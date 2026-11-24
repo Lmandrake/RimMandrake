@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 # `telemetry` CLI (TELEMETRY_BUILD_EVERY_TICK_ACCOUNTED). The stores are Windows-side and WSL (NAT)
 # cannot reach Windows localhost, so the CLI runs under Windows python.exe, as rimbridge_client does.
-# `telemetry wsl-health` runs WSL-side (no Windows hop).
+# `telemetry wsl-health` runs WSL-side (no Windows hop). A machine without the store asks the one that has it.
 here="$(dirname "$(readlink -f "$0")")"
 if [ "$1" = "wsl-health" ]; then shift; exec python3 "$here/health.py" "$@"; fi
-exec python.exe "$(wslpath -w "$here/cli.py")" "$@"
+store="$(python3 "$here/games.py" store)" || { echo "COULD NOT LOOK: this machine's telemetry config cannot be read" >&2; exit 3; }
+if [ "$store" = local ]; then exec python.exe "$(wslpath -w "$here/cli.py")" "$@"; fi
+args=""; for a in "$@"; do args="$args '${a//\'/\'\\\'\'}'"; done
+ssh -o BatchMode=yes -o ConnectTimeout=10 -o LogLevel=ERROR "$store" "~/.local/bin/telemetry$args"; rc=$?
+if [ $rc = 255 ]; then echo "COULD NOT LOOK: the telemetry store ($store) could not be reached" >&2; exit 3; fi
+exit $rc

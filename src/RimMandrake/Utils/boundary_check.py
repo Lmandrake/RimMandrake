@@ -55,6 +55,8 @@ PAGES = {
     "design/specs/2026-11-22-disk-sense-reads-only/boundary.md": "src/RimMandrake/Utils/selftest_disk_sense.py",
     "design/specs/2026-11-22-sense-families-cheap/boundary.md": "src/RimMandrake/Utils/selftest_ops_sense_blind.py",
     "design/specs/2026-11-23-sense-apart-from-beat/boundary.md": "src/RimMandrake/Utils/selftest_metronome_apart.py",
+    "design/specs/2026-11-23-telemetry-any-game/boundary.md":
+        "src/RimMandrake/Utils/telemetry/selftest_telemetry_games.py",
     "design/specs/2026-11-22-units-one-folder/boundary.md": "src/RimMandrake/Utils/selftest_units_one_folder.py",
     "design/specs/2026-11-22-live-account/boundary.md": "src/RimMandrake/Utils/selftest_account_live.py",
     "design/specs/2026-11-22-login-deadline-forewarning/boundary.md": "src/RimMandrake/rimflow/selftest_login_deadline.py",

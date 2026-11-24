@@ -33,6 +33,7 @@ import os
 import re
 import time
 
+import games
 import store
 from tcommon import bridge_failed, cfg, loads, parse_ts, utc_day
 
@@ -47,18 +48,27 @@ HEAD_BYTES = 4096           # a first line longer than this is fingerprinted by 
 class Emit:
     """What a parser writes into: VM points, SQLite rows, and the live `latest` view."""
 
-    def __init__(self, con, vm: store.VMSink, latest: dict):
-        self.con, self.vm, self.latest = con, vm, latest
+    def __init__(self, con, vm: store.VMSink, latest: dict, src: "Source | None" = None):
+        self.con, self.vm = con, vm
+        self.game = src.game if src else None           # every point and event of a game's record carries its name
+        self.src = src.name if src else "bridge"
+        self.machine = src.machine if src else games.here()
+        # each game has its own live view, so one game's stall or speed is never read as another's; the store's own
+        # first game keeps the top level
+        self.latest = latest
+        if src and src.game and src.name != "tps":
+            self.latest = latest.setdefault("games", {}).setdefault(src.game, {})
+        self.shared = latest
         self.rows = 0
         self.events = 0
         self.points = 0
 
     def point(self, name, labels, v, ts):
         self.points += 1
-        self.vm.add(name, labels, v, ts)
+        self.vm.add(name, {**labels, "game": self.game} if self.game else labels, v, ts)
 
     def event(self, ts, kind, subject=None, detail=None, src=None, src_ref=None, **kw):
-        if store.add_event(self.con, ts, kind, subject, detail, src, src_ref, **kw):
+        if store.add_event(self.con, ts, kind, subject, detail, src, src_ref, game=self.game, **kw):
             self.events += 1
 
 
@@ -172,9 +182,9 @@ def parse_tps(r: dict, E: Emit, ref: str) -> bool | None:
             for sig_n in (exc.get("top") or []) if first else []:
                 if isinstance(sig_n, list) and len(sig_n) >= 2:
                     E.con.execute(
-                        "INSERT INTO exc_sigs(session,sig,first_ts,last_ts,n,sup,sample) VALUES(?,?,?,?,?,0,NULL) "
-                        "ON CONFLICT(session,sig) DO UPDATE SET n=n+excluded.n, last_ts=excluded.last_ts",
-                        (r.get("session"), str(sig_n[0])[:300], ts, ts, int(sig_n[1])))
+                        "INSERT INTO exc_sigs(session,sig,first_ts,last_ts,n,sup,sample,game) VALUES(?,?,?,?,?,0,NULL,?) "
+                        "ON CONFLICT(session,sig) DO UPDATE SET n=n+excluded.n, last_ts=excluded.last_ts, "
+                        "game=excluded.game", (r.get("session"), str(sig_n[0])[:300], ts, ts, int(sig_n[1]), E.game))
         br = r.get("br")
         if isinstance(br, dict):
             E.point("rm_game_bridge_calls", lab, br.get("calls"), ts)
@@ -206,18 +216,18 @@ def parse_tps(r: dict, E: Emit, ref: str) -> bool | None:
         parse_vitals(r, E, ref, ts, sess, modlab)
         return
     if k == "mapcomp":
-        E.con.execute("INSERT OR IGNORE INTO mapcomp(ts,session,type,mod,ms_per_tick,calls,max_ms,ticks,src_ref) "
-                      "VALUES(?,?,?,?,?,?,?,?,?)",
+        E.con.execute("INSERT OR IGNORE INTO mapcomp(ts,session,type,mod,ms_per_tick,calls,max_ms,ticks,src_ref,"
+                      "game) VALUES(?,?,?,?,?,?,?,?,?,?)",
                       (ts, r.get("session"), r.get("type"), r.get("mod"), r.get("msPerTick"), r.get("calls"),
-                       r.get("maxMs"), r.get("ticks"), ref))
+                       r.get("maxMs"), r.get("ticks"), ref, E.game))
         E.event(ts, "mapcomp", r.get("type"), r, "tps", ref)
         return
     if k == "flight":
         fid = f"{r.get('session')}:{r.get('seq')}"
-        E.con.execute("INSERT OR IGNORE INTO flight(id,ts,session,file,trigger,tick_from,tick_to,worst_us,detail) "
-                      "VALUES(?,?,?,?,?,?,?,?,?)",
+        E.con.execute("INSERT OR IGNORE INTO flight(id,ts,session,file,trigger,tick_from,tick_to,worst_us,detail,"
+                      "game) VALUES(?,?,?,?,?,?,?,?,?,?)",
                       (fid, ts, r.get("session"), r.get("file"), r.get("trigger"), r.get("tickFrom"),
-                       r.get("tickTo"), r.get("worstDurUs"), json.dumps(r)))
+                       r.get("tickTo"), r.get("worstDurUs"), json.dumps(r), E.game))
     if k:
         subject = r.get("why") or r.get("type") or r.get("save") or r.get("trigger") or sess
         if k == "incident":
@@ -347,37 +357,41 @@ def parse_bridge(r: dict, E: Emit, ref: str) -> bool | None:
     if ts is None or not cid:
         return False
     ev = r.get("ev")
-    if ev == "start":   # an end that arrived first parked a row with ts NULL: the start fills it, never twice
-        E.con.execute("INSERT INTO bridge_calls(cid,ts,tool,mutating,script,seat,run,client) VALUES(?,?,?,?,?,?,?,?) "
+    if ev == "start":
+        game = games.game_of_endpoint(E.machine, r.get("endpoint"))
+        # an end that arrived first parked a row with ts NULL: the start fills it, never twice
+        E.con.execute("INSERT INTO bridge_calls(cid,ts,tool,mutating,script,seat,run,client,game) "
+                      "VALUES(?,?,?,?,?,?,?,?,?) "
                       "ON CONFLICT(cid) DO UPDATE SET ts=excluded.ts, tool=excluded.tool, mutating=excluded.mutating, "
-                      "script=excluded.script, seat=excluded.seat, run=excluded.run, client=excluded.client "
+                      "script=excluded.script, seat=excluded.seat, run=excluded.run, client=excluded.client, "
+                      "game=excluded.game "
                       "WHERE bridge_calls.ts IS NULL",
                       (cid, ts, r.get("tool"), 1 if r.get("mutating") else 0, r.get("script"), r.get("seat"),
-                       r.get("run"), r.get("client")))
+                       r.get("run"), r.get("client"), game))
         parked = _BRIDGE_PARKED.pop(cid, None)
         if parked is not None:
-            _bridge_bucket(parked[0], r.get("tool") or "?", parked[1], parked[2])
+            _bridge_bucket(parked[0], r.get("tool") or "?", parked[1], parked[2], game, E.src)
     elif ev == "end":   # an end with no start yet (files drain oldest first, so only a lost start) parks its row
         E.con.execute("INSERT INTO bridge_calls(cid,ts_end,ms,status,success) VALUES(?,?,?,?,?) "
                       "ON CONFLICT(cid) DO UPDATE SET ts_end=excluded.ts_end, ms=excluded.ms, status=excluded.status, "
                       "success=excluded.success",
                       (cid, ts, r.get("ms"), r.get("status"), _succ(r.get("success"))))
-        row = E.con.execute("SELECT tool, ts FROM bridge_calls WHERE cid=?", (cid,)).fetchone()
+        row = E.con.execute("SELECT tool, ts, game FROM bridge_calls WHERE cid=?", (cid,)).fetchone()
         ms = _num(r.get("ms"))
         if ms is None or not math.isfinite(ms):     # one NaN/inf duration must not poison the bucket's sum and max
             ms = 0.0
         failed = bridge_failed(_succ(r.get("success")), r.get("status"))
         if row is not None and row[1] is not None:
-            _bridge_bucket(ts, row[0] or "?", ms, failed)
+            _bridge_bucket(ts, row[0] or "?", ms, failed, row[2], E.src)
         else:
-            _BRIDGE_PARKED[cid] = (ts, ms, failed)
-        E.latest["bridge_last"] = ts
+            _BRIDGE_PARKED[cid] = (ts, ms, failed, E.src)
+        E.shared.setdefault("bridge_lasts", {})[E.src] = ts
     elif ev == "reconciled":
         E.con.execute("UPDATE bridge_calls SET status=? WHERE cid=?", (f"reconciled:{r.get('as')}", cid))
 
 
-def _bridge_bucket(ts: float, tool: str, ms: float, failed: bool) -> None:
-    a = _BRIDGE_OPEN.setdefault((int(ts // BRIDGE_BUCKET) * BRIDGE_BUCKET, tool), [0, 0.0, 0.0, 0])
+def _bridge_bucket(ts: float, tool: str, ms: float, failed: bool, game: str | None, src: str) -> None:
+    a = _BRIDGE_OPEN.setdefault((int(ts // BRIDGE_BUCKET) * BRIDGE_BUCKET, tool, game, src), [0, 0.0, 0.0, 0])
     a[0] += 1
     a[1] += ms
     a[2] = max(a[2], ms)
@@ -385,20 +399,22 @@ def _bridge_bucket(ts: float, tool: str, ms: float, failed: bool) -> None:
 
 
 def flush_bridge_buckets(E: Emit, force: bool = False, now: float | None = None) -> None:
+    """E.src's buckets only: another machine's calls arrive a pull later, and its own clock closes its buckets."""
     """Emit closed 10 s buckets once; an open bucket waits (one point per series per timestamp). With `now` (the
     calls stopped), a bucket the wall clock left 30 s behind is closed too, so the last calls are not held forever."""
-    horizon = (E.latest.get("bridge_last") or 0) - 2 * BRIDGE_BUCKET
+    horizon = ((E.shared.get("bridge_lasts") or {}).get(E.src) or 0) - 2 * BRIDGE_BUCKET
     if now is not None:
         horizon = max(horizon, now - 3 * BRIDGE_BUCKET)
-    for cid, (ts, ms, failed) in list(_BRIDGE_PARKED.items()):  # a start that never came by its bucket's close
-        if force or int(ts // BRIDGE_BUCKET) * BRIDGE_BUCKET <= horizon:
+    for cid, (ts, ms, failed, src) in list(_BRIDGE_PARKED.items()):  # a start that never came by its bucket's close
+        if force or src == E.src and int(ts // BRIDGE_BUCKET) * BRIDGE_BUCKET <= horizon:
             del _BRIDGE_PARKED[cid]
-            _bridge_bucket(ts, "?", ms, failed)
-    for (bts, tool) in sorted(list(_BRIDGE_OPEN)):
-        if not force and bts > horizon:
+            _bridge_bucket(ts, "?", ms, failed, None, src)
+    for k in sorted(_BRIDGE_OPEN, key=lambda k: (k[0], k[1], k[2] or "", k[3])):
+        bts, tool, game, src = k
+        if not force and (src != E.src or bts > horizon):
             continue
-        c, s, mx, err = _BRIDGE_OPEN.pop((bts, tool))
-        lab = {"tool": tool}
+        c, s, mx, err = _BRIDGE_OPEN.pop(k)
+        lab = {"tool": tool, "game": game}
         E.point("rm_bridge_calls", lab, c, bts)
         E.point("rm_bridge_ms_sum", lab, s, bts)
         E.point("rm_bridge_ms_max", lab, mx, bts)
@@ -412,9 +428,9 @@ TAIL_STATE_KEY = "tail_state"
 def tail_state(vm: store.VMSink, latest: dict) -> dict:
     """What the committed cursors stand on beyond SQLite: the open and parked bridge buckets (rows already read but
     not yet a point) and any point neither VM nor the spool took. Written in the cursor's own commit."""
-    return {"open": [[b, t, a] for (b, t), a in _BRIDGE_OPEN.items()],
+    return {"open": [[*k, a] for k, a in _BRIDGE_OPEN.items()],
             "parked": [[cid, list(v)] for cid, v in _BRIDGE_PARKED.items()],
-            "bridge_last": latest.get("bridge_last"),
+            "bridge_lasts": latest.get("bridge_lasts"),
             "points": [list(p) for p in vm.points]}
 
 
@@ -425,11 +441,15 @@ def restore_tail_state(con, vm: store.VMSink, latest: dict) -> bool:
     if not isinstance(st, dict):
         return False
     _BRIDGE_OPEN.clear()
-    _BRIDGE_OPEN.update({(b, t): list(a) for b, t, a in st.get("open") or []})
+    # a state saved before the key carried a game and a source: [bucket, tool, sums]
+    _BRIDGE_OPEN.update({(x[0], x[1], *(x[2:4] if len(x) == 5 else (None, "bridge"))): list(x[-1])
+                         for x in st.get("open") or []})
     _BRIDGE_PARKED.clear()
-    _BRIDGE_PARKED.update({cid: tuple(v) for cid, v in st.get("parked") or []})
-    if st.get("bridge_last") is not None:
-        latest["bridge_last"] = max(latest.get("bridge_last") or 0, st["bridge_last"])
+    _BRIDGE_PARKED.update({cid: (*v[:3], v[3] if len(v) > 3 else "bridge") for cid, v in st.get("parked") or []})
+    saved = st.get("bridge_lasts") or ({"bridge": st["bridge_last"]} if st.get("bridge_last") is not None else {})
+    lasts = latest.setdefault("bridge_lasts", {})
+    for src, t in saved.items():
+        lasts[src] = max(lasts.get(src) or 0, t)
     held = [tuple(p) for p in st.get("points") or []]
     if held:
         vm.points[:0] = held
@@ -550,7 +570,8 @@ class Source:
     Any other return (None) means it took the row."""
 
     def __init__(self, name, pattern_fn, parser, fast=False, archive=True, desc="", rate="", producer="",
-                 ordered=False):
+                 ordered=False, game=None, machine=None):
+        self.game, self.machine = game, machine or games.here()
         self.name, self.pattern_fn, self.parser, self.ordered = name, pattern_fn, parser, ordered
         self.fast, self.archive, self.desc, self.rate, self.producer = fast, archive, desc, rate, producer
 
@@ -568,10 +589,20 @@ def _j(*a):
 def make_sources() -> list[Source]:
     c = cfg()
     jb = c["jawabench"]
-    return [
-        Source("tps", lambda: [_j(jb, "tps", "tps_*.jsonl")], parse_tps, fast=True,
-               desc="JawaBench TPS record: sample windows (5 s; 1 s test tier), context, incidents, flight refs",
-               rate="5 s / 1 s armed", producer="JawaBenchTpsWriter.cs"),
+    out = []
+    for name, key, machine, _letter in games.all_games():     # one TPS record per game of the map
+        d = glob.escape(games.record_dir(key))
+        out.append(Source(
+            games.source_name("tps", key), lambda d=d: [_j(d, "tps", "tps_*.jsonl")], parse_tps, fast=True,
+            desc=f"{name}: JawaBench TPS record: sample windows (5 s; 1 s test tier), context, incidents, flight refs",
+            rate="5 s / 1 s armed" + ("" if games.is_local(key) else ", pulled each minute"),
+            producer="JawaBenchTpsWriter.cs", game=name, machine=machine))
+    for machine in sorted({g[2] for g in games.all_games()} - {games.here()}):      # one call log per machine
+        bc = _j(games.machine_dir(machine), "bridge_calls.jsonl")
+        out.append(Source(games.source_name("bridge", machine), lambda bc=bc: [bc, bc + ".1"], parse_bridge, fast=True,
+                          ordered=True, desc=f"rimbridge_client per-call evidence of {machine}", machine=machine,
+                          rate="per bridge call, pulled each minute", producer="rimbridge_client.py _evidence"))
+    return out + [
         Source("health", lambda: [_j(jb, "health", "observer_*.jsonl")], parse_health,
                desc="health_observer.py: game CPU/main thread/memory, sys memory, log growth",
                rate="5 s game up, 30 s idle", producer="health_observer.py"),
@@ -627,7 +658,7 @@ class Tailer:
         return f"ino:{ino}" if ino else f"path:{path}"
 
     def pass_source(self, src: Source) -> int:
-        E = Emit(self.con, self.vm, self.latest)
+        E = Emit(self.con, self.vm, self.latest, src)
         n = 0
         stt = self.stats.setdefault(src.name, {"rows": 0, "bad": 0, "resets": 0, "files": 0, "last_row_ts": None,
                                                "last_pass": None, "error": None})
@@ -637,6 +668,7 @@ class Tailer:
             stt["error"] = str(e)
             return 0
         stt["files"] = len(files)
+        game_row: dict = {}
         backlog = False     # a file read only up to MAX_READ this pass: its bridge buckets are not complete yet
         cursor_moved = False    # a reset or a first fingerprint must be committed even by a pass that read no rows
         for path in files:
@@ -721,6 +753,9 @@ class Tailer:
                     stt["skipped"] = stt.get("skipped", 0) + 1
                     continue
                 t = parse_ts(r.get("utc") or r.get("t") or r.get("ts") or r.get("at"))
+                if plausible_ts(t) and src.game:
+                    if t >= game_row.get("ts", 0):
+                        game_row = {"ts": t, "session": r.get("session"), "pid": games.pid_of(path)}
                 if plausible_ts(t):     # inf / 1e308 / far future would pin freshness and break alerts.json
                     stt["last_row_ts"] = max(stt["last_row_ts"] or 0, t)
             new = chunk[max(0, done - start):]
@@ -738,8 +773,12 @@ class Tailer:
                               resets, head))
             if partial and src.ordered:     # an older file still has a backlog: newer files wait for the next pass,
                 break                       # or a call's end (live file) lands before its start (the .1 tail)
-        if src.name == "bridge" and not backlog:    # a pass with nothing new: the calls stopped, close what the
-            flush_bridge_buckets(E, now=time.time() if n == 0 else None)    # clock left. A backlog flushes once drained
+        if src.parser is parse_bridge and not backlog:  # a pass with nothing new: the calls stopped, close what the
+            # clock left. A backlog flushes once drained. A pulled log is a pull and a clock behind
+            wait = 0 if src.machine == games.here() else games.LOOK_S
+            flush_bridge_buckets(E, now=time.time() - wait if n == 0 else None)
+        if game_row and game_row["ts"] >= ((store.kv_get(self.con, "game:" + src.game) or {}).get("ts") or 0):
+            store.kv_set(self.con, "game:" + src.game, game_row)    # the newest row of this game, for games.status
         stt["rows"] += n
         stt["last_pass"] = time.time()
         if n or E.events or E.points or cursor_moved:
@@ -779,11 +818,11 @@ class Tailer:
 
 def copy_side_files(con) -> int:
     """Flight dumps and first-sight exception files (P2) are capped and rotated in-game; keep a copy."""
-    jb = cfg()["jawabench"]
+    dirs = [glob.escape(games.record_dir(g[1])) for g in games.all_games()]
     n = 0
     for sub, pat in (("flight", "flight_*.jsonl.gz"), ("exc", "exc_*.jsonl")):
         dst = os.path.join(cfg()["raw"], sub)
-        for p in glob.glob(os.path.join(jb, "tps", sub, pat)):
+        for p in [p for d in dirs for p in glob.glob(os.path.join(d, "tps", sub, pat))]:
             q = os.path.join(dst, os.path.basename(p))
             try:
                 st = os.stat(p)

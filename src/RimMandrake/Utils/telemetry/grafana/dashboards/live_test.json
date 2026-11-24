@@ -186,8 +186,8 @@
       "type": "prometheus",
       "uid": "vm"
      },
-     "expr": "rm_game_tps",
-     "legendFormat": "{{tier}} x{{mult}}",
+     "expr": "rm_game_tps{game=~\"$game\"}",
+     "legendFormat": "{{game}} {{tier}} x{{mult}}",
      "range": true,
      "refId": "A"
     }
@@ -239,8 +239,8 @@
       "type": "prometheus",
       "uid": "vm"
      },
-     "expr": "rm_game_ratio",
-     "legendFormat": "{{tier}} x{{mult}}",
+     "expr": "rm_game_ratio{game=~\"$game\"}",
+     "legendFormat": "{{game}} {{tier}} x{{mult}}",
      "range": true,
      "refId": "A"
     }
@@ -292,8 +292,8 @@
       "type": "prometheus",
       "uid": "vm"
      },
-     "expr": "rm_game_tick_ms",
-     "legendFormat": "mean x{{mult}}",
+     "expr": "rm_game_tick_ms{game=~\"$game\"}",
+     "legendFormat": "{{game}} mean x{{mult}}",
      "range": true,
      "refId": "A"
     },
@@ -302,8 +302,8 @@
       "type": "prometheus",
       "uid": "vm"
      },
-     "expr": "rm_game_worst_tick_ms",
-     "legendFormat": "worst tick",
+     "expr": "rm_game_worst_tick_ms{game=~\"$game\"}",
+     "legendFormat": "{{game}} worst tick",
      "range": true,
      "refId": "B"
     }
@@ -347,7 +347,7 @@
       "type": "prometheus",
       "uid": "vm"
      },
-     "expr": "sum by (le) (rm_game_tick_hist)",
+     "expr": "sum by (le) (rm_game_tick_hist{game=~\"$game\"})",
      "format": "heatmap",
      "legendFormat": "{{le}}",
      "range": true,
@@ -401,8 +401,8 @@
       "type": "prometheus",
       "uid": "vm"
      },
-     "expr": "rm_game_stage_ms",
-     "legendFormat": "{{stage}}",
+     "expr": "rm_game_stage_ms{game=~\"$game\"}",
+     "legendFormat": "{{game}} {{stage}}",
      "range": true,
      "refId": "A"
     }
@@ -466,8 +466,8 @@
       "type": "prometheus",
       "uid": "vm"
      },
-     "expr": "rm_game_exc",
-     "legendFormat": "logged",
+     "expr": "rm_game_exc{game=~\"$game\"}",
+     "legendFormat": "{{game}} logged",
      "range": true,
      "refId": "A"
     },
@@ -476,8 +476,8 @@
       "type": "prometheus",
       "uid": "vm"
      },
-     "expr": "rm_game_exc_suppressed",
-     "legendFormat": "suppressed by cap",
+     "expr": "rm_game_exc_suppressed{game=~\"$game\"}",
+     "legendFormat": "{{game}} suppressed by cap",
      "range": true,
      "refId": "B"
     }
@@ -528,8 +528,8 @@
       "type": "prometheus",
       "uid": "vm"
      },
-     "expr": "rm_game_bridge_calls",
-     "legendFormat": "calls/window",
+     "expr": "rm_game_bridge_calls{game=~\"$game\"}",
+     "legendFormat": "{{game}} calls/window",
      "range": true,
      "refId": "A"
     },
@@ -538,8 +538,8 @@
       "type": "prometheus",
       "uid": "vm"
      },
-     "expr": "rm_game_bridge_main_ms",
-     "legendFormat": "main-thread ms",
+     "expr": "rm_game_bridge_main_ms{game=~\"$game\"}",
+     "legendFormat": "{{game}} main-thread ms",
      "range": true,
      "refId": "B"
     },
@@ -548,8 +548,8 @@
       "type": "prometheus",
       "uid": "vm"
      },
-     "expr": "rm_game_bridge_qmax_ms",
-     "legendFormat": "queue max ms",
+     "expr": "rm_game_bridge_qmax_ms{game=~\"$game\"}",
+     "legendFormat": "{{game}} queue max ms",
      "range": true,
      "refId": "C"
     }
@@ -600,8 +600,8 @@
       "type": "prometheus",
       "uid": "vm"
      },
-     "expr": "rm_game_heap_mb",
-     "legendFormat": "heap MB",
+     "expr": "rm_game_heap_mb{game=~\"$game\"}",
+     "legendFormat": "{{game}} heap MB",
      "range": true,
      "refId": "A"
     },
@@ -610,8 +610,8 @@
       "type": "prometheus",
       "uid": "vm"
      },
-     "expr": "rate(rm_game_gc_gen0[1m])*60",
-     "legendFormat": "GC/min",
+     "expr": "rate(rm_game_gc_gen0{game=~\"$game\"}[1m])*60",
+     "legendFormat": "{{game}} GC/min",
      "range": true,
      "refId": "B"
     }
@@ -662,8 +662,8 @@
       "type": "prometheus",
       "uid": "vm"
      },
-     "expr": "rm_game_pawns",
-     "legendFormat": "map {{map}} {{biome}}",
+     "expr": "rm_game_pawns{game=~\"$game\"}",
+     "legendFormat": "{{game}} map {{map}} {{biome}}",
      "range": true,
      "refId": "A"
     }
@@ -714,8 +714,8 @@
       "type": "prometheus",
       "uid": "vm"
      },
-     "expr": "rm_game_things",
-     "legendFormat": "map {{map}} {{biome}}",
+     "expr": "rm_game_things{game=~\"$game\"}",
+     "legendFormat": "{{game}} map {{map}} {{biome}}",
      "range": true,
      "refId": "A"
     }
@@ -766,8 +766,8 @@
       "type": "prometheus",
       "uid": "vm"
      },
-     "expr": "rm_game_gap_max_ms",
-     "legendFormat": "gap max ms",
+     "expr": "rm_game_gap_max_ms{game=~\"$game\"}",
+     "legendFormat": "{{game}} gap max ms",
      "range": true,
      "refId": "A"
     },
@@ -776,8 +776,8 @@
       "type": "prometheus",
       "uid": "vm"
      },
-     "expr": "rm_game_fps",
-     "legendFormat": "fps",
+     "expr": "rm_game_fps{game=~\"$game\"}",
+     "legendFormat": "{{game}} fps",
      "range": true,
      "refId": "B"
     }
@@ -841,8 +841,8 @@
       "type": "prometheus",
       "uid": "vm"
      },
-     "expr": "rm_game_pawns_colonists_alive",
-     "legendFormat": "colonists alive",
+     "expr": "rm_game_pawns_colonists_alive{game=~\"$game\"}",
+     "legendFormat": "{{game}} colonists alive",
      "range": true,
      "refId": "A"
     },
@@ -851,8 +851,8 @@
       "type": "prometheus",
       "uid": "vm"
      },
-     "expr": "rm_game_pawns_colonists_downed",
-     "legendFormat": "downed",
+     "expr": "rm_game_pawns_colonists_downed{game=~\"$game\"}",
+     "legendFormat": "{{game}} downed",
      "range": true,
      "refId": "B"
     },
@@ -861,8 +861,8 @@
       "type": "prometheus",
       "uid": "vm"
      },
-     "expr": "rm_game_pawns_colonists_hostile",
-     "legendFormat": "colonists hostile",
+     "expr": "rm_game_pawns_colonists_hostile{game=~\"$game\"}",
+     "legendFormat": "{{game}} colonists hostile",
      "range": true,
      "refId": "C"
     },
@@ -871,8 +871,8 @@
       "type": "prometheus",
       "uid": "vm"
      },
-     "expr": "rm_game_pawns_hostile",
-     "legendFormat": "hostiles",
+     "expr": "rm_game_pawns_hostile{game=~\"$game\"}",
+     "legendFormat": "{{game}} hostiles",
      "range": true,
      "refId": "D"
     }
@@ -923,8 +923,8 @@
       "type": "prometheus",
       "uid": "vm"
      },
-     "expr": "rm_game_pawns_min_health",
-     "legendFormat": "min health",
+     "expr": "rm_game_pawns_min_health{game=~\"$game\"}",
+     "legendFormat": "{{game}} min health",
      "range": true,
      "refId": "A"
     },
@@ -933,8 +933,8 @@
       "type": "prometheus",
       "uid": "vm"
      },
-     "expr": "rm_game_pawns_min_mood_margin",
-     "legendFormat": "min mood - break threshold",
+     "expr": "rm_game_pawns_min_mood_margin{game=~\"$game\"}",
+     "legendFormat": "{{game}} min mood - break threshold",
      "range": true,
      "refId": "B"
     }
@@ -985,8 +985,8 @@
       "type": "prometheus",
       "uid": "vm"
      },
-     "expr": "rm_game_threat_structures",
-     "legendFormat": "{{kind}}",
+     "expr": "rm_game_threat_structures{game=~\"$game\"}",
+     "legendFormat": "{{game}} {{kind}}",
      "range": true,
      "refId": "A"
     },
@@ -995,8 +995,8 @@
       "type": "prometheus",
       "uid": "vm"
      },
-     "expr": "rm_game_modal_age_s",
-     "legendFormat": "modal age s",
+     "expr": "rm_game_modal_age_s{game=~\"$game\"}",
+     "legendFormat": "{{game}} modal age s",
      "range": true,
      "refId": "B"
     },
@@ -1005,8 +1005,8 @@
       "type": "prometheus",
       "uid": "vm"
      },
-     "expr": "rm_game_clock_disc_total",
-     "legendFormat": "clock discontinuities",
+     "expr": "rm_game_clock_disc_total{game=~\"$game\"}",
+     "legendFormat": "{{game}} clock discontinuities",
      "range": true,
      "refId": "C"
     }
@@ -1150,7 +1150,32 @@
   "game"
  ],
  "templating": {
-  "list": []
+  "list": [
+   {
+    "allValue": ".*",
+    "current": {
+     "text": "All",
+     "value": "$__all"
+    },
+    "datasource": {
+     "type": "prometheus",
+     "uid": "vm"
+    },
+    "definition": "label_values(rm_game_running, game)",
+    "includeAll": true,
+    "label": "game",
+    "multi": true,
+    "name": "game",
+    "options": [],
+    "query": {
+     "query": "label_values(rm_game_running, game)",
+     "refId": "game"
+    },
+    "refresh": 2,
+    "sort": 1,
+    "type": "query"
+   }
+  ]
  },
  "time": {
   "from": "now-30m",

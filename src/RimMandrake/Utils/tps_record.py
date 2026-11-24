@@ -343,6 +343,29 @@ LEGACY = ("tps.1.jsonl", "tps.jsonl", "observer.jsonl")   # observer.jsonl: belt
 _open = open   # selftest swaps this to simulate a segment vanishing mid-read
 
 
+def game_record(text):
+    """-> (folder, 0) of a game's record, or (None, rc) with the refusal printed: 2 no such game, 3 could not look at
+    it (never read as "no rows"), 4 it has written no record yet. The reading's age goes to stderr, so --json stays."""
+    sys.path.append(os.path.join(HERE, "telemetry"))
+    import games
+    try:
+        name, key = games.resolve(text)
+    except games.game_names.GameNameError as e:
+        print("tps_record: REFUSED: %s" % e, file=sys.stderr)
+        return None, games.EX_UNKNOWN
+    d = os.path.join(games.record_dir(key), "tps")
+    if not games.is_local(key):
+        lk = games.look(key, time.time(), daemon=False)
+        if lk["error"]:
+            print("tps_record: %s: COULD NOT LOOK (%s)" % (name, lk["error"]), file=sys.stderr)
+            return None, games.EX_COULD_NOT_LOOK
+        print("%s: last look %s ago" % (name, games.age_s(max(0, time.time() - lk["at"]))), file=sys.stderr)
+    if not os.path.isdir(d):
+        print("tps_record: %s: no data yet (no folder %s)" % (name, d), file=sys.stderr)
+        return None, games.EX_NO_DATA
+    return d, 0
+
+
 def record_dir():
     from game_paths import LOCALLOW
     return os.path.join(LOCALLOW, "JawaBench", "tps")
@@ -1177,6 +1200,8 @@ def main(argv=None):
     ap.add_argument("--last", type=int, default=0, help="also print the last N rows")
     ap.add_argument("--window", type=int, default=300, help="verdict window in seconds (default 300)")
     ap.add_argument("--dir", default=None, help="record directory (default: the game's SaveData JawaBench/tps)")
+    ap.add_argument("--game", default=None, help="ArchBig, ArchSmall, Steve1 or Steve2: that game's record (another "
+                    "machine's is the copy the telemetry pull keeps, at most about a minute old)")
     ap.add_argument("--json", action="store_true")
     ap.add_argument("--recent", action="store_true", help="verdict only: read just the segments written within the "
                     "window (+%d s); the counts then cover those segments" % TPS_RECENT_SLACK_S)
@@ -1184,6 +1209,13 @@ def main(argv=None):
                     "stream (health_observer.py) to the timeline and its incidents; evidence only, no causes")
     ap.add_argument("--health-dir", default=None, help="observer stream directory (default <LocalLow>/JawaBench/health)")
     a = ap.parse_args(argv)
+    if a.game and a.dir:
+        print("tps_record: --game and --dir both name a record; give one", file=sys.stderr)
+        return 2
+    if a.game:
+        a.dir, rc = game_record(a.game)
+        if rc:
+            return rc
     if a.recent and (a.at or a.since or a.sessions):
         print("tps_record: --recent reads only the verdict window; it does not go with --at, --since or --sessions",
               file=sys.stderr)

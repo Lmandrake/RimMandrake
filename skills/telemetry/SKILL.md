@@ -34,7 +34,7 @@ functionality as needed by debugging."*
   - `modver`: the mod order and the mod versions;
   - `build`: the build of the JawaBench companion.
 - Compare versions of the SAME mod list, against a fixed debug save. Compare on demand, with `telemetry around`.
-  `telemetry around` filters by game speed only. Check yourself that both sides have the same `mods` label:
+  `telemetry around` filters by game speed, and by `--game`. Check yourself that both sides have the same `mods` label:
   `telemetry query` prints the labels.
 - The alarms are coarse: very low memory or TPS, or a disk that fills. `analysis.RULES` (in `analysis.py`) holds the
   alarm thresholds.
@@ -73,17 +73,29 @@ producers                                  Windows, E:\telemetry  (survives wsl 
 ```
 
 - `<data root>` is the folder that `python3 src/RimMandrake/Utils/rmpaths.py` prints.
-- The TPS record comes from ArchBig only. ArchSmall writes its TPS record in its own folder, and no source reads that
-  folder. The rows of `bridge_calls.jsonl` cover both games on Archmagi. `rm_proc_*` and `rm_game_process_up` count
-  any RimWorld process. So ArchSmall alone can fire the alarm `blind:tps`.
+- **All four games are read** (ArchBig, ArchSmall, Steve1, Steve2; the list is `game_names.py`). A game on Archmagi is
+  read from its own folder. A game on another machine is copied each minute by `rm-telemetry-pull.timer`
+  (`telemetry/pull_games.py`) into `E:\telemetry\inbox\games\<machine>\`. Every game series, event and bridge call
+  carries its `game`.
+- Ask about one game with `--game Steve1` on `series`, `query`, `at`, `events`, `around`, `flight`, `exc` and `bridge`.
+  Without `--game`, all games answer, each line labelled. `telemetry games` says which are up and how old each reading is.
+- The exit codes differ: 2 no such game, 3 could not look at it (with the cause; rows held from before are shown with
+  their age), 4 it has written no row yet, 0 a reading. A game that is down is a reading: it says `down` and the age.
+- On a machine without the store (SteveDesktop), the same `telemetry` command asks Archmagi's store over ssh.
+- Rows from before 2026-11-23 have no game. Game series without a label are ArchBig's. Bridge calls without one are
+  either Archmagi game's.
+- `rm_proc_*` and `rm_game_process_up` count any RimWorld process on Archmagi.
+- Page: `design/specs/2026-11-23-telemetry-any-game/boundary.md`.
 - No program carries an alarm out of telemetry. To see an open alarm, run `telemetry health`.
 - The daemon, the stores, Grafana and the CLI run on the Windows side **with no window** (`references/traps.md`, "Visible windows").
-- WSL does two things only. WSL exports its own sources, and `rm-telemetry-health.timer` watches the heartbeat.
+- WSL does three things only. WSL exports its own sources, copies the other machines' game records, and
+  `rm-telemetry-health.timer` watches the heartbeat.
 - The Windows side never reads `\\wsl.localhost`, because a read of that path boots the distro.
 
 ## Verbs
 
 ```
+telemetry games [Steve1]              each game: up or down, age of its newest row and of the last look at it
 telemetry health                      every source's newest row and lag, stores, processes, open alerts
 telemetry at "15:02" --span 2m        all game/host series + events around a moment
 telemetry events --kind deploy,incident --since 24h

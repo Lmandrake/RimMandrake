@@ -151,8 +151,8 @@
       "type": "prometheus",
       "uid": "vm"
      },
-     "expr": "rm_game_tick_ms",
-     "legendFormat": "x{{mult}} mods {{mods}} ver {{modver}} build {{build}}",
+     "expr": "rm_game_tick_ms{game=~\"$game\"}",
+     "legendFormat": "{{game}} x{{mult}} mods {{mods}} ver {{modver}} build {{build}}",
      "range": true,
      "refId": "A"
     }
@@ -204,9 +204,9 @@
       "type": "prometheus",
       "uid": "vm"
      },
-     "expr": "quantile_over_time(0.5, rm_game_stage_ms[10m])",
+     "expr": "quantile_over_time(0.5, rm_game_stage_ms{game=~\"$game\"}[10m])",
      "interval": "1m",
-     "legendFormat": "{{stage}}",
+     "legendFormat": "{{game}} {{stage}}",
      "range": true,
      "refId": "A"
     }
@@ -337,7 +337,32 @@
   "changes"
  ],
  "templating": {
-  "list": []
+  "list": [
+   {
+    "allValue": ".*",
+    "current": {
+     "text": "All",
+     "value": "$__all"
+    },
+    "datasource": {
+     "type": "prometheus",
+     "uid": "vm"
+    },
+    "definition": "label_values(rm_game_running, game)",
+    "includeAll": true,
+    "label": "game",
+    "multi": true,
+    "name": "game",
+    "options": [],
+    "query": {
+     "query": "label_values(rm_game_running, game)",
+     "refId": "game"
+    },
+    "refresh": 2,
+    "sort": 1,
+    "type": "query"
+   }
+  ]
  },
  "time": {
   "from": "now-7d",

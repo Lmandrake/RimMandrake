@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import sys
 
 HERE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "dashboards")
@@ -26,11 +27,26 @@ def sql_target(q, ref="A", time_cols=("time",), qtype="table"):
             "timeColumns": list(time_cols)}
 
 
+GAME_SERIES = re.compile(r"\b(rm_(?:game|bridge)_\w+)(?!\w)(?!\{)")
+
+
 def prom(expr, legend="", ref="A", interval=""):
+    """A game's series answers for the games picked in the board's `game` box, and its legend names its game."""
+    if GAME_SERIES.search(expr):
+        expr = GAME_SERIES.sub(r'\1{game=~"$game"}', expr)
+        if "sum" not in expr and "max(" not in expr and "topk" not in expr:
+            legend = ("{{game}} " + legend).strip()
     t = {"refId": ref, "datasource": VM, "expr": expr, "legendFormat": legend, "range": True}
     if interval:
         t["interval"] = interval
     return t
+
+
+# "All" is .* and so also takes the rows written before rows carried a game
+GAME_BOX = {"name": "game", "label": "game", "type": "query", "datasource": VM, "refresh": 2, "sort": 1,
+            "query": {"query": "label_values(rm_game_running, game)", "refId": "game"}, "definition":
+            "label_values(rm_game_running, game)", "includeAll": True, "allValue": ".*", "multi": True,
+            "current": {"text": "All", "value": "$__all"}, "options": []}
 
 
 class Board:
@@ -38,7 +54,7 @@ class Board:
         self.d = {"uid": uid, "title": title, "tags": ["rimmandrake", "telemetry", *tags], "timezone": "browser",
                   "schemaVersion": 39, "version": 1, "refresh": refresh, "editable": False,
                   "time": {"from": time_from, "to": "now"}, "panels": [],
-                  "annotations": {"list": []}, "templating": {"list": []},
+                  "annotations": {"list": []}, "templating": {"list": [dict(GAME_BOX)] if "game" in tags or "bridge" in tags or "changes" in tags else []},
                   "links": [{"title": "Telemetry", "type": "dashboards", "tags": ["telemetry"], "asDropdown": True}]}
         self.y = 0
         self.x = 0

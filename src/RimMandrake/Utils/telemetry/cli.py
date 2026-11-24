@@ -5,6 +5,9 @@
 Rule for agents: QUERY HISTORY BEFORE RE-MEASURING LIVE. Every block is headed by source and
 freshness; absent data prints UNMEASURED (<why>), never 0.
 
+  telemetry games [Steve1]                each game: up or down, the age of its newest row and of the last look at it
+  (--game NAME on series, query, at, events, around, flight, exc, bridge: that game only. ArchBig, ArchSmall, Steve1,
+   Steve2 in any letter case. Exit 2 unknown game, 3 could not look at it, 4 it has no data yet.)
   telemetry health                        every source: newest row, lag, rows, errors; stores; processes
   telemetry series [--grep tps]           series that exist, with newest value and age
   telemetry query <MetricsQL> [--since 1h] [--step 15s]
@@ -38,6 +41,7 @@ from datetime import datetime, timedelta
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import analysis  # noqa: E402
+import games  # noqa: E402
 import store  # noqa: E402
 from tcommon import CODE_DIR, bridge_failed, cfg, iso, read_json  # noqa: E402
 
@@ -82,6 +86,56 @@ def http_ok(url: str) -> bool:
         return False
 
 
+# ------------------------------------------------------------------ one game
+
+class Reading:
+    """The --game of a verb: its filter, and what an empty answer about that game means. No --game: every game."""
+
+    def __init__(self, text):
+        self.name = None
+        if text is None:
+            return
+        try:
+            self.name, self.key = games.resolve(text)
+        except games.game_names.GameNameError as e:
+            print(f"REFUSED: {e}", file=sys.stderr)
+            raise SystemExit(games.EX_UNKNOWN)
+        p = cfg()["db"]
+        self.st = games.status(store.connect(p, readonly=True) if os.path.exists(p) else None, self.name)
+        print(self.st["line"])
+
+    def empty(self, why: str) -> int:
+        """Nothing to show. The reason is never "zero" when the game could not be looked at or has written nothing."""
+        if self.name is None or self.st["rc"] == 0:
+            print(f"  {why}")
+            return 0
+        print("  UNMEASURED (could not look at this game: no row held for this question)"
+              if self.st["rc"] == games.EX_COULD_NOT_LOOK else "  no data yet from this game")
+        return self.st["rc"]
+
+    def blank(self) -> bool:
+        """The game has no rows to read at all, so no store needs asking."""
+        return self.name is not None and not self.st["held"]
+
+    def sql(self, src_col=None):
+        return games.sql_game(self.name, src_col) if self.name else ("1", [])
+
+
+def cmd_games(a) -> int:
+    p = cfg()["db"]
+    con = store.connect(p, readonly=True) if os.path.exists(p) else None
+    try:
+        names = [games.resolve(a.game)[0]] if a.game else [g[0] for g in games.all_games()]
+    except games.game_names.GameNameError as e:
+        print(f"REFUSED: {e}", file=sys.stderr)
+        return games.EX_UNKNOWN
+    rows = [games.status(con, n) for n in names]
+    for r in rows:
+        print(r["line"])
+    rcs = [r["rc"] for r in rows]
+    return games.EX_COULD_NOT_LOOK if games.EX_COULD_NOT_LOOK in rcs else max(rcs) if len(rcs) == 1 else 0
+
+
 # ------------------------------------------------------------------ verbs
 
 def cmd_health(a) -> int:
@@ -117,6 +171,9 @@ def cmd_health(a) -> int:
 
 
 def cmd_series(a) -> int:
+    g = Reading(a.game)
+    if g.blank():
+        return g.empty("")
     try:
         names = json.loads(store.vm_get("/api/v1/label/__name__/values"))["data"]
     except Exception as e:  # noqa: BLE001
@@ -126,11 +183,12 @@ def cmd_series(a) -> int:
     print(f"VictoriaMetrics · {len(names)} series names" + (f" matching {a.grep!r}" if a.grep else ""))
     for n in names:
         try:
-            r = store.vm_query(f"last_over_time({n}[30d])")["data"]["result"]
+            r = store.vm_query(f"last_over_time({n}[30d])", game=g.name)["data"]["result"]
         except Exception:  # noqa: BLE001
             r = []
         if not r:
-            print(f"  {n:<34} UNMEASURED (no point in 30 d)")
+            if g.name is None:      # a series of the host or of another game is not this game's gap
+                print(f"  {n:<34} UNMEASURED (no point in 30 d)")
             continue
         newest = max(float(x["value"][0]) for x in r)
         v = r[0]["value"][1]
@@ -143,16 +201,19 @@ def _labels(m: dict) -> str:
 
 
 def cmd_query(a) -> int:
+    g = Reading(a.game)
+    if g.blank():
+        return g.empty("")
     end = time.time()
     try:
-        d = store.vm_query(a.expr, end - dur(a.since), end, a.step)
+        d = store.vm_query(a.expr, end - dur(a.since), end, a.step, game=g.name)
     except Exception as e:  # noqa: BLE001
         print(f"UNMEASURED (VictoriaMetrics: {e})")
         return 1
     res = d["data"]["result"]
-    print(f"VictoriaMetrics · {a.expr} · last {a.since} step {a.step} · {len(res)} series")
+    print(f"VictoriaMetrics · {a.expr} · last {a.since} step {a.step}" + (f" · {len(res)} series" if res else ""))
     if not res:
-        print("  UNMEASURED (no points in range; check the name with `telemetry series --grep`)")
+        return g.empty("UNMEASURED (no points in range; check the name with `telemetry series --grep`)")
     for s in res[:a.limit]:
         vals = [float(v[1]) for v in s["values"]]
         print(f"  {_labels(s['metric'])}  n={len(vals)} min={min(vals):.4g} med={statistics.median(vals):.4g} "
@@ -188,43 +249,55 @@ AT_SERIES = ["rm_game_tps", "rm_game_ratio", "rm_game_tick_ms", "rm_game_worst_t
 
 
 def cmd_at(a) -> int:
+    g = Reading(a.game)
+    if g.blank():
+        return g.empty("")
     t = parse_moment(a.moment)
     span = dur(a.span)
     print(f"around {iso(t)} ± {a.span}")
     err = vm_ok()
     for n in AT_SERIES:
+        if g.name and not n.startswith("rm_game_"):
+            continue        # the host's and the process list's series are no one game's
         if err:
             print(f"  {n:<26} UNMEASURED (VictoriaMetrics down)")
             continue
         try:
-            r = store.vm_query(n, t - span, t + span, "1s" if span <= 300 else "15s")["data"]["result"]
+            r = store.vm_query(n, t - span, t + span, "1s" if span <= 300 else "15s",
+                               game=g.name if n.startswith("rm_game_") else None)["data"]["result"]
         except Exception as e:  # noqa: BLE001
             print(f"  {n:<26} UNMEASURED ({e})")
             continue
         if not r:
             print(f"  {n:<26} UNMEASURED (no points in window)")
             continue
-        for s in r[:3]:
+        for s in r:
             vals = [float(v[1]) for v in s["values"]]
             print(f"  {n:<26} {_labels(s['metric'])} n={len(vals)} min={min(vals):.4g} max={max(vals):.4g} "
                   f"med={statistics.median(vals):.4g}")
     con = db()
-    rows = con.execute("SELECT ts,kind,subject FROM events WHERE ts BETWEEN ? AND ? AND kind NOT IN "
-                       "('art_job','art_queued','art_registered','art_validated','ledger') ORDER BY ts",
-                       (t - span, t + span)).fetchall()
+    w, wa = g.sql("src")
+    rows = con.execute("SELECT ts,kind,subject,game FROM events WHERE ts BETWEEN ? AND ? AND kind NOT IN "
+                       f"('art_job','art_queued','art_registered','art_validated','ledger') AND {w} ORDER BY ts",
+                       (t - span, t + span, *wa)).fetchall()
     print(f"  events ({len(rows)}):")
     for r in rows[:60]:
-        print(f"    {iso(r['ts'])[11:]}  {r['kind']:<14} {str(r['subject'] or '')[:90]}")
-    calls = con.execute("SELECT COUNT(*), AVG(ms), MAX(ms) FROM bridge_calls WHERE ts BETWEEN ? AND ?",
-                        (t - span, t + span)).fetchone()
+        print(f"    {iso(r['ts'])[11:]}  {r['kind']:<14} {(r['game'] or '') if not g.name else ''} {str(r['subject'] or '')[:90]}")
+    w, wa = ("game=?", [g.name]) if g.name else ("1", [])
+    calls = con.execute(f"SELECT COUNT(*), AVG(ms), MAX(ms) FROM bridge_calls WHERE ts BETWEEN ? AND ? AND {w}",
+                        (t - span, t + span, *wa)).fetchone()
     print(f"  bridge calls: {calls[0]}" + (f", mean {calls[1]:.0f} ms, max {calls[2]:.0f} ms" if calls[0] else ""))
     return 0
 
 
 def cmd_events(a) -> int:
+    g = Reading(a.game)
+    if g.blank():
+        return g.empty("")
     con = db()
-    q = "SELECT id,ts,ts_end,kind,subject,seat,sha,detail FROM events WHERE ts>?"
-    args: list = [time.time() - dur(a.since)]
+    w, wa = g.sql("src")
+    q = f"SELECT id,ts,ts_end,kind,subject,seat,sha,detail,game FROM events WHERE ts>? AND {w}"
+    args: list = [time.time() - dur(a.since), *wa]
     if a.kind:
         ks = a.kind.split(",")
         q += " AND kind IN (%s)" % ",".join("?" * len(ks))
@@ -234,14 +307,19 @@ def cmd_events(a) -> int:
         args += [f"%{a.grep}%"] * 2
     rows = con.execute(q + " ORDER BY ts DESC LIMIT ?", (*args, a.limit)).fetchall()
     print(f"events DB · last {a.since}" + (f" · kind {a.kind}" if a.kind else "") + f" · {len(rows)} shown")
+    if not rows and g.name:
+        return g.empty("no such event of this game in the window")
     for r in reversed(rows):
         det = (r["detail"] or "")[:a.width]
-        print(f"  #{r['id']:<7} {iso(r['ts'])}  {r['kind']:<14} {str(r['subject'] or '')[:60]:<60} "
+        print(f"  #{r['id']:<7} {iso(r['ts'])}  {r['kind']:<14} {r['game'] or '-':<9} {str(r['subject'] or '')[:60]:<60} "
               f"{r['sha'] or ''} {det if a.detail else ''}")
     return 0
 
 
 def cmd_around(a) -> int:
+    g = Reading(a.game)
+    if g.blank():
+        return g.empty("")
     con = db()
     m = re.fullmatch(r"deploy:(\d+)", a.what)
     if not m:
@@ -254,8 +332,8 @@ def cmd_around(a) -> int:
         print("  UNMEASURED (VictoriaMetrics down)")
         return 1
     for mult in (1, 3, 6, 12):
-        before = analysis.windows_from_vm(a.metric, d["ts"] - dur(a.span), d["ts"] - 60, mult)
-        after = analysis.windows_from_vm(a.metric, d["ts"] + 120, d["ts"] + dur(a.span), mult)
+        before = analysis.windows_from_vm(a.metric, d["ts"] - dur(a.span), d["ts"] - 60, mult, g.name)
+        after = analysis.windows_from_vm(a.metric, d["ts"] + 120, d["ts"] + dur(a.span), mult, g.name)
         c = analysis.compare_windows(before, after, metric=a.metric)
         if c["verdict"] == "UNMEASURED":
             print(f"  x{mult:<3} UNMEASURED ({c['n_before']} windows before, {c['n_after']} after; "
@@ -301,19 +379,23 @@ def cmd_run(a) -> int:
 
 
 def cmd_flight(a) -> int:
+    g = Reading(a.game)
+    if g.blank():
+        return g.empty("")
     con = db()
-    rows = con.execute("SELECT * FROM flight ORDER BY ts DESC LIMIT ?", (a.last,)).fetchall()
+    w, wa = g.sql()
+    rows = con.execute(f"SELECT * FROM flight WHERE {w} ORDER BY ts DESC LIMIT ?", (*wa, a.last)).fetchall()
     if not rows:
-        print("UNMEASURED (no flight dumps recorded: the in-game test tier was never armed, or nothing triggered)")
-        return 0
+        return g.empty("UNMEASURED (no flight dumps recorded: the in-game test tier was never armed, or nothing triggered)")
     for r in rows:
         print(f"  {iso(r['ts'])}  trigger {r['trigger']:<10} ticks {r['tick_from']}..{r['tick_to']} "
               f"worst {(r['worst_us'] or 0) / 1000:.1f} ms  {r['file']}")
     if a.show:
         r = rows[0]
         p = os.path.join(cfg()["raw"], "flight", os.path.basename(r["file"] or ""))
-        if not os.path.exists(p):
-            p = os.path.join(cfg()["jawabench"], "tps", "flight", os.path.basename(r["file"] or ""))
+        for k in [x[1] for x in games.all_games()]:
+            if not os.path.exists(p):
+                p = os.path.join(games.record_dir(k), "tps", "flight", os.path.basename(r["file"] or ""))
         try:
             with gzip.open(p, "rt", encoding="utf-8") as f:
                 lines = f.read().splitlines()
@@ -329,20 +411,25 @@ def cmd_flight(a) -> int:
 
 
 def cmd_exc(a) -> int:
+    g = Reading(a.game)
+    if g.blank():
+        return g.empty("")
     con = db()
+    w, wa = g.sql()
     since = time.time() - dur(a.since)
-    rows = con.execute("SELECT * FROM exc_sigs WHERE last_ts>? ORDER BY n DESC LIMIT ?", (since, a.top)).fetchall()
+    rows = con.execute(f"SELECT * FROM exc_sigs WHERE last_ts>? AND {w} ORDER BY n DESC LIMIT ?",
+                       (since, *wa, a.top)).fetchall()
     sup = None
     if not vm_ok():
         try:
-            r = store.vm_query(f"sum(sum_over_time(rm_game_exc_suppressed[{a.since}]))")["data"]["result"]
+            r = store.vm_query(f"sum(sum_over_time(rm_game_exc_suppressed[{a.since}]))", game=g.name)["data"]["result"]
             sup = r[0]["value"][1] if r else None
         except Exception:  # noqa: BLE001
             pass
     print(f"exception signatures · last {a.since} · suppressed by the log cap: "
           f"{sup if sup is not None else 'UNMEASURED'}  (direct Debug.LogError after the cap stays invisible)")
     if not rows:
-        print("  UNMEASURED (no signatures: test tier not armed, or the counter is off)")
+        return g.empty("UNMEASURED (no signatures: test tier not armed, or the counter is off)")
     for r in rows:
         print(f"  {r['n']:>6}  {r['sig'][:120]}")
         if a.text and r["sample"]:
@@ -351,14 +438,20 @@ def cmd_exc(a) -> int:
 
 
 def cmd_bridge(a) -> int:
+    g = Reading(a.game)
     con = db()
     since = time.time() - dur(a.since)
-    rows = con.execute("SELECT tool, ms, success, status FROM bridge_calls WHERE ts>? AND ms IS NOT NULL", (since,)).fetchall()
-    newest = con.execute("SELECT MAX(ts) FROM bridge_calls").fetchone()[0]
-    print(f"bridge calls · last {a.since} · {len(rows)} completed · newest call {age(newest)} ago")
+    w, wa = ("game=?", [g.name]) if g.name else ("1", [])
+    rows = con.execute(f"SELECT tool, ms, success, status FROM bridge_calls WHERE ts>? AND ms IS NOT NULL AND {w}",
+                       (since, *wa)).fetchall()
+    newest = con.execute(f"SELECT MAX(ts) FROM bridge_calls WHERE {w}", wa).fetchone()[0]
     if not rows:
-        print("  UNMEASURED (no calls in window)")
-        return 0
+        return g.empty("UNMEASURED (no calls in window)")
+    print(f"bridge calls · last {a.since} · {len(rows)} completed · newest call {age(newest)} ago")
+    for name, n in con.execute("SELECT COALESCE(game,'(no game in the row)'), COUNT(*) FROM bridge_calls WHERE ts>? AND "
+                               "ms IS NOT NULL GROUP BY 1 ORDER BY 2 DESC", (since,)):
+        if not g.name or name.startswith("("):
+            print(f"  {name}: {n} calls")
     by: dict = {}
     for r in rows:
         by.setdefault(r["tool"], []).append((r["ms"], bridge_failed(r["success"], r["status"])))
@@ -430,6 +523,16 @@ def cmd_mark(a) -> int:
 def cmd_tier(a) -> int:
     """Arms the in-game tier through the bridge. Hold the bridge first (CLAUDE.md: one driver). This verb does not check
     for your hold; rimbridge_client refuses the call when another live process holds the driver lock."""
+    if a.game:
+        try:
+            name, key = games.resolve(a.game)
+        except games.game_names.GameNameError as e:
+            print(f"REFUSED: {e}", file=sys.stderr)
+            return games.EX_UNKNOWN
+        if not games.is_local(key):
+            print(f"REFUSED: {name} runs on {games.split(key)[0]}: its bridge is driven there, not from this machine")
+            return games.EX_UNKNOWN
+        os.environ["RM_GAME_INSTANCE"] = games.split(key)[1]    # rimbridge_client and game_paths follow the name
     utils = os.path.dirname(CODE_DIR)
     sys.path.insert(0, utils)
     try:
@@ -489,6 +592,7 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(prog="telemetry", description=__doc__.split("\n")[0])
     sp = ap.add_subparsers(dest="cmd", required=True)
     sp.add_parser("health").set_defaults(f=cmd_health)
+    p = sp.add_parser("games"); p.add_argument("game", nargs="?"); p.set_defaults(f=cmd_games)  # noqa: E702
     p = sp.add_parser("series"); p.add_argument("--grep"); p.set_defaults(f=cmd_series)  # noqa: E702
     p = sp.add_parser("query"); p.add_argument("expr"); p.add_argument("--since", default="1h")  # noqa: E702
     p.add_argument("--step", default="15s"); p.add_argument("--limit", type=int, default=20)  # noqa: E702
@@ -517,6 +621,8 @@ def main(argv=None) -> int:
     p = sp.add_parser("label"); p.add_argument("event", type=int); p.add_argument("label", choices=["tp", "fp"])  # noqa: E702
     p.add_argument("why", nargs="?", default=""); p.set_defaults(f=cmd_label)  # noqa: E702
     p = sp.add_parser("rebuild"); p.add_argument("--since", default="7d"); p.set_defaults(f=cmd_rebuild)  # noqa: E702
+    for verb in ("series", "query", "at", "events", "around", "flight", "exc", "bridge", "tier"):
+        sp.choices[verb].add_argument("--game", help="one game: " + games.game_names.known())
     sp.add_parser("up").set_defaults(f=cmd_up)
     sp.add_parser("down").set_defaults(f=cmd_down)
     a = ap.parse_args(argv)

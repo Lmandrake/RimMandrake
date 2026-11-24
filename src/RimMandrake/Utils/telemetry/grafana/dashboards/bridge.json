@@ -127,7 +127,7 @@
       "type": "prometheus",
       "uid": "vm"
      },
-     "expr": "topk(10, sum by (tool) (sum_over_time(rm_bridge_calls[1m])))",
+     "expr": "topk(10, sum by (tool) (sum_over_time(rm_bridge_calls{game=~\"$game\"}[1m])))",
      "interval": "1m",
      "legendFormat": "{{tool}}",
      "range": true,
@@ -181,7 +181,7 @@
       "type": "prometheus",
       "uid": "vm"
      },
-     "expr": "sum(sum_over_time(rm_bridge_ms_sum[1m])) / sum(sum_over_time(rm_bridge_calls[1m]))",
+     "expr": "sum(sum_over_time(rm_bridge_ms_sum{game=~\"$game\"}[1m])) / sum(sum_over_time(rm_bridge_calls{game=~\"$game\"}[1m]))",
      "interval": "1m",
      "legendFormat": "mean ms",
      "range": true,
@@ -192,7 +192,7 @@
       "type": "prometheus",
       "uid": "vm"
      },
-     "expr": "max(max_over_time(rm_bridge_ms_max[1m]))",
+     "expr": "max(max_over_time(rm_bridge_ms_max{game=~\"$game\"}[1m]))",
      "interval": "1m",
      "legendFormat": "max ms",
      "range": true,
@@ -245,7 +245,7 @@
       "type": "prometheus",
       "uid": "vm"
      },
-     "expr": "sum(sum_over_time(rm_bridge_errors[1m]))",
+     "expr": "sum(sum_over_time(rm_bridge_errors{game=~\"$game\"}[1m]))",
      "interval": "1m",
      "legendFormat": "errors",
      "range": true,
@@ -340,7 +340,32 @@
   "bridge"
  ],
  "templating": {
-  "list": []
+  "list": [
+   {
+    "allValue": ".*",
+    "current": {
+     "text": "All",
+     "value": "$__all"
+    },
+    "datasource": {
+     "type": "prometheus",
+     "uid": "vm"
+    },
+    "definition": "label_values(rm_game_running, game)",
+    "includeAll": true,
+    "label": "game",
+    "multi": true,
+    "name": "game",
+    "options": [],
+    "query": {
+     "query": "label_values(rm_game_running, game)",
+     "refId": "game"
+    },
+    "refresh": 2,
+    "sort": 1,
+    "type": "query"
+   }
+  ]
  },
  "time": {
   "from": "now-6h",

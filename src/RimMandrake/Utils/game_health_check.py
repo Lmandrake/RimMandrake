@@ -649,9 +649,8 @@ def companion_dll():
     env = os.environ.get("RM_GAME_HEALTH_COMPANION_DLL")
     if env:
         return env
-    root = ("/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld" if os.name != "nt"
-            else r"C:\Program Files (x86)\Steam\steamapps\common\RimWorld")
-    return os.path.join(root, "BridgeTools", "JawaBench", "JawaBench.BridgeTools.dll")
+    import game_paths       # this process's game (RM_GAME_INSTANCE), on this machine
+    return os.path.join(game_paths.GAME_DIR, "BridgeTools", "JawaBench", "JawaBench.BridgeTools.dll")
 
 
 def companion_preflight(path=None):

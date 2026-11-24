@@ -50,6 +50,9 @@ def _defaults() -> dict:
         "bin": j(root, "bin"),
         "archive": archive,
         "jawabench": jb,
+        "game_dirs": {},            # a game key -> its JawaBench folder, over games.record_dir (tests)
+        # the machine that holds this store, for a machine that does not (the `telemetry` wrapper asks it over ssh)
+        "store_ssh": os.environ.get("TELEMETRY_STORE_SSH", "mandrake@archmagi-wsl"),
         "game_mods": game_mods,
         "modsconfig": modsconfig,
         "bridge_calls": rmpaths.rm_str("scratch", "bridge_calls.jsonl"),

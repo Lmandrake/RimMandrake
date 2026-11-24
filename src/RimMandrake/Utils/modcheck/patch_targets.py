@@ -36,9 +36,11 @@ from pathlib import Path
 
 from lxml import etree
 
-GAME_DATA = Path("/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data")
-MOD_ROOTS = (Path("/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100"),
-             Path("/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods"))
+if str(Path(__file__).resolve().parents[1]) not in sys.path:
+    sys.path.append(str(Path(__file__).resolve().parents[1]))
+import game_paths  # noqa: E402  (this process's game on this machine: RM_GAME_INSTANCE, RM_STEAMAPPS)
+GAME_DATA = Path(game_paths.GAME_DATA)
+MOD_ROOTS = (Path(game_paths.WORKSHOP), Path(game_paths.LOCAL_MODS))
 REPO_SRC = Path(__file__).resolve().parents[3]          # .../src
 VERSION = "1.6"
 

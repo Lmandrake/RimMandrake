@@ -8,7 +8,7 @@ Windows side (no elevation needed):
   E:\\telemetry\\grafana\\custom.ini                            (rendered from grafana/custom.ini.template)
   scheduled task "RimMandrake\\Telemetry"  every minute: pythonw supervise.py (from the MIRROR)
 WSL side:
-  ~/.config/systemd/user/rm-telemetry-{export,health}.{service,timer}  (ops_clocks.py install, from ../systemd)
+  ~/.config/systemd/user/rm-telemetry-{export,health,pull}.{service,timer}  (ops_clocks.py install, from ../systemd)
   ~/.local/bin/telemetry -> this directory's `telemetry` wrapper
 
 Pinned versions are below; bump them here, re-run, commit.
@@ -118,7 +118,7 @@ def main(argv=None) -> int:
     # the units' one home is src/RimMandrake/Utils/systemd/; ops_clocks.install is the only installer
     sys.path.insert(0, os.path.dirname(HERE))
     import ops_clocks
-    rc = ops_clocks.install(["rm-telemetry-export", "rm-telemetry-health"], apply=True, enable=True,
+    rc = ops_clocks.install(["rm-telemetry-export", "rm-telemetry-health", "rm-telemetry-pull"], apply=True, enable=True,
                             out=lambda line: print("  " + line))
     print(f"  systemd timers: {'ok' if rc == 0 else 'FAILED (exit %d)' % rc}")
     binp = os.path.expanduser("~/.local/bin/telemetry")

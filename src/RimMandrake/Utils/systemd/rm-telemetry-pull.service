@@ -1,0 +1,20 @@
+# Copies the telemetry record of every game on another machine (Steve1, Steve2) into E:\telemetry\inbox\games
+# (telemetry/pull_games.py; page design/specs/2026-11-23-telemetry-any-game/boundary.md). One ssh call a machine; only
+# new bytes travel. Exit 3 = a machine could not be read: the cause is in E:\telemetry\state\games_pull.json, where
+# `telemetry games` reads it as COULD NOT LOOK.
+# Install:  python3 src/RimMandrake/Utils/ops_clocks.py install rm-telemetry-pull --apply --enable
+# Off:      systemctl --user disable --now rm-telemetry-pull.timer
+[Unit]
+Description=RimMandrake telemetry: copy the other machines' game records
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/dispatch
+Environment=PATH=/home/mandrake/.local/bin:/usr/local/bin:/usr/bin:/bin
+Environment=RM_DATA_ROOT=/mnt/d/ClaudeWork/rimmandrake
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/telemetry/pull_games.py
+SuccessExitStatus=3
+Nice=10
+# Danger: a hung run blocks every later pull. pull_games.HANG_S (15 min) ends a hung ssh first; the first pull of 136 MB
+# took 99 s, a usual one 4 s (measured 2026-11-23).
+TimeoutStartSec=20min

@@ -26,12 +26,12 @@ SCHEMA = """
 PRAGMA journal_mode=WAL;
 CREATE TABLE IF NOT EXISTS events(
   id INTEGER PRIMARY KEY, ts REAL NOT NULL, ts_end REAL, kind TEXT NOT NULL, subject TEXT,
-  seat TEXT, sha TEXT, detail TEXT, src TEXT, src_ref TEXT UNIQUE);
+  seat TEXT, sha TEXT, detail TEXT, src TEXT, src_ref TEXT UNIQUE, game TEXT);
 CREATE INDEX IF NOT EXISTS ev_ts ON events(ts);
 CREATE INDEX IF NOT EXISTS ev_kind_ts ON events(kind, ts);
 CREATE TABLE IF NOT EXISTS bridge_calls(
   cid TEXT PRIMARY KEY, ts REAL, ts_end REAL, tool TEXT, ms REAL, status TEXT, success INTEGER,
-  mutating INTEGER, script TEXT, seat TEXT, run TEXT, client TEXT);
+  mutating INTEGER, script TEXT, seat TEXT, run TEXT, client TEXT, game TEXT);
 CREATE INDEX IF NOT EXISTS bc_ts ON bridge_calls(ts);
 CREATE TABLE IF NOT EXISTS proof_runs(
   id TEXT PRIMARY KEY, ts REAL, path TEXT, mod TEXT, script TEXT, wall_s REAL, mod_hash TEXT,
@@ -40,14 +40,14 @@ CREATE TABLE IF NOT EXISTS proof_rows(
   run_id TEXT, row_id TEXT, status TEXT, class TEXT, detail TEXT, PRIMARY KEY(run_id, row_id));
 CREATE TABLE IF NOT EXISTS flight(
   id TEXT PRIMARY KEY, ts REAL, session TEXT, file TEXT, trigger TEXT, tick_from INTEGER,
-  tick_to INTEGER, worst_us INTEGER, detail TEXT);
+  tick_to INTEGER, worst_us INTEGER, detail TEXT, game TEXT);
 CREATE TABLE IF NOT EXISTS exc_sigs(
-  session TEXT, sig TEXT, first_ts REAL, last_ts REAL, n INTEGER, sup INTEGER, sample TEXT,
+  session TEXT, sig TEXT, first_ts REAL, last_ts REAL, n INTEGER, sup INTEGER, sample TEXT, game TEXT,
   PRIMARY KEY(session, sig));
 CREATE TABLE IF NOT EXISTS exc_seen(src_ref TEXT PRIMARY KEY, ts REAL);
 CREATE TABLE IF NOT EXISTS mapcomp(
   ts REAL, session TEXT, type TEXT, mod TEXT, ms_per_tick REAL, calls INTEGER, max_ms REAL,
-  ticks INTEGER, src_ref TEXT UNIQUE);
+  ticks INTEGER, src_ref TEXT UNIQUE, game TEXT);
 -- cursors.done = bytes of this file already copied to raw/ (a rebuild re-reads from 0, never re-copies)
 -- cursors.gen = truncation resets seen under this file id; it is part of every row's src_ref (ingest.row_ref)
 -- cursors.head = fingerprint of the file's first line (ingest.head_print); a difference means a new file generation
@@ -60,12 +60,13 @@ CREATE TABLE IF NOT EXISTS kv(k TEXT PRIMARY KEY, v TEXT);
 
 def migrate(con) -> None:
     """Columns added after a store was created (CREATE TABLE IF NOT EXISTS never alters an existing table)."""
-    have = {r[1] for r in con.execute("PRAGMA table_info(cursors)")}
-    for col, decl in (("gen", "INTEGER DEFAULT 0"), ("head", "TEXT")):
-        if col in have:
+    for table, col, decl in (("cursors", "gen", "INTEGER DEFAULT 0"), ("cursors", "head", "TEXT"),
+                             ("events", "game", "TEXT"), ("bridge_calls", "game", "TEXT"), ("flight", "game", "TEXT"),
+                             ("exc_sigs", "game", "TEXT"), ("mapcomp", "game", "TEXT")):
+        if col in {r[1] for r in con.execute(f"PRAGMA table_info({table})")}:
             continue
         try:
-            con.execute(f"ALTER TABLE cursors ADD COLUMN {col} {decl}")
+            con.execute(f"ALTER TABLE {table} ADD COLUMN {col} {decl}")
             con.commit()
         except sqlite3.OperationalError as e:   # telemetryd and a CLI call migrating at once: the other one won
             if "duplicate column" not in str(e):
@@ -88,11 +89,13 @@ def connect(path: str | None = None, readonly: bool = False) -> sqlite3.Connecti
 
 
 def add_event(con, ts, kind, subject=None, detail=None, src=None, src_ref=None, ts_end=None,
-              seat=None, sha=None) -> bool:
+              seat=None, sha=None, game=None) -> bool:
     cur = con.execute(
-        "INSERT OR IGNORE INTO events(ts,ts_end,kind,subject,seat,sha,detail,src,src_ref) VALUES(?,?,?,?,?,?,?,?,?)",
+        "INSERT OR IGNORE INTO events(ts,ts_end,kind,subject,seat,sha,detail,src,src_ref,game) "
+        "VALUES(?,?,?,?,?,?,?,?,?,?)",
         (ts, ts_end, kind, subject, seat, sha,
-         json.dumps(detail, separators=(",", ":"), default=str) if detail is not None else None, src, src_ref))
+         json.dumps(detail, separators=(",", ":"), default=str) if detail is not None else None, src, src_ref,
+         game))
     return cur.rowcount > 0
 
 
@@ -250,9 +253,13 @@ def _get(url: str, timeout: float) -> bytes:
 
 
 def vm_query(expr: str, start: float | None = None, end: float | None = None, step: str | None = None,
-             url: str | None = None) -> dict:
+             url: str | None = None, game: str | None = None) -> dict:
+    """game: a game's name; only its series answer (games.selector, VM's extra_filters[])."""
     base = (url or cfg()["vm_url"]).rstrip("/")
     q = {"query": expr}
+    if game:
+        import games
+        q["extra_filters[]"] = games.selector(game)
     if start is not None:
         q.update({"start": f"{start:.3f}", "end": f"{(end or time.time()):.3f}", "step": step or "15s"})
         path = "/api/v1/query_range"

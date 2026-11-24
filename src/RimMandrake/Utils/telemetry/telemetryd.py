@@ -51,8 +51,8 @@ class Daemon:
         self.started = now()
 
     def tier_armed(self) -> bool:
-        t = self.latest.get("tps") or {}
-        return t.get("tier") == "test" and now() - t.get("ts", 0) < 30
+        views = [self.latest, *(self.latest.get("games") or {}).values()]
+        return any(t.get("tier") == "test" and now() - t.get("ts", 0) < 30 for t in (v.get("tps") or {} for v in views))
 
     def every(self, key: str, period: float, t: float) -> bool:
         if t >= self.due.get(key, 0):
