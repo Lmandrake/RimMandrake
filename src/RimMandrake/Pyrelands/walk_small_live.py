@@ -29,6 +29,7 @@ RELOAD_SAVE = "pyre_reload"
 RELOAD_BURN_TICKS = 5000   # the scar's burn, as fresh_burn_bonus: the grass is gone and the cells carry a burn stamp
 RELOAD_FRONT_TICKS = 250   # the front is alight at the save
 SMOKE_HOURS = 3
+DEEP_ASH = "RM_FE_Ash_Deep"   # the biome's ordinary ground: a fire there ends with its grass
 HOUR = 2500
 OURS = ("Pyrelands", "RM_FE_", "RM_Pyre", "FireEcologyHook")   # what a log error of ours names
 PLANT_RELOAD_ENV, PLANT_SMOKE_ENV = "PYRE_PLANT_RELOAD", "PYRE_PLANT_SMOKE"
@@ -204,7 +205,9 @@ def register(suite, V):
             mark = V._log_mark(t)
             t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
             V._extinguish(t)
-            V._soil(t, (x, z, w, h))
+            # SITE (visit 8, 2026-11-24): the pad was never-burned soil, where vanilla keeps a fire 7,500 ticks after its grass is
+            # gone (Fire.TryBurnFloor); every fire of the 3 hours still burned, so the centre moved half the front's way
+            t.bridge_call("jawa/set_terrain", x=x, z=z, terrainDef=DEEP_ASH, width=w, height=h, layer="top")
             V._plants(t, "RM_FE_Plant_EmberGrass", (x, z, w, h))
             V._fire(t, (x, z + h // 2 - 3, 2, 6))
             rows = []

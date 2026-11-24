@@ -147,6 +147,8 @@ def run(chain, game, env=None, still=False):
                 game.saves[p["saveName"]] = json.loads(json.dumps(game.st))
             if tool == "jawa/map_info":
                 return {"mapBiome": "RM_Pyrelands"}
+            if tool == "jawa/set_terrain":
+                out.setdefault("terrain", []).append(p["terrainDef"])
             if tool == "jawa/running_mods":
                 return {"success": True, "packageIds": W.full_list_ids()}
             if tool == "jawa/static_call":
@@ -217,6 +219,9 @@ for p in ("front_lost", "old_save"):
     check("chain %s: the planted %s FAILs" % (R, p), x["verdict"] == "FAIL", (x["verdict"], x["why"]))
 x = run(F, Game())
 check("chain %s PASSes on a walking front" % F, x["verdict"] == "PASS", x)
+check("chain %s burns the biome's own ground, deep ash (visit 8: on never-burned soil a fire outlives its grass for 3 h, so the centre "
+      "of all that burns moved half the front's way: 3.0 and 2.7 cells, one PASS and one FAIL)" % F,
+      x.get("terrain") == ["RM_FE_Ash_Deep"], x.get("terrain"))
 x = run(F, Game(), still=True)
 check("chain %s FAILs on a fire that stands still" % F, x["verdict"] == "FAIL", (x["verdict"], x["why"]))
 for p in ("no_front", "log_error"):
