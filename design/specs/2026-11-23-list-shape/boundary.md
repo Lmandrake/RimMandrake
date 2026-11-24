@@ -84,6 +84,9 @@ skills or models, or the run needs help. Asking for help (a `LEFT OPEN:` note, a
   stage keeps a store of its own.
 - **old-items-enter-only-when-named.** An open item with no check and no route is due for Shape only when it is named,
   or it was filed at or after `shape_from` and is at least `shape_grace_h` old. Each reading says why in words.
+- **a-naming-can-be-taken-off.** `rimflow shape <ID> --leave` takes the naming off an item: the item is due again only by
+  its age, or when someone names it again. It keeps the item's split and check. On an item that is not named it writes
+  nothing and says so. Why: on 2026-11-23 the old-ticket sort named 80 old items, and the owner stopped the sort.
 - **the-lane-launches-a-shape-run-through-every-gate.** A due item reads `shape` and is launched as one detached run
   with the Shape brief, kind `shape`, model opus. The lane's gates (disabled, pause, `pipe off`, the owner's mod hold,
   a claim, a wait, the account, the chain rule, the slots, the clone pool) stop it as they stop a Work run.

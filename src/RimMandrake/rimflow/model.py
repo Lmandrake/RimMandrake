@@ -587,11 +587,11 @@ VERBS = {
     # list_effect tick's `close` does. A reader older than this entry refuses the verb into `world.errors`.
     "effect":    {"who": "any",   "req": (), "opt": ("check", "seen", "cleared")},
     # 🔑 `shape` (RIMMANDRAKE_BUILD_SHAPE_STAGE_CHECK_TESTS_THE_NEED_NOT_PAPER; list_shape.py): the Shape stage's facts.
-    # `enter` names the item for a Shape run. `parts` is the split, each part a check with its `fooled_by` line or a
+    # `enter` names the item for a Shape run; `leave` takes that naming off. `parts` is the split, each part a check with its `fooled_by` line or a
     # route {who, ask, resumes}; `size` small|large; `check`/`seen` the item's one outcome check derived from the parts
     # (absent when every part is routed, which clears the item's check). One event, never two separately forgettable
     # writes. State does not move. A reader older than this entry refuses the verb into `world.errors`.
-    "shape":     {"who": "any",   "req": (), "opt": ("enter", "parts", "size", "check", "seen")},
+    "shape":     {"who": "any",   "req": (), "opt": ("enter", "leave", "parts", "size", "check", "seen")},
     # 🔑 `raise` (2026-10-26, STEVE_STEWARD_BUILD_NO_LLM_OWNER, design §6.4 T+30): puts an
     # OPEN item at the top of its seat's `next`, ahead of rows and `this_deployment`.
     # Unlike `this_deployment` nothing clears it but the item ending, so an escalation
@@ -1816,7 +1816,7 @@ class Item(object):
         self.walks = []                 # `walk` events, in ledger order: [{ts, seat, phase, save, found, findings, detail}]
         self.effect = self.effect_seen = None   # the outcome check and its attach reading (list_effect.py)
         self.shape = None               # the last `shape` split: {parts, size, at, seat, unit} (list_shape.py)
-        self.shape_named = None         # ts of the first `shape --enter`: named for a Shape run
+        self.shape_named = None         # ts of the first `shape --enter` since the last `--leave`: named for a Shape run
         self.raised_tsn = 0             # tsn of that same first `raise` (0 when absent): `ts` is to the
         #                                 second, so a run raising C, A, B in one run needs it for order
 
@@ -2805,8 +2805,10 @@ def _apply_item_verb(ev, index, item, seat, world):
         else:
             raise SchemaError("effect %s: give a check, or cleared" % item.id)
     elif verb == "shape":
-        if not ev.get("enter") and not isinstance(ev.get("parts"), list):
-            raise SchemaError("shape %s: give parts, or enter" % item.id)
+        if not ev.get("enter") and not ev.get("leave") and not isinstance(ev.get("parts"), list):
+            raise SchemaError("shape %s: give parts, enter or leave" % item.id)
+        if ev.get("leave"):
+            item.shape_named = None
         if ev.get("enter") and not item.shape_named:
             item.shape_named = ev["ts"]
         if isinstance(ev.get("parts"), list):

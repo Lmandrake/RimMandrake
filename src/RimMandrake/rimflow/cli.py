@@ -2100,9 +2100,10 @@ def cmd_effect(args, seat):
 
 
 def cmd_shape(args, seat):
-    """`rimflow shape <ID> --parts '<json>' [--size small|large]` | `--enter`: the Shape stage's facts (list_shape.py).
+    """`rimflow shape <ID> --parts '<json>' [--size small|large]` | `--enter` | `--leave`: the Shape stage's facts.
     --parts writes the split, each part a check with its fooled_by line or a route, and the item's one outcome check
-    derived from them; an unshaped split writes nothing and names the repair. --enter names an item for a Shape run."""
+    derived from them; an unshaped split writes nothing and names the repair. --enter names an item for a Shape run, --leave takes the naming
+    off (list_shape.py)."""
     import list_effect
     import list_shape
     _, w = load()
@@ -2111,9 +2112,17 @@ def cmd_shape(args, seat):
         die("shape: %s has never been filed." % args.id)
     if it.state in model.TERMINAL:
         die("shape: %s is %s already; a closed item is not shaped." % (args.id, it.state))
-    if bool(args.enter) == bool(args.parts):
-        die("shape: give --parts '<json list>' or --enter (one of them).")
+    if bool(args.enter) + bool(args.leave) + bool(args.parts) != 1:
+        die("shape: give --parts '<json list>', --enter or --leave (one of them).")
     ev = {"seat": seat, "event": "shape", "id": args.id}
+    if args.leave:
+        if not it.shape_named:
+            print("%s: not named for Shape. Nothing was written." % args.id)
+            return 0
+        ev["leave"] = True
+        _emit(ev, w, quiet=True)
+        print("%s: its naming for Shape is taken off. It is due again only by its age or a new --enter." % args.id)
+        return 0
     if args.enter:
         f = list_shape.facts(it)
         if not list_shape.needs_shape_run(f):
@@ -4815,6 +4824,7 @@ def build_parser():
     s.add_argument("--size", choices=("small", "large"), default="small",
                    help="small (default): this run also does the work; large: the lane gives it its own Work runs")
     s.add_argument("--enter", action="store_true", help="name the item for a Shape run (an old item enters only so)")
+    s.add_argument("--leave", action="store_true", help="take that naming off, so no Shape run starts because of it")
 
     s = add("claim", "take it under a LEASE and start it (-> doing); never re-offers it",
             cmd_claim)

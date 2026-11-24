@@ -297,6 +297,33 @@ def t_old_items_enter_only_when_named():
     chk(lambda: due(new_ripe, {}, NOW)[0] is False, "no shape_from set: no new item enters by itself")
 
 
+def t_a_naming_can_be_taken_off():
+    iid = "RIMMANDRAKE_TEST_SHAPE_NAMING_TAKEN_OFF"
+    file_item(iid)
+    cfg = {"shape_from": NOW + 9e9, "shape_grace_h": 24}        # every item is old: only a naming makes it due
+    cli("shape", iid, "--enter", "--why", "selftest")
+    chk(lambda: LS().due(LS().facts(world().items[iid]), cfg, NOW)[0] is True, "named: due")
+    rc, out = cli("shape", iid, "--leave", "--why", "selftest: the owner stopped it")
+    it = world().items[iid]
+    chk(lambda: rc == 0 and it.shape_named is None and LS().due(LS().facts(it), cfg, NOW)[0] is False,
+        "--leave takes the naming off: not due (rc %d: %s)" % (rc, out[-200:]))
+    n = len(events())
+    rc, out = cli("shape", iid, "--leave", "--why", "selftest")
+    chk(lambda: rc == 0 and len(events()) == n and "not named" in out, "--leave on an unnamed item writes nothing (%s)" % out[-200:])
+    rc, out = cli("shape", iid, "--enter", "--leave", "--why", "selftest")
+    chk(lambda: rc != 0 and len(events()) == n, "--enter with --leave is refused and writes nothing")
+    cli("shape", iid, "--enter", "--why", "selftest")
+    chk(lambda: bool(world().items[iid].shape_named), "a later --enter names it again")
+    sp = "RIMMANDRAKE_TEST_SHAPE_LEAVE_KEEPS_THE_SPLIT"
+    file_item(sp)
+    page("sh/page.md", "nothing yet\n")
+    cli("shape", sp, "--enter", "--why", "selftest")
+    cli("shape", sp, "--parts", json.dumps([part("a")]), "--why", "selftest")
+    cli("shape", sp, "--leave", "--why", "selftest")
+    it = world().items[sp]
+    chk(lambda: it.shape and it.effect and it.shape_named is None, "--leave keeps the split and the check")
+
+
 def t_the_lane_launches_a_shape_run_through_every_gate():
     rows, launches, _ = decide({"A": lane_it()})
     chk(lambda: rows["A"]["decision"] == "shape" and launches == ["A"] and rows["A"].get("kind") == "shape"
@@ -530,6 +557,7 @@ def main():
                   t_holds_keeps_fails_apart_from_could_not_look,
                   t_the_ledger_carries_the_shape,
                   t_old_items_enter_only_when_named,
+                  t_a_naming_can_be_taken_off,
                   t_the_lane_launches_a_shape_run_through_every_gate,
                   t_a_shape_run_that_left_neither_check_nor_route_is_stopped,
                   t_a_large_shape_run_is_not_a_work_run,

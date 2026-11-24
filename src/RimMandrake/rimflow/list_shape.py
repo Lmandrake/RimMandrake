@@ -12,7 +12,7 @@ boundary.md; selftest selftest_list_shape.py; acceptance acceptance/step4_shape_
     python3 src/RimMandrake/rimflow/list_shape.py status [ID...]    the Shape facts of open items: due, shaped, weak, routed
 
 The write is `rimflow shape <ID> --parts '<json list>' [--size small|large]` (cli.cmd_shape, which calls
-`write_fields`), and `rimflow shape <ID> --enter` names an old item for Shape. The lane launches the Shape run
+`write_fields`), and `rimflow shape <ID> --enter` names an old item for Shape (`--leave` takes it off). The lane launches the Shape run
 (list_dispatch.decide: `shape`), with the brief roles/list_shape.md filled by `brief_text`.
 A part: {"name", "effect": check or None, "fooled_by": str or None, "route": None or {"who", "ask", "resumes"},
 "holds_why": optional}. The checks are list_effect's forms.
