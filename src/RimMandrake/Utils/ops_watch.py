@@ -1419,7 +1419,7 @@ def nightly_news(now, ctx):
                       said=c["overdue_said"], news=c["overdue"][:30])}
     # a compose pass (the metronome's sense beat, 15 s) never reruns: it reads the verdicts `rerun-reds` paid for, and
     # a group not rerun yet reads "later" (held, files nothing), as a pass out of budget does
-    out.update(red_groups(c, v["night"], budget=0 if ctx.get("no_reruns") else None))
+    out.update(red_groups(c, v["night"], budget=0 if ctx.get("no_reruns") else None, ctx=ctx))
     return out
 
 
@@ -1427,7 +1427,8 @@ def rerun_reds(now=None, rules=None):
     """`ops_watch.py rerun-reds` (rm-ops-reds.timer): the NIGHTLY_REDS_FIX_RERUN_BEFORE_PAYING reruns, out of the
     metronome's sense beat, which cannot fit one (a group's rerun takes ~17 s). It reads the night and its red groups
     as a pass does (the flow collector for the open ids) and reruns each group a pass would file, within
-    selftest.red_rerun_budget_s, saving each verdict in nightly_rerun.json; it files nothing and writes no status.
+    selftest.red_rerun_budget_s, then verifies one closed fix for a held group. Each verdict goes in nightly_rerun.json;
+    it files nothing and writes no status.
     Its own lock, so a sense pass is never Busy behind a rerun."""
     import fcntl
     if nightly_held():
@@ -1440,7 +1441,7 @@ def rerun_reds(now=None, rules=None):
             fcntl.flock(lk, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except BlockingIOError:
             raise Busy("another rerun-reds holds %s" % (ops_dir() / "rerun.lock"))
-        ctx = {}
+        ctx = {"verify_held": True}
         c_flow(now, rules, ctx)
         pts = nightly_news(now, ctx)
     g = _obj(read_json(rerun_path()))
@@ -1509,7 +1510,7 @@ def red_launch_checks(pt):
                                    + " ".join(shlex.quote(str(t)) for t in tests))
 
 
-def rerun_at_main(tests, timeout, root=None):
+def rerun_at_main(tests, timeout, root=None, *, fix=None):
     """NIGHTLY_REDS_FIX_RERUN_BEFORE_PAYING: one plain rerun (run_selftests --only, no LLM) of a red group's tests in
     this checkout, brought to origin/main first by a fast-forward pull (as testq-tick/testq-sweep already do to the
     dispatch clone ops_watch runs from; it trails origin/main by minutes). -> (verdict, said, sha): verdict green
@@ -1518,11 +1519,14 @@ def rerun_at_main(tests, timeout, root=None):
     Existence is judged AFTER the pull, at origin/main, and "gone" needs git to show the deletion: a path the history
     never held (a parse bug) stays unmeasured. A group partly deleted reruns what is left (NIGHTLY_COP_FIX_RED_WARIWE_XVFM_WYEK:
     the arena trial's selftest_arena_prompt_rewrites.py, deleted by owner card, refiled because the old check ran
-    before the pull and read the missing file as unmeasured)."""
+    before the pull and read the missing file as unmeasured). For a closed fix, require that commit and every test,
+    and force a fresh run."""
     root = Path(root) if root else rerun_root()
     try:
         _git(root, "pull", "-q", "--ff-only", "origin", "main", timeout=90)
         head, main = _git(root, "rev-parse", "HEAD"), _git(root, "rev-parse", "origin/main")
+        if fix:
+            _git(root, "merge-base", "--is-ancestor", fix, head)
     except (OSError, RuntimeError, subprocess.TimeoutExpired) as e:
         return "unmeasured", "git: %s" % str(e), None
     if head != main:
@@ -1531,6 +1535,10 @@ def rerun_at_main(tests, timeout, root=None):
     if dirty:
         return "unmeasured", dirty, head
     missing = [t for t in tests if not (root / t).is_file()]
+    if fix and not tests:
+        return "unmeasured", "empty test group", head
+    if fix and missing:
+        return "unmeasured", "missing group tests: " + ", ".join(missing), head
     deleted = {}
     for t in missing:
         try:
@@ -1544,7 +1552,10 @@ def rerun_at_main(tests, timeout, root=None):
     if not tests:
         return "gone", "deleted at origin/main: %s" % ", ".join(
             "%s (%s)" % (Path(t).name, c) for t, c in sorted(deleted.items())[:3]), head
-    argv = [sys.executable, str(root / "src/RimMandrake/Utils/run_selftests.py"), "--only", *tests]
+    argv = [sys.executable, str(root / "src/RimMandrake/Utils/run_selftests.py")]
+    if fix:
+        argv += ["--no-cache", "--because", "verify closed nightly-red fix"]
+    argv += ["--only", *tests]
     try:
         r = subprocess.run(argv, cwd=str(root), capture_output=True, text=True, timeout=max(1, int(timeout)))
     except subprocess.TimeoutExpired:
@@ -1566,7 +1577,10 @@ def rerun_at_main(tests, timeout, root=None):
     dirty = rerun_tree_dirty(root)
     if dirty:
         return "unmeasured", "after the rerun: " + dirty, head
-    if r.returncode == 0 and res.startswith("RESULT: GREEN") and "UNMEASURED (" not in out and "DROPPED:" not in out:
+    if fix and (crash := re.search(r"^CRASH \(.*", out, re.M)):
+        return "unmeasured", crash[0], head
+    all_pass = not fix or sorted(re.findall(r"^PASS +[\d.]+s  (\S+)", out, re.M)) == sorted(tests)
+    if r.returncode == 0 and res.startswith("RESULT: GREEN") and all_pass and "UNMEASURED (" not in out and "DROPPED:" not in out:
         return "green", res, head
     if res.startswith("RESULT: GREEN"):
         return "unmeasured", "green with tests that did not run their check", head
@@ -1577,33 +1591,42 @@ class RerunGate:
     """Each new group of a night is rerun once (the verdict kept in nightly_rerun.json for that night), within the
     pass's budget. verdict(g): green / gone (files nothing), red / unmeasured (files as before), later (budget spent)."""
 
-    def __init__(self, night, run, budget, clock=time.monotonic):
+    def __init__(self, night, run, budget, clock=time.monotonic, *, verify_held=False):
         self.night, self.run, self.clock = night, run, clock
         self.end = clock() + budget
+        self.verify_held = verify_held
         st = read_json(rerun_path()) if rerun_path().exists() else {}
         self.st = st if isinstance(st, dict) and st.get("night") == night else {"night": night, "groups": {}}
         self.dirty = False
 
-    def verdict(self, g):
+    def verdict(self, g, fix=None):
         hit = self.st["groups"].get(g["key"])
-        if hit and sorted(hit.get("tests", [])) == sorted(g["tests"]):
+        if hit and (not fix or hit.get("fix") == fix) and sorted(hit.get("tests", [])) == sorted(g["tests"]):
             return hit["verdict"]
-        left = self.end - self.clock()
-        if left < 15:
-            return "later"
+        if fix:
+            if not self.verify_held:
+                return "later"
+            # One full test window (run_selftests' default is 600 s), after the new-group budget.
+            self.verify_held = False
+            left, kwargs = 600, {"fix": fix}
+        else:
+            left, kwargs = self.end - self.clock(), {}
+            if left < 15:
+                return "later"
         try:
-            v, said, sha = self.run(list(g["tests"]), int(left))
+            v, said, sha = self.run(list(g["tests"]), int(left), **kwargs)
         except Exception as e:  # noqa: BLE001  a broken rerun files the group as before
             v, said, sha = "unmeasured", "%s: %s" % (type(e).__name__, str(e)), None
         self.st["groups"][g["key"]] = {"verdict": v, "said": said, "sha": sha, "tests": list(g["tests"]),
-                                       "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
+                                       "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), **kwargs}
         self.dirty = True
         self.save()     # each verdict as it lands: a pass killed at its deadline keeps the reruns it paid for
         return v
 
     def green(self):
         """Groups that filed nothing because origin/main has no red to fix: green on the rerun, or every test gone."""
-        return sorted((k, e) for k, e in self.st["groups"].items() if e.get("verdict") in ("green", "gone"))
+        return sorted((k, e) for k, e in self.st["groups"].items()
+                      if not e.get("fix") and e.get("verdict") in ("green", "gone"))
 
     def save(self):
         if self.dirty:
@@ -1621,7 +1644,7 @@ def rerun_budget_s():
 RERUN_REDS = rerun_at_main
 
 
-def red_groups(c, night, state=None, rerun="default", budget=None):
+def red_groups(c, night, state=None, rerun="default", budget=None, ctx=None):
     """BUILD COP (known_reds.py): one testing.red_<id> reading per root-cause group of the night's unparked reds, for
     the wildcard alarm NIGHTLY_COP_FIX (one raised item per group). An absent key holds its alarm, so a group gone from
     a READ night reads 0 and clears; an unread night (the sweep is rewriting its output) emits no group and holds all.
@@ -1629,16 +1652,18 @@ def red_groups(c, night, state=None, rerun="default", budget=None):
     first; the rest are absent, so held, and come next pass.
     NIGHTLY_REDS_FIX_RERUN_BEFORE_PAYING: before a new group files, its tests rerun once at origin/main (RerunGate);
     a group green on that rerun is a flake or a launch drop and files nothing, counted in
-    testing.nightly_reds_rerun_green."""
+    testing.nightly_reds_rerun_green. A held group from before its fix item closed reads 0 on a matching green proof."""
     import known_reds
     if not c.get("detail_read"):
         return {}
     run = RERUN_REDS if rerun == "default" else rerun
-    gate = RerunGate(night, run, rerun_budget_s() if budget is None else budget) if run else None
+    ctx = ctx or {}
+    gate = RerunGate(night, run, rerun_budget_s() if budget is None else budget,
+                     verify_held=ctx.get("verify_held", False)) if run else None
     if state is None:
         p = ops_dir() / "alarms.json"
         state = read_json(p) if p.exists() else {}
-    held = {aid.split(":", 1)[1] for aid in (state if isinstance(state, dict) else {})
+    held = {aid.split(":", 1)[1]: row for aid, row in _obj(state).items()
             if aid.startswith("NIGHTLY_RED:testing.red_")}
     cap = known_reds.new_items_per_pass()
     out, fresh = {}, 0
@@ -1654,9 +1679,17 @@ def red_groups(c, night, state=None, rerun="default", budget=None):
                           titled={"%s (due %s)" % (t, g["due"]): Path(t).name for t in g["tests"][:30]},
                           tests=list(g["tests"]))
     live = {g["key"] for g in c["groups"]}
-    for k in sorted(held - live):
+    for k in sorted(held.keys() - live):
         out[k] = M(0, "nightly reds with one first error line, no entry parking them", night=night, said="green or parked")
     if gate is not None:
+        for g in c["groups"]:
+            k = g["key"]
+            row = _obj(held.get(k))
+            item = row.get("item") or row.get("name")
+            fix = ctx.get("closed_fixes", {}).get(item) if isinstance(item, str) else None
+            if fix and stale_for_close(out[k], ctx["closes"].get(item)) and gate.verdict(g, fix) == "green":
+                sha = gate.st["groups"][k]["sha"]
+                out[k] = M(0, out[k]["unit"], night=night, said="all group tests green at %s" % sha)
         gate.save()
         gr = gate.green()
         out["testing.nightly_reds_rerun_green"] = M(
@@ -2263,6 +2296,7 @@ def c_flow(now, rules, ctx):
         elif ev.get("event") == "verify" and t >= now - DAY and ev.get("result") == "pass":
             v24 += 1
     ctx["closes"] = closes
+    ctx["closed_fixes"] = {i: it.closed_sha for i, it in world.items.items() if it.state == "done" and it.closed_sha}
     out = {"flow.untriaged_findings": untriaged_reading(events),
            "flow.closes_24h": M(len(c24), "items closed, 24 h"),
            "flow.verify_pass_24h": M(v24, "verify pass events, 24 h (maker or not)")}
@@ -5382,7 +5416,7 @@ def main(argv=None):
     d.add_argument("--blind", action="store_true", help="print digest_blind.md (the token-blind roles' digest)")
     sub.add_parser("backfill", help="seed an empty production series from rm-streams-collect' history")
     sub.add_parser("file-held", help="file the alarms the alarm pass deferred, outside the beat (start_held_filer)")
-    sub.add_parser("rerun-reds", help="rerun the night's new red groups at origin/main (out of the metronome's beat)")
+    sub.add_parser("rerun-reds", help="rerun new nightly-red groups and verify closed fixes at origin/main")
     ln = sub.add_parser("lint", help="refuse a ranges block with a metric short of owner, class, age, ack or why")
     ln.add_argument("--rules", help="the rules file, default the shipped one")
     a = ap.parse_args(argv)

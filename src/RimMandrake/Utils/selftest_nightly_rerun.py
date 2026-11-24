@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """selftest_nightly_rerun.py -- NIGHTLY_REDS_FIX_RERUN_BEFORE_PAYING: before ops_watch files a nightly-red group, its
 tests rerun once at origin/main with no LLM; a group green on that rerun files nothing and is counted as a flake.
-Covers the gate in red_groups (green / red / unmeasured / budget spent / once per night / held groups untouched), its
+Covers the gate in red_groups (green / red / unmeasured / budget spent / once per night / held groups), its
 wiring through nightly_news, and rerun_at_main against a real throwaway git origin (green, red, behind origin/main,
 missing test, a test deleted at origin/main, a green that did not run its check, a rerun past its budget)."""
 import os
@@ -9,11 +9,13 @@ import subprocess
 import sys
 import tempfile
 from pathlib import Path
+from unittest.mock import patch
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 TMP = Path(tempfile.mkdtemp(prefix="nightly_rerun_"))
 os.environ["RM_OPS_WATCH_DIR"] = str(TMP / "ops")
+os.environ["RM_NIGHTLY_HELD"] = "0"
 (TMP / "ops").mkdir()
 import ops_watch as OW  # noqa: E402
 import known_reds as K  # noqa: E402
@@ -117,14 +119,65 @@ check("WIRE: the pass reruns a new group before filing it, and a green one files
       and "testing.red_wire" not in pts and pts.get("testing.nightly_reds_rerun_green", {}).get("v") == 1, (fw.calls, sorted(pts)))
 check("WIRE: the default rerunner is rerun_at_main", OW.RERUN_REDS is OW.rerun_at_main)
 
+# ---- a filed group gets a fresh, exact rerun after its fix closes, outside sense
+def test_held_rerun(verdict):
+    import ops_ledger
+    item, fix = "SELFTEST_FIX_HELD_ABCD", "a" * 12
+    tests = ["src/x/selftest_a.py", "src/x/selftest_b.py"]
+    group = grp("held", *tests)
+    key = group["key"]
+    aid = "NIGHTLY_RED:" + key
+    night = {"night": NIGHT, "news": [], "listed": [], "cured": [], "reds": tests, "unlisted": tests, "expired": [],
+             "cop": {"detail_read": True, "overdue": [], "overdue_said": "", "groups": [group]}}
+    events = [dict(event="file", id=item, seat="BENCH", title="Red group", kind="task", ts=NIGHT, **{"for": "BENCH"}),
+              dict(event="close", id=item, seat="BENCH", sha=fix, noCode="retry fix landed", ts="2026-11-04T12:00:00Z")]
+    alarms = OW.ops_dir() / "alarms.json"
+    OW.atomic_json(alarms, {aid: {"state": "OPEN", "item": item}})
+    OW.atomic_json(OW.rerun_path(), {"night": NIGHT, "groups": {key: {"tests": tests, "verdict": "green", "sha": "b" * 40}}})
+    with patch.object(ops_ledger, "read_ledger", return_value=events), patch.object(K, "measure", return_value=night), \
+            patch.object(OW, "qhome", return_value=TMP), patch.object(OW, "ghost_runs_reading", return_value=OW.M(0)), \
+            patch.object(OW, "RERUN_REDS", return_value=(verdict, "fake", fix + "c" * 28)) as rerun:
+        ctx = {"no_reruns": True}
+        OW.c_flow(OW.epoch(NIGHT), {}, ctx)
+        before = OW.nightly_news(OW.epoch(NIGHT), ctx)[key]["v"]
+        OW.rerun_reds(now=OW.epoch(NIGHT), rules={"fixture": True})
+        points = OW.nightly_news(OW.epoch(NIGHT), ctx)
+        after = points[key]["v"]
+        calls = rerun.call_args_list
+        check("held rerun %s leaves reading %d" % (verdict, 0 if verdict == "green" else 2),
+              before == 2 and after == (0 if verdict == "green" else 2) and len(calls) == 1
+              and calls[0].args[0] == tests and calls[0].args[1] >= 540 and calls[0].kwargs.get("fix") == fix,
+              (before, after, calls))
+        if verdict == "green":
+            group["tests"] = tests[:1]
+            check("a green proof for a different test set leaves the held group red",
+                  OW.nightly_news(OW.epoch(NIGHT), ctx)[key]["v"] == 1)
+            group["tests"] = tests
+            rules = {"alarm": {"clear_passes": 1}, "targets": [{"key": "testing.red_*", "tag": "NIGHTLY_RED",
+                      "op": ">", "value": 0, "alarm": True, "marks": ["MEASURED"]}]}
+            state = OW.run_alarms(points, rules, OW.epoch(NIGHT), {item}, None, open_ids=set(), closed_at=ctx["closes"])
+            check("a measured green proof clears the held alarm", aid not in state, state)
+            check("verifying a closed fix does not count as avoiding a new filing", points["testing.nightly_reds_rerun_green"]["v"] == 0)
+            check("the old group does not refile after its alarm clears", key not in OW.nightly_news(OW.epoch(NIGHT), ctx))
+    alarms.unlink(missing_ok=True)
+
+
+for verdict in ("green", "red", "unmeasured", "gone"):
+    test_held_rerun(verdict)
+
 # ---- rerun_at_main against a real throwaway origin
 STUB = '''import sys
-names = [a for a in sys.argv[1:] if a != "--only"]
+args = sys.argv[1:]
+names = args[args.index("--only") + 1:]
 bad = [n for n in names if "red" in n]
 if any("slow" in n for n in names):
     import time; time.sleep(30)
 if any("blind" in n for n in names):
     print("UNMEASURED (1/1) -- did NOT run their check")
+if "--no-cache" in args and "--because" in args:
+    for name in names:
+        if not any(word in name for word in ("red", "blind", "skip")):
+            print(f"PASS          0.1s  {name}")
 print("RESULT: " + ("RED" if bad else "GREEN") + " (green = FAIL 0 and CRASH 0)")
 sys.exit(1 if bad else 0)
 '''
@@ -139,13 +192,14 @@ sh("git", "init", "-q", "--bare", "-b", "main", str(org))
 sh("git", "clone", "-q", str(org), str(wc))
 (wc / "src/RimMandrake/Utils").mkdir(parents=True)
 (wc / "src/RimMandrake/Utils/run_selftests.py").write_text(STUB)
-for n in ("selftest_ok.py", "selftest_red.py", "selftest_blind.py", "selftest_slow.py"):
+for n in ("selftest_ok.py", "selftest_red.py", "selftest_blind.py", "selftest_slow.py", "selftest_skip.py"):
     (wc / "src/RimMandrake/Utils" / n).write_text("")
 for a in (("add", "."), ("-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "-m", "x"), ("push", "-q", "origin", "main")):
     sh("git", *a, cwd=wc)
 U_ = "src/RimMandrake/Utils/"
 v, said, sha = OW.rerun_at_main([U_ + "selftest_ok.py"], 20, root=wc)
 check("rerun_at_main: green at origin/main is green, with the sha", v == "green" and sha and len(sha) == 40, (v, said, sha))
+fix_sha = sha[:12]
 v, said, _ = OW.rerun_at_main([U_ + "selftest_ok.py", U_ + "selftest_red.py"], 20, root=wc)
 check("rerun_at_main: a failing test is red", v == "red", (v, said))
 v, said, _ = OW.rerun_at_main([U_ + "selftest_blind.py"], 20, root=wc)
@@ -167,6 +221,16 @@ v, said, _ = OW.rerun_at_main([U_ + "selftest_red.py"], 20, root=wc)
 check("rerun_at_main: a test deleted at origin/main is gone", v == "gone" and "selftest_red.py" in said, (v, said))
 v, said, _ = OW.rerun_at_main([U_ + "selftest_red.py", U_ + "selftest_ok.py"], 20, root=wc)
 check("rerun_at_main: a group partly deleted reruns what is left", v == "green", (v, said))
+other_sha = OW._git(wc, "-c", "user.name=t", "-c", "user.email=t@t", "commit-tree", "HEAD^{tree}", "-m", "unrelated fix")
+for names, fix, expected, why in (
+        (("ok",), fix_sha, "green", "RESULT"),
+        (("ok",), other_sha, "unmeasured", "is-ancestor"),
+        (("ok", "red"), fix_sha, "unmeasured", "missing group tests"),
+        (("ok", "skip"), fix_sha, "unmeasured", "did not run"),
+        (("slow",), fix_sha, "unmeasured", "budget"),
+        ((), fix_sha, "unmeasured", "empty test group")):
+    v, said, _ = OW.rerun_at_main([U_ + "selftest_%s.py" % n for n in names], 1, root=wc, fix=fix)
+    check("held rerun at main: %s (%s)" % (expected, why), v == expected and why in said, (v, said))
 fg = Fake({"src/x/selftest_deleted.py": "gone"})
 outg = OW.red_groups({"detail_read": True, "groups": [grp("gone", "src/x/selftest_deleted.py")]}, "2026-11-12T11:00:00Z",
                      state={}, rerun=fg)

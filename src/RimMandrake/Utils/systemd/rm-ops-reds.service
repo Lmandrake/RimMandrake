@@ -3,7 +3,7 @@
 # (OPS_METRONOME_MIGRATE_CLOCKS_FENCED). Test execution, so it stays outside the beat like the nightly selftests.
 # Install:  ops_clocks.py install rm-ops-reds --apply --enable
 [Unit]
-Description=RimMandrake ops_watch: rerun the night's new red selftest groups at origin/main
+Description=RimMandrake ops_watch: rerun new nightly-red groups and verify closed fixes at origin/main
 
 [Service]
 Type=oneshot
@@ -11,5 +11,5 @@ WorkingDirectory=/home/mandrake/rm/dispatch
 ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/ops_watch.py rerun-reds
 Nice=10
 MemoryMax=4G
-# selftest.red_rerun_budget_s bounds the reruns; this bounds the unit.
-TimeoutStartSec=600s
+# The new-group budget is 120 s. Then one closed fix gets 600 s, with room for git pulls and ledger reads.
+TimeoutStartSec=900s
