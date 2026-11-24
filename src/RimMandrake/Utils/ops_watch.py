@@ -2362,12 +2362,12 @@ def steve_incident_unclaimed(world, model, now, rules, fault_since=None):
     for source in ("steward.json", "steward_watch.json"):
         try:
             state = json.loads((qhome() / source).read_text(encoding="utf-8"))
-            inc = state["incident"]
+            inc = state.get("incident")      # a record with no incident key holds none
             if inc is not None and not isinstance(inc, dict):
                 raise ValueError("incident is not a record")
         except FileNotFoundError:
             continue
-        except (KeyError, TypeError, OSError, ValueError) as e:
+        except (AttributeError, OSError, ValueError) as e:
             unread.append("%s: %s" % (source, e))
             continue
         seen.add(source)
