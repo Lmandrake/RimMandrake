@@ -1,0 +1,3 @@
+Two live proofs started inside a shell that held ArchSmall by 'rimflow bridge take' read 'no quicktest map' after 400 s of get_ui_state polls only, so the wait never called start_debug_game_ready (likely the phase read 'unreachable', cause not measured); the same proof under 'game_lock.py run ArchSmall -- CMD' passed, and a direct start right after READY loaded in 30 s. Run a bridge proof under game_lock run; take the rimflow bridge only for the ModsConfig write, and release it before the proof. The Debug log window that a def error opens does NOT block the start (2026-11-24, measured).
+item: RIMMANDRAKE_HARDEN_RUN_LIFE_CYCLE_KILL_CANCEL_THROWN_TICK
+home: skills/rimbridge/references/traps/lifecycle.md

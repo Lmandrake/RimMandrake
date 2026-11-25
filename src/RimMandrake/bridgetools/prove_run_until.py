@@ -206,8 +206,9 @@ def brief(r):
 
 def start_map():
     from await_lifecycle import await_lifecycle
-    if not await_lifecycle(W.call, "map_ready", deadline_s=400, start=True):
-        W.row("map", None, "no quicktest map")
+    lc = await_lifecycle(W.call, "map_ready", deadline_s=400, start=True)
+    if not lc:
+        W.row("map", None, "no quicktest map: %s; started %s %s" % (lc.reason, lc.started, (lc.last or {}).get("startError") or ""))
         return False
     time.sleep(3)
     return True
