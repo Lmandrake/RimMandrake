@@ -386,6 +386,31 @@ def tick_timer_state():
     return word if word in ("active", "inactive", "failed", "activating", "deactivating", "reloading") else None
 
 
+NOT_RUNNING = 0      # tick_run_start(): systemd says no tick runs now
+# A running tick older than this is treated as stopped. It equals testq-tick.service's TimeoutStartSec, which kills it then.
+TICK_HUNG_S = 14400  # budget: danger=a hung tick that never writes steward.json; evidence=2026-11-12 tick ran 23 min; longest=1386.2s (user journal, 14 days to 2026-11-24)
+
+
+def tick_run_start():
+    """-> the epoch the running testq-tick.service started, NOT_RUNNING when none runs, None when systemd cannot be asked.
+    steward.json is written once per tick, after the fill loop, so a tick that runs past STALE_S is not a stopped steward."""
+    try:
+        r = subprocess.run(["systemctl", "--user", "show", "testq-tick.service", "-p", "ActiveState",
+                            "-p", "InactiveExitTimestamp", "--timestamp=unix"], capture_output=True, text=True,
+                           timeout=1800)   # budget: class=call
+    except (OSError, subprocess.SubprocessError):
+        return None
+    f = dict(ln.split("=", 1) for ln in r.stdout.splitlines() if "=" in ln)
+    if r.returncode or "ActiveState" not in f:
+        return None
+    if f["ActiveState"] not in ("activating", "active", "reloading"):
+        return NOT_RUNNING
+    try:
+        return float(f.get("InactiveExitTimestamp", "").lstrip("@"))
+    except ValueError:
+        return None
+
+
 def restart_tick():
     try:
         r = subprocess.run(["systemctl", "--user", "restart", "testq-tick.timer"], capture_output=True, text=True,
@@ -1097,6 +1122,13 @@ def _watch_pass(now):
     age = now - seen
     inc = wst.get("incident")
     settle_wake(inc, now, src="steward-watch")
+    if age > STALE_S:
+        start = tick_run_start()
+        if start and now - start <= TICK_HUNG_S:      # a long tick still running: its steward pass writes at its end;
+            # an open incident stays as it is (no recovery, no rung) until that pass writes or the tick hangs
+            wst.update(ts=iso(now), epoch=now, age_s=int(age), tick_running_s=int(now - start))
+            S.dump(wst, path("steward_watch.json"))
+            return wst
     if age <= STALE_S:
         if inc:
             if not (sj or {}).get("incident"):      # the steward's own incident keeps the shared row failed

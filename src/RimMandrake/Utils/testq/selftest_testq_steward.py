@@ -115,6 +115,7 @@ def main():
         import testq as T
         import steward as W
         W.tick_timer_state = lambda: "active"      # the real one asks this machine's systemd
+        W.tick_run_start = lambda: W.NOT_RUNNING   # the real one asks this machine's systemd: a live tick would excuse a stale case
         check(T.QHOME == queue, "the queue is the temp one")
 
         def cli(*a, seat="BENCH"):
