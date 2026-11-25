@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "ExplosiveKnockback",
   "version": "0.2.0",
-  "stage": "blind_challenge",
-  "stage_label": "Blind challenge, tests first (Stages 4 and 5)",
-  "since": "2026-11-25T04:42:07-08:00",
+  "stage": "in_game",
+  "stage_label": "In-game acceptance (Stage 6)",
+  "since": "2026-11-25T06:33:02-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -65,6 +65,26 @@
         "every_bar_has_a_check_that_runs",
         "table_version",
         "fourth_cycle",
+        "judge_certificate"
+      ]
+    },
+    {
+      "from": "blind_challenge",
+      "to": "in_game",
+      "at": "2026-11-25T06:33:02-08:00",
+      "by": "BENCH",
+      "why": "steward run RIMMANDRAKE_CONFIRM_EXPLOSIVEKNOCKBACK_CYCLE_ONE_EXIT_MET: blind cycle 1 exit met, read and confirmed",
+      "unit": "rm-detached-bench-rimmandrake-confirm-explosiveknockback-c-1795617077",
+      "confirmed": {
+        "steward_confirms": "read blind_challenge/cycle_1 SUMMARY.md, faults.json, fixes.jsonl, tests_edited.json and row files: lane1 after fix 28 PASS/0 FAIL/1 INFO/71 UNSETTLED (all not_kernel, game-side, none on inv_kernel or inv_proof_scenes); reruns 36/36 PASS; planted 31/35 caught, 4 misses explained (2 Polish owned by Stage 6 scenes, 1 owned by sc_pawn_arc_bruise_sizes, 1 equivalent mutant); 1 Problem (check) FIXED 08b632f259, T_PROOFGATE D1 additive only, nothing weakened; I reran D1 myself: PASS on HEAD, FAIL 'no Build case for wall_stop' on P_SCENE_CASE_RENAMED; red_seen recorded. No mod fix, so no fix reader owed. Verdict: exit met."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "steward_confirms",
+        "exit_met",
         "judge_certificate"
       ]
     }
