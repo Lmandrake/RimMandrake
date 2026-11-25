@@ -8,6 +8,26 @@ deleted, git holds the history. His words are cited from the ledger notes on `V3
 
 ---
 
+## From Wed 2026-11-25, about 1:20 AM PST: get the machine in order; mod work is second until this is done (block 11, on top)
+
+His words (ledger, owner-said note on `RIMMANDRAKE_MOVE_STEVEDESKTOP_CLONES_TO_SSD_LINUX_DRIVE_SITS_ON_HARD_DISK`):
+*"Keep on that pipeline fixing work. We need our new workbundles, instant pipeline commands, a functional Steve Desktop
+running on the SSD... get the machine in order please! Modwork is #2 priority until this is done."* When pipeline work
+and mod work compete for a run slot, an account or a game, this block's work goes first. The blocks below stay in force
+after this block.
+
+1. **Work bundles are built, all seven parts, and the first real bundle has run**:
+   `RIMMANDRAKE_BATCH_ONE_MODS_OPEN_WORK_INTO_ONE_RUN_PIPELINE_SPLITS_PER_TICKET`; relaunch duty
+   `RIMMANDRAKE_RELAUNCH_BUNDLE_BUILD_IF_IT_DIES_PROGRAM_SKIPS_DEATHS`.
+2. **SteveDesktop works from its SSD**: `RIMMANDRAKE_MOVE_STEVEDESKTOP_CLONES_TO_SSD_LINUX_DRIVE_SITS_ON_HARD_DISK`.
+   Until that item closes, no new work goes to SteveDesktop (his word, 12:38 AM PST 2026-11-25): its host slots are 0
+   in `list_dispatch.json` and its test lane is paused. Also `RIMMANDRAKE_REUSE_TREECHECK_TREE_EACH_PUBLISH_WRITES_THREE_GIG`.
+3. **Pipeline commands act at once**. He named "instant pipeline commands" without a ticket. The Conductor finds which
+   commands are slow or do not bind at once (`./pipe`, `./acct`, `./publish`, `maturation.py next` took over 120 s at
+   12:01 AM PST 2026-11-25) and files the work.
+4. **The stale leftovers of retired eras are removed on both machines**:
+   `RIMMANDRAKE_CLEAN_STALE_LOCKS_AND_LEFTOVERS_OF_RETIRED_ERAS`.
+
 ## From Mon 2026-11-23, about 8:15 AM PST: the reread and rewrite of the rule files comes first (block 10, on top)
 
 His words (ledger, owner-said note on `RIMMANDRAKE_REWRITE_RULE_DOCS_PLAIN_ENGLISH_LOSE_NOTHING`): *"I think this
