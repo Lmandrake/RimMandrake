@@ -484,6 +484,8 @@ def overlay(runs, ids, bundles, live):
                     r["ended"].append(u["unit"])
             if b.get("state") in LIVE_STATES:
                 r["bundle"] = b["id"]
+            elif b.get("state") == "gated" and (b.get("outcomes") or {}).get(m, {}).get("outcome", "open") == "open":
+                r["bundle_resume"] = b["id"]      # a gate refused its restart: the lane owes it one more run
             if (b.get("outcomes") or {}).get(m, {}).get("outcome") == "refused":
                 r["bundle_refused"] = {"id": b["id"], "why": b["outcomes"][m].get("why")}
     return runs
@@ -664,6 +666,193 @@ def cmd_step(o):
         lk.close()
     print("STEP %s: %s" % (o.bundle, rec["step"]))
     return 0
+
+
+# ---- part 4: outcomes, restart and the guard on progress ------------------------------------------------------------
+
+HAND_KILL_RX = re.compile(r"^killed: (?!(?:signal|unknown)\b)")     # mark_killed writes its reason; a death reads signal
+READ_MEMBERS = r"""
+import json, os, sys
+sys.path.insert(0, os.path.join("src", "RimMandrake", "rimflow"))
+import model
+evs = model.read()
+items = model.replay(evs).items
+out = {}
+for i in sys.argv[1:]:
+    x = items.get(i)
+    out[i] = None if x is None else {"state": x.state, "wait_until": x.wait_until, "wait_ts": None, "refusal": None,
+                                     "refusal_ts": None}
+for e in evs:
+    f = out.get(e.get("id"))
+    if f is None:
+        continue
+    if e.get("event") == "wait":
+        f["wait_ts"] = e.get("ts")
+    elif e.get("event") == "note" and str(e.get("text") or "").strip().upper().startswith(("REFUSED BY BUNDLE:", "BUNDLE REFUSED:")):
+        f["refusal"], f["refusal_ts"] = str(e.get("text")).strip(), e.get("ts")
+print(json.dumps(out))
+"""
+
+
+def read_members(clone, ids):
+    """-> {id: facts or None} as the run's clone folds its ledger (the run's own closes sit there first); raises when the
+    ledger there cannot be read."""
+    import time_budget as TB
+    r = subprocess.run([sys.executable, "-c", READ_MEMBERS] + list(ids), cwd=clone, capture_output=True, text=True,
+                       timeout=TB.RIMFLOW_S, stdin=subprocess.DEVNULL)
+    if r.returncode:
+        raise RuntimeError("the member read in %s exited %d: %s" % (clone, r.returncode, _one(r.stderr, 300)))
+    return json.loads(r.stdout)
+
+
+def _when(v):
+    """-> epoch of an epoch or ISO value; raises ValueError when it cannot be read."""
+    if isinstance(v, (int, float)) and not isinstance(v, bool):
+        return float(v)
+    return _ts(v)
+
+
+def outcomes(rec, facts, now):
+    """-> {member: {"outcome", "why"}}: fixed | already_fixed | dropped | refused | waits | open | unread. A refusal or
+    wait counts only when written since the bundle began."""
+    out, since = {}, rec.get("at") or 0
+    for m in rec["members"]:
+        f = (facts or {}).get(m)
+        if not isinstance(f, dict):
+            out[m] = {"outcome": "unread", "why": "its ledger state could not be read"}
+            continue
+        st = f.get("state")
+        try:
+            refused = bool(f.get("refusal")) and _when(f.get("refusal_ts")) >= since
+            waits = bool(f.get("wait_until")) and _when(f["wait_until"]) > now and _when(f.get("wait_ts")) >= since
+        except (TypeError, ValueError) as e:
+            out[m] = {"outcome": "unread", "why": "a time on it could not be read (%s)" % e}
+            continue
+        if st == "done":
+            out[m] = {"outcome": "already_fixed" if m in (rec.get("sort_closed") or []) else "fixed", "why": "closed done"}
+        elif st in ("dropped", "superseded"):
+            out[m] = {"outcome": "dropped", "why": "closed %s" % st}
+        elif refused:
+            out[m] = {"outcome": "refused", "why": f["refusal"]}
+        elif waits:
+            out[m] = {"outcome": "waits", "why": "a dated wait to %s" % f["wait_until"]}
+        else:
+            out[m] = {"outcome": "open", "why": "no close, refusal or wait since the bundle began"}
+    return out
+
+
+def plan_restart(rec, facts, run, now):
+    """-> {act: end | restart | raise | none, why, target?, open, outcomes, ended_now}. Pure over its inputs."""
+    o = outcomes(rec, facts, now)
+    opened = [m for m in rec["members"] if o[m]["outcome"] == "open"]
+    unread = [m for m in rec["members"] if o[m]["outcome"] == "unread"]
+    ended = len(rec["members"]) - len(opened) - len(unread)
+    base = {"open": opened, "outcomes": o, "ended_now": ended}
+    if unread:
+        return dict(base, act="raise", why="could not look at %s (%s); nothing is decided on a member it cannot read" % (
+            ", ".join(unread), o[unread[0]]["why"]))
+    if not opened:
+        return dict(base, act="end", why="every member has an outcome: " + ", ".join(
+            "%s %s" % (m, o[m]["outcome"]) for m in rec["members"]))
+    res = str(run.get("result") or "")
+    if HAND_KILL_RX.match(res):
+        return dict(base, act="none", why="stopped by hand (%s): a stop is not restarted" % _one(res, 160))
+    unit = next((u for u in rec.get("units") or [] if u.get("unit") == run.get("unit")), None)
+    if unit and unit.get("kind") == "restart" and ended <= int(unit.get("ended_before") or 0):
+        return dict(base, act="raise", why="restart %s of bundle %s ended no member (still open: %s); a restart that "
+                                           "ends none is not restarted again" % (run.get("unit"), rec["id"], ", ".join(opened)))
+    return dict(base, act="restart", target=opened[0], why="%d member(s) still open (%s)" % (len(opened), ", ".join(opened)))
+
+
+def conductor_say(line, now=None):
+    import detached_helper as DH
+    DH.conductor_line(line, now or time.time(), head="WORK BUNDLE")
+
+
+def note_end(bid, q, unit, now, say=None):
+    """Write what a run's end decided on the record: outcomes, the unit's count, the state; each refusal and a raise
+    reach the Conductor log once."""
+    say = say or (lambda line: conductor_say(line, now))
+    lk = _lock()
+    try:
+        rec = store_read(bid)
+        if not rec:
+            return None
+        rec["outcomes"] = q.get("outcomes") or rec.get("outcomes") or {}
+        rec["outcomes_at"] = now
+        for u in rec.get("units") or []:
+            if u.get("unit") == unit:
+                u.update(ended_after=q.get("ended_now"), end_act=q["act"])
+        rec["state"] = {"end": "ended", "raise": "raised", "restart": "restarting", "none": "stopped",
+                        "gated": "gated"}[q["act"]]
+        if q["act"] == "raise":
+            rec["raised"] = {"at": now, "why": q["why"]}
+        told = set(rec.get("told") or [])
+        lines = []
+        for m in rec["members"]:
+            oc = rec["outcomes"].get(m) or {}
+            if oc.get("outcome") == "refused" and m not in told:
+                lines.append("work bundle %s (%s): %s refused: %s" % (bid, rec["system"], m, _one(oc.get("why"), 400)))
+                told.add(m)
+        if q["act"] == "raise" and "raise" not in told:
+            lines.append("ALARM work bundle %s (%s) is not restarted: %s. Look at its state file %s; restart it by hand "
+                         "with `./pipe bundle <ids> --why ...` or end it" % (bid, rec["system"], q["why"], rec["state_file"]))
+            told.add("raise")
+        rec["told"] = sorted(told)
+        store_write(rec)
+    finally:
+        lk.close()
+    for line in lines:
+        try:
+            say(line)
+        except Exception as e:  # noqa: BLE001 - the record keeps the outcome; the line is said on stderr
+            print("work_bundle: conductor line not written (%s): %s" % (e, line), file=sys.stderr)
+    return rec
+
+
+def note_restart(bid, unit, now, ended_before):
+    lk = _lock()
+    try:
+        rec = store_read(bid)
+        if not rec:
+            return None
+        rec["units"] = (rec.get("units") or []) + [{"unit": unit, "at": now, "kind": "restart", "ended_before": ended_before}]
+        rec.update(state="live", restarts=int(rec.get("restarts") or 0) + 1)
+        return store_write(rec)
+    finally:
+        lk.close()
+
+
+def loc_plan(rec, facts, now, gates, base, gate_no):
+    """left_open_continue.plan's bundle branch: the bundle's rule decides, LOC's gates still bind. -> a LOC plan."""
+    bid = (rec.get("env") or {}).get(ENV)
+    try:
+        b = store_read(bid)
+    except Exception as e:  # noqa: BLE001
+        return dict(base, act="alarm", bundle=bid, why="work bundle %s: its record could not be read (%s)" % (bid, e))
+    if not b:
+        return dict(base, act="alarm", bundle=bid, why="work bundle %s has no record in %s" % (bid, store_dir()))
+    q = plan_restart(b, facts, rec, now)
+    out = dict(base, bundle=bid, bundle_plan=q, state_file=b["state_file"], open_lane=q["open"], kind="bundle")
+    if q["act"] == "end":
+        return dict(out, act="none", why=q["why"])
+    if q["act"] == "none":
+        return dict(out, act="none", why=q["why"])
+    if q["act"] == "raise":
+        return dict(out, act="alarm", why=q["why"])
+    no = gate_no(rec, q["target"], gates)
+    if no:
+        return dict(out, act="none", why=no, bundle_plan=dict(q, act="gated", why=no))
+    import left_open_continue as LOC
+    return dict(out, act="continue", target=q["target"], capped=LOC.capped(rec), note=None, progress=[],
+                n=int(rec.get("continue_n") or 0) + 1, why="work bundle %s: %s" % (bid, q["why"]))
+
+
+def members_of_run(rec):
+    """-> the bundle's members for a run record that carries RM_WORK_BUNDLE, or []."""
+    bid = (rec.get("env") or {}).get(ENV)
+    b = store_read(bid) if bid else None
+    return list(b["members"]) if b else []
 
 
 # ---- reading the ledger ---------------------------------------------------------------------------------------------

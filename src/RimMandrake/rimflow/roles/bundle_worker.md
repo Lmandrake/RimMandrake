@@ -97,13 +97,13 @@ each group; what is not tested, with its command.
 
 ## The bundle's commands (work_bundle.py)
 
-- Your context size, against half of your window: `python3 src/RimMandrake/rimflow/work_bundle.py context`. It prints
-  `GO ON`, `SAVE AND RESTART` or `UNMEASURED` with its cause. On `UNMEASURED`, go on: the state file after each group is
+- Your context size, against half of your window: `python3 src/RimMandrake/rimflow/work_bundle.py context`. The command
+  prints `GO ON`, `SAVE AND RESTART` or `UNMEASURED` with its cause. On `UNMEASURED`, go on: the state file that you write after each member or one-cause group (step 3) is
   your checkpoint.
 - Your step, for the pipeline page: `python3 src/RimMandrake/rimflow/work_bundle.py step <bundle id> "<step>"`.
 - A live check on the first free game (ArchBig, then ArchSmall), held for the life of the check:
   `python3 src/RimMandrake/rimflow/work_bundle.py live <bundle id> --for "<what>" -- <the check's command>`. When no
-  game is free it runs nothing, prints each game's answer and records `UNRUN` with the command on the bundle; then
-  follow step 5 above.
+  game is free, the command runs nothing, prints each game's answer and records `UNRUN` with the check's command on the
+  bundle; then follow step 5 above.
 - The pipeline reads each member's outcome from the ledger: a close, a drop, a dated wait, or a note that starts
-  `REFUSED BY BUNDLE:`. A member with none of these is open, and the bundle restarts until it has one.
+  `REFUSED BY BUNDLE:`. A member with none of these is open, and the bundle restarts until each member has an outcome.

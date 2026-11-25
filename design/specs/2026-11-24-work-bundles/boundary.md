@@ -43,6 +43,8 @@ bundle began). A member with none of these is **open**.
   only room is another host waits for a local slot.
 - **a-member-whose-system-moves.** The members are fixed at launch. A ticket re-homed into the system later joins the
   next bundle, not the live one.
+- **a-bare-systemctl-stop.** A unit stopped with `systemctl stop` and no `pipe` act reads `killed: signal`, the same
+  as a death, so the bundle restarts. Stop a bundle with `./pipe stop` or `pipe off`.
 - **two-launchers-at-once.** The store lock is per machine; a launch from another machine is not seen.
 
 ## PROMISES (each one is owed a test of the same name)
@@ -79,22 +81,25 @@ bundle began). A member with none of these is **open**.
 - **context-reads-the-own-session.** `work_bundle.py context` prints the session's context tokens, the model's window
   (the newest `contextWindow` in the run's result files, else UNMEASURED) and one verdict: `GO ON`, `SAVE AND RESTART`
   (above half of the window) or `UNMEASURED` with its cause, never a guessed window.
+- **outcomes-are-read-from-the-ledger.** Each member's outcome is read from the ledger as the Words above say; the
+  record keeps what was read and when.
+- **restart-until-each-member-has-an-outcome.** When a bundle run ends (success, a spend stop, or a failure) and a
+  member is still open, `left_open_continue` restarts the bundle in a FRESH session, never a resume, from its state
+  file and its first brief, on the first open member. A full context, a cap or a death is never a reason to stop. A death by
+  signal (`killed: signal`, `killed: unknown`) restarts too. A run stopped by hand (`pipe stop --kill`, whose result is
+  `killed: <its reason>`) is not restarted and the bundle reads `stopped`. A voided run, a pipeline pause, an owner hold
+  and a `pipe off` refuse the restart, as for any run: the bundle reads `gated`, and its open members are the lane's
+  again, owed one more run once the gate lifts.
+- **a-restart-that-ended-no-member-raises.** A restart (not the first run) that ended no member since it began is not
+  restarted again: the bundle reads `raised`, and one ALARM line in the Conductor log names the bundle, the open
+  members and the units. The 3-a-day count of single runs does not apply to a bundle; this guard on progress does.
+- **a-bundle-with-every-outcome-ends.** When every member has an outcome, the bundle reads `ended`. Each `refused`
+  member's reason goes to the Conductor log, once.
+- **a-refused-member-is-stopped-with-its-reason.** In the lane, an open member refused in an ended bundle reads
+  `stopped`, and its Needs Conductor line quotes the refusal.
 
 ## PLANNED (built part by part; each moves up to PROMISES, with its test, when its part lands)
 
-- *outcomes-are-read-from-the-ledger.* Each member's outcome is read from the ledger as the Words above say; the
-  record keeps what was read and when.
-- *restart-until-each-member-has-an-outcome.* When a bundle run ends (success, a spend stop, or a failure) and a
-  member is still open, `left_open_continue` restarts the bundle in a FRESH session, never a resume, from its state
-  file and its first brief, on the first open member. A full context, a cap or a death is never a reason to stop. A run
-  ended by hand (`killed`), a voided run, a pipeline pause, an owner hold and a `pipe off` stop it, as for any run.
-- *a-restart-that-ended-no-member-raises.* A restart (not the first run) that ended no member since it began is not
-  restarted again: the bundle reads `raised`, and one ALARM line in the Conductor log names the bundle, the open
-  members and the units. The 3-a-day count of single runs does not apply to a bundle; this guard on progress does.
-- *a-bundle-with-every-outcome-ends.* When every member has an outcome, the bundle reads `ended`. Each `refused`
-  member's reason goes to the Conductor log, once.
-- *a-refused-member-is-stopped-with-its-reason.* In the lane, an open member refused in an ended bundle reads
-  `stopped`, and its Needs Conductor line quotes the refusal.
 - *live-pass-takes-a-free-game-or-says-unrun.* `work_bundle.py live <id> --for "..." -- CMD` asks `game_lock.py
   query` for ArchBig, then ArchSmall, and runs CMD under `game_lock.py run` on the first free one. When no game is free
   (held, his hold, `pipe off`, or could not look), it runs nothing and records `UNRUN` with the exact command and each

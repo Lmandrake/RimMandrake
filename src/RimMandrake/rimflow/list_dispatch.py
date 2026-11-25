@@ -478,7 +478,7 @@ def decide(cfg, st, facts, now, account=(True, "")):
                     "read the runs' notes on %s, then do the rest by hand, put a wait on it, drop it, or "
                     "`list_dispatch.py clear %s --why ...` for one more run" % (iid, iid))
                 continue
-            if last is done[-1] and not last.get("next") and not look:
+            if last is done[-1] and not last.get("next") and not look and not run.get("bundle_resume"):
                 stop("run %s ended with no LEFT OPEN: note (no next act of its own) and no wait, and the check still "
                      "fails" % last.get("unit"),
                      "read run %s's note on %s, then do the rest by hand, put a wait on it, drop it, or "

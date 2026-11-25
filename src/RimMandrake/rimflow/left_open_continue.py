@@ -21,6 +21,10 @@ dated wait is not running. A run that ended success with its item open and nothi
 its result text, no open lane ticket) is continued ONCE, kind `owed`, to close the item on its published sha or say
 what is left; an owed continuation that ends the same way is the alarm (RIMMANDRAKE_CLOSE_DETACHED_ITEM_AT_RUN_END:
 13 such runs were closed by hand in five days, 6 of them with work left, so a close from the exit alone is wrong).
+A run that carries RM_WORK_BUNDLE follows the bundle's rule instead (work_bundle.loc_plan; page
+design/specs/2026-11-24-work-bundles/boundary.md): it restarts FRESH from the bundle's state file while a member has no
+outcome, after a success, a spend stop or a death; a restart that ended no member is the alarm; the daily count does not
+apply; these gates still bind.
 Boundary: design/specs/2026-11-19-run-end-continue/boundary.md. Never continued:
 a killed, voided or failed run, a closed item (a lane with every ticket closed), an owner-held mod, a paused pipeline,
 a `pipe off` switch on its scope; a gate that cannot be read is a named no. At most MAX_PER_DAY continuations per item
@@ -236,6 +240,9 @@ def plan(rec, got, lane_states, now=None, gates=None, root=None):
     base = {"unit": rec.get("unit"), "item": item}
     if rec.get("continued_by"):
         return dict(base, act="none", why="already continued as %s" % rec["continued_by"])
+    if (rec.get("env") or {}).get("RM_WORK_BUNDLE"):     # a work bundle: its own rule (work_bundle.py), these gates
+        import work_bundle as WB
+        return WB.loc_plan(rec, lane_states, now, gates, base, gate_no)
     if rec.get("next_act_owner"):     # list_dispatch counts its own runs (design/specs/2026-11-23-list-dispatch)
         return dict(base, act="none", why="its next act belongs to %s, which launched it" % rec["next_act_owner"])
     if res.startswith("killed"):
@@ -366,6 +373,9 @@ def whole_or_fresh(ctx, progress):
 
 def resume_choice(rec, p, now, projects=None):
     """-> (session id, None, why it resumes) to resume the ended run's session, or (None, why it starts fresh, None)."""
+    if p.get("bundle"):
+        return None, "a work bundle restarts fresh from its state file %s, never in the old session" % (
+            p.get("state_file") or "-"), None
     role = blind_role(rec, p.get("target"))
     if role:
         return None, "a blind role (%s) always starts fresh, never in a session that holds earlier context" % role, None
@@ -420,6 +430,14 @@ def conductor_resume(session, item, brief, projects=None, reader=None, env=None)
 def header(rec, p, now):
     """The continuation's brief header. Never a word on spend, its cap, what is left of one or why a run was stopped:
     a stopped run is "interrupted", nothing more (RIMMANDRAKE_HIDE_CAP_STOP_FROM_RESUMED_RUN_READER_TRIMMED)."""
+    if p.get("bundle"):
+        return ("WORK BUNDLE RESTART (left_open_continue.py, %s): restart %d of work bundle %s, in a fresh context.\n"
+                "Members still open: %s. Work `%s` first.\n"
+                "This is a fresh session with no memory of the previous one. Your clone stands on origin/main. First read "
+                "the bundle's state file %s, then `git log --oneline -15`; do not redo work that is already published. "
+                "Then carry on from the state file's Next.\n" % (
+                    local(now), p["n"], p["bundle"], ", ".join("`%s`" % t for t in p.get("open_lane") or []),
+                    p["target"], p.get("state_file") or "-"))
     lines = ["CONTINUED BY ITSELF (left_open_continue.py, %s): continuation %d of at most %d a day for %s." % (
         local(now), p["n"], MAX_PER_DAY, rec.get("continue_root_item") or rec["item"])]
     if p.get("capped"):
@@ -510,7 +528,7 @@ def recheck(rec, now, gates=None, root=None, reader=None):
     no = gate_no(rec, p["target"], gates)
     if no:
         return no
-    if len(today(rec, now, root)) >= MAX_PER_DAY:
+    if not p.get("bundle") and len(today(rec, now, root)) >= MAX_PER_DAY:    # a bundle's guard is on progress
         return "limit"
     try:
         got = (reader or read_target)(p["target"])
@@ -593,6 +611,9 @@ def run(unit, now=None, launch_fn=None, gates=None, root=None, log_path=None, re
     if code == 0 and m:
         rec.update(continued_by=m.group(1), continued_at=now)
         DH.write_record(rec, root)
+        if p.get("bundle"):
+            import work_bundle as WB
+            WB.note_restart(p["bundle"], m.group(1), now, (p.get("bundle_plan") or {}).get("ended_now") or 0)
         line = "%s on %s ended with work left (%s); continued as %s on %s, same model %s, %s (%d of at most %d today)" % (
             unit, rec["item"], p.get("why"), m.group(1), p["target"], rec.get("model"),
             "its session resumed" if sid else "fresh: " + str(fresh_why), p["n"], MAX_PER_DAY)
@@ -687,18 +708,33 @@ def kick(rec, p, runner=subprocess.run):
 
 def at_finish(rec, got, clone, now, runner=subprocess.run, continuer=None, states_reader=None):
     """finish's whole step: plan, then alarm or kick. -> (plan, step line)."""
+    bundle = (rec.get("env") or {}).get("RM_WORK_BUNDLE")
     try:
-        lane = lane_tickets_of(rec)
-        states = (states_reader or read_states)(clone, lane) if lane else {}
+        if bundle:      # a work bundle's members, as the run's clone folds them (work_bundle.read_members)
+            import work_bundle as WB
+            members = WB.members_of_run(rec)
+            states = (states_reader or WB.read_members)(clone, members) if members else {}
+        else:
+            lane = lane_tickets_of(rec)
+            states = (states_reader or read_states)(clone, lane) if lane else {}
     except Exception as e:  # noqa: BLE001
+        if bundle:      # could not look: the Conductor is told, the bundle is not left silent
+            p = {"act": "alarm", "unit": rec.get("unit"), "item": rec.get("item"), "bundle": bundle,
+                 "why": "work bundle %s: its members could not be read (%s)" % (bundle, e)}
+            alarm(DH.read_record(rec["unit"]) or rec, p, now)
+            return p, "continue: ALARM %s (%s)" % (ALARM_ID, p["why"])
         return {"act": "none", "why": "lane tickets unreadable: %s" % e}, "continue: lane tickets UNMEASURED (%s)" % e
     try:
         p = plan(rec, got, states, now=now)
     except Exception as e:  # noqa: BLE001
         return {"act": "none", "why": "plan failed: %s" % e}, "continue: plan FAILED (%s: %s)" % (type(e).__name__, e)
     fresh = DH.read_record(rec["unit"]) or rec
-    fresh["continue_plan"] = p          # written before the kick: the continuation step reads it
-    DH.write_record(fresh)
+    fresh["continue_plan"] = {k: v for k, v in p.items() if k != "bundle_plan"} if p.get("bundle") else p
+    DH.write_record(fresh)          # written before the kick: the continuation step reads it
+    if p.get("bundle_plan"):        # the bundle's record takes what this end decided (work_bundle.note_end)
+        import work_bundle as WB
+        q = p["bundle_plan"]
+        WB.note_end(p["bundle"], q, rec["unit"], now)
     if p["act"] == "alarm":
         alarm(fresh, p, now)
         return p, "continue: ALARM %s (%s)" % (ALARM_ID, p["why"])

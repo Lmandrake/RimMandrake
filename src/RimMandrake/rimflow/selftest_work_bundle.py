@@ -22,6 +22,9 @@ sys.dont_write_bytecode = True
 os.environ["RM_UNDER_SELFTEST"] = "1"
 TMP = tempfile.mkdtemp(prefix="selftest_work_bundle_")
 os.environ["RM_WORK_BUNDLE_DIR"] = os.path.join(TMP, "store")
+os.environ["RM_DISPATCHER_STATE"] = os.path.join(TMP, "dispatcher")     # run records and the Conductor log stay here
+os.environ["RM_CONDUCTOR_LOG"] = os.path.join(TMP, "conductor.log")
+os.makedirs(os.path.join(TMP, "dispatcher", "detached"), exist_ok=True)
 FAILS = []
 
 
@@ -330,6 +333,177 @@ def t_context_reads_the_own_session():
     chk(lambda: r3["verdict"] == "UNMEASURED" and r3["tokens"] is None, "context: no transcript reads UNMEASURED")
 
 
+# ---- part 4: restart and keep going ---------------------------------------------------------------------------------
+
+def bundle_rec(W, members, at=NOW, units=None, outcomes=None, state="live"):
+    rec = W.new_record("pipeline:ledger", members, "why", "workshop", at)
+    rec.update(state=state, units=units or [{"unit": "u-first", "at": at, "kind": "launch", "ended_before": 0}],
+               outcomes=outcomes or {})
+    return W.store_write(rec)
+
+
+def facts_of(**kw):
+    """member facts as read_members returns them: {id: {state, wait_until, wait_ts, refusal, refusal_ts}}"""
+    out = {}
+    for i, f in kw.items():
+        out[i] = dict({"state": "proposed", "wait_until": None, "wait_ts": None, "refusal": None, "refusal_ts": None}, **f)
+    return out
+
+
+def run_rec(W, rec, unit="u-first", result="success (exit 0)", kind=None):
+    r = {"unit": unit, "item": rec["lead"], "seat": "BENCH", "at": NOW + 10, "result": result,
+         "env": {W.ENV: rec["id"]}, "next_act_owner": "list_dispatch", "model": "opus"}
+    if kind:
+        r["continued_from"] = "u-first"
+    return r
+
+
+def t_outcomes_are_read_from_the_ledger():
+    W = WB()
+    rec = bundle_rec(W, ["O1", "O2", "O3", "O4", "O5", "O6"])
+    rec["sort_closed"] = ["O6"]
+    f = facts_of(O1={"state": "done"}, O2={"state": "dropped"},
+                 O3={"refusal": "REFUSED BY BUNDLE: not this system", "refusal_ts": NOW + 5},
+                 O4={"wait_until": "2099-01-01T00:00:00Z", "wait_ts": NOW + 6}, O5={}, O6={"state": "done"})
+    o = W.outcomes(rec, f, NOW + 100)
+    chk(lambda: [o[i]["outcome"] for i in rec["members"]] == ["fixed", "dropped", "refused", "waits", "open",
+                                                             "already_fixed"], "outcomes: %s" % o)
+    chk(lambda: "not this system" in o["O3"]["why"], "outcomes: a refusal keeps its reason")
+    old = facts_of(O3={"refusal": "REFUSED BY BUNDLE: old", "refusal_ts": NOW - 50},
+                   O4={"wait_until": "2099-01-01T00:00:00Z", "wait_ts": NOW - 50})
+    o2 = W.outcomes(rec, old, NOW + 100)
+    chk(lambda: o2["O3"]["outcome"] == "open" and o2["O4"]["outcome"] == "open",
+        "outcomes: a refusal or wait from before the bundle began is no outcome of it")
+    chk(lambda: W.outcomes(rec, {"O1": None}, NOW)["O1"]["outcome"] == "unread",
+        "outcomes: a member that could not be read is unread, never open or fixed")
+
+
+def t_restart_until_each_member_has_an_outcome():
+    W = WB()
+    import left_open_continue as LOC
+    rec = bundle_rec(W, ["P1", "P2", "P3"])
+    f = facts_of(P1={"state": "done"}, P2={}, P3={})
+    for res, what in (("success (exit 0)", "a success"), ("failed (exit 1)", "a death"),
+                      ("killed by the spend watchdog at its cap", "a spend stop")):
+        r = run_rec(W, rec, result=res)
+        p = LOC.plan(r, {"state": "done", "notes": []}, f, now=NOW + 100, gates={k: (lambda a: None) for k in LOC.GATES})
+        chk(lambda: p["act"] == "continue" and p["target"] == "P2" and p.get("bundle") == rec["id"],
+            "restart: after %s with open members the bundle restarts on the first open one (%s)" % (what, p))
+    r = run_rec(W, rec, result="killed: stopped by the Conductor (pipe stop --kill)")
+    p = LOC.plan(r, {"state": "proposed", "notes": []}, f, now=NOW + 100, gates={k: (lambda a: None) for k in LOC.GATES})
+    chk(lambda: p["act"] == "none" and "hand" in p["why"], "restart: a run stopped by hand is not restarted (%s)" % p)
+    r = run_rec(W, rec, result="killed: signal (killed SIGKILL)")
+    p = LOC.plan(r, {"state": "proposed", "notes": []}, f, now=NOW + 100, gates={k: (lambda a: None) for k in LOC.GATES})
+    chk(lambda: p["act"] == "continue", "restart: a death by signal restarts (%s)" % p.get("why"))
+    held = dict({k: (lambda a: None) for k in LOC.GATES}, held=lambda m: "HELD BY OWNER")
+    r = run_rec(W, rec)
+    r["env"]["RM_CONTROL_MOD"] = "FlowWorks"
+    p = LOC.plan(r, {"state": "proposed", "notes": []}, f, now=NOW + 100, gates=held)
+    chk(lambda: p["act"] == "none" and "HELD" in p["why"], "restart: an owner hold stops the restart")
+    W.note_end(rec["id"], p["bundle_plan"], "u-first", NOW + 100, say=lambda line: None)
+    chk(lambda: W.store_read(rec["id"])["state"] == "gated", "restart: a restart a gate refused leaves the bundle gated")
+    over = W.overlay({}, ["P2"], {rec["id"]: W.store_read(rec["id"])}, live=lambda u: False)
+    chk(lambda: over["P2"].get("bundle_resume") == rec["id"] and "bundle" not in over["P2"],
+        "restart: a gated bundle's open member is the lane's again, with one more run owed")
+    import list_dispatch as LD
+    st = {"items": {"P2": {"attempts": [{"at": NOW, "unit": "u-first", "model": "opus", "cap": 120, "kind": "work"}]}}}
+    facts = {"items": {"P2": {"state": "proposed", "effect": "cmd:x", "verdict": "fails", "events": 1, "out": "red"}},
+             "runs": over, "recent": None}
+    rws, ln = LD.decide({"enabled": True, "max_live": 2}, st, facts, NOW + 200)
+    chk(lambda: rws[0]["decision"] == "launch", "restart: once the gate lifts the lane launches it again (%s)" % rws[0])
+    sid, fresh, _ = LOC.resume_choice(run_rec(W, rec), {"target": "P2", "bundle": rec["id"]}, NOW)
+    chk(lambda: sid is None and "state file" in str(fresh), "restart: always fresh, never a resume (%s)" % fresh)
+    h = LOC.header(run_rec(W, rec), {"n": 2, "target": "P2", "bundle": rec["id"], "open_lane": ["P2", "P3"],
+                                     "state_file": rec["state_file"]}, NOW)
+    chk(lambda: rec["state_file"] in h and rec["id"] in h and "a day" not in h,
+        "restart: the header names the state file and the bundle, and no daily count (%s)" % h[:200])
+
+
+def t_finish_writes_the_bundles_end():
+    """part of restart-until-each-member-has-an-outcome: finish's step plans from the clone's member read and writes the
+    record before the kick"""
+    W = WB()
+    import left_open_continue as LOC
+    import detached_helper as DH
+    chk(lambda: DH.runs_dir().startswith(TMP), "finish test: the run records are the throwaway ones (%s)" % DH.runs_dir())
+    rec = bundle_rec(W, ["F1", "F2"])
+    r = run_rec(W, rec)
+    DH.write_record(dict(r, status="finished"))
+    kicked = []
+    p, line = LOC.at_finish(r, {"state": "proposed", "notes": []}, TMP, NOW + 100,
+                            continuer=lambda rr, q: kicked.append(q) or "continue kicked",
+                            states_reader=lambda clone, ids: facts_of(F1={"state": "done"}, F2={}))
+    on = W.store_read(rec["id"])
+    chk(lambda: p["act"] == "continue" and kicked and on["state"] == "restarting" and on["outcomes"]["F1"]["outcome"] == "fixed",
+        "finish: plans the restart, kicks it and writes the record restarting with outcomes (%s / %s)" % (line, on["state"]))
+    chk(lambda: "bundle_plan" not in (DH.read_record(r["unit"]) or {}).get("continue_plan", {}) and
+        (DH.read_record(r["unit"]) or {}).get("continue_plan", {}).get("bundle") == rec["id"],
+        "finish: the run record's continue_plan names the bundle")
+    p2, line2 = LOC.at_finish(r, {"state": "proposed", "notes": []}, TMP, NOW + 100,
+                              continuer=lambda rr, q: "x", states_reader=lambda clone, ids: 1 / 0)
+    chk(lambda: p2["act"] == "alarm" and "could not be read" in p2["why"],
+        "finish: members that cannot be read raise an alarm, never a silent end (%s)" % line2)
+
+
+def t_a_restart_that_ended_no_member_raises():
+    W = WB()
+    import left_open_continue as LOC
+    units = [{"unit": "u-first", "at": NOW, "kind": "launch", "ended_before": 0},
+             {"unit": "u-second", "at": NOW + 50, "kind": "restart", "ended_before": 1}]
+    rec = bundle_rec(W, ["Q1", "Q2"], units=units)
+    f = facts_of(Q1={"state": "done"}, Q2={})
+    r = run_rec(W, rec, unit="u-second", kind="restart")
+    p = LOC.plan(r, {"state": "proposed", "notes": []}, f, now=NOW + 100, gates={k: (lambda a: None) for k in LOC.GATES})
+    chk(lambda: p["act"] == "alarm" and "Q2" in p["why"] and "u-second" in p["why"],
+        "progress guard: a restart that ended no member raises, naming the open members and the unit (%s)" % p)
+    f2 = facts_of(Q1={"state": "done"}, Q2={"refusal": "REFUSED BY BUNDLE: x", "refusal_ts": NOW + 60})
+    p2 = LOC.plan(r, {"state": "proposed", "notes": []}, f2, now=NOW + 100, gates={k: (lambda a: None) for k in LOC.GATES})
+    chk(lambda: p2["act"] == "none" and "every member" in p2["why"], "progress guard: a restart that ended one goes on")
+    units1 = [{"unit": "u-first", "at": NOW, "kind": "launch", "ended_before": 0}]
+    rec1 = bundle_rec(W, ["Q3", "Q4"], units=units1)
+    p3 = LOC.plan(run_rec(W, rec1), {"state": "proposed", "notes": []}, facts_of(Q3={}, Q4={}), now=NOW + 100,
+                  gates={k: (lambda a: None) for k in LOC.GATES})
+    chk(lambda: p3["act"] == "continue", "progress guard: the first run that ended none is restarted once (%s)" % p3)
+    import inspect
+    chk(lambda: "bundle" in inspect.getsource(LOC.recheck), "progress guard: recheck reads the bundle rule")
+
+
+def t_a_bundle_with_every_outcome_ends():
+    W = WB()
+    rec = bundle_rec(W, ["E1", "E2"])
+    lines = []
+    f = facts_of(E1={"state": "done"}, E2={"refusal": "REFUSED BY BUNDLE: needs the owner's flight test",
+                                          "refusal_ts": NOW + 5})
+    p = W.plan_restart(rec, f, run_rec(W, rec), NOW + 100)
+    chk(lambda: p["act"] == "end", "end: every member has an outcome (%s)" % p)
+    W.note_end(rec["id"], p, "u-first", NOW + 100, say=lines.append)
+    on = W.store_read(rec["id"])
+    chk(lambda: on["state"] == "ended" and on["outcomes"]["E2"]["outcome"] == "refused",
+        "end: the record reads ended, with each outcome")
+    chk(lambda: len(lines) == 1 and "E2" in lines[0] and "flight test" in lines[0],
+        "end: each refusal goes to the Conductor log with its reason, once (%s)" % lines)
+    W.note_end(rec["id"], p, "u-first", NOW + 200, say=lines.append)
+    chk(lambda: len(lines) == 1, "end: a second end says nothing again")
+    rec2 = bundle_rec(W, ["E3"])
+    W.note_restart(rec2["id"], "u-new", NOW + 300, ended_before=0)
+    on2 = W.store_read(rec2["id"])
+    chk(lambda: on2["state"] == "live" and on2["restarts"] == 1 and on2["units"][-1]["unit"] == "u-new",
+        "restart: the record takes the new unit and counts the restart")
+
+
+def t_a_refused_member_is_stopped_with_its_reason():
+    import list_dispatch as LD
+    st = {"items": {"R9": {"attempts": [{"at": NOW, "unit": "u-b", "model": "opus", "cap": 120, "kind": "work"}]}}}
+    facts = {"items": {"R9": {"state": "proposed", "effect": "cmd:x", "verdict": "fails", "events": 1, "out": "red"}},
+             "runs": {"R9": {"live": [], "ended": ["u-b"], "bundle_refused": {"id": "WB-x", "why":
+                                                                              "REFUSED BY BUNDLE: needs his flight test"}}},
+             "recent": None}
+    rws, ln = LD.decide({"enabled": True, "max_live": 2}, st, facts, NOW + 100)
+    chk(lambda: rws[0]["decision"] == "stopped" and "needs his flight test" in rws[0]["why"]
+        and "flight test" in rws[0]["need"]["why_not_recovered"] and not ln,
+        "lane: a member its bundle refused reads stopped, and its Needs Conductor line quotes the refusal (%s)" % rws[0])
+
+
 def t_each_limit_names_its_danger():
     import re
     src = open(os.path.join(HERE, "work_bundle.py"), encoding="utf-8").read().splitlines()
@@ -346,7 +520,10 @@ def main():
     for t in [t_sort_runs_each_members_test_and_closes_only_green, t_sort_dry_closes_nothing, t_members_are_one_system,
               t_ready_members_only, t_one_live_bundle_per_system, t_the_record_is_written_at_launch,
               t_the_brief_names_every_member_and_the_role, t_the_lane_launches_one_bundle_per_system,
-              t_context_reads_the_own_session,
+              t_context_reads_the_own_session, t_outcomes_are_read_from_the_ledger,
+              t_restart_until_each_member_has_an_outcome, t_finish_writes_the_bundles_end,
+              t_a_restart_that_ended_no_member_raises,
+              t_a_bundle_with_every_outcome_ends, t_a_refused_member_is_stopped_with_its_reason,
               t_each_limit_names_its_danger]:
         print("-- %s" % t.__name__)
         try:
