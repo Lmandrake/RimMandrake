@@ -1,6 +1,6 @@
 # Work bundles: one worker takes all ready tickets of one system (draft for the owner, 2026-11-24)
 
-Status: DRAFT. Four choices are open for the owner (section 7). Nothing here is built.
+Status: the owner decided the four open choices on 2026-11-24 (section 7). Nothing here is built yet.
 Evidence: `design/RimMandrake/batch_worker_runs_compared_2026-11-24.md` (the batch-worker report) and the night of
 2026-11-24. Related ticket: `RIMMANDRAKE_BATCH_ONE_MODS_OPEN_WORK_INTO_ONE_RUN_PIPELINE_SPLITS_PER_TICKET`.
 
@@ -50,15 +50,17 @@ The bundle takes what the gate lets through: the work that the finder truly coul
 | 3. Fix in order | the worker | After each member or one-cause group: green run, a progress note, a publish. | a death loses one group at most |
 | 4. One fresh reader | a fresh run | Reads the changed files once, at the end, not once per fix. | the reviewer rule, at bundle size |
 | 5. One live pass | the worker, on a free game | Runs the in-game checks that the changes touch. Also tries the members that the sort kept but doubted: the game settles them. For a pipeline component, the live pass is the component running for real. | the live proof is the expensive part; do it once |
-| 6. Close each member | the worker | Each member closes with the commit that fixed it. A member not done goes back with its reason. One table in the report. | tickets keep their identity and their test |
+| 6. Close each member | the worker | Each member closes with the commit that fixed it. A member is refused only with a reason (it cannot be proven, it is not about this system, or another surprise). Without a reason the bundle keeps going. One table in the report. | tickets keep their identity and their test |
 
 ## 5. Right size: a guard on progress, not a count
 
 - **Membership.** Same system, and shared files or one cause. Tickets of two systems are never in one bundle.
 - **No fixed count.** A count would be a limit with no measured danger. The danger is a full context: the worker
   loses what it learned. The evidence is 480k of context after 18 tickets.
-- **The guard.** After each group the run reads its own context size. Above half of its window it finishes the group,
-  writes a handover note, and the bundle goes on in a fresh run with the note and the remaining members.
+- **The guard.** After each group the run reads its own context size. Above half of its window it finishes the group
+  and saves its state: what is done, what it learned about the system, what is next. The bundle then restarts in a
+  fresh context from that state and keeps going, as many times as the bundle needs. The state file is the bundle's
+  memory; the progress notes and the publishes after each group are its checkpoints.
 - **First estimate, to be measured:** about 25k to 65k of context per member, so 10 to 15 real fixes fit one context
   [guess ~60%]. The first three bundles record context after each group; then this line gets a measured number.
 - **Model.** Opus by default (the Conductor's call: the Opus sweep cost 2.40M weighted tokens, the Fable close-out
@@ -66,9 +68,11 @@ The bundle takes what the gate lets through: the work that the finder truly coul
 
 ## 6. Where it goes in the two pipelines
 
-- **Workshop Pipeline.** Tickets already have a home (`list_home.py`: `mod:FlowWorks` holds 65, `game:art-canon` 30).
-  The launcher (`list_dispatch.py`) launches one bundle per home with ready work, not one run per ticket. Homes that
-  are too wide (a whole mod with unrelated parts) split by shared files.
+- **Workshop Pipeline.** Its systems are the parts of the pipeline itself (a rimflow component, a tool, a machine)
+  and the game-wide subjects. Tickets already have a home (`list_home.py`: `game:art-canon` holds 30,
+  `machine:SteveDesktop` 4). The launcher (`list_dispatch.py`) launches one bundle per home with ready work, not one
+  run per ticket. A home that is too wide splits by shared files. A ticket with a `mod:` home (`mod:FlowWorks` holds
+  65) is one mod's work: it stays off the Workshop Pipeline and joins that mod's bundle in the Maturation Pipeline.
 - **Maturation Pipeline.** A tester fixes what it finds (section 3). What it cannot fix goes to the mod's one bundle,
   not to one fixer run per fault. The steward routes a visit's failures back as one bundle. The offline builder
   already takes several bars in one run; it follows the same six steps.
@@ -76,12 +80,25 @@ The bundle takes what the gate lets through: the work that the finder truly coul
 - **One command for a hand launch:** `./pipe bundle <Mod | home | ticket ids> --why "..."`.
 - **The pipeline page** shows each bundle: its members, each member's outcome, the step it is on.
 
-## 7. Open choices for the owner
+## 7. Decided by the owner (question card, 2026-11-24 about 10:20 PM PST)
 
-1. The form: a record that a program makes at launch; a "joint ticket" that a person or agent files; or a role only.
-2. Where the live proof runs: inside the bundle run; or at the mod's next in-game visit.
-3. How it starts: the default for both pipelines at once; or a measured trial on one mod and one component first.
-4. A member that the run did not finish: back to the list with its reason; or dropped and reported.
+1. **The form: a record that a program makes at launch.** The launcher writes one bundle record that lists its member
+   tickets. Each ticket keeps its own test and closes with its own commit. Nobody files a bundle by hand.
+2. **The live proof runs inside the bundle run.**
+3. **How it works and how it starts.** His words: "They fix together, offline test together, then live test together.
+   When they run out of context they save their state, restart, and keep going. It's the relentless agent in spirit. It
+   works because the correct unit of work is a system not a bug. Same lesson we learned for mods for the maturation
+   pipeline. Learning it again for the workshop pipeline and also to extend it not just to advancing a mod or system
+   but to embrace all the tickets at once that make up a version."
+   - So the bundle is the way both pipelines work, not a trial and not a hand command.
+   - A bundle outlives a context. At a full context the worker saves its state, restarts and goes on (section 5).
+   - The members of a bundle are all the tickets that make up the current version of that mod or system.
+4. **No member is left unfinished without a reason.** His words: "Either they just reboot and keep fixing or they have
+   a reason to not do the ticket and say so. Refused tickets may not be provable, or do not represent the system they
+   were told to modify, or any number of other surprises. But there must be a reason or else the bundle keeps going."
+   - A bundle ends only when each member is fixed and proven, closed as already fixed, or refused with its reason.
+   - A full context, a cap or a death is never a reason. The bundle restarts.
+   - Each refusal reaches the Conductor with its reason, and his daily digest.
 
 ## 8. How we will know it works
 
