@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Selftest for the art-eval pipeline's pure parts: policy files parse, severity by policy (not model), the Opus
 band, GPT strong-accept, routing, regen cap, catch dependency, kept art, incomplete cards, shadow streaks, and a
-runner dry run with mocked reviewers. No model is called.
+runner dry run with mocked reviewers. Reviewers are mocked and runtime state goes in temporary directories.
 
     python3 src/RimMandrake/Utils/art_eval/selftest_art_eval.py
 """
@@ -481,6 +481,20 @@ def tuning_checks():
             rr = json.loads((td / "state" / "regen_rounds.json").read_text())
             check("regen_rounds.json: no double count", rr.get("RM_Ok") == 2 and "RM_Stop" not in rr, rr)
 
+            furnace = dict(base, subject="RM_FurnaceBeast", candidate="s2r1", images=imgs(256, "furnace"),
+                           provenance="art-eval regen round s2r1, artpipe jobs x")
+            for at in ("2026-10-23T01:00:00-07:00", "2026-10-24T01:00:00-07:00"):
+                RS.add_reset(furnace["subject"], "fauna_source", {"by_card": "q -> a"}, path=RS.RESETS, now=at)
+            preview, = runner.run([furnace], "fauna_preview", rev=Mock(), test=True, work_root=td / "w")
+            runner.run([furnace], "fauna_first", rev=Mock(), work_root=td / "w")
+            production = td / "state" / "runs" / "fauna_first"
+            judgment = json.loads((production / "decisions.jsonl").read_text())
+            job_ids = [j["id"] for j in json.loads((production / "regen_jobs.json").read_text())]
+            check("test_run_spends_production_round",
+                  preview["decision"] == judgment["decision"] == "REGEN" and judgment["round"] == 2
+                  and job_ids == ["arteval_RM_FurnaceBeast_s2r2"],
+                  f"round={judgment['round']}, jobs={job_ids}")
+
             # regress in parts: max_new judges N rows, a resume judges only the rest, never one row twice
             rows = []
             for i, sp in enumerate((ok, live, dict(ok, subject="RM_Ok2"))):
@@ -566,6 +580,104 @@ def tuning_checks():
           runner.regress_row(row, "X", "HOLD_ERROR")["unmeasured"] and "known_miss" not in runner.regress_row(row, "X", "HOLD_ERROR"))
     check("regress: a wrong row with no known_miss names none", "known_miss" not in runner.regress_row({"expect": "ACCEPT"}, "X", "REGEN"))
 
+def regression_resume_mixes_plant_versions():
+    import shutil
+    from unittest.mock import patch
+    from PIL import Image
+    import runner as RN
+
+    with tempfile.TemporaryDirectory() as td:
+        td = Path(td)
+        refs = td / "refs"
+        shutil.copytree(P.REFS, refs)
+        for panel in ("single", "scale"):
+            Image.new("RGBA", (64, 64), (90, 120, 60, 255)).save(td / f"{panel}.png")
+        imgs = {p: str(td / f"{p}.png") for p in ("single", "scale")}
+        rows = []
+        for subject in ("RM_Shadefern", "RM_Dewblade"):
+            path = td / f"{subject}.json"
+            path.write_text(json.dumps({"subject": subject, "candidate": "B", "template": "plant",
+                                        "module": "bush", "images": imgs}))
+            rows.append({"spec": str(path), "expect": "ACCEPT"})
+        (td / "regression.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
+        calls = []
+
+        class Mock(RN.Reviewers):
+            def opus(self, prompt, card_dir):
+                card = json.loads((card_dir / "card.json").read_text())
+                calls.append(card["subject"])
+                items = P.checklist_for(P.load_template("plant"), "bush", P.card_facts(card))
+                return json.dumps(opus_reply(items)), {"models_reported": ["mock"]}
+
+        with patch.object(RN, "STATE", td), patch.object(RN, "PROMPTS", refs / "prompts"), \
+                patch.object(P, "REFS", refs), patch.object(RN, "storage_root", return_value=td / "work"), \
+                patch.dict("os.environ", ART_LEDGER_DIR=str(td / "art-ledger")):
+            first = RN.regress(rev=Mock(), run_id="plant_resume", max_new=1)
+            assert first.get("incomplete") == 1 and calls == ["RM_Shadefern"], (first, calls)
+            template = refs / "templates/plant.md"
+            original = template.read_text()
+            template.write_text(original + "\nA revised plant review instruction.\n")
+            refused = False
+            try:
+                RN.regress(rev=Mock(), run_id="plant_resume")
+            except SystemExit as e:
+                refused = "prompt versions" in str(e)
+            check("regression_resume_mixes_plant_versions", refused and calls == ["RM_Shadefern"],
+                  f"refused={refused}, judged={calls}")
+            template.write_text(original)
+            manifest = td / "runs/plant_resume/run.json"
+            meta = json.loads(manifest.read_text())
+            meta["versions_key"] = RN.versions_key(RN.prompt_versions("creature"))
+            manifest.write_text(json.dumps(meta))
+            for case in ("creature-only fingerprint", "missing manifest"):
+                refused = False
+                try:
+                    RN.regress(rev=Mock(), run_id="plant_resume")
+                except SystemExit as e:
+                    refused = "prompt versions" in str(e)
+                check(f"regression_resume_mixes_plant_versions ({case})",
+                      refused and calls == ["RM_Shadefern"], f"refused={refused}, judged={calls}")
+                manifest.unlink(missing_ok=True)
+
+
+def raw_reviews_missing_from_run_record():
+    from unittest.mock import patch
+    from PIL import Image
+    import round_series as RS
+    import runner as RN
+
+    with tempfile.TemporaryDirectory() as td:
+        td = Path(td)
+        image = td / "plant.png"
+        Image.new("RGBA", (64, 64), (90, 120, 60, 255)).save(image)
+        spec = {"subject": "RM_TestPlant", "template": "plant", "module": "bush", "owner_kept": False,
+                "target_texpath": "Plants/TestPlant", "images": {"single": str(image), "scale": str(image)}}
+        items = P.checklist_for(P.load_template("plant"), "bush", P.card_facts(spec))
+        opus = "The panel warrants a second look.\n```json\n" + json.dumps(opus_reply(items, overall="weak")) + "\n```\n"
+        gpt = "My review follows.\r\n" + json.dumps({"schema": "rm-art-eval/gpt@v1", "verdict": "regen"})
+        attempts = iter(["The first reply has no JSON.\n", opus])
+
+        class Mock(RN.Reviewers):
+            def opus(self, prompt, card_dir):
+                return next(attempts), {}
+
+            def gpt(self, prompt, images, work):
+                return gpt, {}
+
+            def regen(self, prompt, work):
+                return json.dumps({"prompt": "A bush with pale leaves."}), {}
+
+        with patch.object(RN, "STATE", td), patch.object(RS, "RESETS", td / "round_resets.jsonl"), \
+                patch.dict("os.environ", ART_LEDGER_DIR=str(td / "art-ledger")):
+            RN.run([spec], "raw_reviews", rev=Mock(), work_root=td / "work")
+        rec = json.loads((td / "runs/raw_reviews/decisions.jsonl").read_text())
+        assert rec["decision"] == "REGEN" and rec["opus"]["band"] == "WEAK" and rec["gpt"]["outcome"] == "REGEN", rec
+        raw = rec.get("reviewer_raw")
+        check("raw_reviews_missing_from_run_record",
+              raw == {"opus": ["The first reply has no JSON.\n", opus], "gpt": [gpt]},
+              f"raw attempts in decisions.jsonl: {raw!r}")
+
+
 def departures_checks():
     """ARTEVAL_DEPARTURES_TUNE_ALMOST_EVERYTHING: a departure the description does not state never reaches a card."""
     import cards as C
@@ -620,6 +732,20 @@ def departures_checks():
 
 
 def main():
+    from unittest.mock import patch
+    import round_series as RS
+
+    with tempfile.TemporaryDirectory() as td:
+        state = Path(td)
+        with patch.dict("os.environ", RM_DATA_ROOT=td, ART_EVAL_WORK=str(state / "work"),
+                        ARTPIPE_STATE_DIR=str(state / "artpipe"), ART_LEDGER_DIR=str(state / "art-ledger"),
+                        ARTSTORE=str(state / "artstore")), \
+                patch.object(RS, "RESETS", state / "round_resets.jsonl"), \
+                patch.object(RS, "ADOPTIONS", state / "fauna_run_adoptions.jsonl"):
+            return run_checks()
+
+
+def run_checks():
     pol = P.load_policy()
     check("policy version", pol["version"].startswith("severity@"), pol.get("version"))
     for t in P.TEMPLATES:
@@ -1232,6 +1358,32 @@ def main():
             finally:
                 RN.STATE = old_state
             check("history: latest by instant across a DST offset change", hd.get("RM_D") == "ACCEPT", hd)
+
+            preview = td / "runs" / "fauna_preview"
+            preview.mkdir()
+            (preview / "run.json").write_text(json.dumps({"test": True}))
+            (preview / "decisions.jsonl").write_text(json.dumps({
+                "subject": "RM_H", "decision": "REGEN", "at": "2026-10-21T00:00:00+00:00"}) + "\n")
+            sprite = str(td / "catch.png")
+            im.save(sprite)
+            catch = {"subject": "RM_HCatch", "template": "creature", "module": "catch", "depends_on": "RM_H",
+                     "images": {"single": sprite, "scale": sprite, "living_reference": {"south": sprite}}}
+
+            class Catch(RN.Reviewers):
+                def opus(self, prompt, card_dir):
+                    items = P.checklist_for(P.load_template("creature"), "catch", P.card_facts(catch))
+                    return json.dumps(opus_reply(items)), {}
+
+            from unittest.mock import patch
+            import round_series as RS
+            with patch.object(RN, "STATE", td), patch.object(RS, "RESETS", td / "round_resets.jsonl"), \
+                    patch.dict("os.environ", ART_LEDGER_DIR=str(td / "art-ledger")):
+                history = RN.history_decisions()["RM_H"]
+                caught, = RN.run([catch], "catch_only", rev=Catch(), work_root=td / "work")
+            check("catch_history_test_exclusion_untested",
+                  history == "ACCEPT" and caught["decision"] == "ACCEPT" and caught["opus"]["band"] == "GOOD",
+                  f"history={history}, catch={caught['decision']}")
+
             # resume after a crash: the REGEN rounds already logged count toward the cap
             sd = td / "s2"
             (sd / "r1").mkdir(parents=True)
@@ -1311,6 +1463,8 @@ def main():
     tuning_checks()
     cap_checks()
     departures_checks()
+    regression_resume_mixes_plant_versions()
+    raw_reviews_missing_from_run_record()
     print(f"{'PASS' if not FAILS else 'FAIL'}: art_eval selftest, {len(FAILS)} failure(s)")
     return 1 if FAILS else 0
 

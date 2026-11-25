@@ -17,9 +17,11 @@ here names an account). The model id actually used is read back from the CLI's `
 GPT = src/RimMandrake/Utils/gpt_consult.py with the images attached (its default model, CODEX_CONSULT_MODEL
 overrides; the model is read back from its own log line). Regen prompt edits: `claude -p` on the sonnet rung.
 
-Outputs: cards + raw replies under the agent storage root (art_eval/runs/<run-id>/); the decision log, raw reviewer
-replies, summary and regen jobs under infrastructure/state/art_eval/runs/<run-id>/ (committed). `--test` runs
-never touch the regen-round counter or the delegated verdict files; `--record` writes
+Outputs: cards + raw replies under the agent storage root (art_eval/runs/<run-id>/); the decision log, summary and
+regen jobs under infrastructure/state/art_eval/runs/<run-id>/ (committed). The decision log's `reviewer_raw`
+stores exact Opus and GPT reply attempts in order (raw_reviews_missing_from_run_record). `--test` runs
+never count toward production regen rounds, including after a series reset (test_run_spends_production_round),
+or touch the delegated verdict files; `--record` writes
 infrastructure/state/delegated/<date>/<subject>.json (delegation_policy §3).
 """
 from __future__ import annotations
@@ -27,6 +29,7 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import functools
+import hashlib
 import json
 import os
 import re
@@ -540,6 +543,7 @@ def evaluate(spec: dict, card_dir: Path, rev: Reviewers, policy: dict, settings:
         lambda r: P.validate_opus(r, items),
         "{err}. Return the JSON object exactly as specified, every checklist id answered.")
     rec["models"]["opus"] = metas
+    rec["reviewer_raw"] = {"opus": raws}
     (card_dir / "opus_raw.txt").write_text("\n\n=====\n\n".join(raws))
     if reply is None:
         rec["decision"] = "HOLD_ERROR"
@@ -574,6 +578,7 @@ def evaluate(spec: dict, card_dir: Path, rev: Reviewers, policy: dict, settings:
             lambda r: P.validate_gpt(r, concerns),
             "{err}. Return the JSON object exactly as specified.")
         rec["models"]["gpt"] = gmetas
+        rec["reviewer_raw"]["gpt"] = graws
         (card_dir / "gpt_raw.txt").write_text("\n\n=====\n\n".join(graws))
         if greply is None:
             rec.update(decision="HOLD_ERROR")
@@ -622,7 +627,8 @@ def _instant(at) -> dt.datetime:
 
 def history_decisions() -> dict:
     """Latest non-test decision per subject across committed runs (for catch dependencies across runs). Latest is by
-    the record's own `at`, never by run-dir name: run ids are free text, so their alphabetical order is not time."""
+    the record's own `at`, never by run-dir name: run ids are free text, so their alphabetical order is not time.
+    A newer test verdict cannot override the living animal's production decision (catch_history_test_exclusion_untested)."""
     best = {}
     for f in sorted((STATE / "runs").glob("*/decisions.jsonl")):
         meta = f.parent / "run.json"
@@ -639,7 +645,8 @@ def history_decisions() -> dict:
 
 
 def run(specs: list, run_id: str, rev: Reviewers | None = None, test: bool = False, record: bool = False,
-        work_root: Path | None = None, state_root: Path | None = None, file_regens: bool = False) -> list:
+        work_root: Path | None = None, state_root: Path | None = None, file_regens: bool = False, *,
+        run_versions_key: str | None = None) -> list:
     if not test:
         import round_series as RS
         fauna = [s["subject"] for s in specs if str(s.get("provenance", "")).startswith("art-eval regen round")]
@@ -665,7 +672,11 @@ def run(specs: list, run_id: str, rev: Reviewers | None = None, test: bool = Fal
     if not test:   # a reset subject (owner card 2026-10-24, round_series.py) counts its fresh series, not the old 3
         import round_series as RS
         rs = RS.resets(RS.RESETS)
-        rounds = RS.apply_to_rounds(rounds, RS.decisions(STATE / "runs"), rs)
+        if rs:
+            adopted = RS.adopted_runs()
+            fauna_recs = ((rid, r) for rid, r in RS.production_decisions(STATE / "runs")
+                          if rid.startswith("fauna_") or rid in adopted)
+            rounds = RS.apply_to_rounds(rounds, fauna_recs, rs)
         seen_pics = RS.regened_pictures(RS.production_decisions(STATE / "runs" if state_root is None else state_root), rs)
     living = {} if test else history_decisions()
     flyers = functools.cache(flyer_defs)   # read only when a body ACCEPT could be a master: a plant run never needs it
@@ -681,7 +692,7 @@ def run(specs: list, run_id: str, rev: Reviewers | None = None, test: bool = Fal
                 rounds[r["subject"]] = max(rounds.get(r["subject"], 0), r.get("round") or 0)
     meta = json.loads((out / "run.json").read_text()) if (out / "run.json").is_file() else {
         "run_id": run_id, "test": test, "started": now(), "subjects": [],
-        "versions_key": versions_key(prompt_versions("creature"))}
+        "versions_key": run_versions_key or versions_key(prompt_versions("creature"))}
     meta["subjects"] = list(dict.fromkeys(meta["subjects"] + [s["subject"] for s in specs]))
     (out / "run.json").write_text(json.dumps(meta, indent=1))
     for s in specs:
@@ -1121,17 +1132,25 @@ def regress(rev: Reviewers | None = None, run_id: str | None = None, max_new: in
     expected class (ACCEPT vs not). Writes infrastructure/state/art_eval/regression_runs/<run>.json.
     run_id resumes a regress run (the set outgrew one 8-minute call); max_new judges at most that many rows this
     call and returns {"incomplete": n} while judgeable rows remain. Missing pictures hold a row unmeasured and
-    can be retried on resume. A resumed run on other prompt versions is refused."""
+    can be retried on resume. A resume requires a matching fingerprint of the prompts and every template used
+    by the set (regression_resume_mixes_plant_versions)."""
     rows = [json.loads(l) for l in (STATE / "regression.jsonl").read_text().splitlines() if l.strip()]
     specs = [C.pilot_spec(r["pilot"]) if r.get("pilot") else C.load_spec(ROOT / r["spec"]) for r in rows]
     rid = run_id or "regress_" + dt.datetime.now().strftime("%Y%m%dT%H%M%S")
     rdir = STATE / "runs" / rid
-    vk = versions_key(prompt_versions("creature"))
-    if (rdir / "run.json").is_file() and json.loads((rdir / "run.json").read_text()).get("versions_key") != vk:
-        raise SystemExit(f"{rid} was started on other prompt versions: start a new regress run")
+    versions = {t: prompt_versions(t) for t in sorted({s["template"] for s in specs})}
+    vk = "regress#" + hashlib.sha256(json.dumps(versions, sort_keys=True).encode()).hexdigest()
+    manifest, decisions = rdir / "run.json", rdir / "decisions.jsonl"
     done = set()
-    if (rdir / "decisions.jsonl").is_file():
-        done = {spec_key(json.loads(l)) for l in (rdir / "decisions.jsonl").read_text().splitlines() if l.strip()}
+    if manifest.is_file() or decisions.is_file():
+        try:
+            meta = json.loads(manifest.read_text())
+        except (OSError, ValueError):
+            meta = {}
+        if not isinstance(meta, dict) or meta.get("versions_key") != vk:
+            raise SystemExit(f"{rid} has different or unverified prompt versions: start a new regress run")
+        if decisions.is_file():
+            done = {spec_key(json.loads(l)) for l in decisions.read_text().splitlines() if l.strip()}
     todo = [s for s in specs if spec_key(s) not in done]
     blocked = {}
     for s in todo:
@@ -1139,7 +1158,7 @@ def regress(rev: Reviewers | None = None, run_id: str | None = None, max_new: in
         if absent:
             blocked[spec_key(s)] = absent
     todo = [s for s in todo if spec_key(s) not in blocked]
-    recs = {spec_key(r): r for r in run(todo[:max_new] if max_new else todo, rid, rev=rev, test=True)}
+    recs = {spec_key(r): r for r in run(todo[:max_new] if max_new else todo, rid, rev=rev, test=True, run_versions_key=vk)}
     missing = [spec_key(s) for s in todo if spec_key(s) not in recs]
     if missing:
         return {"run": rid, "incomplete": len(missing), "total": len(specs)}
@@ -1149,7 +1168,7 @@ def regress(rev: Reviewers | None = None, run_id: str | None = None, max_new: in
         res.append(regress_row(row, s["subject"], "HOLD_INPUT" if absent else recs[spec_key(s)]["decision"]))
         if absent:
             res[-1]["missing_images"] = absent
-    out = {"versions_key": versions_key(prompt_versions("creature")), "run": rid, "at": now(),
+    out = {"versions_key": vk, "run": rid, "at": now(),
            "passed": sum(r["pass"] for r in res), "total": len(res),
            "unmeasured": sum(r["unmeasured"] for r in res), "rows": res}
     (STATE / "regression_runs").mkdir(exist_ok=True)
