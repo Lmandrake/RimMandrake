@@ -59,6 +59,10 @@ PLANTS = [
     ("a_level_not_confirmed_near_the_line_refuses_starts", P,
      '    if near_old and lr["age_min"] is not None and lr["age_min"] > fr["max_age_min"]:', '    if False:'),
     ("a_rescue_drain_in_flight_goes_on", P, 'f["draining"] or bool(last.get("draining"))', 'f["draining"]'),
+    # the sweep of 2026-11-25: a run that did not end after its save order held the fleet at steven's line for 30 h
+    ("a_stopped_fleet_switches_when_an_account_refills", P, '    under = under or stopped_end\n', ''),
+    ("an_account_end_drain_ends_at_its_bound", P, 'and now - since >= bound * 3600 and not AE.has_emergency',
+     'and False and not AE.has_emergency'),
     ("a_request_is_done_by_the_switchers_log", P, 'for q in open_requests(plan, f))\n', 'for q in active(plan["requests"], f["now"]))\n'),
     ("tick_drives_the_old_actuator", P, '        if near_end and not polled:', '        if False:'),
     ("tick_drives_the_old_actuator", P, '            can = [a for a in can if take(a)[1]] or can\n', '            pass\n'),

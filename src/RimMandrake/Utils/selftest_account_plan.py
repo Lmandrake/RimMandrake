@@ -477,6 +477,57 @@ def t_an_account_outside_the_plan_is_left_alone():
           d["do"] == "soft" and d.get("drain") and not d.get("account_end"), d)
 
 
+def t_a_stopped_fleet_switches_when_an_account_refills():
+    """RIMMANDRAKE_SWEEP_ACCOUNT_BURN_REGIMES_TWO_FAULTS_ONE_DAY (the sweep, 2026-11-25): the fleet stopped on system at its
+    2% wait floor; lukas reset to 100% an hour later, and the fleet stayed stopped ('no start inside its warning zone')
+    until system's own reset, 70 h on."""
+    n = "a_stopped_fleet_switches_when_an_account_refills"
+    st = {"stopped": {"account": "system", "at": AP.iso(NOW - 3600), "key": "stop_system"}}
+    rows = {"steven": R(54, 100), "system": R(2.5, 70), "lukas": R(100, 168)}
+    d = AP.decide(BASE, F("system", rows, runs=[], state=st))
+    check(n + ": stopped on system inside its warning zone, lukas refilled: the switch to lukas",
+          d["do"] == "switch" and d["to"] == "lukas" and "stopped" in d["why"], d)
+    d = AP.decide(BASE, F("system", {**rows, "lukas": R(100, 168, age=30.0)}, runs=[], state=st))
+    check(n + ": lukas refilled but not confirmed after a poll: the fleet stays stopped, it does not start on system",
+          d["do"] == "stopped", d)
+    d = AP.decide(BASE, F("system", {**rows, "lukas": R(1, 100)}, runs=[], state=st))
+    check(n + ": no account can take over: it stays stopped", d["do"] == "stopped", d)
+    d = AP.decide(BASE, F("system", {**rows, "system": R(30, 70)}, runs=[], state=st))
+    check(n + ": the stopped account itself has headroom again: the fleet starts on it", d["do"] == "start", d)
+
+
+def t_an_account_end_drain_ends_at_its_bound():
+    """RIMMANDRAKE_SWEEP_ACCOUNT_BURN_REGIMES_TWO_FAULTS_ONE_DAY (the sweep, 2026-11-25): steven at its 52% line with a run
+    that did not end after its save order held every new run for 30 h while system and lukas could take over, and the
+    run burned steven to 1%. Owner 2026-10-28: 'Make sure not to overshoot and get stuck even if there is a surprise
+    long-running subagent.'"""
+    n = "an_account_end_drain_ends_at_its_bound"
+    rows = {"steven": R(51, 150), "system": R(80, 110), "lukas": R(40, 120)}
+    def ep(h):
+        return {"account_end": {"account": "steven", "warn_line": 53, "line": 52, "save_at": AP.iso(NOW - h * 3600)}}
+    d = AP.decide(BASE, F("steven", rows, runs=RUN, state=ep(0.5)))
+    check(n + ": half an hour after the save order the switch waits for the live run (a drain at the line)",
+          d["do"] == "soft" and d.get("drain") and d.get("account_end"), d)
+    d = AP.decide(BASE, F("steven", rows, runs=RUN, state=ep(2.5)))
+    check(n + ": past rescue.drain_h after the save order the switch goes, with the run still live",
+          d["do"] == "switch" and d.get("to") in ("system", "lukas") and "drain_h" in d["why"], d)
+    d = AP.decide(BASE, F("steven", rows, runs=None, state=ep(2.5)))
+    check(n + ": runs that cannot be read count as live, and the bound ends their drain too", d["do"] == "switch", d)
+    p = copy.deepcopy(BASE)
+    p["numbers"]["rescue"]["drain_h"] = None
+    d = AP.decide(p, F("steven", rows, runs=RUN, state=ep(9)))
+    check(n + ": with rescue.drain_h null the drain at the line waits for its runs, as before",
+          d["do"] == "soft" and d.get("drain"), d)
+    low = {"steven": R(90, 100), "system": R(4, 110), "lukas": R(40, 120)}
+    st = {"account_end": {"account": "system", "warn_line": 6, "line": 5, "save_at": AP.iso(NOW - 9 * 3600)}}
+    d = AP.decide(plan(system={"leave": 5}), F("system", low, runs=RUN, state=st))
+    check(n + ": an account with an emergency step (a line under 10%) keeps its own end: no switch on the bound above "
+              "the emergency percent", d["do"] == "soft" and d.get("drain"), d)
+    d = AP.decide(BASE, F("steven", rows, runs=RUN, state={"account_end": {"account": "system", "save_at": AP.iso(
+        NOW - 9 * 3600)}}))
+    check(n + ": a save order on another account is no start of this drain", d["do"] == "soft" and d.get("drain"), d)
+
+
 # ------------------------------------------------------------------ the plan file and the commands
 def t_a_step_that_is_not_alive_says_so():
     n = "a_step_that_is_not_alive_says_so"
@@ -1952,7 +2003,8 @@ def main():
               t_no_marker_decides, t_an_account_left_at_its_line_is_no_target, t_a_refilled_account_is_a_target_at_once,
               t_unknown_never_gives_permission, t_the_last_account_waits_at_its_wait_floor,
               t_a_level_not_confirmed_near_the_line_refuses_starts, t_a_level_not_read_is_no_pending_switch,
-              t_a_rescue_drain_in_flight_goes_on,
+              t_a_rescue_drain_in_flight_goes_on, t_an_account_end_drain_ends_at_its_bound,
+              t_a_stopped_fleet_switches_when_an_account_refills,
               t_an_account_outside_the_plan_is_left_alone, t_a_step_that_is_not_alive_says_so,
               t_one_file_binds_at_the_next_read, t_a_bad_write_keeps_the_old_plan, t_two_writers_lose_no_change,
               t_every_write_has_an_undo, t_a_write_is_never_refused_for_a_missing_flag,

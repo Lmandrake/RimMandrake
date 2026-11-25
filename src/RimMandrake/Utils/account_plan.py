@@ -931,7 +931,16 @@ def decide(plan, f, polled=True) -> dict:
 
     def out(d, **more):
         d = {**base, **d, **more}
-        return SP.drained(d, {"account_end": cfg}, runs)
+        dd = SP.drained(d, {"account_end": cfg}, runs)
+        # an_account_end_drain_ends_at_its_bound: on an account with no emergency step (a high line), a run that did not
+        # end in rescue.drain_h hours after its save order no longer holds the fleet: the act goes, and it stops it
+        ep, bound = state.get("account_end") or {}, dig(N, "rescue.drain_h")
+        since = stamp(ep.get("save_at")) if ep.get("account") == live else None
+        if dd.get("drain") and dd.get("account_end") and bound is not None and since is not None \
+                and now - since >= bound * 3600 and not AE.has_emergency(dd.get("line"), cfg):
+            return {**d, "why": "%s; the save order went out at %s and %s after rescue.drain_h (%s h): the %s goes now and "
+                                "stops them" % (d.get("why"), pacific(since), runs_say(runs), g(bound), d["do"])}
+        return dd
 
     # ---- fresh readings before any act
     need, near_old, near_end = [], False, False
@@ -948,6 +957,11 @@ def decide(plan, f, polled=True) -> dict:
             need.append("%s's reset has passed and its reading is from before it" % a)
 
     under = rl is None or (pl is not None and pl <= line)       # finished at its line; the warning line only warns
+    # a_stopped_fleet_switches_when_an_account_refills: a fleet stopped on an account that it would not start again (its
+    # warning zone) is finished there once another account can take over; else it waits for that account's own reset
+    stopped_end = (stopped_here and not under and bool(can) and pl is not None and warn is not None
+                   and pl <= warn + N["entry_margin_pct"])
+    under = under or stopped_end
     until = ended(rl, env, live)
     can = targets(can, rules, env, under)
     base["can_now"] = list(can)         # the accounts that a switch may land on now (status prints the end with it)
@@ -1003,6 +1017,8 @@ def decide(plan, f, polled=True) -> dict:
                 nxt = q["to"]
         if nxt is not None:
             how = ("no step uses %s now" % live) if rl is None else (
+                "the fleet is stopped on %s at %s%%, inside its warning zone, and another account can take over" % (
+                    live, g(pl)) if stopped_end else
                 "%s at %s%% is at its %s%% line" % (live, g(pl), g(line)) if under else
                 "the step %s ends: %s" % (rl["step"], rl["until"]))
             why = "%s. Next: %s (%s%% left)" % (how, nxt, g(rd[nxt]["left"]))

@@ -38,7 +38,9 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
   line said so each pass. Measured 2026-11-18 to 11-24: 11.5% of passes had no live run; the longest stretch with one
   was 50.8 h.
 - **a-run-that-outlives-the-rescue-drain.** After `rescue.drain_h` hours of drain the switch goes, and it stops the
-  runs that are still live (the old actuator's rule of 2026-11-20). 95 of 100 runs end inside 2 h.
+  runs that are still live (the old actuator's rule of 2026-11-20). 95 of 100 runs end inside 2 h. The same bound ends
+  a drain at the line of an account with no emergency step (an_account_end_drain_ends_at_its_bound): such a run is
+  stopped, and the account goes under its line by the burn of those hours.
 - **many-accounts.** The week ahead tries each account that can take over at each finish. It is built for the three
   Claude accounts of today; with more than about five it gets slow.
 - **a-switch-that-neither-log-names.** A switch made by copying credentials by hand, outside `claude-account`.
@@ -80,6 +82,11 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
   (the burn rate times those hours). The old actuator then refuses new starts while the live runs finish, for at most
   `rescue.drain_h` hours, and the reason line says so. A smaller rescue reads `normal`, refuses no start, and names the
   points and the command that goes at once. With `rescue.drain_h` null, a rescue goes only with no run live.
+- **an_account_end_drain_ends_at_its_bound.** On an account with no emergency step (a line over
+  `account_end.emergency_max_line`), a drain at the line that still has live runs (or runs that cannot be read)
+  `rescue.drain_h` hours after its save order ends: the switch, or the stop when no account can take over, goes then
+  and stops those runs. With `rescue.drain_h` null the drain waits for its runs. An account with an emergency step keeps
+  its own end (the emergency order at `emergency_pct`). Found by the sweep (`design/specs/2026-11-25-account-plan-sweep/`).
 - **a_rescue_drain_in_flight_goes_on.** A drain that the old actuator has started for a rescue goes on while the rescue
   still betters the week ahead by `switch_cost_pts`. It ends when the rescue is worth less than a switch.
 - **an_unknown_burn_never_causes_a_switch.** With no measured burn rate there is no rescue switch, and the next
@@ -99,6 +106,10 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
   account is at its own line and no other account can take over.
 - **a_refilled_account_is_a_target_at_once.** The same account, read above its entry line after its reset, is a
   target at the next pass, with no command.
+- **a_stopped_fleet_switches_when_an_account_refills.** A fleet stopped on an account that it does not start again
+  (the level is inside its warning zone plus `entry_margin_pct`) is finished there once another account can take over
+  (a reset refilled it): the decision is the switch to it, behind the same fresh-reading guard as every switch. Found by
+  the sweep (`design/specs/2026-11-25-account-plan-sweep/`).
 - **unknown_never_gives_permission.** A `when` condition that is unknown keeps its step not alive; an `until`
   condition that is unknown does not end a step; a level that is not MEASURED and fresh makes no account a target.
 - **a_level_not_confirmed_near_the_line_refuses_starts.** Within `fresh.near_pct` of its warning line, a level that is
