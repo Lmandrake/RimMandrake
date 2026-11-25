@@ -1463,6 +1463,19 @@ def sized_timeout(requested_s, drivers):
     return min(t, 12 * 3600), need, warn
 
 
+# LIMITS: the run timeout is a hang guard, never a speed bar. Danger: a hung modcheck holds the lane for good. Evidence
+# that a tight one kills live work: J20261124T190317Z-6b7bd8 (est_s 2305, --timeout 2700) was killed twice as a HANG
+# while its rows still landed (5865 s lost, 7 PASS rows dropped). So the floor is HANG_GUARD_X times the estimate.
+HANG_GUARD_X = 10
+
+
+def hang_guard_timeout(timeout_s, est_s):
+    """-> the run timeout raised to at least HANG_GUARD_X x the submit estimate, never past the schema's 12 h."""
+    if not est_s:
+        return int(timeout_s)
+    return max(int(timeout_s), min(int(est_s) * HANG_GUARD_X, 12 * 3600))
+
+
 def split_sweep(drivers, driver_chains, chains, cap_s=WORKER_DRIVER_CAP_S):
     """TESTQ_SWEEP_FIX_DRIVERS_OVER_CAP -> a list of chain-name lists, one per sweep job, each needing at most cap_s of
     driver time, covering every chain once. Drivers that share a chain go together (a chain selection starts every
@@ -1586,6 +1599,9 @@ def cmd_submit(a):
         return 2
     asked = job["timeout_s"]
     job["timeout_s"], driver_need, size_warn = sized_timeout(asked, pv["drivers"])
+    per = row_seconds(a.mod) if planned is not None else None
+    est = int(per * len(planned)) if per else None
+    job["timeout_s"] = hang_guard_timeout(job["timeout_s"], est)
     if not a.no_sha_check and not published(a.sha):
         print("REFUSED: %s is not on origin/main; the runner pulls origin, so ./publish first" % a.sha)
         return 2
@@ -1605,17 +1621,17 @@ def cmd_submit(a):
     S.dump(job, q("pending", job["id"] + ".json"))
     out = {"job": job["id"], "state": "pending"}
     if driver_need:             # what the planned drivers reserve, and the timeout raised to give them room
-        out.update(drivers=[d.get("name") for d in pv["drivers"]], driver_need_s=driver_need,
-                   timeout_s=job["timeout_s"])
-        if job["timeout_s"] != asked:
-            out["timeout_raised_from"] = asked
+        out.update(drivers=[d.get("name") for d in pv["drivers"]], driver_need_s=driver_need)
         if size_warn:
             out["warning"] = size_warn
+    if driver_need or job["timeout_s"] != asked:
+        out["timeout_s"] = job["timeout_s"]
+        if job["timeout_s"] != asked:
+            out["timeout_raised_from"] = asked
     if planned is not None:     # the plan modcheck will run, so the submitter sees prerequisites and the time it costs
         out["planned_rows"] = len(planned)
-        per = row_seconds(a.mod)
-        if per:
-            out["est_s"] = int(per * len(planned))
+        if est:
+            out["est_s"] = est
     print(json.dumps(out))
     return 0
 
@@ -1864,12 +1880,20 @@ def under_tick_lock(fn):
 
 
 def cmd_cancel(a):
+    """Cancel acts on the state the caller saw. J20261125T002549Z-4f27ce: a cancel of a pending job waited for the tick
+    lock, the tick sent the job meanwhile, and the cancel stopped it running. Such a cancel is refused, naming the new
+    state, unless --running."""
     ensure_dirs()
-    return under_tick_lock(lambda: cancel_locked(a))
+    seen = where(a.job)
+    return under_tick_lock(lambda: cancel_locked(a, seen))
 
 
-def cancel_locked(a):
+def cancel_locked(a, seen=None):
     st = where(a.job)
+    if seen == "pending" and st == "running" and not getattr(a, "running", False):
+        print("REFUSED: %s was pending when you asked, but the tick sent it meanwhile: it is now running; nothing was "
+              "stopped. Pass --running to stop the running attempt" % a.job)
+        return 2
     if st == "pending":
         job = read_json(q("pending", a.job + ".json"))
         move(a.job, "pending", "cancelled", {"job": job, "reason": a.reason, "at": S.utcnow()})
@@ -2632,6 +2656,8 @@ def main(argv=None):
     s = sub.add_parser("cancel")
     s.add_argument("job")
     s.add_argument("--reason", required=True)
+    s.add_argument("--running", action="store_true",
+                   help="also stop the job when the tick sent it after you saw it pending")
     s = sub.add_parser("resume")
     s.add_argument("--reason", required=True)
     s.add_argument("--lane", choices=(STEVE, STEVE2, ARCHMAGI), default=STEVE)

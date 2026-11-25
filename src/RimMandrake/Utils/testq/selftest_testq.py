@@ -183,6 +183,51 @@ def t_driver_sizing():
         shutil.rmtree(tmp, ignore_errors=True)
 
 
+def t_hang_guard_timeout():
+    """RIMMANDRAKE_RAISE_LANE_JOB_TIMEOUT_THAT_KILLED_A_LIVE_RUN_TWICE: J20261124T190317Z-6b7bd8 (est_s 2305) was
+    submitted with --timeout 2700 and killed twice as a HANG while its rows still landed. The run timeout is a hang
+    guard: at least HANG_GUARD_X times the submit estimate (capped at the schema's 12 h)."""
+    import testq as T
+    check(T.hang_guard_timeout(2700, 2305) >= 10 * 2305, "est_s 2305 gets a timeout of at least 10x: %s"
+          % T.hang_guard_timeout(2700, 2305))
+    check(T.hang_guard_timeout(2700, None) == 2700, "no estimate: the asked timeout stands")
+    check(T.hang_guard_timeout(30000, 100) == 30000, "an asked timeout above the floor stands")
+    check(T.hang_guard_timeout(2700, 9000) == 12 * 3600, "capped at the schema's 12 h")
+
+
+def t_cancel_acts_on_the_state_seen():
+    """2026-11-24 J20261125T002549Z-4f27ce: cancel of a PENDING job waited for the tick lock, the tick sent the job
+    meanwhile, and cancel then stopped it running. Cancel acts on the state the caller saw: a pending job sent
+    meanwhile is refused, naming the new state, unless --running."""
+    import argparse
+    import testq as T
+    tmp = tempfile.mkdtemp(prefix="rf_cancel_")
+    saved = (T.QHOME, T.under_tick_lock, T.worker_for)
+    stops = []
+    try:
+        T.QHOME = tmp
+        T.ensure_dirs()
+        jid = "J20990101T000000Z-cafe01"
+        T.S.dump({"id": jid}, T.q("pending", jid + ".json"))
+
+        def tick_sends_it(fn):          # the tick wins the lock and moves the job to running/ first
+            if os.path.exists(T.q("pending", jid + ".json")):
+                os.remove(T.q("pending", jid + ".json"))
+            T.S.dump({"job": {"id": jid}, "attempt": jid + ".a1", "host": T.STEVE}, T.q("running", jid + ".json"))
+            return fn()
+        T.under_tick_lock = tick_sends_it
+        T.worker_for = lambda host: (lambda argv: stops.append(argv))
+        rc = T.cmd_cancel(argparse.Namespace(job=jid, reason="selftest", running=False))
+        rec = T.read_json(T.q("running", jid + ".json")) or {}
+        check(rc == 2 and not stops and not rec.get("cancel"),
+              "a pending job sent meanwhile is not stopped by a plain cancel: rc=%s stops=%s" % (rc, stops))
+        rc = T.cmd_cancel(argparse.Namespace(job=jid, reason="selftest", running=True))
+        check(rc == 0 and stops, "--running stops it: rc=%s stops=%s" % (rc, stops))
+    finally:
+        T.QHOME, T.under_tick_lock, T.worker_for = saved
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
 def t_sweep_split():
     """TESTQ_SWEEP_FIX_DRIVERS_OVER_CAP: a full sweep whose drivers need more than the worker's driver cap is queued as
     chain-group jobs that each fit, and together start every driver (none is SKIPPED_BUDGET)."""
@@ -736,6 +781,8 @@ def main():
         t_running_heartbeat()
         t_bad_selection()
         t_driver_sizing()
+        t_hang_guard_timeout()
+        t_cancel_acts_on_the_state_seen()
         t_sweep_split()
         t_fill_policy()
         t_fill_drops_unknown_chains()
