@@ -871,16 +871,27 @@ def _hold_site(session, tx, expected_ids):
     threat structures between chains; a Pikeman+Scyther that arrived at tick 4801 shot the colony and voided 21 rows.
     The Watch's own bland-map recipe, without its budget or detector. Returns the receipt (BlandReport.as_dict)."""
     import helpers as _H  # noqa: E402
+    import testenv_guards as _TG  # noqa: E402
     try:
         # An earlier chain's spawned raider is a fixture (its corpse is litter, never contamination) but a LIVE one
         # left behind is a threat to this chain: remove every hostile first, by vanish, before the fixture-aware recipe.
         pre = _H.kill_hostiles(session, ())
+        # HARNESS_REPAIR_CAUSE_3EA971C0: a fresh map hides fleshbeasts/wildlife the listing cannot see until the map is
+        # unfogged (r7, TESTENV_FLESHBEAST_HARDEN_FREED_BY_UNFOG); they arrived mid-row (Bulbfreak 7948 + its Divide
+        # brood, 2026-11-24). Release them HERE and vanish them (hostile-only: fixtures stay); prepare_bland_map's
+        # kill_wildlife then takes released animals. The same guard test_site_saves.clean_map runs on a site save.
+        fog = _TG.clear_map_fog(session, sweep=lambda: _H.kill_hostiles(session, ()))
         rep = _H.prepare_bland_map(session, tx, sorted(expected_ids), kill=True, resurrect=False)
     except Exception as e:     # noqa: BLE001 - a hold that could not run is a reason, never a crash
         return {"bland": False, "problems": ["site hold raised %s: %s" % (type(e).__name__, e)],
                 "bridge_timeout": bool(BRIDGE_TIMEOUT.search("%s: %s" % (type(e).__name__, e)))}
     out = rep.as_dict()
-    out["steps"] = [pre.as_dict()] + list(out.get("steps") or [])
+    fog_step = {"name": "clear_map_fog", "acted": len(fog.get("releasedByUnfog") or []),
+                "verified": bool(fog.get("verified")), "residue": list(fog.get("hostilesAfter") or []), "evidence": fog}
+    out["steps"] = [pre.as_dict(), fog_step] + list(out.get("steps") or [])
+    if not fog.get("verified"):
+        out["problems"] = list(out.get("problems") or []) + ["map unfog: %s" % fog.get("error")]
+        out["bland"] = False
     return out
 
 

@@ -891,6 +891,9 @@ def t_site_held_between_chains_without_watch():
         calls.append(("kill_all_hostiles", tuple(expected_ids)))
         return Res()
 
+    import testenv_guards as TG
+    real_fog = TG.clear_map_fog     # the hold's unfog (HARNESS_REPAIR_CAUSE_3EA971C0): stubbed like every other hold helper
+    TG.clear_map_fog = lambda s, sweep=None: {"verified": True, "releasedByUnfog": [], "hostilesAfter": [], "error": None}
     real = (H.prepare_bland_map, H.SettingsTransaction, H.kill_hostiles, runner.load_fixtures, runner.save_fixtures)
     H.prepare_bland_map, H.SettingsTransaction, H.kill_hostiles = fake_prepare, Tx, fake_kill
     runner.load_fixtures = lambda *a, **k: set()           # never read or overwrite the live fixture ledger
@@ -943,6 +946,7 @@ def t_site_held_between_chains_without_watch():
     finally:
         (H.prepare_bland_map, H.SettingsTransaction, H.kill_hostiles, runner.load_fixtures,
          runner.save_fixtures) = real
+        TG.clear_map_fog = real_fog
     check("hold: the live entry point run() turns the hold on",
           "hold_site=True" in inspect.getsource(runner.run))
     check("a profile check that fails after the drivers writes a refused sheet carrying their receipts, never a crash",
@@ -1094,6 +1098,9 @@ def t_site_reloaded_after_a_chain_kills_its_colonist():
         r = runner.run_suite(make_suite(killers), _fake_session(), hold_site=True, anchor=(10, 10))
         return r, [c for c in calls if not isinstance(c, tuple)]
 
+    import testenv_guards as TG
+    real_fog = TG.clear_map_fog     # the hold's unfog (HARNESS_REPAIR_CAUSE_3EA971C0): stubbed like every other hold helper
+    TG.clear_map_fog = lambda s, sweep=None: {"verified": True, "releasedByUnfog": [], "hostilesAfter": [], "error": None}
     real = (H.prepare_bland_map, H.SettingsTransaction, H.kill_hostiles, runner.load_fixtures, runner.save_fixtures,
             runner._load_site_again)
     H.prepare_bland_map, H.SettingsTransaction, H.kill_hostiles = prepare, Tx, (lambda s, e=(): Res())
@@ -1172,6 +1179,7 @@ def t_site_reloaded_after_a_chain_kills_its_colonist():
     finally:
         (H.prepare_bland_map, H.SettingsTransaction, H.kill_hostiles, runner.load_fixtures, runner.save_fixtures,
          runner._load_site_again) = real
+        TG.clear_map_fog = real_fog
 
 
 TESTS = [

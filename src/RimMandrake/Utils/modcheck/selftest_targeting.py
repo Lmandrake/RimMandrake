@@ -139,6 +139,9 @@ def t_targeted_suite_keeps_site_hold():
         def as_dict(self):
             return {}
 
+    import testenv_guards as TG
+    real_fog = TG.clear_map_fog     # the hold's unfog (HARNESS_REPAIR_CAUSE_3EA971C0): stubbed like every other hold helper
+    TG.clear_map_fog = lambda s, sweep=None: {"verified": True, "releasedByUnfog": [], "hostilesAfter": [], "error": None}
     real = (H.prepare_bland_map, H.SettingsTransaction, H.kill_hostiles, runner.load_fixtures, runner.save_fixtures)
     H.prepare_bland_map = lambda *a, **k: seen.append("hold") or Rep()
     H.SettingsTransaction, H.kill_hostiles = Tx, (lambda *a, **k: Res())
@@ -152,6 +155,7 @@ def t_targeted_suite_keeps_site_hold():
     finally:
         (H.prepare_bland_map, H.SettingsTransaction, H.kill_hostiles, runner.load_fixtures,
          runner.save_fixtures) = real
+        TG.clear_map_fog = real_fog
     ok(CALLS == ["thirst"] and seen == ["hold"], "targeted: only the selected chain runs, after its site hold",
        (CALLS, seen))
 
@@ -547,6 +551,9 @@ def t_hold_contract_every_run():
     class Res(object):
         def as_dict(self):
             return {}
+    import testenv_guards as TG
+    real_fog = TG.clear_map_fog     # the hold's unfog (HARNESS_REPAIR_CAUSE_3EA971C0): stubbed like every other hold helper
+    TG.clear_map_fog = lambda s, sweep=None: {"verified": True, "releasedByUnfog": [], "hostilesAfter": [], "error": None}
     real = (H.prepare_bland_map, H.SettingsTransaction, H.kill_hostiles, runner.load_fixtures, runner.save_fixtures)
     H.prepare_bland_map = lambda *a, **k: Rep()
     H.SettingsTransaction, H.kill_hostiles = Tx, (lambda *a, **k: Res())
@@ -560,6 +567,7 @@ def t_hold_contract_every_run():
     finally:
         (H.prepare_bland_map, H.SettingsTransaction, H.kill_hostiles, runner.load_fixtures,
          runner.save_fixtures) = real
+        TG.clear_map_fog = real_fog
     tools = [c[0] for c in calls]
     resets = [i for i, c in enumerate(calls) if c[1].get("method") == "ResetMessageCount"]
     marks = [i for i, t in enumerate(tools) if t == "jawa/drain_log"]

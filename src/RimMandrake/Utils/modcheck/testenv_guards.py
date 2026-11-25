@@ -206,7 +206,7 @@ def _hostile_pawns(session):
 MAX_UNFOG_SWEEPS = 3      # re-sweeps after the unfog; r7 needed one (4 fleshbeasts), more than 3 means it keeps releasing
 
 
-def clear_map_fog(session):
+def clear_map_fog(session, sweep=None):
     """Unfog the WHOLE current map, but only on a map already swept of hostiles (an unfog wakes every pawn it uncovers:
     Pawn.Notify_Unfogged), then SWEEP AGAIN until the hostile listing reads back empty.
     TESTENV_FLESHBEAST_HARDEN_FREED_BY_UNFOG (r7, 2026-10-15): on 4 of 5 fresh maps the hostile listing read 0 before the
@@ -216,7 +216,9 @@ def clear_map_fog(session):
     "sweepPasses": n, "hostilesAfter": [...]|None, "verified": bool, "error": str|None}.
     verified=True means no fogged cell is left (no later fog-blocker removal can flood a pocket: no "Area revealed"
     letter, no woken sleeper) AND no hostile is listed after the unfog. A refused, unread or unsettled map is never
-    verified; a map that keeps releasing hostiles past MAX_UNFOG_SWEEPS is a SITE fault."""
+    verified; a map that keeps releasing hostiles past MAX_UNFOG_SWEEPS is a SITE fault.
+    `sweep`: the re-sweep, a callable that removes the listed hostiles (default: vanish every non-colonist, the calm's own
+    sweep). runner._hold_site passes its hostile-only vanish, so a chain's non-hostile fixtures survive the re-sweep."""
     out = {"hostilesBefore": None, "foggedBefore": None, "foggedNow": None, "releasedByUnfog": [], "sweepPasses": 0,
            "hostilesAfter": None, "verified": False, "error": None}
     ids, err = _hostile_pawns(session)
@@ -235,14 +237,14 @@ def clear_map_fog(session):
     if r["foggedCellsNow"] != 0:
         out["error"] = "%d cell(s) still fogged after unfogAll" % r["foggedCellsNow"]
         return out
-    out["error"] = _sweep_released(session, out)
+    out["error"] = _sweep_released(session, out, sweep)
     out["verified"] = out["error"] is None
     return out
 
 
-def _sweep_released(session, out):
-    """Read hostiles back after the unfog; while any is listed, vanish every non-colonist (the calm's own sweep) and read
-    again, at most MAX_UNFOG_SWEEPS times. Fills out["releasedByUnfog"/"sweepPasses"/"hostilesAfter"]; -> error or None."""
+def _sweep_released(session, out, sweep=None):
+    """Read hostiles back after the unfog; while any is listed, run `sweep` (default: vanish every non-colonist, the
+    calm's own sweep) and read again, at most MAX_UNFOG_SWEEPS times. Fills out["releasedByUnfog"/"sweepPasses"/"hostilesAfter"]; -> error or None."""
     for n in range(MAX_UNFOG_SWEEPS + 1):
         ids, err = _hostile_pawns(session)
         out["hostilesAfter"] = ids
@@ -256,6 +258,9 @@ def _sweep_released(session, out):
         if n == MAX_UNFOG_SWEEPS:
             break
         out["sweepPasses"] = n + 1
+        if sweep is not None:
+            sweep()       # the read at the top of the loop is its check
+            continue
         r = session.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
         if not _ok(r):
             return "destroy_bulk after the unfog failed: %s" % (str(r)[:200],)
