@@ -2,10 +2,10 @@
   "schema": 1,
   "mod": "FlowWorks",
   "version": "0.1.0",
-  "stage": "in_game",
-  "stage_label": "In-game acceptance (Stage 6)",
-  "since": "2026-11-24T20:21:36-08:00",
-  "since_from": "advance by BENCH",
+  "stage": "pre_human",
+  "stage_label": "Walk brief (Stage 7)",
+  "since": "2026-11-25T00:15:17-08:00",
+  "since_from": "advance by CONDUCTOR",
   "at_door": false,
   "seeded": {
     "at": "2026-11-14T16:02:19-08:00",
@@ -18,7 +18,7 @@
     "visit": 3,
     "total": 4
   },
-  "pre_human_arrivals": 2,
+  "pre_human_arrivals": 3,
   "moves": [
     {
       "from": "offline_build",
@@ -452,6 +452,28 @@
         "by",
         "version",
         "hold"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "pre_human",
+      "at": "2026-11-25T00:15:17-08:00",
+      "by": "CONDUCTOR",
+      "why": "in-game visit 12 exit met: 30 of 30 in-game checks PASS on build e32272585f; hand act folds into RIMMANDRAKE_BATCH_ONE_MODS_OPEN_WORK_INTO_ONE_RUN_PIPELINE_SPLITS_PER_TICKET",
+      "unit": null,
+      "confirmed": {
+        "steward_confirms": "I read design/concepts/FlowWorks/version/in_game/visit_12/SUMMARY.md. The stage exit is met. Three owed cases of blind challenge cycle 4 (film never drowns crops, sheet settings units, drill reads its setting) are UNMEASURED in game; their offline cases stand and decide their bars, so no bar is left undecided. Material-word doubling goes to the Polish list.",
+        "owner_said": "per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS: in-game visit 12 exit met: 30 of 30 in-game checks PASS on build e32272585f; hand act folds into RIMMANDRAKE_BATCH_ONE_MODS_OPEN_WORK_INTO_ONE_RUN_PIPELINE_SPLITS_PER_TICKET"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "steward_confirms",
+        "exit_met",
+        "build_match",
+        "unrun_run"
       ]
     }
   ],

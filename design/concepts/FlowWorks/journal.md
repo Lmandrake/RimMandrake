@@ -12,7 +12,7 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`: "Yes, lock the other four mods").
   Code exists and is large: `src/RimMandrake/FlowWorks/` (C# mod, a 325+ case C# SelfTest, about 168 Python selftests,
   a northstar proof harness).
-- **Stage now:** Stage 6, in-game acceptance, since 2026-11-24 8:21 PM PST (`version/stage_record.json`).
+- **Stage now:** Stage 7, the walk brief, since 2026-11-25 12:15 AM PST (`version/stage_record.json`).
 - **Bars:** 55 = 28 inventory rows of `record.json` + 27 leaves of `tree.json` (`coverage_judge.required_ids()`); 59 at the
   lock, his card of 2026-11-14 added `inv_geyser_tub` and `inv_liquid_coating` (61), and his card of 2026-11-14 ~9:43 PM
   PST moved the four wetting bars to 0.2.0 (57), and his word of 2026-11-23 ~11:05 PM PST moved the raid proof to 0.2.0
@@ -23,7 +23,7 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - **Held look statements for this mod:** 103 rows in five files of `design/RimMandrake/validation_holding/` (2026-11-12:
   56 rows; 2026-11-13 morning: 18; 2026-11-13 dig interface: 2; 2026-11-13 evening: 5; 2026-11-14: 22); 83 are placed
   in `version/test_table.json`, all 103 placed. [measured, preflight C8, 2:40 PM PST]
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-24 8:21 PM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-25 12:15 AM PST).
 
 ### The vision (his root paragraph, approved 2026-11-04, OWNER:1793794915205594887; eight lines in `version/vision.md`)
 
@@ -533,4 +533,14 @@ None open; question 3 (the dig speed) is answered in the history entry of 2026-1
 - Steward confirms: read visit_11 SUMMARY.md, rows.jsonl, strange.jsonl and maturation.py next: 0 FAIL, 0 undecided bars, 0 fix readers owed, sc_ways_out spoiled (game-only rerun), driver test edit 00a965aa56 a repair not a weakening; verdict: next visit
 - Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-24 9:27 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** a live run of RIMMANDRAKE_TRACE_FLOWWORKS_UNDER_DECK_PATH_MISS_ONE_IN_28_RUNS on any free game (it classes visit 10's one UNRESOLVED `sc_hung_bridge` run), and `sc_walk` on ArchBig with his full list in visit 11 (it alone decides `inv_settings` and `walk_moat_season`).
+- Record: `version/stage_record.json`.
+
+### 2026-11-25 12:15 AM PST, stage change: In-game acceptance (Stage 6) to Walk brief (Stage 7) (by CONDUCTOR)
+
+- Why: in-game visit 12 exit met: 30 of 30 in-game checks PASS on build e32272585f; hand act folds into RIMMANDRAKE_BATCH_ONE_MODS_OPEN_WORK_INTO_ONE_RUN_PIPELINE_SPLITS_PER_TICKET
+- Checks passed: order, by, version, hold, steward_confirms, exit_met, build_match, unrun_run.
+- Steward confirms: I read design/concepts/FlowWorks/version/in_game/visit_12/SUMMARY.md. The stage exit is met. Three owed cases of blind challenge cycle 4 (film never drowns crops, sheet settings units, drill reads its setting) are UNMEASURED in game; their offline cases stand and decide their bars, so no bar is left undecided. Material-word doubling goes to the Polish list.
+- Owner said: per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS: in-game visit 12 exit met: 30 of 30 in-game checks PASS on build e32272585f; hand act folds into RIMMANDRAKE_BATCH_ONE_MODS_OPEN_WORK_INTO_ONE_RUN_PIPELINE_SPLITS_PER_TICKET
+- Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-24 8:21 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-24 8:21 PM PST).
 - Record: `version/stage_record.json`.
