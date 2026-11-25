@@ -950,6 +950,26 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
            would_pass="a CONDUCTOR INTERVENED line of kind release for stage %s after the hold" % col_of(cur),
            fix="the Conductor writes the release line in the journal's Conductor interventions list when the hold's "
                "reason has ended", cost="owner", why_sound="a hold stands until its release (the Conductor's rule, spec §5 item 5)")
+    # road_back_items: a mod sent back to this stage leaves it only when the repair items of that road back are ended
+    # (RIMMANDRAKE_HOLD_MOD_AT_ROAD_BACK_STAGE_AND_LET_BUNDLE_BRIEF_START; design/specs/2026-11-25-road-back-holds-stage-exit)
+    rbh = road_back_hold(root, mod, rec, cur) if forward else None
+    if rbh is not None:
+        held_ids = [x["id"] for x in rbh["open"]]
+        clause("road_back_items", "a mod sent back to this stage down a road back leaves it only when every repair item "
+               "of that road back that this stage can work is closed or dropped", not held_ids and not rbh["unread"],
+               [rec_ref],
+               observed="road back %s -> %s (%s) from %s; open: %s%s%s" % (
+                   rbh["move"].get("from"), rbh["move"].get("to"), rbh["move"].get("at"),
+                   ", ".join(rbh["sources"]) or "no item named",
+                   ", ".join("%s (needs %s)" % (x["id"], x["needs"] or "unset") for x in rbh["open"]) or "none",
+                   ("; Stage 6 work, not held at this offline stage: %s" % ", ".join(x["id"] for x in rbh["stage6"]))
+                   if rbh["stage6"] else "",
+                   ("; could not look: %s" % "; ".join(rbh["unread"])) if rbh["unread"] else ""),
+               would_pass="each open item above closed or dropped in the ledger (rimflow close/drop), and every source "
+                          "of the road back readable",
+               fix="work each open item of the road back to its close (`./pipe bundle %s` runs them together)" % mod,
+               why_sound="a road back sends a mod to the stage that repairs its faults; it leaves that stage when the "
+                         "repairs are done, not when the stage's other exit tests pass")
 
     if forward:
         if cur == "intake":
@@ -1347,6 +1367,7 @@ def advance(root, mod, to, by, why, steward=None, conductor=None, owner=None, wa
         rec["pre_human_arrivals"] = rec.get("pre_human_arrivals", 0) + 1
     # the detached or role run that made the move; a move with no unit was made by a hand (maturation_hands.py)
     move = {"from": cur, "to": to, "at": iso(t), "by": by, "why": why, "unit": os.environ.get("RM_ROLE_UNIT") or None,
+            "item": move_item(),
             "confirmed": {k: v for k, v in (("steward_confirms", steward), ("conductor_decision", conductor),
                                             ("owner_said", owner), ("game_only", ", ".join(game_only or ()))) if v},
             "checks_passed": [p["clause"] for p in res["verdict"]["passed"]]}
@@ -5234,6 +5255,68 @@ def _section(text, head):
         return ""
     end = next((j for j in range(start + 1, len(lines)) if lines[j].startswith("## ")), len(lines))
     return "\n".join(lines[start + 1:end]).strip()
+
+
+def move_item():
+    """-> the ledger item of the run that makes a move (its run record, read through RM_ROLE_UNIT), None for a hand move
+    or a record that cannot be read. Never raises: the road-back hold reads `unit` again when `item` is None."""
+    unit = os.environ.get("RM_ROLE_UNIT")
+    if not unit:
+        return None
+    try:
+        import detached_helper as DH
+        return (DH.read_record(unit) or {}).get("item") or None
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def road_back_hold(root, mod, rec, cur):
+    """-> None when the record's newest move is not a road back (a move to an earlier stage) to the stage it stands at.
+    Else {"move", "sources", "open", "stage6", "unread"}: the repair items of that road back that are not closed,
+    dropped or superseded (a reopen counts as open). Its items: those filed caused_by the item of the run that made the
+    move (the move's `item`, else its `unit`'s run record), and the ledger items that the move's why or steward words
+    name. At an offline stage an item that needs the live game is Stage 6 work (`stage6`) and does not hold. `unread`
+    names each source that could not be read: it holds, never a pass. design/specs/2026-11-25-road-back-holds-stage-exit."""
+    moves = [m for m in rec.get("moves") or [] if isinstance(m, dict)]
+    mv = moves[-1] if moves else None
+    if not mv or mv.get("to") != cur or cur not in WORDS or mv.get("from") not in WORDS \
+            or WORDS.index(cur) >= WORDS.index(mv["from"]):
+        return None
+    unread, sources = [], []
+    item = mv.get("item")
+    if not item and mv.get("unit"):
+        try:
+            import detached_helper as DH
+            item = (DH.read_record(mv["unit"]) or {}).get("item")
+        except Exception as e:  # noqa: BLE001
+            unread.append("the run record of %s (%s: %s)" % (mv["unit"], type(e).__name__, e))
+            item = None
+        if not item and not unread:
+            unread.append("the run record of %s, which made the move, names no item" % mv["unit"])
+    if item:
+        sources.append(item)
+    text = " ".join(str(x or "") for x in (mv.get("why"), (mv.get("confirmed") or {}).get("steward_confirms")))
+    named = [w for w in dict.fromkeys(re.findall(r"[A-Z][A-Z0-9]*(?:_[A-Z0-9]+){2,}", text))
+             if ITEM_RE.match(w) and w not in sources]
+    out = {"move": mv, "sources": sources, "open": [], "stage6": [], "unread": unread}
+    if not sources and not named:       # a hand move that names no item: nothing to read, nothing holds
+        return out
+    d = os.path.join(root, "infrastructure", "state", "ledger", "events")
+    if not os.path.isdir(d):
+        unread.append("the ledger folder %s" % os.path.relpath(d, root))
+        return out
+    try:
+        got = ledger_items_caused_by(root, sources, ended_too=True, named=named)
+        ended = ledger_ended(root, [x["id"] for x in got])
+    except (OSError, UnicodeDecodeError) as e:
+        unread.append("the ledger (%s: %s)" % (type(e).__name__, e))
+        return out
+    for x in got:
+        if x["id"] in ended or x["id"] in sources:
+            continue
+        live = cur in OFFLINE_STAGES and x.get("needs") in LIVE_NEEDS
+        out["stage6" if live else "open"].append(x)
+    return out
 
 
 def ledger_ended(root, ids):

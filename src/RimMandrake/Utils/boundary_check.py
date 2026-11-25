@@ -188,6 +188,8 @@ PAGES = {
         "src/RimMandrake/rimflow/selftest_maturation_tripwires.py",
     "design/specs/2026-11-19-maturation-game-only-blind-exit/boundary.md":
         "src/RimMandrake/rimflow/selftest_maturation_game_only_exit.py",
+    "design/specs/2026-11-25-road-back-holds-stage-exit/boundary.md":
+        "src/RimMandrake/rimflow/selftest_maturation_road_back_hold.py",
     "design/specs/2026-11-20-tick-game-only-exit/boundary.md":
         "src/RimMandrake/rimflow/selftest_tick_game_only_exit.py",
     "design/specs/2026-11-24-game-deploy-own-unit/boundary.md":

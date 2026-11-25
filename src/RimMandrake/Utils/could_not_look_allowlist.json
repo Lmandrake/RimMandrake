@@ -117,6 +117,9 @@
   "src/RimMandrake/rimflow/left_open_continue.py::main::or-empty": 1,
   "src/RimMandrake/rimflow/maturation.py::_absent::except-returns-empty": 1,
   "src/RimMandrake/rimflow/maturation.py::_ledger_relation.rel::except-returns-empty": 1,
+  "src/RimMandrake/rimflow/maturation.py::move_item::or-empty": 1,
+  "src/RimMandrake/rimflow/maturation.py::move_item::except-returns-empty": 1,
+  "src/RimMandrake/rimflow/maturation.py::road_back_hold::or-empty": 1,
   "src/RimMandrake/rimflow/maturation.py::_git_show::except-returns-empty": 1,
   "src/RimMandrake/rimflow/maturation.py::_instant::except-returns-empty": 1,
   "src/RimMandrake/rimflow/maturation.py::_is_savegame::except-returns-empty": 1,
@@ -293,6 +296,15 @@
   "src/RimMandrake/rimflow/detached_helper.py::drop_clone_lock::except-returns-empty": 1
  },
  "reasons": {
+  "src/RimMandrake/rimflow/maturation.py::move_item::or-empty": [
+   "NOT A COLLAPSE: None is 'no item known'; the move still carries `unit`, and road_back_hold reads the run record again and says could not look when it cannot (design/specs/2026-11-25-road-back-holds-stage-exit/boundary.md)"
+  ],
+  "src/RimMandrake/rimflow/maturation.py::move_item::except-returns-empty": [
+   "NOT A COLLAPSE: a run record that cannot be read at the move leaves `item` None and `unit` set; road_back_hold reads `unit` again and holds with could not look"
+  ],
+  "src/RimMandrake/rimflow/maturation.py::road_back_hold::or-empty": [
+   "NOT A COLLAPSE: an empty item from the run record is appended to `unread` on the next line, which holds the exit with could not look"
+  ],
   "src/RimMandrake/rimflow/maturation.py::_ledger_relation.rel::except-returns-empty": [
    "NOT A COLLAPSE: None is the relation's own 'unknown' (scene_verdicts.summary), and an unknown relation counts the earlier run for nothing, the strict side; the ledger never reads it as untouched"
   ],

@@ -37,6 +37,7 @@ import tempfile
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 sys.path.insert(0, HERE)
+os.environ.pop("RM_ROLE_UNIT", None)     # a move made in this test is a hand move, whatever run launched the test
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 
 import maturation as M          # noqa: E402
