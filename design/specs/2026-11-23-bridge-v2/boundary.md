@@ -385,6 +385,91 @@ None of its own.
 The flight probes and the flapping-bird judge have their own page: `../2026-11-24-flight-frames/boundary.md`.
 
 
+## CALM PROFILE
+
+Code: `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchCalmProfileCore.cs` (all of it, the pure half),
+`src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchCalmProfile.cs` (all of it, the Verse half and the tool `jawa/calm_profile`),
+its two calls in `JawaBenchCalm.cs` (`FramePre` and `SpawnPost`: no new patch site), `AllowOne` and `TakeBack` in
+`JawaBenchGatesCore.Gate`, and `src/RimMandrake/bridgetools/calm_profile.py` (the certificate lines). Item
+`RIMMANDRAKE_BUILD_CALM_PROFILE_BREACH_LOG_AND_LEASE`. Each promise has a check of its name in
+`src/RimMandrake/bridgetools/selftest_calm_profile.py` (harness `bridgetools/CalmProfileSelfTest`). The live proof is
+`src/RimMandrake/bridgetools/prove_calm_profile.py`.
+
+**A profile** is named and versioned (`standard`, version 1). It is a list of controls, each with its class, its count and its
+certificate line:
+
+| control | mechanism | class | counts | certificate line |
+|---|---|---|---|---|
+| `storyteller`, `random_mental_states`, `random_diseases` | the engine's own switch off | PUT BACK | scheduling switched off | none yet |
+| `incident_gate`, `quest_gate`, `mental_gate` | the scene gates (§SCENE GATES), with the scene's allow lists | PUT BACK | attempts stopped | `incident.held`, `gate.quest.held`, `gate.mental.held` |
+| `incident_queue` | the queue held aside (`JawaBenchGates.HoldQueue`) | GIVEN BACK | scheduling switched off | none yet |
+| `wild_spawner` | the wild spawner block | PUT BACK | attempts stopped (spawner ticks skipped) | none yet |
+| `weather` | a forced weather condition of the profile's own (`weather`, default Clear) | PUT BACK | none | none yet |
+| `proximity_letters` | unsent proximity letters marked sent | PUT BACK | none | none yet |
+| `needs_hold` | the needs of the named pawns (`holdNeeds`) set back each frame | PUT BACK, and NOT UNDONE (save): what did not happen | none | none yet |
+| `clear_site` | with `clear=true`: hostiles, wild predators, threat structures and fires vanished, other conditions ended | NOT UNDONE (save), DESTRUCTIVE | none | none yet |
+
+A control reads **HELD** only when its mechanism was read back in place **and** the scene's certified lines (from a tap certificate
+that is valid for the loaded identity, `calm_profile.certificate_lines`) hold its line. With the mechanism read back and no line it
+reads **ARMED UNPROVEN**. A mechanism that did not arm reads **COULD NOT ARM** with the cause; a control that the scene takes off
+reads **EXCEPTED**; a control that the profile does not switch on (`needs_hold` with no pawn, `clear_site` without `clear`) reads
+**OFF**; under CAMPAIGN every control reads **REFUSED** by name.
+
+**The record.** Each change is an entry with its class and its before value. At leave, at lease end and before a re-arm, the PUT
+BACK and GIVEN BACK entries are put back in reverse order, and each is read back: a value that reads otherwise, or a put-back that
+threw, is named in `notPutBack`. A NOT UNDONE entry is never put back: it is listed with its reach in `notUndone`.
+
+**The breach log** holds every breach with its class (ENVIRONMENT or APPARATUS), its kind, its tick and what it names: an attempt
+held by a gate, a pawn that arrived on the profile's map in a game tick (a pawn placed by a call outside a tick is counted as
+placed), a weather that is not the forced one, a call by a second driver. While a run is running each breach is also a `breach` row
+of the run's trace. 200 rows are kept; the counts are exact.
+
+**The lease.** The profile holds for `minutes` of wall time (default 30, at most 240), renewed by `renew`. When it runs out, the
+put-back runs on the next frame, paused or not. **After a load** the profile puts back what it can on the old game and arms again on
+the new one, with the same arguments, certified lines and lease; a load into a canonical save arms nothing (every control REFUSED).
+
+**One driver.** The `driver` that armed the profile owns it until leave. A write (`arm`, `renew`, `except`, `leave`) by another
+driver is refused, and is a breach of class APPARATUS. `read` is open to anyone and changes nothing.
+
+### LIMITS
+
+- **the lease: 30 minutes, at most 240.** The danger: a driver that dies leaves a game with no incidents, weather or wild animals,
+  and the next user tests a game that is not the real game (the calm map's lease, since 2026-11-23, for the same reason).
+- **the breach log: 200 rows.** The danger: a mod that tries one incident each tick fills the memory. The counts stay exact.
+
+### DOES NOT SURVIVE (not promised)
+
+- **a-hook-that-is-not-connected.** An offline test proves the rules. Only the certificate shows a planted breach stopped on the mod
+  list; a control without a line reads ARMED UNPROVEN, never HELD.
+- **a-pawn-placed-by-a-call.** A pawn that a tool places outside a tick is counted, not a breach: the scene places its cast that way.
+- **an-arrival-on-another-map.** The arrival watch and the weather read one map, the profile's.
+- **the-save-of-a-held-game.** A save made while the profile holds saves the queue empty and the forced weather on the map.
+- **values-set-by-another-hand.** A value that another tool changed while the profile held is named as not put back; it is not
+  overwritten.
+
+### PROMISES (each one is owed a test of the same name)
+
+- **a-control-reads-held-only-with-its-certificate-line.** A control whose mechanism was read back reads HELD with its certified line
+  and ARMED UNPROVEN without it; a control with no line in the certificate never reads HELD; a line comes only from a valid
+  certificate that shows the route.
+- **a-scene-exception-opens-one-gate-for-one-named-event.** An exception lets one named event through its gate once; the same event
+  again is held; at leave an exception not used is closed and named.
+- **a-hold-on-needs-is-two-entries.** A hold on needs writes a PUT BACK entry (the hold) and a NOT UNDONE entry of reach save (what
+  did not happen).
+- **the-put-back-runs-in-reverse-order-with-read-back.** The entries are put back last first, and each is read back after its put-back.
+- **a-lease-that-ran-out-puts-back.** At the first tick after the lease ends, every entry is put back and the profile is off.
+- **a-value-that-could-not-be-put-back-is-named.** A put-back that throws, or a value that reads otherwise afterwards, is named in
+  `notPutBack` with the control; the other entries are still put back.
+- **a-destructive-control-is-refused-under-campaign-only.** With a canonical save loaded every control is refused by name and none
+  is applied, the destructive one named as destructive; on any other save the destructive control is applied.
+- **attempts-stopped-and-scheduling-switched-off-are-two-numbers.** A switched-off scheduler adds nothing to attempts stopped, and a
+  held attempt adds nothing to scheduling switched off.
+- **a-second-driver-is-an-apparatus-breach.** A write by another driver is refused, changes nothing, and is one breach of class
+  APPARATUS that names both drivers; a read by anyone is no breach.
+- **unknown-profile-keys-are-refused.** A key that is not a profile key, an unknown profile or version, and an exception that names
+  no control are refused by name, and nothing is armed.
+- **a-not-undone-control-is-listed-as-such.** A NOT UNDONE entry is never put back and is listed in `notUndone` with its reach.
+
 ## Flight probes
 
 The flight probes and the flapping-bird judge have their own page: `../2026-11-24-flight-frames/boundary.md`.

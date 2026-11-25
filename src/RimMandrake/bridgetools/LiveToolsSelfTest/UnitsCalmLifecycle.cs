@@ -140,6 +140,13 @@ namespace JawaBench.BridgeTools
 
     internal static class JawaBenchTpsWatchdog { internal static double Now; }
 
+    /// <summary>The calm profile's two calls from JawaBenchCalm's hooks (its own harness is CalmProfileSelfTest): inert here.</summary>
+    internal static class JawaBenchCalmProfile
+    {
+        internal static void Frame() { }
+        internal static void Spawned(Pawn pawn, Map map, bool respawningAfterLoad, bool runOriginal) { }
+    }
+
     internal static class JawaBenchCompanionSafety
     {
         internal static readonly JawaBenchSafetyCore.Policy CurrentPolicy = JawaBenchSafetyCore.TestPolicy;

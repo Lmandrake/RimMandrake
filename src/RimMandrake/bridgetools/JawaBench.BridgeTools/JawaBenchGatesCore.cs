@@ -86,6 +86,25 @@ namespace JawaBench.BridgeTools
                 lock (_lock) { if (_on) LastRelease = why; _on = false; _game = null; _allow.Clear(); }
             }
 
+            /// <summary>One more pass for this name (a scene's exception, JawaBenchCalmProfileCore.Session.Except).</summary>
+            public void AllowOne(string name)
+            {
+                lock (_lock) { int c; _allow.TryGetValue(name, out c); _allow[name] = c + 1; }
+            }
+
+            /// <summary>Take back one pass for this name if it is still unused. Returns 1 when one was taken back (the pass was not
+            /// used), else 0.</summary>
+            public int TakeBack(string name)
+            {
+                lock (_lock)
+                {
+                    int c;
+                    if (!_allow.TryGetValue(name, out c) || c <= 0) return 0;
+                    _allow[name] = c - 1;
+                    return 1;
+                }
+            }
+
             /// <summary>The allow entries not used yet, "name xN".</summary>
             public string AllowLeft()
             {

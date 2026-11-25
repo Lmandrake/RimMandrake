@@ -121,6 +121,7 @@ namespace JawaBench.BridgeTools
             ["jawa/biome_art_audit"] = FHeavyDiagnostic, ["jawa/pawnkind_audit"] = FHeavyDiagnostic, ["jawa/world_mutators_audit"] = FHeavyDiagnostic,
             ["jawa/world_lint"] = FHeavyDiagnostic, ["jawa/rimdefdump_run"] = FHeavyDiagnostic, ["jawa/export_things"] = FHeavyDiagnostic,
             ["jawa/wild_spawner_block"] = FQuietWorld, ["jawa/quiet_site"] = FQuietWorld,
+            ["jawa/calm_profile"] = FQuietWorld,     // BRIDGE v2.0 calm profile (RIMMANDRAKE_BUILD_CALM_PROFILE_BREACH_LOG_AND_LEASE): the quiet-world controls in one call
         };
 
         /// <summary>Tripwire for the unit test: authoring tools the owner ruled must stay usable in campaign.</summary>

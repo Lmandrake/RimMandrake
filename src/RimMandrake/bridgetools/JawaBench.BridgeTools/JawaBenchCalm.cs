@@ -142,6 +142,7 @@ namespace JawaBench.BridgeTools
             {
                 // Root_Play.Update runs on the main thread even when the game tick is paused.
                 if (_owed && !Active()) Restore("lease ended: " + (Lease.LastRelease ?? "unknown"));
+                JawaBenchCalmProfile.Frame();            // the calm profile's lease, re-arm after a load and watchers (no site of its own)
             }
             catch { }
         }
@@ -150,6 +151,7 @@ namespace JawaBench.BridgeTools
         {
             try
             {
+                JawaBenchCalmProfile.Spawned(__instance, map, respawningAfterLoad, __runOriginal);   // the calm profile's arrival watch
                 if (!__runOriginal || respawningAfterLoad || __instance == null || map == null || !Lease.On || !Active() || map.uniqueID != MapId) return;
                 if (!_known.Add(__instance.thingIDNumber)) return;
                 if (InTick()) Breaches.Add("arrival", Tick(), PawnText(__instance));
