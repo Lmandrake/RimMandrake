@@ -14,6 +14,9 @@ Environment=FAMILY_CLEAN_FAMILIES=screenshots
 Environment="FAMILY_CLEAN_SCREENSHOTS=/mnt/c/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots:/mnt/d/ClaudeWork/rimmandrake/instances/b/Screenshots"
 Environment=FAMILY_CLEAN_RESULTS=/mnt/d/RimTest/testq/outbox:/mnt/d/RimTest/testq.b/outbox
 Environment=FAMILY_CLEAN_STATE=%h/.local/state/rm-family-clean
+# danger: a runner pinned to code older than the screenshots family ignores FAMILY_CLEAN_FAMILIES and runs every
+# Archmagi family with --apply on this host (seen in that code's selftest red run, 2026-11-25); refuse such code
+ExecStartPre=/bin/grep -q FAMILY_CLEAN_FAMILIES %h/rm/runner/src/RimMandrake/Utils/family_clean.py
 ExecStart=/usr/bin/python3 %h/rm/runner/src/RimMandrake/Utils/family_clean.py --apply
 ExecStartPost=/bin/bash -c 'cd %h/rm/runner && /usr/bin/python3 src/RimMandrake/Utils/family_clean.py check > "$FAMILY_CLEAN_STATE/check_ok.txt.tmp" && mv "$FAMILY_CLEAN_STATE/check_ok.txt.tmp" "$FAMILY_CLEAN_STATE/check_ok.txt"'
 Nice=19
