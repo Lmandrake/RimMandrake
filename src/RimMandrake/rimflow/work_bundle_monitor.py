@@ -480,21 +480,38 @@ def _ratio(tok, n):
     return round(tok / n) if n else None
 
 
+def _worst(xs):
+    return "reopened" if "reopened" in xs else "pending" if "pending" in xs else "stayed"
+
+
 def kind_numbers(rows, now):
-    """rows: the day's runs of one kind -> runs, closes, tokens, tokens per close, headline and its counts."""
+    """rows: the day's runs of one kind -> runs, tickets closed, tokens, tokens per ticket, the headline and its counts.
+    The unit is the TICKET: a ticket closed twice (by one run, or by two runs of the kind) counts once, by its worst
+    close (reopened, then pending, then stayed)."""
     priced = [r for r in rows if r["tokens"] is not None]
     tok = sum(r["tokens"] for r in priced)
-    closes = [c for r in priced for c in r["closes"]]
-    st = [stayed(c, now) for c in closes]
+    by = {}
+    for r in priced:
+        for c in r["closes"]:
+            by.setdefault(c["item"], []).append(stayed(c, now))
+    st = {i: _worst(v) for i, v in by.items()}
+    n = {k: sum(1 for v in st.values() if v == k) for k in ("stayed", "reopened", "pending")}
     pre = [r["first_edit"] for r in rows if isinstance(r["first_edit"], int)]
+    why = {}
+    for r in rows:
+        if r["tokens"] is None:
+            k = re.sub(r"'[^']*'", "'…'", str(r.get("unpriced_why") or "no cause"))[:120]
+            why[k] = why.get(k, 0) + 1
     return {"runs": len(rows), "priced_runs": len(priced), "unpriced_runs": len(rows) - len(priced),
-            "closes": sum(len(r["closes"]) for r in rows), "tokens": tok if priced else UNM,
-            "tokens_per_close": _ratio(tok, len(closes)) if priced else UNM,
-            "stayed": st.count("stayed"), "reopened": st.count("reopened"), "pending": st.count("pending"),
-            "tokens_per_stayed_close": (_ratio(tok, st.count("stayed")) if priced and not st.count("pending") else
-                                        ("pending" if st.count("pending") else UNM)),
-            "provisional_tokens_per_unreopened_close": _ratio(tok, st.count("stayed") + st.count("pending"))
-            if priced else UNM,
+            "unpriced_why": why, "close_events": sum(len(r["closes"]) for r in rows),
+            "tickets_closed": len({c["item"] for r in rows for c in r["closes"]}),
+            "tickets_closed_by_priced_runs": len(st), "tokens": tok if priced else UNM,
+            "tokens_per_ticket_closed": _ratio(tok, len(st)) if priced else UNM,
+            "stayed": n["stayed"], "reopened": n["reopened"], "pending": n["pending"],
+            "reopened_tickets": sorted(i for i, v in st.items() if v == "reopened"),
+            "tokens_per_ticket_stayed_closed": (_ratio(tok, n["stayed"]) if priced and not n["pending"] else
+                                                ("pending" if n["pending"] else UNM)),
+            "provisional_tokens_per_unreopened_ticket": _ratio(tok, n["stayed"] + n["pending"]) if priced else UNM,
             "first_edit_median": int(statistics.median(pre)) if pre else (UNM if not rows else "none measured"),
             "first_edit_runs": len(pre), "no_edit_runs": sum(1 for r in rows if r["first_edit"] == "no edit"),
             "first_edit_unmeasured": sum(1 for r in rows if r["first_edit"] is None)}
@@ -502,7 +519,12 @@ def kind_numbers(rows, now):
 
 NOTES = {
     "share": "per pipeline and kind: bundle = a bundle record with 2+ members; bundle_of_one = a bundle record with 1 "
-             "member; single = every other detached run. Runs are the detached runs that ENDED in the window.",
+             "member; single = every other detached run. Runs are the detached runs that ENDED in the window. closes = "
+             "distinct tickets closed by those runs.",
+    "tickets": "every efficiency figure is per distinct TICKET: a ticket closed twice counts once, by its worst close "
+               "(reopened, then pending, then stayed); close_events counts the close events.",
+    "unpriced": "a run with no weighted_v2 figure is unpriced and stays out of every token sum; unpriced_why counts the "
+                "causes (a weighted_v1 record needs its model alias's env var to be converted).",
     "efficiency": "efficiency.*.single counts single-ticket runs AND bundles of one together (the comparison is "
                   "multi-member bundles against everything else); efficiency.today.bundle_of_one shows the bundles of "
                   "one alone. headline_window is the 24 hours that ended 3 days before the window's end: its closes are "
@@ -564,7 +586,8 @@ def measure(S, t0, t1, now, projects=PROJECTS, transcripts=True):
         share = {"state": "measured", "still_running": running}
         for pl in ("maturation", "workshop"):
             share[pl] = {k: {"runs": sum(1 for r in rows if r["pipeline"] == pl and r["kind"] == k),
-                             "closes": sum(len(r["closes"]) for r in rows if r["pipeline"] == pl and r["kind"] == k),
+                             "closes": len({c["item"] for r in rows if r["pipeline"] == pl and r["kind"] == k
+                                            for c in r["closes"]}),
                              "tokens": sum(r["tokens"] or 0 for r in rows if r["pipeline"] == pl and r["kind"] == k),
                              "unpriced": sum(1 for r in rows if r["pipeline"] == pl and r["kind"] == k
                                              and r["tokens"] is None)}
@@ -653,7 +676,8 @@ def baseline(S, rows, bundles, ub, titles, closes, now):
             if homes.get(it) != sysname and not (mod and mod_of(it, titles.get(it), S["mods"]) == mod):
                 continue
             tok, _w = tokens_of(rec)
-            sel.append({"tokens": tok, "closes": run_closes(rec, None, closes), "first_edit": "not read"})
+            sel.append({"tokens": tok, "unpriced_why": _w, "closes": run_closes(rec, None, closes),
+                        "first_edit": "not read"})
         out[sysname] = dict(kind_numbers(sel, now), state="measured", since=iso(first - BASELINE_DAYS * DAY),
                             until=iso(first))
     return out

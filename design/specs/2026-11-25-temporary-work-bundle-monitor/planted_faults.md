@@ -24,3 +24,4 @@ string at a time; the before and after strings are given here.
 | the monitor's spend carried into the digest fields | `digest_fields` adds `monitor_tokens` | digest-line-blind |
 | a failed report renews the newest copy | `daily` writes `report_newest.md` before the failure check | report-needs-four-sections (1) |
 | a home's past runs not read | `baseline` matches only by mod name | baseline-same-system-before-first-bundle |
+| a ticket closed twice counted twice | `kind_numbers` keys the closes by close event, not by ticket | headline-tokens-per-stayed-close |

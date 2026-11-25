@@ -94,8 +94,9 @@ its cause, or `failed` with its cause. A source that cannot be read prints `coul
 - **unpriced-run-not-zero-tokens.** A run with no token figure is counted unpriced and stays out of every token sum.
 - **reopened-close-not-stayed.** A close with a reopen signal within 3 days does not stay closed; a younger close without
   one is pending; only an older close without one stays.
-- **headline-tokens-per-stayed-close.** The headline is the weighted tokens of the priced runs over the closes of those
-  runs that stayed closed; it reads `pending` while any of those closes is pending, and the count of runs is beside it.
+- **headline-tokens-per-stayed-close.** The headline is the weighted tokens of the priced runs over the distinct tickets
+  those runs closed that stayed closed; a ticket closed twice counts once, by its worst close; the reopened tickets are
+  named; it reads `pending` while any of those tickets is pending, and the count of runs is beside it.
 - **program-filing-not-setdown.** A `not_now` that carries only `program` is a program filing, counted apart, never a
   set-down.
 - **setdowns-by-class-and-role.** Set-downs are counted by their class and by the role of the run that filed them.

@@ -142,7 +142,8 @@ def t_unpriced_run_not_zero_tokens():
     k = R["efficiency"]["today"]["single"]
     chk(k["unpriced_runs"] == 1 and k["priced_runs"] == 1 and k["tokens"] == 700,
         "unpriced-run-not-zero-tokens: the unpriced run stays out of the sum")
-    chk(k["tokens_per_close"] == 700, "unpriced-run-not-zero-tokens: its close is not divided into the priced tokens")
+    chk(k["tokens_per_ticket_closed"] == 700, "unpriced-run-not-zero-tokens: its close is not divided into the priced tokens")
+    chk(sum(k["unpriced_why"].values()) == 1, "unpriced-run-not-zero-tokens: its cause is counted")
     R2 = measure(world(runs={"u1": rec("u1", "A", T0 + 100, tokens=None)}))
     chk(R2["efficiency"]["today"]["single"]["tokens"] == M.UNM,
         "unpriced-run-not-zero-tokens: only unpriced runs read UNMEASURED, not 0")
@@ -168,11 +169,17 @@ def t_headline_tokens_per_stayed_close():
            ev("start", "B", rip + 3600)]
     R = measure(world(runs=runs, events=evs))
     h = R["efficiency"]["headline_window"]["single"]
-    chk(h["stayed"] == 1 and h["reopened"] == 1 and h["tokens_per_stayed_close"] == 1200 and h["runs"] == 2,
-        "headline-tokens-per-stayed-close: 1200 tokens over 1 stayed close, 2 runs (%s)" % h["tokens_per_stayed_close"])
+    chk(h["stayed"] == 1 and h["reopened"] == 1 and h["tokens_per_ticket_stayed_closed"] == 1200 and h["runs"] == 2,
+        "headline-tokens-per-stayed-close: 1200 tokens over 1 stayed ticket, 2 runs (%s)" % h["tokens_per_ticket_stayed_closed"])
+    chk(h["reopened_tickets"] == ["B"], "headline-tokens-per-stayed-close: the reopened ticket is named")
+    runs = {"u4": rec("u4", "D", rip, tokens=600)}
+    evs = [ev("close", "D", rip - 20, role_unit="u4"), ev("close", "D", rip - 10, role_unit="u4")]
+    h = measure(world(runs=runs, events=evs))["efficiency"]["headline_window"]["single"]
+    chk(h["close_events"] == 2 and h["tickets_closed"] == 1 and h["tokens_per_ticket_stayed_closed"] == 600,
+        "headline-tokens-per-stayed-close: a ticket closed twice counts once (%s)" % h["tokens_per_ticket_stayed_closed"])
     runs = {"u3": rec("u3", "C", T0 + 100, tokens=400)}
     R = measure(world(runs=runs, events=[ev("close", "C", T0 + 90, role_unit="u3")]))
-    chk(R["efficiency"]["today"]["single"]["tokens_per_stayed_close"] == "pending",
+    chk(R["efficiency"]["today"]["single"]["tokens_per_ticket_stayed_closed"] == "pending",
         "headline-tokens-per-stayed-close: today's young close reads pending")
 
 
@@ -337,9 +344,9 @@ def t_baseline_same_system_before_first_bundle():
            ev("close", "J1", first - 2 * M.DAY - 10, role_unit="u-old")]
     R = measure(world(runs=runs, bundles=by, events=evs))
     b = R["efficiency"]["baseline"].get("pipeline:judges") or {}
-    chk(b.get("state") == "measured" and b.get("runs") == 1 and b.get("tokens") == 800 and b.get("closes") == 1,
+    chk(b.get("state") == "measured" and b.get("runs") == 1 and b.get("tokens") == 800 and b.get("tickets_closed") == 1,
         "baseline-same-system-before-first-bundle: one run of the home in the 14 days before (%s)" %
-        {k: b.get(k) for k in ("state", "runs", "tokens", "closes")})
+        {k: b.get(k) for k in ("state", "runs", "tokens", "tickets_closed")})
 
 
 def t_report_needs_four_sections():
