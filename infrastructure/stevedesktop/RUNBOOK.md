@@ -6,7 +6,11 @@ from Archmagi (192.168.86.221), and keep itself up to date (git pull, apt, winge
 
 **Plan this serves:** `design/RimMandrake/stevedesktop_bringup_plan_2026-10-24.md` (Phase 1 plus
 the unattended part of Phase 2). Since 2026-11-24 (owner's order) SteveDesktop also works open non-mod list tickets:
-`detached_helper.py launch --host SteveDesktop` starts a run as a user unit in `~/rm/list/<ITEM>`, never in the test lane's clones.
+the working route is SteveDesktop's own `detached_helper.py` in `~/rm/bench` (`ssh stevedesktop-wsl`, with `~/.local/bin` on
+PATH; `launch --host SteveDesktop` did not work on 2026-11-24: `RIMMANDRAKE_FINISH_STEVE_HOST_LAUNCH_NEVER_RAN_ON_REAL_MACHINE`).
+Its run clones are in `~/rm/relentless/clones`, made from `~/rm/mirror.git`, never in the test lane's clones. The global git
+`pushInsteadOf` on that machine sends a RimMandrake push through `github-rimmandrake-write`.
+See the runs: `ssh stevedesktop-wsl 'cd ~/rm/bench; python3 src/RimMandrake/rimflow/detached_helper.py status'`.
 
 **Its games:** SteveDesktop runs two games, **Steve1** (lock key `stevedesktop`) and **Steve2** (lock key
 `stevedesktop.b`). Name them so in every line you write; the machine is still SteveDesktop. Every tool takes the names
