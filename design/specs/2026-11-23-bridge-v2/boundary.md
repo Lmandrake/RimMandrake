@@ -660,3 +660,110 @@ given, not done; the run reads the rest); a work giver's option merged into an e
 | A motive for a pawn with no lord is refused `NO_LORD`, by name, and changes nothing. | `a_motive_for_a_pawn_with_no_lord_is_refused_by_name` |
 | A raw order is recorded as raw: used 4, `via` raw, "not shown reachable in play". | `a_raw_job_is_recorded_as_raw` |
 | Live: for an order through the giver, the job tap's `giver` names that giver; for a raw order it does not. | `prove_ordered_rescue.py` R4 |
+
+## THE PATCH SWITCH (`JawaBenchPatchSwitch.cs`)
+
+Item `RIMMANDRAKE_BUILD_MUTANTS_BY_OVERLAY_AUTHOR_DOES_NOT_CHOOSE`. Tool `jawa/patch_switch`. Code:
+`src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchPatchSwitch.cs` (the Harmony side) and
+`JawaBenchPatchSwitchCore.cs` (pure: the names, the choice of one patch, the refusals, the counters). The offline tests are in
+`src/RimMandrake/bridgetools/selftest_patch_switch.py` (harness `PatchSwitchSelfTest/Program.cs`) and
+`selftest_deviation_record.py` (`t_one_patch_entry_is_repaid_alone`). The live proof is
+`src/RimMandrake/bridgetools/prove_patch_switch.py`. It writes `live/mutants/patch_switch_result.md`. It is UNRUN.
+
+The switch takes one of our Harmony patches off and puts it back while the game runs. Two call counters show that the
+change took. `action=list` gives each patch whose patch method is in the assembly of a running `mandrake.*` mod.
+`action=off` removes that one patch method from that one original (one Harmony `Unpatch`). The deviation record gets an
+overlay entry of class PUT BACK, reach process. The process is tainted until a restart. `action=on` puts the same patch
+method back with its own owner, kind, priority, before and after. Then the tool reads Harmony's patch info again. The entry
+is repaid; the taint stays. `action=arm_count` puts a JawaBench prefix on the patch method and one on the original.
+`action=count` reads the two counters.
+
+It accepts: a patch id from `action=list` (`kind:PatchType.Method@OrigType.Method(params)`); a `Type.Method` or a bare
+method name that names one patch; a `mod` filter for `list`; the session driver for `off` and `on`; an overlay name.
+
+It does not survive (not promised):
+- A caller that the JIT compiled with the patch method inlined, or a delegate that holds the old replacement. The patch
+  counter then stays at 0 while the patch is on (04_live_tuning.md E9). `arm_count` builds the original's replacement
+  again after the patch method gets its counter; this removes the caller in the original only. Live row 2 reads it.
+- A patch method that patches more than one original. `off` takes it off one original only. `list` gives
+  `originalsOfPatchMethod`; the proof uses a patch of one original.
+- A patch method in two slots of one original (`AMBIGUOUS`): one `Unpatch` takes it out of each slot.
+- The order among patches of equal priority after `on`. Harmony gives the patch a new index, so it can run after the
+  others of its priority. `on` reports `orderBefore`, `orderAfter` and `orderKept`; it does not refuse a moved order.
+- A restart. The off store, the counters and the counter hooks live in the process. A restart puts every patch back and
+  clears the taint.
+- A transpiler's count (`TRANSPILER_NOT_COUNTABLE`): a transpiler runs when Harmony builds the replacement, not on a call.
+
+| promise | test |
+|---|---|
+| A patch id names its kind, its patch method and its original with the parameter types. Two patches that differ in kind or overload have two ids. | `t_unit_id` |
+| A name picks one patch: the exact id, then `Type.Method`, then a bare method name. A name of two patches is refused `AMBIGUOUS` with each id. A name of no patch is refused `UNKNOWN_PATCH`. | `t_unit_select` |
+| A patch is ours only when its assembly belongs to a running mod whose packageId starts with `mandrake.`. | `t_unit_ours` |
+| A JawaBench patch (its owner is `mandrake.jawabench.*` or `jawabench.*`, or its method is in the JawaBench assembly) is refused `JAWABENCH` by `off` and by the counters. | `t_unit_jawabench`, `t_unit_count_refusals`, live row 4d |
+| `off` refuses in this order: `JAWABENCH`, `NOT_OURS`, `AMBIGUOUS`, then the save (`CAMPAIGN`, `CANONICAL_SAVE`, `COULD_NOT_LOOK`), then `ALREADY_OFF`. A patch that is refused by name does not read the save. A refusal comes before any write. | `t_unit_off_refusals`, `t_off_refuses_before_it_writes`, live row 3b |
+| `on` of a patch that is on is refused `ALREADY_ON`. | `t_unit_on_refusals`, live row 4c |
+| `off` takes one patch method off one original only. It never calls `UnpatchAll`. | `t_off_takes_one_method_off_one_original` |
+| `on` puts the patch back with its kind, priority, before and after, and reads the state back from Harmony's patch info. | `t_on_puts_back_kind_priority_before_after`, live row 4a |
+| `off` is an overlay entry of class PUT BACK, reach process, through `JawaBenchDeviations.ApplySettings`. The receipt shows it and reads tainted. | `t_off_is_a_put_back_overlay_entry_that_taints`, live row 5a |
+| `on` repays its own entry only. A second holder is refused `NOT_THE_DRIVER`; a journaled setting is refused `SETTINGS_ENTRY`. The other entries stay, and the taint stays. The last repay clears the holder and the stamp. A repay whose write fails marks the record SPOILED. | `t_on_repays_its_entry_only`, `t_one_patch_entry_is_repaid_alone`, live row 5b |
+| A counter that is not armed reads -1, never 0. A call on a key that is not armed adds no row. Many threads lose no hit. A second arm keeps the count. | `t_unit_counters` |
+| The patch counter goes on before the original's counter is put on again, so Harmony builds the original's replacement after the patch method changed (E9). | `t_patch_counter_is_armed_before_the_original_is_rebuilt`, live row 2 |
+| Each counter hook is a void prefix whose whole body is a contained, Interlocked count. A fault is counted, and the game's method runs on. | `t_counter_hooks_are_contained`, `selftest_bridge_hooks.py` |
+| After `off` the original counter rises and the patch counter does not. After `on` both rise. | live rows 3c, 4b |
+| A canonical save is refused. The tool's own refusal is the unit; live, a session on a canonical save does not open. | `t_unit_off_refusals`, live row 6 |
+| The `on`/`off` order check reports `orderKept` true only when the run order of the slot is the same before and after. | `t_unit_order_kept` |
+| The pure core uses no Harmony, Verse, RimWorld or Unity type. The tool name is in one file. | `t_core_is_pure`, `t_tool_name_is_registered_once` |
+
+## MUTANTS AND SHOWN BOTH WAYS (`src/RimMandrake/Utils/scene_mutants.py`, `scene.py both-ways`)
+
+Item `RIMMANDRAKE_BUILD_MUTANTS_BY_OVERLAY_AUTHOR_DOES_NOT_CHOOSE` (05_build_design.md §Decision 13). The mod keeps a list of
+mutants in `design/concepts/<Mod>/version/mutants.json` (schema `mutants_v1`). The program draws one mutant for a scene. A
+session overlay (a settings field), the patch switch or the scene's own plant applies it. The scene's author does not choose.
+`scene.py both-ways <script>` makes the green run, then the red run under the drawn mutant. Each run starts from the scene's
+fixture save, loaded fresh. The red run writes back the green run's random state, one per `s.run`, in order. The judge
+judges each run. A `both_ways` line in the mod's `scene_runs.jsonl` holds both runs' ids, receipt hashes, fixtures and the
+verdict. The core is pure. Each promise has a test of its name in `src/RimMandrake/Utils/selftest_scene_mutants.py`. The
+planted faults and their red runs are in `design/specs/2026-11-23-bridge-v2/live/mutants/plants.txt`.
+
+It accepts: a list with `feature_switches` (the mod's whole-feature switches), `bars` (per bar: `scenes`, `written_by`,
+`reviewed_by`, `review`) and `mutants` (per mutant: `name`, `bar`, `kind` live or compiled, `change`, `breaks` success or
+forbidden, `witness.track` or `witness.tracks` (any one that differs), and `apply` for a live mutant or `flag` for a compiled one); the verdicts of `scene_judge.py`; traces
+in schema `scene_trace_v1`.
+
+It does not survive (not promised):
+- A scene whose map is `fresh:*` has no fixture save, so its two runs are never one fixture (`NOT_ONE_FIXTURE`). Such a scene
+  needs a stage save first.
+- Runs from one save with the random state written back can still draw differently after some ticks
+  (`experiments/play_vs_step_rand_draws.md`). So a witness can differ for a reason other than the mutant. The witness shows that
+  the mutant can have acted. It does not prove that the mutant caused the difference.
+- A scene whose success condition is only "the run played" (its checks are rows printed after the session) reads SUCCESS
+  under any mutant. Then both-ways reads NOT_KILLED, and that reading is wrong. The fix is
+  `RIMMANDRAKE_JUDGE_SCENE_ROWS_PLANTED_RUN_READ_SUCCESS`. Until that fix, list only scenes whose contract decides the bar.
+- A patch mutant needs the patch switch hand (§THE PATCH SWITCH). A compiled mutant needs a build with its flag. Neither one
+  is run by `both-ways` today.
+- The review is a name and a sentence on the list. Nothing checks that the reviewer read the scene.
+
+LIMITS: none. The draw, the lint and the judgement are bounded by the size of the list.
+
+| promise | test |
+|---|---|
+| A mutant that only switches the whole feature off is refused (`FEATURE_OFF`). A list that names no feature switch is refused (`NO_FEATURE_SWITCHES`), because then such a mutant cannot be told apart. | `t_feature_off_mutant_is_refused` |
+| A mutant must name a bar, and a bar that the mod's locked list does not hold is refused. | `t_mutant_must_name_a_bar` |
+| The draw is the same for one scene and build, whatever the order of the list. Over builds, every mutant is drawn. | `t_draw_is_same_for_one_scene_and_build` |
+| The scene cannot set the draw: a script that names a draw at its top level, or calls accept with a plant, is refused `SCENE_SETS_DRAW`. | `t_scene_cannot_set_the_draw` |
+| The red run's receipt can never count as a pass: its line carries `PLANTED <mutant>`, and `scene_verdicts.bar_refusal` refuses any stamped line. A red verdict that counts reads `RED_COUNTED`, a defect. | `t_red_receipt_never_counts_as_pass` |
+| A red run that ends SUCCESS reads "mutant not killed" (`NOT_KILLED`). | `t_red_success_reads_mutant_not_killed` |
+| A red run with no exposure proves nothing and says so (`NO_EXPOSURE`). | `t_red_without_exposure_proves_nothing` |
+| A red run whose witness reads the same as in the green run reads "mutant not used" (`NOT_USED`). The whole course of the track is compared, not only its last value. A witness that is not in a trace is `WITNESS_UNREAD`, never "used". | `t_red_with_unchanged_witness_reads_mutant_not_used` |
+| A bar with fewer than two mutants is refused (`ONE_MUTANT`). | `t_bar_with_one_mutant_is_refused` |
+| A red run that fails on another condition than the mutant names is reported as such (`OTHER_CONDITION`). | `t_red_failing_on_another_condition_is_reported_so` |
+| Both runs start from one fixture hash. A different hash, or no fixture, is `NOT_ONE_FIXTURE`. | `t_both_runs_start_from_one_fixture_hash` |
+| A compiled mutant is listed "needs build" and is not run live. | `t_compiled_mutant_needs_build_and_is_not_run_live` |
+| A bar whose killed mutants are all value changes says so (`ONLY_VALUE_KILLS`). | `t_bar_killed_only_by_value_changes_says_so` |
+| A bar's list that is reviewed by the scene's writer, or that has no review sentence, is refused (`NOT_REVIEWED`). | `t_list_reviewed_by_the_scene_writer_is_refused` |
+| KILLED needs a green SUCCESS and a red MOD FAILURE on the condition that the mutant names. | `t_killed_needs_the_named_condition_and_a_changed_witness` |
+| Both receipts are in the scene's history. `history --killed` counts a KILLED line only when its two runs are run lines of the ledger with the same receipts, and the red one is PLANTED. | `t_both_receipts_are_in_the_scene_history` |
+
+Live test (UNRUN): `python.exe src\RimMandrake\Utils\scene.py both-ways src\RimMandrake\ExplosiveKnockback\proof\scene_storeroom_pit.py`
+on ArchBig (the scene's game). The green run must read SUCCESS and the red run KILLED. Its check is
+`scene_mutants.py history ExplosiveKnockback --killed`.

@@ -8,6 +8,8 @@
     python.exe scene.py end-session <game>       end the session of a driver that died, and look at nothing (else: scene.attach)
     python3   scene.py tools <words>             find a bridge tool (no game)
     python3   scene.py raw-census                every s.raw call in the committed scenes, a proposal for a reviewer
+    python.exe scene.py both-ways <script.py>    the green run, then the red run under the mutant that the program draws from the mod's
+                                                  mutants.json, from one fixture save (scene_mutants.py)
     python.exe scene.py compare --plan <plan.py> --arms play1,play3,ultra,step --n 5 [--game ArchSmall]
                                                   one scene in each arm from one save, traces compared tick by tick (scene_compare.py)
 
@@ -15,6 +17,7 @@ A script: `import scene; from scene import cond as c`. Pages: scene_contracts/. 
 design/specs/2026-11-23-scene-library/boundary.md. Exit of a command: 0 done, 1 the script stopped, 2 could not look, 3 refused."""
 import ast
 import difflib
+import hashlib
 import inspect
 import json
 import os
@@ -60,6 +63,8 @@ PHASES = ("lock", "identify", "load", "settle", "calm", "arm")
 
 WORLD = None                            # scene_world.RealWorld(), made on first use; a test puts its fake here
 LAUNCH = {"mode": "script", "commit": None, "script": None, "plant": None}   # scene.py accept / explore set this
+# scene.py both-ways (scene_mutants.py) also sets: "overlay" (the red run's session overlay), "rands" (the green run's random
+# states, written back by each s.run of the red run in order) and "run_dirs" (each session's run folder, appended)
 
 
 def _world():
@@ -115,6 +120,10 @@ def open(game, contract=None, needs=None):  # noqa: A001 - the name of the contr
         raise Refused("BAD_ARGS", "needs takes mods, map, calm and overlay, not %s" % ", ".join(odd))
     if needs.get("calm") not in (None,) + CALM_PROFILES:
         raise Refused("BAD_ARGS", "no calm profile %r; the profiles: %s" % (needs["calm"], ", ".join(CALM_PROFILES)))
+    if LAUNCH.get("overlay"):                  # the drawn mutant of a red run (scene_mutants.py): the scene cannot add its own
+        if needs.get("overlay") not in (None, "none"):
+            raise Refused("MUTANT_AND_OVERLAY", "a red run's session overlay is its mutant; remove the scene's own overlay from needs")
+        needs["overlay"] = LAUNCH["overlay"]
     overlay = needs.get("overlay")
     if overlay is not None and overlay != "none":
         if (not isinstance(overlay, dict) or set(overlay) != {"name", "entries"}
@@ -188,6 +197,7 @@ class Session(object):
         self._stations = []                     # the ids of the stage stations that s.stage took (scene_stations.py)
         self._deviation = None
         self._deviation_supported = False
+        self.fixture = None                     # {"name", "sha256"} of the save that _load loaded (scene_mutants.py: one fixture)
 
     # ---- the bridge
     def _call(self, tool, **args):
@@ -287,7 +297,10 @@ class Session(object):
             self._dir = self.W.run_dir("%s_%s" % (os.path.splitext(os.path.basename(LAUNCH["script"] or LAUNCH["mode"]))[0], self.game))
             self.W.save(os.path.join(self._dir, "run.json"), json.dumps({
                 "session": self.id, "game": self.game, "mode": LAUNCH["mode"], "commit": LAUNCH["commit"], "script": LAUNCH["script"],
-                "contract": getattr(self.contract, "hash", None), "library": VERSION}, indent=1, sort_keys=True))
+                "contract": getattr(self.contract, "hash", None), "library": VERSION, "fixture": self.fixture,
+                "plant": LAUNCH.get("plant")}, indent=1, sort_keys=True))
+            if isinstance(LAUNCH.get("run_dirs"), list):
+                LAUNCH["run_dirs"].append(self._dir)
         return self._dir
 
     # ---- the six phases of open
@@ -416,10 +429,26 @@ class Session(object):
         if r.get("success") is not True:
             raise Fault("LOAD_FAILED", done=["asked for %s" % where], detail=str(r.get("message") or r.get("error") or r))
         self._loaded = where
+        if not fresh:
+            sha, why = self._fixture_sha(where)
+            self.fixture = {"name": where, "sha256": sha} if sha else {"name": where, "sha256": None, "could_not_look": why}
         p["did"].append("loaded %s (the game's earlier map is gone)" % where)
         p["did"].append(self.W.stage_loaded(self.key, where))
         if not fresh:
             rec.could_not_look.append("whether %s was saved in a marked process: a save does not carry the mark yet" % where)
+
+    def _fixture_sha(self, name):
+        """-> (the sha256 of the save file, None), or (None, why it could not be read): then two runs are never one fixture."""
+        try:
+            if not getattr(self, "_saves", None):
+                self._has_save(name)
+            for p in (os.path.join(self._saves or "", name + ".rws"), os.path.join(self._saves or "", name)):
+                if self._saves and os.path.isfile(p):
+                    with _file(p, "rb") as f:
+                        return hashlib.sha256(f.read()).hexdigest(), None
+        except Exception as e:  # noqa: BLE001 - any failure to read it means: not known, so never one fixture with another run
+            return None, "the save file could not be read: %s: %s" % (type(e).__name__, e)
+        return None, "no file %s(.rws) in the save folder %r" % (name, getattr(self, "_saves", None))
 
     def _menu(self, p):
         """A fresh map is started from the main menu only (measured 2026-11-23: from a map the start timed out after 280 s)."""
@@ -686,6 +715,8 @@ class Session(object):
             raise Refused("NO_LIMIT", "limit=%r: give the most ticks the run may play" % (limit,))
         if speed not in SPEEDS:
             raise Refused("BAD_ARGS", "speed=%r; the speeds: %s" % (speed, ", ".join(SPEEDS)))
+        if rand is None and LAUNCH.get("rands"):  # a red run (scene.py both-ways): the green run's random state of this run, in order
+            rand = LAUNCH["rands"].pop(0)
         if rand is not None and not (isinstance(rand, str) and rand.isdigit()):
             raise Refused("BAD_ARGS", "rand=%r: the decimal random state of an earlier run's open record" % (rand,))
         tracks = []
@@ -1171,14 +1202,17 @@ def plant():
     return LAUNCH.get("plant")
 
 
-def accept(script, plant_=None):
-    """Run a committed script as an acceptance run. -> exit code."""
+def accept(script, plant_=None, extra=None):
+    """Run a committed script as an acceptance run. extra: what scene.py both-ways gives a red run (its overlay, the green run's
+    random states). -> exit code."""
     import runpy
     import scene_world
     W = _world()
     repo = getattr(W, "repo", None) or scene_world.REPO
     commit = check_accept(script, repo, W.git)
-    LAUNCH.update(mode="accept", plant=plant_, commit=commit, script=os.path.relpath(os.path.abspath(script), repo).replace("\\", "/"))
+    extra = extra or {}
+    LAUNCH.update(mode="accept", plant=plant_, commit=commit, script=os.path.relpath(os.path.abspath(script), repo).replace("\\", "/"),
+                  overlay=extra.get("overlay"), rands=list(extra.get("rands") or []))
     old_in, sys.stdin = sys.stdin, _file(os.devnull)
     print("ACCEPT %s at %s" % (LAUNCH["script"], commit[:12]), flush=True)
     try:
@@ -1328,6 +1362,13 @@ def main(argv):
             return explore(rest[0], rest[2] if rest[1:2] == ["--map"] and len(rest) > 2 else None)
         if verb == "end-session" and len(rest) == 1:
             return end_session(rest[0])
+        if verb == "both-ways" and len(rest) == 1:
+            import scene_mutants
+            try:
+                return scene_mutants.run_live(rest[0])
+            except scene_mutants.Refused as e:
+                print("REFUSED %s" % e)
+                return 3
         if verb == "compare":
             import scene_compare
             return scene_compare.main(rest)

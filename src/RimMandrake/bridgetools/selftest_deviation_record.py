@@ -89,6 +89,7 @@ def units():
 FIELDS = BRIDGE / "JawaBenchModSettingsFieldTools.cs"
 LIVE = BRIDGE / "JawaBenchDeviations.cs"
 HANDS = BRIDGE / "JawaBenchHands.cs"
+SWITCH = BRIDGE / "JawaBenchPatchSwitch.cs"
 
 
 def t_entries_apply_in_order_and_roll_back(units):
@@ -120,6 +121,10 @@ def t_save_dirt_clears_on_fixture_load(units):
 
 def t_process_dirt_survives_fixture_load(units):
     return wired(LIVE, "Record.Load(") or units.get("process")
+
+
+def t_one_patch_entry_is_repaid_alone(units):
+    return wired(SWITCH, "JawaBenchDeviations.Record.Repay(") or units.get("repay")
 
 
 def t_const_is_refused_by_name(units):
@@ -213,6 +218,7 @@ def main():
         t_receipt_lists_four_kinds_and_their_classes,
         t_save_dirt_clears_on_fixture_load,
         t_process_dirt_survives_fixture_load,
+        t_one_patch_entry_is_repaid_alone,
         t_const_is_refused_by_name,
         t_static_readonly_is_refused_by_name,
         t_canonical_save_refuses_overlay,

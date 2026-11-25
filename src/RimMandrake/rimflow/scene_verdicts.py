@@ -144,6 +144,12 @@ def add_class(root, mod, run, outcome, why, by, rejudged=False, spoiled_by=None)
 def bar_refusal(line, spec=None):
     """-> None when the run may count for a bar, else why it counts for nothing (it reads TUNED when the receipt is
     stamped or tainted). A mark that the receipt does not establish counts for nothing: unknown is never clean."""
+    stamps = line.get("stamps")
+    if isinstance(stamps, list) and stamps:   # a red run (PLANTED <mutant>), an explored or tuned run: shown, never counted
+        planted = [s for s in stamps if str(s).startswith("PLANTED ")]
+        if planted:
+            return "NOT COUNTED: a red run (%s)" % ", ".join(planted)
+        return ("TUNED: stamped %s" if "TUNED" in stamps else "NOT COUNTED: stamped %s") % ", ".join(map(str, stamps))
     ov = line.get("overlay")
     if not isinstance(ov, str) or not ov.strip():
         return "NOT COUNTED: the receipt does not establish its overlay stamp"

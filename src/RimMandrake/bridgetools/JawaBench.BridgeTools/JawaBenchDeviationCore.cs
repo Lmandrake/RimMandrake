@@ -157,6 +157,32 @@ namespace JawaBench.BridgeTools
                 return error;
             }
 
+            // Repay one process entry and keep the rest. The taint stays: the process ran with the deviation.
+            internal string Repay(string holder, string target)
+            {
+                if (_live.Count != 0 && Holder != holder)
+                    return "NOT_THE_DRIVER: the deviation record belongs to " + (Holder ?? "standalone settings");
+                int i = _live.FindLastIndex(e => e.Target == target);
+                if (i < 0) return "NOT_IN_RECORD: " + target;
+                var entry = _live[i];
+                if (entry.Settings != null) return "SETTINGS_ENTRY: " + target + " is journaled; use revert";
+                if (entry.Class == "NOT UNDONE") return "NOT_UNDONE: " + target + " has no way back";
+                _stampDirty = true;
+                try
+                {
+                    if (entry.Attempted && !Equals(entry.Read(), entry.Before))
+                        WriteChecked(entry, entry.Before);
+                    _live.RemoveAt(i);
+                }
+                catch (Exception e)
+                {
+                    Spoiled = true;
+                    return "SPOILED: " + target + ": " + e.Message;
+                }
+                if (_live.Count == 0) { Holder = null; _name = null; }
+                return null;
+            }
+
             private string Undo(int from)
             {
                 var errors = new List<string>();

@@ -32,6 +32,9 @@ SCENES = {"moat": os.path.join(RM, "FlowWorks", "northstar", "scene_moat_rim_war
           "wall_lamps": os.path.join(RM, "GimmeSomeSlack", "northstar", "scene_wall_lamp_looks.py")}
 READINGS = os.path.join(REPO, "design", "specs", "2026-11-23-bridge-v2", "12_conversion_readings.md")
 TMP = tempfile.mkdtemp(prefix="scene_conversion_")
+sys.path.insert(0, os.path.join(RM, "rimflow"))
+import scene_verdicts                               # noqa: E402
+scene_verdicts.REPO = TMP   # the scenes' own judge lines write the verdict ledger: into this test's folder, never a real mod's file
 COMMIT = "a" * 40
 # the hits captured live on ArchBig, TP_MOAT_HELD_A (selftest_flowworks_moat_rim_stabs.py): 'tick instigator damageDef'
 OFF = {"wardens[0]": ["912 Human24671 Blunt", "1032 Human24671 Blunt"],               # the warden's own punches

@@ -159,6 +159,14 @@ def t_the_taint_mark_counts_for_nothing():
         s, unknown)
 
 
+def t_a_planted_run_counts_for_nothing():
+    red = v(A, run(LK.SUCCESS, stamps=["PLANTED light_limit_5"]))      # a red run of scene.py both-ways, every other mark clean
+    explored = v(A, run(LK.SUCCESS, stamps=["EXPLORED"]))
+    clean = v(A, run(LK.SUCCESS, stamps=[]))
+    return (red["state"] == SV.ZERO and red["runs"][0]["reads"].startswith("NOT COUNTED: a red run") and explored["state"] == SV.ZERO
+            and clean["verdict"] == "PASS"), (red, explored, clean)
+
+
 def t_an_uncompared_arm_counts_for_nothing():
     s = v(A, run(LK.SUCCESS, arm="STEP", compared=False))
     done = v(A, run(LK.SUCCESS, arm="STEP", compared=True))
@@ -286,6 +294,7 @@ def _mutants():
         return br(dict(line, tainted=False), spec)
     yield "the overlay stamp is checked and the taint mark is not", SV, "bar_refusal", stamp_only
     yield "every receipt counts", SV, "bar_refusal", lambda line, spec=None: None
+    yield "a planted or stamped run counts", SV, "bar_refusal", lambda line, spec=None: br(dict(line, stamps=[]), spec)
     yield "an arm counts uncompared", SV, "bar_refusal", lambda line, spec=None: br(dict(line, compared=True), spec)
     yield "a PROOF build counts", SV, "bar_refusal", lambda line, spec=None: br(dict(line, build_kind="RELEASE"), spec)
     yield "any map kind counts", SV, "bar_refusal", lambda line, spec=None: br(dict(line, map_kind="settlement"),
@@ -333,7 +342,7 @@ def main(argv):
     TESTS = [t_kind_a_one_success_passes, t_kind_a_one_mod_failure_fails, t_kind_b_one_success_passes,
              t_kind_b_mod_failure_blocks_the_pass, t_kind_b_unresolved_blocks_the_pass, t_spent_budget_is_inconclusive,
              t_x_of_y_short_is_held_for_the_conductor, t_unresolved_holds_until_classed, t_reclassification_keeps_the_history,
-             t_a_replay_is_not_a_sample, t_a_cluster_counts_as_one, t_a_stamped_run_reads_tuned,
+             t_a_replay_is_not_a_sample, t_a_cluster_counts_as_one, t_a_stamped_run_reads_tuned, t_a_planted_run_counts_for_nothing,
              t_the_taint_mark_counts_for_nothing, t_an_uncompared_arm_counts_for_nothing,
              t_a_proof_build_or_a_map_the_bar_refuses_counts_for_nothing, t_an_untouched_change_keeps_the_verdict,
              t_a_serious_unresolved_opens_a_hunt_notice, t_zero_none_could_not_look_and_failed_are_four_answers,

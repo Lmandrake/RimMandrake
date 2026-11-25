@@ -1,0 +1,17 @@
+Planted faults of selftest_scene_mutants.py, each seen red on 2026-11-25 (RIMMANDRAKE_BUILD_MUTANTS_BY_OVERLAY_AUTHOR_DOES_NOT_CHOOSE).
+Each plant was one edit of the module, run, and the module put back.
+
+== FEATURE_OFF rule removed
+FAIL t_feature_off_mutant_is_refused: AssertionError: []
+selftest_scene_mutants: 15 checks passed of 16
+== witness by last value only
+FAIL t_red_with_unchanged_witness_reads_mutant_not_used: AssertionError: {'verdict': 'NOT_USED', 'why': 'mutant not used: its witness reads the same in the green and the red run, so the mutant did not act: track steel_flyer', 'mutant': 'light_limit_5', 'change': 'value', 'kind': 'live'}
+selftest_scene_mutants: 15 checks passed of 16
+== fixture hash not compared
+FAIL t_both_runs_start_from_one_fixture_hash: AssertionError: {'verdict': 'KILLED', 'why': 'mutant killed: the red run failed on the condition that the mutant names: on success', 'mutant': 'light_limit_5', 'change': 'value', 'kind': 'live'}
+selftest_scene_mutants: 15 checks passed of 16
+== stamp rule removed from bar_refusal
+FAIL t_red_receipt_never_counts_as_pass: AttributeError: 'NoneType' object has no attribute 'startswith'
+selftest_scene_mutants: 15 checks passed of 16
+
+== scene_verdicts plant 'a planted or stamped run counts' (selftest_scene_verdicts.py _mutants): caught by t_a_planted_run_counts_for_nothing

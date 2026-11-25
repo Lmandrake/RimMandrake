@@ -1,0 +1,77 @@
+{
+ "schema": "mutants_v1",
+ "mod": "ExplosiveKnockback",
+ "about": "The mod's mutants (05_build_design.md Decision 13; src/RimMandrake/Utils/scene_mutants.py). The program draws one for a scene (scene.py both-ways); the scene's author does not choose. A witness is a value the scene records that differs because of the mutant.",
+ "feature_switches": [
+  "RimMandrake.ExplosiveKnockback.RimMandrakeExplosiveKnockbackSettings.enabled"
+ ],
+ "bars": {
+  "inv_pits_receive": {
+   "scenes": [
+    "scene_storeroom_pit"
+   ],
+   "written_by": "RIMMANDRAKE_CONVERT_THREE_SCENES_SHOW_IF_TEN_NAMES_HELP",
+   "reviewed_by": "rm-judge second review of RIMMANDRAKE_BUILD_MUTANTS_BY_OVERLAY_AUTHOR_DOES_NOT_CHOOSE, 2026-11-25",
+   "review": "Approved, all three sound: each flips a real part read live per blast (throwIntoPits in Kernel() and the pit-as-wall test in RM_KnockbackMath.Resolve, maxThrowCells through CapFor since Bomb has no own cap, throwItems in KbPlanner.Decide and GoodWillBeThrown), none is the enabled switch, each change word is honest, and each witness moves because of the mutant; pits_take_nothing and throw_one_cell most likely fail on success because the pit is about 5 cells from the bomb, while goods_stay_put's forbidden rests on a fragile stack being among the 6 nearest goods (unverified, and a wrong guess shows as OTHER_CONDITION, since success fails anyway)."
+  }
+ },
+ "mutants": [
+  {
+   "name": "pits_take_nothing",
+   "bar": "inv_pits_receive",
+   "kind": "live",
+   "change": "branch",
+   "breaks": "success",
+   "apply": {
+    "setting": "RimMandrake.ExplosiveKnockback.RimMandrakeExplosiveKnockbackSettings.throwIntoPits",
+    "value": "False"
+   },
+   "witness": {
+    "tracks": [
+     "people[0].pos",
+     "people[1].pos",
+     "people[2].pos",
+     "people[3].pos",
+     "people[4].pos",
+     "goods[0].pos",
+     "goods[1].pos",
+     "goods[2].pos",
+     "goods[3].pos",
+     "goods[4].pos",
+     "goods[5].pos"
+    ]
+   },
+   "why": "the pit branch is skipped: a pit acts as a wall (RM_KnockbackMath.cs), so a throw that would end in the pit stops at its edge; the witness is every cast track, because which thrown thing crosses the pit is not known before the run"
+  },
+  {
+   "name": "throw_one_cell",
+   "bar": "inv_pits_receive",
+   "kind": "live",
+   "change": "value",
+   "breaks": "success",
+   "apply": {
+    "setting": "RimMandrake.ExplosiveKnockback.RimMandrakeExplosiveKnockbackSettings.maxThrowCells",
+    "value": "1"
+   },
+   "witness": {
+    "track": "goods[0].pos"
+   },
+   "why": "a wrong cap: nothing flies further than one cell, so nothing reaches the pit beside the room"
+  },
+  {
+   "name": "goods_stay_put",
+   "bar": "inv_pits_receive",
+   "kind": "live",
+   "change": "branch",
+   "breaks": "forbidden",
+   "apply": {
+    "setting": "RimMandrake.ExplosiveKnockback.RimMandrakeExplosiveKnockbackSettings.throwItems",
+    "value": "False"
+   },
+   "witness": {
+    "track": "goods[0].pos"
+   },
+   "why": "the goods branch is skipped: goods are not thrown, so they also lose the thrown goods' blast-damage spare (ItemWillBeThrown); the old proof's arm B destroys a fragile stack in this save at full damage, so the red run fails on forbidden (a goods stack gone)"
+  }
+ ]
+}

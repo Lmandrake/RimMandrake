@@ -70,6 +70,9 @@ receipt is not seen before. A **cluster** is a set of side-by-side copies with o
 - **a-rejudged-run-shows-both-outcomes.** A re-judged run shows the first and the new outcome; the new one speaks.
 - **a-line-without-identity-is-refused.** A run line without its identity, or a second run line for one run id, is
   refused by name and nothing is written.
+- **a-planted-run-counts-for-nothing.** A run line whose stamps are not empty counts for no bar: a red run of `scene.py
+  both-ways` (stamp `PLANTED <mutant>`) reads "NOT COUNTED: a red run", a TUNED stamp reads TUNED, any other stamp (EXPLORED)
+  reads NOT COUNTED (`scene_mutants.py`, `design/specs/2026-11-23-bridge-v2/boundary.md` §MUTANTS AND SHOWN BOTH WAYS).
 - **exit-holds-a-pass-the-ledger-refuses.** The Stage 6 exit keeps a check's `pass` only when the ledger has no line for
   its scene or reads PASS. A tuned or tainted run gives `spoiled`, an UNRESOLVED run `unresolved`, and the exit is not
   met. A check with no ledger line is not touched.

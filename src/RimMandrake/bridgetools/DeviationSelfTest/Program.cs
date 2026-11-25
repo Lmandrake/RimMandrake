@@ -116,6 +116,28 @@ internal static class Program
             r.Load(false);
             Need(r.ProcessDirty && Equals(r.Receipt()["clean"], false), "fixture cleared process reach");
         });
+        Check("repay", () =>
+        {
+            var r = Fresh();
+            string patch = "on";
+            D.Entry Switch(string target) => new D.Entry("overlay", "PUT BACK", "process", target, null, "off", () => patch, v => patch = (string)v);
+            Need(r.Apply("a", "patch_switch", new[] { Switch("p") }) == null && patch == "off", "could not take the patch off");
+            Need(r.Apply("a", null, new[] { Setting("x", 5) }) == null, "could not add a setting beside the patch");
+            Need((r.Repay("b", "p") ?? "").StartsWith("NOT_THE_DRIVER") && patch == "off", "a second holder repaid an entry");
+            Need((r.Repay("a", "x") ?? "").StartsWith("SETTINGS_ENTRY") && Equals(values["x"], 5), "repay put back a journaled setting");
+            Need((r.Repay("a", "q") ?? "").StartsWith("NOT_IN_RECORD"), "repay of an unknown target did not refuse by name");
+            Need(r.Repay("a", "p") == null && patch == "on", "repay did not put the patch back");
+            var left = (IList<Dictionary<string, object>>)r.Receipt()["entries"];
+            Need(left.Count == 1 && Equals(left[0]["target"], "x") && r.Tainted && r.Holder == "a", "repay took more than its own entry or dropped the taint");
+            Need(r.Revert("a") == null && Equals(values["x"], 0) && r.Holder == null && r.Tainted, "revert after repay failed");
+            Need(r.Apply("a", "patch_switch", new[] { Switch("p") }) == null && r.Repay("a", "p") == null && r.Holder == null &&
+                 Equals(r.Receipt()["overlay"], "none") && Equals(r.Receipt()["tainted"], true), "the last repay kept the holder or the stamp");
+            var bad = Fresh();
+            bad.Apply("a", "patch_switch", new[] { new D.Entry("overlay", "PUT BACK", "process", "p", null, "off", () => patch,
+                v => { if (Equals(v, "on")) throw new IOException("no way back"); patch = (string)v; }) });
+            Need((bad.Repay("a", "p") ?? "").StartsWith("SPOILED") && bad.Spoiled, "a failed repay did not mark SPOILED");
+            patch = "on";
+        });
         Check("const", () => Need((D.FieldRefusal(typeof(Program).GetField("Constant")) ?? "").Contains("const Constant"), "const Constant was not refused by name"));
         Check("readonly", () => Need((D.FieldRefusal(typeof(Program).GetField("Readonly")) ?? "").Contains("static readonly Readonly"), "static readonly Readonly was not refused by name"));
         Check("canonical", () =>
