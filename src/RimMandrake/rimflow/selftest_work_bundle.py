@@ -92,6 +92,14 @@ def t_sort_runs_each_members_test_and_closes_only_green():
         "sort apply: only the green members close (%s)" % [c[0] for c in closed])
     chk(lambda: all(c[1] == "abc1234" and "abc1234" in c[2] for c in closed),
         "sort apply: the close names the commit the test ran on, in --sha and in the evidence")
+    import inspect
+    src = inspect.getsource(W.close_member)
+    chk(lambda: '"--no-code"' in src and '"--sha"' not in src,
+        "sort close: --no-code names the build (a ledger-only build is refused as --sha; measured 2026-11-24)")
+    refused = W.sort_apply([{"id": "G", "verdict": "holds", "test": "cmd:x", "why": ""}], "abc1234",
+                           lambda *a: (2, "close: G has not earned its close: guard this fix died 1 time(s)"))
+    chk(lambda: not refused[0]["closed"] and "guard this fix died" in refused[0]["act"],
+        "sort apply: a close a ticket's gate refuses is kept and reported with the gate's words")
     chk(lambda: {r["id"]: r["act"] for r in out}["D_NONE"] == "listed no test",
         "sort apply: a no-test member is listed `no test`, never closed")
     # a vacuous check is never green

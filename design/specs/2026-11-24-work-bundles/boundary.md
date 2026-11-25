@@ -49,7 +49,8 @@ bundle began). A member with none of these is **open**.
 
 - **sort-runs-each-members-test-and-closes-only-green.** `sort` runs each open member's test once on the current build.
   `holds` closes the member as already fixed, as the pipeline's act, with the commit the test ran on named in the close
-  (`--sha <origin/main sha>` and `--evidence`); `fails` keeps it; `unmeasured` keeps it and says why; a member with no
+  (`--no-code "already fixed: ... on the build <sha>"` and `--evidence`; that build is often ledger-only, which `--sha`
+  refuses); a close that a gate of the ticket refuses is reported with the gate's words and the member is kept; `fails` keeps it; `unmeasured` keeps it and says why; a member with no
   runnable test is listed `no test` and is never closed. No model and no tokens. A named script that holds counts only when git
   shows it added with its ticket (from 6 h before the filing on); one that was there before is `holds_unproven` and is
   kept for the worker, because it was never seen failing on this ticket. A section that reads `Acceptance test: none` is

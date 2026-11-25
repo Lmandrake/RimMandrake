@@ -189,8 +189,11 @@ def sort(ids, items, prose_of, run_effect, run_script_fn, root=REPO, exists=None
 
 
 def close_member(iid, sha, evidence):
-    """`rimflow close <iid> --sha <sha> --evidence ...` as the pipeline's act. -> (rc, output)."""
-    argv = [sys.executable, os.path.join(HERE, "cli.py"), "close", iid, "--sha", sha, "--evidence", evidence,
+    """`rimflow close <iid> --no-code "already fixed: ... at <sha>" --evidence ...` as the pipeline's act. -> (rc, output).
+    The build the test ran on is named in the text, not in --sha: that build is often a ledger-only commit, which
+    `close --sha` refuses, and the commit that did the work is not known to the sort (list_effect.close_item's form)."""
+    argv = [sys.executable, os.path.join(HERE, "cli.py"), "close", iid, "--no-code",
+            "already fixed: its test holds on the build %s (work_bundle sort)" % sha, "--evidence", evidence,
             "--seat", "BENCH", "--why", "pipeline act (work_bundle sort): its test holds at %s, so it was already fixed"
             % sha, "--reason", "already fixed: its test holds at %s (work_bundle sort)" % sha, "--publish"]
     env = dict(os.environ, RM_ROLE_UNIT=os.environ.get("RM_ROLE_UNIT") or UNIT, RIMFLOW_SEAT="BENCH")
