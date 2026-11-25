@@ -51,6 +51,43 @@ def _moh():
     return m
 
 
+def _hws():
+    """rimflow/host_work_switch.py, loaded by its path (the same rule as _moh: rimflow never goes on sys.path here)."""
+    m = sys.modules.get("host_work_switch")
+    if m is not None:
+        return m
+    import importlib.util
+    p = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "rimflow", "host_work_switch.py")
+    spec = importlib.util.spec_from_file_location("host_work_switch", os.path.abspath(p))
+    m = importlib.util.module_from_spec(spec)
+    sys.modules["host_work_switch"] = m
+    spec.loader.exec_module(m)
+    return m
+
+
+def steve_switched():
+    """-> the text of the host work switch on SteveDesktop (pipeline improvements only), or None."""
+    return _hws().switched("SteveDesktop")
+
+
+def switch_refusal(job):
+    """-> a refusal record when JOB is mod work bound for the SteveDesktop lane while SteveDesktop is switched to
+    pipeline work only (rimflow/host_work_switch.py), else None. Mod work: a chains, rows, --full or stage-6 checks job.
+    Pipeline work passes: a --proofs job (live-proof lines of a pipeline item), an Ops job, the Archmagi lane."""
+    job = job or {}
+    if job.get("requested_by") in OPS_REQUESTERS or str(job.get("lane") or "stevedesktop") == "archmagi":
+        return None     # lane "any" can land on SteveDesktop, so it is refused with the Archmagi lane as its repair
+    if ((job.get("selector") or {}).get("proofs")):
+        return None
+    sw = steve_switched()
+    if not sw:
+        return None
+    r = _refuse(job.get("mod"), "mod work on SteveDesktop: " + sw, "the switch is lifted",
+                "submit it to the Archmagi lane (--lane archmagi), or as pipeline proof lines (--proofs)", "held")
+    r["clause"] = "host_work_switch"
+    return r
+
+
 def _holds():
     """-> mod_owner_hold.load() (RM_OWNER_HOLD_FILE or the repo's list); raises mod_owner_hold.Unreadable."""
     return _moh().load()

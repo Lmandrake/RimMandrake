@@ -23,6 +23,7 @@ import argparse
 import json
 import os
 import re
+import socket
 import subprocess
 import sys
 import time
@@ -207,6 +208,51 @@ def sort(ids, items, prose_of, run_effect, run_script_fn, root=REPO, exists=None
             what = "python3 %s" % what
         rows.append({"id": i, "test": what, "verdict": verdict, "why": _one(out, 300) or "(no output)"})
     return rows
+
+
+# The owner, 2026-11-25 (item RIMMANDRAKE_VET_WORK_BOUND_FOR_STEVEDESKTOP_HE_SAW_FIREHAWK_AGAIN): "We must ALWAYS Filter
+# old tickets into any process, yes. The older, the more grinding required to prove they're not harmful." A ticket filed
+# before the Maturation Pipeline began needs a test that is red today (a red test today also shows that its target
+# exists today); a newer ticket needs its red test, or a failure that happened and is recorded on it.
+MATURATION_START = "2026-11-13T00:00:00Z"
+
+
+def failure_recorded(it):
+    """-> what recorded failure the ticket carries, or None: an alarm raised from a measurement, a filing by a program
+    from a measured fault (seat RUNNER: testq ingest, the steward), a failed run of its test, a finding, a live promise
+    that broke, or a bug ticket (the record of a failure)."""
+    ran, found = _g(it, "runs"), _g(it, "findings")
+    runs = [r for r in ran if str(getattr(r, "result", "")).lower() == "fail"] if ran else ()
+    for what, ok in (("an alarm raised from a measurement", _g(it, "raised")),
+                     ("a filing by a program from a measured fault", _g(it, "spawned_by") == "RUNNER"),
+                     ("%d failed run(s) of its test" % len(runs), runs),
+                     ("%d finding(s)" % (len(found) if found else 0), found),
+                     ("a live promise that broke", _g(it, "live_broken")),
+                     ("a bug ticket", _g(it, "kind") == "bug")):
+        if ok:
+            return what
+    return None
+
+
+def age_refusal(it, verdict, now):
+    """-> why a ticket may not enter a run yet (the owner's age filter), or None. verdict: its test's reading from the
+    sort (fails = red today), None when nothing ran."""
+    if verdict == "fails":
+        return None
+    filed = _g(it, "created_at")
+    try:
+        t = _ts(filed)
+    except (TypeError, ValueError):
+        return ("UNVETTED: its filing date %r cannot be read, so it enters a run only with a test that is red today; its "
+                "test reads %s" % (filed, verdict or "nothing"))
+    if t < _ts(MATURATION_START):
+        return ("UNVETTED: filed %s, before the Maturation Pipeline (%s), so it enters a run only with a test that is red "
+                "today (that also shows its target exists); its test reads %s. Vet it: attach a red check "
+                "(`rimflow effect`), or drop it" % (str(filed)[:10], MATURATION_START[:10], verdict or "nothing"))
+    if failure_recorded(it):
+        return None
+    return ("UNVETTED: filed %s, it enters a run only with its red test or a recorded failure; its test reads %s and it "
+            "records no failure" % (str(filed)[:10], verdict or "nothing"))
 
 
 def close_member(iid, sha, evidence):
@@ -608,6 +654,16 @@ def remote_argv(host, ids, why):
 LEFT_OUT_RX = re.compile(r"^left out: (\S+)\s+(.*)$", re.M)
 
 
+def switch_refusal(host, system):
+    """-> why a bundle of SYSTEM may not run on HOST, or None: a mod's bundle never runs on a host that the owner switched
+    to pipeline work only (host_work_switch.py)."""
+    if not str(system or "").startswith("mod:"):
+        return None
+    import host_work_switch as HWS
+    sw = HWS.switched(host)
+    return ("REFUSED: a mod bundle (%s) on %s: %s" % (system, host, sw)) if sw else None
+
+
 def launch_remote(host, system, members, why, pipeline, now=None, runner=subprocess.run, launched_by=None):
     """The bundle of `system` launched on `host`. A placeholder (`launching`, `host` set) holds the system under the
     store lock, and the lock is let go before the ssh: a long remote sort must not hold every local finish waiting
@@ -619,6 +675,9 @@ def launch_remote(host, system, members, why, pipeline, now=None, runner=subproc
     now = time.time() if now is None else now
     if not members:
         return 2, "%s has no ready member" % system
+    no = switch_refusal(host, system)
+    if no:
+        return 3, {"launch_out": no, "decision": "host_refused", "left_out": {}}
     lk = _lock()
     try:
         live = live_bundles()
@@ -825,6 +884,10 @@ def bundle_command(system, ids, items, why, now, prose_of, run_effect, run_scrip
     closed = [r["id"] for r in rows if r.get("closed")]
     rest = [i for i in ids if i not in closed]
     ready, out = ready_split(rest, items, now, refused=refused, held=held, leased=leased)
+    verdicts = {r["id"]: r["verdict"] for r in rows}
+    aged = {i: age_refusal(items[i], verdicts.get(i), now) for i in ready}
+    out.update({i: y for i, y in aged.items() if y})
+    ready = [i for i in ready if not aged[i]]
     got = {"rows": rows, "closed": closed, "ready": ready, "out": out, "rc": 3, "rec": None}
     if not ready:
         return got
@@ -848,7 +911,7 @@ def cmd_launch(o):
         return 2
     mod = system.split(":", 1)[1] if system.startswith("mod:") else None
     if mod:
-        no = mod_gate(mod)
+        no = mod_gate(mod) or switch_refusal(socket.gethostname(), system)
         if no:
             print("REFUSED: %s" % no)
             return 2

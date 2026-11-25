@@ -840,9 +840,13 @@ def t_a_lead_takes_the_ready_tickets_of_its_home():
     out, and so does one whose system has no lead."""
     import types
     L = LD()
-    x = lambda **kw: types.SimpleNamespace(**dict({"wait_until": None, "title": "t"}, **kw))  # noqa: E731
+    x = lambda **kw: types.SimpleNamespace(**dict({"wait_until": None, "title": "t", "kind": "bug",  # noqa: E731
+                                                   "created_at": "2026-11-24T00:00:00Z"}, **kw))
+    # the owner's age filter (2026-11-25, work_bundle.age_refusal): a joiner has no check, so only a newer ticket with a
+    # recorded failure joins; an old one (O) and a newer one with no recorded failure (N) stay out
     cands = {"B": x(), "C": x(wait_until="2099-01-01T00:00:00Z"), "D": x(), "E": x(), "F": x(), "G": x(), "H": x(),
-             "I": x(), "J": x(), "K": x(wait_until="not a date"), "R": x(), "P": x(wait_until="2000-01-01T00:00:00Z")}
+             "I": x(), "J": x(), "K": x(wait_until="not a date"), "R": x(), "P": x(wait_until="2000-01-01T00:00:00Z"),
+             "O": x(created_at="2026-10-01T00:00:00Z"), "N": x(kind="task")}
     sysmap = dict({i: "pipeline:test-lane" for i in cands}, I="pipeline:docs", J="item:J")
     got = L.join_candidates(cands, NOW, want={"pipeline:test-lane", "item:J"}, system=sysmap.get,
                             facts=lambda t: ([], True) if t is cands["E"] else (["Z"], False) if t is cands["G"] else ([], False),
@@ -852,7 +856,7 @@ def t_a_lead_takes_the_ready_tickets_of_its_home():
                             refused=lambda i: "REFUSED BY BUNDLE: not this system" if i == "R" else None)
     chk(lambda: got == {"B": "pipeline:test-lane", "P": "pipeline:test-lane"},
         "join_candidates: a ready ticket and one whose wait passed join; a waiting, held, blocked, off, waiting-on, "
-        "leased, refused, unreadable-date, no-lead or item: ticket stays out (%s)" % got)
+        "leased, refused, unreadable-date, no-lead, item:, old or unvetted ticket stays out (%s)" % got)
     items = {"A": it()}
     rows, launches, _ = run(items, systems={"A": "pipeline:test-lane"}, bundles_live={}, join={"B": "pipeline:test-lane"})
     chk(lambda: rows["A"].get("bundle", {}).get("members") == ["A", "B"] and launches == ["A"],

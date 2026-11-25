@@ -1,0 +1,21 @@
+PASS  a mod chain job for SteveDesktop is refused while it is switched, and the refusal names its repair: mod work on SteveDesktop: SteveDesktop works pipeline improvements only (his words, 2026-11-24: "I'd like to have SteveDesktop working 100% on closing out non-mod work today please."); lift: python3 src/RimMandrake/rimflow/host_work_switch.py lift SteveDesktop --said "<his words>"; it runs once the switch is lifted (smallest fix: submit it to the Archmagi lane (--lane archmagi), or as pipeline proof lines (--proofs))
+FAIL  testq's one queueing door (hold_refusal: submit and the fault-window rerun) refuses it too
+PASS  lane any can land on SteveDesktop: refused
+PASS  a --proofs job (pipeline proof lines) passes
+PASS  the Archmagi lane passes
+PASS  an Ops job passes
+PASS  no switch: the mod job passes
+PASS  an unreadable switch file refuses (could not look)
+FAIL  fill_plan: the switch outranks fill.stop and the filler queues nothing: {'verdict': 'stopped', 'text': 'stopped: /home/mandrake/.seat-tmp/BENCH/host_switch_4365ju_l/q/fill.stop exists'}
+FAIL  with fill.stop removed the switch still stops the filler: pick
+FAIL  the steward reads the switch as intended and settled, never a fault: {'state': 'IDLE_EMPTY', 'reason': 'fill would queue DivingInteraction: scald_walking_pasture,seabed_floor_ambient_carryover,seabed_floor_generators but nothing is pending (the fill failed?)', 'fault_at': 0, 'at_once': False, 'jobs': [], 'settled': False}
+Traceback (most recent call last):
+  File "/home/mandrake/rm/relentless/clones/RIMMANDRAKE_VET_WORK_BOUND_FOR_STEVEDESKTOP_HE_SAW_FIREHAWK_AGAIN.det/src/RimMandrake/Utils/testq/selftest_testq_host_switch.py", line 113, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/home/mandrake/rm/relentless/clones/RIMMANDRAKE_VET_WORK_BOUND_FOR_STEVEDESKTOP_HE_SAW_FIREHAWK_AGAIN.det/src/RimMandrake/Utils/testq/selftest_testq_host_switch.py", line 107, in main
+    t_rerun_line()
+    ~~~~~~~~~~~~^^
+  File "/home/mandrake/rm/relentless/clones/RIMMANDRAKE_VET_WORK_BOUND_FOR_STEVEDESKTOP_HE_SAW_FIREHAWK_AGAIN.det/src/RimMandrake/Utils/testq/selftest_testq_host_switch.py", line 97, in t_rerun_line
+    line = ingest.rerun_line(j, ["embergrass_regrow"])
+TypeError: rerun_line() takes 1 positional argument but 2 were given

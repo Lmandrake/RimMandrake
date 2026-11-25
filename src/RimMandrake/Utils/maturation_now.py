@@ -1933,6 +1933,22 @@ def unread_note(d):
         len(e), "" if len(e) == 1 else "s", DETAIL)
 
 
+def switch_line():
+    """-> one line: which machine the owner switched to pipeline work only (rimflow/host_work_switch.py), with the lift."""
+    import importlib.util
+    hp = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "rimflow", "host_work_switch.py")
+    spec = importlib.util.spec_from_file_location("host_work_switch", os.path.abspath(hp))
+    H = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(H)
+    try:
+        rows = H.load()
+    except H.Unreadable as e:
+        return "Machines: the host work switch COULD NOT BE READ (%s), so no machine takes mod work." % e
+    if not rows:
+        return "Machines: no machine is switched; each takes mod work (set: `host_work_switch.py set <machine> --said ...`)."
+    return "Machines: " + " ".join(H.switched(k) + "." for k in sorted(rows))
+
+
 def build(d, now):
     """-> (markdown, html): the summary page. The same blocks in both; what only an agent needs is build_detail's."""
     measured = "**Measured from disk %s.** Made by a program, no model, no tokens." % pac(now)
@@ -1940,7 +1956,8 @@ def build(d, now):
     nm, tr = d.get("nonmod"), d.get("trend")
     note = unread_note(d)
     tail = "Everything behind these numbers: `%s\\%s.html`." % (NATIVE_OUT, DETAIL)
-    parts_md = ["# " + title, "", measured, "", PX.crossref_md("maturation"), "", needs_panel(d), ""]
+    sw = switch_line()
+    parts_md = ["# " + title, "", measured, "", PX.crossref_md("maturation"), "", "**%s**" % sw, "", needs_panel(d), ""]
     if tr:
         parts_md += ["## " + MT.TITLE, "", MT.block(tr), ""]
     if nm:
@@ -1951,7 +1968,7 @@ def build(d, now):
     parts_md += ["## Every mod, one line", ""] + one_line_md(d)
     parts_md += ["---", ""] + ([note, ""] if note else []) + [tail, ""]
     md = "\n".join(parts_md)
-    body = [PX.crossref_html("maturation"), needs_panel(d)]
+    body = [PX.crossref_html("maturation"), "<p class='m'><b>%s</b></p>" % esc(sw), needs_panel(d)]
     if tr:
         body += ["<h2>%s</h2>" % esc(MT.TITLE), MT.block(tr)]
     if nm:

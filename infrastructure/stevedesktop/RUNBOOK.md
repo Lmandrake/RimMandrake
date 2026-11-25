@@ -312,6 +312,21 @@ packages (VS Code, gh, Sysinternals) install fine straight over SSH. `winget sou
 - **Scripting Windows on SteveDesktop over ssh has three more traps.** `scp` can hang past 120 s and a PowerShell `-Command` reading `$input` from ssh stdin writes nothing: put a script there with `ssh 'powershell -EncodedCommand <b64>'` doing `[IO.File]::WriteAllBytes` from base64, and run long jobs as a SYSTEM scheduled task (`Start-Process` from ssh dies with the session). `Get-ChildItem -Recurse` under `C:\Users` loops through `Application Data` junctions: walk with .NET and skip `ReparsePoint`. In PowerShell 5, `ConvertFrom-Json` on a file holding an array, piped to `ForEach-Object`, hands over the whole array as one object: use `-Raw` and `foreach($x in @($a))`. `Get-WinEvent -FilterHashtable` reads a UTC DateTime's digits as local time, so on a west-of-Greenwich machine a recent UTC StartTime asks for the future and returns 'no events' with no error: pass local time and print a probe count beside any empty event section.
 - **SteveDesktop gets no Lodestar or Dispatch update by itself:** it has no sweep, and its deploy-key origins (Lmandrake/Lodestar, Dispatch) became one-commit release repos on 2026-10-28, so `git pull` refuses to fast-forward. Deliver a rule change by pushing dev HEAD over ssh to branch `archmagi-main` in each clone and merging `--ff-only`, until a sweep or a `-dev` read key exists.
 
+## What work SteveDesktop takes: the host work switch
+
+- One switch says that SteveDesktop works pipeline improvements only: `src/RimMandrake/rimflow/host_work_switch.json`.
+  - Show it with `python3 src/RimMandrake/rimflow/host_work_switch.py show`.
+  - Set it with `... set SteveDesktop --said "<his words>" --publish`.
+  - Lift it with `... lift SteveDesktop --said "<his words>" --publish`. The Conductor window can also lift it, with
+    `--per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS --why "..."`.
+- While the switch is set, these refuse mod work: testq submit, the idle filler, the fault-window rerun, mod bundles
+  and the list launcher's host room.
+  - Mod work is a job with chains, rows, `--full` or stage-6 checks. Each refusal names its repair: the Archmagi lane,
+    or `--proofs`.
+  - The steward reads the switch as SWITCHED, which is settled and never a fault.
+- The switch has no expiry. Do not stop the filler with `testq/fill.stop` to carry an order of the owner. That file
+  aged into a fault, got an expiry and was removed on 2026-11-25.
+
 ## Test centre: running a modcheck there (proved 2026-10-25)
 
 **The game is ours (owner, 2026-10-25, verbatim):** "Steve no longer plays Rimworld, so you never

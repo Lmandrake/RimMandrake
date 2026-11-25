@@ -289,12 +289,16 @@ def env_window(rec):
         "" if state else "; UNCHECKED beyond that: the fault monitor has never run")
 
 
-def rerun_line(job):
-    """The testq.py submit line that re-runs JOB as it was (same mod, selector, purpose, items), at the fix's sha."""
+def rerun_line(job, held=()):
+    """The testq.py submit line that re-runs JOB (same mod, selector, purpose, items) at the fix's sha. HELD: the chains
+    that carried the fault. A chain job re-runs only those: the cheapest run that shows the fault is the proof, and a
+    chain that gave its verdict is not run again (2026-11-24/25: a Pyrelands repair re-ran its passed
+    firehawk_first_sighting_letter chain three times beside the one chain that held the fault)."""
     sel, out = job.get("selector") or {}, ["python3 src/RimMandrake/Utils/testq/testq.py submit", job["mod"]]
     for k in ("chains", "rows"):
         if sel.get(k):
-            out += ["--%s" % k, ",".join(sel[k])]
+            names = [c for c in sel[k] if c in set(held or ())] if k == "chains" else []
+            out += ["--%s" % k, ",".join(names or sel[k])]
     for it in sel.get("item") or []:
         out += ["--item", it]
     if sel.get("full"):
@@ -357,8 +361,9 @@ def repair_prose(name, job, res, cause, env_read):
         "- SITE: the test site (map, fixture, quiet hold, a surprise event) did it. Fix the staging, not the check.",
         "- HARNESS: the harness's own code. Fix it here.", "",
         "## verify", "",
-        "Pass = the SAME job re-run yields a verdict. After the fix is published, queue it again:",
-        "", "    %s" % rerun_line(job), "",
+        "Pass = the chains that held the fault, re-run, yield a verdict (only those: a chain that gave its verdict is "
+        "not run again). After the fix is published, queue it again, once:",
+        "", "    %s" % rerun_line(job, held), "",
         "and when it finishes: `python3 src/RimMandrake/Utils/testq/retest.py passed <new job id> %s` exits 0 (the run "
         "is DONE, rows carry PASS/FAIL/SKIP, and none carries this cause). A FAIL verdict passes this item: a real "
         "FAIL is a verdict." % name, "",

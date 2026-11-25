@@ -252,6 +252,21 @@ def machine_load(cfg, load, cores):
     return False, None, None
 
 
+def switch_refuses(host, it):
+    """-> why HOST takes no room for ticket IT, or None. A host on pipeline work only (rimflow/host_work_switch.py)
+    takes no mod work: a ticket that mod_work reads as a mod's, or one whose mod reading could not be made."""
+    import host_work_switch as HWS
+    sw = HWS.switched(host)
+    if not sw:
+        return None
+    mw = it.get("mod_work") or {}
+    if mw.get("unreadable"):
+        return "%s: its mod could not be read (%s), and %s" % (host, mw["unreadable"], sw)
+    if mw.get("mod") or it.get("mod"):
+        return "%s takes no mod work (%s): %s" % (host, mw.get("mod") or it.get("mod"), sw)
+    return None
+
+
 def host_room(cfg, hosts, new=0):
     """-> (host, why not). A lane run whose own slots are full goes to a host of cfg["hosts"] that has fewer live lane
     runs (its own, plus `new` placed there this tick) than its max_live, and whose live account has more than its
@@ -548,6 +563,9 @@ def decide(cfg, st, facts, now, account=(True, "")):
         host = None
         if not free:
             host, hwhy = host_room(cfg, facts.get("hosts"), placed)
+            no = host and switch_refuses(host, it)
+            if no:
+                host, hwhy = None, no
             if not host and over:
                 put("machine_load", owhy + "; nothing launches on this machine" + (
                     "; no host has room: " + hwhy if cfg.get("hosts") else ""))
@@ -774,6 +792,9 @@ def join_candidates(cands, now, want, system, facts, lease, off, held, refused):
                 continue
             o, cnl = off(i)
             if o or cnl or held(i):
+                continue
+            import work_bundle as WB
+            if WB.age_refusal(x, None, now):   # a joiner has no check: only a newer ticket with a recorded failure joins
                 continue
         except Exception:  # noqa: BLE001 - a fact that cannot be read keeps this ticket out of every bundle
             continue

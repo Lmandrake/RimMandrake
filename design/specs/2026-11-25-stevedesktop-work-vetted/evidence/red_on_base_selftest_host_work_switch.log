@@ -1,0 +1,20 @@
+PASS  no row: SteveDesktop is not switched
+PASS  set without authority is refused
+PASS  set with his words: Steve1/Steve2 read it, with his words and the lift command (SteveDesktop works pipeline improvements only (his words, 2026-11-24: "I'd like to have SteveDesktop working 100% on closing out non-mod work today please."); lift: python3 src/RimMandrake/rimflow/host_work_switch.py lift SteveDesktop --said "<his words>")
+PASS  the other machine is not switched
+PASS  a helper (RM_ROLE_UNIT set) cannot lift it by the Conductor's ruling
+PASS  a lift without authority is refused
+PASS  his lift removes it and keeps the lifted row with his words
+PASS  lifting an unswitched host says so
+PASS  an unreadable file reads as switched (could not look)
+Traceback (most recent call last):
+  File "/home/mandrake/rm/relentless/clones/RIMMANDRAKE_VET_WORK_BOUND_FOR_STEVEDESKTOP_HE_SAW_FIREHAWK_AGAIN.det/src/RimMandrake/rimflow/selftest_host_work_switch.py", line 140, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/home/mandrake/rm/relentless/clones/RIMMANDRAKE_VET_WORK_BOUND_FOR_STEVEDESKTOP_HE_SAW_FIREHAWK_AGAIN.det/src/RimMandrake/rimflow/selftest_host_work_switch.py", line 132, in main
+    t_age_filter()
+    ~~~~~~~~~~~~^^
+  File "/home/mandrake/rm/relentless/clones/RIMMANDRAKE_VET_WORK_BOUND_FOR_STEVEDESKTOP_HE_SAW_FIREHAWK_AGAIN.det/src/RimMandrake/rimflow/selftest_host_work_switch.py", line 81, in t_age_filter
+    check(W.age_refusal(old, "fails", NOW) is None, "an old ticket with a test red today is admitted")
+          ^^^^^^^^^^^^^
+AttributeError: module 'work_bundle' has no attribute 'age_refusal'. Did you mean: 'is_refusal'?

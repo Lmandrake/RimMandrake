@@ -1,0 +1,14 @@
+PASS  a mod chain job for SteveDesktop is refused while it is switched, and the refusal names its repair: mod work on SteveDesktop: SteveDesktop works pipeline improvements only (his words, 2026-11-24: "I'd like to have SteveDesktop working 100% on closing out non-mod work today please."); lift: python3 src/RimMandrake/rimflow/host_work_switch.py lift SteveDesktop --said "<his words>"; it runs once the switch is lifted (smallest fix: submit it to the Archmagi lane (--lane archmagi), or as pipeline proof lines (--proofs))
+PASS  testq's one queueing door (hold_refusal: submit and the fault-window rerun) refuses it too
+PASS  lane any can land on SteveDesktop: refused
+PASS  a --proofs job (pipeline proof lines) passes
+PASS  the Archmagi lane passes
+PASS  an Ops job passes
+PASS  no switch: the mod job passes
+PASS  an unreadable switch file refuses (could not look)
+PASS  fill_plan: the switch outranks fill.stop and the filler queues nothing: {'verdict': 'switched', 'text': 'switched: SteveDesktop works pipeline improvements only (his words, 2026-11-24: "I\'d like to have SteveDesktop working 100% on closing out non-mod work today please."); lift: python3 src/RimMandrake/rimflow/host_work_switch.py lift SteveDesktop --said "<his words>"'}
+PASS  with fill.stop removed the switch still stops the filler: switched
+PASS  the steward reads the switch as intended and settled, never a fault: {'state': 'SWITCHED', 'reason': 'switched: SteveDesktop works pipeline improvements only (his words, 2026-11-24: "I\'d like to have SteveDesktop working 100% on closing out non-mod work today please."); lift: python3 src/RimMandrake/rimflow/host_work_switch.py lift SteveDes', 'fault_at': None, 'at_once': False, 'jobs': [], 'settled': True}
+PASS  a harness repair re-runs only the chain that held the fault: python3 src/RimMandrake/Utils/testq/testq.py submit Pyrelands --chains embergrass_regrow --purpose guard --by BENCH --sha <the fix's published sha>
+PASS  with no held chain known the whole selection re-runs (nothing is left unproved)
+ALL PASS

@@ -252,6 +252,9 @@ PAGES = {
     "design/specs/2026-11-25-deploy-shard-guard/boundary.md":
         "src/RimMandrake/rimflow/selftest_ledger_sparse_deploy.py",
     "design/specs/2026-11-25-polish-door/boundary.md": "src/RimMandrake/Utils/selftest_polish_door.py",
+    "design/specs/2026-11-25-stevedesktop-work-vetted/boundary.md": "src/RimMandrake/rimflow/selftest_host_work_switch.py",
+    "design/specs/2026-11-25-stevedesktop-work-vetted/testq/boundary.md":
+        "src/RimMandrake/Utils/testq/selftest_testq_host_switch.py",
     "design/specs/2026-11-25-fixer-rule/boundary.md": "src/RimMandrake/rimflow/selftest_fixer_rule.py",
 }
 SECTIONS = ("PROMISES", "SURVIVES")

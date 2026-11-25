@@ -1,0 +1,31 @@
+PASS  no row: SteveDesktop is not switched
+PASS  set without authority is refused
+PASS  set with his words: Steve1/Steve2 read it, with his words and the lift command (SteveDesktop works pipeline improvements only (his words, 2026-11-24: "I'd like to have SteveDesktop working 100% on closing out non-mod work today please."); lift: python3 src/RimMandrake/rimflow/host_work_switch.py lift SteveDesktop --said "<his words>")
+PASS  the other machine is not switched
+PASS  a helper (RM_ROLE_UNIT set) cannot lift it by the Conductor's ruling
+PASS  a lift without authority is refused
+PASS  his lift removes it and keeps the lifted row with his words
+PASS  lifting an unswitched host says so
+PASS  an unreadable file reads as switched (could not look)
+PASS  the status page names the switch and its lift: Machines: SteveDesktop works pipeline improvements only (his words, 2026-11-24: "I'd like to have SteveDesktop working 100% on closing out non-mod work today please."); lift: python3 src/RimMandrake/rimflow/host_work_switch.py lift SteveDesktop --said "<his words>".
+PASS  and says when no machine is switched
+PASS  an old ticket with a test red today is admitted
+PASS  an old ticket whose test reads None is refused
+PASS  an old ticket whose test reads no_test is refused
+PASS  an old ticket whose test reads holds_unproven is refused
+PASS  an old ticket whose test reads unmeasured is refused
+PASS  a new ticket with no red test and no recorded failure is refused
+PASS  a new ticket with a recorded failure {'spawned_by': 'RUNNER'} is admitted
+PASS  a new ticket with a recorded failure {'raised': '2026-11-24T10:00:00Z'} is admitted
+PASS  a new ticket with a recorded failure {'kind': 'bug'} is admitted
+PASS  a new ticket with a recorded failure {'findings': ['F1']} is admitted
+PASS  a new ticket with a recorded failure {'runs': [namespace(result='fail')]} is admitted
+PASS  an old joiner, and one with no filing date, are refused
+PASS  the bundle takes the old ticket with a red test and the new bug, nothing else (['OLD_RED', 'NEW_BUG'])
+PASS  the unvetted members are left out with their reason ({'OLD_NOTEST': 'UNVETTED: filed 2026-10-01, before the Maturation Pipeline (', 'NEW_NOTEST': 'UNVETTED: filed 2026-11-24, it enters a run only with its re'})
+PASS  a mod bundle is not sent to a switched host, and no ssh runs (3, {'launch_out': 'REFUSED: a mod bundle (mod:DivingInteraction) on SteveDesktop: SteveDesktop works pipeline improvements only (his words, 2026-11-24: "I\'d like to have SteveDesktop working 100% on closing out non-mod work today please."); lift: python3 src/RimMandrake/rimflow/host_work_switch.py lift SteveDesktop --said "<his words>"', 'decision': 'host_refused', 'left_out': {}})
+PASS  a pipeline bundle still goes there
+PASS  the list launcher gives a mod ticket no room on it (SteveDesktop takes no mod work (Pyrelands): SteveDesktop works pipeline improvements only (his words, 2026-11-24: "I'd like to have SteveDesktop working 100% on closing out non-mod work today please."); lift: python3 src/RimMandrake/rimflow/host_work_switch.py lift SteveDesktop --said "<his words>")
+PASS  a ticket whose mod cannot be read gets no room there either
+PASS  a pipeline ticket gets room
+ALL PASS

@@ -28,6 +28,8 @@ What it knows (section 6.1), first match wins:
                    and it ends an incident (the lane stands idle on purpose, every check above it passed)
   IDLE_EMPTY       nothing queued and the fill found nothing selectable (no history, every chain DRY), or it would
                    queue chains yet nothing is pending (the fill itself failed): an evidence gap, a fault
+  SWITCHED         SteveDesktop is on pipeline work only (rimflow/host_work_switch.py, fill_plan verdict "switched"):
+                   the owner's order, never a fault and never aged; a fill.stop beside it is not read
   EXHAUSTED        the fill's gap scan found nothing to do at all (fill_plan verdict "exhausted"): not a fault,
                    and it ends an incident
   TICK_STOPPED     (after RUNNING and PAUSED: a job running or an intentional pause is not a fault) testq-tick.timer is not active on this machine (stopped by hand or by another seat): nothing is
@@ -164,6 +166,12 @@ def fill_stop_until(p):
     return None
 
 
+def _switched():
+    """-> the host work switch's text for SteveDesktop, or None (testq/pipeline_admit.steve_switched)."""
+    import pipeline_admit as PA
+    return PA.steve_switched() if T.switch_applies() else None
+
+
 def _st(state, reason, fault_at=None, at_once=False, jobs=(), settled=False):
     """fault_at: the epoch from which the state is a fault (0: already; None: never). settled: the lane is working as
     intended, so this state ends an incident."""
@@ -215,7 +223,8 @@ def lane_state(now, mods=None):
         return _st("PAUSED", "; ".join("stopped until %s after equal endings: %s" % (x["until"], x["signature"][:100])
                                        for x in stops),
                    min(S.parse_ts(x["first"]) for x in stops) + T.LS.ESCALATE_S)
-    if os.path.exists(path("fill.stop")):
+    sw = _switched()
+    if os.path.exists(path("fill.stop")) and not sw:   # under the host switch a fill.stop adds nothing, and never ages
         until = fill_stop_until(path("fill.stop"))
         if until is not None:
             return _st("PAUSED", "fill stopped until %s: %s exists" % (iso(until), path("fill.stop")), until)
@@ -239,6 +248,8 @@ def lane_state(now, mods=None):
     by = {}
     for m, p in plans.items():
         by.setdefault(p["verdict"], []).append(m)
+    if "switched" in by:    # the owner's order on the machine (rimflow/host_work_switch.py): intended, never a fault
+        return _st("SWITCHED", plans[by["switched"][0]]["text"][:240], None, settled=True)
     if "brake" in by:
         tails = [t for m in by["brake"] for t in plans[m].get("tail") or [] if t]
         jobs = [t["job"]["id"] if isinstance(t.get("job"), dict) else t.get("job") for t in tails]
