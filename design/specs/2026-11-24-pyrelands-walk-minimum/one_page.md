@@ -12,7 +12,7 @@ The other six claims belong to other bars, or to no bar. [measured, text read]
 |---|---|---|---|
 | A reload gives back the front, the scar, its bonus and the fruit | **this bar** | nothing else | small scene |
 | Colonists step away from fire, and eat before fire duty | **this bar** | `sc_fire_sense`, which was in no table | small scene |
-| Your full list does not break the burn, and the log is clean | **this bar** | nothing else | small scene |
+| Your full list does not break the burn, and the log is clean | **this bar** | nothing else | ran once (PASS, visit 9); full-list testing is retired until integration |
 | About two weeks of play feel right | the bar's sentence | nothing | play testing: no part of passing |
 | A second fire gives fruit again | scorch-fruit | `T_FUZZ` and `sc_scorchfruit` | offline |
 | The roster toggle stops and starts the burn | settings | `T_SETTINGS_SWEEP_OFFLINE`, `P_gate` | offline |
@@ -52,13 +52,13 @@ So even the good run could not decide its own scene. The four parts that failed 
 | `sc_full_list_smoke` | your full list | 3 hours | one fire walks, and no error names Pyrelands |
 
 - `sc_walk` played at least 25.5 game days in its code. [measured, code read] The three scenes play under half a day. [measured, code read]
-- Only `sc_full_list_smoke` loads your full list. Other mods exist only there, so no cheaper test can decide it.
+- Only `sc_full_list_smoke` loads your full list. It ran once, PASS, in visit 9 (2026-11-24 08:02 PST), and then left the test table, because full-list testing is retired until the integration phase. [measured]
 - Each scene says in the table why no cheaper test decides its claim.
 - The two new scenes passed on a scripted game and failed on each planted fault, 61 checks. [measured]
-- No new scene has run in the game. They are **UNRUN**. This run had no game.
+- In-game results: `sc_reload_keeps_the_burn` PASS in visit 8 and twice in visit 9; `sc_fire_sense` PASS 5 of 5 parts in visit 8, after a harness repair (the gate-off plant read FAIL). [measured, rows.jsonl]
 
 **The bar.** Its sentence did not change. The sentence says what a player does; it promises no scripted play.
-The bar now passes when the three scenes pass. Its words "about two weeks" are with the Conductor.
+The bar is decided by `sc_reload_keeps_the_burn` and `sc_fire_sense` at in-game acceptance. Season-long play is play testing (his ruling of 2026-11-24): no script and no walk decides it.
 
 ## What we learned, and what stops it next time
 
@@ -81,6 +81,5 @@ The Pyrelands scenes in that table keep their passes. Nobody runs them again for
 
 ## What is not measured
 
-- The wall time of the three scenes. A guess is 15 minutes, plus one load of the full list. [guess ~60%]
 - A run of `sc_fire_sense` on this build. In visit 2, its meal half failed once and passed in a clean scene. [measured]
 - Whether the waits in other mods' C# scenes are long. The check cannot read C#.
