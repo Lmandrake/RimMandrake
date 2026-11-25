@@ -23,12 +23,14 @@ import os
 import sys
 import shutil
 import tempfile
+from unittest.mock import patch
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 TMP = tempfile.mkdtemp(prefix="selftest_seat_restart_")
 os.environ["RM_DISPATCHER_STATE"] = os.path.join(TMP, "state")
 os.environ["TESTQ_QUEUE"] = os.path.join(TMP, "testq")
 os.environ["RM_SEAT_LOG_DIR"] = os.path.join(TMP, "seat_log")
+os.environ["SEAT_RESTART_NO_TICK"] = "1"
 sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.dirname(HERE))
 sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
@@ -45,6 +47,40 @@ def check(ok, msg):
     print(("ok    " if ok else "FAIL  ") + msg)
     if not ok:
         FAILS.append(msg)
+
+
+def t_dispatcher_ticks_use_wall_clock_slots():
+    calls = []
+
+    def record(argv, **kw):
+        calls.append(argv)
+        return subprocess.CompletedProcess(argv, 0)
+
+    with patch.object(SR.subprocess, "run", record), patch.dict(os.environ, SEAT_RESTART_NO_TICK="1"):
+        SR._tick_soon(1)
+        check(not calls, "dispatcher-ticks-use-wall-clock-slots: SEAT_RESTART_NO_TICK issues no commands")
+        with patch.dict(os.environ, SEAT_RESTART_NO_TICK=""), patch.object(SR.time, "time", return_value=T0 + 0.5) as now:
+            SR._tick_soon(1, 31)
+            now.return_value += 5
+            SR._tick_soon(1)
+
+    launches = [argv for argv in calls if argv[0] == "systemd-run"]
+    expected = ["--on-calendar=" + time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(T0 + offset))
+                for offset in (2, 32, 7)]
+    check(len(launches) == 3 and all(due in argv and not any(x.startswith("--on-active") for x in argv)
+                                    for due, argv in zip(expected, launches)),
+          "dispatcher-ticks-use-wall-clock-slots: every arm uses its absolute wall-clock due time")
+    units = [[x for x in argv if x.startswith("--unit=")] for argv in launches]
+    check(units == [["--unit=rm-dispatcher-soon-1"], ["--unit=rm-dispatcher-soon-31"], ["--unit=rm-dispatcher-soon-1"]],
+          "dispatcher-ticks-use-wall-clock-slots: rearming reuses the fixed unit for that delay")
+    stop = ["systemctl", "--user", "stop", "rm-dispatcher-soon-1.timer", "rm-dispatcher-soon-1.service"]
+    check(len(launches) == 3 and stop in calls[calls.index(launches[0]) + 1:calls.index(launches[2])],
+          "dispatcher-ticks-use-wall-clock-slots: rearming stops the previous timer and its helper before arming")
+    check(len(launches) == 3 and all(argv[-4:] == ["systemctl", "--user", "start", "rm-dispatcher.service"]
+                                    and "--collect" in argv and "--timer-property=AccuracySec=1s" in argv
+                                    and "--timer-property=RemainAfterElapse=no" in argv
+                                    for argv in launches),
+          "dispatcher-ticks-use-wall-clock-slots: the one-shot starts the Dispatcher and unloads after elapse")
 
 
 def sched(enabled=True, **seat_kw):
@@ -2979,16 +3015,19 @@ def test_ticket_that_is_no_item():
     check(v and not v[0]["note"], "a goodbye restart notes no ledger item")
 
 
+def _restart_tests():
+    return [fn for name, fn in sorted(globals().items()) if name.startswith("test_") and callable(fn)]
+
+
 def main():
     SR.UNFILED = lambda t: None      # fixtures name no real item; test_ticket_that_is_no_item drives the refusal
-    for name, fn in sorted(globals().items()):
-        if name.startswith("test_") and callable(fn):
-            try:
-                fn()
-            except Exception as e:  # noqa: BLE001
-                import traceback
-                traceback.print_exc()
-                check(False, "%s raised %s: %s" % (name, type(e).__name__, e))
+    for fn in (*_restart_tests(), t_dispatcher_ticks_use_wall_clock_slots):
+        try:
+            fn()
+        except Exception as e:  # noqa: BLE001
+            import traceback
+            traceback.print_exc()
+            check(False, "%s raised %s: %s" % (fn.__name__, type(e).__name__, e))
     print("\n%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0
 

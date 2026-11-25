@@ -55,6 +55,7 @@ import datetime
 import fcntl
 import glob
 import json
+import math
 import os
 import re
 import signal
@@ -758,9 +759,16 @@ def _tick_soon(*delays):
     if os.environ.get("SEAT_RESTART_NO_TICK"):
         return
     for d in delays:
+        unit = "rm-dispatcher-soon-%d" % d
         try:
-            subprocess.run(["systemd-run", "--user", "--quiet", "--on-active=%d" % d, "systemctl", "--user", "start",
-                            "rm-dispatcher.service"], timeout=10, capture_output=True)
+            # --collect unloads the stopped units. On the first arm there is nothing to stop.
+            subprocess.run(["systemctl", "--user", "stop", unit + ".timer", unit + ".service"],
+                           timeout=10, capture_output=True)  # budget: danger=a hung user bus would hold the goodbye path; evidence=systemctl waits on dbus; longest=0.01s (one measured run 2026-11-24)
+            # A daemon-reload resets a relative countdown. Round up so the shortest delay stays in the future.
+            due = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(math.ceil(time.time() + int(d))))
+            subprocess.run(["systemd-run", "--user", "--quiet", "--collect", "--unit=" + unit, "--on-calendar=" + due,
+                            "--timer-property=AccuracySec=1s", "--timer-property=RemainAfterElapse=no",
+                            "systemctl", "--user", "start", "rm-dispatcher.service"], timeout=10, capture_output=True)  # budget: danger=a hung user bus would hold the goodbye path; evidence=systemctl waits on dbus; longest=0.01s (one measured run 2026-11-24)
         except (OSError, subprocess.SubprocessError):
             pass
 
