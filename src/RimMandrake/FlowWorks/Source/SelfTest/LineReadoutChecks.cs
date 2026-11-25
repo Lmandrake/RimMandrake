@@ -115,11 +115,15 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("PipePoleGravship_P8_aboard_span_rekeys_on_landing", () =>
             {
                 // GSS GS-1, any anchor kind: the despawn inside GenerateGravship is WillReplace; the aboard set is every anchor in
-                // the ship's things; a span to an aboard partner is KEPT; PostSwapMap re-seeds and fires the span-change seam
+                // the ship's things; a span to an aboard partner is KEPT while the keep-wires setting is on (default on, GSS 0.2.0);
+                // PostSwapMap re-seeds and fires the span-change seam
                 string anchor = GssSrc("Aerial", "CompAerialAnchor.cs");
                 string despawn = Body(anchor, "public override void PostDeSpawn(");
-                Assert(despawn.Contains("mode == DestroyMode.WillReplace ? GravshipAboardIds() : null") && despawn.Contains("AerialMath.PlanRemoval(thingIDNumber, killed, spans, aboard)")
+                Assert(despawn.Contains("mode == DestroyMode.WillReplace ? GravshipAboardIds() : null") && despawn.Contains("AerialMath.PlanRemoval(thingIDNumber, killed, spans, aboard, AerialSettings.keepWiresOnGravship)")
                     && !despawn.Contains("AerialLineKind"), "the gravship despawn path is not kind-agnostic (pipe spans would not be kept)");
+                Assert(Body(GssSrc("Aerial", "AerialMath.cs"), "public static RemovalPlan PlanRemoval(int id, bool killed, IList<(int, SpanState)> spans, ICollection<int> aboard, bool keepAboard = true)")
+                    .Contains("if (keepAboard) { if (!plan.Kept.Contains(partner)) plan.Kept.Add(partner); continue; }"), "a span to an aboard partner is not kept");
+                Assert(GssSrc("Aerial", "AerialSettings.cs").Contains("public static bool keepWiresOnGravship = true;"), "the keep-wires setting is not on by default");
                 Assert(Body(anchor, "private static HashSet<int> GravshipAboardIds(").Contains("g.Things.Where(t => Of(t) != null)"), "the aboard set skips some anchor kinds");
                 string swap = Body(anchor, "public override void PostSwapMap(");
                 Assert(swap.Contains("comp?.Notify_SpansChanged()") && !swap.Contains("AerialLineKind"), "landing does not fire the span-change seam for every kind");
@@ -146,10 +150,13 @@ namespace RimMandrake.FlowWorks.SelfTest
 
             Case("PipePoleGravship_P8_edge_span_coils_and_no_support_loss", () =>
             {
-                // a span to a pole left on the ground: GROUNDED (coiled, nothing falls: nothing died); only a KILLED pole drops spans
-                string plan = Body(GssSrc("Aerial", "AerialMath.cs"), "public static RemovalPlan PlanRemoval(int id, bool killed, IList<(int, SpanState)> spans, ICollection<int> aboard)");
-                Assert(plan.Contains("if (aboard != null && !killed)") && plan.Contains("plan.Grounded.Add(partner)") && plan.Contains("if (killed && st == SpanState.Up) plan.Fallen.Add("),
-                    "a span crossing the ship's edge does not come down coiled (or a lift drops it as a fall)");
+                // a span to a pole left on the ground SNAPS at launch (GSS 0.2.0; owner 2026-11-24: "Yes, the wire should snap
+                // ship-to-ground. Of course it would."): the ground pole is GROUNDED and an UP span's half falls at it, as when a
+                // pole dies; a span already cut drops nothing new. The case name keeps its old word "coils" (required_checks.json)
+                string plan = Body(GssSrc("Aerial", "AerialMath.cs"), "public static RemovalPlan PlanRemoval(int id, bool killed, IList<(int, SpanState)> spans, ICollection<int> aboard, bool keepAboard = true)");
+                Assert(plan.Contains("if (aboard != null && !killed)") && plan.Contains("plan.Grounded.Add(partner)") && plan.Contains("snapped = st == SpanState.Up;")
+                    && plan.Contains("if ((killed || snapped) && st == SpanState.Up) plan.Fallen.Add("),
+                    "a span crossing the ship's edge does not snap at the ground pole (or a cut span drops again)");
                 // FlowWorks' own support loss (a dig kills a pole; a deck collapse drops cords) never runs on a despawn: only at the
                 // Deepen commit and ClearDeckTop, neither of which a launch calls on the ship's things
                 string dig = Src("Machinery", "RM_LineDigBreak.cs");
