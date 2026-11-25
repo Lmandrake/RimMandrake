@@ -59,6 +59,7 @@ PAGES = {
     "design/specs/2026-11-24-bridge-order-waits/boundary.md": "src/RimMandrake/bridgetools/selftest_order_wait.py",
     "design/specs/2026-11-23-bridge-v2-life-cycle/boundary.md": "src/RimMandrake/bridgetools/selftest_run_life_cycle.py",
     "design/specs/2026-11-23-bridge-v2/boundary.md": "src/RimMandrake/bridgetools/selftest_scene_tick_wiring.py",
+    "design/specs/2026-11-24-play-vs-step/boundary.md": "src/RimMandrake/Utils/selftest_scene_compare.py",
     "design/specs/2026-11-23-bridge-v2-watcher/boundary.md": "src/RimMandrake/Utils/selftest_game_watcher.py",
     "design/specs/2026-11-23-loaded-receipt/boundary.md": "src/RimMandrake/rimflow/selftest_loaded_receipt.py",
     "design/specs/2026-11-23-calm-map/boundary.md": "src/RimMandrake/Utils/selftest_calm_core.py",

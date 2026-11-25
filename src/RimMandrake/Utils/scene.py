@@ -8,6 +8,8 @@
     python.exe scene.py end-session <game>       end the session of a driver that died, and look at nothing (else: scene.attach)
     python3   scene.py tools <words>             find a bridge tool (no game)
     python3   scene.py raw-census                every s.raw call in the committed scenes, a proposal for a reviewer
+    python.exe scene.py compare --plan <plan.py> --arms play1,play3,ultra,step --n 5 [--game ArchSmall]
+                                                  one scene in each arm from one save, traces compared tick by tick (scene_compare.py)
 
 A script: `import scene; from scene import cond as c`. Pages: scene_contracts/. Promises, limits and what is not promised:
 design/specs/2026-11-23-scene-library/boundary.md. Exit of a command: 0 done, 1 the script stopped, 2 could not look, 3 refused."""
@@ -36,7 +38,7 @@ CONVERT = "RIMMANDRAKE_CONVERT_THREE_SCENES_SHOW_IF_TEN_NAMES_HELP"
 OWED = {}
 GAME_STATE = "RM_SCENE_STATE"           # the text in the game process: {"pid", "stamps", "session"}
 EXPLORED = "EXPLORED"
-SPEEDS = ("Normal", "Fast", "Superfast", "Ultrafast")
+SPEEDS = ("Normal", "Fast", "Superfast", "Ultrafast", "Step")   # Step: paused, the companion steps the tick (scene_compare.py)
 CALM_PROFILES = ("standard",)
 CALM_MINUTES = 240                      # the calm tool's own longest lease (design/specs/2026-11-23-calm-map/boundary.md)
 # budget: danger=a run whose clock stands still never ends (a window that pauses the game); ends no work: the silence bound of a
@@ -606,7 +608,7 @@ class Session(object):
         return bool(live)
 
     # ---- run
-    def run(self, until, limit=None, speed="Normal", record=None):
+    def run(self, until, limit=None, speed="Normal", record=None, rand=None):
         """Let the game play to an exact tick, and record values on every tick (scene_contracts/run.md)."""
         if self.closed:
             raise Refused("SESSION_CLOSED", "this session has ended; open a session")
@@ -615,6 +617,8 @@ class Session(object):
             raise Refused("NO_LIMIT", "limit=%r: give the most ticks the run may play" % (limit,))
         if speed not in SPEEDS:
             raise Refused("BAD_ARGS", "speed=%r; the speeds: %s" % (speed, ", ".join(SPEEDS)))
+        if rand is not None and not (isinstance(rand, str) and rand.isdigit()):
+            raise Refused("BAD_ARGS", "rand=%r: the decimal random state of an earlier run's open record" % (rand,))
         tracks = []
         for t in record or []:
             if not isinstance(t, cond.Track):
@@ -629,13 +633,15 @@ class Session(object):
         rec.could_not_look += health_notes
         if self.hand is None:
             raise Fault("NO_HAND", detail="the game has neither %s nor %s" % (hands.RUN_UNTIL, hands.SLICE))
+        if (speed == "Step" or rand is not None) and not isinstance(self.hand, hands.RunUntil):
+            raise Refused("BAD_ARGS", "speed='Step' and rand= need %s in a session; this game has only %s" % (hands.RUN_UNTIL, hands.SLICE))
         try:
-            return self._play(rec, tree, ticks, tracks, limit, speed)
+            return self._play(rec, tree, ticks, tracks, limit, speed, rand)
         except Fault as e:
             e.receipt = self._finish(rec, did=e.done)
             raise
 
-    def _play(self, rec, tree, ticks, tracks, limit, speed):
+    def _play(self, rec, tree, ticks, tracks, limit, speed, rand=None):
         live = self.hand.live()
         if live:
             raise Refused("RUN_ACTIVE", "run %s has not ended; read s.state.live_run, then s.cancel_run()" % live)
@@ -650,7 +656,9 @@ class Session(object):
         plan = self.hand.plan(tree, tracks)
         names = [self.hand.name(cond.probe_name(p)) for p, _o in cond.walk(tree) if p["p"] not in (cond.TICK, "value.state")]
         request = rec.entry["request"]
-        row, lost = self._start(request, plan, limit, speed)
+        row, lost = self._start(request, plan, limit, speed, rand)
+        if rand is not None and row.get("randWritten") is not True:
+            rec.could_not_look.append("the random state %s was not written back: %s" % (rand, row.get("randWhy") or "the game did not say so"))
         row, stalled = self._wait(request, row)
         self._run = dict(row)
         rows = self._trace(row)
@@ -699,14 +707,15 @@ class Session(object):
         values = {n: Value(n, v[0], v[1], v[3], v[2]) for n, v in hands.last_values(rows).items()}
         values[cond.TICK] = Value(cond.TICK, "ok", t2, t2)
         res = RunResult(request, why, int(t1) if t1 is not None else None, t2, values, path, detail)
+        res.replayed = bool(row.get("replayed"))
         self._run.update(why=why)
         res.receipt = self._finish(rec, did=["played ticks %s to %s at speed %s; paused on %s" % (res.tick_from, t2, speed, t2)])
         return res
 
-    def _start(self, request, plan, limit, speed):
+    def _start(self, request, plan, limit, speed, rand=None):
         """-> (the run, was the reply lost). A lost reply is looked up by the request; the run is never started twice."""
         try:
-            return self.hand.start(request, plan, limit, speed), False
+            return (self.hand.start(request, plan, limit, speed, rand) if rand is not None else self.hand.start(request, plan, limit, speed)), False
         except CallFailed as e:
             raise Fault("RUN_NOT_STARTED", detail=str(e), request=request)
         except ReplyLost as e:
@@ -1214,6 +1223,9 @@ def main(argv):
             return explore(rest[0], rest[2] if rest[1:2] == ["--map"] and len(rest) > 2 else None)
         if verb == "end-session" and len(rest) == 1:
             return end_session(rest[0])
+        if verb == "compare":
+            import scene_compare
+            return scene_compare.main(rest)
         if verb == "raw-census":
             ops, looked, blind = raw_census()
             print("%d committed scene(s) on the library were read; %d file(s) could not be read%s" % (looked, len(blind), ": " + "; ".join(blind) if blind else ""))

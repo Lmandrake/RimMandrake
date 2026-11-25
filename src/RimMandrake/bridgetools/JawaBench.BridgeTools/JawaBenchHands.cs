@@ -56,7 +56,8 @@ namespace JawaBench.BridgeTools
 
         /// <summary>start | status | cancel.</summary>
         public static Dictionary<string, object> RunUntil(string action, string driver = null, string request = null, string until = null, int limit = 0,
-                                                          string speed = "Normal", string record = null, string acts = null, double tickBudgetMs = 0)
+                                                          string speed = "Normal", string record = null, string acts = null, double tickBudgetMs = 0,
+                                                          string randState = null)
         {
             string a = (action ?? "").Trim().ToLowerInvariant();
             if (a == "status") return More(Core.RunStatus(driver, request));
@@ -64,20 +65,42 @@ namespace JawaBench.BridgeTools
             if (a != "start") return H.Refusal("BAD_ARGS", "action is start, status or cancel, not '" + action + "'", "correct it");
             try
             {
-                TimeSpeed sp;
-                if (!Enum.TryParse(speed, true, out sp) || !Enum.IsDefined(typeof(TimeSpeed), sp) || sp == TimeSpeed.Paused)
-                    return H.Refusal("BAD_ARGS", "speed is Normal, Fast, Superfast or Ultrafast, not '" + speed + "'", "correct it");
+                // STEP (RIMMANDRAKE_MEASURE_PLAY_AGAINST_PAUSED_STEP_NEVER_COMPARED): the game stays paused and the scene frame steps
+                // DoSingleTick in slices, one slice per frame (JawaBenchSceneTick.StepFrame). The same run, trace and end-of-tick hook.
+                bool step = string.Equals((speed ?? "").Trim(), "Step", StringComparison.OrdinalIgnoreCase);
+                TimeSpeed sp = TimeSpeed.Paused;
+                if (!step && (!Enum.TryParse(speed, true, out sp) || !Enum.IsDefined(typeof(TimeSpeed), sp) || sp == TimeSpeed.Paused))
+                    return H.Refusal("BAD_ARGS", "speed is Normal, Fast, Superfast, Ultrafast or Step, not '" + speed + "'", "correct it");
+                ulong rand = 0;
+                bool writeRand = !string.IsNullOrWhiteSpace(randState);
+                if (writeRand && !ulong.TryParse(randState.Trim(), NumberStyles.None, CultureInfo.InvariantCulture, out rand))
+                    return H.Refusal("BAD_ARGS", "randState is the decimal Rand.StateCompressed, not '" + randState + "'", "send the `rand` of a run's open record");
                 var list = H.ParseActs(acts, true);
                 if (!(tickBudgetMs >= 0)) return H.Refusal("BAD_ARGS", "tickBudgetMs is less than 0", "0 is no budget");
-                var what = new List<object> { until, (double)limit, sp.ToString(), record, acts };
+                string spName = step ? "Step" : sp.ToString();
+                var what = new List<object> { until, (double)limit, spName, record, acts };
                 if (tickBudgetMs > 0) what.Add(tickBudgetMs);
+                if (writeRand) what.Add(randState.Trim());
                 string canon = C.Canon(what);
-                return More(Core.StartRun(driver, request, canon, list, limit, (id, ticks, trace) =>
+                string randWhy = null;
+                bool randTried = false;
+                var reply = Core.StartRun(driver, request, canon, list, limit, (id, ticks, trace) =>
                 {
                     var plan = H.MakePlan(until, record, limit, Host.MapId, Core.GroupSize);
                     var src = JawaBenchTerrainTools.NewProbeSource();
-                    return new T.SceneRun(id, plan.Compile(src), src, ticks, Host, "PLAY", sp.ToString(), trace, tickBudgetMs);
-                }, JawaBenchSceneTick.EpochBox(), Armed, () => Find.TickManager.CurTimeSpeed = sp));
+                    return new T.SceneRun(id, plan.Compile(src), src, ticks, Host, step ? "STEP" : "PLAY", spName, trace, tickBudgetMs);
+                }, JawaBenchSceneTick.EpochBox(), run =>
+                {
+                    // the write-back is in the arming hop, just before the open record reads the state: no frame draws between them
+                    if (writeRand) { randTried = true; randWhy = JawaBenchSceneTick.WriteRand(rand); }
+                    Armed(run);
+                }, () =>
+                {
+                    if (step) JawaBenchSceneTick.StepRun = JawaBenchSceneTick.Cur;
+                    else Find.TickManager.CurTimeSpeed = sp;
+                });
+                if (randTried) { reply["randWritten"] = randWhy == null; if (randWhy != null) reply["randWhy"] = randWhy; }
+                return More(reply);
             }
             catch (H.Refused e) { return H.Refusal(e); }
             catch (CondRefused e) { return H.Refusal(e); }
@@ -691,15 +714,16 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "The request id, made by the caller before it sends the call.")] string request = null,
             [ToolParameter(Description = "start: the stop condition, a JSON condition node.")] string until = null,
             [ToolParameter(Description = "start: the most ticks to play, at least 1.")] int limit = 0,
-            [ToolParameter(Description = "start: Normal, Fast, Superfast or Ultrafast.")] string speed = "Normal",
+            [ToolParameter(Description = "start: Normal, Fast, Superfast or Ultrafast (the game's own loop), or Step (paused; the companion steps the tick in slices, once a frame).")] string speed = "Normal",
             [ToolParameter(Description = "start: a JSON list of {of, path} or {name, probe}: more values to record.")] string record = null,
             [ToolParameter(Description = "start: a JSON list of {id, tool, args, at}: acts in the starting hop (at 0) or on a tick (at N).")] string acts = null,
-            [ToolParameter(Description = "start: the most ms that reading one tick (tracks and condition) may take; over it the run ends in state budget and names the costliest value. 0 = no bound.")] double tickBudgetMs = 0)
+            [ToolParameter(Description = "start: the most ms that reading one tick (tracks and condition) may take; over it the run ends in state budget and names the costliest value. 0 = no bound.")] double tickBudgetMs = 0,
+            [ToolParameter(Description = "start: a decimal Rand.StateCompressed to write back at arm, in the arming hop (the `rand` of an earlier run's open record); the reply says randWritten. Empty = none.")] string randState = null)
         {
             return await ctx.MainThread.InvokeAsync<object>(() =>
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                return JawaBenchHands.RunUntil(action, driver, request, until, limit, speed, record, acts, tickBudgetMs);
+                return JawaBenchHands.RunUntil(action, driver, request, until, limit, speed, record, acts, tickBudgetMs, randState);
             }, cancellationToken);
         }
 

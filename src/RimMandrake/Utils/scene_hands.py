@@ -43,9 +43,10 @@ class RunUntil(object):
                 self.names[C.conds.canon(p)] = C.probe_name(p)
         return {"until": _retarget(tree, "of"), "record": [{"of": _target(t.of), "path": t.path} for t in tracks]}
 
-    def start(self, request, plan, limit, speed):
+    def start(self, request, plan, limit, speed, rand=None):
+        more = {"randState": rand} if rand is not None else {}
         r = self.call(RUN_UNTIL, action="start", driver=self.driver, request=request, until=json.dumps(plan["until"], sort_keys=True),
-                      limit=limit, speed=speed, record=json.dumps(plan["record"], sort_keys=True))
+                      limit=limit, speed=speed, record=json.dumps(plan["record"], sort_keys=True), **more)
         return self._read(r, request)
 
     def find(self, request):
@@ -77,7 +78,8 @@ class RunUntil(object):
             raise Fault(name or "RUN_NOT_STARTED", detail=say.strip(), request=request)
         return {"run": r.get("run"), "request": request, "stage": r.get("stage"), "state": r.get("state") or r.get("why"),
                 "why": r.get("why"), "tick": r.get("tick"), "tickFrom": r.get("tickFrom"), "rows": r.get("rows"),
-                "recordDir": r.get("recordDir"), "writer": r.get("writerSession"), "detail": r.get("unknownValue") or r.get("detail") or r.get("faults")}
+                "recordDir": r.get("recordDir"), "writer": r.get("writerSession"), "detail": r.get("unknownValue") or r.get("detail") or r.get("faults"),
+                "replayed": r.get("replayed"), "randWritten": r.get("randWritten"), "randWhy": r.get("randWhy")}
 
     def name(self, track):
         return self.names.get(track) or (track[6:] if track.startswith("thing:") else track)

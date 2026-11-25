@@ -39,7 +39,28 @@ namespace JawaBench.BridgeTools
         private static object _epochBox = 0.0;
         private static int _epochOf = int.MinValue;
         private static Func<ulong> _rand;
+        private static Action<ulong> _setRand;
         private static MethodInfo _canControl;
+        /// <summary>The run_until run that the scene frame steps while the game stays paused (speed Step), or null.</summary>
+        internal static volatile T.SceneRun StepRun;
+        // budget: not a guard; it shapes the STEP arm like jawa/safe_advance's default frame (40 ms of stepping per frame), so that
+        // budget: the per-frame work runs once a slice. The run ends by its own condition or limit.
+        internal const double StepFrameMs = 40;
+
+        /// <summary>Write Rand.StateCompressed and read it back. Null when it holds, else why not. Main thread.</summary>
+        internal static string WriteRand(ulong v)
+        {
+            if (_setRand == null)
+            {
+                var s = AccessTools.PropertySetter(typeof(Rand), "StateCompressed");
+                if (s == null) return "the setter of Rand.StateCompressed did not resolve";
+                _setRand = (Action<ulong>)Delegate.CreateDelegate(typeof(Action<ulong>), s);
+            }
+            if (_rand == null) return "Rand.StateCompressed has no reader yet";
+            _setRand(v);
+            ulong back = _rand();
+            return back == v ? null : "wrote " + v + ", read back " + back;
+        }
 
         /// <summary>The tick hook has work for a run.</summary>
         internal static bool Live { get { var r = Cur; return r != null && r.Running; } }
@@ -180,6 +201,17 @@ namespace JawaBench.BridgeTools
             try { r.Force("aborted", why, SameGame() ? Find.TickManager.TicksGame : r.EndTick); } catch (Exception e) { LastFault += " | " + e.Message; }
         }
 
+        /// <summary>One slice of a STEP run: the game stays paused; DoSingleTick until the run ends or the slice is spent. The end-of-tick
+        /// hook steps the run as in PLAY, and its pause ends the slice.</summary>
+        private static void StepFrame(T.SceneRun r)
+        {
+            var tm = Find.TickManager;
+            if (tm.CurTimeSpeed != TimeSpeed.Paused) tm.CurTimeSpeed = TimeSpeed.Paused;
+            if (LongEventHandler.AnyEventNowOrWaiting) return;
+            var sw = System.Diagnostics.Stopwatch.StartNew();
+            while (r.Running && ReferenceEquals(StepRun, r) && sw.Elapsed.TotalMilliseconds < StepFrameMs) tm.DoSingleTick();
+        }
+
         /// <summary>Once a frame (the monitor's driver), armed or not.</summary>
         internal static void Frame()
         {
@@ -190,13 +222,14 @@ namespace JawaBench.BridgeTools
         private static void FrameRun()
         {
             var r = Cur;
-            if (r == null || r.Stage == "closed") return;
+            if (r == null || r.Stage == "closed") { StepRun = null; return; }
             try
             {
                 if (r.Running)
                 {
                     string gone = Gone();
-                    if (gone != null) r.Force("epoch", gone, r.EndTick);
+                    if (gone != null) { r.Force("epoch", gone, r.EndTick); return; }
+                    if (ReferenceEquals(StepRun, r)) StepFrame(r);
                     return;
                 }
                 if (Time.frameCount == _endFrame) return;      // the tick count is read after the ending frame is over

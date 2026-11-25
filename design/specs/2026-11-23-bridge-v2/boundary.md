@@ -110,3 +110,7 @@ The [watcher boundary](../2026-11-23-bridge-v2-watcher/boundary.md) names the te
 | proof | reading | evidence |
 |---|---|---|
 | `prove_run_life_cycle.py` | 3 of 3 rows PASS | `design/specs/2026-11-23-bridge-v2-life-cycle/live/` (ArchSmall, tier `explosiveknockback_visit`, companion and Explosive Knockback PROOF build from `ac24cfedbb`, 2026-11-24) |
+
+## PLAY AGAINST STEP
+
+`scene.py compare` (`src/RimMandrake/Utils/scene_compare.py`) has its own page: `design/specs/2026-11-24-play-vs-step/boundary.md`.

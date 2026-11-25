@@ -35,7 +35,14 @@ Refusals: `SESSION_OPEN`, `NO_SESSION`, `NOT_THE_DRIVER`, `DRIVER_ALIVE`, `TAKEN
 ### `jawa/run_until`
 
 `action` is `start`, `status` or `cancel`. `start` takes `driver`, `request` (the id that the caller made before it sent the
-call), `until` (a JSON condition tree), `limit`, `speed`, `record`, `acts`, `tickBudgetMs` (0 = no bound on what reading one tick may take).
+call), `until` (a JSON condition tree), `limit`, `speed`, `record`, `acts`, `tickBudgetMs` (0 = no bound on what reading one tick may take),
+`randState`.
+
+- `speed`: `Normal`, `Fast`, `Superfast` or `Ultrafast` plays the run in the game's own loop (mode `PLAY`). `Step` keeps the game
+  paused, and the scene frame calls `DoSingleTick` until the run ends or 40 ms of the frame are spent (mode `STEP`,
+  `JawaBenchSceneTick.StepFrame`). The run, its trace and the end-of-tick hook are the same in both modes.
+- `randState`: a decimal `Rand.StateCompressed`, written in the hop that arms the run and read back. The reply says
+  `randWritten` (and `randWhy` when it is false). The `open` record holds `rand`, the state at arm, in every run.
 
 - `until`: the nodes and probes of `jawa/cond_eval`, two more probes and two group nodes.
   `{"p": "value", "of": T, "path": P}` reads a value path. `{"p": "value.state", "of": T, "path": P}` gives its state as text

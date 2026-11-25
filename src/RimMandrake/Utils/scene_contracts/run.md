@@ -9,7 +9,8 @@ records what the script named on every tick on the way. This is the per-tick cap
 |---|---|---|
 | `until` | a condition from `scene.cond`, or a number of ticks | `c.any("raiders", c.outside("moat"))` |
 | `limit` | the most ticks to play; always needed | `2500` |
-| `speed` | `"Normal"`, `"Fast"`, `"Superfast"`, `"Ultrafast"` | `"Normal"` |
+| `speed` | `"Normal"`, `"Fast"`, `"Superfast"`, `"Ultrafast"` (the game's own loop, PLAY), or `"Step"` (the game stays paused and the companion steps the tick in slices, once a frame: STEP) | `"Normal"` |
+| `rand` | the random state to write back at arm, a decimal string: the `rand` of an earlier run's `open` record. The game writes it in the hop that arms the run; the receipt says when it did not | `"12345678901234567890"` |
 | `record` | more values to capture on every tick: an alias (one thing or a group) and a field path. A path may name a private field or a static field of a mod (`help read` gives the path grammar) | `[c.track("raiders", "Position"), c.track("raiders", "CurJobDef")]` |
 
 The game must be paused at the start. Every value that `until` or the contract's conditions read is recorded without
@@ -18,6 +19,15 @@ being named in `record`.
 **A group is frozen.** A group alias holds the things that were bound to it (by `s.stage`, or by `bind=` of an act),
 by their ids. A member that dies or leaves reads `gone` from that tick on and stays in the group. A thing that appears
 later is not in the group.
+
+## Which speed counts for a bar
+
+PLAY at speed 1 (`"Normal"`) is the reference. **An arm that was not compared with the reference counts for no bar.** An
+arm is a speed (`"Superfast"`, `"Ultrafast"`, `"Step"`, ...). A comparison is `scene.py compare`: one plan, one fixture save
+loaded fresh for every run, the random state written back before every run, five runs of each arm, traces compared tick
+by tick (`scene_compare.py`). The comparison holds for one key: the plan's hash, the loaded hashes of our mods, the
+companion's hash, the mod list and the arm. When any part of the key changes, the comparison is owed again, and until it
+is made again the arm counts for no bar. The latest result: `design/specs/2026-11-23-bridge-v2/experiments/play_vs_step_result.md`.
 
 ## Returns
 

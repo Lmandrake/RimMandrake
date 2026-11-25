@@ -211,7 +211,9 @@ namespace JawaBench.BridgeTools
                 foreach (var a in _acts) acts.Add(new Dictionary<string, object> { { "name", a.Name }, { "at", (double)a.At } });
                 var tracks = new List<object>();
                 foreach (var t in _tracks) tracks.Add(t.Name);
+                // rand: Rand.StateCompressed at arm, as a decimal string (a ulong is wider than a JSON number); reading it draws nothing
                 Emit(tick, "first", "open", "\"schema\":" + S(Schema) + ",\"mode\":" + S(_mode) + ",\"speed\":" + S(_speed) + ",\"epoch\":" + S(epoch) +
+                                            ",\"rand\":" + S(_h.RandState().ToString(System.Globalization.CultureInfo.InvariantCulture)) +
                                             ",\"maxTicks\":" + _c.MaxTicks + ",\"tracks\":" + S(tracks) + ",\"acts\":" + S(acts) + ",\"cond\":" + S(_c.Canonical));
                 try
                 {
