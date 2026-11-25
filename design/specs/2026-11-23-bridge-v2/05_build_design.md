@@ -486,11 +486,14 @@ view-rectangle postfix that makes the game submit the draws `[READ: JawaBenchArt
 - The stage is not free isolation. The green room still ticks, and the world, the storyteller and the one random
   stream are shared. The calm profile holds or watches those; the stage removes only what stands on the same map.
 - One trap, read in the code: an incident whose def requires colonists on the target map "succeeds" without running
-  when the map has no free colonist `[READ: JawaBenchAwareness.cs header, IncidentWorker.TryExecute]`. A raid scene
-  therefore casts its defenders, and the incident tap's "called, not fired" record catches the miss. A raid whose
-  raiders find no way in, or whose points depend on a wealth that a bare stage does not have, is a failed opportunity
-  on the record: the scene sets the points and the arrival mode in the incident's parms, and the opportunity
-  conditions name "raiders spawned at an edge and hold an assault duty".
+  when the map has no free colonist `[READ: JawaBenchAwareness.cs header, IncidentWorker.TryExecute]`, and the incident
+  journal's row (`returned`, `outerBodyRan`, `pawnsSpawnedDuring`) tells "called, not fired" from "fired". RaidEnemy is
+  not such an incident: at a stage with no colonist it fires, and its raiders arrive `[MEASURED 2026-11-24, ArchBig,
+  prove_stage_map.py R4: 6 raiders, the journal row agreed]`. A raid scene casts its defenders because the claim is about
+  a defended colony, not to make the raid fire. A raid left to the worker draws its strategy (StageThenAttack stands
+  under a Defend duty first `[MEASURED, the same run]`), so the scene fixes the strategy and the arrival mode
+  (`jawa/fire_raid strategy= arrivalMode=`) and the points; the opportunity conditions name "raiders spawned at an edge
+  and hold an assault duty". A raid whose raiders find no way in is a failed opportunity on the record.
 - **Scenes on his full-list colony** (the walks) cannot move the colony. There the bystanders are held by means that
   are per pawn: an allowed area that excludes the stations for each colony pawn and animal, and the scene's things set
   forbidden. These are precautions and not isolation: an area does not bind a pawn in a mental state, in combat or

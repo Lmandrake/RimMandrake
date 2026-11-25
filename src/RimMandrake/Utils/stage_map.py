@@ -46,6 +46,11 @@ def outer(argv):
         print(__doc__)
         return 2
     game = a[1]
+    # A wsl.exe child of a Windows python gets each name in WSLENV that the parent did not set as "" (measured 2026-11-24):
+    # RIMFLOW_DRIVER_LOCK="" then reads as "no lock path", and ArchBig's make could not take its lock. Drop such empty names.
+    for k in [w.split("/")[0] for w in os.environ.get("WSLENV", "").split(":") if w]:
+        if os.environ.get(k) == "":
+            del os.environ[k]
     # budget: danger=a hung game_instance.py holds the make; evidence=none seen, a hang guard; longest=1s (one measured run, 2026-11-24)
     env = subprocess.run([sys.executable, os.path.join(HERE, "game_instance.py"), "env", game], capture_output=True, text=True, timeout=60)
     if env.returncode != 0:

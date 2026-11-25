@@ -1,0 +1,13 @@
+make settlement: exit 0, 19.5 s wall
+  the game holds 2 maps: leaving it for the main menu (a test game is disposable)
+  the game stands at Entry: starting a quicktest for the green room
+  green room: map 0, tile 8849, AridShrubland, 4 colonist(s)
+  green room fed: 90 meal(s) beside 3 colonist(s), food need full
+  made the settlement map on tile 8809 (AridShrubland): map 1, 100x100, 1.4 s
+  emptied: 6 pawn(s) vanished, 2607 thing(s) cleared, terrain Granite_Rough on 10000 cell(s) (read-back ok=True), fog lifted, 0 pawn(s) left, 1.1 s
+  MADE settlement stage RM_Stage_ArchBig_settlement: 100x100, map 1 current, green room map 0; make 1.4 s, total 3.1 s; stage file D:\ClaudeWork\rimmandrake\scratch\scene_stages\made\RM_Stage_ArchBig_settlement.json
+  ArchBig: held for `python.exe \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_BUILD_STAGE_MAP_CAST_ONLY_NO_BYSTANDERS.det\src\RimMandrake\Utils\stage_map.py --inner make ArchBig --kind settlement --save RM_Stage_ArchBig_settlement` (gen 1642)
+  [bridge split] 18.6 s wall: load 7.6 / ticks 0.0 / reads 2.0 / other 2.3 / outside calls 6.6 s
+PASS R3 a raid at a settlement stage with cast defenders spawns raiders at an edge with an assault duty: 5 raider(s), each spawned within 6 cells of an edge ([(0, 90), (4, 98), (5, 90)]), duties ['AssaultColony'], lords ['LordJob_AssaultColony']; defenders ['Human24429', 'Human24432', 'Human24435']
+PASS R4 a raid at a stage with no free colonist: the incident journal's outcome agrees with the stage: journal row {'def': 'RaidEnemy', 'returned': 'true', 'outerBodyRan': 'true', 'pawnsSpawnedDuring': 6, 'exception': None}; 6 hostile(s) on the stage; installed True
+prove_stage_map: 2 of 2 rows held, 0 failed, 0 paused (raid_pause.py)

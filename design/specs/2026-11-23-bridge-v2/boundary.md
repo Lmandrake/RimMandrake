@@ -377,7 +377,7 @@ None of its own.
 
 | proof | reading | evidence |
 |---|---|---|
-| `prove_stage_map.py` | 4 of 6 rows PASS (R1, R2, R5, R6), 2 PAUSED (R3, R4: the raid pause refused `jawa/fire_incident`), 0 FAIL | `design/specs/2026-11-23-bridge-v2/live/stage_map/prove_stage_map_2026-11-24.txt` (ArchSmall, the 18-mod list loaded there, 2026-11-24) |
+| `prove_stage_map.py` | 6 of 6 rows PASS: R1, R2, R5, R6 on ArchSmall (2026-11-24, `design/specs/2026-11-23-bridge-v2/live/stage_map/prove_stage_map_2026-11-24.txt`); R3, R4 on ArchBig under the raid allow, the raid held still by `jawa/fire_raid` ImmediateAttack/EdgeWalkIn, R4 the repaired claim above (2026-11-25, `design/specs/2026-11-23-bridge-v2/live/stage_map/prove_stage_map_r3r4_2026-11-25.txt`) | the two files named |
 | `prove_run_life_cycle.py` | 3 of 3 rows PASS | `design/specs/2026-11-23-bridge-v2-life-cycle/live/` (ArchSmall, tier `explosiveknockback_visit`, companion and Explosive Knockback PROOF build from `ac24cfedbb`, 2026-11-24) |
 
 ## PLAY AGAINST STEP
@@ -458,6 +458,6 @@ map and refuses otherwise, because a map switch can reply success and not take (
 | After make, the stage holds no pawn, and with the calm on it gains none over 60,000 ticks. | `prove_stage_map.py` R1 |
 | The green room's colonists are alive, fed and not malnourished after 60,000 ticks of an idle stage. | `prove_stage_map.py` R2 |
 | A raid at a settlement stage with cast defenders spawns raiders at an edge with an assault duty. | `prove_stage_map.py` R3 |
-| A raid at a stage with no free colonist is reported "called, not fired". | `prove_stage_map.py` R4 |
+| A raid at a stage with no free colonist: the incident journal's outcome (fired, or called and not fired) agrees with the raiders on the stage. | `prove_stage_map.py` R4; offline `selftest_prove_stage_map_rows.py` |
 | The make time of each map kind is printed. | `prove_stage_map.py` R5 |
 | A pawn on the stage that is not cast is a `BREACH` line on the receipt of `s.stage` and of the close. | `prove_stage_map.py` R6; offline `a_pawn_on_a_station_is_vanished_and_a_pawn_not_cast_is_a_breach` |

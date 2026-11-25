@@ -210,7 +210,8 @@ and the verdict ledger counts it for no bar. The first scenes are built and comp
 - **Live test (UNRUN):** `python.exe src\RimMandrake\bridgetools\prove_stage_map.py`, 6 rows: the stage holds zero
   pawns after make; the green room's colonists are alive and fed after 60,000 ticks of an idle stage; a raid fired at a
   `settlement` stage with cast defenders spawns raiders at an edge with an assault duty; the same raid at a stage with
-  no free colonist is reported "called, not fired"; the make time of each map kind is printed; a wild animal that
+  no free colonist: the incident journal's outcome agrees with the raiders on the stage (the game fires it; measured
+  2026-11-24); the make time of each map kind is printed; a wild animal that
   appears on the stage is a breach.
 
 ### `RIMMANDRAKE_BUILD_CAST_TRACKS_AND_JOB_TAPS_FIRST_FAMILY`
