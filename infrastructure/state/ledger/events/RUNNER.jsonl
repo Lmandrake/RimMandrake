@@ -12118,3 +12118,4 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_SCRATCH_OUTSIDE_CAP_DRAIN_CLCI_TBVP","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-25T03:00:04Z","tsn":1795575604069254199}
 {"seat":"RUNNER","event":"live","id":"OPS_TIMER_REPAIR_PRXC_XKGA","result":"broken","detail":"Ops alarm TIMER_FAILED: timers.failed_units = 1 failed user units (MEASURED), line > 0","ts":"2026-11-25T03:00:24Z","tsn":1795575624526678207}
 {"seat":"RUNNER","event":"raise","id":"OPS_TIMER_REPAIR_PRXC_XKGA","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-25T03:00:37Z","tsn":1795575637075804044}
+{"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_OUTSIDE_CAP_DRAIN_CLCI_TBVP","result":"kept","detail":"sweep: running again","ts":"2026-11-25T03:01:40Z","tsn":1795575700265920721}
