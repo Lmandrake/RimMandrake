@@ -827,6 +827,32 @@ namespace RimMandrake.ExplosiveKnockback
             return (ok ? "PASS " : "FAIL ") + s.name + " " + detail;
         }
 
+        /// <summary>Where an unspawned thing went, for a verdict line (RIMMANDRAKE_HUNT_KNOCKBACK_GOOD_UNMOVED_LONG_BATCH_THREE_SIGHTINGS:
+        /// a good read "gone" after a throw, and nothing said whether it was destroyed, merged into a stack (destroyed, stack 0)
+        /// or picked up, and by whom).</summary>
+        internal static string Gone(Thing t)
+        {
+            if (t == null)
+            {
+                return "gone(null)";
+            }
+            IThingHolder h = t.ParentHolder;
+            string holder = h == null ? "none" : h.GetType().Name;
+            if (h is Pawn_CarryTracker ct)
+            {
+                holder += ":" + ct.pawn?.LabelShort + ct.pawn?.thingIDNumber + " job=" + ct.pawn?.CurJobDef?.defName;
+            }
+            else if (h is Pawn_InventoryTracker it)
+            {
+                holder += ":" + it.pawn?.LabelShort + it.pawn?.thingIDNumber;
+            }
+            else if (h is Thing ht)
+            {
+                holder += ":" + ht.def.defName + ht.thingIDNumber;
+            }
+            return "gone(destroyed=" + t.Destroyed + " stack=" + t.stackCount + " holder=" + holder + ")";
+        }
+
         private static string Moved(Scene s, string key, out Thing t, out int cells)
         {
             t = s.things[key];
@@ -837,7 +863,7 @@ namespace RimMandrake.ExplosiveKnockback
             }
             if (!t.Spawned)
             {
-                return key + " not spawned";
+                return key + " not spawned " + Gone(t);
             }
             cells = Cheb(t.Position, s.starts[key]);
             return key + " " + s.starts[key].x + "," + s.starts[key].z + "->" + t.Position.x + "," + t.Position.z + " (" + cells + " cells)";
@@ -1759,8 +1785,8 @@ namespace RimMandrake.ExplosiveKnockback
                         bool pass = lh.Count == 0 && lp.Count >= 1 && pl.health.summaryHealth.SummaryHealthPercent == sc.numbers["plHp"]
                             && light.Spawned && light.Position.x < pl.Position.x;
                         return Result(sc, hit && pass, "hit=" + hit + " pass=" + pass + " heavyMass=" + sc.numbers["heavyMass"]
-                            + " heavyAt=" + (heavy.Spawned ? heavy.Position.x + "," + heavy.Position.z : "gone") + " ph=" + ph.Position.x + "," + ph.Position.z
-                            + " phHp=" + ph.health.summaryHealth.SummaryHealthPercent.ToString("0.000") + " lightAt=" + (light.Spawned ? light.Position.x + "," + light.Position.z : "gone")
+                            + " heavyAt=" + (heavy.Spawned ? heavy.Position.x + "," + heavy.Position.z : Gone(heavy)) + " ph=" + ph.Position.x + "," + ph.Position.z
+                            + " phHp=" + ph.health.summaryHealth.SummaryHealthPercent.ToString("0.000") + " lightAt=" + (light.Spawned ? light.Position.x + "," + light.Position.z : Gone(light))
                             + (hh.Count > 0 ? " [" + Rec(hh[0]) + "]" : " no heavy_hit") + " passes=" + lp.Count);
                     };
                     return null;
@@ -1817,7 +1843,7 @@ namespace RimMandrake.ExplosiveKnockback
                         bool landed = !gun.Destroyed && gun.Spawned && gun.Position != land;
                         bool journal = ll.Count == 1 && Convert.ToInt32(ll[0]["residentsMoved"]) == 0;
                         return Result(sc, stays && landed && journal, "stays=" + stays + " landed=" + landed + " journal_zero_moved=" + journal
-                            + " resident=" + (res.Spawned ? res.Position.x + "," + res.Position.z : "gone") + " gun=" + (gun.Spawned ? gun.Position.x + "," + gun.Position.z : "gone")
+                            + " resident=" + (res.Spawned ? res.Position.x + "," + res.Position.z : Gone(res)) + " gun=" + (gun.Spawned ? gun.Position.x + "," + gun.Position.z : Gone(gun))
                             + " inPit=" + (gun.Spawned && RM_KnockbackCompat.IsSuperdeep(Map, gun.Position)) + " [" + Rec(ll[0]) + "]");
                     };
                     return null;
