@@ -1052,7 +1052,9 @@ _mut = [
     ("no fresh map", _txt.replace("--menu-dwell 5 --needs", "--game --needs"), "fresh map"),
     ("no --needs", _txt.replace(" --menu-dwell 5 " + _NEEDS, " --menu-dwell 5"), "holds FlowWorks"),
     ("not --chunks", _txt.replace(" --chunks", ""), "without --chunks"),
-    ("the old 3000 s budget", _txt.replace("--max-seconds 2500", "--max-seconds 3000"), "watchdog"),
+    # a budget AT the job's watchdog (2700 -> 21600 s in RIMMANDRAKE_MEASURE_TIME_BUDGETS_AGAINST_REAL_RUNS_HE_SEES_TEN_PERCENT; the old
+    # mutant, 3000 s, was outside the old 2700 s watchdog only and went stale when the watchdog rose)
+    ("a budget at the watchdog", _txt.replace("--max-seconds 2500", "--max-seconds %d" % _watch), "watchdog"),
     ("a budget under the estimate", _txt.replace("--max-seconds 2500", "--max-seconds 900"), "under the session's estimated"),
     ("no budget", _txt.replace(" --max-seconds 2500", ""), "no --max-seconds"),
     ("a site failure swallowed", _txt.replace(" && ", " ; ", 1), "go on after a step failed"),

@@ -146,19 +146,40 @@ def layout(ox, oz):
 
 SITE_KEYS = ("rect", "hoses_rect", "picks_rect", "bars_rect")
 DEFAULT_MAP = (250, 250)          # a dry run has no map to ask: the debug quicktest size
-FIT_MARGIN = 2
+# RIMMANDRAKE_FIX_FLOWWORKS_REVIEW_STAGER_NS_ROW_IN_EDGE_BAND_READ_AS_BUILT: GenGrid.NoBuildEdgeWidth is 10. Vanilla refuses
+# construction there ("Too close to map edge") and a dug square there is an edge SINK (RM_MapControls.EdgeSinkAt). With the
+# old margin of 2, visit 11 on a 250 map put bars_bridges_ns stations 69, 74, 75 at x 239-246: three empty pits in the save.
+NO_BUILD_EDGE = 10
+FIT_MARGIN = NO_BUILD_EDGE
 
 
-def site_extent(L):
-    """(x0, z0, x1, z1) bounding every site rect of the layout, x1/z1 exclusive (pure)."""
-    rs = [L[k] for k in SITE_KEYS]
+def site_keys(rows=None):
+    """The site rects that `rows` clear and build in (main's clear_site tests); None = every rect (pure)."""
+    if rows is None:
+        return SITE_KEYS
+    keys = []
+    if [r for r in rows if r not in OPT_ROWS + BARS_ROWS]:
+        keys.append("rect")
+    if "picks" in rows:
+        keys.append("picks_rect")
+    if [r for r in rows if r in BARS_ROWS]:
+        keys.append("bars_rect")
+    if "hoses" in rows:
+        keys.append("hoses_rect")
+    return tuple(keys) or SITE_KEYS
+
+
+def site_extent(L, rows=None):
+    """(x0, z0, x1, z1) bounding every site rect that `rows` use (None = all), x1/z1 exclusive (pure)."""
+    rs = [L[k] for k in site_keys(rows)]
     return (min(r[0] for r in rs), min(r[1] for r in rs), max(r[0] + r[2] for r in rs), max(r[1] + r[3] for r in rs))
 
 
-def fit_origin(ox, oz, size, margin=FIT_MARGIN):
-    """REVIEW_STAGER_FIX_BARS_OFF_SMALL_MAP: the origin nearest (ox, oz) at which the whole site lies inside a map of `size`
-    (W, H) with `margin` to spare. Raises ValueError when the site is larger than the map (pure)."""
-    x0, z0, x1, z1 = site_extent(layout(ox, oz))
+def fit_origin(ox, oz, size, margin=FIT_MARGIN, rows=None):
+    """REVIEW_STAGER_FIX_BARS_OFF_SMALL_MAP: the origin nearest (ox, oz) at which the site of `rows` (None = every row) lies
+    inside a map of `size` (W, H) with `margin` to spare: the no-build edge band. Raises ValueError when the site is larger
+    than the map less that band (pure)."""
+    x0, z0, x1, z1 = site_extent(layout(ox, oz), rows)
     W, H = size
     if x1 - x0 + 2 * margin > W or z1 - z0 + 2 * margin > H:
         raise ValueError("the review site is %dx%d squares, the map %dx%d: it cannot fit" % (x1 - x0, z1 - z0, W, H))
@@ -177,6 +198,31 @@ def offmap_problems(stations, size):
         if x < 0 or z < 0 or x + w > W or z + h > H or not (0 <= lx < W and 0 <= lz < H):
             out.append("station %s %r rect %s is off the %dx%d map" % (st["n"], st.get("short"), st["rect"], W, H))
     return out
+
+
+def edgeband_problems(stations, size, band=NO_BUILD_EDGE):
+    """[str] every station whose rect reaches into the no-build edge band of a map of `size` (pure). Never a note: a
+    station there cannot be built (vanilla refuses) or dug (an edge sink drains it), so its picture would be empty."""
+    W, H = size
+    out = []
+    for st in stations:
+        x, z, w, h = st["rect"]
+        if x < band or z < band or x + w > W - band or z + h > H - band:
+            out.append("station %s %r rect %s reaches the %d-square no-build edge of the %dx%d map" % (
+                st["n"], st.get("short"), st["rect"], band, W, H))
+    return out
+
+
+PROOF_FAILS = (re.compile(r"^REFUSED"), re.compile(r"\bok=False\b"), re.compile(r"^RAILS none\b"),
+               re.compile(r"^LOOK \S+ parts=0\b"))
+
+
+def proof_failed(txt):
+    """True when a proof reply says it did not do the thing (pure). The proofs answer success=true with a verdict in the
+    text: "REFUSED: ...", "BUILD ok=False ... reason=...", "JETTY ok=False ...", "RAILS none" (no bridge at the cell) and
+    "LOOK look=L parts=0 reason=..." are all a thing NOT built. Visit 11 read 'BUILD ok=False' as success."""
+    t = (txt or "").strip()
+    return any(r.search(t) for r in PROOF_FAILS)
 
 
 # ------------------------------------------------------------------ Stage: plan + execution in ONE path
@@ -424,8 +470,10 @@ class Stage(object):
         if self.dry:
             return True, ""
         ok, txt = self.w.proof(typ, method, arg)
+        if ok and proof_failed(txt):
+            ok = False
         if not ok:
-            self.notes.append("proof %s.%s(%s) REFUSED/failed: %s" % (typ.split(".")[-1], method, arg, (txt or "")[:120]))
+            self.notes.append("proof %s.%s(%s) REFUSED/failed: %s" % (typ.split(".")[-1], method, arg, (txt or "")[:160]))
         return ok, txt
 
     def ticks(self, n):
@@ -1021,13 +1069,14 @@ def main(argv=None):
     if msize is None:
         msize = C.map_size(w)
     try:
-        fit = fit_origin(ox, oz, msize)
+        fit = fit_origin(ox, oz, msize, rows=only)
     except ValueError as e:
         print("REFUSED: %s" % e)
         return 4
     if fit != (ox, oz):
         if a.origin:
-            print("REFUSED: origin %s puts the site off the %dx%d map (it fits at %s); nothing was staged" % ((ox, oz), msize[0], msize[1], fit))
+            print("REFUSED: origin %s puts the site off the %dx%d map or in its %d-square no-build edge (it fits at %s); "
+                  "nothing was staged" % ((ox, oz), msize[0], msize[1], FIT_MARGIN, fit))
             return 4
         ox, oz = fit
         L = layout(ox, oz)
@@ -1074,6 +1123,10 @@ def main(argv=None):
     off = offmap_problems(s.stations, msize)
     if off:        # backstop: fit_origin above already refuses a site that does not fit; an off-map station is never a note
         print("REFUSED (not saved): %d station(s) off the map: %s" % (len(off), "; ".join(off[:3])))
+        return 4
+    edge = edgeband_problems(s.stations, msize)
+    if edge:       # backstop as above: fit_origin keeps the site out of the band; a station in it is never a note
+        print("REFUSED (not saved): %d station(s) in the no-build edge band: %s" % (len(edge), "; ".join(edge[:3])))
         return 4
     s.labels()                       # every station numbered in the world, the same number as its caption line
     for p in layout_problems(s.stations, rows=ALL_ROWS):

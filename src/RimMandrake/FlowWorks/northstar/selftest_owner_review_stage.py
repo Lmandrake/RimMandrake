@@ -271,5 +271,96 @@ def _shift_fuel(ln):
 
 
 check("can-fail: chemfuel beside, not under, the deck reads red", any("chemfuel" in p for p in ns_problems([_shift_fuel(ln) for ln in d.plan])))
+# RIMMANDRAKE_FIX_FLOWWORKS_REVIEW_STAGER_NS_ROW_IN_EDGE_BAND_READ_AS_BUILT. Range swept: square and oblong maps 200..400
+# (every vanilla size and the 250 quicktest) x requested origins over the whole map and off it; a site that fits is read
+# station by station with the band check, a site that cannot fit must be refused; and --only subsets (each row alone, the
+# default sweep, every row, live_session B9's list), since the fit reads only the rects of the rows that run. Left out:
+# seeds, settings and time (the layout is pure geometry of the origin and the map size; nothing else moves a station).
+def _plan_stations(origin, rows=None):
+    st = ORS.Stage(None, True)
+    with contextlib.redirect_stdout(io.StringIO()):
+        Lx = ORS.layout(*origin)
+        for row in rows or ORS.ALL_ROWS + ORS.OPT_ROWS:
+            if row == "gates":
+                ORS.row_gates(st, Lx, "RM_Sluice", "gates_sluice", "WoodLog")
+                ORS.row_gates(st, Lx, "RM_SecurityGrateDoor", "gates_grate", "Steel")
+            else:
+                ORS.ROWS[row](st, Lx)
+    return st.stations
+
+
+_cases = _bad = _refused = _nst = 0
+_worst = None
+B9_ROWS = ["ladders", "spikes", "gates", "shallows", "sprinklers", "hoses", "bars_joint", "bars_dry", "bars_trench", "bars_access",
+           "bars_bridges"]          # live_session.py B9's --only list
+SUBSETS = [None, list(ORS.ALL_ROWS), B9_ROWS] + [[r] for r in ORS.ALL_ROWS + ORS.OPT_ROWS]
+for W in (200, 225, 250, 275, 300, 325, 350, 400):
+    for H in (200, 250, 300, 400):
+        for req in ((100, 100), (0, 0), (W, H), (W // 2, 5), (5, H // 2), (-50, 500)):
+          for rows in SUBSETS:
+            try:
+                fo = ORS.fit_origin(req[0], req[1], (W, H), rows=rows)
+            except ValueError:
+                _refused += 1
+                continue
+            _cases += 1
+            sts = _plan_stations(fo, rows)
+            _nst += len(sts)
+            if not sts:
+                _bad += 1
+                continue
+            probs = ORS.edgeband_problems(sts, (W, H)) + ORS.offmap_problems(sts, (W, H))
+            gap = min(min(r[0], r[1], W - r[0] - r[2], H - r[1] - r[3]) for r in (x["rect"] for x in sts))
+            _worst = gap if _worst is None else min(_worst, gap)
+            if probs:
+                _bad += 1
+                print("   band case %s req %s rows %s -> %s: %s" % ((W, H), req, rows and rows[:3], fo, probs[:2]))
+print("   edge sweep: %d fitted cases read (%d stations), %d refused (site wider than map less the band), worst station gap to an edge %s "
+      "(limit %d), %d in the band" % (_cases, _nst, _refused, _worst, ORS.NO_BUILD_EDGE, _bad))
+check("every fitted station on every map size stays out of the no-build edge band", _cases > 100 and _bad == 0 and
+      _worst >= ORS.NO_BUILD_EDGE, (_cases, _bad, _worst))
+check("a 250 map still fits the whole default site", ORS.fit_origin(100, 100, (250, 250)) is not None)
+import live_session as _LS  # noqa: E402
+_z = _LS.plan_zones((250, 250))["owner"]
+_b9 = (_z[0] + 3, _z[1] + 5)
+check("live_session B9's explicit origin still fits its rows unmoved on a 250 map (it would be refused)",
+      ORS.fit_origin(_b9[0], _b9[1], (250, 250), rows=B9_ROWS) == _b9, (_b9, ORS.fit_origin(_b9[0], _b9[1], (250, 250), rows=B9_ROWS)))
+r = subprocess.run([sys.executable, os.path.join(HERE, "owner_review_stage.py"), "--dry-run", "--origin", "%d,%d" % _b9,
+                    "--only", ",".join(B9_ROWS)], capture_output=True, text=True)
+check("live_session B9's argv dry-runs on the 250 map unmoved (main fits the rows it runs)",
+      r.returncode == 0 and "origin moved" not in r.stdout, (r.returncode, r.stdout[-300:]))
+_old = ORS.FIT_MARGIN
+try:            # can-fail: the old margin of 2 reproduces visit 11 (stations in the band on the 250 quicktest)
+    import inspect
+    _src = inspect.signature(ORS.fit_origin).parameters["margin"].default
+    _vis = _plan_stations(ORS.fit_origin(100, 100, (250, 250), margin=2))
+    _hit = ORS.edgeband_problems(_vis, (250, 250))
+    _ns_hit = [p for p in _hit if any(st["n"] == int(p.split()[1]) and st["row"] == "bars_bridges_ns" for st in _vis)]
+    check("can-fail: the old margin 2 puts bars_bridges_ns stations in the band on a 250 map (visit 11)", len(_ns_hit) >= 3, _hit[:4])
+    check("fit_origin's default margin is the no-build edge", _src == ORS.NO_BUILD_EDGE, _src)
+finally:
+    ORS.FIT_MARGIN = _old
+VISIT11 = "BUILD ok=False anchors=0 decks=0 blueprints=0 records=0 reason=Anchor: Too close to map edge."
+check("visit 11's ProofBuild reply reads as a failure", ORS.proof_failed(VISIT11))
+for bad in ("REFUSED: arg must be x,z", "JETTY ok=False anchors=0 decks=0 blueprints=0 railed=0 reason=x", "RAILS none",
+            "LOOK look=Modern parts=0 reason=Too close to map edge."):
+    check("a not-built reply reads as a failure: %s" % bad[:30], ORS.proof_failed(bad))
+for good in ("BUILD ok=True anchors=2 decks=4 blueprints=0 records=1 reason=-", "JETTY ok=True anchors=1 decks=2 blueprints=0 railed=2",
+             "RAILS on=True railed=6", "LOOK look=Modern parts=6 styled=6 pink=0 paths=a", "FILLED (1, 2, 3) W=10000dL fluid=RM_Fluid_Chemfuel",
+             "", None):
+    check("a built reply is not a failure: %r" % (good,)[:40], not ORS.proof_failed(good))
+
+
+class EdgeRefuses(C.FakeGame):
+    """Answers static_call the way the live game did on visit 11: success=true, the verdict ok=False in the text."""
+    def call(self, tool, **kw):
+        if tool == "jawa/static_call":
+            return {"success": True, "result": VISIT11}
+        return C.FakeGame.call(self, tool, **kw)
+
+
+e = stage(EdgeRefuses)
+ok, _ = e.proof(ORS.SUSP, "ProofBuild", "240,151;240,156;rope;god")
+check("Stage.proof returns not-ok and notes a 'BUILD ok=False' reply", (not ok) and any("Too close to map edge" in n for n in e.notes), e.notes)
 print("selftest_owner_review_stage: %d failure(s)" % len(FAILS))
 sys.exit(1 if FAILS else 0)
