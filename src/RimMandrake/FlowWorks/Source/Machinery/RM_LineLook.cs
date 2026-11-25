@@ -42,11 +42,13 @@ namespace RimMandrake.FlowWorks.Machinery
         RM_LinePart KindOf(object v);
         /// <summary>Pipe cells joined to a pipe cell: cardinal, plus pipe-pole span edges.</summary>
         IEnumerable<object> PipeNeighbours(object cell);
-        /// <summary>Things 8-way around or on a pipe cell (the kernel keeps tanks and machines).</summary>
+        /// <summary>Things 8-way around or on a pipe cell (the kernel keeps tanks and machines; a pipe thing listed here is
+        /// skipped, never walked as a cell).</summary>
         IEnumerable<object> AroundCell(object cell);
         /// <summary>Pipe cells 8-way around or under a part.</summary>
         IEnumerable<object> PipeCellsAround(object part);
-        /// <summary>Things touching a part 8-way, the part itself excluded.</summary>
+        /// <summary>Things touching a part 8-way, the part itself excluded (a pipe thing listed here is skipped: the pipe joins
+        /// come from PipeCellsAround).</summary>
         IEnumerable<object> Touching(object part);
         /// <summary>Hose couplings at v: for a reel, what its hose couples (body port, free-end port, the relay it feeds); for any
         /// other vertex, the reels whose hose couples to it.</summary>
@@ -128,14 +130,17 @@ namespace RimMandrake.FlowWorks.Machinery
         {
             switch (kv)
             {
+                // AroundCell and Touching list THINGS, the pipe things in those cells too. A pipe vertex is only ever its cell, and
+                // the cell queries (PipeNeighbours, PipeCellsAround) already give every pipe join; a pipe thing taken from a touch
+                // list would be walked as a cell (InvalidCastException, visit 11, 2026-11-24) or join pipes diagonally. Skip it.
                 case RM_LinePart.Pipe:
                     foreach (object n in g.PipeNeighbours(v)) yield return n;
-                    foreach (object n in g.AroundCell(v)) yield return n;
+                    foreach (object n in g.AroundCell(v)) if (g.KindOf(n) != RM_LinePart.Pipe) yield return n;
                     break;
                 case RM_LinePart.Tank:
                 case RM_LinePart.Machine:
                     foreach (object n in g.PipeCellsAround(v)) yield return n;
-                    foreach (object n in g.Touching(v)) yield return n;
+                    foreach (object n in g.Touching(v)) if (g.KindOf(n) != RM_LinePart.Pipe) yield return n;
                     break;
                 case RM_LinePart.Fitting:
                     // a fitting is walked only as a START (nothing joins one by touch or hose): it leads to the pipe cells it

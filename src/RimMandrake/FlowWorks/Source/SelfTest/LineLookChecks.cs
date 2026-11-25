@@ -86,7 +86,9 @@ namespace RimMandrake.FlowWorks.SelfTest
             public IEnumerable<object> AroundCell(object cell)
             {
                 var (x, z) = ((int, int))cell;
-                return Things.Where(t => Gap(t, x, z) <= 1);   // every thing on or 8-way around, as the adapter lists them
+                // every thing on or 8-way around, as the adapter lists them: the cell's own PIPE things included (the adapter's
+                // GetThingList holds the pipe Thing; visit 11, 2026-11-24, threw when the walk took one for a pipe cell)
+                return Things.Concat(Pipes.Values).Where(t => Gap(t, x, z) <= 1);
             }
 
             public IEnumerable<object> PipeCellsAround(object part)
@@ -98,7 +100,8 @@ namespace RimMandrake.FlowWorks.SelfTest
             public IEnumerable<object> Touching(object part)
             {
                 var p = (P)part;
-                return Things.Where(t => t != p && Gap(p, t) <= 1);   // fittings and foreign things too: the kernel filters
+                // fittings, foreign things and the pipe things beside it too, as the adapter lists them: the kernel filters
+                return Things.Concat(Pipes.Values).Where(t => t != p && Gap(p, t) <= 1);
             }
 
             public IEnumerable<object> HoseJoins(object v)
@@ -188,6 +191,46 @@ namespace RimMandrake.FlowWorks.SelfTest
                 }
                 Console.WriteLine($"      {starts.Count} starts x {want.Length} parts; worst miss {worst} (limit 0) at {worstAt}");
                 Assert(worst == 0, "a start that does not reach exactly the line: " + worstAt);
+            });
+
+            Case("LineLook_pipe_thing_listed_by_touch_is_not_a_vertex", () =>
+            {
+                // RIMMANDRAKE_FIX_FLOWWORKS_LINE_LOOK_CAST_THROWS_WHEN_TANK_TOUCHES_PIPE (visit 11, 2026-11-24, ArchBig): the
+                // adapter's Touching and AroundCell list every thing in the cells, the PIPE things too. The walk took such a pipe
+                // Thing for a pipe vertex and cast it to a cell: InvalidCastException, no look changed. A pipe vertex is only ever
+                // its cell (PipeNeighbours, PipeCellsAround); a pipe thing listed by touch is not a join. Regimes read: every
+                // start of station 24 (tank, pump, head, reel, pipe, faucet's cell); a tank and a pump with pipes on all 8 sides;
+                // two pipes that only touch diagonally (not one line: a pipe joins pipe cardinally, never by an 8-way touch).
+                var (g, at) = Station24();
+                int read = 0, threw = 0;
+                string first = "-";
+                foreach (object s in new object[] { at["tank"], at["pump"], at["head"], at["reel"], at["faucet"], g.Cell(2, 0), g.Cell(6, 0), g.Cell(7, 0) })
+                {
+                    read++;
+                    try { g.Pick("Modern", s); }
+                    catch (Exception e) { threw++; if (first == "-") first = s + ": " + e.GetType().Name; }
+                }
+                var h = new Fake();
+                P tank = h.Add("tank", RM_LinePart.Tank, 0, 0), pump = h.Add("pump", RM_LinePart.Machine, 10, 0);
+                for (int dx = -1; dx <= 1; dx++) for (int dz = -1; dz <= 1; dz++)
+                    if (dx != 0 || dz != 0) { h.Pipe(dx, dz); h.Pipe(10 + dx, dz); }
+                int ringTank = -1, ringPump = -1;
+                foreach (var (s, set) in new[] { (tank, 0), (pump, 1) })
+                {
+                    read++;
+                    try { int n = h.Pick("Modern", s).Count; if (set == 0) ringTank = n; else ringPump = n; }
+                    catch (Exception e) { threw++; if (first == "-") first = s + " ring: " + e.GetType().Name; }
+                }
+                var d = new Fake();
+                d.Pipe(0, 0); d.Pipe(1, 1);
+                int diag = -1;
+                read++;
+                try { diag = d.Pick("Modern", d.Cell(0, 0)).Count; }
+                catch (Exception e) { threw++; if (first == "-") first = "diagonal: " + e.GetType().Name; }
+                Console.WriteLine($"      {read} starts read; threw {threw} (limit 0), first {first}; tank ring {ringTank} (want 9), pump ring {ringPump} (want 9), diagonal pair {diag} (want 1)");
+                Assert(threw == 0, "a pipe thing listed by touch must not be walked as a pipe cell: " + first);
+                Assert(ringTank == 9 && ringPump == 9, "a tank or pump ringed by pipe reaches its 8 pipes, each once");
+                Assert(diag == 1, "two pipes touching only diagonally are not one line");
             });
 
             Case("LineLook_old_rule_pipes_only_is_red_here", () =>
