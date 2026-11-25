@@ -162,8 +162,9 @@ By tool family: Git, publish and clones (3) · Ledger, rimflow, handoffs and les
     and give a word budget. The consult then ran in under 10 min.
   - Full-file reviews time out because codex goes web-searching decompiled game source, or runs PowerShell/python on
     the files. A 2,000+ line file took 520 s. 7 files of ~100k chars took 500 s, twice.
-  - For a full-file review, add `--lockdown --effort medium` and the line 'Do NOT run any tools or commands; just read
-    and answer'. Send at most 4 files. Such reviews answered in 51-150 s.
+  - For a full-file review, add `--lockdown` and the line 'Do NOT run any tools or commands; just read and answer'. Send
+    at most 4 files. Such reviews answered in 51-150 s at medium effort (measured 2026-10-25). The effort floor is now
+    high (owner by card 2026-11-25: "No medium anywhere"), which is `gpt_consult.py`'s default.
   - Verify every GPT claim against the file or vanilla Data before you accept it. GPT reported an extra closing brace
     in a file whose braces balance 27/27. GPT called MeleeDodgeChance 8 an 800% bug, but vanilla uses 15 and 8 on the
     unfinalized scale.
