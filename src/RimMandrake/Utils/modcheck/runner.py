@@ -1349,6 +1349,7 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
                                "modal_check": _modal,
                                "site_hold": _hold,
                                "site_reload": _reload,
+                               "setup_records": list(getattr(t, "setup_records", None) or []),
                                "env_reset": _env,
                                "phase_s": _phase})
             if _gd is not None:

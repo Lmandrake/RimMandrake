@@ -230,6 +230,9 @@ class TestContext(object):
         self.validity_checks = []
         self.components = []
         self._current = None
+        # records made outside any component (chain setup: a site load and its quiet-profile receipt), kept for the
+        # chain's sheet entry instead of dropped (RIMMANDRAKE_READ_WHY_STEVE_SICKLY_SWEEP_FINDS_NONE_SAVES_SAY_TWO)
+        self.setup_records = []
         self._on_finding = on_finding or (lambda component: None)
         # action receipts (contract.spawn_receipt): requested vs ACTUAL kinds and ids of every pawn spawn this
         # context made, the actual kind READ BACK from an independent list_pawns (E5: a substituted spawn).
@@ -965,11 +968,13 @@ class TestContext(object):
 
     # ------------------------------------------------------------- misc
     def _record(self, call, result):
-        if self._current is not None:
-            self._current.evidence.append({"call": call, "result": result})
-            from rimdrive import UNVERIFIED
-            if result is UNVERIFIED:
-                self._current.unverified += 1
+        if self._current is None:
+            self.setup_records.append({"call": call, "result": result})
+            return
+        self._current.evidence.append({"call": call, "result": result})
+        from rimdrive import UNVERIFIED
+        if result is UNVERIFIED:
+            self._current.unverified += 1
 
 
 class _ComponentCtx(object):
