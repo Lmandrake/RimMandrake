@@ -33,9 +33,10 @@ def chain_rows(path):
         if ch.get("name") == "toggle_bottle_loop":
             out = {}
             for c in ch.get("components") or []:
-                mw = any("ProofBottleCount" in str((e.get("result") or {}).get("method"))
-                         and str((e.get("result") or {}).get("result", "")).startswith("BOTTLES")
-                         for e in c.get("evidence") or [])
+                # an evidence `result` is not always a dict: the 2026-11-25 ArchBig run holds bare True results
+                res = [e.get("result") for e in c.get("evidence") or [] if isinstance(e, dict)]
+                mw = any(isinstance(r, dict) and "ProofBottleCount" in str(r.get("method"))
+                         and str(r.get("result", "")).startswith("BOTTLES") for r in res)
                 out[c.get("name")] = (c.get("verdict"), mw)
             return out
     return None

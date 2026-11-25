@@ -1,0 +1,778 @@
+{
+ "mod": "FlowWorks",
+ "stamp": "20261125T161718Z",
+ "summary": {
+  "chains": [
+   {
+    "name": "toggle_bottle_loop",
+    "components": [
+     {
+      "name": "bottle_loop_on",
+      "toggle": "bottleLoopEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofBottleCount(System.String)",
+         "result": "BOTTLES RM_BottleEmpty=1/1/0 RM_BottleDirty=0/0/0 RM_Bottle_FreshWater=0/0/0 holders=-",
+         "thingArgs": [],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_4e34489a9e6f461f8b5889dc3422b595",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofBottleCount(System.String)",
+         "result": "BOTTLES RM_BottleEmpty=0/0/1 RM_BottleDirty=0/0/0 RM_Bottle_FreshWater=0/0/0 holders=Human19601:RM_FillBottleJob:RM_BottleEmpty",
+         "thingArgs": [],
+         "ticksGame": 126,
+         "operation": {
+          "OperationId": "op_021dae150c694f238a895a002e75270c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 22
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 126
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofBottleCount(System.String)",
+         "result": "BOTTLES RM_BottleEmpty=0/0/1 RM_BottleDirty=0/0/0 RM_Bottle_FreshWater=0/0/0 holders=Human19601:RM_FillBottleJob:RM_BottleEmpty",
+         "thingArgs": [],
+         "ticksGame": 251,
+         "operation": {
+          "OperationId": "op_061a30c4d8b34b63a1b59e834cb49cdc",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 34
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 251
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofBottleCount(System.String)",
+         "result": "BOTTLES RM_BottleEmpty=0/0/0 RM_BottleDirty=0/0/0 RM_Bottle_FreshWater=1/1/0 holders=-",
+         "thingArgs": [],
+         "ticksGame": 376,
+         "operation": {
+          "OperationId": "op_d3f3f182d3ca476d97d1d70db2ee948b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 376
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_pawns",
+        "result": {
+         "success": true,
+         "message": "6 pawn(s).",
+         "pawns": [
+          {
+           "id": "Human872",
+           "name": "Pheanox",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "New Arrivals",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 151,
+           "z": 139,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human875",
+           "name": "Tuomi",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "New Arrivals",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 138,
+           "z": 140,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human878",
+           "name": "Braden",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "New Arrivals",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 158,
+           "z": 133,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "RM_IllothLarvae14409",
+           "name": "Tofu",
+           "kind": "RM_IllothLarvae",
+           "kindDef": "RM_IllothLarvae",
+           "def": "RM_IllothLarvae",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "New Arrivals",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 140,
+           "z": 145,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Insectoid",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.5
+          },
+          {
+           "id": "Human19601",
+           "name": "Mason",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "New Arrivals",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 166,
+           "z": 132,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human19604",
+           "name": "Hairy",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "New Arrivals",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 179,
+           "z": 130,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          }
+         ],
+         "returned": 6,
+         "truncated": 0,
+         "totalOnMap": 6,
+         "ticksGame": 376,
+         "operation": {
+          "OperationId": "op_74acb31b18824fa48b283668da41c47a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 376
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "bottle_loop_off",
+      "toggle": "bottleLoopEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'bottleLoopEnabled': False})",
+        "result": true
+       },
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofBottleCount(System.String)",
+         "result": "BOTTLES RM_BottleEmpty=1/1/0 RM_BottleDirty=0/0/0 RM_Bottle_FreshWater=0/0/0 holders=-",
+         "thingArgs": [],
+         "ticksGame": 376,
+         "operation": {
+          "OperationId": "op_a3f584a7c3144cb5928449f86508b45f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 376
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofBottleCount(System.String)",
+         "result": "BOTTLES RM_BottleEmpty=1/1/0 RM_BottleDirty=0/0/0 RM_Bottle_FreshWater=0/0/0 holders=-",
+         "thingArgs": [],
+         "ticksGame": 2376,
+         "operation": {
+          "OperationId": "op_d0497076e2a545bca1b91dea6f877511",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2376
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null,
+    "site_hold": {
+     "bland": true,
+     "problems": [],
+     "notes": [],
+     "dead": [],
+     "steps": [
+      {
+       "name": "kill_hostiles",
+       "acted": 4,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "targeted": [
+         "Locust19523",
+         "Megaspider19522",
+         "Spelopede19520",
+         "Spelopede19521"
+        ]
+       }
+      },
+      {
+       "name": "clear_map_fog",
+       "acted": 3,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "hostilesBefore": [],
+        "foggedBefore": 9159,
+        "foggedNow": 0,
+        "releasedByUnfog": [
+         "Trispike14080",
+         "Trispike14079",
+         "Bulbfreak14078"
+        ],
+        "sweepPasses": 1,
+        "hostilesAfter": [],
+        "verified": true,
+        "error": null
+       }
+      },
+      {
+       "name": "pause",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {}
+      },
+      {
+       "name": "quiet_world",
+       "acted": 3,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "profile": "isolated",
+        "quests": "not touched",
+        "notSuppressed": [
+         "active quests and their parts (never ended by default: ending a quest changes the world)",
+         "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+         "existing game conditions, map/world/game components and mod tickers",
+         "hives and other pawn-spawning structures, births, egg hatching, breeders",
+         "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+         "weather transitions, fires, existing hostile behaviour"
+        ],
+        "storyteller": {
+         "cleared_count": 0,
+         "cleared": []
+        },
+        "logRaidInfo": "on",
+        "wildSpawner": "blocked (read back)",
+        "readBack": {
+         "enableStoryteller": false,
+         "enableRandomMentalStates": false,
+         "enableRandomDiseases": false,
+         "logRaidInfo": true,
+         "threatScale": 0.0,
+         "allowBigThreats": false
+        },
+        "incidentQueueAfterClear": 0
+       }
+      },
+      {
+       "name": "quiet_site_map",
+       "acted": 4,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "removed": [
+         [
+          "Hive",
+          "Hive19510"
+         ],
+         [
+          "GlowPod",
+          "GlowPod19530"
+         ],
+         [
+          "GlowPod",
+          "GlowPod19531"
+         ],
+         [
+          "EggSac",
+          "EggSac19532"
+         ]
+        ],
+        "threatsAfter": 0,
+        "lettersUnsentAfter": 0
+       }
+      },
+      {
+       "name": "kill_hostiles",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "targeted": []
+       }
+      },
+      {
+       "name": "kill_wildlife",
+       "acted": 9,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "route": "destroy_bulk"
+       }
+      },
+      {
+       "name": "clear_strangers",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "targeted": []
+       }
+      },
+      {
+       "name": "extinguish",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {}
+      },
+      {
+       "name": "restore_colonists",
+       "acted": 12,
+       "verified": true,
+       "residue": [],
+       "evidence": {}
+      }
+     ]
+    },
+    "site_reload": null,
+    "env_reset": {
+     "log_reset": "ok",
+     "weather": "ok",
+     "map_info": "ok",
+     "unroof": "ok",
+     "gas_ToxGas": "ok",
+     "gas_BlindSmoke": "ok",
+     "gas_RotStink": "ok",
+     "gas_DeadlifeDust": "ok",
+     "gas_things": "ok"
+    },
+    "phase_s": {
+     "hold": 6.465,
+     "body": 18.848,
+     "teardown": 0.0
+    }
+   }
+  ],
+  "all_green": true,
+  "findings": [],
+  "refused": "",
+  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_TRACE_FLOWWORKS_BOTTLE_LOOP_EMPTY_GONE_NONE_FILLED.det\\design\\validation_walks\\RimMandrake\\FlowWorks.md",
+  "acceptance": {
+   "overall": "INDETERMINATE",
+   "rows": [
+    {
+     "row": "toggle_bottle_loop/bottle_loop_on",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "toggle_bottle_loop/bottle_loop_off",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    }
+   ],
+   "spoils": [
+    {
+     "class": "envelope_off",
+     "why": "run without the situational envelope: blocking window and visitors unobserved",
+     "chain": "toggle_bottle_loop"
+    }
+   ],
+   "counts": {
+    "PASS": 0,
+    "FAIL": 0,
+    "INDETERMINATE": 2,
+    "UNMEASURED": 0,
+    "NOT_RUN": 0
+   },
+   "classes": [
+    "envelope_off"
+   ]
+  },
+  "reuse": {
+   "reused": [],
+   "reusable": []
+  },
+  "host": "Archmagi",
+  "offline_chains": [],
+  "fresh_green": true,
+  "invalid": [],
+  "leads": [],
+  "visual": [],
+  "visual_all_green": true,
+  "state_all_green": true,
+  "targeted": {
+   "chains": [
+    "toggle_bottle_loop"
+   ],
+   "of_chains": 96,
+   "rows": [],
+   "item": null,
+   "by": [
+    "chain toggle_bottle_loop: named by --chains"
+   ],
+   "rows_run": [
+    "bottle_loop_on",
+    "bottle_loop_off"
+   ],
+   "scope": {
+    "toggle_bottle_loop": {
+     "mode": "full",
+     "requested_rows": [],
+     "reasons": [
+      "named by --chains"
+     ],
+     "executed": [
+      "bottle_loop_on",
+      "bottle_loop_off"
+     ],
+     "skipped": []
+    }
+   },
+   "offline_skipped": {},
+   "incomplete": {}
+  }
+ },
+ "benign_stops": []
+}
