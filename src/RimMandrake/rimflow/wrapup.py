@@ -110,7 +110,9 @@ def scrub_handoff_env(env=None):
 def state_dir():
     if os.environ.get("RM_WRAPUP_DIR"):
         return os.environ["RM_WRAPUP_DIR"]
-    if os.environ.get("RM_UNDER_SELFTEST"):
+    if os.environ.get("RM_UNDER_SELFTEST") or os.path.basename(sys.argv[0] if sys.argv else "").startswith("selftest"):
+        # (a selftest run by hand, not through run_selftests.py, is a selftest too: 35 false debts on the live
+        # register, 2026-11-25, RIMMANDRAKE_FENCE_DIRECT_SELFTEST_DEBTS_OFF_LIVE_REGISTER)
         # a selftest drives the stagers against fakes: its debts (some left on purpose by a failing-restore case)
         # go to its own TMPDIR, never the live register the alarm reads
         return os.path.join(tempfile.gettempdir(), "rm_wrapup_selftest")
