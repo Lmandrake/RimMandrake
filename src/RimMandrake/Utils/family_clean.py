@@ -667,6 +667,7 @@ def summary(rows: list[dict], families: list[str]) -> dict:
             c[r["verdict"]] = c.get(r["verdict"], 0) + 1
         out[f] = {"rows": len(fr), "verdicts": c,
                   "remove_bytes": sum(r["bytes"] or 0 for r in fr if r["verdict"] in ("REMOVE", "REMOVED")),
+                  "unsized": sum(1 for r in fr if r["verdict"] in ("REMOVE", "REMOVED") and r["bytes"] is None),
                   "unmeasured": [r["why"] for r in fr if r["verdict"] == "UNMEASURED"][:5]}
     return out
 
@@ -755,8 +756,9 @@ def main(argv=None) -> int:
         print_rows(rows, fams, a.all)
         print()
         for f, s in summ.items():
-            print("%-16s %s; %s %s" % (f, ", ".join("%s %d" % kv for kv in sorted(s["verdicts"].items())) or "no rows",
-                                      "removed" if a.apply else "would remove", human(s["remove_bytes"])))
+            print("%-16s %s; %s %s%s" % (f, ", ".join("%s %d" % kv for kv in sorted(s["verdicts"].items())) or "no rows",
+                                        "removed" if a.apply else "would remove", human(s["remove_bytes"]),
+                                        (" + %d unit(s) sized only at removal" % s["unsized"]) if s["unsized"] else ""))
         if not a.apply:
             print("(dry run: --apply removes the REMOVE rows)")
     if not a.family:          # a whole run is a reading; only an --apply run is the one the timer's promise reads

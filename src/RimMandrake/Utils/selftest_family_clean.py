@@ -21,6 +21,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import uuid
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -29,6 +30,8 @@ sys.path.insert(0, str(HERE))
 import transient_pin  # noqa: E402
 
 DAY = 86400
+# Fixture names are made per run: a name written in this file is cited by this file, and a cited unit is (rightly) kept.
+TAG = "zzfc" + uuid.uuid4().hex[:10]
 
 
 def age(p: Path, days: float):
@@ -94,11 +97,11 @@ def main() -> int:
                  "ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws.bak-pre-selftest"]
         for n in canon:
             put(saves / n, 60)
-        debug = put(saves / "zz_family_clean_selftest_debug_q7.rws", 10)
+        debug = put(saves / (TAG + "_debug.rws"), 10)
         b = data / "backups"
-        old_backup = put(b / "zz_fc_selftest_old_backup_k3" / "f.txt", 20)
+        old_backup = put(b / (TAG + "_old_backup") / "f.txt", 20)
         age(old_backup.parent, 20)
-        clone = b / "zz_fc_selftest_clone_backup_k3" / "c"
+        clone = b / (TAG + "_clone_backup") / "c"
         clone.mkdir(parents=True)
         git(clone, "init", "-q", "-b", "main")
         (clone / "a.txt").write_text("unique work")
@@ -108,9 +111,9 @@ def main() -> int:
             for n in dns + fns:
                 age(Path(dp) / n, 20)
         age(clone.parent.parent, 20)
-        only = put(b / "zz_fc_selftest_canon_backup_k3" / "CANONICAL_ZZ_FC_SELFTEST_ONLYCOPY.rws", 20)
+        only = put(b / (TAG + "_canon_backup") / ("CANONICAL_" + TAG + ".rws"), 20)
         age(only.parent, 20)
-        young_backup = put(b / "zz_fc_selftest_young_backup_k3" / "f.txt", 2)
+        young_backup = put(b / (TAG + "_young_backup") / "f.txt", 2)
         keeper = put(data / "scratch" / "save_keepers" / "k.rws", 50)
         age(keeper.parent, 50)
         (data / "dispatcher" / "detached").mkdir(parents=True)
