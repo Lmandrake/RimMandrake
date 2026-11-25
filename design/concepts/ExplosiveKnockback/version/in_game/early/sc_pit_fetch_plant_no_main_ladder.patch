@@ -1,0 +1,12 @@
+diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs
+index 3dfbba7a32..d15d4321fc 100644
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs
+@@ -2538,6 +2538,7 @@ namespace RimMandrake.ExplosiveKnockback
+                         }
+                         // SetRaised, not a field write: it also clears reachability and bumps the climb masks.
+                         setRaised.Invoke(comp, new object[] { true });
++                        lad.Destroy(DestroyMode.Vanish);   // PLANTED FAULT: no ladder into the main pit
+                         if ((bool)lowered.Invoke(null, new object[] { Map, O(s, -6, -4) }) || (bool)lowered.Invoke(null, new object[] { Map, O(s, -6, -5) }))
+                         {
+                             return "the raised control ladder still reads lowered (FlowWorks' ladders can be raised and lowered setting off?)";
