@@ -2031,13 +2031,49 @@ def _filing_door(door, iid, title, kind, args):
                             program=os.environ.get("RM_FILING_PROGRAM", ""), not_now=getattr(args, "not_now", None),
                             did_it=getattr(args, "did_it", None), not_worth_it=getattr(args, "not_worth_it", None),
                             state_dir=filing_gate.state_dir(), facts_fn=lambda: filing_gate.facts(str(model.ROOT), unit),
-                            look_sha=_did_it_look)
+                            look_sha=_did_it_look, judge_fn=_set_down_judge(), binds=_set_down_binds)
     if d.err:
         sys.stderr.write(d.err + "\n")
     if not d.go:
         print(d.text)
         sys.exit(d.rc)
     return d
+
+
+def _set_down_judge():
+    """The set-down judge (set_down_judge.door_judge), or None when it cannot be loaded: the door then files unjudged."""
+    try:
+        import set_down_judge
+        return set_down_judge.door_judge
+    except Exception as e:  # noqa: BLE001 - a dead judge never stops filing (filing gate page)
+        sys.stderr.write("filing_gate: note: the set-down judge could not be loaded (%s: %s)\n" % (type(e).__name__, e))
+        return None
+
+
+def _set_down_binds():
+    import set_down_judge
+    return set_down_judge.binding()
+
+
+def _defer_door(door, iid, text):
+    """The gate of the other doors of a defer (`wait`, `block`, a LEFT OPEN or NEXT note; filing_gate.at_defer): print
+    the refusal and exit 6, or return the record of what passed."""
+    import filing_gate
+    unit = filing_gate.door_unit()
+    if not unit or _filing_owner() or os.environ.get("RM_FILING_PROGRAM", ""):
+        return None
+    try:
+        live = filing_gate.facts(str(model.ROOT), None)[0]
+    except Exception:  # noqa: BLE001 - could not look: a named run is then not read as live
+        live = None
+    d = filing_gate.at_defer(door, iid, text, unit=unit, owner=False, program="", state_dir=filing_gate.state_dir(),
+                             live_units=live, judge_fn=_set_down_judge(), binds=_set_down_binds)
+    if d.err:
+        sys.stderr.write(d.err + "\n")
+    if not d.go:
+        print(d.text)
+        sys.exit(d.rc)
+    return d.record
 
 
 def _filed_through_door(iid, d):
@@ -2488,6 +2524,8 @@ def cmd_block(args, seat):
                 die("cycle refused: %s. Nothing on it could ever finish first."
                     % " -> ".join(cyc))
     on = ons[0] if ons else None
+    if (kind or ("item" if ons else "other")) != "item":   # a block on a predecessor item names what lifts it
+        _defer_door("block", args.id, args.reason)       # a helper's block is a set-down (filing_gate.at_defer)
     ev = {"seat": seat, "event": "block", "id": args.id, "reason": args.reason, "on": on,
           "until": until if until != "done" else None}   # default stays old-reader-identical
     for k, v in (("kind", kind), ("lift_at", lift_at), ("also_on", ons[1:] or None)):
@@ -2516,6 +2554,7 @@ def cmd_wait(args, seat):
             die("%s has never been filed." % args.id)
         if day <= now:
             die("wait --until %s is not ahead of now: a wait frees a place only while its date runs." % until)
+        _defer_door("wait", args.id, args.reason)    # a helper's wait is a set-down (filing_gate.at_defer)
         _emit({"seat": seat, "event": "wait", "id": args.id, "until": until, "reason": args.reason}, w, quiet=True)
     print("wait %s until %s" % (args.id, until))
     return 0
@@ -2632,6 +2671,8 @@ def _simple_run(verb, extra, args, seat, pf):
     _, w = load()
     if verb == "reassign":
         args.to = _unretire(args.to)
+    if verb == "note":      # a helper's LEFT OPEN or NEXT note that defers to the Conductor is a set-down
+        _defer_door("note", args.id, getattr(args, "text", None))
     ev = {"seat": seat, "event": verb, "id": args.id}
     for field, attr in extra:
         ev[field] = getattr(args, attr, None)

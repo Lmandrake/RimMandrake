@@ -2037,9 +2037,9 @@
     "src/RimMandrake/rimflow/selftest_maturation.py",
     "--submit"
    ],
-   "hash": "79e9562e48e7d993",
+   "hash": "0ce0957184cc4f6a",
    "last_run": {
-    "at": "2026-11-25T20:09:14Z",
+    "at": "2026-11-25T20:25:33Z",
     "cases": "3 planted case(s) ran and came out as planted",
     "exit": 0,
     "out": "ALL PASS",
@@ -2075,7 +2075,7 @@
      "id": "locked_version_passes"
     }
    ],
-   "reset_at": "2026-11-25T20:09:14Z",
+   "reset_at": "2026-11-25T20:25:33Z",
    "status": "CALIBRATED",
    "was": "CALIBRATED"
   },
@@ -2355,6 +2355,140 @@
    "status": "CALIBRATED",
    "timeout_s": 1200,
    "was": "CALIBRATED"
+  },
+  "set_down_judge": {
+   "brief": [
+    "src/RimMandrake/rimflow/roles/set_down_judge.md",
+    "src/RimMandrake/rimflow/set_down_judge.py"
+   ],
+   "cases": {
+    "bad": [
+     "18 of the 25 real set-downs of 2026-11-25 that the Conductor classed weak (a choice between known fixes, a live experiment not made, a file not read, a Conductor call as owner-act, a held game, other-mod misused) (set_down_cases.json)"
+    ],
+    "good": [
+     "7 of the 25 that the Conductor classed legitimate (a named missing access, five things tried, only his ear can judge, another mod's code)"
+    ]
+   },
+   "hash": "5600d7087971e246",
+   "last_run": {
+    "at": "2026-11-25T19:50:51Z",
+    "cases": "came out the other way: n01, n10, n11, n16, n19",
+    "exit": 0,
+    "out": "agreement 20 of 25; disagree: [1, 10, 11, 16, 19]; could not judge: 1",
+    "results": "25 case rows"
+   },
+   "model_check": [
+    "python3",
+    "src/RimMandrake/rimflow/set_down_calibration.py"
+   ],
+   "planted": [
+    {
+     "expect": "pass",
+     "id": "n01"
+    },
+    {
+     "expect": "refuse",
+     "id": "n02"
+    },
+    {
+     "expect": "refuse",
+     "id": "n03"
+    },
+    {
+     "expect": "refuse",
+     "id": "n04"
+    },
+    {
+     "expect": "refuse",
+     "id": "n05"
+    },
+    {
+     "expect": "refuse",
+     "id": "n06"
+    },
+    {
+     "expect": "refuse",
+     "id": "n07"
+    },
+    {
+     "expect": "refuse",
+     "id": "n08"
+    },
+    {
+     "expect": "pass",
+     "id": "n09"
+    },
+    {
+     "expect": "pass",
+     "id": "n10"
+    },
+    {
+     "expect": "refuse",
+     "id": "n11"
+    },
+    {
+     "expect": "refuse",
+     "id": "n12"
+    },
+    {
+     "expect": "refuse",
+     "id": "n13"
+    },
+    {
+     "expect": "refuse",
+     "id": "n14"
+    },
+    {
+     "expect": "refuse",
+     "id": "n15"
+    },
+    {
+     "expect": "pass",
+     "id": "n16"
+    },
+    {
+     "expect": "pass",
+     "id": "n17"
+    },
+    {
+     "expect": "pass",
+     "id": "n18"
+    },
+    {
+     "expect": "pass",
+     "id": "n19"
+    },
+    {
+     "expect": "refuse",
+     "id": "n20"
+    },
+    {
+     "expect": "refuse",
+     "id": "n21"
+    },
+    {
+     "expect": "refuse",
+     "id": "n22"
+    },
+    {
+     "expect": "refuse",
+     "id": "n23"
+    },
+    {
+     "expect": "refuse",
+     "id": "n24"
+    },
+    {
+     "expect": "refuse",
+     "id": "n25"
+    }
+   ],
+   "reset_at": "2026-11-25T19:50:51Z",
+   "status": "FAILED",
+   "timeout_s": 3600,
+   "tolerate": 3,
+   "tolerate_why": "the Conductor's ruling in the brief of RIMMANDRAKE_TIGHTEN_SET_DOWN_CLASSES_ANY_TWELVE_LETTERS_PASS, 2026-11-25: the judge binds with at most 3 disagreements of 25",
+   "was": "FAILED"
   }
  }
 }

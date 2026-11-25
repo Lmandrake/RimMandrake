@@ -4034,8 +4034,9 @@ def blind_brief_text(root, mod, cap_usd=None):
           "on its `fixes.jsonl` row. Then one fresh reader, a run that did not make the fix, reads only that fix, once, "
           "and writes `lane2/%s` (`{\"fault\": <id>, \"reader\": <its unit>, \"verdict\": \"sound\"|\"unsound\", "
           "\"why\"}`); the steward run that reads this cycle is that reader. Never write that file yourself. A Problem "
-          "you could not fix stays PENDING with `unfixed` (why: no tools, the fix is not known, another run holds the "
-          "files, one of his five acts, a north-star bar) and goes down the road back." % FIX_REVIEWS]
+          "you could not fix stays PENDING with `unfixed` (why: no tools, the cause is still unknown after three theories, "
+          "each tested with its experiment and reading, another run holds the files, one of his five acts, a north-star "
+          "bar) and goes down the road back." % FIX_REVIEWS]
 
     # ---- output and exit
     heads = ["Start time"] + (["Changed files to bars"] if n >= 2 else []) + [

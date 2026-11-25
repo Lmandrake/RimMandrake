@@ -651,11 +651,14 @@ EXPECTS = ("pass", "refuse")
 RESULTS_ENV = "RM_CALIBRATION_RESULTS"   # where a check writes {"cases": [{"id", "expect", "got"}, ...]}
 
 
-def judge_cases(planted, results):
+def judge_cases(planted, results, tolerate=0):
     """-> (status, why) for one check's case results against the row's planted cases (RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS).
     `planted` is a list of {id, expect} or {"count": {"pass": n, "refuse": m}} (a corpus too big to list). CALIBRATED
     only when every planted case ran and came out as planted and the cases go both ways; a case that came out the other
-    way is FAILED; a case that did not run, no results, or one-way cases leave it UNTESTED. Exit 0 alone proves nothing."""
+    way is FAILED; a case that did not run, no results, or one-way cases leave it UNTESTED. Exit 0 alone proves nothing.
+    `tolerate` (a row's field, set only by a ruling that names it; RIMMANDRAKE_TIGHTEN_SET_DOWN_CLASSES_ANY_TWELVE_LETTERS_PASS:
+    the Conductor's "at most 3 disagreements of 25" for set_down_judge): up to that many cases may come out the other way,
+    and the why names them."""
     cases = [c for c in (results or {}).get("cases") or [] if isinstance(c, dict)]
     wrong = sorted(str(c.get("id")) for c in cases if c.get("expect") in EXPECTS and c.get("got") != c.get("expect"))
     if isinstance(planted, dict) and isinstance(planted.get("count"), dict):
@@ -668,19 +671,23 @@ def judge_cases(planted, results):
         missing = sorted(str(c.get("id")) for c in planted or [] if isinstance(c, dict) and str(c.get("id")) not in got)
         wrong = sorted(set(wrong) | {str(c.get("id")) for c in planted or [] if isinstance(c, dict)
                                      and str(c.get("id")) in got and got[str(c["id"])].get("got") != c.get("expect")})
-    if wrong:
+    tolerate = int(tolerate or 0)
+    if wrong and len(wrong) > tolerate:
         return "FAILED", "came out the other way: %s" % ", ".join(wrong)
     if not all(want.values()):
         return "UNTESTED", "planted cases do not go both ways (%s)" % ", ".join("%s %d" % kv for kv in sorted(want.items()))
     if missing:
         return "UNTESTED", "did not run: %s" % ", ".join(missing)
     n = len(cases) if isinstance(planted, dict) else len({str(c.get("id")) for c in planted or [] if isinstance(c, dict)})
+    if wrong:
+        return "CALIBRATED", "%d of %d planted case(s) came out the other way (%s), within the row's tolerate of %d" % (
+            len(wrong), n, ", ".join(wrong), tolerate)
     return "CALIBRATED", "%d planted case(s) ran and came out as planted" % n   # a recorded, unplanted row is not one
 
 
 # budget: danger=a calibration check that never ends holds the calibration; never reached in the 14 days to 2026-11-24; no
 # budget: record of its run
-def run_check(cmd, root, planted, timeout=600):
+def run_check(cmd, root, planted, timeout=600, tolerate=0):
     """Run one calibration check with RESULTS_ENV set. -> (status, last_run)."""
     import subprocess
     import tempfile
@@ -700,7 +707,7 @@ def run_check(cmd, root, planted, timeout=600):
     if code != 0:
         st, why = "FAILED", "exit %s" % code
     else:
-        st, why = judge_cases(planted, results)
+        st, why = judge_cases(planted, results, tolerate)
     run = {"exit": code, "out": out.splitlines()[-1] if out else "", "cases": why}
     if isinstance(results, dict) and isinstance(results.get("cases"), list):
         run["results"] = results["cases"] if len(results["cases"]) <= 20 else "%d case rows" % len(results["cases"])
@@ -722,7 +729,8 @@ def calibrate(path=None, root=None, run_free=True, now=None, model=()):
         cmd = row.get("model_check") if fam in model else row.get("free_check") if run_free else None
         if cmd:
             row["status"], row["last_run"] = run_check(cmd, root, row.get("planted"),
-                                                       timeout=int(row.get("timeout_s") or 600))
+                                                       timeout=int(row.get("timeout_s") or 600),
+                                                       tolerate=row.get("tolerate") or 0)
             row["last_run"]["at"] = at
     if run_free or model:
         _write(path, reg)

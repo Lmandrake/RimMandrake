@@ -42,15 +42,28 @@ def gate(kind="bug", unit=UNIT, owner=False, program="", not_now=None, live=LIVE
 def t_a_helper_work_ticket_with_no_evidence_is_refused():
     for kind in ("bug", "task", None):
         d = gate(kind=kind)
-        check("kind %s, no flag: refused" % kind, not d.ok and "do the work now" in d.text.lower(), d)
+        check("kind %s, no flag: refused" % kind, not d.ok and FG.FIXER in d.text, d)
     check("an empty flag is no evidence", not gate(not_now="  ").ok)
+
+
+def no_menu(text):
+    """The refusal prints no list of classes: at most one class name stands in it."""
+    return sum(1 for c in FG.CLASSES if c in text) <= 1
 
 
 def t_the_refusal_is_a_path_to_pass():
     d = gate()
     check("names the flag and the form", "--not-now" in d.text and "<class>: <evidence>" in d.text, d.text)
-    check("lists each class", all(c in d.text for c in FG.CLASSES), d.text)
-    check("says test first", "test first" in d.text, d.text)
+    check("no menu of classes", no_menu(d.text), d.text)
+    check("leads with the fixer's words, test first", d.text.splitlines()[1] == FG.FIXER and "test first" in FG.FIXER,
+          d.text)
+    check("says what a valid set-down shows, with an example", "valid set-down" in d.text and "example" in d.text.lower(),
+          d.text)
+    d = gate(not_now="independent: x")
+    check("a set-down of one class gets that class's requirement and no other", "independent" in d.text and
+          no_menu(d.text) and FG.REQUIREMENTS["independent"] in d.text, d.text)
+    src = open(os.path.join(HERE, "filing_gate.py"), encoding="utf-8").read()
+    check("refusal() is the one home of the wording", src.count("FIXER") >= 2 and src.count("def refusal(") == 1)
 
 
 def t_evidence_of_a_known_class_files_the_ticket():
@@ -67,7 +80,7 @@ def t_an_unknown_class_is_refused():
     for bad in ("large: the work has four parts and a live proof", "my work would not finish: three more parts",
                 "later: the next run can do this part better"):
         d = gate(not_now=bad)
-        check("refused: %s" % bad.split(":")[0], not d.ok and all(c in d.text for c in FG.CLASSES), d)
+        check("refused, no menu: %s" % bad.split(":")[0], not d.ok and no_menu(d.text), d)
 
 
 def t_files_held_names_a_live_run():
@@ -442,7 +455,7 @@ def t_the_spawn_door_has_the_same_gate():
     check("cli spawn: refused, exit 6, no event", rc == 6 and events(env, ID) == [], (rc, out[-600:]))
     check("recorded, door spawn", [(r["id"], r.get("door")) for r in rows] == [(ID, "spawn")], rows)
     rc, out = cli(env, "spawn", "--from", "RIMMANDRAKE_SOME_CAUSE_TO_SPAWN_FROM", "--for", "CONDUCTOR", "--name", ID,
-                  "--not-now", "fix-unknown: tried two hypotheses, the cause is still unknown")
+                  "--not-now", THREE_THEORIES)
     check("with evidence: spawned, resolved", rc == 0 and len(events(env, ID)) == 1 and
           FG.unresolved(UNIT, env["RM_DISPATCHER_STATE"]) == [], (rc, out[-600:]))
     rc, out = cli(env, "spawn", "--from", "RIMMANDRAKE_SOME_CAUSE_TO_SPAWN_FROM", "--for", "CONDUCTOR", "--name",
@@ -557,6 +570,303 @@ def t_a_unit_a_test_inherited_from_its_run_is_no_run():
           (r.returncode, r.stdout[-600:]))
 
 
+# ---- 0.4.0: the requirements, from the 25 real set-downs of 2026-11-25 (set_down_cases.json) -----------------------
+
+THREE_THEORIES = ("fix-unknown: theory 1: the cache is stale; experiment: cleared it and ran the scene again; reading: "
+                  "the same failure. theory 2: the patch does not load; experiment: grep Player.log for the patch id; "
+                  "reading: it loads. theory 3 (from gpt_consult.py): a tick race; experiment: ran it at speed 1; "
+                  "reading: the same failure")
+REAL = json.load(open(os.path.join(REPO, "design/specs/2026-11-24-filing-gate/set_down_cases.json"), encoding="utf-8"))
+REAL = {c["n"]: c for c in REAL["cases"]}
+
+
+def real(n):
+    c = REAL[n]
+    return "%s: %s" % (c["class"], c["evidence"])
+
+
+def t_fix_unknown_needs_three_theories_each_tested():
+    d = gate(not_now=real(23))
+    check("real 23 'seen in pictures only' is refused, with the requirement", not d.ok and "three" in d.text and
+          "theor" in d.text and no_menu(d.text), d)
+    d = gate(not_now=real(19))
+    check("real 19 (experiments, no theories) is refused by the form", not d.ok and "theor" in d.text, d)
+    check("three theories, each tested, with GPT, pass", gate(not_now=THREE_THEORIES).ok, gate(not_now=THREE_THEORIES))
+    two = THREE_THEORIES.split(" theory 3")[0] + "; asked gpt_consult.py for more, it had none"
+    d = gate(not_now=two)
+    check("two theories, with GPT, are refused for the count", not d.ok and "2 theories" in d.text, d)
+    check("no GPT consult is refused", not gate(not_now=THREE_THEORIES.replace(" (from gpt_consult.py)", "")).ok)
+    bare = THREE_THEORIES.replace("experiment: cleared it and ran the scene again; ", "")
+    check("a theory with no experiment is refused", not gate(not_now=bare).ok, gate(not_now=bare))
+    same = "fix-unknown: " + " ".join("theory %d: the cache is stale; experiment: cleared it; reading: same; gpt" % i
+                                      for i in (1, 2, 3))
+    check("one theory three times is refused", not gate(not_now=same).ok)
+
+
+def t_a_choice_between_known_fixes_is_refused():
+    for n in (4, 7, 8, 14, 20):
+        d = gate(not_now=real(n))
+        check("real %d (a choice between known fixes) is refused, take the one you recommend" % n, not d.ok and
+              "recommend" in d.text and "delegated" in d.text, d.text)
+    check("the three-theory form still passes", gate(not_now=THREE_THEORIES).ok)
+    check("owner-act with options goes to the judge, not refused by the program",
+          gate(not_now=real(6)).ok, gate(not_now=real(6)))
+
+
+def t_owner_act_names_an_act_not_a_conductor_call():
+    for n in (2, 12):
+        d = gate(not_now=real(n))
+        check("real %d (a Conductor call) is refused, names the five acts" % n, not d.ok and "five acts" in d.text, d)
+    check("real 18 ('only his ear can judge') passes the program", gate(not_now=real(18)).ok)
+    check("real 6 (relaxing a bar) passes the program", gate(not_now=real(6)).ok)
+    check("the Conductor and a looser bar passes", gate(not_now="owner-act: loosening bar X is the Conductor's act").ok)
+
+
+def t_a_held_game_is_not_a_reason():
+    for n in (3, 11):
+        d = gate(not_now=real(n))
+        check("real %d (a held game) is refused, wait with game_lock.py run" % n, not d.ok and "game_lock.py run" in d.text,
+              d.text)
+    check("files-held is not read as a game", gate(not_now="files-held: rm-detached-bench-other-run-2 holds "
+                                                   "game_lock.py, held for its whole run").ok)
+    check("real 16 (a game named, not held) is not refused for a held game",
+          "game_lock.py run" not in gate(not_now=real(16)).text)
+
+
+def t_a_workaround_is_refused():
+    d = gate(not_now=real(13), mods=("FlowWorks", "ExplosiveKnockback"))
+    check("real 13 'worked around in this run' is refused", not d.ok and "workaround" in d.text, d)
+    check("a work-around in no-tool is refused", not gate(not_now="no-tool: the bridge cannot do it, so I worked "
+                                                         "around it by hand").ok)
+
+
+def t_a_set_down_that_did_not_look_is_refused():
+    d = gate(not_now=real(15))
+    check("real 15 'Operations did not read' is refused for it", not d.ok and "did not read" in d.text.splitlines()[0], d)
+    d = gate(not_now="no-tool: the bridge sets no area; I did not read the companion's tool list")
+    check("a no-tool that did not look is refused for it", not d.ok and "did not read" in d.text.splitlines()[0], d)
+    d = gate(not_now=real(14))
+    check("real 14 'I tried neither' is refused", not d.ok, d)
+    check("a reading that says the scene did not run is no confession",
+          gate(not_now=THREE_THEORIES.replace("reading: it loads", "reading: the scene did not run")).ok)
+
+
+def fake_judge(answer=None, raises=None):
+    seen = {}
+
+    def ask(prompt, **kw):
+        seen["prompt"] = prompt
+        if raises:
+            raise raises
+        return answer
+    return ask, seen
+
+
+def transcript(path, rows):
+    with open(path, "w", encoding="utf-8") as f:
+        for r in rows:
+            f.write(json.dumps(r) + "\n")
+    return path
+
+
+def tx_rows():
+    return [{"type": "assistant", "timestamp": "2026-11-25T10:00:00Z", "message": {"content": [
+                {"type": "text", "text": "I will look at the scene log."},
+                {"type": "tool_use", "id": "a", "name": "Bash", "input": {"command": "grep -c Scar Player.log"}}]}},
+            {"type": "user", "timestamp": "2026-11-25T10:00:05Z", "message": {"content": [
+                {"type": "tool_result", "tool_use_id": "a", "content": "0"}]}},
+            {"type": "assistant", "timestamp": "2026-11-25T10:01:00Z", "isSidechain": True, "message": {"content": [
+                {"type": "tool_use", "id": "b", "name": "Bash", "input": {"command": "echo SIDECHAIN"}}]}},
+            {"type": "assistant", "timestamp": "2026-11-25T11:00:00Z", "message": {"content": [
+                {"type": "tool_use", "id": "c", "name": "Bash", "input": {"command": "echo AFTER-THE-FILING"}}]}}]
+
+
+SD = {"door": "file", "id": "RIMMANDRAKE_SOME_WORK_LEFT_HERE", "title": "t", "kind": "bug", "class": "fix-unknown",
+      "evidence": "seen in pictures only; whether it is ours is not known"}
+
+
+def t_the_judge_reads_the_transcript_and_answers():
+    import set_down_judge as SJ
+    tp = transcript(os.path.join(scratch("judge"), "t.jsonl"), tx_rows())
+    dg, why = SJ.digest(tp, until="2026-11-25T10:30:00Z")
+    check("the digest holds the run's commands, outputs and words", dg and "grep -c Scar Player.log" in dg and
+          "I will look" in dg and "\n  0" in dg, dg)
+    check("the digest stops at the filing and skips a sidechain", "AFTER-THE-FILING" not in dg and "SIDECHAIN" not in dg,
+          dg)
+    big = [{"type": "assistant", "timestamp": "2026-11-25T10:00:%02dZ" % (i % 60), "message": {"content": [
+        {"type": "tool_use", "id": str(i), "name": "Bash", "input": {"command": "echo step-%05d %s" % (i, "x" * 200)}}]}}
+        for i in range(2000)]
+    dg2, _ = SJ.digest(transcript(os.path.join(TMP, "judge", "big.jsonl"), big))
+    check("a long transcript keeps its head and tail inside the limit", len(dg2) <= SJ.DIGEST_MAX_CHARS + 200 and
+          "step-00000" in dg2 and "step-01999" in dg2 and "elided" in dg2, len(dg2))
+    ask, seen = fake_judge('{"verdict": "REFUSED", "requirement": "fix-unknown", "missing": "no experiment was run", '
+                           '"next_act": "run the scene twice and grep the scar"}')
+    v = SJ.judge(SD, tp, [], ask=ask, until="2026-11-25T10:30:00Z")
+    check("REFUSED with missing and next act", v["verdict"] == "REFUSED" and v["missing"] and v["next_act"], v)
+    check("the prompt holds the set-down and the transcript", SD["evidence"] in seen["prompt"] and
+          "grep -c Scar" in seen["prompt"], seen)
+    ask, _ = fake_judge('{"verdict": "PASS", "requirement": "fix-unknown", "missing": "", "next_act": ""}')
+    check("PASS", SJ.judge(SD, tp, [], ask=ask)["verdict"] == "PASS")
+    for bad in ('{"verdict": "REFUSED", "missing": "", "next_act": ""}', "I think it is fine", '{"verdict": "MAYBE"}'):
+        ask, _ = fake_judge(bad)
+        v = SJ.judge(SD, tp, [], ask=ask)
+        check("malformed %r: could not judge" % bad[:30], v["verdict"] == "could not judge" and v["why"], v)
+
+
+def t_each_judgment_starts_fresh_with_the_earlier_refusals():
+    import set_down_judge as SJ
+    st = scratch("earlier")
+    FG.record_refusal(UNIT, st, SD["id"], "t", "bug", "the judge: no experiment was run; next: run the scene twice",
+                      now="2026-11-25T10:10:00Z")
+    FG.record_refusal(UNIT, st, "RIMMANDRAKE_ANOTHER_ID_HERE", "t", "bug", "OTHER ID REFUSAL", now="2026-11-25T10:11:00Z")
+    earlier = SJ.earlier_refusals(UNIT, st, SD["id"])
+    check("the earlier refusals of this unit and id", [r["why"][:9] for r in earlier] == ["the judge"], earlier)
+    ask, seen = fake_judge('{"verdict": "PASS", "requirement": "fix-unknown", "missing": "", "next_act": ""}')
+    SJ.judge(SD, transcript(os.path.join(st, "t.jsonl"), tx_rows()), earlier, ask=ask)
+    check("the prompt holds what the first refusal asked", "run the scene twice" in seen["prompt"] and
+          "OTHER ID" not in seen["prompt"], seen.get("prompt", "")[-800:])
+    src = open(os.path.join(HERE, "set_down_judge.py"), encoding="utf-8").read()
+    check("no resume: the call never passes --resume or --continue", "--resume" not in src and "--continue" not in src)
+
+
+def t_a_judge_that_cannot_answer_passes_the_set_down_and_says_so():
+    import set_down_judge as SJ
+    ask, _ = fake_judge(raises=OSError("claude exit 1: no account"))
+    v = SJ.judge(SD, None, [], ask=ask)
+    check("no transcript: could not judge, with the cause, and no call", v["verdict"] == "could not judge" and
+          "transcript" in v["why"], v)
+    tp = transcript(os.path.join(scratch("cnj"), "t.jsonl"), tx_rows())
+    v = SJ.judge(SD, tp, [], ask=ask)
+    check("a failed call: could not judge, the cause kept", v["verdict"] == "could not judge" and "no account" in v["why"], v)
+    ask, _ = fake_judge(raises=subprocess.TimeoutExpired("claude", 1))
+    check("a timeout: could not judge", SJ.judge(SD, tp, [], ask=ask)["verdict"] == "could not judge")
+    st = scratch("cnj_door")
+    dd = FG.at_door("file", SD["id"], "t", "bug", unit=UNIT, owner=False, program="", not_now=THREE_THEORIES,
+                    did_it=None, not_worth_it=None, state_dir=st, facts_fn=lambda: (LIVE, lambda m: False),
+                    look_sha=lambda s: {}, now="2026-11-25T10:20:00Z",
+                    judge_fn=lambda sd, earlier: {"verdict": "could not judge", "why": "no account"}, binds=lambda: True)
+    check("at the door, a binding judge that cannot answer: filed, the record says so", dd.go and
+          "could not judge" in dd.record["judge"]["verdict"] and "no account" in dd.record["judge"]["why"], dd)
+    check("off under test: could not judge: off", SJ.door_judge(dict(SD), [])["verdict"] == "could not judge" and
+          "off" in SJ.door_judge(dict(SD), [])["why"])
+
+
+def t_the_judge_binds_only_when_calibrated():
+    import refusal_contract as RC
+    refused = lambda sd, earlier: {"verdict": "REFUSED", "missing": "no experiment ran", "next_act": "run the scene",
+                                   "requirement": "fix-unknown"}
+    for binds, name in ((False, "shadow"), (True, "binding")):
+        st = scratch("bind_" + name)
+        dd = FG.at_door("file", SD["id"], "t", "bug", unit=UNIT, owner=False, program="", not_now=THREE_THEORIES,
+                        did_it=None, not_worth_it=None, state_dir=st, facts_fn=lambda: (LIVE, lambda m: False),
+                        look_sha=lambda s: {}, now="2026-11-25T10:20:00Z", judge_fn=refused, binds=lambda: binds)
+        log = os.path.join(st, "set_down_judge", UNIT + ".jsonl")
+        rows = [json.loads(x) for x in open(log, encoding="utf-8")] if os.path.exists(log) else []
+        if binds:
+            check("binding: REFUSED refuses at the door, exit 6, recorded, with the missing part and next act",
+                  not dd.go and dd.rc == 6 and "no experiment ran" in dd.text and "run the scene" in dd.text and
+                  lines_of(st), dd)
+        else:
+            check("shadow: filed, the verdict on the event with binds false", dd.go and
+                  dd.record["judge"]["verdict"] == "REFUSED" and dd.record["judge"]["binds"] is False, dd)
+        check("%s: the verdict is logged" % name, len(rows) == 1 and rows[0]["verdict"] == "REFUSED", rows)
+    import set_down_judge as SJ
+    check("the binding reads the calibration row's status", SJ.FAMILY == "set_down_judge" and
+          SJ.binding.__code__.co_names.count("status") >= 1)
+    planted = [{"id": "c%d" % i, "expect": "pass" if i % 2 else "refuse"} for i in range(10)]
+    res = {"cases": [dict(c, got=c["expect"]) for c in planted]}
+    check("tolerate 0: every case as planted is CALIBRATED", RC.judge_cases(planted, res)[0] == "CALIBRATED")
+    res["cases"][0]["got"] = "pass"
+    check("tolerate 0: one other way is FAILED", RC.judge_cases(planted, res)[0] == "FAILED")
+    st, why = RC.judge_cases(planted, res, tolerate=3)
+    check("tolerate 3: one other way is CALIBRATED and says so", st == "CALIBRATED" and "1 of 10" in why, why)
+    for i in (1, 2, 3):
+        res["cases"][i]["got"] = "refuse" if planted[i]["expect"] == "pass" else "pass"
+    check("tolerate 3: four other ways are FAILED", RC.judge_cases(planted, res, tolerate=3)[0] == "FAILED")
+    reg = json.load(open(os.path.join(REPO, "infrastructure/state/judge_calibration.json"), encoding="utf-8"))
+    row = reg["families"].get("set_down_judge") or {}
+    check("the registry row: 25 planted, tolerate 3, a model check", len(row.get("planted") or []) == 25 and
+          row.get("tolerate") == 3 and row.get("model_check"), row.get("tolerate"))
+
+
+def t_the_judge_is_told_no_spend():
+    import set_down_judge as SJ
+    ask, seen = fake_judge('{"verdict": "PASS", "missing": "", "next_act": ""}')
+    SJ.judge(SD, transcript(os.path.join(scratch("spend"), "t.jsonl"), tx_rows()), [{"why": "x", "at": "t"}], ask=ask)
+    p = seen["prompt"].lower()
+    figure = r"\$\s?\d|\d[\d,.]*\s*(k |m )?(usd|dollars|weighted|tokens)|budget|spent|cost of|tokens? (left|used)"
+    check("no spend figure in the prompt (a money spend, one of his five acts, is no figure)", not re.search(figure, p),
+          re.findall(r".{0,20}(?:%s).{0,20}" % figure, p))
+    check("no --max-budget-usd in the call", "--max-budget-usd" not in " ".join(SJ.judge_argv()))
+
+
+def t_the_judge_call_is_one_bare_model_call():
+    import set_down_judge as SJ
+    a = SJ.judge_argv()
+    check("claude -p, no tools, no settings, strict MCP, no session kept", a[1] == "-p" and
+          a[a.index("--tools") + 1] == "" and a[a.index("--setting-sources") + 1] == "" and "--strict-mcp-config" in a
+          and "--no-session-persistence" in a, a)
+    check("the model from the environment", SJ.judge_argv(env={"RM_SET_DOWN_JUDGE_MODEL": "sonnet"})[
+        SJ.judge_argv(env={"RM_SET_DOWN_JUDGE_MODEL": "sonnet"}).index("--model") + 1] == "sonnet" and
+          a[a.index("--model") + 1] == "opus", a)
+    src = open(os.path.join(HERE, "set_down_judge.py"), encoding="utf-8").read()
+    check("names no account or host", not re.search(r"ANTHROPIC_BASE_URL\s*=|us\.anthropic|us-gov\.|claude-account use",
+                                                     src))
+    check("an empty folder", "TemporaryDirectory" in src and "cwd=" in src)
+
+
+def t_the_other_doors_take_the_same_check():
+    st = scratch("defer")
+    live = {"rm-detached-bench-other-run-2"}
+
+    def defer(door_, text, unit=UNIT, owner=False, program=""):
+        return FG.at_defer(door_, SD["id"], text, unit=unit, owner=owner, program=program, state_dir=st,
+                           live_units=live, judge_fn=None, now="2026-11-25T10:20:00Z")
+    real_wait = ("the Conductor picks a route on RIMMANDRAKE_OTHER and runs the game-only advance")
+    d = defer("wait", real_wait)
+    check("a wait that names a Conductor call is refused, exit 6, recorded", not d.go and d.rc == 6 and
+          "five acts" in d.text and [r["door"] for r in lines_of(st)] == ["wait"], (d, lines_of(st)))
+    for ok in ("the account reset at 2 PM PST frees the runs", "rm-detached-bench-other-run-2 holds the files",
+               "his hold on FlowWorks: only he or the Conductor lifts it", "the Conductor's act: a looser bar on X",
+               "rm-findings-judge.timer runs the sweep tomorrow"):
+        check("a wait passes: %s" % ok[:40], defer("wait", ok).go, defer("wait", ok))
+    check("a block on a held game is refused", not defer("block", "both Archmagi games are held by other runs").go)
+    check("a block that says worked around is refused", not defer("block", "worked around in this run").go)
+    check("a LEFT OPEN note that names the Conductor's call is refused",
+          not defer("note", "LEFT OPEN: the Conductor rules on the scope: shrink or drop").go)
+    check("a NEXT note that names the Conductor's call is refused",
+          not defer("note", "state ok. NEXT: the Conductor decides which of the two fixes").go)
+    check("a note that defers to nobody passes", defer("note", "PROGRESS: theory: x | experiment: y | reading: z").go)
+    check("a PROGRESS note's lower-case next: is no defer", defer("note", "PROGRESS: theory: x | next: the Conductor "
+                                                                    "reads the table").go)
+    check("a LEFT OPEN that names no one passes the program", defer("note", "LEFT OPEN: part 3 is not built yet").go)
+    check("the owner, the window and a program pass", defer("wait", real_wait, owner=True).go and
+          defer("wait", real_wait, unit="").go and defer("wait", real_wait, program="p.f").go)
+    src = open(CLI, encoding="utf-8").read()
+    for head in ("def cmd_wait(args, seat):", "def cmd_block(args, seat):", "def _simple_run(verb, extra, args, seat, pf):"):
+        body = _body(src, head)
+        check("%s calls the defer door before it writes" % head[4:].split("(")[0],
+              0 <= body.find("_defer_door(") < body.find("_emit("), None)
+    fresh_cli("wait")
+    win, _ = cli_env("wait", unit="")
+    cli(win, "file", ID, "--for", "CONDUCTOR", "--title", "probe")
+    env, _ = cli_env("wait")
+    cli(env, "claim", ID, "--seat", "BENCH")
+    rc, out = cli(env, "wait", ID, "--until", "2099-01-01", "--reason", real_wait)
+    check("cli wait in a helper: refused, exit 6, no wait event", rc == 6 and "REFUSED" in out and
+          not [e for e in events(env, ID) if e.get("event") == "wait"], (rc, out[-500:]))
+    rc, out = cli(env, "wait", ID, "--until", "2099-01-01", "--reason", "the account reset at 2 PM PST frees the runs")
+    check("cli wait for a reset: written", rc == 0 and [e for e in events(env, ID) if e.get("event") == "wait"],
+          (rc, out[-500:]))
+
+
+def t_the_blind_brief_asks_three_theories():
+    src = open(os.path.join(HERE, "maturation.py"), encoding="utf-8").read()
+    body = _body(src, "def blind_brief_text(")
+    check("the blind brief has no bare 'the fix is not known'", "the fix is not known" not in body)
+    check("the blind brief names three theories, each tested", "three theories" in body, None)
+
+
 def main():
     tests = (
         t_a_helper_work_ticket_with_no_evidence_is_refused,
@@ -590,6 +900,20 @@ def main():
         t_each_program_that_files_names_itself,
         t_a_test_with_the_real_state_files_as_no_run,
         t_a_unit_a_test_inherited_from_its_run_is_no_run,
+        t_fix_unknown_needs_three_theories_each_tested,
+        t_a_choice_between_known_fixes_is_refused,
+        t_owner_act_names_an_act_not_a_conductor_call,
+        t_a_held_game_is_not_a_reason,
+        t_a_workaround_is_refused,
+        t_a_set_down_that_did_not_look_is_refused,
+        t_the_judge_reads_the_transcript_and_answers,
+        t_each_judgment_starts_fresh_with_the_earlier_refusals,
+        t_a_judge_that_cannot_answer_passes_the_set_down_and_says_so,
+        t_the_judge_binds_only_when_calibrated,
+        t_the_judge_is_told_no_spend,
+        t_the_judge_call_is_one_bare_model_call,
+        t_the_other_doors_take_the_same_check,
+        t_the_blind_brief_asks_three_theories,
     )
     for fn in tests:
         print(fn.__name__)
