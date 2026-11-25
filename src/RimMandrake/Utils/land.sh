@@ -46,7 +46,10 @@ trap 'rm -f "$TMPB" "$TMPB.push" "$IDX"' EXIT
 
 # fetch origin and build N on top of it (re-run when the push loses a race)
 build() {
-  git fetch -q "$REM" "$BR"
+  # a peer's fetch in the same clone can win the ref update ("incorrect old value provided"): that fetch is tried
+  # again; three failures in a row are a real fetch fault
+  git fetch -q "$REM" "$BR" || { sleep 1; git fetch -q "$REM" "$BR"; } || { sleep 2; git fetch -q "$REM" "$BR"; } \
+    || die "git fetch $REM $BR failed three times"
   # --verify -q: a failed bare rev-parse echoes its argument to stdout, which then sat in UP above the real sha
   UP=$(git rev-parse --verify -q "$REM/$BR^{commit}" || git rev-parse --verify -q "FETCH_HEAD^{commit}") \
     || die "cannot read $REM/$BR after the fetch"
@@ -92,7 +95,12 @@ TRY=0
 while :; do
   build "$@"
   git push -q "$REM" "$N:refs/heads/$BR" 2>"$TMPB.push" && break
-  grep -q -e rejected -e non-fast-forward -e "fetch first" "$TMPB.push" || { cat "$TMPB.push" >&2; die "push failed"; }
+  # the race also comes in a pre-push hook's words (the ledger lint's NOT_APPEND against the newer tip): any refusal
+  # while origin moved off UP is the race, whatever it says; a refusal with origin standing still is a verdict
+  NOW=$(git ls-remote "$REM" "refs/heads/$BR" 2>/dev/null | cut -f1)
+  if ! grep -q -e rejected -e non-fast-forward -e "fetch first" "$TMPB.push" && { [ -z "$NOW" ] || [ "$NOW" = "$UP" ]; }; then
+    cat "$TMPB.push" >&2; die "push failed"
+  fi
   TRY=$((TRY + 1)); [ "$TRY" -lt 5 ] || { cat "$TMPB.push" >&2; die "push rejected $TRY times: origin keeps moving"; }
   echo "land.sh: origin moved during the push; rebuilding on the new tip (try $((TRY + 1)))" >&2; sleep "$TRY"
 done

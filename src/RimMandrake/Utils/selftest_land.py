@@ -85,6 +85,43 @@ def main() -> int:
         check("r.txt" in git(o, "ls-tree", "--name-only", "main"), "the racing commit is kept under ours")
         hook.unlink()
 
+        # OPS_TIMER_REPAIR_PRXC_XKGA: the race in the pre-push lint's words. Origin moves after the build, and the
+        # ledger lint refuses the stale commit against the newer tip (NOT_APPEND), not git's "rejected": rm-seat-tidy
+        # died "push failed" on it six times on Archmagi on 2026-11-23/24. A refusal while origin moved is the race.
+        hook.write_text(f"#!/bin/sh\n[ -e {td}/raced2 ] && exit 0\ntouch {td}/raced2\n"
+                        f"(cd {peer} && git pull -q --ff-only origin main && echo r2 > r2.txt && git add r2.txt && "
+                        f"git commit -qm race2 && git push -q --no-verify origin HEAD:main) >/dev/null 2>&1\n"
+                        f"echo 'pre-push REFUSED (ledger_lint) on refs/heads/main:' >&2\n"
+                        f"echo '  NOT_APPEND x.jsonl:0 line on the base is gone' >&2\nexit 1\n")
+        hook.chmod(0o755)
+        Path(seat, "g.txt").write_text("g\n")
+        r = land(seat, "-m", "g", "g.txt", env={"LAND_SYNC": "0"})
+        check(r.returncode == 0 and "rebuilding on the new tip" in r.stderr,
+              "a hook refusal while origin moved is the race: rebuilt and retried (rc=%d)" % r.returncode)
+        check("r2.txt" in git(o, "ls-tree", "--name-only", "main") and "g.txt" in git(o, "ls-tree", "--name-only", "main"),
+              "the hook-race landing keeps the racing commit under ours")
+        # a refusal with origin standing still is a verdict on the commit: refused once, never retried
+        hook.write_text("#!/bin/sh\necho 'pre-push REFUSED (ledger_lint): a real finding' >&2\nexit 1\n")
+        tip = git(o, "rev-parse", "main")
+        Path(seat, "h.txt").write_text("h\n")
+        r = land(seat, "-m", "h", "h.txt", env={"LAND_SYNC": "0"})
+        check(r.returncode == 2 and "push failed" in r.stderr and "rebuilding" not in r.stderr
+              and git(o, "rev-parse", "main") == tip, "a hook refusal with origin unmoved: refused, not retried")
+        hook.unlink()
+        # a fetch that loses a ref-update race in the clone ("incorrect old value provided") is tried again
+        shim = Path(td, "bin")
+        shim.mkdir(exist_ok=True)
+        real_git = subprocess.run(["sh", "-c", "command -v git"], capture_output=True, text=True).stdout.strip()
+        Path(shim, "git").write_text(
+            f"#!/bin/sh\nif [ \"$1\" = fetch ] && [ ! -e {td}/fetched ]; then touch {td}/fetched; "
+            f"echo 'error: fetching ref refs/remotes/origin/main failed: incorrect old value provided' >&2; exit 1; fi\n"
+            f"exec {real_git} \"$@\"\n")
+        Path(shim, "git").chmod(0o755)
+        Path(seat, "i.txt").write_text("i\n")
+        r = land(seat, "-m", "i", "i.txt", env={"LAND_SYNC": "0", "PATH": f"{shim}:{os.environ['PATH']}"})
+        check(r.returncode == 0 and r.stdout.startswith("PUBLISHED"),
+              "a fetch that collides with a peer's fetch is tried again (rc=%d: %s)" % (r.returncode, r.stderr.strip()[-160:]))
+
         r = land(seat, "-m", "a3", "a.txt", env={"LAND_SYNC": "0"})
         check(r.returncode == 2 and "nothing to land" in r.stderr, "re-landing identical content is refused")
 
