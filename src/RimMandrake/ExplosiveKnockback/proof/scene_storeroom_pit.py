@@ -45,6 +45,16 @@ pit = scene.contract(
     end=TICKS, limit=TICKS + 100)
 
 
+def put(s, field, value, strict=True):
+    """Set one static settings field as the session's driver, and read the write back. Inside a session the bridge refuses a
+    set that names no driver; this scene sent none and never read the reply, so its plant knockback_off never applied and the
+    planted run read SUCCESS (ArchSmall, 2026-11-25 10:48 PST, run scn_cb8b1221ef62)."""
+    r = s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=field, value=value, driver=s.id) or {}
+    if strict and (r.get("success") is not True or str(r.get("valueAfter")) != str(value)):
+        raise RuntimeError("SETTING_REFUSED: %s=%s was not written (%s)" % (field, value, {k: r.get(k) for k in ("success", "valueAfter", "error", "message")}))
+    return r
+
+
 def far(a, b):
     return ((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2) ** 0.5
 
@@ -75,13 +85,13 @@ with scene.open(GAME, contract=pit, needs={"mods": ["ExplosiveKnockback", "FlowW
     prior = (s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="get", field="enabled") or {}).get("value") if off else None
     try:
         if off:
-            s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="enabled", value="False")
+            put(s, "enabled", "False")
         hp = s.read("bomb", "hitPointsInt")
         s.act.damage("bomb", (hp.v if hp.state == "ok" else 60) + 40, kind="Crush", name="bomb")
         run = s.run(until=pit.end, limit=pit.limit)
     finally:
         if off:   # the master switch back to what it read before the plant, on every exit path
-            s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="enabled", value=str(prior) if prior is not None else "True")
+            put(s, "enabled", str(prior) if prior is not None else "True", strict=False)
     print(run, run.receipt)
     folder = s.run_dir
 print(scene.judge(folder))
