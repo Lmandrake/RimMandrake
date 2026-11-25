@@ -90,7 +90,7 @@ check("on: fire and no ash in any hour", mv(QUIET, spell([0, 3, 9], DECAY)) is F
 check("a missing ash read is undecided", mv(QUIET, spell([0, 3, 9], [50.0, None, 43.0, 48.0])) is None)
 check("no reads are undecided", mv(spell([], [1.0]), LITON) is None)
 check("the off spells outlast the standing burn's quiet window",
-      V.OFF_CONTROL_WAIT_TICKS > V.BURN_QUIET_TICKS and getattr(V, "R8_MASTER_HOURS", 0) * 2500 > V.BURN_QUIET_TICKS)
+      getattr(V, "WALK_OFF_SPELL_TICKS", 0) > V.BURN_QUIET_TICKS and getattr(V, "R8_MASTER_HOURS", 0) * 2500 > V.BURN_QUIET_TICKS)
 src = open(_path, encoding="utf-8").read()
 check("the part stages its own sleeper", "def _walk_bed_fire_resumes" in src)
 check("the part carries its planted switch", "PYRE_PLANT_BED_MASTER" in src)

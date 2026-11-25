@@ -5119,7 +5119,7 @@ def _ten_walk_season(t):
         _extinguish(t)
         off = _ten_gate_on(t)
         a0, f0 = _depth(t, None), _count(t, "Fire")
-        _wait(t, OFF_CONTROL_WAIT_TICKS)   # visit 8: in one day a quiet map relights nothing, so an ignored gate read PASS
+        _wait(t, WALK_OFF_SPELL_TICKS)   # visit 8: in one day a quiet map relights nothing, so an ignored gate read PASS
         a1, f1 = _depth(t, None), _count(t, "Fire")
         _set(t, {"pyrelandsEnabled": True})
         on = _ten_gate_on(t)
@@ -5147,7 +5147,7 @@ def _ten_walk_season(t):
             _extinguish(t)   # as the gate-off day: a fire after the day was lit in it, never the walk's spread
             roster, off = _ten_roster_on(t), _ten_gate_on(t)
             a0, f0 = _depth(t, None), _count(t, "Fire")
-            _wait(t, OFF_CONTROL_WAIT_TICKS)   # as the gate's off spell
+            _wait(t, WALK_OFF_SPELL_TICKS)   # as the gate's off spell
             a1, f1 = _depth(t, None), _count(t, "Fire")
         finally:
             _ten_roster_set(t, True)
@@ -6342,6 +6342,9 @@ OFF_CONTROL_HOLDS = ("fireClockEnabled", "fireHawkSpreadEnabled", "furnaceTherma
 # lights, so the longer window only makes the PASS stricter. Visit 4's probe (burnLineEnabled on, the other sources held
 # off) read 1-2 burn-line fires at every sample from the window's end to 15000 ticks past it.
 OFF_CONTROL_WAIT_TICKS = BURN_STAGED_WAIT_TICKS   # it played the 120,000-tick quiet window until visit 9
+# The walk's off spells (gate, roster, R8 master) stage no quiet counter: each must play the whole quiet window plus the
+# watch intervals and four reseed retries, or an ignored switch relights nothing in the spell and reads PASS (visit 8).
+WALK_OFF_SPELL_TICKS = BURN_QUIET_TICKS + BURN_STAGED_WAIT_TICKS
 
 
 def _burn_line_off_control(t):
@@ -6963,7 +6966,7 @@ def _r6_beds_lit(t):
     return lit, len(ids)
 
 
-R8_MASTER_HOURS = OFF_CONTROL_WAIT_TICKS // TEN_HOUR + 1   # the standing burn relights only after two quiet days
+R8_MASTER_HOURS = WALK_OFF_SPELL_TICKS // TEN_HOUR + 1   # the standing burn relights only after two quiet days
 PLANT_MASTER_ENV = "PYRE_PLANT_MASTER"   # planted states for walk_master_off_then_on: "left_on" or "left_off"
 
 
