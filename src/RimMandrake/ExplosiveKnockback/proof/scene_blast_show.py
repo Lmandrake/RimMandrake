@@ -121,12 +121,15 @@ def blasts(s, rows):
         s.act.damage(pad + "_x", (hp.v if hp.state == "ok" else 100) + 60, kind="Crush", name=pad)
         s.shot(rect(pad), name=pad + "_fire")
         t1, kick = static(s, "lastShakeTick"), static(s, "lastShakeKick")
-        if not (t0 is not None and t1 is not None and t1 > t0):
+        # the kick tick is a static: it outlives a map, so the first pad's t0 can be a later tick of the last map (visit 1 of
+        # 0.2.0: ied_soil first read "not moved"). A shake of this blast writes the tick now, so a change is the reading.
+        shook = t0 is not None and t1 is not None and t1 >= 0 and t1 != t0
+        if not shook:
             kick = None             # a kick read with no shake of this blast is an earlier blast's: never compare it
         s.run(until=SETTLE, limit=SETTLE + 120)
         s.shot(rect(pad), name=pad + "_scar")
         ours, vanilla = scars_on(s, pad)
-        rows[pad] = dict(scars=ours, vanilla=vanilla, shook=(t0 is not None and t1 is not None and t1 > t0), kick=kick)
+        rows[pad] = dict(scars=ours, vanilla=vanilla, shook=shook, kick=kick)
         if pad == "he_tile":
             paint = s.read("soot_wall", "PaintColorDef.defName")
             rows[pad]["paint"] = str(paint.v) if paint.state == "ok" else "unread (%s)" % paint.state
