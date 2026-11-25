@@ -12104,3 +12104,5 @@
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_UNITS","result":"kept","detail":"sweep: running again","ts":"2026-11-25T01:48:39Z","tsn":1795571319691704635}
 {"seat":"RUNNER","event":"raise","id":"STEVE_LANE_UNSTICK_PAUSED_UNOWNED_PAUSED_ARJYIP","reason":"steward: lane unowned 30 min (PAUSED)","ts":"2026-11-25T01:59:21Z","tsn":1795571961183921184}
 {"seat":"RUNNER","event":"note","id":"STEVE_LANE_UNSTICK_PAUSED_UNOWNED_PAUSED_ARJYIP","text":"steward: started one capped headless BENCH session (budget $5, 2700 s cap); log /mnt/d/ClaudeWork/rimmandrake/testq/wake/20261125T015909Z.log","ts":"2026-11-25T01:59:44Z","tsn":1795571984474825518}
+{"seat":"RUNNER","event":"note","id":"STEVE_LANE_UNSTICK_PAUSED_UNOWNED_PAUSED_ARJYIP","text":"steward: SteveDesktop lane PAUSED: fill stopped: /mnt/d/ClaudeWork/rimmandrake/testq/fill.stop exists again since 2026-11-25T01:28:16Z, 34 min unowned","ts":"2026-11-25T02:04:01Z","tsn":1795572241991917689}
+{"seat":"RUNNER","event":"raise","id":"STEVE_LANE_UNSTICK_PAUSED_UNOWNED_PAUSED_ARJYIP","reason":"steward: lane unowned 34 min (PAUSED)","ts":"2026-11-25T02:04:13Z","tsn":1795572253230658154}
