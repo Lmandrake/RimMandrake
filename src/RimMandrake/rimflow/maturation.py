@@ -3590,19 +3590,29 @@ def read_exit(root, mod, n, tt=None, game_only_bars=None):
         # fix, once (owner, 2026-11-20: "I agree with your blind judge -> fresh reader argument."); this replaces the
         # whole new blind cycle RIMMANDRAKE_SEND_FIXES_TO_NEW_BLIND_JUDGE sent a fixed mod to
         rv = fix_reviews(os.path.join(d, "lane2", FIX_REVIEWS))
-        read_rv = {i: review_sound(rv, i, (fixes.get(i) or {}).get("unit")) for i in fixed}
-        owed = [i for i in fixed if not read_rv[i][0]]
+        states = {i: review_state(rv, i, (fixes.get(i) or {}).get("unit")) for i in fixed}
+        read_rv = {i: (st["state"] == "sound", st["why"]) for i, st in states.items()}
+        # a chain that ended (a reader's fix, fixed again by its validator) owes no reader: the Conductor reads it
+        ended = [i for i in fixed if states[i]["state"] == "ended"]
+        owed = [i for i in fixed if not read_rv[i][0] and i not in ended]
         if owed:
             out["checks"]["fix_reader_owed"] = owed
+        if ended:
+            out["checks"]["fix_chain_ended"] = ended
+        if any(states[i]["chain"] for i in fixed):
+            out["checks"]["reader_fixes"] = {i: states[i]["chain"] for i in fixed if states[i]["chain"]}
         if all(w == JUDGE_SAYS_FALSE for w in why):
             del why[:]          # a judge that fixed the mod wrote false: the reader below decides
+            why.extend("%s (fault %s)" % (states[i]["why"], i) for i in ended)
             if owed:
                 why.append("one fresh reader is owed for %d mod fix(es) made in this cycle (%s): a run that did not make "
                            "the fix reads only that fix, once, and writes %s/lane2/%s; the steward run is that reader "
                            "(file nothing new)" % (len(owed), "; ".join("%s: %s" % (i, read_rv[i][1]) for i in owed[:6]),
                                                    rel(mod, base), FIX_REVIEWS))
-            else:
+            elif not ended:
                 out["checks"]["fix_readers_sound"] = fixed
+        else:
+            why.extend("%s (fault %s)" % (states[i]["why"], i) for i in ended)
     out["state"] = "not_met" if why else "met"
     if not why:
         pol = out["checks"].get("lane1_fail_left_as_polish") or {}
@@ -4643,22 +4653,99 @@ def mod_fix_shown(r):
     return ("its mod fix names no %s" % ", no ".join(miss)) if miss else None
 
 
-def review_sound(reviews, key, maker):
-    """-> (True, None) when the last `fix_reviews.jsonl` row for fix key (its `fix` commit or blind `fault` id) reads
-    `sound` by a reader that is not maker (the unit that made the fix). Else (False, why). One fresh reader checks only
-    that fix, once (owner, 2026-11-20: "I agree with your blind judge -> fresh reader argument.")."""
-    mine = [x for x in reviews or [] if isinstance(x, dict) and key and key in (x.get("fix"), x.get("fault"))]
-    if not mine:
-        return False, "no fresh reader has read it"
-    x = mine[-1]
+FIX_CHAIN_ENDED = "the fix chain ends: "     # an exit reason: a reader's fix whose validator fixed again (no third read)
+READER_FIXED = "fixed"              # a review verdict: the reader found a fault in the fix and fixed it itself
+CONDUCTOR_READER = "CONDUCTOR"      # the reader name of the Conductor's own reading, the one read after a chain ends
+
+
+def _names(x, key):
+    """True when review row x is about fix `key`: its `fix` or blind `fault` equals key, or both are commits and one is a
+    prefix of the other (a short sha in a review, the full one in a record)."""
+    k = str(key or "").strip()
+    for v in (x.get("fix"), x.get("fault")):
+        v = str(v or "").strip()
+        if k and v and (v == k or (SHA_RE.match(v) and SHA_RE.match(k) and (v.startswith(k) or k.startswith(v)))):
+            return True
+    return False
+
+
+def run_lineage(unit):
+    """-> the units of unit's run chain: itself, and the runs it carries on (`continued_from`, `continue_root` of its
+    detached record). Just itself when no record reads: a run with no record continues nothing that this can see."""
+    import detached_helper as DH
+    u = str(unit or "").strip()
+    out = {u} - {""}
+    rec = DH.read_record(u) if u else None
+    if not isinstance(rec, dict):
+        # no detached record (a hand run, a fixture): the boundary page's a-validator-outside-the-records
+        return out
+    out |= {str(rec[k]).strip() for k in ("continued_from", "continue_root") if str(rec.get(k) or "").strip()}
+    return out
+
+
+def review_state(reviews, key, maker, lineage=None):
+    """-> {"state": sound | unsound | owed | ended, "why", "chain"}: how fix `key` (its `fix` commit or blind `fault` id)
+    stands on the `fix_reviews.jsonl` rows. One fresh reader that did not make the fix reads it once (owner, 2026-11-20:
+    "I agree with your blind judge -> fresh reader argument."). A reader that sees a fault it can fix, fixes it (owner,
+    2026-11-25: "A blind judge absolutely CAN fix and SHOULD fix! But it would then require a new blind judge run to
+    validate its work thereafter."): its row reads `fixed` with `fixed_at` (its commit) and its `red`/`green`, and is no
+    pass. One new fresh reader, a run that made neither fix and carries on neither run (`lineage`), reads that fix
+    (rows keyed by `fixed_at`). When that validator fixes too, the chain ends: no third read; only a row by the Conductor
+    (reader CONDUCTOR) on the last fix decides, and until one, the state is `ended`. `chain` lists each reader's fix."""
+    lineage = lineage or run_lineage
+    rows = [x for x in reviews or [] if isinstance(x, dict)]
     if not maker:
-        return False, "the fix names no unit, so its reader cannot be shown to be another"
-    if not str(x.get("reader") or "").strip() or str(x.get("reader")).strip() == str(maker).strip():
-        return False, "its review names no reader, or the unit that made the fix (%s)" % maker
-    if str(x.get("verdict", "")).lower() != "sound":
-        return False, "its reader %s read it %s: %s" % (x.get("reader"), x.get("verdict") or "with no verdict",
-                                                         x.get("why") or "no reason given")
-    return True, None
+        return {"state": "owed", "why": "the fix names no unit, so its reader cannot be shown to be another", "chain": []}
+    barred = set(lineage(maker)) | {str(maker).strip()}
+    chain, cur = [], key
+    for depth in (0, 1):
+        mine = [x for x in rows if _names(x, cur)]
+        valid = [x for x in mine if str(x.get("reader") or "").strip()
+                 and not (set(lineage(str(x["reader"]).strip())) & barred)]
+        if not valid:
+            if not depth:
+                why = ("no fresh reader has read it" if not mine else "its review names no reader, or the unit that "
+                       "made the fix (%s)" % maker)
+            else:
+                f = chain[-1]
+                why = ("its reader %s found a fault and fixed it at %s%s; that reading is no pass of its own fix: one "
+                       "new fresh reader, a run that made neither fix and starts fresh, reads %s once%s" % (
+                           f["reader"], f["fixed_at"], "" if f["shown"] else " (its red then green is not shown: %s; "
+                           "the validator runs its test at the parent and at the fix)" % f["shown_why"], f["fixed_at"],
+                           "" if not mine else " (a row on it by a run that made a fix is not counted)"))
+            return {"state": "owed", "why": why, "chain": chain}
+        x = valid[-1]
+        reader, verdict = str(x["reader"]).strip(), str(x.get("verdict", "")).lower()
+        if verdict == "sound":
+            return {"state": "sound", "why": None if not chain else "read sound by %s after %s's fix at %s" % (
+                reader, chain[-1]["reader"], chain[-1]["fixed_at"]), "chain": chain}
+        if verdict != READER_FIXED:
+            return {"state": "unsound", "why": "its reader %s read it %s: %s" % (
+                reader, x.get("verdict") or "with no verdict", x.get("why") or "no reason given"), "chain": chain}
+        at = str(x.get("fixed_at") or "").strip()
+        if not SHA_RE.match(at):
+            return {"state": "unsound", "why": "its reader %s found a fault (%s) and names no commit of its fix "
+                    "(`fixed_at`): the fault stands" % (reader, x.get("why") or "no reason given"), "chain": chain}
+        shown = mod_fix_shown({"mod_fix": {"commit": at, "red": x.get("red"), "green": x.get("green")}})
+        chain.append({"reader": reader, "fixed_at": at, "shown": shown is None, "shown_why": shown,
+                      "why": x.get("why")})
+        barred |= set(lineage(reader)) | {reader}
+        cur = at
+    con = [x for x in rows if _names(x, cur) and str(x.get("reader") or "").strip().upper().startswith(CONDUCTOR_READER)]
+    if con:
+        v = str(con[-1].get("verdict", "")).lower()
+        return {"state": "sound" if v == "sound" else "unsound", "why": "the Conductor read the last fix %s %s: %s" % (
+            cur, con[-1].get("verdict") or "with no verdict", con[-1].get("why") or "no reason given"), "chain": chain}
+    return {"state": "ended", "why": FIX_CHAIN_ENDED + "reader %s fixed this fix at %s, and its validator %s fixed again "
+            "at %s; there is no third read: the Conductor reads %s and writes a row with reader %s (sound or unsound)" % (
+                chain[0]["reader"], chain[0]["fixed_at"], chain[1]["reader"], chain[1]["fixed_at"], cur,
+                CONDUCTOR_READER), "chain": chain}
+
+
+def review_sound(reviews, key, maker, lineage=None):
+    """-> (True, None) when fix key reads sound (review_state), else (False, why)."""
+    r = review_state(reviews, key, maker, lineage)
+    return (True, None) if r["state"] == "sound" else (False, r["why"])
 
 
 def fix_reviews(path):
@@ -4874,12 +4961,16 @@ def read_ingame_exit(root, mod, n, tt=None, *, deploy_stamp=False):
     try:
         for c in landed_at_walk(root, mod, load(root, mod), n):
             # the reader may have read it before this visit opened (ExplosiveKnockback db80fab783: visit 5's file)
-            seen = [dict(x, fix=c) for k in visit_numbers(root, mod) if k <= n for x in fix_reviews(os.path.join(
-                mod_dir(root, mod), INGAME_DIR, "visit_%d" % k, FIX_REVIEWS))
-                if SHA_RE.match(str(x.get("fix") or "")) and c.startswith(x["fix"])]
-            good, rwhy = review_sound(seen, c, "the run that landed %s" % c)
+            # every row, not only those on c: a reader that fixed c is validated by a row on its own fix (review_state)
+            seen = [x for k in visit_numbers(root, mod) if k <= n for x in fix_reviews(os.path.join(
+                mod_dir(root, mod), INGAME_DIR, "visit_%d" % k, FIX_REVIEWS))]
+            rs = review_state(seen, c, "the run that landed %s" % c)
+            good, rwhy = rs["state"] == "sound", rs["why"]
             if good:
                 sound.append(c)
+            elif rs["state"] == "ended":
+                out.setdefault("fix_chain_ended", []).append(c)
+                why.append(rwhy)
             else:
                 owed.append({"check": None, "fix": c, "why": rwhy})
                 why.append("the mod change %s landed while the mod stood at his walk and owes one fresh reader (%s): a run "
@@ -4906,10 +4997,16 @@ def read_ingame_exit(root, mod, n, tt=None, *, deploy_stamp=False):
         if cnt == "pass" and earlier.get(t):
             ln["mod_fix"] = r["mod_fix"]
             mf = r["mod_fix"]
-            good, rwhy = review_sound(reviews, mf.get("commit"), mf.get("unit") or r.get("unit"))
+            rs = review_state(reviews, mf.get("commit"), mf.get("unit") or r.get("unit"))
+            good, rwhy = rs["state"] == "sound", rs["why"]
             ln["review"] = "sound" if good else rwhy
+            if rs["chain"]:
+                ln["reader_fixes"] = rs["chain"]
             if good:
                 sound.append(mf.get("commit"))
+            elif rs["state"] == "ended":
+                out.setdefault("fix_chain_ended", []).append(mf.get("commit"))
+                why.append("in-game check %s: %s" % (t, rwhy))
             else:
                 owed.append({"check": t, "fix": mf.get("commit"), "why": rwhy})
                 why.append("in-game check %s: the mod fix %s made in the sitting owes one fresh reader (%s): a run that "

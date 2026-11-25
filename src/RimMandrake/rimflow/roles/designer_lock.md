@@ -43,6 +43,8 @@ The launcher injects this packet with `designer.md` at stage 5. Follow one versi
      `advisory_gaps` of `<dir>/coverage_verdict.json`.
    - No claim and no change: no judge runs.
    - A `coverage_fixes.json` against another judge is ignored. So the next round needs a new one.
+   - A gap with `judge_fixed` was fixed by the judge itself, in `scenes.json`. Do not redo that fix and do not claim it:
+     the next judge, a fresh one, checks it as a repair. If that judge fixes again, judging stops for the Conductor.
 
    **The owner may pass coverage on his own word**, past a `not_covered` verdict. That stamp is
    `concept_tree.py certify <dir> --owner-event OWNER:<tsn>` (`signed_by: owner`). The stamp is his, or the Conductor

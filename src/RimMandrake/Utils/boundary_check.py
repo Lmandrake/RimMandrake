@@ -257,6 +257,7 @@ PAGES = {
     "design/specs/2026-11-25-stevedesktop-work-vetted/testq/boundary.md":
         "src/RimMandrake/Utils/testq/selftest_testq_host_switch.py",
     "design/specs/2026-11-25-fixer-rule/boundary.md": "src/RimMandrake/rimflow/selftest_fixer_rule.py",
+    "design/specs/2026-11-25-blind-readers-fix/boundary.md": "src/RimMandrake/rimflow/selftest_blind_readers_fix.py",
 }
 SECTIONS = ("PROMISES", "SURVIVES")
 HEAD_RX = re.compile(r"^##\s+(\S+)")

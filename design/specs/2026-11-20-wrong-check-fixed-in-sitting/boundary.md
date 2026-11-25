@@ -30,7 +30,8 @@ that selftest also plants a fault in each part of the reader and sees its test g
   {"cmd", "rc"}}`, the before/after test (red an rc non-zero on the parent, green rc 0 on the fix).
 - **a-fix-review.** One row per mod fix in `fix_reviews.jsonl` (the visit folder, or the cycle's `lane2/`): `{"fix":
   <commit> | "fault": <id>, "reader": <unit>, "verdict": "sound"|"unsound", "why"}`, by a reader that did not make the
-  fix.
+  fix. A reader that fixes the fix writes `"verdict": "fixed"`; that row and the fresh validator it owes are on
+  `design/specs/2026-11-25-blind-readers-fix/boundary.md`.
 - **a-blind-check-fault.** A blind-cycle Problem with `against` `check` or `scene`, FIXED, whose `fixes.jsonl` row
   carries `plant`, `red` (the repaired check on the plant, an rc non-zero), `green` (the repaired check on the real
   build, rc 0) and `sha`.

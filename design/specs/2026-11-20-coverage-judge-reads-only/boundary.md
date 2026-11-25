@@ -1,11 +1,12 @@
-# BOUNDARY: the coverage judge and its second reader read and never edit (coverage_judge.py judge_tail), Design Version 0.1.0
+# BOUNDARY: the coverage judge's second reader reads and never edits (coverage_judge.py judge_tail), Design Version 0.2.0
 
-Code: `src/RimMandrake/rimflow/coverage_judge.py`. **This page covers only the command line the coverage judge and its
-second reader are started with**: `judge_tail` and `READ_ONLY_DENY`. Item
-`RIMMANDRAKE_RESUME_WRONG_CHECK_WORKER_WITH_MOD_FIX_EXTENSION` (point 6, the contained half: "do not let it edit
-files"). The judge ran with `--dangerously-skip-permissions` and every tool. The other half (the Designer session that
-wrote the design is resumed to mend the judge's gaps, then the judge reads again fresh) is a design note on that item,
-not built here. The test of the promise is in `src/RimMandrake/rimflow/selftest_coverage_judge_reads_only.py`.
+Code: `src/RimMandrake/rimflow/coverage_judge.py`. **This page covers only the command line the coverage judge's second
+reader is started with**: `judge_tail` with its default `may_fix=False`, and `READ_ONLY_DENY`. Item
+`RIMMANDRAKE_RESUME_WRONG_CHECK_WORKER_WITH_MOD_FIX_EXTENSION` (point 6). The judge itself was read-only from that item
+until the owner's ruling of 2026-11-25 ("A blind judge absolutely CAN fix and SHOULD fix!"): it now fixes a gap whose
+repair lies in `scenes.json`, and a fresh judge checks the fix. That part, and its chain rule, are on
+`design/specs/2026-11-25-blind-readers-fix/boundary.md`. The test of the promise here is in
+`src/RimMandrake/rimflow/selftest_coverage_judge_reads_only.py`.
 
 ## ACCEPTS (the only inputs these parts are built for)
 
@@ -13,13 +14,12 @@ not built here. The test of the promise is in `src/RimMandrake/rimflow/selftest_
 
 ## DOES NOT SURVIVE (not handled)
 
-- **a-write-through-bash.** The denied tools are Edit, Write and NotebookEdit. A Bash command can still write a file;
-  the judge's input hashes (`fresh_key`, RIMMANDRAKE_HASH_EVERY_COVERAGE_INPUT) still refuse a signature on inputs
-  that changed while it judged.
+- **a-write-through-bash.** The denied tools are Edit, Write and NotebookEdit. A Bash command can still write a file.
+  The second reader is shown only JSON and is told to read no file.
 
 ## PROMISES (each one is owed a test of the same name)
 
-- **judge-cannot-edit.** The tail the judge and its second reader are started with denies Edit, Write and
+- **second-reader-cannot-edit.** The tail `judge_tail` gives by default (the second reader's) denies Edit, Write and
   NotebookEdit (`--disallowedTools`), keeps the model, the label, the JSON output and the schema, and passes no
   `--max-budget-usd`.
 

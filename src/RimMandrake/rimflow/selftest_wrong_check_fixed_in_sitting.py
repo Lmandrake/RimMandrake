@@ -422,7 +422,9 @@ def _mutants():
     yield "every blind Problem is a check repair", "check_repair", lambda root, x, fx, edited: (True, None)
     yield "no blind Problem is a check repair", "check_repair", lambda root, x, fx, edited: (False, "planted")
     yield "a mod fix counts with no red run", "mod_fix_shown", lambda r: None
-    yield "every fix review is sound", "review_sound", lambda reviews, key, maker: (True, None)
+    # the callers read review_state (review_sound is its wrapper; RIMMANDRAKE_LET_BLIND_READERS_FIX_TWO_STILL_FORBIDDEN_IN_CODE)
+    yield "every fix review is sound", "review_state", lambda reviews, key, maker, lineage=None: {
+        "state": "sound", "why": None, "chain": []}
     del real_shown, real_repair
 
 

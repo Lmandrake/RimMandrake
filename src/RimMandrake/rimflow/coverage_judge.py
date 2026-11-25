@@ -167,6 +167,23 @@ REPAIR_HOW = ("Answer `repairs` with one row for EVERY earlier gap listed, by it
               "that the repair added, altered or removed; you give it `severity` `problem`; and a second reader who did "
               "not judge confirms it. Any other new gap, including one on unchanged material, is advisory: it goes to the "
               "owner's short list and blocks nothing.")
+# A blind judge fixes what it sees (owner, 2026-11-25: "A blind judge absolutely CAN fix and SHOULD fix! But it would
+# then require a new blind judge run to validate its work thereafter."). The judge's fix stays in scenes.json: the tree
+# and the sheet are the Cold Reader exam's frozen inputs (designer_stage.EXAM_FROZEN) and record.json holds his words.
+# Page: design/specs/2026-11-25-blind-readers-fix/boundary.md.
+JUDGE_FIXABLE = ("scenes.json",)
+FIX_CHAIN_ENDED = "the fix chain ends: "     # the hold's words when a look that checks a judge's fix fixes again
+JUDGE_FIX_TEXT = (
+    "You may fix a gap yourself: you are about to refuse it, so when you can see the repair, make it. Do this only when "
+    "the repair is known and lies wholly in scenes.json (a scene's asserted start, its control, an assertion, or a "
+    "missing scene). First write the gap as usual (it is the test that reads red); then edit scenes.json; then set that "
+    "gap's `judge_fixed` to what you changed (the scene ids and what). Your fix is no pass of your own: the gap still "
+    "blocks this look, so answer not_covered, and the next look, a fresh judge that did not make the fix, checks it as "
+    "a repair (it reads green or it does not). Edit no other file: the tree and the sheet are the exam's frozen "
+    "inputs, record.json holds the owner's words, and a gap that needs one of them, his answer, a changed bar or one of "
+    "his five acts is the Designer's (its `return_to` as usual). Never edit a role file, the bar rule, a calibration "
+    "record or this brief. When the look you are checking is itself a judge's fix and you fix again, the chain ends "
+    "there: judging stops and the Conductor reads both fixes.")
 RECORD_TEXT = (
     "\n\nEvery gap is a refusal record, as detailed as the evidence it refuses, with a path to pass: `evidence` lists "
     "the concept files it rests on (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json; `file:line` "
@@ -325,6 +342,7 @@ def prior_verdict(d):
 # the brief is calibrated, then receives a full review because its checklist cannot supply a trusted delta baseline.
 FIXES_FILE = "coverage_fixes.json"
 SCHEMA["properties"]["gaps"]["items"]["properties"]["late_why"] = {"type": "string"}
+SCHEMA["properties"]["gaps"]["items"]["properties"]["judge_fixed"] = {"type": "string"}    # JUDGE_FIX_TEXT
 ROW_KINDS = ("inv", "leaf", "rest")   # entry kinds whose id is a checklist row
 
 
@@ -449,7 +467,7 @@ def delta_plan(d, prior, read=None):
     current entries, the checklist rows to redo, and the gaps carried open."""
     if not (isinstance(prior, dict) and prior.get("verdict") == "not_covered" and isinstance(prior.get("hashes"), dict)
             and not prior.get("error") and not prior.get("unchecked")
-            and not prior.get("advisory") and not (prior.get("contract") or {}).get("advisory")
+            and (not prior.get("advisory") or own_fix_only(prior)) and not (prior.get("contract") or {}).get("advisory")
             and all(isinstance(g, dict) and g.get("gid") for g in prior.get("gaps") or [])):
         return None
     now_ents = entries(d, read)
@@ -457,8 +475,11 @@ def delta_plan(d, prior, read=None):
     old_h = prior["hashes"]
     changed = sorted(k for k in set(old_h) | set(now_h) if old_h.get(k) != now_h.get(k))
     claims, refused = fix_claims(d, prior)
-    claimed = {c["gap"] for c in claims}
     gaps = prior_slots(prior)
+    # a gap the prior judge fixed itself is a claim its fresh successor checks (JUDGE_FIX_TEXT)
+    claims += [{"gap": g["gid"], "evidence": "the judge %s fixed it itself: %s" % (prior.get("judge"), g["judge_fixed"])}
+               for g in gaps if str(g.get("judge_fixed") or "").strip() and g["gid"] not in {c["gap"] for c in claims}]
+    claimed = {c["gap"] for c in claims}
     rows = []
     for c in claims:
         rows += next((g.get("ids") or [] for g in gaps if g.get("gid") == c["gap"]), [])
@@ -481,16 +502,23 @@ def delta_plan(d, prior, read=None):
             or any(k.partition(":")[0] not in ROW_KINDS for k in changed)}
 
 
+def own_fix_only(rec):
+    """True when a verdict's only advisory is its judge's own fix (`judge_fixed`): the inputs it moved are all the files
+    it fixed, so a fresh look checks that fix as a repair (JUDGE_FIX_TEXT)."""
+    jf = rec.get("judge_fixed") if isinstance(rec, dict) else None
+    return bool(isinstance(jf, dict) and jf.get("files") and set(rec.get("stale_inputs") or []) <= set(jf["files"]))
+
+
 def delta_prompt(d, repo, dp, round_no):
     rel = CT.concept_rel(d, repo)
     claims = {c["gap"]: c["evidence"] for c in dp["claims"]}
     body = ["You are the coverage judge for the RimMandrake concept at %s, on a re-judge: round %d. A previous judge "
-            "listed its gaps; the Designer says it fixed some of them. You judge ONLY what is below. Read "
+            "listed its gaps; the Designer, or that judge itself, says it fixed some of them. You judge ONLY what is below. Read "
             "src/RimMandrake/rimflow/roles/designer_scene_contract.md (the proof-scene contract) first. Do not reread the "
             "concept's files whole: everything to judge is quoted here, and you open a file only at the place a claim's "
-            "evidence names, to check it. Do not read result.*.json, log.md, stage.json or any transcript, and edit "
-            "nothing. The second not_covered verdict stops judging." % (rel, round_no),
-            "", RULES_TEXT, "", REPAIR_LOOK + " " + REPAIR_HOW,
+            "evidence names, to check it. Do not read result.*.json, log.md, stage.json or any transcript. The second "
+            "not_covered verdict stops judging." % (rel, round_no),
+            "", RULES_TEXT, "", REPAIR_LOOK + " " + REPAIR_HOW, "", JUDGE_FIX_TEXT,
             "", "## Gaps the Designer claims fixed (check each and answer its `repairs` row)"]
     for g in dp["claimed_gaps"]:
         body.append("- %s (ids %s; was: %s; at %s)\n  evidence: %s" % (
@@ -932,6 +960,8 @@ def stop_reason(st, d=None):
                 "spend was counted for them" % (len(dead), " since the release" if rel else "", JUDGE_FAULT_LIMIT,
                                                   _clip(dead[-1]["void_system"], 120)))
     standing, win, since, bad_win, bad_since = counting_window(st, d, rs)
+    if win and win[-1].get("fix_chain_ended"):
+        return win[-1]["fix_chain_ended"]     # no third look on a judge's fix that its checker fixed again (judge_fix)
     if standing:
         after = win
         tail = _looks(after)
@@ -1234,16 +1264,17 @@ def reader_prompt(items):
             % (BR.RULE_TEXT, json.dumps(items, ensure_ascii=False, indent=1)))
 
 
-# The judge and its second reader read and never edit (item RIMMANDRAKE_RESUME_WRONG_CHECK_WORKER_WITH_MOD_FIX_EXTENSION:
-# "do not let it edit files"); a gap is the Designer's to mend. Page: design/specs/2026-11-20-coverage-judge-reads-only/
+# The second reader grades the judge's criteria from the JSON it is shown and opens no file, so it never edits. The
+# judge may fix a gap it sees, in scenes.json only (JUDGE_FIX_TEXT; owner 2026-11-25). Pages:
+# design/specs/2026-11-20-coverage-judge-reads-only/ and design/specs/2026-11-25-blind-readers-fix/
 READ_ONLY_DENY = "Edit,Write,NotebookEdit"
 
 
-def judge_tail(name, schema):
+def judge_tail(name, schema, may_fix=False):
     """-> the command-line tail a coverage judge or second reader starts with: its model, label, JSON answer and schema,
-    and the editing tools denied."""
+    and, unless may_fix (the judge, which fixes what it sees), the editing tools denied."""
     return ["--model", MODEL, "--name", name, "--output-format", "json", "--json-schema",
-            json.dumps(schema, separators=(",", ":")), "--disallowedTools", READ_ONLY_DENY,
+            json.dumps(schema, separators=(",", ":"))] + ([] if may_fix else ["--disallowedTools", READ_ONLY_DENY]) + [
             "--dangerously-skip-permissions"] + EF.effort_args(MODEL)
 
 
@@ -1508,6 +1539,7 @@ def record_round(d, rec):
         # the detached run that asked for the Designer run this judge screens (role_launch.with_parent): run_void.children
         "parent": os.environ.get("RM_PARENT_UNIT") or None,
         "reader_void_system": rec.get("reader_void_system"), "stale_inputs": rec.get("stale_inputs") or None,
+        "judge_fixed": bool(rec.get("judge_fixed")), "fix_chain_ended": rec.get("fix_chain_ended") or None,
         "repair_blocks": repair_blocks(rec)})
     DS.write_json(DS.state_path(d), st)
     return st
@@ -1651,8 +1683,8 @@ def prompt(d, repo, ids=(), prior=False, round_no=1):
         "src/RimMandrake/rimflow/roles/designer_scene_contract.md (the proof-scene contract), "
         "src/RimMandrake/rimflow/roles/designer_lock.md (what the lock means), then %(rel)s/sheet.md, tree.json, "
         "scenes.json, floor.json, exam.json and record.json (scope, inventory, decisions). Do not read result.*.json, "
-        "log.md, stage.json or any transcript: judge the artifacts, not the maker's account of them. Do not edit any "
-        "file. Judge COVERAGE: every in-scope capability in record.json's inventory and every leaf in tree.json is "
+        "log.md, stage.json or any transcript: judge the artifacts, not the maker's account of them. "
+        + JUDGE_FIX_TEXT + " Judge COVERAGE: every in-scope capability in record.json's inventory and every leaf in tree.json is "
         "exercised by an acceptance or interaction scene that meets the contract (asserted start, a control that rules "
         "out the plausible alternative), or is waived/out in his words; no leaf is accepted only by an "
         "exploration or mock scene; the sheet a player reads says what the tree tests. Resetting or cleaning up a test "
@@ -1843,6 +1875,29 @@ def settle_look(lk, rec, msg):
               file=sys.stderr)
 
 
+def judge_fix(rec, prior, moved):
+    """Read the judge's own fix (JUDGE_FIX_TEXT) into rec. A look whose gaps carry `judge_fixed` and whose moved inputs
+    are all JUDGE_FIXABLE gets `judge_fixed` {files, what, by}; its verdict is not_covered (a judge never passes its own
+    fix). The look after such a look that fixes again ends the chain: `fix_chain_ended`, and run() holds the concept for
+    the Conductor, so there is no third look. A fix outside JUDGE_FIXABLE is no fix: the moved inputs stay stale, as
+    any input moved under a judge."""
+    fixed = [g for g in (rec.get("gaps") or []) + (rec.get("advisory_gaps") or [])
+             if isinstance(g, dict) and str(g.get("judge_fixed") or "").strip()]
+    if not (fixed and moved):
+        return
+    if not set(moved) <= set(JUDGE_FIXABLE):
+        rec["judge_fix_refused"] = "it moved %s; a judge's fix stays in %s" % (", ".join(moved), ", ".join(JUDGE_FIXABLE))
+        return
+    rec["judge_fixed"] = {"files": list(moved), "what": [str(g["judge_fixed"]) for g in fixed], "by": rec.get("judge")}
+    if rec.get("verdict") == "covered":
+        rec["verdict"] = "not_covered"
+    if isinstance(prior, dict) and prior.get("judge_fixed"):
+        rec["fix_chain_ended"] = (FIX_CHAIN_ENDED + "judge %s fixed this concept's scenes, and the fresh judge %s that "
+                                  "checked that fix fixed again; there is no third look: the Conductor reads both fixes "
+                                  "and releases one look (`coverage_judge.py release`)" % (
+                                      prior["judge_fixed"].get("by") or prior.get("judge"), rec.get("judge")))
+
+
 def _judge(d, repo, runner, timeout, now, charge, reader, unit):
     """run()'s judging body, on the unit name run() reserved the look for."""
     tree = CT.load(d)
@@ -1860,7 +1915,7 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
     env = dict(os.environ, RM_ROLE_UNIT=unit)
 
     def tail_for(schema):
-        return judge_tail("COVERAGE JUDGE %s" % unit, schema)
+        return judge_tail("COVERAGE JUDGE %s" % unit, schema, may_fix=True)
     tail = tail_for(SCHEMA)
     round_no = len(rounds(st0, d)) + 1
     text = delta_prompt(d, repo, dp, round_no) if dp is not None else prompt(d, repo, ids, prior is not None, round_no)
@@ -2151,8 +2206,15 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
                        or r["clause"] in bad_c] + sorted(late_c - {r["clause"] for r in cv["refusals"]})
             if suspect and not errs:
                 rec["criteria_suspect"] = suspect
+    judge_fix(rec, prior, moved_inputs(d, before) if rec.get("verdict") in ("covered", "not_covered") else [])
     if rec.get("verdict") == "not_covered":
         stale = moved_inputs(d, before)
+        if rec.get("judge_fixed") and stale:
+            rec["stale_inputs"] = stale
+            rec["advisory"] = ("the judge fixed %s itself (%s): its own fix is no pass and no refusal; the next look, a "
+                               "fresh judge that did not make it, checks it as a repair" % (
+                                   ", ".join(stale), "; ".join(rec["judge_fixed"]["what"])))
+            stale = []
         if stale:
             # judged on inputs that changed under it: no strike, no park, no stop, and the Designer is not sent back
             # on it; the next look judges what is there now
@@ -2216,7 +2278,7 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
         return rec, msg + "; parked: %s" % parked[1]
     # a stale refusal stops nothing here: the next plan() reads the caps against the stage state then current, so
     # hold() never writes blocked over a state that moved while the judge read it
-    stop = None if rec["signed"] or rec.get("stale_inputs") else stop_reason(st, d)
+    stop = rec.get("fix_chain_ended") or (None if rec["signed"] or rec.get("stale_inputs") else stop_reason(st, d))
     if stop:
         rec["stopped"] = stop
         DS.write_json(os.path.join(d, VERDICT_FILE), rec)

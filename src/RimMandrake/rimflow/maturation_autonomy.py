@@ -1477,6 +1477,12 @@ def _blind_match(f):
     return next((str(x) for x in (f.get("exit") or {}).get("why") or [] if str(x).startswith(M.BLIND_MATCH)), None)
 
 
+def _fix_chain_ended(f):
+    """-> the exit's reason that says a fix chain ended (a fresh reader's fix, fixed again by its validator), else None.
+    A steward would be the third reader, so none is launched (maturation.FIX_CHAIN_ENDED)."""
+    return next((str(x) for x in (f.get("exit") or {}).get("why") or [] if M.FIX_CHAIN_ENDED in str(x)), None)
+
+
 def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=designer_unit, fx_dchain=None, now=None,
            fx_evidence=None, fx_exam=None, endings=None, fx_version_bugs=None, fx_walk_owed=None, fx_walk_game=None,
            fx_signed=None):
@@ -1583,6 +1589,12 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=desig
         row.update(aut="autodeploy", decision="autodeploy", need=None, why="%s; the pipeline deploys it" % _stale_walk(f),
                    steward_why=_stale_walk(f), steward_key="%s|%s|autodeploy|%s|%s" % (
                        ver, stage, row.get("visit"), _h([_stale_walk(f)])))
+        return
+    if dec == "exit_not_met" and _fix_chain_ended(f):
+        # a reader's fix that its validator fixed again: the chain ends, no third reader is launched (owner,
+        # 2026-11-25; maturation.review_state): the Conductor reads the last fix and writes its row
+        row.update(decision="fix_chain_ended", need=None, why="%s; nothing more launches on it until the Conductor's row "
+                   "lands" % _fix_chain_ended(f))
         return
     if dec in STEWARD_ON or (dec == "cycle_unfinished" and stage == "blind_challenge"):
         n = row.get("visit") if stage == "in_game" else row.get("cycle") if stage == "blind_challenge" else None
@@ -1781,6 +1793,7 @@ PAUSE_WHY = {
     "coverage_stop": "coverage judging stopped on it (REFUSAL_NOTHING_COULD_EVER_PASS)",
     "ceiling": "the stage's spend plus the next run's cap passes stage_ceiling_usd", "not_offline": "no automatic step exists for its stage",
     "system_fault": "runs keep dying of a system cause (OPS_MATURATION_SYSTEM_FAULT_LOOP); no trial is spent",
+    "fix_chain_ended": "a fresh reader's fix was fixed again by its validator: no third read, the Conductor reads it",
 }
 
 
@@ -1870,9 +1883,18 @@ STEWARD_RULES = """Rules (the owner's, carried; every one binds you):
   run starts fresh. When the reading names `fix_readers_owed` (a visit) or `fix_reader_owed` (a blind cycle), read only
   that fix, once: its diff (`git show <sha>`), its before/after test (run it at the parent and at the fix), and the
   check it repairs. Write one row per fix to the record's `fix_reviews.jsonl` (`{"fix": <sha>` for a visit, `"fault":
-  <id>` for a cycle`, "reader": <your unit>, "verdict": "sound"|"unsound", "why": ...}`) and land it. Sound: the
-  reading can turn met, and you advance. Unsound: file it as a named item with what you found; it goes down the road
-  back. Never read a second time, and never fix the fix yourself.
+  <id>` for a cycle`, "reader": <your unit>, "verdict": "sound"|"unsound"|"fixed", "why": ...}`) and land it. Sound:
+  the reading can turn met, and you advance. A fault in the fix that you can fix, you fix in this run (owner,
+  2026-11-25: "A blind judge absolutely CAN fix and SHOULD fix!"), test first: a test red on the fix as it stands, your
+  fix, the test green; then write `"verdict": "fixed"` with `"fixed_at": <your commit>`, `"red": {"cmd", "rc"}` and
+  `"green": {"cmd", "rc"}`, and land it. Your row is no pass of your own fix: the tick then launches one new fresh
+  reader, a run that made neither fix and starts fresh, that reads your fix the same way (its row keyed `"fix":
+  <your fixed_at>`). When a reading names a reader's fix as the one owed, you are that validator: read that fix only.
+  A validator that also fixes writes `fixed` too, and the chain ends there: no third read, the Conductor reads it.
+  Your fix changes the mod or its tests, never a bar, the judge's brief, rubric or calibration; only the checks that it
+  touches run again. Unsound, and you cannot fix it (the fix is not known after a real attempt, a tool is missing, or
+  the fix would move a bar or is one of his five acts): file it as a named item with what you found, what you tried and
+  what would pass; it goes down the road back. Never read a fix a second time, and never read your own fix.
 - Move the mod only with `python3 src/RimMandrake/rimflow/maturation.py advance <Mod> --to <stage> --by BENCH --why
   "..." [--steward-confirms "<what you read and the verdict>"]`, forward one stage or along a drawn road back.
 - Land with `./publish -m "subject" <explicit paths>` (the record, the journal, the ledger shard); a move that is not on
