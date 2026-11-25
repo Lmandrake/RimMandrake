@@ -66,6 +66,32 @@ The bundle takes what the gate lets through: the work that the finder truly coul
 - **Model.** Opus by default (the Conductor's call: the Opus sweep cost 2.40M weighted tokens, the Fable close-out
   6.44M, on unlike work). `./pipe model <Mod> fable` stays for a mod he wants on Fable.
 
+### Who restarts a bundle
+
+A program restarts a bundle. No seat, no window and no person restarts a bundle.
+
+- **The restarter** is `src/RimMandrake/rimflow/left_open_continue.py`. The systemd unit of each detached run calls
+  it when the run ends (`finish`, the unit's ExecStopPost), on every kind of end.
+- **When the bundle machinery is built** (boundary page, promise *restart-until-each-member-has-an-outcome*): a bundle
+  run that ends with a member still open is restarted in a fresh context, from the state file and the first brief.
+  The end can be a saved state at a full context, a spend stop, or a death. The 3-a-day count of single runs does not
+  apply to a bundle.
+- **What stops a bundle:** only a stop that someone ordered (a kill by hand, a void, a pipeline pause, an owner hold,
+  `pipe off`), or a restart that ended no member. A restart that ended no member writes one ALARM line in the
+  Conductor log. The Conductor then acts; the bundle reads `raised`, never silently ended.
+- **Until that machinery is built**, a bundle that is launched by hand is a plain detached run. The same program
+  restarts a plain detached run, with three weaker rules:
+  - the run must end with exit 0, and with a `LEFT OPEN:` note or an open item;
+  - a spend stop is continued only when the launch carried `--continue-on-cap N`;
+  - at most 3 restarts for one item in 24 hours. The next one is the alarm `DETACHED_CONTINUE_LIMIT_REACHED` in the
+    Conductor log, with no launch.
+  A run that dies (a non-zero exit) is not restarted by the program. The Conductor's run-end wake reports that death,
+  and the Conductor relaunches the run by hand.
+- **The build of this machinery follows the weaker rules too.** So the builder writes a `PROGRESS:` note and
+  publishes after each part, and the Conductor holds an owed item to relaunch the build after a death or the alarm.
+- **How to see it:** `work_bundle.py` status (boundary promise) shows each bundle with its step, its restarts and its
+  open members. A bundle that is not `ended` and has no live run and no `restarting` state is a defect.
+
 ## 6. Where it goes in the two pipelines
 
 - **Workshop Pipeline.** Its systems are the parts of the pipeline itself (a rimflow component, a tool, a machine)
