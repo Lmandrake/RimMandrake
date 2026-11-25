@@ -10,6 +10,9 @@ brings it up. Proves:
         close it; all clear opens it.
   candidates: lane archmagi only; lane any only while SteveDesktop is down or busy; never lane stevedesktop;
         full-list profile only by default; a job Archmagi refused to deploy is skipped.
+  closed door: submit --lane archmagi refuses, with its path to pass, a job the lane would never admit by the tick's
+        own reading (lane off; a profile outside its list); queues an admitted job or another lane's as before; with
+        no reading it queues and warns.
   tick: disabled -> nothing runs and nothing is logged about archmagi; enabled and open -> the real worker runs the
         job locally and its result lands in done/ with host archmagi (result host archmagi); the driver lock is held
         while it runs; drift -> REFUSED/DEPLOY, the job back in pending and skipped; no game -> REFUSED/LOAD, back to
@@ -161,13 +164,18 @@ class Rig:
                            timeout=180)
         return r.returncode, r.stdout + r.stderr
 
-    def job(self, _name, lane="archmagi", profile="full-list", priority=50):
-        """Submit a real job (testq submit validates it) -> its id. _NAME only labels the test's intent."""
+    def submit(self, lane, profile, **extra):
         if not hasattr(self, "sha"):
             self.sha = subprocess.run(["git", "-C", REPO, "merge-base", "HEAD", "origin/main"], capture_output=True,
                                       text=True).stdout.strip()
-        rc, o = self.tq("submit", "Mock", "--purpose", "commission", "--by", "BENCH", "--sha", self.sha, "--rows",
-                        "r1", "--lane", lane, "--profile", profile, "--priority", str(priority))
+        return self.tq("submit", "Mock", "--purpose", "commission", "--by", "BENCH", "--sha", self.sha, "--rows",
+                       "r1", "--lane", lane, "--profile", profile, "--priority", str(extra.pop("priority", 50)),
+                       **extra)
+
+    def job(self, _name, lane="archmagi", profile="full-list", priority=50):
+        """Submit a real job (testq submit validates it) -> its id. _NAME only labels the test's intent. The rig's own
+        TESTQ_ARCHMAGI_PROFILES names the job's profile, so submit's closed-door refusal admits it (t_closed_door)."""
+        rc, o = self.submit(lane, profile, priority=priority, TESTQ_ARCHMAGI_PROFILES="full-list," + profile)
         try:
             return json.loads(o.strip().splitlines()[-1])["job"]
         except (ValueError, IndexError, KeyError):
@@ -283,6 +291,52 @@ def t_candidates(r):
     json.dump({"skip": {a: {"why": "drift"}}}, open(r.p("queue", "archmagi_state.json"), "w"))
     c = ids(r.call("testq.archmagi_candidates(True, False)"))
     check(c == [], "a job Archmagi refused to deploy is skipped: %s" % c)
+
+
+def testq_read(path):
+    try:
+        return json.load(open(path))
+    except (OSError, ValueError):
+        return None
+
+
+def t_closed_door(r):
+    """RIMMANDRAKE_ROUTE_ARCHMAGI_LANE_TARGETED_JOBS_QUEUED_TO_A_CLOSED_DOOR: submit --lane archmagi refuses a job the
+    lane would never admit as the tick runs it (off, or a profile outside its list), naming its path to pass; a job
+    the lane admits, or a job of another lane, is queued as before; with no reading it is queued, with a warning."""
+    agent = dict(TESTQ_ARCHMAGI=None)       # an agent's shell: it carries none of the tick's lane variables
+    r.clear()
+    r.tq("list")
+    rc, o = r.submit("archmagi", "targeted", **agent)
+    check(rc == 0 and "lane_warning" in o and "could not read" in o,
+          "no tick reading: queued, with a warning that says it could not read the lane: %s" % o[-200:])
+    r.clear()
+    r.tq("tick", TESTQ_ARCHMAGI=None)
+    st = (testq_read(r.p("queue", "archmagi_state.json")) or {}).get("admits") or {}
+    check(st.get("on") is False and st.get("profiles") == ["full-list"],
+          "a tick with the lane off records it: %s" % st)
+    rc, o = r.submit("archmagi", "targeted", **agent)
+    check(rc == 2 and "REFUSED" in o and "is off" in o and "Path to pass" in o and not glob.glob(
+        r.p("queue", "pending", "*.json")), "lane off: a targeted job is refused with its path, nothing queued: %s"
+          % o[-300:])
+    rc, o = r.submit("archmagi", "full-list", **agent)
+    check(rc == 2 and "is off" in o, "lane off: a full-list job is refused too: %s" % o[-200:])
+    rc, o = r.submit("stevedesktop", "targeted", **agent)
+    check(rc == 0 and '"pending"' in o and "lane_warning" not in o, "another lane is queued as before: %s" % o[-200:])
+    r.clear()
+    r.tq("tick")
+    st = (testq_read(r.p("queue", "archmagi_state.json")) or {}).get("admits") or {}
+    check(st.get("on") is True and st.get("profiles") == ["full-list"], "a tick with the lane on records it: %s" % st)
+    rc, o = r.submit("archmagi", "targeted", **agent)
+    check(rc == 2 and "admits only profile(s) full-list, not targeted" in o and "Path to pass" in o,
+          "lane on, default profiles: a targeted job is refused: %s" % o[-300:])
+    rc, o = r.submit("archmagi", "full-list", **agent)
+    check(rc == 0 and '"pending"' in o and "lane_warning" not in o, "lane on: a full-list job is queued: %s" % o[-200:])
+    r.clear()
+    r.tq("tick", TESTQ_ARCHMAGI_PROFILES="full-list,targeted")
+    rc, o = r.submit("archmagi", "targeted", **agent)
+    check(rc == 0 and '"pending"' in o, "a tick that admits targeted: a targeted job is queued: %s" % o[-200:])
+    r.clear()
 
 
 def admitted(r, jid):
@@ -479,7 +533,7 @@ def main():
     tmp = tempfile.mkdtemp(prefix="rf_testq_arch_")
     try:
         r = Rig(tmp)
-        for t in (t_gate, t_candidates, t_tick, t_steve_and_any, t_keep_modlist, t_phases):
+        for t in (t_gate, t_candidates, t_closed_door, t_tick, t_steve_and_any, t_keep_modlist, t_phases):
             try:
                 t(r)
             except Exception as ex:     # noqa: BLE001 - reported; the next test still runs

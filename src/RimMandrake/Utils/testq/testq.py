@@ -79,6 +79,9 @@ One tick, under a non-blocking lock (a second tick while one runs exits at once)
      backs off TESTQ_ARCHMAGI_BACKOFF_S, 1800 s). A window holder appearing mid-run (a forced take) stops the
      attempt and hands the job back. A red canary / refused pull pauses only this lane (archmagi_paused.json;
      `resume --lane archmagi`).
+     Each tick records what it admits (archmagi_state.json "admits": on, profiles); `submit --lane archmagi` refuses a
+     job the lane would never admit by that reading (off, or a profile outside the list), with its path to pass, so no
+     job waits with no consumer (RIMMANDRAKE_ROUTE_ARCHMAGI_LANE_TARGETED_JOBS_QUEUED_TO_A_CLOSED_DOOR).
      The section 2 trial switch (ARCHMAGI_BACKFILL_WIRE_TRIAL_SWITCH; work_allocation_framework_2026-10-26.md section 2,
      rules in archmagi_switch.py) sits in front of the gate: with TESTQ_ARCHMAGI=1 the lane admits only while the
      switch is ON (S1 saturation / S2 failover), never an S3 job (filler, guard, sweep; a deploy/load job outside a
@@ -966,12 +969,53 @@ def archmagi_gate(now=None):
     return True, "free, silent %d s" % quiet
 
 
+def archmagi_profiles():
+    """The job profiles the backfill admits (TESTQ_ARCHMAGI_PROFILES of the tick's environment; default full-list)."""
+    return [x for x in (os.environ.get("TESTQ_ARCHMAGI_PROFILES") or "full-list").split(",") if x]
+
+
+def archmagi_admits_reading():
+    """-> {"on", "profiles", "at", "by"} of the lane's admission rule, or None when nothing shows it. The tick writes what
+    its own environment says (archmagi_tick); a process that carries TESTQ_ARCHMAGI itself (a test's seam) reads its own."""
+    if os.environ.get("TESTQ_ARCHMAGI") is not None:
+        return {"on": os.environ["TESTQ_ARCHMAGI"] == "1", "profiles": archmagi_profiles(), "at": S.utcnow(),
+                "by": "this process's environment"}
+    r = arch_state().get("admits")
+    if not isinstance(r, dict) or not isinstance(r.get("profiles"), list):
+        return None
+    return dict(r, by="the testq tick (its rule unchanged since %s)" % r.get("at"))
+
+
+def archmagi_lane_refusal(job):
+    """-> (refusal or None, warning or None) for a lane archmagi job at submit
+    (RIMMANDRAKE_ROUTE_ARCHMAGI_LANE_TARGETED_JOBS_QUEUED_TO_A_CLOSED_DOOR): a job the backfill will never admit as the
+    tick runs it now (lane off, or a profile outside its list) is refused with its path to pass, never queued to wait
+    with no consumer. No reading of the rule: accepted, with a warning that says so."""
+    if job.get("lane") != ARCHMAGI:
+        return None, None
+    r = archmagi_admits_reading()
+    if r is None:
+        return None, ("could not read whether the Archmagi lane admits a %s job (no tick reading in %s); it may wait "
+                      "with no consumer" % (job.get("profile"), q("archmagi_state.json")))
+    why = None
+    if not r["on"]:
+        why = "the Archmagi lane is off (TESTQ_ARCHMAGI=1 is not in the testq tick's environment)"
+    elif job.get("profile") not in r["profiles"]:
+        why = ("the Archmagi lane admits only profile(s) %s, not %s (it never deploys or loads a list: "
+               "archmagi_phases.py)" % (",".join(r["profiles"]), job.get("profile")))
+    if not why:
+        return None, None
+    return ("lane archmagi would never admit this job: %s; read from %s. Path to pass: run it on a free Archmagi game "
+            "yourself (game_lock.py query all), or submit with --lane stevedesktop when that lane takes work "
+            "(testq.py list shows its pause)" % (why, r["by"])), None
+
+
 def archmagi_candidates(steve_up, steve_busy, now=None):
     """Jobs the backfill may take: lane archmagi; lane any only while SteveDesktop is down or busy (plan section 6:
     ssh down re-routes profile-compatible jobs); never lane stevedesktop; only TESTQ_ARCHMAGI_PROFILES; never a job
     Archmagi already refused to deploy."""
     now = now or time.time()
-    profiles = (os.environ.get("TESTQ_ARCHMAGI_PROFILES") or "full-list").split(",")
+    profiles = archmagi_profiles()
     skip = arch_state().get("skip") or {}
     out = []
     for j in records("pending"):
@@ -1063,6 +1107,10 @@ def archmagi_tick(steve_up, steve_busy):
     """Step 5 of the tick: reconcile, drain and (gates permitting) admit on Archmagi. Admits nothing unless enabled;
     an attempt started before it was switched off is still reconciled to the end."""
     mine = [r for r in records("running") if host_of(r) == ARCHMAGI]
+    # what this tick admits, for submit's refusal of a job queued to a closed door (archmagi_lane_refusal)
+    admits = {"on": os.environ.get("TESTQ_ARCHMAGI") == "1", "profiles": archmagi_profiles()}
+    if {k: (arch_state().get("admits") or {}).get(k) for k in admits} != admits:
+        arch_state_update(admits=dict(admits, at=S.utcnow()))
     if os.environ.get("TESTQ_ARCHMAGI") != "1" and not mine:     # switched off: still finish what it started
         return
     for rec in mine:
@@ -1572,6 +1620,10 @@ def cmd_submit(a):
     if nogo:
         print("REFUSED: %s" % nogo["text"])
         return 2
+    closed, lane_warn = archmagi_lane_refusal(job)
+    if closed:
+        print("REFUSED: %s" % closed)
+        return 2
     why = S.deploy_problem(list(a.deploy or []), os.path.join(REPO, "src"))
     if why:
         print("REFUSED: --deploy %s; the worker would die INVALID/DEPLOY on a booked slot" % why)
@@ -1632,6 +1684,8 @@ def cmd_submit(a):
         out["planned_rows"] = len(planned)
         if est:
             out["est_s"] = est
+    if lane_warn:
+        out["lane_warning"] = lane_warn
     print(json.dumps(out))
     return 0
 
