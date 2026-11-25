@@ -139,9 +139,20 @@ def read_field(s, field, of=SETTINGS):
 
 
 def setting(s, field, value, of=SETTINGS):
-    """Set one static field (only inside the session's try, whose finally puts every switch back)."""
-    s.raw("jawa/mod_settings_field", typeName=of, action="set", field=field, value=value)
+    """Set one static field (only inside the session's try, whose finally puts every switch back), as the session's driver,
+    read back: a refused write ends the scene by name (put)."""
+    put(s, field, value, of=of)
     return value
+
+
+def put(s, field, value, of=None, strict=True):
+    """Set one static settings field inside the open session, as its driver, and read the write back. Inside a session the
+    bridge refuses a set that names no driver (deviation record: JawaBenchHands.SettingsDriver); until visit 1 of 0.2.0
+    this scene sent none and never read the reply, so its writes never applied and its rows read a game it had not set."""
+    r = s.raw("jawa/mod_settings_field", typeName=of or SETTINGS, action="set", field=field, value=value, driver=s.id) or {}
+    if strict and (r.get("success") is not True or str(r.get("valueAfter")) != str(value)):
+        raise RuntimeError("SETTING_REFUSED: %s=%s was not written (%s)" % (field, value, {k: r.get(k) for k in ("success", "valueAfter", "error", "message")}))
+    return r
 
 
 def shake_tick(s):
@@ -222,7 +233,7 @@ def sweep(s, rows, throws, before):
     put back on every exit path."""
     kick0 = read_field(s, "lastShakeTick", of=SHOW)
     try:
-        r = s.raw("jawa/mod_settings_field", typeName=SHOW, action="set", field="lastShakeTick", value="-1")
+        r = put(s, "lastShakeTick", "-1", of=SHOW, strict=False)
         print("INFO kick tick reset to -1: %s" % ({k: (r or {}).get(k) for k in ("success", "valueBefore", "valueAfter", "error")},))
         for pad in ORDER:
             centre, off = PADS[pad]

@@ -62,6 +62,15 @@ GAME = "ArchSmall"
 # colonist was gone by tick 3 under collapsed rocks and the stack buried (APPARATUS FAULT of the first run).
 STAGE = "RM_Stage_ExplosiveKnockback"
 SETTINGS = "RimMandrake.ExplosiveKnockback.RimMandrakeExplosiveKnockbackSettings"
+
+def put(s, field, value, of=None, strict=True):
+    """Set one static settings field inside the open session, as its driver, and read the write back. Inside a session the
+    bridge refuses a set that names no driver (deviation record: JawaBenchHands.SettingsDriver); until visit 1 of 0.2.0
+    this scene sent none and never read the reply, so its writes never applied and its rows read a game it had not set."""
+    r = s.raw("jawa/mod_settings_field", typeName=of or SETTINGS, action="set", field=field, value=value, driver=s.id) or {}
+    if strict and (r.get("success") is not True or str(r.get("valueAfter")) != str(value)):
+        raise RuntimeError("SETTING_REFUSED: %s=%s was not written (%s)" % (field, value, {k: r.get(k) for k in ("success", "valueAfter", "error", "message")}))
+    return r
 JOURNAL = "RimMandrake.ExplosiveKnockback.RM_KnockbackJournal"
 STATION = (20, 20, 30, 44)
 RADIUS = 2.9                    # Shell_HighExplosive's explosiveRadius (Items_Resource_Shell.xml)
@@ -275,16 +284,16 @@ with scene.open(GAME, contract=carried, needs={"mods": ["ExplosiveKnockback"], "
     limit = prior.get("lightMassLimit")
     rows = {}
     try:
-        s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="blastPowerFromDamage", value="False")
+        put(s, "blastPowerFromDamage", "False")
         if planted:
-            s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="lightMassLimit", value="5")
+            put(s, "lightMassLimit", "5")
         stage_loads(s)
         for name in ORDER:
             lane(s, name, rows)
     finally:
         for f, v in prior.items():   # back to what it read before, on every exit path
             if v is not None:
-                s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=f, value=str(v))
+                put(s, f, str(v), strict=False)
     folder = s.run_dir
 
 fails = 0
