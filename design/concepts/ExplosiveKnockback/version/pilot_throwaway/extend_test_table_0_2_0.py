@@ -180,6 +180,16 @@ def measure(t):
         t.pop("new", None)
         t["entry_exists"] = True
         t["runs_today"] = dict(ran=False, entry_exists=True, why="live: UNRUN until Stage 6; command: " + t["command"])
+        # a builder's live run (maturation.py live-row, version/in_game/early_rows.jsonl) is this check's last run: Stage 6
+        # reads it as a row of the next visit (build_match.early_rows); the table shows it, newest row of the check
+        early = os.path.join(C, "version/in_game/early_rows.jsonl")
+        rows = [json.loads(x) for x in open(early) if x.strip()] if os.path.isfile(early) else []
+        mine = [r for r in rows if r.get("test") == t["id"]]
+        if mine:
+            r = mine[-1]
+            t["runs_today"] = dict(ran=True, entry_exists=True, result=r.get("verdict"), outcome=r.get("outcome"),
+                                   at=r.get("at"), game=r.get("game"), instance=r.get("instance"), mod_sha=r.get("mod_sha"),
+                                   evidence=r.get("evidence"), command=t["command"], early_row=True)
 
 
 def runnable(t):

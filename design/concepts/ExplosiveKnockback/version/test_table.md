@@ -1,6 +1,6 @@
 # Explosive Knockback 0.2.0: test-and-stage table
 
-Generated 2026-11-24T22:31:42-08:00 from `test_table.json` (the record; this is its read view) by `version/pilot_throwaway/extend_test_table_0_2_0.py`. 0.2.0 keeps the 59 bars of 0.1.0 (their rows are below, as 0.1.0 left them) and adds 14. A bar passes when every deciding test passes.
+Generated 2026-11-25T02:40:30-08:00 from `test_table.json` (the record; this is its read view) by `version/pilot_throwaway/extend_test_table_0_2_0.py`. 0.2.0 keeps the 59 bars of 0.1.0 (their rows are below, as 0.1.0 left them) and adds 14. A bar passes when every deciding test passes.
 
 ## Counts (measured)
 
