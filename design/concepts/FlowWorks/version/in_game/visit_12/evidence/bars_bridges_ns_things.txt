@@ -1,0 +1,135 @@
+{'id': 'Plant_PincushionCactus8485', 'def': 'Plant_PincushionCactus', 'x': 241, 'z': 145, 'label': 'Pincushion cactus'}
+{'id': 'RM_SuspensionAnchor_Steel21461', 'def': 'RM_SuspensionAnchor_Steel', 'x': 212, 'z': 162, 'label': 'Steel steel suspension bridge anchor'}
+{'id': 'RM_SuspensionAnchor_Steel21462', 'def': 'RM_SuspensionAnchor_Steel', 'x': 212, 'z': 167, 'label': 'Steel steel suspension bridge anchor'}
+{'id': 'RM_SuspensionDeck_Steel21463', 'def': 'RM_SuspensionDeck_Steel', 'x': 212, 'z': 163, 'label': 'Steel steel suspension bridge'}
+{'id': 'RM_SuspensionDeck_Steel21464', 'def': 'RM_SuspensionDeck_Steel', 'x': 212, 'z': 166, 'label': 'Steel steel suspension bridge'}
+{'id': 'RM_SuspensionDeck_Steel21465', 'def': 'RM_SuspensionDeck_Steel', 'x': 212, 'z': 164, 'label': 'Steel steel suspension bridge'}
+{'id': 'RM_SuspensionDeck_Steel21466', 'def': 'RM_SuspensionDeck_Steel', 'x': 212, 'z': 165, 'label': 'Steel steel suspension bridge'}
+{'id': 'RM_SuspensionRailing21467', 'def': 'RM_SuspensionRailing', 'x': 212, 'z': 163, 'label': 'Steel suspension bridge railing'}
+{'id': 'RM_SuspensionRailing21468', 'def': 'RM_SuspensionRailing', 'x': 212, 'z': 164, 'label': 'Steel suspension bridge railing'}
+{'id': 'RM_SuspensionRailing21469', 'def': 'RM_SuspensionRailing', 'x': 212, 'z': 165, 'label': 'Steel suspension bridge railing'}
+{'id': 'RM_SuspensionRailing21470', 'def': 'RM_SuspensionRailing', 'x': 212, 'z': 166, 'label': 'Steel suspension bridge railing'}
+{'id': 'RM_SuspensionAnchor_Steel21471', 'def': 'RM_SuspensionAnchor_Steel', 'x': 217, 'z': 162, 'label': 'Steel steel suspension bridge anchor'}
+{'id': 'RM_SuspensionAnchor_Steel21472', 'def': 'RM_SuspensionAnchor_Steel', 'x': 217, 'z': 167, 'label': 'Steel steel suspension bridge anchor'}
+{'id': 'RM_SuspensionDeck_Steel21473', 'def': 'RM_SuspensionDeck_Steel', 'x': 217, 'z': 163, 'label': 'Steel steel suspension bridge'}
+{'id': 'RM_SuspensionDeck_Steel21474', 'def': 'RM_SuspensionDeck_Steel', 'x': 217, 'z': 166, 'label': 'Steel steel suspension bridge'}
+{'id': 'RM_SuspensionDeck_Steel21475', 'def': 'RM_SuspensionDeck_Steel', 'x': 217, 'z': 164, 'label': 'Steel steel suspension bridge'}
+{'id': 'RM_SuspensionDeck_Steel21476', 'def': 'RM_SuspensionDeck_Steel', 'x': 217, 'z': 165, 'label': 'Steel steel suspension bridge'}
+{'id': 'RM_SuspensionRailing21477', 'def': 'RM_SuspensionRailing', 'x': 217, 'z': 163, 'label': 'Steel suspension bridge railing'}
+{'id': 'RM_SuspensionRailing21478', 'def': 'RM_SuspensionRailing', 'x': 217, 'z': 164, 'label': 'Steel suspension bridge railing'}
+{'id': 'RM_SuspensionRailing21479', 'def': 'RM_SuspensionRailing', 'x': 217, 'z': 165, 'label': 'Steel suspension bridge railing'}
+{'id': 'RM_SuspensionRailing21480', 'def': 'RM_SuspensionRailing', 'x': 217, 'z': 166, 'label': 'Steel suspension bridge railing'}
+{'id': 'RM_SuspensionAnchor_Steel21481', 'def': 'RM_SuspensionAnchor_Steel', 'x': 222, 'z': 162, 'label': 'Steel steel suspension bridge anchor'}
+{'id': 'RM_SuspensionAnchor_Steel21482', 'def': 'RM_SuspensionAnchor_Steel', 'x': 222, 'z': 167, 'label': 'Steel steel suspension bridge anchor'}
+{'id': 'RM_SuspensionDeck_Steel21483', 'def': 'RM_SuspensionDeck_Steel', 'x': 222, 'z': 163, 'label': 'Steel steel suspension bridge'}
+{'id': 'RM_SuspensionDeck_Steel21484', 'def': 'RM_SuspensionDeck_Steel', 'x': 222, 'z': 166, 'label': 'Steel steel suspension bridge'}
+{'id': 'RM_SuspensionDeck_Steel21485', 'def': 'RM_SuspensionDeck_Steel', 'x': 222, 'z': 164, 'label': 'Steel steel suspension bridge'}
+{'id': 'RM_SuspensionDeck_Steel21486', 'def': 'RM_SuspensionDeck_Steel', 'x': 222, 'z': 165, 'label': 'Steel steel suspension bridge'}
+{'id': 'RM_SuspensionRailing21487', 'def': 'RM_SuspensionRailing', 'x': 222, 'z': 163, 'label': 'Steel suspension bridge railing'}
+{'id': 'RM_SuspensionRailing21488', 'def': 'RM_SuspensionRailing', 'x': 222, 'z': 164, 'label': 'Steel suspension bridge railing'}
+{'id': 'RM_SuspensionRailing21489', 'def': 'RM_SuspensionRailing', 'x': 222, 'z': 165, 'label': 'Steel suspension bridge railing'}
+{'id': 'RM_SuspensionRailing21490', 'def': 'RM_SuspensionRailing', 'x': 222, 'z': 166, 'label': 'Steel suspension bridge railing'}
+{'id': 'RM_SuspensionAnchor_Steel21491', 'def': 'RM_SuspensionAnchor_Steel', 'x': 227, 'z': 162, 'label': 'Steel steel suspension bridge anchor'}
+{'id': 'RM_SuspensionAnchor_Steel21492', 'def': 'RM_SuspensionAnchor_Steel', 'x': 227, 'z': 167, 'label': 'Steel steel suspension bridge anchor'}
+{'id': 'RM_SuspensionDeck_Steel21493', 'def': 'RM_SuspensionDeck_Steel', 'x': 227, 'z': 163, 'label': 'Steel steel suspension bridge'}
+{'id': 'RM_SuspensionDeck_Steel21494', 'def': 'RM_SuspensionDeck_Steel', 'x': 227, 'z': 166, 'label': 'Steel steel suspension bridge'}
+{'id': 'RM_SuspensionDeck_Steel21495', 'def': 'RM_SuspensionDeck_Steel', 'x': 227, 'z': 164, 'label': 'Steel steel suspension bridge'}
+{'id': 'RM_SuspensionDeck_Steel21496', 'def': 'RM_SuspensionDeck_Steel', 'x': 227, 'z': 165, 'label': 'Steel steel suspension bridge'}
+{'id': 'RM_SuspensionRailing21497', 'def': 'RM_SuspensionRailing', 'x': 227, 'z': 163, 'label': 'Steel suspension bridge railing'}
+{'id': 'RM_SuspensionRailing21498', 'def': 'RM_SuspensionRailing', 'x': 227, 'z': 164, 'label': 'Steel suspension bridge railing'}
+{'id': 'RM_SuspensionRailing21499', 'def': 'RM_SuspensionRailing', 'x': 227, 'z': 165, 'label': 'Steel suspension bridge railing'}
+{'id': 'RM_SuspensionRailing21500', 'def': 'RM_SuspensionRailing', 'x': 227, 'z': 166, 'label': 'Steel suspension bridge railing'}
+{'id': 'RM_SuspensionAnchor_Timber21501', 'def': 'RM_SuspensionAnchor_Timber', 'x': 232, 'z': 162, 'label': 'Wooden timber suspension bridge anchor'}
+{'id': 'RM_SuspensionAnchor_Timber21502', 'def': 'RM_SuspensionAnchor_Timber', 'x': 232, 'z': 167, 'label': 'Wooden timber suspension bridge anchor'}
+{'id': 'RM_SuspensionDeck_Timber21503', 'def': 'RM_SuspensionDeck_Timber', 'x': 232, 'z': 163, 'label': 'Wooden timber suspension bridge'}
+{'id': 'RM_SuspensionDeck_Timber21504', 'def': 'RM_SuspensionDeck_Timber', 'x': 232, 'z': 166, 'label': 'Wooden timber suspension bridge'}
+{'id': 'RM_SuspensionDeck_Timber21505', 'def': 'RM_SuspensionDeck_Timber', 'x': 232, 'z': 164, 'label': 'Wooden timber suspension bridge'}
+{'id': 'RM_SuspensionDeck_Timber21506', 'def': 'RM_SuspensionDeck_Timber', 'x': 232, 'z': 165, 'label': 'Wooden timber suspension bridge'}
+{'id': 'RM_SuspensionAnchor_Rope21507', 'def': 'RM_SuspensionAnchor_Rope', 'x': 212, 'z': 154, 'label': 'Rope suspension bridge anchor'}
+{'id': 'RM_SuspensionAnchor_Rope21508', 'def': 'RM_SuspensionAnchor_Rope', 'x': 212, 'z': 159, 'label': 'Rope suspension bridge anchor'}
+{'id': 'RM_SuspensionDeck_Rope21509', 'def': 'RM_SuspensionDeck_Rope', 'x': 212, 'z': 155, 'label': 'Rope suspension bridge'}
+{'id': 'RM_SuspensionDeck_Rope21510', 'def': 'RM_SuspensionDeck_Rope', 'x': 212, 'z': 158, 'label': 'Rope suspension bridge'}
+{'id': 'RM_SuspensionDeck_Rope21511', 'def': 'RM_SuspensionDeck_Rope', 'x': 212, 'z': 156, 'label': 'Rope suspension bridge'}
+{'id': 'RM_SuspensionDeck_Rope21512', 'def': 'RM_SuspensionDeck_Rope', 'x': 212, 'z': 157, 'label': 'Rope suspension bridge'}
+{'id': 'RM_SuspensionRailing21513', 'def': 'RM_SuspensionRailing', 'x': 212, 'z': 155, 'label': 'Wooden suspension bridge railing'}
+{'id': 'RM_SuspensionRailing21514', 'def': 'RM_SuspensionRailing', 'x': 212, 'z': 156, 'label': 'Wooden suspension bridge railing'}
+{'id': 'RM_SuspensionRailing21515', 'def': 'RM_SuspensionRailing', 'x': 212, 'z': 157, 'label': 'Wooden suspension bridge railing'}
+{'id': 'RM_SuspensionRailing21516', 'def': 'RM_SuspensionRailing', 'x': 212, 'z': 158, 'label': 'Wooden suspension bridge railing'}
+{'id': 'RM_SuspensionAnchor_Timber21517', 'def': 'RM_SuspensionAnchor_Timber', 'x': 217, 'z': 154, 'label': 'Wooden timber suspension bridge anchor'}
+{'id': 'RM_SuspensionAnchor_Timber21518', 'def': 'RM_SuspensionAnchor_Timber', 'x': 217, 'z': 159, 'label': 'Wooden timber suspension bridge anchor'}
+{'id': 'RM_SuspensionDeck_Timber21519', 'def': 'RM_SuspensionDeck_Timber', 'x': 217, 'z': 155, 'label': 'Wooden timber suspension bridge'}
+{'id': 'RM_SuspensionDeck_Timber21520', 'def': 'RM_SuspensionDeck_Timber', 'x': 217, 'z': 158, 'label': 'Wooden timber suspension bridge'}
+{'id': 'RM_SuspensionDeck_Timber21521', 'def': 'RM_SuspensionDeck_Timber', 'x': 217, 'z': 156, 'label': 'Wooden timber suspension bridge'}
+{'id': 'RM_SuspensionDeck_Timber21522', 'def': 'RM_SuspensionDeck_Timber', 'x': 217, 'z': 157, 'label': 'Wooden timber suspension bridge'}
+{'id': 'RM_SuspensionRailing21523', 'def': 'RM_SuspensionRailing', 'x': 217, 'z': 155, 'label': 'Wooden suspension bridge railing'}
+{'id': 'RM_SuspensionRailing21524', 'def': 'RM_SuspensionRailing', 'x': 217, 'z': 156, 'label': 'Wooden suspension bridge railing'}
+{'id': 'RM_SuspensionRailing21525', 'def': 'RM_SuspensionRailing', 'x': 217, 'z': 157, 'label': 'Wooden suspension bridge railing'}
+{'id': 'RM_SuspensionRailing21526', 'def': 'RM_SuspensionRailing', 'x': 217, 'z': 158, 'label': 'Wooden suspension bridge railing'}
+{'id': 'RM_SuspensionAnchor_Steel21527', 'def': 'RM_SuspensionAnchor_Steel', 'x': 222, 'z': 154, 'label': 'Steel steel suspension bridge anchor'}
+{'id': 'RM_SuspensionAnchor_Steel21528', 'def': 'RM_SuspensionAnchor_Steel', 'x': 222, 'z': 159, 'label': 'Steel steel suspension bridge anchor'}
+{'id': 'RM_SuspensionDeck_Steel21529', 'def': 'RM_SuspensionDeck_Steel', 'x': 222, 'z': 155, 'label': 'Steel steel suspension bridge'}
+{'id': 'RM_SuspensionDeck_Steel21530', 'def': 'RM_SuspensionDeck_Steel', 'x': 222, 'z': 158, 'label': 'Steel steel suspension bridge'}
+{'id': 'RM_SuspensionDeck_Steel21531', 'def': 'RM_SuspensionDeck_Steel', 'x': 222, 'z': 156, 'label': 'Steel steel suspension bridge'}
+{'id': 'RM_SuspensionDeck_Steel21532', 'def': 'RM_SuspensionDeck_Steel', 'x': 222, 'z': 157, 'label': 'Steel steel suspension bridge'}
+{'id': 'RM_SuspensionRailing21533', 'def': 'RM_SuspensionRailing', 'x': 222, 'z': 155, 'label': 'Steel suspension bridge railing'}
+{'id': 'RM_SuspensionRailing21534', 'def': 'RM_SuspensionRailing', 'x': 222, 'z': 156, 'label': 'Steel suspension bridge railing'}
+{'id': 'RM_SuspensionRailing21535', 'def': 'RM_SuspensionRailing', 'x': 222, 'z': 157, 'label': 'Steel suspension bridge railing'}
+{'id': 'RM_SuspensionRailing21536', 'def': 'RM_SuspensionRailing', 'x': 222, 'z': 158, 'label': 'Steel suspension bridge railing'}
+{'id': 'RM_SuspensionAnchor_Heavy21537', 'def': 'RM_SuspensionAnchor_Heavy', 'x': 227, 'z': 154, 'label': 'Heavy truss bridge anchor'}
+{'id': 'RM_SuspensionAnchor_Heavy21538', 'def': 'RM_SuspensionAnchor_Heavy', 'x': 227, 'z': 159, 'label': 'Heavy truss bridge anchor'}
+{'id': 'RM_SuspensionDeck_Heavy21539', 'def': 'RM_SuspensionDeck_Heavy', 'x': 227, 'z': 155, 'label': 'Heavy truss bridge'}
+{'id': 'RM_SuspensionDeck_Heavy21540', 'def': 'RM_SuspensionDeck_Heavy', 'x': 227, 'z': 158, 'label': 'Heavy truss bridge'}
+{'id': 'RM_SuspensionDeck_Heavy21541', 'def': 'RM_SuspensionDeck_Heavy', 'x': 227, 'z': 156, 'label': 'Heavy truss bridge'}
+{'id': 'RM_SuspensionDeck_Heavy21542', 'def': 'RM_SuspensionDeck_Heavy', 'x': 227, 'z': 157, 'label': 'Heavy truss bridge'}
+{'id': 'RM_SuspensionRailing21543', 'def': 'RM_SuspensionRailing', 'x': 227, 'z': 155, 'label': 'Steel suspension bridge railing'}
+{'id': 'RM_SuspensionRailing21544', 'def': 'RM_SuspensionRailing', 'x': 227, 'z': 156, 'label': 'Steel suspension bridge railing'}
+{'id': 'RM_SuspensionRailing21545', 'def': 'RM_SuspensionRailing', 'x': 227, 'z': 157, 'label': 'Steel suspension bridge railing'}
+{'id': 'RM_SuspensionRailing21546', 'def': 'RM_SuspensionRailing', 'x': 227, 'z': 158, 'label': 'Steel suspension bridge railing'}
+{'id': 'RM_SuspensionAnchor_Steel21547', 'def': 'RM_SuspensionAnchor_Steel', 'x': 232, 'z': 154, 'label': 'Steel steel suspension bridge anchor'}
+{'id': 'RM_SuspensionAnchor_Steel21548', 'def': 'RM_SuspensionAnchor_Steel', 'x': 232, 'z': 159, 'label': 'Steel steel suspension bridge anchor'}
+{'id': 'RM_SuspensionDeck_SteelGrated21549', 'def': 'RM_SuspensionDeck_SteelGrated', 'x': 232, 'z': 155, 'label': 'Steel grated steel suspension bridge'}
+{'id': 'RM_SuspensionDeck_SteelGrated21550', 'def': 'RM_SuspensionDeck_SteelGrated', 'x': 232, 'z': 158, 'label': 'Steel grated steel suspension bridge'}
+{'id': 'RM_SuspensionDeck_SteelGrated21551', 'def': 'RM_SuspensionDeck_SteelGrated', 'x': 232, 'z': 156, 'label': 'Steel grated steel suspension bridge'}
+{'id': 'RM_SuspensionDeck_SteelGrated21552', 'def': 'RM_SuspensionDeck_SteelGrated', 'x': 232, 'z': 157, 'label': 'Steel grated steel suspension bridge'}
+{'id': 'RM_SuspensionAnchor_Heavy21553', 'def': 'RM_SuspensionAnchor_Heavy', 'x': 237, 'z': 154, 'label': 'Heavy truss bridge anchor'}
+{'id': 'RM_SuspensionAnchor_Heavy21554', 'def': 'RM_SuspensionAnchor_Heavy', 'x': 237, 'z': 159, 'label': 'Heavy truss bridge anchor'}
+{'id': 'RM_SuspensionDeck_HeavyGrated21555', 'def': 'RM_SuspensionDeck_HeavyGrated', 'x': 237, 'z': 155, 'label': 'Grated heavy truss bridge'}
+{'id': 'RM_SuspensionDeck_HeavyGrated21556', 'def': 'RM_SuspensionDeck_HeavyGrated', 'x': 237, 'z': 158, 'label': 'Grated heavy truss bridge'}
+{'id': 'RM_SuspensionDeck_HeavyGrated21557', 'def': 'RM_SuspensionDeck_HeavyGrated', 'x': 237, 'z': 156, 'label': 'Grated heavy truss bridge'}
+{'id': 'RM_SuspensionDeck_HeavyGrated21558', 'def': 'RM_SuspensionDeck_HeavyGrated', 'x': 237, 'z': 157, 'label': 'Grated heavy truss bridge'}
+{'id': 'RM_SuspensionAnchor_Steel21559', 'def': 'RM_SuspensionAnchor_Steel', 'x': 212, 'z': 146, 'label': 'Steel steel suspension bridge anchor'}
+[bridge split] 0.7 s wall: load 0.0 / ticks 0.0 / reads 0.5 / other 0.0 / outside calls 0.2 s{'id': 'RM_SuspensionJetty_Steel21560', 'def': 'RM_SuspensionJetty_Steel', 'x': 212, 'z': 147, 'label': 'Steel steel jetty'}
+{'id': 'RM_SuspensionRailing21561', 'def': 'RM_SuspensionRailing', 'x': 212, 'z': 147, 'label': 'Steel suspension bridge railing'}
+{'id': 'RM_SuspensionJetty_Steel21562', 'def': 'RM_SuspensionJetty_Steel', 'x': 212, 'z': 148, 'label': 'Steel steel jetty'}
+{'id': 'RM_SuspensionRailing21563', 'def': 'RM_SuspensionRailing', 'x': 212, 'z': 148, 'label': 'Steel suspension bridge railing'}
+{'id': 'RM_SuspensionAnchor_Steel21564', 'def': 'RM_SuspensionAnchor_Steel', 'x': 217, 'z': 151, 'label': 'Steel steel suspension bridge anchor'}
+{'id': 'RM_SuspensionJetty_Steel21565', 'def': 'RM_SuspensionJetty_Steel', 'x': 217, 'z': 150, 'label': 'Steel steel jetty'}
+{'id': 'RM_SuspensionRailing21566', 'def': 'RM_SuspensionRailing', 'x': 217, 'z': 150, 'label': 'Steel suspension bridge railing'}
+{'id': 'RM_SuspensionJetty_Steel21567', 'def': 'RM_SuspensionJetty_Steel', 'x': 217, 'z': 149, 'label': 'Steel steel jetty'}
+
+{'id': 'RM_SuspensionRailing21568', 'def': 'RM_SuspensionRailing', 'x': 217, 'z': 149, 'label': 'Steel suspension bridge railing'}
+{'id': 'RM_SuspensionAnchor_Heavy21569', 'def': 'RM_SuspensionAnchor_Heavy', 'x': 222, 'z': 146, 'label': 'Heavy truss bridge anchor'}
+{'id': 'RM_SuspensionJetty_Heavy21570', 'def': 'RM_SuspensionJetty_Heavy', 'x': 222, 'z': 147, 'label': 'Heavy jetty'}
+{'id': 'RM_SuspensionRailing21571', 'def': 'RM_SuspensionRailing', 'x': 222, 'z': 147, 'label': 'Steel suspension bridge railing'}
+{'id': 'RM_SuspensionJetty_Heavy21572', 'def': 'RM_SuspensionJetty_Heavy', 'x': 222, 'z': 148, 'label': 'Heavy jetty'}
+{'id': 'RM_SuspensionRailing21573', 'def': 'RM_SuspensionRailing', 'x': 222, 'z': 148, 'label': 'Steel suspension bridge railing'}
+{'id': 'RM_SuspensionAnchor_Heavy21574', 'def': 'RM_SuspensionAnchor_Heavy', 'x': 227, 'z': 151, 'label': 'Heavy truss bridge anchor'}
+{'id': 'RM_SuspensionJetty_Heavy21575', 'def': 'RM_SuspensionJetty_Heavy', 'x': 227, 'z': 150, 'label': 'Heavy jetty'}
+{'id': 'RM_SuspensionRailing21576', 'def': 'RM_SuspensionRailing', 'x': 227, 'z': 150, 'label': 'Steel suspension bridge railing'}
+{'id': 'RM_SuspensionJetty_Heavy21577', 'def': 'RM_SuspensionJetty_Heavy', 'x': 227, 'z': 149, 'label': 'Heavy jetty'}
+{'id': 'RM_SuspensionRailing21578', 'def': 'RM_SuspensionRailing', 'x': 227, 'z': 149, 'label': 'Steel suspension bridge railing'}
+{'id': 'RM_StationSign21643', 'def': 'RM_StationSign', 'x': 212, 'z': 168, 'label': 'SIGN 65 N-S steel Scrapper (normal)'}
+{'id': 'RM_StationSign21644', 'def': 'RM_StationSign', 'x': 217, 'z': 168, 'label': 'SIGN 66 N-S steel Industrial (normal)'}
+{'id': 'RM_StationSign21645', 'def': 'RM_StationSign', 'x': 222, 'z': 168, 'label': 'SIGN 67 N-S steel Modern (normal)'}
+{'id': 'RM_StationSign21646', 'def': 'RM_StationSign', 'x': 227, 'z': 168, 'label': 'SIGN 68 N-S steel Futuristic (normal)'}
+{'id': 'RM_StationSign21647', 'def': 'RM_StationSign', 'x': 232, 'z': 168, 'label': 'SIGN 69 fire under deck (unlit) (normal)'}
+{'id': 'RM_StationSign21648', 'def': 'RM_StationSign', 'x': 212, 'z': 160, 'label': 'SIGN 70 N-S rope (normal)'}
+{'id': 'RM_StationSign21649', 'def': 'RM_StationSign', 'x': 217, 'z': 160, 'label': 'SIGN 71 N-S timber (normal)'}
+{'id': 'RM_StationSign21650', 'def': 'RM_StationSign', 'x': 222, 'z': 160, 'label': 'SIGN 72 N-S steel (normal)'}
+{'id': 'RM_StationSign21651', 'def': 'RM_StationSign', 'x': 227, 'z': 160, 'label': 'SIGN 73 N-S heavy (normal)'}
+{'id': 'RM_StationSign21652', 'def': 'RM_StationSign', 'x': 232, 'z': 160, 'label': 'SIGN 74 N-S steelgrated (normal)'}
+{'id': 'RM_StationSign21653', 'def': 'RM_StationSign', 'x': 237, 'z': 160, 'label': 'SIGN 75 N-S heavygrated (normal)'}
+{'id': 'RM_StationSign21654', 'def': 'RM_StationSign', 'x': 212, 'z': 152, 'label': 'SIGN 76 steel jetty north (normal)'}
+{'id': 'RM_StationSign21655', 'def': 'RM_StationSign', 'x': 217, 'z': 152, 'label': 'SIGN 77 steel jetty south (normal)'}
+{'id': 'RM_StationSign21656', 'def': 'RM_StationSign', 'x': 222, 'z': 152, 'label': 'SIGN 78 heavy jetty north (normal)'}
+{'id': 'RM_StationSign21657', 'def': 'RM_StationSign', 'x': 227, 'z': 152, 'label': 'SIGN 79 heavy jetty south (normal)'}

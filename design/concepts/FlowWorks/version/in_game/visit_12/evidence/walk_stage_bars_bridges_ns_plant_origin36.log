@@ -1,0 +1,2 @@
+REFUSED: origin (36, 100) puts the site off the 250x250 map or in its 10-square no-build edge (it fits at (28, 100)); nothing was staged
+[bridge split] 0.2 s wall: load 0.0 / ticks 0.0 / reads 0.0 / other 0.0 / outside calls 0.1 s

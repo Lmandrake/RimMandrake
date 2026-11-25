@@ -1,0 +1,133 @@
+OWNER REVIEW MAP FLOWWORKS_OWNER_REVIEW_20261124_2336  origin (100, 100)  rect (97, 94, 64, 70)  rows ['gates']
+ROW gates: RM_Sluice (E-W and N-S canals, four facings closed + one held open)
+  dig (100, 119) depth 1
+  dig (101, 119) depth 1
+  dig (102, 119) depth 1
+  dig (103, 119) depth 1
+  dig (104, 119) depth 1
+  fill (100, 119) = 1 notches (0.5 m)
+  fill (101, 119) = 1 notches (0.5 m)
+  fill (103, 119) = 1 notches (0.5 m)
+  fill (104, 119) = 1 notches (0.5 m)
+  place RM_Sluice at (102, 119) rot=1(East) stuff=WoodLog
+  station 1 (gates_sluice) (100, 116, 5, 5): EW canal, RM_Sluice, facing East, closed
+  dig (107, 119) depth 1
+  dig (108, 119) depth 1
+  dig (109, 119) depth 1
+  dig (110, 119) depth 1
+  dig (111, 119) depth 1
+  fill (107, 119) = 1 notches (0.5 m)
+  fill (108, 119) = 1 notches (0.5 m)
+  fill (110, 119) = 1 notches (0.5 m)
+  fill (111, 119) = 1 notches (0.5 m)
+  place RM_Sluice at (109, 119) rot=3(West) stuff=WoodLog
+  station 2 (gates_sluice) (107, 116, 5, 5): EW canal, RM_Sluice, facing West, closed
+  dig (115, 116) depth 1
+  dig (115, 117) depth 1
+  dig (115, 118) depth 1
+  dig (115, 119) depth 1
+  dig (115, 120) depth 1
+  fill (115, 116) = 1 notches (0.5 m)
+  fill (115, 117) = 1 notches (0.5 m)
+  fill (115, 119) = 1 notches (0.5 m)
+  fill (115, 120) = 1 notches (0.5 m)
+  place RM_Sluice at (115, 118) rot=0(North) stuff=WoodLog
+  station 3 (gates_sluice) (114, 116, 5, 5): NS canal, RM_Sluice, facing North, closed
+  dig (122, 116) depth 1
+  dig (122, 117) depth 1
+  dig (122, 118) depth 1
+  dig (122, 119) depth 1
+  dig (122, 120) depth 1
+  fill (122, 116) = 1 notches (0.5 m)
+  fill (122, 117) = 1 notches (0.5 m)
+  fill (122, 119) = 1 notches (0.5 m)
+  fill (122, 120) = 1 notches (0.5 m)
+  place RM_Sluice at (122, 118) rot=2(South) stuff=WoodLog
+  station 4 (gates_sluice) (121, 116, 5, 5): NS canal, RM_Sluice, facing South, closed
+  dig (128, 119) depth 1
+  dig (129, 119) depth 1
+  dig (130, 119) depth 1
+  dig (131, 119) depth 1
+  dig (132, 119) depth 1
+  fill (128, 119) = 1 notches (0.5 m)
+  fill (129, 119) = 1 notches (0.5 m)
+  fill (131, 119) = 1 notches (0.5 m)
+  fill (132, 119) = 1 notches (0.5 m)
+  place RM_Sluice at (130, 119) rot=1(East) stuff=WoodLog
+  hold open (130, 119) (Hold open button + a colonist walks in)
+  station 5 (gates_sluice) (128, 116, 5, 5): EW canal, RM_Sluice, facing East, HELD OPEN [DOOR RM_Sluice open=True seals=False | depth 1 water 10000dL]
+ROW gates: RM_SecurityGrateDoor (E-W and N-S canals, four facings closed + one held open)
+  dig (100, 128) depth 1
+  dig (101, 128) depth 1
+  dig (102, 128) depth 1
+  dig (103, 128) depth 1
+  dig (104, 128) depth 1
+  fill (100, 128) = 1 notches (0.5 m)
+  fill (101, 128) = 1 notches (0.5 m)
+  fill (103, 128) = 1 notches (0.5 m)
+  fill (104, 128) = 1 notches (0.5 m)
+  place RM_SecurityGrateDoor at (102, 128) rot=1(East) stuff=Steel
+  station 6 (gates_grate) (100, 125, 5, 5): EW canal, RM_SecurityGrateDoor, facing East, closed
+  dig (107, 128) depth 1
+  dig (108, 128) depth 1
+  dig (109, 128) depth 1
+  dig (110, 128) depth 1
+  dig (111, 128) depth 1
+  fill (107, 128) = 1 notches (0.5 m)
+  fill (108, 128) = 1 notches (0.5 m)
+  fill (110, 128) = 1 notches (0.5 m)
+  fill (111, 128) = 1 notches (0.5 m)
+  place RM_SecurityGrateDoor at (109, 128) rot=3(West) stuff=Steel
+  station 7 (gates_grate) (107, 125, 5, 5): EW canal, RM_SecurityGrateDoor, facing West, closed
+  dig (115, 125) depth 1
+  dig (115, 126) depth 1
+  dig (115, 127) depth 1
+  dig (115, 128) depth 1
+  dig (115, 129) depth 1
+  fill (115, 125) = 1 notches (0.5 m)
+  fill (115, 126) = 1 notches (0.5 m)
+  fill (115, 128) = 1 notches (0.5 m)
+  fill (115, 129) = 1 notches (0.5 m)
+  place RM_SecurityGrateDoor at (115, 127) rot=0(North) stuff=Steel
+  station 8 (gates_grate) (114, 125, 5, 5): NS canal, RM_SecurityGrateDoor, facing North, closed
+  dig (122, 125) depth 1
+  dig (122, 126) depth 1
+  dig (122, 127) depth 1
+  dig (122, 128) depth 1
+  dig (122, 129) depth 1
+  fill (122, 125) = 1 notches (0.5 m)
+  fill (122, 126) = 1 notches (0.5 m)
+  fill (122, 128) = 1 notches (0.5 m)
+  fill (122, 129) = 1 notches (0.5 m)
+  place RM_SecurityGrateDoor at (122, 127) rot=2(South) stuff=Steel
+  station 9 (gates_grate) (121, 125, 5, 5): NS canal, RM_SecurityGrateDoor, facing South, closed
+  dig (128, 128) depth 1
+  dig (129, 128) depth 1
+  dig (130, 128) depth 1
+  dig (131, 128) depth 1
+  dig (132, 128) depth 1
+  fill (128, 128) = 1 notches (0.5 m)
+  fill (129, 128) = 1 notches (0.5 m)
+  fill (131, 128) = 1 notches (0.5 m)
+  fill (132, 128) = 1 notches (0.5 m)
+  place RM_SecurityGrateDoor at (130, 128) rot=1(East) stuff=Steel
+  hold open (130, 128) (Hold open button + a colonist walks in)
+  station 10 (gates_grate) (128, 125, 5, 5): EW canal, RM_SecurityGrateDoor, facing East, HELD OPEN [DOOR RM_SecurityGrateDoor open=True seals=False | depth 1 wa]
+  review_label clear tag=owner_review_stage; add 10 station labels
+    label 102|121|1|EW E|#ffd27f|small|owner_review_stage
+    label 109|121|2|EW W|#ffd27f|small|owner_review_stage
+    label 116|121|3|NS N|#ffd27f|small|owner_review_stage
+    label 123|121|4|NS S|#ffd27f|small|owner_review_stage
+    label 130|121|5|EW E OPEN|#ffd27f|small|owner_review_stage
+    label 102|130|6|EW E|#ffd27f|small|owner_review_stage
+    label 109|130|7|EW W|#ffd27f|small|owner_review_stage
+    label 116|130|8|NS N|#ffd27f|small|owner_review_stage
+    label 123|130|9|NS S|#ffd27f|small|owner_review_stage
+    label 130|130|10|EW E OPEN|#ffd27f|small|owner_review_stage
+  review_sign clear prefix 'SIGN '; place 10 station sign books
+SWATCH: vanilla WaterShallow (98, 95, 3, 3), photographed and measured before the save (water must read blue over red)
+FINISH: kill hostiles, Clear weather, step toward midday, frame, shoot, save 'FLOWWORKS_OWNER_REVIEW_20261124_2336'
+NOTE: map biome AridShrubland
+NOTE: approx hour 10.3 (ticksAbs mod day, longitude ignored)
+[bridge split] 27.9 s wall: load 0.0 / ticks 7.9 / reads 1.6 / other 11.7 / outside calls 6.6 s
+[bridge split] WARN 90 calls of jawa/flowworks_excavation_drive (3.6 s): batch them

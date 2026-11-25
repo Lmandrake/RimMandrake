@@ -1,0 +1,4 @@
+PASS \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_TWELVE.det\design\concepts\FlowWorks\version\in_game\visit_12\evidence\sc_geyser_tub_20261124T224344.json 
+\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_TWELVE.det\src\RimMandrake\FlowWorks\northstar\live_session.py:2357: SyntaxWarning: invalid escape sequence '\.'
+  """Repo-relative when it can be: python.exe runs the repo from \\wsl.localhost\... and --out-dir is on D:, and relpath
+[bridge split] 31.8 s wall: load 0.5 / ticks 2.8 / reads 2.0 / other 3.5 / outside calls 23.1 s

@@ -1,0 +1,142 @@
+OWNER REVIEW MAP FLOWWORKS_OWNER_REVIEW_20261124_2327  origin (100, 100)  rect (97, 94, 64, 70)  rows ['shallows']
+ROW shallows: 0.2 / 0.5 / 1 / 1.5 / 2 / 5 m
+  dig (100, 135) depth 1
+  dig (101, 135) depth 1
+  dig (102, 135) depth 1
+  dig (103, 135) depth 1
+  dig (104, 135) depth 1
+  fill body at (100, 135) = 0.20 m
+  station 1 (shallows) (100, 135, 5, 1): 0.2 m: 5-square strip, 0.2 m of water (2,000 L) in 0.5 m holes
+  dig (107, 134) depth 1
+  dig (107, 135) depth 1
+  dig (107, 136) depth 1
+  dig (108, 134) depth 1
+  dig (108, 135) depth 1
+  dig (108, 136) depth 1
+  dig (109, 134) depth 1
+  dig (109, 135) depth 1
+  dig (109, 136) depth 1
+  fill (107, 134) = 1 notches (0.5 m)
+  fill (107, 135) = 1 notches (0.5 m)
+  fill (107, 136) = 1 notches (0.5 m)
+  fill (108, 134) = 1 notches (0.5 m)
+  fill (108, 135) = 1 notches (0.5 m)
+  fill (108, 136) = 1 notches (0.5 m)
+  fill (109, 134) = 1 notches (0.5 m)
+  fill (109, 135) = 1 notches (0.5 m)
+  fill (109, 136) = 1 notches (0.5 m)
+  station 2 (shallows) (107, 134, 3, 3): 0.5 m: pit 1 deep, 1 notches
+  dig (112, 134) depth 2
+  dig (112, 135) depth 2
+  dig (112, 136) depth 2
+  dig (113, 134) depth 2
+  dig (113, 135) depth 2
+  dig (113, 136) depth 2
+  dig (114, 134) depth 2
+  dig (114, 135) depth 2
+  dig (114, 136) depth 2
+  fill (112, 134) = 2 notches (1.0 m)
+  fill (112, 135) = 2 notches (1.0 m)
+  fill (112, 136) = 2 notches (1.0 m)
+  fill (113, 134) = 2 notches (1.0 m)
+  fill (113, 135) = 2 notches (1.0 m)
+  fill (113, 136) = 2 notches (1.0 m)
+  fill (114, 134) = 2 notches (1.0 m)
+  fill (114, 135) = 2 notches (1.0 m)
+  fill (114, 136) = 2 notches (1.0 m)
+  station 3 (shallows) (112, 134, 3, 3): 1.0 m: pit 2 deep, 2 notches
+  dig (117, 134) depth 3
+  dig (117, 135) depth 3
+  dig (117, 136) depth 3
+  dig (118, 134) depth 3
+  dig (118, 135) depth 3
+  dig (118, 136) depth 3
+  dig (119, 134) depth 3
+  dig (119, 135) depth 3
+  dig (119, 136) depth 3
+  fill (117, 134) = 3 notches (1.5 m)
+  fill (117, 135) = 3 notches (1.5 m)
+  fill (117, 136) = 3 notches (1.5 m)
+  fill (118, 134) = 3 notches (1.5 m)
+  fill (118, 135) = 3 notches (1.5 m)
+  fill (118, 136) = 3 notches (1.5 m)
+  fill (119, 134) = 3 notches (1.5 m)
+  fill (119, 135) = 3 notches (1.5 m)
+  fill (119, 136) = 3 notches (1.5 m)
+  station 4 (shallows) (117, 134, 3, 3): 1.5 m: pit 3 deep, 3 notches
+  dig (122, 134) depth 4
+  dig (122, 135) depth 4
+  dig (122, 136) depth 4
+  dig (123, 134) depth 4
+  dig (123, 135) depth 4
+  dig (123, 136) depth 4
+  dig (124, 134) depth 4
+  dig (124, 135) depth 4
+  dig (124, 136) depth 4
+  fill (122, 134) = 4 notches (2.0 m)
+  fill (122, 135) = 4 notches (2.0 m)
+  fill (122, 136) = 4 notches (2.0 m)
+  fill (123, 134) = 4 notches (2.0 m)
+  fill (123, 135) = 4 notches (2.0 m)
+  fill (123, 136) = 4 notches (2.0 m)
+  fill (124, 134) = 4 notches (2.0 m)
+  fill (124, 135) = 4 notches (2.0 m)
+  fill (124, 136) = 4 notches (2.0 m)
+  station 5 (shallows) (122, 134, 3, 3): 2.0 m: pit 4 deep, 4 notches
+  dig (127, 134) depth 10
+  dig (127, 135) depth 10
+  dig (127, 136) depth 10
+  dig (128, 134) depth 10
+  dig (128, 135) depth 10
+  dig (128, 136) depth 10
+  dig (129, 134) depth 10
+  dig (129, 135) depth 10
+  dig (129, 136) depth 10
+  fill (127, 134) = 10 notches (5.0 m)
+  fill (127, 135) = 10 notches (5.0 m)
+  fill (127, 136) = 10 notches (5.0 m)
+  fill (128, 134) = 10 notches (5.0 m)
+  fill (128, 135) = 10 notches (5.0 m)
+  fill (128, 136) = 10 notches (5.0 m)
+  fill (129, 134) = 10 notches (5.0 m)
+  fill (129, 135) = 10 notches (5.0 m)
+  fill (129, 136) = 10 notches (5.0 m)
+  station 6 (shallows) (127, 134, 3, 3): 5.0 m: pit 10 deep, 10 notches
+  dig (132, 134) depth 2
+  dig (132, 135) depth 2
+  dig (132, 136) depth 2
+  dig (133, 134) depth 2
+  dig (133, 135) depth 2
+  dig (133, 136) depth 2
+  dig (134, 134) depth 2
+  dig (134, 135) depth 2
+  dig (134, 136) depth 2
+  station 7 (shallows) (132, 134, 3, 3): dry: 1 m hole, no water
+  advance 250 ticks
+  review_label clear tag=owner_review_stage; add 7 station labels
+    label 102|136|1|0.2 m|#ffd27f|small|owner_review_stage
+    label 108|137|2|0.5 m|#ffd27f|small|owner_review_stage
+    label 113|137|3|1.0 m|#ffd27f|small|owner_review_stage
+    label 118|137|4|1.5 m|#ffd27f|small|owner_review_stage
+    label 123|137|5|2.0 m|#ffd27f|small|owner_review_stage
+    label 128|137|6|5.0 m|#ffd27f|small|owner_review_stage
+    label 133|137|7|dry|#ffd27f|small|owner_review_stage
+  review_sign clear prefix 'SIGN '; place 7 station sign books
+SWATCH: vanilla WaterShallow (98, 95, 3, 3), photographed and measured before the save (water must read blue over red)
+FINISH: kill hostiles, Clear weather, step toward midday, frame, shoot, save 'FLOWWORKS_OWNER_REVIEW_20261124_2327'
+NOTE: map biome AridShrubland
+NOTE: 0.2 m strip (100, 135) readout {'kind': 'water', 'hole_m': 0.5, 'water_m': 0.2, 'litres': 400, 'dl': 4000, 'text': 'Hole 0.5 m � Water 0.20 m (400 L)'}
+NOTE: 0.2 m strip (101, 135) readout {'kind': 'water', 'hole_m': 0.5, 'water_m': 0.2, 'litres': 400, 'dl': 4000, 'text': 'Hole 0.5 m � Water 0.20 m (400 L)'}
+NOTE: 0.2 m strip (102, 135) readout {'kind': 'water', 'hole_m': 0.5, 'water_m': 0.2, 'litres': 400, 'dl': 4000, 'text': 'Hole 0.5 m � Water 0.20 m (400 L)'}
+NOTE: 0.2 m strip (103, 135) readout {'kind': 'water', 'hole_m': 0.5, 'water_m': 0.2, 'litres': 400, 'dl': 4000, 'text': 'Hole 0.5 m � Water 0.20 m (400 L)'}
+NOTE: 0.2 m strip (104, 135) readout {'kind': 'water', 'hole_m': 0.5, 'water_m': 0.2, 'litres': 400, 'dl': 4000, 'text': 'Hole 0.5 m � Water 0.20 m (400 L)'}
+NOTE: approx hour 10.3 (ticksAbs mod day, longitude ignored)
+NOTE: water swatch (98, 95, 3, 3) mean RGB [89.1, 100.4, 104.4] -> reads as water
+SHOT: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_TWELVE.det\Transient\owner_review_stage\row_shallows_labelled.png
+SHOT: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_TWELVE.det\Transient\owner_review_stage\overview.png
+SHOT: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_TWELVE.det\Transient\owner_review_stage\water_swatch.png
+save_guard: 750 keepers hashed and backed up in /mnt/d/ClaudeWork/rimmandrake/scratch/save_keepers
+save_guard: command exit 0; changed files: none
+save_guard: VERIFIED - no keeper changed
+[bridge split] 35.4 s wall: load 0.0 / ticks 9.5 / reads 1.0 / other 6.8 / outside calls 18.1 s
+[bridge split] WARN 105 calls of jawa/flowworks_excavation_drive (4.4 s): batch them

@@ -1,0 +1,82 @@
+OWNER REVIEW MAP FLOWWORKS_OWNER_REVIEW_20261124_2325  origin (100, 100)  rect (97, 94, 64, 70)  rows ['sprinklers']
+ROW sprinklers: four looks, pipe restyled before the head is built
+  place RM_LiquidTank at (100, 155) rot=-
+  place RM_UniversalPipe at (102, 155) rot=-
+  place RM_UniversalPipe at (103, 155) rot=-
+  place RM_UniversalPipe at (104, 155) rot=-
+  place RM_UniversalPipe at (105, 155) rot=-
+  place RM_LiquidPump at (103, 155) rot=-
+  place PowerConduit at (103, 154) rot=-
+  place PowerConduit at (103, 153) rot=-
+  place Battery at (103, 151) rot=-
+  battery_set charge battery at (103, 151) to 100%
+  fill tank (100, 155) with RM_Liquid_FreshWater 100000 dL (ProofTank)
+  Choose style Futuristic on the whole pipe run via the pipe's gizmo (objects_sheet.choose_look run=True)
+  fill tank (100, 155) with RM_Liquid_FreshWater 100000 dL (ProofTank)
+  place RM_SprinklerHead at (105, 155) rot=-
+  station 1 (sprinklers) (100, 151, 6, 6): sprinkler Futuristic: head at (105, 155) (look read back in notes)
+  place RM_LiquidTank at (108, 155) rot=-
+  place RM_UniversalPipe at (110, 155) rot=-
+  place RM_UniversalPipe at (111, 155) rot=-
+  place RM_UniversalPipe at (112, 155) rot=-
+  place RM_UniversalPipe at (113, 155) rot=-
+  place RM_LiquidPump at (111, 155) rot=-
+  place PowerConduit at (111, 154) rot=-
+  place PowerConduit at (111, 153) rot=-
+  place Battery at (111, 151) rot=-
+  battery_set charge battery at (111, 151) to 100%
+  fill tank (108, 155) with RM_Liquid_FreshWater 100000 dL (ProofTank)
+  Choose style Industrial on the whole pipe run via the pipe's gizmo (objects_sheet.choose_look run=True)
+  fill tank (108, 155) with RM_Liquid_FreshWater 100000 dL (ProofTank)
+  place RM_SprinklerHead at (113, 155) rot=-
+  station 2 (sprinklers) (108, 151, 6, 6): sprinkler Industrial: head at (113, 155) (look read back in notes)
+  place RM_LiquidTank at (116, 155) rot=-
+  place RM_UniversalPipe at (118, 155) rot=-
+  place RM_UniversalPipe at (119, 155) rot=-
+  place RM_UniversalPipe at (120, 155) rot=-
+  place RM_UniversalPipe at (121, 155) rot=-
+  place RM_LiquidPump at (119, 155) rot=-
+  place PowerConduit at (119, 154) rot=-
+  place PowerConduit at (119, 153) rot=-
+  place Battery at (119, 151) rot=-
+  battery_set charge battery at (119, 151) to 100%
+  fill tank (116, 155) with RM_Liquid_FreshWater 100000 dL (ProofTank)
+  Choose style Modern on the whole pipe run via the pipe's gizmo (objects_sheet.choose_look run=True)
+  fill tank (116, 155) with RM_Liquid_FreshWater 100000 dL (ProofTank)
+  place RM_SprinklerHead at (121, 155) rot=-
+  station 3 (sprinklers) (116, 151, 6, 6): sprinkler Modern: head at (121, 155) (look read back in notes)
+  place RM_LiquidTank at (124, 155) rot=-
+  place RM_UniversalPipe at (126, 155) rot=-
+  place RM_UniversalPipe at (127, 155) rot=-
+  place RM_UniversalPipe at (128, 155) rot=-
+  place RM_UniversalPipe at (129, 155) rot=-
+  place RM_LiquidPump at (127, 155) rot=-
+  place PowerConduit at (127, 154) rot=-
+  place PowerConduit at (127, 153) rot=-
+  place Battery at (127, 151) rot=-
+  battery_set charge battery at (127, 151) to 100%
+  fill tank (124, 155) with RM_Liquid_FreshWater 100000 dL (ProofTank)
+  Choose style Scrapper on the whole pipe run via the pipe's gizmo (objects_sheet.choose_look run=True)
+  fill tank (124, 155) with RM_Liquid_FreshWater 100000 dL (ProofTank)
+  place RM_SprinklerHead at (129, 155) rot=-
+  station 4 (sprinklers) (124, 151, 6, 6): sprinkler Scrapper: head at (129, 155) (look read back in notes)
+  advance 2800 ticks
+  review_label clear tag=owner_review_stage; add 4 station labels
+    label 103|157|1|Futuristic|#ffd27f|small|owner_review_stage
+    label 111|157|2|Industrial|#ffd27f|small|owner_review_stage
+    label 119|157|3|Modern|#ffd27f|small|owner_review_stage
+    label 127|157|4|Scrapper|#ffd27f|small|owner_review_stage
+  review_sign clear prefix 'SIGN '; place 4 station sign books
+SWATCH: vanilla WaterShallow (98, 95, 3, 3), photographed and measured before the save (water must read blue over red)
+FINISH: kill hostiles, Clear weather, step toward midday, frame, shoot, save 'FLOWWORKS_OWNER_REVIEW_20261124_2325'
+NOTE: map biome AridShrubland
+NOTE: approx hour 10.5 (ticksAbs mod day, longitude ignored)
+NOTE: water swatch (98, 95, 3, 3) mean RGB [88.7, 99.6, 103.4] -> reads as water
+SHOT: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_TWELVE.det\Transient\owner_review_stage\row_sprinklers_labelled.png
+SHOT: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_TWELVE.det\Transient\owner_review_stage\overview.png
+SHOT: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_TWELVE.det\Transient\owner_review_stage\water_swatch.png
+save_guard: 750 keepers hashed and backed up in /mnt/d/ClaudeWork/rimmandrake/scratch/save_keepers
+save_guard: command exit 0; changed files: none
+save_guard: VERIFIED - no keeper changed
+[bridge split] 37.1 s wall: load 0.0 / ticks 9.1 / reads 4.9 / other 5.2 / outside calls 17.9 s
+[bridge split] WARN 93 calls of jawa/list_things (4.1 s): batch them
