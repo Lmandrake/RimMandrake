@@ -26,10 +26,18 @@ What it does, in order:
     tap_certificate.arm_check must read COULD NOT ARM with "our hook is not on". The hook comes back at the next run with a
     cast (JawaBenchCast.Join calls EnsurePatched); the script runs one and reads Harmony again. If it is still off, the log
     says: restart the game.
- 5. Four rows: R1 every fixture left its record on the loaded small list; R2 NOT OWED (full-list testing is retired,
+ 5. The overhead of the taps (05_build_design decision 4, 06_build_order "the reference scene run with and without
+    tracks"): one reference scene (REF_TICKS ticks at Step, the same two Goto orders), first a warm-up, then once with A and B
+    bound as the cast (cast tracks, world tracks and taps live) and once with no cast bound (world tracks only: every run
+    has them, JawaBenchHands joins the world to each run). tap_certificate.reference_scene reads the pair.
+ 6. Five rows: R1 every fixture left its record on the loaded small list; R2 NOT OWED (full-list testing is retired,
     repo CLAUDE.md, Mod development runs on small lists), with the foreign patches on each tapped method named; R3 the
-    blind hook is reported; R4 the suite's wall time.
- Writes RESULT {"made", "rows", "certificate", "fixtures"} and a plain-text log beside it (tap_certificate_log.txt).
+    blind hook is reported; R4 the suite's wall time; R5 the reference scene (a measurement: PASS when both runs completed
+    and the numbers are recorded, COULD NOT LOOK otherwise).
+ Writes RESULT {"made", "rows", "certificate", "fixtures", "reference_scene"} and a plain-text log beside it
+ (tap_certificate_log.txt).
+ --only-overhead runs step 5 alone and merges R5 and "reference_scene" into the committed RESULT, keeping its certificate.
+ It refuses (exit 2) when the loaded identity is not the certificate's key: then run the whole suite, so the audit holds.
 Exit: 0 every row holds, 1 a row failed, 2 unmeasured (no game, no session, a refusal before any fixture ran).
 """
 import argparse
@@ -58,6 +66,10 @@ DEFS = [("Muffalo", "PawnKindDef"), ("Gun_Revolver", "ThingDef"), ("Goto", "JobD
         ("Smoke", "DamageDef"), ("ToxicBuildup", "HediffDef"), ("Wander_Sad", "MentalStateDef"), ("OpportunitySite_ItemStash", "QuestScriptDef"),
         ("Eclipse", "IncidentDef"), ("NeutralEvent", "MessageTypeDef"), ("NeutralEvent", "LetterDef")]
 QUEST, MENTAL, INCIDENT = "OpportunitySite_ItemStash", "Wander_Sad", "Eclipse"
+# The reference scene: 600 ticks (the coordinator's brief, 2026-11-25: "e.g. 600 ticks at Superfast or Step"); Step, so the
+# companion steps each tick and the wall time is the ticks' own cost, not the game's frame pacing. The warm-up (60 ticks, 1 s
+# of game time) is ours: the first run after a load pays JIT and caches, and it would land on whichever run went first.
+REF_TICKS, REF_WARM, REF_SPEED = 600, 60, "Step"
 
 
 def log(s):
@@ -390,6 +402,7 @@ def main(argv=None):
     ap.add_argument("--dry", action="store_true", help="print the fixture plan and check it against TAPS; no bridge call")
     ap.add_argument("--config", default=None, help="the game's Config folder, for the settings hashes")
     ap.add_argument("--dump", default=None, help="write each fixture's reply, trace rows and journal to this folder")
+    ap.add_argument("--only-overhead", action="store_true", help="run the reference scene alone (R5) and merge it into RESULT")
     a = ap.parse_args(argv)
     if a.dump:
         os.makedirs(a.dump, exist_ok=True)
@@ -450,8 +463,11 @@ def main(argv=None):
     ident0 = K.read_identity(read, settings)
     log("identity: companion %s, modlist %s, foreign owners %s" % (ident0["companion"], ident0["modlist"], K.foreign_owners(ident0["inventory"])))
 
+    if a.only_overhead:
+        return only_overhead(W, R, read, ident0, settings)
     R.open_session(lease=120)
     W.call("jawa/scene_gate", action="release", kind="", why="tap certificate session start")
+    scene, r5 = None, None
     try:
         stage = make_stage(W, R)
         if stage is None:
@@ -468,6 +484,7 @@ def main(argv=None):
                 blind = blind_verdict(W, R, read, ident0, shown, settings, res, stage, bound)
                 bound = set(blind.pop("_bound"))
             log("fixture %-11s %s" % (f["name"], res["line"]))
+        scene, r5, bound = reference(W, R, stage, bound)
     finally:
         W.call("jawa/scene_gate", action="release", kind="", why="tap certificate session end")
         R.end_session("close")
@@ -481,11 +498,11 @@ def main(argv=None):
         log("NOTE: the certificate key changed during the session: before %s, after %s" % (K.key_of(ident0), K.key_of(ident1)))
     suite_ms = int((time.time() - t_start) * 1000)
     cert = K.make(ident1, shown, blind, game=a.host, suite_ms=suite_ms, source_sha=source_sha())
-    rows = four_rows(cert, results, blind, suite_ms)
+    rows = four_rows(cert, results, blind, suite_ms) + [r5]
     for r in rows:
         log("%s %-8s %s" % (r["row"], r["verdict"], r["detail"]))
     res = {"made": datetime.datetime.now().isoformat(timespec="seconds"), "rows": rows, "certificate": cert,
-           "fixtures": [{k: v for k, v in x.items() if k != "routes"} for x in results]}
+           "fixtures": [{k: v for k, v in x.items() if k != "routes"} for x in results], "reference_scene": scene}
     os.makedirs(os.path.dirname(K.RESULT), exist_ok=True)
     with open(K.RESULT, "w", encoding="utf-8") as f:
         json.dump(res, f, indent=1, sort_keys=True, default=str)
@@ -596,6 +613,95 @@ def run_fixture(W, R, f, bound):
         W.call("jawa/session", action="bind", driver=R.DRIVER, bindings=json.dumps({k: None for k in bound}))
         bound = set()
     return res, bound
+
+
+def ref_run(W, R, stage, ticks):
+    """One run of the reference scene with whatever is bound now. -> {state, ticks, wallMs, close, run}."""
+    c = stage["gunXZ"]
+    acts = [act("jawa/ordered_job", 0, pawnId=stage["A"], jobDef="Goto", targetAX=c[2][0], targetAZ=c[2][1], waitTicks=0),
+            act("jawa/ordered_job", 0, pawnId=stage["B"], jobDef="Goto", targetAX=c[1][0], targetAZ=c[1][1], waitTicks=0),
+            act("jawa/ordered_job", ticks // 2, pawnId=stage["A"], jobDef="Goto", targetAX=c[0][0], targetAZ=c[0][1], waitTicks=0),
+            act("jawa/ordered_job", ticks // 2, pawnId=stage["B"], jobDef="Goto", targetAX=c[2][0], targetAZ=c[2][1], waitTicks=0)]
+    acts = [dict(x, id=R.req("ref_%d" % i)) for i, x in enumerate(acts)]
+    t0 = R.tick() or 0
+    w0 = time.time()
+    rep = R.run(R.at_tick(t0 + ticks), ticks + 200, acts=acts, speed=REF_SPEED)
+    wall = (time.time() - w0) * 1000.0
+    st = W.call("jawa/session", action="state")
+    rows = W.read_trace({"recordDir": st.get("recordDir"), "session": st.get("writerSession") or st.get("session"), "run": rep.get("run")}, 15) if rep.get("run") else []
+    close = next((r for r in rows if r.get("rec") == "close"), None)
+    t1 = rep.get("ticksGame")
+    out = {"run": rep.get("run"), "state": rep.get("state"), "why": rep.get("why"), "ticks": (t1 - t0) if isinstance(t1, int) else None,
+           "wallMs": round(wall, 1), "close": close, "acts": [x.get("state") for x in rep.get("acts") or []]}
+    if DUMP[0]:
+        with open(os.path.join(DUMP[0], "reference_%s.json" % (rep.get("run") or "none")), "w", encoding="utf-8") as fh:
+            json.dump({"reply": rep, "rows": rows}, fh, indent=1, default=str)
+    return out
+
+
+def reference(W, R, stage, bound):
+    """The reference scene: a warm-up with no cast, then the cast run (A, B bound), then the no-cast run. -> (scene, R5, bound)."""
+    def bind(b):
+        if b:
+            W.call("jawa/session", action="bind", driver=R.DRIVER, bindings=json.dumps(b))
+    bind({k: None for k in bound})
+    warm = ref_run(W, R, stage, REF_WARM)
+    bind({"refA": stage["A"], "refB": stage["B"]})
+    cast = ref_run(W, R, stage, REF_TICKS)
+    bind({"refA": None, "refB": None})
+    nocast = ref_run(W, R, stage, REF_TICKS)
+    scene, row = K.reference_scene({"cast": cast, "nocast": nocast}, REF_TICKS)
+    scene.update({"speed": REF_SPEED, "order": ["warm-up (no cast, %d ticks)" % REF_WARM, "cast", "nocast"],
+                  "warmup": {k: warm.get(k) for k in ("state", "ticks", "wallMs")},
+                  "runs": {n: {k: r.get(k) for k in ("run", "state", "why", "acts")} for n, r in (("cast", cast), ("nocast", nocast))},
+                  "close": {n: {p: (r.get("close") or {}).get(p) for p in ("cast", "world")} for n, r in (("cast", cast), ("nocast", nocast))}})
+    for n, r in (("warm-up", warm), ("cast", cast), ("nocast", nocast)):
+        log("reference %-7s run %s %s, %s ticks, %s ms wall" % (n, r.get("run"), r.get("state"), r.get("ticks"), r.get("wallMs")))
+    return scene, row, set()
+
+
+def only_overhead(W, R, read, ident0, settings):
+    """R5 alone, merged into the committed RESULT: its certificate stays, but only while the loaded identity is its key."""
+    try:
+        with open(K.RESULT, encoding="utf-8") as f:
+            res = json.load(f)
+    except (OSError, ValueError) as e:
+        log("UNMEASURED: --only-overhead merges into RESULT, and it cannot be read: %s" % e)
+        return 2
+    if (res.get("certificate") or {}).get("key") != K.key_of(ident0):
+        log("REFUSED: the loaded identity is not the certificate's key (%s, loaded %s): run the whole suite" % (
+            (res.get("certificate") or {}).get("key"), K.key_of(ident0)))
+        return 2
+    R.open_session(lease=120)
+    W.call("jawa/scene_gate", action="release", kind="", why="tap certificate reference scene")
+    try:
+        stage = make_stage(W, R)
+        if stage is None:
+            return 2
+        scene, r5, _ = reference(W, R, stage, set())
+    finally:
+        W.call("jawa/scene_gate", action="release", kind="", why="tap certificate reference scene end")
+        R.end_session("close")
+    ident1 = K.read_identity(read, settings)
+    if ident1 is None or K.key_of(ident1) != K.key_of(ident0):
+        log("REFUSED: the identity changed during the reference scene; RESULT is left as it was")
+        return 2
+    scene["made"] = datetime.datetime.now().isoformat(timespec="seconds")
+    res["reference_scene"] = scene
+    res["rows"] = [r for r in res.get("rows") or [] if r.get("row") != "R5"] + [r5]
+    log("%s %-8s %s" % (r5["row"], r5["verdict"], r5["detail"]))
+    with open(K.RESULT, "w", encoding="utf-8") as f:
+        json.dump(res, f, indent=1, sort_keys=True, default=str)
+    rc, line = K.audit(K.RESULT)
+    log("audit: %s" % line)
+    old = []
+    if os.path.exists(LOG):
+        with open(LOG, encoding="utf-8") as f:
+            old = f.read().rstrip("\n").split("\n")
+    with open(LOG, "w", encoding="utf-8") as f:
+        f.write("\n".join(old + ["", "--only-overhead %s" % scene["made"]] + LINES) + "\n")
+    print("merged R5 into %s and %s" % (K.RESULT, LOG))
+    return 0 if rc == 0 and r5["verdict"] == "PASS" else 1
 
 
 def blind_verdict(W, R, read, ident, shown, settings, res, stage, bound):

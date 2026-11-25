@@ -376,6 +376,14 @@ None of its own.
   "not provable here"; on a route not shown it reads "not covered".
 - **every-owner-of-our-companion-is-ours.** A patch of any Harmony owner of this companion (`jawabench.*` and `mandrake.jawabench.*`,
   `OUR_OWNERS`) is ours: never on the foreign list, and it counts as our hook at arm.
+- **the-reference-scene-is-recorded-or-could-not-look.** The overhead of the taps (`reference_scene`, row R5): one reference scene
+  run with the cast bound and with none is a measurement, not a bar. Both runs completed (state hit, the ticks asked, a close record,
+  a wall time; the cast run carried the cast and the no-cast run did not) is PASS with the numbers; anything else is COULD NOT LOOK.
+
+## Flight probes
+
+The flight probes and the flapping-bird judge have their own page: `../2026-11-24-flight-frames/boundary.md`.
+
 
 ## Flight probes
 

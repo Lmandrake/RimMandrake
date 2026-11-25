@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Selftest: the tap certificate of BRIDGE v2.0 (tap_certificate.py, the pure core; the witness counts of JawaBenchHookGuard.cs).
 Item RIMMANDRAKE_BUILD_TAP_CERTIFICATE_CANARY_RUNS_OFF_STAGE. Page: design/specs/2026-11-23-bridge-v2/boundary.md §TAP CERTIFICATE;
-one test per promise there, 11 checks:
+one test per promise there, 13 checks:
 
   1 a certificate for another companion is refused      2 for another mod list      3 a changed patch inventory is refused
   4 a route not shown is listed as such, never as covered   5 a scene that needs an uncertified tap is COULD NOT ARM
@@ -10,6 +10,8 @@ one test per promise there, 11 checks:
   9 a changed setting of a mod with a foreign patch voids the certificate
  10 an entry with no record voids that tap's coverage for the run (and the guard counts what the witness reads)
  11 an absence on a method with a foreign prefix reads "not provable here"
+ 12 every owner of our companion is ours
+ 13 the reference scene (R5) is recorded when both runs completed, COULD NOT LOOK otherwise
 
 Each plant breaks one rule of a COPY of the core and must turn its named check red. An offline test proves rules, never hooks:
 the live proof is prove_tap_certificate.py. No game, no bridge, no dotnet.
@@ -209,12 +211,35 @@ def t_every_owner_of_our_companion_is_ours(K):
     need(not a["receipt"], "our own prefix named as foreign: %s" % a["receipt"])
 
 
+def t_the_reference_scene_is_recorded_or_could_not_look(K):
+    # R5, the overhead of the taps: a measurement. Both runs completed -> PASS with the numbers; a run that did not complete,
+    # left no close, ran short, or a pair whose cast run carried no cast (or whose no-cast run did) -> COULD NOT LOOK.
+    world = {"msPerTick": 0.002}
+    def run(cast, state="hit", ticks=600, wall=1200.0, close=True):
+        c = {"world": world, "cast": {"msPerTick": 0.013}} if cast else {"world": world}
+        return {"state": state, "ticks": ticks, "wallMs": wall, "close": c if close else None}
+    good = {"cast": run(True, wall=1260.0), "nocast": run(False)}
+    out, row = K.reference_scene(good, 600)
+    need(row["verdict"] == "PASS", "both runs completed and it is not PASS: %s" % row)
+    need(out["cast"]["msPerTick"] == 2.1 and out["nocast"]["msPerTick"] == 2.0, "ms per tick is not wall over ticks: %s" % out)
+    need(out["difference"]["msPerTick"] == 0.1 and out["difference"]["wallMs"] == 60.0, "the difference is wrong: %s" % out["difference"])
+    need(out["cast"]["castMsPerTick"] == 0.013 and out["nocast"]["worldMsPerTick"] == 0.002, "the close numbers are not carried: %s" % out)
+    for bad, what in (({"cast": run(True, state="budget"), "nocast": run(False)}, "a run that ended budget"),
+                      ({"cast": run(True), "nocast": run(False, close=False)}, "a run with no close"),
+                      ({"cast": run(True, ticks=300), "nocast": run(False)}, "a short run"),
+                      ({"cast": run(False), "nocast": run(False)}, "a cast run with no cast"),
+                      ({"cast": run(True), "nocast": run(True)}, "a no-cast run with a cast"),
+                      ({"cast": run(True)}, "a missing run")):
+        _, r = K.reference_scene(bad, 600)
+        need(r["verdict"] == "COULD NOT LOOK", "%s reads %s" % (what, r))
+
+
 CHECKS = [t_a_certificate_for_another_companion_is_refused, t_a_certificate_for_another_mod_list_is_refused,
           t_a_changed_patch_inventory_is_refused, t_a_route_not_shown_is_listed_never_covered,
           t_a_scene_that_needs_an_uncertified_tap_could_not_arm, t_the_arm_check_calls_no_act, t_a_foreign_prefix_is_named_on_the_receipt,
           t_a_missing_certificate_is_could_not_look, t_a_changed_setting_of_a_patching_mod_voids_the_certificate,
           t_an_entry_with_no_record_voids_the_tap_for_the_run, t_an_absence_under_a_foreign_prefix_is_not_provable_here,
-          t_every_owner_of_our_companion_is_ours]
+          t_every_owner_of_our_companion_is_ours, t_the_reference_scene_is_recorded_or_could_not_look]
 
 
 def run_all(path):
@@ -261,6 +286,10 @@ PLANTS = [
      [("    if _prefixes(cert, tap):\n        return NOT_PROVABLE", "    if False:\n        return NOT_PROVABLE")]),
     ("ours read as the cast's own prefix only", "every_owner_of_our_companion_is_ours",
      [('OUR_OWNERS = ("jawabench", "mandrake.jawabench")', 'OUR_OWNERS = ("jawabench",)')]),
+    ("a reference scene that trusts an unfinished run", "the_reference_scene_is_recorded_or_could_not_look",
+     [('        if r.get("state") != "hit":', '        if False:')]),
+    ("a reference scene that never checks the pair carried and lacked the cast", "the_reference_scene_is_recorded_or_could_not_look",
+     [("    if not close_cast_ok(out):", "    if False:")]),
 ]
 
 

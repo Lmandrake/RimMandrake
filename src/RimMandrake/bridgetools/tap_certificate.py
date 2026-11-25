@@ -23,6 +23,8 @@ The four readers below are pure functions of data; the bridge reads live only in
   witness(close)                    -> per hook of a run's close record: entries with no record void that tap for the run
   absence(cert, tap, route)         -> "provable" | "not provable here" (a foreign prefix) | "not covered"
   receipt_mode(arm)                 -> "CERTIFIED" with a valid certificate that covers the scene, else "BOOTSTRAP"
+  reference_scene(runs, ticks)      -> the overhead of the taps: one scene with the cast bound and with none (row R5, a
+                                       measurement: PASS when both runs completed and the numbers are recorded)
 
   python3 tap_certificate.py audit [RESULT]   exit 0: the committed live result shows a certificate made by the session, with
                                               every fixture's route shown and the planted blind tap reported blind; 1 not;
@@ -303,6 +305,55 @@ def absence(cert, tap, route):
     if _prefixes(cert, tap):
         return NOT_PROVABLE
     return "provable"
+
+
+# ------------------------------------------------------------------------------------------------ the overhead of the taps
+def _per(close, part):
+    p = (close or {}).get(part)
+    return p.get("msPerTick") if isinstance(p, dict) else None
+
+
+def reference_scene(runs, ticks):
+    """The overhead of the taps (05_build_design decision 4, 06_build_order: "the reference scene run with and without
+    tracks"). runs: {"cast": run, "nocast": run}, each {state, ticks, wallMs, close (the run's close record or None)}; ticks:
+    the ticks the scene asked for. -> (the "reference_scene" object, the R5 row). A measurement, not a bar: R5 is PASS when
+    both runs completed (state hit, the ticks they asked for, a close record, a wall time) and COULD NOT LOOK otherwise.
+    The cast run must have carried the cast (a close with "cast"), the no-cast run must not, or the pair measures nothing."""
+    out, why = {"ticks": ticks}, []
+    for name in ("cast", "nocast"):
+        r = runs.get(name) or {}
+        close = r.get("close")
+        n, wall = r.get("ticks"), r.get("wallMs")
+        o = {"state": r.get("state"), "ticks": n, "wallMs": wall,
+             "msPerTick": round(wall / float(n), 4) if isinstance(wall, (int, float)) and isinstance(n, int) and n > 0 else None,
+             "castMsPerTick": _per(close, "cast"), "worldMsPerTick": _per(close, "world"),
+             "castCarried": isinstance((close or {}).get("cast"), dict)}
+        out[name] = o
+        if r.get("state") != "hit":
+            why.append("the %s run ended %s, not hit" % (name, r.get("state")))
+        if close is None:
+            why.append("the %s run left no close record" % name)
+        if n != ticks:
+            why.append("the %s run ran %s ticks, not %d" % (name, n, ticks))
+        if o["msPerTick"] is None:
+            why.append("the %s run has no wall time" % name)
+    if not close_cast_ok(out):
+        why.append("the cast run carried no cast, or the no-cast run did")
+    c, n = out["cast"], out["nocast"]
+    out["difference"] = {"msPerTick": round(c["msPerTick"] - n["msPerTick"], 4) if c["msPerTick"] is not None and n["msPerTick"] is not None else None,
+                         "wallMs": round(c["wallMs"] - n["wallMs"], 1) if isinstance(c["wallMs"], (int, float)) and isinstance(n["wallMs"], (int, float)) else None}
+    if why:
+        return out, {"row": "R5", "verdict": "COULD NOT LOOK", "detail": "the reference scene: " + "; ".join(why)}
+    return out, {"row": "R5", "verdict": "PASS", "detail": (
+        "the reference scene, %d ticks a run (a measurement, no bar): with the cast %.4f ms/tick wall (cast tracks %s, world %s ms/tick), "
+        "with no cast %.4f ms/tick wall (world %s ms/tick); difference %+.4f ms/tick, %+.1f ms over the run" % (
+            ticks, c["msPerTick"], c["castMsPerTick"], c["worldMsPerTick"], n["msPerTick"], n["worldMsPerTick"],
+            out["difference"]["msPerTick"], out["difference"]["wallMs"]))}
+
+
+def close_cast_ok(out):
+    """True when the cast run carried the cast and the no-cast run did not; False otherwise."""
+    return bool(out["cast"]["castCarried"]) and not out["nocast"]["castCarried"]
 
 
 # ------------------------------------------------------------------------------------------------ the committed live result

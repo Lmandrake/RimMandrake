@@ -3490,6 +3490,7 @@
     "instigatorId",
     "methodName",
     "owner",
+    "pawnId",
     "questId",
     "radius",
     "size",
