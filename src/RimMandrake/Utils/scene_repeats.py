@@ -57,6 +57,12 @@ def station_digest(blocks, rect):
     show all of it. `blocks` are the readBack blocks of the stamp's staging calls (and of its clean). Ids and absolute cells are
     left out, so two copies at different stations of one plan give one digest. A block that made more rows than it lists cannot
     be digested here: the companion lists at most 50 (StageReadBack.ListedWrong)."""
+    lines, why = station_lines(blocks, rect)
+    return (None, why) if lines is None else (_h(lines), None)
+
+
+def station_lines(blocks, rect):
+    """-> (the lines that station_digest hashes, None), or (None, why). Two stamps whose digests differ differ in these lines."""
     ox, oz = int(rect[0]), int(rect[1])
     lines = []
     for i, b in enumerate(blocks):
@@ -73,7 +79,7 @@ def station_digest(blocks, rect):
         for l in b.get("left") or []:
             lines.append("left|%s,%s|%s|%s" % (int(l.get("x", 0)) - ox, int(l.get("z", 0)) - oz, l.get("def"), l.get("blocking")))
         lines.append("wrong|%d" % int(b.get("rowsWrong") or 0))
-    return _h(lines), None
+    return lines, None
 
 
 def mod_digests(rows):

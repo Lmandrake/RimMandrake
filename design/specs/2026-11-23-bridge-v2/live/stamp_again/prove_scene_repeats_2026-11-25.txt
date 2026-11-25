@@ -1,0 +1,39 @@
+prove_scene_repeats 2026-11-25T05:53:05 on ArchBig, rows R1,R2,R3, stage RM_Stage_ArchBig_settlement
+make settlement: exit 0, 36.3 s wall
+  the game holds 2 maps: leaving it for the main menu (a test game is disposable)
+  the game stands at Entry: starting a quicktest for the green room
+  green room: map 0, tile 35922, RM_TheRot, 4 colonist(s)
+  green room fed: 90 meal(s) beside 3 colonist(s), food need full
+  made the settlement map on tile 35862 (RM_TheRot): map 1, 100x100, 2.9 s
+  emptied: 4 pawn(s) vanished, 5642 thing(s) cleared, terrain Granite_Rough on 10000 cell(s) (read-back ok=True), fog lifted, 0 pawn(s) left, 1.1 s
+  MADE settlement stage RM_Stage_ArchBig_settlement: 100x100, map 1 current, green room map 0; make 2.9 s, total 4.7 s; stage file D:\ClaudeWork\rimmandrake\scratch\scene_stages\made\RM_Stage_ArchBig_settlement.json
+  ArchBig: held for `python.exe \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_PROVE_STAMP_AGAIN_TWENTY_COPIES_ON_THE_RESCUE.det\src\RimMandrake\Utils\stage_map.py --inner make ArchBig --kind settlement --save RM_Stage_ArchBig_settlement` (gen 1675, inherited)
+  [bridge split] 35.7 s wall: load 7.3 / ticks 0.0 / reads 2.5 / other 4.2 / outside calls 21.8 s
+  single run 1: 46.3 s wall, SUCCESS (the victim lies in a SleepingSpot)
+  single run 2: 47.0 s wall, SUCCESS (the victim lies in a SleepingSpot)
+  single run 3: 48.6 s wall, SUCCESS (the victim lies in a SleepingSpot)
+  copy 1 at (1, 1, 7, 5): SUCCESS (the victim lies in a SleepingSpot)
+  copy 2 at (20, 1, 7, 5): SUCCESS (the victim lies in a SleepingSpot)
+  copy 3 at (39, 1, 7, 5): SUCCESS (the victim lies in a SleepingSpot)
+  copy 4 at (58, 1, 7, 5): SUCCESS (the victim lies in a SleepingSpot)
+  copy 5 at (77, 1, 7, 5): SUCCESS (the victim lies in a SleepingSpot)
+  copy 6 at (1, 18, 7, 5): SUCCESS (the victim lies in a SleepingSpot)
+  copy 7 at (20, 18, 7, 5): SUCCESS (the victim lies in a SleepingSpot)
+  copy 8 at (39, 18, 7, 5): SUCCESS (the victim lies in a SleepingSpot)
+  copy 9 at (58, 18, 7, 5): SUCCESS (the victim lies in a SleepingSpot)
+  copy 10 at (77, 18, 7, 5): SUCCESS (the victim lies in a SleepingSpot)
+  copy 11 at (1, 35, 7, 5): SUCCESS (the victim lies in a SleepingSpot)
+  copy 12 at (20, 35, 7, 5): SUCCESS (the victim lies in a SleepingSpot)
+  copy 13 at (39, 35, 7, 5): SUCCESS (the victim lies in a SleepingSpot)
+  copy 14 at (58, 35, 7, 5): SUCCESS (the victim lies in a SleepingSpot)
+  copy 15 at (77, 35, 7, 5): SUCCESS (the victim lies in a SleepingSpot)
+  copy 16 at (1, 52, 7, 5): SUCCESS (the victim lies in a SleepingSpot)
+  copy 17 at (20, 52, 7, 5): SUCCESS (the victim lies in a SleepingSpot)
+  copy 18 at (39, 52, 7, 5): SUCCESS (the victim lies in a SleepingSpot)
+  copy 19 at (58, 52, 7, 5): SUCCESS (the victim lies in a SleepingSpot)
+  copy 20 at (77, 52, 7, 5): SUCCESS (the victim lies in a SleepingSpot)
+  series 39015e3e: counts {'launches': 20, 'opportunities': 20, 'exposures': 20, 'samples': 1, 'clusters': 1, 'stopped': False}; station digests ['010cd37ab6a1e109']; mods {'RimMandrake.Abyss': 'no digest hook', 'RimMandrake.Biomes': 'no digest hook', 'RimMandrake.BlueDesert': 'no digest hook', 'RimMandrake.Bones': 'no digest hook', 'RimMandrake.Cauldron': 'no digest hook', 'RimMandrake.Contagion': 'no digest hook', 'RimMandrake.CrackedLands': 'no digest hook', 'RimMandrake.CreatureBehaviors': 'no digest hook', 'RimMandrake.DivingInteraction': 'no digest hook', 'RimMandrake.EnvironmentalHazards': 'no digest hook', 'RimMandrake.ExplosiveGrowth': 'no digest hook', 'RimMandrake.FeverWood': 'no digest hook', 'RimMandrake.Greentide': 'no digest hook', 'RimMandrake.LanternDeeps': 'no digest hook', 'RimMandrake.LeaningScrub': 'no digest hook', 'RimMandrake.LongShade': 'no digest hook', 'RimMandrake.Miasma': 'no digest hook', 'RimMandrake.RustCathedral': 'no digest hook', 'RimMandrake.RustCathedral.Hum': 'no digest hook', 'RimMandrake.RustCathedral.Walls': 'no digest hook', 'RimMandrake.SleepingIce': 'no digest hook', 'RimMandrake.Stillsand': 'no digest hook', 'RimMandrake.TerminalBiomes': 'no digest hook', 'RimMandrake.TheForge': 'no digest hook', 'RimMandrake.TheRot': 'no digest hook', 'RimMandrake.TheSump': 'no digest hook', 'RimMandrake.Warscar': 'no digest hook', 'RimMandrake.Wastes': 'no digest hook', 'RimMandrake.Webwork': 'no digest hook', 'RimMandrake.WeepingStones': 'no digest hook', 'RimMandrake.Wreckage': 'no digest hook', 'RimMandrakeBeastMechanicsRSW': 'no digest hook', 'RimMandrakeExplosiveKnockback': 'no digest hook', 'RimMandrakeFlowWorks': 'no digest hook', 'RimMandrakeGelatinousSlime': 'no digest hook', 'RimMandrakeGimmeSomeSlack': 'no digest hook', 'RimMandrakeLivestockRSW': 'no digest hook', 'RimMandrakeLuminousPigment': 'no digest hook', 'RimMandrakeMovingDunes': 'no digest hook', 'RimMandrakePatches': 'no digest hook', 'RimMandrakeSeaShores': 'no digest hook'}; 20 ledger lines, clusters ['39015e3e.c1']
+PASS R1 20 stamped copies of the rescue finish in less wall time than 3 single runs: 20 copies in one session and one run: 102.9 s wall; 3 single runs: 46.3, 47.0, 48.6 = 141.9 s; 20 of 20 SUCCESS, 0 order(s) not given, 0 breach(es)
+PASS R2 a planted cross-talk between two copies is a BREACH and both copies read UNRESOLVED: plant {'success': True, 'job': None, 'curJob': None, 'message': None}; stations (1, 1, 7, 5) and (20, 1, 7, 5); ["BREACH: rescuer_201 of launch 1 was at (14, 3), on launch 2's station (20, 1, 7, 5) (margin 6)"]; ledger outcomes ['UNRESOLVED', 'UNRESOLVED'], spoiled_by ['cross-talk between copies of cluster 67b087d3.c1']
+UNRUN R3 a mod state left dirty on purpose changes the reset digest and stops the repeat RESET_DIGEST_DIFFERS: 41 mod(s) of ours loaded, 0 with a digest hook (none); dirtying act not given. Needs a mod with an [RMDigest] hook and its dirtying act. Command: python.exe src\RimMandrake\bridgetools\prove_scene_repeats.py --game ArchBig --rows R3 --dirty-tool <tool> --dirty-args '<json>'
+prove_scene_repeats: 2 of 3 rows held, 0 failed, 0 could not look, 1 unrun

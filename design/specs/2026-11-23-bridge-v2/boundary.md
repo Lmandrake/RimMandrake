@@ -488,6 +488,7 @@ The settings writer and its deviation record have their own [boundary and offlin
 |---|---|---|
 | `prove_stage_map.py` | 6 of 6 rows PASS: R1, R2, R5, R6 on ArchSmall (2026-11-24, `design/specs/2026-11-23-bridge-v2/live/stage_map/prove_stage_map_2026-11-24.txt`); R3, R4 on ArchBig under the raid allow, the raid held still by `jawa/fire_raid` ImmediateAttack/EdgeWalkIn, R4 the repaired claim above (2026-11-25, `design/specs/2026-11-23-bridge-v2/live/stage_map/prove_stage_map_r3r4_2026-11-25.txt`) | the two files named |
 | `prove_run_life_cycle.py` | 3 of 3 rows PASS | `design/specs/2026-11-23-bridge-v2-life-cycle/live/` (ArchSmall, tier `explosiveknockback_visit`, companion and Explosive Knockback PROOF build from `ac24cfedbb`, 2026-11-24) |
+| `prove_scene_repeats.py` | R1 PASS, R2 PASS, R3 UNRUN, on ArchBig (2026-11-25, the build of `4bf9ada762` and this page's commit). R1: 20 stamped copies of the ordered rescue in one session and one run took 102.9 s wall; 3 single runs took 46.3, 47.0 and 48.6 s (141.9 s); 20 of 20 SUCCESS, one station digest for all 20, no breach. R2: copy 1's rescuer ordered onto copy 2's victim walked onto copy 2's station and put that victim in copy 2's spot: one BREACH, both ledger lines UNRESOLVED. R3 UNRUN: no mod of ours has a digest hook (41 loaded, 0 hooked); its command and remainder are `RIMMANDRAKE_GIVE_ONE_MOD_A_DIGEST_HOOK_SO_A_DIRTY_RESET_CAN_SHOW` | `design/specs/2026-11-23-bridge-v2/live/stamp_again/prove_scene_repeats_2026-11-25.txt` (R1 to R3), `design/specs/2026-11-23-bridge-v2/live/stamp_again/prove_scene_repeats_r2_2026-11-25.txt` (R2 with the planted rescuer's cells) |
 
 ## STAMP AGAIN (`src/RimMandrake/Utils/scene_repeats.py`)
 
@@ -521,9 +522,14 @@ the first live series sets it from its own `not_reset` list.
 | Launches, valid opportunities and exposures are counted apart, and each ledger line carries its own opportunity and exposures. | `launches_opportunities_and_exposures_are_counted_apart` |
 | A cast member of one copy seen on another copy's station or its margin is a `BREACH`, and each copy it touches reads UNRESOLVED on its ledger line. | `cross_talk_between_two_copies_is_a_breach` |
 
-Live test (UNRUN): 20 stamped copies of the chosen-rescue scene finish in less wall time than 3 single runs take today; a planted
-cross-talk between two copies is a breach; a mod state left dirty on purpose changes the reset digest and stops the repeat. It
-needs the ordered-rescue scene of `RIMMANDRAKE_BUILD_CAST_ASSERTS_AND_ORDER_THROUGH_GIVER` (open at 2026-11-25) and a free game.
+Live test: `src/RimMandrake/bridgetools/prove_scene_repeats.py` (three rows: 20 stamped copies of the ordered rescue against 3
+single runs; a planted cross-talk between two copies; a mod state left dirty on purpose). Its reading is under LIVE READINGS. What
+the live runs taught the scene: in the first run (ArchBig, 2026-11-25), copy 2's station digest differed from copy 1's while each
+copy's staging also held a `jawa/set_work_priority` block; which line differed was not read. With that block gone, all 20 copies
+gave one digest. A Bed is not staged: `jawa/build_batch` reads back its CompQuality, which the game rolls, so two honest copies
+would digest apart (read in the code, not run). The rescue stages a SleepingSpot (no quality, no stuff) and drafts its rescuer.
+An idle undrafted colonist wandered 7 cells off its station onto the next copy's margin, so copies keep their cast drafted
+or busy; DoctorRescue is not directOrderable, so the rescue is the ordered-rescue scene's `jawa/ordered_job Rescue`.
 
 ## PLAY AGAINST STEP
 

@@ -9,8 +9,11 @@ its reading goes under §LIVE READINGS. Evidence: design/specs/2026-11-23-bridge
 The scene library takes the driver lock (scene.open). The stage save RM_Stage_<game>_settlement is made first by
 stage_map.py make (through wsl.exe), unless --no-make. One copy of the ordered rescue on a 7x5 station: a rescuer at (1,2),
 a victim at (3,2) downed by jawa/pawn_force_incapacitate, a sleeping spot at (5,3) (a bed with no quality and no stuff, so
-two honest copies read back alike); the rescuer is set to Doctor and ordered `jawa/order level=giver giver=DoctorRescue`
-onto the victim; a run of 1500 ticks at Normal; SUCCESS when the victim then lies in its own spot.
+two honest copies read back alike). The rescue is the ordered-rescue scene's (prove_ordered_rescue.py R0): `jawa/ordered_job
+Rescue` with the victim and the spot. DoctorRescue is not directOrderable (Core WorkGivers.xml), so jawa/order through that
+giver is refused: measured on ArchBig 2026-11-25. The rescuer is drafted first: an idle undrafted colonist wandered 7 cells off
+its station and onto the next copy's margin (ArchBig 2026-11-25), and a drafted one stands where its job ends. A run of 1500
+ticks at Normal; SUCCESS when the victim then lies in its own spot.
   R1 20 stamped copies of the rescue (one cluster, one run) finish in less wall time than 3 single runs (each its own
      session, one copy, one run); both times printed; every copy whose order was given reads SUCCESS, and no BREACH;
   R2 a planted cross-talk: copy 1's rescuer ordered onto copy 2's victim is a BREACH, and both ledger lines read UNRESOLVED;
@@ -33,8 +36,7 @@ UTILS = os.path.join(HERE, "..", "Utils")
 sys.path.insert(0, UTILS)
 sys.path.insert(0, HERE)
 
-GIVER = "DoctorRescue"        # WorkGiverDef of the rescue (RimSage: Core WorkGivers.xml)
-WORKTYPE = "Doctor"           # DoctorRescue's work type
+RESCUE = "Rescue"             # the JobDef of the ordered-rescue scene (jawa/ordered_job, targetA the victim, targetB the bed)
 SPOT = "SleepingSpot"         # RimSage: Building_Bed, no CompQuality, no stuff, useHitPoints False
 STATION = (7, 5)
 DISTANCE = 12                 # cells kept between two copies (the allocator's margin is half of it on each side)
@@ -52,7 +54,7 @@ def _h(x):
     return hashlib.sha256(json.dumps(x, sort_keys=True, default=str).encode("utf-8")).hexdigest()[:16]
 
 
-PLAN = {"station": STATION, "rescuer": (1, 2), "victim": (3, 2), "spot": (5, 3, 0), "giver": GIVER, "ticks": TICKS, "speed": "Normal"}
+PLAN = {"station": STATION, "rescuer": (1, 2), "victim": (3, 2), "spot": (5, 3, 0), "job": RESCUE, "drafted": True, "ticks": TICKS, "speed": "Normal"}
 CLAIM = "an ordered rescue on a stage station: the rescuer carries the downed victim to the station's own sleeping spot"
 
 
@@ -89,10 +91,8 @@ def cells_from_trace(rows, names):
 
 def rescue_outcome(order, job, target):
     """-> (outcome, why). order: the jawa/order reply; job, target: the victim's job and its target def after the run."""
-    if not isinstance(order, dict) or order.get("success") is False:
-        return "APPARATUS FAULT", "the order call failed: %s" % short(order)
-    if order.get("given") is not True or not order.get("started"):
-        return "APPARATUS FAULT", "the giver did not take the order (the staged rescuer cannot rescue?): %s" % short(order)
+    if not isinstance(order, dict) or order.get("success") is not True:
+        return "APPARATUS FAULT", "the rescue order was not taken: %s" % short(order)
     if job == "LayDown" and target == SPOT:
         return "SUCCESS", "the victim lies in a %s" % SPOT
     return "UNRESOLVED", "after the run the victim's job is %s on %s" % (job, target)
@@ -119,7 +119,12 @@ def judge_r1(singles, copies_wall, launches, breaches, stopped):
     return None
 
 
-def judge_r2(breaches, lines):
+def judge_r2(breaches, lines, plant=None):
+    """None when the planted order was taken, it put launch 1's rescuer on launch 2's station (a BREACH), and both ledger lines
+    read UNRESOLVED. A breach from anything but the plant (a wander) does not count: the plant is what the row tests."""
+    if plant is not None and plant.get("success") is not True:
+        return "the planted order was not taken: %s" % short(plant)
+    breaches = [b for b in breaches if re.match(r"BREACH: rescuer_\S+ of launch 1 was at .* on launch 2's station", b)]
     if not breaches:
         return "no BREACH for a rescuer ordered onto the other copy's station"
     if len(lines) != 2 or any(l.get("outcome") != "UNRESOLVED" for l in lines):
@@ -139,9 +144,9 @@ def selfcheck():
             {"rec": "track", "name": "a.Position", "st": "gone", "v": None, "tick": 2},
             {"rec": "track", "name": "a.Position", "st": "ok", "v": "(2, 0, 2)", "tick": 3}]
     ok.append(cells_from_trace(rows, {"a.Position": "a"}) == {"a": [(1, 2), (2, 2)]})
-    ok.append(rescue_outcome({"given": True, "started": True}, "LayDown", SPOT)[0] == "SUCCESS")
-    ok.append(rescue_outcome({"given": False, "reason": "incapable"}, None, None)[0] == "APPARATUS FAULT")
-    ok.append(rescue_outcome({"given": True, "started": True}, "Wait_Downed", None)[0] == "UNRESOLVED")
+    ok.append(rescue_outcome({"success": True}, "LayDown", SPOT)[0] == "SUCCESS")
+    ok.append(rescue_outcome({"success": False, "message": "no path"}, None, None)[0] == "APPARATUS FAULT")
+    ok.append(rescue_outcome({"success": True}, "Wait_Downed", None)[0] == "UNRESOLVED")
     good = [{"launch": i, "outcome": "SUCCESS"} for i in range(1, 21)]
     ok.append(judge_r1([30.0, 30.0, 30.0], 60.0, good, [], None) is None)
     ok.append(judge_r1([30.0, 30.0, 30.0], 95.0, good, [], None) is not None)               # slower than three singles
@@ -154,7 +159,9 @@ def selfcheck():
     l2 = s.stamp(("d", None), {}, rect=(29, 10, 7, 5), cluster=c)
     s.ended(l1, "SUCCESS", True, cells={"rescuer_1": [(11, 12), (25, 12), (31, 12)]})
     s.ended(l2, "SUCCESS", True, cells={"rescuer_2": [(30, 12)]})
-    ok.append(judge_r2(s.crosstalk(c), s.ledger_lines({})) is None)
+    ok.append(judge_r2(s.crosstalk(c), s.ledger_lines({}), {"success": True}) is None)
+    ok.append(judge_r2(["BREACH: rescuer_1 of launch 1 was at (31, 12), on launch 2's station (29, 10, 7, 5) (margin 6)"],
+                       [{"outcome": "UNRESOLVED"}] * 2, {"success": False}) is not None)    # the plant not taken: no verdict for the row
     s = SR.Series("sc", claim="c", build="b", plan="p", distance=DISTANCE)
     c = s.cluster()
     l1 = s.stamp(("d", None), {}, rect=(10, 10, 7, 5), cluster=c)
@@ -204,17 +211,20 @@ def stage_copy(s, i, series, blk):
         raise RuntimeError("the stage receipt names no station: %s" % cast.receipt.did)
     rect = tuple(int(m.group(k)) for k in (2, 3, 4, 5))
     rid, vid = getattr(cast, r).id, getattr(cast, v).id
+    sid = getattr(cast, b).id
     down = reply(s.raw("jawa/pawn_force_incapacitate", pawn=vid, action="downed", allowBleedingWounds=False))
-    work = reply(s.raw("jawa/set_work_priority", pawnId=rid, workType=WORKTYPE, priority=1, manualPriorities=True))
+    work = reply(s.raw("jawa/set_draft", pawnId=rid, drafted=True))
     breach = [d for d in cast.receipt.did if d.startswith("BREACH")]
     blocks = blk.take()
-    return {"i": i, "rect": rect, "station": m.group(1), "rescuer": r, "victim": v, "rid": rid, "vid": vid, "blocks": blocks,
+    return {"i": i, "rect": rect, "station": m.group(1), "rescuer": r, "victim": v, "rid": rid, "vid": vid, "sid": sid, "blocks": blocks,
             "downed": bool(down.get("downedAfter") or down.get("downed")), "down": down, "work": work.get("success"), "stage_breach": breach,
             "digest": SR.station_digest(blocks, rect) if blocks else (None, "no readBack block was seen")}
 
 
-def order(s, actor, target):
-    return reply(s.raw("jawa/order", actor=actor, level="giver", giver=GIVER, target=target))
+def order(s, rescuer, victim):
+    """The ordered rescue of prove_ordered_rescue.py R0: `rescuer` carries `victim` (a staged copy) to that copy's spot."""
+    return reply(s.raw("jawa/ordered_job", pawnId=rescuer["rid"], jobDef=RESCUE, targetAId=victim["vid"], targetBId=victim["sid"],
+                       count=1, waitTicks=0))
 
 
 def run_and_read(s, copies):
@@ -255,11 +265,9 @@ def single_run(game, save, i):
     """One copy in its own session, as a scene runs today. -> (wall s, outcome, why)."""
     t0 = time.time()
     with open_stage(game, save) as s:
-        if "jawa/order" not in s._tools:
-            raise SystemExit("NO VERDICT: the companion on %s has no jawa/order (RIMMANDRAKE_BUILD_CAST_ASSERTS_AND_ORDER_THROUGH_GIVER, 577381c7e5)" % game)
         blk = Blocks(s)
         k = stage_copy(s, i, None, blk)
-        o = order(s, k["rescuer"], k["victim"])
+        o = order(s, k, k)
         _res, _cells, got = run_and_read(s, [k])
     out, why = rescue_outcome(o, *got[k["victim"]])
     return time.time() - t0, out, why
@@ -286,11 +294,16 @@ def row1(game, save, rows):
                 k["launch"] = series.stamp(k["digest"], SR.read_mod_digests(s), rect=k["rect"], cluster=cl)
             except SR.Stop as e:
                 stopped = "%s at copy %d: %s" % (e.name, i, e.why)
+                first = SR.station_lines(copies[0]["blocks"], copies[0]["rect"])[0] if copies else None
+                now = SR.station_lines(k["blocks"], k["rect"])[0]
+                if first is not None and now is not None:
+                    log("  the station lines that differ: only in copy 1 %s; only in copy %d %s" % (
+                        sorted(set(first) - set(now))[:6], i, sorted(set(now) - set(first))[:6]))
                 break
             copies.append(k)
         mods = series.launches[0]["start"]["mods"] if series.launches else {}
         for k in copies:
-            k["order"] = order(s, k["rescuer"], k["victim"])
+            k["order"] = order(s, k, k)
         _res, cells, got = run_and_read(s, copies) if copies and not stopped else (None, {}, {})
         for k in copies:
             out, why = rescue_outcome(k["order"], *got.get(k["victim"], (None, None)))
@@ -325,18 +338,21 @@ def row2(game, save, rows):
             k["launch"] = series.stamp(k["digest"], SR.read_mod_digests(s), rect=k["rect"], cluster=cl)
             ks.append(k)
         a, b = ks
-        o = order(s, a["rescuer"], b["victim"])          # the plant: copy 1's rescuer onto copy 2's victim, on copy 2's station
+        o = order(s, a, b)                              # the plant: copy 1's rescuer onto copy 2's victim, on copy 2's station
         _res, cells, got = run_and_read(s, ks)
+        raw_out = {}
         for k in ks:
-            out, why = rescue_outcome(o if k is b else {"given": True, "started": True}, *got.get(k["victim"], (None, None)))
+            out, why = rescue_outcome(o, *got.get(k["victim"], (None, None)))
+            raw_out[k["victim"]] = out
             series.ended(k["launch"], out, opportunity=True, exposures=1,
                          cells={k["rescuer"]: cells.get(k["rescuer"], []), k["victim"]: cells.get(k["victim"], [])})
         breaches = series.crosstalk(cl)
         lines = series.ledger_lines({})
-    rows.append(("R2 a planted cross-talk between two copies is a BREACH and both copies read UNRESOLVED", judge_r2(breaches, lines),
-                 "order %s; stations %s and %s; %s; ledger outcomes %s, spoiled_by %s" % (
-                     {k: o.get(k) for k in ("given", "started", "via", "reason")}, a["rect"], b["rect"], breaches[:2] or "no breach",
-                     [l.get("outcome") for l in lines], sorted({str(l.get("spoiled_by")) for l in lines}))))
+    rows.append(("R2 a planted cross-talk between two copies is a BREACH and both copies read UNRESOLVED", judge_r2(breaches, lines, o),
+                 "plant %s; stations %s and %s; %s; ledger outcomes %s, spoiled_by %s" % (
+                     {k: o.get(k) for k in ("success", "job", "curJob", "message")}, a["rect"], b["rect"], breaches[:2] or "no breach",
+                     [l.get("outcome") for l in lines], sorted({str(l.get("spoiled_by")) for l in lines})) +
+                 "; the planted rescuer's cells %s; before the breach the victims read %s" % (cells.get(a["rescuer"], [])[:8], raw_out)))
 
 
 def row3(game, save, rows, tool, args):
