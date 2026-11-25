@@ -971,6 +971,26 @@ def sea_verdict(lake, edge_painted, sticky):
 # ============================================================================ B4 shared-clock blocks (generators)
 HUMAN = "Colonist"
 
+# A3's jumper is one the SHIPPED game has (RIMMANDRAKE_RUN_FLOWWORKS_WAYS_OUT_WHERE_CHERRY_PICKER_KEEPS_JUMP_PACK). The ship
+# cut list (infrastructure/state/cherrypicker/CherryPicker.SHIP.xml, byte-identical to ArchBig's live Cherry Picker config,
+# measured 2026-11-24) cuts every jump apparel (Apparel_PackJump, Apparel_ArmorLocust) and the JumpPack research; Cherry
+# Picker's Pawn_ApparelTracker.Wear prefix refused the pack on 12 of 12 pawns, so visit 11's A3 read UNMEASURED twice on
+# ArchBig. The Longjump legs gene's Longjump ability (Biotech; defNames read from RimSage) is not cut. Its
+# Verb_CastAbilityJump lands through JumpUtility.DoJump and ThingDefOf.PawnFlyer, the same vanilla landing as the pack's
+# Verb_Jump, which is what RM_Patch_PawnFlyer_LandInPit reads. Its hemogen cost needs a Gene_Hemogen, so the jumper also gets
+# Hemogenic and is filled. selftest_b4_jumper_shipped.py.
+JUMPER_GENES = ("Hemogenic", "LongjumpLegs")
+JUMPER_ABILITY = "Longjump"
+
+
+def stage_jumper(s, pid):
+    """Give pid the shipped jumper: the JUMPER_GENES as xenogenes and a full hemogen bar. -> {success, steps}: success only
+    when every step's reply read success, so a refused step is an unread A3, never a jump that was not tried."""
+    steps = [s.call("jawa/pawn_genes", pawn=pid, action="add", gene=g, xenogene=True) for g in JUMPER_GENES]
+    steps.append(s.call("jawa/gene_resource_poke", pawn=pid, mode="hemogen", offset=1.0, applyStatFactor=False))
+    ok = all(isinstance(r, dict) and r.get("success") is True for r in steps)
+    return dict(success=ok, steps=[str(r)[:80] for r in steps])
+
 
 def g_cover_tiers(s):
     """SUSPENSION_BASE A3: one six-cover deck over 2 m (superdeep) cells per tier (40/120/220 kg). Colonists are
@@ -1064,7 +1084,7 @@ def g_cover_tiers(s):
 
 def g_pit_access(s):
     """PIT_ACCESS A1-A4 on one strip: four 3x3 pits (2 m with a portable ladder; 4 m sheer for climbing gear and its
-    no-gear control; 3 m for the jump pack; 3 m sheer with a downed colonist and nobody able to reach)."""
+    no-gear control; 3 m for the jumper (Longjump legs, stage_jumper); 3 m sheer with a downed colonist and nobody able to reach)."""
     x, z, _w, _h = s.zones["access"]
     import fw_walk_common as FC
     P1, P2, P3, P4 = (x + 1, z + 1), (x + 10, z + 1), (x + 19, z + 1), (x + 28, z + 1)
@@ -1086,7 +1106,7 @@ def g_pit_access(s):
     j = s.spawn(HUMAN, (P3[0] + 1, P3[1] + 5))
     d = s.spawn(HUMAN, (P4[0] + 1, P4[1] + 1))
     gear = s.call("jawa/pawn_gear", **{"pawn": g, "action": "wear", "def": "RM_ClimbingGear", "stuff": ""}) if g else {}
-    jp = s.call("jawa/pawn_gear", **{"pawn": j, "action": "wear", "def": "Apparel_PackJump", "stuff": ""}) if j else {}
+    jp = stage_jumper(s, j) if j else {}
     out = (x + 5, z + 10)
     ordered = {}
     for pid in (a, g, ctl):
@@ -1115,20 +1135,13 @@ def g_pit_access(s):
     st = st_out(rc, want_out=False) if ordered.get(ctl, False) else "UNMEASURED"
     s.row("B4_access_no_gear_stays_in", "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS", "A2", st, "MOD" if st != "UNMEASURED" else "HARNESS",
           dict(pawn=rc), "B4")
-    # A3: jump pack in and out (the jump verb is driven by jawa/pawn_use_verb on the pack; refused = UNMEASURED)
+    # A3: a jump into the 3 m pit, by the shipped jumper (stage_jumper; Longjump through jawa/pawn_use_ability's real cast
+    # job, drafted so the pawn holds; refused or not accepted = UNMEASURED)
     jin = {}
     if jp.get("success"):
-        vl = s.call("jawa/pawn_use_verb", pawn=j, action="list")
-        # the list sits under "result" ({success, action, result: {pawn, verbCount, verbs}}, JawaBenchAbilityTools); the
-        # top-level read found none (live 20261018T233414: "no jump verb listed"). Cast by the verb's load id: a jump
-        # pack's verbProps.label may be null
-        listed = (vl.get("result") or {}).get("verbs") if isinstance(vl.get("result"), dict) else vl.get("verbs")
-        verbs = [v for v in (listed or []) if "jump" in str(v).lower()]
-        lab = ((verbs[0].get("id") or verbs[0].get("label")) if isinstance(verbs[0], dict) else str(verbs[0])) if verbs else None
-        if lab:
-            jin = s.call("jawa/pawn_use_verb", pawn=j, action="cast", verb=lab, x=P3[0] + 1, z=P3[1] + 1)
-        else:
-            jin = {"success": False, "why": "no jump verb listed", "verbs": str(vl)[:120]}
+        jin = s.call("jawa/pawn_use_ability", pawn=j, action="cast", ability=JUMPER_ABILITY, x=P3[0] + 1, z=P3[1] + 1,
+                     mode="job", draft=True, waitTicks=120)
+        jin = dict(jin, success=jin.get("success") is True and jin.get("accepted") is True)
     yield Wait(180)
     rj = s.climb(j) if j else {}
     pg = s.call("jawa/pawn_get", pawn=j) if j else {}
@@ -1138,8 +1151,8 @@ def g_pit_access(s):
     st = "UNMEASURED" if not (jp.get("success") and jin.get("success") and rj and hed_read) else (
         "PASS" if (rj.get("depth") or 0) > 0 and not fall else "FAIL")
     s.row("B4_access_jump_pack_in_no_fall", "PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS", "A3", st, "MOD" if st != "UNMEASURED" else "HARNESS",
-          dict(pack=str(jp)[:120], jump=str(jin)[:160], pawn=rj, hediffs=hed,
-               owed="jump back out, skip, knockback-still-falls: not read"), "B4")
+          dict(jumper="%s via %s" % (JUMPER_ABILITY, "+".join(JUMPER_GENES)), staged=str(jp)[:160], jump=str(jin)[:160],
+               pawn=rj, hediffs=hed, owed="jump back out, skip, knockback-still-falls: not read"), "B4")
     # A4: a downed colonist in a sheer pit -> a ladder job queued at the nearest wall, built, colonist rescued
     def ladder_there():
         lr = s.call("jawa/list_things", defName="RM_Ladder,RM_LadderPortable,Blueprint_RM_Ladder,Frame_RM_Ladder,"
