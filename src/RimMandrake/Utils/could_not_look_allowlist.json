@@ -295,7 +295,8 @@
   "src/RimMandrake/rimflow/build_match.py::_early_or_none::except-returns-empty": 1,
   "src/RimMandrake/rimflow/detached_helper.py::drop_clone_lock::except-returns-empty": 1,
   "src/RimMandrake/rimflow/work_bundle_monitor.py::ep::except-returns-empty": 1,
-  "src/RimMandrake/rimflow/work_bundle_monitor.py::read_moves::or-empty": 1
+  "src/RimMandrake/rimflow/work_bundle_monitor.py::read_moves::or-empty": 1,
+  "src/RimMandrake/Utils/publish.py::_take_kept.last_top::except-returns-empty": 1
  },
  "reasons": {
   "src/RimMandrake/rimflow/maturation.py::move_item::or-empty": [
@@ -1240,6 +1241,9 @@
   ],
   "src/RimMandrake/rimflow/work_bundle_monitor.py::read_moves::or-empty": [
    "NOT A COLLAPSE: a stage record with no moves list is a mod that has not moved; an unreadable record is counted in unreadable and names its file"
+  ],
+  "src/RimMandrake/Utils/publish.py::_take_kept.last_top::except-returns-empty": [
+   "NOT A COLLAPSE: last_top is only the order the machine's kept trees are tried in; an unreadable mark sorts the tree after this clone's own, and _reuse_kept makes whichever tree is taken exact before use (design/specs/2026-11-25-treecheck-kept-tree/boundary.md)"
   ]
  }
 }

@@ -390,7 +390,7 @@ def t_replay_resume_takes_a_fresh_clone_and_restores_the_bundle():
                      "session": session, "bundle": bundle, "return_steps": ["bundle failed: kept"]})
     made, restored = [], []
 
-    def fake_take(item_, runner=None, name=None):
+    def fake_take(item_, runner=None, name=None, **_kw):
         dest = os.path.join(pool, "clones", name or item_ + ".det")
         os.makedirs(os.path.join(dest, ".git"), exist_ok=True)
         made.append(dest)

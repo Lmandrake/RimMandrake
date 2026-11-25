@@ -778,7 +778,7 @@ def units_runner(states, log=None):
                 return R(0, states[u] + "\n") if "ActiveState" in argv else R(0, "loaded\n")
             return R(0, "inactive\n") if "ActiveState" in argv else R(0, "not-found\n")
         log.append((list(argv), kw))
-        if argv and argv[0] == "python3" and "scratch_clone.py" in " ".join(argv):     # a fresh clone at --name
+        if argv and argv[0] == "python3" and "scratch_clone.py" in argv[1] and argv[2:3] == ["clone"]:  # a fresh clone at --name
             os.makedirs(os.path.join(POOL, "clones", argv[argv.index("--name") + 1], ".git"), exist_ok=True)
             open(os.path.join(POOL, "clones", argv[argv.index("--name") + 1], "sync"), "w").close()
         return R(0, "")
@@ -1786,7 +1786,29 @@ def t_a_launch_on_a_missing_clone_takes_a_pool_clone_instead():
           % (rc, text[:400]))
 
 
+def test_clone_shape():
+    """RIMMANDRAKE_SHRINK_STEVEDESKTOP_CLONES_FOUR_FILL_ITS_EIGHTY_GIG: a mod run (or one that asks) gets every file, every
+    other run a slim clone; a slim clone's brief says the media are left out, not gone."""
+    check(DH.clone_full("X", {"RM_CONTROL_MOD": "Pyrelands"}) and DH.clone_full("RIMMANDRAKE_PYRELANDS_IN_GAME_VISIT_3")
+          and DH.clone_full("X", {"RM_CLONE_FULL": "1"}) and not DH.clone_full("RIMMANDRAKE_FIX_A_TOOL", {})
+          and not DH.clone_full("X", None) and not DH.clone_full("X", {"RM_CLONE_FULL": "0"}),
+          "shape: a mod run, an in-game item and RM_CLONE_FULL=1 get a full clone; any other run a slim one")
+    d = tempfile.mkdtemp(prefix="shape-", dir=TMP)
+    subprocess.run(["git", "init", "-q", d], check=True)
+    check(DH.slim_line(d) == "" and DH.slim_line(os.path.join(d, "absent")) == "", "shape: a full clone's brief has no slim line")
+    subprocess.run(["git", "-C", d, "sparse-checkout", "set", "--no-cone", *DH_SC().SLIM_PATTERNS], check=True,
+                   capture_output=True)
+    line = DH.slim_line(d)
+    check("slim" in line and "png" in line and "shape . --full" in line, "shape: a slim clone's brief says so: %r" % line[:80])
+
+
+def DH_SC():
+    import scratch_clone
+    return scratch_clone
+
+
 def main():
+    test_clone_shape()
     test_refuse()
     t_a_launch_on_a_missing_clone_takes_a_pool_clone_instead()
     test_launch_and_finish()

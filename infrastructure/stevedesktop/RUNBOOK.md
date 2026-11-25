@@ -487,10 +487,19 @@ RIMMANDRAKE_MOVE_STEVEDESKTOP_CLONES_TO_SSD_LINUX_DRIVE_SITS_ON_HARD_DISK holds 
 - **Check:** `rm-ssd-check.timer` (systemd --user, every 10 min) runs `~/.local/bin/rm_ssd_check.py`. It writes
   `~/.local/state/rm-ssd/last.json` (ON_NVME, NOT_MOUNTED, WRONG_DISK, NOT_NVME or COULD_NOT_LOOK) every run. It writes
   `reading.json` only on ON_NVME, so the live promise on the item goes stale as soon as `~/rm` leaves the NVMe.
-- **Space:** the disk holds about 49 GB. `runner`, `runner_b` and `mirror.git` borrow `store.git`'s objects
+- **Space:** the disk is 79 GB. About 28 GB is fixed: `bench` 5.8, `store.git` 11, `runner` 5.6, `runner_b` 5.2
+  (2026-11-25). `runner`, `runner_b`, `mirror.git` and every pool clone borrow `store.git`'s objects
   (`objects/info/alternates`; `store.git` never prunes, `scratch_clone.py` STORE config). So never delete or re-seed
-  `store.git` here without first `git repack -a -d` in each borrower. `testcentre_env.sh` sets `RM_POOL_FLOOR_GB=12`
-  for the pool, because the global floor (210 GB) is larger than this whole disk. `C:` keeps about 23 GB free.
+  `store.git` here without first `git repack -a -d` in each borrower. `./publish` keeps its two check trees for the
+  machine in `~/rm/treecheck-kept` (4.7 GB each, made once). A helper's pool clone is slim, about 1.5 GB, with no media
+  files, unless it is a mod run (`detached_helper.clone_full`). `testcentre_env.sh` sets `RM_POOL_FLOOR_GB=12` for the
+  pool, because the global floor (210 GB) is larger than this whole disk; its danger is written beside it.
+- **Room check:** `rm-pool-room.timer` (systemd --user, hourly) runs `~/.local/bin/rm_pool_room.py`. It writes
+  `~/.local/state/rm-ssd/pool_room.json` (ROOM, SHORT or COULD_NOT_LOOK: free space, floor, each clone's size, how many
+  more clones the pool admits) every run, and `pool_room_ok.json` only on ROOM: 10 runs fit.
+- **`C:` cannot give the disk much more room.** Measured 2026-11-25: 977 GB used, 22.6 GB free. Steve's own files fill
+  it (`C:\Users\sjlewis\OneDrive` 607 GB, his RimWorld save copies of 2020-2024 and `Ludeon Studios old` 27 GB);
+  Windows, programs and `rm.vhdx` (86 GB) hold the rest. None of that is ours to delete.
 - **Back out:** `sudo systemctl disable --now rm-ssd-mount.service`, `sudo umount ~/rm`, `sudo chattr -i ~/rm`,
   `rmdir ~/rm`, then put a copy of `~/rm` back on the WSL volume, and disable `\RM SSD Attach`.
 

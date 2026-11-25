@@ -35,6 +35,8 @@ unset _d
 # RIMMANDRAKE_MOVE_STEVEDESKTOP_CLONES_TO_SSD_LINUX_DRIVE_SITS_ON_HARD_DISK (2026-11-25): ~/rm here is its own 80 GiB disk on
 # the NVMe (infrastructure/stevedesktop/rm_ssd/), not the WSL volume. The pool's disk floor in slot_rules.json
 # (ops.disk_brake_free_gb, 210 GB: one worst day of scratch growth on Archmagi's volume) is larger than this whole disk and
-# would refuse every new pool clone. The danger here is the ~/rm disk filling mid-run, so the floor keeps one more run's
-# growth free beyond the largest clone: a 4.7 GB kept check tree plus a 7 GB Saves backup seen in one pool clone (2026-11-22).
+# would refuse every new pool clone. The danger here is the ~/rm disk filling mid-run, which breaks every run on it, so the
+# floor keeps one run's worst growth free beyond the largest clone: a 4.7 GB fresh check tree (publish makes one when both
+# of the machine's kept trees in ~/rm/treecheck-kept are held) plus a 7 GB Saves backup seen in one pool clone
+# (2026-11-22). The machine's two kept trees (9.4 GB) are made once and stay; rm-pool-room.timer reads the room each hour.
 export RM_POOL_FLOOR_GB=12

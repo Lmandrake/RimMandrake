@@ -1282,11 +1282,16 @@ def is_sparse(top):
 
 
 CHECKTREE_PREFIX = "rm-treecheck-"
-# RIMMANDRAKE_REUSE_TREECHECK_TREE_EACH_PUBLISH_WRITES_THREE_GIG: one check tree per clone is kept and reused; a reuse
-# rewrites only the files that differ (page: design/specs/2026-11-25-treecheck-kept-tree/boundary.md)
-CHECKTREE_KEPT = CHECKTREE_PREFIX + "kept"
+# RIMMANDRAKE_REUSE_TREECHECK_TREE_EACH_PUBLISH_WRITES_THREE_GIG: kept check trees are reused; a reuse rewrites only the
+# files that differ. RIMMANDRAKE_SHRINK_STEVEDESKTOP_CLONES_FOUR_FILL_ITS_EIGHTY_GIG: the kept trees belong to the machine,
+# one per tree-check slot, under kept_root(); one per clone (4.7 GB in each pool clone) filled SteveDesktop's 80 GB disk.
+# Page: design/specs/2026-11-25-treecheck-kept-tree/boundary.md.
+CHECKTREE_KEPT = CHECKTREE_PREFIX + "kept"   # a clone's own kept tree, the old layout: removed when found
 CHECKTREE_KEPT_LOCK = CHECKTREE_KEPT + ".lock"
-PRISTINE_CONFIG = "rm-pristine-config"       # in the kept tree's .git: its config as the clone made it
+KEPT_ROOT_ENV = "PUBLISH_KEPT_ROOT"          # the machine's kept trees (default <RM_ROOT>/treecheck-kept)
+KEPT_N_ENV = "PUBLISH_KEPT_TREES"            # how many (default treecheck_slots.slots_n(): one per slot)
+KEPT_TOP = "rm-kept-top"                     # in a kept tree's .git: the clone it was last made exact for
+PRISTINE_CONFIG = "rm-pristine-config"       # in the kept tree's .git: its config as a fresh clone made it
 # budget: danger=the sweep deletes the check tree of a live landing; longest=584s (the longest door-check wall of 636 publishes,
 # budget: 14 days to 2026-11-24; one check may now take 6000 s)
 CHECKTREE_STALE_S = 21600
@@ -1353,12 +1358,43 @@ def _sync_kept_refs(top, tree):
     return None
 
 
+def kept_root(top):
+    """-> the folder of the machine's kept trees that serve `top`, or None for a repo outside RM_ROOT (a selftest's temp
+    repo), which keeps its one tree in its own git dir, the layout before, and takes it away with it."""
+    if os.environ.get(KEPT_ROOT_ENV):
+        return os.environ[KEPT_ROOT_ENV]
+    if os.path.realpath(top).startswith(os.path.realpath(RM_ROOT).rstrip(os.sep) + os.sep):
+        return os.path.join(RM_ROOT, "treecheck-kept")
+    return None
+
+
+def kept_n():
+    v = os.environ.get(KEPT_N_ENV, "").strip()
+    if v.isdigit() and int(v) >= 1:
+        return int(v)
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import treecheck_slots
+    return treecheck_slots.slots_n()
+
+
+def _objects_of(top):
+    """The object store a fresh `git clone --shared` of top borrows: top's own objects folder, absolute."""
+    return os.path.join(out(top, "rev-parse", "--absolute-git-dir"), "objects")
+
+
 def _reuse_kept(top, tree, head):
-    """Make the kept tree exactly `head`: no file a check run left, no edit, the refs of a fresh clone. git rewrites
-    only the paths that differ from what the tree holds. -> None when it is exact now, else why it is not."""
+    """Make the kept tree exactly `head`: no file a check run left, no edit, the refs of a fresh clone of `top`. The
+    tree may last have served another clone: it borrows `top`'s objects from now on (`checkout -f` needs none of the last
+    clone's commits, measured 2026-11-25). git rewrites only the paths that differ from what the tree
+    holds. -> None when it is exact now, else why it is not."""
     gd = os.path.join(tree, ".git")
     if not os.path.isdir(gd):
         return "it has no .git"
+    try:
+        with open(os.path.join(gd, "objects", "info", "alternates"), "w") as f:
+            f.write(_objects_of(top) + "\n")
+    except (OSError, Refuse) as e:
+        return "its alternates: %s" % e
     for n in os.listdir(gd):            # a red re-run's tree inside it, left by a killed run: the lock says nobody is in it
         if n.startswith(CHECKTREE_PREFIX):
             _rmtree_hard(os.path.join(gd, n))
@@ -1369,6 +1405,9 @@ def _reuse_kept(top, tree, head):
         shutil.copyfile(os.path.join(gd, PRISTINE_CONFIG), os.path.join(gd, "config"))   # a check may have set config
     except OSError as e:
         return "its pristine config: %s" % e
+    r = _treegit(tree, "config", "remote.origin.url", top)          # a fresh clone of top names top as its origin
+    if r.returncode:
+        return "git config remote.origin.url: %s" % r.stderr.strip()
     for a in (["clean", "-q", "-ffdx"], ["checkout", "-q", "-f", "--detach", head]):
         r = _treegit(tree, *a)
         if r.returncode:
@@ -1399,6 +1438,15 @@ def _fresh_tree(top, tree, head, what):
             raise Refuse("the full checkout of %s for the checks failed: git %s: %s"
                          % (what, a[0] if a[0] != "-C" else a[2], r.stderr.strip()))
     shutil.copyfile(os.path.join(tree, ".git", "config"), os.path.join(tree, ".git", PRISTINE_CONFIG))
+    _mark_kept_top(top, tree)
+
+
+def _mark_kept_top(top, tree):
+    try:
+        with open(os.path.join(tree, ".git", KEPT_TOP), "w") as f:
+            f.write(os.path.realpath(top) + "\n")
+    except OSError:
+        pass                        # only an order hint (_take_kept): a tree with no mark is still exact
 
 
 def _rmtree_hard(p):
@@ -1415,48 +1463,99 @@ def _rmtree_hard(p):
     shutil.rmtree(p, **({"onexc": fix} if sys.version_info >= (3, 12) else {"onerror": fix}))
 
 
-def _take_kept_lock(gitdir):
-    """-> (fd, None) holding the kept tree's flock, or (None, why) when another user holds it or it cannot be opened."""
+def _take_kept_lock(lock):
+    """-> (fd, None) holding the flock on the file `lock`, or (None, why) when another user holds it or it cannot be
+    opened."""
     try:
-        fd = os.open(os.path.join(gitdir, CHECKTREE_KEPT_LOCK), os.O_CREAT | os.O_RDWR, 0o644)
+        fd = os.open(lock, os.O_CREAT | os.O_RDWR, 0o644)
     except OSError as e:
         return None, "its lock could not be opened: %s" % e
     try:
         fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
     except OSError:
         os.close(fd)
-        return None, "another check of this clone holds the kept tree"
+        return None, "another check holds the kept tree"
     return fd, None
+
+
+def _take_kept(top, gitdir):
+    """-> (tree, fd, None): one of the machine's kept_n() kept trees under kept_root(top), its flock held (the tree this
+    clone used last is tried first: the fewest files differ), or (None, None, why) when every one is in use. A repo
+    outside RM_ROOT gets the one tree in its own git dir."""
+    root = kept_root(top)
+    if root is None:
+        fd, why = _take_kept_lock(os.path.join(gitdir, CHECKTREE_KEPT_LOCK))
+        return (os.path.join(gitdir, CHECKTREE_KEPT) if fd is not None else None), fd, why
+    try:
+        os.makedirs(root, exist_ok=True)
+    except OSError as e:
+        return None, None, "the machine's kept-tree folder %s cannot be made: %s" % (root, e)
+    me = os.path.realpath(top)
+
+    def last_top(n):
+        try:
+            with open(os.path.join(root, n, ".git", KEPT_TOP)) as f:
+                return f.read().strip()
+        except OSError:
+            return ""
+    names = sorted((CHECKTREE_PREFIX + "kept-%d" % i for i in range(kept_n())), key=lambda n: last_top(n) != me)
+    for n in names:
+        fd, _why = _take_kept_lock(os.path.join(root, n + ".lock"))
+        if fd is not None:
+            return os.path.join(root, n), fd, None
+    return None, None, "all %d of the machine's kept trees are in use" % len(names)
+
+
+def _drop_clone_kept(gitdir):
+    """Remove the clone's own kept tree, the layout before the machine's kept trees, when no publish holds it. -> what
+    it did, or None."""
+    old = os.path.join(gitdir, CHECKTREE_KEPT)
+    if not os.path.lexists(old):
+        return None
+    fd, why = _take_kept_lock(os.path.join(gitdir, CHECKTREE_KEPT_LOCK))
+    if fd is None:
+        return "this clone's own kept tree stays for now: %s" % why
+    try:
+        _rmtree_hard(old)
+    finally:
+        os.close(fd)
+    return "removed this clone's own kept tree (%s): the machine's kept trees serve it now" % (
+        "FAILED" if os.path.lexists(old) else "gone")
 
 
 @contextlib.contextmanager
 def full_head_tree(top, rev="HEAD", what="HEAD", lands=None):
     """The checks judge the commit, not the working tree: a sparse clone lacks the files they read (they went red or
     green blind, lessons 2026-11-15 194926Z/195130Z) and a full one holds edits the commit does not (is_clone_top).
-    Yield a full checkout of `rev`: the clone's kept check tree (CHECKTREE_KEPT, a `git clone --shared` inside this
-    clone's git dir, no objects copied), made exactly that commit by _reuse_kept, which rewrites only the files that
-    differ; one checkout wrote 3.36 GB on SteveDesktop when every publish made a new tree (2026-11-25). A kept tree that
-    cannot be made exact is made fresh. While another user holds the kept tree (a nested call, split_pre_existing), the
-    call makes a fresh tree of its own and removes it after. A random-named leftover of a killed run (older than
-    CHECKTREE_STALE_S) is removed first. Page: design/specs/2026-11-25-treecheck-kept-tree/boundary.md."""
+    Yield a full checkout of `rev`: one of the machine's kept check trees (_take_kept: kept_n() of them under
+    kept_root(), each a `git clone --shared` of the clone it last served, no objects copied), made exactly that commit
+    of this clone by _reuse_kept, which rewrites only the files that differ; one checkout wrote 3.36 GB on SteveDesktop
+    when every publish made a new tree (2026-11-25), and one kept tree per clone filled its 80 GB disk the same day. A
+    kept tree that cannot be made exact is made fresh. While every kept tree is held (a nested call, split_pre_existing,
+    more callers than slots), the call makes a fresh tree of its own in the clone's git dir and removes it after. A
+    random-named leftover of a killed run (older than CHECKTREE_STALE_S) and the clone's own kept tree of the old layout
+    are removed first. Page: design/specs/2026-11-25-treecheck-kept-tree/boundary.md."""
     gitdir = out(top, "rev-parse", "--absolute-git-dir")
     for n in os.listdir(gitdir):
         p = os.path.join(gitdir, n)
         if n.startswith(CHECKTREE_PREFIX) and n not in (CHECKTREE_KEPT, CHECKTREE_KEPT_LOCK) \
                 and time.time() - os.path.getmtime(p) > CHECKTREE_STALE_S:
             shutil.rmtree(p, ignore_errors=True)
+    dropped = _drop_clone_kept(gitdir) if kept_root(top) is not None else None
+    if dropped:
+        print("tree checks: " + dropped, flush=True)
     head = out(top, "rev-parse", rev)
-    kept = os.path.join(gitdir, CHECKTREE_KEPT)
     t0, w0 = time.monotonic(), _io_written()
     # a check tree's own red re-runs (split_pre_existing is handed the kept tree as top) keep nothing inside it
-    fd, busy = (None, "a check tree keeps no tree of its own") \
-        if os.path.basename(os.path.realpath(top)).startswith(CHECKTREE_PREFIX) else _take_kept_lock(gitdir)
+    kept, fd, busy = (None, None, "a check tree keeps no tree of its own") \
+        if os.path.basename(os.path.realpath(top)).startswith(CHECKTREE_PREFIX) else _take_kept(top, gitdir)
     tree = None
     try:
         if fd is not None:
             why = _reuse_kept(top, kept, head) if os.path.lexists(kept) else "none kept yet"
             if why is None:
-                how = "the kept tree, reused"
+                how = "the kept tree %s, reused" % os.path.basename(kept)
+                _mark_kept_top(top, kept)
                 tree = kept
             else:
                 if os.path.lexists(kept):
@@ -1471,7 +1570,7 @@ def full_head_tree(top, rev="HEAD", what="HEAD", lands=None):
                     except BaseException:
                         shutil.rmtree(kept, ignore_errors=True)
                         raise
-                    how = "the kept tree, made fresh (%s)" % why
+                    how = "the kept tree %s, made fresh (%s)" % (os.path.basename(kept), why)
         if tree is None:
             tree = tempfile.mkdtemp(prefix=CHECKTREE_PREFIX, dir=gitdir)
             _fresh_tree(top, tree, head, what)

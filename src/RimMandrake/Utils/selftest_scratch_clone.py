@@ -173,7 +173,7 @@ def main() -> int:
               "--sparse adds to the base cone, no duplicates")
         check(sc.cone_for(True, [], False) == ("checkout", []) and sc.cone_for(False, [], True) == ("no-checkout", []),
               "--checkout and --no-checkout are explicit opt-ins")
-        for bad in ((True, ["c"], False), (True, [], True), (False, ["c"], True)):
+        for bad in ((True, ["c"], False), (True, [], True), (False, ["c"], True), (True, [], False, True)):
             try:
                 sc.cone_for(*bad)
                 check(False, f"conflicting modes refused: {bad}")
@@ -189,6 +189,23 @@ def main() -> int:
 
         rc, out = quiet(sc.clone, "selftest full", "full", True, [], False, False)
         check(rc == 0 and (BASE / "scratch" / SEAT / "full" / "sub/b.txt").read_text() == "two\n", "--checkout")
+        # RIMMANDRAKE_SHRINK_STEVEDESKTOP_CLONES_FOUR_FILL_ITS_EIGHTY_GIG: a slim clone holds every file but media
+        commit_to_seed(work, "sub/pic.png", "a texture\n")
+        commit_to_seed(work, "sub/deep/snd.wav", "a sound\n")
+        rc, out = quiet(sc.clone, "selftest slim", "slim", False, [], False, False, False, True)
+        sl = BASE / "scratch" / SEAT / "slim"
+        listed = sh("git", "-C", str(sl), "ls-files").split("\n")
+        check(rc == 0 and (sl / "a.txt").exists() and (sl / "sub/b.txt").exists() and not (sl / "sub/pic.png").exists()
+              and not (sl / "sub/deep/snd.wav").exists() and "sub/pic.png" in listed and sc.is_slim(sl),
+              "--slim: every text file in every folder, no media file on disk, media still tracked")
+        check(not sh("git", "-C", str(sl), "status", "--porcelain"), "--slim: git status reads clean")
+        check(sc.shape(sl, False) == "full" and (sl / "sub/pic.png").read_text() == "a texture\n" and not sc.is_slim(sl),
+              "shape --full brings the media back")
+        sc.shape(sl, True)
+        check(not (sl / "sub/pic.png").exists() and (sl / "sub/b.txt").exists() and sc.is_slim(sl),
+              "shape --slim leaves the media out again")
+        check(not sc.is_slim(BASE / "scratch" / SEAT / "full") and not sc.is_slim(BASE / "scratch" / SEAT / "plain"),
+              "a full clone and a cone-sparse clone do not read as slim")
         commit_to_seed(work, "c/d.txt", "three\n")       # store must pick this up on the next clone
         rc, out = quiet(sc.clone, "selftest sparse", "sparse", False, ["c"], False, False)
         sp = BASE / "scratch" / SEAT / "sparse"
@@ -202,7 +219,7 @@ def main() -> int:
         check(rc == 1, "existing destination refused")
 
         uses = sc.read_jsonl("uses.jsonl")
-        check(len(uses) == 6, f"one record per use: {len(uses)}")
+        check(len(uses) == 7, f"one record per use: {len(uses)}")
         need = {"ts", "seat", "purpose", "path", "wall_s", "git_dir_own_bytes", "full_clone_bytes",
                 "objects_borrowed", "ok", "error"}
         check(need <= set(uses[0]), f"record fields missing: {need - set(uses[0])}")
@@ -212,7 +229,7 @@ def main() -> int:
         # A seat-clone gc cannot reach a store borrower; the store's own gc keeps everything.
         sh("git", "--git-dir", os.environ["RM_OBJSTORE"], "gc", "-q")
         s = sc.sample()
-        check(s["borrowers_store"] == 4 and s["borrowers_seat"] == 0, f"borrowers counted: {s}")
+        check(s["borrowers_store"] == 5 and s["borrowers_seat"] == 0, f"borrowers counted: {s}")
         check(s["borrowers_broken"] == [] and s["fsck_sampled"], "healthy borrowers pass the check")
         check(s["disk_free_bytes"] > 0 and s["store_objects"] > 0, "store + disk recorded")
 
@@ -221,12 +238,12 @@ def main() -> int:
         objs.rename(BASE / "objects.aside")
         s = sc.sample()
         (BASE / "objects.aside").rename(objs)
-        check(len(s["borrowers_broken"]) == 4 and len(sc.read_jsonl("incidents.jsonl")) == 4,
+        check(len(s["borrowers_broken"]) == 5 and len(sc.read_jsonl("incidents.jsonl")) == 5,
               f"missing store objects become incidents: {s['borrowers_broken']}")
 
         rep = sc.report()
         check("corruption incidents" in rep and "VERDICT: BAD" in rep, "report verdict reflects incidents")
-        check("5 / 1" in rep, "report counts uses")
+        check("6 / 1" in rep, "report counts uses")
 
         # The bounded pool: cap at creation, reuse before create, stranded work is an alarm and is never reused.
         pool = BASE / "scratch" / "pool"

@@ -619,11 +619,26 @@ def move_half_made_aside(dest, name, runner=subprocess.run, now=None):
     return "%s %s, moved aside to %s" % (dest, why, target)
 
 
-def take_clone(item, runner=subprocess.run, name=None):
+SCRATCH_CLONE = os.path.join(REPO, "src", "RimMandrake", "Utils", "scratch_clone.py")
+FULL_TREE_ENV = "RM_CLONE_FULL"     # --env RM_CLONE_FULL=1: a run that is no mod run but reads media (art) gets every file
+
+
+def clone_full(item, env=None):
+    """True when the run's clone needs every file: a mod run (RM_CONTROL_MOD: a build, a deploy, an in-game visit) or a
+    run that asks (RM_CLONE_FULL=1). Every other run gets a slim clone, no media (scratch_clone.SLIM_MEDIA): a full clone
+    is 4.7 GB and a slim one 1.4 GB, and ten full ones did not fit SteveDesktop's 80 GB disk
+    (RIMMANDRAKE_SHRINK_STEVEDESKTOP_CLONES_FOUR_FILL_ITS_EIGHTY_GIG)."""
+    env = env or {}
+    return bool(env.get("RM_CONTROL_MOD") or INGAME_ITEM.search(item or "")
+                or str(env.get(FULL_TREE_ENV, "")).strip().lower() in ("1", "yes", "true"))
+
+
+def take_clone(item, runner=subprocess.run, name=None, full=True):
     """-> (clone path, log line). A pool clone named <ITEM>.det (or `name`, a resume's fresh one): made by
-    scratch_clone.py, or reused and synced. A clone whose checkout is incomplete (no ./sync at its root: its first checkout
-    died partway) or that is no clone is moved aside and made again, said in one line
-    (RIMMANDRAKE_REPLACE_HALF_MADE_POOL_CLONE_LAUNCH_FAILED_THRICE: three launches died on `./sync` missing)."""
+    scratch_clone.py, or reused and synced, every file when `full`, else slim (clone_full). A clone whose checkout is
+    incomplete (no ./sync at its root: its first checkout died partway) or that is no clone is moved aside and made
+    again, said in one line (RIMMANDRAKE_REPLACE_HALF_MADE_POOL_CLONE_LAUNCH_FAILED_THRICE: three launches died on
+    `./sync` missing)."""
     name = name or item + ".det"
     if runner is subprocess.run:    # a checkout is gigabytes of file cache: never in a timed unit's own memory limit
         runner = own_cgroup.run
@@ -637,14 +652,21 @@ def take_clone(item, runner=subprocess.run, name=None):
         if r.returncode:    # a stale clone builds stale code: refused, as a new clone that fails is
             # (RIMMANDRAKE_REFUSE_STALE_DET_CLONE_WHEN_SYNC_FAILS)
             raise RuntimeError("reused %s but its ./sync failed (exit %d): %s" % (dest, r.returncode, said))
-        return dest, "reused %s (sync exit 0: %s; %s)" % (dest, said, seat_identity(dest))
+        shaped = "slim" if is_slim(dest) else "full"
+        if (shaped == "slim") == full:      # the last run's shape is not this one's
+            s = runner(["python3", SCRATCH_CLONE, "shape", dest, "--full" if full else "--slim"], capture_output=True,
+                       text=True, timeout=1800, stdin=subprocess.DEVNULL)  # budget: class=call
+            shaped = ((s.stdout or "") + (s.stderr or "")).strip()
+            if s.returncode:    # a slim clone given to a mod run builds without its textures: refused, as a failed sync is
+                raise RuntimeError("reused %s but its shape failed (exit %d): %s" % (dest, s.returncode, shaped))
+        return dest, "reused %s (sync exit 0: %s; %s; %s)" % (dest, said, shaped, seat_identity(dest))
     env = dict(os.environ, RM_SCRATCH_ROOT=pool_root(), RM_SEAT="clones")
-    r = runner(["python3", os.path.join(REPO, "src", "RimMandrake", "Utils", "scratch_clone.py"), "clone",
-                "detached run for " + item, "--name", name, "--checkout", "--fetch"],
+    r = runner(["python3", SCRATCH_CLONE, "clone",
+                "detached run for " + item, "--name", name, "--checkout" if full else "--slim", "--fetch"],
                env=env, capture_output=True, text=True, timeout=10800, stdin=subprocess.DEVNULL)  # budget: class=launch
     if r.returncode or not os.path.isdir(os.path.join(dest, ".git")):
         raise RuntimeError("scratch_clone failed (exit %d): %s" % (r.returncode, ((r.stdout or "") + (r.stderr or ""))))
-    return dest, replaced + "made " + dest
+    return dest, replaced + "made " + dest + ("" if full else " (slim: no media)")
 
 
 def clone_lock_path(dest):
@@ -1502,7 +1524,34 @@ def brief_message(brief, item, seat, clone, max_s=None, env=None):
     return (brief.rstrip() + item_history(brief, item, clone, env)
             + FOOTER.format(clone=clone, item=item, seat=seat,
                             bound_text=("Wall-time bound: %d s" % max_s) if max_s else "no wall-time bound")
-            + card_footer(item) + command_lines(item, seat))
+            + slim_line(clone) + card_footer(item) + command_lines(item, seat))
+
+
+SLIM_LINE = """- This clone is slim: it holds every file but media (%s). git still lists them; the disk holds none. When your
+  work reads one, run `python3 src/RimMandrake/Utils/scratch_clone.py shape . --full` (about 20 s, 3.3 GB). A missing
+  media file here is no finding. ./publish checks a full checkout either way.
+"""
+
+
+def is_slim(clone):
+    """scratch_clone.is_slim, the one reading of a clone's shape."""
+    utils = os.path.join(REPO, "src", "RimMandrake", "Utils")
+    if utils not in sys.path:
+        sys.path.insert(0, utils)
+    import scratch_clone
+    return scratch_clone.is_slim(clone)
+
+
+def slim_line(clone):
+    """-> SLIM_LINE when `clone` is slim (scratch_clone.is_slim), else "": a run must never read a left-out file as gone."""
+    try:
+        if not is_slim(clone):          # is_slim puts scratch_clone on the path
+            return ""
+        import scratch_clone
+        return SLIM_LINE % ", ".join(scratch_clone.SLIM_MEDIA)
+    except Exception as e:  # noqa: BLE001  the line is a courtesy: a failure to read the shape says so and never blocks a launch
+        return "- This clone's shape could not be read (%s: %s); a media file missing here may be left out, not gone.\n" % (
+            type(e).__name__, e)
 
 
 # budget: danger=a hung launch check holds the launch; never reached in the 14 days to 2026-11-24; no record of its run
@@ -1694,7 +1743,7 @@ def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, 
         how = "given " + clone
     else:
         try:
-            clone, how = take_clone(item, runner=runner, name=os.path.basename(dest))
+            clone, how = take_clone(item, runner=runner, name=os.path.basename(dest), full=clone_full(item, env))
         except Exception as e:  # noqa: BLE001
             return 1, "clone failed: %s" % e
         if resume_session and os.path.basename(dest) != item + ".det":

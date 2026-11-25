@@ -44,7 +44,21 @@ BASE = tempfile.mkdtemp(prefix="tckept-", dir=os.path.expanduser("~/.cache"))
 __import__("atexit").register(shutil.rmtree, BASE, True)
 FAILS = []
 ENV = dict(os.environ, GIT_AUTHOR_NAME="t", GIT_AUTHOR_EMAIL="t@t", GIT_COMMITTER_NAME="t", GIT_COMMITTER_EMAIL="t@t")
-KEPT = getattr(P, "CHECKTREE_KEPT", "rm-treecheck-kept")
+KEPT = getattr(P, "CHECKTREE_KEPT", "rm-treecheck-kept")      # a clone's own kept tree: the layout before the machine's
+KROOT_ENV = getattr(P, "KEPT_ROOT_ENV", "PUBLISH_KEPT_ROOT")
+KN_ENV = getattr(P, "KEPT_N_ENV", "PUBLISH_KEPT_TREES")
+
+
+def machine(name, n=2):
+    """Give the next calls a machine of their own: kept trees under BASE/<name>-kept, n of them. -> that folder."""
+    root = os.path.join(BASE, name + "-kept")
+    os.makedirs(root, exist_ok=True)
+    os.environ[KROOT_ENV], os.environ[KN_ENV] = root, str(n)
+    return root
+
+
+def kept_at(root, i=0):
+    return os.path.join(root, P.CHECKTREE_PREFIX + "kept-%d" % i)
 
 
 def check(ok, what):
@@ -62,7 +76,8 @@ def g(cwd, *a, inp=None):
 
 def repo(name):
     """A clone-like repo: 40 files in 4 folders, an ignore rule, commit A; commit B changes one file. HEAD at B on main,
-    plus a tag and a second branch. -> (top, A, B)."""
+    plus a tag and a second branch; the kept trees of a machine of its own (machine). -> (top, A, B)."""
+    machine(name)
     top = os.path.join(BASE, name)
     os.makedirs(top)
     g(top, "init", "-q", "-b", "main")
@@ -176,14 +191,13 @@ def t_a_tree_that_cannot_be_made_exact_is_made_fresh():
     for plant, how in ((lambda t: Path(t, ".git", "index").write_bytes(b"garbage"), "a garbage index"),
                        (lambda t: shutil.rmtree(os.path.join(t, ".git")), "no .git at all"),
                        (ro_folder, "a read-only folder git clean cannot empty"),
-                       (lambda t: Path(t, ".git", "objects", "info", "alternates").write_text("/nonexistent/objects\n"),
-                        "its objects gone (alternates name nothing)")):
+                       (lambda t: Path(t, ".git", "HEAD").write_text("garbage\n"), "a garbage HEAD")):
         t, _r, _o = tree_at(top)
         Path(t, "stray.txt").write_text("x\n")
         plant(t)
         t2, why, o = tree_at(top, keep=lambda t: exact(top, t, b))
         check(why is None and "made fresh" in o and "cannot be made exact" in o
-              and t2 == os.path.join(top, ".git", KEPT),
+              and t2 == kept_at(os.environ[KROOT_ENV]),
               "a-tree-that-cannot-be-made-exact-is-made-fresh: %s -> exact fresh tree, said why (%s; %r)"
               % (how, why, o.strip()[-200:]))
     check(g(top, "rev-parse", "HEAD") == b and not g(top, "status", "--porcelain"),
@@ -199,8 +213,19 @@ open(sys.argv[2], "w").write("held"); time.sleep(60)
 
 def t_a_second_user_makes_its_own_tree():
     top, a, b = repo("second")
-    gitdir = os.path.join(top, ".git")
+    root = os.environ[KROOT_ENV]
     seen = {}
+
+    def outer2(t):
+        inner_t, inner, _o = tree_at(top, rev=a, keep=lambda u: g(u, "rev-parse", "HEAD"))
+        seen["two"] = (t, inner_t, inner, os.path.isdir(inner_t))
+        return exact(top, t, b)
+    _t, why, _o = tree_at(top, keep=outer2)
+    o_t, i_t, i_head, i_kept = seen["two"]
+    check(o_t != i_t and {o_t, i_t} == {kept_at(root, 0), kept_at(root, 1)} and i_head == a and i_kept and why is None,
+          "a-second-user-makes-its-own-tree: with two kept trees, a nested call gets the other kept tree at its own rev, "
+          "and the outer tree stays exact (%s; %s, %s)" % (why, o_t, i_t))
+    root = machine("second-one", n=1)
 
     def outer(t):
         seen["outer"] = t
@@ -213,14 +238,14 @@ def t_a_second_user_makes_its_own_tree():
           "a-second-user-makes-its-own-tree: a nested call yields another tree at its own rev, removed after, and the "
           "outer tree stays exact (%s)" % why)
     flag = os.path.join(BASE, "held.flag")
-    h = subprocess.Popen([sys.executable, "-c", HOLDER, os.path.join(gitdir, KEPT + ".lock"), flag])
+    h = subprocess.Popen([sys.executable, "-c", HOLDER, kept_at(root) + ".lock", flag])
     try:
         for _ in range(200):
             if os.path.exists(flag):
                 break
             time.sleep(0.05)
         t, why, o = tree_at(top, keep=lambda t: exact(top, t, b))
-        check(t != os.path.join(gitdir, KEPT) and why is None and not os.path.exists(t),
+        check(t != kept_at(root) and why is None and not os.path.exists(t),
               "a-second-user-makes-its-own-tree: while another process holds the kept tree, a call makes its own and "
               "removes it after (%s; %r)" % (why, o.strip()[-120:]))
     finally:
@@ -245,10 +270,12 @@ def t_a_clone_back_from_the_pool_gets_no_wrong_tree():
     Path(t, "d1", "f1.txt").write_text("the last run's edit\n")
     g(t, "update-ref", "refs/remotes/origin/main", a)
     (gitdir / "rm-treecheck-abc123" / "src").mkdir(parents=True)          # a random-named tree a killed run left
+    (gitdir / KEPT / "src").mkdir(parents=True)                           # a clone's own kept tree, the old layout
+    (gitdir / (KEPT + ".lock")).write_text("")
     said, _o = quiet(lambda: SC.shed(Path(top)))
-    check(os.path.isdir(t) and not (gitdir / "rm-treecheck-abc123").exists(),
-          "a-clone-back-from-the-pool-gets-no-wrong-tree: shed keeps the kept tree and removes the random one (%s)"
-          % said)
+    check(os.path.isdir(t) and not list(gitdir.glob(P.CHECKTREE_PREFIX + "*")),
+          "a-clone-back-from-the-pool-gets-no-wrong-tree: shed removes every check tree in the clone (a random one, the "
+          "old layout's own kept tree and its lock) and never the machine's kept tree (%s)" % said)
     Path(top, "d2", "f2.txt").write_text("the next run's work\n")
     g(top, "commit", "-q", "-am", "C")
     c = g(top, "rev-parse", "HEAD")
@@ -288,7 +315,7 @@ sys.modules["publish"] = P; spec.loader.exec_module(P)
 import signal
 signal.signal(signal.SIGTERM, getattr(P, "_on_term", signal.SIG_DFL))
 import fcntl
-fd = os.open(os.path.join(sys.argv[3], ".git", sys.argv[5] + ".lock"), os.O_CREAT | os.O_RDWR); fcntl.flock(fd, fcntl.LOCK_EX)
+fd = os.open(sys.argv[5], os.O_CREAT | os.O_RDWR); fcntl.flock(fd, fcntl.LOCK_EX)
 import subprocess
 with P.full_head_tree(sys.argv[3]) as t:
     child = subprocess.Popen(["sleep", "300"], start_new_session=True)
@@ -298,9 +325,10 @@ with P.full_head_tree(sys.argv[3]) as t:
 
 def t_a_killed_publish_leaves_no_random_tree():
     top, a, b = repo("termed")
+    root = machine("termed", n=1)
     gitdir = os.path.join(top, ".git")
     flag = os.path.join(BASE, "termed.flag")
-    p = subprocess.Popen([sys.executable, "-c", TERMED, HERE, UNDER, top, flag, KEPT],
+    p = subprocess.Popen([sys.executable, "-c", TERMED, HERE, UNDER, top, flag, kept_at(root) + ".lock"],
                          stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     for _ in range(400):
         if os.path.exists(flag) and open(flag).read():
@@ -316,20 +344,105 @@ def t_a_killed_publish_leaves_no_random_tree():
     alive = os.path.exists("/proc/%s" % child) and "Z" not in open("/proc/%s/stat" % child).read().split()[2]
     if alive:
         os.kill(int(child), signal.SIGKILL)
-    check(not os.path.exists(t) and t != os.path.join(gitdir, KEPT) and not alive,
+    check(not os.path.exists(t) and t != kept_at(root) and not alive,
           "a-killed-publish-leaves-no-random-tree: SIGTERM removes the random-named tree and ends the check's session "
           "(tree %s, check %s)" % ("left" if os.path.exists(t) else "gone", "alive" if alive else "ended"))
     _t, _r, _o = tree_at(top)                                           # a kept tree and its lock now exist
     old = time.time() - P.CHECKTREE_STALE_S - 60
     left = os.path.join(gitdir, "rm-treecheck-q1w2e3r4")
     os.makedirs(os.path.join(left, "src"))
-    for pth in (left, os.path.join(gitdir, KEPT), os.path.join(gitdir, KEPT + ".lock")):
+    for pth in (left, kept_at(root), kept_at(root) + ".lock"):
         os.utime(pth, (old, old))
     _t, _r, o = tree_at(top)
-    check(not os.path.exists(left) and os.path.isdir(os.path.join(gitdir, KEPT)) and "reused" in o
-          and os.path.exists(os.path.join(gitdir, KEPT + ".lock")),
+    check(not os.path.exists(left) and os.path.isdir(kept_at(root)) and "reused" in o
+          and os.path.exists(kept_at(root) + ".lock"),
           "a-killed-publish-leaves-no-random-tree: the stale sweep removes an old random-named tree and never the kept "
           "tree or its lock")
+
+
+def t_one_kept_tree_serves_every_clone_of_the_machine():
+    x, a, b = repo("share-x")
+    root = machine("share", n=1)
+    y = os.path.join(BASE, "share-y")
+    g(BASE, "clone", "-q", x, y)
+    g(y, "checkout", "-q", "main")
+    Path(y, "d3", "f9.txt").write_text("only in y\n")
+    g(y, "commit", "-q", "-am", "Y")
+    yc = g(y, "rev-parse", "HEAD")
+    tx, sx, _o = tree_at(x, keep=stats)
+    ty, (why, sy, alt, url), oy = tree_at(y, keep=lambda t: (exact(y, t, yc), stats(t),
+                                                           Path(t, ".git/objects/info/alternates").read_text().strip(),
+                                                           g(t, "config", "remote.origin.url")))
+    moved = sorted(q for q in sx if q in sy and sx[q] != sy[q])
+    check(tx == ty == kept_at(root) and why is None and "reused" in oy and moved == ["d3/f9.txt"],
+          "one-kept-tree-serves-every-clone-of-the-machine: the tree x used is reused for y, exactly y's commit with a "
+          "fresh clone of y's refs, rewriting only the file that differs (%s; %s)" % (why, moved[:4]))
+    check(alt == os.path.join(y, ".git", "objects") and url == y,
+          "one-kept-tree-serves-every-clone-of-the-machine: it borrows y's objects and names y as its origin "
+          "(%s; %s)" % (alt, url))
+    Path(x, "d1", "f1.txt").write_text("only in x\n")                 # the tree's HEAD now names a commit y lacks
+    g(x, "commit", "-q", "-am", "X")
+    tree_at(x)
+    shutil.rmtree(x)                                                    # and the clone that holds it is gone
+    t2, why, o = tree_at(y, keep=lambda t: exact(y, t, yc))
+    check(t2 == kept_at(root) and why is None and "reused" in o,
+          "one-kept-tree-serves-every-clone-of-the-machine: after the last clone it served is removed, the next clone "
+          "still reuses it, never reading that clone's commits (%s; %r)" % (why, o.strip()[-160:]))
+    for i in range(3):
+        z = os.path.join(BASE, "share-z%d" % i)
+        g(BASE, "clone", "-q", y, z)
+        tree_at(z)
+    trees = sorted(n for n in os.listdir(root) if not n.endswith(".lock"))
+    check(trees == [os.path.basename(kept_at(root))] and not any(
+              n.startswith(P.CHECKTREE_PREFIX) for i in range(3)
+              for n in os.listdir(os.path.join(BASE, "share-z%d" % i, ".git"))),
+          "one-kept-tree-serves-every-clone-of-the-machine: three more clones add no tree, on the machine or in a "
+          "clone (%s)" % trees)
+
+
+def t_a_repo_outside_rm_root_keeps_its_tree_in_its_own_git_dir():
+    top, a, b = repo("outside")
+    del os.environ[KROOT_ENV]
+    fake_rm = os.path.join(BASE, "fake-rm")
+    os.makedirs(fake_rm)
+    was, P.RM_ROOT = P.RM_ROOT, fake_rm
+    try:
+        t, why, o = tree_at(top, keep=lambda t: exact(top, t, b))
+        t2, why2, o2 = tree_at(top, keep=lambda t: exact(top, t, b))
+        inside = os.path.join(fake_rm, "clone")
+        g(BASE, "clone", "-q", top, inside)
+        t3, why3, _o = tree_at(inside, keep=lambda t: exact(inside, t, b))
+    finally:
+        P.RM_ROOT = was
+    check(t == t2 == os.path.join(top, ".git", KEPT) and why is None and why2 is None and "reused" in o2
+          and t3 == os.path.join(fake_rm, "treecheck-kept", P.CHECKTREE_PREFIX + "kept-0") and why3 is None,
+          "a-repo-outside-rm-root-keeps-its-tree-in-its-own-git-dir: a temp repo keeps one tree in its .git and reuses "
+          "it; a clone under RM_ROOT uses the machine's (%s; %s; %s)" % (t, t3, why3))
+
+
+def t_a_clone_keeps_no_kept_tree_of_its_own():
+    top, a, b = repo("legacy")
+    old = os.path.join(top, ".git", KEPT)
+    os.makedirs(os.path.join(old, "src"))
+    Path(old, "src", "f").write_text("a full checkout of the old layout\n")
+    flag = os.path.join(BASE, "legacy.flag")
+    h = subprocess.Popen([sys.executable, "-c", HOLDER, old + ".lock", flag])
+    try:
+        for _ in range(200):
+            if os.path.exists(flag):
+                break
+            time.sleep(0.05)
+        _t, why, o = tree_at(top, keep=lambda t: exact(top, t, b))
+        check(os.path.isdir(old) and why is None and "stays for now" in o,
+              "a-clone-keeps-no-kept-tree-of-its-own: while an older publish holds the clone's own kept tree, it stays "
+              "and the checks still run (%s)" % why)
+    finally:
+        h.kill()
+        h.wait()
+    _t, why, o = tree_at(top, keep=lambda t: exact(top, t, b))
+    check(not os.path.exists(old) and why is None and "removed this clone's own kept tree" in o,
+          "a-clone-keeps-no-kept-tree-of-its-own: the next call removes the clone's own kept tree and says so (%r)"
+          % o.strip()[:160])
 
 
 
@@ -344,10 +457,17 @@ MUTANTS = [
     ("the lock is ignored", "        fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)\n    except OSError:\n        os.close(fd)\n"
      "        return None, \"another", "        pass\n    except OSError:\n        os.close(fd)\n        return None, \"another"),
     ("a read-only folder blocks the fresh tree", '    shutil.rmtree(p, **({"onexc": fix} if sys.version_info >= (3, 12) else {"onerror": fix}))', "    shutil.rmtree(p, ignore_errors=True)"),
-    ("rev is ignored", "    head = out(top, \"rev-parse\", rev)\n    kept", "    head = out(top, \"rev-parse\", \"HEAD\")\n    kept"),
+    ("rev is ignored", "    head = out(top, \"rev-parse\", rev)\n    t0", "    head = out(top, \"rev-parse\", \"HEAD\")\n    t0"),
     ("SIGTERM kills no check", "    _kill_own_sessions()\n    raise SystemExit", "    raise SystemExit"),
     ("SIGTERM skips clean-up", "    raise SystemExit(128 + signum)", "    os._exit(128 + signum)"),
-    ("the sweep removes the kept tree", "n not in (CHECKTREE_KEPT, CHECKTREE_KEPT_LOCK)", "True"),
+    ("alternates not repointed", '            f.write(_objects_of(top) + "\\n")', "            pass"),
+    ("origin stays the last clone's", '    r = _treegit(tree, "config", "remote.origin.url", top)', '    r = _treegit(tree, "config", "core.bare")'),
+    ("one kept tree per clone again", "    root = kept_root(top)\n    if root is None:", '    root = None\n    if root is None:'),
+    ("the old per-clone tree stays", "    dropped = _drop_clone_kept(gitdir) if", "    dropped = None if"),
+    ("a temp repo writes the machine's trees", '        return os.path.join(RM_ROOT, "treecheck-kept")\n    return None',
+     '        return os.path.join(RM_ROOT, "treecheck-kept")\n    return os.path.join(RM_ROOT, "treecheck-kept")'),
+    ("one kept tree whatever the slots", "names = sorted((CHECKTREE_PREFIX + \"kept-%d\" % i for i in range(kept_n()))",
+     "names = sorted((CHECKTREE_PREFIX + \"kept-%d\" % i for i in range(1))"),
     ("a check tree keeps a tree of its own", '        if os.path.basename(os.path.realpath(top)).startswith(CHECKTREE_PREFIX) else',
      '        if False else'),
     ("a leftover inside the kept tree stays", "        if n.startswith(CHECKTREE_PREFIX):\n            _rmtree_hard(os.path.join(gd, n))",
@@ -386,7 +506,9 @@ def main():
     tests = [t_a_second_checkout_rewrites_only_the_files_that_differ, t_the_kept_tree_is_exactly_the_commit,
              t_a_tree_that_cannot_be_made_exact_is_made_fresh, t_a_second_user_makes_its_own_tree,
              t_a_rev_other_than_head_is_checked_out, t_a_clone_back_from_the_pool_gets_no_wrong_tree,
-             t_a_check_tree_keeps_no_tree_of_its_own, t_a_killed_publish_leaves_no_random_tree]
+             t_a_check_tree_keeps_no_tree_of_its_own, t_a_killed_publish_leaves_no_random_tree,
+             t_one_kept_tree_serves_every_clone_of_the_machine, t_a_clone_keeps_no_kept_tree_of_its_own,
+             t_a_repo_outside_rm_root_keeps_its_tree_in_its_own_git_dir]
     for t in tests:
         try:
             t()

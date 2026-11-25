@@ -1,0 +1,7 @@
+[Unit]
+Description=Read how many helper runs ~/rm still holds (rm_pool_room.py; reading ~/.local/state/rm-ssd/pool_room_ok.json)
+
+[Service]
+Type=oneshot
+# testcentre_env.sh is the one home of RM_POOL_FLOOR_GB, the floor the pool admits clones by
+ExecStart=/bin/bash -c '. %h/rm/runner/infrastructure/stevedesktop/testcentre_env.sh && exec /usr/bin/python3 %h/.local/bin/rm_pool_room.py'

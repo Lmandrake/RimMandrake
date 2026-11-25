@@ -40,8 +40,12 @@ What a clone checks out (SCRATCH_CLONES_SHRINK_SPARSE_NOT_FULL; measured 2026-10
   default        cone-sparse: the root files plus BASE_CONE (the tooling every helper needs to run selftests, rimflow
                  and ./publish, ~200 MB), plus any --sparse PATH the task needs. `git sparse-checkout add <dir>` widens
                  it later; a commit outside the cone is fine, git keeps the rest of the tree as it is on HEAD.
-  --checkout     the whole tree. For Relentless pool clones (bounded by the pool cap) and work that truly reads
-                 everything (a full build, a repo-wide sweep); say why in the purpose.
+  --checkout     the whole tree. For a mod run (a build, a deploy, art) and work that truly reads everything; say why
+                 in the purpose.
+  --slim         every file but media (SLIM_MEDIA: png, jpg, audio ...; 3.6 of the 4.8 GB tree on 2026-11-25), a non-cone
+                 sparse checkout. A detached helper's pool clone that is no mod run (RIMMANDRAKE_SHRINK_STEVEDESKTOP_CLONES_
+                 FOUR_FILL_ITS_EIGHTY_GIG: ten full clones did not fit SteveDesktop's 80 GB disk). `shape --full` or
+                 `git sparse-checkout disable` brings the media back; ./publish judges a full checkout either way.
   --no-checkout  no working tree at all (read-only git inspection).
 """
 from __future__ import annotations
@@ -306,10 +310,37 @@ def refresh(lock: bool = True) -> dict:
 
 # ---------------------------------------------------------------- clone
 
-def cone_for(checkout: bool, sparse: list[str], no_checkout: bool) -> tuple[str, list[str]]:
+# The files a slim clone leaves out: media, which no pipeline ticket reads as text. Case as the tree holds them (all
+# lower case, measured 2026-11-25: git ls-files).
+SLIM_MEDIA = ("png", "jpg", "jpeg", "webp", "gif", "bmp", "tga", "dds", "psd", "wav", "ogg", "mp3", "mp4")
+SLIM_PATTERNS = ("/*",) + tuple("!*." + e for e in SLIM_MEDIA)
+
+
+def is_slim(dest) -> bool:
+    """True when `dest` is a clone that `shape` made slim (its sparse-checkout file is SLIM_PATTERNS)."""
+    try:
+        got = (Path(dest) / ".git" / "info" / "sparse-checkout").read_text().split()
+    except OSError:
+        return False
+    return got == list(SLIM_PATTERNS) and git("config", "--bool", "core.sparseCheckout", cwd=dest, check=False) == "true"
+
+
+def shape(dest, slim: bool) -> str:
+    """Make the clone `dest` slim (no media files) or full (every file). git leaves out or brings back only what
+    differs. -> one line that says what it is now. Raises on a git failure."""
+    if slim:
+        git("sparse-checkout", "set", "--no-cone", *SLIM_PATTERNS, cwd=dest)
+        return "slim (no %s)" % ", ".join(SLIM_MEDIA[:4] + ("...",))
+    git("sparse-checkout", "disable", cwd=dest)
+    return "full"
+
+
+def cone_for(checkout: bool, sparse: list[str], no_checkout: bool, slim: bool = False) -> tuple[str, list[str]]:
     """-> (mode, cone dirs). Sparse is the default: BASE_CONE plus whatever --sparse names."""
-    if checkout and (sparse or no_checkout) or (sparse and no_checkout):
-        raise ValueError("pick one of --sparse, --checkout, --no-checkout")
+    if sum((bool(checkout), bool(sparse), bool(no_checkout), bool(slim))) > 1:
+        raise ValueError("pick one of --sparse, --checkout, --no-checkout, --slim")
+    if slim:
+        return "slim", []
     if checkout:
         return "checkout", []
     if no_checkout:
@@ -323,11 +354,11 @@ def cone_for(checkout: bool, sparse: list[str], no_checkout: bool) -> tuple[str,
 
 
 def clone(purpose: str, name: str | None, checkout: bool, sparse: list[str], fetch: bool,
-          dissociate: bool, no_checkout: bool = False) -> int:
+          dissociate: bool, no_checkout: bool = False, slim: bool = False) -> int:
     s = seat()
     name = name or f"{purpose.replace(' ', '-')[:40]}-{time.strftime('%Y%m%d-%H%M%S')}"
     dest = scratch_root() / s / name
-    mode, cone = cone_for(checkout, sparse, no_checkout)
+    mode, cone = cone_for(checkout, sparse, no_checkout, slim)
     rec = {"ts": now_iso(), "seat": s, "purpose": purpose, "path": str(dest), "mode": mode, "cone": cone,
            "dissociate": dissociate, "fetch": fetch, "ok": False, "error": None}
     t0 = time.time()
@@ -339,6 +370,8 @@ def clone(purpose: str, name: str | None, checkout: bool, sparse: list[str], fet
         if dest.parent == pool_root():
             reused = pool_reuse(dest, fetch=fetch)
             if reused:
+                if mode in ("slim", "checkout"):    # the last run's shape is not this one's
+                    rec["shape"] = shape(dest, mode == "slim")
                 rec.update({"ok": True, "reused": True})
                 print(dest)
                 return 0
@@ -371,6 +404,8 @@ def clone(purpose: str, name: str | None, checkout: bool, sparse: list[str], fet
         t3 = time.time()
         if mode == "sparse":
             git("sparse-checkout", "set", "--cone", *cone, cwd=dest)
+        elif mode == "slim":
+            git("sparse-checkout", "set", "--no-cone", *SLIM_PATTERNS, cwd=dest)
         if mode != "no-checkout":
             git("read-tree", "-mu", "HEAD", cwd=dest)
         rec["checkout_s"] = round(time.time() - t3, 2)
@@ -466,19 +501,20 @@ def floor_reading(largest: int) -> dict:
 
 
 TREECHECK_PREFIX = "rm-treecheck-"      # publish.py CHECKTREE_PREFIX: its full checkout for the door checks
-# publish.py CHECKTREE_KEPT and its lock: the one check tree a clone keeps; the next run's publish reuses it, made exact
-# first (design/specs/2026-11-25-treecheck-kept-tree/boundary.md), so the pool keeps it
-TREECHECK_KEPT = (TREECHECK_PREFIX + "kept", TREECHECK_PREFIX + "kept.lock")
 
 
 def shed(c: Path) -> list[str]:
     """Make a reused clone as small as a fresh one: remove every untracked and ignored file (a run's Transient output, a
-    Saves backup), every leftover publish checkout in .git but the kept one (TREECHECK_KEPT), and every loose object a
-    pack already holds. Only for a clone nobody works in whose work is pushed (pool_reuse's own test). -> what it did,
-    one line per step."""
+    Saves backup), every publish checkout in .git (a killed run's, and the clone's own kept tree of the layout before
+    publish kept its trees per machine: design/specs/2026-11-25-treecheck-kept-tree/boundary.md), and every loose
+    object a pack already holds. Only for a clone nobody works in whose work is pushed (pool_reuse's own test). -> what
+    it did, one line per step."""
     said = []
-    for d in sorted(d for d in (c / ".git").glob(TREECHECK_PREFIX + "*") if d.name not in TREECHECK_KEPT):
-        shutil.rmtree(d, ignore_errors=True)
+    for d in sorted((c / ".git").glob(TREECHECK_PREFIX + "*")):
+        if d.is_dir() and not d.is_symlink():
+            shutil.rmtree(d, ignore_errors=True)
+        else:
+            d.unlink(missing_ok=True)
         said.append(f"removed {d.name}" + (" (FAILED)" if d.exists() else ""))
     for argv, what in ((["clean", "-q", "-ffdx"], "clean"), (["repack", "-d", "-l", "-q"], "repack"),
                        (["prune-packed", "-q"], "prune-packed")):
@@ -1312,13 +1348,26 @@ def main(argv=None) -> int:
     g.add_argument("--checkout", action="store_true",
                    help="whole working tree (~4 GB): pool clones and repo-wide work only")
     g.add_argument("--no-checkout", action="store_true", help="no working tree (git inspection only)")
+    g.add_argument("--slim", action="store_true", help="every file but media (SLIM_MEDIA): a helper run that is no mod run")
     c.add_argument("--fetch", action="store_true", help="also fetch origin (GitHub) after cloning")
     c.add_argument("--dissociate", action="store_true", help="durable clone: no alternates (hard-linked packs)")
+    sh = sub.add_parser("shape", help="make an existing clone slim (no media) or full")
+    sh.add_argument("path")
+    k = sh.add_mutually_exclusive_group(required=True)
+    k.add_argument("--slim", action="store_true")
+    k.add_argument("--full", action="store_true")
     for n in ("init", "refresh", "sample", "baseline", "report", "pool"):
         sub.add_parser(n)
     a = ap.parse_args(argv)
     if a.cmd == "clone":
-        return clone(a.purpose, a.name, a.checkout, a.sparse, a.fetch, a.dissociate, a.no_checkout)
+        return clone(a.purpose, a.name, a.checkout, a.sparse, a.fetch, a.dissociate, a.no_checkout, a.slim)
+    if a.cmd == "shape":
+        try:
+            print("%s: %s" % (a.path, shape(a.path, a.slim)))
+        except (subprocess.SubprocessError, RuntimeError, OSError) as e:
+            print("scratch_clone shape: FAILED: %s" % e, file=sys.stderr)
+            return 1
+        return 0
     if a.cmd == "report":
         print(report())
         return 0
