@@ -48,7 +48,7 @@ load() {    # load <tier>: game down, tier written (an owned swap of this run), 
   step python3 $U/modset_builder.py --tier "$1" --apply --by "rerun2h_$1_$(date +%H%M%S)" || return 12
   exact "$1" || { echo "TIER NOT EXACT: $1" >> $L; return 13; }
   step python3 $U/game_instance.py launch $g --wait || return 14
-  step python3 $B/wait_bridge.py || return 15
+  step python.exe -u $B/wait_bridge.py || return 15   # Windows Python: WSL cannot reach the bridge on Windows loopback
 }
 modcheck() {   # modcheck <name> <mod> <chains> <job id of the sighting> <record dir>
   local n=$1 mod=$2 ch=$3 jid=$4 dir=$5 log=$S/$1_modcheck.log

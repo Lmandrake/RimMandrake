@@ -1,0 +1,3 @@
+PASS \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_RERUN_TWO_HARNESS_REPAIRS_ON_FREE_ARCHMAGI_GAME.det\design\concepts\FlowWorks\version\in_game\bundle_shrink_20261125\evidence\sc_hole_prison_20261125T050026.json 
+[bridge split] 63.0 s wall: load 0.8 / ticks 9.5 / reads 5.6 / other 12.9 / outside calls 34.1 s
+[bridge split] WARN 70 calls of jawa/static_call (3.3 s): batch them

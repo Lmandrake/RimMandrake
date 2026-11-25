@@ -1,0 +1,3 @@
+PASS \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_RERUN_TWO_HARNESS_REPAIRS_ON_FREE_ARCHMAGI_GAME.det\design\concepts\FlowWorks\version\in_game\bundle_shrink_20261125\evidence\sc_source_refills_20261125T045842.json 
+[bridge split] 40.5 s wall: load 0.4 / ticks 5.2 / reads 2.6 / other 11.3 / outside calls 21.0 s
+[bridge split] WARN 200 calls of jawa/flowworks_excavation_drive (9.1 s): batch them

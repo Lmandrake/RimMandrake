@@ -1,0 +1,2946 @@
+{
+  "script": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_RERUN_TWO_HARNESS_REPAIRS_ON_FREE_ARCHMAGI_GAME.det\\src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py",
+  "started": 1795611571.8170958,
+  "mode": "live",
+  "calls": [
+    {
+      "tool": "jawa/destroy_batch",
+      "args": {
+        "rects": "56,54,30,32",
+        "categories": "Building,Plant,Item,Filth"
+      },
+      "result": {
+        "success": true,
+        "message": "Destroyed 192 thing(s) across 960 cell(s).",
+        "cellsExamined": 960,
+        "outOfBounds": 0,
+        "destroyed": 192,
+        "pawnsSkipped": 0,
+        "undestroyableSkipped": 0,
+        "perCategory": {
+          "Plant": 71,
+          "Filth": 87,
+          "Item": 34
+        },
+        "samples": [
+          {
+            "x": 56,
+            "z": 59,
+            "def": "Plant_Bush",
+            "category": "Plant"
+          },
+          {
+            "x": 56,
+            "z": 75,
+            "def": "Plant_Grass",
+            "category": "Plant"
+          },
+          {
+            "x": 56,
+            "z": 80,
+            "def": "Plant_Grass",
+            "category": "Plant"
+          },
+          {
+            "x": 56,
+            "z": 82,
+            "def": "Plant_Grass",
+            "category": "Plant"
+          },
+          {
+            "x": 57,
+            "z": 58,
+            "def": "Plant_Grass",
+            "category": "Plant"
+          },
+          {
+            "x": 57,
+            "z": 76,
+            "def": "Plant_PincushionCactus",
+            "category": "Plant"
+          },
+          {
+            "x": 57,
+            "z": 81,
+            "def": "Plant_Grass",
+            "category": "Plant"
+          },
+          {
+            "x": 58,
+            "z": 80,
+            "def": "Plant_Dandelion",
+            "category": "Plant"
+          }
+        ],
+        "readBack": {
+          "ok": true,
+          "tool": "jawa/destroy_batch",
+          "faults": [],
+          "frameOpen": 13713,
+          "frameReply": 13713,
+          "sameFrame": true,
+          "rows": 192,
+          "rowsWrong": 0,
+          "wrong": [],
+          "made": [
+            {
+              "op": "gone",
+              "id": "Plant_Bush6111",
+              "x": 56,
+              "z": 59,
+              "got": {
+                "def": "Plant_Bush",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass3821",
+              "x": 56,
+              "z": 75,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass8765",
+              "x": 56,
+              "z": 80,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass4957",
+              "x": 56,
+              "z": 82,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass7521",
+              "x": 57,
+              "z": 58,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_PincushionCactus5175",
+              "x": 57,
+              "z": 76,
+              "got": {
+                "def": "Plant_PincushionCactus",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass5441",
+              "x": 57,
+              "z": 81,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Dandelion5529",
+              "x": 58,
+              "z": 80,
+              "got": {
+                "def": "Plant_Dandelion",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass6693",
+              "x": 58,
+              "z": 81,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_PincushionCactus5980",
+              "x": 59,
+              "z": 60,
+              "got": {
+                "def": "Plant_PincushionCactus",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass5568",
+              "x": 59,
+              "z": 62,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Bush5142",
+              "x": 59,
+              "z": 72,
+              "got": {
+                "def": "Plant_Bush",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass6660",
+              "x": 59,
+              "z": 73,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass9604",
+              "x": 59,
+              "z": 82,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Bush5778",
+              "x": 60,
+              "z": 71,
+              "got": {
+                "def": "Plant_Bush",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass9749",
+              "x": 60,
+              "z": 79,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_PincushionCactus9865",
+              "x": 60,
+              "z": 80,
+              "got": {
+                "def": "Plant_PincushionCactus",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass5996",
+              "x": 61,
+              "z": 54,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Filth_RubbleRock12502",
+              "x": 61,
+              "z": 56,
+              "got": {
+                "def": "Filth_RubbleRock",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Filth_RubbleRock12567",
+              "x": 61,
+              "z": 60,
+              "got": {
+                "def": "Filth_RubbleRock",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Filth_RubbleRock12564",
+              "x": 61,
+              "z": 61,
+              "got": {
+                "def": "Filth_RubbleRock",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass5536",
+              "x": 61,
+              "z": 82,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass5246",
+              "x": 62,
+              "z": 54,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Filth_RubbleRock12494",
+              "x": 62,
+              "z": 54,
+              "got": {
+                "def": "Filth_RubbleRock",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "ChunkMarble18581",
+              "x": 62,
+              "z": 55,
+              "got": {
+                "def": "ChunkMarble",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Filth_RubbleRock12503",
+              "x": 62,
+              "z": 55,
+              "got": {
+                "def": "Filth_RubbleRock",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "ChunkMarble18596",
+              "x": 62,
+              "z": 56,
+              "got": {
+                "def": "ChunkMarble",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Filth_RubbleRock12499",
+              "x": 62,
+              "z": 56,
+              "got": {
+                "def": "Filth_RubbleRock",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "ChunkMarble18657",
+              "x": 62,
+              "z": 61,
+              "got": {
+                "def": "ChunkMarble",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass7066",
+              "x": 62,
+              "z": 78,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Bush9863",
+              "x": 62,
+              "z": 80,
+              "got": {
+                "def": "Plant_Bush",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Filth_RubbleRock12501",
+              "x": 63,
+              "z": 54,
+              "got": {
+                "def": "Filth_RubbleRock",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "ChunkMarble18582",
+              "x": 63,
+              "z": 55,
+              "got": {
+                "def": "ChunkMarble",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Filth_RubbleRock12495",
+              "x": 63,
+              "z": 55,
+              "got": {
+                "def": "Filth_RubbleRock",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "ChunkMarble18597",
+              "x": 63,
+              "z": 56,
+              "got": {
+                "def": "ChunkMarble",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass8870",
+              "x": 63,
+              "z": 57,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Filth_RubbleRock12497",
+              "x": 63,
+              "z": 57,
+              "got": {
+                "def": "Filth_RubbleRock",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass4749",
+              "x": 63,
+              "z": 60,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Filth_RubbleRock12565",
+              "x": 63,
+              "z": 60,
+              "got": {
+                "def": "Filth_RubbleRock",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Filth_RubbleRock12566",
+              "x": 63,
+              "z": 62,
+              "got": {
+                "def": "Filth_RubbleRock",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass6348",
+              "x": 63,
+              "z": 64,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Dandelion3407",
+              "x": 63,
+              "z": 72,
+              "got": {
+                "def": "Plant_Dandelion",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_SaguaroCactus7174",
+              "x": 63,
+              "z": 79,
+              "got": {
+                "def": "Plant_SaguaroCactus",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_SaguaroCactus6748",
+              "x": 63,
+              "z": 81,
+              "got": {
+                "def": "Plant_SaguaroCactus",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Filth_RubbleRock12485",
+              "x": 64,
+              "z": 54,
+              "got": {
+                "def": "Filth_RubbleRock",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "ChunkMarble18583",
+              "x": 64,
+              "z": 55,
+              "got": {
+                "def": "ChunkMarble",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Filth_RubbleRock12489",
+              "x": 64,
+              "z": 55,
+              "got": {
+                "def": "Filth_RubbleRock",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass7964",
+              "x": 64,
+              "z": 56,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Filth_RubbleRock12476",
+              "x": 64,
+              "z": 56,
+              "got": {
+                "def": "Filth_RubbleRock",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_TreeDrago9501",
+              "x": 64,
+              "z": 57,
+              "got": {
+                "def": "Plant_TreeDrago",
+                "destroyed": "True"
+              }
+            }
+          ],
+          "leftBlocking": 0,
+          "leftKept": 0,
+          "left": [],
+          "digest": "a7ee304a150426f5"
+        },
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_63a35886fcec4421a02468563794ff8e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 60
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/set_terrain_batch",
+      "args": {
+        "ops": "Soil:56,54,30,32"
+      },
+      "result": {
+        "success": true,
+        "message": "Applied 1/1 op(s): 707 cell(s) changed, 253 already correct.",
+        "layer": "top",
+        "opsRequested": 1,
+        "opsApplied": 1,
+        "cellsRequested": 960,
+        "cellsChanged": 707,
+        "cellsAlreadyCorrect": 253,
+        "cellsOutOfBounds": 0,
+        "cellsFailedVerify": 0,
+        "refreshed": true,
+        "cellsRefreshed": 707,
+        "errors": [],
+        "samples": [
+          {
+            "x": 56,
+            "z": 54,
+            "before": "Sand",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 56,
+            "z": 55,
+            "before": "Gravel",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 56,
+            "z": 56,
+            "before": "Gravel",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 56,
+            "z": 57,
+            "before": "Gravel",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 56,
+            "z": 58,
+            "before": "Gravel",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 56,
+            "z": 59,
+            "before": "Gravel",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 56,
+            "z": 60,
+            "before": "Gravel",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 56,
+            "z": 61,
+            "before": "Gravel",
+            "after": "Soil",
+            "applied": true
+          }
+        ],
+        "mapSize": {
+          "x": 250,
+          "z": 250
+        },
+        "readBack": {
+          "ok": true,
+          "tool": "jawa/set_terrain_batch",
+          "faults": [],
+          "frameOpen": 13719,
+          "frameReply": 13719,
+          "sameFrame": true,
+          "rows": 960,
+          "rowsWrong": 0,
+          "wrong": [],
+          "made": [
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 54,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 55,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 56,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 57,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 58,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 59,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 60,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 61,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 62,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 63,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 64,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 65,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 66,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 67,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 68,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 69,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 70,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 71,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 72,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 73,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 74,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 75,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 76,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 77,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 78,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 79,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 80,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 81,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 82,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 83,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 84,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 85,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 54,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 55,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 56,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 57,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 58,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 59,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 60,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 61,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 62,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 63,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 64,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 65,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 66,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 67,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 68,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 69,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 70,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 71,
+              "got": {
+                "terrain": "Soil"
+              }
+            }
+          ],
+          "leftBlocking": 0,
+          "leftKept": 0,
+          "left": [],
+          "digest": "f43ee67564a027bd"
+        },
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_b4d31a2f93cd4f098cfc67ab62b0050a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/set_roof_batch",
+      "args": {
+        "ops": "None:56,54,30,32"
+      },
+      "result": {
+        "success": true,
+        "message": "Roofed 0 cell(s) across 1 op(s).",
+        "opsRequested": 1,
+        "cellsChanged": 0,
+        "cellsFailedVerify": 0,
+        "cellsOutOfBounds": 0,
+        "perDef": {},
+        "errors": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_6de35868212f4c54a6689fedf69b2c40",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/weather_set",
+      "args": {
+        "weather": "Clear",
+        "lockWeather": true
+      },
+      "result": {
+        "success": true,
+        "before": "Clear",
+        "after": "Clear",
+        "lockInForce": true,
+        "gamePaused": true,
+        "notes": [
+          "registered a PERMANENT GameCondition_ForceWeather - this is the only durable weather control"
+        ],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_9513fcce8a5148179a35162c7fecd772",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/build_batch",
+      "args": {
+        "ops": "RM_LiquidTank:60,60;RM_UniversalPipe:62,60;RM_UniversalPipe:63,60;RM_UniversalPipe:64,60;RM_UniversalPipe:65,60;RM_UniversalPipe:66,60;RM_LiquidTank:60,66;RM_UniversalPipe:62,66;RM_UniversalPipe:63,66;RM_UniversalPipe:64,66;RM_UniversalPipe:65,66",
+        "faction": "player",
+        "wipeExisting": false
+      },
+      "result": {
+        "success": true,
+        "partial": false,
+        "placed": 11,
+        "survived": 11,
+        "lostToLaterOps": 0,
+        "failedCount": 0,
+        "failed": [],
+        "displacedCount": 0,
+        "displaced": [],
+        "placeWorkerWarningsCount": 0,
+        "placeWorkerWarnings": [],
+        "qualityIgnoredForDefs": [],
+        "message": "11 placed.",
+        "note": "Walls create NO roof - roof separately. Run jawa/map_commit after the batch.",
+        "things": [
+          {
+            "def": "RM_LiquidTank",
+            "x": 60,
+            "z": 60,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 220,
+            "maxHitPoints": 220,
+            "destroyed": false
+          },
+          {
+            "def": "RM_UniversalPipe",
+            "x": 62,
+            "z": 60,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 100,
+            "maxHitPoints": 100,
+            "destroyed": false
+          },
+          {
+            "def": "RM_UniversalPipe",
+            "x": 63,
+            "z": 60,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 100,
+            "maxHitPoints": 100,
+            "destroyed": false
+          },
+          {
+            "def": "RM_UniversalPipe",
+            "x": 64,
+            "z": 60,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 100,
+            "maxHitPoints": 100,
+            "destroyed": false
+          },
+          {
+            "def": "RM_UniversalPipe",
+            "x": 65,
+            "z": 60,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 100,
+            "maxHitPoints": 100,
+            "destroyed": false
+          },
+          {
+            "def": "RM_UniversalPipe",
+            "x": 66,
+            "z": 60,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 100,
+            "maxHitPoints": 100,
+            "destroyed": false
+          },
+          {
+            "def": "RM_LiquidTank",
+            "x": 60,
+            "z": 66,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 220,
+            "maxHitPoints": 220,
+            "destroyed": false
+          },
+          {
+            "def": "RM_UniversalPipe",
+            "x": 62,
+            "z": 66,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 100,
+            "maxHitPoints": 100,
+            "destroyed": false
+          }
+        ],
+        "readBack": {
+          "ok": true,
+          "tool": "jawa/build_batch",
+          "faults": [],
+          "frameOpen": 13732,
+          "frameReply": 13732,
+          "sameFrame": true,
+          "rows": 11,
+          "rowsWrong": 0,
+          "wrong": [],
+          "made": [
+            {
+              "op": "thing",
+              "id": "RM_LiquidTank21169",
+              "x": 60,
+              "z": 60,
+              "got": {
+                "cell": "60,60",
+                "def": "RM_LiquidTank",
+                "faction": "PlayerColony",
+                "hp": "220",
+                "rot": "0",
+                "standing": "True"
+              }
+            },
+            {
+              "op": "thing",
+              "id": "RM_UniversalPipe21170",
+              "x": 62,
+              "z": 60,
+              "got": {
+                "cell": "62,60",
+                "def": "RM_UniversalPipe",
+                "faction": "PlayerColony",
+                "hp": "100",
+                "rot": "0",
+                "standing": "True"
+              }
+            },
+            {
+              "op": "thing",
+              "id": "RM_UniversalPipe21171",
+              "x": 63,
+              "z": 60,
+              "got": {
+                "cell": "63,60",
+                "def": "RM_UniversalPipe",
+                "faction": "PlayerColony",
+                "hp": "100",
+                "rot": "0",
+                "standing": "True"
+              }
+            },
+            {
+              "op": "thing",
+              "id": "RM_UniversalPipe21172",
+              "x": 64,
+              "z": 60,
+              "got": {
+                "cell": "64,60",
+                "def": "RM_UniversalPipe",
+                "faction": "PlayerColony",
+                "hp": "100",
+                "rot": "0",
+                "standing": "True"
+              }
+            },
+            {
+              "op": "thing",
+              "id": "RM_UniversalPipe21173",
+              "x": 65,
+              "z": 60,
+              "got": {
+                "cell": "65,60",
+                "def": "RM_UniversalPipe",
+                "faction": "PlayerColony",
+                "hp": "100",
+                "rot": "0",
+                "standing": "True"
+              }
+            },
+            {
+              "op": "thing",
+              "id": "RM_UniversalPipe21174",
+              "x": 66,
+              "z": 60,
+              "got": {
+                "cell": "66,60",
+                "def": "RM_UniversalPipe",
+                "faction": "PlayerColony",
+                "hp": "100",
+                "rot": "0",
+                "standing": "True"
+              }
+            },
+            {
+              "op": "thing",
+              "id": "RM_LiquidTank21175",
+              "x": 60,
+              "z": 66,
+              "got": {
+                "cell": "60,66",
+                "def": "RM_LiquidTank",
+                "faction": "PlayerColony",
+                "hp": "220",
+                "rot": "0",
+                "standing": "True"
+              }
+            },
+            {
+              "op": "thing",
+              "id": "RM_UniversalPipe21176",
+              "x": 62,
+              "z": 66,
+              "got": {
+                "cell": "62,66",
+                "def": "RM_UniversalPipe",
+                "faction": "PlayerColony",
+                "hp": "100",
+                "rot": "0",
+                "standing": "True"
+              }
+            },
+            {
+              "op": "thing",
+              "id": "RM_UniversalPipe21177",
+              "x": 63,
+              "z": 66,
+              "got": {
+                "cell": "63,66",
+                "def": "RM_UniversalPipe",
+                "faction": "PlayerColony",
+                "hp": "100",
+                "rot": "0",
+                "standing": "True"
+              }
+            },
+            {
+              "op": "thing",
+              "id": "RM_UniversalPipe21178",
+              "x": 64,
+              "z": 66,
+              "got": {
+                "cell": "64,66",
+                "def": "RM_UniversalPipe",
+                "faction": "PlayerColony",
+                "hp": "100",
+                "rot": "0",
+                "standing": "True"
+              }
+            },
+            {
+              "op": "thing",
+              "id": "RM_UniversalPipe21179",
+              "x": 65,
+              "z": 66,
+              "got": {
+                "cell": "65,66",
+                "def": "RM_UniversalPipe",
+                "faction": "PlayerColony",
+                "hp": "100",
+                "rot": "0",
+                "standing": "True"
+              }
+            }
+          ],
+          "leftBlocking": 0,
+          "leftKept": 0,
+          "left": [],
+          "digest": "780aca87ae41c29d"
+        },
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_4fc8379eceb34c0c8a9a659976b10786",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/build_batch",
+      "args": {
+        "ops": "RM_LiquidPump:63,60;RM_SprinklerHead:65,60;PowerConduit:63,59;PowerConduit:63,58;Battery:63,56,0;RM_SprinklerHead:65,66",
+        "faction": "player",
+        "wipeExisting": false
+      },
+      "result": {
+        "success": true,
+        "partial": false,
+        "placed": 6,
+        "survived": 6,
+        "lostToLaterOps": 0,
+        "failedCount": 0,
+        "failed": [],
+        "displacedCount": 0,
+        "displaced": [],
+        "placeWorkerWarningsCount": 0,
+        "placeWorkerWarnings": [],
+        "qualityIgnoredForDefs": [],
+        "message": "6 placed.",
+        "note": "Walls create NO roof - roof separately. Run jawa/map_commit after the batch.",
+        "things": [
+          {
+            "def": "RM_LiquidPump",
+            "x": 63,
+            "z": 60,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 120,
+            "maxHitPoints": 120,
+            "destroyed": false
+          },
+          {
+            "def": "RM_SprinklerHead",
+            "x": 65,
+            "z": 60,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 60,
+            "maxHitPoints": 60,
+            "destroyed": false
+          },
+          {
+            "def": "PowerConduit",
+            "x": 63,
+            "z": 59,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 80,
+            "maxHitPoints": 80,
+            "destroyed": false
+          },
+          {
+            "def": "PowerConduit",
+            "x": 63,
+            "z": 58,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 80,
+            "maxHitPoints": 80,
+            "destroyed": false
+          },
+          {
+            "def": "Battery",
+            "x": 63,
+            "z": 56,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 100,
+            "maxHitPoints": 100,
+            "destroyed": false
+          },
+          {
+            "def": "RM_SprinklerHead",
+            "x": 65,
+            "z": 66,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 60,
+            "maxHitPoints": 60,
+            "destroyed": false
+          }
+        ],
+        "readBack": {
+          "ok": true,
+          "tool": "jawa/build_batch",
+          "faults": [],
+          "frameOpen": 13737,
+          "frameReply": 13737,
+          "sameFrame": true,
+          "rows": 6,
+          "rowsWrong": 0,
+          "wrong": [],
+          "made": [
+            {
+              "op": "thing",
+              "id": "RM_LiquidPump21180",
+              "x": 63,
+              "z": 60,
+              "got": {
+                "cell": "63,60",
+                "def": "RM_LiquidPump",
+                "faction": "PlayerColony",
+                "hp": "120",
+                "rot": "0",
+                "standing": "True"
+              }
+            },
+            {
+              "op": "thing",
+              "id": "RM_SprinklerHead21181",
+              "x": 65,
+              "z": 60,
+              "got": {
+                "cell": "65,60",
+                "def": "RM_SprinklerHead",
+                "faction": "PlayerColony",
+                "hp": "60",
+                "rot": "0",
+                "standing": "True"
+              }
+            },
+            {
+              "op": "thing",
+              "id": "PowerConduit21182",
+              "x": 63,
+              "z": 59,
+              "got": {
+                "cell": "63,59",
+                "def": "PowerConduit",
+                "faction": "PlayerColony",
+                "hp": "80",
+                "rot": "0",
+                "standing": "True"
+              }
+            },
+            {
+              "op": "thing",
+              "id": "PowerConduit21183",
+              "x": 63,
+              "z": 58,
+              "got": {
+                "cell": "63,58",
+                "def": "PowerConduit",
+                "faction": "PlayerColony",
+                "hp": "80",
+                "rot": "0",
+                "standing": "True"
+              }
+            },
+            {
+              "op": "thing",
+              "id": "Battery21184",
+              "x": 63,
+              "z": 56,
+              "got": {
+                "cell": "63,56",
+                "def": "Battery",
+                "faction": "PlayerColony",
+                "hp": "100",
+                "rot": "0",
+                "standing": "True"
+              }
+            },
+            {
+              "op": "thing",
+              "id": "RM_SprinklerHead21185",
+              "x": 65,
+              "z": 66,
+              "got": {
+                "cell": "65,66",
+                "def": "RM_SprinklerHead",
+                "faction": "PlayerColony",
+                "hp": "60",
+                "rot": "0",
+                "standing": "True"
+              }
+            }
+          ],
+          "leftBlocking": 0,
+          "leftKept": 0,
+          "left": [],
+          "digest": "b82fb06b5c017062"
+        },
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_4caaa0439e7940beb14acf9f9524db4a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 54
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "Battery",
+        "rect": "63,56,1,1",
+        "limit": 2
+      },
+      "result": {
+        "success": true,
+        "things": [
+          {
+            "id": "Battery21184",
+            "def": "Battery",
+            "label": "Battery",
+            "x": 63,
+            "z": 56,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 100,
+            "maxHitPoints": 100,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals"
+          }
+        ],
+        "scanned": 14930,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {
+          "Battery": 1
+        },
+        "ticksGame": 2,
+        "message": "1 of 1 matching thing(s) returned, 14930 examined.",
+        "operation": {
+          "OperationId": "op_a8f8a9b28d6a4636b9cc877ae012ed63",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/battery_set",
+      "args": {
+        "thing": "Battery21184",
+        "mode": "setPct",
+        "value": 1.0
+      },
+      "result": {
+        "success": true,
+        "thing": "Battery",
+        "mode": "setPct",
+        "storedEnergyBefore": 0.0,
+        "storedEnergyAfter": 600.0,
+        "storedEnergyMax": 600.0,
+        "storedEnergyPctAfter": 1.0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_c19ad30d34934579af609a7a5df13708",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 46
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/set_plants",
+      "args": {
+        "ops": "Plant_Potato:64,61,5,3",
+        "density": 1.0,
+        "growth": 0.1
+      },
+      "result": {
+        "success": true,
+        "message": "Planted 15, cleared 0.",
+        "planted": 15,
+        "cleared": 0,
+        "rejected": 0,
+        "rejectionReasons": {},
+        "rejectedCells": [],
+        "cellsSkippedByDensity": 0,
+        "cellsOutOfBounds": 0,
+        "growth": 0.1,
+        "errors": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_6fe167d706004e78bbda6ed91288cee2",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 34
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "RM_SprinklerHead",
+        "rect": "65,60,1,1",
+        "limit": 2
+      },
+      "result": {
+        "success": true,
+        "things": [
+          {
+            "id": "RM_SprinklerHead21181",
+            "def": "RM_SprinklerHead",
+            "label": "Sprinkler head",
+            "x": 65,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 60,
+            "maxHitPoints": 60,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals"
+          }
+        ],
+        "scanned": 14945,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {
+          "RM_SprinklerHead": 1
+        },
+        "ticksGame": 2,
+        "message": "1 of 1 matching thing(s) returned, 14945 examined.",
+        "operation": {
+          "OperationId": "op_27195aec08c3438cbfc6b6e1fc54ba08",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "RM_SprinklerHead",
+        "rect": "65,66,1,1",
+        "limit": 2
+      },
+      "result": {
+        "success": true,
+        "things": [
+          {
+            "id": "RM_SprinklerHead21185",
+            "def": "RM_SprinklerHead",
+            "label": "Sprinkler head",
+            "x": 65,
+            "z": 66,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 60,
+            "maxHitPoints": 60,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals"
+          }
+        ],
+        "scanned": 14945,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {
+          "RM_SprinklerHead": 1
+        },
+        "ticksGame": 2,
+        "message": "1 of 1 matching thing(s) returned, 14945 examined.",
+        "operation": {
+          "OperationId": "op_e1bc032bccfd46cf93d0d2f760f98768",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "RM_LiquidPump",
+        "rect": "63,60,1,1",
+        "limit": 2
+      },
+      "result": {
+        "success": true,
+        "things": [
+          {
+            "id": "RM_LiquidPump21180",
+            "def": "RM_LiquidPump",
+            "label": "Liquid pump",
+            "x": 63,
+            "z": 60,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 120,
+            "maxHitPoints": 120,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals"
+          }
+        ],
+        "scanned": 14945,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {
+          "RM_LiquidPump": 1
+        },
+        "ticksGame": 2,
+        "message": "1 of 1 matching thing(s) returned, 14945 examined.",
+        "operation": {
+          "OperationId": "op_19077dd6a35c4c48bd9b4dad529b918d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofTank",
+        "60,60;Store;RM_Liquid_FreshWater;100000"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofTank(System.String)",
+        "result": "TANK mode=Store effective=Store liquid=RM_Liquid_FreshWater units=100000",
+        "thingArgs": [],
+        "ticksGame": 252,
+        "operation": {
+          "OperationId": "op_1359d70eeea442b7a64288a9b0a6208d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 252
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofTank",
+        "60,66;Store;RM_Liquid_FreshWater;100000"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofTank(System.String)",
+        "result": "TANK mode=Store effective=Store liquid=RM_Liquid_FreshWater units=100000",
+        "thingArgs": [],
+        "ticksGame": 252,
+        "operation": {
+          "OperationId": "op_8f4bc546f5184b6cabf1505c2489d0e0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 34
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 252
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_pawns",
+      "args": {
+        "faction": "player"
+      },
+      "result": {
+        "success": true,
+        "message": "3 pawn(s).",
+        "pawns": [
+          {
+            "id": "Human475",
+            "name": "Rowan",
+            "kind": "Colonist",
+            "kindDef": "Colonist",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Baseliner",
+            "xenotypeLabel": "baseliner",
+            "uniqueXenotype": false,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "isPlayer": true,
+            "hostile": false,
+            "factionHostile": false,
+            "x": 124,
+            "z": 117,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human478",
+            "name": "Ellison",
+            "kind": "Colonist",
+            "kindDef": "Colonist",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Baseliner",
+            "xenotypeLabel": "baseliner",
+            "uniqueXenotype": false,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "isPlayer": true,
+            "hostile": false,
+            "factionHostile": false,
+            "x": 115,
+            "z": 111,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human483",
+            "name": "Shiki",
+            "kind": "Colonist",
+            "kindDef": "Colonist",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Baseliner",
+            "xenotypeLabel": "baseliner",
+            "uniqueXenotype": false,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "isPlayer": true,
+            "hostile": false,
+            "factionHostile": false,
+            "x": 121,
+            "z": 114,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          }
+        ],
+        "returned": 3,
+        "truncated": 0,
+        "totalOnMap": 3,
+        "ticksGame": 252,
+        "operation": {
+          "OperationId": "op_dad11b65856e4255846cc73e6e89f957",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 252
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofTank",
+        "60,60;Store"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofTank(System.String)",
+        "result": "TANK mode=Store effective=Store liquid=RM_Liquid_FreshWater units=99875",
+        "thingArgs": [],
+        "ticksGame": 2752,
+        "operation": {
+          "OperationId": "op_c92862e8b72d47f88ccf8a0b32512009",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2752
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofTank",
+        "60,66;Store"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofTank(System.String)",
+        "result": "TANK mode=Store effective=Store liquid=RM_Liquid_FreshWater units=100000",
+        "thingArgs": [],
+        "ticksGame": 2752,
+        "operation": {
+          "OperationId": "op_b481a05dc93d49d7911370154da5b1f8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 38
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2752
+        }
+      }
+    },
+    {
+      "tool": "jawa/inspect_string",
+      "args": {
+        "thingIds": "RM_SprinklerHead21181"
+      },
+      "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 14946 examined.",
+        "matched": 1,
+        "examined": 14946,
+        "threw": 0,
+        "things": [
+          {
+            "id": "RM_SprinklerHead21181",
+            "defName": "RM_SprinklerHead",
+            "label": "sprinkler head",
+            "x": 65,
+            "z": 60,
+            "className": "RimMandrake.FlowWorks.Sprinklers.Building_RM_SprinklerHead",
+            "inspect": [
+              "Spraying fresh water \u00b7 12.5 L/h \u00b7 25 cells"
+            ]
+          }
+        ],
+        "ticksGame": 2752,
+        "operation": {
+          "OperationId": "op_243ce87b6df24e08b873cc2b6fcc9573",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 34
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2752
+        }
+      }
+    },
+    {
+      "tool": "jawa/inspect_string",
+      "args": {
+        "thingIds": "RM_SprinklerHead21185"
+      },
+      "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 14946 examined.",
+        "matched": 1,
+        "examined": 14946,
+        "threw": 0,
+        "things": [
+          {
+            "id": "RM_SprinklerHead21185",
+            "defName": "RM_SprinklerHead",
+            "label": "sprinkler head",
+            "x": 65,
+            "z": 66,
+            "className": "RimMandrake.FlowWorks.Sprinklers.Building_RM_SprinklerHead",
+            "inspect": [
+              "No pressure: no pump on this network"
+            ]
+          }
+        ],
+        "ticksGame": 2752,
+        "operation": {
+          "OperationId": "op_af8dd278798c4ca09bbec98b9f9bc485",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2752
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_pawns",
+      "args": {
+        "faction": "player"
+      },
+      "result": {
+        "success": true,
+        "message": "3 pawn(s).",
+        "pawns": [
+          {
+            "id": "Human475",
+            "name": "Rowan",
+            "kind": "Colonist",
+            "kindDef": "Colonist",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Baseliner",
+            "xenotypeLabel": "baseliner",
+            "uniqueXenotype": false,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "isPlayer": true,
+            "hostile": false,
+            "factionHostile": false,
+            "x": 105,
+            "z": 107,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human478",
+            "name": "Ellison",
+            "kind": "Colonist",
+            "kindDef": "Colonist",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Baseliner",
+            "xenotypeLabel": "baseliner",
+            "uniqueXenotype": false,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "isPlayer": true,
+            "hostile": false,
+            "factionHostile": false,
+            "x": 116,
+            "z": 107,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human483",
+            "name": "Shiki",
+            "kind": "Colonist",
+            "kindDef": "Colonist",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Baseliner",
+            "xenotypeLabel": "baseliner",
+            "uniqueXenotype": false,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "isPlayer": true,
+            "hostile": false,
+            "factionHostile": false,
+            "x": 106,
+            "z": 108,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          }
+        ],
+        "returned": 3,
+        "truncated": 0,
+        "totalOnMap": 3,
+        "ticksGame": 2752,
+        "operation": {
+          "OperationId": "op_4a2436d739f841c9ac6498fd74eb27e5",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2752
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofTank",
+        "60,60;Store"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofTank(System.String)",
+        "result": "TANK mode=Store effective=Store liquid=RM_Liquid_FreshWater units=99750",
+        "thingArgs": [],
+        "ticksGame": 5252,
+        "operation": {
+          "OperationId": "op_e657bc034a0541f0a97c445c8a1d594d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 5252
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofTank",
+        "60,66;Store"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofTank(System.String)",
+        "result": "TANK mode=Store effective=Store liquid=RM_Liquid_FreshWater units=100000",
+        "thingArgs": [],
+        "ticksGame": 5252,
+        "operation": {
+          "OperationId": "op_15ab821b73c24299aa62fb7f7fb56e7a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 5252
+        }
+      }
+    },
+    {
+      "tool": "jawa/inspect_string",
+      "args": {
+        "thingIds": "RM_SprinklerHead21181"
+      },
+      "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 14948 examined.",
+        "matched": 1,
+        "examined": 14948,
+        "threw": 0,
+        "things": [
+          {
+            "id": "RM_SprinklerHead21181",
+            "defName": "RM_SprinklerHead",
+            "label": "sprinkler head",
+            "x": 65,
+            "z": 60,
+            "className": "RimMandrake.FlowWorks.Sprinklers.Building_RM_SprinklerHead",
+            "inspect": [
+              "Spraying fresh water \u00b7 12.5 L/h \u00b7 25 cells"
+            ]
+          }
+        ],
+        "ticksGame": 5252,
+        "operation": {
+          "OperationId": "op_0ebea4885a9d47779e03a65a4d6df4a9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 5252
+        }
+      }
+    },
+    {
+      "tool": "jawa/inspect_string",
+      "args": {
+        "thingIds": "RM_SprinklerHead21185"
+      },
+      "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 14948 examined.",
+        "matched": 1,
+        "examined": 14948,
+        "threw": 0,
+        "things": [
+          {
+            "id": "RM_SprinklerHead21185",
+            "defName": "RM_SprinklerHead",
+            "label": "sprinkler head",
+            "x": 65,
+            "z": 66,
+            "className": "RimMandrake.FlowWorks.Sprinklers.Building_RM_SprinklerHead",
+            "inspect": [
+              "No pressure: no pump on this network"
+            ]
+          }
+        ],
+        "ticksGame": 5252,
+        "operation": {
+          "OperationId": "op_ddb8e19aac9249ed82a3f1393fa07f6e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 38
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 5252
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_pawns",
+      "args": {
+        "faction": "player"
+      },
+      "result": {
+        "success": true,
+        "message": "3 pawn(s).",
+        "pawns": [
+          {
+            "id": "Human475",
+            "name": "Rowan",
+            "kind": "Colonist",
+            "kindDef": "Colonist",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Baseliner",
+            "xenotypeLabel": "baseliner",
+            "uniqueXenotype": false,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "isPlayer": true,
+            "hostile": false,
+            "factionHostile": false,
+            "x": 97,
+            "z": 106,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human478",
+            "name": "Ellison",
+            "kind": "Colonist",
+            "kindDef": "Colonist",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Baseliner",
+            "xenotypeLabel": "baseliner",
+            "uniqueXenotype": false,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "isPlayer": true,
+            "hostile": false,
+            "factionHostile": false,
+            "x": 95,
+            "z": 109,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human483",
+            "name": "Shiki",
+            "kind": "Colonist",
+            "kindDef": "Colonist",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Baseliner",
+            "xenotypeLabel": "baseliner",
+            "uniqueXenotype": false,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "isPlayer": true,
+            "hostile": false,
+            "factionHostile": false,
+            "x": 95,
+            "z": 105,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          }
+        ],
+        "returned": 3,
+        "truncated": 0,
+        "totalOnMap": 3,
+        "ticksGame": 5252,
+        "operation": {
+          "OperationId": "op_74dd2c143d37486187122da2b2276b94",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 5252
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofTank",
+        "60,60;Store"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofTank(System.String)",
+        "result": "TANK mode=Store effective=Store liquid=RM_Liquid_FreshWater units=99625",
+        "thingArgs": [],
+        "ticksGame": 7752,
+        "operation": {
+          "OperationId": "op_bc1f8e446c3c4a93b333a3f984b2b1ca",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 7752
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofTank",
+        "60,66;Store"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofTank(System.String)",
+        "result": "TANK mode=Store effective=Store liquid=RM_Liquid_FreshWater units=100000",
+        "thingArgs": [],
+        "ticksGame": 7752,
+        "operation": {
+          "OperationId": "op_66df533d613d4aa69dfd775e869c3f77",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 7752
+        }
+      }
+    },
+    {
+      "tool": "jawa/inspect_string",
+      "args": {
+        "thingIds": "RM_SprinklerHead21181"
+      },
+      "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 14951 examined.",
+        "matched": 1,
+        "examined": 14951,
+        "threw": 0,
+        "things": [
+          {
+            "id": "RM_SprinklerHead21181",
+            "defName": "RM_SprinklerHead",
+            "label": "sprinkler head",
+            "x": 65,
+            "z": 60,
+            "className": "RimMandrake.FlowWorks.Sprinklers.Building_RM_SprinklerHead",
+            "inspect": [
+              "Spraying fresh water \u00b7 12.5 L/h \u00b7 25 cells"
+            ]
+          }
+        ],
+        "ticksGame": 7752,
+        "operation": {
+          "OperationId": "op_c2c0e815c0d749feadfa0125f77607a0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 34
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 7752
+        }
+      }
+    },
+    {
+      "tool": "jawa/inspect_string",
+      "args": {
+        "thingIds": "RM_SprinklerHead21185"
+      },
+      "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 14951 examined.",
+        "matched": 1,
+        "examined": 14951,
+        "threw": 0,
+        "things": [
+          {
+            "id": "RM_SprinklerHead21185",
+            "defName": "RM_SprinklerHead",
+            "label": "sprinkler head",
+            "x": 65,
+            "z": 66,
+            "className": "RimMandrake.FlowWorks.Sprinklers.Building_RM_SprinklerHead",
+            "inspect": [
+              "No pressure: no pump on this network"
+            ]
+          }
+        ],
+        "ticksGame": 7752,
+        "operation": {
+          "OperationId": "op_9e8c7e0294ff4ac0aa6213306413481b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 7752
+        }
+      }
+    }
+  ],
+  "site": {
+    "site": "calm",
+    "save": "RM_TestSite_calm_v3",
+    "utc": "2026-11-25T12:59:31Z",
+    "problems": [],
+    "load_s": 4.1,
+    "quietMap": {
+      "profile": "quiet_site",
+      "suite": "isolated",
+      "row": "test_site_saves_load_calm",
+      "topic": null,
+      "controls": [
+        {
+          "name": "threat_structures_cleared",
+          "what": "hostile threat structures vanished at setup (vitals classifier: turret, spawner, dormant, condition causer, non-humanlike faction); keep_defs spared",
+          "hides": "hive/infestation/mech-cluster interactions; insect-faction behaviour on the site",
+          "readBack": {
+            "removed": [],
+            "threatsAfter": 0,
+            "kept": 0,
+            "errors": []
+          }
+        },
+        {
+          "name": "hostiles_removed",
+          "what": "hostile pawns present at setup removed by Vanish (no death action, no corpse)",
+          "hides": "combat interactions with the mod's things",
+          "readBack": {
+            "acted": 0,
+            "residue": []
+          }
+        },
+        {
+          "name": "proximity_letters_sent",
+          "what": "every CompProximityLetter marked sent (the mapgen void monolith's 'Fallen monolith')",
+          "hides": "the Anomaly monolith discovery letter and any mod building's proximity letter",
+          "readBack": {
+            "letters": [
+              [
+                "VoidMonolith",
+                "Fallen monolith",
+                true
+              ]
+            ],
+            "unsentAfter": 0
+          }
+        },
+        {
+          "name": "modal_broker",
+          "what": "explicit window handlers only (MODAL_HANDLERS); an unknown force-pause window is CAPTURED and blocks the row, never closed blindly; the same window still open after its handler escalates",
+          "hides": "the handled dialog's other choices (VEF new-faction: 'Do nothing' means the faction is not spawned)",
+          "readBack": {
+            "handled": [],
+            "unknown": []
+          }
+        }
+      ],
+      "notSuppressed": [
+        "active quests and their parts (never ended by default: ending a quest changes the world)",
+        "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+        "existing game conditions, map/world/game components and mod tickers",
+        "hives and other pawn-spawning structures, births, egg hatching, breeders",
+        "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+        "weather transitions, fires, existing hostile behaviour"
+      ],
+      "keepDefs": [],
+      "events": [],
+      "problems": [],
+      "verify": null,
+      "arrivals": [],
+      "note": "enableStoryteller is not saved with the game: re-apply after any load"
+    },
+    "sky": {
+      "weather": [
+        {
+          "after": "Clear",
+          "ok": true
+        },
+        {
+          "after": "Clear",
+          "ok": true
+        }
+      ],
+      "extinguished": 0,
+      "strayFires": 0,
+      "verified": true,
+      "error": null
+    },
+    "check": {
+      "site": "calm",
+      "utc": "2026-11-25T12:59:37Z",
+      "problems": [],
+      "map": {
+        "tile": 112579,
+        "mapId": 0,
+        "sizeX": 250,
+        "sizeZ": 250,
+        "mapBiome": "AridShrubland",
+        "outdoorTempNow": 13.9428368
+      },
+      "foggedCells": 0,
+      "triggers": 0,
+      "danger": [],
+      "ruins": 0,
+      "hostiles": [],
+      "threatStructures": [],
+      "fires": 0,
+      "weather": {
+        "current": "Clear",
+        "rainRate": 0.0
+      },
+      "colonists": [
+        [
+          "Human475",
+          false
+        ],
+        [
+          "Human478",
+          false
+        ],
+        [
+          "Human483",
+          false
+        ]
+      ],
+      "verified": true
+    },
+    "ready_s": 6.3,
+    "verified": true
+  },
+  "scene": "scene_sprinkler_pump",
+  "rows": [
+    {
+      "id": "GARDEN_head_draws_its_net",
+      "status": "PASS",
+      "kind": "MOD",
+      "detail": "{'drop': 125, 'cells': 25, 'head': 'Spraying fresh water \u00b7 12.5 L/h \u00b7 25 cells'}"
+    },
+    {
+      "id": "GARDEN_no_pump_no_spray",
+      "status": "PASS",
+      "kind": "MOD",
+      "detail": "{'filled': 100000, 'end': 100000, 'head': 'No pressure: no pump on this network', 'pumpedHeadSprayed': True}"
+    }
+  ],
+  "garden_log": [
+    {
+      "t": {
+        "W": [
+          99875,
+          2752
+        ],
+        "P": [
+          100000,
+          2752
+        ]
+      },
+      "drill": null,
+      "yard": null,
+      "headW": "Spraying fresh water \u00b7 12.5 L/h \u00b7 25 cells",
+      "headP": "No pressure: no pump on this network"
+    },
+    {
+      "t": {
+        "W": [
+          99750,
+          5252
+        ],
+        "P": [
+          100000,
+          5252
+        ]
+      },
+      "drill": null,
+      "yard": null,
+      "headW": "Spraying fresh water \u00b7 12.5 L/h \u00b7 25 cells",
+      "headP": "No pressure: no pump on this network"
+    },
+    {
+      "t": {
+        "W": [
+          99625,
+          7752
+        ],
+        "P": [
+          100000,
+          7752
+        ]
+      },
+      "drill": null,
+      "yard": null,
+      "headW": "Spraying fresh water \u00b7 12.5 L/h \u00b7 25 cells",
+      "headP": "No pressure: no pump on this network"
+    }
+  ],
+  "status": "PASS",
+  "finished": 1795611593.1582844
+}
