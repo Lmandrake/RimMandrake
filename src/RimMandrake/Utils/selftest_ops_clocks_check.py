@@ -105,9 +105,11 @@ check(OC.effective("ExecStart=/usr/bin/python3 \\\n  /x/src/RimMandrake/a.py\n")
 
 # --- the pinned clause: deploy_dirty and the snapshot a checker uses when it cannot read the deploy
 import json  # noqa: E402
+import shutil  # noqa: E402
 import subprocess  # noqa: E402
 import tempfile  # noqa: E402
 import time  # noqa: E402
+from unittest.mock import patch  # noqa: E402
 
 
 def git(d, *a):
@@ -181,29 +183,24 @@ with tempfile.TemporaryDirectory() as tmp:
     check(any("local edit" in p for p in OC.judge_snapshot({k: v for k, v in snap.items() if k != "porcelain_src"},
                                                            str(rep), now, repo=rep)),
           "judge_snapshot: a snapshot with no porcelain field is not taken as clean")
-    # an unreadable deploy routes check() to the snapshot (no live systemd: clocks emptied)
+    # Drive the real snapshot routing with an unreadable deploy and a matching installed-unit fixture.
     lock = Path(tmp) / "locked"
     lock.mkdir()
-    os.chmod(lock, 0)
-    try:
-        if OC.readable(str(lock)):
-            print("skip  unreadable-deploy routing (running as root)")
-        else:
-            os.environ["RM_OPS_DEPLOY"], os.environ["RM_OPS_SNAPSHOT"] = str(lock), str(Path(tmp) / "missing.json")
-            empty = dict(conf, clocks={}, outside=["*"])
-            r = OC.check(empty)
-            check(len(r) == 1 and "snapshot" in r[0] and "cannot be read" in r[0],
-                  "check: an unreadable deploy with no snapshot fails by name, not 'holds no src'")
-            snapf.write_text(json.dumps(dict(snap, deploy=str(lock))))
-            os.environ["RM_OPS_SNAPSHOT"] = str(snapf)
-            notes = []
-            r = OC.check(empty, notes)
-            check(r == [] and any("judged from snapshot" in n for n in notes),
-                  "check: an unreadable deploy is judged from the snapshot, and says so (%s %s)" % (r, notes))
-    finally:
-        os.chmod(lock, 0o700)
-        os.environ.pop("RM_OPS_DEPLOY", None)
-        os.environ.pop("RM_OPS_SNAPSHOT", None)
+    units = shutil.copytree(OC.UNIT_DIR, Path(tmp) / "installed")
+    env = {"RM_OPS_DEPLOY": str(lock), "RM_OPS_SNAPSHOT": str(Path(tmp) / "missing.json"),
+           "RM_UNIT_INSTALL_DIR": str(units)}
+    with patch.dict(os.environ, env), patch.object(OC, "readable", return_value=False), \
+            patch.object(OC, "_sc", return_value=subprocess.CompletedProcess([], 0, "", "")):
+        empty = dict(conf, clocks={}, outside=["*"])
+        r = OC.check(empty)
+        check(len(r) == 1 and "snapshot" in r[0] and "cannot be read" in r[0],
+              "check: an unreadable deploy with no snapshot fails by name, not 'holds no src'")
+        snapf.write_text(json.dumps(dict(snap, deploy=str(lock))))
+        os.environ["RM_OPS_SNAPSHOT"] = str(snapf)
+        notes = []
+        r = OC.check(empty, notes)
+        check(r == [] and any("judged from snapshot" in n for n in notes),
+              "check: an unreadable deploy is judged from the snapshot, and says so (%s %s)" % (r, notes))
 
 # the committed snapshot is a reading of the real deploy
 real = json.loads(OC.SNAPSHOT.read_text(encoding="utf-8"))

@@ -22,6 +22,8 @@ ROOT = Path(__file__).resolve().parents[4]   # the checkout this code runs from
 # units reach must be here: selftest_deploy_sparse_dirs.py walks their imports (PULSEDEPLOY_FIX_SPARSE_LIST_FORGOT_CONTRACTS).
 SPARSE_DIRS = ("src/RimMandrake/Utils/ops_core", "src/RimMandrake/rimflow", "src/RimMandrake/Utils/art",
                "src/RimMandrake/Utils/modcheck",    # modcheck/metrics.py: testing_metrics.py's owner-day + sheet loader
+               "src/RimMandrake/Utils/northstar_driver",  # modcheck/test_site_saves.py imports its session
+               "src/RimMandrake/Utils/rimdrive",    # northstar_driver/session.py and modcheck import it
                "src/RimMandrake/Utils/sim",         # sim/csuite_codex_limits.py: ops_watch.py's Codex reading
                "src/RimMandrake/contracts",         # close_evidence.py path-loads contracts/jsonl.py; rimflow imports it
                "src/RimMandrake/Utils/testq",       # ops_watch.py's brake reading; rimflow/dispatcher.py

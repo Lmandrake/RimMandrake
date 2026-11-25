@@ -8,6 +8,8 @@ plan(host, item, brief_path, facts) -> {"verdict": LOCAL|REMOTE|REFUSED|COULD NO
 import json
 import re
 import subprocess
+import sys
+from pathlib import Path
 
 LOCAL_NAMES = ("archmagi", "local", "")
 HOSTS = {"stevedesktop": "stevedesktop"}          # lower-case name -> ssh alias
@@ -64,10 +66,11 @@ def read_facts(host, clone, picked_account, runner=subprocess.run):
     f["picked_account"], f["clone"] = picked_account, clone
     if not h:
         return f
+    connect = "ConnectTimeout=10"
 
     def sh(cmd):
         try:
-            r = runner(["ssh", "-o", "ConnectTimeout=10", h, cmd], capture_output=True, text=True, timeout=60)
+            r = runner(["ssh", "-o", connect, h, cmd], capture_output=True, text=True, timeout=60)
         except Exception:  # noqa: BLE001
             return None
         return r.stdout.strip() if r.returncode == 0 else None
@@ -77,7 +80,15 @@ def read_facts(host, clone, picked_account, runner=subprocess.run):
     if up != "up":
         return f
     f["claude"] = sh("claude --version") or None
-    f["account"] = sh("claude-account status 2>/dev/null | grep -i -o -m1 -E 'lukas|steven|system'") or None
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "Utils"))
+    import account_live as AL
+
+    def run_status(argv, timeout):
+        argv = [connect if arg.startswith("ConnectTimeout=") else arg for arg in argv]
+        r = runner(argv, capture_output=True, text=True, timeout=timeout)
+        return r.returncode, r.stdout
+
+    f["account"] = AL.name_of(AL.read(target=h, run=run_status))
     f["push"] = (sh("ssh -T -o BatchMode=yes git@github-rimmandrake-write 2>&1; true") or "").lower().count("successfully") > 0 or None
     free = sh("df -BG --output=avail / | tail -1 | tr -dc 0-9")
     f["free_gb"] = int(free) if free else None

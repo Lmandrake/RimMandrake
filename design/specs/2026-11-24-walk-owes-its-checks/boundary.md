@@ -21,8 +21,10 @@ The question: at Stage 7 or 8, must a check run in a game before he walks?
 
 ## DOES NOT SURVIVE (not handled)
 
-- **a-walk-that-another-cause-spoils.** A row that stopped counting for its game build or its mod list, with no change
-  that touches its check, sends no mod back from Stage 7 or 8. The Stage 6 exit reads those.
+- **a-walk-that-another-cause-spoils.** The Stage 6 exit reads game-build differences and list differences outside
+  the published small list. The tick and next visit plan use a change to that list to
+  find the rows whose mod-list relation is touched or unreadable
+  (`design/specs/2026-11-21-rerun-only-related/boundary.md`, `mod-list-only-reruns-related-rows`).
 - **a-walk-he-makes-with-no-hold.** The act reads his OWNER hold and the stops on ArchBig. It cannot see a walk that he
   makes with neither.
 - **a-reader-that-made-the-commit.** A commit names no unit, so that its reader is another run is the reader's word.

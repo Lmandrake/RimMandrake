@@ -21,17 +21,44 @@ import sys
 import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
+WORLD = tempfile.TemporaryDirectory(prefix="conductor_reset_world_")
+# The status line finds its queue beside the script. Run the shipped script from a fixture root.
+os.symlink(os.path.join(REPO, "src"), os.path.join(WORLD.name, "src"), target_is_directory=True)
+os.environ.update(RM_DATA_ROOT=WORLD.name, RM_SWITCH_PLAN_DIR=os.path.join(WORLD.name, "switching_plan"),
+                  CLAUDE_CONFIG_DIR=os.path.join(WORLD.name, "claude"),
+                  RIMFLOW_LEDGER=os.path.join(WORLD.name, "ledger", "events.jsonl"),
+                  RIMFLOW_ITEMS=os.path.join(WORLD.name, "items"), RIMFLOW_PROBE="no-reading")
 sys.path.insert(0, HERE)
 import selftest_seat_restart as T  # noqa: E402  (sets RM_DISPATCHER_STATE to its temp dir before dispatcher loads)
 from selftest_seat_restart import D, SR, T0, check, dos, obs, run, sess  # noqa: E402
 import reset_mode as RM  # noqa: E402
 
-REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 ROOT = os.environ["RM_DISPATCHER_STATE"]
 SOFT, HARD, CEIL = 110_000, 200_000, 400_000
 os.environ["SEAT_RESTART_NO_TICK"] = "1"
 os.environ.pop("RM_ROLE_UNIT", None)   # the hooks run as the Conductor window; a launched run (RM_ROLE_UNIT) prints nothing
+os.environ.pop("RM_DETACHED_UNIT", None)
+
+
+def wake_world():
+    home = tempfile.mkdtemp(prefix="cr-home-", dir=WORLD.name)
+    state = tempfile.mkdtemp(prefix="cr-state-", dir=WORLD.name)
+    clone = os.path.join(WORLD.name, "bench")
+    with open(os.path.join(HERE, "dispatcher_schedule.json")) as f:
+        sched = json.load(f)
+    sched["seat_restart"]["seats"]["BENCH"].update(clone=clone, seat_log=os.path.join(state, "conductor.md"))
+    schedule = os.path.join(state, "schedule.json")
+    with open(schedule, "w") as f:
+        json.dump(sched, f)
+    os.makedirs(os.path.join(home, "sessions"))
+    # The real wake command should see an empty handoff history.
+    git_root = os.path.join(state, "git")
+    subprocess.run(["git", "init", "-q", git_root], check=True)
+    env = dict(os.environ, CLAUDE_CONFIG_DIR=home, RM_DISPATCHER_STATE=state, AGENT_SEAT="BENCH", RIMFLOW_SEAT="BENCH",
+               RM_SEAT_RESTART_SCHEDULE=schedule, GIT_DIR=os.path.join(git_root, ".git"), GIT_WORK_TREE=REPO)
+    return clone, home, state, env
 
 
 def sch(**kw):
@@ -256,7 +283,7 @@ def test_words_through_the_real_hook():
 
 
 def test_status_line_shows_it():
-    sl = os.path.join(REPO, "src", "RimMandrake", "Utils", "statusline.py")
+    sl = os.path.join(WORLD.name, "src", "RimMandrake", "Utils", "statusline.py")
 
     def line(seat):
         r = subprocess.run([sys.executable, sl], input=json.dumps({"session_id": "sid-line", "model": {"id": "x"}}), capture_output=True,
@@ -280,7 +307,8 @@ def test_status_line_shows_it():
 
     def registered(seat):
         r = subprocess.run(reg.get("command") or "true", shell=True, input=json.dumps({"session_id": "sid-line", "model": {"id": "x"}}),
-                           capture_output=True, text=True, env=dict(os.environ, AGENT_SEAT=seat, CLAUDE_PROJECT_DIR=REPO), timeout=60)
+                           capture_output=True, text=True, env=dict(os.environ, AGENT_SEAT=seat, CLAUDE_PROJECT_DIR=WORLD.name),
+                           timeout=60)
         return r.stdout
     RM.write("BENCH", RM.HOLD, "sid-line", ROOT)
     check("reset HOLD" in registered("BENCH"), "the registered status line shows hold")
@@ -379,12 +407,7 @@ def test_window_that_died_without_a_record():
     prompt = W.WAKE_PROMPT["BENCH"]
     check("src/RimMandrake/Utils/handoff.py --wake" in prompt, "the first-launch wake prompt runs handoff.py --wake")
     check("BENCH" in W.OWN_WAKE, "and that is the Conductor tile's first launch")
-    clone = json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))["seat_restart"]["seats"]["BENCH"].get("clone") \
-        or SR.config(SR._schedule())["BENCH"]["clone"]
-    home = tempfile.mkdtemp(prefix="cr-home-")
-    state = tempfile.mkdtemp(prefix="cr-state-")
-    os.makedirs(os.path.join(home, "sessions"))
-    env = dict(os.environ, CLAUDE_CONFIG_DIR=home, RM_DISPATCHER_STATE=state, AGENT_SEAT="BENCH", RIMFLOW_SEAT="BENCH")
+    clone, home, state, env = wake_world()
     sid = "cccccccc-dead"
     old = SR.claude_home
     SR.claude_home = lambda: home
@@ -404,7 +427,10 @@ def test_window_that_died_without_a_record():
         shown = out.split(">>>", 1)[0]    # the reply block only: the real handoff text after it may say anything
         check("older window" not in shown and "role launch" not in shown and "another name" not in shown,
               "and only that one: not an older window, a role launch of the same name, or another title")
-        check(out.lstrip().startswith("== the old window's LAST REPLY"), "it comes before the handoff text")
+        reply = out.find("== the old window's LAST REPLY")
+        owed = out.find("== what the Conductor OWES")
+        handoff = out.find("no committed handoff for BENCH")
+        check(0 <= reply < owed < handoff, "the old reply comes before the owed view and handoff text")
         # a stale record of an older restart must not outrank the window that actually died
         os.makedirs(os.path.dirname(SR.killed_path("BENCH", state)), exist_ok=True)
         with open(SR.killed_path("BENCH", state), "w") as f:
@@ -449,12 +475,7 @@ def test_both_wake_commands_with_every_record():
     """The blind check's gaps at 5d471d50: 'seat_restart.py wake' (what a Dispatcher relaunch runs) and 'handoff.py --wake'
     (what a first launch runs), as real subprocesses over real files in a fake Claude home, with no record, a stale record
     and an aborted record. The newest dead window's reply shows each time, and the dictated one-liners it ended on do not."""
-    clone = json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))["seat_restart"]["seats"]["BENCH"].get("clone") \
-        or SR.config(SR._schedule())["BENCH"]["clone"]
-    home = tempfile.mkdtemp(prefix="cr-home-")
-    state = tempfile.mkdtemp(prefix="cr-state-")
-    os.makedirs(os.path.join(home, "sessions"))
-    env = dict(os.environ, CLAUDE_CONFIG_DIR=home, RM_DISPATCHER_STATE=state, AGENT_SEAT="BENCH", RIMFLOW_SEAT="BENCH")
+    clone, home, state, env = wake_world()
     commands = {"seat_restart wake": [os.path.join(HERE, "seat_restart.py"), "wake", "--seat", "BENCH"],
                 "handoff --wake": [os.path.join(REPO, "src/RimMandrake/Utils/handoff.py"), "--wake"]}
     old_home = SR.claude_home
@@ -697,7 +718,7 @@ def test_only_the_switch_words():
 
 
 def test_status_line_says_past_the_ceiling():
-    sl = os.path.join(REPO, "src", "RimMandrake", "Utils", "statusline.py")
+    sl = os.path.join(WORLD.name, "src", "RimMandrake", "Utils", "statusline.py")
     with open(os.path.join(HERE, "dispatcher_schedule.json")) as f:
         ceil = json.load(f)["seat_restart"]["seats"]["BENCH"]["hold_ceiling_tokens"]
 
@@ -737,7 +758,8 @@ def test_handoff_says_when_the_reshow_crashed():
     d = tempfile.mkdtemp(prefix="cr-site-")
     with open(os.path.join(d, "sitecustomize.py"), "w") as f:
         f.write("import os, sys\nif sys.argv and sys.argv[0].endswith('seat_restart.py'):\n    sys.stderr.write('boom')\n    sys.stderr.flush()\n    os._exit(5)\n")
-    env = dict(os.environ, PYTHONPATH=d + os.pathsep + os.environ.get("PYTHONPATH", ""), AGENT_SEAT="BENCH", RIMFLOW_SEAT="BENCH")
+    _, _, _, env = wake_world()
+    env["PYTHONPATH"] = d + os.pathsep + env.get("PYTHONPATH", "")
     r = subprocess.run([sys.executable, os.path.join(REPO, "src/RimMandrake/Utils/handoff.py"), "--wake"], cwd=REPO, env=env,
                        capture_output=True, text=True, timeout=120)
     check("LAST REPLY: UNMEASURED (exit 5" in r.stdout, "a crashed re-show is said as UNMEASURED with its exit (%s)" % r.stdout[:200])

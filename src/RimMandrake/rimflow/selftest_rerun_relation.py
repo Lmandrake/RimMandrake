@@ -18,6 +18,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from unittest.mock import patch
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -788,6 +789,81 @@ def t_tier_list_of_any_install_here_counts():
        yes[0] and "ArchSmall" in yes[1] and not no[0], (yes, no))
 
 
+def t_mod_list_only_reruns_related_rows():
+    import maturation as M
+
+    name = "mod-list-only-reruns-related-rows"
+    tr = Tree()
+    try:
+        d = "design/concepts/Planted/"
+        src = "src/RimMandrake/Planted/"
+        tr.write(src + "About/About.xml", "<ModMetaData><packageId>test.planted</packageId><modDependencies>"
+                 "<li><packageId>test.required</packageId></li></modDependencies></ModMetaData>")
+        tr.write(src + "Patches/Target.xml", '<Patch><Operation MayRequire="test.target"/></Patch>')
+        tests = {k: dict(table()["sc_full"], id=k) for k in ("a", "b")}
+        tests["b"] = dict(tests["b"], kind="live_minimal", why_full_list=None, tier="small", mods=[])
+        scenes = [{"id": "a", "mods": ["test.a"]}, {"id": "b"}]
+        tr.set_table(tests)
+        tr.write(d + "scenes.json", json.dumps({"scenes": scenes}))
+        old = tr.commit("the rows' build before the walk switched lists")
+        tr.write(d + "version/small_list.json", '{"tier":"small"}')
+        tr.commit("the new walk list")
+        tt = {"tests": tests}
+        base = ["test.planted", "test.required", "test.target"]
+
+        def match(before, after, specs=tt, b_before=None):
+            walk = {"mod_hash": "h", "game_build": "g", "active_mods": after, "standin": "planted"}
+            rows = {k: dict(test=k, mod_sha=old, mod_hash="h", game_build="g", active_mods=before,
+                            tier="small", verdict="PASS", site_checked=True) for k in tests}
+            if b_before is not None:
+                rows["b"]["active_mods"] = b_before
+            tr.write(d + "version/in_game/visit_1/rows.jsonl", "".join(json.dumps(r) + "\n" for r in rows.values()))
+            tier = lambda _: (after, "planted new list unreadable" if after is None else None)
+            with patch.object(BM, "walk_build", return_value=walk), patch.object(BM, "tier_lister", return_value=tier):
+                return BM.check_visit(tr.root, MOD, 1, specs, "planted.rws", cache_dir=None)
+
+        for before, after, owed, label in (
+                (base + ["test.unused"], base, [], "dropping only unread mods owes zero rows"),
+                (base + ["TEST.A_steam"], base, ["a"], "dropping a read mod owes only its row"),
+                (base, base + ["test.a"], ["a"], "joining a read mod owes only its row"),
+                (base, base + ["test.unused"], [], "joining only unread mods owes zero rows, including an empty read set"),
+                (base, base[1:], ["a", "b"], "each row reads the tested mod"),
+                (base, base[:1] + base[2:], ["a", "b"], "each row reads its required mods"),
+                (base, base[:-1], ["a", "b"], "each row reads its patch targets")):
+            res = match(before, after)
+            ok(name + ": " + label, res["rerun"] == owed, "owed %s, expected %s" % (res["rerun"], owed))
+        res = match(None, base, b_before=base)
+        ok(name + ": unreadable old list owes only its row and says why",
+           res["rerun"] == ["a"] and "old mod list" in res["rows"]["a"]["why"], res["rows"])
+        res = match([], base, b_before=base)
+        ok(name + ": an empty old list is said as empty",
+           res["rerun"] == ["a"] and "is empty" in res["rows"]["a"]["why"], res["rows"])
+        res = match(base, None)
+        ok(name + ": unreadable new list owes rows and says why",
+           res["rerun"] == ["a", "b"] and all("list" in x["why"] for x in res["rows"].values()), res["rows"])
+        no_mods = dict(tt, tests=dict(tests, b={k: v for k, v in tests["b"].items() if k != "mods"}))
+        res = match(base + ["test.unused"], base, no_mods)
+        ok(name + ": a check and scene that name no extra mods keep the row of an unread mod", not res["rerun"], res["rows"])
+        res = match(base, base[:-1], no_mods)
+        ok(name + ": and owe it for a mod that the mod itself reads", res["rerun"] == ["a", "b"], res["rows"])
+        match(base + ["test.a"], base)
+        with patch.object(BM, "tier_lister", return_value=lambda _: (base, None)):
+            wo = M.walk_owed(tr.root, MOD, {"stage": "his_walk"})
+            plan = M.ingame_to_run(tr.root, MOD, 2, tt)
+        ok(name + ": the tick and next visit owe only the row the list change touches",
+           list(wo["owed"]) == ["a"] and "test.a" in wo["owed"]["a"] and plan == (["a"], ["b"]), (wo, plan))
+        switched = dict(tests, b=dict(tests["b"], tier="next-small"))
+        tr.set_table(switched)
+        tr.commit("check b switches to a tier that only drops an unread mod")
+        res = match(base + ["test.unused"], base, {"tests": switched})
+        with patch.object(BM, "tier_lister", return_value=lambda _: (base, None)):
+            plan = M.ingame_to_run(tr.root, MOD, 2, {"tests": switched})
+        ok(name + ": switching the named tier keeps a row when its reads are unchanged",
+           not res["rerun"] and plan == ([], ["a", "b"]), (res["rerun"], plan))
+    finally:
+        tr.close()
+
+
 def t_full_list_is_the_mods_the_game_can_load():
     """RIMMANDRAKE_DROP_UNINSTALLED_MOD_FROM_FULL_LIST_IDENTITY_KOTH (ExplosiveKnockback visit 4, 2026-11-23): ModsConfig named
     koth.isid, which is not installed; the rows listed 315 mods, the save the game wrote 314, and no full row counted."""
@@ -1104,6 +1180,7 @@ def main():
     t_walk_not_the_source_is_one_deploy()
     t_stale_walk_folder_still_reads_the_source_change()
     t_tier_list_of_any_install_here_counts()
+    t_mod_list_only_reruns_related_rows()
     t_full_list_is_the_mods_the_game_can_load()
     t_a_path_outside_the_repo_is_not_in_the_change()
     t_python_imports_read_once_per_commit()

@@ -20,6 +20,9 @@ stage (the in-game build match, the Stage 6 exit, the visit brief, `./pipe why`,
   file that the check's other declared C# names, and `none` says that the check was read and exercises no C# of the mod.
 - **row-commits-git-knows.** A row names the source commit it ran on (`mod_sha`); the commit now is the repository's
   HEAD. A commit git cannot resolve gives no relation.
+- **row-mod-lists.** A live row records the package IDs it ran on (`active_mods`). The reference is the walk save's
+  list for a full-list check or the check's tier for a minimal-list check. The check or its scene can declare extra
+  package IDs it reads or exercises in `mods`, none named or `[]` for no extra mods.
 - **the-mod-scope.** The change is the files that differ between the two commits under `src/RimMandrake/<Mod>/`,
   under `design/concepts/<Mod>/`, every file that any check of the table declares, and every C# file the mod's DLL is
   compiled from (its `.srchash`).
@@ -112,7 +115,8 @@ stage (the in-game build match, the Stage 6 exit, the visit brief, `./pipe why`,
 - **json-relates-by-entry.** In a changed JSON file that holds an object whose `id` (or key) is the check's id or
   entry, only that object's change touches the check; otherwise the file relates whole.
 - **spec-change-reruns.** A check whose own test-table entry changed between the two commits in what it runs
-  (`kind`, `file`, `entry`, `reads`, `exercises`, `command`, `tier`, `why_full_list`) reruns.
+  (`kind`, `file`, `entry`, `reads`, `exercises`, `command`, `tier`, `why_full_list`) reruns. A live check's tier
+  change is judged by its mod-list relation when the caller compares the lists.
 - **rows-from-several-builds.** Each row is related from its own commit: rows made on two earlier commits are judged
   apart.
 - **a-path-outside-the-repo-is-not-in-the-change.** A declared path outside the repository (absolute, a drive path, or
@@ -127,9 +131,15 @@ stage (the in-game build match, the Stage 6 exit, the visit brief, `./pipe why`,
   RIMMANDRAKE_JUDGE_ROWS_BY_SOURCE_WHILE_WALK_FOLDER_STALE.)
 - **tier-list-of-any-install-here-counts.** A row does not name the install it ran on, so a minimal-list row's list is
   compared with the tier's list on this process's install, then on the machine's other game install. The list as either
-  install gives it counts; a list that is the tier's on neither does not. (Measured 2026-11-23: 37 ArchSmall rows of
+  install gives it counts. A mismatch on both goes to the mod-list relation. (Measured 2026-11-23: 37 ArchSmall rows of
   Pyrelands visit 7 read "to run" against ArchBig's older About.xml; item
   RIMMANDRAKE_READ_TIER_LIST_FROM_EVERY_GAME_INSTALL_HERE.)
+- **mod-list-only-reruns-related-rows.** A package joining or leaving the reference list owes only rows that read or
+  exercise it. Every check reads the mod itself, its declared dependencies, and the mods named by its XML guards or
+  small-list `also` entries. Extra reads come from the check's or its scene's `mods`. An unreadable old or new list,
+  or a membership change with an unreadable mod read list, owes the row and names the cause. A list with the same members
+  in a different order still owes the row. The tick and the next visit apply the same membership rule when the
+  published small list changes, or the check names a different tier.
 - **full-list-is-the-mods-the-game-can-load.** The identity of a full-list row lists the packages of ModsConfig that
   the machine has installed, because the game loads only those and a save names only those. A package left out is named
   in `not_installed`. A scan that fails leaves the list whole and gives the reason. (Measured 2026-11-23: koth.isid was

@@ -885,13 +885,14 @@ def scope(git, mod, sha, specs):
 class Relation:
     """The change relation of one mod's test table, read at commit NEW. `touches(id, old)` answers one check."""
 
-    def __init__(self, root, mod, tests, new=None, runner=subprocess.run, old_tests=None):
+    def __init__(self, root, mod, tests, new=None, runner=subprocess.run, old_tests=None, compare_mod_lists=False):
         self.root, self.mod, self.tests = root, mod, dict(tests)
         self.git = Git(root, runner)
         self.new = self.git.rev(new or "HEAD")
         self._scope = {}
         self._py = {}
         self.old_tests = old_tests          # {old sha: {id: spec}} for a test; else read from git
+        self.compare_mod_lists = compare_mod_lists
         self._evidence = None
         self.declare(read_declarations(os.path.join(root, DECLARATIONS % mod)))
 
@@ -1388,9 +1389,12 @@ class Relation:
         if ot is None:
             return "unreadable", "the test table at %s cannot be read, so whether its entry changed is unknown" % (
                 o[:10]), []
-        if tid in ot and any(run_key(ot[tid], k) != run_key(spec, k) for k in RUN_KEYS):
+        if tid in ot:
             keys = [k for k in RUN_KEYS if run_key(ot[tid], k) != run_key(spec, k)]
-            return "touched", "its test-table entry changed (%s)" % ", ".join(keys), ["test_table.json"]
+            if self.compare_mod_lists and "tier" in keys and str(spec.get("kind", "")).startswith("live"):
+                keys.remove("tier")         # build_match compares the recorded and current lists
+            if keys:
+                return "touched", "its test-table entry changed (%s)" % ", ".join(keys), ["test_table.json"]
         if whole:
             under = [f for f in ch if covers(mod_root(self.mod), f)]
             # an ignored file never ships, but a check that declares it reads it (its own script above all)
@@ -1506,10 +1510,10 @@ class Relation:
         return out
 
 
-def relate(root, mod, tests, last_rows, new=None, runner=subprocess.run, old_tests=None):
+def relate(root, mod, tests, last_rows, new=None, runner=subprocess.run, old_tests=None, compare_mod_lists=False):
     """tests: {id: spec}; last_rows: {id: row or None}. -> {rows: {id: {state, why, files, old}}, touched, unreadable,
-    untouched, norow, undeclared, new}."""
-    rel = Relation(root, mod, tests, new=new, runner=runner, old_tests=old_tests)
+    untouched, norow, undeclared, new}. compare_mod_lists means the caller judges live tier changes by list membership."""
+    rel = Relation(root, mod, tests, new=new, runner=runner, old_tests=old_tests, compare_mod_lists=compare_mod_lists)
     out = {"rows": {}, "touched": [], "unreadable": [], "untouched": [], "norow": [], "undeclared": [],
            "new": rel.new}
     olds = set()

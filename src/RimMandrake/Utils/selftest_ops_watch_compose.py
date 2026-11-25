@@ -13,6 +13,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 _TMP = Path(_tf.mkdtemp(prefix="selftest_ops_watch_compose_"))
 os.environ["RM_OPS_WATCH_DIR"] = str(_TMP / "ops")
+os.environ["RM_NIGHTLY_HELD"] = "0"  # the rerun cases start with a finished nightly
 import ops_watch as OW  # noqa: E402
 import metronome  # noqa: E402
 
@@ -109,7 +110,7 @@ budgets = []
 known_reds.measure = lambda open_ids, now, with_cop=False: {"night": "N1", "news": [], "reds": [], "listed": [], "cured": [],
     "cop": {"groups": [], "detail_read": True, "overdue": [], "overdue_said": ""}}
 known_reds.uncovered = lambda v: []
-OW.red_groups = lambda c, night, state=None, rerun="default", budget=None: (budgets.append(budget), {})[1]
+OW.red_groups = lambda c, night, state=None, rerun="default", budget=None, ctx=None: (budgets.append(budget), {})[1]
 OW.nightly_news(time.time(), {"no_reruns": True})
 OW.nightly_news(time.time(), {})
 check("reruns: a compose pass gives the rerun gate no budget, a whole pass the policy's", budgets == [0, None], budgets)

@@ -30,6 +30,7 @@ frozen history; every new event lands in `events/<SEAT>.jsonl` beside it. A case
 opens `<tmp>/events.jsonl` directly reads an EMPTY ledger — use `_ledger_text()` /
 `_ledger_events()`.
 """
+import ast
 import json
 import os
 import re
@@ -1073,15 +1074,28 @@ def t_render_is_delegated_never_reimplemented():
         assert calls[-1] == "reindex", "the named function was not called: %r" % calls
     finally:
         cli._render_module = saved
-    # 🔑 The sharper invariant: this CLI opens NO file for writing. Every byte it puts
-    # on disk goes through `model.append`, which holds the flock. A renderer would
-    # have to write files, so "no write mode anywhere" is what actually keeps the two
-    # apart — and it doubles as the guarantee that no CLI verb can tear the ledger.
+    # CLI data writes go through model.append or the renderer. Only these two
+    # calls may create lock files for the CLI's check-and-append fences.
     src = open(CLI, encoding="utf-8").read()
-    for banned in ('"w"', "'w'", '"a"', "'a'", "os.O_WRONLY"):
-        assert banned not in src, (
-            "cli.py opens a file for writing (%s). Every write must go through "
-            "model.append, which holds the lock 9p needs." % banned)
+    locks = {"open(os.path.join(LE.sdir(), 'live-close-note.lock'), 'a')", "os.open(path, os.O_RDWR | os.O_CREAT, 420)"}
+    for call in (n for n in ast.walk(ast.parse(src)) if isinstance(n, ast.Call)):
+        callee = ast.unparse(call.func)
+        name = callee.rsplit(".", 1)[-1]
+        if name not in ("open", "fdopen", "write_text", "write_bytes"):
+            continue
+        source = ast.unparse(call)
+        if source in locks:
+            locks.remove(source)
+            continue
+        index = 1 if callee in ("open", "io.open", "os.open", "os.fdopen") else 0
+        mode = next((kw.value for kw in call.keywords if kw.arg in ("mode", "flags")),
+                    call.args[index] if len(call.args) > index else None)
+        if callee == "os.open":
+            writes = mode is None or ast.unparse(mode) != "os.O_RDONLY"
+        else:
+            writes = name in ("write_text", "write_bytes") or (
+                mode is not None and (not isinstance(mode, ast.Constant) or any(c in str(mode.value) for c in "wax+")))
+        assert not writes, "cli.py opens a file for writing at line %d (%s)" % (call.lineno, source)
 
 
 def t_runs_as_a_module_too():

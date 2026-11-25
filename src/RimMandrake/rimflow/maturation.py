@@ -1077,14 +1077,13 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
                 exit_met_clause(root, mod, rec, cur, owner, clause, rec_ref, req_ref, game_only_bars=go_bars)
             if cur == "in_game":
                 # the BUILD MATCH (owner, 2026-11-17, narrowed 2026-11-21): a row counts on the build he walks when its
-                # game build and list match and the change since its commit touches nothing its check reads or
-                # exercises (rerun_relation.py); only the touched checks run again (build_match.py, read by
-                # read_ingame_exit)
+                # game build matches and neither the mod-list change nor the source change touches what it reads or
+                # exercises (build_match.py, read by read_ingame_exit)
                 n = max(1, len(ingame_openings(rec)))
                 bm = read_ingame_exit(root, mod, n).get("build_match")
                 clause("build_match", "every in-game check's last row counts on the build he walks: its game build "
-                       "equals the walk's, its mod list is his walk's (a full-list test) or its tier's (a minimal-list "
-                       "test), and its mod hash equals the walk's or the change since its commit touches nothing it "
+                       "equals the walk's, a membership change to its reference list adds or drops no mod it reads, "
+                       "and its mod hash equals the walk's or the change since its commit touches nothing it "
                        "reads or exercises; the walk folder is the current source (build_match.py)",
                        bool(bm) and bm["read"] > 0 and not bm["rerun"] and not bm.get("deploy"),
                        [rec_ref], observed=BM.summary(bm) if bm else "visit %d has no Exit block to read" % n,
@@ -4845,8 +4844,7 @@ def read_ingame_exit(root, mod, n, tt=None):
     one = all(b.startswith(a) for i, a in enumerate(shas) for b in shas[i + 1:])
     out["build"] = shas[-1] if shas and one else None
     # the BUILD MATCH (owner, 2026-11-17, RIMMANDRAKE_FOLD_STAGE_SEVEN_INTO_WALK_BRIEF_NO_VETO): a check's last row counts
-    # only when its mod hash and game build equal the build he walks (the labelled savegame's, read on Archmagi) and its
-    # mod list is his walk's (a full-list test) or its tier's (a minimal-list test); one that does not is re-run
+    # only when its game build matches, and any changes to the mod or its reference list leave the check untouched.
     try:
         bm = BM.check_visit(root, mod, n, tt, blk["savegame"])
     except Exception as e:      # a build match that cannot run counts nothing
@@ -5495,9 +5493,11 @@ def walk_owed(root, mod, rec=None):
         for u in unrun_owed(root, mod, tt, carried=last):
             if u.get("check") in tests:     # a check outside the table has no row a program knows: it holds nothing
                 out["owed"].setdefault(u["check"], "UNRUN: %s" % u["owed_why"])
-        # the relation first: with nothing touched no row of a check can stop counting for a change, and the walk folder
-        # (about 30 s of Windows reads for Pyrelands) is not read by every tick
-        rel_ = BM.RR.relate(root, mod, tests, {t: r for t, r in last.items() if t})
+        # Read the source and tier changes first; only a source change that may touch a row needs the walk folder
+        # (about 30 s of Windows reads for Pyrelands).
+        rel_ = BM.RR.relate(root, mod, tests, {t: r for t, r in last.items() if t}, compare_mod_lists=True)
+        for t, why in BM.planned_list_owed(root, mod, tests.items(), last, rel_["new"]).items():
+            out["owed"].setdefault(t, why)
         if not (rel_["touched"] or rel_["unreadable"]):
             return out
         n = max(1, len(ingame_openings(rec)))
@@ -5577,7 +5577,10 @@ def ingame_facts(root, mod):
                 "full_list": [k for k, t in checks if BM.is_full(t)],
                 "testq": [k for k, t in checks if isinstance(t.get("testq"), dict)]})
     try:
-        out["to_run"], out["counted_earlier"] = ingame_to_run(root, mod, n, tt)
+        list_why = {}
+        out["to_run"], out["counted_earlier"] = ingame_to_run(root, mod, n, tt, list_why=list_why)
+        if list_why:
+            out["to_run_why"] = "; ".join("%s: %s" % (k, why) for k, why in list_why.items())
     except Exception as e:      # a relation that cannot be read relates nothing: every check runs
         out["to_run"], out["counted_earlier"] = [k for k, _ in checks], []
         out["to_run_why"] = "the change relation could not be read (%s: %s)" % (type(e).__name__, e)
@@ -5655,17 +5658,21 @@ def _check_lines(tt, ids, root):
     return out
 
 
-def ingame_to_run(root, mod, n, tt):
+def ingame_to_run(root, mod, n, tt, list_why=None):
     """-> (to_run, counted): the stage-6 checks visit n runs, and those it does not because an earlier visit's last row
     is a PASS that the change since its commit does not touch (rerun_relation.py; owner, 2026-11-21: only the checks a
     change touches run again). A check with no earlier row, a last row that is not a PASS (a spoiled or INCONCLUSIVE
-    scene, live_kinds.py), a touched check and one whose relation cannot be read all run. The Stage 6 exit's build match reads the walk build and decides for good."""
+    scene, live_kinds.py), a touched check and one whose relation cannot be read all run. list_why, when given, receives
+    the reasons a list change owes rows. The Stage 6 exit's build match reads the walk build and decides for good."""
     checks = ingame_tests(tt or {})
     if n <= 1:
         return [k for k, _ in checks], []
     last = BM.carried_rows(root, mod, n - 1)
     runs = BM.check_runs(root, mod, n - 1)
-    rel = BM.RR.relate(root, mod, dict(checks), {t: r for t, r in last.items() if t})
+    rel = BM.RR.relate(root, mod, dict(checks), {t: r for t, r in last.items() if t}, compare_mod_lists=True)
+    list_owed = BM.planned_list_owed(root, mod, checks, last, rel.get("new"))
+    if list_why is not None:
+        list_why.update(list_owed)
     unrun = {u.get("check") for u in unrun_owed(root, mod, tt, carried=last)}
     run, counted = [], []
     for k, spec in checks:
@@ -5675,7 +5682,7 @@ def ingame_to_run(root, mod, n, tt):
         if x is not None:       # the kind and the outcomes say whether the scene passes on its runs
             r = dict(x["use"], verdict="PASS" if x["passes"] else "FAIL")
         if r and str(r.get("verdict", "")).upper() == "PASS" and r.get("site_checked") is True and st == "untouched" \
-                and k not in unrun:
+                and k not in unrun and k not in list_owed:
             counted.append(k)
         else:
             run.append(k)

@@ -4,6 +4,10 @@
 
  a host name in any letter case, an item, a brief path, and the facts read from the host.
 - LOCAL: this machine. REMOTE: one systemd user unit on the host, in `~/rm/list/<ITEM>`.
+
+`read_facts()` gets the remote login from `account_live.read`. Its banner and status fixtures are in
+`src/RimMandrake/Utils/selftest_account_live.py`.
+
 ## DOES NOT SURVIVE
 
 - ssh that hangs past its timeout (a fact stays None).

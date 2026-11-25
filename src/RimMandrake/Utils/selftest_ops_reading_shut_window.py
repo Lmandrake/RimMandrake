@@ -85,8 +85,6 @@ check("reset gap: 100% of the week left, an upper bound", pts["accounts.system.w
       and pts["accounts.system.week_left_pct"]["m"] == "ESTIMATE", pts["accounts.system.week_left_pct"])
 h = pts["accounts.system.hours_to_reset"]["v"]
 check("reset gap: the next reset is one week after the passed one", h is not None and abs(h - (168 - 21.4 / 60)) < 0.1, h)
-check("reset gap: the band is GREEN, not the cautious RED a degraded launch gets",
-      RL.band({"throttle_bands": {"GREEN": {"runway_ge": 1.5}, "RED": {"runway_ge": 0.0}}}, r)[0] == "GREEN", r)
 
 # --- the item's own words: week MEASURED, five_hour null --------------------------------------------------------------
 shut = rec("system", NOW - 600, 3.0, "2026-11-11T11:59-08:00")

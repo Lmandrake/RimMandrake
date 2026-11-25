@@ -5,8 +5,9 @@ Owner, 2026-11-17, approving the Stage 6 -> Stage 7 change (item RIMMANDRAKE_FOL
 spec design/specs/2026-11-13-maturation-pipeline.md, Stage 6 exit and Stage 7):
   every in-game verdict records the game, the mod's source sha, a hash of its deployed folder, the active mod list
   (ModsConfig.xml activeMods, parsed, in order) and the game build. A verdict whose mod hash or game build differs from
-  the build he walks does not count; its check is re-run. A full-list test's list equals his walk's list exactly; a
-  minimal-list test's list equals the list modset_builder.py builds for its tier from the same commit.
+  the build he walks does not count; its check is re-run. The list for comparison is his walk's for a full-list test,
+  or the list modset_builder.py builds for its tier for a minimal-list test. A mod joining or leaving that list reruns
+  only checks that read it or whose mod-list relation cannot be read.
 
   python3 src/RimMandrake/rimflow/build_match.py identity --mod M (--tier T | --full) [--mod-sha SHA]
       one JSON line, the identity fields a live driver merges into each rows.jsonl row it writes (run it on the game
@@ -55,6 +56,7 @@ import stat
 import subprocess
 import sys
 import xml.etree.ElementTree as ET
+from functools import cache
 
 import live_kinds as LK
 import own_cgroup
@@ -69,8 +71,8 @@ WALK_HOST = "archmagi"                       # he walks on Archmagi (spec Stage 
 STANDIN_ENV = "MATURATION_WALK_BUILD"
 CACHE_DIR = "/mnt/d/ClaudeWork/rimmandrake/build_match"
 REQUIRED = ("mod_hash", "game_build", "active_mods")
-LIMIT = ("every check counts: its game build equals the walk's, its list equals its reference list, and its mod hash "
-         "equals the walk's or the change since its commit touches nothing it reads or exercises")
+LIMIT = ("every check counts: its game build equals the walk's, any change of list membership leaves the mods it reads "
+         "or exercises untouched, and its mod hash equals the walk's or the source change leaves it untouched")
 
 
 # ---- reading the machine ---------------------------------------------------------------------------------------------
@@ -560,6 +562,126 @@ def _first_diff(a, b):
     return "none"
 
 
+def _list_why(mods, label):
+    if isinstance(mods, (list, tuple)) and not mods:
+        return "the %s mod list (active_mods) is empty" % label
+    if not isinstance(mods, (list, tuple)) or any(not isinstance(p, str) or not norm_pid(p) for p in mods):
+        return "the %s mod list (active_mods) cannot be read" % label
+    return None
+
+
+def mod_list_relation(root, mod):
+    """Read the mod-list relation on demand. A check or scene names extra package IDs in `mods`; none named,
+    it reads what the mod itself reads (its small list holds every mod that it patches or requires)."""
+    sys.path.insert(0, UTILS) if UTILS not in sys.path else None
+    import small_list as SL
+
+    @cache
+    def scenes():
+        path = os.path.join(root, "design", "concepts", mod, "scenes.json")
+        if not os.path.exists(path):        # a mod with no scenes file names no scene reads
+            return {}
+        with open(path, encoding="utf-8") as f:
+            return {s["id"]: s for s in json.load(f)["scenes"]}
+
+    @cache
+    def common():
+        folder = SL.mod_dir(root, mod)
+        pid = _first_package_id(os.path.join(folder, "About", "About.xml"))
+        if not pid:
+            raise SL.CouldNotLook("About.xml names no readable packageId")
+        need = SL.needs(folder)
+        small = SL.load_spec(root, mod)
+        ids = {pid, *norm_list(small.get("also", {}) if small is not None else ())}
+        names = {n.lower() for kind, k in need if kind == "name" for n in k.split("\n")}
+        if names:
+            by_name = {"core": {"ludeon.rimworld"}, **{p.rsplit(".", 1)[1]: {p} for p in SL.DLC}}
+            for p, rec in SL.with_our_names(SL.scan(), root).items():
+                by_name.setdefault(rec["name"].strip().lower(), set()).add(norm_pid(p))
+            if names - by_name.keys():
+                raise SL.CouldNotLook("no packageId for patch target(s) %s" % ", ".join(sorted(names - by_name.keys())))
+            ids.update(p for n in names for p in by_name[n])
+        ids.update(p for kind, k in need if kind != "name" for p in k.split(","))
+        comp = composed_into(root, mod)
+        if comp == COMPOSE_UNREADABLE:
+            raise SL.CouldNotLook("Biomes.compose.json")
+        if comp:
+            ids.add(comp[0])
+        return ids
+
+    def compare_lists(test, spec, old, new):
+        why = _list_why(old, "old") or _list_why(new, "new")
+        if why:
+            return False, why
+        if same_list(old, new):
+            return True, ""
+        before, after = set(norm_list(old)), set(norm_list(new))
+        left, joined = before - after, after - before
+        if not (left or joined):
+            return False, "the mod list order differs: %s" % _first_diff(old, new)
+        try:
+            scene = scenes().get(test, {})
+            lists = [s["mods"] for s in (spec, scene) if "mods" in s]
+            if any(not isinstance(xs, list) or any(not isinstance(p, str) or not norm_pid(p) for p in xs)
+                   for xs in lists):
+                return False, "the check or scene's mod read list cannot be read"
+            reads = common() | {norm_pid(p) for xs in lists for p in xs}
+        except (OSError, ValueError, KeyError, TypeError, SL.CouldNotLook) as e:
+            if could_not_look(e):
+                raise
+            return False, "the mod read list cannot be read: %s" % e
+        hit = ["%s %s" % (", ".join(sorted(reads & diff)), verb) for diff, verb in ((left, "left"), (joined, "joined"))
+               if reads & diff]
+        return ((False, "; ".join(hit) + " the mod list") if hit else
+                (True, "; the mod list changed outside what this check reads"))
+    return compare_lists
+
+
+def planned_list_owed(root, mod, tests, last, new):
+    """List changes from the published tier definitions can be read before there is a new walk save."""
+    if not new:
+        return {}
+    git = RR.Git(root)
+    small = "design/concepts/%s/version/small_list.json" % mod
+    out, tiers = {}, None
+    for t, spec in tests:
+        r = last.get(t) or {}
+        old = git.rev(r.get("mod_sha"))
+        if not old or old == new:
+            continue
+        changed = git.changed(old, new, [small])     # not modset_builder.py: a tier's list costs 13 s a tick, Stage 6 reads it
+        if changed is None:
+            out[t] = "git cannot read the change to the mod list definitions"
+            continue
+        tier = spec.get("tier") or r.get("tier")
+        if not changed and (is_full(spec) or not r.get("tier") or tier == r["tier"]):
+            continue
+        if is_full(spec):
+            raw = git.show(new, small)
+            if raw is None and small not in changed:
+                continue                    # full-list check without a configured walk tier
+            try:
+                tier = json.loads(raw)["tier"]
+            except (TypeError, ValueError, KeyError):
+                out[t] = "the new mod list cannot be read from small_list.json"
+                continue
+        if tiers is None:
+            tiers, lists = tier_lister({}), mod_list_relation(root, mod)
+        ref, why = tiers(tier) if tier else (None, "the check and its row name no tier")
+        if ref is None:
+            out[t] = "the new mod list cannot be read: %s" % why
+            continue
+        mods = r.get("active_mods")
+        if not is_full(spec) and not _list_why(mods, "old") and not same_list(mods, ref):
+            game, _ = other_tier_match(tier, mods, tiers)
+            if game:
+                continue
+        counts, why = lists(t, spec, mods, ref)
+        if not counts:
+            out[t] = why
+    return out
+
+
 def judge_row(test, spec, r, walk, tiers, relation=None, deploy=None):
     """-> (counts, why) for one check's last row. relation: rerun_relation.relate's reading; a row whose mod hash
     differs from the walk's counts only when it reads this check untouched. deploy (the walk folder is not the current
@@ -569,6 +691,11 @@ def judge_row(test, spec, r, walk, tiers, relation=None, deploy=None):
         return False, "the walk build is unreadable, so nothing counts yet: %s" % "; ".join(walk["why"])
     if not r:
         return False, "no row for this check"
+    lists = (relation or {}).get("mod_lists")
+    if lists:
+        why = _list_why(r.get("active_mods"), "old")
+        if why:
+            return False, why
     for f in REQUIRED:
         if not r.get(f):
             return False, "the row records no %s (run `build_match.py identity` and merge it into the row)" % f
@@ -595,24 +722,40 @@ def judge_row(test, spec, r, walk, tiers, relation=None, deploy=None):
             return False, "no readable change relation (%s): declare what it exercises" % rel["why"]
         carried = "; made on %s, and the change since touches nothing it reads or exercises" % rel.get("old")
     if is_full(spec):
-        if not same_list(r.get("active_mods"), walk.get("active_mods")):
+        ref = walk.get("active_mods")
+        if lists:
+            counts, why = lists(test, spec, r["active_mods"], ref)
+            if not counts:
+                return False, why
+            carried += why
+        elif not same_list(r.get("active_mods"), ref):
             return False, "a full-list test whose list is not his walk's: %s" % _first_diff(
-                r.get("active_mods"), walk.get("active_mods"))
-        return True, "game build and his walk's full list (%d mods)%s" % (len(walk["active_mods"]), carried)
+                r.get("active_mods"), ref)
+        return True, "game build and his walk's full list (%d mods)%s" % (len(ref), carried)
     tier = spec.get("tier") or r.get("tier")
     if not tier:
         return False, "a minimal-list test whose row names no tier"
-    if spec.get("tier") and r.get("tier") and spec["tier"] != r["tier"]:
+    if not lists and spec.get("tier") and r.get("tier") and spec["tier"] != r["tier"]:
         return False, "the row ran on tier %s; the test table names tier %s" % (r["tier"], spec["tier"])
     ref, why = tiers(tier)
     if ref is None:
         return False, "tier %s gives no list: %s" % (tier, why)
+    if lists:
+        bad = _list_why(ref, "new")
+        if bad:
+            return False, bad
     if not same_list(r.get("active_mods"), ref):
         game, said = other_tier_match(tier, r.get("active_mods"), tiers)
-        if not game:
+        if game:
+            ref, carried = r["active_mods"], "%s; the list as %s's install gives it" % (carried, game)
+        elif lists:
+            counts, why = lists(test, spec, r["active_mods"], ref)
+            if not counts:
+                return False, why + said
+            carried += why
+        else:
             return False, "a minimal-list test whose list is not tier %s's: %s%s" % (tier, _first_diff(
                 r.get("active_mods"), ref), said)
-        ref, carried = r["active_mods"], "%s; the list as %s's install gives it" % (carried, game)
     return True, "game build and tier %s's list (%d mods)%s%s" % (
         tier, len(ref), "" if spec.get("tier") else "; tier named by the row, the test table names none", carried)
 
@@ -627,7 +770,7 @@ def compare(tests, last_rows, walk, tiers, relation=None, deploy=None):
            "unreadable": list((relation or {}).get("unreadable") or []), "new": (relation or {}).get("new")}
     for t, spec in tests:
         ok, why = judge_row(t, spec, last_rows.get(t), walk, tiers, relation, deploy)
-        # relation: what the change relation says of the check's row (None: not read); walk_owed reads it
+        # relation: what the source change relation says of the row (None: not read); walk_owed reads it
         out["rows"][t] = {"counts": ok, "why": why, "full": is_full(spec),
                           "relation": (((relation or {}).get("rows") or {}).get(t) or {}).get("state")}
         if not ok:
@@ -778,9 +921,10 @@ def check_visit(root, mod, n, tt, savegame, cache_dir=CACHE_DIR, runner=None):
     deploy, _ = walk_source(root, mod, walk) if not walk.get("why") else (None, None)
     kw = {"runner": runner} if runner else {}
     try:
-        rel = RR.relate(root, mod, dict(tests), {t: r for t, r in last.items() if t}, **kw)
+        rel = RR.relate(root, mod, dict(tests), {t: r for t, r in last.items() if t}, compare_mod_lists=True, **kw)
     except Exception as e:      # a relation that cannot be read relates nothing: each changed row runs again
         rel = {"rows": {}, "undeclared": [], "unreadable": [], "error": "%s: %s" % (type(e).__name__, e)}
+    rel["mod_lists"] = mod_list_relation(root, mod)
     return compare(tests, last, walk, tier_lister(walk, cache_dir), relation=rel, deploy=deploy)
 
 

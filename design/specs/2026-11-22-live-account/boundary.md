@@ -9,9 +9,9 @@ Proof that the one home equals or beats each old reader: `equivalence.md` beside
 The fact: the account that a machine's Claude sessions use now, as `claude-account --json status` names it in its
 `live` field. Every reader of that fact calls `account_live.read`: `slot_allocator.live_login_name`,
 `switching_plan.switcher_status`, `running_now.collect_inuse`, `account_handover` (`check`) and
-`account_usage.remote_live` (another machine, over ssh). `account_usage.live_email` is not a reader of this fact: it
-reads the email in this machine's session config file, which the usage poller matches against its own registry, and
-it runs no program.
+`account_usage.remote_live` and `run_host.read_facts` (another machine, over ssh). For the usage poller,
+`account_usage.live_email` reads this machine's session config file. The poller matches that email against its own
+registry.
 
 ## ACCEPTS (the only inputs this is built for)
 
@@ -49,7 +49,9 @@ it runs no program.
 - **a-remote-machine-is-read-over-ssh.** `read(target=...)` runs the status on that machine through
   `ssh -o BatchMode=yes` and a login shell, and its output goes through the same parse.
 - **every-reader-uses-the-one-home.** No tracked file outside `account_live.py` and its tests runs
-  `claude-account` with `status`, and each of the five readers above calls `account_live`.
+  `claude-account` with `status`, and each of the readers above calls `account_live`.
+- **remote-list-preflight-reads-the-live-field.** The remote list preflight uses the live name in the status object
+  even when a login banner mentions another account.
 
 ## LIMITS
 

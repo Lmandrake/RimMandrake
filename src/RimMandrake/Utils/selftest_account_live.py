@@ -125,9 +125,27 @@ def t_every_reader_uses_the_one_home():
     rows = [ln for ln in r.stdout.splitlines() if not ln.startswith("src/RimMandrake/Utils/account_live.py:")
             and "/selftest_" not in ln]
     check(r.returncode in (0, 1) and not rows, "no file outside account_live.py runs claude-account status", rows)
-    for f in ("slot_allocator.py", "switching_plan.py", "account_handover.py", "account_usage.py"):
+    for f in ("slot_allocator.py", "switching_plan.py", "account_handover.py", "account_usage.py",
+              "../rimflow/run_host.py"):
         src = open(os.path.join(HERE, f)).read()
         check("account_live" in src and "AL.read(" in src, "%s reads the live account through account_live" % f)
+
+
+def t_remote_list_preflight_reads_the_live_field():
+    import run_host
+    status = CASES["stevedesktop-real-over-ssh"]["out"]
+
+    def run(argv, **kwargs):
+        cmd = argv[-1]
+        out = {"echo up": "up", "claude --version": "2.1.331"}.get(cmd, "")
+        if "claude-account --json status" in cmd and argv[-2] == "stevedesktop":
+            out = "Last login for lukas\n" + status
+        elif cmd.startswith("claude-account status"):
+            out = "lukas"
+        return subprocess.CompletedProcess(argv, 0, out, "")
+
+    facts = run_host.read_facts("stevedesktop", "~/rm/list/test", "system", runner=run)
+    check(facts["account"] == "system", "remote list preflight reads the live field despite a banner", facts["account"])
 
 
 def main():
@@ -135,7 +153,7 @@ def main():
               t_a_cut_status_is_failed_not_a_name, t_a_non_zero_exit_is_failed, t_not_ok_is_failed,
               t_no_live_account_is_empty, t_a_missing_or_hung_switcher_could_not_look,
               t_every_blind_answer_names_its_cause, t_a_remote_machine_is_read_over_ssh,
-              t_every_reader_uses_the_one_home):
+              t_every_reader_uses_the_one_home, t_remote_list_preflight_reads_the_live_field):
         t()
     print("selftest_account_live: %s" % ("FAILED %d" % len(FAILS) if FAILS else "OK"))
     return 1 if FAILS else 0
