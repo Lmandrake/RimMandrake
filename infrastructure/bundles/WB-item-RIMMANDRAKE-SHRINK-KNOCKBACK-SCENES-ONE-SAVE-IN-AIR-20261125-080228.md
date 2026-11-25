@@ -15,7 +15,7 @@ System: item RIMMANDRAKE_SHRINK_KNOCKBACK_SCENES_ONE_SAVE_IN_AIR (Explosive Knoc
 - Fresh reader: 2 significant + 1 borderline, all fixed red-first (3ac2a9201c86).
 - Live: a debug-regenerated map renumbers its own things across a save (APPARATUS FAULT of the first census; lesson filed).
 - Filed: RIMMANDRAKE_GATE_ARCHSMALL_TIER_SWAP_ON_DRIVER_LOCK_NOT_LEDGER (another system).
-- Context: 264k after the build group; about 520k at the close.
+- Context: 264k after the build group; 416k at the close.
 
 ## Not tested
 
