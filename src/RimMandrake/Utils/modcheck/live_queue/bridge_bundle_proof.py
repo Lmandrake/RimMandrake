@@ -435,15 +435,10 @@ def g_PROFILE(L):
     finally:
         with open(path, "wb") as fh:
             fh.write(keep)
+        t0 = time.time()
         if os.path.exists(aside):
             os.remove(aside)
-    t0 = time.time()
-    while time.time() - t0 < 10:
-        p, _ = _profile(L)
-        if p == "test":
-            break
-        time.sleep(0.2)
-    out["backProfile"], out["flipS"] = p, round(time.time() - t0, 2)
+    out["backProfile"], out["flipS"] = _wait_profile(L, "test", t0=t0)
     try:
         d = json.loads(keep.decode("utf-8"))
         d["campaignSaves"] = SAVE
@@ -592,12 +587,15 @@ def _write_profile(path, profile, keep):
         json.dump(d, fh)
 
 
-def _wait_profile(L, want, limit=10.0):
-    t0 = time.time()
+def _wait_profile(L, want, limit=10.0, t0=None):
+    """-> (profile, seconds from t0 to the START of the first call that read `want`). The call's own round trip
+    (0.3-0.5 s on Steve1) is not the companion's latency: a 2.45 s end-of-call reading was 1.9 s of cache (2026-11-25)."""
+    t0 = time.time() if t0 is None else t0
     while time.time() - t0 < limit:
+        ts = time.time()
         p, _ = _profile(L)
         if p == want:
-            break
+            return p, round(ts - t0, 2)
         time.sleep(0.2)
     return p, round(time.time() - t0, 2)
 

@@ -6,7 +6,7 @@ The item measures vitals overhead "on the 23-mod tier and the full list". The 23
 makeup is modset_builder.TIERS["ratchet_pilot"]. vitals_overhead.py --tier minimal only bounds the COUNT (10..80),
 so a 13-mod minimal list or a 70-mod list would pass it; this check pins the tier by what it holds:
   every `want` id (bar retired donors), all five DLC + Core, no `forbid` id, no `forbid_substr` match,
-  and COUNT_LO..COUNT_HI running mods (22 and 23 measured on that tier; zoom/harmony may move it by a few).
+  and count_bounds() running mods (the tier's own ids + Core + DLC, plus up to COUNT_EXTRA framework mods).
 Exit 0 = TIER_OK, 1 = WRONG_TIER, 2 = BLIND (no running list read). Reads jawa/running_mods, never ModsConfig.xml.
 `--ids FILE` judges a saved list (one packageId per line, or a JSON list) offline.
 """
@@ -18,7 +18,17 @@ sys.path.insert(0, UTILS)
 import modset_builder as MB
 
 TIER = "ratchet_pilot"
-COUNT_LO, COUNT_HI = 20, 26
+# The count bounds follow the tier's own makeup (its live want ids + Core + the five DLC, plus up to 12 framework and
+# owner-tool mods: harmony, the bridge's deps, zoom, cherry picker ...). They were 20..26 when the tier held 22-23 mods;
+# its donors retired and the exact load is 19 (2026-11-25, J20261125T204220Z-0422b1), which a fixed range refused.
+# The upper bound still refuses a 70-mod list (danger: a big list measured as the small tier).
+COUNT_EXTRA = 12
+
+
+def count_bounds(tier=TIER):
+    t = MB.TIERS[tier]
+    lo = len([w for w in t["want"] if not MB._is_retired_donor(w)]) + 1 + len(MB.DLC_IDS)
+    return lo, lo + COUNT_EXTRA
 
 
 def makeup(ids, tier=TIER):
@@ -40,8 +50,9 @@ def makeup(ids, tier=TIER):
     forb += [p for p in got for s in t.get("forbid_substr", []) if s.lower() in p]
     if forb:
         bad.append("forbidden mods running %s" % sorted(set(forb)))
-    if not (COUNT_LO <= len(got) <= COUNT_HI):
-        bad.append("%d running mods, the %s tier holds %d..%d" % (len(got), tier, COUNT_LO, COUNT_HI))
+    lo, hi = count_bounds(tier)
+    if not (lo <= len(got) <= hi):
+        bad.append("%d running mods, the %s tier holds %d..%d" % (len(got), tier, lo, hi))
     if bad:
         return 1, "WRONG_TIER", "; ".join(bad)
     return 0, "TIER_OK", "%d running mods hold the %s tier makeup" % (len(got), tier)

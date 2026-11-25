@@ -197,6 +197,14 @@ check("min13 is 13", len(MIN13), 13)
 check("13 passes count tier (the gap)", V.verdict(run(mods=13), "minimal")[:2], (0, "MEASURED"))
 check("13-mod minimal refused for A1", TM.makeup(MIN13)[:2], (1, "WRONG_TIER"))
 check("70 passes count tier (the gap)", V.verdict(run(mods=70), "minimal")[:2], (0, "MEASURED"))
+# measured 2026-11-25, lane job J20261125T204220Z-0422b1: the exact ratchet_pilot load is 19 mods now (its donors
+# retired); a fixed 20..26 count refused the true tier
+STEVE19 = ["brrainz.harmony", "brrainz.rimbridgeserver", "ludeon.rimworld", "ludeon.rimworld.anomaly",
+           "ludeon.rimworld.biotech", "ludeon.rimworld.ideology", "ludeon.rimworld.odyssey", "ludeon.rimworld.royalty",
+           "mandrake.rm.biomes", "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack", "mandrake.rm.hugethings",
+           "mandrake.rm.luminouspigment", "mandrake.rm.patches", "mandrake.rm.weathersuite", "mandrake.rsw.swbestiary",
+           "mandrake.rut.patches", "owlchemist.cherrypicker", "ray1203.simplecamerasetting"]
+check("the 19-mod tier load of 2026-11-25 is the tier", TM.makeup(STEVE19)[:2], (0, "TIER_OK"))
 check("70-mod list refused for A1", TM.makeup(PILOT + ["dep.big.%02d" % i for i in range(47)])[:2], (1, "WRONG_TIER"))
 for _w in [w for w in _t["want"] if not TM.MB._is_retired_donor(w)]:     # drop ANY tier mod, e.g. rm.patches
     _l = [x for x in PILOT if x != _w] + ["dep.pad"]
