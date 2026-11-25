@@ -1,0 +1,3 @@
+A staged hook test that a detached helper starts inherits that helper's own RM_ROLE_UNIT, and control.py hook reads RM_ROLE_UNIT before RM_DETACHED_UNIT: the staged run then looks up the stager's unit, finds no order and prints nothing, which reads as 'the hook does not deliver'. Start the staged run with env -u RM_ROLE_UNIT (and -u RM_DETACHED_UNIT for a staged launch). Seen 2026-11-24 in part 5 of the account tool: the first staged Claude Code run answered NOTHING, the second (without the variable) quoted the ACCOUNT WARNING.
+item: RIMMANDRAKE_WIRE_PLAN_READERS_NOBODY_READS_BURN_MODE_YET
+home: skills/using-rimflow/references/traps.md
