@@ -87,6 +87,7 @@ PAGES = {
     "design/specs/2026-11-23-wake-carries-result/boundary.md":
         "src/RimMandrake/rimflow/selftest_run_end_wake_result.py",
     "design/specs/2026-11-23-run-alive/boundary.md": "src/RimMandrake/rimflow/selftest_run_alive.py",
+    "design/specs/2026-11-25-run-peek/boundary.md": "src/RimMandrake/rimflow/selftest_run_peek.py",
     "design/specs/2026-11-23-steve-two-games-lane/boundary.md": "src/RimMandrake/Utils/testq/selftest_testq_steve2.py",
     "design/specs/2026-11-24-lane-job-follows-companion/boundary.md":
         "src/RimMandrake/Utils/testq/selftest_companion_stage.py",

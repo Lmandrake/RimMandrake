@@ -494,7 +494,15 @@ python3 src/RimMandrake/rimflow/cli.py queue CONDUCTOR --owed   # what you OWE, 
 python3 src/RimMandrake/rimflow/cli.py seat ready
 tail -n 40 /mnt/d/ClaudeWork/rimmandrake/conductor/log.md
 python3 src/RimMandrake/rimflow/cli.py queue CONDUCTOR
+python3 src/RimMandrake/rimflow/run_peek.py show        # what each live mod run spends its time on
 ```
+
+**Ask about a run that is long on one or two checks** (owner, 2026-11-24: "If they're spending a lot of time on one or
+two tests, PLEASE let's ask if it's even sensible to try that, if it needs to be deferred, re-examined, replaced with a
+simpler test, or needs to be raised with me"). `run_peek.py show` lists each live mod run's checks by time, its last
+`PROGRESS:` note and its last message. The applied tick writes one `LONG ON ONE CHECK:` line in the Conductor log for a
+run with over an hour on one check. For each such run, decide: the test stays, is deferred, is re-examined, is replaced
+by a cheaper test (`cheaper_why`), or goes to him with its evidence. Log the call as your act.
 
 **The question watcher (a Monitor) is armed with a grep anchored to the log line's leading timestamp that excludes the log text "restart:BENCH"**
 Without the anchor and the exclusion, the watcher's own command text and the backstop's restart line match the grep.

@@ -17,6 +17,7 @@ Start of turn (the full text is in the role file):
 - `python3 src/RimMandrake/rimflow/cli.py queue CONDUCTOR --owed`;
 - `python3 src/RimMandrake/rimflow/cli.py seat ready`;
 - the last 40 lines of `/mnt/d/ClaudeWork/rimmandrake/conductor/log.md`;
-- `python3 src/RimMandrake/rimflow/cli.py queue CONDUCTOR`.
+- `python3 src/RimMandrake/rimflow/cli.py queue CONDUCTOR`;
+- `python3 src/RimMandrake/rimflow/run_peek.py show` (what each live mod run spends its time on).
 
 The folded workshop rules (SEAT_BENCH_RENAME_WORD_OUTLIVED_ITS_WORKSHOP) live in the Workshop rules section of the role file.

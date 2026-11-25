@@ -4499,6 +4499,11 @@ def _tick(root, cfg, apply, fx=None, now=None, page=False):
             SF.observe(facts, st, now, rd, dict({"holds": {OH.key(m) for m in holds}}, **(fx.get("shortfall") or {})))
         except Exception as e:      # noqa: BLE001  this reading failing never costs the tick
             rd["shortfall_error"] = "%s: %s" % (e.__class__.__name__, e)
+        try:        # a live mod run with over an hour on one check: the Conductor is asked, once (owner, 2026-11-24)
+            import run_peek as RP       # noqa: E402  (RIMMANDRAKE_PEEK_AT_LIVE_MOD_RUNS_HE_SAID_IT_IS_THE_CONDUCTORS_JOB)
+            RP.observe(now, rd, fx.get("peek"), d, facts)
+        except Exception as e:      # noqa: BLE001  this reading failing never costs the tick
+            rd["peek_error"] = "%s: %s" % (e.__class__.__name__, e)
         _write(os.path.join(d, "state.json"), st)
         _write(os.path.join(d, "reading.json"), rd)
         with open(os.path.join(d, "ticks.jsonl"), "a", encoding="utf-8") as f:
