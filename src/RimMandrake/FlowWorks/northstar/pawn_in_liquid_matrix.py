@@ -57,9 +57,12 @@ COLS = [
 ]
 # (key, kindDef, faction, label, apparel)
 KINDS = [
-    ("COLONIST_ARMOUR", "Colonist", "player", "colonist, marine armour + helmet", ["Apparel_PowerArmor", "Apparel_PowerArmorHelmet"]),
-    ("COLONIST_ROBE_HAT", "Colonist", "player", "colonist, long robe + cowboy hat", ["Apparel_Robe", "Apparel_CowboyHat"]),
-    ("COLONIST_PACK", "Colonist", "player", "colonist, parka + jump pack", ["Apparel_Parka", "Apparel_PackJump"]),
+    # garments the owner's game has: ArchBig's Cherry Picker list removes Apparel_PowerArmor, Apparel_PowerArmorHelmet,
+    # Apparel_Robe and Apparel_PackJump, and Wear() of a removed def leaves the pawn bare (28 FAIL rows on ArchBig,
+    # 2026-11-25; RIMMANDRAKE_FIND_WHY_PAWN_GEAR_WEAR_KEPT_NONE). Check a new garment against that list first.
+    ("COLONIST_ARMOUR", "Colonist", "player", "colonist, flak jacket + advanced helmet", ["Apparel_FlakJacket", "Apparel_AdvancedHelmet"]),
+    ("COLONIST_ROBE_HAT", "Colonist", "player", "colonist, royal robe + cowboy hat", ["Apparel_RobeRoyal", "Apparel_CowboyHat"]),
+    ("COLONIST_PACK", "Colonist", "player", "colonist, parka + broadshield pack", ["Apparel_Parka", "Apparel_PackBroadshield"]),
     ("HARE", "Hare", "none", "hare (small animal)", []),
     ("COBRA", "Cobra", "none", "cobra (long animal)", []),
     ("MUFFALO", "Muffalo", "none", "muffalo (quadruped)", []),
@@ -182,6 +185,11 @@ def spawned_id(r):
 
 def stage():
     x, z, w, h = site()
+    # which companion staged it: on 2026-11-25 another run's proof build on ArchBig failed every wear, and no record named
+    # the build (RIMMANDRAKE_FIND_WHY_PAWN_GEAR_WEAR_KEPT_NONE); compare its commit with origin/main before reading a wear row
+    hs = call("jawa/companion_handshake")
+    log("companion", {k: hs.get(k) for k in ("companionSha", "companionVersion", "companionFileSha256", "companionPath", "compileProfile", "error")
+                      if hs.get(k) is not None} or str(hs)[:300])
     r = call("jawa/static_call", type="RimMandrake.FlowWorks.RM_NorthstarProofs", method="ProofResetRect",
              args="%d;%d;%d;%d" % (x, z, w, h))
     log("reset", str(r.get("result") or r)[:200])
@@ -221,8 +229,13 @@ def stage():
         call("jawa/pawn_gear", pawn=pid, action="clear", clearWhat="equipment")
         for ap in kind[4]:
             g = call("jawa/pawn_gear", pawn=pid, action="wear", **{"def": ap})
-            if g.get("success") is not True:
-                row("%s_%s_wears_%s" % (rk, ck, ap), False, str(g)[:200])
+            # a PASS row too, so "no failing wear row" cannot hold on a stage that wore nothing; a FAIL keeps the read-back's
+            # wrong block and the worn list whole (the first 200 characters cut both off, 2026-11-25)
+            rb = g.get("readBack") or {}
+            worn = [a.get("def") if isinstance(a, dict) else a for a in ((g.get("pawn") or {}).get("apparel") or [])]
+            row("%s_%s_wears_%s" % (rk, ck, ap), g.get("success") is True,
+                {"faults": rb.get("faults"), "wrong": rb.get("wrong"), "made": rb.get("made"), "notes": g.get("notes"),
+                 "worn": worn, "error": g.get("error") or g.get("message")})
         if lying:
             # lie down without wounds (anesthetic: the forced downing's wound decals swamped the look, 2026-11-22); a body
             # that takes no anesthetic (a mechanoid, a droid) lies as its clean corpse (Pawn.Kill, no damage)
@@ -437,7 +450,7 @@ def verdict(names):
     ok = True
     for n in names:
         r = rows.get(n)
-        print("%-9s %s  %s" % (r["verdict"] if r else "MISSING", n, (r or {}).get("got", "")[:200]))
+        print("%-9s %s  %s" % (r["verdict"] if r else "MISSING", n, str((r or {}).get("got", ""))[:200]))
         ok = ok and r is not None and r["verdict"] == "PASS"
     print("VERDICT: %s (%s)" % ("PASS" if ok else "FAIL", reads[-1]))
     return 0 if ok else 1
