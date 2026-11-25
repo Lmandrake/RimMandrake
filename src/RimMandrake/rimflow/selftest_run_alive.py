@@ -326,6 +326,10 @@ def t_one_file_beside_the_record():
         check("the look is on file beside the record", json.load(fh) == got)
     check("no reader of run records takes it for one", sorted(r["unit"] for r in DH.all_records()) == before and
           not {"unit", "status", "item"} & set(got), got.keys())
+    unread = []
+    list(DH.all_records(unreadable=unread.append))
+    check("no reader of run records reports it unreadable (list_dispatch counted no spare room: 123 such files)",
+          not unread, unread)
     import stop_resume as SR
     check("stop_resume reads the same runs", not [r for r in SR.recent_records(None, NOW) if not r.get("unit")])
     check("no half-written file is left", not [n for n in os.listdir(DH.runs_dir()) if n.endswith(".tmp")])

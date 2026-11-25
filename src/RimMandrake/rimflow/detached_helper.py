@@ -369,7 +369,9 @@ def live_status(rec, runner=subprocess.run, now=None):
 def all_records(root=None, unreadable=None):
     d = runs_dir(root)
     for n in sorted(os.listdir(d)):
-        if n.endswith(".json") and not n.endswith(".out.json"):
+        # <unit>.alive.json is run_alive.py's look, not a record: read as one, each such file reported unreadable and
+        # list_dispatch then counted no spare room (2026-11-24: 123 files, 11 ready items at slots_full at load 6)
+        if n.endswith(".json") and not n.endswith((".out.json", ".alive.json")):
             rec = read_record(n[:-5], root)
             if isinstance(rec, dict) and rec.get("unit"):
                 yield rec
