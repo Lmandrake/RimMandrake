@@ -48,8 +48,11 @@ Any non-canonical game will do; the test lane's games are disposable.
   PEN2       PEN_ANIMALS_UNSTICK_STATUES_LEARN_TO_WALK A2: human_review.py --build --save makes a review keeper save from
              the newest NS_Pyrelands_site_*.rws in <data root>/fixtures (tier ratchet_pilot holds its mods), the keeper
              is loaded from the menu, and human_review.py's --release-pens call releases
-             every pen specimen; after 600 ticks at least half have moved and each is inside its pen; its --pin-pens
-             call brings every one home and restores the facing it was released with
+             every pen specimen (none left on the 60000-tick pin: each next job comes from its think tree, the pin
+             reading proven on the pinned state first); by 9000 ticks at least half have moved (on the hot Pyrelands
+             map an animal in a roofed pen first rests 600-1500 ticks by design, RM_JobGiver_ShadeHop, so 600 ticks
+             cannot tell a rest from a pin) and each is inside its pen; its --pin-pens call brings every one home and
+             restores the facing it was released with
   KEEPER     KEEPER_SAVES_HARDEN_WRONG_SLOT_WRITES A1: save_guard.snapshot on this game's real Saves folder hashes every
              keeper and holds a store copy of each; a save_base through the guard writes a new save, verified, with no
              keeper changed (the new save is deleted after: it is the proof's own)
@@ -366,26 +369,32 @@ def v_PEN2(d):
         return 2, d["why"]
     if not d.get("selected"):
         return 2, "the review layout's pen rects selected no animal on %s (the save's layout differs)" % d.get("save")
+    ids, moved = d.get("ids") or [], d.get("moved") or []
+    # the known-bad control: before the release every specimen is on the pin, so the pin reading must name each one.
+    # A reading that misses the pin there could not see a pin that the release left (UNMEASURED, never PASS).
+    if len(d.get("pinBefore") or []) != len(ids):
+        return 2, "the pin reading named %d of %d pinned specimens before the release: it cannot see a pin" % (
+            len(d.get("pinBefore") or []), len(ids))
     f = []
     if d.get("released") != d.get("selected") or d.get("notReleased"):
-        f.append("released %s of %s (%s still Wait)" % (d.get("released"), d.get("selected"), d.get("notReleased")))
-    ids, moved = d.get("ids") or [], d.get("moved") or []
+        f.append("released %s of %s (%s still on the pin)" % (d.get("released"), d.get("selected"), d.get("notReleased")))
+    if d.get("pinAfter"):
+        f.append("still on the pin right after release: %s" % d["pinAfter"][:5])
+    late = d.get("lateTicks") or 600
     if len(moved) * 2 < len(ids):
-        f.append("only %d of %d moved in 600 ticks" % (len(moved), len(ids)))
+        f.append("only %d of %d moved in %d ticks" % (len(moved), len(ids), late))
     if d.get("outside"):
         f.append("outside their pen: %s" % d["outside"][:5])
     if d.get("facingWrong"):
         f.append("facing not restored: %s" % d["facingWrong"][:5])
     if (d.get("returnedHome") or 0) + len(d.get("homeOccupied") or []) < len(ids):   # a held cell: the tool's rule
         f.append("returned home %s of %d" % (d.get("returnedHome"), len(ids)))
-    if f and (d.get("jobsAfterRelease") or d.get("unmovedDetail")):
-        f.append("jobs right after release %s; unmoved kind/job %s" % (d.get("jobsAfterRelease"), d.get("unmovedDetail")))
-    if f and d.get("heat"):
-        f.append("heat (id moved cell comfy safe): %s" % "; ".join(
-            "%s %s %s %s %s" % (h.get("kind") or h.get("id"), "M" if h.get("moved") else "-", h.get("cellTemp"),
-                                h.get("ComfortableTemperatureRange"), h.get("SafeTemperatureRange")) for h in d["heat"]))
-    return (1 if f else 0), "; ".join(f) or "%d released, %d moved, all inside their pens, all home with their facing (%s)" % (
-        len(ids), len(moved), d.get("save"))
+    if f and (d.get("giversAfter") or d.get("unmovedDetail")):
+        f.append("givers right after release %s; unmoved kind/job/giver %s" % (d.get("giversAfter"), d.get("unmovedDetail")))
+    return (1 if f else 0), "; ".join(f) or (
+        "%d released (none left on the pin; givers %s), %d moved by 600 ticks and %d by %d, all inside their pens, all "
+        "home with their facing (%s)" % (len(ids), d.get("giversAfter"), len(d.get("moved600") or []), len(moved), late,
+                                         d.get("save")))
 
 
 VERDICTS = dict((c, globals()["v_" + c]) for c in CLAUSES)
@@ -992,23 +1001,37 @@ def _bare(i):
     return i[6:] if i.startswith("Thing_") else i
 
 
-def _pen_heat(L, before, now, kinds, n_still=12, n_moved=6):
-    """-> per-animal heat rows for PEN2's FAIL reading: is an animal that never moved standing outside its kind's
-    comfortable range? Unmoved rows first, then moved ones as the control (if those are as far out of range, heat is
-    not what holds the unmoved). A failed read is recorded as its error, never as a temperature."""
-    moved = [i for i in sorted(before) if (now.get(i, {}).get("x"), now.get(i, {}).get("z")) !=
-             (before[i].get("x"), before[i].get("z"))]
-    still = [i for i in sorted(before) if i not in moved]
-    rows = []
-    for i, mv in [(i, False) for i in still[:n_still]] + [(i, True) for i in moved[:n_moved]]:
-        a = L.call("jawa/thing_ambient_temp", thing=i)
-        row = {"id": i, "moved": mv, "kind": kinds.get(i),
-               "cellTemp": a.get("cellTemp") if _ok(a) else "ERR %s" % str(a.get("error") or a)[:80]}
-        for name in ("ComfortableTemperatureRange", "SafeTemperatureRange"):
-            r = L.call("jawa/static_call", type="Verse.GenTemperature", method=name, args=i)
-            row[name] = r.get("result") if _ok(r) else "ERR %s" % str(r.get("error") or r)[:80]
-        rows.append(row)
-    return rows
+PEN_PIN_TICKS = 60000          # jawa/pen_pin's and the artboard stager's pin: a Wait started directly, no think node
+PEN_LATE_TICKS = 9000          # the second reading: several of the longest designed shade rests (RM_SunHeatExtension
+#                                restTicks 600-1500, RM_JobGiver_ShadeHop) after the 600-tick one
+
+
+def _hist(xs):
+    out = {}
+    for x in xs:
+        out[str(x)] = out.get(str(x), 0) + 1
+    return out
+
+
+def pen_job_class(job):
+    """-> 'pin' (the 60000-tick pin: a Wait with no think-tree giver), 'rest' (a Wait a think node gave: the animal's own
+    behaviour, e.g. a shade rest), 'none' or 'other'. Reads jawa/pawn_census's job row."""
+    if not isinstance(job, dict) or not job.get("def"):
+        return "none"
+    if job.get("def") != "Wait":
+        return "other"
+    if not job.get("giver") and (job.get("expiryInterval") or 0) >= PEN_PIN_TICKS:
+        return "pin"
+    return "rest"
+
+
+def _pen_jobs(L, ids):
+    """-> {id: census job row} for ids (batches of 80, the census's own row cap is higher)."""
+    out = {}
+    for k in range(0, len(ids), 80):
+        for r in L.call("jawa/pawn_census", ids=",".join(ids[k:k + 80])).get("pawns") or []:
+            out[_bare(r.get("id") or r.get("pawn"))] = r.get("job")
+    return out
 
 
 def g_PEN2(L):
@@ -1051,11 +1074,16 @@ def g_PEN2(L):
     rects = [HR.footprint(s) for s in HR.pen_stations(S)]
     rstr = HR.pen_rects(S)
     before = dict((_bare(p.get("pawn")), p) for p in L.call("jawa/pen_pin", rects=rstr, restore=False).get("pawns") or [])
+    ids0 = sorted(before)
+    jobs0 = _pen_jobs(L, ids0)                                   # the known-bad control: all of them on the pin now
     rel = L.call("jawa/pen_release", rects=rstr)                 # exactly human_review.py --release-pens (Review.pens)
+    jobs1 = _pen_jobs(L, ids0)                                   # paused, at once: whose behaviour drives each one now
     L.call("rimworld/step_game_ticks", ticks=600, pauseFirst=True)
+    now600 = dict((_bare(p.get("id")), p) for p in L.call("jawa/list_pawns").get("pawns") or [])
+    L.call("rimworld/step_game_ticks", ticks=PEN_LATE_TICKS - 600, pauseFirst=True)
     now = dict((_bare(p.get("id")), p) for p in L.call("jawa/list_pawns").get("pawns") or [])
-    heat = _pen_heat(L, before, now, dict((_bare(r.get("pawn")), r.get("kind")) for r in rel.get("pawns") or []))
-    #                                                              (read before the pin: the cells they idled on)
+    still = [i for i in ids0 if (now.get(i, {}).get("x"), now.get(i, {}).get("z")) == (before[i].get("x"), before[i].get("z"))]
+    jobs2 = _pen_jobs(L, still) if still else {}                 # read before the pin: what holds the unmoved
     pin = L.call("jawa/pen_pin", rects=rstr, restore=True)       # exactly human_review.py --pin-pens
     pinned = dict((_bare(p.get("pawn")), p) for p in pin.get("pawns") or [])
 
@@ -1066,30 +1094,32 @@ def g_PEN2(L):
         return None
 
     ids = sorted(before)
-    moved, outside, facing = [], [], []
+    moved, moved600, outside, facing = [], [], [], []
     for i in ids:
         b, n = before[i], now.get(i) or {}
         home = rect_of(b.get("x"), b.get("z"))
         if (n.get("x"), n.get("z")) != (b.get("x"), b.get("z")):
             moved.append(i)
+        n6 = now600.get(i) or {}
+        if (n6.get("x"), n6.get("z")) != (b.get("x"), b.get("z")):
+            moved600.append(i)
         if home is None or rect_of(n.get("x"), n.get("z")) != home:
             outside.append("%s at %s,%s" % (i, n.get("x"), n.get("z")))
         held = any(_bare(h.get("pawn")) == i and " holds " in str(h.get("reason")) for h in pin.get("homeRefused") or [])
         if not held and str((pinned.get(i) or {}).get("rotation")) != str(b.get("rotation")):
             facing.append("%s: %s -> %s" % (i, b.get("rotation"), (pinned.get(i) or {}).get("rotation")))
     unmoved = [i for i in ids if i not in moved]
-    census = dict((_bare(r.get("id") or r.get("pawn")), r) for r in
-                  (L.call("jawa/pawn_census", ids=",".join(unmoved[:80])).get("pawns") or [])) if unmoved else {}
     kinds = dict((_bare(r.get("pawn")), r.get("kind")) for r in rel.get("pawns") or [])
     detail = {}
-    for i in unmoved:            # what an unmoved animal is and does: the reading that classes a FAIL (mod, check, scene)
-        c = census.get(i) or {}
-        job = c.get("job")
-        key = "%s/%s%s" % (kinds.get(i), (job or {}).get("def") if isinstance(job, dict) else job,
-                           "/downed" if c.get("downed") else "")
+    for i in unmoved:            # what holds an unmoved animal: the reading that classes a FAIL (mod, check, scene)
+        j = jobs2.get(i)
+        key = "%s/%s/%s" % (kinds.get(i), (j or {}).get("def"), (j or {}).get("giver"))
         detail[key] = detail.get(key, 0) + 1
     return {"save": review, "selected": rel.get("selected"), "released": rel.get("released"),
-            "jobsAfterRelease": rel.get("jobsAfter"), "unmovedDetail": detail, "heat": heat,
+            "jobsAfterRelease": rel.get("jobsAfter"), "unmovedDetail": detail, "moved600": moved600,
+            "lateTicks": PEN_LATE_TICKS, "pinBefore": [i for i in ids if pen_job_class(jobs0.get(i)) == "pin"],
+            "pinAfter": [i for i in ids if pen_job_class(jobs1.get(i)) == "pin"],
+            "giversAfter": _hist([(jobs1.get(i) or {}).get("giver") or (jobs1.get(i) or {}).get("def") for i in ids]),
             "notReleased": rel.get("notReleased"), "ids": ids, "moved": moved, "outside": outside,
             "facingWrong": facing, "returnedHome": pin.get("returnedHome"),
             "homeOccupied": [_bare(h.get("pawn")) for h in pin.get("homeRefused") or [] if " holds " in str(h.get("reason"))]}

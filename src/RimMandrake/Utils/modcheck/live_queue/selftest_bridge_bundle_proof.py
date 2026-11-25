@@ -148,19 +148,25 @@ check("SETTLE cleared the roster", "SETTLE", dict(st, refused=False, msg="", aft
 check("SETTLE refused but removed some", "SETTLE", dict(st, after=39), 1)
 check("SETTLE the import refused a row instead", "SETTLE", dict(st, msg="REFUSING the whole import: 1 of 1"), 2)
 pn = {"selected": 3, "released": 3, "notReleased": 0, "ids": ["a", "b", "c"], "moved": ["a", "b"], "outside": [],
-      "facingWrong": [], "returnedHome": 3, "save": "RM_pyre_review_x"}
+      "facingWrong": [], "returnedHome": 3, "save": "RM_pyre_review_x", "pinBefore": ["a", "b", "c"], "pinAfter": [],
+      "moved600": ["a"], "lateTicks": 9000}
 check("PEN2 released, moved, stayed, re-pinned", "PEN2", pn, 0)
 check("PEN2 nobody moved (statues)", "PEN2", dict(pn, moved=[]), 1)
 check("PEN2 one walked out of its pen", "PEN2", dict(pn, outside=["b"]), 1)
 check("PEN2 a facing not restored", "PEN2", dict(pn, facingWrong=["c: South -> North"]), 1)
 check("PEN2 one stayed pinned", "PEN2", dict(pn, released=2, notReleased=1), 1)
 check("PEN2 the layout selects nobody", "PEN2", dict(pn, selected=0, ids=[]), 2)
-_h = [{"id": "a", "kind": "RM_Kind", "moved": False, "cellTemp": 51.0, "ComfortableTemperatureRange": "-10~40",
-       "SafeTemperatureRange": "-20~50"}]
-_rc, _msg = B.verdict("PEN2", dict(pn, moved=[], heat=_h))
-check("PEN2 a statue FAIL names each read animal's cell heat beside its range", "PEN2", dict(pn, moved=[], heat=_h), 1)
-if "RM_Kind - 51.0 -10~40 -20~50" not in _msg:
-    print("FAIL PEN2 heat row missing from the FAIL text: %s" % _msg[-160:]); FAILS.append("PEN2 heat row")
+check("PEN2 one left on the pin after release", "PEN2", dict(pn, pinAfter=["c"]), 1)
+check("PEN2 the pin reading blind on the pinned state: UNMEASURED", "PEN2", dict(pn, pinBefore=[]), 2)
+for _job, _want in (({"def": "Wait", "giver": None, "expiryInterval": 60000}, "pin"),
+                    ({"def": "Wait", "giver": "RM_JobGiver_ShadeHop", "expiryInterval": 900}, "rest"),
+                    ({"def": "Wait", "giver": "JobGiver_IdleError", "expiryInterval": 100}, "rest"),
+                    ({"def": "GotoWander", "giver": "JobGiver_WanderAnywhere", "expiryInterval": -1}, "other"),
+                    (None, "none")):
+    _got = B.pen_job_class(_job)
+    print("%s pen_job_class %-60s -> %s" % ("ok  " if _got == _want else "FAIL", _job, _got))
+    if _got != _want:
+        FAILS.append("pen_job_class %s" % _job)
 check("ORIGIN a wild animal that arrived after mapgen is not a FAIL", "ORIGIN",
       dict(og, wild=["Thing_A1", "Thing_A3"], chains={"Thing_A1": "mapgen > wild-spawner", "Thing_A3": "wild-spawner"}), 0)
 check("ORIGIN only late arrivals: no mapgen wildlife read", "ORIGIN",

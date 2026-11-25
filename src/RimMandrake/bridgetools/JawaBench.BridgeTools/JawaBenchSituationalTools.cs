@@ -690,7 +690,8 @@ namespace JawaBench.BridgeTools
                 "success, count, totalSelected, truncated, ticksGame, readErrors[], pawns[] with id, name, " +
                 "kindDef, faction, isPlayer, hostile, isColonist, spawned, dead, downed, x, z, inMentalState, " +
                 "mentalState{def, isAggro, ageTicks, causedByMood, causedByDamage, causedByPawn, " +
-                "forceRecoverAfterTicks}, breakImminent{minor, major, extreme}, job{def, targetA, targetB} (each target: thingId, def, x, z; thingId null for a cell), " +
+                "forceRecoverAfterTicks}, breakImminent{minor, major, extreme}, job{def, targetA, targetB, startTick, expiryInterval, giver} (each target: thingId, def, x, z; thingId null for a cell; " +
+                "expiryInterval -1 = none; giver = the issuing think node's type, null for a job started directly), " +
                 "isPredatorHunting, preyId, enemyTargetId, meleeThreatId, lastAttackTargetTick, " +
                 "anyCloseHostilesRecently, needs{food, rest, mood, joy}, lord{loadId, lordJob, toil}, duty{def, focus}.")]
         public static async Task<object> PawnCensus(
@@ -777,7 +778,8 @@ namespace JawaBench.BridgeTools
                             inMentalState = ms != null,
                             mentalState = mental,
                             breakImminent = breakImm,
-                            job = job == null ? null : (object)new { def = job.def != null ? job.def.defName : null, targetA = TargetRow(job.targetA), targetB = TargetRow(job.targetB) },
+                            job = job == null ? null : (object)new { def = job.def != null ? job.def.defName : null, targetA = TargetRow(job.targetA), targetB = TargetRow(job.targetB),
+                                                           startTick = job.startTick, expiryInterval = job.expiryInterval, giver = job.jobGiver?.GetType().Name },
                             isPredatorHunting = hunting,
                             preyId,
                             enemyTargetId = p.mindState != null && p.mindState.enemyTarget != null ? p.mindState.enemyTarget.ThingID : null,

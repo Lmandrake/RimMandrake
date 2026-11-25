@@ -121,15 +121,17 @@ namespace JawaBench.BridgeTools
             Description =
                 "End the long Wait job that pins review-pen animals (the artboard stager and review-map builders give each " +
                 "pen specimen a 60000-tick Wait so it holds its facing), so they take their own next job and wander inside " +
-                "their walled pen. Select with exactly ONE of: rects ('x,z,w,h;x,z,w,h' - every animal standing in any), " +
+                "their walled pen (on a hot map an animal in shade may first rest in place). Select with exactly ONE of: rects ('x,z,w,h;x,z,w,h' - every animal standing in any), " +
                 "pawns (comma ids), or allMap=true (every animal on the current map whose current job is Wait). Only a pawn " +
                 "whose CURRENT job is Wait is touched; others are reported in skipped with their job. Humanlikes are skipped " +
                 "unless includeHumanlike=true. Each released pawn's cell and rotation are remembered (in memory only, not in " +
                 "the save) so the pin tool (pen_pin) can put it back. NOTHING MOVES WHILE PAUSED: unpause to watch. A save " +
                 "made after this keeps them released. The pen must be closed (walls, a door wild animals cannot open) or they leave.",
             ResultDescription =
-                "success, selected, released, notReleased (still Wait after ending it), skipped[{pawn,reason}], " +
-                "jobsBefore{def:n}, jobsAfter{def:n}, pawns[{pawn,kind,x,z,jobAfter}], ticksGame.")]
+                "success, selected, released, notReleased (still on a Wait no think node gave: the pin did not end), " +
+                "skipped[{pawn,reason}], jobsBefore{def:n}, jobsAfter{def:n}, pawns[{pawn,kind,x,z,jobAfter,giverAfter}] " +
+                "(giverAfter: the think node that gave the next job; a Wait it gives, e.g. a shade rest, is the animal's " +
+                "own behaviour), ticksGame.")]
         public static async Task<object> PenRelease(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -160,14 +162,18 @@ namespace JawaBench.BridgeTools
                     p.jobs.ClearQueuedJobs();
                     p.jobs.EndCurrentJob(JobCondition.InterruptForced, true, true);
                     string after = p.CurJobDef?.defName ?? "(none)";
-                    if (p.CurJobDef == JobDefOf.Wait) stuck++;
+                    // Still pinned = a Wait that no think node gave (the pin is started directly, so its jobGiver is
+                    // null). A Wait the think tree gives at once is the animal's own behaviour (a shade rest on a hot
+                    // map, RM_JobGiver_ShadeHop): released (PEN_ANIMALS_UNSTICK_STATUES_LEARN_TO_WALK, 2026-11-25).
+                    string giver = p.CurJob?.jobGiver?.GetType().Name;
+                    if (p.CurJobDef == JobDefOf.Wait && giver == null) stuck++;
                     else
                     {
                         released++;
                         PenStashes.Remove(p);
                         PenStashes.Add(p, new PenStash { cell = cell, rot = rot, releasedTick = TicksGameSafe(), mapId = map.uniqueID });
                     }
-                    rows.Add(new { pawn = p.ThingID, kind = p.kindDef?.defName, x = cell.x, z = cell.z, jobAfter = after });
+                    rows.Add(new { pawn = p.ThingID, kind = p.kindDef?.defName, x = cell.x, z = cell.z, jobAfter = after, giverAfter = giver });
                 }
                 return (object)new
                 {
