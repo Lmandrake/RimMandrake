@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "ExplosiveKnockback",
   "version": "0.2.0",
-  "stage": "offline_build",
-  "stage_label": "Offline build (Stage 3)",
-  "since": "2026-11-24T17:09:06-08:00",
+  "stage": "blind_challenge",
+  "stage_label": "Blind challenge, tests first (Stages 4 and 5)",
+  "since": "2026-11-25T04:42:07-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -14,8 +14,8 @@
     "previous": "version/stage_record_0.1.0.json"
   },
   "cycles": {
-    "visit": 0,
-    "total": 0
+    "visit": 1,
+    "total": 1
   },
   "pre_human_arrivals": 0,
   "spend": [],
@@ -45,6 +45,27 @@
         "version",
         "hold",
         "preflight_record"
+      ]
+    },
+    {
+      "from": "offline_build",
+      "to": "blind_challenge",
+      "at": "2026-11-25T04:42:07-08:00",
+      "by": "BENCH",
+      "why": "Stage 3 offline build for 0.2.0: every exit test passes (order, version, hold, every_bar_has_a_check_that_runs, table_version, fourth_cycle, judge_certificate); item RIMMANDRAKE_ADVANCE_EXPLOSIVEKNOCKBACK_PAST_OFFLINE_BUILD",
+      "unit": "rm-detached-bench-rimmandrake-advance-explosiveknockback-p-1795610408",
+      "confirmed": {
+        "steward_confirms": "read maturation.py next (0 refusals, 0 hand steps, no fix readers owed, no blind cycle open); ran judge_certificate.certify: ok, did_not_run [], 296 rows = 279 PASS + 17 WARN, every WARN a grandfathered red_seen on a test file unchanged since red_seen_grandfather.json (no red proof owed); bar rebound_goes_shorter loosened at 380aa4ee6d is a logged Conductor act under RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS with lost/undo, not re-judged here. Verdict: advance."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "every_bar_has_a_check_that_runs",
+        "table_version",
+        "fourth_cycle",
+        "judge_certificate"
       ]
     }
   ]

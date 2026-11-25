@@ -8,13 +8,13 @@ The top part, **the mod as it stands**, is rewritten at every stage change and s
 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Code exists:
   `src/RimMandrake/ExplosiveKnockback/`.
-- **Stage now:** Stage 3, offline build, since 2026-11-24 5:09 PM PST (`version/stage_record.json`).
+- **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-25 4:42 AM PST (`version/stage_record.json`).
 - **Bars:** 59 (30 inventory rows of `record.json` + 29 leaves of `tree.json`). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`).
 - **Measured 2026-11-14 12:45 PST:** 53 of 59 bars have at least one test that runs today; 47 have every deciding test
   runnable; 41 have all their offline deciding tests green. All 15 offline tests are built (13 PASS, 2 known red,
   unchanged). In-game scenes: 56, entry exists 50, absent 6. Every in-game scene is UNRUN (Stage 6); commands in the table.
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-24 5:09 PM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-25 4:42 AM PST).
 - **Open questions:** see "Questions" at the end of the history.
 
 ### The vision (his root paragraph, approved by card 2026-11-11, OWNER:1794468835221748501)
@@ -506,3 +506,13 @@ answer the locked bar, his recorded words or the shipped code already gives; no 
 - A conflict found before it went red: the plan's one `sootReach` served both soot parts, so one soot switch off could not give its part the unmodded look (S_OFF_OWN). Split into `sootThingsReach` and `sootPawnsReach`; the kernel's S_SWITCH now checks both.
 - Art: 10 new jobs (6 smoke, 4 soot tiles); a fresh Opus judge accepted 30 of 32, refused spark_a (grey box) and smoke_e (pale rim); both rerolls accepted; 34 verdicts in `version/art/blast_show_art_verdict_2026-11-24.json`; 32 installed by `art install`.
 - Red seen on planted faults: T_BLAST_SHOW_OFFLINE and T_SETTINGS_SWEEP_SHOW (`evidence/plants/soot_pawns_on_things_switch.patch`), T_SETTINGS_SWEEP_OFFLINE (`evidence/plants/soot_setting_unswept.patch`). sc_blast_show gains V_SOOT_THING and V_SOOT_PAWN (UNRUN); the sweep's showOff lane turns the three new switches off too (UNRUN).
+
+### 2026-11-25 4:42 AM PST, stage change: Offline build (Stage 3) to Blind challenge, tests first (Stages 4 and 5) (by BENCH)
+
+- Why: Stage 3 offline build for 0.2.0: every exit test passes (order, version, hold, every_bar_has_a_check_that_runs, table_version, fourth_cycle, judge_certificate); item RIMMANDRAKE_ADVANCE_EXPLOSIVEKNOCKBACK_PAST_OFFLINE_BUILD
+- Checks passed: order, by, version, hold, every_bar_has_a_check_that_runs, table_version, fourth_cycle, judge_certificate.
+- Steward confirms: read maturation.py next (0 refusals, 0 hand steps, no fix readers owed, no blind cycle open); ran judge_certificate.certify: ok, did_not_run [], 296 rows = 279 PASS + 17 WARN, every WARN a grandfathered red_seen on a test file unchanged since red_seen_grandfather.json (no red proof owed); bar rebound_goes_shorter loosened at 380aa4ee6d is a logged Conductor act under RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS with lost/undo, not re-judged here. Verdict: advance.
+- Blind cycle 1 of this visit (1 in all).
+- Was, "Stage now": - **Stage now:** Stage 3, offline build, since 2026-11-24 5:09 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-24 5:09 PM PST).
+- Record: `version/stage_record.json`.
