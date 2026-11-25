@@ -108,6 +108,8 @@ def t_the_disk_sense_starts_no_fetch_and_no_landing():
     got = {}
 
     def run(filer=None, families=None, compose=False, still_owner=None, held_detach=False):
+        if INSTANCE == "tidy-in-sense":     # replay 707fe0c64d..9708495bcd: the disk sense ran the seat tidy itself
+            seat_dirt.tidy(str(SEAT))
         got.update(OW.c_disk(time.time(), OW.load_rules(), {}))
         return {"headline": "stub"}
     OW.run, metronome.may_act = run, (lambda *a, **kw: (True, ""))
@@ -268,6 +270,11 @@ def t_the_tidy_lands_a_shards_lines_never_the_whole_shard():
 
 def t_a_ring_names_its_paths():
     _shard_test("names", "a-ring-names-its-paths")
+
+
+# `tidy-in-sense` replays the instance (RIMMANDRAKE_SKIP_SEAT_DIRT_FETCH_IN_CLEAN_CLONE, 2026-11-22: the sense fetched and
+# landed inside its 15 s kill on every beat) and fails; with no argument the real code is checked.
+INSTANCE = sys.argv[1] if len(sys.argv) > 1 else ""
 
 
 def main():
