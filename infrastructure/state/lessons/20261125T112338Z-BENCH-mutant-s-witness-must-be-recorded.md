@@ -1,0 +1,3 @@
+A mutant's witness must be a recorded value that the mutant changes in THIS staging: for an effect at one place (a pit beside a storeroom), the nearest cast member's track usually reads the same in the green and the red run, so the mutant reads NOT_USED and can never be killed. Give such a mutant every cast track (witness.tracks). Also check which condition the judge meets first: forbidden is read before success, so a mutant that also leaves fragile goods unthrown fails on forbidden (Knockback goods_stay_put, independent review 2026-11-25).
+item: RIMMANDRAKE_BUILD_MUTANTS_BY_OVERLAY_AUTHOR_DOES_NOT_CHOOSE
+home: design/specs/2026-11-23-bridge-v2/boundary.md
