@@ -1,0 +1,83 @@
+# Planted faults in src/RimMandrake/Utils/scene_repeats.py, each run against selftest_scene_repeats.py (2026-11-25T08:32Z)
+
+## the reset digest compares the station only, not the mods
+- replaced: `    for m in sorted(set(ref["mods"]) | set(now["mods"])):`
+- with: `    for m in []:`
+```
+PASS each_stamp_is_a_fresh_launch_of_one_plan
+PASS copies_side_by_side_are_one_cluster_that_keeps_its_distance
+PASS a_map_wide_scene_is_refused_copies
+FAIL a_dirty_mod_state_changes_the_reset_digest_and_stops_the_repeat: AssertionError: a dirty mod digest did not stop the repeat
+FAIL an_unverifiable_reset_is_never_equal: AssertionError: not refused (RESET_UNVERIFIED wanted)
+FAIL a_fresh_process_comparison_falls_due_and_a_difference_joins_the_not_reset_list: AssertionError: []
+PASS launches_opportunities_and_exposures_are_counted_apart
+PASS cross_talk_between_two_copies_is_a_breach
+selftest_scene_repeats: 5 checks passed
+exit=1
+```
+
+## copies written without their cluster id
+- replaced: `            if l["cluster"]:
+                line["cluster"] = l["cluster"]`
+- with: `            if False:
+                line["cluster"] = l["cluster"]`
+```
+PASS each_stamp_is_a_fresh_launch_of_one_plan
+FAIL copies_side_by_side_are_one_cluster_that_keeps_its_distance: AssertionError: every copy carries its cluster id
+PASS a_map_wide_scene_is_refused_copies
+PASS a_dirty_mod_state_changes_the_reset_digest_and_stops_the_repeat
+PASS an_unverifiable_reset_is_never_equal
+PASS a_fresh_process_comparison_falls_due_and_a_difference_joins_the_not_reset_list
+PASS launches_opportunities_and_exposures_are_counted_apart
+PASS cross_talk_between_two_copies_is_a_breach
+selftest_scene_repeats: 7 checks passed
+exit=1
+```
+
+## opportunities counted as launches
+- replaced: `"opportunities": sum(1 for l in ended if l["opportunity"]),`
+- with: `"opportunities": len(self.launches),`
+```
+PASS each_stamp_is_a_fresh_launch_of_one_plan
+PASS copies_side_by_side_are_one_cluster_that_keeps_its_distance
+PASS a_map_wide_scene_is_refused_copies
+PASS a_dirty_mod_state_changes_the_reset_digest_and_stops_the_repeat
+PASS an_unverifiable_reset_is_never_equal
+PASS a_fresh_process_comparison_falls_due_and_a_difference_joins_the_not_reset_list
+FAIL launches_opportunities_and_exposures_are_counted_apart: AssertionError: {'launches': 5, 'opportunities': 5, 'exposures': 7, 'samples': 4, 'clusters': 0, 'stopped': False}
+PASS cross_talk_between_two_copies_is_a_breach
+selftest_scene_repeats: 7 checks passed
+exit=1
+```
+
+## the cross-talk test without the margin
+- replaced: `        m = int(math.ceil(self.distance / 2.0))
+        out = []`
+- with: `        m = 0
+        out = []`
+```
+PASS each_stamp_is_a_fresh_launch_of_one_plan
+PASS copies_side_by_side_are_one_cluster_that_keeps_its_distance
+PASS a_map_wide_scene_is_refused_copies
+PASS a_dirty_mod_state_changes_the_reset_digest_and_stops_the_repeat
+PASS an_unverifiable_reset_is_never_equal
+PASS a_fresh_process_comparison_falls_due_and_a_difference_joins_the_not_reset_list
+PASS launches_opportunities_and_exposures_are_counted_apart
+FAIL cross_talk_between_two_copies_is_a_breach: AssertionError: (21, 12) is in launch 2's margin of 2: []
+selftest_scene_repeats: 7 checks passed
+exit=1
+```
+
+## the real build
+```
+PASS each_stamp_is_a_fresh_launch_of_one_plan
+PASS copies_side_by_side_are_one_cluster_that_keeps_its_distance
+PASS a_map_wide_scene_is_refused_copies
+PASS a_dirty_mod_state_changes_the_reset_digest_and_stops_the_repeat
+PASS an_unverifiable_reset_is_never_equal
+PASS a_fresh_process_comparison_falls_due_and_a_difference_joins_the_not_reset_list
+PASS launches_opportunities_and_exposures_are_counted_apart
+PASS cross_talk_between_two_copies_is_a_breach
+selftest_scene_repeats: 8 checks passed
+exit=0
+```

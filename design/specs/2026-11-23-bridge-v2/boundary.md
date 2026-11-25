@@ -389,6 +389,42 @@ The flight probes and the flapping-bird judge have their own page: `../2026-11-2
 | `prove_stage_map.py` | 6 of 6 rows PASS: R1, R2, R5, R6 on ArchSmall (2026-11-24, `design/specs/2026-11-23-bridge-v2/live/stage_map/prove_stage_map_2026-11-24.txt`); R3, R4 on ArchBig under the raid allow, the raid held still by `jawa/fire_raid` ImmediateAttack/EdgeWalkIn, R4 the repaired claim above (2026-11-25, `design/specs/2026-11-23-bridge-v2/live/stage_map/prove_stage_map_r3r4_2026-11-25.txt`) | the two files named |
 | `prove_run_life_cycle.py` | 3 of 3 rows PASS | `design/specs/2026-11-23-bridge-v2-life-cycle/live/` (ArchSmall, tier `explosiveknockback_visit`, companion and Explosive Knockback PROOF build from `ac24cfedbb`, 2026-11-24) |
 
+## STAMP AGAIN (`src/RimMandrake/Utils/scene_repeats.py`)
+
+Item `RIMMANDRAKE_BUILD_STAMP_AGAIN_REPEATS_WITH_RESET_DIGEST` (02_needs_design.md §8, shapes 2 and 3; 05_build_design.md decisions 8
+and 12). Pure Python, no game. A scene script keeps one `Series` per plan: each stamp of the plan on a station is a launch, and the
+series compares the start state of each launch with the first stamp's. The start state is the station digest (`station_digest`: the
+readBack blocks of the stamp's staging and clean calls, relative to the station's corner, ids and absolute cells left out) and the
+digest of each of our mods (`mod_digests`, from `jawa/mod_hooks action=digest`). Copies that share one stretch of ticks are one
+cluster; the ledger lines carry the cluster id, so `scene_verdicts.py` counts them as one sample. Each promise has a test of its
+name in `src/RimMandrake/Utils/selftest_scene_repeats.py`; the planted faults and their red runs are in
+`design/specs/2026-11-23-bridge-v2/live/stamp_again/plants.txt`.
+
+It accepts: readBack blocks as `JawaBenchStageReadBack.Reply` gives them; the `digests` rows of `jawa/mod_hooks digest`; the station
+rects that the allocator gave; the cells where each cast alias of a copy was seen. It does not survive (not promised): a block that
+made more rows than it lists (over 50) is not digested here, so its stamp is RESET_UNVERIFIED, not compared; state that neither the
+station nor a mod's digest hook covers (world pawns, the id allocator, a mod's state its hook leaves out) passes the reset unseen
+until a fresh-process comparison shows it; cross-talk is read only from the cells the script records, never from a job's target.
+
+LIMITS: `FRESH_EVERY_COUNT = 10` launches between fresh-process comparisons. Danger: a stamp that does not reset some state, unseen by
+every digest, colours every later launch of the series. Evidence: none measured yet (02_needs_design.md §8 "from time to time");
+the first live series sets it from its own `not_reset` list.
+
+| promise | test |
+|---|---|
+| Each stamp is a launch of the one plan with its own number; a replay is never a sample. | `each_stamp_is_a_fresh_launch_of_one_plan` |
+| Copies side by side keep the scene's distance (the allocator's margins), every copy's ledger line carries the cluster id, and the verdict ledger counts the cluster as one sample. Two copies of one plan at different stations give one station digest. | `copies_side_by_side_are_one_cluster_that_keeps_its_distance` |
+| A map-wide scene is refused copies (`MAP_WIDE_NO_COPIES`); it is stamped again one at a time. | `a_map_wide_scene_is_refused_copies` |
+| A mod digest or a station digest that differs from the first stamp's stops the repeat (`RESET_DIGEST_DIFFERS`, each part with both values), and every later stamp of the series is refused. | `a_dirty_mod_state_changes_the_reset_digest_and_stops_the_repeat` |
+| A digest that could not be read (an unproven or throwing hook, a block that lists less than it made) is never equal: the repeat stops `RESET_UNVERIFIED`. A mod with no digest hook is listed on each launch and stops nothing. | `an_unverifiable_reset_is_never_equal` |
+| A fresh-process comparison falls due every `fresh_every_count` launches; a launch past its due point says `fresh_overdue`; a difference from the first stamp joins the list of what a stamp does not reset and stops the series (`STAMP_NOT_FRESH`). | `a_fresh_process_comparison_falls_due_and_a_difference_joins_the_not_reset_list` |
+| Launches, valid opportunities and exposures are counted apart, and each ledger line carries its own opportunity and exposures. | `launches_opportunities_and_exposures_are_counted_apart` |
+| A cast member of one copy seen on another copy's station or its margin is a `BREACH`, and each copy it touches reads UNRESOLVED on its ledger line. | `cross_talk_between_two_copies_is_a_breach` |
+
+Live test (UNRUN): 20 stamped copies of the chosen-rescue scene finish in less wall time than 3 single runs take today; a planted
+cross-talk between two copies is a breach; a mod state left dirty on purpose changes the reset digest and stops the repeat. It
+needs the ordered-rescue scene of `RIMMANDRAKE_BUILD_CAST_ASSERTS_AND_ORDER_THROUGH_GIVER` (open at 2026-11-25) and a free game.
+
 ## PLAY AGAINST STEP
 
 `scene.py compare` (`src/RimMandrake/Utils/scene_compare.py`) has its own page: `design/specs/2026-11-24-play-vs-step/boundary.md`.
