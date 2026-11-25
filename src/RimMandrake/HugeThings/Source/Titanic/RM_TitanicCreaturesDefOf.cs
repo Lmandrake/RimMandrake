@@ -10,6 +10,7 @@ namespace RimMandrake.TitanicCreatures
         public static JobDef RM_HarvestTitanicCorpse;
         public static JobDef RM_TitanClearObstacle;
         public static JobDef RM_TitanSqueeze;
+        public static JobDef RM_TitanPassageCross;
 
         static RM_TitanicCreaturesDefOf()
         {

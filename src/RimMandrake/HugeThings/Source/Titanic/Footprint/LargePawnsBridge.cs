@@ -50,6 +50,31 @@ namespace RimMandrake.TitanicCreatures
 
         private static readonly string[] ClearingFields = { "pathClearingManhunter", "pathClearingBerserk", "pathClearingAIFight" };
 
+        // Large Pawns' GetSize and OccupiedRect report 1x1 before spawn. Read the same override and size ladder for arrival.
+        internal static CellRect ArrivalFootprint(Pawn pawn, Rot4 rotation)
+        {
+            Type utility = GenTypes.GetTypeInAnyAssembly("LargePawns.LargePawnUtility");
+            Type main = GenTypes.GetTypeInAnyAssembly(LargePawnsMainTypeName);
+            if (utility != null && main != null && AccessTools.Property(utility, "IsEnabled")?.GetValue(null) is true)
+            {
+                object settings = AccessTools.Field(main, "settings")?.GetValue(null);
+                if (settings != null)
+                {
+                    Type type = settings.GetType();
+                    int size = (int)(AccessTools.Method(type, "GetSizeOverride")?.Invoke(settings, new object[] { pawn.def.defName }) ?? 0);
+                    if (size < 1 || size > 4)
+                    {
+                        size = (int)(AccessTools.Method(utility, "ExternalOverrideSize")?.Invoke(null, new object[] { pawn }) ?? 0);
+                        if (size <= 1)
+                            for (size = 4; size > 1; size--)
+                                if (AccessTools.Field(type, "size" + size + "Min")?.GetValue(settings) is float min && pawn.BodySize >= min) break;
+                    }
+                    if (size > 1) return GenAdj.OccupiedRect(IntVec3.Zero, Rot4.North, size, size);
+                }
+            }
+            return GenAdj.OccupiedRect(IntVec3.Zero, rotation, pawn.def.size);
+        }
+
         /// <summary>
         /// LARGEPAWNS_BRIDGE_HARDENING_1 (B3.16): every member is resolved BEFORE anything is written; the ladder, the clearing bools and
         /// the override rows are snapshotted, applied, and rolled back whole on any throw, and success is logged only after

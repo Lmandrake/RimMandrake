@@ -46,6 +46,7 @@ Sources: `About/About.xml`, `Defs/**` (trunk blocker, tier def, 5 crush rules, c
 - A titan whose way is sealed (or `titanClearingDetourFactor` times longer round than through) by a wall or a giant it may crush walks to the first obstacle, strikes it about once a second through the wake's crush rules (T3 destroys a building outright; a giant takes the heavy blow through its own damage route), and resumes its job through the gap (`TITAN_BREAKTHROUGH_CLEARING_1`, card #1 "smashes through anything built"). → not_driven.titan_breaks_through_a_sealed_lane (UNMEASURED live; offline kernel fuzz `lane`, `clearing`, `line`)
 - Clearing never strikes natural rock, a chunk or any crush-table "no", a quest object, its own faction's or a non-hostile faction's building, or anything below its tier; a lane sealed by such a thing stays sealed. → not_driven.protected_building_in_a_sealed_lane_never_struck (UNMEASURED live; offline kernel fuzz `lane`)
 - A short detour is walked round, never smashed through. → not_driven.short_detour_walked_round_not_smashed (UNMEASURED live; offline kernel fuzz `lane`, `clearing`)
+- A warned passage enters from the named edge. The titan needs a route its whole footprint can walk or clear under the existing wall, tier, and roof rules. If thick rock or protected obstacles seal the route, the existing faded-tremors message plays. → not_driven.titan_passage_keeps_warned_edge (A2 UNRUN, offline checks in kernel fuzz `passage` and `northstar/selftest_passage_pool.py`)
 - Custom size tiers (`tierThresholdsCustom`) move the ladder; only a rising T1 < T2 < T3 is used. → not_driven.custom_tiers_move_the_ladder (UNMEASURED: restart between loads)
 - Items under a growing trunk are pushed to the nearest free cell, never wiped; `plantItemPushEnabled` off leaves the cell open. → not_driven.growth_pushes_items_never_wipes_them (UNMEASURED live; offline kernel fuzz `items`)
 
@@ -58,6 +59,7 @@ Sources: `About/About.xml`, `Defs/**` (trunk blocker, tier def, 5 crush rules, c
 6. [B] clear; Elephant on lane A and Rat on lane B each with six 5-HP `Plant_Grass`; `ordered_job Goto` 15 cells; wait 500 ticks; count `Filth_RubbleRock` and surviving plants per lane; repeat with `wakeEnabled` off and the multiplier at 0.1   # wake
 7. [B] T2/T3 races, the smash seam, butchering, roofs, Large Pawns, master toggles   # not_driven (UNMEASURED)
 8. [S] (human pass, OWED) the combined walk save, grid key `Transient/huge_titan_walk_plan_2026-10-07.md`: pawns walk around grath elders and under their caps; clicking the stem selects; nothing can be built inside one; titans read as mass, the T3 titans smash a giant fungus in their path and the T1/T2 titans go around it; owner decides.
+9. [B] After the passage warning, wall off the warned approach. Watch the titan enter on that edge, approach and break the barrier, then depart. Repeat with a thick-rock control, across a save/load, and with the event disabled.   # not_driven.titan_passage_keeps_warned_edge (A2 UNRUN)
 
 ## north star
 state: VALIDATED

@@ -40,6 +40,57 @@ namespace RimMandrake.HugeThings
 
     public static class TitanClearing
     {
+        /// <summary>Cardinal route of footprint anchors across a cell grid, or null if it is sealed.</summary>
+        public static List<int> PassageRoute(int w, int h, IEnumerable<int> starts, IEnumerable<int> ends,
+                                             int minX, int minZ, int maxX, int maxZ,
+                                             Func<int, bool> cellAllowed)
+        {
+            var previous = new int[w * h];
+            var exits = new HashSet<int>(ends);
+            var pending = new Queue<int>();
+            foreach (int start in starts)
+            {
+                if (!Fits(start) || previous[start] != 0) continue;
+                pending.Enqueue(start);
+                previous[start] = -1;
+            }
+            while (pending.Count > 0)
+            {
+                int i = pending.Dequeue();
+                if (exits.Contains(i))
+                {
+                    var route = new List<int> { i };
+                    while (previous[i] > 0) { i = previous[i] - 1; route.Add(i); }
+                    route.Reverse();
+                    return route;
+                }
+                if (i % w > 0) Add(i - 1, i);
+                if (i % w < w - 1) Add(i + 1, i);
+                Add(i - w, i);
+                Add(i + w, i);
+            }
+            return null;
+
+            bool Fits(int i)
+            {
+                if (i < 0 || i >= previous.Length) return false;
+                int x = i % w, z = i / w;
+                if (x + minX < 0 || x + maxX >= w || z + minZ < 0 || z + maxZ >= h) return false;
+                for (int dz = minZ; dz <= maxZ; dz++)
+                    for (int dx = minX; dx <= maxX; dx++)
+                        if (!cellAllowed(i + dz * w + dx)) return false;
+                return true;
+            }
+
+            void Add(int i, int from)
+            {
+                if (i < 0 || i >= previous.Length || previous[i] != 0) return;
+                if (!Fits(i)) { previous[i] = -1; return; }
+                previous[i] = from + 1;
+                pending.Enqueue(i);
+            }
+        }
+
         /// <summary>Ticks between two strikes on an obstacle (the "timed cadence"): one heavy blow a second.</summary>
         public const int StrikeIntervalTicks = 60;
 

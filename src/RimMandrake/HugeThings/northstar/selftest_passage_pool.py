@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""Bounded planted receipt defects: truncation, vacuity, sea leakage, wrong arrival."""
+"""Offline arrival routing and planted receipt defects for the passage pool."""
 import unittest
+from pathlib import Path
 import passage_pool_live as P
 
 
@@ -13,6 +14,13 @@ ARRIVED = 'pending=False kind=none arrivalIn=-1 arrived=Calf123 kind=Calf tier=T
 
 
 class Receipts(unittest.TestCase):
+    def test_arrival_keeps_warned_edge(self):
+        source = Path(__file__).resolve().parents[1] / 'Source/Titanic/Events/TitanPassage.cs'
+        arrive = source.read_text(encoding='utf-8').split('private void Arrive()', 1)[1].split('private void Clear()', 1)[0]
+        self.assertFalse('TryFindStartAndEnd' in arrive, 'Arrive reroutes to an unwarned edge')
+        self.assertFalse('.reachability' in arrive, 'Arrive uses generic walker reachability')
+        self.assertIn('TitanPassageUtility.FindRoute', arrive)
+
     def test_positive_adult_and_calf_not_filtered_by_name(self):
         got = P.land_pool(response(POOL))
         self.assertEqual([k['kind'] for k in got['kinds']], ['Adult', 'Calf'])

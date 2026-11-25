@@ -99,6 +99,40 @@ namespace RimMandrake.HugeThings.SelfTest
 
         private const int Open = 0, Wall = 1, Trunk = 2, Protected = 3;
 
+        private static string CasePassage(int seed)
+        {
+            const int width = 15, start = 7 * width + 2, end = 7 * width + 13;
+            var grid = new int[width, width];
+            List<int> Route(int footprint, bool clear, int[] starts)
+            {
+                Func<int, bool> allowed = i => grid[i % width, i / width] == Open || (clear && grid[i % width, i / width] == Wall);
+                return TitanClearing.PassageRoute(width, width, starts, new[] { end }, -footprint, -footprint, footprint, footprint, allowed);
+            }
+            bool Cross(int footprint, bool clear) => Route(footprint, clear, new[] { start }) != null;
+            void Ring(int kind)
+            {
+                for (int x = 0; x < width; x++)
+                    for (int z = 0; z < width; z++)
+                        if (Math.Max(Math.Abs(x - 2), Math.Abs(z - 7)) == 2) grid[x, z] = kind;
+            }
+
+            Check(Cross(1, false), "open ground rejected a three-cell titan");
+            Ring(Wall);
+            bool wall = Cross(1, true);
+            bool disabled = Cross(1, false);
+            Ring(Protected); // natural rock or a curated, unbreakable wall
+            Check(!Cross(1, true), "thick-rock ring admitted a titan");
+            grid[4, 7] = Open;
+            Check(Cross(0, true), "one-cell control could not use a one-cell gap");
+            bool narrow = Cross(1, true);
+            Check(wall && !disabled && !narrow, "crushable wall ring crosses=" + wall + ", clearing off=" + disabled + ", three-cell titan through one-cell gap=" + narrow);
+            const int otherStart = width + 2;
+            List<int> alternate = Route(1, true, new[] { start, otherStart });
+            Check(alternate != null && alternate[0] == otherStart && alternate[alternate.Count - 1] == end,
+                "a second entry outside the ring did not yield a route to the same exit");
+            return "passage";
+        }
+
         /// <summary>Shortest 4-connected walk (in steps) through open cells, or -1.</summary>
         private static int Bfs(int[,] g, int sx, int sz, int dx, int dz)
         {
@@ -247,7 +281,7 @@ namespace RimMandrake.HugeThings.SelfTest
             return fails == 0 && ran > 0;
         }
 
-        public static readonly string[] Families = { "clearing", "line", "lane", "clearingdeterminism" };
+        public static readonly string[] Families = { "clearing", "line", "lane", "passage", "clearingdeterminism" };
 
         public static bool Run(double scale, int? one, string only)
         {
@@ -256,6 +290,7 @@ namespace RimMandrake.HugeThings.SelfTest
             if (only == null || only == "clearing") ok &= Family("clearing", N(8000), one, CaseClearing);
             if (only == null || only == "line") ok &= Family("line", N(4000), one, CaseLine);
             if (only == null || only == "lane") ok &= Family("lane", N(3000), one, CaseLane);
+            if (only == null || only == "passage") ok &= Family("passage", 1, one, CasePassage);
             if (only == null || only == "clearingdeterminism")
                 ok &= Family("clearingdeterminism", N(300), one, s =>
                 {

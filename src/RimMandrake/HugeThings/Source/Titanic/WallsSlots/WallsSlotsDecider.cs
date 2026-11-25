@@ -19,7 +19,7 @@ namespace RimMandrake.TitanicCreatures
     /// </summary>
     public static class WallsSlotsDecider
     {
-        private const int MaxBreachTries = 3;
+        internal const int MaxBreachTries = 3;
         private const int HeldSayTicks = 2500;
 
         private static readonly Dictionary<int, int> lastDetourCheck = new Dictionary<int, int>();
@@ -139,24 +139,7 @@ namespace RimMandrake.TitanicCreatures
                 if (WallsSlots.Breaks(cr.verdict))
                 {
                     if (!WallsSlots.MayBreak(full, reachable, byPawn, throughCost, factor)) return Fail(reachable, id, key, now);
-                    if (cr.walls.Count == 0) return Fail(reachable, id, key, now);
-                    Thing first = NearestWall(pawn, cr);
-                    if (TitanClearingUtility.GaveUpOnThing(id, first, now)) return Fail(reachable, id, key, now);
-                    Job job = JobMaker.MakeJob(RM_TitanicCreaturesDefOf.RM_TitanClearObstacle, first);
-                    job.count = (int)cr.verdict;
-                    job.targetQueueA = new List<LocalTargetInfo>();
-                    job.countQueue = new List<int>();
-                    for (int i = 0; i < cr.walls.Count; i++)
-                    {
-                        job.targetQueueA.Add(cr.walls[i]);
-                        job.countQueue.Add(cr.layer[i] * 2 + (cr.roofed[i] ? 1 : 0));
-                    }
-                    int layers = 1;
-                    foreach (int l in cr.layer) if (l + 1 > layers) layers = l + 1;
-                    job.expiryInterval = WallsSlots.SmashIntervalTicks * (WallsSlots.MaxBlowsPerLayer * layers + 10) + 2500;
-                    job.checkOverrideOnExpire = false;
-                    Begin(pawn, job);
-                    return true;
+                    return StartCrossing(pawn, cr) || Fail(reachable, id, key, now);
                 }
                 if (cr.verdict == CrossVerdict.Hold || cr.verdict == CrossVerdict.Forbidden)
                 {
@@ -168,6 +151,28 @@ namespace RimMandrake.TitanicCreatures
                 return Fail(reachable, id, key, now);
             }
             return Fail(reachable, id, key, now);
+        }
+
+        internal static bool StartCrossing(Pawn pawn, WallsSlotsUtility.Crossing cr)
+        {
+            if (cr.walls.Count == 0) return false;
+            Thing first = NearestWall(pawn, cr);
+            if (TitanClearingUtility.GaveUpOnThing(pawn.thingIDNumber, first, Find.TickManager.TicksGame)) return false;
+            Job job = JobMaker.MakeJob(RM_TitanicCreaturesDefOf.RM_TitanClearObstacle, first);
+            job.count = (int)cr.verdict;
+            job.targetQueueA = new List<LocalTargetInfo>();
+            job.countQueue = new List<int>();
+            for (int i = 0; i < cr.walls.Count; i++)
+            {
+                job.targetQueueA.Add(cr.walls[i]);
+                job.countQueue.Add(cr.layer[i] * 2 + (cr.roofed[i] ? 1 : 0));
+            }
+            int layers = 1;
+            foreach (int l in cr.layer) if (l + 1 > layers) layers = l + 1;
+            job.expiryInterval = WallsSlots.SmashIntervalTicks * (WallsSlots.MaxBlowsPerLayer * layers + 10) + 2500;
+            job.checkOverrideOnExpire = false;
+            Begin(pawn, job);
+            return true;
         }
 
         private static Thing NearestWall(Pawn pawn, WallsSlotsUtility.Crossing cr)

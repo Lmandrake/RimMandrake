@@ -94,9 +94,12 @@ namespace RimMandrake.TitanicCreatures
             ClearSource pick = TitanClearing.Choose(reachable, byPawn, RM_HugeThingsSettings.titanClearingDetourFactor,
                 breachKind, breachCost, probeKind, probeCost);
             Thing target = pick == ClearSource.Breach ? breachThing : (pick == ClearSource.Probe ? probeThing : null);
-            if (target == null) return false;
+            return target != null && StartClearing(pawn, target, now);
+        }
 
-            lastStart[id] = now;
+        private static bool StartClearing(Pawn pawn, Thing target, int now)
+        {
+            lastStart[pawn.thingIDNumber] = now;
             Job job = JobMaker.MakeJob(RM_TitanicCreaturesDefOf.RM_TitanClearObstacle, target);
             job.expiryInterval = TitanClearing.StrikeIntervalTicks * (TitanClearing.MaxStrikes + 10) + 2500;
             job.checkOverrideOnExpire = false;
@@ -105,6 +108,12 @@ namespace RimMandrake.TitanicCreatures
             // gap. A non-suspendable job simply ends and the think tree picks the next one.
             pawn.jobs.StartJob(job, JobCondition.InterruptForced, null, resumeCurJobAfterwards: true);
             return true;
+        }
+
+        internal static bool StartPassageClearing(Pawn pawn, Thing obstacle)
+        {
+            int now = Find.TickManager.TicksGame;
+            return !GaveUpOn(pawn.thingIDNumber, obstacle, now) && StartClearing(pawn, obstacle, now);
         }
 
         /// <summary>The first solid cell on the straight line to the destination, as an obstacle, or null at open ground's end.</summary>

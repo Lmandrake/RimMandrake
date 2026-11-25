@@ -16,7 +16,7 @@ namespace RimMandrake.TitanicCreatures
     ///
     /// Only creatures carrying CompTitanicWake (a body size at or above the T1 floor) are ever judged, so only big creatures pay.
     ///
-    /// Route agreement (§6): the path-start hook (Patch_StartPath_TitanClearing) is the one place a decision is made. A squeeze is
+    /// Route agreement (§6): ordinary moves are judged by Patch_StartPath_TitanClearing. Passage jobs reuse the wall probe. A squeeze is
     /// a job that walks a straight gap cell by cell (JobDriver_TitanSqueeze); the pathfinder and reachability are never told a
     /// narrow gap is open, so nothing else can route a body into it. A crossing the creature holds at is remembered per creature
     /// (HeldCells) and closed to its own path requests (Patch_PathGridDoorsBlockedJob_RoofExclusion, the per-request provider
@@ -190,10 +190,11 @@ namespace RimMandrake.TitanicCreatures
             Impassable = 5,
         }
 
-        public static CellKind KindAt(Pawn p, IntVec3 c, out Building b)
+        public static CellKind KindAt(Pawn p, IntVec3 c, out Building b) => KindAt(p, p.Map, c, out b);
+
+        private static CellKind KindAt(Pawn p, Map map, IntVec3 c, out Building b)
         {
             b = null;
-            Map map = p.Map;
             if (!c.InBounds(map)) return CellKind.Impassable;
             Building ed = c.GetEdifice(map);
             if (ed != null && ed.BlocksPawn(p))
@@ -255,6 +256,7 @@ namespace RimMandrake.TitanicCreatures
             public float hpSum;
             public CrossVerdict verdict;
             public int breadth;
+            internal int lastNode;
         }
 
         /// <summary>
@@ -267,17 +269,20 @@ namespace RimMandrake.TitanicCreatures
         /// </summary>
         public static Crossing Probe(Pawn p, List<IntVec3> route)
         {
-            if (p?.Map == null || route == null || route.Count == 0) return null;
-            Map map = p.Map;
+            if (p?.Map == null) return null;
+            return Probe(p, p.Map, route, 0, p.Position, p.OccupiedRect());
+        }
+
+        internal static Crossing Probe(Pawn p, Map map, List<IntVec3> route, int firstNode, IntVec3 pos, CellRect foot)
+        {
+            if (route == null || firstNode >= route.Count) return null;
             int b = Breadth(p);
-            IntVec3 pos = p.Position;
-            CellRect foot = p.OccupiedRect();
             int ox0 = foot.minX - pos.x, oz0 = foot.minZ - pos.z, ox1 = foot.maxX - pos.x, oz1 = foot.maxZ - pos.z;
             var seen = new HashSet<int>();
             var cr = new Crossing { breadth = b };
             int started = -1, lastContact = -1, clearRun = 0;
-            int n = Math.Min(route.Count, WallsSlots.CrossingNodeCap);
-            for (int i = 0; i < n; i++)
+            int n = Math.Min(route.Count, firstNode + WallsSlots.CrossingNodeCap);
+            for (int i = firstNode; i < n; i++)
             {
                 IntVec3 node = route[i];
                 bool contact = false;
@@ -285,7 +290,7 @@ namespace RimMandrake.TitanicCreatures
                     for (int dx = ox0; dx <= ox1; dx++)
                     {
                         IntVec3 c = new IntVec3(node.x + dx, 0, node.z + dz);
-                        CellKind k = KindAt(p, c, out Building wall);
+                        CellKind k = KindAt(p, map, c, out Building wall);
                         if (k == CellKind.Open) continue;
                         bool centre = c == node;
                         if (k == CellKind.Trunk) { cr.trunk = true; contact = true; continue; }
@@ -307,6 +312,7 @@ namespace RimMandrake.TitanicCreatures
                 else if (started >= 0 && ++clearRun >= b) break;
             }
             if (started < 0) return null;
+            cr.lastNode = lastContact;
             if (cr.cells.Count == 0 && !cr.forbidden) return cr.trunk ? cr : null;
             IntVec3 from = started > 0 ? route[started - 1] : pos;
             IntVec3 to = route[Math.Max(lastContact, started)];

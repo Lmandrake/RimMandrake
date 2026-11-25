@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
+using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 using Verse.AI;
@@ -17,8 +19,8 @@ namespace RimMandrake.TitanicCreatures
     /// The incident only SCHEDULES: it picks a titan from this map biome's own hints (its RM_TitanPassageExtension passage list,
     /// else its own roster; sea giants only on sea maps, land giants only on land; owner by card 2026-10-21), sends the tremor
     /// letter, and hands the passage to MapComponent_TitanPassages, which shakes the camera with growing force through the
-    /// warning hours and then walks the titan across the map edge to edge (vanilla LordJob_ExitMapNear, the herd-migration
-    /// shape). The wake does the rest. No race or biome is named in code: the biome data decides who comes.
+    /// warning hours and then walks the titan across the map from the warned edge. The wake and clearing jobs do the damage.
+    /// No race or biome is named in code: the biome data decides who comes.
     /// </summary>
     public class IncidentWorker_TitanPassage : IncidentWorker
     {
@@ -47,6 +49,8 @@ namespace RimMandrake.TitanicCreatures
 
     public static class TitanPassageUtility
     {
+        private enum RouteCell : byte { Unknown, Open, Clearable, Closed }
+
         public const string SeabedLayerDefName = "RM_SeabedLayer";
         public const string SeabedFloorExtensionName = "RM_SeabedFloorExtension";
 
@@ -143,9 +147,135 @@ namespace RimMandrake.TitanicCreatures
 
         public static string EdgeName(Map map, IntVec3 c)
         {
+            Rot4 edge = PassageEdge(map, c);
+            if (edge == Rot4.West) return "RM_TitanPassage_West".Translate();
+            if (edge == Rot4.East) return "RM_TitanPassage_East".Translate();
+            return (edge == Rot4.South ? "RM_TitanPassage_South" : "RM_TitanPassage_North").Translate();
+        }
+
+        internal static Rot4 PassageEdge(Map map, IntVec3 c)
+        {
             int dx = Mathf.Min(c.x, map.Size.x - 1 - c.x), dz = Mathf.Min(c.z, map.Size.z - 1 - c.z);
-            if (dx < dz) return (c.x < map.Size.x / 2 ? "RM_TitanPassage_West" : "RM_TitanPassage_East").Translate();
-            return (c.z < map.Size.z / 2 ? "RM_TitanPassage_South" : "RM_TitanPassage_North").Translate();
+            if (dx < dz) return c.x < map.Size.x / 2 ? Rot4.West : Rot4.East;
+            return c.z < map.Size.z / 2 ? Rot4.South : Rot4.North;
+        }
+
+        // Only slide along the named edge, with the outermost row of the body on that edge.
+        internal static IEnumerable<IntVec3> EdgeAnchors(Map map, IntVec3 edgeCell, CellRect foot, int radius)
+        {
+            Rot4 edge = PassageEdge(map, edgeCell);
+            int left = -foot.minX, right = map.Size.x - 1 - foot.maxX;
+            int bottom = -foot.minZ, top = map.Size.z - 1 - foot.maxZ;
+            if (left > right || bottom > top) yield break;
+            bool horizontal = edge == Rot4.South || edge == Rot4.North;
+            int x = horizontal ? Mathf.Clamp(edgeCell.x, left, right) : edge == Rot4.West ? left : right;
+            int z = horizontal ? edge == Rot4.South ? bottom : top : Mathf.Clamp(edgeCell.z, bottom, top);
+            for (int i = 0; i <= 2 * radius; i++)
+            {
+                int offset = i % 2 == 0 ? -i / 2 : (i + 1) / 2;
+                int ax = horizontal ? x + offset : x, az = horizontal ? z : z + offset;
+                if (ax >= left && ax <= right && az >= bottom && az <= top) yield return new IntVec3(ax, 0, az);
+            }
+        }
+
+        internal static List<IntVec3> FindRoute(Pawn pawn, Map map, IEnumerable<IntVec3> entries, IEnumerable<IntVec3> exits,
+                                               CellRect foot, out WallsSlotsUtility.Crossing crossing, out Thing obstacle)
+        {
+            crossing = null;
+            obstacle = null;
+            int w = map.Size.x, h = map.Size.z;
+            TitanicTier tier = TitanicTierUtility.GetTier(pawn);
+            bool avoidRoof = RM_HugeThingsSettings.RoofAvoidanceActive && tier != TitanicTier.None;
+            bool clear = RM_HugeThingsSettings.TitanClearingActive && tier != TitanicTier.None && !pawn.Flying
+                         && pawn.TryGetComp<CompTitanicWake>() != null;
+            bool walls = clear && RM_HugeThingsSettings.WallsSlotsActive && WallsSlotsUtility.Breadth(pawn) > 1;
+            PathGrid grid = map.pathing.For(pawn).pathGrid;
+            var cells = new RouteCell[w * h];
+            RouteCell Cell(int i)
+            {
+                if (cells[i] != RouteCell.Unknown) return cells[i];
+                IntVec3 c = map.cellIndices.IndexToCell(i);
+                if (avoidRoof && c.GetRoof(map)?.isThickRoof == true) return cells[i] = RouteCell.Closed;
+                if (grid.Walkable(c) && c.GetEdifice(map)?.BlocksPawn(pawn) != true) return cells[i] = RouteCell.Open;
+                if (c.GetTerrain(map).passability == Traversability.Impassable) return cells[i] = RouteCell.Closed;
+                return cells[i] = clear && Obstacle(c) != null ? RouteCell.Clearable : RouteCell.Closed;
+            }
+
+            Thing Obstacle(IntVec3 c)
+            {
+                Building ed = c.GetEdifice(map);
+                if (walls && WallsSlotsUtility.WallEligible(pawn, ed)) return ed;
+                if (ed != null) return TitanClearingUtility.Classify(pawn, tier, ed) != ClearKind.None ? ed : null;
+                return c.GetThingList(map).FirstOrDefault(t => TitanClearingUtility.Classify(pawn, tier, t) == ClearKind.Trunk);
+            }
+
+            int[] starts = entries.Where(c => c.InBounds(map)).Select(map.cellIndices.CellToIndex).ToArray();
+            int[] ends = exits.Where(c => c.InBounds(map)).Select(map.cellIndices.CellToIndex).ToArray();
+            if (starts.Length == 0 || ends.Length == 0) return null;
+            List<IntVec3> Route(Func<int, bool> allowed) => TitanClearing.PassageRoute(w, h, starts, ends,
+                foot.minX, foot.minZ, foot.maxX, foot.maxZ, allowed)?.Select(map.cellIndices.IndexToCell).ToList();
+            List<IntVec3> walk = Route(i => Cell(i) == RouteCell.Open);
+            if (walk != null || !clear) return walk;
+            // Match the clearing decider: exclude a crossing that holds before trying another way through.
+            for (int attempt = 0; attempt < WallsSlotsDecider.MaxBreachTries; attempt++)
+            {
+                List<IntVec3> anchors = Route(i => Cell(i) != RouteCell.Closed);
+                if (anchors == null) return null;
+                IntVec3 start = anchors[0];
+                bool held = false;
+                for (int n = 0; n < anchors.Count; n++)
+                {
+                    IntVec3 anchor = anchors[n];
+                    Thing block = null;
+                    foreach (IntVec3 c in foot.MovedBy(anchor))
+                        if (Cell(map.cellIndices.CellToIndex(c)) == RouteCell.Clearable) { block = Obstacle(c); break; }
+                    if (block == null) continue;
+                    var group = walls ? WallsSlotsUtility.Probe(pawn, map, anchors, n, start, foot.MovedBy(start)) : null;
+                    if (group != null && group.cells.Count > 0 && !WallsSlots.Breaks(group.verdict))
+                    {
+                        foreach (IntVec3 c in group.cells) cells[map.cellIndices.CellToIndex(c)] = RouteCell.Closed;
+                        held = true;
+                        break;
+                    }
+                    if (group != null && WallsSlots.Breaks(group.verdict))
+                    {
+                        if (obstacle == null && crossing == null && WallsSlotsUtility.WallEligible(pawn, block as Building))
+                            crossing = group;
+                        n = group.lastNode;
+                    }
+                    if (obstacle == null && crossing == null) obstacle = block;
+                }
+                if (!held) return anchors;
+                crossing = null;
+                obstacle = null;
+            }
+            return null;
+        }
+    }
+
+    // A vanilla exit job first requires a reachable edge cell. Give clearing its goal directly, and exit when the body reaches it.
+    public class JobDriver_TitanPassageCross : JobDriver_Goto
+    {
+        protected override IEnumerable<Toil> MakeNewToils()
+        {
+            Toil walk = Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.OnCell);
+            Action startPath = walk.initAction;
+            walk.initAction = () =>
+            {
+                CellRect foot = pawn.OccupiedRect().MovedBy(-pawn.Position);
+                var route = TitanPassageUtility.FindRoute(pawn, Map, new[] { pawn.Position }, new[] { job.targetA.Cell }, foot,
+                    out WallsSlotsUtility.Crossing crossing, out Thing obstacle);
+                if (crossing != null && WallsSlotsDecider.StartCrossing(pawn, crossing)) return;
+                if (obstacle != null && TitanClearingUtility.StartPassageClearing(pawn, obstacle)) return;
+                if (route == null || crossing != null || obstacle != null) EndJobWith(JobCondition.Incompletable);
+                else startPath();
+            };
+            yield return walk;
+            yield return Toils_General.Do(() =>
+            {
+                if (Map.CanEverExit && (!ModsConfig.AnomalyActive || MetalhorrorUtility.TryPawnExitMap(pawn)))
+                    pawn.ExitMap(true, TitanPassageUtility.PassageEdge(Map, job.targetB.Cell));
+            });
         }
     }
 
@@ -200,21 +330,34 @@ namespace RimMandrake.TitanicCreatures
             PawnKindDef k = kind;
             IntVec3 s = start, e = end;
             Clear();
-            // the warned edge is kept while it is still standable and reaches the far edge; otherwise a fresh route is found
-            bool routeOk = s.IsValid && e.IsValid && s.InBounds(map) && s.Standable(map)
-                           && map.reachability.CanReach(s, e, PathEndMode.OnCell, TraverseParms.For(TraverseMode.PassDoors));
-            if (!routeOk) routeOk = TitanPassageUtility.TryFindStartAndEnd(map, out s, out e);
-            if (!RM_HugeThingsSettings.TitanEventsActive || !TitanPassageUtility.Eligible(k, map, TitanPassageUtility.T3OnMap(map)) || !routeOk)
+            if (!RM_HugeThingsSettings.TitanEventsActive || !s.InBounds(map) || !e.InBounds(map)
+                || !TitanPassageUtility.Eligible(k, map, TitanPassageUtility.T3OnMap(map)))
             {
                 Messages.Message("RM_TitanPassage_Faded".Translate(), MessageTypeDefOf.NeutralEvent);
                 return;
             }
             Pawn titan = PawnGenerator.GeneratePawn(new PawnGenerationRequest(k, null, PawnGenerationContext.NonPlayer, map.Tile));
-            GenSpawn.Spawn(titan, CellFinder.RandomClosewalkCellNear(s, map, 8), map, Rot4.FromAngleFlat((map.Center - s).AngleFlat));
+            Rot4 rotation = Rot4.FromAngleFlat((map.Center - s).AngleFlat);
+            CellRect foot = LargePawnsBridge.ArrivalFootprint(titan, rotation);
+            var entries = TitanPassageUtility.EdgeAnchors(map, s, foot, 8).Where(
+                a => foot.MovedBy(a).All(c => c.Standable(map) && c.GetFirstPawn(map) == null)).ToArray();
+            var exits = TitanPassageUtility.EdgeAnchors(map, e, foot, (int)LordJob_ExitMapNear.DefaultRadius).Except(entries);
+            var route = TitanPassageUtility.FindRoute(titan, map, entries, exits, foot, out _, out _);
+            if (route == null)
+            {
+                Find.WorldPawns.PassToWorld(titan, PawnDiscardDecideMode.Discard);
+                Messages.Message("RM_TitanPassage_Faded".Translate(), MessageTypeDefOf.NeutralEvent);
+                return;
+            }
+            GenSpawn.Spawn(titan, route[0], map, rotation);
             LordMaker.MakeNewLord(null, new LordJob_ExitMapNear(e, LocomotionUrgency.Walk), map, new List<Pawn> { titan });
             arrived = titan;
             Find.LetterStack.ReceiveLetter("RM_TitanPassage_ArriveLabel".Translate(titan.LabelShortCap),
                 "RM_TitanPassage_ArriveText".Translate(titan.LabelShort), LetterDefOf.ThreatSmall, titan);
+            if (!map.CanEverExit) return;
+            Job job = JobMaker.MakeJob(RM_TitanicCreaturesDefOf.RM_TitanPassageCross, route[route.Count - 1], e);
+            job.locomotionUrgency = LocomotionUrgency.Walk;
+            titan.jobs.StartJob(job, JobCondition.InterruptForced);
         }
 
         private void Clear()
