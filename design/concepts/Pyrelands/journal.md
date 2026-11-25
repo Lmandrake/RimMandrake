@@ -587,3 +587,10 @@ the tree, record and test-table edits, the re-pin and the lock-bars add are queu
 - Was, "Stage now": - **Stage now:** Stage 8, his live walk, since 2026-11-24 3:21 PM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-24 3:21 PM PST).
 - Record: `version/stage_record.json`.
+
+### 2026-11-24 7:45 PM PST, review save: PYRELANDS_REVIEW (by BENCH)
+
+- The owner's words: "Please save this savegame as the new "Pyrelands review" future sessions can start with, and modify their test setup script to do this themselves."
+- A later session that must show Pyrelands to the owner starts from `PYRELANDS_REVIEW.rws` (ArchSmall and ArchBig Saves folders, and `D:\ClaudeWork\rimmandrake\review_saves\Pyrelands\`). It is the 0.1.0 walk save plus 16 creature pens with six of each kind.
+- 26,585,426 bytes, sha256 `de9e52ddc8e8458c1efc3c0c7cda3999118ef645d08d8562be4d11c208cedbb9`; it loads on the Pyrelands small list (`version/small_list.json`).
+- What it holds, and the script that makes it again: `version/walk_brief/review_save.md`.
