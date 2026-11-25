@@ -57,15 +57,16 @@ back (22 removed, 0 left). Captures: `screenshots/stations_1..4.jpg`, looked at.
 `D:\ClaudeWork\backups\archsmall_saves_20261125_ek_v1`.
 
 ## Beyond the checks
-`strange.jsonl`: 9 rows. 1 open: every load logs "ends with a numerical digit, which is not allowed on ThingDefs" for each
-RM_KnockbackBlast scar def. The fix is known (rename and keep old saves loading). It is carried in this item's LEFT OPEN note.
+`strange.jsonl`: 9 rows, 6 explained, 3 filed, 0 open. One filed fault is in the mod: every load logs "ends with a numerical
+digit, which is not allowed on ThingDefs" for each of the 12 RM_KnockbackBlast scar defs. Filed for the mod's road back:
+RIMMANDRAKE_RENAME_KNOCKBACK_SCAR_DEFS_DIGIT_ENDING_CONFIG_ERROR.
 
 ## Exit
 The four checks that keep their PASS from an earlier run (rerun_relation.py: nothing they read changed) stand in the block as pass.
 
 ```
 ingame_rows: {sc_mortar_throw: pass, sc_over_sandbags: pass, sc_pawn_arc: pass, sc_spared: pass, sc_mass_and_power: pass, sc_recovery: pass, sc_hose_drop: pass, sc_settings_off: pass, sc_settings_sweep: pass, sc_wall_stop: pass, sc_pawn_hits_pawn: pass, sc_door_water: pass, sc_shield: pass, sc_storeroom_mortar: pass, sc_all_fly_no_cap: pass, sc_open_storage: pass, sc_closed_containers: pass, sc_heavy_knock: pass, sc_blast_kinds: pass, sc_only_explosions: pass, sc_lookup: pass, sc_gas_chain: pass, sc_cauldron_gas: pass, sc_cover_breaks: pass, sc_pit_fall: pass, sc_pit_enemy: pass, sc_no_careless_fall: pass, sc_frame_probe_check: pass, sc_barrage_perf: pass, sc_gas_shove_into_pit: pass, sc_killed_thrown: pass, sc_goods_obstacles: pass, P_heavy_skip: pass, P_emp_no_throw: pass, P_fire_half: pass, P_harmful_unpatched: pass, P_items: pass, P_shelf: pass, P_in_pit_skip: pass, P_no_cross: pass, P_corpse_into_pit: pass, P_body_override: pass, P_impact_factor: pass, P_lookup_zero_wins: pass, P_goods_fly_midair: pass, P_goods_fly_lands: pass, P_goods_fly_wall: unmeasured, P_goods_fly_rebound: unmeasured, P_goods_fly_off: pass, P_container_thrown: pass, P_land_no_bump: pass, P_land_no_bump_pit: pass, P_gas_clumps: pass, sc_pawn_arc_carried_thing: pass, sc_storeroom_mortar_rebound_legs: pass, sc_blast_show: fail, sc_settings_sweep_show_switches: pass, sc_save_in_air: pass, sc_walk_frames: pass, sc_pit_fetch: pass, sc_pawn_arc_bruise_sizes: pass, sc_pawn_arc_sandbag_no_contact: pass, sc_gas_chain_pawn_on_cover: pass}
-strange_open: 1
+strange_open: 0
 savegame: D:\ClaudeWork\rimmandrake\instances\b\Saves\EK_V020_VISIT1_WALK_20261125_D.rws
 exit_met: false
 ```
