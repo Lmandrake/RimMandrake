@@ -107,8 +107,12 @@ probe; `scene.py tools <name>` printing a tool's argument schema.
 
 ## What could not be measured
 
-- **Every live column.** No converted scene has run in a game: both Archmagi games were held by other runs during this run
-  (`game_lock.py query all`, 2026-11-24 7:36 PM PST). The live test is UNRUN; its commands are below.
+- **Every live column.** No converted scene has run in a game. Both Archmagi games were held by other runs for most of this
+  run (`game_lock.py query all`, 2026-11-24 7:36 PM PST). When ArchBig was free (8:28 PM PST), the moat scene's accept run
+  could not start: `scene.open` refused at its load phase, `LOAD_FAILED: Save 'TP_MOAT_HELD_A' cannot be loaded because 11
+  mod(s) recorded by the save are not currently active` (Cherry Picker, Gimme Some Slack, Cold Storage, Explosive Knockback and
+  7 more), and put the lock back (MEASURED). The fixture was saved on a larger list than FlowWorks' small list, so a valid run
+  needs either that list on the game or a fixture made on the small list. The live test is UNRUN; its commands are below.
 - **The old scenes' bridge calls in one run.** No record counts them; the call sites are counted instead, and a call site in
   a loop is many calls.
 - **Runs to the first valid run, and spoiled runs, of the old storeroom and wall lamp scenes.** Their run records were not
