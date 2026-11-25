@@ -8,13 +8,22 @@ The fixture is the saved sitting EK_SITTING_STATION1_STOREROOM_PIT_20261112: a s
 colonists, goods, and a FlowWorks superdeep pit on the open east side. The bomb is set off by damage, as the old proof does.
 The old row stays the deciding row until this scene was seen to FAIL on its planted fault and PASS on the real build in one sitting.
 
+No colonist death is forbidden (RIMMANDRAKE_CLASS_KNOCKBACK_SHELL_KILLS_COLONIST_TWO_OF_FIVE_RUNS): 25 shells are a vanilla
+Bomb of 50 on every cell of a 6-cell ring, and that alone can kill a colonist in flak. Measured on ArchSmall 2026-11-25
+(road_back_2026-11-25/probe_storeroom_deaths.jsonl): with knockback switched off, colonist 36513 died with the brain
+destroyed by Shredded (Bomb) in 2 of 10 runs; with knockback on, 0 of 8. The old claim "kills nobody" forbade the vanilla
+blast's own deaths; no bar of the mod promises it (inv_killed_corpse expects a blast to kill). A vanished colonist is not
+read here: a dead one reads `gone` like a vanished one, and the cond grammar cannot tell them apart.
+The fixture records RimMandrake Patches (mandrake.rm.patches): the game refuses to load it without that mod, so the
+Knockback tier explosiveknockback_visit carries it.
+
     python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_storeroom_pit.py
     python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_storeroom_pit.py --plant knockback_off
 """
 import scene
 from scene import cond as c
 
-GAME, SAVE = "ArchBig", "EK_SITTING_STATION1_STOREROOM_PIT_20261112"
+GAME, SAVE = "ArchSmall", "EK_SITTING_STATION1_STOREROOM_PIT_20261112"   # the fixture is on ArchBig and ArchSmall
 SITE, PIT = (114, 117, 22, 15), (128, 122, 4, 5)    # storeroom_pit_proof.py defaults: the census rect, the pit cells
 RADIUS, PEOPLE, GOODS, TICKS = 6.0, 5, 6, 300       # the blast radius; 5 colonists (the old START row); the 6 goods stacks nearest
                                                     # the bomb (the old row reads 12: one condition holds at most 64 nodes)
@@ -29,10 +38,10 @@ def in_pit(of):
 
 
 pit = scene.contract(
-    claim="a bomb in a storeroom beside a pit throws goods and people into the pit, and kills nobody", kind="A",
+    claim="a bomb in a storeroom beside a pit throws goods and people into the pit, and destroys none of the goods", kind="A",
     exposure=c.state("bomb", "positionInt") == "gone",
     success=[c.played(TICKS), c.any_(*[in_pit(p) for p in WHO]), c.any_(*[in_pit(g) for g in WHAT])],
-    forbidden=[c.state(p, "positionInt") == "gone" for p in WHO] + [c.state(g, "positionInt") == "gone" for g in WHAT],
+    forbidden=[c.state(g, "positionInt") == "gone" for g in WHAT],
     end=TICKS, limit=TICKS + 100)
 
 

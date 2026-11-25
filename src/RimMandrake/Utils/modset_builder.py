@@ -232,9 +232,12 @@ TIERS = {
                "what those checks' commands name: LWM's Deep Storage (closed containers), RimMandrake: Baroque Biomes "
                "(the Cauldron's vent gas, folded into it) and Jawa Armoury Rebalance with its dependencies (the "
                "crate-tagged storage). The plain tier lacks all three, so closed_containers, settings_sweep and "
-               "gas_into_pit could not run on it.",
+               "gas_into_pit could not run on it. RimMandrake Patches: the storeroom-pit fixture save "
+               "(EK_SITTING_STATION1_STOREROOM_PIT_20261112) records it, and the game refuses to load a save whose mod is "
+               "not active (ArchSmall, 2026-11-25).",
         "want": [BRIDGE, "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack", "mandrake.rm.explosiveknockback",
-                 "mandrake.rsw.swbestiary", "lwm.deepstorage", "mandrake.rm.biomes", "mandrake.rsw.armoury"],
+                 "mandrake.rsw.swbestiary", "lwm.deepstorage", "mandrake.rm.biomes", "mandrake.rsw.armoury",
+                 "mandrake.rm.patches"],
         "forbid": ["mandrake.rm.pits", "sarg.alphabiomes", "glitchgoblin.invisibleconduitcont"],
         "forbid_substr": ["manywaters"],
         "dlc": True,
