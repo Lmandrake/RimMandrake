@@ -1,0 +1,3 @@
+A scene that loads a stage save replays the same thing ids and ticks on every run, while static state (the mod's journal, a show's last-kick tick) outlives the load. A reader that filters by tick or id, or marks the journal by a line's text, reads the last run's records as its own; mark by position at session open, and count an event only inside its own act's tick window. The same scenes also read positionInt back as 'x,z' and thingIDNumber as a float (88274.0), and an undrafted cast walks off its cells during a settle: set off every lane on one paused tick.
+item: RIMMANDRAKE_PROVE_KNOCKBACK_SIX_NEW_SCENES_LIVE_ARCHSMALL_SAT_FREE
+home: src/RimMandrake/Utils/scene.py help (stage.md, read.md)
