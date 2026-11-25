@@ -344,8 +344,8 @@ def t_one_command_lifts():
 
 def t_briefs_carry_the_rule():
     assert RP.RULE in M.HOW_A_BAR_HOLDS and "cheaper_why" in M.LIVE_KINDS_RULE and "PAUSED" in M.LK.STEWARD_RULE
-    for f in ("src/RimMandrake/rimflow/roles/designer_scene_contract.md", "src/RimMandrake/rimflow/roles/fable_rescue.md",
-              ".claude/agents/rm-testpilot.md", ".claude/agents/rm-bridge.md", "infrastructure/agents/CHARTER.md", "CLAUDE.md",
+    for f in ("src/RimMandrake/rimflow/roles/designer_scene_contract.md", "src/RimMandrake/rimflow/roles/builder.md",
+              ".claude/agents/rm-bridge.md", "infrastructure/agents/CHARTER.md", "CLAUDE.md",
               "design/RimMandrake/debug_process.md"):
         assert "cheapest test that decides" in " ".join(open(os.path.join(REPO, f), encoding="utf-8").read().split()), f
 

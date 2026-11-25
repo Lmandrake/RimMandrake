@@ -3,14 +3,14 @@
 Fable Rescuer again found that offline modeling is REALLY informative and useful. Sounds like something that should
 be instructed to the mod builder in general, yes, from the get-go?"). Item RIMMANDRAKE_TEACH_OFFLINE_MODEL_FIRST_BUILD.
 
-- one source: the marked block in roles/fable_rescue.md step 2; maturation.OFFLINE_MODEL is read from it, and no other
+- one source: the marked block in roles/builder.md (the one builder role); maturation.OFFLINE_MODEL is read from it, and no other
   brief source (rimflow .py, roles/*.md, .claude/agents/*.md) carries a pasted copy of its lines.
 - the block says: decision logic runnable offline, on real game code wherever it runs (Verse code that needs no Unity
   player, measured by RIMMANDRAKE_PROBE_OFFLINE_MODEL_LINKING_REAL_GAME_CODE), so an offline test runs the SHIPPED decision; a generator of the situations
   read by the bars' own checks, built before fixing or tuning; the range declared (what it varies, how many cases, what
   it leaves out), never "every case"; proportional (no decision logic: one line instead).
 - the offline builder brief (brief_text, for a mod with no records yet: the first build) and the road-back fixer brief
-  carry it; the rescue brief (fable_rescue.md) still does, in place.
+  carry it; the builder role (builder.md) holds it in place.
 - it states no spend, cap or budget.
 Each check prints what it read.
 """
@@ -28,7 +28,7 @@ sys.path.insert(0, HERE)
 import maturation as M  # noqa: E402
 import maturation_autonomy as MA  # noqa: E402
 
-RESCUE = os.path.join(HERE, "roles", "fable_rescue.md")
+RESCUE = os.path.join(HERE, "roles", "builder.md")     # the one builder role
 fails = []
 
 
@@ -42,9 +42,10 @@ with open(RESCUE, encoding="utf-8") as fh:
     rescue = fh.read()
 block = getattr(M, "OFFLINE_MODEL", "")
 check(bool(block), "maturation.OFFLINE_MODEL exists (%d chars)" % len(block))
-check(bool(block) and block in rescue, "the rescue brief fable_rescue.md carries the block in place")
+check(bool(block) and block in rescue, "the builder role builder.md carries the block in place")
+check(os.path.basename(getattr(M, "OFFLINE_MODEL_SOURCE", "")) == "builder.md", "OFFLINE_MODEL_SOURCE is roles/builder.md")
 reader = getattr(M, "read_offline_model", None)
-check(callable(reader) and reader() == block, "OFFLINE_MODEL is read from fable_rescue.md, not written in code")
+check(callable(reader) and reader() == block, "OFFLINE_MODEL is read from builder.md, not written in code")
 
 flatb = re.sub(r"\s+", " ", block)
 for words in ("Hunt parameter regimes and regions, not examples.", "Verse", "SHIPPED decision",

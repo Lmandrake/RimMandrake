@@ -12,10 +12,9 @@ import os, re, shutil, sys, tempfile
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
 SOURCE = os.path.join(".claude", "rm_positive_steps.md")
-FILES = [os.path.join("src", "RimMandrake", "rimflow", "roles", "fable_rescue.md"),
+FILES = [os.path.join("src", "RimMandrake", "rimflow", "roles", "builder.md"),     # the one builder role
          os.path.join(".claude", "agents", "rm-builder.md"),
-         os.path.join(".claude", "agents", "rm-fixer.md"),
-         os.path.join(".claude", "agents", "rm-testpilot.md")]
+         os.path.join(".claude", "agents", "rm-fixer.md")]
 PY = [("maturation.HOW_A_BAR_HOLDS", "maturation", "HOW_A_BAR_HOLDS"),
       ("testpilot_route.HOLDS_LINES", "testpilot_route", "HOLDS_LINES")]
 FAILS = []
@@ -105,8 +104,8 @@ def t_an_edited_copy_is_refused():
     p = file_problems(t)
     check(len(p) == 1 and FILES[2] in p[0], "an-edited-copy-is-refused (one word, only that file)")
     shutil.rmtree(t, ignore_errors=True)
-    t = planted(lambda r: edit(r, FILES[3], "Get inventive.", "Be inventive."))
-    check(any(FILES[3] in x for x in file_problems(t)), "an-edited-copy-is-refused (testpilot)")
+    t = planted(lambda r: edit(r, FILES[0], "Get inventive.", "Be inventive."))
+    check(any(FILES[0] in x for x in file_problems(t)), "an-edited-copy-is-refused (the builder role)")
     shutil.rmtree(t, ignore_errors=True)
 
 

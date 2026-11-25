@@ -79,7 +79,9 @@ That block gives the wrong date for the supersede. The ledger shows the supersed
 
 ## fable_rescue.md: where the brief came from
 
-The header of `src/RimMandrake/rimflow/roles/fable_rescue.md`, word for word.
+The header of `src/RimMandrake/rimflow/roles/fable_rescue.md`, word for word. On 2026-11-25 that file, `roles/bundle_worker.md`
+and the body of `.claude/agents/rm-testpilot.md` merged into the one builder role, `src/RimMandrake/rimflow/roles/builder.md`
+(item `RIMMANDRAKE_MERGE_BUILDER_ROLES_INTO_ONE_THREE_FILES_DIFFER_BY_SETTINGS`); git holds the old texts.
 
 The owner and the Conductor wrote this brief on the night that Gimme Some Slack was unstuck. The item is
 `RIMMANDRAKE_INVENT_SLACK_LIVE_END_GREEN_BY_THIN_MARGIN`. The worked example is its showings folder,

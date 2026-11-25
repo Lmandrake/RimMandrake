@@ -271,12 +271,13 @@ def build_sha(root=REPO):
 
 # ---- part 2: the record and the launcher ----------------------------------------------------------------------------
 
-ROLE = "src/RimMandrake/rimflow/roles/bundle_worker.md"
+ROLE = "src/RimMandrake/rimflow/roles/builder.md"     # the one builder role, setting Work Bundle
+SETTING = "Work Bundle"
 STATE_FILES = "infrastructure/bundles"
 ENV = "RM_WORK_BUNDLE"
 LIVE_STATES = ("launching", "live", "restarting")
 REFUSED_HEAD = "REFUSED BY BUNDLE:"
-REFUSED_HEADS = (REFUSED_HEAD, "BUNDLE REFUSED:")     # the role (roles/bundle_worker.md) writes the first
+REFUSED_HEADS = (REFUSED_HEAD, "BUNDLE REFUSED:")     # the role (roles/builder.md) writes the first
 # a head with a short qualifier before its colon ("REFUSED BY BUNDLE (the L4 level only): ...") is a refusal too: a
 # fault of form in the head never turns a reasoned refusal into an open member
 _REFUSED_RE = re.compile(r"^\s*(REFUSED BY BUNDLE|BUNDLE REFUSED)\b[^:\n]*:", re.I)
@@ -343,8 +344,8 @@ def live_bundles(bundles=None):
 # A bundle launched on another machine (`./pipe bundle` run on SteveDesktop) has its record in that machine's store,
 # so this store cannot see it; its worker cites its id on every ledger act ("work bundle WB-..."). budget: danger=a
 # quiet stretch longer than this reads the remote bundle ended, and the lane launches a second bundle of its system on
-# the same files; longest=the worker writes a PROGRESS note for each 30 minutes of waiting (roles/bundle_worker.md step
-# 5), and 10x that is 5 h. Cost of the bound: a dead remote bundle holds its system for 5 h.
+# the same files; longest=the worker writes a PROGRESS note for each 30 minutes of waiting (roles/builder.md, "The live
+# pass"), and 10x that is 5 h. Cost of the bound: a dead remote bundle holds its system for 5 h.
 REMOTE_QUIET_S = 5 * 3600
 CITE_RX = re.compile(r"work bundle (WB-[A-Za-z0-9-]+?-\d{8}-\d{6})")
 
@@ -452,7 +453,7 @@ def brief(rec, items, tests, root=REPO):
                                               t or "no test (step 1: class it; write its test if it is real)"))
     return """You are the worker of work bundle {bid}: all the ready tickets of one system, {system}, in one run.
 
-Read your role first and follow it step by step: {role}
+Read your role first and follow it step by step: {role}, in the setting {setting}
 
 The bundle id is {bid}. Its state file is {sf}: read it first if it exists (a restart), and write it after each group
 (a group is one member, or the members that share one cause, that you fix together: your role, step 3).
@@ -464,7 +465,7 @@ The members ({n}), each with its own test and its own close:
 
 Why this bundle: {why}
 
-{polish}""".format(bid=rec["id"], system=rec["system"], role=ROLE, sf=rec["state_file"], lead=rec["lead"],
+{polish}""".format(bid=rec["id"], system=rec["system"], role=ROLE, setting=SETTING, sf=rec["state_file"], lead=rec["lead"],
                     n=len(rec["members"]), rows="\n".join(rows), why=rec["why"], polish=polish_text(rec["system"], root))
 
 
@@ -489,6 +490,8 @@ def launch_run(rec, text, model="opus", cap=None, seat="BENCH", mod=None, next_a
         cap = LD.load_cfg()["%s_cap_usd" % model]     # the lane's per-run stop; no guessed number
     argv = [sys.executable, os.path.join(HERE, "detached_helper.py"), "launch", "--by-program", "work_bundle", "--seat", seat, "--item", rec["lead"],
             "--brief-file", path, "--model", model, "--budget-usd", "%g" % cap, "--env", "%s=%s" % (ENV, rec["id"])]
+    import effort as EF
+    argv += EF.effort_args(model)     # the builder's settings: the role, the model and the effort of the one table
     if mod:
         argv += ["--env", "RM_CONTROL_MOD=%s" % mod]
     if next_act_owner:
@@ -1320,7 +1323,7 @@ def holder_note(rec, items, tests, root=REPO):
     """The lines the holder's brief gains: the bundle, its state file, the role, and the joined tickets."""
     road = [m for m in rec["members"] if m not in tests] if tests else []
     joined = [m for m in rec["members"] if m in tests]
-    lines = ["", "This holder run is work bundle %s of %s. Follow the role %s with this brief: its state file is %s "
+    lines = ["", "This holder run is work bundle %s of %s. Follow the role %s, setting Work Bundle, with this brief: its state file is %s "
              "(read it first if it exists; write it after each group, where a group is one member, or the members that share one cause, that you fix together), and `python3 src/RimMandrake/rimflow/"
              "work_bundle.py context` after each group. The bundle restarts you fresh from that file until each member "
              "has an outcome." % (rec["id"], rec["system"], ROLE, rec["state_file"])]

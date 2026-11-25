@@ -279,7 +279,7 @@ One proposal inside Stage 1 is big enough to be an open question. The question i
 - a generator of the mod's situations, read by the bars' own checks before any fix or tuning;
 - the range of the generator, declared.
 
-The one source is `roles/fable_rescue.md` step 2. The ruling is `design/RimMandrake/standing_rulings.md` §Every mod builder builds the offline model from the first build.
+The one source is the offline-model block of `roles/builder.md`. The ruling is `design/RimMandrake/standing_rulings.md` §Every mod builder builds the offline model from the first build.
 
 ### Stages 4 and 5: Blind offline challenge and game-logic testing, one stage, tests first
 

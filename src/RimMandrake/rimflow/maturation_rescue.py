@@ -5,7 +5,8 @@ one: a proposal is a line for the Conductor, who launches or declines.
 Item RIMMANDRAKE_PROPOSE_RESCUE_WHEN_MOD_CIRCLES_BOTH_HAND_LAUNCHED. The owner, 2026-11-16 about 10:10 PM PST, on the
 Conductor's criteria: "yup. Then we'll watch stats to see if we need to tune that." Both rescues that night (Gimme Some
 Slack, Pyrelands) were hand launches; the five criteria are the Rescue brief's "Why you were called"
-(src/RimMandrake/rimflow/roles/fable_rescue.md), each read from a record, never guessed:
+(the Rescue setting of src/RimMandrake/rimflow/roles/builder.md, "When you are stuck"), each read from a record,
+never guessed:
 
   C1 flip      the same check went PASS on one build and FAIL on a later one, its own file not edited in between
                (blind cycles: lane2/reruns.jsonl then reruns_after_fix.jsonl; in-game visits: rows.jsonl by mod_sha)
@@ -613,7 +614,7 @@ def log_line(p, pid, now):
         parts.append("%s %s x%d (%s)" % (c, NAMES[c], len(mine), what))
     path = next((e["evidence"].get("paths", [None])[-1] for e in ev if e["evidence"].get("paths")), None)
     return ("RESCUE PROPOSED: %s %s — %s; evidence %s; `python3 src/RimMandrake/rimflow/maturation_rescue.py list` — "
-            "RAISE FIRST: read it, then launch a Fable Rescue (roles/fable_rescue.md) and record `maturation_rescue.py "
+            "RAISE FIRST: read it, then launch a builder in the Rescue setting (roles/builder.md) and record `maturation_rescue.py "
             "outcome %s launched --item ID`, or `outcome %s declined --why \"...\"`; nothing was launched\n" % (
                 iso(now), p["mod"], "; ".join(parts), path or "(see list)", pid, pid))
 

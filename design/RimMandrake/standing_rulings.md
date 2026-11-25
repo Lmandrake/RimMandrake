@@ -1551,9 +1551,9 @@ rescue; "Rescurer" in his words is "Rescuer".) Enacted by the Conductor.
   - Declare the range: what it varies, how many cases, what it leaves out. Never write "every case".
   - A mod with no decision logic says so in one line.
   - This extends his 2026-11-16 "Hunt parameter regimes and regions, not examples" from the rescue to every builder.
-- **One source:** the `offline-model` block in `src/RimMandrake/rimflow/roles/fable_rescue.md` step 2. Edit the block,
-  never a copy. Its readers:
-  - the rescue reads the block in place;
+- **One source:** the `offline-model` block in `src/RimMandrake/rimflow/roles/builder.md`, the one builder role. Edit
+  the block, never a copy. Its readers:
+  - every builder run reads the block in place;
   - `maturation.OFFLINE_MODEL` reads the block into the offline builder's brief (`brief_text`, from a mod's first
     build);
   - `maturation.OFFLINE_MODEL` also reads the block into the road-back fixer's brief

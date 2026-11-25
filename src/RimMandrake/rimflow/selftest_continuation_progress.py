@@ -232,9 +232,9 @@ def t_the_conductors_resume_follows_the_same_rule():
 
 def t_the_briefs_require_a_progress_note():
     import testpilot_route as TR
-    role = open(os.path.join(REPO, ".claude", "agents", "rm-testpilot.md"), encoding="utf-8").read()
+    role = open(os.path.join(REPO, "src", "RimMandrake", "rimflow", "roles", "builder.md"), encoding="utf-8").read()
     sit = TR.brief({"id": "X_ITEM_FOR_A_SIT", "why": "w"}, None, detached=True, agent=True)
-    for name, text in (("FOOTER", DH.FOOTER), ("pilot sitting brief", sit), ("rm-testpilot.md", role)):
+    for name, text in (("FOOTER", DH.FOOTER), ("pilot sitting brief", sit), ("roles/builder.md", role)):
         ok = "PROGRESS:" in text and all(w in text.lower() for w in ("theory", "experiment", "reading", "next"))
         check("progress note asked in " + name, ok)
 
@@ -282,7 +282,9 @@ def t_a_pilot_sitting_launches_with_its_agent():
     import maturation_autonomy as MA
     sit = TR.brief({"id": "X_ITEM_FOR_A_SIT", "why": "w"}, None, detached=True, agent=True)
     check("agent brief: says the role file is the system prompt", "system prompt" in sit, sit[:300])
-    check("agent brief: asks for no Read of the role file", "Read `.claude/agents/rm-testpilot.md` in full" not in sit)
+    check("agent brief: asks for no Read of the agent file", "Read `.claude/agents/rm-testpilot.md` in full" not in sit)
+    check("agent brief: names the one builder role and its setting", "src/RimMandrake/rimflow/roles/builder.md" in sit
+          and "Sitting" in sit, sit[:300])
     check("tick pilot brief uses the agent text", "system prompt" in MA.pilot_brief(REPO, "X_ITEM", "FlowWorks", "w"))
     check("tick pilot env names the agent", MA.pilot_env({"RM_CONTROL_MOD": "FlowWorks"}).get(DH.AGENT_ENV)
           == "rm-testpilot", str(MA.pilot_env({})))

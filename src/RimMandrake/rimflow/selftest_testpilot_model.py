@@ -40,6 +40,17 @@ def _agent():
         return f.read()
 
 
+BUILDER = os.path.join(ROOT, "src", "RimMandrake", "rimflow", "roles", "builder.md")
+
+
+def _builder():
+    """The one builder role, which the agent file points at (RIMMANDRAKE_MERGE_BUILDER_ROLES_INTO_ONE_THREE_FILES_DIFFER_BY_SETTINGS)."""
+    with open(BUILDER, encoding="utf-8") as f:
+        text = f.read()
+    assert "src/RimMandrake/rimflow/roles/builder.md" in _agent(), "rm-testpilot.md must point at roles/builder.md"
+    return text
+
+
 def t_agent_file_is_fable():
     head = _agent().split("\n---", 1)[0]
     assert "\nmodel: fable\n" in head + "\n", "rm-testpilot.md frontmatter must say `model: fable`"
@@ -81,12 +92,12 @@ def t_pilot_brief_names_fable_and_holds_before_surprise():
 
 
 def t_agent_file_holds_the_same_steps():
-    a = _agent()
-    assert a.index("## How a sitting holds") < a.index(TR.SURPRISE), "the holds section leads the agent file"
+    a = _builder()
+    assert a.index("## What the owner wants from every builder") < a.index(TR.SURPRISE), "the holds section leads the role"
     assert TR.POSITIVE_STEPS in a.replace("\n", " ") or TR.POSITIVE_STEPS in a, "the positive steps, verbatim"
     for want in ("Hunt parameter regimes and regions, not examples.", "You may not end with open cases.",
-                 "With the live game:", "game_instance.py status"):
-        assert want in a, "rm-testpilot.md lacks %r" % want
+                 "The game is the instrument.", "game_instance.py status"):
+        assert want in a, "roles/builder.md lacks %r" % want
 
 
 def t_policy_records_the_exception_once():

@@ -61,7 +61,7 @@ for agent in (".claude/agents/rm-builder.md", ".claude/agents/rm-fixer.md"):
         check(words in t, "%s lacks %r" % (agent, words))
 
 
-for p in ("src/RimMandrake/rimflow/roles/fable_rescue.md", ".claude/agents/rm-builder.md", ".claude/agents/rm-fixer.md"):
+for p in ("src/RimMandrake/rimflow/roles/builder.md", ".claude/agents/rm-builder.md", ".claude/agents/rm-fixer.md"):
     check(not re.search(r"(?i)\bthe family\b", read(p)), "%s says 'the family' bare" % p)
 for name, text in (("HOW_A_BAR_HOLDS", rule), ("cert_brief", cb), ("fixer_brief", fb)):
     check(not re.search(r"(?i)\bthe family\b", text), "%s says 'the family' bare" % name)

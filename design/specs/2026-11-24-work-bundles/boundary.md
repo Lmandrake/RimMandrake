@@ -4,7 +4,7 @@ Item: `RIMMANDRAKE_BATCH_ONE_MODS_OPEN_WORK_INTO_ONE_RUN_PIPELINE_SPLITS_PER_TIC
 (section 7 holds the owner's four decisions). Why: both pipelines launched one run per ticket, and each run loaded the
 same system again (design section 1).
 
-Code: `src/RimMandrake/rimflow/work_bundle.py` (all of it), `src/RimMandrake/rimflow/roles/bundle_worker.md`, the
+Code: `src/RimMandrake/rimflow/work_bundle.py` (all of it), `src/RimMandrake/rimflow/roles/builder.md` (its Work Bundle setting), the
 bundle hooks in `list_dispatch.py` (`gather`: `work_bundle.overlay`; `decide`: the `in_bundle` and `bundle_refused`
 rows and `work_bundle.group`; `execute`: a lead row launches its bundle), the bundle branch of
 `left_open_continue.py` (`plan`, `recheck`, `resume_choice`, `header`, `run`, `at_finish`), the `bundle` verb of
@@ -97,7 +97,7 @@ bundle began). A member with none of these is **open**.
   launch's timeout, a `ledger_open` fault in the holder) also leaves `launch_failed`, never `launching`, which is live
   and would block the system.
 - **the-brief-names-every-member-and-the-role.** The brief lists each member with its title and its test, names the
-  role file `roles/bundle_worker.md`, the state file and the bundle id, and states no spend, cap or remainder.
+  role file `roles/builder.md` and its setting Work Bundle, the state file and the bundle id, and states no spend, cap or remainder.
 - **the-brief-carries-the-polish-of-its-files.** The brief and the holder's note carry `POLISH_RULE` (the bundle does the
   polish of each file that it changes, and takes each open polish line that names one). A mod bundle's brief lists the
   open lines of `design/concepts/<Mod>/version/polish.md`; any other bundle's brief points at the polish.md beside the

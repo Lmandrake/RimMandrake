@@ -206,16 +206,16 @@ def t_brief_makes_measuring_surprise_the_core_job():
 
 def t_agent_file_carries_measuring_surprise():
     root = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
-    with open(os.path.join(root, ".claude", "agents", "rm-testpilot.md")) as f:
-        a = f.read()
-    assert a.index(R.SURPRISE) < a.index("## The sitting"), "the framing leads the agent file"
+    with open(os.path.join(root, "src", "RimMandrake", "rimflow", "roles", "builder.md")) as f:
+        a = " ".join(f.read().split())     # the one builder role (RIMMANDRAKE_MERGE_BUILDER_ROLES_INTO_ONE_THREE_FILES_DIFFER_BY_SETTINGS)
+    assert a.index(R.SURPRISE) < a.index("## When you are stuck"), "the framing is in the builder's live pass"
     for want in ("Measuring surprise.", "jawa/vitals", "jawa/take_screenshot",
                  "system_screenshot.py", "EXPECTED, ODD or ALARMING", "bridge state read that explains or confirms it",
                  "after every experiment;", "at least every ~10 minutes.", "`jawa/vitals action=arm`",
                  "capture, BEFORE any `jawa/clear_ui`", "1500 px or less", "Never take focus or fullscreen",
                  "rule 4 of \"Beyond the checklist\"", "Never capture, stage or test a flyer's flight",
                  "Don't try to capture images of flight. It doesn't work.", "surprises: <n scored, ids filed>"):
-        assert want in a, "rm-testpilot.md lacks %r" % want
+        assert want in a, "roles/builder.md lacks %r" % want
 
 
 
@@ -239,14 +239,14 @@ def t_brief_reads_explains_and_writes_the_surprise_book():
 
 def t_agent_file_carries_the_surprise_book():
     root = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
-    with open(os.path.join(root, ".claude", "agents", "rm-testpilot.md")) as f:
-        a = f.read()
-    assert a.index(R.SURPRISE) < a.index(R.BOOK) < a.index("## The sitting"), "the book follows the framing"
+    with open(os.path.join(root, "src", "RimMandrake", "rimflow", "roles", "builder.md")) as f:
+        a = " ".join(f.read().split())
+    assert a.index(R.SURPRISE) < a.index(R.BOOK) < a.index("## When you are stuck"), "the book follows the framing"
     for want in ("This can be the agent learning.", "surprise_book.py settle", "surprise_book.py start", "SAMPLE",
                  "EXPLAIN-AWAY", "surprise_book.py explain", "WildAnimals_<Biome>.xml", "Reading BiomeDefs alone sees half",
                  "--outcome explained", "--outcome filed --item", "Never retire a key by hand", "in one context",
                  "revives a key at once", "explained <n>, retired <keys>", "surprise_book.jsonl` with your paths"):
-        assert want in a, "rm-testpilot.md lacks %r" % want
+        assert want in a, "roles/builder.md lacks %r" % want
 
 def t_dispatcher_reads_the_route_and_tells_the_seat():
     out = "%s   ready  row 1  needs bridge  target x\ntitle\n\n%s\n" % (

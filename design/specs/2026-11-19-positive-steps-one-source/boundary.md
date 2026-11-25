@@ -9,8 +9,8 @@ Each promise has a test of its name in the selftest.
 
 ## ACCEPTS (the only inputs this is built for)
 
-- **a-carrier-file-or-brief.** The four files (`src/RimMandrake/rimflow/roles/fable_rescue.md`, `.claude/agents/rm-builder.md`,
-  `rm-fixer.md`, `rm-testpilot.md`) and the two texts built in Python (`maturation.HOW_A_BAR_HOLDS`,
+- **a-carrier-file-or-brief.** The three files (`src/RimMandrake/rimflow/roles/builder.md`, `.claude/agents/rm-builder.md`,
+  `rm-fixer.md`) and the two texts built in Python (`maturation.HOW_A_BAR_HOLDS`,
   `testpilot_route.HOLDS_LINES`), compared after collapsing runs of whitespace (a markdown line wrap is not an edit).
 
 ## DOES NOT SURVIVE (not promised)

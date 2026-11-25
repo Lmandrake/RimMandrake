@@ -244,16 +244,17 @@ HOST_NOTES = {
                 "end. Take with --idle-ok; his OWNER hold still refuses, and then you pick the other host.",
 }
 # a detached run that IS the sitting (the Maturation tick's Test Pilot step, RIMMANDRAKE_ROUTE_SPENT_LIVE_FIXER_PILOT_BY_HAND)
-SIT = ("You are this sitting: the RimMandrake Test Pilot (rm-testpilot). Read `.claude/agents/rm-testpilot.md` in full "
-       "first, as your role file, and load the `test-pilot-sitting` skill: it is your method. Do not spawn a subagent: "
-       "you sit. One sitting, one item.")
+SIT = ("You are this sitting: a RimMandrake builder in the Sitting setting (the Test Pilot, rm-testpilot). Read "
+       "`src/RimMandrake/rimflow/roles/builder.md` in full first, as your role file, and load the `test-pilot-sitting` "
+       "skill: it is your method. Do not spawn a subagent: you sit. One sitting, one item.")
 
 
-# the same, for a sitting launched as `claude --agent rm-testpilot` (detached_helper AGENT_ENV): the role file is already
-# its system prompt, so a Read of it would put ~10k tokens into every later request
-# (RIMMANDRAKE_STOP_RESUME_REWRITING_CONTEXT_A_MILLION_AT_ONCE)
-SIT_AGENT = ("You are this sitting: the RimMandrake Test Pilot (rm-testpilot). You were launched as that agent, so your role "
-             "file `.claude/agents/rm-testpilot.md` is your system prompt: do not Read it again. Load the "
+# the same, for a sitting launched as `claude --agent rm-testpilot` (detached_helper AGENT_ENV): the agent file is its
+# system prompt and only points at the builder role, so a Read of the agent file would put it into every later request
+# twice (RIMMANDRAKE_STOP_RESUME_REWRITING_CONTEXT_A_MILLION_AT_ONCE); the role is read once
+SIT_AGENT = ("You are this sitting: a RimMandrake builder in the Sitting setting (the Test Pilot, rm-testpilot). You were "
+             "launched as that agent, so `.claude/agents/rm-testpilot.md` is your system prompt: do not Read it again. "
+             "Read `src/RimMandrake/rimflow/roles/builder.md` in full once: it is your role. Load the "
              "`test-pilot-sitting` skill: it is your method. Do not spawn a subagent: you sit. One sitting, one item.")
 PROGRESS_LINE = ("After each experiment, write your progress record on the item: `rimflow note <ID> --text \"PROGRESS: "
                  "theory: ... | experiment: ... | reading: ... | next: ...\"`. A stopped sitting with a large context is "

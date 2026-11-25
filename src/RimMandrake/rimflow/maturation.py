@@ -2317,14 +2317,14 @@ HOW_A_BAR_HOLDS = "\n".join([
 ])
 # The offline model, from a mod's first build (owner, 2026-11-17 ~10:50 AM PST: "it feels like the Fable Rescuer again
 # found that offline modeling is REALLY informative and useful. Sounds like something that should be instructed to the
-# mod builder in general, yes, from the get-go?"). One source: the marked block in roles/fable_rescue.md step 2, which
-# the rescue reads in place; the offline build (brief_text) and the road-back fixer (maturation_autonomy.fixer_brief)
+# mod builder in general, yes, from the get-go?"). One source: the marked block in roles/builder.md (the one builder
+# role), which a builder run reads in place; the offline build (brief_text) and the road-back fixer (maturation_autonomy.fixer_brief)
 # carry it read from there. Item RIMMANDRAKE_TEACH_OFFLINE_MODEL_FIRST_BUILD; selftest_offline_model_rule.py.
-OFFLINE_MODEL_SOURCE = os.path.join(HERE, "roles", "fable_rescue.md")
+OFFLINE_MODEL_SOURCE = os.path.join(HERE, "roles", "builder.md")
 
 
 def read_offline_model(path=OFFLINE_MODEL_SOURCE):
-    """-> the text between the offline-model markers in fable_rescue.md. A missing file or marker gives a pointer to
+    """-> the text between the offline-model markers in builder.md. A missing file or marker gives a pointer to
     the file instead (the selftest goes red on that; a brief is never refused for it)."""
     try:
         with open(path, encoding="utf-8") as fh:
@@ -2332,7 +2332,7 @@ def read_offline_model(path=OFFLINE_MODEL_SOURCE):
         a = t.index("-->", t.index("<!-- offline-model: begin")) + 3     # the begin comment spans two lines
         return t[a:t.index("<!-- offline-model: end -->", a)].strip()
     except (OSError, ValueError):
-        return ("**The offline model.** Read `src/RimMandrake/rimflow/roles/fable_rescue.md` step 2 (the block "
+        return ("**The offline model.** Read `src/RimMandrake/rimflow/roles/builder.md` (the block "
                 "\"The offline model\") before any fix or tuning.")
 
 

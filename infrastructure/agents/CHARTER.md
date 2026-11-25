@@ -236,7 +236,7 @@ says what a first script must contain.
 - A live test declares its kind (A, B or C) and judges each run by one of seven outcomes: `CLAUDE.md` §A live test
   declares its kind.
 - **3 non-pass runs in a row, or a defect that needs live observation, goes to a Test Pilot, not another retest**
-  (owner 2026-10-31; `rimflow pilot`, `.claude/agents/rm-testpilot.md`, `standing_rulings.md`).
+  (owner 2026-10-31; `rimflow pilot`; the Sitting setting of `src/RimMandrake/rimflow/roles/builder.md`, launched as `.claude/agents/rm-testpilot.md`; `standing_rulings.md`).
 
 ## Game state and the bridge
 

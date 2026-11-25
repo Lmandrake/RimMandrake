@@ -61,9 +61,9 @@ if subprocess.run(base + ["--waited-s", "-1"], capture_output=True).returncode !
 line = subprocess.run(base[:5] + ["dead", "--useful-tests", "1"], capture_output=True, text=True).stdout
 if not re.search(r"RELOAD rule=R1 .*rule_sha=[0-9a-f]{12}", line) or "TESTPILOT_SAT" in R.MARKER:
     FAIL.append("cli reload line: %r" % line)
-agent = open(os.path.join(HERE, "..", "..", "..", ".claude", "agents", "rm-testpilot.md"), encoding="utf-8").read()
-if "testpilot_reload.py" not in agent:
-    FAIL.append("rm-testpilot.md does not name the rule")
+role = open(os.path.join(HERE, "roles", "builder.md"), encoding="utf-8").read()     # the one builder role
+if "testpilot_reload.py" not in role:
+    FAIL.append("roles/builder.md does not name the rule")
 
 print("FAIL: %s" % FAIL if FAIL else "selftest_testpilot_reload: all pass")
 sys.exit(1 if FAIL else 0)
