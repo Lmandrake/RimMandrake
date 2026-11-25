@@ -118,6 +118,9 @@ refused a fifth run at its disk floor.
 - 2026-11-25, the machine's trees: the selftest is green, 11 of 11, and 18 of 18 planted faults are caught (among them
   alternates not repointed, origin not repointed, a tree per clone again, the old tree kept, one tree whatever the
   slots). `evidence/` holds the readings of the per-clone version below.
+- SteveDesktop, 2026-11-25 1:17 PM PST: ten pool clones stood at once on the 79 GB `~/rm` disk, 22 GB free over the
+  12 GB floor, and `./publish` landed from a slim one (29abc0d529) on the machine's kept tree, reused in 0.6 s with
+  46 MB written (`evidence/stevedesktop_ten_clones.txt`). Archmagi: reuses of 1.2 to 1.9 s, 40 to 49 MB.
 
 - The selftest, 2026-11-25 1:00 AM PST: red on the base commit 0070ebed21 (`evidence/selftest_red_on_base.txt`, 9
   failing; its second checkout rewrote 41 of 41 files), green on the fix (`evidence/selftest_green_on_fix.txt`, 8 of 8;

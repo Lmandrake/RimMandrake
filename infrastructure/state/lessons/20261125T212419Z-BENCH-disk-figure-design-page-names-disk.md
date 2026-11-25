@@ -1,0 +1,3 @@
+A disk figure on a design page names the disk it was read on, and goes stale when the work moves disks. The kept-check-tree page (2026-11-25 12:08 AM PST) chose one 4.7 GB tree per clone because SteveDesktop's / had 753 GB free. That same day ~/rm moved to an 80 GB NVMe disk, and four clones of 10-11 GB filled it by 11:56 AM, so the pool refused a fifth run. When a page cites free space, write the mount it was measured on (findmnt), and recheck the choice when the clones' disk changes.
+item: RIMMANDRAKE_SHRINK_STEVEDESKTOP_CLONES_FOUR_FILL_ITS_EIGHTY_GIG
+home: design/specs/2026-11-25-treecheck-kept-tree/boundary.md

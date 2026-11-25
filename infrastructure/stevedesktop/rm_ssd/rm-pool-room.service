@@ -1,7 +1,15 @@
 [Unit]
-Description=Read how many helper runs ~/rm still holds (rm_pool_room.py; reading ~/.local/state/rm-ssd/pool_room_ok.json)
+Description=Refresh the object store, then read how many helper runs ~/rm still holds (rm_pool_room.py; reading ~/.local/state/rm-ssd/pool_room_ok.json)
 
 [Service]
 Type=oneshot
+# Nothing else fetches mirror.git here: on 2026-11-25 it was a day behind origin, so every new pool clone fetched that day
+# from GitHub into its own .git (0.9 GB each). Fetch it, feed the store (scratch_clone.py refresh), then pack away the
+# mirror's copies of what the store now holds (repack -l keeps only objects the store lacks; the store never prunes).
+# "-": a failed refresh (GitHub down) never stops the room reading.
+ExecStartPre=-/bin/bash -c 'git -C %h/rm/mirror.git fetch -q origin && /usr/bin/python3 %h/rm/runner/src/RimMandrake/Utils/scratch_clone.py refresh && git -C %h/rm/mirror.git repack -a -d -l -q'
 # testcentre_env.sh is the one home of RM_POOL_FLOOR_GB, the floor the pool admits clones by
 ExecStart=/bin/bash -c '. %h/rm/runner/infrastructure/stevedesktop/testcentre_env.sh && exec /usr/bin/python3 %h/.local/bin/rm_pool_room.py'
+# danger: a fetch that hangs holds this oneshot active, so no later hour runs; longest: measured on the first run (below
+# 10 min expected for a day of origin); 2 h is far above that and below the next-but-one hour
+TimeoutStartSec=2h
