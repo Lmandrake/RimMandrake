@@ -70,8 +70,6 @@ its cause, or `failed` with its cause. A source that cannot be read prints `coul
   tokens before the first edit read `could not look` for that run, and the judge is told the transcript could not be
   read.
 - **a-corrupt-ledger-line.** It is skipped and counted (`delivery_metrics._jsonl`), not shown by name.
-- **a-past-run-of-a-home.** The baseline names only a mod system: `list_home` holds the homes of open tickets only, so
-  the earlier runs of a `pipeline:` home read `could not look`.
 - **role-runs-in-the-share.** Role runs (`rm-role-*`) work no ticket list; they are not in the share or the efficiency
   numbers. Their set-downs are counted and judged.
 
@@ -114,6 +112,9 @@ its cause, or `failed` with its cause. A source that cannot be read prints `coul
   an unreadable reading says could not look.
 - **digest-line-blind.** The digest line carries the counts and the report as a handle through the blind page; an
   unreadable monitor reads UNMEASURED.
+- **baseline-same-system-before-first-bundle.** The baseline of a bundle system takes the single-ticket runs that
+  ended in the 14 days before its first bundle and whose item is of that system: its home (the ledger's `home` events)
+  is the system, or, for `mod:X`, its item names the mod.
 - **report-needs-four-sections.** A report that lacks one of its four sections is not written as the report; the
   failure is written as `report_<date>.FAILED.md` and in `latest.json`. Only a written report renews
   `report_newest.md`, the one fixed reading of the item's live promise.

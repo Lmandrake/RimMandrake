@@ -23,3 +23,4 @@ string at a time; the before and after strings are given here.
 | every set-down read as one role | `role_of` drops the Maturation stage | setdowns-by-class-and-role |
 | the monitor's spend carried into the digest fields | `digest_fields` adds `monitor_tokens` | digest-line-blind |
 | a failed report renews the newest copy | `daily` writes `report_newest.md` before the failure check | report-needs-four-sections (1) |
+| a home's past runs not read | `baseline` matches only by mod name | baseline-same-system-before-first-bundle |

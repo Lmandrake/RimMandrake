@@ -623,25 +623,33 @@ def measure(S, t0, t1, now, projects=PROJECTS, transcripts=True):
     return R
 
 
+def homes_of(events):
+    """-> {item: its latest home} from the ledger's `home` events (closed items keep theirs)."""
+    out = {}
+    for e in events or []:
+        if e.get("event") == "home" and e.get("id") and e.get("home"):
+            out[e["id"]] = e["home"]
+    return out
+
+
 def baseline(S, rows, bundles, ub, titles, closes, now):
     """For each multi-member bundle system of the day: the single-ticket runs of the same system in the 14 days before
-    its first bundle. Only a mod system can be named (item_identity.named_mod); other homes read could not look."""
+    its first bundle. A mod system (mod:X) takes the runs whose item names the mod (item_identity.named_mod) or whose
+    item's home is mod:X; any other home takes the runs whose item's home (the ledger's `home` events) is that home."""
     out = {}
     runs = S["runs"]["value"] or {}
+    homes = homes_of(S["ledger"]["value"])
     systems = sorted({r["system"] for r in rows if r["kind"] == "bundle" and r["system"]})
     for sysname in systems:
         first = min(b.get("at") or 0 for b in bundles.values() if b.get("system") == sysname)
-        if not sysname.startswith("mod:"):
-            out[sysname] = {"state": CNL, "cause": "only a mod system can be named for past runs (list_home holds the "
-                                                   "homes of open tickets only)"}
-            continue
-        mod = sysname[4:]
+        mod = sysname[4:] if sysname.startswith("mod:") else None
         sel = []
         for u, rec in runs.items():
             e = ep(rec.get("ended"))
             if e is None or not (first - BASELINE_DAYS * DAY <= e < first) or kind_of(rec, ub, bundles) == "bundle":
                 continue
-            if mod_of(rec.get("item"), titles.get(rec.get("item")), S["mods"]) != mod:
+            it = rec.get("item")
+            if homes.get(it) != sysname and not (mod and mod_of(it, titles.get(it), S["mods"]) == mod):
                 continue
             tok, _w = tokens_of(rec)
             sel.append({"tokens": tok, "closes": run_closes(rec, None, closes), "first_edit": "not read"})

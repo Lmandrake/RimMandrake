@@ -323,6 +323,25 @@ def t_digest_line_blind():
     chk("UNMEASURED: the monitor could not be read" in t2, "digest-line-blind: an unreadable monitor reads UNMEASURED")
 
 
+def t_baseline_same_system_before_first_bundle():
+    first = T0 + 100
+    by = {"WB-p": bundle("WB-p", ["A", "B"], ["u-b"], first, system="pipeline:judges")}
+    by["WB-p"]["system"] = "pipeline:judges"
+    runs = {"u-b": rec("u-b", "A", T0 + 500),
+            "u-old": rec("u-old", "J1", first - 2 * M.DAY, tokens=800),          # same home, inside 14 days
+            "u-older": rec("u-older", "J2", first - 20 * M.DAY, tokens=50),      # same home, too old
+            "u-other": rec("u-other", "K1", first - M.DAY, tokens=70)}           # other home
+    evs = [ev("home", "J1", T0 - 30 * M.DAY, home="pipeline:judges"), ev("home", "J2", T0 - 30 * M.DAY,
+                                                                          home="pipeline:judges"),
+           ev("home", "K1", T0 - 30 * M.DAY, home="pipeline:docs"),
+           ev("close", "J1", first - 2 * M.DAY - 10, role_unit="u-old")]
+    R = measure(world(runs=runs, bundles=by, events=evs))
+    b = R["efficiency"]["baseline"].get("pipeline:judges") or {}
+    chk(b.get("state") == "measured" and b.get("runs") == 1 and b.get("tokens") == 800 and b.get("closes") == 1,
+        "baseline-same-system-before-first-bundle: one run of the home in the 14 days before (%s)" %
+        {k: b.get(k) for k in ("state", "runs", "tokens", "closes")})
+
+
 def t_report_needs_four_sections():
     od = os.path.join(TMP, "daily")
     os.environ["RM_WBM_OUT"] = od
@@ -352,7 +371,7 @@ def main():
               t_headline_tokens_per_stayed_close, t_program_filing_not_setdown, t_setdowns_by_class_and_role,
               t_backward_moves_classed, t_tokens_before_first_edit, t_bundle_live_ran_and_unrun,
               t_judge_failure_could_not_judge, t_judge_told_no_spend, t_page_section_no_tokens, t_digest_line_blind,
-              t_report_needs_four_sections]:
+              t_baseline_same_system_before_first_bundle, t_report_needs_four_sections]:
         print("-- %s" % t.__name__)
         try:
             t()
