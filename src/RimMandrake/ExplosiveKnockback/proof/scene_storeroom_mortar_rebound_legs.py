@@ -9,19 +9,17 @@ hit, rounded down). This scene reads what the player sees: the cells each leg re
 
 Kind A. A fresh quicktest map on ArchSmall; one clean station; three granite-walled storerooms (Wall, stuff BlocksGranite,
 as RM_KnockbackProof builds them), each set off alone. Each room is 5 cells deep (inner z 0..4) and W cells wide:
-  narrow  W=2   a rebound crosses 1 cell before the far wall
-  mid     W=3   a rebound crosses 2 cells
-  wide    W=5   a rebound crosses 4 cells (a rebound of 3 or fewer cells rests inside the room)
-In each room: a Shell_HighExplosive (Bomb, radius 2.9) at inner (1, 2), and loose goods (stack 1) against the west wall at
-inner (0, 1) Steel, (0, 2) ComponentIndustrial, (0, 3) Plasteel, 1 and 1.41 cells from the shell. (Goods 2.83 cells out
-round to 0 cells and skip too_weak, RM_KnockbackProof_StoreroomBombPit.cs visit 3, so the goods sit close.) Each good is
-pushed into its wall, takes the hit where it lies (wallFirst) and bounces back across the room. The shell is set off by
-damage (s.act.damage Crush, its hit points + 60), as scene_blast_show does. Rooms are 8 or more cells apart: no blast
-reaches the next room. No colonist, no raid, no hostile pawn.
+  narrow  W=3   the steel flies about 1 cell to the far wall
+  mid     W=4   about 2 cells
+  wide    W=6   about 4 cells
+In each room: a Shell_HighExplosive (Bomb, radius 2.9) against the west wall at inner (0, 2), and one Steel (stack 1; it
+survives a wall hit) beside it at inner (1, 2), in its row. The steel flies east across the room, hits the far wall and
+rebounds. The shell is set off by damage (s.act.damage Crush, its hit points + 60), as scene_blast_show does. Rooms are 5
+or more cells apart and each blast is set off alone: no blast reaches the next room. No colonist, no raid, no hostile pawn.
 
 The range (what the game varies for this bar, and what this scene covers):
-  - the room's width against the rebound's reach: covered by the three widths (cut by the far wall at 1, 2 cells; rests
-    inside at 4). The cells a throw gets (distance to the shell, the good's mass): covered at 1 and 1.41 cells, three masses.
+  - the room's width against the first leg's length: covered by the three widths (a first leg of about 1, 2 and 4 cells).
+    The cells a throw gets (distance to the shell, the good's mass): one point only, 1 cell from the shell, one Steel.
   - left out: a closed door as the face (the kernel treats it as a wall, offline case); diagonal-only rooms; shelves and
     crates (containers do not rebound); goodsRebound off (no rebound at all: nothing to compare).
 
@@ -52,14 +50,19 @@ rebound then loses no cells, a good crossing a narrow room flies the same width 
 V_SHORTER must FAIL with a worst ratio of 1. That shows the check can see legs that do not shrink.
 Open points for the first run:
   - the settings reads and the plant are s.raw jawa/mod_settings_field (`tune` is NOT_BUILT): the run is EXPLORED.
-  - a wall-cut leg: in the narrow room a rebound that reaches the far wall flies 1 cell, and the next rebound, if any, can
-    fly 1 cell too (rounded-down cells: 5 planned -> 3 kept -> 1 flown, 2 left -> 1 kept -> 1 flown). Then V_SHORTER narrow
-    FAILS on the real build: the bar's "clearly shorter way" and the room's walls disagree. That is a question for the
-    Conductor with the shot narrow_after, never a check to relax here.
-  - the planned cells at 1 and 1.41 cells from a 50-Bomb shell are not measured; if every good plans 3 or fewer, the mid
-    and wide rooms read no pair, and only the narrow room speaks.
+  - a first leg cut short by a near wall (narrow, mid) leaves most of the throw: the rebound keeps 70% of the cells left
+    and can fly as far as or farther than the first leg (planned 6: flies 1, rebounds 3). Then V_SHORTER FAILS on the
+    real build: the bar's "clearly shorter way than the flight before" and the rule "a share of the cells left" disagree
+    near a wall. That is a question for the Conductor with the shot <room>_after, never a check to relax here.
   - the goods may be destroyed by the blast or the wall hit (destroyedAtWall / destroyedInFlight): they are printed and
     leave the pairs.
+
+RESTAGED 2026-11-25 after its first live run (ArchSmall, APPARATUS FAULT): goods against the west wall with the shell to
+their east were slammed into the wall where they lay (wallFirst) and bounced once: Steel and Plasteel, diagonal to the
+shell, off the corner into a side wall after 1 cell; ComponentIndustrial, the one in line, was destroyed by the wall hit.
+No good flew a leg and then a rebound, so V_SHORTER read no pair. Now the shell lies against the west wall at inner (0, 2)
+and one Steel (it survives a wall hit) beside it at (1, 2), in its row: the steel flies east across the room, hits the far
+wall and rebounds. Inner widths 3, 4 and 6 give first legs of about 1, 2 and 4 cells (planned 6, the cap).
 """
 import json
 import math
@@ -78,10 +81,10 @@ STATION = (20, 20, 28, 10)
 SHELL = "Shell_HighExplosive"   # Bomb, explosiveRadius 2.9 (Items_Resource_Shell.xml)
 DEPTH = 5                       # inner z 0..4
 # room -> (inner west x, inner south z, inner width)
-ROOMS = {"narrow": (2, 2, 2), "mid": (10, 2, 3), "wide": (19, 2, 5)}
+ROOMS = {"narrow": (2, 2, 3), "mid": (11, 2, 4), "wide": (21, 2, 6)}
 ORDER = ["narrow", "mid", "wide"]
-GOODS = [((0, 1), "Steel"), ((0, 2), "ComponentIndustrial"), ((0, 3), "Plasteel")]
-SHELL_AT = (1, 2)
+GOODS = [((1, 2), "Steel")]
+SHELL_AT = (0, 2)
 MAX_BOUNCES = 6                 # RM_ThingFlyer_Knockback.MaxBounces
 SETTLE = 360                    # ticks after each blast; at keep 100 a 6-bounce chain of short legs must also have landed
 LIMIT_RATIO = 1.0               # the bar: each leg shorter than the one before (strictly)
