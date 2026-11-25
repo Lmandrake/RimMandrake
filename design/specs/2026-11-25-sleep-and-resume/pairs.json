@@ -1,0 +1,2403 @@
+[
+ {
+  "unit": "rm-detached-bench-rimmandrake-fix-dry-pit-hauler-descent-s-1794816095",
+  "item": "RIMMANDRAKE_FIX_DRY_PIT_HAULER_DESCENT_SWIMS_HID_IT",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-drive-gimmesomeslack-in-game-1794831340",
+  "item": "RIMMANDRAKE_DRIVE_GIMMESOMESLACK_IN_GAME_ACCEPTANCE_VISIT_ONE",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-drive-gimmesomeslack-in-game-1794834319",
+  "item": "RIMMANDRAKE_DRIVE_GIMMESOMESLACK_IN_GAME_VISIT_ONE",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-drive-gimmesomeslack-in-game-1794835758",
+  "item": "RIMMANDRAKE_DRIVE_GIMMESOMESLACK_IN_GAME_VISIT_ONE",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-invent-slack-live-end-green-1794884090",
+  "item": "RIMMANDRAKE_INVENT_SLACK_LIVE_END_GREEN_BY_THIN_MARGIN",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-invent-slack-live-end-green-1794885421",
+  "item": "RIMMANDRAKE_INVENT_SLACK_LIVE_END_GREEN_BY_THIN_MARGIN",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-lay-slack-close-fittings-twe-1794892548",
+  "item": "RIMMANDRAKE_LAY_SLACK_CLOSE_FITTINGS_TWENTY_ONE_UNLAID",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-run-pyrelands-week-sky-free-1794899342",
+  "item": "RIMMANDRAKE_RUN_PYRELANDS_WEEK_SKY_FREE_NEVER_ONCE_SEEN",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-lay-slack-close-fittings-twe-1794902099",
+  "item": "RIMMANDRAKE_LAY_SLACK_CLOSE_FITTINGS_TWENTY_ONE_UNLAID",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-lay-slack-close-fittings-twe-1794925337",
+  "item": "RIMMANDRAKE_LAY_SLACK_CLOSE_FITTINGS_TWENTY_ONE_UNLAID",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-lay-slack-close-fittings-twe-1794925467",
+  "item": "RIMMANDRAKE_LAY_SLACK_CLOSE_FITTINGS_TWENTY_ONE_UNLAID",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-build-pipeline-control-one-l-1795034984",
+  "item": "RIMMANDRAKE_BUILD_PIPELINE_CONTROL_ONE_LINERS_NO_BUILD_PROCESS",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-void-system-killed-runs-no-t-1795034992",
+  "item": "RIMMANDRAKE_VOID_SYSTEM_KILLED_RUNS_NO_TRIAL_SPENT",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-design-judge-same-problem-ma-1795035460",
+  "item": "RIMMANDRAKE_DESIGN_JUDGE_SAME_PROBLEM_MATCH_FOUR_ROUNDS_LOST",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-work-valid-old-era-tickets-n-1795044602",
+  "item": "RIMMANDRAKE_WORK_VALID_OLD_ERA_TICKETS_NO_STALE_CRUD",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-fix-slot-allocator-override-1795046257",
+  "item": "RIMMANDRAKE_FIX_SLOT_ALLOCATOR_OVERRIDE_AND_BURN_PICK",
+  "kind": "fresh",
+  "how": "manual",
+  "parent": "rm-detached-bench-ops-watch-fix-blind-readings-still-zero-1795042694",
+  "gap_min": 0.5,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-recheck-feverwood-greentide-1795047293",
+  "item": "RIMMANDRAKE_RECHECK_FEVERWOOD_GREENTIDE_ABYSS_CHOICES",
+  "kind": "fresh",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-recheck-feverwood-greentide-1795046425",
+  "gap_min": 0.4,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-recheck-bluedesert-to-slime-1795047623",
+  "item": "RIMMANDRAKE_RECHECK_BLUEDESERT_TO_SLIME_CHOICES",
+  "kind": "fresh",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-recheck-bluedesert-to-slime-1795046457",
+  "gap_min": 0.6,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-recheck-lanterndeeps-to-rust-1795047897",
+  "item": "RIMMANDRAKE_RECHECK_LANTERNDEEPS_TO_RUSTCATHEDRAL_CHOICES",
+  "kind": "fresh",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-recheck-lanterndeeps-to-rust-1795046492",
+  "gap_min": 0.5,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-build-shared-scene-runner-fi-1795048907",
+  "item": "RIMMANDRAKE_BUILD_SHARED_SCENE_RUNNER_FIRST_SLICE",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-split-live-code-out-of-relen-1795048948",
+  "item": "RIMMANDRAKE_SPLIT_LIVE_CODE_OUT_OF_RELENTLESS_NAMED_MODULES",
+  "kind": "fresh",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-split-live-code-out-of-relen-1795044003",
+  "gap_min": 0.3,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-fix-designer-stage-codex-rev-1795051058",
+  "item": "RIMMANDRAKE_FIX_DESIGNER_STAGE_CODEX_REVIEW_FINDINGS",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-build-shared-scene-runner-fi-1795051066",
+  "item": "RIMMANDRAKE_BUILD_SHARED_SCENE_RUNNER_FIRST_SLICE",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-unclog-scratch-archive-backl-1795051074",
+  "item": "RIMMANDRAKE_UNCLOG_SCRATCH_ARCHIVE_BACKLOG_29_KB_CLONES_EACH",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-split-live-code-out-of-relen-1795051147",
+  "item": "RIMMANDRAKE_SPLIT_LIVE_CODE_OUT_OF_RELENTLESS_NAMED_MODULES",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-split-live-code-out-of-relen-1795055327",
+  "item": "RIMMANDRAKE_SPLIT_LIVE_CODE_OUT_OF_RELENTLESS_NAMED_MODULES",
+  "kind": "fresh",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-split-live-code-out-of-relen-1795051147",
+  "gap_min": 0.5,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-split-live-code-out-of-relen-1795057251",
+  "item": "RIMMANDRAKE_SPLIT_LIVE_CODE_OUT_OF_RELENTLESS_NAMED_MODULES",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-extend-void-to-judge-designe-1795057261",
+  "item": "RIMMANDRAKE_EXTEND_VOID_TO_JUDGE_DESIGNER_AND_PILOT_COUNTERS",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-finish-rollback-when-a-resto-1795057272",
+  "item": "RIMMANDRAKE_FINISH_ROLLBACK_WHEN_A_RESTORE_WRITE_FAILS",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-attribute-manual-switch-by-l-1795057279",
+  "item": "RIMMANDRAKE_ATTRIBUTE_MANUAL_SWITCH_BY_LOG_NOT_OLD_MARKER",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-harden-publish-park-restore-1795057313",
+  "item": "RIMMANDRAKE_HARDEN_PUBLISH_PARK_RESTORE_RACE_CODEX_FOUND",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-fix-coverage-judge-ten-findi-1795057355",
+  "item": "RIMMANDRAKE_FIX_COVERAGE_JUDGE_TEN_FINDINGS_FIFTH_COUNT_CLEAN",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-split-control-review-round-t-1795057389",
+  "item": "RIMMANDRAKE_SPLIT_CONTROL_REVIEW_ROUND_TWO_NINE_UNTRIED",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-unclog-scratch-archive-backl-1795057422",
+  "item": "RIMMANDRAKE_UNCLOG_SCRATCH_ARCHIVE_BACKLOG_29_KB_CLONES_EACH",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-decide-guards-owed-by-landed-1795057451",
+  "item": "RIMMANDRAKE_DECIDE_GUARDS_OWED_BY_LANDED_OLD_FIXES",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-read-odd-result-shape-as-bli-1795057735",
+  "item": "RIMMANDRAKE_READ_ODD_RESULT_SHAPE_AS_BLIND_NOT_CRASH",
+  "kind": "fresh",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-attribute-manual-switch-by-l-1795057279",
+  "gap_min": 0.4,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-read-odd-result-shape-as-bli-1795057904",
+  "item": "RIMMANDRAKE_READ_ODD_RESULT_SHAPE_AS_BLIND_NOT_CRASH",
+  "kind": "fresh",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-read-odd-result-shape-as-bli-1795057735",
+  "gap_min": 0.3,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-recheck-lanterndeeps-to-rust-1795058357",
+  "item": "RIMMANDRAKE_RECHECK_LANTERNDEEPS_TO_RUSTCATHEDRAL_CHOICES",
+  "kind": "fresh",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-recheck-lanterndeeps-to-rust-1795046492",
+  "gap_min": 174.8,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-narrow-cutover-writer-check-1795058596",
+  "item": "RIMMANDRAKE_NARROW_CUTOVER_WRITER_CHECK_EIGHT_OF_THIRTEEN_READ",
+  "kind": "fresh",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-finish-rollback-when-a-resto-1795057272",
+  "gap_min": 0.3,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-recheck-sleepingice-to-thero-1795059486",
+  "item": "RIMMANDRAKE_RECHECK_SLEEPINGICE_TO_THEROT_CHOICES",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-recheck-thesump-to-weepingst-1795059567",
+  "item": "RIMMANDRAKE_RECHECK_THESUMP_TO_WEEPINGSTONES_CHOICES",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-recheck-sleepingice-to-thero-1795059797",
+  "item": "RIMMANDRAKE_RECHECK_SLEEPINGICE_TO_THEROT_CHOICES",
+  "kind": "fresh",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-recheck-sleepingice-to-thero-1795059486",
+  "gap_min": 0.3,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-recheck-thesump-to-weepingst-1795060005",
+  "item": "RIMMANDRAKE_RECHECK_THESUMP_TO_WEEPINGSTONES_CHOICES",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-recheck-lanterndeeps-to-rust-1795060083",
+  "item": "RIMMANDRAKE_RECHECK_LANTERNDEEPS_TO_RUSTCATHEDRAL_CHOICES",
+  "kind": "fresh",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-recheck-lanterndeeps-to-rust-1795058357",
+  "gap_min": 0.4,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-retake-only-touched-exam-sce-1795060498",
+  "item": "RIMMANDRAKE_RETAKE_ONLY_TOUCHED_EXAM_SCENARIOS_CARD_ASKED_TWICE",
+  "kind": "fresh",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-retake-only-touched-exam-sce-1795058261",
+  "gap_min": 0.5,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-recheck-feverwood-greentide-1795061894",
+  "item": "RIMMANDRAKE_RECHECK_FEVERWOOD_GREENTIDE_ABYSS_CHOICES",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-forecast-on-shared-planner-d-1795061965",
+  "item": "RIMMANDRAKE_FORECAST_ON_SHARED_PLANNER_DROPIN_MIRROR_DEADMAN",
+  "kind": "fresh",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-split-control-review-round-t-1795057389",
+  "gap_min": 0.5,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-recheck-feverwood-greentide-1795062752",
+  "item": "RIMMANDRAKE_RECHECK_FEVERWOOD_GREENTIDE_ABYSS_CHOICES",
+  "kind": "fresh",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-recheck-feverwood-greentide-1795061894",
+  "gap_min": 0.3,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-extend-void-to-judge-designe-1795068930",
+  "item": "RIMMANDRAKE_EXTEND_VOID_TO_JUDGE_DESIGNER_AND_PILOT_COUNTERS",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-split-live-code-out-of-relen-1795068941",
+  "item": "RIMMANDRAKE_SPLIT_LIVE_CODE_OUT_OF_RELENTLESS_NAMED_MODULES",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-unclog-scratch-archive-backl-1795068950",
+  "item": "RIMMANDRAKE_UNCLOG_SCRATCH_ARCHIVE_BACKLOG_29_KB_CLONES_EACH",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-hide-cap-stop-from-resumed-r-1795068960",
+  "item": "RIMMANDRAKE_HIDE_CAP_STOP_FROM_RESUMED_RUN_READER_TRIMMED",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-fix-open-codex-findings-one-1795069192",
+  "item": "RIMMANDRAKE_FIX_OPEN_CODEX_FINDINGS_ONE_AGENT_KEEPS_CONTEXT",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-unplace-machinery-helpers-fr-1795069236",
+  "item": "RIMMANDRAKE_UNPLACE_MACHINERY_HELPERS_FROM_MODS_SLOT_TAKEN",
+  "kind": "fresh",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-extend-void-to-judge-designe-1795068930",
+  "gap_min": 0.4,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-design-review-treadmill-fix-1795069799",
+  "item": "RIMMANDRAKE_DESIGN_REVIEW_TREADMILL_FIX_COUNT_WAS_FLAT",
+  "kind": "fresh",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-design-review-treadmill-fix-1795069184",
+  "gap_min": 0.4,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-fix-open-codex-findings-one-1795070395",
+  "item": "RIMMANDRAKE_FIX_OPEN_CODEX_FINDINGS_ONE_AGENT_KEEPS_CONTEXT",
+  "kind": "fresh",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-fix-open-codex-findings-one-1795069192",
+  "gap_min": 0.5,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-split-live-code-out-of-relen-1795070440",
+  "item": "RIMMANDRAKE_SPLIT_LIVE_CODE_OUT_OF_RELENTLESS_NAMED_MODULES",
+  "kind": "fresh",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-split-live-code-out-of-relen-1795068941",
+  "gap_min": 0.9,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-try-night-hypotheses-on-runn-1795079031",
+  "item": "RIMMANDRAKE_TRY_NIGHT_HYPOTHESES_ON_RUNNING_FACTORY_BETTER",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": null
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-finish-retired-era-remains-t-1795099599",
+  "item": "RIMMANDRAKE_FINISH_RETIRED_ERA_REMAINS_TWENTY_ONE_NO_TICKETS",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-finish-retired-era-remains-t-1795096995",
+  "gap_min": 0.6,
+  "parent_end_ctx": 366186,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 384664,
+   "first_write": 18478,
+   "first_read": 366184,
+   "first_w": 56957,
+   "first_act": {
+    "n_req": 6,
+    "w_before_act": 213296,
+    "act": "Bash:cat > /tmp/era_tickets.py <<'PYEOF'\nimport os\nT = {}\nT[\"RIMMANDRAKE_RENAME_RUN_S"
+   },
+   "n_req": 14,
+   "w_total": 449732,
+   "end_ctx": 407939,
+   "first_t": "2026-11-19T14:47:05.343Z",
+   "act_ctx": 389447,
+   "n_after_act": 8,
+   "w_read_after_act": 160312
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-enact-conductor-may-do-all-b-1795104236",
+  "item": "RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-enact-conductor-may-do-all-b-1795101851",
+  "gap_min": 0.5,
+  "parent_end_ctx": 368429,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 388100,
+   "first_write": 19671,
+   "first_read": 368427,
+   "first_w": 59710,
+   "first_act": {
+    "n_req": 7,
+    "w_before_act": 197508,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BU"
+   },
+   "n_req": 24,
+   "w_total": 624623,
+   "end_ctx": 408838,
+   "first_t": "2026-11-19T16:04:27.607Z",
+   "act_ctx": 392255,
+   "n_after_act": 17,
+   "w_read_after_act": 341016
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-fix-status-pages-reading-dea-1795129693",
+  "item": "RIMMANDRAKE_FIX_STATUS_PAGES_READING_DEAD_LOGS",
+  "kind": "fresh",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-fix-status-pages-reading-dea-1795129456",
+  "gap_min": 0.5,
+  "parent_end_ctx": 73792,
+  "parent_model": "claude-sonnet-5-5",
+  "child": {
+   "model": "claude-sonnet-5-5",
+   "first_ctx": 63417,
+   "first_write": 50224,
+   "first_read": 13191,
+   "first_w": 51267,
+   "first_act": {
+    "n_req": 6,
+    "w_before_act": 69573,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_FIX_STATUS_PAGES_READING_DEAD"
+   },
+   "n_req": 63,
+   "w_total": 344909,
+   "end_ctx": 137794,
+   "first_t": "2026-11-19T23:09:08.206Z",
+   "act_ctx": 68876,
+   "n_after_act": 57,
+   "w_read_after_act": 144704
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-fix-modledger-cutover-and-se-1795131161",
+  "item": "RIMMANDRAKE_FIX_MODLEDGER_CUTOVER_AND_SEAL_EMPTY_SHARD",
+  "kind": "fresh",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-fix-modledger-cutover-and-se-1795129356",
+  "gap_min": 1.7,
+  "parent_end_ctx": 117580,
+  "parent_model": "claude-sonnet-5-5",
+  "child": {
+   "model": "claude-sonnet-5-5",
+   "first_ctx": 63835,
+   "first_write": 50631,
+   "first_read": 13202,
+   "first_w": 51417,
+   "first_act": {
+    "n_req": 2,
+    "w_before_act": 56927,
+    "act": "Bash:python3 src/RimMandrake/rimflow/cli.py wait RIMMANDRAKE_FIX_MODLEDGER_CUTOVER_AN"
+   },
+   "n_req": 4,
+   "w_total": 62295,
+   "end_ctx": 67526,
+   "first_t": "2026-11-19T23:34:34.993Z",
+   "act_ctx": 66923,
+   "n_after_act": 2,
+   "w_read_after_act": 3356
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-fix-status-pages-reading-dea-1795131839",
+  "item": "RIMMANDRAKE_FIX_STATUS_PAGES_READING_DEAD_LOGS",
+  "kind": "fresh",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-fix-status-pages-reading-dea-1795129693",
+  "gap_min": 0.4,
+  "parent_end_ctx": 137794,
+  "parent_model": "claude-sonnet-5-5",
+  "child": {
+   "model": "claude-sonnet-5-5",
+   "first_ctx": 64044,
+   "first_write": 50851,
+   "first_read": 13191,
+   "first_w": 52192,
+   "first_act": {
+    "n_req": 20,
+    "w_before_act": 121809,
+    "act": "Bash:./publish -m \"vv matrix: negative-control revision was on no branch (full run di"
+   },
+   "n_req": 22,
+   "w_total": 131502,
+   "end_ctx": 84386,
+   "first_t": "2026-11-19T23:45:27.919Z",
+   "act_ctx": 82799,
+   "n_after_act": 2,
+   "w_read_after_act": 4148
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-restamp-pyrelands-concept-tr-1795133694",
+  "item": "RIMMANDRAKE_RESTAMP_PYRELANDS_CONCEPT_TREE_RED_IN_TWO_LANES",
+  "kind": "fresh",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-restamp-pyrelands-concept-tr-1795133439",
+  "gap_min": 0.7,
+  "parent_end_ctx": 73693,
+  "parent_model": "claude-sonnet-5-5",
+  "child": {
+   "model": "claude-sonnet-5-5",
+   "first_ctx": 61241,
+   "first_write": 48035,
+   "first_read": 13204,
+   "first_w": 49151,
+   "first_act": {
+    "n_req": 2,
+    "w_before_act": 55934,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_RESTAMP_PYRELANDS_CONCEPT_TRE"
+   },
+   "n_req": 3,
+   "w_total": 59128,
+   "end_ctx": 65845,
+   "first_t": "2026-11-20T00:15:50.622Z",
+   "act_ctx": 65197,
+   "n_after_act": 1,
+   "w_read_after_act": 1630
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-fix-red-selftests-one-sweep-1795147264",
+  "item": "RIMMANDRAKE_FIX_RED_SELFTESTS_ONE_SWEEP_NO_NEW_ONES",
+  "kind": "fresh",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-fix-red-selftests-one-sweep-1795144073",
+  "gap_min": 0.4,
+  "parent_end_ctx": 153052,
+  "parent_model": "claude-sonnet-5-5",
+  "child": {
+   "model": "claude-sonnet-5-5",
+   "first_ctx": 70535,
+   "first_write": 57333,
+   "first_read": 13200,
+   "first_w": 58172,
+   "first_act": {
+    "n_req": 9,
+    "w_before_act": 88690,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_FIX_RED_SELFTESTS_ONE_SWEEP_N"
+   },
+   "n_req": 10,
+   "w_total": 92503,
+   "end_ctx": 81061,
+   "first_t": "2026-11-20T04:01:56.390Z",
+   "act_ctx": 80104,
+   "n_after_act": 1,
+   "w_read_after_act": 2003
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-drive-flowworks-in-game-visi-1795152348",
+  "item": "RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_TWO",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 214972,
+   "first_write": 203704,
+   "first_read": 11266,
+   "first_w": 409798,
+   "first_act": {
+    "n_req": 38,
+    "w_before_act": 1057939,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT"
+   },
+   "n_req": 166,
+   "w_total": 3977371,
+   "end_ctx": 408626,
+   "first_t": "2026-11-20T05:26:08.463Z",
+   "act_ctx": 266412,
+   "n_after_act": 128,
+   "w_read_after_act": 2178963
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-resume-wrong-check-worker-wi-1795180504",
+  "item": "RIMMANDRAKE_RESUME_WRONG_CHECK_WORKER_WITH_MOD_FIX_EXTENSION",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-enact-wrong-check-fixed-in-s-1795176901",
+  "gap_min": 3.3,
+  "parent_end_ctx": 241728,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 262566,
+   "first_write": 20838,
+   "first_read": 241726,
+   "first_w": 56094,
+   "first_act": {
+    "n_req": 16,
+    "w_before_act": 392568,
+    "act": "Bash:python3 src/RimMandrake/rimflow/cli.py note RIMMANDRAKE_RESUME_WRONG_CHECK_WORKE"
+   },
+   "n_req": 145,
+   "w_total": 3945670,
+   "end_ctx": 493226,
+   "first_t": "2026-11-20T13:15:22.536Z",
+   "act_ctx": 298328,
+   "n_after_act": 129,
+   "w_read_after_act": 2602933
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-resume-walk-sort-with-part-t-1795187393",
+  "item": "RIMMANDRAKE_RESUME_WALK_SORT_WITH_PART_TWO_THEN_CARD",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-sort-flowworks-walk-report-k-1795185779",
+  "gap_min": 3.9,
+  "parent_end_ctx": 292804,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 316775,
+   "first_write": 23971,
+   "first_read": 292802,
+   "first_w": 64309,
+   "first_act": {
+    "n_req": 43,
+    "w_before_act": 1146689,
+    "act": "Write:/home/mandrake/rm/relentless/clones/RIMMANDRAKE_RESUME_WALK_SORT_WITH_PART_TWO_T"
+   },
+   "n_req": 64,
+   "w_total": 1820287,
+   "end_ctx": 434860,
+   "first_t": "2026-11-20T15:10:16.440Z",
+   "act_ctx": 393675,
+   "n_after_act": 21,
+   "w_read_after_act": 437796
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-rebuild-flowworks-pits-as-re-1795226153",
+  "item": "RIMMANDRAKE_REBUILD_FLOWWORKS_PITS_AS_RELATIVE_TERRAIN",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-rebuild-flowworks-pits-as-re-1795223547",
+  "gap_min": 1.1,
+  "parent_end_ctx": 340227,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 342942,
+   "first_write": 2713,
+   "first_read": 340225,
+   "first_w": 24946,
+   "first_act": {
+    "n_req": 8,
+    "w_before_act": 186463,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_REBUILD_FLOWWORKS_PITS_AS_REL"
+   },
+   "n_req": 26,
+   "w_total": 597540,
+   "end_ctx": 370279,
+   "first_t": "2026-11-21T01:56:07.737Z",
+   "act_ctx": 353110,
+   "n_after_act": 18,
+   "w_read_after_act": 324623
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-judge-flowworks-drowned-body-1795239712",
+  "item": "RIMMANDRAKE_JUDGE_FLOWWORKS_DROWNED_BODY_COVER_BY_EYE",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-mock-flowworks-water-by-dept-1795235588",
+  "gap_min": 20.7,
+  "parent_end_ctx": 270213,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 322692,
+   "first_write": 52479,
+   "first_read": 270211,
+   "first_w": 123646,
+   "first_act": {
+    "n_req": 6,
+    "w_before_act": 267185,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_JUDGE_FLOWWORKS_DROWNED_BODY_"
+   },
+   "n_req": 28,
+   "w_total": 1546445,
+   "end_ctx": 402311,
+   "first_t": "2026-11-21T05:42:11.295Z",
+   "act_ctx": 343317,
+   "n_after_act": 22,
+   "w_read_after_act": 402417
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-drive-gimmesomeslack-in-game-1795244138",
+  "item": "RIMMANDRAKE_DRIVE_GIMMESOMESLACK_IN_GAME_VISIT_ONE_RUN_TWO",
+  "kind": "fresh",
+  "how": "fresh",
+  "parent": "rm-detached-bench-rimmandrake-drive-gimmesomeslack-in-game-1795239179",
+  "gap_min": 0.4,
+  "parent_end_ctx": 453448,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 121467,
+   "first_write": 108221,
+   "first_read": 13244,
+   "first_w": 218356,
+   "first_act": {
+    "n_req": 3,
+    "w_before_act": 253222,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_DRIVE_GIMMESOMESLACK_IN_GAME_"
+   },
+   "n_req": 7,
+   "w_total": 300803,
+   "end_ctx": 133712,
+   "first_t": "2026-11-21T06:56:31.703Z",
+   "act_ctx": 129381,
+   "n_after_act": 4,
+   "w_read_after_act": 26286
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-judge-flowworks-drowned-body-1795244699",
+  "item": "RIMMANDRAKE_JUDGE_FLOWWORKS_DROWNED_BODY_COVER_BY_EYE",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-judge-flowworks-drowned-body-1795239712",
+  "gap_min": 3.7,
+  "parent_end_ctx": 351902,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 386318,
+   "first_write": 34414,
+   "first_read": 351900,
+   "first_w": 91197,
+   "first_act": {
+    "n_req": 8,
+    "w_before_act": 266304,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_JUDGE_FLOWWORKS_DROWNED_BODY_"
+   },
+   "n_req": 17,
+   "w_total": 492299,
+   "end_ctx": 402311,
+   "first_t": "2026-11-21T07:05:17.864Z",
+   "act_ctx": 393940,
+   "n_after_act": 9,
+   "w_read_after_act": 178670
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-drive-pyrelands-in-game-visi-1795244787",
+  "item": "RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO_RUN_TWO",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-drive-pyrelands-in-game-visi-1795231310",
+  "gap_min": 88.6,
+  "parent_end_ctx": 546021,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 568344,
+   "first_write": 557088,
+   "first_read": 11254,
+   "first_w": 1116741,
+   "first_act": {
+    "n_req": 12,
+    "w_before_act": 1524629,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT"
+   },
+   "n_req": 14,
+   "w_total": 1598182,
+   "end_ctx": 588376,
+   "first_t": "2026-11-21T07:06:36.995Z",
+   "act_ctx": 586142,
+   "n_after_act": 2,
+   "w_read_after_act": 58676
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-judge-flowworks-drowned-body-1795245184",
+  "item": "RIMMANDRAKE_JUDGE_FLOWWORKS_DROWNED_BODY_COVER_BY_EYE",
+  "kind": "fresh",
+  "how": "fresh",
+  "parent": "rm-detached-bench-rimmandrake-judge-flowworks-drowned-body-1795244699",
+  "gap_min": 0.4,
+  "parent_end_ctx": 402311,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 102291,
+   "first_write": 91035,
+   "first_read": 11254,
+   "first_w": 183940,
+   "first_act": {
+    "n_req": 19,
+    "w_before_act": 401426,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_JUDGE_FLOWWORKS_DROWNED_BODY_"
+   },
+   "n_req": 195,
+   "w_total": 3468911,
+   "end_ctx": 348852,
+   "first_t": "2026-11-21T07:13:58.883Z",
+   "act_ctx": 132080,
+   "n_after_act": 176,
+   "w_read_after_act": 2089197
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-drive-pyrelands-in-game-visi-1795245285",
+  "item": "RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT_TWO_RUN_TWO",
+  "kind": "fresh",
+  "how": "fresh",
+  "parent": "rm-detached-bench-rimmandrake-drive-pyrelands-in-game-visi-1795244787",
+  "gap_min": 0.4,
+  "parent_end_ctx": 588376,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 70053,
+   "first_write": 56811,
+   "first_read": 13240,
+   "first_w": 115551,
+   "first_act": {
+    "n_req": 12,
+    "w_before_act": 256146,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_VISIT"
+   },
+   "n_req": 262,
+   "w_total": 4400354,
+   "end_ctx": 363407,
+   "first_t": "2026-11-21T07:15:00.323Z",
+   "act_ctx": 100916,
+   "n_after_act": 250,
+   "w_read_after_act": 2893706
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-repair-at-the-refusal-no-sto-1795252218",
+  "item": "RIMMANDRAKE_REPAIR_AT_THE_REFUSAL_NO_STOP_FOR_UNTIED_SHOES",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-repair-at-the-refusal-no-sto-1795249837",
+  "gap_min": 0.6,
+  "parent_end_ctx": 232523,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 254283,
+   "first_write": 21757,
+   "first_read": 232522,
+   "first_w": 57764,
+   "first_act": {
+    "n_req": 34,
+    "w_before_act": 799289,
+    "act": "Bash:set -o pipefail; ./publish -m \"A launch that never started is a fault of form: r"
+   },
+   "n_req": 180,
+   "w_total": 4561948,
+   "end_ctx": 490585,
+   "first_t": "2026-11-21T09:12:15.607Z",
+   "act_ctx": 314089,
+   "n_after_act": 146,
+   "w_read_after_act": 2977130
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-trace-flowworks-moat-swimmer-1795262548",
+  "item": "RIMMANDRAKE_TRACE_FLOWWORKS_MOAT_SWIMMERS_ONLY_IN_THE_CONTROL",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-trace-flowworks-moat-swimmer-1795260867",
+  "gap_min": 0.8,
+  "parent_end_ctx": 303589,
+  "parent_model": "claude-fable-5-2",
+  "child": {
+   "model": "claude-fable-5-2",
+   "first_ctx": 306055,
+   "first_write": 1850,
+   "first_read": 304203,
+   "first_w": 35174,
+   "first_act": {
+    "n_req": 9,
+    "w_before_act": 242567,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_TRACE_FLOWWORKS_MOAT_SWIMMERS"
+   },
+   "n_req": 54,
+   "w_total": 2247207,
+   "end_ctx": 408944,
+   "first_t": "2026-11-21T12:03:09.466Z",
+   "act_ctx": 316773,
+   "n_after_act": 45,
+   "w_read_after_act": 806379
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-trace-flowworks-fallen-raide-1795263313",
+  "item": "RIMMANDRAKE_TRACE_FLOWWORKS_FALLEN_RAIDER_WAITS_FOR_NO_LADDER",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-trace-flowworks-fallen-raide-1795254110",
+  "gap_min": 100.0,
+  "parent_end_ctx": 287642,
+  "parent_model": "claude-fable-5-2",
+  "child": {
+   "model": "claude-fable-5-2",
+   "first_ctx": 310158,
+   "first_write": 298786,
+   "first_read": 11370,
+   "first_w": 1201996,
+   "first_act": {
+    "n_req": 2,
+    "w_before_act": 1241764,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_TRACE_FLOWWORKS_FALLEN_RAIDER"
+   },
+   "n_req": 10,
+   "w_total": 1487029,
+   "end_ctx": 323267,
+   "first_t": "2026-11-21T12:15:34.350Z",
+   "act_ctx": 312207,
+   "n_after_act": 8,
+   "w_read_after_act": 127013
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-stage-flowworks-pit-trap-rai-1795263907",
+  "item": "RIMMANDRAKE_STAGE_FLOWWORKS_PIT_TRAP_RAID_NONE_FELL",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-trace-flowworks-moat-swimmer-1795262548",
+  "gap_min": 10.9,
+  "parent_end_ctx": 345229,
+  "parent_model": "claude-fable-5-2",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 373771,
+   "first_write": 362399,
+   "first_read": 11370,
+   "first_w": 727684,
+   "first_act": {
+    "n_req": 12,
+    "w_before_act": 1009933,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_STAGE_FLOWWORKS_PIT_TRAP_RAID"
+   },
+   "n_req": 26,
+   "w_total": 1383896,
+   "end_ctx": 408944,
+   "first_t": "2026-11-21T12:25:32.499Z",
+   "act_ctx": 392666,
+   "n_after_act": 14,
+   "w_read_after_act": 280174
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-build-one-game-lock-claim-fo-1795266041",
+  "item": "RIMMANDRAKE_BUILD_ONE_GAME_LOCK_CLAIM_FOUR_RECORDS_DISAGREE",
+  "kind": "fresh",
+  "how": "fresh",
+  "parent": "rm-detached-bench-rimmandrake-build-one-game-lock-claim-fo-1795261034",
+  "gap_min": 0.5,
+  "parent_end_ctx": 495939,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 74533,
+   "first_write": 61287,
+   "first_read": 13244,
+   "first_w": 124533,
+   "first_act": {
+    "n_req": 21,
+    "w_before_act": 431487,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_BUILD_ONE_GAME_LOCK_CLAIM_FOU"
+   },
+   "n_req": 78,
+   "w_total": 1384246,
+   "end_ctx": 230798,
+   "first_t": "2026-11-21T13:01:58.599Z",
+   "act_ctx": 133963,
+   "n_after_act": 57,
+   "w_read_after_act": 527455
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-trace-pyre-firehawk-turns-ma-1795276912",
+  "item": "RIMMANDRAKE_TRACE_PYRE_FIREHAWK_TURNS_MANHUNTER_IN_BURN_WALK",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-trace-pyre-firehawk-turns-ma-1795275072",
+  "gap_min": 1.4,
+  "parent_end_ctx": 302784,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-fable-5-2",
+   "first_ctx": 263642,
+   "first_write": 252386,
+   "first_read": 11254,
+   "first_w": 1014301,
+   "first_act": {
+    "n_req": 6,
+    "w_before_act": 1138345,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_TRACE_PYRE_FIREHAWK_TURNS_MAN"
+   },
+   "n_req": 8,
+   "w_total": 1202977,
+   "end_ctx": 273855,
+   "first_t": "2026-11-21T16:02:13.077Z",
+   "act_ctx": 270594,
+   "n_after_act": 2,
+   "w_read_after_act": 27140
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-drive-flowworks-in-game-visi-1795279900",
+  "item": "RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_THREE_RUN_TWO",
+  "kind": "fresh",
+  "how": "fresh",
+  "parent": "rm-detached-bench-rimmandrake-drive-flowworks-in-game-visi-1795268462",
+  "gap_min": 0.3,
+  "parent_end_ctx": 434211,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 118026,
+   "first_write": 104783,
+   "first_read": 13241,
+   "first_w": 211470,
+   "first_act": {
+    "n_req": 34,
+    "w_before_act": 693385,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT"
+   },
+   "n_req": 96,
+   "w_total": 1734993,
+   "end_ctx": 254887,
+   "first_t": "2026-11-21T16:52:37.494Z",
+   "act_ctx": 182404,
+   "n_after_act": 62,
+   "w_read_after_act": 678711
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-drive-pyrelands-in-game-acce-1795291876",
+  "item": "RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_THREE",
+  "kind": "resume",
+  "how": "resume",
+  "parent": "rm-detached-bench-rimmandrake-drive-pyrelands-in-game-acce-1795278789",
+  "gap_min": 0.5,
+  "parent_end_ctx": 529245,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 532634,
+   "first_write": 1943,
+   "first_read": 530687,
+   "first_w": 33094,
+   "first_act": {
+    "n_req": 10,
+    "w_before_act": 320759,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEP"
+   },
+   "n_req": 12,
+   "w_total": 387587,
+   "end_ctx": 544658,
+   "first_t": "2026-11-21T20:12:26.039Z",
+   "act_ctx": 542950,
+   "n_after_act": 2,
+   "w_read_after_act": 54343
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-measure-flowworks-dig-call-q-1795292292",
+  "item": "RIMMANDRAKE_MEASURE_FLOWWORKS_DIG_CALL_QUARTER_SECOND_ON_SITTING_MAP",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-route-flowworks-visit-three-1795286075",
+  "gap_min": 94.9,
+  "parent_end_ctx": 152329,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 201975,
+   "first_write": 190719,
+   "first_read": 11254,
+   "first_w": 385933,
+   "first_act": {
+    "n_req": 8,
+    "w_before_act": 510086,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_MEASURE_FLOWWORKS_DIG_CALL_QU"
+   },
+   "n_req": 119,
+   "w_total": 3043955,
+   "end_ctx": 438270,
+   "first_t": "2026-11-21T20:18:30.850Z",
+   "act_ctx": 216383,
+   "n_after_act": 111,
+   "w_read_after_act": 1684769
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-measure-flowworks-dig-call-q-1795297246",
+  "item": "RIMMANDRAKE_MEASURE_FLOWWORKS_DIG_CALL_QUARTER_SECOND_ON_SITTING_MAP",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-measure-flowworks-dig-call-q-1795292292",
+  "gap_min": 10.2,
+  "parent_end_ctx": 379961,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 429392,
+   "first_write": 49429,
+   "first_read": 379959,
+   "first_w": 121530,
+   "first_act": {
+    "n_req": 3,
+    "w_before_act": 182791,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_MEASURE_FLOWWORKS_DIG_CALL_QU"
+   },
+   "n_req": 7,
+   "w_total": 293508,
+   "end_ctx": 438270,
+   "first_t": "2026-11-21T21:41:05.892Z",
+   "act_ctx": 431682,
+   "n_after_act": 4,
+   "w_read_after_act": 86913
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-measure-flowworks-dig-call-q-1795297520",
+  "item": "RIMMANDRAKE_MEASURE_FLOWWORKS_DIG_CALL_QUARTER_SECOND_ON_SITTING_MAP",
+  "kind": "fresh",
+  "how": "fresh",
+  "parent": "rm-detached-bench-rimmandrake-measure-flowworks-dig-call-q-1795297246",
+  "gap_min": 0.7,
+  "parent_end_ctx": 438270,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 101367,
+   "first_write": 90111,
+   "first_read": 11254,
+   "first_w": 182172,
+   "first_act": {
+    "n_req": 13,
+    "w_before_act": 357886,
+    "act": "Write:/mnt/d/ClaudeWork/scratch/dig_call_profile/profile_call.py"
+   },
+   "n_req": 99,
+   "w_total": 1676410,
+   "end_ctx": 243955,
+   "first_t": "2026-11-21T21:46:27.824Z",
+   "act_ctx": 135733,
+   "n_after_act": 86,
+   "w_read_after_act": 813244
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-drive-flowworks-in-game-acce-1795315288",
+  "item": "RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_FIVE",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-steward-flowworks-pre-human-1795312974",
+  "gap_min": 22.6,
+  "parent_end_ctx": 258565,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 324852,
+   "first_write": 66287,
+   "first_read": 258563,
+   "first_w": 148694,
+   "first_act": {
+    "n_req": 6,
+    "w_before_act": 278566,
+    "act": "Write:/home/mandrake/rm/relentless/clones/RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTAN"
+   },
+   "n_req": 69,
+   "w_total": 1813767,
+   "end_ctx": 412514,
+   "first_t": "2026-11-22T02:41:48.770Z",
+   "act_ctx": 339414,
+   "n_after_act": 63,
+   "w_read_after_act": 1189400
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-gate-inferno-deck-chance-sol-1795325522",
+  "item": "RIMMANDRAKE_GATE_INFERNO_DECK_CHANCE_SOLID_OUTBURNS_GRATE",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-route-flowworks-visit-five-f-1795321345",
+  "gap_min": 57.2,
+  "parent_end_ctx": 152471,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 201308,
+   "first_write": 48837,
+   "first_read": 152469,
+   "first_w": 108999,
+   "first_act": {
+    "n_req": 20,
+    "w_before_act": 503703,
+    "act": "Edit:/home/mandrake/rm/relentless/clones/RIMMANDRAKE_GATE_INFERNO_DECK_CHANCE_SOLID_O"
+   },
+   "n_req": 88,
+   "w_total": 1927651,
+   "end_ctx": 341543,
+   "first_t": "2026-11-22T05:32:34.424Z",
+   "act_ctx": 247017,
+   "n_after_act": 68,
+   "w_read_after_act": 1018107
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-drive-flowworks-in-game-acce-1795331070",
+  "item": "RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_SIX",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-prove-flowworks-t-fetch-fall-1795330023",
+  "gap_min": 11.6,
+  "parent_end_ctx": 126104,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 190616,
+   "first_write": 64512,
+   "first_read": 126102,
+   "first_w": 137496,
+   "first_act": {
+    "n_req": 25,
+    "w_before_act": 514886,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEP"
+   },
+   "n_req": 113,
+   "w_total": 2463061,
+   "end_ctx": 361400,
+   "first_t": "2026-11-22T07:04:49.901Z",
+   "act_ctx": 227648,
+   "n_after_act": 88,
+   "w_read_after_act": 1321286
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-unstick-flowworks-fill-job-h-1795338441",
+  "item": "RIMMANDRAKE_UNSTICK_FLOWWORKS_FILL_JOB_HOLDS_GRAVEL_BESIDE_THE_HOLE",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-route-flowworks-visit-six-fa-1795335815",
+  "gap_min": 34.8,
+  "parent_end_ctx": 131761,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 182125,
+   "first_write": 50364,
+   "first_read": 131759,
+   "first_w": 110058,
+   "first_act": {
+    "n_req": 17,
+    "w_before_act": 406011,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_UNSTICK_FLOWWORKS_FILL_JOB_HO"
+   },
+   "n_req": 158,
+   "w_total": 3760884,
+   "end_ctx": 451559,
+   "first_t": "2026-11-22T09:07:43.771Z",
+   "act_ctx": 218869,
+   "n_after_act": 141,
+   "w_read_after_act": 2412586
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-drive-flowworks-in-game-acce-1795341401",
+  "item": "RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_SEVEN",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-unstick-flowworks-fill-job-h-1795338441",
+  "gap_min": 20.0,
+  "parent_end_ctx": 279116,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 342936,
+   "first_write": 63820,
+   "first_read": 279114,
+   "first_w": 144818,
+   "first_act": {
+    "n_req": 23,
+    "w_before_act": 685660,
+    "act": "Write:/home/mandrake/rm/relentless/clones/RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTAN"
+   },
+   "n_req": 88,
+   "w_total": 2405531,
+   "end_ctx": 451559,
+   "first_t": "2026-11-22T09:57:08.801Z",
+   "act_ctx": 375612,
+   "n_after_act": 65,
+   "w_read_after_act": 1344762
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-generalize-pipeline-repairs-1795346348",
+  "item": "RIMMANDRAKE_GENERALIZE_PIPELINE_REPAIRS_INTO_FEW_PRINCIPLES",
+  "kind": "fresh",
+  "how": "fresh",
+  "parent": "rm-detached-bench-rimmandrake-generalize-pipeline-repairs-1795344265",
+  "gap_min": 0.4,
+  "parent_end_ctx": 236828,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 68362,
+   "first_write": 55119,
+   "first_read": 13241,
+   "first_w": 112532,
+   "first_act": {
+    "n_req": 51,
+    "w_before_act": 713128,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_GENERALIZE_PIPELINE_REPAIRS_I"
+   },
+   "n_req": 59,
+   "w_total": 808363,
+   "end_ctx": 158206,
+   "first_t": "2026-11-22T11:20:04.878Z",
+   "act_ctx": 150289,
+   "n_after_act": 8,
+   "w_read_after_act": 61449
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-generate-flowworks-tank-desi-1795393394",
+  "item": "RIMMANDRAKE_GENERATE_FLOWWORKS_TANK_DESIGNS_FIRST_RUN_ONLY_REPAINTED",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 271731,
+   "first_write": 22361,
+   "first_read": 249366,
+   "first_w": 60529,
+   "first_act": {
+    "n_req": 5,
+    "w_before_act": 137565,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_GENERATE_FLOWWORKS_TANK_DESIG"
+   },
+   "n_req": 66,
+   "w_total": 1453030,
+   "end_ctx": 349125,
+   "first_t": "2026-11-23T00:26:08.781Z",
+   "act_ctx": 278083,
+   "n_after_act": 61,
+   "w_read_after_act": 956679
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-fade-every-pit-cover-transpa-1795396492",
+  "item": "RIMMANDRAKE_FADE_EVERY_PIT_COVER_TRANSPARENT_OVER_A_PAWN_LIGHTEN_PLEASED_HIM",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-confirm-flowworks-visit-seve-1795346535",
+  "gap_min": 822.0,
+  "parent_end_ctx": 147658,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 197497,
+   "first_write": 186241,
+   "first_read": 11254,
+   "first_w": 375302,
+   "first_act": {
+    "n_req": 11,
+    "w_before_act": 566036,
+    "act": "Bash:cat > /tmp/fwrb/brief_common.md <<'EOF'\nCOMMON RULES (all bind; you are a helper"
+   },
+   "n_req": 46,
+   "w_total": 1837278,
+   "end_ctx": 323977,
+   "first_t": "2026-11-23T01:15:28.313Z",
+   "act_ctx": 218587,
+   "n_after_act": 35,
+   "w_read_after_act": 475026
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-redraw-stepped-pit-inner-cli-1795399545",
+  "item": "RIMMANDRAKE_REDRAW_STEPPED_PIT_INNER_CLIFF_STOPS_SHORT_OF_THE_RIM",
+  "kind": "fresh",
+  "how": "fresh",
+  "parent": "rm-detached-bench-rimmandrake-redraw-stepped-pit-inner-cli-1795398069",
+  "gap_min": 0.4,
+  "parent_end_ctx": 274933,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 70251,
+   "first_write": 57001,
+   "first_read": 13248,
+   "first_w": 115611,
+   "first_act": {
+    "n_req": 25,
+    "w_before_act": 649322,
+    "act": "Write:/home/mandrake/rm/relentless/clones/RIMMANDRAKE_REDRAW_STEPPED_PIT_INNER_CLIFF_S"
+   },
+   "n_req": 110,
+   "w_total": 2316473,
+   "end_ctx": 296779,
+   "first_t": "2026-11-23T02:07:00.816Z",
+   "act_ctx": 178961,
+   "n_after_act": 85,
+   "w_read_after_act": 1079766
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-resume-census-with-his-compl-1795403457",
+  "item": "RIMMANDRAKE_RESUME_CENSUS_WITH_HIS_COMPLETENESS_RULE_LEDGER_ONLY_REJECTED",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-census-where-open-things-liv-1795402369",
+  "gap_min": 0.9,
+  "parent_end_ctx": 230959,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 254541,
+   "first_write": 23582,
+   "first_read": 230957,
+   "first_w": 60084,
+   "first_act": {
+    "n_req": 2,
+    "w_before_act": 75209,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_RESUME_CENSUS_WITH_HIS_COMPLE"
+   },
+   "n_req": 57,
+   "w_total": 1355979,
+   "end_ctx": 348414,
+   "first_t": "2026-11-23T03:11:50.222Z",
+   "act_ctx": 254984,
+   "n_after_act": 55,
+   "w_read_after_act": 836475
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-redraw-stepped-pit-inner-cli-1795403650",
+  "item": "RIMMANDRAKE_REDRAW_STEPPED_PIT_INNER_CLIFF_STOPS_SHORT_OF_THE_RIM",
+  "kind": "fresh",
+  "how": "fresh",
+  "parent": "rm-detached-bench-rimmandrake-redraw-stepped-pit-inner-cli-1795399545",
+  "gap_min": 0.4,
+  "parent_end_ctx": 296779,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 71767,
+   "first_write": 58517,
+   "first_read": 13248,
+   "first_w": 119243,
+   "first_act": {
+    "n_req": 37,
+    "w_before_act": 668510,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_REDRAW_STEPPED_PIT_INNER_CLIF"
+   },
+   "n_req": 87,
+   "w_total": 1408377,
+   "end_ctx": 219484,
+   "first_t": "2026-11-23T03:15:18.704Z",
+   "act_ctx": 161760,
+   "n_after_act": 50,
+   "w_read_after_act": 485019
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-fix-pit-floor-tint-past-two-1795412681",
+  "item": "RIMMANDRAKE_FIX_PIT_FLOOR_TINT_PAST_TWO_M_DRAWS_ONE_COLOUR",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-fade-every-pit-cover-transpa-1795396492",
+  "gap_min": 239.2,
+  "parent_end_ctx": 241962,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 292517,
+   "first_write": 281261,
+   "first_read": 11254,
+   "first_w": 565827,
+   "first_act": {
+    "n_req": 14,
+    "w_before_act": 841407,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_FIX_PIT_FLOOR_TINT_PAST_TWO_M"
+   },
+   "n_req": 22,
+   "w_total": 1023399,
+   "end_ctx": 323977,
+   "first_t": "2026-11-23T05:45:13.723Z",
+   "act_ctx": 314477,
+   "n_after_act": 8,
+   "w_read_after_act": 127806
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-tell-him-rot-spore-mushroom-1795413386",
+  "item": "RIMMANDRAKE_TELL_HIM_ROT_SPORE_MUSHROOM_PERFORMANCE_VERDICT_HIS_HUNCH",
+  "kind": "resume",
+  "how": "resume",
+  "parent": "rm-detached-bench-rimmandrake-tell-him-rot-spore-mushroom-1795412694",
+  "gap_min": 0.7,
+  "parent_end_ctx": 141921,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 145341,
+   "first_write": 3418,
+   "first_read": 141919,
+   "first_w": 15416,
+   "first_act": {
+    "n_req": 2,
+    "w_before_act": 27322,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_TELL_HIM_ROT_SPORE_MUSHROOM_P"
+   },
+   "n_req": 4,
+   "w_total": 52104,
+   "end_ctx": 147809,
+   "first_t": "2026-11-23T05:57:50.148Z",
+   "act_ctx": 145935,
+   "n_after_act": 2,
+   "w_read_after_act": 14635
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-size-sense-step-limit-fiftee-1795413567",
+  "item": "RIMMANDRAKE_SIZE_SENSE_STEP_LIMIT_FIFTEEN_SECONDS_NOBODY_CAN_SOURCE",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-watch-ops-sense-overrun-most-1795407030",
+  "gap_min": 14.1,
+  "parent_end_ctx": 345463,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 367876,
+   "first_write": 22413,
+   "first_read": 345461,
+   "first_w": 63871,
+   "first_act": {
+    "n_req": 11,
+    "w_before_act": 342136,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_SIZE_SENSE_STEP_LIMIT_FIFTEEN"
+   },
+   "n_req": 40,
+   "w_total": 1204412,
+   "end_ctx": 445399,
+   "first_t": "2026-11-23T06:00:10.544Z",
+   "act_ctx": 392198,
+   "n_after_act": 29,
+   "w_read_after_act": 609226
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-plan-one-list-for-non-mod-wo-1795415332",
+  "item": "RIMMANDRAKE_PLAN_ONE_LIST_FOR_NON_MOD_WORK_WORKED_BY_THE_PIPELINE",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-study-one-place-for-owed-wor-1795403606",
+  "gap_min": 173.1,
+  "parent_end_ctx": 311180,
+  "parent_model": "claude-fable-5-2",
+  "child": {
+   "model": "claude-fable-5-2",
+   "first_ctx": 336284,
+   "first_write": 324912,
+   "first_read": 11370,
+   "first_w": 1304960,
+   "first_act": {
+    "n_req": 6,
+    "w_before_act": 1529786,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_PLAN_ONE_LIST_FOR_NON_MOD_WOR"
+   },
+   "n_req": 69,
+   "w_total": 4722802,
+   "end_ctx": 533368,
+   "first_t": "2026-11-23T06:29:40.217Z",
+   "act_ctx": 353652,
+   "n_after_act": 63,
+   "w_read_after_act": 1393379
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-resume-plan-run-with-his-sec-1795416697",
+  "item": "RIMMANDRAKE_RESUME_PLAN_RUN_WITH_HIS_SECOND_PIPELINE_DIRECTION",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-plan-one-list-for-non-mod-wo-1795415332",
+  "gap_min": 2.8,
+  "parent_end_ctx": 446505,
+  "parent_model": "claude-fable-5-2",
+  "child": {
+   "model": "claude-fable-5-2",
+   "first_ctx": 471711,
+   "first_write": 25206,
+   "first_read": 446503,
+   "first_w": 128173,
+   "first_act": {
+    "n_req": 7,
+    "w_before_act": 332620,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_RESUME_PLAN_RUN_WITH_HIS_SECO"
+   },
+   "n_req": 26,
+   "w_total": 1465844,
+   "end_ctx": 533368,
+   "first_t": "2026-11-23T06:52:25.373Z",
+   "act_ctx": 479754,
+   "n_after_act": 19,
+   "w_read_after_act": 480842
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-drive-flowworks-in-game-acce-1795429633",
+  "item": "RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_EIGHT",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-green-flowworks-py-flowworks-1795427705",
+  "gap_min": 8.8,
+  "parent_end_ctx": 179095,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 250284,
+   "first_write": 71189,
+   "first_read": 179093,
+   "first_w": 153590,
+   "first_act": {
+    "n_req": 93,
+    "w_before_act": 2258851,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEP"
+   },
+   "n_req": 157,
+   "w_total": 4052672,
+   "end_ctx": 481603,
+   "first_t": "2026-11-23T10:27:45.395Z",
+   "act_ctx": 404594,
+   "n_after_act": 64,
+   "w_read_after_act": 1417745
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-drive-flowworks-in-game-acce-1795438647",
+  "item": "RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_EIGHT",
+  "kind": "fresh",
+  "how": "fresh",
+  "parent": "rm-detached-bench-rimmandrake-drive-flowworks-in-game-acce-1795429633",
+  "gap_min": 0.5,
+  "parent_end_ctx": 481603,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 117344,
+   "first_write": 106088,
+   "first_read": 11254,
+   "first_w": 214061,
+   "first_act": {
+    "n_req": 19,
+    "w_before_act": 477199,
+    "act": "Edit:/home/mandrake/rm/relentless/clones/RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTAN"
+   },
+   "n_req": 91,
+   "w_total": 1714108,
+   "end_ctx": 266663,
+   "first_t": "2026-11-23T12:58:43.799Z",
+   "act_ctx": 160609,
+   "n_after_act": 72,
+   "w_read_after_act": 771207
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-finish-slack-icon-lamp-check-1795441946",
+  "item": "RIMMANDRAKE_FINISH_SLACK_ICON_LAMP_CHECKS_CAPPED_AT_HALF",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-finish-slack-icon-lamp-check-1795440201",
+  "gap_min": 2.9,
+  "parent_end_ctx": 349943,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 353015,
+   "first_write": 3070,
+   "first_read": 349941,
+   "first_w": 25401,
+   "first_act": {
+    "n_req": 3,
+    "w_before_act": 73456,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_FINISH_SLACK_ICON_LAMP_CHECKS"
+   },
+   "n_req": 38,
+   "w_total": 908322,
+   "end_ctx": 393697,
+   "first_t": "2026-11-23T13:52:48.629Z",
+   "act_ctx": 354912,
+   "n_after_act": 35,
+   "w_read_after_act": 653261
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-hold-flowworks-pit-prisoners-1795448911",
+  "item": "RIMMANDRAKE_HOLD_FLOWWORKS_PIT_PRISONERS_THREE_CAPTURE_FAULTS",
+  "kind": "fresh",
+  "how": "fresh",
+  "parent": "rm-detached-bench-rimmandrake-hold-flowworks-pit-prisoners-1795442695",
+  "gap_min": 0.4,
+  "parent_end_ctx": 337518,
+  "parent_model": "claude-fable-5-2",
+  "child": {
+   "model": "claude-fable-5-2",
+   "first_ctx": 72364,
+   "first_write": 56842,
+   "first_read": 15520,
+   "first_w": 232318,
+   "first_act": {
+    "n_req": 17,
+    "w_before_act": 647052,
+    "act": "Write:/home/mandrake/rm/relentless/clones/RIMMANDRAKE_HOLD_FLOWWORKS_PIT_PRISONERS_THR"
+   },
+   "n_req": 137,
+   "w_total": 3893720,
+   "end_ctx": 320346,
+   "first_t": "2026-11-23T15:50:42.961Z",
+   "act_ctx": 122372,
+   "n_after_act": 120,
+   "w_read_after_act": 1346962
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-drive-explosiveknockback-in-1795449132",
+  "item": "RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_GAME_VISIT_FOUR",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-route-explosiveknockback-cyc-1795442063",
+  "gap_min": 88.0,
+  "parent_end_ctx": 196405,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 266298,
+   "first_write": 255043,
+   "first_read": 11253,
+   "first_w": 513471,
+   "first_act": {
+    "n_req": 9,
+    "w_before_act": 796432,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_G"
+   },
+   "n_req": 82,
+   "w_total": 3302962,
+   "end_ctx": 541318,
+   "first_t": "2026-11-23T15:52:39.378Z",
+   "act_ctx": 329167,
+   "n_after_act": 73,
+   "w_read_after_act": 1617952
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-cut-flowworks-corpse-wounds-1795461661",
+  "item": "RIMMANDRAKE_CUT_FLOWWORKS_CORPSE_WOUNDS_FLOAT_ON_TAR",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-route-flowworks-visit-eight-1795441875",
+  "gap_min": 318.1,
+  "parent_end_ctx": 153033,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 203407,
+   "first_write": 192152,
+   "first_read": 11253,
+   "first_w": 388509,
+   "first_act": {
+    "n_req": 14,
+    "w_before_act": 896809,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_CUT_FLOWWORKS_CORPSE_WOUNDS_F"
+   },
+   "n_req": 37,
+   "w_total": 1845104,
+   "end_ctx": 462949,
+   "first_t": "2026-11-23T19:21:52.809Z",
+   "act_ctx": 333508,
+   "n_after_act": 23,
+   "w_read_after_act": 478967
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-hold-spared-carrier-in-blast-1795464324",
+  "item": "RIMMANDRAKE_HOLD_SPARED_CARRIER_IN_BLAST_IT_WALKED_AWAY",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-route-explosiveknockback-vis-1795461526",
+  "gap_min": 14.2,
+  "parent_end_ctx": 242703,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 291770,
+   "first_write": 49067,
+   "first_read": 242701,
+   "first_w": 117366,
+   "first_act": {
+    "n_req": 8,
+    "w_before_act": 499767,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_HOLD_SPARED_CARRIER_IN_BLAST_"
+   },
+   "n_req": 10,
+   "w_total": 562818,
+   "end_ctx": 391391,
+   "first_t": "2026-11-23T20:06:04.967Z",
+   "act_ctx": 385646,
+   "n_after_act": 2,
+   "w_read_after_act": 38727
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-drive-explosiveknockback-in-1795478768",
+  "item": "RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_GAME_VISIT_FIVE",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-run-knockback-walk-frame-arm-1795464446",
+  "gap_min": 90.2,
+  "parent_end_ctx": 365322,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 428005,
+   "first_write": 416750,
+   "first_read": 11253,
+   "first_w": 836820,
+   "first_act": {
+    "n_req": 2,
+    "w_before_act": 869142,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_G"
+   },
+   "n_req": 42,
+   "w_total": 2181161,
+   "end_ctx": 508664,
+   "first_t": "2026-11-24T00:07:03.065Z",
+   "act_ctx": 429340,
+   "n_after_act": 40,
+   "w_read_after_act": 940961
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-drive-explosiveknockback-in-1795511419",
+  "item": "RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_GAME_VISIT_SIX",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-steward-explosiveknockback-p-1795487378",
+  "gap_min": 335.0,
+  "parent_end_ctx": 281236,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 346708,
+   "first_write": 335453,
+   "first_read": 11253,
+   "first_w": 680141,
+   "first_act": {
+    "n_req": 13,
+    "w_before_act": 1190647,
+    "act": "Bash:for s in heavy_knock goods_obstacles storeroom_bomb_pit settings_sweep gas_into_"
+   },
+   "n_req": 89,
+   "w_total": 4021955,
+   "end_ctx": 634267,
+   "first_t": "2026-11-24T09:11:40.335Z",
+   "act_ctx": 443333,
+   "n_after_act": 76,
+   "w_read_after_act": 2063920
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-drive-pyrelands-in-game-acce-1795548509",
+  "item": "RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_NINE",
+  "kind": "resume",
+  "how": "manual",
+  "parent": null,
+  "gap_min": null,
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 485323,
+   "first_write": 48512,
+   "first_read": 436807,
+   "first_w": 123178,
+   "first_act": {
+    "n_req": 3,
+    "w_before_act": 196399,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEP"
+   },
+   "n_req": 40,
+   "w_total": 1947773,
+   "end_ctx": 653711,
+   "first_t": "2026-11-24T19:30:00.307Z",
+   "act_ctx": 493424,
+   "n_after_act": 37,
+   "w_read_after_act": 1074972
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-batch-knockback-scenes-fifty-1795568188",
+  "item": "RIMMANDRAKE_BATCH_KNOCKBACK_SCENES_FIFTY_FIVE_SETTINGS_RESETS",
+  "kind": "resume",
+  "how": "resume",
+  "parent": "rm-detached-bench-rimmandrake-batch-knockback-scenes-fifty-1795566002",
+  "gap_min": 1.0,
+  "parent_end_ctx": 113544,
+  "parent_model": "claude-sonnet-5-5",
+  "child": {
+   "model": "claude-sonnet-5-5",
+   "first_ctx": 124285,
+   "first_write": 112911,
+   "first_read": 11372,
+   "first_w": 113731,
+   "first_act": {
+    "n_req": 5,
+    "w_before_act": 144427,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_BATCH_KNOCKBACK_SCENES_FIFTY_"
+   },
+   "n_req": 7,
+   "w_total": 155384,
+   "end_ctx": 131979,
+   "first_t": "2026-11-25T00:58:41.183Z",
+   "act_ctx": 130450,
+   "n_after_act": 2,
+   "w_read_after_act": 6535
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-feed-codex-grouped-tickets-h-1795568216",
+  "item": "RIMMANDRAKE_FEED_CODEX_GROUPED_TICKETS_HE_SAID_LAUNCH_IT",
+  "kind": "fresh",
+  "how": "fresh",
+  "parent": "rm-detached-bench-rimmandrake-feed-codex-grouped-tickets-h-1795559124",
+  "gap_min": 7.4,
+  "parent_end_ctx": 392240,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 84343,
+   "first_write": 73085,
+   "first_read": 11256,
+   "first_w": 148825,
+   "first_act": {
+    "n_req": 20,
+    "w_before_act": 307976,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_FEED_CODEX_GROUPED_TICKETS_HE"
+   },
+   "n_req": 63,
+   "w_total": 816238,
+   "end_ctx": 166029,
+   "first_t": "2026-11-25T01:00:06.837Z",
+   "act_ctx": 103540,
+   "n_after_act": 43,
+   "w_read_after_act": 291975
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-free-pyre-walk-save-sky-tuto-1795568665",
+  "item": "RIMMANDRAKE_FREE_PYRE_WALK_SAVE_SKY_TUTOR_PINS_CLEAR",
+  "kind": "fresh",
+  "how": "fresh",
+  "parent": "rm-detached-bench-rimmandrake-free-pyre-walk-save-sky-tuto-1795564776",
+  "gap_min": 23.6,
+  "parent_end_ctx": 225968,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 86387,
+   "first_write": 75129,
+   "first_read": 11256,
+   "first_w": 152368,
+   "first_act": {
+    "n_req": 16,
+    "w_before_act": 316027,
+    "act": "Edit:/home/mandrake/rm/relentless/clones/RIMMANDRAKE_FREE_PYRE_WALK_SAVE_SKY_TUTOR_PI"
+   },
+   "n_req": 30,
+   "w_total": 464440,
+   "end_ctx": 124903,
+   "first_t": "2026-11-25T01:05:34.121Z",
+   "act_ctx": 112742,
+   "n_after_act": 14,
+   "w_read_after_act": 83718
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-remove-relentless-now-page-c-1795568727",
+  "item": "RIMMANDRAKE_REMOVE_RELENTLESS_NOW_PAGE_CONSOLIDATE_MONITORS_HE_SAID_SLEEK",
+  "kind": "fresh",
+  "how": "fresh",
+  "parent": "rm-detached-bench-rimmandrake-remove-relentless-now-page-c-1795566174",
+  "gap_min": 12.4,
+  "parent_end_ctx": 353767,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 87126,
+   "first_write": 75868,
+   "first_read": 11256,
+   "first_w": 153671,
+   "first_act": {
+    "n_req": 9,
+    "w_before_act": 229385,
+    "act": "Bash:cd ~/dev/MandrakeWorkflows && set -o pipefail && git commit -q -m \"augur: exampl"
+   },
+   "n_req": 92,
+   "w_total": 1334903,
+   "end_ctx": 203202,
+   "first_t": "2026-11-25T01:07:00.645Z",
+   "act_ctx": 98111,
+   "n_after_act": 83,
+   "w_read_after_act": 657855
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-open-knockback-zero-two-blas-1795568812",
+  "item": "RIMMANDRAKE_OPEN_KNOCKBACK_ZERO_TWO_BLAST_SHOW_HE_SAID_GET_CREATIVE",
+  "kind": "fresh",
+  "how": "fresh",
+  "parent": "rm-detached-bench-rimmandrake-open-knockback-zero-two-blas-1795565868",
+  "gap_min": 30.0,
+  "parent_end_ctx": 259536,
+  "parent_model": "claude-fable-5-2",
+  "child": {
+   "model": "claude-fable-5-2",
+   "first_ctx": 87902,
+   "first_write": 76528,
+   "first_read": 11372,
+   "first_w": 312525,
+   "first_act": {
+    "n_req": 7,
+    "w_before_act": 414318,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_OPEN_KNOCKBACK_ZERO_TWO_BLAST"
+   },
+   "n_req": 8,
+   "w_total": 438333,
+   "end_ctx": 101235,
+   "first_t": "2026-11-25T01:08:16.262Z",
+   "act_ctx": 100324,
+   "n_after_act": 1,
+   "w_read_after_act": 5016
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-switch-stevedesktop-to-steve-1795568888",
+  "item": "RIMMANDRAKE_SWITCH_STEVEDESKTOP_TO_STEVEN_WORK_PIPELINE_TICKETS_NOT_PYRELANDS",
+  "kind": "fresh",
+  "how": "fresh",
+  "parent": "rm-detached-bench-rimmandrake-switch-stevedesktop-to-steve-1795566030",
+  "gap_min": 26.8,
+  "parent_end_ctx": 253221,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 85970,
+   "first_write": 74712,
+   "first_read": 11256,
+   "first_w": 152454,
+   "first_act": {
+    "n_req": 11,
+    "w_before_act": 325875,
+    "act": "Bash:mkdir -p /mnt/d/ClaudeWork/scratch/steve_briefs; cd /mnt/d/ClaudeWork/scratch/st"
+   },
+   "n_req": 70,
+   "w_total": 1212524,
+   "end_ctx": 206351,
+   "first_t": "2026-11-25T01:10:13.727Z",
+   "act_ctx": 113664,
+   "n_after_act": 59,
+   "w_read_after_act": 493382
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-add-knockback-sweep-to-batch-1795584620",
+  "item": "RIMMANDRAKE_ADD_KNOCKBACK_SWEEP_TO_BATCH_REPORT_OWNER_RECALLED",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-report-batch-worker-runs-two-1795583474",
+  "gap_min": 5.4,
+  "parent_end_ctx": 205806,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 234840,
+   "first_write": 29034,
+   "first_read": 205804,
+   "first_w": 69890,
+   "first_act": {
+    "n_req": 10,
+    "w_before_act": 322763,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_ADD_KNOCKBACK_SWEEP_TO_BATCH_"
+   },
+   "n_req": 17,
+   "w_total": 522444,
+   "end_ctx": 292912,
+   "first_t": "2026-11-25T05:31:31.013Z",
+   "act_ctx": 275797,
+   "n_after_act": 7,
+   "w_read_after_act": 99687
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-prove-knockback-six-new-scen-1795590006",
+  "item": "RIMMANDRAKE_PROVE_KNOCKBACK_SIX_NEW_SCENES_LIVE_ARCHSMALL_SAT_FREE",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-autobuild-explosiveknockback-1795583454",
+  "gap_min": 11.1,
+  "parent_end_ctx": 365399,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 411646,
+   "first_write": 46247,
+   "first_read": 365397,
+   "first_w": 113466,
+   "first_act": {
+    "n_req": 9,
+    "w_before_act": 319215,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_PROVE_KNOCKBACK_SIX_NEW_SCENE"
+   },
+   "n_req": 191,
+   "w_total": 6425749,
+   "end_ctx": 667806,
+   "first_t": "2026-11-25T07:01:37.026Z",
+   "act_ctx": 421054,
+   "n_after_act": 182,
+   "w_read_after_act": 4891948
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-build-stage-map-cast-only-no-1795590216",
+  "item": "RIMMANDRAKE_BUILD_STAGE_MAP_CAST_ONLY_NO_BYSTANDERS",
+  "kind": "resume",
+  "how": "manual",
+  "parent": "rm-detached-bench-rimmandrake-build-stage-map-cast-only-no-1795583260",
+  "gap_min": 10.1,
+  "parent_end_ctx": 352794,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 378514,
+   "first_write": 25720,
+   "first_read": 352792,
+   "first_w": 70662,
+   "first_act": {
+    "n_req": 7,
+    "w_before_act": 212368,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_BUILD_STAGE_MAP_CAST_ONLY_NO_"
+   },
+   "n_req": 39,
+   "w_total": 1071926,
+   "end_ctx": 422944,
+   "first_t": "2026-11-25T07:05:38.255Z",
+   "act_ctx": 383260,
+   "n_after_act": 32,
+   "w_read_after_act": 643536
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-feed-codex-third-lane-ninety-1795593841",
+  "item": "RIMMANDRAKE_FEED_CODEX_THIRD_LANE_NINETY_SIX_LEFT_IDLE",
+  "kind": "fresh",
+  "how": "fresh",
+  "parent": "rm-detached-bench-rimmandrake-feed-codex-third-lane-ninety-1795585206",
+  "gap_min": 0.5,
+  "parent_end_ctx": 460857,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 89789,
+   "first_write": 76459,
+   "first_read": 13328,
+   "first_w": 154841,
+   "first_act": {
+    "n_req": 18,
+    "w_before_act": 426459,
+    "act": "Bash:cd /home/mandrake/rm/relentless/clones/RIMMANDRAKE_FEED_CODEX_THIRD_LANE_NINETY_"
+   },
+   "n_req": 80,
+   "w_total": 1444052,
+   "end_ctx": 243238,
+   "first_t": "2026-11-25T08:05:55.585Z",
+   "act_ctx": 153060,
+   "n_after_act": 62,
+   "w_read_after_act": 646246
+  }
+ },
+ {
+  "unit": "rm-detached-bench-rimmandrake-drive-explosiveknockback-in-1795625605",
+  "item": "RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_GAME_VISIT_ONE",
+  "kind": "fresh",
+  "how": "fresh",
+  "parent": "rm-detached-bench-rimmandrake-drive-explosiveknockback-in-1795617920",
+  "gap_min": 0.4,
+  "parent_end_ctx": 494018,
+  "parent_model": "claude-opus-5-5",
+  "child": {
+   "model": "claude-opus-5-5",
+   "first_ctx": 129436,
+   "first_write": 116103,
+   "first_read": 13331,
+   "first_w": 235665,
+   "first_act": {
+    "n_req": 50,
+    "w_before_act": 1101227,
+    "act": "Write:/home/mandrake/rm/relentless/clones/RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_GAME"
+   },
+   "n_req": 139,
+   "w_total": 3151253,
+   "end_ctx": 392677,
+   "first_t": "2026-11-25T16:54:47.933Z",
+   "act_ctx": 252191,
+   "n_after_act": 89,
+   "w_read_after_act": 1432266
+  }
+ }
+]
