@@ -15,8 +15,9 @@ Rows (each gets a labelled picture; the overview picture carries all of them):
             spikeMinDropMetres: build_batch skips PlaceWorker_SpikesOnSuperdeep, so a shallower pit staged spikes no player could build.
   gates     RM_Sluice and RM_SecurityGrateDoor in E-W and N-S canals, all four facings, closed; plus one of each HELD OPEN (the
             Hold open button + a colonist walking in, water_scenes_walk.gate_open; skipped with a reason when it cannot be done).
-  shallows  six separate dug pits at 0.2 / 0.5 / 1 / 1.5 / 2 / 5 m of water. A driver sets WHOLE 0.5 m notches (fill 1..10), so the
-            0.2 m square is a 5-square strip given 2 notches that LEVEL to 0.2 m each. The build picks the terrain (RM_WaterLadder).
+  shallows  six separate dug pits at 0.2 / 0.5 / 1 / 1.5 / 2 / 5 m of water. The driver sets the water of a whole connected dug
+            BODY (setBodyWaterM, any metres), so the 0.2 m station is a 5-square 0.5 m strip set to 0.2 m (2,000 L) and read back
+            on every square. The build picks the terrain (RM_WaterLadder).
   hoses     (--only hoses) pipe vs hose girth: RM_LiquidPump with a pipe W + hose E, pipe N + hose S, hoses W + E; a 2x2 tank, a tap and a
             sprinkler head each fed by a pipe AND a hose; a 6-square pipe run beside a hose run; a colonist beside each for scale.
             A hose is NOT a plain spawn: an RM_HoseReel is built touching the pump (it couples to it) and the hose is laid with the
@@ -71,6 +72,7 @@ LOOKS = ("Futuristic", "Industrial", "Modern", "Scrapper")
 PULSE = 2500
 NOTCH_M = 0.5                      # one fill notch = 0.5 m of water over a square (RM_LevelSolve.MetresPerUnit * U)
 SHALLOWS = ((0.5, 1), (1.0, 2), (1.5, 3), (2.0, 4), (5.0, 10))   # (metres, notches)
+STRIP_M = 0.2                      # station 17 "0.2 m": the metres its sign names, read back on every strip square
 BARS_ROWS = ("bars_joint", "bars_dry", "bars_trench", "bars_access", "bars_bridges", "bars_bridge_kinds", "bars_bridges_ns")
 ALL_ROWS = ("ladders", "spikes", "gates", "shallows", "sprinklers") + BARS_ROWS
 OPT_ROWS = ("hoses", "picks")            # run only when named in --only (own site east of the others; not in the default sweep)
@@ -382,6 +384,14 @@ class Stage(object):
         if not self.dry:
             self.chk("fill %s = %d" % (c, f), self.w.set_fill(c, f))
 
+    def fill_m(self, c, metres):
+        """Set the whole connected dug body around c to `metres` of water (flowworks_excavation_drive setBodyWaterM: one
+        level surface above the body's deepest floor, RM_MapComponent_Excavation.TrySetBodyWaterM). fill() is this in whole
+        0.5 m notches; it is NOT one square: a fill of one square of a strip fills the whole strip."""
+        self.say("  fill body at %s = %.2f m" % (c, metres))
+        if not self.dry:
+            self.chk("fill body %s = %.2f m" % (c, metres), self.w._drive("set_fill", c, deepenLevels=0, setBodyWaterM=metres))
+
     def pit(self, origin, n, depth, fill=-1):
         for i in range(n):
             for j in range(n):
@@ -571,9 +581,12 @@ def row_shallows(s, L):
     strip = [(ox + i, oz + 1) for i in range(5)]
     for c in strip:
         s.dig(c, 1)
-    s.fill(strip[0], 1)
-    s.fill(strip[1], 1)
-    cap.append(s.station("shallows", (ox, oz + 1, 5, 1), "0.2 m: 5-square strip, 2 notches levelled over 5 squares", short="0.2 m"))
+    # SITE (RIMMANDRAKE_TRACE_FLOWWORKS_TWO_NOTCH_STRIP_READS_FIVE_THOUSAND_LITRES): this was fill(strip[0], 1) and
+    # fill(strip[1], 1), meant as 2 notches in 2 squares to level over 5. But the driver's water is per BODY, so each call
+    # set all 5 squares to 0.5 m: 5,000 L, read 0.5 m / 1,000 L on every square on visits 2, 4 and 11 (owner, 2026-11-20:
+    # "the 0.2m still shows 0.5m depth upon hover over"). Set the body to the signed 0.2 m (2,000 L) directly.
+    s.fill_m(strip[0], STRIP_M)
+    cap.append(s.station("shallows", (ox, oz + 1, 5, 1), "0.2 m: 5-square strip, 0.2 m of water (2,000 L) in 0.5 m holes", short="0.2 m"))
     x = ox + 7
     for metres, notches in SHALLOWS:
         pit = (x, oz)
@@ -585,21 +598,20 @@ def row_shallows(s, L):
         x += 5
     s.pit((x, oz), 3, 2)            # the sixth look: a dry 1 m hole, no water
     cap.append(s.station("shallows", (x, oz, 3, 3), "dry: 1 m hole, no water", short="dry"))
-    # The exact-level solver grows a body's dry rim ONE square per flow pulse (RM_FlowKernel.ExactDomain adds a dry square
-    # only beside a wet one), so 2 notches in squares 0-1 read 0.33/0.33/0.33/0/0 after one pulse and level at 0.2 m after
-    # three (measured live 2026-10-18). The 2026-10-18 run read after 300 ticks = one pulse and reported a false unlevel.
-    pulses = len(strip) + 2
+    # One flow pulse, then read every strip square: a level body set by the driver is the state the solver leaves where it
+    # is (TrySetBodyWaterM's own contract), so after a pulse each square must still read the signed metres. The old check
+    # asked only that the five read ALIKE, and five squares of 0.5 m passed it on three visits.
     if s.dry:
-        s.ticks(250 * pulses)
+        s.ticks(250)
     else:
-        s.ticks(s.w.interval() * pulses)
+        s.ticks(s.w.interval())
         got = []
         for c in strip:
             rd = s.w.readout(c)
-            got.append(None if rd is None else rd.get("dl"))
+            got.append(None if rd is None else rd.get("water_m"))
             s.notes.append("0.2 m strip %s readout %s" % (c, rd))
-        if None in got or len(set(got)) != 1:
-            s.notes.append("0.2 m strip NOT LEVEL after %d pulses: dl %s" % (pulses, got))
+        if any(g is None or abs(g - STRIP_M) > 0.005 for g in got):      # 0.005 = half the readout's last printed digit (0.01 m)
+            s.notes.append("0.2 m strip NOT AS SIGNED after 1 pulse: water m %s, the sign says %.1f m on every square" % (got, STRIP_M))
     return cap
 
 

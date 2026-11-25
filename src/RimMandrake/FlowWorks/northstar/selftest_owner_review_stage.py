@@ -362,5 +362,83 @@ class EdgeRefuses(C.FakeGame):
 e = stage(EdgeRefuses)
 ok, _ = e.proof(ORS.SUSP, "ProofBuild", "240,151;240,156;rope;god")
 check("Stage.proof returns not-ok and notes a 'BUILD ok=False' reply", (not ok) and any("Too close to map edge" in n for n in e.notes), e.notes)
+
+
+# RIMMANDRAKE_TRACE_FLOWWORKS_TWO_NOTCH_STRIP_READS_FIVE_THOUSAND_LITRES: station 17 "0.2 m" read 0.5 m and 1,000 L on all five
+# squares on visits 2, 4 and 11 (owner, 2026-11-20: "the 0.2m still shows 0.5m depth upon hover over"). The mod was right:
+# flowworks_excavation_drive's setBodyWaterM sets the WHOLE connected dug body (RM_MapComponent_Excavation.TrySetBodyWaterM),
+# so "fill square 0 with 1 notch" filled all five squares to 0.5 m. The shared FakeGame writes one square, so the mock never
+# showed it. BodyFake mirrors TrySetBodyWaterM: one level surface `metres` above the body's deepest floor, clamped to each brim.
+class BodyFake(C.FakeGame):
+    U = 10000                        # RM_LevelSolve.U: decilitres in one 0.5 m notch of one square (1,000 L)
+    ROUND_TO_NOTCH = False           # planted fault: a driver that can only set whole notches
+
+    def __init__(self):
+        C.FakeGame.__init__(self)
+        self.dl = {}
+
+    def _body(self, seed):
+        body, seen = [seed], {seed}
+        for c in body:
+            for dx, dz in ((0, 1), (1, 0), (0, -1), (-1, 0)):
+                n = (c[0] + dx, c[1] + dz)
+                if self.depth.get(n, 0) > 0 and n not in seen:
+                    seen.add(n)
+                    body.append(n)
+        return body
+
+    def call(self, tool, **kw):
+        if tool == "jawa/flowworks_excavation_drive":
+            c = (kw["x"], kw["z"])
+            self.depth[c] = self.depth.get(c, 0) + int(kw.get("deepenLevels") or 0)
+            m = float(kw.get("setBodyWaterM", -1))
+            if m >= 0 and self.depth.get(c, 0) > 0:
+                if self.ROUND_TO_NOTCH:
+                    m = round(m / 0.5) * 0.5
+                body = self._body(c)
+                deepest = max(self.depth[b] for b in body)
+                surface = int(round(m / (0.5 / self.U)))
+                for b in body:
+                    self.dl[b] = max(0, min(self.depth[b] * self.U, surface - (deepest - self.depth[b]) * self.U))
+            return {"success": True}
+        return C.FakeGame.call(self, tool, **kw)
+
+    def _static(self, typ, method, arg):
+        if method == "ProofReadout":
+            c = tuple(int(v) for v in arg.split(","))
+            if self.depth.get(c, 0) == 0:
+                return {"success": True, "result": "OK -"}
+            dl = self.dl.get(c, 0)
+            return {"success": True, "result": "OK Hole %.1f m · Water %.2f m (%s L)" % (
+                self.depth[c] * 0.5, dl * 0.5 / self.U, "{:,}".format(dl // 10))}
+        return C.FakeGame._static(self, typ, method, arg)
+
+
+def shallows_strip(game_cls):
+    s = stage(game_cls)
+    L = ORS.layout(100, 100)
+    with contextlib.redirect_stdout(io.StringIO()):
+        ORS.row_shallows(s, L)
+    ox, oz = L["shallows"]
+    reads = [WSW.parse_readout(s.w.B._static(WSW.NSP, "ProofReadout", "%d,%d" % (ox + i, oz + 1))["result"]) for i in range(5)]
+    return s, reads
+
+
+b, reads = shallows_strip(BodyFake)
+print("  station 17 on BodyFake: water_m %s, litres %s (total %d L; the sign: 0.2 m on 5 squares = 2,000 L)" % (
+    [r["water_m"] for r in reads], [r["litres"] for r in reads], sum(r["litres"] for r in reads)))
+check("station 17 '0.2 m': every strip square reads 0.2 m of water in a 0.5 m hole (per-body fill, as the bridge does it)",
+      all(r and r["water_m"] == 0.2 and r["hole_m"] == 0.5 for r in reads), reads)
+check("station 17 holds the 2,000 L its sign stands for, not 5,000 L", sum(r["litres"] for r in reads) == 2000, reads)
+check("station 17 staged as signed: no NOT AS SIGNED note", not any("NOT AS SIGNED" in n for n in b.notes), b.notes)
+
+
+class NotchOnly(BodyFake):
+    ROUND_TO_NOTCH = True
+
+
+b2, _ = shallows_strip(NotchOnly)
+check("can-fail: a driver that rounds to whole notches leaves station 17 NOT AS SIGNED in the notes",
+      any("0.2 m strip NOT AS SIGNED" in n for n in b2.notes), b2.notes)
 print("selftest_owner_review_stage: %d failure(s)" % len(FAILS))
 sys.exit(1 if FAILS else 0)
