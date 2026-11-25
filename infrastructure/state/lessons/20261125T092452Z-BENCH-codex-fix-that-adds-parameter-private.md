@@ -1,0 +1,2 @@
+A Codex fix that adds a parameter to a private function can break a selftest that stubs that function with a fixed-arity lambda (selftest_control.py stubbed model._append_locked as lambda path, blob). Tell Codex to grep for monkeypatches of every function whose signature it changes, and run those tests too; ./publish caught it on 2026-11-25.
+item: RIMMANDRAKE_FEED_CODEX_THIRD_LANE_NINETY_SIX_LEFT_IDLE
