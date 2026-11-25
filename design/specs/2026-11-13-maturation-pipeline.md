@@ -402,7 +402,7 @@ The fastest methods:
 | Purpose | "Human live-walk of prepared sittings, savegames, maps, etc." | HIS |
 | Who | Mandrake. | HIS |
 | Model tier | None. An agent may sit with him to stage and record. | PROPOSAL |
-| Inputs | The Stage 7 brief; a dense, labelled savegame. | CARRIED (rule 5) |
+| Inputs | The Stage 7 brief; a dense, labelled savegame. For a mod that adds or changes creatures, the savegame holds one pen for each creature kind of the mod, with six animals in each (`src/RimMandrake/Utils/modcheck/walk_pens.py`), and the brief names where the pens are. | CARRIED (rule 5); HIS, 2026-11-24 (the pens) |
 | Outputs | His words, verbatim, in the ledger. Each thing he says becomes one line item with a class: mod fault, test-map fault, test-tool fault, art, new bar, or question. Each pass he gives is pinned. | CARRIED (rules 2a and 2e) |
 | Exit ("ready" means) | He passes the version. The pass record is written: date, git commit, bars, evidence, cost, cycles. | CARRIED (Design Versions draft §3.7); the pass is his alone |
 | Road back | A Problem (a defect, or something a player would reject as strange or disappointing) stays in this version. The Problem goes to the lowest stage that can show it. Polish goes to the mod's Polish list; the Conductor decides each move and tells him after (card 2026-11-23). A Divergent idea goes to the next version. His objection closes only on his own later look, as a labelled cell in the next save he opens anyway. | CARRIED (his cards of 2026-11-13 and 2026-11-12) |

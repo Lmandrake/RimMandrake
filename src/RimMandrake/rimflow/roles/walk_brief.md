@@ -47,6 +47,13 @@ the end of "What you write".
 - the walk savegame's station signs. If a station shows an aftermath (a blast, a collapse, a flood) and its sign has no AFTER
   tag, `walk_twins.py` cannot see that station. Then look for its START twin yourself. File a missing twin as a ticket
 
+- the walk savegame's creature pens. A walk save for a mod that adds or changes creatures holds pens: one pen for each
+  creature kind of the mod, with six animals in each (three male and three female, a juvenile and a baby where the kind has
+  them). `src/RimMandrake/Utils/modcheck/walk_pens.py` stages them, and the walk staging calls it. Read the pens with
+  `python.exe src/RimMandrake/Utils/modcheck/walk_pens.py --mod <Mod> --check` on the loaded walk save (exit 0: each pen holds
+  six). If the save has no pens, stage them on a free game with `walk_pens.py --mod <Mod> --stage --save <new name>` and
+  name the new save in the brief. If no game is free, file a ticket and name it under "Known, not fixed".
+
 ## What you write
 
 Write `design/concepts/<Mod>/version/walk_brief/arrival_<N>.md`, where N = the record's `pre_human_arrivals`. The
@@ -57,7 +64,8 @@ file has four headings and one line `written_by: <your unit>`. Each heading has 
 written_by: <unit>
 
 ## What to open
-The savegame (absolute Windows path), the mod list it loads, where on the map to look first.
+The savegame (absolute Windows path), the mod list it loads, where on the map to look first. For a mod that adds or
+changes creatures: where the creature pens are (the cells of the block of pens) and the kinds in them.
 
 ## What changed since his last look
 What the version changed, in his words where he gave them, each with its commit.
