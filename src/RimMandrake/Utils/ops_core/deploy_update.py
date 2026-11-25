@@ -9,6 +9,8 @@ The checkout keeps its old name and its `.git/pulse_update_last_good` stamp, whi
 """
 from __future__ import annotations
 
+import glob
+import os
 import sys
 import time
 from pathlib import Path
@@ -123,6 +125,29 @@ def _clean_landed_dirt(git) -> bool:
     return True
 
 
+def _clear_stale_index_lock(lock: Path, timeout: float) -> float | None:
+    """Clear an abandoned deploy index lock and return its age in seconds."""
+    try:
+        seen = lock.stat()
+        age = time.time() - seen.st_mtime
+        if age <= timeout or not Path("/proc/self/fd").is_dir():
+            return None
+        resolved = os.path.realpath(lock)
+        for fd in glob.iglob("/proc/[0-9]*/fd/*"):
+            try:
+                if os.readlink(fd) == resolved:
+                    return None
+            except OSError:
+                continue               # vanished process or a descriptor we cannot inspect
+        current = lock.stat()
+        if not os.path.samestat(seen, current) or seen.st_mtime_ns != current.st_mtime_ns:
+            return None                # the lock changed during the scan
+        lock.unlink()
+        return age
+    except FileNotFoundError:
+        return None                    # already gone
+
+
 def update_code(root: Path = ROOT, timeout: float = UPDATE_BUDGET_S, max_skip_age: float = UPDATE_SKIP_MAX_AGE_S) -> dict:
     """Fast-forward the deploy checkout to origin/main. Refuses a seat clone: pulling there would move
     another agent's working tree under it (RIMPULSE_DEPLOY_FIX_RUNS_THE_BENCH_CLONE).
@@ -135,6 +160,8 @@ def update_code(root: Path = ROOT, timeout: float = UPDATE_BUDGET_S, max_skip_ag
         raise RuntimeError(f"{root} is a seat clone, not the deploy checkout; never pulled from here")
     stamp = root / ".git" / UPDATE_STAMP
     end = time.monotonic() + timeout
+    cleared = _clear_stale_index_lock(root / ".git" / "index.lock", timeout)
+    result = {"cleared_lock": cleared} if cleared is not None else {}
 
     def git(*a):
         left = end - time.monotonic()
@@ -161,9 +188,9 @@ def update_code(root: Path = ROOT, timeout: float = UPDATE_BUDGET_S, max_skip_ag
             raise RuntimeError(f"git timed out and {stamp} is missing, so the skip has no good pass to lean on") from e
         if age > max_skip_age:
             raise RuntimeError(f"git timed out and the last good pass is {age:.0f} s old (limit {max_skip_age:.0f} s)") from e
-        return {"skipped": True, "age": age}
+        return {**result, "skipped": True, "age": age}
     stamp.touch()
-    return {"old": old[:12], "new": new[:12], "changed": old != new}
+    return {**result, "old": old[:12], "new": new[:12], "changed": old != new}
 
 
 def main(argv=None) -> int:

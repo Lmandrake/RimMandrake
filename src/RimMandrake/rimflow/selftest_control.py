@@ -2331,7 +2331,7 @@ def t_a_test_process_never_writes_the_real_ledger():
     import model as M
     ev = {"seat": "BENCH", "event": "note", "id": "SELFTEST_LIVE_EFFECT_PROBE", "text": "t", "why": "selftest"}
     wrote, real = [], M._append_locked
-    M._append_locked = lambda path, blob: wrote.append(path) or 0
+    M._append_locked = lambda path, blob, **_kw: wrote.append(path) or 0
     try:
         try:
             M.append(dict(ev))

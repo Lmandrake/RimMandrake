@@ -87,6 +87,7 @@ import json
 import os
 import re
 import socket
+import subprocess
 import sys
 import time
 
@@ -1414,7 +1415,7 @@ def append(ev, path=None):
     `SHARD_DIR` above): two seats can never append to the same git-tracked file, so
     they can never conflict in one. Every safety property here is unchanged — same
     `flock`, same O_APPEND, same PIPE_BUF ceiling, same short-write refusal — because
-    the only thing that moved is WHICH file the lock is taken on.
+    the lock moves to the shard. Git is checked only if the shard needs to be created.
 
     ⚠️ WITH AN EXPLICIT `path` IT WRITES EXACTLY THERE, unsharded, exactly as before.
     That is the contract `selftest_concurrency.py` and several `selftest_model.py`
@@ -1442,6 +1443,7 @@ def append(ev, path=None):
     # ⚠️ AFTER `validate`, never before: `_check_seat` is what guarantees `ev["seat"]`
     # is one of SEATS, and therefore that it is a safe, bounded filename. A seat
     # resolved before validation could carry a path separator.
+    guard_shard = path is None
     path = path or shard_path(ev["seat"])
     ev = to_disk(dict(ev))      # validated as BENCH, written as CONDUCTOR/RELENTLESS (see WRITE_NAMES)
     line = json.dumps(ev, separators=(",", ":"), ensure_ascii=False) + "\n"
@@ -1453,10 +1455,14 @@ def append(ev, path=None):
             "event is %d bytes; O_APPEND is only atomic below %d, and a torn line "
             "corrupts the ledger irrecoverably. Move the prose into items/%s.md."
             % (len(blob), PIPE_BUF, ev.get("id", "<ID>")))
-    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)   # `or "."`: dirname of a bare filename is ""
-    dlock = _dir_lock(os.path.dirname(path) or ".")
+    directory = os.path.dirname(path) or "."
+    if guard_shard and not os.path.isdir(directory):
+        # Refuse before creating a missing ledger directory. The open under its lock checks again if needed.
+        _refuse_missing_tracked_shard(path)
+    os.makedirs(directory, exist_ok=True)
+    dlock = _dir_lock(directory)
     try:
-        off = _append_locked(path, blob)
+        off = _append_locked(path, blob, guard_shard=guard_shard)
     finally:
         if dlock is not None:
             os.close(dlock)
@@ -1515,9 +1521,45 @@ def _spill_prose(ev, line, blob):
     return ev, line, blob
 
 
-def _append_locked(path, blob):
+def _refuse_missing_tracked_shard(path):
+    """Ask the Git worktree containing the shard, even when its whole ledger directory is absent."""
+    path = os.path.abspath(path)
+    parent = os.path.dirname(path)
+    while not os.path.isdir(parent):
+        parent = os.path.dirname(parent)
+    git = ["git", "-C", parent]
+    # Hang guard: a wedged Git or filesystem must not stall a writer (including under the shard directory lock).
+    # Measured need: 0.01-0.03 s on ext4 (2026-11-25); git on drvfs takes about 2 s a call, so 60 s is far above both.
+    timeout = 60
+    try:
+        tracked = subprocess.run([*git, "--literal-pathspecs", "ls-files", "--error-unmatch", "--",
+                                  os.path.relpath(path, parent)], stdout=subprocess.DEVNULL,
+                                 stderr=subprocess.DEVNULL, timeout=timeout)
+    except FileNotFoundError:
+        return
+    except subprocess.TimeoutExpired as e:
+        raise LedgerError("timed out checking Git for missing ledger shard %s" % path) from e
+    if tracked.returncode != 0:
+        return
+    try:
+        root = os.fsdecode(subprocess.check_output([*git, "rev-parse", "--show-toplevel"],
+                                                 stderr=subprocess.DEVNULL, timeout=timeout).rstrip(b"\n"))
+    except (OSError, subprocess.SubprocessError):
+        root = parent
+    raise LedgerError("The checkout at %s does not hold its ledger on disk (sparse cone or deleted file). "
+                      "This write would cut tracked shard %s." % (root, path))
+
+
+def _append_locked(path, blob, *, guard_shard=False):
+    flags = os.O_WRONLY | os.O_APPEND
     for _ in range(5):
-        fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o644)
+        try:
+            fd = os.open(path, flags if guard_shard else flags | os.O_CREAT, 0o644)
+        except FileNotFoundError:
+            if not guard_shard:
+                raise
+            _refuse_missing_tracked_shard(path)
+            fd = os.open(path, flags | os.O_CREAT, 0o644)
         # ⛔ DO NOT REMOVE THE LOCK "because O_APPEND is atomic". It is, on ext4 and
         # tmpfs. This repo is on 9p, where it is not, and without this lock five of
         # every six events are lost — measured, not theorised. See the module
