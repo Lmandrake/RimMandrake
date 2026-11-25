@@ -2335,6 +2335,9 @@ KIT = {
     </weaponTags>
       <apparelTags>
       <li>SaV_outfit_merc</li>
+      <!-- RIMMANDRAKE_FIND_STAR_WARS_JUMP_PACK_ELSE_MAKE_ONE_BLACKSTAR_WEARS: the Armoury's Mandalorian jetpack
+           (guy762_Jetpack_light, Verb_Jump). Owner 2026-11-24: "The Blackstar faction definitely has jump packs". -->
+      <li>MNC_jetpack_light</li>
       <li>KotORArmor_mid</li>
       <li>KotORClothing_undersuit</li>
     </apparelTags>
@@ -2382,6 +2385,8 @@ KIT = {
     <apparelRequired>
       <li MayRequire="mandrake.rsw.armoury">guy762_MandoArmor_battle</li>
       <li>guy762_MandoHelmet_supercom</li>
+      <!-- the Mandalorian's jetpack (RIMMANDRAKE_FIND_STAR_WARS_JUMP_PACK_ELSE_MAKE_ONE_BLACKSTAR_WEARS) -->
+      <li MayRequire="mandrake.rsw.armoury">guy762_Jetpack_light</li>
     </apparelRequired>
       <!-- professional mercenaries: combat drugs, real medicine, and paid in silver -->
     <inventoryOptions>
@@ -2426,6 +2431,9 @@ KIT = {
     </weaponTags>
       <apparelTags>
       <li>SaV_outfit_merc</li>
+      <!-- RIMMANDRAKE_FIND_STAR_WARS_JUMP_PACK_ELSE_MAKE_ONE_BLACKSTAR_WEARS: the Armoury's Mandalorian jetpack
+           (guy762_Jetpack_light, Verb_Jump). Owner 2026-11-24: "The Blackstar faction definitely has jump packs". -->
+      <li>MNC_jetpack_light</li>
       <li>KotORArmor_mid</li>
       <li>KotORClothing_undersuit</li>
     </apparelTags>
@@ -2472,6 +2480,9 @@ KIT = {
     </weaponTags>
       <apparelTags>
       <li>SaV_outfit_merc</li>
+      <!-- RIMMANDRAKE_FIND_STAR_WARS_JUMP_PACK_ELSE_MAKE_ONE_BLACKSTAR_WEARS: the Armoury's Mandalorian jetpack
+           (guy762_Jetpack_light, Verb_Jump). Owner 2026-11-24: "The Blackstar faction definitely has jump packs". -->
+      <li>MNC_jetpack_light</li>
       <li>MNCFactionArmor</li>
       <li>KotORArmor_mid</li>
     </apparelTags>
@@ -2953,7 +2964,11 @@ _head, _tail = _g.split("    <weaponTags>", 1)
 _tail = _tail.split("</weaponTags>", 1)[1]
 KIT["Jawa_Blackstar_Breacher"] = (
     "    <canBeSapper>true</canBeSapper>\n    <isGoodBreacher>true</isGoodBreacher>\n"
-    + _head + "    <weaponTags>\n      <li>GrenadeDestructive</li>\n    </weaponTags>" + _tail)
+    + _head + "    <weaponTags>\n      <li>GrenadeDestructive</li>\n    </weaponTags>"
+    # The breacher is the one who crosses a trench or a wall first: always the Mandalorian jetpack
+    # (RIMMANDRAKE_FIND_STAR_WARS_JUMP_PACK_ELSE_MAKE_ONE_BLACKSTAR_WEARS; never Apparel_PackJump, the ship list cuts it).
+    + "\n    <apparelRequired>\n      <li MayRequire=\"mandrake.rsw.armoury\">guy762_Jetpack_light</li>\n    </apparelRequired>"
+    + _tail)
 
 
 

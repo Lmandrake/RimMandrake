@@ -2307,6 +2307,9 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </weaponTags>
       <apparelTags>
       <li>SaV_outfit_merc</li>
+      <!-- RIMMANDRAKE_FIND_STAR_WARS_JUMP_PACK_ELSE_MAKE_ONE_BLACKSTAR_WEARS: the Armoury's Mandalorian jetpack
+           (guy762_Jetpack_light, Verb_Jump). Owner 2026-11-24: "The Blackstar faction definitely has jump packs". -->
+      <li>MNC_jetpack_light</li>
       <li>KotORArmor_mid</li>
       <li>KotORClothing_undersuit</li>
     </apparelTags>
@@ -2365,6 +2368,8 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <apparelRequired>
       <li MayRequire="mandrake.rsw.armoury">guy762_MandoArmor_battle</li>
       <li>guy762_MandoHelmet_supercom</li>
+      <!-- the Mandalorian's jetpack (RIMMANDRAKE_FIND_STAR_WARS_JUMP_PACK_ELSE_MAKE_ONE_BLACKSTAR_WEARS) -->
+      <li MayRequire="mandrake.rsw.armoury">guy762_Jetpack_light</li>
     </apparelRequired>
       <!-- professional mercenaries: combat drugs, real medicine, and paid in silver -->
     <inventoryOptions>
@@ -2419,8 +2424,14 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <weaponTags>
       <li>GrenadeDestructive</li>
     </weaponTags>
+    <apparelRequired>
+      <li MayRequire="mandrake.rsw.armoury">guy762_Jetpack_light</li>
+    </apparelRequired>
       <apparelTags>
       <li>SaV_outfit_merc</li>
+      <!-- RIMMANDRAKE_FIND_STAR_WARS_JUMP_PACK_ELSE_MAKE_ONE_BLACKSTAR_WEARS: the Armoury's Mandalorian jetpack
+           (guy762_Jetpack_light, Verb_Jump). Owner 2026-11-24: "The Blackstar faction definitely has jump packs". -->
+      <li>MNC_jetpack_light</li>
       <li>KotORArmor_mid</li>
       <li>KotORClothing_undersuit</li>
     </apparelTags>
@@ -2478,6 +2489,9 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </weaponTags>
       <apparelTags>
       <li>SaV_outfit_merc</li>
+      <!-- RIMMANDRAKE_FIND_STAR_WARS_JUMP_PACK_ELSE_MAKE_ONE_BLACKSTAR_WEARS: the Armoury's Mandalorian jetpack
+           (guy762_Jetpack_light, Verb_Jump). Owner 2026-11-24: "The Blackstar faction definitely has jump packs". -->
+      <li>MNC_jetpack_light</li>
       <li>KotORArmor_mid</li>
       <li>KotORClothing_undersuit</li>
     </apparelTags>
@@ -2535,6 +2549,9 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     </weaponTags>
       <apparelTags>
       <li>SaV_outfit_merc</li>
+      <!-- RIMMANDRAKE_FIND_STAR_WARS_JUMP_PACK_ELSE_MAKE_ONE_BLACKSTAR_WEARS: the Armoury's Mandalorian jetpack
+           (guy762_Jetpack_light, Verb_Jump). Owner 2026-11-24: "The Blackstar faction definitely has jump packs". -->
+      <li>MNC_jetpack_light</li>
       <li>MNCFactionArmor</li>
       <li>KotORArmor_mid</li>
     </apparelTags>
