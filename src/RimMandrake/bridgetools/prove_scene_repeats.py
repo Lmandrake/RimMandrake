@@ -107,6 +107,9 @@ def judge_r1(singles, copies_wall, launches, breaches, stopped):
         return "%d of %d copies ran" % (len(launches), COPIES)
     if breaches:
         return "%d breach(es) between honest copies: %s" % (len(breaches), breaches[:2])
+    blind = [l["launch"] for l in launches if not l.get("seen", True)]
+    if blind:
+        return "COULD NOT LOOK: no cell of the rescuer of launch(es) %s was read, so the cross-talk check saw nothing" % blind[:5]
     given = [l for l in launches if l.get("outcome") != "APPARATUS FAULT"]
     bad = [(l["launch"], l["outcome"], l.get("why")) for l in given if l["outcome"] != "SUCCESS"]
     if bad:
@@ -183,6 +186,7 @@ def selfcheck():
     ok.append(judge_r1([30.0, 30.0, 30.0], 95.0, good, [], None) is not None)               # slower than three singles
     ok.append(judge_r1([30.0] * 3, 60.0, good[:-1] + [{"launch": 20, "outcome": "UNRESOLVED"}], [], None) is not None)
     ok.append(judge_r1([30.0] * 3, 60.0, good, ["BREACH: x"], None) is not None)
+    ok.append(str(judge_r1([30.0] * 3, 60.0, good[:-1] + [{"launch": 20, "outcome": "SUCCESS", "seen": 0}], [], None)).startswith("COULD NOT LOOK"))
     # R2 on the real Series: a rescuer of launch 1 seen on launch 2's station is a breach, both lines UNRESOLVED
     s = SR.Series("sc", claim="c", build="b", plan="p", distance=DISTANCE)
     c = s.cluster()
@@ -352,13 +356,14 @@ def row1(game, save, rows):
             out, why = rescue_outcome(k["order"], *got.get(k["victim"], (None, None)))
             series.ended(k["launch"], out, opportunity=out != "APPARATUS FAULT", exposures=1,
                          cells={k["rescuer"]: cells.get(k["rescuer"], []), k["victim"]: cells.get(k["victim"], [])})
-            launches.append({"launch": k["launch"]["launch"], "outcome": out, "why": why, "rect": k["rect"]})
+            launches.append({"launch": k["launch"]["launch"], "outcome": out, "why": why, "rect": k["rect"],
+                             "seen": len(cells.get(k["rescuer"], []))})
         breaches = series.crosstalk(cl) if copies else []
         lines = series.ledger_lines({})
         counts = series.counts()
     wall = time.time() - t0
     for l in launches:
-        log("  copy %d at %s: %s (%s)" % (l["launch"], l["rect"], l["outcome"], l["why"]))
+        log("  copy %d at %s: %s (%s); %d rescuer cell(s) read" % (l["launch"], l["rect"], l["outcome"], l["why"], l.get("seen", 0)))
     log("  series %s: counts %s; station digests %s; mods %s; %d ledger lines, clusters %s" % (
         series.id, counts, sorted(d for d in digests if d) or digests, mods, len(lines), sorted({l.get("cluster") for l in lines})))
     bad = judge_r1(singles, wall, launches, breaches, stopped)

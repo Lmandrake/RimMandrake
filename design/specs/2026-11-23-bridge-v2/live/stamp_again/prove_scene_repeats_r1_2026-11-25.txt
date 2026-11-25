@@ -1,0 +1,27 @@
+prove_scene_repeats 2026-11-25T06:08:02 on ArchBig, rows R1, stage RM_Stage_ArchBig_settlement
+  single run 1: 45.6 s wall, SUCCESS (the victim lies in a SleepingSpot)
+  single run 2: 44.5 s wall, SUCCESS (the victim lies in a SleepingSpot)
+  single run 3: 45.0 s wall, SUCCESS (the victim lies in a SleepingSpot)
+  copy 1 at (1, 1, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 2 at (20, 1, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 3 at (39, 1, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 4 at (58, 1, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 5 at (77, 1, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 6 at (1, 18, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 7 at (20, 18, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 8 at (39, 18, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 9 at (58, 18, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 10 at (77, 18, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 11 at (1, 35, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 12 at (20, 35, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 13 at (39, 35, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 14 at (58, 35, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 15 at (77, 35, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 16 at (1, 52, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 17 at (20, 52, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 18 at (39, 52, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 19 at (58, 52, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 20 at (77, 52, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  series 39015e3e: counts {'launches': 20, 'opportunities': 20, 'exposures': 20, 'samples': 1, 'clusters': 1, 'stopped': False}; station digests ['010cd37ab6a1e109']; mods {'RimMandrake.Abyss': 'no digest hook', 'RimMandrake.Biomes': 'no digest hook', 'RimMandrake.BlueDesert': 'no digest hook', 'RimMandrake.Bones': 'no digest hook', 'RimMandrake.Cauldron': 'no digest hook', 'RimMandrake.Contagion': 'no digest hook', 'RimMandrake.CrackedLands': 'no digest hook', 'RimMandrake.CreatureBehaviors': 'no digest hook', 'RimMandrake.DivingInteraction': 'no digest hook', 'RimMandrake.EnvironmentalHazards': 'no digest hook', 'RimMandrake.ExplosiveGrowth': 'no digest hook', 'RimMandrake.FeverWood': 'no digest hook', 'RimMandrake.Greentide': 'no digest hook', 'RimMandrake.LanternDeeps': 'no digest hook', 'RimMandrake.LeaningScrub': 'no digest hook', 'RimMandrake.LongShade': 'no digest hook', 'RimMandrake.Miasma': 'no digest hook', 'RimMandrake.RustCathedral': 'no digest hook', 'RimMandrake.RustCathedral.Hum': 'no digest hook', 'RimMandrake.RustCathedral.Walls': 'no digest hook', 'RimMandrake.SleepingIce': 'no digest hook', 'RimMandrake.Stillsand': 'no digest hook', 'RimMandrake.TerminalBiomes': 'no digest hook', 'RimMandrake.TheForge': 'no digest hook', 'RimMandrake.TheRot': 'no digest hook', 'RimMandrake.TheSump': 'no digest hook', 'RimMandrake.Warscar': 'no digest hook', 'RimMandrake.Wastes': 'no digest hook', 'RimMandrake.Webwork': 'no digest hook', 'RimMandrake.WeepingStones': 'no digest hook', 'RimMandrake.Wreckage': 'no digest hook', 'RimMandrakeBeastMechanicsRSW': 'no digest hook', 'RimMandrakeExplosiveKnockback': 'no digest hook', 'RimMandrakeFlowWorks': 'no digest hook', 'RimMandrakeGelatinousSlime': 'no digest hook', 'RimMandrakeGimmeSomeSlack': 'no digest hook', 'RimMandrakeLivestockRSW': 'no digest hook', 'RimMandrakeLuminousPigment': 'no digest hook', 'RimMandrakeMovingDunes': 'no digest hook', 'RimMandrakePatches': 'no digest hook', 'RimMandrakeSeaShores': 'no digest hook'}; 20 ledger lines, clusters ['39015e3e.c1']
+PASS R1 20 stamped copies of the rescue finish in less wall time than 3 single runs: 20 copies in one session and one run: 90.5 s wall; 3 single runs: 45.6, 44.5, 45.0 = 135.2 s; 20 of 20 SUCCESS, 0 order(s) not given, 0 breach(es)
+prove_scene_repeats: 1 of 1 rows held, 0 failed, 0 could not look, 0 unrun
