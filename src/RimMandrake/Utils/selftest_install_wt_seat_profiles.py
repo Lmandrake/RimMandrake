@@ -135,11 +135,31 @@ def test_tab_closes_only_when_fleet_stopped():
             check(r.returncode == 0, "fleet-stop close exits 0 so WT closeOnExit=graceful really closes the tab")
 
 
+def test_retired_foundry_tile_is_removed():
+    """FOUNDRY is a retired seat (owner by card 2026-11-02) and its clone /home/mandrake/rm/foundry is gone; its tile
+    launched a window into that missing clone (found 2026-11-25). --apply removes it and its scheme."""
+    import json, subprocess, tempfile
+    d = {"profiles": {"list": [{"guid": W.seat_guid("FOUNDRY"), "name": "AGENT FOUNDRY"}, {"guid": "{x}", "name": "Mine"}]},
+         "schemes": [{"name": "Seat FOUNDRY"}, {"name": "Mine"}]}
+    with tempfile.TemporaryDirectory() as td:
+        f = os.path.join(td, "settings.json")
+        json.dump(d, open(f, "w"))
+        r = subprocess.run([sys.executable, os.path.join(HERE, "install_wt_seat_profiles.py"), "--settings", f,
+                            "--apply"], capture_output=True, text=True)
+        out = json.load(open(f))
+    names = [p["name"] for p in out["profiles"]["list"]]
+    schemes = [s["name"] for s in out.get("schemes", [])]
+    check(r.returncode == 0, f"--apply runs ({r.stderr[-200:]})")
+    check("AGENT FOUNDRY" not in names and "Seat FOUNDRY" not in schemes, "retired FOUNDRY tile and scheme are removed")
+    check("Mine" in names and "Mine" in schemes, "a hand-made profile and scheme stay")
+
+
 if __name__ == "__main__":
     test_only_touches_only_named_tiles()
     test_plain_path_has_first_prompt()
     test_tab_closes_only_when_fleet_stopped()
     test_wrapped_path_has_first_prompt()
     test_others_untouched()
+    test_retired_foundry_tile_is_removed()
     print(f"\n{'FAIL' if FAILS else 'OK'}: {len(FAILS)} failure(s)")
     sys.exit(1 if FAILS else 0)

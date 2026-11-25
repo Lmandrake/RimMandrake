@@ -239,8 +239,8 @@ SEATS = {
                   ("/mnt/d/Luke/dev", r"D:\Luke\dev"), None),
 }
 
-# Profiles from the retired four-seat fleet, removed on --apply.
-RETIRED = ("DECIDE", "BUILD", "CHECK", "REP")
+# Profiles of retired seats (the four-seat fleet, then FOUNDRY), removed on --apply.
+RETIRED = ("DECIDE", "BUILD", "CHECK", "REP", "FOUNDRY")   # FOUNDRY: retired seat (owner by card 2026-11-02)
 
 # Hand-made drafts replaced by installer-owned profiles. Matched by their literal
 # guids — they predate seat_guid() so the derived form cannot find them — and
