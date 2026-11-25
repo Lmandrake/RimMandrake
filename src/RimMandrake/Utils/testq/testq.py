@@ -2291,6 +2291,12 @@ def fill_rank(mod, n, now, today=None, exclude=()):
     plan = {k: g[k] for k in ("rank", "purpose", "row_items", "dry", "held", "ident", "counts", "flaky", "blind",
                               "why")}
     plan["repeat_hold"] = repeat
+    if g["rank"] and g["rank"] not in gaps.FILL_RANKS:
+        # the ranks are in order: a gap rank means no owed work (gaps.FILL_RANKS); counted and named, never queued
+        unowed = ", ".join("%d %s" % (g["counts"][r], r) for r in gaps.RANKS if r not in gaps.FILL_RANKS and g["counts"][r])
+        return dict(plan, rank=None, purpose=None, row_items={}, verdict="exhausted", pick=[],
+                    text="%s: no owed work (a fix to retest, an item owing a live level); not queued, owed by no mod: "
+                         "%s; no fill" % (mod, unowed))
     if g["rank"]:
         return dict(plan, verdict="pick", pick=g["pick"], text="would queue %s" % g["text"])
     if repeat:
@@ -2308,8 +2314,8 @@ def fill_rank(mod, n, now, today=None, exclude=()):
 
 def cmd_fill(a):
     """Never let Steve's lane idle, with no LLM in the loop: when no ready job waits and a game is free, queue up to `--n`
-    chains of MOD from the first non-empty rank of the evidence-gap order (gaps.py: a FAIL whose fix has landed, an
-    item owing a live level, UNMEASURED/NOT_RUN at the current identity, never run at it). A chain that PASSED at the
+    chains of MOD from the first non-empty owed rank (gaps.FILL_RANKS: a FAIL whose fix has landed, an item owing a
+    live level). UNMEASURED/NOT_RUN and never-run chains are counted, never queued: no mod owes them. A chain that PASSED at the
     current identity is never filler. Brakes (`fill_plan`): the stop file, a daily job backstop, a paused
     lane, and two filler jobs in a row that did not come back DONE (a cancel is not counted; a brake whose jobs all have
     a recorded non-fault cause is released by Operations' one canary, brake_release.py)."""

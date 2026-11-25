@@ -263,7 +263,7 @@ def t_filler_fills_an_idle_game(r):
     draining = r.py("import testq, gaps\n"
                     "gaps.owed_items = lambda world=None: {}\n"
                     "def plan(chains):\n"
-                    "    gaps.probe = lambda mod, items, since: {'chains': chains}\n"
+                    "    gaps.probe = lambda mod, items, since: {'chains': chains, 'item_chains': {'X_OWES_L1': chains}}\n"
                     "    p = testq.fill_plan('Mock', 4, 200)\n"
                     "    return [p['verdict'], p.get('pick'), p['text']]\n"
                     "print(json.dumps([plan(['c1']), plan(['c1', 'c2'])]))")

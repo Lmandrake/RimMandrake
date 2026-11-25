@@ -282,12 +282,12 @@ def t_fill_plan():
             with open(os.path.join(tmp, "done", r["job"]["id"] + ".json"), "w") as fh:
                 json.dump(r, fh)
         put(rec(1, 25, [("alpha", "a1", "PASS")]))
-        G.probe = fake_probe(["alpha", "beta_b"])
+        G.probe = fake_probe(["alpha", "beta_b"], item_chains={"X_BETA_OWES_L1": ["beta_b"]})
         G.owed_items = lambda world=None: {}
         G.git = fake_git()
         now = S.parse_ts(fin) + 3600
         p = T.fill_plan(MOD, 2, T.FILL_CAP_DEFAULT, now=now)
-        check(p["verdict"] == "pick" and p["pick"] == ["beta_b"] and p["rank"] == "never_run"
+        check(p["verdict"] == "pick" and p["pick"] == ["beta_b"] and p["rank"] == "item_owed"
               and p["purpose"] == "guard", "fill_plan: the gap order, not the stalest chain: %s" % p["text"])
         put(rec(2, 25, [("beta_b", "b1", "PASS")]))
         p = T.fill_plan(MOD, 2, T.FILL_CAP_DEFAULT, now=now)
@@ -298,6 +298,41 @@ def t_fill_plan():
         p = T.fill_plan(MOD, 2, T.FILL_CAP_DEFAULT, now=now)
         check(p["verdict"] == "exhausted" and p["flaky"] == ["beta_b"], "fill_plan: a flipped chain is only reported: %s"
               % p["text"])
+    finally:
+        T.QHOME, G.probe, G.owed_items, G.git = saved
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def t_filler_queues_only_owed_work():
+    """RIMMANDRAKE_MEASURE_LANE_FILLER_FAULTS_FOUND_THEN_REPLACE_WITH_OWED_LIVE_WORK: the idle lane queues only work a mod
+    owes (a FAIL whose fix landed: its retest; an item owing a live level: its UNRUN proof). Measured 2026-11-10..24:
+    577 "guard" filler jobs (unmeasured / never-run ranks) found no mod fault; every item their FAILs closed was a
+    check, harness or mod-list fault. rank() still counts the two gap ranks; fill_plan never picks them."""
+    import testq as T
+    tmp = tempfile.mkdtemp(prefix="rf_testq_owed_")
+    saved = (T.QHOME, G.probe, G.owed_items, G.git)
+    try:
+        T.QHOME = tmp
+        T.ensure_dirs()
+
+        def put(r):
+            with open(os.path.join(tmp, "done", r["job"]["id"] + ".json"), "w") as fh:
+                json.dump(r, fh)
+        put(rec(1, 25, [("alpha", "a1", "PASS")], sha="s1"))
+        G.probe = fake_probe(["alpha", "beta_b", "gamma_c"])
+        G.owed_items = lambda world=None: {}
+        G.git = fake_git()
+        now = S.parse_ts("2026-10-25T10:00:00Z") + 3600
+        p = T.fill_plan(MOD, 2, T.FILL_CAP_DEFAULT, now=now)
+        check(p["verdict"] == "exhausted" and p["pick"] == [],
+              "fill_plan: never-run chains are owed by no mod: no fill: %s" % p["text"])
+        check(p["counts"]["never_run"] == 2 and "never_run" in p["text"],
+              "fill_plan: the gap ranks are still counted and named: %s %s" % (p["counts"], p["text"]))
+        put(rec(2, 25, [("gamma_c", "g1", "FAIL")], sha="s2"))
+        G.git = fake_git(logs={"s2": [("c0ffee9", "FlowWorks: fix the gamma_c drain")]})
+        p = T.fill_plan(MOD, 2, T.FILL_CAP_DEFAULT, now=now)
+        check(p["verdict"] == "pick" and p["pick"] == ["gamma_c"] and p["rank"] == "fix_landed",
+              "fill_plan: a FAIL whose fix landed is owed: its retest is queued: %s" % p["text"])
     finally:
         T.QHOME, G.probe, G.owed_items, G.git = saved
         shutil.rmtree(tmp, ignore_errors=True)
@@ -368,7 +403,7 @@ def t_pilot_owner_only():
 
 def main():
     for t in (t_pilot_routed_skipped, t_pilot_owner_only, t_identity_and_verdicts, t_pass_and_unfixed_fail_never_filler, t_fix_landed, t_item_owed, t_shared_chain_owner,
-              t_unmeasured_and_dry, t_never_run_and_identity, t_flaky_is_reported_never_repeated, t_blind, t_real_probe, t_fill_plan):
+              t_unmeasured_and_dry, t_never_run_and_identity, t_flaky_is_reported_never_repeated, t_blind, t_real_probe, t_fill_plan, t_filler_queues_only_owed_work):
         try:
             t()
         except Exception as e:      # noqa: BLE001 - one broken case must not hide the rest

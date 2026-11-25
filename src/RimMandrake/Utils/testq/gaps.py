@@ -13,6 +13,7 @@ FlowWorks first". When SteveDesktop's lane is idle, `testq.py fill MOD` queues t
   3. unmeasured   a chain whose latest valid run at the current identity has UNMEASURED or NOT_RUN rows, except a
                   DRY chain (its last two runs measured nothing; see testq.is_dry).
   4. never_run    a chain with no valid run at the current identity, stalest first.
+  The filler queues only ranks 1 and 2 (FILL_RANKS: work a mod owes). Ranks 3 and 4 are counted and named, never queued.
   5. the sweep    is not the filler's: it is a named act (`testq.py sweep`), no timer queues it.
 
 ONE VERDICT PER CODE VERSION (owner ruling by card 2026-10-31, "Retest only after a code change"; retest.py): a chain
@@ -46,6 +47,10 @@ import retest as R  # noqa: E402
 import schema as S  # noqa: E402
 
 RANKS = ("fix_landed", "item_owed", "unmeasured", "never_run")
+# The ranks the idle lane may queue: work a mod owes (RIMMANDRAKE_MEASURE_LANE_FILLER_FAULTS_FOUND_THEN_REPLACE_WITH_OWED_LIVE_WORK).
+# Measured 2026-11-10..24: 577 filler jobs from the gap ranks (unmeasured, never_run), 85 of 121 lane hours, and no mod
+# fault; every item their FAILs closed was a check, harness or mod-list fault. The gap ranks are still counted and named.
+FILL_RANKS = ("fix_landed", "item_owed")
 PURPOSE = {"fix_landed": "fix", "item_owed": "guard", "unmeasured": "guard", "never_run": "guard"}
 LIVE_LEVELS = ("L1", "L2", "GREEN-MIN")       # the levels one testq run can give an item (minimal list, live)
 SITE_HOLD_ROW = "<site hold"
@@ -530,7 +535,8 @@ def rank(mod, n, now, recs, dry_of, world=None, g=None, prober=None, exclude=())
     "rank" None means nothing may be queued as filler (every chain holds a verdict at its code version, is held for
     a repair, or is DRY): testq reports verdict "exhausted". EXCLUDE: chains never to pick (modcheck refused them
     this fill).
-    G / PROBER: the git and modcheck answers (selftests pass fakes)."""
+    G / PROBER: the git and modcheck answers (selftests pass fakes). The ranks are in order, so a picked rank outside
+    FILL_RANKS means no owed work: the filler (testq.fill_rank) reads it as exhausted."""
     g = g or git
     s0 = settled(mod, recs, world, g, prober)
     runs, ident, moved, st, pr, blind, fails = (s0["runs"], s0["ident"], s0["moved"], s0["st"], s0["pr"], s0["blind"],

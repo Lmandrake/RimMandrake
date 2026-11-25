@@ -338,14 +338,14 @@ def t_fill_drops_unknown_chains():
                                       "rows": [{"chain": chain, "row": "r", "verdict": "PASS"}]}}, fh)
         # modcheck's catalogue as gaps sees it: thirst live, core_offline offline; renamed_away_zz is history only
         gaps.probe = lambda mod, items, since: {"chains": ["thirst", "core_offline"], "offline": ["core_offline"],
-                                                "item_chains": {}, "changed": {}}
+                                                "item_chains": {"X_THIRST_OWES_L1": ["thirst"]}, "changed": {}}
         gaps.owed_items = lambda world=None: {}
         T.cmd_submit = lambda sub: sent.append((sub.chains, sub.purpose)) or 0
         import argparse
         rc = T.cmd_fill(argparse.Namespace(mod="FlowWorks", n=1, cap=T.FILL_CAP_DEFAULT))
         check(rc == 0 and sent == [("thirst", "guard")],
               "fill ranks a history-only chain, drops it when modcheck refuses it, never picks an offline one, and "
-              "submits the live chain (no identity: never run at it): rc=%s sent=%s" % (rc, sent))
+              "submits the live chain an item owes (gaps.FILL_RANKS): rc=%s sent=%s" % (rc, sent))
     finally:
         T.QHOME, T.cmd_submit, gaps.probe, gaps.owed_items = saved
         shutil.rmtree(tmp, ignore_errors=True)
@@ -378,7 +378,7 @@ def t_fill_no_day_budget():
                        "requested_by": T.FILLER, "purpose": "guard", "canary": True, "lane": "stevedesktop"},
                        "result": {"outcome": "DONE", "started": iso(now - 36000), "finished": iso(now - 30),
                                   "rows": []}}, fh)
-        gaps.probe = lambda mod, items, since: {"chains": ["thirst"], "offline": [], "item_chains": {}, "changed": {}}
+        gaps.probe = lambda mod, items, since: {"chains": ["thirst"], "offline": [], "item_chains": {"X_THIRST_OWES_L1": ["thirst"]}, "changed": {}}
         gaps.owed_items = lambda world=None: {}
         T.cmd_submit = lambda sub: sent.append((sub.chains, sub.purpose)) or 0
         ns = argparse.Namespace(mod="FlowWorks", n=1, cap=T.FILL_CAP_DEFAULT)
@@ -404,7 +404,7 @@ def t_fill_brake_released_by_proof():
     try:
         T.QHOME = tmp
         T.ensure_dirs()
-        gaps.probe = lambda mod, items, since: {"chains": ["thirst"], "offline": [], "item_chains": {}, "changed": {}}
+        gaps.probe = lambda mod, items, since: {"chains": ["thirst"], "offline": [], "item_chains": {"X_THIRST_OWES_L1": ["thirst"]}, "changed": {}}
         gaps.owed_items = lambda world=None: {}
 
         def put(jid, fin, by, outcome, canary=True, lane="stevedesktop"):
@@ -1080,11 +1080,16 @@ def main():
                                                 "requested_by": "selftest", "purpose": "guard"},
                        "result": {"outcome": "DONE", "started": fin, "finished": fin,
                                   "rows": [{"chain": "c_noident", "row": "r", "verdict": "PASS"}]}}, fh)
+        n1 = njobs()
         rc, o = tq("fill", "Mock", "--n", "1")
+        check(rc == 0 and njobs() == n1 and "no owed work" in o and "never_run" in o,
+              "never-run chains are owed by no mod: the idle lane queues nothing, and names them (gaps.FILL_RANKS): %s"
+              % o[-200:])
+        # the filler's own job, as the filler would queue it, for the brakes below (an owed pick is gaps' selftest's)
+        rc, o = tq("submit", "Mock", "--purpose", "guard", "--by", "BENCH.filler", "--sha", sha, "--chains", "c_noident")
         fj = json.loads(o.strip().splitlines()[-1]).get("job") if rc == 0 and o.strip().endswith("}") else None
-        fjob = read_job(fj) if fj else {}
-        check(fjob.get("requested_by") == "BENCH.filler" and len(fjob.get("selector", {}).get("chains", [])) == 1
-              and fjob.get("lane") == "stevedesktop", "an idle lane gets the stalest chain queued: %s %s" % (o[-200:], fjob))
+        check(bool(fj) and read_job(fj).get("requested_by") == "BENCH.filler", "a filler job is queued for the brakes: %s"
+              % o[-200:])
         rc, o = tq("fill", "Mock")
         check(o.startswith("busy"), "the filler's own pending job keeps it from queuing a second: %s" % o)
         tq("cancel", fj, "--reason", "selftest")
