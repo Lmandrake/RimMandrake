@@ -210,7 +210,7 @@ def passes(series, old_log, switches, plans, today, seed, t0, t1):
         counts[cause] = counts.get(cause, 0) + 1
         line = "%s  old %s%s (%s%% left, line %s) | plan %s%s: %s" % (
             AP.pacific(t), rec["do"], " -> %s" % rec["to"] if rec.get("to") else "", rec.get("pct_left"), rec.get("line"),
-            new["do"], " -> %s" % new["to"] if new.get("to") else "", str(new.get("why"))[:160])
+            new["do"], " -> %s" % new["to"] if new.get("to") else "", str(new.get("why"))[:160])   # cut-ok: a one-line replay report row
         key = (cause, rec["live"], new.get("to"))
         if last == key and t - eps[-1][2] <= 1800:      # the same difference, with at most a pass or two between
             eps[-1][2], eps[-1][3] = t, eps[-1][3] + 1
