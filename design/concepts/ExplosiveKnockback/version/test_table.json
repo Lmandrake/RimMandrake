@@ -1482,8 +1482,10 @@
    "partial": "'the hauler used the ladder' is read as the hauler's path cells entering a pit cell, or the hauler seen on one at a 10-tick sample; whether the path crosses the ladder's own cell is printed, not judged",
    "item": "RIMMANDRAKE_PROVE_PIT_GOODS_RETRIEVABLE",
    "runs_today": {
-    "ran": false,
-    "why": "UNRUN in this form: hauls ordered and the window cut to 5000 ticks on 2026-11-25 (RIMMANDRAKE_SHRINK_KNOCKBACK_SCENES_ONE_SAVE_IN_AIR); offline layout guard selftest_explosiveknockback_pit_fetch.py PASS"
+    "ran": true,
+    "result": "PASS",
+    "at": "2026-11-25T02:11:24-08:00",
+    "why": "live ArchBig: PASS, free-will main 1 control 0, both hauls out, path via the ladder cell, control stack stayed, 5000 ticks in 8 s (early_rows.jsonl)"
    },
    "testq": {
     "check": {
@@ -3016,7 +3018,7 @@
     "sc_walk_blasts",
     "sc_walk_raid"
    ],
-   "partial": "goods only: a pawn saved in flight is pawn_flight_saveload.py's (5 of 5 PASS live, 2026-11-17, rescue_2026-11-17/live); the census counts things older than the shell, so a load-made twin under a new id reads as born, not as a duplicate",
+   "partial": "goods only: a pawn saved in flight is pawn_flight_saveload.py's (5 of 5 PASS live, 2026-11-17, rescue_2026-11-17/live); the census follows the three staged ids and the staged defs' totals, not the map's own things (a debug-regenerated map renumbers its chunks across a save, live 2026-11-25)",
    "rows_moved": {
     "A_SAVE_MIDAIR, A_RELOAD_NO_DUP_LOST": "sc_save_in_air",
     "A_IMPACTS_IN_ROOM, B_IMPACTS_IN_ROOM": "goods_arc_spin_rebound (sc_storeroom_mortar), open_shelf_scatters (sc_open_storage), closed_container_holds (sc_closed_containers)",
@@ -3031,8 +3033,10 @@
    "frame_card": "his card of 2026-11-16 (OWNER:1794834159094900561, 'How should the walk's frame row be judged? -> Compare to mod-off'): the walk's frame row passes when the mod-on p99 frame is within 10 percent of the same colony's mod-off arm in the same run, both arms MEASURED (and OWNER:1794836946186553250: the arms on the smallest list). The clause is NOT dropped with sc_walk_blasts: sc_walk_frames (the walk's own --frames-only run, small list, no raid) keeps deciding it until the Conductor rules on RIMMANDRAKE_DECIDE_KNOCKBACK_FRAME_ROW_HIS_CARD_SET_IT; sc_barrage_perf (mod-on beside the same session's mod-off) is the proposed home",
    "item": "RIMMANDRAKE_SHRINK_KNOCKBACK_SCENES_ONE_SAVE_IN_AIR",
    "runs_today": {
-    "ran": false,
-    "why": "UNRUN: written 2026-11-25 by RIMMANDRAKE_SHRINK_KNOCKBACK_SCENES_ONE_SAVE_IN_AIR; offline oracle selftest_explosiveknockback_save_in_air.py (14 cases, 4 planted judge faults red; 3 cases added red-first after the fresh reader)"
+    "ran": true,
+    "result": "PASS",
+    "at": "2026-11-25T03:41:27-08:00",
+    "why": "live ArchBig on a regenerated quicktest map: 5 of 5 rows PASS; plant lose_heavy FAIL on SA_EACH_ONCE and SA_LANDED in the same sitting (early_rows.jsonl); offline oracle selftest_explosiveknockback_save_in_air.py 14 cases"
    },
    "testq": {
     "check": {

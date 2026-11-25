@@ -11,7 +11,8 @@ One good evidence set must read PASS on every row; each planted fault must turn 
   S7  a carrier still in the air at the end                                -> SA_LANDED FAIL
   S8  the Steel stack lands short                                          -> SA_LANDED FAIL
   S9  the stage refused                                                    -> SA_PRE FAIL, the rest UNMEASURED
-  S10 census: a thing born after the shell (id > hi) is not counted; a thing listed and in a carrier is a duplicate
+  S10 census: only the staged ids are counted (a map thing is not: live 2026-11-25, a regenerated map renumbers its own
+      chunks across a save); a staged thing listed and in a carrier is a duplicate; totals count every id of a staged def
   S11 the live arm misses a staged thing (the rect missed it)              -> SA_EACH_ONCE UNMEASURED, never PASS
   S12 the triplet stopped before arm C was read at its target (a load that never took) -> SA_AIR_AT_LOAD and SA_LANDED
       UNMEASURED, never a FAIL of the mod and never a PASS read off the live game (fresh reader, 2026-11-25)
@@ -85,10 +86,11 @@ def main():
     expect("S9", plant(lambda e: e.__setitem__("stage", "INVALID items site: climb depth 2")),
            {"SA_PRE": "FAIL", "SA_IN_AIR": "UNMEASURED", "SA_AIR_AT_LOAD": "UNMEASURED", "SA_EACH_ONCE": "UNMEASURED",
             "SA_LANDED": "UNMEASURED"})
-    c = S.census([{"id": "Steel101", "stackCount": 75}, {"id": "Filth200", "stackCount": 1}],
-                 "RM_ThingFlyer_Knockback9 inner=Steel x75 innerId=Steel101 at=1,1 dest=4,1 left=7 bounces=0", 103)
-    if c["ids"] != ["101"] or c["dup"] != ["101"]:
-        fails.append("S10: census %s, want ids ['101'] and dup ['101']" % c)
+    c = S.census([{"id": "Steel101", "def": "Steel", "stackCount": 75}, {"id": "Filth200", "stackCount": 1},
+                  {"id": "ChunkGranite50", "def": "ChunkGranite", "stackCount": 1}],
+                 "RM_ThingFlyer_Knockback9 inner=Steel x75 innerId=Steel101 at=1,1 dest=4,1 left=7 bounces=0", {"101", "102", "103"}, {"Steel"})
+    if c["ids"] != ["101"] or c["dup"] != ["101"] or c["total"] != {"Steel": 150}:
+        fails.append("S10: census %s, want ids ['101'], dup ['101'], total Steel 150" % c)
     expect("S11", plant(lambda e: [e["arms"].__setitem__(k, arm(ids=IDS[:2])) for k in "ABC"]),
            {"SA_EACH_ONCE": "UNMEASURED", "SA_LANDED": "PASS"})
     expect("S12", plant(lambda e: e["arms_at_target"].__setitem__("C", False)),

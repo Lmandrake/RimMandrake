@@ -1,0 +1,7 @@
+SA_PRE           PASS       stage STAGED items at 12,12 tick=1; staged ['56153', '56154', '56156']
+SA_IN_AIR        PASS       2 staged thing(s) in a carrier 2 ticks after the shell: [{'innerId': '56154', 'def': 'ComponentIndustrial', 'count': 1, 'left': 25}, {'innerId': '56153', 'def': 'Steel', 'count': 75, 'left': 25}]
+SA_AIR_AT_LOAD   PASS       in the air at the save with > 3 ticks left: ['56153', '56154']; in the air right after load B ['56153', '56154'], load C ['56153', '56154']
+SA_EACH_ONCE     FAIL       MOD: both loads agree and differ from the live game; at tick 13: live 13, load 3, reload 3 things; dup {}; lost ['49787', '49793', '49797', '49801', '50098'] new [] (load vs live); SAVE_DROPS_STATE both loads agree with each other and differ from the live arm on 23 field(s): the round trip loses it (the writer or a deterministic loader -- read the .rws to tell which); totals by def {'A': {'Compone
+SA_LANDED        PASS       after 20 tick(s): 0 carrier(s) left; dup []; staged absent []; Steel 75; totals by def {'ComponentIndustrial': 1, 'MinifiedTree': 1, 'Steel': 75} (staged {'Steel': 75, 'ComponentIndustrial': 1, 'MinifiedTree': 1})
+FAIL sc_save_in_air; evidence: D:\ClaudeWork\scratch\ek_save_in_air\live\ArchSmall\save_in_air.json
+[bridge split] 18.6 s wall: load 0.8 / ticks 1.0 / reads 1.3 / other 1.3 / outside calls 14.2 s

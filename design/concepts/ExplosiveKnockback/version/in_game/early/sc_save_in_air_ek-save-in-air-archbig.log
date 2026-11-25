@@ -1,0 +1,7 @@
+SA_PRE           PASS       stage STAGED items at 12,12 tick=1; staged ['57335', '57336', '57338']
+SA_IN_AIR        PASS       2 staged thing(s) in a carrier 2 ticks after the shell: [{'innerId': '57336', 'def': 'ComponentIndustrial', 'count': 1, 'left': 25}, {'innerId': '57335', 'def': 'Steel', 'count': 75, 'left': 25}]
+SA_AIR_AT_LOAD   PASS       in the air at the save with > 3 ticks left: ['57335', '57336']; in the air right after load B ['57335', '57336'], load C ['57335', '57336']
+SA_EACH_ONCE     PASS       at tick 13: live 3, load 3, reload 3 things; dup {}; lost [] new [] (load vs live); IDENTICAL live, load and reload agree at tick 13; totals by def {'A': {'ComponentIndustrial': 1, 'MinifiedTree': 1, 'Steel': 75}, 'B': {'ComponentIndustrial': 1, 'MinifiedTree': 1, 'Steel': 75}, 'C': {'ComponentIndustrial': 1, 'MinifiedTree': 1, 'Steel': 75}} (staged {'Steel': 75, 'ComponentIndustrial': 1, 'Minifie
+SA_LANDED        PASS       after 20 tick(s): 0 carrier(s) left; dup []; staged absent []; Steel 75; totals by def {'ComponentIndustrial': 1, 'MinifiedTree': 1, 'Steel': 75} (staged {'Steel': 75, 'ComponentIndustrial': 1, 'MinifiedTree': 1})
+PASS sc_save_in_air; evidence: D:\ClaudeWork\scratch\ek_save_in_air\live\ArchBig\save_in_air.json
+[bridge split] 19.5 s wall: load 0.8 / ticks 1.0 / reads 2.5 / other 1.4 / outside calls 13.8 s

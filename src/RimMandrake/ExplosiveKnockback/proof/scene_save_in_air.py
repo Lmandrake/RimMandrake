@@ -12,9 +12,10 @@ radius, damage 1: it pushes at the Bomb's reference force and harms nothing). Tw
 carriers. Then validation_core.saveload_triplet: save, arm A live, arms B and C two loads of that save, each read at the
 save tick + TRIPLET_MIN_TICKS on the measured clock, so only the round trip differs between the arms.
 
-The census an arm reads: the id of every haulable thing in the site that is older than the shell (id <= the highest id read
-before it: a thing born after the save takes a per-load id, live 2026-11-16), wherever it is, spawned or inside a carrier,
-with its stack count. A thing seen in two places is a duplicate.
+The census an arm reads: each of the three staged things by its id, wherever it is, spawned or inside a carrier, with
+its stack count (a thing seen in two places is a duplicate), and the total of each staged def over every id in the site
+(a load-made copy under a new id shows there). The blast reaches only the stage's cleared site, so no other thing is the
+mod's; a map's own things are not counted by id (a regenerated map renumbers them across a save: see census()).
 
   SA_PRE          proof build, the stage STAGED, three staged things read before the shell
   SA_IN_AIR       at the save, at least one staged thing is inside a carrier (else nothing in the air was saved)
@@ -47,7 +48,9 @@ STEEL = 75
 SITE = 10                       # half-width of the census rect around the origin: a 2.9 blast throws goods a few cells
 AIR_TICKS = 2                   # ticks from the shell to the save (the ticket: "save at 2 ticks")
 LAND_MAX = 240                  # a hang guard: goods fly 14 cells/s, so a throw lands in under 40 ticks; 6x that
-KINDS = {"Steel": "steel", "ComponentIndustrial": "comp", "MinifiedThing": "heavy"}   # the items stage's three defs
+CELLS = {(1, 0): "steel", (0, 1): "comp", (-1, 0): "heavy"}   # the items stage's three cells, from the origin (O(s, dx, dz))
+# The staged things are found by cell and new id, never by def: live 2026-11-25 (ArchBig) the minified building did not
+# read back as def "MinifiedThing" and SA_PRE refused a good stage (APPARATUS FAULT); its def is whatever list_things says.
 ROWS = ("SA_PRE", "SA_IN_AIR", "SA_AIR_AT_LOAD", "SA_EACH_ONCE", "SA_LANDED")
 
 
@@ -75,27 +78,33 @@ def flights(text):
     return out
 
 
-def census(things, flight_text, hi):
+def census(things, flight_text, keep, defs=()):
     """One arm's reading: {"ids": sorted ids, "dup": sorted ids seen twice, "stack": {id: count}, "total": {def: count}}.
-    things is jawa/list_things' list for the site; only ids <= hi (older than the shell) are in ids. total sums the staged
+    things is jawa/list_things' list for the site; only the staged ids (keep) are in ids. The blast (radius 2.9) reaches
+    only the stage's cleared 15x15, where the staged things are the only things; a map thing outside it is never the
+    mod's. Live 2026-11-25 (ArchSmall, then a control on ArchBig with no blast): on a map made by the debug action
+    Regenerate Current Map, every rock chunk took a NEW id across its own save and load (31 lost, 31 new), so a census
+    of the map's old ids read a loss the mod never made (APPARATUS FAULT). total sums the staged
     defs over every id, new ones included, spawned and in the air: a load-made copy under a NEW id reads as more Steel
     there, where ids alone see nothing (fresh reader, 2026-11-25)."""
-    seen, stack, total = [], {}, {}
+    seen, stack, total, where = [], {}, {}, {}
     for t in things or []:
-        if t.get("def") in KINDS:
+        if t.get("def") in defs:
             total[t["def"]] = total.get(t["def"], 0) + int(t.get("stackCount") or 0)
         n = num(t.get("id"))
-        if n and int(n) <= hi:
+        if n in keep:
             seen.append(n)
             stack[n] = t.get("stackCount")
+            where[n] = (t.get("def"), pos(t))
     for f in flights(flight_text):
-        if f.get("def") in KINDS:
+        if f.get("def") in defs:
             total[f["def"]] = total.get(f["def"], 0) + int(f.get("count") or 0)
-        if f["innerId"] and int(f["innerId"]) <= hi:
+        if f["innerId"] in keep:
             seen.append(f["innerId"])
             stack.setdefault(f["innerId"], "in_air")
     return {"ids": sorted(set(seen)), "dup": sorted(i for i in set(seen) if seen.count(i) > 1),
-            "stack": {k: stack[k] for k in sorted(stack)}, "total": {k: total[k] for k in sorted(total)}}
+            "stack": {k: stack[k] for k in sorted(stack)}, "total": {k: total[k] for k in sorted(total)},
+            "where": {k: where[k] for k in sorted(where)}}      # evidence only: not in the triplet's compared reading
 
 
 def judge(ev):
@@ -223,15 +232,20 @@ def main():
         ev["stage"] = kp("Stage", "%s,%s" % (SCENE, origin))
         now = things()
         old = set(num(t.get("id")) for t in before)
-        mine = [t for t in now if num(t.get("id")) and num(t.get("id")) not in old and t.get("def") in KINDS]
-        ev["staged"] = [(KINDS[t.get("def")], num(t.get("id")), t.get("stackCount"), pos(t)) for t in mine]
+        at = {(ox + dx, oz + dz): k for (dx, dz), k in CELLS.items()}
+        mine = [t for t in now if num(t.get("id")) and num(t.get("id")) not in old and pos(t) in at]
+        ev["staged"] = [(at[pos(t)], t.get("def"), num(t.get("id")), t.get("stackCount"), pos(t)) for t in mine]
+        if len(mine) != STAGED:                # what the cells hold, any group, so a miss names its cause
+            ev["around"] = [(t.get("def"), t.get("id"), pos(t), t.get("stackCount")) for t in
+                            c("jawa/list_things", rect="%d,%d,3,3" % (ox - 1, oz - 1), limit=50).get("things") or []]
+        defs = sorted(set(t.get("def") for t in mine))
         ev["staged_ids"] = sorted(num(t.get("id")) for t in mine)
         ev["staged_total"] = {}
         for t in mine:
             ev["staged_total"][t["def"]] = ev["staged_total"].get(t["def"], 0) + int(t.get("stackCount") or 0)
-        ev["steel_id"] = next((i for k, i, _n, _p in ev["staged"] if k == "steel"), None)
-        heavy = next((p for k, _i, _n, p in ev["staged"] if k == "heavy"), None)
-        hi = max([int(num(t.get("id"))) for t in now if num(t.get("id"))] + [0])
+        ev["steel_id"] = next((i for k, _d, i, _n, _p in ev["staged"] if k == "steel"), None)
+        heavy = next((p for k, _d, _i, _n, p in ev["staged"] if k == "heavy"), None)
+        keep = set(ev["staged_ids"])
     else:
         ev["stage"] = "no clear origin (Origins: %r)" % origin
     rows = judge(ev)
@@ -244,7 +258,7 @@ def main():
         arm = ["A"]
 
         def read_state(_B=None):
-            cs = census(things(), kp("Flights"), hi)
+            cs = census(things(), kp("Flights"), keep, defs)
             ev["arms"][arm[0]] = cs
             return {"ids": cs["ids"], "dup": cs["dup"], "stack": cs["stack"]}
 
@@ -287,7 +301,7 @@ def main():
                 step(10)
             left = flights(kp("Flights"))
             ev["landed"] = {"ticks": t_end if t_end is not None else LAND_MAX, "carriers_left": left,
-                            "census": census(things(), "", hi)}
+                            "census": census(things(), kp("Flights"), keep, defs)}
         else:
             ev["land_why"] = "the triplet did not read every arm at its target"
         rows = judge(ev)
