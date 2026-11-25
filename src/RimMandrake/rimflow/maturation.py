@@ -3557,10 +3557,13 @@ def cycle_openings(rec):
     return {i + 1 + off: m.get("at") for i, m in enumerate(moves)}
 
 
+HISTORY_REV = "HEAD"   # the commit cycle_open_sha walks back from; a selftest on a fixture commit sets it to that commit
+
+
 def cycle_open_sha(mod, k):
     """-> the commit whose stage record first reads cycles.total == k (the advance that opened cycle k), or None."""
     path = "design/concepts/%s/%s" % (mod, RECORD)
-    r = subprocess.run(["git", "-C", REPO, "log", "--format=%H", "--", path], capture_output=True, text=True,
+    r = subprocess.run(["git", "-C", REPO, "log", "--format=%H", HISTORY_REV, "--", path], capture_output=True, text=True,
                        timeout=60)
     found = None
     for sha in r.stdout.split():

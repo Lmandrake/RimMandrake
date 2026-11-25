@@ -1583,7 +1583,10 @@ def blind_main():
         f = M.blind_facts(root, "ExplosiveKnockback")
         ok(f.get("cycle") == 2 and f.get("owed") == "cycle", "visit 2 with only cycle_1 recorded: cycle 2 is owed (%s)"
            % {k: f.get(k) for k in ("cycle", "owed")})
+        # the record's history as 0.1.0 left it (its pass commit), not as a later Design Version reseeds it at 0 cycles
+        M.HISTORY_REV = "102967fb8360fe6b8cad77cf9419e67f49fae9e3"
         text, _ = M.brief_text(root, "ExplosiveKnockback")
+        M.HISTORY_REV = "HEAD"
         ok("cycle 2" in text.split("\n")[0] and "f5e310809f" in text and "git diff --name-only f5e310809f" in text,
            "the cycle-2 brief diffs from the advance that opened cycle 1 (f5e310809f), found in git")
         ok("except `cycle_1/tests_edited.json`" in text and "miss_of" in text and "Changed files to bars" in text,
