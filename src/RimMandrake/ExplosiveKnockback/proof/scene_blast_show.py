@@ -61,7 +61,9 @@ PADS = {
     "emp_soil": ("Shell_EMP", "Soil", (24, 24)),
     "anti_soil": ("Shell_AntigrainWarhead", "Soil", (80, 20)),      # last: its 14.9-cell blast reaches no other pad
 }
-ORDER = ["he_soil", "he_rough", "he_tile", "he_water", "ied_soil", "fire_soil", "emp_soil", "anti_soil"]
+# ied_soil goes first: its muffalo is staged at the start and, after four earlier pads' settles (1,200+ ticks), had walked
+# out of the soot reach in the first live run (visit 1 of 0.2.0: V_SOOT_PAWN read no soot, no muffalo in ied_soil's frame)
+ORDER = ["ied_soil", "he_soil", "he_rough", "he_tile", "he_water", "fire_soil", "emp_soil", "anti_soil"]
 WANT = {"he_soil": "Crater", "ied_soil": "Crater", "anti_soil": "Crater", "he_rough": "Scorch", "he_tile": "Scorch",
         "fire_soil": "Scorch", "he_water": None, "emp_soil": None}
 HARMFUL = [p for p in ORDER if p != "emp_soil"]
@@ -109,11 +111,18 @@ def static(s, field):
 def blasts(s, rows):
     """Set off each pad in turn, and read its scars, marks and shake into rows[pad]."""
     for pad in ORDER:
+        # the show's kick falls with the blast's distance from the centre of the view (RM_KnockbackShowPlan.ShakeMag): the
+        # contract reads "each harmful blast in view", so the view is put on the pad first (visit 1 of 0.2.0: with the
+        # view elsewhere only the antigrain's kick was above the one-pixel floor)
+        cx, cz = PADS[pad][2]
+        s.raw("rimworld/jump_camera_to_cell", x=cx, z=cz)
         t0 = static(s, "lastShakeTick")
         hp = s.read(pad + "_x", "hitPointsInt")
         s.act.damage(pad + "_x", (hp.v if hp.state == "ok" else 100) + 60, kind="Crush", name=pad)
         s.shot(rect(pad), name=pad + "_fire")
         t1, kick = static(s, "lastShakeTick"), static(s, "lastShakeKick")
+        if not (t0 is not None and t1 is not None and t1 > t0):
+            kick = None             # a kick read with no shake of this blast is an earlier blast's: never compare it
         s.run(until=SETTLE, limit=SETTLE + 120)
         s.shot(rect(pad), name=pad + "_scar")
         ours, vanilla = scars_on(s, pad)
@@ -146,11 +155,13 @@ with scene.open(GAME, contract=show, needs={"mods": ["ExplosiveKnockback"], "map
     try:
         if planted:
             for f in SWITCHES:
-                s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=f, value="False")
+                r = s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=f, value="False", driver=s.id) or {}
+                if r.get("success") is not True:   # inside a session a set names its driver; a refused plant plants nothing
+                    raise RuntimeError("SETTING_REFUSED: %s=False was not written (%s)" % (f, r.get("message")))
         blasts(s, rows)
     finally:
         for f, v in prior.items():   # each switch back to what it read before the plant, on every exit path
-            s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=f, value=str(v) if v is not None else "True")
+            s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=f, value=str(v) if v is not None else "True", driver=s.id)
     folder = s.run_dir
 
 fails = 0
