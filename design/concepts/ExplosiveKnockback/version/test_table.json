@@ -2714,7 +2714,6 @@
    "kind": "offline",
    "stage": "4-5",
    "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_blast_show.py",
-   "new": true,
    "item": "RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS",
    "observes": "the blast show's structure, grown from proof/absorb_blast_show_check.py: our own flecks with our own art, the explosion hook, one saved on/off per part with its default on, the strength scaled by the blast's damage, and no donor mod named (design/specs/2026-11-24-knockback-blast-show/design.md)",
    "reads": [
@@ -2724,8 +2723,12 @@
    ],
    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_blast_show.py",
    "runs_today": {
-    "ran": false,
-    "why": "specified for 0.2.0, not built: Stage 3 builds it, red first"
+    "ran": true,
+    "rc": 1,
+    "seconds": 1.3,
+    "last": "FAIL blast show: 5 of 26 line(s) failing",
+    "at": "2026-11-24T20:56:25-08:00",
+    "result": "FAIL"
    }
   },
   "T_SETTINGS_SWEEP_SHOW": {
@@ -2870,27 +2873,29 @@
    "id": "sc_blast_show",
    "kind": "live_minimal",
    "stage": "6",
-   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
-   "entry": "blast_show",
-   "new": true,
+   "file": "src/RimMandrake/ExplosiveKnockback/proof/scene_blast_show.py",
+   "entry": "scene_blast_show.py",
    "item": "RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS",
    "scene": "sc_blast_show",
    "observes": "one grenade and one mortar shell on soil and on stone: fire and flash; camera shake after a small and a big blast at the same distance and with the slider at none; the air ring over a tiled floor; smoke at three times in still air and in wind with the thrown colonist visible in each; the scar after the blast, after a day and after cleaning; the paint of a wall, a door, a table and a floor cell inside and outside the blast and after the paint is removed; the soot of a colonist and an animal in the blast and of one outside it, then after rain; a grenade and an antigrain-class blast on two like pads, each part compared; each capture goes to the art judge (design/RimMandrake/art_judge_brief.md), whose keep is part of this verdict",
    "reads": [
-    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "src/RimMandrake/ExplosiveKnockback/proof/scene_blast_show.py",
     "design/concepts/ExplosiveKnockback/scenes.json",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "design/specs/2026-11-24-knockback-blast-show/design.md",
-    "design/RimMandrake/art_judge_brief.md"
+    "design/RimMandrake/art_judge_brief.md",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackShow.cs"
    ],
    "why_game": "the blast's look is drawn by the game (flecks, camera, paint, overlays, weather); only a live frame shows what the player sees, and the look itself is the art judge's call (design/RimMandrake/art_judge_brief.md)",
    "why_full_list": null,
-   "entry_exists": false,
+   "entry_exists": true,
    "partial": null,
    "runs_today": {
     "ran": false,
-    "why": "specified for 0.2.0, not built: Stage 3 builds it, red first"
+    "entry_exists": true,
+    "why": "live: UNRUN until Stage 6; command: python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_blast_show.py"
    },
+   "command": "python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_blast_show.py",
    "cheaper_why": "every part of the show is drawn by the same blast, at the same moment, on the same pads: one staged grenade and one mortar shell show all eight parts in one set of frames, and a scene per part would stage the same blasts eight times over for the same reading; the scene holds one claim per part, each read and judged apart, so one part's fault names that part"
   },
   "sc_settings_sweep_show_switches": {
@@ -4205,8 +4210,8 @@
     "T_BLAST_SHOW_OFFLINE"
    ],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "blast_show_screen_shake",
@@ -4223,8 +4228,8 @@
     "T_BLAST_SHOW_OFFLINE"
    ],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "blast_show_air_ripple",
@@ -4241,8 +4246,8 @@
     "T_BLAST_SHOW_OFFLINE"
    ],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "blast_show_smoke",
@@ -4259,8 +4264,8 @@
     "T_BLAST_SHOW_OFFLINE"
    ],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "blast_show_crater_scar",
@@ -4277,8 +4282,8 @@
     "T_BLAST_SHOW_OFFLINE"
    ],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "blast_show_soot_on_things",
@@ -4295,8 +4300,8 @@
     "T_BLAST_SHOW_OFFLINE"
    ],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "blast_show_soot_on_pawns",
@@ -4313,8 +4318,8 @@
     "T_BLAST_SHOW_OFFLINE"
    ],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "blast_show_scales_with_damage",
@@ -4331,8 +4336,8 @@
     "T_BLAST_SHOW_OFFLINE"
    ],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "blast_show_switches_off_clean",
@@ -4416,8 +4421,12 @@
   "selftest_explosiveknockback_stage6_visit2.py": "proof-harness guards: the scene and site faults Stage 6 visit 2 found (a quicktest pond's dry bed and the like), so these test the proof harness, not a bar (RIMMANDRAKE_REGISTER_EK_SELFTESTS_THIRTEEN_NO_TABLE_ENTRY_SAW)"
  },
  "made_0_2_0": {
-  "at": "2026-11-24T17:06:58-08:00",
+  "at": "2026-11-24T20:56:25-08:00",
   "by": "steward run RIMMANDRAKE_STEWARD_EXPLOSIVEKNOCKBACK_PREFLIGHT_STAGE (version/pilot_throwaway/extend_test_table_0_2_0.py)",
-  "what": "the 59 rows of 0.1.0 kept; the 14 bars of 0.2.0 added with the deciders their record.json proof_note names, each new test specified (new: true) for Stage 3"
+  "what": "the 59 rows of 0.1.0 kept; the 14 bars of 0.2.0 added with the deciders their record.json proof_note names, each new test specified (new: true) for Stage 3; a test a Stage 3 batch built (BUILT) is measured now and leaves new: true",
+  "built": [
+   "T_BLAST_SHOW_OFFLINE",
+   "sc_blast_show"
+  ]
  }
 }

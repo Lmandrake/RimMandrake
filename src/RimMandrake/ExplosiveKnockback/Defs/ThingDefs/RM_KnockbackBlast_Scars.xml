@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Explosive Knockback 0.2.0: the crater scars (design/specs/2026-11-24-knockback-blast-show/design.md §3.11). One def
+     per drawn width (RM_KnockbackShowPlan.ScarDrawSizes; B_SCAR_DEFS refuses a mismatch) and kind: a Crater (torn
+     ground) on soil, a Scorch (no pit) on stone, built floors and under a fire blast. Shaped as vanilla Filth_BlastMark
+     (MapMeshOnly filth, drawn wider than its cells); unlike it, rain washes ours and time wears it away. Art is our own
+     (design §6: three craters and three scorches), installed by `art install` under Textures/Things/Filth/RM_KnockbackBlast/. -->
+<Defs>
+
+  <ThingDef ParentName="BaseFilth">
+    <defName>RM_KnockbackBlastCrater_3</defName>
+    <label>blast crater</label>
+    <description>Torn, burnt ground with a ragged dark rim, left by a blast. Rain and time wear it away; a colonist can clean it.</description>
+    <thingClass>Filth</thingClass>
+    <altitudeLayer>Filth</altitudeLayer>
+    <drawerType>MapMeshOnly</drawerType>
+    <useHitPoints>false</useHitPoints>
+    <size>(1,1)</size>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <texPath>Things/Filth/RM_KnockbackBlast/Crater</texPath>
+      <drawSize>3</drawSize>
+    </graphicData>
+    <statBases>
+      <Beauty>-10</Beauty>
+      <Cleanliness>0</Cleanliness>
+    </statBases>
+    <filth>
+      <cleaningSound>Interact_CleanFilth_Dirt</cleaningSound>
+      <cleaningWorkToReduceThickness>50</cleaningWorkToReduceThickness>
+      <maxThickness>1</maxThickness>
+      <rainWashes>true</rainWashes>
+      <disappearsInDays>3~6</disappearsInDays>
+    </filth>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseFilth">
+    <defName>RM_KnockbackBlastCrater_5</defName>
+    <label>blast crater</label>
+    <description>Torn, burnt ground with a ragged dark rim, left by a blast. Rain and time wear it away; a colonist can clean it.</description>
+    <thingClass>Filth</thingClass>
+    <altitudeLayer>Filth</altitudeLayer>
+    <drawerType>MapMeshOnly</drawerType>
+    <useHitPoints>false</useHitPoints>
+    <size>(1,1)</size>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <texPath>Things/Filth/RM_KnockbackBlast/Crater</texPath>
+      <drawSize>5</drawSize>
+    </graphicData>
+    <statBases>
+      <Beauty>-10</Beauty>
+      <Cleanliness>0</Cleanliness>
+    </statBases>
+    <filth>
+      <cleaningSound>Interact_CleanFilth_Dirt</cleaningSound>
+      <cleaningWorkToReduceThickness>50</cleaningWorkToReduceThickness>
+      <maxThickness>1</maxThickness>
+      <rainWashes>true</rainWashes>
+      <disappearsInDays>3~6</disappearsInDays>
+    </filth>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseFilth">
+    <defName>RM_KnockbackBlastCrater_7</defName>
+    <label>blast crater</label>
+    <description>Torn, burnt ground with a ragged dark rim, left by a blast. Rain and time wear it away; a colonist can clean it.</description>
+    <thingClass>Filth</thingClass>
+    <altitudeLayer>Filth</altitudeLayer>
+    <drawerType>MapMeshOnly</drawerType>
+    <useHitPoints>false</useHitPoints>
+    <size>(3,3)</size>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <texPath>Things/Filth/RM_KnockbackBlast/Crater</texPath>
+      <drawSize>7</drawSize>
+    </graphicData>
+    <statBases>
+      <Beauty>-10</Beauty>
+      <Cleanliness>0</Cleanliness>
+    </statBases>
+    <filth>
+      <cleaningSound>Interact_CleanFilth_Dirt</cleaningSound>
+      <cleaningWorkToReduceThickness>50</cleaningWorkToReduceThickness>
+      <maxThickness>1</maxThickness>
+      <rainWashes>true</rainWashes>
+      <disappearsInDays>3~6</disappearsInDays>
+    </filth>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseFilth">
+    <defName>RM_KnockbackBlastCrater_10</defName>
+    <label>blast crater</label>
+    <description>Torn, burnt ground with a ragged dark rim, left by a blast. Rain and time wear it away; a colonist can clean it.</description>
+    <thingClass>Filth</thingClass>
+    <altitudeLayer>Filth</altitudeLayer>
+    <drawerType>MapMeshOnly</drawerType>
+    <useHitPoints>false</useHitPoints>
+    <size>(3,3)</size>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <texPath>Things/Filth/RM_KnockbackBlast/Crater</texPath>
+      <drawSize>10</drawSize>
+    </graphicData>
+    <statBases>
+      <Beauty>-10</Beauty>
+      <Cleanliness>0</Cleanliness>
+    </statBases>
+    <filth>
+      <cleaningSound>Interact_CleanFilth_Dirt</cleaningSound>
+      <cleaningWorkToReduceThickness>50</cleaningWorkToReduceThickness>
+      <maxThickness>1</maxThickness>
+      <rainWashes>true</rainWashes>
+      <disappearsInDays>3~6</disappearsInDays>
+    </filth>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseFilth">
+    <defName>RM_KnockbackBlastCrater_14</defName>
+    <label>blast crater</label>
+    <description>Torn, burnt ground with a ragged dark rim, left by a blast. Rain and time wear it away; a colonist can clean it.</description>
+    <thingClass>Filth</thingClass>
+    <altitudeLayer>Filth</altitudeLayer>
+    <drawerType>MapMeshOnly</drawerType>
+    <useHitPoints>false</useHitPoints>
+    <size>(3,3)</size>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <texPath>Things/Filth/RM_KnockbackBlast/Crater</texPath>
+      <drawSize>14</drawSize>
+    </graphicData>
+    <statBases>
+      <Beauty>-10</Beauty>
+      <Cleanliness>0</Cleanliness>
+    </statBases>
+    <filth>
+      <cleaningSound>Interact_CleanFilth_Dirt</cleaningSound>
+      <cleaningWorkToReduceThickness>50</cleaningWorkToReduceThickness>
+      <maxThickness>1</maxThickness>
+      <rainWashes>true</rainWashes>
+      <disappearsInDays>3~6</disappearsInDays>
+    </filth>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseFilth">
+    <defName>RM_KnockbackBlastCrater_20</defName>
+    <label>blast crater</label>
+    <description>Torn, burnt ground with a ragged dark rim, left by a blast. Rain and time wear it away; a colonist can clean it.</description>
+    <thingClass>Filth</thingClass>
+    <altitudeLayer>Filth</altitudeLayer>
+    <drawerType>MapMeshOnly</drawerType>
+    <useHitPoints>false</useHitPoints>
+    <size>(3,3)</size>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <texPath>Things/Filth/RM_KnockbackBlast/Crater</texPath>
+      <drawSize>20</drawSize>
+    </graphicData>
+    <statBases>
+      <Beauty>-10</Beauty>
+      <Cleanliness>0</Cleanliness>
+    </statBases>
+    <filth>
+      <cleaningSound>Interact_CleanFilth_Dirt</cleaningSound>
+      <cleaningWorkToReduceThickness>50</cleaningWorkToReduceThickness>
+      <maxThickness>1</maxThickness>
+      <rainWashes>true</rainWashes>
+      <disappearsInDays>3~6</disappearsInDays>
+    </filth>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseFilth">
+    <defName>RM_KnockbackBlastScorch_3</defName>
+    <label>blast scorch</label>
+    <description>A black scorch left by a blast on hard ground. Rain and time wear it away; a colonist can clean it.</description>
+    <thingClass>Filth</thingClass>
+    <altitudeLayer>Filth</altitudeLayer>
+    <drawerType>MapMeshOnly</drawerType>
+    <useHitPoints>false</useHitPoints>
+    <size>(1,1)</size>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <texPath>Things/Filth/RM_KnockbackBlast/Scorch</texPath>
+      <drawSize>3</drawSize>
+    </graphicData>
+    <statBases>
+      <Beauty>-6</Beauty>
+      <Cleanliness>0</Cleanliness>
+    </statBases>
+    <filth>
+      <cleaningSound>Interact_CleanFilth_Dirt</cleaningSound>
+      <cleaningWorkToReduceThickness>50</cleaningWorkToReduceThickness>
+      <maxThickness>1</maxThickness>
+      <rainWashes>true</rainWashes>
+      <disappearsInDays>3~6</disappearsInDays>
+    </filth>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseFilth">
+    <defName>RM_KnockbackBlastScorch_5</defName>
+    <label>blast scorch</label>
+    <description>A black scorch left by a blast on hard ground. Rain and time wear it away; a colonist can clean it.</description>
+    <thingClass>Filth</thingClass>
+    <altitudeLayer>Filth</altitudeLayer>
+    <drawerType>MapMeshOnly</drawerType>
+    <useHitPoints>false</useHitPoints>
+    <size>(1,1)</size>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <texPath>Things/Filth/RM_KnockbackBlast/Scorch</texPath>
+      <drawSize>5</drawSize>
+    </graphicData>
+    <statBases>
+      <Beauty>-6</Beauty>
+      <Cleanliness>0</Cleanliness>
+    </statBases>
+    <filth>
+      <cleaningSound>Interact_CleanFilth_Dirt</cleaningSound>
+      <cleaningWorkToReduceThickness>50</cleaningWorkToReduceThickness>
+      <maxThickness>1</maxThickness>
+      <rainWashes>true</rainWashes>
+      <disappearsInDays>3~6</disappearsInDays>
+    </filth>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseFilth">
+    <defName>RM_KnockbackBlastScorch_7</defName>
+    <label>blast scorch</label>
+    <description>A black scorch left by a blast on hard ground. Rain and time wear it away; a colonist can clean it.</description>
+    <thingClass>Filth</thingClass>
+    <altitudeLayer>Filth</altitudeLayer>
+    <drawerType>MapMeshOnly</drawerType>
+    <useHitPoints>false</useHitPoints>
+    <size>(3,3)</size>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <texPath>Things/Filth/RM_KnockbackBlast/Scorch</texPath>
+      <drawSize>7</drawSize>
+    </graphicData>
+    <statBases>
+      <Beauty>-6</Beauty>
+      <Cleanliness>0</Cleanliness>
+    </statBases>
+    <filth>
+      <cleaningSound>Interact_CleanFilth_Dirt</cleaningSound>
+      <cleaningWorkToReduceThickness>50</cleaningWorkToReduceThickness>
+      <maxThickness>1</maxThickness>
+      <rainWashes>true</rainWashes>
+      <disappearsInDays>3~6</disappearsInDays>
+    </filth>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseFilth">
+    <defName>RM_KnockbackBlastScorch_10</defName>
+    <label>blast scorch</label>
+    <description>A black scorch left by a blast on hard ground. Rain and time wear it away; a colonist can clean it.</description>
+    <thingClass>Filth</thingClass>
+    <altitudeLayer>Filth</altitudeLayer>
+    <drawerType>MapMeshOnly</drawerType>
+    <useHitPoints>false</useHitPoints>
+    <size>(3,3)</size>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <texPath>Things/Filth/RM_KnockbackBlast/Scorch</texPath>
+      <drawSize>10</drawSize>
+    </graphicData>
+    <statBases>
+      <Beauty>-6</Beauty>
+      <Cleanliness>0</Cleanliness>
+    </statBases>
+    <filth>
+      <cleaningSound>Interact_CleanFilth_Dirt</cleaningSound>
+      <cleaningWorkToReduceThickness>50</cleaningWorkToReduceThickness>
+      <maxThickness>1</maxThickness>
+      <rainWashes>true</rainWashes>
+      <disappearsInDays>3~6</disappearsInDays>
+    </filth>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseFilth">
+    <defName>RM_KnockbackBlastScorch_14</defName>
+    <label>blast scorch</label>
+    <description>A black scorch left by a blast on hard ground. Rain and time wear it away; a colonist can clean it.</description>
+    <thingClass>Filth</thingClass>
+    <altitudeLayer>Filth</altitudeLayer>
+    <drawerType>MapMeshOnly</drawerType>
+    <useHitPoints>false</useHitPoints>
+    <size>(3,3)</size>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <texPath>Things/Filth/RM_KnockbackBlast/Scorch</texPath>
+      <drawSize>14</drawSize>
+    </graphicData>
+    <statBases>
+      <Beauty>-6</Beauty>
+      <Cleanliness>0</Cleanliness>
+    </statBases>
+    <filth>
+      <cleaningSound>Interact_CleanFilth_Dirt</cleaningSound>
+      <cleaningWorkToReduceThickness>50</cleaningWorkToReduceThickness>
+      <maxThickness>1</maxThickness>
+      <rainWashes>true</rainWashes>
+      <disappearsInDays>3~6</disappearsInDays>
+    </filth>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseFilth">
+    <defName>RM_KnockbackBlastScorch_20</defName>
+    <label>blast scorch</label>
+    <description>A black scorch left by a blast on hard ground. Rain and time wear it away; a colonist can clean it.</description>
+    <thingClass>Filth</thingClass>
+    <altitudeLayer>Filth</altitudeLayer>
+    <drawerType>MapMeshOnly</drawerType>
+    <useHitPoints>false</useHitPoints>
+    <size>(3,3)</size>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <texPath>Things/Filth/RM_KnockbackBlast/Scorch</texPath>
+      <drawSize>20</drawSize>
+    </graphicData>
+    <statBases>
+      <Beauty>-6</Beauty>
+      <Cleanliness>0</Cleanliness>
+    </statBases>
+    <filth>
+      <cleaningSound>Interact_CleanFilth_Dirt</cleaningSound>
+      <cleaningWorkToReduceThickness>50</cleaningWorkToReduceThickness>
+      <maxThickness>1</maxThickness>
+      <rainWashes>true</rainWashes>
+      <disappearsInDays>3~6</disappearsInDays>
+    </filth>
+  </ThingDef>
+
+</Defs>

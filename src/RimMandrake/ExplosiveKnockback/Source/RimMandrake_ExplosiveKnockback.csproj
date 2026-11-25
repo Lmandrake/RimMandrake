@@ -54,6 +54,7 @@
     <Compile Include="RM_KnockbackMath.cs" />
     <Compile Include="RM_KnockbackPlan.cs" />
     <Compile Include="RM_KnockbackVerdicts.cs" />
+    <Compile Include="RM_KnockbackShowPlan.cs" />
     <Compile Include="RM_KnockbackMod.cs" />
     <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
     <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="RM_MapComponent_Knockback.cs" />
     <Compile Include="RM_ThingFlyer_Knockback.cs" />
     <Compile Include="RM_PawnFlyerPatches.cs" />
+    <Compile Include="RM_KnockbackShow.cs" />
     <Compile Include="RM_KnockbackProof.cs" />
     <Compile Include="RM_KnockbackProof_StageThree.cs" />
     <Compile Include="RM_KnockbackProof_GoodsObstacles.cs" />

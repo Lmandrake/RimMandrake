@@ -488,3 +488,7 @@ answer the locked bar, his recorded words or the shipped code already gives; no 
 - Was, "Stage now": - **Stage now:** Stage 2, preflight, since 2026-11-24 4:34 PM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-24 3:44 PM PST).
 - Record: `version/stage_record.json`.
+
+### 2026-11-24 9:00 PM PST, Stage 3 build batch: the blast show's checks (RIMMANDRAKE_AUTOBUILD_EXPLOSIVEKNOCKBACK_FOURTEEN_BARS_LEFT, BENCH)
+
+- Built the blast show's kernel (`Source/RM_KnockbackShowPlan.cs`, Verse-free; its generator `Source/SelfTestShow`), its hook and drawing (`Source/RM_KnockbackShow.cs`: fire and flash, shake, ripple, scars), four part switches with the shake slider and the marks-last choice, the fleck and scar defs, the offline check T_BLAST_SHOW_OFFLINE (`selftest_explosiveknockback_blast_show.py`, seen red first and red-seen on a planted fault) and the live scene sc_blast_show (`proof/scene_blast_show.py`, UNRUN); the table maker now measures what is built. Bars not runnable: 14 before, 6 after. T_BLAST_SHOW_OFFLINE runs red until the queued art (22 jobs, `version/art/blast_show_art_0_2_0.json`) is installed and the smoke and soot parts are built.

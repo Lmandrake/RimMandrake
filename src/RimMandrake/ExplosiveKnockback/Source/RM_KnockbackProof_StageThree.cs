@@ -415,6 +415,9 @@ namespace RimMandrake.ExplosiveKnockback
             ["lightMassLimit20"] = Lane(new[] { "lightMassLimit=20" }, "C", "H"),
             ["closedGuard"] = Lane(new[] { "closedContainerGuard=False" }, "locker", "lockerGoods", "G", "Gcell", "H"),
             ["fireHalf"] = Lane(new[] { "fireAtHalf=False" }),
+            // the blast show off (bar blast_show_switches_off_clean): every throw observation equals the default run's
+            ["showOff"] = Lane(new[] { "showFireAndFlash=False", "showScreenShake=False", "showAirRipple=False", "showCraterScars=False",
+                                       "showShakeStrength=0", "showMarksLast=0" }),
         };
 
         private static KeyValuePair<string[], string[]> Lane(string[] set, params string[] changes) => new KeyValuePair<string[], string[]>(set, changes);
@@ -437,7 +440,8 @@ namespace RimMandrake.ExplosiveKnockback
             "goodsSpinDegPerTick", "goodsRebound", "goodsReboundKeepPercent", "openStorageProtectsGoods", "heavyGoodsDamageMin",
             "heavyGoodsDamageMax", "heavyGoodsStaggerTicks", "gasBurstRadius", "gasBurstGoodsCells", "gasPawnCooldownTicks",
             "flyingGoods", "shoveClosedContainers", "heavyGoodsKnock", "gasChain", "enabled", "shieldsAbsorbThrow",
-            "closedContainerGuard", "fireAtHalf",
+            "closedContainerGuard", "fireAtHalf", "showFireAndFlash", "showScreenShake", "showAirRipple", "showCraterScars",
+            "showShakeStrength", "showMarksLast",
         };
 
         private static IEnumerable<System.Reflection.FieldInfo> SavedFields() => typeof(RimMandrakeExplosiveKnockbackSettings)
@@ -537,6 +541,12 @@ namespace RimMandrake.ExplosiveKnockback
                         float ff = RM_Patch_DamageWorker_ExplosionKnockback.ConfigOf(null, DamageDefOf.Flame).force;
                         own = ff <= 0f;
                         seen = "flameForce=" + ff.ToString("0.###") + " " + seen;
+                        break;
+                    // the show's switches read while off: no part of the show is on, and the throws (drift) are the default's
+                    case "showOff":
+                        KbShowSwitches sw = RM_KnockbackShow.Switches();
+                        own = !sw.fireAndFlash && !sw.screenShake && !sw.airRipple && !sw.craterScars && sw.shakeStrength == 0f;
+                        seen = "showSwitches=" + (own ? "off" : "ON") + " " + seen;
                         break;
                     default: own = false; break;
                 }

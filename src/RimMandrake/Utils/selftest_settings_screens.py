@@ -545,6 +545,7 @@ MODS = {
         "Impact and landing": "Now",
         "Burning gas": "Now",
         "Shield belts": "Now",
+        "Blast show": "Now",
         "Debug": "Now",
     }, ()),
     "AcousticScanner": ("RM_AcousticScannerMod.cs", "RM_AcousticScanner.csproj", {

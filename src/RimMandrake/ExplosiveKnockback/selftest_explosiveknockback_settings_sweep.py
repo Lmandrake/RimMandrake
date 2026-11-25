@@ -35,6 +35,10 @@ GAME_SIDE = {
     "goodsWallImpactPerCell": "sc_storeroom_mortar", "gasBurstRadius": "T_GAS_CLUMP_ORDER", "gasBurstGoodsCells": "T_GAS_CLUMP_ORDER",
     "gasPawnCooldownTicks": "T_GAS_CLUMP_ORDER",
     "closedContainerGuard": "sc_settings_sweep", "fireAtHalf": "sc_settings_sweep",
+    # the blast show (0.2.0): what each switch does to a blast is the show kernel's (T_BLAST_SHOW_OFFLINE, S_SWITCH); that
+    # the throws stay the same with the show off is sc_settings_sweep's showOff lane
+    "showFireAndFlash": "sc_settings_sweep", "showScreenShake": "sc_settings_sweep", "showAirRipple": "sc_settings_sweep",
+    "showCraterScars": "sc_settings_sweep", "showShakeStrength": "sc_settings_sweep", "showMarksLast": "sc_settings_sweep",
 }
 # the sheet's switches (settings_scale_and_switch, sheet.md "closed guard off, container goods thrown loose ... fire at half off,
 # fire throws nothing"): each is a saved setting, default on, reset to on, and READ by the code path it switches (blind cycle 2,

@@ -4,11 +4,21 @@ test-and-stage table from 0.1.0 (59 bars) to 0.2.0 (73 bars). The 59 rows of 0.1
 bars (VERSION.json bars_new) gets its deciding tests as its own record.json `proof_note` names them: a transcription of
 the Designer's words, not a new placement. Every new test is `new: true` (specified; Stage 3 builds it, red first).
 Usage: python3 extend_test_table_0_2_0.py <repo>   rewrites version/test_table.json and version/test_table.md.
-Idempotent: a second run changes nothing."""
+Idempotent: a second run changes nothing but the measured runs_today of the built new tests.
+
+Stage 3 (RIMMANDRAKE_AUTOBUILD_EXPLOSIVEKNOCKBACK_FOURTEEN_BARS_LEFT, 2026-11-24): a new test leaves `new: true` only when
+its builder names it in BUILT below, with the evidence the maker reads (a line its run prints, or the scene file it
+writes). The maker then MEASURES it: it runs a built offline test and records rc and seconds; it records a built live
+scene UNRUN with its exact command and entry_exists true. A bar's every_decider_runnable_today is the pipeline's own rule
+(maturation._bar_lines, make_test_table.py): each decider ran today, or is an in-game entry written and recorded UNRUN.
+The first form of this file asked each decider to be `not new` and PASS, which no in-game scene can be offline: no 0.2.0
+bar could ever read runnable."""
 import datetime
 import json
 import os
+import subprocess
 import sys
+import time
 
 REPO = os.path.abspath(sys.argv[1]); os.chdir(REPO)
 C = "design/concepts/ExplosiveKnockback"; M = "src/RimMandrake/ExplosiveKnockback"
@@ -38,6 +48,13 @@ def live(tid, entry, observes, why_game, item, scene=None, reads=()):
 
 
 BS = "sc_blast_show"
+BS_SCENE = M + "/proof/scene_blast_show.py"
+# test id -> what shows it is built: ("prints", <text its run prints>) or ("scene", <the scene file>). Each Stage 3 batch
+# adds the tests it built; nothing else leaves `new: true`.
+BUILT = {
+    "T_BLAST_SHOW_OFFLINE": ("prints", " blast show: "),
+    BS: ("scene", BS_SCENE),
+}
 BS_WHY = ("the blast's look is drawn by the game (flecks, camera, paint, overlays, weather); only a live frame shows "
           "what the player sees, and the look itself is the art judge's call (%s)" % ART)
 JUDGED = "; each capture goes to the art judge (%s), whose keep is part of this verdict" % ART
@@ -83,7 +100,7 @@ TESTS = [
     live("sc_storeroom_mortar_rebound_legs", "storeroom_mortar",
          "sc_storeroom_mortar's trace: each rebound leg of a thrown good is shorter than the leg before, until it rests",
          "the legs of real thing flights off real walls and doors", FOLD, "sc_storeroom_mortar"),
-    live(BS, "blast_show",
+    dict(live(BS, "blast_show",
          "one grenade and one mortar shell on soil and on stone: fire and flash; camera shake after a small and a big "
          "blast at the same distance and with the slider at none; the air ring over a tiled floor; smoke at three times "
          "in still air and in wind with the thrown colonist visible in each; the scar after the blast, after a day and "
@@ -91,6 +108,9 @@ TESTS = [
          "the paint is removed; the soot of a colonist and an animal in the blast and of one outside it, then after "
          "rain; a grenade and an antigrain-class blast on two like pads, each part compared" + JUDGED,
          BS_WHY, ABSORB, reads=[BLAST_SPEC, ART]),
+         # a scene on the scene library (CLAUDE.md: scenes and verdicts stay in Python), not a C# proof entry
+         file=BS_SCENE, entry="scene_blast_show.py",
+         command="python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_blast_show.py"),
     live("sc_settings_sweep_show_switches", "settings_sweep",
          "sc_settings_sweep with each show switch off in turn, and a throw compared show-on against show-off",
          "the drawn look of a real blast with each switch off, and the throw beside it", ABSORB, "sc_settings_sweep"),
@@ -110,6 +130,42 @@ DECIDES = {
 for p in SHOW_PARTS:
     DECIDES[p] = (["T_BLAST_SHOW_OFFLINE", BS], [])
 
+def measure(t):
+    """Fill a new test's runs_today from what is built (BUILT), measured now; an unbuilt one stays NOTRUN."""
+    how = BUILT.get(t["id"])
+    if not how:
+        return
+    kind, ev = how
+    if t["kind"] == "offline":
+        if not os.path.isfile(t["file"]):
+            t["runs_today"] = dict(ran=False, why="named built, but %s does not exist" % t["file"])
+            return
+        t0 = time.time()
+        r = subprocess.run(["python3", t["file"]], capture_output=True, text=True, stdin=subprocess.DEVNULL)
+        out = (r.stdout or "") + (r.stderr or "")
+        last = (out.strip().splitlines() or [""])[-1][:300]
+        if ev not in out:
+            t["runs_today"] = dict(ran=False, why="ran but printed no %r: not the built test (rc %d, last %r)" % (ev, r.returncode, last))
+            return
+        t.pop("new", None)
+        t["runs_today"] = dict(ran=True, rc=r.returncode, seconds=round(time.time() - t0, 1), last=last,
+                               at=datetime.datetime.now().astimezone().isoformat(timespec="seconds"),
+                               result="PASS" if r.returncode == 0 else "FAIL")
+    else:
+        if not os.path.isfile(ev):
+            t["runs_today"] = dict(ran=False, why="named built, but the scene %s does not exist" % ev)
+            return
+        t.pop("new", None)
+        t["entry_exists"] = True
+        t["runs_today"] = dict(ran=False, entry_exists=True, why="live: UNRUN until Stage 6; command: " + t["command"])
+
+
+def runnable(t):
+    """The pipeline's own rule (maturation._bar_lines): ran today, or an in-game entry written and recorded UNRUN."""
+    r = t.get("runs_today") or {}
+    return bool(r.get("ran") or r.get("entry_exists") or (t["kind"] != "offline" and t.get("entry_exists") and t.get("command")))
+
+
 tab = json.load(open(C + "/version/test_table.json"))
 ver = json.load(open(C + "/version/VERSION.json"))
 assert sorted(DECIDES) == sorted(ver["bars_new"]), "the placement does not cover bars_new exactly"
@@ -120,6 +176,9 @@ for t in TESTS:
                             "staged grenade and one mortar shell show all eight parts in one set of frames, and a scene "
                             "per part would stage the same blasts eight times over for the same reading; the scene "
                             "holds one claim per part, each read and judged apart, so one part's fault names that part")
+    if t["id"] == BS:
+        t["reads"] = [BS_SCENE if r == PROOF else r for r in t["reads"]] + [M + "/Source/RM_KnockbackShow.cs"]
+    measure(t)
     tests[t["id"]] = t
 have = {b["id"] for b in bars}
 for bid in ver["bars_new"]:
@@ -131,9 +190,8 @@ for bid in ver["bars_new"]:
                proves_at=max((tests[x]["stage"] for x in dec), key=lambda s: {"2": 2, "4-5": 4, "6": 6, "8": 8}[s]),
                decides=dec, supports=sup, held=[], offline_decides=offd,
                offline_green_today=bool(offd) and all(tests[x].get("runs_today", {}).get("result") == "PASS" for x in offd),
-               every_decider_runnable_today=all(not tests[x].get("new") and tests[x].get("runs_today", {}).get("result") == "PASS"
-                                                for x in dec),
-               any_test_runnable_today=any(not tests[x].get("new") for x in dec + sup))
+               every_decider_runnable_today=all(runnable(tests[x]) for x in dec),
+               any_test_runnable_today=any(runnable(tests[x]) for x in dec + sup))
     if bid in have:
         bars[[b["id"] for b in bars].index(bid)] = row
     else:
@@ -143,7 +201,9 @@ tab["made_0_2_0"] = dict(at=datetime.datetime.now().astimezone().isoformat(times
                          by="steward run RIMMANDRAKE_STEWARD_EXPLOSIVEKNOCKBACK_PREFLIGHT_STAGE "
                             "(version/pilot_throwaway/extend_test_table_0_2_0.py)",
                          what="the 59 rows of 0.1.0 kept; the 14 bars of 0.2.0 added with the deciders their "
-                              "record.json proof_note names, each new test specified (new: true) for Stage 3")
+                              "record.json proof_note names, each new test specified (new: true) for Stage 3; a test a Stage 3 "
+                              "batch built (BUILT) is measured now and leaves new: true",
+                         built=sorted(BUILT))
 json.dump(tab, open(C + "/version/test_table.json", "w"), indent=1)
 
 # the read view: the 0.1.0 view stays below a 0.2.0 head and section

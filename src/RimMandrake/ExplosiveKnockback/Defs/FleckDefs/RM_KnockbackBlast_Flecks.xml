@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Explosive Knockback 0.2.0: the blast show's flecks (design/specs/2026-11-24-knockback-blast-show/design.md §3).
+     Sizes and counts come from RM_KnockbackShowPlan (offline-tested); the times below are the look, the live scene
+     sc_blast_show's and the art judge's to read. Every texture is our own art (design §6), made by the art pipeline and
+     installed by `art install` under Textures/Things/Mote/RM_KnockbackBlast/; the ripple alone uses the game's own
+     distortion textures, as the design says (§3.6, "Art: none"). -->
+<Defs>
+
+  <!-- the white-hot disc that outshines the scene for a few frames (§3.1), drawn additive as vanilla's ExplosionFlash -->
+  <FleckDef ParentName="FleckBase">
+    <defName>RM_KnockbackBlastFlash</defName>
+    <altitudeLayer>MoteOverhead</altitudeLayer>
+    <fadeInTime>0</fadeInTime>
+    <solidTime>0.06</solidTime>
+    <fadeOutTime>0.14</fadeOutTime>
+    <graphicData>
+      <texPath>Things/Mote/RM_KnockbackBlast/Flash</texPath>
+      <shaderType>MoteGlow</shaderType>
+    </graphicData>
+  </FleckDef>
+
+  <!-- fireball lobes that swell fast, slow, darken and break up (§3.2) -->
+  <FleckDef ParentName="FleckBase_RandomGraphic">
+    <defName>RM_KnockbackBlastFireball</defName>
+    <altitudeLayer>MoteOverhead</altitudeLayer>
+    <fadeInTime>0.03</fadeInTime>
+    <solidTime>0.22</solidTime>
+    <fadeOutTime>0.6</fadeOutTime>
+    <growthRate>2.5</growthRate>
+    <randomGraphics>
+      <li><graphicClass>Graphic_Fleck</graphicClass><shaderType>MoteGlow</shaderType><texPath>Things/Mote/RM_KnockbackBlast/FireballA</texPath></li>
+      <li><graphicClass>Graphic_Fleck</graphicClass><shaderType>MoteGlow</shaderType><texPath>Things/Mote/RM_KnockbackBlast/FireballB</texPath></li>
+      <li><graphicClass>Graphic_Fleck</graphicClass><shaderType>MoteGlow</shaderType><texPath>Things/Mote/RM_KnockbackBlast/FireballC</texPath></li>
+      <li><graphicClass>Graphic_Fleck</graphicClass><shaderType>MoteGlow</shaderType><texPath>Things/Mote/RM_KnockbackBlast/FireballD</texPath></li>
+    </randomGraphics>
+  </FleckDef>
+
+  <!-- bright streaks that fly out and drop (§3.3) -->
+  <FleckDef ParentName="FleckBase_RandomGraphic_Thrown">
+    <defName>RM_KnockbackBlastSpark</defName>
+    <altitudeLayer>MoteOverhead</altitudeLayer>
+    <fadeInTime>0</fadeInTime>
+    <solidTime>0.25</solidTime>
+    <fadeOutTime>0.3</fadeOutTime>
+    <randomGraphics>
+      <li><graphicClass>Graphic_Fleck</graphicClass><shaderType>MoteGlow</shaderType><texPath>Things/Mote/RM_KnockbackBlast/SparkA</texPath></li>
+      <li><graphicClass>Graphic_Fleck</graphicClass><shaderType>MoteGlow</shaderType><texPath>Things/Mote/RM_KnockbackBlast/SparkB</texPath></li>
+      <li><graphicClass>Graphic_Fleck</graphicClass><shaderType>MoteGlow</shaderType><texPath>Things/Mote/RM_KnockbackBlast/Ember</texPath></li>
+    </randomGraphics>
+  </FleckDef>
+
+  <!-- clods thrown from soil (§3.4) -->
+  <FleckDef ParentName="FleckBase_RandomGraphic_Thrown">
+    <defName>RM_KnockbackBlastDirt</defName>
+    <altitudeLayer>MoteOverhead</altitudeLayer>
+    <fadeInTime>0</fadeInTime>
+    <solidTime>0.5</solidTime>
+    <fadeOutTime>0.4</fadeOutTime>
+    <randomGraphics>
+      <li><graphicClass>Graphic_Fleck</graphicClass><shaderType>Mote</shaderType><texPath>Things/Mote/RM_KnockbackBlast/DirtA</texPath></li>
+      <li><graphicClass>Graphic_Fleck</graphicClass><shaderType>Mote</shaderType><texPath>Things/Mote/RM_KnockbackBlast/DirtB</texPath></li>
+      <li><graphicClass>Graphic_Fleck</graphicClass><shaderType>Mote</shaderType><texPath>Things/Mote/RM_KnockbackBlast/DirtC</texPath></li>
+      <li><graphicClass>Graphic_Fleck</graphicClass><shaderType>Mote</shaderType><texPath>Things/Mote/RM_KnockbackBlast/DirtD</texPath></li>
+    </randomGraphics>
+  </FleckDef>
+
+  <!-- chips thrown from stone and built floors (§3.4) -->
+  <FleckDef ParentName="FleckBase_RandomGraphic_Thrown">
+    <defName>RM_KnockbackBlastStone</defName>
+    <altitudeLayer>MoteOverhead</altitudeLayer>
+    <fadeInTime>0</fadeInTime>
+    <solidTime>0.5</solidTime>
+    <fadeOutTime>0.4</fadeOutTime>
+    <randomGraphics>
+      <li><graphicClass>Graphic_Fleck</graphicClass><shaderType>Mote</shaderType><texPath>Things/Mote/RM_KnockbackBlast/StoneA</texPath></li>
+      <li><graphicClass>Graphic_Fleck</graphicClass><shaderType>Mote</shaderType><texPath>Things/Mote/RM_KnockbackBlast/StoneB</texPath></li>
+      <li><graphicClass>Graphic_Fleck</graphicClass><shaderType>Mote</shaderType><texPath>Things/Mote/RM_KnockbackBlast/StoneC</texPath></li>
+      <li><graphicClass>Graphic_Fleck</graphicClass><shaderType>Mote</shaderType><texPath>Things/Mote/RM_KnockbackBlast/StoneD</texPath></li>
+    </randomGraphics>
+  </FleckDef>
+
+  <!-- a ring of bent air that races out to the blast's edge (§3.6): the game's own distortion shader and textures, as
+       vanilla's ShockwaveFast. growthRate MUST equal RM_KnockbackShowPlan.RippleGrowthPerSecond (B_RIPPLE_RATE). -->
+  <FleckDef ParentName="FleckBase">
+    <defName>RM_KnockbackBlastRipple</defName>
+    <altitudeLayer>MoteLow</altitudeLayer>
+    <fadeInTime>0</fadeInTime>
+    <solidTime>0.1</solidTime>
+    <fadeOutTime>0.08</fadeOutTime>
+    <growthRate>30</growthRate>
+    <graphicData>
+      <graphicClass>Graphic_FleckPulse</graphicClass>
+      <texPath>Things/Mote/Black</texPath>
+      <shaderType>MoteLargeDistortionWave</shaderType>
+      <shaderParameters>
+        <_DistortionTex>/Things/Mote/PsychicDistortionCurrents</_DistortionTex>
+        <_NoiseTex>/Things/Mote/PsycastNoise</_NoiseTex>
+        <_distortionIntensity>0.12</_distortionIntensity>
+        <_brightnessMultiplier>1.2</_brightnessMultiplier>
+      </shaderParameters>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+  </FleckDef>
+
+</Defs>

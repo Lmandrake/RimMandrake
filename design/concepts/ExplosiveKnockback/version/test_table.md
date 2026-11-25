@@ -1,12 +1,12 @@
 # Explosive Knockback 0.2.0: test-and-stage table
 
-Generated 2026-11-24T17:06:58-08:00 from `test_table.json` (the record; this is its read view) by `version/pilot_throwaway/extend_test_table_0_2_0.py`. 0.2.0 keeps the 59 bars of 0.1.0 (their rows are below, as 0.1.0 left them) and adds 14. A bar passes when every deciding test passes.
+Generated 2026-11-24T20:56:25-08:00 from `test_table.json` (the record; this is its read view) by `version/pilot_throwaway/extend_test_table_0_2_0.py`. 0.2.0 keeps the 59 bars of 0.1.0 (their rows are below, as 0.1.0 left them) and adds 14. A bar passes when every deciding test passes.
 
 ## Counts (measured)
 
 - bars: 73
-- with every deciding test runnable today: 59
-- tests specified for Stage 3 (new: true): 14
+- with every deciding test runnable today: 67
+- tests specified for Stage 3 (new: true): 12
 
 ## The 14 bars new in 0.2.0
 
@@ -43,7 +43,7 @@ Generated 2026-11-24T17:06:58-08:00 from `test_table.json` (the record; this is 
 | `sc_pawn_arc_sandbag_no_contact` | 6 | live_minimal | `RM_KnockbackProof.cs::pawn_arc` | RIMMANDRAKE_FOLD_KNOCKBACK_POLISH_LINES_INTO_ZERO_TWO_THREE_JUDGED_IN | a revised sc_pawn_arc lane: a pawn behind a sandbag the throw cannot cross takes no impact and no bruise |
 | `sc_gas_chain_pawn_on_cover` | 6 | live_minimal | `RM_KnockbackProof.cs::gas_chain` | RIMMANDRAKE_FOLD_KNOCKBACK_POLISH_LINES_INTO_ZERO_TWO_THREE_JUDGED_IN | a lane of sc_gas_chain: a colonist on an intact pit cover is shoved one cell by a gas burst |
 | `sc_storeroom_mortar_rebound_legs` | 6 | live_minimal | `RM_KnockbackProof.cs::storeroom_mortar` | RIMMANDRAKE_FOLD_KNOCKBACK_POLISH_LINES_INTO_ZERO_TWO_THREE_JUDGED_IN | sc_storeroom_mortar's trace: each rebound leg of a thrown good is shorter than the leg before, until it rests |
-| `sc_blast_show` | 6 | live_minimal | `RM_KnockbackProof.cs::blast_show` | RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS | one grenade and one mortar shell on soil and on stone: fire and flash; camera shake after a small and a big blast at the same distance and with the slider at none; the air ring over a tiled floor; smoke at three times in still air and in wind with the thrown colonist visible in each; the scar after the blast, after a day and after cleaning; the paint of a wall, a door, a table and a floor cell inside and outside the blast and after the paint is removed; the soot of a colonist and an animal in the blast and of one outside it, then after rain; a grenade and an antigrain-class blast on two like pads, each part compared; each capture goes to the art judge (design/RimMandrake/art_judge_brief.md), whose keep is part of this verdict |
+| `sc_blast_show` | 6 | live_minimal | `scene_blast_show.py::scene_blast_show.py` | RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS | one grenade and one mortar shell on soil and on stone: fire and flash; camera shake after a small and a big blast at the same distance and with the slider at none; the air ring over a tiled floor; smoke at three times in still air and in wind with the thrown colonist visible in each; the scar after the blast, after a day and after cleaning; the paint of a wall, a door, a table and a floor cell inside and outside the blast and after the paint is removed; the soot of a colonist and an animal in the blast and of one outside it, then after rain; a grenade and an antigrain-class blast on two like pads, each part compared; each capture goes to the art judge (design/RimMandrake/art_judge_brief.md), whose keep is part of this verdict |
 | `sc_settings_sweep_show_switches` | 6 | live_minimal | `RM_KnockbackProof.cs::settings_sweep` | RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS | sc_settings_sweep with each show switch off in turn, and a throw compared show-on against show-off |
 
 ---

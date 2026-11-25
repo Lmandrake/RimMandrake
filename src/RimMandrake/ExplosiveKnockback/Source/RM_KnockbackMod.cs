@@ -141,6 +141,14 @@ namespace RimMandrake.ExplosiveKnockback
         public static int recoveryWindowTicks = 120;
         public static bool shieldsAbsorbThrow = true;
         public static float shieldDebitPerForce = 10f;
+        // the blast show (design/specs/2026-11-24-knockback-blast-show/design.md §5): one on/off per part, all on; every
+        // part off gives the unmodded look of a blast. The smoke and soot switches come with those parts.
+        public static bool showFireAndFlash = true;
+        public static bool showScreenShake = true;
+        public static bool showAirRipple = true;
+        public static bool showCraterScars = true;
+        public static float showShakeStrength = 1f;       // 0 = none, 2 = double; inside the player's own Screen shake preference
+        public static int showMarksLast = 1;              // how long scars last: 0 short, 1 normal, 2 long (marks made after the change)
 
         /// <summary>Per-request kernel settings for one blast's configuration (never mutates the shared settings).</summary>
         public static KbSettings Kernel(KbConfig c)
@@ -229,6 +237,12 @@ namespace RimMandrake.ExplosiveKnockback
             Scribe_Values.Look(ref recoveryWindowTicks, "recoveryWindowTicks", 120);
             Scribe_Values.Look(ref shieldsAbsorbThrow, "shieldsAbsorbThrow", true);
             Scribe_Values.Look(ref shieldDebitPerForce, "shieldDebitPerForce", 10f);
+            Scribe_Values.Look(ref showFireAndFlash, "showFireAndFlash", true);
+            Scribe_Values.Look(ref showScreenShake, "showScreenShake", true);
+            Scribe_Values.Look(ref showAirRipple, "showAirRipple", true);
+            Scribe_Values.Look(ref showCraterScars, "showCraterScars", true);
+            Scribe_Values.Look(ref showShakeStrength, "showShakeStrength", 1f);
+            Scribe_Values.Look(ref showMarksLast, "showMarksLast", 1);
             RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
@@ -374,6 +388,26 @@ namespace RimMandrake.ExplosiveKnockback
                 list.GapLine();
             }
 
+            if (Group(list, "Blast show", RimMandrake.Shared.SettingScope.Now, new[] { "showFireAndFlash", "showScreenShake", "showShakeStrength", "showAirRipple", "showCraterScars", "showMarksLast" }))
+            {
+                list.CheckboxLabeled("Fire and flash", ref showFireAndFlash,
+                    "On (the default): a harmful blast shows a white flash, a fireball that swells and dies, sparks, and dirt or stone thrown from the ground it hit (a fire blast throws no dirt). Off: the game's own flash and puffs.");
+                list.CheckboxLabeled("Screen shake", ref showScreenShake,
+                    "On (the default): the view kicks harder for a bigger and a nearer blast, a big blast shakes longer, and a far small blast does not shake it. Off: the game's own shake.");
+                if (showScreenShake)
+                {
+                    list.Label("Screen shake strength: " + showShakeStrength.ToString("0.00") + "x  (0 = none, 1 = as shipped, 2 = double; inside your own Screen shake setting)");
+                    showShakeStrength = Mathf.Round(list.Slider(showShakeStrength, 0f, 2f) * 20f) / 20f;
+                }
+                list.CheckboxLabeled("Air ripple", ref showAirRipple,
+                    "On (the default): a ring of bent air runs out from a blast to about its edge; a bigger blast makes a wider, stronger ring. Off: no ring.");
+                list.CheckboxLabeled("Crater scars", ref showCraterScars,
+                    "On (the default): a blast leaves a scar sized by its power: torn ground on soil, a scorch on stone and floors, none on water. Rain and time wear it away and a colonist can clean it. Off: the game's own blast mark.");
+                list.Label("How long scars last: " + (showMarksLast == 0 ? "short (half)" : showMarksLast == 2 ? "long (double)" : "normal") + "  (acts on marks made after the change)");
+                showMarksLast = Mathf.RoundToInt(list.Slider(showMarksLast, 0f, 2f));
+                list.GapLine();
+            }
+
             if (Prefs.DevMode && Group(list, "Debug", RimMandrake.Shared.SettingScope.Now, new[] { "debugDrawVectors" }))
             {
                 list.CheckboxLabeled("Debug: draw throw vectors", ref debugDrawVectors);
@@ -504,6 +538,12 @@ namespace RimMandrake.ExplosiveKnockback
             RimMandrakeExplosiveKnockbackSettings.recoveryWindowTicks = 120;
             RimMandrakeExplosiveKnockbackSettings.shieldsAbsorbThrow = true;
             RimMandrakeExplosiveKnockbackSettings.shieldDebitPerForce = 10f;
+            RimMandrakeExplosiveKnockbackSettings.showFireAndFlash = true;
+            RimMandrakeExplosiveKnockbackSettings.showScreenShake = true;
+            RimMandrakeExplosiveKnockbackSettings.showAirRipple = true;
+            RimMandrakeExplosiveKnockbackSettings.showCraterScars = true;
+            RimMandrakeExplosiveKnockbackSettings.showShakeStrength = 1f;
+            RimMandrakeExplosiveKnockbackSettings.showMarksLast = 1;
         }
     }
 }

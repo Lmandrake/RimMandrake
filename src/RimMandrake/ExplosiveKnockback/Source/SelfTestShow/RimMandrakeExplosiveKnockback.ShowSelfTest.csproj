@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Offline selftest of the blast show's kernel. Compiles the PRODUCTION RM_KnockbackShowPlan.cs and RM_KnockbackMath.cs;
+       no RimWorld refs. Run: python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_blast_show.py -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <AssemblyName>RimMandrakeExplosiveKnockback.ShowSelfTest</AssemblyName>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <BaseOutputPath>bin\</BaseOutputPath>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\RM_KnockbackMath.cs" />
+    <Compile Include="..\RM_KnockbackShowPlan.cs" />
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+</Project>

@@ -1,4 +1,17 @@
 {
+ "T_BLAST_SHOW_OFFLINE": {
+  "at": "2026-11-25T04:56:42Z",
+  "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_blast_show.py",
+  "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_blast_show.py",
+  "last": "FAIL blast show: 9 of 27 line(s) failing",
+  "patch": "--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackShowPlan.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackShowPlan.cs\n@@ -257,7 +257,7 @@\n                 p.replayWaterSplash = true;\n                 if (b.inView && b.onCurrentMap)\n                 {\n-                    p.flashScale = VanillaFlashPerRadius * er;\n+                    p.flashScale = VanillaFlashPerRadius * RefRadius;\n                     // three to six lobes (\u00a73.2): one more for each doubling of power from 1, three below it\n                     p.fireballLobes = Clamp(3 + (int)Math.Floor(Math.Log(Math.Max(1f, p.power), 2.0)), 3, 6);\n                     p.fireballScale = 1.2f * er;\n",
+  "patch_files": [
+   "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackShowPlan.cs"
+  ],
+  "patch_sha": "8c515b48a182a41e",
+  "rc": 1,
+  "test_blob": "e59d039b1ad405802c329ce99b9ca2cc0b6aad2b"
+ },
  "T_FUZZ": {
   "at": "2026-11-23T12:19:57Z",
   "command": "python3 src/RimMandrake/Utils/selftest_explosiveknockback_fuzz.py",
@@ -65,30 +78,30 @@
   "test_blob": "9a4f7b477f47cb27d9564c1a7af6fa4e8a27f8b1"
  },
  "T_SETTINGS_SCREEN": {
-  "at": "2026-11-23T12:20:21Z",
+  "at": "2026-11-25T04:57:10Z",
   "command": "python3 src/RimMandrake/Utils/selftest_settings_screens.py --mod ExplosiveKnockback",
   "file": "src/RimMandrake/Utils/selftest_settings_screens.py",
   "last": "settings screens selftest: 6/7 ok (mods: ExplosiveKnockback)",
-  "patch": "diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs\nindex 0f94fbc7d9..2574a49b46 100644\n--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs\n@@ -364,7 +364,7 @@ namespace RimMandrake.ExplosiveKnockback\n                 list.GapLine();\n             }\n \n-            if (Group(list, \"Shield belts\", RimMandrake.Shared.SettingScope.Now, new[] { \"shieldsAbsorbThrow\", \"shieldDebitPerForce\" }))\n+            if (Group(list, \"Shield belts\", RimMandrake.Shared.SettingScope.Now, new[] { \"shieldsAbsorbThrow\" }))\n             {\n                 list.CheckboxLabeled(\"Shield belts absorb the throw\", ref shieldsAbsorbThrow,\n                     \"On: a pawn whose shield absorbed the blast is not thrown, and the shield pays extra charge for it (a strong throw can pop it). Off: shields stop the wound, never the shove.\");\n",
+  "patch": "--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs\n@@ -388,7 +388,7 @@\n                 list.GapLine();\n             }\n \n-            if (Group(list, \"Blast show\", RimMandrake.Shared.SettingScope.Now, new[] { \"showFireAndFlash\", \"showScreenShake\", \"showShakeStrength\", \"showAirRipple\", \"showCraterScars\", \"showMarksLast\" }))\n+            if (Group(list, \"Blast show effects\", RimMandrake.Shared.SettingScope.Now, new[] { \"showFireAndFlash\", \"showScreenShake\", \"showShakeStrength\", \"showAirRipple\", \"showCraterScars\", \"showMarksLast\" }))\n             {\n                 list.CheckboxLabeled(\"Fire and flash\", ref showFireAndFlash,\n                     \"On (the default): a harmful blast shows a white flash, a fireball that swells and dies, sparks, and dirt or stone thrown from the ground it hit (a fire blast throws no dirt). Off: the game's own flash and puffs.\");\n",
   "patch_files": [
    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs"
   ],
-  "patch_sha": "eda2f061d059c9ad",
+  "patch_sha": "69c066cf95706c92",
   "rc": 1,
-  "test_blob": "e9bc063b23c724c03dc083e4fe903a476d17771b"
+  "test_blob": "9fde2309a33235d9a07055241681db05e865eadb"
  },
  "T_SETTINGS_SWEEP_OFFLINE": {
-  "at": "2026-11-23T12:20:26Z",
+  "at": "2026-11-25T04:57:09Z",
   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py",
   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py",
   "last": "explosive knockback settings sweep: PASS (24 runs, 0 faults, 2/2 coupling mutants caught) | static: 1 faults, 4/4 planted caught, 10/10 switch faults caught | FAIL",
-  "patch": "diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs\nindex 0f94fbc7d9..d51192b452 100644\n--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs\n@@ -158,7 +158,7 @@ namespace RimMandrake.ExplosiveKnockback\n                 lightMassLimit = lightMassLimit,\n                 impactEnabled = impactDamageEnabled,\n                 impactPerCell = impactDamagePerCell,\n-                sandbagsStop = sandbagsStopThrow,\n+                sandbagsStop = sandbagsStopThrow && throwIntoPits,\n                 intoPits = throwIntoPits,\n             };\n         }\n",
+  "patch": "--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs\n@@ -239,7 +239,6 @@\n             Scribe_Values.Look(ref shieldDebitPerForce, \"shieldDebitPerForce\", 10f);\n             Scribe_Values.Look(ref showFireAndFlash, \"showFireAndFlash\", true);\n             Scribe_Values.Look(ref showScreenShake, \"showScreenShake\", true);\n-            Scribe_Values.Look(ref showAirRipple, \"showAirRipple\", true);\n             Scribe_Values.Look(ref showCraterScars, \"showCraterScars\", true);\n             Scribe_Values.Look(ref showShakeStrength, \"showShakeStrength\", 1f);\n             Scribe_Values.Look(ref showMarksLast, \"showMarksLast\", 1);\n",
   "patch_files": [
    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs"
   ],
-  "patch_sha": "924363a99fd88f0a",
+  "patch_sha": "e9f29c7af32ffaea",
   "rc": 1,
-  "test_blob": "787cc18515457b03ad94d895813165e4d18ea988"
+  "test_blob": "6bed4fca55e904313202766d09fa3da00db64e54"
  },
  "T_SITUATION_MAP_OFFLINE": {
   "at": "2026-11-24T13:27:45Z",
