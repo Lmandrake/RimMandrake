@@ -9,7 +9,7 @@ build.py --gm --apply and a restart:
 
 The five rows of the ticket, each on a fresh quicktest map with the profile armed (certified lines from the committed tap
 certificate when it is valid for the loaded identity, else none: the controls then read ARMED UNPROVEN, which the rows accept):
-  planted_incident_is_one_breach             a forced RaidEnemy by a call: held, and ONE breach that names it
+  planted_incident_is_one_breach             a forced Eclipse by a call (no raid: raid tests are paused): held, and ONE breach that names it
   planted_wild_animal_at_the_edge_is_one_breach  a Muffalo spawned at the map edge by an act inside a run (a game tick): ONE
                                              arrival breach that names it
   planted_weather_change_is_one_breach      a locked Rain: ONE weather breach that names it
@@ -82,6 +82,11 @@ def arm(lines, **spec):
     return cp("arm", spec=json.dumps(spec))
 
 
+def incident_held(f, nb):
+    """The incident row's check: the planted incident did not fire, and ONE breach names it as held."""
+    return f.get("fired") is not True and len(nb) == 1 and nb[0].get("kind") == "incident_held" and "Eclipse" in str(nb[0].get("what"))
+
+
 def wait_frames(s=1.5):
     time.sleep(s)                  # Root_Play.Update runs each frame, paused or not: the gate poll and the weather watch
 
@@ -121,12 +126,24 @@ def main():
 
     # 1. a planted incident
     seq = (r.get("breaches") or {}).get("lastSeq") or 0
-    f = W.call("jawa/fire_incident", incidentDef="RaidEnemy", forced=True, points=200)
+    # Eclipse, not a raid: raid tests are paused (raid_pause.py), and the gate holds any incident by the same route.
+    f = W.call("jawa/fire_incident", incidentDef="Eclipse", forced=True)
     wait_frames()
     r = cp("read", sinceSeq=seq)
     nb = new_breaches(r, seq)
-    W.row("planted_incident_is_one_breach", f.get("fired") is not True and len(nb) == 1 and nb[0].get("kind") == "incident_held" and "RaidEnemy" in str(nb[0].get("what")),
-          "fired=%s breaches=%s; reply %s" % (f.get("fired"), nb, json.dumps(f)[:300]))
+    W.row("planted_incident_is_one_breach", incident_held(f, nb), "fired=%s breaches=%s; reply %s" % (f.get("fired"), nb, json.dumps(f)[:300]))
+    # the planted fault of this check: with the incident gate excepted, the same act must read red
+    cp("leave")
+    rp = arm(lines, **{"except": "incident_gate"})
+    seq = (rp.get("breaches") or {}).get("lastSeq") or 0
+    fp = W.call("jawa/fire_incident", incidentDef="Eclipse", forced=True)
+    wait_frames()
+    nbp = new_breaches(cp("read", sinceSeq=seq), seq)
+    W.row("planted_incident_check_red_with_the_gate_excepted", incident_held(fp, nbp) is False and fp.get("fired") is True,
+          "fired=%s breaches=%s" % (fp.get("fired"), nbp))
+    W.call("jawa/game_condition", action="end", condition="Eclipse")
+    cp("leave")
+    r = arm(lines)
 
     # 2. a planted wild animal at the map edge, in a game tick (an act of a run)
     import prove_run_until as R
@@ -143,8 +160,8 @@ def main():
     wait_frames()
     r = cp("read", sinceSeq=seq)
     nb = new_breaches(r, seq)
-    W.row("planted_wild_animal_at_the_edge_is_one_breach", len(nb) == 1 and nb[0].get("kind") == "arrival" and "Muffalo" in str(nb[0].get("what")),
-          "run %s %s; acts %s; breaches=%s; placed=%s" % (rep.get("run"), rep.get("why"), [x.get("state") for x in rep.get("acts") or []], nb, r.get("placed")))
+    W.row("planted_wild_animal_at_the_edge_is_one_breach", None if not rep.get("run") else len(nb) == 1 and nb[0].get("kind") == "arrival" and "Muffalo" in str(nb[0].get("what")),
+          "run %s %s; acts %s; breaches=%s; placed=%s; reply %s" % (rep.get("run"), rep.get("why"), [x.get("state") for x in rep.get("acts") or []], nb, r.get("placed"), "" if rep.get("run") else json.dumps(rep)[:300]))
 
     # 3. a planted weather change
     seq = (r.get("breaches") or {}).get("lastSeq") or 0
