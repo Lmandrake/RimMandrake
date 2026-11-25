@@ -703,6 +703,33 @@ def t_the_conductor_ends_a_dead_bundle():
     chk(lambda: o.verb == "end" and o.why == "dead", "end: the command line parses")
 
 
+def t_five_tickets_two_fixed_one_run():
+    """The item's acceptance (RIMMANDRAKE_BATCH_ONE_MODS_OPEN_WORK_INTO_ONE_RUN_PIPELINE_SPLITS_PER_TICKET): on five open
+    tickets of one mod, two already fixed, the batch command closes the two with their commit and launches exactly one
+    run whose brief lists the other three."""
+    W = WB()
+    ids = ["AC_ONE", "AC_TWO", "AC_THREE", "AC_FOUR", "AC_FIVE"]
+    green = {"AC_TWO", "AC_FOUR"}
+    items = {i: item(i, home="mod:Pyrelands", effect="cmd:check-%s" % i, title="ticket %s" % i) for i in ids}
+    closed, launched = [], []
+
+    def launcher(rec, text):
+        launched.append(text)
+        return 0, "DETACHED u-acc", "u-acc"
+    got = W.bundle_command("mod:Pyrelands", ids, items, "acceptance", NOW + 900, prose_of=lambda i: "",
+                           run_effect=lambda t, r: ("holds", "ok") if t[10:] in green else ("fails", "red"),
+                           run_script_fn=lambda p, r: ("fails", ""), sha="abc1234",
+                           closer=lambda i, sha, ev: closed.append((i, sha)) or (0, "closed"),
+                           refused={}.get, held=lambda i: None, leased=lambda it: False, launcher=launcher)
+    chk(lambda: sorted(closed) == [("AC_FOUR", "abc1234"), ("AC_TWO", "abc1234")],
+        "acceptance: the two already fixed close, with the commit named (%s)" % closed)
+    chk(lambda: len(launched) == 1 and all(i in launched[0] for i in ("AC_ONE", "AC_THREE", "AC_FIVE"))
+        and not any(i in launched[0] for i in green), "acceptance: exactly one run, its brief lists the other three")
+    chk(lambda: got["rc"] == 0 and got["rec"]["members"] == ["AC_ONE", "AC_THREE", "AC_FIVE"],
+        "acceptance: the bundle's members are the three (%s)" % got.get("rec", {}).get("members"))
+    W.store_write(dict(got["rec"], state="ended"))
+
+
 def t_each_limit_names_its_danger():
     import re
     src = open(os.path.join(HERE, "work_bundle.py"), encoding="utf-8").read().splitlines()
@@ -726,7 +753,7 @@ def main():
               t_a_bundle_with_every_outcome_ends, t_a_refused_member_is_stopped_with_its_reason,
               t_live_pass_takes_a_free_game_or_says_unrun, t_the_page_shows_each_live_bundle,
               t_the_maturation_road_back_is_one_bundle, t_a_test_never_writes_the_real_store,
-              t_the_conductor_ends_a_dead_bundle,
+              t_the_conductor_ends_a_dead_bundle, t_five_tickets_two_fixed_one_run,
               t_each_limit_names_its_danger]:
         print("-- %s" % t.__name__)
         try:

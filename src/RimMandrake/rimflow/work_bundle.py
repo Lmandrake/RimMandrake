@@ -543,6 +543,23 @@ def mod_gate(mod):
     return ("%s is off (%s); a mod's readiness list must read READY before it runs" % (mod, why)) if why else None
 
 
+def bundle_command(system, ids, items, why, now, prose_of, run_effect, run_script_fn, sha, refused, held, leased,
+                   launcher, closer=None, dry=False, pipeline="workshop"):
+    """The batch command's steps over its inputs: the sort (green members close as already fixed at `sha`), then ONE
+    bundle of the ready rest. -> {rows, closed, ready, out, rc: 0 | 1 | 2 | 3 (no ready member), rec}."""
+    rows = sort_apply(sort(ids, items, prose_of, run_effect, run_script_fn), sha, closer=closer or close_member, dry=dry)
+    closed = [r["id"] for r in rows if r.get("closed")]
+    rest = [i for i in ids if i not in closed]
+    ready, out = ready_split(rest, items, now, refused=refused, held=held, leased=leased)
+    got = {"rows": rows, "closed": closed, "ready": ready, "out": out, "rc": 3, "rec": None}
+    if not ready:
+        return got
+    rc, rec = launch_bundle(system, ready, items, why, pipeline, now=now, tests=tests_text(ready, items, prose_of),
+                            launcher=launcher, launched_by="hand")
+    got.update(rc=rc, rec=rec)
+    return got
+
+
 def cmd_launch(o):
     """The hand launch, `./pipe bundle <home | Mod | ID...> --why "..."`: the sort first, then one bundle of the
     ready rest."""
@@ -563,28 +580,25 @@ def cmd_launch(o):
             return 2
     prose = prose_reader()
     sha, fault = build_sha()
-    rows = sort_apply(sort(ids, w.items, prose, LE.run, run_script, root=REPO), sha or "HEAD", dry=bool(fault))
-    for r in rows:
+    if fault:
+        print("sort runs dry (%s): its green members stay in the bundle, for the worker to close" % fault)
+    import mod_owner_hold as MOH
+    ref = refusals(LM.read())
+    got = bundle_command(system, ids, w.items, o.why, now, prose_of=prose, run_effect=LE.run, run_script_fn=run_script,
+                         sha=sha or "HEAD", dry=bool(fault), refused=ref.get,
+                         held=lambda i: None if mod else member_held(w.items[i], reading, MOH.held),
+                         leased=lambda it: _g(it, "state") == "doing" and LM.lease_status(it, now) == "live",
+                         launcher=lambda r, b: launch_run(r, b, mod=mod), pipeline="maturation" if mod else "workshop")
+    for r in got["rows"]:
         if r["verdict"] in ("holds", "holds_unproven", "unmeasured"):
             print("sort: %-62s %s" % (r["id"], r["act"]))
-    if fault:
-        print("sort ran dry (%s): its green members stay in the bundle, for the worker to close" % fault)
-    gone = set(r["id"] for r in rows if r.get("closed"))
-    rest = [i for i in ids if i not in gone]
-    ref = refusals(LM.read())
-    import mod_owner_hold as MOH
-    ready, out = ready_split(rest, w.items, now, refused=ref.get,
-                             held=lambda i: None if mod else member_held(w.items[i], reading, MOH.held),
-                             leased=lambda it: _g(it, "state") == "doing" and LM.lease_status(it, now) == "live")
-    for i, y in sorted(out.items()):
+    for i, y in sorted(got["out"].items()):
         print("left out: %-60s %s" % (i, _one(y, 160)))
-    if not ready:
-        print("NO BUNDLE: %s has no ready member (%d closed by the sort, %d left out)" % (system, len(gone), len(out)))
-        return 0 if gone else 2
-    tests = tests_text(ready, w.items, prose)
-    pipeline = "maturation" if mod else "workshop"
-    rc, rec = launch_bundle(system, ready, w.items, o.why, pipeline, now=now, tests=tests,
-                            launcher=lambda r, b: launch_run(r, b, mod=mod), launched_by="hand")
+    rc, rec, ready = got["rc"], got["rec"], got["ready"]
+    if rc == 3:
+        print("NO BUNDLE: %s has no ready member (%d closed by the sort, %d left out)" % (system, len(got["closed"]),
+                                                                                        len(got["out"])))
+        return 0 if got["closed"] else 2
     if rc == 2:
         print("REFUSED: %s" % rec)
         return 2

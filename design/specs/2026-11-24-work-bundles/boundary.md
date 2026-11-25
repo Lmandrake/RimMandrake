@@ -62,6 +62,9 @@ bundle began). A member with none of these is **open**.
 - **members-are-one-system.** A target names one system. Ticket ids whose systems differ are refused, and the refusal
   names each id's system (two systems are never in one bundle). A `mod:` system is never launched by the Workshop
   Pipeline (`list_dispatch` leaves mod work to the Maturation Pipeline, as before).
+- **five-tickets-two-fixed-one-run.** The item's acceptance: on five open tickets of one mod, two already fixed, the
+  batch command (`work_bundle.bundle_command`, behind `./pipe bundle`) closes the two with the commit named and launches
+  exactly one run whose brief lists the other three.
 - **each-limit-names-its-danger.** Each number in `work_bundle.py` names the danger it guards beside it.
 - **ready-members-only.** A hand launch takes the open members that are ready: not under another live lease, no dated
   wait ahead, not blocked, not waiting on an open item, not refused since its last other event, not held by the owner.
