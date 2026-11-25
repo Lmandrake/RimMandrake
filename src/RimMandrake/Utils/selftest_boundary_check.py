@@ -71,6 +71,24 @@ def page_only_change(td, write):
           "PAGES is UNREADABLE, not passed by silence", (rc, out[-600:]))
 
 
+def runtime_optional_test_counted(td, write):
+    page = os.path.join(td, "optional.md")
+    tests = os.path.join(td, "selftest_optional.py")
+    write(page, "# BOUNDARY: optional\n\n## PROMISES\n\n- **always.** a.\n- **live.** b.\n")
+    defs = "import argparse\nimport sys\n\ndef t_always():\n    pass\n\ndef t_live():\n    pass\n\n"
+    parse = ('    parser = argparse.ArgumentParser()\n    parser.add_argument("--live", action="store_true")\n'
+             '    args = parser.parse_args()\n')
+    for signature, setup, guard in (("argv", "", "'--live' in argv"),
+                                    ("", "", "'--live' in sys.argv"),
+                                    ("", parse, "args.live")):
+        write(tests, defs + "def main(%s):\n%s    t_always()\n    if %s:\n        t_live()\n"
+              % (signature, setup, guard))
+        rc, out = run(page, "--tests", tests)
+        check(rc == 3 and "UNREADABLE" in out and "run time" in out and "t_live" in out and "covered" not in out,
+              "runtime_optional_test_counted: a CLI-only promise is unreadable, with no coverage count (%s)" % guard,
+              (rc, out))
+
+
 def main():
     td = tempfile.mkdtemp(prefix="selftest_boundary_check_")
     page, tests = os.path.join(td, "boundary.md"), os.path.join(td, "selftest_x.py")
@@ -92,6 +110,7 @@ def main():
     rc, out = run(page, "--tests", tests)
     check(rc == 0 and "promises covered 3 of 3" in out, "every promise tested (a def, or a name bound to one) and run by "
           "main(): exit 0", (rc, out))
+    runtime_optional_test_counted(td, write)
     unrun = os.path.join(td, "selftest_unrun.py")
     write(unrun, "def t_off_blocks_starts():\n    pass\n\n\ndef t_queue_is_the_stores():\n    pass\n\n\n"
                  "def t_a_lost_lock():\n    pass\n\n\ndef main():\n    t_off_blocks_starts()\n    t_a_lost_lock()\n")

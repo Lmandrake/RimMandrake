@@ -2,8 +2,8 @@
 """owner_queue.py — the ONE answer to "what truly waits on the owner?", for MATURATION_NOW's "Needs Mandrake" and the mods.
 
 FLEETWATCH_NEEDS_FIX_NOTHING_WHILE_MODS_WAIT: the board's header read "Nothing." while ten mods said "waits on you",
-because the header came from a field nobody wrote and the mods from `needs == owner`. Both now come from is_his(), so
-they cannot disagree, and the header carries the plain question he must answer for each.
+because the header came from a field nobody wrote and the mods from `needs == owner`. Both use the same needs_you()
+lines for the refresh (`mod_and_header_disagree_on_open_dependency`), with the plain question he must answer for each.
 
 An open item is his when the ledger routes it to him (needs=owner, or blocked with kind owner) AND, if Relentless
 holds it, the hold is one only he can lift: an `owner_call` (a delegation_policy §2 line) or a `game` hold for a
@@ -24,12 +24,13 @@ lock under the five-acts ruling (locked_by conductor, owner 2026-11-19, conducto
 pipeline lock certifies nothing. needs_you() names such a row under "certified".
 
 The list only names what he has not yet answered (RUNNING_PAGE_FIX_REVIEW_LEFTOVERS): an item leaves it when his own note
-landed after the ledger last routed it to him, because his turn is over and the next move is ours. A later `needs owner`
-event gives it back to him. It stays open; needs_you() lists it under "answered". Items sharing a leading word
+landed after the ledger last routed it to him, including a `spawn` with `needs=owner` (`spawned_owner_ask_stays_after_answer`).
+A later `needs owner` event gives it back to him. It stays open; needs_you() lists it under "answered". Items sharing a leading word
 (DRAWBRIDGE_...) fold into one row under `topics`, so one look is not asked five times.
 
-An item whose turn has not come is not listed: a dated wait ahead, or a block on a ticket that is still open (`later`).
-needs_you() names it under "later". (2026-11-23: an item waiting to 2026-12-05 sat under Needs Mandrake.)
+An item whose turn has not come goes under "later": a dated wait ahead, or a block on an open ticket that has yet to
+meet the ledger's release rule (`satisfied_build_dependency_still_hides_ask`). The real-books check also counts first
+touches under "later" (`real_books_test_omits_later`).
 
 The question per item lives in infrastructure/state/owner_questions.json ({item: one plain line}); an item with no
 line there shows its ledger title.
@@ -44,11 +45,14 @@ import os
 import re
 import sys
 import time
+from types import SimpleNamespace
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.dirname(HERE))   # rimflow.priority imports as part of its package
 sys.path.insert(0, os.path.join(os.path.dirname(HERE), "rimflow"))   # run_store, designer_stage
 import first_touch  # noqa: E402  the pass item's suffix and its id for a concept folder
 import run_store  # noqa: E402  the store's own test of a flyer hold: two copies of it disagreed
+from rimflow import priority  # noqa: E402  the ledger's block-release rule
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 QUESTIONS = os.path.join(REPO, "infrastructure", "state", "owner_questions.json")
 HIS_HOLDS = ("owner_call",)
@@ -89,7 +93,8 @@ def answered(it, evs):
         e = evs[i] if 0 <= i < len(evs) else {}
         if e.get("event") == "note" and e.get("seat") == "OWNER":
             said = True
-        elif ((e.get("event") == "needs" and e.get("to") == "owner") or (e.get("event") == "file" and e.get("needs") == "owner")
+        elif ((e.get("event") == "needs" and e.get("to") == "owner")
+              or (e.get("event") in ("file", "spawn") and e.get("needs") == "owner")
               or (e.get("event") == "block" and e.get("kind") == "owner")):
             return said
     return False        # no routing event on record: nothing says his turn came, so nothing says it ended
@@ -123,7 +128,7 @@ def designer_turns(root=None):
     """-> {item or "DESIGNER_<MOD>": one plain line} for every Designer turn that waits on him
     (designer_stage.pending_turns: status waiting_owner, no OWNER event naming the concept's item since it closed).
     DESIGNER_TURNS_FIX_LEFT_ON_THE_DOORSTEP: FlowWorks turn 2 sat five hours in turn_02.md, on no list he reads.
-    A folder or the whole root that cannot be read is a line too (DESIGNER_TURNS_UNMEASURED): never "nothing waits"."""
+    An unreadable folder or root gets a DESIGNER_TURNS_UNMEASURED line (unsearchable_designer_folder_reads_as_empty)."""
     try:
         import designer_stage as DS
         turns, bad = DS.pending_turns(root)
@@ -251,16 +256,20 @@ def awaiting_designer(it, passes=None):
 
 
 def later(it, items=None, now=None):
-    """-> True when the item's turn has not come: a dated wait ahead, or a block on a ticket that is still open. A date
-    that cannot be read and a blocker that was never filed are False: the row stays on his list. items None: no block is
-    read (the caller has no ledger)."""
+    """-> True for a dated wait ahead or an open prerequisite that has yet to meet the block's release rule.
+    A date that cannot be read and a blocker that was never filed are False: the row stays on his list. items None:
+    no block is read (the caller has no ledger)."""
     wu = _epoch(getattr(it, "wait_until", None)) if getattr(it, "wait_until", None) else None
     if wu is not None and wu > (time.time() if now is None else now):
         return True
     if not getattr(it, "blocked", False) or getattr(it, "blocked_kind", None) not in (None, "item"):
         return False
     ons = (getattr(it, "blocked_on", None),) + tuple(getattr(it, "blocked_also", None) or ())
-    return any(b and b in (items or {}) and items[b].open for b in ons)
+    if not any(b and b in (items or {}) and items[b].open for b in ons):
+        return False
+    # The default level is done, so an open prerequisite still holds it.
+    return (not getattr(it, "blocked_until", None)
+            or priority.block_holds(SimpleNamespace(items=items), it, time.time() if now is None else now))
 
 
 def is_his(it, rs, evs=None, turns=None, passes=None, certs=None, items=None, now=None):
@@ -475,7 +484,7 @@ def main():
     print("%d first touches certified by his own version lock (close them)" % len(n["certified"]))
     for x in n["certified"]:
         print("certified\t%s" % x["item"])
-    print("%d his later (a date ahead, or behind an open ticket)" % len(n["later"]))
+    print("%d his later (a date ahead, or behind an unmet prerequisite)" % len(n["later"]))
     for x in n["later"]:
         print("later\t%s\t%s" % (x["item"], x["q"]))
     return 0

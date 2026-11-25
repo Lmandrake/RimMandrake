@@ -12,10 +12,12 @@ import os
 import sys
 import tempfile
 from types import SimpleNamespace as NS
+from unittest.mock import patch
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import owner_queue as Q  # noqa: E402
 import fleet_mods as M  # noqa: E402
+import model as D  # noqa: E402
 
 FAILS = []
 
@@ -32,6 +34,92 @@ def it(needs="offline", open_=True, blocked=False, kind=None, title="T"):
 
 def held(kind, why=""):
     return {"status": "held", "hold": {"kind": kind, "why": why, "delivered": True}}
+
+
+def event(verb, **kw):
+    return dict({"event": verb, "seat": "BENCH", "ts": "2026-10-26T12:00:00Z"}, **kw)
+
+
+def filed(iid, needs="offline"):
+    return event("file", id=iid, title=iid, kind="task", needs=needs, **{"for": "BENCH"})
+
+
+def spawned_owner_ask_stays_after_answer():
+    iid, parent = "SPAWNED_OWNER_ASK", "PARENT_TASK"
+    events = [filed(parent), event("spawn", name=iid, needs="owner", **{"from": parent, "for": "BENCH"}),
+              event("note", id=iid, seat="OWNER", text="Retire it", byCard=True)]
+    world = D.replay(events, strict=True)
+    n = Q.needs_you(world.items, {}, {}, events)
+    check("spawned_owner_ask_stays_after_answer: the open spawn is answered and off his list",
+          world.items[iid].open and [x["item"] for x in n["answered"]] == [iid] and not n["lines"])
+    events.append(event("needs", id=iid, to="owner"))
+    n = Q.needs_you(D.replay(events, strict=True).items, {}, {}, events)
+    check("routing the spawn back to the owner returns it to his list", [x["item"] for x in n["lines"]] == [iid]
+          and not n["answered"])
+
+
+def blocked_ask(iid, **kw):
+    predecessor = "PREREQUISITE_TASK"
+    return [filed(iid, "owner"), filed(predecessor), event("claim", id=predecessor),
+            event("block", id=iid, kind="item", on=predecessor, reason="waiting for the prerequisite", **kw)]
+
+
+def mod_and_header_disagree_on_open_dependency():
+    iid = "GRAFFITI_OWNER_ASK"
+    events = blocked_ask(iid)
+    log = "@@fix\t%d\t%s: prepare the ask\nsrc/RimMandrake/Graffiti/Defs/a.xml\n" % (T0, iid)
+    with tempfile.TemporaryDirectory() as td:
+        mc = os.path.join(td, "modcheck.json")
+        with open(mc, "w") as f:
+            f.write("{}")
+        with patch.multiple(M, ledger=lambda: (events, D.replay(events, strict=True)), git_log=lambda days: log,
+                            relentless_states=lambda **_: {}, mod_folders=lambda: {"Graffiti": "Graffiti"},
+                            factory=lambda now: {}, MODCHECK=mc), patch.object(Q, "designer_turns", return_value={}):
+            report = M.gather(T0)
+            mod = report["mods"][0]
+            check("mod_and_header_disagree_on_open_dependency: later ask has no mod waits on you tag",
+                  [x["item"] for x in report["needs"]["later"]] == [iid] and not report["needs"]["lines"]
+                  and mod["waits_you"] == 0 and not mod["waits"] and mod["stuck"][0]["waits"] == "another item")
+            events.append(event("implemented", id="PREREQUISITE_TASK", sha="a" * 40))
+            report = M.gather(T0)
+            mod = report["mods"][0]
+            check("the satisfied dependency puts the ask in both fleet sections", not report["needs"]["later"]
+                  and [x["item"] for x in report["needs"]["lines"]] == [iid] and mod["waits_you"] == 1
+                  and mod["waits"][0].startswith("waits on you:") and mod["stuck"][0]["waits"] == "you")
+
+
+def satisfied_build_dependency_still_hides_ask():
+    iid = "WAIT_FOR_BUILD_ASK"
+    events = blocked_ask(iid, until="built")
+    world = D.replay(events, strict=True)
+    n = Q.needs_you(world.items, {}, {}, events, now=T0)
+    check("the ask waits under later while its predecessor is ready", world.items["PREREQUISITE_TASK"].state == "ready"
+          and [x["item"] for x in n["later"]] == [iid] and not n["lines"])
+    events.append(event("implemented", id="PREREQUISITE_TASK", sha="a" * 40, needs="bridge",
+                        criteria=[{"id": "scene", "level": "L1", "text": "show the built result"}]))
+    world = D.replay(events, strict=True)
+    n = Q.needs_you(world.items, {}, {}, events, now=T0)
+    check("satisfied_build_dependency_still_hides_ask: built predecessor releases the ask before unblock",
+          world.items["PREREQUISITE_TASK"].state == "built" and world.items["PREREQUISITE_TASK"].open
+          and world.items[iid].blocked and [x["item"] for x in n["lines"]] == [iid] and not n["later"])
+
+
+def real_books_covers(n, listed, routed):
+    return routed <= listed | {x["item"] for bucket in ("awaiting_designer", "answered", "certified", "later")
+                               for x in n[bucket]}
+
+
+def real_books_test_omits_later():
+    iid = "WAITING_DESIGN_FIRST_TOUCH"
+    events = blocked_ask(iid)
+    world = D.replay(events, strict=True)
+    n = Q.needs_you(world.items, {}, {}, events, turns={}, passes={iid}, certs=set(), now=T0)
+    routed = {i for i, x in world.items.items() if i.endswith(Q.first_touch.SUFFIX) and Q.routed(x)}
+    listed = {x["item"] for x in n["lines"] if x["item"].endswith(Q.first_touch.SUFFIX)}
+    check("the accepted first touch is listed only under later", routed == {iid} and not listed
+          and [x["item"] for x in n["later"]] == [iid] and not (n["awaiting_designer"] or n["answered"] or n["certified"]))
+    check("real_books_test_omits_later: real-books coverage includes the deferred first touch",
+          real_books_covers(n, listed, routed))
 
 
 items = {
@@ -283,6 +371,11 @@ check("it is named under later, never lost", {x["item"] for x in ln["later"]} ==
 check("a waiting Designer turn is his whatever the wait", {x["item"] for x in Q.needs_you(
     {"DATE_AHEAD": lits["DATE_AHEAD"]}, {}, {}, evs=[], turns={"DATE_AHEAD": "turn"}, now=T0)["lines"]} == {"DATE_AHEAD"})
 
+spawned_owner_ask_stays_after_answer()
+mod_and_header_disagree_on_open_dependency()
+satisfied_build_dependency_still_hides_ask()
+real_books_test_omits_later()
+
 # the real books: every first-touch row routed to him is on exactly one list, and a listed one has its pass or its turn
 real_evs, real_w = M.ledger()
 real_turns, real_passes = Q.designer_turns(), Q.read_designer_passes(os.path.join(Q.REPO, "design", "concepts"))  # this tree, whichever clone runs it
@@ -292,7 +385,7 @@ listed = {x["item"] for x in n["lines"] if x["item"].endswith(first_touch_suffix
 real_routed = {i for i, x in real_w.items.items() if i.endswith(first_touch_suffix) and Q.routed(x)}
 check("real books: the concepts root reads", real_passes is not None)
 check("real books: no listed first-touch row lacks a pass or a turn", all(i in real_passes or i in real_turns for i in listed))
-check("real books: every routed first-touch row is on a list", real_routed <= listed | {x["item"] for x in n["awaiting_designer"]} | {x["item"] for x in n["answered"]} | {x["item"] for x in n["certified"]})
+check("real books: every routed first-touch row is on a list", real_books_covers(n, listed, real_routed))
 real_certs = Q.read_certified(os.path.join(Q.REPO, "design", "concepts"))
 check("real books: no listed first-touch row is one his lock already certified", real_certs is not None and not (listed & real_certs))
 print("real books: %d first touches listed, %d awaiting their Designer pass" % (len(listed), len(n["awaiting_designer"])))

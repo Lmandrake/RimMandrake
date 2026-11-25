@@ -43,6 +43,7 @@ import hashlib
 import json
 import os
 import re
+import stat
 import subprocess
 import sys
 
@@ -3537,7 +3538,8 @@ def pending_turn(d, repo=REPO, lines=None):
 
 def pending_turns(root=None, repo=REPO):
     """-> ([turn], [unreadable: "<dir>: why"]) over every concept folder under `root` (default: the Designer's clone).
-    `_`-prefixed folders (the dry walk) are never real concepts."""
+    Skips `_`-prefixed folders and entries without a stage file. A failed stage stat names the folder as unreadable
+    (`unsearchable_designer_folder_reads_as_empty`)."""
     root = root or concepts_root()
     out, bad = [], []
     try:
@@ -3547,7 +3549,15 @@ def pending_turns(root=None, repo=REPO):
     lines = None
     for n in names:
         d = os.path.join(root, n)
-        if n.startswith("_") or not os.path.isfile(os.path.join(d, "stage.json")):
+        if n.startswith("_"):
+            continue
+        try:
+            if not stat.S_ISREG(os.stat(os.path.join(d, "stage.json")).st_mode):
+                continue
+        except (FileNotFoundError, NotADirectoryError):
+            continue
+        except OSError as e:
+            bad.append("%s: %s" % (d, e))
             continue
         try:
             if lines is None:

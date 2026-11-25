@@ -30,6 +30,9 @@ MemoryMax, swap, and a 5 min 8 s tick (journal 02:15 to 02:31 PST).
 - **page-has-its-own-unit.** The shipped `rm-maturation-page.service` runs `Utils/maturation_now.py` from the dispatch
   clone, its timer fires after each build ends, each limit in it (MemoryMax, TimeoutStartSec) has a comment naming its
   danger beside it, and the shipped dispatch unit's ExecStart passes no `--page`.
+
+## REAL-SIZE CHECK
+
 - **real-size-applying-tick-under-ceiling.** With `--real`: an applying tick whose facts are this repository's real
   gather (its ledger, run records and mods, held in memory as the tick holds them) runs in a cgroup capped at 600 MB
   with no swap, well under the unit's 1G, and ends with exit 0 inside a 20 min hang guard. Only side effects to temp

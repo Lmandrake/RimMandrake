@@ -12,8 +12,9 @@ page's tests file, which that file's `main()` runs (names it, or the def it is b
                                                            change to one, pipeline_tests.json); each must be in PAGES
 
 Exit 0: `promises covered N of N`. 1: a promise has no test, or one `main()` never runs (each named; `promises covered
-N of M`). 3: UNREADABLE, the page or tests file could not be read or parsed, its `main()` is absent or picks tests at
-run time, or a page is not in PAGES (cause named, no count printed). 4: NO PROMISES, the page lists none.
+N of M`). 3: UNREADABLE, the page or tests file could not be read or parsed, its `main()` is absent or a promised
+test runs only with a runtime CLI option (`runtime_optional_test_counted`), its test selection is dynamic, or a page
+is not in PAGES (cause named, no count printed). 4: NO PROMISES, the page lists none.
 """
 import argparse
 import ast
@@ -269,9 +270,49 @@ def test_name(promise):
     return "t_" + re.sub(r"[^a-z0-9]+", "_", promise.lower().replace("'", "")).strip("_")
 
 
-def tests_in(path):
+def _offline_names(main):
+    """Names referenced by main() with no explicit CLI option, for direct flag guards."""
+    argv = {arg.arg for arg in main.args.posonlyargs + main.args.args + main.args.kwonlyargs}
+    parsed = {t.id for n in ast.walk(main) if isinstance(n, ast.Assign) and isinstance(n.value, ast.Call)
+              and isinstance(n.value.func, ast.Attribute) and n.value.func.attr == "parse_args"
+              for t in n.targets if isinstance(t, ast.Name)}
+
+    def default(test):
+        if isinstance(test, ast.UnaryOp) and isinstance(test.op, ast.Not):
+            value = default(test.operand)
+            return None if value is None else not value
+        if isinstance(test, ast.Attribute) and isinstance(test.value, ast.Name) and test.value.id in parsed:
+            return False
+        if isinstance(test, ast.Compare) and len(test.ops) == 1:
+            parts = list(ast.walk(test))
+            if (any(isinstance(n, ast.Constant) and isinstance(n.value, str) and n.value.startswith("--") for n in parts)
+                    and any((isinstance(n, ast.Name) and n.id in argv) or
+                            (isinstance(n, ast.Attribute) and n.attr == "argv") for n in parts)):
+                if isinstance(test.ops[0], (ast.In, ast.Eq)):
+                    return False
+                if isinstance(test.ops[0], (ast.NotIn, ast.NotEq)):
+                    return True
+        return None
+
+    def names(node):
+        if isinstance(node, ast.Name):
+            yield node.id
+        if isinstance(node, ast.If):
+            value = default(node.test)
+            if value is not None:
+                yield from names(node.test)
+                for child in node.body if value else node.orelse:
+                    yield from names(child)
+                return
+        for child in ast.iter_child_nodes(node):
+            yield from names(child)
+
+    return set(names(main))
+
+
+def tests_in(path, promised=()):
     """-> (module-level names bound to a function: `def t_x` or `t_x = t_y`, the subset `main()` runs). Raises
-    Unreadable when there is no `main()` or it picks its tests at run time."""
+    Unreadable when there is no `main()`, it picks its tests at run time, or a name in `promised` is CLI-only."""
     try:
         with open(path, encoding="utf-8") as f:
             tree = ast.parse(f.read(), path)
@@ -289,7 +330,11 @@ def tests_in(path):
     if dynamic:
         raise Unreadable("%s: main() picks its tests at run time (%s), so which run cannot be read"
                          % (path, ", ".join(sorted(dynamic))))
-    ran = {defs[u] for u in used if u in defs}
+    ran = {defs[u] for u in _offline_names(main[-1]) if u in defs}
+    optional = {defs[u] for u in used if u in defs} - ran
+    guarded = sorted(n for n in promised if defs.get(n) in optional)
+    if guarded:
+        raise Unreadable("%s: main() selects %s at run time through a CLI option" % (path, ", ".join(guarded)))
     return set(defs), {n for n, d in defs.items() if d in ran}
 
 
@@ -297,7 +342,7 @@ def check(page, tests):
     """-> exit code, printing the verdict for one page."""
     try:
         names = promises(page)
-        have, run = tests_in(tests)
+        have, run = tests_in(tests, map(test_name, names))
     except Unreadable as e:
         print("UNREADABLE %s" % e)
         return 3

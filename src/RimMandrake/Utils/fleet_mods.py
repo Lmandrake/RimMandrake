@@ -11,7 +11,8 @@ that mod (one line)." Everything here is computed in Python. No page draws the r
   mods(...)      one doc per mod touched in the last 7 days, grouped by the paths the commits changed under src/
                  (src/<Tier>/<Mod>/...; tooling folders and paths outside src/ -> "Infrastructure & tooling"):
                  closed/open/parked counts, proof state (modcheck record and the last blind check), what is next and
-                 what waits on the owner or the game, one line per contributing task.
+                 what waits on the owner or the game, one line per contributing task. Owner asks come from the
+                 same queue lines as the report header (selftest_owner_queue.mod_and_header_disagree_on_open_dependency).
   factory(...)   the header line: factory ok or not, N/target workers, tokens today.
   detached_done(hours)  finished detached dispatcher helpers (dispatcher/detached/*.json), the receipts' second source.
 
@@ -442,11 +443,13 @@ def parked(it, rs):
         (rs or {}).get("status") in PARKED_REL
 
 
-def waits_on(it, rs, evs=None):
+def waits_on(it, rs, evs=None, owner_wait=None):
     """'you' / 'a free game' / '' for an open item."""
     if it is None:
         return ""
-    if owner_queue.is_his(it, rs, evs):  # the same test as the board's Needs you (FLEETWATCH_NEEDS_FIX_NOTHING_WHILE_MODS_WAIT)
+    if owner_wait is None:
+        owner_wait = owner_queue.is_his(it, rs, evs)
+    if owner_wait:
         return "you"
     if (rs or {}).get("status") == "game" or getattr(it, "blocked_kind", None) == "live":
         return "a free game"
@@ -496,14 +499,14 @@ def block_who(reason):
     return "the Conductor"
 
 
-def stuck_of(it, rs, evs=None, known=None, asks=None):
+def stuck_of(it, rs, evs=None, known=None, asks=None, owner_wait=None):
     """-> {"waits": who, "plan": what happens next} for an open item that is not moving, or None when it is moving.
-    'you' comes only from owner_queue.is_his, the same test as Needs you, so the page's count and its tags agree."""
+    On a fleet refresh, 'you' comes from that refresh's Needs you lines."""
     if it is None or not it.open:
         return None
     rs = rs or {}
     status = rs.get("status")
-    if owner_queue.is_his(it, rs, evs):
+    if waits_on(it, rs, evs, owner_wait=owner_wait) == "you":
         return {"waits": "you", "plan": "the Conductor brings you a question card (it is in Needs you)"}
     if owner_queue.routed(it) and not owner_queue.answered(it, evs) and owner_queue.tooling_hold(rs) is None \
             and owner_queue.awaiting_designer(it):
@@ -577,7 +580,7 @@ def split_cross(item_mods):
     return {i for i, ms in item_mods.items() if len(ms - {INFRA}) >= CROSS_MIN}
 
 
-def mods(now, log, world, evs, rel, mc, folders, days=DAYS):
+def mods(now, log, world, evs, rel, mc, folders, days=DAYS, needs=None):
     """One doc per mod touched in the window, plus the infra block and the cross-mod block. No position field: the
     page sorts by `waits_you`, `closed`, `last_at` (a stored position would rewrite every doc when one moves)."""
     known = world.items
@@ -600,7 +603,9 @@ def mods(now, log, world, evs, rel, mc, folders, days=DAYS):
             named_open.setdefault(m, set()).add(iid)
     closed_at = {i: close_at(known[i], evs) for i in item_mods if known[i].state in CLOSED_STATES}
     verdicts = {i: check_of(i, known[i], rel) for i in item_mods}
-    asks = owner_queue.load_questions()  # the same plain question the board's Needs you shows
+    if needs is None:
+        needs = owner_queue.needs_you(known, rel, evs=evs, turns=owner_queue.designer_turns(), now=now)
+    asks = {line["item"]: line["q"] for line in needs["lines"]}
     docs = []
     for m, last in mod_last.items():
         if last < window:
@@ -630,11 +635,11 @@ def mods(now, log, world, evs, rel, mc, folders, days=DAYS):
                                                else 9, {"doing": 0, "built": 1, "validated": 1, "ready": 2}.get(known[i].state, 3),
                                                -(item_last.get(i) or 0), i))
         for i in cand:  # next = the first open item nobody is waiting on
-            if not parked(known[i], rel.get(i)) and not waits_on(known[i], rel.get(i), evs):
+            if not parked(known[i], rel.get(i)) and not waits_on(known[i], rel.get(i), evs, owner_wait=i in asks):
                 nxt = display_title(known[i].title or i)
                 break
         for i in cand:
-            w = waits_on(known[i], rel.get(i), evs)
+            w = waits_on(known[i], rel.get(i), evs, owner_wait=i in asks)
             if w == "you":
                 waits_you += 1
                 waits.append("waits on you: %s" % (asks.get(i) or display_title(known[i].title or i)))
@@ -646,7 +651,7 @@ def mods(now, log, world, evs, rel, mc, folders, days=DAYS):
             waits.append("%s on the game" % n_words(waits_game, "item waits", "items wait"))
         stuck = []      # every open item of the mod that is not moving: who it waits on, and what is planned
         for i in cand:
-            st = stuck_of(known[i], rel.get(i), evs, known, asks)
+            st = stuck_of(known[i], rel.get(i), evs, known, owner_wait=i in asks)
             if st:
                 stuck.append(dict(st, id=i, title=asks.get(i) if st["waits"] == "you" and asks.get(i)
                                   else display_title(known[i].title or i)))
@@ -724,8 +729,9 @@ def gather(now, days=DAYS, detached_done=()):
         it = world.items.get(r["item"])
         r.setdefault("title", (it.title if it else "") or r["item"])
         r["where"], r["infra"] = where(r["item"], item_mods, cross, folders)
-    return {"factory": factory(now), "receipts": rec, "mods": mods(now, log, world, evs, rel, mc, folders, days),
-            "needs": owner_queue.needs_you(world.items, rel, evs=evs, turns=owner_queue.designer_turns())}
+    needs = owner_queue.needs_you(world.items, rel, evs=evs, turns=owner_queue.designer_turns(), now=now)
+    return {"factory": factory(now), "receipts": rec, "mods": mods(now, log, world, evs, rel, mc, folders, days, needs),
+            "needs": needs}
 
 
 def where(item, item_mods, cross, folders):

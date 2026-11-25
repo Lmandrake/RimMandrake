@@ -13,6 +13,7 @@ import re
 import shutil
 import sys
 import tempfile
+from unittest.mock import patch
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -120,6 +121,31 @@ def turn_file_fallback(tmp):
     check("turn file: fallback ignores a turn_100.md directory", turn == older, turn)
 
 
+def unsearchable_designer_folder_reads_as_empty(tmp):
+    sys.path.insert(0, os.path.join(HERE, "..", "Utils"))
+    import owner_queue as Q
+
+    root = os.path.join(tmp, "turn_concepts")
+    unreadable = os.path.join(root, "Unsearchable")
+    os.makedirs(unreadable)
+    stage = os.path.join(unreadable, "stage.json")
+    put(unreadable, "stage.json", {"status": "waiting_owner"})
+    os.mkdir(os.path.join(root, "NoStage"))
+    stat = os.stat
+
+    def deny_stage(path, *args, **kwargs):
+        if path == stage:
+            raise PermissionError(13, "Permission denied", path)
+        return stat(path, *args, **kwargs)
+
+    with patch.object(os, "stat", side_effect=deny_stage):
+        turns = Q.designer_turns(root)
+    line = turns.get("DESIGNER_TURNS_UNMEASURED", "")
+    check("unsearchable_designer_folder_reads_as_empty: denied stage is UNMEASURED by folder",
+          unreadable in line and "Permission denied" in line, turns)
+    check("an accessible concept with no stage is skipped", "NoStage" not in line)
+
+
 def source_ledger_answers():
     """RIMMANDRAKE_SPLIT_UNREADABLE_LEDGER_FROM_FORGED_SOURCE_CITATION: source_errors called a real OWNER citation forged
     when OWNER.jsonl could not be read, because CT.owner_events returns {} (not None) for an unreadable shard. Four
@@ -170,6 +196,7 @@ def main():
     DS.done_items = lambda repo: dict(DONE)
     try:
         turn_file_fallback(tmp)
+        unsearchable_designer_folder_reads_as_empty(tmp)
         repo = Repo(tmp)
         d = os.path.join(tmp, "design/concepts/Foo")
         DS.init(d, "Foo", ITEM, cap=200000, reserve=20000)

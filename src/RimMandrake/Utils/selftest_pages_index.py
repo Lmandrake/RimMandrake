@@ -4,7 +4,7 @@
     python3 src/RimMandrake/Utils/selftest_pages_index.py          offline: the lines, and each renderer calls them
     python3 src/RimMandrake/Utils/selftest_pages_index.py --live   also reads the head of each page file on disk
 
-Boundary: design/specs/2026-11-24-monitors-consolidated/boundary.md (tests of the same name).
+Boundary: design/specs/2026-11-24-monitors-consolidated/boundary.md (offline promises and the separate live check).
 """
 import os
 import sys
