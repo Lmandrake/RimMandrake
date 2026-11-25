@@ -23,6 +23,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -427,6 +428,7 @@ namespace JawaBench.BridgeTools
                 var refused = new List<object>();
                 var warnings = new List<string>();
                 int added = 0, removed = 0;
+                var rb = StageReadBack.Open("jawa/pawn_traits", Time.frameCount);
 
                 if (A != "list")
                 {
@@ -462,7 +464,11 @@ namespace JawaBench.BridgeTools
                             else
                             {
                                 ts.GainTrait(new Trait(td, degree, false));
-                                added++;
+                                var held = ts.allTraits.FirstOrDefault(t => t.def == td);
+                                rb.Made("trait", p.ThingID, p.Position.x, p.Position.z)
+                                    .Want("def", td.defName).Got("def", held?.def.defName)
+                                    .Want("degree", degree.ToString()).Got("degree", held?.Degree.ToString());
+                                if (held != null) added++;
                             }
                         }
                     }
@@ -470,15 +476,23 @@ namespace JawaBench.BridgeTools
                     {
                         var have = ts.allTraits.FirstOrDefault(t => t.def == td);
                         if (have == null) refused.Add(new { trait = td.defName, why = "pawn does not have it" });
-                        else { ts.RemoveTrait(have); removed++; }
+                        else
+                        {
+                            ts.RemoveTrait(have);
+                            bool present = ts.HasTrait(td);
+                            rb.Made("remove_trait", p.ThingID, p.Position.x, p.Position.z)
+                                .Want("present", "False").Got("present", present.ToString());
+                            if (!present) removed++;
+                        }
                     }
                     else return Fail("action must be add|remove|list.");
                 }
 
                 var now = ts.allTraits.Select(t => new { def = t.def.defName, degree = t.Degree, label = t.LabelCap }).ToList();
+                var readBack = StageReadBack.Reply(rb, Time.frameCount);
                 return (object)new
                 {
-                    success = true, action = A, added, removed, refused, warnings,
+                    success = (bool)readBack["ok"], action = A, added, removed, refused, warnings, readBack,
                     traitCount = now.Count,
                     note = "There is no trait cap in TraitSet and GainTrait checks nothing - the refusal above is ours.",
                     traits = now, ticksGame = TicksGameSafe(),
@@ -522,27 +536,38 @@ namespace JawaBench.BridgeTools
                 if (sr.TotallyDisabled)
                     return Fail("Skill '" + sd.defName + "' is TOTALLY DISABLED on this pawn by backstory, trait or gene. Writing a level would be silently meaningless. Change the backstory first.");
 
-                if (level >= 0) sr.Level = Mathf.Clamp(level, 0, 20);
-                if (!string.IsNullOrEmpty(passion))
+                int wantedLevel = Mathf.Clamp(level, 0, 20);
+                bool setPassion = !string.IsNullOrEmpty(passion);
+                Passion pn = default;
+                if (setPassion)
                 {
                     // Enum.Parse accepts any integer literal ("99"), silently producing an
                     // out-of-range Passion that gets scribed straight into the savegame and
                     // indexed by the skills-tab UI - the same trap already fixed for
                     // QualityCategory/MedicalCareCategory/JobTag elsewhere in this DLL.
                     // Enum.IsDefined is what rejects it.
-                    Passion pn;
                     if (!Enum.TryParse(passion.Trim(), true, out pn) || !Enum.IsDefined(typeof(Passion), pn))
                         return Fail("Bad passion '" + passion + "'. None|Minor|Major.");
-                    sr.passion = pn;
                 }
+                var rb = StageReadBack.Open("jawa/set_pawn_skill", Time.frameCount);
+                if (level >= 0) sr.Level = wantedLevel;
+                if (setPassion) sr.passion = pn;
                 if (resetXp) sr.xpSinceLastLevel = 0f;
 
                 var after = new { levelRaw = sr.GetLevel(false), levelEffective = sr.Level, passion = sr.passion.ToString(), xp = sr.xpSinceLastLevel };
+                var row = rb.Made("skill", p.ThingID, p.Position.x, p.Position.z)
+                    .Got("skill", sr.def.defName).Got("levelRaw", after.levelRaw.ToString())
+                    .Got("levelEffective", after.levelEffective.ToString()).Got("passion", after.passion)
+                    .Got("xp", after.xp.ToString("R", CultureInfo.InvariantCulture));
+                if (level >= 0) row.Want("levelRaw", wantedLevel.ToString());
+                if (setPassion) row.Want("passion", pn.ToString());
+                if (resetXp) row.Want("xp", "0");
+                var readBack = StageReadBack.Reply(rb, Time.frameCount);
                 return (object)new
                 {
-                    success = true, skill = sd.defName, before, after,
-                    wroteLevel = level >= 0 ? (object)level : null,
-                    readBackMatches = level < 0 || after.levelRaw == Mathf.Clamp(level, 0, 20),
+                    success = (bool)readBack["ok"], skill = sr.def.defName, before, after, readBack,
+                    wroteLevel = level >= 0 ? (object)after.levelRaw : null,
+                    readBackMatches = level < 0 || after.levelRaw == wantedLevel,
                     note = "levelEffective includes aptitudes; levelRaw is what was written. Compare against levelRaw.",
                     ticksGame = TicksGameSafe(),
                 };
@@ -694,6 +719,8 @@ namespace JawaBench.BridgeTools
             return hit;
         }
 
+        private static string PawnGearQuality(Thing thing) => thing?.TryGetComp<CompQuality>()?.Quality.ToString();
+
         [Tool(
             "jawa/pawn_gear",
             Description =
@@ -730,14 +757,33 @@ namespace JawaBench.BridgeTools
                 string A = (action ?? "").Trim().ToLowerInvariant();
                 var displaced = new List<object>();
                 var notes = new List<string>();
+                var rb = StageReadBack.Open("jawa/pawn_gear", Time.frameCount);
 
                 if (A == "clear")
                 {
                     string W = (clearWhat ?? "all").Trim().ToLowerInvariant();
-                    if (W == "all" || W == "equipment") { if (p.equipment != null) { p.equipment.DestroyAllEquipment(); notes.Add("equipment destroyed"); } }
-                    if (W == "all" || W == "apparel") { if (p.apparel != null) { p.apparel.DestroyAll(); notes.Add("apparel destroyed"); } }
-                    if (W == "all" || W == "inventory") { if (p.inventory != null) { p.inventory.DestroyAll(); notes.Add("inventory destroyed"); } }
-                    if (notes.Count == 0) return Fail("clearWhat must be equipment|apparel|inventory|all.");
+                    if ((W == "all" || W == "equipment") && p.equipment != null)
+                    {
+                        p.equipment.DestroyAllEquipment();
+                        rb.Made("clear_equipment", p.ThingID, p.Position.x, p.Position.z)
+                            .Want("remaining", "0").Got("remaining", p.equipment.AllEquipmentListForReading.Count.ToString());
+                        if (p.equipment.AllEquipmentListForReading.Count == 0) notes.Add("equipment destroyed");
+                    }
+                    if ((W == "all" || W == "apparel") && p.apparel != null)
+                    {
+                        p.apparel.DestroyAll();
+                        rb.Made("clear_apparel", p.ThingID, p.Position.x, p.Position.z)
+                            .Want("remaining", "0").Got("remaining", p.apparel.WornApparel.Count.ToString());
+                        if (p.apparel.WornApparel.Count == 0) notes.Add("apparel destroyed");
+                    }
+                    if ((W == "all" || W == "inventory") && p.inventory != null)
+                    {
+                        p.inventory.DestroyAll();
+                        rb.Made("clear_inventory", p.ThingID, p.Position.x, p.Position.z)
+                            .Want("remaining", "0").Got("remaining", p.inventory.innerContainer.Count.ToString());
+                        if (p.inventory.innerContainer.Count == 0) notes.Add("inventory destroyed");
+                    }
+                    if (rb.Count == 0) return Fail("clearWhat must be equipment|apparel|inventory|all.");
                 }
                 else
                 {
@@ -784,7 +830,8 @@ namespace JawaBench.BridgeTools
                         if (!td.IsWeapon) notes.Add("WARNING: '" + td.defName + "' is not flagged IsWeapon.");
                         var t = ThingMaker.MakeThing(td, sd) as ThingWithComps;
                         if (t == null) return Fail("'" + td.defName + "' did not make a ThingWithComps, so it cannot be equipment.");
-                        if (setQ) { var cq = t.TryGetComp<CompQuality>(); if (cq != null) cq.SetQuality(q, ArtGenerationContext.Outsider); }
+                        var cq = t.TryGetComp<CompQuality>();
+                        if (setQ && cq != null) cq.SetQuality(q, ArtGenerationContext.Outsider);
 
                         // 🔴 THE TRAP: AddEquipment Log.Errors and does nothing when a
                         // primary exists. MakeRoomFor first and say what was displaced -
@@ -794,14 +841,23 @@ namespace JawaBench.BridgeTools
                         if (prior != null)
                         {
                             p.equipment.MakeRoomFor(t);
+                            rb.Made("displace_equipment", prior.ThingID, p.Position.x, p.Position.z)
+                                .Want("held", "False").Got("held", p.equipment.AllEquipmentListForReading.Contains(prior).ToString());
                             if (p.equipment.Primary == prior)
-                                return Fail("MakeRoomFor could not displace " + prior.def.defName + " (drop failed - see the game log) - " + td.defName + " was not equipped.");
-                            displaced.Add(new { def = prior.def.defName, stuff = prior.Stuff != null ? prior.Stuff.defName : null });
-                            notes.Add("displaced the existing primary via MakeRoomFor - without this AddEquipment would have silently no-opped");
+                                notes.Add("MakeRoomFor could not displace " + prior.def.defName + " (drop failed - see the game log).");
+                            else
+                            {
+                                displaced.Add(new { def = prior.def.defName, stuff = prior.Stuff != null ? prior.Stuff.defName : null });
+                                notes.Add("displaced the existing primary via MakeRoomFor - without this AddEquipment would have silently no-opped");
+                            }
                         }
-                        p.equipment.AddEquipment(t);
-                        if (p.equipment.Primary != t)
-                            return Fail("AddEquipment did not make '" + td.defName + "' the pawn's primary (see the game log) - equip failed.");
+                        if (prior == null || p.equipment.Primary != prior) p.equipment.AddEquipment(t);
+                        var held = p.equipment.Primary;
+                        var row = rb.Made("equip", held?.ThingID, p.Position.x, p.Position.z)
+                            .Want("primary", "True").Got("primary", (held == t).ToString())
+                            .Got("def", held?.def.defName).Got("stuff", held?.Stuff?.defName)
+                            .Want("def", td.defName).Want("stuff", sd?.defName).Got("quality", PawnGearQuality(held));
+                        if (setQ && cq != null) row.Want("quality", q.ToString());
                     }
                     else if (A == "wear")
                     {
@@ -825,15 +881,20 @@ namespace JawaBench.BridgeTools
                             }
                         }
                         if (ap == null) ap = (Apparel)ThingMaker.MakeThing(td, sd);
-                        if (setQ) { var cq = ap.TryGetComp<CompQuality>(); if (cq != null) cq.SetQuality(q, ArtGenerationContext.Outsider); }
+                        var cq = ap.TryGetComp<CompQuality>();
+                        if (setQ && cq != null) cq.SetQuality(q, ArtGenerationContext.Outsider);
                         // Finding #16 (COMPANION_HARDENING_AUDIT_2026-09-09): Wear() drops
                         // conflicting worn garments via CanWearTogether, but only equip's
                         // primary-slot displacement was reported in displaced[] - wear's own
                         // drops were invisible. Diff WornApparel before/after.
                         var wornBefore = p.apparel.WornApparel.ToList();
                         p.apparel.Wear(ap, true, false);
-                        if (!p.apparel.WornApparel.Contains(ap))
-                            return Fail("'" + td.defName + "' is not in the pawn's WornApparel after Wear() (see the game log for a dropped-conflict or drop failure) - wear failed.");
+                        var held = p.apparel.WornApparel.FirstOrDefault(a => a == ap);
+                        var row = rb.Made("wear", held?.ThingID, p.Position.x, p.Position.z)
+                            .Want("def", td.defName).Got("def", held?.def.defName).Got("stuff", held?.Stuff?.defName)
+                            .Got("quality", PawnGearQuality(held));
+                        if (stuffExplicit) row.Want("stuff", sd.defName);
+                        if (setQ && cq != null) row.Want("quality", q.ToString());
                         foreach (var was in wornBefore)
                             if (!p.apparel.WornApparel.Contains(was))
                             {
@@ -845,24 +906,47 @@ namespace JawaBench.BridgeTools
                     {
                         if (p.inventory == null) return Fail("Pawn has no inventory tracker.");
                         var t = ThingMaker.MakeThing(td, sd);
-                        t.stackCount = Math.Max(1, count);
-                        if (setQ) { var cq = t.TryGetComp<CompQuality>(); if (cq != null) cq.SetQuality(q, ArtGenerationContext.Outsider); }
-                        // TryAddOrTransfer returns the COUNT transferred, not a bool.
-                        int moved = p.inventory.innerContainer.TryAddOrTransfer(t, Math.Max(1, count));
-                        if (moved <= 0)
-                            return Fail("inventory transferred 0 of " + Math.Max(1, count) + " - container refused it (full, or '" + td.defName + "' is unstorable).");
-                        notes.Add("inventory transferred " + moved + " of " + Math.Max(1, count));
+                        int wantedCount = Math.Max(1, count);
+                        t.stackCount = wantedCount;
+                        var cq = t.TryGetComp<CompQuality>();
+                        if (setQ && cq != null) cq.SetQuality(q, ArtGenerationContext.Outsider);
+                        var wantedQuality = setQ && cq != null ? q.ToString() : PawnGearQuality(t);
+                        var inventory = p.inventory.innerContainer;
+                        // The transfer can merge into existing stacks. Read the change in held items of this kind.
+                        var matching = inventory.Where(item => item.def == td && item.Stuff == sd && PawnGearQuality(item) == wantedQuality);
+                        int before = matching.Sum(item => item.stackCount);
+                        inventory.TryAddOrTransfer(t, wantedCount);
+                        int added = matching.Sum(item => item.stackCount) - before;
+                        var held = added > 0 ? matching.FirstOrDefault() : null;
+                        rb.Made("inventory", p.ThingID, p.Position.x, p.Position.z)
+                            .Want("count", wantedCount.ToString()).Got("count", added.ToString())
+                            .Got("def", held?.def.defName).Got("stuff", held?.Stuff?.defName).Got("quality", PawnGearQuality(held));
+                        notes.Add("inventory transferred " + added + " of " + wantedCount);
                     }
                     else return Fail("action must be equip|wear|inventory|clear.");
                 }
 
                 var snap = PawnSnapshot(p);
+                var readBack = StageReadBack.Reply(rb, Time.frameCount);
                 return (object)new
                 {
-                    success = true, action = A, displaced, notes,
+                    success = (bool)readBack["ok"], action = A, displaced, notes, readBack,
                     pawn = snap, ticksGame = TicksGameSafe(),
                 };
             });
+        }
+
+        private static bool IsOnPartOrChild(BodyPartRecord affected, BodyPartRecord part)
+        {
+            for (var current = affected; current != null; current = current.parent)
+                if (current == part) return true;
+            return false;
+        }
+
+        private static bool PawnHealthHealable(Hediff h)
+        {
+            return !(h.def.countsAsAddedPartOrImplant || h.def.addedPartProps != null)
+                && (h is Hediff_Injury || h is Hediff_MissingPart || h.def.isBad || h.def.chronic);
         }
 
         [Tool(
@@ -905,7 +989,9 @@ namespace JawaBench.BridgeTools
                     if (part == null) return Fail(perr);
                 }
 
-                string didWhat;
+                var rb = StageReadBack.Open("jawa/pawn_health", Time.frameCount);
+                string didWhat = null;
+                var removedList = new List<string>();
                 if (A == "permanent")
                 {
                     // The in-game debug action 'Make injuries permanent' (DebugToolsPawns.MakeInjuryPermanent) is private, and
@@ -919,9 +1005,14 @@ namespace JawaBench.BridgeTools
                         var gp = hx.TryGetComp<HediffComp_GetsPermanent>();
                         if (gp == null) continue;
                         gp.IsPermanent = true;
-                        if (gp.IsPermanent) made++;
+                        var held = p.health.hediffSet.hediffs.FirstOrDefault(x => x == hx);
+                        var heldComp = held?.TryGetComp<HediffComp_GetsPermanent>();
+                        rb.Made("permanent", p.ThingID, p.Position.x, p.Position.z)
+                            .Got("def", held?.def.defName).Got("part", held?.Part?.def.defName)
+                            .Want("permanent", "True").Got("permanent", heldComp?.IsPermanent.ToString());
+                        if (heldComp?.IsPermanent == true) made++;
                     }
-                    if (made == 0) return Fail("No hediff with a GetsPermanent comp matched" + (string.IsNullOrEmpty(hediff) ? "" : " '" + hediff + "'") + ".");
+                    if (rb.Count == 0) return Fail("No hediff with a GetsPermanent comp matched" + (string.IsNullOrEmpty(hediff) ? "" : " '" + hediff + "'") + ".");
                     didWhat = "made " + made + " injur" + (made == 1 ? "y" : "ies") + " permanent";
                 }
                 else if (A == "healall")
@@ -929,28 +1020,70 @@ namespace JawaBench.BridgeTools
                     if (!confirmDestructive)
                         return Fail("healAll removes every injury, missing part and bad hediff on the whole body. Pass confirmDestructive=true.");
                     if (part != null) return Fail("healAll is whole-body; drop bodyPart, or use action='restore' for one part.");
-                    var removedList = new List<string>();
-                    var failedList = new List<string>();
-                    foreach (var hx in p.health.hediffSet.hediffs.ToList())
+                    foreach (var h in p.health.hediffSet.hediffs.Where(PawnHealthHealable).ToList())
                     {
-                        bool bionic = hx.def.countsAsAddedPartOrImplant || hx.def.addedPartProps != null;
-                        if (bionic) continue;
-                        bool bad = hx is Hediff_Injury || hx is Hediff_MissingPart || hx.def.isBad || hx.def.chronic;
-                        if (!bad) continue;
-                        string label = hx.def.defName + (hx.Part != null ? "@" + hx.Part.def.defName : "");
-                        p.health.RemoveHediff(hx);
-                        if (p.health.hediffSet.hediffs.Contains(hx)) failedList.Add(label); else removedList.Add(label);
+                        string label = h.def.defName + (h.Part != null ? "@" + h.Part.def.defName : "");
+                        p.health.RemoveHediff(h);
+                        if (!p.health.hediffSet.hediffs.Contains(h)) removedList.Add(label);
                     }
-                    if (failedList.Count > 0)
-                        return Fail("healAll could not remove: " + string.Join(", ", failedList) + " (removed " + removedList.Count + ").");
-                    var left = p.health.hediffSet.hediffs.Where(h => h.def.isBad || h is Hediff_Injury || h is Hediff_MissingPart)
-                        .Where(h => !(h.def.countsAsAddedPartOrImplant || h.def.addedPartProps != null))
-                        .Select(h => h.def.defName).ToList();
-                    if (left.Count > 0) return Fail("healAll left bad hediffs behind: " + string.Join(", ", left));
+                    rb.Made("heal_all", p.ThingID, p.Position.x, p.Position.z)
+                        .Want("remaining", "0").Got("remaining", p.health.hediffSet.hediffs.Count(PawnHealthHealable).ToString());
+                    didWhat = "removed " + removedList.Count + " hediff(s)";
+                }
+                else
+                {
+                    HediffDef hd = null;
+                    if (A != "restore")
+                    {
+                        if (string.IsNullOrEmpty(hediff)) return Fail("Give a HediffDef.");
+                        hd = DefDatabase<HediffDef>.GetNamedSilentFail(hediff.Trim());
+                        if (hd == null) return Fail("No HediffDef '" + hediff + "'.", DefSuggestions<HediffDef>(hediff));
+                    }
+                    if (A == "restore" || A == "bionic")
+                    {
+                        if (A == "restore" && !confirmDestructive)
+                            return Fail("RestorePart is RECURSIVE into child parts, wipes their hediffs and does not drop what it removes. Pass confirmDestructive=true if that is what you want.");
+                        if (part == null) return Fail(A == "bionic" ? "Give a bodyPart for a bionic."
+                            : "'restore' needs a bodyPart (it is per-part). For the whole body use action='healAll' with confirmDestructive=true.");
+                        p.health.RestorePart(part);
+                        bool missing = p.health.hediffSet.PartIsMissing(part);
+                        var row = rb.Made("restore_part", p.ThingID, p.Position.x, p.Position.z)
+                            .Want("missing", "False").Got("missing", missing.ToString())
+                            .Want("remaining", "0").Got("remaining", p.health.hediffSet.hediffs.Count(h => IsOnPartOrChild(h.Part, part)).ToString());
+                        if (row.Wrong().Count == 0) didWhat = "restored " + part.def.defName + " (and its children)";
+                    }
+                    if (A == "add" || A == "bionic")
+                    {
+                        if (A == "add" && !JawaBenchWorldArgsCore.IsFinite(severity)) return Fail("severity must be finite (NaN/Infinity would be written into the saved hediff).");
+                        var h = p.health.AddHediff(hd, part);
+                        bool setSeverity = A == "add" && severity >= 0f;
+                        if (setSeverity && h != null && p.health.hediffSet.hediffs.Contains(h)) h.Severity = severity;
+                        var held = p.health.hediffSet.hediffs.FirstOrDefault(x => x == h);
+                        var row = rb.Made(A == "bionic" ? "install_hediff" : "add_hediff", p.ThingID, p.Position.x, p.Position.z)
+                            .Want("def", hd.defName).Got("def", held?.def.defName)
+                            .Want("part", part?.def.defName).Got("part", held?.Part?.def.defName)
+                            .Got("severity", held?.Severity.ToString("R", CultureInfo.InvariantCulture));
+                        if (setSeverity) row.Want("severity", severity.ToString("R", CultureInfo.InvariantCulture));
+                        if (held != null) didWhat = (A == "bionic" ? "installed " : "added ") + held.def.defName
+                            + (held.Part != null ? " on " + held.Part.def.defName : " (whole body)");
+                    }
+                    else if (A == "remove")
+                    {
+                        var h = p.health.hediffSet.hediffs.FirstOrDefault(x => x.def == hd && (part == null || x.Part == part));
+                        if (h == null) return Fail("Pawn has no hediff '" + hd.defName + "'" + (part != null ? " on " + part.def.defName : "") + ".");
+                        p.health.RemoveHediff(h);
+                        rb.Made("remove_hediff", p.ThingID, p.Position.x, p.Position.z)
+                            .Want("present", "False").Got("present", p.health.hediffSet.hediffs.Contains(h).ToString());
+                        if (!p.health.hediffSet.hediffs.Contains(h)) didWhat = "removed " + h.def.defName;
+                    }
+                    else if (A != "restore") return Fail("action must be add|remove|bionic|restore|healAll|permanent.");
+                }
+
+                var readBack = StageReadBack.Reply(rb, Time.frameCount);
+                if (A == "healall")
                     return (object)new
                     {
-                        success = true, action = A,
-                        didWhat = "healed whole body: removed " + removedList.Count + " hediff(s)",
+                        success = (bool)readBack["ok"], action = A, didWhat, readBack,
                         removed = removedList,
                         health = new
                         {
@@ -970,53 +1103,6 @@ namespace JawaBench.BridgeTools
                         },
                         ticksGame = TicksGameSafe(),
                     };
-                }
-                else if (A == "restore")
-                {
-                    if (!confirmDestructive)
-                        return Fail("RestorePart is RECURSIVE into child parts, wipes their hediffs and does not drop what it removes. Pass confirmDestructive=true if that is what you want.");
-                    if (part == null) return Fail("'restore' needs a bodyPart (it is per-part). For the whole body use action='healAll' with confirmDestructive=true.");
-                    p.health.RestorePart(part);
-                    didWhat = "restored " + part.def.defName + " (and its children)";
-                }
-                else
-                {
-                    if (string.IsNullOrEmpty(hediff)) return Fail("Give a HediffDef.");
-                    var hd = DefDatabase<HediffDef>.GetNamedSilentFail(hediff.Trim());
-                    if (hd == null) return Fail("No HediffDef '" + hediff + "'.", DefSuggestions<HediffDef>(hediff));
-
-                    if (A == "add")
-                    {
-                        if (!JawaBenchWorldArgsCore.IsFinite(severity)) return Fail("severity must be finite (NaN/Infinity would be written into the saved hediff).");
-                        var h = p.health.AddHediff(hd, part);
-                        // Finding #17 (COMPANION_HARDENING_AUDIT_2026-09-09): AddHediff's
-                        // return was never checked against hediffSet afterward, unlike this
-                        // file's own equip/restore verification pattern - a hediff that
-                        // AddHediff silently declined to attach still reported success.
-                        if (h == null || !p.health.hediffSet.hediffs.Contains(h))
-                            return Fail("AddHediff('" + hd.defName + "') did not attach to the pawn's hediffSet"
-                                + (part != null ? " on " + part.def.defName : "") + " - add failed.");
-                        if (severity >= 0f) h.Severity = severity;
-                        didWhat = "added " + hd.defName + (part != null ? " to " + part.def.defName : " (whole body)");
-                    }
-                    else if (A == "remove")
-                    {
-                        var h = p.health.hediffSet.hediffs.FirstOrDefault(x => x.def == hd && (part == null || x.Part == part));
-                        if (h == null) return Fail("Pawn has no hediff '" + hd.defName + "'" + (part != null ? " on " + part.def.defName : "") + ".");
-                        p.health.RemoveHediff(h);
-                        didWhat = "removed " + hd.defName;
-                    }
-                    else if (A == "bionic")
-                    {
-                        if (part == null) return Fail("Give a bodyPart for a bionic.");
-                        p.health.RestorePart(part);
-                        var bh = p.health.AddHediff(hd, part);
-                        if (bh == null || !p.health.hediffSet.hediffs.Contains(bh))
-                            return Fail("AddHediff('" + hd.defName + "') did not attach on " + part.def.defName + " after RestorePart (which already ran and wiped that part's hediffs) - bionic install failed.");
-                        didWhat = "installed " + hd.defName + " on " + part.def.defName + " (RestorePart then AddHediff - no RecipeDef needed)";
-                    }
-                    else return Fail("action must be add|remove|bionic|restore|healAll|permanent.");
-                }
 
                 var hediffs = p.health.hediffSet.hediffs
                     .Select(h => new { def = h.def.defName, part = h.Part != null ? h.Part.def.defName : null, severity = h.Severity })
@@ -1024,7 +1110,7 @@ namespace JawaBench.BridgeTools
 
                 return (object)new
                 {
-                    success = true, action = A, didWhat,
+                    success = (bool)readBack["ok"], action = A, didWhat, readBack,
                     partsAvailable = part == null && A != "restore" && A != "healall"
                         ? p.RaceProps.body.AllParts.Select(bp => bp.def.defName).Distinct().Take(20).ToList()
                         : null,
@@ -1061,6 +1147,7 @@ namespace JawaBench.BridgeTools
                 if (p.needs == null) return Fail("Pawn has no needs tracker.");
                 string A = (action ?? "list").Trim().ToLowerInvariant();
                 var notes = new List<string>();
+                var rb = StageReadBack.Open("jawa/pawn_need", Time.frameCount);
 
                 if (A == "need")
                 {
@@ -1071,8 +1158,16 @@ namespace JawaBench.BridgeTools
                     var n = p.needs.TryGetNeed(nd);
                     if (n == null) return Fail("This pawn has no '" + nd.defName + "' need. It has: " +
                         string.Join(", ", p.needs.AllNeeds.Select(z => z.def.defName).ToArray()));
-                    n.CurLevelPercentage = Mathf.Clamp01(level);
-                    notes.Add("set " + nd.defName + " to " + n.CurLevelPercentage);
+                    float wanted = Mathf.Clamp01(level);
+                    float wantedLevel = n.MaxLevel * wanted;
+                    n.CurLevelPercentage = wanted;
+                    var held = p.needs.TryGetNeed(nd);
+                    rb.Made("need", p.ThingID, p.Position.x, p.Position.z)
+                        .Want("need", nd.defName).Got("need", held?.def.defName)
+                        .Want("level", wantedLevel.ToString("R", CultureInfo.InvariantCulture))
+                        .Got("level", held?.CurLevel.ToString("R", CultureInfo.InvariantCulture))
+                        .Got("percentage", held?.CurLevelPercentage.ToString("R", CultureInfo.InvariantCulture));
+                    if (held != null) notes.Add(held.def.defName + " reads " + held.CurLevelPercentage);
                 }
                 else if (A == "thought")
                 {
@@ -1093,8 +1188,12 @@ namespace JawaBench.BridgeTools
                     }
                     if (td.IsSocial && other == null)
                         return Fail("'" + td.defName + "' is a SOCIAL thought and needs an otherPawn. Without one RimWorld drops it silently.");
-                    p.needs.mood.thoughts.memories.TryGainMemory(td, other);
-                    notes.Add("gained memory " + td.defName);
+                    var tracker = p.needs.mood.thoughts.memories;
+                    tracker.TryGainMemory(td, other);
+                    var held = tracker.Memories.FirstOrDefault(m => m.def == td && m.otherPawn == other);
+                    rb.Made("thought", p.ThingID, p.Position.x, p.Position.z)
+                        .Want("thought", td.defName).Got("thought", held?.def.defName);
+                    if (held != null) notes.Add("holds memory " + held.def.defName);
                 }
                 else if (A != "list") return Fail("action must be need|thought|list.");
 
@@ -1103,7 +1202,8 @@ namespace JawaBench.BridgeTools
                     ? p.needs.mood.thoughts.memories.Memories.Select(m => new { def = m.def.defName, age = m.age }).Take(20).ToList()
                     : null;
 
-                return (object)new { success = true, action = A, notes, needs, memories, ticksGame = TicksGameSafe() };
+                var readBack = StageReadBack.Reply(rb, Time.frameCount);
+                return (object)new { success = (bool)readBack["ok"], action = A, notes, needs, memories, readBack, ticksGame = TicksGameSafe() };
             });
         }
 

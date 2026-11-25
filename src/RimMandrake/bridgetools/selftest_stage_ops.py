@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Selftest: the stage read-back (JawaBenchStageReadBack.cs) and its four staging tools. Page:
+"""Selftest: the stage read-back (JawaBenchStageReadBack.cs) and its ten staging tools. Page:
 design/specs/2026-11-23-bridge-v2/boundary.md §THE STAGE READ-BACK, one test per promise, 6 checks. Each plant breaks one rule of a
 copy of the core (or of a tool's call site) and must turn its named check red; the ticket's two plants are marked *. The call sites
 in the game half are read from the source: a rule that no tool calls, or calls with a request value, or in a later hop, is red.
@@ -17,6 +17,7 @@ sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 CS = os.path.join(HERE, "JawaBench.BridgeTools")
 CORE = "JawaBenchStageReadBack.cs"
 TT, MT = "JawaBenchTerrainTools.cs", "JawaBenchMapTools.cs"
+PT, JT = "JawaBenchPawnTools.cs", "JawaBenchJobTools.cs"
 PROJ = os.path.join(HERE, "StageOpsSelfTest", "StageOpsSelfTest.csproj")
 N_UNITS = 6
 
@@ -119,9 +120,92 @@ WIRING = [
 ]
 
 
+PAWN_WIRING = [
+    ("pawn_gear", PT, r'(?:DestroyAllEquipment|DestroyAll|MakeRoomFor|AddEquipment|Wear|TryAddOrTransfer)\(', [
+        r'\.Got\("remaining", p\.equipment\.AllEquipmentListForReading\.Count\.ToString\(\)\)',
+        r'\.Got\("remaining", p\.apparel\.WornApparel\.Count\.ToString\(\)\)',
+        r'\.Got\("remaining", p\.inventory\.innerContainer\.Count\.ToString\(\)\)',
+        r'p\.equipment\.AddEquipment\(t\);\s*var held = p\.equipment\.Primary;',
+        r'\.Got\("primary", \(held == t\)\.ToString\(\)\)',
+        r'p\.apparel\.Wear\(ap, true, false\);\s*var held = p\.apparel\.WornApparel\.FirstOrDefault\(a => a == ap\);',
+        r'var matching = inventory\.Where\(item => item\.def == td && item\.Stuff == sd && PawnGearQuality\(item\) == wantedQuality\);\s*int before = matching\.Sum\(item => item\.stackCount\);',
+        r'inventory\.TryAddOrTransfer\(t, wantedCount\);\s*int added = matching\.Sum\(item => item\.stackCount\) - before;',
+        r'\.Got\("count", added\.ToString\(\)\)',
+        r'\.Got\("def", held\?\.def\.defName\)\.Got\("stuff", held\?\.Stuff\?\.defName\)',
+        r'\.Got\("quality", PawnGearQuality\(held\)\)',
+    ]),
+    ("pawn_traits", PT, r'ts\.(?:GainTrait|RemoveTrait)\(', [
+        r'ts\.GainTrait\([^;]+;\s*var held = ts\.allTraits\.FirstOrDefault\(t => t\.def == td\);',
+        r'\.Got\("degree", held\?\.Degree\.ToString\(\)\)',
+        r'ts\.RemoveTrait\(have\);\s*bool present = ts\.HasTrait\(td\);',
+        r'\.Got\("present", present\.ToString\(\)\)',
+    ]),
+    ("set_pawn_skill", PT, r'sr\.(?:Level|passion|xpSinceLastLevel) =', [
+        r'var after = new \{ levelRaw = sr\.GetLevel\(false\), levelEffective = sr\.Level, passion = sr\.passion\.ToString\(\), xp = sr\.xpSinceLastLevel \};',
+        r'\.Got\("levelRaw", after\.levelRaw\.ToString\(\)\)',
+        r'\.Got\("passion", after\.passion\)', r'\.Got\("xp", after\.xp\.ToString\("R", CultureInfo\.InvariantCulture\)\)',
+    ]),
+    ("pawn_need", PT, r'n\.CurLevelPercentage =|\.TryGainMemory\(', [
+        r'n\.CurLevelPercentage = wanted;\s*var held = p\.needs\.TryGetNeed\(nd\);',
+        r'\.Got\("level", held\?\.CurLevel\.ToString\("R", CultureInfo\.InvariantCulture\)\)',
+        r'\.Got\("percentage", held\?\.CurLevelPercentage\.ToString\("R", CultureInfo\.InvariantCulture\)\)',
+        r'tracker\.TryGainMemory\(td, other\);\s*var held = tracker\.Memories\.FirstOrDefault\(m => m\.def == td && m\.otherPawn == other\);',
+        r'\.Got\("thought", held\?\.def\.defName\)',
+    ]),
+    ("pawn_health", PT, r'gp\.IsPermanent = true|\.RemoveHediff\(|\.RestorePart\(|\.AddHediff\(', [
+        r'gp\.IsPermanent = true;\s*var held = p\.health\.hediffSet\.hediffs\.FirstOrDefault\(x => x == hx\);',
+        r'\.Got\("permanent", heldComp\?\.IsPermanent\.ToString\(\)',
+        r'\.Got\("remaining", p\.health\.hediffSet\.hediffs\.Count\(PawnHealthHealable\)\.ToString\(\)\)',
+        r'\.Got\("present", p\.health\.hediffSet\.hediffs\.Contains\(h\)\.ToString\(\)\)',
+        r'\.Got\("remaining", p\.health\.hediffSet\.hediffs\.Count\(h => IsOnPartOrChild\(h\.Part, part\)\)\.ToString\(\)\)',
+        r'var held = p\.health\.hediffSet\.hediffs\.FirstOrDefault\(x => x == h\);',
+        r'\.Got\("severity", held\?\.Severity\.ToString\("R", CultureInfo\.InvariantCulture\)\)',
+    ]),
+    ("set_work_priority", JT, r'\.EnableAndInitializeIfNotAlreadyInitialized\(|\.SetPriority\(|\.useWorkPriorities =', [
+        r'pawn\.workSettings\.SetPriority\(wd, priority\);\s*var readBack = pawn\.workSettings\.GetPriority\(wd\);',
+        r'var priorities = HarmonyLib\.AccessTools\.Field\(typeof\(Pawn_WorkSettings\), "priorities"\)\s*\?\.GetValue\(pawn\.workSettings\) as DefMap<WorkTypeDef, int>;',
+        r'\.Got\("priority", priorities\?\[wd\]\.ToString\(\)\)',
+        r'\.Got\("effectivePriority", readBack\.ToString\(\)\)',
+        r'var manualPrioritiesOn = Find\.PlaySettings\?\.useWorkPriorities \?\? false;',
+        r'\.Got\("manualPrioritiesOn", manualPrioritiesOn\.ToString\(\)\)',
+    ]),
+]
+
+
+def wiring_sources():
+    return {f: read(os.path.join(CS, f)) for f in (TT, MT, PT, JT)}
+
+
+def pawn_wiring(tool, body, write, pats):
+    h = hop(body)
+    if body.count("MainThread.InvokeAsync") != 1 or not h:
+        return "%s must have one main-thread hop" % tool
+    block = "stageReadBack" if tool == "jawa/set_work_priority" else "readBack"
+    frame = "UnityEngine.Time.frameCount" if block == "stageReadBack" else "Time.frameCount"
+    opening = 'var rb = StageReadBack.Open("%s", %s);' % (tool, frame)
+    reply = "var %s = StageReadBack.Reply(rb, %s);" % (block, frame)
+    if (body.count("StageReadBack.Open(") != 1 or body.count("StageReadBack.Reply(") != 1
+            or opening not in h or reply not in h):
+        return "%s lacks an in-hop StageReadBack reply" % tool
+    writes = list(re.finditer(write, h))
+    if not writes or not h.index(opening) < writes[0].start() < writes[-1].end() < h.index(reply):
+        return "%s writes outside its StageReadBack" % tool
+    reads = h[writes[0].start():h.index(reply)]
+    for p in pats:
+        if not re.search(p, reads, re.S):
+            return "%s lacks a game read after writing (/%s/)" % (tool, p)
+    returns = h[h.index(reply):].split("return ")[1:]
+    if not returns or any(not re.search(r'success = \(bool\)%s\["ok"\].*?\b%s,' % (block, block), ret, re.S)
+                          for ret in returns):
+        return "%s does not return the StageReadBack and its verdict" % tool
+    if tool == "jawa/set_pawn_skill" and "wroteLevel = level >= 0 ? (object)after.levelRaw : null" not in returns[0]:
+        return "%s does not report its read level in wroteLevel" % tool
+    return None
+
+
 def wired(srcs=None):
-    """Null when each tool opens, reads back and replies inside its one hop, else the first that does not."""
-    srcs = srcs or {TT: read(os.path.join(CS, TT)), MT: read(os.path.join(CS, MT))}
+    """Null when every staging tool opens, reads back and replies inside its one hop."""
+    srcs = srcs or wiring_sources()
     for tool, f, pats in WIRING:
         h = hop(tool_body(srcs[f], tool))
         if not h:
@@ -133,6 +217,11 @@ def wired(srcs=None):
         for p in pats:
             if not re.search(p, h, re.S):
                 return "FAIL not wired: %s lacks /%s/ in its hop" % (tool, p[:90])
+    faults = [pawn_wiring("jawa/" + tool, tool_body(srcs[f], "jawa/" + tool), write, pats)
+              for tool, f, write, pats in PAWN_WIRING]
+    faults = [f for f in faults if f]
+    if faults:
+        return "FAIL not wired: " + "; ".join(faults)
     return None
 
 
@@ -176,11 +265,14 @@ CORE_PLANTS = [
 
 # call-site plants: each turns the wiring red, so every check that reads the wiring goes red
 SITE_PLANTS = [
-    ("terrain echoes the request", TT, 'Got("terrain", after?.defName)', 'Got("terrain", def.defName)'),
-    ("spawn_pawn echoes the kind asked", TT, 'Got("kind", kindNow)', 'Got("kind", kind.defName)'),
-    ("build_batch echoes the def asked", MT, 'Got("def", spawned.def.defName)', 'Got("def", td.defName)'),
-    ("destroy_batch never reads the cells again", TT, '"still standing after the clean", true);', '"still standing after the clean", false);'),
-    ("destroy_batch's success ignores the read-back", TT, 'bool ok = seen.Count > 0 && outOfBounds == 0 && (bool)readBack["ok"];', 'bool ok = seen.Count > 0 && outOfBounds == 0;'),
+    ("terrain echoes the request", "set_terrain_batch", TT, 'Got("terrain", after?.defName)', 'Got("terrain", def.defName)'),
+    ("spawn_pawn echoes the kind asked", "spawn_pawn", TT, 'Got("kind", kindNow)', 'Got("kind", kind.defName)'),
+    ("build_batch echoes the def asked", "build_batch", MT, 'Got("def", spawned.def.defName)', 'Got("def", td.defName)'),
+    ("destroy_batch never reads the cells again", "destroy_batch", TT, '"still standing after the clean", true);', '"still standing after the clean", false);'),
+    ("destroy_batch's success ignores the read-back", "destroy_batch", TT, 'bool ok = seen.Count > 0 && outOfBounds == 0 && (bool)readBack["ok"];', 'bool ok = seen.Count > 0 && outOfBounds == 0;'),
+    ("pawn_need echoes the requested level", "pawn_need", PT,
+     'Got("percentage", held?.CurLevelPercentage.ToString("R", CultureInfo.InvariantCulture))',
+     'Got("percentage", wanted.ToString("R", CultureInfo.InvariantCulture))'),
 ]
 
 
@@ -200,8 +292,8 @@ def plants():
         hit = must in red
         good = good and hit
         print("%s plant %r turns red: %s" % ("ok  " if hit else "FAIL", name, red), flush=True)
-    srcs = {TT: read(os.path.join(CS, TT)), MT: read(os.path.join(CS, MT))}
-    for name, f, old, new in SITE_PLANTS:
+    srcs = wiring_sources()
+    for name, tool, f, old, new in SITE_PLANTS:
         if srcs[f].count(old) != 1:
             print("FAIL plant %r: its text is in %s %d times, want 1" % (name, f, srcs[f].count(old)))
             good = False
@@ -209,7 +301,7 @@ def plants():
         s2 = dict(srcs)
         s2[f] = srcs[f].replace(old, new)
         v = wired(s2)
-        hit = v is not None
+        hit = v is not None and "jawa/" + tool in v
         good = good and hit
         print("%s plant %r turns the wiring red: %s" % ("ok  " if hit else "FAIL", name, v), flush=True)
     return good

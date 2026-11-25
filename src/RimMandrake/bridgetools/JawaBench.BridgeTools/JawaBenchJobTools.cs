@@ -1480,7 +1480,7 @@ namespace JawaBench.BridgeTools
                 "checked and reported before writing.",
             ResultDescription =
                 "manualPrioritiesOn (Find.PlaySettings.useWorkPriorities) and readBack " +
-                "(GetPriority after the write) together - never readBack alone.")]
+                "(GetPriority after the write), with the stored priority in stageReadBack.")]
         public static async Task<object> SetWorkPriority(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -1517,6 +1517,7 @@ namespace JawaBench.BridgeTools
 
                 if (pawn.workSettings == null)
                     return Fail($"'{pawnId}' has no Pawn_WorkSettings (not a work-eligible pawn).");
+                var rb = StageReadBack.Open("jawa/set_work_priority", UnityEngine.Time.frameCount);
                 pawn.workSettings.EnableAndInitializeIfNotAlreadyInitialized();
 
                 var disabled = pawn.WorkTypeIsDisabled(wd);
@@ -1534,12 +1535,21 @@ namespace JawaBench.BridgeTools
                 pawn.workSettings.SetPriority(wd, priority);
                 var readBack = pawn.workSettings.GetPriority(wd);
                 var manualPrioritiesOn = Find.PlaySettings?.useWorkPriorities ?? false;
+                // GetPriority can mask the stored value for humanlikes. Keep its numeric reply for existing callers.
+                var priorities = HarmonyLib.AccessTools.Field(typeof(Pawn_WorkSettings), "priorities")
+                    ?.GetValue(pawn.workSettings) as DefMap<WorkTypeDef, int>;
+                var row = rb.Made("work_priority", pawn.ThingID, pawn.Position.x, pawn.Position.z)
+                    .Want("priority", priority.ToString()).Got("priority", priorities?[wd].ToString())
+                    .Got("effectivePriority", readBack.ToString()).Got("manualPrioritiesOn", manualPrioritiesOn.ToString());
+                if (manualPriorities.HasValue) row.Want("manualPrioritiesOn", manualPriorities.Value.ToString());
+                var stageReadBack = StageReadBack.Reply(rb, UnityEngine.Time.frameCount);
 
                 return new
                 {
-                    success = true,
+                    success = (bool)stageReadBack["ok"],
                     requested = priority,
                     readBack,
+                    stageReadBack,
                     manualPrioritiesOn,
                     // GetPriority's override is gated on pawn.RaceProps.Humanlike
                     // (RimWorld/Pawn_WorkSettings.cs:164) - a Biotech mech's readBack is the
@@ -1547,8 +1557,7 @@ namespace JawaBench.BridgeTools
                     // must not fire for one.
                     note = !manualPrioritiesOn && priority > 0 && pawn.RaceProps.Humanlike
                         ? "useWorkPriorities is OFF: GetPriority returns 3 for any active " +
-                          "work type regardless of the value written. readBack does not " +
-                          "prove the requested number stuck; it proves only active vs off."
+                          "work type. See stageReadBack for the stored priority."
                         : null,
                 };
             }, cancellationToken).ConfigureAwait(false);
