@@ -295,10 +295,11 @@ namespace JawaBench.BridgeTools
                         string tid = id.Trim().StartsWith("Thing_") ? id.Trim().Substring(6) : id.Trim();
                         how = "id";
                         foreach (var m in Find.Maps) foreach (var t in m.listerThings.AllThings) if (t.ThingID == tid) cands.Add(t);
-                        // a destroyed (vanished) pawn stays in WorldPawns.AllPawnsAliveOrDead: it is gone, so it is refused
-                        // (THING_LOOKUP_BUILD_OWNER_IS_NOT_PAINTER A3; measured 2026-11-25 on Steve1: resolved true)
+                        // a vanished pawn (destroyed, not dead) stays in WorldPawns.AllPawnsAliveOrDead: it is gone, so it is
+                        // refused (THING_LOOKUP_BUILD_OWNER_IS_NOT_PAINTER A3; measured 2026-11-25 on Steve1: resolved true).
+                        // A killed pawn is Destroyed too (Kill -> Destroy(KillFinalize)) and still explains: only !Dead is gone.
                         if (cands.Count == 0) foreach (var p in AllPawnsEverywhere())
-                            if (p.ThingID == tid && !p.Destroyed && !p.Discarded && !cands.Contains(p)) cands.Add(p);
+                            if (p.ThingID == tid && !p.Discarded && !(p.Destroyed && !p.Dead) && !cands.Contains(p)) cands.Add(p);
                     }
                     else if (!string.IsNullOrWhiteSpace(cell))
                     {

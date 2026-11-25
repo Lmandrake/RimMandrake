@@ -155,6 +155,9 @@ def v_EXPLAIN(d):
     gone = d.get("gone") or {}
     if _ok(gone) and gone.get("resolved") is not False:
         f.append("vanished id answered: %s" % json.dumps(gone)[:160])
+    dead = d.get("dead")
+    if dead is not None and not (_ok(dead) and dead.get("resolved") is True):
+        f.append("a killed pawn's id no longer explains: %s" % json.dumps(dead)[:160])
     return (1 if f else 0), "; ".join(f) or "name and cell list candidates, pick none; vanished id refused"
 
 
@@ -308,8 +311,9 @@ def g_TPS(L):
             wins.append(json.loads(x))
         except ValueError:
             pass
-    ratios = sorted(w["ratio"] for w in wins if w.get("state") == "run" and isinstance(w.get("ratio"), (int, float)))
-    summ = {"min": ratios[0], "median": ratios[len(ratios) // 2], "max": ratios[-1]} if ratios else {}
+    # the report's own ratioMin/Median/Max over its run windows: the criterion is that the TOOL returns them
+    summ = {k: r.get(f) for k, f in (("min", "ratioMin"), ("median", "ratioMedian"), ("max", "ratioMax"))
+            if isinstance(r.get(f), (int, float))}
     return {"windows": wins, "summary": summ, "grew": grew}
 
 
@@ -349,7 +353,8 @@ def g_NORTHSTAR(L):
     if not _ok(dmg) or not ev:
         faults["damage_log"] = "dealt %s, logged %d events: %s" % (_ok(dmg), len(ev), json.dumps(log)[:200])
     ln = L.call("jawa/thing_lineage", ids=ids[0])
-    if not _ok(ln) or ids[0].replace("Thing_", "") not in json.dumps(ln):
+    # a miss still echoes the id ({id, found=false, fate}): require a found row
+    if not _ok(ln) or not any(r.get("found") is True for r in ln.get("results") or []):
         faults["thing_lineage"] = json.dumps(ln)[:200]
     notes.append("victim %s, %d damage events, %d queued incidents" % (ids[0], len(ev), len(q)))
     return {"faults": faults, "note": "; ".join(notes)}
@@ -470,13 +475,20 @@ def g_EXPLAIN(L):
     name = L.call("jawa/thing_explain", name=label)
     # one cell that holds two pawns: stand both Muffalo on the first one's cell
     x, z = rows[0].get("x"), rows[0].get("z")
-    L.call("rimworld/spawn_thing", defName="Steel", x=x, z=z, stackCount=10)
+    st = L.call("rimworld/spawn_thing", defName="Steel", x=x, z=z, stackCount=10)
     c = L.call("jawa/thing_explain", cell="%s,%s" % (x, z))
+    for t in (c.get("ambiguous") or []):                      # the Steel goes again: the clause restores the map
+        if t.get("def") == "Steel":
+            L.call("jawa/destroy_batch", rects="%s,%s,1,1" % (x, z), categories="Item")
+            break
     import helpers as H
     H.remove_visitors(L.s, [ids[0]])
     L.spawned.remove(ids[0])
     gone = L.call("jawa/thing_explain", id=ids[0])
-    return {"name": name, "cell": c, "gone": gone, "nameUsed": label}
+    # a killed pawn is Destroyed too (Kill -> Destroy(KillFinalize)) but not gone: it must still explain
+    L.call("jawa/damage", damageDef="Cut", amount=5000, thingId=ids[1])
+    dead = L.call("jawa/thing_explain", id=ids[1])
+    return {"name": name, "cell": c, "gone": gone, "dead": dead, "nameUsed": label}
 
 
 def g_HOOKS(L):

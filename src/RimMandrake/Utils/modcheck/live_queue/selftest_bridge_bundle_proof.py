@@ -52,6 +52,11 @@ amb = {"resolved": False, "ambiguous": [1, 2]}
 check("EXPLAIN ambiguous + vanished refused", "EXPLAIN", {"name": amb, "cell": amb, "gone": {"success": False}}, 0)
 check("EXPLAIN vanished id resolved (2026-11-25)", "EXPLAIN",
       {"name": amb, "cell": amb, "gone": {"success": True, "resolved": True}}, 1)
+check("EXPLAIN killed pawn refused like a vanished one (review 2026-11-25)", "EXPLAIN",
+      {"name": amb, "cell": amb, "gone": {"success": False}, "dead": {"success": False}}, 1)
+check("EXPLAIN killed pawn still explains", "EXPLAIN",
+      {"name": amb, "cell": amb, "gone": {"success": False}, "dead": {"success": True, "resolved": True}}, 0)
+check("TPS report gives no min/median/max", "TPS", {"windows": win, "summary": {}, "grew": 3000}, 1)
 check("EXPLAIN tool picked one", "EXPLAIN", {"name": {"resolved": True}, "cell": amb, "gone": {"success": False}}, 1)
 
 check("HOOKS all ok", "HOOKS", {"coverage": {"tps.Root.Update": "ok"}, "faults": 0, "minutes": 10}, 0)
