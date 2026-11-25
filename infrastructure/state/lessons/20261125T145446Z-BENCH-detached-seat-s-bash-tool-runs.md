@@ -1,0 +1,3 @@
+A detached seat's Bash tool runs in a memory cgroup capped at 6 GiB (claude-code-bash memory.max; the seat scope is 10 GiB), and a Codex agent launched from it (gpt_door.py agent) shares that cap with every process it starts. Loading Stable Audio Open's fp32 checkpoint twice filled it and the kernel OOM killer killed codex itself, ending the job with rc -9 after 27 min and losing its final status. Tell a Codex agent the cap, one model process at a time, load weights with mmap/assign=True, and write its status file after every step (2026-11-25, peak model RSS then 2.4 GiB, no further OOM in 9 jobs).
+item: RIMMANDRAKE_SPIN_UP_GPT_ON_DROID_SOUND_PIPELINE_THREE_METHODS
+home: infrastructure/state/facts/tool_traps.md
