@@ -24,7 +24,7 @@ import designer_stage as DS  # noqa: E402
 import launch_checks as LC  # noqa: E402
 
 FAILS = []
-REAL = os.path.join(ROOT, "design", "concepts", "ExplosiveKnockback")       # locked: every gate refuses
+REAL = os.path.join(ROOT, "design", "concepts", "ExplosiveKnockback")       # a real concept: the mod owns its lock state
 
 
 def check(name, ok, got=""):
@@ -102,8 +102,17 @@ def main():
     with patched(DS, "open_run", blind):
         rc, out = call(DS, ["open", REAL, "--run", "launch-check", "--preview"])
     check("designer open --preview: exit 126 when it could not look", rc == 126, (rc, out[-200:]))
+    # the real concept, with no patch: the preview gives the answer of the open gate itself. Whether that concept is
+    # locked is the state of the mod, which changes (it opened on 2026-11-24 and this row, which assumed "locked", went
+    # red on every publish)
+    try:
+        DS.open_run(REAL, "launch-check", None, commit=False)
+        want = 0
+    except DS.Refused:
+        want = 1
     rc, out = call(DS, ["open", REAL, "--run", "launch-check", "--preview"])
-    check("designer open --preview: the real locked concept refuses (exit 1)", rc == 1, (rc, out[-200:]))
+    check("designer open --preview: the real concept gets the answer of the open gate itself (exit %d now)" % want,
+          rc == want, (rc, out[-200:]))
     rc, out = call(DS, ["open", os.path.join(ROOT, "design", "concepts", "NoSuchConceptHere"), "--run", "x", "--preview"])
     check("designer open --preview: a concept folder that does not exist is exit 1 or 126, never 0",
           rc in (1, 126), (rc, out[-200:]))
