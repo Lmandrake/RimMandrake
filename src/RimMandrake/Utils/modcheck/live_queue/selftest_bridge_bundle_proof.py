@@ -62,5 +62,18 @@ check("AWARE lazy by arm", "AWARE", {"early": False, "genBefore": False, "genAft
 check("AWARE installed at startup", "AWARE", {"early": False, "genBefore": True, "genAfter": True}, 1)
 check("AWARE early set", "AWARE", {"early": True}, 2)
 
+ep = {"epochBefore": 1, "epochAfter": 2, "oldEpoch": False, "absentMap": False, "currentBoth": True,
+      "releaseAfterLoad": "new-game", "releaseAfterTtl": "expired"}
+check("EPOCH all refusals", "EPOCH", ep, 0)
+check("EPOCH old epoch passes", "EPOCH", dict(ep, oldEpoch=True), 1)
+check("EPOCH reload kept the epoch", "EPOCH", dict(ep, epochAfter=1), 1)
+check("EPOCH block survives the load", "EPOCH", dict(ep, releaseAfterLoad=None), 1)
+fr = {"sessionParses": True, "mergedParses": True, "n0": 3, "n1": 300}
+check("FRAME parses, fresh, no late frames", "FRAME", fr, 0)
+check("FRAME malformed session string", "FRAME", dict(fr, sessionParses=False), 1)
+check("FRAME arm does not reset", "FRAME", dict(fr, n0=2400, n1=2700), 1)
+check("FRAME load frames merged late", "FRAME", dict(fr, n1=2100), 1)
+check("PROFILE no save loaded", "PROFILE", {"why": "precondition"}, 2)
+
 print("RESULT: %s" % ("FAIL (%d failing)" % len(FAILS) if FAILS else "PASS (0 failing)"))
 sys.exit(1 if FAILS else 0)

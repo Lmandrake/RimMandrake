@@ -26,7 +26,15 @@ Any non-canonical game will do; the test lane's games are disposable.
              default 10) every TPS and attribution hook reads coverage ok, with no hook fault or foreign-thread reject
   AWARE      AWARENESS_GENPAWN_TAME_ARM_BEFORE_USE A1 (test-profile half): with no install.generation-early the
              GeneratePawn hook is not installed until an arm, and the arm installs it
+  EPOCH      BRIDGE_TARGETS_HARDEN_STALE_AFTER_RELOAD A1+A2: save, reload the same save -> a call with the old
+             expectGameEpoch is refused, an absent expectMapId is refused, the current values pass; a wild-spawner
+             block reads lastRelease new-game after the load, and expired after a short TTL
+  FRAME      RIMMANDRAKE_REPAIR_FRAME_HIST_READS_THREE_WAYS_WRONG: after a load, jawa/health's frame-hist session and
+             merged strings parse as JSON, an arm starts the session fresh, and 5 s later it holds only those frames
+             (no late-merged load frames). Run after EPOCH: it reloads the save EPOCH wrote
+PROFILE needs a loaded save (with none loaded the companion reads test by design): run it after EPOCH.
 """
+SAVE = "bundle_wb_bridge_epoch"
 import json
 import os
 import re
@@ -34,7 +42,8 @@ import sys
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-CLAUSES = ("EVIDENCE", "TPS", "NORTHSTAR", "STATICCALL", "TILECACHE", "PROFILE", "PEN", "EXPLAIN", "HOOKS", "AWARE")
+CLAUSES = ("EVIDENCE", "TPS", "NORTHSTAR", "STATICCALL", "TILECACHE", "PROFILE", "PEN", "EXPLAIN", "HOOKS", "AWARE",
+           "EPOCH", "FRAME")
 
 
 def _ok(r):
@@ -173,6 +182,38 @@ def v_AWARE(d):
     if not d.get("genAfter"):
         f.append("GeneratePawn not read as installed lazily by an arm after startup: %s" % d.get("detailAfter"))
     return (1 if f else 0), "; ".join(f) or "GeneratePawn not installed at startup; %s" % d.get("detailAfter")
+
+
+def v_EPOCH(d):
+    if d.get("why"):
+        return 2, d["why"]
+    f = []
+    if d.get("epochAfter") == d.get("epochBefore"):
+        f.append("the reload kept epoch %s" % d.get("epochBefore"))
+    for k, want in (("oldEpoch", False), ("absentMap", False), ("currentBoth", True)):
+        if bool(d.get(k)) != want:
+            f.append("%s answered %s, want %s: %s" % (k, d.get(k), "pass" if want else "refused", d.get(k + "Msg")))
+    if d.get("releaseAfterLoad") != "new-game":
+        f.append("block after the load reads lastRelease %s, want new-game" % d.get("releaseAfterLoad"))
+    if d.get("releaseAfterTtl") != "expired":
+        f.append("block after its TTL reads lastRelease %s, want expired" % d.get("releaseAfterTtl"))
+    return (1 if f else 0), "; ".join(f) or "epoch %s -> %s; old epoch and absent map refused; block new-game, then expired" % (
+        d.get("epochBefore"), d.get("epochAfter"))
+
+
+def v_FRAME(d):
+    if d.get("why"):
+        return 2, d["why"]
+    f = []
+    for k in ("sessionParses", "mergedParses"):
+        if not d.get(k):
+            f.append("%s false: %s" % (k, d.get(k + "Err")))
+    n0, n1 = d.get("n0"), d.get("n1")
+    if n0 is None or n0 > 120:
+        f.append("session right after the arm holds %s frames, want a fresh count (<= 120)" % n0)
+    if n0 is not None and n1 is not None and n1 - n0 > 5 * 90:
+        f.append("5 s after the arm the session grew %d frames: load frames merged late" % (n1 - n0))
+    return (1 if f else 0), "; ".join(f) or "both strings parse; arm fresh (%s), +%s frames in 5 s" % (n0, (n1 or 0) - (n0 or 0))
 
 
 VERDICTS = dict((c, globals()["v_" + c]) for c in CLAUSES)
@@ -353,6 +394,9 @@ def _profile(L):
 
 
 def g_PROFILE(L):
+    h = L.call("jawa/companion_handshake")
+    if "no save was loaded" in str(h.get("profileWhy")):
+        return {"why": "precondition: no save is loaded, so the companion reads test by design (run EPOCH first)"}
     prof, path = _profile(L)
     if not path:
         return {"why": "handshake names no profile file"}
@@ -466,6 +510,73 @@ def g_AWARE(L):
     lazy_after_start = bool(m) and m.group(1) > str(st.get("installedUtc") or "")
     return {"early": early, "genBefore": det0.startswith("installed") and "lazily" not in det0,
             "genAfter": lazy_after_start, "detailBefore": det0[:300], "detailAfter": det1[:300]}
+
+
+def _epoch(L):
+    return (L.call("jawa/companion_handshake").get("game") or {}).get("epoch")
+
+
+def _load(L):
+    r = L.call("rimworld/load_game_ready", saveName=SAVE, readiness="playable", timeoutMs=600000, pauseIfNeeded=True)
+    return _ok(r), json.dumps(r)[:200]
+
+
+def g_EPOCH(L):
+    mi = L.call("jawa/map_info")
+    r = L.call("rimworld/save_game", saveName=SAVE)
+    if not _ok(r):
+        return {"why": "save_game failed: %s" % json.dumps(r)[:200]}
+    e0 = _epoch(L)
+    cur0 = (L.call("jawa/companion_handshake").get("game") or {}).get("currentMapId")
+    L.call("jawa/wild_spawner_block", action="block", minutes=30)
+    ok, msg = _load(L)
+    if not ok:
+        return {"why": "reload failed: %s" % msg}
+    e1 = _epoch(L)
+    rel_load = (L.call("jawa/wild_spawner_block", action="get").get("lastRelease"))
+    g = L.call("jawa/companion_handshake").get("game") or {}
+    out = {"epochBefore": e0, "epochAfter": e1, "releaseAfterLoad": rel_load, "mapBefore": mi.get("uniqueID")}
+    for k, args in (("oldEpoch", {"expectGameEpoch": e0}), ("absentMap", {"expectMapId": 987654}),
+                    ("currentBoth", {"expectGameEpoch": e1, "expectCurrentMapId": g.get("currentMapId", cur0)})):
+        try:
+            r = L.call("jawa/map_info", **args)
+            out[k], out[k + "Msg"] = _ok(r) and "REFUSED" not in json.dumps(r), (r.get("message") or "")[:160]
+        except Exception as e:                                  # noqa: BLE001 - a refusal may arrive as an error
+            out[k], out[k + "Msg"] = False, str(e)[:160]
+    L.call("jawa/wild_spawner_block", action="block", minutes=0.25)
+    time.sleep(20)
+    out["releaseAfterTtl"] = L.call("jawa/wild_spawner_block", action="get").get("lastRelease")
+    return out
+
+
+def g_FRAME(L):
+    ok, msg = _load(L)
+    if not ok:
+        return {"why": "no %s save to reload (run EPOCH first): %s" % (SAVE, msg)}
+    time.sleep(3)
+    L.call("jawa/health", action="arm", minutes=5)
+
+    def read():
+        fh = (L.call("jawa/health", action="status").get("frameHist") or {})
+        out = {}
+        for k in ("session", "merged"):
+            try:
+                out[k] = json.loads(fh.get(k) or "")
+            except ValueError as e:
+                out[k + "Err"] = "%s: %s" % (e, (fh.get(k) or "")[:120])
+        return out
+    a = read()
+    n0 = (a.get("session") or {}).get("n")
+    L.call("rimworld/set_time_speed", speed="Normal")
+    try:
+        time.sleep(5)
+    finally:
+        L.call("rimworld/set_time_speed", speed="Paused")
+    b = read()
+    return {"sessionParses": "session" in a and "session" in b, "mergedParses": "merged" in a and "merged" in b,
+            "sessionParsesErr": a.get("sessionErr") or b.get("sessionErr"),
+            "mergedParsesErr": a.get("mergedErr") or b.get("mergedErr"),
+            "n0": n0, "n1": (b.get("session") or {}).get("n")}
 
 
 def main(argv):
