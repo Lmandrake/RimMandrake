@@ -50,6 +50,7 @@ import tap_certificate as K  # noqa: E402
 
 LOG = os.path.join(os.path.dirname(K.RESULT), "tap_certificate_log.txt")
 LINES = []
+DUMP = [None]           # --dump DIR: each fixture's reply, trace rows and journal, for diagnosis
 CAST_OWNER = "jawabench.cast"
 BLIND = {"tap": "reserve", "type": "Verse.AI.ReservationManager", "method": "Reserve"}
 # Every def a fixture names, read back from the running game before any fixture (never guessed: the core defs of 1.6).
@@ -82,12 +83,18 @@ def fixtures(c):
     return [
         {"name": "job", "taps": {"job_start": ["ordered", "think_tree"], "job_end": ["interrupted", "succeeded"]},
          "bind": {"jA": A}, "ticks": 700,
-         "acts": [act("jawa/ordered_job", 0, pawnId=A, jobDef="Goto", targetAX=ax + 5, targetAZ=az, waitTicks=0),
-                  act("jawa/ordered_job", 30, pawnId=A, jobDef="Goto", targetAX=ax + 8, targetAZ=az + 3, waitTicks=0)],
+         # The Goto cells are the gun cells: an item came to rest there, so the cell is no wall (run 2: ax+5 errored the
+         # pather and the run faulted). Gun 2 is 3 cells off (about 40 ticks at a colonist's walk), so the order at tick 8
+         # interrupts it, and gun 0 is 1 cell off, so that Goto succeeds well inside the 700 ticks.
+         "acts": [act("jawa/ordered_job", 0, pawnId=A, jobDef="Goto", targetAX=c["gunXZ"][2][0], targetAZ=c["gunXZ"][2][1], waitTicks=0),
+                  act("jawa/ordered_job", 8, pawnId=A, jobDef="Goto", targetAX=c["gunXZ"][0][0], targetAZ=c["gunXZ"][0][1], waitTicks=0)],
          "judge": judge_job},
         {"name": "reserve", "taps": {"reserve": ["made", "refused"]}, "bind": {"rA": A, "rB": B}, "ticks": 300,
-         "acts": [act("jawa/ordered_job", 1, pawnId=A, jobDef="Equip", targetAId=gun(c, 0), waitTicks=0),
-                  act("jawa/ordered_job", 1, pawnId=B, jobDef="Equip", targetAId=gun(c, 0), waitTicks=0)],
+         # B's ordered Equip holds gun 0 (it ran 260 ticks to Succeeded in run 2). A second ORDERED Equip cannot be refused:
+         # a player-forced Reserve takes the gun and ends the holder's job (runs 2 and 3: ords show the holder's Equip
+         # ending InterruptForced inside the second Reserve). So A asks with a job that is not forced, as the think tree's are.
+         "acts": [act("jawa/ordered_job", 1, pawnId=B, jobDef="Equip", targetAId=gun(c, 0), waitTicks=0),
+                  act("jawa/tap_fixture", 3, action="reserve_unforced", pawnId=A, thingId=gun(c, 0))],
          "judge": judge_reserve},
         {"name": "blind", "taps": {}, "bind": {"rB": B}, "ticks": 300, "blind": True,
          "acts": [act("jawa/tap_fixture", 0, action="unpatch", typeName=BLIND["type"], methodName=BLIND["method"], owner=CAST_OWNER),
@@ -120,8 +127,8 @@ def fixtures(c):
                   act("jawa/scene_gate", 3, action="release", kind="quest", why="tap certificate fixture done")],
          "judge": judge_gate("quest")},
         {"name": "letter", "taps": {"letter": ["shown", "queued"]}, "bind": {}, "ticks": 20, "tag": tag,
-         "acts": [act("jawa/letter_send_delayed", 0, label="tapcert shown " + tag, text="tap certificate fixture", textLetterDef="NeutralEvent",
-                      delayTicks=0, playSound=False),
+         # shown: jawa/send_letter (letter_send_delayed refuses delayTicks 0: "use jawa/send_letter for an immediate letter", run 1)
+         "acts": [act("jawa/send_letter", 0, label="tapcert shown " + tag, text="tap certificate fixture", letterDef="NeutralEvent"),
                   act("jawa/letter_send_delayed", 0, label="tapcert queued " + tag, text="tap certificate fixture", textLetterDef="NeutralEvent",
                       delayTicks=600, playSound=False)],
          "judge": judge_letter},
@@ -162,8 +169,11 @@ def first(xs, *keys):
 def judge_job(rows, rep, x):
     s = recs(rows, "job_start", alias="jA")
     e = recs(rows, "job_end", alias="jA")
-    tree = [r for r in recs(rows, "job_start") if r.get("giver") not in (None, "", "player", "queue", "direct")]
-    return {("job_start", "ordered"): first([r for r in s if r.get("giver") == "player" and r.get("def") == "Goto"], "alias", "def", "giver"),
+    # An ordered job reaches StartJob through the pawn's job queue: its giver is ThinkNode_QueuedJob (runs 1 and 2 on
+    # ArchBig), not "player". So the ordered route is a queued Goto, and the think-tree route is any other giver node.
+    queued = ("ThinkNode_QueuedJob", "queue", "player")
+    tree = [r for r in recs(rows, "job_start") if r.get("giver") not in (None, "", "direct") + queued]
+    return {("job_start", "ordered"): first([r for r in s if r.get("giver") in queued and r.get("def") == "Goto"], "alias", "def", "giver"),
             ("job_start", "think_tree"): first(tree, "alias", "def", "giver"),
             ("job_end", "interrupted"): first([r for r in e if r.get("cond") == "InterruptForced"], "alias", "def", "cond"),
             ("job_end", "succeeded"): first([r for r in e if r.get("cond") == "Succeeded"], "alias", "def", "cond")}
@@ -214,8 +224,11 @@ def judge_quest(rows, rep, x):
 def judge_letter(rows, rep, x):
     tag = x["tag"]
     lt = recs(rows, "letter")
-    return {("letter", "shown"): first([r for r in lt if r.get("label") == "tapcert shown " + tag and r.get("shown") is True], "label", "shown", "queued"),
-            ("letter", "queued"): first([r for r in lt if r.get("label") == "tapcert queued " + tag and r.get("queued") is True], "label", "shown", "queued", "delay")}
+    # The game capitalises a letter's label (run 2 recorded "Tapcert shown 1793"), so the label compares case-blind.
+    def is_(r, what):
+        return str(r.get("label") or "").lower() == ("tapcert %s %s" % (what, tag)).lower()
+    return {("letter", "shown"): first([r for r in lt if is_(r, "shown") and r.get("shown") is True], "label", "shown", "queued"),
+            ("letter", "queued"): first([r for r in lt if is_(r, "queued") and r.get("queued") is True], "label", "shown", "queued", "delay")}
 
 
 def judge_message(rows, rep, x):
@@ -240,9 +253,12 @@ def judge_incident(rows, rep, x):
     """The incident tap is the awareness prefix on IncidentWorker.TryExecute: its record is the incident journal (x["journal"]),
     and its held route is the gate row of the incident gate that sits on that prefix."""
     j = [r for r in x.get("journal") or [] if r.get("def") == INCIDENT]
-    fired = [r for r in j if r.get("workerEntered") is True or r.get("returned") is True]
+    # The journal writes its booleans as strings ("true", "false", "unknown"; run 2), so each reads through tf().
+    def tf(v):
+        return v if isinstance(v, bool) else {"true": True, "false": False}.get(str(v).lower())
+    fired = [r for r in j if tf(r.get("workerEntered")) is True or tf(r.get("returned")) is True]
     held = [r for r in recs(rows, "gate", gate="incident") if r.get("outcome") == "held"]
-    jheld = [r for r in j if r.get("workerEntered") is False and "gate" in str(r.get("workerEnteredWhy") or "")]
+    jheld = [r for r in j if tf(r.get("workerEntered")) is False and "gate" in str(r.get("workerEnteredWhy") or "")]
     ev = first(held, "gate", "outcome", "name")
     if ev is not None:
         ev["journal"] = first(jheld, "aseq", "def", "workerEntered", "workerEnteredWhy")
@@ -253,7 +269,7 @@ def judge_incident(rows, rep, x):
 # ------------------------------------------------------------------------------------------------ dry plan
 def placeholder_stage():
     return {"A": "Human_A", "B": "Human_B", "Ax": 100, "Az": 100, "beasts": ["Muffalo_%d" % i for i in range(5)],
-            "guns": ["Gun_Revolver_%d" % i for i in range(3)], "sizeX": 250, "sizeZ": 250, "tag": "T0"}
+            "guns": ["Gun_Revolver_%d" % i for i in range(3)], "gunXZ": [(101 + i, 102) for i in range(3)], "sizeX": 250, "sizeZ": 250, "tag": "T0"}
 
 
 def plan_check(fx):
@@ -373,7 +389,11 @@ def main(argv=None):
     ap.add_argument("--host", default=None, help="the game by name (ArchSmall, ArchBig); none = the default endpoint")
     ap.add_argument("--dry", action="store_true", help="print the fixture plan and check it against TAPS; no bridge call")
     ap.add_argument("--config", default=None, help="the game's Config folder, for the settings hashes")
+    ap.add_argument("--dump", default=None, help="write each fixture's reply, trace rows and journal to this folder")
     a = ap.parse_args(argv)
+    if a.dump:
+        os.makedirs(a.dump, exist_ok=True)
+        DUMP[0] = a.dump
     if a.dry:
         return dry()
     if plan_check(fixtures(placeholder_stage())):
@@ -528,7 +548,7 @@ def make_stage(W, R):
             log("UNMEASURED: no Gun_Revolver came at %d,%d" % c)
             return None
         guns.append(hit[0])
-    st = {"A": A, "B": B, "Ax": ax, "Az": az, "beasts": beasts, "guns": guns, "sizeX": sx, "sizeZ": sz, "tag": str(R.tick())}
+    st = {"A": A, "B": B, "Ax": ax, "Az": az, "beasts": beasts, "guns": guns, "gunXZ": cells, "sizeX": sx, "sizeZ": sz, "tag": str(R.tick())}
     log("stage made: A %s, B %s at %d,%d; beasts %s; guns %s" % (A, B, ax, az, beasts, guns))
     return st
 
@@ -552,6 +572,9 @@ def run_fixture(W, R, f, bound):
     extra = {"tag": f.get("tag")}
     if jseq is not None:
         extra["journal"] = W.call("jawa/incident_journal", sinceSeq=jseq, limit=50).get("rows") or []
+    if DUMP[0]:
+        with open(os.path.join(DUMP[0], "fixture_%s.json" % f["name"]), "w", encoding="utf-8") as fh:
+            json.dump({"reply": rep, "rows": rows, "extra": extra}, fh, indent=1, default=str)
     routes = f["judge"](rows, rep, extra)
     acts_out = [{"id": x.get("id"), "tool": x.get("tool"), "state": x.get("state")} for x in rep.get("acts") or []]
     not_done = [x for x in acts_out if x["state"] != "done"]

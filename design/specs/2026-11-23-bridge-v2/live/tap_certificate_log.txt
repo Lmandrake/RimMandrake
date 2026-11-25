@@ -1,0 +1,32 @@
+tap certificate session 2026-11-25T00:44:28 on ArchBig, driver prove:47908
+stage: save None, map 0, tick 1
+settings OskarPotocki.VEF unread (0 candidate files)
+settings Owlchemist.CherryPicker unread (2 candidate files)
+settings mandrake.rm.divinginteraction <- Mod_RimMandrake.Biomes_RM_DivingInteractionMod.xml
+settings mandrake.rm.flowworks unread (2 candidate files)
+settings mandrake.rm.gimmesomeslack unread (3 candidate files)
+settings mandrake.rm.stillsand.horizon unread (0 candidate files)
+settings mandrake.rm.terminalbiomes unread (0 candidate files)
+settings mandrake.rm.warscar.chotrix unread (0 candidate files)
+settings mandrake.rut.rustcathedralhum unread (0 candidate files)
+identity: companion 635245a0-0965-4164-b3c2-0b2a1bb1f5d9, modlist sha256:73be868885c0faeb8c90d4832a8dc04444c6ea0cac9f36c84c1d54d245aa25e4, foreign owners ['OskarPotocki.VEF', 'Owlchemist.CherryPicker', 'mandrake.rm.divinginteraction', 'mandrake.rm.flowworks', 'mandrake.rm.gimmesomeslack', 'mandrake.rm.stillsand.horizon', 'mandrake.rm.terminalbiomes', 'mandrake.rm.warscar.chotrix', 'mandrake.rut.rustcathedralhum']
+stage made: A Human812, B Human815 at 130,119; beasts ['Muffalo19523', 'Muffalo19524', 'Muffalo19525', 'Muffalo19526', 'Muffalo19527']; guns ['Gun_Revolver19528', 'Gun_Revolver19529', 'Gun_Revolver19530']
+fixture job         run S1_20261125T084450_r1 hit, 88 rows; job_start.ordered shown, job_start.think_tree shown, job_end.interrupted shown, job_end.succeeded shown; acts not done: job_1_2 refused
+fixture reserve     run S1_20261125T084450_r2 hit, 99 rows; reserve.made shown, reserve.refused shown
+blind: arm COULD NOT ARM ['reserve.made: our hook is not on Verse.AI.ReservationManager.Reserve']; reported True; hook restored True
+fixture blind       run S1_20261125T084450_r3 hit, 67 rows; reserve rows 0, Equip started True, unpatch [('done', ['ReservationManager.Reserve(Pawn,Job,LocalTargetInfo,Int32,Int32,ReservationLayerDef,Boolean,Boolean,Boolean)'])]; acts not done: blind_1_8 refused
+fixture kill        run S1_20261125T084450_r5 hit, 83 rows; kill.by_damage shown, kill.by_hediff shown
+fixture mental      run S1_20261125T084450_r6 hit, 62 rows; mental.started shown, mental.refused shown
+fixture gate_mental run S1_20261125T084450_r7 hit, 66 rows; gate.mental.allowed shown, gate.mental.held shown
+fixture quest       run S1_20261125T084450_r8 hit, 18 rows; quest.added shown, quest.already_there shown
+fixture gate_quest  run S1_20261125T084450_r9 hit, 21 rows; gate.quest.allowed shown, gate.quest.held shown; acts not done: gate_quest_2_29 refused
+fixture letter      run S1_20261125T084450_r10 hit, 17 rows; letter.shown shown, letter.queued shown
+fixture message     run S1_20261125T084450_r11 hit, 18 rows; message.shown shown, message.hidden_repeat shown
+fixture fire        run S1_20261125T084450_r12 hit, 18 rows; fire.by_pawn shown, fire.by_thing shown
+fixture explosion   run S1_20261125T084450_r13 hit, 21 rows; explosion.with_instigator shown, explosion.no_instigator shown
+fixture incident    run S1_20261125T084450_r14 hit, 21 rows; incident.fired shown, incident.held shown; acts not done: incident_2_47 refused
+R1 PASS     every fixture left its record on the loaded small list: 26 of 26 routes shown (worst: none missing; limit: all; 13 fixtures read)
+R2 NOT OWED full-list testing is retired (repo CLAUDE.md, Mod development runs on small lists); foreign patches on the tapped methods: RimWorld.Fire.SpawnSetup postfix mandrake.rm.divinginteraction; RimWorld.Fire.SpawnSetup postfix mandrake.rm.flowworks; RimWorld.IncidentWorker.TryExecute finalizer mandrake.rm.stillsand.horizon; RimWorld.IncidentWorker.TryExecute prefix OskarPotocki.VEF; RimWorld.IncidentWorker.TryExecute prefix mandrake.rm.stillsand.horizon; RimWorld.QuestManager.Add postfix OskarPotocki.VEF; RimWorld.QuestManager.Add prefix Owlchemist.CherryPicker; Verse.AI.Pawn_JobTracker.StartJob postfix mandrake.rm.terminalbiomes; Verse.GenExplosion.DoExplosion postfix mandrake.rm.gimmesomeslack; Verse.GenExplosion.DoExplosion prefix mandrake.rm.warscar.chotrix; Verse.Pawn.Kill finalizer mandrake.rm.divinginteraction; Verse.Pawn.Kill postfix OskarPotocki.VEF; Verse.Pawn.Kill prefix OskarPotocki.VEF; Verse.Pawn.Kill prefix mandrake.rm.divinginteraction; Verse.Pawn.Kill prefix mandrake.rut.rustcathedralhum
+R3 PASS     the blind hook (Verse.AI.ReservationManager.Reserve) is reported: True; restored True
+R4 PASS     suite wall time 66.8 s over 13 fixture runs
+audit: PASS tap certificate made 2026-11-25T00:45:35 on ArchBig: 13 taps, every route shown, blind tap reserve reported

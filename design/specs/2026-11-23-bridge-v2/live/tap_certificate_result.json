@@ -1,0 +1,961 @@
+{
+ "certificate": {
+  "blind": {
+   "method": "Verse.AI.ReservationManager.Reserve",
+   "reported": true,
+   "restored": true,
+   "tap": "reserve"
+  },
+  "by": "prove_tap_certificate.py",
+  "game": "ArchBig",
+  "key": {
+   "companion": "635245a0-0965-4164-b3c2-0b2a1bb1f5d9",
+   "inventory": "sha256:d002d37248a3af506a75253230d92e982b6b812a8b4e97b5625cb3f1ba75629f",
+   "modlist": "sha256:73be868885c0faeb8c90d4832a8dc04444c6ea0cac9f36c84c1d54d245aa25e4",
+   "settings": "sha256:5cb40060f5bcd77758b3c0579d78bb03b37758d86c7bd6ee12fe3f8cda521f7a"
+  },
+  "schema": "tap_certificate_v1",
+  "source_sha": null,
+  "suite_ms": 66833,
+  "taps": {
+   "explosion": {
+    "foreign": [
+     {
+      "kind": "postfix",
+      "method": "Verse.GenExplosion.DoExplosion",
+      "owner": "mandrake.rm.gimmesomeslack",
+      "patchAssembly": "RimMandrakeGimmeSomeSlack",
+      "patchMethod": "RimMandrake.GimmeSomeSlack.Aerial.Patch_GenExplosion_CutSpans.Postfix",
+      "priority": 400
+     },
+     {
+      "kind": "prefix",
+      "method": "Verse.GenExplosion.DoExplosion",
+      "owner": "mandrake.rm.warscar.chotrix",
+      "patchAssembly": "RimMandrake.Warscar",
+      "patchMethod": "RimMandrake.Scarlands.Patch_GenExplosion_DoExplosion.Prefix",
+      "priority": 400
+     }
+    ],
+    "methods": [
+     "Verse.GenExplosion.DoExplosion"
+    ],
+    "not_shown": [],
+    "shown": [
+     "with_instigator",
+     "no_instigator"
+    ]
+   },
+   "fire": {
+    "foreign": [
+     {
+      "kind": "postfix",
+      "method": "RimWorld.Fire.SpawnSetup",
+      "owner": "mandrake.rm.divinginteraction",
+      "patchAssembly": "RimMandrake.DivingInteraction",
+      "patchMethod": "RimMandrake.DivingInteraction.Patch_Fire_SpawnSetup.Postfix",
+      "priority": 400
+     },
+     {
+      "kind": "postfix",
+      "method": "RimWorld.Fire.SpawnSetup",
+      "owner": "mandrake.rm.flowworks",
+      "patchAssembly": "RimMandrakeFlowWorks",
+      "patchMethod": "RimMandrake.FlowWorks.RM_Patch_FireLightsLiquid.Postfix",
+      "priority": 400
+     }
+    ],
+    "methods": [
+     "RimWorld.Fire.SpawnSetup"
+    ],
+    "not_shown": [],
+    "shown": [
+     "by_pawn",
+     "by_thing"
+    ]
+   },
+   "gate.mental": {
+    "foreign": [],
+    "methods": [
+     "Verse.AI.MentalStateHandler.TryStartMentalState"
+    ],
+    "not_shown": [],
+    "shown": [
+     "allowed",
+     "held"
+    ]
+   },
+   "gate.quest": {
+    "foreign": [
+     {
+      "kind": "postfix",
+      "method": "RimWorld.QuestManager.Add",
+      "owner": "OskarPotocki.VEF",
+      "patchAssembly": "VEF",
+      "patchMethod": "VEF.Storyteller.VanillaExpandedFramework_QuestManager_Add_Patch.Postfix",
+      "priority": 400
+     },
+     {
+      "kind": "prefix",
+      "method": "RimWorld.QuestManager.Add",
+      "owner": "Owlchemist.CherryPicker",
+      "patchAssembly": "CherryPicker",
+      "patchMethod": "CherryPicker.Patch_QuestManager.Prefix",
+      "priority": 400
+     }
+    ],
+    "methods": [
+     "RimWorld.QuestManager.Add"
+    ],
+    "not_shown": [],
+    "shown": [
+     "allowed",
+     "held"
+    ]
+   },
+   "incident": {
+    "foreign": [
+     {
+      "kind": "finalizer",
+      "method": "RimWorld.IncidentWorker.TryExecute",
+      "owner": "mandrake.rm.stillsand.horizon",
+      "patchAssembly": "RimMandrake.Stillsand",
+      "patchMethod": "RimMandrake.Stillsand.RM_HorizonWarningPatches.TryExecuteFinalizer",
+      "priority": 400
+     },
+     {
+      "kind": "prefix",
+      "method": "RimWorld.IncidentWorker.TryExecute",
+      "owner": "OskarPotocki.VEF",
+      "patchAssembly": "VEF",
+      "patchMethod": "VEF.Storyteller.VanillaExpandedFramework_IncidentWorker_TryExecute_Patch.Prefix",
+      "priority": 400
+     },
+     {
+      "kind": "prefix",
+      "method": "RimWorld.IncidentWorker.TryExecute",
+      "owner": "mandrake.rm.stillsand.horizon",
+      "patchAssembly": "RimMandrake.Stillsand",
+      "patchMethod": "RimMandrake.Stillsand.RM_HorizonWarningPatches.TryExecutePrefix",
+      "priority": 400
+     }
+    ],
+    "methods": [
+     "RimWorld.IncidentWorker.TryExecute"
+    ],
+    "not_shown": [],
+    "shown": [
+     "fired",
+     "held"
+    ]
+   },
+   "job_end": {
+    "foreign": [],
+    "methods": [
+     "Verse.AI.Pawn_JobTracker.CleanupCurrentJob"
+    ],
+    "not_shown": [],
+    "shown": [
+     "interrupted",
+     "succeeded"
+    ]
+   },
+   "job_start": {
+    "foreign": [
+     {
+      "kind": "postfix",
+      "method": "Verse.AI.Pawn_JobTracker.StartJob",
+      "owner": "mandrake.rm.terminalbiomes",
+      "patchAssembly": "RimMandrake.TerminalBiomes",
+      "patchMethod": "RimMandrake.TerminalBiomes.RM_Patch_VauliskJobStart.Postfix",
+      "priority": 400
+     }
+    ],
+    "methods": [
+     "Verse.AI.Pawn_JobTracker.StartJob"
+    ],
+    "not_shown": [],
+    "shown": [
+     "ordered",
+     "think_tree"
+    ]
+   },
+   "kill": {
+    "foreign": [
+     {
+      "kind": "finalizer",
+      "method": "Verse.Pawn.Kill",
+      "owner": "mandrake.rm.divinginteraction",
+      "patchAssembly": "RimMandrake.DivingInteraction",
+      "patchMethod": "RimMandrake.DivingInteraction.Patch_Pawn_Kill_CorpseFire.Finalizer",
+      "priority": 400
+     },
+     {
+      "kind": "postfix",
+      "method": "Verse.Pawn.Kill",
+      "owner": "OskarPotocki.VEF",
+      "patchAssembly": "VEF",
+      "patchMethod": "VEF.Apparels.VanillaExpandedFramework_Pawn_Kill_Patch.Postfix",
+      "priority": 400
+     },
+     {
+      "kind": "postfix",
+      "method": "Verse.Pawn.Kill",
+      "owner": "OskarPotocki.VEF",
+      "patchAssembly": "VEF",
+      "patchMethod": "VEF.Pawns.VanillaExpandedFramework_Pawn_Kill.Postfix",
+      "priority": 400
+     },
+     {
+      "kind": "prefix",
+      "method": "Verse.Pawn.Kill",
+      "owner": "OskarPotocki.VEF",
+      "patchAssembly": "VEF",
+      "patchMethod": "VEF.Apparels.VanillaExpandedFramework_Pawn_Kill_Patch.Prefix",
+      "priority": 400
+     },
+     {
+      "kind": "prefix",
+      "method": "Verse.Pawn.Kill",
+      "owner": "OskarPotocki.VEF",
+      "patchAssembly": "VEF",
+      "patchMethod": "VEF.Storyteller.VanillaExpandedFramework_Pawn_Kill_Patch.Prefix",
+      "priority": 400
+     },
+     {
+      "kind": "prefix",
+      "method": "Verse.Pawn.Kill",
+      "owner": "mandrake.rm.divinginteraction",
+      "patchAssembly": "RimMandrake.DivingInteraction",
+      "patchMethod": "RimMandrake.DivingInteraction.Patch_Pawn_Kill_CorpseFire.Prefix",
+      "priority": 400
+     },
+     {
+      "kind": "prefix",
+      "method": "Verse.Pawn.Kill",
+      "owner": "mandrake.rut.rustcathedralhum",
+      "patchAssembly": "RimMandrake.RustCathedral.Hum",
+      "patchMethod": "RimMandrake.RustCathedral.Hum.HarmonyPatch_HullBolts_Kill.Prefix",
+      "priority": 400
+     },
+     {
+      "kind": "prefix",
+      "method": "Verse.Pawn.Kill",
+      "owner": "mandrake.rut.rustcathedralhum",
+      "patchAssembly": "RimMandrake.RustCathedral.Hum",
+      "patchMethod": "RimMandrake.RustCathedral.Hum.HarmonyPatch_WatchedBolts_Kill.Prefix",
+      "priority": 400
+     }
+    ],
+    "methods": [
+     "Verse.Pawn.Kill"
+    ],
+    "not_shown": [],
+    "shown": [
+     "by_damage",
+     "by_hediff"
+    ]
+   },
+   "letter": {
+    "foreign": [],
+    "methods": [
+     "Verse.LetterStack.ReceiveLetter"
+    ],
+    "not_shown": [],
+    "shown": [
+     "shown",
+     "queued"
+    ]
+   },
+   "mental": {
+    "foreign": [],
+    "methods": [
+     "Verse.AI.MentalStateHandler.TryStartMentalState"
+    ],
+    "not_shown": [],
+    "shown": [
+     "started",
+     "refused"
+    ]
+   },
+   "message": {
+    "foreign": [],
+    "methods": [
+     "Verse.Messages.Message"
+    ],
+    "not_shown": [],
+    "shown": [
+     "shown",
+     "hidden_repeat"
+    ]
+   },
+   "quest": {
+    "foreign": [
+     {
+      "kind": "postfix",
+      "method": "RimWorld.QuestManager.Add",
+      "owner": "OskarPotocki.VEF",
+      "patchAssembly": "VEF",
+      "patchMethod": "VEF.Storyteller.VanillaExpandedFramework_QuestManager_Add_Patch.Postfix",
+      "priority": 400
+     },
+     {
+      "kind": "prefix",
+      "method": "RimWorld.QuestManager.Add",
+      "owner": "Owlchemist.CherryPicker",
+      "patchAssembly": "CherryPicker",
+      "patchMethod": "CherryPicker.Patch_QuestManager.Prefix",
+      "priority": 400
+     }
+    ],
+    "methods": [
+     "RimWorld.QuestManager.Add"
+    ],
+    "not_shown": [],
+    "shown": [
+     "added",
+     "already_there"
+    ]
+   },
+   "reserve": {
+    "foreign": [],
+    "methods": [
+     "Verse.AI.ReservationManager.Reserve"
+    ],
+    "not_shown": [],
+    "shown": [
+     "made",
+     "refused"
+    ]
+   }
+  }
+ },
+ "fixtures": [
+  {
+   "acts": [
+    {
+     "id": "job_0_1",
+     "state": "done",
+     "tool": "jawa/ordered_job"
+    },
+    {
+     "id": "job_1_2",
+     "state": "refused",
+     "tool": "jawa/ordered_job"
+    }
+   ],
+   "acts_reply": [
+    {
+     "id": "job_1_2",
+     "reply": {
+      "accepted": true,
+      "afterJobDef": "Wait",
+      "beforeJobDef": "Goto",
+      "interruptibleBefore": true,
+      "note": "Job was accepted (enqueued) but curJob after 0 tick(s) is 'Wait', not 'Goto' - it may have finished, failed immediately, or be queued rather than current.",
+      "nowRunningRequested": false,
+      "pausedDuringWait": false,
+      "queueLength": 0,
+      "requestedJobDef": "Goto",
+      "success": false,
+      "ticksElapsed": 0,
+      "waitEnded": "ticks"
+     },
+     "state": "refused"
+    }
+   ],
+   "line": "run S1_20261125T084450_r1 hit, 88 rows; job_start.ordered shown, job_start.think_tree shown, job_end.interrupted shown, job_end.succeeded shown; acts not done: job_1_2 refused",
+   "name": "job",
+   "rows": 88,
+   "run": "S1_20261125T084450_r1",
+   "shown": {
+    "job_end.interrupted": {
+     "alias": "jA",
+     "cond": "InterruptForced",
+     "def": "Goto",
+     "rec": "job_end",
+     "seq": 39
+    },
+    "job_end.succeeded": {
+     "alias": "jA",
+     "cond": "Succeeded",
+     "def": "Wait",
+     "rec": "job_end",
+     "seq": 51
+    },
+    "job_start.ordered": {
+     "alias": "jA",
+     "def": "Goto",
+     "giver": "ThinkNode_QueuedJob",
+     "rec": "job_start",
+     "seq": 32
+    },
+    "job_start.think_tree": {
+     "alias": "jA",
+     "def": "GotoWander",
+     "giver": "JobGiver_WanderColony",
+     "rec": "job_start",
+     "seq": 57
+    }
+   },
+   "why": "hit"
+  },
+  {
+   "acts": [
+    {
+     "id": "reserve_0_4",
+     "state": "done",
+     "tool": "jawa/ordered_job"
+    },
+    {
+     "id": "reserve_1_5",
+     "state": "done",
+     "tool": "jawa/tap_fixture"
+    }
+   ],
+   "line": "run S1_20261125T084450_r2 hit, 99 rows; reserve.made shown, reserve.refused shown",
+   "name": "reserve",
+   "rows": 99,
+   "run": "S1_20261125T084450_r2",
+   "shown": {
+    "reserve.made": {
+     "alias": "rB",
+     "made": true,
+     "rec": "reserve",
+     "seq": 143,
+     "target": "Gun_Revolver19528"
+    },
+    "reserve.refused": {
+     "alias": "rA",
+     "holder": "Human815",
+     "made": false,
+     "rec": "reserve",
+     "seq": 153,
+     "target": "Gun_Revolver19528"
+    }
+   },
+   "why": "hit"
+  },
+  {
+   "acts": [
+    {
+     "id": "blind_0_7",
+     "state": "done",
+     "tool": "jawa/tap_fixture"
+    },
+    {
+     "id": "blind_1_8",
+     "state": "refused",
+     "tool": "jawa/ordered_job"
+    }
+   ],
+   "acts_reply": [
+    {
+     "id": "blind_1_8",
+     "reply": {
+      "accepted": true,
+      "afterJobDef": "Wait_MaintainPosture",
+      "beforeJobDef": "Wait_Wander",
+      "interruptibleBefore": true,
+      "note": "Job was accepted (enqueued) but curJob after 0 tick(s) is 'Wait_MaintainPosture', not 'Equip' - it may have finished, failed immediately, or be queued rather than current.",
+      "nowRunningRequested": false,
+      "pausedDuringWait": false,
+      "queueLength": 0,
+      "requestedJobDef": "Equip",
+      "success": false,
+      "ticksElapsed": 0,
+      "waitEnded": "ticks"
+     },
+     "state": "refused"
+    }
+   ],
+   "arm": {
+    "reasons": [
+     "reserve.made: our hook is not on Verse.AI.ReservationManager.Reserve"
+    ],
+    "routes": {
+     "reserve.made": "blind"
+    },
+    "verdict": "COULD NOT ARM"
+   },
+   "blind": {
+    "reached": {
+     "alias": "rB",
+     "def": "Equip",
+     "giver": "ThinkNode_QueuedJob",
+     "rec": "job_start",
+     "seq": 243
+    },
+    "reserve_rows": 0,
+    "unpatched": [
+     [
+      "done",
+      [
+       "ReservationManager.Reserve(Pawn,Job,LocalTargetInfo,Int32,Int32,ReservationLayerDef,Boolean,Boolean,Boolean)"
+      ]
+     ]
+    ]
+   },
+   "line": "run S1_20261125T084450_r3 hit, 67 rows; reserve rows 0, Equip started True, unpatch [('done', ['ReservationManager.Reserve(Pawn,Job,LocalTargetInfo,Int32,Int32,ReservationLayerDef,Boolean,Boolean,Boolean)'])]; acts not done: blind_1_8 refused",
+   "name": "blind",
+   "rows": 67,
+   "run": "S1_20261125T084450_r3",
+   "why": "hit"
+  },
+  {
+   "acts": [
+    {
+     "id": "kill_0_11",
+     "state": "done",
+     "tool": "jawa/damage"
+    },
+    {
+     "id": "kill_1_12",
+     "state": "done",
+     "tool": "jawa/pawn_health"
+    }
+   ],
+   "line": "run S1_20261125T084450_r5 hit, 83 rows; kill.by_damage shown, kill.by_hediff shown",
+   "name": "kill",
+   "rows": 83,
+   "run": "S1_20261125T084450_r5",
+   "shown": {
+    "kill.by_damage": {
+     "alias": "kD",
+     "culprit": "hediff Cut",
+     "rec": "kill",
+     "seq": 369
+    },
+    "kill.by_hediff": {
+     "alias": "kH",
+     "culprit": "hediff ToxicBuildup",
+     "rec": "kill",
+     "seq": 373
+    }
+   },
+   "why": "hit"
+  },
+  {
+   "acts": [
+    {
+     "id": "mental_0_14",
+     "state": "done",
+     "tool": "jawa/pawn_mental"
+    },
+    {
+     "id": "mental_1_15",
+     "state": "done",
+     "tool": "jawa/pawn_mental"
+    },
+    {
+     "id": "mental_2_16",
+     "state": "done",
+     "tool": "jawa/pawn_mental"
+    }
+   ],
+   "line": "run S1_20261125T084450_r6 hit, 62 rows; mental.started shown, mental.refused shown",
+   "name": "mental",
+   "rows": 62,
+   "run": "S1_20261125T084450_r6",
+   "shown": {
+    "mental.refused": {
+     "alias": "mB",
+     "reason": "forced via bridge",
+     "rec": "mental_attempt",
+     "seq": 458,
+     "started": false,
+     "state": "Wander_Sad"
+    },
+    "mental.started": {
+     "alias": "mB",
+     "rec": "mental_attempt",
+     "seq": 450,
+     "started": true,
+     "state": "Wander_Sad"
+    }
+   },
+   "why": "hit"
+  },
+  {
+   "acts": [
+    {
+     "id": "gate_mental_0_18",
+     "state": "done",
+     "tool": "jawa/scene_gate"
+    },
+    {
+     "id": "gate_mental_1_19",
+     "state": "done",
+     "tool": "jawa/pawn_mental"
+    },
+    {
+     "id": "gate_mental_2_20",
+     "state": "done",
+     "tool": "jawa/pawn_mental"
+    },
+    {
+     "id": "gate_mental_3_21",
+     "state": "done",
+     "tool": "jawa/pawn_mental"
+    },
+    {
+     "id": "gate_mental_4_22",
+     "state": "done",
+     "tool": "jawa/scene_gate"
+    }
+   ],
+   "line": "run S1_20261125T084450_r7 hit, 66 rows; gate.mental.allowed shown, gate.mental.held shown",
+   "name": "gate_mental",
+   "rows": 66,
+   "run": "S1_20261125T084450_r7",
+   "shown": {
+    "gate.mental.allowed": {
+     "gate": "mental",
+     "name": "Wander_Sad",
+     "outcome": "allowed",
+     "rec": "gate",
+     "seq": 521
+    },
+    "gate.mental.held": {
+     "gate": "mental",
+     "name": "Wander_Sad",
+     "outcome": "held",
+     "rec": "gate",
+     "seq": 547
+    }
+   },
+   "why": "hit"
+  },
+  {
+   "acts": [
+    {
+     "id": "quest_0_24",
+     "state": "done",
+     "tool": "jawa/fire_quest"
+    },
+    {
+     "id": "quest_1_25",
+     "state": "done",
+     "tool": "jawa/tap_fixture"
+    }
+   ],
+   "line": "run S1_20261125T084450_r8 hit, 18 rows; quest.added shown, quest.already_there shown",
+   "name": "quest",
+   "rows": 18,
+   "run": "S1_20261125T084450_r8",
+   "shown": {
+    "quest.added": {
+     "added": true,
+     "quest": 0,
+     "rec": "quest",
+     "root": "OpportunitySite_ItemStash",
+     "seq": 584
+    },
+    "quest.already_there": {
+     "quest": 0,
+     "rec": "quest",
+     "refused": "already there",
+     "root": "OpportunitySite_ItemStash",
+     "seq": 587
+    }
+   },
+   "why": "hit"
+  },
+  {
+   "acts": [
+    {
+     "id": "gate_quest_0_27",
+     "state": "done",
+     "tool": "jawa/scene_gate"
+    },
+    {
+     "id": "gate_quest_1_28",
+     "state": "done",
+     "tool": "jawa/fire_quest"
+    },
+    {
+     "id": "gate_quest_2_29",
+     "state": "refused",
+     "tool": "jawa/fire_quest"
+    },
+    {
+     "id": "gate_quest_3_30",
+     "state": "done",
+     "tool": "jawa/scene_gate"
+    }
+   ],
+   "acts_reply": [
+    {
+     "id": "gate_quest_2_29",
+     "reply": {
+      "message": "OpportunitySite_ItemStash generated but is NOT in the QuestManager. The generator returned quest 2 \u2014 treat this as a failed quest script, not a bridge error.",
+      "success": false
+     },
+     "state": "refused"
+    }
+   ],
+   "line": "run S1_20261125T084450_r9 hit, 21 rows; gate.quest.allowed shown, gate.quest.held shown; acts not done: gate_quest_2_29 refused",
+   "name": "gate_quest",
+   "rows": 21,
+   "run": "S1_20261125T084450_r9",
+   "shown": {
+    "gate.quest.allowed": {
+     "gate": "quest",
+     "name": "OpportunitySite_ItemStash",
+     "outcome": "allowed",
+     "rec": "gate",
+     "seq": 610
+    },
+    "gate.quest.held": {
+     "gate": "quest",
+     "name": "OpportunitySite_ItemStash",
+     "outcome": "held",
+     "rec": "gate",
+     "seq": 615
+    }
+   },
+   "why": "hit"
+  },
+  {
+   "acts": [
+    {
+     "id": "letter_0_32",
+     "state": "done",
+     "tool": "jawa/send_letter"
+    },
+    {
+     "id": "letter_1_33",
+     "state": "done",
+     "tool": "jawa/letter_send_delayed"
+    }
+   ],
+   "line": "run S1_20261125T084450_r10 hit, 17 rows; letter.shown shown, letter.queued shown",
+   "name": "letter",
+   "rows": 17,
+   "run": "S1_20261125T084450_r10",
+   "shown": {
+    "letter.queued": {
+     "delay": 600,
+     "label": "Tapcert queued 1",
+     "queued": true,
+     "rec": "letter",
+     "seq": 641,
+     "shown": false
+    },
+    "letter.shown": {
+     "label": "Tapcert shown 1",
+     "queued": false,
+     "rec": "letter",
+     "seq": 638,
+     "shown": true
+    }
+   },
+   "why": "hit"
+  },
+  {
+   "acts": [
+    {
+     "id": "message_0_35",
+     "state": "done",
+     "tool": "jawa/static_call"
+    },
+    {
+     "id": "message_1_36",
+     "state": "done",
+     "tool": "jawa/static_call"
+    }
+   ],
+   "line": "run S1_20261125T084450_r11 hit, 18 rows; message.shown shown, message.hidden_repeat shown",
+   "name": "message",
+   "rows": 18,
+   "run": "S1_20261125T084450_r11",
+   "shown": {
+    "message.hidden_repeat": {
+     "hidden": "a live message with the same text and targets",
+     "rec": "message",
+     "seq": 663,
+     "shown": false,
+     "text": "tapcert message 1"
+    },
+    "message.shown": {
+     "rec": "message",
+     "seq": 660,
+     "shown": true,
+     "text": "tapcert message 1"
+    }
+   },
+   "why": "hit"
+  },
+  {
+   "acts": [
+    {
+     "id": "fire_0_38",
+     "state": "done",
+     "tool": "jawa/tap_fixture"
+    },
+    {
+     "id": "fire_1_39",
+     "state": "done",
+     "tool": "jawa/tap_fixture"
+    },
+    {
+     "id": "fire_2_40",
+     "state": "done",
+     "tool": "jawa/map_fire"
+    }
+   ],
+   "line": "run S1_20261125T084450_r12 hit, 18 rows; fire.by_pawn shown, fire.by_thing shown",
+   "name": "fire",
+   "rows": 18,
+   "run": "S1_20261125T084450_r12",
+   "shown": {
+    "fire.by_pawn": {
+     "attached": "Muffalo19526",
+     "instigator": "Human812",
+     "instigatorKind": "pawn",
+     "rec": "fire",
+     "seq": 683
+    },
+    "fire.by_thing": {
+     "attached": "Muffalo19527",
+     "instigator": "Gun_Revolver19530",
+     "instigatorKind": "thing",
+     "rec": "fire",
+     "seq": 686
+    }
+   },
+   "why": "hit"
+  },
+  {
+   "acts": [
+    {
+     "id": "explosion_0_42",
+     "state": "done",
+     "tool": "jawa/tap_fixture"
+    },
+    {
+     "id": "explosion_1_43",
+     "state": "done",
+     "tool": "jawa/explosion_at"
+    }
+   ],
+   "line": "run S1_20261125T084450_r13 hit, 21 rows; explosion.with_instigator shown, explosion.no_instigator shown",
+   "name": "explosion",
+   "rows": 21,
+   "run": "S1_20261125T084450_r13",
+   "shown": {
+    "explosion.no_instigator": {
+     "cell": "126,115",
+     "instigator": null,
+     "instigatorKind": "none",
+     "rec": "explosion",
+     "seq": 711
+    },
+    "explosion.with_instigator": {
+     "cell": "134,115",
+     "instigator": "Human812",
+     "instigatorKind": "pawn",
+     "rec": "explosion",
+     "seq": 708
+    }
+   },
+   "why": "hit"
+  },
+  {
+   "acts": [
+    {
+     "id": "incident_0_45",
+     "state": "done",
+     "tool": "jawa/fire_incident"
+    },
+    {
+     "id": "incident_1_46",
+     "state": "done",
+     "tool": "jawa/scene_gate"
+    },
+    {
+     "id": "incident_2_47",
+     "state": "refused",
+     "tool": "jawa/fire_incident"
+    },
+    {
+     "id": "incident_3_48",
+     "state": "done",
+     "tool": "jawa/scene_gate"
+    }
+   ],
+   "acts_reply": [
+    {
+     "id": "incident_2_47",
+     "reply": {
+      "blockedByDialog": false,
+      "canFireNow": false,
+      "category": "Misc",
+      "fired": false,
+      "forced": true,
+      "incident": "Eclipse",
+      "message": "Eclipse did NOT fire. canFireNow=False.",
+      "points": 35.0,
+      "success": false,
+      "ticksGame": 1795,
+      "windowsOpened": []
+     },
+     "state": "refused"
+    }
+   ],
+   "line": "run S1_20261125T084450_r14 hit, 21 rows; incident.fired shown, incident.held shown; acts not done: incident_2_47 refused",
+   "name": "incident",
+   "rows": 21,
+   "run": "S1_20261125T084450_r14",
+   "shown": {
+    "incident.fired": {
+     "aseq": 79,
+     "def": "Eclipse",
+     "rec": "incident_journal",
+     "returned": "true",
+     "seq": null,
+     "workerEntered": "unknown"
+    },
+    "incident.held": {
+     "gate": "incident",
+     "journal": {
+      "aseq": 80,
+      "def": "Eclipse",
+      "rec": null,
+      "seq": null,
+      "workerEntered": "false",
+      "workerEnteredWhy": "held by the scene incident gate (JawaBenchGates)"
+     },
+     "name": "Eclipse",
+     "outcome": "held",
+     "rec": "gate",
+     "seq": 741
+    }
+   },
+   "why": "hit"
+  }
+ ],
+ "made": "2026-11-25T00:45:35",
+ "rows": [
+  {
+   "detail": "every fixture left its record on the loaded small list: 26 of 26 routes shown (worst: none missing; limit: all; 13 fixtures read)",
+   "row": "R1",
+   "verdict": "PASS"
+  },
+  {
+   "detail": "full-list testing is retired (repo CLAUDE.md, Mod development runs on small lists); foreign patches on the tapped methods: RimWorld.Fire.SpawnSetup postfix mandrake.rm.divinginteraction; RimWorld.Fire.SpawnSetup postfix mandrake.rm.flowworks; RimWorld.IncidentWorker.TryExecute finalizer mandrake.rm.stillsand.horizon; RimWorld.IncidentWorker.TryExecute prefix OskarPotocki.VEF; RimWorld.IncidentWorker.TryExecute prefix mandrake.rm.stillsand.horizon; RimWorld.QuestManager.Add postfix OskarPotocki.VEF; RimWorld.QuestManager.Add prefix Owlchemist.CherryPicker; Verse.AI.Pawn_JobTracker.StartJob postfix mandrake.rm.terminalbiomes; Verse.GenExplosion.DoExplosion postfix mandrake.rm.gimmesomeslack; Verse.GenExplosion.DoExplosion prefix mandrake.rm.warscar.chotrix; Verse.Pawn.Kill finalizer mandrake.rm.divinginteraction; Verse.Pawn.Kill postfix OskarPotocki.VEF; Verse.Pawn.Kill prefix OskarPotocki.VEF; Verse.Pawn.Kill prefix mandrake.rm.divinginteraction; Verse.Pawn.Kill prefix mandrake.rut.rustcathedralhum",
+   "row": "R2",
+   "verdict": "NOT OWED"
+  },
+  {
+   "detail": "the blind hook (Verse.AI.ReservationManager.Reserve) is reported: True; restored True",
+   "row": "R3",
+   "verdict": "PASS"
+  },
+  {
+   "detail": "suite wall time 66.8 s over 13 fixture runs",
+   "row": "R4",
+   "verdict": "PASS"
+  }
+ ]
+}

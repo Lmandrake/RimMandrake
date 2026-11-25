@@ -46,8 +46,9 @@ def game(K, companion="mvid-A", ids=("ludeon.rimworld", "mandrake.rm.bridge"), f
     def read(tool, args):
         calls.append(tool)
         if tool == "jawa/running_mods":
-            return {"success": True, "packageIds": list(ids),
-                    "mods": [{"packageId": "mandrake.rm.bridge", "assembly": {"matches": [{"mvid": companion}]}}]}
+            # The live shape (ArchBig, 2026-11-25): the companion is no mod; its match is the reply's top-level "assembly".
+            return {"success": True, "packageIds": list(ids), "mods": [{"packageId": i, "loadOrder": n} for n, i in enumerate(ids)],
+                    "assembly": {"name": "JawaBench.BridgeTools", "matchCount": 1, "matches": [{"mvid": companion}]}}
         if tool == "jawa/harmony_patches":
             meth = "%s.%s" % (args["typeName"], args["methodName"])
             pre, post = [], []

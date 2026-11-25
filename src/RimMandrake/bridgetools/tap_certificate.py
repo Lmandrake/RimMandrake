@@ -63,7 +63,7 @@ TAPS = {
 ARM_READS = ("jawa/running_mods", "jawa/harmony_patches")
 # The act list of the certification session: every tool that its fixtures use to change the game. None is an arm read.
 ACT_TOOLS = ("jawa/ordered_job", "jawa/damage", "jawa/pawn_health", "jawa/pawn_mental", "jawa/scene_gate", "jawa/tap_fixture",
-             "jawa/fire_quest", "jawa/letter_send_delayed", "jawa/static_call", "jawa/explosion_at", "jawa/fire_incident", "jawa/map_fire",
+             "jawa/fire_quest", "jawa/send_letter", "jawa/letter_send_delayed", "jawa/static_call", "jawa/explosion_at", "jawa/fire_incident", "jawa/map_fire",
              "jawa/spawn_pawn", "jawa/spawn_batch")
 CERTIFIED, BOOTSTRAP = "CERTIFIED", "BOOTSTRAP"
 ARMED, COULD_NOT_ARM, COULD_NOT_LOOK = "ARMED", "COULD NOT ARM", "COULD NOT LOOK"
@@ -194,10 +194,11 @@ def read_identity(read, settings=None):
         return None
     sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "rimflow"))
     import loaded_build
-    mvid = None
-    for m in rm.get("mods") or []:
-        for x in ((m.get("assembly") or {}).get("matches") or []):
-            mvid = mvid or x.get("mvid")
+    # The companion is no mod (RimBridgeServer loads it from <game>/BridgeTools): its match is the reply's top-level
+    # "assembly" (measured live on ArchBig 2026-11-25). Two matches are two loaded copies: no single companion, None.
+    matches = (rm.get("assembly") or {}).get("matches") or []
+    mvids = sorted({x.get("mvid") for x in matches if x.get("mvid")})
+    mvid = mvids[0] if len(mvids) == 1 else None
     inv = {}
     for t, m in tapped_methods():
         rows = _patches_of(read, t, m)
