@@ -160,6 +160,8 @@ def check_tree(paths, units, allow):
     for name, state in units or ():
         if not era_unit(name) or state in MASKED:
             continue
+        if state == "transient":     # a live run's systemd-run unit carries its item's name; it is not installed and ends with the run
+            continue
         hits = {g for g, _ in allow if g == "unit:" + name}
         if not hits:
             remnants.append(f"unit:{name} ({state})")
@@ -213,6 +215,11 @@ def probes():
                            ("whittle-claude@.service", "static"), ("rm-pulse.service", "disabled")], [])
     want(r == ["unit:rm-relentless.timer (enabled)", "unit:whittle-claude@.service (static)",
                "unit:rm-pulse.service (disabled)"], f"an unmasked era unit is a remnant, a masked one is not (got {r})")
+    r, _ = check_tree([], [("rm-detached-bench-rimmandrake-remove-relentless-now-page-c-1.service", "transient"),
+                           ("claude-seat-BENCH-rm-detached-bench-remove-relentless-now-1.scope", "transient"),
+                           ("rm-relentless.timer", "enabled")], [])
+    want(r == ["unit:rm-relentless.timer (enabled)"],
+         f"a live run's transient unit named for its item is not a remnant; an installed era unit is (got {r})")
     r, p = check_tree([], [("rm-keep.timer", "enabled")], [("unit:rm-keep.timer", "")])
     want(any("no reason" in x for x in p), "an allow row without a reason is a problem")
     _, p = check_tree(["src/RimMandrake/rimflow/cli.py"], [], allow[:1])

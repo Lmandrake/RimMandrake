@@ -3,5 +3,5 @@ Description=Claude account standard switching plan (switching_plan.py check)
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/switching_plan.py check
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/account_plan.py pass
 TimeoutStartSec=2700s
