@@ -2220,11 +2220,30 @@ WRONG_CHECK_RULE = "\n".join([
     "- **Mod wrong, and you can fix it: fix it in the sitting.** Write a before/after test (red on the parent, green on "
     "the fix), fix the mod, and show the check passing on the fixed build. Then one fresh reader, a run that did not "
     "make the fix, reads only that fix, once (owner, 2026-11-20). Only a mod fault you could not fix in the sitting goes "
-    "down the road back, with the evidence why (no tools, the fix is not known, another run holds the files, it needs one "
+    "down the road back, with the evidence why (no tools; the cause still unknown after a sincere attempt, with each "
+    "thing tried; another run holds the files; it needs one "
     "of his five acts or a north-star bar).",
     RED_SEEN_RULE,
     "- A wrong check or scene never sends the mod back a stage. Only a mod wrong line not fixed in the sitting, or a bar "
     "left undecided, does."])
+# What a run finds, it fixes in the sitting (owner, 2026-11-25: "I want Option (3) absolutely."; item
+# RIMMANDRAKE_REFUSE_OWN_MOD_HANDOFF_DRIVER_RENAMED_NOTHING: Explosive Knockback's visit-1 driver left a known fix of its
+# own mod, the rename of 12 defNames, to a ticket filed as other-mod). Carried by the in-game driver's brief and the
+# steward's brief (maturation_autonomy.steward_brief); selftest_wrong_check_fixed_in_sitting.py reads both as rendered.
+FIX_IN_SITTING_RULE = "\n".join([
+    "**What you find, you fix in this sitting: three duties** (owner, 2026-11-25: \"I want Option (3) absolutely.\"; "
+    "root CLAUDE.md §Touching code has a cost, \"Fix a fault in the sitting\").",
+    "- **A mod fault with a known fix is fixed in the sitting**, whatever showed it (a failed check, a log line, a config "
+    "error, a strange thing): first a test that is red on the parent build and green on the fix, then the fix, then run "
+    "again the checks that the fix touches (`build_match.py check --mod <Mod>` names them). A fault of the mod of this "
+    "run is never filed as `other-mod`: the filing gate refuses it.",
+    "- **A behaviour that no check sees gets its check in the sitting.** Write the check, show that it FAILS on a planted "
+    "fault (or on a state known bad) and PASSES on the real build, with both readings beside its row, and add it to the "
+    "test table as a decider of its bar. Do not file the gap in place of the check.",
+    "- **A fault goes back only after a sincere attempt at its cause**: experiments in the sitting, one change each. Its "
+    "row (`unfixed`) and its item name each thing that was tried and what each showed, and it goes back with its red "
+    "deciding test, or with its open hunt item when it shows only sometimes (a Kind C hunt). An undecided bar goes back "
+    "the same way. A fault with a known fix that is left unfixed is a defect of the visit, not a road back."])
 # The three kinds of live test and the seven outcomes of a run (owner, 2026-11-23; standing_rulings.md §Live tests have
 # three kinds). Carried by the in-game driver's brief. live_kinds.py reads the kinds and the outcomes at the exit.
 LIVE_KINDS_RULE = "\n".join([
@@ -6079,11 +6098,13 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
           "Explore past the bars on the same maps: plentiful screenshots (`src/RimMandrake/Utils/system_screenshot.py` "
           "for the desktop, the bridge's capture for the map), looked at, not only taken. Every strange thing no bar "
           "covers is a row of `strange.jsonl`: explained (what it is and why it is fine) or filed (a rimflow item, its "
-          "id in the row). Screenshots go in `%s/screenshots/` only if under 1 MB each; else name their paths." % vdir,
+          "id in the row). A mod fault among them with a known fix is fixed in the sitting first (the three duties "
+          "below), and its row is explained with the fix's commit. Screenshots go in `%s/screenshots/` only if under 1 MB each; else name their paths." % vdir,
           "", "## A live test declares its kind", "", LIVE_KINDS_RULE,
           "", "## A FAIL is diagnosed and classed in the sitting", "",
           "A FAIL or UNMEASURED is not a verdict to carry home bare: diagnose it by experiment while the game is up "
-          "(change one thing, watch the row), and class it.", "", WRONG_CHECK_RULE, FREE_GAME_RULE, "",
+          "(change one thing, watch the row), and class it.", "", FIX_IN_SITTING_RULE, "", WRONG_CHECK_RULE,
+          FREE_GAME_RULE, "",
           "What each class does here (`read_ingame_exit` reads these row fields):",
           "- **Mod wrong, and you can fix it** (`class: \"MOD\"` on the failed row): fix it in the sitting. Write the "
           "before/after test first and see it red on the parent, fix the mod, see it green, commit, redeploy, and re-run "
@@ -6095,7 +6116,8 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
           "\"why\"}`); the steward run that reads this visit is that reader. Never write that file yourself." % (
               vdir, FIX_REVIEWS),
           "- **Mod wrong, and you cannot fix it in the sitting**: the row stays FAIL; say why on the row (`unfixed`: no "
-          "tools, the fix is not known, another run holds the files, one of his five acts, a north-star bar). It goes "
+          "tools; the cause still unknown after a sincere attempt, with each thing that you tried; another run holds "
+          "the files; one of his five acts; a north-star bar). A known fix is never a reason. It goes "
           "down its road back (spec Stage 6: the lowest stage that can show it, an offline test that fails on the old "
           "code first), and a new visit reruns it on the fixed build.",
           "- **Check or scene wrong, and a bar needs it** (`class: \"HARNESS\"` or `\"SITE\"` on the failed row): repair "

@@ -1861,7 +1861,8 @@ STEWARD_RULES = """Rules (the owner's, carried; every one binds you):
   PROJECT_VERB_INTENTION_TWIST, `rimflow namecheck`) only for a line that still goes back and that the driver or judge
   did not file itself (a row or fault that names `filed` is filed): a mod wrong line not fixed in the sitting; a line
   with no class that you class mod wrong from its evidence; a needed check or scene that the driver could not repair
-  (`unrepaired`), with the evidence why (no tools, the fix is not known, another run holds the files). Each carries its
+  (`unrepaired`), with the evidence why (no tools; the cause still unknown after a sincere attempt, with each thing
+  tried; another run holds the files). Each carries its
   acceptance test (a command that fails now and passes on a fix, or `Acceptance test: none, <reason>`). A check or
   scene repaired and shown both ways, a needless check removed, and a mod fix made in the sitting get no item.
   `maturation.py next` reads each line's class (`lines`), the undecided bars and the fix readers owed.
@@ -1926,8 +1927,14 @@ def steward_brief(root, mod, row):
                         "(caused by this item) only for the lines the rules below name; when a line's check is an OFFLINE command (a selftest or offline check "
                         "that runs in under 120 s, never a bridge, game or live run), its item's prose (items/<ID>.md) "
                         "carries `## launch-checks` then `must-fail: <that command>`, so a fixer whose red already passes "
-                        "is refused at launch. Then send the mod down its road back (%s) only for a mod wrong line or an "
-                        "undecided bar: a wrong check or scene never sends the mod back. If the reading says only "
+                        "is refused at launch. Then send the mod down its road back (%s) only for a mod wrong line whose "
+                        "cause stays unknown after a sincere attempt (its row names each thing tried), or an "
+                        "undecided bar, each with its red deciding test or its open hunt item: a wrong check or scene "
+                        "never sends the mod back. A mod wrong line with a known fix that the driver left is a defect "
+                        "of that visit, not a road back: when an offline test can show it, fix it in this run (the "
+                        "three duties below; a later run that did not make your fix reads it); else file it with "
+                        "`--needs game-up` and its red test, saying the driver left a known fix, so a holder run fixes "
+                        "it on a free game. If the reading says only "
                         "fresh readers of mod fixes are owed, you are that reader (the rule below): read each fix once, "
                         "write the reviews, and when the reading then reads met, advance. The tick runs a pilot mod's "
                         "holder on all the items first (any other mod: one fixer per item), and the next visit or cycle "
@@ -1996,7 +2003,7 @@ def steward_brief(root, mod, row):
         "## The state the Dispatch tick read", "", "- decision: %s" % row.get("decision"),
         "- why: %s" % row.get("why"), "- maturation.py next: %s" % nxt, refs, "",
         "## Your task", "", str(task), "", "Detail: %s" % (row.get("steward_need") or ""), "",
-        STEWARD_RULES, "",
+        STEWARD_RULES, "", M.FIX_IN_SITTING_RULE, "",
         "Before you stop, write a ledger note (`rimflow note %(item)s --text ... --seat BENCH --why \"steward run\"`) "
         "saying what you read, what you moved or filed, and anything that is the owner's (as card text).", ""])
 

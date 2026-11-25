@@ -1,4 +1,4 @@
-# BOUNDARY: a wrong check is repaired or removed in the sitting (maturation.py read_ingame_exit, read_exit, the stage briefs), Design Version 0.1.0
+# BOUNDARY: a wrong check is repaired or removed in the sitting (maturation.py read_ingame_exit, read_exit, the stage briefs), Design Version 0.2.0
 
 Code: `src/RimMandrake/rimflow/maturation.py` and `src/RimMandrake/rimflow/maturation_autonomy.py`. Owner rulings
 2026-11-20: the first part, and the follow-up of item `RIMMANDRAKE_RESUME_WRONG_CHECK_WORKER_WITH_MOD_FIX_EXTENSION`
@@ -6,7 +6,10 @@ Code: `src/RimMandrake/rimflow/maturation.py` and `src/RimMandrake/rimflow/matur
 the fix). **This page covers
 only how a failed or unmeasured line is classed and what each class does to the exit**: `line_class`, `repair_shown`
 and their use in `read_ingame_exit`; `check_repair` and its use in `read_exit`; and the class text in
-`ingame_brief_text`, `blind_brief_text`, `steward_brief` and `fixer_brief`. Item
+`ingame_brief_text`, `blind_brief_text`, `steward_brief` and `fixer_brief`, with the three duties of
+`FIX_IN_SITTING_RULE` and the Dispatch step's line after a visit whose exit is not met
+(`maturation_dispatch.INGAME_NOT_MET`; item `RIMMANDRAKE_REFUSE_OWN_MOD_HANDOFF_DRIVER_RENAMED_NOTHING`, the owner on
+2026-11-25: "I want Option (3) absolutely."). Item
 `RIMMANDRAKE_ENACT_WRONG_CHECK_FIXED_IN_SITTING_NOT_RETURNED`; the rule is
 `design/RimMandrake/standing_rulings.md` §Touching code has a cost, "A fault is fixed in the sitting; a wrong check is
 repaired or removed there; neither sends the mod back". A row with an `outcome`, and a tagged scene, are
@@ -78,5 +81,18 @@ that selftest also plants a fault in each part of the reader and sees its test g
   classing step, the two tests, the repair rule, the mod fix in the sitting with one fresh reader, the live game taken
   when free (`bridge take --idle-ok`) and the `red-seen` record for an edited deciding test; none still says to set a
   check aside, that a wrong check is only a note, or that a cycle's fixes owe a new blind judge.
+- **exit-not-met-sends-back-only-unknown-causes-and-undecided-bars.** The Dispatch step's line after a visit whose exit
+  is not met sends down a road back only a mod fault whose cause stays unknown after the driver's sincere attempt, and
+  an undecided bar, each with its red deciding test or its open hunt item. It says that a mod fault with a known fix
+  that the driver left is a defect of that visit, whose next act is a run that fixes it on a free game, not a road back.
+  It no longer sends each mod-wrong line back.
+- **the-driver-brief-states-the-three-duties.** The in-game driver's brief carries `FIX_IN_SITTING_RULE`: a mod fault
+  with a known fix is fixed in the sitting (red on the parent build, green on the fix, then the checks that the fix
+  touches); a behaviour that no check sees gets its check in the sitting, seen FAIL on a planted fault and PASS on the
+  real build; a fault goes back only after a sincere attempt at its cause, naming each thing that was tried. A strange
+  thing that is a mod fault with a known fix is fixed before it is filed, and "the fix is not known" is no reason
+  without the sincere attempt.
+- **the-steward-brief-states-the-three-duties.** The steward's brief on a visit whose exit is not met carries the same
+  three duties, and routes a known fix that the driver left as a defect of that visit, not a road back.
 
 Later lists beside this page: `polish.md` (none yet); `next_version.md` (none yet).

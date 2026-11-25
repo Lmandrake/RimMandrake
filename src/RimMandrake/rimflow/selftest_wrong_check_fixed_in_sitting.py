@@ -458,12 +458,71 @@ def t_a_blind_build_match_is_named_at_the_exit():
     return got == {"blind": ("not_met", True), "bug": ("not_met", False)}, got
 
 
+# ---- item RIMMANDRAKE_REFUSE_OWN_MOD_HANDOFF_DRIVER_RENAMED_NOTHING (owner, 2026-11-25: "I want Option (3) absolutely.")
+# Explosive Knockback's visit-1 driver left a known fix of its own mod to a ticket and filed two behaviours no check saw;
+# the Dispatch line after the visit sent each mod-wrong line down its road back. Each text is read as rendered.
+DUTIES = {
+    "a known fix is fixed in the sitting, red first, touched checks again": (
+        "known fix is fixed in the sitting", "red on the parent build and green on the fix", "checks that the fix touches"),
+    "a behaviour no check sees gets its check, seen FAIL on a plant and PASS on the real build": (
+        "no check sees gets its check in the sitting", "FAILS on a planted fault", "PASSES on the real build"),
+    "a fault goes back only after a sincere attempt, naming each thing tried": (
+        "only after a sincere attempt at its cause", "each thing that was tried"),
+}
+
+
+def _duties_lack(where, text):
+    flat = " ".join(text.split())
+    return ["%s lacks the duty %r (%s)" % (where, d, ", ".join(repr(w) for w in ws if w not in flat))
+            for d, ws in DUTIES.items() if any(w not in flat for w in ws)]
+
+
+def t_exit_not_met_sends_back_only_unknown_causes_and_undecided_bars():
+    import maturation_dispatch as MD
+    puts = []
+    f = {"mod": MOD, "visit": 1, "version": "0.1.0", "live_units": [], "owed": "exit not met",
+         "exit": {"state": "not met", "record": "design/concepts/%s/version/in_game/visit_1" % MOD,
+                  "why": ["check c1: FAIL (classed MOD)"]}}
+    MD.decide_ingame({}, {}, f, {"mod": MOD}, lambda d, *a, **k: puts.append((d,) + a), 1000.0, (True, ""), 0, [], None)
+    text = " ".join((puts[0][-1] if puts else "").split())
+    lacks = [w for w in ("exit not met", "cause stays unknown after a sincere attempt", "undecided bar",
+                         "red deciding test", "open hunt item", "known fix", "defect of that visit",
+                         "fixes it on a free game", "not a road back") if w not in text]
+    lacks += ["still sends each mod-wrong line"] if "sends each mod-wrong line" in text else []
+    lacks += ["not one exit_not_met put: %r" % puts] if len(puts) != 1 or puts[0][0] != "exit_not_met" else []
+    return not lacks, lacks
+
+
+def t_the_driver_brief_states_the_three_duties():
+    text = M.ingame_brief_text(visit("duties", ALL_PASS), MOD)[0]
+    flat = " ".join(text.split())
+    lacks = _duties_lack("FIX_IN_SITTING_RULE", getattr(M, "FIX_IN_SITTING_RULE", "")) + _duties_lack("the driver's brief", text)
+    lacks += ["still offers 'the fix is not known' without the sincere attempt"] if (
+        "no tools, the fix is not known, another run" in flat) else []
+    lacks += ["a strange thing that is a known mod fault is not fixed before it is filed"] if (
+        "A mod fault among them with a known fix is fixed in the sitting" not in flat) else []
+    return not lacks, lacks
+
+
+def t_the_steward_brief_states_the_three_duties():
+    root = visit("steward_duties", ALL_PASS)
+    text = MA.steward_brief(root, MOD, {"steward_kind": "exit_not_met", "stage": "in_game", "mod": MOD, "why": "x",
+                                        "decision": "steward"})
+    flat = " ".join(text.split())
+    lacks = _duties_lack("the steward's brief", text)
+    lacks += ["a known fix the driver left is not routed as a defect of that visit"] if not (
+        "defect of that visit" in flat and "not a road back" in flat) else []
+    return not lacks, lacks
+
+
 def main():
     tests = [t_all_pass_met, t_mod_wrong_not_met, t_check_wrong_repaired_counts, t_repair_without_planted_not_pass,
              t_repair_in_two_commits_counts, t_strange_explained_as_status_settles, t_strange_filed_as_status_item_settles, t_needless_check_is_removed, t_held_statement_check_is_not_needless, t_not_counted_needs_owner, t_mod_fixed_in_sitting_counts,
              t_one_build_is_the_last_rows, t_scene_wrong_same_as_check, t_unclassed_not_silent,
              t_wrong_unhandled_not_silent, t_mix_reads_each_line, t_blind_check_repair_owes_no_judge,
-             t_blind_mod_fix_owes_one_fresh_reader, t_briefs_carry_the_rule, t_a_blind_build_match_is_named_at_the_exit]
+             t_blind_mod_fix_owes_one_fresh_reader, t_briefs_carry_the_rule, t_a_blind_build_match_is_named_at_the_exit,
+             t_exit_not_met_sends_back_only_unknown_causes_and_undecided_bars, t_the_driver_brief_states_the_three_duties,
+             t_the_steward_brief_states_the_three_duties]
     fails = run(tests)
     missed = missed_mutants(tests) if not fails else []
     shutil.rmtree(TMP, ignore_errors=True)

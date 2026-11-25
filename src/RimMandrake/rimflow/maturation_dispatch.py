@@ -2378,6 +2378,16 @@ def decide_void_resume(cfg, s, f, row, put, n, vid, account, live_total, release
     return True
 
 
+# The Needs Conductor line after a visit whose exit is not met (RIMMANDRAKE_REFUSE_OWN_MOD_HANDOFF_DRIVER_RENAMED_NOTHING;
+# the owner, 2026-11-25: "I want Option (3) absolutely."; maturation.FIX_IN_SITTING_RULE). selftest_wrong_check_fixed_in_sitting.py.
+INGAME_NOT_MET = (
+    "in-game visit %s ended, exit not met (%s); nothing more launches on it: the Conductor reads %s. Only two kinds of "
+    "line go down a road back, each with its red deciding test or its open hunt item: a mod fault whose cause stays "
+    "unknown after a sincere attempt by the driver (its row names each thing tried), and an undecided bar. A mod fault "
+    "with a known fix that the driver left is a defect of that visit: the next act is a run that fixes it on a free game "
+    "(red test first, then the checks that the fix touches), not a road back. A wrong check or scene never goes back")
+
+
 def decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge, releases=None, games_of=None):
     """One decision for an advancing mod at in-game acceptance -> True to launch its live driver. At most
     ingame_auto_runs_per_visit (1) automatic runs per visit (keyed by the version and the visit number), one live-game
@@ -2426,10 +2436,7 @@ def decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge
         return False
     if owed == "exit not met":
         failed = "; ".join((ex.get("why") or [])[:3])
-        put("exit_not_met", failed,
-            "in-game visit %s ended, exit not met (%s); nothing more launches on it: the Conductor reads %s and sends "
-            "each mod-wrong line, and each undecided bar, down its road back (a wrong check or scene never goes back)"
-            % (n, failed, summ) + forecast)
+        put("exit_not_met", failed, INGAME_NOT_MET % (n, failed, summ) + forecast)
         return False
     mine = [x for x in ours if x.get("visit") == n]
     retry = mine[-1] if mine and retriable(cfg, mine[-1], f.get("killed"), mod) else None
