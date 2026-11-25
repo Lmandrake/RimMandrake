@@ -21,6 +21,7 @@ namespace RimMandrake.ExplosiveKnockback
         public static FleckDef RM_KnockbackBlastDirt;
         public static FleckDef RM_KnockbackBlastStone;
         public static FleckDef RM_KnockbackBlastRipple;
+        public static FleckDef RM_KnockbackBlastSmoke;
 
         static RM_KnockbackShowDefOf()
         {
@@ -32,6 +33,17 @@ namespace RimMandrake.ExplosiveKnockback
     {
         private static readonly AccessTools.FieldRef<Filth, int> DisappearAfterTicks =
             AccessTools.FieldRefAccess<Filth, int>("disappearAfterTicks");
+        // the cells the blast reaches (DamageWorker.ExplosionCellsToHit, filled by StartExplosion before our postfix): soot
+        // lies only where the blast did reach, never behind a wall it stopped at (guiding principle 4)
+        private static readonly AccessTools.FieldRef<Explosion, System.Collections.Generic.List<IntVec3>> CellsToAffect =
+            AccessTools.FieldRefAccess<Explosion, System.Collections.Generic.List<IntVec3>>("cellsToAffect");
+
+        /// <summary>Smoke puffs started in the last SmokeWindowTicks, and the window's start: a barrage's smoke is capped,
+        /// so many blasts in a second cannot pile up hundreds of the costliest flecks (design §3.8, "capped per view";
+        /// bar barrage_frame_budget). The cap is three blasts' worth of the plan's own per-blast maximum (30 puffs).</summary>
+        private const int SmokeWindowTicks = 60;
+        private const int SmokeCapPerWindow = 3 * 30;
+        private static int smokeWindowStart = -1, smokeInWindow;
 
         /// <summary>The last kick the show added to the camera shaker, and its tick: a public static a live scene reads with
         /// jawa/mod_settings_field get (sc_blast_show's V_SHAKE). Written only by Draw.</summary>
@@ -49,10 +61,9 @@ namespace RimMandrake.ExplosiveKnockback
                 screenShake = RimMandrakeExplosiveKnockbackSettings.showScreenShake,
                 airRipple = RimMandrakeExplosiveKnockbackSettings.showAirRipple,
                 craterScars = RimMandrakeExplosiveKnockbackSettings.showCraterScars,
-                // the parts of the later batches (smoke, soot) have no switch yet and draw nothing yet
-                smoke = false,
-                sootOnThings = false,
-                sootOnPawns = false,
+                smoke = RimMandrakeExplosiveKnockbackSettings.showSmoke,
+                sootOnThings = RimMandrakeExplosiveKnockbackSettings.showSootOnThings,
+                sootOnPawns = RimMandrakeExplosiveKnockbackSettings.showSootOnPawns,
                 shakeStrength = RimMandrakeExplosiveKnockbackSettings.showShakeStrength,
                 powerFromDamage = RimMandrakeExplosiveKnockbackSettings.blastPowerFromDamage,
                 powerRefPercent = RimMandrakeExplosiveKnockbackSettings.blastPowerRefPercent,
@@ -199,9 +210,92 @@ namespace RimMandrake.ExplosiveKnockback
                 map.flecks.CreateFleck(d);
             }
 
+            if (p.smokePuffs > 0)
+            {
+                DrawSmoke(e, map, p);
+            }
+
             if (p.scarKind != KbScarKind.None)
             {
                 LayScar(e.Position, map, p);
+            }
+
+            if (p.sootThingsReach > 0f || p.sootPawnsReach > 0f)
+            {
+                LaySoot(e, map, p);
+            }
+        }
+
+        /// <summary>Smoke (design §3.8): non-rotating puffs that rise from the root, lean with the wind and thin over the
+        /// plan's smokeSeconds; the first puffs are the darkest (the boiling base), later ones paler. The spread, speeds
+        /// and tints are the look: the live scene sc_blast_show's and the art judge's to read.</summary>
+        private static void DrawSmoke(Explosion e, Map map, KbShowPlan p)
+        {
+            FleckDef def = RM_KnockbackShowDefOf.RM_KnockbackBlastSmoke;
+            int now = Find.TickManager.TicksGame;
+            if (smokeWindowStart < 0 || now - smokeWindowStart >= SmokeWindowTicks || now < smokeWindowStart)
+            {
+                smokeWindowStart = now;
+                smokeInWindow = 0;
+            }
+            int puffs = Mathf.Min(p.smokePuffs, SmokeCapPerWindow - smokeInWindow);
+            if (puffs <= 0)
+            {
+                return;
+            }
+            smokeInWindow += puffs;
+            Vector3 root = e.Position.ToVector3Shifted();
+            float wind = Mathf.Clamp01(map.windManager.WindSpeed / 2f);       // WindSpeed runs about 0 to 2
+            float life = Mathf.Max(0.5f, p.smokeSeconds - def.fadeInTime - def.fadeOutTime);
+            float spread = Mathf.Max(0.6f, e.radius * 0.45f);
+            float size = Mathf.Sqrt(Mathf.Max(1f, p.smokeSeconds / 12f));     // a longer-lived column is a bigger one
+            for (int i = 0; i < puffs; i++)
+            {
+                float t = puffs > 1 ? i / (float)(puffs - 1) : 0f;           // 0: the base, 1: the last, palest puff
+                FleckCreationData d = FleckMaker.GetDataStatic(root + Rand.InsideUnitCircleVec3 * spread, map, def,
+                    Rand.Range(1.4f, 2.4f) * size);
+                d.rotation = Rand.Range(0f, 360f);
+                d.rotationRate = 0f;                                          // it never spins (his words)
+                d.velocityAngle = Rand.Range(-12f, 12f) + 50f * wind;         // up the screen, leaning downwind
+                d.velocitySpeed = Rand.Range(0.25f, 0.55f) + 0.5f * wind;
+                d.solidTimeOverride = life * Rand.Range(0.75f, 1f);
+                float g = Mathf.Lerp(0.08f, 0.42f, t) + Rand.Range(-0.03f, 0.03f);
+                d.instanceColor = new Color(g, g, g, Rand.Range(0.75f, 0.95f));
+                map.flecks.CreateFleck(d);
+            }
+        }
+
+        /// <summary>Soot (design §3.12, §3.13): on the cells the blast reaches within the plan's reach of each part.</summary>
+        private static void LaySoot(Explosion e, Map map, KbShowPlan p)
+        {
+            System.Collections.Generic.List<IntVec3> reached = CellsToAffect(e);
+            if (reached == null || reached.Count == 0)
+            {
+                return;
+            }
+            IntVec3 c0 = e.Position;
+            var things = new System.Collections.Generic.List<IntVec3>();
+            var pawns = new System.Collections.Generic.List<IntVec3>();
+            float rt = p.sootThingsReach * p.sootThingsReach, rp = p.sootPawnsReach * p.sootPawnsReach;
+            foreach (IntVec3 c in reached)
+            {
+                float d2 = (c - c0).LengthHorizontalSquared;
+                if (d2 <= rt)
+                {
+                    things.Add(c);
+                }
+                if (d2 <= rp)
+                {
+                    pawns.Add(c);
+                }
+            }
+            if (things.Count > 0)
+            {
+                RM_KnockbackSoot.SootThings(map, things);
+            }
+            if (pawns.Count > 0)
+            {
+                RM_KnockbackSoot.SootPawns(map, pawns);
             }
         }
 

@@ -47,6 +47,7 @@ GAME_SIDE = {
     # the throws stay the same with the show off is sc_settings_sweep's showOff lane
     "showFireAndFlash": "sc_settings_sweep", "showScreenShake": "sc_settings_sweep", "showAirRipple": "sc_settings_sweep",
     "showCraterScars": "sc_settings_sweep", "showShakeStrength": "sc_settings_sweep", "showMarksLast": "sc_settings_sweep",
+    "showSmoke": "sc_settings_sweep", "showSootOnThings": "sc_settings_sweep", "showSootOnPawns": "sc_settings_sweep",
 }
 # the sheet's switches (settings_scale_and_switch, sheet.md "closed guard off, container goods thrown loose ... fire at half off,
 # fire throws nothing"): each is a saved setting, default on, reset to on, and READ by the code path it switches (blind cycle 2,
@@ -245,7 +246,7 @@ OWN = {"fire_and_flash": ["flashScale", "fireballLobes", "fireballScale", "spark
        "air_ripple": ["rippleDiameter", "rippleSeconds", "rippleAlpha"],
        "crater_scar": ["scarKind", "scarSize", "scarSizeClass"],
        "smoke": ["smokePuffs", "smokeSeconds"],
-       "soot_on_things": ["sootReach"], "soot_on_pawns": ["sootReach"]}
+       "soot_on_things": ["sootThingsReach"], "soot_on_pawns": ["sootPawnsReach"]}
 VANILLA = {"fire_and_flash": [("vanilla flash and cell flecks", lambda r: r["suppressVanillaVisuals"] == "0"),
                               ("vanilla water splash", lambda r: r["suppressVanillaVisuals"] == "0" or r["replayWaterSplash"] == "1")],
            "screen_shake": [("vanilla shake", lambda r: (r["suppressVanillaVisuals"] == "0" and r["zeroVanillaShake"] == "0")
@@ -257,7 +258,7 @@ NOT_PARTS = {"power": "the blast's measure, shared with the throw (S_ONE_MEASURE
 # the Explosion fields the show's prefix may write; the throw must read none of them
 EXPLOSION_WRITES = ("doVisualEffects", "screenShakeFactor", "preExplosionSpawnSingleThingDef")
 TEST_SOURCE = re.compile(r"^RM_Knockback(Proof\w*|Scenes|Verdicts)\.cs$|^RM_PatchApplierProbe\.cs$")
-SHOW_FILES = ("RM_KnockbackShow.cs", "RM_KnockbackShowPlan.cs")
+SHOW_FILES = ("RM_KnockbackShow.cs", "RM_KnockbackShowPlan.cs", "RM_KnockbackSoot.cs")   # the soot parts' own file
 THROW_API = re.compile(r"\b(KbPlanner|KbSettings|KbRules|KbPlan|RM_MapComponent_Knockback|RM_ThingFlyer_Knockback|PawnFlyer\w*|"
                        r"%s\.(Kernel|Rules)\()" % SETTINGS)
 

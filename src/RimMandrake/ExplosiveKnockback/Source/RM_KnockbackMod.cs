@@ -142,13 +142,16 @@ namespace RimMandrake.ExplosiveKnockback
         public static bool shieldsAbsorbThrow = true;
         public static float shieldDebitPerForce = 10f;
         // the blast show (design/specs/2026-11-24-knockback-blast-show/design.md §5): one on/off per part, all on; every
-        // part off gives the unmodded look of a blast. The smoke and soot switches come with those parts.
+        // part off gives the unmodded look of a blast.
         public static bool showFireAndFlash = true;
+        public static bool showSmoke = true;
+        public static bool showSootOnThings = true;
+        public static bool showSootOnPawns = true;
         public static bool showScreenShake = true;
         public static bool showAirRipple = true;
         public static bool showCraterScars = true;
         public static float showShakeStrength = 1f;       // 0 = none, 2 = double; inside the player's own Screen shake preference
-        public static int showMarksLast = 1;              // how long scars last: 0 short, 1 normal, 2 long (marks made after the change)
+        public static int showMarksLast = 1;              // how long scars and soot last: 0 short, 1 normal, 2 long (marks made after the change)
 
         /// <summary>Per-request kernel settings for one blast's configuration (never mutates the shared settings).</summary>
         public static KbSettings Kernel(KbConfig c)
@@ -238,6 +241,9 @@ namespace RimMandrake.ExplosiveKnockback
             Scribe_Values.Look(ref shieldsAbsorbThrow, "shieldsAbsorbThrow", true);
             Scribe_Values.Look(ref shieldDebitPerForce, "shieldDebitPerForce", 10f);
             Scribe_Values.Look(ref showFireAndFlash, "showFireAndFlash", true);
+            Scribe_Values.Look(ref showSmoke, "showSmoke", true);
+            Scribe_Values.Look(ref showSootOnThings, "showSootOnThings", true);
+            Scribe_Values.Look(ref showSootOnPawns, "showSootOnPawns", true);
             Scribe_Values.Look(ref showScreenShake, "showScreenShake", true);
             Scribe_Values.Look(ref showAirRipple, "showAirRipple", true);
             Scribe_Values.Look(ref showCraterScars, "showCraterScars", true);
@@ -388,10 +394,12 @@ namespace RimMandrake.ExplosiveKnockback
                 list.GapLine();
             }
 
-            if (Group(list, "Blast show", RimMandrake.Shared.SettingScope.Now, new[] { "showFireAndFlash", "showScreenShake", "showShakeStrength", "showAirRipple", "showCraterScars", "showMarksLast" }))
+            if (Group(list, "Blast show", RimMandrake.Shared.SettingScope.Now, new[] { "showFireAndFlash", "showSmoke", "showScreenShake", "showShakeStrength", "showAirRipple", "showCraterScars", "showSootOnThings", "showSootOnPawns", "showMarksLast" }))
             {
                 list.CheckboxLabeled("Fire and flash", ref showFireAndFlash,
                     "On (the default): a harmful blast shows a white flash, a fireball that swells and dies, sparks, and dirt or stone thrown from the ground it hit (a fire blast throws no dirt). Off: the game's own flash and puffs.");
+                list.CheckboxLabeled("Smoke", ref showSmoke,
+                    "On (the default): a dark column of smoke boils up from a blast, pales to grey, leans with the wind and thins away; a bigger blast leaves a taller, longer column. It never spins. Off: no smoke from the blast.");
                 list.CheckboxLabeled("Screen shake", ref showScreenShake,
                     "On (the default): the view kicks harder for a bigger and a nearer blast, a big blast shakes longer, and a far small blast does not shake it. Off: the game's own shake.");
                 if (showScreenShake)
@@ -403,7 +411,11 @@ namespace RimMandrake.ExplosiveKnockback
                     "On (the default): a ring of bent air runs out from a blast to about its edge; a bigger blast makes a wider, stronger ring. Off: no ring.");
                 list.CheckboxLabeled("Crater scars", ref showCraterScars,
                     "On (the default): a blast leaves a scar sized by its power: torn ground on soil, a scorch on stone and floors, none on water. Rain and time wear it away and a colonist can clean it. Off: the game's own blast mark.");
-                list.Label("How long scars last: " + (showMarksLast == 0 ? "short (half)" : showMarksLast == 2 ? "long (double)" : "normal") + "  (acts on marks made after the change)");
+                list.CheckboxLabeled("Soot on things", ref showSootOnThings,
+                    "On (the default): walls, doors, furniture and built floors near a blast turn charred black; a bigger blast reaches farther. Rain weathers it off outdoors, time wears it off, and Remove paint or a new coat clears it; the paint a thing had comes back. Off: no soot on things.");
+                list.CheckboxLabeled("Soot on pawns", ref showSootOnPawns,
+                    "On (the default): a person or animal caught in a blast is smudged black. A look only: no harm, no mood. It wears off in a day or so and washes off in rain or water. Off: no soot on pawns.");
+                list.Label("How long scars and soot last: " + (showMarksLast == 0 ? "short (half)" : showMarksLast == 2 ? "long (double)" : "normal") + "  (acts on marks made after the change)");
                 showMarksLast = Mathf.RoundToInt(list.Slider(showMarksLast, 0f, 2f));
                 list.GapLine();
             }
@@ -539,6 +551,9 @@ namespace RimMandrake.ExplosiveKnockback
             RimMandrakeExplosiveKnockbackSettings.shieldsAbsorbThrow = true;
             RimMandrakeExplosiveKnockbackSettings.shieldDebitPerForce = 10f;
             RimMandrakeExplosiveKnockbackSettings.showFireAndFlash = true;
+            RimMandrakeExplosiveKnockbackSettings.showSmoke = true;
+            RimMandrakeExplosiveKnockbackSettings.showSootOnThings = true;
+            RimMandrakeExplosiveKnockbackSettings.showSootOnPawns = true;
             RimMandrakeExplosiveKnockbackSettings.showScreenShake = true;
             RimMandrakeExplosiveKnockbackSettings.showAirRipple = true;
             RimMandrakeExplosiveKnockbackSettings.showCraterScars = true;

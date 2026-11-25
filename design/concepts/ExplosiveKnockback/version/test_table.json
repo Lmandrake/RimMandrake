@@ -160,11 +160,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 5.47,
+    "seconds": 4.62,
     "last": "explosiveknockback data: 15 RM_KnockbackExtension li checked (6 here, 9 in KineticArms)",
-    "at": "2026-11-25T06:32:34Z",
+    "at": "2026-11-25T07:27:27Z",
     "result": "PASS",
-    "build": "7e890fb5c18faedf4549",
+    "build": "fc395d781276ef936c0f",
     "command": "python3 src/RimMandrake/Utils/lint_explosiveknockback_defs.py",
     "margins": []
    }
@@ -231,11 +231,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.16,
+    "seconds": 0.23,
     "last": "MOCK: PASS (41/41 scenes staged, all_green=False)",
-    "at": "2026-11-25T06:33:53Z",
+    "at": "2026-11-25T07:27:28Z",
     "result": "PASS",
-    "build": "5f2965661bd2039bc4cb",
+    "build": "f2ab9ef224a10cc1af97",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_script.py",
     "margins": []
    }
@@ -255,11 +255,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 4.11,
+    "seconds": 3.98,
     "last": "PASS proofgate (R1 P1 G1)",
-    "at": "2026-11-25T06:33:57Z",
+    "at": "2026-11-25T07:27:32Z",
     "result": "PASS",
-    "build": "bcbbd2eebefacc5f0f9d",
+    "build": "ee5623a3b27b14477c15",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py",
     "margins": []
    }
@@ -299,11 +299,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.08,
+    "seconds": 0.07,
     "last": "settings screens selftest: 7/7 ok (mods: ExplosiveKnockback)",
-    "at": "2026-11-25T06:34:13Z",
+    "at": "2026-11-25T07:27:32Z",
     "result": "PASS",
-    "build": "3510a5ebac15e1f77502",
+    "build": "1f0c5479c9b646e0c564",
     "command": "python3 src/RimMandrake/Utils/selftest_settings_screens.py --mod ExplosiveKnockback",
     "margins": []
    }
@@ -350,11 +350,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.43,
+    "seconds": 2.24,
     "last": "explosive knockback settings sweep: PASS (24 runs, 0 faults, 2/2 coupling mutants caught) | static: 0 faults, 4/4 planted caught, 10/10 switch faults caught | PASS | halves: offline PASS",
-    "at": "2026-11-25T06:34:15Z",
+    "at": "2026-11-25T07:27:34Z",
     "result": "PASS",
-    "build": "be07d102670ded3dd255",
+    "build": "a8810a75bcd0e9bd9ec4",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py --half offline",
     "margins": []
    }
@@ -454,9 +454,9 @@
     "rc": 0,
     "seconds": 0.03,
     "last": "PASS stage3 scenes: 0 failed",
-    "at": "2026-11-25T06:34:18Z",
+    "at": "2026-11-25T07:27:34Z",
     "result": "PASS",
-    "build": "32800696efccfc14178b",
+    "build": "1499978598d01188dda7",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_stage3_scenes.py",
     "margins": []
    }
@@ -2765,12 +2765,12 @@
    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_blast_show.py",
    "runs_today": {
     "ran": true,
-    "rc": 1,
-    "seconds": 2.15,
-    "last": "FAIL blast show: 5 of 26 line(s) failing",
-    "at": "2026-11-25T06:42:29Z",
-    "result": "FAIL",
-    "build": "9d3e81e13c1e51acbbcf",
+    "rc": 0,
+    "seconds": 1.59,
+    "last": "PASS blast show: 0 of 26 line(s) failing",
+    "at": "2026-11-25T07:27:36Z",
+    "result": "PASS",
+    "build": "cca034cd343a6325ca67",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_blast_show.py",
     "margins": []
    }
@@ -2789,12 +2789,12 @@
    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py --half show",
    "runs_today": {
     "ran": true,
-    "rc": 1,
-    "seconds": 6.84,
-    "last": "explosive knockback settings sweep show: FAIL (8 scenarios x 27648 blasts = 276480 rows; 1/21 checks failing; parts with their own switch 4/7, unbuilt: smoke,soot_on_things,soot_on_pawns; 2/2 planted map faults caught, 5/5 planted throw faults caught) | halves: show FAIL",
-    "at": "2026-11-25T06:42:36Z",
-    "result": "FAIL",
-    "build": "e4e9c13fcc5f7800850c",
+    "rc": 0,
+    "seconds": 7.03,
+    "last": "explosive knockback settings sweep show: PASS (11 scenarios x 27648 blasts = 359424 rows; 0/30 checks failing; parts with their own switch 7/7, unbuilt: none; 2/2 planted map faults caught, 5/5 planted throw faults caught) | halves: show PASS",
+    "at": "2026-11-25T07:27:43Z",
+    "result": "PASS",
+    "build": "eeba7bd586e8f3f77701",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py --half show",
     "margins": []
    }

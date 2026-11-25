@@ -1,0 +1,127 @@
+{
+ "made": "2026-11-24",
+ "by": "RIMMANDRAKE_GREEN_EXPLOSIVEKNOCKBACK_T_BLAST_SHOW_RED_DECIDER",
+ "what": "the blast show's smoke puffs (design.md section 6: six) and pawn soot tiles (four), the parts the first batch left owed",
+ "rows": [
+  {
+   "id": "rm_kbblast_smoke_a",
+   "rimflow_item_id": "RIMMANDRAKE_GREEN_EXPLOSIVEKNOCKBACK_T_BLAST_SHOW_RED_DECIDER",
+   "target_def": "RM_KnockbackBlastSmoke",
+   "prompt": "One puff of real smoke from an explosion seen from above, a dense round billow: irregular and asymmetric, soft turbulent edges dissolving into fully transparent wisps, a darker dense base and a paler lit top, neutral grey so it can be tinted from near black to pale grey, centred, filling most of the canvas.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "background": "transparent",
+   "style_notes": "RimWorld's top-down painted look: soft feathered edges, painterly, natural colour; practical film pyrotechnics, black oily smoke. Seen from straight above. Genuinely transparent background. Design: design/specs/2026-11-24-knockback-blast-show/design.md section 6; it installs to the texPath named in this row. texPath: Textures/Things/Mote/RM_KnockbackBlast/SmokeA.png",
+   "priority": 40,
+   "target_texpath": "Things/Mote/RM_KnockbackBlast/SmokeA"
+  },
+  {
+   "id": "rm_kbblast_smoke_b",
+   "rimflow_item_id": "RIMMANDRAKE_GREEN_EXPLOSIVEKNOCKBACK_T_BLAST_SHOW_RED_DECIDER",
+   "target_def": "RM_KnockbackBlastSmoke",
+   "prompt": "One puff of real smoke from an explosion seen from above, a lopsided billow leaning to one side: irregular and asymmetric, soft turbulent edges dissolving into fully transparent wisps, a darker dense base and a paler lit top, neutral grey so it can be tinted from near black to pale grey, centred, filling most of the canvas.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "background": "transparent",
+   "style_notes": "RimWorld's top-down painted look: soft feathered edges, painterly, natural colour; practical film pyrotechnics, black oily smoke. Seen from straight above. Genuinely transparent background. Design: design/specs/2026-11-24-knockback-blast-show/design.md section 6; it installs to the texPath named in this row. texPath: Textures/Things/Mote/RM_KnockbackBlast/SmokeB.png",
+   "priority": 40,
+   "target_texpath": "Things/Mote/RM_KnockbackBlast/SmokeB"
+  },
+  {
+   "id": "rm_kbblast_smoke_c",
+   "rimflow_item_id": "RIMMANDRAKE_GREEN_EXPLOSIVEKNOCKBACK_T_BLAST_SHOW_RED_DECIDER",
+   "target_def": "RM_KnockbackBlastSmoke",
+   "prompt": "One puff of real smoke from an explosion seen from above, a torn billow breaking into two lumps: irregular and asymmetric, soft turbulent edges dissolving into fully transparent wisps, a darker dense base and a paler lit top, neutral grey so it can be tinted from near black to pale grey, centred, filling most of the canvas.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "background": "transparent",
+   "style_notes": "RimWorld's top-down painted look: soft feathered edges, painterly, natural colour; practical film pyrotechnics, black oily smoke. Seen from straight above. Genuinely transparent background. Design: design/specs/2026-11-24-knockback-blast-show/design.md section 6; it installs to the texPath named in this row. texPath: Textures/Things/Mote/RM_KnockbackBlast/SmokeC.png",
+   "priority": 40,
+   "target_texpath": "Things/Mote/RM_KnockbackBlast/SmokeC"
+  },
+  {
+   "id": "rm_kbblast_smoke_d",
+   "rimflow_item_id": "RIMMANDRAKE_GREEN_EXPLOSIVEKNOCKBACK_T_BLAST_SHOW_RED_DECIDER",
+   "target_def": "RM_KnockbackBlastSmoke",
+   "prompt": "One puff of real smoke from an explosion seen from above, a thin wispy drift: irregular and asymmetric, soft turbulent edges dissolving into fully transparent wisps, a darker dense base and a paler lit top, neutral grey so it can be tinted from near black to pale grey, centred, filling most of the canvas.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "background": "transparent",
+   "style_notes": "RimWorld's top-down painted look: soft feathered edges, painterly, natural colour; practical film pyrotechnics, black oily smoke. Seen from straight above. Genuinely transparent background. Design: design/specs/2026-11-24-knockback-blast-show/design.md section 6; it installs to the texPath named in this row. texPath: Textures/Things/Mote/RM_KnockbackBlast/SmokeD.png",
+   "priority": 40,
+   "target_texpath": "Things/Mote/RM_KnockbackBlast/SmokeD"
+  },
+  {
+   "id": "rm_kbblast_smoke_e",
+   "rimflow_item_id": "RIMMANDRAKE_GREEN_EXPLOSIVEKNOCKBACK_T_BLAST_SHOW_RED_DECIDER",
+   "target_def": "RM_KnockbackBlastSmoke",
+   "prompt": "One puff of real smoke from an explosion seen from above, a heavy low billow, flattened: irregular and asymmetric, soft turbulent edges dissolving into fully transparent wisps, a darker dense base and a paler lit top, neutral grey so it can be tinted from near black to pale grey, centred, filling most of the canvas.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "background": "transparent",
+   "style_notes": "RimWorld's top-down painted look: soft feathered edges, painterly, natural colour; practical film pyrotechnics, black oily smoke. Seen from straight above. Genuinely transparent background. Design: design/specs/2026-11-24-knockback-blast-show/design.md section 6; it installs to the texPath named in this row. texPath: Textures/Things/Mote/RM_KnockbackBlast/SmokeE.png",
+   "priority": 40,
+   "target_texpath": "Things/Mote/RM_KnockbackBlast/SmokeE"
+  },
+  {
+   "id": "rm_kbblast_smoke_f",
+   "rimflow_item_id": "RIMMANDRAKE_GREEN_EXPLOSIVEKNOCKBACK_T_BLAST_SHOW_RED_DECIDER",
+   "target_def": "RM_KnockbackBlastSmoke",
+   "prompt": "One puff of real smoke from an explosion seen from above, a small tight curl: irregular and asymmetric, soft turbulent edges dissolving into fully transparent wisps, a darker dense base and a paler lit top, neutral grey so it can be tinted from near black to pale grey, centred, filling most of the canvas.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "background": "transparent",
+   "style_notes": "RimWorld's top-down painted look: soft feathered edges, painterly, natural colour; practical film pyrotechnics, black oily smoke. Seen from straight above. Genuinely transparent background. Design: design/specs/2026-11-24-knockback-blast-show/design.md section 6; it installs to the texPath named in this row. texPath: Textures/Things/Mote/RM_KnockbackBlast/SmokeF.png",
+   "priority": 40,
+   "target_texpath": "Things/Mote/RM_KnockbackBlast/SmokeF"
+  },
+  {
+   "id": "rm_kbsoot_pawn_a",
+   "rimflow_item_id": "RIMMANDRAKE_GREEN_EXPLOSIVEKNOCKBACK_T_BLAST_SHOW_RED_DECIDER",
+   "prompt": "A seamless tileable texture of black soot marks, fine speckled smudges, scattered over the whole square with transparent gaps between them, matte charcoal black, as soot left on skin and cloth after an explosion.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "background": "transparent",
+   "style_notes": "RimWorld's top-down painted look: soft feathered edges, painterly, natural colour; practical film pyrotechnics, black oily smoke. Seen from straight above. Genuinely transparent background. Design: design/specs/2026-11-24-knockback-blast-show/design.md section 6; it installs to the texPath named in this row. texPath: Textures/Things/Pawn/Overlays/RM_KnockbackSoot/SootA.png",
+   "priority": 40,
+   "target_texpath": "Things/Pawn/Overlays/RM_KnockbackSoot/SootA",
+   "no_subject": "a pawn overlay tile that RM_PawnSootDrawer draws in code for hediff RM_KnockbackSoot, masked by the body and head (as vanilla firefoam); no def has a texPath for it"
+  },
+  {
+   "id": "rm_kbsoot_pawn_b",
+   "rimflow_item_id": "RIMMANDRAKE_GREEN_EXPLOSIVEKNOCKBACK_T_BLAST_SHOW_RED_DECIDER",
+   "prompt": "A seamless tileable texture of black soot marks, dragged streaks in one direction, scattered over the whole square with transparent gaps between them, matte charcoal black, as soot left on skin and cloth after an explosion.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "background": "transparent",
+   "style_notes": "RimWorld's top-down painted look: soft feathered edges, painterly, natural colour; practical film pyrotechnics, black oily smoke. Seen from straight above. Genuinely transparent background. Design: design/specs/2026-11-24-knockback-blast-show/design.md section 6; it installs to the texPath named in this row. texPath: Textures/Things/Pawn/Overlays/RM_KnockbackSoot/SootB.png",
+   "priority": 40,
+   "target_texpath": "Things/Pawn/Overlays/RM_KnockbackSoot/SootB",
+   "no_subject": "a pawn overlay tile that RM_PawnSootDrawer draws in code for hediff RM_KnockbackSoot, masked by the body and head (as vanilla firefoam); no def has a texPath for it"
+  },
+  {
+   "id": "rm_kbsoot_pawn_c",
+   "rimflow_item_id": "RIMMANDRAKE_GREEN_EXPLOSIVEKNOCKBACK_T_BLAST_SHOW_RED_DECIDER",
+   "prompt": "A seamless tileable texture of black soot marks, blotchy patches with soft edges, scattered over the whole square with transparent gaps between them, matte charcoal black, as soot left on skin and cloth after an explosion.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "background": "transparent",
+   "style_notes": "RimWorld's top-down painted look: soft feathered edges, painterly, natural colour; practical film pyrotechnics, black oily smoke. Seen from straight above. Genuinely transparent background. Design: design/specs/2026-11-24-knockback-blast-show/design.md section 6; it installs to the texPath named in this row. texPath: Textures/Things/Pawn/Overlays/RM_KnockbackSoot/SootC.png",
+   "priority": 40,
+   "target_texpath": "Things/Pawn/Overlays/RM_KnockbackSoot/SootC",
+   "no_subject": "a pawn overlay tile that RM_PawnSootDrawer draws in code for hediff RM_KnockbackSoot, masked by the body and head (as vanilla firefoam); no def has a texPath for it"
+  },
+  {
+   "id": "rm_kbsoot_pawn_d",
+   "rimflow_item_id": "RIMMANDRAKE_GREEN_EXPLOSIVEKNOCKBACK_T_BLAST_SHOW_RED_DECIDER",
+   "prompt": "A seamless tileable texture of black soot marks, a mix of speckles and short streaks, scattered over the whole square with transparent gaps between them, matte charcoal black, as soot left on skin and cloth after an explosion.",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "background": "transparent",
+   "style_notes": "RimWorld's top-down painted look: soft feathered edges, painterly, natural colour; practical film pyrotechnics, black oily smoke. Seen from straight above. Genuinely transparent background. Design: design/specs/2026-11-24-knockback-blast-show/design.md section 6; it installs to the texPath named in this row. texPath: Textures/Things/Pawn/Overlays/RM_KnockbackSoot/SootD.png",
+   "priority": 40,
+   "target_texpath": "Things/Pawn/Overlays/RM_KnockbackSoot/SootD",
+   "no_subject": "a pawn overlay tile that RM_PawnSootDrawer draws in code for hediff RM_KnockbackSoot, masked by the body and head (as vanilla firefoam); no def has a texPath for it"
+  }
+ ]
+}

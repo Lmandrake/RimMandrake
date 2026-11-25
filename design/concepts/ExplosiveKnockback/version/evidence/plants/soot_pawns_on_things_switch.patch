@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackShowPlan.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackShowPlan.cs
+@@ -317,7 +317,7 @@
+             {
+                 p.sootThingsReach = 0.8f * er;
+             }
+-            if (s.sootOnPawns)
++            if (s.sootOnThings || s.sootOnPawns)
+             {
+                 p.sootPawnsReach = 0.8f * er;
+             }

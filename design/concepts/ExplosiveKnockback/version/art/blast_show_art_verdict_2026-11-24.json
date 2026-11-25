@@ -1,0 +1,212 @@
+{
+ "judge": "fresh Opus art judge, delegated (not the maker)",
+ "brief": "design/RimMandrake/art_judge_brief.md",
+ "date": "2026-11-24",
+ "evidence": "alpha probe and composite sheets under D:\\ClaudeWork\\rimmandrake\\judge_blastshow (alpha.txt, s1_glow..s6_soot.png); all 32 RGBA with corner alpha 0 and border alpha <=1",
+ "verdicts": [
+  {
+   "id": "rm_kbblast_flash",
+   "verdict": "ACCEPT",
+   "reason": "Real alpha (corners 0); soft white-yellow hot disc with black/clear surround, reads additive as a bright flash (design 6: 'soft white-yellow, drawn additive').",
+   "polish": "Four small spike glints on the disc rim; a plain soft disc was asked. Barely visible at flash duration."
+  },
+  {
+   "id": "rm_kbblast_fireball_a",
+   "verdict": "ACCEPT",
+   "reason": "Real alpha; dense round lobe, white core, red ragged edge; orange-white core and red ragged edge as asked (design 6), painted fire, no outline, no cartoon shapes.",
+   "polish": "Under additive blend on a mid ground the red edge washes to pale orange; that is the shader, not the art."
+  },
+  {
+   "id": "rm_kbblast_fireball_b",
+   "verdict": "ACCEPT",
+   "reason": "Real alpha; ragged lobe torn open on one side; orange-white core and red ragged edge as asked (design 6), painted fire, no outline, no cartoon shapes.",
+   "polish": ""
+  },
+  {
+   "id": "rm_kbblast_fireball_c",
+   "verdict": "ACCEPT",
+   "reason": "Real alpha; comet-swirl lobe with a trailing tongue; orange-white core and red ragged edge as asked (design 6), painted fire, no outline, no cartoon shapes.",
+   "polish": "Swirl tail is directional; if it is rotated per fleck it will not read as a repeating stamp, so keep rotation random."
+  },
+  {
+   "id": "rm_kbblast_fireball_d",
+   "verdict": "ACCEPT",
+   "reason": "Real alpha; compact lobe, white core; orange-white core and red ragged edge as asked (design 6), painted fire, no outline, no cartoon shapes.",
+   "polish": ""
+  },
+  {
+   "id": "rm_kbblast_spark_a",
+   "verdict": "REJECT",
+   "reason": "D4 'Real alpha: no backdrop, halo': a ragged grey rectangular panel surrounds the streak (about 115x100 px of 128; alpha ~28 with RGB ~182, ~20/255 added per pixel under the additive glow shader). Each thrown spark would draw a faint grey box around itself, plainly visible at night. Fix: rerun or clear alpha outside the streak (keep only the streak and its tight glow).",
+   "polish": ""
+  },
+  {
+   "id": "rm_kbblast_spark_b",
+   "verdict": "ACCEPT",
+   "reason": "Real alpha (96% clear); thin bright tapering streak, hot white head fading to orange tail (design 6: 'thin, bright, tapering').",
+   "polish": "Head is slightly flame-shaped rather than a point; reads fine at fleck size."
+  },
+  {
+   "id": "rm_kbblast_ember",
+   "verdict": "ACCEPT",
+   "reason": "Real alpha; small orange-hot glowing ember with soft glow, black surround reads as nothing additively.",
+   "polish": "Two or three tiny satellite specks beside it; harmless."
+  },
+  {
+   "id": "rm_kbblast_dirt_a",
+   "verdict": "ACCEPT",
+   "reason": "Real alpha; painted earth clod with cracks, soft shading, no outline; tints cleanly by terrain colour.",
+   "polish": "Base is light brown rather than the asked neutral grey, so the terrain tint lands a little warmer/darker than the terrain itself."
+  },
+  {
+   "id": "rm_kbblast_dirt_b",
+   "verdict": "ACCEPT",
+   "reason": "Real alpha; painted earth clod with cracks, soft shading, no outline; tints cleanly by terrain colour.",
+   "polish": ""
+  },
+  {
+   "id": "rm_kbblast_dirt_c",
+   "verdict": "ACCEPT",
+   "reason": "Real alpha; painted earth clod with cracks, soft shading, no outline; tints cleanly by terrain colour.",
+   "polish": ""
+  },
+  {
+   "id": "rm_kbblast_dirt_d",
+   "verdict": "ACCEPT",
+   "reason": "Real alpha; painted earth clod with cracks, soft shading, no outline; tints cleanly by terrain colour.",
+   "polish": ""
+  },
+  {
+   "id": "rm_kbblast_stone_a",
+   "verdict": "ACCEPT",
+   "reason": "Real alpha; neutral-grey faceted stone chip as asked, tints cleanly by terrain colour, no outline.",
+   "polish": ""
+  },
+  {
+   "id": "rm_kbblast_stone_b",
+   "verdict": "ACCEPT",
+   "reason": "Real alpha; neutral-grey faceted stone chip as asked, tints cleanly by terrain colour, no outline.",
+   "polish": ""
+  },
+  {
+   "id": "rm_kbblast_stone_c",
+   "verdict": "ACCEPT",
+   "reason": "Real alpha; neutral-grey faceted stone chip as asked, tints cleanly by terrain colour, no outline.",
+   "polish": "Smallest chip (c) is ~40 px of 128; fine as a variant, tiny at play zoom."
+  },
+  {
+   "id": "rm_kbblast_stone_d",
+   "verdict": "ACCEPT",
+   "reason": "Real alpha; neutral-grey faceted stone chip as asked, tints cleanly by terrain colour, no outline.",
+   "polish": ""
+  },
+  {
+   "id": "rm_kbblast_crater_1",
+   "verdict": "ACCEPT",
+   "reason": "Real alpha, transparent edge; torn pit with ragged charred rim and radial streaks; reads as an ugly crater scar on soil, sand and stone (owner: 'Ugly crater scars that look like ugly crater scars').",
+   "polish": "A few glowing ember specks are baked into the pit; a scar that lasts days keeps glowing. Small at play zoom."
+  },
+  {
+   "id": "rm_kbblast_crater_2",
+   "verdict": "ACCEPT",
+   "reason": "Real alpha; directional torn crater with a one-sided ejecta spray and burnt rim; reads as a crater on all three grounds.",
+   "polish": "Baked glowing specks as crater_1."
+  },
+  {
+   "id": "rm_kbblast_crater_3",
+   "verdict": "ACCEPT",
+   "reason": "Real alpha; round torn pit, dark burnt rim, radial spikes; reads as a crater on soil, sand and stone.",
+   "polish": "Baked glowing specks as crater_1."
+  },
+  {
+   "id": "rm_kbblast_scorch_1",
+   "verdict": "ACCEPT",
+   "reason": "Real alpha; black starburst scorch with radial streaks, no pit, as the stone/built-floor mark (design 3.11); reads on all three grounds.",
+   "polish": "A pale dusty fringe rings it (edge luminance ~172 vs core ~49); it reads as ash on stone and sand, but on dark soil or dark wood floors it shows as a light halo."
+  },
+  {
+   "id": "rm_kbblast_scorch_2",
+   "verdict": "ACCEPT",
+   "reason": "Real alpha; directional black scorch with radial streaks and thrown droplets; reads as a blast mark.",
+   "polish": "The round droplets lean toward an ink splatter."
+  },
+  {
+   "id": "rm_kbblast_scorch_3",
+   "verdict": "ACCEPT",
+   "reason": "Real alpha; black starburst scorch with streaks; reads as a blast mark.",
+   "polish": "Round droplets and blobby arms lean toward an ink splatter more than burn."
+  },
+  {
+   "id": "rm_kbblast_smoke_a",
+   "verdict": "ACCEPT",
+   "reason": "Real alpha; asymmetric irregular billow, soft volumetric turbulence, dark base and lit top; tints from near black to pale grey and reads as smoke, not round cartoon cotton (design 6).",
+   "polish": ""
+  },
+  {
+   "id": "rm_kbblast_smoke_b",
+   "verdict": "ACCEPT",
+   "reason": "Real alpha; asymmetric elongated two-lobe billow, soft volumetric turbulence, dark base and lit top; tints from near black to pale grey and reads as smoke, not round cartoon cotton (design 6).",
+   "polish": "Edges are lighter than the core (lit rims), which suits the lit-top brief."
+  },
+  {
+   "id": "rm_kbblast_smoke_c",
+   "verdict": "ACCEPT",
+   "reason": "Real alpha; asymmetric notched heart-like billow with a gap, soft volumetric turbulence, dark base and lit top; tints from near black to pale grey and reads as smoke, not round cartoon cotton (design 6).",
+   "polish": ""
+  },
+  {
+   "id": "rm_kbblast_smoke_d",
+   "verdict": "ACCEPT",
+   "reason": "Real alpha; asymmetric ragged billow with wisps, soft volumetric turbulence, dark base and lit top; tints from near black to pale grey and reads as smoke, not round cartoon cotton (design 6).",
+   "polish": "Edges are lighter than the core (lit rims), which suits the lit-top brief."
+  },
+  {
+   "id": "rm_kbblast_smoke_e",
+   "verdict": "REJECT",
+   "reason": "D4 'no backdrop, halo' with the owner's 'Smoke that looks like smoke, not rotating cartoon cotton': a pale matte ring runs all the way round the puff (semi-transparent edge luminance ~201 vs core ~98, the highest of the six) on a near-round, roughly symmetric outline. At mid-grey tint each puff draws as a cut-out with a light rim, which reads as cartoon cotton in an overlapping column. Fix: rerun or defringe (pull edge RGB toward core value) and break the round outline.",
+   "polish": ""
+  },
+  {
+   "id": "rm_kbblast_smoke_f",
+   "verdict": "ACCEPT",
+   "reason": "Real alpha; asymmetric billow with a lit upper-right lobe and dark lower base; reads as smoke when tinted dark or pale.",
+   "polish": "Pale fringe on its edge (edge luminance ~180 vs core ~112) is weaker than e's and patchy; a defringe pass would help at mid-grey tint."
+  },
+  {
+   "id": "rm_kbsoot_pawn_a",
+   "verdict": "ACCEPT",
+   "reason": "Real alpha; dark sparse smudges with fine specks with wide transparent gaps; reads as black soot when masked to a body (design 3.13, 6).",
+   "polish": "Marks stop ~8 px short of every edge, so a 2x2 tiling shows a regular grid of gaps; not a visible seam, but the repeat is noticeable if the tile covers the body more than once."
+  },
+  {
+   "id": "rm_kbsoot_pawn_b",
+   "verdict": "ACCEPT",
+   "reason": "Real alpha; dark diagonal smeared streaks with wide transparent gaps; reads as black soot when masked to a body (design 3.13, 6).",
+   "polish": ""
+  },
+  {
+   "id": "rm_kbsoot_pawn_c",
+   "verdict": "ACCEPT",
+   "reason": "Real alpha; dark large soft blotches with wide transparent gaps; reads as black soot when masked to a body (design 3.13, 6).",
+   "polish": " Blotches are mid-dark grey (~99 luminance) and soft, reading more like smoke stains than black soot."
+  },
+  {
+   "id": "rm_kbsoot_pawn_d",
+   "verdict": "ACCEPT",
+   "reason": "Real alpha; dark blotches with scattered spatter and streaks with wide transparent gaps; reads as black soot when masked to a body (design 3.13, 6).",
+   "polish": ""
+  },
+  {
+   "id": "rm_kbblast_spark_a_r2",
+   "verdict": "ACCEPT",
+   "reason": "Repair check of spark_a's D4 refusal: the grey box is gone (97% fully clear, alpha 0 in columns 5/20/100/115 and on the whole border; content only in the 9x96 px streak). Thin bright tapering streak, white head to orange tail, reads clean under the additive shader.",
+   "polish": "Nearly identical in shape to spark_b; two streak variants differ little."
+  },
+  {
+   "id": "rm_kbblast_smoke_e_r2",
+   "verdict": "ACCEPT",
+   "reason": "Repair check of smoke_e's D4 and 'cartoon cotton' refusal: the pale ring is gone (edge luminance ~116 vs core ~76, was 201 vs 98); the outline is lobed and asymmetric, not round. Real alpha (corners 0, border alpha <=1). Reads as smoke at mid and dark tint.",
+   "polish": "Base and top are similar in value; the 'dark base, lit top' gradient is weaker than in puffs a-d."
+  }
+ ]
+}

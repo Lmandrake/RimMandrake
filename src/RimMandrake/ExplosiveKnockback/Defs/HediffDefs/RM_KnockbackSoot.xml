@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Explosive Knockback 0.2.0: soot on pawns (design/specs/2026-11-24-knockback-blast-show/design.md §3.13). A look only:
+     no stage, no stat, no thought. A person or animal caught in a harmful blast is smudged black over body and head; it
+     wears off in a day or so (the "How long scars and soot last" choice scales that on each new soot) and washes off in
+     rain or water (RM_HediffComp_SootWashes). The overlay is drawn as vanilla firefoam is: a PawnOverlayDrawer masked by
+     the body and head textures (RM_PawnSootDrawer), on render nodes this hediff carries, as Anomaly's shambler wounds do. -->
+<Defs>
+  <HediffDef>
+    <defName>RM_KnockbackSoot</defName>
+    <label>sooted</label>
+    <description>Black soot from a blast, smeared over skin, fur and clothes. It does no harm; it wears off in a day or so and washes off in rain or water.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.55, 0.55, 0.55)</defaultLabelColor>
+    <isBad>false</isBad>
+    <everCurableByItem>false</everCurableByItem>
+    <makesSickThought>false</makesSickThought>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>60000~90000</disappearsAfterTicks>
+        <showRemainingTime>true</showRemainingTime>
+      </li>
+      <li Class="RimMandrake.ExplosiveKnockback.RM_HediffCompProperties_SootWashes" />
+    </comps>
+    <renderNodeProperties>
+      <li Class="PawnRenderNodeProperties_Overlay">
+        <debugLabel>Blast soot</debugLabel>
+        <workerClass>RimMandrake.ExplosiveKnockback.RM_PawnRenderNodeWorker_OverlaySoot</workerClass>
+        <overlayLayer>Body</overlayLayer>
+        <baseLayer>41</baseLayer>
+        <pawnType>HumanlikeOnly</pawnType>
+        <parentTagDef>Body</parentTagDef>
+      </li>
+      <li Class="PawnRenderNodeProperties_Overlay">
+        <debugLabel>Blast soot (head)</debugLabel>
+        <workerClass>RimMandrake.ExplosiveKnockback.RM_PawnRenderNodeWorker_OverlaySoot</workerClass>
+        <overlayLayer>Head</overlayLayer>
+        <baseLayer>86</baseLayer>
+        <pawnType>HumanlikeOnly</pawnType>
+        <parentTagDef>Head</parentTagDef>
+      </li>
+      <li>
+        <debugLabel>Blast soot</debugLabel>
+        <nodeClass>PawnRenderNode_AnimalPart</nodeClass>
+        <workerClass>RimMandrake.ExplosiveKnockback.RM_PawnRenderNodeWorker_OverlaySoot</workerClass>
+        <overlayLayer>Body</overlayLayer>
+        <useGraphic>false</useGraphic>
+        <baseLayer>11</baseLayer>
+        <pawnType>NonHumanlikeOnly</pawnType>
+      </li>
+    </renderNodeProperties>
+  </HediffDef>
+</Defs>

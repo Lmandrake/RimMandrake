@@ -417,6 +417,7 @@ namespace RimMandrake.ExplosiveKnockback
             ["fireHalf"] = Lane(new[] { "fireAtHalf=False" }),
             // the blast show off (bar blast_show_switches_off_clean): every throw observation equals the default run's
             ["showOff"] = Lane(new[] { "showFireAndFlash=False", "showScreenShake=False", "showAirRipple=False", "showCraterScars=False",
+                                       "showSmoke=False", "showSootOnThings=False", "showSootOnPawns=False",
                                        "showShakeStrength=0", "showMarksLast=0" }),
         };
 
@@ -441,7 +442,7 @@ namespace RimMandrake.ExplosiveKnockback
             "heavyGoodsDamageMax", "heavyGoodsStaggerTicks", "gasBurstRadius", "gasBurstGoodsCells", "gasPawnCooldownTicks",
             "flyingGoods", "shoveClosedContainers", "heavyGoodsKnock", "gasChain", "enabled", "shieldsAbsorbThrow",
             "closedContainerGuard", "fireAtHalf", "showFireAndFlash", "showScreenShake", "showAirRipple", "showCraterScars",
-            "showShakeStrength", "showMarksLast",
+            "showSmoke", "showSootOnThings", "showSootOnPawns", "showShakeStrength", "showMarksLast",
         };
 
         private static IEnumerable<System.Reflection.FieldInfo> SavedFields() => typeof(RimMandrakeExplosiveKnockbackSettings)

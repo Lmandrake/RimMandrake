@@ -64,6 +64,7 @@
     <Compile Include="RM_ThingFlyer_Knockback.cs" />
     <Compile Include="RM_PawnFlyerPatches.cs" />
     <Compile Include="RM_KnockbackShow.cs" />
+    <Compile Include="RM_KnockbackSoot.cs" />
     <Compile Include="RM_KnockbackProof.cs" />
     <Compile Include="RM_KnockbackProof_StageThree.cs" />
     <Compile Include="RM_KnockbackProof_GoodsObstacles.cs" />

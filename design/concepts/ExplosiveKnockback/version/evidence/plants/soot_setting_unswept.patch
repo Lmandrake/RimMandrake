@@ -1,0 +1,18 @@
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs
+@@ -147,6 +147,7 @@
+         public static bool showSmoke = true;
+         public static bool showSootOnThings = true;
+         public static bool showSootOnPawns = true;
++        public static bool showSootOnCorpses = true;
+         public static bool showScreenShake = true;
+         public static bool showAirRipple = true;
+         public static bool showCraterScars = true;
+@@ -244,6 +245,7 @@
+             Scribe_Values.Look(ref showSmoke, "showSmoke", true);
+             Scribe_Values.Look(ref showSootOnThings, "showSootOnThings", true);
+             Scribe_Values.Look(ref showSootOnPawns, "showSootOnPawns", true);
++            Scribe_Values.Look(ref showSootOnCorpses, "showSootOnCorpses", true);
+             Scribe_Values.Look(ref showScreenShake, "showScreenShake", true);
+             Scribe_Values.Look(ref showAirRipple, "showAirRipple", true);
+             Scribe_Values.Look(ref showCraterScars, "showCraterScars", true);

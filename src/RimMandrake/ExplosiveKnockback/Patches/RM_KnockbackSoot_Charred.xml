@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Explosive Knockback 0.2.0: soot on things uses Pyrelands' one charred colour, RM_FE_Charred (design
+     2026-11-24-knockback-blast-show §1.2: no second soot colour). When Pyrelands is not loaded, this adds the same
+     ColorDef (the values of src/RimMandrake/Pyrelands/Defs/ThingDefs_Ash/RM_FE_Charred.xml). Patches run on the combined
+     defs of every mod, so the load order does not matter. -->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ColorDef[defName="RM_FE_Charred"]</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs</xpath>
+      <value>
+        <ColorDef>
+          <defName>RM_FE_Charred</defName>
+          <label>charred</label>
+          <color>(58, 52, 49)</color>
+          <colorType>Misc</colorType>
+        </ColorDef>
+      </value>
+    </nomatch>
+  </Operation>
+</Patch>

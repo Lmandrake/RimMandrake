@@ -95,10 +95,12 @@ namespace RimMandrake.ExplosiveKnockback
         public float scarSize;           // drawn width, cells
         public int scarSizeClass;        // index into ScarDrawSizes: which of the six scar defs of its kind
 
-        // the later parts' sizes, read by the parts built in later batches (smoke, soot)
+        // smoke and soot
         public int smokePuffs;
         public float smokeSeconds;
-        public float sootReach;          // cells from the centre that soot reaches on things and pawns
+        public float sootThingsReach;    // cells from the centre that soot reaches on walls, doors, furniture and floors
+        public float sootPawnsReach;     // cells from the centre that soot reaches on pawns (each soot part has its own field,
+                                         // so one soot switch off leaves the other's look whole: S_OFF_OWN, S_SWITCH)
     }
 
     public static class RM_KnockbackShowPlan
@@ -304,15 +306,20 @@ namespace RimMandrake.ExplosiveKnockback
                 p.scarSizeClass = ScarClass(p.scarSize);
             }
 
-            // the later parts' sizes (built in later batches; their switches gate them there)
+            // smoke: drawn only in view on the current map (a fleck nobody sees costs frames)
             if (s.smoke && b.inView && b.onCurrentMap)
             {
                 p.smokePuffs = Clamp((int)Math.Round(6f * root), 3, 30);
                 p.smokeSeconds = 12f * root;
             }
-            if (s.sootOnThings || s.sootOnPawns)
+            // soot: laid on or off screen (it endures, as a scar does)
+            if (s.sootOnThings)
             {
-                p.sootReach = 0.8f * er;
+                p.sootThingsReach = 0.8f * er;
+            }
+            if (s.sootOnPawns)
+            {
+                p.sootPawnsReach = 0.8f * er;
             }
             return p;
         }

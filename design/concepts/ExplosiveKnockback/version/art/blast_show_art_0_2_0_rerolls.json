@@ -1,0 +1,31 @@
+{
+ "made": "2026-11-24",
+ "by": "RIMMANDRAKE_GREEN_EXPLOSIVEKNOCKBACK_T_BLAST_SHOW_RED_DECIDER",
+ "what": "rerolls of the two renders the art judge refused (blast_show_art_verdict_2026-11-24.json)",
+ "rows": [
+  {
+   "rimflow_item_id": "RIMMANDRAKE_GREEN_EXPLOSIVEKNOCKBACK_T_BLAST_SHOW_RED_DECIDER",
+   "target_def": "RM_KnockbackBlastSpark",
+   "prompt": "One thin bright spark streak running straight up the canvas: a white-hot head at the top tapering into an orange tail that fades out, centred on the canvas's vertical axis. Everything outside the streak and its tight glow is fully transparent, alpha zero, with no faint box or backdrop.",
+   "background": "transparent",
+   "priority": 40,
+   "target_texpath": "Things/Mote/RM_KnockbackBlast/SparkA",
+   "id": "rm_kbblast_spark_a_r2",
+   "canvas_w": 128,
+   "canvas_h": 128,
+   "style_notes": "RimWorld's top-down painted look: soft feathered edges, painterly, natural colour; practical film pyrotechnics, a fuel fireball with white sparks. Seen from straight above. Genuinely transparent background. Design: design/specs/2026-11-24-knockback-blast-show/design.md section 6; it installs to the texPath named in this row. texPath: Textures/Things/Mote/RM_KnockbackBlast/SparkA.png"
+  },
+  {
+   "rimflow_item_id": "RIMMANDRAKE_GREEN_EXPLOSIVEKNOCKBACK_T_BLAST_SHOW_RED_DECIDER",
+   "target_def": "RM_KnockbackBlastSmoke",
+   "prompt": "One puff of real smoke from an explosion seen from above, a heavy low billow, flattened: irregular and asymmetric, soft turbulent edges dissolving into fully transparent wisps, a darker dense base and a paler lit top, neutral grey so it can be tinted from near black to pale grey, centred, filling most of the canvas. Its outline is ragged and irregular, its edge thins darker into transparent wisps, with no pale rim around it.",
+   "background": "transparent",
+   "priority": 40,
+   "target_texpath": "Things/Mote/RM_KnockbackBlast/SmokeE",
+   "id": "rm_kbblast_smoke_e_r2",
+   "canvas_w": 256,
+   "canvas_h": 256,
+   "style_notes": "RimWorld's top-down painted look: soft feathered edges, painterly, natural colour; practical film pyrotechnics, black oily smoke. Seen from straight above. Genuinely transparent background. Design: design/specs/2026-11-24-knockback-blast-show/design.md section 6; it installs to the texPath named in this row. texPath: Textures/Things/Mote/RM_KnockbackBlast/SmokeE.png"
+  }
+ ]
+}

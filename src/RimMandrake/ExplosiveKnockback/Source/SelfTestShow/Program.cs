@@ -158,7 +158,8 @@ internal static class Program
                 {
                     ("ripple width", a.plan.rippleDiameter, b.plan.rippleDiameter),
                     ("smoke time", a.plan.smokeSeconds, b.plan.smokeSeconds),
-                    ("soot reach", a.plan.sootReach, b.plan.sootReach),
+                    ("soot reach on things", a.plan.sootThingsReach, b.plan.sootThingsReach),
+                    ("soot reach on pawns", a.plan.sootPawnsReach, b.plan.sootPawnsReach),
                 };
                 if (k != KbShowKind.OtherHarmful)
                 {
@@ -209,7 +210,7 @@ internal static class Program
         bool pairOk = anti.flashScale > gren.flashScale && anti.fireballScale > gren.fireballScale && anti.fireballLobes > gren.fireballLobes
             && anti.shakeMag > gren.shakeMag && anti.shakeHoldTicks > gren.shakeHoldTicks && anti.rippleDiameter > gren.rippleDiameter && anti.rippleAlpha > gren.rippleAlpha
             && anti.scarSize > gren.scarSize && anti.scarSizeClass > gren.scarSizeClass && anti.smokeSeconds > gren.smokeSeconds
-            && anti.sootReach > gren.sootReach;
+            && anti.sootThingsReach > gren.sootThingsReach && anti.sootPawnsReach > gren.sootPawnsReach;
         Check("S_PAIR", pairOk, "grenade vs antigrain: the antigrain is bigger in every part",
             string.Format("flash {0:0.0}/{1:0.0} lobes {2}/{3} shake {4:0.000}/{5:0.000} ring {6:0.0}/{7:0.0} scar {8:0.0}/{9:0.0} class {10}/{11}",
                 gren.flashScale, anti.flashScale, gren.fireballLobes, anti.fireballLobes, gren.shakeMag, anti.shakeMag,
@@ -281,23 +282,26 @@ internal static class Program
             var off = RM_KnockbackShowPlan.Plan(b, KbShowSwitches.AllOff());
             n++;
             if (off.suppressVanillaVisuals || off.zeroVanillaShake || off.suppressVanillaBlastMark || off.replayVanillaShake || off.replayWaterSplash
-                || !AllZero(FirePart(off)) || !AllZero(ShakePart(off)) || !AllZero(RipplePart(off)) || !AllZero(ScarPart(off)) || !AllZero(SmokePart(off)) || off.sootReach != 0f)
+                || !AllZero(FirePart(off)) || !AllZero(ShakePart(off)) || !AllZero(RipplePart(off)) || !AllZero(ScarPart(off)) || !AllZero(SmokePart(off)) || off.sootThingsReach != 0f || off.sootPawnsReach != 0f)
             { bad++; badAt = "all off still changes the blast at " + k + "/" + g + "/" + r; }
             foreach (string part in Parts)
             {
                 var p = RM_KnockbackShowPlan.Plan(b, With(all, part, false));
                 n++;
                 bool fireSame = Same(FirePart(p), FirePart(on)), shakeSame = Same(ShakePart(p), ShakePart(on)),
-                     ripSame = Same(RipplePart(p), RipplePart(on)), scarSame = Same(ScarPart(p), ScarPart(on)), smokeSame = Same(SmokePart(p), SmokePart(on));
+                     ripSame = Same(RipplePart(p), RipplePart(on)), scarSame = Same(ScarPart(p), ScarPart(on)), smokeSame = Same(SmokePart(p), SmokePart(on)),
+                     thingsSame = p.sootThingsReach == on.sootThingsReach, pawnsSame = p.sootPawnsReach == on.sootPawnsReach;
                 bool ok = part switch
                 {
-                    "fireAndFlash" => AllZero(FirePart(p)) && !p.suppressVanillaVisuals && !p.replayWaterSplash && shakeSame && ripSame && scarSame && smokeSame,
+                    "fireAndFlash" => AllZero(FirePart(p)) && !p.suppressVanillaVisuals && !p.replayWaterSplash && shakeSame && ripSame && scarSame && smokeSame && thingsSame && pawnsSame,
                     "screenShake" => AllZero(ShakePart(p)) && !p.zeroVanillaShake && fireSame && ripSame && scarSame && smokeSame
-                                     && p.replayVanillaShake == on.suppressVanillaVisuals,
-                    "airRipple" => AllZero(RipplePart(p)) && fireSame && shakeSame && scarSame && smokeSame,
-                    "craterScars" => AllZero(ScarPart(p)) && !p.suppressVanillaBlastMark && fireSame && shakeSame && ripSame && smokeSame,
-                    "smoke" => AllZero(SmokePart(p)) && fireSame && shakeSame && ripSame && scarSame,
-                    _ => fireSame && shakeSame && ripSame && scarSame && smokeSame,
+                                     && p.replayVanillaShake == on.suppressVanillaVisuals && thingsSame && pawnsSame,
+                    "airRipple" => AllZero(RipplePart(p)) && fireSame && shakeSame && scarSame && smokeSame && thingsSame && pawnsSame,
+                    "craterScars" => AllZero(ScarPart(p)) && !p.suppressVanillaBlastMark && fireSame && shakeSame && ripSame && smokeSame && thingsSame && pawnsSame,
+                    "smoke" => AllZero(SmokePart(p)) && fireSame && shakeSame && ripSame && scarSame && thingsSame && pawnsSame,
+                    "sootOnThings" => p.sootThingsReach == 0f && fireSame && shakeSame && ripSame && scarSame && smokeSame && pawnsSame,
+                    "sootOnPawns" => p.sootPawnsReach == 0f && fireSame && shakeSame && ripSame && scarSame && smokeSame && thingsSame,
+                    _ => false,
                 };
                 if (!ok) { bad++; badAt = part + " off at " + k + "/" + g + "/r" + r + "/x" + q + "/view" + view; }
             }

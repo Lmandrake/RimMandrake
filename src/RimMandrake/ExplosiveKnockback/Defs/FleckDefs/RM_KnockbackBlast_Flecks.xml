@@ -102,4 +102,25 @@
     </graphicData>
   </FleckDef>
 
+  <!-- smoke that boils up from the root, pales, leans downwind and thins (§3.8). It never spins: RM_KnockbackShow.DrawSmoke
+       gives every puff rotationRate 0, an upward drift plus the map's wind, and its tint from near black to pale grey; its
+       life is RM_KnockbackShowPlan's smokeSeconds (solidTimeOverride). MoteOverhead: under the thrown pawns and goods
+       (their flyers draw at Skyfaller), so a flight stays readable. -->
+  <FleckDef ParentName="FleckBase_RandomGraphic_Thrown">
+    <defName>RM_KnockbackBlastSmoke</defName>
+    <altitudeLayer>MoteOverhead</altitudeLayer>
+    <fadeInTime>0.6</fadeInTime>
+    <solidTime>8</solidTime>
+    <fadeOutTime>4</fadeOutTime>
+    <growthRate>0.22</growthRate>
+    <randomGraphics>
+      <li><graphicClass>Graphic_Fleck</graphicClass><shaderType>Mote</shaderType><texPath>Things/Mote/RM_KnockbackBlast/SmokeA</texPath></li>
+      <li><graphicClass>Graphic_Fleck</graphicClass><shaderType>Mote</shaderType><texPath>Things/Mote/RM_KnockbackBlast/SmokeB</texPath></li>
+      <li><graphicClass>Graphic_Fleck</graphicClass><shaderType>Mote</shaderType><texPath>Things/Mote/RM_KnockbackBlast/SmokeC</texPath></li>
+      <li><graphicClass>Graphic_Fleck</graphicClass><shaderType>Mote</shaderType><texPath>Things/Mote/RM_KnockbackBlast/SmokeD</texPath></li>
+      <li><graphicClass>Graphic_Fleck</graphicClass><shaderType>Mote</shaderType><texPath>Things/Mote/RM_KnockbackBlast/SmokeE</texPath></li>
+      <li><graphicClass>Graphic_Fleck</graphicClass><shaderType>Mote</shaderType><texPath>Things/Mote/RM_KnockbackBlast/SmokeF</texPath></li>
+    </randomGraphics>
+  </FleckDef>
+
 </Defs>

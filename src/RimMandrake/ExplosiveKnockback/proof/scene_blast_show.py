@@ -1,8 +1,8 @@
 """scene_blast_show.py - Explosive Knockback 0.2.0, sc_blast_show: the blast show in the game (scene library 0.3.0).
 
 Bars (design/concepts/ExplosiveKnockback/record.json): blast_show_fire_and_flash, blast_show_screen_shake,
-blast_show_air_ripple, blast_show_crater_scar and blast_show_scales_with_damage; the smoke and soot bars join when their
-parts are built. The kernel's sizes are decided offline (T_BLAST_SHOW_OFFLINE). This scene reads what only the game can
+blast_show_air_ripple, blast_show_crater_scar, blast_show_smoke, blast_show_soot_on_things, blast_show_soot_on_pawns and
+blast_show_scales_with_damage. The kernel's sizes are decided offline (T_BLAST_SHOW_OFFLINE). This scene reads what only the game can
 show: a real blast lays OUR scar and never vanilla's mark, of the kind its ground calls for and of the width its power
 calls for; the show kicked the camera; and a picture of each blast right after it goes off (fire, flash, sparks, thrown
 bits, ripple) and once it has settled (the scar), for the art judge (design/RimMandrake/art_judge_brief.md), whose keep
@@ -24,14 +24,20 @@ The checks (each prints PASS or FAIL with what it read):
   V_SCAR_SIZE   drawn widths on soil rise: he_soil < ied_soil < anti_soil (RM_KnockbackShowPlan: 7, 10, 20)
   V_SHAKE       RM_KnockbackShow.lastShakeTick moves to the blast's tick for each harmful blast in view, and its kick rises
                 he_soil < anti_soil
-  SHOTS         <pad>_fire right after each blast, <pad>_scar after 300 ticks
+  V_SOOT_THING  the granite wall two cells from he_tile's centre wears the charred paint RM_FE_Charred after its blast
+  V_SOOT_PAWN   the muffalo three cells from ied_soil's centre carries hediff RM_KnockbackSoot after its blast (it is
+                thrown, as any pawn in a blast is; the muffalo's size keeps it alive at that distance [guess ~80%])
+  SHOTS         <pad>_fire right after each blast (fire, flash, sparks, bits, ripple, the smoke column rising), <pad>_scar
+                after 300 ticks (the scar; the smoke has thinned)
 
     python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_blast_show.py
     python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_blast_show.py --plant show_off
 
 UNRUN until Stage 6: written 2026-11-24 by RIMMANDRAKE_AUTOBUILD_EXPLOSIVEKNOCKBACK_FOURTEEN_BARS_LEFT and never run live.
-The plant `show_off` turns the four built show switches off: V_SCAR_KIND, V_NO_VANILLA and V_SHAKE must then FAIL
-(vanilla's mark returns, no kick of ours), which shows that the checks can see. Open points for the first run: whether
+The plant `show_off` turns the seven show switches off: V_SCAR_KIND, V_NO_VANILLA, V_SHAKE, V_SOOT_THING and V_SOOT_PAWN
+must then FAIL (vanilla's mark returns, no kick of ours, no soot), which shows that the checks can see. Smoke and soot
+checks were added 2026-11-24 by RIMMANDRAKE_GREEN_EXPLOSIVEKNOCKBACK_T_BLAST_SHOW_RED_DECIDER, also unrun; open point: the
+read paths PaintColorDef.defName (a Building property) and health.hediffSet.hediffs[i].def.defName. Open points for the first run: whether
 jawa/mod_settings_field get stamps the run EXPLORED (if so, V_SHAKE supports and the shots decide the shake), and whether
 the off-screen capture draws flecks (if not, the _fire shots are taken on screen with rimworld/jump_camera_to_cell).
 """
@@ -41,7 +47,8 @@ from scene import cond as c
 GAME = "ArchSmall"
 SETTINGS = "RimMandrake.ExplosiveKnockback.RimMandrakeExplosiveKnockbackSettings"
 SHOW = "RimMandrake.ExplosiveKnockback.RM_KnockbackShow"
-SWITCHES = ("showFireAndFlash", "showScreenShake", "showAirRipple", "showCraterScars")
+SWITCHES = ("showFireAndFlash", "showScreenShake", "showAirRipple", "showCraterScars", "showSmoke", "showSootOnThings",
+            "showSootOnPawns")
 STATION = (20, 20, 100, 40)
 # pad -> (explosive, terrain, centre relative to the station's corner); a pad is 9 x 9 cells around its centre
 PADS = {
@@ -59,6 +66,10 @@ WANT = {"he_soil": "Crater", "ied_soil": "Crater", "anti_soil": "Crater", "he_ro
         "fire_soil": "Scorch", "he_water": None, "emp_soil": None}
 HARMFUL = [p for p in ORDER if p != "emp_soil"]
 SETTLE = 300            # ticks after each blast: every fleck of the show is gone in under 2 s (120 ticks)
+# the soot watchers: a granite wall on he_tile (a built floor pad) and a muffalo on ied_soil, inside each blast's soot
+# reach (0.8 x the effective radius: about 2.3 cells for the 2.9-cell shell, 3.1 for the 3.9-cell IED)
+WALL_AT = (32, 6)
+BEAST_AT = (57, 6)
 HALF = 4                # a pad's reading rect is its centre +-4 cells; the antigrain's reaches +-12 (its 20-cell scar)
 
 show = scene.contract(
@@ -107,12 +118,28 @@ def blasts(s, rows):
         s.shot(rect(pad), name=pad + "_scar")
         ours, vanilla = scars_on(s, pad)
         rows[pad] = dict(scars=ours, vanilla=vanilla, shook=(t0 is not None and t1 is not None and t1 > t0), kick=kick)
+        if pad == "he_tile":
+            paint = s.read("soot_wall", "PaintColorDef.defName")
+            rows[pad]["paint"] = str(paint.v) if paint.state == "ok" else "unread (%s)" % paint.state
+        if pad == "ied_soil":
+            rows[pad]["sooted"] = sooted(s, "soot_beast")
+
+
+def sooted(s, alias):
+    """-> True/False: the pawn carries RM_KnockbackSoot; None when its hediffs cannot be read."""
+    n = s.read(alias, "health.hediffSet.hediffs._size")
+    if n.state != "ok":
+        return None
+    vals = s.read_many(reads=[(alias, "health.hediffSet.hediffs[%d].def.defName" % i) for i in range(int(n.v))]) if int(n.v) else []
+    return any(v.state == "ok" and str(v.v) == "RM_KnockbackSoot" for v in vals)
 
 
 with scene.open(GAME, contract=show, needs={"mods": ["ExplosiveKnockback"], "map": "fresh:quicktest", "calm": "standard"}) as s:
     s.stage(station=STATION,
             terrain={p: dict(rect=(x - HALF, z - HALF, 2 * HALF + 1, 2 * HALF + 1), terrain=t) for p, (_d, t, (x, z)) in PADS.items()},
-            things={p + "_x": dict(thing=d, at=(x, z)) for p, (d, _t, (x, z)) in PADS.items()})
+            things=dict({p + "_x": dict(thing=d, at=(x, z)) for p, (d, _t, (x, z)) in PADS.items()},
+                        soot_wall=dict(thing="Wall", stuff="BlocksGranite", at=WALL_AT)),
+            cast={"soot_beast": dict(kind="Muffalo", at=BEAST_AT)})
     planted = scene.plant() == "show_off"
     rows = {}
     prior = {f: (s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="get", field=f) or {}).get("value") for f in SWITCHES} if planted else {}
@@ -146,5 +173,9 @@ ws = [max((w for _k, w in rows[p]["scars"]), default=0) for p in ("he_soil", "ie
 row(ws[0] < ws[1] < ws[2], "V_SCAR_SIZE", "drawn widths he_soil, ied_soil, anti_soil = %s, strictly rising" % ws)
 ka, kb = rows["he_soil"]["kick"], rows["anti_soil"]["kick"]
 row(ka is not None and kb is not None and kb > ka, "V_SHAKE_SIZE", "kick he_soil %s < anti_soil %s" % (ka, kb))
+paint = rows["he_tile"].get("paint")
+row(paint == "RM_FE_Charred", "V_SOOT_THING", "the wall by he_tile wears %s, want RM_FE_Charred" % paint)
+soot = rows["ied_soil"].get("sooted")
+row(soot is True, "V_SOOT_PAWN", "the muffalo by ied_soil carries RM_KnockbackSoot: %s" % soot)
 print("%s sc_blast_show: %d failing row(s); the pictures in %s go to the art judge" % ("PASS" if fails == 0 else "FAIL", fails, folder))
 print(scene.judge(folder))
