@@ -1,0 +1,5 @@
+- scene_verdicts.summary: with a build given and no claim, the claim is the scene's last line's, also when that line is on another build; take the latest claim on the given build (fresh reader 2026-11-24; matters only when an old-build run is appended after a plan change)
+- scene_verdicts.add_class: a `classed` line may class a run that is not UNRESOLVED; the docstring says classed is for UNRESOLVED runs only
+- scene_verdicts.hunts: an ENVIRONMENT FAULT without `spoiled_by` (read UNRESOLVED by live_kinds) opens no hunt
+- scene_verdicts.add_run: a run line that is a JSON list raises TypeError that main() does not catch
+- scene_verdicts cluster: a tainted copy is dropped and the clean copies fold alone; side-by-side copies likely share one process and its taint

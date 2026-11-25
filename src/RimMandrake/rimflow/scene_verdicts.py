@@ -240,13 +240,15 @@ def summary(spec, lines, scene, claim=None, build=None, relation=None):
     if LK.kind(spec) not in ("A", "B", "C") or LK.tag_flaws(spec):
         out.update(state=FAILED, why=["the scene's tag cannot be used: %s" % "; ".join(LK.tag_flaws(spec))])
         return out
-    pool, receipts, clusters = [], set(), {}
+    pool, clusters = [], {}
+    first = {}      # receipt hash -> the run that first named it, over the whole file: a receipt is one sample
+    for h in hist.values():
+        first.setdefault(h["line"].get("receipt"), h["line"]["run"])
     for h in mine:
         line = h["line"]
         row = {"run": line["run"], "build": line.get("build"), "outcomes": h["outcomes"], "now": h["now"]}
         out["runs"].append(row)
-        seen = line.get("receipt") in receipts     # a receipt is one sample, whatever claim a later line names
-        receipts.add(line.get("receipt"))
+        seen = first.get(line.get("receipt")) != line["run"]    # whatever scene or claim the first line named
         if line.get("claim") != claim:
             row["reads"] = "OTHER CLAIM %s" % line.get("claim")
             continue

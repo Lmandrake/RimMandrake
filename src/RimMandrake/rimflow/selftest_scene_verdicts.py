@@ -130,8 +130,10 @@ def t_a_replay_is_not_a_sample():
     same = v(B, first, run(LK.SUCCESS, receipt=first["receipt"]))
     g = run(LK.SUCCESS)
     moved = v(A, g, run(LK.SUCCESS, claim="plan2", receipt=g["receipt"]), claim="plan2")   # a new claim, an old receipt
+    other = run(LK.SUCCESS, scene="c2", claim="plan9")
+    scene = v(A, other, run(LK.SUCCESS, receipt=other["receipt"]))      # another scene's receipt, filed again under c1
     return (s["verdict"] == "NO VALID RUN" and s["counted"] == 1 and "REPLAY" in s["runs"][1]["reads"]
-            and same["verdict"] == "NO VALID RUN" and moved["state"] == SV.ZERO), (s, same, moved)
+            and same["verdict"] == "NO VALID RUN" and moved["state"] == scene["state"] == SV.ZERO), (s, same, moved, scene)
 
 
 def t_a_cluster_counts_as_one():
