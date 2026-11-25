@@ -1,0 +1,2 @@
+A pass that rewrites its own state file before it rechecks a decision reads its own write in the recheck. account_plan.py tick: the old actuator writes the 'switch in progress' notice before its recheck, and the plan read 'is a drain in flight' from that notice, so a rescue drain lapsed at its bound. Take such a fact once at the start of the pass, and test the whole pass (arm, recheck, act), not only the pure decision.
+item: RIMMANDRAKE_DESIGN_ACCOUNT_PLAN_ONE_FILE_COMMANDED_IN_ONE_LINE
