@@ -1,6 +1,6 @@
 # One worker, many tickets, one context: the two runs compared (2026-11-24)
 
-Item: `RIMMANDRAKE_REPORT_BATCH_WORKER_RUNS_TWO_TRIED_NOW_COMPARE`. Written 2026-11-24, about 9:40 PM PST, for Mandrake.
+Item: `RIMMANDRAKE_REPORT_BATCH_WORKER_RUNS_TWO_TRIED_NOW_COMPARE`. Written 2026-11-24, about 9:25 PM PST, for Mandrake.
 
 His request (2026-11-24, about 9:03 PM PST): "I would like to request a report on our analysis of what happens when we
 ask a worker to "take several tickets and just keep working to solve them all together, then even take them to the live
