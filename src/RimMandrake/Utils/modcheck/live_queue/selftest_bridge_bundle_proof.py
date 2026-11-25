@@ -72,9 +72,12 @@ check("AWARE installed at startup", "AWARE", {"early": False, "genBefore": True,
 check("AWARE early set", "AWARE", {"early": True}, 2)
 
 ep = {"epochBefore": 1, "epochAfter": 2, "oldEpoch": False, "absentMap": False, "currentBoth": True,
+      "oldEpochMsg": "REFUSED: stale expectGameEpoch", "absentMapMsg": "REFUSED: no such map",
       "releaseAfterLoad": "new-game", "releaseAfterTtl": "expired"}
 check("EPOCH all refusals", "EPOCH", ep, 0)
 check("EPOCH old epoch passes", "EPOCH", dict(ep, oldEpoch=True), 1)
+check("EPOCH a client error read as a refusal (2026-11-25)", "EPOCH",
+      dict(ep, oldEpochMsg="jawa/map_info does not declare expectGameEpoch"), 1)
 check("EPOCH reload kept the epoch", "EPOCH", dict(ep, epochAfter=1), 1)
 check("EPOCH block survives the load", "EPOCH", dict(ep, releaseAfterLoad=None), 1)
 fr = {"sessionParses": True, "mergedParses": True, "n0": 3, "n1": 300}

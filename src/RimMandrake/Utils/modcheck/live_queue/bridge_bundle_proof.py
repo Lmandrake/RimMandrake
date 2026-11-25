@@ -200,8 +200,9 @@ def v_EPOCH(d):
     if d.get("epochAfter") == d.get("epochBefore"):
         f.append("the reload kept epoch %s" % d.get("epochBefore"))
     for k, want in (("oldEpoch", False), ("absentMap", False), ("currentBoth", True)):
-        if bool(d.get(k)) != want:
-            f.append("%s answered %s, want %s: %s" % (k, d.get(k), "pass" if want else "refused", d.get(k + "Msg")))
+        msg = str(d.get(k + "Msg") or "")
+        if bool(d.get(k)) != want or (not want and "refus" not in msg.lower()):
+            f.append("%s answered %s, want %s: %s" % (k, d.get(k), "pass" if want else "the companion's refusal", msg))
     if d.get("releaseAfterLoad") != "new-game":
         f.append("block after the load reads lastRelease %s, want new-game" % d.get("releaseAfterLoad"))
     if d.get("releaseAfterTtl") != "expired":

@@ -238,8 +238,13 @@ def ensure_map(s):
     mi = call(s, "jawa/map_info")
     if mi.get("success", True) and mi.get("sizeX") is not None:
         return None
-    r = call(s, "rimworld/start_debug_game_ready", timeoutMs=900000, readiness="mapData", pauseIfNeeded=True)
-    mi = call(s, "jawa/map_info")
-    if mi.get("success", True) and mi.get("sizeX") is not None:
-        return None
+    r = call(s, "rimworld/start_debug_game_ready", timeoutMs=900000, readiness="playable", pauseIfNeeded=True)
+    # mapData can answer while programState is still MapInitializing (measured 2026-11-25): wait for the map itself
+    import time
+    t0 = time.time()
+    while time.time() - t0 < 300:               # budget: danger=a debug game that never finishes; a real one is seconds
+        mi = call(s, "jawa/map_info")
+        if mi.get("success", True) and mi.get("sizeX") is not None:
+            return None
+        time.sleep(2)
     return "no current map, and start_debug_game_ready gave none: %s" % str(r)[:200]

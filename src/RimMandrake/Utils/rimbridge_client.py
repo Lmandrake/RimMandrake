@@ -1066,6 +1066,12 @@ def resolve_endpoint(host=None, port=None, token=None, log_path=None):
 # the bridge
 # --------------------------------------------------------------------------
 
+# The companion reads these from the RAW argument dictionary at the binder, on every tool, and refuses a stale target
+# (JawaBenchCompanionSafety.CheckReserved; the handshake lists them as reservedArgs). No tool declares them, so
+# check_params must not refuse them (selftest_rimbridge_reserved_args.py).
+RESERVED_ARGS = frozenset(("expectGameEpoch", "expectMapId", "expectCurrentMapId"))
+
+
 class RimBridge:
     """One GABP session over one TCP socket.
 
@@ -1389,7 +1395,7 @@ class RimBridge:
             return "UNCHECKED: %s is not in tools/list" % tool
         if declared is None:
             return "UNCHECKED: no readable schema on %s" % tool
-        unknown = sorted(k for k in params if k not in declared)
+        unknown = sorted(k for k in params if k not in declared and k not in RESERVED_ARGS)
         if unknown:
             raise UnknownParameterError(
                 "%s does not declare %s. The bridge would DISCARD %s silently and run "
