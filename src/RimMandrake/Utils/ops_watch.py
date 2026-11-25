@@ -2264,16 +2264,33 @@ def c_timers(now, rules, ctx):
     return out
 
 
-def untriaged_reading(events):
-    """Findings with no outcome yet (findings design section 3). The fold's table is the one judge of an outcome, a spawn
-    --from, a retype, an item of that name or a decide, and of an undo of any of them (findings_fold.no_outcome): this
-    reading adds no test of its own. A bad table costs this reading alone: UNMEASURED, not a guess."""
+# The daily findings judge's own wait (rm-findings-judge.timer, 07:20 PST daily; longest run 637 s, user journal to
+# 2026-11-24): a finding filed just after one judge run has no outcome until the next, by design. Danger it guards: the
+# alarm rang OPS_FINDINGS_DIAGNOSE every day on such waiting findings (alarms_log.jsonl 2026-11-22..24, filed and cleared
+# by the judge each day), each ring raising a helper. One day plus two hours of slack: a finding past it was missed.
+UNTRIAGED_GRACE_S = 26 * HOUR
+
+
+def untriaged_reading(events, now=None):
+    """Findings with no outcome past one judge cycle (findings design section 3). The fold's table is the one judge of an
+    outcome, a spawn --from, a retype, an item of that name or a decide, and of an undo of any of them
+    (findings_fold.no_outcome): this reading adds only the age (UNTRIAGED_GRACE_S from the finding's first event). A
+    finding whose time cannot be read counts. A bad table costs this reading alone: UNMEASURED, not a guess."""
     try:
         import findings_fold
         untr = findings_fold.no_outcome(events)
+        types = findings_fold.load_rules()["finding_types"]
     except Exception as e:  # noqa: BLE001  findings_fold.Unmeasured, or a fold that will not import
         return U("findings fold table: %s: %s" % (type(e).__name__, str(e)))
-    return M(len(untr), "findings with no outcome yet", first=sorted(untr)[:5])
+    now = time.time() if now is None else now
+    born, first = {}, {}
+    for e in events:          # the fold's own keys (finding_key over the same typed events, in ledger order)
+        if e.get("event") == "finding" and e.get("type") in types:
+            born.setdefault(findings_fold.finding_key(e, first), epoch(e.get("ts")))
+    waiting = {n for n in untr if born.get(n) is not None and now - born[n] < UNTRIAGED_GRACE_S}
+    late = untr - waiting
+    return M(len(late), "findings with no outcome past one judge cycle", first=sorted(late)[:5],
+             waiting_for_judge=len(waiting))
 
 
 def c_flow(now, rules, ctx):

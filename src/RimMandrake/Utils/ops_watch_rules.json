@@ -499,7 +499,7 @@
   {"key": "testing.nightly_reds_overdue", "op": ">", "value": 0, "alarm": true, "tag": "NIGHTLY_RED_OVERDUE", "name": "OPS_RED_OVERDUE_CHASE", "marks": ["MEASURED"], "title_field": "said", "note_field": "news", "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
    "why": "BUILD COP: a nightly red still red past selftest.red_fix_deadline_h from the first night of its streak, owned or not (an item makes a red owned, never fixed). Only a fix or a known-red entry ends it."},
   {"key": "flow.untriaged_findings", "op": ">", "value": 0, "alarm": true, "worse": {"factor": 2}, "tag": "UNTRIAGED", "name": "OPS_FINDINGS_DIAGNOSE",
-   "why": "findings filed UNTRIAGED with no outcome yet: no same-named item, spawn --from, ledger retype or findings_fold decide (findings design section 3)"}
+   "why": "findings filed UNTRIAGED with no outcome past one judge cycle (ops_watch.UNTRIAGED_GRACE_S; a younger one waits for the daily findings judge by design): no same-named item, spawn --from, ledger retype or findings_fold decide (findings design section 3)"}
  ],
  "alarm": {
   "_doc": "Filing: spawn as RUNNER from the dispatch clone (its testq/ingest.py: rimflow + publish) under QHOME/ingest.lock, the lock the ingest and the Dispatcher take. RM_OPS_ALARM_CLONE / RM_OPS_ALARM_PARENT override.",

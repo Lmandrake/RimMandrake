@@ -2140,7 +2140,20 @@ for _name, _ev, _ln in [(k, [_F, v], []) for k, v in _OUTCOMES.items()] + [("a d
     _r, _no = _alarm(_ev, _ln + [_undo])
     check("untriaged: an undo of %s restores it, same count both ways" % _name,
           _r["m"] == "MEASURED" and _r["v"] == 1 and _no == ["X_1"], (_r, _no))
+# OPS_FINDINGS_DIAGNOSE_XZLM: a finding filed after today's daily judge waits for tomorrow's by design; the alarm rang
+# on every such finding, every day (alarms_log 2026-11-22..24). Only a finding past one judge cycle rings.
 _dfn = _FF.no_outcome
+_FF.no_outcome = lambda *a: {"X_1"}
+try:
+    _t1 = OW.epoch(_F["ts"])
+    _r = OW.untriaged_reading([_F], now=_t1 + 3 * OW.HOUR)
+    check("untriaged: a finding inside one judge cycle waits, no ring", _r["m"] == "MEASURED" and _r["v"] == 0, _r)
+    _r = OW.untriaged_reading([_F], now=_t1 + OW.UNTRIAGED_GRACE_S + 60)
+    check("untriaged: a finding past one judge cycle rings", _r["m"] == "MEASURED" and _r["v"] == 1, _r)
+    _r = OW.untriaged_reading([dict(_F, ts="garbled")], now=_t1 + 60)
+    check("untriaged: a finding with no readable time counts", _r["v"] == 1, _r)
+finally:
+    _FF.no_outcome = _dfn
 _FF.no_outcome = lambda *a: 1 / 0
 try:
     check("untriaged: a bad table is UNMEASURED, never a count", OW.untriaged_reading([_F])["m"] == "UNMEASURED")
