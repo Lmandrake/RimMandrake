@@ -120,7 +120,13 @@ check("WILDBLOCK still skipping after the release", "WILDBLOCK", dict(wb, skippe
 check("WILDBLOCK block not read back", "WILDBLOCK", dict(wb, blocked=False), 1)
 check("WILDBLOCK the clock moved too little", "WILDBLOCK", dict(wb, ticks=400, skipped=400), 2)
 pt = {"gssStarted": True, "fwRefusal": "A GSS playtest run is active: g1. Collect or abort it", "fwRefused": True,
-      "fwStarted": True, "gssRefusal": "A FlowWorks playtest run is active: p1.", "gssRefused": True}
+      "fwStarted": True, "fwRunningAtCall": True, "gssRefusal": "A FlowWorks playtest run is active: p1.", "gssRefused": True}
+# measured 2026-11-25 (lane job J20261125T214629Z-889e6f): the FlowWorks 'fluids' run completed in 4 frames, so the
+# GSS start came after it and ran: the scene was wrong, not the guard
+check("PLAYTEST the FlowWorks run ended before the cross-call", "PLAYTEST",
+      dict(pt, fwRunningAtCall=False, gssRefused=False, gssRefusal="{\"success\": true, \"runId\": \"gsspt_1\"}"), 2)
+check("PLAYTEST GSS started beside a running FlowWorks run", "PLAYTEST",
+      dict(pt, gssRefused=False, gssRefusal="{\"success\": true}"), 1)
 check("PLAYTEST each runner refuses while the other runs", "PLAYTEST", pt, 0)
 check("PLAYTEST FlowWorks started beside a GSS run", "PLAYTEST", dict(pt, fwRefused=False, fwRefusal=""), 1)
 # the real shape of that fault: the stray FlowWorks run still holds the slot, so the second playtest_start is refused

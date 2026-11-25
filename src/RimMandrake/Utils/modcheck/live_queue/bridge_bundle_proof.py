@@ -316,6 +316,9 @@ def v_PLAYTEST(d):
     if not d.get("gssStarted") or not d.get("fwStarted"):
         return 2, "a first run did not start (gss %s, flowworks %s): %s" % (d.get("gssStarted"), d.get("fwStarted"),
                                                                            d.get("startMsg"))
+    if d.get("fwRunningAtCall") is not True:
+        return 2, "the FlowWorks run was not running at the cross-call (%s), so the GSS start proves nothing" % (
+            d.get("fwStateAtCall"))
     f = []
     if not (d.get("fwRefused") and "GSS playtest run is active" in str(d.get("fwRefusal"))):
         f.append("playtest_start beside a GSS run: %s" % (d.get("fwRefusal") or "it started"))
@@ -818,10 +821,12 @@ def g_KEEPER(L):
                       if not os.path.exists(save_guard.store_path(snap["store"], k["sha256"])))
     slot = "none" if "no save was loaded" in str(L.call("jawa/companion_handshake").get("profileWhy")) else None
     target = "bundle_keeper_%d" % int(time.time())
-    sv = saved_base.save_base(L.s, snap["saves_dir"], name=target, current_slot=slot)
     path = os.path.join(snap["saves_dir"], target + ".rws")
-    if os.path.exists(path):
-        os.remove(path)                       # the proof's own save, never a keeper
+    try:
+        sv = saved_base.save_base(L.s, snap["saves_dir"], name=target, current_slot=slot)
+    finally:
+        if os.path.exists(path):
+            os.remove(path)                   # the proof's own save, never a keeper
     return {"keepers": len(keep), "unstored": unstored, "save": sv, "target": target, "slot": slot,
             "savesDir": snap["saves_dir"]}
 
@@ -895,14 +900,21 @@ def g_PLAYTEST(L):
         _await_run(L, "jawa/playtest_status", stray["runId"])
         L.call("jawa/playtest_collect", runId=stray["runId"])
         return out
-    p = _call_or_err(L, "jawa/playtest_start", recipe="fluids")
+    # pilot = fluids,dig,pit: 'fluids' alone completed in 4 frames (0.165 s) on 2026-11-25, before the cross-call
+    p = _call_or_err(L, "jawa/playtest_start", recipe="pilot")
     out["fwStarted"] = _ok(p) and bool(p.get("runId"))
     if not out["fwStarted"]:
         out["startMsg"] = _refusal(p)[1]
         return out
-    out["gssRefused"], out["gssRefusal"] = _refusal(_call_or_err(L, "jawa/gss_playtest_start", recipe="quick"))
+    g2 = _call_or_err(L, "jawa/gss_playtest_start", recipe="quick")
+    out["fwStateAtCall"] = L.call("jawa/playtest_status", runId=p["runId"]).get("state")
+    out["fwRunningAtCall"] = out["fwStateAtCall"] == "running"     # read after: still running then, so running at the call
+    out["gssRefused"], out["gssRefusal"] = _refusal(g2)
     _await_run(L, "jawa/playtest_status", p["runId"])
     L.call("jawa/playtest_collect", runId=p["runId"])
+    if not out["gssRefused"] and _ok(g2) and g2.get("runId"):       # a GSS run started: leave no run behind
+        _await_run(L, "jawa/gss_playtest_status", g2["runId"])
+        L.call("jawa/gss_playtest_collect", runId=g2["runId"])
     return out
 
 
@@ -979,8 +991,12 @@ def g_PEN2(L):
     if not keep:
         return {"why": "no RM_pyre_review_*.rws fixture in %s" % fx}
     name = "bundle_pen2_review"
-    shutil.copyfile(keep[-1], os.path.join(SAVES, name + ".rws"))
-    r = L.call("rimworld/load_game_ready", saveName=name, readiness="playable", timeoutMs=900000, pauseIfNeeded=True)
+    staged = os.path.join(SAVES, name + ".rws")
+    shutil.copyfile(keep[-1], staged)
+    try:
+        r = L.call("rimworld/load_game_ready", saveName=name, readiness="playable", timeoutMs=900000, pauseIfNeeded=True)
+    finally:
+        os.remove(staged)                     # the loaded game holds it now; the proof's own copy, never a keeper
     if not _ok(r):
         return {"why": "the review save did not load: %s" % json.dumps(r)[:200]}
     sys.path.insert(0, os.path.join(HERE, "..", "..", "..", "Pyrelands"))
