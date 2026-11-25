@@ -675,8 +675,9 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   `src/RimMandrake/Utils/pipeline_tests.json`.
 - Codex and GPT may review pipeline code. Each such review uses `src/RimMandrake/rimflow/roles/code_review.md` or a
   prompt that carries the same significance rule, stop level and polish route. A finding that is not significant is
-  one line on `polish.md`. Such a finding is never a ticket, and nobody works it. Whether Codex obeys this rule is
-  UNMEASURED: read the first three reviews, and count the findings and the significant ones.
+  one line on `polish.md`. Such a finding is never a ticket, and nobody works it. Codex does not apply this rule by
+  itself: it calls rare inputs Problems. So the run that reads a Codex review judges each Problem by the rule itself.
+  The measurement: `design/RimMandrake/standing_rulings.md` §Codex and GPT reviews of pipeline machinery.
 - Before you spend a review on a file, check that the file is still reachable.
 - Full text: `design/RimMandrake/standing_rulings.md` §Code is clean when its promises are tested, and §A boundary
   page before pipeline code.

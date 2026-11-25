@@ -2778,10 +2778,13 @@ repair drew new claims [measured, `design/specs/2026-11-18-review-growth-cycle/0
     - the same stop level (one full read, one fresh read of a fix, never a third);
     - the same polish route (one line on `polish.md`, no ticket).
   - A finding that is not significant is one line on `polish.md`, never a ticket. Nobody works the finding.
-  - A Codex or GPT reviewer that cannot write the clone returns its Problems. The run that launched it fixes each
-    Problem, test first. Then one fresh reader reads the fixed file once.
-  - UNMEASURED: that Codex obeys the significance rule on real code. To measure it, read the first three reviews:
-    count the findings, and count the significant ones.
+  - A Codex or GPT reviewer that cannot write the clone returns its Problems. The run that launched it
+    judges each returned Problem by the significance rule. It fixes each significant one, test first, and writes each
+    other one as a line on `polish.md`. Then one fresh reader reads the fixed file once.
+  - Codex does not apply the significance rule by itself (measured). Its traces are mostly true, but it calls rare
+    inputs Problems. The first three reviews after the restart: 13 findings, 12 called Problems, 4 kept by the reader,
+    2 landed (`design/specs/2026-11-18-review-growth-cycle/06-codex-first-three-reviews-20261124.md`). Six later
+    reviews: 22 findings, 18 called Problems, 15 kept (`05-codex-reviews-no-page-20261125.md`, same folder).
   - The measured readings are sorts of 35 old claims, not a review of code. Each sort caught 2 of 3 agreed real
     claims. The agreed polish claims called a Problem were 1 of 9 (2026-11-19), 1 of 9 (2026-11-24 08:51Z) and 2 of 9
     (2026-11-24 09:07Z).
