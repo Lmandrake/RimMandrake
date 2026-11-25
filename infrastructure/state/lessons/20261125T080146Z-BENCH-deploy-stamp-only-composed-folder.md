@@ -1,0 +1,2 @@
+A deploy stamp (.<Mod>.walk-build.json beside a folder in the game's Mods) is refreshed only by deploy_custom_mods --compose --apply. Never write one beside a folder that a plain deploy writes (Mods/FlowWorks): the next plain deploy leaves it stale and the Dispatch forecast trusts it. To time the stamp read, write it, read it, and delete it at once (done 2026-11-24 for RIMMANDRAKE_CUT_TICK_DRVFS_WALK_OF_DEPLOYED_BIOMES_STATS_TEN_THOUSAND).
+item: RIMMANDRAKE_FEED_CODEX_THIRD_LANE_NINETY_SIX_LEFT_IDLE
