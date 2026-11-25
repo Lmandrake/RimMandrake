@@ -1,0 +1,3 @@
+A full 'refusal_contract.py calibrate' rewrites the last_run times of every row of infrastructure/state/judge_calibration.json, so a commit that carries it conflicts with any other run that calibrated meanwhile (two refused landings on 2026-11-25). To land one row, take origin's file and change only that row (refusal_contract.run_check on that row), then publish at once. Also: an LLM judge's verdict on one case can flip between runs of the same brief (set_down_judge case 19: REFUSED, REFUSED, PASS), so one calibration run near the bind line is not a stable reading.
+item: RIMMANDRAKE_TIGHTEN_SET_DOWN_CLASSES_ANY_TWELVE_LETTERS_PASS
+home: the refusal_contract boundary page
