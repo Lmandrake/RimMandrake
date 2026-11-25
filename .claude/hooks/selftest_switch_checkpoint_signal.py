@@ -92,6 +92,46 @@ def main():
         ok(rc == 0 and out == "", "the same window, the same notice: told once")
         rc, out = run(win, session="hestia-2")
         ok("SWITCH PENDING" in out, "another window session is told on its own")
+        # 2026-11-25 2:00 PM PST (RIMMANDRAKE_SILENCE_SWITCH_PENDING_SIGNAL_WHEN_LEVEL_ONLY_UNREAD): one second after
+        # steven's reset its level was not read yet; the pass decided soft ("no new start until it is read"), no switch
+        # was pending, and the hook told the Conductor SWITCH PENDING and each run CHECKPOINT NOW.
+        def raw(n):
+            with open(os.path.join(plan, "notice.json"), "w") as f:
+                json.dump(n, f)
+
+        def both(tag):
+            o1 = run(dict(env, RM_DETACHED_UNIT="rm-detached-bench-%s-9" % tag))[1]
+            o2 = run(win, session="window-%s" % tag)[1]
+            return o1, o2
+        raw({"account": "steven", "account_end": False, "at": "2026-11-25T14:00:00-08:00", "drain": False, "line": 52,
+             "message": "switch pending: publish and finish; no new helpers", "pct_left": None,
+             "since": "2026-11-25T14:00:00-08:00", "state": "soft", "warning": None,
+             "why": "steven reads RESET PASSED and its last level (None) cannot prove that it is above its warning "
+                    "line: no new start until it is read"})
+        o1, o2 = both("reset")
+        ok(o1 == "" and o2 == "", "the notice of 2:00 PM (soft, drain false, level null, older writer): no line to a "
+                                  "detached run, none to a window (read %r / %r)" % (o1[:60], o2[:60]))
+        for tag, n in (("stale", {"drain": False, "pct_left": 54.0}), ("follower", {"drain": True, "pct_left": None})):
+            raw({"account": "steven", "account_end": False, "at": "2026-11-25T14:10:00-08:00", "line": 52,
+                 "since": "2026-11-25T14:10:%02d-08:00" % len(tag), "state": "soft", "switch_pending": False,
+                 "message": "the level of steven is not read yet: no new run starts until it is read; live runs go on",
+                 **n})
+            o1, o2 = both(tag)
+            ok(o1 == "" and o2 == "", "a level-not-read notice (%s, switch_pending false): no line to a run or a window "
+                                      "(read %r / %r)" % (tag, o1[:60], o2[:60]))
+        for tag, n in (("drain", {"switch_pending": True}), ("drain-older-writer", {})):
+            raw({"account": "steven", "account_end": False, "at": "2026-11-25T20:00:00-08:00", "drain": True,
+                 "line": 52, "pct_left": 52.0, "since": "2026-11-25T20:00:%02d-08:00" % len(tag), "state": "soft",
+                 "message": "draining: no new start; live runs finish on this account, then it switches", **n})
+            o1, o2 = both(tag)
+            ok("CHECKPOINT NOW" in o1 and "SWITCH PENDING" in o2,
+               "a real pending switch (drain true, %s): the run and the window are each told" % tag)
+        raw({"account": "steven", "drain": False, "pct_left": 60.0, "line": 52, "state": "soft",
+             "since": "2026-11-25T21:00:00-08:00", "at": "2026-11-25T21:00:00-08:00", "switch_pending": True,
+             "message": "switch pending: publish and finish; no new helpers"})
+        o1, o2 = both("prepoll")
+        ok("CHECKPOINT NOW" in o1 and "SWITCH PENDING" in o2,
+           "a switch due before its poll (soft, drain false, switch_pending true): both are told")
         for st in ("none", "stop"):
             notice(st, "2026-11-18T16:00:00-08:00")
             rc, out = run(env)

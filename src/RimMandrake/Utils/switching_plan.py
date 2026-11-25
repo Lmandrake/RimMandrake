@@ -687,7 +687,8 @@ def _decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dic
                                                     "or into the soft zone"}
         return {**base, "do": "start", "why": f"{live} has headroom again after the hard stop"}
     if live in stale:
-        return {**base, "do": "soft", "why": "reading not fresh near a line after a poll: " + "; ".join(stale[live])}
+        return {**base, "do": "soft", "unread": True,
+                "why": "reading not fresh near a line after a poll: " + "; ".join(stale[live])}
     if p <= line[live] + plan["soft_margin_pct"]:
         return {**base, "do": "soft", "why": f"{live} at {p}% is within {plan['soft_margin_pct']} of its "
                                              f"{line[live]}% line: switch pending, publish and finish{respected}"}
@@ -995,7 +996,11 @@ def notice_of(d: dict, now: float, prev: dict) -> dict:
         prev.get("since") if prev.get("state") == state and prev.get("since")
         and bool(prev.get("drain")) == bool(d.get("drain")) else iso(now))     # a drain's own start bounds a pull
     warned = bool(d.get("warning")) and state in ("soft", "none") and not d.get("drain")
+    # a soft decision only because the live level is not read (account_plan.decide `unread`): no switch is pending
+    unread = state == "soft" and bool(d.get("unread")) and not d.get("account_end")
     msg = {"soft": ("the account is at its line: save your work now and publish; no new start" if d.get("account_end")
+                    else "the level of %s is not read yet: no new run starts until it is read; live runs go on" % (
+                        d.get("account") or "the live account") if unread
                     else "draining: no new start; live runs finish on this account, then it switches" if d.get("drain")
                     else "the account nears its line: save a note, publish what is done, keep working; new work "
                          "still starts" if warned else "switch pending: publish and finish; no new helpers"),
@@ -1006,6 +1011,8 @@ def notice_of(d: dict, now: float, prev: dict) -> dict:
             "line": d.get("line"), "pct_left": d.get("pct_left"), "message": msg,
             "why": d.get("why"), "drain": bool(d.get("drain")) and state == "soft",
             "account_end": bool(d.get("account_end")) and state == "soft",
+            # what the checkpoint hook reads (switch_checkpoint_signal.py): a soft notice of an unread level is none
+            "switch_pending": state == "soft" and not unread,
             # the warning's text, which a run that starts now gets in its start package
             "warning": d.get("warning_text") if warned else None,
             **({k: d.get(k) or prev.get(k) for k in ("reset_at", "reset_account")} if state == "stop" else {})}

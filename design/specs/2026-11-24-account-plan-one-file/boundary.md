@@ -104,6 +104,12 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
 - **a_level_not_confirmed_near_the_line_refuses_starts.** Within `fresh.near_pct` of its warning line, a level that is
   still older than `fresh.max_age_min` after a poll reads `soft`: nobody can say that the account is above its line.
   Far from the line an old reading refuses nothing.
+- **a_level_not_read_is_no_pending_switch.** A `soft` decision only because the live level is not read (its reset has
+  passed and no reading came since, or a stale reading near its warning line after a poll) is no pending switch. Its
+  notice reads `switch_pending` false and says that no new run starts until the level is read and that live runs go
+  on; on another machine it still refuses a new run, with the same words. A notice of a real drain, or of a switch due
+  before its poll, reads `switch_pending` true. The checkpoint hook (`.claude/hooks/switch_checkpoint_signal.py`) tells
+  a run or a window that a switch is pending only on a notice that reads it.
 - **an_account_outside_the_plan_is_left_alone.** When the live account is no account of the plan, the decision is
   `normal`: no switch, no stop, no refusal. The reason names the repair. An account of the plan that no step uses now
   (Steve's account past its window) is left when its live runs end.

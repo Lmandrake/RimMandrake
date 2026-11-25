@@ -6,7 +6,8 @@ A switch (`claude-account use`) or the plan's stop SIGTERMs every Claude process
 live detached runs to end before it switches (owner: "And yes for live runs finish past, absolutely."), and stops them
 only at the account's hard line, after a failed switch, or at the end of pull_drain_max_s
 (design/specs/2026-11-20-account-drain/boundary.md). When the switching plan's notice (switching_plan.py write_notice ->
-notice.json) reads `soft`, the run's next tool call gets one line of context: the run finishes on this account; publish
+notice.json) reads `soft` and a switch is pending (`switch_pending`; a soft notice of a level that is only not read
+says none), the run's next tool call gets one line of context: the run finishes on this account; publish
 what is green as you go, so a hard-line stop loses nothing. Once per notice (its `since`) per run. The signal never
 states spend, a cap or what is left of one.
 
@@ -40,6 +41,18 @@ def notice_path():
     return os.path.join(d, "notice.json")
 
 
+def switch_pending(n):
+    """A switch is pending: a soft notice that is not only a level not read (2026-11-25 2:00 PM PST: one second after a
+    reset the level was unread, the notice read soft, and every run and window was told a switch was pending). The
+    notice's `switch_pending` decides (switching_plan.notice_of); a notice of an older writer, which has no such field,
+    is pending unless it is the shape of an unread level: no drain and no level."""
+    if n.get("state") != "soft":
+        return False
+    if "switch_pending" in n:
+        return n.get("switch_pending") is True
+    return bool(n.get("drain")) or n.get("pct_left") is not None
+
+
 def marker_path(unit, since):
     """One file per (run, notice): created exclusively, so two tool calls at once cannot both deliver."""
     d = os.environ.get("RM_SWITCH_SIGNAL_DIR") or os.path.join(tempfile.gettempdir(), "rm_switch_signal")
@@ -54,7 +67,7 @@ def signal(unit, text=SIGNAL):
             n = json.load(fh)
     except (OSError, ValueError):
         return None
-    if not isinstance(n, dict) or n.get("state") != "soft":
+    if not isinstance(n, dict) or not switch_pending(n):
         return None
     since = str(n.get("since") or n.get("at") or "")
     m = marker_path(unit, since)

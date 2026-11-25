@@ -955,9 +955,9 @@ def decide(plan, f, polled=True) -> dict:
         if need and not polled:
             return {**base, "do": "poll", "poll": True, "why": "; ".join(need)}
         if lr["last_left"] is None or warn is None or lr["last_left"] <= warn + fr["near_pct"]:
-            return {**base, "do": "soft", "why": "%s reads %s and its last level (%s) cannot prove that it is above its "
-                                                 "warning line: no new start until it is read" % (
-                                                     live, lr["state"], lr["last_left"])}
+            return {**base, "do": "soft", "unread": True,   # no switch is pending: the level is only unread
+                    "why": "%s reads %s and its last level (%s) cannot prove that it is above its "
+                           "warning line: no new start until it is read" % (live, lr["state"], lr["last_left"])}
         return {**base, "do": "normal", "why": "%s reads %s; its last level was %s%%, above its %s%% warning line: "
                                                "it stays" % (live, lr["state"], g(lr["last_left"]), g(warn))}
 
@@ -1034,9 +1034,10 @@ def decide(plan, f, polled=True) -> dict:
     if need and not polled:
         return {**base, "do": "poll", "poll": True, "why": "; ".join(need)}
     if near_old and lr["age_min"] is not None and lr["age_min"] > fr["max_age_min"]:
-        return {**base, "do": "soft", "why": "%s at %s%% on a %s-min-old reading, within %s points of its %s%% warning "
-                                             "line: the level cannot be confirmed after a poll, so no new start until "
-                                             "it is read" % (live, g(pl), g(lr["age_min"]), g(fr["near_pct"]), g(warn))}
+        return {**base, "do": "soft", "unread": True,       # no switch is pending: the level is only unconfirmed
+                "why": "%s at %s%% on a %s-min-old reading, within %s points of its %s%% warning "
+                       "line: the level cannot be confirmed after a poll, so no new start until "
+                       "it is read" % (live, g(pl), g(lr["age_min"]), g(fr["near_pct"]), g(warn))}
     if stopped_here:
         if pl <= warn + N["entry_margin_pct"]:
             return {**base, "do": "stopped", "why": "stopped on %s: no start inside its warning zone" % live}
@@ -1242,6 +1243,9 @@ def notice_refusal(n, now, carried=False):
         return ("the account %s is out (notice since %s): the fleet is stopped and nothing starts until an account "
                 "resets (./acct status shows it)" % (acc, since))
     if n.get("state") == "soft" and n.get("drain") and not (carried and not n.get("account_end")):
+        if n.get("switch_pending") is False:        # a level that is not read: no switch is pending
+            return ("the level of the account %s is not read (notice since %s): no new run starts until it is read; "
+                    "live runs go on. Why: %s" % (acc, since, " ".join(str(n.get("why") or "").split())))
         return ("the account %s is draining (notice since %s): live runs finish on it and no new run starts until the "
                 "switch (./acct status shows it). Why: %s" % (acc, since, " ".join(str(n.get("why") or "").split())))
     return None

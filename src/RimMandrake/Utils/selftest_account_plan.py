@@ -396,6 +396,41 @@ def t_a_level_not_confirmed_near_the_line_refuses_starts():
     check(n + ": far from the line an old reading refuses nothing", d["do"] == "normal", d)
 
 
+def t_a_level_not_read_is_no_pending_switch():
+    """2026-11-25 2:00 PM PST: one second after steven's reset its level was not read; the pass decided soft and its
+    notice said 'switch pending', and the hook told every run and window so. No switch was pending."""
+    n = "a_level_not_read_is_no_pending_switch"
+    reset = {"steven": R(60, -1 / 3600), "system": R(80, 110), "lukas": R(18, 120)}   # its reset 1 s ago, not read since
+    near = {**FAR, "lukas": R(4, 120, age=30.0)}
+    cases = (("reset passed", AP.decide(OPEN, F("steven", reset, runs=RUN), polled=True), "steven"),
+             ("stale near the line", AP.decide(BASE, F("lukas", near, runs=RUN), polled=True), "lukas"))
+    for tag, d, acc in cases:
+        nt = SP.notice_of(d, NOW, {})
+        check(n + ": %s: the decision is soft, as before (no new start until the level is read)" % tag,
+              d["do"] == "soft" and d.get("unread"), d)
+        check(n + ": %s: its notice does not say that a switch is pending" % tag,
+              nt["switch_pending"] is False and not nt["drain"] and "switch" not in nt["message"].lower()
+              and "drain" not in nt["message"].lower(), nt)
+        check(n + ": %s: its notice says what is true: no new run until the level is read; live runs go on" % tag,
+              "not read" in nt["message"] and acc in nt["message"] and "live runs" in nt["message"], nt["message"])
+    f = F("lukas", {"steven": R(None, 20, src="UNMEASURED"), "system": R(80, 110), "lukas": R(18, 120)})
+    nt = AP.machine_notice(NEW(), f, "steven", NOW, "box2")
+    why = AP.notice_refusal(nt, NOW) or ""
+    check(n + ": another machine on an account whose level is unread: no new run there, and no switch said",
+          nt["drain"] and nt["switch_pending"] is False and "not read" in why and "switch" not in why
+          and "switch" not in nt["message"].lower(), (nt, why))
+    real = SP.notice_of({"do": "soft", "drain": True, "account": "steven", "pct_left": 52, "line": 52,
+                         "why": "the switch to system waits while live runs finish"}, NOW, {})
+    check(n + ": a real drain before a switch still says that a switch is pending",
+          real["switch_pending"] is True and real["drain"] and "switches" in real["message"], real)
+    pre = SP.notice_of({"do": "soft", "to": "system", "account": "steven", "pct_left": 60, "line": 52,
+                        "why": "planted switch before its poll"}, NOW, {})
+    check(n + ": a switch due before its poll (soft, no drain) still says that a switch is pending",
+          pre["switch_pending"] is True and "switch pending" in pre["message"], pre)
+    check(n + ": a notice that is not soft has no switch pending",
+          SP.notice_of({"do": "normal", "account": "steven"}, NOW, {})["switch_pending"] is False)
+
+
 def t_a_rescue_drain_in_flight_goes_on():
     n = "a_rescue_drain_in_flight_goes_on"
     f = F("lukas", {"steven": R(14, 20), "system": R(3, 100), "lukas": R(95, 150)}, runs=RUN)
@@ -1894,7 +1929,8 @@ def main():
               t_a_hand_switch_is_respected, t_the_reason_is_one_checkable_line, t_the_forecast_is_the_pick,
               t_no_marker_decides, t_an_account_left_at_its_line_is_no_target, t_a_refilled_account_is_a_target_at_once,
               t_unknown_never_gives_permission, t_the_last_account_waits_at_its_wait_floor,
-              t_a_level_not_confirmed_near_the_line_refuses_starts, t_a_rescue_drain_in_flight_goes_on,
+              t_a_level_not_confirmed_near_the_line_refuses_starts, t_a_level_not_read_is_no_pending_switch,
+              t_a_rescue_drain_in_flight_goes_on,
               t_an_account_outside_the_plan_is_left_alone, t_a_step_that_is_not_alive_says_so,
               t_one_file_binds_at_the_next_read, t_a_bad_write_keeps_the_old_plan, t_two_writers_lose_no_change,
               t_every_write_has_an_undo, t_a_write_is_never_refused_for_a_missing_flag,
