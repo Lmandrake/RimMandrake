@@ -69,7 +69,7 @@
       <harvestedThingDef>Steel</harvestedThingDef>
     </plant>
     <modExtensions>
-      <li Class="VEF.Plants.DualCropExtension">
+      <li Class="VEF.Plants.DualCropExtension" MayRequire="oskarpotocki.vanillafactionsexpanded.core">
         <randomOutput>true</randomOutput>
         <outPutAmount>1</outPutAmount>
         <randomSecondaryOutput>

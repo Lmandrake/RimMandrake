@@ -24,6 +24,27 @@ def check(name, cond, detail=""):
 
 bad = V.static_checks()
 check("shipped tree: static_checks green", not bad, "; ".join(bad))
+
+# CrackedLands is composed into mandrake.rm.biomes, which does not require Vanilla Expanded Framework. A VEF class with no
+# MayRequire is an unknown type on a list without VEF: the load logs a config error and drops the whole def (the
+# Pyrelands small-list load of 2026-11-24 lost RM_GargantuanLithops this way).
+import glob as _glob  # noqa: E402
+import xml.etree.ElementTree as _ET  # noqa: E402
+VEF_ID = "oskarpotocki.vanillafactionsexpanded.core"
+
+
+def vef_unguarded(root_el):
+    return [el.get("Class") for el in root_el.iter() if el.get("Class", "").startswith("VEF.")
+            and VEF_ID not in (el.get("MayRequire") or "").lower()]
+
+
+naked = []
+for _f in sorted(_glob.glob(os.path.join(HERE, "Defs", "**", "*.xml"), recursive=True)):
+    naked += ["%s: %s" % (os.path.basename(_f), c) for c in vef_unguarded(_ET.parse(_f).getroot())]
+check("every VEF class in CrackedLands' defs carries MayRequire " + VEF_ID, not naked, "; ".join(naked))
+check("sanity: the guard check sees an unguarded VEF class",
+      vef_unguarded(_ET.fromstring('<Defs><ThingDef><modExtensions><li Class="VEF.Plants.DualCropExtension"/></modExtensions>'
+                                   '</ThingDef></Defs>')) == ["VEF.Plants.DualCropExtension"])
 xml = open(os.path.join(HERE, "Defs", "ThingDefs_Races", "RM_IrqitTarruq.xml"), encoding="utf-8").read()
 check("shipped tarruq call green", V._tarruq_call_findings(xml) == [])
 check("sanity: shipped XML carries the call", "<soundCall>Pawn_Muffalo_Call</soundCall>" in xml)
