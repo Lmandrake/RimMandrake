@@ -204,7 +204,11 @@ def throw(s, after_tick, pawn_id):
     recs, cause = journal(s)
     if recs is None:
         return dict(cause=cause)
-    mine = [r for r in recs if str(r.get("thing", "")).endswith(str(pawn_id)) and int(r.get("tick", -1)) >= after_tick]
+    try:
+        pid = str(int(float(pawn_id)))   # an id reads back as a float (88274.0)
+    except (TypeError, ValueError):
+        return dict(cause="the colonist's id could not be read: %r" % (pawn_id,))
+    mine = [r for r in recs if str(r.get("thing", "")).endswith(pid) and int(r.get("tick", -1)) >= after_tick]
     launch = [r for r in mine if r.get("type") == "launch"]
     land = [r for r in mine if r.get("type") == "land"]
     if len(launch) != 1:
@@ -216,22 +220,30 @@ planted = scene.plant()
 def sweep(s, rows, throws, before):
     """The pads with each switch off in turn and all off, then the colonist thrown show-on and show-off. Every switch is
     put back on every exit path."""
+    kick0 = read_field(s, "lastShakeTick", of=SHOW)
     try:
+        setting(s, "lastShakeTick", "-1", of=SHOW)   # no kick yet in this run: a stale tick from the last run reads -1
         for pad in ORDER:
             centre, off = PADS[pad]
             for f in SWITCHES:
                 if planted != "switches_ignored":
                     setting(s, f, "False" if f in off else "True")
+            # the show shakes the camera only for a blast in view: put the view on the pad first (the all_on pad, 86
+            # cells east, lay out of view on the first run and read no kick)
+            s.raw("rimworld/jump_camera_to_cell", x=STATION[0] + centre[0], z=STATION[1] + centre[1])
             t0 = shake_tick(s)
             hp = s.read(pad + "_x", "hitPointsInt")
+            blast_tick = hp.tick
             s.act.damage(pad + "_x", (hp.v if hp.state == "ok" else 100) + 60, kind="Crush", name=pad)
             s.shot(rect(centre), name=pad + "_blast")
             s.run(until=SETTLE, limit=SETTLE + 120)
             s.shot(rect(centre), name=pad + "_settled")
             t1 = shake_tick(s)
             ours, vanilla = scars_on(s, centre)
+            # the kick's tick is a static: it outlives the load of the stage save, whose ticks repeat from run to run,
+            # so "it moved" is read against this blast's own tick, never against the value before
             rows[pad] = dict(off=off, ours=ours, vanilla=vanilla, t0=t0, t1=t1,
-                             shook=None if t0 is None or t1 is None else t1 > t0)
+                             shook=None if t1 is None or blast_tick is None else t1 >= blast_tick)
 
         # the throws: show on (every switch on), then show off (the four off), the same colonist on a like pad
         pid = s.read("thrown", "thingIDNumber")
@@ -260,6 +272,7 @@ def sweep(s, rows, throws, before):
         for f in SWITCHES:
             setting(s, f, before.get(f) or "True")       # unread: the default, on
         setting(s, "blastPowerFromDamage", before.get("blastPowerFromDamage") or "True")
+        setting(s, "lastShakeTick", kick0 if kick0 is not None else "-1", of=SHOW)
 
 
 with scene.open(GAME, contract=show, needs={"mods": ["ExplosiveKnockback"], "map": STAGE, "calm": "standard"}) as s:
