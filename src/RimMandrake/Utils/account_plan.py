@@ -1339,8 +1339,8 @@ def machine_notice(plan, f, account, now, name, prev=None, why_unread=None) -> d
         return {"state": "soft", "since": prev.get("since") if prev.get("could_not_look") and prev.get("since")
                 else iso(now), "at": iso(now), "account": None, "line": None, "pct_left": None, "message": msg,
                 "why": msg, "drain": True, "account_end": False, "warning": None, "could_not_look": True, **tag}
-    d = decide(plan, machine_facts(f, account))
     fm = machine_facts(f, account)
+    d = decide(plan, fm)
     if d["do"] in REFUSES:
         under = is_num(d.get("pct_left")) and is_num(d.get("line")) and d["pct_left"] <= d["line"]
         dm = {**d, "do": "soft", "drain": True, "account_end": under}
@@ -1364,10 +1364,13 @@ SWITCH_RETRY_S = 30 * 60    # budget: danger=a switch asked on every pass while 
 def machine_switch(plan, f, now, name, m, account, n, prev, runs_of, switch):
     """RIMMANDRAKE_AUTOMATE_STEVEDESKTOP_ACCOUNT_SWITCH_PLAN_SAYS_NEVER: a machine whose notice says its account is at
     its end is switched to the plan's next account when it lists no live helper run (the switch closes every Claude
-    window there). -> the record of what was done, or None when its account is not at its end. Pure but for the seams."""
-    if not n.get("account_end"):
+    window there). Its account is at its end at its line (the notice's `account_end`), or above it when no step uses
+    the account now: the decision then leaves it when its runs end, and the notice says so. -> the record of what was
+    done, or None when its account is not at its end. Pure but for the seams."""
+    d = decide(plan, machine_facts(f, account)) if account else {}
+    finished = d.get("under") and (d.get("do") == "switch" or d.get("drain_of") == "switch")
+    if not (n.get("account_end") or finished):
         return None
-    d = decide(plan, machine_facts(f, account))
     can = d.get("can_now")
     nxt = next((a for a in (d.get("to"), (d.get("pending") or {}).get("to"), d.get("next"))
                 if a and a != account and (can is None or a in can)), None) or next(
@@ -1400,14 +1403,14 @@ def push_machines(plan, f, now, account_of=None, send=None, runs_of=None, switch
         try:
             account, why = (account_of or MS.machine_account)(m["ssh"])
             keep = plan_dir() / ("machine.%s.json" % name)
-            n = machine_notice(plan, f, account, now, name, read_json(keep, {}), why)
             prev = read_json(keep, {})
+            prev = prev if isinstance(prev, dict) else {}
+            n = machine_notice(plan, f, account, now, name, prev, why)
             ok, err = (send or MS.send_notice)(m["ssh"], n)
-            sw = machine_switch(plan, f, now, name, m, account, n, prev if isinstance(prev, dict) else {}, runs_of,
-                                switch) if ok else None
+            sw = machine_switch(plan, f, now, name, m, account, n, prev, runs_of, switch) if ok else None
             if ok:
                 write_atomic(keep, dict(n, switch=sw) if sw and sw.get("at") else
-                             dict(n, switch=prev.get("switch")) if isinstance(prev, dict) and prev.get("switch") else n)
+                             dict(n, switch=prev.get("switch")) if prev.get("switch") else n)
             out[name] = {"ok": bool(ok), "account": account, "state": n["state"], "drain": n["drain"],
                          "line": ("sent: " + (n["message"] or "nothing is refused")) if ok else
                          "COULD NOT LOOK: the notice did not reach %s (%s)" % (name, err)}

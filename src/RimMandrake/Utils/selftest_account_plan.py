@@ -1690,6 +1690,28 @@ def t_a_machine_at_its_end_is_switched_when_its_runs_end():
     AP.push_machines(pm, F("lukas", end), NOW + 600, account_of=lambda a: ("steven", None),
                      send=lambda a, nt: (True, ""))
     check(n + ": a pass with test seams for the notice and none for the runs switches nothing", len(calls) == 1, calls)
+    # 2026-11-25 fresh read: steven past his 48 h window at 70%, above his 52% line. No step uses him now, so his
+    # decision is to leave him when the runs end; the machine was told "then it switches", refused every new run, and
+    # was never switched (it waited for a reset days away).
+    pw = copy.deepcopy(BASE)
+    pw.update(driver="new", machines={"box2": {"ssh": "box2-wsl"}})
+    past = {"steven": R(70, 100), "system": R(80, 110), "lukas": R(60, 120)}
+    calls.clear()
+    fresh(pw)
+    out = AP.push_machines(pw, F("lukas", past), NOW, account_of=lambda a: ("steven", None),
+                           send=lambda a, nt: (True, ""), runs_of=lambda a: (1, None), switch=sw)
+    check(n + ": a machine on an account that no step uses now, with a live run: not switched, the pass says it waits",
+          calls == [] and "waits" in (out["box2"].get("switch") or ""), (calls, out))
+    out = AP.push_machines(pw, F("lukas", past), NOW + 60, account_of=lambda a: ("steven", None),
+                           send=lambda a, nt: (True, ""), runs_of=lambda a: (0, None), switch=sw)
+    check(n + ": the same machine with no live run is switched to the plan's next account, as its notice says",
+          len(calls) == 1 and calls[0][2] not in (None, "steven"), (calls, out))
+    calls.clear()
+    fresh(pw)
+    unread = {**past, "steven": R(None, 150, src="UNMEASURED")}        # inside his window: his step gives a line
+    AP.push_machines(pw, F("lukas", unread), NOW, account_of=lambda a: ("steven", None),
+                     send=lambda a, nt: (True, ""), runs_of=lambda a: (0, None), switch=sw)
+    check(n + ": a machine whose account has a step and a level that is not read is never switched", calls == [], calls)
 
 
 def t_a_push_that_fails_leaves_the_pass_whole():

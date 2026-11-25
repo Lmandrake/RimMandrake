@@ -26,3 +26,5 @@
 - `account_pick.py` keeps its own `switch_when` line (10% of the week left) for its alarm; the plan stays on an account to its line. Its `hold` list is empty, so it holds no launch.
 - With `advisory.enabled` true the allocator places `n_total` seats whatever the pace: Burn Mode's raise changes the paced figure and its reason line only.
 - The remote account read adds 4 to 17 s to each timed pass for each listed machine.
+- `machine_notice` and `machine_switch` read the plan's `requests` as if they were the other machine's: `./acct switch A --now` makes a listed machine drain (no new run, "then it switches") for the one pass until this machine's switch closes the request, and that machine is not switched. risk: one pass (about 5 min) of refused starts on SteveDesktop after each `switch --now`.
+- `machine_switch` takes the next account from `can_now`, which does not ask for a fresh reading of it (`fresh.max_age_min`), as this machine's own switch does. risk: SteveDesktop switched onto an account whose last reading is old, which the next pass then judges.

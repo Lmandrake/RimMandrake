@@ -162,7 +162,9 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
 - **a_machine_at_its_end_is_switched_when_its_runs_end.** A machine whose notice says its account is at its end is
   switched by the pass to the plan's next account (`claude-account use NEXT --confirm NAME` over ssh), only when it lists
   no live helper run; a run there, or runs that cannot be read, switch nothing and the pass says so. The same switch is
-  not asked again for `SWITCH_RETRY_S` (30 min). A machine above its line is never switched.
+  not asked again for `SWITCH_RETRY_S` (30 min). A machine whose account no step uses now (Steve's account past its
+  window) is at its end too, above its line: its notice drains, and it is switched the same way when its runs end. Any
+  other machine above its line, and a machine whose level is not read, is never switched.
 - **a_push_that_fails_leaves_the_pass_whole.** A machine that cannot be reached is said by name in the pass's log; the
   pass and the other machines go on; a notice that did not arrive is not kept as that machine's last.
 - **a_following_machine_that_cannot_look_refuses.** A machine that got a notice from the deciding machine starts no
