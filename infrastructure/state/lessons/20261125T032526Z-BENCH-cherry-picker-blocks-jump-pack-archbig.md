@@ -1,0 +1,2 @@
+On ArchBig every test tier that loads Cherry Picker (flowworks, flowworks_list) reads his config, which lists ThingDef/Apparel_PackJump: CherryPicker.Patch_Wear.Prefix silently refuses to put a jump pack on any pawn (no log line), while the def still resolves. A scene that wears a jump pack cannot ask there; ArchSmall has no Cherry Picker config. Check jawa/harmony_patches on Pawn_ApparelTracker.Wear before blaming the wear tool.
+item: RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ELEVEN
