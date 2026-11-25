@@ -24,6 +24,13 @@ faults (name -> intended effect):
   dead_battery          battery_set says charged, the pump gets no power        -> every pump row UNMEASURED SITE
   probe_refused         the hose probe answers nothing                          -> no row is a MOD verdict (UNMEASURED)
   no_biomes             mandrake.rm.biomes absent; IsSoaked unavailable         -> draws / dries / walls UNMEASURED SITE
+  hungry                the colony's colonist starts at Food 0.3 and every spawned pawn at 0.4  -> without mend() the
+                        clock governor stops the run ("starving") before T21 (J20261124T162236Z-c18442)
+  salted                the colony's colonist carries RM_SaltPoisoning (an earlier driver's) that downs it 900 ticks
+                        in               -> without mend() the governor stops the run ("downed") before T22 and T21
+                        (J20261124T065455Z-c5e072, HARNESS_REPAIR_CAUSE_8135787B_3)
+The clock governor (clockgate.GovernorStop) is modelled for those two: a colonist at Food 0 or downed stops ticks() with
+FakeGovernorStop. Food falls 2.67e-5 a tick (Need_Food.BaseHungerRate); a pawn with no Food set never hungers.
 """
 import re
 
@@ -33,6 +40,12 @@ PULSE = 2500
 WET_FOR = PULSE + 250
 SPRAYABLE = {"RM_Liquid_FreshWater": "fresh water", "RM_Liquid_AcidWater": "acid water", "RM_Liquid_Chemfuel": "chemfuel"}
 THICK = ("RM_Liquid_Tar",)
+HUNGER_PER_TICK = 2.67e-5
+SALT_DOWNS_AFTER = 900
+
+
+class FakeGovernorStop(RuntimeError):
+    """The fake's clockgate.GovernorStop: safe_advance stopped on a colonist's need or harm."""
 
 
 def _rect(s):
@@ -59,6 +72,13 @@ class SprinklerFakeBridge(object):
         self.counters = {"Pulses": 0, "SprayedUnits": 0}
         self.calls = []
         self.pulse_log = []
+        if self.faults & {"hungry", "salted"}:          # the colony's own colonist, there before the driver
+            self.nid += 1
+            self.pawns[self.nid] = {"x": 0, "z": 0, "hediffs": [], "needs": {}, "colony": True}
+            if "hungry" in self.faults:
+                self.pawns[self.nid]["needs"]["Food"] = 0.3
+            if "salted" in self.faults:
+                self.pawns[self.nid]["hediffs"].append({"def": "RM_SaltPoisoning", "severity": 0.6, "since": self.tick})
 
     # ------------------------------------------------------------ world
     def _thing(self, defn, x, z):
@@ -89,6 +109,14 @@ class SprinklerFakeBridge(object):
     def advance(self, n):
         for _ in range(n):
             self.tick += 1
+            for pid, p in self.pawns.items():
+                if "Food" in p["needs"]:
+                    p["needs"]["Food"] = max(0.0, p["needs"]["Food"] - HUNGER_PER_TICK)
+                    if p["needs"]["Food"] <= 0:
+                        raise FakeGovernorStop("safe_advance stopped: starving: food category Starving (pawn %d)" % pid)
+                if any(h["def"] == "RM_SaltPoisoning" and self.tick - h.get("since", self.tick) >= SALT_DOWNS_AFTER
+                       for h in p["hediffs"]):
+                    raise FakeGovernorStop("safe_advance stopped: downed (pawn %d); hediffs RM_SaltPoisoning" % pid)
             if self.tick % 200 == 0:        # vanilla PowerNet.PowerNetTick: a NEW consumer switches on only here
                 for p in self._of("RM_LiquidPump"):
                     if self._has("PowerConduit", p["x"], p["z"] - 1) and any(b == (p["x"], p["z"] - 4) for b in self.charged):
@@ -308,8 +336,20 @@ class SprinklerFakeBridge(object):
         if "spawn_fail" in self.faults:
             return {"success": False, "pawns": []}
         self.nid += 1
-        self.pawns[self.nid] = {"x": int(x), "z": int(z), "hediffs": [], "needs": {}}
+        self.pawns[self.nid] = {"x": int(x), "z": int(z), "hediffs": [], "needs": {"Food": 0.4} if "hungry" in self.faults else {}}
         return {"success": True, "pawns": [{"id": self.nid}]}
+
+    def t_jawa_list_pawns(self, **kw):
+        return {"success": True, "pawns": [{"id": pid, "isPlayer": True, "intelligence": "Humanlike", "dead": False,
+                                            "spawned": True} for pid in self.pawns]}
+
+    def t_jawa_pawn_health(self, pawn=None, action="", hediff=None, **kw):
+        p = self.pawns.get(int(pawn))
+        if not p or action != "remove":
+            return {"success": False, "message": "fake: only action=remove"}
+        before = len(p["hediffs"])
+        p["hediffs"] = [h for h in p["hediffs"] if h["def"] != hediff]
+        return {"success": len(p["hediffs"]) < before, "message": "" if len(p["hediffs"]) < before else "Pawn has no hediff"}
 
     def t_jawa_pawn_get(self, pawn=None, **kw):
         p = self.pawns.get(int(pawn))

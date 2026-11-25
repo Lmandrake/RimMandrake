@@ -153,5 +153,23 @@ for fault, cls in (("no_charge", "SITE"), ("dead_battery", "SITE"), ("probe_refu
         check("fault %s: %s is not a MOD FAIL" % (fault, IDS[k]), s_ == "UNMEASURED" and c_ == cls or
               (s_ == "PASS" and k == ("effects" if fault == "probe_refused" else "switch")), (s_, c_))   # effects reads no tank; switch no power
 
+# ---- (7) HARNESS_REPAIR_CAUSE_8135787B_3: the driver shares the run's map with thirst_live, whose colonists it inherits
+# salted (RM_SaltPoisoning) and hungry, and its own acid pawn is never fed. The clock governor then stopped the run before
+# T22/T21 (live: J20261124T065455Z-c5e072 "downed", J20261124T162236Z-c18442 "starving"), so testq read thirst as
+# driver_undelivered. mend() before each net must let the whole plan run, and must leave no RM_ hediff it was given.
+for fault in ("hungry", "salted"):
+    code, res, B, _ = run(faults=(fault,))
+    got = [r["id"] for r in res["rows"]]
+    check("fault %s: the run is not stopped by the governor" % fault, not isinstance(code, Exception), code)
+    check("fault %s: T22 and T21 are written" % fault, "T22_no_brine_spray" in got and "T21_drinking_reserve" in got, got)
+    check("fault %s: every row PASS (the inherited colonist is not a verdict on the mod)" % fault,
+          all(r["status"] == "PASS" for r in res["rows"]), [(r["id"], r["status"]) for r in res["rows"]])
+    m = res.get("mend") or []
+    check("fault %s: mend is recorded per net, with a clean read-back" % fault,
+          len(m) >= 6 and all(x.get("residue") == [] for x in m), m[:2])
+code, res, B, _ = run(faults=("salted",))
+check("salted: the inherited RM_SaltPoisoning is gone after the run",
+      not any(h["def"].startswith("RM_") for p in B.pawns.values() if p.get("colony") for h in p["hediffs"]), B.pawns)
+
 print("\n%s" % ("selftest_sprinkler_live: ALL OK" if not FAILS else "selftest_sprinkler_live: %d FAILED: %s" % (len(FAILS), FAILS)))
 sys.exit(1 if FAILS else 0)

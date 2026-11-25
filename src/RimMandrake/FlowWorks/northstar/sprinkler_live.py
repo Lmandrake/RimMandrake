@@ -203,8 +203,42 @@ def main(argv=None, bridge=None):
         v = str(r.get("result"))
         return True if v == "True" else False if v == "False" else None
 
+    def mend():
+        """HARNESS_REPAIR_CAUSE_8135787B_3 (SITE): this driver runs on the run's own map after thirst_live, and inherits
+        its colonists salted (RM_SaltPoisoning) and dehydrated; its own acid pawn is spawned and never fed; one run is
+        ~40,000 ticks, more than site_calm's one Food top-up lasts. The clock governor then stopped the run ("downed" at
+        the brine net, J20261124T065455Z-c5e072; "starving" at the reserve net, J20261124T162236Z-c18442) and T22/T21
+        were never written. No row here measures a colonist that is already on the map (the effects and reserve rows
+        spawn and set their own pawn AFTER net()), so before each net every colonist is fed and watered and every RM_
+        hediff an earlier scene left is removed. Read back: the RM_ hediffs still on a colonist are `residue`."""
+        ev = {"fed": 0, "removed": [], "residue": [], "failed": []}
+        r = B.call("jawa/list_pawns", includeHealth=False, includeCorpses=False, limit=500) or {}
+        if not r.get("success"):
+            ev["failed"].append("list_pawns: %s" % str(r)[:160])
+        cols = [p["id"] for p in r.get("pawns") or [] if p.get("isPlayer") and p.get("intelligence") == "Humanlike"
+                and not p.get("dead") and p.get("spawned", True)]
+
+        def rm_hediffs(pid):
+            ps = (B.call("jawa/pawn_get", pawn=pid) or {}).get("pawns") or []
+            return sorted({str(h.get("def")) for h in (ps[0].get("hediffs") if ps else []) or []
+                           if str(h.get("def") or "").startswith("RM_")})
+        for pid in cols:
+            for nd in ("Food", "RM_Thirst"):
+                if (B.call("jawa/pawn_need", pawn=pid, action="need", need=nd, level=1.0) or {}).get("success") is False:
+                    ev["failed"].append("%s %s" % (pid, nd))
+            ev["fed"] += 1
+            for hd in rm_hediffs(pid):
+                ok = (B.call("jawa/pawn_health", pawn=pid, action="remove", hediff=hd) or {}).get("success")
+                ev["removed"].append([pid, hd, bool(ok)])
+            left = rm_hediffs(pid)
+            if left:
+                ev["residue"].append([pid, left])
+        res.setdefault("mend", []).append(ev)
+        return ev
+
     def net(i):
         """Build net i (layout in the docstring); returns its cells dict."""
+        mend()
         ox, oz = OX, OZ + 14 * i
         B.call("jawa/destroy_batch", rects="%d,%d,14,12" % (ox - 3, oz - 5), categories="Building,Plant,Item,Filth")
         B.call("jawa/set_terrain_batch", ops="Soil:%d,%d,14,12" % (ox - 3, oz - 5))
