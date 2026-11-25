@@ -1,0 +1,19 @@
+ACCEPT src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_land_on_pawn_sizes.py at be795bc51577
+PASS V_LAND_REC small: land_on_pawn {'pawn': 'Squirrel88278', 'mass': 60.88, 'otherMass': 12, 'amount': 1.317, 'otherAmount': 6.683}
+PASS V_HEDIFF small: walker's new Bruise+Crush 6.682765483856201 (before (0.0, 0, False), after (6.682765483856201, 1, False))
+PASS V_LAND_REC large: land_on_pawn {'pawn': 'Muffalo88283', 'mass': 60.88, 'otherMass': 144, 'amount': 5.623, 'otherAmount': 2.377}
+PASS V_HEDIFF large: walker's new Bruise+Crush 2.3771958351135254 (before (0.0, 0, False), after (2.3771958351135254, 1, False))
+PASS V_LAND_REC colonist: land_on_pawn {'pawn': 'Human88288', 'mass': 60.83, 'otherMass': 60.83, 'amount': 4, 'otherAmount': 4}
+PASS V_HEDIFF colonist: walker's new Bruise+Crush 4.0 (before (0.0, 2, False), after (4.0, 3, False))
+PASS V_SMALL: colonist 1.317 vs squirrel 6.683; hediffs colonist +1.140328049659729 vs squirrel +6.682765483856201 (squirrel dead False)
+PASS V_LARGE: colonist 5.623 vs muffalo 2.377; hediffs colonist +4.5571393966674805 vs muffalo +2.3771958351135254
+PASS V_ALIKE: amount 4.0 / otherAmount 4.0 = 1.0; masses 60.83, 60.83 -> 1.0 (limit +-0.05); both at most 4.45: True
+PASS V_NOT_DOWNED: thrower downed False, walker downed False
+PASS V_EMPTY: 1 launch record(s) to [[30, 56]], 0 land_on_pawn record(s)
+PASS sc_pawn_land_on_pawn_sizes: 0 failing, 0 invalid row(s); pictures in D:\ClaudeWork\rimmandrake\scratch\scene_runs\20261125T112558_scene_pawn_land_on_pawn_sizes_ArchSmall_40856
+ACCEPT src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_land_on_pawn_sizes.py: the script ended. For a kept run, use scene.py judge.
+[bridge split] 65.6 s wall: load 0.8 / ticks 0.0 / reads 3.7 / other 13.8 / outside calls 47.3 s
+[bridge split] WARN 140 calls of rimbridge/get_bridge_status (3.4 s): batch them
+[bridge split] WARN 98 calls of jawa/session (4.2 s): batch them
+[bridge split] WARN 96 calls of jawa/static_call (4.0 s): batch them
+[bridge split] WARN 73 calls of jawa/read_paths (3.1 s): batch them
