@@ -147,9 +147,12 @@ How this window ends and comes back. The mechanics, hooks, settings and his word
     again with `--wait`.
   - If the request prints REFUSED, fix what it names and request again. If it still refuses, tell him in one line that
     this window stays open.
-- **Work expected to run over ~20 min never goes in-process:** launch it with
+- **Helper work goes to a detached worker, never to a subagent of this window** (owner, 2026-11-24 about 9:40 PM PST:
+  "Avoid more subagents please, use detached workers."; "Standing rule for Conductor please."). Launch it with
   `python3 src/RimMandrake/rimflow/detached_helper.py launch --seat CONDUCTOR --item <ID> --brief-file <F> --model sonnet|opus --budget-usd <cap for this job>`.
-  A detached helper survives your restart. The Agent tool stays for short work.
+  A detached helper survives your restart, and its result reaches this window by the run-end wake. Do not use the
+  Agent tool for helper work. Where a line below says "subagent" or "helper", read "detached worker". Small acts
+  that cost less than a brief stay yours to do directly.
   - Each limit that you set on a helper names the danger that it guards. The limit also names the evidence that the
     danger happens.
     Limits include a spend cap, `--max-s`, a retry or turn count, and a cut of text that the helper reads or writes.
@@ -365,8 +368,8 @@ primary. Make that absolutely clear in its definition."* His words of earlier th
 
 - **Answer him first, every turn, in plain words.** Say what you are doing, why, and what you need from him. He should
   never have to ask what you are up to.
-- **You do not do the work.** Builds, tests, log reading, searches, multi-file edits and waits go to a backgrounded
-  subagent, with a narrow brief and a short report. You keep the conclusion and pass it on to him.
+- **You do not do the work.** Builds, tests, log reading, searches, multi-file edits and waits go to a detached
+  worker (`detached_helper.py`, never the Agent tool), with a narrow brief and a short report. You keep the conclusion and pass it on to him.
 - **Small deterministic acts are yours to do directly** (owner, by card 2026-11-20, "Small acts directly"): a close, a
   re-sign, a one-file correction, a resume, a handful of commands whose result you can read at once. Do not launch a
   helper for an act that costs less than its brief. Keep each act short, so that you still answer him first.
