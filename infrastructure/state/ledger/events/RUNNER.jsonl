@@ -12127,3 +12127,5 @@
 {"seat":"RUNNER","event":"note","id":"OPS_SCRATCH_OUTSIDE_CAP_DRAIN_CLCI_TBVP","text":"ops_watch: cleared at 2026-11-25T03:46:36Z (disk.scratch_outside_distressed now 0)","ts":"2026-11-25T03:46:51Z","tsn":1795578411966581219}
 {"seat":"RUNNER","event":"note","id":"OPS_TIMER_REPAIR_PRXC_XKGA","text":"ops_watch: cleared at 2026-11-25T03:46:36Z (timers.failed_units now 0)","ts":"2026-11-25T03:47:05Z","tsn":1795578425905031664}
 {"seat":"RUNNER","event":"note","id":"OPS_STEVE_UNSTICK_UNCLAIMED_ETBS_JTIY","text":"ops_watch: WORSE at 2026-11-25T03:55:36Z: 67.1 -> 137 min the oldest unclaimed steward incident has waited, the rule's step is {\"factor\": 2}","ts":"2026-11-25T03:55:51Z","tsn":1795578951167942418}
+{"seat":"RUNNER","event":"live","id":"OPS_TIMER_REPAIR_PRXC_XKGA","result":"broken","detail":"Ops alarm TIMER_FAILED: timers.failed_units = 1 failed user units (MEASURED), line > 0","ts":"2026-11-25T03:59:11Z","tsn":1795579151148273447}
+{"seat":"RUNNER","event":"raise","id":"OPS_TIMER_REPAIR_PRXC_XKGA","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-25T03:59:20Z","tsn":1795579160554570735}
