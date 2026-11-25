@@ -72,11 +72,36 @@ def at(x, z):
     return STATION[0] + x, STATION[1] + z
 
 
+
+# The journal is a static list: it outlives a load. Every run of a scene loads the same stage save, so its thing ids and
+# ticks repeat, and a filter on tick or id cannot tell this run's records from the last run's. mark_journal keeps the
+# last line already there when the session opens; since_mark keeps only the lines after it (the list trims its oldest
+# 1000 lines at 4000, so the mark is a line's text, not a position; a mark trimmed away means every line is this run's).
+_MARK = []
+
+
+def mark_journal(s):
+    v = s.read("static:" + JOURNAL, "lines")
+    lines = list(v.v) if v.state == "ok" and isinstance(v.v, (list, tuple)) else []
+    _MARK[:] = [lines[-1] if lines else None, len(lines)]
+    print("INFO journal mark: %d line(s) before this run" % len(lines))
+
+
+def since_mark(raw):
+    raw = list(raw)
+    if not _MARK or _MARK[0] is None:
+        return raw
+    for i in range(len(raw) - 1, -1, -1):
+        if raw[i] == _MARK[0]:
+            return raw[i + 1:]
+    return raw
+
+
 def journal(s):
     v = s.read("static:" + JOURNAL, "lines")
     if v.state != "ok":
         return None, "journal %s" % v.state
-    raw = v.v if isinstance(v.v, (list, tuple)) else str(v.v).splitlines()
+    raw = since_mark(v.v if isinstance(v.v, (list, tuple)) else str(v.v).splitlines())
     recs = []
     for line in raw:
         line = str(line).strip()
@@ -90,7 +115,7 @@ def journal(s):
 
 def thing_id(s, alias):
     d, n = s.read(alias, "def.defName"), s.read(alias, "thingIDNumber")
-    return "%s%s" % (d.v, n.v) if d.state == "ok" and n.state == "ok" else None
+    return "%s%d" % (d.v, int(float(n.v))) if d.state == "ok" and n.state == "ok" else None   # an id reads back as a float
 
 
 def hurt(s, alias):
@@ -133,6 +158,7 @@ for name in ORDER:
         things["bag_" + name] = dict(thing="Sandbags", at=(bag, z), stuff="Cloth")
 
 with scene.open(GAME, contract=no_contact, needs={"mods": ["ExplosiveKnockback"], "map": STAGE, "calm": "standard"}) as s:
+    mark_journal(s)
     s.stage(station=STATION, cast=cast, things=things or None)
     stops = (s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="get", field="sandbagsStopThrow") or {}).get("value")
     prior = {f: (s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="get", field=f) or {}).get("value") for f in ["blastPowerFromDamage"]}
