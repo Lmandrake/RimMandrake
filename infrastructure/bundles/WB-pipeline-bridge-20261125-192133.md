@@ -1,7 +1,7 @@
 # WB-pipeline-bridge-20261125-192133 state
 
 Worker run 1 on SteveDesktop, 2026-11-25 11:22 AM to about 1:15 PM PST (context 420k at its save). Run 2 (restart 1)
-from 1:20 PM PST: context 150k at start, 330k at this save (window 1M, line 500k). Restart from here.
+from 1:20 PM PST: context 150k at start, 330k at the first save, about 420k at the second (window 1M, line 500k). Restart from here.
 
 ## What the next context must know
 - Run live checks as SteveDesktop lane jobs, not by hand: Steve1 and Steve2 are the lane's busy games. Every member
@@ -20,8 +20,9 @@ from 1:20 PM PST: context 150k at start, 330k at this save (window 1M, line 500k
   waits to 2026-12-02 for the Conductor to re-level A1 (a looser bar is his act); BRIDGE_TARGETS, COMPANION_PROFILE and
   TPS_HOOKS carry `REFUSED BY BUNDLE (the L4 level only):` notes, which work_bundle.py reads as refusals since 68f9e2c4c2.
 - Raid tests are paused (`src/RimMandrake/rimflow/raid_pause.py show`).
-- The Pyrelands review keeper save fixture is staged at `/mnt/d/RimTest/data/fixtures/RM_pyre_review_20261015_r2.rws`
-  (a copy from ArchBig's Saves; PEN2 copies it into the lane game's Saves as bundle_pen2_review).
+- PEN2's fixture is the Pyrelands site save `/mnt/d/RimTest/data/fixtures/NS_Pyrelands_site_1_417df172fdb5_visit5.rws`
+  (its mods are inside tier ratchet_pilot). The 2026-10-15 review keeper records VFE, Alpha Biomes/Animals and
+  Pyrelands Mechanics, which no small list loads, so PEN2 builds its own keeper (human_review.py --build --save).
 - Evidence of run 1's hand sitting: `/mnt/d/ClaudeWork/rimmandrake/bundles/WB-pipeline-bridge-20261125-192133/`.
 
 ## Done
@@ -43,22 +44,23 @@ from 1:20 PM PST: context 150k at start, 330k at this save (window 1M, line 500k
 | BRIDGE_TARGETS, COMPANION_PROFILE, TPS_HOOKS | REFUSED (L4 level only) | run 1 notes, now read |
 | BRIDGE_TPS_CAPTURE_FIXES_1 | REFUSED | C3's overhead half needs the full list (retired until integration) |
 | FLYERFRAMES, EXPERIMENT_MANIFEST, HEALTH_METRICS_JUDGE | REFUSED | run 1 |
+| VITALS_OVERHEAD_MEASURE_FULL_LIST_TOLL | A1 PASS, A2 REFUSED | lane J20261125T213144Z-a67a04 MEASURED within 10% on every workload; A2 needs the full list |
+| RIMMANDRAKE_PROVE_COMPANION_REFUSALS_THE_MINIMAL_LIST_CANNOT | done | PLAYTEST J20261125T220551Z-9be74a, SETTLE and CAMPAIGN J20261125T214629Z-889e6f PASS; full-inventory refusal unreachable (ThingOwner maxStacks 999999); flight remainder RIMMANDRAKE_PROVE_FLIGHT_MAINTAIN_HOLDS_ONLY_STARTED_PAWNS (owner act 1) |
+| step 4 fresh reader (run 2) | done | 1 significant finding fixed (89136970f9); nits done in 6ca2e748c0 and 80ede465f9 |
+| (no ticket) PLAYTEST scene: the FlowWorks 'fluids' run ended in 4 frames, before the cross-call | scene repaired | 80ede465f9 |
 
 ## Next, in order
-1. Read and record the pending lane jobs: VITALS A1 J20261125T213144Z-a67a04 (then REFUSE A2: full list),
-   RIMMANDRAKE_PROVE_COMPANION_REFUSALS J20261125T214629Z-889e6f (A1 PLAYTEST, A2 SETTLE, A3 CAMPAIGN; close the item
-   with its evidence, naming that refusal (3) is unreachable in vanilla: Pawn_InventoryTracker's ThingOwner has
-   maxStacks 999999, so GetCountCanAccept returns the whole count; (4) flight maintain is owner-present only), PEN A2
-   J20261125T215320Z-1ff6a7. Class any non-pass (mod, check or scene) and repair.
+1. PEN A2: lane job J20261125T222034Z-4d50a4 (sha f9643d71c7). The run before (J20261125T220757Z-226592) built and
+   loaded a fresh keeper; pen_release selected 65, released 20, and 45 stayed in Wait and did not move in 600 ticks.
+   This rerun names each unmoved animal's kind and job ("unmoved kind/job" in the FAIL line). Class it: the mod
+   (pen_release / pen_pin, JawaBenchPenTools.cs: EndCurrentJob lets the think tree pick Wait again), the check, or
+   the scene (for example heat, night, downed animals or flyers in the pens). Fix it test first and run it again.
 2. BRIDGE_TPS_REVIEW2_FIXES_1 C3: the controlled interruption matrix, items 1 and 2 of design/RimMandrake/tps_record.md
    §Acceptance (the doc rewrite puts item 3 in C4), read from the record files (tps_record.py, tps_observer.py), with
    jawa/tps_test_block (0.5-120 s main-thread blocks): 2-10 s hitches and 40/90 s blocks as ONE incident each, a save
    as a longevent, a hang plus kill leaving silence rows and an exited-without-shutdown observer row, forced kills near
    segment boundaries. The observer is a Windows scheduled task ("RimMandrake\TPS Observer", Archmagi, every 2 min);
    on SteveDesktop run it by hand (`python.exe src/RimMandrake/Utils/tps_observer.py --print`; under WSL it declares
-   no exit). ArchBig was FREE at 1:50 PM PST.
-   C4 (full list): REFUSE.
-3. Step 4 fresh reader over this run's changes: 68f9e2c4c2 (work_bundle.py), 60903e56a9 (vitals_overhead.py), and the
-   bridge_bundle_proof.py clauses KEEPER, ORIGIN, WILDBLOCK, PLAYTEST, CAMPAIGN, SETTLE, PEN2.
-4. Polish lines from run 1's fresh reader (one line each, no ticket): the rerun tail mixes the first run's text; mixed
+   no exit). C4 (full list): REFUSE.
+3. Polish lines from run 1's fresh reader (one line each, no ticket): the rerun tail mixes the first run's text; mixed
    python.exe/python3 lines rerun their python.exe parts; TPS/FRAME/HOOKS leave the game Paused.
