@@ -14,6 +14,7 @@ dir, and 150 GB stood REFUSED behind 15 session dirs.
     scratch_reap.py --apply         act on DELETE and ARCHIVE rows (each re-judged immediately before rmtree)
     scratch_reap.py --json          machine-readable rows
     scratch_reap.py --max-seconds N stop starting deletions N seconds after the run began; the next run takes the rest
+                                   this also bounds the per-run TMPDIR sweep and its crash pin removals
     scratch_reap.py --pressure-check  if the root disk is low and no run is recent, start the reaper's unit now
 
 Candidates (never anything else — loose files and other dirs are left alone):
@@ -28,8 +29,9 @@ Verdicts:
   ARCHIVE  old, and it holds a commit the mirror lacks (any readable ref, reflog or stash; a local tracking ref proves
            nothing, and a dead one holds nothing; a clone whose bundle is over the cap keeps only the objects GitHub's main
            and tags do not reach, make_residual),
-           a dirty or untracked file, ignored files that are not build output, or loose session files: bundle + tar +
-           index and worktree patches to a new archive dir, restore-tested, an acts.jsonl line, then delete. A commit
+           a dirty or untracked file, ignored files that are not build output, or loose session files: preserve the
+           applicable bundle, tar and patches. A tar-only archive must extract with matching bytes before deletion.
+           The acts.jsonl receipt records the checks that ran. A commit
            whose author, dates and subject match main but whose content does not is kept as a patch: main's history was
            rewritten once, so old clones hold every commit under another hash, and a whole-history bundle is huge.
   REFUSE   skipped and reported. FAILS CLOSED: anything we cannot read or prove lands here.
@@ -1990,6 +1992,37 @@ def make_tar(top: Path, paths: list[str] | None, out: Path):
         raise PreserveFailed("tar: the archive does not list back")
 
 
+def verify_tar_restore(top: Path, paths: list[str] | None, archive: Path):
+    """Extract privately and compare the expected tree, without following symlinks."""
+    env = {k: v for k, v in os.environ.items() if k not in ("TAR_OPTIONS", "GZIP")}
+    with tempfile.TemporaryDirectory(dir=archive.parent) as td:
+        restored = Path(td)
+        # budget: danger=a hung tar holds the cleaner, and the disk fills; evidence=the same bound as make_tar's create;
+        # budget: longest=25s (one measured run: the largest dirty.tar.gz in the archive root, 1.2 GB, 2026-11-24)
+        r = subprocess.run(["tar", "-xzf", str(archive), "-C", td], capture_output=True, timeout=1800, env=env)
+        if r.returncode:
+            raise PreserveFailed(f"tar restore: {r.stderr.decode('utf-8', 'replace').strip()}")
+        todo = [Path(p) for p in (paths if paths is not None else ["."])]
+        while todo:
+            p = todo.pop()
+            src, dst = top / p, restored / p
+            mode = stat.S_IFMT(src.lstat().st_mode)
+            if mode != stat.S_IFMT(dst.lstat().st_mode):
+                raise PreserveFailed(f"tar restore: {p} changed type")
+            if stat.S_ISDIR(mode):
+                names = set(os.listdir(src))
+                same = names == set(os.listdir(dst))
+                todo.extend(p / n for n in names)
+            elif stat.S_ISREG(mode):
+                same = sha256(src) == sha256(dst)
+            elif stat.S_ISLNK(mode):
+                same = os.readlink(src) == os.readlink(dst)
+            else:
+                raise Refused(f"tar restore: unsupported file type at {p}")
+            if not same:
+                raise PreserveFailed(f"tar restore: {p} does not match the source")
+
+
 def acts_append(root: Path, rec: dict):
     with open(root / "acts.jsonl", "a", encoding="utf-8") as f:
         f.write(json.dumps(rec) + "\n")
@@ -2021,7 +2054,7 @@ def rename_new(src: Path, dst: Path):
 
 
 def preserve(row: dict) -> str:
-    """Bundle and tar one ARCHIVE row, proved restorable, logged to acts.jsonl. -> the archive dir."""
+    """Preserve one ARCHIVE row and record the checks performed, including a restore for a tar-only archive."""
     p = Path(row["path"])
     root = archive_root()
     slug = re.sub(r"[^A-Za-z0-9._-]+", "_", p.name)[:60] + "-" + hashlib.sha1(str(p).encode()).hexdigest()[:8]
@@ -2065,6 +2098,9 @@ def preserve(row: dict) -> str:
             made.append(work / "residue.tar.gz")
         if not made:
             raise PreserveFailed("nothing to preserve, yet the row says ARCHIVE")
+        tar_only = len(made) == 1 and made[0].name.endswith(".tar.gz")
+        if tar_only:
+            verify_tar_restore(p, row.get("dirty") if made[0].name == "dirty.tar.gz" else None, made[0])
         day.mkdir(parents=True, exist_ok=True)
         tmp = Path(tempfile.mkdtemp(dir=day, prefix=".incoming-"))      # a new dir per attempt: nothing is overwritten
         files = {}
@@ -2094,11 +2130,21 @@ def preserve(row: dict) -> str:
         for q in (day, day.parent, root):               # each new link, up to the root that outlives them
             durable(q, False)
     manifest = dest / "manifest.json"
+    verified = []
+    if "clone.bundle" in files:
+        verified.append("bundle restored into an empty repo")
+    if row.get("residual"):
+        if "residual.pack" in files:
+            verified.append("residual pack indexed, every residual object listed")
+        verified.append("the other objects are reachable on the mirrors")
+    if tar_only:
+        verified.append("tar restored and matched to the source")
+    elif any(name.endswith(".tar.gz") for name in files):
+        verified.append("tar listed")
+    verified.append("sha256 matched on the archive")
     acts_append(root, {"ts": local_ts(), "kind": "scratch-" + row["kind"], "path": row["path"], "size": row["bytes"],
                        "archive": str(dest), "manifest": str(manifest),
-                       "verify": "residual pack indexed, every object listed; the rest is reachable on the mirrors; "
-                                 "tar listed; sha256 matched on the archive" if row.get("residual")
-                                 else "bundle restored into an empty repo; tar listed; sha256 matched on the archive",
+                       "verify": "; ".join(verified),
                        "evidence": "; ".join(row["why"])})
     return str(dest)
 
@@ -2517,14 +2563,14 @@ def _tmp_flush(ctx: Ctx, pinned: list, out: dict, done: list):
     pinned.clear()
 
 
-def sweep_run_tmp() -> dict:
+def sweep_run_tmp(deadline: float = 0) -> dict:
     """The per-run TMPDIR root's backstop (rimflow/run_tmp.py): hourly, as well as every Relentless tick."""
     try:
         here = str(Path(__file__).resolve().parents[1] / "rimflow")
         if here not in sys.path:
             sys.path.insert(0, here)
         import run_tmp
-        r = run_tmp.sweep()
+        r = run_tmp.sweep(deadline=deadline)
         return {"root": r["root"], "removed": len(r["removed"]), "live": r["live"], "work": len(r["work"]),
                 "errors": r["errors"][:3]}
     except Exception as e:  # noqa: BLE001 - a backstop never kills the run it rides on
@@ -2871,8 +2917,11 @@ def run(a, sd: Path) -> int:
     tmp, tmp_rows = sweep_tmp(ctx, a.apply, start + a.max_seconds / 2 if a.max_seconds else 0)
     lap("tmp")
     # the real run-dir root only on a real run (a test that sets its roots names RM_RUN_TMP_ROOT to get one)
-    runs_tmp = sweep_run_tmp() if a.apply and (os.environ.get("SCRATCH_REAP_ROOTS") is None
-                                               or os.environ.get("RM_RUN_TMP_ROOT")) else {}
+    deadline = start + a.max_seconds if a.max_seconds else 0
+    runs_tmp = {}
+    if a.apply and (not deadline or time.time() < deadline) and (
+            os.environ.get("SCRATCH_REAP_ROOTS") is None or os.environ.get("RM_RUN_TMP_ROOT")):
+        runs_tmp = sweep_run_tmp(deadline)
     lap("run_tmp")
     if tmp_rows or tmp["errors"]:
         rotate(sd / "tmp_runs.jsonl")

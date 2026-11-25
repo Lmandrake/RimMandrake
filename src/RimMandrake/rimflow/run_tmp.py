@@ -9,7 +9,8 @@ tmpfs) filled with about 15 GB of agents' mutation scratch and the nightly selft
     env(dir)        {TMPDIR, TMP, TEMP} -> dir
     drop(name)      delete <root>/<name> now if its run is over (an end path calls it; refused while live)
     sweep()         delete every dir under <root> whose run is over (the hourly scratch_reap run): the guarantee
-                    behind every end path, a killed engine and a restart included
+                    behind every end path, a killed engine and a restart included; with a deadline, start no
+                    further removals once it passes
 
 <root> is ~/.seat-tmp/runs (env RM_RUN_TMP_ROOT): the ext4 disk, not the /tmp tmpfs, and inside scratch_reap's roots, so
 anything kept here is still judged by the reaper. <name> is the run's systemd unit (rm-detached-bench-<item>-<n>), or
@@ -254,8 +255,9 @@ def _young(d: str, now: float) -> bool:
     return now - max(st.st_mtime, st.st_ctime) < GRACE_S
 
 
-def sweep(only: list[str] | None = None, now: float | None = None, runner=subprocess.run, mine: bool = False) -> dict:
-    """Delete the dirs of runs that are over. -> a summary for the caller's record; never raises for one dir."""
+def sweep(only: list[str] | None = None, now: float | None = None, runner=subprocess.run, mine: bool = False,
+          deadline: float = 0) -> dict:
+    """Delete the dirs of runs that are over until the optional wall-clock deadline. Return a summary."""
     now = time.time() if now is None else now
     rt = root()
     out = {"root": rt, "removed": [], "live": 0, "young": 0, "work": [], "errors": [], "blind": 0}
@@ -281,6 +283,8 @@ def sweep(only: list[str] | None = None, now: float | None = None, runner=subpro
         # a child that survived the crash names the ORIGINAL dir in its TMPDIR: either name in use keeps the pin
         if (pid == os.getpid() or start_time(pid) is None) and n not in used and orig not in used \
                 and not holds_work(os.path.join(rt, n)):
+            if deadline and time.time() >= deadline:
+                return out
             try:
                 shutil.rmtree(os.path.join(rt, n))
                 out["removed"].append(n)
@@ -305,6 +309,8 @@ def sweep(only: list[str] | None = None, now: float | None = None, runner=subpro
         if holds_work(d):
             out["work"].append(n)
             continue
+        if deadline and time.time() >= deadline:
+            break
         try:
             pin = os.path.join(rt, ".reaping-%d-%s" % (os.getpid(), n))
             os.rename(d, pin)
