@@ -277,6 +277,14 @@ ENV = "RM_WORK_BUNDLE"
 LIVE_STATES = ("launching", "live", "restarting")
 REFUSED_HEAD = "REFUSED BY BUNDLE:"
 REFUSED_HEADS = (REFUSED_HEAD, "BUNDLE REFUSED:")     # the role (roles/bundle_worker.md) writes the first
+# a head with a short qualifier before its colon ("REFUSED BY BUNDLE (the L4 level only): ...") is a refusal too: a
+# fault of form in the head never turns a reasoned refusal into an open member
+_REFUSED_RE = re.compile(r"^\s*(REFUSED BY BUNDLE|BUNDLE REFUSED)\b[^:\n]*:", re.I)
+
+
+def is_refusal(text):
+    """-> True when a note's text is a bundle refusal."""
+    return bool(_REFUSED_RE.match(str(text or "")))
 
 
 def store_dir(create=True):
@@ -606,7 +614,7 @@ def refusals(events):
         if not i:
             continue
         if e.get("event") == "note":
-            if str(e.get("text") or "").strip().upper().startswith(REFUSED_HEADS):
+            if is_refusal(e.get("text")):
                 refused[i] = (t, str(e.get("text")).strip())
         elif t >= last_other.get(i, 0):
             last_other[i] = t
@@ -791,6 +799,7 @@ READ_MEMBERS = r"""
 import json, os, sys
 sys.path.insert(0, os.path.join("src", "RimMandrake", "rimflow"))
 import model
+from work_bundle import is_refusal
 evs = model.read()
 items = model.replay(evs).items
 out = {}
@@ -804,7 +813,7 @@ for e in evs:
         continue
     if e.get("event") == "wait":
         f["wait_ts"] = e.get("ts")
-    elif e.get("event") == "note" and str(e.get("text") or "").strip().upper().startswith(("REFUSED BY BUNDLE:", "BUNDLE REFUSED:")):
+    elif e.get("event") == "note" and is_refusal(e.get("text")):
         f["refusal"], f["refusal_ts"] = str(e.get("text")).strip(), e.get("ts")
 print(json.dumps(out))
 """

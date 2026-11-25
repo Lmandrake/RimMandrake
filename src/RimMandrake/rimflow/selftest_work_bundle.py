@@ -192,6 +192,14 @@ def t_ready_members_only():
     rf = W.refusals(evs)
     chk(lambda: rf.get("R1") == "REFUSED BY BUNDLE: not this system" and "R2" not in rf and "R3" not in rf,
         "ready: a refusal stands until a later non-note event on the ticket (%s)" % rf)
+    # a qualifier before the colon is still a refusal (the bundle of 2026-11-25 wrote "(the L4 level only)" four times
+    # and was relaunched for members that each held their reason)
+    q = "REFUSED BY BUNDLE (the L4 level only): A1 passes at L2; L4 is the owner level"
+    rq = W.refusals([{"id": "Q1", "event": "note", "ts": "2026-11-21T00:00:00Z", "text": q}])
+    chk(lambda: rq.get("Q1") == q and W.is_refusal(q) and W.is_refusal("bundle refused - x: y")
+        and not W.is_refusal("REFUSED BY BUNDLER: x") and not W.is_refusal("PROGRESS: REFUSED BY BUNDLE: x"),
+        "ready: a qualified refusal head is read as a refusal (%s)" % rq)
+    chk(lambda: "is_refusal(" in W.READ_MEMBERS, "ready: the clone's member read uses the same refusal test")
 
 
 def fake_launch(log, unit="rm-detached-bench-x-1"):
