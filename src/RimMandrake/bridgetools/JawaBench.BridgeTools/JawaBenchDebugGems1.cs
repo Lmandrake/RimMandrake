@@ -334,7 +334,7 @@ namespace JawaBench.BridgeTools
                 "*** ACTS ON THE LIVE COLONY *** GenExplosion.DoExplosion at a cell - the same " +
                 "utility every bomb/grenade/shell in the game calls. damAmount defaults to " +
                 "damType.defaultDamage (the engine's own default) when omitted.",
-            ResultDescription = "success, at, radius, damType, damAmount, chanceToStartFire.")]
+            ResultDescription = "success, at, radius, damType, damAmount, weapon, projectile (defNames or null), chanceToStartFire.")]
         public static async Task<object> ExplosionAt(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -351,7 +351,11 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "Chance per cell to start a fire. Default 0.")]
             float chanceToStartFire = 0f,
             [ToolParameter(Description = "Also damage things adjacent to the explosion cells. Default false.")]
-            bool applyDamageToNeighbors = false)
+            bool applyDamageToNeighbors = false,
+            [ToolParameter(Description = "Optional ThingDef defName set as the explosion's weapon (Explosion.weapon), e.g. Gun_Revolver: what a mod that tunes by weapon reads.")]
+            string weapon = null,
+            [ToolParameter(Description = "Optional ThingDef defName set as the explosion's projectile (Explosion.projectile), e.g. Bullet_Revolver.")]
+            string projectile = null)
         {
             return await ctx.MainThread.InvokeAsync<object>(() =>
             {
@@ -364,11 +368,23 @@ namespace JawaBench.BridgeTools
                 if (string.IsNullOrWhiteSpace(damType)) return Fail("Give 'damType', a DamageDef defName.");
                 var dDef = DefDatabase<DamageDef>.GetNamedSilentFail(damType.Trim());
                 if (dDef == null) return Fail("No DamageDef '" + damType + "'.", DefSuggestions<DamageDef>(damType));
+                ThingDef wDef = null, pDef = null;
+                if (!string.IsNullOrWhiteSpace(weapon))
+                {
+                    wDef = DefDatabase<ThingDef>.GetNamedSilentFail(weapon.Trim());
+                    if (wDef == null) return Fail("No ThingDef '" + weapon + "' for 'weapon'.", DefSuggestions<ThingDef>(weapon));
+                }
+                if (!string.IsNullOrWhiteSpace(projectile))
+                {
+                    pDef = DefDatabase<ThingDef>.GetNamedSilentFail(projectile.Trim());
+                    if (pDef == null) return Fail("No ThingDef '" + projectile + "' for 'projectile'.", DefSuggestions<ThingDef>(projectile));
+                }
 
                 try
                 {
+                    // positional: instigator, damAmount, armorPenetration, explosionSound, weapon, projectile (1.6 signature, rimsage)
                     GenExplosion.DoExplosion(cell, map, radius, dDef, null, damAmount,
-                        armorPenetration, null, null, null, null, null, 0f, 1, null, null, 255,
+                        armorPenetration, null, wDef, pDef, null, null, 0f, 1, null, null, 255,
                         applyDamageToNeighbors, null, 0f, 1, chanceToStartFire);
                 }
                 catch (Exception e) { return Fail("DoExplosion threw " + e.GetType().Name + ": " + e.Message); }
@@ -380,6 +396,8 @@ namespace JawaBench.BridgeTools
                     radius,
                     damType = dDef.defName,
                     damAmount = damAmount > 0 ? damAmount : dDef.defaultDamage,
+                    weapon = wDef?.defName,
+                    projectile = pDef?.defName,
                     chanceToStartFire,
                     ticksGame = TicksGameSafe()
                 };
