@@ -16,7 +16,7 @@ no hostile pawn.
 PLANTS that must go red:
   --plant switches_ignored   no switch is written: S_SCAR and S_SHAKE FAIL on every off pad and S_ALL_OFF FAILS
                              (our scar and kick stay, vanilla's mark stays away), which shows that the rows can see.
-  --plant unlike_pad         the show-off shell is placed 3 cells from the colonist, not 2: T_LIKE_PAD FAILS, and
+  --plant unlike_pad         the show-off blast is set off 3 cells from the colonist, not 2: T_LIKE_PAD FAILS, and
                              T_SAME_THROW FAILS (or T_THROWN off, if 3 cells is past the 2.9-cell radius), which
                              shows that the throw rows can tell two throws apart.
 
@@ -31,7 +31,8 @@ type read from Core's Items_Resource_Shell.xml, which also gives the shell its v
   off_fire    showFireAndFlash off     off_shake   showScreenShake off
   off_ripple  showAirRipple off        off_scar    showCraterScars off
   all_off     the four built switches off: the unmodded look
-  throw lane  Soil, 80 x 13 cells; the colonist stands 2 cells east of the shell and is thrown east
+  throw lane  Soil, 80 x 13 cells; each throw is a 1-damage Bomb blast (jawa/explosion_at, radius 2.9) 2 cells west of
+              the colonist, with blast power from damage off, so it throws at full force and harms nobody
 
 Rows (each prints PASS or FAIL with what it read, the count of cases and the limit):
   S_SCAR <pad>    our RM_KnockbackBlastCrater_* filth present iff showCraterScars is on; Filth_BlastMark present iff off
@@ -67,7 +68,9 @@ NS = "RimMandrake.ExplosiveKnockback."
 SETTINGS = NS + "RimMandrakeExplosiveKnockbackSettings"
 SHOW = NS + "RM_KnockbackShow"
 JOURNAL = NS + "RM_KnockbackJournal"
-SWITCHES = ("showFireAndFlash", "showScreenShake", "showAirRipple", "showCraterScars")   # RM_KnockbackMod.cs fields
+SWITCHES = ("showFireAndFlash", "showScreenShake", "showAirRipple", "showCraterScars", "showSmoke", "showSootOnThings",
+            "showSootOnPawns")   # RM_KnockbackMod.cs fields; the last three were built after this scene was written and have
+                                 # no single-off pad yet: they are switched with "all off" and the show-off throw
 SHELL = "Shell_HighExplosive"
 STATION = (20, 20, 100, 40)
 HALF = 4                 # a pad is its centre +-4 cells: the 2.9-cell blast and our widest HE scar (7 cells) fit inside
@@ -232,18 +235,21 @@ def sweep(s, rows, throws, before):
 
         # the throws: show on (every switch on), then show off (the four off), the same colonist on a like pad
         pid = s.read("thrown", "thingIDNumber")
+        setting(s, "blastPowerFromDamage", "False")
         for name, value in (("on", "True"), ("off", "False")):
             for f in SWITCHES:
                 setting(s, f, value)
             pawn_at = cell(s.read("thrown", "positionInt"))
             alias = "throw_%s_x" % name
             gap = GAP + 1 if (planted == "unlike_pad" and name == "off") else GAP
-            if name == "off" and pawn_at is not None:
-                s.act.place(SHELL, at=(pawn_at[0] - gap, pawn_at[1]), bind=alias)   # act.place takes map cells
-            shell_at = cell(s.read(alias, "positionInt"))
-            hp = s.read(alias, "hitPointsInt")
-            tick = hp.tick if hp.state == "ok" else 0
-            s.act.damage(alias, (hp.v if hp.state == "ok" else 100) + 60, kind="Crush", name="throw_" + name)
+            # a 1-damage blast with blast power off (the throw at full force, no harm): the first run threw with a real
+            # shell 2 cells off, and the colonist did not stand for the second throw (2026-11-25 ArchSmall)
+            if pawn_at is None:
+                raise scene.Fault("STAGING_FAULT", detail="the colonist's cell could not be read before the %s throw: %s" % (
+                    name, s.read("thrown", "Dead")))
+            shell_at = (pawn_at[0] - gap, pawn_at[1])
+            tick = s.read("thrown", "positionInt").tick or 0
+            s.raw("jawa/explosion_at", at="%d,%d" % shell_at, radius=2.9, damType="Bomb", damAmount=1)
             s.shot(lane_rect(), name="throw_%s_blast" % name)
             s.run(until=THROW_SETTLE, limit=THROW_SETTLE + 120)
             s.shot(lane_rect(), name="throw_%s_landed" % name)
@@ -253,6 +259,7 @@ def sweep(s, rows, throws, before):
     finally:
         for f in SWITCHES:
             setting(s, f, before.get(f) or "True")       # unread: the default, on
+        setting(s, "blastPowerFromDamage", before.get("blastPowerFromDamage") or "True")
 
 
 with scene.open(GAME, contract=show, needs={"mods": ["ExplosiveKnockback"], "map": STAGE, "calm": "standard"}) as s:
@@ -260,10 +267,9 @@ with scene.open(GAME, contract=show, needs={"mods": ["ExplosiveKnockback"], "map
     terrain = {p: dict(rect=(x - HALF, z - HALF, 2 * HALF + 1, 2 * HALF + 1), terrain="Soil") for p, ((x, z), _off) in PADS.items()}
     terrain["lane"] = dict(rect=LANE, terrain="Soil")
     things = {p + "_x": dict(thing=SHELL, at=centre) for p, (centre, _off) in PADS.items()}
-    things["throw_on_x"] = dict(thing=SHELL, at=THROW_SHELL)
     s.stage(station=STATION, terrain=terrain, things=things,
             cast={"thrown": dict(kind="Colonist", at=COLONIST)})
-    before = {f: read_field(s, f) for f in SWITCHES}       # put back on every exit path (the finally below)
+    before = {f: read_field(s, f) for f in SWITCHES + ("blastPowerFromDamage",)}   # put back on every exit path
     rows = {}
     throws = {}
     sweep(s, rows, throws, before)
