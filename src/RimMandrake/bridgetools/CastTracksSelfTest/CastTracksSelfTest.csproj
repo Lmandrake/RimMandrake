@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Offline harness for the cast tracks and the job and reservation taps of BRIDGE v2.0
+    (RIMMANDRAKE_BUILD_CAST_TRACKS_AND_JOB_TAPS_FIRST_FAMILY): the PRODUCTION cores (or a planted copy of the cast core,
+    -p:CoreDir=), net8.0, no RimWorld. Run: python3 src/RimMandrake/bridgetools/selftest_cast_tracks.py
+  -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AssemblyName>CastTracksSelfTest</AssemblyName>
+    <RootNamespace>JawaBench.BridgeTools</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <CoreDir Condition="'$(CoreDir)' == ''">..\JawaBench.BridgeTools\</CoreDir>
+    <BaseOutputPath>bin\</BaseOutputPath>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\JawaBench.BridgeTools\JawaBenchCondCore.cs" />
+    <Compile Include="..\JawaBench.BridgeTools\JawaBenchRunLockCore.cs" />
+    <Compile Include="..\JawaBench.BridgeTools\JawaBenchSceneTickCore.cs" />
+    <Compile Include="..\JawaBench.BridgeTools\JawaBenchHookGuard.cs" />
+    <Compile Include="..\JawaBench.BridgeTools\JawaBenchTpsMath.cs" />
+    <Compile Include="$(CoreDir)JawaBenchCastCore.cs" />
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+
+</Project>

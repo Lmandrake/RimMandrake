@@ -57,6 +57,7 @@ Column meanings:
 | `JawaBenchCompanionSafety.cs` | 2 | startup | on | bridge tool threads | GateTask[gate] GateObject[gate] | static audit (wraps bridge tools, not game methods) |
 | `JawaBenchCalm.cs` | 4 | lazy | off | main only (game tick and main-thread tools) | GatePre[c] QueuePre[c] SpawnPost[c,ro] FramePre[c] | `LiveToolsSelfTest/Program.cs` (gate, breach), live `prove_three_tools.py` |
 | `JawaBenchFirstException.cs` | 3 | startup | on | accepted: `[ThreadStatic]` roads, locked store | ErrorPre[c] ErrorFin[vf,c,or] OncePre[c] OnceFin[vf,c,or] ResetPre[c] | `LiveToolsSelfTest/Program.cs` (roads, flood, bounded), live `prove_three_tools.py` |
+| `JawaBenchCast.cs` | 3 | lazy (on at the first `jawa/run_until` run with a cast, then stays on) | off | rejected | StartPre[c,th] StartPost[c,ro,or] StartFin[vf] EndPre[c,th] EndPost[c,ro,or] EndFin[vf] ReservePre[c,th] ReservePost[c,ro,or] ReserveFin[vf] | `selftest_cast_tracks.py` (the six rules for the job tap and the reservation tap, through `JawaBenchCastCore.Taps`); live: the tap certificate ticket |
 
 Proof of the ones marked `static audit`: `python3 src/RimMandrake/bridgetools/selftest_bridge_hooks.py`. The run without
 `--no-cs` also builds `TpsMathSelfTest` and requires every `T_Recorder*`, `T_Guard*` and `T_Writer*` unit to read `ok`.

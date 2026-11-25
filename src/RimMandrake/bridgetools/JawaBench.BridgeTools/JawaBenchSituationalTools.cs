@@ -429,6 +429,9 @@ namespace JawaBench.BridgeTools
             // Contained here too: a throw out of a postfix would surface as Pawn.Kill's own exception.
             try { if (__instance != null && __instance.Dead) JawaBenchVitals.OnKill(__instance, dinfo, exactCulprit, __state); }
             catch (Exception ex) { NoteError(GKill, "kill-vitals", ex); }
+            // the kill record of a cast pawn in the live scene run (JawaBenchCast; the settle reconciliation reads it)
+            try { if (__instance != null && __instance.Dead) JawaBenchCast.OnKill(__instance, dinfo, exactCulprit); }
+            catch (Exception ex) { NoteError(GKill, "kill-cast", ex); }
         }
 
         private static void KillFin(Exception __exception) => Threw(GKill, __exception);

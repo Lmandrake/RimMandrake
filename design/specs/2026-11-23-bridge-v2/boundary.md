@@ -54,8 +54,7 @@ Each record is one line of kind `scene` in the game's `JawaBench` record, writte
 5. A sampled value is an end-of-tick value.
 6. A random draw inside the sample phase is a `fault` record.
 
-Not yet in the trace, each with its ticket in `06_build_order.md`: the tap records with their two sequence numbers; the alias
-links; the plan and checker versions; the reviewed list of readers (a track may read a property today).
+Not yet in the trace, each with its ticket in `06_build_order.md`: the plan and checker versions; the reviewed list of readers (a track may read a property today).
 
 ## THE LIFE CYCLE, THE RUN LOCK
 
@@ -113,6 +112,70 @@ A missing, unreadable or old-format heartbeat is COULD NOT LOOK and adds one lin
 admission checks the disk reading before connecting and before starting a run, and refuses a game read as broken
 or gone. A broken-game stop goes through `game_instance.py stop --broken` after two independent readings.
 The [watcher boundary](../2026-11-23-bridge-v2-watcher/boundary.md) names the tests, limits and stop evidence.
+
+## CAST TRACKS AND JOB TAPS
+
+Code: `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchCastCore.cs` (all of it, the pure half),
+`src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchCast.cs` (all of it, the Verse half and its three patch sites), the `ISceneCast`
+seam of `JawaBenchSceneTickCore.cs`, `CastPawns` and the `JawaBenchCast.Join` line of `JawaBenchHands.cs`, and the `kill-cast` line of
+`KillPostfix` in `JawaBenchSituationalTools.cs`. Item `RIMMANDRAKE_BUILD_CAST_TRACKS_AND_JOB_TAPS_FIRST_FAMILY`. Each promise has a test of
+its name in `src/RimMandrake/bridgetools/selftest_cast_tracks.py` (harness `bridgetools/CastTracksSelfTest`). The hooks are on
+`src/RimMandrake/bridgetools/HOOKS.md`.
+
+**The cast** of a `jawa/run_until` run is every pawn of the session's bindings: an alias, or `alias[i]` in a group. Each member has the
+twelve standard cast tracks, `<alias>.pos`, `facing`, `job` (`def#loadID`), `toil`, `health` (summary percent), `downed`, `dead`,
+`mental`, `carried`, `holder`, `faction` (`def#loadID`), `drafted`. They are sampled in the sample phase, after the named tracks, and
+written on change only, as `track` rows of the trace (first and last sample of every one).
+
+**The taps** (lazy: on at the first run with a cast, then on): job start (`Pawn_JobTracker.StartJob`), job end
+(`Pawn_JobTracker.CleanupCurrentJob`, where every end goes, `EndCurrentJob` and the end inside `StartJob` included), and a reservation
+made or refused (`ReservationManager.Reserve`). The kill tap that exists feeds the cast too. A tap row is a scene line with phase
+`in_tick` and the run's own `n`; it carries `ord`, the entry ordinal taken at the prefix (the call order, also when calls nest).
+
+| rec | fields |
+|---|---|
+| `job_start` | `alias`, `thing`, `ord`, `job`, `def`, `giver` (the ThinkNode type, `player`, `queue` or `direct`), `current`, `prev` (the job it replaced), `prevEnd` (its end condition, or `Suspended`) |
+| `job_end` | `alias`, `thing`, `ord`, `job`, `def`, `toil` (the toil it ended on), `cond` |
+| `reserve` | `alias`, `thing`, `ord`, `job`, `target`, `made`, `holder` (who holds it, when refused) |
+| `kill` | `alias`, `thing`, `ord`, `culprit` |
+| `link` | `alias`, `from`, `to`, `why`: the alias moved to another thing (a dead pawn's corpse) |
+| `rebind` | `name` (`<alias>.toil`), `from`, `to`: the job of the toil track changed |
+| `reconcile` | `alias`, `what`, `deadAt`, `verdict` (`COULD NOT LOOK`) |
+
+`close` gains `cast`: `members`, `tracks`, `samples`, `reads`, `rows`, `links`, `rebinds`, `ms`, `msMax`, `msPerTick`, `reconcile`, and
+`taps` (`records`, `outside`, `notCast`, `dropped`, and the coverage of each of the three hooks).
+
+### LIMITS
+
+None of its own. The taps use the guards of `JawaBenchHookGuard`; the rows go through the writer of the run.
+
+### DOES NOT SURVIVE (not promised)
+
+- **a-hook-that-is-not-connected.** An offline test proves the rules, never that Harmony put the hook on the method or that another mod's
+  prefix lets the original run. The live proof is the tap certificate (`RIMMANDRAKE_BUILD_TAP_CERTIFICATE_CANARY_RUNS_OFF_STAGE`).
+- **a-change-inside-one-tick.** A cast track sees the end of the tick. A job that started and ended inside one tick is seen only by the taps.
+- **zero-allocation-with-a-cast.** A changed position, job or holder text costs one string; a tap row costs its line.
+- **a-pawn-outside-the-cast.** Its jobs and reservations are counted (`notCast`) and not written.
+
+### PROMISES (each one is owed a test of the same name)
+
+- **the-job-tap-follows-the-six-hook-rules.** Reentrancy, a skipped prefix, a skipped original, a game exception, an off-thread call and
+  a writer fault are each handled as `HOOKS.md` says, for the job start and the job end; a job start names the job it replaced and its
+  end condition, and the end row comes first.
+- **the-reservation-tap-follows-the-six-hook-rules.** The same six, for a reservation; a refusal names its holder.
+- **two-job-starts-in-one-tick-keep-their-order.** Rows of one tick keep their record order in `n`, and `ord` keeps the call order when
+  one start nests inside another.
+- **a-record-outside-any-run-is-dropped-and-counted.** With no running run (none, or one that is settling), a tap writes no row and counts
+  it in `outside`.
+- **an-alias-whose-object-is-replaced-writes-a-link.** An alias never moves to another thing without a `link` row before the rows of that
+  thing.
+- **a-track-on-a-replaced-job-rebinds.** When the job changes, a `rebind` row and then the toil row are written, also when the index is
+  the same.
+- **the-settle-reconciliation-catches-a-death-with-no-kill-record.** A cast member that died in the run with no kill record is a
+  `reconcile` row, verdict COULD NOT LOOK, and is listed in `close`.
+- **the-hook-table-check-passes.** `selftest_bridge_hooks.py` passes with the three new sites on `HOOKS.md`.
+- **the-per-tick-cost-of-the-tracks-is-in-the-result.** `close.cast` holds the ms of the cast tracks, the most of one sample and the
+  mean per tick.
 
 ## LIVE READINGS
 

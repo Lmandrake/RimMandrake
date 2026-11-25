@@ -88,7 +88,9 @@ namespace JawaBench.BridgeTools
                 {
                     var plan = H.MakePlan(until, record, limit, Host.MapId, Core.GroupSize);
                     var src = JawaBenchTerrainTools.NewProbeSource();
-                    return new T.SceneRun(id, plan.Compile(src), src, ticks, Host, step ? "STEP" : "PLAY", spName, trace, tickBudgetMs);
+                    var made = new T.SceneRun(id, plan.Compile(src), src, ticks, Host, step ? "STEP" : "PLAY", spName, trace, tickBudgetMs);
+                    JawaBenchCast.Join(made, Host.CastPawns(Core.GroupSize));       // the standard cast tracks of every bound pawn
+                    return made;
                 }, JawaBenchSceneTick.EpochBox(), run =>
                 {
                     // the write-back is in the arming hop, just before the open record reads the state: no frame draws between them
@@ -261,6 +263,21 @@ namespace JawaBench.BridgeTools
             }
 
             public void Unbind(string alias) { _bound.Remove(alias); }
+
+            /// <summary>The cast of a run: every bound pawn, named by its alias, or `alias[i]` in a group.</summary>
+            internal List<KeyValuePair<string, Thing>> CastPawns(Func<string, int> sizeOf)
+            {
+                var l = new List<KeyValuePair<string, Thing>>();
+                foreach (var kv in _bound)
+                {
+                    int n = sizeOf(kv.Key);
+                    for (int i = 0; i < kv.Value.Length; i++)
+                        if (kv.Value[i] is Pawn)
+                            l.Add(new KeyValuePair<string, Thing>(n > 0 ? kv.Key + "[" + i.ToString(CultureInfo.InvariantCulture) + "]" : kv.Key, kv.Value[i]));
+                }
+                l.Sort((a, b) => string.CompareOrdinal(a.Key, b.Key));
+                return l;
+            }
 
             private Dictionary<string, MethodInfo> _tools;
             internal Dictionary<string, MethodInfo> Tools()

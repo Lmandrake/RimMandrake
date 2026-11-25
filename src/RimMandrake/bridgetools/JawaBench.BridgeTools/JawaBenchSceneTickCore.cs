@@ -27,6 +27,20 @@ namespace JawaBench.BridgeTools
         long? AllocBytes();
     }
 
+    /// <summary>One row of a run's trace, numbered in its series. Returns the line's sequence number, or -1 when dropped.</summary>
+    internal delegate long SceneRow(long tick, string phase, string rec, string fields);
+
+    /// <summary>The standard cast tracks of a run (JawaBenchCastCore.Cast, RIMMANDRAKE_BUILD_CAST_TRACKS_AND_JOB_TAPS_FIRST_FAMILY):
+    /// sampled in the sample phase after the named tracks, and reconciled after the last sample. Declared here so that this file
+    /// needs no other core.</summary>
+    internal interface ISceneCast
+    {
+        void Sample(SceneRow row, long tick, string phase, bool all);
+        void Reconcile(SceneRow row, long tick);
+        /// <summary>The `cast` field of the close record: a JSON object.</summary>
+        string Summary();
+    }
+
     internal static class JawaBenchSceneTickCore
     {
         internal const string Schema = "scene_trace_v1";
@@ -137,6 +151,9 @@ namespace JawaBench.BridgeTools
             public IList<Track> Tracks { get { return _tracks; } }
             /// <summary>What the run lock refused and let through while this run was live.</summary>
             public readonly JawaBenchRunLockCore.LockLog Lock = new JawaBenchRunLockCore.LockLog();
+            /// <summary>The standard cast tracks, or null. Set before Arm.</summary>
+            public ISceneCast Cast;
+            SceneRow _row;
 
             /// <summary>The probe of the condition value that could not be read, with its state; null when there is none.</summary>
             public Dictionary<string, object> UnknownValue()
@@ -189,6 +206,14 @@ namespace JawaBench.BridgeTools
                 return true;
             }
 
+            /// <summary>A tap record, made inside the tick by a Harmony hook: phase `in_tick`, the tick now. Returns -2 when the run is
+            /// not running (the record is outside any run), else the sequence number, or -1 when the writer dropped it.</summary>
+            public long EmitTap(string rec, string fields)
+            {
+                if (Stage != "running") return -2;
+                return Emit(_h.Tick(), "in_tick", rec, fields);
+            }
+
             void Fault(long tick, string phase, string what, string detail)
             {
                 _faults.Add(what + ": " + detail);
@@ -211,6 +236,11 @@ namespace JawaBench.BridgeTools
                     t.Has = true; t.Last = r;
                     Emit(tick, phase, "track", "\"name\":" + S(t.Name) + ",\"st\":" + S(r.Status) + ",\"v\":" + S(r.V) +
                                                (r.Status == "ok" ? "" : ",\"detail\":" + S(r.Detail)));
+                }
+                if (Cast != null)
+                {
+                    if (_row == null) _row = Emit;
+                    Cast.Sample(_row, tick, phase, all);
                 }
             }
 
@@ -361,6 +391,7 @@ namespace JawaBench.BridgeTools
                     {
                         ulong r0 = _h.RandState();
                         Sample(tick, "last", true);
+                        if (Cast != null) Cast.Reconcile(_row ?? (_row = Emit), tick);
                         RandCheck(r0, tick, "last");
                     }
                     catch (Exception e) { Fault(tick, "last", "threw", "the last sample: " + e.GetType().Name + ": " + e.Message); }
@@ -376,7 +407,8 @@ namespace JawaBench.BridgeTools
                 Emit(tick, "last", "close", "\"rows\":" + _rows + ",\"dropped\":" + _dropped + ",\"drained\":" + (drained ? "true" : "false") +
                                             ",\"paused\":" + (_paused ? "true" : "false") + ",\"tickAfter\":" + tick + ",\"skipped\":" + _skipped +
                                             ",\"randFaults\":" + _randFaults + ",\"actsNotDone\":" + S(left) + ",\"alloc\":" + alloc +
-                                            ",\"lockReads\":" + Lock.Reads + ",\"breaches\":" + S(Lock.Breaches()));
+                                            ",\"lockReads\":" + Lock.Reads + ",\"breaches\":" + S(Lock.Breaches()) +
+                                            (Cast != null ? ",\"cast\":" + Cast.Summary() : ""));
                 Stage = "closed";
             }
         }
