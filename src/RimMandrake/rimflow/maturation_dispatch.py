@@ -335,8 +335,16 @@ def gather(root, cfg, live=True):
         m = by.get(mod) or {}
         runs = m.get("runs", UNM) if m else []
         if isinstance(runs, list):
-            f["live_units"] = [r["unit"] for r in runs if r.get("live")]
-            f["lane_units"] = [r["unit"] for r in runs if r.get("live") and r.get("lane") == LIST_LANE]
+            # a lane run holds its mod only once it is on the mod's files (lane_on_mod_files); one on pipeline code
+            # that names the mod by a title word held FlowWorks with ArchBig free (2026-11-25 9:05 AM PST,
+            # RIMMANDRAKE_FIND_WHY_ARCHSMALL_SITS_FREE_TWO_MODS_AT_IN_GAME)
+            beside = [r["unit"] for r in runs if r.get("live") and r.get("lane") == LIST_LANE
+                      and _beside(lane_on_mod_files(r["unit"], mod))]
+            f["live_units"] = [r["unit"] for r in runs if r.get("live") and r["unit"] not in beside]
+            f["lane_units"] = [r["unit"] for r in runs if r.get("live") and r.get("lane") == LIST_LANE
+                               and r["unit"] not in beside]
+            if beside:
+                f["lane_beside"] = beside
             ends = [r["end"] for r in runs if isinstance(r.get("end"), (int, float))]
             f["last_end"] = max(ends) if ends else None
             box3 = ((m.get("boxes") or {}).get("3") or {}).get("runs") or []
@@ -767,6 +775,57 @@ def one_run_fence(facts, rows, launches):
 
 
 LIST_LANE = "list_dispatch"     # detached_helper's next_act_owner on every Workshop Pipeline run
+
+
+def _beside(answer):
+    """True only for a looked answer of False: a lane run that could not be read is held, never free."""
+    return bool(answer.ok and answer.value is False)
+
+
+def _mod_paths(paths, mod):
+    import mod_work as MW
+    hits = []
+    for p in paths:
+        m = MW.PATH_RX.match(str(p).strip().strip('"').replace("\\", "/"))
+        if m and MW.place(m.groups(), {mod}) == mod:
+            hits.append(p)
+    return hits
+
+
+def lane_on_mod_files(unit, mod, record=None, run=None):
+    """-> probe_result value(True) when the Workshop Pipeline run `unit` is on `mod`'s files (src/<Tier>/<mod>/, design/concepts/<mod>/): its
+    clone's working tree, its commits not on origin/main, or its commits since launch that name its item touch one.
+    value(False) when it touches none; could_not_look(cause) for no record, no clone or a git error: held, never free.
+    A lane run names its mod by a title word (list_dispatch.mod_of), so one on pipeline code held the mod for nothing.
+    The lane launches beside a live mod run with no such guard, so the window a lane run opens before its first mod
+    edit is the one it already has (design/specs/2026-11-23-list-dispatch/boundary.md, a-lane-run-on-a-mod-takes-no-mod-slot)."""
+    import probe_result as PR
+    import time_budget as TB
+    run = run or subprocess.run
+    try:
+        rec = (record or DH.read_record)(unit)
+    except Exception as e:       # noqa: BLE001  could not look is held
+        return PR.could_not_look("the run record of %s could not be read (%s: %s)" % (unit, type(e).__name__, e))
+    clone, item, at = (rec or {}).get("clone"), (rec or {}).get("item"), (rec or {}).get("at")
+    if not (clone and os.path.isdir(os.path.join(str(clone), ".git")) and item):
+        return PR.could_not_look("%s has no record, no item or no clone on disk (%s)" % (unit, clone))
+    reads = [["status", "--porcelain", "--untracked-files=all"],
+             ["log", "--format=", "--name-only", "origin/main..HEAD"],
+             ["log", "--format=", "--name-only", "--fixed-strings", "--grep", str(item), "HEAD"]
+             + (["--since=@%d" % int(at - 3600)] if isinstance(at, (int, float)) else [])]
+    paths = []
+    for a in reads:
+        try:
+            r = run(["git", "-C", str(clone)] + a, capture_output=True, text=True, timeout=TB.CALL_S,
+                    stdin=subprocess.DEVNULL)
+        except (OSError, subprocess.SubprocessError) as e:
+            return PR.could_not_look("git %s in %s: %s: %s" % (a[0], clone, type(e).__name__, e))
+        if r.returncode:
+            return PR.could_not_look("git %s in %s exited %d: %s" % (a[0], clone, r.returncode, (r.stderr or "")[:200]))
+        for ln in (r.stdout or "").splitlines():
+            ln = ln[3:] if a[0] == "status" else ln
+            paths += [x for x in ln.split(" -> ") if x.strip()]
+    return PR.value(bool(_mod_paths(paths, mod)))
 
 
 def occupancy(facts):

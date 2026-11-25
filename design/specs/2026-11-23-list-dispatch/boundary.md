@@ -127,9 +127,15 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   `OPS_LIST_GATE_HOLDS_READY_WORK_ON_COULD_NOT_LOOK`, its title naming the gate, the file and the count. The danger
   and the line's reason are on the target in `ops_watch_rules.json`.
 - **a-lane-run-on-a-mod-takes-no-mod-slot.** The mod tick (`maturation_dispatch.occupancy`) does not count a live run that
-  this lane launched (`next_act_owner` list_dispatch) in its own `max_live`. The run is still live on its mod, so no mod
-  run starts beside it on the same files. Measured 2026-11-24: lane runs on FlowWorks held the Gimme Some Slack walk brief
-  at slots_full.
+  this lane launched (`next_act_owner` list_dispatch) in its own `max_live`. Measured 2026-11-24: lane runs on FlowWorks
+  held the Gimme Some Slack walk brief at slots_full.
+- **a-lane-run-holds-its-mod-only-on-its-files.** A live lane run is live on its mod (so no mod run starts beside it)
+  only when it is on the mod's files (`maturation_dispatch.lane_on_mod_files`): its clone's working tree, its commits not
+  on origin/main, or its commits since launch that name its item touch `src/<Tier>/<Mod>/` or `design/concepts/<Mod>/`.
+  A run on other files is beside the mod (`lane_beside` in the mod's facts) and holds nothing. A run whose record, clone
+  or git read cannot be read is held. Measured 2026-11-25 9:05 AM PST: a Shape run on pipeline code, whose title named
+  FlowWorks, held FlowWorks's in-game visit while ArchBig read FREE. Does not survive: a lane run that starts a mod edit
+  after a mod run launched beside it (the lane already launches beside a live mod run).
 - **a-claimed-item-is-not-the-lanes.** An item that is `doing` under a live lease, with no lane run on it, reads
   `claimed`: it is not launched and not adopted. The lease of the lane's own run does not stop its second run.
 - **a-raised-item-goes-first.** Items that `rimflow raise` raised come before every other item, in the order they were

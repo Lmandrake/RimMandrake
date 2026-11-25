@@ -753,6 +753,80 @@ def t_a_mod_ticket_is_not_the_list_pipelines():
     chk(lambda: o["offer"] == [] and list(o["blind"]) == [ids[2]], "list_home offer: an unreadable home is not offered")
 
 
+def t_a_lane_run_holds_its_mod_only_on_its_files():
+    import subprocess
+    import time
+    import maturation_dispatch as MD
+    git = lambda d, *a: subprocess.run(["git", "-C", d] + list(a), capture_output=True, text=True, check=True)  # noqa: E731
+    with tempfile.TemporaryDirectory() as td:
+        origin, clone = os.path.join(td, "o.git"), os.path.join(td, "c")
+        subprocess.run(["git", "init", "-q", "--bare", "-b", "main", origin], check=True)
+        subprocess.run(["git", "clone", "-q", origin, clone], check=True, capture_output=True)
+        for k, v in (("user.email", "t@t"), ("user.name", "t")):
+            git(clone, "config", k, v)
+        os.makedirs(os.path.join(clone, "src", "RimMandrake", "rimflow"))
+        os.makedirs(os.path.join(clone, "src", "RimMandrake", "FlowWorks", "northstar"))
+        os.makedirs(os.path.join(clone, "design", "concepts", "FlowWorks"))
+        open(os.path.join(clone, "README"), "w").write("x\n")
+        git(clone, "add", "README")
+        git(clone, "commit", "-qm", "base")
+        git(clone, "push", "-q", "origin", "HEAD:main")
+        rec = {"clone": clone, "item": "RIMMANDRAKE_X_FLOWWORKS_Y", "at": time.time() - 60}
+        on = lambda: (lambda a: a.value if a.ok else a.kind)(MD.lane_on_mod_files("u", "FlowWorks", record=lambda u: rec))  # noqa: E731
+        chk(lambda: on() is False, "a lane run with no change is beside its mod, not on it (%s)" % on())
+        p = os.path.join(clone, "src", "RimMandrake", "rimflow", "tick.py")
+        open(p, "w").write("x\n")
+        git(clone, "add", p)
+        git(clone, "commit", "-qm", "RIMMANDRAKE_X_FLOWWORKS_Y: pipeline code")
+        git(clone, "push", "-q", "origin", "HEAD:main")
+        chk(lambda: on() is False, "a lane run on pipeline code only is not on its mod's files (%s)" % on())
+        q = os.path.join(clone, "src", "RimMandrake", "FlowWorks", "northstar", "p.py")
+        open(q, "w").write("x\n")
+        chk(lambda: on() is True, "an untracked file in the mod's folder holds the mod (%s)" % on())
+        git(clone, "add", q)
+        git(clone, "commit", "-qm", "unnamed local commit")
+        chk(lambda: on() is True, "a local commit on the mod's files holds the mod (%s)" % on())
+        git(clone, "push", "-q", "origin", "HEAD:main")
+        git(clone, "fetch", "-q")
+        chk(lambda: on() is False, "a pushed commit that names no item is not this run's (%s)" % on())
+        c = os.path.join(clone, "design", "concepts", "FlowWorks", "polish.md")
+        open(c, "w").write("x\n")
+        git(clone, "add", c)
+        git(clone, "commit", "-qm", "RIMMANDRAKE_X_FLOWWORKS_Y: polish line")
+        git(clone, "push", "-q", "origin", "HEAD:main")
+        git(clone, "fetch", "-q")
+        chk(lambda: on() is True, "a published commit that names its item, in the concept folder, holds the mod (%s)" % on())
+        chk(lambda: MD.lane_on_mod_files("u", "Pyrelands", record=lambda u: rec).value is False,
+            "another mod's files do not hold this mod")
+        chk(lambda: MD.lane_on_mod_files("u", "FlowWorks", record=lambda u: None).kind == "could_not_look",
+            "no record reads could-not-look (held)")
+        chk(lambda: MD.lane_on_mod_files("u", "FlowWorks", record=lambda u: dict(rec, clone=os.path.join(td, "gone")))
+            .kind == "could_not_look", "a missing clone reads could-not-look (held)")
+        bad = lambda *a, **k: subprocess.CompletedProcess(a, 128, "", "fatal")  # noqa: E731
+        chk(lambda: MD.lane_on_mod_files("u", "FlowWorks", record=lambda u: rec, run=bad).kind == "could_not_look",
+            "a git error reads could-not-look (held)")
+    # gather: a lane run beside its mod is not live on it; one held or unreadable stays live
+    import maturation_now as MN
+    v = MN.run_view({"unit": "u-lane", "item": "X", "status": "running", "at": NOW, "next_act_owner": "list_dispatch"}, NOW)
+    keep = MD.MN.gather, MD.M.build_facts, MD.M.load, MD.lane_on_mod_files
+    MD.MN.gather = lambda root, live=True: {"mods": [{"name": "FlowWorks", "boxes": {}, "runs": [
+        dict(v, unit="u-beside", live=True, end=None), dict(v, unit="u-on", live=True, end=None),
+        dict(v, unit="u-blind", live=True, end=None), dict(v, unit="u-drive", lane=None, live=True, end=None)]}]}
+    MD.M.build_facts = lambda root, mod: {"mod": mod, "stage": "designer"}
+    MD.M.load = lambda root, mod: {"stage": "designer"}
+    import probe_result as PR
+    seen = {"u-beside": PR.value(False), "u-on": PR.value(True)}
+    MD.lane_on_mod_files = lambda u, m: seen[u] if u in seen else PR.could_not_look("unread")
+    try:
+        g = MD.gather(REPO, {"advancing": ["FlowWorks"]})["FlowWorks"]
+    finally:
+        MD.MN.gather, MD.M.build_facts, MD.M.load, MD.lane_on_mod_files = keep
+    chk(lambda: g["live_units"] == ["u-on", "u-blind", "u-drive"] and g["lane_beside"] == ["u-beside"]
+        and g["lane_units"] == ["u-on", "u-blind"],
+        "gather: only a lane run on the mod's files, or unreadable, is live on it (%s, %s, %s)"
+        % (g.get("live_units"), g.get("lane_units"), g.get("lane_beside")))
+
+
 def t_each_limit_names_its_danger():
     c = LD().load_cfg()
     nums = [k for k, v in c.items() if isinstance(v, (int, float)) and not isinstance(v, bool) and not k.startswith("_")]
@@ -776,6 +850,7 @@ def main():
               t_a_gate_held_on_could_not_look_is_told,
               t_a_raised_item_goes_first,
               t_a_lane_run_on_a_mod_takes_no_mod_slot,
+              t_a_lane_run_holds_its_mod_only_on_its_files,
               t_a_passed_wait_gets_one_second_look,
               t_a_claimed_item_is_not_the_lanes,
               t_oldest_blocking_item_first,
