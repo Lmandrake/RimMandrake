@@ -1,0 +1,11 @@
+# Daily: see rm-family-clean.service. The age lines are 14 days and more, so a daily run is ample.
+[Unit]
+Description=RimMandrake family cleaner, daily
+
+[Timer]
+OnCalendar=*-*-* 03:40:00
+RandomizedDelaySec=600
+Persistent=true
+
+[Install]
+WantedBy=timers.target

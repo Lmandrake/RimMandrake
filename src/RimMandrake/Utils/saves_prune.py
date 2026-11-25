@@ -45,6 +45,12 @@ ROOT = HERE.parents[2]
 sys.path.insert(0, str(HERE))
 from canon_save import start_savegame_name  # noqa: E402
 CANONICAL = start_savegame_name()   # canon.yml planet.start_savegame; CANONICAL_* saves stay protected too
+import canonical_saves  # noqa: E402  (the companion's guard list, made from infrastructure/state/CANONICAL_SAVE.md)
+try:
+    GUARD = canonical_saves.read(str(ROOT))      # (names, starts): every guarded save, and its backups, is never PRUNE
+except canonical_saves.Unreadable as _e:
+    GUARD = None
+    GUARD_ERROR = str(_e)
 AWAITING = ROOT / "infrastructure" / "state" / "saves_awaiting_review.txt"
 AUTOSAVE = re.compile(r"^Autosave-\d+\.rws$", re.I)
 BACKUP = re.compile(r"(\.bak|bak-pre|\.before[_-]|before_|_backup|\.prev|\.orig|pre_?edit|\.old$)", re.I)
@@ -114,9 +120,10 @@ def classify(name: str, mtime: float, now: float, aw: set[str], cites: dict[str,
     s = stem(name)
     is_backup = bool(BACKUP.search(name[len(s):] if name.lower().endswith(".rws") else name)) \
         or not name.lower().endswith(".rws") or bool(BACKUP.search(s))
-    if name == CANONICAL or (s.startswith("CANONICAL_") and not is_backup):
+    guarded = GUARD is not None and (s in GUARD[0] or any(s.startswith(x) for x in GUARD[1]))
+    if name == CANONICAL or ((s.startswith("CANONICAL_") or guarded) and not is_backup):
         return "KEEP", "canonical"
-    if s.startswith("CANONICAL_"):
+    if s.startswith("CANONICAL_") or guarded:
         return "HOLD", "backup of a canonical save — delete only by hand, after checking the live file"
     if AUTOSAVE.match(name):
         return "KEEP", "autosave (the game rotates these)"
@@ -180,6 +187,8 @@ def main(argv=None) -> int:
         rows.append({"name": n, "verdict": v, "why": why, "bytes": sz, "age_d": round((now - mt) / 86400, 1)})
     if CANONICAL not in {r["name"] for r in rows}:
         print("WARNING: the canonical start save %s is NOT in %s" % (CANONICAL, sd))
+    if GUARD is None:
+        CITE_ERRORS.append("the canonical guard could not be read: %s" % GUARD_ERROR)
     for err in CITE_ERRORS:
         print("UNMEASURED: citation search failed — %s" % err)
     if a.apply and CITE_ERRORS:

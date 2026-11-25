@@ -1,0 +1,22 @@
+# rm-family-clean: family_clean.py --apply, the cleaner for the trash families scratch_reap.py does not cover
+# (bench Transient/, the Saves folder, D:\ClaudeWork\rimmandrake backups, codex_wsl, showings, scratch, kept_clones,
+# build selftest stages; dispatcher/detached and ~/.claude/projects are measured and kept or left to their own cleaner).
+# Each family's reader and age line: the docstring of src/RimMandrake/Utils/family_clean.py.
+# Reading: D:\ClaudeWork\rimmandrake\family_clean\last_run.json (family_clean.py check reads it); acts: acts.jsonl beside it.
+# Runs from the one Operations deploy (the dispatch clone, which only fast-forwards to origin/main).
+# Item: RIMMANDRAKE_EXTEND_CLEANER_TO_FAMILIES_NO_CLEANER_COVERS_265_GB_ON_D.
+# Install:  python3 src/RimMandrake/Utils/ops_clocks.py install rm-family-clean --apply --enable
+[Unit]
+Description=RimMandrake family cleaner (Transient, Saves, D: backups/codex_wsl/showings/scratch/kept_clones/build)
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/dispatch
+Environment=RM_DATA_ROOT=/mnt/d/ClaudeWork/rimmandrake
+Environment=WINBUILD_ROOT=/mnt/d/ClaudeWork/rimmandrake/build
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/family_clean.py --apply
+Nice=19
+IOSchedulingClass=idle
+CPUSchedulingPolicy=batch
+# budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=1171s (dry run 2026-11-25; an --apply run adds its deletes)
+TimeoutStartSec=14400

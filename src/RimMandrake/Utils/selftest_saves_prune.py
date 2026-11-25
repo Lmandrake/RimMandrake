@@ -4,7 +4,9 @@
   1. a cited save is KEEP and an uncited old debug save is PRUNE (citation search stubbed: one hit);
   2. --apply deletes the PRUNE row only, never the cited one or a CANONICAL_* save;
   3. a citation search that fails to run (exit 128) makes --apply REFUSE (rc 2) and delete nothing —
-     before 2026-10-26 a blind search read as "cited nowhere" and every cited save became PRUNE.
+     before 2026-10-26 a blind search read as "cited nowhere" and every cited save became PRUNE;
+  4. a backup of a save that CANONICAL_SAVE.md guards by name (no CANONICAL_ prefix) is never deleted - before
+     2026-11-25 only the start name and CANONICAL_* were guarded, so an uncited `.bak-pre` copy of a guarded save was PRUNE.
 """
 import io
 import os
@@ -20,6 +22,7 @@ sys.path.insert(0, str(HERE))
 import saves_prune as sp  # noqa: E402
 
 CITED, UNCITED, CANON = "RM_SelftestCitedSave.rws", "zz_selftest_uncited_debug.rws", "CANONICAL_SELFTEST_X.rws"
+GUARDED_BAK = "ASHKARR_DEV_START_2026-10-21_REPAINT.rws.bak-pre-selftest-20261125"   # a name in the guard list, not the start
 
 
 def fake_run(hit: bool, rc: int):
@@ -48,7 +51,7 @@ def main() -> int:
         with tempfile.TemporaryDirectory() as td:
             d = Path(td)
             old = time.time() - 10 * 86400
-            for n in (CITED, UNCITED, CANON):
+            for n in (CITED, UNCITED, CANON, GUARDED_BAK):
                 (d / n).write_bytes(b"x")
                 os.utime(d / n, (old, old))
             rc, out, _ = go(d, fake_run(True, 0), [])
@@ -56,16 +59,16 @@ def main() -> int:
                     "PRUNE" not in next((l for l in out.splitlines() if UNCITED in l), ""):
                 fails.append("dry run verdicts wrong:\n" + out)
             rc, out, left = go(d, fake_run(False, 128), ["--apply"])
-            if rc != 2 or "REFUSED" not in out or left != sorted([CITED, UNCITED, CANON]):
+            if rc != 2 or "REFUSED" not in out or left != sorted([CITED, UNCITED, CANON, GUARDED_BAK]):
                 fails.append("blind search did not refuse --apply (rc=%s, left=%s)" % (rc, left))
             rc, out, left = go(d, fake_run(True, 0), ["--apply"])
-            if rc != 0 or left != sorted([CITED, CANON]):
+            if rc != 0 or left != sorted([CITED, CANON, GUARDED_BAK]):
                 fails.append("--apply deleted the wrong set (rc=%s, left=%s)" % (rc, left))
     finally:
         sp.subprocess.run = real
     for f in fails:
         print("FAIL:", f)
-    print("selftest_saves_prune: %s" % ("FAIL" if fails else "OK (3/3)"))
+    print("selftest_saves_prune: %s" % ("FAIL" if fails else "OK (4/4)"))
     return 1 if fails else 0
 
 
