@@ -1,0 +1,2 @@
+A test table's runs_today text is the offline certificate's view and goes stale when a hand writes UNRUN into it: Pyrelands' two walk deciders read UNRUN for a day after visits 8 and 9 had PASSed them. Read the visit rows.jsonl and rerun_relation.py for live state, and leave runs_today in its standard 'live: this run is offline only' form.
+item: RIMMANDRAKE_SPLIT_PYRELANDS_SEASON_WALK_TO_MINIMUM_TESTS
