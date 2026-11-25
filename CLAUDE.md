@@ -590,7 +590,9 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 
 - The run that builds an item also writes its offline selftest and its live bridge test. Later these join the formal
   tests.
-- If the live test did not run, record it as UNRUN, with its command.
+- When a game is free, the builder or fixer deploys the mod's small list and runs the in-game checks that its change
+  touches in the same run, and records each run with `maturation.py live-row`. Stage 6 counts that run.
+- If the live test did not run because no game could take it, record it as UNRUN, with its command.
 - Full text: `design/RimMandrake/standing_rulings.md` §The test is built with the item.
 
 ## A live test declares its kind

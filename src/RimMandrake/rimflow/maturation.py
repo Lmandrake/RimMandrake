@@ -132,7 +132,9 @@ LIVE_NEEDS = ("game-up", "bridge")      # the model.NEEDS windows only a live ga
 
 
 def game_takeable(stage):
-    """True only at in-game acceptance (Stage 6): the one stage whose runs may take the bridge and the game."""
+    """True only at in-game acceptance (Stage 6): the one stage whose runs get the live holder brief for game-only items.
+    A builder or fixer at another stage still takes a free game for the in-game checks its change touches
+    (LIVE_IN_RUN_RULE)."""
     return stage == "in_game"
 
 
@@ -661,9 +663,9 @@ def ledger_implemented(root, ids):
 def live_known_red_owed(root, tt, bar_ids):
     """-> {bar id: [(test id, known-red item, why)]} for the bars among bar_ids whose only unrunnable deciders are live
     stage-6 checks whose entry exists and whose known red is cured (closed) or implemented with a remainder that needs
-    the live game (ledger needs game-up or bridge). Such a check runs: it is UNRUN with its command and owed to Stage 6,
-    which runs every decider (RIMMANDRAKE_ROUTE_LIVE_ONLY_DECIDER_STAGE_THREE_NO_ROAD; the owner's 2026-11-13 rule, an
-    unrun live test is recorded UNRUN with its command). Any decider of another shape, an offline known red, an
+    the live game (ledger needs game-up or bridge). Such a check runs: it is UNRUN with its command and owed to Stage 6
+    unless a builder or fixer ran it live on a free game (RIMMANDRAKE_ROUTE_LIVE_ONLY_DECIDER_STAGE_THREE_NO_ROAD; the
+    owner's 2026-11-13 rule, an unrun live test is recorded UNRUN with its command). Any decider of another shape, an offline known red, an
     unlanded fix or an offline remainder keeps the bar refused: the bar itself is never loosened."""
     tests = (tt or {}).get("tests") or {} if isinstance(tt, dict) else {}
     bars = {b.get("id"): b for b in (tt or {}).get("bars") or [] if isinstance(b, dict)} if isinstance(tt, dict) else {}
@@ -1106,7 +1108,7 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
                        would_pass="a row for each on a commit that contains its UNRUN row's sha",
                        fix="run only these checks (%s) and write their rows" % ", ".join(
                            dict.fromkeys(str(r.get("check")) for r in uo)), cost="rerun",
-                       why_sound="spec Stage 3 exit: an in-game check is UNRUN until Stage 6 runs it")
+                       why_sound="spec Stage 3 exit: an in-game check that no free game could take is UNRUN until a live run of it")
         elif cur == "pre_human":
             clause("walk_checks_stand", "no in-game check is owed on the build he walks: no UNRUN row is left, and no "
                    "change since a check's last row touches it or cannot be related to it (walk_owed)",
@@ -2143,6 +2145,34 @@ FREE_GAME_RULE = (
     "the work.")
 
 
+# Owner, 2026-11-24 about 11:00 PM PST, after a builder left six live scenes unrun while ArchSmall was free: "Was a game
+# available? Because it so, that builder should have deployed it and tested it right away in the same context."
+# (item RIMMANDRAKE_RUN_LIVE_CHECKS_IN_BUILDER_RUN_WHEN_GAME_FREE; design/specs/2026-11-24-live-checks-in-builder-run/)
+# In the Stage 3 builder's brief and every offline-closing fixer's brief; %(mod)s is the mod.
+LIVE_IN_RUN_RULE = (
+    "- **Run the in-game checks that your change touches in this run, on a free game** (owner, 2026-11-24: \"Was a game "
+    "available? Because it so, that builder should have deployed it and tested it right away in the same context.\"). "
+    "When your change has an in-game check (a stage-6 check of the test table that reads or exercises what you "
+    "changed), read `python3 src/RimMandrake/rimflow/game_lock.py query all` (ArchBig, ArchSmall) and the SteveDesktop "
+    "test lane (Steve1, Steve2: `infrastructure/stevedesktop/RUNBOOK.md`). When any game is free, take it (the free game "
+    "rule below), deploy the mod on its small list (`python3 src/RimMandrake/Utils/small_list.py show %(mod)s` prints "
+    "the tier and its mods; `python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod %(mod)s --apply`, with "
+    "`--instance ArchSmall` on ArchSmall), and run the in-game checks that your change touches, each with its exact "
+    "command. Class each non-pass (the mod is wrong, the check is wrong, or the scene is wrong) and fix it in the same "
+    "sitting, test first, then run it again.\n"
+    "- Record each live run, a pass or not, as the row a Stage 6 driver writes in `rows.jsonl`: `python3 "
+    "src/RimMandrake/rimflow/maturation.py live-row %(mod)s --item <your item> --row <a file holding the row's JSON> "
+    "--identity \"$(python3 src/RimMandrake/rimflow/build_match.py identity --mod %(mod)s --tier <the tier you "
+    "loaded>)\"`, and land `design/concepts/%(mod)s/version/in_game/early_rows.jsonl` with your work. Stage 6 reads it "
+    "as a row of its next visit, through the same outcome classes, build match and change relation, and does not run "
+    "that check again while nothing it reads or exercises changes. Release the game the moment you stop.\n"
+    "- Record an in-game check UNRUN with its exact command (`maturation.py unrun`, which stamps who held each game) "
+    "only when no game could take it, and name in your last note which run held each game. A busy game never blocks "
+    "your exit: Stage 3 accepts UNRUN.\n"
+    "- His OWNER hold and `./pipe off game:<name>` bind; never put a game in fullscreen or in focus; stage no raid while "
+    "the raid pause is on (`python3 src/RimMandrake/rimflow/raid_pause.py show`); never test a flyer's flight.")
+
+
 def _gn(game):
     """-> the name people read for game letter `game` on this machine: ArchBig, ArchSmall (game_names.py, the one map)."""
     import game_names
@@ -2401,8 +2431,9 @@ def brief_text(root, mod, cap_usd=None, bars=None):
               % ", ".join(f["walk_bars"])]
     live = sorted(k for k, t in ((tt or {}).get("tests") or {}).items()
                   if isinstance(t, dict) and str(t.get("kind", "")).startswith("live"))
-    L += ["", "## In-game checks (UNRUN until Stage 6): %d in the table" % len(live), "",
-          "Each in-game check you write is listed UNRUN with its exact command; you never run one (no game, no bridge)."]
+    L += ["", "## In-game checks: %d in the table" % len(live), "",
+          "Each in-game check you write has its exact command. Run the ones that your change touches in this run, on a "
+          "free game, by the standing rules below; record one UNRUN with its command only when no game could take it."]
     L += ["", "## The journal says", ""]
     for field in ("Waiting on", "Next"):
         span = _bullet(jtext, field)
@@ -2410,9 +2441,13 @@ def brief_text(root, mod, cap_usd=None, bars=None):
     steward = (read_text(root, mod, STEWARD_FILE) or "").strip()
     L += ["", "## Steward's decisions", "", steward or STANDING_DEFAULT]
     L += ["", "## Standing rules for this build", "",
-          "- Offline only: no bridge, no game, no deploy, no ModsConfig change. Whittle and Relentless stay off.",
+          "- Offline first. The bridge, a game, a deploy and a ModsConfig change are only for the in-game checks that "
+          "your change touches, by the next rules. Whittle and Relentless stay off.",
+          LIVE_IN_RUN_RULE % {"mod": mod},
+          FREE_GAME_RULE,
           "- The test is built with the item (owner, 2026-11-13): each missing check is watched failing where the "
-          "behaviour is missing, then passing; an in-game check is written with its exact command and recorded UNRUN.",
+          "behaviour is missing, then passing; an in-game check is written with its exact command, run on a free game, "
+          "and recorded UNRUN only when no game could take it.",
           "- Every offline test you add or edit that decides a bar is proven able to fail before the judge: plant a "
           "fault it must catch and run `python3 src/RimMandrake/rimflow/maturation.py red-seen %s <TEST> --patch "
           "<fault.patch>` (applied, run, reversed; recorded only when it goes red), then commit "
@@ -4723,6 +4758,11 @@ def read_ingame_exit(root, mod, n, tt=None, *, deploy_stamp=False):
     rows = _jsonl(os.path.join(d, "rows.jsonl"))
     if rows is None:
         why.append("rows.jsonl is missing")
+    # a live run a builder or fixer made before this visit is a row of it, read before its own (early_rows.jsonl)
+    try:
+        rows = [dict(r, _early=True) for r in BM.early_rows(root, mod) if r["before_visit"] == n] + list(rows or [])
+    except ValueError as e:
+        why.append("%s: no run's outcome is known to be clear" % e)
     # a check this visit did not run keeps the last row of the latest earlier visit that ran it (owner, 2026-11-21:
     # only the checks a change touches run again); the build match below decides whether that row still counts
     # (a spoiled run speaks for nobody: a check with only spoiled runs here keeps its earlier row too, live_kinds.py)
@@ -5431,13 +5471,27 @@ def ingame_debts(root, mod, tt=None):
 UNRUN_FILE = INGAME_DIR + "/unrun.jsonl"
 
 
-def record_unrun(root, mod, item, check, command, offline, sha, by="BENCH"):
+STEVE_NOT_READ = "Steve1, Steve2: through the SteveDesktop test lane, not read from here"
+
+
+def games_now():
+    """-> [line]: who holds each game of this machine now (game_lock.py query_all), then SteveDesktop's games as not read.
+    A reading that fails is one `could not look` line with its cause, never a free game."""
+    try:
+        import game_lock
+        lines = [str(r.get("line") or "%s: %s" % (r.get("game"), r.get("state"))) for r in game_lock.query_all()]
+    except Exception as e:      # noqa: BLE001  a lock that cannot be read is named, never read as free
+        lines = ["could not look at the games of this machine (%s: %s)" % (type(e).__name__, e)]
+    return lines + [STEVE_NOT_READ]
+
+
+def record_unrun(root, mod, item, check, command, offline, sha, by="BENCH", games=None):
     """Appends one row to version/in_game/unrun.jsonl: road-back item `item` closed at an offline stage on its offline
-    test (`offline`, green at `sha`); its in-game check `check` is UNRUN until Stage 6, with its exact `command` (spec
-    §4 Stage 3 exit: "Every in-game check exists and is listed UNRUN with its exact command until Stage 6"). -> the row.
-    Refuses (ValueError) a row missing any of them."""
+    test (`offline`, green at `sha`); its in-game check `check` is UNRUN, with its exact `command`, because no free game
+    could take it (spec §4 Stage 3 exit). `games`: who held each game (default: games_now(), read at the write). -> the
+    row. Refuses (ValueError) a row missing any of them."""
     row = {"item": item, "check": check, "command": command, "offline": offline, "sha": sha, "result": "UNRUN",
-           "by": by, "at": iso(now_ts())}
+           "by": by, "at": iso(now_ts()), "games": list(games) if games is not None else games_now()}
     gone = [k for k in ("item", "check", "command", "offline", "sha") if not str(row[k] or "").strip()]
     if gone:
         raise ValueError("an UNRUN record needs %s" % ", ".join(gone))
@@ -5446,6 +5500,67 @@ def record_unrun(root, mod, item, check, command, offline, sha, by="BENCH"):
     with open(p, "a", encoding="utf-8") as fh:
         fh.write(json.dumps(row, ensure_ascii=False) + "\n")
     return row
+
+
+EARLY_FILE = INGAME_DIR + "/early_rows.jsonl"
+EARLY_VERDICTS = ("PASS", "FAIL", "UNMEASURED")
+IDENTITY_CMD = "python3 src/RimMandrake/rimflow/build_match.py identity --mod %s --tier <the tier you loaded>"
+
+
+def early_visit(root, mod):
+    """-> the visit an early row joins: the open visit while the mod is in in-game acceptance and that visit's driver has
+    written nothing (no folder, or only the test lane's rows), else the next visit to open. Raises ValueError when the
+    stage record cannot be read: which visit is next is then unknown."""
+    rec, why = read_json(root, mod, RECORD)
+    if not isinstance(rec, dict):
+        raise ValueError("%s cannot be read (%s): which visit the row joins is unknown" % (RECORD, why))
+    n = len(ingame_openings(rec))
+    if rec.get("stage") == "in_game" and n:
+        d = os.path.join(mod_dir(root, mod), INGAME_DIR, "visit_%d" % n)
+        return n if not os.path.isdir(d) or not os.listdir(d) or lane_rows_only(d) else n + 1
+    return n + 1
+
+
+def record_early_row(root, mod, item, row, by="BENCH", tt=None):
+    """Appends one live run that a builder or fixer made outside a visit to version/in_game/early_rows.jsonl (item
+    RIMMANDRAKE_RUN_LIVE_CHECKS_IN_BUILDER_RUN_WHEN_GAME_FREE). `row` is the row a Stage 6 driver writes in rows.jsonl,
+    merged with the identity line; it is stamped with item, by, at and before_visit (early_visit). The build match reads
+    it as a row of that visit (build_match.carried_rows). -> the stamped row. Refuses (ValueError) a row that lacks a field
+    a visit row needs, naming each one and the identity command; a refused row writes nothing."""
+    if tt is None:
+        tt, terr = read_json(root, mod, "version/test_table.json")
+        if tt is None:
+            raise ValueError("version/test_table.json cannot be read (%s): no check can be named" % terr)
+    r = dict(row or {})
+    bad = []
+    if r.get("test") not in dict(ingame_tests(tt)):
+        bad.append("test (a stage-6 in-game check of the test table; %r is not)" % r.get("test"))
+    if str(r.get("verdict") or "").upper() not in EARLY_VERDICTS:
+        bad.append("verdict (one of %s)" % ", ".join(EARLY_VERDICTS))
+    if LK.norm(r.get("outcome")) not in LK.OUTCOMES:
+        bad.append("outcome (one of %s)" % ", ".join(LK.OUTCOMES))
+    for k in ("game", "mod_sha", "command", "evidence", "mod_hash", "game_build"):
+        if not str(r.get(k) or "").strip():
+            bad.append(k)
+    if r.get("site_checked") not in (True, False):
+        bad.append("site_checked (true or false)")
+    if not isinstance(r.get("held"), list):
+        bad.append("held (a list: what the site switched off or locked; [] when the whole mod ran)")
+    if not isinstance(r.get("active_mods"), list) or not r.get("active_mods"):
+        bad.append("active_mods (the parsed list)")
+    if not r.get("tier") and r.get("full_list") is not True:
+        bad.append("tier (or full_list true)")
+    if not str(item or "").strip():
+        bad.append("item")
+    if bad:
+        raise ValueError("a live row needs: %s. The identity fields are the JSON line `%s` prints after the deploy "
+                         "(pass it as --identity)" % ("; ".join(bad), IDENTITY_CMD % mod))
+    r.update({"item": item, "by": by, "at": iso(now_ts()), "before_visit": early_visit(root, mod)})
+    p = os.path.join(mod_dir(root, mod), EARLY_FILE)
+    os.makedirs(os.path.dirname(p), exist_ok=True)
+    with open(p, "a", encoding="utf-8") as fh:
+        fh.write(json.dumps(r, ensure_ascii=False, sort_keys=True) + "\n")
+    return r
 
 
 def read_unrun(root, mod):
@@ -5717,10 +5832,9 @@ def ingame_to_run(root, mod, n, tt, list_why=None):
     scene, live_kinds.py), a touched check and one whose relation cannot be read all run. list_why, when given, receives
     the reasons a list change owes rows. The Stage 6 exit's build match reads the walk build and decides for good."""
     checks = ingame_tests(tt or {})
-    if n <= 1:
+    last, runs = BM.rows_before(root, mod, n)
+    if not [t for t in last if t]:
         return [k for k, _ in checks], []
-    last = BM.carried_rows(root, mod, n - 1)
-    runs = BM.check_runs(root, mod, n - 1)
     rel = BM.RR.relate(root, mod, dict(checks), {t: r for t, r in last.items() if t}, compare_mod_lists=True)
     list_owed = BM.planned_list_owed(root, mod, checks, last, rel.get("new"))
     if list_why is not None:
@@ -5746,17 +5860,18 @@ def unclassed_lines(root, mod, n, tt):
     that reads UNRESOLVED with no usable `classed`, or whose words cannot be read (live_kinds.reading). [] when none."""
     out = []
     try:
-        runs = BM.check_runs(root, mod, n - 1) if n > 1 else {}
+        runs = BM.rows_before(root, mod, n, strict=True)[1]
     except ValueError as e:
         return ["- could not look: %s" % e]
     for t, spec in ingame_tests(tt or {}):
         for v, r in runs.get(t) or []:
             w, why = LK.outcome(r, spec)
             if w in (LK.UNRESOLVED, LK.REFUSED):
-                out.append("- `%s`: a run of visit %d (%s, build %s, evidence `%s`) reads %s%s. Its row: "
-                           "`%s`." % (t, v, r.get("at") or "no time", str(r.get("mod_sha"))[:10],
-                                        r.get("evidence") or r.get("job") or "none named", w,
-                                        " (%s)" % why if why else "", rel(mod, "%s/visit_%d/rows.jsonl" % (INGAME_DIR, v))))
+                out.append("- `%s`: %s (%s, build %s, evidence `%s`) reads %s%s. Its row: `%s`." % (
+                    t, "a live run before visit %d by item %s" % (v, r.get("item")) if r.get("_early") else
+                    "a run of visit %d" % v, r.get("at") or "no time", str(r.get("mod_sha"))[:10],
+                    r.get("evidence") or r.get("job") or "none named", w, " (%s)" % why if why else "",
+                    rel(mod, EARLY_FILE if r.get("_early") else "%s/visit_%d/rows.jsonl" % (INGAME_DIR, v))))
     return out
 
 
@@ -6046,7 +6161,17 @@ def build_parser():
     w.add_argument("--group", action="append", default=[], help="A+B[+C]: one fixer run for these fix/scene items")
     w.add_argument("--pass", dest="passes", action="append", default=[], help="a pass he stated (repeatable)")
     w.add_argument("--walked", help="when and where he walked")
-    u = sub.add_parser("unrun", help="record a road-back item's in-game check UNRUN for Stage 6 (it closed offline)")
+    lr = sub.add_parser("live-row", help="record one live run of an in-game check that a builder or fixer made outside a "
+                        "visit (version/in_game/early_rows.jsonl): Stage 6 reads it as a row of its next visit")
+    lr.add_argument("mod")
+    lr.add_argument("--item", required=True, help="the item this run works")
+    lr.add_argument("--row", required=True, help="the row a Stage 6 driver writes in rows.jsonl: its JSON, or a file "
+                    "that holds it")
+    lr.add_argument("--identity", default="", help="the JSON line `build_match.py identity --mod M --tier T` prints "
+                    "after the deploy (merged into the row)")
+    lr.add_argument("--by", default="BENCH")
+    u = sub.add_parser("unrun", help="record a road-back item's in-game check UNRUN for Stage 6 (it closed offline and "
+                       "no free game could take it)")
     u.add_argument("mod")
     u.add_argument("--item", required=True)
     u.add_argument("--check", required=True, help="the test table's stage-6 check id")
@@ -6275,14 +6400,32 @@ def main(argv=None):
             return 0
         print("REFUSED: %s" % res.get("why"))
         return 1
+    if o.cmd == "live-row":
+        try:
+            txt = o.row
+            if os.path.isfile(txt):
+                with open(txt, encoding="utf-8") as fh:
+                    txt = fh.read()
+            row = json.loads(txt)
+            if o.identity.strip():
+                row.update(json.loads(o.identity))
+            if not isinstance(row, dict):
+                raise ValueError("--row is JSON but not one object")
+            r = record_early_row(root, o.mod, o.item, row, by=o.by)
+        except ValueError as e:     # json.JSONDecodeError is one
+            print("REFUSED: %s" % e)
+            return 2
+        print("LIVE ROW %s %s: %s (%s) on %s at %s; a row of visit %d in %s" % (
+            o.mod, r["test"], r["verdict"], r["outcome"], r["game"], r["mod_sha"], r["before_visit"], EARLY_FILE))
+        return 0
     if o.cmd == "unrun":
         try:
             r = record_unrun(root, o.mod, o.item, o.check, o.command, o.offline, o.sha, by=o.by)
         except ValueError as e:
             print("REFUSED: %s" % e)
             return 2
-        print("UNRUN %s %s: %s (closed offline on %s at %s); listed in %s" % (o.mod, r["check"], r["command"],
-                                                                             r["offline"], r["sha"], UNRUN_FILE))
+        print("UNRUN %s %s: %s (closed offline on %s at %s); listed in %s; the games: %s" % (
+            o.mod, r["check"], r["command"], r["offline"], r["sha"], UNRUN_FILE, " | ".join(r["games"])))
         return 0
     if o.cmd == "gate":     # GATE_FIRST (RIMMANDRAKE_RUN_LAUNCH_CHECKS_FIVE_STEWARDS_HIT_GATES): writes nothing
         if load(root, o.mod) is None:

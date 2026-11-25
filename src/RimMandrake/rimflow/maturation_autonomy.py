@@ -1901,8 +1901,9 @@ STAGE6_ROAD = (
     "lowest stage that can show its fault, and say which in its item:\n"
     "- An offline test can show it (a selftest against a fake bridge or map, a pure-function check, a criterion text): "
     "file it with `--needs offline`; its body names that offline acceptance command (red on the old code), and its "
-    "in-game check (the test table's stage-6 id and its exact live command), which its fixer records UNRUN for Stage 6 "
-    "with `maturation.py unrun` when it closes the item on the offline test.\n"
+    "in-game check (the test table's stage-6 id and its exact live command), which its fixer runs in the same run on a "
+    "free game and records with `maturation.py live-row`, or records UNRUN with `maturation.py unrun` only when no game "
+    "could take it, when it closes the item on the offline test.\n"
     "- Only the game can show it (the cause is unknown until a live experiment, or the fault lives in the engine's "
     "behaviour no fake models): file it with `--needs game-up`; it is Stage 6 work, game-only, and is never sent to "
     "Stage 3. When every failed line is game-only, advance --to in_game (the next visit), never --to offline_build.\n"
@@ -2030,15 +2031,17 @@ def live_rules(purpose, mod, seat="BENCH"):
 
 
 # the offline half of a road-back item (RIMMANDRAKE_CLOSE_OFFLINE_STAGE_ITEMS_OFFLINE_GAME_WAS_DEMANDED; spec Stage 3 exit and
-# Stage 6 road back): it closes on an offline test; its in-game check is recorded UNRUN for Stage 6, never run here
+# Stage 6 road back): it closes on an offline test; its in-game check runs in the same run on a free game, and is
+# recorded UNRUN for Stage 6 only when no game could take it (owner, 2026-11-24; M.LIVE_IN_RUN_RULE)
 OFFLINE_CLOSE = (
-    "This run is offline: the item closes on its OFFLINE acceptance test (an offline test that fails on the old code, "
-    "written first, run and seen passing on the fix). Its in-game check is Stage 6's: record it UNRUN with its exact "
-    "command, `python3 src/RimMandrake/rimflow/maturation.py unrun %(mod)s --item %(item)s --check <the test table's "
-    "stage-6 id> --command \"<its exact live command>\" --offline \"<the offline test>\" --sha <the sha it is green "
-    "at>`, land `design/concepts/%(mod)s/version/in_game/unrun.jsonl` with the fix, then close the item. If no offline "
-    "test can show the fault, say why in a note starting LEFT OPEN: and set `rimflow needs %(item)s --to game-up`: it is "
-    "Stage 6 work, and the record goes back there. Never take the bridge or a game.")
+    "The item closes on its OFFLINE acceptance test (an offline test that fails on the old code, written first, run "
+    "and seen passing on the fix). Its in-game check (the test table's stage-6 id) runs in this run on a free game, by "
+    "the rules below. Only when no game could take it, record it UNRUN with its exact command, `python3 "
+    "src/RimMandrake/rimflow/maturation.py unrun %(mod)s --item %(item)s --check <the test table's stage-6 id> --command "
+    "\"<its exact live command>\" --offline \"<the offline test>\" --sha <the sha it is green at>`. Land "
+    "`design/concepts/%(mod)s/version/in_game/early_rows.jsonl` or `unrun.jsonl` with the fix, then close the item. If "
+    "no offline test can show the fault, say why in a note starting LEFT OPEN: and set `rimflow needs %(item)s --to "
+    "game-up`: it is Stage 6 work, and the record goes back there.\n") + M.LIVE_IN_RUN_RULE + "\n" + M.FREE_GAME_RULE.replace("%", "%%")
 
 
 def fixer_brief(item, mod, cap, fix_for=None, live=False, walk_result=None, group=None):
@@ -2080,7 +2083,7 @@ def fixer_brief(item, mod, cap, fix_for=None, live=False, walk_result=None, grou
                 "test first (watch it fail on the base), land with `./publish -m ... <paths>`, and close the item with "
                 "the published sha. If what it owes is his pick or his look, or more than one run, do every part that "
                 "is yours, then write a note starting LEFT OPEN: that says what landed and what is owed, and by whom. "
-                "Drop nothing: it is his Problem, not a check to judge. Never take the bridge or a game.\n%s\n\n%s\n\n"
+                "Drop nothing: it is his Problem, not a check to judge.\n%s\n\n%s\n\n"
                 "%s\n\n%s\n" % (item, mod, item, item, mod, OFFLINE_CLOSE % {"mod": mod, "item": item},
                                 M.SELF_FIX_RULE, M.HOW_A_BAR_HOLDS, M.OFFLINE_MODEL))
     return ("# Road-back fix: %s (%s)\n\nItem: %s. Seat BENCH.\n\nRead `python3 "

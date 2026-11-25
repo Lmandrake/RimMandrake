@@ -287,14 +287,15 @@
   ".claude/hooks/filing_refusal_before_stop.py::main::except-returns-empty": 1,
   "src/RimMandrake/rimflow/filing_gate.py::run_unit::except-returns-empty": 1,
   "src/RimMandrake/Utils/scene_names.py::_def_names::except-returns-empty": 1,
-  "src/RimMandrake/Utils/scene_world.py::RealWorld.file_stamp::except-returns-empty": 1
+  "src/RimMandrake/Utils/scene_world.py::RealWorld.file_stamp::except-returns-empty": 1,
+  "src/RimMandrake/rimflow/build_match.py::_early_or_none::except-returns-empty": 1
  },
  "reasons": {
   "src/RimMandrake/rimflow/maturation.py::_ledger_relation.rel::except-returns-empty": [
    "NOT A COLLAPSE: None is the relation's own 'unknown' (scene_verdicts.summary), and an unknown relation counts the earlier run for nothing, the strict side; the ledger never reads it as untouched"
   ],
   "src/RimMandrake/Utils/scene_world.py::RealWorld.stage_state::except-returns-empty": [
-    "NOT A COLLAPSE: None is 'this map is not a made stage' (only FileNotFoundError, which is that reading: scene.open removes the live file when it loads a map that is not a stage); every other OSError raises, and the caller refuses NO_STAGE by name"
+   "NOT A COLLAPSE: None is 'this map is not a made stage' (only FileNotFoundError, which is that reading: scene.open removes the live file when it loads a map that is not a stage); every other OSError raises, and the caller refuses NO_STAGE by name"
   ],
   "src/RimMandrake/Utils/waitalive.py::stat_of::except-returns-empty": [
    "NOT A COLLAPSE: None is 'the process is gone' (only ENOENT and ESRCH, which are that reading); every other error raises CouldNotLook, exit 5"
@@ -1208,6 +1209,9 @@
   ],
   "src/RimMandrake/Utils/scene_world.py::RealWorld.file_stamp::except-returns-empty": [
    "NOT A COLLAPSE: None is 'no file'; s.shot reads None after the capture as SHOT_NOT_FRESH, a Fault, never a fresh picture"
+  ],
+  "src/RimMandrake/rimflow/build_match.py::_early_or_none::except-returns-empty": [
+   "NOT A COLLAPSE: the lenient reader (carried_rows) reads an unreadable early_rows.jsonl as no early row, as it reads an unreadable rows.jsonl: a check with no row runs (it never counts); check_runs and the Stage 6 exit read the file strictly and name the cause"
   ]
  }
 }

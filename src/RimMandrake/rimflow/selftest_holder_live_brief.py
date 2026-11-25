@@ -32,8 +32,9 @@ def check(name, ok, detail=""):
     print(("PASS  " if ok else "FAIL  ") + name + ("" if ok else "  " + str(detail)[:300]))
 
 
-FORBID = "Never take the bridge or a game."
-TAKE = "bridge take --idle-ok"
+# The offline fixer brief closes on its offline test and runs the touched in-game check on a free game (owner, 2026-11-24; RIMMANDRAKE_RUN_LIVE_CHECKS_IN_BUILDER_RUN_WHEN_GAME_FREE): its old ban on the bridge is gone, so the offline brief is told from the live holder brief by these two marks.
+FORBID = "The item closes on its OFFLINE acceptance test"
+TAKE = "Every item here needs a game, so this run drives one"
 
 root = tempfile.mkdtemp(prefix="holder_live_st_")
 PILOT = (L.config().get("pilot_mods") or ["ExplosiveKnockback"])[0]
@@ -64,7 +65,7 @@ check("live_only: no items is not live-only", not A.live_only([]))
 
 off = A.fixer_brief("I", PILOT, 15)
 live = A.fixer_brief("I", PILOT, 15, live=True)
-check("the offline fixer brief still forbids the bridge and the game", FORBID in off and TAKE not in off, off[-300:])
+check("the offline fixer brief closes on its offline test and is not the live holder brief", FORBID in off and TAKE not in off, off[-300:])
 check("the live brief takes the bridge, brings the game up and releases it",
       FORBID not in live and TAKE in live and "./game --idle-ok --why" in live and "bridge release" in live, live)
 check("the live brief keeps the live rules: no flyer flight, no fullscreen or focus, no broken game left running",

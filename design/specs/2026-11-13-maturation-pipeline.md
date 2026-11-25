@@ -225,7 +225,7 @@ Plain-text version of the same map:
    - the file it will live in;
    - what it will observe;
    - the files it reads.
-3. **Right after the lock (Stage 3)**, a builder writes every check. Each check is seen failing where the behaviour is missing. A mod does not move past Stage 3 until every bar has a check that runs. An in-game scene may be recorded UNRUN, with its command, until Stage 6.
+3. **Right after the lock (Stage 3)**, a builder writes every check. Each check is seen failing where the behaviour is missing. A mod does not move past Stage 3 until every bar has a check that runs. The builder runs each in-game scene that its change touches on a free game, in the same run. A scene that no free game could take may be recorded UNRUN, with its command, until a live run of it.
 4. **A lock means changes are visible and have a reason, not that nothing changes.**
    - The check was wrong and the bar's meaning is unchanged: the steward (the Conductor) fixes the check and re-pins it. One journal line says why. He is not asked.
    - A bar is added because of a discovery: agents may do it, recorded in the journal.
@@ -267,7 +267,7 @@ One proposal inside Stage 1 is big enough to be an open question. The question i
 | Model tier | Per ticket: see Agent_Policy.md, "The ladder" and "Helpers in this repo". | CARRIED |
 | Inputs | The locked version; the preflight record. | PROPOSAL |
 | Outputs | Code, defs, art. For each bar, its offline test and its in-game test. Each test was watched failing before the code made it pass. Review status clean. | CARRIED (his ruling 2026-11-13: "we build the test at the same time as the item, both offline and online versions") |
-| Exit ("ready" means) | Every bar has a check that runs, each seen failing where the behaviour was missing. Every bar's offline check passes. Every in-game check exists and is listed UNRUN with its exact command until Stage 6. The builder's own list of what it could not test is written down. | HIS by agreement (the lock rule, §4 Stage 1); "passes" and the builder's list PROPOSAL |
+| Exit ("ready" means) | Every bar has a check that runs, each seen failing where the behaviour was missing. Every bar's offline check passes. Every in-game check exists with its exact command. Each one that the build touched was run on a free game in the same run (`maturation.py live-row`; Stage 6 counts that run as a row of its next visit), or is listed UNRUN with its exact command because no game could take it. **[HIS, 2026-11-24]** ("Was a game available? Because it so, that builder should have deployed it and tested it right away in the same context.") The builder's own list of what it could not test is written down. | HIS by agreement (the lock rule, §4 Stage 1); "passes" and the builder's list PROPOSAL |
 | Road back | None of its own. Faults found later arrive here as line items. | CARRIED (rule 2) |
 | Tracked on the mod | Tickets open and done in this stage; bars with a passing offline test, of total; tokens. | PROPOSAL |
 

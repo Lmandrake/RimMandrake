@@ -62,7 +62,8 @@ def t_version_bug_goes_before_the_exit():
     return (row.get("aut") == "fixer" and row.get("fix_item") == BUG_V and row.get("fix_for") == "version"
             and row.get("decision") == "fixer" and not row.get("game_only_items")
             and "Road-back fix" not in brief and "drop the item" not in brief and BUG_V in brief
-            and "Never take the bridge" in brief), (row, brief[:300])
+            # it closes offline and runs its touched in-game check on a free game (owner, 2026-11-24)
+            and "maturation.py live-row" in brief and "Never take the bridge" not in brief), (row, brief[:300])
 
 
 def t_spent_version_bug_holds_the_exit():

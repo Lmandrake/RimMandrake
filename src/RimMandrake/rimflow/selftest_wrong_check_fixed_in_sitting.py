@@ -381,8 +381,10 @@ def t_briefs_carry_the_rule():
     flat = {k: " ".join(v.split()) for k, v in texts.items()}
     lacks = ["%s lacks %r" % (k, p) for k, v in flat.items() for p in BRIEF_PINS if p not in v]
     lacks += ["%s lacks the free game rule" % k for k in FREE_GAME if "bridge take --idle-ok" not in flat[k]]
-    lacks += ["the offline fixer brief lost its game ban, or gained the free game rule"
-              for v in [flat["fixer"]] if "Never take the bridge or a game." not in v or "bridge take --idle-ok" in v]
+    # the offline fixer runs the in-game check its change touches on a free game (owner, 2026-11-24)
+    lacks += ["the offline fixer brief lost the rule to run its touched in-game check on a free game"
+              for v in [flat["fixer"]] if "maturation.py live-row" not in v or "bridge take --idle-ok" not in v
+              or "Never take the bridge or a game." in v]
     stale = ["%s still says %r" % (k, s) for k, v in flat.items()
              for s in ("a check you judge wrong is a note to the Conductor", "File EACH failed or UNMEASURED line",
                        "A failed or UNMEASURED line is filed as a NAMED item", "set it aside", "set_aside",

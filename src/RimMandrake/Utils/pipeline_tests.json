@@ -353,6 +353,7 @@
     {"test": "src/RimMandrake/rimflow/selftest_next_step_stage_moved.py", "inputs": ["design/specs/2026-11-21-next-step-stage-moved/boundary.md"], "seconds": 0.2},
     {"test": "src/RimMandrake/rimflow/selftest_visit_wait_cited_items.py", "inputs": ["design/specs/2026-11-21-visit-wait-cited-items/boundary.md"], "seconds": 0.3},
     {"test": "src/RimMandrake/rimflow/selftest_walk_owes_checks.py", "inputs": ["design/specs/2026-11-24-walk-owes-its-checks/boundary.md"], "seconds": 9},
+    {"test": "src/RimMandrake/rimflow/selftest_live_checks_in_builder_run.py", "inputs": ["design/specs/2026-11-24-live-checks-in-builder-run/boundary.md"], "seconds": 1.6},
     {"test": "src/RimMandrake/rimflow/selftest_walk_result.py", "inputs": ["design/specs/2026-11-22-walk-result/boundary.md"], "seconds": 3},
     {"test": "src/RimMandrake/rimflow/selftest_mod_next.py", "inputs": ["design/specs/2026-11-22-mod-next/boundary.md"], "seconds": 3.0},
     {"test": "src/RimMandrake/rimflow/selftest_mod_next_equivalence.py", "inputs": ["design/specs/2026-11-22-mod-next/recorded_inputs.json", "infrastructure/state/control/acts.jsonl"], "seconds": 30},

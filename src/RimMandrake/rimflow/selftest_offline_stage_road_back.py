@@ -47,8 +47,9 @@ def attempt(name, fn):
         return None
 
 
-FORBID = "Never take the bridge or a game."
-TAKE = "bridge take --idle-ok"
+# The offline fixer brief closes on its offline test and runs the touched in-game check on a free game (owner, 2026-11-24; RIMMANDRAKE_RUN_LIVE_CHECKS_IN_BUILDER_RUN_WHEN_GAME_FREE): its old ban on the bridge is gone, so the offline brief is told from the live holder brief by these two marks.
+FORBID = "The item closes on its OFFLINE acceptance test"
+TAKE = "Every item here needs a game, so this run drives one"
 LIVE_A, LIVE_B, OFF_C = "RIMMANDRAKE_FIX_LIVE_ONE_A", "RIMMANDRAKE_FIX_LIVE_TWO_B", "RIMMANDRAKE_FIX_OFF_THREE_C"
 
 root = tempfile.mkdtemp(prefix="offline_rb_st_")
@@ -115,7 +116,7 @@ check("the refusal names the move back to Stage 6 (advance --to in_game --game-o
       "--to in_game" in text and "--game-only" in text and LIVE_A in text, text)
 rc, text = pilot(ALL_LIVE + [{"id": OFF_C, "needs": "offline"}], "offline_build")
 b = sent[-1][1] if len(sent) > n else ""
-check("pilot-launch at Stage 3 with an offline item among game-only ones: an offline brief, never the bridge",
+check("pilot-launch at Stage 3 with an offline item among game-only ones: an offline brief, not the live holder brief",
       rc == 0 and FORBID in b and TAKE not in b, (rc, text, b[-400:]))
 check("that holder works the offline item and leaves the game-only ones to Stage 6",
       ("work every open road-back item together, from the packet above: %s." % OFF_C) in b and "Stage 6" in b, b[-600:])

@@ -1608,6 +1608,30 @@ sandbox could not reach WSL.
 
 Item: `RIMMANDRAKE_BUILD_TESTS_WITH_ITEM_OFFLINE_AND_LIVE`.
 
+### A builder or fixer runs its in-game check in the same run when a game is free — owner, 2026-11-24
+
+*"Was a game available? Because it so, that builder should have deployed it and tested it right away in the same
+context."* (2026-11-24 about 11:00 PM PST, after a builder wrote six live scenes and left them unrun while ArchSmall was
+free. The same night, for work bundles, he decided that the live proof runs inside the run:
+`design/specs/2026-11-24-work-bundles/design.md` section 7.)
+
+- This applies to the Stage 3 builder and to every fixer whose change has an in-game check, at any stage.
+- Read `python3 src/RimMandrake/rimflow/game_lock.py query all` and the SteveDesktop test lane (Steve1, Steve2).
+- If any game is free, take it. Deploy the mod's small list. Run the in-game checks that the change touches. Class
+  and fix a non-pass in the same sitting.
+- Record each run with `maturation.py live-row`. Stage 6 counts that run as a row of its next visit, with the same
+  outcome classes, the same build match and the same change relation. Stage 6 does not run the check again while
+  nothing that the check reads or exercises changes.
+- Record UNRUN with its command only when no game could take the check. Name which run held each game
+  (`maturation.py unrun` stamps it).
+- His OWNER hold and `./pipe off game:<name>` bind. Never put a game in fullscreen or focus. Stage no raid while the
+  raid pause is on.
+- The Stage 3 exit still accepts UNRUN, so a busy game never blocks a build. The Stage 6 exit still needs each in-game
+  check run on a commit that holds its change.
+
+Item: `RIMMANDRAKE_RUN_LIVE_CHECKS_IN_BUILDER_RUN_WHEN_GAME_FREE`. Page:
+`design/specs/2026-11-24-live-checks-in-builder-run/boundary.md`.
+
 ## Live tests have three kinds — owner, 2026-11-23
 
 Item `RIMMANDRAKE_ENACT_THREE_TEST_KINDS_FORCED_COUNTED_HUNTED_NOT_STARS_ALIGNED`. He approved this text on 2026-11-23

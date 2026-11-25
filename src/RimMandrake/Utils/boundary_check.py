@@ -41,6 +41,7 @@ PAGES = {
     "design/specs/2026-11-24-walk-save-start-twin/boundary.md": "src/RimMandrake/rimflow/selftest_walk_twins.py",
     "design/specs/2026-11-24-walk-pens/boundary.md": "src/RimMandrake/Utils/modcheck/selftest_walk_pens.py",
     "design/specs/2026-11-24-walk-owes-its-checks/boundary.md": "src/RimMandrake/rimflow/selftest_walk_owes_checks.py",
+    "design/specs/2026-11-24-live-checks-in-builder-run/boundary.md": "src/RimMandrake/rimflow/selftest_live_checks_in_builder_run.py",
     "design/specs/2026-11-24-designer-mends-in-its-session/boundary.md":
         "src/RimMandrake/rimflow/selftest_designer_mend.py",
     "design/specs/2026-11-24-first-pass-calibration/boundary.md":

@@ -905,44 +905,94 @@ def last_rows(rows):
     return out
 
 
-def carried_rows(root, mod, n=None):
-    """{check id: its deciding row}: visit n's last row for each check it ran, else the last row of the latest earlier
-    visit that ran it (a row is carried with `_visit` naming its visit). A spoiled run speaks for nobody, so its row never
-    replaces one that is not spoiled (live_kinds.later; owner, 2026-11-23). n None: the latest visit on disk. Rows naming
-    no check are kept as a list under "" (visit n's only)."""
+def early_rows(root, mod):
+    """-> [row]: the runs of in-game checks that a builder or fixer made outside a visit (maturation.py live-row,
+    version/in_game/early_rows.jsonl), oldest first, each with its int `before_visit`: the visit whose rows it joins, read
+    before that visit's own rows (design/specs/2026-11-24-live-checks-in-builder-run/boundary.md). [] when there is none.
+    Raises ValueError when the file is there and cannot be read, since an UNRESOLVED run in it would be missed."""
     import maturation as M
-    have = M.visit_numbers(root, mod) or []
-    n = n or (have[-1] if have else 1)
-    out = {}
-    for k in sorted(v for v in have if v <= n):
-        rows = M._jsonl(os.path.join(M.mod_dir(root, mod), M.INGAME_DIR, "visit_%d" % k, "rows.jsonl")) or []
-        for r in rows:
-            t = r.get("test") or r.get("id")
-            if t:
-                out[t] = LK.later(out.get(t), dict(r, _visit=k))
-            elif k == n:
-                out.setdefault("", []).append(r)
+    p = os.path.join(M.mod_dir(root, mod), M.EARLY_FILE)
+    if not os.path.exists(p):
+        return []
+    rows = M._jsonl(p)
+    if rows is None:
+        raise ValueError("%s is there and cannot be read" % M.EARLY_FILE)
+    return [r for r in rows if isinstance(r, dict) and "_bad" not in r and isinstance(r.get("before_visit"), int)]
+
+
+def _visit_rows(root, mod, n, *, strict):
+    """-> [(visit, row)] in the order they were made: for each visit k up to n (n None: every visit on disk and every
+    early row), the early rows of visit k, then visit k's rows.jsonl. strict: a rows.jsonl there that cannot be read
+    raises ValueError; else it reads as no rows."""
+    import maturation as M
+    have = M.visit_numbers(root, mod)
+    early = early_rows(root, mod) if strict else _early_or_none(root, mod)
+    top = n if n is not None else max(have + [r["before_visit"] for r in early] + [0])
+    ks = sorted({v for v in have if v <= top} | {r["before_visit"] for r in early if r["before_visit"] <= top})
+    out = []
+    for k in ks:
+        out += [(k, dict(r, _early=True)) for r in early if r["before_visit"] == k]
+        p = os.path.join(M.mod_dir(root, mod), M.INGAME_DIR, "visit_%d" % k, "rows.jsonl")
+        if k not in have or not os.path.exists(p):
+            continue
+        rows = M._jsonl(p)
+        if rows is None and strict:
+            raise ValueError("visit_%d/rows.jsonl is there and cannot be read" % k)
+        out += [(k, r) for r in rows or []]
     return out
 
 
-def check_runs(root, mod, n=None):
-    """{check id: [(visit, row)]}: every row of every visit up to n, in order (live_kinds.reading). A visit with no
-    rows.jsonl yet has no rows; one that is there and cannot be read raises, since an UNRESOLVED run in it would be missed."""
+def _early_or_none(root, mod):
+    try:
+        return early_rows(root, mod)
+    except ValueError:
+        return []
+
+
+def carried_rows(root, mod, n=None):
+    """{check id: its deciding row}: visit n's last row for each check it ran, else the last row of the latest earlier
+    visit that ran it (a row is carried with `_visit` naming its visit). A spoiled run speaks for nobody, so its row never
+    replaces one that is not spoiled (live_kinds.later; owner, 2026-11-23). n None: the latest visit on disk, and every
+    early row after it. An early row (a builder's or fixer's live run, early_rows) is a row of the visit it precedes, read
+    before that visit's own. Rows naming no check are kept as a list under "" (visit n's only)."""
     import maturation as M
     have = M.visit_numbers(root, mod)
-    n = n or (have[-1] if have else 1)
+    last = n if n is not None else (have[-1] if have else 1)
     out = {}
-    for k in sorted(v for v in have if v <= n):
-        p = os.path.join(M.mod_dir(root, mod), M.INGAME_DIR, "visit_%d" % k, "rows.jsonl")
-        if not os.path.exists(p):
+    for k, r in _visit_rows(root, mod, n, strict=False):
+        t = r.get("test") or r.get("id")
+        if t:
+            out[t] = LK.later(out.get(t), dict(r, _visit=k))
+        elif k == last:
+            out.setdefault("", []).append(r)
+    return out
+
+
+def rows_before(root, mod, n, strict=True):
+    """-> (last, runs) of what was recorded before visit n's driver wrote: every visit before n, and the early rows of
+    visits up to n. last is carried_rows' shape ({check: its deciding row}), runs check_runs' ({check: [(visit, row)]}).
+    What visit n's brief counts and lists (maturation.ingame_to_run, unclassed_lines). strict: an unreadable rows file
+    raises ValueError, as check_runs does."""
+    last, runs = {}, {}
+    for k, r in _visit_rows(root, mod, n, strict=strict):
+        if k >= n and not r.get("_early"):
             continue
-        rows = M._jsonl(p)
-        if rows is None:
-            raise ValueError("visit_%d/rows.jsonl is there and cannot be read" % k)
-        for r in rows:
-            t = r.get("test") or r.get("id")
-            if t:
-                out.setdefault(t, []).append((k, r))
+        t = r.get("test") or r.get("id")
+        if t:
+            last[t] = LK.later(last.get(t), dict(r, _visit=k))
+            runs.setdefault(t, []).append((k, r))
+    return last, runs
+
+
+def check_runs(root, mod, n=None):
+    """{check id: [(visit, row)]}: every row of every visit up to n, in order, an early row as a row of the visit it
+    precedes (live_kinds.reading). A visit with no rows.jsonl yet has no rows; one that is there and cannot be read
+    raises, since an UNRESOLVED run in it would be missed."""
+    out = {}
+    for k, r in _visit_rows(root, mod, n, strict=True):
+        t = r.get("test") or r.get("id")
+        if t:
+            out.setdefault(t, []).append((k, r))
     return out
 
 
