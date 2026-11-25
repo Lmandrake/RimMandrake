@@ -404,7 +404,7 @@ def _side(run_dir, verdict):
             o = SC._open([json.loads(x) for x in f if x.strip()])
         rands.append(str(o.get("rand")) if o and o.get("rand") is not None else None)
     return {"run": "%s:%s" % (run.get("session"), req), "fixture": run.get("fixture"), "rows": rows, "rands": rands,
-            "verdict": {"outcome": verdict.outcome, "failed": verdict.failed, "evidence": verdict.evidence,
+            "verdict": {"outcome": verdict.outcome, "failed": verdict.first_failed, "evidence": verdict.evidence,
                         "counts_for_bar": verdict.counts_for_bar}}
 
 

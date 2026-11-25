@@ -56,3 +56,8 @@ up to and including the spoiler's tick. A mod's advisory records provide no cond
   matching receipt give COULD NOT LOOK.
 - **unknown-key-named.** An unknown checker key is refused with its name. Invalid checker data or conditions,
   an absent or ambiguous call selection, and rejudgement without a first verdict are refused by name.
+- **standard-cast-and-world-tracks-are-read.** The companion's twelve cast tracks of each cast member (`<alias>.pos`, `.job`, ...)
+  and its six world tracks (`world.weather`, ...) are read although the open row does not list them. Each joins at its first
+  sample and is held to the first-and-last rule of a declared track. Any other undeclared name gives COULD NOT LOOK.
+- **in-tick-tap-rows-are-read-in-the-span.** A cast or world tap row (phase `in_tick`: `job_start`, `job_end`, `link`, ...) inside
+  the run's ticks is read. A track with phase `in_tick` gives COULD NOT LOOK.

@@ -782,6 +782,7 @@ LIMITS: none. The draw, the lint and the judgement are bounded by the size of th
 | A bar's list that is reviewed by the scene's writer, or that has no review sentence, is refused (`NOT_REVIEWED`). | `t_list_reviewed_by_the_scene_writer_is_refused` |
 | KILLED needs a green SUCCESS and a red MOD FAILURE on the condition that the mutant names. | `t_killed_needs_the_named_condition_and_a_changed_witness` |
 | Both receipts are in the scene's history. `history --killed` counts a KILLED line only when its two runs are run lines of the ledger with the same receipts, and the red one is PLANTED. | `t_both_receipts_are_in_the_scene_history` |
+| A kept run is read from the judge's own verdict: its first failed condition reaches the both-ways judgement. | `t_a_kept_run_is_read_from_the_judge_verdict` |
 
 Live test (UNRUN): `python.exe src\RimMandrake\Utils\scene.py both-ways src\RimMandrake\ExplosiveKnockback\proof\scene_storeroom_pit.py`
 on ArchBig (the scene's game). The green run must read SUCCESS and the red run KILLED. Its check is

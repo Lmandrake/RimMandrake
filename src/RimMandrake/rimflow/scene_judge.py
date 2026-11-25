@@ -70,6 +70,14 @@ def observation(why, tick=None, observed=None):
     return {"condition": why, "tick": tick, "observed": observed}
 
 
+# The tracks that the companion writes without a line in the open row (design/specs/2026-11-23-bridge-v2/boundary.md): the twelve
+# cast tracks of each cast member and the six world tracks. Each is written on change only, with a first and a last sample.
+CAST_TRACKS = ("pos", "facing", "job", "toil", "health", "downed", "dead", "mental", "carried", "holder", "faction", "drafted")
+WORLD_TRACKS = ("weather", "conditions", "temp", "hour", "camera", "windows")
+STANDARD_TRACK = re.compile(r"^(?:world\.(?:%s)|(?!world\.)[A-Za-z_][A-Za-z0-9_]*(?:\[\d+\])?\.(?:%s))$" % (
+    "|".join(WORLD_TRACKS), "|".join(CAST_TRACKS)))
+
+
 class Trace:
     def __init__(self, rows):
         if any(not isinstance(r, dict) or type(r.get("n")) is not int for r in rows):
@@ -112,6 +120,8 @@ class Trace:
         self.acts, self.faults, aliases, tap_seq = {}, [], {}, {}
         for r in rows[1:-1]:
             phase, tick, rec = r.get("phase"), r["tick"], r.get("rec")
+            if phase == "in_tick" and rec not in ("track", "tap", "act", "fault") and self.start <= tick <= self.stop:
+                phase = "end_of_tick"           # a cast or world tap row (job_start, link, ...): inside the run's ticks it is read
             if phase not in ("first", "end_of_tick", "last") or (
                 phase == "first" and tick != self.start or phase == "last" and (tick != self.stop or r["seq"] <= self.end["seq"])
             ):
@@ -128,6 +138,8 @@ class Trace:
                         phase == "end_of_tick" and tick <= self.start):
                     raise NoReading("track %s was sampled after an act or outside a tick" % n)
                 target = self.first if phase == "first" else self.last if phase == "last" else self.changes.setdefault(tick, {})
+                if phase == "first" and n not in self.tracks and STANDARD_TRACK.match(n):
+                    self.tracks.add(n)          # a standard track joins at its first sample, then the declared tracks' rules hold
                 if n in target or n not in self.tracks:
                     raise NoReading("duplicate or undeclared sample: " + n)
                 target[n] = r

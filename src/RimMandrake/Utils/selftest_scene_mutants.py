@@ -233,13 +233,31 @@ def t_both_receipts_are_in_the_scene_history():
         assert isinstance(s, dict), s
 
 
+def t_a_kept_run_is_read_from_the_judge_verdict():
+    """_side reads a scene_judge.Verdict as the judge makes it (live on ArchBig 2026-11-25: it read .failed, which the Verdict
+    does not have, and both-ways crashed after the green run). A MOD FAILURE's first failed condition reaches the both-ways
+    judgement, so KILLED can be read."""
+    import scene_judge as SJ
+    with tempfile.TemporaryDirectory() as d:
+        with open(os.path.join(d, "run.json"), "w") as f:
+            json.dump({"session": "scn_1", "fixture": FIX}, f)
+        with open(os.path.join(d, "trace_run_1.jsonl"), "w") as f:
+            f.write("\n".join(json.dumps(r) for r in trace((0, 1, 1))))
+        v = SJ.Verdict("MOD FAILURE", 8, {"condition": "success", "tick": 1002, "observed": []}, {"exposure": True}, False,
+                       {"entry": {"request": "run_1"}})
+        got = M._side(d, v)
+    assert got["run"] == "scn_1:run_1" and got["fixture"] == FIX, got
+    assert got["verdict"]["outcome"] == "MOD FAILURE" and got["verdict"]["failed"] == {"condition": "success", "tick": 1002, "observed": []}, got
+    assert got["verdict"]["counts_for_bar"] is False and got["rands"] == ["42"], got
+
+
 CHECKS = (t_feature_off_mutant_is_refused, t_mutant_must_name_a_bar, t_draw_is_same_for_one_scene_and_build,
           t_scene_cannot_set_the_draw, t_red_receipt_never_counts_as_pass, t_red_success_reads_mutant_not_killed,
           t_red_without_exposure_proves_nothing, t_red_with_unchanged_witness_reads_mutant_not_used, t_bar_with_one_mutant_is_refused,
           t_red_failing_on_another_condition_is_reported_so, t_both_runs_start_from_one_fixture_hash,
           t_compiled_mutant_needs_build_and_is_not_run_live, t_bar_killed_only_by_value_changes_says_so,
           t_list_reviewed_by_the_scene_writer_is_refused, t_killed_needs_the_named_condition_and_a_changed_witness,
-          t_both_receipts_are_in_the_scene_history)
+          t_both_receipts_are_in_the_scene_history, t_a_kept_run_is_read_from_the_judge_verdict)
 
 
 def main():

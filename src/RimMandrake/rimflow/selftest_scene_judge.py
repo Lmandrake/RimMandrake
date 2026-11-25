@@ -456,6 +456,52 @@ def check_folder_refusals():
         expect_refused(module().judge, "BAD_PLAN", "choose request from run_fixture, second", folder)
 
 
+def standard_rows(names, last=True, first_phase="first"):
+    """The fixture with the companion's standard tracks added: first at the start tick, one change, last at the end tick."""
+    plan, rows, receipts = fixture()
+    at_first = 1 + sum(1 for r in rows if r["phase"] == "first" and r["rec"] == "track")
+    stop = next(r for r in rows if r["rec"] == "end")["tick"]
+    for k, name in enumerate(names):
+        start = rows[0]["tick"] if first_phase == "first" else rows[0]["tick"] + 1
+        rows.insert(at_first + k, {**rows[0], "rec": "track", "name": name, "phase": first_phase, "tick": start, "st": "ok", "v": "a"})
+        if last:
+            rows.insert(len(rows) - 1, {**rows[0], "rec": "track", "name": name, "phase": "last", "tick": stop, "st": "ok", "v": "b"})
+    for r in rows:
+        r.pop("tracks", None) if r["rec"] != "open" else None
+    return plan, normalize(rows), receipts
+
+
+def t_standard_cast_and_world_tracks_are_read():
+    """The companion writes the twelve cast tracks of each cast member (<alias>.pos, .job, ...) and the six world tracks
+    (world.weather, ...) as track rows that the open row does not list (boundary.md, the cast and the world tracks). Live on
+    ArchBig 2026-11-25: scene_storeroom_pit read COULD NOT LOOK, 'duplicate or undeclared sample: people[0].pos'. They are read,
+    and held to the first-and-last rule of a declared track; any other undeclared name stays a refusal."""
+    std = ["people[0].pos", "people[0].job", "bomb.dead", "world.weather", "world.windows"]
+    expect(classify(standard_rows(std)), "SUCCESS", 6)
+    expect(classify(standard_rows(["people[0].pos"], last=False)), "COULD NOT LOOK", 3, "last sample: people[0].pos")
+    expect(classify(standard_rows(["people[0].banana"])), "COULD NOT LOOK", 3, "duplicate or undeclared sample: people[0].banana")
+    expect(classify(standard_rows(["world.pos"])), "COULD NOT LOOK", 3, "duplicate or undeclared sample: world.pos")
+    expect(classify(standard_rows(["people[0].pos"], first_phase="end_of_tick")), "COULD NOT LOOK", 3, "undeclared sample: people[0].pos")
+
+
+
+def t_in_tick_tap_rows_are_read_in_the_span():
+    """The cast and world taps write their rows with phase in_tick (job_start, job_end, reserve, kill, link, mental_attempt, ...;
+    boundary.md). Live on ArchBig 2026-11-25: once the cast tracks were read, the same run read 'invalid phase on tick 15006'.
+    They are read; on a track, in_tick stays invalid (a row outside the run's ticks is refused first by the tick order)."""
+    def with_row(**row):
+        plan, rows, receipts = fixture()
+        at = next(i for i, r in enumerate(rows) if r["rec"] == "end")
+        rows.insert(at, {**rows[0], **row})
+        for r in rows[1:]:
+            r.pop("tracks", None)
+        return plan, normalize(rows), receipts
+    expect(classify(with_row(rec="job_start", phase="in_tick", tick=3, alias="pawn", job="Wait#1", ord=1)), "SUCCESS", 6)
+    expect(classify(with_row(rec="rebind", phase="end_of_tick", tick=3, name="pawn.toil", to=None)), "SUCCESS", 6)
+    expect(classify(with_row(rec="track", phase="in_tick", tick=3, name="job", st="ok", v="x")), "COULD NOT LOOK", 3,
+           "invalid phase on tick 3")
+
+
 def main():
     tests = [("classifier row 1", t_classifier_rows)] + [
         ("classifier row %s" % n, lambda n=n: classifier_case(n)) for n in range(2, 10)]
@@ -463,7 +509,8 @@ def main():
         t_no_closing_record, t_dropped_span, t_missing_first_sample, t_missing_last_sample, t_missing_tap,
         t_success_at_first_sample, t_success_without_exposure, t_advisory_record, t_cast_went_to_hazard, t_giver_refusal,
         t_same_checker_adds_history, t_unrecorded_value_named, t_first_outcome_kept, t_alias_needs_link,
-        t_forbidden_wins_over_an_unreadable_success)]
+        t_forbidden_wins_over_an_unreadable_success, t_standard_cast_and_world_tracks_are_read,
+        t_in_tick_tap_rows_are_read_in_the_span)]
     tests += [("exit code 0", t_exit_codes)] + [("exit code %s" % n, lambda n=n: exit_case(n)) for n in range(1, 7)]
     tests.append(("unknown key named", t_unknown_key_named))
     good = 0
@@ -476,7 +523,7 @@ def main():
             print("ok   " + name)
             good += 1
     print("scene judge: %d of %d checks passed" % (good, len(tests)))
-    return 0 if good == len(tests) == 32 else 1
+    return 0 if good == len(tests) == 34 else 1
 
 
 if __name__ == "__main__":
