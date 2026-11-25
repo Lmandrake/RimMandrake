@@ -1392,25 +1392,43 @@ def corpus() -> list[tuple[str, str]]:
     """[(file, text)] of every ledger file, item (live + closed), handoff in each seat clone, and our systemd units."""
     global _CORPUS, _CORPUS_AT
     if _CORPUS is None:
-        _CORPUS, _CORPUS_AT = [], time.time()
-        files: list[str] = []
-        for cr in corpus_roots():
-            st = cr / "infrastructure" / "state"
-            if (st / "ledger" / "events.jsonl").exists():
-                files.append(str(st / "ledger" / "events.jsonl"))
-            files += listed(st / "ledger" / "events", ".jsonl", True) + listed(st / "items", ".md", True)
-            files += listed(st / "items" / "closed", ".md") + listed(st / "handoffs", ".md")
-        if not os.environ.get("SCRATCH_REAP_CORPUS"):
-            units = HOME / ".config" / "systemd" / "user"
-            files += listed(units, ".service", True)
-            for dropin in sorted(glob.glob(str(units / "*.service.d"))):      # WorkingDirectory= may live in a drop-in
-                files += listed(Path(dropin), ".conf")
-        for f in files:
+        # A file can go between its listing and its read: a probe unit's drop-in removed by its owner (2026-11-25T20:51Z
+        # killed the run), an item moved to items/closed/ by its close. Its text may live on under a new name, so the
+        # whole corpus is listed and read again, once; a second vanishing, or any other OSError, stops the run.
+        for attempt in (1, 2):
             try:
-                _CORPUS.append((f, open(f, encoding="utf-8", errors="replace").read()))
-            except OSError as e:
-                raise RuntimeError(f"ledger corpus unreadable: {f}: {e.strerror}")
+                _CORPUS = _read_corpus()
+                break
+            except FileNotFoundError as e:
+                if attempt == 2:
+                    raise RuntimeError(f"ledger corpus unreadable: {e.filename}: {e.strerror}") from e
+        _CORPUS_AT = time.time()
     return _CORPUS
+
+
+def _read_corpus() -> list[tuple[str, str]]:
+    """One listing and read of the corpus. A file gone before its read raises FileNotFoundError (corpus() reads again)."""
+    out: list[tuple[str, str]] = []
+    files: list[str] = []
+    for cr in corpus_roots():
+        st = cr / "infrastructure" / "state"
+        if (st / "ledger" / "events.jsonl").exists():
+            files.append(str(st / "ledger" / "events.jsonl"))
+        files += listed(st / "ledger" / "events", ".jsonl", True) + listed(st / "items", ".md", True)
+        files += listed(st / "items" / "closed", ".md") + listed(st / "handoffs", ".md")
+    if not os.environ.get("SCRATCH_REAP_CORPUS"):
+        units = HOME / ".config" / "systemd" / "user"
+        files += listed(units, ".service", True)
+        for dropin in sorted(glob.glob(str(units / "*.service.d"))):      # WorkingDirectory= may live in a drop-in
+            files += listed(Path(dropin), ".conf")
+    for f in files:
+        try:
+            out.append((f, open(f, encoding="utf-8", errors="replace").read()))
+        except FileNotFoundError:
+            raise
+        except OSError as e:
+            raise RuntimeError(f"ledger corpus unreadable: {f}: {e.strerror}")
+    return out
 
 
 def vocab() -> set[str]:
