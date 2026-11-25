@@ -76,6 +76,7 @@ import maturation_now as MN     # noqa: E402  the journal readers: one parser, n
 import raid_pause as RP          # noqa: E402  raid tests are paused (owner, 2026-11-23)
 import scene_size as SZ          # noqa: E402  an oversized live scene carries its evidence (owner, 2026-11-24)
 import live_kinds as LK          # noqa: E402  the kinds of a live scene and the outcomes of its runs
+import scene_verdicts as SV      # noqa: E402  the scene verdict ledger: a receipt is not a verdict (Bridge v2)
 import refusal_contract as RC   # noqa: E402
 import judge_certificate as JC   # noqa: E402  the pre-judgement certificate (PRE_JUDGEMENT_CERTIFICATE)
 import own_cgroup               # noqa: E402  a history read is file cache outside the tick's memory limit
@@ -4669,6 +4670,19 @@ def walk_letter(root, mod):
     return "a"
 
 
+def _ledger_relation(root, mod, specs):
+    """-> relation(scene, old build, new build) for scene_verdicts: True when the change does not touch what the scene
+    reads (rerun_relation.py), False when it does, None when that cannot be read (the run then counts for nothing)."""
+    def rel(scene, old, new):
+        try:
+            r = BM.RR.relate(root, mod, {scene: specs.get(scene) or {}}, {scene: {"mod_sha": old}}, new=new)
+            st = (r["rows"].get(scene) or {}).get("state")
+        except Exception:  # noqa: BLE001  an unreadable relation is unknown, and unknown never keeps a verdict
+            return None
+        return True if st == "untouched" else False if st == "touched" else None
+    return rel
+
+
 def read_ingame_exit(root, mod, n, tt=None):
     """-> {visit, state, why[], claimed, rows}: the program's reading of visit n's exit. state: absent (no visit_n folder,
     or one that holds only the test lane's rows, lane_rows_only: its driver is still owed) | no_exit_block (no Exit block with the four keys: a visit in progress, or one that ended without writing it) | met |
@@ -4741,6 +4755,15 @@ def read_ingame_exit(root, mod, n, tt=None):
         rp = r.get("repair") if r is not None and isinstance(r.get("repair"), dict) else {}
         cls = str(r.get("class") or rp.get("class") or "").upper() if r is not None else ""
         lines_[t] = {"count": cnt, "class": cls or None, "bars": _bars_of(tt, t)}
+    # the scene verdict ledger (scene_verdicts.py; Bridge v2 decision 12): a check whose scene has runs in
+    # version/scene_runs.jsonl keeps its pass only when the ledger reads PASS (a tuned, tainted, uncompared, PROOF or
+    # wrong-map run counts for nothing; an UNRESOLVED run holds). The ledger never turns any other line into a pass.
+    veto, out["hunts"] = SV.exit_veto(root, mod, checks, {t: ln["count"] for t, ln in lines_.items()},
+                                      builds={t: (last.get(t) or {}).get("mod_sha") for t, _ in checks},
+                                      relation=_ledger_relation(root, mod, dict(checks)))
+    for t, (c, w) in veto.items():
+        lines_[t]["count"] = c
+        why.append("in-game check %s: %s" % (t, w))
     # a wrong check or scene that no bar needs (every bar it decides has another decider that reads a counted PASS or a
     # MOD FAIL) is removed from the test table, never kept as not counted (owner, 2026-11-20: "How does that help if
     # there's a needless test present? The next judge will hit it again...")

@@ -114,6 +114,7 @@
   "src/RimMandrake/rimflow/judge_certificate.py::grandfather::or-empty": 2,
   "src/RimMandrake/rimflow/left_open_continue.py::main::or-empty": 1,
   "src/RimMandrake/rimflow/maturation.py::_absent::except-returns-empty": 1,
+  "src/RimMandrake/rimflow/maturation.py::_ledger_relation.rel::except-returns-empty": 1,
   "src/RimMandrake/rimflow/maturation.py::_git_show::except-returns-empty": 1,
   "src/RimMandrake/rimflow/maturation.py::_instant::except-returns-empty": 1,
   "src/RimMandrake/rimflow/maturation.py::_is_savegame::except-returns-empty": 1,
@@ -282,6 +283,7 @@
   "src/RimMandrake/Utils/account_plan.py::series_rows::except-returns-empty": 1
  },
  "reasons": {
+    "src/RimMandrake/rimflow/maturation.py::_ledger_relation.rel::except-returns-empty": ["NOT A COLLAPSE: None is the relation's own 'unknown' (scene_verdicts.summary), and an unknown relation counts the earlier run for nothing, the strict side; the ledger never reads it as untouched"],
   "src/RimMandrake/Utils/waitalive.py::stat_of::except-returns-empty": [
    "NOT A COLLAPSE: None is 'the process is gone' (only ENOENT and ESRCH, which are that reading); every other error raises CouldNotLook, exit 5"
   ],

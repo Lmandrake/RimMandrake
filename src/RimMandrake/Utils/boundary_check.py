@@ -116,6 +116,7 @@ PAGES = {
     "design/specs/2026-11-23-tick-names-steve-games/boundary.md": "src/RimMandrake/rimflow/selftest_tick_names_steve_games.py",
     "design/specs/2026-11-23-raid-tests-paused/boundary.md": "src/RimMandrake/rimflow/selftest_raid_pause.py",
     "design/specs/2026-11-23-live-kinds-exit-reader/boundary.md": "src/RimMandrake/rimflow/selftest_live_kinds.py",
+    "design/specs/2026-11-23-scene-verdicts/boundary.md": "src/RimMandrake/rimflow/selftest_scene_verdicts.py",
     "design/specs/2026-11-21-rerun-only-related/boundary.md": "src/RimMandrake/rimflow/selftest_rerun_relation.py",
     "design/specs/2026-11-19-codebase-now/boundary.md": "src/RimMandrake/Utils/selftest_codebase_now.py",
     "design/specs/2026-11-19-standing-status-tabs/boundary.md": "src/RimMandrake/Utils/selftest_standing_tabs.py",

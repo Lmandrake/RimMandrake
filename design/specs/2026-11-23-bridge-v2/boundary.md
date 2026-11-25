@@ -96,6 +96,13 @@ sample order and coverage, observation names and alias continuity before classif
 row and the first failed condition with recorded values. A keeper can be judged again from the same evidence.
 The first verdict stays in place and an accepted rejudgement appends one history line. The named tests and the
 offline input contract are on the [scene judge boundary](../2026-11-23-scene-judge/boundary.md).
+## Verdict ledger
+
+`src/RimMandrake/rimflow/scene_verdicts.py` turns the runs of one claim on one build into the scene's verdict, from
+`design/concepts/<Mod>/version/scene_runs.jsonl`. A run whose receipt has an overlay stamp, the taint mark, an
+uncompared arm, a PROOF build or a map kind that the bar does not accept counts for no bar. The Stage 6 exit keeps a
+check's pass only when the ledger reads PASS or has no line for its scene. The promises and tests are on the
+[verdict ledger boundary](../2026-11-23-scene-verdicts/boundary.md).
 ## GAME WATCHER
 
 `src/RimMandrake/Utils/game_watcher.py` reads the existing TPS heartbeat and the named game's process identity.
