@@ -63,8 +63,8 @@ Each promise has a check of its name in `src/RimMandrake/rimflow/selftest_contin
   context and the progress record. The holder launchers (`maturation.launch_mod`, `maturation_autonomy.launch_brief`)
   pass `--planned-resume` with every `--resume` (found by the fresh reader of this fix: without it, every holder session
   between 150k and 400k with a `PROGRESS:` note was turned fresh, against his 400k card).
-- **the-briefs-require-a-progress-note.** The detached footer (`FOOTER`), the pilot's sitting brief and
-  `.claude/agents/rm-testpilot.md` each tell the run to write a `PROGRESS:` note on its item after each experiment or
+- **the-briefs-require-a-progress-note.** The detached footer (`FOOTER`), the pilot's sitting brief and the builder
+  role `src/RimMandrake/rimflow/roles/builder.md` (which `.claude/agents/rm-testpilot.md` points at) each tell the run to write a `PROGRESS:` note on its item after each experiment or
   step, with its theory, experiment, reading and next action.
 - **the-token-estimate-is-the-measured-ratio.** `modledger.tokens(text)` is the character count divided by
   `chars_per_token` in `modledger.json` (1.8, measured), rounded up; a config without it fails by name.
