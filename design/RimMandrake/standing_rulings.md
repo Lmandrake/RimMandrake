@@ -567,9 +567,11 @@ The rule:
     (`src/RimMandrake/Utils/findings_judge_friday.md`). That run is a weekly Opus `claude -p`, which also reads
     patterns across runs and files rule candidates. The step came in with item
     `RIMMANDRAKE_WIRE_FRIDAY_JUDGE_TO_EXAMINE_FLAGGED_FILES_WEEKLY`, and first ran on 2026-11-20 (`flagged=0`).
-- **A minor nit, or a claim that is not significant,** is one line on `polish.md` beside the page. Nobody fixes it.
-  - For now nobody takes lines from a polish list. The list is a record (his card of 5:54 PM PST, quoted at the top of
-    this section).
+- **A minor nit, or a claim that is not significant,** in a file that the run changed: the run fixes it before the
+  fresh reader (§Touching code has a cost, the polish rule). Any other nit is one line on `polish.md` beside the page.
+  - The next Work Bundle that changes that file takes the line. A polish line is never a ticket.
+  - His card of 5:54 PM PST (quoted at the top of this section) made the list a record "for now". His words of
+    2026-11-25 (§Touching code has a cost, the polish rule) end that "for now".
 - **Filing gate.** A new ticket must cite a broken promise or a failure. File one ticket per source event, never one
   per symptom.
 - **A standing scan reads quiet files when the machine is idle** (his card of 5:54 PM PST).
@@ -624,7 +626,7 @@ answers, run `python3 src/RimMandrake/Utils/code_review_status.py --help`.
   - Codex and GPT may review pipeline machinery by this rule (§A boundary page before pipeline code).
   - "The test is built with the item" and "The pipeline fixes its own defects" stand.
   - A mod's Polish list in the Maturation Pipeline (the Design Version rule) is a separate list. The Conductor decides
-    each move to it. "Nobody takes lines" covers only the `polish.md` beside a code page.
+    each move to it. A Work Bundle of the mod still takes a line of it that names a file that the bundle changes.
 - **Test that this was applied:**
   - `code_review_status.py check` on a file that no page names reads NO PAGE.
   - `check` on a file whose page has every promise tested and passing reads CLEAN, with no review record.
@@ -694,24 +696,51 @@ The rule:
   - A page can list a rare failure under DOES NOT SURVIVE (§A boundary page before pipeline code, Decision 4). Such a
     failure is not a real chance until it happens once. Then it is a failure and a new source event, and it is worth the
     touch.
-- **A finding that fails test 1 gets no fix and no ticket.**
-  - Write the finding as one line on `polish.md` beside its page. Where no page exists, write one line in your report.
+- **A finding that fails test 1 gets no ticket.**
+  - If the finding is in a file that your run changed, do it now (the polish rule, below).
+  - Else write the finding as one line on `polish.md` beside its page. Where no page exists, write one line in your
+    report.
   - An open ticket that fails test 1 is dropped with the reason `not worth the touch: <why>`.
   - Such a drop does not trim work. §You do not trim work (`roles/conductor.md`) forbids a cut of worthy work to
     save spend. This rule says that the unworthy touch is itself the cost.
-- **Test 2, if you see it, do it.** Whoever judges a finding or a ticket worth the touch is its fixer, in the same run.
-  The fixer writes the test, sees the test fail, fixes, sees the test pass, and publishes. Never set the
-  fix down for someone else without evidence that the fix is not yours to do. The evidence is one of these:
+- **Test 2, if you see it, do it.** You are the fixer. When you find a fault, fix it in this run, test first. A later
+  run knows less. Hand it on only with test-2 evidence. The fixer writes the test, sees the test fail, fixes, sees the
+  test pass, and publishes. Test-2 evidence is one of these:
+  - your verdict must stay independent of the work. A judge that fixed the work it judges would become its maker, and
+    nobody would judge the fix;
   - you lack the tools or the access (a read-only role; a live-only fault and no bridge);
-  - the fix is not known;
-  - it needs one of the owner's five acts (§Only five acts stay his);
-  - it would change a north-star bar;
-  - another live run holds the same files;
-  - your verdict must stay independent of the work. A judge that fixed the work it judges would become its
-    maker, and nobody would judge the fix;
-  - your assigned work would not finish (name it).
+  - the fix is not known after a real attempt: name what you tried;
+  - it needs one of the owner's five acts, or it changes a north-star bar (a looser bar is the Conductor's act). The
+    five acts: §Only five acts stay his;
+  - another live run holds the files.
 
-  The ticket that you file carries that evidence, and the fix where you could see it.
+  A large task, a long run or a full context is not evidence. A fresh session goes on from your notes.
+
+  The ticket that you file carries that evidence, and the fix that you would make, when the evidence stops you.
+  The one copy of the statement and the list in code is `src/RimMandrake/rimflow/fixer_rule.py`; its selftest checks
+  each home word for word.
+- **The polish rule** (owner, 2026-11-25, about 11:35 AM PST, item
+  `RIMMANDRAKE_CLOSE_POLISH_AND_FOOTER_DOORS_SIXTEEN_FENCES_CONTRADICT`). His words: *"A work bundle should have much
+  less room to declare polish, I think. They're RIGHT THERE, so the cost to "polish" is extremely low. But if you're
+  RIGHT THERE... just tune, polish, etc, right? Only if the risk of touching new code and inducing bugs is high would I
+  resist it... but most likely the agent trying to claim something is polish actually DID just touch that code, so
+  even that weakens... let's close all these trapdoors out of being The Agent That Does."* The Conductor ruled the rule:
+  - A run that changed a file in this run does the polish of that file in this run. After a fix, one fresh run that did
+    not make the fix reads the changed file once. The run does the polish before that read, so the polish adds no
+    second read.
+  - A Work Bundle also takes each open line of the `polish.md` of its mod or its subsystem that names a file that the
+    bundle changes. The worker does the line and removes it from `polish.md`. The bundle's brief prints the lines
+    (`work_bundle.py` `POLISH_RULE`).
+  - A polish line is allowed in three cases only: the line names a file that the run did not change; the line names a
+    concrete risk after `risk:` (this change, this possible wrong result); the change would move a bar, is a new
+    feature of the mod, or is one of the owner's five acts. A line that records a done act (a removed check) starts
+    `record:`.
+  - A judge or a reader that must stay blind still writes a polish line and fixes nothing outside its rule. The next
+    Work Bundle of that mod takes the line.
+  - Polish never moves a bar. A pass never waits for a polish line that names a file that nobody changed.
+  - The block: in a helper run, `./publish` returns a new polish line that names a file of the run's own changes and
+    has no `risk:` or `record:` part. The run does the polish and publishes again. Code: `src/RimMandrake/Utils/polish_door.py`;
+    page: `design/specs/2026-11-25-polish-door/boundary.md`.
 - **Test 1 comes first.** "If you see it, do it" never licenses a touch that fails test 1.
 - **A fault is fixed in the sitting; a wrong check is repaired or removed there; neither sends the mod back** (owner,
   2026-11-20, items `RIMMANDRAKE_ENACT_WRONG_CHECK_FIXED_IN_SITTING_NOT_RETURNED` and
@@ -738,12 +767,13 @@ The rule:
     the check is wrong. SITE: the staged scene is wrong. These are the classes of skill `live-debugging-proof-harness`.
   - A wrong check or scene is worth repair only if a bar would go undecided without it.
   - Remove a check that no bar needs. Take the check out of the test table, so that no later judge meets it again. When
-    nothing else names the check, delete it. One line on the polish list is the record of the removal. No ticket.
+    nothing else names the check, delete it. One line on the polish list that starts `record:` is the record of the
+    removal. No ticket.
   - "A failure happened" (test 1) does not by itself make a wrong check worth the touch. The failure was the check's.
   - The agent that classes a check wrong repairs the check in the same sitting. That agent runs the check again while
     the game is up.
-  - Two reasons of test 2 do not excuse a wrong check or scene. One is "my verdict must stay independent". The other is
-    "my assigned work would not finish". The repair of a check or scene does not touch the mod.
+  - "My verdict must stay independent" does not excuse a wrong check or scene, and a long task is not evidence. The
+    repair of a check or scene does not touch the mod.
   - The guard that replaces distrust: a repaired check counts only when three things are true in that sitting.
     - The check is seen to FAIL on a planted fault (or on a state that is known bad).
     - The check is seen to PASS on the real build.
@@ -1541,6 +1571,7 @@ is rigorous checking is self denial."*
 
 - The proof, harness, site, sandbox and contract are suspects alongside the code.
 - Attribute a failure before any rework. An instrument fault becomes repair work, and the item waits without a strike.
+  The run that attributes the instrument fault repairs the fault.
 - A false close is still worse than a wait.
 - Design input: GPT consult at `D:\ClaudeWork\rimmandrake\conductor\test_tolerance_consult\`.
 
@@ -1919,7 +1950,8 @@ This ruling has two halves. Quote the two halves together.
   of Python's reach through the bridge today. Examples: a capture or an act on each tick, a hidden or private value, a
   live write of a value, an event between two ticks. Each such wall is enough reason to add generic C# to the bridge.
   - No agent asks the owner or the Conductor first.
-  - The agent that hits the wall builds the new bridge function, test first. Or that agent files a ticket for it.
+  - The agent that hits the wall builds the new bridge function, test first. The agent files a ticket for the
+    function only with the test-2 evidence (§Touching code has a cost).
   - Do not poll from Python around the wall. A poll can miss an event that lasts one tick.
   - First check that no bridge tool reaches the thing already (`skills/rimbridge-companion/SKILL.md` §0).
 - **Half two: unchanged.** Tests, scene steps and verdicts stay in Python. The C# that an agent adds is a generic
@@ -2110,7 +2142,7 @@ the Designer's runs, a Conductor helper.
     itself files the ticket and launches a fixer on the ticket, inside its own caps.
 - Hand off only with the evidence that §Touching code has a cost; if you see it, do it lists under its test 2. The ones
   that come up most here:
-  - the fix is not known;
+  - the fix is not known after a real attempt: name what you tried;
   - the fix is outside the agent's tools (it needs the game and the agent holds no bridge, or it needs the owner under
     `delegation_policy.md` §2);
   - the fix would change a north-star bar;
@@ -2119,8 +2151,8 @@ the Designer's runs, a Conductor helper.
 - A defect must pass test 1 of that section (worth the touch) before anyone fixes or files it.
 - A workaround by hand without the permanent fix is not allowed. He ruled against cleaning up after the pipeline and
   leaving it alone.
-- The rule does not change how a MOD's gaps (its bars, its build work, its findings) are handled. Those gaps keep going
-  through the stages as designed. The rule is about the pipeline's own machinery.
+- A mod's unbuilt bars still go through the stages. A mod fault that your run can fix, you fix in your run (§Touching
+  code has a cost, a fault is fixed in the sitting). The rule is about the pipeline's own machinery.
 - Ledger calls made under the rule: `--per-ruling
   RIMMANDRAKE_HARDEN_PIPELINE_WHERE_HANDS_CLEANED_UP --why "delegated: self-fix: <what and why>"`.
 - Where the tick still hands a line to the Conductor, and whether it self-fixes now: the prose of

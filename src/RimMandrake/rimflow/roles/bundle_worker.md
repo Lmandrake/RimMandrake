@@ -41,8 +41,14 @@ Start no helpers of your own, except the one fresh reader of step 4.
    before the fix proves nothing: repair it or re-class the member.
 3. **Fix in order.** For each member or one-cause group: fix, see its test pass, run the tests that the change touches,
    write a `PROGRESS:` note on the bundle's item, and `./publish`. Then read your own context size (next section).
-4. **One fresh reader.** When the fixes are in, one fresh run that did not make them reads the changed files once, by
-   `src/RimMandrake/rimflow/roles/code_review.md`. A significant finding is fixed test first. There is no second read.
+4. **Polish, then one fresh reader.** Do the polish of every file that you changed, now: you are right there, so the
+   cost is low. Take each open line of the system's `polish.md` that your brief prints (and of the `polish.md` beside
+   the boundary page of each file that you changed) that names a file you changed: do it, and remove the line. Keep a
+   line only when it names a file that you did not change, names a concrete risk after `risk:`, or would move a bar,
+   add a feature or need one of the owner's five acts. Polish never moves a bar. `./publish` returns a new polish line
+   on your own changed file that has no `risk:` part. Then one fresh run that did not make the fixes reads the changed
+   files once, by `src/RimMandrake/rimflow/roles/code_review.md`. A significant finding is fixed test first. There is
+   no second read.
 5. **One live pass.** When a change has an in-game check, or the system runs live (a timer, a tick, a publish):
    - Read `python3 src/RimMandrake/rimflow/game_lock.py query all`. Take a free game by name (ArchBig or ArchSmall;
      Steve1 and Steve2 through the test lane). His OWNER hold and `./pipe off game:<name>` bind. Never put the game in

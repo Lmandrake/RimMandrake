@@ -1098,7 +1098,7 @@
      "planted (code_review_calibration.py): the 21 claims that are a rare failure the page lists as not handled, or polish, by the same rule; must not be admitted as Problems"
     ]
    },
-   "hash": "ca80659d18edbf02",
+   "hash": "a59f424038a995ae",
    "last_run": {
     "at": "2026-11-25T05:49:14Z",
     "cases": "came out the other way: c2.9, c3.4, c4.1, c4.14, c4.3",
@@ -1254,8 +1254,8 @@
      "id": "c4.15"
     }
    ],
-   "reset_at": "2026-11-24T09:05:30Z",
-   "status": "FAILED",
+   "reset_at": "2026-11-25T20:09:14Z",
+   "status": "UNTESTED",
    "timeout_s": 540,
    "was": "FAILED"
   },
@@ -1673,7 +1673,7 @@
    ],
    "hash": "0c5c7ef641403d64",
    "last_run": {
-    "at": "2026-11-25T19:48:02Z",
+    "at": "2026-11-25T20:09:14Z",
     "cases": "822 planted case(s) ran and came out as planted",
     "exit": 0,
     "out": "evidence corpus: 55 false closes, 55 rejected; 767 valid closes, 767 accepted - OK",
@@ -2037,9 +2037,9 @@
     "src/RimMandrake/rimflow/selftest_maturation.py",
     "--submit"
    ],
-   "hash": "c2c97d1d1491b4c1",
+   "hash": "79e9562e48e7d993",
    "last_run": {
-    "at": "2026-11-25T19:48:02Z",
+    "at": "2026-11-25T20:09:14Z",
     "cases": "3 planted case(s) ran and came out as planted",
     "exit": 0,
     "out": "ALL PASS",
@@ -2075,7 +2075,7 @@
      "id": "locked_version_passes"
     }
    ],
-   "reset_at": "2026-11-25T19:48:02Z",
+   "reset_at": "2026-11-25T20:09:14Z",
    "status": "CALIBRATED",
    "was": "CALIBRATED"
   },
@@ -2096,47 +2096,47 @@
      "ops_one_cause_three_alarms: Do you also file a separate item for each of the three alarms?"
     ]
    },
-   "hash": "b19947c5b3884ef3",
+   "hash": "626da8bb0539e198",
    "last_run": {
-    "at": "2026-11-25T08:33:02Z",
+    "at": "2026-11-25T20:09:31Z",
     "cases": "5 planted case(s) ran and came out as planted",
     "exit": 0,
-    "out": "ok           ops_one_cause_three_alarms: expect pass, got pass (The alarm-run rule 'One cause seen by several alarms is one item' (the dedupe key `RIMMANDRAKE_KEY_AUTO_FILERS_ONE_FAULT_ONE_TICKET`) means the single item for the dead ArchSmall process covers all three alarms, with each alarm just noted on it.)",
+    "out": "ok           ops_one_cause_three_alarms: expect pass, got pass (The Alarm runs line 'One cause seen by several alarms is one item (`RIMMANDRAKE_KEY_AUTO_FILERS_ONE_FAULT_ONE_TICKET` builds the dedupe key in the filers)' means the shared cause gets a single item, with each alarm noted rather than ticketed separately.)",
     "results": [
      {
       "expect": "refuse",
       "got": "refuse",
       "id": "ops_runs_voided_by_a_timeout",
       "model": "sonnet",
-      "why": "Alarm runs question 4 and test 1 say a failure that happened and voided runs is worth a fix, so I make it in this run (a one-line wall-time change in role_launch.py, test first) or file an item with evidence if it is not mine to touch."
+      "why": "Alarm runs question 4 says a real alarm whose fix passes test 1 (a failure that happened, voided runs) is fixed in this run, test first, and the one-line wall-time change in role_launch.py is not in the Never list (which covers dispatcher.py, ops_watch_rules.json targets and slot_rules.json), so I fix it, or file an item with evidence if the fix is a loosening that must be handed up."
      },
      {
       "expect": "refuse",
       "got": "refuse",
       "id": "ops_publish_refused_by_a_stale_fixture",
       "model": "sonnet",
-      "why": "Alarm runs question 4 applies test 1 (a failure that happened, four refused landings, so someone would care) and says you make the fix in this run, test first, since the new name is in the morning commit and no evidence for filing instead exists."
+      "why": "Alarm runs question 4 applies test 1 (a failing test that four landings hit passes) and test 2 says 'you make the fix in this run, test first', with an item filed only on listed evidence, so the fix to the fixture's renamed file is made or filed rather than skipped."
      },
      {
       "expect": "pass",
       "got": "pass",
       "id": "ops_retired_word_on_a_page_label",
       "model": "sonnet",
-      "why": "Alarm-run question 4 applies test 1 (would someone care about the fix?), and a stale 'pulse' header with correct data, no readers and no failed or voided run fails it, so the instruction 'A real alarm whose fix fails test 1 files no item: note `not worth the touch: <why>` on the alarm item' means I only note it."
+      "why": "Under Alarm runs, question 4, test 1 asks whether someone would care about the fix (a failure that happened, a significant finding, a failing test, or a real chance to void a run), and a stale header that no program reads and that has caused no failure or void fails it, so the rule 'A real alarm whose fix fails test 1 files no item: note `not worth the touch: <why>` on the alarm item' applies."
      },
      {
       "expect": "pass",
       "got": "pass",
       "id": "ops_unrelated_warning_after_answers",
       "model": "sonnet",
-      "why": "The 'When an alarm run is enough' rule says that once each named alarm has its four answers you stop and do not hunt for other faults, and an unrelated deprecation warning that caused no failure fails test 1 (would someone care), so no item is filed."
+      "why": "The 'When an alarm run is enough' rule says that once each named alarm has its four answers you stop and do not hunt for other faults, and a warning that caused no failure fails test 1 of 'Touching code has a cost', so it files no item."
      },
      {
       "expect": "pass",
       "got": "pass",
       "id": "ops_one_cause_three_alarms",
       "model": "sonnet",
-      "why": "The alarm-run rule 'One cause seen by several alarms is one item' (the dedupe key `RIMMANDRAKE_KEY_AUTO_FILERS_ONE_FAULT_ONE_TICKET`) means the single item for the dead ArchSmall process covers all three alarms, with each alarm just noted on it."
+      "why": "The Alarm runs line 'One cause seen by several alarms is one item (`RIMMANDRAKE_KEY_AUTO_FILERS_ONE_FAULT_ONE_TICKET` builds the dedupe key in the filers)' means the shared cause gets a single item, with each alarm noted rather than ticketed separately."
      }
     ]
    },
@@ -2169,10 +2169,10 @@
      "id": "ops_one_cause_three_alarms"
     }
    ],
-   "reset_at": "2026-11-25T08:33:02Z",
+   "reset_at": "2026-11-25T20:09:14Z",
    "status": "CALIBRATED",
    "timeout_s": 1800,
-   "was": "FAILED"
+   "was": "CALIBRATED"
   },
   "rm_judge_stop": {
    "brief": [
@@ -2190,47 +2190,47 @@
      "rj_asked_how_it_could_be_better: Do you make a third look and refuse the work on what you find?"
     ]
    },
-   "hash": "1a057f2ab0f82f0d",
+   "hash": "200cf054df050764",
    "last_run": {
-    "at": "2026-11-25T08:33:02Z",
+    "at": "2026-11-25T20:09:25Z",
     "cases": "5 planted case(s) ran and came out as planted",
     "exit": 0,
-    "out": "ok           rj_asked_how_it_could_be_better: expect pass, got pass (My instructions say 'One full inspection, then one check of the repairs... Never a third look,' and 'Enough: each thing that your brief names has a verdict with its evidence. Then stop. Do not look for more.' Any 'how could it be better' idea is polish, which gets one line marked polish and blocks nothing.)",
+    "out": "ok           rj_asked_how_it_could_be_better: expect pass, got pass (My instructions say 'One full inspection, then one check of the repairs... Never a third look' (standing_rulings.md §The judge refuses flaws, not polish), and since every named bar already has its verdict with evidence I stop ('Enough... Then stop. Do not look for more'); any 'how could it be better' item is polish that blocks nothing, not grounds to refuse.)",
     "results": [
      {
       "expect": "refuse",
       "got": "refuse",
       "id": "rj_side_view_missing_legs",
       "model": "opus",
-      "why": "The line \"Refuse only a flaw: a promise that is not kept... Quote the promise\" decides it: the brief promises 'the creature reads as a four-legged animal from the side', and an east facing that draws two legs and reads as a biped breaks that promise, so this is a flaw and not polish."
+      "why": "The line 'Refuse only a flaw: a promise that is not kept... Quote the promise' decides it, because the brief's promise 'the creature reads as a four-legged animal from the side' is broken when the east facing draws only two legs and reads as a biped."
      },
      {
       "expect": "refuse",
       "got": "refuse",
       "id": "rj_north_facing_shows_face",
       "model": "opus",
-      "why": "The line 'Refuse only a flaw: a promise that is not kept... Quote the promise' decides it, because the brief's promise 'the north facing shows the creature's back' is broken: the north facing shows the face and eyes."
+      "why": "The line 'Refuse only a flaw: a promise that is not kept... Quote the promise' decides it: the brief's bar 'the north facing shows the creature's back' is not kept, because the north facing shows the face and eyes like the south facing, so this is a flaw and not polish."
      },
      {
       "expect": "pass",
       "got": "pass",
       "id": "rj_palette_could_be_muted",
       "model": "opus",
-      "why": "The instruction 'Refuse only a flaw: a promise that is not kept... Quote the promise' together with 'Everything else is polish: one line in your verdict record, marked polish' decides it, because the bar 'the plant reads as a desert shrub at game zoom' is met and no bar or rule names the palette, so the muted-greens idea is polish that blocks nothing."
+      "why": "\"Refuse only a flaw: a promise that is not kept... Quote the promise. Everything else is polish: one line in your verdict record, marked polish\" — the bar 'the plant reads as a desert shrub at game zoom' is kept, and no bar or rule names the palette, so the muted-greens idea is a polish line, not a refusal."
      },
      {
       "expect": "pass",
       "got": "pass",
       "id": "rj_new_nit_on_the_repair_look",
       "model": "opus",
-      "why": "\"The second look checks only the listed problems\" and \"Everything else is polish: one line in your verdict record, marked polish. Polish files no ticket and blocks nothing\" — the soft shadow is an unlisted, unnamed-bar issue, so it is recorded as polish and does not block."
+      "why": "The instructions say 'The second look checks only the listed problems' and 'Refuse only a flaw... Everything else is polish: one line in your verdict record, marked polish', so the soft shadow, which breaks no named promise, gets a polish line and does not block the work."
      },
      {
       "expect": "pass",
       "got": "pass",
       "id": "rj_asked_how_it_could_be_better",
       "model": "opus",
-      "why": "My instructions say 'One full inspection, then one check of the repairs... Never a third look,' and 'Enough: each thing that your brief names has a verdict with its evidence. Then stop. Do not look for more.' Any 'how could it be better' idea is polish, which gets one line marked polish and blocks nothing."
+      "why": "My instructions say 'One full inspection, then one check of the repairs... Never a third look' (standing_rulings.md §The judge refuses flaws, not polish), and since every named bar already has its verdict with evidence I stop ('Enough... Then stop. Do not look for more'); any 'how could it be better' item is polish that blocks nothing, not grounds to refuse."
      }
     ]
    },
@@ -2263,7 +2263,7 @@
      "id": "rj_asked_how_it_could_be_better"
     }
    ],
-   "reset_at": "2026-11-25T08:33:02Z",
+   "reset_at": "2026-11-25T20:09:14Z",
    "status": "CALIBRATED",
    "timeout_s": 1800,
    "was": "CALIBRATED"

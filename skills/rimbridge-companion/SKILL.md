@@ -12,7 +12,7 @@ JawaBench DLL, which adds tools to the bridge.
 To drive the bridge with tools that exist, use the `rimbridge` skill. This skill is about *making it able to do more*.
 
 **You do not need permission to add a generic bridge tool for a thing that Python cannot control or measure today.** Build
-the bridge tool, test first, or file a ticket for it. Tests, scene steps and verdicts stay in Python (§3, rule 11).
+the bridge tool, test first. File a ticket for it only with the test-2 evidence (the list under test 2 of `CLAUDE.md` §Touching code has a cost). Tests, scene steps and verdicts stay in Python (§3, rule 11).
 The owner's words: `design/RimMandrake/standing_rulings.md` §What Python cannot reach goes into the bridge's C#.
 
 ---

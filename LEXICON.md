@@ -82,6 +82,10 @@ These words are for the files that agents read, not for talk with Mandrake. Each
 | **Official dump** | The frozen dump of the game's defs, `observed/inventory/DefDump_OFFICIAL/`. |
 | **Naming tiers** | RimMandrake, RimStarWars and RimUtinni, with the prefixes `RM_`, `RSW_` and `RUT_` (`design/NAMING_SCHEME_PLAN.md`). |
 | **Direct Sun** | The one heat of the sun, a function of the sun's angle (`design/RimMandrake/unified_direct_sun_heat_2026-10-19.md`). |
+| **Work Bundle** | One run that fixes all ready tickets of one mod or one subsystem in one context (`src/RimMandrake/rimflow/work_bundle.py`; role `src/RimMandrake/rimflow/roles/bundle_worker.md`). |
+| **Test 1** | The question before any touch of code: would someone care about the fix (`CLAUDE.md` §Touching code has a cost). |
+| **Test-2 evidence** | The only reasons to hand a fault on instead of fixing it in the run: a verdict that must stay independent, no tool or access, a fix not known after a real attempt, one of his five acts or a north-star bar, files that another live run holds (`CLAUDE.md` §Touching code has a cost, test 2; `src/RimMandrake/rimflow/fixer_rule.py` `EVIDENCE`). |
+| **Polish line** | One line on a `polish.md` beside a boundary page or in a mod's `version/`: a small change that is not owed now. The polish rule of `CLAUDE.md` §Touching code has a cost says when one may stay. |
 
 ## Retired names
 

@@ -41,8 +41,9 @@ false answer. Do not write a page.
      `polish.md` beside the page, when the file has a page. When the file has no page, drop it.
    - A bar (a sentence about what the player sees or can do, in a mod's `## north star` section or its
      `version/locked_bars.json`) is never yours to change.
-   - When you cannot fix a Problem offline (it needs the live game, his decision, or the fix is unknown), file one ticket
-     that names the failure with its concrete case (`rimflow file`, the line in the footer), and end the file `noted`
+   - When the fix needs one of his five acts, is unknown after a real attempt, or needs a game while `python3
+     src/RimMandrake/rimflow/game_lock.py query all` shows none free, file one ticket that names what you tried and the
+     failure with its concrete case (`rimflow file`, the line in the footer), and end the file `noted`
      with the ticket's id. Search the ledger for the failure first.
 5. End the file with exactly one of these. A refusal names its repair: do the repair and run the command again.
    - No Problem found, or a Problem was fixed and the fresh reader found none:

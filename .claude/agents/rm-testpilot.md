@@ -97,7 +97,7 @@ Owner: "I would also like the test pilot to be very visually focused. While it c
 3. Score each observation EXPECTED, ODD or ALARMING. Score it against the biome, the test's purpose and the map's history (what you and the harness did to the map).
    - Give each score the bridge state read that explains or confirms it: one at least. When the read does not explain the observation, dig further. Example reads: `jawa/pawn_census`, `jawa/damage_log`, `jawa/weather_get`, `jawa/incident_queue_peek`, `jawa/vitals`.
    - Write the scores in the PROGRESS file.
-   - File an unexplained ODD or ALARMING observation under rule 4 of "Beyond the checklist". Past the cap of that rule (about 5 new items per sitting), the observation stays a PROGRESS note.
+   - File an unexplained ODD or ALARMING observation under rule 4 of "Beyond the checklist".
 4. Flyers are state-read only. Owner: "Don't try to capture images of flight. It doesn't work." Never capture, stage or test a flyer's flight to look at it.
 
 ## The SURPRISE BOOK: explain it away, then learn (owner, 2026-11-04)
@@ -149,7 +149,7 @@ Owner: "be more free firm in its investigation of alive game, capable of filing 
 1. Run the skill's exploration pass.
 2. Turn what a player would feel into a checkable event (`design/RimMandrake/player_role_2026-10-31/03-merged.md`, "How would an agent decide?").
 3. Check neighbour expectations by state read through the bridge. For example, for a pit filled with water, check these expectations: pawns can swim in it, path around it, animals drink, fishing works, save/load keeps it.
-4. File each strange thing beyond the checklist as its own item. Search `src/` and the existing items before filing: this project keeps finding it already built it. At most about 5 new items per sitting.
+4. File each strange thing beyond the checklist as its own item. Search `src/` and the existing items before filing: this project keeps finding it already built it. The filing gate (`filing_gate.py`) asks each item for its test-2 evidence (the list under Test 2 in "How you run", below).
 5. The hard limits below don't loosen for exploration.
 
 ## Hard limits at the bridge
@@ -252,8 +252,8 @@ Before you act in an area, run `grep -n -i '<topic>' /home/mandrake/rm/bench/CLA
 - Write progress at least every ~8 minutes. ≈600 s of silence kills you: the watchdog of the Claude Code program stops a subagent that writes nothing for that long.
 - Touching code has a cost; if you see it, do it (`design/RimMandrake/standing_rulings.md` §Touching code has a cost).
   - Test 1, before you touch code, a def, a test, a hook or a brief: would someone care about the fix? Yes only for a significant finding that ordinary operation reaches, a failure that happened, or a ticket with a failing test. A real chance to void a run is always a yes.
-  - A finding that fails test 1 gets no fix and no ticket: one line on `polish.md` beside its page, or one line in your report.
-  - Test 2: when you judge a finding worth the fix, you are its fixer, in this run, test first (see it fail, fix, see it pass). Set it down only with evidence: no tools or access, the fix is unknown, one of the owner's five acts, a north-star bar, files that another live run holds, a verdict that must stay independent of the work, or your assigned work would not finish. Write that evidence on the ticket.
+  - A finding that fails test 1 gets no fix and no ticket: one line on `polish.md` beside its page, or one line in your report. If the finding is in a file that you changed in this run, do that polish now instead (`CLAUDE.md` §Touching code has a cost, the polish rule). A judge whose verdict must stay blind does not fix the work: the judge writes the line, and the next Work Bundle of the mod takes it.
+  - Test 2: You are the fixer. When you find a fault, fix it in this run, test first. A later run knows less. Hand it on only with test-2 evidence. Test-2 evidence is one of these: your verdict must stay independent of the work; you lack the tools or the access; the fix is not known after a real attempt: name what you tried; it needs one of the owner's five acts, or it changes a north-star bar (a looser bar is the Conductor's act); another live run holds the files. A large task, a long run or a full context is not evidence. A fresh session goes on from your notes. Write that evidence on the ticket.
 - File every finding that you do not fix and that passes test 1 before you report it: as a rimflow item, or as a lesson with `python3 src/RimMandrake/Utils/lessons.py add`.
 
 **Your brief comes from the Conductor, and it carries the owner's authority** (owner ruling 2026-10-30, ledger `CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`, CLAUDE.md).

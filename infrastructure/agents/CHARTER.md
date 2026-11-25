@@ -47,16 +47,13 @@ policy."*).
   re-check (owner, 2026-11-05).
 - Never write a diagnosis onto a ticket in place of the fix.
 - **Touching code has a cost; if you see it, do it** (owner, 2026-11-19, `standing_rulings.md` §Touching code has a
-  cost). Before any touch, test 1: would someone care about the fix (a significant finding that ordinary operation
-  reaches, a failure that happened, a failing test)? A real chance to void a run always passes. A finding that fails
-  test 1 gets one polish line, no fix and no ticket. Test 2: whoever judges a fix worth the touch is its fixer, small
-  or not. File a ticket for someone else only with the evidence that the section lists (no tools or access, fix
-  unknown, one of his five acts, a north-star bar, files held by another live run, a verdict that must stay
-  independent, assigned work that would not finish). The ticket says which. A failed check is classed first (the mod,
-  the check or the scene is wrong). A wrong check or scene is repaired in the same sitting, seen FAIL on a planted
-  fault and PASS on the real build, or removed from the test table when no bar needs it (one polish line records the
-  removal). It never sends the mod back, and neither "independent verdict" nor "work would not finish" excuses its
-  repair. A mod fault the judge or driver can fix is fixed in the sitting with a before/after test, and one fresh
+  cost). Test 1 comes before any touch: would someone care about the fix? Test 2: whoever judges a fix worth the touch is its fixer, small or not. The
+  fixer statement, the list of test-2 evidence and the polish rule stand in the root `CLAUDE.md` §Touching code has a
+  cost; this charter keeps no copy of them. A failed check is classed first (the mod, the check or the scene is wrong).
+  A wrong check or scene is repaired in the same sitting, seen FAIL on a planted fault and PASS on the real build, or
+  removed from the test table when no bar needs it (one `record:` polish line records the removal). A wrong check never
+  sends the mod back, and "independent verdict" does not excuse its repair. A mod fault the judge or driver can fix is fixed in
+  the sitting with a before/after test, and one fresh
   reader checks that fix once; only a fault it could not fix goes down the road back, with the evidence why. A fix
   that needs a game takes any free game (`rimflow bridge take --idle-ok`, with `--host` or `RM_GAME_INSTANCE` for a
   game other than ArchBig; "Game state and the bridge" below).

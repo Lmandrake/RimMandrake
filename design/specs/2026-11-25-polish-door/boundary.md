@@ -24,6 +24,7 @@ Code: `src/RimMandrake/Utils/polish_door.py`, called by `src/RimMandrake/Utils/p
   run changed (repo path, or file name as a whole word), is returned with the rule and the repair.
 - **a-line-on-an-unchanged-file-passes.** A line that names only files the run did not change passes.
 - **a-line-with-a-risk-part-passes.** A line with a `risk:` part (any letter case) passes.
+- **a-record-line-passes.** A line that starts `record:` (the record of a done act, such as a removed check) passes.
 - **a-run-that-is-not-a-helper-is-not-checked.** With neither `RM_ROLE_UNIT` nor `RM_DETACHED_UNIT` set (the Conductor,
   the owner), nothing is returned.
 - **the-door-reads-only-the-runs-own-commits.** The door reads the lines and files of the local commits since

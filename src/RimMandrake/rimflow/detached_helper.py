@@ -143,13 +143,15 @@ Ledger item: {item}. Seat: {seat}. {bound_text}.
 - At the end, close it with the sha ./publish printed (the close line; an operational item also takes `--live`), or, when
   anything is left, write a note whose text starts `LEFT OPEN:` and says exactly what. A run that ends success with its item open and no such note is
   flagged to the Conductor.
+- {fixer}
 - An acceptance check can pass on less than the spec. Before you close, read each spec line again: build what is not
-  built, or file it as ONE ticket and close with `--remainder <its id>`. `close` asks when your words name an unbuilt part.
-- A `LEFT OPEN:` note relaunches this brief in a fresh session (left_open_continue.py). When what is left is not a
-  helper's to do (the owner's decision, an act of the Conductor's, a date), also put a dated wait on the item, so it
-  is not relaunched for nothing (the wait line).
-- Before you stop: write your state, evidence paths and one imperative NEXT as a note (the note line). A program
-  reads your process for your sign of life: no note is asked by the clock.
+  built. A remainder is filed only with the test-2 evidence (`--not-now`), and the close names it with
+  `--remainder <its id>`. `close` asks when your words name an unbuilt part.
+- A `LEFT OPEN:` note relaunches this brief in a fresh session (left_open_continue.py). When what is left is one of his
+  five acts, a looser bar, a hold to lift, or a date, put a dated wait that names that act, so it is not relaunched for
+  nothing (the wait line). A choice between known fixes is yours: take the one you recommend and log it delegated.
+- Before you stop: write your state and evidence paths as a note (the note line). Write a NEXT only for work that
+  test-2 evidence stops. A program reads your process for your sign of life: no note is asked by the clock.
 - After each experiment or step that changes what you know, write your progress record as a note whose text starts
   `PROGRESS:` and names the theory, the experiment, the reading and the next action (`"PROGRESS: theory: ... |
   experiment: ... | reading: ... | next: ..."`). A stopped run with a large context is carried on by a fresh session that has only this brief and those notes.
@@ -162,7 +164,10 @@ Ledger item: {item}. Seat: {seat}. {bound_text}.
   nothing: after 3, 4 or a cut call, `python3 src/RimMandrake/Utils/waitalive.py attach <name>` waits again. For a job
   whose work is on Windows or another machine, add `--progress <the log that it writes>`. Do not poll with `sleep`.
 - Nobody reads your stdout until you end; the note is what the Conductor sees. End with a 5-line summary.
-""".replace("BASH_MAX_MS", str(BASH_MAX_MS)) + RULE_HOMES + FF.BRIEF_LINE
+"""
+# the fixer statement and its test-2 list: one constant (fixer_rule.py), so this copy cannot drift from the others
+import fixer_rule  # noqa: E402
+FOOTER = FOOTER.replace("{fixer}", fixer_rule.text()).replace("BASH_MAX_MS", str(BASH_MAX_MS)) + RULE_HOMES + FF.BRIEF_LINE
 
 
 def dirty_shards(clone, seat, runner=subprocess.run):

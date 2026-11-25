@@ -298,7 +298,7 @@ is running).
    - (a) Pending enact items from his rulings. An enact item is the item that a ruling record creates, to carry the
      ruling out (Orphan home 1). Each enact item has a builder ticket, or gets one.
    - (b) Canon-check findings. When the fix is a wording edit in one file, fix the doc to canon. Never fix canon to the
-     doc. Otherwise, file the finding to the Conductor lane. An ambiguous reading goes to him on a card.
+     doc. Otherwise, launch the fix at once (a helper that you launch). An ambiguous reading goes to him on a card.
    - (c) New `--for OWNER` items and the hand-ups of Operations: gate them.
      - Review every card bound for him first.
      - A card can be outside his five acts (`delegation_policy.md` §2), with no concrete evidence against the obvious
@@ -513,7 +513,8 @@ Read the result in the wake. Do not open the `.out.json` file. The result needs 
 sentence: a launch that you promise, a decision that you call yours, a question that you put to him, a page that you
 say you will write.
 - File it: `rimflow file <ID> --for CONDUCTOR --kind owed --title "<the act>" --caused-by <item it acts on>`.
-- Park an owed item on a trigger with `rimflow wait`.
+- Park an owed item with `rimflow wait` only on a trigger outside you: a date, or the end of a run. An owed item
+  parked on your own act is a self-wait: do the act.
 - Discharge it with evidence: `close --sha`, or `--no-code` naming a sha, a run id, a path or `told him at <time>`.
 - A close of its parent discharges nothing.
 - Spec: `design/specs/2026-11-15-conductor-restart-loses-nothing.md` §3.
@@ -629,7 +630,7 @@ Design work is never done in-window.
   - builds, to helpers that you launch. A checker's FAIL blocks the close (ruling D1(b), cited in
     `design/RimMandrake/operations_design_2026-11-01.md`).
   - his five acts, to him;
-  - repeat errors: `lessons.py add` and a ticket.
+  - repeat errors: `lessons.py add`, a ticket, and launch the fix at once.
   - schedule changes, as proposals to the schedule file.
 - **Never:**
   - answer from memory instead of the numbers;

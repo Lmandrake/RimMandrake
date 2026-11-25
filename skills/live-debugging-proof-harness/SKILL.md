@@ -300,7 +300,7 @@ A flat tick window measures whatever happened to be slowest. The slowest thing i
   - Today's rule and the item ids are in `references/lightspeed-authoring.md` §3.
 - **When no bridge call can make the act or read the value, add a generic bridge tool. Do not ask first.**
   - Examples: an act or a capture on each tick, a private value, an event between two ticks. The row stays UNMEASURED until
-    the tool exists. Build the tool, test first, or file a ticket for the tool (`rimbridge-companion`).
+    the tool exists. Build the tool, test first (`rimbridge-companion`). File a ticket for it only with the test-2 evidence (`CLAUDE.md` §Touching code has a cost, test 2).
   - The scene steps, the check and the verdict stay in Python. Ask of each new tool: could a scene of another mod call
     this tool unchanged? Yes: an instrument, so add it. No: a test, a scene or a check of one mod, so keep it in Python.
   - The owner's words: `design/RimMandrake/standing_rulings.md` §What Python cannot reach goes into the bridge's C#.

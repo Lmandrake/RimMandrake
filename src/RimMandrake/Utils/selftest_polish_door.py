@@ -152,6 +152,11 @@ def t_a_line_with_a_risk_part_passes():
                    [CODE]) == [], "a line with a risk part passes (any letter case)")
 
 
+def t_a_record_line_passes():
+    chk(D.returned([(POLISH, "- record: removed the check `x_part_depth` from `x_part.py`; no bar needs it.")],
+                   [CODE]) == [], "a record line (a removed check) passes")
+
+
 def t_a_run_that_is_not_a_helper_is_not_checked():
     chk(not D.helper_run({}) and D.helper_run({"RM_ROLE_UNIT": "u"}) and D.helper_run({"RM_DETACHED_UNIT": "u"}),
         "helper_run: true only when RM_ROLE_UNIT or RM_DETACHED_UNIT is set")
@@ -164,6 +169,7 @@ def main():
     t_a_helper_line_on_its_own_changed_file_is_returned()
     t_a_line_on_an_unchanged_file_passes()
     t_a_line_with_a_risk_part_passes()
+    t_a_record_line_passes()
     t_a_run_that_is_not_a_helper_is_not_checked()
     t_the_door_reads_only_the_runs_own_commits()
     t_a_refused_landing_leaves_the_files_as_written()

@@ -142,8 +142,8 @@ def t_every_fixer_brief_runs_touched_checks_on_a_free_game():
     if "records UNRUN for Stage 6" in road or "live-row" not in road:
         out["stage6 road"] = road[:400]
     blocked = flat(A.fixer_brief(ITEM, MOD, 15, fix_for="blocked"))
-    if "Never take the bridge or a game" not in blocked:     # pipeline machinery has no in-game check: unchanged
-        out["blocked"] = "lost its game ban"
+    if "Never take the bridge or a game" in blocked or "free game" not in blocked:   # the Conductor's ruling, 2026-11-25
+        out["blocked"] = "keeps the old game ban, or lost the free-game line"
     return not out, out
 
 

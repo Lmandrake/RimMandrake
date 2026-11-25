@@ -40,8 +40,10 @@ The page has these parts. Each entry is named with words:
 ## You fix it; one blind reread follows
 
 You read the page, the code and the tests, the whole file, once. You fix each Problem (below) in this job. First
-write a test and see it fail. Then fix the code and see the test pass. Fix nothing else. A minor nit, or a
-finding that is not significant, goes on `polish.md` (below). If you cannot write the clone (a `gpt_consult.py` call),
+write a test and see it fail. Then fix the code and see the test pass. When you changed a file, do the polish of that
+file too, before the fresh reader reads it (`CLAUDE.md` §Touching code has a cost, the polish rule). Fix nothing else.
+A minor nit, or a finding that is not significant, in a file that you did not change goes on `polish.md` (below). The
+fresh reader must stay blind: it fixes only a Problem and writes each nit on `polish.md`. If you cannot write the clone (a `gpt_consult.py` call),
 return your Problems. The run that launched you fixes them by this brief.
 
 When you fixed nothing, the review is over. When you fixed something, one fresh reader who did not make the fix reads
@@ -97,7 +99,8 @@ fix is "refuse the input" before "handle the input". Only a CALIBRATED brief's r
 
 - **"It should also accept or survive X"**: one line on `next_version.md` beside the page. That line is never added
   to the current version's bars.
-- **Each of these** is one line on `polish.md` beside the page, and nobody fixes it:
+- **Each of these**, in a file that you did not change, is one line on `polish.md` beside the page. In a file that you
+  changed, you do it now, before the fresh reader (the polish rule):
   - a minor nit;
   - a finding with no meaningful impact;
   - a stricter test with no broken component described;
@@ -107,9 +110,10 @@ fix is "refuse the input" before "handle the input". Only a CALIBRATED brief's r
 - **A rare failure** (§A Problem): one plain line for the page's DOES NOT SURVIVE. The page's owner writes it there;
   no fix is built.
 
-No ticket and no repair lane come from either list. For now nobody takes lines from a polish list: it is a record
-(owner, by card 2026-11-19: *"(3) for now. We will later do experiments on Polish if we can/must. We're not close to
-polishing anything right now"*). When a polish line fires in a real run, that run is a failure and a new source
+No ticket and no repair lane come from either list. The next Work Bundle that changes the file a polish line names
+takes the line, does it, and removes it. A polish line stays only when it names a file that the run did not change, or
+names a concrete risk after `risk:`, or would move a bar, add a feature or need one of the owner's five acts. In a
+helper run, `./publish` returns a new polish line on a file of your own changes that has no `risk:` part. When a polish line fires in a real run, that run is a failure and a new source
 event. The line is then no longer polish. A Problem that you fixed needs no ticket. A new ticket must cite a broken
 promise or a failure. File one ticket per source event, never one per symptom.
 

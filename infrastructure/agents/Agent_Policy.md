@@ -246,7 +246,11 @@ is true. Never spawn a duplicate for "reliability".
 > tool returns success and you cannot see the effect · you would have to invent a
 > defName, field or namespace.
 
-Escalating is a success; record it. Stamp the model on closes (`model=sonnet-5.5` in the `note`). Then the ledger can
+Both parts guard against a worker that widens its task. A run fixes inside its own mod or subsystem. A run names in
+its close each file that it changed outside the files that its brief named.
+
+An escalation that names what you tried and what would settle the question is a success. An escalation in place of an
+attempt is not. Record each escalation as a note on its item. Stamp the model on closes (`model=sonnet-5.5` in the `note`). Then the ledger can
 answer the accepted-work rate per model.
 
 ## Hooks and Claude Code session quirks

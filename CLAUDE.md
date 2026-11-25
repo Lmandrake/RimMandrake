@@ -42,8 +42,9 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - Agents may add regression checks and new north-star bars (`design/RimMandrake/delegation_policy.md` §1).
 - Only the Conductor may loosen a bar, as a mindful act (see "Only five acts stay his" below).
 - When Python cannot control or measure a thing through the bridge, add generic C# to the bridge that reaches the
-  thing. Do not ask first: build or file the bridge function, test first. Tests, scene steps and verdicts stay in Python;
-  never put a test, a scene or a check of one mod in C#. Full text: `design/RimMandrake/standing_rulings.md` §What Python
+  thing. Do not ask first. Build the bridge function, test first. File a ticket for it only with the test-2 evidence
+  (§Touching code has a cost). Tests, scene steps and verdicts stay in Python; never put a test, a scene or a check of
+  one mod in C#. Full text: `design/RimMandrake/standing_rulings.md` §What Python
   cannot reach goes into the bridge's C#.
 - When you are stuck, go to GPT early, for hypotheses to test.
 - Process: `design/RimMandrake/debug_process.md`.
@@ -379,7 +380,8 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   - When the fix is known, file the ticket with its acceptance test. Do the fix in the same run, tests first. Then
     publish, and say so.
   - Hand off only with the evidence that §Touching code has a cost lists. Put the evidence on the ticket.
-  - A hand workaround without the permanent fix is not allowed. A mod's gaps still go through the stages.
+  - A hand workaround without the permanent fix is not allowed.
+  - A mod's unbuilt bars still go through the stages. A mod fault that your run can fix, you fix in your run.
 - **The Evidence-for-Ask rule** applies to every agent that would pause for the owner, for every question and choice.
   - Take the obvious answer instead of the pause. Log it with `--per-ruling
     RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME --why "delegated: evidence-for-ask: <the call and
@@ -439,16 +441,31 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
     ticket is not a go.
 - A real chance to void a run is always worth the fix. A real chance is a failure that happened, or a concrete case in
   normal use. A rare failure that a page lists as not survived is not a real chance until it happens once.
-- A finding that fails test 1 gets no fix and no ticket. Write one line on `polish.md`, or in your report. Drop an open
-  ticket that fails test 1 with the reason `not worth the touch: <why>`.
-- Test 2: if you judge a finding worth the fix, you are its fixer, in the same run, test first. Set it down only with
-  evidence. Write that evidence on the ticket. The evidence is one of these:
-  - you lack the tools or the access;
-  - the fix is unknown;
-  - it needs one of the owner's five acts, or it changes a north-star bar;
-  - another live run holds the files;
+- A finding that fails test 1 gets no ticket. If it is in a file that your run changed, do it now (the polish rule,
+  below). Else write one line on `polish.md`, or in your report. Drop an open ticket that fails test 1 with the reason
+  `not worth the touch: <why>`.
+- The polish rule:
+  - A run that changed a file in this run does the polish of that file in this run. Do the polish before the fresh
+    reader reads the changed file, so that the polish adds no second read.
+  - A Work Bundle also takes each open line of the `polish.md` of its mod or its subsystem that names a file that the
+    bundle changes. The worker does the line and removes it from `polish.md`.
+  - A polish line is allowed in three cases only: the line names a file that the run did not change; the line names a
+    concrete risk after `risk:` (this change, this possible wrong result); the change would move a bar, is a new
+    feature of the mod, or is one of the owner's five acts.
+  - A judge or a reader that must stay blind writes a polish line and fixes nothing outside its rule. The next Work
+    Bundle of that mod takes the line.
+  - Polish never moves a bar. A pass never waits for a polish line that names a file that nobody changed.
+  - In a helper run, `./publish` returns a new polish line that names a file of the run's changes and has no `risk:`
+    part (`polish_door.py`). Do the polish, remove the line, and publish again.
+- Test 2: You are the fixer. When you find a fault, fix it in this run, test first. A later run knows less. Hand it on
+  only with test-2 evidence. Write that evidence on the ticket. Test-2 evidence is one of these:
   - your verdict must stay independent of the work;
-  - your assigned work would not finish.
+  - you lack the tools or the access;
+  - the fix is not known after a real attempt: name what you tried;
+  - it needs one of the owner's five acts, or it changes a north-star bar (a looser bar is the Conductor's act);
+  - another live run holds the files.
+- A large task, a long run or a full context is not evidence. A fresh session goes on from your notes.
+- The one copy of this statement and list in code is `src/RimMandrake/rimflow/fixer_rule.py`.
 - In a helper run, `rimflow file` and `spawn` refuse a work ticket (exit 6) with no `--not-now "<class>: <evidence>"`.
   Then do the work and give `--did-it <sha>`, file with `--not-now`, or give `--not-worth-it "<why>"`. The Stop hook
   keeps the run until each refusal has one of these.
@@ -456,12 +473,11 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - Fix a fault in the sitting. Repair or remove a wrong check in the sitting. Neither sends the mod back:
   - Class each failed or unmeasured check first: the mod is wrong, the check is wrong, or the staged scene is wrong.
   - A wrong check or scene is worth repair only if a bar would go undecided without it. Remove a check that no bar
-    needs from the test table, and delete it when nothing else names it. Write one line on the polish list as the
-    record. No ticket.
+    needs from the test table, and delete it when nothing else names it. Write one line on the mod's `polish.md` that
+    starts `record:` as the record. No ticket.
   - "A failure happened" does not make a wrong check worth the fix by itself. The failure was the check's.
   - The agent that classes a check wrong repairs it in the same sitting and runs it again. "My verdict must stay
-    independent" and "my assigned work would not finish" do not excuse a wrong check or scene. The repair does not
-    touch the mod.
+    independent" and a long task do not excuse a wrong check or scene. The repair does not touch the mod.
   - A repaired check counts only after it is seen to FAIL on a planted fault (or a state known bad) and PASS on the
     real build, in that sitting, with both readings beside the row. A needed check whose repair cannot be shown both
     ways stays not counted (UNMEASURED), never PASS, and keeps an owner.
@@ -666,8 +682,9 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   with `code_review_status.py flag <path> --why "…"`. Nobody reviews a FLAGGED file again. There is no third read.
 - Flagged files are examined about weekly (`code_review_status.py list --flagged`). The question for each file: must
   the definition of significant change, or is this code really unstable?
-- Write each minor nit, and each claim that is not significant, as one line on `polish.md` beside the page. Nobody
-  fixes it. For now nobody takes lines from a polish list. A polish list is a record.
+- A minor nit, or a claim that is not significant, in a file that the run changed: the run fixes it before the fresh
+  reader (§Touching code has a cost, the polish rule). Write any other nit as one line on `polish.md` beside the page.
+  The next Work Bundle that changes that file takes the line. A polish line is never a ticket.
 - A new ticket must cite a broken promise or a failure. File one ticket per source event, never one per symptom.
 - Code with no page reads NO PAGE. It is not DIRTY. It gets its page when someone next changes it, or when it is on a
   mod's next-step path. Do not write pages for untouched code.
@@ -675,7 +692,7 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   `src/RimMandrake/Utils/pipeline_tests.json`.
 - Codex and GPT may review pipeline code. Each such review uses `src/RimMandrake/rimflow/roles/code_review.md` or a
   prompt that carries the same significance rule, stop level and polish route. A finding that is not significant is
-  one line on `polish.md`. Such a finding is never a ticket, and nobody works it. Codex does not apply this rule by
+  one line on `polish.md`, under the polish rule. Such a finding is never a ticket. Codex does not apply this rule by
   itself: it calls rare inputs Problems. So the run that reads a Codex review judges each Problem by the rule itself.
   The measurement: `design/RimMandrake/standing_rulings.md` §Codex and GPT reviews of pipeline machinery.
 - Before you spend a review on a file, check that the file is still reachable.
@@ -825,7 +842,7 @@ python3 src/RimMandrake/Utils/system_click.py <x> <y>          OS-level click fo
   `efficient-subagents` and `generating-rimworld-sprites`.
 - File each lesson as one file in `infrastructure/state/lessons/`, with `python3 src/RimMandrake/Utils/lessons.py add
   "…"`.
-- Edit skills only in fresh-context curation sessions.
+- Fix a false sentence in a skill on sight. Restructure a skill or add to it only in a fresh-context curation session.
 
 ## Compact Instructions
 

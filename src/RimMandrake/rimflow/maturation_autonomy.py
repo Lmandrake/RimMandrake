@@ -2063,8 +2063,8 @@ def fixer_brief(item, mod, cap, fix_for=None, live=False, walk_result=None, grou
                 "%sFind the cause by experiment where the item says so, write a test that fails on the base first, fix "
                 "it, see the test pass, land with `./publish -m ... <paths>`, and close the item with the published "
                 "sha. His objection closes for good only on his own later look: say in the close what he will see. If "
-                "the fix is his (a pick, a ruling) or needs more than this run, do every part that is yours, then write "
-                "a note starting LEFT OPEN: that says what landed and what is owed, and by whom.\n%s\n\n%s\n\n%s\n" % (
+                "the fix is his pick (one of his five acts), do every part that is yours, then write a note starting "
+                "LEFT OPEN: naming the pick. A long fix is still yours.\n%s\n\n%s\n\n%s\n" % (
                     item, mod, item, item, walk_result or "version/walk_brief/", mod,
                     ("It shares one cause or the same files with %s: fix them in this run and close each one. " %
                      ", ".join(others)) if others else "",
@@ -2077,9 +2077,11 @@ def fixer_brief(item, mod, cap, fix_for=None, live=False, walk_result=None, grou
                 "pipeline's own machinery, and the mod is PAUSED until it is fixed. Fix it, its acceptance test first "
                 "(watch it fail on the base), land with `./publish -m ... <paths>`, close the item with the published "
                 "sha, then un-block the Designer: `python3 src/RimMandrake/rimflow/designer_stage.py unblock "
-                "design/concepts/%s --why \"%s fixed at <sha>\"` and land design/concepts/%s/stage.json. If it cannot "
-                "be fixed offline, or the fix is the owner's (a bar, a ruling, a spend cap), write that in a note "
-                "starting LEFT OPEN: and drop nothing. Never take the bridge or a game.\n%s\n" % (
+                "design/concepts/%s --why \"%s fixed at <sha>\"` and land design/concepts/%s/stage.json. If the fix "
+                "needs one of his five acts or a looser bar (the Conductor's act), write that in a note starting LEFT "
+                "OPEN: and drop nothing. A ruling that the standing rules settle is yours. A live check of the fix may "
+                "take a free game (`python3 src/RimMandrake/rimflow/game_lock.py query all`; CLAUDE.md §The bridge is "
+                "passed through one file).\n%s\n" % (
                     item, mod, item, item, mod, mod, item, mod, M.SELF_FIX_RULE))
     if fix_for == "version":
         # RIMMANDRAKE_UNPARK_FLOWWORKS_STUCK_AT_OFFLINE_STAGE_EIGHT_HOURS: an open offline Problem of the version, built
@@ -2089,7 +2091,7 @@ def fixer_brief(item, mod, cap, fix_for=None, live=False, walk_result=None, grou
                 "its review, and the record goes back to Stage 6 only after it closes (the game-only items there must "
                 "not be tried on a build this fix then changes). Build it to its own spec and acceptance test, the "
                 "test first (watch it fail on the base), land with `./publish -m ... <paths>`, and close the item with "
-                "the published sha. If what it owes is his pick or his look, or more than one run, do every part that "
+                "the published sha. If what it owes is his pick or his look, do every part that "
                 "is yours, then write a note starting LEFT OPEN: that says what landed and what is owed, and by whom. "
                 "Drop nothing: it is his Problem, not a check to judge.\n%s\n\n%s\n\n"
                 "%s\n\n%s\n" % (item, mod, item, item, mod, OFFLINE_CLOSE % {"mod": mod, "item": item},
@@ -2098,14 +2100,14 @@ def fixer_brief(item, mod, cap, fix_for=None, live=False, walk_result=None, grou
             "src/RimMandrake/rimflow/cli.py show %s` to its end: it is one failed line of %s's in-game visit or blind "
             "cycle, sent back by the steward. Class it first, by the rule below: if the check or the scene is wrong, "
             "not the mod, and no bar goes undecided without it, drop the item with `--why \"not worth the touch: "
-            "<why>\"` and its one polish line; if a bar needs it, repair the check, never the mod, and show it FAIL on "
+            "<why>\"` and its one `record:` polish line; if a bar needs it, repair the check, never the mod, and show it FAIL on "
             "a planted fault and PASS on the real build. A line sent back is one symptom: before you fix it, read the other failed "
             "lines of the same visit or cycle that touch the same system, and if two or more share a cause, fix the "
             "cause. If this line has come back before (its item history shows it), do not tune it again: say what the "
             "earlier fixes changed and why they did not hold. Fix it, run its acceptance test (watch it fail first if "
             "it is new), land "
             "with `./publish -m ... <paths>`, and close the item with the published sha. If it cannot be fixed "
-            "offline, or the fix is the owner's (a bar, a ruling, a classification), write that in a note and drop "
+            "offline, or the fix needs a looser bar (the Conductor's act) or another of his five acts, write that in a note and drop "
             "nothing. %s\n%s\n\n%s\n\n%s\n\n%s\n" % (item, mod, item, item, mod, "Its acceptance test needs a game: use it "
                                                "as the section below says, and write a note starting LEFT OPEN: on "
                                                "what still fails." if live else OFFLINE_CLOSE % {"mod": mod, "item": item},

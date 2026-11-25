@@ -17,14 +17,17 @@ import subprocess
 
 import time_budget
 
-RISK_RX = re.compile(r"\brisk:", re.I)
+# a `risk:` part keeps a line (case two and three of the rule); a `record:` line records a done act (a removed check),
+# which is no polish owed
+RISK_RX = re.compile(r"\b(?:risk|record):", re.I)
 HELPER_VARS = ("RM_ROLE_UNIT", "RM_DETACHED_UNIT")
 NOT_CODE = re.compile(r"(^|/)polish\.md$|^infrastructure/state/ledger/")
 
 RULE = ("A run that changed a file in this run does the polish of that file in this run, before the fresh reader. "
         "A polish line stays only when it names a file that the run did not change, or carries a `risk:` part that "
         "names the concrete risk (this change, this possible wrong result), or the change would move a bar, add a "
-        "feature or need one of the owner's five acts (say which after `risk:`).")
+        "feature or need one of the owner's five acts (say which after `risk:`). A line that records a done act (a "
+        "removed check) starts `record:`.")
 
 
 def helper_run(env=None):

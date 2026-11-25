@@ -78,6 +78,7 @@ import scene_size as SZ          # noqa: E402  an oversized live scene carries i
 import live_kinds as LK          # noqa: E402  the kinds of a live scene and the outcomes of its runs
 import scene_verdicts as SV      # noqa: E402  the scene verdict ledger: a receipt is not a verdict (Bridge v2)
 import refusal_contract as RC   # noqa: E402
+import fixer_rule                # noqa: E402  the one fixer statement and test-2 list (fixer_rule.py)
 import judge_certificate as JC   # noqa: E402  the pre-judgement certificate (PRE_JUDGEMENT_CERTIFICATE)
 import own_cgroup               # noqa: E402  a history read is file cache outside the tick's memory limit
 import build_match as BM         # noqa: E402  the Stage 6 exit's build match (owner, 2026-11-17)
@@ -2130,10 +2131,10 @@ OWNER_WIRE = ("So can we wire up Operations/Dispatch such that they do advance o
 SELF_FIX_RULE = ("- The pipeline fixes its own defects (owner, 2026-11-15): a defect you find in the pipeline itself (its "
                  "code, tools, records, tests, status page) with a clear cause and a known fix is yours: file it (its "
                  "acceptance test in the body), fix it in this run, tests first, publish, and name the ticket and sha in "
-                 "your report. Hand it off only when the fix is unknown, outside your tools, or would change a "
-                 "north-star bar, with the evidence and what you tried on the ticket. Never work around it by hand. A "
-                 "mod's own gaps still go through the stages. Full text: `design/RimMandrake/standing_rulings.md` "
-                 "§The pipeline fixes its own defects.")
+                 "your report. " + fixer_rule.text() + " Write that evidence and what you tried on the ticket. Never "
+                 "work around it by hand. A mod's unbuilt bars still go through the stages. A mod fault that your run "
+                 "can fix, you fix in your run. Full text: `design/RimMandrake/standing_rulings.md` §The pipeline fixes "
+                 "its own defects.")
 # The owner's rulings of 2026-11-20 (RIMMANDRAKE_ENACT_WRONG_CHECK_FIXED_IN_SITTING_NOT_RETURNED and
 # RIMMANDRAKE_RESUME_WRONG_CHECK_WORKER_WITH_MOD_FIX_EXTENSION): a wrong check is repaired or removed in the sitting, a
 # mod fault the judge or driver can fix is fixed there with one fresh reader of the fix, and any role takes a free game.
@@ -2149,8 +2150,8 @@ RED_SEEN_RULE = (
     "edited decider with no recorded red run, and the mod waits until one is recorded.")
 # Any role that needs the live game to finish a fix takes it when it is free (owner, 2026-11-20: "if a live game is
 # available, of course a judge (or any role!) should be able to just grab it"). Carried by the briefs whose fix can need
-# the game: the in-game driver, the blind judge and the live fixer (maturation_autonomy.live_rules). An offline-stage
-# fixer gets only offline items (a game-only item goes back to Stage 6), so its brief keeps "Never take the bridge".
+# the game: the in-game driver, the blind judge and the live fixer (maturation_autonomy.live_rules). The pipeline-defect
+# fixer may take a free game for a live check of its fix (the Conductor's ruling, 2026-11-25).
 FREE_GAME_RULE = (
     "- **A fix that needs the live game takes it when it is free** (owner, 2026-11-20): there are several games, each "
     "with its own bridge holder: ArchBig (Steam's install on Archmagi), ArchSmall (its own install on "
@@ -2207,10 +2208,10 @@ WRONG_CHECK_RULE = "\n".join([
     "- Test 1, the worth of the touch: a wrong check or scene is worth repair only if a bar would go undecided without "
     "it. \"A failure happened\" does not make it worth the touch by itself: the failure was the check's. A check that no "
     "bar needs is not kept: remove it from the test table (and delete it when nothing else names it), with one line on "
-    "the polish list as the record of the removal. No ticket. A needless check left in place meets the next judge again.",
+    "the polish list that starts `record:` as the record of the removal. No ticket. A needless check left in place meets the next judge again.",
     "- Test 2, if you see it, do it: the agent that classes a check or scene wrong repairs it in the same sitting and runs "
-    "it again. \"My verdict must stay independent\" and \"my assigned work would not finish\" do not excuse a wrong "
-    "check or scene: its repair does not touch the mod.",
+    "it again. \"My verdict must stay independent\" and a long task do not excuse a wrong check or scene: its repair "
+    "does not touch the mod.",
     "- The guard: a repaired check counts only after it is seen to FAIL on a planted fault (or on a state known bad) and "
     "PASS on the real build, in that sitting, with both readings recorded beside the row. A needed check whose repair "
     "cannot be shown both ways stays not counted (UNMEASURED), never PASS, and keeps an owner: this run, or a filed item "
@@ -2348,8 +2349,9 @@ SELF_CHECK_RULE = ("**Before you stop, read your own record the way the pipeline
 STEWARD_FILE = "version/steward_decisions.md"
 STANDING_DEFAULT = ("No Conductor decisions are written for this run, so the standing default holds: build the missing "
                     "checks for the bars listed above, offline, and nothing else. Do not change a bar, its wording, the "
-                    "Design Version or the stage. A bar that cannot get a check offline is written up in a note on your "
-                    "item as a question to the Conductor, never guessed around.")
+                    "Design Version or the stage. A bar that cannot get a check offline gets a live check: take a free "
+                    "game (`python3 src/RimMandrake/rimflow/game_lock.py query all`) and build it there, never guessed "
+                    "around (CLAUDE.md §The bridge is passed through one file).")
 BUILD_CLAUSES = ("every_bar_has_a_check_that_runs", "table_version")    # refusals a builder can work off, offline
 
 

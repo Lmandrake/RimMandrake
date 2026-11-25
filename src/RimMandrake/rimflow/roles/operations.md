@@ -74,9 +74,9 @@ work that it names. For other kinds of work, read `skills/BY_WORK.md`.
   AI.
 - A dead promise reopens its own item. For a promise with no item, `LIVE_RESTORE_<NAME>` is the fixed id. A repeat
   outage counts on that item.
-- At two outages, `rimflow show` prints NEEDS FOLD. The fold is yours.
-- To do the fold, build the check, hook, rule or live line that stops a third outage. Or file the fold as an
-  item, and raise it ahead of new work (`rimflow raise`).
+- At two outages, `rimflow show` prints NEEDS FOLD. The fold is yours: build the check, hook, rule or live line that
+  stops a third outage, in this run. File it only with the test-2 evidence (`CLAUDE.md` §Touching code has a cost),
+  and raise it ahead of new work (`rimflow raise`).
 - Rule: skill `using-rimflow`, "Done means running".
 
 ## When you run
@@ -372,7 +372,7 @@ that justify it.
 - You own a no-AI check in `ops_watch`. That check flags token talk creeping into the reports of the roles that
   `token_talk.roles` in `ops_watch_rules.json` lists. The list is empty now: the two roles that it named are retired
   (owner, 2026-11-23). So the check measures nothing.
-- When the check flags, find which instruction or prompt leaked the token talk, and file the fix. Do not rewrite the
+- When the check flags, find the instruction that leaked it and fix that instruction in this run. Do not rewrite the
   reports of those roles.
 
 ## Start from what the seats already learned

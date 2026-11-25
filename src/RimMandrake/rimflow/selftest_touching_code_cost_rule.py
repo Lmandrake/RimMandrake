@@ -22,11 +22,11 @@ ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 
 RULE = "Touching code has a cost; if you see it, do it"
 AGENTS = [".claude/agents/rm-%s.md" % a for a in ("bridge", "builder", "consult", "fixer", "judge", "testpilot")]
-AGENT_PINS = [RULE.split(";")[0], "Test 1, before you touch code", "Test 2: when you judge a finding worth the fix",
+AGENT_PINS = [RULE.split(";")[0], "Test 1, before you touch code", "Test 2: ",
               "A real chance to void a run is always a yes", "gets no fix and no ticket"]
 
 PRESENT = {
-    "CLAUDE.md": ["## " + RULE, "Test 1 comes before you touch code", "Test 2: if you judge a finding worth the fix",
+    "CLAUDE.md": ["## " + RULE, "Test 1 comes before you touch code", "Test 2: You are the fixer.",
                   "A real chance to void a run is always worth the fix", "`not worth the touch: <why>`",
                   "the polish route, which files no ticket"],
     "design/RimMandrake/standing_rulings.md": [

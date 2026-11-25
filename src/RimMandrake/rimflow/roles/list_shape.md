@@ -57,7 +57,7 @@ Steps:
    - a note whose text starts `LEFT OPEN:` and names the ONE next act that a second run would do. The lane gives the
      item at most one more run, and only on that note.
    - a dated wait (`cli.py wait {item} --until <YYYY-MM-DD> --reason "<who acts next and on what>"`) when the next act
-     is someone else's.
+     belongs to one of the four routes of step 3 (a judge, the owner, the Conductor, a review).
    Do not file a new item for your own next step. A routed part keeps the item open: the party that answers it shapes
    the item again with `cli.py shape`.
 

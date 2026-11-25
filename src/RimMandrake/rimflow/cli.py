@@ -2282,7 +2282,8 @@ def _card_owed_or_die(args, evs):
             "account for:\n%s\n\nPath to pass: name each one in the close's words, with where it was done or filed, e.g.\n"
             "    --why \"%s: done in <path or sha> | filed <ITEM_ID>\"\n"
             "The card's whole text: python3 src/RimMandrake/rimflow/card_capture.py show %s\n"
-            "Not built (and not yours to waive)? Leave the item open with a `LEFT OPEN:` note saying so."
+            "Not built? Build it now, test first, then close. Only when test-2 evidence stops you (CLAUDE.md §Touching "
+            "code has a cost), leave the item open with a `LEFT OPEN:` note that names the evidence."
             % (args.id, "\n".join("  - " + m for m in missing),
                re.sub(r"^needs\s+(to\s+)?", "", missing[0]), args.id))
 
