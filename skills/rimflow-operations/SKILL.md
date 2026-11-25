@@ -9,7 +9,8 @@ One machine uses ONE Claude account at a time. A switch closes every Claude wind
 Fleet. The Fleet is the set of Claude windows that `~/.claude-accounts/machine.json` names. The accounts are in the
 plan (`./acct plan`). One of them is lent (`references/accounts.md`).
 
-The plan decides which account burns. The meter says how much each account has. Every rule is a field of ONE file,
+The plan decides which account burns. The meter (`account_usage.py`, which reads each account's `/usage` figures)
+says how much each account has. Every rule is a field of ONE file,
 `~/.local/state/rimmandrake/account_plan/plan.json`, which only `./acct` writes. A write binds at the next read, with no
 commit, publish or pull. No rule is in this skill: a line, a floor, an order or a percent that you read here would be
 a copy, and the copy would be wrong after the next command. Reset times are never written down. Read a reset time from
@@ -34,7 +35,8 @@ How to read each line of `account_usage.py now`:
   - MEASURED: the first-party `/usage` command read the account. `/usage` makes no model call.
   - ESTIMATE: the last MEASURED figure, carried forward. The figure is a lower bound on usage. An ESTIMATE is blind: it
     does not see what was spent since.
-  - UNMEASURED: there is no figure to carry, or the account's window reset since the last one.
+  - UNMEASURED: there is no figure to carry, or the account's week (or its 5-hour session) reset since the last
+    MEASURED figure.
 - A figure is only as good as the age of its `measured` time. `stale` means: do not act on the figure.
 
 A dormant account is an account that is not live. A dormant account is read from its vault, the folder that holds its
@@ -77,20 +79,21 @@ How the plan decides (the page of promises: `design/specs/2026-11-24-account-pla
 
 What reads the plan:
 
-- **The timed pass** (`account-plan.timer`, each 5 min, `account_plan.py pass`). It makes the switch through the
+- **The timed pass** (`account-plan.timer`, each 5 min, `account_plan.py pass`). The timed pass makes the switch through the
   account-end actuator (`switching_plan._check`, `account_end.py`): the warning, the save order, the pause, the switch.
   Its log is `~/.local/state/rimmandrake/account_plan/log.jsonl`; `journalctl --user -u account-plan.service` has each pass.
 - **Every launcher** of a detached run (`detached_helper.drain_refusal`). A refusal starts `refused: ACCOUNT GATE`. The
   pipeline reads it as a wait, not a fault, and launches the same thing again after the switch.
 - **Codex's door** (`codex_advice.gate`, which `gpt_consult.py` passes). At Codex's line every job is refused, exit 4.
 - **The helper allocator** (`slot_allocator.py`): Burn Mode (`./acct burn-mode`), the pool and its Codex advice line.
-- **Another machine on the same account** (`./acct plan` lists the machines). Each pass writes it its notice. It
-  starts no new run at the line, and no new run when it has had no notice for 20 min (COULD NOT LOOK). The tool never
-  switches another machine: that is a hand act, and `./acct status` prints the command.
+- **Another machine on the same account** (`./acct plan` lists the machines). Each timed pass writes that machine
+  its notice. That machine starts no new run at the line. That machine also starts no new run when its last notice is
+  over 20 min old (COULD NOT LOOK). The tool never switches another machine: the switch of another machine is a hand
+  act, and `./acct status` prints the command.
 
-A window has no stop hook. Its signs are the notice (`./acct can-use`), the Conductor log lines `ACCOUNT END` and the
+An interactive Claude window (a seat's terminal session) has no stop hook. The signs for such a window are the notice (`./acct can-use`), the Conductor log lines `ACCOUNT END` and the
 ledger notes on `RIMMANDRAKE_BUILD_ACCOUNT_END_WARN_SAVE_PAUSE_SWITCH_SIZED_BY_BURN`. No program refuses a new helper
-inside a window.
+inside an interactive Claude window.
 
 **Do not stop runs or switch by hand at the warning.** The hand stop and the hand switch of 2026-11-18 killed 9 runs,
 and their resumes missed the prompt cache (`design/specs/2026-11-20-context-kept-not-reloaded/report.md` §1 row 3).
@@ -98,10 +101,11 @@ and their resumes missed the prompt cache (`design/specs/2026-11-20-context-kept
 **Why the switch waits for live runs.** The switch is local. `claude-account` renames a credential file. The rename
 spends no model tokens and uses no network. But the switch stops every Claude process on the machine. A killed run
 that is resumed on the next account loses its prompt cache. At 0%, every window and helper on that account errors, and
-the owner cannot talk to a seat. So no Claude account's line is under the plan's floor.
+the owner cannot talk to a seat. So no Claude account's line is under the plan's floor (`numbers.floor_pct`, which `./acct plan` prints).
 
-The old engine and its rule file decide only when `./acct driver` reads `old`, or while the plan file is refused; the
-pass then says so. The actuator half of the old engine's file is what the timed pass drives.
+The old engine is the decision half of the `switching_plan` module, with its rule file `switching_plan.json`. The old
+engine decides only when `./acct driver` reads `old`, or while the plan file is refused; the timed pass then says so.
+The other half of the `switching_plan` module is the account-end actuator, which the timed pass drives.
 
 More traps for this section: [references/traps.md](references/traps.md) § 2. The account plan.
 
@@ -196,8 +200,9 @@ More traps for this section: [references/traps.md](references/traps.md) § 6. Th
 - The dormant-account tie: two accounts can read the same newest time. Do not take the first dict key.
   `claude-account status` is the authority on which account is live. Without its answer, `pick_burn_account` prefers the
   "live login" method.
-- A DARK allocator is right while there is nowhere to go, and wrong once a fresh account exists. A drain at the line
-  ends when the last run has ended, so a drain that stops all work cannot strand the account.
+- An allocator override of DARK (`slot_allocator.py set --mode DARK`: every seat at 0 helpers) is right while no
+  account can take over, and wrong once a fresh account exists. A drain at the line ends when the last run has ended,
+  so a drain that stops all work cannot strand the account.
 - If `use` times out at 600 s mid-switch, the journal stays. Recover (§4).
 - Selftests stub the CLI. So probe the real call once. More: `references/traps.md`.
 
