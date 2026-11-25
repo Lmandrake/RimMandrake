@@ -1798,6 +1798,59 @@ def t_codex_door_asks_the_plan():
           and "runway" not in src.split('"""')[2])
 
 
+def t_status_and_help_are_the_operators_page():
+    n = "status_and_help_are_the_operators_page"
+    p = NEW()
+    p["machines"] = {"box2": {"ssh": "box2-wsl"}}
+    fresh(p)
+    (TMP / "plan" / "machine.box2.json").write_text(json.dumps({"at": AP.iso(NOW - 60), "account": "lukas", "state": "none",
+                                                                "message": ""}))
+    rc, text = acct("status", frame=F("lukas", LVL, runs=RUN))
+    end = text[text.index("END OF lukas"):] if "END OF lukas" in text else ""
+    check(n + ": status says what the pass does at the end of the live account: the warning zone, the line, the emergency percent",
+          "from 2% to 1%" in end and "at 1%: no new run starts" in end and "save and end" in end and "paused" in end, text)
+    nxt = AP.decide(p, F("lukas", LVL, runs=RUN))["next"]
+    check(n + ": it names the next account, the one of the decision (%s)" % nxt, nxt and "next account: %s" % nxt in end, end)
+    check(n + ": it names each machine on the same account and its hand switch",
+          "box2 is on lukas too" in end and "ssh -t box2-wsl claude-account-switch box2 <account>" in end, end)
+    check(n + ": it gives the hand commands with the names filled in", "./acct switch %s --now" % nxt in end
+          and "./acct hold --for 2h" in end and "./acct line lukas <percent> --until-reset" in end, end)
+    alone = {"steven": R(3, 100), "system": R(2, 110), "lukas": R(18, 120)}
+    rc, text = acct("status", frame=F("lukas", alone, runs=RUN))
+    end = text[text.index("END OF lukas"):] if "END OF lukas" in text else ""
+    check(n + ": with no account that can take over it says that the fleet stops at the wait floor, and until which reset",
+          "no account can take over" in end and "at 2%" in end and "stops" in end and "reset of steven" in end
+          and "next account" not in end and "./acct switch <account> --now" in end, end)
+    (TMP / "plan" / "machine.box2.json").write_text(json.dumps({"at": AP.iso(NOW - 60), "account": "system", "state": "none",
+                                                                "message": ""}))
+    rc, text = acct("status", frame=F("lukas", LVL, runs=RUN))
+    check(n + ": a machine on another account is not said to be on this one", "box2 is on lukas too" not in text
+          and "MACHINE box2: on system" in text, text)
+    rc, text = acct("status", frame=F("codex9", LVL))
+    check(n + ": with a live account outside the plan there is no END block, and status still answers", "END OF" not in text
+          and "no account of the plan" in text, text)
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf), contextlib.suppress(SystemExit):
+        AP.parser().parse_args(["--help"])
+    help_text = buf.getvalue()
+    cmds = [c for c in AP.parser()._subparsers._group_actions[0].choices]
+    missing = [c for c in cmds if c not in ("tick", "pass", "import-legacy") and ("./acct %s" % c) not in help_text]
+    check(n + ": --help shows each command an operator types as a line `./acct <command>`", not missing, missing)
+    for words in ("WHAT THE TIMED PASS DOES BY ITSELF", "at the line", "ANOTHER MACHINE", "WHEN IT LOOKS WRONG", "EXIT",
+                  "claude-account-switch", "./acct undo", "./acct driver old"):
+        check("%s: --help has `%s`" % (n, words), words in help_text, help_text[:200])
+    check(n + ": --help states no percent and no account name (the numbers are the plan's: status prints them)",
+          not any(w in help_text for w in ("steven", "lukas", " 5%", " 1%", "25%", "52%")), help_text)
+    skill = (HERE.parent.parent.parent / "skills" / "rimflow-operations" / "SKILL.md")
+    if skill.exists():      # a copy of the two code folders has no skill: the page is checked in the repo
+        st = skill.read_text()
+        check(n + ": the skill sends the operator to ./acct and names no command of the old engine",
+              "./acct status" in st and "./acct --help" in st and "switching_plan.py" not in st, [x for x in st.splitlines()
+                                                                                                  if "switching_plan.py" in x][:3])
+        check(n + ": the skill states no line, floor or order of its own (the plan file holds them)",
+              not any(w in st for w in ("52%", "steven > system > lukas", "leave line of 25")), "a number of the plan is in the skill")
+
+
 def main():
     for t in (t_live_account_stays_until_its_own_line, t_order_only_answers_which_account_is_next,
               t_no_start_is_refused_for_a_preference, t_a_rescue_switch_needs_points_worth_a_switch,
@@ -1831,7 +1884,8 @@ def main():
               t_can_use_is_the_one_answer_for_a_new_run, t_a_carried_run_goes_until_the_line,
               t_each_machine_on_the_account_gets_its_decision, t_a_push_that_fails_leaves_the_pass_whole,
               t_a_following_machine_that_cannot_look_refuses, t_readers_take_the_rules_through_one_door,
-              t_the_allocator_raises_its_pace_to_the_target_burn, t_codex_door_asks_the_plan):
+              t_the_allocator_raises_its_pace_to_the_target_burn, t_codex_door_asks_the_plan,
+              t_status_and_help_are_the_operators_page):
         try:
             t()
         except Exception as e:  # noqa: BLE001  a check that broke is a FAIL of its promise, by name

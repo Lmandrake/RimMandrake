@@ -43,6 +43,9 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
   Claude accounts of today; with more than about five it gets slow.
 - **a-switch-that-neither-log-names.** A switch made by copying credentials by hand, outside `claude-account`.
 - **a-lost-history-file.** Undo then has nothing to read, and answers NONE.
+- **the-old-engine-file.** `switching_plan.py` stays: its actuator half (`_check`, the notice, the markers, the fleet
+  stop) is what the timed pass drives, and its decision half is the fallback when `./acct driver` reads `old` or the
+  plan file is refused. `switching_plan.json` carries a tombstone that says so.
 - **a-run-on-another-machine-that-does-not-end.** At the line a listed machine gets a notice: no new run starts there,
   and its hooks tell each live run to save and publish. A run there that keeps working burns the account under its
   line: this tool stops no process on another machine and never switches one. Both are hand acts
@@ -163,6 +166,13 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
   record older than 20 min, and it says why when it does not raise.
 - **codex_door_asks_the_plan.** `codex_advice.gate` (every direct Codex caller) refuses a job, exit 4, when the plan
   answers NO for Codex, required or not; a plan or meter that cannot be read is COULD NOT LOOK and the job is sent.
+
+- **status_and_help_are_the_operators_page.** `./acct status` prints the end of the live account with the numbers and
+  names in force: the warning zone, the line, the emergency percent, the next account (only one that can take over
+  now; else that the fleet stops and which reset is first), each listed machine on the same account with its hand
+  switch, and the hand commands. `./acct --help` shows each command an operator types, what the timed pass does by
+  itself, and what to do when it looks wrong; it states no percent and no account name. The skill
+  `skills/rimflow-operations` sends the operator to those two and holds no rule of its own.
 
 ### Burn Mode and the measures
 

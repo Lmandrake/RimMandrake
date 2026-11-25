@@ -21,7 +21,7 @@ be read at all, and the engine never sits waiting on a meter that cannot see it.
 A switch the plan did not make is respected (owner's account ruling, ACCOUNTPLAN_FIX_UNDOES_SWITCH_IN_FOUR_MIN: `use lukas`
 at 11:26 was undone by this engine at 11:30): the switcher's own log names the last switch; when no transition marker of
 ours accounts for it, that account stays live, whatever the priority or a reset would pull to, until it is spent (at its
-line, past its window) or the next switch. A failover (login_watch, account_handover) reads the same, on purpose: the log
+line, past its window) or the next switch. A failover (login_watch) reads the same, on purpose: the log
 cannot tell them from his hand, and leaving a working account alone is the safe way to be wrong.
 
 Live runs finish (owner 2026-11-20: "And yes for live runs finish past, absolutely. Actually 0.1% is even ok kept. We

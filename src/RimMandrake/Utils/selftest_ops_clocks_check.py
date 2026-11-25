@@ -68,6 +68,9 @@ week = plan_unit + ("# /x/account-plan.service.d/week.conf\n[Service]\n"
                     "Environment=RM_SWITCH_PLAN=%s/src/RimMandrake/Utils/switching_plan_week_2026-11-05.json\n" % DEP)
 check(any("RM_SWITCH_PLAN" in p and "switching_plan_week_2026-11-05.json" in p for p in OC.judge(week, DEP)),
       "a drop-in pointing the account plan at another plan file is caught (got %r)" % OC.judge(week, DEP))
+other = plan_unit + "[Service]\nEnvironment=RM_ACCOUNT_PLAN_DIR=/tmp/another_plan\n"
+check(any("RM_ACCOUNT_PLAN_DIR" in p and "/tmp/another_plan" in p for p in OC.judge(other, DEP)),
+      "a unit that names another account plan folder is caught (got %r)" % OC.judge(other, DEP))
 quoted = plan_unit + '[Service]\nEnvironment="A=1" "RM_SWITCH_PLAN=/tmp/p.json"\n'
 check(any("RM_SWITCH_PLAN" in p for p in OC.judge(quoted, DEP)), "a quoted RM_SWITCH_PLAN among others is caught")
 cleared = week + "[Service]\nEnvironment=\n"

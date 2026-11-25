@@ -172,6 +172,11 @@ PLANTS = [
     ("codex_door_asks_the_plan", "Utils/codex_advice.py", '    return {"state": {AP.OK: "OK", AP.NO: "LINE"}.get(rc, "UNMEASURED"), "why": line}', '    return {"state": {AP.OK: "OK", AP.NO: "OK"}.get(rc, "UNMEASURED"), "why": line}'),
     ("codex_door_asks_the_plan", "Utils/codex_advice.py", '    return {"state": {AP.OK: "OK", AP.NO: "LINE"}.get(rc, "UNMEASURED"), "why": line}', '    return {"state": {AP.OK: "OK", AP.NO: "LINE"}.get(rc, "LINE"), "why": line}'),
     ("codex_door_asks_the_plan", "Utils/codex_advice.py", '    if adv["state"] == "LINE":\n        print(', '    if adv["state"] == "LINE" and not required:\n        print('),
+    ("status_and_help_are_the_operators_page", P, '                if a and (can is None or a in can)), None) or (can[0] if can else None)', '                if a), None) or (can[0] if can else None)'),
+    ("status_and_help_are_the_operators_page", P, '        if isinstance(n, dict) and n.get("account") == live:\n            out.append("      %s is on %s too', '        if isinstance(n, dict):\n            out.append("      %s is on %s too'),
+    ("status_and_help_are_the_operators_page", P, 'epilog=PAGE,', 'epilog=None,'),
+    ("status_and_help_are_the_operators_page", P, '    if AE.has_emergency(line, cfg):\n        out.append("      at %s%%: each Claude process is paused', '    if False:\n        out.append("      at %s%%: each Claude process is paused'),
+    ("status_and_help_are_the_operators_page", P, '    out += end_lines(plan, f, d)\n', ''),
 ]
 
 

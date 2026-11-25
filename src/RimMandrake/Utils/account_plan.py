@@ -950,6 +950,7 @@ def decide(plan, f, polled=True) -> dict:
     under = rl is None or (pl is not None and pl <= line)       # finished at its line; the warning line only warns
     until = ended(rl, env, live)
     can = targets(can, rules, env, under)
+    base["can_now"] = list(can)         # the accounts that a switch may land on now (status prints the end with it)
     if not under and not until and not lr["ok"] and not blind:
         if need and not polled:
             return {**base, "do": "poll", "poll": True, "why": "; ".join(need)}
@@ -1584,6 +1585,44 @@ def next_line(plan, f, d=None) -> str:
     return "%s: %s" % (d["do"].upper(), d["why"])
 
 
+def end_lines(plan, f, d) -> list:
+    """What the timed pass does by itself at the end of the live account, with the numbers in force, the machines on
+    the same account, and the hand commands with the names filled in. [] when the live account has no line."""
+    live, line, warn = d.get("account"), d.get("line"), d.get("warn_line")
+    if not live or line is None or live not in claude_accounts(plan):
+        return []
+    cfg, rd = plan["numbers"]["account_end"], readings_of(f)
+    can = d.get("can_now")              # None: the decision ended before it knew (a hold, an unread live account)
+    nxt = next((a for a in (d.get("to"), (d.get("pending") or {}).get("to"), d.get("next"))
+                if a and (can is None or a in can)), None) or (can[0] if can else None)
+    act = "switch" if nxt else "stop"
+    out = ["END OF %s (what the timed pass does by itself)" % live]
+    if warn is not None and warn > line:
+        out.append("      from %s%% to %s%%: each live run gets one warning (save a note, publish, keep working); new runs "
+                   "start, warned" % (g(warn), g(line)))
+    out.append("      at %s%%: no new run starts; each live run is told to save and end; the %s goes when the last one "
+               "ends" % (g(line), act))
+    if AE.has_emergency(line, cfg):
+        out.append("      at %s%%: each Claude process is paused, the level is read again, then the %s goes with runs "
+                   "live" % (g(cfg["emergency_pct"]), act))
+    if nxt:
+        left = (rd.get(nxt) or {}).get("left")
+        out.append("      next account: %s (%s)" % (nxt, "UNMEASURED now" if left is None else "%s%% left" % g(left)))
+    else:
+        first = min(((r["reset"], a) for a, r in rd.items() if a != live and a in claude_accounts(plan)
+                     and r["reset"] is not None), default=None)
+        out.append("      no account can take over now: the fleet stops at %s%% and starts again at a reset%s" % (
+            g(line), "" if first is None else " (the reset of %s, %s, is the first)" % (first[1], pacific(first[0]))))
+    for name, m in (plan.get("machines") or {}).items():
+        n = read_json(plan_dir() / ("machine.%s.json" % name))
+        if isinstance(n, dict) and n.get("account") == live:
+            out.append("      %s is on %s too: it gets no new run at the same line; its switch is by hand: ssh -t %s "
+                       "claude-account-switch %s <account>" % (name, live, m["ssh"], name))
+    out.append("      by hand: ./acct switch %s --now · ./acct hold --for 2h · ./acct line %s <percent> --until-reset · "
+               "./acct --help" % (nxt or "<account>", live))
+    return out
+
+
 def status_text(plan, f):
     """-> (text, exit). Exit 2 when the live account or its level could not be looked at."""
     d = decide(plan, f)
@@ -1600,6 +1639,7 @@ def status_text(plan, f):
     for a, v in bm["accounts"].items():
         out.append("BURN MODE %s: %s. %s" % (a, v["state"].upper(), v["why"]))
     out.append("      a raise of load is %s: %s" % ("allowed" if bm["raise_ok"] else "NOT allowed", bm["load_why"]))
+    out += end_lines(plan, f, d)
     out.append("ACCOUNTS (what is LEFT)")
     out += account_lines(plan, f)
     if f.get("slow_at"):
@@ -2115,8 +2155,59 @@ class Parser(argparse.ArgumentParser):
         raise Refused("%s; repair: ./acct --help" % message)
 
 
+PAGE = """\
+THE OPERATOR'S PAGE: an account end, with no other file open
+
+LOOK
+  ./acct status              now and next, the end of the live account, each account as LEFT, each machine, holds
+  ./acct next                one line: what the next pass does, and why
+  ./acct forecast            the week ahead: each switch and reset, the points that a reset erases
+  ./acct readings            each account: what is left, its reset in Pacific time, the age of the reading
+  ./acct plan                the steps in order, the lines, the machines, the numbers
+  ./acct can-use [A]         may a new run start here now (A: may a job go to that account); exit 0 yes, 1 no, 2 could not look
+  ./acct burn-mode           the state that the helper allocator and Codex's door read
+  ./acct measures            past weeks: points erased at each reset, switches, runs live at each switch
+
+WHAT THE TIMED PASS DOES BY ITSELF (each 5 minutes; near a line it reads the level more often)
+  above the warning line     nothing: the live account stays, whatever the order of the steps
+  warning line to the line   each live run gets one warning (save a note, publish, keep working); new runs start, warned
+  at the line                no new run; each live run is told to save and end; the switch goes when the last one ends
+  at the emergency percent   each Claude process is paused, the level is read again, then the switch goes with runs live
+  no account can take over   the fleet stops at the line, and starts again at the first reset
+  after a switch             each window is reopened as a new session; a run that ended for the switch is started again, once
+  `./acct status` prints these steps with the numbers and the names in force.
+
+CHANGE (each write prints its undo; --why "..." or --owner-said "..." records the reason; none is demanded)
+  ./acct hold --for 2h       stop each automatic act (./acct release ends it; a hold ends by itself)
+  ./acct switch A --now      go to account A at the next pass (with no --now: at the first pass with no live run)
+  ./acct line A N --until-reset    another leave line for A until its reset (burn deeper, or leave earlier)
+  ./acct pin --for 6h        keep the live account: no rescue switch leaves it (./acct unpin ends it)
+  ./acct order A B C         which account is next when the live one is finished
+  ./acct step add|set|rm|move NAME ...    a step of the plan (use, leave, warn, until, when, a life)
+  ./acct set numbers.K=V     one number of the plan (./acct plan prints them)
+  ./acct machine add NAME --ssh SSHNAME   another machine that gets this plan's decision (./acct machine rm NAME)
+  ./acct whatif -- <a write> the same write on a copy: now, next and the week ahead, before and after; writes nothing
+  ./acct undo [REV]          the plan as it was before that change
+
+ANOTHER MACHINE on the same account (./acct status has a line for each)
+  Each pass writes it the plan's decision for the account that it is on. At the line it starts no new run and its
+  live runs are told to save. With no notice for 20 minutes it starts no new run and says COULD NOT LOOK.
+  This tool never switches another machine. By hand: ssh -t SSHNAME claude-account-switch NAME ACCOUNT
+
+WHEN IT LOOKS WRONG
+  COULD NOT LOOK in status   the meter or the switcher is unread: python3 src/RimMandrake/Utils/account_usage.py poll
+  a switch failed            status says so; `claude-account status` shows the logins; the pass tries again from a stopped fleet
+  the plan file is refused   ./acct undo   (the old engine runs meanwhile, and the pass says so)
+  the new engine is wrong    ./acct driver old   (the old engine decides from the next pass; ./acct driver new takes it back)
+  a launch is refused        ./acct can-use says why; a refusal with ACCOUNT GATE ends by itself after the switch
+
+EXIT  0 done, or yes · 1 no · 2 could not look · 3 refused, nothing written · 4 failed · 5 none
+"""
+
+
 def parser():
-    ap = Parser(prog="acct", description="The account plan: one file, one-line commands.")
+    ap = Parser(prog="acct", description="The account plan: one file, one-line commands.", epilog=PAGE,
+                formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True, parser_class=Parser)
     who = argparse.ArgumentParser(add_help=False)
     for flag in ("--why", "--owner-said", "--by-card", "--per-ruling"):

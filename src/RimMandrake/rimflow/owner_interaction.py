@@ -112,7 +112,7 @@ def agent_hands(role_seat=None):
 def own_terminal():
     """-> True when a person's terminal runs this: the process has a controlling terminal. With no agent hands
     (agent_hands() == ""), that tells his own shell from a timer, a systemd unit or a script spawned headless, which
-    use the same relay flags with no hands to name (art enact, account_handover, ...). Those must not run his clock: a
+    use the same relay flags with no hands to name (art enact, ...). Those must not run his clock: a
     timer every 30 min would keep his hold forever. Test ledgers only (RIMFLOW_LEDGER redirected) may pin the answer
     with RIMFLOW_OWNER_TERMINAL=1|0; the real ledger ignores it."""
     pin = os.environ.get("RIMFLOW_OWNER_TERMINAL")

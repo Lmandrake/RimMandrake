@@ -39,7 +39,7 @@
   "outside": {
     "rm-relentless": "the Relentless tick: retired by the owner 2026-11-13, unit masked (design/RimMandrake/retired_loops_2026-11-13.md)",
     "rm-relentless-*": "Relentless worker, check and stage runs: retired with the tick 2026-11-13",
-    "rm-account-handover-*": "one-shot account change-over armed by hand with systemd-run; stops itself (arm new ones from the deploy, see account_handover.py)",
+    "rm-account-handover-*": "a one-shot account change-over of the handover tool, which was deleted on 2026-11-24 (./acct switch <account> is the door now). No program arms one; the name stays known so that a leftover unit is named, not unknown",
     "rm-steve-fault": "Steve's retest (strategy §2 'Stay outside')",
     "testq-*": "the RUNNER test queue lane, not an Operations clock",
     "rm-selftests-nightly": "nightly selftests of finished mods (strategy §2 'Stay outside'), on a clean clone of origin/main (nightly_scope.py)",

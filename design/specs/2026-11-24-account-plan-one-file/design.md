@@ -126,14 +126,15 @@ each such case as a wanted difference.
 
 | home | after the cut-over |
 |---|---|
-| `switching_plan.json` | read once by `./acct import-legacy`; then a tombstone that points at the plan file |
+| `switching_plan.json` | read once by `./acct import-legacy`; it carries a tombstone that points at the plan file, and is read again only while the old engine decides (`./acct driver old`, or a refused plan file) |
 | rule kinds in `switching_plan.py` (`_decide`, exceptions, markers, pool) | not called; `tick` gives the actuator part of that file its decision |
 | `markers/*.json` | read only as the record of a switcher call in flight (`pending`, under 40 min) or failed; never as "this account is out" |
 | the `HOLD` file | a hand-made one is still obeyed and shown; `./acct hold` is the door |
-| the skill's rule table | a pointer and the commands, with no number |
-| `slot_rules.json` `lent_accounts`, `ops.codex_*` | a pointer; the allocator and Codex's door read the plan (the wiring ticket) |
+| the skill's rule table | the commands, with no number (done: `skills/rimflow-operations/SKILL.md` §2) |
+| `slot_rules.json` `ops.codex_*` | a pointer (`_codex`); the allocator's advice line and Codex's door read `./acct can-use codex` |
+| `slot_rules.json` `lent_accounts` | kept: the allocator's own draw check (`slot_allocator.py plan`); a temporary line comes from the plan file (`temporary_line`) |
 | `standing_rulings.md` prose (leave lines, reset day, "run to the line") | history; each rule is a field of the plan |
-| `account_handover.py` timers | retired by `./acct step add ... --ends-at-reset` |
+| `account_handover.py` timers | deleted 2026-11-24; `./acct switch <account>` and `./acct step add ... --ends-at-reset` are the doors |
 
 ## Commands (each one line; a write prints at most 3 lines, the last is its undo)
 

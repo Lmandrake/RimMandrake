@@ -9,10 +9,8 @@ The meter (`account_usage.py`, timer rm-account-usage) polls every account and w
 registry is discarded. Read order: live here, live remote (ssh), vault here (token valid 15+ min),
 ESTIMATE, UNMEASURED.
 
-Per account (rules in switching_plan.json; verify with `status`, times change weekly):
-- `system`, `lukas`: plain; switch-away floor 1%, wait floor 2%.
-- `steven`: lent, not ours. Owner 2026-10-27: use up to 50% used, only after a fresh reset. We leave at 52% left
-  (card 10:20). "Fresh" = 48 h after his reset (delegated reading); outside it the engine never switches to him and
-  switches off him if live. For pool pacing his budget "expires" at the end of that window. The meter cannot
-  tell his use from ours, so all use counts against us. Last 10 min of the window: no switch to him.
-`slot_allocator.py plan --account A --draw PCT` checks a draw against a lent rule.
+Per account: the rules are steps of the account plan (`./acct plan` prints each step: use, leave line, window, life).
+- The lent account belongs to someone else. Its step carries his leave line and his window after a reset; outside the
+  window no step uses it, so the plan never switches to it and leaves it when its live runs end. The meter cannot tell
+  his use from ours, so all use counts against us.
+`slot_allocator.py plan --account A --draw PCT` checks a draw against the lent rule of `slot_rules.json`.

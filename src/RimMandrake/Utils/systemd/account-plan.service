@@ -1,5 +1,5 @@
 [Unit]
-Description=Claude account standard switching plan (switching_plan.py check)
+Description=The account plan: its timed pass (account_plan.py pass; ./acct status)
 
 [Service]
 Type=oneshot
