@@ -257,9 +257,15 @@ a, o = amt["colonist"]
 m, om = (num(bc, "mass"), num(bc, "otherMass")) if bc else (None, None)
 ratio = a / o if a and o else None
 follows = ratio is not None and m and om and abs(ratio - om / m) <= 0.05
-row(ratio is not None and 0.8 <= ratio <= 1.25 and bool(follows), "V_ALIKE",
-    "amount %s / otherAmount %s = %s (limit 0.8..1.25); masses %s, %s -> otherMass/mass %s (limit +-0.05)" % (
-        a, o, ratio, m, om, (om / m) if m and om else None))
+# "about the same size" is the staging's: two colonists' masses vary with their gear (48.8 and 60.8 kg read 2026-11-24),
+# so a pair further apart than 25% is no like pair and leaves the row UNLAID; the bar's claim is that the split follows
+# the masses and stays light
+like = bool(m and om and 0.8 <= om / m <= 1.25)
+# a like pair (masses within 25%) takes at most 1.25 / 2.25 of two cells of wall impact each: 4.44 at the default 4 per cell
+light = a is not None and o is not None and max(a, o) <= 4.45
+row(like and bool(follows) and light, "V_ALIKE",
+    "amount %s / otherAmount %s = %s; masses %s, %s -> otherMass/mass %s (limit +-0.05)%s; both at most 4.45: %s" % (
+        a, o, ratio, m, om, (om / m) if m and om else None, "" if like else ": UNLAID (not a like pair)", light))
 d = rows["colonist"]["downed"]
 row(not d.get("thrower") and not d.get("other"), "V_NOT_DOWNED", "thrower downed %s, standing colonist downed %s" % (
     d.get("thrower"), d.get("other")))

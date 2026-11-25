@@ -293,7 +293,10 @@ for name in ORDER:
     launches = [m for m in r["moves"] if m.get("type") == "launch"]
     m = launches[0] if len(launches) == 1 else None
     st, en = r["stood"], r["end"]
-    moved = (max(abs(en[0] - st[0]), abs(en[1] - st[1])) if None not in st + en else None)
+    # the throw itself, from the launch record: the colonist stands undrafted through the burn walk, so a cell read before
+    # it is not where the shove found it (control lane, 2026-11-24 ArchSmall: walked 3 cells, then shoved 1)
+    fr, to = cell(m.get("from")) if m else None, cell(m.get("to")) if m else None
+    moved = max(abs(to[0] - fr[0]), abs(to[1] - fr[1])) if fr and to else None
     land_ok = m is not None and len(r["lands"]) >= 1 and cell(r["lands"][0].get("at")) == cell(m.get("to"))
     try:
         planned, impact = float(m.get("planned")), float(m.get("impact"))
@@ -317,6 +320,9 @@ for name in ORDER:
         for d in b:
             if d in added:
                 added.remove(d)
-    row(added is not None and all(d == "Burn" for d in added), "V_UNHURT " + name, "hediffs added: %s (Burn is the fire's)" % added)
+    # the shove harms nobody; a Burn is the fire's and ToxGasExposure / ToxicBuildup are the cloud's own breath (the cover
+    # colonist stands in the cloud), printed, never the shove's
+    row(added is not None and all(d in ("Burn", "ToxGasExposure", "ToxicBuildup") for d in added), "V_UNHURT " + name,
+        "hediffs added: %s (Burn is the fire's, ToxGasExposure and ToxicBuildup the cloud's)" % added)
 print("%s sc_gas_chain_pawn_on_cover: %d failing row(s); pictures in %s" % ("PASS" if fails == 0 else "FAIL", fails, folder))
 print(scene.judge(folder))

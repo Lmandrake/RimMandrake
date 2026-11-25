@@ -137,21 +137,25 @@ def hurt(s, alias):
     return sev, int(n.v)
 
 
-def lane(s, name, rows):
+def lane_fire(s, name, rows):
+    """Read a lane and set off its blast, on the paused tick that every lane shares."""
     z = LANES[name][0]
     thrower, other = "thrower_" + name, "other_" + name
     ids = {"thrower": thing_id(s, thrower), "other": thing_id(s, other)}
-    before = hurt(s, other)
     start = s.read(thrower, "positionInt")
     bx, bz = at(6, z)
+    rows[name] = dict(ids=ids, before=hurt(s, other), start=start.v, t0=start.tick, blast=(bx, bz))
     s.raw("jawa/explosion_at", at="%d,%d" % (bx, bz), radius=RADIUS, damType="Bomb", damAmount=1)
-    s.run(until=SETTLE, limit=SETTLE + 120)
+
+
+def lane_read(s, name, rows):
+    r = rows[name]
+    bx, bz = r.pop("blast")
     s.shot((bx - 2, bz - 3, 12, 7), name=name + "_after")
     recs, err = journal(s)
-    mine = [r for r in (recs or []) if isinstance(r.get("tick"), (int, float)) and r["tick"] >= (start.tick or 0)
-            and r.get("thing") == ids["thrower"] and r.get("type") in ("bruise", "launch", "blocked")]
-    rows[name] = dict(ids=ids, before=before, after=hurt(s, other), recs=mine, err=err, start=start.v)
-
+    mine = [x for x in (recs or []) if isinstance(x.get("tick"), (int, float)) and x["tick"] >= (r["t0"] or 0)
+            and x.get("thing") == r["ids"]["thrower"] and x.get("type") in ("bruise", "launch", "blocked")]
+    r.update(after=hurt(s, "other_" + name), recs=mine, err=err)
 
 planted = scene.plant() == "no_sandbag"
 cast, things = {}, {}
@@ -170,8 +174,14 @@ with scene.open(GAME, contract=no_contact, needs={"mods": ["ExplosiveKnockback"]
     rows = {}
     try:
         s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="blastPowerFromDamage", value="False")
+        # every lane's blast on one paused tick, then one settle: the cast is not drafted, and with a settle per lane the
+        # later lanes' pawns walked off their cells (2026-11-24 ArchSmall: the far lane's thrower 1 cell off, its throw
+        # never reached the sandbag; APPARATUS FAULT). The lanes lie 12 cells apart; a blast reaches 2.9
         for name in ORDER:
-            lane(s, name, rows)
+            lane_fire(s, name, rows)
+        s.run(until=SETTLE, limit=SETTLE + 120)
+        for name in ORDER:
+            lane_read(s, name, rows)
     finally:
         for f, v in prior.items():   # back to what it read before, on every exit path
             if v is not None:
