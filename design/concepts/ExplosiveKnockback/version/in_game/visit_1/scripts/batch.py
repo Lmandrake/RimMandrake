@@ -48,7 +48,7 @@ def site(rb, biome):
 
 
 def verdict(rc, text):
-    m = re.search(r"VERDICT (\w+)", text)
+    m = re.search(r"VERDICT (\w+)", text) or re.search(r"^(PASS|FAIL|UNMEASURED) sc_\w+; evidence:", text, re.M)
     v = m.group(1) if m else "NONE"
     if rc == 0 and v == "PASS":
         return "PASS", v
@@ -87,6 +87,8 @@ def main():
     ap.add_argument("--sha", required=True, help="source sha the deployed DLL was built from")
     ap.add_argument("--timeout", type=int, default=500)
     ap.add_argument("--no-sweep", action="store_true", help="leave non-colonists on the map (default: destroy them first)")
+    ap.add_argument("--daylight", action="store_true", help="jump the clock forward to 10-14 h before each process "
+                    "(stage_review.daylight): StatPart_Glow cuts a colonist's move speed to 0.8 at night, and pawn_arc wants 4.4 c/s")
     ap.add_argument("--stash", default="", help="write evidence and rows under this ignored folder (Transient/...) instead of the"
                     " visit folder, to copy in after: scene.py accept refuses a tree that changed between two of its runs")
     a = ap.parse_args()
@@ -124,6 +126,9 @@ def main():
                 if q.get("isPlayer") and q.get("intelligence") == "Humanlike" and q.get("spawned") and not q.get("dead"):
                     r = rb.call("jawa/set_draft", {"pawnId": q["id"], "drafted": True}) or {}
                     drafted += 1 if r.get("success") is not False else 0
+            if a.daylight:
+                import stage_review
+                stage_review.daylight(rb)
             st = site(rb, a.biome)
             st["colonists_drafted"] = drafted
             if not a.no_sweep:

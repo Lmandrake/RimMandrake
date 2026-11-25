@@ -37,6 +37,8 @@ STATIONS = [
     ("goods_obstacles", "goods thrown at a door, sandbags and deep water", "do goods stop and bounce right?"),
 ]
 LOW, HIGH = 12, 42
+if "--high" in sys.argv:      # visit 1 of 0.2.0: a rock with a thick roof stood at 12,42 on the fresh map; the START row moves up
+    HIGH = int(sys.argv[sys.argv.index("--high") + 1])
 
 
 def main():
@@ -101,6 +103,26 @@ def main():
                     if left:
                         sys.exit("NOT STAGED: an explosion is still on the map")
                 signs.append(RM.sign_book(x, HIGH - 3, "%02d" % (i + 1), "%s START" % scene, look="as it stood before the blast; nothing is armed. The AFTER site is straight below (z %d)" % LOW))
+            # 0.2.0's blast show lays its scar on a rendered frame after the shell goes off, even paused, so a START twin whose
+            # explosion was removed before any tick still gets the scar of a blast that never happened (visit 1 of 0.2.0: a
+            # crater on every START site). Let frames pass, then take our scars off the START row and read it back.
+            import time
+            time.sleep(3)
+            scarred = []
+            for i, (scene, _w, _d) in enumerate(STATIONS):
+                rect = "%d,%d,15,15" % (cols[i] - 7, HIGH - 7)
+                scars = [t for t in (b.call("jawa/list_things", {"rect": rect, "limit": 400}).get("things") or [])
+                         if str(t.get("defName") or t.get("def") or "").startswith("RM_KnockbackBlast")]
+                for t in scars:
+                    b.call("jawa/destroy_batch", {"rects": "%d,%d,1,1" % (t["x"], t["z"]), "categories": "Filth"})
+                time.sleep(0.5)
+                still = [t.get("defName") or t.get("def") for t in (b.call("jawa/list_things", {"rect": rect, "limit": 400}).get("things") or [])
+                         if str(t.get("defName") or t.get("def") or "").startswith("RM_KnockbackBlast")]
+                print("START  %02d scars removed %d left %d" % (i + 1, len(scars), len(still)), flush=True)
+                if still:
+                    scarred.append((cols[i], HIGH, still))
+            if scarred:
+                sys.exit("NOT STAGED: blast scars still on START sites %s" % scarred)
         finally:
             K.restore_settings(b, snap)
         b.call("jawa/set_fog", {"action": "unfog", "rect": "0,0,250,60"})

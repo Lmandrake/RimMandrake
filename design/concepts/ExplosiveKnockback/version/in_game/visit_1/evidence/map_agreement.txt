@@ -1,0 +1,130 @@
+  1 AGREE    t:a:col:1:0;b:bomb:2.9
+  2 AGREE    c:wall:3:3;t:a:col:1:1;b:bomb:2.9
+  3 AGREE    c:door:0:-4;t:a:col:0:-1;b:bomb:2.9
+  4 AGREE    c:sandbag:-2:0;t:a:col:-1:0;b:bomb:2.9
+  5 AGREE    c:water:4:2;t:a:col:2:1;b:bomb:2.9
+  6 AGREE    c:pit:-3:5;t:a:col:-1:2;b:bomb:2.9
+  7 AGREE    c:cover:-2:-2;t:a:col:-1:-1;b:bomb:2.9
+  8 AGREE    t:o:big:2:-4;t:a:col:1:-2;b:bomb:2.9
+  9 AGREE    t:o:wood50:4:0;t:a:col:1:0;b:bomb:2.9
+ 10 AGREE    c:pit:2:2;t:o:wood50:2:2;t:a:col:1:1;b:bomb:2.9
+ 11 AGREE    c:pit:0:-3;c:wall:0:-4;t:a:col:0:-1;b:bomb:2.9
+ 12 AGREE    c:cover:-4:0;t:o:col:-4:0;t:a:col:-1:0;b:bomb:2.9
+ 13 AGREE    t:a:steel2:2:1;b:bomb:2.9
+ 14 AGREE    c:wall:-2:4;t:a:steel2:-1:2;b:bomb:2.9
+ 15 AGREE    c:door:-4:-4;t:a:steel2:-1:-1;b:bomb:2.9
+ 16 AGREE    c:sandbag:2:-3;t:a:steel2:1:-2;b:bomb:2.9
+ 17 AGREE    c:water:3:0;t:a:steel2:1:0;b:bomb:2.9
+ 18 AGREE    c:pit:4:4;t:a:steel2:1:1;b:bomb:2.9
+ 19 AGREE    c:cover:0:-2;t:a:steel2:0:-1;b:bomb:2.9
+ 20 AGREE    t:o:big:4:2;t:a:steel2:2:1;b:bomb:2.9
+ 21 AGREE    t:o:wood50:5:3;t:a:steel2:2:1;b:bomb:2.9
+ 22 AGREE    c:pit:-2:3;t:o:wood50:-2:3;t:a:steel2:-1:2;b:bomb:2.9
+ 23 AGREE    c:pit:-3:-3;c:wall:-4:-4;t:a:steel2:-1:-1;b:bomb:2.9
+ 24 AGREE    c:cover:3:-5;t:o:col:3:-5;t:a:steel2:1:-2;b:bomb:2.9
+ 25 AGREE    t:a:steel40:2:1;b:bomb:2.9
+ 26 AGREE    c:wall:3:3;t:a:steel40:1:1;b:bomb:2.9
+ 27 AGREE    c:door:0:-4;t:a:steel40:0:-1;b:bomb:2.9
+ 28 AGREE    c:sandbag:3:2;t:a:steel40:2:1;b:bomb:2.9
+ 29 AGREE    c:water:4:2;t:a:steel40:2:1;b:bomb:2.9
+ 30 AGREE    c:pit:-3:5;t:a:steel40:-1:2;b:bomb:2.9
+ 31 AGREE    c:cover:-2:-2;t:a:steel40:-1:-1;b:bomb:2.9
+ 32 AGREE    t:o:big:2:-4;t:a:steel40:1:-2;b:bomb:2.9
+ 33 AGREE    t:o:wood50:5:3;t:a:steel40:2:1;b:bomb:2.9
+ 34 AGREE    c:pit:2:2;t:o:wood50:2:2;t:a:steel40:1:1;b:bomb:2.9
+ 35 AGREE    c:pit:0:-3;c:wall:0:-4;t:a:steel40:0:-1;b:bomb:2.9
+ 36 AGREE    c:cover:-4:0;t:o:col:-4:0;t:a:steel40:-1:0;b:bomb:2.9
+ 37 AGREE    t:a:uran74:2:1;b:bomb:2.9
+ 38 AGREE    c:wall:-2:4;t:a:uran74:-1:2;b:bomb:2.9
+ 39 AGREE    c:door:-4:-4;t:a:uran74:-1:-1;b:bomb:2.9
+ 40 AGREE    c:sandbag:2:-3;t:a:uran74:1:-2;b:bomb:2.9
+ 41 AGREE    c:water:3:0;t:a:uran74:1:0;b:bomb:2.9
+ 42 AGREE    c:pit:4:4;t:a:uran74:1:1;b:bomb:2.9
+ 43 AGREE    c:cover:0:-2;t:a:uran74:0:-1;b:bomb:2.9
+ 44 AGREE    t:o:big:-3:0;t:a:uran74:-1:0;b:bomb:2.9
+ 45 AGREE    t:o:wood50:5:3;t:a:uran74:2:1;b:bomb:2.9
+ 46 AGREE    c:pit:-2:3;t:o:wood50:-2:3;t:a:uran74:-1:2;b:bomb:2.9
+ 47 AGREE    c:pit:-3:-3;c:wall:-4:-4;t:a:uran74:-1:-1;b:bomb:2.9
+ 48 AGREE    c:cover:3:-5;t:o:col:3:-5;t:a:uran74:1:-2;b:bomb:2.9
+ 49 AGREE    t:a:col:1:0;b:gas:1.9
+ 50 AGREE    c:wall:3:3;t:a:col:1:1;b:gas:1.9
+ 51 AGREE    c:door:0:-4;t:a:col:0:-1;b:gas:1.9
+ 52 AGREE    c:sandbag:-2:0;t:a:col:-1:0;b:gas:1.9
+ 53 AGREE    c:water:-3:-3;t:a:col:-1:-1;b:gas:1.9
+ 54 AGREE    c:pit:-4:-4;t:a:col:-1:-1;b:gas:1.9
+ 55 AGREE    c:cover:-2:-2;t:a:col:-1:-1;b:gas:1.9
+ 56 AGREE    t:o:big:3:0;t:a:col:1:0;b:gas:1.9
+ 57 AGREE    t:o:wood50:4:0;t:a:col:1:0;b:gas:1.9
+ 58 AGREE    c:pit:2:2;t:o:wood50:2:2;t:a:col:1:1;b:gas:1.9
+ 59 AGREE    c:pit:0:-3;c:wall:0:-4;t:a:col:0:-1;b:gas:1.9
+ 60 AGREE    c:cover:-4:0;t:o:col:-4:0;t:a:col:-1:0;b:gas:1.9
+ 61 AGREE    t:a:steel2:-1:-1;b:gas:1.9
+ 62 AGREE    c:wall:-3:-3;t:a:steel2:-1:-1;b:gas:1.9
+ 63 AGREE    c:door:-4:-4;t:a:steel2:-1:-1;b:gas:1.9
+ 64 AGREE    c:sandbag:2:0;t:a:steel2:1:0;b:gas:1.9
+ 65 AGREE    c:water:3:0;t:a:steel2:1:0;b:gas:1.9
+ 66 AGREE    c:pit:4:4;t:a:steel2:1:1;b:gas:1.9
+ 67 AGREE    c:cover:0:-2;t:a:steel2:0:-1;b:gas:1.9
+ 68 AGREE    t:o:big:-3:0;t:a:steel2:-1:0;b:gas:1.9
+ 69 AGREE    t:o:wood50:-4:-4;t:a:steel2:-1:-1;b:gas:1.9
+ 70 AGREE    c:pit:-2:-2;t:o:wood50:-2:-2;t:a:steel2:-1:-1;b:gas:1.9
+ 71 AGREE    c:pit:-3:-3;c:wall:-4:-4;t:a:steel2:-1:-1;b:gas:1.9
+ 72 AGREE    c:cover:4:0;t:o:col:4:0;t:a:steel2:1:0;b:gas:1.9
+ 73 AGREE    t:a:steel40:1:0;b:gas:1.9
+ 74 AGREE    c:wall:3:3;t:a:steel40:1:1;b:gas:1.9
+ 75 AGREE    c:door:0:-4;t:a:steel40:0:-1;b:gas:1.9
+ 76 AGREE    c:sandbag:-2:0;t:a:steel40:-1:0;b:gas:1.9
+ 77 AGREE    c:water:-3:-3;t:a:steel40:-1:-1;b:gas:1.9
+ 78 AGREE    c:pit:-4:-4;t:a:steel40:-1:-1;b:gas:1.9
+ 79 AGREE    c:cover:-2:-2;t:a:steel40:-1:-1;b:gas:1.9
+ 80 AGREE    t:o:big:3:0;t:a:steel40:1:0;b:gas:1.9
+ 81 AGREE    t:o:wood50:4:0;t:a:steel40:1:0;b:gas:1.9
+ 82 AGREE    c:pit:2:2;t:o:wood50:2:2;t:a:steel40:1:1;b:gas:1.9
+ 83 AGREE    c:pit:0:-3;c:wall:0:-4;t:a:steel40:0:-1;b:gas:1.9
+ 84 AGREE    c:cover:-4:0;t:o:col:-4:0;t:a:steel40:-1:0;b:gas:1.9
+ 85 AGREE    t:a:uran74:-1:-1;b:gas:1.9
+ 86 AGREE    c:wall:-3:-3;t:a:uran74:-1:-1;b:gas:1.9
+ 87 AGREE    c:door:-4:-4;t:a:uran74:-1:-1;b:gas:1.9
+ 88 AGREE    c:sandbag:2:0;t:a:uran74:1:0;b:gas:1.9
+ 89 AGREE    c:water:3:0;t:a:uran74:1:0;b:gas:1.9
+ 90 AGREE    c:pit:4:4;t:a:uran74:1:1;b:gas:1.9
+ 91 AGREE    c:cover:0:-2;t:a:uran74:0:-1;b:gas:1.9
+ 92 AGREE    t:o:big:-3:0;t:a:uran74:-1:0;b:gas:1.9
+ 93 AGREE    t:o:wood50:-4:-4;t:a:uran74:-1:-1;b:gas:1.9
+ 94 AGREE    c:pit:-2:-2;t:o:wood50:-2:-2;t:a:uran74:-1:-1;b:gas:1.9
+ 95 AGREE    c:pit:-3:-3;c:wall:-4:-4;t:a:uran74:-1:-1;b:gas:1.9
+ 96 AGREE    c:cover:4:0;t:o:col:4:0;t:a:uran74:1:0;b:gas:1.9
+ 97 AGREE    c:wall:3:-1;c:wall:3:0;c:wall:3:1;t:a:steel2:2:0;b:bomb:2.9
+ 98 AGREE    c:wall:3:-1;c:wall:3:0;c:wall:3:1;c:wall:2:2;c:wall:1:2;c:wall:3:2;t:a:steel40:2:1;b:bomb:2.9
+ 99 AGREE    c:wall:-1:3;c:wall:0:3;c:wall:1:3;t:a:wood50:0:2;t:b:steel2:0:1;b:bomb:2.9
+100 AGREE    c:pit:3:0;t:a:steel2:2:0;t:b:wood50:1:0;b:bomb:2.9
+101 AGREE    c:pit:3:0;c:pit:3:1;t:a:steel2:2:0;t:b:wood50:1:0;b:bomb:2.9
+102 AGREE    c:pit:3:0;c:pit:3:1;c:pit:3:-1;t:a:steel2:2:0;t:b:wood50:1:0;t:c:uran74:1:1;b:bomb:2.9
+103 AGREE    c:pit:0:-3;t:a:steel2:0:-2;t:b:wood50:0:-1;t:c:col:1:-1;b:bomb:2.9
+104 AGREE    c:sandbag:2:0;t:a:uran74:1:0;b:bomb:2.9
+105 AGREE    c:sandbag:2:0;c:sandbag:3:0;t:a:steel40:1:0;b:gas:1.9
+106 AGREE    c:sandbag:0:2;t:a:col:0:1;b:gas:1.9
+107 AGREE    c:cover:3:0;t:a:col:1:0;t:b:steel2:1:1;c:cover:3:2;b:bomb:1.9
+108 AGREE    c:cover:2:0;t:a:col:1:0;b:gas:1.9
+109 AGREE    c:pit:2:0;t:a:col:1:0;b:gas:1.9
+110 AGREE    c:cover:3:0;t:o:col:3:0;t:a:col:1:0;b:bomb:1.9
+111 AGREE    t:a:col:1:0;t:b:col:2:0;t:c:col:3:0;b:bomb:2.9
+112 AGREE    t:a:steel40:1:0;t:b:col:3:0;b:bomb:2.9
+113 AGREE    c:door:3:0;c:wall:3:1;c:wall:3:-1;t:a:steel2:1:0;b:bomb:2.9
+114 AGREE    c:water:3:0;c:water:4:0;t:a:steel2:1:0;b:bomb:2.9
+115 AGREE    c:water:2:0;t:a:steel2:1:0;b:bomb:2.9
+116 AGREE    c:wall:1:0;c:wall:0:1;t:a:steel2:1:1;b:gas:1.9
+117 AGREE    c:wall:-1:0;c:wall:0:-1;t:a:steel2:-1:-1;b:gas:1.9
+118 AGREE    c:wall:1:0;c:door:0:1;t:a:col:1:1;b:gas:1.9
+119 AGREE    c:wall:1:0;t:a:steel2:1:1;b:gas:1.9
+120 DISAGREE c:wall:0:1;t:a:steel2:1:1;b:gas:1.9  <- a: game 1,1,0, model 3,3,0
+121 AGREE    c:sandbag:1:0;c:sandbag:0:1;t:a:steel2:1:1;b:gas:1.9
+122 AGREE    c:wall:1:0;c:wall:0:1;t:a:steel2:1:1;b:bomb:2.9
+123 AGREE    c:wall:1:0;t:a:steel2:2:0;b:bomb:2.9
+124 AGREE    c:pit:3:0;c:pit:3:1;c:pit:3:2;c:pit:3:3;t:o:wood50:3:0;t:p:wood50:3:1;t:q:wood50:3:2;t:a:steel2:1:0;b:bomb:2.9
+125 AGREE    c:pit:3:0;c:pit:3:1;t:o:wood50:3:0;t:p:wood50:3:1;t:a:steel2:1:0;b:bomb:2.9
+MAP AGREEMENT 124 of 125 cases agree (1 disagree, 0 invalid); model map-6
+[bridge split] 105.4 s wall: load 0.0 / ticks 54.7 / reads 0.0 / other 19.9 / outside calls 30.8 s
+[bridge split] WARN 500 calls of jawa/safe_advance (54.7 s): batch them
+[bridge split] WARN 383 calls of jawa/static_call (15.4 s): batch them
+[bridge split] WARN 114 calls of jawa/mod_settings_field (4.5 s): batch them
