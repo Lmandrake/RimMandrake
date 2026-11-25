@@ -1,0 +1,3 @@
+An item filed with --effect is closed by the list_effect tick the moment its outcome check holds, with noCode and no live line; the worker's own close with --sha and --live is then refused as a second close. For an operational item (a timer, a hook), put the promise in src/RimMandrake/rimflow/live_baseline.txt so rm-deadman still rechecks it. Seen 2026-11-25 on RIMMANDRAKE_PRUNE_STEVE_LANE_SCREENSHOTS_HALF_GIG_A_DAY_ONTO_FULL_C: the tick closed it 5 min after the one-off cleaner run made the folder small, before the timer was installed.
+item: RIMMANDRAKE_PRUNE_STEVE_LANE_SCREENSHOTS_HALF_GIG_A_DAY_ONTO_FULL_C
+home: skills/using-rimflow/references/traps.md

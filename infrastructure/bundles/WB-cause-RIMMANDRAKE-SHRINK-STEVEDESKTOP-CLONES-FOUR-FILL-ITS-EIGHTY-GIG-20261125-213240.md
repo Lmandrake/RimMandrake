@@ -6,7 +6,7 @@ System: SteveDesktop disk room (cause RIMMANDRAKE_SHRINK_STEVEDESKTOP_CLONES_FOU
 
 | member | class | outcome | commit |
 |---|---|---|---|
-| RIMMANDRAKE_PRUNE_STEVE_LANE_SCREENSHOTS_HALF_GIG_A_DAY_ONTO_FULL_C | REAL | fixed; acceptance cmd passed 2026-11-25 3:07 PM PST (folder 15 GB to 3.1 GB) | cd98dd40b0 |
+| RIMMANDRAKE_PRUNE_STEVE_LANE_SCREENSHOTS_HALF_GIG_A_DAY_ONTO_FULL_C | REAL | done (closed by the list_effect tick); live: unit run 3:16 PM PST, check HOLDS; deadman watches it via live_baseline.txt | cd98dd40b0, a544fa39db, c7a1379969, 0cb98773f1 |
 
 Context after the group: 217k of 1M.
 
@@ -22,7 +22,4 @@ Context after the group: 217k of 1M.
 
 ## Next, in order
 
-1. Fresh reader's findings: fix the significant ones, test first.
-2. Publish the unit guard. Install the timer on SteveDesktop. Pull the runner when the lane is idle. Run the unit once.
-   Read `~/.local/state/rm-family-clean/check_ok.txt`.
-3. Close the member with `--live "unit=rm-family-clean.timer reading=/home/mandrake/.local/state/rm-family-clean/check_ok.txt max_age=30h host=stevedesktop"`.
+Nothing. The bundle is finished.
