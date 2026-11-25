@@ -10,8 +10,10 @@ It loads the fixture (a hot, sunny Pyrelands map on the pyrelands tier), spawns 
 plays --ticks ticks, prints where every wild animal stands and what it does, and saves under --out. The verdict is
 the acceptance script on that save (no cell holds three or more wild animals):
     python3 infrastructure/state/acceptance/RIMMANDRAKE_SPREAD_SHADE_DASH_SEVEN_ANIMALS_ON_ONE_CELL.py <out>.rws
-The census line `dashed` says whether the herd really ran for shade; a run where none dashed is COULD NOT LOOK for this
-claim (a cool or dark map), whatever the acceptance script says.
+The line `dashed` (read from a pawn_census trace every --every ticks) says whether the herd really ran for shade; a run
+where none dashed is COULD NOT LOOK for this claim (a cool or dark map), whatever the acceptance script says.
+Measured 2026-11-25 on Steve1 (fixture PYRELANDS_0.1.0_VISIT9_WALK_SIGNED, --cell 68,33, 2500 ticks): red on the parent
+of the least-load fix (four ullai resting on (74,18), a three-cell sliver), green on the fix.
 """
 import argparse
 import collections
@@ -94,13 +96,9 @@ def scene(N, s, a):
         ids.add(p.get("thingId") or p.get("id") if isinstance(p, dict) else p)
     if isinstance(sp, dict) and sp.get("thingId"):
         ids.add(sp["thingId"])
-    s.call("jawa/safe_advance", action="start", ticks=60)
-    _, herd = census("t+60", s, ids)
-    dashed = sum(1 for p in herd if "ShadeDash" in str(job_of(p)))
-    print("dashed: %d of %d herd members on RM_ShadeDash at t+60" % (dashed, len(herd)), flush=True)
     hist = collections.defaultdict(list)    # id -> [(tick, cell, job)] on every change
     first = True
-    left = a.ticks - 60
+    left = a.ticks
     while left > 0:
         step = min(left, a.every)
         s.call("jawa/safe_advance", action="start", ticks=step)
@@ -118,6 +116,8 @@ def scene(N, s, a):
             if not hist[pid] or hist[pid][-1][1:] != entry:
                 hist[pid].append((a.ticks - left,) + entry)
     heaps, _ = census("t+%d" % a.ticks, s, ids)
+    dashed = sum(1 for i in ids if any("RM_ShadeDash" in e[2] for e in hist.get(i, [])))
+    print("dashed: %d of %d herd members ran RM_ShadeDash during the run (pawn_census trace)" % (dashed, len(ids)), flush=True)
     animals, _ = wild(s)
     at = collections.defaultdict(list)
     for p in animals:

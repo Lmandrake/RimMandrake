@@ -3,7 +3,8 @@ or more wild animals that rest, idle or dash (the shade behaviour's own jobs). u
 Exit 0 holds, 1 fails, 2 could not look (no wild animal on the map).
 
 Wild animals on a job with its own target cell (drinking at one water cell, eating) are listed apart and not judged:
-the shade dash never gives those jobs (measured live 2026-11-25: three gizka drinking at one terrain cell, FlowWorks)."""
+the shade dash never gives those jobs (measured live 2026-11-25: three gizka drinking at one terrain cell, FlowWorks).
+A dasher still on its rim cell, bound for another cell, is passing through and is listed apart too."""
 import collections
 import sys
 import xml.etree.ElementTree as ET
@@ -16,8 +17,10 @@ except Exception as e:  # noqa: BLE001
 judged, busy = collections.defaultdict(list), collections.defaultdict(list)
 for t in things:
     if t.find("kindDef") is not None and t.findtext("faction") is None:
-        job = t.findtext("jobs/curJob/def")
-        (judged if job in SHADE_JOBS else busy)[t.findtext("pos")].append("%s:%s" % (t.findtext("kindDef"), job))
+        job, pos = t.findtext("jobs/curJob/def"), t.findtext("pos")
+        # A dasher counts where it lands. One still on its rim cell, bound for another, is passing through.
+        leaving = job == "RM_ShadeDash" and t.findtext("jobs/curJob/targetB") not in (None, pos)
+        (judged if job in SHADE_JOBS and not leaving else busy)[pos].append("%s:%s" % (t.findtext("kindDef"), job))
 if not judged and not busy:
     print("COULD NOT LOOK: no wild animal"); sys.exit(2)
 bad = {p: v for p, v in judged.items() if len(v) >= 3}
@@ -25,5 +28,5 @@ other = {p: v for p, v in busy.items() if len(v) >= 3}
 print("%d wild animals; resting/idle/dashing cells with three or more: %s" % (
     sum(map(len, judged.values())) + sum(map(len, busy.values())), bad or "none"))
 if other:
-    print("not judged (busy on a job with its own target): %s" % other)
+    print("not judged (busy on a job with its own target, or a dasher leaving): %s" % other)
 sys.exit(1 if bad else 0)

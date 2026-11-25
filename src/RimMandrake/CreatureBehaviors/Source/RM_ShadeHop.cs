@@ -216,18 +216,19 @@ namespace RimMandrake.CreatureBehaviors
             }
         }
 
-        private static readonly HashSet<int> takenCells = new HashSet<int>();
+        private static readonly Dictionary<int, int> cellLoad = new Dictionary<int, int>();
 
-        /// <summary>RIMMANDRAKE_SPREAD_SHADE_DASH_SEVEN_ANIMALS_ON_ONE_CELL: a
-        /// free landing cell of target's patch, nearest to target. A cell is
-        /// taken when another pawn stands on it, another dash is landing on
-        /// it, or nothing can stand there. So a herd that dashes for one rim
-        /// spreads over the patch instead of resting in a heap on one cell.</summary>
-        public static IntVec3 SpreadLanding(Pawn pawn, RM_ShadePatchGraph graph, IntVec3 target)
+        /// <summary>RIMMANDRAKE_SPREAD_SHADE_DASH_SEVEN_ANIMALS_ON_ONE_CELL: the
+        /// landing cell for a dash aimed at target: the nearest shade cell no
+        /// other pawn stands on or is bound for (a dash landing, a walk's
+        /// destination), else the nearest least-loaded one within the dash cap.
+        /// So a herd that dashes for one rim spreads over the shade instead of
+        /// resting in a heap on one cell. load is the pick's count of others.</summary>
+        public static IntVec3 SpreadLanding(Pawn pawn, RM_ShadePatchGraph graph, IntVec3 target, out int load)
         {
             Map map = pawn.Map;
             CellIndices ci = map.cellIndices;
-            takenCells.Clear();
+            cellLoad.Clear();
             IReadOnlyList<Pawn> all = map.mapPawns.AllPawnsSpawned;
             for (int i = 0; i < all.Count; i++)
             {
@@ -236,37 +237,54 @@ namespace RimMandrake.CreatureBehaviors
                 {
                     continue;
                 }
-                takenCells.Add(ci.CellToIndex(other.Position));
-                if (other.pather != null && other.pather.Moving && other.pather.Destination.Cell.InBounds(map))
-                {
-                    takenCells.Add(ci.CellToIndex(other.pather.Destination.Cell));
-                }
+                // A pawn bound for a cell loads that cell, not the one it is leaving.
+                IntVec3 bound = other.Position;
                 Job j = other.CurJob;
                 if (j != null && j.def == RM_JobDefOf.RM_ShadeDash && j.targetB.Cell.InBounds(map))
                 {
-                    takenCells.Add(ci.CellToIndex(j.targetB.Cell));
+                    bound = j.targetB.Cell;
                 }
+                else if (other.pather != null && other.pather.Moving && other.pather.Destination.Cell.InBounds(map))
+                {
+                    bound = other.pather.Destination.Cell;
+                }
+                int k = ci.CellToIndex(bound);
+                cellLoad[k] = cellLoad.TryGetValue(k, out int n) ? n + 1 : 1;
             }
             RM_SunHeatExtension ext = RM_MapComponent_ShadeGrid.For(map)?.HeatExtension;
             int radius = ext != null ? Mathf.CeilToInt(ext.maxDashCells) : 0;
             int pick = graph.SpreadLanding(ci.CellToIndex(target),
-                i => takenCells.Contains(i) || !ci.IndexToCell(i).Standable(map), radius);
-            takenCells.Clear();
+                i => cellLoad.TryGetValue(i, out int c) ? c : 0,
+                i => !ci.IndexToCell(i).Standable(map), radius);
+            load = cellLoad.TryGetValue(pick, out int pl) ? pl : 0;
+            cellLoad.Clear();
             return ci.IndexToCell(pick);
+        }
+
+        public static IntVec3 SpreadLanding(Pawn pawn, RM_ShadePatchGraph graph, IntVec3 target)
+        {
+            return SpreadLanding(pawn, graph, target, out _);
+        }
+
+        /// <summary>How many other pawns stand on this pawn's cell.</summary>
+        public static int OthersHere(Pawn pawn)
+        {
+            List<Thing> here = pawn.Map.thingGrid.ThingsListAtFast(pawn.Position);
+            int n = 0;
+            for (int i = 0; i < here.Count; i++)
+            {
+                if (here[i] is Pawn other && other != pawn)
+                {
+                    n++;
+                }
+            }
+            return n;
         }
 
         /// <summary>True when another pawn stands on this pawn's cell.</summary>
         public static bool Crowded(Pawn pawn)
         {
-            List<Thing> here = pawn.Map.thingGrid.ThingsListAtFast(pawn.Position);
-            for (int i = 0; i < here.Count; i++)
-            {
-                if (here[i] is Pawn other && other != pawn)
-                {
-                    return true;
-                }
-            }
-            return false;
+            return OthersHere(pawn) > 0;
         }
 
         /// <summary>In the sun: the nearest shade within dash range (graph
@@ -429,13 +447,16 @@ namespace RimMandrake.CreatureBehaviors
             // only drains below the comfortable max, so on a hot map a
             // cooked animal stays in the shade.
             // RIMMANDRAKE_SPREAD_SHADE_DASH_SEVEN_ANIMALS_ON_ONE_CELL: never rest
-            // in a heap. An animal that shares its cell steps to the nearest
-            // free cell of its patch first, so a heap made before this fix
-            // (or by any other path) breaks up at the next think.
-            if (patch != RM_ShadePatchGraph.NoPatch && RM_ShadeHop.Crowded(pawn))
+            // in a heap. An animal that shares its cell steps (or, across sun,
+            // sprints) to the nearest emptier shade cell first, so a heap made
+            // before this fix (or by any other path) breaks up at the next think.
+            int others = patch != RM_ShadePatchGraph.NoPatch ? RM_ShadeHop.OthersHere(pawn) : 0;
+            if (others > 0)
             {
-                IntVec3 free = RM_ShadeHop.SpreadLanding(pawn, graph, pawn.Position);
-                if (free != pawn.Position && pawn.CanReach(free, PathEndMode.OnCell, Danger.Deadly))
+                // Move only to a strictly emptier cell, so a pair on scarce
+                // shade stays put instead of trading places for ever.
+                IntVec3 free = RM_ShadeHop.SpreadLanding(pawn, graph, pawn.Position, out int freeLoad);
+                if (free != pawn.Position && freeLoad < others && pawn.CanReach(free, PathEndMode.OnCell, Danger.Deadly))
                 {
                     if (graph.PatchAt(pawn.Map.cellIndices.CellToIndex(free)) != patch)
                     {

@@ -280,24 +280,33 @@ namespace RimMandrake.CreatureBehaviors
         /// <summary>RIMMANDRAKE_SPREAD_SHADE_DASH_SEVEN_ANIMALS_ON_ONE_CELL:
         /// the landing cell for a dash aimed at `target`. Every animal near
         /// one rim gets the same nearestShade / edge toCell, so without this a
-        /// herd lands, and then rests, on one cell. Returns the shade cell
-        /// (a cell of any patch) nearest to target, ring by ring over shade
-        /// and open walkable ground, that `taken` does not refuse; target
-        /// itself when it is free, when it is in no patch, or when no free
-        /// shade cell lies within maxRadius rings. Many patches on a sun map
-        /// are slivers of two or three cells, so the search must leave the
-        /// target's patch (measured live, Pyrelands 2026-11-25: seven animals
-        /// on a two-cell patch).
-        /// maxRadius guards a cost: with every shade cell taken, an unbounded
-        /// walk crosses the whole map (62,500 cells on a 250 map) on each
-        /// think. The caller passes the dash cap, the farthest an animal would
-        /// cross open sun anyway.</summary>
-        public int SpreadLanding(int target, Func<int, bool> taken, int maxRadius)
+        /// herd lands, and then rests, on one cell.
+        /// load(cell) is how many other animals stand on or are bound for the
+        /// cell; blocked(cell) is true where nothing can stand. The walk goes
+        /// ring by ring over shade and open walkable ground from target (many
+        /// patches on a sun map are slivers of two or three cells, so it must
+        /// leave the target's patch) and returns the nearest shade cell (a cell
+        /// of any patch) with load 0. When every shade cell within maxRadius
+        /// rings is loaded, it returns the nearest one with the least load, so
+        /// a herd on scarce shade spreads evenly (measured live, Pyrelands
+        /// 2026-11-25: eight shade cells within the dash cap, ten animals).
+        /// Target itself when it is free, in no patch, or no less loaded than
+        /// any other shade cell in reach.
+        /// maxRadius guards a cost: an unbounded walk crosses the whole map
+        /// (62,500 cells on a 250 map) on each think. The caller passes the
+        /// dash cap, the farthest an animal would cross open sun anyway.</summary>
+        public int SpreadLanding(int target, Func<int, int> load, Func<int, bool> blocked, int maxRadius)
         {
-            if (PatchAt(target) == NoPatch || taken == null || !taken(target))
+            if (PatchAt(target) == NoPatch || load == null)
             {
                 return target;
             }
+            int targetLoad = load(target);
+            if (targetLoad <= 0)
+            {
+                return target;
+            }
+            int best = target, bestLoad = targetLoad;
             int tx = target % width, tz = target / width;
             HashSet<int> seen = new HashSet<int> { target };
             Queue<int> queue = new Queue<int>();
@@ -322,15 +331,25 @@ namespace RimMandrake.CreatureBehaviors
                         {
                             continue; // blocked, or beyond the field
                         }
-                        if (shadeCell && !taken(v))
+                        queue.Enqueue(v);
+                        if (!shadeCell || (blocked != null && blocked(v)))
+                        {
+                            continue;
+                        }
+                        int l = load(v);
+                        if (l <= 0)
                         {
                             return v;
                         }
-                        queue.Enqueue(v);
+                        if (l < bestLoad)
+                        {
+                            best = v;
+                            bestLoad = l;
+                        }
                     }
                 }
             }
-            return target;
+            return best;
         }
 
         /// <summary>Octile distance in cost units between two cells, the
