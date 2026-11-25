@@ -50,26 +50,32 @@ with scene.open(GAME, contract=looks, needs={"mods": [MOD], "map": MAP, "calm": 
     x0, z0 = STATION[0], STATION[1]
     s.stage(station=STATION, things={"wall": dict(thing="Wall", stuff="Steel", at=[(x, WALL_Z) for x in range(2, 25)]),
                                      "cord": dict(thing="PowerConduit", at=[(x, 6) for x in range(2, 25)])})
-    if scene.plant() == "master_switch_off":    # before the picks: with the mod off, the pick stores no look
-        s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="enabled", value="False")
-    for (x, z), look in zip(LAMP_CELLS, LOOKS):
-        ask_probe(s, "cplace:WallLamp:%s:%d,%d:god" % (look, x0 + x, z0 + z))
-    at = {}
-    for v in s.read_many(rect=(x0, z0 + LAMP_Z, STATION[2], 1), path="def.defName"):
-        if v.state == "ok" and v.v == "WallLamp":
-            at[v.of] = None
-    found = s.read_many(rect=(x0, z0 + LAMP_Z, STATION[2], 1), path="positionInt")
-    by_cell = {}
-    for v in found:
-        if v.of in at and v.state == "ok":
-            x, *_y, z = (int(n) for n in str(v.v).split(","))
-            by_cell[(x - x0, z - z0)] = v.of[6:]
-    missing = [cl for cl in LAMP_CELLS if cl not in by_cell]
-    if missing:
-        raise scene.Fault("STAGING_FAULT", detail="no wall lamp stands at %s after the picks" % missing)
-    s.stage(cast={"lamps": dict(take=[by_cell[cl] for cl in LAMP_CELLS])})
-    run = s.run(until=looks.end, limit=looks.limit)
-    shot = s.shot(rect=("lamps", 3), name="wall_lamps_all_looks")
-    print(run, run.receipt, shot)
+    planted = scene.plant() == "master_switch_off"
+    prior = (s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="get", field="enabled") or {}).get("value") if planted else None
+    try:
+        if planted:
+            s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="enabled", value="False")
+        for (x, z), look in zip(LAMP_CELLS, LOOKS):
+            ask_probe(s, "cplace:WallLamp:%s:%d,%d:god" % (look, x0 + x, z0 + z))
+        at = {}
+        for v in s.read_many(rect=(x0, z0 + LAMP_Z, STATION[2], 1), path="def.defName"):
+            if v.state == "ok" and v.v == "WallLamp":
+                at[v.of] = None
+        found = s.read_many(rect=(x0, z0 + LAMP_Z, STATION[2], 1), path="positionInt")
+        by_cell = {}
+        for v in found:
+            if v.of in at and v.state == "ok":
+                x, *_y, z = (int(n) for n in str(v.v).split(","))
+                by_cell[(x - x0, z - z0)] = v.of[6:]
+        missing = [cl for cl in LAMP_CELLS if cl not in by_cell]
+        if missing:
+            raise scene.Fault("STAGING_FAULT", detail="no wall lamp stands at %s after the picks" % missing)
+        s.stage(cast={"lamps": dict(take=[by_cell[cl] for cl in LAMP_CELLS])})
+        run = s.run(until=looks.end, limit=looks.limit)
+        shot = s.shot(rect=("lamps", 3), name="wall_lamps_all_looks")
+        print(run, run.receipt, shot)
+    finally:
+        if planted:   # the setting back to what it read before the plant, on every exit path
+            s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="enabled", value=str(prior) if prior is not None else "True")
     folder = s.run_dir
 print(scene.judge(folder))

@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs
+@@ -130,7 +130,7 @@
+             if (f.mechanoid && !q.throwMechanoids) return "mechanoids_off";
+             // GPT #1 + "you can't climb out. Period." A person on an intact cover stands on ground to the player: burning gas
+             // shoves them as on any floor (bar gas_shoves_pawn_on_pit_cover); a blast breaks that cover, so it still skips them
+-            if (f.onSuperdeep && !(gas && f.onCover)) return "in_pit";
++            if (false) return "in_pit";
+             return null;
+         }
+ 

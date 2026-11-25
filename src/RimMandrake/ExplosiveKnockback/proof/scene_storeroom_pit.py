@@ -62,11 +62,17 @@ with scene.open(GAME, contract=pit, needs={"mods": ["ExplosiveKnockback", "FlowW
             len(people), len(goods), RADIUS))
     s.stage(cast={"bomb": dict(take=shells[0][6:]), "people": dict(take=[p[6:] for p in people]),
                   "goods": dict(take=[g[6:] for g in goods])})
-    if scene.plant() == "knockback_off":            # arm C of the old proof: the master switch off, so nothing is thrown
-        s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="enabled", value="False")
-    hp = s.read("bomb", "hitPointsInt")
-    s.act.damage("bomb", (hp.v if hp.state == "ok" else 60) + 40, kind="Crush", name="bomb")
-    run = s.run(until=pit.end, limit=pit.limit)
+    off = scene.plant() == "knockback_off"          # arm C of the old proof: the master switch off, so nothing is thrown
+    prior = (s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="get", field="enabled") or {}).get("value") if off else None
+    try:
+        if off:
+            s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="enabled", value="False")
+        hp = s.read("bomb", "hitPointsInt")
+        s.act.damage("bomb", (hp.v if hp.state == "ok" else 60) + 40, kind="Crush", name="bomb")
+        run = s.run(until=pit.end, limit=pit.limit)
+    finally:
+        if off:   # the master switch back to what it read before the plant, on every exit path
+            s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="enabled", value=str(prior) if prior is not None else "True")
     print(run, run.receipt)
     folder = s.run_dir
 print(scene.judge(folder))

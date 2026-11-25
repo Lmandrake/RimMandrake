@@ -1,0 +1,10 @@
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs
+@@ -203,6 +203,7 @@
+         /// <summary>Cells to throw. 0 = no move. Calibration (owner Q7): mortar r 2.9, distance 1, 60 kg -> 3.</summary>
+         public static int ThrowCells(float dist, float radius, float force, float mass, KbSettings s)
+         {
++            dist = 0f;
+             return Cells(ThrowRaw(dist, radius, force, mass, s), s);
+         }
+ 

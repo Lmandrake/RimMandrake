@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs
+@@ -1122,7 +1122,7 @@
+             long takeoffT0 = System.Diagnostics.Stopwatch.GetTimestamp();
+ #endif
+             // bar carried_thing_own_arc: the hands are empty here (ThrowCarried), so the pawn flies alone
+-            PawnFlyer flyer = PawnFlyer.MakeFlyer(def, p, dest, null, null, flyWithCarriedThing: false);
++            PawnFlyer flyer = PawnFlyer.MakeFlyer(def, p, dest, null, null, flyWithCarriedThing: true);
+             if (flyer == null)
+             {
+                 return false;

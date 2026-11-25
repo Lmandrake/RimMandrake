@@ -65,9 +65,9 @@ show = scene.contract(
     claim="a harmful blast shows our own fire, flash, shake, ripple and scar, sized by its power, never vanilla's mark",
     kind="A",
     exposure=c.state("he_soil_x", "positionInt") == "gone",
-    success=[c.played(len(ORDER) * SETTLE)],
+    success=[c.played(SETTLE)],                   # c.played counts the judged run only: the last pad's settle
     forbidden=[],
-    end=len(ORDER) * SETTLE, limit=len(ORDER) * SETTLE + 900)
+    end=SETTLE, limit=len(ORDER) * SETTLE + 900)
 
 
 def rect(pad):
@@ -95,14 +95,8 @@ def static(s, field):
         return None
 
 
-with scene.open(GAME, contract=show, needs={"mods": ["ExplosiveKnockback"], "map": "fresh:quicktest", "calm": "standard"}) as s:
-    s.stage(station=STATION,
-            terrain={p: dict(rect=(x - HALF, z - HALF, 2 * HALF + 1, 2 * HALF + 1), terrain=t) for p, (_d, t, (x, z)) in PADS.items()},
-            things={p + "_x": dict(thing=d, at=(x, z)) for p, (d, _t, (x, z)) in PADS.items()})
-    if scene.plant() == "show_off":
-        for f in SWITCHES:
-            s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=f, value="False")
-    rows = {}
+def blasts(s, rows):
+    """Set off each pad in turn, and read its scars, marks and shake into rows[pad]."""
     for pad in ORDER:
         t0 = static(s, "lastShakeTick")
         hp = s.read(pad + "_x", "hitPointsInt")
@@ -113,6 +107,23 @@ with scene.open(GAME, contract=show, needs={"mods": ["ExplosiveKnockback"], "map
         s.shot(rect(pad), name=pad + "_scar")
         ours, vanilla = scars_on(s, pad)
         rows[pad] = dict(scars=ours, vanilla=vanilla, shook=(t0 is not None and t1 is not None and t1 > t0), kick=kick)
+
+
+with scene.open(GAME, contract=show, needs={"mods": ["ExplosiveKnockback"], "map": "fresh:quicktest", "calm": "standard"}) as s:
+    s.stage(station=STATION,
+            terrain={p: dict(rect=(x - HALF, z - HALF, 2 * HALF + 1, 2 * HALF + 1), terrain=t) for p, (_d, t, (x, z)) in PADS.items()},
+            things={p + "_x": dict(thing=d, at=(x, z)) for p, (d, _t, (x, z)) in PADS.items()})
+    planted = scene.plant() == "show_off"
+    rows = {}
+    prior = {f: (s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="get", field=f) or {}).get("value") for f in SWITCHES} if planted else {}
+    try:
+        if planted:
+            for f in SWITCHES:
+                s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=f, value="False")
+        blasts(s, rows)
+    finally:
+        for f, v in prior.items():   # each switch back to what it read before the plant, on every exit path
+            s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=f, value=str(v) if v is not None else "True")
     folder = s.run_dir
 
 fails = 0

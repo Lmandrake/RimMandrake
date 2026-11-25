@@ -777,6 +777,215 @@ internal static class Program
                 && RM_KnockbackVerdicts.SparedOffCell("big", true, 5, 8, 5, 9) != null && RM_KnockbackVerdicts.SparedOffCell("pit", false, 5, 9, 5, 9) == "pit not on the map");
         }
 
+        // ── 0.2.0 (RIMMANDRAKE_AUTOBUILD_EXPLOSIVEKNOCKBACK_SIX_BARS_LEFT): the four kernel bars of Stage 3. Each case is a
+        // named check plus a sweep over its declared range; each sweep prints its cases read and its worst value.
+        var inv = System.Globalization.CultureInfo.InvariantCulture;
+        var q0 = new KbRules();
+        Func<float, float, KbFacts> pawnAt = (x, m) => new KbFacts { kind = KbKind.Pawn, thingId = 11, x = (int)x, z = 2, mass = m };
+
+        // K_CARRY_OWN_PLAN (bar carried_thing_own_arc): the carried thing gets a plan of its own, for its own mass, from the
+        // carrier's cell; one too heavy to fly comes to rest on the carrier's start cell; the carrier's own plan is unchanged.
+        {
+            var w = new MWorld(30, 5);
+            var b = new KbBlast { id = 7, cx = 2, cz = 2, radius = 2.9f, force = 1f };
+            KbFacts carrier = pawnAt(3, 70f);
+            KbPlan alone = KbPlanner.Decide(carrier, b, q0, new KbSettings(), w);
+            KbPlan cp = KbPlanner.Carried(carrier, 12, KbKind.Item, 10f, b, q0, new KbSettings(), w);
+            KbPlan with = KbPlanner.Decide(carrier, b, q0, new KbSettings(), w);
+            Check("K_CARRY_OWN_PLAN a 10 kg stack carried by a thrown 70 kg colonist flies on its own plan",
+                alone.act == KbAct.LaunchPawn && cp != null && cp.act == KbAct.ThrowGoods && cp != alone && cp.mass == 10f,
+                "pawn " + alone.act + " stack " + cp?.act);
+            Check("K_CARRY_OWN_PLAN the lighter stack flies farther than its carrier", cp.cells > alone.cells && cp.first.res.cellsTravelled > alone.res.cellsTravelled,
+                "stack " + cp.cells + "/" + cp.first.res.cellsTravelled + " pawn " + alone.cells + "/" + alone.res.cellsTravelled);
+            KbPlanner.CarriedRest(cp, carrier, out int rx, out int rz);
+            Check("K_CARRY_OWN_PLAN the stack comes to rest where its own flight ends", rx == cp.first.res.destX && rz == cp.first.res.destZ && (rx != alone.res.destX || rz != alone.res.destZ),
+                rx + "," + rz + " pawn " + alone.res.destX + "," + alone.res.destZ);
+            KbPlan hv = KbPlanner.Carried(carrier, 13, KbKind.Item, 120f, b, q0, new KbSettings(), w);
+            KbPlanner.CarriedRest(hv, carrier, out int hx, out int hz);
+            Check("K_CARRY_OWN_PLAN a carried thing too heavy to fly drops on the carrier's start cell", !hv.Throws && hv.reason == "too_heavy" && hx == 3 && hz == 2,
+                hv.act + " " + hv.reason + " at " + hx + "," + hz);
+            Check("K_CARRY_OWN_PLAN the carrier plans as one who carries nothing", with.act == alone.act && with.cells == alone.cells
+                && with.res.destX == alone.res.destX && with.res.destZ == alone.res.destZ && with.res.impact == alone.res.impact);
+            KbPlan corpse = KbPlanner.Carried(carrier, 14, KbKind.Corpse, 40f, b, q0, new KbSettings(), w);
+            Check("K_CARRY_OWN_PLAN a carried corpse flies as a corpse", corpse.act == KbAct.ThrowGoods && corpse.kind == KbKind.Corpse);
+            KbPlan off = KbPlanner.Carried(carrier, 15, KbKind.Item, 10f, b, new KbRules { throwItems = false }, new KbSettings(), w);
+            KbPlanner.CarriedRest(off, carrier, out int ox, out int oz);
+            Check("K_CARRY_OWN_PLAN items switched off: the stack drops where the carrier stood", !off.Throws && ox == 3 && oz == 2, off.act + " " + off.reason);
+            // the range: carrier 40-150 kg, 0-2.9 cells from a 2.9 or 1.9 blast, carried 0.1-200 kg, walls 1-8 cells out
+            int cases = 0, bad = 0; string worst = "none";
+            foreach (float rad in new[] { 1.9f, 2.9f })
+            foreach (int d in new[] { 0, 1, 2 })
+            foreach (float pm in new[] { 40f, 70f, 110f, 150f })
+            foreach (float cm in new[] { 0.1f, 1f, 5f, 10f, 30f, 60f, 74f, 76f, 120f, 200f })
+            foreach (int wall in new[] { 0, 1, 2, 4, 8 })
+            {
+                var ww = new MWorld(30, 5);
+                if (wall > 0) for (int z = 0; z < 5; z++) ww.terr[2 + d + wall, z] = KbCell.Wall;
+                var bb = new KbBlast { id = 9, cx = 2, cz = 2, radius = rad, force = 1f };
+                KbFacts c = new KbFacts { kind = KbKind.Pawn, thingId = 21, x = 2 + d, z = 2, mass = pm };
+                KbPlan pp = KbPlanner.Decide(c, bb, q0, new KbSettings(), ww);
+                KbPlan tp = KbPlanner.Carried(c, 22, KbKind.Item, cm, bb, q0, new KbSettings(), ww);
+                KbPlanner.CarriedRest(tp, c, out int qx, out int qz);
+                cases++;
+                bool eligible = RM_KnockbackMath.Eligible(KbKind.Item, cm, new KbSettings());
+                string why = null;
+                if (tp == null) why = "no plan";
+                else if (!eligible && tp.Throws) why = "a thing over the light mass limit flew";
+                else if (!tp.Throws && (qx != c.x || qz != c.z)) why = "an unthrown carried thing rests off the start cell";
+                else if (tp.Throws && pp.act == KbAct.LaunchPawn && cm < pm && tp.kernelCells < pp.kernelCells) why = "a lighter carried thing planned shorter than its carrier";
+                else if (tp.Throws && Math.Abs(qx - c.x) + Math.Abs(qz - c.z) > 30) why = "rest cell off the map";
+                if (why != null) { bad++; worst = why + " (radius " + rad + " d " + d + " carrier " + pm + " carried " + cm + " wall " + wall + ")"; }
+            }
+            Check("K_CARRY_OWN_PLAN sweep", bad == 0, worst);
+            Console.WriteLine("K_CARRY_OWN_PLAN sweep: " + cases + " cases read, " + bad + " failing, worst: " + worst + " (limit: 0 failing)");
+        }
+
+        // K_COLLISION_BRUISE (bar collision_bruise_by_size): each pawn's bruise follows the OTHER's mass against its own
+        {
+            var sb = new KbSettings();
+            float like = RM_KnockbackMath.CollisionBruise(70f, 70f, sb);
+            float oneCell = RM_KnockbackMath.ImpactFor(1, 70f, sb);
+            Check("K_COLLISION_BRUISE a like pair bruise each other alike, lightly", like > 0f && like <= oneCell + 1e-4f,
+                "70/70 = " + like.ToString("0.###", inv) + ", one cell of wall impact at 70 kg = " + oneCell.ToString("0.###", inv));
+            float onRat = RM_KnockbackMath.CollisionBruise(1f, 70f, sb), onPerson = RM_KnockbackMath.CollisionBruise(70f, 1f, sb);
+            Check("K_COLLISION_BRUISE a person on a rat: the rat is hurt many times more, the person nearly not",
+                onRat >= 20f * onPerson && onPerson < 0.25f && onRat > like, "rat " + onRat.ToString("0.###", inv) + " person " + onPerson.ToString("0.###", inv));
+            float dogHit = RM_KnockbackMath.CollisionBruise(30f, 70f, sb), personHit = RM_KnockbackMath.CollisionBruise(70f, 30f, sb);
+            Check("K_COLLISION_BRUISE a person and a dog: the dog takes more", dogHit > personHit && personHit > 0f);
+            float bigOnSmall = RM_KnockbackMath.CollisionBruise(1f, 2000f, sb), bigTakes = RM_KnockbackMath.CollisionBruise(2000f, 1f, sb);
+            Check("K_COLLISION_BRUISE a rat on an elephant-sized creature: the big one has nothing to treat", bigTakes < 0.01f && bigOnSmall > like);
+            Check("K_COLLISION_BRUISE no other pawn, or a bad mass, bruises nobody", RM_KnockbackMath.CollisionBruise(70f, 0f, sb) == 0f
+                && RM_KnockbackMath.CollisionBruise(0f, 70f, sb) == 0f && RM_KnockbackMath.CollisionBruise(-5f, 70f, sb) == 0f
+                && RM_KnockbackMath.CollisionBruise(float.NaN, 70f, sb) == 0f && RM_KnockbackMath.CollisionBruise(70f, float.NaN, sb) == 0f
+                && RM_KnockbackMath.CollisionBruise(float.PositiveInfinity, 70f, sb) == 0f && RM_KnockbackMath.CollisionBruise(70f, float.PositiveInfinity, sb) == 0f);
+            Check("K_COLLISION_BRUISE impact switched off, or a blast with no impact (palm thumper), bruises nobody",
+                RM_KnockbackMath.CollisionBruise(1f, 70f, new KbSettings { impactEnabled = false }) == 0f
+                && RM_KnockbackMath.CollisionBruise(1f, 70f, new KbSettings { impactFactor = 0f }) == 0f);
+            // a throw stopped by a standing pawn: the same rule, both ways (leaf pawn_hits_pawn_stops keeps its hit)
+            var g = new Grid(10, 3).Set(2, 1, KbCell.Pawn);
+            KbResult r = RM_KnockbackMath.Resolve(g, 0, 1, 1f, 0f, 4, KbKind.Pawn, 70f, sb);
+            KbPlanner.Collide(ref r, 70f, 1f, sb);
+            Check("K_COLLISION_BRUISE a person thrown into a rat: the rat takes the bruise by size, the person a scratch",
+                r.hitOther && r.destX == 1 && r.otherImpact == RM_KnockbackMath.CollisionBruise(1f, 70f, sb) && r.impact == RM_KnockbackMath.CollisionBruise(70f, 1f, sb),
+                "impact " + r.impact + " other " + r.otherImpact);
+            KbResult r2 = RM_KnockbackMath.Resolve(g, 0, 1, 1f, 0f, 4, KbKind.Pawn, 70f, sb);
+            KbPlanner.Collide(ref r2, 70f, 70f, sb);
+            Check("K_COLLISION_BRUISE a person thrown into a person: both take an impact hit, alike", r2.impact > 0f && r2.impact == r2.otherImpact);
+            KbResult r3 = RM_KnockbackMath.Resolve(new Grid(10, 3).Set(2, 1, KbCell.Wall), 0, 1, 1f, 0f, 4, KbKind.Pawn, 70f, sb);
+            float wallHit = r3.impact;
+            KbPlanner.Collide(ref r3, 70f, 70f, sb);
+            Check("K_COLLISION_BRUISE a throw that met no pawn keeps its own hit and bruises nobody", !r3.hitOther && r3.otherImpact == 0f && r3.impact == wallHit);
+            // the range: own and other mass 0.5-2000 kg (geometric, 41 steps each), the impact setting 0.5-3 x
+            float[] ms = Enumerable.Range(0, 41).Select(i => (float)(0.5 * Math.Pow(4000.0, i / 40.0))).ToArray();
+            int cases = 0, bad = 0; string worst = "none"; float worstLike = 0f;
+            foreach (float ipc in new[] { 2f, 4f, 12f })
+            {
+                var st = new KbSettings { impactPerCell = ipc };
+                for (int i = 0; i < ms.Length; i++)
+                for (int j = 0; j < ms.Length; j++)
+                {
+                    cases++;
+                    float a = RM_KnockbackMath.CollisionBruise(ms[i], ms[j], st);
+                    string why = null;
+                    if (!(a >= 0f) || float.IsInfinity(a)) why = "not a finite amount";
+                    else if (j > 0 && a + 1e-5f < RM_KnockbackMath.CollisionBruise(ms[i], ms[j - 1], st)) why = "fell as the other's mass rose";
+                    else if (i > 0 && a > RM_KnockbackMath.CollisionBruise(ms[i - 1], ms[j], st) + 1e-5f) why = "rose as its own mass rose";
+                    else if (i == j && Math.Abs(a - RM_KnockbackMath.CollisionBruise(ms[j], ms[i], st)) > 1e-4f) why = "a like pair not alike";
+                    if (i == j) worstLike = Math.Max(worstLike, a / RM_KnockbackMath.ImpactFor(1, 70f, st));
+                    if (why != null) { bad++; worst = why + " (own " + ms[i] + " other " + ms[j] + " impactPerCell " + ipc + ")"; }
+                }
+            }
+            Check("K_COLLISION_BRUISE sweep", bad == 0 && worstLike <= 1f + 1e-4f, worst + "; like pair at most " + worstLike + " of one cell's wall hit");
+            Console.WriteLine("K_COLLISION_BRUISE sweep: " + cases + " cases read, " + bad + " failing, worst: " + worst + "; a like pair's bruise at most "
+                + worstLike.ToString("0.###", inv) + " of one cell's wall hit at 70 kg (limit 1)");
+        }
+
+        // K_GAS_COVER_SHOVE (bar gas_shoves_pawn_on_pit_cover): a burning-gas burst shoves a person on an intact cover one cell,
+        // as on any floor; a person down in an open pit is not shoved; a blast still skips them (its blast breaks the cover)
+        {
+            var w = new MWorld(20, 5);
+            var gas = new KbBlast { id = -4, cx = 4, cz = 2, radius = 2.4f, force = 1f, gas = true };
+            var blast = new KbBlast { id = 4, cx = 4, cz = 2, radius = 2.9f, force = 1f };
+            KbFacts onCover = new KbFacts { kind = KbKind.Pawn, thingId = 31, x = 5, z = 2, mass = 70f, onSuperdeep = true, onCover = true };
+            KbFacts inPit = new KbFacts { kind = KbKind.Pawn, thingId = 32, x = 5, z = 2, mass = 70f, onSuperdeep = true, onCover = false };
+            KbFacts onFloor = new KbFacts { kind = KbKind.Pawn, thingId = 33, x = 5, z = 2, mass = 70f };
+            KbPlan pc = KbPlanner.Decide(onCover, gas, q0, new KbSettings(), w), pf = KbPlanner.Decide(onFloor, gas, q0, new KbSettings(), w);
+            Check("K_GAS_COVER_SHOVE a person on an intact cover is shoved one cell by burning gas", pc.act == KbAct.LaunchPawn && pc.res.cellsTravelled == 1,
+                pc.act + " " + pc.reason + " " + pc.res.cellsTravelled);
+            Check("K_GAS_COVER_SHOVE ... as on any floor", pc.res.destX == pf.res.destX && pc.res.destZ == pf.res.destZ && pc.res.impact == pf.res.impact && pc.res.impact == 0f);
+            KbPlan pp = KbPlanner.Decide(inPit, gas, q0, new KbSettings(), w);
+            Check("K_GAS_COVER_SHOVE a person down in an open pit is not shoved", pp.act == KbAct.Skip && pp.reason == "in_pit", pp.act + " " + pp.reason);
+            KbPlan pb = KbPlanner.Decide(onCover, blast, q0, new KbSettings(), w);
+            Check("K_GAS_COVER_SHOVE a blast still leaves a person on a cover to its broken cover", pb.act == KbAct.Skip && pb.reason == "in_pit", pb.act + " " + pb.reason);
+            Check("K_GAS_COVER_SHOVE the shove's landing never breaks a cover", !RM_KnockbackMath.LandingBreaksCover(KbKind.Pawn, true, false, gas.id));
+            // the range: the pawn 0-2 cells from the clump in 8 directions, on a cover / open pit / floor, cooldown in or out
+            int cases = 0, bad = 0; string worst = "none";
+            for (int ox = -2; ox <= 2; ox++)
+            for (int oz = -2; oz <= 2; oz++)
+            foreach (int ground in new[] { 0, 1, 2 })
+            foreach (int ago in new[] { 10, 1000 })
+            {
+                var f = new KbFacts { kind = KbKind.Pawn, thingId = 40, x = 10 + ox, z = 10 + oz, mass = 70f, onSuperdeep = ground > 0, onCover = ground == 1, gasShovedAgo = ago };
+                var floor = new KbFacts { kind = KbKind.Pawn, thingId = 40, x = 10 + ox, z = 10 + oz, mass = 70f, gasShovedAgo = ago };
+                var g2 = new KbBlast { id = -5, cx = 10, cz = 10, radius = 2.4f, force = 1f, gas = true };
+                var ww = new MWorld(21, 21);
+                KbPlan a = KbPlanner.Decide(f, g2, q0, new KbSettings(), ww), c = KbPlanner.Decide(floor, g2, q0, new KbSettings(), ww);
+                cases++;
+                string why = null;
+                if (ground == 2 && a.act != KbAct.Skip) why = "a person in an open pit was shoved";
+                else if (ground != 2 && (a.act != c.act || a.reason != c.reason || a.res.destX != c.res.destX || a.res.destZ != c.res.destZ)) why = "on a cover the shove differs from the floor's";
+                else if (a.Throws && a.res.cellsTravelled > 1) why = "a gas shove of more than one cell";
+                if (why != null) { bad++; worst = why + " (" + ox + "," + oz + " ground " + ground + " ago " + ago + ": " + a.act + " " + a.reason + ")"; }
+            }
+            Check("K_GAS_COVER_SHOVE sweep", bad == 0, worst);
+            Console.WriteLine("K_GAS_COVER_SHOVE sweep: " + cases + " cases read, " + bad + " failing, worst: " + worst + " (limit: 0 failing)");
+        }
+
+        // K_NO_CONTACT (bar no_impact_without_contact): a throw a sandbag stops before it reaches a pawn hits nobody
+        {
+            var sn = new KbSettings();
+            var g = new Grid(12, 3).Set(5, 1, KbCell.Partial).Set(6, 1, KbCell.Pawn);
+            KbResult r = RM_KnockbackMath.Resolve(g, 4, 1, 1f, 0f, 3, KbKind.Pawn, 70f, sn);
+            KbPlanner.Collide(ref r, 70f, 70f, sn);
+            Check("K_NO_CONTACT lane 4 | sandbag 5 | pawn 6: no hit, no bruise", !r.hitOther && r.otherImpact == 0f && r.destX == 4 && r.stop == KbStop.PawnBeyondCover,
+                "hit " + r.hitOther + " other " + r.otherImpact + " dest " + r.destX + " stop " + r.stop);
+            KbResult r2 = RM_KnockbackMath.Resolve(new Grid(12, 3).Set(5, 1, KbCell.Partial).Set(6, 1, KbCell.Pawn), 3, 1, 1f, 0f, 4, KbKind.Pawn, 70f, sn);
+            Check("K_NO_CONTACT a cell short of the sandbag: still no hit", !r2.hitOther && r2.destX == 4 && r2.otherImpact == 0f, "hit " + r2.hitOther + " dest " + r2.destX);
+            KbResult r3 = RM_KnockbackMath.Resolve(new Grid(12, 3).Set(6, 1, KbCell.Pawn), 4, 1, 1f, 0f, 3, KbKind.Pawn, 70f, sn);
+            Check("K_NO_CONTACT control: no sandbag, the pawn is met", r3.hitOther && r3.destX == 5 && r3.otherImpact > 0f);
+            KbResult r4 = RM_KnockbackMath.Resolve(new Grid(12, 3).Set(5, 1, KbCell.Partial).Set(7, 1, KbCell.Pawn), 4, 1, 1f, 0f, 4, KbKind.Pawn, 70f, sn);
+            Check("K_NO_CONTACT control: over the sandbag to the cell before the pawn, the pawn is met", r4.hitOther && r4.destX == 6);
+            // every lane of 1-6 cells of open / sandbag / pawn, thrown 1-6 cells, sandbags stopping or not: a hit only from the
+            // cell next to the pawn, and never a bruise on a pawn not hit
+            int cases = 0, bad = 0; string worst = "none";
+            var kinds = new[] { KbCell.Open, KbCell.Partial, KbCell.Pawn };
+            for (int len = 1; len <= 6; len++)
+            {
+                int combos = (int)Math.Pow(3, len);
+                for (int code = 0; code < combos; code++)
+                {
+                    var lg = new Grid(10, 3);
+                    int cc = code;
+                    for (int k = 1; k <= len; k++) { lg.Set(k, 1, kinds[cc % 3]); cc /= 3; }
+                    foreach (int cells in new[] { 1, 2, 3, 4, 5, 6 })
+                    foreach (bool stopAt in new[] { false, true })
+                    {
+                        var st = new KbSettings { sandbagsStop = stopAt };
+                        KbResult x = RM_KnockbackMath.Resolve(lg, 0, 1, 1f, 0f, cells, KbKind.Pawn, 70f, st);
+                        KbPlanner.Collide(ref x, 70f, 70f, st);
+                        cases++;
+                        string why = null;
+                        if (x.hitOther && Math.Max(Math.Abs(x.otherX - x.destX), Math.Abs(x.otherZ - x.destZ)) != 1) why = "hit a pawn it did not reach (dest " + x.destX + ", pawn " + x.otherX + ")";
+                        else if (!x.hitOther && x.otherImpact != 0f) why = "a bruise with no hit";
+                        else if (lg.At(x.destX, x.destZ) == KbCell.Partial && x.cellsTravelled > 0) why = "came to rest on a sandbag";
+                        if (why != null) { bad++; worst = why + " (lane code " + code + " len " + len + " cells " + cells + " stop " + stopAt + ")"; }
+                    }
+                }
+            }
+            Check("K_NO_CONTACT sweep", bad == 0, worst);
+            Console.WriteLine("K_NO_CONTACT sweep: " + cases + " cases read, " + bad + " failing, worst: " + worst + " (limit: 0 failing)");
+        }
+
         Console.WriteLine("explosive knockback kernel: " + pass + "/" + (pass + fail) + " passed");
         return fail == 0 ? 0 : 1;
     }

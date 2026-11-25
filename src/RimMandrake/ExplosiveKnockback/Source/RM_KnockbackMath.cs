@@ -33,6 +33,9 @@ namespace RimMandrake.ExplosiveKnockback
         Water = 6,
         OutOfBounds = 7,
         PartialCover = 8, // only with "sandbags stop a throw" on
+        // it crossed sandbags toward a pawn standing just past them, and comes back off them: it never reached that pawn
+        // (bar no_impact_without_contact), so it hit nobody. With "sandbags stop a throw" off; it takes its own stop's hit.
+        PawnBeyondCover = 9,
     }
 
     public interface IKbGrid
@@ -436,6 +439,23 @@ namespace RimMandrake.ExplosiveKnockback
             return s.impactPerCell * s.impactFactor * notTravelled / (float)Math.Sqrt(MassScale(mass, s));
         }
 
+        /// <summary>Bar collision_bruise_by_size (owner 2026-11-24: "the bruising should be proportional to the size of the thing
+        /// that hit you"): the Blunt amount one pawn takes when it meets another, by landing on it or by being stopped by it.
+        /// Size is the creature's mass, the measure this mod throws by. The amount is two cells of wall impact times the
+        /// other's share of the pair's mass: it rises with the other's mass and falls with one's own, a like pair take one
+        /// cell's wall hit each (the lightest hit the mod gives at a wall, leaf pawn_hits_pawn_stops "like at a wall"), and
+        /// the heavier of an unequal pair takes next to nothing. Impact off, a blast with no impact, no other pawn, or a mass
+        /// that is not a positive finite number: 0.</summary>
+        public static float CollisionBruise(float ownMass, float otherMass, KbSettings s)
+        {
+            if (s == null || !s.impactEnabled || !(ownMass > 0f) || !(otherMass > 0f) || float.IsInfinity(ownMass) || float.IsInfinity(otherMass))
+            {
+                return 0f;
+            }
+            float amount = 2f * s.impactPerCell * s.impactFactor * otherMass / (ownMass + otherMass);
+            return amount > 0f && !float.IsInfinity(amount) ? amount : 0f;
+        }
+
         /// <summary>Walk the throw (design §3.4). The start cell is never read.</summary>
         public static KbResult Resolve(IKbGrid grid, int sx, int sz, float dx, float dz, int cells, KbKind kind,
             float mass, KbSettings s)
@@ -536,12 +556,21 @@ namespace RimMandrake.ExplosiveKnockback
                 px = lastNonPartialX;
                 pz = lastNonPartialZ;
                 travelled = lastNonPartialN;
+                if (stop == KbStop.Pawn)
+                {
+                    // bar no_impact_without_contact: the sandbag stopped it before it reached the pawn beyond, so it hit
+                    // nobody (0.1.0 reported the hit, a bruise on a pawn it never touched, lane 4 | sandbag 5 | pawn 6)
+                    stop = KbStop.PawnBeyondCover;
+                    r.hitOther = false;
+                    r.otherX = 0;
+                    r.otherZ = 0;
+                }
             }
             r.destX = px;
             r.destZ = pz;
             r.cellsTravelled = travelled;
             r.stop = travelled == 0 && stop == KbStop.Distance ? KbStop.None : stop;
-            if (pawn && (stop == KbStop.Wall || stop == KbStop.Door || stop == KbStop.Pawn || stop == KbStop.PartialCover))
+            if (pawn && (stop == KbStop.Wall || stop == KbStop.Door || stop == KbStop.Pawn || stop == KbStop.PartialCover || stop == KbStop.PawnBeyondCover))
             {
                 float imp = ImpactFor(cells - travelled, mass, s);
                 if (stop == KbStop.Pawn)

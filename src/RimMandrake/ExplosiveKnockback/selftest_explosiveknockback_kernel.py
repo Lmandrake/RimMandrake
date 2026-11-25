@@ -51,7 +51,14 @@ def main(extra=()):
     out = (r.stdout or "").replace("\r", "")
     if extra:
         return r.returncode, out + (r.stderr or "")
-    print(out.strip().splitlines()[-1] if r.returncode == 0 and out.strip() else out + (r.stderr or ""))
+    if r.returncode == 0 and out.strip():
+        # each 0.2.0 sweep prints its cases read, its failing count and its worst value (the Stage 3 brief's rule)
+        for line in out.strip().splitlines()[:-1]:
+            if " sweep: " in line:
+                print(line)
+        print(out.strip().splitlines()[-1])
+    else:
+        print(out + (r.stderr or ""))
     return r.returncode
 
 

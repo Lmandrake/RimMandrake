@@ -12,44 +12,122 @@
   "rc": 1,
   "test_blob": "e59d039b1ad405802c329ce99b9ca2cc0b6aad2b"
  },
+ "T_CARRY_STATIC": {
+  "at": "2026-11-25T05:49:34Z",
+  "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_carry_static.py",
+  "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_carry_static.py",
+  "last": "FAIL carry static: 1 of 4 lines failing, 3 of 4 planted faults caught (cases read: 4 lines, 4 plants; limit 0 failing)",
+  "patch": "--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs\n@@ -1122,7 +1122,7 @@\n             long takeoffT0 = System.Diagnostics.Stopwatch.GetTimestamp();\n #endif\n             // bar carried_thing_own_arc: the hands are empty here (ThrowCarried), so the pawn flies alone\n-            PawnFlyer flyer = PawnFlyer.MakeFlyer(def, p, dest, null, null, flyWithCarriedThing: false);\n+            PawnFlyer flyer = PawnFlyer.MakeFlyer(def, p, dest, null, null, flyWithCarriedThing: true);\n             if (flyer == null)\n             {\n                 return false;\n",
+  "patch_files": [
+   "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs"
+  ],
+  "patch_sha": "1cb681c038d1041e",
+  "rc": 1,
+  "test_blob": "d52844ec53adeed2f7bfe4ed2967fdaffceb8c82"
+ },
  "T_FUZZ": {
-  "at": "2026-11-23T12:19:57Z",
+  "at": "2026-11-25T05:49:57Z",
   "command": "python3 src/RimMandrake/Utils/selftest_explosiveknockback_fuzz.py",
   "file": "src/RimMandrake/Utils/selftest_explosiveknockback_fuzz.py",
-  "last": "explosiveknockback fuzz: 36004 cases, 916489 steps, 1.45s total -> FAILED",
-  "patch": "diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\nindex c4d5d6130c..83847935a8 100644\n--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\n@@ -186,7 +186,7 @@ namespace RimMandrake.ExplosiveKnockback\n             {\n                 return 0f;\n             }\n-            return 1f - Clamp01(dist / radius);\n+            return 1f - Clamp01(dist / (radius + 0.5f));\n         }\n \n         public static float MassScale(float mass, KbSettings s)\n",
+  "last": "explosiveknockback fuzz: 27758 cases, 850791 steps, 1.19s total -> FAILED",
+  "patch": "--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\n@@ -561,7 +561,6 @@\n                     // bar no_impact_without_contact: the sandbag stopped it before it reached the pawn beyond, so it hit\n                     // nobody (0.1.0 reported the hit, a bruise on a pawn it never touched, lane 4 | sandbag 5 | pawn 6)\n                     stop = KbStop.PawnBeyondCover;\n-                    r.hitOther = false;\n                     r.otherX = 0;\n                     r.otherZ = 0;\n                 }\n",
   "patch_files": [
    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
   ],
-  "patch_sha": "81197cdbb95ff94a",
+  "patch_sha": "f321685500fd8ead",
   "rc": 1,
   "test_blob": "dbb6d32f674d44644b8a6ff1229a21abbd280952"
  },
  "T_HEAVY_KNOCK_RULE": {
-  "at": "2026-11-23T22:00:21Z",
+  "at": "2026-11-25T05:49:28Z",
   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
-  "last": "explosive knockback kernel: 247/248 passed",
-  "patch": "diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs\nindex 15f572f674..843773b287 100644\n--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs\n@@ -30,7 +30,7 @@ namespace RimMandrake.ExplosiveKnockback\n             {\n                 return key + \" not on the map\";\n             }\n-            return x == stagedX && z == stagedZ ? null : key + \" at \" + x + \",\" + z + \", staged \" + stagedX + \",\" + stagedZ;\n+            return x == stagedX ? null : key + \" at \" + x + \",\" + z + \", staged \" + stagedX + \",\" + stagedZ;\n         }\n \n         /// <summary>sc_calibration: the colonist is thrown exactly 3 cells (people_thrown_three_cells), straight away from\n",
+  "last": "explosive knockback kernel: 276/277 passed",
+  "patch": "--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\n@@ -344,7 +344,7 @@\n         {\n             damage = 0f;\n             stun = 0;\n-            if (explosionId < 0 || !enabled || kind != KbKind.Item || !personThere || mass < minMass)\n+            if (explosionId < 0 || !enabled || kind != KbKind.Item || !personThere)\n             {\n                 return false;\n             }\n",
   "patch_files": [
-   "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs"
+   "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
   ],
-  "patch_sha": "d67b0864ecfdaf22",
+  "patch_sha": "59d15aee025727f3",
   "rc": 1,
-  "test_blob": "3440aaf847989a207203f2188a7bda4fa7ad094f"
+  "test_blob": "16cdc6f284334f9128068c3639c5402bea7c131a"
  },
  "T_KERNEL": {
-  "at": "2026-11-23T22:00:17Z",
+  "at": "2026-11-25T05:49:33Z",
   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
-  "last": "explosive knockback kernel: 247/248 passed",
-  "patch": "diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs\nindex 15f572f674..843773b287 100644\n--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs\n@@ -30,7 +30,7 @@ namespace RimMandrake.ExplosiveKnockback\n             {\n                 return key + \" not on the map\";\n             }\n-            return x == stagedX && z == stagedZ ? null : key + \" at \" + x + \",\" + z + \", staged \" + stagedX + \",\" + stagedZ;\n+            return x == stagedX ? null : key + \" at \" + x + \",\" + z + \", staged \" + stagedX + \",\" + stagedZ;\n         }\n \n         /// <summary>sc_calibration: the colonist is thrown exactly 3 cells (people_thrown_three_cells), straight away from\n",
+  "last": "explosive knockback kernel: 261/277 passed",
+  "patch": "--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\n@@ -203,6 +203,7 @@\n         /// <summary>Cells to throw. 0 = no move. Calibration (owner Q7): mortar r 2.9, distance 1, 60 kg -> 3.</summary>\n         public static int ThrowCells(float dist, float radius, float force, float mass, KbSettings s)\n         {\n+            dist = 0f;\n             return Cells(ThrowRaw(dist, radius, force, mass, s), s);\n         }\n \n",
   "patch_files": [
-   "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs"
+   "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
   ],
-  "patch_sha": "d67b0864ecfdaf22",
+  "patch_sha": "e86f515ece943d3d",
   "rc": 1,
-  "test_blob": "3440aaf847989a207203f2188a7bda4fa7ad094f"
+  "test_blob": "16cdc6f284334f9128068c3639c5402bea7c131a"
+ },
+ "T_KERNEL_CARRY_OWN_PLAN": {
+  "at": "2026-11-25T05:49:08Z",
+  "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+  "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+  "last": "explosive knockback kernel: 274/277 passed",
+  "patch": "--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs\n@@ -287,7 +287,7 @@\n         public static KbPlan Carried(KbFacts carrier, int thingId, KbKind kind, float mass, KbBlast b, KbRules q, KbSettings s, IKbWorld w)\n         {\n             var f = new KbFacts { kind = kind == KbKind.Corpse ? KbKind.Corpse : KbKind.Item, spawned = carrier.spawned, thingId = thingId,\n-                x = carrier.x, z = carrier.z, mass = mass, onSuperdeep = carrier.onSuperdeep, onCover = carrier.onCover };\n+                x = carrier.x, z = carrier.z, mass = carrier.mass, onSuperdeep = carrier.onSuperdeep, onCover = carrier.onCover };\n             return Decide(f, b, q, s, w);\n         }\n \n",
+  "patch_files": [
+   "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs"
+  ],
+  "patch_sha": "6b24eb064722b877",
+  "rc": 1,
+  "test_blob": "16cdc6f284334f9128068c3639c5402bea7c131a"
+ },
+ "T_KERNEL_COLLISION_BRUISE": {
+  "at": "2026-11-25T05:49:13Z",
+  "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+  "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+  "last": "explosive knockback kernel: 273/277 passed",
+  "patch": "--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\n@@ -452,7 +452,7 @@\n             {\n                 return 0f;\n             }\n-            float amount = 2f * s.impactPerCell * s.impactFactor * otherMass / (ownMass + otherMass);\n+            float amount = 2f * s.impactPerCell * s.impactFactor * ownMass / (ownMass + otherMass);\n             return amount > 0f && !float.IsInfinity(amount) ? amount : 0f;\n         }\n \n",
+  "patch_files": [
+   "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+  ],
+  "patch_sha": "89a7dbe79a4f5fae",
+  "rc": 1,
+  "test_blob": "16cdc6f284334f9128068c3639c5402bea7c131a"
+ },
+ "T_KERNEL_GAS_COVER_SHOVE": {
+  "at": "2026-11-25T05:49:19Z",
+  "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+  "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+  "last": "explosive knockback kernel: 274/277 passed",
+  "patch": "--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs\n@@ -130,7 +130,7 @@\n             if (f.mechanoid && !q.throwMechanoids) return \"mechanoids_off\";\n             // GPT #1 + \"you can't climb out. Period.\" A person on an intact cover stands on ground to the player: burning gas\n             // shoves them as on any floor (bar gas_shoves_pawn_on_pit_cover); a blast breaks that cover, so it still skips them\n-            if (f.onSuperdeep && !(gas && f.onCover)) return \"in_pit\";\n+            if (f.onSuperdeep) return \"in_pit\";\n             return null;\n         }\n \n",
+  "patch_files": [
+   "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs"
+  ],
+  "patch_sha": "7310a78a66be8a2c",
+  "rc": 1,
+  "test_blob": "16cdc6f284334f9128068c3639c5402bea7c131a"
+ },
+ "T_KERNEL_NO_CONTACT": {
+  "at": "2026-11-25T05:49:24Z",
+  "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+  "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+  "last": "explosive knockback kernel: 274/277 passed",
+  "patch": "--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\n@@ -561,7 +561,6 @@\n                     // bar no_impact_without_contact: the sandbag stopped it before it reached the pawn beyond, so it hit\n                     // nobody (0.1.0 reported the hit, a bruise on a pawn it never touched, lane 4 | sandbag 5 | pawn 6)\n                     stop = KbStop.PawnBeyondCover;\n-                    r.hitOther = false;\n                     r.otherX = 0;\n                     r.otherZ = 0;\n                 }\n",
+  "patch_files": [
+   "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+  ],
+  "patch_sha": "f321685500fd8ead",
+  "rc": 1,
+  "test_blob": "16cdc6f284334f9128068c3639c5402bea7c131a"
+ },
+ "T_LINT_PLANTED": {
+  "at": "2026-11-25T05:51:37Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_explosiveknockback_lint.py",
+  "file": "src/RimMandrake/Utils/selftest_explosiveknockback_lint.py",
+  "last": "ExplosiveKnockback lint planted-defect selftest: 16/20 ok",
+  "patch": "--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs\n@@ -543,7 +543,6 @@\n             RimMandrakeExplosiveKnockbackSettings.showAirRipple = true;\n             RimMandrakeExplosiveKnockbackSettings.showCraterScars = true;\n             RimMandrakeExplosiveKnockbackSettings.showShakeStrength = 1f;\n-            RimMandrakeExplosiveKnockbackSettings.showMarksLast = 1;\n         }\n     }\n }\n",
+  "patch_files": [
+   "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs"
+  ],
+  "patch_sha": "84bb39ed3c27980d",
+  "rc": 1,
+  "test_blob": "7fba2721ca1cdbd40279fb828bf359dcfbe810a0"
  },
  "T_PROOFGATE": {
   "at": "2026-11-23T12:20:21Z",
@@ -65,17 +143,17 @@
   "test_blob": "386e6f1136ffb5c294b41ddcaf97985183e4c230"
  },
  "T_RESTORE": {
-  "at": "2026-11-23T13:06:21Z",
+  "at": "2026-11-25T06:42:08Z",
   "command": "python3 src/RimMandrake/Utils/selftest_proof_restore_check.py",
   "file": "src/RimMandrake/Utils/selftest_proof_restore_check.py",
   "last": "selftest_proof_restore_check: FAIL (1 failure(s))",
-  "patch": "--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs\n@@ -524,6 +524,7 @@\n         /// inside [loS, hiS] probe seconds) + \" path=\" + the CSV; \"NONE\" when no probe ran or it saw no frame.</summary>\n         public static string Frame(string arg)\n         {\n+            RimMandrakeExplosiveKnockbackSettings.strength = 2f;\n             string[] p = (arg ?? \"\").Split(',');\n             string verb = p[0].Trim().ToLowerInvariant();\n             if (verb == \"begin\")\n",
+  "patch": "--- a/src/RimMandrake/ExplosiveKnockback/proof/scene_storeroom_pit.py\n+++ b/src/RimMandrake/ExplosiveKnockback/proof/scene_storeroom_pit.py\n@@ -64,9 +64,9 @@\n                   \"goods\": dict(take=[g[6:] for g in goods])})\n     off = scene.plant() == \"knockback_off\"          # arm C of the old proof: the master switch off, so nothing is thrown\n     prior = (s.raw(\"jawa/mod_settings_field\", typeName=SETTINGS, action=\"get\", field=\"enabled\") or {}).get(\"value\") if off else None\n+    if off:\n+        s.raw(\"jawa/mod_settings_field\", typeName=SETTINGS, action=\"set\", field=\"enabled\", value=\"False\")\n     try:\n-        if off:\n-            s.raw(\"jawa/mod_settings_field\", typeName=SETTINGS, action=\"set\", field=\"enabled\", value=\"False\")\n         hp = s.read(\"bomb\", \"hitPointsInt\")\n         s.act.damage(\"bomb\", (hp.v if hp.state == \"ok\" else 60) + 40, kind=\"Crush\", name=\"bomb\")\n         run = s.run(until=pit.end, limit=pit.limit)\n",
   "patch_files": [
-   "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs"
+   "src/RimMandrake/ExplosiveKnockback/proof/scene_storeroom_pit.py"
   ],
-  "patch_sha": "a886d5a92afb6057",
+  "patch_sha": "615563d2f1b0b451",
   "rc": 1,
-  "test_blob": "9a4f7b477f47cb27d9564c1a7af6fa4e8a27f8b1"
+  "test_blob": "7b70b9b078ac802631c2c7218b7640271581f7c2"
  },
  "T_SETTINGS_SCREEN": {
   "at": "2026-11-25T04:57:10Z",
@@ -91,30 +169,43 @@
   "test_blob": "9fde2309a33235d9a07055241681db05e865eadb"
  },
  "T_SETTINGS_SWEEP_OFFLINE": {
-  "at": "2026-11-25T04:57:09Z",
-  "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py",
+  "at": "2026-11-25T06:32:22Z",
+  "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py --half offline",
   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py",
-  "last": "explosive knockback settings sweep: PASS (24 runs, 0 faults, 2/2 coupling mutants caught) | static: 1 faults, 4/4 planted caught, 10/10 switch faults caught | FAIL",
-  "patch": "--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs\n@@ -239,7 +239,6 @@\n             Scribe_Values.Look(ref shieldDebitPerForce, \"shieldDebitPerForce\", 10f);\n             Scribe_Values.Look(ref showFireAndFlash, \"showFireAndFlash\", true);\n             Scribe_Values.Look(ref showScreenShake, \"showScreenShake\", true);\n-            Scribe_Values.Look(ref showAirRipple, \"showAirRipple\", true);\n             Scribe_Values.Look(ref showCraterScars, \"showCraterScars\", true);\n             Scribe_Values.Look(ref showShakeStrength, \"showShakeStrength\", 1f);\n             Scribe_Values.Look(ref showMarksLast, \"showMarksLast\", 1);\n",
+  "last": "explosive knockback settings sweep: PASS (24 runs, 0 faults, 2/2 coupling mutants caught) | static: 1 faults, 3/4 planted caught, 10/10 switch faults caught | FAIL | halves: offline FAIL",
+  "patch": "--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs\t2026-11-24 21:30:44.933400500 -0800\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs\t2026-11-24 21:30:44.943479900 -0800\n@@ -163,7 +163,7 @@\n                 globalMultiplier = strength,\n                 maxCells = RM_KnockbackMath.CapFor(ownCap, maxThrowCells, ownCapScale),\n                 creatureMassLimit = creatureMassLimit,\n-                lightMassLimit = lightMassLimit,\n+                lightMassLimit = creatureMassLimit,\n                 impactEnabled = impactDamageEnabled,\n                 impactPerCell = impactDamagePerCell,\n                 sandbagsStop = sandbagsStopThrow,\n",
   "patch_files": [
    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs"
   ],
-  "patch_sha": "e9f29c7af32ffaea",
+  "patch_sha": "490bce91e409881a",
   "rc": 1,
-  "test_blob": "6bed4fca55e904313202766d09fa3da00db64e54"
+  "test_blob": "e736077ca01170a9d051dfd0adb481edbc3bc29b"
+ },
+ "T_SETTINGS_SWEEP_SHOW": {
+  "at": "2026-11-25T06:32:16Z",
+  "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py --half show",
+  "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py",
+  "last": "explosive knockback settings sweep show: FAIL (8 scenarios x 27648 blasts = 276480 rows; 4/21 checks failing; parts with their own switch 4/7, unbuilt: smoke,soot_on_things,soot_on_pawns; 2/2 planted map faults caught, 5/5 planted throw faults caught) | halves: show FAIL",
+  "patch": "--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackShowPlan.cs\t2026-11-24 21:30:44.825070800 -0800\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackShowPlan.cs\t2026-11-24 21:30:44.842655700 -0800\n@@ -287,7 +287,7 @@\n             }\n \n             // air ripple: a ring to about the blast's edge, wider and stronger for a bigger blast\n-            if (s.airRipple && b.inView && b.onCurrentMap)\n+            if (s.fireAndFlash && b.inView && b.onCurrentMap)\n             {\n                 p.rippleDiameter = 2f * er;\n                 p.rippleSeconds = p.rippleDiameter / RippleGrowthPerSecond;\n",
+  "patch_files": [
+   "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackShowPlan.cs"
+  ],
+  "patch_sha": "0f45496841b2130c",
+  "rc": 1,
+  "test_blob": "e736077ca01170a9d051dfd0adb481edbc3bc29b"
  },
  "T_SITUATION_MAP_OFFLINE": {
-  "at": "2026-11-24T13:27:45Z",
+  "at": "2026-11-25T05:52:09Z",
   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_map.py",
   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_map.py",
   "last": "explosive knockback map: FAIL (the map is red on the shipped decision)",
-  "patch": "diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs\nindex 2804b41d04..2fa5af111f 100644\n--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs\n@@ -408,7 +408,7 @@ namespace RimMandrake.ExplosiveKnockback\n \n         public static bool LandingWithinCap(int x, int z, int originX, int originZ, int cap)\n         {\n-            return cap <= 0 || Math.Max(Math.Abs(x - originX), Math.Abs(z - originZ)) <= cap;\n+            return true;\n         }\n \n         /// <summary>The floor of the pit at (x, z): every open pit cell joined to it, corners included, within PitReach. Owner, by card\n",
+  "patch": "--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs\n@@ -130,7 +130,7 @@\n             if (f.mechanoid && !q.throwMechanoids) return \"mechanoids_off\";\n             // GPT #1 + \"you can't climb out. Period.\" A person on an intact cover stands on ground to the player: burning gas\n             // shoves them as on any floor (bar gas_shoves_pawn_on_pit_cover); a blast breaks that cover, so it still skips them\n-            if (f.onSuperdeep && !(gas && f.onCover)) return \"in_pit\";\n+            if (false) return \"in_pit\";\n             return null;\n         }\n \n",
   "patch_files": [
    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs"
   ],
-  "patch_sha": "4eaaff05ed786e65",
+  "patch_sha": "bd0f563290039b9f",
   "rc": 1,
-  "test_blob": "0f4db00a080d1ee0e89b14b4b931181a0e3952ee"
+  "test_blob": "8ca4bd7eb06fc6ecc2de3a653d365b49fb05b73b"
  },
  "T_STAGE3_SCENES": {
   "at": "2026-11-24T09:32:03Z",

@@ -1,0 +1,10 @@
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs
+@@ -543,7 +543,6 @@
+             RimMandrakeExplosiveKnockbackSettings.showAirRipple = true;
+             RimMandrakeExplosiveKnockbackSettings.showCraterScars = true;
+             RimMandrakeExplosiveKnockbackSettings.showShakeStrength = 1f;
+-            RimMandrakeExplosiveKnockbackSettings.showMarksLast = 1;
+         }
+     }
+ }

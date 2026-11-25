@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs	2026-11-24 21:30:44.933400500 -0800
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs	2026-11-24 21:30:44.943479900 -0800
+@@ -163,7 +163,7 @@
+                 globalMultiplier = strength,
+                 maxCells = RM_KnockbackMath.CapFor(ownCap, maxThrowCells, ownCapScale),
+                 creatureMassLimit = creatureMassLimit,
+-                lightMassLimit = lightMassLimit,
++                lightMassLimit = creatureMassLimit,
+                 impactEnabled = impactDamageEnabled,
+                 impactPerCell = impactDamagePerCell,
+                 sandbagsStop = sandbagsStopThrow,

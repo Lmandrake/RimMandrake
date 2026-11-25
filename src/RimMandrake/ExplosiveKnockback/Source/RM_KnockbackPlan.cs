@@ -42,6 +42,7 @@ namespace RimMandrake.ExplosiveKnockback
         public int gasShovedAgo = int.MaxValue; // ticks since a burning-gas clump last shoved it
         // ── where it is ──
         public bool onSuperdeep;      // its cell is dug to superdeep, covered or not
+        public bool onCover;          // that superdeep cell is under an intact cover (bar gas_shoves_pawn_on_pit_cover)
         public bool onStorage;        // the edifice under a good is storage of any kind
         public bool onClosed;         // the edifice under a good is a closed container
         // ── a container ──
@@ -118,7 +119,7 @@ namespace RimMandrake.ExplosiveKnockback
     public static class KbPlanner
     {
         /// <summary>Why a living pawn is never thrown (leaf the_spared), or null. Order is the journal's.</summary>
-        public static string PawnSkipReason(KbFacts f, KbRules q)
+        public static string PawnSkipReason(KbFacts f, KbRules q, bool gas = false)
         {
             if (f.dead) return "dead";
             if (f.flying) return "flying";
@@ -127,7 +128,9 @@ namespace RimMandrake.ExplosiveKnockback
             if (f.downed && !q.throwDowned) return "downed_off";
             if (f.animal && !q.throwAnimals) return "animals_off";
             if (f.mechanoid && !q.throwMechanoids) return "mechanoids_off";
-            if (f.onSuperdeep) return "in_pit"; // GPT #1 + "you can't climb out. Period."
+            // GPT #1 + "you can't climb out. Period." A person on an intact cover stands on ground to the player: burning gas
+            // shoves them as on any floor (bar gas_shoves_pawn_on_pit_cover); a blast breaks that cover, so it still skips them
+            if (f.onSuperdeep && !(gas && f.onCover)) return "in_pit";
             return null;
         }
 
@@ -186,7 +189,7 @@ namespace RimMandrake.ExplosiveKnockback
             bool pawn = f.kind == KbKind.Pawn;
             if (pawn)
             {
-                string why = PawnSkipReason(f, q);
+                string why = PawnSkipReason(f, q, b.gas);
                 if (why != null)
                 {
                     return Skip(p, why);
@@ -274,6 +277,46 @@ namespace RimMandrake.ExplosiveKnockback
             }
             p.act = pawn ? KbAct.LaunchPawn : KbAct.ThrowGoods;
             return p;
+        }
+
+        /// <summary>Bar carried_thing_own_arc (owner 2026-11-14: "Next version it should go flying independently of the person
+        /// holding it. Different trajectories."): the plan of what a thrown pawn carries, decided as a loose good of its own
+        /// kind and mass lying on the carrier's cell when the blast goes off. It leaves the carrier's hands at the blast either
+        /// way: a plan that Throws flies on its own flight; any other plan (too heavy, items or goods in the air switched off,
+        /// a pit) leaves it on the carrier's start cell (CarriedRest). The carrier's own plan does not read it.</summary>
+        public static KbPlan Carried(KbFacts carrier, int thingId, KbKind kind, float mass, KbBlast b, KbRules q, KbSettings s, IKbWorld w)
+        {
+            var f = new KbFacts { kind = kind == KbKind.Corpse ? KbKind.Corpse : KbKind.Item, spawned = carrier.spawned, thingId = thingId,
+                x = carrier.x, z = carrier.z, mass = mass, onSuperdeep = carrier.onSuperdeep, onCover = carrier.onCover };
+            return Decide(f, b, q, s, w);
+        }
+
+        /// <summary>Where a carried thing comes to rest by its plan (Carried): the end of its own first leg when it flies (a
+        /// rebound or a pit may still change that in flight, as for any flying good), else the carrier's start cell.</summary>
+        public static void CarriedRest(KbPlan p, KbFacts carrier, out int x, out int z)
+        {
+            if (p != null && p.act == KbAct.ThrowGoods)
+            {
+                x = p.first.res.destX;
+                z = p.first.res.destZ;
+                return;
+            }
+            x = carrier.x;
+            z = carrier.z;
+        }
+
+        /// <summary>Bar collision_bruise_by_size: one rule for both ways two pawns meet. A throw the walk stopped at a pawn
+        /// (res.hitOther) bruises both by size, the thrown one by the other's mass and the other by the thrown one's,
+        /// in place of the walk's even split; a throw that met no pawn is left as it is.</summary>
+        public static void Collide(ref KbResult res, float ownMass, float otherMass, KbSettings s)
+        {
+            if (!res.hitOther)
+            {
+                res.otherImpact = 0f;
+                return;
+            }
+            res.impact = RM_KnockbackMath.CollisionBruise(ownMass, otherMass, s);
+            res.otherImpact = RM_KnockbackMath.CollisionBruise(otherMass, ownMass, s);
         }
 
         /// <summary>Leaf every_good_moves ("the player never sees one stack sit still in the blast while its neighbours fly")

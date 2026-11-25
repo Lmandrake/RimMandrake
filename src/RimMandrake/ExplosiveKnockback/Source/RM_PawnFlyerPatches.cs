@@ -273,12 +273,34 @@ namespace RimMandrake.ExplosiveKnockback
                 RM_MapComponent_Knockback.NotifyLanded(__state); // stun-lock guard: stamps landing + stun end
                 if (__state.Spawned)
                 {
+                    // bar collision_bruise_by_size: a pawn that walked onto the landing cell mid-flight is landed on; both are
+                    // bruised by size (RM_KnockbackMath.CollisionBruise), by the throwing blast's impact factor. A landing on an
+                    // empty cell bruises nobody.
+                    RM_MapComponent_Knockback comp = __state.Map.GetComponent<RM_MapComponent_Knockback>();
+                    KbSettings ks = RimMandrakeExplosiveKnockbackSettings.Kernel();
+                    ks.impactFactor = comp != null ? comp.TakeImpactFactor(__state) : 1f;
+                    var landedOn = new System.Collections.Generic.List<Pawn>();
                     foreach (Thing t in __state.Position.GetThingList(__state.Map))
                     {
-                        if (t is Pawn o && o != __state)
+                        if (t is Pawn o && o != __state && !RM_KnockbackCompat.IsBeneathCover(o))
                         {
-                            RM_KnockbackJournal.Add("land_on_pawn", 0, __state, "at", __state.Position, "pawn", o.ThingID, "pawnId", o.thingIDNumber);
+                            landedOn.Add(o);
                         }
+                    }
+                    foreach (Pawn o in landedOn)
+                    {
+                        float own = RM_MapComponent_Knockback.PawnMass(__state), other = RM_MapComponent_Knockback.PawnMass(o);
+                        float amount = RM_KnockbackMath.CollisionBruise(own, other, ks), otherAmount = RM_KnockbackMath.CollisionBruise(other, own, ks);
+                        if (otherAmount > 0f && !o.Dead)
+                        {
+                            o.TakeDamage(new DamageInfo(DamageDefOf.Blunt, otherAmount));
+                        }
+                        if (amount > 0f && !__state.Dead)
+                        {
+                            __state.TakeDamage(new DamageInfo(DamageDefOf.Blunt, amount));
+                        }
+                        RM_KnockbackJournal.Add("land_on_pawn", 0, __state, "at", __state.Position, "pawn", o.ThingID, "pawnId", o.thingIDNumber,
+                            "mass", own, "otherMass", other, "amount", amount, "otherAmount", otherAmount);
                     }
                 }
                 RM_KnockbackJournal.Add("land", 0, __state, "at", __state.Spawned ? __state.Position : IntVec3.Invalid,

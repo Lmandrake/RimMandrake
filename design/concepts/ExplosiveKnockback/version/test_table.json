@@ -111,11 +111,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 3.15,
-    "last": "explosive knockback kernel: 248/248 passed",
-    "at": "2026-11-23T22:40:05Z",
+    "seconds": 2.5,
+    "last": "explosive knockback kernel: 277/277 passed",
+    "at": "2026-11-25T06:32:24Z",
     "result": "PASS",
-    "build": "2140c0b23bb4d296f95a",
+    "build": "a0e70f8817cee629e3db",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
     "margins": []
    }
@@ -135,11 +135,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 6.1,
-    "last": "explosiveknockback fuzz: 42001 cases, 922486 steps, 1.54s total -> OK",
-    "at": "2026-11-23T22:40:11Z",
+    "seconds": 4.25,
+    "last": "explosiveknockback fuzz: 42001 cases, 922486 steps, 1.40s total -> OK",
+    "at": "2026-11-25T06:32:28Z",
     "result": "PASS",
-    "build": "c4b00ce05d301d63703e",
+    "build": "3f2632125532db6f7f84",
     "command": "python3 src/RimMandrake/Utils/selftest_explosiveknockback_fuzz.py",
     "margins": []
    }
@@ -160,12 +160,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 3.61,
+    "seconds": 5.47,
     "last": "explosiveknockback data: 15 RM_KnockbackExtension li checked (6 here, 9 in KineticArms)",
-    "at": "2026-11-19T03:36:48Z",
+    "at": "2026-11-25T06:32:34Z",
     "result": "PASS",
-    "build": "2d1f270613ba37dc1e6b",
-    "command": "python3 src/RimMandrake/Utils/lint_explosiveknockback_defs.py"
+    "build": "7e890fb5c18faedf4549",
+    "command": "python3 src/RimMandrake/Utils/lint_explosiveknockback_defs.py",
+    "margins": []
    }
   },
   "T_LINT_PLANTED": {
@@ -182,12 +183,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 45.05,
+    "seconds": 54.05,
     "last": "ExplosiveKnockback lint planted-defect selftest: 20/20 ok",
-    "at": "2026-11-19T03:37:33Z",
+    "at": "2026-11-25T06:33:28Z",
     "result": "PASS",
-    "build": "17f915b8d7cf62d40e08",
-    "command": "python3 src/RimMandrake/Utils/selftest_explosiveknockback_lint.py"
+    "build": "4b5497a5f2957c5d12bc",
+    "command": "python3 src/RimMandrake/Utils/selftest_explosiveknockback_lint.py",
+    "margins": []
    }
   },
   "T_CENSUS": {
@@ -204,11 +206,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 17.19,
+    "seconds": 24.88,
     "last": "PASS storage census: closed exactly when hidden",
-    "at": "2026-11-24T03:39:53Z",
+    "at": "2026-11-25T06:33:53Z",
     "result": "PASS",
-    "build": "3a11f87c2e50cac09a1c",
+    "build": "cfe7b0704ee187935b58",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_storage_census.py",
     "margins": []
    }
@@ -229,11 +231,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.26,
+    "seconds": 0.16,
     "last": "MOCK: PASS (41/41 scenes staged, all_green=False)",
-    "at": "2026-11-24T06:59:57Z",
+    "at": "2026-11-25T06:33:53Z",
     "result": "PASS",
-    "build": "cc5202aa9e41701838a3",
+    "build": "5f2965661bd2039bc4cb",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_script.py",
     "margins": []
    }
@@ -253,11 +255,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 11.23,
+    "seconds": 4.11,
     "last": "PASS proofgate (R1 P1 G1)",
-    "at": "2026-11-24T07:00:09Z",
+    "at": "2026-11-25T06:33:57Z",
     "result": "PASS",
-    "build": "761647fe0c7f1a92fe88",
+    "build": "bcbbd2eebefacc5f0f9d",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py",
     "margins": []
    }
@@ -275,11 +277,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 19.92,
+    "seconds": 17.25,
     "last": "selftest_proof_restore_check: PASS (0 failure(s))",
-    "at": "2026-11-23T22:40:45Z",
+    "at": "2026-11-25T06:42:27Z",
     "result": "PASS",
-    "build": "a90d22f95e436a5a9b6c",
+    "build": "527b01ddcbcb5a3da464",
     "command": "python3 src/RimMandrake/Utils/selftest_proof_restore_check.py",
     "margins": []
    }
@@ -297,11 +299,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.1,
+    "seconds": 0.08,
     "last": "settings screens selftest: 7/7 ok (mods: ExplosiveKnockback)",
-    "at": "2026-11-23T11:30:44Z",
+    "at": "2026-11-25T06:34:13Z",
     "result": "PASS",
-    "build": "d5463b24aa3c6735113d",
+    "build": "3510a5ebac15e1f77502",
     "command": "python3 src/RimMandrake/Utils/selftest_settings_screens.py --mod ExplosiveKnockback",
     "margins": []
    }
@@ -344,16 +346,16 @@
    ],
    "id": "T_SETTINGS_SWEEP_OFFLINE",
    "kind": "offline",
-   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py",
+   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py --half offline",
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.65,
-    "last": "explosive knockback settings sweep: PASS (24 runs, 0 faults, 2/2 coupling mutants caught) | static: 0 faults, 4/4 planted caught, 10/10 switch faults caught | PASS",
-    "at": "2026-11-23T22:40:47Z",
+    "seconds": 2.43,
+    "last": "explosive knockback settings sweep: PASS (24 runs, 0 faults, 2/2 coupling mutants caught) | static: 0 faults, 4/4 planted caught, 10/10 switch faults caught | PASS | halves: offline PASS",
+    "at": "2026-11-25T06:34:15Z",
     "result": "PASS",
-    "build": "85a4effa7b9a31c17538",
-    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py",
+    "build": "be07d102670ded3dd255",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py --half offline",
     "margins": []
    }
   },
@@ -397,11 +399,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.03,
+    "seconds": 0.08,
     "last": "explosive knockback gas clumps: PASS (0 faults, 11/11 planted faults caught)",
-    "at": "2026-11-24T03:39:57Z",
+    "at": "2026-11-25T06:34:15Z",
     "result": "PASS",
-    "build": "10510c71d1dfb74c1dc9",
+    "build": "fbded99cf659466d9dca",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_gas_clumps.py",
     "margins": []
    }
@@ -423,11 +425,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.62,
-    "last": "explosive knockback kernel: 248/248 passed",
-    "at": "2026-11-23T22:40:50Z",
+    "seconds": 2.43,
+    "last": "explosive knockback kernel: 277/277 passed",
+    "at": "2026-11-25T06:34:18Z",
     "result": "PASS",
-    "build": "2140c0b23bb4d296f95a",
+    "build": "a0e70f8817cee629e3db",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
     "margins": []
    }
@@ -452,9 +454,9 @@
     "rc": 0,
     "seconds": 0.03,
     "last": "PASS stage3 scenes: 0 failed",
-    "at": "2026-11-24T07:00:09Z",
+    "at": "2026-11-25T06:34:18Z",
     "result": "PASS",
-    "build": "2b7230b42b66ead3c264",
+    "build": "32800696efccfc14178b",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_stage3_scenes.py",
     "margins": []
    }
@@ -475,11 +477,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.21,
+    "seconds": 0.34,
     "last": "explosive knockback hook scope: PASS (0 faults, 3/3 planted faults caught)",
-    "at": "2026-11-24T03:39:57Z",
+    "at": "2026-11-25T06:34:18Z",
     "result": "PASS",
-    "build": "4630996b1c76d346e4f9",
+    "build": "8f42afdd8563db0a2aef",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_hook_scope.py",
     "margins": []
    }
@@ -2373,11 +2375,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.05,
+    "seconds": 0.04,
     "last": "FRAME_BUDGET offline selftest: PASS (8 case(s), 0 failed)",
-    "at": "2026-11-24T07:00:09Z",
+    "at": "2026-11-25T06:34:18Z",
     "result": "PASS",
-    "build": "82b462ca802b25a35dd7",
+    "build": "2f22cd8f2697cc397982",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/validation.py --selftest",
     "margins": []
    }
@@ -2396,11 +2398,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 4.29,
+    "seconds": 2.52,
     "last": "ALL PASS",
-    "at": "2026-11-24T07:00:13Z",
+    "at": "2026-11-25T06:34:21Z",
     "result": "PASS",
-    "build": "8cc347acb6d2bc33b712",
+    "build": "5336d02af1b4764b86b1",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_barrage_p99.py",
     "margins": []
    }
@@ -2482,9 +2484,9 @@
     "rc": 0,
     "seconds": 0.03,
     "last": "PASS landing job search: 0 failed",
-    "at": "2026-11-23T22:40:50Z",
+    "at": "2026-11-25T06:34:21Z",
     "result": "PASS",
-    "build": "54fe9fd7faf314c24416",
+    "build": "7fb77091bc4fbf67ecd2",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_landing_job_search.py",
     "margins": []
    }
@@ -2506,11 +2508,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 214.68,
-    "last": "explosive knockback map: PASS (every bar holds; 31 of 31 planted faults seen)",
-    "at": "2026-11-24T03:43:32Z",
+    "seconds": 315.32,
+    "last": "explosive knockback map: PASS (every bar holds; 39 of 39 planted faults seen)",
+    "at": "2026-11-25T06:39:36Z",
     "result": "PASS",
-    "build": "9979bf533e8980006dd4",
+    "build": "782c8c51a839d2f1ff86",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_map.py",
     "margins": []
    }
@@ -2567,11 +2569,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.72,
+    "seconds": 1.26,
     "last": "PASS walk_storeroom_raid leaf: 0 failed",
-    "at": "2026-11-24T07:00:14Z",
+    "at": "2026-11-25T06:39:37Z",
     "result": "PASS",
-    "build": "4f289670719a666475c8",
+    "build": "6195abcdbc1be01e2ed0",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_walk_raid.py",
     "margins": []
    }
@@ -2588,11 +2590,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.17,
+    "seconds": 3.46,
     "last": "explosive knockback blind cycle 1: PASS",
-    "at": "2026-11-23T10:30:26Z",
+    "at": "2026-11-25T06:39:41Z",
     "result": "PASS",
-    "build": "dd207f7a4d14bd5ebbe9",
+    "build": "c8fe7718f98305050f0c",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_blind_cycle1.py",
     "margins": []
    }
@@ -2623,17 +2625,25 @@
    "kind": "offline",
    "stage": "4-5",
    "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
-   "new": true,
    "item": "RIMMANDRAKE_FLING_KNOCKBACK_CARRY_ON_OWN_ARC",
    "observes": "kernel case K_CARRY_OWN_PLAN: a thrown colonist's carried thing gets a flight plan of its own, apart from the colonist's; a carried thing too heavy to fly lands on the colonist's start cell; a colonist carrying nothing plans as before",
    "reads": [
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
-    "src/RimMandrake/ExplosiveKnockback/Source/SelfTest/Program.cs"
+    "src/RimMandrake/ExplosiveKnockback/Source/SelfTest/Program.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/SelfTest/KnockbackMap.cs"
    ],
    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
    "runs_today": {
-    "ran": false,
-    "why": "specified for 0.2.0, not built: Stage 3 builds it, red first"
+    "ran": true,
+    "rc": 0,
+    "seconds": 3.62,
+    "last": "explosive knockback kernel: 277/277 passed",
+    "at": "2026-11-25T06:39:45Z",
+    "result": "PASS",
+    "build": "7a58e66b3678999bc782",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+    "margins": []
    },
    "marker": "K_CARRY_OWN_PLAN"
   },
@@ -2642,16 +2652,23 @@
    "kind": "offline",
    "stage": "4-5",
    "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_carry_static.py",
-   "new": true,
    "item": "RIMMANDRAKE_FLING_KNOCKBACK_CARRY_ON_OWN_ARC",
    "observes": "static: the pawn throw no longer flies with its carried thing (no MakeFlyer(..., flyWithCarriedThing: true) on the throw path of RM_MapComponent_Knockback.cs)",
    "reads": [
-    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs"
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_ThingFlyer_Knockback.cs"
    ],
    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_carry_static.py",
    "runs_today": {
-    "ran": false,
-    "why": "specified for 0.2.0, not built: Stage 3 builds it, red first"
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.04,
+    "last": "PASS carry static: 0 of 4 lines failing, 4 of 4 planted faults caught (cases read: 4 lines, 4 plants; limit 0 failing)",
+    "at": "2026-11-25T06:39:45Z",
+    "result": "PASS",
+    "build": "b9b0ff61c7263c11aace",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_carry_static.py",
+    "margins": []
    }
   },
   "T_KERNEL_COLLISION_BRUISE": {
@@ -2659,17 +2676,25 @@
    "kind": "offline",
    "stage": "4-5",
    "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
-   "new": true,
    "item": "RIMMANDRAKE_BRUISE_KNOCKBACK_LANDING_ON_PAWN",
    "observes": "kernel case K_COLLISION_BRUISE over pairs of masses: a thrown pawn landing on a pawn bruises it by their sizes (a small one on a large one is a light bruise, a large one on a small one a heavy one)",
    "reads": [
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
-    "src/RimMandrake/ExplosiveKnockback/Source/SelfTest/Program.cs"
+    "src/RimMandrake/ExplosiveKnockback/Source/SelfTest/Program.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/SelfTest/KnockbackMap.cs"
    ],
    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
    "runs_today": {
-    "ran": false,
-    "why": "specified for 0.2.0, not built: Stage 3 builds it, red first"
+    "ran": true,
+    "rc": 0,
+    "seconds": 4.07,
+    "last": "explosive knockback kernel: 277/277 passed",
+    "at": "2026-11-25T06:39:49Z",
+    "result": "PASS",
+    "build": "7a58e66b3678999bc782",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+    "margins": []
    },
    "marker": "K_COLLISION_BRUISE"
   },
@@ -2678,17 +2703,25 @@
    "kind": "offline",
    "stage": "4-5",
    "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
-   "new": true,
    "item": "RIMMANDRAKE_FOLD_KNOCKBACK_POLISH_LINES_INTO_ZERO_TWO_THREE_JUDGED_IN",
    "observes": "a kernel case: a pawn on a covered superdeep cell under a gas burst is shoved one cell, as on any floor",
    "reads": [
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
-    "src/RimMandrake/ExplosiveKnockback/Source/SelfTest/Program.cs"
+    "src/RimMandrake/ExplosiveKnockback/Source/SelfTest/Program.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/SelfTest/KnockbackMap.cs"
    ],
    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
    "runs_today": {
-    "ran": false,
-    "why": "specified for 0.2.0, not built: Stage 3 builds it, red first"
+    "ran": true,
+    "rc": 0,
+    "seconds": 3.5,
+    "last": "explosive knockback kernel: 277/277 passed",
+    "at": "2026-11-25T06:39:52Z",
+    "result": "PASS",
+    "build": "7a58e66b3678999bc782",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+    "margins": []
    }
   },
   "T_KERNEL_NO_CONTACT": {
@@ -2696,17 +2729,25 @@
    "kind": "offline",
    "stage": "4-5",
    "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
-   "new": true,
    "item": "RIMMANDRAKE_FOLD_KNOCKBACK_POLISH_LINES_INTO_ZERO_TWO_THREE_JUDGED_IN",
    "observes": "a kernel case lane | sandbag | pawn: a throw stopped by the sandbag gives the pawn beyond it no hit and no bruise",
    "reads": [
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
-    "src/RimMandrake/ExplosiveKnockback/Source/SelfTest/Program.cs"
+    "src/RimMandrake/ExplosiveKnockback/Source/SelfTest/Program.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/SelfTest/KnockbackMap.cs"
    ],
    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
    "runs_today": {
-    "ran": false,
-    "why": "specified for 0.2.0, not built: Stage 3 builds it, red first"
+    "ran": true,
+    "rc": 0,
+    "seconds": 3.89,
+    "last": "explosive knockback kernel: 277/277 passed",
+    "at": "2026-11-25T06:39:56Z",
+    "result": "PASS",
+    "build": "7a58e66b3678999bc782",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+    "margins": []
    }
   },
   "T_BLAST_SHOW_OFFLINE": {
@@ -2725,10 +2766,13 @@
    "runs_today": {
     "ran": true,
     "rc": 1,
-    "seconds": 1.3,
+    "seconds": 2.15,
     "last": "FAIL blast show: 5 of 26 line(s) failing",
-    "at": "2026-11-24T20:56:25-08:00",
-    "result": "FAIL"
+    "at": "2026-11-25T06:42:29Z",
+    "result": "FAIL",
+    "build": "9d3e81e13c1e51acbbcf",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_blast_show.py",
+    "margins": []
    }
   },
   "T_SETTINGS_SWEEP_SHOW": {
@@ -2736,138 +2780,149 @@
    "kind": "offline",
    "stage": "4-5",
    "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py",
-   "new": true,
    "item": "RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS",
    "observes": "the settings sweep gains the show's switches: each switch off changes only its own part, and every switch off gives the unmodded look of a blast with the throw unchanged",
    "reads": [
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs",
     "design/concepts/ExplosiveKnockback/scenes.json"
    ],
-   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py",
+   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py --half show",
    "runs_today": {
-    "ran": false,
-    "why": "specified for 0.2.0, not built: Stage 3 builds it, red first"
+    "ran": true,
+    "rc": 1,
+    "seconds": 6.84,
+    "last": "explosive knockback settings sweep show: FAIL (8 scenarios x 27648 blasts = 276480 rows; 1/21 checks failing; parts with their own switch 4/7, unbuilt: smoke,soot_on_things,soot_on_pawns; 2/2 planted map faults caught, 5/5 planted throw faults caught) | halves: show FAIL",
+    "at": "2026-11-25T06:42:36Z",
+    "result": "FAIL",
+    "build": "e4e9c13fcc5f7800850c",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py --half show",
+    "margins": []
    }
   },
   "sc_pawn_arc_carried_thing": {
    "id": "sc_pawn_arc_carried_thing",
    "kind": "live_minimal",
    "stage": "6",
-   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
-   "entry": "pawn_arc",
-   "new": true,
+   "file": "src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_carried_thing.py",
+   "entry": "scene_pawn_arc_carried_thing.py",
    "item": "RIMMANDRAKE_FLING_KNOCKBACK_CARRY_ON_OWN_ARC",
    "scene": "sc_pawn_arc",
    "observes": "a revised sc_pawn_arc lane: a colonist carrying a stack is thrown; two things fly on two paths, the stack lands where its own flight ends with no loss and no copy, the colonist lands empty-handed; a too-heavy stack drops where the colonist stood; a colonist carrying nothing flies as before",
    "reads": [
-    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_carried_thing.py",
     "design/concepts/ExplosiveKnockback/scenes.json",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs"
    ],
    "why_game": "two real flyers (the pawn's and the thing's) and the haul state of a real pawn",
    "why_full_list": null,
-   "entry_exists": false,
+   "entry_exists": true,
    "partial": null,
    "runs_today": {
     "ran": false,
-    "why": "specified for 0.2.0, not built: Stage 3 builds it, red first"
-   }
+    "entry_exists": true,
+    "why": "live: UNRUN until Stage 6; command: python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_pawn_arc_carried_thing.py"
+   },
+   "command": "python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_pawn_arc_carried_thing.py"
   },
   "sc_pawn_arc_bruise_sizes": {
    "id": "sc_pawn_arc_bruise_sizes",
    "kind": "live_minimal",
    "stage": "6",
-   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
-   "entry": "pawn_arc",
-   "new": true,
+   "file": "src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_bruise_sizes.py",
+   "entry": "scene_pawn_arc_bruise_sizes.py",
    "item": "RIMMANDRAKE_BRUISE_KNOCKBACK_LANDING_ON_PAWN",
    "scene": "sc_pawn_arc",
    "observes": "a revised sc_pawn_arc lane with a small and a large second pawn: the landing bruises each by size",
    "reads": [
-    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_bruise_sizes.py",
     "design/concepts/ExplosiveKnockback/scenes.json",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs"
    ],
    "why_game": "a real landing on a real pawn and the injury the game records on it",
    "why_full_list": null,
-   "entry_exists": false,
+   "entry_exists": true,
    "partial": null,
    "runs_today": {
     "ran": false,
-    "why": "specified for 0.2.0, not built: Stage 3 builds it, red first"
-   }
+    "entry_exists": true,
+    "why": "live: UNRUN until Stage 6; command: python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_pawn_arc_bruise_sizes.py"
+   },
+   "command": "python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_pawn_arc_bruise_sizes.py"
   },
   "sc_pawn_arc_sandbag_no_contact": {
    "id": "sc_pawn_arc_sandbag_no_contact",
    "kind": "live_minimal",
    "stage": "6",
-   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
-   "entry": "pawn_arc",
-   "new": true,
+   "file": "src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_sandbag_no_contact.py",
+   "entry": "scene_pawn_arc_sandbag_no_contact.py",
    "item": "RIMMANDRAKE_FOLD_KNOCKBACK_POLISH_LINES_INTO_ZERO_TWO_THREE_JUDGED_IN",
    "scene": "sc_pawn_arc",
    "observes": "a revised sc_pawn_arc lane: a pawn behind a sandbag the throw cannot cross takes no impact and no bruise",
    "reads": [
-    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_sandbag_no_contact.py",
     "design/concepts/ExplosiveKnockback/scenes.json",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs"
    ],
    "why_game": "a real sandbag stopping a real flight, and the pawn beyond it read for injuries",
    "why_full_list": null,
-   "entry_exists": false,
+   "entry_exists": true,
    "partial": null,
    "runs_today": {
     "ran": false,
-    "why": "specified for 0.2.0, not built: Stage 3 builds it, red first"
-   }
+    "entry_exists": true,
+    "why": "live: UNRUN until Stage 6; command: python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_pawn_arc_sandbag_no_contact.py"
+   },
+   "command": "python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_pawn_arc_sandbag_no_contact.py"
   },
   "sc_gas_chain_pawn_on_cover": {
    "id": "sc_gas_chain_pawn_on_cover",
    "kind": "live_minimal",
    "stage": "6",
-   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
-   "entry": "gas_chain",
-   "new": true,
+   "file": "src/RimMandrake/ExplosiveKnockback/proof/scene_gas_chain_pawn_on_cover.py",
+   "entry": "scene_gas_chain_pawn_on_cover.py",
    "item": "RIMMANDRAKE_FOLD_KNOCKBACK_POLISH_LINES_INTO_ZERO_TWO_THREE_JUDGED_IN",
    "scene": "sc_gas_chain",
    "observes": "a lane of sc_gas_chain: a colonist on an intact pit cover is shoved one cell by a gas burst",
    "reads": [
-    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "src/RimMandrake/ExplosiveKnockback/proof/scene_gas_chain_pawn_on_cover.py",
     "design/concepts/ExplosiveKnockback/scenes.json",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs"
    ],
    "why_game": "a real gas burst over a real FlowWorks pit cover",
    "why_full_list": null,
-   "entry_exists": false,
+   "entry_exists": true,
    "partial": null,
    "runs_today": {
     "ran": false,
-    "why": "specified for 0.2.0, not built: Stage 3 builds it, red first"
-   }
+    "entry_exists": true,
+    "why": "live: UNRUN until Stage 6; command: python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_gas_chain_pawn_on_cover.py"
+   },
+   "command": "python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_gas_chain_pawn_on_cover.py"
   },
   "sc_storeroom_mortar_rebound_legs": {
    "id": "sc_storeroom_mortar_rebound_legs",
    "kind": "live_minimal",
    "stage": "6",
-   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
-   "entry": "storeroom_mortar",
-   "new": true,
+   "file": "src/RimMandrake/ExplosiveKnockback/proof/scene_storeroom_mortar_rebound_legs.py",
+   "entry": "scene_storeroom_mortar_rebound_legs.py",
    "item": "RIMMANDRAKE_FOLD_KNOCKBACK_POLISH_LINES_INTO_ZERO_TWO_THREE_JUDGED_IN",
    "scene": "sc_storeroom_mortar",
    "observes": "sc_storeroom_mortar's trace: each rebound leg of a thrown good is shorter than the leg before, until it rests",
    "reads": [
-    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "src/RimMandrake/ExplosiveKnockback/proof/scene_storeroom_mortar_rebound_legs.py",
     "design/concepts/ExplosiveKnockback/scenes.json",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs"
    ],
    "why_game": "the legs of real thing flights off real walls and doors",
    "why_full_list": null,
-   "entry_exists": false,
+   "entry_exists": true,
    "partial": null,
    "runs_today": {
     "ran": false,
-    "why": "specified for 0.2.0, not built: Stage 3 builds it, red first"
-   }
+    "entry_exists": true,
+    "why": "live: UNRUN until Stage 6; command: python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_storeroom_mortar_rebound_legs.py"
+   },
+   "command": "python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_storeroom_mortar_rebound_legs.py"
   },
   "sc_blast_show": {
    "id": "sc_blast_show",
@@ -2902,25 +2957,26 @@
    "id": "sc_settings_sweep_show_switches",
    "kind": "live_minimal",
    "stage": "6",
-   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
-   "entry": "settings_sweep",
-   "new": true,
+   "file": "src/RimMandrake/ExplosiveKnockback/proof/scene_settings_sweep_show_switches.py",
+   "entry": "scene_settings_sweep_show_switches.py",
    "item": "RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS",
    "scene": "sc_settings_sweep",
    "observes": "sc_settings_sweep with each show switch off in turn, and a throw compared show-on against show-off",
    "reads": [
-    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "src/RimMandrake/ExplosiveKnockback/proof/scene_settings_sweep_show_switches.py",
     "design/concepts/ExplosiveKnockback/scenes.json",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs"
    ],
    "why_game": "the drawn look of a real blast with each switch off, and the throw beside it",
    "why_full_list": null,
-   "entry_exists": false,
+   "entry_exists": true,
    "partial": null,
    "runs_today": {
     "ran": false,
-    "why": "specified for 0.2.0, not built: Stage 3 builds it, red first"
-   }
+    "entry_exists": true,
+    "why": "live: UNRUN until Stage 6; command: python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_settings_sweep_show_switches.py"
+   },
+   "command": "python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_settings_sweep_show_switches.py"
   }
  },
  "bars": [
@@ -4173,9 +4229,9 @@
     "T_KERNEL_CARRY_OWN_PLAN",
     "T_CARRY_STATIC"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "collision_bruise_by_size",
@@ -4191,9 +4247,9 @@
    "offline_decides": [
     "T_KERNEL_COLLISION_BRUISE"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "blast_show_fire_and_flash",
@@ -4358,7 +4414,7 @@
     "T_SETTINGS_SWEEP_SHOW"
    ],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -4375,9 +4431,9 @@
    "offline_decides": [
     "T_KERNEL_GAS_COVER_SHOVE"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "no_impact_without_contact",
@@ -4393,9 +4449,9 @@
    "offline_decides": [
     "T_KERNEL_NO_CONTACT"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "rebound_goes_shorter",
@@ -4412,7 +4468,7 @@
     "T_KERNEL"
    ],
    "offline_green_today": true,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   }
  ],
@@ -4421,12 +4477,24 @@
   "selftest_explosiveknockback_stage6_visit2.py": "proof-harness guards: the scene and site faults Stage 6 visit 2 found (a quicktest pond's dry bed and the like), so these test the proof harness, not a bar (RIMMANDRAKE_REGISTER_EK_SELFTESTS_THIRTEEN_NO_TABLE_ENTRY_SAW)"
  },
  "made_0_2_0": {
-  "at": "2026-11-24T20:56:25-08:00",
+  "at": "2026-11-24T22:31:42-08:00",
   "by": "steward run RIMMANDRAKE_STEWARD_EXPLOSIVEKNOCKBACK_PREFLIGHT_STAGE (version/pilot_throwaway/extend_test_table_0_2_0.py)",
   "what": "the 59 rows of 0.1.0 kept; the 14 bars of 0.2.0 added with the deciders their record.json proof_note names, each new test specified (new: true) for Stage 3; a test a Stage 3 batch built (BUILT) is measured now and leaves new: true",
   "built": [
    "T_BLAST_SHOW_OFFLINE",
-   "sc_blast_show"
+   "T_CARRY_STATIC",
+   "T_KERNEL_CARRY_OWN_PLAN",
+   "T_KERNEL_COLLISION_BRUISE",
+   "T_KERNEL_GAS_COVER_SHOVE",
+   "T_KERNEL_NO_CONTACT",
+   "T_SETTINGS_SWEEP_SHOW",
+   "sc_blast_show",
+   "sc_gas_chain_pawn_on_cover",
+   "sc_pawn_arc_bruise_sizes",
+   "sc_pawn_arc_carried_thing",
+   "sc_pawn_arc_sandbag_no_contact",
+   "sc_settings_sweep_show_switches",
+   "sc_storeroom_mortar_rebound_legs"
   ]
  }
 }

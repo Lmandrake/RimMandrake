@@ -16,6 +16,7 @@ bar could ever read runnable."""
 import datetime
 import json
 import os
+import shlex
 import subprocess
 import sys
 import time
@@ -54,7 +55,27 @@ BS_SCENE = M + "/proof/scene_blast_show.py"
 BUILT = {
     "T_BLAST_SHOW_OFFLINE": ("prints", " blast show: "),
     BS: ("scene", BS_SCENE),
+    # RIMMANDRAKE_AUTOBUILD_EXPLOSIVEKNOCKBACK_SIX_BARS_LEFT (2026-11-24): the six bars left
+    "T_KERNEL_CARRY_OWN_PLAN": ("prints", "K_CARRY_OWN_PLAN sweep: "),
+    "T_KERNEL_COLLISION_BRUISE": ("prints", "K_COLLISION_BRUISE sweep: "),
+    "T_KERNEL_GAS_COVER_SHOVE": ("prints", "K_GAS_COVER_SHOVE sweep: "),
+    "T_KERNEL_NO_CONTACT": ("prints", "K_NO_CONTACT sweep: "),
+    "T_CARRY_STATIC": ("prints", " carry static: "),
+    "T_SETTINGS_SWEEP_SHOW": ("prints", " settings sweep show: "),
 }
+# the live scenes of the six bars: each on the scene library (CLAUDE.md: scenes and verdicts stay in Python), its own file
+SCENES6 = {
+    "sc_pawn_arc_carried_thing": "scene_pawn_arc_carried_thing.py",
+    "sc_pawn_arc_bruise_sizes": "scene_pawn_arc_bruise_sizes.py",
+    "sc_pawn_arc_sandbag_no_contact": "scene_pawn_arc_sandbag_no_contact.py",
+    "sc_gas_chain_pawn_on_cover": "scene_gas_chain_pawn_on_cover.py",
+    "sc_storeroom_mortar_rebound_legs": "scene_storeroom_mortar_rebound_legs.py",
+    "sc_settings_sweep_show_switches": "scene_settings_sweep_show_switches.py",
+}
+for _tid, _f in SCENES6.items():
+    BUILT[_tid] = ("scene", M + "/proof/" + _f)
+# the settings sweep's file holds two deciders, one half each (an unbuilt show part must not turn the 0.1.0 half red)
+HALF = {"T_SETTINGS_SWEEP_OFFLINE": "offline", "T_SETTINGS_SWEEP_SHOW": "show"}
 BS_WHY = ("the blast's look is drawn by the game (flecks, camera, paint, overlays, weather); only a live frame shows "
           "what the player sees, and the look itself is the art judge's call (%s)" % ART)
 JUDGED = "; each capture goes to the art judge (%s), whose keep is part of this verdict" % ART
@@ -141,7 +162,8 @@ def measure(t):
             t["runs_today"] = dict(ran=False, why="named built, but %s does not exist" % t["file"])
             return
         t0 = time.time()
-        r = subprocess.run(["python3", t["file"]], capture_output=True, text=True, stdin=subprocess.DEVNULL)
+        # the table's own command, as the pipeline runs it (a file run bare missed a --half)
+        r = subprocess.run(shlex.split(t["command"]), capture_output=True, text=True, stdin=subprocess.DEVNULL)
         out = (r.stdout or "") + (r.stderr or "")
         last = (out.strip().splitlines() or [""])[-1][:300]
         if ev not in out:
@@ -150,7 +172,7 @@ def measure(t):
         t.pop("new", None)
         t["runs_today"] = dict(ran=True, rc=r.returncode, seconds=round(time.time() - t0, 1), last=last,
                                at=datetime.datetime.now().astimezone().isoformat(timespec="seconds"),
-                               result="PASS" if r.returncode == 0 else "FAIL")
+                               result="PASS" if r.returncode == 0 else "FAIL", command=t["command"])
     else:
         if not os.path.isfile(ev):
             t["runs_today"] = dict(ran=False, why="named built, but the scene %s does not exist" % ev)
@@ -178,8 +200,21 @@ for t in TESTS:
                             "holds one claim per part, each read and judged apart, so one part's fault names that part")
     if t["id"] == BS:
         t["reads"] = [BS_SCENE if r == PROOF else r for r in t["reads"]] + [M + "/Source/RM_KnockbackShow.cs"]
+    if t["id"] in SCENES6:
+        f = M + "/proof/" + SCENES6[t["id"]]
+        t.update(file=f, entry=SCENES6[t["id"]], reads=[f if r == PROOF else r for r in t["reads"]],
+                 command="python.exe src\\RimMandrake\\Utils\\scene.py accept " + f.replace("/", "\\"))
+    if t["id"] in HALF:
+        t["command"] = "python3 %s --half %s" % (t["file"], HALF[t["id"]])
+    if t["id"] in ("T_KERNEL_CARRY_OWN_PLAN", "T_KERNEL_COLLISION_BRUISE", "T_KERNEL_GAS_COVER_SHOVE", "T_KERNEL_NO_CONTACT"):
+        t["reads"] = t["reads"] + [M + "/Source/RM_KnockbackPlan.cs", M + "/Source/SelfTest/KnockbackMap.cs"]
+    if t["id"] == "T_CARRY_STATIC":
+        t["reads"] = t["reads"] + [M + "/Source/RM_ThingFlyer_Knockback.cs"]
     measure(t)
     tests[t["id"]] = t
+# the 0.1.0 half of the settings sweep keeps its own command (its row is the 0.1.0 maker's; only the command moves)
+if "T_SETTINGS_SWEEP_OFFLINE" in tests:
+    tests["T_SETTINGS_SWEEP_OFFLINE"]["command"] = "python3 %s --half offline" % tests["T_SETTINGS_SWEEP_OFFLINE"]["file"]
 have = {b["id"] for b in bars}
 for bid in ver["bars_new"]:
     dec, sup = DECIDES[bid]

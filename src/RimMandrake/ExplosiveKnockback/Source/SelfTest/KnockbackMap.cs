@@ -264,7 +264,7 @@ internal static class KnockbackMap
             kind = t.kind, container = t.container, spawned = !t.air && !t.merged, thingId = t.id, x = t.x, z = t.z, mass = mass,
             dead = t.dead, flying = t.flying, inBed = t.inBed, carryingPawn = t.carryingPawn, downed = t.downed, animal = t.animal, mechanoid = t.mech,
             shieldAbsorbed = t.shield && !gas, recovering = t.recovering, gasShovedAgo = t.gasShovedAgo,
-            onSuperdeep = w.deep[t.x, t.z], onStorage = w.shelf[t.x, t.z] || box != null, onClosed = box != null, oneByOne = t.oneByOne,
+            onSuperdeep = w.deep[t.x, t.z], onCover = w.deep[t.x, t.z] && w.cover[t.x, t.z] && !t.inPit, onStorage = w.shelf[t.x, t.z] || box != null, onClosed = box != null, oneByOne = t.oneByOne,
         };
     }
 

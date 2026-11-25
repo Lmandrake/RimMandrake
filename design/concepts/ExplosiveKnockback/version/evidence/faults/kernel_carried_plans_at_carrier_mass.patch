@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs
+@@ -287,7 +287,7 @@
+         public static KbPlan Carried(KbFacts carrier, int thingId, KbKind kind, float mass, KbBlast b, KbRules q, KbSettings s, IKbWorld w)
+         {
+             var f = new KbFacts { kind = kind == KbKind.Corpse ? KbKind.Corpse : KbKind.Item, spawned = carrier.spawned, thingId = thingId,
+-                x = carrier.x, z = carrier.z, mass = mass, onSuperdeep = carrier.onSuperdeep, onCover = carrier.onCover };
++                x = carrier.x, z = carrier.z, mass = carrier.mass, onSuperdeep = carrier.onSuperdeep, onCover = carrier.onCover };
+             return Decide(f, b, q, s, w);
+         }
+ 

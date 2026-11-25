@@ -46,7 +46,7 @@ FAULTS = [
     ("a pawn in bed is thrown", "RM_KnockbackPlan.cs", 'if (f.inBed) return "in_bed";', ""),
     ("a pawn carrying a pawn is thrown", "RM_KnockbackPlan.cs", 'if (f.carryingPawn) return "carrying_pawn";', ""),
     ("an airborne pawn is thrown", "RM_KnockbackPlan.cs", 'if (f.flying) return "flying";', ""),
-    ("a pawn in a pit is thrown", "RM_KnockbackPlan.cs", 'if (f.onSuperdeep) return "in_pit"; // GPT', "// GPT"),
+    ("a pawn in a pit is thrown", "RM_KnockbackPlan.cs", 'if (f.onSuperdeep && !(gas && f.onCover)) return "in_pit";', ""),
     ("goods on a pit floor are thrown", "RM_KnockbackPlan.cs", "if (!pawn && f.onSuperdeep)", "if (false && f.onSuperdeep)"),
     ("a recovering pawn is thrown again", "RM_KnockbackPlan.cs", "if (pawn && f.recovering)", "if (false && f.recovering)"),
     ("a closed container keeps nothing", "RM_KnockbackPlan.cs", "bool closed = q.closedContainerGuard && f.onClosed;", "bool closed = false;"),

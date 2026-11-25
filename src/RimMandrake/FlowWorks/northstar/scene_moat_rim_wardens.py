@@ -57,12 +57,18 @@ with scene.open(GAME, contract=moat, needs={"mods": ["FlowWorks"], "map": SAVE, 
     s.stage(cast={"raiders": dict(take=RAIDERS)})
     at = [cell_of(v) for v in s.read_many(reads=[(r, "positionInt") for r in RAIDER])]
     s.stage(cast={"wardens": dict(kind="Colonist", at=[lip(a) for a in at])})
-    if scene.plant() == "melee_rule_off":           # the fault of the test pilot sitting: the rule off, so a held raider stabs
-        s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="pitLipMeleeDeniedEnabled", value="False")
-    with s.act.batch() as b:                        # both orders on one tick
-        for w, r, a in zip(WARDEN, RAIDER, at):
-            b.job(w, CAPTURE, target=r, cell=lip(a), name="capture")
-    run = s.run(until=moat.end, limit=moat.limit)
-    print(run, run.receipt)
+    planted = scene.plant() == "melee_rule_off"
+    prior = (s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="get", field="pitLipMeleeDeniedEnabled") or {}).get("value") if planted else None
+    try:
+        if planted:
+            s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="pitLipMeleeDeniedEnabled", value="False")
+        with s.act.batch() as b:                        # both orders on one tick
+            for w, r, a in zip(WARDEN, RAIDER, at):
+                b.job(w, CAPTURE, target=r, cell=lip(a), name="capture")
+        run = s.run(until=moat.end, limit=moat.limit)
+        print(run, run.receipt)
+    finally:
+        if planted:   # the setting back to what it read before the plant, on every exit path
+            s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="pitLipMeleeDeniedEnabled", value=str(prior) if prior is not None else "True")
     folder = s.run_dir
 print(scene.judge(folder))

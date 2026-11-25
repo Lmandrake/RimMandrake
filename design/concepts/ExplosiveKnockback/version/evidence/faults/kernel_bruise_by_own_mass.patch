@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs
+@@ -452,7 +452,7 @@
+             {
+                 return 0f;
+             }
+-            float amount = 2f * s.impactPerCell * s.impactFactor * otherMass / (ownMass + otherMass);
++            float amount = 2f * s.impactPerCell * s.impactFactor * ownMass / (ownMass + otherMass);
+             return amount > 0f && !float.IsInfinity(amount) ? amount : 0f;
+         }
+ 

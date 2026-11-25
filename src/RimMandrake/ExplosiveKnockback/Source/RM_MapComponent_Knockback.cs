@@ -210,6 +210,39 @@ namespace RimMandrake.ExplosiveKnockback
             thrownBy[p.thingIDNumber] = explosionId;
         }
 
+        // bar collision_bruise_by_size: the throwing blast's impact factor, for a landing on a pawn that walked onto the cell
+        // mid-flight (a palm thumper's 0 bruises nobody there either). Not saved: after a load the landing reads 1.
+        private readonly Dictionary<int, float> landingImpactFactor = new Dictionary<int, float>();
+
+        public void RememberImpactFactor(Pawn p, float factor)
+        {
+            landingImpactFactor[p.thingIDNumber] = factor;
+        }
+
+        /// <summary>The impact factor of the blast that threw this pawn, forgotten once read; 1 when none is remembered.</summary>
+        public float TakeImpactFactor(Pawn p)
+        {
+            if (!landingImpactFactor.TryGetValue(p.thingIDNumber, out float f))
+            {
+                return 1f;
+            }
+            landingImpactFactor.Remove(p.thingIDNumber);
+            return f;
+        }
+
+        /// <summary>The mass a pawn is thrown and bruised by: the game's Mass stat less carried inventory, at least 1 kg.</summary>
+        public static float PawnMass(Pawn p)
+        {
+            float m = Mathf.Max(1f, p.GetStatValue(StatDefOf.Mass) - MassUtility.InventoryMass(p));
+#if RM_PROOFS
+            if (RM_KnockbackProof.PinnedMass.TryGetValue(p.thingIDNumber, out float pinned))
+            {
+                m = pinned;   // test-only: sc_mass_and_power pins its colonist to 64-76 kg (judge gap g4)
+            }
+#endif
+            return m;
+        }
+
         /// <summary>The explosion that threw this pawn, forgotten once read. False when it was not thrown by us.</summary>
         public bool TakeThrow(Pawn p, out int explosionId)
         {
@@ -659,8 +692,12 @@ namespace RimMandrake.ExplosiveKnockback
             }
             if (pawn != null)
             {
+                // bar collision_bruise_by_size: a throw stopped by a pawn bruises both by size (KbPlanner.Collide)
+                Pawn met = p.res.hitOther ? new IntVec3(p.res.otherX, 0, p.res.otherZ).GetFirstPawn(map) : null;
+                float metMass = met != null && met != pawn ? PawnMass(met) : 0f;
+                KbPlanner.Collide(ref p.res, mass, metMass, p.s);
                 // LaunchPawn, or Blocked: ThrowPawn deals the impact either way and journals a throw of no cells as blocked
-                bool thrown = ThrowPawn(r, pawn, start, dest, p.res, mass);
+                bool thrown = ThrowPawn(r, pawn, start, dest, p.res, mass, f, p.s, met, metMass);
                 if (thrown && r.gas)
                 {
                     gasShovedAt[pawn.thingIDNumber] = Find.TickManager.TicksGame;
@@ -739,16 +776,12 @@ namespace RimMandrake.ExplosiveKnockback
             lastGasShove = 0;
             var f = new KbFacts { spawned = true, thingId = t.thingIDNumber, x = t.Position.x, z = t.Position.z,
                 onSuperdeep = RM_KnockbackCompat.IsSuperdeep(map, t.Position) };
+            // on an intact cover, not beneath it (bar gas_shoves_pawn_on_pit_cover)
+            f.onCover = f.onSuperdeep && RM_KnockbackCompat.CoverAt(map, t.Position) != null && !(t is Pawn under && RM_KnockbackCompat.IsBeneathCover(under));
             if (t is Pawn p)
             {
                 f.kind = KbKind.Pawn;
-                f.mass = Mathf.Max(1f, p.GetStatValue(StatDefOf.Mass) - MassUtility.InventoryMass(p));
-#if RM_PROOFS
-                if (RM_KnockbackProof.PinnedMass.TryGetValue(p.thingIDNumber, out float pinned))
-                {
-                    f.mass = pinned;   // test-only: sc_mass_and_power pins its colonist to 64-76 kg (judge gap g4)
-                }
-#endif
+                f.mass = PawnMass(p);
                 f.dead = p.Dead;
                 f.flying = p.Flying;
                 f.inBed = p.InBed();
@@ -1049,17 +1082,22 @@ namespace RimMandrake.ExplosiveKnockback
             RM_KnockbackJournal.Add("gas_burst", id, null, "at", c, "source", source, "radius", radius, "queued", n);
         }
 
-        private bool ThrowPawn(KnockbackRequest r, Pawn p, IntVec3 start, IntVec3 dest, KbResult res, float mass)
+        private bool ThrowPawn(KnockbackRequest r, Pawn p, IntVec3 start, IntVec3 dest, KbResult res, float mass, KbFacts f, KbSettings ks,
+            Pawn met, float metMass)
         {
             // impact at LAUNCH (GPT #7/#11), then re-check before the flyer
             if (res.impact > 0f)
             {
                 p.TakeDamage(new DamageInfo(DamageDefOf.Blunt, res.impact, 0f, -1f, r.instigator));
             }
-            if (res.hitOther && res.otherImpact > 0f)
+            if (res.hitOther && res.otherImpact > 0f && met != null && met != p)
             {
-                Pawn other = new IntVec3(res.otherX, 0, res.otherZ).GetFirstPawn(map);
-                other?.TakeDamage(new DamageInfo(DamageDefOf.Blunt, res.otherImpact, 0f, -1f, r.instigator));
+                met.TakeDamage(new DamageInfo(DamageDefOf.Blunt, res.otherImpact, 0f, -1f, r.instigator));
+            }
+            if (res.hitOther)
+            {
+                RM_KnockbackJournal.Add("bruise", r.explosionId, p, "how", "path", "other", met?.ThingID ?? "none", "otherId", met?.thingIDNumber ?? -1,
+                    "mass", mass, "otherMass", metMass, "amount", res.impact, "otherAmount", res.otherImpact);
             }
             if (res.hitDoor && RimMandrakeExplosiveKnockbackSettings.doorsTakeDamage && res.impact > 0f)
             {
@@ -1073,15 +1111,18 @@ namespace RimMandrake.ExplosiveKnockback
                 return false;
             }
             bool hose = RM_KnockbackCompat.DropCarriedHose(p);
+            string carried = ThrowCarried(r, p, f, start, ks);
             ThingDef def = RM_KnockbackDefOf.RM_PawnFlyer_Knockback;
             int lo = Mathf.Max(0, RimMandrakeExplosiveKnockbackSettings.landingStunMin);
             def.pawnFlyer.stunDurationTicksRange = new IntRange(lo, Mathf.Max(lo, RimMandrakeExplosiveKnockbackSettings.landingStunMax));
             RM_Patch_PawnFlyer_KnockbackLanding.RememberHaul(p);    // back to its haul after landing (bar pawn_flight_arc)
             RM_Patch_PawnFlyer_KnockbackLanding.RememberThrow(p, r.explosionId); // a blast-thrown landing breaks a cover (sc_pit_fall)
+            RememberImpactFactor(p, ks?.impactFactor ?? 1f);                      // a landing on a pawn bruises by this blast's factor
 #if RM_PROOFS
             long takeoffT0 = System.Diagnostics.Stopwatch.GetTimestamp();
 #endif
-            PawnFlyer flyer = PawnFlyer.MakeFlyer(def, p, dest, null, null, flyWithCarriedThing: true);
+            // bar carried_thing_own_arc: the hands are empty here (ThrowCarried), so the pawn flies alone
+            PawnFlyer flyer = PawnFlyer.MakeFlyer(def, p, dest, null, null, flyWithCarriedThing: false);
             if (flyer == null)
             {
                 return false;
@@ -1094,8 +1135,52 @@ namespace RimMandrake.ExplosiveKnockback
             RM_KnockbackJournal.Launches++;
             RM_KnockbackJournal.Add("launch", r.explosionId, p, "from", start, "to", dest, "planned", res.cellsPlanned,
                 "cells", res.cellsTravelled, "stop", res.stop.ToString(), "impact", res.impact, "otherImpact", res.otherImpact,
-                "door", res.hitDoor, "mass", mass, "hoseDropped", hose, "faction", p.Faction?.def?.defName ?? "none");
+                "door", res.hitDoor, "mass", mass, "hoseDropped", hose, "carried", carried, "onCover", f != null && f.onCover, "gas", r.gas,
+                "hitOther", res.hitOther, "faction", p.Faction?.def?.defName ?? "none");
             return true;
+        }
+
+        /// <summary>Bar carried_thing_own_arc: what a thrown pawn carries leaves its hands at the blast. Its own plan
+        /// (KbPlanner.Carried) either flies it on a flight of its own, straight from the hands into a goods flyer, or leaves it
+        /// on the start cell (too heavy, switched off, a pit). Returns the thing's id, or "none". A carried pawn never gets
+        /// here (its carrier is skipped, carrying_pawn); a hose end was dropped just before (bar hose_drops_at_takeoff).</summary>
+        private string ThrowCarried(KnockbackRequest r, Pawn p, KbFacts f, IntVec3 start, KbSettings ks)
+        {
+            Thing held = p.carryTracker?.CarriedThing;
+            if (held == null || held is Pawn)
+            {
+                return "none";
+            }
+            string id = held.ThingID;
+            int count = held.stackCount;
+            KbKind kind = held is Corpse ? KbKind.Corpse : KbKind.Item;
+            float cm = held is Corpse dead && dead.InnerPawn != null ? dead.InnerPawn.GetStatValue(StatDefOf.Mass) : held.GetStatValue(StatDefOf.Mass) * held.stackCount;
+            KbSettings cs = r.config != null ? RimMandrakeExplosiveKnockbackSettings.Kernel(r.config) : RimMandrakeExplosiveKnockbackSettings.Kernel(r.ownCap);
+            KbFacts carrier = f ?? new KbFacts { spawned = true, thingId = p.thingIDNumber, x = start.x, z = start.z };
+            KbPlan cp = KbPlanner.Carried(carrier, held.thingIDNumber, kind, cm, BlastOf(r), RimMandrakeExplosiveKnockbackSettings.Rules(), cs,
+                new RM_MapKbWorld(map, p));
+            KbPlanner.CarriedRest(cp, carrier, out int rx, out int rz);
+            RM_ThingFlyer_Knockback fl = null;
+            if (cp.act == KbAct.ThrowGoods)
+            {
+                KbLeg leg = cp.first;
+                fl = RM_ThingFlyer_Knockback.LaunchFromHands(p, held, map, start, leg.res, leg.dx, leg.dz, kind, cm, r.explosionId,
+                    r.config?.impactFactor ?? 1f, r.instigator, cp.wallFirst ? 1 : 0, r.gas ? cp.s.maxCells : 0);
+            }
+            bool dropped = false;
+            if (fl == null && p.carryTracker?.CarriedThing == held)
+            {
+                dropped = p.carryTracker.TryDropCarriedThing(start, ThingPlaceMode.Near, out Thing _);
+            }
+            RM_KnockbackJournal.Add("carried_throw", r.explosionId, p, "thing", id, "thingId", held.thingIDNumber, "count", count, "kind", kind.ToString(),
+                "mass", cm, "act", fl != null ? "thrown" : dropped ? "dropped" : "held", "reason", cp.act == KbAct.Skip ? cp.reason : cp.act.ToString(),
+                "from", start, "to", new IntVec3(rx, 0, rz), "planned", cp.cells, "flyer", fl?.thingIDNumber ?? -1, "flightTicks", fl?.TicksLeft ?? 0,
+                "wallFirst", cp.wallFirst);
+            if (fl != null)
+            {
+                RM_KnockbackJournal.ItemMoves++;
+            }
+            return id;
         }
     }
 }

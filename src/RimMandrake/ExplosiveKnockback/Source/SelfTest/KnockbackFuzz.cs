@@ -215,12 +215,16 @@ internal static class KnockbackFuzz
         // rest on the last non-sandbag cell of the trail
         int keep = trail.Count;
         while (keep > 0 && trail[keep - 1].k == KbCell.Partial) keep--;
-        if (trail.Count > 0 && trail[trail.Count - 1].k == KbCell.Partial) { /* backed off */ }
+        if (trail.Count > 0 && trail[trail.Count - 1].k == KbCell.Partial)
+        {
+            // backed off. 0.2.0 bar no_impact_without_contact: a pawn met beyond the sandbag was never reached, so it is not hit
+            if (why == KbStop.Pawn) { why = KbStop.PawnBeyondCover; res.hitOther = false; res.otherX = 0; res.otherZ = 0; }
+        }
         else keep = trail.Count;
         res.cellsTravelled = keep;
         if (keep > 0) { res.destX = trail[keep - 1].x; res.destZ = trail[keep - 1].z; }
         res.stop = res.cellsTravelled == 0 && why == KbStop.Distance ? KbStop.None : why;
-        if (kind == KbKind.Pawn && (why == KbStop.Wall || why == KbStop.Door || why == KbStop.Pawn || why == KbStop.PartialCover))
+        if (kind == KbKind.Pawn && (why == KbStop.Wall || why == KbStop.Door || why == KbStop.Pawn || why == KbStop.PartialCover || why == KbStop.PawnBeyondCover))
         {
             float imp = s.impactEnabled && cells - keep > 0 ? s.impactPerCell * s.impactFactor * (cells - keep) / (float)Math.Sqrt(RM_KnockbackMath.MassScale(mass, s)) : 0f;
             if (why == KbStop.Pawn) { res.impact = imp * 0.5f; res.otherImpact = imp * 0.5f; } else res.impact = imp;

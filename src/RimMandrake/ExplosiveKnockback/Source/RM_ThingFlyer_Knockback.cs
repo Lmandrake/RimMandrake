@@ -102,6 +102,41 @@ namespace RimMandrake.ExplosiveKnockback
                 }
                 return null;
             }
+            f.Begin(start, map, res, dx, dz, kind, mass, explosionId, impactFactor, instigator, bounces, landingCap);
+            return f;
+        }
+
+        /// <summary>Bar carried_thing_own_arc: what a thrown pawn carries leaves its hands at the blast and flies its own plan
+        /// (KbPlanner.Carried), moved from the hands straight into the flyer, never spawned between, so nothing is lost or
+        /// doubled. Null when it could not: the thing is then still in the carrier's hands.</summary>
+        public static RM_ThingFlyer_Knockback LaunchFromHands(Pawn carrier, Thing t, Map map, IntVec3 start, KbResult res, float dx, float dz,
+            KbKind kind, float mass, int explosionId, float impactFactor, Thing instigator, int bounces = 0, int landingCap = 0)
+        {
+            ThingDef def = RM_KnockbackDefOf.RM_ThingFlyer_Knockback;
+            ThingOwner hands = carrier?.carryTracker?.innerContainer;
+            if (def == null || t == null || hands == null || !hands.Contains(t) || map == null || !res.Moved)
+            {
+                return null;
+            }
+            var f = (RM_ThingFlyer_Knockback)ThingMaker.MakeThing(def);
+            int count = t.stackCount;
+            if (hands.TryTransferToContainer(t, f.innerContainer, count, canMergeWithExistingStacks: false) < count || f.Inner != t)
+            {
+                // a part moved: give it back to the hands, so the drop that follows keeps the count whole
+                if (f.innerContainer.Count > 0)
+                {
+                    f.innerContainer.TryTransferToContainer(f.innerContainer[0], hands, f.innerContainer[0].stackCount);
+                }
+                return null;
+            }
+            f.Begin(start, map, res, dx, dz, kind, mass, explosionId, impactFactor, instigator, bounces, landingCap);
+            return f;
+        }
+
+        private void Begin(IntVec3 start, Map map, KbResult res, float dx, float dz, KbKind kind, float mass, int explosionId,
+            float impactFactor, Thing instigator, int bounces, int landingCap)
+        {
+            RM_ThingFlyer_Knockback f = this;
             f.originCell = start;
             f.bounces = bounces;   // 1 = it was slammed into the wall behind it before it flew (KbPlan.wallFirst)
             f.explosionId = explosionId;
@@ -117,7 +152,6 @@ namespace RimMandrake.ExplosiveKnockback
             f.spinRate = RimMandrakeExplosiveKnockbackSettings.goodsSpinDegPerTick * Rand.Sign;
             f.StartLeg(start, res, dx, dz);
             GenSpawn.Spawn(f, start, map);
-            return f;
         }
 
         /// <summary>A closed container and the goods on its cell, sent to `to` (already chosen free by ThrowContainer).

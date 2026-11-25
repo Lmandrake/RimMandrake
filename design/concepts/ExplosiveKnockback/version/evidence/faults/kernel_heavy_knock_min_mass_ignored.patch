@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs
+@@ -344,7 +344,7 @@
+         {
+             damage = 0f;
+             stun = 0;
+-            if (explosionId < 0 || !enabled || kind != KbKind.Item || !personThere || mass < minMass)
++            if (explosionId < 0 || !enabled || kind != KbKind.Item || !personThere)
+             {
+                 return false;
+             }

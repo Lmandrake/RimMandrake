@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackShowPlan.cs	2026-11-24 21:30:44.825070800 -0800
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackShowPlan.cs	2026-11-24 21:30:44.842655700 -0800
+@@ -287,7 +287,7 @@
+             }
+ 
+             // air ripple: a ring to about the blast's edge, wider and stronger for a bigger blast
+-            if (s.airRipple && b.inView && b.onCurrentMap)
++            if (s.fireAndFlash && b.inView && b.onCurrentMap)
+             {
+                 p.rippleDiameter = 2f * er;
+                 p.rippleSeconds = p.rippleDiameter / RippleGrowthPerSecond;

@@ -71,8 +71,66 @@ internal static class Program
     private static bool AllZero(float[] a) { foreach (float x in a) if (x != 0f) return false; return true; }
     private static bool Same(float[] a, float[] b) { for (int i = 0; i < a.Length; i++) if (a[i] != b[i]) return false; return true; }
 
+    // ---- --sweep-dump OUT SCENARIO... (T_SETTINGS_SWEEP_OFFLINE's show half, T_SETTINGS_SWEEP_SHOW in
+    // selftest_explosiveknockback_settings_sweep.py): no judgement here. Each SCENARIO is "name:field=value,..." over
+    // KbShowSwitches' fields (the Python side builds them from RM_KnockbackShow.Switches() and the mod's settings); this
+    // writes every public field of the shipped Plan() for every blast of the sweep's range, once per scenario, and the
+    // Python side decides. THE SWEEP'S RANGE (declared): kind x ground (all four each) x Radii x Ratios (above) x camera
+    // distance {0, 15, 45} x screenShakeFactor {0, 1} x {in view, off view, other map}. Left out: power from damage off
+    // and the reference percent (they only rescale the damage ratio, which Ratios sweeps: S_ONE_MEASURE), a shake factor
+    // of 2 (a straight multiplier, S_SHAKE), and the frames the game draws (the live scene sc_settings_sweep_show_switches).
+    private static int SweepDump(string[] args)
+    {
+        var fields = typeof(KbShowPlan).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+        var sfields = typeof(KbShowSwitches).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+        using var w = new System.IO.StreamWriter(args[1]);
+        w.WriteLine("FIELDS " + string.Join(",", Array.ConvertAll(fields, f => f.Name)));
+        w.WriteLine("SWITCHFIELDS " + string.Join(",", Array.ConvertAll(sfields, f => f.Name)));
+        int rows = 0;
+        for (int a = 2; a < args.Length; a++)
+        {
+            string[] head = args[a].Split(new[] { ':' }, 2);
+            object box = new KbShowSwitches();
+            int set = 0;
+            foreach (string kv in head[1].Split(','))
+            {
+                string[] p = kv.Split('=');
+                var f = typeof(KbShowSwitches).GetField(p[0]);
+                if (f == null) { w.WriteLine("BADFIELD " + head[0] + " " + p[0]); continue; }
+                f.SetValue(box, f.FieldType == typeof(bool) ? (object)(p[1] == "1" || p[1] == "True" || p[1] == "true")
+                                                            : float.Parse(p[1], System.Globalization.CultureInfo.InvariantCulture));
+                set++;
+            }
+            var s = (KbShowSwitches)box;
+            w.WriteLine("SCENARIO " + head[0] + " set=" + set);
+            foreach (var k in Kinds) foreach (var g in Grounds) foreach (float r in Radii) foreach (float q in Ratios)
+            foreach (float d in new[] { 0f, 15f, 45f }) foreach (float sf in new[] { 0f, 1f }) foreach (int view in new[] { 0, 1, 2 })
+            {
+                var pl = RM_KnockbackShowPlan.Plan(Blast(k, g, r, q, d, sf, view), s);
+                object pb = pl;
+                var vals = new string[fields.Length];
+                for (int i = 0; i < fields.Length; i++)
+                {
+                    object v = fields[i].GetValue(pb);
+                    vals[i] = v is bool bv ? (bv ? "1" : "0") : v is float fv ? fv.ToString("R", System.Globalization.CultureInfo.InvariantCulture)
+                        : v is Enum ? Convert.ToInt32(v).ToString() : Convert.ToString(v, System.Globalization.CultureInfo.InvariantCulture);
+                }
+                w.WriteLine(head[0] + "\t" + k + "/" + g + "/r" + r.ToString("R", System.Globalization.CultureInfo.InvariantCulture) + "/x"
+                            + q.ToString("R", System.Globalization.CultureInfo.InvariantCulture) + "/d" + d + "/f" + sf + "/v" + view + "\t" + string.Join("\t", vals));
+                rows++;
+            }
+        }
+        w.WriteLine("END rows=" + rows);
+        Console.WriteLine("SWEEP DUMP " + rows + " rows");
+        return 0;
+    }
+
     private static int Main(string[] args)
     {
+        if (args.Length >= 2 && args[0] == "--sweep-dump")
+        {
+            return SweepDump(args);
+        }
         var all = KbShowSwitches.AllOn();
         int n;
 
