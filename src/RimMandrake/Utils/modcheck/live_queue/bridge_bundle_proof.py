@@ -36,6 +36,8 @@ Any non-canonical game will do; the test lane's games are disposable.
              launch (launch_ready.py), then the first call reads startedBy bridge-registration and the first map's wild
              animals read a mapgen > wild-spawner chain. The file is restored in every case; the early hook stays
              until the next launch (AWARE reads that game as a precondition, not a FAIL)
+  WILDBLOCK  THING_LOOKUP_BUILD_OWNER_IS_NOT_PAINTER A4: wild_spawner_block block reads back blocked, skippedTicks rises
+             by every spawner tick over 1213+ ticks, and release restores it (no tick skipped after)
   KEEPER     KEEPER_SAVES_HARDEN_WRONG_SLOT_WRITES A1: save_guard.snapshot on this game's real Saves folder hashes every
              keeper and holds a store copy of each; a save_base through the guard writes a new save, verified, with no
              keeper changed (the new save is deleted after: it is the proof's own)
@@ -50,7 +52,7 @@ import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CLAUSES = ("EVIDENCE", "TPS", "NORTHSTAR", "STATICCALL", "TILECACHE", "PROFILE", "PEN", "EXPLAIN", "HOOKS", "AWARE",
-           "EPOCH", "FRAME", "KEEPER", "ORIGIN")
+           "EPOCH", "FRAME", "KEEPER", "ORIGIN", "WILDBLOCK")
 
 
 def _ok(r):
@@ -272,6 +274,27 @@ def v_ORIGIN(d):
         f.append("%d of %d wild animals do not read mapgen > wild-spawner: %s" % (
             len(bad), len(wild), ", ".join("%s=%s" % (w, ch.get(w)) for w in bad[:5])))
     return (1 if f else 0), "; ".join(f) or "startedBy bridge-registration; %d wild animals read mapgen > wild-spawner" % len(wild)
+
+
+WILD_TICKS = 1300          # the spawner check period is 1213 ticks (the tool's own text): one full period and more
+
+
+def v_WILDBLOCK(d):
+    if d.get("why"):
+        return 2, d["why"]
+    if (d.get("ticks") or 0) < 1213:
+        return 2, "the clock moved %s ticks under the block, want 1213+" % d.get("ticks")
+    f = []
+    if not d.get("blocked"):
+        f.append("the block did not read back blocked")
+    if (d.get("skipped") or 0) < 0.9 * d["ticks"]:
+        f.append("skippedTicks rose %s over %s ticks: the block was not exercised" % (d.get("skipped"), d["ticks"]))
+    if d.get("releasedBlocked") is not False or d.get("lastRelease") != "released":
+        f.append("after release: blocked %s, lastRelease %s" % (d.get("releasedBlocked"), d.get("lastRelease")))
+    if d.get("skippedAfter"):
+        f.append("%s spawner ticks skipped after the release" % d["skippedAfter"])
+    return (1 if f else 0), "; ".join(f) or "blocked; %d of %d ticks skipped; released, then 0 skipped in %s ticks" % (
+        d["skipped"], d["ticks"], d.get("afterTicks"))
 
 
 VERDICTS = dict((c, globals()["v_" + c]) for c in CLAUSES)
@@ -724,6 +747,34 @@ def g_KEEPER(L):
         os.remove(path)                       # the proof's own save, never a keeper
     return {"keepers": len(keep), "unstored": unstored, "save": sv, "target": target, "slot": slot,
             "savesDir": snap["saves_dir"]}
+
+
+def g_WILDBLOCK(L):
+    def tick():
+        return L.call("jawa/time_clock").get("ticksGame")
+
+    def step(n):
+        t0 = tick()
+        L.call("rimworld/step_game_ticks", ticks=n, pauseFirst=True)
+        t1 = tick()
+        return (t1 - t0) if isinstance(t0, int) and isinstance(t1, int) else None
+
+    b = L.call("jawa/wild_spawner_block", action="block", minutes=10)
+    if not _ok(b):
+        return {"why": "block failed: %s" % json.dumps(b)[:200]}
+    s0 = b.get("skippedTicks") or 0
+    try:
+        n = step(WILD_TICKS)
+        g = L.call("jawa/wild_spawner_block", action="get")
+    finally:
+        r = L.call("jawa/wild_spawner_block", action="release")
+    g2 = L.call("jawa/wild_spawner_block", action="get")
+    s2 = g2.get("skippedTicks") or 0
+    n2 = step(120)
+    s3 = L.call("jawa/wild_spawner_block", action="get").get("skippedTicks") or 0
+    return {"blocked": bool(b.get("blocked")) and bool(g.get("blocked")), "ticks": n,
+            "skipped": (g.get("skippedTicks") or 0) - s0, "releasedBlocked": g2.get("blocked"),
+            "lastRelease": g2.get("lastRelease") or r.get("lastRelease"), "afterTicks": n2, "skippedAfter": s3 - s2}
 
 
 def g_ORIGIN_cold(Session):

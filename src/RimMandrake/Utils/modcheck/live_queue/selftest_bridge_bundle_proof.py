@@ -112,5 +112,12 @@ check("ORIGIN the launch failed", "ORIGIN", dict(og, launchRc=1), 2)
 check("ORIGIN the settings file was not restored", "ORIGIN", dict(og, restored=False), 1)
 check("AWARE a game launched with generation-early is a precondition, not a FAIL", "AWARE",
       {"early": True, "genBefore": True, "genAfter": False}, 2)
+wb = {"blocked": True, "ticks": 1300, "skipped": 1300, "releasedBlocked": False, "lastRelease": "released",
+      "afterTicks": 120, "skippedAfter": 0}
+check("WILDBLOCK blocks, skips each tick, release restores", "WILDBLOCK", wb, 0)
+check("WILDBLOCK skips nothing over 1300 ticks", "WILDBLOCK", dict(wb, skipped=0), 1)
+check("WILDBLOCK still skipping after the release", "WILDBLOCK", dict(wb, skippedAfter=120), 1)
+check("WILDBLOCK block not read back", "WILDBLOCK", dict(wb, blocked=False), 1)
+check("WILDBLOCK the clock moved too little", "WILDBLOCK", dict(wb, ticks=400, skipped=400), 2)
 print("RESULT: %s" % ("FAIL (%d failing)" % len(FAILS) if FAILS else "PASS (0 failing)"))
 sys.exit(1 if FAILS else 0)
