@@ -68,6 +68,10 @@ import scene
 from scene import cond as c
 
 GAME = "ArchSmall"
+# a stage save (stage_map.py make ArchSmall --kind settlement --save RM_Stage_ExplosiveKnockback): every roof and
+# destroyable thing cleared. A fixed station on a fresh quicktest map can lie under mountain roof: on 2026-11-24 the
+# colonist was gone by tick 3 under collapsed rocks and the stack buried (APPARATUS FAULT of the first run).
+STAGE = "RM_Stage_ExplosiveKnockback"
 SETTINGS = "RimMandrake.ExplosiveKnockback.RimMandrakeExplosiveKnockbackSettings"
 JOURNAL = "RimMandrake.ExplosiveKnockback.RM_KnockbackJournal"
 STATION = (20, 20, 28, 10)
@@ -158,7 +162,7 @@ for room in ORDER:
     for i, (xz, d) in enumerate(GOODS):    # each good its own alias: the goods differ by def
         staged["good%d_%s" % (i, room)] = dict(thing=d, at=inner(room, xz))
 
-with scene.open(GAME, contract=legs_bar, needs={"mods": ["ExplosiveKnockback"], "map": "fresh:quicktest", "calm": "standard"}) as s:
+with scene.open(GAME, contract=legs_bar, needs={"mods": ["ExplosiveKnockback"], "map": STAGE, "calm": "standard"}) as s:
     s.stage(station=STATION, things=staged)
     rebound_on = setting(s, "goodsRebound")
     prior = {f: setting(s, f) for f in ["goodsReboundKeepPercent"]}

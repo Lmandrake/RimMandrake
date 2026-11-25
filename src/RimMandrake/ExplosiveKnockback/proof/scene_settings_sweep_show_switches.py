@@ -59,6 +59,10 @@ import scene
 from scene import cond as c
 
 GAME = "ArchSmall"
+# a stage save (stage_map.py make ArchSmall --kind settlement --save RM_Stage_ExplosiveKnockback): every roof and
+# destroyable thing cleared. A fixed station on a fresh quicktest map can lie under mountain roof: on 2026-11-24 the
+# colonist was gone by tick 3 under collapsed rocks and the stack buried (APPARATUS FAULT of the first run).
+STAGE = "RM_Stage_ExplosiveKnockback"
 NS = "RimMandrake.ExplosiveKnockback."
 SETTINGS = NS + "RimMandrakeExplosiveKnockbackSettings"
 SHOW = NS + "RM_KnockbackShow"
@@ -221,7 +225,7 @@ def sweep(s, rows, throws, before):
             setting(s, f, before.get(f) or "True")       # unread: the default, on
 
 
-with scene.open(GAME, contract=show, needs={"mods": ["ExplosiveKnockback"], "map": "fresh:quicktest", "calm": "standard"}) as s:
+with scene.open(GAME, contract=show, needs={"mods": ["ExplosiveKnockback"], "map": STAGE, "calm": "standard"}) as s:
     terrain = {p: dict(rect=(x - HALF, z - HALF, 2 * HALF + 1, 2 * HALF + 1), terrain="Soil") for p, ((x, z), _off) in PADS.items()}
     terrain["lane"] = dict(rect=LANE, terrain="Soil")
     things = {p + "_x": dict(thing=SHELL, at=centre) for p, (centre, _off) in PADS.items()}

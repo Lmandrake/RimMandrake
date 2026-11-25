@@ -57,6 +57,10 @@ import scene
 from scene import cond as c
 
 GAME = "ArchSmall"
+# a stage save (stage_map.py make ArchSmall --kind settlement --save RM_Stage_ExplosiveKnockback): every roof and
+# destroyable thing cleared. A fixed station on a fresh quicktest map can lie under mountain roof: on 2026-11-24 the
+# colonist was gone by tick 3 under collapsed rocks and the stack buried (APPARATUS FAULT of the first run).
+STAGE = "RM_Stage_ExplosiveKnockback"
 SETTINGS = "RimMandrake.ExplosiveKnockback.RimMandrakeExplosiveKnockbackSettings"
 JOURNAL = "RimMandrake.ExplosiveKnockback.RM_KnockbackJournal"
 STATION = (20, 20, 30, 44)
@@ -233,7 +237,7 @@ cast = {"colonist_" + n: dict(kind="Colonist", at=(8, z), faction="player") for 
 cast["muffalo_heavy"] = dict(kind="Muffalo", at=(9, LANES["heavy"]), faction="player")
 planted = scene.plant() == "light_limit_5"
 
-with scene.open(GAME, contract=carried, needs={"mods": ["ExplosiveKnockback"], "map": "fresh:quicktest", "calm": "standard"}) as s:
+with scene.open(GAME, contract=carried, needs={"mods": ["ExplosiveKnockback"], "map": STAGE, "calm": "standard"}) as s:
     s.stage(station=STATION, cast=cast)
     fields = ["blastPowerFromDamage", "lightMassLimit"]
     prior = {f: (s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="get", field=f) or {}).get("value") for f in fields}
@@ -301,7 +305,7 @@ for name in ("light", "empty"):
     h = r.get("hands_after")
     row(bool(a0) and bool(d0) and cell(d0, "at") == cell(a0, "to") and h is not None and h.state == "ok" and int(h.v) == 0,
         "V_PAWN_LAND " + name, "launch to %s, land at %s (downed %s), hands after %s, cell after %s" % (
-            cell(a0, "to"), cell(d0, "at"), d0.get("downed"), (h.state, h.v if h.state == "ok" else None) if h else None, r.get("pos_after")))
+            cell(a0, "to"), cell(d0, "at"), d0.get("downed"), (h.state, h.v if h.state == "ok" else None) if h is not None else None, r.get("pos_after")))
 H = rows["heavy"]
 hc = recs("heavy", "carried_throw", H.get("load")) if H.get("load") else []
 h0 = hc[0] if len(hc) == 1 else {}

@@ -45,6 +45,10 @@ import scene
 from scene import cond as c
 
 GAME = "ArchSmall"
+# a stage save (stage_map.py make ArchSmall --kind settlement --save RM_Stage_ExplosiveKnockback): every roof and
+# destroyable thing cleared. A fixed station on a fresh quicktest map can lie under mountain roof: on 2026-11-24 the
+# colonist was gone by tick 3 under collapsed rocks and the stack buried (APPARATUS FAULT of the first run).
+STAGE = "RM_Stage_ExplosiveKnockback"
 SETTINGS = "RimMandrake.ExplosiveKnockback.RimMandrakeExplosiveKnockbackSettings"
 JOURNAL = "RimMandrake.ExplosiveKnockback.RM_KnockbackJournal"
 STATION = (20, 20, 24, 40)
@@ -128,7 +132,7 @@ for name in ORDER:
     if bag is not None and not planted:
         things["bag_" + name] = dict(thing="Sandbags", at=(bag, z), stuff="Cloth")
 
-with scene.open(GAME, contract=no_contact, needs={"mods": ["ExplosiveKnockback"], "map": "fresh:quicktest", "calm": "standard"}) as s:
+with scene.open(GAME, contract=no_contact, needs={"mods": ["ExplosiveKnockback"], "map": STAGE, "calm": "standard"}) as s:
     s.stage(station=STATION, cast=cast, things=things or None)
     stops = (s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="get", field="sandbagsStopThrow") or {}).get("value")
     prior = {f: (s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="get", field=f) or {}).get("value") for f in ["blastPowerFromDamage"]}
