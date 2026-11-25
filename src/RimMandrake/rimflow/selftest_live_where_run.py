@@ -55,20 +55,20 @@ def ssh_calls(run):
     return [c for c in run.calls if c and c[0] == "ssh"]
 
 
-def test_local_holds_first():
+def t_local_holds_first():
     run = runner({"rm-metronome.timer": "enabled"}, remote_out="WHY should not be asked")
     got = L.check_where_run(LINE, runner=run, env={})
     check(got is None and not ssh_calls(run), "local-holds-first: a local hold passes, no ssh (%r)" % (got,))
 
 
-def test_pipeline_host_is_final():
+def t_pipeline_host_is_final():
     run = runner({"rm-deadman.timer": "enabled"}, remote_out="HOLDS")
     got = L.check_where_run(LINE, runner=run, env={})
     check(got and "not-found" in got and not ssh_calls(run),
           "pipeline-host-is-final: with the deadman local, the local failure stands (%r)" % (got,))
 
 
-def test_off_host_asks_the_host():
+def t_off_host_asks_the_host():
     run = runner({}, remote_out="noise\nHOLDS\n")
     got = L.check_where_run(LINE, not_before=123.0, runner=run, env={})
     calls = ssh_calls(run)
@@ -85,7 +85,7 @@ def test_off_host_asks_the_host():
     check(got and L.not_yet(got), "off-host-asks-the-host: a NotYet stays a NotYet (%r)" % (got,))
 
 
-def test_blind_never_passes():
+def t_blind_never_passes():
     for kw, what in (({"raise_ssh": True}, "timeout"), ({"remote_rc": 255}, "ssh exit 255"),
                      ({"remote_out": "Traceback ..."}, "no verdict")):
         run = runner({}, **kw)
@@ -94,24 +94,28 @@ def test_blind_never_passes():
               "blind-never-passes: %s reads COULD NOT LOOK, never a pass (%r)" % (what, got))
 
 
-def test_stay_local_when_empty():
+def t_stay_local_when_empty():
     run = runner({}, remote_out="HOLDS")
     got = L.check_where_run(LINE, runner=run, env={"RIMFLOW_LIVE_SSH": ""})
     check(got and "not-found" in got and not ssh_calls(run), "stay-local-when-empty: no ssh, local answer (%r)" % (got,))
 
 
-def test_close_gates_use_it():
+def t_close_gates_use_it():
     src = open(os.path.join(HERE, "cli.py"), encoding="utf-8").read()
     check(src.count("live_line.check_where_run(") >= 2 and "why = live_line.check(line" not in src,
           "the two close gates in cli.py call check_where_run, not the local-only check")
 
 
-if __name__ == "__main__":
-    for name, fn in sorted(globals().items()):
-        if name.startswith("test_") and callable(fn):
-            try:
-                fn()
-            except Exception as e:  # noqa: BLE001
-                check(False, "%s raised %s: %s" % (name, type(e).__name__, e))
+def main():
+    for fn in (t_local_holds_first, t_pipeline_host_is_final, t_off_host_asks_the_host, t_blind_never_passes,
+               t_stay_local_when_empty, t_close_gates_use_it):
+        try:
+            fn()
+        except Exception as e:  # noqa: BLE001
+            check(False, "%s raised %s: %s" % (fn.__name__, type(e).__name__, e))
     print("FAIL: %d failure(s)" % len(FAILS) if FAILS else "ALL OK")
-    sys.exit(1 if FAILS else 0)
+    return 1 if FAILS else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
