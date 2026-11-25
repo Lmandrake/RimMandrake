@@ -40,22 +40,30 @@ def main():
     try:
         for i, mb in enumerate((40, 10, 10)):
             c = os.path.join(base, "clones", "c%d.det" % i)
-            os.makedirs(os.path.join(c, ".git"))
+            os.makedirs(os.path.join(c, ".git", "info"))
             with open(os.path.join(c, "blob"), "wb") as f:
                 f.write(os.urandom(mb * 10**6))
+            if i:                                   # c1, c2: slim clones (scratch_clone.SLIM_PATTERNS), the size a new one is
+                with open(os.path.join(c, ".git", "info", "sparse-checkout"), "w") as f:
+                    f.write("/*\n!*.png\n!*.jpg\n")
         os.makedirs(os.path.join(base, "clones", "c0.det.lock"))           # a lock, not a clone
         os.makedirs(os.path.join(base, "kept", "rm-treecheck-kept-0"))
+        with open(os.path.join(base, "kept", "rm-treecheck-kept-0", "blob"), "wb") as f:
+            f.write(os.urandom(30 * 10**6))                                 # one of the 2 machine trees, 30 MB
         free = shutil.disk_usage(base).free / 1e9
         rc, rec, okf = run(base, None)
         check(rc == 5 and rec.get("verdict") == "COULD_NOT_LOOK" and "more_clones" not in rec and not os.path.exists(okf),
               "no floor in the environment: COULD NOT LOOK, no count, no ok reading (%s)" % rec.get("why"))
-        rc, rec, okf = run(base, round(free - 1.0, 3))     # 1 GB above the floor: 40 MB clones -> about 24 more
-        check(rc == 0 and rec.get("verdict") == "ROOM" and rec.get("clones_now") == 3 and 15 <= rec.get("more_clones", 0) <= 30
-              and abs(rec.get("largest_clone_gb", 0) - 0.04) < 0.005 and os.path.exists(okf),
-              "1 GB over the floor, 40 MB largest clone: ROOM, the lock not counted, the ok reading written (%s)"
-              % rec.get("why"))
+        rc, rec, okf = run(base, round(free - 1.0, 3))
+        # 1 GB over the floor, less the largest clone (40 MB) and the missing machine tree (30 MB): 0.93 GB of 10 MB slim
+        # clones is about 93 more, never the 23 a count by the largest clone gives
+        check(rc == 0 and rec.get("verdict") == "ROOM" and rec.get("clones_now") == 3 and 80 <= rec.get("more_clones", 0) <= 100
+              and abs(rec.get("largest_clone_gb", 0) - 0.04) < 0.005 and abs(rec.get("new_clone_gb", 0) - 0.01) < 0.003
+              and abs(rec.get("kept_trees_owed_gb", 0) - 0.03) < 0.005 and os.path.exists(okf),
+              "1 GB over the floor: ROOM, each new clone counted at a slim clone's size, the second machine tree reserved, "
+              "the lock not counted, the ok reading written (%s)" % rec.get("why"))
         os.remove(okf)
-        rc, rec, okf = run(base, round(free - 0.1, 3))     # 100 MB above the floor: 1 or 2 more, short of 10
+        rc, rec, okf = run(base, round(free - 0.1, 3))     # 100 MB above the floor: 3 or so more, short of 10
         check(rc == 1 and rec.get("verdict") == "SHORT" and rec.get("runs_it_holds", 99) < 10 and not os.path.exists(okf),
               "100 MB over the floor: SHORT and no ok reading (%s)" % rec.get("why"))
         rc, rec, okf = run(base, round(free + 1.0, 3))     # under the floor already: no more
