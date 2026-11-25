@@ -15,6 +15,11 @@ page, and no line has a live ticket (a ticket older than the ruling is parked wi
 - Every mod: the performance of a colony among all the mods.
 - The painted world: real tile ids, biomes on tiles, world testing.
 
+- **The TPS and game-health family:** the full-list overhead test (MUST 17, `RECORDER_OVERHEAD_MEASURE_SIX_CONFIGS_DEEP`) and what waits on it.
+  The parked items (2026-11-25): `GAME_OBSERVER_BUILD_OUTSIDE_LOOKING_IN`, `GC_EARLYLOAD_DUMPS_PROBE_SHOW_VALUE_FIRST`,
+  `HEALTH_BANDS_WIRE_QUEUED_BEHIND_OVERHEAD`, `OPTIMISATION_TOOLS_BUILD_BY_NAME_NOT_BLAME`, `HEALTH_METRICS_PROVE_EIGHT_WRITTEN_UNTESTED`,
+  `HEALTH_CHECK_MONITOR_MEMORY_TPS_OVER_TIME`, `EXPERIMENT_MANIFEST_BUILD_FREEZE_SIX_CELLS` and `HEAP_READ_BISECT_ROWS_NAME_THE_RETAINERS`.
+
 ## Faults that only the full list showed, still open
 
 - Explosive Knockback: LWM's gun locker draws its guns on the full list and hides them on the 24-mod list. A mod of the full list draws them

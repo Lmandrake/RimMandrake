@@ -39,3 +39,8 @@ Nothing: every member has an outcome. Found without a ticket and fixed: the reap
 - after classing start: 114k of 1M
 - after scratch, pool, maturation groups: 236k of 1M
 - at the end: about 330k of 1M; no restart
+
+## Classed by RIMMANDRAKE_VET_WORK_BOUND_FOR_STEVEDESKTOP_HE_SAW_FIREHAWK_AGAIN (2026-11-25)
+
+- RESOURCE_SIM_BUILD_WAITS_FOR_REAL_DATA: NOT WORTH THE TOUCH, dropped (5da43d498e). Do not work it.
+- Table: design/specs/2026-11-25-stevedesktop-work-vetted/table.md
