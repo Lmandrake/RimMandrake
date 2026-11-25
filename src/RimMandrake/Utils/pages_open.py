@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """pages_open.py: open the standing status pages as tabs of ONE Chrome window (./pages).
 
-Tabs, in order: CODEBASE_NOW.html, MATURATION_NOW.html (STATUS_BOARD.html is the dead Relentless board and is not a tab), from the conductor
+Tabs, in order: CODEBASE_NOW.html, MATURATION_NOW.html, from the conductor
 folder that rmpaths names. A missing page is named and the rest still open. Promises: design/specs/2026-11-19-standing-status-tabs/boundary.md.
 
     ./pages [--dry-run] [--show]

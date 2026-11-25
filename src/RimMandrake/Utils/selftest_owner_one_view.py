@@ -200,11 +200,10 @@ def t_not_his_before_its_turn():
         assert OQ.needs_you({"A": x}, {}, {}, evs=[], turns={"A": "turn"}, now=NOW)["count"] == 1, "a Designer turn is his"
 
 
-def t_both_pages_build_from_one_view():
+def t_the_page_builds_from_one_view():
     need()
-    for p in ("running_now.py", "maturation_now.py"):
-        with open(os.path.join(HERE, p), encoding="utf-8") as f:
-            assert "one_view(" in f.read(), p
+    with open(os.path.join(HERE, "maturation_now.py"), encoding="utf-8") as f:
+        assert "one_view(" in f.read()
     import maturation_now as M
     d = {"view": {"his": [{"item": "X_ONE", "q": "Pick it"}], "ours": [], "home": HOME},
          "needs": {"journal": ["Gimme Some Slack: question 4, poles"], "mandrake": [], "conductor": [], "pipeline": []}}
@@ -255,7 +254,7 @@ def main():
     tests = [t_count_sums_the_readable_sources, t_no_readable_source_is_none_never_zero, t_an_unanswered_card_is_a_need,
              t_an_ended_run_with_no_later_act_is_a_need, t_the_reading_is_shared_and_cached,
              t_a_test_never_writes_the_shared_files,
-             t_one_view_shows_his_ours_and_the_count, t_not_his_before_its_turn, t_both_pages_build_from_one_view,
+             t_one_view_shows_his_ours_and_the_count, t_not_his_before_its_turn, t_the_page_builds_from_one_view,
              t_the_live_promise_follows_the_shared_view_file, t_each_limit_names_its_danger]
     failed = 0
     for t in tests:

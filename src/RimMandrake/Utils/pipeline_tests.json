@@ -353,7 +353,7 @@
     {"test": "src/RimMandrake/rimflow/acceptance/step4_shape_accept.py", "seconds": 1},
     {"test": "src/RimMandrake/rimflow/selftest_list_pipeline.py", "seconds": 1, "inputs": ["design/specs/2026-11-23-list-stage-view/boundary.md"]},
     {"test": "src/RimMandrake/rimflow/acceptance/step3b_stage_view_accept.py", "seconds": 1},
-    {"test": "src/RimMandrake/Utils/selftest_owner_one_view.py", "seconds": 1, "inputs": ["design/specs/2026-11-23-owner-one-view/boundary.md", "src/RimMandrake/Utils/owner_queue.py", "src/RimMandrake/Utils/running_now.py"]},
+    {"test": "src/RimMandrake/Utils/selftest_owner_one_view.py", "seconds": 1, "inputs": ["design/specs/2026-11-23-owner-one-view/boundary.md", "src/RimMandrake/Utils/owner_queue.py", "src/RimMandrake/Utils/maturation_now.py"]},
     {"test": "src/RimMandrake/rimflow/acceptance/step3_one_view_accept.py", "seconds": 1},
     {"test": "src/RimMandrake/rimflow/selftest_close_check.py", "inputs": ["design/specs/2026-11-23-close-check/boundary.md"], "seconds": 1},
     {"test": "src/RimMandrake/Utils/selftest_follow_through.py", "inputs": ["design/specs/2026-11-23-follow-through-audit/boundary.md", "src/RimMandrake/Utils/follow_through_reader.md"], "seconds": 2},

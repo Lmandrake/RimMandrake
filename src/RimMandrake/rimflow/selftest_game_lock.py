@@ -732,8 +732,8 @@ def t_the_two_last_glance_file_readers_read_every_game_from_the_lock():
     """The equivalence run on its fixture cases: the old readers (frozen) and the new on the same locks, every
     difference classed; the new readers equal `game_lock.py query all` (selftest_game_driver_readers.py)."""
     p = _readers_run()
-    check(p.returncode == 0 and _readers_ok(p, ("running_now", "preflight")),
-          "preflight_bridge and running_now read every game from its lock, never the glance file",
+    check(p.returncode == 0 and _readers_ok(p, ("query_all", "preflight")),
+          "preflight_bridge and query_all read every game from its lock, never the glance file",
           p.stdout[-900:] + p.stderr[-300:])
 
 

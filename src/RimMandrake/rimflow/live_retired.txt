@@ -30,3 +30,6 @@ unit=rm-agent-improve.timer     # the daily agent-improvement pass, stopped by h
 unit=rm-agent-improve.service     # the daily agent-improvement pass, stopped by his card 2026-11-23 (RIMMANDRAKE_ENACT_HIS_CARD_ARTIST_DAILY_PASS_SKILL_CARDS_RETIRED)
 reading=/mnt/d/ClaudeWork/rimmandrake/ops_watch/health.json  # ops_health.py, the health verdict nobody read (the Conductor, 2026-11-23, census Table 2 row 4)
 reading=/mnt/d/ClaudeWork/rimmandrake/ops_watch/series/plan.jsonl  # the plan family of ops_watch, removed e0a979ce9f with the Producer's list
+unit=rm-running.timer           # the RELENTLESS_NOW page, removed by his word 2026-11-24 (RIMMANDRAKE_REMOVE_RELENTLESS_NOW_PAGE_CONSOLIDATE_MONITORS_HE_SAID_SLEEK); its SteveDesktop reading runs as rm-steve-reading.timer, promised by that item
+unit=rm-fleet-now.timer         # FLEET_NOW.html, removed by his word 2026-11-24 (dc1fde4514); the one fleet page is Augur's
+reading=/mnt/d/ClaudeWork/rimmandrake/conductor/STATUS_BOARD.html  # the dead Relentless board, removed 2026-11-24 with the page that wrote it

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""fleet_mods.py — the slow half of RELENTLESS_NOW (running_now.py): receipts, mods worked on lately, the factory line.
+"""fleet_mods.py — ledger readings shared by the status programs (`ledger`, `relentless_states`), plus receipts, mods worked on lately, the factory line.
 
 FLEETWATCH_PAGE_SHRINK_LESS_BASH_MORE_MODS (owner, by card 2026-11-02): "there should be a lower section that has a
 list of all Mods worked on in the past week or so and where they stand. What was done? Each task that contributed to
-that mod (one line)." Everything here is computed in Python so the page stays dumb; running_now.py renders it.
+that mod (one line)." Everything here is computed in Python. No page draws the receipts, mods and factory parts since 2026-11-24.
 (The Fleet Watch board that first carried it was retired by the owner, 2026-11-04: FLEETWATCH_CODE_RETIRE_NOBODY_WAS_WATCHING.)
 
   receipts(...)  one row per item finished today (local day): ✓/✗, the blind check's verdict, one plain sentence of
@@ -126,7 +126,7 @@ def detached_done(hours, now=None, root=DETACHED, unit_state=None, item_state=No
     so the selftest runs offline."""
     now = time.time() if now is None else now
     unit_state = unit_state or (lambda u: sh("systemctl", "--user", "is-active", u) or "unknown")
-    if item_state is None:  # one ledger replay for every row; a `rimflow show` per row (~1.8 s each) outran rm-running
+    if item_state is None:  # one ledger replay for every row; a `rimflow show` per row took ~1.8 s each
         states = []
 
         def item_state(item):

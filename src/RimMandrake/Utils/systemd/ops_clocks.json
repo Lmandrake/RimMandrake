@@ -11,7 +11,7 @@
     "rm-restart-now": "rm-restart-now.path",
     "rm-scratch-pressure": "rm-scratch-pressure.timer",
     "rm-scratch-reap": "rm-scratch-reap.timer",
-    "rm-running": "rm-running.timer",
+    "rm-steve-reading": "rm-steve-reading.timer",
     "rm-memwatch": "rm-memwatch.timer",
     "rm-objstore": "rm-objstore.timer",
     "rm-launch-permissions": "rm-launch-permissions.timer",

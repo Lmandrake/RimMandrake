@@ -4,8 +4,8 @@ Code: `src/RimMandrake/rimflow/game_lock.py` (all of it), `src/RimMandrake/rimfl
 `game_a_lock_record`, `bridge_gate`), `src/RimMandrake/rimflow/driver_lock.py` (`process_alive` of a WSL holder seen from Windows, `my_identity` of a Windows process, `clone_key`, the `clone` and `role_unit` a take
 records), and the ArchBig readers `testq.bridge_holder`, `bridgetools/build.py` `bridge_holder`,
 `seat_restart.bridge_reading` and `wrapup.World.game_a_hold`; the readers of who drives each game
-`game_lock.query_all`, `preflight_bridge.c_bridge_lease` (check O02) and `running_now.collect_bridge` (with the game lines
-of its strip and its Archmagi panel, item `RIMMANDRAKE_MOVE_GAME_DRIVER_READERS_OFF_BRIDGE_FILE_TWO_LEFT`), `handoff.bridge_lines`
+`game_lock.query_all` (MATURATION_NOW's games line), `preflight_bridge.c_bridge_lease` (check O02, item
+`RIMMANDRAKE_MOVE_GAME_DRIVER_READERS_OFF_BRIDGE_FILE_TWO_LEFT`), `handoff.bridge_lines`
 and `FlowWorks/northstar/preflight_flowworks.p_b1` (item `RIMMANDRAKE_MOVE_TWO_MORE_GLANCE_READERS_CENSUS_MISSED`).
 Item: `RIMMANDRAKE_BUILD_ONE_GAME_LOCK_CLAIM_FOUR_RECORDS_DISAGREE`, written 2026-11-21. The owner, about 3:35 AM PST:
 *"We need a lightning responsive deterministic python way of taking and releasing game A or B as well as determining if
@@ -125,7 +125,7 @@ Before: `rimflow bridge who` 5.0 s for ArchBig, 1.8 s for ArchSmall.
   decides (measured 2026-11-21: 36-43 ms quiet; 109-130 ms inside `./publish`'s side-by-side door tests).
 
 - **the-two-last-glance-file-readers-read-every-game-from-the-lock.** `preflight_bridge.c_bridge_lease` reads the lock
-  of its own process's game (`RM_GAME_INSTANCE`, ArchBig by default) and `running_now.collect_bridge` reads every game
+  of its own process's game (`RM_GAME_INSTANCE`, ArchBig by default) and `game_lock.query_all` reads every game
   of this machine, each through `game_lock.query`; neither opens the BRIDGE glance file. With no glance file anywhere,
   a held ArchBig and a free ArchSmall read as `game_lock.py query all` reads them. An unreadable lock reads UNMEASURED
   by its cause, never FREE and never held. A free game under `pipe off game:<g>` is his hold, never FREE. The

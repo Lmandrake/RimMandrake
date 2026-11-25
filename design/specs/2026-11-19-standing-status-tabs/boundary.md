@@ -14,10 +14,6 @@ CODEBASE_NOW"*. Written 2026-11-19. Each promise has a test of its name in
 
 ## DOES NOT SURVIVE (not promised; where the opener notices, it says so)
 
-- **a-typora-theme-changed-after-a-build.** The theme is read each run; a tab shows the new look on its next reload.
-- **a-markdown-feature-the-renderer-lacks.** The page uses `markdown_it` (CommonMark plus tables). A Typora-only extension
-  (math, footnotes) would show raw. The source holds none (measured 2026-11-19: one fence, no headings).
-
 - **no-chrome-or-no-desktop.** The launch command fails; the opener prints the failure and exits 3. It cannot tell a
   window that opened and closed at once from one that never opened.
 - **a-tab-the-owner-closed.** A closed tab stays closed until the next `./pages`. A second `./pages` opens a second window.
@@ -27,7 +23,7 @@ CODEBASE_NOW"*. Written 2026-11-19. Each promise has a test of its name in
 ## PROMISES (each one is owed a test of the same name)
 
 - **two-tabs-in-order.** One command opens one window whose tabs are CODEBASE_NOW.html, then
-  MATURATION_NOW.html, each as a `file:///` URL (`STATUS_BOARD.html` is a retired board and is not a tab; the fleet page is Augur's, not a tab here) in the conductor folder. Tested by `t_two_tabs_in_order`.
+  MATURATION_NOW.html, each as a `file:///` URL (the fleet page is Augur's, not a tab here) in the conductor folder. Tested by `t_two_tabs_in_order`.
 - **missing-page-named-others-open.** A page that is not on disk is named in the output as MISSING, the other pages
   still open, and the exit code is 2. All present: exit 0. Tested by `t_missing_page_named_others_open`.
 - **folder-from-rmpaths.** Changing `RM_DATA_ROOT` changes the folder in every URL; no drive path is written in
@@ -37,15 +33,14 @@ CODEBASE_NOW"*. Written 2026-11-19. Each promise has a test of its name in
 - **dry-run-opens-nothing.** `--dry-run` prints the command and one URL per line, and calls no launcher. Tested by
   `t_dry_run_opens_nothing`.
 - **maturation-page-reloads-and-shows-build-time.** The MATURATION_NOW.html page carries a refresh line of 300
-  seconds (the STATUS_BOARD cadence) and its build time in its first lines, visible. Tested by
+  seconds and its build time in its first lines, visible. Tested by
   `t_maturation_page_reloads_and_shows_build_time`.
 
 
 ## LIMITS
 
 - **300 seconds, the reload of the MATURATION_NOW tab.** Danger: a tab that reloads slower than its writer shows old
-  data. The writer runs each dispatch tick (measured: the item's design table, 2026-11-19); STATUS_BOARD reloads at
-  300 s (`status_board.RELOAD_S`), and the tab shows the build time, so a tab older than that is plain to see.
+  data. The writer runs each dispatch tick (measured: the item's design table, 2026-11-19), and the tab shows the build time, so a tab older than that is plain to see.
 
 
 ## LIFE CYCLES (a move not listed here is a defect)

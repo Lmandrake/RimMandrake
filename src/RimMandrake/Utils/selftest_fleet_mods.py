@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""selftest_fleet_mods.py — RELENTLESS_NOW's mods/receipts derivations, offline (no git, no ledger, no store).
+"""selftest_fleet_mods.py — fleet_mods' mods/receipts derivations, offline (no git, no ledger, no store).
 
 Covers: title_short (prefixes, tags, ids, word cut), real_count (ledger-only commits excluded), mod grouping
 (mod_of_path, attribute dropping infra when a mod was touched, item_mod longest match), outcome (main commit, marks
@@ -111,7 +111,7 @@ check("detached_done: closed item is Done with commits and tokens", dd.get("D_DO
 check("detached_done: no commits, not closed -> Stopped, tokens UNMEASURED", dd.get("D_QUIET", {}).get("status") == "Stopped"
       and dd["D_QUIET"]["tokens"] is None)
     # RIMMANDRAKE_BATCH_DETACHED_ITEM_STATES_SEVENTY_EIGHT_REPLAYS: the default state reader replays the ledger ONCE
-    # per call, never a `rimflow show` subprocess per helper (78 of them took 140 s; rm-running's limit is 90 s)
+    # per call, never a `rimflow show` subprocess per helper (78 of them took 140 s)
 calls = {"states": 0, "show": 0}
 
 
@@ -156,7 +156,7 @@ GONE = ["src/RimMandrake/Utils/fleet_watch.py", "src/RimMandrake/Utils/fleet_ref
         "src/RimMandrake/Utils/fleetwatch_page.html", "src/RimMandrake/Utils/selftest_fleet_refresh.py",
         "src/RimMandrake/Utils/systemd/rm-fleetwatch.service", "src/RimMandrake/Utils/systemd/rm-fleetwatch.timer"]
 check("retired: Fleet Watch files are gone", [g for g in GONE if os.path.exists(os.path.join(REPO, g))] == [])
-check("retired: fleet_mods.py and owner_queue.py, which RELENTLESS_NOW reads, remain",
+check("retired: fleet_mods.py and owner_queue.py, which the status programs read, remain",
       all(os.path.exists(os.path.join(UTILS, f)) for f in ("fleet_mods.py", "owner_queue.py")))
 NAMES = re.compile(r"\bfleet_watch\b|\bfleet_refresh\b|fleetwatch_page|rm-fleetwatch")
 named = []
@@ -176,8 +176,8 @@ for root, dirs, files in os.walk(os.path.join(REPO, "src")):
             pass
 check("retired: nothing under src/ names fleet_watch, fleet_refresh, fleetwatch_page or rm-fleetwatch %s" % named,
       named == [])
-check("retired: the instrument can see (it finds fleet_mods in running_now.py)",
-      "fleet_mods" in open(os.path.join(UTILS, "running_now.py"), encoding="utf-8").read())
+check("retired: the instrument can see (it finds fleet_mods in owner_queue.py)",
+      "fleet_mods" in open(os.path.join(UTILS, "owner_queue.py"), encoding="utf-8").read())
 
 print("\n%d FAIL" % len(FAILS) if FAILS else "\nALL PASS")
 sys.exit(1 if FAILS else 0)

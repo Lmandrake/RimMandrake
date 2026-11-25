@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""owner_queue.py — the ONE answer to "what truly waits on the owner?", for RELENTLESS_NOW's "Needs you" and its mods.
+"""owner_queue.py — the ONE answer to "what truly waits on the owner?", for MATURATION_NOW's "Needs Mandrake" and the mods.
 
 FLEETWATCH_NEEDS_FIX_NOTHING_WHILE_MODS_WAIT: the board's header read "Nothing." while ten mods said "waits on you",
 because the header came from a field nobody wrote and the mods from `needs == owner`. Both now come from is_his(), so
@@ -300,8 +300,8 @@ def needs_you(items, rel, questions=None, evs=None, turns=None, passes=None, cer
 
 
 # ---- the owner's one view (design/specs/2026-11-23-owner-one-view/boundary.md) ------------------------------------
-# A view another page wrote is shown while it is younger than this. Danger: Fleet Now would show rows older than its own
-# fleet refresh (FLEET_EVERY, 300 s) and so be staler than before. Evidence: running_now refreshes the fleet every 300 s.
+# A shared view is fresh while it is younger than this. Danger: a reader would show rows of a build that stopped.
+# Evidence: Maturation Now writes the view each minute, and the live promise on view.json asks five minutes.
 VIEW_FRESH_S = 300
 UNM = "UNMEASURED"
 
@@ -351,7 +351,7 @@ def home_line(home):
 
 
 def one_view(his, ours_rows, home, fmt="md"):
-    """-> the block both pages show (one-view-shows-his-ours-and-the-count): his rows, our rows oldest first with their
+    """-> the block MATURATION_NOW shows (one-view-shows-his-ours-and-the-count): his rows, our rows oldest first with their
     age, and the count of needs not filed anywhere beside them. fmt "md": Markdown lines joined by newlines; "html": one
     line of HTML with no blank line in it (Typora)."""
     import html as H
@@ -400,8 +400,8 @@ def fresh_view(v, now, fresh_s=VIEW_FRESH_S):
 
 def test_refusal(path=None):
     """-> why a write to the shared owner-view files is refused, or None. A test process (test_process.under_test, the
-    one definition) never writes the real ones: a selftest builds Maturation Now live, and its view would reach Fleet
-    Now. An explicit path or RM_OWNER_VIEW_DIR is a test's own place and is allowed."""
+    one definition) never writes the real ones: a selftest builds Maturation Now live, and its view would replace
+    the real one. An explicit path or RM_OWNER_VIEW_DIR is a test's own place and is allowed."""
     if path or os.environ.get("RM_OWNER_VIEW_DIR"):
         return None
     import test_process
@@ -409,7 +409,7 @@ def test_refusal(path=None):
 
 
 def write_view(his, ours_rows, home, now, path=None):
-    """The view one page built, for the other page to show in the same minute. A write that fails is returned, not raised."""
+    """The view Maturation Now built (its live promise reads this file). A write that fails is returned, not raised."""
     refused = test_refusal(path)
     if refused:
         return refused

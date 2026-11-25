@@ -1,0 +1,11 @@
+# Every minute - see rm-steve-reading.service.
+[Unit]
+Description=RimMandrake SteveDesktop reading for the fleet page, every minute
+
+[Timer]
+OnBootSec=30s
+OnUnitActiveSec=1min
+AccuracySec=5s
+
+[Install]
+WantedBy=timers.target

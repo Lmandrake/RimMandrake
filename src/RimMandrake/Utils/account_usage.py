@@ -605,7 +605,7 @@ def read_now(now: float | None = None) -> dict:
 
 
 def derive_record(r: dict, now: float) -> dict:
-    """One latest.json record plus the derived fields read_now documents. Pure: running_now.py calls it on the file it read."""
+    """One latest.json record plus the derived fields read_now documents. Pure."""
     d = dict(r)
     polled = now - (epoch(r.get("ts")) or 0)
     d["poll_age_min"] = round(polled / 60, 1)

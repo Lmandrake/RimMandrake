@@ -57,7 +57,7 @@ def t_tight_is_refused():
     check(len(py(CALL % ("599", TAG % "1min"))) == 1 and py(CALL % ("600", TAG % "1min")) == [], "tight-is-refused: a unit in min")
     check(len(py(CALL % ("60 * 9", TAG % "60"))) == 1, "tight-is-refused: an arithmetic number is read")
     check(len(L.judge(L.budgets_in_unit("a.service", "# budget: danger=a hang; longest=90.3s\nTimeoutStartSec=90\n"), {})) == 1,
-          "tight-is-refused: the rm-running.service of 2026-11-23 (90 s over a 90.3 s run)")
+          "tight-is-refused: a page timer of 2026-11-23 (90 s over a 90.3 s run)")
     check(len(L.judge(L.budgets_in_json("a.json", '{"_limit_s": "danger=a hang; longest=5.7s", "limit_s": 4}'), {})) == 1,
           "tight-is-refused: the metronome's 4 s over a 5.7 s run")
     check(len(py(CALL % (str(T.PUBLISH_S // 20), "  # budget: class=publish"))) == 1 and

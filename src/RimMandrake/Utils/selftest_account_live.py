@@ -125,7 +125,7 @@ def t_every_reader_uses_the_one_home():
     rows = [ln for ln in r.stdout.splitlines() if not ln.startswith("src/RimMandrake/Utils/account_live.py:")
             and "/selftest_" not in ln]
     check(r.returncode in (0, 1) and not rows, "no file outside account_live.py runs claude-account status", rows)
-    for f in ("slot_allocator.py", "switching_plan.py", "running_now.py", "account_handover.py", "account_usage.py"):
+    for f in ("slot_allocator.py", "switching_plan.py", "account_handover.py", "account_usage.py"):
         src = open(os.path.join(HERE, f)).read()
         check("account_live" in src and "AL.read(" in src, "%s reads the live account through account_live" % f)
 

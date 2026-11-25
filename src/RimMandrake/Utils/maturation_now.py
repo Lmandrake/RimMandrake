@@ -465,7 +465,7 @@ def live_facts(mods):
             out["owed"] = DH.owed_lines(recs, world.items, evs)
     except Exception as e:      # noqa: BLE001
         out["errors"].append("run records: %s: %s" % (e.__class__.__name__, str(e)))
-    # the owner's one view, shared with Fleet Now (design/specs/2026-11-23-owner-one-view/boundary.md)
+    # the owner's one view, written to the shared file (design/specs/2026-11-23-owner-one-view/boundary.md)
     if world is not None and out["questions"] is not None:
         try:
             import no_home  # noqa: E402
@@ -474,7 +474,7 @@ def live_facts(mods):
             out["view"] = {"his": out["questions"], "ours": owner_queue.ours(n, world.items, now), "home": home}
             failed = owner_queue.write_view(out["view"]["his"], out["view"]["ours"], home, now)
             if failed:
-                out["errors"].append("the owner's one view was not shared with Fleet Now: %s" % failed)
+                out["errors"].append("the owner's one view was not written: %s" % failed)
         except Exception as e:      # noqa: BLE001  no view: the page falls back to its own lists, named
             out["errors"].append("the owner's one view: %s: %s" % (e.__class__.__name__, str(e)))
     return out
@@ -767,7 +767,7 @@ def journal_needs(mods):
 
 
 def mandrake_needs(mods, view=None):
-    """-> the "Needs Mandrake" lines. With the owner's one view: its rows (owner_queue.is_his, the rule Fleet Now shows)
+    """-> the "Needs Mandrake" lines. With the owner's one view: its rows (owner_queue.is_his)
     then the journal questions. Without it: his open journal questions and his queue's questions on each mod."""
     if view:
         return ["%s (`%s`)" % (" ".join(str(x["q"]).split()), x["item"]) for x in view["his"]] + journal_needs(mods)

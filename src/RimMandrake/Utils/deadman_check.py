@@ -347,10 +347,8 @@ def load_retired(path=None):
 
 
 # A closed item cannot be re-closed to change its `live` line, so a file that moved on purpose is listed here: the
-# ledger's old reading= path is swept as the new one. (RUNNING_NOW.md -> RELENTLESS_NOW.md, owner 2026-11-07.)
-MOVED_READINGS = {
-    "/mnt/d/ClaudeWork/rimmandrake/conductor/RUNNING_NOW.md": "/mnt/d/ClaudeWork/rimmandrake/conductor/RELENTLESS_NOW.md",
-}
+# ledger's old reading= path is swept as the new one.
+MOVED_READINGS = {}
 
 
 def moved(line):

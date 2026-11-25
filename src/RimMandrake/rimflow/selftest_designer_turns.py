@@ -2,8 +2,8 @@
 """selftest_designer_turns.py - DESIGNER_TURNS_FIX_LEFT_ON_THE_DOORSTEP.
 
 A Designer turn that closes waiting_owner must reach the owner wherever he looks, and stay there until an OWNER event
-answers it: designer_stage.pending_turns -> owner_queue.needs_you (NEEDS YOU), running_now's Needs-you box (RUNNING
-NOW), seat_restart's wake, and role_launch's escalation line in the Conductor's log. And the stale-clone trap: the
+answers it: designer_stage.pending_turns -> owner_queue.needs_you (NEEDS YOU), the owner's one view (MATURATION_NOW's
+Needs Mandrake), seat_restart's wake, and role_launch's escalation line in the Conductor's log. And the stale-clone trap: the
 Dispatcher's clone was behind origin and refused "WAITING_OWNER: no new owner event" with his answer already published;
 role_launch.judge_sync fetches and designer_stage reads origin/main's OWNER.jsonl too.
 
@@ -71,14 +71,13 @@ class Item:
 
 
 def surfaces(root, now):
-    """-> what each surface says: (pending turns, owner_queue line, needs_you, RUNNING NOW box, wake text)."""
+    """-> what each surface says: (pending turns, owner_queue line, needs_you, the one view, wake text)."""
     import owner_queue as OQ
-    import running_now as RN
     import seat_restart as SR
     turns, bad = DS.pending_turns(root)
     oq = OQ.designer_turns(root)
     n = OQ.needs_you({ITEM: Item(ITEM, "the concept's own item")}, {}, questions={}, evs=[], turns=oq)
-    box = RN.needs_html({"fleet": {"mods": [], "good_t": now, "needs": n}, "now": now, "showings": {}})
+    box = OQ.one_view(n["lines"], [], None)
     real = DS.concepts_root
     DS.concepts_root = lambda *a: root
     try:
@@ -116,8 +115,8 @@ def doorstep(tmp):
     check("is_his: an item whose Designer turn waits is his", OQ.is_his(Item(ITEM, "t"), None, [], turns=oq), "")
     n2 = OQ.needs_you({}, {}, questions={}, evs=[], turns=oq)
     check("NEEDS YOU: a turn whose item the ledger does not hold is still a line", n2["count"] == 1, n2)
-    check("RUNNING NOW: the board's Needs-you box shows the turn and its asks",
-          "NEEDS YOU, 1" in box and "Foo Designer turn" in box and "ask_prisoner" in box, box)
+    check("the one view (MATURATION_NOW) shows the turn and its asks",
+          "Needs you (1)" in box and "Foo Designer turn" in box and "ask_prisoner" in box, box)
     check("wake: the seat-restart report lists the waiting turn with its asks",
           "DESIGNER TURNS WAITING ON HIM (1)" in wake and "ask_match" in wake, wake)
 
@@ -129,14 +128,14 @@ def doorstep(tmp):
     turns, bad, oq, n, box, wake = surfaces(root, now)
     check("not an answer: an OWNER lease, a --per-ruling note, his words from before the close, a note on another "
           "item: the turn stays on every surface",
-          len(turns) == 1 and n["count"] == 1 and "NEEDS YOU, 1" in box and "WAITING ON HIM (1)" in wake, (turns, n))
+          len(turns) == 1 and n["count"] == 1 and "Needs you (1)" in box and "WAITING ON HIM (1)" in wake, (turns, n))
 
     # his answer: an OWNER note naming the item after the turn closed takes it off every surface
     owner_ev(shard, ITEM, now - 60, text="Answer to Designer ask_prisoner: (b)", byCard="How? -> (b)")   # his card
     turns, bad, oq, n, box, wake = surfaces(root, now)
     check("answered: pending_turns drops the turn", turns == [] and not bad, (turns, bad))
     check("answered: the owner queue and NEEDS YOU clear", oq == {} and n["count"] == 0, (oq, n))
-    check("answered: the RUNNING NOW box says nothing waits", "Nothing waits on you." in box, box)
+    check("answered: the one view says nothing waits", "Nothing waits on you." in box, box)
     check("answered: the wake says none wait", "Designer turns waiting on him: none" in wake, wake)
 
     # an unreadable state is said, never silently dropped

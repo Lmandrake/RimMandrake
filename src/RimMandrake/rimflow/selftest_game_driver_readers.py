@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """selftest_game_driver_readers.py - the equivalence run of the readers moved off the BRIDGE glance file.
 
-Items RIMMANDRAKE_MOVE_GAME_DRIVER_READERS_OFF_BRIDGE_FILE_TWO_LEFT (`preflight_bridge.c_bridge_lease`,
-`running_now.collect_bridge`) and RIMMANDRAKE_MOVE_TWO_MORE_GLANCE_READERS_CENSUS_MISSED (`handoff.bridge_lines`, the
+Items RIMMANDRAKE_MOVE_GAME_DRIVER_READERS_OFF_BRIDGE_FILE_TWO_LEFT (`preflight_bridge.c_bridge_lease`) and RIMMANDRAKE_MOVE_TWO_MORE_GLANCE_READERS_CENSUS_MISSED (`handoff.bridge_lines`, the
 handoff's "- Bridge:" lines, and FlowWorks's `preflight_flowworks.p_b1`, row P-B1). Each now reads each game's driver
 lock through `game_lock.query`, and the glance file and its printer are deleted. This runs the OLD readers (frozen
 copies of their code at 88fccbe8d6 and 2d45788d5c, below) and the NEW ones on the same lock states and compares their
@@ -11,7 +10,7 @@ verdicts:
   old path: the lock -> the glance file the printer wrote from it (a frozen copy of `cli._mirror_bridge` and
             `model.bridge_body`, both deleted) -> the old reader of that file; and the old reader with no glance file
             at all (a helper clone has none; the old P-B1 then asked `rimflow bridge who`)
-  new path: the lock -> the four readers above, and `game_lock.py query all`
+  new path: the lock -> the three readers above, and `game_lock.py query all`
 
 Every difference is classed in the table `KNOWN_OLD_WRONG` (the old reader was wrong; the new verdict stands). An
 unclassed difference, or a new reader that disagrees with `game_lock.py query all`, is a FAIL.
@@ -57,7 +56,6 @@ import control  # noqa: E402
 import driver_lock  # noqa: E402
 import game_lock  # noqa: E402
 import preflight_bridge  # noqa: E402
-import running_now  # noqa: E402
 import bridge_holder  # noqa: E402
 import handoff  # noqa: E402
 sys.path.insert(0, os.path.join(os.path.dirname(HERE), "FlowWorks", "northstar"))
@@ -96,20 +94,6 @@ def old_c_bridge_lease(text, seat, live):
     if holder.upper().startswith(bridge_holder.identity(seat.upper())):
         return "PASS", 'held by this seat: ' + line
     return "FAIL", 'held by another seat: %s' % line
-
-
-def old_collect_bridge(texts):
-    """running_now.collect_bridge as it was: the newest of the dispatch and bench clones' BRIDGE files, ArchBig only.
-    texts: [(text or None, mtime)]."""
-    last = None
-    for txt, mt in texts:
-        if txt is None:
-            continue
-        body = "\n".join(l for l in txt.splitlines() if not l.startswith("#"))
-        m = re.search(r"^(HELD|FREE)\b[ \t]*(?!since\b)(\S*)[ \t]*(?:since\s+(\S+))?", body, re.M)
-        if m and (last is None or mt > last["mt"]):
-            last = {"state": m.group(1), "who": m.group(2), "mt": mt}
-    return last        # None: the old reader raised Unmeasured
 
 
 def old_handoff_bridge(text):
@@ -284,24 +268,11 @@ def query_all_cli():
     return [ln for ln in r.stdout.splitlines() if ln.startswith(("ArchBig:", "ArchSmall:"))]
 
 
-class LiveEnv(running_now.Env):
-    pass
-
-
-def norm_old_rn(o):
-    return None if o is None else (o["state"], o["who"] or "")
-
-
-def norm_new_rn_a(rows):
-    """New running_now row of ArchBig, in the old reader's terms: (HELD|FREE, who) or None for UNMEASURED."""
-    a = [r for r in rows if r["game"] == "ArchBig"][0]
-    if a["state"] == "UNKNOWN":
-        return None
-    if a["state"] == "HELD" or (a["state"] == "HIS_HOLD" and a["who"]):
-        return ("HELD", a["who"])
-    if a["state"] == "HIS_HOLD":
-        return ("HIS_HOLD", "")
-    return ("FREE", "")
+def every_game():
+    """One row per game of this machine, as MATURATION_NOW's games line reads them (game_lock.query_all)."""
+    import game_names
+    return [{"game": game_names.show(r.get("game")), "state": r.get("state"), "who": r.get("seat") or "", "line": r.get("line")}
+            for r in game_lock.query_all()]
 
 
 def compare(case, a=None, b=None, pipe_a=None, control_bad=False, seat="BENCH", why_differs=None, quiet=False):
@@ -312,7 +283,7 @@ def compare(case, a=None, b=None, pipe_a=None, control_bad=False, seat="BENCH", 
     glance = printed_glance()
     ctx = {"seat": seat, "live": False}
     new_pf = preflight_bridge.c_bridge_lease(ctx).status
-    new_rows = running_now.collect_bridge(LiveEnv())
+    new_rows = every_game()
     new_b1 = new_p_b1(seat)
     new_ho = new_handoff_lines()
     who = bridge_who_out()
@@ -322,13 +293,11 @@ def compare(case, a=None, b=None, pipe_a=None, control_bad=False, seat="BENCH", 
         check(same_ho, "%s: the handoff's Bridge lines are `game_lock.py query all`'s" % case, (new_ho, lines))
     same = [r["line"] for r in new_rows] == lines
     if not (same and quiet):
-        check(same, "%s: running_now reads every game as `game_lock.py query all`" % case,
+        check(same, "%s: query_all reads every game as `game_lock.py query all`" % case,
               ([r["line"] for r in new_rows], lines))
     rows = {
         "preflight, glance printed": (old_c_bridge_lease(glance, seat, False)[0], new_pf),
         "preflight, no glance file": (old_c_bridge_lease(None, seat, False)[0], new_pf),
-        "running_now, glance printed": (norm_old_rn(old_collect_bridge([(glance, 1.0)])), norm_new_rn_a(new_rows)),
-        "running_now, no glance file": (norm_old_rn(old_collect_bridge([(None, 0)])), norm_new_rn_a(new_rows)),
         "P-B1, glance printed": (old_p_b1(glance, who, seat), new_b1),
         "P-B1, no glance file": (old_p_b1(None, who, seat), new_b1),
         "handoff, glance printed": (norm_old_handoff(old_handoff_bridge(glance)), norm_new_handoff(new_ho)),
@@ -356,7 +325,6 @@ def compare(case, a=None, b=None, pipe_a=None, control_bad=False, seat="BENCH", 
 
 
 NO_GLANCE = "a helper clone has no glance file: the old reader could not look"
-NO_GLANCE_RN = "the dispatch and bench clones' glance files were absent: the old page could not look"
 
 
 NO_GLANCE_HO = "a helper clone has no glance file: the handoff wrote 'Bridge: unknown'"
@@ -366,7 +334,7 @@ PIPE_HIDDEN = "his `pipe off game:ArchBig` was invisible to the glance file"
 
 
 def blind(extra=None):
-    d = {"preflight, no glance file": NO_GLANCE, "running_now, no glance file": NO_GLANCE_RN,
+    d = {"preflight, no glance file": NO_GLANCE,
          "handoff, no glance file": NO_GLANCE_HO}
     d.update(extra or {})
     return d
@@ -385,14 +353,14 @@ def t_fixtures():
     pf, rows = compare("held ArchBig (OPERATIONS, live), free ArchSmall", a=lock_body("OPERATIONS", s.pid),
                        why_differs=blind())
     check(pf == "FAIL" and rows[0]["state"] == "HELD" and rows[0]["who"] == "OPERATIONS" and rows[1]["state"] == "FREE",
-          "held ArchBig, free ArchSmall: preflight FAIL; running_now reads both games", rows)
+          "held ArchBig, free ArchSmall: preflight FAIL; query_all reads both games", rows)
 
     pf, rows = compare("ArchBig held by this seat", a=lock_body("BENCH", s.pid), why_differs=blind())
     check(pf == "PASS", "a hold of this seat: PASS")
 
     pf, rows = compare("free ArchBig, held ArchSmall", b=lock_body("OPERATIONS", s.pid), why_differs=blind())
     check(rows[1]["state"] == "HELD" and rows[1]["who"] == "OPERATIONS",
-          "running_now sees ArchSmall's holder (the old page never showed ArchSmall)", rows)
+          "query_all sees ArchSmall's holder", rows)
     os.environ["RM_GAME_INSTANCE"] = "b"
     try:
         # under RM_GAME_INSTANCE=b, RIMFLOW_DRIVER_LOCK names game b's lock (game_lock.lock_path, host_guard.instance_env)
@@ -428,7 +396,7 @@ def t_fixtures():
 
     garbled = '{"seat": "BENCH", "identity": {"pid'
     pf, rows = compare("a garbled lock (planted fault)", a=garbled, why_differs={
-        "preflight, glance printed": GARBLED, "running_now, glance printed": GARBLED, "P-B1, glance printed": GARBLED,
+        "preflight, glance printed": GARBLED, "P-B1, glance printed": GARBLED,
         "handoff, glance printed": GARBLED, "handoff, no glance file": NO_GLANCE_HO,
     })
     check(new_p_b1("BENCH") == "UNMEASURED" and new_handoff_lines()[:1] and
@@ -438,7 +406,6 @@ def t_fixtures():
 
     pf, rows = compare("pipe off game:ArchBig, game free", pipe_a="his walk", why_differs=blind({
         "preflight, glance printed": "his `pipe off game:ArchBig` was invisible to the glance file: PASS under his stop",
-        "running_now, glance printed": "his `pipe off game:ArchBig` was invisible to the glance file: FREE under his stop",
         "handoff, glance printed": PIPE_HIDDEN + ": the handoff said FREE under his stop",
     }))
     check(pf == "FAIL" and rows[0]["state"] == "HIS_HOLD", "a free game under his pipe hold: FAIL, HIS_HOLD", rows)
@@ -449,7 +416,6 @@ def t_fixtures():
 
     pf, rows = compare("a control store that cannot be read, game free", control_bad=True, why_differs={
         "preflight, glance printed": "a store that cannot be read cannot rule out his pipe hold",
-        "running_now, glance printed": "a store that cannot be read cannot rule out his pipe hold",
         "handoff, glance printed": "a store that cannot be read cannot rule out his pipe hold",
         "handoff, no glance file": NO_GLANCE_HO,
     })      # with no glance file both are blind: the same verdict, UNMEASURED
@@ -468,14 +434,6 @@ def t_fixtures():
     # no reader opens a glance file: a planted one that lies changes nothing
     with open(GLANCE, "w") as f:
         f.write(stale)
-    saved = running_now.Env.read_text
-    opened = []
-    running_now.Env.read_text = lambda self, p: opened.append(p) or saved(self, p)
-    try:
-        rows = running_now.collect_bridge(LiveEnv())
-    finally:
-        running_now.Env.read_text = saved
-    check(rows[0]["state"] == "FREE" and not opened, "a planted, lying glance file is never read", (rows, opened))
     # the handoff and P-B1 open no glance file (a clone's own, at infrastructure/state/BRIDGE, or any other)
     import builtins
     import io as _io

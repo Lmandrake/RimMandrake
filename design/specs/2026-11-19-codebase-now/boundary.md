@@ -4,7 +4,7 @@ Code: `src/RimMandrake/Utils/codebase_now.py`, run by `rm-codebase-now.timer` (u
 Item: `RIMMANDRAKE_REVIVE_CLEAN_DIRTY_TREEMAP_ON_STANDING_TABS`. Why it exists: his card of 2026-11-19 5:54 PM PST,
 *"the Python to visualize the clean/dirty codebase is ressurrected and included on the standard suite of Desktop
 visualizations to track"*. The page is `D:\ClaudeWork\rimmandrake\conductor\CODEBASE_NOW.html`, beside
-`MATURATION_NOW.html` and `RELENTLESS_NOW.md`. A program writes it with no model call. Written 2026-11-19.
+`MATURATION_NOW.html`. A program writes it with no model call. Written 2026-11-19.
 Each promise has a test of its name in `src/RimMandrake/Utils/selftest_codebase_now.py`.
 
 The older treemap (`src/RimMandrake/Utils/codebase_health.py`, `rm-codebase-health.timer`) stays. It paints red for

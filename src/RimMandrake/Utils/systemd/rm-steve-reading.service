@@ -1,0 +1,16 @@
+# SteveDesktop's machine, games and lane jobs, read over one ssh into running_steve.json, which Augur's fleet page draws
+# (D:\ClaudeWork\augur\dashboard\FLEET_NOW.md). No AI, no bridge. Runs from the dispatch clone, not through the Dispatcher.
+# Reading: D:\ClaudeWork\rimmandrake\conductor\running_steve.json (WSL /mnt/d/ClaudeWork/rimmandrake/conductor/running_steve.json)
+# Install: python3 src/RimMandrake/Utils/ops_clocks.py install rm-steve-reading --apply --enable
+[Unit]
+Description=RimMandrake SteveDesktop reading for the fleet page, every minute (one ssh each 180 s)
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/dispatch
+Environment=PATH=/home/mandrake/.local/bin:/usr/local/bin:/usr/bin:/bin
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/steve_reading.py
+Nice=10
+MemoryMax=512M
+# budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=90.3s (user journal, 14 days to 2026-11-24, of the older, larger program)
+TimeoutStartSec=1800

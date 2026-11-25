@@ -122,12 +122,6 @@ def main():
     finally:
         status.load, status.mod_hash, runner.find_mod_dir, EV.env_commit_time = saved
 
-    # running_now's fleet count: an UNMEASURED mod is its own count, never folded into "never run"
-    sys.path.insert(0, os.path.dirname(HERE))
-    import running_now as R
-    c = R.mods_status_counts("A  UNMEASURED (x)\nB  RED (y)\nC  GREEN\n")
-    check(c == {"UNMEASURED": 1, "RED": 1, "GREEN": 1}, "running_now counts an UNMEASURED line as itself (%s)" % dict(c))
-
     print("%d check(s) failed" % len(FAILS) if FAILS else "all checks passed")
     return 1 if FAILS else 0
 

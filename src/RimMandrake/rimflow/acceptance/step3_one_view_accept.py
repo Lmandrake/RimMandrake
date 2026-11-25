@@ -7,9 +7,9 @@ Contract:
         sources = {name: callable -> list of needs with no home}; a callable that raises is a source that could not
         be read: it is named in "unmeasured" and adds nothing. When no source could be read, "no_home" is None.
     unanswered_cards(asked, answered) -> the asked ids with no answer, in the order asked
-  a new function owner_queue.one_view(his, ours, home) -> str, the block both pages show
+  a new function owner_queue.one_view(his, ours, home) -> str, the block the page shows
         his, ours = lists of {"item", "q"} (ours also "age"); home = the dict count() returns
-  running_now.py and maturation_now.py both call owner_queue.one_view.
+  maturation_now.py calls owner_queue.one_view.
 Expected when built: PASS 12/12.  Today: FAIL 0/12, because no_home.py and owner_queue.one_view do not exist."""
 import os
 import sys
@@ -66,6 +66,5 @@ H.check("an unread count reads UNMEASURED, never 0",
             view(HIS, OURS, {"no_home": None, "by_source": {}, "unmeasured": ["typed words"]})))
 H.check("the view shows what is his and what is ours with its age",
         lambda: (lambda t: "Pick the bridge art" in t and "Write the ruling into the page" in t and "2d" in t)(view(HIS, OURS, HOME)))
-H.check("Fleet Now and Maturation Now both build the block from owner_queue.one_view",
-        lambda: "one_view(" in src("running_now.py") and "one_view(" in src("maturation_now.py"))
+H.check("Maturation Now builds the block from owner_queue.one_view", lambda: "one_view(" in src("maturation_now.py"))
 H.done(12)

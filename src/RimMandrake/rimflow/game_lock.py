@@ -253,7 +253,7 @@ def query(g, pipe=True, path=None):
 
 def query_all(pipe=True):
     """-> [query(g)] for every game of this machine, ArchBig first: what `query all` prints, and what every reader of
-    "who drives the games" reads (running_now, preflight_bridge). SteveDesktop's games are not read from here."""
+    "who drives the games" reads (maturation_nonmod, handoff, preflight_bridge). SteveDesktop's games are not read from here."""
     return [query(g, pipe=pipe) for g in games()]
 
 

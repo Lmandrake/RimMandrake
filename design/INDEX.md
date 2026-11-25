@@ -1148,7 +1148,6 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `starwars_junk_reskin_2026-10-03.md` | Star Wars junk reskin — vanilla ancient junk, many variants (2026-10-03) | 📜 names a retired era |
 | `statue_expansion_assessment.md` | Statue Art Expansion — Assessment (STATUE_ART_EXPANSION_1) | — |
 | `statue_mods_spec.md` | Statue mods spec — Utinni statues (RUT_) and Flame statues (RM_) | 📜 names a retired era |
-| `status_pages_successor_2026-11-03.md` | Status pages: the successor to RimPulse (STATUS_PAGES_BUILD_REPLACE_RIMPULSE) | 📜 names a retired era |
 | `stevedesktop_bringup_plan_2026-10-24.md` | SteveDesktop: second test machine, bring-up plan (2026-10-24) | 📜 names a retired era |
 | `sun_and_shade_modularity_2026-10-19.md` | Sun & Shade: standalone mod or part of Baroque Biomes? Design pass, 2026-10-19 | — |
 | `surface_river_weirs_design_2026-10-02.md` | Surface river weirs — design (SURFACE_RIVER_WEIRS_1), 2026-10-02 | 📜 names a retired era |

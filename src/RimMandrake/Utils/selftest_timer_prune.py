@@ -50,7 +50,7 @@ def names_in(text):
 
 
 # --- repo: the retired names are gone from what reads them
-for rel in ("deadman_check.py", "running_now_families.json", "../rimflow/dispatcher_schedule.json"):
+for rel in ("deadman_check.py", "../rimflow/dispatcher_schedule.json"):
     p = HERE / rel
     check(not names_in(p.read_text(encoding="utf-8")), "%s names no retired timer" % p.name,
           names_in(p.read_text(encoding="utf-8")))

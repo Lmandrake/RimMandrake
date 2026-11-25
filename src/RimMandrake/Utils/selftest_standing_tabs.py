@@ -100,14 +100,30 @@ def t_no_rimmandrake_fleet_page():
     files = subprocess.run(["git", "ls-files", "src", "pages", "design/specs/2026-11-19-standing-status-tabs/boundary.md",
                             "design/specs/2026-11-24-fleet-now-stevedesktop"], capture_output=True, text=True, cwd=REPO).stdout.split()
     assert files, "git ls-files returned nothing"
-    hit = [f for f in files if os.path.exists(os.path.join(REPO, f)) and f != "src/RimMandrake/Utils/selftest_standing_tabs.py"
+    hit = [f for f in files if os.path.exists(os.path.join(REPO, f)) and f not in ("src/RimMandrake/Utils/selftest_standing_tabs.py", "src/RimMandrake/rimflow/live_retired.txt")
            and pat.search(open(os.path.join(REPO, f), encoding="utf-8", errors="replace").read())]
     assert not hit, hit
     assert not os.path.exists(os.path.join(HERE, "fleet" + "_now.py"))
 
 
+def t_no_relentless_page_or_board():
+    """running_now.py's page, its phone copy, its fleet cache and the status board are removed: no live file names one."""
+    pat = ("RELENTLESS" + "_NOW|\\brunning" + "_now\\b|running" + "_fleet|\\brm-running\\b|STATUS" + "_BOARD\\b|"
+           "(?<!FlowWorks_)\\bstatus" + "_board\\b")
+    assert re.search(pat, "conductor/RELENTLESS" + "_NOW.md") and not re.search(pat, "FlowWorks_status_board.html"), "the pattern cannot see"
+    # what may name them: this test; the retirement list; two frozen corpora of past commands and failures
+    allowed = {"src/RimMandrake/Utils/selftest_standing_tabs.py", "src/RimMandrake/rimflow/live_retired.txt",
+               "src/RimMandrake/Utils/hook_latency_corpus.json", "src/RimMandrake/Utils/selftest_ops_watch_cause_book_corpus.json"}
+    r = subprocess.run(["git", "grep", "-lIP", pat, "--", "src", "skills", "pages", "pipe", "CLAUDE.md", "infrastructure/agents", ".claude"],
+                       capture_output=True, text=True, cwd=REPO)
+    assert r.returncode in (0, 1), "git grep could not look: %s" % r.stderr[-200:]
+    hit = sorted(set(r.stdout.split("\n")) - allowed - {""})
+    assert "src/RimMandrake/rimflow/live_retired.txt" in r.stdout, "git grep did not find the retirement list's own line"
+    assert not hit, hit
+
+
 def main():
-    tests = [t_no_rimmandrake_fleet_page, t_two_tabs_in_order, t_missing_page_named_others_open, t_folder_from_rmpaths,
+    tests = [t_no_relentless_page_or_board, t_no_rimmandrake_fleet_page, t_two_tabs_in_order, t_missing_page_named_others_open, t_folder_from_rmpaths,
              t_never_fullscreen_never_steal_focus, t_dry_run_opens_nothing,
              t_maturation_page_reloads_and_shows_build_time]
     failed = 0
