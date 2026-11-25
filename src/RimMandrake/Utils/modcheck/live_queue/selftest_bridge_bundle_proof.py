@@ -99,5 +99,18 @@ check("KEEPER the save went to another slot", "KEEPER",
 check("KEEPER no keeper to guard", "KEEPER", dict(kp, keepers=0), 2)
 check("KEEPER the guard could not back up", "KEEPER", {"why": "cannot back up keepers"}, 2)
 
+og = {"launchRc": 0, "startedBy": "bridge-registration", "genHook": "installed early (install.generation-early) by bridge-registration",
+      "wild": ["Thing_A1", "Thing_A2"], "chains": {"Thing_A1": "mapgen > wild-spawner", "Thing_A2": "mapgen > wild-spawner"},
+      "restored": True}
+check("ORIGIN cold launch, mapgen wildlife chain", "ORIGIN", og, 0)
+check("ORIGIN started by a tool call", "ORIGIN", dict(og, startedBy="tool-call"), 1)
+check("ORIGIN a wild animal with origin unknown", "ORIGIN", dict(og, chains={"Thing_A1": "mapgen > wild-spawner", "Thing_A2": None}), 1)
+check("ORIGIN chain without the spawner", "ORIGIN", dict(og, chains={"Thing_A1": "mapgen", "Thing_A2": "mapgen"}), 1)
+check("ORIGIN the hook was not installed early", "ORIGIN", dict(og, genHook="not installed (lazy)"), 2)
+check("ORIGIN no wildlife on the first map", "ORIGIN", dict(og, wild=[], chains={}), 2)
+check("ORIGIN the launch failed", "ORIGIN", dict(og, launchRc=1), 2)
+check("ORIGIN the settings file was not restored", "ORIGIN", dict(og, restored=False), 1)
+check("AWARE a game launched with generation-early is a precondition, not a FAIL", "AWARE",
+      {"early": True, "genBefore": True, "genAfter": False}, 2)
 print("RESULT: %s" % ("FAIL (%d failing)" % len(FAILS) if FAILS else "PASS (0 failing)"))
 sys.exit(1 if FAILS else 0)

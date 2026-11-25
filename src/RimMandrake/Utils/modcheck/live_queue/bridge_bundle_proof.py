@@ -32,6 +32,10 @@ Any non-canonical game will do; the test lane's games are disposable.
   FRAME      RIMMANDRAKE_REPAIR_FRAME_HIST_READS_THREE_WAYS_WRONG: after a load, jawa/health's frame-hist session and
              merged strings parse as JSON, an arm starts the session fresh, and 5 s later it holds only those frames
              (no late-merged load frames). Run after EPOCH: it reloads the save EPOCH wrote
+  ORIGIN     PAWN_ORIGIN_BUILD_SAY_ORIGIN_UNKNOWN A2: awareness_settings.json set to install.generation-early, a cold
+             launch (launch_ready.py), then the first call reads startedBy bridge-registration and the first map's wild
+             animals read a mapgen > wild-spawner chain. The file is restored in every case; the early hook stays
+             until the next launch (AWARE reads that game as a precondition, not a FAIL)
   KEEPER     KEEPER_SAVES_HARDEN_WRONG_SLOT_WRITES A1: save_guard.snapshot on this game's real Saves folder hashes every
              keeper and holds a store copy of each; a save_base through the guard writes a new save, verified, with no
              keeper changed (the new save is deleted after: it is the proof's own)
@@ -46,7 +50,7 @@ import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CLAUSES = ("EVIDENCE", "TPS", "NORTHSTAR", "STATICCALL", "TILECACHE", "PROFILE", "PEN", "EXPLAIN", "HOOKS", "AWARE",
-           "EPOCH", "FRAME", "KEEPER")
+           "EPOCH", "FRAME", "KEEPER", "ORIGIN")
 
 
 def _ok(r):
@@ -244,6 +248,30 @@ def v_KEEPER(d):
         f.append("save_base through the guard did not verify: %s" % "; ".join(sv.get("problems") or ["no reading"]))
     return (1 if f else 0), "; ".join(f) or "%d keepers hashed and stored; %s.rws written new (slot %s), no keeper changed" % (
         d["keepers"], d.get("target"), d.get("slot"))
+
+
+def v_ORIGIN(d):
+    if d.get("why"):
+        return 2, d["why"]
+    if d.get("launchRc") != 0:
+        return 2, "the cold launch did not read READY (exit %s): %s" % (d.get("launchRc"), d.get("launchTail"))
+    f = []
+    if d.get("restored") is not True:
+        f.append("awareness_settings.json was not restored: %s" % d.get("restoreErr"))
+    if not str(d.get("genHook") or "").startswith("installed early"):
+        return 2, "precondition: the GeneratePawn hook was not installed early (%s)%s" % (
+            d.get("genHook"), "; " + "; ".join(f) if f else "")
+    if d.get("startedBy") != "bridge-registration":
+        f.append("awareness startedBy %s, want bridge-registration" % d.get("startedBy"))
+    wild = d.get("wild") or []
+    if not wild:
+        return (1 if f else 2), "; ".join(f + ["the first map holds no wild animal to read"])
+    ch = d.get("chains") or {}
+    bad = [w for w in wild if not re.search(r"\bmapgen\b.*>.*\bwild-spawner\b", str(ch.get(w) or ""))]
+    if bad:
+        f.append("%d of %d wild animals do not read mapgen > wild-spawner: %s" % (
+            len(bad), len(wild), ", ".join("%s=%s" % (w, ch.get(w)) for w in bad[:5])))
+    return (1 if f else 0), "; ".join(f) or "startedBy bridge-registration; %d wild animals read mapgen > wild-spawner" % len(wild)
 
 
 VERDICTS = dict((c, globals()["v_" + c]) for c in CLAUSES)
@@ -549,6 +577,7 @@ def g_AWARE(L):
             early = False
     early = early or bool((st.get("options") or {}).get("install.generation-early"))
     det0 = str(st.get("generationHook") or "")
+    early = early or det0.startswith("installed early")   # launched with the option (ORIGIN's cold launch): no lazy half
     camp = None
     if not det0.startswith("installed") and not early:
         # campaign half: a fresh hook, a loaded save, the profile file at campaign -> an arm leaves GeneratePawn off
@@ -697,6 +726,56 @@ def g_KEEPER(L):
             "savesDir": snap["saves_dir"]}
 
 
+def g_ORIGIN_cold(Session):
+    """ORIGIN runs outside main's one Session: the cold launch ends the game the first Session talked to."""
+    import subprocess
+    from common import call, ensure_map
+    with Session(lock=None, focus=False, strict=False, quiet=True) as s:
+        path = call(s, "jawa/awareness", action="status").get("settings")
+    if not path:
+        return {"why": "jawa/awareness status names no settings file"}
+    path = path.replace("/", "\\") if os.name == "nt" else path
+    keep = open(path, "rb").read() if os.path.exists(path) else None
+    out = {"restored": False}
+    try:
+        try:
+            d = json.loads(keep.decode("utf-8")) if keep else {}
+        except ValueError:
+            d = {}
+        d["install.generation-early"] = True
+        with open(path, "w") as fh:
+            json.dump(d, fh)
+        lr = os.path.join(HERE, "..", "..", "..", "bridgetools", "launch_ready.py")
+        p = subprocess.run([sys.executable, lr], capture_output=True, text=True, timeout=5400,  # hang guard: a cold
+                           stdin=subprocess.DEVNULL)                                           # load is minutes
+        out["launchRc"], out["launchTail"] = p.returncode, (p.stdout + p.stderr)[-300:]
+        if p.returncode != 0:
+            return out
+        with Session(lock=None, focus=False, strict=False, quiet=True) as s:
+            st = call(s, "jawa/awareness", action="status")         # the first tool call after the launch
+            out["startedBy"], out["genHook"] = st.get("startedBy"), str(st.get("generationHook") or "")
+            why = ensure_map(s)
+            if why:
+                out["why"] = why
+                return out
+            pawns = call(s, "jawa/list_pawns", faction="nonplayer").get("pawns") or []
+            wild = [r.get("id") for r in pawns if r.get("id") and not r.get("faction") and not r.get("dead")]
+            po = call(s, "jawa/pawn_origin", ids=",".join(wild)) if wild else {}
+            out["wild"] = wild
+            out["chains"] = dict((r.get("id"), (r.get("generation") or {}).get("chain")) for r in po.get("pawns") or [])
+        return out
+    finally:
+        try:
+            if keep is None:
+                os.remove(path)
+            else:
+                with open(path, "wb") as fh:
+                    fh.write(keep)
+            out["restored"] = True
+        except OSError as e:
+            out["restoreErr"] = str(e)[:160]
+
+
 def main(argv):
     if len(argv) != 2 or argv[1] not in CLAUSES:
         print(__doc__)
@@ -709,6 +788,15 @@ def main(argv):
     except Exception as e:                                      # noqa: BLE001
         print("%s UNMEASURED: harness import failed: %s" % (clause, e))
         return 2
+    if clause == "ORIGIN":
+        try:
+            d = g_ORIGIN_cold(Session)
+        except Exception as e:                                  # noqa: BLE001 - no bridge is not a verdict
+            print("%s UNMEASURED: %s: %s" % (clause, type(e).__name__, str(e)[:300]))
+            return 2
+        rc, msg = verdict(clause, d)
+        print("%s %s: %s" % (clause, ("PASS", "FAIL", "UNMEASURED")[rc], msg))
+        return rc
     try:
         with Session(lock=None, focus=False, strict=False, quiet=True) as s:
             L = Live(s)

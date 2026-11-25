@@ -1,0 +1,2 @@
+# live proofs of PAWN_ORIGIN_BUILD_SAY_ORIGIN_UNKNOWN (bridge_bundle_proof.py; work bundle WB-pipeline-bridge-20261125-192133). ORIGIN cold-launches the lane's own game of this job.
+live-proof A2: python3 src/RimMandrake/Utils/modcheck/live_queue/bridge_bundle_proof.py ORIGIN < /dev/null
