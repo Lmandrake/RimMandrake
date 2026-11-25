@@ -14,3 +14,5 @@
 - 2026-11-24 (conversion ticket, the fresh agent): no page names `s.run_dir`, nor the attributes of `Cast`, `Made`, `Effect` and `Value`.
 - 2026-11-24 (conversion ticket, the fresh agent): `help cond` says "compare a probe with a number" and shows no call of a probe; a text compare works.
 - 2026-11-24 (conversion ticket, the fresh agent): `scene.py tools` cuts each description at about 150 characters and prints no argument schema.
+- 2026-11-25 fresh reader: in `_answer_load_windows`, a failed window list reads as "no load window to answer"; the calm still refuses an open window by name.
+- 2026-11-25 fresh reader: `scene_fake` opens all load windows at once; VEF opens them one at a time, and the test does not exercise that order.

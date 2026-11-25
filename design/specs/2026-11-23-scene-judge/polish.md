@@ -1,0 +1,3 @@
+- 2026-11-25 fresh reader: STANDARD_TRACK accepts any alias (the judge has no cast roster), so an unbound `ghost.pos` row would join; nothing produces one.
+- 2026-11-25 fresh reader: STANDARD_TRACK takes ASCII aliases only; the companion's bind check also allows Unicode letters and a leading digit, whose tracks would read COULD NOT LOOK. No scene uses one.
+- 2026-11-25 fresh reader: a cast pawn brought back to life after its corpse link names the pawn id again in its taps, and the run reads COULD NOT LOOK.

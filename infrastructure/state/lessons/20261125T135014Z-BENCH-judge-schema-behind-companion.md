@@ -1,0 +1,2 @@
+The first live run of a scene with a cast found three blind spots in scene_judge at once (undeclared cast and world tracks, in_tick tap rows, from/to links): the judge had been tested only against hand-made traces of an older schema. A new trace family in the companion needs one kept live trace judged offline before any scene relies on it.
+item: RIMMANDRAKE_BUILD_MUTANTS_BY_OVERLAY_AUTHOR_DOES_NOT_CHOOSE
