@@ -1,0 +1,4 @@
+PASS \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES.det\design\concepts\FlowWorks\version\in_game\bundle_shrink_20261125\evidence\sc_pawn_height_20261125T023655.json 
+[bridge split] 330.0 s wall: load 0.5 / ticks 186.0 / reads 3.3 / other 50.3 / outside calls 90.0 s
+[bridge split] WARN 1094 calls of jawa/static_call (44.4 s): batch them
+[bridge split] WARN 1081 calls of jawa/safe_advance (186.0 s): batch them

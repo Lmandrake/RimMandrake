@@ -1,0 +1,3 @@
+PASS \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES.det\design\concepts\FlowWorks\version\in_game\bundle_shrink_20261125\evidence\sc_source_refills_20261125T023251.json 
+[bridge split] 53.0 s wall: load 0.7 / ticks 9.1 / reads 4.0 / other 14.0 / outside calls 25.2 s
+[bridge split] WARN 200 calls of jawa/flowworks_excavation_drive (8.7 s): batch them

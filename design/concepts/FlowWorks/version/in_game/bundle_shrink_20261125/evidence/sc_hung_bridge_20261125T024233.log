@@ -1,0 +1,15 @@
+== section posts
+SB_drag_6_timber_builds            PASS       {"read": "BUILD ok=True anchors=2 decks=6 blueprints=0 records=1 reason=-"}
+SB_path_crosses_on_deck            PASS       {"read": "PATH found=True cells=10 decked=6", "walls": true}
+SB_load_over_rating_whole_span_falls PASS       {"empty": "SPAN tier=timber load=0.0 rating=600 state=Ok decks=6 railings=False deckNotches=0 span=1/1 line=Load 0 / 600 kg", "before": "SPAN tier=timber load=623.3 rating=600 state=Over decks=6 railings=False deckNotches=0 span=1/1 line=Load 623 / 600 kg", "inspect_line": "Load", "after": "SPAN tie
+SB_drag_9_timber_refused           PASS       {"read": "BUILD ok=False anchors=0 decks=0 blueprints=0 records=0 reason=A timber suspension bridge spans at most 8 squares between supports (this span: 9). Fill a ground island back in (cheap) or build a tower on the hole floor (very expensive) to go further."}
+SB_rails_off_some_fall             PASS       {"read": "KNOCK trials=20 fell=5 railed=False edge=True", "build": "BUILD ok=True anchors=2 decks=4 blueprints=0 records=1 reason=-"}
+SB_rails_on_nobody_falls           PASS       {"rails": "RAILS on=True railed=4", "read": "KNOCK trials=20 fell=0 railed=True edge=True", "build": "BUILD ok=True anchors=2 decks=4 blueprints=0 records=1 reason=-"}
+SB_anchor_lost_swings_from_that_end PASS       {"read": "SWING 141,152@188 142,152@208 143,152@228 144,152@248", "lane": [[141, 188], [142, 208], [143, 228], [144, 248]], "build": "BUILD ok=True anchors=2 decks=4 blueprints=0 records=1 reason=-", "destroy": {"success": true, "message": "Destroyed 1 thing(s) across 1 cell(s).", "destroyed": 1}}
+SB_vanilla_bridge_refused_over_dug PASS       {"read": "VANILLA accepted=False reason=Use a suspension bridge over dug ground"}
+SB_settings_off_no_button_never_breaks UNMEASURED {"owed": true, "why": "OWED: toggle suspensionBridgesBuildable / suspensionWeightCollapse via jawa/mod_settings_field on RimMandrake.FlowWorks.Pits.RM_SuspensionSettings and re-run LOAD; not scripted yet"}
+== section under
+UND_floor_path_walks_under         PASS       {"read": "UNDERPATH found=True cells=8 decked=2 view=floor", "reachAfter": {"paused_polls": 0, "ticks": 0}}
+UND_both_arrive                    UNMEASURED {"a": [148, 180], "b": [141, 176], "verdictWithheld": "FAIL", "unmeasuredBecause": [{"scope": "UND_both", "what": "jawa/order_pawn", "why": "refused: 0/1 pawn(s) standing on (144,182) after 606 tick(s); 1 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human24687. Pass undraftAfter=true or undraft them you
+suspension bridge proof: 11 rows, 0 FAIL -> \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES.det\design\concepts\FlowWorks\version\in_game\bundle_shrink_20261125\evidence\sc_hung_bridge_20261125T024233.json
+[bridge split] 75.6 s wall: load 0.0 / ticks 1.5 / reads 1.1 / other 31.5 / outside calls 41.5 s
