@@ -26,6 +26,13 @@ beside the result.
   substring-matches the payload reads that failed call as **ABSENT**. That false negative looks like a catastrophic
   finding: in one pass it would have failed all 22 biomes. Read the tool's own `success` / `foundCount` / `notFound`
   fields. Treat "could not ask" as UNMEASURED, never as "looked and it is not there".
+- 🔴 **`jawa/list_pawns` field `hostile` reads only the pawn's FACTION, so a mad animal reads `hostile: false`.** The tool
+  computes `pawn.Faction != null && pawn.Faction.HostileTo(player)`. A wild manhunter has no faction. Measured 2026-11-24 on a
+  three-day watch of the Pyrelands walk save: one ashwallow was in `AttackMelee` from tick 826,083 to 850,483 and downed
+  every colonist, and the watch read `hostile` 0 at every sample. A run then reported "0 hostile at every sample". A
+  "no hostile at build" gate that counts this field passes a save with a mad animal in it. To see a mad animal, also
+  read the pawn's `MentalStateDef` (`jawa/thing_read`), until the bridge fix
+  `RIMMANDRAKE_WIDEN_LIST_PAWNS_HOSTILE_TO_MAD_ANIMALS_ZERO_WHILE_BITING` lands.
 - ⚠️ **`python.exe` emits CRLF.** A value captured into a shell variable is `"PRESENT\r"`. Then every
   `[ "$X" = "PRESENT" ]` fails, and a clean result records as a failure. Pipe the value through `tr -d '\r\n'`.
 - ⚠️ **`grep -c` prints `0` AND exits 1 on no match**, so `$(grep -c … || echo 0)` emits **two** lines. Every count
