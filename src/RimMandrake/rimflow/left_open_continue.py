@@ -614,9 +614,11 @@ def run(unit, now=None, launch_fn=None, gates=None, root=None, log_path=None, re
     return {"unit": unit, "act": "refused", "why": str(out)[:300]}  # cut-ok: terminal display
 
 
-def account_end_wait(now):
-    """-> why no continuation may start while the account ends (drain_refusal's text), or None."""
-    return DH.drain_refusal(now, {"continued_from": "-"})
+def account_end_wait(now, plan_dir=None):
+    """-> why no continuation may start while the account ends (drain_refusal's text), or None. plan_dir: a test's
+    folder; then only its notice is read."""
+    return DH.drain_refusal(now, {"continued_from": "-"},
+                            path=os.path.join(plan_dir, "notice.json") if plan_dir else None)
 
 
 def kick_waiting(now=None, root=None, runner=subprocess.run, plan_dir=None):
@@ -628,7 +630,7 @@ def kick_waiting(now=None, root=None, runner=subprocess.run, plan_dir=None):
     if not waiting_recs:
         return "left_open: none waits"
     ok, why = SR.headroom(plan_dir, now)
-    if not ok or account_end_wait(now):
+    if not ok or account_end_wait(now, plan_dir):
         return "left_open: %d wait (%s)" % (len(waiting_recs), why)
     said = []
     for r in waiting_recs:

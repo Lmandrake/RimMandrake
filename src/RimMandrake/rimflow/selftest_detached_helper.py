@@ -359,6 +359,51 @@ def _test_return():
     rc, text = DH.return_clone(unit, now=T0 + 20, runner=run, evictor=ev, busy=not_busy)
     check(rc == 0 and "already returned" in text and len(calls) == n and len(seen) == 1, "return: a second call changes nothing")
 
+    # RIMMANDRAKE_RETRY_CARRY_ON_REFUSED_BY_DRAIN_FOUR_RUNS_STRANDED (2026-11-24 4:37 to 4:53 PM PST): the continuation
+    # step wrote "waits for the account switch" into the record while the return step worked on its own old copy, and
+    # the return's last write took the mark away: four runs were never started after the switch
+    unit, clone = det_clone("WAITS_RUN")
+    r0 = DH.read_record(unit)
+    r0["continue_plan"] = {"act": "continue", "why": "as planned at finish"}
+    DH.write_record(r0)
+    calls, run0 = sh_runner(shard_dirty=False)
+
+    def run_mid(argv, **kw):
+        if argv[0] == "./sync":     # the continuation step's write lands while the return step works
+            r = DH.read_record(unit)
+            r["continue_waits"] = {"at": T0 + 11, "why": "refused: the account lukas is draining"}
+            r["continue_plan"] = {"act": "continue", "why": "written during the return"}
+            DH.write_record(r)
+        return run0(argv, **kw)
+    seen, ev = fake_evictor()
+    rc, text = DH.return_clone(unit, now=T0 + 12, runner=run_mid, evictor=ev, busy=not_busy)
+    got = DH.read_record(unit)
+    check(rc == 0 and got.get("returned") == T0 + 12 and (got.get("continue_waits") or {}).get("at") == T0 + 11,
+          "return: a mark that another step wrote into the record during the return is kept (%s)" % sorted(got))
+    check(got["continue_plan"]["why"] == "written during the return" and got.get("return_steps"),
+          "return: a field that the other step changed keeps its new value, beside the return's own fields")
+    import left_open_continue as LOC
+    import control as C
+    pd = os.path.join(TMP, "plan_after_switch")
+    os.makedirs(pd, exist_ok=True)
+    with open(os.path.join(pd, "notice.json"), "w") as f:
+        json.dump({"state": "none", "at": DH.iso(T0 + 300)}, f)
+    with open(os.path.join(pd, "log.jsonl"), "w") as f:
+        f.write(json.dumps({"do": "normal", "at": DH.iso(T0 + 300)}) + "\n")
+    kicks = []
+
+    class Ran:
+        returncode, stdout, stderr, refused, why = 0, "", "", False, ""
+    real, C.launch_unit = C.launch_unit, lambda argv, spec, **k: kicks.append(spec) or Ran()
+    try:
+        said = LOC.kick_waiting(T0 + 330, plan_dir=pd)
+        check([k["unit"] for k in kicks if k["unit"].startswith(unit)] == [unit + "-continue"],
+              "return: so the first timed pass after the switch starts the carry-on (%s)" % said)
+        LOC.kick_waiting(T0 + 400, plan_dir=pd)
+        check(len([k for k in kicks if k["unit"].startswith(unit)]) == 1, "return: and starts it once")
+    finally:
+        C.launch_unit = real
+
     # a dirty shard is published before the sync, and --no-publish-ledger leaves it for the bundle
     unit, clone = det_clone("DIRTY_SHARD")
     calls, run = sh_runner(shard_dirty=True)

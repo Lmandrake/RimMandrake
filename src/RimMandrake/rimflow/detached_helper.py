@@ -940,6 +940,12 @@ def return_clone(unit, now=None, runner=subprocess.run, evictor=None, busy=None,
     steps.append("bundle " + (bundle or "none (nothing left to bundle)"))
     if kept:
         steps.append("KEPT: " + kept)
+    # the return works for seconds to minutes on the record it read at its start. Another step of the same run (the
+    # continuation step's "waits for the account switch") writes the record meanwhile: this write adds the return's
+    # own fields to the record as it is NOW, and takes nothing away
+    latest = read_record(unit, root)
+    if latest is not None:      # a record that cannot be read now: the return keeps the copy that it read at its start
+        rec = {**rec, **latest}
     rec.update(return_steps=steps, bundle=bundle)
     if not kept:
         rec["returned"] = now
