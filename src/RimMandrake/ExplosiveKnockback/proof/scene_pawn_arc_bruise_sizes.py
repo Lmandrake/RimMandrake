@@ -139,25 +139,29 @@ def hurt(s, alias):
     return sev, int(n.v), dead.state == "ok" and str(dead.v) == "True"
 
 
-def lane(s, name, rows):
+def lane_fire(s, name, rows):
+    """Read a lane's pawns and set off its blast, on the paused tick that every lane shares."""
     _kind, z = LANES[name]
     thrower, other = "thrower_" + name, ("other_" + name if LANES[name][0] else None)
     ids = {"thrower": thing_id(s, thrower), "other": thing_id(s, other) if other else None}
     before = {"thrower": hurt(s, thrower), "other": hurt(s, other) if other else None}
     start = s.read(thrower, "positionInt")
-    t0 = start.tick
     bx, bz = at(6, z)
     s.raw("jawa/explosion_at", at="%d,%d" % (bx, bz), radius=RADIUS, damType="Bomb", damAmount=1)
-    s.run(until=SETTLE, limit=SETTLE + 120)
+    rows[name] = dict(ids=ids, before=before, start=start.v, t0=start.tick, blast=(bx, bz), thrower=thrower, other=other)
+
+
+def lane_read(s, name, rows):
+    r = rows[name]
+    thrower, other, (bx, bz) = r.pop("thrower"), r.pop("other"), r.pop("blast")
     s.shot((bx - 2, bz - 3, 14, 7), name=name + "_after")
     recs, err = journal(s)
-    mine = [r for r in (recs or []) if isinstance(r.get("tick"), (int, float)) and r["tick"] >= (t0 or 0)
-            and r.get("def") == "Human" and r.get("type") in ("bruise", "launch", "blocked")]
+    mine = [x for x in (recs or []) if isinstance(x.get("tick"), (int, float)) and x["tick"] >= (r["t0"] or 0)
+            and x.get("def") == "Human" and x.get("type") in ("bruise", "launch", "blocked")]
     after = {"thrower": hurt(s, thrower), "other": hurt(s, other) if other else None}
     downed = {k: s.read(a, "Downed") for k, a in (("thrower", thrower), ("other", other)) if a}
-    rows[name] = dict(ids=ids, before=before, after=after, recs=mine, err=err, start=start.v,
-                      downed={k: (v.state == "ok" and str(v.v) == "True") for k, v in downed.items()})
-
+    r.update(after=after, recs=mine, err=err,
+             downed={k: (v.state == "ok" and str(v.v) == "True") for k, v in downed.items()})
 
 cast = {}
 for name in ORDER:
@@ -176,8 +180,14 @@ with scene.open(GAME, contract=bruise_sizes, needs={"mods": ["ExplosiveKnockback
         s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="blastPowerFromDamage", value="False")
         if scene.plant() == "no_bruise":
             s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="impactDamageEnabled", value="False")
+        # every lane's blast on one paused tick, then one settle: the cast is not drafted, and in the first form (a
+        # settle per lane) the later lanes' pawns walked off their cells before their blast (2026-11-24, ArchSmall: the
+        # large lane's colonist and elephant 4 cells away; APPARATUS FAULT). The lanes lie 10 cells apart; a blast reaches 2.9
         for name in ORDER:
-            lane(s, name, rows)
+            lane_fire(s, name, rows)
+        s.run(until=SETTLE, limit=SETTLE + 120)
+        for name in ORDER:
+            lane_read(s, name, rows)
     finally:
         for f, v in prior.items():   # each setting back to what it read before, on every exit path
             if v is not None:
