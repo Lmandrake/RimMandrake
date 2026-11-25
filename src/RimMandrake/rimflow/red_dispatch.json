@@ -6,8 +6,8 @@
   "_max_live_doc": "At most this many live detached runs on red-fix items at once, hand launches included.",
   "max_launches_per_night": 6,
   "_night_doc": "A night runs from 03:00 Pacific (the nightly sweep's start, rm-selftests-nightly.timer) to the next 03:00.",
-  "sonnet_cap_usd": 5,
-  "opus_cap_usd": 12,
+  "sonnet_cap_usd": 50,
+  "opus_cap_usd": 120,
   "opus_if": {
     "min_tests": 2,
     "_min_tests_doc": "one first error line shared by this many tests is a cause in shared code, not in one test",

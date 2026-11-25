@@ -10,6 +10,6 @@
   "_reading_max_age_s_doc": "Danger: a mod pipeline reading that stopped, read as an idle machine. The mod pipeline's tick writes it about each minute (943 to 1438 ticks a day measured 2026-11-18 to 11-23).",
   "_system_wait_s": "danger=a launch is sent again every tick into the same refusal; ends no work: a wait before the next try", "system_wait_s": 3600,
   "_system_wait_s_doc": "Danger: a launch sent again on every tick into the same refusal (the night of 2026-11-20, maturation_dispatch.REPAIR_LAUNCH_MOST; the same wait as list_dispatch.SYSTEM_WAIT_S).",
-  "sonnet_cap_usd": 5,
+  "sonnet_cap_usd": 50,
   "_sonnet_cap_usd_doc": "Danger: runaway spend by one helper, stopped from outside by spend_watchdog (detached_helper --budget-usd); the brief never states it. Same as red_dispatch.json and list_dispatch.json."
 }
