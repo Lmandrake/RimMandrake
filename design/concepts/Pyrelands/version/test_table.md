@@ -102,8 +102,8 @@ Generated 2026-11-16T21:27:29-08:00 from `test_table.json` (the record; this is 
 | `sc_ullai` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: herd_follows_drive | live: this run is offline only; entry exists in validation.py |
 | `sc_three_skies` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: cinderfall | live: this run is offline only; entry exists in validation.py |
 | `sc_no_rain` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: no_ordinary_rain | live: this run is offline only; entry exists in validation.py |
-| `sc_reload_keeps_the_burn` | live_minimal | 6 | `src/RimMandrake/Pyrelands/walk_small_live.py` :: reload_keeps_the_burn | UNRUN |
-| `sc_fire_sense` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: fire_sense | UNRUN on this build |
+| `sc_reload_keeps_the_burn` | live_minimal | 6 | `src/RimMandrake/Pyrelands/walk_small_live.py` :: reload_keeps_the_burn | live: this run is offline only; entry exists in walk_small_live.py |
+| `sc_fire_sense` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: fire_sense | live: this run is offline only; entry exists in validation.py |
 | `sc_firefoam_sprayer` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: firefoam_sprayer | live: this run is offline only; entry exists in validation.py |
 | `sc_sand_shovel` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: sand_shovel | live: this run is offline only; entry exists in validation.py |
 | `sc_rite_hook_alone` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: rite_hook_alone | live: this run is offline only; entry exists in validation.py |

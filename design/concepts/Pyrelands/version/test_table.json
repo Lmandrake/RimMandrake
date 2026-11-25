@@ -974,7 +974,7 @@
    "item": "RIMMANDRAKE_SPLIT_PYRELANDS_SEASON_WALK_TO_MINIMUM_TESTS",
    "runs_today": {
     "ran": false,
-    "why": "UNRUN: replaced sc_walk's reload part on 2026-11-24; offline T_WALK_SMALL (every planted fault FAILs). sc_walk's reload part PASSed on his full list, visit 8 run 2, 2026-11-24 1:10 AM PST"
+    "why": "live: this run is offline only; entry exists in walk_small_live.py"
    },
    "testq": {
     "chains": [
@@ -1006,7 +1006,7 @@
    "item": "RIMMANDRAKE_SPLIT_PYRELANDS_SEASON_WALK_TO_MINIMUM_TESTS",
    "runs_today": {
     "ran": false,
-    "why": "UNRUN on this build: visit 2 read steps_away PASS, gate-off control PASS and hungry_eats_first FAIL once, not reproduced on a clean reload (visit_2/findings.md F9)"
+    "why": "live: this run is offline only; entry exists in validation.py"
    },
    "testq": {
     "chains": [
