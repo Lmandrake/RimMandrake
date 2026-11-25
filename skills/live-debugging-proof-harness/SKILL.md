@@ -243,6 +243,8 @@ The ladder, from most force to least, for "a raider crosses a covered pit":
 3. Build a corridor with no other way, and put bait beyond the pit.
 4. Put a ring of pits round a base, and let a natural raid come.
 
+Step 4 is not to be had now: raid tests are paused, and the cheapest test that decides the bar is the test (`design/RimMandrake/standing_rulings.md` §The cheapest test that decides the bar).
+
 Say which step the scene uses. Say in one line why not a lighter one. Trying every lighter step first is not required.
 Example of a decision that force steps past: our pathing patch decides whether a raider enters a pit. Teleporting the
 raider (step 1) skips that patch, so step 1 shows nothing about the patch.

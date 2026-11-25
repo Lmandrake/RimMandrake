@@ -109,6 +109,8 @@ The ladder, from most force to least, for "a raider crosses a covered pit":
 3. Build a corridor with no other way, and put bait beyond the pit.
 4. Put a ring of pits round a base, and let a natural raid come.
 
+Step 4 is not to be had now: raid tests are paused, and the cheapest test that decides the bar is the test (`design/RimMandrake/standing_rulings.md` §The cheapest test that decides the bar).
+
 Say which step the scene uses, and in one line why not a lighter one. Trying every lighter step first is not required. A
 scene that shows a mechanism says which of the mod's decisions its force steps past. The scene shows nothing about those
 decisions. The kinds of live scene and the seven outcomes of a run: `skills/live-debugging-proof-harness/SKILL.md` §The

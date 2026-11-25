@@ -35,6 +35,7 @@ actions.** Those two acts have destroyed a colony and a 568-mod game respectivel
 | **add a tool the bridge does not have** | §9 (no permission needed for a generic tool; tests stay in Python), then the `rimbridge-companion` skill |
 | something "worked" and did not | grep `references/traps/` for your verb |
 | meet a pawn/creature you did not put there, or start any debugging theory | `references/first_look.md` — the 7-step first look (`modcheck/scene_report.py`), and what you may NOT claim about origin |
+| **stage a raid** (`jawa/fire_raid`, `jawa/raid_shape_fire`, a raid incident through `jawa/fire_incident` or `jawa/storyteller_fire`) | The client refuses a call that stages a raid while raid tests are paused (raid_pause.py show). The calls, their traps and the faction rewrite: `references/traps/pawns-factions.md`, `references/silent-failures.md` §`jawa/fire_raid` |
 | optimise, or quote a timing | `references/performance.md` |
 | **launch** the game (cold load), or attach after one | `references/preflight.md` — `preflight_bridge.py --tier full [--deep]` before, `--live` after; GREEN or do not spend the load |
 
