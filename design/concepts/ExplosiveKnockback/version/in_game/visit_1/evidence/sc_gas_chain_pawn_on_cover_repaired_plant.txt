@@ -1,0 +1,21 @@
+ACCEPT src/RimMandrake/ExplosiveKnockback/proof/scene_gas_chain_pawn_on_cover.py at 7dab94c3b798
+INFO journal mark: 200 line(s) before this run
+INFO gasChain = True (the bar is read at its default, True)
+PASS V_SMALL_LIST: small_list.json also = ['lwm.deepstorage', 'mandrake.rm.biomes', 'mandrake.rm.flowworks']
+PASS V_ON_DECK cover: stood at (28.0, 26.0) (deck (28, 26)), CoverAt RM_PitCover_ReinforcedFrame88282; dig {'success': True, 'depth': 8}
+FAIL V_BURST cover: 0 gas_burst record(s); seeded seeded=13 total=3250; fire placed 1: UNLAID
+FAIL V_SHOVE cover: 0 launch(es) []; moved None cell(s) (28.0, 26.0) -> (28.0, 26.0); land []; fire on its cell after False
+FAIL V_ON_COVER cover: launch onCover None; other records []
+PASS V_COVER_INTACT: CoverAt RM_PitCover_ReinforcedFrame88282 after the settle; hitPointsInt 160.0 -> 160.0
+PASS V_UNHURT cover: hediffs added: ['ToxicBuildup'] (Burn is the fire's, ToxGasExposure and ToxicBuildup the cloud's)
+FAIL V_BURST control: 0 gas_burst record(s); seeded seeded=13 total=3250; fire placed 1: UNLAID
+FAIL V_SHOVE control: 0 launch(es) []; moved None cell(s) (28.0, 26.0) -> (28.0, 40.0); land []; fire on its cell after False
+PASS V_UNHURT control: hediffs added: [] (Burn is the fire's, ToxGasExposure and ToxicBuildup the cloud's)
+FAIL sc_gas_chain_pawn_on_cover: 5 failing row(s); pictures in D:\ClaudeWork\rimmandrake\scratch\scene_runs\20261125T093904_scene_gas_chain_pawn_on_cover_ArchSmall_48108
+ACCEPT src/RimMandrake/ExplosiveKnockback/proof/scene_gas_chain_pawn_on_cover.py: the script ended. For a kept run, use scene.py judge.
+[bridge split] 175.8 s wall: load 0.5 / ticks 0.0 / reads 4.0 / other 41.2 / outside calls 130.1 s
+[bridge split] WARN 426 calls of rimbridge/get_bridge_status (3.8 s): batch them
+[bridge split] WARN 311 calls of jawa/session (12.9 s): batch them
+[bridge split] WARN 253 calls of jawa/static_call (10.7 s): batch them
+[bridge split] WARN 215 calls of jawa/run_until (8.9 s): batch them
+[bridge split] WARN 154 calls of jawa/read_paths (6.5 s): batch them

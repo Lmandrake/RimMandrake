@@ -1,0 +1,15 @@
+ACCEPT src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_sandbag_no_contact.py at 7dab94c3b798
+INFO journal mark: 67 line(s) before this run
+INFO sandbagsStopThrow = False (the bar is read at its default, False)
+PASS V_STOP near: 1 move record(s) [{'type': 'blocked', 'stop': 'PawnBeyondCover', 'hitOther': None, 'planned': 3, 'cells': None, 'impact': 11.588, 'otherImpact': 0}] (thrower at 27,26)
+PASS V_NO_BRUISE near: 0 bruise record(s): []
+PASS V_UNTOUCHED near: standing colonist (Bruise+Crush severity, hediff count) before (0, 0), after (0, 0)
+PASS V_STOP far: 1 move record(s) [{'type': 'launch', 'stop': 'PawnBeyondCover', 'hitOther': False, 'planned': 3, 'cells': 1, 'impact': 7.724, 'otherImpact': 0}] (thrower at 27,38)
+PASS V_NO_BRUISE far: 0 bruise record(s): []
+PASS V_UNTOUCHED far: standing colonist (Bruise+Crush severity, hediff count) before (0, 1), after (0, 1)
+PASS V_REACH far: planned 3.0 cells, needs >= 3 to reach the sandbag
+PASS V_CONTROL: moves [{'type': 'launch', 'stop': 'Pawn', 'hitOther': True, 'cells': 1}]; bruise [{'other': 'Human88296', 'amount': 4.055, 'otherAmount': 3.945}]; standing colonist before (0, 0), after (3.9449214935302734, 1)
+PASS sc_pawn_arc_sandbag_no_contact: 0 failing row(s); pictures in D:\ClaudeWork\rimmandrake\scratch\scene_runs\20261125T093624_scene_pawn_arc_sandbag_no_contact_ArchSmall_50764
+ACCEPT src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_sandbag_no_contact.py: the script ended. For a kept run, use scene.py judge.
+[bridge split] 39.4 s wall: load 0.5 / ticks 0.0 / reads 1.8 / other 7.1 / outside calls 30.0 s
+[bridge split] WARN 85 calls of rimbridge/get_bridge_status (1.6 s): batch them

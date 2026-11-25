@@ -1018,7 +1018,8 @@
    "stage": "6",
    "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
    "entry": "all_fly_no_cap",
-   "observes": "stacks reached is over 60 (INVALID otherwise; a thing reached is one inside the radius whose kernel throw is at least one cell; a rim thing whose throw rounds to 0 logs skip too_weak); stacks moved equals stacks reached; every stack inside ",
+   "observes": "one 5.9-cell blast over 10 colonists and 80 Steel stacks, read from that explosion's journal: no skip line with a cap_ reason and over 40 throws executed; every stack the kernel throws a cell or more has an item_move, over 40 of them; every request line ends in exactly one launch, item move, blocked or skip line",
+   "cheaper_why": "the three claims are counts over one and the same explosion (one exp id): no cap drops a throw, every stack the kernel moves flies, and every request gets one outcome are each a property of how many throws one blast executes in the tick its wave lands, and each needs the same 40-plus things reached at once; a scene per claim stages the same 90-thing blast three times for the same journal. The scene is one runner lane of 300 ticks (about 2 s of wall time, measured 2026-11-25 on ArchSmall), on the tier list; the kernel half (K-11, no cap) is offline",
    "reads": [
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
     "design/concepts/ExplosiveKnockback/scenes.json",
@@ -1223,7 +1224,7 @@
    "stage": "6",
    "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
    "entry": "lookup_projectile",
-   "observes": "journal tuning source: (a) projectile, (b) weapon, (c) damage type, with throw cells ordered (a) > (b) > (c); (d) no request line and no move; (e) exactly 2 cells; (f) exactly 2 cells; (g) the global 6 cells; (h) stopped before the wall, jo",
+   "observes": "a Bomb blast fired with Bullet_Revolver carrying a scene-only knockback extension (force 2.5, maxThrowCells 8): the colonist one cell away has exactly one request line, its tuning source projectile, and is thrown within one cell of the kernel's throw cells for that extension",
    "reads": [
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
     "design/concepts/ExplosiveKnockback/scenes.json",

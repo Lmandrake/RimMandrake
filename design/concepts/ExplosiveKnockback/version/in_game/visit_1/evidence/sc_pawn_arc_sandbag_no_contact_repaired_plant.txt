@@ -1,0 +1,15 @@
+ACCEPT src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_sandbag_no_contact.py at 7dab94c3b798
+INFO journal mark: 76 line(s) before this run
+INFO sandbagsStopThrow = False (the bar is read at its default, False)
+FAIL V_STOP near: 1 move record(s) [{'type': 'launch', 'stop': 'Pawn', 'hitOther': True, 'planned': 3, 'cells': 1, 'impact': 4, 'otherImpact': 4}] (thrower at 27,26)
+FAIL V_NO_BRUISE near: 1 bruise record(s): [{'type': 'bruise', 'tick': 5, 'exp': 88298, 'thing': 'Human88274', 'def': 'Human', 'how': 'path', 'other': 'Human88278', 'otherId': 88278, 'mass': 60.83, 'otherMass': 60.83, 'amount': 4, 'otherAmount': 4}]
+FAIL V_UNTOUCHED near: standing colonist (Bruise+Crush severity, hediff count) before (0, 1), after (3.132061004638672, 2)
+FAIL V_STOP far: 1 move record(s) [{'type': 'launch', 'stop': 'Pawn', 'hitOther': True, 'planned': 3, 'cells': 2, 'impact': 3.998, 'otherImpact': 4.002}] (thrower at 27,38)
+FAIL V_NO_BRUISE far: 1 bruise record(s): [{'type': 'bruise', 'tick': 5, 'exp': 88300, 'thing': 'Human88282', 'def': 'Human', 'how': 'path', 'other': 'Human88286', 'otherId': 88286, 'mass': 60.88, 'otherMass': 60.83, 'amount': 3.998, 'otherAmount': 4.002}]
+FAIL V_UNTOUCHED far: standing colonist (Bruise+Crush severity, hediff count) before (0, 2), after (0, 3)
+PASS V_REACH far: planned 3.0 cells, needs >= 3 to reach the sandbag
+PASS V_CONTROL: moves [{'type': 'launch', 'stop': 'Pawn', 'hitOther': True, 'cells': 1}]; bruise [{'other': 'Human88294', 'amount': 4, 'otherAmount': 4}]; standing colonist before (0, 0), after (3.9200000762939453, 1)
+FAIL sc_pawn_arc_sandbag_no_contact: 6 failing row(s); pictures in D:\ClaudeWork\rimmandrake\scratch\scene_runs\20261125T093706_scene_pawn_arc_sandbag_no_contact_ArchSmall_460
+ACCEPT src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_sandbag_no_contact.py: the script ended. For a kept run, use scene.py judge.
+[bridge split] 40.5 s wall: load 0.5 / ticks 0.0 / reads 2.3 / other 7.3 / outside calls 30.3 s
+[bridge split] WARN 87 calls of rimbridge/get_bridge_status (2.1 s): batch them

@@ -1,0 +1,20 @@
+ACCEPT src/RimMandrake/ExplosiveKnockback/proof/scene_gas_chain_pawn_on_cover.py at 7dab94c3b798
+INFO journal mark: 88 line(s) before this run
+INFO gasChain = True (the bar is read at its default, True)
+PASS V_SMALL_LIST: small_list.json also = ['lwm.deepstorage', 'mandrake.rm.biomes', 'mandrake.rm.flowworks']
+PASS V_ON_DECK cover: stood at (28.0, 26.0) (deck (28, 26)), CoverAt RM_PitCover_ReinforcedFrame88282; dig {'success': True, 'depth': 8}
+PASS V_BURST cover: 34 gas_burst record(s); seeded seeded=13 total=3250; fire placed 1
+PASS V_SHOVE cover: 1 launch(es) [{'gas': True, 'planned': 1, 'cells': 1, 'impact': 0, 'stop': 'Distance', 'from': [28, 26], 'to': [29, 26]}]; moved 1 cell(s) (28.0, 26.0) -> (29.0, 26.0); land [[29, 26]]; fire on its cell after False
+PASS V_ON_COVER cover: launch onCover True; other records [{'type': 'skip', 'reason': 'not_spawned'}, {'type': 'skip', 'reason': 'not_spawned'}, {'type': 'skip', 'reason': 'gas_cooldown'}, {'type': 'skip', 'reason': 'gas_cooldown'}]
+PASS V_COVER_INTACT: CoverAt RM_PitCover_ReinforcedFrame88282 after the settle; hitPointsInt 160.0 -> 159.0
+PASS V_UNHURT cover: hediffs added: ['ToxGasExposure', 'ToxicBuildup'] (Burn is the fire's, ToxGasExposure and ToxicBuildup the cloud's)
+PASS V_BURST control: 34 gas_burst record(s); seeded seeded=13 total=3250; fire placed 1
+PASS V_SHOVE control: 1 launch(es) [{'gas': True, 'planned': 1, 'cells': 1, 'impact': 0, 'stop': 'Distance', 'from': [28, 40], 'to': [29, 40]}]; moved 1 cell(s) (28.0, 35.0) -> (29.0, 40.0); land [[29, 40]]; fire on its cell after False
+PASS V_UNHURT control: hediffs added: ['ToxGasExposure', 'ToxicBuildup'] (Burn is the fire's, ToxGasExposure and ToxicBuildup the cloud's)
+PASS sc_gas_chain_pawn_on_cover: 0 failing row(s); pictures in D:\ClaudeWork\rimmandrake\scratch\scene_runs\20261125T093755_scene_gas_chain_pawn_on_cover_ArchSmall_14832
+ACCEPT src/RimMandrake/ExplosiveKnockback/proof/scene_gas_chain_pawn_on_cover.py: the script ended. For a kept run, use scene.py judge.
+[bridge split] 67.7 s wall: load 0.5 / ticks 0.0 / reads 2.5 / other 13.3 / outside calls 51.4 s
+[bridge split] WARN 157 calls of rimbridge/get_bridge_status (2.3 s): batch them
+[bridge split] WARN 95 calls of jawa/session (3.7 s): batch them
+[bridge split] WARN 89 calls of jawa/static_call (3.5 s): batch them
+[bridge split] WARN 59 calls of jawa/run_until (2.3 s): batch them

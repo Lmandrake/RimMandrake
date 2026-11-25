@@ -1,0 +1,20 @@
+ACCEPT src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_bruise_sizes.py at 7dab94c3b798
+INFO journal mark: 55 line(s) before this run
+PASS V_BRUISE_REC small: bruise {'other': 'Squirrel88278', 'mass': 60.88, 'otherMass': 12, 'amount': 0, 'otherAmount': 0} (thrower Human88274, standing Squirrel88278, thrower started at 28,26, 7 record(s) read)
+FAIL V_HEDIFF small: standing pawn's new Bruise+Crush severity 0.0 (before (0.0, 0, False), after (0.0, 0, False))
+PASS V_BRUISE_REC large: bruise {'other': 'Elephant88283', 'mass': 60.83, 'otherMass': 240, 'amount': 0, 'otherAmount': 0} (thrower Human88279, standing Elephant88283, thrower started at 28,36, 7 record(s) read)
+FAIL V_HEDIFF large: standing pawn's new Bruise+Crush severity 0.0 (before (0.0, 0, False), after (0.0, 0, False))
+PASS V_BRUISE_REC colonist: bruise {'other': 'Human88288', 'mass': 60.88, 'otherMass': 60.83, 'amount': 0, 'otherAmount': 0} (thrower Human88284, standing Human88288, thrower started at 28,46, 7 record(s) read)
+FAIL V_HEDIFF colonist: standing pawn's new Bruise+Crush severity 0.0 (before (0.0, 0, False), after (0.0, 0, False))
+FAIL V_SMALL: journal colonist 0.0 vs squirrel 0.0; hediffs colonist +0.0 vs squirrel +0.0 (squirrel dead False)
+FAIL V_LARGE: journal colonist 0.0 vs elephant 0.0; hediffs colonist +0.0 vs elephant +0.0
+FAIL V_ALIKE: amount 0.0 / otherAmount 0.0 = None; masses 60.88, 60.83 -> otherMass/mass 0.999178712220762 (limit +-0.05); both at most 4.45: True
+PASS V_NOT_DOWNED: thrower downed False, standing colonist downed False
+PASS V_EMPTY: 0 bruise record(s), launch [{'stop': 'Distance', 'hitOther': False, 'cells': 1}]
+FAIL sc_pawn_arc_bruise_sizes: 6 failing row(s); pictures in D:\ClaudeWork\rimmandrake\scratch\scene_runs\20261125T093527_scene_pawn_arc_bruise_sizes_ArchSmall_46040
+ACCEPT src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_bruise_sizes.py: the script ended. For a kept run, use scene.py judge.
+[bridge split] 48.8 s wall: load 0.5 / ticks 0.0 / reads 2.1 / other 12.1 / outside calls 34.3 s
+[bridge split] WARN 130 calls of rimbridge/get_bridge_status (1.8 s): batch them
+[bridge split] WARN 88 calls of jawa/session (3.5 s): batch them
+[bridge split] WARN 87 calls of jawa/static_call (3.4 s): batch them
+[bridge split] WARN 68 calls of jawa/read_paths (2.7 s): batch them
