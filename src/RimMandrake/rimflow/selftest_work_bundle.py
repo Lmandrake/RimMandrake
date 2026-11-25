@@ -269,6 +269,28 @@ def t_the_brief_names_every_member_and_the_role():
         "brief: states no spend, cap or remainder")
 
 
+def t_the_brief_carries_the_polish_of_its_files():
+    W = WB()
+    root = tempfile.mkdtemp(prefix="wb-polish-")
+    pol = os.path.join(root, "design", "concepts", "FlowWorks", "version", "polish.md")
+    os.makedirs(os.path.dirname(pol))
+    with open(pol, "w") as f:
+        f.write("# Polish\n\n- `pump.py` reads the depth twice.\n- `valve.cs` logs one line too many.\n")
+    items = {"C1": item("C1", title="first thing")}
+    rec = W.new_record("mod:FlowWorks", ["C1"], "why", "workshop", NOW)
+    b = W.brief(rec, items, {"C1": None}, root=root)
+    chk(lambda: W.POLISH_RULE in b and "design/concepts/FlowWorks/version/polish.md" in b
+        and "`pump.py` reads the depth twice." in b and "`valve.cs` logs one line too many." in b,
+        "brief: a mod bundle carries the polish rule and the open lines of the mod's polish.md")
+    note = W.holder_note(rec, items, {"C1": None}, root=root)
+    chk(lambda: W.POLISH_RULE in note and "`pump.py` reads the depth twice." in note,
+        "holder note: the mod's polish lines join the holder's brief too")
+    rec2 = W.new_record("pipeline:docs", ["C1"], "why", "workshop", NOW)
+    b2 = W.brief(rec2, items, {"C1": None}, root=root)
+    chk(lambda: W.POLISH_RULE in b2 and "boundary page" in b2,
+        "brief: a pipeline bundle carries the rule and points at the polish.md beside each changed file's page")
+
+
 def t_the_lane_launches_one_bundle_per_system():
     W = WB()
     rows = [{"item": "L1", "decision": "launch", "model": "opus", "cap": 120, "run_n": 1},
@@ -745,7 +767,7 @@ def t_each_limit_names_its_danger():
 def main():
     for t in [t_sort_runs_each_members_test_and_closes_only_green, t_sort_dry_closes_nothing, t_members_are_one_system,
               t_ready_members_only, t_one_live_bundle_per_system, t_the_record_is_written_at_launch,
-              t_the_brief_names_every_member_and_the_role, t_the_lane_launches_one_bundle_per_system,
+              t_the_brief_names_every_member_and_the_role, t_the_brief_carries_the_polish_of_its_files, t_the_lane_launches_one_bundle_per_system,
               t_context_reads_the_own_session, t_outcomes_are_read_from_the_ledger,
               t_restart_until_each_member_has_an_outcome, t_finish_writes_the_bundles_end,
               t_a_restart_that_ended_no_member_raises, t_the_real_restart_path_keeps_the_progress_guard,

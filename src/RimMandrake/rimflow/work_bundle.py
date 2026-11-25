@@ -354,8 +354,44 @@ def ready_split(ids, items, now, refused, held, leased):
     return ready, out
 
 
-def brief(rec, items, tests):
-    """The bundle run's brief: the role, the members with their tests, the state file. No spend, cap or remainder."""
+# The polish rule of a bundle (CLAUDE.md §Touching code has a cost): it is RIGHT THERE, so it does the polish of the
+# files it changes. One text, cited by brief() and holder_note(), so the two cannot drift.
+POLISH_RULE = ("Polish: you do the polish of every file that you change, in this run, before the fresh reader of step 4. "
+               "Also take each open line of the polish.md below (and of the polish.md beside the boundary page of each "
+               "file that you change) that names a file you change: do it, and remove the line. A polish line stays only "
+               "when it names a file that you did not change, names a concrete risk after `risk:`, or would move a bar, "
+               "add a feature or need one of the owner's five acts. Polish never moves a bar. ./publish returns a new "
+               "line about your own changed file that has no `risk:` part.")
+
+
+def polish_of(system, root=REPO):
+    """-> (repo path, [open bullet lines]) of the system's polish.md, or (None, []) when the system has no fixed one
+    (a mod's is design/concepts/<Mod>/version/polish.md; a pipeline part's sit beside the pages of its files)."""
+    if not str(system or "").startswith("mod:"):
+        return None, []
+    rel = "design/concepts/%s/version/polish.md" % system[4:]
+    try:
+        with open(os.path.join(root, rel), encoding="utf-8") as f:
+            lines = [ln.strip() for ln in f if ln.lstrip().startswith(("- ", "* "))]
+    except OSError:
+        return rel, []
+    return rel, lines
+
+
+def polish_text(system, root=REPO):
+    rel, lines = polish_of(system, root)
+    if rel is None:
+        where = "This system has no one polish.md: read the polish.md beside the boundary page of each file you change."
+    elif not lines:
+        where = "The system's polish.md is %s; it has no open line now." % rel
+    else:
+        where = "The open lines of %s (%d):\n%s" % (rel, len(lines), "\n".join("  " + ln for ln in lines))
+    return "%s\n%s\n" % (POLISH_RULE, where)
+
+
+def brief(rec, items, tests, root=REPO):
+    """The bundle run's brief: the role, the members with their tests, the state file, the polish to take. No spend,
+    cap or remainder."""
     rows = []
     for i in rec["members"]:
         t = tests.get(i)
@@ -374,8 +410,9 @@ The members ({n}), each with its own test and its own close:
 {rows}
 
 Why this bundle: {why}
-""".format(bid=rec["id"], system=rec["system"], role=ROLE, sf=rec["state_file"], lead=rec["lead"], n=len(rec["members"]),
-           rows="\n".join(rows), why=rec["why"])
+
+{polish}""".format(bid=rec["id"], system=rec["system"], role=ROLE, sf=rec["state_file"], lead=rec["lead"],
+                    n=len(rec["members"]), rows="\n".join(rows), why=rec["why"], polish=polish_text(rec["system"], root))
 
 
 def tests_text(ids, items, prose_of):
@@ -1032,7 +1069,7 @@ def holder_bundle(mod, lead, ids, extra, now, why=None):
     return 0, rec
 
 
-def holder_note(rec, items, tests):
+def holder_note(rec, items, tests, root=REPO):
     """The lines the holder's brief gains: the bundle, its state file, the role, and the joined tickets."""
     road = [m for m in rec["members"] if m not in tests] if tests else []
     joined = [m for m in rec["members"] if m in tests]
@@ -1044,6 +1081,7 @@ def holder_note(rec, items, tests):
         lines.append("The bundle also holds these ready tickets of the mod, each with its own test and its own close:")
         lines += ["- `%s` %s\n  test: %s" % (m, _one(_g(items.get(m), "title"), 160), tests.get(m)) for m in joined]
     del road
+    lines.append(polish_text(rec["system"], root))
     return "\n".join(lines) + "\n"
 
 

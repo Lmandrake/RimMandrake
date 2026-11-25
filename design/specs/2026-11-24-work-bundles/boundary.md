@@ -83,6 +83,10 @@ bundle began). A member with none of these is **open**.
   and would block the system.
 - **the-brief-names-every-member-and-the-role.** The brief lists each member with its title and its test, names the
   role file `roles/bundle_worker.md`, the state file and the bundle id, and states no spend, cap or remainder.
+- **the-brief-carries-the-polish-of-its-files.** The brief and the holder's note carry `POLISH_RULE` (the bundle does the
+  polish of each file that it changes, and takes each open polish line that names one). A mod bundle's brief lists the
+  open lines of `design/concepts/<Mod>/version/polish.md`; any other bundle's brief points at the polish.md beside the
+  boundary page of each file that it changes.
 - **context-reads-the-own-session.** `work_bundle.py context` prints the session's context tokens, the model's window
   (the newest `contextWindow` in the run's result files, else UNMEASURED) and one verdict: `GO ON`, `SAVE AND RESTART`
   (above half of the window) or `UNMEASURED` with its cause, never a guessed window.

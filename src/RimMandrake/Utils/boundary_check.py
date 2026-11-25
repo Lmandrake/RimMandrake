@@ -246,6 +246,7 @@ PAGES = {
     "design/specs/2026-11-24-live-gate-on-pipeline-host/boundary.md": "src/RimMandrake/rimflow/selftest_live_where_run.py",
     "design/specs/2026-11-25-deploy-shard-guard/boundary.md":
         "src/RimMandrake/rimflow/selftest_ledger_sparse_deploy.py",
+    "design/specs/2026-11-25-polish-door/boundary.md": "src/RimMandrake/Utils/selftest_polish_door.py",
 }
 SECTIONS = ("PROMISES", "SURVIVES")
 HEAD_RX = re.compile(r"^##\s+(\S+)")

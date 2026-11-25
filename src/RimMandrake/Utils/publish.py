@@ -1009,6 +1009,17 @@ def door_checks(top, changed):
         pipeline_checks(top, changed, gate)
 
 
+def polish_door_check(top):
+    """A helper run's new polish.md line about a file it changed, with no `risk:` part, is returned to the run with the
+    rule (polish_door.py; CLAUDE.md §Touching code has a cost). Raises Refuse; the caller takes the commit off HEAD."""
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import polish_door
+    _, track, _label = target_ref(top)
+    msg = polish_door.check(top, track)
+    if msg:
+        raise Refuse(msg)
+
+
 def door_inputs(top, test):
     """-> repo-relative paths a pipeline test's verdict is taken to depend on: the test, the repo .py files it imports or
     names (transitively; run_selftests' reader, without its whole-directory sweep, which would tie every rimflow test to
@@ -1729,6 +1740,7 @@ def _publish(top, paths, msg, cwd=None):
                             "record cannot be told" % track, _undo(top, made, named)))
     changed = _changed_since_origin(top)
     try:
+        polish_door_check(top)
         door_checks(top, changed)
     except Refuse as e:
         if not made:
