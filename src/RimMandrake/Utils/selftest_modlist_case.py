@@ -53,7 +53,11 @@ with tempfile.TemporaryDirectory() as d:
         # door 2: enable (with_zoom)
         check("with_zoom lowercases", Z.with_zoom(MIXED) == [m.lower() for m in MIXED])
         open(live, "w").write(cfg(MIXED)); S.FULL = src
-        S.enable(["Kutte.Stairs"], True)
+        closure = MB.package_closure; MB.package_closure = lambda pkgs: (list(pkgs), [])   # not this host's installs
+        try:
+            S.enable(["Kutte.Stairs"], True)
+        finally:
+            MB.package_closure = closure
         got = ids_of(live)
         check("enable writes lowercase", Z.mixed_case(got) == [] and "kutte.stairs" in got)
         # door 3: write_config
