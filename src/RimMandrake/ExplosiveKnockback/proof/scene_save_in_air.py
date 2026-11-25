@@ -62,32 +62,40 @@ def pos(t):
 
 
 def flights(text):
-    """RM_KnockbackProof.Flights text -> [{innerId (digits), left}]."""
+    """RM_KnockbackProof.Flights text -> [{innerId (digits), def, count, left}]."""
     out = []
     for line in str(text or "").splitlines():
         m = re.search(r"innerId=(\S+)", line)
         if not m or line.startswith("NONE"):
             continue
         left = re.search(r"left=(-?\d+)", line)
-        out.append({"innerId": num(m.group(1)), "left": int(left.group(1)) if left else None})
+        inner = re.search(r"inner=(\S+) x(\d+)", line)
+        out.append({"innerId": num(m.group(1)), "def": inner.group(1) if inner else None,
+                    "count": int(inner.group(2)) if inner else None, "left": int(left.group(1)) if left else None})
     return out
 
 
 def census(things, flight_text, hi):
-    """One arm's reading: {"ids": sorted ids, "dup": sorted ids seen twice, "stack": {id: count}}. things is
-    jawa/list_things' list for the site; only ids <= hi (older than the shell) are counted."""
-    seen, stack = [], {}
+    """One arm's reading: {"ids": sorted ids, "dup": sorted ids seen twice, "stack": {id: count}, "total": {def: count}}.
+    things is jawa/list_things' list for the site; only ids <= hi (older than the shell) are in ids. total sums the staged
+    defs over every id, new ones included, spawned and in the air: a load-made copy under a NEW id reads as more Steel
+    there, where ids alone see nothing (fresh reader, 2026-11-25)."""
+    seen, stack, total = [], {}, {}
     for t in things or []:
+        if t.get("def") in KINDS:
+            total[t["def"]] = total.get(t["def"], 0) + int(t.get("stackCount") or 0)
         n = num(t.get("id"))
         if n and int(n) <= hi:
             seen.append(n)
             stack[n] = t.get("stackCount")
     for f in flights(flight_text):
+        if f.get("def") in KINDS:
+            total[f["def"]] = total.get(f["def"], 0) + int(f.get("count") or 0)
         if f["innerId"] and int(f["innerId"]) <= hi:
             seen.append(f["innerId"])
             stack.setdefault(f["innerId"], "in_air")
     return {"ids": sorted(set(seen)), "dup": sorted(i for i in set(seen) if seen.count(i) > 1),
-            "stack": {k: stack[k] for k in sorted(stack)}}
+            "stack": {k: stack[k] for k in sorted(stack)}, "total": {k: total[k] for k in sorted(total)}}
 
 
 def judge(ev):
@@ -113,11 +121,16 @@ def judge(ev):
     slack = ev.get("load_slack", 3)
     want = sorted(f["innerId"] for f in air if (f.get("left") or 0) > slack)
     loads = ev.get("air_at_load") or []
-    if len(loads) < 2:
-        r("SA_AIR_AT_LOAD", "UNMEASURED", "%d load(s) read, want 2 (the triplet stopped early: %s)" % (len(loads), ev.get("why")))
+    at = ev.get("arms_at_target") or {}
+    loaded = all(at.get(k) for k in "ABC")      # a load that never took leaves the live game, or a loading one, to read
+    if not loaded or len(loads) < 2:
+        r("SA_AIR_AT_LOAD", "UNMEASURED", "arms read at the target %s, %d load(s) read (the triplet stopped early: %s)" % (
+            at, len(loads), ev.get("why")))
+    elif not want:
+        r("SA_AIR_AT_LOAD", "UNMEASURED", "every flight had %d ticks or fewer left at the save: %s" % (slack, air))
     else:
         got = [sorted(f["innerId"] for f in ld if f.get("innerId") in staged) for ld in loads]
-        r("SA_AIR_AT_LOAD", all(set(want) <= set(g) for g in got) and bool(want),
+        r("SA_AIR_AT_LOAD", all(set(want) <= set(g) for g in got),
           "in the air at the save with > %d ticks left: %s; in the air right after load B %s, load C %s" % (
               slack, want, got[0], got[1]))
     tr = ev.get("triplet") or {}
@@ -130,10 +143,18 @@ def judge(ev):
         tr.get("target"), len(ids.get("A", [])), len(ids.get("B", [])), len(ids.get("C", [])), dups, lost[:5], new[:5],
         tr.get("verdict"), tr.get("why") or "")
     missing = [i for i in staged if i not in ids.get("A", [])]
+    want_total = ev.get("staged_total") or {}
+    tot = {k: a.get("total") for k, a in arms.items()}
+    off = {k: v for k, v in tot.items() if k in ("B", "C") and v != want_total}
+    det += "; totals by def %s (staged %s)" % (tot, want_total)
     if dups:
         r("SA_EACH_ONCE", False, "MOD: a thing counted twice; " + det)
-    elif missing:
-        r("SA_EACH_ONCE", "UNMEASURED", "the live arm lacks staged thing(s) %s: the census rect missed them; %s" % (missing, det))
+    elif missing or tot.get("A") != want_total:
+        r("SA_EACH_ONCE", "UNMEASURED", "the live arm lacks staged thing(s) %s or its totals differ: the census rect missed them; %s" % (missing, det))
+    elif off:
+        r("SA_EACH_ONCE", False, "MOD: a load changed the total of a staged def (a copy under a new id, or a loss) in %s; %s" % (sorted(off), det))
+    elif ev.get("plant") and not ev.get("planted"):
+        r("SA_EACH_ONCE", "UNMEASURED", "the plant %s was asked and nothing was planted; %s" % (ev.get("plant"), det))
     elif tr.get("verdict") == "IDENTICAL":
         r("SA_EACH_ONCE", True, det)
     elif tr.get("verdict") == "SAVE_DROPS_STATE":
@@ -141,16 +162,18 @@ def judge(ev):
     else:
         r("SA_EACH_ONCE", "UNMEASURED", det)
     end = ev.get("landed")
-    if not end:
+    if not loaded:
+        r("SA_LANDED", "UNMEASURED", "the triplet did not read every arm at its target (%s): the game after it is not a load" % at)
+    elif not end:
         r("SA_LANDED", "UNMEASURED", "no reading after the flights (%s)" % ev.get("land_why"))
     else:
         c = end.get("census") or {}
         left = end.get("carriers_left")
         st = (c.get("stack") or {}).get(ev.get("steel_id"))
         absent = [i for i in staged if i not in (c.get("ids") or [])]
-        r("SA_LANDED", not left and not c.get("dup") and not absent and st == STEEL,
-          "after %s tick(s): %d carrier(s) left; dup %s; staged absent %s; Steel %s" % (
-              end.get("ticks"), len(left or []), c.get("dup"), absent, st))
+        r("SA_LANDED", not left and not c.get("dup") and not absent and st == STEEL and c.get("total") == want_total,
+          "after %s tick(s): %d carrier(s) left; dup %s; staged absent %s; Steel %s; totals by def %s (staged %s)" % (
+              end.get("ticks"), len(left or []), c.get("dup"), absent, st, c.get("total"), want_total))
     return rows
 
 
@@ -203,6 +226,9 @@ def main():
         mine = [t for t in now if num(t.get("id")) and num(t.get("id")) not in old and t.get("def") in KINDS]
         ev["staged"] = [(KINDS[t.get("def")], num(t.get("id")), t.get("stackCount"), pos(t)) for t in mine]
         ev["staged_ids"] = sorted(num(t.get("id")) for t in mine)
+        ev["staged_total"] = {}
+        for t in mine:
+            ev["staged_total"][t["def"]] = ev["staged_total"].get(t["def"], 0) + int(t.get("stackCount") or 0)
         ev["steel_id"] = next((i for k, i, _n, _p in ev["staged"] if k == "steel"), None)
         heavy = next((p for k, _i, _n, p in ev["staged"] if k == "heavy"), None)
         hi = max([int(num(t.get("id"))) for t in now if num(t.get("id"))] + [0])
@@ -228,7 +254,9 @@ def main():
             arm[0] = "B" if arm[0] == "A" else "C"
             ev["air_at_load"].append(flights(kp("Flights")))
             if a.plant == "lose_heavy" and heavy:
-                ev.setdefault("planted", []).append(c("jawa/destroy_batch", rects="%d,%d,1,1" % heavy, categories="Item"))
+                got = c("jawa/destroy_batch", rects="%d,%d,1,1" % heavy, categories="Item")
+                if got.get("success") is not False:     # a refused plant is no plant: SA_EACH_ONCE then reads UNMEASURED
+                    ev.setdefault("planted", []).append(got)
             return ok, why
 
         class _TB(object):
@@ -246,7 +274,11 @@ def main():
             tr = {"verdict": "UNMEASURED", "why": "saveload_triplet raised %r" % e}
         ev["triplet"] = {k: tr.get(k) for k in ("verdict", "why", "target", "save")}
         ev["why"] = tr.get("why")
-        if tr.get("arms"):
+        # every arm read at the target, or the game after the triplet is not a load of the save (fresh reader, 2026-11-25:
+        # arms["A"] is set before arm B loads, so a non-empty arms dict proves nothing)
+        tgt = tr.get("target")
+        ev["arms_at_target"] = {k: tgt is not None and (tr.get("arms") or {}).get(k, {}).get("readTick") == tgt for k in "ABC"}
+        if all(ev["arms_at_target"].values()):
             t_end = None
             for t in range(0, LAND_MAX, 10):
                 if not flights(kp("Flights")):
@@ -257,7 +289,7 @@ def main():
             ev["landed"] = {"ticks": t_end if t_end is not None else LAND_MAX, "carriers_left": left,
                             "census": census(things(), "", hi)}
         else:
-            ev["land_why"] = "the triplet loaded nothing"
+            ev["land_why"] = "the triplet did not read every arm at its target"
         rows = judge(ev)
     kp("Clear")
     out = a.out or os.path.join(os.environ.get("RM_SCRATCH", r"D:\ClaudeWork\rimmandrake"), "ek_proof",

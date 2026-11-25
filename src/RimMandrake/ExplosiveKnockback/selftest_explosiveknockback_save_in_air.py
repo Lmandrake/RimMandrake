@@ -13,6 +13,10 @@ One good evidence set must read PASS on every row; each planted fault must turn 
   S9  the stage refused                                                    -> SA_PRE FAIL, the rest UNMEASURED
   S10 census: a thing born after the shell (id > hi) is not counted; a thing listed and in a carrier is a duplicate
   S11 the live arm misses a staged thing (the rect missed it)              -> SA_EACH_ONCE UNMEASURED, never PASS
+  S12 the triplet stopped before arm C was read at its target (a load that never took) -> SA_AIR_AT_LOAD and SA_LANDED
+      UNMEASURED, never a FAIL of the mod and never a PASS read off the live game (fresh reader, 2026-11-25)
+  S13 a load makes a copy of the Steel under a NEW id (150 Steel, every old id once) -> SA_EACH_ONCE FAIL, SA_LANDED FAIL
+  S14 --plant asked but nothing was planted                                -> SA_EACH_ONCE UNMEASURED, never PASS
 
     python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_save_in_air.py
 """
@@ -27,8 +31,12 @@ import scene_save_in_air as S  # noqa: E402
 IDS = ["101", "102", "103"]           # steel, comp, heavy
 
 
-def arm(ids=IDS, dup=()):
-    return {"ids": sorted(ids), "dup": sorted(dup), "stack": {"101": "in_air", "102": "in_air", "103": 1}}
+TOTAL = {"ComponentIndustrial": 1, "MinifiedThing": 1, "Steel": 75}
+
+
+def arm(ids=IDS, dup=(), total=None):
+    return {"ids": sorted(ids), "dup": sorted(dup), "stack": {"101": "in_air", "102": "in_air", "103": 1},
+            "total": dict(total or TOTAL)}
 
 
 GOOD = {
@@ -37,8 +45,10 @@ GOOD = {
     "air_at_load": [[{"innerId": "101", "left": 10}, {"innerId": "102", "left": 8}],
                     [{"innerId": "101", "left": 10}, {"innerId": "102", "left": 8}]],
     "arms": {"A": arm(), "B": arm(), "C": arm()},
+    "staged_total": dict(TOTAL), "arms_at_target": {"A": True, "B": True, "C": True},
     "triplet": {"verdict": "IDENTICAL", "target": 1012},
-    "landed": {"ticks": 20, "carriers_left": [], "census": {"ids": IDS, "dup": [], "stack": {"101": 75, "102": 1, "103": 1}}},
+    "landed": {"ticks": 20, "carriers_left": [], "census": {"ids": IDS, "dup": [], "stack": {"101": 75, "102": 1, "103": 1},
+                                                            "total": dict(TOTAL)}},
 }
 
 
@@ -81,9 +91,19 @@ def main():
         fails.append("S10: census %s, want ids ['101'] and dup ['101']" % c)
     expect("S11", plant(lambda e: [e["arms"].__setitem__(k, arm(ids=IDS[:2])) for k in "ABC"]),
            {"SA_EACH_ONCE": "UNMEASURED", "SA_LANDED": "PASS"})
+    expect("S12", plant(lambda e: e["arms_at_target"].__setitem__("C", False)),
+           {"SA_AIR_AT_LOAD": "UNMEASURED", "SA_EACH_ONCE": "PASS", "SA_LANDED": "UNMEASURED"})
+
+    def copy_new_id(e):
+        big = dict(TOTAL, Steel=150)
+        e["arms"]["B"] = arm(total=big)
+        e["arms"]["C"] = arm(total=big)
+        e["landed"]["census"]["total"] = big
+    expect("S13", plant(copy_new_id), {"SA_EACH_ONCE": "FAIL", "SA_LANDED": "FAIL"})
+    expect("S14", plant(lambda e: e.__setitem__("plant", "lose_heavy")), {"SA_EACH_ONCE": "UNMEASURED"})
     for f in fails:
         print("FAIL " + f)
-    print("explosive knockback save in air judgment: %s (%d of 11 cases wrong)" % ("PASS" if not fails else "FAIL", len(
+    print("explosive knockback save in air judgment: %s (%d of 14 cases wrong)" % ("PASS" if not fails else "FAIL", len(
         set(f.split(":")[0] for f in fails))))
     return 1 if fails else 0
 

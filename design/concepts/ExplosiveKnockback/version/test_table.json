@@ -1468,7 +1468,7 @@
    "stage": "6",
    "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
    "entry": "pit_goods_fetch",
-   "observes": "the two hauls are ordered (the stack, then the corpse, each to the storage HaulToStorageJob picks) with the hauler's needs held full; within 5000 ticks the stack reaches a stockpile and the corpse a grave or stockpile outside the pit; the hauler's path cells enter the pit (or it is seen on a pit cell), which only the lowered ladder allows; the raised-ladder control stack stays in its pit",
+   "observes": "before the orders the hauler's free-will answer is read (PawnCanAutomaticallyHaulFast, reach included): yes for the lowered-ladder pit's stack and corpse, no for the raised-ladder control's stack; then the two hauls are ordered (the stack, then the corpse, each to the storage HaulToStorageJob picks) with the hauler's needs held full; within 5000 ticks the stack reaches a stockpile and the corpse a grave or stockpile outside the pit; the hauler's path cells enter the pit (or it is seen on a pit cell), which only the lowered ladder allows; the raised-ladder control stack stays in its pit",
    "reads": [
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
     "design/concepts/ExplosiveKnockback/scenes.json",
@@ -2954,7 +2954,7 @@
    "stage": "6",
    "file": "src/RimMandrake/ExplosiveKnockback/proof/scene_save_in_air.py",
    "entry": "scene_save_in_air.py",
-   "observes": "one HE-shell blast (Bomb, radius 2.9) over three goods; a save 2 ticks later with goods in their carriers; a live arm and two loads of that save, each read at the save tick + 10: each thing older than the shell is counted once, the loads agree with the live game, the loads keep the flights, and after landing every thing is on the ground once with its count",
+   "observes": "one HE-shell blast (Bomb, radius 2.9) over three goods; a save 2 ticks later with goods in their carriers; a live arm and two loads of that save, each read at the save tick + 10: each thing older than the shell is counted once, the loads agree with the live game, the loads keep the flights, and after landing every thing is on the ground once with its count; the staged defs' totals (Steel 75, one component, one minified building) hold in every arm and after landing, so a copy under a new id is seen",
    "reads": [
     "src/RimMandrake/ExplosiveKnockback/proof/scene_save_in_air.py",
     "src/RimMandrake/Utils/validation_core.py",
@@ -2990,7 +2990,7 @@
    "item": "RIMMANDRAKE_SHRINK_KNOCKBACK_SCENES_ONE_SAVE_IN_AIR",
    "runs_today": {
     "ran": false,
-    "why": "UNRUN: written 2026-11-25 by RIMMANDRAKE_SHRINK_KNOCKBACK_SCENES_ONE_SAVE_IN_AIR; offline oracle selftest_explosiveknockback_save_in_air.py (11 cases, 4 planted judge faults red)"
+    "why": "UNRUN: written 2026-11-25 by RIMMANDRAKE_SHRINK_KNOCKBACK_SCENES_ONE_SAVE_IN_AIR; offline oracle selftest_explosiveknockback_save_in_air.py (14 cases, 4 planted judge faults red; 3 cases added red-first after the fresh reader)"
    },
    "testq": {
     "check": {

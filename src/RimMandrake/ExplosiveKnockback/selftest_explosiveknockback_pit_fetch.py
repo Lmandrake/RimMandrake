@@ -18,6 +18,10 @@ fetched. And the corpse lay on the pit's edge row, where a hauler on the rim tou
   G6 every haulable on the map that is not the scene's is forbidden for the scene and allowed again by its restore (visit 3,
      2026-11-16, SITE: after 53 scenes the hauler carried their corpses and steel into this scene's stockpiles, the stack
      merged into another and the corpse was moved off its cell; 2 FAIL of 2 on that map, 2 PASS of 2 on a fresh one)
+  G7 the hauls are ORDERED (2026-11-25), and an ordered haul skips the free-will reach test, so before the orders the scene
+     reads HaulAIUtility.PawnCanAutomaticallyHaulFast for the stack, the corpse and the control stack, and the verdict
+     requires the first two true and the control false (fresh reader, 2026-11-25: a reach veto that wrongly shut the
+     lowered-ladder pit would else pass, the ordered job walking the ladder anyway)
 
     python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_pit_fetch.py
 """
@@ -58,6 +62,9 @@ def layout(b):
         "zones": [tuple(int(v) for v in m) for m in re.findall(r"z[ab]\.AddCell\(" + O + r"\)", b)],
         "hauler": one(r'Colonist\(s, "h", ' + O, "the hauler"),
         "corpse_allowed": bool(re.search(r"dead\.Kill\(null\);.{0,400}?dead\.Corpse\?\.SetForbidden\(false", b, re.S)),
+        "free_will_reach": all(re.search(r'PawnCanAutomaticallyHaulFast\(h, s\.things\["%s"\], false\)' % k, b)
+                               for k in ("st", "corpse", "cst"))
+                           and 0 <= b.find("PawnCanAutomaticallyHaulFast") < b.find("TryTakeOrderedJob"),
         "foreign_forbidden": bool(re.search(r"ThingRequestGroup\.HaulableEver.{0,600}?SetForbidden\(true.{0,600}?s\.restore.{0,300}?"
                                             r"SetForbidden\(false", b, re.S)) and b.find("HaulableEver") < b.find("ProofSchedule"),
     }
@@ -96,6 +103,11 @@ def check(lay):
         faults.append("G5 the corpse is left forbidden (vanilla forbids a corpse dying outside the home area): nobody hauls it")
     if not lay.get("foreign_forbidden"):
         faults.append("G6 the map's other haulables stay allowed: earlier scenes' corpses and steel crowd this scene's stockpiles")
+    if not lay.get("free_will_reach"):
+        faults.append("G7 the ordered hauls are not preceded by a free-will reach read of stack, corpse and control: a reach "
+                      "veto that shuts the lowered-ladder pit would pass")
+    if lay.get("verdict_reach") is False:
+        faults.append("G7 the verdict does not require the free-will reach (autoHaulMain true, autoHaulControl false)")
     return faults
 
 
@@ -103,6 +115,9 @@ def main():
     text = open(SRC, encoding="utf-8").read()
     try:
         lay = layout(block(text))
+        i = text.index('case "pit_goods_fetch":')
+        v = text[text.index("s.verdict = sc =>", i):text.index("return null;", text.index("s.verdict = sc =>", i))]
+        lay["verdict_reach"] = "autoHaulMain" in v and "autoHaulControl" in v
         faults = check(lay)
     except ValueError as e:
         faults = ["layout unreadable: %s" % e]
@@ -111,7 +126,7 @@ def main():
     # planted faults: the visit-2 layout must go red on G1 and G2
     old = {"main": {(x, z) for x in (2, 3, 4) for z in (-1, 0, 1)}, "control": {(x, z) for x in (-5, -4, -3) for z in (-1, 0, 1)},
            "st": (3, 0), "cst": (-4, 0), "dead": (3, 1), "lad": (1, 0, 2, 0), "ctl": (-6, 0, -5, 0),
-           "zones": [(0, 5), (2, 5)], "hauler": (0, 3), "corpse_allowed": True, "foreign_forbidden": True}
+           "zones": [(0, 5), (2, 5)], "hauler": (0, 3), "corpse_allowed": True, "foreign_forbidden": True, "free_will_reach": True}
     got = check(old)
     planted = all(any(f.startswith(g) for f in got) for g in ("G1", "G2"))
     if not planted:

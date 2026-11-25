@@ -887,11 +887,11 @@ namespace RimMandrake.ExplosiveKnockback
             }
         }
 
-        /// <summary>Bridge read, also after a reload (no scene state): every carrier on the current map as
-        /// "id inner=def xN innerId=n at=x,z dest=x,z left=ticks bounces=n", one per line; "NONE" when there is none.</summary>
         /// <summary>sc_pit_fetch's window: the two ordered hauls finish well inside it (RIMMANDRAKE_SHRINK_KNOCKBACK_SCENES_ONE_SAVE_IN_AIR).</summary>
         private const int PitFetchTicks = 5000;
 
+        /// <summary>Bridge read, also after a reload (no scene state): every carrier on the current map as
+        /// "id inner=def xN innerId=n at=x,z dest=x,z left=ticks bounces=n", one per line; "NONE" when there is none.</summary>
         public static string Flights(string _)
         {
             if (Map == null)
@@ -2630,6 +2630,12 @@ namespace RimMandrake.ExplosiveKnockback
                         // day (60000 ticks) to choose its own work; 6 of 12 runs did not pass. The two hauls are now ORDERED (the
                         // stack, then the corpse, each to the storage HaulToStorageJob picks), the hauler's needs are held full
                         // so no meal or bed interrupts it, its path cells are read, and the scene runs 5000 ticks.
+                        // An ordered haul skips the free-will test a hauler at large meets (reach included), so the free-will
+                        // answer is read first and judged: the lowered-ladder pit's goods haulable, the raised-ladder control's
+                        // not (fresh reader, 2026-11-25: a reach veto that shut the lowered pit would else pass on the order).
+                        s.numbers["autoHaulMain"] = HaulAIUtility.PawnCanAutomaticallyHaulFast(h, s.things["st"], false)
+                            && HaulAIUtility.PawnCanAutomaticallyHaulFast(h, s.things["corpse"], false) ? 1 : 0;
+                        s.numbers["autoHaulControl"] = HaulAIUtility.PawnCanAutomaticallyHaulFast(h, s.things["cst"], false) ? 1 : 0;
                         Job jSt = HaulAIUtility.HaulToStorageJob(h, s.things["st"], true);
                         Job jCorpse = HaulAIUtility.HaulToStorageJob(h, s.things["corpse"], true);
                         if (jSt == null || jCorpse == null)
@@ -2685,7 +2691,11 @@ namespace RimMandrake.ExplosiveKnockback
                         bool inPit = sc.numbers.ContainsKey("haulerInPit"), pathIn = sc.numbers.ContainsKey("pathIntoPit");
                         bool ladder = inPit || pathIn;
                         bool control = cst.Spawned && RM_KnockbackCompat.IsSuperdeep(m, cst.Position);
-                        return Result(sc, stOut && corpseOut && ladder && control, "stack out=" + stOut + " corpse out=" + corpseOut + " hauler in pit=" + inPit
+                        float am = sc.numbers.TryGetValue("autoHaulMain", out float amv) ? amv : -1f;
+                        float ac = sc.numbers.TryGetValue("autoHaulControl", out float acv) ? acv : -1f;
+                        bool reach = am == 1f && ac == 0f;
+                        return Result(sc, stOut && corpseOut && ladder && control && reach, "free-will haul: main " + am + " control " + ac
+                            + " (want 1, 0); stack out=" + stOut + " corpse out=" + corpseOut + " hauler in pit=" + inPit
                             + " path into pit=" + pathIn + " path via ladder cell=" + sc.numbers.ContainsKey("pathViaLadder")
                             + " raised-ladder control stack still in its pit=" + control + " (2 hauls ordered, needs held, step " + PitFetchTicks + " ticks)");
                     };
