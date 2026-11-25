@@ -1,13 +1,16 @@
 """Visit 9, restage of the walk save (item RIMMANDRAKE_FREE_PYRE_WALK_SAVE_SKY_TUTOR_PINS_CLEAR). python.exe, ArchSmall held, the
 old walk save freshly loaded (live_site.py --save PYRELANDS_0.1.0_VISIT9_WALK) and still paused. Runs no tick: the stations stay
-as saved. Storyteller Cassandra (Tutor pins the sky clear), Peaceful so no raid meets his walk, one sign per station in the save.
-    python.exe ...\\walk_restage.py NAME      stage and save as NAME (refuses an existing name)"""
+as saved. Storyteller Cassandra (Tutor pins the sky clear), Peaceful so no raid meets his walk, one sign per station in the save,
+and one pen for each creature kind of the mod with six animals in each (modcheck/walk_pens.py; the walk brief's pens rule).
+    python.exe ...\\walk_restage.py NAME      stage and save as NAME (refuses an existing name)
+The Pyrelands review save (PYRELANDS_REVIEW) is this script's output on PYRELANDS_0.1.0_VISIT9_WALK: version/walk_brief/review_save.md."""
 import json, os, sys
 ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), *[".."] * 7))
 for p in ("Utils", "Utils/modcheck"):
     sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake", *p.split("/")))
 import reviewmap as RM  # noqa: E402
 import stage_review as S  # noqa: E402
+import walk_pens as WP  # noqa: E402
 NAME, OLD_TICK = sys.argv[1], 677101
 # x, z of the sign, key, name, look, do, decide, then the rect a capture of the station frames
 STATIONS = [
@@ -45,7 +48,11 @@ out = {"storyteller": st.get("after"), "weather_unlock": wx.get("success"), "que
        "refused": pr.get("refused"), "signs": sorted(got.values()), "not_on_its_cell": moved, "hostiles": len(hostiles), "hour": hour, "tick": tick}
 if len(got) != len(STATIONS) or (st.get("after") or {}).get("storytellerDef") != "Cassandra" or hostiles:
     print(json.dumps(out, indent=1)); sys.exit("NOT SAVED: see above")
-out["save"] = RM.save_keeper(B, NAME, saves=RM.SAVES, signs=signs)
+pens = WP.stage(B, "Pyrelands")
+out["pens"] = {k: pens.get(k) for k in ("ok", "why", "site", "block", "rows", "not_loaded")}
+if not pens.get("ok"):
+    print(json.dumps(out, indent=1)); sys.exit("NOT SAVED: the pens did not stage (see out.pens)")
+out["save"] = RM.save_keeper(B, NAME, saves=RM.SAVES, signs=signs + pens["signs"])
 print(json.dumps(out, indent=1))
 json.dump({"name": NAME, "stations": [(s[2], s[3], s[-1], s[:2]) for s in STATIONS], "out": out},
           open(os.path.join(ROOT, "design/concepts/Pyrelands/version/in_game/visit_9/evidence/walk_restage.json"), "w"), indent=1)

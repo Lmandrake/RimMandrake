@@ -1,0 +1,298 @@
+ArchSmall: held for `timeout -k 10 3000 python.exe D:\ClaudeWork\scratch\walk_pens_live\live.py PYRELANDS_PENS_LIVETEST_20261124` (gen 109)
+load: True {'success': True, 'saveName': 'PYRELANDS_0.1.0_VISIT9_WALK_SIGNED', 'path': 'D:\\ClaudeWork\\rimmandrake\\instances\\b\\Saves\\PYRELANDS_0.1.0_VISIT9_WALK_SIGNED.rws', 'message': 'RimWorld has a loaded visual-ready game and is paused for automation.', 'compatibilityCheckIgnored': False, 'compatibili
+paused: True 677103
+site 3,195 block 86x52, 16 pens
+{
+ "ok": true,
+ "site": [
+  3,
+  195
+ ],
+ "block": [
+  86,
+  52
+ ],
+ "pens": [
+  {
+   "kind": "RSW_Gizka",
+   "x": 3,
+   "z": 195,
+   "w": 10,
+   "h": 10
+  },
+  {
+   "kind": "RSW_Nuna",
+   "x": 15,
+   "z": 195,
+   "w": 10,
+   "h": 10
+  },
+  {
+   "kind": "RM_FireHawk",
+   "x": 27,
+   "z": 195,
+   "w": 10,
+   "h": 10
+  },
+  {
+   "kind": "RSW_Iriaz",
+   "x": 39,
+   "z": 195,
+   "w": 10,
+   "h": 10
+  },
+  {
+   "kind": "RM_FireWasp",
+   "x": 51,
+   "z": 195,
+   "w": 10,
+   "h": 10
+  },
+  {
+   "kind": "RSW_Anooba",
+   "x": 63,
+   "z": 195,
+   "w": 10,
+   "h": 10
+  },
+  {
+   "kind": "RM_Sytheclaw",
+   "x": 75,
+   "z": 195,
+   "w": 12,
+   "h": 12
+  },
+  {
+   "kind": "RM_Ashwallow",
+   "x": 3,
+   "z": 209,
+   "w": 12,
+   "h": 12
+  },
+  {
+   "kind": "RM_Emberscythe",
+   "x": 17,
+   "z": 209,
+   "w": 12,
+   "h": 12
+  },
+  {
+   "kind": "RM_Flamefang",
+   "x": 31,
+   "z": 209,
+   "w": 12,
+   "h": 12
+  },
+  {
+   "kind": "RM_Ullai",
+   "x": 45,
+   "z": 209,
+   "w": 12,
+   "h": 12
+  },
+  {
+   "kind": "RSW_Orray",
+   "x": 59,
+   "z": 209,
+   "w": 14,
+   "h": 14
+  },
+  {
+   "kind": "RM_Barbslinger",
+   "x": 75,
+   "z": 209,
+   "w": 14,
+   "h": 14
+  },
+  {
+   "kind": "RSW_Dalgo",
+   "x": 3,
+   "z": 225,
+   "w": 14,
+   "h": 14
+  },
+  {
+   "kind": "RSW_Zeer",
+   "x": 19,
+   "z": 225,
+   "w": 16,
+   "h": 16
+  },
+  {
+   "kind": "RM_FurnaceBeast",
+   "x": 37,
+   "z": 225,
+   "w": 22,
+   "h": 22
+  }
+ ],
+ "rows": [
+  {
+   "kind": "RSW_Gizka",
+   "verdict": "PASS",
+   "of_kind": 6,
+   "living": 6,
+   "hostile": 0,
+   "mental": 0
+  },
+  {
+   "kind": "RSW_Nuna",
+   "verdict": "PASS",
+   "of_kind": 6,
+   "living": 6,
+   "hostile": 0,
+   "mental": 0
+  },
+  {
+   "kind": "RM_FireHawk",
+   "verdict": "PASS",
+   "of_kind": 6,
+   "living": 6,
+   "hostile": 0,
+   "mental": 0
+  },
+  {
+   "kind": "RSW_Iriaz",
+   "verdict": "PASS",
+   "of_kind": 6,
+   "living": 6,
+   "hostile": 0,
+   "mental": 0
+  },
+  {
+   "kind": "RM_FireWasp",
+   "verdict": "PASS",
+   "of_kind": 6,
+   "living": 6,
+   "hostile": 0,
+   "mental": 0
+  },
+  {
+   "kind": "RSW_Anooba",
+   "verdict": "PASS",
+   "of_kind": 6,
+   "living": 6,
+   "hostile": 0,
+   "mental": 0
+  },
+  {
+   "kind": "RM_Sytheclaw",
+   "verdict": "PASS",
+   "of_kind": 6,
+   "living": 6,
+   "hostile": 0,
+   "mental": 0
+  },
+  {
+   "kind": "RM_Ashwallow",
+   "verdict": "PASS",
+   "of_kind": 6,
+   "living": 6,
+   "hostile": 0,
+   "mental": 0
+  },
+  {
+   "kind": "RM_Emberscythe",
+   "verdict": "PASS",
+   "of_kind": 6,
+   "living": 6,
+   "hostile": 0,
+   "mental": 0
+  },
+  {
+   "kind": "RM_Flamefang",
+   "verdict": "PASS",
+   "of_kind": 6,
+   "living": 6,
+   "hostile": 0,
+   "mental": 0
+  },
+  {
+   "kind": "RM_Ullai",
+   "verdict": "PASS",
+   "of_kind": 6,
+   "living": 6,
+   "hostile": 0,
+   "mental": 0
+  },
+  {
+   "kind": "RSW_Orray",
+   "verdict": "PASS",
+   "of_kind": 6,
+   "living": 6,
+   "hostile": 0,
+   "mental": 0
+  },
+  {
+   "kind": "RM_Barbslinger",
+   "verdict": "PASS",
+   "of_kind": 6,
+   "living": 6,
+   "hostile": 0,
+   "mental": 0
+  },
+  {
+   "kind": "RSW_Dalgo",
+   "verdict": "PASS",
+   "of_kind": 6,
+   "living": 6,
+   "hostile": 0,
+   "mental": 0
+  },
+  {
+   "kind": "RSW_Zeer",
+   "verdict": "PASS",
+   "of_kind": 6,
+   "living": 6,
+   "hostile": 0,
+   "mental": 0
+  },
+  {
+   "kind": "RM_FurnaceBeast",
+   "verdict": "PASS",
+   "of_kind": 6,
+   "living": 6,
+   "hostile": 0,
+   "mental": 0
+  }
+ ],
+ "not_loaded": [],
+ "tick": 677103,
+ "save": {
+  "ok": true,
+  "new": [
+   "PYRELANDS_PENS_LIVETEST_2026112[bridge split] 303.7 s wall: load 9.1 / ticks 0.0 / reads 18.2 / other 30.6 / outside calls 245.8 s
+4.rws"
+  ],
+  "changed": [],
+  "gone": [],
+  "name": "PYRELANDS_PENS_LIVETEST_20261124",
+  "tool": true,
+  "signs": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\JawaBenchReviewSigns\\PYRELANDS_PENS_LIVETEST_20261124.txt"
+ }
+}
+stage rc 0 in 203 s
+PASS           RM_FireHawk      {'of_kind': 6, 'living': 6, 'hostile': 0, 'mental': 0, 'rect': [27, 195, 10, 10]}
+PASS           RM_FurnaceBeast  {'of_kind': 6, 'living': 6, 'hostile': 0, 'mental': 0, 'rect': [37, 225, 22, 22]}
+PASS           RM_Ullai         {'of_kind': 6, 'living': 6, 'hostile': 0, 'mental': 0, 'rect': [45, 209, 12, 12]}
+PASS           RM_Emberscythe   {'of_kind': 6, 'living': 6, 'hostile': 0, 'mental': 0, 'rect': [17, 209, 12, 12]}
+PASS           RM_Sytheclaw     {'of_kind': 6, 'living': 6, 'hostile': 0, 'mental': 0, 'rect': [75, 195, 12, 12]}
+PASS           RM_Barbslinger   {'of_kind': 6, 'living': 6, 'hostile': 0, 'mental': 0, 'rect': [75, 209, 14, 14]}
+PASS           RM_FireWasp      {'of_kind': 6, 'living': 6, 'hostile': 0, 'mental': 0, 'rect': [51, 195, 10, 10]}
+PASS           RM_Flamefang     {'of_kind': 6, 'living': 6, 'hostile': 0, 'mental': 0, 'rect': [31, 209, 12, 12]}
+PASS           RM_Ashwallow     {'of_kind': 6, 'living': 6, 'hostile': 0, 'mental': 0, 'rect': [3, 209, 12, 12]}
+PASS           RSW_Anooba       {'of_kind': 6, 'living': 6, 'hostile': 0, 'mental': 0, 'rect': [63, 195, 10, 10]}
+PASS           RSW_Iriaz        {'of_kind': 6, 'living': 6, 'hostile': 0, 'mental': 0, 'rect': [39, 195, 10, 10]}
+PASS           RSW_Nuna         {'of_kind': 6, 'living': 6, 'hostile': 0, 'mental': 0, 'rect': [15, 195, 10, 10]}
+PASS           RSW_Orray        {'of_kind': 6, 'living': 6, 'hostile': 0, 'mental': 0, 'rect': [59, 209, 14, 14]}
+PASS           RSW_Zeer         {'of_kind': 6, 'living': 6, 'hostile': 0, 'mental': 0, 'rect': [19, 225, 16, 16]}
+PASS           RSW_Dalgo        {'of_kind': 6, 'living': 6, 'hostile': 0, 'mental': 0, 'rect': [3, 225, 14, 14]}
+PASS           RSW_Gizka        {'of_kind': 6, 'living': 6, 'hostile': 0, 'mental': 0, 'rect': [3, 195, 10, 10]}
+WALK PENS PASS: 16 of 16 pens hold six
+check rc 0
+paused after: (True, 677103)
+[bridge split] WARN 225 calls of jawa/list_pawns (9.5 s): batch them
+[bridge split] WARN 208 calls of jawa/pawn_census (8.7 s): batch them
+[bridge split] WARN 131 calls of jawa/pawn_get (5.5 s): batch them
+[bridge split] WARN 96 calls of jawa/spawn_pawn (4.0 s): batch them
+[bridge split] WARN 78 calls of jawa/set_pawn_gender (3.3 s): batch them
