@@ -2807,7 +2807,7 @@
    "entry": "scene_pawn_arc_bruise_sizes.py",
    "item": "RIMMANDRAKE_BRUISE_KNOCKBACK_LANDING_ON_PAWN",
    "scene": "sc_pawn_arc",
-   "observes": "a revised sc_pawn_arc lane with a small and a large second pawn: the landing bruises each by size",
+   "observes": "a thrown colonist stopped mid-path by a standing squirrel, elephant or colonist: both bruised by size (the stop half; the landing half is sc_pawn_land_on_pawn_sizes)",
    "reads": [
     "src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_bruise_sizes.py",
     "design/concepts/ExplosiveKnockback/scenes.json",
@@ -2831,6 +2831,26 @@
     "early_row": true
    },
    "command": "python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_pawn_arc_bruise_sizes.py"
+  },
+  "sc_pawn_land_on_pawn_sizes": {
+   "id": "sc_pawn_land_on_pawn_sizes",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_land_on_pawn_sizes.py",
+   "entry": "scene_pawn_land_on_pawn_sizes.py",
+   "item": "RIMMANDRAKE_COVER_KNOCKBACK_BAR_HALVES_NO_LIVE_CHECK_SEES",
+   "scene": "sc_pawn_arc",
+   "observes": "a thrown colonist lands on a squirrel, a muffalo or a colonist that walked onto its landing cell mid-flight: the land_on_pawn record and the hediffs bruise the lighter one harder, a like pair alike and lightly, nobody downed; an empty landing bruises nobody",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_land_on_pawn_sizes.py",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_PawnFlyerPatches.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "why_game": "the landing is RM_PawnFlyerPatches.Landed on a real PawnFlyer, and the injury the game records on each pawn",
+   "why_full_list": null,
+   "entry_exists": true,
+   "partial": null,
+   "command": "python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_pawn_land_on_pawn_sizes.py"
   },
   "sc_pawn_arc_sandbag_no_contact": {
    "id": "sc_pawn_arc_sandbag_no_contact",
@@ -4360,7 +4380,8 @@
    "proves_at": "6",
    "decides": [
     "T_KERNEL_COLLISION_BRUISE",
-    "sc_pawn_arc_bruise_sizes"
+    "sc_pawn_arc_bruise_sizes",
+    "sc_pawn_land_on_pawn_sizes"
    ],
    "supports": [],
    "held": [],
