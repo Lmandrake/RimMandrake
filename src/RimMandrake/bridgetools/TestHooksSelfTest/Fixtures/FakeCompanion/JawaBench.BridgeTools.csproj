@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Stands for the companion in the harness: the Leak fixture names its type, so the check "a release DLL names no type of the
+       companion" is seen to go red on a DLL that does. Not the companion. -->
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <AssemblyName>JawaBench.BridgeTools</AssemblyName>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="FakeCompanion.cs" />
+  </ItemGroup>
+</Project>

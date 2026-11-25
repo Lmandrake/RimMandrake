@@ -95,6 +95,7 @@ namespace JawaBench.BridgeTools
         /// <summary>Null when a run may start, else why not. Changes nothing.</summary>
         internal static string Refuse(string caller = null)
         {
+            if (T.Watch == null) T.Watch = JawaBenchModHooks.Registry;    // the mods' trace sinks: armed and cleared with each run
             if (!JawaBenchVitals.GameReady()) return "no game is playing";
             var adv = JawaBenchSafeAdvance.Cur;
             string held = LK.RefuseArm(Cur?.Id, Cur?.Stage, adv != null && adv.State == "running", StepOwner, caller);

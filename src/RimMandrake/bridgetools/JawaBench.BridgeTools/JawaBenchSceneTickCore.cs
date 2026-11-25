@@ -32,6 +32,17 @@ namespace JawaBench.BridgeTools
         internal const string Schema = "scene_trace_v1";
         internal const double DrainMs = 60000;      // boundary page, LIMITS
 
+        /// <summary>What listens to the arm and the end of every run: the mods' trace sinks (JawaBenchModHooksCore.Registry, page
+        /// design/specs/2026-11-23-bridge-v2-mod-hooks/boundary.md). Ended is called on every end state, a thrown tick included.</summary>
+        internal interface IRunWatch
+        {
+            void Armed(SceneRun run, long tick);
+            void Ended(SceneRun run, long tick);
+        }
+
+        /// <summary>Null: nothing listens (the offline harnesses of the run). Set by the Verse side before the first run.</summary>
+        internal static IRunWatch Watch;
+
         /// <summary>The numbering of one trace. A run has its own, or it shares its session's, so that the rows of several runs
         /// are one series with no gap.</summary>
         internal sealed class Trace
@@ -108,6 +119,7 @@ namespace JawaBench.BridgeTools
             double _settleFrom = -1;
             long _steady, _steadyBytes, _steadyDirty, _gc;
             string _forced, _forcedWhy;
+            IRunWatch _watch;                       // the watch that saw the arm: it sees the end
 
             /// <summary>running -> settling (ended, paused) -> closed.</summary>
             public string Stage = "new";
@@ -168,6 +180,15 @@ namespace JawaBench.BridgeTools
 
             static string S(object o) { return JawaBenchCondCore.Canon(o); }
 
+            /// <summary>A trace point of a mod (RMTrace.Emit), as a record `mod` of phase `in_tick`: evidence of a branch only. False,
+            /// and nothing written, when the run is not running.</summary>
+            public bool ModSays(string mod, string name, string key, string value)
+            {
+                if (Stage != "running") return false;
+                Emit(_h.Tick(), "in_tick", "mod", "\"mod\":" + S(mod) + ",\"name\":" + S(name) + (key == null ? "" : ",\"key\":" + S(key) + ",\"v\":" + S(value)));
+                return true;
+            }
+
             void Fault(long tick, string phase, string what, string detail)
             {
                 _faults.Add(what + ": " + detail);
@@ -217,6 +238,8 @@ namespace JawaBench.BridgeTools
                                             ",\"maxTicks\":" + _c.MaxTicks + ",\"tracks\":" + S(tracks) + ",\"acts\":" + S(acts) + ",\"cond\":" + S(_c.Canonical));
                 try
                 {
+                    var w = Watch;
+                    if (w != null) { _watch = w; w.Armed(this, tick); }
                     ulong r0 = _h.RandState();
                     Sample(tick, "first", true);
                     _cond.Arm(tick, epoch);
@@ -297,6 +320,13 @@ namespace JawaBench.BridgeTools
                 _ended = true;
                 _endTick = tick;
                 Stage = "settling";                  // first: whatever throws below, the evaluator is off and the run will close
+                var wl = _watch;
+                _watch = null;
+                if (wl != null)
+                {
+                    try { wl.Ended(this, tick); }
+                    catch (Exception e) { Fault(tick, phase, "threw", "the mod hooks' leave: " + e.GetType().Name + ": " + e.Message); }
+                }
                 try { _paused = _h.Pause(); }
                 catch (Exception e) { _paused = false; Fault(tick, phase, "threw", "the pause: " + e.GetType().Name + ": " + e.Message); }
                 if (!_paused && State == "epoch") Fault(tick, phase, "game_replaced", "the game or the map of the run is gone: what is there now was not paused");

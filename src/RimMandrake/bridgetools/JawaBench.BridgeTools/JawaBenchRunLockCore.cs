@@ -41,6 +41,8 @@ namespace JawaBench.BridgeTools
             { "jawa/scene_slice", new[] { "status", "cancel" } }, { "jawa/safe_advance", new[] { "status", "cancel" } },
             { "jawa/first_exception", new[] { "read" } }, { "jawa/health", new[] { "status" } }, { "jawa/vitals", new[] { "status" } },
             { "jawa/quiet_site", new[] { "status" } }, { "jawa/damage_log", new[] { "read" } },
+            // list, admit and digest read; prove reads the digest (the dirtying is the caller's act); reset changes the mod's state
+            { "jawa/mod_hooks", new[] { "list", "admit", "digest", "prove" } },
             // its "action" is type.method: the process text that the scene library reads to know whose session is open
             { "jawa/static_call", new[] { "system.environment.getenvironmentvariable" } },
         };

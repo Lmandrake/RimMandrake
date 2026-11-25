@@ -28,14 +28,16 @@ Each record is one line of kind `scene` in the game's `JawaBench` record, writte
 | `run` | the run's id |
 | `n` | the row's number inside the run, from 1, with no gap. A gap is a lost row |
 | `tick` | `TicksGame` when the record was made |
-| `phase` | `first` (before any act), `end_of_tick`, `last` (after the pause) |
-| `rec` | `open`, `track`, `act`, `fault`, `end`, `close` |
+| `phase` | `first` (before any act), `end_of_tick`, `last` (after the pause), `in_tick` (a `mod` record, written during the game's tick) |
+| `rec` | `open`, `track`, `act`, `fault`, `mod`, `end`, `close` |
 
 - `open`: `schema`, `mode` (`PLAY`; `STEP` when a step loop drives the tick, and `speed` then names the loop), `speed`, `epoch`, `cond` (the condition as compiled, with its tracks), `acts`,
   `maxTicks`.
 - `track`: `name`, `st` (`ok`, `gone`, `oob`, `unbound`, `error`), `v`, and `detail` when `st` is not `ok`. Written at `first`
   and `last` for every track, and at `end_of_tick` only when `v` or `st` changed.
 - `act`: `name`, `ok`, `detail`. Written after the act step was done, on the tick on which it was done.
+- `mod`: `mod` (the assembly), `name`, and `key` and `v` when the mod gave them. A mod's `RMTrace.Emit` while the run runs; evidence of a
+  branch only. The sinks and their promises: `../2026-11-23-bridge-v2-mod-hooks/boundary.md`.
 - `fault`: `what` (`rand_in_sample`, `ran_past_end`, `pause_refused`, `game_replaced`, `threw`), `detail`.
 - `end`: `state` (`hit`, `unknown`, `done`, `stopped`, `error`, `epoch`, `cancelled`, `aborted`, `threw`, `budget`), `hitTick`, `executed`, `why`,
   `triggers`, `unknown`, `complete`, `cost`, `costliest` (the condition node or track whose reads took the most time).

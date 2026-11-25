@@ -5,12 +5,12 @@ One ticket of the Bridge v2.0 build order. Read `design/specs/2026-11-23-bridge-
 
 ## spec
 
-- **Builds:** `src/RimMandrake/_Shared/TestHooks/RMTestHooks.cs` (`RMTrace`, `RMResetAttribute`, `RMDigestAttribute`,
-  `RMProbeAttribute`); the kernel's discovery; the "mod says" record type; first use in Explosive Knockback and
+- **Builds:** `src/RimMandrake/_Shared/TestHooks/RMTestHooks.cs` (`RMTrace`, `RMResetAttribute`, `RMDigestAttribute`;
+  pass three builds no `RMProbe` plug-in); the kernel's discovery; the "mod says" record type; first use in Explosive Knockback and
   FlowWorks when each next advances.
-- **Needs:** the run-plan ticket.
+- **Needs:** the instruments ticket `RIMMANDRAKE_WIDEN_SLICE_INTO_RUN_UNTIL_AND_ACT_BATCH` (pass three moved the block off the held run-plan ticket).
 
-Depends on: `RIMMANDRAKE_BUILD_RUN_PLAN_ONE_CALL_SCENE_AS_DATA`.
+Depends on: `RIMMANDRAKE_WIDEN_SLICE_INTO_RUN_UNTIL_AND_ACT_BATCH` (pass three; it was the held run-plan ticket).
 
 ## verify
 
@@ -24,11 +24,12 @@ Seen red on base `adfddcb1f8` on 2026-11-23: exit 1 ("--only names no such file"
 
 - **Offline test:** `python3 src/RimMandrake/Utils/run_selftests.py --only src/RimMandrake/bridgetools/selftest_test_hooks.py`, 8 checks: a mod with no hook is
   listed as such; a hook of the wrong shape is a named problem; `Emit` with a null sink allocates nothing; the sink is
-  cleared at leave, also after a thrown tick; two mods' hooks do not collide; a plug-in from a PROOF build is refused
+  cleared at leave, also after a thrown tick; two mods' hooks do not collide; a hook from a PROOF build is refused
   for an acceptance run; a mod's release DLL with hooks names no type of the companion; **a digest hook is accepted
   only after it was seen to differ between a clean state and a state dirtied on purpose**.
 
-Live test: none drafted in the build order for this ticket.
+Live test (UNRUN): `python.exe src\RimMandrake\bridgetools\prove_mod_hooks.py` on a TEST-profile game with the companion of this
+build, 3 rows; row 3 reads UNMEASURED until a loaded mod has a trace point (the first use, in each mod's next version).
 
 ## criteria
 

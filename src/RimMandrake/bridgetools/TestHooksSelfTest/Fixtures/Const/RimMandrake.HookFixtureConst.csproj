@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- A fixture mod of the offline harness for the mods' test hooks (selftest_test_hooks.py). Settings: ../Fixture.props. -->
+  <PropertyGroup>
+    <AssemblyName>RimMandrake.HookFixtureConst</AssemblyName>
+    <FixtureDefines>FIX_CONST</FixtureDefines>
+  </PropertyGroup>
+  <Import Project="../Fixture.props" />
+</Project>

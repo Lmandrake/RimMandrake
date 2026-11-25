@@ -357,13 +357,13 @@ and the verdict ledger counts it for no bar. The first scenes are built and comp
   of `04_live_tuning.md`.
 
 ### `RIMMANDRAKE_BUILD_MOD_TRACE_AND_RESET_HOOKS_BY_REFLECTION`
-- **Builds:** `src/RimMandrake/_Shared/TestHooks/RMTestHooks.cs` (`RMTrace`, `RMResetAttribute`, `RMDigestAttribute`,
-  `RMProbeAttribute`); the kernel's discovery; the "mod says" record type; first use in Explosive Knockback and
+- **Builds:** `src/RimMandrake/_Shared/TestHooks/RMTestHooks.cs` (`RMTrace`, `RMResetAttribute`, `RMDigestAttribute`;
+  pass three builds no `RMProbe` plug-in); the kernel's discovery; the "mod says" record type; first use in Explosive Knockback and
   FlowWorks when each next advances.
-- **Needs:** the run-plan ticket.
+- **Needs:** the instruments ticket (pass three moved the block off the held run-plan ticket).
 - **Offline test:** `SELF src/RimMandrake/bridgetools/selftest_test_hooks.py`, 8 checks: a mod with no hook is
   listed as such; a hook of the wrong shape is a named problem; `Emit` with a null sink allocates nothing; the sink is
-  cleared at leave, also after a thrown tick; two mods' hooks do not collide; a plug-in from a PROOF build is refused
+  cleared at leave, also after a thrown tick; two mods' hooks do not collide; a hook from a PROOF build is refused
   for an acceptance run; a mod's release DLL with hooks names no type of the companion; **a digest hook is accepted
   only after it was seen to differ between a clean state and a state dirtied on purpose**.
 - **Wrong code that must go red:** a `Digest` that returns a constant (GPT's case).

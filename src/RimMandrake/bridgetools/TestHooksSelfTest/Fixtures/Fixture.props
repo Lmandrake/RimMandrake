@@ -1,0 +1,18 @@
+<Project>
+  <!-- The fixture mods of selftest_test_hooks.py: net472 like a real mod, each with the SHIPPED hooks file
+       (src/RimMandrake/_Shared/TestHooks/RMTestHooks.cs) unless the harness plants a copy (-p:HooksFile=, -p:FixtureSrc=). -->
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <OutputType>Library</OutputType>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <DefineConstants>$(DefineConstants);$(FixtureDefines)</DefineConstants>
+    <DebugType>none</DebugType>
+    <HooksFile Condition="'$(HooksFile)' == ''">$(MSBuildThisFileDirectory)..\..\..\_Shared\TestHooks\RMTestHooks.cs</HooksFile>
+    <FixtureSrc Condition="'$(FixtureSrc)' == ''">$(MSBuildThisFileDirectory)Fixtures.cs</FixtureSrc>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(HooksFile)" Condition="'$(NoHooks)' != 'true'" />
+    <Compile Include="$(FixtureSrc)" />
+  </ItemGroup>
+</Project>
