@@ -371,6 +371,25 @@ def t_alias_needs_link():
     expect(classify((plan, rows, receipts)), "COULD NOT LOOK", 3, "does not name its alias")
 
 
+
+def t_cast_link_is_proved_by_the_cast_taps():
+    """The companion's cast writes a link as alias, from, to, why (a dead pawn's corpse), and its tap rows (job_end, kill) carry
+    the alias and its thing id (boundary.md, the cast). Live on ArchBig 2026-11-25: a colonist killed by the blast read COULD NOT
+    LOOK, 'alias people[1] has an unproved link', which hid a forbidden effect. A from that matches the thing of the alias's taps
+    proves the link; a from that does not, a link before any tap names the thing, or a tap on another thing with no link, does not."""
+    def run(*extra):
+        plan, rows, receipts = fixture()
+        for row in extra:
+            insert(rows, row.pop("rec"), tick=row.pop("tick"), **row)
+        return classify((plan, rows, receipts))
+    tap = dict(rec="kill", tick=3, phase="in_tick", alias="pawn", thing=36520, ord=1, culprit="hediff MissingBodyPart")
+    link = dict(rec="link", tick=3, alias="pawn", why="dead: its corpse")
+    expect(run(dict(tap), dict(link, **{"from": 36520, "to": 67951})), "SUCCESS", 6)
+    expect(run(dict(tap), dict(link, **{"from": 11, "to": 67951})), "COULD NOT LOOK", 3, "unproved link")
+    expect(run(dict(link, **{"from": 36520, "to": 67951})), "COULD NOT LOOK", 3, "unproved link")
+    expect(run(dict(tap), dict(tap, thing=99, tick=4)), "COULD NOT LOOK", 3, "changed object without a link")
+
+
 def exit_case(code):
     module()
     with tempfile.TemporaryDirectory() as d:
@@ -510,7 +529,7 @@ def main():
         t_success_at_first_sample, t_success_without_exposure, t_advisory_record, t_cast_went_to_hazard, t_giver_refusal,
         t_same_checker_adds_history, t_unrecorded_value_named, t_first_outcome_kept, t_alias_needs_link,
         t_forbidden_wins_over_an_unreadable_success, t_standard_cast_and_world_tracks_are_read,
-        t_in_tick_tap_rows_are_read_in_the_span)]
+        t_in_tick_tap_rows_are_read_in_the_span, t_cast_link_is_proved_by_the_cast_taps)]
     tests += [("exit code 0", t_exit_codes)] + [("exit code %s" % n, lambda n=n: exit_case(n)) for n in range(1, 7)]
     tests.append(("unknown key named", t_unknown_key_named))
     good = 0
@@ -523,7 +542,7 @@ def main():
             print("ok   " + name)
             good += 1
     print("scene judge: %d of %d checks passed" % (good, len(tests)))
-    return 0 if good == len(tests) == 34 else 1
+    return 0 if good == len(tests) == 35 else 1
 
 
 if __name__ == "__main__":

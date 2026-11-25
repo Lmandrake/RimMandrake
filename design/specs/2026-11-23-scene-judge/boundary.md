@@ -61,3 +61,6 @@ up to and including the spoiler's tick. A mod's advisory records provide no cond
   sample and is held to the first-and-last rule of a declared track. Any other undeclared name gives COULD NOT LOOK.
 - **in-tick-tap-rows-are-read-in-the-span.** A cast or world tap row (phase `in_tick`: `job_start`, `job_end`, `link`, ...) inside
   the run's ticks is read. A track with phase `in_tick` gives COULD NOT LOOK.
+- **cast-link-is-proved-by-the-cast-taps.** A cast link (`alias`, `from`, `to`, `why`) is proved when `from` is the thing that the
+  alias's earlier cast tap rows (`job_end`, `kill`, ...) name. A `from` that differs, a link before any tap names the thing, or a
+  tap on another thing with no link gives COULD NOT LOOK.

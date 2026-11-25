@@ -126,6 +126,9 @@ class Trace:
                 phase == "first" and tick != self.start or phase == "last" and (tick != self.stop or r["seq"] <= self.end["seq"])
             ):
                 raise NoReading("invalid phase on tick %s" % tick)
+            if rec not in ("track", "tap", "link", "act", "fault") and isinstance(r.get("alias"), str) and type(r.get("thing")) is int:
+                if aliases.setdefault(r["alias"], r["thing"]) != r["thing"]:     # a cast tap names the thing of its alias
+                    raise NoReading("alias %s changed object without a link" % r["alias"])
             if rec not in ("track", "tap", "link", "act", "fault") or r.get("source") == "mod_says":
                 continue
             self.check_alias(r, aliases)
@@ -182,7 +185,7 @@ class Trace:
         if not isinstance(alias, str) or not alias:
             raise NoReading("an alias link does not name its alias")
         if row["rec"] == "link":
-            old, new = row.get("old"), row.get("new")
+            old, new = row.get("old", row.get("from")), row.get("new", row.get("to"))   # the cast's link: from, to
             if not old or not new or aliases.get(alias) != old:
                 raise NoReading("alias %s has an unproved link" % alias)
             aliases[alias] = new
