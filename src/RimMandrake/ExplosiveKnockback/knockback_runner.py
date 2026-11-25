@@ -59,6 +59,18 @@ def snapshot_settings(b):
     return snap
 
 
+def settings_off(base, now):
+    """{field: [baseline, now]} for every field whose value differs from the run's baseline, the fields one side could not
+    read as [baseline or "UNREAD", now or "UNREAD"] (RIMMANDRAKE_HUNT_KNOCKBACK_GOOD_UNMOVED_LONG_BATCH_THREE_SIGHTINGS: a
+    value a scene left off its default would spoil the next scene of the same process)."""
+    out = {}
+    for f in sorted(set(base) | set(now)):
+        a, b = base.get(f, "UNREAD"), now.get(f, "UNREAD")
+        if str(a) != str(b):
+            out[f] = [a, b]
+    return out
+
+
 def restore_settings(b, snap):
     """Put the player's values back (the run's finally): a failed write is printed, never raised over the verdict."""
     for f, v in snap.items():
@@ -152,6 +164,7 @@ def main():
         try:
             call(b, "Settings", "reset")
             call(b, "Clear", "x")
+            base = snapshot_settings(b)     # the defaults every scene starts from; each verdict is followed by a read against it
             for name, org in zip(scenes, origins):
                 staged = call(b, "Stage", "%s,%s" % (name, org))
                 st, _, detail = parse_verdict(staged)
@@ -171,9 +184,11 @@ def main():
                 if adv is not None and not adv["reached"] and st != "ERROR":
                     st, detail = "INVALID", "advance short (%d of %d ticks; %s); verdict was %s %s" % (
                         adv["advanced"], a.ticks, "; ".join(adv["halts"][-2:]) or "no halt reported", st, detail)
+                off = settings_off(base, snapshot_settings(b))
                 rows.append({"type": "scenario", "scene": name, "status": st, "detail": detail, "origin": org,
-                             "advance": adv})
+                             "advance": adv, "settings_off_after": off})
                 print("%-16s %s %s" % (name, st, detail))
+                print("%-16s SETTINGS after verdict: %s" % (name, json.dumps(off) if off else "all at the run's defaults"))
             journal = call(b, "Journal", "4000")
         finally:
             restore_settings(b, snap)

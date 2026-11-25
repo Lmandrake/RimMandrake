@@ -47,6 +47,27 @@ def site(rb, biome):
     return out
 
 
+SETTINGS = "RimMandrake.ExplosiveKnockback.RimMandrakeExplosiveKnockbackSettings"
+
+
+def settings_now(rb):
+    """Every Explosive Knockback settings field's value now ({} when the mod's settings cannot be read). The hunt
+    RIMMANDRAKE_HUNT_KNOCKBACK_GOOD_UNMOVED_LONG_BATCH_THREE_SIGHTINGS compares each process's before and after with the
+    batch's first read: a value off it points at a process that did not put its settings back."""
+    sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "ExplosiveKnockback"))
+    from validation import settings_fields
+    out = {}
+    for f in sorted(settings_fields()):
+        r = rb.call("jawa/mod_settings_field", {"typeName": SETTINGS, "action": "get", "field": f}) or {}
+        if r.get("success", True) is not False and "value" in r:
+            out[f] = r["value"]
+    return out
+
+
+def settings_off(base, now):
+    return {f: [base.get(f, "UNREAD"), now.get(f, "UNREAD")] for f in sorted(set(base) | set(now)) if str(base.get(f, "UNREAD")) != str(now.get(f, "UNREAD"))}
+
+
 def verdict(rc, text):
     m = re.search(r"VERDICT (\w+)", text) or re.search(r"^(PASS|FAIL|UNMEASURED) sc_\w+; evidence:", text, re.M)
     v = m.group(1) if m else "NONE"
@@ -113,9 +134,12 @@ def main():
     groups = {}
     for tid, t in tests:
         groups.setdefault(t["command"].split("   (")[0].strip(), []).append((tid, t))
+    base = None
     for cmd, members in groups.items():
         argv = [sys.executable] + cmd.split()[1:]
         with RimBridge(host=host, port=port, token=token) as rb:
+            before = settings_now(rb)
+            base = before if base is None else base
             if not a.no_sweep:      # every non-colonist off the map, the incident queue emptied (reviewmap.sweep_pawns)
                 sw = rb.call("jawa/destroy_bulk", {"filter": "nonColonists", "dryRun": False}) or {}
                 rb.call("jawa/incident_queue_clear", {})
@@ -143,6 +167,9 @@ def main():
             rc, text = -9, "TIMEOUT after %d s\n%s" % (limit, out[-30000:])
         rows = scene_rows(text)
         wall = round(time.time() - t0, 1)
+        with RimBridge(host=host, port=port, token=token) as rb:
+            after = settings_now(rb)
+        st["settings_off_before"], st["settings_off_after"] = settings_off(base, before), settings_off(base, after)
         for tid, t in members:
             ev = os.path.join("design", "concepts", "ExplosiveKnockback", "version", "in_game", os.path.basename(VISIT), "evidence",
                               tid + a.suffix + ".txt")
