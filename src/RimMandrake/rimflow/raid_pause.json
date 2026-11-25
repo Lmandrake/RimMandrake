@@ -3,7 +3,8 @@
  "why": "owner, 2026-11-23: \"no raid tests until we have better tools, pause them for now\"; lifted when the Bridge 2 scene library holds a raid still (design/specs/2026-11-23-bridge-v2/)",
  "lift": "python3 src/RimMandrake/rimflow/raid_pause.py lift --why \"...\"",
  "allow": [
-  "RIMMANDRAKE_CONVERT_THREE_SCENES_SHOW_IF_TEN_NAMES_HELP"
+  "RIMMANDRAKE_CONVERT_THREE_SCENES_SHOW_IF_TEN_NAMES_HELP",
+  "RIMMANDRAKE_BUILD_STAGE_MAP_CAST_ONLY_NO_BYSTANDERS"
  ],
  "chains": {
   "Visibility": {
@@ -20,5 +21,8 @@
    "scene_raider_pressure": "a raid exit of each of two factions",
    "scene_weathered_raid_mark": "a raid (RM_GraffitiProof.RaidStart)"
   }
+ },
+ "allow_why": {
+  "RIMMANDRAKE_BUILD_STAGE_MAP_CAST_ONLY_NO_BYSTANDERS": "allow: Conductor act (RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS): the stage map is the better raid-test tool his pause waits for (owner 2026-11-24: no raid tests until we have better tools); its two rows R3 and R4 test the tool's own function, a raid on a stage with cast defenders and with none; no mod is tested by them. undo: raid_pause.py (see show) removes the allow"
  }
 }
