@@ -4123,6 +4123,7 @@ def blind_brief_text(root, mod, cap_usd=None):
 
 INGAME_DIR = "version/in_game"
 INGAME_KEYS = ("ingame_rows", "strange_open", "savegame", "exit_met")
+DRIVER_SAYS_FALSE = "the driver's block says exit_met false"
 LIVE_MODELS = ("opus",)     # a live driver: Agent_Policy.md "Helpers in this repo" (rm-bridge, opus); Fable never waits
                             # on a live resource (the user-level model ladder)
 GAMES = ("archmagi", "stevedesktop")
@@ -4789,7 +4790,7 @@ def read_ingame_exit(root, mod, n, tt=None, *, deploy_stamp=False):
         return out
     why = out["why"]
     if not blk["exit_met"]:
-        why.append("the driver's block says exit_met false")
+        why.append(DRIVER_SAYS_FALSE)
     checks = ingame_tests(tt)
     if not checks:
         why.append("the test table names no stage-6 in-game check (kind live*, stage 6)")
@@ -4865,6 +4866,7 @@ def read_ingame_exit(root, mod, n, tt=None, *, deploy_stamp=False):
             ln["count"] = "needless"
     reviews = fix_reviews(os.path.join(d, FIX_REVIEWS))
     owed = out["fix_readers_owed"] = []
+    sound = out["fix_readers_sound"] = []
     out["shortfalls"] = []
     try:
         for c in landed_at_walk(root, mod, load(root, mod), n):
@@ -4873,7 +4875,9 @@ def read_ingame_exit(root, mod, n, tt=None, *, deploy_stamp=False):
                 mod_dir(root, mod), INGAME_DIR, "visit_%d" % k, FIX_REVIEWS))
                 if SHA_RE.match(str(x.get("fix") or "")) and c.startswith(x["fix"])]
             good, rwhy = review_sound(seen, c, "the run that landed %s" % c)
-            if not good:
+            if good:
+                sound.append(c)
+            else:
                 owed.append({"check": None, "fix": c, "why": rwhy})
                 why.append("the mod change %s landed while the mod stood at his walk and owes one fresh reader (%s): a run "
                            "that did not make it reads only that commit, once, and writes %s/%s" % (
@@ -4901,7 +4905,9 @@ def read_ingame_exit(root, mod, n, tt=None, *, deploy_stamp=False):
             mf = r["mod_fix"]
             good, rwhy = review_sound(reviews, mf.get("commit"), mf.get("unit") or r.get("unit"))
             ln["review"] = "sound" if good else rwhy
-            if not good:
+            if good:
+                sound.append(mf.get("commit"))
+            else:
                 owed.append({"check": t, "fix": mf.get("commit"), "why": rwhy})
                 why.append("in-game check %s: the mod fix %s made in the sitting owes one fresh reader (%s): a run that "
                            "did not make the fix reads only that fix, once, and writes %s/%s" % (
@@ -5021,8 +5027,17 @@ def read_ingame_exit(root, mod, n, tt=None, *, deploy_stamp=False):
         twins = WT.save_why(native_to_here(sv))
         if twins:
             why.append(twins)
+    if DRIVER_SAYS_FALSE in why and sound and not owed:
+        # a driver whose visit holds a mod fix writes false for its owed fresh reader; with every such reader sound, the
+        # false is that reader, now done, and only the file checks decide (the blind cycle's rule, owner 2026-11-20;
+        # FlowWorks visit 13, 2026-11-25: RIMMANDRAKE_READ_VISIT_DRIVER_FALSE_AS_OWED_FIX_READER)
+        why.remove(DRIVER_SAYS_FALSE)
+        out["driver_false_read_as_fix_reader"] = True
     out["state"] = "not_met" if why else "met"
     if not why:
+        if out.get("driver_false_read_as_fix_reader"):
+            why.append("the driver's block says exit_met false, read as the owed fix reader, now done: %d mod fix(es) "
+                       "each read sound by one fresh reader (%s)" % (len(sound), ", ".join(str(c)[:10] for c in sound[:6])))
         nc = sorted(t for t, ln in lines_.items() if ln["count"] == "not_counted")
         rep = sorted(t for t, ln in lines_.items() if ln["count"] == "pass" and ln.get("repair"))
         why.append("%d of %d in-game checks PASS on checked sites%s%s; strange things all explained or filed; savegame %s%s"

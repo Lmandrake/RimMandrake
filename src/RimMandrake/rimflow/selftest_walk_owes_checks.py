@@ -329,10 +329,23 @@ def t_a_fix_that_landed_at_the_walk_owes_a_reader():
     tr.put(tr.c("version/in_game/visit_2/fix_reviews.jsonl"), json.dumps({
         "fix": cs, "reader": "rm-reader", "verdict": "sound", "why": "w"}) + "\n")
     out.append(reads()[0] == [])                                    # read before the visit opened, by a short hash
+    # the driver wrote exit_met false only for that owed reader (FlowWorks visit 13, 2026-11-25): with every review
+    # sound, the false reads as that reader, now done (RIMMANDRAKE_READ_VISIT_DRIVER_FALSE_AS_OWED_FIX_READER)
+    driver_false = "the driver's block says exit_met false"
+    tr.put(tr.c("version/in_game/visit_2/SUMMARY.md"), "# v\n\n## Exit\n```\ningame_rows: {sc_a: pass, sc_b: pass, "
+           "sc_c: pass}\nstrange_open: 0\nsavegame: /x.rws\nexit_met: false\n```\n")
+    ex = M.read_ingame_exit(tr.root, MOD, 2)
+    out.append(driver_false not in ex["why"] and sorted(ex.get("fix_readers_sound") or []) == sorted([cs, xml]))
+    tr.put(tr.c("version/in_game/visit_2/fix_reviews.jsonl"), json.dumps({
+        "fix": cs, "reader": "rm-reader", "verdict": "unsound", "why": "w"}) + "\n")
+    out.append(driver_false in M.read_ingame_exit(tr.root, MOD, 2)["why"])     # a reader still owed: the false stands
+    tr.put(tr.c("version/in_game/visit_2/fix_reviews.jsonl"), json.dumps({
+        "fix": cs, "reader": "rm-reader", "verdict": "sound", "why": "w"}) + "\n")
     mv = rec["moves"][-1]
     mv["confirmed"] = {"walk_result": "x"}                          # his walk's own road back: its fixes come after it
     save()
     out.append(M.landed_at_walk(tr.root, MOD, rec, 2) == [] and reads()[0] == [])
+    out.append(driver_false in M.read_ingame_exit(tr.root, MOD, 2)["why"])     # no fix to read: the false stands
     mv.pop("confirmed")
     mv["from"] = "in_game"
     out.append(M.landed_at_walk(tr.root, MOD, rec, 2) == [])
