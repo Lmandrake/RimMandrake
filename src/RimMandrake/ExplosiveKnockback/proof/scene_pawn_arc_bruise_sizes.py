@@ -95,8 +95,13 @@ def since_mark(raw):
     raw = list(raw)
     if not _MARK or _MARK[0] is None:
         return raw
-    for i in range(len(raw) - 1, -1, -1):
-        if raw[i] == _MARK[0]:
+    last, n = _MARK
+    # by position while the list has not trimmed (the line before the cut is still the mark); a run on the same save
+    # writes lines identical to the last run's, so the mark's text alone can cut inside this run's own lines
+    if 0 < n <= len(raw) and raw[n - 1] == last:
+        return raw[n:]
+    for i in range(min(n, len(raw)) - 1, -1, -1):   # trimmed: the mark moved toward the front, never past position n
+        if raw[i] == last:
             return raw[i + 1:]
     return raw
 
