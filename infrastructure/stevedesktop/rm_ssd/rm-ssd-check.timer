@@ -1,0 +1,10 @@
+[Unit]
+Description=Every 10 min: is ~/rm on the NVMe?
+
+[Timer]
+OnBootSec=3min
+OnUnitActiveSec=10min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

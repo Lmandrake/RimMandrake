@@ -1,0 +1,6 @@
+[Unit]
+Description=Read whether ~/rm is on the NVMe (rm_ssd_check.py; reading ~/.local/state/rm-ssd/reading.json)
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 %h/.local/bin/rm_ssd_check.py

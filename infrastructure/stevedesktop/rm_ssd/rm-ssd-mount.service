@@ -1,0 +1,13 @@
+[Unit]
+Description=Mount SteveDesktop's ~/rm disk (C:\WSL\rmssd\rm.vhdx on the NVMe) at /home/mandrake/rm
+After=local-fs.target
+
+[Service]
+Type=simple
+RemainAfterExit=yes
+ExecStart=/usr/local/sbin/rm-ssd-mount.sh
+Restart=on-failure
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target

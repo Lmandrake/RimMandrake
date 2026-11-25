@@ -466,6 +466,34 @@ Archmagi copies them back with
 | **No more security updates** | Bootstrap records `display_version` and `build` in the report. Agents keep the machine off untrusted inbound paths: SSH from LAN + Tailscale only, CRD dials out | Windows 10 left support on 2025-10-14. Consumer Extended Security Updates were published to run to 2026-10-13, which is before this week. So unless the machine is on a paid commercial ESU, Windows Update brings little or nothing now (Microsoft's published dates; not measured on this machine). That means fewer surprise reboots but no new patches. The machine must be on 22H2 (`display_version` 22H2, build 19045) for WSL to update |
 - **A power-loss reboot can leave the runner clone `~/rm/runner` with empty git objects and zero-length tracked files,** so every testq job is REFUSED SYNC and the lane pauses. Fix: `find .git/objects -type f -empty -delete`, `git fetch`, fsck, restore dirty files path-wise (`git diff --name-only -z | xargs -0 git checkout --`; the house hook refuses `reset --hard` even over ssh), `git pull --ff-only`, then `testq.py resume`. Rerun `findings_fold.py run` before `flow.untriaged_findings` drops.
 
+## ~/rm lives on its own disk on the NVMe (2026-11-25)
+
+The WSL volume (`D:\WSL\Ubuntu\ext4.vhdx`) is on the 14 TB SATA hard disk. `~/rm` (every clone, the pool, `store.git`,
+`mirror.git`) is a separate ext4 disk on the NVMe `C:`: `C:\WSL\rmssd\rm.vhdx`, 80 GiB, fixed size (it cannot grow
+into `C:`), label `rmssd`, UUID `3bfbfd35-f6eb-41fe-a94d-10faf48fa360`. Item
+RIMMANDRAKE_MOVE_STEVEDESKTOP_CLONES_TO_SSD_LINUX_DRIVE_SITS_ON_HARD_DISK holds the before and after readings
+(a 4.7 GB tree write: 121 s on the HDD, 24 s on the NVMe). Kit: `infrastructure/stevedesktop/rm_ssd/` (`install.sh`).
+
+- **Attach (Windows, needs administrator):** task `\RM SSD Attach` (sjlewis, highest, at logon and every 2 min) runs
+  `rm_ssd_attach.ps1` through a `.vbs` with no window. It runs `wsl --mount --vhd C:\WSL\rmssd\rm.vhdx --bare` only
+  while Ubuntu runs and no export, import, shutdown or terminate is under way. It never starts WSL. Log:
+  `C:\SteveDesktop\rm_ssd_attach.log` (actions and failures only).
+- **Mount (WSL):** `rm-ssd-mount.service` (root, enabled) waits for the UUID, asks Windows to run the task at once
+  (`schtasks.exe /run`), and mounts it at `/home/mandrake/rm`. Measured after a `wsl --shutdown`: the disk was mounted
+  11 s after systemd started.
+- **The empty `/home/mandrake/rm` under the mount is immutable** (`chattr +i`). Anything that runs before the mount
+  fails there and never writes the hard disk. Seat Fleet tiles that start before the mount fail, and `\Steve Seats
+  Watch` starts them again on its next beat.
+- **Check:** `rm-ssd-check.timer` (systemd --user, every 10 min) runs `~/.local/bin/rm_ssd_check.py`. It writes
+  `~/.local/state/rm-ssd/last.json` (ON_NVME, NOT_MOUNTED, WRONG_DISK, NOT_NVME or COULD_NOT_LOOK) every run. It writes
+  `reading.json` only on ON_NVME, so the live promise on the item goes stale as soon as `~/rm` leaves the NVMe.
+- **Space:** the disk holds about 49 GB. `runner`, `runner_b` and `mirror.git` borrow `store.git`'s objects
+  (`objects/info/alternates`; `store.git` never prunes, `scratch_clone.py` STORE config). So never delete or re-seed
+  `store.git` here without first `git repack -a -d` in each borrower. `testcentre_env.sh` sets `RM_POOL_FLOOR_GB=12`
+  for the pool, because the global floor (210 GB) is larger than this whole disk. `C:` keeps about 23 GB free.
+- **Back out:** `sudo systemctl disable --now rm-ssd-mount.service`, `sudo umount ~/rm`, `sudo chattr -i ~/rm`,
+  `rmdir ~/rm`, then put a copy of `~/rm` back on the WSL volume, and disable `\RM SSD Attach`.
+
 ## The ASUS Sonic Studio audio driver is OFF for good (2026-11-21)
 
 - **What was turned off:** the kernel audio driver `AVoluteSS3Vad` (`AVoluteSS3Vad.sys`, PnP "Sonic Studio Virtual Mixer", part of
