@@ -7,15 +7,20 @@ The instance (Archmagi, 2026-11-25T20:51Z): the run died "ledger corpus unreadab
 unit's drop-in, listed, then removed by its owner before the read. An item closed mid-read moves from items/ to
 items/closed/ the same way. The corpus is safety evidence, so a moved file's text must still be read: corpus() lists
 again and reads the fresh listing. A file that cannot be read for any other reason still stops the run.
+`--at <rev>` replays the instance on scratch_reap.py as it was at that commit (the guard's red, on the parent of the fix).
 """
+import argparse
 import errno
+import importlib.util
 import os
+import subprocess
 import sys
 import tempfile
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-import scratch_reap as R  # noqa: E402
+HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))
+R = None
 
 FAILS = []
 
@@ -26,7 +31,32 @@ def check(cond, msg):
         FAILS.append(msg)
 
 
+def load(at, td):
+    if not at:
+        import scratch_reap
+        return scratch_reap
+    src = subprocess.run(["git", "-C", str(HERE), "show", "%s:./scratch_reap.py" % at], check=True, capture_output=True,
+                         text=True).stdout
+    p = Path(td) / "scratch_reap.py"
+    p.write_text(src)
+    spec = importlib.util.spec_from_file_location("scratch_reap", p)
+    m = importlib.util.module_from_spec(spec)
+    sys.modules["scratch_reap"] = m
+    spec.loader.exec_module(m)
+    return m
+
+
 def main() -> int:
+    global R
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--at", help="replay on scratch_reap.py at this commit")
+    a = ap.parse_args()
+    with tempfile.TemporaryDirectory(prefix="selftest_reap_corpus_at_") as at_dir:
+        R = load(a.at, at_dir)
+        return cases()
+
+
+def cases() -> int:
     with tempfile.TemporaryDirectory(prefix="selftest_reap_corpus_") as td:
         root = Path(td) / "clone"
         st = root / "infrastructure" / "state"
