@@ -701,6 +701,20 @@ def main() -> int:
         check("fresh" in rows and not rows["fresh"]["stranded"], "work edited a minute ago is held but not stranded yet")
         check("pushed" not in names and "built" not in names and "rewritten" not in names, "pushed, built and rewritten stay silent")
         check((sc.state_dir() / "scratch_stranded.json").exists(), "the reading is written where the alarm says")
+        # seats incident 2026-11-25: a clone of ANOTHER repo (the Codex lane's MandrakeWorkflows-dev clone) read "1787 commits on
+        # no remote" because only the RimMandrake mirror was asked. Its own pushed commits are landed; its unpushed one is held.
+        fbare, fseed = BASE / "foreign.git", BASE / "foreign_seed"
+        sh("git", "init", "-q", "--bare", "--initial-branch=main", str(fbare))
+        sh("git", "clone", "-q", str(fbare), str(fseed))
+        for i in range(2):     # their own seconds: a print main shares would excuse the commit before the repo is asked
+            subprocess.run(["git", "-C", str(fseed), "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "--allow-empty", "-m", f"foreign {i}"],
+                           check=True, env={**os.environ, "GIT_AUTHOR_DATE": f"170000{5000 + i} +0000", "GIT_COMMITTER_DATE": f"170000{5000 + i} +0000"})
+        sh("git", "-C", str(fseed), "push", "-q", "origin", "HEAD:refs/heads/main")
+        sh("git", "clone", "-q", str(fbare), str(scr / "foreign"))
+        check(sc.clone_unlanded(scr / "foreign")[0] == [], f"a foreign repo's pushed commits are landed: {sc.clone_unlanded(scr / 'foreign')}")
+        subprocess.run(["git", "-C", str(scr / "foreign"), "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "--allow-empty", "-m", "unpushed foreign"],
+                       check=True, env={**os.environ, "GIT_AUTHOR_DATE": "1700005900 +0000", "GIT_COMMITTER_DATE": "1700005900 +0000"})
+        check("1 commit(s) on no remote" in sc.clone_unlanded(scr / "foreign")[0], "a foreign repo's unpushed commit is held")
         sr_git, sr.git = sr.git, lambda *a, **k: subprocess.CompletedProcess(a, 128, "", "fatal: planted")
         try:
             check("unreadable" in " ".join(sc.clone_unlanded(scr / "pushed")[0]), "a clone that cannot be read is held, not clean")

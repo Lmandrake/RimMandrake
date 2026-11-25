@@ -952,6 +952,17 @@ def ledger_commit_on_mirror(c: Path, sha: str, tip: str) -> bool:
         return False
 
 
+def is_foreign_repo(c: Path, tip: str) -> bool:
+    """True when the clone is of another repo than the mirror (no root commit in common): the mirror cannot prove a push
+    there, so only the clone's own remote refs can (a foreign clone has no stale shared lender). Any doubt: not foreign.
+    Seen 2026-11-25: a Codex lane's MandrakeWorkflows-dev clone read 1787 commits on no remote (seats incident)."""
+    import scratch_reap as sr
+    mine, theirs = (sr.git(x, "rev-list", "--max-parents=0", ref) for x, ref in ((c, "HEAD"), (sr.origin_mirrors()[0], tip)))
+    if mine.returncode or theirs.returncode or not mine.stdout.split() or not theirs.stdout.split():
+        return False
+    return not set(mine.stdout.split()) & set(theirs.stdout.split())
+
+
 def clone_unlanded(c: Path) -> tuple[list[str], float]:
     """(what this clone alone holds, mtime of its newest dirty file). Branches, HEAD and stash; a tag is an archive, not work.
     Fails closed: what git cannot read reports itself unreadable."""
@@ -959,6 +970,9 @@ def clone_unlanded(c: Path) -> tuple[list[str], float]:
     tips = sr.mirror_tips()
     if not tips:
         raise RuntimeError("no mirror to judge a push against")
+    foreign = is_foreign_repo(c, tips[0])
+    if foreign:     # the mirror cannot prove a push of another repo: its own remote refs do
+        tips = tips + sr.git(c, "for-each-ref", "--format=%(objectname)", "refs/remotes/").stdout.split()
     r = sr.git(c, "rev-list", "--ignore-missing", "--exclude=refs/remotes/*", "--exclude=refs/tags/*", "--all", "--stdin",
                stdin="".join(f"^{t}\n" for t in tips))
     if r.returncode:
