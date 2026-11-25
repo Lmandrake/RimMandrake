@@ -235,6 +235,36 @@ def t_a_blind_beat_changes_nothing():
     check("a process that cannot be read: blind", got["act"] == "blind" and "permission denied" in got["why"], got)
 
 
+def t_a_run_on_another_host_is_not_gone():
+    # measured 2026-11-24 9:30 PM PST: Archmagi's beat read 8 live SteveDesktop runs as "gone: its unit is not running",
+    # because their units live in SteveDesktop's systemd and this machine's systemctl answers inactive for them.
+    c, tok = new_clone("remote")
+    say(c)
+    rec = new_rec(c, tok)
+    first = look(rec)
+    rec = dict(rec, host="SteveDesktop")
+    for name, sd in (("its unit reads inactive here", Systemd(state="inactive")),
+                     ("its unit is not found here", Systemd(state="not-found")),
+                     ("no claude here", Systemd(procs=()))):
+        got = look(rec, sd, now=NOW + 5000)
+        check("a SteveDesktop run, %s: blind, names its host and where to read it, nothing lapsed or appended" % name,
+              got["act"] == "blind" and "gone" not in got["why"] and "SteveDesktop" in got["why"] and
+              "detached_helper.py status" in got["why"] and len(renewals(c)) == 1 and
+              got["renewal"] == first["renewal"] and got["line"] == first["line"], got)
+    got = look(dict(rec, host="Archmagi"), Systemd(state="inactive"), now=NOW + 5000)
+    check("a run on this machine (host Archmagi) whose unit is gone still reads gone", got["act"] == "lapse" and
+          "gone" in got["why"], got)
+    import socket
+    keep = socket.gethostname
+    socket.gethostname = lambda: "SteveDesktop"
+    try:        # the same record read by SteveDesktop's own beat is its own run
+        got = look(rec, Systemd(state="inactive"), now=NOW + 5000)
+    finally:
+        socket.gethostname = keep
+    check("on SteveDesktop itself its own run whose unit is gone reads gone", got["act"] == "lapse" and
+          "gone" in got["why"], got)
+
+
 def t_a_refused_renewal_reads_refused():
     c, tok = new_clone("fence")
     say(c)
@@ -472,7 +502,8 @@ def t_it_raises_no_alarm():
 
 def main():
     tests = (t_a_live_run_keeps_its_lease, t_a_long_wait_is_not_hung, t_a_dead_run_loses_its_lease,
-             t_a_hung_run_loses_its_lease, t_a_blind_beat_changes_nothing, t_a_refused_renewal_reads_refused,
+             t_a_hung_run_loses_its_lease, t_a_blind_beat_changes_nothing, t_a_run_on_another_host_is_not_gone,
+             t_a_refused_renewal_reads_refused,
              t_the_alive_line_is_the_runs_own, t_one_file_beside_the_record, t_the_status_shows_it,
              t_the_ledger_gets_it_once, t_one_run_never_stops_the_others,
              t_a_beat_that_could_not_look_writes_no_reading, t_the_brief_asks_only_while_no_timer_lives,

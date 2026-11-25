@@ -54,6 +54,8 @@ def decide(f, beat_s=BEAT_S, silence_s=SILENCE_S):
     def out(act, why):
         return {"act": act, "why": why}
     st = f.get("unit_state")
+    if st == "remote":
+        return out("blind", "could not look: it runs on %s, not on this machine" % f.get("host"))
     if st == "inactive":
         return out("lapse", "gone: its unit is not running")
     if st != "active":
@@ -392,6 +394,14 @@ def _try(fn, *a):
 def facts(rec, now, prev=None, runner=subprocess.run, projects=None):
     """-> (decide()'s facts, {fact: why it could not be read}, the transcript's path or None)."""
     import role_launch as RL
+    import run_host
+    import socket
+    door = run_host.door(rec.get("host"))
+    if door and run_host._norm(rec.get("host")) != socket.gethostname().strip().lower():    # its unit, its /proc and its transcript are that machine's; this machine's systemd says inactive for it
+        f = {"unit_state": "remote", "host": rec["host"], "proc_alive": None, "silent_s": None, "child_running": None,
+             "since_beat_s": None}
+        return f, {"host": "read it there: ssh %s 'cd ~/rm/bench && python3 src/RimMandrake/rimflow/detached_helper.py "
+                           "status'" % door}, None
     blind = {}
     f = {"unit_state": unit_fact(RL.unit_state(rec["unit"], runner=runner)), "proc_alive": None, "silent_s": None,
          "child_running": None, "since_beat_s": None}

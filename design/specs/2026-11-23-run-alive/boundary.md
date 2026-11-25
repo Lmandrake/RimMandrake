@@ -44,6 +44,9 @@ Each promise has a check of its name in `src/RimMandrake/rimflow/selftest_run_al
   says `hung`.
 - **a-blind-beat-changes-nothing.** When a fact that decides could not be read, the beat renews nothing, lapses nothing,
   keeps the last `ALIVE:` line, and names the fact. It is never "dead" and never "alive".
+- **a-run-on-another-host-is-not-gone.** A run whose record names another machine (`host`, a door of `run_host.py`) is
+  never read from this machine's systemd or /proc. It reads blind, names its host and the command that reads it there,
+  and changes nothing. A run on this machine is looked at as before.
 - **a-refused-renewal-reads-refused.** A refused append, a failed append, and a lease that another holder fenced (on
   origin/main or in the clone) read `refused: <cause>`, and the next look tries again. A run with no lease calls no append.
 - **the-alive-line-is-the-runs-own.** The line holds the run's last message and its commits. It holds no spend sentence
