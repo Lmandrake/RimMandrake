@@ -191,7 +191,10 @@ class FakeWorld(object):
         return {"success": bool(ids), "tilesReset": len(ids), "verifiedNull": bool(ids), "refused": []}
 
     def _t_jawa_list_pawns(self, includeHealth=False, includeCorpses=False, limit=500, faction=None, rect=None):
-        rows = [copy.deepcopy(p) for p in self.pawns.values() if includeCorpses or not p["dead"]]
+        # current map only, like the live tool, for a row that names its map ("map" key) against self.current_map; a row
+        # with no "map" key is on whatever map is current (the fake's older single-map behaviour)
+        cur = getattr(self, "current_map", 0)
+        rows = [copy.deepcopy(p) for p in self.pawns.values() if (includeCorpses or not p["dead"]) and p.get("map", cur) == cur]
         if not includeHealth:
             for r in rows:
                 r.pop("health", None)
@@ -314,6 +317,19 @@ class FakeWorld(object):
             p["health"]["hediffs"] = keep
             return {"success": ok}
         return {"success": False, "message": "fake supports remove only"}
+
+    def _t_rimworld_list_colonists(self, currentMapOnly=True, **_):
+        """The bridge's colonist roster shape (pawnId 'Thing_<id>', mapIndex). A pawn row's "map" key (default 0) is its
+        map (no key: the current map); with currentMapOnly only map self.current_map's colonists answer. Mode
+        "colonists_blind" fails it."""
+        if "colonists_blind" in self.modes:
+            return {"success": False, "message": "colonists_blind"}
+        cur = getattr(self, "current_map", 0)
+        rows = [{"pawnId": "Thing_" + p["id"], "dead": p["dead"], "humanlike": p["intelligence"] == "Humanlike",
+                 "factionIsPlayer": bool(p["isPlayer"]), "mapIndex": p.get("map", cur)}
+                for p in self.pawns.values() if not p["dead"] and p["isPlayer"] and p["intelligence"] == "Humanlike"
+                and (not currentMapOnly or p.get("map", cur) == cur)]
+        return {"success": True, "count": len(rows), "colonists": rows}
 
     def _t_jawa_pawn_traits(self, pawn=None, action="list", trait=None, degree=0, **_):
         """The companion's jawa/pawn_traits reply shape (JawaBenchPawnTools.cs): traits[] of {def, degree} after the act,

@@ -403,11 +403,19 @@ def disease_traits_off(session):
     """Remove each DISEASE_TRAITS degree from every live player colonist (jawa/pawn_traits remove), read back by list.
     Verified only when every colonist's traits were read after the act and none holds one: a colonist whose traits
     could not be read is residue ('could not look' is never clean). The removal is a change to the map (a reload of
-    the save undoes it), so nothing is restored."""
-    try:
-        cols = [r["id"] for r in read_pawns(session, health=False) if is_colonist(r) and not r["dead"]]
-    except HelperUnverified as e:
-        return HelperResult("disease_traits_off", verified=False, residue=["colonists unread: %s" % e])
+    the save undoes it), so nothing is restored.
+    The roster is EVERY map's (rimworld/list_colonists currentMapOnly=False; jawa/pawn_traits finds a pawn on any map):
+    modcheck's site hold runs at chain start, before the chain makes its site current, and a current-map roster swept
+    map 0's colonists and missed sickly Raptor on the Pyrelands site, map 1 (J20261125T175432Z-148e38, 2026-11-25)."""
+    r, err = _try_call(session, "rimworld/list_colonists", currentMapOnly=False)
+    if r is None:
+        return HelperResult("disease_traits_off", verified=False, residue=["colonists of every map unread: %s" % err])
+    cols = []
+    for c in r.get("colonists") or []:
+        pid = str(c.get("pawnId") or "")
+        pid = pid[6:] if pid.startswith("Thing_") else pid
+        if pid and not c.get("dead") and c.get("humanlike") is not False and c.get("factionIsPlayer") is not False:
+            cols.append(pid)
     removed, residue = [], []
     for pid in cols:
         r, err = _try_call(session, "jawa/pawn_traits", pawn=pid, action="list")

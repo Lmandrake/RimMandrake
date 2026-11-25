@@ -157,6 +157,21 @@ def main():
           and w.pawns["Drifter1"]["traits"] == [{"def": "Immunity", "degree": -1}])
     check("random_events_off verified after the Sickly removal, and records it",
           r.verified and "Col1" in str(r.evidence), str(r.evidence))
+    # the site hold runs at chain start, before the chain makes its site current: a sickly colonist on ANOTHER map
+    # (Pyrelands Raptor on map 1 while map 0 was current, J20261125T175432Z-148e38) is swept too
+    w = messy()
+    w.pawns["Col3"]["traits"] = [{"def": "Immunity", "degree": -1}]
+    w.pawns["Col3"]["map"] = 1
+    with H.SettingsTransaction(w) as tx:
+        r = H.random_events_off(w, tx)
+    check("random_events_off removes Sickly from a colonist on a map that is not current",
+          w.pawns["Col3"]["traits"] == [] and r.verified, "%s %s" % (w.pawns["Col3"]["traits"], r.as_dict()))
+    w = messy()
+    w.modes.add("colonists_blind")
+    with H.SettingsTransaction(w) as tx:
+        r = H.random_events_off(w, tx)
+    check("unreadable all-maps roster: random_events_off is NOT verified", not r.verified and r.residue,
+          "%s %s" % (r.verified, r.residue))
     w = messy()
     w.pawns["Col1"]["traits"] = [{"def": "Immunity", "degree": -1}]
     w.modes.add("traits_blind")
