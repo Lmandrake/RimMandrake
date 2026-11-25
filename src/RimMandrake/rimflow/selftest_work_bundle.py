@@ -544,6 +544,37 @@ def t_live_pass_takes_a_free_game_or_says_unrun():
         "live: the command line parses --for and the command after -- (%s)" % vars(o))
 
 
+# ---- part 7: the page ------------------------------------------------------------------------------------------------
+
+def t_the_page_shows_each_live_bundle():
+    W = WB()
+    live = W.new_record("pipeline:docs", ["G1", "G2"], "why", "workshop", NOW)
+    live.update(state="live", step="3 fix in order", restarts=2, units=[{"unit": "u-live", "at": NOW, "kind": "restart"}],
+                outcomes={"G1": {"outcome": "fixed", "why": "closed done"}})
+    dead = W.new_record("pipeline:hooks", ["H1"], "why", "workshop", NOW)
+    dead.update(state="live", units=[{"unit": "u-dead", "at": NOW, "kind": "launch"}])
+    ended = W.new_record("pipeline:ledger", ["J1"], "why", "workshop", NOW)
+    ended.update(state="ended")
+    page = W.page_rows(NOW + 60, bundles={b["id"]: b for b in (live, dead, ended)},
+                       unit_live=lambda u: u == "u-live")
+    ids = [r["id"] for r in page["rows"]]
+    chk(lambda: page["state"] == "ok" and live["id"] in ids and dead["id"] in ids and ended["id"] not in ids,
+        "page: one block per bundle that is not ended (%s)" % ids)
+    r = next(x for x in page["rows"] if x["id"] == live["id"])
+    chk(lambda: r["system"] == "pipeline:docs" and r["step"] == "3 fix in order" and r["restarts"] == 2
+        and r["members"] == [("G1", "fixed"), ("G2", "no outcome yet")], "page: system, step, restarts, members (%s)" % r)
+    d = next(x for x in page["rows"] if x["id"] == dead["id"])
+    chk(lambda: "dead, no finish" in d["state"], "page: a live bundle whose unit is gone reads dead, no finish (%s)" % d)
+    md, ht = "\n".join(W.page_md(page)), W.page_html(page)
+    chk(lambda: all(x in md and x in ht for x in (live["id"], "pipeline:docs", "G1", "fixed", "3 fix in order")),
+        "page: the markdown and the HTML both show the block")
+    blind = W.page_rows(NOW, bundles=None, reader=lambda: 1 / 0)
+    chk(lambda: blind["state"] == "unmeasured" and "UNMEASURED" in "\n".join(W.page_md(blind)) and
+        "UNMEASURED" in W.page_html(blind), "page: a store that cannot be read is one UNMEASURED line, never empty")
+    none = W.page_rows(NOW, bundles={})
+    chk(lambda: "none" in "\n".join(W.page_md(none)), "page: no live bundle says none, looked")
+
+
 def t_each_limit_names_its_danger():
     import re
     src = open(os.path.join(HERE, "work_bundle.py"), encoding="utf-8").read().splitlines()
@@ -564,7 +595,7 @@ def main():
               t_restart_until_each_member_has_an_outcome, t_finish_writes_the_bundles_end,
               t_a_restart_that_ended_no_member_raises,
               t_a_bundle_with_every_outcome_ends, t_a_refused_member_is_stopped_with_its_reason,
-              t_live_pass_takes_a_free_game_or_says_unrun,
+              t_live_pass_takes_a_free_game_or_says_unrun, t_the_page_shows_each_live_bundle,
               t_each_limit_names_its_danger]:
         print("-- %s" % t.__name__)
         try:

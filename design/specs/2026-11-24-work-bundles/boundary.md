@@ -101,6 +101,9 @@ bundle began). A member with none of these is **open**.
   query` for ArchBig, then ArchSmall, and runs CMD under `game_lock.py run` on the first free one. When no game is free
   (held, his hold, `pipe off`, or could not look), it runs nothing and records `UNRUN` with the exact command and each
   game's answer, in the record and on stdout.
+- **the-page-shows-each-live-bundle.** The Maturation Pipeline page has one block per bundle that is not ended: system,
+  step, restarts, each member with its outcome, and the state; a store that cannot be read is one UNMEASURED line,
+  never an empty block.
 
 ## PLANNED (built part by part; each moves up to PROMISES, with its test, when its part lands)
 
@@ -108,8 +111,5 @@ bundle began). A member with none of these is **open**.
   that mod's home are one bundle of that mod, not one fixer run each. A mod that the owner holds, a mod whose readiness
   list is not READY, and a mod with a live bundle launch no bundle. The mod's version, bars and stage records are not
   written by this step.
-- *the-page-shows-each-live-bundle.* The Maturation Pipeline page has one block per bundle that is not ended: system,
-  step, restarts, each member with its outcome, and the state; a store that cannot be read is one UNMEASURED line,
-  never an empty block.
 
 Later lists beside this page: `polish.md`.

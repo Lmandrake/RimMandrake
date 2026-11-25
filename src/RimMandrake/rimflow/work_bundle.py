@@ -936,6 +936,72 @@ def cmd_live(o):
     return live_pass(o.bundle, o.what, cmd)
 
 
+# ---- part 7: the page -----------------------------------------------------------------------------------------------
+
+PAGE_TITLE = "Work bundles (one run per system; work_bundle.py)"
+SHOWN_STATES_NOT = ("ended", "replaced")
+
+
+def _unit_live(u):
+    import detached_helper as DH
+    rec = DH.read_record(u)
+    return rec is None or DH.live_status(rec) in ("launching", "running")    # unread counts live: never "dead" unseen
+
+
+def page_rows(now, bundles=None, unit_live=None, reader=None):
+    """-> {"state": ok | unmeasured, "cause"?, "rows": [{id, system, state, step, restarts, members: [(id, outcome)],
+    since}]}: one row per bundle that is not ended."""
+    unit_live = unit_live or _unit_live
+    if bundles is None:
+        try:
+            bundles = (reader or all_bundles)()
+        except Exception as e:  # noqa: BLE001 - could not look: said, never an empty block
+            return {"state": "unmeasured", "cause": "the work-bundle store could not be read (%s: %s)" % (
+                type(e).__name__, _one(e, 160)), "rows": []}
+    rows = []
+    for b in sorted(bundles.values(), key=lambda b: b.get("at") or 0):
+        if b.get("state") in SHOWN_STATES_NOT:
+            continue
+        st = b.get("state")
+        units = b.get("units") or []
+        if st in LIVE_STATES and units and not unit_live(units[-1]["unit"]) and st != "restarting":
+            st = "%s, dead, no finish (unit %s is gone and its end was never recorded; `work_bundle` cannot restart it)" % (
+                st, units[-1]["unit"])
+        oc = b.get("outcomes") or {}
+        rows.append({"id": b["id"], "system": b.get("system"), "state": st, "step": b.get("step") or "-",
+                     "restarts": int(b.get("restarts") or 0), "since": b.get("at"),
+                     "members": [(m, (oc.get(m) or {}).get("outcome") or "no outcome yet") for m in b.get("members") or []],
+                     "unit": units[-1]["unit"] if units else None, "raised": (b.get("raised") or {}).get("why")})
+    return {"state": "ok", "rows": rows}
+
+
+def _line(r):
+    mem = ", ".join("`%s` %s" % (m, o) for m, o in r["members"])
+    return "**%s** · %s · %s · step: %s · restarts: %d · run: %s%s · members: %s" % (
+        r["id"], r["system"], r["state"], r["step"], r["restarts"], r["unit"] or "-",
+        (" · raised: %s" % _one(r["raised"], 200)) if r.get("raised") else "", mem)
+
+
+def page_md(page):
+    out = ["## " + PAGE_TITLE, ""]
+    if page["state"] != "ok":
+        return out + ["- UNMEASURED: %s." % page["cause"], ""]
+    return out + (["- " + _line(r) for r in page["rows"]] or ["- none (looked: the work-bundle store; no bundle is open)"]) + [""]
+
+
+def page_html(page):
+    import html
+    def inline(s):
+        s = html.escape(str(s), quote=False)
+        s = re.sub(r"\*\*([^*]+)\*\*", r"<b>\1</b>", s)
+        return re.sub(r"`([^`]+)`", r"<code>\1</code>", s)
+    if page["state"] != "ok":
+        items = ["UNMEASURED: %s." % page["cause"]]
+    else:
+        items = [_line(r) for r in page["rows"]] or ["none (looked: the work-bundle store; no bundle is open)"]
+    return "<h2>%s</h2><ul>%s</ul>" % (html.escape(PAGE_TITLE), "".join("<li>%s</li>" % inline(x) for x in items))
+
+
 # ---- reading the ledger ---------------------------------------------------------------------------------------------
 
 def world():

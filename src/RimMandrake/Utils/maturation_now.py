@@ -1080,6 +1080,7 @@ def gather(root, live=True):
     import list_pipeline as LP  # noqa: E402  the Workshop Pipeline's one stage rule, the one list_dispatch's tick calls
     nonmod = MNM.safe_section(nm_stores, now, spend=read_spend, stage=lambda item, t: LP.stage_of(item, t))
     return {"mods": mods, "others": other, "held": held, "needs": needs, "now": now, "nonmod": nonmod,
+            "bundles": bundle_page(now),
             "trend": trend(lf, versioned, now, live),
             "view": lf.get("view"),
             "intake": {"count": lf["intake"], "questions_total": UNM if lf["questions"] is None else len(lf["questions"])},
@@ -1697,6 +1698,25 @@ def needs_md(d):
     return out
 
 
+def bundle_page(now):
+    """The work bundles block (work_bundle.page_rows): one row per bundle that is not ended; unreadable reads UNMEASURED."""
+    try:
+        import work_bundle as WB
+        return WB.page_rows(now)
+    except Exception as e:  # noqa: BLE001 - could not look: the block says so
+        return {"state": "unmeasured", "cause": "work_bundle could not be read (%s: %s)" % (type(e).__name__, e), "rows": []}
+
+
+def bundles_md(d):
+    import work_bundle as WB
+    return WB.page_md(d["bundles"]) if d.get("bundles") else []
+
+
+def bundles_html(d):
+    import work_bundle as WB
+    return WB.page_html(d["bundles"]) if d.get("bundles") else ""
+
+
 def nonmod_md(d):
     """The non-mod pipeline section, directly under "Pipeline now" (maturation_nonmod.py)."""
     return MNM.markdown(d["nonmod"]) if d.get("nonmod") else []
@@ -1897,6 +1917,7 @@ def build(d, now):
         parts_md += ["## " + MT.TITLE, "", MT.block(tr), ""]
     if nm:
         parts_md += ["## " + MNM.PANEL_TITLE, "", MNM.panel(nm), ""]
+    parts_md += bundles_md(d)
     parts_md += ["## The mod pipeline", "", pipeline_line(d), "", "<div>" + picture(d) + "</div>", ""]
     parts_md += ["## Every mod, one line", ""] + one_line_md(d)
     parts_md += ["---", ""] + ([note, ""] if note else []) + [tail, ""]
@@ -1906,6 +1927,7 @@ def build(d, now):
         body += ["<h2>%s</h2>" % esc(MT.TITLE), MT.block(tr)]
     if nm:
         body += ["<h2>%s</h2>" % esc(MNM.PANEL_TITLE), MNM.panel(nm)]
+    body.append(bundles_html(d))
     body += ["<h2>The mod pipeline</h2><p class='m'>%s</p>" % esc(pipeline_line(d)), picture(d)]
     rows = [r for m, r in zip(d["mods"], summary_rows(d)) if not folded(m)]
     off = ["%s (%s, %s)" % (m["label"], where_word(m), "held" if m["held"] or str(m["waits_on"]).startswith("held") else "off")
@@ -1928,7 +1950,7 @@ def build_detail(d, now):
     measured = "**Measured from disk %s.** Made by `maturation_now.py`, no model, no tokens." % pac(now)
     lead = ("The lists behind MATURATION_NOW. "
             "The map is the spec's (`%s\\design\\specs\\2026-11-13-maturation-pipeline.md`)." % NATIVE_REPO)
-    md = ["# " + title, "", measured, "", PX.crossref_md("detail"), ""] + needs_md(d) + nonmod_md(d) + [top_chips(d), "", lead, ""]
+    md = ["# " + title, "", measured, "", PX.crossref_md("detail"), ""] + needs_md(d) + nonmod_md(d) + bundles_md(d) + [top_chips(d), "", lead, ""]
     md += convergence_md(d) + ["## Each mod", ""]
     for m in d["mods"]:
         md += [card(m), ""]
@@ -1945,7 +1967,7 @@ def build_detail(d, now):
     others = "".join("<li><code>%s</code>: no <code>version/VERSION.json</code>, so not placed on the map.</li>"
                      % esc(o["name"]) for o in d["others"])
     cant = "".join("<li>%s</li>" % inline_md(x) for x in unread_lines(d))
-    body = ["<p class='m'><a href='MATURATION_NOW.html'>The summary</a></p>", PX.crossref_html("detail"), needs_html(d), nonmod_html(d),
+    body = ["<p class='m'><a href='MATURATION_NOW.html'>The summary</a></p>", PX.crossref_html("detail"), needs_html(d), nonmod_html(d), bundles_html(d),
             "<p>%s</p>" % top_chips(d), "<p class='m'>%s</p>" % inline_md(lead), convergence_html(d),
             "<h2>Each mod</h2>"] + [card(m) for m in d["mods"]]
     if others:
