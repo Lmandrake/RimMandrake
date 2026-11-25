@@ -1,0 +1,2 @@
+An UNRESOLVED in-game row holds its scene under any later PASS. Before a deploy, look for a game that still holds the row's old build (compare the DLL sha256 with git show <mod_sha>:...dll) and read the cause there: FlowWorks visit 10's 1-in-28 stale reach was shown on ArchBig's undeployed DLL in one load of 28 (8 of its 18 lanes; 0 in a second set of 14 loads). Count such a fault by load, not by lane: 252 lanes in 14 loads are 14 looks, so a clean repeat shows no fix.
+item: RIMMANDRAKE_LIST_FLOWWORKS_READINESS_VISIT_TWELVE_TENS_LIST_IS_STALE
