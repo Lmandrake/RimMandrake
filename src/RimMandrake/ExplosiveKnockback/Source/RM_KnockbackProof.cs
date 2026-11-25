@@ -35,6 +35,8 @@ namespace RimMandrake.ExplosiveKnockback
             public Dictionary<string, IntVec3> atBlast;     // spared_states: each thing's cell just after the blast (visit 1)
             public Dictionary<string, IntVec3> stagedCells; // spared_states: each spared thing's cell as staged (the sleeper has its own bed check)
             public Dictionary<string, IntVec3> preBlast;    // spared_states: each thing's cell on the blast's tick, before it
+            public string placeFault;                       // Item: a good that could not be placed, and what held its cell
+            public readonly Dictionary<string, string> wantWhy = new Dictionary<string, string>(); // WantCells: its inputs, per key
         }
 
         private static readonly Dictionary<string, Scene> scenes = new Dictionary<string, Scene>();
@@ -523,6 +525,10 @@ namespace RimMandrake.ExplosiveKnockback
                     }
                 }
                 string why = Build(s);
+                if (why == null && s.placeFault != null)
+                {
+                    why = "site: " + s.placeFault;
+                }
                 if (why != null)
                 {
                     RunRestore(s);
@@ -678,6 +684,15 @@ namespace RimMandrake.ExplosiveKnockback
             Thing t = ThingMaker.MakeThing(DefDatabase<ThingDef>.GetNamed(def));
             t.stackCount = count;
             GenPlace.TryPlaceThing(t, c, Map, ThingPlaceMode.Direct, out Thing placed);
+            if (placed == null || !placed.Spawned)
+            {
+                // RIMMANDRAKE_HUNT_KNOCKBACK_GOOD_UNMOVED_LONG_BATCH_THREE_SIGHTINGS: a Direct place onto a cell that already holds an
+                // item of another def spawns nothing, and the unspawned good's start is no cell: the scene then reads "planned 0
+                // cells". Stage turns this into an INVALID that names what held the cell.
+                s.placeFault = (s.placeFault == null ? "" : s.placeFault + "; ") + "could not place " + count + " " + def + " at "
+                    + c.x + "," + c.z + ", the cell holds [" + string.Join(", ", c.GetThingList(Map).Select(x => x.def.defName + x.thingIDNumber
+                    + " x" + x.stackCount + " " + x.def.category)) + "]";
+            }
             Track(s, key, placed ?? t);
             return placed ?? t;
         }
@@ -960,7 +975,20 @@ namespace RimMandrake.ExplosiveKnockback
             KbSettings k = RimMandrakeExplosiveKnockbackSettings.Kernel();
             Thing t = s.things[key];
             float mass = t.GetStatValue(StatDefOf.Mass) * t.stackCount;
-            return RM_KnockbackVerdicts.GoodCells((s.starts[key] - s.o).LengthHorizontal, r, mass, k, RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild);
+            float dist = (s.starts[key] - s.o).LengthHorizontal;
+            float wild = RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild;
+            int cells = RM_KnockbackVerdicts.GoodCells(dist, r, mass, k, wild);
+            // RIMMANDRAKE_HUNT_KNOCKBACK_GOOD_UNMOVED_LONG_BATCH_THREE_SIGHTINGS: a long batch once planned 0 cells here; an INVALID
+            // line prints these inputs (WantWhy) so the next sighting names the input that went to 0
+            s.wantWhy[key] = "inputs " + key + ": dist=" + dist.ToString("0.00") + " mass=" + mass.ToString("0.###") + " stack=" + t.stackCount
+                + " spawned=" + t.Spawned + " at=" + s.starts[key].x + "," + s.starts[key].z + " o=" + s.o.x + "," + s.o.z + " wild=" + wild
+                + " k{mult=" + k.globalMultiplier + " base=" + k.baseCells + " max=" + k.maxCells + " light=" + k.lightMassLimit + " ref=" + k.refMass + "}";
+            return cells;
+        }
+
+        private static string WantWhy(Scene s, string key)
+        {
+            return s.wantWhy.TryGetValue(key, out string w) ? " [" + w + "]" : " [no inputs recorded]";
         }
 
         /// <summary>WantCells for a blast centred on <paramref name="centre"/> rather than the scene origin (a scene with several
@@ -1569,7 +1597,7 @@ namespace RimMandrake.ExplosiveKnockback
                         int want = (int)sc.numbers["want"];
                         if (want < 2)
                         {
-                            return "INVALID " + sc.name + " component planned " + want + " cells: does not reach the wall";
+                            return "INVALID " + sc.name + " component planned " + want + " cells: does not reach the wall" + WantWhy(sc, "comp");
                         }
                         string m = Moved(sc, "comp", out Thing tt, out int cells);
                         var imp = ForThing(sc, "goods_impact", t);
@@ -1603,7 +1631,7 @@ namespace RimMandrake.ExplosiveKnockback
                         int back = RM_KnockbackMath.ReboundCells(left, RimMandrakeExplosiveKnockbackSettings.goodsReboundKeepPercent);
                         if (back < 1)
                         {
-                            return "INVALID " + sc.name + " planned " + want + " cells leaves no rebound (back=" + back + ")";
+                            return "INVALID " + sc.name + " planned " + want + " cells leaves no rebound (back=" + back + ")" + WantWhy(sc, "comp");
                         }
                         string m = Moved(sc, "comp", out Thing tt, out int cells);
                         var rb = ForThing(sc, "item_rebound", t);
