@@ -1,0 +1,2 @@
+# live proof of LAUNCHER_READY_HARDEN_OLD_LOG_LINES_LIE: relaunches the lane's own game of this job (disposable) and reads READY only on a current-process receipt (work bundle WB-pipeline-bridge-20261125-192133)
+live-proof A1: bash src/RimMandrake/bridgetools/launch_and_wait.sh < /dev/null
