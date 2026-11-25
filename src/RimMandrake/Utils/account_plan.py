@@ -1325,7 +1325,7 @@ def machine_notice(plan, f, account, now, name, prev=None, why_unread=None) -> d
     """The notice for the machine `name`, which is on `account`: the plan's decision for that account from the same
     readings (pure). A decision under which no new run starts is a drain there (at the line: `account_end`, save and
     publish); the warning zone carries the warning text; an account that could not be read refuses new runs and says
-    could not look. A following machine is never switched from here: its switch is a hand act."""
+    could not look. Its switch at the line is machine_switch's, after the notice."""
     import switching_plan as SP
     prev = prev if isinstance(prev, dict) else {}
     tag = {"machine": name, "follows": os.uname().nodename}
@@ -1335,9 +1335,8 @@ def machine_notice(plan, f, account, now, name, prev=None, why_unread=None) -> d
         return {"state": "soft", "since": prev.get("since") if prev.get("could_not_look") and prev.get("since")
                 else iso(now), "at": iso(now), "account": None, "line": None, "pct_left": None, "message": msg,
                 "why": msg, "drain": True, "account_end": False, "warning": None, "could_not_look": True, **tag}
-    fm = {**f, "live": account, "runs": None, "state": {}, "markers": {}, "hand": True, "draining": False,
-          "burn_live": f.get("burn_live") if account == f.get("live") else None}
-    d = decide(plan, fm)
+    d = decide(plan, machine_facts(f, account))
+    fm = machine_facts(f, account)
     if d["do"] in REFUSES:
         under = is_num(d.get("pct_left")) and is_num(d.get("line")) and d["pct_left"] <= d["line"]
         dm = {**d, "do": "soft", "drain": True, "account_end": under}
@@ -1349,23 +1348,67 @@ def machine_notice(plan, f, account, now, name, prev=None, why_unread=None) -> d
     return {**SP.notice_of(dm, now, prev), **tag}
 
 
-def push_machines(plan, f, now, account_of=None, send=None) -> dict:
+def machine_facts(f, account) -> dict:
+    """The readings of this pass, seen from a machine that is on `account` (its runs are not this machine's)."""
+    return {**f, "live": account, "runs": None, "state": {}, "markers": {}, "hand": True, "draining": False,
+            "burn_live": f.get("burn_live") if account == f.get("live") else None}
+
+
+SWITCH_RETRY_S = 30 * 60    # budget: danger=a switch asked on every pass while it fails; ends no work: asked again
+
+
+def machine_switch(plan, f, now, name, m, account, n, prev, runs_of, switch):
+    """RIMMANDRAKE_AUTOMATE_STEVEDESKTOP_ACCOUNT_SWITCH_PLAN_SAYS_NEVER: a machine whose notice says its account is at
+    its end is switched to the plan's next account when it lists no live helper run (the switch closes every Claude
+    window there). -> the record of what was done, or None when its account is not at its end. Pure but for the seams."""
+    if not n.get("account_end"):
+        return None
+    d = decide(plan, machine_facts(f, account))
+    can = d.get("can_now")
+    nxt = next((a for a in (d.get("to"), (d.get("pending") or {}).get("to"), d.get("next"))
+                if a and a != account and (can is None or a in can)), None) or next(
+        (a for a in (can or []) if a != account), None)
+    if not nxt:
+        return {"to": None, "at": iso(now), "ok": False, "line": "no account can take over; it waits for a reset"}
+    last = prev.get("switch") if isinstance(prev.get("switch"), dict) else {}
+    if last.get("to") == nxt and stamp(last.get("at")) is not None and now - stamp(last["at"]) < SWITCH_RETRY_S:
+        return dict(last, line="switch to %s asked at %s; not asked again yet" % (nxt, last["at"]))
+    runs, why = runs_of(m["ssh"])
+    if runs is None:
+        return {"to": nxt, "at": None, "ok": False, "line": "COULD NOT LOOK at its live runs (%s); not switched" % why}
+    if runs:
+        return {"to": nxt, "at": None, "ok": False, "line": "%d live run(s) there; the switch to %s waits" % (runs, nxt)}
+    ok, words = switch(m["ssh"], name, nxt)
+    return {"to": nxt, "at": iso(now), "ok": bool(ok),
+            "line": ("switched to %s" % nxt) if ok else "the switch to %s failed: %s" % (nxt, words)}
+
+
+def push_machines(plan, f, now, account_of=None, send=None, runs_of=None, switch=None) -> dict:
     """Each machine of the plan gets the plan's decision for the account that it is on, from the readings of this pass.
     -> {machine: {ok, account, state, line}}. Never raises: a machine that could not be reached is said, and its own
     gate refuses new runs once its notice is older than NOTICE_FRESH_S."""
     import account_plan_machines as MS      # the ssh transport: this file starts no process
     out = {}
+    if send is not None and runs_of is None:    # test seams for the notice and none for the runs: switch nothing
+        runs_of = lambda alias: (None, "no runs reader given")  # noqa: E731
+    runs_of, switch = runs_of or MS.machine_runs, switch or MS.switch_machine
     for name, m in (plan.get("machines") or {}).items():
         try:
             account, why = (account_of or MS.machine_account)(m["ssh"])
             keep = plan_dir() / ("machine.%s.json" % name)
             n = machine_notice(plan, f, account, now, name, read_json(keep, {}), why)
+            prev = read_json(keep, {})
             ok, err = (send or MS.send_notice)(m["ssh"], n)
+            sw = machine_switch(plan, f, now, name, m, account, n, prev if isinstance(prev, dict) else {}, runs_of,
+                                switch) if ok else None
             if ok:
-                write_atomic(keep, n)
+                write_atomic(keep, dict(n, switch=sw) if sw and sw.get("at") else
+                             dict(n, switch=prev.get("switch")) if isinstance(prev, dict) and prev.get("switch") else n)
             out[name] = {"ok": bool(ok), "account": account, "state": n["state"], "drain": n["drain"],
                          "line": ("sent: " + (n["message"] or "nothing is refused")) if ok else
                          "COULD NOT LOOK: the notice did not reach %s (%s)" % (name, err)}
+            if sw:
+                out[name]["switch"] = sw["line"]
         except Exception as e:  # noqa: BLE001  the pass goes on; the machine's own gate handles a missing notice
             out[name] = {"ok": False, "account": None, "state": None, "drain": None,
                          "line": "COULD NOT LOOK: %s: %s" % (type(e).__name__, e)}
@@ -1616,8 +1659,8 @@ def end_lines(plan, f, d) -> list:
     for name, m in (plan.get("machines") or {}).items():
         n = read_json(plan_dir() / ("machine.%s.json" % name))
         if isinstance(n, dict) and n.get("account") == live:
-            out.append("      %s is on %s too: it gets no new run at the same line; its switch is by hand: ssh -t %s "
-                       "claude-account-switch %s <account>" % (name, live, m["ssh"], name))
+            out.append("      %s is on %s too: it gets no new run at the same line; the pass switches it when it lists no "
+                       "live run (by hand: ssh -t %s claude-account-switch %s <account>)" % (name, live, m["ssh"], name))
     out.append("      by hand: ./acct switch %s --now · ./acct hold --for 2h · ./acct line %s <percent> --until-reset · "
                "./acct --help" % (nxt or "<account>", live))
     return out
@@ -2192,7 +2235,8 @@ CHANGE (each write prints its undo; --why "..." or --owner-said "..." records th
 ANOTHER MACHINE on the same account (./acct status has a line for each)
   Each pass writes it the plan's decision for the account that it is on. At the line it starts no new run and its
   live runs are told to save. With no notice for 20 minutes it starts no new run and says COULD NOT LOOK.
-  This tool never switches another machine. By hand: ssh -t SSHNAME claude-account-switch NAME ACCOUNT
+  At the line, once it lists no live helper run, the pass switches it to the next account (claude-account use).
+  By hand: ssh -t SSHNAME claude-account-switch NAME ACCOUNT
 
 WHEN IT LOOKS WRONG
   COULD NOT LOOK in status   the meter or the switcher is unread: python3 src/RimMandrake/Utils/account_usage.py poll

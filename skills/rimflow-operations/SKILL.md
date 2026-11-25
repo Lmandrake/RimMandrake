@@ -88,8 +88,8 @@ What reads the plan:
 - **The helper allocator** (`slot_allocator.py`): Burn Mode (`./acct burn-mode`), the pool and its Codex advice line.
 - **Another machine on the same account** (`./acct plan` lists the machines). Each timed pass writes that machine
   its notice. That machine starts no new run at the line. That machine also starts no new run when its last notice is
-  over 20 min old (COULD NOT LOOK). The tool never switches another machine: the switch of another machine is a hand
-  act, and `./acct status` prints the command.
+  over 20 min old (COULD NOT LOOK). At the line, once that machine lists no live helper run, the pass switches it to
+  the next account (`claude-account use`); `./acct status` prints the hand command too.
 
 An interactive Claude window (a seat's terminal session) has no stop hook. The signs for such a window are the notice (`./acct can-use`), the Conductor log lines `ACCOUNT END` and the
 ledger notes on `RIMMANDRAKE_BUILD_ACCOUNT_END_WARN_SAVE_PAUSE_SWITCH_SIZED_BY_BURN`. No program refuses a new helper

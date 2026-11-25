@@ -48,8 +48,8 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
   plan file is refused. `switching_plan.json` carries a tombstone that says so.
 - **a-run-on-another-machine-that-does-not-end.** At the line a listed machine gets a notice: no new run starts there,
   and its hooks tell each live run to save and publish. A run there that keeps working burns the account under its
-  line: this tool stops no process on another machine and never switches one. Both are hand acts
-  (`ssh -t <machine> claude-account-switch ...`).
+  line: this tool stops no process on another machine, and switches it only once it lists no live run
+  (a_machine_at_its_end_is_switched_when_its_runs_end). Stopping such a run is a hand act.
 - **a-machine-that-the-plan-does-not-list.** It has no notice and no gate from here. It is as it was before.
 - **the-deciding-machine-off.** While this machine is off or its pass is dead, each listed machine refuses new runs
   (could not look) from 20 min after its last notice, until a notice arrives.
@@ -153,6 +153,10 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
   which account it is on, decides for that account with the same readings and rules, and writes the result there as
   its notice: nothing refused, the warning text, or no new run (at the line: save and publish). An account that could
   not be read is could not look and no new run. `status` has one line for each machine.
+- **a_machine_at_its_end_is_switched_when_its_runs_end.** A machine whose notice says its account is at its end is
+  switched by the pass to the plan's next account (`claude-account use NEXT --confirm NAME` over ssh), only when it lists
+  no live helper run; a run there, or runs that cannot be read, switch nothing and the pass says so. The same switch is
+  not asked again for `SWITCH_RETRY_S` (30 min). A machine above its line is never switched.
 - **a_push_that_fails_leaves_the_pass_whole.** A machine that cannot be reached is said by name in the pass's log; the
   pass and the other machines go on; a notice that did not arrive is not kept as that machine's last.
 - **a_following_machine_that_cannot_look_refuses.** A machine that got a notice from the deciding machine starts no

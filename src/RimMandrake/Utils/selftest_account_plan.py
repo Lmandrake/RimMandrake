@@ -1621,6 +1621,42 @@ def t_each_machine_on_the_account_gets_its_decision():
         m.close()
 
 
+def t_a_machine_at_its_end_is_switched_when_its_runs_end():
+    """RIMMANDRAKE_AUTOMATE_STEVEDESKTOP_ACCOUNT_SWITCH_PLAN_SAYS_NEVER: SteveDesktop's switch was by hand, so at its
+    line it started nothing until someone typed a command."""
+    n = "a_machine_at_its_end_is_switched_when_its_runs_end"
+    pm = NEW()
+    pm["machines"] = {"box2": {"ssh": "box2-wsl"}}
+    end = {"steven": R(5, 20), "system": R(80, 110), "lukas": R(18, 120)}
+    calls = []
+
+    def sw(alias, name, acct):
+        calls.append((alias, name, acct))
+        return True, "switched"
+    fresh(pm)
+    out = AP.push_machines(pm, F("lukas", end), NOW, account_of=lambda a: ("steven", None), send=lambda a, nt: (True, ""),
+                           runs_of=lambda a: (1, None), switch=sw)
+    check(n + ": a machine at its end with one live run is not switched; the pass says it waits",
+          calls == [] and "waits" in (out["box2"].get("switch") or ""), (calls, out))
+    out = AP.push_machines(pm, F("lukas", end), NOW + 60, account_of=lambda a: ("steven", None),
+                           send=lambda a, nt: (True, ""), runs_of=lambda a: (0, None), switch=sw)
+    check(n + ": with no live run it is switched once, to the plan's next account",
+          len(calls) == 1 and calls[0][:2] == ("box2-wsl", "box2") and calls[0][2] not in (None, "steven"), (calls, out))
+    AP.push_machines(pm, F("lukas", end), NOW + 120, account_of=lambda a: ("steven", None),
+                     send=lambda a, nt: (True, ""), runs_of=lambda a: (0, None), switch=sw)
+    check(n + ": the same switch is not asked again on the next pass", len(calls) == 1, calls)
+    fresh(pm)
+    AP.push_machines(pm, F("lukas", end), NOW, account_of=lambda a: ("steven", None), send=lambda a, nt: (True, ""),
+                     runs_of=lambda a: (None, "ssh: no route"), switch=sw)
+    check(n + ": runs that cannot be read switch nothing", len(calls) == 1, calls)
+    AP.push_machines(pm, F("lukas", LVL), NOW, account_of=lambda a: ("steven", None), send=lambda a, nt: (True, ""),
+                     runs_of=lambda a: (0, None), switch=sw)
+    check(n + ": a machine above its line is not switched", len(calls) == 1, calls)
+    AP.push_machines(pm, F("lukas", end), NOW + 600, account_of=lambda a: ("steven", None),
+                     send=lambda a, nt: (True, ""))
+    check(n + ": a pass with test seams for the notice and none for the runs switches nothing", len(calls) == 1, calls)
+
+
 def t_a_push_that_fails_leaves_the_pass_whole():
     n = "a_push_that_fails_leaves_the_pass_whole"
     pm = NEW()
@@ -1882,7 +1918,8 @@ def main():
               t_fault_preference_switch_drained_at_eighteen_percent, t_fault_plan_change_needed_edit_publish_pull,
               t_fault_hand_hold_six_seconds_before_a_pass, t_fault_stop_and_undo_crossed,
               t_can_use_is_the_one_answer_for_a_new_run, t_a_carried_run_goes_until_the_line,
-              t_each_machine_on_the_account_gets_its_decision, t_a_push_that_fails_leaves_the_pass_whole,
+              t_each_machine_on_the_account_gets_its_decision, t_a_machine_at_its_end_is_switched_when_its_runs_end,
+              t_a_push_that_fails_leaves_the_pass_whole,
               t_a_following_machine_that_cannot_look_refuses, t_readers_take_the_rules_through_one_door,
               t_the_allocator_raises_its_pace_to_the_target_burn, t_codex_door_asks_the_plan,
               t_status_and_help_are_the_operators_page):
