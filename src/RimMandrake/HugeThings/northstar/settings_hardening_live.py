@@ -32,7 +32,6 @@ SPEC={
  'roofWallHpFactor':(1,3,1.5,2),'roofWallDamageFactor':(.25,1,.6667,.5),
  'yieldCurveMinFactor':(.05,1,.15,.25),'corpseSiteHarvestMeatPerSession':(5,100,None,35),
  'corpseSiteHarvestLeatherPerSession':(2,50,None,15),'corpseSiteWorkHoursPerSession':(.25,6,1,1.5),
- 'corpseSiteMeatSpoilagePerDay':(.02,.5,.15,.2),'corpseSiteLeatherSpoilagePerDay':(.02,.5,.08,.1),
  'corpseSiteScavengerDailyChance':(0,1,.35,.45),'corpseSiteScavengerMax':(1,8,None,4),
  'corpseSiteVisitorMeatPerDay':(5,100,None,30),'corpseSiteCampDailyChance':(0,1,.1,.2),
  'corpseSiteCampHours':(6,120,36,48),'titanEventWarningHours':(.5,24,2,6)}

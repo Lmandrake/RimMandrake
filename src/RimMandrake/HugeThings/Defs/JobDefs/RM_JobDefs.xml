@@ -8,6 +8,13 @@
     <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
   </JobDef>
 
+  <!-- HarvestDesignated requires HarvestPlant through its own vanilla driver. -->
+  <JobDef>
+    <defName>RM_HarvestHugePlantFromTrunk</defName>
+    <driverClass>RimWorld.JobDriver_PlantHarvest_Designated</driverClass>
+    <reportString>harvesting TargetA.</reportString>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
 
   <JobDef>
     <defName>RM_HarvestTitanicCorpse</defName>

@@ -28,7 +28,7 @@ namespace RimMandrake.TitanicCreatures
                 return;
             }
             // CORPSE_SITE_SAFETY_1 (B3.1): never destroy the corpse inside its own SpawnSetup; queue it for a later tick.
-            map?.GetComponent<MapComponent_TitanicCorpseSites>()?.Enqueue(__instance);
+            map?.GetComponent<MapComponent_TitanicCorpseSites>()?.Enqueue(__instance, respawningAfterLoad);
         }
     }
 }

@@ -58,8 +58,7 @@ namespace RimMandrake.TitanicCreatures
             return sb.ToString();
         }
 
-        /// <summary>One forced daily step on every site of the current map (visitor meal, then the draw and camp rolls, then
-        /// spoilage), then SiteReport.</summary>
+        /// <summary>Run the daily visitor meal and arrival rolls for each site, then report the sites.</summary>
         public static string SiteDailyStep()
         {
             Map map = Find.CurrentMap;

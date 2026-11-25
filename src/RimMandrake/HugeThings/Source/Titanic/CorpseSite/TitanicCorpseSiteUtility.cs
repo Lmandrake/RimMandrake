@@ -19,16 +19,23 @@ namespace RimMandrake.TitanicCreatures
 
         /// <summary>
         /// CORPSE_SITE_SAFETY_1 (B3.3): the site is an edifice, and GenSpawn wipes any destroyable edifice under its footprint. The
-        /// whole rect must be in bounds and empty except for the source corpse; otherwise conversion stays pending.
+        /// whole rect must be in bounds and empty except for the source corpse and edifice(s) the T3 may crush.
         /// </summary>
-        public static bool SiteFits(IntVec3 pos, Map map, ThingDef siteDef, Corpse source = null)
+        private static bool SiteFits(IntVec3 pos, Map map, ThingDef siteDef, Corpse source, HashSet<Thing> crush = null)
         {
             CellRect rect = GenAdj.OccupiedRect(pos, Rot4.North, siteDef.size);
             foreach (IntVec3 c in rect)
             {
-                if (!c.InBounds(map) || c.GetEdifice(map) != null) return false;
+                if (!c.InBounds(map)) return false;
+                Thing edifice = c.GetEdifice(map);
+                if (edifice != null)
+                {
+                    if (crush == null || !edifice.def.destroyable || !CrushTableUtility.IsCrushableAtTier(edifice, TitanicTier.T3))
+                        return false;
+                    crush.Add(edifice);
+                }
                 foreach (Thing thing in c.GetThingList(map))
-                    if (thing != source) return false;
+                    if (thing != source && thing != edifice) return false;
             }
             return true;
         }
@@ -52,11 +59,26 @@ namespace RimMandrake.TitanicCreatures
                 return false;
             }
             ThingDef siteDef = RM_TitanicCreaturesDefOf.RM_TitanicCorpseSite;
-            IntVec3 pos = corpse.Position;
-            if (!SiteFits(pos, map, siteDef, corpse))
+            IntVec3 origin = corpse.Position;
+            var crush = RM_HugeThingsSettings.WakeActive ? new HashSet<Thing>() : null;
+            var anchor = RM_TitanicKernel.FindCorpseSiteAnchor(origin.x, origin.z, map.Size.x, map.Size.z, (x, z) =>
             {
-                return false;
+                crush?.Clear();
+                return SiteFits(new IntVec3(x, origin.y, z), map, siteDef, corpse, crush);
+            });
+            if (!anchor.HasValue) return false;
+            var pos = new IntVec3(anchor.Value.x, origin.y, anchor.Value.z);
+            if (crush != null && crush.Count > 0)
+            {
+                foreach (Thing edifice in crush)
+                    if (edifice.Spawned) edifice.Destroy(DestroyMode.Vanish);
+                if (!SiteFits(pos, map, siteDef, corpse)) return false;
             }
+            return SpawnSite(corpse, map, inner, siteDef, origin, pos);
+        }
+
+        private static bool SpawnSite(Corpse corpse, Map map, Pawn inner, ThingDef siteDef, IntVec3 origin, IntVec3 pos)
+        {
             string label = inner.LabelCap;
             ThingDef meatDef = inner.RaceProps.meatDef;
             int meatTotal = meatDef != null ? GenMath.RoundRandom(inner.GetStatValue(StatDefOf.MeatAmount)) : 0;
@@ -80,7 +102,7 @@ namespace RimMandrake.TitanicCreatures
             finally
             {
                 if (!site.Spawned && !corpse.Destroyed && !corpse.Spawned)
-                    GenSpawn.Spawn(corpse, pos, map, WipeMode.VanishOrMoveAside);
+                    GenSpawn.Spawn(corpse, origin, map, WipeMode.VanishOrMoveAside);
             }
             if (!site.Spawned) return false;
             // Never an instant meat pile beside the landmark (ruling #4): the corpse goes once the site stands.
@@ -103,12 +125,14 @@ namespace RimMandrake.TitanicCreatures
         private List<Corpse> pending = new List<Corpse>();
         private int cursor;
         private int nextRetryTick;
+        private bool reconcileLoaded;
         private const int RetryInterval = 250;
 
         public MapComponent_TitanicCorpseSites(Map map) : base(map) { }
 
-        public void Enqueue(Corpse corpse)
+        public void Enqueue(Corpse corpse, bool respawningAfterLoad = false)
         {
+            reconcileLoaded |= respawningAfterLoad;
             if (corpse == null || pending.Contains(corpse)) return;
             pending.Add(corpse);
             nextRetryTick = 0;
@@ -120,27 +144,35 @@ namespace RimMandrake.TitanicCreatures
             // Include old saves which never recorded pending conversion, as well as references restored by Scribe.
             foreach (Thing thing in map.listerThings.ThingsInGroup(ThingRequestGroup.Corpse))
                 if (thing is Corpse corpse && TitanicCorpseSiteUtility.StillEligible(corpse, map)) Enqueue(corpse);
+            if (reconcileLoaded && RM_HugeThingsSettings.CorpseSiteActive)
+                foreach (Corpse corpse in pending.ToArray())
+                    if (TryConvert(corpse)) pending.Remove(corpse);
+            reconcileLoaded = false;
         }
 
         public override void MapComponentTick()
         {
             if (!RM_HugeThingsSettings.CorpseSiteActive || pending.Count == 0 || Find.TickManager.TicksGame < nextRetryTick) return;
             if (cursor >= pending.Count) cursor = 0;
-            Corpse corpse = pending[cursor];
+            if (TryConvert(pending[cursor])) pending.RemoveAt(cursor);
+            else cursor++;
+            // One attempt per tick; wait between complete rounds of the remaining queue.
+            if (cursor >= pending.Count) { cursor = 0; nextRetryTick = Find.TickManager.TicksGame + RetryInterval; }
+        }
+
+        private bool TryConvert(Corpse corpse)
+        {
             // Unspawned corpses can be in a holder or caravan: retain the reference until they return to this map.
-            bool remove = corpse == null || corpse.Destroyed;
-            if (!remove && TitanicCorpseSiteUtility.StillEligible(corpse, map))
+            if (corpse == null || corpse.Destroyed) return true;
+            if (TitanicCorpseSiteUtility.StillEligible(corpse, map))
             {
-                try { remove = TitanicCorpseSiteUtility.ConvertToSite(corpse, map); }
+                try { return TitanicCorpseSiteUtility.ConvertToSite(corpse, map); }
                 catch (Exception e)
                 {
                     Log.ErrorOnce("[RimMandrake.TitanicCreatures] corpse-site conversion failed; remains pending: " + e, 0x5171A1);
                 }
             }
-            if (remove) pending.RemoveAt(cursor);
-            else cursor++;
-            // One attempt per tick; wait between complete rounds of the remaining queue.
-            if (cursor >= pending.Count) { cursor = 0; nextRetryTick = Find.TickManager.TicksGame + RetryInterval; }
+            return false;
         }
 
         public override void ExposeData()
@@ -151,6 +183,8 @@ namespace RimMandrake.TitanicCreatures
             {
                 if (pending == null) pending = new List<Corpse>();
                 pending.RemoveAll(c => c == null);
+                // Vanilla spawns saved Things after Scribe's PostLoadInit. Convert once all are on the map in FinalizeInit.
+                reconcileLoaded = true;
             }
         }
     }

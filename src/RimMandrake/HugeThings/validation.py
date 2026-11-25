@@ -64,7 +64,6 @@ DEFAULTS = {"giantPlantsEnabled": True, "plantTrunkEnabled": True, "plantSelecti
             "titanClearingEnabled": True, "titanClearingDetourFactor": 2.5,
             "yieldCurveEnabled": True, "yieldCurveMinFactor": 0.15,
             "corpseSiteEnabled": True, "corpseSiteHarvestMeatPerSession": 25, "corpseSiteHarvestLeatherPerSession": 10,
-            "corpseSiteMeatSpoilagePerDay": 0.15, "corpseSiteLeatherSpoilagePerDay": 0.08,
             "corpseSiteWorkHoursPerSession": 1.0,
             # TITAN_CAMPS_SCAVENGERS_EVENTS_1 (cards #4/#5 2026-09-09; numbers PROVISIONAL, FOUNDRY 2026-10-21)
             "corpseSiteScavengersEnabled": True, "corpseSiteScavengerDailyChance": 0.35, "corpseSiteScavengerMax": 3,

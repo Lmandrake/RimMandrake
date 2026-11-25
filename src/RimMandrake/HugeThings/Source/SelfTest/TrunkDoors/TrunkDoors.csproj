@@ -4,6 +4,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
+    <Compile Include="WorkGiverStubs.cs" />
+    <Compile Include="../../HugePlantCutting.cs" Link="HugePlantCutting.cs" />
     <Compile Include="../../PlantCutToilRewrite.cs" Link="PlantCutToilRewrite.cs" />
     <Reference Include="0Harmony"><HintPath>$(HarmonyDll)</HintPath></Reference>
   </ItemGroup>

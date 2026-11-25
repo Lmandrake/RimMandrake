@@ -3,10 +3,10 @@
 //   tier   body-size ladder, force-in / force-out, DefQualifies vs TierFor agreement, Large Pawns footprint projection
 //   yield  sub-linear butcher factor: bounds, monotone in size, total yield never shrinks as the beast grows
 //   crush  the crush table decision, wake damage monotone in tier, roof rule, T3 outright-destroy only for buildings
-//   pool   T3 corpse-site pool: daily spoilage and per-session harvest conserve units and always terminate
+//   pool   T3 corpse-site pool: per-session harvest conserves units and always terminates
 //   visitors  corpse-site scavengers/camps drain the pool; the titan-event gate (card #5) and the footfall warning band
 // A failing case is printed as `family seed N: message`; --fuzz-seed N replays it. PROVISIONAL numbers (tier floors 4/8/20, crush 20/60,
-// spoilage 0.15/0.08, yield floor 0.15) are BENCH-draft tuning; the properties here hold for any value in the settings sliders.
+// yield floor 0.15) are BENCH-draft tuning; the properties here hold for any value in the settings sliders.
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -264,37 +264,19 @@ namespace RimMandrake.TitanicCreatures.SelfTest
                 try
                 {
                     int meat0 = r.Next(0, 4000), leather0 = r.Next(0, 1500);
-                    float meatRate = F(r, 0.02f, 0.5f), leatherRate = F(r, 0.02f, 0.5f);
                     int meatSess = r.Next(5, 101), leatherSess = r.Next(2, 51);
-                    int meat = meat0, leather = leather0; long harvestedM = 0, harvestedL = 0, lostM = 0, lostL = 0;
-                    int days = 0;
-                    while ((meat > 0 || leather > 0) && days < 5000)
+                    int meat = meat0, leather = leather0, harvestedM = 0, harvestedL = 0;
+                    while (meat > 0 || leather > 0)
                     {
                         Steps++;
-                        // visits during the day, then the day's spoilage
-                        int visits = r.Next(0, 4);
-                        for (int v = 0; v < visits && (meat > 0 || leather > 0); v++)
-                        {
-                            int tm = RM_TitanicKernel.HarvestTake(meat, meatSess), tl = RM_TitanicKernel.HarvestTake(leather, leatherSess);
-                            Check(tm >= 0 && tm <= meat && tm <= meatSess, "meat take out of range");
-                            Check(tl >= 0 && tl <= leather && tl <= leatherSess, "leather take out of range");
-                            Check(meat == 0 || tm > 0, "a session got no meat from a non-empty pool");
-                            meat -= tm; leather -= tl; harvestedM += tm; harvestedL += tl;
-                        }
-                        int lm = RM_TitanicKernel.SpoilLoss(meat, meatRate), ll = RM_TitanicKernel.SpoilLoss(leather, leatherRate);
-                        Check(lm >= 0 && lm <= meat && ll >= 0 && ll <= leather, "spoilage lost more than is there");
-                        Check(meat == 0 || lm >= 1, "spoilage stalled with meat left (the site would never clear)");
-                        Check(leather == 0 || ll >= 1, "spoilage stalled with leather left");
-                        Check(lm <= Math.Ceiling(meat * (double)meatRate) + 1, "spoilage far above the configured fraction");
-                        meat -= lm; leather -= ll; lostM += lm; lostL += ll;
-                        Check(meat >= 0 && leather >= 0, "pool went negative");
-                        days++;
+                        int tm = RM_TitanicKernel.HarvestTake(meat, meatSess), tl = RM_TitanicKernel.HarvestTake(leather, leatherSess);
+                        Check(tm >= 0 && tm <= meat && tm <= meatSess, "meat take out of range");
+                        Check(tl >= 0 && tl <= leather && tl <= leatherSess, "leather take out of range");
+                        Check(meat == 0 || tm > 0, "a session got no meat from a non-empty pool");
+                        Check(leather == 0 || tl > 0, "a session got no leather from a non-empty pool");
+                        meat -= tm; leather -= tl; harvestedM += tm; harvestedL += tl;
                     }
-                    Check(meat == 0 && leather == 0, "pool did not drain within 5000 days at rates >= 2%");
-                    Check(harvestedM + lostM == meat0 && harvestedL + lostL == leather0, "units not conserved (harvested + spoiled != total)");
-                    Check(RM_TitanicKernel.SpoilLoss(0, 0.5f) == 0 && RM_TitanicKernel.SpoilLoss(-3, 0.5f) == 0, "spoilage of an empty pool");
-                    Check(RM_TitanicKernel.SpoilLoss(10, 0f) == 0, "zero spoilage rate lost units");
-                    foreach (float wild in new[] { 1f, 1.5f, 7f }) Check(RM_TitanicKernel.SpoilLoss(10, wild) == 10, $"spoilage rate {wild} must lose exactly the whole pool, got {RM_TitanicKernel.SpoilLoss(10, wild)}");
+                    Check(harvestedM == meat0 && harvestedL == leather0, "harvested units not conserved");
                     Check(RM_TitanicKernel.HarvestTake(10, 0) == 0 && RM_TitanicKernel.HarvestTake(10, -5) == 0, "non-positive session size harvested");
                 }
                 catch (Exception e) { fails.Add($"pool seed {seed}: {e.Message}"); }
@@ -302,7 +284,7 @@ namespace RimMandrake.TitanicCreatures.SelfTest
             return fails;
         }
 
-        // TITAN_CAMPS_SCAVENGERS_EVENTS_1: visitors (scavengers, a camp) drain the pool alongside harvest and spoilage, a draw
+        // TITAN_CAMPS_SCAVENGERS_EVENTS_1: visitors (scavengers, a camp) drain the pool alongside harvest, a draw
         // never brings a pack to a picked-clean site, and the titan-event gate restates card #5 and the one-T3 spacing law.
         private static List<string> Visitors(int cases, int seed0)
         {
@@ -313,8 +295,8 @@ namespace RimMandrake.TitanicCreatures.SelfTest
                 try
                 {
                     int meat0 = r.Next(0, 4000), meat = meat0, per = r.Next(1, 60), max = r.Next(1, 7);
-                    long eaten = 0, spoiled = 0; int days = 0;
-                    while (meat > 0 && days < 5000)
+                    long eaten = 0; int days = 0;
+                    while (meat > 0 && days < 10000)
                     {
                         Steps++;
                         int n = RM_TitanicKernel.ScavengerCount(meat, per, max);
@@ -324,11 +306,9 @@ namespace RimMandrake.TitanicCreatures.SelfTest
                         int take = RM_TitanicKernel.VisitorTake(meat, visitors, per);
                         Check(take >= 0 && take <= meat && take <= (long)visitors * per, "visitor take out of range");
                         Check(visitors == 0 || take > 0, "visitors at a non-empty site took nothing");
-                        meat -= take; eaten += take;
-                        int lm = RM_TitanicKernel.SpoilLoss(meat, 0.02f);
-                        meat -= lm; spoiled += lm; days++;
+                        meat -= take; eaten += take; days++;
                     }
-                    Check(meat == 0 && eaten + spoiled == meat0, "visitor pool not conserved or never drained");
+                    Check(meat == 0 && eaten == meat0, "visitor pool not conserved or never drained");
                     Check(RM_TitanicKernel.ScavengerCount(0, per, max) == 0, "an empty site drew scavengers");
                     Check(RM_TitanicKernel.VisitorTake(100, int.MaxValue, int.MaxValue) == 100, "huge visitor numbers overflowed");
                     Check(RM_TitanicKernel.VisitorTake(100, 3, 0) == 0 && RM_TitanicKernel.VisitorTake(100, -1, 5) == 0, "non-positive visitors took meat");

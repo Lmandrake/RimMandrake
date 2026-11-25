@@ -240,7 +240,7 @@ def body(R, a):
             else:
                 de, dm = s3["eaten"] - at["eaten"], at["meat"] - s3["meat"]
                 R.row("A2_eat", "A2", "PASS" if de > 0 and dm >= de else "FAIL", "MOD",
-                      "eaten +%d, meat -%d (spoilage the rest) with %d at the site" %
+                      "eaten +%d, meat -%d with %d at the site" %
                       (de, dm, sum(1 for x in at["S"] if "atSite=True" in x)))
     passage(R, a)
 

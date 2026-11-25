@@ -77,5 +77,5 @@ def main():
  assert 'GetSettings<RM_HugeThingsSettings>()' in source
  assert 'Scribe.mode == LoadSaveMode.PostLoadInit || Scribe.mode == LoadSaveMode.LoadingVars' in source
  assert 'Scribe_Values.Look(ref titanEventWarningHours, "titanEventWarningHours", 2f);' in source
- print('PASS settings oracle: 27 fields; 135 negative read controls; all hostile categories; valid tuning; warning default/source Scribe wiring')
+ print(f'PASS settings oracle: {len(SPEC)} fields, {5*len(SPEC)} negative read controls, hostile categories, valid tuning and warning Scribe wiring')
 if __name__=='__main__':main()

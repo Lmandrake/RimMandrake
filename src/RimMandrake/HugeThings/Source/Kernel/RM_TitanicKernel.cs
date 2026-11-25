@@ -1,6 +1,6 @@
 // Verse-free kernel of Titanic Creatures: the size-tier ladder, the force-in/force-out override, the Large Pawns footprint size, the
-// sub-linear butcher yield, the crush decision and damage, the roof rule, and the T3 corpse-site pool arithmetic (daily spoilage and
-// per-session harvest). TitanicTierUtility, YieldCurveUtility, CrushTableUtility, TitanicWakeProcessor, LargePawnsBridge and
+// sub-linear butcher yield, the crush decision and damage, the roof rule, and the T3 corpse-site placement and harvest.
+// TitanicTierUtility, YieldCurveUtility, CrushTableUtility, TitanicWakeProcessor, LargePawnsBridge and
 // Building_TitanicCorpseSite call these with the same expressions; SelfTest/TitanicFuzz.cs compiles this file alone.
 // Keep it free of Verse/RimWorld/UnityEngine/HarmonyLib (a `using Verse;` here breaks the self-test build, which is the guard rail).
 // Tiers are ints (None 0, T1 1, T2 2, T3 3) so they order with the same comparisons the enum TitanicTier gives.
@@ -180,12 +180,32 @@ namespace RimMandrake.TitanicCreatures
             return tier >= T1 && rolledUnderChance;
         }
 
-        /// <summary>Units lost to one day of spoilage: a fixed fraction of what is left, always at least one while anything is left.</summary>
-        public static int SpoilLoss(int remaining, float perDay)
+        /// <summary>Pick the first fitting anchor in outward square rings.</summary>
+        public static (int x, int z)? FindCorpseSiteAnchor(int x, int z, int width, int height, Func<int, int, bool> fits)
         {
-            if (remaining <= 0) return 0;
-            int loss = (int)Math.Ceiling(remaining * perDay);
-            return Math.Min(remaining, Math.Max(0, loss));
+            foreach (var anchor in CorpseSiteAnchors(x, z, width, height))
+                if (fits(anchor.x, anchor.z)) return anchor;
+            return null;
+        }
+
+        private static IEnumerable<(int x, int z)> CorpseSiteAnchors(int x, int z, int width, int height)
+        {
+            yield return (x, z);
+            int lastRing = Math.Max(Math.Max(x, width - 1 - x), Math.Max(z, height - 1 - z));
+            for (int ring = 1; ring <= lastRing; ring++)
+            {
+                int left = x - ring, right = x + ring, bottom = z - ring, top = z + ring;
+                for (int col = Math.Max(0, left); col <= Math.Min(width - 1, right); col++)
+                {
+                    if (bottom >= 0) yield return (col, bottom);
+                    if (top < height) yield return (col, top);
+                }
+                for (int row = Math.Max(0, bottom + 1); row <= Math.Min(height - 1, top - 1); row++)
+                {
+                    if (left >= 0) yield return (left, row);
+                    if (right < width) yield return (right, row);
+                }
+            }
         }
 
         /// <summary>Units one work session pulls from the pool.</summary>

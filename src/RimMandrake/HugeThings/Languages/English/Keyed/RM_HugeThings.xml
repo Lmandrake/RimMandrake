@@ -48,12 +48,10 @@
   <RM_HugeThings_Yield_Desc>A T1 or T2 titan butchers for somewhat less meat and leather per body size than a same-mass ordinary animal would. Off: full vanilla yield.</RM_HugeThings_Yield_Desc>
   <RM_HugeThings_YieldFloor>  Minimum yield floor: {0}% of normal</RM_HugeThings_YieldFloor>
   <RM_HugeThings_CorpseSite>T3 corpse becomes a harvest site</RM_HugeThings_CorpseSite>
-  <RM_HugeThings_CorpseSite_Desc>The largest tier's corpse becomes a standing landmark, harvested over several work sessions with the yield slowly spoiling, instead of being butchered at once. Off: it butchers like any ordinary corpse.</RM_HugeThings_CorpseSite_Desc>
+  <RM_HugeThings_CorpseSite_Desc>The largest tier's corpse becomes a landmark harvested over several work sessions. Meat rots at the site's temperature and leather keeps. Turn this off to butcher it like an ordinary corpse.</RM_HugeThings_CorpseSite_Desc>
   <RM_HugeThings_CorpseMeat>  Meat per harvest session: {0}</RM_HugeThings_CorpseMeat>
   <RM_HugeThings_CorpseLeather>  Leather per harvest session: {0}</RM_HugeThings_CorpseLeather>
   <RM_HugeThings_CorpseHours>  Work hours per session: {0}</RM_HugeThings_CorpseHours>
-  <RM_HugeThings_CorpseMeatSpoil>  Meat spoilage per day: {0}%</RM_HugeThings_CorpseMeatSpoil>
-  <RM_HugeThings_CorpseLeatherSpoil>  Leather spoilage per day: {0}%</RM_HugeThings_CorpseLeatherSpoil>
   <!-- BIG_CREATURES_DESIGN_WALLS_AND_SLOTS phase 1: settings, text motes and inspect lines -->
   <RM_HugeThings_WallsSlots>  Big creatures judge walls and gaps by their breadth</RM_HugeThings_WallsSlots>
   <RM_HugeThings_WallsSlots_Desc>A creature's breadth is the square root of its body size, rounded (a krayt is 3). It walks gaps at least as wide as its body, squeezes through gaps at least half that wide (slowed, straight through) and ignores narrower ones. A built wall as thick as the creature is broad stops it; a thin wall whose hit points fit its trample budget it breaks through without stopping; anything in between it smashes, one body-wide blow a second. Natural rock is never damaged. This replaces the size-tier wall rules (colossal crush, titanic destroy outright). Off: the tier rules above.</RM_HugeThings_WallsSlots_Desc>

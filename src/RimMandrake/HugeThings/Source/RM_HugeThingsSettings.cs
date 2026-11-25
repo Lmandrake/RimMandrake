@@ -64,8 +64,6 @@ namespace RimMandrake.HugeThings
         public static bool corpseSiteEnabled = true;
         public static int corpseSiteHarvestMeatPerSession = 25;
         public static int corpseSiteHarvestLeatherPerSession = 10;
-        public static float corpseSiteMeatSpoilagePerDay = 0.15f;
-        public static float corpseSiteLeatherSpoilagePerDay = 0.08f;
         // 2500 ticks == 1 in-game hour (GenDate.TicksPerHour).
         public static float corpseSiteWorkHoursPerSession = 1f;
         // TITAN_CAMPS_SCAVENGERS_EVENTS_1 (card #4 "camps, spoilage, scavenger draw"; card #5 "events with warning (footfall
@@ -149,8 +147,6 @@ namespace RimMandrake.HugeThings
             Scribe_Values.Look(ref corpseSiteEnabled, "corpseSiteEnabled", true);
             Scribe_Values.Look(ref corpseSiteHarvestMeatPerSession, "corpseSiteHarvestMeatPerSession", 25);
             Scribe_Values.Look(ref corpseSiteHarvestLeatherPerSession, "corpseSiteHarvestLeatherPerSession", 10);
-            Scribe_Values.Look(ref corpseSiteMeatSpoilagePerDay, "corpseSiteMeatSpoilagePerDay", 0.15f);
-            Scribe_Values.Look(ref corpseSiteLeatherSpoilagePerDay, "corpseSiteLeatherSpoilagePerDay", 0.08f);
             Scribe_Values.Look(ref corpseSiteWorkHoursPerSession, "corpseSiteWorkHoursPerSession", 1f);
             Scribe_Values.Look(ref corpseSiteScavengersEnabled, "corpseSiteScavengersEnabled", true);
             Scribe_Values.Look(ref corpseSiteScavengerDailyChance, "corpseSiteScavengerDailyChance", 0.35f);
@@ -192,8 +188,6 @@ namespace RimMandrake.HugeThings
             corpseSiteHarvestMeatPerSession = RM_TitanicKernel.SaneSetting(corpseSiteHarvestMeatPerSession, 5, 100);
             corpseSiteHarvestLeatherPerSession = RM_TitanicKernel.SaneSetting(corpseSiteHarvestLeatherPerSession, 2, 50);
             corpseSiteWorkHoursPerSession = RM_TitanicKernel.SaneSetting(corpseSiteWorkHoursPerSession, 0.25f, 6f, 1f);
-            corpseSiteMeatSpoilagePerDay = RM_TitanicKernel.SaneSetting(corpseSiteMeatSpoilagePerDay, 0.02f, 0.5f, 0.15f);
-            corpseSiteLeatherSpoilagePerDay = RM_TitanicKernel.SaneSetting(corpseSiteLeatherSpoilagePerDay, 0.02f, 0.5f, 0.08f);
             corpseSiteScavengerDailyChance = RM_TitanicKernel.SaneSetting(corpseSiteScavengerDailyChance, 0f, 1f, 0.35f);
             corpseSiteScavengerMax = RM_TitanicKernel.SaneSetting(corpseSiteScavengerMax, 1, 8);
             corpseSiteVisitorMeatPerDay = RM_TitanicKernel.SaneSetting(corpseSiteVisitorMeatPerDay, 5, 100);
@@ -352,7 +346,7 @@ namespace RimMandrake.HugeThings
                 list.GapLine();
             }
 
-            if (Group(list, "RM_HugeThings_CorpseGroup".Translate(), RimMandrake.Shared.SettingScope.Now, new[] { "corpseSiteEnabled", "corpseSiteHarvestMeatPerSession", "corpseSiteHarvestLeatherPerSession", "corpseSiteMeatSpoilagePerDay", "corpseSiteLeatherSpoilagePerDay", "corpseSiteWorkHoursPerSession", "corpseSiteScavengersEnabled", "corpseSiteScavengerDailyChance", "corpseSiteScavengerMax", "corpseSiteVisitorMeatPerDay", "corpseSiteCampsEnabled", "corpseSiteCampDailyChance", "corpseSiteCampHours" }))
+            if (Group(list, "RM_HugeThings_CorpseGroup".Translate(), RimMandrake.Shared.SettingScope.Now, new[] { "corpseSiteEnabled", "corpseSiteHarvestMeatPerSession", "corpseSiteHarvestLeatherPerSession", "corpseSiteWorkHoursPerSession", "corpseSiteScavengersEnabled", "corpseSiteScavengerDailyChance", "corpseSiteScavengerMax", "corpseSiteVisitorMeatPerDay", "corpseSiteCampsEnabled", "corpseSiteCampDailyChance", "corpseSiteCampHours" }))
             {
                 if (giantAnimalsEnabled)
                 {
@@ -365,10 +359,6 @@ namespace RimMandrake.HugeThings
                         corpseSiteHarvestLeatherPerSession = (int)list.Slider(corpseSiteHarvestLeatherPerSession, 2f, 50f);
                         list.Label("RM_HugeThings_CorpseHours".Translate(corpseSiteWorkHoursPerSession.ToString("0.0")));
                         corpseSiteWorkHoursPerSession = list.Slider(corpseSiteWorkHoursPerSession, 0.25f, 6f);
-                        list.Label("RM_HugeThings_CorpseMeatSpoil".Translate((corpseSiteMeatSpoilagePerDay * 100f).ToString("0")));
-                        corpseSiteMeatSpoilagePerDay = list.Slider(corpseSiteMeatSpoilagePerDay, 0.02f, 0.5f);
-                        list.Label("RM_HugeThings_CorpseLeatherSpoil".Translate((corpseSiteLeatherSpoilagePerDay * 100f).ToString("0")));
-                        corpseSiteLeatherSpoilagePerDay = list.Slider(corpseSiteLeatherSpoilagePerDay, 0.02f, 0.5f);
                         list.Label("RM_HugeThings_CorpseVisitorMeat".Translate(corpseSiteVisitorMeatPerDay.ToString()));
                         corpseSiteVisitorMeatPerDay = (int)list.Slider(corpseSiteVisitorMeatPerDay, 5f, 100f);
                         list.CheckboxLabeled("RM_HugeThings_CorpseScavengers".Translate(), ref corpseSiteScavengersEnabled, "RM_HugeThings_CorpseScavengers_Desc".Translate());

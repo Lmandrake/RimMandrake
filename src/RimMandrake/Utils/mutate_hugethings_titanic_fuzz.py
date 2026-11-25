@@ -42,8 +42,6 @@ MUTATIONS = [
     ("a sparing race holes its own roof (Pyrelands visit 7)", "return tier >= T2 && hasRoof && !thick && !sparesRoofs;", "return tier >= T2 && hasRoof && !thick;"),
     ("rubble without a roll", "return tier >= T1 && rolledUnderChance;", "return tier >= T1;"),
     ("untiered pawn leaves rubble", "return tier >= T1 && rolledUnderChance;", "return rolledUnderChance;"),
-    ("spoilage floors instead of ceils", "int loss = (int)Math.Ceiling(remaining * perDay);", "int loss = (int)Math.Floor(remaining * perDay);"),
-    ("spoilage unclamped", "return Math.Min(remaining, Math.Max(0, loss));", "return loss;"),
     ("harvest takes the whole pool", "return Math.Max(0, Math.Min(remaining, perSession));", "return Math.Max(0, remaining);"),
     ("harvest ignores the pool", "return Math.Max(0, Math.Min(remaining, perSession));", "return Math.Max(0, perSession);"),
     ("ladder accepts t2 == t3", "return t1 > 0f && t1 < t2 && t2 < t3;", "return t1 > 0f && t1 < t2 && t2 <= t3;"),

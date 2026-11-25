@@ -17,6 +17,7 @@ namespace RimMandrake.HugeThings
     public class WorkGiver_CutHugePlantFromTrunk : WorkGiver_PlantsCut
     {
         public static JobDef CutDef => DefDatabase<JobDef>.GetNamed("RM_CutHugePlantFromTrunk");
+        public static JobDef HarvestDef => DefDatabase<JobDef>.GetNamed("RM_HarvestHugePlantFromTrunk");
         public override PathEndMode PathEndMode => PathEndMode.Touch;
         public override ThingRequest PotentialWorkThingRequest => ThingRequest.ForDef(HugeThingsDefOf.RM_HugeTrunkBlocker);
 
@@ -29,7 +30,8 @@ namespace RimMandrake.HugeThings
             var component = pawn.Map.GetComponent<MapComponent_HugeFootprints>();
             if (component == null) yield break;
             var seen = new HashSet<int>();
-            foreach (Designation designation in pawn.Map.designationManager.SpawnedDesignationsOfDef(DesignationDefOf.CutPlant))
+            foreach (Designation designation in pawn.Map.designationManager.SpawnedDesignationsOfDef(DesignationDefOf.CutPlant)
+                .Concat(pawn.Map.designationManager.SpawnedDesignationsOfDef(DesignationDefOf.HarvestPlant)))
                 if (designation.target.Thing is Plant plant)
                     foreach (Building_TrunkBlocker blocker in component.CutBlockers(plant))
                         if (seen.Add(blocker.thingIDNumber)) yield return blocker;
@@ -40,20 +42,23 @@ namespace RimMandrake.HugeThings
             if (ShouldSkip(pawn, forced) || !(thing is Building_TrunkBlocker blocker) || !blocker.Spawned || blocker.Map != pawn.Map || thing.IsForbidden(pawn)) return null;
             var component = pawn.Map.GetComponent<MapComponent_HugeFootprints>();
             if (component == null) return null;
+            var designations = pawn.Map.designationManager;
             foreach (Plant plant in component.CutOwners(blocker))
             {
                 if (!ValidContact(pawn, plant, blocker) || plant.IsForbidden(pawn) ||
-                    pawn.Map.designationManager.DesignationOn(plant, DesignationDefOf.CutPlant) == null ||
+                    (designations.DesignationOn(plant, DesignationDefOf.CutPlant) == null &&
+                     designations.DesignationOn(plant, DesignationDefOf.HarvestPlant) == null) ||
                     pawn.CanReach(plant, PathEndMode.Touch, Danger.Deadly)) continue;
                 // The registered vanilla giver supplies its own gates, including all other mods' patches.
                 var vanilla = DefDatabase<WorkGiverDef>.GetNamed("PlantsCut").Worker as WorkGiver_PlantsCut;
                 Job original = vanilla?.JobOnThing(pawn, plant, forced);
                 if (original == null) continue;
-                bool accepted = original.def == JobDefOf.CutPlantDesignated && original.targetA.Thing == plant &&
+                bool harvesting = original.def == JobDefOf.HarvestDesignated;
+                bool accepted = (harvesting || original.def == JobDefOf.CutPlantDesignated) && original.targetA.Thing == plant &&
                     (original.targetQueueA == null || original.targetQueueA.Count == 0);
                 if (!accepted) { JobMaker.ReturnToPool(original); continue; }
                 // Keep the vanilla-created job, including playerForced and any policy metadata; no queued batch.
-                original.def = CutDef;
+                original.def = harvesting ? HarvestDef : CutDef;
                 original.targetC = blocker;
                 return original;
             }
@@ -63,7 +68,7 @@ namespace RimMandrake.HugeThings
         public override string PostProcessedGerund(Job job)
         {
             var vanilla = DefDatabase<WorkGiverDef>.GetNamed("PlantsCut").Worker as WorkGiver_PlantsCut;
-            Job description = JobMaker.MakeJob(JobDefOf.CutPlantDesignated, job.targetA);
+            Job description = JobMaker.MakeJob(job.def == HarvestDef ? JobDefOf.HarvestDesignated : JobDefOf.CutPlantDesignated, job.targetA);
             try { return vanilla.PostProcessedGerund(description); }
             finally { JobMaker.ReturnToPool(description); }
         }
@@ -106,7 +111,8 @@ namespace RimMandrake.HugeThings
         }
 
         private static bool TrunkJob(JobDriver_PlantWork driver)
-            => driver is JobDriver_PlantCut_Designated && driver.job.def == WorkGiver_CutHugePlantFromTrunk.CutDef;
+            => (driver is JobDriver_PlantCut_Designated && driver.job.def == WorkGiver_CutHugePlantFromTrunk.CutDef) ||
+               (driver is JobDriver_PlantHarvest_Designated && driver.job.def == WorkGiver_CutHugePlantFromTrunk.HarvestDef);
 
         private static bool Valid(JobDriver_PlantWork driver)
             => WorkGiver_CutHugePlantFromTrunk.ValidContact(driver.pawn, driver.job.targetA.Thing as Plant,

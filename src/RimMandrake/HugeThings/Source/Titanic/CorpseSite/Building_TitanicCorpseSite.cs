@@ -31,14 +31,10 @@ namespace RimMandrake.TitanicCreatures
         private int meatRemaining;
         private ThingDef leatherDef;
         private int leatherRemaining;
-        private int lastSpoilageTick = -1;
+        private int lastVisitorsTick = -1;
+        private float meatRotProgress;
         private List<Pawn> scavengers = new List<Pawn>();
         private List<Pawn> campers = new List<Pawn>();
-
-        private const int TicksPerSpoilageStep = RM_TitanicKernel.TicksPerDay;
-        // Defaults live in RM_TitanicCreaturesSettings (meat spoils faster
-        // than leather by default) - read from there at point of use so a
-        // settings change takes effect on sites already standing.
 
         // CORPSE_SITE_SAFETY_1 (B3.12): a pool whose def is gone (a removed mod) is not yield; it can never be harvested or drain.
         public bool HasYield => (meatRemaining > 0 && meatDef != null) || (leatherRemaining > 0 && leatherDef != null);
@@ -58,7 +54,7 @@ namespace RimMandrake.TitanicCreatures
             base.SpawnSetup(map, respawningAfterLoad);
             if (!respawningAfterLoad)
             {
-                lastSpoilageTick = Find.TickManager.TicksGame;
+                lastVisitorsTick = Find.TickManager.TicksGame;
             }
         }
 
@@ -71,37 +67,21 @@ namespace RimMandrake.TitanicCreatures
                 return;
             }
             int now = Find.TickManager.TicksGame;
-            if (lastSpoilageTick < 0)
+            if (lastVisitorsTick < 0) lastVisitorsTick = now;
+            if (now - lastVisitorsTick >= RM_TitanicKernel.TicksPerDay)
             {
-                lastSpoilageTick = now;
-                return;
+                lastVisitorsTick = now;
+                DailyVisitors();
             }
-            if (now - lastSpoilageTick < TicksPerSpoilageStep)
-            {
-                return;
-            }
-            lastSpoilageTick = now;
-            ApplyDailySpoilage();
-        }
 
-        /// <summary>
-        /// A fixed fraction of what's LEFT is lost each day rather than a hard
-        /// vanish-at-tick-N deadline, so an untouched site decays away over
-        /// roughly a week instead of lasting forever or disappearing on a
-        /// cliff edge - the "spoilage clock" the ruling names, without
-        /// building a new per-stack rot simulation for a one-off Building.
-        /// </summary>
-        private void ApplyDailySpoilage()
-        {
-            DailyVisitors();
-            int meatLoss = RM_TitanicKernel.SpoilLoss(meatRemaining, RM_HugeThingsSettings.corpseSiteMeatSpoilagePerDay);
-            int leatherLoss = RM_TitanicKernel.SpoilLoss(leatherRemaining, RM_HugeThingsSettings.corpseSiteLeatherSpoilagePerDay);
-            meatRemaining = Mathf.Max(0, meatRemaining - meatLoss);
-            leatherRemaining = Mathf.Max(0, leatherRemaining - leatherLoss);
-            if (!HasYield)
+            var rot = meatRemaining > 0 ? meatDef?.GetCompProperties<CompProperties_Rottable>() : null;
+            if (rot != null)
             {
-                Destroy();
+                // Match CompRottable.CompTickRare and the source meat's fresh lifetime.
+                meatRotProgress += GenTemperature.RotRateAtTemperature(AmbientTemperature) * 250;
+                if (meatRotProgress >= rot.TicksToRotStart) meatRemaining = 0;
             }
+            FinishSession();
         }
 
         /// <summary>TITAN_CAMPS_SCAVENGERS_EVENTS_1: visitors near the site take their day's share of the meat, then the day's
@@ -139,7 +119,11 @@ namespace RimMandrake.TitanicCreatures
         public int MeatRemaining => meatRemaining;
         public IEnumerable<Pawn> Scavengers => scavengers;
         public IEnumerable<Pawn> Campers => campers;
-        public void DebugDailyStep() => ApplyDailySpoilage();
+        public void DebugDailyStep()
+        {
+            DailyVisitors();
+            FinishSession();
+        }
 
         /// <summary>
         /// One work session's worth of extraction - never the whole pool, so
@@ -193,7 +177,8 @@ namespace RimMandrake.TitanicCreatures
             Scribe_Values.Look(ref meatRemaining, "meatRemaining");
             Scribe_Defs.Look(ref leatherDef, "leatherDef");
             Scribe_Values.Look(ref leatherRemaining, "leatherRemaining");
-            Scribe_Values.Look(ref lastSpoilageTick, "lastSpoilageTick", -1);
+            Scribe_Values.Look(ref lastVisitorsTick, "lastSpoilageTick", -1);
+            Scribe_Values.Look(ref meatRotProgress, "meatRotProgress");
             Scribe_Collections.Look(ref scavengers, "rmScavengers", LookMode.Reference);
             Scribe_Collections.Look(ref campers, "rmCampers", LookMode.Reference);
             Scribe_Values.Look(ref visitorsEatenTotal, "rmVisitorsEaten", 0);

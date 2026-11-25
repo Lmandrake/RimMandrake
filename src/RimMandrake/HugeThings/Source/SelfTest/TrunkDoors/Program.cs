@@ -4,6 +4,9 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
+using RimWorld;
+using Verse;
+using Verse.AI;
 using RimMandrake.HugeThings;
 class Program
 {
@@ -22,6 +25,26 @@ class Program
     static List<CodeInstruction> Rewrite(List<CodeInstruction> code,out bool accepted, bool field=true)
         =>PlantCutToilRewrite.Rewrite(code,field?typeof(Program).GetField(nameof(driver)):null,
             Method(nameof(Go)),Method(nameof(Touch)),Method(nameof(GoWrap)),Method(nameof(TouchWrap)),1,2,out accepted);
+    static void CheckChopWood()
+    {
+        typeof(Patch_PlantWork_TrunkContact).GetProperty("Ready").SetValue(null, true);
+        var plant = new Plant { Growth = 1f };
+        var blocker = new Building_TrunkBlocker();
+        var map = new Map { Footprints = new MapComponent_HugeFootprints(plant, blocker) };
+        var pawn = new Pawn { Map = map };
+        plant.Map = blocker.Map = map;
+        map.designationManager.Add(plant, DesignationDefOf.HarvestPlant);
+        var giver = new WorkGiver_CutHugePlantFromTrunk();
+        Check(giver.PotentialWorkThingsGlobal(pawn).SequenceEqual(new[] { blocker }),
+            "Chop wood on a grown giant did not yield its trunk blocker");
+        var job = giver.JobOnThing(pawn, blocker, forced: true);
+        Check(job?.def == DefDatabase<JobDef>.GetNamed("RM_HarvestHugePlantFromTrunk") && job.targetA.Thing == plant &&
+            job.targetC.Thing == blocker && job.playerForced, "HarvestDesignated was not wrapped with its targets and flags");
+        var driver = new JobDriver_PlantHarvest_Designated { job = job, pawn = pawn };
+        Check(Patch_PlantWork_TrunkContact.GotoContact(TargetIndex.A, PathEndMode.Touch, false, driver).GotoTarget == TargetIndex.C,
+            "wrapped harvest still approaches the enclosed root");
+    }
+
     static int Main()
     {
         try
@@ -48,7 +71,8 @@ class Program
             Check(labels[3].labels.Contains(label),"input branch labels mutated");
             var region=Original();region[3].blocks.Add(new ExceptionBlock(ExceptionBlockType.EndExceptionBlock));
             Check(ReferenceEquals(Rewrite(region,out accepted),region) && !accepted,"exception boundary moved across driver injection");
-            Console.WriteLine("PASS trunk contact IL: "+checks+" checks including nine mismatch mutants");return 0;
+            CheckChopWood();
+            Console.WriteLine("PASS trunk contact IL and Chop wood: "+checks+" checks including nine mismatch mutants");return 0;
         }
         catch(Exception e) { Console.WriteLine("FAIL trunk contact IL: "+e);return 1; }
     }
