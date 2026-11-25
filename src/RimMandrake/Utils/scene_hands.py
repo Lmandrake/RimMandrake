@@ -17,15 +17,18 @@ REFUSALS = {"NO_LIMIT": "NO_LIMIT", "GAME_RUNNING": "GAME_RUNNING", "RUN_ACTIVE"
             "OPTIONAL_COUNTS_UNKNOWN_FALSE": "UNRECORDED_VALUE", "BAD_CONDITION": "UNRECORDED_VALUE"}
 
 
-def _target(of):
-    """A thing id that is no other kind of target is sent as thing:<id> (no alias is bound until s.stage is built)."""
-    return of if ":" in of or of in ("map", "game", "world", "$") else "thing:" + of
+def _target(of, aliases=()):
+    """An alias that s.stage bound in the game's session is sent as it is (raiders, raiders[1]); a thing id that is no other
+    kind of target is sent as thing:<id>."""
+    if ":" in of or of in ("map", "game", "world", "$") or of.split("[", 1)[0] in aliases:
+        return of
+    return "thing:" + of
 
 
-def _retarget(node, key):
+def _retarget(node, key, aliases=()):
     if isinstance(node, dict):
-        return {k: (_target(v) if k == key and isinstance(v, str) else _retarget(v, key)) for k, v in node.items()}
-    return [_retarget(x, key) for x in node] if isinstance(node, list) else node
+        return {k: (_target(v, aliases) if k == key and isinstance(v, str) else _retarget(v, key, aliases)) for k, v in node.items()}
+    return [_retarget(x, key, aliases) for x in node] if isinstance(node, list) else node
 
 
 class RunUntil(object):
@@ -35,13 +38,14 @@ class RunUntil(object):
 
     def __init__(self, call, driver):
         self.call, self.driver, self.names = call, driver, {}
+        self.aliases = set()                    # the aliases bound in the game's session (s.stage)
 
     def plan(self, tree, tracks):
         # the game names a track "thing:Human12.path", or by the canonical text of its probe (JawaBenchHandsCore.TrackName)
         for p, _opt in C.walk(tree):
             if p["p"] not in C.VALUE_PROBES:
                 self.names[C.conds.canon(p)] = C.probe_name(p)
-        return {"until": _retarget(tree, "of"), "record": [{"of": _target(t.of), "path": t.path} for t in tracks]}
+        return {"until": _retarget(tree, "of", self.aliases), "record": [{"of": _target(t.of, self.aliases), "path": t.path} for t in tracks]}
 
     def start(self, request, plan, limit, speed, rand=None):
         more = {"randState": rand} if rand is not None else {}
@@ -95,6 +99,7 @@ class Slice(object):
 
     def __init__(self, call):
         self.call, self.pawn, self.before, self.lost = call, None, None, False
+        self.aliases = set()                    # never bound in the game: the slice has no session (an alias needs jawa/run_until)
 
     def plan(self, tree, tracks):
         def probe(of, path):

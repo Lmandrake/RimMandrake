@@ -829,13 +829,13 @@ def test_abort_writes_closing_record():
 
 
 def test_names_not_built_say_so():
+    """0.3.0: all ten names are built; a verb or a piece that is not built refuses NOT_BUILT and names the ticket that builds it."""
     W, s = opened()
-    e = refused("NOT_BUILT", getattr, scene, "contract")
-    must("RIMMANDRAKE_" in e.repair, "no ticket")
-    for n in ("stage", "act", "read", "shot"):
-        refused("NOT_BUILT", getattr, s, n)
-    must(not hasattr(s, "act") and not hasattr(s, "nothing"), "hasattr")
-    must(sorted(scene.BUILT + ("contract", "stage", "act", "read", "shot")) == sorted(scene.NAMES), "the ten names")
+    must(sorted(scene.BUILT) == sorted(scene.NAMES) and callable(scene.contract), "the ten names")
+    for verb in ("tune", "reload", "order"):
+        e = refused("NOT_BUILT", getattr, s.act, verb)
+        must("RIMMANDRAKE_" in e.repair, "no ticket for %s" % verb)
+    must(not hasattr(s.act, "tune") and not hasattr(s, "nothing"), "hasattr")
 
 
 def test_tools_and_raw_census():

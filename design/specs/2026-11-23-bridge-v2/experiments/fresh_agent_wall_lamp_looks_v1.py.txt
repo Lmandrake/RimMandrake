@@ -1,0 +1,131 @@
+"""Gimme Some Slack, scene `sc_wall_lamp_looks`, bar `wall_lamp_takes_looks`, on the scene library (0.3.0).
+
+The claim of the old scene: a steel wall with a floor cord along it; four wall lamps on it, one per look (the build
+menu's pick), a fifth in Industrial and a standing lamp in Industrial on the same cord. Each lamp draws its look's
+wall lamp. A capture is kept for the judge.
+
+Row converted here: SC_wall_lamp_draws_each_look, "each of the four wall lamps, one per look, draws in its look".
+Planted fault (`scene.py accept <this> --plant master_switch_off`): the mod's master switch off; every wall lamp then
+draws vanilla, and the row must go red.
+
+Not converted yet (each needs an act that 0.3.0 does not have, see the QUESTIONS of the conversion):
+the three lamps facing east, west and south on their own walls (Restyle), the cord restyle "All connected"
+Industrial -> Modern, and the master switch read as a row of its own (s.act.tune is NOT_BUILT).
+"""
+import scene
+from scene import cond as c
+
+# ---- the game and the map -----------------------------------------------------------------------------------------
+GAME = "ArchSmall"                       # open.md: OWNER_HOLD repair names ArchSmall as a free game
+MOD = "GimmeSomeSlack"                   # GUESS: the mod name that needs["mods"] wants; open.md accepts "a tier name or mod names"
+MAP = "fresh:quicktest"                  # open.md: "fresh:quicktest is the one fresh map"
+STATION = (20, 20, 16, 9)                # GUESS: a buildable 16 x 9 rectangle of the quicktest map; stage.md cleans it first
+
+# ---- the defs -----------------------------------------------------------------------------------------------------
+LOOKS = ["Scrapper", "Industrial", "Modern", "Futuristic"]
+WALL_DEF, WALL_STUFF = "Wall", "Steel"   # GUESS: vanilla wall def with steel stuff; no page names a wall def
+WALL_LAMP_DEF = "WallLamp"               # GUESS: taken from the stage.md example `dict(thing="WallLamp", ...)`; assumes GSS
+                                         #   restyles that def rather than adding one def per look
+STANDING_LAMP_DEF = "StandingLamp"       # GUESS: vanilla standing lamp
+CORD_DEF = "GSS_FloorCord"               # GUESS: the floor cord's defName; no page or tool names it
+SOUTH = 2                                # stage.md: rot 0 north, 1 east, 2 south, 3 west
+
+# ---- how a lamp gets its look, and how its look is read -----------------------------------------------------------
+# GUESS: the build menu's pick has no argument in s.stage or s.act.place, so the look is given after staging by the
+# looks-board tool jawa/gss_stage (its description: "the GSS state ops a recipe needs after jawa/artboard_stage
+# spawned its things"). Its op name and argument names are not shown by `scene.py tools` (the line is cut).
+GSS_STAGE_TOOL = "jawa/gss_stage"
+GSS_SET_LOOK_ARGS = lambda thing_id, look: dict(op="set_look", thing=thing_id, look=look)   # GUESS: op and arg names
+
+# GUESS: the drawn picture is Thing.graphicInt (a private field; read.md allows private fields) and its `path`.
+DRAWN_PATH = "graphicInt.path"
+# GUESS: the texture path of each look's wall lamp, and of the vanilla one; nothing in the help names them.
+LOOK_TEX = {look: f"Things/Building/GimmeSomeSlack/WallLamp/{look}/WallLamp" for look in LOOKS}
+
+# ---- the planted fault --------------------------------------------------------------------------------------------
+PLANT = "master_switch_off"
+SETTINGS_TOOL = "jawa/mod_settings_field"     # `scene.py tools "mod settings"`: read or write a ModSettings field by type and field
+SETTINGS_TYPE = "RimMandrake.GimmeSomeSlack.GSS_Settings"   # GUESS: the ModSettings class's full type name
+MASTER_FIELD = "enabled"                                    # GUESS: the master switch's field name
+SETTINGS_ARGS = lambda value: dict(type=SETTINGS_TYPE, field=MASTER_FIELD, value=value)   # GUESS: the tool's arg names
+
+# ---- the layout, relative to the station corner -------------------------------------------------------------------
+WALL_Z = 5
+WALL_CELLS = [(x, WALL_Z) for x in range(1, 14)]          # one steel wall, 13 cells
+LAMP_Z = WALL_Z - 1                                        # GUESS: a wall lamp stands in the cell in front of the wall,
+                                                           #   rotated to face away from it (south of the wall: rot 2)
+LAMP_CELLS = [(2, LAMP_Z), (4, LAMP_Z), (6, LAMP_Z), (8, LAMP_Z)]   # one per look, in LOOKS order
+FIFTH_LAMP_CELL = (10, LAMP_Z)                             # the fifth wall lamp, Industrial
+STANDING_LAMP_CELL = (12, LAMP_Z - 1)                      # the standing lamp, Industrial, on the cord's end
+CORD_CELLS = [(x, LAMP_Z) for x in range(1, 14)] + [STANDING_LAMP_CELL]   # the floor cord along the wall face
+
+LAMPS = [f"lamps[{i}]" for i in range(len(LOOKS))]
+SETTLE_TICKS = 60      # the row is "draws", which is true from the spawn; c.played joins it so that the judge does
+LIMIT_TICKS = 120      #   not refuse a success already true on the first sample (contract.md). 60 ticks = 1 s of game.
+
+# ---- 1. the contract, before the game is touched ------------------------------------------------------------------
+looks = scene.contract(
+    claim="each of the four wall lamps, one per look, draws in its look",
+    kind="A",
+    exposure=[c.state(lamp, "positionInt") == "ok" for lamp in LAMPS],          # all four lamps stand on the map
+    success=[c.played(SETTLE_TICKS)]
+            + [c.value(lamp, DRAWN_PATH) == LOOK_TEX[look] for lamp, look in zip(LAMPS, LOOKS)],
+    forbidden=[c.state(lamp, "positionInt") == "gone" for lamp in LAMPS],      # a lamp destroyed mid-run
+    end=SETTLE_TICKS,
+    limit=LIMIT_TICKS)
+
+planted = scene.plant()
+
+# ---- 2. open ------------------------------------------------------------------------------------------------------
+with scene.open(GAME, contract=looks, needs={"mods": [MOD], "map": MAP, "calm": "standard"}) as s:
+    print(s.opened)
+
+    try:
+        if planted == PLANT:
+            # The planted fault: the master switch off before the lamps are made. The run is stamped PLANTED.
+            s.raw(SETTINGS_TOOL, **SETTINGS_ARGS(False))
+
+        # ---- 3. stage ---------------------------------------------------------------------------------------------
+        cast = s.stage(
+            station=STATION,
+            things={
+                "lamp_wall": dict(thing=WALL_DEF, stuff=WALL_STUFF, at=WALL_CELLS),
+                "cord": dict(thing=CORD_DEF, at=CORD_CELLS),
+                "lamps": dict(thing=WALL_LAMP_DEF, at=LAMP_CELLS, rot=SOUTH),
+                "lamp_industrial_2": dict(thing=WALL_LAMP_DEF, at=FIFTH_LAMP_CELL, rot=SOUTH),
+                "standing_lamp": dict(thing=STANDING_LAMP_DEF, at=STANDING_LAMP_CELL),
+            })
+        print(cast.receipt.did, cast.receipt.could_not_look)
+
+        # ---- 4. the build menu's pick: give each lamp its look (s.raw: no verb or stage key does it) ------------------
+        for i, look in enumerate(LOOKS):
+            s.raw(GSS_STAGE_TOOL, **GSS_SET_LOOK_ARGS(cast["lamps"][i].id, look))   # GUESS: Cast item attribute `.id`
+        s.raw(GSS_STAGE_TOOL, **GSS_SET_LOOK_ARGS(cast["lamp_industrial_2"].id, "Industrial"))
+        s.raw(GSS_STAGE_TOOL, **GSS_SET_LOOK_ARGS(cast["standing_lamp"].id, "Industrial"))
+
+        # ---- 5. run: the judged run; the contract's values are recorded on every tick ----------------------------------
+        r = s.run(until=SETTLE_TICKS, limit=LIMIT_TICKS, speed="Normal",
+                  record=[c.track("lamp_industrial_2", DRAWN_PATH), c.track("standing_lamp", DRAWN_PATH)])
+        print("run:", r.why, r.tick, r.trace)
+
+        # ---- 6. read: what each lamp draws now, for the report (the judge reads the trace, not this) ------------------
+        drawn = s.read_many(reads=[(lamp, DRAWN_PATH) for lamp in LAMPS]
+                                  + [(lamp, "rotationInt") for lamp in LAMPS])   # GUESS: Thing's private rotation field
+        for lamp, look, value in zip(LAMPS, LOOKS, drawn[:len(LAMPS)]):
+            if value.state != "ok":
+                print(lamp, look, "could not read:", value.state, getattr(value, "detail", ""))
+            else:
+                print(lamp, look, "draws", value.v, "want", LOOK_TEX[look], "match" if value.v == LOOK_TEX[look] else "MISMATCH")
+
+        # ---- 7. shot: the picture for the art judge -------------------------------------------------------------------
+        shot = s.shot(rect=("lamp_wall", 3), name="wall_lamps_all_looks")
+        print("shot:", shot.path, shot.tick, shot.fresh, shot.receipt.could_not_look)
+
+    finally:
+        if planted == PLANT:
+            s.raw(SETTINGS_TOOL, **SETTINGS_ARGS(True))      # the master switch back on
+
+# ---- 8. judge, outside the game: the last run of the session ----------------------------------------------------------
+run_dir = r.trace.rsplit("/", 1)[0]      # GUESS: the run folder is the folder of the trace file (judge.md lists the trace inside it)
+verdict = scene.judge(run_dir)
+print("verdict:", verdict.outcome, verdict.row, verdict.first_failed)

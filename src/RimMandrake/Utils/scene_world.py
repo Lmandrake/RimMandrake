@@ -9,6 +9,8 @@ import subprocess
 import sys
 import time
 
+import time_budget  # noqa: E402
+
 from scene_core import CallFailed, Fault, ReplyLost
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -267,6 +269,26 @@ class RealWorld(object):
     def save(self, path, text, append=False):
         with open(path, "a" if append else "w", encoding="utf-8") as f:
             f.write(text)
+
+    def picture_path(self, run_dir, name):
+        """-> where the game writes a picture of this run: an absolute path in the game's own spelling (python.exe: Windows)."""
+        p = os.path.join(run_dir, name + ".png")
+        if os.name != "nt":
+            try:
+                p = subprocess.run(["wslpath", "-w", p], capture_output=True, text=True, timeout=time_budget.CALL_S).stdout.strip() or p
+            except (OSError, subprocess.SubprocessError):
+                pass
+        return p
+
+    def file_stamp(self, path):
+        """-> (size, mtime) of a file this machine can read, or None when there is none."""
+        if os.name != "nt" and re.match(r"^[A-Za-z]:\\", path):
+            path = "/mnt/%s/%s" % (path[0].lower(), path[3:].replace("\\", "/"))
+        try:
+            st = os.stat(path)
+            return st.st_size, st.st_mtime_ns
+        except OSError:
+            return None
 
     def read_trace(self, folder, writer, run):
         """-> the records of one run in seq order, or [] (looked, none yet). An unreadable folder raises Fault."""

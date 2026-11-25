@@ -33,7 +33,7 @@ class FakeGame(object):
         self.tools = rec("tools")
         self.run_until = run_until
         if run_until:
-            for n in ("jawa/session", "jawa/run_until"):
+            for n in ("jawa/session", "jawa/run_until", "jawa/read_paths", "jawa/act_batch"):
                 self.tools.append({"name": n, "description": "from the wire page", "inputSchema": {"properties": {}}, "parameters": []})
         self.open_act = None
         self.session = None             # the game's own session (run_until only)
@@ -43,6 +43,13 @@ class FakeGame(object):
         self.lose, self.fail, self.deny_static = set(), {}, False   # tool:action whose reply is lost; tool -> error
         self.menu_polls = 0
         self.load_ready = [rec("status_initializing")]              # what a load shows before it is ready
+        # the names of the conversion ticket (scene_names.py), from the wire pages; not recorded
+        self.values = {}                # (of, path) -> (state, v): what jawa/read_paths reads
+        self.rect_values = []           # what a rect read gives: [{of, path, state, v}]
+        self.kind_made = {}             # kindDef -> the kind the game makes instead (a replaced pawn kind)
+        self.echo = False               # planted: a staging tool whose block echoes the request (no readBack)
+        self.serial_id, self.acts_done, self.bound, self.pictures = 20000, {}, {}, {}
+        self.map_size = (250, 250)
 
     # ---- the tools
     def call(self, tool, a):
@@ -112,7 +119,84 @@ class FakeGame(object):
             return self._session(a)
         if tool == "jawa/run_until":
             return self._run_until(a)
+        if tool == "jawa/read_paths":
+            return self._read_paths(a)
+        if tool == "jawa/act_batch":
+            return self._act_batch(a)
+        if tool in ("jawa/spawn_pawn", "jawa/build_batch", "jawa/set_terrain_batch", "jawa/destroy_batch"):
+            return self._stage(tool, a)
+        if tool == "jawa/artboard_capture":
+            self.pictures[a["path"]] = self.pictures.get(a["path"], 0) + 1
+            return {"success": True, "path": a["path"], "fileSizeBytes": 4096, "frame": [a["w"] * a["ppc"], a["h"] * a["ppc"]],
+                    "foggedCells": 0, "cameraRestored": True}
+        if tool in ("jawa/damage", "jawa/ordered_job"):
+            return {"success": True, "accepted": True}
         return {"success": True, "tool": tool}
+
+    # ---- the hands of the conversion ticket
+    def _value(self, of, path):
+        if of == "map" and path == "info.size":
+            return "ok", "%d,0,%d" % self.map_size
+        return self.values.get((of, path), ("error", None))
+
+    def _read_paths(self, a):
+        out = []
+        if a.get("rect"):
+            out += [dict(v) for v in self.rect_values if v["path"] == a.get("path")]
+        for r in json.loads(a.get("reads") or "[]"):
+            st, v = self._value(r["of"], r["path"])
+            out.append({"of": r["of"], "path": r["path"], "state": st, "v": v, "detail": None if st == "ok" else "the fake holds it as %s" % st})
+        return {"success": True, "tick": self.status["tick"], "paused": self.status.get("paused", True), "values": out}
+
+    def _act_batch(self, a):
+        if not self.session:
+            return {"success": False, "refused": "NO_SESSION", "message": "no session"}
+        if not self.status.get("paused", True):
+            return {"success": False, "refused": "GAME_RUNNING", "message": "the game is running"}
+        rows = []
+        for act in json.loads(a["acts"]):
+            key = json.dumps([act["tool"], act["args"]], sort_keys=True)
+            if act["id"] in self.acts_done:
+                old = self.acts_done[act["id"]]
+                if old["key"] != key:
+                    return {"success": False, "refused": "REQUEST_CONFLICT", "message": "id %s came again with other arguments" % act["id"]}
+                rows.append(dict(old["row"], replayed=True))
+                continue
+            reply = self._do(act["tool"], act["args"])
+            row = {"id": act["id"], "tool": act["tool"], "state": "done" if reply.get("success") is not False else "refused",
+                   "reply": reply, "tick": self.status["tick"], "frame": 7, "replayed": False}
+            self.acts_done[act["id"]] = {"key": key, "row": row}
+            rows.append(row)
+        return {"success": True, "acts": rows}
+
+    def _stage(self, tool, a):
+        made, wrong = [], []
+        if tool == "jawa/spawn_pawn":
+            self.serial_id += 1
+            kind = self.kind_made.get(a["kindDef"], a["kindDef"])
+            row = {"op": "pawn", "id": "Human%d" % self.serial_id, "x": a["x"], "z": a["z"],
+                   "got": {"kind": kind, "spawned": "True", "cell": "%d,%d" % (a["x"], a["z"]), "faction": "PlayerColony"}}
+            made.append(row)
+            if kind != a["kindDef"]:
+                wrong.append(dict(row, wrong=[{"key": "kind", "want": a["kindDef"], "got": kind}]))
+        elif tool == "jawa/build_batch":
+            for op in a["ops"].split(";"):
+                d, rest = op.split(":")
+                xz = rest.split(",")
+                self.serial_id += 1
+                made.append({"op": "thing", "id": "%s%d" % (d, self.serial_id), "x": int(xz[0]), "z": int(xz[1]),
+                             "got": {"def": d, "cell": "%s,%s" % (xz[0], xz[1]), "rot": xz[2] if len(xz) > 2 else "0"}})
+        elif tool == "jawa/set_terrain_batch":
+            for op in a["ops"].split(";"):
+                d, rest = op.split(":")
+                x, z = (int(n) for n in rest.split(",")[:2])
+                made.append({"op": "terrain", "id": None, "x": x, "z": z, "got": {"terrain": d}})
+        if self.echo:
+            return {"success": True, "pawns": [{"id": "Human1", "kind": a.get("kindDef")}], "ops": a.get("ops")}
+        block = {"ok": not wrong, "tool": tool, "faults": ["read_back_wrong"] if wrong else [], "frameOpen": 7, "frameReply": 7,
+                 "sameFrame": True, "rows": len(made), "rowsWrong": len(wrong), "wrong": wrong, "made": made, "leftBlocking": 0,
+                 "leftKept": 0, "left": [], "digest": "d"}
+        return {"success": not wrong, "readBack": block}
 
     # ---- a run: its records in the recorded schema
     def _play(self, run_id, names, limit):
@@ -125,19 +209,22 @@ class FakeGame(object):
 
         def add(tick, phase, kind, **kw):
             rows.append(dict(base, seq=len(self.rows) + len(rows) + 8, run=run_id, n=len(rows) + 1, tick=tick, phase=phase, rec=kind, **kw))
-        add(t0, "first", "open", **{k: v for k, v in REC["trace_hit"][0].items() if k in ("schema", "mode", "epoch")})
-        last = {}
+        add(t0, "first", "open", acts=[], tracks=list(names), taps=[],
+            **{k: v for k, v in REC["trace_hit"][0].items() if k in ("schema", "mode", "epoch")})
+        last, samples = {}, []
         for name in names:
             for off, st, v in s["tracks"].get(name, [(0, "ok", 5)]):
                 if off <= n:
-                    add(t0 + off, "first" if off == 0 else "end_of_tick", "track", name=name, st=st, v=v)
-                    last[name] = (st, v)
-        add(end, "end_of_tick", "end", state=s["state"], hitTick=end if s["state"] == "hit" else None, executed=n, why=None)
+                    samples.append((off, name, st, v))
+        for off, name, st, v in sorted(samples, key=lambda x: (x[0], x[1])):
+            add(t0 + off, "first" if off == 0 else "end_of_tick", "track", name=name, st=st, v=v)
+            last[name] = (st, v)
+        add(end, "end_of_tick", "end", complete=s["state"] in ("hit", "done"), state=s["state"], hitTick=end if s["state"] == "hit" else None, executed=n, why=None)
         for name in names:
             add(end, "last", "track", name=name, st=last[name][0], v=last[name][1])
         if s.get("fault"):
             add(end, "last", "fault", what=s["fault"], detail="planted")
-        add(end, "last", "close", rows=len(rows), dropped=s.get("dropped", 0), drained=s.get("drained", True), paused=s.get("paused", True),
+        add(end, "last", "close", actsNotDone=[], rows=len(rows), dropped=s.get("dropped", 0), drained=s.get("drained", True), paused=s.get("paused", True),
             tickAfter=end + s.get("ran_on", 0))
         if s.get("no_close"):
             rows.pop()
@@ -297,6 +384,13 @@ class FakeWorld(object):
 
     def run_dir(self, label):
         return "/fake/%s" % label
+
+    def picture_path(self, run_dir, name):
+        return "%s/%s.png" % (run_dir, name)
+
+    def file_stamp(self, path):
+        n = self.game.pictures.get(path)
+        return None if n is None else (4096, n)
 
     def save(self, path, text, append=False):
         self.files[path] = (self.files.get(path, "") if append else "") + text

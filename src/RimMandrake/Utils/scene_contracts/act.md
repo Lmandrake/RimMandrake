@@ -6,20 +6,25 @@
 
 One verb for each call. `help verbs` gives each verb's arguments.
 
-| verb | what it does |
-|---|---|
-| `order` | gives a pawn an order through the game's own work giver or float menu code |
-| `job` | forces a job on a pawn |
-| `damage`, `explode` | hurts a thing; makes an explosion on a cell |
-| `incident`, `weather` | fires an incident; sets the weather |
-| `place`, `remove` | makes or removes one thing after staging |
-| `reload` | saves and loads in the middle of the scene, and binds each alias again |
-| **`tune`** | **the live write.** Writes one value into the running game: a def field, a static field of a mod, or a mod setting. `s.act.tune(target, value)` |
+| verb | what it does | built in 0.3.0 |
+|---|---|---|
+| `damage` | hurts a thing (`jawa/damage`); `damage(target, amount, kind="Blunt")` | yes |
+| `job` | forces a job on a pawn through the player-order path (`jawa/ordered_job`); `job(pawn, job, target=None, cell=None)` | yes |
+| `place` | makes one thing after staging (`jawa/build_batch`); `place(thing, at, stuff=None, rot=None, bind=None)` | yes |
+| `order` | gives a pawn an order through the game's own work giver or float menu code | no: `RIMMANDRAKE_BUILD_CAST_ASSERTS_AND_ORDER_THROUGH_GIVER` |
+| `explode` | makes an explosion on a cell | no: no converted scene needed it (`jawa/explosion_at` through `s.raw`) |
+| `incident` | fires an incident | no: no converted scene needed it |
+| `weather` | sets the weather | no: no converted scene needed it |
+| `remove` | removes one thing after staging | no: no converted scene needed it |
+| `reload` | saves and loads in the middle of the scene, and binds each alias again | no: `RIMMANDRAKE_BUILD_LOAD_CROSSING_ACT_REBINDS_ALIASES` |
+| `tune` | **the live write.** Writes one value into the running game: a def field, a static field of a mod, or a mod setting. `s.act.tune(target, value)` | no: `RIMMANDRAKE_BUILD_DEVIATION_RECORD_SETTINGS_FIELD_JOINS_FIRST` |
 
+A verb that is not built refuses `NOT_BUILT` and names its ticket. Until then `s.raw` reaches the tool, and the run is EXPLORED.
 Every verb may take `name=` (so that a condition can say "after this act") and, where it makes things, `bind=` (the
 alias for what the act spawned). The other arguments of each verb, with their defaults, are the catalogue
 `help verbs`; the catalogue is printed from the code, and the selftest compares it with the signatures.
-`with s.act.batch() as b:` sends several acts in one call, **with no frame between them**. `reload` cannot be in a
+Every act is sent through `jawa/act_batch` with a request id, also one act alone. `with s.act.batch() as b:` sends several acts in
+one call, **with no frame between them**; after the block, `b.effects` holds one `Effect` for each act. `reload` cannot be in a
 batch. The game must be paused.
 
 ## Returns

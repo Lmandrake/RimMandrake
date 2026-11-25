@@ -208,6 +208,16 @@ def t_missing_first_sample():
             assert verdict.receipt["could_not_look"] == ["unreadable condition opportunity"], verdict.receipt
 
 
+def t_forbidden_wins_over_an_unreadable_success():
+    """A forbidden effect is a MOD FAILURE in any run, also when another condition went unreadable (a destroyed thing that the
+    success reads). Found by RIMMANDRAKE_CONVERT_THREE_SCENES_SHOW_IF_TEN_NAMES_HELP: the storeroom pit's goods stack destroyed."""
+    data = fixture()
+    first = {r.get("name"): r for r in data[1] if r.get("rec") == "track" and r["phase"] == "first"}
+    first["downed"]["v"] = True
+    first["job"].update(st="gone", v=None)
+    expect(classify(data), "MOD FAILURE", 1, "forbidden")
+
+
 def t_missing_last_sample():
     missing_sample("last")
 
@@ -452,7 +462,8 @@ def main():
     tests += [(t.__name__[2:].replace("_", " "), t) for t in (
         t_no_closing_record, t_dropped_span, t_missing_first_sample, t_missing_last_sample, t_missing_tap,
         t_success_at_first_sample, t_success_without_exposure, t_advisory_record, t_cast_went_to_hazard, t_giver_refusal,
-        t_same_checker_adds_history, t_unrecorded_value_named, t_first_outcome_kept, t_alias_needs_link)]
+        t_same_checker_adds_history, t_unrecorded_value_named, t_first_outcome_kept, t_alias_needs_link,
+        t_forbidden_wins_over_an_unreadable_success)]
     tests += [("exit code 0", t_exit_codes)] + [("exit code %s" % n, lambda n=n: exit_case(n)) for n in range(1, 7)]
     tests.append(("unknown key named", t_unknown_key_named))
     good = 0
@@ -465,7 +476,7 @@ def main():
             print("ok   " + name)
             good += 1
     print("scene judge: %d of %d checks passed" % (good, len(tests)))
-    return 0 if good == len(tests) == 31 else 1
+    return 0 if good == len(tests) == 32 else 1
 
 
 if __name__ == "__main__":

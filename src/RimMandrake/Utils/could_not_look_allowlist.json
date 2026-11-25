@@ -284,7 +284,9 @@
   ".claude/hooks/filing_refusal_before_stop.py::blocks_so_far::or-empty": 1,
   ".claude/hooks/filing_refusal_before_stop.py::blocks_so_far::except-returns-empty": 1,
   ".claude/hooks/filing_refusal_before_stop.py::main::except-returns-empty": 1,
-  "src/RimMandrake/rimflow/filing_gate.py::run_unit::except-returns-empty": 1
+  "src/RimMandrake/rimflow/filing_gate.py::run_unit::except-returns-empty": 1,
+  "src/RimMandrake/Utils/scene_names.py::_def_names::except-returns-empty": 1,
+  "src/RimMandrake/Utils/scene_world.py::RealWorld.file_stamp::except-returns-empty": 1
  },
  "reasons": {
   "src/RimMandrake/rimflow/maturation.py::_ledger_relation.rel::except-returns-empty": [
@@ -1196,6 +1198,12 @@
   ],
   "src/RimMandrake/rimflow/filing_gate.py::run_unit::except-returns-empty": [
    "NOT A COLLAPSE: None is run_unit's own 'could not look', and filing_unit reads None as 'not inherited', the strict side: the test gets the whole gate"
+  ],
+  "src/RimMandrake/Utils/scene_names.py::_def_names::except-returns-empty": [
+   "NOT A COLLAPSE: None is the could-not-look answer of the def check; scene.contract writes it into could_not_look and refuses nothing on it"
+  ],
+  "src/RimMandrake/Utils/scene_world.py::RealWorld.file_stamp::except-returns-empty": [
+   "NOT A COLLAPSE: None is 'no file'; s.shot reads None after the capture as SHOT_NOT_FRESH, a Fault, never a fresh picture"
   ]
  }
 }

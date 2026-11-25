@@ -9,8 +9,9 @@
 | `target` | an alias of the cast; or `"def:<DefType>/<defName>"`; or `"static:<Type>"`; or `"map"` | `"raider_1"` |
 | `path` | field steps from the target. A step may be a public or a **private** field, a property from the reviewed list, a comp by class (`comp<RM_CompX>`), a list index. No method call | `"Position"` |
 
-`s.read_many([(target, path), ...])` reads many values in one call, on one tick. `s.read_many(rect=..., path=...)` reads
-one path for every cell or thing in a rectangle.
+`s.read_many(reads=[(target, path), ...])` reads many values in one call, on one tick. `s.read_many(rect=(x, z, w, h),
+path=...)` reads one path for every thing in a rectangle; each `Value` there also has `.of`, the thing it was read from
+(`thing:<id>`). An alias is read as the thing it is bound to (`thing:<id>`); an alias that holds nothing reads `unbound`.
 
 For a value on **every tick**, do not loop over `s.read`: name the same path in `s.run(record=...)`.
 
@@ -49,14 +50,15 @@ type.
 
 ## Example (FlowWorks: whether the moat holds a raider is hidden state of the mod)
 
-Today the mod carries a C# proof helper that prints a text line, `PITTRAVEL pawn=... held=b flying=b`
-(`RM_PromotionProofs.cs`). Python calls the helper through `jawa/static_call` and searches the text for `held=True`
-(`concept_scenes.py`, `_moat_rows`). With a hidden read the helper and the text search are not needed:
+Today the mod carries a C# proof helper that prints a text line with `held=b` (`RM_NorthstarProofs.cs`). Python calls the
+helper through `jawa/static_call` and searches the text for `held=True` (`concept_scenes.py`, `_moat_rows`). The conversion
+found that no path reaches that flag: `RM_SuperdeepTrap.IsHeld` computes it in a method, and nothing stores it. So the
+converted scene reads where the raider stands, and the held flag waits for a trace point in the mod (a hands ticket).
 
 ```python
-held = s.read("raider_1", "<the path of the mod's held flag, read from the source at conversion>")
-if held.state != "ok":
-    raise scene.Fault("COULD_NOT_LOOK", held)      # never treated as False
+at = s.read("raiders[0]", "positionInt")       # "x,y,z" of the cell, read from the thing's private field
+if at.state != "ok":
+    raise scene.Fault("COULD_NOT_LOOK", detail=repr(at))   # never treated as 0
 ```
 
 ## The red check

@@ -7,7 +7,10 @@ objects here. Compare a probe with a number to get a condition; join conditions 
     c.track(of, path)      a value to record on every tick. `of`: an alias, a group, or a thing id ("Human12")
     c.value(of, path)      the same value, in a condition: c.value("Human12", "positionInt.x") > 40
     c.gone_ok(of, path, cond)   cond, or the thing is gone: a gone thing is then readable, and the part is true
-    c.ticks(n)             n ticks after the start (the same as until=n)"""
+    c.ticks(n)             n ticks after the start (the same as until=n)
+    c.played(n)            in a contract: n ticks of the judged run have played (the run's start tick is written in at the run)
+    c.state(of, path)      the state of a value as text: ok, null, gone, unbound, error. It can always be read:
+                           c.state("people[0]", "positionInt") == "gone" says that colonist died or left the map"""
 import re
 
 import conds
@@ -47,6 +50,16 @@ def ticks(n):
 
 def value(of, path):
     return Expr({"p": "value", "of": of, "path": path}, "any")
+
+
+def state(of, path):
+    return Expr({"p": "value.state", "of": of, "path": path}, "any")
+
+
+def played(n):
+    if isinstance(n, bool) or not isinstance(n, int) or n < 1:
+        raise Refused("BAD_ARGS", "played(n): n is a number of ticks, 1 or more, not %r" % (n,))
+    return game.tick >= {"played": n}
 
 
 def gone_ok(of, path, cond):

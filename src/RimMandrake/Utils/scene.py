@@ -28,12 +28,14 @@ if HERE not in sys.path:
 
 import scene_cond as cond  # noqa: E402
 import scene_hands as hands  # noqa: E402
+import scene_names as names  # noqa: E402
+from scene_names import Contract, contract  # noqa: E402,F401
 from scene_core import (CallFailed, Fault, NotBuilt, Receipt, Refused, Reply, ReplyLost, RunResult, Value, text)  # noqa: E402,F401
 
-VERSION = "0.2.0"
+VERSION = "0.3.0"
 PAGES = os.path.join(HERE, "scene_contracts")
 NAMES = ("contract", "open", "stage", "run", "act", "read", "judge", "shot", "attach", "raw")
-BUILT = ("open", "run", "judge", "attach", "raw")
+BUILT = NAMES                           # 0.3.0: all ten; verbs and pieces not built refuse NOT_BUILT by name
 CONVERT = "RIMMANDRAKE_CONVERT_THREE_SCENES_SHOW_IF_TEN_NAMES_HELP"
 OWED = {}
 GAME_STATE = "RM_SCENE_STATE"           # the text in the game process: {"pid", "stamps", "session"}
@@ -57,7 +59,7 @@ OLD_LAYERS = {"validation_core", "helpers", "quiet_site", "scenelib", "scenes", 
 PHASES = ("lock", "identify", "load", "settle", "calm", "arm")
 
 WORLD = None                            # scene_world.RealWorld(), made on first use; a test puts its fake here
-LAUNCH = {"mode": "script", "commit": None, "script": None}     # scene.py accept / explore set this
+LAUNCH = {"mode": "script", "commit": None, "script": None, "plant": None}   # scene.py accept / explore set this
 
 
 def _world():
@@ -69,8 +71,6 @@ def _world():
 
 
 def __getattr__(name):
-    if name == "contract":
-        raise _not_built(name)
     raise AttributeError("module 'scene' has no attribute %r; the ten names: %s" % (name, ", ".join(NAMES)))
 
 
@@ -171,6 +171,7 @@ class Session(object):
         self._open_act = None
         self._tools, self._hands, self._run, self._dir, self._loaded = {}, {}, None, None, None
         self._tick = None
+        self._aliases, self._shots = {}, set()  # alias -> thing id or [ids] (s.stage); the names of this run's pictures
 
     # ---- the bridge
     def _call(self, tool, **args):
@@ -239,7 +240,8 @@ class Session(object):
         rec.build = self.build
         rec.hands = dict(self._hands)
         rec.game["tick_after"] = self._tick
-        rec.stamps = sorted(set(self.stamps) | ({EXPLORED} if LAUNCH["mode"] == "explore" else set()))
+        rec.stamps = sorted(set(self.stamps) | ({EXPLORED} if LAUNCH["mode"] == "explore" else set()) |
+                            ({"PLANTED %s" % LAUNCH["plant"]} if LAUNCH.get("plant") else set()))
         self.W.save(os.path.join(self.run_dir, "receipts.jsonl"), json.dumps(rec.as_dict(), sort_keys=True, default=str) + "\n", append=True)
         return rec
 
@@ -583,11 +585,30 @@ class Session(object):
             sys.stderr.write("scene: the session did not close cleanly: %s\n" % e)   # the first error is the one that is raised
         return False
 
-    # ---- what is not built
+    # ---- the names built by the conversion ticket (scene_names.py)
+    stage, read, read_many, shot = names.stage, names.read, names.read_many, names.shot
+
+    @property
+    def act(self):
+        if self.closed:
+            raise Refused("SESSION_CLOSED", "this session has ended; open a session")
+        return names.Act(self)
+
+    def _map_size(self):
+        """-> (x, z) of the map. A size that could not be read is Fault COULD_NOT_LOOK; the caller says so in its receipt."""
+        try:
+            r = self._call(names.READ_PATHS, reads=json.dumps([{"of": "map", "path": "info.size"}]))
+        except (CallFailed, ReplyLost) as e:
+            raise Fault("COULD_NOT_LOOK", detail="the map's size: %s" % e)
+        v = (r.get("values") or [{}])[0]
+        size = names._cell(v.get("v")) if v.get("state") == "ok" else None
+        if size is None:
+            raise Fault("COULD_NOT_LOOK", detail="the map's size reads %r" % (v,))
+        return size
+
     def __getattr__(self, name):
-        if name in ("stage", "act", "read", "read_many", "shot"):
-            raise _not_built("s." + name)
-        raise AttributeError("a session has no %r; built: s.run, s.raw, s.state, s.cancel_run, s.close, s.abort, s.run_dir" % name)
+        raise AttributeError("a session has no %r; the names: s.stage, s.run, s.act, s.read, s.read_many, s.shot, s.raw, s.state, "
+                             "s.cancel_run, s.close, s.abort, s.run_dir" % name)
 
     # ---- state
     @property
@@ -627,6 +648,10 @@ class Session(object):
             if why:
                 raise Refused("BAD_PATH", "%s (`help read`)" % why)
             tracks.append(t)
+        for t in (self.contract.needs_record if self.contract is not None else []):   # an alias not bound yet waits for s.stage
+            bound = ":" in t.of or t.of in ("map", "game", "world") or t.of.split("[", 1)[0] in self._aliases
+            if bound and t.name not in [x.name for x in tracks]:
+                tracks.append(t)
         tree, ticks = cond.compile_until(until)
         health_notes = self._require_game_health()
         rec = self._begin("s.run")
@@ -636,7 +661,10 @@ class Session(object):
         if (speed == "Step" or rand is not None) and not isinstance(self.hand, hands.RunUntil):
             raise Refused("BAD_ARGS", "speed='Step' and rand= need %s in a session; this game has only %s" % (hands.RUN_UNTIL, hands.SLICE))
         try:
-            return self._play(rec, tree, ticks, tracks, limit, speed, rand)
+            res = self._play(rec, tree, ticks, tracks, limit, speed, rand)
+            if self.contract is not None:       # the last run of a session is the run that the judge reads (contract.md)
+                self.W.save(os.path.join(self.run_dir, "contract.json"), json.dumps(self.contract.plan(res.request, res.tick_from), indent=1, sort_keys=True))
+            return res
         except Fault as e:
             e.receipt = self._finish(rec, did=e.done)
             raise
@@ -952,7 +980,8 @@ def page(name):
     if name == "cond":
         return (cond.__doc__ or "").strip() + "\n\nThe probes: " + ", ".join(sorted(cond.conds.PROBES) + list(cond.VALUE_PROBES))
     if name == "verbs":
-        return "s.act and its verbs are not built yet (%s); the page: help act" % CONVERT
+        return "The verbs of s.act (the page: help act). Every verb takes name=; a verb that makes a thing takes bind=.\n" + "\n".join(
+            "  %-9s %s" % (v, names.VERBS[v]) for v in sorted(names.VERBS))
     f = os.path.join(PAGES, "README.md" if name in ("", "readme") else name + ".md")
     if name and name not in NAMES and name != "readme":
         return None
@@ -961,9 +990,12 @@ def page(name):
 
 
 def signature(name):
-    """-> the argument names that a built name takes (its own self left out)."""
-    fn = {"open": open, "run": Session.run, "judge": judge, "raw": Session.raw, "attach": attach, "tools": tools}[name]
-    return [p for p in inspect.signature(fn).parameters if p != "self"]
+    """-> the argument names that a built name takes (its own self left out); for act, its verbs."""
+    if name == "act":
+        return sorted(names.VERBS)
+    fn = {"open": open, "run": Session.run, "judge": judge, "raw": Session.raw, "attach": attach, "tools": tools, "contract": contract,
+          "stage": names.stage, "read": names.read, "read_many": names.read_many, "shot": names.shot}[name]
+    return [p for p in inspect.signature(fn).parameters if p not in ("self", "s")]
 
 
 def page_arguments(name, text_=None):
@@ -1069,14 +1101,20 @@ def judge(run_dir, rejudge=False):
     return _judge_module().judge(run_dir, rejudge)
 
 
-def accept(script):
+def plant():
+    """-> the name of the planted fault that `scene.py accept <script> --plant <name>` asked for, or None. A planted run shows that
+    the scene can go red; it is never a pass."""
+    return LAUNCH.get("plant")
+
+
+def accept(script, plant_=None):
     """Run a committed script as an acceptance run. -> exit code."""
     import runpy
     import scene_world
     W = _world()
     repo = getattr(W, "repo", None) or scene_world.REPO
     commit = check_accept(script, repo, W.git)
-    LAUNCH.update(mode="accept", commit=commit, script=os.path.relpath(os.path.abspath(script), repo).replace("\\", "/"))
+    LAUNCH.update(mode="accept", plant=plant_, commit=commit, script=os.path.relpath(os.path.abspath(script), repo).replace("\\", "/"))
     old_in, sys.stdin = sys.stdin, _file(os.devnull)
     print("ACCEPT %s at %s" % (LAUNCH["script"], commit[:12]), flush=True)
     try:
@@ -1218,6 +1256,8 @@ def main(argv):
             return 0
         if verb == "accept" and len(rest) == 1:
             return accept(rest[0])
+        if verb == "accept" and len(rest) == 3 and rest[1] == "--plant":
+            return accept(rest[0], rest[2])
         if verb == "judge":
             return _judge_module().main(rest)
         if verb == "explore" and rest:

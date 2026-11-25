@@ -293,14 +293,17 @@ def readings(plan, trace):
         trees[role] = compiled.tree, TraceEval(c)
     for name in plan.get("external", []):
         TraceCompiler(trace).require_tap(name)
-    first, hits, misses, final = {}, {}, {}, {}
+    first, hits, misses, final, unread = {}, {}, {}, {}, {}
     for i, (tick, values, events) in enumerate(trace.frames()):
         for role, (tree, ev) in trees.items():
+            if role in unread:
+                continue
             ev.tick, ev.values, ev.events = tick, values, events
             value, _, _, records = ev.evaluate(tree, tick)
             seen = observation(role, tick, records)
             if value is None or any(r["status"] == "ignored" for r in records):
-                raise NoReading("unreadable condition " + role, seen)
+                unread[role] = seen         # a forbidden effect still decides the run (MOD FAILURE in any run)
+                continue
             final[role] = seen
             if i == 0:
                 first[role] = value
@@ -308,6 +311,9 @@ def readings(plan, trace):
                 hits.setdefault(role, seen)
             elif not value:
                 misses.setdefault(role, seen)
+    if unread and "forbidden" not in hits:
+        role, seen = next(iter(unread.items()))
+        raise NoReading("unreadable condition " + role, seen)
     return first, hits, misses, final
 
 

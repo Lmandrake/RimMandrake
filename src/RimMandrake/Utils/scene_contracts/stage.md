@@ -6,17 +6,22 @@
 
 | argument | meaning | example |
 |---|---|---|
-| `cast` | pawns by alias: kind, faction, position, and what each must be able to do | `{"digger": dict(kind="Colonist", at=(4, 4), can=["Mining"])}` |
-| `things` | things by alias: def, stuff, position, rotation | `{"lamp": dict(thing="WallLamp", at=(3, 7))}` |
-| `terrain` | cells or rectangles and their terrain | `{"plot": dict(rect=(0, 0, 12, 6), terrain="Soil")}` |
-| `station` | the station to use; default: the next clean one | `None` |
+| `cast` | pawns by alias: `kind`, `at` (a cell, or a list of cells for a group), `faction` (default `player`), `can`; or `take=` a thing id or a list of ids that the map already holds (a fixture save) | `{"digger": dict(kind="Colonist", at=(4, 4), can=["Mining"])}`, `{"raiders": dict(take=["Human21181", "Human21233"])}` |
+| `things` | things by alias: `thing` (a def), `at` (a cell or a list), `stuff`, `rot` (0 north, 1 east, 2 south, 3 west) | `{"lamp": dict(thing="WallLamp", at=(3, 7), rot=0)}` |
+| `terrain` | rectangles and their terrain: `rect` (x, z, w, h), `terrain` | `{"plot": dict(rect=(0, 0, 12, 6), terrain="Soil")}` |
+| `station` | a rectangle (x, z, w, h): it is cleaned first, and every position is relative to its corner. `None`: positions are map cells and nothing is cleaned (the list of clean stations is `RIMMANDRAKE_BUILD_STAGE_MAP_CAST_ONLY_NO_BYSTANDERS`) | `None` |
+
+A group (`at=[...]` or `take=[...]`) is bound as `alias[0]`, `alias[1]`, and so on, in the order given.
 
 The game must be paused.
 
 ## Returns
 
-A `Cast`: for each alias, the object that the game made (its id, its kind as made, its cell) or its state when it was
-not made.
+A `Cast`: for each alias, the object that the game made (its id, its kind as made, its cell), or a list of them for a group.
+Each value is read from the `readBack` block that the staging tool builds in its own main-thread hop
+(`design/specs/2026-11-23-bridge-v2/boundary.md` §THE STAGE READ-BACK), never from the request. A taken thing is read back with
+`jawa/read_paths`. Each alias is then bound in the game's session (`jawa/session` action `bind`), so that a track or a condition
+can name it.
 
 Receipt: `did`: one line for each object made and each cell changed; `hands`: the batch tools that were called;
 `could_not_look`: for example "the skills of `digger` were not read: the pawn was gone at the read-back".
@@ -34,8 +39,10 @@ station. At close the station is cleaned again, unless the script asks to keep i
 | `UNKNOWN_DEF` | a kind, thing or terrain def is not in the frozen dump | read the name from the def |
 | `ALIAS_TAKEN` | an alias is already bound in this session | choose another alias |
 | `OUTSIDE_STATION` | a position is outside the station | move it inside, or ask for a larger station |
-| `NO_CLEAN_STATION` | no station of the map could be cleaned | the message names what stayed on each station |
+| `BAD_ARGS` | a spec of a wrong shape, or nothing to stage | the message names the spec |
 
+**Fault:** `NO_CLEAN_STATION`: the clean of the station left a thing that blocks; `detail` names it.
+**Fault:** `COULD_NOT_LOOK`: a staging tool gave no `readBack` block (an older companion), so what it made is not known.
 **Fault:** `STAGING_FAULT`. The game made something other than what was asked: a replaced pawn kind, a pawn that cannot
 do what `can` asks, a build that the ground refused. `done` lists what was made and what was not. The scene's run is
 then an APPARATUS FAULT; it never becomes a result about the mod.
@@ -60,7 +67,6 @@ On visit 9 each of these two faults was found only after its scene failed, and e
 
 ## Limits
 
-It stages a station, not a colony. A bar that needs a living colony needs a fixture save (`scene.open`). The read-back
-is made in the same main-thread hop as the write only after the staging hands promise that
-(`RIMMANDRAKE_BUILD_STAGE_OPS_READ_BACK_NEVER_ECHO`); until then the receipt says `could_not_look: a frame may have run
-between the write and the read-back`.
+It stages a station, not a colony. A bar that needs a living colony needs a fixture save (`scene.open`). `can=` is not checked yet: the receipt says so in `could_not_look` (the cast
+asserts are `RIMMANDRAKE_BUILD_CAST_ASSERTS_AND_ORDER_THROUGH_GIVER`). A read-back block whose two frames differ is named in
+`could_not_look`. A stage is not put back at close: the map is disposable (only a canonical save is precious).

@@ -2,8 +2,9 @@
 
 A live test of a mod is a Python script. The script imports one module, `scene`, and uses these ten names. The bridge's
 563 tools are the hands behind the names. The design is `design/specs/2026-11-23-bridge-v2/11_design.md`. Design Version of the library:
-**0.2.0**. **Built: `scene.open`, `s.run`, `scene.judge` and `s.raw`** (with `scene.tools`, `s.state`, `s.cancel_run`). The other six names
-refuse `NOT_BUILT` and name the ticket that builds them. Each example is written from a real scene of ours and has not run.
+**0.3.0**. **All ten names are built.** `scene.contract`, `s.stage`, `s.act`, `s.read` (with `s.read_many`) and `s.shot` were built in
+0.3.0 by `RIMMANDRAKE_CONVERT_THREE_SCENES_SHOW_IF_TEN_NAMES_HELP`. A verb of `s.act` that no converted scene needed (`tune`, `reload`,
+`order` and four more) refuses `NOT_BUILT` and names the ticket that builds it (`help verbs`). Each example is written from a real scene of ours and has not run.
 What the names share, the limits and what is not promised: `design/specs/2026-11-23-scene-library/boundary.md`.
 
 | # | name | use it to | page |
@@ -60,6 +61,9 @@ changing raw call belongs to the **game process**, not to the session:
 Today the game process holds the mark of a changing raw call. A save does not carry a mark yet (the tuning tickets build it), and
 `scene.open` says so in `could_not_look` after it loads a save. A marked run counts for no bar. Only `scene.py accept <script>`, from a clean tree, in an unmarked process, on a fresh
 map or an unmarked fixture, makes a run that can count.
+
+**A planted fault.** `scene.py accept <script> --plant <name>` sets `scene.plant()` to the name. The script plants that fault
+(often by `s.raw`), every receipt carries the stamp `PLANTED <name>`, and the run counts for no bar: it shows that the scene can go red.
 
 **The order of a session.** `contract`, `open`, then any mix of `stage`, `run`, `act`, `read`, `shot`, then the session
 closes, then `judge`. An act needs a paused game. A run starts and ends paused.
