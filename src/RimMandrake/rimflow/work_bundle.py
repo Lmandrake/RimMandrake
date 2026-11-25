@@ -506,6 +506,13 @@ def _lock():
     return f
 
 
+def _replace_gated(system, bid):
+    """A gated bundle of `system` is the new bundle `bid`'s to carry on: it reads replaced. Under the store lock."""
+    for old in all_bundles().values():
+        if old.get("system") == system and old.get("state") == "gated":
+            store_write(dict(old, state="replaced", replaced_by=bid))
+
+
 def launch_bundle(system, members, items, why, pipeline, now=None, launcher=None, tests=None, launched_by=None):
     """One bundle for `system`: refused (2, why) while another bundle of it is live; else the record is written, then
     the run starts. -> (0, record) | (1, record with launch_failed) | (2, why)."""
@@ -518,9 +525,7 @@ def launch_bundle(system, members, items, why, pipeline, now=None, launcher=None
         if system in live:
             return 2, "%s already has a live bundle, %s; one live bundle per system" % (system, live[system])
         rec = new_record(system, members, why, pipeline, now, launched_by)
-        for old in all_bundles().values():      # a gated bundle of this system is the new one's to carry on
-            if old.get("system") == system and old.get("state") == "gated":
-                store_write(dict(old, state="replaced", replaced_by=rec["id"]))
+        _replace_gated(system, rec["id"])
         store_write(rec)
     finally:
         lk.close()
@@ -544,36 +549,203 @@ def group(rows, launches, systems, live, join=None):
     """The lane's launch rows of one system become one bundle. -> (rows, launches). systems: {item: system}; live:
     {system: live bundle id}; join: {ticket: system} of the open tickets that have no lane row (no check) and are ready
     (list_dispatch.join_candidates): each joins the bundle of its system's lead, so a bundle is the home's ready tickets,
-    not only the tick's launch rows. A joining ticket never leads. Pure; edits the rows in place."""
-    lead, keep = {}, []
+    not only the tick's launch rows. A joining ticket never leads. The first launch row of a system leads, wherever its
+    other rows stand; a lead whose room is another host (`host`, list_dispatch.host_room) leads a bundle that runs on
+    that host (launch_remote). Pure; edits the rows in place."""
+    lead, keep, mine = {}, [], []
     for r in rows:
         i = r["item"]
         if r.get("kind") == "shape" or i not in systems:
             if i in launches:
                 keep.append(i)
             continue
-        s = systems[i]
         if r["decision"] not in ("launch", "slots_full"):
             continue
+        s = systems[i]
+        mine.append(r)
+        if s not in live and r["decision"] == "launch" and s not in lead:
+            lead[s] = r
+            r["bundle"] = dict({"system": s, "members": [i]}, **({"host": r["host"]} if r.get("host") else {}))
+            keep.append(i)
+    for r in mine:
+        s = systems[r["item"]]
         if s in live:
             r.update(decision="bundle_live", why="waits for the live bundle %s of %s; it joins the next one" % (live[s], s))
-        elif r["decision"] == "launch" and s not in lead:
-            if r.get("host"):
-                r.pop("host")
-                r.update(decision="slots_full", why="a work bundle runs on this machine only (its record and its restart "
-                                                    "are here), and the lane's own slots are full")
-                continue
-            lead[s] = r
-            r["bundle"] = {"system": s, "members": [i]}
-            keep.append(i)
-        elif s in lead:
-            lead[s]["bundle"]["members"].append(i)
+        elif s in lead and lead[s] is not r:
+            lead[s]["bundle"]["members"].append(r["item"])
             r.update(decision="bundled", why="joins the bundle of %s that %s leads this tick" % (s, lead[s]["item"]))
     for i in sorted(join or {}):
         s = join[i]
         if s in lead and not s.startswith(("item:", "mod:")) and i not in lead[s]["bundle"]["members"]:
             lead[s]["bundle"]["members"].append(i)
     return rows, [i for i in launches if i in keep]
+
+
+# ---- a bundle on another host (SteveDesktop) -------------------------------------------------------------------------
+# The lane's lead row may have its room on a host (list_dispatch.host_room). The whole bundle then runs ON that host:
+# its record, its runs and its restarts are the host's own (`./pipe bundle` there, after `./sync`, so the host's sort
+# reads the current ledger). This store keeps a marker of it (`host` set): live from the launch, so the minutes before
+# its worker's first ledger act hold its system; ended when the host's record ends (refresh_remote), and then the
+# members' attempts read ended (overlay), so the lane's run count goes on. Item
+# RIMMANDRAKE_SEND_LANE_BUNDLES_TO_STEVEDESKTOP_NONE_SINCE_ONE_AM.
+REMOTE_LAUNCHED_RX = re.compile(r"^BUNDLE (WB-\S+) of (\S+) launched: (\S+); \d+ member\(s\): (.*)$", re.M)
+
+
+def remote_argv(host, ids, why):
+    """-> the ssh argv that launches the bundle on `host`; raises ValueError for a host with no door."""
+    import shlex
+    import run_host as RH
+    target = RH.door(host)
+    if not target:
+        raise ValueError("no ssh door to host %r (run_host.HOSTS)" % host)
+    return RH._ssh(target, "cd %s && ./sync && ./pipe bundle %s --why %s" % (
+        RH.BENCH, " ".join(shlex.quote(i) for i in ids), shlex.quote(why)))
+
+
+LEFT_OUT_RX = re.compile(r"^left out: (\S+)\s+(.*)$", re.M)
+
+
+def launch_remote(host, system, members, why, pipeline, now=None, runner=subprocess.run, launched_by=None):
+    """The bundle of `system` launched on `host`. A placeholder (`launching`, `host` set) holds the system under the
+    store lock, and the lock is let go before the ssh: a long remote sort must not hold every local finish waiting
+    (a finish is bounded at detached_helper.STOP_S). -> (0, marker) | (1, {"launch_out"}) | (2, why): a bundle of the
+    system is live here | (3, {"launch_out", "decision": "bundle_live" | "host_refused" | "no_bundle", "left_out"}):
+    the host launched nothing and said why. The marker, or a failed launch, carries `left_out` {id: the host's
+    reason}."""
+    import time_budget as TB
+    now = time.time() if now is None else now
+    if not members:
+        return 2, "%s has no ready member" % system
+    lk = _lock()
+    try:
+        live = live_bundles()
+        if system in live:
+            return 2, "%s already has a live bundle, %s; one live bundle per system" % (system, live[system])
+        held = new_record(system, members, why, pipeline, now, launched_by)
+        held.update(host=host, asked=list(members))
+        store_write(held)
+    finally:
+        lk.close()
+
+    def let_go(state, **kw):
+        lk2 = _lock()
+        try:
+            store_write(dict(store_read(held["id"]) or held, state=state, **kw))
+        finally:
+            lk2.close()
+    try:
+        r = runner(remote_argv(host, members, why), capture_output=True, text=True, timeout=TB.LAUNCH_S,
+                   stdin=subprocess.DEVNULL)
+    except BaseException as e:      # noqa: BLE001 - a raise leaves no `launching` placeholder: that state holds the system
+        out = "the ssh launch on %s raised %s: %s" % (host, type(e).__name__, _one(e, 400))
+        let_go("launch_failed", launch_out=out)
+        if not isinstance(e, Exception):
+            raise
+        return 1, {"launch_out": out}
+    out = ((r.stdout or "") + (r.stderr or "")).strip()
+    left = {i: _one(y, 200) for i, y in LEFT_OUT_RX.findall(r.stdout or "")}
+    m = REMOTE_LAUNCHED_RX.search(r.stdout or "")
+    if not m:
+        said = [ln for ln in out.splitlines() if ln.startswith(("REFUSED:", "NO BUNDLE:"))]
+        if said:
+            dec = ("bundle_live" if "already has a live bundle" in said[0] else
+                   "no_bundle" if said[0].startswith("NO BUNDLE:") else "host_refused")
+            let_go("ended", ended_why="on %s: %s" % (host, _one(said[0], 400)), left_out=left)
+            return 3, {"launch_out": "on %s: %s" % (host, _one(said[0], 400)), "decision": dec, "left_out": left}
+        txt = "on %s, rc %s: %s" % (host, r.returncode, _one(out, 600) or "no output")
+        let_go("launch_failed", launch_out=txt, left_out=left)
+        return 1, {"launch_out": txt, "left_out": left}
+    bid, unit, took = m.group(1), m.group(3), m.group(4)
+    rec = new_record(system, [x.strip() for x in took.split(",") if x.strip()], why, pipeline, now, launched_by)
+    rec.update(id=bid, host=host, state="live", asked=list(members), left_out=left,
+               state_file="%s/%s.md" % (STATE_FILES, bid),
+               units=[{"unit": unit, "at": now, "kind": "launch", "ended_before": 0, "host": host}])
+    lk = _lock()
+    try:
+        _replace_gated(system, bid)
+        store_write(rec)
+        store_write(dict(store_read(held["id"]) or held, state="replaced", replaced_by=bid))
+    finally:
+        lk.close()
+    return 0, rec
+
+
+# The ssh read of the host's record, once per live remote bundle per tick.
+REMOTE_READ_S = 60  # budget: danger=a hung ssh holds the tick with no end; evidence=none measured; longest=0.44s (one measured run 2026-11-25, Archmagi to SteveDesktop, a real record)
+
+
+def read_remote(rec, runner=subprocess.run):
+    """-> (the host's own record of the bundle, None) | (None, why could not look). A host with no such record is
+    could not look too: the quiet bound of refresh_remote ends it."""
+    import shlex
+    import run_host as RH
+    target = RH.door(rec.get("host"))
+    if not target:
+        return None, "no ssh door to host %r" % rec.get("host")
+    py = ("import json,sys; sys.path.insert(0,'src/RimMandrake/rimflow'); import work_bundle as W; "
+          "print(json.dumps({'record': W.store_read(%r)}))" % rec["id"])
+    try:
+        r = runner(RH._ssh(target, "cd %s && python3 -c %s" % (RH.BENCH, shlex.quote(py))), capture_output=True,
+                   text=True, timeout=REMOTE_READ_S, stdin=subprocess.DEVNULL)
+        d = json.loads((r.stdout or "").strip().splitlines()[-1]) if r.returncode == 0 else None
+    except Exception as e:  # noqa: BLE001
+        return None, "%s: %s" % (type(e).__name__, _one(e, 200))
+    if not isinstance(d, dict):
+        return None, "the host answered rc %s: %s" % (r.returncode, _one((r.stderr or r.stdout or "").strip(), 200))
+    if not isinstance(d.get("record"), dict):
+        return None, "the host's store has no record %s" % rec["id"]
+    return d["record"], None
+
+
+def _cited_at(events, bid):
+    newest = 0
+    for e in events:
+        if any(bid in CITE_RX.findall(str(e.get(k) or "")) for k in ("why", "text", "reason")):
+            try:
+                newest = max(newest, _ts(e.get("ts")))
+            except (TypeError, ValueError):
+                continue
+    return newest
+
+
+def refresh_remote(bundles, now, read=read_remote, events=None):
+    """Each live marker of a bundle on another host takes the host's own reading: its state, step, restarts, units and
+    outcomes (a state that is not live ends it here). When the host cannot be read, the marker stays live until no
+    ledger event (`events()`, read only then) has cited it, nor was it launched, for REMOTE_QUIET_S; then it reads
+    ended, with the cause. Writes each changed marker; edits `bundles` in place. -> [ids changed]."""
+    changed, evs = [], None
+    for b in list(bundles.values()):
+        if not b.get("host") or b.get("state") not in LIVE_STATES:
+            continue
+        got, why = read(b)
+        if got is not None:
+            new = dict(b, host_read_at=now, host_state=got.get("state"))
+            new.pop("host_unread", None)
+            for k in ("step", "restarts", "outcomes", "raised"):
+                if k in got:
+                    new[k] = got[k]
+            if got.get("units"):
+                new["units"] = [dict(u, host=b["host"]) for u in got["units"]]
+            if got.get("state") not in LIVE_STATES:
+                new["state"] = got.get("state") or "ended"
+        else:
+            if evs is None:
+                evs = list(events()) if events else []
+            last = max(float(b.get("at") or 0), _cited_at(evs, b["id"]))
+            new = dict(b, host_unread=why)
+            if now - last > REMOTE_QUIET_S:
+                new.update(state="ended", ended_why="quiet: %s could not be read (%s), and no ledger event cited %s for "
+                                                    "%d h" % (b["host"], why, b["id"], REMOTE_QUIET_S // 3600))
+        cmp = lambda x: {k: v for k, v in x.items() if k not in ("host_read_at",)}  # noqa: E731
+        if cmp(new) != cmp(b):
+            lk = _lock()
+            try:
+                store_write(new)
+            finally:
+                lk.close()
+            changed.append(b["id"])
+        bundles[b["id"]] = new
+    return changed
 
 
 def overlay(runs, ids, bundles, live):
@@ -589,7 +761,9 @@ def overlay(runs, ids, bundles, live):
             r.setdefault("live", [])
             r.setdefault("ended", [])
             for u in b.get("units") or []:
-                key = "live" if live(u["unit"]) else "ended"
+                # a remote marker's units live on its host: they are live while the marker is (refresh_remote)
+                on = (b.get("state") in LIVE_STATES) if b.get("host") else live(u["unit"])
+                key = "live" if on else "ended"
                 if u["unit"] not in r["live"] + r["ended"] and key == "ended":
                     r["ended"].append(u["unit"])
             if b.get("state") in LIVE_STATES:
@@ -806,13 +980,15 @@ out = {}
 for i in sys.argv[1:]:
     x = items.get(i)
     out[i] = None if x is None else {"state": x.state, "wait_until": x.wait_until, "wait_ts": None, "refusal": None,
-                                     "refusal_ts": None}
+                                     "refusal_ts": None, "close_ts": None}
 for e in evs:
     f = out.get(e.get("id"))
     if f is None:
         continue
     if e.get("event") == "wait":
         f["wait_ts"] = e.get("ts")
+    elif e.get("event") == "close":
+        f["close_ts"] = e.get("ts")
     elif e.get("event") == "note" and is_refusal(e.get("text")):
         f["refusal"], f["refusal_ts"] = str(e.get("text")).strip(), e.get("ts")
 print(json.dumps(out))
@@ -850,10 +1026,13 @@ def outcomes(rec, facts, now):
         try:
             refused = bool(f.get("refusal")) and _when(f.get("refusal_ts")) >= since
             waits = bool(f.get("wait_until")) and _when(f["wait_until"]) > now and _when(f.get("wait_ts")) >= since
+            before = bool(f.get("close_ts")) and _when(f["close_ts"]) < since
         except (TypeError, ValueError) as e:
             out[m] = {"outcome": "unread", "why": "a time on it could not be read (%s)" % e}
             continue
-        if st == "done":
+        if st == "done" and before:
+            out[m] = {"outcome": "already_fixed", "why": "closed done before the bundle began"}
+        elif st == "done":
             out[m] = {"outcome": "already_fixed" if m in (rec.get("sort_closed") or []) else "fixed", "why": "closed done"}
         elif st in ("dropped", "superseded"):
             out[m] = {"outcome": "dropped", "why": "closed %s" % st}
@@ -944,8 +1123,12 @@ def note_restart(bid, unit, now, ended_before):
         rec = store_read(bid)
         if not rec:
             return None
-        rec["units"] = (rec.get("units") or []) + [{"unit": unit, "at": now, "kind": "restart", "ended_before": ended_before}]
-        rec.update(state="live", restarts=int(rec.get("restarts") or 0) + 1)
+        late = rec.get("state") != "restarting"    # gated or ended meanwhile: the unit is recorded, the state stays
+        rec["units"] = (rec.get("units") or []) + [dict({"unit": unit, "at": now, "kind": "restart",
+                                                         "ended_before": ended_before}, **({"late": True} if late else {}))]
+        rec["restarts"] = int(rec.get("restarts") or 0) + 1
+        if not late:
+            rec["state"] = "live"
         return store_write(rec)
     finally:
         lk.close()
@@ -1123,6 +1306,7 @@ def holder_bundle(mod, lead, ids, extra, now, why=None):
         rec = new_record(system, members, why or "the road back of %s: its open items and its ready tickets with a "
                          "test, in the holder run (maturation_dispatch.road_back_holder)" % mod, "maturation", now,
                          launched_by="maturation_dispatch holder")
+        _replace_gated(system, rec["id"])
         store_write(rec)
     finally:
         lk.close()
@@ -1160,20 +1344,28 @@ def holder_launched(bid, unit, now, out=None):
         lk.close()
 
 
-def end_bundle(bid, why, now, say=None):
+def end_bundle(bid, why, now, say=None, unit_live=None):
     """The Conductor's end of a bundle whose run cannot end it (its unit died with finish never run). -> 0, or 2 when
-    there is no such bundle. Its open members are the lane's again."""
+    there is no such bundle. Its open members are the lane's again. A local unit still live is said and recorded
+    (`unit_live_at_end`): it runs on, outside any bundle."""
     say = say or (lambda line: conductor_say(line, now))
+    unit_live = unit_live or _unit_live
     lk = _lock()
     try:
         rec = store_read(bid)
         if not rec:
             return 2
+        units = rec.get("units") or []
+        on = units[-1]["unit"] if units and not rec.get("host") and unit_live(units[-1]["unit"]) else None
         rec.update(state="ended", ended_by_hand={"at": now, "why": _one(why, 400), "was": rec.get("state")})
+        if on:
+            rec["unit_live_at_end"] = on
         store_write(rec)
     finally:
         lk.close()
-    say("work bundle %s (%s) ENDED by hand: %s" % (bid, rec["system"], _one(why, 400)))
+    say("work bundle %s (%s) ENDED by hand: %s%s" % (bid, rec["system"], _one(why, 400),
+                                                    ("; its unit %s is still live and runs on, outside any bundle "
+                                                     "(`./pipe stop %s`)" % (on, on)) if on else ""))
     return 0
 
 
@@ -1211,7 +1403,10 @@ def page_rows(now, bundles=None, unit_live=None, reader=None):
             continue
         st = b.get("state")
         units = b.get("units") or []
-        if st in LIVE_STATES and units and not unit_live(units[-1]["unit"]) and st != "restarting":
+        if b.get("host"):
+            st = "%s on %s%s" % (st, b["host"], (" (the host could not be read: %s)" % _one(b["host_unread"], 160))
+                                 if b.get("host_unread") else "")
+        elif st in LIVE_STATES and units and not unit_live(units[-1]["unit"]) and st != "restarting":
             st = "%s, dead, no finish (unit %s is gone and its end was never recorded; `work_bundle` cannot restart it)" % (
                 st, units[-1]["unit"])
         oc = b.get("outcomes") or {}

@@ -40,8 +40,8 @@ bundle began). A member with none of these is **open**.
 - **a-run-whose-finish-never-ran.** A restart is planned in `finish` (the unit's ExecStopPost), which runs on every
   end, a kill included. A unit whose ExecStopPost never ran leaves its bundle `live` with a dead unit; the page shows
   the bundle as `dead, no finish` and the members stay in it until the Conductor ends it (`work_bundle.py end`).
-- **a-bundle-on-another-host.** A bundle runs on this machine: its record and its restart are here. A lane bundle whose
-  only room is another host waits for a local slot.
+- **a-remote-bundle-whose-host-never-answers.** A marker of a bundle on a host that cannot be read stays live until no
+  ledger event has cited it for `REMOTE_QUIET_S` (5 h); a dead remote bundle holds its system that long.
 - **a-member-whose-system-moves.** The members are fixed at launch. A ticket re-homed into the system later joins the
   next bundle, not the live one.
 - **a-bare-systemctl-stop.** A unit stopped with `systemctl stop` and no `pipe` act reads `killed: signal`, the same
@@ -74,11 +74,20 @@ bundle began). A member with none of these is **open**.
   that bundle. In the lane, a ready item of a system whose bundle is live reads `bundle_live`; a member of the live
   bundle reads `in_bundle`.
 - **the-lane-launches-one-bundle-per-system.** In a `list_dispatch` tick, the launch rows of one system become one
-  bundle: the first is the lead and takes the slot; the others, and rows of the same system that read `slots_full`,
-  read `bundled` and launch nothing of their own. The lead's bundle also takes each ready open ticket of its system
+  bundle: the first is the lead and takes the slot; the others, and rows of the same system that read `slots_full`
+  (before or after the lead), read `bundled` and launch nothing of their own. The lead's bundle also takes each ready open ticket of its system
   that has no lane row (no check: `list_dispatch.join_candidates`; not leased, blocked, waiting, off, held, refused or
   in a live bundle); such a ticket never leads. A home with one ready ticket still gets its run. An `item:<ID>` ticket
   is a bundle of one. Shape runs are not bundled. Test: `t_the_lane_bundles_a_home_not_a_ticket`.
+- **a-bundle-on-another-host-launches-there.** A lane lead row whose room is another host (`list_dispatch.host_room`)
+  leads a bundle that runs ON that host: `ssh <door> 'cd ~/rm/bench && ./sync && ./pipe bundle <ids> --why ...'`
+  (`work_bundle.launch_remote`), so the host's store holds its record and its restarts, and its sort reads a current
+  ledger. This store writes a marker (the host's bundle id, `host`, the members the host took, its unit) that reads
+  live at once, so no second bundle of the system starts before its worker's first ledger act. Each tick,
+  `refresh_remote` copies the host's own record (state, step, restarts, units, outcomes) into the marker; when the
+  host's record ends, the marker ends, and each member's attempt reads ended (`overlay`), never unseen. A host that
+  refuses (its own live bundle of the system) reads `bundle_live` and spends no attempt; only the members the host
+  took get the attempt. The page shows the bundle with its host. Test: `t_a_bundle_on_another_host_launches_there`.
 - **a-bundle-on-another-machine-is-live-here.** A bundle that another machine's store holds (`./pipe bundle` run on
   SteveDesktop) is live in this lane while a ledger event cites its id within `REMOTE_QUIET_S`; its system gets no
   second bundle.

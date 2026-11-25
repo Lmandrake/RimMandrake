@@ -324,9 +324,9 @@ def t_the_lane_launches_one_bundle_per_system():
     chk(lambda: by["S1"]["decision"] == "launch" and "bundle" not in by["S1"], "group: a Shape run is not bundled")
     chk(lambda: by["Q1"]["decision"] == "bundle_live" and "WB-pipeline-docs-1" in by["Q1"]["why"],
         "group: a ready row of a system with a live bundle reads bundle_live, naming it")
-    chk(lambda: by["H1"]["decision"] == "slots_full" and "this machine" in by["H1"]["why"],
-        "group: a bundle whose only room is another host waits for a local slot")
-    chk(lambda: sorted(launches2) == ["L1", "M1", "N1", "S1"], "group: the launches are the leads and the Shape run")
+    chk(lambda: by["H1"]["decision"] == "launch" and by["H1"]["bundle"].get("host") == "SteveDesktop",
+        "group: a lead whose only room is another host leads a bundle on that host (%s)" % by["H1"])
+    chk(lambda: sorted(launches2) == ["H1", "L1", "M1", "N1", "S1"], "group: the launches are the leads and the Shape run")
     # in the lane tick: a member of a live bundle reads in_bundle and launches nothing
     import list_dispatch as LD
     facts = {"items": {"X": {"state": "proposed", "effect": "cmd:x", "verdict": "fails", "events": 1, "out": "red"}},
@@ -414,6 +414,9 @@ def t_outcomes_are_read_from_the_ledger():
     o2 = W.outcomes(rec, old, NOW + 100)
     chk(lambda: o2["O3"]["outcome"] == "open" and o2["O4"]["outcome"] == "open",
         "outcomes: a refusal or wait from before the bundle began is no outcome of it")
+    o3 = W.outcomes(rec, facts_of(O1={"state": "done", "close_ts": NOW - 50}), NOW + 100)
+    chk(lambda: o3["O1"]["outcome"] == "already_fixed" and "before" in o3["O1"]["why"],
+        "outcomes: a member closed done before the bundle began is no fix of it (%s)" % o3["O1"])
     chk(lambda: W.outcomes(rec, {"O1": None}, NOW)["O1"]["outcome"] == "unread",
         "outcomes: a member that could not be read is unread, never open or fixed")
 
@@ -592,6 +595,11 @@ def t_a_bundle_with_every_outcome_ends():
     on2 = W.store_read(rec2["id"])
     chk(lambda: on2["state"] == "live" and on2["restarts"] == 1 and on2["units"][-1]["unit"] == "u-new",
         "restart: the record takes the new unit and counts the restart")
+    rec3 = bundle_rec(W, ["E4"], state="gated")
+    W.note_restart(rec3["id"], "u-late", NOW + 300, ended_before=0)
+    on3 = W.store_read(rec3["id"])
+    chk(lambda: on3["state"] == "gated" and on3["units"][-1]["unit"] == "u-late" and on3["units"][-1].get("late"),
+        "restart: a step that starts after the bundle was gated records its unit and leaves the state (%s)" % on3["state"])
 
 
 def t_a_refused_member_is_stopped_with_its_reason():
@@ -605,6 +613,10 @@ def t_a_refused_member_is_stopped_with_its_reason():
     chk(lambda: rws[0]["decision"] == "stopped" and "needs his flight test" in rws[0]["why"]
         and "flight test" in rws[0]["need"]["why_not_recovered"] and not ln,
         "lane: a member its bundle refused reads stopped, and its Needs Conductor line quotes the refusal (%s)" % rws[0])
+    st["items"]["R9"]["attempts"] = []      # what `list_dispatch.py clear R9` leaves (its attempts go under `cleared`)
+    rws, ln = LD.decide({"enabled": True, "max_live": 2}, st, facts, NOW + 200)
+    chk(lambda: rws[0]["decision"] != "stopped" and "R9" in ln,
+        "lane: a refused member that the Conductor cleared may run again (%s)" % rws[0])
 
 
 # ---- part 5: the live pass ------------------------------------------------------------------------------------------
@@ -658,7 +670,10 @@ def t_the_maturation_road_back_is_one_bundle():
                         refused={}, leased=lambda it: False)
     chk(lambda: got == ["MT_RED"], "maturation: a ready ticket of the mod with a test joins; no test, a wait, the road "
                                    "back's own and another mod's do not (%s)" % got)
+    gated = W.store_write(dict(W.new_record("mod:FlowWorks", ["MT_OLD"], "why", "maturation", NOW - 900), state="gated"))
     rc, rec = W.holder_bundle("FlowWorks", "MT_ROAD", ["MT_ROAD"], ["MT_RED"], NOW)
+    chk(lambda: W.store_read(gated["id"])["state"] == "replaced" and W.store_read(gated["id"])["replaced_by"] == rec["id"],
+        "maturation: the holder's bundle carries on a gated bundle of its mod, which reads replaced")
     chk(lambda: rc == 0 and rec["system"] == "mod:FlowWorks" and rec["members"] == ["MT_ROAD", "MT_RED"]
         and rec["pipeline"] == "maturation" and W.store_read(rec["id"])["state"] == "launching",
         "maturation: the holder's road back and the joined tickets are one bundle of the mod (%s)" % rec.get("members"))
@@ -729,6 +744,11 @@ def t_the_conductor_ends_a_dead_bundle():
     chk(lambda: rc == 0 and on["state"] == "ended" and on["ended_by_hand"]["why"] and lines and rec["id"] in lines[0],
         "end: the Conductor's end marks the bundle ended, with its reason, and says one line (%s)" % on.get("state"))
     chk(lambda: W.end_bundle("WB-none-such", "x", NOW, say=lines.append) == 2, "end: a bundle that does not exist is refused")
+    rec2 = bundle_rec(W, ["K2"])
+    lines2 = []
+    W.end_bundle(rec2["id"], "by hand", NOW + 10, say=lines2.append, unit_live=lambda u: True)
+    chk(lambda: W.store_read(rec2["id"]).get("unit_live_at_end") == "u-first" and "u-first" in lines2[0]
+        and "still" in lines2[0], "end: a bundle ended while its unit is live says so, and records it (%s)" % lines2)
     o = W.parse(["end", rec["id"], "--why", "dead"])
     chk(lambda: o.verb == "end" and o.why == "dead", "end: the command line parses")
 
@@ -833,11 +853,131 @@ def t_a_bundle_on_another_machine_is_live_here():
         "ended one are not (%s)" % got)
 
 
+def t_a_bundle_on_another_host_launches_there():
+    """RIMMANDRAKE_SEND_LANE_BUNDLES_TO_STEVEDESKTOP_NONE_SINCE_ONE_AM: from 11:52 PM PST 2026-11-24 every lane Work run
+    was a bundle, and group() sent a lead whose only room was SteveDesktop back to slots_full, so no lane run went
+    there. A host lead launches the whole bundle ON the host (./sync, then ./pipe bundle, over ssh); this store keeps
+    a marker that reads live until the host's own record ends, and then the members' attempts read ended."""
+    W = WB()
+    import list_dispatch as LD
+    # group: the order of the rows does not decide which rows join (a slots_full row before its lead joins it)
+    rows = [{"item": "H0", "decision": "slots_full", "why": "full"},
+            {"item": "H1", "decision": "launch", "model": "opus", "cap": 120, "run_n": 1, "host": "SteveDesktop"},
+            {"item": "H2", "decision": "launch", "model": "sonnet", "cap": 50, "run_n": 1}]
+    systems = {"H0": "pipeline:hooks", "H1": "pipeline:hooks", "H2": "pipeline:hooks"}
+    rows2, launches2 = W.group(rows, ["H1", "H2"], systems, {})
+    by = {r["item"]: r for r in rows2}
+    chk(lambda: by["H1"].get("bundle") == {"system": "pipeline:hooks", "members": ["H1", "H0", "H2"], "host": "SteveDesktop"}
+        and by["H0"]["decision"] == "bundled" and launches2 == ["H1"],
+        "group: a host lead leads; a slots_full row before it joins it (%s %s)" % (by["H1"].get("bundle"), by["H0"]))
+    # execute: the host lead launches through ssh; the host's sort left H0 out
+    bid = "WB-pipeline-hooks-20261125-210000"
+    seen, during = [], []
+
+    def runner(argv, **kw):
+        import fcntl
+        seen.append(argv)
+        f = open(os.path.join(os.path.dirname(W.store_dir()), "launch.lock"), "w")
+        try:        # the store lock is free while the host works: a local finish is never held by a remote sort
+            fcntl.flock(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            during.append(("lock free", W.live_bundles().get("pipeline:hooks")))
+        except OSError:
+            during.append(("lock held", None))
+        finally:
+            f.close()
+        return types.SimpleNamespace(returncode=0, stderr="", stdout=(
+            "SYNCED abc -> def\nleft out: H0  it is under another live lease (BENCH)\n"
+            "BUNDLE %s of pipeline:hooks launched: rm-detached-hooks-1; 2 member(s): H1, H2\n" % bid))
+    st = {"items": {}}
+    items = {i: {"state": "proposed", "effect": "cmd:x", "verdict": "fails", "events": 1, "out": "red"} for i in systems}
+    LD.execute({"enabled": True, "seat": "BENCH"}, st, rows2, launches2, {"items": items}, NOW,
+               fx={"launch": lambda *a, **k: (9, "a local launch was made", None), "remote": runner})
+    cmd = seen[0][-1] if seen else ""
+    chk(lambda: len(seen) == 1 and "mandrake@stevedesktop-wsl" in seen[0] and "cd ~/rm/bench && ./sync && ./pipe bundle "
+        "H1 H0 H2 --why" in cmd, "execute: the host lead's bundle is launched on the host after ./sync (%s)" % seen)
+    chk(lambda: during and during[0][0] == "lock free" and during[0][1] and during[0][1] != bid,
+        "launch_remote: during the ssh the store lock is free and a placeholder holds the system (%s)" % during)
+    ph = [r for r in W.all_bundles().values() if r.get("replaced_by") == bid]
+    chk(lambda: len(ph) == 1 and ph[0]["state"] == "replaced", "launch_remote: the placeholder reads replaced (%s)" % ph)
+    chk(lambda: by["H0"]["decision"] == "host_left_out" and "lease" in by["H0"]["why"],
+        "execute: a bundled row the host left out says so, with the host's reason (%s)" % by["H0"])
+    rec = W.store_read(bid)
+    chk(lambda: rec and rec["host"] == "SteveDesktop" and rec["state"] == "live" and rec["members"] == ["H1", "H2"]
+        and rec["units"][0]["unit"] == "rm-detached-hooks-1",
+        "execute: this store keeps a marker of the remote bundle, with the members the host took (%s)" % rec)
+    att = {i: (st["items"].get(i) or {}).get("attempts") for i in systems}
+    chk(lambda: att["H1"][0]["unit"] == att["H2"][0]["unit"] == "rm-detached-hooks-1" and not att["H0"]
+        and by["H1"]["decision"] == "launched",
+        "execute: each member the host took gets the bundle's attempt; one it left out gets none (%s)" % att)
+    # the minutes before the worker's first ledger act: the marker is live, the members read in_bundle
+    runs = W.overlay({}, list(systems), W.all_bundles(), live=lambda u: None is W.store_read("no-such"))
+    chk(lambda: runs["H1"].get("bundle") == bid and "bundle" not in runs.get("H0", {}),
+        "overlay: a member of a live remote bundle carries its id (%s)" % runs)
+    chk(lambda: W.live_bundles().get("pipeline:hooks") == bid, "live_bundles: the remote marker holds its system")
+    # the host cannot be read: live until the quiet bound, then ended
+    W.refresh_remote(W.all_bundles(), NOW + 600, read=lambda r: (None, "ssh: no route"), events=lambda: [])
+    chk(lambda: W.store_read(bid)["state"] == "live", "refresh_remote: a host that cannot be read keeps the bundle live")
+    # the host's record ends: the marker takes its state, outcomes and units; each member's attempt reads ended
+    host = dict(rec, state="ended", outcomes={"H1": {"outcome": "fixed"}, "H2": {"outcome": "refused", "why": "x"}},
+                units=[{"unit": "rm-detached-hooks-1", "kind": "launch"}, {"unit": "rm-detached-hooks-2", "kind": "restart"}])
+    W.refresh_remote(W.all_bundles(), NOW + 3600, read=lambda r: (host, None), events=lambda: [])
+    after = W.store_read(bid)
+    chk(lambda: after["state"] == "ended" and after["host"] == "SteveDesktop" and len(after["units"]) == 2,
+        "refresh_remote: the host's end is copied into the marker (%s)" % after)
+    runs = W.overlay({}, list(systems), W.all_bundles(), live=lambda u: True)
+    chk(lambda: "rm-detached-hooks-1" in runs["H1"]["ended"] and "bundle" not in runs["H1"]
+        and runs["H2"].get("bundle_refused", {}).get("id") == bid,
+        "overlay: after the remote end each member's attempt reads ended, though no local record exists (%s)" % runs)
+    st["items"]["H1"]["attempts"][0]["next"] = "LEFT OPEN: x"
+    rws, _ln = LD.decide({"enabled": True, "max_live": 2}, st, {"items": {"H1": items["H1"]}, "runs": runs, "recent": None},
+                         NOW + 3700)
+    chk(lambda: rws[0]["decision"] != "unseen", "lane: a member of an ended remote bundle never reads unseen (%s)" % rws[0])
+    # a marker the host never reports: ended once no ledger event cites it for REMOTE_QUIET_S
+    W.store_write(dict(rec, id=bid + "q", state="live", at=NOW))
+    W.refresh_remote({bid + "q": W.store_read(bid + "q")}, NOW + W.REMOTE_QUIET_S - 60, read=lambda r: (None, "down"),
+                     events=lambda: [{"ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(NOW + 100)),
+                                      "why": "work bundle %sq" % bid}])
+    chk(lambda: W.store_read(bid + "q")["state"] == "live", "refresh_remote: a cited remote bundle stays live")
+    W.refresh_remote({bid + "q": W.store_read(bid + "q")}, NOW + 100 + W.REMOTE_QUIET_S + 60,
+                     read=lambda r: (None, "down"), events=lambda: [])
+    q = W.store_read(bid + "q")
+    chk(lambda: q["state"] == "ended" and "quiet" in q.get("ended_why", ""),
+        "refresh_remote: a remote bundle that nobody can read or cite for REMOTE_QUIET_S reads ended (%s)" % q)
+    # the page: a live remote bundle is never read "dead, no finish" by a local unit check
+    W.store_write(dict(rec, id=bid + "p", state="live"))
+    pg = W.page_rows(NOW, bundles={bid + "p": W.store_read(bid + "p")}, unit_live=lambda u: False)
+    chk(lambda: "dead" not in pg["rows"][0]["state"] and "SteveDesktop" in pg["rows"][0]["state"],
+        "page: a live remote bundle reads live on its host (%s)" % pg["rows"])
+    # a host refusal (a live bundle of the system there) leaves no marker and no spent attempt
+    st2 = {"items": {}}
+    rows3, l3 = W.group([{"item": "H1", "decision": "launch", "model": "opus", "cap": 120, "run_n": 1,
+                                 "host": "SteveDesktop"}], ["H1"], {"H1": "pipeline:other"}, {})
+    LD.execute({"enabled": True}, st2, rows3, l3, {"items": items}, NOW, fx={"remote": lambda a, **k: types.SimpleNamespace(
+        returncode=2, stderr="", stdout="REFUSED: pipeline:other already has a live bundle, WB-pipeline-other-1\n")})
+    chk(lambda: rows3[0]["decision"] == "bundle_live" and not st2["items"].get("H1", {}).get("attempts")
+        and not W.live_bundles().get("pipeline:other"),
+        "execute: a host that refuses (its own live bundle) is bundle_live, with no attempt or hold (%s %s)" % (rows3[0], st2))
+    rows4, l4 = W.group([{"item": "H1", "decision": "launch", "model": "opus", "cap": 120, "run_n": 1,
+                          "host": "SteveDesktop"}], ["H1"], {"H1": "pipeline:third"}, {})
+    LD.execute({"enabled": True}, st2, rows4, l4, {"items": items}, NOW, fx={"remote": lambda a, **k: types.SimpleNamespace(
+        returncode=0, stderr="", stdout="sort: H1  closed\nNO BUNDLE: pipeline:third has no ready member (1 closed by the "
+                                        "sort, 0 left out)\n")})
+    chk(lambda: rows4[0]["decision"] == "no_bundle" and not st2["items"].get("H1", {}).get("attempts"),
+        "execute: a host whose sort closed every member launched nothing, and no attempt is spent (%s)" % rows4[0])
+
+    def boom(a, **k):
+        raise OSError("ssh: connect refused")
+    rc5, got5 = W.launch_remote("SteveDesktop", "pipeline:fourth", ["H1"], "why", "workshop", now=NOW, runner=boom)
+    chk(lambda: rc5 == 1 and "connect refused" in got5["launch_out"] and not W.live_bundles().get("pipeline:fourth"),
+        "launch_remote: an ssh that raises leaves no live placeholder (%s)" % got5)
+
+
 def main():
     for t in [t_sort_runs_each_members_test_and_closes_only_green, t_sort_dry_closes_nothing, t_members_are_one_system,
               t_ready_members_only, t_one_live_bundle_per_system, t_the_record_is_written_at_launch,
               t_the_brief_names_every_member_and_the_role, t_the_brief_carries_the_polish_of_its_files, t_the_lane_launches_one_bundle_per_system,
               t_the_lane_bundles_a_home_not_a_ticket, t_a_bundle_on_another_machine_is_live_here,
+              t_a_bundle_on_another_host_launches_there,
               t_context_reads_the_own_session, t_outcomes_are_read_from_the_ledger,
               t_restart_until_each_member_has_an_outcome, t_finish_writes_the_bundles_end,
               t_a_restart_that_ended_no_member_raises, t_the_real_restart_path_keeps_the_progress_guard,
