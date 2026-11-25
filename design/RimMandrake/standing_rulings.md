@@ -1620,7 +1620,7 @@ free. The same night, for work bundles, he decided that the live proof runs insi
 - If any game is free, take it. Deploy the mod list in `design/concepts/<Mod>/version/small_list.json`. Run the
   in-game checks that the change touches. Class and fix a non-pass in the same sitting.
 - Record each run with `maturation.py live-row`. Stage 6 counts that run as a row of its next visit. The run
-  ends in one of the seven outcomes. The run counts only on the build he walks: its game build and deployed mod hash
+  ends in one of the seven outcomes of §Live tests have three kinds (section 2). The run counts only on the build he walks: its game build and deployed mod hash
   equal his walk's (`build_match.py`). The run counts only while the change since its commit touches nothing
   that the check reads or exercises (`rerun_relation.py`). Stage 6 does not run the check again while
   nothing that the check reads or exercises changes.
