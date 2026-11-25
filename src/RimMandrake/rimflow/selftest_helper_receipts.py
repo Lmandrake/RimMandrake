@@ -296,12 +296,37 @@ def t_empty_markers_are_not_reread():
           "empty-markers-are-not-reread: control, the same dead helper with no marker gets a receipt")
 
 
+def t_stopped_by_its_window_is_read():
+    """A window that stops its own background command with TaskStop, then speaks, has read it (2026-11-25: window
+    823b2f91 stopped its account watch btuxl3dtr before its goodbye, and the receipt still called it no-reader)."""
+    def stop(tu, tid):
+        return asst("", "tool_use", [{"type": "tool_use", "id": tu, "name": "TaskStop", "input": {"task_id": tid}}])
+
+    def stopped(tu, tid):
+        return {"type": "user", "timestamp": T0, "message": {"role": "user", "content": [{
+            "type": "tool_result", "tool_use_id": tu,
+            "content": json.dumps({"message": "Successfully stopped task: %s (until done)" % tid, "task_id": tid})}]}}
+    i, j = "3333aaaa-stopped", "4444aaaa-stoplast"
+    write(tx(i), [user("hi"), bg_call("b3", "until acct; do sleep 60; done"), bg_result("b3", "bstop"),
+                  stop("s3", "bstop"), stopped("s3", "bstop"), asst("handed over")])
+    # control: the stop's result is the last record, no turn after it: nobody read that the stop landed
+    write(tx(j), [user("hi"), bg_call("b4", "until acct; do sleep 60; done"), bg_result("b4", "bstop2"),
+                  stop("s4", "bstop2"), stopped("s4", "bstop2")])
+    age(tx(i), 2 * HR.SETTLE_S)
+    age(tx(j), 2 * HR.SETTLE_S)
+    new = {r["session"]: r for r in HR.collect(SEAT, CLONE, force=[i, j], max_reads=20)}
+    check(i not in new, "NEGATIVE: a command its own window stopped, then spoke, is read (%r)" % new.get(i))
+    check(j in new and [x["id"] for x in new[j]["bash"]] == ["bstop2"],
+          "control: a stop with no later turn still reads no-reader (%r)" % new.get(j))
+
+
 def main():
     os.makedirs(CLONE)
     real_kill()
     _, a, e = scenarios()
     t_foreground_result_needs_assistant()
     t_empty_markers_are_not_reread()
+    t_stopped_by_its_window_is_read()
     readers(a, e)
     unreadable()
     print("FAILED %d" % len(FAILS) if FAILS else "ALL OK")

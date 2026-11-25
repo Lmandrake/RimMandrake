@@ -54,6 +54,7 @@ def _report_tail(final, transcript):
 NOTICE = re.compile(r"<task-id>([^<\\]+)</task-id>.{0,700}?<status>(\w+)</status>", re.S)
 BG_ID = re.compile(r"running in background with ID: (\w+)")
 BG_OUT = re.compile(r"written to: (\S+?\.output)")
+STOPPED = re.compile(r"Successfully stopped task: (\w+)")   # the window's own TaskStop: a read, once a turn follows it
 
 
 def receipts_dir(seat, root=None):
@@ -148,6 +149,8 @@ def _read_main(path):
                     if tu in rows["bg"]:
                         got, out = BG_ID.search(body), BG_OUT.search(body)
                         rows["bg"][tu].update(id=got.group(1) if got else None, output=out.group(1) if out else None)
+                    for tid in STOPPED.findall(body):
+                        rows["notes"].setdefault(tid, ("stopped", pos))
                     if "Async agent launched" not in body:
                         pending_results.add(tu)     # a foreground report still needs a later assistant record
     return rows
