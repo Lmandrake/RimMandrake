@@ -11,8 +11,8 @@ Locked by pipeline (RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME)
 
 | file | git blob at the lock commit | role |
 |---|---|---|
-| `design/concepts/ExplosiveKnockback/tree.json` | `0cfc0c12792f9fb68781d4d878126918f70d38ce` | the leaves: each is an acceptance criterion with its scenario, false passes and red |
-| `design/concepts/ExplosiveKnockback/sheet.md` | `0cd48ce7a8e382cb968064990c5d49eabc4a4014` | his plain-words sheet: does, does not, his words |
+| `design/concepts/ExplosiveKnockback/tree.json` | `2c30821858956e0fe18b54678897b1a119c18ca0` | the leaves: each is an acceptance criterion with its scenario, false passes and red |
+| `design/concepts/ExplosiveKnockback/sheet.md` | `c2803b37522b07096d5f2c7c381f7fdf04ef7dcb` | his plain-words sheet: does, does not, his words |
 | `design/concepts/ExplosiveKnockback/scenes.json` | `be9f21f4992c2b55cde1684d23bbf6e1f8148c63` | the acceptance scenes and showcases the leaves are proven by |
 | `design/concepts/ExplosiveKnockback/floor.json` | `a322de650cb13e4bf77f91c24828ea008fe0ddf8` | the quality floor lines every mod meets |
 | `design/concepts/ExplosiveKnockback/exam.json` | `5a8f2e579bed5cb0c8f7e95ee823162eb6b25538` | the Cold Reader exam of tree and sheet (frozen against an older tree; VERSION.json caveats) |
@@ -24,3 +24,5 @@ Locked by pipeline (RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME)
 - A locked file changed after the lock ONLY in test text, check wording or bookkeeping fields is re-pinned here with a journal line; a changed bar is his card (re-pin rule, 2026-11-14).
 
 **Pinned 2026-11-24 (steward run RIMMANDRAKE_STEWARD_EXPLOSIVEKNOCKBACK_PREFLIGHT_STAGE, Stage 2).** The 0.2.0 lock kept the 0.1.0 pins, which predate the 0.1.0 frame-row cards, so preflight read four locked files as changed (C12). This table pins each file as it stood at the lock commit; no file changed after the lock, so no bar's meaning moves. The 0.1.0 text that followed here was a byte-for-byte copy of `previous/0.1.0/bars.md` and was removed.
+
+**Re-pinned 2026-11-24 (the Conductor's act; RIMMANDRAKE_REWORD_KNOCKBACK_REBOUND_LEAF_THEN_RETAKE_WHOLE_EXAM, per RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS).** The leaf `goods_arc_spin_rebound` said each rebound keeps about seventy percent of its speed; the build keeps a share of the cells the throw had left (`RM_KnockbackMath.ReboundCells`), at an unchanged flight speed. `tree.json`: the leaf's experience now reads "each rebound carrying them on for only part of the way the throw still had left, so the bounces die away before they come to rest", and its `oracle_proposed` and the tree's advisory line say cells left instead of speed (test text). `sheet.md`: the same sentence, "each one carrying on for only part of the way the throw still had left, until spent". The reword corrects a false description and loosens no bar: the bar `rebound_goes_shorter` in `record.json` is unchanged. The table above pins the reworded blobs (was `0cfc0c1279` and `0cd48ce7a8`). The Cold Reader exam is retaken whole on the reworded tree under the same item.
