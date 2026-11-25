@@ -1,0 +1,2 @@
+# live proofs of COMPANION_PROFILE_ENFORCE_SAFE_BY_DEFAULT (bridge_bundle_proof.py; work bundle WB-pipeline-bridge-20261125-192133)
+live-proof A1: python3 src/RimMandrake/Utils/modcheck/live_queue/bridge_bundle_proof.py PROFILE < /dev/null

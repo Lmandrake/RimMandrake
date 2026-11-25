@@ -1,0 +1,2 @@
+# live proofs of TPS_HOOKS_HARDEN_REENTRY_AND_LATE_GUARDS (bridge_bundle_proof.py; work bundle WB-pipeline-bridge-20261125-192133)
+live-proof A1: python3 src/RimMandrake/Utils/modcheck/live_queue/bridge_bundle_proof.py HOOKS < /dev/null

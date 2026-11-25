@@ -1,0 +1,491 @@
+"""Live proofs of the built pipeline:bridge tickets (work bundle WB-pipeline-bridge-20261125-192133), one clause per call:
+
+    python.exe src/RimMandrake/Utils/modcheck/live_queue/bridge_bundle_proof.py <CLAUSE>
+
+Runs on the CURRENT map through the bridge (Session focus=False), removes what it spawns, and prints one
+"<clause> PASS|FAIL|UNMEASURED: ..." line. Exit 0 = holds, 1 = it answered and something is wrong, 2 = UNMEASURED.
+Any non-canonical game will do; the test lane's games are disposable.
+
+  EVIDENCE   BRIDGE_CALL_EVIDENCE_WIRE_LOST_REPLY_UNKNOWN A1: every call of this python.exe session writes a start row
+             and an end row to the bridge call evidence log, and no in-flight marker of this process is left
+  TPS        BRIDGE_TPS_REGULAR_REPORT_1 C2: 60 real seconds at speed 1 -> the record segment grows, jawa/tps_report
+             returns the last windows at a ~5 s cadence with min/median/max, median ratio near 1 (60 tps)
+  NORTHSTAR  NORTHSTAR_COMPANION_GAPS_1 A2: pawn_census, pawn_roles, incident_queue_peek, incident_queue_remove (dry
+             run changes nothing), damage_log (a damage we deal is logged), thing_lineage (the victim is found)
+  STATICCALL STATIC_CALL_THINGID_FIX_DIGIT_EATS_ITSELF A1 (live half): static_call GenAdj.OccupiedRect resolves a whole
+             ThingID and a bare id number of a live pawn
+  TILECACHE  TILE_TEMP_CACHE_RESET_TOOL_1 A1: retile one far tile's temperature -> world_cache_audit includeTemps
+             reads it stale, world_tile_cache_reset returns verifiedNull, a re-audit reads it fresh (restored after)
+  PROFILE    COMPANION_PROFILE_ENFORCE_SAFE_BY_DEFAULT A1+A2: no profile file -> effectiveProfile campaign, spawn_pawn
+             runs, static_call refuses; the test file back -> test within 2 s (the file is restored in every case)
+  PEN        PEN_ANIMALS_UNSTICK_STATUES_LEARN_TO_WALK A1: animals given a Wait pin are released (released ==
+             selected, no Wait after), re-pinned with return home
+  EXPLAIN    THING_LOOKUP_BUILD_OWNER_IS_NOT_PAINTER A3: an ambiguous cell or name lists candidates and picks none;
+             a vanished id is refused
+  HOOKS      TPS_HOOKS_HARDEN_REENTRY_AND_LATE_GUARDS A1+A2: after PLAY minutes of play (env BUNDLE_PLAY_MINUTES,
+             default 10) every TPS and attribution hook reads coverage ok, with no hook fault or foreign-thread reject
+  AWARE      AWARENESS_GENPAWN_TAME_ARM_BEFORE_USE A1 (test-profile half): with no install.generation-early the
+             GeneratePawn hook is not installed until an arm, and the arm installs it
+"""
+import json
+import os
+import re
+import sys
+import time
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+CLAUSES = ("EVIDENCE", "TPS", "NORTHSTAR", "STATICCALL", "TILECACHE", "PROFILE", "PEN", "EXPLAIN", "HOOKS", "AWARE")
+
+
+def _ok(r):
+    return isinstance(r, dict) and r.get("success", True) is not False
+
+
+# ------------------------------------------------------------------------------------------------ pure verdicts
+def v_EVIDENCE(d):
+    rows, cids = d.get("rows") or [], d.get("cids") or []
+    if not cids:
+        return 2, "no calls were made: %s" % d.get("why")
+    starts = {r.get("cid") for r in rows if r.get("ev") == "start"}
+    ends = {r.get("cid") for r in rows if r.get("ev") == "end"}
+    f = ["call %s has no %s row" % (c, w) for c in cids for w, s in (("start", starts), ("end", ends)) if c not in s]
+    if d.get("inflight"):
+        f.append("in-flight markers left: %s" % d["inflight"][:5])
+    return (1 if f else 0), "; ".join(f) or "%d calls, each with start and end rows; no in-flight marker" % len(cids)
+
+
+def v_TPS(d):
+    if d.get("why"):
+        return 2, d["why"]
+    w = [x for x in d.get("windows") or [] if x.get("state") == "run"]
+    f = []
+    if d.get("grew", 0) <= 0:
+        f.append("record segment did not grow (%s bytes)" % d.get("grew"))
+    if len(w) < 8:
+        f.append("%d run windows in 60 s, want >= 8 at a 5 s cadence" % len(w))
+    ratios = sorted(x.get("ratio") for x in w if isinstance(x.get("ratio"), (int, float)))
+    med = ratios[len(ratios) // 2] if ratios else None
+    if med is None or not 0.8 <= med <= 1.2:
+        f.append("median ratio %s, want near 1 at speed 1" % med)
+    s = d.get("summary") or {}
+    if not all(k in s for k in ("min", "median", "max")):
+        f.append("report summary lacks min/median/max: %s" % sorted(s))
+    return (1 if f else 0), "; ".join(f) or "%d run windows, median ratio %.3f, segment +%d bytes" % (
+        len(w), med, d["grew"])
+
+
+def v_NORTHSTAR(d):
+    if d.get("why"):
+        return 2, d["why"]
+    f = [k + ": " + v for k, v in sorted((d.get("faults") or {}).items())]
+    return (1 if f else 0), "; ".join(f) or "six tools answered correctly: %s" % d.get("note")
+
+
+def v_STATICCALL(d):
+    if d.get("why"):
+        return 2, d["why"]
+    f = ["%s: %s" % (k, r.get("message")) for k, r in sorted((d.get("calls") or {}).items()) if not r.get("ok")]
+    return (1 if f else 0), "; ".join(f) or "whole ThingID and bare number both resolve: %s" % d.get("note")
+
+
+def v_TILECACHE(d):
+    if d.get("why"):
+        return 2, d["why"]
+    f = []
+    if not d.get("staleBefore"):
+        f.append("audit after the retile reads no stale temperature cache: %s" % d.get("audit1"))
+    if not d.get("verifiedNull"):
+        f.append("reset did not return verifiedNull: %s" % d.get("reset"))
+    if d.get("staleAfter"):
+        f.append("re-audit still stale: %s" % d.get("audit2"))
+    return (1 if f else 0), "; ".join(f) or "tile %s: stale after retile, verifiedNull, fresh after reset" % d.get("tile")
+
+
+def v_PROFILE(d):
+    if d.get("why"):
+        return 2, d["why"]
+    f = []
+    if d.get("noFileProfile") != "campaign":
+        f.append("no profile file reads %s, want campaign" % d.get("noFileProfile"))
+    if not d.get("spawnRan"):
+        f.append("spawn_pawn refused in campaign: %s" % d.get("spawnMsg"))
+    if d.get("staticRefused") is not True:
+        f.append("static_call not refused in campaign: %s" % d.get("staticMsg"))
+    if d.get("backProfile") != "test" or (d.get("flipS") or 99) > 2.0:
+        f.append("test file back reads %s after %s s, want test within 2 s" % (d.get("backProfile"), d.get("flipS")))
+    return (1 if f else 0), "; ".join(f) or "campaign with no file (spawn runs, static_call refused); test again in %.2f s" % d["flipS"]
+
+
+def v_PEN(d):
+    if d.get("why"):
+        return 2, d["why"]
+    rel, pin = d.get("release") or {}, d.get("pin") or {}
+    f = []
+    n = len(d.get("ids") or [])
+    if d.get("waitBefore") != n:
+        f.append("%s of %d had a Wait pin before release" % (d.get("waitBefore"), n))
+    if rel.get("released") != n or rel.get("notReleased"):
+        f.append("released %s of %d, notReleased %s" % (rel.get("released"), n, rel.get("notReleased")))
+    if d.get("waitAfter"):
+        f.append("%d still on Wait after release" % d["waitAfter"])
+    if pin.get("pinned") != n:
+        f.append("re-pinned %s of %d" % (pin.get("pinned"), n))
+    return (1 if f else 0), "; ".join(f) or "%d animals released (no Wait after), re-pinned %s, returnedHome %s" % (
+        n, pin.get("pinned"), pin.get("returnedHome"))
+
+
+def v_EXPLAIN(d):
+    if d.get("why"):
+        return 2, d["why"]
+    f = []
+    for k in ("name", "cell"):
+        r = d.get(k) or {}
+        if r.get("resolved") is not False or len(r.get("ambiguous") or []) < 2:
+            f.append("%s selector: resolved %s with %d candidates, want false with >= 2" % (
+                k, r.get("resolved"), len(r.get("ambiguous") or [])))
+    gone = d.get("gone") or {}
+    if _ok(gone) and gone.get("resolved") is not False:
+        f.append("vanished id answered: %s" % json.dumps(gone)[:160])
+    return (1 if f else 0), "; ".join(f) or "name and cell list candidates, pick none; vanished id refused"
+
+
+def v_HOOKS(d):
+    if d.get("why"):
+        return 2, d["why"]
+    f = ["%s coverage %s" % (k, v) for k, v in sorted((d.get("coverage") or {}).items()) if v != "ok"]
+    if not d.get("coverage"):
+        f.append("no hook coverage read")
+    for k in ("faults", "foreignThreadRejects"):
+        if d.get(k):
+            f.append("%s %s" % (k, d[k]))
+    return (1 if f else 0), "; ".join(f) or "%d hooks coverage ok after %s min, 0 faults, 0 foreign-thread rejects" % (
+        len(d["coverage"]), d.get("minutes"))
+
+
+def v_AWARE(d):
+    if d.get("why"):
+        return 2, d["why"]
+    f = []
+    if d.get("early"):
+        return 2, "precondition: awareness_settings.json sets install.generation-early"
+    if d.get("genBefore"):
+        f.append("GeneratePawn hook installed before any arm: %s" % d.get("detailBefore"))
+    if not d.get("genAfter"):
+        f.append("GeneratePawn not read as installed lazily by an arm after startup: %s" % d.get("detailAfter"))
+    return (1 if f else 0), "; ".join(f) or "GeneratePawn not installed at startup; %s" % d.get("detailAfter")
+
+
+VERDICTS = dict((c, globals()["v_" + c]) for c in CLAUSES)
+
+
+def verdict(clause, d):
+    try:
+        return VERDICTS[clause](d)
+    except Exception as e:                                      # noqa: BLE001 - a malformed read is not a pass
+        return 2, "verdict could not read the data: %s: %s" % (type(e).__name__, e)
+
+
+# ------------------------------------------------------------------------------------------------ live gathering
+class Live(object):
+    def __init__(self, s):
+        sys.path.insert(0, HERE)
+        from common import call
+        self.s, self._call, self.spawned = s, call, []
+
+    def call(self, tool, **p):
+        return self._call(self.s, tool, **p)
+
+    def anchor(self):
+        import helpers as H
+        ax, az, _ = H.safe_anchor(self.s)
+        return ax, az
+
+    def spawn(self, kind, x, z, count=1, faction="none"):
+        r = self.call("jawa/spawn_pawn", kindDef=kind, x=x, z=z, faction=faction, count=count)
+        ids = [p.get("id") for p in r.get("pawns") or [] if p.get("id")]
+        self.spawned += ids
+        return r, ids
+
+    def cleanup(self):
+        import helpers as H
+        if self.spawned:
+            try:
+                H.remove_visitors(self.s, self.spawned)
+            except Exception:                                   # noqa: BLE001 - housekeeping, never a verdict
+                pass
+
+
+def g_EVIDENCE(L):
+    import rimbridge_client as RC
+    path = RC.EVIDENCE_LOG
+    if not path:
+        return {"why": "no evidence log configured in this interpreter (RIMBRIDGE_EVIDENCE_LOG empty or not Windows)"}
+    size0 = os.path.getsize(path) if os.path.isfile(path) else 0
+    for t in ("jawa/map_info", "jawa/companion_handshake", "jawa/tps_report"):
+        L.call(t) if t != "jawa/tps_report" else L.call(t, last=1)
+    time.sleep(0.5)
+    rows = []
+    with open(path, "rb") as fh:
+        fh.seek(size0)
+        for line in fh.read().decode("utf-8", "replace").splitlines():
+            try:
+                rows.append(json.loads(line))
+            except ValueError:
+                pass
+    # a start row names the pid; its end row carries only the cid (measured 2026-11-25)
+    cids = sorted({r.get("cid") for r in rows if r.get("ev") == "start" and r.get("pid") == os.getpid()})
+    mine = [r for r in rows if r.get("cid") in cids]
+    idir = RC._inflight_dir()
+    inflight = [n for n in (os.listdir(idir) if os.path.isdir(idir) else []) if str(os.getpid()) in n]
+    return {"rows": mine, "cids": cids, "inflight": inflight}
+
+
+def g_TPS(L):
+    r0 = L.call("jawa/tps_report", last=1)
+    seg = r0.get("segment")
+    if not seg or not os.path.isfile(seg):
+        return {"why": "tps_report names no readable segment: %s" % seg}
+    size0 = os.path.getsize(seg)
+    L.call("rimworld/set_time_speed", speed="Normal")
+    try:
+        time.sleep(62)
+    finally:
+        L.call("rimworld/set_time_speed", speed="Paused")
+    r = L.call("jawa/tps_report", last=12)
+    seg1 = r.get("segment") or seg
+    grew = os.path.getsize(seg1) - (size0 if seg1 == seg else 0)
+    return {"windows": r.get("windows") or r.get("last") or [], "summary": r.get("summary") or {}, "grew": grew}
+
+
+def g_NORTHSTAR(L):
+    faults, notes = {}, []
+    ax, az = L.anchor()
+    _, ids = L.spawn("Muffalo", ax, az)
+    if not ids:
+        return {"why": "Muffalo spawn failed"}
+    L.call("jawa/pen_pin", pawns=ids[0].replace("Thing_", ""), restore=False, ticks=600)
+    c = L.call("jawa/pawn_census", ids=ids[0])
+    row = (c.get("pawns") or c.get("rows") or [{}])[0]
+    if not _ok(c) or not row or "wait" not in json.dumps(row).lower():
+        faults["pawn_census"] = "no row with a job for %s: %s" % (ids[0], json.dumps(c)[:200])
+    ro = L.call("jawa/pawn_roles", faction="player")
+    rows = ro.get("pawns") or ro.get("rows") or []
+    if not _ok(ro) or not rows or not all(x.get("isColonist") for x in rows
+                                                       if not (x.get("isSlave") or x.get("isAnimal") or x.get("isColonyMech"))):
+        faults["pawn_roles"] = "player pawns not read as colonists: %s" % json.dumps(ro)[:200]
+    pk = L.call("jawa/incident_queue_peek")
+    q = pk.get("queue") or pk.get("incidents") or pk.get("entries") or []
+    if not _ok(pk):
+        faults["incident_queue_peek"] = json.dumps(pk)[:200]
+    if q:
+        rm = L.call("jawa/incident_queue_remove", defName=(q[0].get("def") or q[0].get("defName")), dryRun=True)
+        q2 = (L.call("jawa/incident_queue_peek").get("queue") or [])
+        if not _ok(rm) or len(q2) != len(q):
+            faults["incident_queue_remove"] = "dry run changed the queue %d -> %d: %s" % (len(q), len(q2), json.dumps(rm)[:160])
+    else:
+        rm = L.call("jawa/incident_queue_remove", defName="RaidEnemy", dryRun=True)
+        if not _ok(rm) and "nothing" not in json.dumps(rm).lower() and "no " not in json.dumps(rm).lower():
+            faults["incident_queue_remove"] = json.dumps(rm)[:200]
+        notes.append("queue empty")
+    dmg = L.call("jawa/damage", damageDef="Cut", amount=3, thingId=ids[0])
+    log = L.call("jawa/damage_log", thingId=ids[0])
+    ev = log.get("events") or []
+    if not _ok(dmg) or not ev:
+        faults["damage_log"] = "dealt %s, logged %d events: %s" % (_ok(dmg), len(ev), json.dumps(log)[:200])
+    ln = L.call("jawa/thing_lineage", ids=ids[0])
+    if not _ok(ln) or ids[0].replace("Thing_", "") not in json.dumps(ln):
+        faults["thing_lineage"] = json.dumps(ln)[:200]
+    notes.append("victim %s, %d damage events, %d queued incidents" % (ids[0], len(ev), len(q)))
+    return {"faults": faults, "note": "; ".join(notes)}
+
+
+def g_STATICCALL(L):
+    ax, az = L.anchor()
+    _, ids = L.spawn("Muffalo", ax, az)
+    if not ids:
+        return {"why": "Muffalo spawn failed"}
+    whole = ids[0].replace("Thing_", "")
+    num = re.sub(r"^\D+", "", whole)
+    calls = {}
+    for k, a in (("whole ThingID", whole), ("bare number", num)):
+        r = L.call("jawa/static_call", type="Verse.GenAdj", method="OccupiedRect", args=a)
+        calls[k] = {"ok": _ok(r), "message": (r.get("message") or json.dumps(r.get("result"))[:80])}
+    return {"calls": calls, "note": "%s -> %s" % (whole, calls["whole ThingID"]["message"])}
+
+
+def g_TILECACHE(L):
+    mi = L.call("jawa/map_info")
+    home = mi.get("tile")
+    g = L.call("jawa/world_tile_get", range="%d-%d" % (max(0, (home or 0) + 400), (home or 0) + 460), limit=60)
+    rows = [r for r in g.get("tiles") or g.get("rows") or [] if (r.get("elevation") or 0) > 0]
+    if not rows:
+        return {"why": "no land tile read near %s: %s" % (home, json.dumps(g)[:160])}
+    t = rows[0].get("tile", rows[0].get("id"))
+    temp0 = rows[0].get("temperature")
+    L.call("jawa/world_cache_audit", tiles=str(t), includeTemps=True, populate=True)
+    try:
+        L.call("jawa/world_tile_set", tiles=str(t), temperature=(temp0 or 0) + 25)
+        a1 = L.call("jawa/world_cache_audit", tiles=str(t), includeTemps=True)
+        rs = L.call("jawa/world_tile_cache_reset", tiles=str(t))
+        a2 = L.call("jawa/world_cache_audit", tiles=str(t), includeTemps=True)
+    finally:
+        L.call("jawa/world_tile_set", tiles=str(t), temperature=temp0)
+        L.call("jawa/world_tile_cache_reset", tiles=str(t))
+
+    def stale(a):
+        return sum(int((a.get(k) or {}).get("stale") or 0) for k in ("minTemp", "maxTemp"))
+    return {"tile": t, "audit1": json.dumps(a1)[:300], "audit2": json.dumps(a2)[:300], "reset": json.dumps(rs)[:300],
+            "staleBefore": stale(a1) > 0, "staleAfter": stale(a2) > 0, "verifiedNull": "verifiednull" in json.dumps(rs).lower()}
+
+
+def _profile(L):
+    h = L.call("jawa/companion_handshake")
+    return h.get("effectiveProfile"), h.get("profileFile")
+
+
+def g_PROFILE(L):
+    prof, path = _profile(L)
+    if not path:
+        return {"why": "handshake names no profile file"}
+    path = path.replace("/", "\\") if os.name == "nt" else path
+    if not os.path.isfile(path):
+        return {"why": "profile file %s absent at start: cannot restore what is not there" % path}
+    keep = open(path, "rb").read()
+    aside = path + ".bundle_aside"
+    out = {}
+    os.replace(path, aside)
+    try:
+        time.sleep(2.5)
+        out["noFileProfile"], _ = _profile(L)
+        ax, az = L.anchor()
+        r, ids = L.spawn("Muffalo", ax, az)
+        out["spawnRan"], out["spawnMsg"] = bool(ids), r.get("message")
+        sc = L.call("jawa/static_call", type="Verse.GenAdj", method="OccupiedRect", args=(ids[0] if ids else "1"))
+        out["staticRefused"] = not _ok(sc) and "profile" in json.dumps(sc).lower()
+        out["staticMsg"] = (sc.get("message") or "")[:160]
+    finally:
+        with open(path, "wb") as fh:
+            fh.write(keep)
+        if os.path.exists(aside):
+            os.remove(aside)
+    t0 = time.time()
+    while time.time() - t0 < 10:
+        p, _ = _profile(L)
+        if p == "test":
+            break
+        time.sleep(0.2)
+    out["backProfile"], out["flipS"] = p, round(time.time() - t0, 2)
+    return out
+
+
+def _waits(L, ids):
+    c = L.call("jawa/pawn_census", ids=",".join(ids))
+    rows = c.get("pawns") or c.get("rows") or []
+    return sum(1 for r in rows if "wait" == str((r.get("job") or {}).get("def") if isinstance(r.get("job"), dict)
+                                                else r.get("job") or r.get("jobDef")).lower())
+
+
+def g_PEN(L):
+    ax, az = L.anchor()
+    _, ids = L.spawn("Muffalo", ax, az, count=3)
+    if len(ids) < 3:
+        return {"why": "spawned %d of 3 Muffalo" % len(ids)}
+    pins = ",".join(i.replace("Thing_", "") for i in ids)
+    p0 = L.call("jawa/pen_pin", pawns=pins, restore=False, ticks=60000)
+    if not _ok(p0):
+        return {"why": "the first pin failed: %s" % json.dumps(p0)[:160]}
+    wb = _waits(L, ids)
+    rel = L.call("jawa/pen_release", pawns=pins)
+    wa = _waits(L, ids)
+    pin = L.call("jawa/pen_pin", pawns=pins, restore=True)
+    return {"ids": ids, "waitBefore": wb, "release": rel, "waitAfter": wa, "pin": pin}
+
+
+def g_EXPLAIN(L):
+    ax, az = L.anchor()
+    _, ids = L.spawn("Muffalo", ax, az, count=2)
+    if len(ids) < 2:
+        return {"why": "spawned %d of 2 Muffalo" % len(ids)}
+    rows = L.call("jawa/pawn_census", ids=",".join(ids)).get("pawns") or []
+    label = (rows[0].get("name") if rows else None) or "Muffalo"
+    name = L.call("jawa/thing_explain", name=label)
+    # one cell that holds two pawns: stand both Muffalo on the first one's cell
+    x, z = rows[0].get("x"), rows[0].get("z")
+    L.call("rimworld/spawn_thing", defName="Steel", x=x, z=z, stackCount=10)
+    c = L.call("jawa/thing_explain", cell="%s,%s" % (x, z))
+    import helpers as H
+    H.remove_visitors(L.s, [ids[0]])
+    L.spawned.remove(ids[0])
+    gone = L.call("jawa/thing_explain", id=ids[0])
+    return {"name": name, "cell": c, "gone": gone, "nameUsed": label}
+
+
+def g_HOOKS(L):
+    mins = float(os.environ.get("BUNDLE_PLAY_MINUTES") or 10)
+    L.call("rimworld/set_time_speed", speed="Superfast")
+    try:
+        time.sleep(mins * 60)
+    finally:
+        L.call("rimworld/set_time_speed", speed="Paused")
+    h = L.call("jawa/companion_handshake").get("hooks") or {}
+    cov, faults, rejects = {}, 0, 0
+    for fam, v in h.items():
+        for k, x in ((v or {}).get("coverage") or {}).items():
+            cov["%s.%s" % (fam, k)] = x.get("coverage") if isinstance(x, dict) else x
+            if isinstance(x, dict):
+                faults += int(x.get("faults") or 0)
+                rejects += int(x.get("foreignThreadRejects") or x.get("rejected") or 0)
+        faults += int((v or {}).get("faults") or 0)
+    return {"coverage": cov, "faults": faults, "foreignThreadRejects": rejects, "minutes": mins}
+
+
+def g_AWARE(L):
+    st = L.call("jawa/awareness", action="status")
+    path = st.get("settings")
+    early = False
+    if path:
+        p = path.replace("/", "\\") if os.name == "nt" else path
+        try:
+            early = bool(json.load(open(p)).get("install.generation-early"))
+        except (OSError, ValueError):
+            early = False
+    early = early or bool((st.get("options") or {}).get("install.generation-early"))
+    det0 = str(st.get("generationHook") or "")
+    L.call("jawa/awareness", action="arm", minutes=5)
+    det1 = str(L.call("jawa/awareness", action="status").get("generationHook") or "")
+    # installed at startup reads 'installed early ...'; a lazy install names the arm and its time, after the startup
+    m = re.search(r"installed lazily by jawa/awareness arm at (\S+)", det1)
+    lazy_after_start = bool(m) and m.group(1) > str(st.get("installedUtc") or "")
+    return {"early": early, "genBefore": det0.startswith("installed") and "lazily" not in det0,
+            "genAfter": lazy_after_start, "detailBefore": det0[:300], "detailAfter": det1[:300]}
+
+
+def main(argv):
+    if len(argv) != 2 or argv[1] not in CLAUSES:
+        print(__doc__)
+        return 2
+    clause = argv[1]
+    try:
+        sys.path.insert(0, HERE)
+        import common  # noqa: F401  (puts modcheck, Utils on sys.path)
+        from rimdrive import Session
+    except Exception as e:                                      # noqa: BLE001
+        print("%s UNMEASURED: harness import failed: %s" % (clause, e))
+        return 2
+    try:
+        with Session(lock=None, focus=False, strict=False, quiet=True) as s:
+            L = Live(s)
+            try:
+                d = globals()["g_" + clause](L)
+            finally:
+                L.cleanup()
+    except Exception as e:                                      # noqa: BLE001 - no bridge is not a verdict
+        print("%s UNMEASURED: %s: %s" % (clause, type(e).__name__, str(e)[:300]))
+        return 2
+    rc, msg = verdict(clause, d)
+    print("%s %s: %s" % (clause, ("PASS", "FAIL", "UNMEASURED")[rc], msg))
+    return rc
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))

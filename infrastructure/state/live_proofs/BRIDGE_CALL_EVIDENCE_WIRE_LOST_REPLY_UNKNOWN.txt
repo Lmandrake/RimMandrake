@@ -1,0 +1,2 @@
+# live proofs of BRIDGE_CALL_EVIDENCE_WIRE_LOST_REPLY_UNKNOWN (bridge_bundle_proof.py; work bundle WB-pipeline-bridge-20261125-192133)
+live-proof A1: python3 src/RimMandrake/Utils/modcheck/live_queue/bridge_bundle_proof.py EVIDENCE < /dev/null
