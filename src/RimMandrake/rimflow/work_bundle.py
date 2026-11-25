@@ -58,18 +58,32 @@ def _g(x, k, default=None):
 
 # ---- systems --------------------------------------------------------------------------------------------------------
 
-def system_of(it, reading):
-    """-> the system of one ticket: its mod (mod:<Mod>, mod_work's one rule), else its home, else item:<ID>. None when
-    its mod work could not be read."""
+def _home(it):
+    home = _g(it, "home")
+    h = home.get("home") if isinstance(home, dict) else None
+    return h if h and h != "unplaced" else None
+
+
+def system_of(it, reading, items=None):
+    """-> the system of one ticket: its mod (mod:<Mod>, mod_work's one rule), else its home, else (with `items`, the
+    ledger's items by id) the home of its parent (caused_by), else cause:<parent> when the parent has no home or a mod:
+    home, else item:<ID>. None when its mod work could not be read. One hop only: a deeper ancestor of a ticket filed
+    today is often an unrelated sweep (measured 2026-11-25: chains of 7 hops end on pipeline:docs). A mod: home is not
+    inherited, because a ticket that is not mod work itself is never one mod's bundle. Why: tickets filed after the
+    one sort of 2026-11-23 have no home, and ten of twelve bundles of 2026-11-25 held one ticket."""
     r = reading(it)
     if not isinstance(r, dict) or r.get("unreadable"):
         return None
     if r.get("mod"):
         return "mod:%s" % r["mod"]
-    home = _g(it, "home")
-    h = home.get("home") if isinstance(home, dict) else None
-    if h and h != "unplaced":
+    h = _home(it)
+    if h:
         return h
+    pid = _g(it, "caused_by")
+    parent = items.get(pid) if items is not None and pid else None
+    if parent is not None:
+        ph = _home(parent)
+        return ph if ph and not ph.startswith("mod:") else "cause:%s" % pid
     return "item:%s" % _g(it, "id")
 
 
@@ -86,7 +100,7 @@ def resolve(target, items, mods, reading):
                 return None, [], "%s is not an item of the ledger" % i
             if _g(x, "state") in CLOSED:
                 return None, [], "%s is %s" % (i, _g(x, "state"))
-            s = system_of(x, reading)
+            s = system_of(x, reading, items)
             if s is None:
                 return None, [], "could not look which system %s belongs to" % i
             sy[i] = s
@@ -95,12 +109,12 @@ def resolve(target, items, mods, reading):
             return None, [], "two systems are never in one bundle: " + "; ".join("%s is %s" % kv for kv in sy.items())
         return next(iter(sy.values())), got, "the named tickets"
     t = str(target)
-    if not t.startswith(("mod:", "pipeline:", "game:", "machine:", "item:")):
+    if not t.startswith(("mod:", "pipeline:", "game:", "machine:", "item:", "cause:")):
         m = next((m for m in mods if m.lower() == t.lower()), None)
         if not m:
             return None, [], "%r is not a home (pipeline:<part>, game:<need>, machine:<name>), a mod or ticket ids" % t
         t = "mod:%s" % m
-    ids = sorted(i for i, x in items.items() if _g(x, "state") not in CLOSED and system_of(x, reading) == t)
+    ids = sorted(i for i, x in items.items() if _g(x, "state") not in CLOSED and system_of(x, reading, items) == t)
     return t, ids, "the open tickets of %s" % t
 
 
@@ -318,6 +332,37 @@ def live_bundles(bundles=None):
     return {r["system"]: r["id"] for r in bundles.values() if r.get("state") in LIVE_STATES}
 
 
+# A bundle launched on another machine (`./pipe bundle` run on SteveDesktop) has its record in that machine's store,
+# so this store cannot see it; its worker cites its id on every ledger act ("work bundle WB-..."). budget: danger=a
+# quiet stretch longer than this reads the remote bundle ended, and the lane launches a second bundle of its system on
+# the same files; longest=the worker writes a PROGRESS note for each 30 minutes of waiting (roles/bundle_worker.md step
+# 5), and 10x that is 5 h. Cost of the bound: a dead remote bundle holds its system for 5 h.
+REMOTE_QUIET_S = 5 * 3600
+CITE_RX = re.compile(r"work bundle (WB-[A-Za-z0-9-]+?-\d{8}-\d{6})")
+
+
+def cited_live(events, now, local, systems):
+    """-> {system: bundle id} for each of `systems` whose bundle a ledger event (why, text or reason) cited within
+    REMOTE_QUIET_S and this store (`local`, {id: record}) does not hold: a local record's state is the truth for a
+    local bundle. Pure over its inputs; an event whose time cannot be read is skipped."""
+    newest = {}
+    for e in events:
+        for k in ("why", "text", "reason"):
+            for bid in CITE_RX.findall(str(e.get(k) or "")):
+                try:
+                    t = _ts(e.get("ts"))
+                except (TypeError, ValueError):
+                    continue
+                newest[bid] = max(newest.get(bid, 0), t)
+    by_slug = {re.sub(r"[^A-Za-z0-9]+", "-", s).strip("-"): s for s in systems}
+    out = {}
+    for bid, t in newest.items():
+        s = by_slug.get(bid[3:-16])
+        if s and bid not in local and now - t <= REMOTE_QUIET_S and (s not in out or bid > out[s]):
+            out[s] = bid
+    return out
+
+
 def bundle_id(system, now):
     slug = re.sub(r"[^A-Za-z0-9]+", "-", system).strip("-")
     return "WB-%s-%s" % (slug, time.strftime("%Y%m%d-%H%M%S", time.gmtime(now)))
@@ -487,9 +532,11 @@ def launch_bundle(system, members, items, why, pipeline, now=None, launcher=None
     return 1, rec
 
 
-def group(rows, launches, systems, live):
+def group(rows, launches, systems, live, join=None):
     """The lane's launch rows of one system become one bundle. -> (rows, launches). systems: {item: system}; live:
-    {system: live bundle id}. Pure; edits the rows in place."""
+    {system: live bundle id}; join: {ticket: system} of the open tickets that have no lane row (no check) and are ready
+    (list_dispatch.join_candidates): each joins the bundle of its system's lead, so a bundle is the home's ready tickets,
+    not only the tick's launch rows. A joining ticket never leads. Pure; edits the rows in place."""
     lead, keep = {}, []
     for r in rows:
         i = r["item"]
@@ -514,6 +561,10 @@ def group(rows, launches, systems, live):
         elif s in lead:
             lead[s]["bundle"]["members"].append(i)
             r.update(decision="bundled", why="joins the bundle of %s that %s leads this tick" % (s, lead[s]["item"]))
+    for i in sorted(join or {}):
+        s = join[i]
+        if s in lead and not s.startswith(("item:", "mod:")) and i not in lead[s]["bundle"]["members"]:
+            lead[s]["bundle"]["members"].append(i)
     return rows, [i for i in launches if i in keep]
 
 

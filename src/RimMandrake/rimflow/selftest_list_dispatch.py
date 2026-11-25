@@ -834,9 +834,37 @@ def t_each_limit_names_its_danger():
         "every numeric setting has its _doc (%s)" % ", ".join(k for k in nums if not c.get("_%s_doc" % k)))
 
 
+def t_a_lead_takes_the_ready_tickets_of_its_home():
+    """RIMMANDRAKE_BUNDLE_LIST_TICKETS_BY_HOME_TEN_OF_TWELVE_HELD_ONE: an open ticket with no check (no lane row) of the
+    lead's home joins the lead's bundle when it is ready; one that waits, is blocked, held, off, leased or refused stays
+    out, and so does one whose system has no lead."""
+    import types
+    L = LD()
+    x = lambda **kw: types.SimpleNamespace(**dict({"wait_until": None, "title": "t"}, **kw))  # noqa: E731
+    cands = {"B": x(), "C": x(wait_until="2099-01-01T00:00:00Z"), "D": x(), "E": x(), "F": x(), "G": x(), "H": x(),
+             "I": x(), "J": x(), "K": x(wait_until="not a date"), "R": x(), "P": x(wait_until="2000-01-01T00:00:00Z")}
+    sysmap = dict({i: "pipeline:test-lane" for i in cands}, I="pipeline:docs", J="item:J")
+    got = L.join_candidates(cands, NOW, want={"pipeline:test-lane", "item:J"}, system=sysmap.get,
+                            facts=lambda t: ([], True) if t is cands["E"] else (["Z"], False) if t is cands["G"] else ([], False),
+                            lease=lambda t: "live" if t is cands["H"] else None,
+                            off=lambda i: ("off by pipe", None) if i == "F" else (None, None),
+                            held=lambda i: "HELD BY OWNER" if i == "D" else None,
+                            refused=lambda i: "REFUSED BY BUNDLE: not this system" if i == "R" else None)
+    chk(lambda: got == {"B": "pipeline:test-lane", "P": "pipeline:test-lane"},
+        "join_candidates: a ready ticket and one whose wait passed join; a waiting, held, blocked, off, waiting-on, "
+        "leased, refused, unreadable-date, no-lead or item: ticket stays out (%s)" % got)
+    items = {"A": it()}
+    rows, launches, _ = run(items, systems={"A": "pipeline:test-lane"}, bundles_live={}, join={"B": "pipeline:test-lane"})
+    chk(lambda: rows["A"].get("bundle", {}).get("members") == ["A", "B"] and launches == ["A"],
+        "decide: one bundle of the home, with its ready ticket that has no check (%s, %s)"
+        % (rows["A"].get("bundle"), launches))
+    rows, launches, _ = run({}, systems={}, bundles_live={}, join={"B": "pipeline:test-lane"})
+    chk(lambda: launches == [], "decide: a home with no ticket whose check fails launches nothing")
+
 def main():
     for t in (t_decide_is_pure_and_says_why_on_every_row,
               t_the_check_runs_before_every_attempt,
+              t_a_lead_takes_the_ready_tickets_of_its_home,
               t_one_work_run_then_one_more_only_on_a_named_next_act,
               t_a_launch_that_never_started_is_not_spent, t_a_list_run_that_died_spends_no_run,
               t_a_stop_names_the_outcome_the_reason_and_the_smallest_act,

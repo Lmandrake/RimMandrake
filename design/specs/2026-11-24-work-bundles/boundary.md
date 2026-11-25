@@ -12,7 +12,8 @@ rows and `work_bundle.group`; `execute`: a lead row launches its bundle), the bu
 Pipeline page. Each promise has a test of its name in `src/RimMandrake/rimflow/selftest_work_bundle.py`.
 
 Words. A **system** is one home of `list_home.py` (`pipeline:<part>`, `game:<need>`, `machine:<name>`), one mod
-(`mod:<folder>`), or `item:<ID>` for a ticket that has no home. A **bundle** is one record that a program writes at
+(`mod:<folder>`). A ticket that has no home takes its parent's home (`caused_by`, one hop, never a `mod:` home), else
+`cause:<parent>`, else it is `item:<ID>`. A **bundle** is one record that a program writes at
 launch: its system, its members, the runs it took, each member's outcome so far, the step. A **member** keeps its own
 identity, its own test and its own close. An **outcome** is one of: `fixed` (closed `done` after the bundle began),
 `already_fixed` (closed by the reality sort), `dropped` (closed `dropped` or `superseded`), `refused` (a note on the member
@@ -74,8 +75,13 @@ bundle began). A member with none of these is **open**.
   bundle reads `in_bundle`.
 - **the-lane-launches-one-bundle-per-system.** In a `list_dispatch` tick, the launch rows of one system become one
   bundle: the first is the lead and takes the slot; the others, and rows of the same system that read `slots_full`,
-  read `bundled` and launch nothing of their own. A ticket with no home is a bundle of one (`item:<ID>`). Shape runs are
-  not bundled.
+  read `bundled` and launch nothing of their own. The lead's bundle also takes each ready open ticket of its system
+  that has no lane row (no check: `list_dispatch.join_candidates`; not leased, blocked, waiting, off, held, refused or
+  in a live bundle); such a ticket never leads. A home with one ready ticket still gets its run. An `item:<ID>` ticket
+  is a bundle of one. Shape runs are not bundled. Test: `t_the_lane_bundles_a_home_not_a_ticket`.
+- **a-bundle-on-another-machine-is-live-here.** A bundle that another machine's store holds (`./pipe bundle` run on
+  SteveDesktop) is live in this lane while a ledger event cites its id within `REMOTE_QUIET_S`; its system gets no
+  second bundle.
 - **the-record-is-written-at-launch.** A launch writes the record before it starts the run: system, members, lead, why,
   the state file path, `state` `live`, and the run unit when the launch returns one. A launch that started nothing
   sets `state` `launch_failed` with its output, and no member reads `in_bundle`. A launch that raises (a hung

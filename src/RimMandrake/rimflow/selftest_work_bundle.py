@@ -764,10 +764,72 @@ def t_each_limit_names_its_danger():
     chk(lambda: not bad, "each number in work_bundle.py names its danger or its class (%s)" % bad)
 
 
+def t_the_lane_bundles_a_home_not_a_ticket():
+    """RIMMANDRAKE_BUNDLE_LIST_TICKETS_BY_HOME_TEN_OF_TWELVE_HELD_ONE: on 2026-11-25 ten of twelve bundles held one ticket.
+    New tickets have no recorded home, and the lane's bundle took only the tick's launch rows."""
+    W = WB()
+    reading = lambda it: {"mod": None}  # noqa: E731
+    items = {"P": item("P", home="pipeline:test-lane"), "C1": item("C1", caused_by="P"), "C2": item("C2", caused_by="P"),
+             "G": item("G", caused_by="C1"), "Q": item("Q"), "S1": item("S1", caused_by="Q"),
+             "S2": item("S2", caused_by="Q"), "MP": item("MP", home="mod:FlowWorks"), "MC": item("MC", caused_by="MP"),
+             "LONE": item("LONE"), "GONE": item("GONE", caused_by="NOT_AN_ITEM")}
+    sy = {i: W.system_of(x, reading, items) for i, x in items.items()}
+    chk(lambda: sy["C1"] == sy["C2"] == "pipeline:test-lane",
+        "system_of: a ticket with no home takes its parent's home (%s %s)" % (sy["C1"], sy["C2"]))
+    chk(lambda: sy["G"] == "cause:C1", "system_of: one hop only; a grandchild is the cause of its own parent (%s)" % sy["G"])
+    chk(lambda: sy["S1"] == sy["S2"] == "cause:Q",
+        "system_of: siblings of a parent with no home share one system, cause:<parent> (%s %s)" % (sy["S1"], sy["S2"]))
+    chk(lambda: sy["MC"] == "cause:MP", "system_of: a mod: home is never inherited (it is mod work) (%s)" % sy["MC"])
+    chk(lambda: sy["LONE"] == "item:LONE" and sy["GONE"] == "item:GONE",
+        "system_of: no home and no parent in the ledger is a bundle of one (%s %s)" % (sy["LONE"], sy["GONE"]))
+    chk(lambda: W.system_of(items["C1"], reading) == "item:C1", "system_of: without the items, the old reading")
+    s, ids, _w = W.resolve("pipeline:test-lane", items, ["FlowWorks"], reading)
+    chk(lambda: s == "pipeline:test-lane" and ids == ["C1", "C2", "P"],
+        "resolve: a home's hand bundle takes the children that inherit it (%s)" % ids)
+    s, ids, _w = W.resolve("cause:Q", items, ["FlowWorks"], reading)
+    chk(lambda: s == "cause:Q" and ids == ["S1", "S2"], "resolve: cause:<parent> is a target (%s %s)" % (s, ids))
+    rows = [{"item": "L1", "decision": "launch", "model": "sonnet", "cap": 50, "run_n": 1},
+            {"item": "V2", "decision": "launch", "model": "opus", "cap": 120, "run_n": 1}]
+    systems = {"L1": "pipeline:test-lane", "V2": "pipeline:bridge"}
+    join = {"J1": "pipeline:test-lane", "J0": "pipeline:test-lane", "J3": "item:J3", "K1": "pipeline:docs",
+            "V1": "pipeline:bridge", "M1": "mod:FlowWorks"}
+    rows2, launches2 = W.group(rows, ["L1", "V2"], systems, {"pipeline:bridge": "WB-pipeline-bridge-1"}, join)
+    by = {r["item"]: r for r in rows2}
+    chk(lambda: by["L1"].get("bundle", {}).get("members") == ["L1", "J0", "J1"],
+        "group: the lead's bundle takes every ready ticket of its home, not only the tick's launch rows (%s)"
+        % by["L1"].get("bundle"))
+    chk(lambda: by["V2"]["decision"] == "bundle_live" and "bundle" not in by["V2"],
+        "group: a home with a live bundle gets no second bundle")
+    chk(lambda: launches2 == ["L1"] and set(by) == {"L1", "V2"},
+        "group: one launch for the home; a joining ticket neither leads nor gets a row (%s)" % launches2)
+    rows3, launches3 = W.group([{"item": "L1", "decision": "launch", "model": "sonnet", "cap": 50, "run_n": 1}], ["L1"],
+                               {"L1": "pipeline:test-lane"}, {})
+    chk(lambda: rows3[0]["bundle"]["members"] == ["L1"] and launches3 == ["L1"],
+        "group: a home with one ready ticket still gets its run")
+
+
+def t_a_bundle_on_another_machine_is_live_here():
+    """A bundle that runs on another machine (SteveDesktop's own store) is live here by its ledger citations."""
+    W = WB()
+    iso = lambda t: time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(t))  # noqa: E731
+    now = 1_800_000_000.0
+    evs = [{"ts": iso(now - 3600), "event": "close", "id": "X1", "why": "work bundle WB-pipeline-test-lane-20261125-192031: fixed"},
+           {"ts": iso(now - 7 * 3600), "event": "claim", "id": "X2", "why": "work bundle WB-pipeline-docs-20261125-010101"},
+           {"ts": iso(now - 600), "event": "note", "id": "X3", "text": "PROGRESS: work bundle WB-pipeline-ledger-20261125-020202 step 3"},
+           {"ts": iso(now - 60), "event": "note", "id": "X4", "why": "work bundle WB-cause-Q-20261125-030303"}]
+    local = {"WB-pipeline-ledger-20261125-020202": {"id": "WB-pipeline-ledger-20261125-020202", "state": "ended",
+                                                    "system": "pipeline:ledger"}}
+    got = W.cited_live(evs, now, local, ["pipeline:test-lane", "pipeline:docs", "pipeline:ledger", "cause:Q", "item:Z"])
+    chk(lambda: got == {"pipeline:test-lane": "WB-pipeline-test-lane-20261125-192031", "cause:Q": "WB-cause-Q-20261125-030303"},
+        "cited_live: a bundle this store does not hold is live while the ledger cites it; a quiet one and a local "
+        "ended one are not (%s)" % got)
+
+
 def main():
     for t in [t_sort_runs_each_members_test_and_closes_only_green, t_sort_dry_closes_nothing, t_members_are_one_system,
               t_ready_members_only, t_one_live_bundle_per_system, t_the_record_is_written_at_launch,
               t_the_brief_names_every_member_and_the_role, t_the_brief_carries_the_polish_of_its_files, t_the_lane_launches_one_bundle_per_system,
+              t_the_lane_bundles_a_home_not_a_ticket, t_a_bundle_on_another_machine_is_live_here,
               t_context_reads_the_own_session, t_outcomes_are_read_from_the_ledger,
               t_restart_until_each_member_has_an_outcome, t_finish_writes_the_bundles_end,
               t_a_restart_that_ended_no_member_raises, t_the_real_restart_path_keeps_the_progress_guard,

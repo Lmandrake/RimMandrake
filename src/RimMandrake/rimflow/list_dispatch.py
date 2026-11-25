@@ -593,7 +593,7 @@ def decide(cfg, st, facts, now, account=(True, "")):
         launches.append(iid)
     if facts.get("systems") is not None:     # work_bundle.py: one bundle per system, the first launch row leads it
         import work_bundle as WB
-        rows, launches = WB.group(rows, launches, facts["systems"], facts.get("bundles_live") or {})
+        rows, launches = WB.group(rows, launches, facts["systems"], facts.get("bundles_live") or {}, facts.get("join"))
     return rows, launches
 
 
@@ -746,6 +746,40 @@ def block_facts(world, x, now):
     return waits, not waits
 
 
+def join_candidates(cands, now, want, system, facts, lease, off, held, refused):
+    """-> {ticket: system} of the open tickets that have no lane row (no check) and may join their system's bundle this
+    tick: no live lease, no block, no wait ahead, not off, not held, not refused by a bundle or in a live one, and a
+    system in `want` (the lane's own systems; so only a home that has a lead can take it) that is not item: or mod:.
+    cands: {id: model.Item}; the others are functions of one ticket. A fact that cannot be read keeps the ticket out
+    (it is never "ready"). Why: RIMMANDRAKE_BUNDLE_LIST_TICKETS_BY_HOME_TEN_OF_TWELVE_HELD_ONE, ten of twelve bundles of
+    2026-11-25 held one ticket while the hand bundle of a home took the whole home."""
+    out = {}
+    for i in sorted(cands):
+        x = cands[i]
+        try:
+            if lease(x) == "live" or refused(i):
+                continue
+            wu = getattr(x, "wait_until", None)
+            if wu:
+                import model as LM
+                t = LM.epoch(wu)
+                if t is None or t > now:
+                    continue
+            s = system(i)
+            if not s or s not in want or s.startswith(("item:", "mod:")):
+                continue
+            waits, blocked = facts(x)
+            if waits or blocked:
+                continue
+            o, cnl = off(i)
+            if o or cnl or held(i):
+                continue
+        except Exception:  # noqa: BLE001 - a fact that cannot be read keeps this ticket out of every bundle
+            continue
+        out[i] = s
+    return out
+
+
 def gather(st, now=None, root=None, load_lag_s=None):
     import list_effect as LE
     now = time.time() if now is None else now
@@ -810,7 +844,7 @@ def gather(st, now=None, root=None, load_lag_s=None):
     on_hosts, unread_old = {}, []
     runs, recent = _runs(set(ordered), now, cfg["load_lag_s"] if load_lag_s is None else load_lag_s, on_hosts,
                          unread_old)
-    systems, bundles_live = None, {}
+    systems, bundles_live, join = None, {}, {}
     if runs is not None:
         import work_bundle as WB
         try:
@@ -828,7 +862,31 @@ def gather(st, now=None, root=None, load_lag_s=None):
             for iid, d in ordered.items():
                 mwd = d.get("mod_work") or {}
                 if not (mwd.get("mod") or mwd.get("unreadable")):
-                    systems[iid] = WB.system_of(w.items[iid], lambda it, m=mwd: m)
+                    systems[iid] = WB.system_of(w.items[iid], lambda it, m=mwd: m, w.items)
+            try:        # a bundle another machine launched (SteveDesktop's own store) is live by its ledger acts
+                evs = LM.read()
+                cands = {i: x for i, x in open_.items() if i not in ordered}
+                cand_sys = {}
+
+                def sys_of(i):
+                    if i not in cand_sys:
+                        x = cands[i]
+                        mw = ({"mod": None, "unreadable": mw_cause} if mw_mods is None else
+                              MW.reading(x, mw_mods, LM.ITEMS))
+                        cand_sys[i] = WB.system_of(x, lambda it, m=mw: m, w.items)
+                    return cand_sys[i]
+                for s, bid in WB.cited_live(evs, now, bundles, set(systems.values())).items():
+                    bundles_live.setdefault(s, bid)
+                ref = WB.refusals(evs)
+                busy = set(m for b in bundles.values() if b.get("state") in WB.LIVE_STATES for m in b.get("members") or [])
+                join = join_candidates(cands, now, want=set(systems.values()), system=sys_of,
+                                       facts=lambda x: block_facts(w, x, now), lease=lambda x: LM.lease_status(x, now),
+                                       off=lambda i: _off(i, mod_of(i, cands[i].title, mods)),
+                                       held=lambda i: _held(mod_of(i, cands[i].title, mods)),
+                                       refused=lambda i: ref.get(i) or (i in busy))
+            except Exception as e:  # noqa: BLE001 - which systems a remote bundle holds is unknown: nothing launches
+                runs, recent = None, PR_could_not_look("the ledger's bundle citations or the tickets that may join a "
+                                                       "bundle could not be read (%s: %s)" % (type(e).__name__, e))
     _read_next(st, ordered, runs or {})
     paused = _paused(now)
     for iid, d in ordered.items():
@@ -853,7 +911,7 @@ def gather(st, now=None, root=None, load_lag_s=None):
     live = None if runs is None else sum(len(r["live"]) for r in runs.values())
     load = load_now()
     return {"items": ordered, "runs": runs, "other_live": 0, "paused": paused, "systems": systems,
-            "bundles_live": bundles_live,
+            "bundles_live": bundles_live, "join": join,
             "pool": _pool(), "live_lane": live, "load": load.value if load.ok else None, "recent": recent,
             "cores": os.cpu_count(),
             "hosts": host_facts(cfg, on_hosts), "unread_old": unread_old}
