@@ -1,0 +1,2 @@
+On SteveDesktop, selftests that read the real hostname go red for the machine, not the change: selftest_scene_library refuses GAME_HELD (34 of 34 green with RM_HOST=archmagi), and selftest_run_alive read SteveDesktop runs as local (repaired at 28b3aa0692 to pin Archmagi). Run such tests with RM_HOST=archmagi before you call a red yours.
+item: RIMMANDRAKE_BUILD_DEVIATION_RECORD_SETTINGS_FIELD_JOINS_FIRST
