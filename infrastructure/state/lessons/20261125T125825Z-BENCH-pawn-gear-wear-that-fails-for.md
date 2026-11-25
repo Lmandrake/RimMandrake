@@ -1,0 +1,3 @@
+A pawn_gear wear that fails for some garments and not others on one game: first check that game's Cherry Picker settings (ArchBig applies infrastructure/state/cherrypicker/CherryPicker.SHIP.xml; ArchSmall has none). Wear() of a cut def leaves the pawn bare with success False, and a stale-companion theory looked right until the failing set matched the cut list exactly (RIMMANDRAKE_FIND_WHY_PAWN_GEAR_WEAR_KEPT_NONE, 2026-11-25). Player-prev.log is the session before the last launch, not necessarily the run you are diagnosing: check its mod list first.
+item: RIMMANDRAKE_FIND_WHY_PAWN_GEAR_WEAR_KEPT_NONE
+home: skills/rimbridge/SKILL.md
