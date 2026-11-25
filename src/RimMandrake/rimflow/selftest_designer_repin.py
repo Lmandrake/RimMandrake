@@ -21,7 +21,10 @@ stage.json, OWNER lines and a ledger event tying each commit to its card. Checks
    not his word), an uncommitted edit and an unlocked version, each as a refusal record with stage.json
    byte-identical; and the sources it finds pass repin itself;
 9. RIMMANDRAKE_REPAIR_FLOWWORKS_REPIN_REFUSAL_AND_ESCAPE_WARNING: a commit of scene test text only (no bar) is cited
-   TEXT@<sha> with no card and passes repin; a moved requirement, a dropped scene or a tree.json change still refuses."""
+   TEXT@<sha> with no card and passes repin; a moved requirement, a dropped scene or a tree.json change still refuses;
+10. RIMMANDRAKE_DECIDE_FLOWWORKS_REPIN_THAT_VOIDS_ITS_LOCKED_EXAM: on a locked concept whose stage 4 exam is frozen
+   against the current tree and sheet, a re-pin of a scenes.json change only carries stage 4 (re-pinned, not voided),
+   keeps the exam valid and leaves the version locked (check 5 keeps the other half: a tree or sheet change voids it)."""
 import json
 import os
 import shutil
@@ -328,6 +331,49 @@ def text_only_checks():
         git(root, "commit", "-q", "-m", "tree and scene text together (no card)")
         both = git(root, "rev-parse", "HEAD")
         refuses("9 a hand TEXT source on a commit that also touched tree.json", d, root, ["TEXT@" + both], "test text")
+    finally:
+        shutil.rmtree(root, ignore_errors=True)
+
+
+def scenes_only_keeps_exam_checks():
+    """10: a re-pin whose changed file (scenes.json) the exam does not read keeps stage 4's exam and the lock."""
+    root, d, shas = fixture(dated=True)
+    try:
+        st = DS.load_state(d)
+        cur, frozen = DS.inputs(d, st, root), DS.owner_uncited(root, st.get("item"), d)
+        for r in DS.accepted(st):
+            if "owner" in DS.DEPS[r["stage"]]:
+                r["inputs"]["owner"], r["owner_uncited"] = cur.get("owner"), frozen
+        DS.write_json(DS.state_path(d), st)
+        srcs, rf = DS.repin_sources(d, repo=root)
+        DS.repin(d, srcs, "selftest: level before the exam", repo=root)
+        st = DS.load_state(d)
+        cur = DS.inputs(d, st, root)
+        with open(os.path.join(d, "exam.json"), "w") as f:      # the exam, frozen against today's tree and sheet
+            json.dump({"inputs": {k: cur.get(k) for k in DS.EXAM_FROZEN}}, f)
+        git(root, "add", "-A")
+        git(root, "commit", "-q", "-m", "fixture: an exam taken on the current tree and sheet")
+        cur = DS.inputs(d, st, root)
+        st["results"].append({"stage": 4, "outcome": "done", "inputs": {k: cur.get(k) for k in DS.DEPS[4]},
+                              "owner_uncited": frozen, "pinned_at": {}})
+        st["stage"], st["status"] = 5, "locked"
+        DS.write_json(DS.state_path(d), st)
+
+        def text(sc):
+            sc["scenes"][0]["action"] += "; game time runs on"
+        fix = scene_edit(d, root, text, "scene text only (no bar changed)")
+        srcs, rf = DS.repin_sources(d, repo=root)
+        check("10 the scenes-only commit is cited TEXT@<sha>, no refusal", rf is None and srcs == ["TEXT@%s" % fix],
+              (srcs, rf))
+        out = DS.repin(d, srcs, "selftest: scene text under a locked exam", repo=root) if srcs else []
+        st = DS.load_state(d)
+        r4 = next((r for r in DS.accepted(st) if r["stage"] == 4), {})
+        ee = DS.exam_errors(DS.read_json(os.path.join(d, "exam.json")), d, st, root)
+        check("10 stage 4 is re-pinned, not voided", 4 in out and not r4.get("voided"), (out, r4.get("voided")))
+        check("10 the version stays locked", st.get("status") == "locked", st.get("status"))
+        check("10 the exam still reads the current tree and sheet", not any("another" in e for e in ee), ee[:3])
+        check("10 nothing is stale after the re-pin", DS.stale_stage(d, st, root) == (None, []),
+              DS.stale_stage(d, st, root))
     finally:
         shutil.rmtree(root, ignore_errors=True)
 
@@ -699,6 +745,7 @@ def main():
         auto_sources_checks()
         late_approval_checks()
         text_only_checks()
+        scenes_only_keeps_exam_checks()
         first_pin_checks()
 
         # 4: the spend ceiling and his word that predates the park
