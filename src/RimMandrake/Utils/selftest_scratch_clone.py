@@ -654,13 +654,34 @@ def main() -> int:
                            env={**os.environ, "GIT_AUTHOR_DATE": "1700002000 +0000", "GIT_COMMITTER_DATE": "1700002000 +0000"})
         check(sr.disposable("infrastructure/state/art/sheets/flyer_gate_selftest.snapshot.json"), "selftest_flyer_gate's snapshot is disposable")
         check(not sc.noise_on_mirror(scr / "maindiff", "landed.py", sr.mirror_tips()[0]), "a non-noise path main lacks is never excused")
+        # OPS_WORKER_CLONE_POOL_RESTORE_HMOQ_PBAL: a live detached run keeps its Codex clones under rm/scratch/<its seat
+        # dir>/ while it lands them one by one; 6 read stranded on 2026-11-25 while the run was alive. A clone whose seat
+        # dir a live claude-seat scope names is the run's, not stranded. A bare seat (BENCH, the Conductor's, always live)
+        # excuses nothing; a run that has ended excuses nothing.
+        for n in ("BENCH-rm-detached-live-run/cxs-a", "BENCH-rm-detached-dead-run/cxs-b", "BENCHSEAT/own"):
+            plant(n)
+            subprocess.run(["git", "-C", str(scr / n), "commit", "-q", "--allow-empty", "-m", "codex " + n], check=True,
+                           env={**os.environ, "GIT_AUTHOR_DATE": "1700003000 +0000", "GIT_COMMITTER_DATE": "1700003000 +0000"})
+        check(sc.cgroup_seat("0::/user.slice/app.slice/claude-seat-BENCH-rm-detached-live-run-1795568216.scope/claude-code-bash\n")
+              == "BENCH-rm-detached-live-run", "the seat a scope names, as scratch_clone.seat() names its dir")
+        check(sc.cgroup_seat("0::/user.slice/app.slice/rm-foo.service\n") is None, "no claude-seat scope, no seat")
+        _live = sc.live_seats
+        sc.live_seats = lambda: {"BENCH-rm-detached-live-run", "BENCHSEAT"}
         for n in ("pushed", "unpushed", "dirty", "built", "held", "rewritten", "shardlanded", "shardnew", "shardgone",
                   "rebased", "authortwin", "spacetwin", "reverted", "mainsame", "maindiff", "ledgertwin", "ledgernew",
-                  "ledgermixed"):
+                  "ledgermixed", "BENCH-rm-detached-live-run/cxs-a", "BENCH-rm-detached-dead-run/cxs-b", "BENCHSEAT/own"):
             idle(scr / n)
-        ss = sc.scratch_stranded()
+        try:
+            ss = sc.scratch_stranded()
+        finally:
+            sc.live_seats = _live
         rows = {Path(r["path"]).name: r for r in ss["rows"]}
         names = {Path(p).name for p in ss["stranded"]}
+        check("cxs-a" in rows and not rows["cxs-a"]["stranded"] and rows["cxs-a"].get("owner_live"),
+              f"a live run's clone is held, not stranded: {rows.get('cxs-a')}")
+        check("cxs-b" in names, f"a clone whose run has ended is stranded: {rows.get('cxs-b')}")
+        check("own" in names, f"a bare seat's clone is stranded though that seat is live: {rows.get('own')}")
+        names -= {"cxs-b", "own"}
         check("mainsame" not in rows, f"a file main holds byte for byte is not work: {rows.get('mainsame')}")
         check(rows.get("maindiff", {}).get("holds") == ["1 dirty file(s)"], f"a file main holds otherwise is: {rows.get('maindiff')}")
         check(names == {"unpushed", "dirty", "held", "shardnew", "shardgone", "authortwin", "spacetwin", "reverted", "maindiff",

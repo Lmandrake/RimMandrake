@@ -143,13 +143,34 @@ def seat() -> str:
     if os.environ.get("RM_SEAT"):
         return os.environ["RM_SEAT"]
     try:
-        for line in Path("/proc/self/cgroup").read_text().splitlines():
-            for part in line.split("/"):
-                if part.startswith("claude-seat-"):
-                    return part[len("claude-seat-"):].rsplit("-", 1)[0]
+        s = cgroup_seat(Path("/proc/self/cgroup").read_text())
+        if s:
+            return s
     except OSError:
         pass
     return "UNKNOWN"
+
+
+def cgroup_seat(text: str) -> str | None:
+    """The seat a /proc/<pid>/cgroup names: claude-seat-<seat>-<n>[.scope] -> <seat>, the name of its rm/scratch dir."""
+    for line in text.splitlines():
+        for part in line.split("/"):
+            if part.startswith("claude-seat-"):
+                return part[len("claude-seat-"):].rsplit("-", 1)[0]
+    return None
+
+
+def live_seats() -> set[str]:
+    """Every seat a live process runs in (its claude-seat scope)."""
+    out = set()
+    for f in glob.glob("/proc/[0-9]*/cgroup"):
+        try:
+            s = cgroup_seat(Path(f).read_text())
+        except OSError:
+            continue
+        if s:
+            out.add(s)
+    return out
 
 
 def now_iso() -> str:
@@ -1001,6 +1022,19 @@ def scratch_stranded() -> dict:
     now = time.time()
     import scratch_reap as sr
     sr.mirror_tips()     # its cache fills by appending: fill it before the threads read it
+    # A detached or role run's clones sit under rm/scratch/<its seat>/ (seat(): the scope name less its number). While
+    # that run lives they are its work, landed in turn, not stranded: 6 Codex clones of a live run read stranded on
+    # 2026-11-25 (OPS_WORKER_CLONE_POOL_RESTORE_HMOQ_PBAL). Only a unit's seat dir ("-rm-" in it) is excused: a bare
+    # seat such as BENCH is always live, and would excuse its clones for good. When the run ends, the excuse ends.
+    live = {s for s in live_seats() if "-rm-" in s}
+    root = scratch_root()
+
+    def owner_live(c: Path) -> bool:
+        try:
+            rel = c.relative_to(root)
+        except ValueError:
+            return False
+        return len(rel.parts) > 1 and rel.parts[0] in live
 
     def one(c: Path) -> dict | None:
         idle = clone_idle_s(c)               # read before git touches anything in it
@@ -1008,8 +1042,12 @@ def scratch_stranded() -> dict:
         if not risk:
             return None
         idle = min(idle, now - newest) if newest else idle
-        return {"path": str(c), "holds": risk, "idle_h": round(idle / 3600, 2),
-                "stranded": idle >= POOL_IDLE_S and not clone_in_use(c)}
+        row = {"path": str(c), "holds": risk, "idle_h": round(idle / 3600, 2), "stranded": False}
+        if owner_live(c):
+            row["owner_live"] = True
+        else:
+            row["stranded"] = idle >= POOL_IDLE_S and not clone_in_use(c)
+        return row
 
     rows = [r for r in _per_clone(one, scratch_clone_dirs()) if r is not None]
     d = {"ts": now_iso(), "epoch": now, "stranded": [r["path"] for r in rows if r["stranded"]], "rows": rows}
