@@ -683,6 +683,41 @@ def proof_verdict(rc, tail):
     return "UNMEASURED", None
 
 
+# A live-proof line says `python3 <script>` (145 lines, written on Archmagi). On SteveDesktop WSL2 is NAT-mode, so a WSL
+# python dies at connect with rimbridge_client's no-route error and the row reads UNMEASURED while the game runs fine
+# (8 attempts, e.g. J20261125T163509Z-d18f1f). Such a run made no bridge call, so the line runs once more under
+# Windows python (selftest_steve_worker_wsl_proof.py).
+WSL_NO_ROUTE = "cannot reach the bridge from WSL"
+_PY3_START_RX = re.compile(r"(^|&&|\|\||[;|(])(\s*(?:[A-Za-z_]\w*=\S*\s+)*)python3(?=\s|$)")
+_ASSIGN_RX = re.compile(r"([A-Za-z_]\w*)=\S*\s+")
+
+
+def windows_python_line(cmd):
+    """The proof line with each command-starting python3 turned into python.exe, and the inline VAR=x names it sets
+    passed to Windows through WSLENV; None when no command starts with python3."""
+    names = []
+
+    def sub(m):
+        for n in _ASSIGN_RX.findall(m.group(2)):
+            if n != "WSLENV" and n not in names:
+                names.append(n)
+        return m.group(1) + m.group(2) + "python.exe"
+    out, n = _PY3_START_RX.subn(sub, cmd)
+    if not n:
+        return None
+    return ("export WSLENV=${WSLENV:+$WSLENV:}%s; " % ":".join(names) if names else "") + out
+
+
+def run_proof_line(sh, cmd, log, timeout):
+    """(rc, tail) of one proof line; a WSL no-route reading reruns it once under python.exe, and the rerun's is kept."""
+    rc, tail = sh(cmd, log_name=log, timeout=timeout)
+    win = windows_python_line(cmd) if WSL_NO_ROUTE in (tail or "") else None
+    if not win:
+        return rc, tail
+    rc, tail = sh(win, log_name=log, timeout=timeout)
+    return rc, "rerun under python.exe (WSL has no route to the bridge): %s" % (tail or "")
+
+
 def kept_env_keys(environ):
     """The environment a detached attempt keeps: the RM_/TESTQ_/STEVE_/RIMFLOW_ seams, and GABP_ (Steve2's bridge port
     and token, from `game_instance.py env b`; without them its modcheck would knock on Steve1's 5174)."""
@@ -1541,7 +1576,7 @@ class Attempt:
                              "detail": "no `live-proof %s:` line in %s at %s" % (c, rel, self.job["source_sha"])})
                 continue
             log = "proof_%s.log" % c
-            rc, tail = self.sh(cmd, log_name=log, timeout=per)
+            rc, tail = run_proof_line(self.sh, cmd, log, per)
             verdict, crashed = proof_verdict(rc, tail)
             head = ("exit %d" % rc + (", crashed (%s): could not look" % crashed if crashed else "")) \
                 if rc is not None else "timed out after %d s" % per
