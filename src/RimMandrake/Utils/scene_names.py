@@ -591,7 +591,17 @@ def _take_station(s, stage, request, rec, did):
         s._stations.append(got["id"])
         did.append("took station %s %s on the %s stage %s, cleaned" % (got["id"], got["rect"], got["kind"], got["stage"]))
         if got["shared_map"]:
-            rec.could_not_look.append("shared map: station %s is on a colony map; its bystanders are held per pawn, not removed" % got["id"])
+            import colony_holds as CH
+            cast = set()
+            for v in s._aliases.values():
+                cast.update(v if isinstance(v, list) else [v])
+            try:
+                h = CH.hold(lambda tool, **a: s._call(tool, **a), stage.size, got["rect"], got["margin"], cast=cast)
+            except CH.HoldFault as e:
+                raise Fault(e.name, done=did, detail="the colony hold of station %s: %s" % (got["id"], e.why))
+            s._holds[got["id"]] = h
+            did.append("held %d colony pawn(s) out of station %s by area %s" % (len(h["held"]), got["id"], h["area"]))
+            rec.could_not_look.append(CH.receipt_line(got["id"], h))
         return got["rect"]
 
 
@@ -621,6 +631,14 @@ def put_back_stations(s):
             stage.release(sid)
             lines.append("cleaned and released %s" % sid)
         s._stations.remove(sid)
+    for sid, h in list(s._holds.items()):
+        import colony_holds as CH
+        rect = next(x for x in stage.stations if x["id"] == sid)["rect"]
+        try:
+            lines += CH.release(lambda tool, **a: s._call(tool, **a), h, rect)
+        except Exception as e:  # noqa: BLE001  a door that fails here is named, never dropped
+            lines.append("NOT RESTORED: the colony hold of %s: %s" % (sid, e))
+        del s._holds[sid]
     s.W.stage_save(s.key, stage.to_json())
     try:
         lines += stage_breaches(s)

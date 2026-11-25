@@ -172,6 +172,7 @@ class Session(object):
         self._tools, self._hands, self._run, self._dir, self._loaded = {}, {}, None, None, None
         self._tick = None
         self._aliases, self._shots = {}, set()  # alias -> thing id or [ids] (s.stage); the names of this run's pictures
+        self._holds = {}                        # station id -> its colony hold (colony_holds.py), put back at the close
         self._stations = []                     # the ids of the stage stations that s.stage took (scene_stations.py)
 
     # ---- the bridge

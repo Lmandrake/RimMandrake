@@ -131,6 +131,17 @@ class FakeGame(object):
             self.pictures[a["path"]] = self.pictures.get(a["path"], 0) + 1
             return {"success": True, "path": a["path"], "fileSizeBytes": 4096, "frame": [a["w"] * a["ppc"], a["h"] * a["ppc"]],
                     "foggedCells": 0, "cameraRestored": True}
+        if tool == "jawa/new_allowed_area":
+            return {"success": True, "label": a.get("label")}
+        if tool == "jawa/paint_area":
+            return {"success": True, "failedVerify": 0, "outOfBounds": 0}
+        if tool == "jawa/set_player_settings":
+            self.areas = getattr(self, "areas", {})
+            if "area" in a:
+                self.areas[a["pawnId"]] = None if a["area"] in ("none", "clear") else a["area"]
+            return {"success": True, "area": self.areas.get(a["pawnId"])}
+        if tool == "jawa/set_forbidden":
+            return {"success": True, "changed": 1}
         if tool == "jawa/list_pawns":
             return {"success": True, "pawns": [dict(p) for p in self.pawns_on.get(a.get("rect"), [])]}
         if tool == "jawa/pawn_force_incapacitate":

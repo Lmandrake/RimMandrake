@@ -448,6 +448,22 @@ cells are not one rectangle (rock, water: the stage map is bare ground of one te
 | A released station may be given again; the state written to disk and read back keeps every retirement. | `a_released_station_is_given_again_and_retirement_survives_a_reload` |
 | A request or a stage of a wrong shape is refused by name and takes nothing. | `a_bad_request_is_refused_by_name` |
 
+## THE COLONY STATION HOLDS (`src/RimMandrake/Utils/colony_holds.py`, tool `jawa/set_forbidden`)
+
+Item `RIMMANDRAKE_BUILD_COLONY_STATION_HOLDS_BYSTANDERS_BY_AREA`. On a `colony` stage a station is taken among a real colony's pawns. `s.stage` holds each non-cast pawn and animal out of the station plus its margin by one allowed area (`RM_StationHold`), sets the station's things forbidden, and `s.close` gives each pawn its own area and the things their own state back. Tests: `src/RimMandrake/bridgetools/selftest_stage_colony_holds.py` (a fake game; the live reading is under LIVE READINGS when taken).
+
+It does not survive (not promised): a pawn standing inside the station at the take walks out by its own path and may still be seen there for a moment; a pawn that the game refuses the area for, a drafted pawn, a pawn in a mental state (each is named on the receipt as NOT HELD, never counted held); the ten allowed areas of the map all in use.
+
+| promise | test |
+|---|---|
+| The area holds every map cell outside the station grown by its margin, and none inside. | `the_area_excludes_the_station_and_its_margin_and_covers_the_rest` |
+| Each colony pawn and animal is held; a cast pawn is not. | `every_colony_pawn_and_animal_is_held_but_not_the_cast` |
+| The station's things are set forbidden. | `the_things_of_the_station_are_set_forbidden` |
+| The close gives each pawn its own area back, and the things their state; a pawn not restored is named. | `close_gives_each_pawn_its_own_area_back_and_the_things_theirs`, `a_failed_restore_is_named` |
+| A pawn the area cannot bind is named on the receipt and is not counted held. | `a_pawn_the_area_cannot_bind_is_named_not_counted` |
+| A map that cannot be read, or a station that fills the map, holds nothing and says so by name. | `an_unreadable_map_is_could_not_look_and_makes_nothing`, `a_station_on_the_map_edge_still_leaves_a_free_area` |
+| `s.stage` on a colony station takes the hold, and the receipt line says how many pawns are held. | `the_scene_takes_the_hold_on_a_colony_station_and_the_receipt_says_so` |
+
 ## THE STAGE MAP (`src/RimMandrake/Utils/stage_map.py`)
 
 Item `RIMMANDRAKE_BUILD_STAGE_MAP_CAST_ONLY_NO_BYSTANDERS` (05_build_design.md §Decision 7). `stage_map.py make <game> --kind
