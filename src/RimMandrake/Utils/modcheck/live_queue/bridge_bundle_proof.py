@@ -254,7 +254,16 @@ def g_TPS(L):
     r = L.call("jawa/tps_report", last=12)
     seg1 = r.get("segment") or seg
     grew = os.path.getsize(seg1) - (size0 if seg1 == seg else 0)
-    return {"windows": r.get("windows") or r.get("last") or [], "summary": r.get("summary") or {}, "grew": grew}
+    # the report returns its last windows as JSONL strings (samplesJsonl); min/median/max are read from them
+    wins = []
+    for x in r.get("samplesJsonl") or []:
+        try:
+            wins.append(json.loads(x))
+        except ValueError:
+            pass
+    ratios = sorted(w["ratio"] for w in wins if w.get("state") == "run" and isinstance(w.get("ratio"), (int, float)))
+    summ = {"min": ratios[0], "median": ratios[len(ratios) // 2], "max": ratios[-1]} if ratios else {}
+    return {"windows": wins, "summary": summ, "grew": grew}
 
 
 def g_NORTHSTAR(L):
@@ -427,15 +436,14 @@ def g_HOOKS(L):
         time.sleep(mins * 60)
     finally:
         L.call("rimworld/set_time_speed", speed="Paused")
-    h = L.call("jawa/companion_handshake").get("hooks") or {}
+    r = L.call("jawa/tps_report", last=1)
     cov, faults, rejects = {}, 0, 0
-    for fam, v in h.items():
-        for k, x in ((v or {}).get("coverage") or {}).items():
-            cov["%s.%s" % (fam, k)] = x.get("coverage") if isinstance(x, dict) else x
-            if isinstance(x, dict):
-                faults += int(x.get("faults") or 0)
-                rejects += int(x.get("foreignThreadRejects") or x.get("rejected") or 0)
-        faults += int((v or {}).get("faults") or 0)
+    for fam in ("hooks", "attributionHooks"):
+        for k, x in (r.get(fam) or {}).items():
+            cov["%s.%s" % (fam, k)] = x.get("coverage")
+            faults += sum(int(x.get(f) or 0) for f in ("faults", "unbalanced", "orphanExits", "originalThrew"))
+            rejects += int(x.get("foreignRejected") or 0)
+    faults += int((r.get("tier") or {}).get("hookFaults") or 0)
     return {"coverage": cov, "faults": faults, "foreignThreadRejects": rejects, "minutes": mins}
 
 
