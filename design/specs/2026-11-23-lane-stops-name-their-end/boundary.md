@@ -38,6 +38,8 @@ pause. An **equal ending** is the same outcome, the same cause and the same note
 - **a-hand-pause-is-extended-not-refused.** A second hand pause replaces the end of the first.
 - **the-steward-reads-a-stop-as-a-pause.** Every live game stopped reads PAUSED until the end, and is a fault only after
   `ESCALATE_S`.
+- **a-fill-stop-names-its-end.** A hand-written `fill.stop` with an `until: <ISO time>` line reads PAUSED and is a
+  fault only at that time. With no readable `until` line, it is a fault 60 min after its mtime (`MANUAL_PAUSE_S`).
 
 ## LIMITS
 

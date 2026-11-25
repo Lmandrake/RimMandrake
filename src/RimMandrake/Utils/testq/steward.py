@@ -16,7 +16,7 @@ What it knows (section 6.1), first match wins:
   QUARANTINE       QHOME/quarantine.json exists (an operator's hand quarantine)     fault, escalates at once
   RUNNING          a SteveDesktop job is running: not a fault, and NOT recovery (an open incident's clock runs on)
   PAUSED           paused.json: an auto pause (it names an outcome) is a fault at once; a manual pause with an `until`
-                   in the future is intentional; any other manual pause (or QHOME/fill.stop, aged by its mtime) turns
+                   in the future is intentional; any other manual pause (or QHOME/fill.stop with no `until: <ISO>` line, aged by its mtime) turns
                    into a fault 60 min after it began
   READY            a job is ready but not admitted: a fault once it has waited 5 min (a not-ours busy worker, a
                    dispatcher that stopped admitting)
@@ -149,6 +149,21 @@ UNIT_PAUSE_S = 24 * 3600     # a pause that waits for a unit is told of after a 
 COMPANION_GRACE_S = 900     # a hold outlasting a build and a push, and more than one retry of a blip, is a fault
 
 
+def fill_stop_until(p):
+    """-> the epoch of a `until: <ISO time>` line in a hand-written fill.stop, or None. A deliberate filler stop (an
+    owner's order for the day) named no end, so it always aged into a fault 60 min after its mtime and paged a seat
+    (STEVE_LANE_UNSTICK_PAUSED_UNOWNED_PAUSED_ARJYIP, 2026-11-24). A torn or missing line keeps that 60 min ageing."""
+    try:
+        with open(p) as f:
+            for line in f:
+                k, _, v = line.partition(":")
+                if k.strip().lower() == "until" and v.strip():
+                    return int(S.parse_ts(v.strip()))
+    except (OSError, TypeError, ValueError):
+        return None
+    return None
+
+
 def _st(state, reason, fault_at=None, at_once=False, jobs=(), settled=False):
     """fault_at: the epoch from which the state is a fault (0: already; None: never). settled: the lane is working as
     intended, so this state ends an incident."""
@@ -201,6 +216,9 @@ def lane_state(now, mods=None):
                                        for x in stops),
                    min(S.parse_ts(x["first"]) for x in stops) + T.LS.ESCALATE_S)
     if os.path.exists(path("fill.stop")):
+        until = fill_stop_until(path("fill.stop"))
+        if until is not None:
+            return _st("PAUSED", "fill stopped until %s: %s exists" % (iso(until), path("fill.stop")), until)
         return _st("PAUSED", "fill stopped: %s exists" % path("fill.stop"),
                    os.path.getmtime(path("fill.stop")) + MANUAL_PAUSE_S)
     tick = tick_timer_state()

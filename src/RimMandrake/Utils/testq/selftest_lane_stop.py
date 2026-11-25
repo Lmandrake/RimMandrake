@@ -173,6 +173,27 @@ def t_steward():
         W.tick_timer_state = saved
 
 
+def t_fill_stop():
+    import steward as W
+    saved = W.tick_timer_state
+    W.tick_timer_state = lambda: "active"
+    try:
+        with Rig():
+            stop, now = T.q("fill.stop"), time.time()
+            end = now + 5 * 3600
+            open(stop, "w").write("owner order: no filler today\nuntil: %s\n" % W.iso(end))
+            st = W.lane_state(now, mods=[])
+            check(st["state"] == "PAUSED" and st["fault_at"] == int(end) and "until" in st["reason"],
+                  "a-fill-stop-names-its-end: an until line is its end, not a fault at 60 min (%r, %r)" % (st["fault_at"], int(end)))
+            for text in ("owner order: no filler today\n", "until: not a time\n"):
+                open(stop, "w").write(text)
+                st = W.lane_state(now, mods=[])
+                check(st["state"] == "PAUSED" and st["fault_at"] == os.path.getmtime(stop) + W.MANUAL_PAUSE_S,
+                      "a-fill-stop-names-its-end: no readable until, a fault 60 min after its mtime (%r)" % text)
+    finally:
+        W.tick_timer_state = saved
+
+
 def t_ticket():
     import ingest as I
     with Rig() as r:
@@ -199,6 +220,7 @@ t_every_pause_has_an_end = t_pause
 t_a_unit_pause_waits_for_its_unit = t_pause
 t_a_hand_pause_is_extended_not_refused = t_pause
 t_the_steward_reads_a_stop_as_a_pause = t_steward
+t_a_fill_stop_names_its_end = t_fill_stop
 
 
 MUTANTS = [("sig is None:\n        if os", "sig is not None and False:\n        if os"), ('rec["stops"] if False else ', ""),
@@ -240,7 +262,8 @@ def main():
                            t_every_pause_has_an_end,
                            t_a_unit_pause_waits_for_its_unit,
                            t_a_hand_pause_is_extended_not_refused,
-                           t_the_steward_reads_a_stop_as_a_pause))
+                           t_the_steward_reads_a_stop_as_a_pause,
+                           t_a_fill_stop_names_its_end))
     for t in scenes:
         if "--core" not in sys.argv or t in (t_stop, t_pause):
             t()
