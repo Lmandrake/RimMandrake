@@ -1,0 +1,130 @@
+{
+ "job": {
+  "id": "DIRECT-ArchBig-20261125T0345",
+  "mod": "FlowWorks",
+  "selector": {
+   "chains": [
+    "suspension_bridges_and_covers",
+    "machinery_pipes"
+   ]
+  },
+  "source": "796f7cee91",
+  "lane": "direct:ArchBig"
+ },
+ "result": {
+  "outcome": "DONE",
+  "cause": null,
+  "rows": [
+   {
+    "chain": "suspension_bridges_and_covers",
+    "row": "suspension_selftest_ran",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "suspension_bridges_and_covers",
+    "row": "Suspension_spans_supports_and_swing_order",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "suspension_bridges_and_covers",
+    "row": "Suspension_deck_built_over_the_hole_floor",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "suspension_bridges_and_covers",
+    "row": "Underpass_band_step_clearance_and_sunken_height",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "suspension_bridges_and_covers",
+    "row": "Underpass_wiring_masks_sites_not_tunnels",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "suspension_bridges_and_covers",
+    "row": "SpanBase_cover_is_the_trap_tier_of_the_base",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "suspension_bridges_and_covers",
+    "row": "SpanBase_cover_read_is_decked_surface_no_underpass",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "suspension_bridges_and_covers",
+    "row": "Suspension_SteelHeavyAnchors_no_rope_table",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "suspension_bridges_and_covers",
+    "row": "under_deck_live",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "suspension_bridge_result_20261125T034612.json UND_floor_path_walks_under; suspension_bridge_result_20261125T034612.json UND_both_arrive"
+   },
+   {
+    "chain": "suspension_bridges_and_covers",
+    "row": "suspension_look",
+    "verdict": "UNMEASURED",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "ExpectationFailed: UNMEASURED: look owed -- an RM_SuspensionBridge over a dug hole reads as a deck hung between anchors at its two ends, not a floor tile or the game's own bridge, judged by eye (SUSPENSION_ART_RESKIN_HE_SEES_FIRST)"
+   },
+   {
+    "chain": "suspension_bridges_and_covers",
+    "row": "cover_vs_bridge_look",
+    "verdict": "UNMEASURED",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "an UNMEASURED component ended this chain earlier: ExpectationFailed: UNMEASURED: look owed -- an RM_SuspensionBridge over a dug hole reads as a deck hung between anchors at its two ends, not a floor tile or the game's own bridge, judged by eye (SUSPE"
+   },
+   {
+    "chain": "machinery_pipes",
+    "row": "pipe_feeds_far_tank",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "machinery_pipes",
+    "row": "pipes_off_far_tank_idle",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   }
+  ],
+  "sheet": "/mnt/d/ClaudeWork/rimmandrake/evidence/HARNESS_REPAIR_CAUSE_4AFBF8A2_3/FlowWorks_20261125T120330Z.json",
+  "game": "ArchBig",
+  "runner_sha": "796f7cee91",
+  "note": "direct run on ArchBig; {'PASS': 11, 'UNMEASURED': 2}",
+  "log": "/mnt/d/ClaudeWork/rimmandrake/evidence/HARNESS_REPAIR_CAUSE_4AFBF8A2_3/modcheck.log",
+  "how": "direct modcheck on ArchBig 2026-11-25 3:45-4:04 AM PST per CONDUCTOR RULING 2:15 AM PST (Archmagi lane takes no targeted job; SteveDesktop lane paused); built by direct_record.py in that folder, judged by retest.py passed"
+ }
+}
