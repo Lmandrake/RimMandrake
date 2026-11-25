@@ -1515,11 +1515,28 @@ def _git_blob(root, commit, path):
 def pin_bars_md(root, mod, v, ids, blob=None):
     """RIMMANDRAKE_PIN_BARS_MD_WHEN_PIPELINE_LOCKS_A_MOD: write version/bars.md, the git blob of each locked file at
     VERSION.json's locked_from_commit, when no bars.md exists (a hand lock wrote one; the pipeline's lock did not, and
-    the re-pin rule, the judges' inputs and every preflight's pin check read it). Never rewrites one. -> path or None."""
-    if os.path.exists(os.path.join(mod_dir(root, mod), "version", "bars.md")):
-        return None
-    blob = blob or (lambda c, p: _git_blob(root, c, p))
+    the re-pin rule, the judges' inputs and every preflight's pin check read it). Never rewrites one pinned at this lock.
+    RIMMANDRAKE_PIN_BARS_MD_AT_EACH_VERSION_LOCK_NOT_ONLY_FIRST: a bars.md that does not name this lock commit holds an
+    earlier lock's pins (a next version found the last version's file); it is kept as previous/<its version>/bars.md
+    (never over another file) and this version's pins are written. -> path or None."""
+    bp = os.path.join(mod_dir(root, mod), "version", "bars.md")
     c = v.get("locked_from_commit")
+    if os.path.exists(bp):
+        with open(bp, encoding="utf-8", errors="replace") as f:
+            old = f.read()
+        if not c or ("`%s`" % c) in old:
+            return None
+        m = re.match(r"#\s+\S+\s+([0-9][0-9A-Za-z.+-]*)", old)
+        was = m.group(1) if m and m.group(1) != str(v.get("version")) else "before_%s" % v.get("version")
+        keep = os.path.join(mod_dir(root, mod), "version", "previous", was, "bars.md")
+        if os.path.exists(keep):
+            with open(keep, encoding="utf-8", errors="replace") as f:
+                same = f.read() == old
+            if not same:
+                keep = os.path.join(os.path.dirname(keep), "bars.before_%s.md" % str(c)[:10])
+        if not os.path.exists(keep):
+            write_text(root, mod, os.path.relpath(keep, mod_dir(root, mod)), old)
+    blob = blob or (lambda c, p: _git_blob(root, c, p))
     rows = [(f, blob(c, rel(mod, f))) for f in LOCK_PINNED]
     rows = [(f, b) for f, b in rows if b]
     L = ["# %s %s: the bars, locked as they stood on %s" % (mod, v.get("version"), v.get("locked_on") or "UNMEASURED"),

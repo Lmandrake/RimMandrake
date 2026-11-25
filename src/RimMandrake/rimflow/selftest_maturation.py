@@ -1064,6 +1064,22 @@ def lock_bars_main(root):
             ok("| `design/concepts/%s/tree.json` | `%s` |" % (mod, "a" * 40) in bm and "`c0ffee`" in bm
                and "sheet.md" not in bm, "the first lock-bars pins each locked file that exists at locked_from_commit "
                "in version/bars.md (a pipeline lock had no pins)")
+            # RIMMANDRAKE_PIN_BARS_MD_AT_EACH_VERSION_LOCK_NOT_ONLY_FIRST: a next version's lock finds the earlier
+            # version's bars.md; its pins are of an earlier lock commit, so they are set aside and the file re-pinned
+            old = ("# %s 0.0.9: the bars, locked as they stood on 2026-11-01\n\nLock commit: `deadbeef`.\n\n"
+                   "| `design/concepts/%s/tree.json` | `%s` | the leaves |\n" % (mod, mod, "c" * 40))
+            with open(bp, "w") as f:
+                f.write(old)
+            pv = os.path.join(c, "previous", "0.0.9", "bars.md")
+            M.pin_bars_md(root, mod, v, ids, blob)
+            bm = open(bp).read()
+            ok("`c0ffee`" in bm and "| `design/concepts/%s/tree.json` | `%s` |" % (mod, "a" * 40) in bm
+               and "c" * 40 not in bm and os.path.exists(pv) and open(pv).read() == old,
+               "a next version's lock re-pins bars.md at its own lock commit and keeps the earlier file as "
+               "previous/<its version>/bars.md (the earlier pins never pass for this version's)")
+            M.pin_bars_md(root, mod, v, ids, lambda commit, path: "d" * 40)
+            ok("d" * 40 not in open(bp).read(), "a bars.md already pinned at this lock commit is never rewritten")
+            shutil.rmtree(os.path.join(c, "previous", "0.0.9"), ignore_errors=True)
             r2 = lb(root, mod, "BENCH", "selftest", show=show)
             ok(not r2["ok"] and "already records" in r2["why"], "a second lock-bars with no change is refused")
             r3 = lb(root, mod, "BENCH", "selftest", add=["invented_bar"], show=show)
