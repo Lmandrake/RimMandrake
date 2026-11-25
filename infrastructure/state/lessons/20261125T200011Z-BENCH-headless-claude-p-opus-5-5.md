@@ -1,0 +1,2 @@
+A headless claude -p Opus 5.5 run writes its cache with the 1-hour TTL (weight 2 in weighted_v2), so about half of its weighted cost is the final context size x2: rm-role-operations-1795546904 ended at a 204k context and 407k of its 815k was cache writes. To explain a run's cost, read usage.cache_creation and the context at the last call before you look for a costly read.
+item: RIMMANDRAKE_CUT_OPERATIONS_RUN_COST_815K_AGAINST_320K_ADVISORY
