@@ -12,8 +12,10 @@ Workloads, each run as ABBA-ordered off/armed repetitions on ONE quicktest map (
   health    4 x 800 ticks per arm, --hurt animals scratched before EACH rep (both arms)
   paused    2 x --paused-s wall seconds per arm, paused with Dialog_Options open (no tick runs; the ui/heartbeat
             wall passes are what is measured)
-Stepping is `rimworld/step_game_ticks` in BOTH arms: `jawa/safe_advance` auto-arms the monitor, so it cannot be the
-"off" mover. "off" is disarmed with the DoSingleTick hook installed (the state after any test session) once the
+Stepping is `rimworld/step_game_ticks` in BOTH arms, sent literally inside `tickburst_step.one_tick_per_frame()`:
+`jawa/safe_advance` auto-arms the monitor, so it cannot be the "off" mover, and rimbridge_client sends a paused step of
+more than ONE_FRAME_MAX ticks to safe_advance unless that block is open (every off rep ended armed, lane job
+J20261125T205643Z-e2d5a0). "off" is disarmed with the DoSingleTick hook installed (the state after any test session) once the
 first arm has run; the first off rep of `long` runs before any arm and is recorded as `hooks` = its real status.
 Armed reps arm with specimens (steel stacks) so the `subjects` channel runs; `heartbeat` runs every 5 s while armed.
 
@@ -43,6 +45,14 @@ WORKLOADS = {  # name: (reps per arm, ticks per rep); paused has ticks 0 (wall s
     "health": (4, 800),
     "paused": (2, 0),
 }
+
+
+SPAWN_MAX = 50      # jawa/spawn_pawn refuses count > 50 (JawaBenchTerrainTools.cs); the busy map asks for more
+
+
+def spawn_batches(n, cap=SPAWN_MAX):
+    """-> the per-call counts that spawn `n` pawns, each at most `cap`."""
+    return [min(cap, n - i) for i in range(0, max(0, int(n)), cap)]
 
 
 def abba(reps):
@@ -157,6 +167,7 @@ def verdict(result, tier):
 def _live(a):
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     from rimbridge_client import RimBridge, resolve_endpoint
+    import tickburst_step as TS
 
     def say(*x):
         print(" ".join(str(i) for i in x), flush=True)
@@ -245,7 +256,9 @@ def _live(a):
             row = {"arm": "armed" if armed else "off", "ticks_req": n_ticks, "hooks": st0.get("hooks")}
             w0 = time.perf_counter()
             if n_ticks:
-                c("rimworld/step_game_ticks", ticks=n_ticks, pauseFirst=True)
+                with TS.one_tick_per_frame():      # the literal tool: the fast path would arm the off rep
+                    c("rimworld/step_game_ticks", ticks=n_ticks, pauseFirst=True,
+                      timeoutMs=max(60000, n_ticks * 100))     # hang guard, as tickburst_step.advance sets it
             else:
                 time.sleep(a.paused_s)
             row["wall_ms"] = round((time.perf_counter() - w0) * 1000.0, 1)
@@ -266,7 +279,9 @@ def _live(a):
 
         for name, (reps, n_ticks) in WORKLOADS.items():
             if name == "busy":
-                r = c("jawa/spawn_pawn", kindDef=a.animal, x=cx - 10, z=cz - 10, faction="none", count=a.busy)
+                oks = [c("jawa/spawn_pawn", kindDef=a.animal, x=cx - 10, z=cz - 10, faction="none", count=k).get("success")
+                       for k in spawn_batches(a.busy)]
+                r = {"success": bool(oks) and all(oks)}
                 al = c("jawa/list_pawns", faction="nonplayer").get("pawns") or []
                 animals[:] = [str(x.get("id")) for x in al if x.get("id") and not x.get("dead") and x.get("kind") == a.animal]
                 setup["busy"] = {"asked": a.busy, "success": r.get("success"), "wild_pawns": len(animals)}

@@ -254,6 +254,92 @@ _cr = dict(l.split(":", 1)[0].split(" ", 1) for l in open(os.path.join(HERE, "..
 check("A1 is a small-list clause", _cr.get("A1"), "L2")
 check("A2 is the full-list clause", _cr.get("A2"), RL.FINAL)
 
+# the live driver against a fake bridge that behaves as the real one does (lane job J20261125T205643Z-e2d5a0, BLIND):
+# rimbridge_client sends a paused step_game_ticks of more than tickburst_step.ONE_FRAME_MAX ticks to jawa/safe_advance,
+# which arms the monitor for itself, so every "off" rep ended armed; and jawa/spawn_pawn refuses count > 50, so the
+# 60-animal busy map spawned none and no health rep had an animal to scratch
+sys.path.insert(0, os.path.join(HERE, ".."))
+import types, tickburst_step as TSB
+
+
+class FakeBridge(object):
+    SPAWN_MAX = 50
+
+    def __init__(self, *a, **k):
+        self.armed, self.pawns, self.tick, self.n = False, [], 0, 0
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *e):
+        return False
+
+    def call(self, tool, args=None, check=True):
+        a = args or {}
+        if tool == "rimworld/step_game_ticks":
+            n = int(a.get("ticks") or 1)
+            if TSB.fast_wanted(n, a.get("pauseFirst", True)) and not self.armed:
+                self.armed = True            # jawa/safe_advance's own auto-arm
+            self.tick += n
+            import time as _t
+            _t.sleep(0.002)
+            return {"success": True}
+        if tool == "jawa/vitals":
+            act = a.get("action")
+            if act == "arm":
+                self.armed = True
+            elif act == "disarm":
+                self.armed = False
+            self.n += 1
+            return {"success": True, "armed": self.armed, "hooks": "installed", "paused": True,
+                    "channels": {c: {"calls": self.n, "totalMs": 0.01 * self.n, "on": True} for c in V.CHANNELS}}
+        if tool == "jawa/time_clock":
+            return {"ticksGame": self.tick}
+        if tool == "jawa/running_mods":
+            return {"count": 19}
+        if tool == "jawa/map_info":
+            return {"sizeX": 250, "sizeZ": 250}
+        if tool == "jawa/list_things":
+            return {"things": [{"id": "Steel%d" % a.get("rect", "").__hash__()}]}
+        if tool == "jawa/spawn_pawn":
+            k = int(a.get("count") or 1)
+            if k > self.SPAWN_MAX:
+                return {"success": False, "error": "count %d > 50" % k}
+            self.pawns += [{"id": "P%d" % (len(self.pawns) + i), "kind": a.get("kindDef"), "dead": False}
+                           for i in range(k)]
+            return {"success": True}
+        if tool == "jawa/list_pawns":
+            return {"pawns": list(self.pawns)}
+        return {"success": True}
+
+
+_fa = types.ModuleType("await_lifecycle")
+_fa.await_lifecycle = lambda c, state, t: types.SimpleNamespace(ok=True, reason="")
+_fr = types.ModuleType("rimbridge_client")
+_fr.RimBridge, _fr.resolve_endpoint = FakeBridge, (lambda: ("h", 1, "t"))
+_saved = {k: sys.modules.get(k) for k in ("await_lifecycle", "rimbridge_client")}
+sys.modules.update({"await_lifecycle": _fa, "rimbridge_client": _fr})
+import time as _time
+_sleep = _time.sleep
+_time.sleep = lambda s: _sleep(min(s, 0.002))
+try:
+    import io, contextlib
+    with contextlib.redirect_stdout(io.StringIO()):
+        _res = V._live(types.SimpleNamespace(tier="minimal", busy=60, animal="Muffalo", hurt=10, paused_s=0.01))
+    _vc = V.verdict(_res, "minimal")
+    check("live driver against the real bridge's behaviour is MEASURED (%s)" % _vc[2][:300], _vc[:2], (0, "MEASURED"))
+    check("off reps stay off over the span",
+          sorted({tuple(r["armed_state"]) for w in _res["workloads"].values() for r in w if r["arm"] == "off"}),
+          [(False, False)])
+    check("the busy map holds every asked animal", _res["setup"]["busy"]["wild_pawns"], 60)
+finally:
+    _time.sleep = _sleep
+    for k, v in _saved.items():
+        if v is None:
+            sys.modules.pop(k, None)
+        else:
+            sys.modules[k] = v
+
 if FAILS:
     print("FAIL selftest_vitals_overhead: %d" % len(FAILS))
     for f in FAILS:
