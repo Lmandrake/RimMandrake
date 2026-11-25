@@ -79,3 +79,23 @@ This audit's run made none of them. It read the production lines of `2e9cff556b`
 `c96efbd3bc`, `de28709aab`, `80268a7572`, `a60c81fcb1`, `26cdbc68a9`, `c3a60f061a`, `d28602ad11`, `03a158941e` (last 5 % not),
 `f090327ad2` (hook lines in part), `d3df46dd64`, `01bc9212f2`, `caf6eb8af5`, `49a3139e96`. Nothing significant.
 `f97db855eb` was read by the SteveDesktop run. Not read: the test files, `80c8910b85`.
+
+## The 8:07 AM PST stop: what it cut
+
+Item: `RIMMANDRAKE_VERIFY_CODEX_STOP_HE_SAID_DO_NOT_INTERRUPT`. Read 2026-11-25 9:10 AM PST from the ledger and
+`infrastructure/state/control/acts.jsonl`.
+
+- His words at 8:07 AM PST 2026-11-24: "Please release the requirement to use up CODEX. I will be spending it
+  elsewhere, so our usage of it can resume the normal rate. Thanks." These words do not say "do not interrupt work in
+  progress". His only words of that day about interrupting came at 8:27 AM PST and are about walks: "Don't interrupt
+  mod work for a walk."
+- The act was `ct_000169`, a stop of the builder-lane unit in mode `at_easy_spot`.
+- Work was cut: the run ended its four newest Codex jobs; three were killed about two minutes into their tickets, one
+  had finished. The three partial diffs held selftest lines only.
+- Nothing is lost:
+  - `LEFTOVERS_CHECK_FIX_SAFE_ON_UNSAFE_FOLDER` and `TRACE_MKDIR_HARDEN_STAT_OUTLIVES_IT` were built again by the Codex
+    lane and landed at `c9679e3046` (closed 2026-11-24 3:05 PM PST; red on the old code, green on the fix).
+  - `TELEMETRY_HARDEN_FIX_FOUR_EDGE_CASES` has been parked by his card since 2026-11-01. The lane should not have taken
+    it, so its cut job cost nothing that is owed.
+- Not cut by the stop: the deviation record and the rest of the ask lane were built before 8:07 AM. They are listed
+  above under "Open".
