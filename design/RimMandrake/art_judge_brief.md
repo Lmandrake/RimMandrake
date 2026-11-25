@@ -115,7 +115,7 @@ If one of these is missing, answer `UNSURE: not given <what>`. Never guess the m
   report. So on a picture that he kept, your verdict is KEEP, whatever other line it breaks. Write the concern in
   `notes`, with no refusal record. Only the art-eval pipeline's own judge, which does not use this brief, may write a
   regen verdict on it. — Owner 2026-10-19; owner card 2026-10-23 06:42 (*"Kept art judged really bad: may the pipeline redraw it on its own? → Yes, but show me after"*);
-  `delegation_policy.md` §2.3
+  `delegation_policy.md` §2.2
 - E4. His note on a subject is a requirement, quoted verbatim. A candidate that ignores his note is REDO. — Owner
   (req 9)
 
