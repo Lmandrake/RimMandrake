@@ -11,6 +11,9 @@ unit=rm-memwatch.timer max_age=2h
 unit=rm-mirror.timer max_age=2h
 unit=rm-objstore.timer max_age=3h
 unit=rm-scratch-reap.timer reading=/home/mandrake/.local/state/rm-scratch-reap/last_run.json max_age=3h
+# SteveDesktop's Screenshots cleaner (RIMMANDRAKE_PRUNE_STEVE_LANE_SCREENSHOTS_HALF_GIG_A_DAY_ONTO_FULL_C: the list_effect tick
+# closed it when its outcome check held, so its close carries no live line); check_ok.txt is written only when check holds
+unit=rm-family-clean.timer reading=/home/mandrake/.local/state/rm-family-clean/check_ok.txt max_age=30h host=stevedesktop
 unit=rm-selftests-nightly-catchup.timer reading=/mnt/d/ClaudeWork/rimmandrake/ops_watch/nightly_catchup.json max_age=3h
 unit=rm-selftests-nightly.timer max_age=75h
 unit=rm-streams-collect.timer max_age=2h
