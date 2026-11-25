@@ -49,20 +49,10 @@ from 1:20 PM PST: context 150k at start, 330k at the first save, about 420k at t
 | step 4 fresh reader (run 2) | done | 1 significant finding fixed (89136970f9); nits done in 6ca2e748c0 and 80ede465f9 |
 | (no ticket) PLAYTEST scene: the FlowWorks 'fluids' run ended in 4 frames, before the cross-call | scene repaired | 80ede465f9 |
 | BRIDGE_LOCK_HARDEN_ALIVE_MEANS_A_PID | done (run 3) | A1 live on Steve1 by hand (a live `claude`-named holder, then this session): refused naming the driver lock, who shows the holder pid, FREE on exit; a99e90a41d (a held --host take exits 75, not 2; an unreachable guard is not called held), 955d54f81c (4 lock selftests were red on SteveDesktop: they now pin RM_HOST=archmagi) |
+| PEN_ANIMALS_UNSTICK_STATUES_LEARN_TO_WALK | done (run 3) | heat theory refuted (lane J20261125T224621Z-837802: all inside comfortable range); cause RM_JobGiver_ShadeHop rests penned animals 600-1500 ticks by design. b931622136: pen_release counts only a giverless Wait as pinned, census job rows carry startTick/expiry/giver, PEN2 proves its pin reading on the pinned state and reads moves at 600 and 9000 ticks. Lane J20261125T225920Z-f8bd9f PASS (65 released, givers ShadeHop 57, wander 8; 47 moved by 9000) |
 
 ## Next, in order
-1. PEN A2: two lane runs on a freshly built keeper (J20261125T220757Z-226592, J20261125T222034Z-4d50a4, sha
-   f9643d71c7) agree: pen_release selects 65, ends every Wait, and the think tree at once gives 47 of them a NEW
-   plain Wait (jobs right after release {'Wait': 47, 'GotoWander': 18}); those 47 never move in 600 ticks. Every pen
-   kind is in the 47 (2 to 4 of each), so it is not one species. Ruled out: a companion patch holding artboard pawns
-   (ArtboardPawns only marks them), and avoidWander on the RM_FE_Ash_Deep floor (it has none; pathCost 2).
-   Vanilla gives a plain Wait only by JobGiver_Idle (50 ticks; decompiled 1.6), so wander FAILS for them every think.
-   THEORY to test first: wander refuses cells that are dangerous for the pawn, temperature included, and these roofed
-   Pyrelands pens (~50 C) sit outside most kinds' safe range, so those animals idle. One lane run decides it: add to
-   PEN2's detail, per unmoved animal, `jawa/thing_ambient_temp thing=<id>` (cellTemp) beside its comfortable range
-   (a stat read: ComfyTemperatureMin/Max). If the theory holds, the fault is the review layout (human_review.py pens
-   too hot for their animals, so the owner sees statues even after release), not the pen tool: fix the layout (cool
-   pens, or the release reports heat-held animals by name) test first, then rerun PEN2.
+1. Fresh reader (role step 4) of run 3's fixes: a99e90a41d (cli.py --host take exit), b931622136 (JawaBenchPenTools.cs, JawaBenchSituationalTools.cs census, bridge_bundle_proof.py PEN2).
 2. BRIDGE_TPS_REVIEW2_FIXES_1 C3: the controlled interruption matrix, items 1 and 2 of design/RimMandrake/tps_record.md
    §Acceptance (the doc rewrite puts item 3 in C4), read from the record files (tps_record.py, tps_observer.py), with
    jawa/tps_test_block (0.5-120 s main-thread blocks): 2-10 s hitches and 40/90 s blocks as ONE incident each, a save

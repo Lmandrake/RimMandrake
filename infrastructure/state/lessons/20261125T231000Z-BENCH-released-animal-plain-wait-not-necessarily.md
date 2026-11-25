@@ -1,0 +1,3 @@
+A released animal on a plain Wait is not necessarily stuck: on a hot map RM_JobGiver_ShadeHop (CreatureBehaviors, Animal_PreWander) gives an animal in shade a plain Wait of 600-1500 ticks (a rest). Tell a pin from behaviour by Job.jobGiver (null for a directly started job such as our 60000-tick pin; the think node's type otherwise), now in jawa/pawn_census job rows. Vanilla wander gives Wait_Wander, never Wait; a plain Wait from the think tree is IdleError (100), error recovery (150/250), JobGiver_Idle or a mod node.
+item: PEN_ANIMALS_UNSTICK_STATUES_LEARN_TO_WALK
+home: skills/rimbridge-companion
