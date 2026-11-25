@@ -201,6 +201,11 @@ namespace JawaBench.BridgeTools
             public long Ord;
             public JobSnap Prev;
             public bool Suspend;
+            // The started job as the prefix saw it. A job that ends inside its own StartJob (a pather error on the first
+            // toil) is back in JobMaker's pool by the postfix, its def null and loadID -1 (measured live on ArchBig
+            // 2026-11-25: an ordered Goto recorded as "?#-1"). So the postfix records these, not the pooled job.
+            public JobSnap New;
+            public string NewGiver;
         }
 
         internal sealed class Taps

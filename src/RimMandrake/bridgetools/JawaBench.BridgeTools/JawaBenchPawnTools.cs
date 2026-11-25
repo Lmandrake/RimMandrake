@@ -1056,6 +1056,12 @@ namespace JawaBench.BridgeTools
                     {
                         if (A == "add" && !JawaBenchWorldArgsCore.IsFinite(severity)) return Fail("severity must be finite (NaN/Infinity would be written into the saved hediff).");
                         var h = p.health.AddHediff(hd, part);
+                        // A hediff the pawn already has merges into the one it has (HediffSet.AddDirect -> TryMergeWith):
+                        // the returned hediff is then in no list, and the severity asked for went nowhere (measured live
+                        // on ArchBig 2026-11-25: ToxicBuildup severity 1 on a Muffalo with buildup read back {}).
+                        // The merged-into hediff is the one this call changed, so it is the one the severity goes on.
+                        if (h != null && !p.health.hediffSet.hediffs.Contains(h))
+                            h = p.health.hediffSet.hediffs.FirstOrDefault(x => x.def == hd && x.Part == part) ?? h;
                         bool setSeverity = A == "add" && severity >= 0f;
                         if (setSeverity && h != null && p.health.hediffSet.hediffs.Contains(h)) h.Severity = severity;
                         var held = p.health.hediffSet.hediffs.FirstOrDefault(x => x == h);

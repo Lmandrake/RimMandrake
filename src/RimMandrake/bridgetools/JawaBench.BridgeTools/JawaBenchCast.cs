@@ -125,7 +125,7 @@ namespace JawaBench.BridgeTools
             return j != null && j.playerForced ? "player" : "direct";
         }
 
-        private static void StartPre(Pawn_JobTracker __instance, bool resumeCurJobAfterwards, out K.TapState __state)
+        private static void StartPre(Pawn_JobTracker __instance, Job newJob, ThinkNode jobGiver, bool fromQueue, bool resumeCurJobAfterwards, out K.TapState __state)
         {
             __state = default(K.TapState);
             if (!Tp.GStart.Admit(OnMain(), out __state.S)) return;
@@ -133,6 +133,8 @@ namespace JawaBench.BridgeTools
             {
                 var cj = __instance != null ? __instance.curJob : null;
                 Tp.Opened(ref __state, Snap(cj, cj != null ? __instance.curDriver : null), resumeCurJobAfterwards && cj != null && cj.def != null && cj.def.suspendable);
+                __state.New = Snap(newJob, null);
+                __state.NewGiver = newJob != null ? Giver(newJob, jobGiver, fromQueue) : null;
             }
             catch (Exception e) { Tp.GStart.Note("job_start-pre", e); }
         }
@@ -145,7 +147,8 @@ namespace JawaBench.BridgeTools
             {
                 if (newJob == null || ___pawn == null) return;
                 var cond = lastJobEndCondition == JobCondition.None ? JobCondition.InterruptForced : lastJobEndCondition;   // as StartJob does
-                Tp.RecordStart(__state, ___pawn.thingIDNumber, Snap(newJob, null), Giver(newJob, jobGiver, fromQueue), cond.ToString(),
+                Tp.RecordStart(__state, ___pawn.thingIDNumber, __state.New.Has ? __state.New : Snap(newJob, null),
+                               __state.NewGiver ?? Giver(newJob, jobGiver, fromQueue), cond.ToString(),
                                ReferenceEquals(__instance.curJob, newJob));
             }
             catch (Exception e) { Tp.GStart.Note("job_start", e); }
