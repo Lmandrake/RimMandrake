@@ -1,0 +1,5 @@
+shared process: python.exe src\RimMandrake\Utils\scene.py accept src\RimMandrake\ExplosiveKnockback\proof\scene_storeroom_mortar_rebound_legs.py
+scenes of this check: 
+
+--- whole process output ---
+REFUSED TREE_NOT_CLEAN: 86 path(s) differ from the commit: M src/RimMandrake/ExplosiveKnockback/Assemblies/RimMandrakeExplosiveKnockback.dll; M src/RimMandrake/ExplosiveKnockback/Assemblies/RimMandrakeExplosiveKnockback.dll.srchash; ?? design/concepts/ExplosiveKnockback/version/in_game/visit_1/SUMMARY.md; ?? design/concepts/ExplosiveKnockback/version/in_game/visit_1/diag_rows.jsonl; ?? design/concepts/ExplosiveKnockback/version/in_game/visit_1/evidence/P_body_override.txt .... Commit or remove them, then accept

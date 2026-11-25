@@ -1,0 +1,30 @@
+shared process: python.exe src\RimMandrake\ExplosiveKnockback\knockback_runner.py --scenes calibration,over_sandbags,spared_states,mass_and_power,immunity_window,settings_off,wall_stop,pawn_hits_pawn,door_stop,shield_counter --ticks 300
+scenes of this check: mass_and_power
+mass_and_power PASS lane=default damage=50 ratio=1.00 small(gripper 1.2 kg)=5/want 5 colonist(colonist 64.0 kg)=3/want 3 under(gorekite 144.0 kg)=2/want 2 heavy(gromma 240.0 kg)=spared/want 0 order=True
+--- whole process output ---
+scenes available: calibration,wall_stop,door_stop,over_sandbags,pit_colonist,pit_enemy,no_cross,cover_breaks,items,corpse_into_pit,killed_by_blast,shelf,in_pit_skip,heavy_skip,all_fly_no_cap,settings_off,emp_no_throw,lookup_projectile,lookup_zero_wins,impact_factor,body_override,immunity_window,shield_counter,goods_fly_midair,goods_fly_lands,goods_fly_wall,goods_fly_rebound,goods_fly_off,fire_half,harmful_unpatched,container_thrown,heavy_knock,land_no_bump,land_no_bump_pit,gas_clumps,mass_and_power,mass_and_power_x2,mass_and_power_off,mass_and_power_off_x2,mass_and_power_250,mass_and_power_250_x2,pawn_hits_pawn,only_explosions,open_storage,no_cross_ordered,spared_states,blast_kinds,goods_fly_wild,gas_chain,gas_census,pawn_arc,pit_goods_fetch,hose_carry_drop,hose_carry_drop_off,closed_containers,closed_containers_control,settings_sweep,settings_sweep_after,frame_probe_selfcheck,frame_probe_selfcheck_paused,barrage_perf,barrage_perf_off,gas_into_pit,gas_into_pit_off,goods_obstacles,goods_obstacles_control,storeroom_bomb_pit,storeroom_bomb_pit_control,pit_colonist_control flowworks=True hoses=True
+calibration      advanced 300/300 ticks in 1 s via jawa/safe_advance
+calibration      PASS p 13,12->16,12 (3 cells) away=True alive=True launches=1 [type=launch tick=2 exp=58841 thing=Human58838 from=13,12 to=16,12 planned=3 cells=3 stop=Distance impact=0 otherImpact=0 door=False mass=60.79998 hoseDropped=False carried=none onCover=False gas=False hitOther=False faction=PlayerColony]
+over_sandbags    advanced 300/300 ticks in 1 s via jawa/safe_advance
+over_sandbags    PASS p 28,12->31,12 (3 cells) (sandbags at x+2)
+spared_states    advanced 300/300 ticks in 1 s via jawa/safe_advance
+spared_states    PASS big too_heavy_creature; pit in_pit; pitstack in_pit; carrier carrying_pawn; sleeper in_bed; corpse too_heavy; blast at +60 ticks (step 300)
+mass_and_power   advanced 300/300 ticks in 1 s via jawa/safe_advance
+mass_and_power   PASS lane=default damage=50 ratio=1.00 small(gripper 1.2 kg)=5/want 5 colonist(colonist 64.0 kg)=3/want 3 under(gorekite 144.0 kg)=2/want 2 heavy(gromma 240.0 kg)=spared/want 0 order=True
+immunity_window  advanced 300/300 ticks in 1 s via jawa/safe_advance
+immunity_window  PASS launches=1 immuneSkip=True guardHolds=True
+settings_off     advanced 300/300 ticks in 1 s via jawa/safe_advance
+settings_off     PASS p 88,12->88,12 (0 cells); steel 86,12->86,12 (0 cells) waveHitThem=True
+wall_stop        advanced 300/300 ticks in 1 s via jawa/safe_advance
+wall_stop        PASS p 103,12->104,12 (1 cells) [type=launch tick=1802 exp=58926 thing=Human58922 from=103,12 to=104,12 planned=3 cells=1 stop=Wall impact=7.721507 otherImpact=0 door=False mass=60.74998 hoseDropped=False carried=none onCover=False gas=False hitOther=False faction=PlayerColony]
+pawn_hits_pawn   advanced 300/300 ticks in 1 s via jawa/safe_advance
+pawn_hits_pawn   PASS p 118,12->119,12 (1 cells) [type=launch tick=2102 exp=58939 thing=Human58930 from=118,12 to=119,12 planned=3 cells=1 stop=Pawn impact=3.560018 otherImpact=4.439982 door=False mass=60.79998 hoseDropped=False carried=none onCover=False gas=False hitOther=True faction=PlayerColony] | covered lane p2 118,7->119,7 (1 cells) [type=launch tick=2102 exp=58959 thing=Human58944 from=118,7 to=119,7 planned=3 cells=1 stop=Pawn impact=4.437956 otherImpact=3.562044 door=False mass=48.79998 hoseDropped=False carried=none onCover=False gas=False hitOther=True faction=PlayerColony]
+door_stop        advanced 300/300 ticks in 1 s via jawa/safe_advance
+door_stop        PASS p 133,12->134,12 (1 cells) doorHp 104->92 [type=launch tick=2402 exp=58977 thing=Human58971 from=133,12 to=134,12 planned=3 cells=1 stop=Door impact=7.723094 otherImpact=0 door=True mass=60.79998 hoseDropped=False carried=none onCover=False gas=False hitOther=False faction=PlayerColony]
+shield_counter   advanced 300/300 ticks in 1 s via jawa/safe_advance
+shield_counter   PASS p 148,12->148,12 (0 cells) energy 1.1->1.1 [type=skip tick=2702 exp=58988 thing=Human58984 reason=shield energyBefore=1.067 energyAfter=0.737 broke=False]
+VERDICT PASS  (10 scenes) -> \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_GAME_VISIT_ONE.det\Transient\explosive_knockback\run_20261125T065603.jsonl
+
+--- stderr ---
+[bridge split] 18.0 s wall: load 0.0 / ticks 5.5 / reads 0.0 / other 6.2 / outside calls 6.3 s
+[bridge split] WARN 114 calls of jawa/mod_settings_field (4.9 s): batch them

@@ -1,0 +1,13 @@
+shared process: python.exe src\RimMandrake\ExplosiveKnockback\proof\scene_save_in_air.py
+scenes of this check: 
+
+--- whole process output ---
+SA_PRE           PASS       stage STAGED items at 27,12 tick=38491; staged ['62084', '62115', '62117']
+SA_IN_AIR        PASS       2 staged thing(s) in a carrier 2 ticks after the shell: [{'innerId': '62115', 'def': 'ComponentIndustrial', 'count': 1, 'left': 25}, {'innerId': '62084', 'def': 'Steel', 'count': 75, 'left': 25}]
+SA_AIR_AT_LOAD   PASS       in the air at the save with > 3 ticks left: ['62084', '62115']; in the air right after load B ['62084', '62115'], load C ['62084', '62115']
+SA_EACH_ONCE     UNMEASURED the live arm lacks staged thing(s) [] or its totals differ: the census rect missed them; at tick 38503: live 3, load 3, reload 3 things; dup {}; lost [] new [] (load vs live); IDENTICAL live, load and reload agree at tick 38503; totals by def {'A': {'ComponentIndustrial': 62, 'MinifiedTree': 1, 'Steel': 75}, 'B': {'ComponentIndustrial': 62, 'MinifiedTree': 1, 'Steel': 75}, 'C': {'ComponentIndustri
+SA_LANDED        FAIL       after 20 tick(s): 0 carrier(s) left; dup []; staged absent []; Steel 75; totals by def {'ComponentIndustrial': 62, 'MinifiedTree': 1, 'Steel': 75} (staged {'Steel': 75, 'ComponentIndustrial': 1, 'MinifiedTree': 1})
+FAIL sc_save_in_air; evidence: D:\ClaudeWork\rimmandrake\ek_proof\scene_save_in_air_20261125T070801.json
+
+--- stderr ---
+[bridge split] 18.4 s wall: load 0.9 / ticks 0.9 / reads 2.3 / other 1.2 / outside calls 13.1 s

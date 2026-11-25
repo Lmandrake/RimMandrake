@@ -1,0 +1,30 @@
+shared process: python.exe src\RimMandrake\ExplosiveKnockback\knockback_runner.py --scenes impact_factor,lookup_zero_wins,goods_fly_midair,goods_fly_lands,goods_fly_wall,goods_fly_rebound,goods_fly_off,container_thrown,land_no_bump,land_no_bump_pit
+scenes of this check: goods_fly_off
+goods_fly_off PASS steel 118,12->118,12 (0 cells) wantIfOn=6 flyingOffSkip=True itemMoves=0 seenInCarrier=False
+--- whole process output ---
+scenes available: calibration,wall_stop,door_stop,over_sandbags,pit_colonist,pit_enemy,no_cross,cover_breaks,items,corpse_into_pit,killed_by_blast,shelf,in_pit_skip,heavy_skip,all_fly_no_cap,settings_off,emp_no_throw,lookup_projectile,lookup_zero_wins,impact_factor,body_override,immunity_window,shield_counter,goods_fly_midair,goods_fly_lands,goods_fly_wall,goods_fly_rebound,goods_fly_off,fire_half,harmful_unpatched,container_thrown,heavy_knock,land_no_bump,land_no_bump_pit,gas_clumps,mass_and_power,mass_and_power_x2,mass_and_power_off,mass_and_power_off_x2,mass_and_power_250,mass_and_power_250_x2,pawn_hits_pawn,only_explosions,open_storage,no_cross_ordered,spared_states,blast_kinds,goods_fly_wild,gas_chain,gas_census,pawn_arc,pit_goods_fetch,hose_carry_drop,hose_carry_drop_off,closed_containers,closed_containers_control,settings_sweep,settings_sweep_after,frame_probe_selfcheck,frame_probe_selfcheck_paused,barrage_perf,barrage_perf_off,gas_into_pit,gas_into_pit_off,goods_obstacles,goods_obstacles_control,storeroom_bomb_pit,storeroom_bomb_pit_control,pit_colonist_control flowworks=True hoses=True
+impact_factor    advanced 300/300 ticks in 1 s via jawa/safe_advance
+impact_factor    PASS p 28,12->29,12 (1 cells) [type=launch tick=25592 exp=61581 thing=Human61577 from=28,12 to=29,12 planned=3 cells=1 stop=Wall impact=0 otherImpact=0 door=False mass=60.74998 hoseDropped=False carried=none onCover=False gas=False hitOther=False faction=PlayerColony]
+lookup_zero_wins advanced 300/300 ticks in 1 s via jawa/safe_advance
+lookup_zero_wins PASS p 43,12->43,12 (0 cells) requests=0
+goods_fly_midair advanced 300/300 ticks in 1 s via jawa/safe_advance
+goods_fly_midair PASS in carrier at +2 ticks, count=75 dest=64,12 ticksLeft=59
+goods_fly_lands  advanced 300/300 ticks in 1 s via jawa/safe_advance
+goods_fly_lands  PASS steel 73,12->79,12 (6 cells) want=6 count=75 flying=True item_land=1 carrierLeft=False [type=item_land tick=26552 exp=61612 thing=Steel61611 from=73,12 to=79,12 dest=79,12 bounces=0 stop=Distance count=75 spawnFallback=False residentsMoved=0 ticks=60 place=Direct]
+goods_fly_wall   advanced 300/300 ticks in 1 s via jawa/safe_advance
+goods_fly_wall   FAIL comp not spawned want=6 flying=True [type=goods_impact tick=26798 exp=61624 thing=ComponentIndustrial61622 stop=Wall left=5 damage=50 destroyed=False at=landed]
+goods_fly_rebound advanced 300/300 ticks in 1 s via jawa/safe_advance
+goods_fly_rebound INVALID planned 0 cells leaves no rebound (back=0)
+goods_fly_off    advanced 300/300 ticks in 1 s via jawa/safe_advance
+goods_fly_off    PASS steel 118,12->118,12 (0 cells) wantIfOn=6 flyingOffSkip=True itemMoves=0 seenInCarrier=False
+container_thrown advanced 300/300 ticks in 1 s via jawa/safe_advance
+container_thrown PASS thrown=True together=True shorter=True shielded=True box=LWM_WeaponsLocker boxCells=5 looseCells=6 revolverHp=100/100 looseRevolverHp=93/100 [type=container tick=27692 exp=61657 thing=LWM_WeaponsLocker61652 action=thrown from=133,12 to=138,12 planned=5 cells=5 mass=10.6 goods=2 held=0 oneByOne=True overLimit=False]
+land_no_bump     advanced 300/300 ticks in 1 s via jawa/safe_advance
+land_no_bump     PASS stays=True landed=True journal_zero_moved=True resident=154,12 gun=153,12 inPit=False [type=item_land tick=28018 exp=61670 thing=Gun_Revolver61668 from=148,12 to=153,12 dest=154,12 bounces=0 stop=Distance count=1 spawnFallback=False residentsMoved=0 ticks=26 place=NearCell]
+land_no_bump_pit advanced 300/300 ticks in 1 s via jawa/safe_advance
+land_no_bump_pit PASS stays=True landed=True journal_zero_moved=True resident=165,12 gun=165,11 inPit=True [type=item_land tick=28301 exp=61679 thing=Gun_Revolver61677 from=163,12 to=165,11 dest=165,12 bounces=0 stop=Pit count=1 spawnFallback=False residentsMoved=0 ticks=9 place=PitFloor]
+VERDICT FAIL  (10 scenes) -> \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_GAME_VISIT_ONE.det\Transient\explosive_knockback\run_20261125T070058.jsonl
+
+--- stderr ---
+[bridge split] 19.2 s wall: load 0.0 / ticks 7.4 / reads 0.0 / other 5.8 / outside calls 6.0 s
+[bridge split] WARN 114 calls of jawa/mod_settings_field (4.8 s): batch them
