@@ -12091,3 +12091,5 @@
 {"seat":"RUNNER","event":"note","id":"OPS_MATURATION_MOD_PAUSED_FYEB","text":"ops_watch: cleared at 2026-11-24T23:43:27Z (maturation.paused now 0)","ts":"2026-11-24T23:43:53Z","tsn":1795563833547477274}
 {"seat":"RUNNER","event":"live","id":"RIMMANDRAKE_RESTORE_STEVEDESKTOP_ON_FLEET_NOW_OLD_PAGE_HAD_IT","result":"broken","detail":"rm-fleet-now.timer: is-enabled says 'not-found', wanted 'enabled'","ts":"2026-11-24T23:48:56Z","tsn":1795564136329245602}
 {"seat":"RUNNER","event":"raise","id":"RIMMANDRAKE_RESTORE_STEVEDESKTOP_ON_FLEET_NOW_OLD_PAGE_HAD_IT","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-24T23:49:15Z","tsn":1795564155584081846}
+{"seat":"RUNNER","event":"live","id":"OPS_MATURATION_MOD_PAUSED_FYEB","result":"broken","detail":"Ops alarm MATURATION_PAUSED: maturation.paused = 1 mods (MEASURED), line > 0","ts":"2026-11-25T00:40:11Z","tsn":1795567211992200641}
+{"seat":"RUNNER","event":"raise","id":"OPS_MATURATION_MOD_PAUSED_FYEB","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-25T00:40:23Z","tsn":1795567223505302303}
