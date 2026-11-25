@@ -131,6 +131,10 @@ def probe(lock, timed=0, **extra):
     else:       # python.exe never ran: could not look, which is no verdict on the lock (2026-11-23, load 60 on the machine)
         print("UNMEASURED: WSL could not start a Windows process (3 tries): %s" % (r.stdout + r.stderr).strip()[-160:])
         sys.exit(2)
+    if "RmDataRootUnset" in r.stdout + r.stderr:    # the machine's environment, not the lock: no verdict (SteveDesktop)
+        print("UNMEASURED: this machine's Windows python.exe has no RM_DATA_ROOT or LODESTAR_ROOT (rmpaths.RmDataRootUnset)"
+              "; set one in the Windows user environment to run the Windows-client cases")
+        sys.exit(2)
     try:
         return json.loads(r.stdout.strip().splitlines()[-1])
     except (ValueError, IndexError):
