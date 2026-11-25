@@ -432,6 +432,28 @@ def test_accept_refuses_a_dirty_tree_and_an_older_layer():
         must(scene.main(["accept", p("good.py")]) == 3 and len(W.game.log) == n, "a refused script ran")
 
 
+LEDGER_WRITER = ("import os, scene\nwith scene.open('ArchSmall') as s:\n    print('RAN', s.run(until=20, limit=200).receipt.commit)\n"
+                 "v = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'design', 'concepts', 'WMod', 'version')\n"
+                 "os.makedirs(v, exist_ok=True)\nopen(os.path.join(v, 'scene_runs.jsonl'), 'a').write('{}\\n')\n")
+
+
+def test_accept_keeps_its_identity_when_the_judge_appends_the_scene_ledger():
+    # the judge appends the mod's scene ledger (scene_runs.jsonl) at the end of an accept run; the run then read
+    # "THE TREE CHANGED DURING THE RUN" and the next accept was refused TREE_NOT_CLEAN (2026-11-24, ArchSmall)
+    d, git = _tree({"s/good.py": GOOD, "s/ledger.py": LEDGER_WRITER})
+    W = world()
+    W.repo, W.git = d, git
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        rc = scene.main(["accept", os.path.join(d, "s", "ledger.py")])
+    must(rc == 0 and "TREE CHANGED" not in out.getvalue(), "the judge's ledger line cost the run its identity: %s" % out.getvalue()[-300:])
+    head = git("rev-parse", "HEAD")[1].strip()
+    must(scene.check_accept(os.path.join(d, "s", "good.py"), d, git) == head, "a ledger line left by the last run refused the next accept")
+    with open(os.path.join(d, "s", "extra.txt"), "w") as f:
+        f.write("x")
+    refused("TREE_NOT_CLEAN", scene.check_accept, os.path.join(d, "s", "good.py"), d, git)
+
+
 def test_explore_run_is_explored():
     W = world()
     old, sys.stdin = sys.stdin, io.StringIO("r = s.run(until=20, limit=200)\nprint('STAMPS', r.receipt.stamps)\n")
@@ -929,7 +951,8 @@ def main():
             test_close_waits_for_the_session_writer, test_session_of_another_is_lost_not_used, test_end_session_ends_a_dead_driver_only,
             test_attach_refuses_no_session, test_attach_refuses_driver_alive, test_attach_refuses_owner_hold, test_attach_refuses_unknown_game,
             test_attach_pauses_a_running_game, test_attach_then_run_is_refused, test_abort_writes_closing_record,
-            test_names_not_built_say_so, test_tools_and_raw_census, test_lock_child_env_names_no_dropped_variable]
+            test_names_not_built_say_so, test_tools_and_raw_census, test_lock_child_env_names_no_dropped_variable,
+            test_accept_keeps_its_identity_when_the_judge_appends_the_scene_ledger]
     a = run(ticket)
     print("scene library: %d of %d checks passed" % (a, len(ticket)))
     b = run(more)

@@ -1061,6 +1061,16 @@ def old_imports(path, repo):
     return out
 
 
+LEDGER_LINE = re.compile(r"^.. \"?design/concepts/[^/]+/version/scene_runs\.jsonl\"?$")
+
+
+def not_ledger(porcelain):
+    """git status --porcelain less the scene ledger of any mod: the judge appends that file at the end of an accept run
+    (scene_judge.ledger_append), so it is no change to what the scene ran on, and a line left by the last run is no
+    reason to refuse the next one."""
+    return "\n".join(r for r in (porcelain or "").split("\n") if r.strip() and not LEDGER_LINE.match(r))
+
+
 def check_accept(script, repo, git):
     """-> the commit hash. Refuses TREE_NOT_CLEAN, SCRIPT_NOT_IN_REPO, IMPORTS_OLD_LAYER; nothing is run."""
     full = os.path.abspath(script)
@@ -1075,9 +1085,10 @@ def check_accept(script, repo, git):
         if rc2 != 0:
             raise Fault("COULD_NOT_LOOK", detail="git could not read the tree: %s" % out2.strip())
         raise Refused("SCRIPT_NOT_IN_REPO", "%s is not committed: commit it, then accept" % rel)
-    rc, out = git("status", "--porcelain")
+    rc, out = git("status", "--porcelain", "--untracked-files=all")
     if rc != 0:
         raise Fault("COULD_NOT_LOOK", detail="git status: %s" % out.strip())
+    out = not_ledger(out)
     if out.strip():
         rows = out.strip("\n").split("\n")
         raise Refused("TREE_NOT_CLEAN", "%d path(s) differ from the commit: %s%s. Commit or remove them, then accept" % (
@@ -1135,8 +1146,8 @@ def accept(script, plant_=None):
         sys.stdin.close()
         sys.stdin = old_in
     _rc, after = W.git("rev-parse", "HEAD")
-    _rc2, dirty = W.git("status", "--porcelain")
-    if after.strip() != commit or dirty.strip():
+    _rc2, dirty = W.git("status", "--porcelain", "--untracked-files=all")
+    if after.strip() != commit or not_ledger(dirty).strip():
         word, rc = word + "; THE TREE CHANGED DURING THE RUN, so the run has no identity", max(rc, 1)
     print("ACCEPT %s: %s. For a kept run, use scene.py judge." % (LAUNCH["script"], word), flush=True)
     return rc
