@@ -14,7 +14,7 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - Read your own window file. The Conductor (the window that the owner talks to) reads
   `infrastructure/agents/CONDUCTOR.md`.
 - The game cycle is in `infrastructure/GAME_STATE_WORKFLOW.md`.
-- The model ladder of this repo is in `infrastructure/agents/Agent_Policy.md` and nowhere else. Do not restate it.
+- This repo's application of the fleet ladder is in `infrastructure/agents/Agent_Policy.md` and nowhere else. Do not restate it.
 - `GUIDING_PRINCIPLES.md` says what is always true of the game, above any one mod or biome. It binds. Read it before
   you design or judge.
 
