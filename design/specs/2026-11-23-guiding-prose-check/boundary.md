@@ -88,9 +88,17 @@ on the owner's own line, so the reader is Opus.
   its faults print as "shown only". When the row reads CALIBRATED, they count as faults.
 - **a-publish-with-faults-still-lands.** `./publish` of a rule file with faults prints `PUBLISHED`, exits 0, and then
   prints each fault with its repair. The check runs after the landing and outside the clone's lock.
-- **a-launch-with-faults-still-starts.** `detached_helper.py launch` with a faulty brief starts the unit, exits 0, and
-  its text ends with each fault and its repair. A refused launch's text stays the gate's own. A test's stand-in for
-  `launch` and a throwaway clone that does not hold `guiding_prose.json` are not read and leave no record.
+- **a-launch-with-faults-still-starts.** A launch by a program or by a launched run (`RM_ROLE_UNIT` set) with a faulty
+  brief starts the unit, exits 0, and its text ends with each fault and its repair. A refused launch's text stays the
+  gate's own. A test's stand-in for `launch` and a throwaway clone that does not hold `guiding_prose.json` are not read
+  and leave no record.
+- **a-principal-launch-gets-its-faults-before-the-start.** A launch from the Conductor window or the owner is read
+  before the start. A brief with a fault that counts starts nothing, sends no sentence, exits 5, and its text names
+  each fault with its repair. A changed brief is read again. The same brief text launched again unchanged starts, and
+  its faults print as a NOTE after the start, so a fault that the writer judged wrong never blocks. A brief with no
+  fault starts at once. A check that raises before the start stops nothing. A "shown only" fault of an uncalibrated
+  reader never returns a brief. Item: `RIMMANDRAKE_TRIAL_STE_BRIEFS_CHECK_BEFORE_LAUNCH_NOT_AFTER`; 4 of 11 Conductor
+  briefs of 2026-11-24 needed a correction note after their run had started.
 - **a-sentence-already-sent-in-a-brief-is-silent.** A sentence that an earlier launch sent is not checked again, so a
   program's template is read once.
 - **a-broken-check-stops-nothing.** When the check itself raises, the landing and the launch complete and the writer
@@ -98,10 +106,11 @@ on the owner's own line, so the reader is Opus.
 - **a-principal-gets-a-note.** For the owner or the Conductor window, the faults print as a NOTE, and the run record
   names the principal. The record of every run holds the faults.
 - **the-check-verb-exits-for-a-caller.** `guiding_prose.py check` exits 0 with no fault, 1 with a fault, 3 when it could
-  not look. `./publish` and `launch` keep their own exit codes.
+  not look. `./publish` and `launch` keep their own exit codes, except the return before the start (exit 5).
 - **one-list-for-a-meaning-nobody-finds.** `guiding_prose.py unfindable` files one ledger item for a term in a file, with
   the file, the line, the term and the exact question. A later question on that term and file is a note on that item. An
   entry with no question is refused.
 - **the-recheck-sees-a-dead-check.** `guiding_prose.py recheck` writes its reading only as `ok` when a planted fault
   went through a real throwaway `publish.py` and came back, and when the launch path returned one too. A check cut out
-  of either door reads `ok: false` with the cause, and the reading names each landing of guiding prose with no record.
+  of either door reads `ok: false` with the cause. The launch door is played twice: as the Conductor window (the
+  brief must come back before the start) and as a launched run (it must start and return the fault after), and the reading names each landing of guiding prose with no record.

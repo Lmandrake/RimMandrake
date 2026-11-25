@@ -15,7 +15,9 @@ design/specs/2026-11-23-guiding-prose-check/. Item RIMMANDRAKE_CHECK_GUIDING_PRO
     guiding_prose.py calibrate                    the reader's planted cases (refusal_contract.py runs this)
 
 It runs by itself at the end of `./publish` and of `detached_helper.py launch`, after the landing or the start. It
-refuses nothing and changes no exit code there: it returns each fault with its repair to the writer, in the same run. A
+refuses nothing and changes no exit code there: it returns each fault with its repair to the writer, in the same run.
+One exception: a launch from the Conductor window or the owner is read BEFORE the start. A brief with a fault then
+starts nothing, exits 5, and returns each fault with its repair; the same brief launched again unchanged starts. A
 sentence that the old text already held is never read. Each run is one row in runs.jsonl (RM_GUIDING_PROSE_DIR, else
 guiding_prose/ in the Dispatcher's state dir). RM_GUIDING_PROSE_READER=0 turns the model reader off; it also stays off when no agent reads
 the output (no CLAUDECODE). RM_GUIDING_PROSE_CUT=publish|launch cuts a door (the recheck then reads it as dead).
@@ -518,7 +520,14 @@ def render(res, principal=None):
     """The text a writer reads; "" when there is nothing to say."""
     out, rd = [], res["reader"]
     done = "The brief is sent and the run has started." if res.get("door") == "launch" else "The landing is complete."
-    if res["faults"]:
+    if res["faults"] and res.get("door") == "returned":
+        out.append("GUIDING PROSE: RETURNED BEFORE THE START: %d fault(s) in %d new sentence(s) of the brief. Nothing "
+                   "started and nothing was sent." % (len(res["faults"]), res["sentences"]))
+        out += [line_of(f) for f in res["faults"]]
+        out.append("REPAIR: correct the brief file and launch again. The same brief launched again unchanged starts as "
+                   "written, and its faults print as a note. A meaning that you cannot find: python3 "
+                   "src/RimMandrake/Utils/guiding_prose.py unfindable --file F --line N --term T --question Q")
+    elif res["faults"]:
         head = "%d fault(s) in %d new sentence(s) of %s. Nothing was refused." % (
             len(res["faults"]), res["sentences"], ", ".join(res["files"]))
         out.append("GUIDING PROSE: " + (("NOTE (form, recorded for the %s): " % principal) if principal else "") + head + " " +
@@ -635,12 +644,52 @@ def check_brief(brief, door="launch", env=None, reader=None):
                        sents_by={BRIEF_PATH: sents})
 
 
-def after_launch(brief, item=None):
-    """What `launch` adds to its text once the run has started. Never raises."""
+def _returned_path():
+    return os.path.join(data_dir(), "returned_briefs.txt")
+
+
+def _brief_key(brief):
+    return hashlib.sha1(brief.encode("utf-8")).hexdigest()[:16]
+
+
+def before_launch(brief, item=None, env=None):
+    """For the Conductor window or the owner, before the start -> (result or None, text). A non-empty text means: do
+    not start; the text names each fault with its repair. The same brief text is returned once only: launched again
+    unchanged, it starts, and `after_launch` prints its faults as a NOTE. A launched run or a program gets (None, "").
+    Never raises: a broken check gives (None, "") and `after_launch` says UNMEASURED after the start."""
+    env = os.environ if env is None else env
+    if env.get("RM_GUIDING_PROSE_CUT") == "launch":
+        return None, ""
+    try:
+        lint()
+        import principal as P
+        if not P.who(env):
+            return None, ""
+        res = check_brief(brief, env=env)
+        if not res["faults"]:
+            return res, ""
+        key = _brief_key(brief)
+        try:
+            with open(_returned_path(), encoding="utf-8") as f:
+                if key in f.read().split():
+                    return res, ""
+        except FileNotFoundError:
+            pass
+        with open(_returned_path(), "a", encoding="utf-8") as f:
+            f.write(key + "\n")
+        record("launch-returned", res, env=env, item=item)
+        return res, render(dict(res, door="returned"))
+    except Exception:  # noqa: BLE001  a broken check before the start stops nothing; the check after says so
+        return None, ""
+
+
+def after_launch(brief, item=None, res=None):
+    """What `launch` adds to its text once the run has started. `res`: the result `before_launch` already read. Never
+    raises."""
     if os.environ.get("RM_GUIDING_PROSE_CUT") == "launch":
         return ""
     try:
-        res = check_brief(brief)
+        res = res or check_brief(brief)
         row = record("launch", res, item=item)
         with open(_sent_path(), "a", encoding="utf-8") as f:
             f.write("".join(_key(s) + "\n" for s in sentences(brief)))
@@ -705,11 +754,19 @@ def _publish_door(env):
 
 
 def _launch_door(env):
-    """detached_helper.py's own main with the start itself replaced. -> "ok" or the cause."""
+    """detached_helper.py's own main with the start itself replaced, played twice. -> "ok" or the cause. First as the
+    Conductor window: the planted brief must come back before the start (exit 5). Then as a launched run: it must start
+    and return the fault after. The first play sends nothing, so the second still reads the planted sentence."""
     code = ("import sys; sys.path.insert(0, %r); import detached_helper as D; D.launch = D.OWN_LAUNCH = lambda *a, **k: (0, 'started');"
             "sys.exit(D.main(['launch', '--seat', 'BENCH', '--item', 'PLANT_A_LAUNCH_RECHECK', '--budget-usd', '0', '--brief', %r]))"
             % (RIMFLOW, PLANT))
-    r = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, env=env, timeout=DOOR_TIMEOUT_S, cwd=TOP)
+    conductor = {k: v for k, v in env.items() if k != "RM_ROLE_UNIT"}
+    conductor.update(AGENT_SEAT="BENCH", RIMFLOW_SEAT="BENCH")
+    r = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, env=conductor, timeout=DOOR_TIMEOUT_S, cwd=TOP)
+    if r.returncode != 5 or r.stdout.startswith("started") or "retired-name" not in r.stdout:
+        return "the Conductor's planted brief was not returned before the start (exit %s: %s)" % (r.returncode, (r.stdout + r.stderr).strip())
+    run = dict(env, RM_ROLE_UNIT=env.get("RM_ROLE_UNIT") or "rm-gprose-recheck")
+    r = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, env=run, timeout=DOOR_TIMEOUT_S, cwd=TOP)
     if r.returncode != 0 or "started" not in r.stdout:
         return "the planted launch did not start (exit %s: %s)" % (r.returncode, (r.stdout + r.stderr).strip())
     return "ok" if "retired-name" in r.stdout else "a launch sent a planted fault and returned nothing"

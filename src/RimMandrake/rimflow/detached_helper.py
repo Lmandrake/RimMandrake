@@ -1318,15 +1318,29 @@ def skill_path_warning(brief):
             "Name the paths for its kind of work from skills/BY_WORK.md")
 
 
-def prose_after(brief, item):
-    """-> the faults of the brief's new sentences with their repairs, "" for none (Utils/guiding_prose.py; page
-    design/specs/2026-11-23-guiding-prose-check/boundary.md). Run by main() after the start. It refuses nothing."""
+def _guiding_prose():
+    utils = os.path.join(os.path.dirname(HERE), "Utils")
+    if utils not in sys.path:
+        sys.path.insert(0, utils)
+    import guiding_prose
+    return guiding_prose
+
+
+def prose_before(brief, item):
+    """-> (result or None, text). For the Conductor window or the owner, before the start: a non-empty text names the
+    brief's faults with their repairs, and main() starts nothing (exit 5). Once per brief text; never raises."""
     try:
-        utils = os.path.join(os.path.dirname(HERE), "Utils")
-        if utils not in sys.path:
-            sys.path.insert(0, utils)
-        import guiding_prose
-        return guiding_prose.after_launch(brief, item)
+        return _guiding_prose().before_launch(brief, item)
+    except Exception:  # noqa: BLE001  a check that cannot load before the start stops nothing; prose_after says so
+        return None, ""
+
+
+def prose_after(brief, item, res=None):
+    """-> the faults of the brief's new sentences with their repairs, "" for none (Utils/guiding_prose.py; page
+    design/specs/2026-11-23-guiding-prose-check/boundary.md). Run by main() after the start. It refuses nothing.
+    `res`: what prose_before already read, so the reader is not asked twice."""
+    try:
+        return _guiding_prose().after_launch(brief, item, res)
     except Exception as e:  # noqa: BLE001  the run has started
         return "GUIDING PROSE: UNMEASURED, the check did not load (%s: %s). The run has started." % (type(e).__name__, e)
 
@@ -2558,12 +2572,17 @@ def main(argv=None):
                 session, brief, first = cr["session"], cr["brief"], cr["line"]
                 env = cr.get("env", env)
                 extra.update(cr["extra"])
-            rc, text = launch({"CONDUCTOR": "BENCH"}.get(args.seat.upper(), args.seat.upper()), args.item, brief, args.model,
-                              args.max_s, budget, clone=args.clone, skip_launch_checks=args.skip_launch_checks,
-                              env=env, resume_session=session, extra=extra or None)
-            text = (first + "\n" if first else "") + carried + text
+            pre, returned = prose_before(written, args.item) if launch is OWN_LAUNCH else (None, "")
+            if returned:        # the Conductor's brief has a fault: nothing starts; the same brief again starts
+                rc, text = 5, returned
+            else:
+                rc, text = launch({"CONDUCTOR": "BENCH"}.get(args.seat.upper(), args.seat.upper()), args.item, brief,
+                                  args.model, args.max_s, budget, clone=args.clone,
+                                  skip_launch_checks=args.skip_launch_checks, env=env, resume_session=session,
+                                  extra=extra or None)
+                text = (first + "\n" if first else "") + carried + text
             if rc == 0 and launch is OWN_LAUNCH:     # the writer reads the faults of the brief's new sentences; it refuses nothing
-                prose = prose_after(written, args.item)
+                prose = prose_after(written, args.item, pre)
                 text += "\n" + prose if prose else ""
     elif args.cmd == "finish":
         keep_off_result(args.unit)      # before anything prints: never into claude's result or error file

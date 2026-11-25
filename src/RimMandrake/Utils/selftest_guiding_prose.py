@@ -22,6 +22,7 @@ FAILS = []
 TMP = tempfile.mkdtemp(prefix="rm-selftest-gprose-")
 os.environ["RM_GUIDING_PROSE_DIR"] = os.path.join(TMP, "runs")
 os.environ["RM_GUIDING_PROSE_READER"] = "0"
+os.environ["RM_ROLE_UNIT"] = "rm-selftest-gprose"     # a launched run, never a principal, unless a test says otherwise
 SPEC = os.path.join("design", "specs", "2026-11-19-plain-english-rule-docs")
 # the section as it stood before de63778138e0, and as repaired there (the lines the owner quoted, word for word)
 PIT_OLD = """## A pit is a SUPERDEEP cell
@@ -332,11 +333,16 @@ def t_a_publish_with_faults_still_lands():
               "publish: the check runs in main, outside the clone lock")
 
 
-def launch_main(brief, rc=0, boom=None, stand_in=False):
+def launch_main(brief, rc=0, boom=None, stand_in=False, principal=False):
+    """principal: the launch comes from the Conductor window (seat BENCH, no RM_ROLE_UNIT)."""
     import detached_helper as DH
     old, oldc, own = DH.launch, G.check_brief, DH.OWN_LAUNCH
+    oldenv = {k: os.environ.get(k) for k in ("RM_ROLE_UNIT", "AGENT_SEAT")}
     started = []
     try:
+        if principal:
+            os.environ.pop("RM_ROLE_UNIT", None)
+            os.environ["AGENT_SEAT"] = "BENCH"
         DH.launch = lambda *a, **k: (started.append(a) or (rc, "launched: unit x" if rc == 0 else "refused: no"))
         DH.OWN_LAUNCH = own if stand_in else DH.launch
         if boom:
@@ -352,6 +358,11 @@ def launch_main(brief, rc=0, boom=None, stand_in=False):
         return got, buf.getvalue(), started
     finally:
         DH.launch, G.check_brief, DH.OWN_LAUNCH = old, oldc, own
+        for k, v in oldenv.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
 
 
 def t_a_launch_with_faults_still_starts():
@@ -376,6 +387,26 @@ def t_a_sentence_already_sent_in_a_brief_is_silent():
     _, out, _ = launch_main("# Brief five\n\nThe clerk should wait.\n", rc=2)
     _, out, _ = launch_main("# Brief five\n\nThe clerk should wait.\n")
     check("should" in out, "sent: a refused launch sent nothing, so the next one is checked")
+
+
+def t_a_principal_launch_gets_its_faults_before_the_start():
+    b = "# Brief seven\n\nThe porter should carry the crate to the belt.\n"
+    rc, out, started = launch_main(b, principal=True)
+    check(rc == 5 and started == [], "before: the Conductor's faulty brief starts nothing and exits 5 (rc %s, %d started)" % (rc, len(started)))
+    check("RETURNED BEFORE THE START" in out and "the belt" in out and "REPAIR" in out and "launched: unit" not in out,
+          "before: the text names each fault and its repair, and says nothing started (%s)" % out)
+    rc, out, started = launch_main(b.replace("should carry", "carries"), principal=True)
+    check(rc == 5 and started == [] and "the belt" in out and "should" not in out.split("REPAIR")[0],
+          "before: a repaired brief is read again and returns only what is left (%s)" % out)
+    rc, out, started = launch_main(b, principal=True)
+    check(rc == 0 and len(started) == 1 and out.startswith("launched: unit x") and "NOTE" in out and "the belt" in out,
+          "before: the same brief launched again unchanged starts as written, its faults a NOTE after (%s)" % out)
+    rc, out, started = launch_main("# Brief eight\n\nRun the test. Write the note.\n", principal=True)
+    check(rc == 0 and len(started) == 1 and "GUIDING PROSE" not in out, "before: a brief with no fault starts at once (%s)" % out)
+    rc, out, started = launch_main("# Brief nine\n\nThe weaver should go to the belt.\n")
+    check(rc == 0 and len(started) == 1 and "the belt" in out, "before: a launch by a program or a launched run starts as before")
+    rc, out, started = launch_main("# Brief ten\n\nThe baker should go to the belt.\n", principal=True, boom=RuntimeError("planted"))
+    check(rc == 0 and len(started) == 1 and "UNMEASURED" in out, "before: a check that raises starts the run and says so (%s)" % out)
 
 
 def t_a_broken_check_stops_nothing():
@@ -470,6 +501,7 @@ def main():
     t_a_publish_with_faults_still_lands()
     t_a_launch_with_faults_still_starts()
     t_a_sentence_already_sent_in_a_brief_is_silent()
+    t_a_principal_launch_gets_its_faults_before_the_start()
     t_a_broken_check_stops_nothing()
     t_a_principal_gets_a_note()
     t_the_check_verb_exits_for_a_caller()
