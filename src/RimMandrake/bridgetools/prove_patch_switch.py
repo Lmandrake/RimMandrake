@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Live proof of jawa/patch_switch on ArchSmall, a fresh quicktest with Explosive Knockback loaded.
+"""Live proof of jawa/patch_switch on one Archmagi game (default ArchSmall), a fresh quicktest with Explosive Knockback loaded.
 Page: design/specs/2026-11-23-bridge-v2/boundary.md, section THE PATCH SWITCH.
 
     python.exe prove_patch_switch.py                 the rows on the Explosive Knockback job-override prefix
     python.exe prove_patch_switch.py --patch <id>    the rows on another patch id from action=list
+    python.exe prove_patch_switch.py --game ArchBig  on another game that is free
 
 The off step taints the game process until restart (the switch is an overlay entry of class PUT BACK).
 It writes design/specs/2026-11-23-bridge-v2/live/mutants/patch_switch_result.md; its last line is
@@ -71,7 +72,7 @@ def proof(s, wanted):
         raise CouldNotLook(f"{wanted} names {len(pick)} listed patches; ids: {[p['id'] for p in ours]}")
     target = pick[0]
     pid = target["id"]
-    if target["kind"] == "transpiler" or target["originalsOfPatchMethod"] != 1 or target["offRefusal"] or target["state"] != "on":
+    if target["kind"] == "transpiler" or target.get("originalsOfPatchMethod") != 1 or target.get("offRefusal") or target["state"] != "on":
         raise CouldNotLook(f"{pid} is not a countable patch of one original that is on: {target}")
 
     ok(action="arm_count", patch=pid)
@@ -108,11 +109,11 @@ def proof(s, wanted):
         bench.get("message"))
 
 
-def canonical_row():
+def canonical_row(game):
     # The tool's own CANONICAL_SAVE refusal is the offline unit off-refusals: loading a canonical save to poke it is not allowed.
     # The live row reads the refusal that stands in front of it: a session on a canonical save does not open.
     try:
-        scene.open("ArchSmall", needs={"map": CANONICAL}).close()
+        scene.open(game, needs={"map": CANONICAL}).close()
         got = "opened"
     except scene.Refused as e:
         got = e.name
@@ -133,11 +134,12 @@ def write(verdict):
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--patch", default=WANT, help="a patch id or Type.Method from action=list")
+    parser.add_argument("--game", default="ArchSmall", help="the game to prove it on (its companion must hold jawa/patch_switch)")
     args = parser.parse_args()
     try:
-        with scene.open("ArchSmall", needs={"map": "fresh:quicktest", "mods": ["ExplosiveKnockback"], "overlay": "none"}) as s:
+        with scene.open(args.game, needs={"map": "fresh:quicktest", "mods": ["ExplosiveKnockback"], "overlay": "none"}) as s:
             proof(s, args.patch)
-        canonical_row()
+        canonical_row(args.game)
     except (CouldNotLook, scene.CallFailed, scene.Refused, scene.Fault, OSError, KeyError, TypeError, ValueError) as exc:
         write(f"VERDICT COULD NOT LOOK {type(exc).__name__}: {str(exc)[:300]}")
         return 2

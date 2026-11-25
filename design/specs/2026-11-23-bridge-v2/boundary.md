@@ -687,7 +687,8 @@ Item `RIMMANDRAKE_BUILD_MUTANTS_BY_OVERLAY_AUTHOR_DOES_NOT_CHOOSE`. Tool `jawa/p
 `JawaBenchPatchSwitchCore.cs` (pure: the names, the choice of one patch, the refusals, the counters). The offline tests are in
 `src/RimMandrake/bridgetools/selftest_patch_switch.py` (harness `PatchSwitchSelfTest/Program.cs`) and
 `selftest_deviation_record.py` (`t_one_patch_entry_is_repaid_alone`). The live proof is
-`src/RimMandrake/bridgetools/prove_patch_switch.py`. It writes `live/mutants/patch_switch_result.md`. It is UNRUN.
+`src/RimMandrake/bridgetools/prove_patch_switch.py [--game <name>]`, on a fresh process of a free game. It writes
+`live/mutants/patch_switch_result.md`, whose last line is its verdict.
 
 The switch takes one of our Harmony patches off and puts it back while the game runs. Two call counters show that the
 change took. `action=list` gives each patch whose patch method is in the assembly of a running `mandrake.*` mod.
@@ -784,6 +785,6 @@ LIMITS: none. The draw, the lint and the judgement are bounded by the size of th
 | Both receipts are in the scene's history. `history --killed` counts a KILLED line only when its two runs are run lines of the ledger with the same receipts, and the red one is PLANTED. | `t_both_receipts_are_in_the_scene_history` |
 | A kept run is read from the judge's own verdict: its first failed condition reaches the both-ways judgement. | `t_a_kept_run_is_read_from_the_judge_verdict` |
 
-Live test (UNRUN): `python.exe src\RimMandrake\Utils\scene.py both-ways src\RimMandrake\ExplosiveKnockback\proof\scene_storeroom_pit.py`
+Live test: `python.exe src\RimMandrake\Utils\scene.py both-ways src\RimMandrake\ExplosiveKnockback\proof\scene_storeroom_pit.py`
 on ArchBig (the scene's game). The green run must read SUCCESS and the red run KILLED. Its check is
 `scene_mutants.py history ExplosiveKnockback --killed`.
