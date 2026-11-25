@@ -50,11 +50,18 @@ from 1:20 PM PST: context 150k at start, 330k at the first save, about 420k at t
 | (no ticket) PLAYTEST scene: the FlowWorks 'fluids' run ended in 4 frames, before the cross-call | scene repaired | 80ede465f9 |
 
 ## Next, in order
-1. PEN A2: lane job J20261125T222034Z-4d50a4 (sha f9643d71c7). The run before (J20261125T220757Z-226592) built and
-   loaded a fresh keeper; pen_release selected 65, released 20, and 45 stayed in Wait and did not move in 600 ticks.
-   This rerun names each unmoved animal's kind and job ("unmoved kind/job" in the FAIL line). Class it: the mod
-   (pen_release / pen_pin, JawaBenchPenTools.cs: EndCurrentJob lets the think tree pick Wait again), the check, or
-   the scene (for example heat, night, downed animals or flyers in the pens). Fix it test first and run it again.
+1. PEN A2: two lane runs on a freshly built keeper (J20261125T220757Z-226592, J20261125T222034Z-4d50a4, sha
+   f9643d71c7) agree: pen_release selects 65, ends every Wait, and the think tree at once gives 47 of them a NEW
+   plain Wait (jobs right after release {'Wait': 47, 'GotoWander': 18}); those 47 never move in 600 ticks. Every pen
+   kind is in the 47 (2 to 4 of each), so it is not one species. Ruled out: a companion patch holding artboard pawns
+   (ArtboardPawns only marks them), and avoidWander on the RM_FE_Ash_Deep floor (it has none; pathCost 2).
+   Vanilla gives a plain Wait only by JobGiver_Idle (50 ticks; decompiled 1.6), so wander FAILS for them every think.
+   THEORY to test first: wander refuses cells that are dangerous for the pawn, temperature included, and these roofed
+   Pyrelands pens (~50 C) sit outside most kinds' safe range, so those animals idle. One lane run decides it: add to
+   PEN2's detail, per unmoved animal, `jawa/thing_ambient_temp thing=<id>` (cellTemp) beside its comfortable range
+   (a stat read: ComfyTemperatureMin/Max). If the theory holds, the fault is the review layout (human_review.py pens
+   too hot for their animals, so the owner sees statues even after release), not the pen tool: fix the layout (cool
+   pens, or the release reports heat-held animals by name) test first, then rerun PEN2.
 2. BRIDGE_TPS_REVIEW2_FIXES_1 C3: the controlled interruption matrix, items 1 and 2 of design/RimMandrake/tps_record.md
    §Acceptance (the doc rewrite puts item 3 in C4), read from the record files (tps_record.py, tps_observer.py), with
    jawa/tps_test_block (0.5-120 s main-thread blocks): 2-10 s hitches and 40/90 s blocks as ONE incident each, a save
