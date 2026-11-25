@@ -15,6 +15,13 @@ import tempfile
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import publish as P  # noqa: E402
 
+# the machine-wide push lock (RM_ROOT/.publish-push.lock) of this run's publishes lives in a temp root, so a selftest
+# never waits on, nor holds up, a real ./publish (children read PUBLISH_RM_ROOT, this process P.RM_ROOT)
+os.makedirs(os.path.expanduser("~/.cache/publish-selftest"), exist_ok=True)
+P.RM_ROOT = os.environ["PUBLISH_RM_ROOT"] = tempfile.mkdtemp(prefix="lockroot-",
+                                                             dir=os.path.expanduser("~/.cache/publish-selftest"))
+__import__("atexit").register(shutil.rmtree, P.RM_ROOT, True)
+
 ROOT = os.path.expanduser("~/.cache/publish-selftest")
 ENV = {"GIT_AUTHOR_NAME": "t", "GIT_AUTHOR_EMAIL": "t@t", "GIT_COMMITTER_NAME": "t",
        "GIT_COMMITTER_EMAIL": "t@t", "GIT_CONFIG_GLOBAL": "/dev/null"}

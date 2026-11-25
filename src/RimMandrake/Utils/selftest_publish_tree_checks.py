@@ -17,11 +17,19 @@ import json
 import os
 import subprocess
 import sys
+import shutil
 import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import publish as P  # noqa: E402
+
+# the machine-wide push lock (RM_ROOT/.publish-push.lock) of this run's publishes lives in a temp root, so a selftest
+# never waits on, nor holds up, a real ./publish (children read PUBLISH_RM_ROOT, this process P.RM_ROOT)
+os.makedirs(os.path.expanduser("~/.cache/publish-selftest"), exist_ok=True)
+P.RM_ROOT = os.environ["PUBLISH_RM_ROOT"] = tempfile.mkdtemp(prefix="lockroot-",
+                                                             dir=os.path.expanduser("~/.cache/publish-selftest"))
+__import__("atexit").register(shutil.rmtree, P.RM_ROOT, True)
 
 FAILS = []
 

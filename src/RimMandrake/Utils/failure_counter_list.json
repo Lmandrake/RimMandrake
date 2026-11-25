@@ -69,9 +69,9 @@
    "n": 1,
    "why": "polls a unit's state after a start"
   },
-  "src/RimMandrake/Utils/publish.py::land::attempt + 1 < MAX_TRIES": {
+  "src/RimMandrake/Utils/publish.py::land::fails < PUSH_FAIL_TRIES": {
    "n": 1,
-   "why": "the same loop's last try"
+   "why": "failed pushes while origin did not move; on giving up the commit stays intact on HEAD and the refusal names git's words, nothing is charged"
   },
   "src/RimMandrake/Utils/publish.py::land::for attempt in range(MAX_TRIES)": {
    "n": 1,

@@ -82,7 +82,8 @@ def cli_env(clone):
                  RIMFLOW_PROBE="no-reading", RIMFLOW_SCHEDULE=os.path.join(TMP, "no_schedule.json"),
                  RIMFLOW_DRIVER_LOCK="", RM_HOST="archmagi", RIMFLOW_BRIDGE_LOCK=os.path.join(TMP, "bridge.lock"),
                  RIMFLOW_GIT_CWD=clone, RM_FULLTEXT_DIR=os.path.join(TMP, "fulltext"),
-                 RM_PUBLISH_SKIP_TREE_CHECKS="", RM_PUBLISH_SKIP_PIPELINE_CHECKS="")
+                 RM_PUBLISH_SKIP_TREE_CHECKS="", RM_PUBLISH_SKIP_PIPELINE_CHECKS="",
+                 PUBLISH_RM_ROOT=TMP)                 # the machine-wide push lock of the fixture's publishes, not the real one
 
 
 def rimflow(clone, *args):

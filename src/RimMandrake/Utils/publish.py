@@ -9,9 +9,10 @@
 
 It is exactly: `git add --all -- <paths>` + `git commit -- <paths>` (pathspec on the commit, so
 nothing else staged rides along) + a replay of the local commits onto origin/main by plumbing, moved
-there with `git reset --keep` (never a stash; see rebase()) + push, retried up to 8 times when origin
+there with `git reset --keep` (never a stash; see rebase()) + push, retried up to MAX_TRIES times when origin
 moved under it, never forced. It pushes a seat clone
-(/home/mandrake/rm/<seat>) to HEAD:main.
+(/home/mandrake/rm/<seat>) to HEAD:main. Each attempt's fetch, replay and push run under one machine-wide flock
+(push_lock: RM_ROOT/.publish-push.lock), so this machine's publishers take turns at the push instead of racing.
 
 A push that fails for any reason other than a clean non-fast-forward is AMBIGUOUS (the remote may
 have accepted it before the client gave up): it fetches and checks `merge-base --is-ancestor HEAD
@@ -53,7 +54,23 @@ import time
 REMOTE, BRANCH = "origin", "main"
 OWNER_SHARD = "infrastructure/state/ledger/events/OWNER.jsonl"
 RM_ROOT = os.environ.get("PUBLISH_RM_ROOT", "/home/mandrake/rm")
-MAX_TRIES = 8
+# The race limit: lost push races in a row before a landing refuses. Danger it guards: a push that can never land would
+# loop with no end (a remote that rejects for a reason the race test reads as a race, e.g. a protected branch's
+# "[rejected]"), holding this clone's publish.lock. Measured need: 8 lost races in a row with ~13 writers landing at once
+# (2026-11-24, 6:20 and 6:27 PM PST: the Conductor twice and a helper once refused at the old limit of 8); 10x that.
+MAX_TRIES = 80
+# A push that failed while origin did not move (not a race) is retried this many times, paused up to 20 s between.
+# Danger: an origin that is down or refuses this machine would loop with no end. It is the value the race limit shared
+# until 2026-11-24; its need is unmeasured (push_refusal_census.py counts the "push failed (...); retrying" lines).
+PUSH_FAIL_TRIES = 8
+# The pause after a lost race grows 0.5 s a try up to this top, the pause the old limit reached at its 8th try. Danger:
+# uncapped, the pauses of 80 lost races sum to 27 min (0.5 s x 80 x 81 / 2).
+# budget: danger=uncapped, the pauses of 80 lost races sum to 27 min; ends no work: a pause between two tries
+RACE_PAUSE_MAX_S = 4.0
+PUSH_LOCK_NAME = ".publish-push.lock"
+# A waiter for the push lock names the holder this often. Not a limit: it waits while the holder lives (the kernel drops
+# a flock when its holder exits or is killed), and a holder's own git calls are each bounded by GIT_TIMEOUT_S.
+PUSH_LOCK_SAY_S = 30.0     # budget: ends no work: a waiting line on stderr; the wait goes on
 GIT_TIMEOUT_S = float(os.environ.get("PUBLISH_GIT_TIMEOUT", "300"))   # one git call, push included; a hang is a loud TimeoutExpired, not a stall
 before_push = None          # selftest hook: called(attempt) between rebase and push
 before_reset = None         # selftest hook: called() between the replay and the HEAD check
@@ -183,6 +200,89 @@ def clone_lock(top):
         yield
     finally:
         os.close(fd)                                     # closing releases the flock
+
+
+def push_lock_path():
+    return os.path.join(RM_ROOT, PUSH_LOCK_NAME)
+
+
+class PushLock:
+    """The machine-wide exclusive flock one attempt holds across its fetch, replay and push (2026-11-24: ./publish lost
+    the race 8 times in a row and refused, with ~13 runs on this machine landing at once). Never across the tree or
+    pipeline checks: those take minutes and stay parallel. The wait is a guard on progress, not a fixed wait: it waits
+    while the holder lives, and the kernel drops the flock when the holder exits or is killed. A lock file that cannot be
+    opened (a read-only or missing RM_ROOT) is said on stderr in one line and the push goes on without it: could not
+    look is not a refusal."""
+
+    def __init__(self):
+        self.path, self.fd = push_lock_path(), None
+
+    def take(self):
+        fd, whys = None, []
+        for flags in (os.O_CREAT | os.O_RDWR, os.O_RDONLY):      # read-only still locks: flock needs no write access
+            try:
+                fd = os.open(self.path, flags, 0o644)
+                break
+            except OSError as e:
+                if (e.strerror or str(e)) not in whys:
+                    whys.append(e.strerror or str(e))
+        if fd is None:
+            print("publish: could not open the push lock %s (%s); pushing without it" % (self.path, "; ".join(whys)),
+                  file=sys.stderr, flush=True)
+            return
+        began, said = time.monotonic(), 0
+        while True:
+            try:
+                fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                break
+            except BlockingIOError:
+                if time.monotonic() - began >= said + PUSH_LOCK_SAY_S:
+                    said += PUSH_LOCK_SAY_S
+                    print("publish: waiting %d s for the push lock %s, held by %s" % (
+                        time.monotonic() - began, self.path, self._holder() or "a publisher"), file=sys.stderr, flush=True)
+                time.sleep(0.05)
+            except OSError as e:                                   # a filesystem with no flock
+                os.close(fd)
+                print("publish: could not lock the push lock %s (%s); pushing without it" % (self.path, e.strerror or e),
+                      file=sys.stderr, flush=True)
+                return
+        self.fd = fd
+        try:
+            os.ftruncate(fd, 0)
+            os.write(fd, ("%d %s\n" % (os.getpid(), " ".join(sys.argv)[:200])).encode())
+        except OSError:
+            pass                                                   # opened read-only: the lock holds all the same
+
+    def _holder(self):
+        try:
+            with open(self.path) as f:
+                return f.read().strip()
+        except OSError:
+            return ""
+
+    def drop(self):
+        if self.fd is not None:
+            os.close(self.fd)                                      # closing releases the flock
+            self.fd = None
+
+    @contextlib.contextmanager
+    def released(self):
+        """Let the machine's other publishers push while this one does something slow (a DLL rebuild)."""
+        self.drop()
+        try:
+            yield
+        finally:
+            self.take()
+
+
+@contextlib.contextmanager
+def push_lock():
+    lk = PushLock()
+    lk.take()
+    try:
+        yield lk
+    finally:
+        lk.drop()
 
 
 def toplevel(cwd="."):
@@ -612,32 +712,43 @@ def warn_stranded(stranded):
 
 
 def land(top):
+    """Replay onto origin and push, retried while origin moves under it. Each try's fetch, replay and push hold the
+    machine-wide push lock (push_lock); the classification and the pause between tries do not. A retry repeats only
+    what the moved origin can change (the replay, a DLL rebuild when DLL pairs conflict, the pre-push hook): the tree
+    and pipeline checks ran once before, in _publish."""
     dest, track, label = target_ref(top)
-    guard_retried = False
+    guard_retried, fails, races = False, 0, 0
     for attempt in range(MAX_TRIES):
-        stranded = None
-        try:
-            rebuilt = rebase(top)
-            if rebuilt:
-                rebuild_dlls(top, rebuilt)
-            head = out(top, "rev-parse", "HEAD")
-        except Stranded as s:
-            stranded, head = s, s.tip                    # land the replay; only this clone's branch waits
-        if label == BRANCH and is_ancestor(top, head, track):
-            warn_stranded(stranded)
-            return head                                  # nothing local left to push
-        if before_push:
-            before_push(attempt)
-        r = run(top, "push", "-q", REMOTE, "%s:%s" % (head, dest), check=False)
-        if not r.returncode:
-            run(top, "fetch", "-q", REMOTE, check=False)
-            warn_stranded(stranded)
-            return head
-        err = (r.stderr or r.stdout).strip()
-        # Ambiguity check before any retry: the remote may have taken it before we gave up.
-        run(top, "fetch", "-q", REMOTE, check=False)
-        if ref_exists(top, track) and is_ancestor(top, head, track):
-            print("push reported failure but %s already contains %s — it landed" % (label, head[:12]))
+        stranded = landed = None
+        with push_lock() as lk:
+            try:
+                rebuilt = rebase(top)
+                if rebuilt:
+                    with lk.released():                  # minutes of msbuild: the machine's other publishers push
+                        rebuild_dlls(top, rebuilt)
+                head = out(top, "rev-parse", "HEAD")
+            except Stranded as s:
+                stranded, head = s, s.tip                # land the replay; only this clone's branch waits
+            up = out(top, "rev-parse", track) if ref_exists(top, track) else None
+            if label == BRANCH and is_ancestor(top, head, track):
+                landed = "nothing local left to push"
+            else:
+                if before_push:
+                    before_push(attempt)
+                r = run(top, "push", "-q", REMOTE, "%s:%s" % (head, dest), check=False)
+                # On success the fetch levels the tracking ref; on failure it is the ambiguity check before any retry:
+                # the remote may have taken it before we gave up.
+                run(top, "fetch", "-q", REMOTE, check=False)
+                if not r.returncode:
+                    landed = "pushed"
+                elif ref_exists(top, track) and is_ancestor(top, head, track):
+                    print("push reported failure but %s already contains %s — it landed" % (label, head[:12]))
+                    landed = "taken"
+                err = (r.stderr or r.stdout).strip()
+                # origin moved since this try's fetch: the failure is the race, whatever words it took (two pushes at
+                # once read "[remote rejected] ... cannot lock ref", "failed to push some refs"), as land_ledger reads it
+                moved = ref_exists(top, track) and out(top, "rev-parse", track) != up
+        if landed:
             warn_stranded(stranded)
             return head
         bad = guard_dlls(err)
@@ -653,23 +764,27 @@ def land(top):
                   % (GUARD_TAG, ", ".join(sorted(bad))))
             rebuild_dlls(top, bad)
             continue
-        nonff = re.search(r"non-fast-forward|fetch first|\[rejected\]|failed to update ref", err)
-        if not nonff and re.search(r"^pre-push REFUSED", err, re.M):
+        race = moved or re.search(r"non-fast-forward|fetch first|\[rejected\]|failed to update ref", err)
+        if not race and re.search(r"^pre-push REFUSED", err, re.M):
             # RIMMANDRAKE_STOP_RETRYING_A_PRE_PUSH_REFUSAL: a hook's verdict, not a race; retrying hid its reason
             raise Refuse("push refused by the pre-push hook (nothing pushed):\n%s" % err)
-        if not nonff:
-            if attempt + 1 < MAX_TRIES:
+        if not race:
+            fails += 1
+            if fails < PUSH_FAIL_TRIES:
                 print("push failed (%s); retrying" % err.splitlines()[-1] if err else "push failed")
-                time.sleep(min(2 ** attempt, 20))
+                time.sleep(min(2 ** (fails - 1), 20))
                 continue
             raise Refuse("push failed: %s" % err)
         if label != BRANCH:
             raise Refuse("%s already holds a submission this one does not contain — the seat has not "
                          "landed it yet (it deletes the submit ref when it does). Not forcing.\n%s"
                          % (label, err))
+        races += 1
         print("origin moved (attempt %d); rebasing and retrying" % (attempt + 1))
-        time.sleep(0.5 * (attempt + 1))
-    raise Refuse("origin kept moving: %d non-fast-forward rejections in a row" % MAX_TRIES)
+        time.sleep(min(0.5 * (attempt + 1), RACE_PAUSE_MAX_S))
+    raise Refuse("origin kept moving: could not land after %d tries, %d of them lost push races (the limit MAX_TRIES = "
+                 "%d is 10x the 8 lost races in a row measured on 2026-11-24). Nothing is wrong with the commit: it "
+                 "stays on HEAD; run ./publish again" % (MAX_TRIES, races, MAX_TRIES))
 
 
 def _owed_lines(ours, base, theirs):
@@ -704,13 +819,16 @@ def land_ledger(top, named, msg):
         r = subprocess.run(["git", "cat-file", "blob", "%s:%s" % (rev, p)], cwd=top, capture_output=True,
                            timeout=GIT_TIMEOUT_S)
         return r.stdout if not r.returncode else b""
-    for attempt in range(MAX_TRIES):
+
+    def one(attempt):
+        """One try, under the push lock: fetch, replay the lines, push. -> ("landed"|"held", sha), ("race", None) or
+        ("route", None) when the ordinary route must take it."""
         if run(top, "fetch", "-q", REMOTE, check=False).returncode or not ref_exists(top, track):
-            return None
+            return "route", None
         up = out(top, "rev-parse", track)
         base = run(top, "merge-base", "HEAD", up, check=False).stdout.strip()
         if not base:
-            return None
+            return "route", None
         idx = os.path.join(out(top, "rev-parse", "--absolute-git-dir"), "ledger-landing.%d.idx" % os.getpid())
         env = git_env(GIT_INDEX_FILE=idx)
 
@@ -726,7 +844,7 @@ def land_ledger(top, named, msg):
                 ours, theirs, was = seat_sync._read_shard(g, p), blob(up, p), blob(base, p)
                 new = None if ours is None else _owed_lines(ours, was, theirs)
                 if new is None:
-                    return None
+                    return "route", None
                 taken_out |= bool(collections.Counter(was.splitlines(True)) - collections.Counter(ours.splitlines(True)))
                 if new:
                     changed = True
@@ -734,13 +852,13 @@ def land_ledger(top, named, msg):
                     plumb("update-index", "--add", "--cacheinfo", "100644,%s,%s" % (sha, p))
             if not changed:
                 if taken_out:                            # a line removed here is no append: the ordinary route commits it
-                    return None
+                    return "route", None
                 # another writer's landing in this clone carried our lines: they are on origin, in the commit that says so
                 held = out(top, "log", "-1", "--format=%H", up, "--", *named)
                 if held:
                     print("already on %s/%s: another landing carried these lines" % (REMOTE, BRANCH))
-                    _level_if_free(top)
-                return held or None
+                    return "held", held
+                return "route", None
             tip = plumb("commit-tree", plumb("write-tree"), "-p", up, "-F", "-", inp=msg.encode())
         finally:
             for f in (idx, idx + ".lock"):
@@ -751,8 +869,7 @@ def land_ledger(top, named, msg):
         r = run(top, "push", "-q", REMOTE, "%s:%s" % (tip, dest), check=False)
         run(top, "fetch", "-q", REMOTE, check=False)
         if not r.returncode or (ref_exists(top, track) and is_ancestor(top, tip, track)):
-            _level_if_free(top)
-            return tip
+            return "landed", tip
         err = (r.stderr or r.stdout).strip()
         # origin moved since this try's fetch: the failure is the race, whatever words it took (git's "[remote rejected]
         # cannot lock ref", or the lint's NOT_APPEND against the newer tip). A verdict on the lines repeats on the next try.
@@ -760,8 +877,17 @@ def land_ledger(top, named, msg):
         if not moved and re.search(r"^pre-push REFUSED", err, re.M):
             raise Refuse("push refused by the pre-push hook (nothing pushed):\n%s" % err)
         if not moved and not re.search(r"non-fast-forward|fetch first|\[rejected\]|failed to update ref", err):
-            return None                                  # the ordinary route retries it and names the cause
-        time.sleep(0.5 * (attempt + 1))
+            return "route", None                         # the ordinary route retries it and names the cause
+        return "race", None
+    for attempt in range(MAX_TRIES):
+        with push_lock():
+            how, sha = one(attempt)
+        if how in ("landed", "held"):
+            _level_if_free(top)                          # outside the push lock: a sync is this clone's business
+            return sha
+        if how == "route":
+            return None
+        time.sleep(min(0.5 * (attempt + 1), RACE_PAUSE_MAX_S))
     return None
 
 
