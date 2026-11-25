@@ -44,9 +44,11 @@ CONTROLS = {
                  "cinderfall), pacing, threat-point scaling",
         "items": ["TESTENV_FLOODS_HARDEN_SEASON_CRASHES_PARTY"]},
     "random_events_off": {
-        "what": "random mental states and diseases off",
-        "hides": "mood-break and disease interactions with the mod",
-        "items": []},
+        "what": "random mental states and diseases off; the Sickly trait (Immunity -1) removed from player colonists and "
+                "read back, because its own disease roll obeys no DebugSettings field",
+        "hides": "mood-break and disease interactions with the mod; a row ABOUT disease or immunity must not use this "
+                 "control",
+        "items": ["HARNESS_REPAIR_CAUSE_6236AE26_2"]},
     "wild_spawner_off": {
         "what": "wild-animal replenishment blocked (jawa/wild_spawner_block, dead-man)",
         "hides": "the mod's effect on ongoing wildlife arrival; mapgen wildlife is untouched",
@@ -182,7 +184,8 @@ class QuietSite(object):
             q = H.quiet_world(self.s, self.tx, wild_spawner="wild_spawner_off" in on)
             self.applied["storyteller_off"] = q.evidence.get("readBack")
             self.applied["wild_spawner_off"] = q.evidence.get("wildSpawner")
-            self.applied["random_events_off"] = "read back in storyteller_off readBack"
+            self.applied["random_events_off"] = {"debug": "read back in storyteller_off readBack",
+                                                 "diseaseTraits": q.evidence.get("diseaseTraits")}
             if not q.verified:
                 self.problems.append("quiet_world unverified: %s" % q.residue)
         if "modal_broker" in on:

@@ -142,6 +142,35 @@ def main():
     check("settings restored EXACTLY after an exception",
           w.debug["enableStoryteller"] and w.debug["enableRandomMentalStates"] and w.debug["enableRandomDiseases"]
           and w.difficulty == {"threatScale": 1.0, "allowBigThreats": True}, str(w.debug) + str(w.difficulty))
+    # --- a Sickly colonist's own disease roll (HARNESS_REPAIR_CAUSE_6236AE26_2): Pawn_HealthTracker rolls the trait's
+    # randomDiseaseMtbDays with no DebugSettings gate, so random_events_off must take the trait off player colonists.
+    w = messy()
+    w.pawns["Col1"]["traits"] = [{"def": "SlowLearner", "degree": 0}, {"def": "Immunity", "degree": -1}]
+    w.pawns["Col2"]["traits"] = [{"def": "Immunity", "degree": 1}]                  # super-immune: no disease roll
+    w.pawns["Drifter1"]["traits"] = [{"def": "Immunity", "degree": -1}]             # not ours: left alone
+    with H.SettingsTransaction(w) as tx:
+        r = H.random_events_off(w, tx)
+    check("random_events_off removes Sickly from a player colonist",
+          w.pawns["Col1"]["traits"] == [{"def": "SlowLearner", "degree": 0}], str(w.pawns["Col1"]["traits"]))
+    check("random_events_off keeps super-immune and a non-colonist's Sickly",
+          w.pawns["Col2"]["traits"] == [{"def": "Immunity", "degree": 1}]
+          and w.pawns["Drifter1"]["traits"] == [{"def": "Immunity", "degree": -1}])
+    check("random_events_off verified after the Sickly removal, and records it",
+          r.verified and "Col1" in str(r.evidence), str(r.evidence))
+    w = messy()
+    w.pawns["Col1"]["traits"] = [{"def": "Immunity", "degree": -1}]
+    w.modes.add("traits_blind")
+    with H.SettingsTransaction(w) as tx:
+        r = H.random_events_off(w, tx)
+    check("unreadable traits: random_events_off is NOT verified (could not look is never clean)",
+          not r.verified and r.residue, "%s %s" % (r.verified, r.residue))
+    w = messy()
+    w.debug["enableStoryteller"] = True
+    with H.SettingsTransaction(w) as tx:
+        w.modes.add("traits_blind")
+        q = H.quiet_world(w, tx, wild_spawner=False)
+    check("quiet_world is NOT verified when the Sickly sweep could not look", not q.verified, str(q.residue))
+
     w = messy()
     w.modes.add("settings_lie")
     try:

@@ -315,6 +315,25 @@ class FakeWorld(object):
             return {"success": ok}
         return {"success": False, "message": "fake supports remove only"}
 
+    def _t_jawa_pawn_traits(self, pawn=None, action="list", trait=None, degree=0, **_):
+        """The companion's jawa/pawn_traits reply shape (JawaBenchPawnTools.cs): traits[] of {def, degree} after the act,
+        and `removed`. A pawn's traits live in its row's "traits" key (absent = none). Mode "traits_blind" fails it."""
+        p = self.pawns.get(pawn)
+        if p is None or "traits_blind" in self.modes:
+            return {"success": False, "message": "no such pawn" if p is None else "traits_blind"}
+        ts = p.setdefault("traits", [])
+        removed = 0
+        if action == "remove":
+            have = [t for t in ts if t["def"] == trait]
+            if not have:
+                return {"success": True, "removed": 0, "refused": [{"trait": trait, "why": "pawn does not have it"}],
+                        "traits": copy.deepcopy(ts)}
+            ts.remove(have[0])
+            removed = 1
+        elif action != "list":
+            return {"success": False, "message": "fake supports list and remove only"}
+        return {"success": True, "removed": removed, "refused": [], "traits": copy.deepcopy(ts)}
+
     def _t_jawa_pawn_mental(self, pawn=None, action="list", **_):
         st = self.mental.get(pawn)
         if action == "end":

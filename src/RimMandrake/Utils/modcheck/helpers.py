@@ -322,7 +322,8 @@ QUIET_NOT_SUPPRESSED = (
 def quiet_world(session, tx, wild_spawner=True, log_raids=True):
     """The quiet-world profile for validation runs (map awareness phase 1e). Wires what exists and READS BACK what
     was actually suppressed -- a configured flag is not proof a path obeyed it:
-      * storyteller_off + random_events_off (existing helpers);
+      * storyteller_off + random_events_off (existing helpers; random_events_off also removes the Sickly trait from
+        player colonists, whose own disease roll no DebugSettings field gates: disease_traits_off);
       * DebugSettings.logRaidInfo = true: observation, not suppression -- every raid through
         IncidentWorker_Raid logs `Raid: <faction> <arrival> <strategy> ...` to Player.log (field VERIFIED in
         decompiled 1.6 DebugSettings via RimSage 2026-10-10; the log line per the Opus review, IncidentWorker_Raid);
@@ -362,8 +363,11 @@ def quiet_world(session, tx, wild_spawner=True, log_raids=True):
     verified = (ev["readBack"].get("enableStoryteller") is False and ev["readBack"].get("enableRandomMentalStates") is False
                 and (not log_raids or ev.get("logRaidInfo") != "on" or ev["readBack"].get("logRaidInfo") is True)
                 and not str(ev.get("wildSpawner", "")).startswith("UNVERIFIED"))
-    return HelperResult("quiet_world", acted=st.acted + re_.acted, verified=verified,
-                        residue=[] if verified else ["read-back disagrees: %s" % ev["readBack"]], evidence=ev)
+    ev["diseaseTraits"] = re_.evidence.get("diseaseTraits")
+    residue = [] if verified else ["read-back disagrees: %s" % ev["readBack"]]
+    residue += ["sickly sweep: %s" % x for x in re_.residue]
+    return HelperResult("quiet_world", acted=st.acted + re_.acted, verified=verified and re_.verified,
+                        residue=residue, evidence=ev)
 
 
 def quiet_site_map(session, keep_defs=()):
@@ -388,10 +392,51 @@ def remove_visitors(session, ids):
     return _kill_ids(session, set(ids), "remove_visitors", lambda r: not r.get("dead"), action="vanish")
 
 
+# Trait degrees whose TraitDegreeData.randomDiseaseMtbDays > 0 (rimsage, 1.6 Traits_Spectrum.xml: only Immunity -1,
+# "sickly", 30 days). Pawn_HealthTracker rolls that disease for the pawn itself, with NO DebugSettings gate:
+# enableRandomDiseases gates only StorytellerComp_Disease. MEASURED (HARNESS_REPAIR_CAUSE_6236AE26_2): both support
+# colonists of the Pyrelands visit5 site save are sickly, and five SteveDesktop attempts lost one to Plague 0.9.
+DISEASE_TRAITS = (("Immunity", -1),)
+
+
+def disease_traits_off(session):
+    """Remove each DISEASE_TRAITS degree from every live player colonist (jawa/pawn_traits remove), read back by list.
+    Verified only when every colonist's traits were read after the act and none holds one: a colonist whose traits
+    could not be read is residue ('could not look' is never clean). The removal is a change to the map (a reload of
+    the save undoes it), so nothing is restored."""
+    try:
+        cols = [r["id"] for r in read_pawns(session, health=False) if is_colonist(r) and not r["dead"]]
+    except HelperUnverified as e:
+        return HelperResult("disease_traits_off", verified=False, residue=["colonists unread: %s" % e])
+    removed, residue = [], []
+    for pid in cols:
+        r, err = _try_call(session, "jawa/pawn_traits", pawn=pid, action="list")
+        if r is None:
+            residue.append("%s: traits unread: %s" % (pid, err))
+            continue
+        for d, deg in DISEASE_TRAITS:
+            if any(t.get("def") == d and t.get("degree") == deg for t in r.get("traits") or []):
+                rr, err = _try_call(session, "jawa/pawn_traits", pawn=pid, action="remove", trait=d)
+                if rr is not None and rr.get("removed"):
+                    removed.append((pid, "%s %d" % (d, deg)))
+        after, err = _try_call(session, "jawa/pawn_traits", pawn=pid, action="list")
+        if after is None:
+            residue.append("%s: traits unread after the removal: %s" % (pid, err))
+            continue
+        left = ["%s %s" % (t.get("def"), t.get("degree")) for t in after.get("traits") or []
+                if (t.get("def"), t.get("degree")) in DISEASE_TRAITS]
+        if left:
+            residue.append("%s still holds %s" % (pid, left))
+    return HelperResult("disease_traits_off", acted=len(removed), verified=not residue, residue=residue,
+                        evidence={"colonists": len(cols), "removed": removed})
+
+
 def random_events_off(session, tx):
     tx.set_debug("enableRandomMentalStates", False)
     tx.set_debug("enableRandomDiseases", False)
-    return HelperResult("random_events_off", acted=2, verified=True)
+    d = disease_traits_off(session)
+    return HelperResult("random_events_off", acted=2 + d.acted, verified=d.verified, residue=d.residue,
+                        evidence={"diseaseTraits": d.evidence})
 
 
 # QUIET_SITE_FIX_JAILBREAK_BY_VANISHING: validation_core.keep_pawns_on_map fills this SHARED set with the staged pawns of a
