@@ -32,6 +32,9 @@ Any non-canonical game will do; the test lane's games are disposable.
   FRAME      RIMMANDRAKE_REPAIR_FRAME_HIST_READS_THREE_WAYS_WRONG: after a load, jawa/health's frame-hist session and
              merged strings parse as JSON, an arm starts the session fresh, and 5 s later it holds only those frames
              (no late-merged load frames). Run after EPOCH: it reloads the save EPOCH wrote
+  KEEPER     KEEPER_SAVES_HARDEN_WRONG_SLOT_WRITES A1: save_guard.snapshot on this game's real Saves folder hashes every
+             keeper and holds a store copy of each; a save_base through the guard writes a new save, verified, with no
+             keeper changed (the new save is deleted after: it is the proof's own)
 PROFILE needs a loaded save (with none loaded the companion reads test by design): run it after EPOCH.
 """
 SAVE = "bundle_wb_bridge_epoch"
@@ -43,7 +46,7 @@ import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CLAUSES = ("EVIDENCE", "TPS", "NORTHSTAR", "STATICCALL", "TILECACHE", "PROFILE", "PEN", "EXPLAIN", "HOOKS", "AWARE",
-           "EPOCH", "FRAME")
+           "EPOCH", "FRAME", "KEEPER")
 
 
 def _ok(r):
@@ -226,6 +229,21 @@ def v_FRAME(d):
     if n0 is not None and n1 is not None and n1 - n0 > 5 * 90:
         f.append("5 s after the arm the session grew %d frames: load frames merged late" % (n1 - n0))
     return (1 if f else 0), "; ".join(f) or "both strings parse; arm fresh (%s), +%s frames in 5 s" % (n0, (n1 or 0) - (n0 or 0))
+
+
+def v_KEEPER(d):
+    if d.get("why"):
+        return 2, d["why"]
+    if not d.get("keepers"):
+        return 2, "the Saves folder holds no keeper, so nothing shows the guard keeps one"
+    f = []
+    if d.get("unstored"):
+        f.append("keepers with no store copy: %s" % d["unstored"])
+    sv = d.get("save") or {}
+    if not sv.get("verified"):
+        f.append("save_base through the guard did not verify: %s" % "; ".join(sv.get("problems") or ["no reading"]))
+    return (1 if f else 0), "; ".join(f) or "%d keepers hashed and stored; %s.rws written new (slot %s), no keeper changed" % (
+        d["keepers"], d.get("target"), d.get("slot"))
 
 
 VERDICTS = dict((c, globals()["v_" + c]) for c in CLAUSES)
@@ -657,6 +675,26 @@ def g_FRAME(L):
             "sessionParsesErr": a.get("sessionErr") or b.get("sessionErr"),
             "mergedParsesErr": a.get("mergedErr") or b.get("mergedErr"),
             "n0": n0, "n1": (b.get("session") or {}).get("n")}
+
+
+def g_KEEPER(L):
+    import save_guard
+    import saved_base
+    try:
+        snap = save_guard.snapshot()
+    except OSError as e:
+        return {"why": "cannot back up keepers: %s" % e}
+    keep = snap["keepers"]
+    unstored = sorted(n for n, k in keep.items()
+                      if not os.path.exists(save_guard.store_path(snap["store"], k["sha256"])))
+    slot = "none" if "no save was loaded" in str(L.call("jawa/companion_handshake").get("profileWhy")) else None
+    target = "bundle_keeper_%d" % int(time.time())
+    sv = saved_base.save_base(L.s, snap["saves_dir"], name=target, current_slot=slot)
+    path = os.path.join(snap["saves_dir"], target + ".rws")
+    if os.path.exists(path):
+        os.remove(path)                       # the proof's own save, never a keeper
+    return {"keepers": len(keep), "unstored": unstored, "save": sv, "target": target, "slot": slot,
+            "savesDir": snap["saves_dir"]}
 
 
 def main(argv):

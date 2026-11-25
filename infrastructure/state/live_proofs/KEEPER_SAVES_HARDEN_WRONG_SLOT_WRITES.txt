@@ -1,0 +1,2 @@
+# live proofs of KEEPER_SAVES_HARDEN_WRONG_SLOT_WRITES (bridge_bundle_proof.py; work bundle WB-pipeline-bridge-20261125-192133)
+live-proof A1: python3 src/RimMandrake/Utils/modcheck/live_queue/bridge_bundle_proof.py KEEPER < /dev/null

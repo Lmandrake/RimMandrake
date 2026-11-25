@@ -88,6 +88,16 @@ check("FRAME malformed session string", "FRAME", dict(fr, sessionParses=False), 
 check("FRAME arm does not reset", "FRAME", dict(fr, n0=2400, n1=2700), 1)
 check("FRAME load frames merged late", "FRAME", dict(fr, n1=2100), 1)
 check("PROFILE no save loaded", "PROFILE", {"why": "precondition"}, 2)
+kp = {"keepers": 4, "unstored": [], "save": {"verified": True, "problems": [], "changed": ["bundle_keeper_x.rws"]},
+      "target": "bundle_keeper_x", "slot": "none"}
+check("KEEPER every keeper stored, a new save verified", "KEEPER", kp, 0)
+check("KEEPER a keeper with no store copy", "KEEPER", dict(kp, unstored=["Colony.rws"]), 1)
+check("KEEPER a keeper changed by the save", "KEEPER",
+      dict(kp, save={"verified": False, "problems": ["keeper Colony.rws CHANGED (5 -> 6 bytes)"], "changed": []}), 1)
+check("KEEPER the save went to another slot", "KEEPER",
+      dict(kp, save={"verified": False, "problems": ["no bundle_keeper_x.rws appeared"], "changed": []}), 1)
+check("KEEPER no keeper to guard", "KEEPER", dict(kp, keepers=0), 2)
+check("KEEPER the guard could not back up", "KEEPER", {"why": "cannot back up keepers"}, 2)
 
 print("RESULT: %s" % ("FAIL (%d failing)" % len(FAILS) if FAILS else "PASS (0 failing)"))
 sys.exit(1 if FAILS else 0)
