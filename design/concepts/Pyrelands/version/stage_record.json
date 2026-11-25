@@ -2,10 +2,10 @@
   "schema": 1,
   "mod": "Pyrelands",
   "version": "0.1.0",
-  "stage": "his_walk",
-  "stage_label": "His live walk (Stage 8)",
-  "since": "2026-11-24T15:21:17-08:00",
-  "since_from": "advance by BENCH",
+  "stage": "passed",
+  "stage_label": "Version passed (Passed)",
+  "since": "2026-11-24T19:13:54-08:00",
+  "since_from": "advance by OWNER",
   "at_door": false,
   "seeded": {
     "at": "2026-11-14T16:02:19-08:00",
@@ -439,6 +439,27 @@
         "walk_checks_stand",
         "walk_brief",
         "walk_items_closed"
+      ]
+    },
+    {
+      "from": "his_walk",
+      "to": "passed",
+      "at": "2026-11-24T19:13:54-08:00",
+      "by": "OWNER",
+      "why": "his walk of Pyrelands 0.1.0 on ArchSmall, 2026-11-24 about 7:10 PM PST; next version: more aggressive fire, and grass that declines visibly and leaves dead grass",
+      "unit": null,
+      "confirmed": {
+        "owner_said": "OWNER:1795575810695997798"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "owner_said",
+        "walk_build",
+        "raid_bars_decided",
+        "pass_record_new"
       ]
     }
   ],

@@ -12,7 +12,7 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Scope: the biome alone; the Deep
   Desert Tribes are a separate mod (`design/concepts/PyrelandsMechanics`), started only after this version passes.
   Code exists: `src/RimMandrake/Pyrelands/` (packageId `mandrake.rm.pyrelands`, ships composed in `mandrake.rm.biomes`).
-- **Stage now:** Stage 8, his live walk, since 2026-11-24 3:21 PM PST (`version/stage_record.json`).
+- **Stage now:** Version passed on his word, since 2026-11-24 7:13 PM PST (`version/stage_record.json`).
 - **Bars:** 42 (21 inventory rows of `record.json` + 21 leaves of `tree.json`), as `version/bars.md` counts them; 41 at
   the lock, `inv_firehawk_hunt_rewards` added by his card 2026-11-14.
   Two inventory rows (`inv_firebreak_firefoam`, `inv_lightning_breaker`) are scope `out`: cut, kept only as absence checks.
@@ -29,7 +29,7 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
   14 PROBLEM, 3 CORRECTION, 1 POLISH (g3). By his card 2026-11-15 12:22 PM PST the 17 are fixed in one locked change
   (`RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS`); g3 stays in `version/polish.md`, out of passing.
 - **Held look statements for this mod:** 0 (measured).
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-24 3:21 PM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-24 7:13 PM PST).
 
 ### The vision (his root paragraph, approved by card 2026-11-06, OWNER:1793950669508519029)
 
@@ -577,4 +577,13 @@ the tree, record and test-table edits, the re-pin and the lock-bars add are queu
 - Checks passed: order, by, version, hold, walk_checks_stand, walk_brief, walk_items_closed.
 - Was, "Stage now": - **Stage now:** Stage 7, the walk brief, since 2026-11-24 2:44 PM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-24 2:44 PM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-24 7:13 PM PST, stage change: His live walk (Stage 8) to Version passed (Passed) (by OWNER)
+
+- Why: his walk of Pyrelands 0.1.0 on ArchSmall, 2026-11-24 about 7:10 PM PST; next version: more aggressive fire, and grass that declines visibly and leaves dead grass
+- Checks passed: order, by, version, hold, owner_said, walk_build, raid_bars_decided, pass_record_new.
+- Owner said: OWNER:1795575810695997798
+- Was, "Stage now": - **Stage now:** Stage 8, his live walk, since 2026-11-24 3:21 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-24 3:21 PM PST).
 - Record: `version/stage_record.json`.

@@ -1,0 +1,288 @@
+{
+ "bars": {
+  "locked": [
+   "inv_biome_self_contained",
+   "inv_plant_roster",
+   "inv_embergrass_regrow",
+   "inv_animal_roster",
+   "inv_ash_field",
+   "inv_burn_line_fire_clock",
+   "inv_scorchfruit",
+   "inv_ruins_scorched",
+   "inv_firehawk_ember",
+   "inv_furnacebeast",
+   "inv_burrowers_heat_dome",
+   "inv_ullai_herd_giant",
+   "inv_weather",
+   "inv_firebreak_firefoam",
+   "inv_firefoam_sprayer",
+   "inv_sand_shovel",
+   "inv_lightning_breaker",
+   "inv_fire_rite_hook",
+   "inv_settings_gate",
+   "inv_art_and_text",
+   "burn_line_walks",
+   "ash_ground_and_blowing_ash",
+   "ash_fertile_when_watered",
+   "fresh_burn_compounds_with_black_rain",
+   "grass_carpets_and_regreens",
+   "scorchfruit_born_of_fire",
+   "populations_are_the_biomes_own",
+   "ruins_stand_blackened",
+   "firehawk_lights_ahead",
+   "furnacebeast_warms",
+   "ashwallow_dives_unharmed",
+   "ullai_graze_old_burns",
+   "three_skies",
+   "no_ordinary_rain",
+   "ash_fertility_probe",
+   "walk_season_on_the_pyre",
+   "firefoam_sprayer_reaches_the_fruit",
+   "sand_shovel_yields_glass_sand",
+   "fire_rite_hook_silent_alone",
+   "biome_text_says_engineered",
+   "flamefang_bite_carries_venom",
+   "inv_firehawk_hunt_rewards",
+   "ullai_cross_the_map_as_vanilla_herds",
+   "fire_walks_with_wind"
+  ],
+  "read": null,
+  "record": "design/concepts/Pyrelands/version/locked_bars.json"
+ },
+ "build": {
+  "active_mods": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "owlchemist.cherrypicker",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.hugethings",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes",
+   "mandrake.rm.patches",
+   "mandrake.rm.weathersuite",
+   "mandrake.rsw.swbestiary",
+   "mandrake.rut.patches"
+  ],
+  "game": "archmagi",
+  "game_build": "1.6.4871 rev590",
+  "mod_hash": "sha256:9394be4aaeb2486eed3c58ebb656847a8c5c722d4f2ecd1ee5909157304d2e4d",
+  "mod_sha": "4980c8dcdd",
+  "savegame": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\Saves\\PYRELANDS_0.1.0_VISIT9_WALK_SIGNED.rws",
+  "visit": 9,
+  "visit_record": "design/concepts/Pyrelands/version/in_game/visit_9"
+ },
+ "commit": "c1cec6fb3f7ab465da601f6b39c6dc1271da0580",
+ "cost": {
+  "by_stage": {
+   "blind_challenge": {
+    "entries": 7,
+    "estimates": 0,
+    "tokens": 5187159,
+    "tokens_other": {
+     "weighted_v1": 3213969
+    },
+    "unit": "weighted_v2",
+    "unmeasured": 0,
+    "usd": 31.088966,
+    "wall_s": 13818
+   },
+   "blind_challenge+in_game": {
+    "entries": 5,
+    "estimates": 0,
+    "tokens": 1367252,
+    "tokens_other": {
+     "weighted_v1": 2875272
+    },
+    "unit": "weighted_v2",
+    "unmeasured": 2,
+    "usd": 5.4690066,
+    "wall_s": 3362
+   },
+   "designer": {
+    "entries": 1,
+    "estimates": 0,
+    "tokens": "UNMEASURED",
+    "tokens_other": {
+     "weighted_v1": 11949013
+    },
+    "unit": "weighted_v2",
+    "unmeasured": 2,
+    "usd": "UNMEASURED",
+    "wall_s": "UNMEASURED"
+   },
+   "designer+blind_challenge+offline_build": {
+    "entries": 1,
+    "estimates": 0,
+    "tokens": "UNMEASURED",
+    "tokens_other": {
+     "weighted_v1": 607942
+    },
+    "unit": "weighted_v2",
+    "unmeasured": 0,
+    "usd": 1.8,
+    "wall_s": 318
+   },
+   "designer+offline_build+blind_challenge": {
+    "entries": 1,
+    "estimates": 0,
+    "tokens": "UNMEASURED",
+    "tokens_other": {
+     "weighted_v1": 2365461
+    },
+    "unit": "weighted_v2",
+    "unmeasured": 1,
+    "usd": "UNMEASURED",
+    "wall_s": 1709
+   },
+   "designer+preflight": {
+    "entries": 1,
+    "estimates": 0,
+    "tokens": "UNMEASURED",
+    "tokens_other": {
+     "weighted_v1": 1764761
+    },
+    "unit": "weighted_v2",
+    "unmeasured": 1,
+    "usd": "UNMEASURED",
+    "wall_s": 1136
+   },
+   "in_game": {
+    "entries": 55,
+    "estimates": 0,
+    "tokens": 96124922,
+    "tokens_other": {
+     "weighted_v1": 8043284
+    },
+    "unit": "weighted_v2",
+    "unmeasured": 19,
+    "usd": 395.1685942000001,
+    "wall_s": 217401
+   },
+   "in_game+blind_challenge": {
+    "entries": 1,
+    "estimates": 0,
+    "tokens": 2925006,
+    "tokens_other": {},
+    "unit": "weighted_v2",
+    "unmeasured": 0,
+    "usd": 11.700022800000003,
+    "wall_s": 8172
+   },
+   "in_game+offline_build": {
+    "entries": 3,
+    "estimates": 0,
+    "tokens": 1814743,
+    "tokens_other": {
+     "weighted_v1": 320771
+    },
+    "unit": "weighted_v2",
+    "unmeasured": 1,
+    "usd": 7.258969399999998,
+    "wall_s": 4082
+   },
+   "offline_build": {
+    "entries": 5,
+    "estimates": 0,
+    "tokens": 3402480,
+    "tokens_other": {
+     "weighted_v1": 3806693
+    },
+    "unit": "weighted_v2",
+    "unmeasured": 1,
+    "usd": 16.369394199999995,
+    "wall_s": 16322
+   },
+   "offline_build+blind_challenge": {
+    "entries": 5,
+    "estimates": 0,
+    "tokens": 2039918,
+    "tokens_other": {
+     "weighted_v1": 3278590
+    },
+    "unit": "weighted_v2",
+    "unmeasured": 1,
+    "usd": 13.011143000000004,
+    "wall_s": 3970
+   },
+   "pre_human": {
+    "entries": 3,
+    "estimates": 0,
+    "tokens": 1931146,
+    "tokens_other": {
+     "weighted_v1": 2811999
+    },
+    "unit": "weighted_v2",
+    "unmeasured": 0,
+    "usd": 15.391114000000002,
+    "wall_s": 4464
+   },
+   "preflight": {
+    "entries": 1,
+    "estimates": 0,
+    "tokens": "UNMEASURED",
+    "tokens_other": {
+     "weighted_v1": 1124305
+    },
+    "unit": "weighted_v2",
+    "unmeasured": 0,
+    "usd": 3.156004199999999,
+    "wall_s": 1241
+   },
+   "preflight+blind_challenge": {
+    "entries": 1,
+    "estimates": 0,
+    "tokens": 1761717,
+    "tokens_other": {},
+    "unit": "weighted_v2",
+    "unmeasured": 0,
+    "usd": 7.046866999999999,
+    "wall_s": 2224
+   },
+   "preflight+offline_build": {
+    "entries": 1,
+    "estimates": 0,
+    "tokens": "UNMEASURED",
+    "tokens_other": {
+     "weighted_v1": 3550715
+    },
+    "unit": "weighted_v2",
+    "unmeasured": 0,
+    "usd": 9.657704199999998,
+    "wall_s": 1846
+   }
+  },
+  "entries": 91,
+  "tokens_other": {
+   "weighted_v1": 45712775
+  },
+  "tokens_unmeasured": 9,
+  "unit": "weighted_v2",
+  "weighted_tokens": 116554343
+ },
+ "cycles": {
+  "pre_human_arrivals": 2,
+  "total": 6,
+  "visit": 1
+ },
+ "evidence": [
+  "design/concepts/Pyrelands/version/stage_record.json",
+  "design/concepts/Pyrelands/version/in_game/visit_9",
+  "design/concepts/Pyrelands/version/walk_brief/arrival_2.md",
+  "design/concepts/Pyrelands/version/test_table.json"
+ ],
+ "mod": "Pyrelands",
+ "owner_said": {
+  "event": "OWNER:1795575810695997798",
+  "tsn": "1795575810695997798",
+  "words": "OMG I just got a Firehawk on the map to fly around! It's a PASS! FINALLY! Mark that sucker DONE!!!!! Close tickets! This is a red letter day! Yes, slow fire is a pass for this version, next version puts more aggressive fire."
+ },
+ "passed_on": "2026-11-24T19:13:54-08:00",
+ "version": "0.1.0"
+}
