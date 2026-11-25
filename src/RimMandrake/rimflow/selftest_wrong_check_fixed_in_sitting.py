@@ -169,6 +169,20 @@ def t_strange_explained_as_status_settles():
     return all(g == want for (_, g), (_, want) in zip(got, cases)), [c for (c, g), (_, w) in zip(got, cases) if g != w]
 
 
+def t_strange_filed_as_status_item_settles():
+    # RIMMANDRAKE_ACCEPT_STRANGE_FILED_AS_ITEM_TEN_VISITS_WROTE: FlowWorks and Pyrelands drivers wrote {"seen": ...,
+    # "status": "filed", "item": <ID>} in ten visits; the item must still be a rimflow name, and the open list names
+    # the row by "seen" when it has no "what"
+    item = "RIMMANDRAKE_FIX_FLOWWORKS_LINE_LOOK_CAST_THROWS"
+    cases = [({"seen": "s", "status": "filed", "item": item}, True), ({"what": "w", "filed": item}, True),
+             ({"seen": "s", "status": "filed", "item": "yes"}, False), ({"seen": "s", "status": "filed"}, False),
+             ({"seen": "s", "item": item}, False), ({"seen": "s", "status": "explained", "item": item}, False)]
+    got = [(c, M._strange_settled(c)) for c, _ in cases]
+    label = M._strange_label({"seen": "a pump with no pipe"}) == "a pump with no pipe"
+    return label and all(g == want for (_, g), (_, want) in zip(got, cases)), \
+        [c for (c, g), (_, w) in zip(got, cases) if g != w]
+
+
 def t_needless_check_is_removed():
     needless = [row("c1"), row("c2"), row("c3", "FAIL", **{"class": "HARNESS", "set_aside":
                                                           "c3 reads the wrong cell; c2 decides b_two on its own"})]
@@ -444,7 +458,7 @@ def t_a_blind_build_match_is_named_at_the_exit():
 
 def main():
     tests = [t_all_pass_met, t_mod_wrong_not_met, t_check_wrong_repaired_counts, t_repair_without_planted_not_pass,
-             t_repair_in_two_commits_counts, t_strange_explained_as_status_settles, t_needless_check_is_removed, t_held_statement_check_is_not_needless, t_not_counted_needs_owner, t_mod_fixed_in_sitting_counts,
+             t_repair_in_two_commits_counts, t_strange_explained_as_status_settles, t_strange_filed_as_status_item_settles, t_needless_check_is_removed, t_held_statement_check_is_not_needless, t_not_counted_needs_owner, t_mod_fixed_in_sitting_counts,
              t_one_build_is_the_last_rows, t_scene_wrong_same_as_check, t_unclassed_not_silent,
              t_wrong_unhandled_not_silent, t_mix_reads_each_line, t_blind_check_repair_owes_no_judge,
              t_blind_mod_fix_owes_one_fresh_reader, t_briefs_carry_the_rule, t_a_blind_build_match_is_named_at_the_exit]

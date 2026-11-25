@@ -4251,12 +4251,23 @@ def _strange_settled(x):
         return False
     if ITEM_RE.match(str(x.get("filed") or "").strip()):
         return True
+    if str(x.get("status") or "").strip().lower() == "filed" and ITEM_RE.match(str(x.get("item") or "").strip()):
+        # the shape drivers wrote in ten FlowWorks and Pyrelands visits: {"seen", "status": "filed", "item": <ID>}
+        # (RIMMANDRAKE_ACCEPT_STRANGE_FILED_AS_ITEM_TEN_VISITS_WROTE); the item must still be a rimflow name
+        return True
     text = x.get("explained")
     if not text and str(x.get("status") or "").strip().lower() == "explained":
         # the shape drivers of three mods wrote: {"status": "explained", "why"|"note": ...}; the word floor still binds
         # (RIMMANDRAKE_ACCEPT_STRANGE_EXPLAINED_AS_STATUS_THREE_MODS_WROTE)
         text = x.get("why") or x.get("note")
     return len(str(text or "").split()) >= EXPLAIN_WORDS
+
+
+def _strange_label(x):
+    """-> the words that name a strange.jsonl entry in a reason: its "what", else its "seen", else "?"."""
+    if not isinstance(x, dict):
+        return "?"
+    return x.get("what") or x.get("seen") or x.get("_bad") or "?"
 
 
 def _known_game(g):
@@ -4908,7 +4919,7 @@ def read_ingame_exit(root, mod, n, tt=None):
     st = _jsonl(os.path.join(d, "strange.jsonl"))
     if st is None:
         why.append("strange.jsonl is missing (an empty file says nothing strange was seen)")
-    left = [x.get("what", x.get("_bad", "?")) for x in st or [] if not _strange_settled(x)]
+    left = [_strange_label(x) for x in st or [] if not _strange_settled(x)]
     out["strange_open"] = len(left)
     if left:
         why.append("%d strange thing(s) neither explained nor filed (an explanation of %d words at least, or a named "
