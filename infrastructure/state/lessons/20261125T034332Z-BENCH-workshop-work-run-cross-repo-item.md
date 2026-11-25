@@ -1,0 +1,2 @@
+A Workshop Work run on a cross-repo item (the check reads ~/dev/<Repo>) must run git log on that repo before it writes code: on 2026-11-24 a Codex run had landed RIMMANDRAKE_DRAW_STEVE_SERVICES_ON_FLEETNOW_JSON_HAS_THEM in MandrakeWorkflows 2b0ed4d one minute before this item's Work run launched, while the item still read proposed, and the run drafted a duplicate. Also: close --sha resolves only RimMandrake commits, so close a cross-repo item with --no-code naming the other repo's sha.
+item: RIMMANDRAKE_DRAW_STEVE_SERVICES_ON_FLEETNOW_JSON_HAS_THEM
