@@ -467,10 +467,10 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                 var g = RM_ShadePatchGraph.Build(w, h, sh, wk, 400, 2);
                 int target = 1 * w + 8;
                 var taken = new HashSet<int>();
-                Assert(g.SpreadLanding(target, taken.Contains) == target, "a free target was not kept");
+                Assert(g.SpreadLanding(target, taken.Contains, 24) == target, "a free target was not kept");
                 for (int k = 0; k < 7; k++)
                 {
-                    int c = g.SpreadLanding(target, taken.Contains);
+                    int c = g.SpreadLanding(target, taken.Contains, 24);
                     Assert(taken.Add(c), "animal " + k + " landed on taken cell " + c);
                     Assert(g.patchOf[c] == g.patchOf[target], "animal " + k + " landed outside the target's patch (x=" + c % w + ")");
                 }
@@ -478,11 +478,35 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                 // the rim cell's column pair x=8..9.
                 foreach (int c in taken) Assert(c % w <= 10, "landing at x=" + c % w + " skipped nearer free cells");
                 // Planted fault guard: a full patch, an unshaded target and a null predicate return the target.
-                var all = new HashSet<int>();
-                for (int i = 0; i < w * h; i++) if (g.patchOf[i] == g.patchOf[target]) all.Add(i);
-                Assert(g.SpreadLanding(target, all.Contains) == target, "a full patch did not fall back to the target");
-                Assert(g.SpreadLanding(1 * w + 5, i => true) == 1 * w + 5, "an open-sun target moved");
-                Assert(g.SpreadLanding(target, null) == target, "a null predicate moved the target");
+                Assert(g.SpreadLanding(target, i => true, 24) == target, "with every cell taken it did not fall back to the target");
+                Assert(g.SpreadLanding(1 * w + 5, i => true, 24) == 1 * w + 5, "an open-sun target moved");
+                Assert(g.SpreadLanding(target, null, 24) == target, "a null predicate moved the target");
+            });
+
+            Case("patch graph: a herd too big for a sliver patch spills into the next shade, never piles up", () =>
+            {
+                // Live 2026-11-25 (Pyrelands, Steve1): seven animals on a two-cell
+                // patch. Here: two-cell slivers at x=2 and x=4 (z=1..2), sun between,
+                // and a 3x3 patch at x=20..22 beyond a 10-cell radius.
+                const int w = 30, h = 5;
+                bool[] sh = new bool[w * h], wk = new bool[w * h];
+                for (int i = 0; i < w * h; i++) wk[i] = true;
+                foreach (int x in new[] { 2, 4 }) { sh[1 * w + x] = true; sh[2 * w + x] = true; }
+                for (int z = 1; z <= 3; z++) for (int x = 20; x <= 22; x++) sh[z * w + x] = true;
+                var g = RM_ShadePatchGraph.Build(w, h, sh, wk, 400, 2);
+                Assert(g.PatchCount == 3, "patches " + g.PatchCount);
+                int target = 1 * w + 2;
+                var taken = new HashSet<int>();
+                for (int k = 0; k < 4; k++)
+                {
+                    int c = g.SpreadLanding(target, taken.Contains, 10);
+                    Assert(g.patchOf[c] != RM_ShadePatchGraph.NoPatch, "animal " + k + " landed in the sun (x=" + c % w + ")");
+                    Assert(taken.Add(c), "animal " + k + " landed on taken cell x=" + c % w + " z=" + c / w);
+                }
+                // Both slivers full: the far patch lies beyond radius 10, so the fifth falls back to the target.
+                Assert(g.SpreadLanding(target, taken.Contains, 10) == target, "the search went past its radius");
+                int far = g.SpreadLanding(target, taken.Contains, 24);
+                Assert(far % w >= 20, "with radius 24 the fifth did not reach the far patch (x=" + far % w + ")");
             });
 
             Case("patch graph: diagonal steps cost 14, and every edge is symmetric", () =>

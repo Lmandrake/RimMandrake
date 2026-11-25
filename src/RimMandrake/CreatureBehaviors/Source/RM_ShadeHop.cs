@@ -247,8 +247,10 @@ namespace RimMandrake.CreatureBehaviors
                     takenCells.Add(ci.CellToIndex(j.targetB.Cell));
                 }
             }
+            RM_SunHeatExtension ext = RM_MapComponent_ShadeGrid.For(map)?.HeatExtension;
+            int radius = ext != null ? Mathf.CeilToInt(ext.maxDashCells) : 0;
             int pick = graph.SpreadLanding(ci.CellToIndex(target),
-                i => takenCells.Contains(i) || !ci.IndexToCell(i).Standable(map));
+                i => takenCells.Contains(i) || !ci.IndexToCell(i).Standable(map), radius);
             takenCells.Clear();
             return ci.IndexToCell(pick);
         }
@@ -435,6 +437,10 @@ namespace RimMandrake.CreatureBehaviors
                 IntVec3 free = RM_ShadeHop.SpreadLanding(pawn, graph, pawn.Position);
                 if (free != pawn.Position && pawn.CanReach(free, PathEndMode.OnCell, Danger.Deadly))
                 {
+                    if (graph.PatchAt(pawn.Map.cellIndices.CellToIndex(free)) != patch)
+                    {
+                        return RM_ShadeHop.MakeDash(pawn.Position, free, 0); // across sun: sprint
+                    }
                     Job step = JobMaker.MakeJob(JobDefOf.GotoWander, free);
                     step.locomotionUrgency = LocomotionUrgency.Walk;
                     return step;

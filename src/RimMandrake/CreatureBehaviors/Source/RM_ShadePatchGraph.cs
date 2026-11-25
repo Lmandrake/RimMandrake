@@ -280,19 +280,25 @@ namespace RimMandrake.CreatureBehaviors
         /// <summary>RIMMANDRAKE_SPREAD_SHADE_DASH_SEVEN_ANIMALS_ON_ONE_CELL:
         /// the landing cell for a dash aimed at `target`. Every animal near
         /// one rim gets the same nearestShade / edge toCell, so without this a
-        /// herd lands, and then rests, on one cell. Returns the cell of
-        /// target's own patch nearest to target (8-connected walk inside the
-        /// patch, ring by ring) that `taken` does not refuse; target itself
-        /// when it is free, when it is in no patch, or when every cell of the
-        /// patch is taken. The walk stops at the first free cell, so its cost
-        /// is the size of the crowd, never of the patch.</summary>
-        public int SpreadLanding(int target, Func<int, bool> taken)
+        /// herd lands, and then rests, on one cell. Returns the shade cell
+        /// (a cell of any patch) nearest to target, ring by ring over shade
+        /// and open walkable ground, that `taken` does not refuse; target
+        /// itself when it is free, when it is in no patch, or when no free
+        /// shade cell lies within maxRadius rings. Many patches on a sun map
+        /// are slivers of two or three cells, so the search must leave the
+        /// target's patch (measured live, Pyrelands 2026-11-25: seven animals
+        /// on a two-cell patch).
+        /// maxRadius guards a cost: with every shade cell taken, an unbounded
+        /// walk crosses the whole map (62,500 cells on a 250 map) on each
+        /// think. The caller passes the dash cap, the farthest an animal would
+        /// cross open sun anyway.</summary>
+        public int SpreadLanding(int target, Func<int, bool> taken, int maxRadius)
         {
-            int patch = PatchAt(target);
-            if (patch == NoPatch || taken == null || !taken(target))
+            if (PatchAt(target) == NoPatch || taken == null || !taken(target))
             {
                 return target;
             }
+            int tx = target % width, tz = target / width;
             HashSet<int> seen = new HashSet<int> { target };
             Queue<int> queue = new Queue<int>();
             queue.Enqueue(target);
@@ -305,16 +311,18 @@ namespace RimMandrake.CreatureBehaviors
                     for (int dx = -1; dx <= 1; dx++)
                     {
                         int vx = ux + dx, vz = uz + dz;
-                        if ((dx == 0 && dz == 0) || vx < 0 || vz < 0 || vx >= width || vz >= height)
+                        if ((dx == 0 && dz == 0) || vx < 0 || vz < 0 || vx >= width || vz >= height
+                            || Math.Max(Math.Abs(vx - tx), Math.Abs(vz - tz)) > maxRadius)
                         {
                             continue;
                         }
                         int v = vz * width + vx;
-                        if (patchOf[v] != patch || !seen.Add(v))
+                        bool shadeCell = patchOf[v] != NoPatch;
+                        if (!(shadeCell || distToShade[v] != Unreached) || !seen.Add(v))
                         {
-                            continue;
+                            continue; // blocked, or beyond the field
                         }
-                        if (!taken(v))
+                        if (shadeCell && !taken(v))
                         {
                             return v;
                         }
