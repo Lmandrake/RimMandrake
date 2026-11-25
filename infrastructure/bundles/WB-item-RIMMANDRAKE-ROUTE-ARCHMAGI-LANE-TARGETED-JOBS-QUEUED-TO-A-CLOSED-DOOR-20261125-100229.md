@@ -26,5 +26,6 @@ System: the testq Archmagi backfill lane (`src/RimMandrake/Utils/testq/testq.py`
 
 ## Next
 
-1. Take the fresh reader's report (step 4), fix any significant finding test first.
-2. Close the member with sha 73b6879214.
+Nothing: the bundle is complete. The fresh reader found nothing significant. The list_effect tick closed the member
+when its check held. Polish (no ticket): a lane archmagi filler/guard/sweep job is still queued though S3 never admits
+one; a `tier:` name in TESTQ_ARCHMAGI_PROFILES would pass submit; the reading lags a unit change by one tick.
