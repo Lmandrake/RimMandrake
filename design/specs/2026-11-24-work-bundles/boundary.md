@@ -97,13 +97,13 @@ bundle began). A member with none of these is **open**.
   member's reason goes to the Conductor log, once.
 - **a-refused-member-is-stopped-with-its-reason.** In the lane, an open member refused in an ended bundle reads
   `stopped`, and its Needs Conductor line quotes the refusal.
-
-## PLANNED (built part by part; each moves up to PROMISES, with its test, when its part lands)
-
-- *live-pass-takes-a-free-game-or-says-unrun.* `work_bundle.py live <id> --for "..." -- CMD` asks `game_lock.py
+- **live-pass-takes-a-free-game-or-says-unrun.** `work_bundle.py live <id> --for "..." -- CMD` asks `game_lock.py
   query` for ArchBig, then ArchSmall, and runs CMD under `game_lock.py run` on the first free one. When no game is free
   (held, his hold, `pipe off`, or could not look), it runs nothing and records `UNRUN` with the exact command and each
   game's answer, in the record and on stdout.
+
+## PLANNED (built part by part; each moves up to PROMISES, with its test, when its part lands)
+
 - *the-maturation-road-back-is-one-bundle.* On a mod's road back, the open road-back items and the ready tickets with
   that mod's home are one bundle of that mod, not one fixer run each. A mod that the owner holds, a mod whose readiness
   list is not READY, and a mod with a live bundle launch no bundle. The mod's version, bars and stage records are not

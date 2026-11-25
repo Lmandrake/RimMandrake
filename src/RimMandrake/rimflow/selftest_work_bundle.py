@@ -510,6 +510,40 @@ def t_a_refused_member_is_stopped_with_its_reason():
         "lane: a member its bundle refused reads stopped, and its Needs Conductor line quotes the refusal (%s)" % rws[0])
 
 
+# ---- part 5: the live pass ------------------------------------------------------------------------------------------
+
+def t_live_pass_takes_a_free_game_or_says_unrun():
+    W = WB()
+    rec = bundle_rec(W, ["V1"])
+    asked, ran = [], []
+
+    def query(g):
+        asked.append(g)
+        return {"ArchBig": (75, "ArchBig: held by rm-x for a visit"), "ArchSmall": (0, "ArchSmall: FREE")}[g]
+
+    def runner(argv):
+        ran.append(argv)
+        return 0
+    rc = W.live_pass(rec["id"], "the lamp scene", ["python3", "scene.py", "--x"], query=query, runner=runner, now=NOW)
+    chk(lambda: rc == 0 and asked == ["ArchBig", "ArchSmall"] and ran and "ArchSmall" in ran[0] and "run" in ran[0]
+        and ran[0][-3:] == ["python3", "scene.py", "--x"], "live: ArchBig held, so the check runs on ArchSmall under game_lock run (%s)" % ran)
+    on = W.store_read(rec["id"])
+    chk(lambda: on["live_runs"][-1]["game"] == "ArchSmall" and on["live_runs"][-1]["rc"] == 0,
+        "live: the record keeps the game and the check's exit")
+    ran.clear()
+    rc2 = W.live_pass(rec["id"], "the lamp scene", ["python3", "scene.py"], query=lambda g: (
+        {"ArchBig": 3, "ArchSmall": 2}[g], "%s: answer" % g), runner=runner, now=NOW)
+    on = W.store_read(rec["id"])
+    last = on["live_runs"][-1]
+    chk(lambda: rc2 == 4 and not ran and last.get("unrun") and last["cmd"] == "python3 scene.py"
+        and "ArchBig" in str(last["answers"]) and "ArchSmall" in str(last["answers"]),
+        "live: no free game runs nothing and records UNRUN with the exact command and each game's answer (%s)" % last)
+    # measured 2026-11-25: argparse.REMAINDER after the bundle id swallowed --for, so the real command line was refused
+    o = W.parse(["live", "WB-x", "--for", "the lamp scene", "--", "python3", "-c", "print(1)"])
+    chk(lambda: o.what == "the lamp scene" and o.cmd == ["python3", "-c", "print(1)"] and o.bundle == "WB-x",
+        "live: the command line parses --for and the command after -- (%s)" % vars(o))
+
+
 def t_each_limit_names_its_danger():
     import re
     src = open(os.path.join(HERE, "work_bundle.py"), encoding="utf-8").read().splitlines()
@@ -530,6 +564,7 @@ def main():
               t_restart_until_each_member_has_an_outcome, t_finish_writes_the_bundles_end,
               t_a_restart_that_ended_no_member_raises,
               t_a_bundle_with_every_outcome_ends, t_a_refused_member_is_stopped_with_its_reason,
+              t_live_pass_takes_a_free_game_or_says_unrun,
               t_each_limit_names_its_danger]:
         print("-- %s" % t.__name__)
         try:

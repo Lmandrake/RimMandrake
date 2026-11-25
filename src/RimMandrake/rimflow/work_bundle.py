@@ -11,6 +11,8 @@ selftest selftest_work_bundle.py.
                                                   sort, then ONE bundle of the ready rest; one live bundle per system
     python3 src/RimMandrake/rimflow/work_bundle.py context            the worker's guard: GO ON | SAVE AND RESTART | UNMEASURED
     python3 src/RimMandrake/rimflow/work_bundle.py step <bundle> "<step>"   the worker's step, shown on the page
+    python3 src/RimMandrake/rimflow/work_bundle.py live <bundle> --for "<what>" -- CMD   CMD on the first free game
+                                                  (ArchBig, then ArchSmall) under game_lock run; else UNRUN, recorded
 
 A system is a home of list_home.py (pipeline:<part>, game:<need>, machine:<name>), a mod (mod:<folder>), or item:<ID>
 for a ticket with no home. The sort runs each open member's test on this clone's build: a green test closes the member
@@ -861,6 +863,79 @@ def members_of_run(rec):
     return list(b["members"]) if b else []
 
 
+# ---- part 5: the live pass ------------------------------------------------------------------------------------------
+
+GAMES = ("ArchBig", "ArchSmall")      # this machine's games; Steve1 and Steve2 go through the SteveDesktop test lane
+
+
+def game_query(game):
+    """-> (exit, line) of `game_lock.py query <game>`: 0 free, 75 held, 3 his hold, 2 could not look."""
+    import time_budget as TB
+    try:
+        r = subprocess.run([sys.executable, os.path.join(HERE, "game_lock.py"), "query", game], capture_output=True,
+                           text=True, timeout=TB.CALL_S, stdin=subprocess.DEVNULL)
+    except (OSError, subprocess.SubprocessError) as e:
+        return 2, "%s: could not look (%s: %s)" % (game, type(e).__name__, e)
+    return r.returncode, _one((r.stdout or "") + (r.stderr or ""), 300)
+
+
+def run_held(argv):
+    """-> the exit of one live check held by game_lock run; 124 when it ran past its hang guard (the deploy class: a
+    hung run holds the game it drives, like a hung deploy holds the game copy)."""
+    import time_budget as TB
+    try:
+        return subprocess.run(argv, stdin=subprocess.DEVNULL, timeout=TB.DEPLOY_S).returncode
+    except subprocess.TimeoutExpired:
+        print("work_bundle live: the check ran past its %ds hang guard (time_budget deploy class)" % TB.DEPLOY_S,
+              file=sys.stderr)
+        return 124
+
+
+def live_pass(bid, what, cmd, query=game_query, runner=None, now=None):
+    """Run `cmd` on the first free game, held by `game_lock.py run` for its life; or run nothing and record UNRUN with
+    the exact command and each game's answer. -> the check's exit, or 4 for UNRUN."""
+    import shlex
+    now = time.time() if now is None else now
+    runner = runner or run_held
+    answers, game = {}, None
+    for g in GAMES:
+        code, line = query(g)
+        answers[g] = "exit %d: %s" % (code, line)
+        if code == 0:
+            game = g
+            break
+    text = " ".join(shlex.quote(c) for c in cmd)
+    if game:
+        rc = runner([sys.executable, os.path.join(HERE, "game_lock.py"), "run", game, "--for",
+                     "work bundle %s: %s" % (bid, what), "--"] + list(cmd))
+        row = {"at": now, "game": game, "for": what, "cmd": text, "rc": rc}
+    else:
+        rc = 4
+        row = {"at": now, "unrun": True, "for": what, "cmd": text, "answers": answers}
+    lk = _lock()
+    try:
+        rec = store_read(bid)
+        if rec:
+            rec["live_runs"] = (rec.get("live_runs") or []) + [row]
+            store_write(rec)
+    finally:
+        lk.close()
+    if game:
+        print("LIVE %s on %s: exit %s | %s" % (bid, game, rc, text))
+    else:
+        print("UNRUN %s: no game is free; the command: %s | %s" % (bid, text, " | ".join(
+            "%s %s" % kv for kv in answers.items())))
+    return rc
+
+
+def cmd_live(o):
+    cmd = list(o.cmd)
+    if not cmd:
+        print("REFUSED: no command after --; the form: work_bundle.py live <bundle> --for \"<what>\" -- <command>")
+        return 2
+    return live_pass(o.bundle, o.what, cmd)
+
+
 # ---- reading the ledger ---------------------------------------------------------------------------------------------
 
 def world():
@@ -914,7 +989,14 @@ def cmd_sort(o):
     return 0
 
 
-def main(argv=None):
+def parse(argv=None):
+    """-> the parsed command line. `live`'s command is everything after the first `--`, split off before argparse
+    (argparse.REMAINDER after a positional swallowed --for; measured 2026-11-25)."""
+    argv = list(sys.argv[1:] if argv is None else argv)
+    rest = []
+    if argv[:1] == ["live"] and "--" in argv:
+        k = argv.index("--")
+        argv, rest = argv[:k], argv[k + 1:]
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
     s = sub.add_parser("sort", help="the reality sort: run each member's test, close the green ones as already fixed")
@@ -928,8 +1010,21 @@ def main(argv=None):
     s = sub.add_parser("step", help="the worker writes the step it is on, for the page")
     s.add_argument("bundle")
     s.add_argument("step")
+    s = sub.add_parser("live", help="the live pass: one check on the first free game, or UNRUN with its command")
+    s.add_argument("bundle")
+    s.add_argument("--for", dest="what", required=True)
     o = ap.parse_args(argv)
-    return {"sort": cmd_sort, "launch": cmd_launch, "context": cmd_context, "step": cmd_step}[o.cmd](o)
+    if o.cmd == "live":
+        o.cmd = rest
+        o.verb = "live"
+    else:
+        o.verb = o.cmd
+    return o
+
+
+def main(argv=None):
+    o = parse(argv)
+    return {"sort": cmd_sort, "launch": cmd_launch, "context": cmd_context, "step": cmd_step, "live": cmd_live}[o.verb](o)
 
 
 if __name__ == "__main__":
