@@ -449,6 +449,9 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   - another live run holds the files;
   - your verdict must stay independent of the work;
   - your assigned work would not finish.
+- In a helper run, `rimflow file` and `spawn` refuse a work ticket (exit 6) with no `--not-now "<class>: <evidence>"`.
+  Then do the work and give `--did-it <sha>`, file with `--not-now`, or give `--not-worth-it "<why>"`. The Stop hook
+  keeps the run until each refusal has one of these.
 - Test 1 comes first. Test 2 never makes a fix that fails test 1 worth it.
 - Fix a fault in the sitting. Repair or remove a wrong check in the sitting. Neither sends the mod back:
   - Class each failed or unmeasured check first: the mod is wrong, the check is wrong, or the staged scene is wrong.

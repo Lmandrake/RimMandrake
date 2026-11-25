@@ -187,6 +187,25 @@ A promise is a line that says what must stay alive. These closes need a promise 
   `src/RimMandrake/rimflow/live_retired.txt`.
 - The last pass is `D:\ClaudeWork\rimmandrake\ops_watch\live_sweep.json`.
 
+## The filing gate: `--not-now`, `--did-it`, `--not-worth-it`
+
+In a run with `RM_ROLE_UNIT` (a helper, and a headless Conductor run too), `file` and `spawn` refuse a work ticket with
+exit 6. Only the kinds `owed`, `design`, `notice` and `alarm` pass with no flag. `--owner-said` or `--by-card` lets a
+filing pass; `--per-ruling` alone does not. The refusal is recorded in
+`D:\ClaudeWork\rimmandrake\dispatcher\filing_refusals\<unit>.jsonl`. Resolve each refusal with the same id, in one of
+three ways (give only one; two at once exits 2):
+
+| flag | when | what happens |
+|---|---|---|
+| `--did-it <sha>` | you did the work in this run and landed it | files nothing, exit 0. The sha must be on origin/main and change more than the ledger. |
+| `--not-now "<class>: <evidence>"` | this run cannot do it now | files the ticket, with the class and the evidence on the event. The refusal text lists the classes. |
+| `--not-worth-it "<why>"` | it fails test 1 (CLAUDE.md §Touching code has a cost) | files nothing, exit 0. The why needs 12 characters or more. |
+
+The Stop hook `.claude/hooks/filing_refusal_before_stop.py` blocks the run's end (at most 2 times) while a refusal has
+none of these. The run-end text of `detached_helper` names each one to the Conductor. A program that files sets
+`RM_FILING_PROGRAM` in the env of its own cli call. Never set it, or `RM_UNDER_SELFTEST`, in your shell. Page:
+`design/specs/2026-11-24-filing-gate/boundary.md`.
+
 ## Provenance: `--owner-said`, `--by-card`, `--per-ruling`, `--why`
 
 The owner ruled these flags by question card, 2026-10-11. The transcript-proof guards were deleted that day. The

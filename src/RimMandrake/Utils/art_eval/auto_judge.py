@@ -645,7 +645,8 @@ def file_item(iid: str, title: str, why: str, log: Path, caused_by: str = "ARTEV
     if sh([sys.executable, RIMFLOW, "show", iid], ROOT, log, timeout=120) == 0:
         return f"{iid} (already filed)"
     rc = sh([sys.executable, RIMFLOW, "file", iid, "--for", SEAT, "--title", title, "--kind", "bug", "--needs", "offline",
-             "--target", "v1", "--caused-by", caused_by, "--why", why], ROOT, log, timeout=120)
+             "--target", "v1", "--caused-by", caused_by, "--why", why], ROOT, log, timeout=120,
+            env=dict(os.environ, RM_FILING_PROGRAM="auto_judge.file_item"))   # filing_gate.py: a program files it
     return iid if rc == 0 else f"{iid} (file failed rc {rc})"
 
 

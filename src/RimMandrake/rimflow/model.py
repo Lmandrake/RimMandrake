@@ -500,7 +500,8 @@ VERBS = {
     # shadow preflight, its run id (= the line in ~/.local/state/rimmandrake/preflight/runs.jsonl), time and verdict.
     # Informational: nothing replays them. An older reader strips them (_tolerate_unknown_fields).
     "file":      {"who": "any",   "req": ("for", "title", "kind"),
-                  "opt": ("row", "target", "needs", "spec", "from", "name_note", "effect", "effectSeen") + PREFLIGHT_FIELDS},
+                  "opt": ("row", "target", "needs", "spec", "from", "name_note", "effect", "effectSeen", "not_now")
+                  + PREFLIGHT_FIELDS},   # not_now: filing_gate.at_door, {"class", "evidence"} or {"program"} (2026-11-24)
     "claim":     {"who": "owner", "req": (), "opt": PREFLIGHT_FIELDS},
     "start":     {"who": "owner", "req": (), "opt": PREFLIGHT_FIELDS},
     # `until` (RIM-1, 2026-10-25): the level of `on` that SATISFIES this block,
@@ -537,7 +538,7 @@ VERBS = {
     # (`spawn --from BLACKSTAR_SPAWNS_VESSELLESS_1 --for BUILD --name …`) and made the
     # documented command impossible. Found 2026-08-20 by the renderer, which tried it.
     "spawn":     {"who": "any",   "req": ("from", "for", "name"),
-                  "opt": ("kind", "needs", "this_deployment", "spec", "title", "name_note")},   # name_note: cli._mint_or_die
+                  "opt": ("kind", "needs", "this_deployment", "spec", "title", "name_note", "not_now")},   # name_note: cli._mint_or_die; not_now: filing_gate
     # ⚠️ `reason` moved from `req` to `opt` on these three — owner's ruling, 2026-08-22.
     # Nothing reads them: no renderer, no `priority.rank()` branch, no `derive_matrix`
     # case. They were a required justification that only a human ever reads, which is

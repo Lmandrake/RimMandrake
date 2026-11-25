@@ -328,8 +328,11 @@ def installs_and_unfiled():
         (st / "art_eval/fauna_cands/auto_1/RM_FurnaceBeast_r2.spec.json").write_text("{}")
         AJ.FAUNA_INSTALLS = st / "fi.jsonl"
 
-        def fake_sh(cmd, cwd, log, timeout=0):
+        envs = []
+
+        def fake_sh(cmd, cwd, log, timeout=0, env=None):     # the signature of AJ.sh
             calls.append([str(c) for c in cmd])
+            envs.append(env)
             if "install" in calls[-1] and "fauna_drive.py" in calls[-1][1]:
                 AJ.FAUNA_INSTALLS.write_text(fi[0] + "\n")
             return 1 if calls[-1][-2:] == ["show", "ARTEVAL_FIX_REGEN_UNFILED_FIREHAWK"] else 0
@@ -345,6 +348,10 @@ def installs_and_unfiled():
         names = [" ".join(c[1:3]) for c in calls]
         check("post_run: unfiled row is filed as an item", any(c[-2:] == ["show", "ARTEVAL_FIX_REGEN_UNFILED_FIREHAWK"] for c in calls)
               and any("file" in c and "ARTEVAL_FIX_REGEN_UNFILED_FIREHAWK" in c for c in calls), calls)
+        filed = [e for c, e in zip(calls, envs) if "file" in c and "ARTEVAL_FIX_REGEN_UNFILED_FIREHAWK" in c]
+        check("post_run: the filing names its program (filing_gate.py)", filed and all(
+            (e or {}).get("RM_FILING_PROGRAM") == "auto_judge.file_item" for e in filed),
+            [(e or {}).get("RM_FILING_PROGRAM") for e in filed])
         check("post_run: ACCEPT compares (spec found in the cands dir) then installs; REGEN installs nothing",
               any(c[1].endswith("fauna_compare.py") and c[4].endswith("auto_1/RM_FurnaceBeast_r2.spec.json") for c in calls)
               and sum(c[1].endswith("fauna_drive.py") for c in calls) == 1, names)

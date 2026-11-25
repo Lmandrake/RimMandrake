@@ -280,10 +280,16 @@
   "src/RimMandrake/rimflow/maturation.py::void_judge_run::except-returns-empty": 1,
   "src/RimMandrake/Utils/install_wt_seat_profiles.py::restart_seats::except-returns-empty": 1,
   "src/RimMandrake/Utils/account_plan.py::stamp::except-returns-empty": 1,
-  "src/RimMandrake/Utils/account_plan.py::series_rows::except-returns-empty": 1
+  "src/RimMandrake/Utils/account_plan.py::series_rows::except-returns-empty": 1,
+  ".claude/hooks/filing_refusal_before_stop.py::blocks_so_far::or-empty": 1,
+  ".claude/hooks/filing_refusal_before_stop.py::blocks_so_far::except-returns-empty": 1,
+  ".claude/hooks/filing_refusal_before_stop.py::main::except-returns-empty": 1,
+  "src/RimMandrake/rimflow/filing_gate.py::run_unit::except-returns-empty": 1
  },
  "reasons": {
-    "src/RimMandrake/rimflow/maturation.py::_ledger_relation.rel::except-returns-empty": ["NOT A COLLAPSE: None is the relation's own 'unknown' (scene_verdicts.summary), and an unknown relation counts the earlier run for nothing, the strict side; the ledger never reads it as untouched"],
+  "src/RimMandrake/rimflow/maturation.py::_ledger_relation.rel::except-returns-empty": [
+   "NOT A COLLAPSE: None is the relation's own 'unknown' (scene_verdicts.summary), and an unknown relation counts the earlier run for nothing, the strict side; the ledger never reads it as untouched"
+  ],
   "src/RimMandrake/Utils/waitalive.py::stat_of::except-returns-empty": [
    "NOT A COLLAPSE: None is 'the process is gone' (only ENOENT and ESRCH, which are that reading); every other error raises CouldNotLook, exit 5"
   ],
@@ -1178,6 +1184,18 @@
   ],
   "src/RimMandrake/Utils/account_plan.py::series_rows::except-returns-empty": [
    "NOT A COLLAPSE: None is could not look (the series cannot be opened), [] is a series with no line; fleet_burn and entry_level answer None (unknown) on None, and measures_cmd prints COULD NOT LOOK"
+  ],
+  ".claude/hooks/filing_refusal_before_stop.py::blocks_so_far::or-empty": [
+   "NOT A COLLAPSE: an empty counter file is no block yet (0), the counter's own start; the hook then writes 1"
+  ],
+  ".claude/hooks/filing_refusal_before_stop.py::blocks_so_far::except-returns-empty": [
+   "NOT A COLLAPSE: no counter (absent or garbage) is no block yet; the next write sets it, and a write that fails blocks nothing and says so on stderr"
+  ],
+  ".claude/hooks/filing_refusal_before_stop.py::main::except-returns-empty": [
+   "NOT A COLLAPSE: a counter that cannot be written lets the run end (an unbounded block loop is worse) and stderr says 'did not run'; the run-end text of detached_helper.finish still names each refusal"
+  ],
+  "src/RimMandrake/rimflow/filing_gate.py::run_unit::except-returns-empty": [
+   "NOT A COLLAPSE: None is run_unit's own 'could not look', and filing_unit reads None as 'not inherited', the strict side: the test gets the whole gate"
   ]
  }
 }

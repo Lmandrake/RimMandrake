@@ -1904,7 +1904,8 @@ def file_remainder(rec, got, report, runner=subprocess.run):
                  ["note", rest["name"], "--text", "Filed at the end of %s, which closed %s. Its report:\n%s"
                   % (rec["unit"], item, spend_talk.strip(report))]):
         r = runner(["python3", cli] + argv + ["--seat", rec["seat"], "--why", "a run closed its item with parts unbuilt"],
-                   cwd=rec["clone"], capture_output=True, text=True, timeout=1800, stdin=subprocess.DEVNULL)  # budget: class=call
+                   cwd=rec["clone"], capture_output=True, text=True, timeout=1800, stdin=subprocess.DEVNULL,  # budget: class=call
+                   env=dict(os.environ, RM_FILING_PROGRAM="detached_helper.file_remainder"))  # filing_gate.py: a program
         if r.returncode:
             return "remainder FAILED (%s exit %d: %s)" % (argv[0], r.returncode,
                                                           ((r.stderr or "") + (r.stdout or "")).strip())
@@ -2271,6 +2272,8 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
             text += " ALIVE: could not look (%s: %s)." % (type(e).__name__, e)
     owed = ""
     got = None
+    refused = filing_refusal_lines(unit)     # the run ended with a filing refused and not resolved (filing_gate.py)
+    steps.extend(refused)
     if not os.path.isdir(clone):                 # deleted under the run: no clone to note from, the log line still goes
         steps.append("clone gone: no note on the item, nothing published")
     else:
@@ -2292,6 +2295,7 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
                 steps.append("item state UNMEASURED (its clone's ledger could not be read)")
         if owed:
             text += " OWED: " + owed + "."
+        text += "".join(" " + x + "." for x in refused)
         r = runner(["python3", cli, "note", item, "--text", text, "--seat", seat, "--why", "detached run ended"],
                    cwd=clone, capture_output=True, text=True, timeout=300, stdin=subprocess.DEVNULL)  # budget: class=rimflow
         steps.append("note exit %d" % r.returncode)
@@ -2306,16 +2310,19 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
         path = conductor_line("%s on %s (%s seat): %s, %d s, %s weighted tokens%s. %s. Output %s. READ: rimflow show %s.%s"
                               % (unit, item, seat, st, took, unmeasured if tokens is None else "{:,}".format(tokens), resumed,
                                  fulltext.clip(tail, 200, rec["out"]) or "-", rec["out"], item,
-                                 " OWED: " + owed + "." if owed else ""), now, log_path)
+                                 (" OWED: " + owed + "." if owed else "") + "".join(" " + x + "." for x in refused)),
+                              now, log_path)
         steps.append("conductor log " + path)
     except Exception as e:  # noqa: BLE001
         steps.append("conductor log FAILED: %s" % e)
-    steps.append(wake_conductor(unit, st, rec["out"], item, seat, waker, owed) if run_wakes(rec, owed)
+    said = "\n".join(x for x in [owed] + refused if x)      # the wake shows each on its own line
+    steps.append(wake_conductor(unit, st, rec["out"], item, seat, waker, said) if run_wakes(rec, said)
                  else "wake: none for a scan run (the log line stands)")
     import role_launch as RL
     rec.pop("finish_owed", None)
     rec.update(status="finished", ended=now, result=st, tokens=tokens, token_unit=RL.TOKEN_UNIT, steps=steps,
-               cost_usd=usd if usd is not None else "UNMEASURED", cost_how=how, owed_close=owed, **split)
+               cost_usd=usd if usd is not None else "UNMEASURED", cost_how=how, owed_close=owed,
+               filing_refusals=refused, **split)
     write_record(rec)
     if isinstance(got, dict):   # work left: ONE continuation, its own unit (RIMMANDRAKE_CONTINUE_LEFT_OPEN_RUNS_WITHOUT_A_HAND_RELAUNCH)
         try:
@@ -2328,6 +2335,16 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
         rec["steps"] = steps
         write_record(rec)
     return 0, "FINISHED %s: %s" % (unit, "; ".join(steps))
+
+
+def filing_refusal_lines(unit):
+    """-> one line per filing refusal of the run that it did not resolve (filing_gate.run_end_lines), or the one line
+    "filing refusals: could not look (<why>)". Never raises: the finish goes on."""
+    try:
+        import filing_gate
+        return filing_gate.run_end_lines(unit, state_dir())
+    except Exception as e:  # noqa: BLE001
+        return ["filing refusals: could not look (%s: %s)" % (type(e).__name__, e)]
 
 
 def run_wakes(rec, owed=""):

@@ -741,7 +741,8 @@ def ledger_structural(r, run=subprocess.run):
     ingest publishes the RUNNER shard): spawn it, or note it when the name already stands (a later taming of the same
     cause), then the acks as a note, then raise it so relentless takes it first. -> (ok, output)."""
     cli = os.path.join(HERE, "cli.py")
-    env = dict(os.environ, RIMFLOW_SEAT="RUNNER", CLAUDE_PROJECT_DIR=REPO)
+    env = dict(os.environ, RIMFLOW_SEAT="RUNNER", CLAUDE_PROJECT_DIR=REPO,
+               RM_FILING_PROGRAM="dispatcher.ledger_structural")    # filing_gate.py: a program files it
 
     def rf(*args):
         p = run([sys.executable, cli, *args, "--seat", "RUNNER"], cwd=REPO, env=env, capture_output=True, text=True,

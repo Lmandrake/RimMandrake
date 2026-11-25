@@ -77,8 +77,19 @@ def shard_path():
     return os.path.join(os.path.dirname(led), "events", "RUNNER.jsonl") if led else os.path.join(REPO, SHARD_REL)
 
 
+def filing_program(depth=2):
+    """-> "<module>.<function>" of the program that called rimflow (past any wrapper named rimflow): its name for
+    filing_gate.py, which lets a named program file work and records the name."""
+    f = sys._getframe(depth)
+    while f is not None and f.f_code.co_name == "rimflow":
+        f = f.f_back
+    return "testq.ingest.rimflow" if f is None else \
+        "%s.%s" % (os.path.splitext(os.path.basename(f.f_code.co_filename))[0], f.f_code.co_name)
+
+
 def rimflow(*args):
-    env = dict(os.environ, RIMFLOW_SEAT="RUNNER", CLAUDE_PROJECT_DIR=REPO)
+    # every caller is a program (the seat is RUNNER): it names itself in the env of its own cli call, never in a shell's
+    env = dict(os.environ, RIMFLOW_SEAT="RUNNER", CLAUDE_PROJECT_DIR=REPO, RM_FILING_PROGRAM=filing_program())
     r = own_cgroup.run([sys.executable, CLI] + list(args), env=env, capture_output=True, text=True, timeout=300)  # budget: class=rimflow
     return r.returncode, (r.stdout + r.stderr).strip()
 

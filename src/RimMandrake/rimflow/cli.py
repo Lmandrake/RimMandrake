@@ -1987,6 +1987,67 @@ def _say_shadow(pf, door=None, iid=None):
         print("REFUSED: %s %s (exit %d): %s" % (door, iid, code, first))
 
 
+def _filing_owner():
+    """The owner's authority for the filing gate: his words or his card. A standing ruling alone (--per-ruling) is not
+    his authority on this ticket: any run can cite one (filing_gate.py, promise per-ruling-alone-is-not-the-owner)."""
+    return bool(getattr(model, "OWNER_SAID", "") or getattr(model, "BY_CARD", ""))
+
+
+def _did_it_look(sha):
+    """-> the facts filing_gate.judge_did reads about `sha`: is it a commit, on origin/main, and not ledger-only."""
+    cwd = os.environ.get("RIMFLOW_GIT_CWD") or model.ROOT
+
+    def run(*a):
+        return subprocess.run(("git",) + a, cwd=cwd, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+    try:
+        ref = gitindex_ref()
+        if run("rev-parse", "--git-dir").returncode != 0:
+            return {"looked": False, "why": "no git repository at %s" % cwd}
+        if run("rev-parse", "--verify", "-q", ref + "^{commit}").returncode != 0:
+            return {"looked": False, "why": "%s cannot be read at %s" % (ref, cwd)}
+        r = run("rev-parse", "--verify", "-q", sha + "^{commit}")
+        if r.returncode != 0:
+            return {"looked": True, "exists": False}
+        full = r.stdout.strip()
+        anc = run("merge-base", "--is-ancestor", full, ref)
+        if anc.returncode not in (0, 1):
+            return {"looked": False, "why": "merge-base exit %d" % anc.returncode}
+        paths = run("diff-tree", "--no-commit-id", "--name-only", "-r", "--root", "--diff-merges=first-parent", full)
+        if paths.returncode != 0:
+            return {"looked": False, "why": "diff-tree exit %d" % paths.returncode}
+        files = [x for x in paths.stdout.split("\n") if x]
+        return {"looked": True, "exists": True, "published": anc.returncode == 0, "sha": full,
+                "ledger_only": bool(files) and all(f.startswith(_LEDGER_ONLY) for f in files)}
+    except (OSError, subprocess.SubprocessError) as e:
+        return {"looked": False, "why": "%s: %s" % (type(e).__name__, e)}
+
+
+def _filing_door(door, iid, title, kind, args):
+    """The filing gate at a door that makes work (`file`, `spawn`): -> the gate's Door when the event may be written;
+    otherwise print the gate's text and exit (6 refused, 0 resolved with nothing filed, 2 two ways at once)."""
+    import filing_gate
+    unit = filing_gate.door_unit()
+    d = filing_gate.at_door(door, iid, title, kind, unit=unit, owner=_filing_owner(),
+                            program=os.environ.get("RM_FILING_PROGRAM", ""), not_now=getattr(args, "not_now", None),
+                            did_it=getattr(args, "did_it", None), not_worth_it=getattr(args, "not_worth_it", None),
+                            state_dir=filing_gate.state_dir(), facts_fn=lambda: filing_gate.facts(str(model.ROOT)),
+                            look_sha=_did_it_look)
+    if d.err:
+        sys.stderr.write(d.err + "\n")
+    if not d.go:
+        print(d.text)
+        sys.exit(d.rc)
+    return d
+
+
+def _filed_through_door(iid, d):
+    """The event is written: a recorded refusal of this id is resolved as filed."""
+    import filing_gate
+    err = filing_gate.after_filed(filing_gate.door_unit(), filing_gate.state_dir(), iid, d.record)
+    if err:
+        sys.stderr.write(err + "\n")
+
+
 def cmd_file(args, seat):
     _, w = load()
     pf = _preflight("file", args.id, seat)
@@ -1997,6 +2058,7 @@ def cmd_file(args, seat):
 
 
 def _file(args, seat, w, pf):
+    fg = _filing_door("file", args.id, args.title, args.kind, args)   # before any write (filing_gate.py)
     name_note = pf.gate("A1", _mint_or_die, args.id, w)
     args.for_ = _unretire(args.for_)
     _reader_or_die(args.for_)
@@ -2005,6 +2067,8 @@ def _file(args, seat, w, pf):
           "needs": args.needs, "spec": args.spec, "caused_by": args.caused_by}
     if name_note:
         ev["name_note"] = list(name_note)
+    if fg.record:
+        ev["not_now"] = fg.record
     if getattr(args, "effect", None):
         ev["effect"], ev["effectSeen"] = _effect_gate(args.effect, getattr(args, "holds_why", None), None)
     fw = priority.flowworks_seat(args.id)
@@ -2016,6 +2080,7 @@ def _file(args, seat, w, pf):
     pf.run(kind=args.kind or "task", needs=args.needs or "offline", items=_pf_items(w))
     ev.update(pf.fields())
     _emit(ev, w, quiet=True)
+    _filed_through_door(args.id, fg)
     print("%s filed for %s, state proposed." % (args.id, args.for_))
     pf.gate("F3", _prooflint_say, args.id, None, "filed",
             judge=lambda bad: ("UNMEASURED", "the lint could not run") if bad is None else _judge_list("proof lines the lane refuses")(bad))
@@ -3462,6 +3527,7 @@ def cmd_spawn(args, seat):
     nominating some third item as the host was an artefact of the old schema.
     ⛔ Do not reintroduce `--id` here.
     """
+    fg = _filing_door("spawn", args.name, getattr(args, "title", None) or args.name, args.kind, args)   # filing_gate.py
     args.for_ = _unretire(args.for_)
     _reader_or_die(args.for_)
     _, w = load()
@@ -3481,7 +3547,10 @@ def cmd_spawn(args, seat):
     ev["from"] = args.from_
     if name_note:
         ev["name_note"] = list(name_note)
+    if fg.record:
+        ev["not_now"] = fg.record
     _emit(ev, w, quiet=True)
+    _filed_through_door(args.name, fg)
     print("%s spawned for %s, state proposed, caused by %s."
           % (args.name, args.for_, args.from_))
     print("items/%s.md has no prose yet. Write it when you have something to say; "
@@ -4833,6 +4902,19 @@ def _delegate(fnname):
 # ---------------------------------------------------------------------------
 # ARGUMENTS
 # ---------------------------------------------------------------------------
+def _filing_flags(s):
+    """The filing gate's three ways, on both doors that make work (`file`, `spawn`; filing_gate.py)."""
+    s.add_argument("--not-now", dest="not_now", metavar='"<class>: <evidence>"',
+                   help="a helper run that files work: why this run cannot do the work now. Classes: no-tool, "
+                        "fix-unknown, owner-act, files-held, independent, other-mod (filing_gate.py). With no evidence "
+                        "the filing is refused: do the work in the run")
+    s.add_argument("--did-it", dest="did_it", metavar="<sha>",
+                   help="files NOTHING: the work was done in this run at <sha>, a commit on origin/main that is not "
+                        "ledger-only. Resolves a recorded refusal")
+    s.add_argument("--not-worth-it", dest="not_worth_it", metavar='"<why>"',
+                   help="files NOTHING: the finding is not worth the touch (CLAUDE.md test 1). Resolves a recorded refusal")
+
+
 def build_parser():
     p = argparse.ArgumentParser(
         prog="rimflow",
@@ -4978,6 +5060,7 @@ def build_parser():
     s.add_argument("--needs", choices=model.NEEDS)
     s.add_argument("--spec", help="path to a draft spec, recorded as provenance")
     s.add_argument("--caused-by", dest="caused_by")
+    _filing_flags(s)
     # 🔑 owner, 2026-08-23: "make rimflow file ask - does this replace an existing item?"
     # Nine items were closed by hand at the bench that evening; THREE of them were alive
     # only because a successor took the work over and nobody went back. `supersede` already
@@ -5126,6 +5209,7 @@ def build_parser():
     s.add_argument("--needs", choices=model.NEEDS)
     s.add_argument("--spec")
     s.add_argument("--title", help="one line for the board (default: the name)")
+    _filing_flags(s)
     s.add_argument("--this-deployment", dest="this_deployment", action="store_true",
                    help="jumps the queue; cleared automatically when the game leaves UP")
     # ⛔ NO `--id` HERE, and it is not an oversight to re-fix. `spawn` is in

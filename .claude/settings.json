@@ -244,6 +244,11 @@
             "type": "command",
             "timeout": 60,
             "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/role_result_before_stop.py\""
+          },
+          {
+            "type": "command",
+            "timeout": 60,
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/filing_refusal_before_stop.py\""
           }
         ]
       },

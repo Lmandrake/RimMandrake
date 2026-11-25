@@ -605,7 +605,8 @@ def _cli(args, apply):
     argv = [sys.executable, os.path.join(RIMFLOW, "cli.py")] + args + ["--seat", SEAT, "--publish"]
     if not apply:
         return 0, "would run: " + " ".join(argv[1:])
-    env = dict(os.environ, RM_ROLE_UNIT=os.environ.get("RM_ROLE_UNIT") or UNIT, RIMFLOW_SEAT=SEAT)
+    env = dict(os.environ, RM_ROLE_UNIT=os.environ.get("RM_ROLE_UNIT") or UNIT, RIMFLOW_SEAT=SEAT,
+               RM_FILING_PROGRAM="follow_through._cli")     # filing_gate.py: the program files its plant and reader
     for k in ("CLAUDE_SESSION_ID", "CLAUDE_CODE_SESSION_ID"):     # never a window's session
         env.pop(k, None)
     try:
