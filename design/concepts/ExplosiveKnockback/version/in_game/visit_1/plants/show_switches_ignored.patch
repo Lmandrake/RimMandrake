@@ -1,0 +1,13 @@
+diff --git a/src/RimMandrake/ExplosiveKnockback/proof/scene_settings_sweep_show_switches.py b/src/RimMandrake/ExplosiveKnockback/proof/scene_settings_sweep_show_switches.py
+index b84df0e5df..0fe169c9c3 100644
+--- a/src/RimMandrake/ExplosiveKnockback/proof/scene_settings_sweep_show_switches.py
++++ b/src/RimMandrake/ExplosiveKnockback/proof/scene_settings_sweep_show_switches.py
+@@ -227,7 +227,7 @@ def throw(s, after_tick, pawn_id):
+     return dict(launch=launch[0], land=land[0] if land else None)
+ 
+ 
+-planted = scene.plant()
++planted = "switches_ignored"  # PLANT
+ def sweep(s, rows, throws, before):
+     """The pads with each switch off in turn and all off, then the colonist thrown show-on and show-off. Every switch is
+     put back on every exit path."""

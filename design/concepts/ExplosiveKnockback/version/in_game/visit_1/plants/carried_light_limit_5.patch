@@ -1,0 +1,13 @@
+diff --git a/src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_carried_thing.py b/src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_carried_thing.py
+index ab60264ea3..be903fbf03 100644
+--- a/src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_carried_thing.py
++++ b/src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_carried_thing.py
+@@ -274,7 +274,7 @@ def lane(s, name, rows):
+ 
+ cast = {"colonist_" + n: dict(kind="Colonist", at=(8, z), faction="player") for n, z in LANES.items()}
+ cast["muffalo_heavy"] = dict(kind="Muffalo", at=(9, LANES["heavy"]), faction="player")
+-planted = scene.plant() == "light_limit_5"
++planted = True  # PLANT light_limit_5 always on
+ 
+ with scene.open(GAME, contract=carried, needs={"mods": ["ExplosiveKnockback"], "map": STAGE, "calm": "standard"}) as s:
+     mark_journal(s)

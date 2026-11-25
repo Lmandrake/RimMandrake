@@ -1,0 +1,3 @@
+Inside an open scene session, jawa/mod_settings_field refuses a set that names no driver (NOT_THE_DRIVER, deviation record), and s.raw does not read the reply: a scene that writes settings must pass driver=s.id and check success, or it reads a game it never set (ExplosiveKnockback 0.2.0 visit 1: carried-thing and show-switch scenes). A standalone write outside any session leaves a 'standalone' record that refuses every later session's writes until jawa/mod_settings_field action=revert.
+item: RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_GAME_VISIT_ONE
+home: skills/rimbridge/references/silent-failures.md

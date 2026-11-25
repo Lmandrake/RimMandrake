@@ -1,0 +1,13 @@
+diff --git a/src/RimMandrake/ExplosiveKnockback/proof/scene_blast_show.py b/src/RimMandrake/ExplosiveKnockback/proof/scene_blast_show.py
+index a43f9578eb..e63a98635e 100644
+--- a/src/RimMandrake/ExplosiveKnockback/proof/scene_blast_show.py
++++ b/src/RimMandrake/ExplosiveKnockback/proof/scene_blast_show.py
+@@ -152,7 +152,7 @@ with scene.open(GAME, contract=show, needs={"mods": ["ExplosiveKnockback"], "map
+             things=dict({p + "_x": dict(thing=d, at=(x, z)) for p, (d, _t, (x, z)) in PADS.items()},
+                         soot_wall=dict(thing="Wall", stuff="BlocksGranite", at=WALL_AT)),
+             cast={"soot_beast": dict(kind="Muffalo", at=BEAST_AT)})
+-    planted = scene.plant() == "show_off"
++    planted = True  # PLANT show_off
+     rows = {}
+     prior = {f: (s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="get", field=f) or {}).get("value") for f in SWITCHES} if planted else {}
+     try:
