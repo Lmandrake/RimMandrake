@@ -1092,7 +1092,10 @@ namespace JawaBench.BridgeTools
                 "include full health detail.",
             ResultDescription =
                 "Per pawn: id, name, kind, faction, hostility, position, dead/downed, stun " +
-                "ticks, race flags, and (with includeHealth) every hediff with severity plus " +
+                "ticks, race flags. 'hostile' is pawn.HostileTo(player), so a mad (manhunter) " +
+                "animal reads true; null with 'hostileError' means the game threw (could not " +
+                "look). 'factionHostile' is the faction-only value. 'mentalState' is the " +
+                "MentalStateDef defName or null. With includeHealth: every hediff with severity plus " +
                 "all capacity levels. " +
                 "🔴 THE HEALTH BLOCK IS NESTED: the hediff list is at row['health']['hediffs'], " +
                 "NOT row['hediffs'], and capacities are at row['health']['capacities']. Reading " +
@@ -1109,7 +1112,9 @@ namespace JawaBench.BridgeTools
                 DefaultValue = null)]
             string rect = null,
             [ToolParameter(Description =
-                "Optional faction filter: a faction defName, 'player', 'hostile', or " +
+                "Optional faction filter: a faction defName, 'player', 'hostile' (the game's " +
+                "pawn.HostileTo(player): a manhunter animal counts; a pawn whose hostility " +
+                "could not be read is kept), 'factionHostile' (the faction alone), or " +
                 "'nonplayer'. Omit for all.", DefaultValue = null)]
             string faction = null,
             [ToolParameter(Description =
@@ -1169,14 +1174,26 @@ namespace JawaBench.BridgeTools
                         }
                     }
 
-                    var hostile = pawn.Faction != null && pawn.Faction.HostileTo(playerFaction);
+                    // 'hostile' is the game's own verdict, pawn.HostileTo(playerFaction): it counts a
+                    // mental state (a manhunter animal), a hunting predator, a prison break, a slave
+                    // rebellion and hostileToAll kinds. The faction-only value missed all of those:
+                    // a 3-day watch of the Pyrelands walk save read 0 hostile while a mad ashwallow
+                    // downed every colonist (2026-11-24). The faction-only value stays as factionHostile.
+                    // null + hostileError = could not look (the game threw), never false.
+                    var factionHostile = pawn.Faction != null && pawn.Faction.HostileTo(playerFaction);
+                    bool? hostile = null;
+                    string hostileError = null;
+                    try { hostile = pawn.HostileTo(playerFaction); }
+                    catch (Exception ex) { hostileError = ex.GetType().Name + ": " + ex.Message; }
+                    var mentalState = pawn.MentalStateDef?.defName;
                     var isPlayer = pawn.Faction == playerFaction;
                     if (!string.IsNullOrWhiteSpace(faction))
                     {
                         var f = faction.Trim();
                         var keep =
                             string.Equals(f, "player", StringComparison.OrdinalIgnoreCase) ? isPlayer :
-                            string.Equals(f, "hostile", StringComparison.OrdinalIgnoreCase) ? hostile :
+                            string.Equals(f, "hostile", StringComparison.OrdinalIgnoreCase) ? hostile != false :
+                            string.Equals(f, "factionhostile", StringComparison.OrdinalIgnoreCase) ? factionHostile :
                             string.Equals(f, "nonplayer", StringComparison.OrdinalIgnoreCase) ? !isPlayer :
                             string.Equals(pawn.Faction?.def?.defName, f, StringComparison.OrdinalIgnoreCase);
                         if (!keep) { skippedFaction++; continue; }
@@ -1266,6 +1283,9 @@ namespace JawaBench.BridgeTools
                         factionName = pawn.Faction?.Name,
                         isPlayer,
                         hostile,
+                        hostileError,
+                        factionHostile,
+                        mentalState,
                         x = pos.IsValid ? pos.x : -1,
                         z = pos.IsValid ? pos.z : -1,
                         spawned = pawn.Spawned,
