@@ -11,6 +11,7 @@ selftest selftest_work_bundle.py.
                                                   sort, then ONE bundle of the ready rest; one live bundle per system
     python3 src/RimMandrake/rimflow/work_bundle.py context            the worker's guard: GO ON | SAVE AND RESTART | UNMEASURED
     python3 src/RimMandrake/rimflow/work_bundle.py step <bundle> "<step>"   the worker's step, shown on the page
+    python3 src/RimMandrake/rimflow/work_bundle.py end <bundle> --why "..."   the Conductor ends a bundle whose run cannot
     python3 src/RimMandrake/rimflow/work_bundle.py live <bundle> --for "<what>" -- CMD   CMD on the first free game
                                                   (ArchBig, then ArchSmall) under game_lock run; else UNRUN, recorded
 
@@ -433,7 +434,11 @@ def launch_bundle(system, members, items, why, pipeline, now=None, launcher=None
     finally:
         lk.close()
     text = brief(rec, items, tests or {i: _g(items.get(i), "effect") for i in members})
-    rc, out, unit = (launcher or (lambda r, b: launch_run(r, b)))(rec, text)
+    try:
+        rc, out, unit = (launcher or (lambda r, b: launch_run(r, b)))(rec, text)
+    except BaseException as e:      # a raise leaves no `launching` record: that state is live and blocks the system
+        holder_launched(rec["id"], None, now, "the launch raised %s: %s" % (type(e).__name__, e))
+        raise
     rec = store_read(rec["id"]) or rec
     if rc == 0 and unit:
         rec.update(state="live", units=[{"unit": unit, "at": now, "kind": "launch", "ended_before": 0}])
@@ -804,7 +809,7 @@ def note_end(bid, q, unit, now, say=None):
                 told.add(m)
         if q["act"] == "raise" and "raise" not in told:
             lines.append("ALARM work bundle %s (%s) is not restarted: %s. Look at its state file %s; restart it by hand "
-                         "with `./pipe bundle <ids> --why ...` or end it" % (bid, rec["system"], q["why"], rec["state_file"]))
+                         "with `./pipe bundle <ids> --why ...` or end it with `work_bundle.py end %s --why ...`" % (bid, rec["system"], q["why"], rec["state_file"], bid))
             told.add("raise")
         if rec["state"] in ("ended", "stopped", "gated") and "end:%s" % rec["state"] not in told:
             lines.append("work bundle %s (%s) %s: %s" % (bid, rec["system"], rec["state"].upper(), _one(q["why"], 400)))
@@ -834,6 +839,29 @@ def note_restart(bid, unit, now, ended_before):
         lk.close()
 
 
+def note_unstarted(bid, why, now, say=None):
+    """A restart that finish planned and that never started (the kick or the step refused, the launch refused): the
+    bundle reads `gated`, so its open members are the lane's again. Only a bundle still `restarting` moves: one that a
+    later restart made live again is left as it is."""
+    say = say or (lambda line: conductor_say(line, now))
+    lk = _lock()
+    try:
+        rec = store_read(bid)
+        if not rec or rec.get("state") != "restarting":
+            return None
+        rec.update(state="gated", unstarted={"at": now, "why": _one(why, 400)})
+        store_write(rec)
+    finally:
+        lk.close()
+    line = "work bundle %s (%s) GATED: its restart never started (%s); its open members are the lane's again" % (
+        bid, rec["system"], _one(why, 400))
+    try:
+        say(line)
+    except Exception as e:  # noqa: BLE001 - the record keeps the state; the line is said on stderr
+        print("work_bundle: conductor line not written (%s): %s" % (e, line), file=sys.stderr)
+    return rec
+
+
 def loc_plan(rec, facts, now, gates, base, gate_no):
     """left_open_continue.plan's bundle branch: the bundle's rule decides, LOC's gates still bind. -> a LOC plan."""
     bid = (rec.get("env") or {}).get(ENV)
@@ -856,6 +884,7 @@ def loc_plan(rec, facts, now, gates, base, gate_no):
         return dict(out, act="none", why=no, bundle_plan=dict(q, act="gated", why=no))
     import left_open_continue as LOC
     return dict(out, act="continue", target=q["target"], capped=LOC.capped(rec), note=None, progress=[],
+                bundle_ended_now=q["ended_now"],     # the restart's progress guard (at_finish drops bundle_plan)
                 n=int(rec.get("continue_n") or 0) + 1, why="work bundle %s: %s" % (bid, q["why"]))
 
 
@@ -1018,6 +1047,29 @@ def holder_launched(bid, unit, now, out=None):
         lk.close()
 
 
+def end_bundle(bid, why, now, say=None):
+    """The Conductor's end of a bundle whose run cannot end it (its unit died with finish never run). -> 0, or 2 when
+    there is no such bundle. Its open members are the lane's again."""
+    say = say or (lambda line: conductor_say(line, now))
+    lk = _lock()
+    try:
+        rec = store_read(bid)
+        if not rec:
+            return 2
+        rec.update(state="ended", ended_by_hand={"at": now, "why": _one(why, 400), "was": rec.get("state")})
+        store_write(rec)
+    finally:
+        lk.close()
+    say("work bundle %s (%s) ENDED by hand: %s" % (bid, rec["system"], _one(why, 400)))
+    return 0
+
+
+def cmd_end(o):
+    rc = end_bundle(o.bundle, o.why, time.time())
+    print(("ENDED %s" % o.bundle) if rc == 0 else ("NO BUNDLE %s in %s" % (o.bundle, store_dir())))
+    return rc
+
+
 # ---- part 7: the page -----------------------------------------------------------------------------------------------
 
 PAGE_TITLE = "Work bundles (one run per system; work_bundle.py)"
@@ -1161,6 +1213,9 @@ def parse(argv=None):
     s = sub.add_parser("live", help="the live pass: one check on the first free game, or UNRUN with its command")
     s.add_argument("bundle")
     s.add_argument("--for", dest="what", required=True)
+    s = sub.add_parser("end", help="the Conductor ends a bundle whose run cannot (its unit died with finish never run)")
+    s.add_argument("bundle")
+    s.add_argument("--why", required=True)
     o = ap.parse_args(argv)
     if o.cmd == "live":
         o.cmd = rest
@@ -1172,7 +1227,8 @@ def parse(argv=None):
 
 def main(argv=None):
     o = parse(argv)
-    return {"sort": cmd_sort, "launch": cmd_launch, "context": cmd_context, "step": cmd_step, "live": cmd_live}[o.verb](o)
+    return {"sort": cmd_sort, "launch": cmd_launch, "context": cmd_context, "step": cmd_step, "live": cmd_live,
+            "end": cmd_end}[o.verb](o)
 
 
 if __name__ == "__main__":

@@ -244,6 +244,16 @@ def t_the_record_is_written_at_launch():
     chk(lambda: W.live_bundles() == {} or "pipeline:judges" not in W.live_bundles(),
         "record: a launch_failed bundle is not live")
 
+    def boom(rec, brief):
+        raise TimeoutError("the launch hung past its guard")
+    try:
+        W.launch_bundle("pipeline:art-pipeline", ["B3"], {"B3": item("B3")}, "why", "workshop", now=NOW + 20, launcher=boom)
+    except TimeoutError:
+        pass
+    chk(lambda: "pipeline:art-pipeline" not in W.live_bundles(),
+        "record: a launcher that raises leaves no live bundle behind, so the system is not blocked for good (%s)"
+        % W.live_bundles())
+
 
 def t_the_brief_names_every_member_and_the_role():
     W = WB()
@@ -473,6 +483,63 @@ def t_a_restart_that_ended_no_member_raises():
     chk(lambda: "bundle" in inspect.getsource(LOC.recheck), "progress guard: recheck reads the bundle rule")
 
 
+def _step(LOC, unit, now, launch_fn, reader=lambda t: {"state": "proposed"}):
+    """LOC.run as the continuation unit runs it, offline: no gate, no account end, the fake launch."""
+    keep = LOC.account_end_wait
+    LOC.account_end_wait = lambda now, plan_dir=None: None
+    try:
+        return LOC.run(unit, now=now, launch_fn=launch_fn, gates={k: (lambda a: None) for k in LOC.GATES},
+                       log_path=os.path.join(TMP, "conductor.log"), reader=reader)
+    finally:
+        LOC.account_end_wait = keep
+
+
+def t_the_real_restart_path_keeps_the_progress_guard():
+    """part of a-restart-that-ended-no-member-raises, through the real path (finish -> the continuation step ->
+    note_restart), not hand-built units: the restart's unit must carry the count that ended before it began."""
+    W = WB()
+    import left_open_continue as LOC
+    import detached_helper as DH
+    rec = bundle_rec(W, ["G1", "G2", "G3"], units=[{"unit": "u-g-first", "at": NOW, "kind": "launch", "ended_before": 0}])
+    f = facts_of(G1={"state": "done"}, G2={}, G3={})
+    r = run_rec(W, rec, unit="u-g-first")
+    DH.write_record(dict(r, status="finished"))
+    p, line = LOC.at_finish(r, {"state": "done", "notes": []}, TMP, NOW + 100, continuer=lambda rr, q: "continue kicked",
+                            states_reader=lambda clone, ids: f)
+    got = _step(LOC, "u-g-first", NOW + 150, lambda *a, **k: (0, "DETACHED u-g-second"))
+    unit = next((u for u in W.store_read(rec["id"])["units"] if u["unit"] == "u-g-second"), {})
+    chk(lambda: got["act"] == "continued" and unit.get("ended_before") == 1,
+        "progress guard, real path: the restart's unit records the 1 member ended before it (%s / %s)" % (got, unit))
+    r2 = run_rec(W, rec, unit="u-g-second", kind="restart")
+    p2 = LOC.plan(r2, {"state": "proposed", "notes": []}, f, now=NOW + 300, gates={k: (lambda a: None) for k in LOC.GATES})
+    chk(lambda: p2["act"] == "alarm", "progress guard, real path: that restart, ending none, raises (%s)" % p2.get("act"))
+
+
+def t_a_restart_that_never_starts_leaves_the_bundle_gated():
+    """part of restart-until-each-member-has-an-outcome: a restart refused after finish planned it (`pipe off
+    family:left_open_continue` on the kick, the step's own recheck, a refused launch) must not leave the bundle
+    `restarting`, a live state that holds every member out of the lane with no run."""
+    W = WB()
+    import left_open_continue as LOC
+    import detached_helper as DH
+    for tag, how in (("k", "kick"), ("c", "recheck"), ("l", "launch")):
+        ids = ["H%s1" % tag, "H%s2" % tag]
+        first = "u-h%s-first" % tag
+        rec = bundle_rec(W, ids, units=[{"unit": first, "at": NOW, "kind": "launch", "ended_before": 0}])
+        f = facts_of(**{ids[0]: {"state": "done"}, ids[1]: {}})
+        r = run_rec(W, rec, unit=first)
+        DH.write_record(dict(r, status="finished"))
+        kick = "continue refused by control: pipe off family:left_open_continue" if how == "kick" else "continue kicked x"
+        LOC.at_finish(r, {"state": "done", "notes": []}, TMP, NOW + 100, continuer=lambda rr, q: kick,
+                      states_reader=lambda clone, ids_: f)
+        if how == "recheck":
+            _step(LOC, first, NOW + 150, lambda *a, **k: (0, "DETACHED u-never"), reader=lambda t: {"state": "done"})
+        elif how == "launch":
+            _step(LOC, first, NOW + 150, lambda *a, **k: (2, "refused: the clone pool is full"))
+        st = W.store_read(rec["id"])["state"]
+        chk(lambda: st == "gated", "restart never started (%s refused): the bundle reads gated, not %s" % (how, st))
+
+
 def t_a_bundle_with_every_outcome_ends():
     W = WB()
     rec = bundle_rec(W, ["E1", "E2"])
@@ -622,6 +689,20 @@ def t_a_test_never_writes_the_real_store():
                                                                          "is refused by name (%s)" % r.stderr[-200:])
 
 
+def t_the_conductor_ends_a_dead_bundle():
+    """a-run-whose-finish-never-ran: the page names `work_bundle.py end` as the Conductor's way out"""
+    W = WB()
+    rec = bundle_rec(W, ["K1"])
+    lines = []
+    rc = W.end_bundle(rec["id"], "its unit died with finish never run", NOW + 10, say=lines.append)
+    on = W.store_read(rec["id"])
+    chk(lambda: rc == 0 and on["state"] == "ended" and on["ended_by_hand"]["why"] and lines and rec["id"] in lines[0],
+        "end: the Conductor's end marks the bundle ended, with its reason, and says one line (%s)" % on.get("state"))
+    chk(lambda: W.end_bundle("WB-none-such", "x", NOW, say=lines.append) == 2, "end: a bundle that does not exist is refused")
+    o = W.parse(["end", rec["id"], "--why", "dead"])
+    chk(lambda: o.verb == "end" and o.why == "dead", "end: the command line parses")
+
+
 def t_each_limit_names_its_danger():
     import re
     src = open(os.path.join(HERE, "work_bundle.py"), encoding="utf-8").read().splitlines()
@@ -640,10 +721,12 @@ def main():
               t_the_brief_names_every_member_and_the_role, t_the_lane_launches_one_bundle_per_system,
               t_context_reads_the_own_session, t_outcomes_are_read_from_the_ledger,
               t_restart_until_each_member_has_an_outcome, t_finish_writes_the_bundles_end,
-              t_a_restart_that_ended_no_member_raises,
+              t_a_restart_that_ended_no_member_raises, t_the_real_restart_path_keeps_the_progress_guard,
+              t_a_restart_that_never_starts_leaves_the_bundle_gated,
               t_a_bundle_with_every_outcome_ends, t_a_refused_member_is_stopped_with_its_reason,
               t_live_pass_takes_a_free_game_or_says_unrun, t_the_page_shows_each_live_bundle,
               t_the_maturation_road_back_is_one_bundle, t_a_test_never_writes_the_real_store,
+              t_the_conductor_ends_a_dead_bundle,
               t_each_limit_names_its_danger]:
         print("-- %s" % t.__name__)
         try:

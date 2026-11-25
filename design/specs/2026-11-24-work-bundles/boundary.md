@@ -75,7 +75,9 @@ bundle began). A member with none of these is **open**.
   not bundled.
 - **the-record-is-written-at-launch.** A launch writes the record before it starts the run: system, members, lead, why,
   the state file path, `state` `live`, and the run unit when the launch returns one. A launch that started nothing
-  sets `state` `launch_failed` with its output, and no member reads `in_bundle`.
+  sets `state` `launch_failed` with its output, and no member reads `in_bundle`. A launch that raises (a hung
+  launch's timeout, a `ledger_open` fault in the holder) also leaves `launch_failed`, never `launching`, which is live
+  and would block the system.
 - **the-brief-names-every-member-and-the-role.** The brief lists each member with its title and its test, names the
   role file `roles/bundle_worker.md`, the state file and the bundle id, and states no spend, cap or remainder.
 - **context-reads-the-own-session.** `work_bundle.py context` prints the session's context tokens, the model's window
@@ -93,6 +95,15 @@ bundle began). A member with none of these is **open**.
 - **a-restart-that-ended-no-member-raises.** A restart (not the first run) that ended no member since it began is not
   restarted again: the bundle reads `raised`, and one ALARM line in the Conductor log names the bundle, the open
   members and the units. The 3-a-day count of single runs does not apply to a bundle; this guard on progress does.
+- **the-real-restart-path-keeps-the-progress-guard.** The count of members ended when a restart begins travels from the
+  plan that `finish` writes to the restart's unit on the record, so the guard on progress reads it on the real path, not
+  only in a pure call (found by the fresh reader, 2026-11-25: it was always 0, and a restart that ended none restarted
+  again for good).
+- **a-restart-that-never-starts-leaves-the-bundle-gated.** A planned restart that no step starts (the kick refused, the
+  step's own recheck refused, the launch refused) moves the bundle from `restarting` to `gated`, with one Conductor line;
+  `restarting` is a live state and would hold its members for good.
+- **the-conductor-ends-a-dead-bundle.** `work_bundle.py end <bundle> --why "..."` marks a bundle ended by hand, with its
+  reason and one Conductor line: the way out for a run whose finish never ran.
 - **a-bundle-with-every-outcome-ends.** When every member has an outcome, the bundle reads `ended`. Each `refused`
   member's reason goes to the Conductor log, once.
 - **a-refused-member-is-stopped-with-its-reason.** In the lane, an open member refused in an ended bundle reads

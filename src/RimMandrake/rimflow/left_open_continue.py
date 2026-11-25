@@ -559,6 +559,8 @@ def run(unit, now=None, launch_fn=None, gates=None, root=None, log_path=None, re
             rec["continue_skipped"] = {"at": now, "why": why}
             DH.write_record(rec, root)
             journal({"at": DH.iso(now), "unit": unit, "item": rec.get("item"), "act": "skipped", "why": why}, root)
+            if p.get("bundle") and not why.startswith(("already continued", "another continuation step")):
+                bundle_unstarted(p["bundle"], "the continuation step refused: " + why, now)
         return {"unit": unit, "act": "none", "why": why}
     waits_for = account_end_wait(now)
     if waits_for:       # its run was told to save and end because the account ends: kick_waiting starts it after
@@ -613,7 +615,7 @@ def run(unit, now=None, launch_fn=None, gates=None, root=None, log_path=None, re
         DH.write_record(rec, root)
         if p.get("bundle"):
             import work_bundle as WB
-            WB.note_restart(p["bundle"], m.group(1), now, (p.get("bundle_plan") or {}).get("ended_now") or 0)
+            WB.note_restart(p["bundle"], m.group(1), now, int(p.get("bundle_ended_now") or 0))
         line = "%s on %s ended with work left (%s); continued as %s on %s, same model %s, %s (%d of at most %d today)" % (
             unit, rec["item"], p.get("why"), m.group(1), p["target"], rec.get("model"),
             "its session resumed" if sid else "fresh: " + str(fresh_why), p["n"], MAX_PER_DAY)
@@ -632,7 +634,18 @@ def run(unit, now=None, launch_fn=None, gates=None, root=None, log_path=None, re
     except Exception:  # noqa: BLE001
         pass
     journal({"at": DH.iso(now), "unit": unit, "item": rec["item"], "act": "refused", "why": str(out)}, root)
+    if p.get("bundle"):
+        bundle_unstarted(p["bundle"], "the restart's launch was refused: " + " ".join(str(out).split()), now)
     return {"unit": unit, "act": "refused", "why": str(out)[:300]}  # cut-ok: terminal display
+
+
+def bundle_unstarted(bid, why, now):
+    """A planned bundle restart that never started: the bundle leaves `restarting` (work_bundle.note_unstarted)."""
+    try:
+        import work_bundle as WB
+        WB.note_unstarted(bid, why, now)
+    except Exception as e:  # noqa: BLE001 - the step's own answer stands; the miss is said on stderr
+        print("work bundle %s not marked gated: %s: %s" % (bid, type(e).__name__, e), file=sys.stderr)
 
 
 def account_end_wait(now, plan_dir=None):
@@ -740,7 +753,10 @@ def at_finish(rec, got, clone, now, runner=subprocess.run, continuer=None, state
         return p, "continue: ALARM %s (%s)" % (ALARM_ID, p["why"])
     if p["act"] != "continue":
         return p, "continue: none (%s)" % p["why"]
-    return p, (continuer or (lambda r, q: kick(r, q, runner)))(fresh, p)
+    line = (continuer or (lambda r, q: kick(r, q, runner)))(fresh, p)
+    if p.get("bundle") and ("kicked" not in line or "NOT kicked" in line):    # no step will start the restart
+        bundle_unstarted(p["bundle"], line, now)
+    return p, line
 
 
 def main(argv=None):

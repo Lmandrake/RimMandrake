@@ -3153,20 +3153,25 @@ def road_back_holder(root, cfg, st, mod, stage, opened, item, cap, now, fx, game
         bundle, bcause = None, "work bundle UNMEASURED (%s: %s)" % (type(e).__name__, e)
     plan = modledger.resume_plan(root, mod)     # the holder's recorded session is resumed, not restarted
     rkw = {"session": plan["session_id"]} if plan.get("action") == "resume" and plan.get("session_id") else {}
-    led = ledger_open(root, mod, "fixer", AUT.fixer_brief(item, mod, cap, live=live) + (
-        "\nReconcile first: %s.\n" % plan["why"] if plan.get("reconcile") else "") + (
-        "\nThis is the mod's %sholder run: work every open road-back item together, from the packet above: %s. "
-        "Close each one its acceptance test passes; a note starting LEFT OPEN: on each that is not.\n"
-        % ("live " if live else "", ", ".join(ids)) + (
-        "Not yours: %s need%s a game, Stage 6 work; work none of them here.\n" % (
-            ", ".join(game6), "s" if len(game6) == 1 else "") if game6 else "") + (
-        "\n" + M.game_brief(game) if game else "") + (
-        "Not yours: %s, each worked by its own live run; work none of them here.\n" % ", ".join(
-            "%s (%s)" % kv for kv in sorted(busy.items())) if busy else "") + bnote), stage=stage, now=now, fx=fx)
-    rc, text, unit = (fx.get("launch_brief") or AUT.launch_brief)(
-        item, led["brief"], MM.for_mod(cfg, mod).get("steward_model", "opus"), cap, cfg.get("seat", "BENCH"),
-        env=dict(led["env"], **control_env(mod, stage), **({"RM_GAME_INSTANCE": game} if game else {}),
-                 **({WB.ENV: bundle["id"]} if bundle else {})), **rkw)
+    try:
+        led = ledger_open(root, mod, "fixer", AUT.fixer_brief(item, mod, cap, live=live) + (
+            "\nReconcile first: %s.\n" % plan["why"] if plan.get("reconcile") else "") + (
+            "\nThis is the mod's %sholder run: work every open road-back item together, from the packet above: %s. "
+            "Close each one its acceptance test passes; a note starting LEFT OPEN: on each that is not.\n"
+            % ("live " if live else "", ", ".join(ids)) + (
+            "Not yours: %s need%s a game, Stage 6 work; work none of them here.\n" % (
+                ", ".join(game6), "s" if len(game6) == 1 else "") if game6 else "") + (
+            "\n" + M.game_brief(game) if game else "") + (
+            "Not yours: %s, each worked by its own live run; work none of them here.\n" % ", ".join(
+                "%s (%s)" % kv for kv in sorted(busy.items())) if busy else "") + bnote), stage=stage, now=now, fx=fx)
+        rc, text, unit = (fx.get("launch_brief") or AUT.launch_brief)(
+            item, led["brief"], MM.for_mod(cfg, mod).get("steward_model", "opus"), cap, cfg.get("seat", "BENCH"),
+            env=dict(led["env"], **control_env(mod, stage), **({"RM_GAME_INSTANCE": game} if game else {}),
+                     **({WB.ENV: bundle["id"]} if bundle else {})), **rkw)
+    except BaseException as e:      # a raise leaves no `launching` bundle record: that state blocks the mod
+        if bundle:
+            WB.holder_launched(bundle["id"], None, now, "the holder launch raised %s: %s" % (type(e).__name__, e))
+        raise
     unit = unit if rc == 0 else None
     if bundle:
         WB.holder_launched(bundle["id"], unit, now, text)
