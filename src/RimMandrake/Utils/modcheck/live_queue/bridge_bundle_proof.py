@@ -311,6 +311,8 @@ def v_WILDBLOCK(d):
 def v_PLAYTEST(d):
     if d.get("why"):
         return 2, d["why"]
+    if d.get("gssStarted") and d.get("fwRefused") is False:   # the fault itself; its stray run then blocks fwStarted
+        return 1, "playtest_start beside a GSS run: %s" % (d.get("fwRefusal") or "it started")
     if not d.get("gssStarted") or not d.get("fwStarted"):
         return 2, "a first run did not start (gss %s, flowworks %s): %s" % (d.get("gssStarted"), d.get("fwStarted"),
                                                                            d.get("startMsg"))
@@ -885,9 +887,14 @@ def g_PLAYTEST(L):
     if not out["gssStarted"]:
         out["startMsg"] = _refusal(g)[1]
         return out
-    out["fwRefused"], out["fwRefusal"] = _refusal(_call_or_err(L, "jawa/playtest_start", recipe="fluids"))
+    stray = _call_or_err(L, "jawa/playtest_start", recipe="fluids")
+    out["fwRefused"], out["fwRefusal"] = _refusal(stray)
     _await_run(L, "jawa/gss_playtest_status", g["runId"])
     L.call("jawa/gss_playtest_collect", runId=g["runId"])
+    if not out["fwRefused"] and _ok(stray) and stray.get("runId"):   # it started beside GSS: FAIL, and leave no run behind
+        _await_run(L, "jawa/playtest_status", stray["runId"])
+        L.call("jawa/playtest_collect", runId=stray["runId"])
+        return out
     p = _call_or_err(L, "jawa/playtest_start", recipe="fluids")
     out["fwStarted"] = _ok(p) and bool(p.get("runId"))
     if not out["fwStarted"]:

@@ -123,6 +123,10 @@ pt = {"gssStarted": True, "fwRefusal": "A GSS playtest run is active: g1. Collec
       "fwStarted": True, "gssRefusal": "A FlowWorks playtest run is active: p1.", "gssRefused": True}
 check("PLAYTEST each runner refuses while the other runs", "PLAYTEST", pt, 0)
 check("PLAYTEST FlowWorks started beside a GSS run", "PLAYTEST", dict(pt, fwRefused=False, fwRefusal=""), 1)
+# the real shape of that fault: the stray FlowWorks run still holds the slot, so the second playtest_start is refused
+check("PLAYTEST FlowWorks started beside a GSS run, its own second start then refused", "PLAYTEST",
+      dict(pt, fwRefused=False, fwRefusal="", fwStarted=False,
+           startMsg="A playtest run is active: p0. Pass force=true to abort it."), 1)
 check("PLAYTEST GSS refused for another reason", "PLAYTEST", dict(pt, gssRefusal="No current map."), 1)
 check("PLAYTEST the first run never started", "PLAYTEST", dict(pt, gssStarted=False), 2)
 cp = {"profile": "campaign", "artRefused": True, "artMsg": "REFUSED under the CAMPAIGN profile: killHostiles destroys",
