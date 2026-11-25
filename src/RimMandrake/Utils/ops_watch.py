@@ -406,12 +406,15 @@ def flat_rate(readings, now, flat_h=FLAT_H, recent_h=RECENT_H):
     return max(0.0, used - base) / ((now - base_t) / HOUR), since
 
 
-def loan_runway(name, reading, rate, how, src, lent_rules, allowance, live, now):
+def loan_runway(name, reading, rate, how, src, lent_rules, allowance, live, now, exception=None):
     """A lent account's runway against the loan (slot_rules.json lent_accounts), not the week. The rule stops our draw
     at the end of his window or at the cap, so extrapolating to his weekly reset measures nothing of ours. Open loan:
     x the hours left in the window that the allowance lasts at this burn. Closed loan (allowance 0: outside the window,
     at the cap or floor, off-limits): nothing of ours to run out unless this machine is still on it, which is 0. The
     meter cannot tell his use from ours, so a closed loan with a burn and no live login here is his week, not an alarm.
+    A temporary line of the account plan (exception(name, now, h) -> (id, until, line)) replaces the window: the loan is
+    open until that line's end (2026-11-25: steven's line ran to his reset, 8 h out, past his 48 h window, and read a
+    false closed 0).
     reading: {"left", "used", "h"}; live: this machine's account label, or None when unknown."""
     unit = "x the time to the end of the loan"
     def mark(v, why, **x):
@@ -423,6 +426,13 @@ def loan_runway(name, reading, rate, how, src, lent_rules, allowance, live, now)
     cap, why = allowance({"account": name, "pct_left": reading["left"], "pct_used": reading["used"], "hours_to_reset": h,
                           "resets_at": None, "source": src}, lent_rules, now)
     open_h = h - (168.0 - pol["prefer_start_of_week_h"])
+    try:
+        ex = exception(name, now, h) if exception is not None else None
+    except Exception:  # noqa: BLE001  an unreadable plan is no temporary line: the standing window (the stricter) binds
+        ex = None
+    end = epoch(ex[1]) if ex else None
+    if end is not None:
+        open_h = min(h, (end - now) / HOUR)
     if cap > 0 and open_h > 0:
         rw = runway(cap, rate, open_h)
         if rw is None:
@@ -486,7 +496,7 @@ def c_accounts(now, rules, ctx):
             out[k + "runway"] = E(10.0, why + "; nothing spent yet reads the cap", "x the time to reset")
             if name in lent:
                 out[k + "loan_runway"] = loan_runway(name, {"left": 100.0, "used": 0.0, "h": h}, 0.0, why, "ESTIMATE",
-                                                     lent_rules, SA.lent_allowance, live, now)
+                                                     lent_rules, SA.lent_allowance, live, now, getattr(SA, "_plan_exception", None))
                 out[k + "runway"]["judged_by"] = k + "loan_runway"
             return
         if src not in ("MEASURED", "ESTIMATE") or left is None:
@@ -541,7 +551,7 @@ def c_accounts(now, rules, ctx):
                                   "x the time to reset", rate_pct_h=round(rate, 3))
         if name in lent:
             out[k + "loan_runway"] = loan_runway(name, {"left": left, "used": 100.0 - left, "h": h}, rate, how, src,
-                                                 lent_rules, SA.lent_allowance, live, now)
+                                                 lent_rules, SA.lent_allowance, live, now, getattr(SA, "_plan_exception", None))
             out[k + "runway"]["judged_by"] = k + "loan_runway"
     for name, a in sorted(acc.items()):
         try:

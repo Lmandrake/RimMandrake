@@ -1109,6 +1109,20 @@ try:
     _o = _lent_pass({"lent": _acct(8.0, 140.0)}, {"lent": (4.0, 20, 6.0)})
     check("lent: a burn that eats the cap before the window ends alarms",
           _o["accounts.lent.loan_runway"]["v"] == 0.5 and _alarmed(_o, "accounts.lent.loan_runway") == (True, True))
+    # 2026-11-25: the plan's temporary line (SYSTEM_THEN_STEVEN_TO_FLOOR_2026_11_20.steven) opened steven until his reset,
+    # 8.3 h out, far past his 48 h window. The allowance gave 29 points, but the loan read 0 MEASURED ("this machine is on a
+    # closed loan") and held a false RUNWAY_LOW on his rung for 12.8 h. Under a temporary line the window is that line's life.
+    _fake_accounts({"lent": _acct(40.0, 20.0)})
+    sys.modules["account_usage"].live_email = lambda: "l@x"
+    _ex_until = __import__("datetime").datetime.fromtimestamp(NOW + 20 * 3600, __import__("datetime").timezone.utc).isoformat()
+    sys.modules["slot_allocator"] = types.SimpleNamespace(
+        slope=lambda *a: (1.0, 20, 6.0), load_rules=lambda: _LR,
+        lent_allowance=lambda sp, rules, now: (30.0, "lent: by the switching plan's exception EX until %s" % _ex_until),
+        _plan_exception=lambda name, now, h, plan=None: ("EX", _ex_until, 5))
+    _o = OW.c_accounts(NOW, RULES, {})
+    check("lent: under the plan's temporary line the loan runs to that line's end (30 points, 1%/h, 20 h -> 1.5), not closed",
+          _o["accounts.lent.loan_runway"]["v"] == 1.5 and _o["accounts.lent.loan_runway"]["m"] == "MEASURED"
+          and not _alarmed(_o, "accounts.lent.loan_runway")[0], _o["accounts.lent.loan_runway"])
     _o = _lent_pass({"lent": _acct(52.0, 93.0)}, _slope, email=None)
     check("lent: closed loan and the machine's login unreadable is UNMEASURED, never a clean 10",
           _o["accounts.lent.loan_runway"]["m"] == "UNMEASURED", _o["accounts.lent.loan_runway"])
