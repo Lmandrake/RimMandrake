@@ -113,6 +113,10 @@
    "n": 1,
    "why": "words of a list"
   },
+  "src/RimMandrake/rimflow/build_match.py::_digest_file::for attempt in range(READ_TRIES)": {
+   "n": 1,
+   "why": "reads of one file again after a transient drvfs errno; no outcome of the work is counted or spent"
+  },
   "src/RimMandrake/rimflow/control.py::_fault_alarm::n >= FAULT_LIMIT": {
    "n": 1,
    "why": "the system-fault meter itself: it counts machine faults by design and charges nothing"

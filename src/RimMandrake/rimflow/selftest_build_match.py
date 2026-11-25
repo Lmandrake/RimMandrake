@@ -11,6 +11,7 @@ game. The range it reads, per row: the mod hash same or different, the game buil
 (full or minimal) against its reference (his walk's list, or the tier's list), the list equal, short, reordered or
 differing only in case or the `_steam` suffix, a field missing, a tier unresolved, the walk itself unreadable.
 """
+import errno
 import json
 import os
 import re
@@ -275,6 +276,29 @@ def io_checks(tmp):
     w3 = B.walk_build(root, "TestMod", os.path.join(tmp, "bare.rws"), host="Archmagi",
                       mods_dir=os.path.join(tmp, "Mods"), version_txt=vt)
     check(w3["why"] and "modIds" in " ".join(w3["why"]), "a savegame with no modIds gives no walk list: %s" % w3["why"])
+    # drvfs returned ENOMEM on one 618 kB Biomes texture and read it whole the next time (measured 2026-11-24, on
+    # ArchSmall's Mods folder): the walk build then read "Pyrelands is not deployed" and 0 of 39 checks counted.
+    png = os.path.join(tmp, "Mods", "DeployedName", "Textures", "t.png")
+    real_open, fails = open, {"left": 0}
+
+    def flaky_open(path, *a, **k):
+        if os.path.abspath(str(path)) == os.path.abspath(png) and fails["left"]:
+            fails["left"] -= 1
+            raise OSError(errno.ENOMEM, "Cannot allocate memory", path)
+        return real_open(path, *a, **k)
+    B.open, B.RETRY_PAUSE_S = flaky_open, 0
+    try:
+        fails["left"] = 1
+        check(B.deployed_hash(d) == h1, "a file that drvfs refuses once with ENOMEM is read again: the same hash")
+        fails["left"] = 10 ** 6
+        check(B.deployed_hash(d) is None, "a file that never reads gives no hash, never a value")
+        fails["left"] = 10 ** 6
+        wn = B.walk_build(root, "TestMod", sv, host="Archmagi", mods_dir=os.path.join(tmp, "Mods"), version_txt=vt)
+        txt = " ".join(wn["why"])
+        check(wn["why"] and "not deployed" not in txt and "could not be read" in txt and "t.png" in txt,
+              "a deployed folder that cannot be read says so and names the file, never 'not deployed': %s" % wn["why"])
+    finally:
+        del B.open
     stand = os.path.join(tmp, "standin.json")
     write(stand, json.dumps({"mod_hash": "sha256:feed", "game_build": "1.6.1 rev1", "active_mods": ["a", "b"],
                              "tiers": {"t1": ["a"]}}))
@@ -639,6 +663,9 @@ MUTANTS = {
     "modsconfig_grepped": lambda: setattr(B, "active_mods", _regex_active),
     "hash_names_only": lambda: setattr(B, "_digest_file", lambda p, h: None),
     "any_host_walks": lambda: setattr(B, "WALK_HOST", None),
+    "transient_read_not_retried": lambda: setattr(B, "READ_TRIES", 1),
+    "unreadable_as_not_deployed": lambda: setattr(
+        B, "deployed_hash_why", (lambda o: lambda f, cache_dir=None: (o(f, cache_dir)[0], "no folder"))(B.deployed_hash_why)),
 }
 
 

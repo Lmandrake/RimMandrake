@@ -55,6 +55,7 @@ import socket
 import stat
 import subprocess
 import sys
+import time
 import xml.etree.ElementTree as ET
 from functools import cache
 
@@ -90,22 +91,38 @@ def same_list(a, b):
     return norm_list(a) == norm_list(b)
 
 
+# drvfs (/mnt/d) can refuse one read with ENOMEM under memory pressure and read the same file whole the next time
+# (measured 2026-11-24 on a 618 kB Biomes texture, ArchSmall's Mods folder). The bound guards a file that always fails
+# from holding the reading for ever; the need measured is one read again, so ten tries is ten times that.
+TRANSIENT_READ = (errno.ENOMEM, errno.EAGAIN, errno.EINTR)
+READ_TRIES = 10
+RETRY_PAUSE_S = 0.5
+
+
 def _digest_file(path, h):
     """A plain file's size and bytes. Anything else raises OSError, so the folder hashes to None: a pipe or device is
     never opened (a pipe would wait for a writer), and a file whose read length is not its size (a /proc file reads
     bytes at size 0) is refused, so every hash the cache keeps was read from bytes its size key describes (third GPT
-    review, 2026-11-17)."""
+    review, 2026-11-17). A read that fails with a transient errno is read again from its start; the bytes go into h
+    only after one whole read, so a retry never changes the hash."""
     if not stat.S_ISREG(os.stat(path).st_mode):
         raise OSError("not a plain file: %s" % path)
-    with open(path, "rb") as f:
-        size = os.fstat(f.fileno()).st_size
-        h.update(b"%d\0" % size)
-        got = 0
-        for chunk in iter(lambda: f.read(1 << 20), b""):
-            got += len(chunk)
-            h.update(chunk)
+    for attempt in range(READ_TRIES):
+        try:
+            with open(path, "rb") as f:
+                size = os.fstat(f.fileno()).st_size
+                chunks = list(iter(lambda: f.read(1 << 20), b""))
+            break
+        except OSError as e:
+            if e.errno not in TRANSIENT_READ or attempt == READ_TRIES - 1:
+                raise
+            time.sleep(RETRY_PAUSE_S)
+    got = sum(len(c) for c in chunks)
     if got != size:
         raise OSError("read %d bytes of a %d-byte file: %s" % (got, size, path))
+    h.update(b"%d\0" % size)
+    for c in chunks:
+        h.update(c)
 
 
 def _files(folder):
@@ -143,12 +160,18 @@ def deployed_hash(folder, cache_dir=None):
     cannot see a change no write call makes (stores through a live shared mapping) or a file only another user cannot
     open; a deployed mod folder is written by deploy_custom_mods with plain writes as the one user, and the game opens
     it read-only. A deploy during a reading is the same race an uncached read has: the next reading sees it."""
+    return deployed_hash_why(folder, cache_dir)[0]
+
+
+def deployed_hash_why(folder, cache_dir=None):
+    """(hash, None), or (None, why): why is "no folder" when there is none, else the read error, so a deployed folder
+    that cannot be read is never reported as not deployed."""
     if not folder or not os.path.isdir(folder):
-        return None
+        return None, "no folder"
     try:
-        return _hash_files(folder, _files(folder), cache_dir)
-    except OSError:
-        return None
+        return _hash_files(folder, _files(folder), cache_dir), None
+    except OSError as e:
+        return None, "a part of %s could not be read: %s" % (folder, e)
 
 
 def _cache_key(folder, files, cache_dir):
@@ -325,13 +348,15 @@ def identity(root, mod, tier=None, full=False, mods_dir=None, config=None, versi
         mods_dir, config, version_txt = mods_dir or m, config or c, version_txt or v
     why = []
     pid, folder = _mod_folder(root, mod, mods_dir)
-    h = deployed_hash(folder, cache_dir=cache_dir)
+    h, err = deployed_hash_why(folder, cache_dir=cache_dir)
     if composed_into(root, mod) == COMPOSE_UNREADABLE:
         why.append("%s cannot be read, so which folder the game loads %s from is unknown: repair it"
                    % (compose_file(root), mod))
-    if h is None:
-        why.append("%s is not deployed in %s (no folder whose About.xml names %s), or a part of it cannot be read: "
-                   "deploy it first" % (mod, mods_dir, pid or "its packageId"))
+    if h is None and err == "no folder":
+        why.append("%s is not deployed in %s (no folder whose About.xml names %s): deploy it first"
+                   % (mod, mods_dir, pid or "its packageId"))
+    elif h is None:
+        why.append("%s is deployed, but %s; read it again" % (mod, err))
     am = active_mods(config)
     if not am:
         why.append("no activeMods read from %s" % config)
@@ -441,10 +466,11 @@ def walk_build(root, mod, savegame, host=None, mods_dir=None, version_txt=None, 
     out["walk_game"] = walk_letter(savegame)
     _, folder = _mod_folder(root, mod, mods_dir)
     out["deployed_folder"] = folder
-    out["mod_hash"] = deployed_hash(folder, cache_dir=cache_dir)
+    out["mod_hash"], err = deployed_hash_why(folder, cache_dir=cache_dir)
     out["game_build"] = game_build(version_txt)
     if not out["mod_hash"]:
-        out["why"].append("%s is not deployed in %s" % (mod, mods_dir))
+        out["why"].append("%s is not deployed in %s" % (mod, mods_dir) if err == "no folder"
+                          else "%s is deployed, but %s; read it again" % (mod, err))
     if not out["game_build"]:
         out["why"].append("no game build read from %s" % version_txt)
     sys.path.insert(0, UTILS) if UTILS not in sys.path else None
