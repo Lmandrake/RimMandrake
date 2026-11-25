@@ -10,3 +10,7 @@ A record of minor points that are not significant (`CLAUDE.md` §Code is clean w
 - `certified` is taken on the caller's word by the tool; only `calm_profile.arm_args` fills it from the certificate.
 - The second-driver path inside `Session.Arm` logs its breach at tick -1 (the tool checks first, so nothing reaches it).
 - `Breaches.SinkFaults++` is outside the lock.
+- `prove_ordered_rescue.py` R5 prints the ticks before and after but does not compare them, and does not check the reason (the reason is a fixed non-empty string in `JawaBenchForce.cs`).
+- `prove_ordered_rescue.py` R3: a hostile that fails to spawn reads FAIL (exit 1); the docstring calls a missing scene NO VERDICT (exit 2).
+- `prove_tap_certificate.py` `judge_job`: the think-tree route now also accepts a queued `WorkGiverDef:<defName>` row as evidence (real tree rows are plentiful).
+- `JawaBenchCast.cs` `Giver()`: with no node, `workGiverDef` now wins over `j.jobGiver`; no reader depends on the old order.

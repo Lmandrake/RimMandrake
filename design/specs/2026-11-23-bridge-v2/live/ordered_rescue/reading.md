@@ -29,7 +29,9 @@ colonist rescue the first to the bed (the scene, R0), and spawns and removes one
   receipt as the giver's. R4 reads the tap's `ThinkNode_QueuedJob` against the receipt's `WorkGiverDef:DoctorTendToHumanlikes`
   and fails: `prove_plant_always_raw_2026-11-25.txt`. That run also passed R1, because R1 then checked only that the reply's
   job ended Succeeded, and the plant's Goto did. R1 now also requires the job to be a `TendPatient`. That change touches no
-  check that R4 reads, so the R4 reading of the plant stands.
+  check that R4 reads, so the R4 reading of the plant stands. The plant was built on top of the giver fix (its build log
+  lists both `JawaBenchCast.cs` and `JawaBenchForce.cs` as changed), so its red R4 is read against the fixed tap: the
+  correct executor's tend reads `WorkGiverDef:DoctorTendToHumanlikes`, and the plant's Goto reads `ThinkNode_QueuedJob`.
 - **A rescue is no work order** (an assumption of the item's note was false). `DoctorRescue` is `directOrderable` false in 1.6:
   `jawa/order giver=DoctorRescue` replied "the giver is not directOrderable". The player's rescue
   (`FloatMenuOptionProvider_RescuePawn`) builds a plain `Rescue` job with no work giver on it, so the tap cannot tell that job
