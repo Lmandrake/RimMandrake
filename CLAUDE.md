@@ -452,8 +452,8 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   - A polish line is allowed in three cases only: the line names a file that the run did not change; the line names a
     concrete risk after `risk:` (this change, this possible wrong result); the change would move a bar, is a new
     feature of the mod, or is one of the owner's five acts.
-  - A judge or a reader that must stay blind writes a polish line and fixes nothing outside its rule. The next Work
-    Bundle of that mod takes the line.
+  - A blind judge that sees a fault fixes the fault in its run, test first. A new blind judge, a run that did not make
+    the fix, then validates the fix. A judge that fixed is no longer blind to that fix.
   - Polish never moves a bar. A pass never waits for a polish line that names a file that nobody changed.
   - In a helper run, `./publish` refuses a new polish line that names a file of the run's changes and has no `risk:`
     part, and hands the line back to the run (`polish_door.py`). Do the polish, remove the line, and publish again.

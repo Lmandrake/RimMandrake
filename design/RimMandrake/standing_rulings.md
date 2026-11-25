@@ -735,8 +735,9 @@ The rule:
     concrete risk after `risk:` (this change, this possible wrong result); the change would move a bar, is a new
     feature of the mod, or is one of the owner's five acts. A line that records a done act (a removed check) starts
     `record:`.
-  - A judge or a reader that must stay blind still writes a polish line and fixes nothing outside its rule. The next
-    Work Bundle of that mod takes the line.
+  - A blind judge that sees a fault fixes the fault in its run, test first. A new blind judge, a run that did not
+    make the fix, then validates the fix (owner, 2026-11-25: "A blind judge absolutely CAN fix and SHOULD fix! But it
+    would then require a new blind judge run to validate its work thereafter.").
   - Polish never moves a bar. A pass never waits for a polish line that names a file that nobody changed.
   - The block: in a helper run, `./publish` refuses, and hands back to the run, a new polish line that names a file of
     the run's own changes and has no `risk:` or `record:` part. The run does the polish and publishes again. Code:
