@@ -120,7 +120,7 @@ def cell(v):
         return None
     try:
         p = [int(float(t)) for t in str(v.v).strip("() ").split(",")]
-        return (p[0], p[2])
+        return (p[0], p[1]) if len(p) == 2 else (p[0], p[2])    # the bridge reads positionInt back as "x,z"
     except (ValueError, IndexError):
         return None
 
@@ -242,8 +242,8 @@ def sweep(s, rows, throws, before):
             pawn_at = cell(s.read("thrown", "positionInt"))
             alias = "throw_%s_x" % name
             gap = GAP + 1 if (planted == "unlike_pad" and name == "off") else GAP
-            # a 1-damage blast with blast power off (the throw at full force, no harm): the first run threw with a real
-            # shell 2 cells off, and the colonist did not stand for the second throw (2026-11-25 ArchSmall)
+            # a 1-damage blast with blast power off: the throw at full force, and a colonist 2 cells from it takes no
+            # blast damage, so the second throw finds it as the first did (a real shell's 50 Bomb damage would not)
             if pawn_at is None:
                 raise scene.Fault("STAGING_FAULT", detail="the colonist's cell could not be read before the %s throw: %s" % (
                     name, s.read("thrown", "Dead")))
