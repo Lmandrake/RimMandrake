@@ -113,7 +113,8 @@ fix is "refuse the input" before "handle the input". Only a CALIBRATED brief's r
 No ticket and no repair lane come from either list. The next Work Bundle that changes the file a polish line names
 takes the line, does it, and removes it. A polish line stays only when it names a file that the run did not change, or
 names a concrete risk after `risk:`, or would move a bar, add a feature or need one of the owner's five acts. In a
-helper run, `./publish` returns a new polish line on a file of your own changes that has no `risk:` part. When a polish line fires in a real run, that run is a failure and a new source
+helper run, `./publish` refuses a new polish line on a file of your own changes that has no `risk:` part, and hands
+the line back to you. When a polish line fires in a real run, that run is a failure and a new source
 event. The line is then no longer polish. A Problem that you fixed needs no ticket. A new ticket must cite a broken
 promise or a failure. File one ticket per source event, never one per symptom.
 

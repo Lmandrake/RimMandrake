@@ -51,7 +51,7 @@ policy."*).
   fixer statement, the list of test-2 evidence and the polish rule stand in the root `CLAUDE.md` §Touching code has a
   cost; this charter keeps no copy of them. A failed check is classed first (the mod, the check or the scene is wrong).
   A wrong check or scene is repaired in the same sitting, seen FAIL on a planted fault and PASS on the real build, or
-  removed from the test table when no bar needs it (one `record:` polish line records the removal). A wrong check never
+  removed from the mod's test table (`version/test_table.json`) when no bar needs it (one `record:` polish line records the removal). A wrong check never
   sends the mod back, and "independent verdict" does not excuse its repair. A mod fault the judge or driver can fix is fixed in
   the sitting with a before/after test, and one fresh
   reader checks that fix once; only a fault it could not fix goes down the road back, with the evidence why. A fix

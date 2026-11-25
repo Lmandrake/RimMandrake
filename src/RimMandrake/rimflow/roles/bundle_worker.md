@@ -45,8 +45,8 @@ Start no helpers of your own, except the one fresh reader of step 4.
    cost is low. Take each open line of the system's `polish.md` that your brief prints (and of the `polish.md` beside
    the boundary page of each file that you changed) that names a file you changed: do it, and remove the line. Keep a
    line only when it names a file that you did not change, names a concrete risk after `risk:`, or would move a bar,
-   add a feature or need one of the owner's five acts. Polish never moves a bar. `./publish` returns a new polish line
-   on your own changed file that has no `risk:` part. Then one fresh run that did not make the fixes reads the changed
+   add a feature or need one of the owner's five acts. Polish never moves a bar. `./publish` refuses a new polish line
+   on your own changed file that has no `risk:` part, and hands the line back to you. Then one fresh run that did not make the fixes reads the changed
    files once, by `src/RimMandrake/rimflow/roles/code_review.md`. A significant finding is fixed test first. There is
    no second read.
 5. **One live pass.** When a change has an in-game check, or the system runs live (a timer, a tick, a publish):

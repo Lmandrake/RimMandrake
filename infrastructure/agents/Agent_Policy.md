@@ -246,7 +246,8 @@ is true. Never spawn a duplicate for "reliability".
 > tool returns success and you cannot see the effect · you would have to invent a
 > defName, field or namespace.
 
-Both parts guard against a worker that widens its task. A run fixes inside its own mod or subsystem. A run names in
+The clauses "the criteria do not decide the case" and "the change reaches files outside the ones named" guard
+against a worker that widens its task. A run fixes inside its own mod or subsystem. A run names in
 its close each file that it changed outside the files that its brief named.
 
 An escalation that names what you tried and what would settle the question is a success. An escalation in place of an

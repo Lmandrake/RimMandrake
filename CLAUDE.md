@@ -455,8 +455,8 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   - A judge or a reader that must stay blind writes a polish line and fixes nothing outside its rule. The next Work
     Bundle of that mod takes the line.
   - Polish never moves a bar. A pass never waits for a polish line that names a file that nobody changed.
-  - In a helper run, `./publish` returns a new polish line that names a file of the run's changes and has no `risk:`
-    part (`polish_door.py`). Do the polish, remove the line, and publish again.
+  - In a helper run, `./publish` refuses a new polish line that names a file of the run's changes and has no `risk:`
+    part, and hands the line back to the run (`polish_door.py`). Do the polish, remove the line, and publish again.
 - Test 2: You are the fixer. When you find a fault, fix it in this run, test first. A later run knows less. Hand it on
   only with test-2 evidence. Write that evidence on the ticket. Test-2 evidence is one of these:
   - your verdict must stay independent of the work;

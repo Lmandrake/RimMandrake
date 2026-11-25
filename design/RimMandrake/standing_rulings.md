@@ -738,9 +738,9 @@ The rule:
   - A judge or a reader that must stay blind still writes a polish line and fixes nothing outside its rule. The next
     Work Bundle of that mod takes the line.
   - Polish never moves a bar. A pass never waits for a polish line that names a file that nobody changed.
-  - The block: in a helper run, `./publish` returns a new polish line that names a file of the run's own changes and
-    has no `risk:` or `record:` part. The run does the polish and publishes again. Code: `src/RimMandrake/Utils/polish_door.py`;
-    page: `design/specs/2026-11-25-polish-door/boundary.md`.
+  - The block: in a helper run, `./publish` refuses, and hands back to the run, a new polish line that names a file of
+    the run's own changes and has no `risk:` or `record:` part. The run does the polish and publishes again. Code:
+    `src/RimMandrake/Utils/polish_door.py`; page: `design/specs/2026-11-25-polish-door/boundary.md`.
 - **Test 1 comes first.** "If you see it, do it" never licenses a touch that fails test 1.
 - **A fault is fixed in the sitting; a wrong check is repaired or removed there; neither sends the mod back** (owner,
   2026-11-20, items `RIMMANDRAKE_ENACT_WRONG_CHECK_FIXED_IN_SITTING_NOT_RETURNED` and
