@@ -86,8 +86,8 @@ Page: `design/specs/2026-11-25-effort-ladder/boundary.md`.
   record keeps it. `claude_bounded.sh` adds the table's level when its caller gave none.
 - `launch_permissions.py effort` reads every launch in the tree. The reader is red on a launch with no `--effort`. The
   remote-control server takes no `--effort`; its sessions read the machine's settings file (`effortLevel`).
-- **A worker is stuck** in two cases. Case one: the ticket filer (`filing_gate.py`) refused its set-down, and the run
-  ended without resolving that refusal (`refused_why`). Case two: the run ends success with its item open and a
+- **A worker is stuck** in two cases. Case one: the worker filed a ticket to set its work down (`rimflow file --not-now`), the ticket filer
+  (`filing_gate.py`) refused that filing, and the run ended without resolving the refusal (`refused_why`). Case two: the run ends success with its item open and a
   `LEFT OPEN:` note that says its test is still red, or that names no cause outside the work (`stuck_why`). A cause
   outside the work is the owner or the Conductor, a held or paused game, lane or account, a wait, another run, or a task
   that is not a helper's. `left_open_continue.py` reads both cases.
