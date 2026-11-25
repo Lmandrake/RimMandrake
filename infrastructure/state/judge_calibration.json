@@ -1075,7 +1075,7 @@
    },
    "hash": "ca80659d18edbf02",
    "last_run": {
-    "at": "2026-11-24T09:07:25Z",
+    "at": "2026-11-25T05:49:14Z",
     "cases": "came out the other way: c2.9, c3.4, c4.1, c4.14, c4.3",
     "exit": 0,
     "out": "pass mark FAIL: agreed real caught 2 of 3 (limit all); agreed polish called problem 2 of 9 (limit 1); unscored: 30 of 35 as labelled",
