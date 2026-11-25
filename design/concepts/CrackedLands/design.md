@@ -404,7 +404,7 @@ runner-up), later.
 - Fossil display mounts, lightning drawn to zennaq, dust that drifts backward, fliers arriving on a timer (retired
   before this pass).
 - The vanilla zoo and flora; rain in the canyons; flier nests.
-- The planet-placement worker (worldgen is out in every version).
+- The planet-placement worker and its biome-rarity slider (worldgen is out in every version).
 - Three GPT extensions he did not pick on 2026-09-30: the one-stay water survey, *"fossils remember the map"* and
   *"muttavaq never disappears"*. The ruled versions of those three stand; only the extensions are out.
 - The wood yield of the harrovaq (removed in the build); the lightning the zennaq was to draw.

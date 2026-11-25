@@ -457,8 +457,7 @@ see); each line goes back by one move:*
   ideas; he can bring either back by name.
 - A debt owed to the machines' own faction (the kit's reading; his August ruling names the Enclaves).
 - The nineteen hill tiles (the later flatness ruling); the mech-rat and the mech-chicken (his cuts).
-- **Recommended for dropping, not yet his:** alternate-planet scoring and rarity (there is no worldgen in any
-  version).
+- The alternate-planet scoring worker and its biome-rarity slider (his ruling of 2026-08-15 and 2026-08-18: no worldgen, ever; no setting that could roll a second world).
 
 ## NEEDS HIM
 

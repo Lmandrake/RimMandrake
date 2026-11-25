@@ -554,7 +554,7 @@ see); each line goes back by one move:*
   needed"*; the brommet, *"terrestrial, cut"*.
 - A trait that makes anyone enjoy mess (declined 2026-09-24; only the Jawa's immunity stands).
 - The lasso as a worn item (*"Remove lasso's from the game, but keep this"*).
-- Biome placement scoring and world mutators (no worldgen, ever).
+- Biome placement scoring, its biome-rarity slider and world mutators (no worldgen, ever).
 - The pump rhythm, the buried dragline, the Reckoning of Owners, the first round of tar offerings (not taken).
 - **No longer recommended for dropping:** the arrival letter. The first pass and the cleanse both wanted it gone
   for teaching by telling. It was his own idea and his card (2026-09-24). What is wrong with it is only that its

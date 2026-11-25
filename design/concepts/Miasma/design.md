@@ -448,7 +448,8 @@ see); each line goes back by one move:*
 - The grounded mother, the last dry deck, the scuttler appraisal, the first egg above water, the second-hand
   young, the mother's blind side (not chosen 2026-10-02); the Tide-reader boon (cut 2026-09-12); the pollination
   gate (removed 2026-11-02 by a delegated decision under his veto card, as *"invisible to the player"*).
-- **Recommended for dropping, not yet his:** world scoring and rarity (there is no worldgen in any version); the
+- The world-scoring worker and its biome-rarity slider (his ruling of 2026-08-15 and 2026-08-18: no worldgen, ever; no setting that could roll a second world).
+- **Recommended for dropping, not yet his:** the
   map-wide rise in wild aggression when a mother dies at her site (built from the kit; his card of 2026-09-12
   ruled its scope, *"marked sites only"*, so dropping it is his to confirm); the attar balm that changes injuries;
   the old medicinal mangrove harvest.

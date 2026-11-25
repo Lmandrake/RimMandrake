@@ -542,8 +542,8 @@ see); each line goes back by one move:*
 - This biome as the sea floor (his first idea of 2026-08-13, overtaken by his sheet of 2026-09-06).
 - Any eclipse: *"There are no eclipses on this planet"* (2026-10-01). The nevarithia's death looses its own knot
   of Dark and nothing in the sky.
-- **Recommended for dropping, not yet his:** gill-ash as a second fuel line; the unused donor weather copies; the
-  natural-placement worker and its rarity slider.
+- The natural-placement worker and its biome-rarity slider (his ruling of 2026-08-15 and 2026-08-18: no worldgen, ever; no setting that could roll a second world).
+- **Recommended for dropping, not yet his:** gill-ash as a second fuel line; the unused donor weather copies.
 
 ## NEEDS HIM
 

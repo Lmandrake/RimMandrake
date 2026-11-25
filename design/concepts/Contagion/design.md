@@ -406,8 +406,8 @@ see); each line goes back by one move:*
 - The Shambles here: he moved it to the Rot on 2026-10-05 (*"this belongs in the Rot, not here."*).
 - Eye grass: purged, *"I don't want new versions of these silly plants."* The donor's own ocular giant, never
   admitted.
-- **Recommended for dropping, not yet his:** the duplicate seed-fist fertiliser, the unused donor plants, the
-  planet-scoring worker.
+- The planet-scoring worker and its biome-rarity slider (his ruling of 2026-08-15 and 2026-08-18: no worldgen, ever; no setting that could roll a second world).
+- **Recommended for dropping, not yet his:** the duplicate seed-fist fertiliser, the unused donor plants.
 
 ## NEEDS HIM
 
