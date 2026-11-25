@@ -43,6 +43,8 @@ namespace JawaBench.BridgeTools
             { "jawa/quiet_site", new[] { "status" } }, { "jawa/damage_log", new[] { "read" } },
             // list, admit and digest read; prove reads the digest (the dirtying is the caller's act); reset changes the mod's state
             { "jawa/mod_hooks", new[] { "list", "admit", "digest", "prove" } },
+            // state reads the gates' summary; arm and release change what the game lets through
+            { "jawa/scene_gate", new[] { "state" } },
             // its "action" is type.method: the process text that the scene library reads to know whose session is open
             { "jawa/static_call", new[] { "system.environment.getenvironmentvariable" } },
         };

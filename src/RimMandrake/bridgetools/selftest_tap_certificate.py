@@ -190,11 +190,30 @@ def t_an_absence_under_a_foreign_prefix_is_not_provable_here(K):
     need(K.absence(cert(K, shown=shown), "letter", "queued") == "not covered", "a route not shown is not covered")
 
 
+def t_every_owner_of_our_companion_is_ours(K):
+    # The companion's Harmony ids are "jawabench.*" (cast, world, gates) AND "mandrake.jawabench.*": the kill tap's postfix is
+    # "mandrake.jawabench.eventrecorder" (JawaBenchSituationalTools), the incident tap's prefix "mandrake.jawabench.awareness"
+    # (JawaBenchAwareness). One read as foreign makes the arm say "our hook is not on" while it is on, puts our own patch in the
+    # foreign inventory, and names it as a foreign prefix on the receipt.
+    f = {"Verse.Pawn.Kill": [{"kind": "postfix", "owner": "mandrake.jawabench.eventrecorder", "priority": 400, "patchMethod": "KillPostfix",
+                              "patchAssembly": "JawaBench.BridgeTools"}],
+         "RimWorld.IncidentWorker.TryExecute": [{"kind": "prefix", "owner": "mandrake.jawabench.awareness", "priority": 800,
+                                                 "patchMethod": "IncPre", "patchAssembly": "JawaBench.BridgeTools"}]}
+    off = ("Verse.Pawn.Kill", "RimWorld.IncidentWorker.TryExecute")
+    c = cert(K, foreign=f, ours_off=off)
+    read, _ = game(K, foreign=f, ours_off=off)
+    need(K.foreign_owners(ident(K, foreign=f, ours_off=off)["inventory"]) == [], "our own owners read as foreign")
+    a = K.arm_check(c, read, ["kill.by_damage", "incident.held"])
+    need(a["verdict"] == K.ARMED, "armed on our own kill and incident hooks: %s" % a)
+    need(not a["receipt"], "our own prefix named as foreign: %s" % a["receipt"])
+
+
 CHECKS = [t_a_certificate_for_another_companion_is_refused, t_a_certificate_for_another_mod_list_is_refused,
           t_a_changed_patch_inventory_is_refused, t_a_route_not_shown_is_listed_never_covered,
           t_a_scene_that_needs_an_uncertified_tap_could_not_arm, t_the_arm_check_calls_no_act, t_a_foreign_prefix_is_named_on_the_receipt,
           t_a_missing_certificate_is_could_not_look, t_a_changed_setting_of_a_patching_mod_voids_the_certificate,
-          t_an_entry_with_no_record_voids_the_tap_for_the_run, t_an_absence_under_a_foreign_prefix_is_not_provable_here]
+          t_an_entry_with_no_record_voids_the_tap_for_the_run, t_an_absence_under_a_foreign_prefix_is_not_provable_here,
+          t_every_owner_of_our_companion_is_ours]
 
 
 def run_all(path):
@@ -239,6 +258,8 @@ PLANTS = [
      [('                out[h.get("hook")] = "could not look"', '                out[h.get("hook")] = "ok"')]),
     ("an absence trusted under a foreign prefix", "an_absence_under_a_foreign_prefix_is_not_provable_here",
      [("    if _prefixes(cert, tap):\n        return NOT_PROVABLE", "    if False:\n        return NOT_PROVABLE")]),
+    ("ours read as the cast's own prefix only", "every_owner_of_our_companion_is_ours",
+     [('OUR_OWNERS = ("jawabench", "mandrake.jawabench")', 'OUR_OWNERS = ("jawabench",)')]),
 ]
 
 

@@ -320,7 +320,9 @@ and names each entry.
 Code: `src/RimMandrake/bridgetools/tap_certificate.py` (all of it: the pure core and the `audit` command), the witness counts of
 `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchHookGuard.cs` (`Committed`, `Mark`, and `committed`, `runEntered`,
 `runCommitted` in `CoverageFields`), the `Mark` calls in `JawaBenchCastCore.Taps.NewRun` and `JawaBenchWorld.Join`, and the live
-session `src/RimMandrake/bridgetools/prove_tap_certificate.py`. Item `RIMMANDRAKE_BUILD_TAP_CERTIFICATE_CANARY_RUNS_OFF_STAGE`. Each
+session `src/RimMandrake/bridgetools/prove_tap_certificate.py` with its two TEST-profile act tools in
+`JawaBenchTapFixtureTools.cs` (`jawa/scene_gate`: arm, release or read a gate; `jawa/tap_fixture`: unpatch one of our own
+`jawabench.*` owners for the blind plant, add a quest again, fire with an instigator, explode with an instigator). Item `RIMMANDRAKE_BUILD_TAP_CERTIFICATE_CANARY_RUNS_OFF_STAGE`. Each
 promise has a check of its name in `src/RimMandrake/bridgetools/selftest_tap_certificate.py`. No new patch site.
 
 **The certificate** is made once for each loaded identity, in a disposable game, by `prove_tap_certificate.py`: route fixtures do
@@ -372,6 +374,8 @@ None of its own.
   hook row without the two counts is "could not look", never "ok".
 - **an-absence-under-a-foreign-prefix-is-not-provable-here.** An absence on a covered route of a method with a foreign prefix reads
   "not provable here"; on a route not shown it reads "not covered".
+- **every-owner-of-our-companion-is-ours.** A patch of any Harmony owner of this companion (`jawabench.*` and `mandrake.jawabench.*`,
+  `OUR_OWNERS`) is ours: never on the foreign list, and it counts as our hook at arm.
 
 ## LIVE READINGS
 

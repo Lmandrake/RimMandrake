@@ -38,8 +38,9 @@ REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 SCHEMA = "tap_certificate_v1"
 RESULT = os.path.join(REPO, "design", "specs", "2026-11-23-bridge-v2", "live", "tap_certificate_result.json")
 COMPANION_ASM = "JawaBench.BridgeTools"
-# Harmony ids of this companion. A patch whose owner starts with one of these is ours, never foreign.
-OUR_OWNERS = ("jawabench",)
+# Harmony ids of this companion. A patch whose owner starts with one of these is ours, never foreign. Both forms are live:
+# "jawabench.cast/.world/.gates" and "mandrake.jawabench.*" (the kill tap's eventrecorder, the incident tap's awareness prefix).
+OUR_OWNERS = ("jawabench", "mandrake.jawabench")
 
 # Each tap: the methods it patches (type, method), the hooks of its run close record, and its routes. A route is one real engine
 # way that the tapped fact comes about; the session shows each one by a fixture, positive and negative where the fact has two.
@@ -61,9 +62,9 @@ TAPS = {
 # The only bridge tools the arm check may call: reads. A scene arm does no gameplay act (decision 4).
 ARM_READS = ("jawa/running_mods", "jawa/harmony_patches")
 # The act list of the certification session: every tool that its fixtures use to change the game. None is an arm read.
-ACT_TOOLS = ("jawa/damage", "jawa/order_pawn", "jawa/ordered_job", "jawa/pawn_force_mental_break", "jawa/fire_incident", "jawa/fire_quest",
-             "jawa/letter_send_delayed", "jawa/map_fire", "jawa/map_explosion", "jawa/explosion_at", "jawa/map_drop", "jawa/spawn_pawn",
-             "jawa/act_batch", "jawa/scene_gate", "jawa/run_until", "jawa/pawn_health", "jawa/tap_fixture")
+ACT_TOOLS = ("jawa/ordered_job", "jawa/damage", "jawa/pawn_health", "jawa/pawn_mental", "jawa/scene_gate", "jawa/tap_fixture",
+             "jawa/fire_quest", "jawa/letter_send_delayed", "jawa/static_call", "jawa/explosion_at", "jawa/fire_incident", "jawa/map_fire",
+             "jawa/spawn_pawn", "jawa/spawn_batch")
 CERTIFIED, BOOTSTRAP = "CERTIFIED", "BOOTSTRAP"
 ARMED, COULD_NOT_ARM, COULD_NOT_LOOK = "ARMED", "COULD NOT ARM", "COULD NOT LOOK"
 NOT_PROVABLE = "not provable here"

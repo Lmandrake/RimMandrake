@@ -114,6 +114,7 @@ namespace JawaBench.BridgeTools
             ["jawa/scene_slice"] = FTestOnly,         // BRIDGE v2.0 slice (RIMMANDRAKE_WIRE_COND_RUN_INTO_TICK_BUILT_NEVER_JOINED): runs the clock and hurts a pawn
             ["jawa/session"] = FTestOnly, ["jawa/run_until"] = FTestOnly, ["jawa/act_batch"] = FTestOnly,   // BRIDGE v2.0 hands: they run the clock and act; jawa/read_paths only reads
             ["jawa/mod_hooks"] = FTestOnly,           // BRIDGE v2.0 mod hooks (RIMMANDRAKE_BUILD_MOD_TRACE_AND_RESET_HOOKS_BY_REFLECTION): calls a mod's reset hook
+            ["jawa/scene_gate"] = FTestOnly, ["jawa/tap_fixture"] = FTestOnly,   // the tap certificate fixtures (RIMMANDRAKE_BUILD_TAP_CERTIFICATE_CANARY_RUNS_OFF_STAGE): arm a gate, unpatch our hook, fire, explode
             ["jawa/safe_advance"] = FTestOnly,        // a harness stepper (TELEMETRY_COLONY_VITALS_BUILD_SPEC_SAID_SO); jawa/vitals reads stay available
             ["jawa/type_visibility"] = FHeavyDiagnostic, ["jawa/startup_types"] = FHeavyDiagnostic, ["jawa/forecast_incidents"] = FHeavyDiagnostic,
             ["jawa/world_cache_audit"] = FHeavyDiagnostic, ["jawa/tile_cache_audit"] = FHeavyDiagnostic, ["jawa/texture_audit"] = FHeavyDiagnostic,

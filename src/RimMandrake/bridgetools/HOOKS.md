@@ -61,6 +61,9 @@ Column meanings:
 | `JawaBenchWorld.cs` | 9 | lazy (on at the first `jawa/run_until` run, then stays on) | off | rejected | MentalPre[c,th] MentalPost[c,ro,or] MentalFin[vf] QuestPre[c,th] QuestPost[c,ro,or] QuestFin[vf] LetterPre[c,th] LetterPost[c,ro,or] LetterFin[vf] FirePre[c,th] FirePost[c,ro,or] FireFin[vf] BoomPre[c,th] BoomPost[c,ro,or] BoomFin[vf] MsgPre[c,th] MsgTargetPost[c,ro,or] MsgTextPost[c,ro,or] MsgObjPost[c,ro,or] MsgFin[vf] | `selftest_world_taps.py` (the six rules for each of the six world-event taps, through `JawaBenchWorldCore.Taps`); live: the tap certificate ticket |
 | `JawaBenchGates.cs` | 2 | lazy (on at the first arm of the quest or the mental gate, then stays on) | off | passed through: a call from another thread runs, counted, before any gate state is read | QuestGatePre[c,ro,th] MentalGatePre[c,ro,th] | `selftest_scene_gates.py` (`GatesSelfTest/Program.cs`: the hook rules of each gate through `JawaBenchGatesCore.Gate.Decide`; the incident gate is decided inside `JawaBenchAwareness.IncPre`, no site of its own); live: the tap certificate ticket |
 
+`JawaBenchTapFixtureTools.cs` adds no Harmony site: its `jawa/tap_fixture unpatch` REMOVES one `jawabench.*` owner from one
+method (the tap certificate's blind plant). The `JawaBenchCast.cs` taps come back at the next `jawa/run_until` run with a cast.
+
 Proof of the ones marked `static audit`: `python3 src/RimMandrake/bridgetools/selftest_bridge_hooks.py`. The run without
 `--no-cs` also builds `TpsMathSelfTest` and requires every `T_Recorder*`, `T_Guard*` and `T_Writer*` unit to read `ok`.
 Live coverage on the full list is still owed by `TPS_HOOKS_HARDEN_REENTRY_AND_LATE_GUARDS` (A1, A2).
