@@ -87,6 +87,40 @@ def chains_no_check_names():
     check(ask("plain", commit(), reads, old=no_table) is True, "a mod with no test table stands on its whole mod")
 
 
+def ledger_churn():
+    """A file that only ANOTHER chain's check reads (the ledger, written every minute) leaves this chain's kept answer
+    standing (RIMMANDRAKE_FIX_STEVEDESKTOP_TOP_WASTE_HE_SAID_END_THIS: the key covered every check's reads, so a live
+    rank of Pyrelands re-read 21 of 30 relations on each tick, 76 s, while a Steve game sat free)."""
+    tt = json.load(open(os.path.join(R, V + "test_table.json")))
+    tt["tests"]["k_led"] = {"stage": 6, "kind": "live_minimal", "file": M + "validation.py", "entry": "led",
+                            "reads": ["infra/ledger/events"], "testq": {"chains": ["led"]}}
+    put(V + "test_table.json", json.dumps(tt))
+    put(M + "validation.py", "def a():\n    return 1\n\n\ndef b():\n    return 1\n\n\ndef bare():\n    return 1\n\n\n"
+                             "def led():\n    return 1\n")
+    put("infra/ledger/events/A.jsonl", "1\n")
+    base = commit()
+    put("notes2.md", "words\n")
+    n1 = commit()
+    G._REL.clear()
+    first = G.untouched("M", "a", base, n1)
+    put("infra/ledger/events/A.jsonl", "2\n")
+    n2 = commit()
+
+    class Dead:
+        def __init__(self, r):
+            self._paths = r._paths
+
+        def touches(self, *a):
+            raise RuntimeError("asked again")
+    G._REL.clear()
+    G._REL[("M", n2)] = Dead(G._relation("M", G.stage6_tests("M"), n2))
+    kept = G.untouched("M", "a", base, n2)
+    check((first, kept) == (True, True), "a ledger write that only another chain's check reads keeps this chain's "
+                                         "answer (no relation re-read) %s" % ((first, kept),))
+    G._REL.clear()
+    check(G.untouched("M", "led", base, n2) is False, "the chain whose check reads the ledger still runs again")
+
+
 def probe_reads():
     """The live probe: a mod's reads hold its folder, its dependency's folder and the shared source its csproj compiles."""
     got = {}
@@ -150,6 +184,7 @@ def main():
     subprocess.run(["git", "-C", R, "branch", "-f", "moving", cs], check=True)
     after = G.untouched("M", "a", old, "moving")
     check((before, after) == (True, False), "a ref that moved in one process is read again %s" % ((before, after),))
+    ledger_churn()
     chains_no_check_names()
     probe_reads()
     print("FAIL %d" % len(FAILS) if FAILS else "PASS")

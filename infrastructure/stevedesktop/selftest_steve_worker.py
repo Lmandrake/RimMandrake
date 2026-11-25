@@ -107,6 +107,13 @@ if mode in ("stale", "stale-nokeep") or (mode == "stale-once" and not os.path.ex
     if mode != "stale-nokeep":
         print("STALE_LOAD: Mock: ModsConfig left on the composed list; restart the game on it and run again")
     sys.exit(1)
+if mode == "list":    # the game runs the list ModsConfig held at its launch (MOCK_GL); modcheck composes into MOCK_MC
+    if open(os.environ["MOCK_GL"]).read() != "COMPOSED":
+        open(os.environ["MOCK_MC"], "w").write("COMPOSED")
+        print("[modcheck] Mock HARNESS UNMEASURED: the running load is not the composed list (restart the game on it): "
+              "not loaded: rw.mod.simplestairs; loaded but not composed: adaptive.storage.framework")
+        print("STALE_LOAD: Mock: ModsConfig left on the composed list; restart the game on it and run again")
+        sys.exit(1)
 if mode == "uninstalled":      # MODCHECK_STALE_LOAD_FIX_UNINSTALLED_MOD: runner.run()'s line, verbatim in shape
     print("[modcheck] Mock HARNESS UNMEASURED: mod_not_installed: no folder on this host holds "
           "ray1203.simplecamerasetting (install it; a restart cannot load it): not loaded: ray1203.simplecamerasetting")
@@ -158,7 +165,7 @@ def main():
         env = {k: v for k, v in os.environ.items() if k not in ("RM_HOST_GUARD_GEN", "RIMFLOW_SEAT", "AGENT_SEAT")}   # SteveDesktop's worker has no seat env
         env.update(TESTQ_HOME=home, TESTQ_SHEET_DIR=sheets, TESTQ_MODS_DIR=mods, TESTQ_SKIP_PULL="1",
                    TESTQ_NO_SYSTEMD="1", TESTQ_CMD_DEPLOY="true", TESTQ_CMD_LOAD="true", TESTQ_CMD_DOWN="true",
-                   TESTQ_CMD_PROBE="true", TESTQ_PROBE_GAP_S="0",  # the kept game answers unless a case says not
+                   TESTQ_CMD_PROBE="true", TESTQ_PROBE_GAP_S="0", TESTQ_CMD_COMPOSE="true",  # the kept game answers unless a case says not
                    TESTQ_CMD_RUN="%s %s run" % (sys.executable, mock), RIMFLOW_DRIVER_LOCK=lock,
                    TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",  # never the real rw_game.sh status
                    TESTQ_CMD_DUMP="echo '{\"status\": \"refused\", \"reason\": \"selftest\"}'",  # never a real dump
@@ -333,6 +340,41 @@ def main():
               and not os.path.exists(sdowns + "_3") and "not left on the composed list" in (res.get("note") or ""),
               "a stale load with the list restored -> INVALID at once, no restart that cannot help: %s"
               % res.get("note"))
+
+        # 3a''. RIMMANDRAKE_FIX_STEVEDESKTOP_TOP_WASTE_HE_SAID_END_THIS: the worker composes the job's list BEFORE the
+        # load, so the game starts on it. Before, 226 attempts in 7 days started on the old list, modcheck refused the
+        # stale load and the worker restarted the game: 12.6 game-hours of cold starts on the wrong list.
+        mc = os.path.join(tmp, "Config", "ModsConfig.xml")
+        gl = os.path.join(tmp, "game_list")
+        os.makedirs(os.path.dirname(mc), exist_ok=True)
+        open(mc, "w").write("FULL")
+        cdowns = os.path.join(tmp, "compose_downs")
+        lst = dict(MOCK_MODE="list", MOCK_MC=mc, MOCK_GL=gl, TESTQ_CMD_DOWN="echo down >> %s" % cdowns,
+                   TESTQ_CMD_LOAD="cp %s %s; echo started pid 4242" % (mc, gl),
+                   TESTQ_CMD_COMPOSE="printf COMPOSED > %s; echo COMPOSED: 1 mods" % mc)
+        rc, o = w(["start"], job(), **lst)
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("outcome") == "DONE" and not res.get("stale_load_bounced") and res.get("retries") == 0
+              and open(gl).read() == "COMPOSED",
+              "the game starts on the composed list: DONE with no stale-load restart: %s bounced=%s retries=%s"
+              % (res.get("outcome"), res.get("stale_load_bounced"), res.get("retries")))
+        check(os.path.exists(cdowns) and len(open(cdowns).readlines()) == 1,
+              "a game whose launch list is unknown goes down once when the compose moved ModsConfig")
+        open(mc, "w").write("FULL")       # modcheck put FULL back at the end of that run
+        rc, o = w(["start"], job(), **dict(lst, TESTQ_CMD_LOAD="echo 'already running (pid 4242)'"))
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("outcome") == "DONE" and not res.get("stale_load_bounced")
+              and len(open(cdowns).readlines()) == 1,
+              "a kept game launched on the same composed list is kept: no down, no restart: %s %s"
+              % (res.get("outcome"), res.get("note")))
+        open(mc, "w").write("FULL")
+        open(gl, "w").write("FULL")
+        rc, o = w(["start"], job(), **dict(lst, TESTQ_CMD_COMPOSE="echo 'REFUSED: compose: no'; exit 2"))
+        res = wait_result(o.get("attempt", "x"))
+        wlog = open(os.path.join(home, "attempts", o.get("attempt", "x"), "worker.log"), errors="replace").read()
+        check(res.get("outcome") == "DONE" and res.get("stale_load_bounced") and "compose:" in wlog,
+              "a compose that fails costs nothing but the old restart: DONE after the stale-load restart, named: %s"
+              % res.get("outcome"))
 
         # 3a'. MODCHECK_STALE_LOAD_FIX_UNINSTALLED_MOD (J20261104T074700Z-42d8eb): a composed mod with no folder on the
         # host is its own cause, and the worker spends no restart on it

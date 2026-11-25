@@ -375,18 +375,22 @@ def _relation(mod, tests, new):
 
 _REL = {}
 RELATION_CACHE = "relation_cache.json"
+RELATION_CACHE_KEEP = 10000   # budget: see _related
 
 
-def _cache_key(mod, chain, old, new, tests, g):
-    """What the answer reads at NEW: the mod's own tree, its version folder, the files its checks declare elsewhere, and
-    the relation's code. None when git cannot say (nothing is cached)."""
+def _cache_key(mod, chain, old, new, tests, g, checks=None):
+    """What the answer reads at NEW: the mod's own tree, its version folder, the files that CHECKS (the checks that decide
+    CHAIN; every test when None) declare elsewhere, and the relation's code. None when git cannot say (nothing is cached).
+    Only the chain's own checks: a path another chain's check reads (the ledger, written every minute) changed the key
+    on every tick, so no kept answer was ever found again (RIMMANDRAKE_FIX_STEVEDESKTOP_TOP_WASTE_HE_SAID_END_THIS)."""
     root = next((os.path.join("src", t, mod) for t in TIERS if os.path.isdir(os.path.join(repo_root(), "src", t, mod))), None)
     if not root:
         return None
     rel = _relation(mod, tests, new)
     paths = {root, "design/concepts/%s/version/test_table.json" % mod, "design/concepts/%s/version/exercises.json" % mod,
              "src/RimMandrake/rimflow/rerun_relation.py", "src/RimMandrake/rimflow/declaration_check.py"}
-    for t, spec in tests.items():
+    for t in sorted(tests if checks is None else checks):
+        spec = tests.get(t) or {}
         paths.update(p.rstrip("/") for p in rel._paths(t, spec)[0] if not p.startswith(root + "/") and not os.path.isabs(p))
     out = g("ls-tree", new, "--", *sorted(paths))
     if not out:
@@ -439,7 +443,7 @@ def _related(mod, chain, checks, old_sha, new_sha, tests, g):
     cache = T.read_json(path) or {}
     tests = dict(chain_specs(mod, tests), **tests)      # one relation per mod and commit: every chain's declaration is in it
     try:
-        key = _cache_key(mod, chain, old_sha, new_sha, tests, g)
+        key = _cache_key(mod, chain, old_sha, new_sha, tests, g, checks)
         if key and key in cache:
             return cache[key]
         rel = _relation(mod, tests, new_sha)
@@ -448,7 +452,10 @@ def _related(mod, chain, checks, old_sha, new_sha, tests, g):
         return None
     ans = False if "touched" in got else None if "unreadable" in got else True
     if key and ans is not None:         # an answer is the same for the same bytes; "could not look" is asked again
-        cache = dict(list((T.read_json(path) or {}).items())[-400:], **{key: ans})
+        # budget: danger=the file grows with every commit that moves a mod's reads, and each answer reads it whole;
+        # need=about 900 keys for one fill round (29 wired mods x about 30 chains, 2026-11-25); 400 evicted a mod's
+        # answers before its next rank (RIMMANDRAKE_FIX_STEVEDESKTOP_TOP_WASTE_HE_SAID_END_THIS)
+        cache = dict(list((T.read_json(path) or {}).items())[-RELATION_CACHE_KEEP:], **{key: ans})
         try:
             S.dump(cache, path)
         except OSError:

@@ -96,7 +96,6 @@
   "src/RimMandrake/Utils/modcheck/runner.py::ensure_playing_map::run": 1,
   "src/RimMandrake/Utils/modcheck/runner.py::file_findings::run": 1,
   "src/RimMandrake/Utils/modcheck/runner.py::restore_full::run": 1,
-  "src/RimMandrake/Utils/modcheck/runner.py::run::run": 1,
   "src/RimMandrake/Utils/modcheck/runner.py::swap_to_test_list::run": 1,
   "src/RimMandrake/Utils/modcheck/targeting.py::changed_files.git::run": 1,
   "src/RimMandrake/Utils/modcheck/targeting.py::changed_files::run": 1,

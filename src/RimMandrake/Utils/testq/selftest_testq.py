@@ -1110,6 +1110,14 @@ def main():
         check(o.startswith("brake"), "two non-DONE filler jobs in a row brake the filler: %s" % o)
         unit = open(os.path.join(units_dir, "testq-tick.service"), encoding="utf-8").read()   # the one home
         check("testq.py fill" in unit and "coverage.py wired" in unit, "the tick unit runs the filler over the wired mods")
+        # RIMMANDRAKE_FIX_STEVEDESKTOP_TOP_WASTE_HE_SAID_END_THIS: a filled job waited for the NEXT tick's admit, past
+        # steward, ingest and findings_fold (submitted -> sent: median 104-120 s, 12.6 game-hours over 7 days)
+        lines = [l for l in unit.splitlines() if l.startswith("ExecStart")]
+        fill_at = next((i for i, l in enumerate(lines) if "testq.py fill" in l), -1)
+        after = lines[fill_at + 1] if 0 <= fill_at < len(lines) - 1 else ""
+        check(after.startswith("ExecStart=-") and after.rstrip().endswith("testq.py tick"),
+              "the tick admits what the filler queued at once: a non-fatal `testq.py tick` follows the fill line (%r)"
+              % after[-60:])
         check("ExecStart=-/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/testq/ingest.py" in unit,
               "a failing ingest does not skip the fill line after it (ExecStart=-)")
 

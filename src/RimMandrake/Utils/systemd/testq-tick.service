@@ -9,6 +9,7 @@ ExecStartPre=-/usr/bin/git -C /home/mandrake/rm/dispatch pull -q --ff-only origi
 ExecStart=-/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/testq/companion_stage.py run
 ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/testq/testq.py tick
 ExecStart=-/bin/bash -c 'for m in $(/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/testq/coverage.py wired); do /usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/testq/testq.py fill "$m"; done'
+ExecStart=-/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/testq/testq.py tick
 ExecStart=-/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/testq/testq.py steward
 ExecStart=-/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/testq/ingest.py
 ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/findings_fold.py run

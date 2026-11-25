@@ -785,6 +785,15 @@ RUN_BASE = ("export MODCHECK_SKIP_DEPLOY=1 MODCHECK_STALE_KEEP_COMPOSED=1 "
             # -X faulthandler: 0xC0000005 reaches WSL as "exit 5" with no output (MODCHECK_DIAGNOSE_EXIT_FIVE_NO_SHEET)
             "python.exe -X faulthandler src/RimMandrake/Utils/modcheck/cli.py run --drivers on")
 
+# RIMMANDRAKE_FIX_STEVEDESKTOP_TOP_WASTE_HE_SAID_END_THIS: compose the job's list into ModsConfig BEFORE the load, so
+# the game starts on it. Before, load() started the game on the list ModsConfig held (FULL, which the previous run
+# restored), `run` composed its own, refused the stale load, and the worker restarted the game onto it: 226 attempts in
+# 7 days, 12.6 game-hours. A tree older than `modcheck compose` fails it, and the stale-load restart still repairs.
+COMPOSE_BASE = ("export MODCHECK_SKIP_DEPLOY=1 MODCHECK_STALE_KEEP_COMPOSED=1 "
+                "WSLENV=${WSLENV:+$WSLENV:}MODCHECK_SKIP_DEPLOY:MODCHECK_STALE_KEEP_COMPOSED; "
+                "python.exe src/RimMandrake/Utils/modcheck/cli.py compose")
+LAUNCH_LIST = "launch_list.json"      # {pid, modsconfig_sha256}: the list the game this worker started was launched on
+
 # An exact-tier job (profile tier:<name>, LANE_TIER_WIRE_A_WHOLE_LIST_LOAD; owner by card 2026-11-05: SteveDesktop is the
 # exact-tier host): the tier is loaded as the WHOLE list, the running load is checked against it, then the item's
 # live-proof lines run. Tests override both with TESTQ_CMD_TIERCHECK / TESTQ_CMD_TIERSWAP (the tier is appended).
@@ -1148,9 +1157,48 @@ class Attempt:
     def cmd_down(self):
         return os.environ.get("TESTQ_CMD_DOWN") or GAME + " down"
 
+    def modsconfig(self):
+        return os.path.join(os.environ.get("RM_GAME_USERDATA", ""), "Config", "ModsConfig.xml")
+
+    def modsconfig_sha(self):
+        try:
+            return sha256_file(self.modsconfig())
+        except OSError:
+            return None
+
+    def compose_then_load(self):
+        """Compose the job's list, then load (RIMMANDRAKE_FIX_STEVEDESKTOP_TOP_WASTE_HE_SAID_END_THIS). A kept game goes
+        down first when it was launched on another list, or when its launch list is unknown and the compose moved
+        ModsConfig. A compose that fails, or a down that fails, is only noted: the stale-load restart still repairs."""
+        try:
+            before = self.modsconfig_sha()
+            cmd = (os.environ.get("TESTQ_CMD_COMPOSE") or COMPOSE_BASE) + " " + shlex.quote(self.job["mod"])
+            # a hung compose (python.exe over WSL interop) would hold the attempt, and so one game of the lane
+            rc, tail = self.sh(cmd, log_name="compose.log", timeout=1800)  # budget: class=call
+            want = self.modsconfig_sha()
+            if rc != 0 or not want:
+                self.say("compose: not composed before the load (exit %s: %s); a stale load restarts the game once"
+                         % (rc, (refused_line(tail) or tail or "")[-200:]))
+            else:
+                launched = (read_json(p(LAUNCH_LIST)) or {}).get("modsconfig_sha256")
+                if launched == want:
+                    self.say("compose: the kept game was launched on the composed list")
+                elif launched or before != want:
+                    self.say("compose: ModsConfig is on the composed list; the game goes down so the load starts on it")
+                    # budget: danger=a hung game stop (taskkill over WSL interop) holds the attempt, and so one game of
+                    # budget: the lane; never reached in the 14 days to 2026-11-24; no record of its run
+                    rc_down, tail_down = self.sh(self.cmd_down(), timeout=300)
+                    if rc_down != 0:
+                        self.say("compose: game down failed (%s); the load keeps it"
+                                 % (refused_line(tail_down) or (tail_down or "")[-200:]))
+        except Exception as e:  # noqa: BLE001 - the compose only saves a restart; it never fails a job
+            self.say("compose: skipped (%s: %s)" % (type(e).__name__, e))
+        return self.load()
+
     def load(self):
         cmd = os.environ.get("TESTQ_CMD_LOAD") or "%s init && %s up --wait" % (GAME, GAME)
         since = S.utcnow()
+        launch_sha = self.modsconfig_sha()     # what a fresh start below is launched on (LAUNCH_LIST)
         rc, tail = self.sh(cmd, timeout=LOAD_TIMEOUT_S)
         if rc != 0 and refused_line(tail):         # e.g. archmagi: no game running, and the lane never launches one
             return self.fail("REFUSED", "LOAD", refused_line(tail))
@@ -1235,6 +1283,10 @@ class Attempt:
                     return self.fail("INVALID", "LOAD", "restarted the game for stale bridge marker(s) %s, but load "
                                      "did not report a fresh process: %s" % (" ".join(stale), tail[-200:]))
         if m:
+            try:
+                S.dump({"pid": m.group(1), "modsconfig_sha256": launch_sha, "at": S.utcnow()}, p(LAUNCH_LIST))
+            except OSError as e:
+                self.say("could not record the launch list (%s)" % e)
             self.clear_moot_markers(since, m.group(1))
             if self.res.get("bounced_for_markers") is not None:   # remember only the ones the restart did not clear
                 cleared = set(self.res.get("moot_markers") or [])
@@ -1893,7 +1945,7 @@ class Attempt:
                 tier = S.is_proofs(self.job) or S.is_checks(self.job)
                 run = self.run_checks if S.is_checks(self.job) else self.run_proofs if tier else self.run_modcheck
                 ok = self.timed("deploy", self.deploy)
-                ok = ok and self.timed("load", self.tier_load if tier else self.load)
+                ok = ok and self.timed("load", self.tier_load if tier else self.compose_then_load)
                 ok = ok and self.timed("attest", self.attest)
                 ok and self.timed("run", run)
         except Stopped:

@@ -121,6 +121,10 @@ def main(argv=None):
                        help="exercise the orchestration with no game, no "
                             "subprocess side effects (selftest-shaped)")
 
+    p_comp = sub.add_parser("compose", help="write the list `run MOD...` would compose into ModsConfig and leave it "
+                            "there (a caller that owns its game, MODCHECK_STALE_KEEP_COMPOSED=1, starts the game on it)")
+    p_comp.add_argument("mods", nargs="+")
+
     p_status = sub.add_parser("status")
     p_status.add_argument("mod", nargs="?")
 
@@ -203,6 +207,15 @@ def main(argv=None):
                         "alarms) at <testq>/metrics/<day>.json; `metrics --help` for its flags (modcheck/metrics.py)")
 
     args = ap.parse_args(argv)
+
+    if args.cmd == "compose":
+        import runner
+        try:
+            runner.compose_only(args.mods)
+        except Exception as e:  # noqa: BLE001 - the caller reads the line; nothing it may start on was written
+            print("REFUSED: compose: %s: %s" % (type(e).__name__, str(e)[:400]))
+            return 2
+        return 0
 
     if args.cmd == "record":
         import record

@@ -1513,6 +1513,56 @@ def file_findings(item_id, mod, findings, dry_run=False, seat=None):
     return filed
 
 
+def test_list_ids(mods):
+    """The packageIds of the list a run composes for MODS ((mod_folder, item) pairs): each mod's dependencies, the mod
+    (a composed folder as its composed mod), its tier closure, then their own dependencies. Each mod is deployed first
+    unless MODCHECK_SKIP_DEPLOY is set. The one composition: run() and compose_only() both read it."""
+    package_ids = []
+    for mod_folder, _item in mods:
+        mod_dir = find_mod_dir(mod_folder)
+        folded = composed_into(mod_folder)
+        # the mod AND every mod of ours its composed list names (deploy_closure): RimWorld drops the rest
+        deploy_args = tuple(deploy_args_for(mod_folder))
+        if os.environ.get("MODCHECK_SKIP_DEPLOY"):
+            # The caller already deployed with the game DOWN and launched on that list; a re-deploy now
+            # fails on any DLL the running game holds (LIVE 2026-10-07: a peer rebuilt Hum.dll mid-run).
+            r = subprocess.CompletedProcess(deploy_args, 0, "", "")
+        else:
+            import time_budget  # noqa: E402 - a hung deploy holds the run and the game copy with no end
+            r = subprocess.run(
+                py_cmd(os.path.join(_UTILS, "deploy_custom_mods.py"),
+                       *deploy_args, "--apply"),
+                cwd=ROOT, capture_output=True, text=True, timeout=time_budget.DEPLOY_S)
+        if r.returncode != 0:
+            raise RuntimeError(
+                "deploy of %s FAILED: %s"
+                % (mod_folder, (r.stdout + r.stderr).strip()[-500:]))
+        # dependencies first, then the mod: a composed folder loads as its composed mod
+        package_ids.extend(d for d in mod_dependency_ids(mod_dir) if d not in package_ids)
+        own = folded[1] if folded else mod_package_id(mod_dir)
+        if own not in package_ids:
+            package_ids.append(own)
+        # the composed mod's tier closure (patches, bestiary ...), or an ordinary mod's opted-in tier
+        package_ids.extend(t for t in closure_ids(mod_folder, folded) if t not in package_ids)
+    return with_own_dependencies(package_ids)
+
+
+def compose_only(mods):
+    """`modcheck compose MOD...` (RIMMANDRAKE_FIX_STEVEDESKTOP_TOP_WASTE_HE_SAID_END_THIS): write the list that `run` would
+    compose into ModsConfig and leave it there, so the caller can start its game on it. The SteveDesktop worker started
+    the game on the list ModsConfig held, then `run` composed its own, found the game on the wrong list (stale_load)
+    and the worker restarted it: 226 attempts in 7 days, 12.6 game-hours of cold starts on the wrong list. Only for a
+    caller that owns its game (MODCHECK_STALE_KEEP_COMPOSED=1): anyone else would be left off FULL. -> the packageIds."""
+    if not stale_keep_composed():
+        raise RuntimeError("compose leaves ModsConfig on the composed list; only a caller that owns its game may ask "
+                           "(set MODCHECK_STALE_KEEP_COMPOSED=1)")
+    swap_to_test_list()
+    ids = test_list_ids([(m, None) for m in mods])
+    compose_test_list(ids)
+    print("COMPOSED: %d mods: %s" % (len(ids), ",".join(ids)), flush=True)
+    return ids
+
+
 def run(mods, debug=False, dry_run=False, situational=False, policy="abort", targets=None, seat=None,
         canary=False, validity=False):
     """`mods`: list of (mod_folder_name, item_id) pairs. Full orchestration
@@ -1546,33 +1596,7 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort", tar
             # game restart between run()'s swap and the first Session, and
             # a locked companion DLL (game still up) fails the deploy here
             # loudly rather than the suite failing silently later.
-            package_ids = []
-            for mod_folder, _item in mods:
-                mod_dir = find_mod_dir(mod_folder)
-                folded = composed_into(mod_folder)
-                # the mod AND every mod of ours its composed list names (deploy_closure): RimWorld drops the rest
-                deploy_args = tuple(deploy_args_for(mod_folder))
-                if os.environ.get("MODCHECK_SKIP_DEPLOY"):
-                    # The caller already deployed with the game DOWN and launched on that list; a re-deploy now
-                    # fails on any DLL the running game holds (LIVE 2026-10-07: a peer rebuilt Hum.dll mid-run).
-                    r = subprocess.CompletedProcess(deploy_args, 0, "", "")
-                else:
-                    r = subprocess.run(
-                        py_cmd(os.path.join(_UTILS, "deploy_custom_mods.py"),
-                               *deploy_args, "--apply"),
-                        cwd=ROOT, capture_output=True, text=True)
-                if r.returncode != 0:
-                    raise RuntimeError(
-                        "deploy of %s FAILED: %s"
-                        % (mod_folder, (r.stdout + r.stderr).strip()[-500:]))
-                # dependencies first, then the mod: a composed folder loads as its composed mod
-                package_ids.extend(d for d in mod_dependency_ids(mod_dir) if d not in package_ids)
-                own = folded[1] if folded else mod_package_id(mod_dir)
-                if own not in package_ids:
-                    package_ids.append(own)
-                # the composed mod's tier closure (patches, bestiary ...), or an ordinary mod's opted-in tier
-                package_ids.extend(t for t in closure_ids(mod_folder, folded) if t not in package_ids)
-            package_ids[:] = with_own_dependencies(package_ids)
+            package_ids = test_list_ids(mods)
             if not keep:
                 compose_test_list(package_ids)
         for mod_folder, item_id in mods:
