@@ -126,7 +126,7 @@ def main():
     r = cp("read", sinceSeq=seq)
     nb = new_breaches(r, seq)
     W.row("planted_incident_is_one_breach", f.get("fired") is not True and len(nb) == 1 and nb[0].get("kind") == "incident_held" and "RaidEnemy" in str(nb[0].get("what")),
-          "fired=%s breaches=%s" % (f.get("fired"), nb))
+          "fired=%s breaches=%s; reply %s" % (f.get("fired"), nb, json.dumps(f)[:300]))
 
     # 2. a planted wild animal at the map edge, in a game tick (an act of a run)
     import prove_run_until as R
@@ -170,7 +170,7 @@ def main():
         r = cp("read")
         st1 = statuses(r)
         W.row("a_load_in_the_middle_changes_no_status", r.get("armed") is True and (r.get("rearms") or 0) >= 1 and st1 == st0,
-              "rearms=%s; before %s; after %s; notPutBack %s" % (r.get("rearms"), st0, st1, r.get("notPutBack")))
+              "rearms=%s policy=%s; before %s; after %s; notPutBack %s" % (r.get("rearms"), r.get("rearmPolicy"), st0, st1, r.get("notPutBack")))
     cp("leave")
 
     # 5. a killed driver leaves no control on after its lease

@@ -38,6 +38,8 @@ namespace JawaBench.BridgeTools
         private static readonly Dictionary<string, long> _gateSeen = new Dictionary<string, long>();
         private static readonly List<KeyValuePair<Need, float>> _needs = new List<KeyValuePair<Need, float>>();
         private static string _weatherWant;
+        private static double _saveKnownAt = -1;
+        internal static string RearmPolicy;
         private static bool _weatherOff;
 
         static JawaBenchCalmProfile()
@@ -67,6 +69,16 @@ namespace JawaBench.BridgeTools
         {
             var map = Find.CurrentMap;
             if (map == null || Current.ProgramState != ProgramState.Playing) return;      // still loading: the next frame
+            // Right after a load the companion does not know the loaded save yet, and its policy reads CAMPAIGN until it does (and
+            // keeps a reading for 2 s): measured on ArchBig 2026-11-25, a re-arm on the first frame read every control REFUSED.
+            // So the re-arm waits until the save is known and the policy has been read again after that.
+            string unknownWhy;
+            if (JawaBenchCompanionSafety.LoadedSave(out unknownWhy) == null) { _saveKnownAt = -1; return; }
+            if (_saveKnownAt < 0) { _saveKnownAt = Now; return; }
+            if (Now - _saveKnownAt < 2.5) return;
+            _saveKnownAt = -1;
+            string pw, pd;
+            RearmPolicy = JawaBenchCompanionSafety.Effective(out pw, out pd) + ": " + pw;
             var p = S.P;
             double minutes = S.L.SecondsLeft(Now) / 60.0;
             var lines = new List<string>();
@@ -342,7 +354,7 @@ namespace JawaBench.BridgeTools
                     ["environment"] = S.B.OfClass(P.Environment), ["apparatus"] = S.B.OfClass(P.Apparatus), ["lastSeq"] = S.B.LastSeq, ["dropped"] = S.B.Dropped,
                     ["rows"] = S.B.Since(sinceSeq).Select(b => (object)new Dictionary<string, object> { ["seq"] = b.Seq, ["class"] = b.Class, ["kind"] = b.Kind, ["tick"] = b.Tick, ["what"] = b.What }).ToList(),
                 },
-                ["placed"] = Placed, ["rearms"] = S.Rearms, ["secondsLeft"] = Math.Round(S.L.SecondsLeft(Now), 0), ["leaseEnd"] = S.L.LastEnd,
+                ["placed"] = Placed, ["rearms"] = S.Rearms, ["rearmPolicy"] = RearmPolicy, ["secondsLeft"] = Math.Round(S.L.SecondsLeft(Now), 0), ["leaseEnd"] = S.L.LastEnd,
                 ["gates"] = JawaBenchGates.Summary(), ["faults"] = Faults, ["lastFault"] = LastFault, ["ticksGame"] = Tick(),
             };
             return d;
