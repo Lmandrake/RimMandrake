@@ -284,7 +284,7 @@ def sweep(s, rows, throws, before):
         for f in SWITCHES:
             setting(s, f, before.get(f) or "True")       # unread: the default, on
         setting(s, "blastPowerFromDamage", before.get("blastPowerFromDamage") or "True")
-        setting(s, "lastShakeTick", kick0 if kick0 is not None else "-1", of=SHOW)
+        put(s, "lastShakeTick", kick0 if kick0 is not None else "-1", of=SHOW, strict=False)   # not a settings class: the bridge refuses it, as it always did
 
 
 with scene.open(GAME, contract=show, needs={"mods": ["ExplosiveKnockback"], "map": STAGE, "calm": "standard"}) as s:
