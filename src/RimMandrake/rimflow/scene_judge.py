@@ -492,7 +492,9 @@ def _judge(run_dir, rejudge):
             raise Refused("CONTRACT_MISMATCH", "the checker changed; use --rejudge")
         return Verdict(**{k: previous[k] for k in Verdict.__dataclass_fields__})
 
-    matching = [r for r in receipts if r.get("entry") == {"name": "s.run", "request": request}]
+    # an entry may carry more than its name and request (the s.run entry names its mode since 0aaaaf3de7)
+    matching = [r for r in receipts if isinstance(r.get("entry"), dict) and r["entry"].get("name") == "s.run"
+                and r["entry"].get("request") == request]
     if not matching or not isinstance(run, dict) or any(
         not isinstance(r.get("game"), dict) or r["game"].get("session") != run.get("session") or
         r["game"].get("name") != run.get("game") for r in matching
