@@ -1082,9 +1082,9 @@ def main():
                                   "rows": [{"chain": "c_noident", "row": "r", "verdict": "PASS"}]}}, fh)
         n1 = njobs()
         rc, o = tq("fill", "Mock", "--n", "1")
-        check(rc == 0 and njobs() == n1 and "no owed work" in o and "never_run" in o,
-              "never-run chains are owed by no mod: the idle lane queues nothing, and names them (gaps.FILL_RANKS): %s"
-              % o[-200:])
+        check(rc == 0 and njobs() == n1 and "could not determine owed work" in o and "never_run" in o
+              and "blind: no source for Mock in this checkout" in o,
+              "never-run chains are counted without a fill; Mock has no source to determine owed work: %s" % o[-200:])
         # the filler's own job, as the filler would queue it, for the brakes below (an owed pick is gaps' selftest's)
         rc, o = tq("submit", "Mock", "--purpose", "guard", "--by", "BENCH.filler", "--sha", sha, "--chains", "c_noident")
         fj = json.loads(o.strip().splitlines()[-1]).get("job") if rc == 0 and o.strip().endswith("}") else None

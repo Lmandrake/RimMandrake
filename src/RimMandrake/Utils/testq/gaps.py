@@ -5,7 +5,9 @@ FlowWorks first". When SteveDesktop's lane is idle, `testq.py fill MOD` queues t
 
   1. fix_landed   a chain whose latest valid run FAILED, and a fix has landed since then: a commit after that run's
                   runner_sha names the chain, one of its FAIL rows or the item the run was for, or it changes files
-                  that modcheck's `--changed` maps to the chain. Queued with purpose "fix".
+                  that modcheck's `--changed` maps to the chain. Queued with purpose "fix" against the FAIL rows'
+                  owner. FAIL rows with different owners cannot share one chain-level fix pick
+                  (fix_uses_passing_rows_item).
   2. item_owed    a built or validated rimflow item owing a live level a testq run can give (L1, L2 or GREEN-MIN),
                   linked to a chain of MOD the way `modcheck run --item` links them: the chain's source names the item,
                   or the item's ledger text names the chain or one of its rows. Purpose "guard", recorded against the
@@ -14,6 +16,7 @@ FlowWorks first". When SteveDesktop's lane is idle, `testq.py fill MOD` queues t
                   DRY chain (its last two runs measured nothing; see testq.is_dry).
   4. never_run    a chain with no valid run at the current identity, stalest first.
   The filler queues only ranks 1 and 2 (FILL_RANKS: work a mod owes). Ranks 3 and 4 are counted and named, never queued.
+  The winning rank supplies the pick's owner and reason (owed_rank_overwrites_fix_owner).
   5. the sweep    is not the filler's: it is a named act (`testq.py sweep`), no timer queues it.
 
 ONE VERDICT PER CODE VERSION (owner ruling by card 2026-10-31, "Retest only after a code change"; retest.py): a chain
@@ -31,6 +34,7 @@ chain counts as never run at it. A run with no `deployed` block has no identity,
 modcheck (the chain catalogue, item links and `--changed`) is reached through gapprobe.py, a subprocess in this
 checkout's src/RimMandrake/Utils/modcheck. A checkout without it, or without MOD's source, cannot see ranks 2 or the
 file half of 1. The plan then says "blind: ..." in its text rather than pretending those ranks are empty.
+When only gap ranks are visible, the filler says it could not determine owed work (blind_plan_reports_no_owed_work).
 """
 import functools
 import hashlib
@@ -91,8 +95,9 @@ def chain_verdict(rows):
 
 
 def valid_runs(mod, recs):
-    """-> [{t, id, sha, ident, items, chains: {chain: (verdict, fail_rows)}, versions, partial, harness}] oldest first:
-    MOD's DONE results. A harness chain is not in `chains`; it is in `harness`, {chain: cause}."""
+    """-> [{t, id, sha, ident, items, chains: {chain: (verdict, fail_rows)}, failed_items, versions, partial, harness}]
+    oldest first: MOD's DONE results. `failed_items` is the set of mapped owners (None for an unmapped row) per
+    failed chain. A harness chain is not in `chains`; it is in `harness`, {chain: cause}."""
     out = []
     for rec in recs:
         job, res = (rec or {}).get("job") or {}, (rec or {}).get("result") or {}
@@ -109,6 +114,8 @@ def valid_runs(mod, recs):
         # the item each chain's rows were recorded against (ingest.groups_of): its row id, else its chain, else the job's
         chain_items = {c: next((ri[r["row"]] for r in rows if r.get("row") in ri), None) or ri.get(c) or job.get("item")
                        for c, rows in by.items()}
+        failed_items = {c: {ri.get(row) or ri.get(c) or job.get("item") for row in fail_rows}
+                        for c, (_, fail_rows) in chains.items() if fail_rows}
         sel = job.get("selector") or {}
         harness = {c: why for c, why in causes.items() if c != R.ORPHAN}
         if R.ORPHAN in causes:      # the run died: a chain it was asked for and never reached is the same fault
@@ -117,7 +124,7 @@ def valid_runs(mod, recs):
         out.append({"t": S.parse_ts(rec.get("finished") or res.get("finished") or job["submitted"]),
                     "died": died, "reached": set(by), "id": job.get("id"), "sha": res.get("runner_sha") or job.get("source_sha"),
                     "ident": identity_of(res), "items": items, "chain_items": {c: i for c, i in chain_items.items() if i},
-                    "chains": chains,
+                    "chains": chains, "failed_items": failed_items,
                     "versions": res.get("chain_versions"), "partial": bool(sel.get("rows")), "harness": harness})
     out.sort(key=lambda r: (r["t"], r["id"] or ""))
     return out
@@ -536,7 +543,7 @@ def rank(mod, n, now, recs, dry_of, world=None, g=None, prober=None, exclude=())
     a repair, or is DRY): testq reports verdict "exhausted". EXCLUDE: chains never to pick (modcheck refused them
     this fill).
     G / PROBER: the git and modcheck answers (selftests pass fakes). The ranks are in order, so a picked rank outside
-    FILL_RANKS means no owed work: the filler (testq.fill_rank) reads it as exhausted."""
+    FILL_RANKS means no visible owed work: the filler (testq.fill_rank) reads it as exhausted and reports blindness."""
     g = g or git
     s0 = settled(mod, recs, world, g, prober)
     runs, ident, moved, st, pr, blind, fails = (s0["runs"], s0["ident"], s0["moved"], s0["st"], s0["pr"], s0["blind"],
@@ -555,13 +562,18 @@ def rank(mod, n, now, recs, dry_of, world=None, g=None, prober=None, exclude=())
         return c not in done and c not in held_now
 
     age = {c: st[c]["age"] if c in st else 0 for c in names}
-    cand = {r: [] for r in RANKS}
-    why, row_items = {}, {}
+    cand = {r: {} for r in RANKS}       # rank -> chain -> (item, reason)
+    ambiguous = []                      # FAILed chains whose rows belong to several items: no fix pick
     # 1. FAILs with a fix since
     for c, (run, _, frows) in sorted(fails.items()):
         # A FAIL with no version on it is the one case a commit can reopen: only the version could have said "unchanged"
         if c not in names or c in held_now or (c in done and c not in s0["by_identity"]):
             continue
+        owners = run["failed_items"][c]
+        if len(owners) != 1:       # a whole-chain retest can carry only one owner: refused, and named in the plan
+            ambiguous.append("%s (FAIL rows of %d items; one retest carries one)" % (c, len(owners)))
+            continue
+        owner, = owners
         hit = named_item = None
         msgs = commits_since(run["sha"], g)
         for h, msg in msgs or []:
@@ -575,45 +587,41 @@ def rank(mod, n, now, recs, dry_of, world=None, g=None, prober=None, exclude=())
         if not hit and c in ((pr.get("changed") or {}).get(run["sha"]) or []):
             hit = "files changed since %s map to it (modcheck --changed)" % run["sha"]
         if hit:
-            cand["fix_landed"].append(c)
-            why[c] = hit
-            # the verification is recorded against the item the FAILED rows were for, never the run's first item by
-            # name (TESTQ_FIX_ROW_ITEMS_FIRST_ALPHABETICAL); a chain the run mapped to nobody goes to the item the
-            # fixing commit names, else stays unmapped
-            it = (run.get("chain_items") or {}).get(c) or named_item
-            if it:
-                row_items[c] = it
+            # A chain with no mapped FAIL rows goes to the item the fixing commit names, else stays unmapped.
+            cand["fix_landed"][c] = (owner or named_item, hit)
     # 2. built/validated items owing a live level, linked to a chain
     for c, iid in owner_of(pr).items():
         if c in names and fresh(c) and c not in dry:
-            row_items[c] = iid
-            cand["item_owed"].append(c)
-            why[c] = "%s owes a live level" % iid
+            cand["item_owed"][c] = (iid, "%s owes a live level" % iid)
     # 3. UNMEASURED/NOT_RUN rows at the current identity, at a version with no verdict yet, not DRY
     for c in names:
         if c not in dry and fresh(c) and st.get(c) and st[c]["at"] and st[c]["at"][1] == "GAP":
-            cand["unmeasured"].append(c)
+            cand["unmeasured"][c] = (None, None)
     # 4. no verdict at the current version
     for c in names:
         if c not in dry and fresh(c) and c not in cand["unmeasured"]:
-            cand["never_run"].append(c)
+            cand["never_run"][c] = (None, None)
     flaky = sorted(c for c in names if st.get(c) and st[c]["flaky"])
-    counts = {r: len(dict.fromkeys(cand[r])) for r in RANKS}
+    counts = {r: len(cand[r]) for r in RANKS}
     counts["flaky"] = len(flaky)
     held = sorted(c for c in names if c in held_now)
     counts["held"] = len(held)
     out = {"dry": dry, "held": held, "ident": ident, "moved": moved, "counts": counts, "flaky": flaky, "blind": blind,
-           "row_items": {}, "why": why, "all_dry": False}
+           "row_items": {}, "why": {}, "all_dry": False, "ambiguous": ambiguous}
+    blind_text = ("; blind: " + "; ".join(blind) if blind else "") + \
+        ("; no fix retest for " + ", ".join(ambiguous) if ambiguous else "")
     for r in RANKS:
-        seq = sorted(dict.fromkeys(cand[r]), key=lambda c: (age[c], c))
+        seq = sorted(cand[r], key=lambda c: (age[c], c))
         if seq:
             pick = seq[:n]
-            ri = {c: row_items[c] for c in pick if c in row_items}
-            return dict(out, rank=r, purpose=PURPOSE[r], pick=pick, row_items=ri,
-                        text="%s: %s" % (r, ", ".join("%s (%s)" % (c, why[c]) if c in why else c for c in pick)))
+            ri = {c: cand[r][c][0] for c in pick if cand[r][c][0]}
+            why = {c: reason for c, (_, reason) in cand[r].items() if reason}
+            return dict(out, rank=r, purpose=PURPOSE[r], pick=pick, row_items=ri, why=why,
+                        text="%s: %s%s" % (r, ", ".join("%s (%s)" % (c, why[c]) if c in why else c for c in pick),
+                                           blind_text))
     out["all_dry"] = bool(names) and set(dry) == set(names)
     return dict(out, rank=None, purpose=None, pick=[],
                 text="exhausted: %d chain(s) hold a verdict at their code version, %d held for a repair, %d DRY%s%s"
                      % (sum(1 for c in names if c in done), len(held), len(dry),
                         "; %d flaky (reported, not repeated)" % len(flaky) if flaky else "",
-                        "; blind: " + "; ".join(blind) if blind else ""))
+                        blind_text))

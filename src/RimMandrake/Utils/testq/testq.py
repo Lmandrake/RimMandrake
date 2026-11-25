@@ -2278,7 +2278,9 @@ def facts_hold(mod, now):
 def fill_rank(mod, n, now, today=None, exclude=()):
     """The order half of fill_plan (TESTQ_FILL_RANK_BY_EVIDENCE_GAPS; gaps.py has the order and its reasons):
     verdict pick (rank, purpose, pick, row_items), exhausted (nothing may be queued as filler: every chain PASSED or
-    FAILED-with-no-fix at the current identity, or is DRY) or nohist (no history and no modcheck catalogue)."""
+    FAILED-with-no-fix at the current identity, or is DRY) or nohist (no history and no modcheck catalogue).
+    When only gap ranks are visible and the plan is blind, it reports that owed work could not be determined
+    (blind_plan_reports_no_owed_work)."""
     import gaps
     today = today or time.strftime("%Y-%m-%d", time.localtime(now))
     recs = records("done")
@@ -2292,11 +2294,14 @@ def fill_rank(mod, n, now, today=None, exclude=()):
                               "why")}
     plan["repeat_hold"] = repeat
     if g["rank"] and g["rank"] not in gaps.FILL_RANKS:
-        # the ranks are in order: a gap rank means no owed work (gaps.FILL_RANKS); counted and named, never queued
+        # The gap ranks are counted and named, never queued. A blind probe may have missed owed work.
         unowed = ", ".join("%d %s" % (g["counts"][r], r) for r in gaps.RANKS if r not in gaps.FILL_RANKS and g["counts"][r])
-        return dict(plan, rank=None, purpose=None, row_items={}, verdict="exhausted", pick=[],
-                    text="%s: no owed work (a fix to retest, an item owing a live level); not queued, owed by no mod: "
-                         "%s; no fill" % (mod, unowed))
+        if g["blind"]:
+            text = "%s: could not determine owed work; %s; blind: %s; no fill" % (mod, unowed, "; ".join(g["blind"]))
+        else:
+            text = ("%s: no owed work (a fix to retest, an item owing a live level); not queued, owed by no mod: "
+                    "%s; no fill" % (mod, unowed))
+        return dict(plan, rank=None, purpose=None, row_items={}, verdict="exhausted", pick=[], text=text)
     if g["rank"]:
         return dict(plan, verdict="pick", pick=g["pick"], text="would queue %s" % g["text"])
     if repeat:

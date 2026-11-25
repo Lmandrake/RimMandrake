@@ -16,6 +16,7 @@ import os
 import shutil
 import sys
 import tempfile
+from unittest.mock import patch
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -133,6 +134,44 @@ def t_fix_landed():
           "a commit naming the run's item: fix_landed, recorded against that item: %s %s" % (r["pick"], r["row_items"]))
 
 
+def fix_uses_passing_rows_item():
+    run = rec(1, 20, [("thirst", "T12_no_routine_salt", "PASS"), ("thirst", "T15_slime_effects", "FAIL")],
+              purpose="fix")
+    run["job"]["row_items"] = {"T12_no_routine_salt": "FLOWWORKS_SALT_REGRESSION",
+                               "T15_slime_effects": "FLOWWORKS_SLIME_REGRESSION"}
+    g = fake_git(moved=True, logs={"s0": [("c0ffee7", "Fix T15_slime_effects")]})
+    r = rank([run], ["thirst"], g=g)
+    check(r["rank"] == "fix_landed" and r["pick"] == ["thirst"]
+          and r["row_items"] == {"thirst": "FLOWWORKS_SLIME_REGRESSION"},
+          "fix_uses_passing_rows_item: expected the failing row's owner, got %s" % r["row_items"])
+    run["result"]["rows"][0]["verdict"] = "FAIL"
+    r = rank([run], ["thirst"], g=g)
+    check(r["counts"]["fix_landed"] == 0 and r["row_items"] == {},
+          "fix_uses_passing_rows_item: two failing owners must block a fix pick, got %s %s" % (r["rank"], r["row_items"]))
+    check(r["ambiguous"] and r["ambiguous"][0].startswith("thirst ") and "no fix retest for thirst" in r["text"],
+          "fix_uses_passing_rows_item: the refused fix pick is named in the plan, got %s %s" % (r.get("ambiguous"), r["text"]))
+
+
+def owed_rank_overwrites_fix_owner():
+    run = rec(1, 20, [("thirst", "T15_slime_effects", "FAIL")], purpose="fix")
+    run["job"]["row_items"] = {"thirst": "FLOWWORKS_SLIME_REGRESSION"}
+    run["result"]["chain_versions"] = {"thirst": "v1"}
+    salt = "FLOWWORKS_SALT_REGRESSION"
+    world = (Model, [{"text": "FlowWorks needs live proof on `thirst`"}],
+             World({salt: Item("built", ["L1"], history=[0])}))
+
+    def prober(mod, items, since):
+        return {"chains": ["thirst"], "item_chains": {salt: ["thirst"]} if salt in items else {},
+                "versions": {"thirst": "v2"}}
+
+    r = rank([run], None, world=world, prober=prober,
+             g=fake_git(moved=True, logs={"s0": [("c0ffee8", "Fix T15_slime_effects")]}))
+    check(r["counts"]["item_owed"] == 1 and r["rank"] == "fix_landed"
+          and r["row_items"] == {"thirst": "FLOWWORKS_SLIME_REGRESSION"}
+          and r["why"].get("thirst") == "commit c0ffee8 names T15_slime_effects" and "c0ffee8" in r["text"],
+          "owed_rank_overwrites_fix_owner: expected the fix owner and commit, got %s %s" % (r["row_items"], r["text"]))
+
+
 def t_item_owed():
     world = (Model, [{"text": "drive `alpha` live"}],
              World({"X_OWES_L1": Item("built", ["L1", "L3"], "pump", [0]),
@@ -248,6 +287,27 @@ def t_blind():
     check(r["rank"] is None and "blind: no modcheck" in r["text"], "exhausted while blind says so: %s" % r["text"])
 
 
+def blind_plan_reports_no_owed_work():
+    import testq as T
+    run = rec(1, 20, [("thirst", "T15_slime_effects", "FAIL")], item="FLOWWORKS_SLIME_REGRESSION", purpose="fix")
+    world = (Model, [{"text": "FlowWorks needs live proof on `thirst`"}],
+             World({"FLOWWORKS_SALT_REGRESSION": Item("built", ["L1"], history=[0])}))
+    g = fake_git(moved=True, logs={"s0": [("c0ffee9", "Update FlowWorks source")]})
+    reason = "no modcheck in this checkout"
+    prober = fake_probe([], blind=reason)
+    r = rank([run], None, world=world, g=g, prober=prober)
+    check(r["rank"] == "never_run" and "blind: " + reason in r["text"],
+          "blind_plan_reports_no_owed_work: gap rank text lost the blind reason: %s" % r["text"])
+    with tempfile.TemporaryDirectory(prefix="rf_testq_blind_") as tmp, patch.object(T, "QHOME", tmp), \
+            patch.object(G, "ledger", return_value=world), patch.object(G, "git", g), patch.object(G, "probe", prober):
+        T.ensure_dirs()
+        S.dump(run, T.q("done", run["job"]["id"] + ".json"))
+        p = T.fill_plan(MOD, 2, T.FILL_CAP_DEFAULT, now=NOW)
+    check(p["verdict"] == "exhausted" and p["pick"] == [] and "1 never_run" in p["text"]
+          and "blind: " + reason in p["text"] and "could not determine owed work" in p["text"],
+          "blind_plan_reports_no_owed_work: expected an uncertain fill plan, got %s" % p["text"])
+
+
 def t_real_probe():
     """The instrument can see: one real gapprobe.py run against this checkout's FlowWorks validation."""
     out = G.probe(MOD, {"X_T_PROBE": "walk FlowWorks' `drawbridges` chain",
@@ -324,7 +384,7 @@ def t_filler_queues_only_owed_work():
         G.git = fake_git()
         now = S.parse_ts("2026-10-25T10:00:00Z") + 3600
         p = T.fill_plan(MOD, 2, T.FILL_CAP_DEFAULT, now=now)
-        check(p["verdict"] == "exhausted" and p["pick"] == [],
+        check(p["verdict"] == "exhausted" and p["pick"] == [] and "no owed work" in p["text"],
               "fill_plan: never-run chains are owed by no mod: no fill: %s" % p["text"])
         check(p["counts"]["never_run"] == 2 and "never_run" in p["text"],
               "fill_plan: the gap ranks are still counted and named: %s %s" % (p["counts"], p["text"]))
@@ -403,7 +463,8 @@ def t_pilot_owner_only():
 
 def main():
     for t in (t_pilot_routed_skipped, t_pilot_owner_only, t_identity_and_verdicts, t_pass_and_unfixed_fail_never_filler, t_fix_landed, t_item_owed, t_shared_chain_owner,
-              t_unmeasured_and_dry, t_never_run_and_identity, t_flaky_is_reported_never_repeated, t_blind, t_real_probe, t_fill_plan, t_filler_queues_only_owed_work):
+              t_unmeasured_and_dry, t_never_run_and_identity, t_flaky_is_reported_never_repeated, t_blind, t_real_probe, t_fill_plan, t_filler_queues_only_owed_work,
+              fix_uses_passing_rows_item, owed_rank_overwrites_fix_owner, blind_plan_reports_no_owed_work):
         try:
             t()
         except Exception as e:      # noqa: BLE001 - one broken case must not hide the rest
