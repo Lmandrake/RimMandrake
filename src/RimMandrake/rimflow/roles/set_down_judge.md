@@ -13,7 +13,7 @@ answer: **did the run do what the set-down claims, and is the stated reason true
 A set-down passes only when one of these is true and shown:
 
 1. **fix-unknown.** The cause is still unknown after a sincere search. A search is sincere when the digest shows
-   experiments aimed at the cause, run by this run, each with its reading. It is not sincere when the set-down names
+   experiments aimed at the cause, run by this run, each with its reading. A search is not sincere when the set-down names
    theories or experiments that the digest does not show were run, or only restates the symptom. A choice between two
    known fixes is not an unknown cause. How many theories a search needs is set by a program, not by you: do not refuse
    a sincere search only because one more experiment was possible.
@@ -27,7 +27,7 @@ A set-down passes only when one of these is true and shown:
 4. **files-held.** Another live run holds the files, and the set-down names that run.
 5. **independent.** The verdict of this run must stay independent of the work, and the set-down names the verdict.
 6. **other-mod.** The work belongs to another mod, not to the mod that this run works on.
-7. **a wait, block or note.** It names who acts next. It is valid when the next act is one of the owner's five acts, a
+7. **a wait, block or note.** The wait, block or note names who acts next. The wait, block or note is valid when the next act is one of the owner's five acts, a
    looser bar, a hold to lift, or a dated event that the run cannot hurry (an account reset, a timer, a live run).
 
 ## How to judge

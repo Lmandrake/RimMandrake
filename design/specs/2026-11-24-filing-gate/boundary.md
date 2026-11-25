@@ -170,12 +170,16 @@ there is of a promise here. The hook has its own selftest, `.claude/hooks/selfte
   judge named a next experiment or another route that the run could have taken.
 - The one correction of the brief: a sincere search is experiments run, each with a reading, and the count of
   theories is the program's; a refusal rests on a requirement that fails, never on an imagined route.
-- Run 2, the brief as it stands: 20 of 25 agree (`judge_agreement.md`); the judge refuses 1, 10, 16 and 19 and passes
-  11 (a held game). The bind rule (at most 3 of 25) is not met: the row reads FAILED, so the judge is in shadow.
+- Run 2, after the correction: 20 of 25 agree; the judge refused 1, 10, 16 and 19 and passed 11 (a held game).
+- Run 3, after a wording-only repair of three pronouns that the landing's prose check found: 21 of 25 agree
+  (`judge_agreement.md`); the judge refuses 1, 10 and 16 and passes 11. Case 19 came out REFUSED in runs 1 and 2 and
+  PASS in run 3: the verdict on one case can vary between runs of the same brief. The bind rule (at most 3 of 25) is
+  not met: the row reads FAILED, so the judge is in shadow. Each call took 9 to 26 s.
 - The program half binds now. On the 25 it refuses 17 of the 18 weak set-downs (not 6, a looser bar, which only the
   judge refuses) and 3 of the 7 legitimate ones (10, 16 and 19, by the three-theory rule of 2026-11-25, which those
   texts predate).
-- To bind the judge: the Conductor rules on the four cases where the judge is stricter than the labels (1, 10, 16, 19).
+- To bind the judge: the Conductor rules on the cases where the judge is stricter than the labels (1, 10, 16; 19 in
+  two of three runs). Case 16 is one of the two unsure labels. Case 11 the judge passes, but the program refuses it.
   A ruling that the judge is right moves those labels; then `refusal_contract.py calibrate --model set_down_judge`
   measures again, and CALIBRATED binds it.
 

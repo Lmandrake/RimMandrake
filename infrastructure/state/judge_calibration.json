@@ -1098,7 +1098,7 @@
      "planted (code_review_calibration.py): the 21 claims that are a rare failure the page lists as not handled, or polish, by the same rule; must not be admitted as Problems"
     ]
    },
-   "hash": "a59f424038a995ae",
+   "hash": "6f0ea10d866f50dc",
    "last_run": {
     "at": "2026-11-25T05:49:14Z",
     "cases": "came out the other way: c2.9, c3.4, c4.1, c4.14, c4.3",
@@ -1254,10 +1254,10 @@
      "id": "c4.15"
     }
    ],
-   "reset_at": "2026-11-25T20:09:14Z",
+   "reset_at": "2026-11-25T20:51:08Z",
    "status": "UNTESTED",
    "timeout_s": 540,
-   "was": "FAILED"
+   "was": "UNTESTED"
   },
   "coverage_judge": {
    "brief": [
@@ -2369,12 +2369,12 @@
      "7 of the 25 that the Conductor classed legitimate (a named missing access, five things tried, only his ear can judge, another mod's code)"
     ]
    },
-   "hash": "5600d7087971e246",
+   "hash": "db943f113fe99ff9",
    "last_run": {
-    "at": "2026-11-25T19:50:51Z",
-    "cases": "came out the other way: n01, n10, n11, n16, n19",
+    "at": "2026-11-25T20:51:08Z",
+    "cases": "came out the other way: n01, n10, n11, n16",
     "exit": 0,
-    "out": "agreement 20 of 25; disagree: [1, 10, 11, 16, 19]; could not judge: 1",
+    "out": "agreement 21 of 25; disagree: [1, 10, 11, 16]; could not judge: 1",
     "results": "25 case rows"
    },
    "model_check": [
@@ -2483,7 +2483,7 @@
      "id": "n25"
     }
    ],
-   "reset_at": "2026-11-25T19:50:51Z",
+   "reset_at": "2026-11-25T20:51:08Z",
    "status": "FAILED",
    "timeout_s": 3600,
    "tolerate": 3,
