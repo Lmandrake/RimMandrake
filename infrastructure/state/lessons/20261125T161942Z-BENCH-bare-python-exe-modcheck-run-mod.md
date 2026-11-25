@@ -1,0 +1,3 @@
+A bare python.exe modcheck run <Mod> --chains X on a running Archmagi game composes the next ModsConfig but does not restart the game, so it ends HARNESS UNMEASURED (mod_not_installed or stale_load) against whatever list the game already runs. The archmagi testq lane admits no targeted job. Run it as design/specs/2026-11-25-bottle-loop-map-wide/live_sitting.sh does: game down, deploy, modset_builder --tier <tier> --apply, exact-list check, game_instance launch --wait, then modcheck with MODCHECK_KEEP_MODLIST=1 MODCHECK_SKIP_DEPLOY=1 (in WSLENV), all under game_lock.py run <game>.
+item: RIMMANDRAKE_TRACE_FLOWWORKS_BOTTLE_LOOP_EMPTY_GONE_NONE_FILLED
+home: skills/live-debugging-proof-harness/SKILL.md
