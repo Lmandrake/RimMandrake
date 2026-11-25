@@ -222,7 +222,8 @@ def sweep(s, rows, throws, before):
     put back on every exit path."""
     kick0 = read_field(s, "lastShakeTick", of=SHOW)
     try:
-        setting(s, "lastShakeTick", "-1", of=SHOW)   # no kick yet in this run: a stale tick from the last run reads -1
+        r = s.raw("jawa/mod_settings_field", typeName=SHOW, action="set", field="lastShakeTick", value="-1")
+        print("INFO kick tick reset to -1: %s" % ({k: (r or {}).get(k) for k in ("success", "valueBefore", "valueAfter", "error")},))
         for pad in ORDER:
             centre, off = PADS[pad]
             for f in SWITCHES:
@@ -241,9 +242,9 @@ def sweep(s, rows, throws, before):
             t1 = shake_tick(s)
             ours, vanilla = scars_on(s, centre)
             # the kick's tick is a static: it outlives the load of the stage save, whose ticks repeat from run to run,
-            # so "it moved" is read against this blast's own tick, never against the value before
+            # so a kick counts only inside this blast's own window (its tick to the end of its settle), never as "it moved"
             rows[pad] = dict(off=off, ours=ours, vanilla=vanilla, t0=t0, t1=t1,
-                             shook=None if t1 is None or blast_tick is None else t1 >= blast_tick)
+                             shook=None if t1 is None or blast_tick is None else blast_tick <= t1 <= blast_tick + SETTLE + 120)
 
         # the throws: show on (every switch on), then show off (the four off), the same colonist on a like pad
         pid = s.read("thrown", "thingIDNumber")
