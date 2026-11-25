@@ -166,6 +166,30 @@ def main():
         r = H.random_events_off(w, tx)
     check("random_events_off removes Sickly from a colonist on a map that is not current",
           w.pawns["Col3"]["traits"] == [] and r.verified, "%s %s" % (w.pawns["Col3"]["traits"], r.as_dict()))
+    # the receipt names what was READ for each colonist, so a receipt with nothing removed says why
+    # (RIMMANDRAKE_READ_WHY_STEVE_SICKLY_SWEEP_FINDS_NONE_SAVES_SAY_TWO: two SteveDesktop receipts read removed [])
+    w = messy()
+    w.pawns["Col1"]["traits"] = [{"def": "SlowLearner", "degree": 0}, {"def": "Immunity", "degree": -1}]
+    with H.SettingsTransaction(w) as tx:
+        r = H.random_events_off(w, tx)
+    seen = (r.evidence.get("diseaseTraits") or {}).get("seen") or {}
+    check("the receipt names each colonist's traits as read before the removal",
+          seen.get("Col1") == ["SlowLearner 0", "Immunity -1"] and seen.get("Col2") == [] and "Col3" in seen, str(seen))
+    w = messy()
+    w.pawns["Col1"]["traits"] = [{"def": "Immunity", "degree": -1}]
+    w.modes.add("traits_shapeless")
+    with H.SettingsTransaction(w) as tx:
+        r = H.random_events_off(w, tx)
+    check("a traits reply with no traits list is NOT clean (could not look)", not r.verified and r.residue,
+          "%s %s" % (r.verified, r.residue))
+    w = messy()
+    w.pawns["Col1"]["traits"] = [{"def": "Immunity", "degree": -1}]
+    w.modes.add("traits_degree_text")
+    with H.SettingsTransaction(w) as tx:
+        r = H.random_events_off(w, tx)
+    check("a degree given as text ('-1') still reads as Sickly and is removed",
+          w.pawns["Col1"]["traits"] == [] and r.verified, "%s %s" % (w.pawns["Col1"]["traits"], r.as_dict()))
+
     w = messy()
     w.modes.add("colonists_blind")
     with H.SettingsTransaction(w) as tx:

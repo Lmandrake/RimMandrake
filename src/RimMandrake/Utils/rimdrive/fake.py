@@ -348,6 +348,11 @@ class FakeWorld(object):
             removed = 1
         elif action != "list":
             return {"success": False, "message": "fake supports list and remove only"}
+        if "traits_shapeless" in self.modes:          # success with no traits list: a reply that holds no answer
+            return {"success": True, "removed": removed}
+        if "traits_degree_text" in self.modes:        # degrees as text ("-1"), as the companion's readBack rows give them
+            return {"success": True, "removed": removed, "refused": [],
+                    "traits": [dict(t, degree=str(t["degree"])) for t in ts]}
         return {"success": True, "removed": removed, "refused": [], "traits": copy.deepcopy(ts)}
 
     def _t_jawa_pawn_mental(self, pawn=None, action="list", **_):

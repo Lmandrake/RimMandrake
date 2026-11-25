@@ -416,27 +416,45 @@ def disease_traits_off(session):
         pid = pid[6:] if pid.startswith("Thing_") else pid
         if pid and not c.get("dead") and c.get("humanlike") is not False and c.get("factionIsPlayer") is not False:
             cols.append(pid)
-    removed, residue = [], []
+    removed, residue, seen = [], [], {}
     for pid in cols:
         r, err = _try_call(session, "jawa/pawn_traits", pawn=pid, action="list")
-        if r is None:
-            residue.append("%s: traits unread: %s" % (pid, err))
+        before = _trait_rows(r)
+        if before is None:
+            residue.append("%s: traits unread: %s" % (pid, err or "no traits list in %s" % str(r)[:120]))
             continue
+        seen[pid] = ["%s %s" % (d, deg) for d, deg in before]
         for d, deg in DISEASE_TRAITS:
-            if any(t.get("def") == d and t.get("degree") == deg for t in r.get("traits") or []):
+            if (d, deg) in before:
                 rr, err = _try_call(session, "jawa/pawn_traits", pawn=pid, action="remove", trait=d)
                 if rr is not None and rr.get("removed"):
                     removed.append((pid, "%s %d" % (d, deg)))
-        after, err = _try_call(session, "jawa/pawn_traits", pawn=pid, action="list")
+        after = _trait_rows(_try_call(session, "jawa/pawn_traits", pawn=pid, action="list")[0])
         if after is None:
-            residue.append("%s: traits unread after the removal: %s" % (pid, err))
+            residue.append("%s: traits unread after the removal" % pid)
             continue
-        left = ["%s %s" % (t.get("def"), t.get("degree")) for t in after.get("traits") or []
-                if (t.get("def"), t.get("degree")) in DISEASE_TRAITS]
+        left = ["%s %s" % t for t in after if t in DISEASE_TRAITS]
         if left:
             residue.append("%s still holds %s" % (pid, left))
     return HelperResult("disease_traits_off", acted=len(removed), verified=not residue, residue=residue,
-                        evidence={"colonists": len(cols), "removed": removed})
+                        evidence={"colonists": len(cols), "removed": removed, "seen": seen})
+
+
+def _trait_rows(reply):
+    """A jawa/pawn_traits reply -> [(def, degree int or the raw text)], or None when it holds no traits list (a reply
+    with no answer is 'could not look', never 'no trait'). The companion gives a degree as an int in `traits` and as
+    text in its readBack rows, so a numeric text degree is read as its int."""
+    if not isinstance(reply, dict) or not isinstance(reply.get("traits"), list):
+        return None
+    out = []
+    for t in reply["traits"]:
+        deg = t.get("degree") if isinstance(t, dict) else None
+        try:
+            deg = int(deg)
+        except (TypeError, ValueError):
+            pass
+        out.append((t.get("def") if isinstance(t, dict) else None, deg))
+    return out
 
 
 def random_events_off(session, tx):
