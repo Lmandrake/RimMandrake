@@ -54,6 +54,9 @@ namespace JawaBench.BridgeTools
 
         private static bool OnMain() { try { return UnityData.IsInMainThread; } catch { return false; } }
 
+        /// <summary>The alias of a thing of the cast of the live run, or null (the world taps name a cast pawn or thing by it).</summary>
+        internal static string AliasNow(int thing) { var c = Tp.CastNow(); return c != null ? c.AliasOf(thing) : null; }
+
         /// <summary>Give this run the standard cast tracks of these pawns, and put the taps on. Main thread, before Arm.</summary>
         internal static void Join(T.SceneRun run, IList<KeyValuePair<string, Thing>> pawns)
         {

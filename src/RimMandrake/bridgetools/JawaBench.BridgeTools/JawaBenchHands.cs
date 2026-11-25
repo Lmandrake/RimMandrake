@@ -90,6 +90,7 @@ namespace JawaBench.BridgeTools
                     var src = JawaBenchTerrainTools.NewProbeSource();
                     var made = new T.SceneRun(id, plan.Compile(src), src, ticks, Host, step ? "STEP" : "PLAY", spName, trace, tickBudgetMs);
                     JawaBenchCast.Join(made, Host.CastPawns(Core.GroupSize));       // the standard cast tracks of every bound pawn
+                    JawaBenchWorld.Join(made, Host.MapId);                          // the world tracks of the run's map, and the world-event taps
                     return made;
                 }, JawaBenchSceneTick.EpochBox(), run =>
                 {

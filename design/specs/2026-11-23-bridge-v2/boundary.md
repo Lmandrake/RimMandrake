@@ -177,6 +177,68 @@ None of its own. The taps use the guards of `JawaBenchHookGuard`; the rows go th
 - **the-per-tick-cost-of-the-tracks-is-in-the-result.** `close.cast` holds the ms of the cast tracks, the most of one sample and the
   mean per tick.
 
+## WORLD EVENT TAPS AND WORLD TRACKS
+
+Code: `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchWorldCore.cs` (all of it, the pure half),
+`src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchWorld.cs` (all of it, the Verse half and its nine patch sites), the `World`
+seam of `JawaBenchSceneTickCore.cs`, the `JawaBenchWorld.Join` line of `JawaBenchHands.cs`, and `AliasNow` in `JawaBenchCast.cs`. Item
+`RIMMANDRAKE_BUILD_WORLD_EVENT_TAPS_SECOND_FAMILY`. Each promise has a test of its name in
+`src/RimMandrake/bridgetools/selftest_world_taps.py` (harness `bridgetools/WorldTapsSelfTest`). The hooks are on
+`src/RimMandrake/bridgetools/HOOKS.md`.
+
+**The world tracks** of a `jawa/run_until` run read the run's map: `world.weather` (the current weather def), `world.conditions` (the
+active game conditions of the map and of the world, by def, sorted), `world.temp` (outdoor temperature, to 0.1 °C), `world.hour`
+(local hour), `world.camera` (the view rectangle and the zoom, or `elsewhere` when the camera is on another map) and `world.windows`
+(the window stack, bottom to top, by type). They are sampled in the sample phase after the cast tracks and written on change only, as
+`track` rows (first and last sample of every one). A map that is gone is a row with `st` `gone`.
+
+**The taps** (lazy: on at the first run, then on). A tap row is a scene line with phase `in_tick` and the run's own `n`; it carries
+`ord`, the entry ordinal taken at the prefix. A pawn or thing of the cast carries its alias.
+
+| rec | hook | fields |
+|---|---|---|
+| `mental_attempt` | `MentalStateHandler.TryStartMentalState` | `thing`, `alias`, `ord`, `state`, `reason`, `forced`, `started`, `prev` (the state before the call) |
+| `mental_start` | the same call, when it started a state | `thing`, `alias`, `ord` (the attempt's), `state`, `now` |
+| `quest` | `QuestManager.Add` | `ord`, `quest` (id), `root`, `name`, `added`, `refused` (`already there`, `not added`), `accepted` |
+| `letter` | `LetterStack.ReceiveLetter(Letter, ...)`, where the other two overloads go | `ord`, `def`, `label`, `delay`, `queued`, `shown`, `quest`, `targets` |
+| `message` | all four `Messages.Message` overloads; the outermost call writes | `ord`, `text`, `def`, `shown`, `hidden` (the repeat rule), `targets` |
+| `fire` | `Fire.SpawnSetup`, where both fire routes go; not a fire a load restores | `ord`, `fire`, `cell`, `size`, `attached`, `attachedAlias`, `instigator`, `instigatorKind` (`pawn`, `thing`, `none`), `instigatorAlias` |
+| `explosion` | `GenExplosion.DoExplosion` | `ord`, `cell`, `radius`, `damage`, `instigator`, `instigatorKind`, `instigatorAlias`, `weapon`, `projectile` |
+
+`close` gains `world`: `tracks`, `samples`, `reads`, `rows`, `ms`, `msMax`, `msPerTick`, and `taps` (`records`, `outside`, `dropped`,
+`innerMessages`, `loadedFires`, and the coverage of each of the six hooks).
+
+### LIMITS
+
+None of its own. The taps use the guards of `JawaBenchHookGuard`; the rows go through the writer of the run.
+
+### DOES NOT SURVIVE (not promised)
+
+- **a-hook-that-is-not-connected.** An offline test proves the rules, never that Harmony put the hook on the method, that a small
+  `Messages.Message` overload was not inlined into a caller compiled before the patch, or that another mod's prefix lets the original
+  run. The live proof is the tap certificate (`RIMMANDRAKE_BUILD_TAP_CERTIFICATE_CANARY_RUNS_OFF_STAGE`).
+- **a-change-inside-one-tick.** A world track sees the end of the tick. A window that opens and closes in a frame with no tick is not
+  seen (the window stack is sampled at each tick, not each frame).
+- **events-of-the-whole-game.** The taps record every event while a run is running, on any map. A judge filters by cell, alias or map.
+
+### PROMISES (each one is owed a test of the same name)
+
+- **the-mental-tap-follows-the-six-hook-rules.** Reentrancy, a skipped prefix, a skipped original, a game exception, an off-thread call
+  and a writer fault are each handled as `HOOKS.md` says, and a record outside any running run is dropped and counted in `outside`.
+- **the-quest-tap-follows-the-six-hook-rules.** The same, for a quest; a quest that was there already is a row with `added` false.
+- **the-letter-tap-follows-the-six-hook-rules.** The same, for a letter; a delayed letter is `queued`, not `shown`.
+- **the-message-tap-follows-the-six-hook-rules.** The same, for a message, with the guard's depth closed by the finalizer; the nested
+  overloads write one row.
+- **the-fire-tap-follows-the-six-hook-rules.** The same, for a fire; a fire lit by a pawn and one lit by a thing name their instigator
+  and its kind; a fire that a load restores is counted, not written.
+- **the-explosion-tap-follows-the-six-hook-rules.** The same, for an explosion, with its instigator.
+- **an-attempt-and-a-start-are-two-records.** Every attempt is a `mental_attempt` row, started or not; a start is also a `mental_start`
+  row with the attempt's `ord`, written after it.
+- **a-message-is-recorded-before-the-rule-that-hides-repeats.** A message that the repeat rule hides is still a row, with `shown` false.
+- **the-hook-table-check-passes.** `selftest_bridge_hooks.py` passes with the nine new sites on `HOOKS.md`.
+- **the-world-tracks-write-on-change-and-their-cost-is-in-the-result.** One row per change of each world track, and `close.world` holds
+  their ms, the most of one sample, the mean per tick and the six taps' coverage.
+
 ## LIVE READINGS
 
 | proof | reading | evidence |

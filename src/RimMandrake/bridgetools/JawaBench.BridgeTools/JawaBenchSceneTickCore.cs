@@ -153,6 +153,9 @@ namespace JawaBench.BridgeTools
             public readonly JawaBenchRunLockCore.LockLog Lock = new JawaBenchRunLockCore.LockLog();
             /// <summary>The standard cast tracks, or null. Set before Arm.</summary>
             public ISceneCast Cast;
+            /// <summary>The world tracks and the world-event taps (JawaBenchWorldCore.Tracks,
+            /// RIMMANDRAKE_BUILD_WORLD_EVENT_TAPS_SECOND_FAMILY), or null. Sampled after the cast. Set before Arm.</summary>
+            public ISceneCast World;
             SceneRow _row;
 
             /// <summary>The probe of the condition value that could not be read, with its state; null when there is none.</summary>
@@ -241,6 +244,11 @@ namespace JawaBench.BridgeTools
                 {
                     if (_row == null) _row = Emit;
                     Cast.Sample(_row, tick, phase, all);
+                }
+                if (World != null)
+                {
+                    if (_row == null) _row = Emit;
+                    World.Sample(_row, tick, phase, all);
                 }
             }
 
@@ -408,7 +416,8 @@ namespace JawaBench.BridgeTools
                                             ",\"paused\":" + (_paused ? "true" : "false") + ",\"tickAfter\":" + tick + ",\"skipped\":" + _skipped +
                                             ",\"randFaults\":" + _randFaults + ",\"actsNotDone\":" + S(left) + ",\"alloc\":" + alloc +
                                             ",\"lockReads\":" + Lock.Reads + ",\"breaches\":" + S(Lock.Breaches()) +
-                                            (Cast != null ? ",\"cast\":" + Cast.Summary() : ""));
+                                            (Cast != null ? ",\"cast\":" + Cast.Summary() : "") +
+                                            (World != null ? ",\"world\":" + World.Summary() : ""));
                 Stage = "closed";
             }
         }
