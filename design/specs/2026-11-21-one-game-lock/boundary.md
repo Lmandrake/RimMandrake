@@ -71,8 +71,9 @@ Before: `rimflow bridge who` 5.0 s for ArchBig, 1.8 s for ArchSmall.
 - **an-unreadable-lock-is-could-not-look.** A garbled lock, a lock that stays empty, no lock path, or a control store that
   cannot be read: `query`, `claim` and `release` exit 2 and name the cause. It is never read as free or as held.
 - **run-releases-on-exit-crash-and-sigterm.** `run` returns CMD's exit code and the lock is gone after CMD exits, crashes
-  or is stopped by a SIGTERM forwarded to it; a child of `run` reads the hold as its own tree's; a `run` killed outright
-  leaves the game FREE at once.
+  or is stopped by a SIGTERM forwarded to it; a child of `run` reads the hold as its own tree's, and its driver-lock owner
+  (`RM_DRIVER_PID`) is the run, so `game_instance.stop`'s gate passes CMD's own hold; a `run` killed outright leaves the
+  game FREE at once.
 - **his-hold-refuses-with-exit-3.** `pipe off game:<g>`, his OWNER lock (live, or with its process gone, which a query
   cannot measure), and a flyer's flight each make `query` or `claim` exit 3 by name. His own claim for a flight passes.
   `claim --despite-hold WHY` with a nonempty reason passes the pipe hold, reports the hold and the reason on stderr,

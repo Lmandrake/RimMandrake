@@ -203,6 +203,16 @@ def t_run_releases_on_exit_crash_and_sigterm():
                    "capture_output=True,text=True); d=json.loads(r.stdout); sys.exit(0 if d.get('mine') else 9)" % GL)
     r = bx.gl("run", "a", "--for", "probe", "--", sys.executable, "-c", child_probe)
     check(r.returncode == 0, "run: a child reads the hold as its own process tree's", r.stderr)
+    # RIMMANDRAKE_CLASS_DROID_AND_JAWA_GONE_IN_SHALLOW_TAR (measured 2026-11-25): `game_lock run ArchBig -- <stop, tier,
+    # launch>` was refused by game_instance.stop's gate (`rimflow bridge idle`: NOT TAKEABLE, held by the run's own pid),
+    # because the gate compares the holder with driver_lock.my_identity(), the nearest claude ancestor, not the run.
+    owner_probe = ("import subprocess,sys,json; sys.path.insert(0,%r); import driver_lock as D;"
+                   "r=subprocess.run([sys.executable,%r,'query','a','--json'],capture_output=True,text=True);"
+                   "d=json.loads(r.stdout); h=(d.get('holder') or {}).get('pid'); me=D.my_identity().get('pid');"
+                   "print('holder', h, 'owner', me); sys.exit(0 if h and h == me else 9)" % (HERE, GL))
+    r = bx.gl("run", "a", "--for", "owner probe", "--", sys.executable, "-c", owner_probe)
+    check(r.returncode == 0, "run: CMD's driver-lock owner is the run that holds it (the stop gate passes its own hold)",
+          (r.returncode, r.stdout.strip(), r.stderr.strip()[-200:]))
     # Deliver the real signal at both startup boundaries. The stand-in CMD has no scheduler race of its own.
     startup_term = """
 import os, signal, sys

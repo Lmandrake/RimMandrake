@@ -431,9 +431,18 @@ def run(g, purpose, cmd, seat=None, force=None, flyer=False):
             gen = inherited
         env = dict(os.environ)
         env[GEN_ENV] = str(gen)
+        passed = [GEN_ENV]
+        if inherited is None and me and me.get("pid"):
+            # CMD's driver-lock owner is this run (driver_lock.owner_pid reads RM_DRIVER_PID first): without it,
+            # game_instance.stop's gate (`rimflow bridge idle`) compared the holder with the nearest claude ancestor and
+            # refused CMD's own hold NOT TAKEABLE (RIMMANDRAKE_CLASS_DROID_AND_JAWA_GONE_IN_SHALLOW_TAR, 2026-11-25)
+            env["RM_DRIVER_PID"] = str(me["pid"])
+            passed.append("RM_DRIVER_PID")
         wslenv = env.get("WSLENV", "")
-        if GEN_ENV not in wslenv.split(":"):
-            env["WSLENV"] = (wslenv + ":" if wslenv else "") + GEN_ENV
+        for k in passed:
+            if k not in wslenv.split(":"):
+                wslenv = (wslenv + ":" if wslenv else "") + k
+        env["WSLENV"] = wslenv
         sys.stderr.write("%s: held for `%s` (gen %s%s)\n" % (game_names.show(g), " ".join(cmd), gen,
                                                                   ", inherited" if inherited is not None else ""))
         try:
