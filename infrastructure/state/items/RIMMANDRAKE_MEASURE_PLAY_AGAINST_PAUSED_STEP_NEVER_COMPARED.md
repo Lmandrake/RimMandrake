@@ -13,11 +13,11 @@ One ticket of the Bridge v2.0 build order. Read `design/specs/2026-11-23-bridge-
   was not compared with the reference counts for no bar". A comparison holds for one key (plan hash, loaded hashes of
   the mods the scene touches, companion hash, mod list, arm) and is owed again when the key changes. Replaces the stuck measuring tool of
   `TICKBURST_PROVE_MANY_TICKS_ONE_FRAME`.
-- **Needs:** the run-plan ticket.
+- **Needs:** the instruments ticket (`jawa/run_until`, session), done. The run-plan ticket is held; "plan" here means what the scene script asks for in a call (`06_build_order.md` §Pass three).
 - This is the first of pass one's six first-week measurements. Its result decides which arms may be used for
   acceptance, and whether a faster driver is ever built.
 
-Depends on: `RIMMANDRAKE_BUILD_RUN_PLAN_ONE_CALL_SCENE_AS_DATA`.
+Depends on: `RIMMANDRAKE_WIDEN_SLICE_INTO_RUN_UNTIL_AND_ACT_BATCH` (done).
 
 ## verify
 
