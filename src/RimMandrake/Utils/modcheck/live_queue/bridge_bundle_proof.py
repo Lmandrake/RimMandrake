@@ -380,6 +380,10 @@ def v_PEN2(d):
         f.append("returned home %s of %d" % (d.get("returnedHome"), len(ids)))
     if f and (d.get("jobsAfterRelease") or d.get("unmovedDetail")):
         f.append("jobs right after release %s; unmoved kind/job %s" % (d.get("jobsAfterRelease"), d.get("unmovedDetail")))
+    if f and d.get("heat"):
+        f.append("heat (id moved cell comfy safe): %s" % "; ".join(
+            "%s %s %s %s %s" % (h.get("kind") or h.get("id"), "M" if h.get("moved") else "-", h.get("cellTemp"),
+                                h.get("ComfortableTemperatureRange"), h.get("SafeTemperatureRange")) for h in d["heat"]))
     return (1 if f else 0), "; ".join(f) or "%d released, %d moved, all inside their pens, all home with their facing (%s)" % (
         len(ids), len(moved), d.get("save"))
 
@@ -988,6 +992,25 @@ def _bare(i):
     return i[6:] if i.startswith("Thing_") else i
 
 
+def _pen_heat(L, before, now, kinds, n_still=12, n_moved=6):
+    """-> per-animal heat rows for PEN2's FAIL reading: is an animal that never moved standing outside its kind's
+    comfortable range? Unmoved rows first, then moved ones as the control (if those are as far out of range, heat is
+    not what holds the unmoved). A failed read is recorded as its error, never as a temperature."""
+    moved = [i for i in sorted(before) if (now.get(i, {}).get("x"), now.get(i, {}).get("z")) !=
+             (before[i].get("x"), before[i].get("z"))]
+    still = [i for i in sorted(before) if i not in moved]
+    rows = []
+    for i, mv in [(i, False) for i in still[:n_still]] + [(i, True) for i in moved[:n_moved]]:
+        a = L.call("jawa/thing_ambient_temp", thing=i)
+        row = {"id": i, "moved": mv, "kind": kinds.get(i),
+               "cellTemp": a.get("cellTemp") if _ok(a) else "ERR %s" % str(a.get("error") or a)[:80]}
+        for name in ("ComfortableTemperatureRange", "SafeTemperatureRange"):
+            r = L.call("jawa/static_call", type="Verse.GenTemperature", method=name, args=i)
+            row[name] = r.get("result") if _ok(r) else "ERR %s" % str(r.get("error") or r)[:80]
+        rows.append(row)
+    return rows
+
+
 def g_PEN2(L):
     import glob
     import shutil
@@ -1031,6 +1054,8 @@ def g_PEN2(L):
     rel = L.call("jawa/pen_release", rects=rstr)                 # exactly human_review.py --release-pens (Review.pens)
     L.call("rimworld/step_game_ticks", ticks=600, pauseFirst=True)
     now = dict((_bare(p.get("id")), p) for p in L.call("jawa/list_pawns").get("pawns") or [])
+    heat = _pen_heat(L, before, now, dict((_bare(r.get("pawn")), r.get("kind")) for r in rel.get("pawns") or []))
+    #                                                              (read before the pin: the cells they idled on)
     pin = L.call("jawa/pen_pin", rects=rstr, restore=True)       # exactly human_review.py --pin-pens
     pinned = dict((_bare(p.get("pawn")), p) for p in pin.get("pawns") or [])
 
@@ -1064,7 +1089,7 @@ def g_PEN2(L):
                            "/downed" if c.get("downed") else "")
         detail[key] = detail.get(key, 0) + 1
     return {"save": review, "selected": rel.get("selected"), "released": rel.get("released"),
-            "jobsAfterRelease": rel.get("jobsAfter"), "unmovedDetail": detail,
+            "jobsAfterRelease": rel.get("jobsAfter"), "unmovedDetail": detail, "heat": heat,
             "notReleased": rel.get("notReleased"), "ids": ids, "moved": moved, "outside": outside,
             "facingWrong": facing, "returnedHome": pin.get("returnedHome"),
             "homeOccupied": [_bare(h.get("pawn")) for h in pin.get("homeRefused") or [] if " holds " in str(h.get("reason"))]}

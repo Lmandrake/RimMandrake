@@ -155,6 +155,12 @@ check("PEN2 one walked out of its pen", "PEN2", dict(pn, outside=["b"]), 1)
 check("PEN2 a facing not restored", "PEN2", dict(pn, facingWrong=["c: South -> North"]), 1)
 check("PEN2 one stayed pinned", "PEN2", dict(pn, released=2, notReleased=1), 1)
 check("PEN2 the layout selects nobody", "PEN2", dict(pn, selected=0, ids=[]), 2)
+_h = [{"id": "a", "kind": "RM_Kind", "moved": False, "cellTemp": 51.0, "ComfortableTemperatureRange": "-10~40",
+       "SafeTemperatureRange": "-20~50"}]
+_rc, _msg = B.verdict("PEN2", dict(pn, moved=[], heat=_h))
+check("PEN2 a statue FAIL names each read animal's cell heat beside its range", "PEN2", dict(pn, moved=[], heat=_h), 1)
+if "RM_Kind - 51.0 -10~40 -20~50" not in _msg:
+    print("FAIL PEN2 heat row missing from the FAIL text: %s" % _msg[-160:]); FAILS.append("PEN2 heat row")
 check("ORIGIN a wild animal that arrived after mapgen is not a FAIL", "ORIGIN",
       dict(og, wild=["Thing_A1", "Thing_A3"], chains={"Thing_A1": "mapgen > wild-spawner", "Thing_A3": "wild-spawner"}), 0)
 check("ORIGIN only late arrivals: no mapgen wildlife read", "ORIGIN",
