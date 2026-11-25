@@ -34,7 +34,8 @@ ctl_tool = {"success": True, "pawns": [{"id": "Human11", "kindActual": "Tribal_W
 rows = [{"id": "Human10", "kindDef": "Colonist"}, {"id": "Human11", "kindDef": "Tribal_Warrior"}]
 sub = contract.spawn_receipt("A1", "jawa/spawn_pawn", "Tribal_Warrior", tool, rows)
 ctl = contract.spawn_receipt("A1c", "jawa/spawn_pawn", "Tribal_Warrior", ctl_tool, rows)
-a1 = {"requested": "Tribal_Warrior", "receipt": sub, "control": ctl, "problems": contract.receipt_problems([sub])}
+a1 = {"requested": "Tribal_Warrior", "receipt": sub, "control": ctl, "problems": contract.receipt_problems([sub]),
+      "setFaction": {"success": True, "kindAfter": "Colonist"}}
 check("A1 kind change seen by read-back", "A1", a1, 0)
 same = contract.spawn_receipt("A1", "jawa/spawn_pawn", "Tribal_Warrior", tool, [{"id": "Human10", "kindDef": "Tribal_Warrior"}])
 check("A1 read-back blind to the change", "A1", dict(a1, receipt=same, problems=contract.receipt_problems([same])), 1)
@@ -44,6 +45,12 @@ unread = contract.spawn_receipt("A1c", "jawa/spawn_pawn", "Tribal_Warrior", {"su
                                 [{"id": "Human11"}])
 check("A1 control kinds unreadable", "A1", dict(a1, control=unread), 1)
 check("A1 no spawn", "A1", {"why": "spawn failed"}, 2)
+# 2026-11-25 Steve1 (30-mod load with HAR): SetFaction succeeded, but HAR's ChangeKindPrefix kept the kind, so there was
+# no substitution to see. A missing precondition is UNMEASURED, never the receipt's FAIL.
+check("A1 SetFaction kept the kind: no substitution to see", "A1",
+      dict(a1, receipt=same, problems=contract.receipt_problems([same]),
+           setFaction={"success": True, "kindAfter": "Tribal_Warrior"}), 2)
+check("A1 SetFaction failed", "A1", dict(a1, setFaction={"success": False, "kindAfter": None}), 2)
 
 # A2
 check("A2 first admitted, second reported", "A2", {"first": [], "second": ["Aurora"]}, 0)

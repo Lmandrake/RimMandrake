@@ -82,6 +82,13 @@ def v_A1(d):
     sub, ctl = d.get("receipt"), d.get("control")
     if not sub or not ctl:
         return 2, "no receipts: %s" % d.get("why")
+    sf = d.get("setFaction") or {}
+    if not sf.get("success"):
+        return 2, "precondition: jawa/set_pawn_faction did not succeed: %s" % sf
+    if sf.get("kindAfter") in (None, d["requested"]):
+        # 2026-11-25 Steve1: HAR's ChangeKindPrefix on Pawn.ChangeKind kept Tribal_Warrior; no substitution happened
+        return 2, "precondition: SetFaction left the kind %s (a Harmony prefix on Pawn.ChangeKind? jawa/harmony_patches " \
+                  "Verse.Pawn ChangeKind): no substitution to see" % sf.get("kindAfter")
     f = []
     if sub.get("toolKinds") != [d["requested"]]:
         f.append("tool reported %s, want [%s] (the tool must not see the later change)" % (sub.get("toolKinds"), d["requested"]))
@@ -436,12 +443,15 @@ def g_A1(L):
     rc, cids = L.spawn(want, "none", ax + 3, az)
     if not ids or not cids:
         return {"why": "spawn failed: %s" % r.get("message")}
-    L.call("jawa/set_pawn_faction", pawn=ids[0], faction="player")
+    sf = L.call("jawa/set_pawn_faction", pawn=ids[0], faction="player")
+    sf = {"success": bool(sf.get("success")), "kindAfter": (sf.get("pawn") or {}).get("kindDef"),
+          "message": sf.get("message")}
     import contract
     rows = L.rows()
     sub = contract.spawn_receipt("A1", "jawa/spawn_pawn", want, r, rows)
     ctl = contract.spawn_receipt("A1-control", "jawa/spawn_pawn", want, rc, rows)
-    return {"requested": want, "receipt": sub, "control": ctl, "problems": contract.receipt_problems([sub])}
+    return {"requested": want, "receipt": sub, "control": ctl, "problems": contract.receipt_problems([sub]),
+            "setFaction": sf}
 
 
 def g_A2(L):
