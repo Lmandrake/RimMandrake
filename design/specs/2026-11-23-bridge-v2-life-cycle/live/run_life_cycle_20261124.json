@@ -1,0 +1,839 @@
+{
+ "killed": {
+  "said": {
+   "driver": "prove-child:42008",
+   "run": "S2_20261125T015156_r1",
+   "stage": "running",
+   "no": null
+  },
+  "before": {
+   "success": true,
+   "session": "S2_20261125T015156",
+   "stage": "open",
+   "paused": false,
+   "tick": 79.0,
+   "driver": "prove-child:42008",
+   "taken": false,
+   "leaseEnded": false,
+   "leaseLeftS": 2.4,
+   "lastRun": {
+    "success": true,
+    "session": "S2_20261125T015156",
+    "request": "kill_me",
+    "run": "S2_20261125T015156_r1",
+    "stage": "running",
+    "state": "running",
+    "tickFrom": 1.0,
+    "tick": 79.0,
+    "rows": 1.0,
+    "dropped": 0.0,
+    "drained": false,
+    "replayed": false,
+    "faults": [],
+    "lockReads": 0.0,
+    "breaches": {}
+   },
+   "bound": {},
+   "rows": 3.0,
+   "dropped": 0.0,
+   "ticksGame": 79,
+   "recordDir": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\JawaBench\\tps",
+   "writerSession": "8e56aa843b0140afbfb74c31d62679f2",
+   "maxFrameTicks": 2,
+   "operation": {
+    "OperationId": "op_9e0c992a5ea44d4aaa97265886b63f94",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 38
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": false,
+    "timeSpeed": "Normal",
+    "tick": 80
+   }
+  },
+  "after": {
+   "success": true,
+   "session": "S2_20261125T015156",
+   "stage": "open",
+   "paused": true,
+   "tick": 227.0,
+   "driver": "prove-child:42008",
+   "taken": false,
+   "leaseEnded": true,
+   "leaseLeftS": -4.6,
+   "lastRun": {
+    "success": true,
+    "session": "S2_20261125T015156",
+    "request": "kill_me",
+    "run": "S2_20261125T015156_r1",
+    "stage": "closed",
+    "state": "cancelled",
+    "why": "cancelled",
+    "detail": "the driver's lease ended",
+    "tickFrom": 1.0,
+    "tick": 227.0,
+    "rows": 3.0,
+    "dropped": 0.0,
+    "drained": true,
+    "replayed": false,
+    "faults": [],
+    "lockReads": 0.0,
+    "breaches": {}
+   },
+   "bound": {},
+   "rows": 6.0,
+   "dropped": 0.0,
+   "ticksGame": 227,
+   "recordDir": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\JawaBench\\tps",
+   "writerSession": "8e56aa843b0140afbfb74c31d62679f2",
+   "maxFrameTicks": 2,
+   "operation": {
+    "OperationId": "op_8fc05b0aaeb2498bad54b7b36e397223",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 36
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 227
+   }
+  },
+  "rows": [
+   {
+    "seq": 14,
+    "v": 2,
+    "utc": "2026-11-25T01:51:56.965Z",
+    "mono": 476.052,
+    "session": "8e56aa843b0140afbfb74c31d62679f2",
+    "kind": "scene",
+    "sess": "S2_20261125T015156",
+    "run": "S2_20261125T015156_r1",
+    "n": 3,
+    "tick": 1,
+    "phase": "first",
+    "rec": "open",
+    "schema": "scene_trace_v1",
+    "mode": "PLAY",
+    "speed": "Normal",
+    "epoch": 1,
+    "maxTicks": 500000,
+    "tracks": [],
+    "acts": [],
+    "cond": {
+     "every": 1,
+     "mapId": 0,
+     "max_ticks": 500000,
+     "on_unknown": "stop",
+     "runKey": null,
+     "until": {
+      "cmp": [
+       {
+        "p": "game.tick"
+       },
+       ">=",
+       1000000000
+      ],
+      "id": "n0"
+     }
+    }
+   },
+   {
+    "seq": 16,
+    "v": 2,
+    "utc": "2026-11-25T01:52:00.960Z",
+    "mono": 480.047,
+    "session": "8e56aa843b0140afbfb74c31d62679f2",
+    "kind": "scene",
+    "sess": "S2_20261125T015156",
+    "run": "S2_20261125T015156_r1",
+    "n": 4,
+    "tick": 227,
+    "phase": "end_of_tick",
+    "rec": "end",
+    "state": "cancelled",
+    "why": "the driver's lease ended",
+    "hitTick": null,
+    "executed": 226,
+    "triggers": [],
+    "unknown": null,
+    "complete": true,
+    "cost": {
+     "evalMsMax": 2.76,
+     "evalMsTotal": 4.425,
+     "evals": 227,
+     "nodeEvals": 227,
+     "reads": 227
+    },
+    "costliest": {
+     "ms": 2.585,
+     "msMax": 1.428,
+     "node": "n0",
+     "value": "game.tick"
+    }
+   },
+   {
+    "seq": 18,
+    "v": 2,
+    "utc": "2026-11-25T01:52:00.991Z",
+    "mono": 480.079,
+    "session": "8e56aa843b0140afbfb74c31d62679f2",
+    "kind": "scene",
+    "sess": "S2_20261125T015156",
+    "run": "S2_20261125T015156_r1",
+    "n": 6,
+    "tick": 227,
+    "phase": "last",
+    "rec": "close",
+    "rows": 2,
+    "dropped": 0,
+    "drained": true,
+    "paused": true,
+    "tickAfter": 227,
+    "skipped": 0,
+    "randFaults": 0,
+    "actsNotDone": [],
+    "alloc": null,
+    "lockReads": 0,
+    "breaches": {}
+   }
+  ],
+  "taken": {
+   "success": true,
+   "session": "S2_20261125T015156",
+   "stage": "open",
+   "paused": true,
+   "tick": 227.0,
+   "driver": "prove:43328",
+   "taken": true,
+   "leaseEnded": false,
+   "leaseLeftS": 4.0,
+   "lastRun": {
+    "success": true,
+    "session": "S2_20261125T015156",
+    "request": "kill_me",
+    "run": "S2_20261125T015156_r1",
+    "stage": "closed",
+    "state": "cancelled",
+    "why": "cancelled",
+    "detail": "the driver's lease ended",
+    "tickFrom": 1.0,
+    "tick": 227.0,
+    "rows": 3.0,
+    "dropped": 0.0,
+    "drained": true,
+    "replayed": false,
+    "faults": [],
+    "lockReads": 0.0,
+    "breaches": {}
+   },
+   "bound": {},
+   "rows": 7.0,
+   "dropped": 0.0,
+   "ticksGame": 227,
+   "recordDir": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\JawaBench\\tps",
+   "writerSession": "8e56aa843b0140afbfb74c31d62679f2",
+   "maxFrameTicks": 2,
+   "operation": {
+    "OperationId": "op_d1fd63495a4e4378a119e06a231ee2a3",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 42
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 227
+   }
+  },
+  "ended": {
+   "success": true,
+   "session": "S2_20261125T015156",
+   "stage": "aborted",
+   "paused": true,
+   "tick": 227.0,
+   "driver": "prove:43328",
+   "taken": true,
+   "leaseEnded": false,
+   "leaseLeftS": 3.8,
+   "lastRun": {
+    "success": true,
+    "session": "S2_20261125T015156",
+    "request": "kill_me",
+    "run": "S2_20261125T015156_r1",
+    "stage": "closed",
+    "state": "cancelled",
+    "why": "cancelled",
+    "detail": "the driver's lease ended",
+    "tickFrom": 1.0,
+    "tick": 227.0,
+    "rows": 3.0,
+    "dropped": 0.0,
+    "drained": true,
+    "replayed": false,
+    "faults": [],
+    "lockReads": 0.0,
+    "breaches": {}
+   },
+   "bound": {},
+   "rows": 8.0,
+   "dropped": 0.0,
+   "ticksGame": 227,
+   "recordDir": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\JawaBench\\tps",
+   "writerSession": "8e56aa843b0140afbfb74c31d62679f2",
+   "maxFrameTicks": 2,
+   "operation": {
+    "OperationId": "op_16f11aa6ef1a48cab53fa198ae4bb756",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 36
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 227
+   }
+  }
+ },
+ "lock": {
+  "refusal": {
+   "success": false,
+   "refused": true,
+   "error": "REFUSED: RUN_ACTIVE. Run S3_20261125T015207_r1 is live, and jawa/spawn_pawn is not reviewed as a read. Nothing was changed. Wait for the run to close (jawa/run_until, jawa/scene_slice or jawa/safe_advance action=status), or cancel it, or send the act as an act of the run.",
+   "message": "REFUSED: RUN_ACTIVE. Run S3_20261125T015207_r1 is live, and jawa/spawn_pawn is not reviewed as a read. Nothing was changed. Wait for the run to close (jawa/run_until, jawa/scene_slice or jawa/safe_advance action=status), or cancel it, or send the act as an act of the run.",
+   "effectiveProfile": "test",
+   "compileProfile": "gm",
+   "operation": {
+    "OperationId": "op_8383dbcd4f084a54aa4ad9ffff9f2f95",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 17
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": false,
+    "timeSpeed": "Normal",
+    "tick": 265
+   }
+  },
+  "reply": {
+   "success": true,
+   "session": "S3_20261125T015207",
+   "request": "lock_1",
+   "run": "S3_20261125T015207_r1",
+   "stage": "closed",
+   "state": "hit",
+   "why": "hit",
+   "tickFrom": 227.0,
+   "tick": 627.0,
+   "hitTick": 627.0,
+   "rows": 4.0,
+   "dropped": 0.0,
+   "drained": true,
+   "replayed": false,
+   "faults": [],
+   "lockReads": 2.0,
+   "breaches": {
+    "jawa/spawn_pawn": 1.0
+   },
+   "acts": [
+    {
+     "id": "own_2",
+     "tool": "jawa/spawn_pawn",
+     "state": "done",
+     "reply": {
+      "success": true,
+      "message": "Spawned 1/1 Muffalo in faction (none).",
+      "spawnedCount": 1,
+      "failedCount": 0,
+      "substitutedCount": 0,
+      "pawns": [
+       {
+        "ok": true,
+        "id": "Muffalo9452",
+        "name": "Muffalo",
+        "kindRequested": "Muffalo",
+        "kindActual": "Muffalo",
+        "kindSubstituted": false,
+        "hostile": false,
+        "x": 114,
+        "z": 118,
+        "spawned": true,
+        "xenotypeApplied": true
+       }
+      ],
+      "ticksGame": 527
+     },
+     "tick": 527.0,
+     "frame": 31082.0,
+     "replayed": false,
+     "at": 300.0
+    }
+   ],
+   "values": {},
+   "couldNotLook": [],
+   "cost": {
+    "evals": 401.0,
+    "nodeEvals": 401.0,
+    "reads": 401.0,
+    "evalMsTotal": 3.12,
+    "evalMsMax": 0.165
+   },
+   "costliest": {
+    "node": "n0",
+    "value": "game.tick",
+    "ms": 2.155,
+    "msMax": 0.162
+   },
+   "ticksGame": 627,
+   "paused": true,
+   "recordDir": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\JawaBench\\tps",
+   "writerSession": "8e56aa843b0140afbfb74c31d62679f2",
+   "maxFrameTicks": 1,
+   "operation": {
+    "OperationId": "op_0a0e0785172d47c2aae5bfee60756c28",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 45
+   }
+  },
+  "rows": [
+   {
+    "seq": 24,
+    "v": 2,
+    "utc": "2026-11-25T01:52:07.437Z",
+    "mono": 486.525,
+    "session": "8e56aa843b0140afbfb74c31d62679f2",
+    "kind": "scene",
+    "sess": "S3_20261125T015207",
+    "run": "S3_20261125T015207_r1",
+    "n": 3,
+    "tick": 227,
+    "phase": "first",
+    "rec": "open",
+    "schema": "scene_trace_v1",
+    "mode": "PLAY",
+    "speed": "Normal",
+    "epoch": 1,
+    "maxTicks": 900,
+    "tracks": [],
+    "acts": [
+     {
+      "at": 300,
+      "name": "own_2"
+     }
+    ],
+    "cond": {
+     "every": 1,
+     "mapId": 0,
+     "max_ticks": 900,
+     "on_unknown": "stop",
+     "runKey": null,
+     "until": {
+      "cmp": [
+       {
+        "p": "game.tick"
+       },
+       ">=",
+       627
+      ],
+      "id": "n0"
+     }
+    }
+   },
+   {
+    "seq": 28,
+    "v": 2,
+    "utc": "2026-11-25T01:52:12.417Z",
+    "mono": 491.504,
+    "session": "8e56aa843b0140afbfb74c31d62679f2",
+    "kind": "scene",
+    "sess": "S3_20261125T015207",
+    "run": "S3_20261125T015207_r1",
+    "n": 6,
+    "tick": 527,
+    "phase": "end_of_tick",
+    "rec": "act",
+    "name": "own_2",
+    "ok": true,
+    "detail": "jawa/spawn_pawn"
+   },
+   {
+    "seq": 30,
+    "v": 2,
+    "utc": "2026-11-25T01:52:14.075Z",
+    "mono": 493.162,
+    "session": "8e56aa843b0140afbfb74c31d62679f2",
+    "kind": "scene",
+    "sess": "S3_20261125T015207",
+    "run": "S3_20261125T015207_r1",
+    "n": 7,
+    "tick": 627,
+    "phase": "end_of_tick",
+    "rec": "end",
+    "state": "hit",
+    "why": null,
+    "hitTick": 627,
+    "executed": 400,
+    "triggers": [
+     "cond"
+    ],
+    "unknown": null,
+    "complete": true,
+    "cost": {
+     "evalMsMax": 0.165,
+     "evalMsTotal": 3.12,
+     "evals": 401,
+     "nodeEvals": 401,
+     "reads": 401
+    },
+    "costliest": {
+     "ms": 2.155,
+     "msMax": 0.162,
+     "node": "n0",
+     "value": "game.tick"
+    }
+   },
+   {
+    "seq": 31,
+    "v": 2,
+    "utc": "2026-11-25T01:52:14.108Z",
+    "mono": 493.195,
+    "session": "8e56aa843b0140afbfb74c31d62679f2",
+    "kind": "scene",
+    "sess": "S3_20261125T015207",
+    "run": "S3_20261125T015207_r1",
+    "n": 8,
+    "tick": 627,
+    "phase": "last",
+    "rec": "close",
+    "rows": 3,
+    "dropped": 0,
+    "drained": true,
+    "paused": true,
+    "tickAfter": 627,
+    "skipped": 0,
+    "randFaults": 0,
+    "actsNotDone": [],
+    "alloc": null,
+    "lockReads": 2,
+    "breaches": {
+     "jawa/spawn_pawn": 1
+    }
+   }
+  ],
+  "counts": [
+   0,
+   0,
+   1
+  ]
+ },
+ "step": {
+  "advance": {
+   "success": true,
+   "state": "hit",
+   "requested": 600,
+   "executed": 137,
+   "tickFrom": 627,
+   "tickTo": 764,
+   "triggers": [],
+   "triggersTotal": 0,
+   "wallS": 0.22,
+   "frames": 3,
+   "chunk": 60,
+   "frameBudgetMs": 40.0,
+   "perFrameTickCap": 0,
+   "stepMs": 169.439,
+   "maxFrameMs": 86.666,
+   "scene": {
+    "success": true,
+    "run": "s20261125T015214_1",
+    "stage": "closed",
+    "state": "hit",
+    "hitTick": 764,
+    "endTick": 764,
+    "rows": 3,
+    "dropped": 0,
+    "paused": true,
+    "speed": "Paused",
+    "ticksGame": 764,
+    "recordDir": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\JawaBench\\tps",
+    "session": "8e56aa843b0140afbfb74c31d62679f2",
+    "lockReads": 0,
+    "breaches": {},
+    "costliest": {
+     "node": "n0",
+     "value": "game.tick",
+     "ms": 0.403,
+     "msMax": 0.006
+    },
+    "result": {
+     "state": "hit",
+     "hitTick": 764.0,
+     "values": [
+      {
+       "id": "n0",
+       "v": true,
+       "status": "ok",
+       "pv": 764.0
+      }
+     ],
+     "atArm": [
+      {
+       "id": "n0",
+       "v": false,
+       "status": "ok",
+       "pv": 627.0
+      }
+     ],
+     "trueAtArm": false,
+     "executed": 137.0,
+     "tickFrom": 627.0,
+     "tickTo": 764.0,
+     "epoch": 1.0,
+     "triggers": [
+      "cond"
+     ],
+     "coverage": {
+      "every": 1.0,
+      "evals": 138.0,
+      "resolutionTicks": 1.0,
+      "gaps": [],
+      "complete": true
+     },
+     "cost": {
+      "evals": 138.0,
+      "nodeEvals": 138.0,
+      "reads": 138.0,
+      "evalMsTotal": 0.652,
+      "evalMsMax": 0.016
+     },
+     "watch": [],
+     "watchDropped": 0.0,
+     "watchers": [],
+     "sample": [],
+     "sampleDropped": 0.0,
+     "mutations": [],
+     "canonical": {
+      "mapId": 0.0,
+      "max_ticks": 600.0,
+      "every": 1.0,
+      "on_unknown": "stop",
+      "until": {
+       "id": "n0",
+       "cmp": [
+        {
+         "p": "game.tick"
+        },
+        ">=",
+        764.0
+       ]
+      }
+     }
+    },
+    "maxFrameTicks": 60,
+    "endFrameTicks": 17
+   },
+   "ticksGame": 764,
+   "operation": {
+    "OperationId": "op_b5a9c8296103458ca00f9d5d13565d94",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 366
+   }
+  },
+  "scenes": {
+   "success": true,
+   "overall": "PASS",
+   "rows": [
+    {
+     "scene": "storeroom_bomb_pit",
+     "check": "OUTSIDE haulables -3,-5,7,2",
+     "status": "PASS",
+     "measured": "2",
+     "expected": ">= 1",
+     "source": "outside"
+    },
+    {
+     "scene": "storeroom_bomb_pit",
+     "check": "VERDICT",
+     "status": "PASS",
+     "measured": "east=True [type=launch tick=765 exp=9509 thing=Human9489 from=13,12 to=15,12 planned=3 cells=2 stop=Wall impact=3.860753 otherImpact=0 door=False mass=60.74998 hoseDropped=False faction=PlayerColony at 15,12 stunned=True] south=True [pS 12,11->12,8 (3 cells)] goods=True [unmoved= tooWeak=g_shelf2,g_shelf3,g_shelf4,g_shelf5 flown=7 flat= spin=True rebounds=4 despawnSpawnPairs=0] container=True [con...",
+     "expected": "PASS",
+     "source": "scene"
+    }
+   ],
+   "scenes": [
+    {
+     "scene": "storeroom_bomb_pit",
+     "origin": "12,12",
+     "ticksWanted": 90,
+     "ticksStepped": 90,
+     "frames": 8,
+     "stageMs": 165,
+     "tickMs": 383,
+     "judgeMs": 18,
+     "untilRun": "s20261125T015216_3",
+     "untilState": "hit",
+     "untilHitTick": 854
+    }
+   ],
+   "suiteBegin": "ran: settings at defaults (48 player values kept), journal cleared",
+   "problems": [],
+   "wallS": 0.73,
+   "ticksGame": 854,
+   "operation": {
+    "OperationId": "op_9cfd55a315794b318680b2d84c09c7f7",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 750
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 854
+   }
+  }
+ },
+ "hooks": {
+  "success": true,
+  "typeName": "Verse.TickManager",
+  "methodCount": 2,
+  "methods": [
+   {
+    "method": "DoSingleTick",
+    "declaringType": "Verse.TickManager",
+    "prefixCount": 5,
+    "postfixCount": 3,
+    "transpilerCount": 0,
+    "finalizerCount": 2,
+    "prefixes": [
+     {
+      "owner": "OskarPotocki.VEF",
+      "priority": 400,
+      "patchMethod": "VEF.Maps.VanillaExpandedFramework_DoSingleTick_Patch.Prefix",
+      "patchAssembly": "VEF"
+     },
+     {
+      "owner": "mandrake.rm.flowworks",
+      "priority": 400,
+      "patchMethod": "RimMandrake.FlowWorks.Hose.HoseTickWatch.Prefix",
+      "patchAssembly": "RimMandrakeFlowWorks"
+     },
+     {
+      "owner": "mandrake.rm.hugethings",
+      "priority": 400,
+      "patchMethod": "RimMandrake.HugeThings.Patch_TrunkDoorReloadObservation.Prefix",
+      "patchAssembly": "RM_HugeThings"
+     },
+     {
+      "owner": "mandrake.jawabench.tps.attr",
+      "priority": 400,
+      "patchMethod": "JawaBench.BridgeTools.JawaBenchTpsProfiler.TickPre",
+      "patchAssembly": "JawaBench.BridgeTools"
+     },
+     {
+      "owner": "mandrake.jawabench.vitals",
+      "priority": 400,
+      "patchMethod": "JawaBench.BridgeTools.JawaBenchVitals.TickPre",
+      "patchAssembly": "JawaBench.BridgeTools"
+     }
+    ],
+    "postfixes": [
+     {
+      "owner": "OskarPotocki.VEF",
+      "priority": 400,
+      "patchMethod": "VEF.Maps.VanillaExpandedFramework_DoSingleTick_Patch.Postfix",
+      "patchAssembly": "VEF"
+     },
+     {
+      "owner": "mandrake.rm.flowworks",
+      "priority": 400,
+      "patchMethod": "RimMandrake.FlowWorks.Hose.HoseTickWatch.Postfix",
+      "patchAssembly": "RimMandrakeFlowWorks"
+     },
+     {
+      "owner": "mandrake.jawabench.vitals",
+      "priority": 400,
+      "patchMethod": "JawaBench.BridgeTools.JawaBenchVitals.TickPost",
+      "patchAssembly": "JawaBench.BridgeTools"
+     }
+    ],
+    "transpilers": [],
+    "finalizers": [
+     {
+      "owner": "mandrake.jawabench.tps.attr",
+      "priority": 400,
+      "patchMethod": "JawaBench.BridgeTools.JawaBenchTpsProfiler.TickFin",
+      "patchAssembly": "JawaBench.BridgeTools"
+     },
+     {
+      "owner": "mandrake.jawabench.vitals",
+      "priority": 400,
+      "patchMethod": "JawaBench.BridgeTools.JawaBenchVitals.TickFin",
+      "patchAssembly": "JawaBench.BridgeTools"
+     }
+    ]
+   },
+   {
+    "method": "TickManagerUpdate",
+    "declaringType": "Verse.TickManager",
+    "prefixCount": 1,
+    "postfixCount": 1,
+    "transpilerCount": 0,
+    "finalizerCount": 1,
+    "prefixes": [
+     {
+      "owner": "mandrake.jawabench.tps",
+      "priority": 400,
+      "patchMethod": "JawaBench.BridgeTools.JawaBenchTpsSampler.TmuPrefix",
+      "patchAssembly": "JawaBench.BridgeTools"
+     }
+    ],
+    "postfixes": [
+     {
+      "owner": "mandrake.jawabench.tps",
+      "priority": 400,
+      "patchMethod": "JawaBench.BridgeTools.JawaBenchTpsSampler.TmuPostfix",
+      "patchAssembly": "JawaBench.BridgeTools"
+     }
+    ],
+    "transpilers": [],
+    "finalizers": [
+     {
+      "owner": "mandrake.jawabench.tps",
+      "priority": 400,
+      "patchMethod": "JawaBench.BridgeTools.JawaBenchTpsSampler.TmuFinalizer",
+      "patchAssembly": "JawaBench.BridgeTools"
+     }
+    ]
+   }
+  ],
+  "ticksGame": 854,
+  "operation": {
+   "OperationId": "op_3b2082abe97840baa9976e27a482510f",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 22
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 854
+  }
+ }
+}

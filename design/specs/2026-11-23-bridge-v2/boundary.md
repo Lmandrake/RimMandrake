@@ -104,3 +104,9 @@ A missing, unreadable or old-format heartbeat is COULD NOT LOOK and adds one lin
 admission checks the disk reading before connecting and before starting a run, and refuses a game read as broken
 or gone. A broken-game stop goes through `game_instance.py stop --broken` after two independent readings.
 The [watcher boundary](../2026-11-23-bridge-v2-watcher/boundary.md) names the tests, limits and stop evidence.
+
+## LIVE READINGS
+
+| proof | reading | evidence |
+|---|---|---|
+| `prove_run_life_cycle.py` | 3 of 3 rows PASS | `design/specs/2026-11-23-bridge-v2-life-cycle/live/` (ArchSmall, tier `explosiveknockback_visit`, companion and Explosive Knockback PROOF build from `ac24cfedbb`, 2026-11-24) |

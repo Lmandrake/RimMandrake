@@ -4,7 +4,8 @@ design/specs/2026-11-23-bridge-v2-life-cycle/boundary.md. Item RIMMANDRAKE_HARDE
 
     python.exe prove_run_life_cycle.py [--out DIR]   on a TEST-profile game, a scratch map (it makes its own quicktest map, and spawns
                                                      and leaves one animal there; no save is read or written). Row 3 needs the
-                                                     PROOF build of Explosive Knockback for jawa/run_scenes
+                                                     PROOF build of Explosive Knockback for jawa/run_scenes, on the
+                                                     explosiveknockback_visit tier: its scenes stage LWM Deep Storage lockers
     python3 prove_run_life_cycle.py --selfcheck      the judges on hand-made readings, good and planted; no game
 
 Three rows:

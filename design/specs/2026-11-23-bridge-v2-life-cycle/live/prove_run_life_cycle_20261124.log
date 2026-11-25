@@ -1,0 +1,6 @@
+ArchSmall: held for `python.exe D:\Luke\dev\RimMandrake\src\RimMandrake\bridgetools\prove_run_life_cycle.py --out D:\ClaudeWork\rimmandrake\proofs\run_life_cycle_20261124T174121\run2` (gen 94)
+1 a killed driver                            PASS       lease ended True, paused True, tick 227 then 227; trace closed; taken True; session aborted
+2 the run lock                               PASS       refusal: {"success": false, "refused": true, "error": "REFUSED: RUN_ACTIVE. Run S3_20261125T015207_r1 is live, and jawa/spawn_pawn is not reviewed as a read. Nothing was | animals 0, after it 0, after the run's own act 1; read let through True; close breaches {'jawa/spawn_pawn': 1} reads 2
+3 the step loops stop on the tick            PASS       safe_advance True: asked +137: hit, executed 137, tickTo +137, read +137 then +137, run closed | run_scenes True: asked +90: hit, stepped 90, hit +90, read +90
+prove_run_life_cycle: 3 of 3 rows PASS
+[bridge split] 23.8 s wall: load 0.0 / ticks 0.4 / reads 0.7 / other 2.7 / outside calls 20.0 s
