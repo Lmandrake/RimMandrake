@@ -9,6 +9,7 @@ fleet_mods.receipts choosing between a detached and a Relentless run of the same
 import contextlib
 import io
 import os
+import re
 import sys
 import tempfile
 from types import SimpleNamespace as NS
@@ -389,6 +390,40 @@ check("real books: every routed first-touch row is on a list", real_books_covers
 real_certs = Q.read_certified(os.path.join(Q.REPO, "design", "concepts"))
 check("real books: no listed first-touch row is one his lock already certified", real_certs is not None and not (listed & real_certs))
 print("real books: %d first touches listed, %d awaiting their Designer pass" % (len(listed), len(n["awaiting_designer"])))
+
+
+# RIMMANDRAKE_SHOW_ONLY_REAL_ASKS_UNDER_NEEDS_MANDRAKE_SEVEN_WAIT_A_PHASE: the page listed 9 under "Needs Mandrake"; 7 of them
+# were full-mod-list tickets blocked "until the owner opens the integration phase". No act of his today clears one of those.
+PHASE_WHY = ("the owner opens the integration phase (about version 0.3.0 of every mod): this ticket's work is only for the full "
+             "mod list, retired 2026-11-24 until then")
+
+
+def phase_item(why=PHASE_WHY, needs="owner", kind="owner"):
+    x = it(needs, blocked=True, kind=kind, title="Full-list work")
+    x.blocked_reason, x.id = why, "X"
+    return x
+
+
+real_ask = it("owner", title="Fly the flyer")
+ph = Q.needs_you({"PH_ONE": phase_item(), "PH_TWO": phase_item(needs="bridge"), "REAL_ONE": real_ask}, {}, {}, evs=[])
+check("an item that waits for the integration phase is not under Needs Mandrake",
+      [x["item"] for x in ph["lines"]] == ["REAL_ONE"] and ph["count"] == 1)
+check("each phase-waiting item is listed on its own", [x["item"] for x in ph.get("phase", [])] == ["PH_ONE", "PH_TWO"])
+other = Q.needs_you({"BLK": phase_item(why="the owner picks the art style first")}, {}, {}, evs=[])
+check("an owner block that names no phase stays his, and its block reason is the line",
+      [x["item"] for x in other["lines"]] == ["BLK"] and other["lines"][0]["q"] == "the owner picks the art style first"
+      and other.get("phase") == [])
+check("a block on a kind other than owner is not read for the phase words",
+      not Q.phase_wait(phase_item(kind="item")))
+md = Q.one_view([{"item": "REAL_ONE", "q": "Sit for the flight test, 20 min"}], [], None, phase=[{"item": "PH_ONE", "q": "x"}, {"item": "PH_TWO", "q": "y"}])
+check("the view shows 'Waits for the integration phase (2)'", "Waits for the integration phase (2)" in md)
+check("the view says so for zero phase items too, and nothing else changed when none is given",
+      "Waits for the integration phase" not in Q.one_view([], [], None))
+check("a line that states no minutes says so", "minutes: not stated" in Q.one_view([{"item": "A", "q": "Look at it"}], [], None))
+check("a line that states minutes does not", "minutes: not stated" not in md)
+check("repo questions file: every real owner ask on the live books states its minutes",
+      all(re.search(r"\d+ ?min", q.get(i, "")) for i in ("FLYERFRAMES_PROVE_JOINT_SESSION",
+                                                           "RIMMANDRAKE_HEAR_DROID_NIGHT_QUIZ_THEN_AUDITION_CLAUDE_IS_DEAF")))
 
 print("RESULT %s (%d fail)" % ("GREEN" if not FAILS else "RED", len(FAILS)))
 sys.exit(1 if FAILS else 0)

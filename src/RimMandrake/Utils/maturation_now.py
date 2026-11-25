@@ -472,8 +472,9 @@ def live_facts(mods):
             import no_home  # noqa: E402
             now = time_now()
             home = no_home.reading(evs, world.items, out["records"], now)
-            out["view"] = {"his": out["questions"], "ours": owner_queue.ours(n, world.items, now), "home": home}
-            failed = owner_queue.write_view(out["view"]["his"], out["view"]["ours"], home, now)
+            out["view"] = {"his": out["questions"], "ours": owner_queue.ours(n, world.items, now), "home": home,
+                           "phase": n["phase"]}
+            failed = owner_queue.write_view(out["view"]["his"], out["view"]["ours"], home, now, phase=n["phase"])
             if failed:
                 out["errors"].append("the owner's one view was not written: %s" % failed)
         except Exception as e:      # noqa: BLE001  no view: the page falls back to its own lists, named
@@ -1549,7 +1550,7 @@ def view_block(d, fmt):
     if not v:
         return None
     import owner_queue  # noqa: E402
-    block = owner_queue.one_view(v["his"], v["ours"], v["home"], fmt=fmt)
+    block = owner_queue.one_view(v["his"], v["ours"], v["home"], fmt=fmt, phase=v.get("phase"))
     j = d["needs"].get("journal") or []
     if fmt == "html":
         return ('<h2 style="color:%s">Needs Mandrake (%d)</h2>%s' % (ALERT, len(v["his"]), block)
@@ -1624,6 +1625,12 @@ def conductor_short(lines, mods=()):
     return out
 
 
+def phase_line(d):
+    """"Waits for the integration phase (N)": the items no act of his clears today, on their own line ("" when the view has no reading)."""
+    ph = (d.get("view") or {}).get("phase")
+    return "" if ph is None else "Waits for the integration phase (%d)" % len(ph)
+
+
 def needs_panel(d):
     """Both "Needs" lists, one line of HTML: his first and largest, the Conductor's under it in a smaller font."""
     his, co = his_rows(d), conductor_short(d["needs"].get("conductor") or [], d["mods"])
@@ -1643,6 +1650,8 @@ def needs_panel(d):
     elif not his:
         out.append('<div style="font-size:14px;color:%s">Nothing waits on you.</div>' % DIM)
     foot = []
+    if phase_line(d):
+        foot.append(phase_line(d))
     if v:
         foot.append("%d you answered; the next move is ours" % len(v["ours"]))
         h = v.get("home")
@@ -2227,6 +2236,8 @@ def phone_overview(d, now):
     for t, act, mins, _iid in his or [("Nothing waits on you.", "", "", "")]:
         tag = ", ".join(x for x in (act, mins) if x)
         P.text(t + (" [%s]" % tag if tag else ""), "body", bullet="•", gap=12)
+    if phase_line(d):
+        P.text(phase_line(d), "small", fill=DIM, gap=8)
     P.text("Needs the Conductor (%d)" % len(co), "small", True, fill=DIM, gap=6)
     for x in co or ["Nothing."]:
         P.text(x, "small", fill=DIM, bullet="•", gap=4)

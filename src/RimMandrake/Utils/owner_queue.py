@@ -56,6 +56,10 @@ from rimflow import priority  # noqa: E402  the ledger's block-release rule
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 QUESTIONS = os.path.join(REPO, "infrastructure", "state", "owner_questions.json")
 HIS_HOLDS = ("owner_call",)
+# An item blocked until the integration phase (about version 0.3.0 of every mod) is full-mod-list work: full-list testing is
+# retired until then (CLAUDE.md §Mod development runs on small lists), so no act of his today clears it.
+# Danger: seven such items sat under "Needs Mandrake" as asks (2026-11-25).
+PHASE_RX = re.compile(r"integration phase|only for the full mod list", re.I)
 ACCEPTED_RESULT = re.compile(r"result\.(.+)\.json$")   # designer_stage.close_run's rename; bare result.json is not yet read
 PASSES_TTL = 30     # s: the board asks once per item per refresh; a long-lived board must still see a new result
 _passes_memo = {}
@@ -72,6 +76,12 @@ def routed(it):
     """The ledger sends it to him."""
     return bool(it is not None and it.open and (it.needs == "owner" or
                                                 (getattr(it, "blocked", False) and getattr(it, "blocked_kind", None) == "owner")))
+
+
+def phase_wait(it):
+    """True when the item is blocked on the owner only until the integration phase opens: it waits for a phase, not for him."""
+    return bool(getattr(it, "blocked", False) and getattr(it, "blocked_kind", None) == "owner"
+                and PHASE_RX.search(str(getattr(it, "blocked_reason", None) or "")))
 
 
 def tooling_hold(rs):
@@ -279,7 +289,7 @@ def is_his(it, rs, evs=None, turns=None, passes=None, certs=None, items=None, no
     if turns and getattr(it, "id", None) in turns:
         return True
     return routed(it) and tooling_hold(rs) is None and not answered(it, evs) and not awaiting_designer(it, passes) \
-        and not certified(it, certs) and not later(it, items, now)
+        and not certified(it, certs) and not later(it, items, now) and not phase_wait(it)
 
 
 def needs_you(items, rel, questions=None, evs=None, turns=None, passes=None, certs=None, now=None):
@@ -288,7 +298,9 @@ def needs_you(items, rel, questions=None, evs=None, turns=None, passes=None, cer
     item's own question, and a turn whose item the ledger does not hold is its own line."""
     questions = load_questions() if questions is None else questions
     turns = turns or {}
-    line = lambda iid, it: {"item": iid, "q": (turns.get(iid) or questions.get(iid) or it.title or iid).strip()}  # noqa: E731
+    def line(iid, it):      # his own plain line, else the owner block's reason (the act it waits for), else the title
+        why = str(getattr(it, "blocked_reason", None) or "") if getattr(it, "blocked_kind", None) == "owner" else ""
+        return {"item": iid, "q": (turns.get(iid) or questions.get(iid) or why or it.title or iid).strip()}
     lines = [line(iid, it) for iid, it in sorted(items.items()) if is_his(it, rel.get(iid), evs, passes=passes,
              certs=certs, items=items, now=now) or iid in turns]
     lines += [{"item": iid, "q": q} for iid, q in sorted(turns.items()) if iid not in items]
@@ -302,10 +314,12 @@ def needs_you(items, rel, questions=None, evs=None, turns=None, passes=None, cer
               and certified(it, certs)]
     ahead = [line(iid, it) for iid, it in sorted(items.items()) if iid not in turns and later(it, items, now)
              and is_his(it, rel.get(iid), evs, passes=passes, certs=certs, items={}, now=float("inf"))]
+    phased = [line(iid, it) for iid, it in sorted(items.items()) if iid not in turns and routed(it)
+              and tooling_hold(rel.get(iid)) is None and not answered(it, evs) and phase_wait(it)]
     text = "" if not lines else "%d %s: %s" % (len(lines), "thing" if len(lines) == 1 else "things",
                                                " · ".join(x["q"] for x in lines))
     return {"count": len(lines), "lines": lines, "text": text, "topics": fold(lines), "answered": gone,
-            "awaiting_designer": waiting, "certified": sealed, "later": ahead}
+            "awaiting_designer": waiting, "certified": sealed, "later": ahead, "phase": phased}
 
 
 # ---- the owner's one view (design/specs/2026-11-23-owner-one-view/boundary.md) ------------------------------------
@@ -359,26 +373,40 @@ def home_line(home):
     return "not filed anywhere: %s%s" % (UNM if n is None else n, (" (%s)" % tail) if tail else "")
 
 
-def one_view(his, ours_rows, home, fmt="md"):
+PHASE_TITLE = "Waits for the integration phase"
+MIN_RX = re.compile(r"\b\d{1,3}(?:-\d{1,3})? ?min(?:ute)?s?\b", re.I)
+
+
+def minutes_note(q):
+    """A line of his asks one act and says its minutes; one that does not say them says so ("" when it does), never a guess."""
+    return "" if MIN_RX.search(str(q or "")) else " (minutes: not stated)"
+
+
+def one_view(his, ours_rows, home, fmt="md", phase=None):
     """-> the block MATURATION_NOW shows (one-view-shows-his-ours-and-the-count): his rows, our rows oldest first with their
     age, and the count of needs not filed anywhere beside them. fmt "md": Markdown lines joined by newlines; "html": one
     line of HTML with no blank line in it (Typora)."""
     import html as H
     his, ours_rows = list(his or []), list(ours_rows or [])
+    pn = None if phase is None else len(phase)
     hl = home_line(home)
     if fmt == "html":
         e = H.escape
-        rows = "".join("<div>• %s <span style=\"color:#98a1af;font-size:11px\">%s</span></div>" % (e(x["q"][:130]), e(x["item"]))  # cut-ok: compact dashboard display of the saved question
+        rows = "".join("<div>• %s <span style=\"color:#98a1af;font-size:11px\">%s</span>%s</div>" % (e(x["q"][:130]), e(x["item"]), e(minutes_note(x["q"])))  # cut-ok: compact dashboard display of the saved question
                        for x in his) or "<div>Nothing waits on you.</div>"
         tail = ""
         if ours_rows:
             tail = ('<div style="color:#98a1af;font-size:12px;margin-top:6px">%d you answered; the next move is ours, '
                     'oldest first: %s</div>' % (len(ours_rows), e(", ".join("%s (%s)" % (x["item"], x.get("age") or UNM)
                                                                            for x in ours_rows))))
+        if pn is not None:
+            tail += '<div style="color:#98a1af;font-size:12px;margin-top:6px">%s (%d): no act of yours clears these today</div>' % (PHASE_TITLE, pn)
         return ('<div style="font-weight:bold">NEEDS YOU, %d</div>%s%s<div style="font-size:12px;margin-top:6px">%s</div>'
                 % (len(his), rows, tail, e(hl)))
     out = ["**Needs you (%d)** · %s" % (len(his), hl), ""]
-    out += ["- %s (`%s`)" % (_clip(x["q"], 200), x["item"]) for x in his] or ["- Nothing waits on you."]
+    out += ["- %s (`%s`)%s" % (_clip(x["q"], 200), x["item"], minutes_note(x["q"])) for x in his] or ["- Nothing waits on you."]
+    if pn is not None:
+        out += ["", "**%s (%d)**: no act of yours clears these today" % (PHASE_TITLE, pn)]
     if ours_rows:
         out += ["", "**You answered; the next move is ours (%d, oldest first)**" % len(ours_rows), ""]
         out += ["- %s (`%s`), %s" % (_clip(x["q"], 160), x["item"], x.get("age") or UNM)
@@ -417,7 +445,7 @@ def test_refusal(path=None):
     return "a test process does not write the shared view (test_process.under_test)" if test_process.under_test() else None
 
 
-def write_view(his, ours_rows, home, now, path=None):
+def write_view(his, ours_rows, home, now, path=None, phase=None):
     """The view Maturation Now built (its live promise reads this file). A write that fails is returned, not raised."""
     refused = test_refusal(path)
     if refused:
@@ -425,7 +453,7 @@ def write_view(his, ours_rows, home, now, path=None):
     path = path or view_path()
     try:
         with open(path + ".tmp", "w", encoding="utf-8") as f:
-            json.dump({"at": now, "his": his, "ours": ours_rows, "home": home}, f, indent=1, ensure_ascii=False)
+            json.dump({"at": now, "his": his, "ours": ours_rows, "home": home, "phase": phase}, f, indent=1, ensure_ascii=False)
         os.replace(path + ".tmp", path)
         return None
     except OSError as e:
@@ -484,6 +512,9 @@ def main():
     print("%d first touches certified by his own version lock (close them)" % len(n["certified"]))
     for x in n["certified"]:
         print("certified\t%s" % x["item"])
+    print("%d wait for the integration phase (no act of his clears them today)" % len(n["phase"]))
+    for x in n["phase"]:
+        print("phase\t%s" % x["item"])
     print("%d his later (a date ahead, or behind an unmet prerequisite)" % len(n["later"]))
     for x in n["later"]:
         print("later\t%s\t%s" % (x["item"], x["q"]))
