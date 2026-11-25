@@ -45,6 +45,10 @@ Any non-canonical game will do; the test lane's games are disposable.
              after) artboard_stage killHostiles=true and mod_settings_field set refuse by the profile
   SETTLE     the same item (5): world_settlements_import apply clearExisting with a row on the player's mapped tile
              refuses "REFUSING before clearing" and the settlement count is unchanged (python.exe: the game reads the CSV)
+  PEN2       PEN_ANIMALS_UNSTICK_STATUES_LEARN_TO_WALK A2: the newest RM_pyre_review_*.rws in <data root>/fixtures is
+             copied in as bundle_pen2_review and loaded (tier pyrelands); human_review.py's --release-pens call releases
+             every pen specimen; after 600 ticks at least half have moved and each is inside its pen; its --pin-pens
+             call brings every one home and restores the facing it was released with
   KEEPER     KEEPER_SAVES_HARDEN_WRONG_SLOT_WRITES A1: save_guard.snapshot on this game's real Saves folder hashes every
              keeper and holds a store copy of each; a save_base through the guard writes a new save, verified, with no
              keeper changed (the new save is deleted after: it is the proof's own)
@@ -59,7 +63,7 @@ import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CLAUSES = ("EVIDENCE", "TPS", "NORTHSTAR", "STATICCALL", "TILECACHE", "PROFILE", "PEN", "EXPLAIN", "HOOKS", "AWARE",
-           "EPOCH", "FRAME", "KEEPER", "ORIGIN", "WILDBLOCK", "PLAYTEST", "CAMPAIGN", "SETTLE")
+           "EPOCH", "FRAME", "KEEPER", "ORIGIN", "WILDBLOCK", "PLAYTEST", "CAMPAIGN", "SETTLE", "PEN2")
 
 
 def _ok(r):
@@ -345,6 +349,27 @@ def v_SETTLE(d):
     if d.get("after") != d.get("before"):
         f.append("settlements %s -> %s" % (d.get("before"), d.get("after")))
     return (1 if f else 0), "; ".join(f) or "refused before clearing; %s settlements before and after" % d.get("before")
+
+
+def v_PEN2(d):
+    if d.get("why"):
+        return 2, d["why"]
+    if not d.get("selected"):
+        return 2, "the review layout's pen rects selected no animal on %s (the save's layout differs)" % d.get("save")
+    f = []
+    if d.get("released") != d.get("selected") or d.get("notReleased"):
+        f.append("released %s of %s (%s still Wait)" % (d.get("released"), d.get("selected"), d.get("notReleased")))
+    ids, moved = d.get("ids") or [], d.get("moved") or []
+    if len(moved) * 2 < len(ids):
+        f.append("only %d of %d moved in 600 ticks" % (len(moved), len(ids)))
+    if d.get("outside"):
+        f.append("outside their pen: %s" % d["outside"][:5])
+    if d.get("facingWrong"):
+        f.append("facing not restored: %s" % d["facingWrong"][:5])
+    if (d.get("returnedHome") or 0) < len(ids):
+        f.append("returned home %s of %d" % (d.get("returnedHome"), len(ids)))
+    return (1 if f else 0), "; ".join(f) or "%d released, %d moved, all inside their pens, all home with their facing (%s)" % (
+        len(ids), len(moved), d.get("save"))
 
 
 VERDICTS = dict((c, globals()["v_" + c]) for c in CLAUSES)
@@ -930,6 +955,59 @@ def g_SETTLE(L):
     refused, msg = _refusal(r)
     after = L.call("jawa/world_objects_get", limit=1).get("settlements")
     return {"refused": refused, "msg": msg, "before": before, "after": after, "row": [one[0], player[0]["tile"]]}
+
+
+def _bare(i):
+    i = str(i or "")
+    return i[6:] if i.startswith("Thing_") else i
+
+
+def g_PEN2(L):
+    import glob
+    import shutil
+    import rmpaths
+    from game_paths import SAVES
+    fx = rmpaths.rm_win("fixtures") if os.name == "nt" else rmpaths.rm_str("fixtures")
+    keep = sorted(glob.glob(os.path.join(fx, "RM_pyre_review_*.rws")))
+    if not keep:
+        return {"why": "no RM_pyre_review_*.rws fixture in %s" % fx}
+    name = "bundle_pen2_review"
+    shutil.copyfile(keep[-1], os.path.join(SAVES, name + ".rws"))
+    r = L.call("rimworld/load_game_ready", saveName=name, readiness="playable", timeoutMs=900000, pauseIfNeeded=True)
+    if not _ok(r):
+        return {"why": "the review save did not load: %s" % json.dumps(r)[:200]}
+    sys.path.insert(0, os.path.join(HERE, "..", "..", "..", "Pyrelands"))
+    import human_review as HR
+    S = HR.station_list()
+    rects = [HR.footprint(s) for s in HR.pen_stations(S)]
+    rstr = HR.pen_rects(S)
+    before = dict((_bare(p.get("pawn")), p) for p in L.call("jawa/pen_pin", rects=rstr, restore=False).get("pawns") or [])
+    rel = L.call("jawa/pen_release", rects=rstr)                 # exactly human_review.py --release-pens (Review.pens)
+    L.call("rimworld/step_game_ticks", ticks=600, pauseFirst=True)
+    now = dict((_bare(p.get("id")), p) for p in L.call("jawa/list_pawns").get("pawns") or [])
+    pin = L.call("jawa/pen_pin", rects=rstr, restore=True)       # exactly human_review.py --pin-pens
+    pinned = dict((_bare(p.get("pawn")), p) for p in pin.get("pawns") or [])
+
+    def rect_of(x, z):
+        for (rx, rz, w, h) in rects:
+            if rx <= x < rx + w and rz <= z < rz + h:
+                return (rx, rz, w, h)
+        return None
+
+    ids = sorted(before)
+    moved, outside, facing = [], [], []
+    for i in ids:
+        b, n = before[i], now.get(i) or {}
+        home = rect_of(b.get("x"), b.get("z"))
+        if (n.get("x"), n.get("z")) != (b.get("x"), b.get("z")):
+            moved.append(i)
+        if home is None or rect_of(n.get("x"), n.get("z")) != home:
+            outside.append("%s at %s,%s" % (i, n.get("x"), n.get("z")))
+        if str((pinned.get(i) or {}).get("rotation")) != str(b.get("rotation")):
+            facing.append("%s: %s -> %s" % (i, b.get("rotation"), (pinned.get(i) or {}).get("rotation")))
+    return {"save": os.path.basename(keep[-1]), "selected": rel.get("selected"), "released": rel.get("released"),
+            "notReleased": rel.get("notReleased"), "ids": ids, "moved": moved, "outside": outside,
+            "facingWrong": facing, "returnedHome": pin.get("returnedHome")}
 
 
 def g_ORIGIN_cold(Session):

@@ -137,5 +137,13 @@ check("SETTLE refused before clearing, nothing removed", "SETTLE", st, 0)
 check("SETTLE cleared the roster", "SETTLE", dict(st, refused=False, msg="", after=1), 1)
 check("SETTLE refused but removed some", "SETTLE", dict(st, after=39), 1)
 check("SETTLE the import refused a row instead", "SETTLE", dict(st, msg="REFUSING the whole import: 1 of 1"), 2)
+pn = {"selected": 3, "released": 3, "notReleased": 0, "ids": ["a", "b", "c"], "moved": ["a", "b"], "outside": [],
+      "facingWrong": [], "returnedHome": 3, "save": "RM_pyre_review_x"}
+check("PEN2 released, moved, stayed, re-pinned", "PEN2", pn, 0)
+check("PEN2 nobody moved (statues)", "PEN2", dict(pn, moved=[]), 1)
+check("PEN2 one walked out of its pen", "PEN2", dict(pn, outside=["b"]), 1)
+check("PEN2 a facing not restored", "PEN2", dict(pn, facingWrong=["c: South -> North"]), 1)
+check("PEN2 one stayed pinned", "PEN2", dict(pn, released=2, notReleased=1), 1)
+check("PEN2 the layout selects nobody", "PEN2", dict(pn, selected=0, ids=[]), 2)
 print("RESULT: %s" % ("FAIL (%d failing)" % len(FAILS) if FAILS else "PASS (0 failing)"))
 sys.exit(1 if FAILS else 0)
