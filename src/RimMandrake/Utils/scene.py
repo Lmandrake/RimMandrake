@@ -433,8 +433,6 @@ class Session(object):
             sha, why = self._fixture_sha(where)
             self.fixture = {"name": where, "sha256": sha} if sha else {"name": where, "sha256": None, "could_not_look": why}
         p["did"].append("loaded %s (the game's earlier map is gone)" % where)
-        if not fresh:
-            p["did"].append(self._answer_load_windows(p))
         p["did"].append(self.W.stage_loaded(self.key, where))
         if not fresh:
             rec.could_not_look.append("whether %s was saved in a marked process: a save does not carry the mark yet" % where)
@@ -442,8 +440,9 @@ class Session(object):
     def _answer_load_windows(self, p):
         """A save made before a mod's factions existed opens VEF's Dialog_NewFactionSpawning, one per missing faction (live on
         ArchBig 2026-11-25: the storeroom-pit fixture under the Knockback small list; the calm then refused NOT_CALM
-        force_pause_windows). Each window of quiet_site.MODAL_HANDLERS gets its one approved answer ('Do nothing': the save's
-        world stays as it is). Any other window stays open, for the calm to refuse by name."""
+        force_pause_windows). VEF opens them a few frames after the load returns, so this runs at the end of the settle. Each
+        window of quiet_site.MODAL_HANDLERS gets its one approved answer ('Do nothing': the save's world stays as it is). Any
+        other window stays open, for the calm to refuse by name."""
         md = os.path.join(HERE, "modcheck")
         if md not in sys.path:
             sys.path.append(md)
@@ -522,6 +521,8 @@ class Session(object):
                 if not where and st.get("programState") == "Entry":
                     raise Fault("NO_MAP", detail="the game stands at the menu and no map was asked for: needs={'map': 'fresh:quicktest'}")
                 self.W.sleep(POLL_S)
+        if where:
+            p["did"].append(self._answer_load_windows(p))
 
     def _calm(self, p, profile, rec):
         if profile is None:

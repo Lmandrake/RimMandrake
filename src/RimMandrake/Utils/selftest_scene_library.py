@@ -924,15 +924,16 @@ FACTION_DIALOG = {"type": "VEF.Factions.Dialog_NewFactionSpawning", "forcePause"
 def test_load_answers_the_known_load_windows_only():
     """A save made before a mod's factions existed opens VEF's Dialog_NewFactionSpawning once per missing faction (live on ArchBig
     2026-11-25: the storeroom-pit fixture under the Knockback small list; the calm then refused NOT_CALM force_pause_windows). The load
-    gives each one its approved answer, 'Do nothing', and says so; a window with no approved answer stays open for the calm to refuse."""
+    gives each one its approved answer, 'Do nothing', and says so; a window with no approved answer stays open for the calm to refuse.
+    The windows open a few frames after the load returns (live: the first answer, made at the load's return, found none)."""
     W = world()
     W.game.saves.append("RM_TestSite_river")
     W.game.load_windows = [dict(FACTION_DIALOG, ID=7), dict(FACTION_DIALOG, ID=8)]
     with scene.open("ArchSmall", needs={"map": "RM_TestSite_river"}) as s:
-        did = s.opened[2]["did"]
+        did = s.opened[3]["did"]
     must(W.game.windows == [] and getattr(W.game, "clicked", []) == ["Do nothing", "Do nothing"], "windows %s clicked %s" % (
         W.game.windows, getattr(W.game, "clicked", None)))
-    must(any("answered 2 load window" in x and "Do nothing" in x for x in did), "the load does not say what it answered: %s" % did)
+    must(any("answered 2 load window" in x and "Do nothing" in x for x in did), "the settle does not say what it answered: %s" % did)
     W = world()
     W.game.saves.append("RM_TestSite_river")
     W.game.load_windows = [{"ID": 9, "type": "Dialog_MessageBox", "forcePause": True, "buttons": ["OK"]}]

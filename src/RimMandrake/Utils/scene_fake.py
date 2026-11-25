@@ -70,6 +70,8 @@ class FakeGame(object):
         if tool == "jawa/running_mods":
             return copy.deepcopy(self.running_mods)
         if tool == "rimbridge/get_bridge_status":
+            if getattr(self, "windows_soon", None):
+                self.windows, self.windows_soon = self.windows + self.windows_soon, []
             if self.menu_polls:
                 self.menu_polls -= 1
                 if not self.menu_polls:
@@ -97,8 +99,8 @@ class FakeGame(object):
                 return {"success": False, "message": "Timed out waiting for RimWorld entry scene readiness."}
             self.loads.append(a.get("saveName") or "fresh")
             self.status = rec("status_playing")
-            if a.get("saveName"):
-                self.windows = [dict(w) for w in self.load_windows]
+            if a.get("saveName"):           # VEF opens them a few frames after the load returns (live on ArchBig 2026-11-25)
+                self.windows_soon = [dict(w) for w in self.load_windows]
             return {"success": True}
         if tool == "jawa/window_list_close" and a.get("action") == "list":
             return {"success": True, "windows": [dict(w) for w in self.windows]}
