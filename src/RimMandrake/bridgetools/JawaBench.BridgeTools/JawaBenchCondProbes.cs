@@ -16,8 +16,9 @@
 // - Values match the existing read tools: cell.glow = jawa/glow_at groundGlow, map.sky_glow = its skyGlow, game.hour =
 //   its hour; cell.terrain = jawa/get_terrain_layers top; fw.* = flowworks_excavation_report / _rect depth, fill,
 //   isSourceCell; pawn.pos = jawa/pawn_get position. prove_cond_probes.py compares them live.
-// - ring.count is RINGPROBES_WIRE_EVENT_CURSORS and is refused at bind here; pawn.flight/anim never reach this file
-//   (the core refuses them as probe_not_in_v1).
+// - ring.count is RINGPROBES_WIRE_EVENT_CURSORS and is refused at bind here.
+// - pawn.flight.* and pawn.anim.* read the flight tracker's private state and the flip-book frame the game selects
+//   (reflection reads only; the judge of a recorded series is Utils/flight_frames.py).
 // - No job reads pawn.job def "" and id -1 (ok): having no job is a state, not an unknown.
 // - pawn.* and thing.* follow their subject wherever it is: p.MapId pins the spatial and map probes only (spec §1.2);
 //   pawn.map says which map the pawn is on.
@@ -199,6 +200,15 @@ namespace JawaBench.BridgeTools
                 case "value":
                 case "value.state":
                     return BindValue(p, out why);
+                case "pawn.flight.state":
+                case "pawn.flight.lerp_tick":
+                case "pawn.flight.height":
+                case "pawn.anim.name":
+                case "pawn.anim.start_tick":
+                case "pawn.anim.graphic":
+                case "pawn.anim.texpath":
+                case "pawn.anim.facing":
+                    return BindFlight(p, out why);
                 case "ring.count":
                     why = "ring.count is not wired yet (RINGPROBES_WIRE_EVENT_CURSORS)";
                     return null;
@@ -346,6 +356,69 @@ namespace JawaBench.BridgeTools
                         return Ok(pawn.Drafted);
                     };
             }
+        }
+
+        // ---------------------------------------------------------------- flight and the flip-book frame
+        // Pawn_FlightTracker keeps flightState and lerpTick private (RimWorld 1.6): read once-resolved fields, never
+        // written. The frame is the one the game SELECTS: the body node's TryGetAnimationGraphicState, which is
+        // AnimationWorker_Keyframes.GetKeyframeForTick(tree.AnimationTick) for the generated fly animation. It is not
+        // proof of what reached the screen (that is the owner's eye; 07_for_the_owner.md choice 1). No picture is made.
+        static readonly FieldInfo FlightStateField =
+            typeof(Pawn_FlightTracker).GetField("flightState", BindingFlags.NonPublic | BindingFlags.Instance);
+        static readonly FieldInfo FlightLerpField =
+            typeof(Pawn_FlightTracker).GetField("lerpTick", BindingFlags.NonPublic | BindingFlags.Instance);
+        static readonly string[] FacingWords = { "north", "east", "south", "west" };
+
+        /// <summary>The body node's selected graphic state, or null when no animation drives it.</summary>
+        static GraphicStateDef SelectedState(Pawn pawn)
+        {
+            var tree = pawn.Drawer?.renderer?.renderTree;
+            if (tree == null || tree.currentAnimation == null) return null;
+            PawnRenderNode node;
+            if (!tree.TryGetNodeByTag(PawnRenderNodeTagDefOf.Body, out node) || node == null) return null;
+            GraphicStateDef gs;
+            var parms = new PawnDrawParms { pawn = pawn, facing = pawn.Rotation };
+            return node.TryGetAnimationGraphicState(parms, out gs) ? gs : null;
+        }
+
+        Reader BindFlight(JawaBenchCondCore.Probe p, out string why)
+        {
+            why = null;
+            string id = Arg(p, "pawn");
+            var pawn = _findPawn(id);
+            if (pawn == null) { why = "no pawn '" + id + "'"; return null; }
+            string name = p.Name;
+            if (name.StartsWith("pawn.flight.", StringComparison.Ordinal) && name != "pawn.flight.height"
+                && (FlightStateField == null || FlightLerpField == null))
+            {
+                why = "Pawn_FlightTracker has no flightState/lerpTick field in this game version";
+                return null;
+            }
+            return (x, z) =>
+            {
+                try
+                {
+                    string g = PawnGone(pawn, false);
+                    if (g != null) return St("gone", g);
+                    if (name.StartsWith("pawn.flight.", StringComparison.Ordinal))
+                    {
+                        var fl = pawn.flight;
+                        if (fl == null) return St("unbound", "pawn has no flight tracker");
+                        if (name == "pawn.flight.state") return Ok(FlightStateField.GetValue(fl).ToString());
+                        if (name == "pawn.flight.lerp_tick") return Ok((double)(int)FlightLerpField.GetValue(fl));
+                        return Ok((double)fl.PositionOffsetFactor);
+                    }
+                    if (name == "pawn.anim.facing") return Ok(FacingWords[pawn.Rotation.AsInt & 3]);
+                    var tree = pawn.Drawer?.renderer?.renderTree;
+                    if (tree == null) return St("unbound", "pawn has no render tree");
+                    if (name == "pawn.anim.name") return Ok(tree.currentAnimation != null ? tree.currentAnimation.defName : "");
+                    if (name == "pawn.anim.start_tick") return Ok((double)tree.animationStartTick);
+                    var gs = SelectedState(pawn);
+                    if (name == "pawn.anim.graphic") return Ok(gs != null ? gs.defName : "");
+                    return Ok(gs != null && gs.defaultGraphicData != null ? (gs.defaultGraphicData.texPath ?? "") : "");
+                }
+                catch (Exception e) { return St("error", e.GetType().Name + ": " + e.Message); }
+            };
         }
 
         /// <summary>null while the pawn can be read; else why not. needSpawned: position-like reads need a map.</summary>

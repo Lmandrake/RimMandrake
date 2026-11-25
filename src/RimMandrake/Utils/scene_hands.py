@@ -45,7 +45,9 @@ class RunUntil(object):
         for p, _opt in C.walk(tree):
             if p["p"] not in C.VALUE_PROBES:
                 self.names[C.conds.canon(p)] = C.probe_name(p)
-        return {"until": _retarget(tree, "of", self.aliases), "record": [{"of": _target(t.of, self.aliases), "path": t.path} for t in tracks]}
+        return {"until": _retarget(tree, "of", self.aliases), "record": [
+            {"name": t.name, "probe": t.probe} if isinstance(t, C.ProbeTrack) else {"of": _target(t.of, self.aliases), "path": t.path}
+            for t in tracks]}
 
     def start(self, request, plan, limit, speed, rand=None):
         more = {"randState": rand} if rand is not None else {}
@@ -121,6 +123,8 @@ class Slice(object):
             if p["p"] != C.TICK:
                 sample[C.probe_name(p)] = go(p)
         for t in tracks:
+            if isinstance(t, C.ProbeTrack):
+                raise Refused("UNRECORDED_VALUE", "%s records a named probe; this game's companion has only %s (needs %s)" % (t.name, SLICE, RUN_UNTIL))
             sample[t.name] = probe(t.of, t.path)
         return {"until": go(tree), "record": sample}
 

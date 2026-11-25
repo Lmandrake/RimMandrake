@@ -73,6 +73,12 @@ PROBES = {
     "ring.count": ("num", ("source",), ("filter",)),
     "value": ("value", ("of", "path"), ()),         # any value path (the C# JawaBenchPathCore); null is a value
     "value.state": ("str", ("of", "path"), ()),
+    # flight and the flip-book frame the game selects (RIMMANDRAKE_BUILD_FLIGHT_PROBES_STATE_AND_FRAME_NO_PICTURES)
+    "pawn.flight.state": ("str", ("pawn",), ()), "pawn.flight.lerp_tick": ("num", ("pawn",), ()),
+    "pawn.flight.height": ("num", ("pawn",), ()),
+    "pawn.anim.name": ("str", ("pawn",), ()), "pawn.anim.start_tick": ("num", ("pawn",), ()),
+    "pawn.anim.graphic": ("str", ("pawn",), ()), "pawn.anim.texpath": ("str", ("pawn",), ()),
+    "pawn.anim.facing": ("str", ("pawn",), ()),
 }
 F_VALUES = {"pawn.pos": ("x", "z"), "pawn.job": ("def", "id"), "pawn.state": ("downed", "dead", "mental", "drafted"),
             "thing.pos": ("x", "z")}
@@ -519,7 +525,7 @@ class Compiler(object):
         if not isinstance(name, str):
             raise Refused("type", at + ".p", "want str, got " + jtype(name))
         if name not in PROBES:
-            if name.startswith("pawn.flight.") or name.startswith("pawn.anim.") or name == "static.call":
+            if name == "static.call":
                 raise Refused("probe_not_in_v1", at + ".p", name)
             raise Refused("unknown_probe", at + ".p", name)
         ptype, req, opt = PROBES[name]

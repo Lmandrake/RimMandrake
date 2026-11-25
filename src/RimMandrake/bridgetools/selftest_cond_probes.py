@@ -57,7 +57,9 @@ def static_checks():
     check(not missing, "every core probe has a Verse read case", "missing %s" % missing)
     ring = re.search(r'case "ring\.count":\s*why = "([^"]*)";\s*return null;', code)
     check(bool(ring) and "RINGPROBES_WIRE_EVENT_CURSORS" in ring.group(1), "ring.count is refused at bind, naming its item")
-    check("pawn.flight" not in code and "pawn.anim" not in code, "no flight/anim probe in the Verse source")
+    check("FlightStateField.GetValue(fl)" in code and "TryGetAnimationGraphicState" in code
+          and not re.search(r"SetAnimation|StartFlying|ForceLand", code),
+          "flight/anim probes read the tracker and the selected frame, never fly, land or set an animation")
 
     iface = core[core.index("internal interface IProbeSource"):]
     iface = iface[:iface.index("}")]

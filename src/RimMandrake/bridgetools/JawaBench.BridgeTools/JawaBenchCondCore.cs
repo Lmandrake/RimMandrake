@@ -99,6 +99,15 @@ namespace JawaBench.BridgeTools
             { "ring.count", new ProbeInfo("num", new[] { "source" }, new[] { "filter" }) },
             { "value", new ProbeInfo("value", new[] { "of", "path" }, None0) },         // any value path (JawaBenchPathCore); null is a value
             { "value.state", new ProbeInfo("str", new[] { "of", "path" }, None0) },
+            // flight and the flip-book frame the game selects (RIMMANDRAKE_BUILD_FLIGHT_PROBES_STATE_AND_FRAME_NO_PICTURES)
+            { "pawn.flight.state", new ProbeInfo("str", new[] { "pawn" }, None0) },      // Grounded|TakingOff|Flying|Landing
+            { "pawn.flight.lerp_tick", new ProbeInfo("num", new[] { "pawn" }, None0) },
+            { "pawn.flight.height", new ProbeInfo("num", new[] { "pawn" }, None0) },     // PositionOffsetFactor, 0..1
+            { "pawn.anim.name", new ProbeInfo("str", new[] { "pawn" }, None0) },         // "" when no animation plays
+            { "pawn.anim.start_tick", new ProbeInfo("num", new[] { "pawn" }, None0) },
+            { "pawn.anim.graphic", new ProbeInfo("str", new[] { "pawn" }, None0) },      // body node's GraphicStateDef, or ""
+            { "pawn.anim.texpath", new ProbeInfo("str", new[] { "pawn" }, None0) },
+            { "pawn.anim.facing", new ProbeInfo("str", new[] { "pawn" }, None0) },       // north|east|south|west
         };
         internal static readonly Dictionary<string, string[]> FValues = new Dictionary<string, string[]>
         {
@@ -765,8 +774,7 @@ namespace JawaBench.BridgeTools
                 ProbeInfo info;
                 if (!Probes.TryGetValue(name, out info))
                 {
-                    if (name.StartsWith("pawn.flight.", StringComparison.Ordinal) || name.StartsWith("pawn.anim.", StringComparison.Ordinal)
-                        || name == "static.call")
+                    if (name == "static.call")
                         throw Refuse("probe_not_in_v1", at + ".p", name);
                     throw Refuse("unknown_probe", at + ".p", name);
                 }

@@ -4182,26 +4182,61 @@
    }
   },
   {
-   "name": "refuse_probe_not_in_v1",
+   "name": "flight_state_edge_to_flying",
    "tags": [
-    "refusal",
-    "refuse:probe_not_in_v1"
+    "flight_probe"
    ],
    "spec": {
     "until": {
-     "cmp": [
-      {
-       "p": "pawn.flight.state",
-       "pawn": "Bird1"
-      },
-      "==",
-      "Flying"
-     ]
+     "edge": {
+      "cmp": [
+       {
+        "p": "pawn.flight.state",
+        "pawn": "Bird1"
+       },
+       "==",
+       "Flying"
+      ]
+     },
+     "id": "up"
     },
-    "max_ticks": 1
+    "max_ticks": 10
    },
+   "frames": [
+    {
+     "tick": 1000,
+     "reads": {
+      "pawn.flight.state pawn=Bird1": [
+       "TakingOff",
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1001,
+     "reads": {
+      "pawn.flight.state pawn=Bird1": [
+       "TakingOff",
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1002,
+     "reads": {
+      "pawn.flight.state pawn=Bird1": [
+       "Flying",
+       "ok"
+      ]
+     }
+    },
+    {
+     "tick": 1003
+    }
+   ],
    "expect": {
-    "refused": "probe_not_in_v1"
+    "state": "hit",
+    "hitTick": 1002
    }
   },
   {

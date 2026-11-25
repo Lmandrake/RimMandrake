@@ -1096,8 +1096,9 @@ TMP_RX = re.compile(r"(?:/private)?(?:/tmp|/var/folders|%s)/\S*" % re.escape(tem
 
 
 # A measured reading moves between two runs of the same code: a quoted number in a list (['581', '742']) or a number
-# with a unit of time, size or share (629 ms, 1.5 s, 38 MB, 12%). A bare count ("unit 2", "3 of 9") is kept.
-READING_RX = re.compile(r"'\d+(?:\.\d+)?'|\b\d+(?:\.\d+)?\s?(?:ms|s|MB|GB|KB|%)(?![A-Za-z])")
+# with a unit of time, size or share (629 ms, 1.5 s, 38 MB, 12%), or the machine's load average ("load 14.5"). A bare
+# count ("unit 2", "3 of 9") is kept.
+READING_RX = re.compile(r"'\d+(?:\.\d+)?'|\b\d+(?:\.\d+)?\s?(?:ms|s|MB|GB|KB|%)(?![A-Za-z])|\bload \d+(?:\.\d+)?")
 
 
 # 2026-11-24 on SteveDesktop: a Windows python's traceback spells the check tree \\wsl.localhost\Ubuntu\...\rm-treecheck-<random>,

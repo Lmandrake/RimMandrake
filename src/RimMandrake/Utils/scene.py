@@ -648,6 +648,11 @@ class Session(object):
         for t in record or []:
             if not isinstance(t, cond.Track):
                 raise Refused("BAD_ARGS", "record takes c.track(of, path), not %r" % (t,))
+            if isinstance(t, cond.ProbeTrack):
+                if t.probe.get("p") not in cond.conds.PROBES:
+                    raise Refused("UNRECORDED_VALUE", "no probe %r (`help cond`)" % (t.probe.get("p"),))
+                tracks.append(t)
+                continue
             why = cond.bad_path(t.of, t.path)
             if why:
                 raise Refused("BAD_PATH", "%s (`help read`)" % why)

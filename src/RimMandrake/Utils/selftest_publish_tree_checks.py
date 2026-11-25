@@ -475,6 +475,13 @@ def measured_readings_cases():
     ks1, _ = P.red_signature("FAIL accept: rc 3, ACCEPT s/good.py at e84717789cca\n", "/nowhere", 1)
     ks2, _ = P.red_signature("FAIL accept: rc 3, ACCEPT s/good.py at 1a2b3c4d5e6f\n", "/nowhere", 1)
     check(ks1 == ks2, "a commit sha in a FAIL line is the same red (%s / %s)" % (list(ks1), list(ks2)))
+    # 2026-11-25 on SteveDesktop: selftest_game_lock's 50 ms row, red on origin/main the same way, was refused as "new"
+    # three times: it prints the machine's load average ("load 1.8 on 18 cores"), which moves between the two runs
+    l1 = "FAIL a mutating call's steps take under 50 ms (worst mean None ms of None calls, limit 50, load 1.8 on 18 cores)"
+    l2 = "FAIL a mutating call's steps take under 50 ms (worst mean None ms of None calls, limit 50, load 14.5 on 18 cores)"
+    kl1, _ = P.red_signature(l1 + "\n", "/nowhere", 1)
+    kl2, _ = P.red_signature(l2 + "\n", "/nowhere", 1)
+    check(kl1 == kl2, "a load-average reading in a FAIL line is the same red (%s / %s)" % (list(kl1), list(kl2)))
     k3, _ = P.red_signature("FAIL took 3 of 9 rows\n", "/nowhere", 1)
     k4, _ = P.red_signature("FAIL took 4 of 9 rows\n", "/nowhere", 1)
     check(k3 != k4, "a count is kept")

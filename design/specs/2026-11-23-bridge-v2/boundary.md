@@ -377,6 +377,11 @@ None of its own.
 - **every-owner-of-our-companion-is-ours.** A patch of any Harmony owner of this companion (`jawabench.*` and `mandrake.jawabench.*`,
   `OUR_OWNERS`) is ours: never on the foreign list, and it counts as our hook at arm.
 
+## Flight probes
+
+The flight probes and the flapping-bird judge have their own page: `../2026-11-24-flight-frames/boundary.md`.
+
+
 ## LIVE READINGS
 
 | proof | reading | evidence |

@@ -39,6 +39,25 @@ def track(of, path):
     return Track(of, path)
 
 
+class ProbeTrack(Track):
+    """A named engine probe to record on every tick ({name, probe} in jawa/run_until's record)."""
+
+    def __init__(self, name, probe):
+        self.of, self.path, self.name, self.probe = None, None, name, probe
+
+    def __repr__(self):
+        return "probe_track(%s)" % self.name
+
+
+def flight(pawn):
+    """-> the tracks of one bird's flight and flip-book frame (pawn.flight.*, pawn.anim.*), named as flight_frames reads
+    them. `pawn` is the pawn's thing id (`thing:` is dropped). The judge of the series is flight_frames.py."""
+    import flight_frames
+    pid = pawn[6:] if pawn.startswith("thing:") else pawn
+    return [ProbeTrack(flight_frames.track_name(pid, f), {"p": flight_frames.PROBE_OF[f], "pawn": pid})
+            for f in flight_frames.FIELDS]
+
+
 class Ticks(object):
     def __init__(self, n):
         self.n = n
