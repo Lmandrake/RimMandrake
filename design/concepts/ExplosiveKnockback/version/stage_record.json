@@ -2,10 +2,10 @@
   "schema": 1,
   "mod": "ExplosiveKnockback",
   "version": "0.2.0",
-  "stage": "preflight",
-  "stage_label": "Preflight (Stage 2)",
-  "since": "2026-11-24T16:34:30-08:00",
-  "since_from": "next-version by CONDUCTOR",
+  "stage": "offline_build",
+  "stage_label": "Offline build (Stage 3)",
+  "since": "2026-11-24T17:09:06-08:00",
+  "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
     "at": "2026-11-24T16:34:30-08:00",
@@ -28,6 +28,24 @@
       "why": "0.2.0 (MINOR) opened on his words of 2026-11-24 (OWNER:1795565769863524396, OWNER:1795565863812726726): the carried thing on its own arc, collision bruises by size, our own blast show (design/specs/2026-11-24-knockback-blast-show/design.md) and three polish lines the Conductor judged relevant; 73 bars, every 0.1.0 bar kept; item RIMMANDRAKE_OPEN_KNOCKBACK_ZERO_TWO_BLAST_SHOW_HE_SAID_GET_CREATIVE",
       "version_from": "0.1.0",
       "version_to": "0.2.0"
+    },
+    {
+      "from": "preflight",
+      "to": "offline_build",
+      "at": "2026-11-24T17:09:06-08:00",
+      "by": "BENCH",
+      "why": "Preflight (Stage 2) for 0.2.0 passes: version/preflight.json verdict pass, 0 refusals, 15 checks, by version/pilot_throwaway/preflight_ek_0_2_0.py at 9883d9cf762c; item RIMMANDRAKE_STEWARD_EXPLOSIVEKNOCKBACK_PREFLIGHT_STAGE",
+      "unit": "rm-detached-bench-rimmandrake-steward-explosiveknockback-p-1795568226",
+      "confirmed": {
+        "steward_confirms": "read version/preflight.json (0.2.0, pass, 0 refusals), VERSION.json bars_new (14), record.json proof_note of each new bar, version/bars.md (pins = lock commit c276d1b00edd blobs; every locked file byte-identical, no bar meaning moved), version/test_table.json (73 bars = locked_bars.json; 14 new deciders new: true, Stage 3 builds them red first: offline-build work, not a spec fault)"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "preflight_record"
+      ]
     }
   ]
 }

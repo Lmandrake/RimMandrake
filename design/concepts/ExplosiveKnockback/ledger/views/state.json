@@ -1,10 +1,10 @@
 {
  "_view": {
-  "body_sha256": "c06af729f5d9c58ae2c2d7112501620cd50b82e7c0eb03fd1f015cc3d5e3d968",
+  "body_sha256": "5aad8096c0ef54254f52baa47ab0dbdda2eeedb58d45cbf7ffab9d85c2c7ff1a",
   "reducer": 1,
   "shards": {
    "BACKFILL": 341359,
-   "DISPATCH": 44972,
+   "DISPATCH": 45322,
    "HOLDER.run-1794813483": 1382,
    "HOLDER.run-1794824768": 1788,
    "HOLDER.run-1794830532": 2304,
@@ -884,7 +884,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 724,
+  "events": 725,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -2544,7 +2544,7 @@
   ],
   "spend_tokens": 171672717,
   "spend_usd": 178.6086,
-  "stage": "passed",
+  "stage": "offline_build",
   "superseded": [],
   "tests": [
    {

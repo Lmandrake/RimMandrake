@@ -8,13 +8,13 @@ The top part, **the mod as it stands**, is rewritten at every stage change and s
 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Code exists:
   `src/RimMandrake/ExplosiveKnockback/`.
-- **Stage now:** Stage 2, preflight, since 2026-11-24 4:34 PM PST (`version/stage_record.json`).
+- **Stage now:** Stage 3, offline build, since 2026-11-24 5:09 PM PST (`version/stage_record.json`).
 - **Bars:** 59 (30 inventory rows of `record.json` + 29 leaves of `tree.json`). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`).
 - **Measured 2026-11-14 12:45 PST:** 53 of 59 bars have at least one test that runs today; 47 have every deciding test
   runnable; 41 have all their offline deciding tests green. All 15 offline tests are built (13 PASS, 2 known red,
   unchanged). In-game scenes: 56, entry exists 50, absent 6. Every in-game scene is UNRUN (Stage 6); commands in the table.
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-24 3:44 PM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-24 5:09 PM PST).
 - **Open questions:** see "Questions" at the end of the history.
 
 ### The vision (his root paragraph, approved by card 2026-11-11, OWNER:1794468835221748501)
@@ -479,3 +479,12 @@ answer the locked bar, his recorded words or the shipped code already gives; no 
 - Program: `version/pilot_throwaway/preflight_ek_0_2_0.py`, a copy of the 0.1.0 program. It reads the version from VERSION.json. C6 counts a `new: true` decider as Stage 3 work, not a refusal (spec, Stage 2 exit). C6 refuses a `new` flag whose kernel marker is already built. Planted faults gave red on C6 (2) and C12 (1).
 - Two scope items named in VERSION.json were not on the ledger (C15). They are filed now under their scope names: RIMMANDRAKE_FOLD_KNOCKBACK_POLISH_LINES_INTO_ZERO_TWO_THREE_JUDGED_IN and RIMMANDRAKE_REWORD_KNOCKBACK_REBOUND_LEAF_THEN_RETAKE_WHOLE_EXAM.
 - Result: `version/preflight.json` for 0.2.0, verdict pass, 0 refusals, about 11 s.
+
+### 2026-11-24 5:09 PM PST, stage change: Preflight (Stage 2) to Offline build (Stage 3) (by BENCH)
+
+- Why: Preflight (Stage 2) for 0.2.0 passes: version/preflight.json verdict pass, 0 refusals, 15 checks, by version/pilot_throwaway/preflight_ek_0_2_0.py at 9883d9cf762c; item RIMMANDRAKE_STEWARD_EXPLOSIVEKNOCKBACK_PREFLIGHT_STAGE
+- Checks passed: order, by, version, hold, preflight_record.
+- Steward confirms: read version/preflight.json (0.2.0, pass, 0 refusals), VERSION.json bars_new (14), record.json proof_note of each new bar, version/bars.md (pins = lock commit c276d1b00edd blobs; every locked file byte-identical, no bar meaning moved), version/test_table.json (73 bars = locked_bars.json; 14 new deciders new: true, Stage 3 builds them red first: offline-build work, not a spec fault)
+- Was, "Stage now": - **Stage now:** Stage 2, preflight, since 2026-11-24 4:34 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-24 3:44 PM PST).
+- Record: `version/stage_record.json`.
