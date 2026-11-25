@@ -2087,11 +2087,11 @@
    ],
    "cases": {
     "bad": [
-     "ops_runs_voided_by_a_timeout: In this run, do you file an item for this fault, or fix it?",
-     "ops_publish_refused_by_a_stale_fixture: In this run, do you file an item for this fault, or fix it?"
+     "ops_runs_voided_by_a_timeout: In this run, do you act on this fault, either by fixing it or by filing an item for it? Either act is yes.",
+     "ops_publish_refused_by_a_stale_fixture: In this run, do you act on this fault, either by fixing it or by filing an item for it? Either act is yes."
     ],
     "good": [
-     "ops_retired_word_on_a_page_label: In this run, do you file an item for this fault, or fix it?",
+     "ops_retired_word_on_a_page_label: In this run, do you act on this fault, either by fixing it or by filing an item for it? Either act is yes.",
      "ops_unrelated_warning_after_answers: In this run, do you look into the unrelated warning and file an item for it?",
      "ops_one_cause_three_alarms: Do you also file a separate item for each of the three alarms?"
     ]
