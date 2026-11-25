@@ -1140,6 +1140,8 @@ def c_steve_takeable(now, rules, ctx):
         state, j = work[0]
         return {STEVE_TAKEABLE_KEY: M(0, unit, state="busy", job=j.get("id"), by=j.get("requested_by"),
                                       job_mod=j.get("mod"), job_state=state, waiting=counts)}
+    if str(sj.get("state")).upper() == "PAUSED":     # the owner paused the lane on purpose: idle is ordered, nothing is takeable
+        return {STEVE_TAKEABLE_KEY: M(0, unit, state="quiet", steward=steward)}
     if not waiting:
         if unread:
             return {STEVE_TAKEABLE_KEY: U("nothing known waits, but not read: %s" % "; ".join(unread[:4]), unit)}

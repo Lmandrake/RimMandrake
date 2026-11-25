@@ -378,8 +378,21 @@ def t_the_rule_alarms_to_the_conductor_log():
           "evidence")
 
 
+def t_an_owner_pause_is_quiet():
+    """The steward PAUSED (the owner stopped work on the lane): idle is intended, so nothing is takeable (0 quiet)."""
+    reset()
+    dispatch(today())
+    p = read("steward BRAKED, checks waiting")
+    check((p.get("x") or {}).get("state") == "waiting", "owner-pause: the BRAKED control reads waiting")
+    wjson(TMP / "testq" / "steward.json", {"epoch": iso(NOW - 60), "state": "PAUSED", "fault": False,
+                                          "reason": "paused until later: owner: no new work", "since": iso(NOW - 3600)})
+    p = read("steward PAUSED, checks waiting")
+    check(p.get("m") == "MEASURED" and p.get("v") == 0 and (p.get("x") or {}).get("state") == "quiet",
+          "owner-pause: a PAUSED lane reads 0 quiet (%s %s %s)" % (p.get("m"), p.get("v"), (p.get("x") or {}).get("state")))
+
+
 def main():
-    for t in (t_the_dispatch_reading_names_each_waiting_check, t_idle_or_filler_with_takeable_waiting_alarms,
+    for t in (t_an_owner_pause_is_quiet, t_the_dispatch_reading_names_each_waiting_check, t_idle_or_filler_with_takeable_waiting_alarms,
               t_nothing_takeable_is_quiet, t_commissioned_or_takeable_work_is_busy, t_could_not_look_is_unmeasured,
               t_the_rule_alarms_to_the_conductor_log):
         try:
