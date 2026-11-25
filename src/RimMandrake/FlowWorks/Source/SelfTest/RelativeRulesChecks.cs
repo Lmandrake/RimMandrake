@@ -569,6 +569,22 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_RelativeRulesMath.FallScaleNotches(4) == 1f, "a 2 m fall stays the full fall at every dig cap");
             });
 
+            Case("Relative_humanlike_height_follows_body_size_not_rat_band", () =>
+            {
+                // RIMMANDRAKE_CLASS_DROID_AND_JAWA_GONE_IN_SHALLOW_TAR: a Jawa (0.5) and a T3 droid (0.65) were a rat's 0.5 m
+                float jawa = RM_RelativeRulesMath.HumanlikeHeightMetres(0.5f), droid = RM_RelativeRulesMath.HumanlikeHeightMetres(0.65f);
+                Assert(RM_RelativeRulesMath.HumanlikeHeightMetres(1f) == RM_RelativeRulesMath.HeightMetres(2), "body size 1 stays a person's 1.75 m");
+                Assert(jawa > 1.1f && jawa < 1.4f && droid > 1.3f && droid < 1.55f, "a Jawa is about 1.2 m, a T3 droid about 1.4 m");
+                Assert(!RM_RelativeRulesMath.HeadUnder(0.5f, jawa, false) && !RM_RelativeRulesMath.HeadUnder(0.5f, droid, false),
+                    "0.5 m is not over a Jawa's or a T3 droid's head");
+                Assert(RM_RelativeRulesMath.HumanlikeHeightMetres(0f) > 0f && RM_RelativeRulesMath.HumanlikeHeightMetres(float.NaN) > 0f, "never 0 or NaN");
+                foreach (float h in new[] { jawa, droid })
+                {
+                    RM_PawnCutMath.Mode mode = RM_PawnCutMath.Decide(false, false, true, 0.5f, h, RM_UnderLiquid.CorpseMetres, 0f, out float share, out _);
+                    Assert(mode == RM_PawnCutMath.Mode.Cut && share > 0f && share < 0.5f, "in 0.5 m tar most of her picture shows: " + mode + " " + share);
+                }
+            });
+
             Case("Relative_drowning_head_under_not_hole_depth", () =>
             {
                 float person = RM_RelativeRulesMath.HeightMetres(Person);

@@ -31,7 +31,8 @@ you for too little opacity.")
   cut               share(level, base, height): the share of a thing (from its foot) under the line.
   heights           items 0.3 m, minified 0.75, swale 0.05, lying ladder 0.1, stakes 1.0, corpse 0.3; an installed
                     building by its cover: max(MIN_THING_METRES, fillPercent * FULL_COVER_METRES); a standing pawn by
-                    its climb-size height (RM_Drowning.HeightOf), a lying one CORPSE_METRES.
+                    its height (RM_Drowning.HeightOf: an animal by its climb size band, a humanlike by its body size),
+                    a lying one CORPSE_METRES.
   shadow            a thing standing in a pit casts ONE shadow, on the pit floor under it (never the bank, never the
                     surface), THING_SHADOW_ALPHA, drawn UNDER the sheet so the sheet hides it by the law like the floor (the
                     2026-11-12 draw put it over the water, an untinted dark square under every thing); 0 under an opaque

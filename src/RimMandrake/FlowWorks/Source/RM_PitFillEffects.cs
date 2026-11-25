@@ -198,9 +198,15 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>The creature's height H in metres: its climb size band (no climber/leaper bonus; the "creature height"
-		/// multiplier applies), so one size system serves climbing and water.</summary>
+		/// multiplier applies), so one size system serves climbing and water. A humanlike's height follows its body size
+		/// continuously (RM_RelativeRulesMath.HumanlikeHeightMetres): the bands put a Jawa at a rat's 0.5 m.</summary>
 		public static float HeightOf(Pawn p)
 		{
+			if (p?.RaceProps != null && p.RaceProps.Humanlike)
+			{
+				float m = RimMandrakeFlowWorksSettings.pitClimbAbilityMultiplier > 0f ? RimMandrakeFlowWorksSettings.pitClimbAbilityMultiplier : 1f;
+				return RM_RelativeRulesMath.HumanlikeHeightMetres(p.BodySize * m * m);
+			}
 			int band = RM_PitTrapMath.ClimbLimit(p?.BodySize ?? 1f, 0, RimMandrakeFlowWorksSettings.pitClimbAbilityMultiplier);
 			return RM_RelativeRulesMath.HeightMetres(band);
 		}

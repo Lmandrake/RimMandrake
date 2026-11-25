@@ -1,7 +1,9 @@
-"""Offline checks for jawa_shallows_proof.py's pure verdicts (JAWA_DROWNING_PROVE_RAT_SIZED_IN_SHALLOWS). No bridge.
+"""Offline checks for jawa_shallows_proof.py's pure verdicts (JAWA_DROWNING_PROVE_RAT_SIZED_IN_SHALLOWS; since
+RIMMANDRAKE_CLASS_DROID_AND_JAWA_GONE_IN_SHALLOW_TAR the proof holds the fixed behaviour). No bridge.
 
-Also pins the arithmetic the live proof stands on, read from the shipped C# (RM_RelativeRulesMath.HeightByBand[1] = 0.5,
-DefaultHeadFraction 0.9): a Jawa's head is under at 0.45 m standing, so 0.5 m of shallow water is over it."""
+Also pins the arithmetic the live proof stands on, read from the shipped C# (a humanlike is HeightByBand[2] x sqrt(body
+size), DefaultHeadFraction 0.9): a Jawa (body size 0.5) is 1.24 m, its head under at 1.11 m, so 0.5 m shallows are wading
+water."""
 import os
 import re
 import sys
@@ -24,10 +26,13 @@ def check(name, cond):
 rr = open(os.path.join(SRC, "RM_RelativeRulesMath.cs"), encoding="utf-8").read()
 m = re.search(r"HeightByBand\s*=\s*\{([^}]*)\}", rr)
 bands = [float(v.strip().rstrip("f")) for v in m.group(1).split(",")] if m else []
-check("C#: HeightByBand[1] (small band) is the proof's Jawa H", len(bands) > 1 and bands[1] == J.JAWA_H)
+jawa_h = bands[2] * 0.5 ** 0.5 if len(bands) > 2 else 0.0
+check("C#: a humanlike's height is HeightByBand[2] x sqrt(body size)",
+      re.search(r"return\s+HeightByBand\[2\]\s*\*\s*\(float\)Math\.Sqrt\(\s*b\s*\)", rr) is not None)
+check("C#: the proof's Jawa floor is under a Jawa's height (%.2f m)" % jawa_h, J.JAWA_MIN_H <= jawa_h)
 hf = re.search(r"DefaultHeadFraction\s*=\s*([0-9.]+)f", rr)
 check("C#: DefaultHeadFraction is the proof's head fraction", hf is not None and float(hf.group(1)) == J.HEAD_FRACTION)
-check("arithmetic: 0.5 m of water is over a 0.5 m creature's head standing", 0.5 > J.JAWA_H * J.HEAD_FRACTION + 1e-4)
+check("arithmetic: 0.5 m of water is under a Jawa's head standing", 0.5 <= jawa_h * J.HEAD_FRACTION)
 fe = open(os.path.join(SRC, "RM_PitFillEffects.cs"), encoding="utf-8").read()
 check("C#: ProofDrown prints H, lying, water, under, headUp", all(k in fe for k in ('" H="', '" lying="', '" water="',
                                                                                    '" under="', '" headUp="')))
@@ -37,36 +42,35 @@ check("C#: RM_Swim lives in the namespace the proof calls",
 check("C#: RM_PitFillEffects lives in the namespace the proof calls",
       "namespace " + J.FILL_TYPE.rsplit(".", 1)[0] in fe and "public static string ProofDrown" in fe)
 
-DROWN = "DROWN Human123 H=0.50 lying=False water=0.50 under=True headUp=True exit=False perCheck=0.0000"
+DROWN = "DROWN Human123 H=1.24 lying=False water=0.50 under=False headUp=True exit=False perCheck=0.0000"
 d = J.parse(DROWN)
-check("parse: id and keys", d.get("id") == "Human123" and d.get("H") == "0.50" and d.get("headUp") == "True")
+check("parse: id and keys", d.get("id") == "Human123" and d.get("H") == "1.24" and d.get("headUp") == "True")
 check("parse: REFUSED is empty", J.parse("REFUSED: no pawn at (1, 0, 1)") == {})
 
 check("terrain: brine PASS", J.terrain_verdict(J.BRINE)[0] == "PASS")
 check("can-fail terrain: soil FAIL", J.terrain_verdict("Soil")[0] == "FAIL")
 check("terrain: none UNMEASURED", J.terrain_verdict(None)[0] == "UNMEASURED")
 
-check("height: 0.50 PASS", J.height_verdict(d)[0] == "PASS")
-check("can-fail height: a person-band 1.75 FAIL", J.height_verdict(J.parse(DROWN.replace("H=0.50", "H=1.75")))[0] == "FAIL")
+check("height: 1.24 PASS", J.height_verdict(d)[0] == "PASS")
+check("can-fail height: the rat's 0.50 FAIL", J.height_verdict(J.parse(DROWN.replace("H=1.24", "H=0.50")))[0] == "FAIL")
 check("height: no line UNMEASURED", J.height_verdict({})[0] == "UNMEASURED")
 
-check("over head: 0.50 m standing, under=True PASS", J.over_head_verdict(d)[0] == "PASS")
-check("can-fail over head: 0.40 m FAIL",
-      J.over_head_verdict(J.parse(DROWN.replace("water=0.50", "water=0.40").replace("under=True", "under=False")))[0] == "FAIL")
-check("can-fail over head: mod says under=False FAIL", J.over_head_verdict(J.parse(DROWN.replace("under=True", "under=False")))[0] == "FAIL")
-check("over head: lying is UNMEASURED", J.over_head_verdict(J.parse(DROWN.replace("lying=False", "lying=True")))[0] == "UNMEASURED")
+check("under head: 0.50 m standing, under=False PASS", J.under_head_verdict(d)[0] == "PASS")
+check("can-fail under head: the rat's H, under=True FAIL",
+      J.under_head_verdict(J.parse(DROWN.replace("H=1.24", "H=0.50").replace("under=False", "under=True")))[0] == "FAIL")
+check("can-fail under head: mod says under=True FAIL", J.under_head_verdict(J.parse(DROWN.replace("under=False", "under=True")))[0] == "FAIL")
+check("under head: lying is UNMEASURED", J.under_head_verdict(J.parse(DROWN.replace("lying=False", "lying=True")))[0] == "UNMEASURED")
+check("under head: no water UNMEASURED", J.under_head_verdict(J.parse(DROWN.replace("water=0.50", "water=0.00")))[0] == "UNMEASURED")
 
-SW = {"class": "Swimmer", "exhaustion": "0.100"}
-DOWN = J.parse(DROWN.replace("headUp=True", "headUp=False"))
-good = [{"tick": 0, "severity": 0, "drown": d, "swim": SW},
-        {"tick": 2250, "severity": 0.04, "drown": DOWN, "swim": dict(SW, exhaustion="1.000")}]
-check("drowning: swims, then drowns head-under PASS", J.drowning_verdict(good)[0] == "PASS")
-check("can-fail drowning: never fires FAIL", J.drowning_verdict([dict(good[0]), dict(good[0], tick=6000)])[0] == "FAIL")
-check("can-fail drowning: fires while headUp FAIL",
-      J.drowning_verdict([good[0], dict(good[1], drown=d)])[0] == "FAIL")
-check("can-fail drowning: drowns with no swim read FAIL",
-      J.drowning_verdict([dict(r, swim={"class": "None"}) for r in good])[0] == "FAIL")
-check("drowning: no reads UNMEASURED", J.drowning_verdict([])[0] == "UNMEASURED")
+NONE = {"class": "None", "exhaustion": "0.000"}
+calm = [{"tick": 0, "severity": 0, "drown": d, "swim": NONE}, {"tick": 6000, "severity": 0, "drown": d, "swim": NONE}]
+check("no drowning: wades the whole run PASS", J.no_drowning_verdict(calm, 6000)[0] == "PASS")
+check("can-fail no drowning: drowning fires FAIL",
+      J.no_drowning_verdict([calm[0], dict(calm[1], severity=0.04)], 6000)[0] == "FAIL")
+check("can-fail no drowning: it swims FAIL",
+      J.no_drowning_verdict([calm[0], dict(calm[1], swim={"class": "Swimmer", "exhaustion": "0.1"})], 6000)[0] == "FAIL")
+check("no drowning: stopped early UNMEASURED", J.no_drowning_verdict([calm[0], dict(calm[1], tick=2000)], 6000)[0] == "UNMEASURED")
+check("no drowning: no reads UNMEASURED", J.no_drowning_verdict([], 6000)[0] == "UNMEASURED")
 
 # exit semantics the live round reads (0 PASS, 1 FAIL, else UNMEASURED): a harness fault is never a mod FAIL
 def rws(*st):

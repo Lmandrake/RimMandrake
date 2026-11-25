@@ -141,6 +141,18 @@ namespace RimMandrake.FlowWorks
 			return HeightByBand[b];
 		}
 
+		/// <summary>A humanlike's height H in metres: a person's (HeightByBand[2], body size 1) scaled by sqrt(effective body
+		/// size), the relative climb design §8.2 rule (RM_TrenchCoverMath.HeightMetres). The bands are an animal table ("rat,
+		/// cat, dog"): through them a Jawa (body size 0.5) and a T3 droid (0.65) were a rat's 0.5 m, so 0.5 m of tar hid
+		/// them whole and drowned them (RIMMANDRAKE_CLASS_DROID_AND_JAWA_GONE_IN_SHALLOW_TAR, the live matrix 2026-11-22).
+		/// Body size 1 stays 1.75 m; a Jawa is 1.24 m, a T3 droid 1.41 m (their pictures read 1.1 and 1.45 m against a
+		/// colonist's).</summary>
+		public static float HumanlikeHeightMetres(float effectiveBodySize)
+		{
+			float b = float.IsNaN(effectiveBodySize) || effectiveBodySize < 0.01f ? 0.01f : effectiveBodySize;
+			return HeightByBand[2] * (float)Math.Sqrt(b);
+		}
+
 		/// <summary>V2 defaults: the head goes under at 0.9 H standing, 0.2 H lying down (downed, asleep, in bed).</summary>
 		public const float DefaultHeadFraction = 0.9f;
 

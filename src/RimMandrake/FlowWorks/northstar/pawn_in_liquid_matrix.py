@@ -2,6 +2,7 @@
 
     python.exe pawn_in_liquid_matrix.py <repo_win_path> <out_win_dir> [stage|read|shots|off|all|save:<name>]
     python3    pawn_in_liquid_matrix.py <repo> <out_dir> sheets          (WSL, PIL: the grid images, no bridge)
+    python3    pawn_in_liquid_matrix.py <repo> <out_dir> verdict:<row>,<row>  (no bridge: 0 when each row PASSes in the newest read)
 
 Owner, 2026-11-22: "We will have to confirm this on a variety of worn gear to ensure it works well for the large variety
 of things Pawns can wear. We should think about animals as well, and droids. ... Mechanoids, Droids, Colonists/humanoids,
@@ -263,6 +264,28 @@ def want_mode(kv, lying):
     return ("Tinted" if cl > 0 else "Hidden") if d >= 1 else "Cut"
 
 
+# A colonist's picture spans 1.015..1.231 cells foot to crown standing (this matrix, 2026-11-22) for 1.75 m: the scale that
+# turns any humanlike's own picture into metres, read from the picture, never from the height the mod printed.
+COLONIST_SPAN, COLONIST_M = 1.22, 1.75
+
+
+def in_line_with_picture(kv, level):
+    """RIMMANDRAKE_CLASS_DROID_AND_JAWA_GONE_IN_SHALLOW_TAR: the `_mode` row wants the mode for the pawn's OWN printed
+    height, so it agreed when a Jawa and a T3 droid were given a rat's 0.5 m. This row reads her picture instead: a
+    standing humanlike whose picture is clearly taller than the liquid (by its span against a colonist's) is Cut, with
+    some of her picture above the line. -> (ok, text)"""
+    try:
+        span = float(kv["crown"]) - float(kv["foot"])
+    except (KeyError, ValueError):
+        return False, "UNMEASURED: no picture extent: %s" % kv
+    est = span / COLONIST_SPAN * COLONIST_M
+    text = "picture %.3f cells = about %.2f m; liquid %.2f m; mode %s share %s height %s" % (
+        span, est, level, kv.get("mode"), kv.get("share"), kv.get("height"))
+    if level >= 0.9 * est:
+        return True, "deep enough to cover her: " + text
+    return kv.get("mode") == "Cut" and float(kv.get("share", 1)) < 1.0, text
+
+
 def read(tag=""):
     load_pawns()
     off = tag == "off"
@@ -281,6 +304,8 @@ def read(tag=""):
             row(rid + "_lying_as_staged", is_lying == lying, text)
             want = want_mode(kv, is_lying)
             row(rid + "_mode", kv.get("mode") == want, "want %s: %s" % (want, text))
+            if not is_lying and kv.get("humanlike") == "True":
+                row(rid + "_shows_in_line_with_her_picture", *in_line_with_picture(kv, m))
             if kv.get("mode") == "Cut":
                 try:
                     f, c, l = float(kv["foot"]), float(kv["crown"]), float(kv["line"])
@@ -399,7 +424,26 @@ def sheets():
         print("sheet", out)
 
 
+def verdict(names):
+    """No bridge: exit 0 when every named row PASSes in the newest read (pim_read_*.json in OUT), else 1, printing each
+    row's state (MISSING: the newest read has no such row, i.e. no read since the row was written)."""
+    reads = sorted(f for f in os.listdir(OUT) if f.startswith("pim_read_") and f.endswith(".json")) if os.path.isdir(OUT) else []
+    if not reads:
+        print("VERDICT: FAIL (no pim_read_*.json in %s)" % OUT)
+        return 1
+    rows = {r["row"]: r for r in json.load(open(os.path.join(OUT, reads[-1]), encoding="utf-8")).get("rows", [])}
+    ok = True
+    for n in names:
+        r = rows.get(n)
+        print("%-9s %s  %s" % (r["verdict"] if r else "MISSING", n, (r or {}).get("got", "")[:200]))
+        ok = ok and r is not None and r["verdict"] == "PASS"
+    print("VERDICT: %s (%s)" % ("PASS" if ok else "FAIL", reads[-1]))
+    return 0 if ok else 1
+
+
 if __name__ == "__main__":
+    if STEP.startswith("verdict:"):
+        sys.exit(verdict(STEP.split(":", 1)[1].split(",")))
     t0 = time.time()
     if STEP in ("all", "stage"):
         stage()
