@@ -477,6 +477,11 @@ def measured_readings_cases():
     ks1, _ = P.red_signature("FAIL accept: rc 3, ACCEPT s/good.py at e84717789cca\n", "/nowhere", 1)
     ks2, _ = P.red_signature("FAIL accept: rc 3, ACCEPT s/good.py at 1a2b3c4d5e6f\n", "/nowhere", 1)
     check(ks1 == ks2, "a commit sha in a FAIL line is the same red (%s / %s)" % (list(ks1), list(ks2)))
+    # 2026-11-25 on SteveDesktop: scene_library_mutants, red on origin/main the same way, was refused as "new": one run's
+    # sha was 1532f696a748, the other's 836753201427 (a sha of digits only)
+    kd1, _ = P.red_signature("FAIL accept: ACCEPT s/ledger.py at 1532f696a748\n", "/nowhere", 1)
+    kd2, _ = P.red_signature("FAIL accept: ACCEPT s/ledger.py at 836753201427\n", "/nowhere", 1)
+    check(kd1 == kd2, "a commit sha of digits only is the same red as one with letters (%s / %s)" % (list(kd1), list(kd2)))
     # 2026-11-25 on SteveDesktop: selftest_game_lock's 50 ms row, red on origin/main the same way, was refused as "new"
     # three times: it prints the machine's load average ("load 1.8 on 18 cores"), which moves between the two runs
     l1 = "FAIL a mutating call's steps take under 50 ms (worst mean None ms of None calls, limit 50, load 1.8 on 18 cores)"

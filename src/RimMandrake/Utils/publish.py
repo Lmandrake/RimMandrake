@@ -1131,7 +1131,7 @@ def _norm(ln, tree):
     ln = ln.strip().replace(os.path.realpath(tree), "<TOP>").replace(tree, "<TOP>")
     ln = READING_RX.sub("R", ln)
     ln = TREE_NAME_RX.sub(CHECKTREE_PREFIX + "X", ln)     # the check tree's random name, in any spelling of its path
-    ln = SHA_RX.sub("SHA", ln)
+    ln = SHA_RX.sub("N", ln)       # the token of a long number too: a sha can be all digits (836753201427)
     return re.sub(r"\d{4,}", "N", TMP_RX.sub("<TMP>", ln))
 
 
