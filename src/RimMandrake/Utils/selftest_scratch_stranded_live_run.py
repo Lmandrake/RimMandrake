@@ -4,7 +4,8 @@ stranded, and still calls one stranded when its run has ended or it sits under a
 
 The instance (Archmagi, 2026-11-25T01:13Z): a live detached run, claude-seat-BENCH-rm-detached-bench-rimmandrake-feed-codex-
 grouped-tickets-h-<n>, kept 9 Codex clones under rm/scratch/BENCH-rm-detached-bench-rimmandrake-feed-codex-grouped-tickets-h/
-and landed them in turn; 6 idle over an hour read stranded, so disk.pool_breach read 6 and reopened this item.
+and landed them in turn; 6 idle over an hour read stranded, so disk.pool_breach read 6 and reopened this item. A second
+instance (2026-11-25T09:42Z): a run's clone read stranded the pass after the run exited, before its last landing.
 
 `--at <rev>` replays the instance on scratch_clone.py as it was at that commit (the guard's red, shown on the parent of the
 fix). The fixture lives under rm/scratch/<seat>/ on ext4, every path env-overridden: the real store and state are untouched."""
@@ -98,6 +99,20 @@ def main() -> int:
               % rows.get("cxs-a"))
         check("cxs-b" in names, "a clone whose run has ended is stranded: %s" % rows.get("cxs-b"))
         check("own" in names, "a bare seat's clone is stranded though that seat is live: %s" % rows.get("own"))
+        # The run-end race (2026-11-25T09:42Z, cxs-deployshard-1795594915): the run exited, its excuse ended that pass, and
+        # its last commit landed minutes later. A run seen live in the last idle hour still holds its clones.
+        sc.live_seats = lambda: {BARE}          # the live run has just ended
+        ss = sc.scratch_stranded()
+        names = {Path(p).name for p in ss["stranded"]}
+        check("cxs-a" not in names, "a run that ended inside the idle hour still holds its clones (the landing race)")
+        sf = sc.state_dir() / "scratch_stranded.json"
+        import json as _json
+        d = _json.loads(sf.read_text())
+        d["live_seen"] = {k: v - sc.POOL_IDLE_S - 60 for k, v in (d.get("live_seen") or {}).items()}
+        sf.write_text(_json.dumps(d))
+        ss = sc.scratch_stranded()
+        names = {Path(p).name for p in ss["stranded"]}
+        check("cxs-a" in names, "a run last seen live over an idle hour ago no longer holds its clones")
     finally:
         shutil.rmtree(BASE, ignore_errors=True)
     print("selftest_scratch_stranded_live_run: %s" % ("FAIL %d" % len(FAILS) if FAILS else "OK"))

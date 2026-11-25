@@ -1045,6 +1045,17 @@ def scratch_stranded() -> dict:
     # 2026-11-25 (OPS_WORKER_CLONE_POOL_RESTORE_HMOQ_PBAL). Only a unit's seat dir ("-rm-" in it) is excused: a bare
     # seat such as BENCH is always live, and would excuse its clones for good. When the run ends, the excuse ends.
     live = {s for s in live_seats() if "-rm-" in s}
+    # A run's last landing can come minutes after its process exits (2026-11-25T09:42Z, cxs-deployshard-1795594915 read
+    # stranded the pass after its run ended, and was on origin by 09:52Z). A seat dir seen live inside the last idle hour
+    # still holds its clones; the record is this function's own state file.
+    try:
+        prev = json.loads((state_dir() / "scratch_stranded.json").read_text()).get("live_seen") or {}
+        prev = prev if isinstance(prev, dict) else {}
+    except (OSError, ValueError, AttributeError):
+        prev = {}
+    live_seen = {k: v for k, v in prev.items() if isinstance(v, (int, float)) and now - v < POOL_IDLE_S}
+    live_seen.update({s: now for s in live})
+    live = set(live_seen)
     root = scratch_root()
 
     def owner_live(c: Path) -> bool:
@@ -1068,7 +1079,8 @@ def scratch_stranded() -> dict:
         return row
 
     rows = [r for r in _per_clone(one, scratch_clone_dirs()) if r is not None]
-    d = {"ts": now_iso(), "epoch": now, "stranded": [r["path"] for r in rows if r["stranded"]], "rows": rows}
+    d = {"ts": now_iso(), "epoch": now, "stranded": [r["path"] for r in rows if r["stranded"]], "rows": rows,
+         "live_seen": live_seen}
     try:
         (state_dir() / "scratch_stranded.json").write_text(json.dumps(d))
     except OSError:
