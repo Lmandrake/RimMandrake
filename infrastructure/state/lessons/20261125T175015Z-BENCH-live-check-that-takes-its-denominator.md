@@ -1,0 +1,3 @@
+A live check that takes its denominator from the mod's own journal field cannot see a fault in that field: sc_storeroom_mortar_rebound_legs compared each rebound with the mod's item_rebound left, and a planted cellsLeft = the whole throw passed it (a 4-cell rebound with 2 cells left read as 4 of 6). Derive what the check compares against from the scene's own trace (budget less cells flown), print the mod's number beside it, and plant a fault in the producer of that field to see the check go red.
+item: RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_GAME_VISIT_ONE
+home: skills/live-debugging-proof-harness
