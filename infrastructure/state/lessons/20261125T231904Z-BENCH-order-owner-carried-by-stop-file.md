@@ -1,0 +1,3 @@
+An order of the owner carried by a stop file that a program ages into a fault does not survive: the agents who answer the fault give it an expiry and remove it. On 2026-11-25 the steward aged testq/fill.stop after 60 min, an Operations run wrote an until line into it, and a Conductor role run made a systemd timer that removed it at 08:00Z; the filler then queued mod jobs on SteveDesktop. Carry such an order in a switch that no program ages and that only his words or the Conductor window's recorded act lift (host_work_switch.py).
+item: RIMMANDRAKE_VET_WORK_BOUND_FOR_STEVEDESKTOP_HE_SAW_FIREHAWK_AGAIN
+home: infrastructure/stevedesktop/RUNBOOK.md
