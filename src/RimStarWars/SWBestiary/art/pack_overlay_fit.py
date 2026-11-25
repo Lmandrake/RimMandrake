@@ -354,6 +354,7 @@ def main(argv):
     ap.add_argument("verb", nargs="?", default="plan", choices=("plan", "sheet"))
     ap.add_argument("--out")
     ap.add_argument("--only", nargs="*")
+    ap.add_argument("--tex", help="exactly this body texPath (auto_judge refits the body it just installed)")
     ap.add_argument("--export", help="write PNGs here for `art.py install` (a kept slot refuses the script path)")
     ap.add_argument("--apply", action="store_true")
     ap.add_argument("--refit", action="store_true", help="redo graphics this tool already fitted")
@@ -362,7 +363,8 @@ def main(argv):
     if args.verb == "sheet" and not args.apply:
         sheet(args.out, overs, only=args.only)
         return 0
-    rows = [r for r in targets(args.refit) if not args.only or any(o in r[1] for o in args.only)]
+    rows = [r for r in targets(args.refit) if (not args.only or any(o in r[1] for o in args.only))
+            and (not args.tex or r[1] == args.tex)]
     print("%d graphics, %d facing files" % (len(rows), sum(4 if is_single(r[3], r[1]) else 3 for r in rows)))
     if args.export:
         os.makedirs(args.export, exist_ok=True)

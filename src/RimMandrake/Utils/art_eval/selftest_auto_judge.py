@@ -282,6 +282,15 @@ def installs_and_unfiled():
               AJ.install_cmds(dict(acc, candidate="r3"), "fauna", spec=None, cmp_root=cmp_root) == [])
         fc = AJ.install_cmds({"subject": "RM_Fuzzviper_n", "decision": "ACCEPT"}, "facing", drv=Path("/d/drv.py"))
         check("facing ACCEPT: drv.py install <subject>", [list(map(str, c)) for c in fc] == [["python3", "/d/drv.py", "install", "RM_Fuzzviper_n"]], fc)
+        # a new body leaves its fitted Pack overlay off the body (Moravatha, then Fambaa at 1df326562e): refit it
+        tp = "RimStarWars/SWBestiary/Fambaa/Fambaa"
+        pc = AJ.pack_refit_cmd(tp)
+        check("facing install refits the body's Pack overlay through pack_overlay_fit",
+              Path(str(pc[1])).name == "pack_overlay_fit.py" and pc[2:] == ["--refit", "--tex", tp, "--apply"], pc)
+        ev = [json.dumps({"type": "live", "mod": "src/RimStarWars/SWBestiary", "rel": tp + "Pack_east.png"}),
+              json.dumps({"type": "live", "mod": "src/RimStarWars/SWBestiary", "rel": tp + "_east.png"})]
+        check("the refit's Pack files join the pass's paths, the body's do not double",
+              AJ.pack_installed(ev, tp) == ["src/RimStarWars/SWBestiary/Textures/" + tp + "Pack_east.png"], AJ.pack_installed(ev, tp))
 
         # ---- which repo files an install wrote (its own records, not a git scan that would sweep a peer's files)
         fi = [json.dumps({"def": "RM_FurnaceBeast", "tag": "r2", "files": [{"mod": "RimMandrake/Pyrelands", "rel": "Things/F/F_south.png"}]}),

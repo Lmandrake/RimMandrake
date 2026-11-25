@@ -567,6 +567,20 @@ def facing_installed(event_lines, prefix: str) -> list:
     return list(dict.fromkeys(out))
 
 
+PACK_FIT = ROOT / "src/RimStarWars/SWBestiary/art/pack_overlay_fit.py"
+
+
+def pack_refit_cmd(tp: str) -> list:
+    """A new body leaves the Pack overlay that pack_overlay_fit fitted to the old one off the body (Moravatha, then
+    Fambaa at 1df326562e). Refit that one graphic; a body with no fitted Pack, or another's drawn Pack, is a no-op."""
+    return [sys.executable, PACK_FIT, "--refit", "--tex", tp, "--apply"]
+
+
+def pack_installed(event_lines, tp: str) -> list:
+    """Repo paths the refit made live: <texPath>Pack_<facing>.png."""
+    return facing_installed(event_lines, tp + "Pack")
+
+
 def deploy_target(path: str, folded: dict) -> tuple:
     """(target key, deploy_custom_mods args) for a repo file: a folded biome deploys through the composite."""
     parts = Path(path).parts
@@ -791,6 +805,11 @@ def post_run(run_recs, specs, log: Path, st: dict) -> tuple:
             sts = json.loads((DRV.parent / "state.json").read_text()) if (DRV.parent / "state.json").is_file() else {}
             tp = (((sts.get(r["subject"]) or {}).get("row")) or {}).get("target_texpath")
             got = facing_installed(lines_of(ART_EVENTS), tp) if tp else []
+            if got and not any(row["rc"]):
+                row["rc"].append(sh(pack_refit_cmd(tp), ROOT, log, timeout=540))     # hang guard, far above a fit
+                got += pack_installed(lines_of(ART_EVENTS), tp)
+                if row["rc"][-1] != 0:
+                    row["result"] = f"pack_overlay_fit.py rc {row['rc'][-1]} (see log)"
         row["files"] = got
         row.setdefault("result", f"installed {len(got)} file(s)" if got else "installer ran, no file recorded")
         if vetoed:
