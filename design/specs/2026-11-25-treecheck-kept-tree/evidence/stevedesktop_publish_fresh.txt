@@ -1,0 +1,15 @@
+publish rc=0 wall=205.3 s
+tree checks: the commit is what lands, running them on a full checkout of HEAD replayed onto origin/main f1ccf85ddb08 444af88c3a7e: the kept tree, made fresh (none kept yet) (127.0 s, wrote 4898 MB)
+tree checks: 23 green in 30.4 s
+PUBLISHED 60566a4db2ac7eb92ae8538a0de32ab5681e3cbf
+checkout window (git in a check tree): 183 samples over 187.7 s
+  some: avg10 max 86.91; stalled 69% of the window (total delta)
+  full: avg10 max 85.26; stalled 67% of the window (total delta)
+pressure at start: {"some": {"avg10": 73.65, "avg60": 53.95, "avg300": 51.13, "total": 23477931697.0}, "full": {"avg10": 71.76, "avg60": 52.6, "avg300": 49.62, "total": 22446628990.0}}
+
+--- publish output ---
+tree checks: the commit is what lands, running them on a full checkout of HEAD replayed onto origin/main f1ccf85ddb08 444af88c3a7e: the kept tree, made fresh (none kept yet) (127.0 s, wrote 4898 MB)
+tree checks: 23 green in 30.4 s
+moved the branch: 0 dirty file(s) merged in place, 4 carried past git
+PUBLISHED 60566a4db2ac7eb92ae8538a0de32ab5681e3cbf
+close with: rimflow close <ID> --sha 60566a4db2ac
