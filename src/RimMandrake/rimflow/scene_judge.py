@@ -441,17 +441,54 @@ def _load(path, lines=False):
     return C.parse_json(text)
 
 
-def judge(run_dir, rejudge=False):
+MARKS = ("overlay", "tainted", "arm", "compared", "build_kind", "map_kind")   # copied from the receipt, never made up
+
+
+def ledger_append(run, run_receipt, record, result, rejudge, root=None):
+    """A judged accept run adds its run line to design/concepts/<Mod>/version/scene_runs.jsonl (scene_verdicts.add_run),
+    marks copied from its s.run receipt; a mark the receipt lacks stays absent, so the line reads NOT COUNTED. A rejudge adds
+    a class line, never a second run line. An explore run (or a script outside design/concepts/<Mod>/) adds nothing.
+    -> the line added, or None."""
+    script = str((run or {}).get("script") or "").replace("\\", "/")
+    m = re.match(r"design/concepts/([^/]+)/", script)
+    if (run or {}).get("mode") != "accept" or not m:
+        return None
+    here = os.path.dirname(os.path.abspath(__file__))
+    if here not in sys.path:
+        sys.path.insert(0, here)
+    import scene_verdicts as SV
+    root = root or SV.REPO
+    mod = m.group(1)
+    request = record["request"]
+    rid = "%s:%s" % (run.get("session"), request)
+    line = {"run": rid, "scene": os.path.splitext(os.path.basename(script))[0],
+            "claim": record["checker_plan"].get("claim") or record["checker_hash"],
+            "build": str(run.get("commit")), "outcome": result.outcome, "mode": "accept",
+            "receipt": hashlib.sha256(C.canon(run_receipt).encode("utf-8")).hexdigest(),
+            "stamps": list(result.receipt.get("stamps") or [])}
+    line.update({k: run_receipt[k] for k in MARKS if k in run_receipt})
+    have, _ = SV.read(root, mod)
+    if not any(x.get("rec") == "run" and x.get("run") == rid for x in have):
+        SV.add_run(root, mod, line)
+        if not rejudge:
+            return line
+    if rejudge:
+        return SV.add_class(root, mod, rid, result.outcome, "rejudged by scene_judge: the checker or the judge changed, "
+                            "outcome now %s on the same kept evidence" % result.outcome, "scene_judge", rejudged=True)
+    return None
+
+
+def judge(run_dir, rejudge=False, ledger_root=None):
     """Classify the call selected by contract.json and keep the verdict in this run folder."""
     try:
-        return _judge(run_dir, rejudge)
+        return _judge(run_dir, rejudge, ledger_root)
     except NoReading as e:
         return no_reading(e)
     except (OSError, ValueError) as e:
         return no_reading(NoReading(str(e)))
 
 
-def _judge(run_dir, rejudge):
+def _judge(run_dir, rejudge, ledger_root=None):
     folder = Path(run_dir)
     contract = folder / "contract.json"
     if not contract.is_file():
@@ -520,7 +557,8 @@ def _judge(run_dir, rejudge):
             try:
                 os.link(temp, first_path)
             except FileExistsError:
-                return _judge(run_dir, rejudge)
+                return _judge(run_dir, rejudge, ledger_root)
+    ledger_append(run, matching[0], record, result, rejudge, ledger_root)
     return result
 
 
