@@ -13,6 +13,7 @@ Temporary: it lives while the Work Bundles are evaluated; a lasting monitor is f
 Every number is a measured count, [] none found, `could not look` with its cause, or `failed` with its cause. A source
 that cannot be read makes its numbers UNMEASURED, never 0; a run with no token figure is unpriced, never 0 tokens.
 """
+import effort as EF  # the one effort table (RIMMANDRAKE_PASS_EFFORT_ON_EVERY_LAUNCH_STEVEDESKTOP_RAN_MEDIUM)
 import argparse
 import datetime as dt
 import glob
@@ -760,7 +761,7 @@ def call_model(prompt, tier, timeout, name, runner=None):
     text or None, cause or None, weighted tokens or None, seconds)."""
     import role_launch as RL
     argv = [CLAUDE_BOUNDED, "-p", "--model", RL.launch_model(tier), "--output-format", "json", "--tools", "",
-            "--no-session-persistence", "--name", name]
+            "--no-session-persistence", "--name", name] + EF.effort_args(tier)
     cwd = out_dir(create=True)
     t = time.time()
     try:

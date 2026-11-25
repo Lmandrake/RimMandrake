@@ -13,6 +13,7 @@ model is RM_SET_DOWN_JUDGE_MODEL, or the alias `opus`, which the CLI resolves fr
 answer passes the set-down, and says so. The verdict binds only when the row `set_down_judge` of the judge calibration
 registry reads CALIBRATED (refusal_contract.status).
 """
+import effort as EF  # the one effort table (RIMMANDRAKE_PASS_EFFORT_ON_EVERY_LAUNCH_STEVEDESKTOP_RAN_MEDIUM)
 import json
 import os
 import re
@@ -45,7 +46,7 @@ def judge_argv(env=None):
     env = os.environ if env is None else env
     model = (env.get(MODEL_ENV) or DEFAULT_MODEL).strip()
     return [CLAUDE, "-p", "--model", model, "--tools", "", "--setting-sources", "", "--strict-mcp-config",
-            "--no-session-persistence", "--output-format", "json", "--system-prompt",
+            "--no-session-persistence", "--output-format", "json"] + EF.effort_args(model) + ["--system-prompt",
             "You judge whether a helper run may set work down. You answer with one JSON object."]
 
 

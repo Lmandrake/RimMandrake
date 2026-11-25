@@ -233,9 +233,9 @@ def waiting(got, now):
 
 # ---------------------------------------------------------------- the stuck-worker ladder
 # Owner by card 2026-11-25: a stuck worker gets "Effort up, then model up"; a Fable run on stuck work uses "High".
-# Page design/specs/2026-11-25-effort-ladder/boundary.md. Case two of stuck (the only case read now): the run ended with
-# its test still red, or with a LEFT OPEN: note that names no cause outside the work. Case one (the ticket filer refuses
-# its set-down) waits for the filer of RIMMANDRAKE_TIGHTEN_SET_DOWN_CLASSES_ANY_TWELVE_LETTERS_PASS.
+# Page design/specs/2026-11-25-effort-ladder/boundary.md. A run is stuck in two cases. Case one: the ticket filer
+# (filing_gate.py) refused its set-down and the run ended without resolving that refusal (refused_why). Case two: the
+# run ended with its test still red, or with a LEFT OPEN: note that names no cause outside the work (stuck_why).
 # A cause outside the work: the owner or the Conductor acts next, a game, lane, file or account is held or paused, it
 # waits for a date or another run, or it is not a helper's to do.
 OUTSIDE_RX = re.compile(
@@ -250,6 +250,22 @@ RED_RX = re.compile(r"\b(?:FAIL(?:S|ED)?|still red|stays red|not met|not reprodu
 # The run moved its work on: a part holds, a commit landed.
 PROGRESS_RX = re.compile(r"\b(?:holds?|landed|published|built|done|closed|fixed)\b[^.;]{0,60}?\b[0-9a-f]{7,40}\b|"
                          r"\b(?:part|step) \S+ (?:holds|is done|landed)\b", re.I)
+
+
+def refused_why(rec):
+    """-> (stuck?, why) from the run's filing refusals: stuck when one is not resolved. A record that cannot be read is
+    (False, why): it decides nothing here, and the run-end text already names it (detached_helper.filing_refusal_lines)."""
+    try:
+        import filing_gate as FG
+        left, why = FG.read_refusals(rec.get("unit"), FG.state_dir())
+    except Exception as e:  # noqa: BLE001
+        return False, "its filing refusals could not be read (%s: %s)" % (type(e).__name__, e)
+    if left is None:
+        return False, "its filing refusals could not be read (%s)" % why
+    if left:
+        return True, "the filer refused its set-down of %s and the run did not resolve it" % ", ".join(
+            r["id"] for r in left)
+    return False, "no filing refusal is left open"
 
 
 def stuck_why(text):
@@ -375,13 +391,17 @@ def plan(rec, got, lane_states, now=None, gates=None, root=None):
     if no:
         return dict(base, act="none", why=no)
     ladder = None
-    if target == item and noted and not cap and kind is None:
-        stuck, swhy = stuck_why(noted.get("text"))
+    if target == item and not cap:
+        stuck, swhy = refused_why(rec)
+        if stuck:
+            kind = None     # a refused set-down is stuck work, not an item left unsaid
+        elif noted and kind is None:
+            stuck, swhy = stuck_why(noted.get("text"))
         if stuck:
             ladder = ladder_step(rec, swhy)
     if ladder and ladder["step"] == "conductor":
         return dict(base, act="raise", why=ladder["why"], ladder=ladder,
-                    note={"ts": noted.get("ts"), "text": noted.get("text")})
+                    note={"ts": noted.get("ts"), "text": noted.get("text")} if noted else None)
     done = today(rec, now, root)
     if len(done) >= MAX_PER_DAY:
         return dict(base, act="alarm", why="%d continuations of %s in 24 h already (%s)" % (

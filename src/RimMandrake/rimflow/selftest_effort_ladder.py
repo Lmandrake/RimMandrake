@@ -296,6 +296,30 @@ def t_a_stuck_worker_climbs_effort_first():
           and not LOC.stuck_why("LEFT OPEN: part 1 holds at 6d96cd1d9d; part 2 is next")[0])
 
 
+def t_a_refused_set_down_is_stuck():
+    import filing_gate as FG
+    plant_session()
+    rec = make_run()
+    FG.record_refusal(rec["unit"], STATE, "RIMMANDRAKE_SET_DOWN_OF_THE_SELFTEST", "a set-down", "task", "no Tried: part")
+    p, res = go(rec, OUTSIDE)
+    x = ((LAUNCHES[-1] if LAUNCHES else {}).get("extra") or {})
+    check("a run that ends with its set-down refused climbs, whatever its note says",
+          x.get("ladder_step") == "effort" and x.get("effort") == "xhigh" and "refused" in str(x.get("ladder_why")),
+          (p.get("why"), x))
+    rec = make_run()
+    FG.record_refusal(rec["unit"], STATE, "RIMMANDRAKE_SET_DOWN_OF_THE_SELFTEST", "a set-down", "task", "no Tried: part")
+    FG.record_resolution(rec["unit"], STATE, "filed", "RIMMANDRAKE_SET_DOWN_OF_THE_SELFTEST")
+    p, res = go(rec, OUTSIDE)
+    x = ((LAUNCHES[-1] if LAUNCHES else {}).get("extra") or {})
+    check("a refusal that the run resolved makes nothing stuck", not x.get("ladder_step") and x.get("effort") == "high", x)
+    rec = make_run()
+    os.makedirs(os.path.dirname(FG.refusals_path(rec["unit"], STATE)), exist_ok=True)
+    with open(FG.refusals_path(rec["unit"], STATE), "w") as f:
+        f.write("not json\n")
+    check("an unreadable refusal record decides nothing", LOC.refused_why(rec)[0] is False
+          and "could not" in LOC.refused_why(rec)[1], LOC.refused_why(rec))
+
+
 def t_then_a_higher_model_fresh_from_the_note():
     plant_session()
     p, res = go(make_run(effort="xhigh"), STUCK, extra_notes=[PROG])
@@ -347,7 +371,8 @@ def t_a_ladder_step_spends_no_counted_run():
 def main():
     for t in (t_one_table_floor_high, t_a_launch_without_effort_is_red, t_every_launch_in_this_tree_states_effort,
               t_the_detached_record_keeps_effort, t_the_one_launcher_adds_a_forgotten_effort,
-              t_a_stuck_worker_climbs_effort_first, t_then_a_higher_model_fresh_from_the_note,
+              t_a_refused_set_down_is_stuck, t_a_stuck_worker_climbs_effort_first,
+              t_then_a_higher_model_fresh_from_the_note,
               t_then_the_conductor_raise_first, t_a_ladder_step_spends_no_counted_run):
         try:
             t()

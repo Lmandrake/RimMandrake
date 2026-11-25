@@ -2,7 +2,7 @@
 
 Code: `src/RimMandrake/rimflow/effort.py` (the one table and the ladder's steps); the effort reader in
 `src/RimMandrake/Utils/launch_permissions.py` (`effort_scan`); `--effort` on `detached_helper.py launch`; the ladder in
-`src/RimMandrake/rimflow/left_open_continue.py` (`ladder_step`, `stuck_why`).
+`src/RimMandrake/rimflow/left_open_continue.py` (`ladder_step`, `stuck_why`, `refused_why`).
 Item: `RIMMANDRAKE_PASS_EFFORT_ON_EVERY_LAUNCH_STEVEDESKTOP_RAN_MEDIUM`.
 Each promise has a check of the same name in `src/RimMandrake/rimflow/selftest_effort_ladder.py`.
 
@@ -27,9 +27,6 @@ cover it.
   machine's settings file (`effortLevel`, high on Archmagi and SteveDesktop since 2026-11-25).
 - **the-shipped-game.** The game's own call on a player's machine (`OracleKernel.cs`) is the player's CLI. We do not set
   its effort.
-- **a-set-down-the-filer-refuses.** Case one of a stuck worker (the ticket filer refuses its set-down) needs the filer of
-  `RIMMANDRAKE_TIGHTEN_SET_DOWN_CLASSES_ANY_TWELVE_LETTERS_PASS`. That filer was not landed on 2026-11-25. Only case two
-  is read now.
 - **a-note-in-other-words.** Whether a `LEFT OPEN:` note names a cause outside the work is read from its words
   (`OUTSIDE_RX`). A cause in words that the pattern does not know reads as stuck, and the run climbs one step.
 - **a-blind-role-or-no-tier.** A blind role (a judge, reader, examiner, challenger) and a run whose model names no tier
@@ -49,6 +46,10 @@ cover it.
   and `effort: L` on its record. With no `--effort`, the level comes from the table. A level under the floor is refused.
 - **the-one-launcher-adds-a-forgotten-effort.** `claude_bounded.sh` adds `--effort` from the table when its caller gave
   none. It adds nothing to `auth`, `update`, `/usage` or `remote-control`.
+- **a-refused-set-down-is-stuck.** A run that ends with a filing refusal that it did not resolve
+  (`filing_gate.read_refusals` on its unit) is stuck, whatever its note says. A refusal that the run resolved (filed,
+  did, dropped) makes nothing stuck. A refusal record that cannot be read decides nothing here; the run-end text names
+  it.
 - **a-stuck-worker-climbs-effort-first.** A run at high that ended stuck is continued in the same session at xhigh,
   when the resume rule allows a resume. A note that names a cause outside the work, a lane hand-on and a spend stop are
   not stuck: those continue as before, at the same effort.
