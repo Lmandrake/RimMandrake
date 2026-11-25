@@ -924,7 +924,7 @@ def launch(item, model, cap, brief, seat, mod, host=None, env=None):
     path = os.path.join(d, "%s-%d.md" % (item, int(time.time())))
     with open(path, "w", encoding="utf-8") as f:
         f.write(brief)
-    argv = [sys.executable, os.path.join(HERE, "detached_helper.py"), "launch", "--seat", seat, "--item", item,
+    argv = [sys.executable, os.path.join(HERE, "detached_helper.py"), "launch", "--by-program", "list_dispatch", "--seat", seat, "--item", item,
             "--brief-file", path, "--model", model, "--budget-usd", "%g" % cap, "--next-act-owner", FAMILY]
     if mod:
         argv += ["--env", "RM_CONTROL_MOD=%s" % mod]

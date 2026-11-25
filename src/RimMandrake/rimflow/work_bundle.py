@@ -365,7 +365,8 @@ def brief(rec, items, tests):
 
 Read your role first and follow it step by step: {role}
 
-The bundle id is {bid}. Its state file is {sf}: read it first if it exists (a restart), and write it after each group.
+The bundle id is {bid}. Its state file is {sf}: read it first if it exists (a restart), and write it after each group
+(a group is one member, or the members that share one cause, that you fix together: your role, step 3).
 Your first ticket is `{lead}`: claim it before anything else
 (`python3 src/RimMandrake/rimflow/cli.py claim {lead} --seat BENCH --why "work bundle {bid}" --publish`).
 
@@ -396,7 +397,7 @@ def launch_run(rec, text, model="opus", cap=None, seat="BENCH", mod=None, next_a
     if cap is None:
         import list_dispatch as LD
         cap = LD.load_cfg()["%s_cap_usd" % model]     # the lane's per-run stop; no guessed number
-    argv = [sys.executable, os.path.join(HERE, "detached_helper.py"), "launch", "--seat", seat, "--item", rec["lead"],
+    argv = [sys.executable, os.path.join(HERE, "detached_helper.py"), "launch", "--by-program", "work_bundle", "--seat", seat, "--item", rec["lead"],
             "--brief-file", path, "--model", model, "--budget-usd", "%g" % cap, "--env", "%s=%s" % (ENV, rec["id"])]
     if mod:
         argv += ["--env", "RM_CONTROL_MOD=%s" % mod]
@@ -1036,7 +1037,7 @@ def holder_note(rec, items, tests):
     road = [m for m in rec["members"] if m not in tests] if tests else []
     joined = [m for m in rec["members"] if m in tests]
     lines = ["", "This holder run is work bundle %s of %s. Follow the role %s with this brief: its state file is %s "
-             "(read it first if it exists; write it after each group), and `python3 src/RimMandrake/rimflow/"
+             "(read it first if it exists; write it after each group, where a group is one member, or the members that share one cause, that you fix together), and `python3 src/RimMandrake/rimflow/"
              "work_bundle.py context` after each group. The bundle restarts you fresh from that file until each member "
              "has an outcome." % (rec["id"], rec["system"], ROLE, rec["state_file"])]
     if joined:

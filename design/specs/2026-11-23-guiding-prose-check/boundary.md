@@ -99,6 +99,12 @@ on the owner's own line, so the reader is Opus.
   fault starts at once. A check that raises before the start stops nothing. A "shown only" fault of an uncalibrated
   reader never returns a brief. Item: `RIMMANDRAKE_TRIAL_STE_BRIEFS_CHECK_BEFORE_LAUNCH_NOT_AFTER`; 4 of 11 Conductor
   briefs of 2026-11-24 needed a correction note after their run had started.
+- **a-brief-a-program-wrote-is-never-returned.** A launch with `--by-program NAME` starts at once, also from the
+  Conductor window, and its faults print as a note after the start: the Conductor cannot correct a brief that a program
+  wrote. Every program that launches `detached_helper.py launch` (work_bundle, maturation, list_dispatch, red_dispatch,
+  quiet_scan, follow_through) passes the flag. A brief that the Conductor wrote by hand is still returned. Item:
+  `RIMMANDRAKE_HOLD_MOD_AT_ROAD_BACK_STAGE_AND_LET_BUNDLE_BRIEF_START`; `./pipe bundle ExplosiveKnockback` was
+  returned two times at 10:01 AM PST 2026-11-25.
 - **a-sentence-already-sent-in-a-brief-is-silent.** A sentence that an earlier launch sent is not checked again, so a
   program's template is read once.
 - **a-broken-check-stops-nothing.** When the check itself raises, the landing and the launch complete and the writer

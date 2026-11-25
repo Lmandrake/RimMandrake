@@ -519,7 +519,7 @@ def brief_text():
 
 
 def launch_argv(cfg, brief):
-    return [sys.executable, os.path.join(HERE, "detached_helper.py"), "launch", "--seat", cfg["seat"], "--item", RUN_ITEM,
+    return [sys.executable, os.path.join(HERE, "detached_helper.py"), "launch", "--by-program", "quiet_scan", "--seat", cfg["seat"], "--item", RUN_ITEM,
             "--brief-file", brief, "--model", "sonnet", "--budget-usd", "%g" % cfg["sonnet_cap_usd"],
             "--next-act-owner", FAMILY]
 

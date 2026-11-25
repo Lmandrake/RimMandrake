@@ -3121,7 +3121,7 @@ def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=s
     path = os.path.join(brief_dir(), "%s-%d.md" % (mod, int(now_ts())))
     with open(path, "w", encoding="utf-8") as fh:
         fh.write(text)
-    argv = [sys.executable, detached_helper_path(), "launch", "--seat", seat, "--item", item, "--brief-file", path,
+    argv = [sys.executable, detached_helper_path(), "launch", "--by-program", "maturation", "--seat", seat, "--item", item, "--brief-file", path,
             "--model", model, "--budget-usd", "%g" % budget_usd] + (["--resume", session, "--planned-resume"] if session else []) + (
         # a run stopped by its spend cap gets detached_helper's own continuation, this many times (left_open_continue)
         ["--continue-on-cap", str(int(continue_on_cap))] if continue_on_cap else [])

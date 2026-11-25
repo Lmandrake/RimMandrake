@@ -333,8 +333,8 @@ def t_a_publish_with_faults_still_lands():
               "publish: the check runs in main, outside the clone lock")
 
 
-def launch_main(brief, rc=0, boom=None, stand_in=False, principal=False):
-    """principal: the launch comes from the Conductor window (seat BENCH, no RM_ROLE_UNIT)."""
+def launch_main(brief, rc=0, boom=None, stand_in=False, principal=False, extra=()):
+    """principal: the launch comes from the Conductor window (seat BENCH, no RM_ROLE_UNIT). extra: more launch args."""
     import detached_helper as DH
     old, oldc, own = DH.launch, G.check_brief, DH.OWN_LAUNCH
     oldenv = {k: os.environ.get(k) for k in ("RM_ROLE_UNIT", "AGENT_SEAT")}
@@ -354,7 +354,8 @@ def launch_main(brief, rc=0, boom=None, stand_in=False, principal=False):
             f.write(brief)
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
-            got = DH.main(["launch", "--seat", "BENCH", "--item", "X_Y_Z_W", "--brief-file", path, "--budget-usd", "0"])
+            got = DH.main(["launch", "--seat", "BENCH", "--item", "X_Y_Z_W", "--brief-file", path, "--budget-usd", "0"]
+                          + list(extra))
         return got, buf.getvalue(), started
     finally:
         DH.launch, G.check_brief, DH.OWN_LAUNCH = old, oldc, own
@@ -407,6 +408,25 @@ def t_a_principal_launch_gets_its_faults_before_the_start():
     check(rc == 0 and len(started) == 1 and "the belt" in out, "before: a launch by a program or a launched run starts as before")
     rc, out, started = launch_main("# Brief ten\n\nThe baker should go to the belt.\n", principal=True, boom=RuntimeError("planted"))
     check(rc == 0 and len(started) == 1 and "UNMEASURED" in out, "before: a check that raises starts the run and says so (%s)" % out)
+
+
+def t_a_brief_a_program_wrote_is_never_returned():
+    """RIMMANDRAKE_HOLD_MOD_AT_ROAD_BACK_STAGE_AND_LET_BUNDLE_BRIEF_START: `./pipe bundle` writes its brief by program,
+    from the Conductor window. The Conductor cannot correct that brief, so the launch starts and its faults are a NOTE."""
+    b = "# Brief eleven\n\nThe tailor should carry the cloth to the belt.\n"
+    rc, out, started = launch_main(b, principal=True, extra=["--by-program", "work_bundle"])
+    check(rc == 0 and len(started) == 1 and out.startswith("launched: unit x"),
+          "by program: a brief a program wrote starts at once from the Conductor window (rc %s, %d started: %s)" % (rc, len(started), out))
+    check("the belt" in out and "RETURNED BEFORE THE START" not in out and out.find("launched") < out.find("GUIDING PROSE"),
+          "by program: its faults print as a note after the start (%s)" % out)
+    rc, out, started = launch_main(b.replace("tailor", "glazier"), principal=True)
+    check(rc == 5 and started == [] and "RETURNED BEFORE THE START" in out,
+          "by program: a brief the Conductor wrote by hand is still returned (rc %s: %s)" % (rc, out))
+    rf = os.path.join(os.path.dirname(HERE), "rimflow")
+    for path in ("work_bundle.py", "maturation.py", "list_dispatch.py", "red_dispatch.py", "quiet_scan.py",
+                 os.path.join("..", "Utils", "follow_through.py")):
+        src = open(os.path.join(rf, path), encoding="utf-8").read()
+        check('"--by-program"' in src, "by program: %s names its launches --by-program" % path)
 
 
 def t_a_broken_check_stops_nothing():
@@ -502,6 +522,7 @@ def main():
     t_a_launch_with_faults_still_starts()
     t_a_sentence_already_sent_in_a_brief_is_silent()
     t_a_principal_launch_gets_its_faults_before_the_start()
+    t_a_brief_a_program_wrote_is_never_returned()
     t_a_broken_check_stops_nothing()
     t_a_principal_gets_a_note()
     t_the_check_verb_exits_for_a_caller()

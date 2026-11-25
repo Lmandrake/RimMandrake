@@ -2517,6 +2517,9 @@ def main(argv=None):
                         "default 0: a cap stop ends the work")
     a.add_argument("--host", metavar="NAME", help="start the run on this host (SteveDesktop) as a systemd user unit in its "
                                                    "own clone under ~/rm/list/; default: this machine (run_host.py)")
+    a.add_argument("--by-program", metavar="NAME",
+                   help="a program wrote the brief (work_bundle, maturation, list_dispatch, ...): its prose faults are "
+                        "never returned before the start, even from the Conductor window; they print as a note after")
     a.add_argument("--next-act-owner", metavar="NAME",
                    help="the program that reads this run's LEFT OPEN: note and decides its next run (list_dispatch: the "
                         "Workshop Pipeline's two-run rule); left_open_continue.py does not continue such a run")
@@ -2572,7 +2575,9 @@ def main(argv=None):
                 session, brief, first = cr["session"], cr["brief"], cr["line"]
                 env = cr.get("env", env)
                 extra.update(cr["extra"])
-            pre, returned = prose_before(written, args.item) if launch is OWN_LAUNCH else (None, "")
+            # a brief a program wrote is never returned: the Conductor cannot correct it; prose_after notes its faults
+            pre, returned = (prose_before(written, args.item) if launch is OWN_LAUNCH and not args.by_program
+                             else (None, ""))
             if returned:        # the Conductor's brief has a fault: nothing starts; the same brief again starts
                 rc, text = 5, returned
             else:

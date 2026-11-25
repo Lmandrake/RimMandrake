@@ -336,7 +336,7 @@ def launch(item, model, cap, brief, seat):
     path = os.path.join(d, "%s-%d.md" % (item, int(time.time())))
     with open(path, "w", encoding="utf-8") as f:
         f.write(brief)
-    argv = [sys.executable, os.path.join(HERE, "detached_helper.py"), "launch", "--seat", seat, "--item", item,
+    argv = [sys.executable, os.path.join(HERE, "detached_helper.py"), "launch", "--by-program", "red_dispatch", "--seat", seat, "--item", item,
             "--brief-file", path, "--model", model, "--budget-usd", "%g" % cap]
     r = subprocess.run(argv, capture_output=True, text=True, timeout=10800, stdin=subprocess.DEVNULL)  # budget: class=launch
     out = ((r.stdout or "") + (r.stderr or "")).strip()

@@ -636,7 +636,7 @@ def t_the_maturation_road_back_is_one_bundle():
     chk(lambda: rc2 == 2 and rec["id"] in why, "maturation: a mod with a live bundle launches no second (%s)" % why)
     note = W.holder_note(rec, items, {"MT_RED": "cmd:python3 x_accept.py"})
     chk(lambda: rec["id"] in note and rec["state_file"] in note and "roles/bundle_worker.md" in note and "MT_RED" in note
-        and "write it after each group" in note and "work_bundle.py context" in note,
+        and "write it after each group" in note and "a group is one member" in note and "work_bundle.py context" in note,
         "maturation: the holder's brief names the bundle, its state file, the role and each joined ticket")
     W.holder_launched(rec["id"], "rm-holder-9", NOW)
     chk(lambda: W.store_read(rec["id"])["state"] == "live" and W.store_read(rec["id"])["units"][0]["unit"] == "rm-holder-9",

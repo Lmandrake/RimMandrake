@@ -735,7 +735,7 @@ def launch(date, rid, apply):
     fd, path = tempfile.mkstemp(prefix="%s-" % rid, suffix=".md", dir=d)
     with os.fdopen(fd, "w", encoding="utf-8") as f:
         f.write(brief)
-    argv = [sys.executable, os.path.join(RIMFLOW, "detached_helper.py"), "launch", "--seat", SEAT, "--item", rid,
+    argv = [sys.executable, os.path.join(RIMFLOW, "detached_helper.py"), "launch", "--by-program", "follow_through", "--seat", SEAT, "--item", rid,
             "--brief-file", path, "--model", "opus", "--budget-usd", "%g" % READER_CAP_USD]
     try:
         r = subprocess.run(argv, cwd=REPO, capture_output=True, text=True, timeout=LAUNCH_TIMEOUT_S,
