@@ -1,0 +1,65 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 31.9,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4307968
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 17.1
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Manka",
+ "decision": "ACCEPT",
+ "reasons": [
+  "opus band WEAK (model said good); blocking []; polish []; unreadable ['SCALE']",
+  "gpt strong_accept: unsettled [], own blocking []",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v4",
+   "sha": "3a3bc2e81422"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "3e1892f9c835"
+  }
+ },
+ "image_sha256": {
+  "south.png": "cfdedff3ebf66169c035b4dd6ebde72a4353caeca96d18304ef2070282fa9382",
+  "east.png": "b52fa9971e61f5a23bb56ab2a0b4ae1c3526981ce00317df50054277c0a4bde6",
+  "north.png": "faa4cfd5bc24e32ca62ba01ca1a1560133951819f2285a7e7703c20cc1bf8cf4",
+  "scale.png": "468ba7f8c2fbc1d5196fb1283c4bc53202e34de49f712be915de080d85a2b712",
+  "facings.png": "2db3ffd8f1bc1704e6585b316d205dfcd90fdf97a321bc9d1f0a9ad44fe63bf3"
+ }
+}

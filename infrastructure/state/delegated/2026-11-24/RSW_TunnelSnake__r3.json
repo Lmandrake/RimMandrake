@@ -1,0 +1,73 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 39.0,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4431128
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 46.4
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 15.2,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.157437
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_TunnelSnake",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said weak); blocking ['F_INCONSISTENT', 'F_INCONSISTENT', 'F_SIZE_JUMP']; polish ['LEGIB_32']; unreadable ['SCALE']",
+  "gpt regen: unsettled ['K3'], own blocking ['F_SIZE_JUMP']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v4",
+   "sha": "3a3bc2e81422"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "3e1892f9c835"
+  }
+ },
+ "image_sha256": {
+  "south.png": "852279b0c1d2dc50268cf78824831ee923f312e464ead431dde1bc60abbf783c",
+  "east.png": "a48e7c2e93579bb2511c7a28ab5711c629da95b292e1c151267c7285e5e5c0ae",
+  "north.png": "e68255c2167a02ab625d86eb65b27b7713fd189389b51f221c5fcd39d3337295",
+  "scale.png": "89aa70ec48888d394c56ad231767862685eed18e2fc184d3430d2def681615a5",
+  "facings.png": "5c922ecc3b624429cebf50579308cadb4cc7422c235509be17b05a35ddffcae0"
+ }
+}
