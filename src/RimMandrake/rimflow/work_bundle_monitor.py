@@ -828,7 +828,7 @@ def judge_row(row, runs, roles, projects=PROJECTS, caller=None):
            "class": row.get("class"), "role": row.get("role")}
     path, why = transcript_of(row.get("unit"), runs, roles, projects) if row.get("unit") else (None, "no run unit")
     if path is None:
-        brief, acts, out["transcript"] = "", "", "could not look: %s" % why
+        brief, acts, out["transcript"] = "", "(the acts are unknown: no transcript could be read)", "could not look: %s" % why
     else:
         brief, acts = excerpt(path, ep(row.get("ts")) or time.time())
         out["transcript"] = path

@@ -70,6 +70,8 @@ its cause, or `failed` with its cause. A source that cannot be read prints `coul
   tokens before the first edit read `could not look` for that run, and the judge is told the transcript could not be
   read.
 - **a-corrupt-ledger-line.** It is skipped and counted (`delivery_metrics._jsonl`), not shown by name.
+- **a-live-run-outside-the-bundle-tool.** A bundle's live check counts only when it went through `work_bundle.py live`
+  or `maturation.py live-row`; a live run the worker made another way is not seen (the report of 2026-11-25 found one).
 - **role-runs-in-the-share.** Role runs (`rm-role-*`) work no ticket list; they are not in the share or the efficiency
   numbers. Their set-downs are counted and judged.
 

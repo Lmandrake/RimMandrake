@@ -261,6 +261,10 @@ def t_judge_failure_could_not_judge():
     chk(v["verdict"] == "COULD NOT JUDGE" and "usage limit" in v["cause"], "judge-failure-could-not-judge: a failed call")
     v = M.judge_row(row, {}, {}, caller=lambda *a, **k: ("I think it is fine.", None, 10, 1.0))
     chk(v["verdict"] == "COULD NOT JUDGE" and "no verdict line" in v["cause"], "judge-failure-could-not-judge: no verdict line")
+    seen = []
+    M.judge_row(row, {}, {}, caller=lambda prompt, *a, **k: (seen.append(prompt), (None, "x", None, 0))[1])
+    chk("(no act before this point)" not in seen[0] and "acts are unknown" in seen[0],
+        "judge-failure-could-not-judge: a lost transcript is shown as unknown acts, never as no acts")
     ok = 'reasoning\n{"verdict": "NOT SINCERE", "evidence": "ran nothing", "cause": "the gate"}'
     v = M.judge_row(row, {}, {}, caller=lambda *a, **k: (ok, None, 10, 1.0))
     chk(v["verdict"] == "NOT SINCERE" and v["evidence"] == "ran nothing", "judge-failure-could-not-judge: a good line parses")
