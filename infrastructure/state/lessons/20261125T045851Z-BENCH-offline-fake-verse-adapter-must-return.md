@@ -1,0 +1,3 @@
+An offline fake of a Verse adapter must return the same kinds of objects as the adapter: FlowWorks' LineLook fake listed no pipe things in AroundCell/Touching, while MapLineGraph's GetThingList lists the pipe Thing itself, so 15 green offline cases hid an InvalidCastException that threw on every in-game Choose style along a pipe (visit 11, 2026-11-24). When you write a fake, read each adapter method and copy what it yields, including the vertex's own Thing.
+item: RIMMANDRAKE_FIX_FLOWWORKS_LINE_LOOK_CAST_THROWS_WHEN_TANK_TOUCHES_PIPE
+home: skills/rimworld-modding/references/project-engine-facts.md
