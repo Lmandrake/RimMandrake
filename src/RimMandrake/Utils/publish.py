@@ -46,6 +46,7 @@ import json
 import os
 import re
 import shutil
+import signal
 import subprocess
 import sys
 import tempfile
@@ -97,13 +98,16 @@ class IndexLockHeld(Refuse):
 
 
 def lock_holders(top):
-    """-> [(pid, command)] of the processes that have this clone's .git/index.lock open, read from /proc/*/fd."""
+    """-> [(pid, command)] of the processes that have this clone's .git/index.lock open, read from /proc/*/fd; or a str
+    naming why the lock's path could not be read (could not look is not "nobody holds it")."""
     try:
-        lock = os.path.realpath(os.path.join(subprocess.run(["git", "rev-parse", "--absolute-git-dir"], cwd=top,
-                                                            capture_output=True, text=True, timeout=30).stdout.strip(),
-                                             "index.lock"))
-    except (OSError, subprocess.SubprocessError):
-        return []
+        r = subprocess.run(["git", "rev-parse", "--absolute-git-dir"], cwd=top, capture_output=True, text=True,
+                           timeout=30)  # budget: danger=a hung git holds the refusal; longest=1s (one rev-parse)
+    except (OSError, subprocess.SubprocessError) as e:
+        return "git rev-parse: %s" % e
+    if r.returncode or not r.stdout.strip():
+        return "git rev-parse: %s" % (r.stderr.strip() or "no git dir")
+    lock = os.path.realpath(os.path.join(r.stdout.strip(), "index.lock"))
     out = []
     for d in glob.glob("/proc/[0-9]*/fd/*"):
         try:
@@ -128,7 +132,9 @@ def lock_wait(top, attempt, started):
         held = lock_holders(top)
         raise IndexLockHeld("%s/.git/index.lock stayed held for %d s; %s. Nothing was published. Run ./publish again "
                             "once it is free." % (
-                                top, LOCK_WAIT_S, "held by " + "; ".join("pid %d: %s" % h for h in held) if held else
+                                top, LOCK_WAIT_S,
+                                "who holds it could not be read (%s)" % held if isinstance(held, str) else
+                                "held by " + "; ".join("pid %d: %s" % h for h in held) if held else
                                 "no process has it open: a git that was killed left it (remove it only when no git "
                                 "runs in this clone)"))
     time.sleep(min(0.25 * (attempt + 1), 2.0))
@@ -1264,49 +1270,244 @@ def is_sparse(top):
 
 
 CHECKTREE_PREFIX = "rm-treecheck-"
+# RIMMANDRAKE_REUSE_TREECHECK_TREE_EACH_PUBLISH_WRITES_THREE_GIG: one check tree per clone is kept and reused; a reuse
+# rewrites only the files that differ (page: design/specs/2026-11-25-treecheck-kept-tree/boundary.md)
+CHECKTREE_KEPT = CHECKTREE_PREFIX + "kept"
+CHECKTREE_KEPT_LOCK = CHECKTREE_KEPT + ".lock"
+PRISTINE_CONFIG = "rm-pristine-config"       # in the kept tree's .git: its config as the clone made it
 # budget: danger=the sweep deletes the check tree of a live landing; longest=584s (the longest door-check wall of 636 publishes,
 # budget: 14 days to 2026-11-24; one check may now take 6000 s)
 CHECKTREE_STALE_S = 21600
+
+
+def _io_written():
+    """-> bytes this process and its reaped children have written so far (/proc/self/io write_bytes), or None."""
+    try:
+        with open("/proc/self/io") as f:
+            for ln in f:
+                if ln.startswith("write_bytes:"):
+                    return int(ln.split()[1])
+    except (OSError, ValueError):
+        pass
+    return None
+
+
+def _treegit(tree, *a):
+    """One git call on a check tree, its git dir named outright: a tree with no .git of its own must never reach the
+    clone around it (the kept tree lives inside the clone's git dir, where git would find that repo instead)."""
+    return subprocess.run(["git", "-c", "core.hooksPath=/dev/null", "-c", "core.trustctime=true",
+                           "-c", "core.checkStat=default", "--git-dir", os.path.join(tree, ".git"),
+                           "--work-tree", tree, *a], capture_output=True, text=True, timeout=CHECKTREE_GIT_TIMEOUT_S)
+
+
+def _sync_kept_refs(top, tree):
+    """Give the tree the refs a fresh `git clone --shared` of `top` has: refs/remotes/origin/<b> for each of top's
+    branches, top's tags, top's current branch, origin/HEAD naming it; every other ref (a stale origin/main, a branch or
+    stash a check run made) is deleted. -> None, or why it could not."""
+    r = run(top, "for-each-ref", "--format=%(objectname) %(refname)", "refs/heads", "refs/tags", check=False)
+    if r.returncode:
+        return "git for-each-ref in the clone: %s" % r.stderr.strip()
+    want, heads = {}, {}
+    for ln in r.stdout.splitlines():
+        sha, ref = ln.split(" ", 1)
+        if ref.startswith("refs/heads/"):
+            heads[ref] = sha
+            want["refs/remotes/origin/" + ref[len("refs/heads/"):]] = sha
+        else:
+            want[ref] = sha
+    cur = run(top, "symbolic-ref", "-q", "HEAD", check=False).stdout.strip()
+    if cur in heads:
+        want[cur] = heads[cur]
+    r = _treegit(tree, "for-each-ref", "--format=%(objectname) %(refname) %(symref)")
+    if r.returncode:
+        return "git for-each-ref in the kept tree: %s" % r.stderr.strip()
+    have = {}
+    for ln in r.stdout.splitlines():
+        sha, ref, sym = (ln.split(" ") + [""])[:3]
+        if not sym:
+            have[ref] = sha
+    todo = ["delete %s\n" % ref for ref in sorted(have) if ref not in want]
+    todo += ["update %s %s\n" % (ref, sha) for ref, sha in sorted(want.items()) if have.get(ref) != sha]
+    if todo:
+        r = subprocess.run(["git", "--git-dir", os.path.join(tree, ".git"), "update-ref", "--no-deref", "--stdin"],
+                           input="".join(todo), capture_output=True, text=True, timeout=CHECKTREE_GIT_TIMEOUT_S)
+        if r.returncode:
+            return "git update-ref: %s" % r.stderr.strip()
+    oh = ["symbolic-ref", "refs/remotes/origin/HEAD", "refs/remotes/origin/" + cur[len("refs/heads/"):]] \
+        if cur in heads else ["symbolic-ref", "-q", "--delete", "refs/remotes/origin/HEAD"]
+    r = _treegit(tree, *oh)
+    if r.returncode and cur in heads:
+        return "git symbolic-ref origin/HEAD: %s" % r.stderr.strip()
+    return None
+
+
+def _reuse_kept(top, tree, head):
+    """Make the kept tree exactly `head`: no file a check run left, no edit, the refs of a fresh clone. git rewrites
+    only the paths that differ from what the tree holds. -> None when it is exact now, else why it is not."""
+    gd = os.path.join(tree, ".git")
+    if not os.path.isdir(gd):
+        return "it has no .git"
+    for n in os.listdir(gd):            # a red re-run's tree inside it, left by a killed run: the lock says nobody is in it
+        if n.startswith(CHECKTREE_PREFIX):
+            _rmtree_hard(os.path.join(gd, n))
+    r = _treegit(tree, "rev-parse", "--absolute-git-dir")
+    if r.returncode or os.path.realpath(r.stdout.strip()) != os.path.realpath(gd):
+        return "git cannot read it: %s" % (r.stderr.strip() or r.stdout.strip())
+    try:
+        shutil.copyfile(os.path.join(gd, PRISTINE_CONFIG), os.path.join(gd, "config"))   # a check may have set config
+    except OSError as e:
+        return "its pristine config: %s" % e
+    for a in (["clean", "-q", "-ffdx"], ["checkout", "-q", "-f", "--detach", head]):
+        r = _treegit(tree, *a)
+        if r.returncode:
+            return "git %s: %s" % (a[0], (r.stderr.strip().splitlines() or [""])[-1])
+    why = _sync_kept_refs(top, tree)
+    if why:
+        return why
+    r = _treegit(tree, "rev-parse", "HEAD")
+    if r.returncode or r.stdout.strip() != head:
+        return "its HEAD reads %r, not %s" % (r.stdout.strip() or r.stderr.strip(), head[:12])
+    r = _treegit(tree, "status", "--porcelain=v1", "--ignored", "-uall", "--no-renames")
+    if r.returncode or r.stdout.strip():
+        return "git status after the reset: %s" % ((r.stderr or r.stdout).strip().splitlines() or [""])[0]
+    r = _treegit(tree, "ls-files", "-v")
+    odd = [ln for ln in r.stdout.splitlines() if not ln.startswith("H ")]
+    if r.returncode or odd:
+        return "a path marked assume-unchanged or skip-worktree: %s" % (odd[:1] or [r.stderr.strip()])[0]
+    return None
+
+
+def _fresh_tree(top, tree, head, what):
+    """A `git clone --shared` (no objects copied) of `top` at `tree`, checked out at `head`; raises Refuse."""
+    for a in (["clone", "-q", "--shared", "--no-checkout", top, tree],
+              ["-C", tree, "checkout", "-q", "--detach", head]):
+        r = subprocess.run(["git", "-c", "core.hooksPath=/dev/null", *a], capture_output=True, text=True,
+                           timeout=CHECKTREE_GIT_TIMEOUT_S)
+        if r.returncode:
+            raise Refuse("the full checkout of %s for the checks failed: git %s: %s"
+                         % (what, a[0] if a[0] != "-C" else a[2], r.stderr.strip()))
+    shutil.copyfile(os.path.join(tree, ".git", "config"), os.path.join(tree, ".git", PRISTINE_CONFIG))
+
+
+def _rmtree_hard(p):
+    """shutil.rmtree that first gives back the write bit a check run took off a folder (git clean cannot remove what is
+    in a read-only folder, and neither can a plain rmtree, so the kept tree would never be made fresh again)."""
+    def fix(func, path, _exc):
+        try:
+            os.chmod(os.path.dirname(path), 0o700)
+            if os.path.isdir(path) and not os.path.islink(path):
+                os.chmod(path, 0o700)
+            func(path)
+        except OSError:
+            pass
+    shutil.rmtree(p, **({"onexc": fix} if sys.version_info >= (3, 12) else {"onerror": fix}))
+
+
+def _take_kept_lock(gitdir):
+    """-> (fd, None) holding the kept tree's flock, or (None, why) when another user holds it or it cannot be opened."""
+    try:
+        fd = os.open(os.path.join(gitdir, CHECKTREE_KEPT_LOCK), os.O_CREAT | os.O_RDWR, 0o644)
+    except OSError as e:
+        return None, "its lock could not be opened: %s" % e
+    try:
+        fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except OSError:
+        os.close(fd)
+        return None, "another check of this clone holds the kept tree"
+    return fd, None
 
 
 @contextlib.contextmanager
 def full_head_tree(top, rev="HEAD", what="HEAD", lands=None):
     """The checks judge the commit, not the working tree: a sparse clone lacks the files they read (they went red or
     green blind, lessons 2026-11-15 194926Z/195130Z) and a full one holds edits the commit does not (is_clone_top).
-    Yield a full checkout of HEAD: a throwaway
-    `git clone --shared` inside this clone's git dir (no objects copied, ~15 s for the whole tree on ext4), removed
-    after. It holds the commit being pushed, so a violation in it refuses exactly as in a full clone. A leftover from a
-    killed run (older than an hour) is removed first."""
-    import shutil
-    import tempfile
+    Yield a full checkout of `rev`: the clone's kept check tree (CHECKTREE_KEPT, a `git clone --shared` inside this
+    clone's git dir, no objects copied), made exactly that commit by _reuse_kept, which rewrites only the files that
+    differ; one checkout wrote 3.36 GB on SteveDesktop when every publish made a new tree (2026-11-25). A kept tree that
+    cannot be made exact is made fresh. While another user holds the kept tree (a nested call, split_pre_existing), the
+    call makes a fresh tree of its own and removes it after. A random-named leftover of a killed run (older than
+    CHECKTREE_STALE_S) is removed first. Page: design/specs/2026-11-25-treecheck-kept-tree/boundary.md."""
     gitdir = out(top, "rev-parse", "--absolute-git-dir")
     for n in os.listdir(gitdir):
         p = os.path.join(gitdir, n)
-        if n.startswith(CHECKTREE_PREFIX) and time.time() - os.path.getmtime(p) > CHECKTREE_STALE_S:
+        if n.startswith(CHECKTREE_PREFIX) and n not in (CHECKTREE_KEPT, CHECKTREE_KEPT_LOCK) \
+                and time.time() - os.path.getmtime(p) > CHECKTREE_STALE_S:
             shutil.rmtree(p, ignore_errors=True)
     head = out(top, "rev-parse", rev)
-    tmp = tempfile.mkdtemp(prefix=CHECKTREE_PREFIX, dir=gitdir)
+    kept = os.path.join(gitdir, CHECKTREE_KEPT)
+    t0, w0 = time.monotonic(), _io_written()
+    # a check tree's own red re-runs (split_pre_existing is handed the kept tree as top) keep nothing inside it
+    fd, busy = (None, "a check tree keeps no tree of its own") \
+        if os.path.basename(os.path.realpath(top)).startswith(CHECKTREE_PREFIX) else _take_kept_lock(gitdir)
+    tree = None
     try:
-        t0 = time.monotonic()
+        if fd is not None:
+            why = _reuse_kept(top, kept, head) if os.path.lexists(kept) else "none kept yet"
+            if why is None:
+                how = "the kept tree, reused"
+                tree = kept
+            else:
+                if os.path.lexists(kept):
+                    print("tree checks: the kept check tree cannot be made exact (%s): making it fresh" % why, flush=True)
+                    _rmtree_hard(kept)
+                if os.path.lexists(kept):
+                    busy = "the kept tree could not be removed"
+                else:
+                    tree = kept
+                    try:
+                        _fresh_tree(top, kept, head, what)
+                    except BaseException:
+                        shutil.rmtree(kept, ignore_errors=True)
+                        raise
+                    how = "the kept tree, made fresh (%s)" % why
+        if tree is None:
+            tree = tempfile.mkdtemp(prefix=CHECKTREE_PREFIX, dir=gitdir)
+            _fresh_tree(top, tree, head, what)
+            how = "a fresh tree of its own (%s)" % busy
         # lands: the checkout is the tree as it lands, so its origin/main is that commit. The clone's own origin/main
         # there is this clone's local main, and a landing replayed onto a newer origin read every sha origin gained
         # since as "not on origin/main" (selftest_modledger_tree SHA_NOT_ON_BASE, 2026-11-22)
-        for a in (["clone", "-q", "--shared", "--no-checkout", top, tmp],
-                  ["-C", tmp, "checkout", "-q", "--detach", head],
-                  *([["-C", tmp, "update-ref", "refs/remotes/origin/main", head]] if lands else [])):
-            r = subprocess.run(["git", "-c", "core.hooksPath=/dev/null", *a], capture_output=True, text=True,
-                               timeout=CHECKTREE_GIT_TIMEOUT_S)
+        if lands:
+            r = _treegit(tree, "update-ref", "refs/remotes/origin/main", head)
             if r.returncode:
-                raise Refuse("the full checkout of %s for the checks failed: git %s: %s"
-                             % (what, a[0] if a[0] != "-C" else a[2], r.stderr.strip()))
-        print("tree checks: %s, running them on a full checkout of %s %s (%.1f s)"
+                raise Refuse("the full checkout of %s for the checks failed: git update-ref: %s"
+                             % (what, r.stderr.strip()))
+        w1 = _io_written()
+        print("tree checks: %s, running them on a full checkout of %s %s: %s (%.1f s, wrote %s)"
               % ("the commit is what lands" if (rev == "HEAD" if lands is None else lands) else "a red test re-run",
-                 what, head[:12],
-                 time.monotonic() - t0),
+                 what, head[:12], how, time.monotonic() - t0,
+                 "%.0f MB" % ((w1 - w0) / 1e6) if w0 is not None and w1 is not None else "UNMEASURED bytes"),
               flush=True)
-        yield tmp
+        yield tree
     finally:
-        shutil.rmtree(tmp, ignore_errors=True)
+        if tree is not None and tree != kept:
+            shutil.rmtree(tree, ignore_errors=True)
+        if fd is not None:
+            os.close(fd)                                 # closing releases the flock
+
+
+def _kill_own_sessions():
+    """SIGKILL every process group this process started as its own session (progress_guard runs each check so), so a
+    check does not live on, writing into the kept tree, after its publish ended."""
+    me = os.getpid()
+    for d in os.listdir("/proc"):
+        if not d.isdigit():
+            continue
+        try:
+            with open("/proc/%s/stat" % d) as f:
+                st = f.read().rsplit(")", 1)[1].split()
+            if int(st[1]) == me and int(st[3]) == int(d):        # ppid is this process, and it leads its own session
+                os.killpg(int(d), 9)
+        except (OSError, ValueError, IndexError):
+            pass
+
+
+def _on_term(signum, _frame):
+    """SIGTERM (`timeout N ./publish`, a unit stop) ends publish through its clean-up: the check children die and every
+    `finally` runs, so no random-named check tree is left (bench's rm-treecheck-rqp5014m, 4.6 GB, was left by
+    `timeout 530 ./publish` on 2026-11-24 7:45 PM PST, when the default action skipped them)."""
+    _kill_own_sessions()
+    raise SystemExit(128 + signum)
 
 
 # RIMMANDRAKE_STRIP_HOLDER_WRITER_FROM_DOOR_TESTS: a pilot holder's unit writes the mod ledger as HOLDER.<lease>; a door
@@ -1563,6 +1764,7 @@ def main(argv=None):
     # Progress goes to stdout and REFUSED to stderr. Under a pipe stdout is block-buffered, so `2>&1 | tail` printed the
     # progress AFTER the refusal and hid it (RIMMANDRAKE_FLUSH_PUBLISH_OUTPUT_SO_TAIL_SHOWS_REFUSAL): line-buffer it.
     sys.stdout.reconfigure(line_buffering=True)
+    signal.signal(signal.SIGTERM, _on_term)
     msg = a.message
     if a.file:
         msg = sys.stdin.read() if a.file == "-" else open(a.file).read()

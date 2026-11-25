@@ -466,14 +466,18 @@ def floor_reading(largest: int) -> dict:
 
 
 TREECHECK_PREFIX = "rm-treecheck-"      # publish.py CHECKTREE_PREFIX: its full checkout for the door checks
+# publish.py CHECKTREE_KEPT and its lock: the one check tree a clone keeps; the next run's publish reuses it, made exact
+# first (design/specs/2026-11-25-treecheck-kept-tree/boundary.md), so the pool keeps it
+TREECHECK_KEPT = (TREECHECK_PREFIX + "kept", TREECHECK_PREFIX + "kept.lock")
 
 
 def shed(c: Path) -> list[str]:
     """Make a reused clone as small as a fresh one: remove every untracked and ignored file (a run's Transient output, a
-    Saves backup), every leftover publish checkout in .git, and every loose object a pack already holds. Only for a clone
-    nobody works in whose work is pushed (pool_reuse's own test). -> what it did, one line per step."""
+    Saves backup), every leftover publish checkout in .git but the kept one (TREECHECK_KEPT), and every loose object a
+    pack already holds. Only for a clone nobody works in whose work is pushed (pool_reuse's own test). -> what it did,
+    one line per step."""
     said = []
-    for d in sorted((c / ".git").glob(TREECHECK_PREFIX + "*")):
+    for d in sorted(d for d in (c / ".git").glob(TREECHECK_PREFIX + "*") if d.name not in TREECHECK_KEPT):
         shutil.rmtree(d, ignore_errors=True)
         said.append(f"removed {d.name}" + (" (FAILED)" if d.exists() else ""))
     for argv, what in ((["clean", "-q", "-ffdx"], "clean"), (["repack", "-d", "-l", "-q"], "repack"),

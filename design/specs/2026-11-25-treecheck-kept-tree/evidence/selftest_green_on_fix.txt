@@ -1,0 +1,21 @@
+PASS a-second-checkout-rewrites-only-the-files-that-differ: of 41 files only d0/f0.txt is written again (1 rewritten: ['d0/f0.txt'])
+PASS a-second-checkout-rewrites-only-the-files-that-differ: the output says the tree was reused ('e checks: a red test re-run, running them on a full checkout of 7685201390e766d6b4c43252481d0836273ce71c 7685201390e7: the kept tree, reused (0.0 s, wrote 0 MB)')
+PASS the-kept-tree-is-exactly-the-commit: stray, ignored, edited, unstaged and ref plants are gone, and the refs are a fresh clone's (None; same tree)
+PASS the-kept-tree-is-exactly-the-commit: it was a reuse, not a fresh tree ('tree checks: the commit is what lands, running them on a full checkout of HEAD 7685201390e7: the kept tree, reused (0.1 s, wrote 0 MB)')
+PASS the-kept-tree-is-exactly-the-commit: lands sets origin/main to the commit (7685201390e7)
+PASS the-kept-tree-is-exactly-the-commit: the next use without lands has origin/main as a fresh clone has it (the clone's main)
+PASS a-tree-that-cannot-be-made-exact-is-made-fresh: a garbage index -> exact fresh tree, said why (None; 'of HEAD 7685201390e7: the kept tree, made fresh (git clean: fatal: /home/mandrake/.cache/tckept-4ke032aq/broken/.git/rm-treecheck-kept/.git/index: index file smaller than expected) (0.0 s, wrote 0 MB)')
+PASS a-tree-that-cannot-be-made-exact-is-made-fresh: no .git at all -> exact fresh tree, said why (None; 'made exact (it has no .git): making it fresh\ntree checks: the commit is what lands, running them on a full checkout of HEAD 7685201390e7: the kept tree, made fresh (it has no .git) (0.0 s, wrote 0 MB)')
+PASS a-tree-that-cannot-be-made-exact-is-made-fresh: a read-only folder git clean cannot empty -> exact fresh tree, said why (None; 'ree checks: the commit is what lands, running them on a full checkout of HEAD 7685201390e7: the kept tree, made fresh (git clean: warning: failed to remove ro/f: Permission denied) (0.0 s, wrote 0 MB)')
+PASS a-tree-that-cannot-be-made-exact-is-made-fresh: its objects gone (alternates name nothing) -> exact fresh tree, said why (None; 'is what lands, running them on a full checkout of HEAD 7685201390e7: the kept tree, made fresh (git checkout: fatal: unable to read tree (7685201390e766d6b4c43252481d0836273ce71c)) (0.0 s, wrote 0 MB)')
+PASS a-tree-that-cannot-be-made-exact-is-made-fresh: the clone around it is untouched
+PASS a-second-user-makes-its-own-tree: a nested call yields another tree at its own rev, removed after, and the outer tree stays exact (None)
+PASS a-second-user-makes-its-own-tree: while another process holds the kept tree, a call makes its own and removes it after (None; 'kout of HEAD 1019ab86d3ac: a fresh tree of its own (another check of this clone holds the kept tree) (0.0 s, wrote 0 MB)')
+PASS a-rev-other-than-head-is-checked-out: rev A gives A's tree, then HEAD moves the same kept tree to B ((None, 'file 0 0\n'), (None, 'changed in B\n'))
+PASS a-clone-back-from-the-pool-gets-no-wrong-tree: shed keeps the kept tree and removes the random one (['removed rm-treecheck-abc123', 'clean exit 0', 'repack exit 0', 'prune-packed exit 0'])
+PASS a-clone-back-from-the-pool-gets-no-wrong-tree: the next run's first call reuses it, exactly the new commit (None)
+PASS a-check-tree-keeps-no-tree-of-its-own: a call on the kept tree as top makes a tree at its rev, removes it, and keeps nothing inside the kept tree's .git ([])
+PASS a-check-tree-keeps-no-tree-of-its-own: the next reuse removes a leftover inside the kept tree's .git ([])
+PASS a-killed-publish-leaves-no-random-tree: SIGTERM removes the random-named tree and ends the check's session (tree gone, check ended)
+PASS a-killed-publish-leaves-no-random-tree: the stale sweep removes an old random-named tree and never the kept tree or its lock
+RESULT: GREEN, 8 tests

@@ -1,0 +1,13 @@
+FAIL a-second-checkout-rewrites-only-the-files-that-differ: of 41 files only d0/f0.txt is written again (41 rewritten: ['.gitignore', 'd0/f0.txt', 'd0/f1.txt', 'd0/f2.txt'])
+FAIL a-second-checkout-rewrites-only-the-files-that-differ: the output says the tree was reused ('tree checks: a red test re-run, running them on a full checkout of 7262c7138439c589c4623408b745df28c21bae3a 7262c7138439 (0.0 s)')
+FAIL the-kept-tree-is-exactly-the-commit crashed: FileNotFoundError: [Errno 2] No such file or directory: '/home/mandrake/.cache/tckept-u5og_qfw/exact/.git/rm-treecheck-pg8uga6z/stray.txt'
+FAIL a-tree-that-cannot-be-made-exact-is-made-fresh crashed: FileNotFoundError: [Errno 2] No such file or directory: '/home/mandrake/.cache/tckept-u5og_qfw/broken/.git/rm-treecheck-mnj6kabw/stray.txt'
+PASS a-second-user-makes-its-own-tree: a nested call yields another tree at its own rev, removed after, and the outer tree stays exact (None)
+PASS a-second-user-makes-its-own-tree: while another process holds the kept tree, a call makes its own and removes it after (None; 'tree checks: the commit is what lands, running them on a full checkout of HEAD 7262c7138439 (0.0 s)')
+FAIL a-rev-other-than-head-is-checked-out: rev A gives A's tree, then HEAD moves the same kept tree to B ((None, 'file 0 0\n'), (None, 'changed in B\n'))
+FAIL a-clone-back-from-the-pool-gets-no-wrong-tree crashed: FileNotFoundError: [Errno 2] No such file or directory: '/home/mandrake/.cache/tckept-u5og_qfw/pool/.git/rm-treecheck-i1vgs4h2/stray.txt'
+PASS a-check-tree-keeps-no-tree-of-its-own: a call on the kept tree as top makes a tree at its rev, removes it, and keeps nothing inside the kept tree's .git ([])
+FAIL a-check-tree-keeps-no-tree-of-its-own crashed: FileNotFoundError: [Errno 2] No such file or directory: '/home/mandrake/.cache/tckept-u5og_qfw/nested/.git/rm-treecheck-v7nfca_u/.git'
+FAIL a-killed-publish-leaves-no-random-tree: SIGTERM removes the random-named tree and ends the check's session (tree left, check alive)
+FAIL a-killed-publish-leaves-no-random-tree crashed: FileNotFoundError: [Errno 2] No such file or directory: '/home/mandrake/.cache/tckept-u5og_qfw/termed/.git/rm-treecheck-kept'
+RESULT: RED, 9 failing

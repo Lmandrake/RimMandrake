@@ -51,6 +51,7 @@ PAGES = {
     "design/specs/2026-11-24-time-budgets/boundary.md": "src/RimMandrake/Utils/selftest_time_budget_lint.py",
     "design/specs/2026-11-24-progress-guard/boundary.md": "src/RimMandrake/Utils/selftest_progress_guard.py",
     "design/specs/2026-11-24-treecheck-slots/boundary.md": "src/RimMandrake/Utils/selftest_treecheck_slots.py",
+    "design/specs/2026-11-25-treecheck-kept-tree/boundary.md": "src/RimMandrake/Utils/selftest_treecheck_kept.py",
     "design/specs/2026-11-24-quiet-scan/boundary.md": "src/RimMandrake/rimflow/selftest_quiet_scan.py",
     "design/specs/art-x-delete/boundary.md": "src/RimMandrake/Utils/art/selftest_art_x_ban_hardening.py",
     "design/specs/static-call-thing-id/boundary.md": "src/RimMandrake/Utils/selftest_static_call_args_core.py",

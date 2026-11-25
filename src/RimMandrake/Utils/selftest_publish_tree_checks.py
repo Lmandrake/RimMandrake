@@ -23,6 +23,8 @@ import tempfile
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import publish as P  # noqa: E402
+# the kept check tree and its lock stay in a clone by design (design/specs/2026-11-25-treecheck-kept-tree/boundary.md)
+KEPT = (P.CHECKTREE_KEPT, P.CHECKTREE_KEPT_LOCK)
 
 # the machine-wide push lock (RM_ROOT/.publish-push.lock) of this run's publishes lives in a temp root, so a selftest
 # never waits on, nor holds up, a real ./publish (children read PUBLISH_RM_ROOT, this process P.RM_ROOT)
@@ -146,7 +148,7 @@ def sparse_cases(tmp):
     check(bool(err) and "planted name not allowed" in err and "gamma" in err and "fix-join" in err,
           "a sparse clone refuses a violation committed in the cone (%r)" % (err or out)[-200:])
     gitdir = os.path.join(sp, ".git")
-    left = [n for n in os.listdir(gitdir) if n.startswith(P.CHECKTREE_PREFIX)]
+    left = [n for n in os.listdir(gitdir) if n.startswith(P.CHECKTREE_PREFIX) and n not in KEPT]
     check(not left, "no check tree left in the git dir: %s" % left)
     # RIMMANDRAKE_CHECK_COMMITTED_TREE_NOT_DIRTY_WORKTREE_AT_DOOR: a FULL clone's door verdict is about the commit too.
     # `up` is full; publishing one of two edited files leaves the other dirty in the working tree, where the checks ran.
@@ -163,7 +165,7 @@ def sparse_cases(tmp):
     check(err is None and "1 green" in out,
           "a full clone passes a commit that is green, whatever an uncommitted edit would make of it (%r)"
           % (err or out)[-200:])
-    check(not [n for n in os.listdir(os.path.join(up, ".git")) if n.startswith(P.CHECKTREE_PREFIX)],
+    check(not [n for n in os.listdir(os.path.join(up, ".git")) if n.startswith(P.CHECKTREE_PREFIX) and n not in KEPT],
           "no check tree left in the full clone's git dir")
 
 
@@ -289,7 +291,7 @@ def door_base_cases(tmp):
     check(bool(err) and "every pipeline test runs" in out and "selftest_pipe.py" in err,
           "an unknown change set runs every pipeline test (it used to run none) (%r)" % (err or out))
     left = [n for w in ("pre", "broke", "worse", "newtest", "crashafter", "twice", "silent", "flaky") for n in os.listdir(os.path.join(tmp, w, ".git"))
-            if n.startswith(P.CHECKTREE_PREFIX)]
+            if n.startswith(P.CHECKTREE_PREFIX) and n not in KEPT]
     check(not left, "no base tree left in any git dir: %s" % left)
 
 

@@ -3,6 +3,7 @@
  "places": {
   "src/RimMandrake/Utils/scene_world.py::RealWorld.stage_state::except-returns-empty": 1,
   "src/RimMandrake/Utils/waitalive.py::stat_of::except-returns-empty": 1,
+  "src/RimMandrake/Utils/publish.py::PushLock._holder::except-returns-empty": 1,
   "src/RimMandrake/Utils/waitalive.py::size_of::except-returns-empty": 1,
   "src/RimMandrake/rimflow/run_end_wake.py::_disarm_if_mine::or-empty": 1,
   "src/RimMandrake/rimflow/run_end_wake.py::has_pending::except-returns-empty": 1,
@@ -296,6 +297,9 @@
   ],
   "src/RimMandrake/Utils/scene_world.py::RealWorld.stage_state::except-returns-empty": [
    "NOT A COLLAPSE: None is 'this map is not a made stage' (only FileNotFoundError, which is that reading: scene.open removes the live file when it loads a map that is not a stage); every other OSError raises, and the caller refuses NO_STAGE by name"
+  ],
+  "src/RimMandrake/Utils/publish.py::PushLock._holder::except-returns-empty": [
+    "NOT A COLLAPSE: the holder's name is only the label of the waiting line on stderr; an unreadable name reads 'a publisher', and the wait itself is decided by the flock, never by this text"
   ],
   "src/RimMandrake/Utils/waitalive.py::stat_of::except-returns-empty": [
    "NOT A COLLAPSE: None is 'the process is gone' (only ENOENT and ESRCH, which are that reading); every other error raises CouldNotLook, exit 5"

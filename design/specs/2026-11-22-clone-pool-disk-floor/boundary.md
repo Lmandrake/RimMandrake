@@ -31,7 +31,9 @@ in `src/RimMandrake/Utils/selftest_pool_floor.py`.
   wrote into the clone. Every later item that got that clone carried it.
 - Each ledger write adds a 5 MB loose blob of the 17 MB seat shard. Clones held 1.0 to 1.6 GB of loose objects, most
   of them also in a pack.
-- `./publish` makes a full checkout (`.git/rm-treecheck-*`, 4.3 GB) for its checks. A killed publish leaves it.
+- `./publish` keeps one full checkout per clone for its checks (`.git/rm-treecheck-kept`, 3.4 to 4.6 GB) and reuses it
+  (`design/specs/2026-11-25-treecheck-kept-tree/boundary.md`). A random-named one (`.git/rm-treecheck-<random>`) is made
+  only beside it, and a publish killed with SIGKILL leaves that one.
 
 ## ACCEPTS (the only inputs this is built for)
 
@@ -59,7 +61,8 @@ in `src/RimMandrake/Utils/selftest_pool_floor.py`.
 - **a-reading-under-the-floor-is-a-breach.** `pool_reading` gives the free space, the floor and the margin; a margin
   under zero counts one breach, which `disk.pool_breach` reads.
 - **a-reused-clone-sheds-what-the-last-run-left.** `shed` on a clone removes every ignored and untracked file, every
-  `.git/rm-treecheck-*` folder and every loose object that a pack holds. A tracked file and a commit stay.
+  random-named `.git/rm-treecheck-*` folder and every loose object that a pack holds. A tracked file, a commit and the
+  kept check tree (`.git/rm-treecheck-kept`, which the next run's publish makes exact before use) stay.
 - **pool-reuse-sheds-the-clone.** `pool_reuse` calls `shed` on the clone it gives.
 - **the-sense-reading-walks-few-clones-a-pass.** `pool_reading(cached_sizes=True)` walks each clone with no size on
   record, each size older than `SIZE_MAX_AGE_S`, and the `SIZE_WALKS_PER_PASS` oldest of the rest. It uses no size older
