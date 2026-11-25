@@ -30,7 +30,7 @@ One concept folder, design/concepts/<Mod>/, holds the persisted state and the ch
   manifest                                 the stage -> packet files table, with hashes
   showcases <dir>                          the showcase set: per showcase new coverage and overlap, what is uncovered
   turns [--root R]                         every turn that waits on him: waiting_owner, no OWNER event since it closed
-  repin <dir> --source OWNER:<tsn>[@<commit>]... --why W   a LOCKED version changed by his card: re-pin, no reopen
+  repin <dir> --source OWNER:<tsn>[@<commit>]|TEXT@<commit>... --why W   a LOCKED version changed by his card or by scene test text only: re-pin, no reopen
 
 Exit: 0 ok, 1 refused (the reason on stderr), 2 unreadable.
 What this cannot do, said plainly: injecting a packet proves it was supplied, not followed; the record's sources are
@@ -2913,6 +2913,11 @@ def unblock(d, why):
 VERSION_FILE = os.path.join("version", "VERSION.json")
 _HEX = re.compile(r"\b[0-9a-f]{7,40}\b")
 _REPIN_SOURCE = re.compile(r"^OWNER:([0-9]+)(?:@([0-9A-Za-z^~._/-]+))?$")
+_TEXT_SOURCE = re.compile(r"^TEXT@([0-9A-Za-z^~._/-]+)$")
+# RIMMANDRAKE_REPAIR_FLOWWORKS_REPIN_REFUSAL_AND_ESCAPE_WARNING: the fields of a scene that are its test text. A commit
+# that changes only these, in scenes.json only, changes no bar (the bars are tree.json's leaves and sheet.md), so it
+# needs no card of his: a re-pin cites it as TEXT@<sha>, a note, never a refusal (CLAUDE.md §A fault of form).
+SCENE_TEXT_KEYS = ("start", "action", "expect", "control", "restore")
 
 
 def _git(repo, *a):
@@ -2937,6 +2942,52 @@ def ledger_events(repo):
                 if isinstance(ev, dict):
                     out.append(ev)
     return out
+
+
+def test_text_only(d, commit, repo):
+    """-> (True, "") when `commit` (a full sha) changed, of this concept's frozen input files, scenes.json alone, and in
+    it only the test text of scenes and showcases (SCENE_TEXT_KEYS): the same scene ids, and every other field of each
+    (its requirement, kind, hold, members) and every other top-level key equal. -> (False, why) otherwise, or when the
+    commit or either side of the file cannot be read (UNMEASURED is never test text)."""
+    rel = os.path.relpath(d, repo).replace(os.sep, "/")
+    rc, out = _git_rc(repo, "diff", "--name-only", "%s^" % commit, commit, "--",
+                      *["%s/%s" % (rel, fn) for fn in INPUT_FILES.values()])
+    if rc != 0:
+        return False, "UNMEASURED: the files %s changed cannot be read (no parent, or git failed)" % commit[:10]
+    names = sorted(set(out.decode("utf-8", "replace").split()))
+    if names != ["%s/scenes.json" % rel]:
+        return False, "it changed %s, not scenes.json alone" % (", ".join(n.rsplit("/", 1)[-1] for n in names) or
+                                                                 "no frozen input")
+    sides = []
+    for c in ("%s^" % commit, commit):
+        blob, err = _blob_at(repo, c, "%s/scenes.json" % rel)
+        try:
+            sides.append(json.loads(blob.decode("utf-8")) if blob is not None else None)
+        except ValueError:
+            sides.append(None)
+        if err or not isinstance(sides[-1], dict):
+            return False, "UNMEASURED: scenes.json at %s cannot be read as an object" % c[:11]
+    a, b = sides
+
+    def rows(x, k):
+        v = x.get(k) or []
+        if not isinstance(v, list) or not all(isinstance(r, dict) and r.get("id") for r in v):
+            return None
+        return {r["id"]: {f: r[f] for f in r if f not in SCENE_TEXT_KEYS} for r in v}
+    if {k: v for k, v in a.items() if k not in ("scenes", "showcases")} != \
+            {k: v for k, v in b.items() if k not in ("scenes", "showcases")}:
+        return False, "it changed a top-level key of scenes.json other than scenes and showcases"
+    for k in ("scenes", "showcases"):
+        ra, rb = rows(a, k), rows(b, k)
+        if ra is None or rb is None:
+            return False, "UNMEASURED: scenes.json %s is not a list of scenes with ids" % k
+        if set(ra) != set(rb):
+            return False, "it added or dropped %s: %s" % (k, ", ".join(sorted(set(ra) ^ set(rb))))
+        moved = sorted(i for i in ra if ra[i] != rb[i])
+        if moved:
+            return False, "it changed a field outside the test text (%s) of %s" % ("/".join(SCENE_TEXT_KEYS),
+                                                                                  ", ".join(moved))
+    return True, ""
 
 
 def change_tied(ev, commit, repo, events):
@@ -3185,12 +3236,17 @@ def repin_sources(d, repo=None):
     for c in commits:
         tsns = commit_cards(c, repo, owner_ev, events)
         if not tsns:
+            text, not_text = test_text_only(d, c, repo)
+            if text:                # no bar changed: cited as a note of its own, needing no card of his
+                sources.append("TEXT@%s" % c)
+                continue
             subj = (_git(repo, "log", "-1", "--format=%s", c) or b"").decode("utf-8", "replace").strip()
             conductor = re.findall(r"CONDUCTOR:[0-9]+", (_git(repo, "log", "-1", "--format=%B", c) or b"").decode(
                 "utf-8", "replace"))
-            uncited.append("%s %s: %s" % (c, subj, "cites %s, a delegated call, never his word" % ", ".join(conductor)
-                                          if conductor else "cites no card of his, and no ledger event on a card's item "
-                                          "names it"))
+            uncited.append("%s %s: %s" % (c, subj, "%s; and not test text only: %s" % (
+                                              "cites %s, a delegated call, never his word" % ", ".join(conductor)
+                                              if conductor else "cites no card of his, and no ledger event on a card's "
+                                              "item names it", not_text)))
         sources += ["OWNER:%s@%s" % (t, c) for t in tsns]
     if uncited:
         return sources, refusal(uncited, "%d of %d commits that moved a frozen input carry out no card of his that a "
@@ -3236,10 +3292,21 @@ def repin(d, sources, why, repo=None, dry=False):
     events = ledger_events(repo)
     cited, words = {}, set()          # full commit -> tsn; every tsn cited
     for sv in sources:
+        t = _TEXT_SOURCE.match(str(sv).strip())
+        if t:
+            full = (_git(repo, "rev-parse", "--verify", "%s^{commit}" % t.group(1)) or b"").decode().strip()
+            if not full:
+                raise Refused("commit %s does not resolve" % t.group(1))
+            ok, why_not = test_text_only(d, full, repo)
+            if not ok:
+                raise Refused("%s is not a change of test text only (%s): a changed bar is his card, OWNER:<tsn>@%s" % (
+                    sv, why_not, full[:10]))
+            cited[full] = "TEXT"
+            continue
         m = _REPIN_SOURCE.match(str(sv).strip())
         if not m:
-            raise Refused("source %r is not OWNER:<tsn>[@<commit>]: a locked change is his word only "
-                          "(a Conductor instruction is not his quotation)" % sv)
+            raise Refused("source %r is not OWNER:<tsn>[@<commit>] or TEXT@<commit>: a locked change is his word, or "
+                          "a change of scene test text only (a Conductor instruction is not his quotation)" % sv)
         tsn, ref = m.group(1), m.group(2)
         ev = owner_ev.get(tsn)
         if not isinstance(ev, dict):
@@ -3678,7 +3745,8 @@ def main(argv=None):
     x = sub.add_parser("repin", help="a LOCKED version changed by his card: re-pin the accepted stages' inputs")
     x.add_argument("dir")
     x.add_argument("--source", action="append", default=[],
-                   help="OWNER:<tsn>@<commit> (his card and the commit carrying it out) or OWNER:<tsn> (his word, no file)")
+                   help="OWNER:<tsn>@<commit> (his card and the commit carrying it out), OWNER:<tsn> (his word, no file), or "
+                        "TEXT@<commit> (a commit that changed only scene test text: no bar, no card)")
     x.add_argument("--why", required=True)
     for name in ("scene-begin", "scene-end", "scene-hold"):
         x = sub.add_parser(name)

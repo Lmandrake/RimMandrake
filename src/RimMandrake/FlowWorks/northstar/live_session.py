@@ -2354,7 +2354,7 @@ def verdicts(rows):
 
 
 def rel(path):
-    """Repo-relative when it can be: python.exe runs the repo from \\wsl.localhost\... and --out-dir is on D:, and relpath
+    r"""Repo-relative when it can be: python.exe runs the repo from \\wsl.localhost\... and --out-dir is on D:, and relpath
     across Windows drives raises (it crashed a finished session's ending). Then the absolute path."""
     try:
         return os.path.relpath(path, REPO)

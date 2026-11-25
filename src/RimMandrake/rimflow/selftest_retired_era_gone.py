@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""RIMMANDRAKE_RETIRE_OLD_PIPELINE_REMNANTS_TEN_SLIPPED_INTO_LANES: the pipelines before the Maturation Pipeline stay gone.
+r"""RIMMANDRAKE_RETIRE_OLD_PIPELINE_REMNANTS_TEN_SLIPPED_INTO_LANES: the pipelines before the Maturation Pipeline stay gone.
 
 The owner, 2026-11-18: "Nothing of that era should remain. No more collisions or confusion. I do not want to lose the
 wisdom, just remove all future confusion please."

@@ -1010,7 +1010,8 @@ def _repin_route(fx, root, row, dst, ver):
     if refusal is None:
         row.update(aut="autorepin", decision="autorepin", steward_key="%s|repin|%s" % (ver, g.get("at")), need=None,
                    repin_sources=list(sources),
-                   why="%s: the pipeline re-pins, citing his cards %s (designer_stage.repin's own checks passed dry)" % (
+                   why="%s: the pipeline re-pins, citing %s (his cards; TEXT@ is a change of scene test text only, no bar; "
+                       "designer_stage.repin's own checks passed dry)" % (
                        lead, ", ".join(sources)))
         row["steward_why"] = "the re-pin the grant waits on, citing %s" % ", ".join(sources)
         return

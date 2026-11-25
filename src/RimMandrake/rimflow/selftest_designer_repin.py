@@ -19,7 +19,9 @@ stage.json, OWNER lines and a ledger event tying each commit to its card. Checks
    re-pin cites (paving and the advance corrections, never the exam card given after the corrections commit), refuses
    his new words on the item (never cited for him), a commit that carries out no card of his (a CONDUCTOR citation is
    not his word), an uncommitted edit and an unlocked version, each as a refusal record with stage.json
-   byte-identical; and the sources it finds pass repin itself."""
+   byte-identical; and the sources it finds pass repin itself;
+9. RIMMANDRAKE_REPAIR_FLOWWORKS_REPIN_REFUSAL_AND_ESCAPE_WARNING: a commit of scene test text only (no bar) is cited
+   TEXT@<sha> with no card and passes repin; a moved requirement, a dropped scene or a tree.json change still refuses."""
 import json
 import os
 import shutil
@@ -256,6 +258,76 @@ def late_approval_checks():
             "OWNER:%s@%s" % (card, fix)], (srcs, rf))
         out = DS.repin(d, srcs, "selftest: the late card", repo=root, dry=True) if srcs else None
         check("8 the late card's source passes repin itself", bool(out), out)
+    finally:
+        shutil.rmtree(root, ignore_errors=True)
+
+
+def scene_edit(d, root, edit, msg):
+    """Edit the fixture's scenes.json with `edit(scenes)` and commit it with `msg` (no card cited) -> the full sha."""
+    p = os.path.join(d, "scenes.json")
+    sc = json.loads(open(p, encoding="utf-8").read())
+    edit(sc)
+    with open(p, "w", encoding="utf-8") as f:
+        json.dump(sc, f, indent=1)
+    git(root, "add", "-A")
+    git(root, "commit", "-q", "-m", msg)
+    return git(root, "rev-parse", "HEAD")
+
+
+def text_only_checks():
+    """9 RIMMANDRAKE_REPAIR_FLOWWORKS_REPIN_REFUSAL_AND_ESCAPE_WARNING: a commit that changes only the test text of
+    scenes.json (a scene's start, action, expect, control or restore; FlowWorks 51e271d211, the moat scene's geometry)
+    changes no bar, so it needs no card of his: the auto re-pin cites it as TEXT@<sha>, a note and no refusal, and repin
+    itself takes that source. A commit that also moves a bar's link (a scene's requirement), drops a scene, or touches
+    tree.json still refuses for lack of his card, and a hand TEXT@ source on such a commit is refused."""
+    root, d, shas = fixture(dated=True)
+    try:
+        st = DS.load_state(d)
+        cur, frozen = DS.inputs(d, st, root), DS.owner_uncited(root, st.get("item"), d)
+        for r in DS.accepted(st):
+            if "owner" in DS.DEPS[r["stage"]]:
+                r["inputs"]["owner"], r["owner_uncited"] = cur.get("owner"), frozen
+        DS.write_json(DS.state_path(d), st)
+        srcs, rf = DS.repin_sources(d, repo=root)
+        DS.repin(d, srcs, "selftest: level before the test-text commit", repo=root)
+
+        def text(sc):
+            sc["scenes"][0]["action"] += "; game time runs on"
+            sc["scenes"][0]["start"] = list(sc["scenes"][0]["start"]) + ["the water a metre below the rim"]
+        fix = scene_edit(d, root, text, "moat scene: wider, game time (no bar changed; scenes.json test text)")
+        srcs, rf = DS.repin_sources(d, repo=root)
+        check("9 a test-text-only commit with no card: no refusal, cited as TEXT@<sha>",
+              rf is None and srcs == ["TEXT@%s" % fix], (srcs, rf))
+        out = DS.repin(d, srcs, "selftest: test text only", repo=root, dry=True) if srcs else None
+        check("9 the TEXT source passes repin itself", bool(out), out)
+        if srcs:
+            DS.repin(d, srcs, "selftest: test text only", repo=root)
+        check("9 after the TEXT re-pin nothing is stale", DS.stale_stage(d, DS.load_state(d), root) == (None, []),
+              DS.stale_stage(d, DS.load_state(d), root))
+        row = (DS.load_state(d).get("history") or [{}])[-1]
+        check("9 the history row names the TEXT source", "TEXT@%s" % fix in row.get("why", ""), row)
+
+        def link(sc):
+            sc["scenes"][0]["requirement"] = list(sc["scenes"][0]["requirement"]) + ["a_bar_it_never_proved"]
+        bad = scene_edit(d, root, link, "scene: proves one more bar (no card)")
+        srcs, rf = auto_refuses("9 a scene's requirement moved with no card", d, root, bad)
+        check("9 a moved requirement is never cited as TEXT", not any(x.startswith("TEXT@") for x in srcs), srcs)
+        refuses("9 a hand TEXT source on a requirement change", d, root, ["TEXT@" + bad], "test text")
+        git(root, "revert", "--no-edit", "HEAD")
+
+        def drop(sc):
+            sc["scenes"].pop()
+        gone = scene_edit(d, root, drop, "scene dropped (no card)")
+        auto_refuses("9 a scene dropped with no card", d, root, gone)
+        git(root, "revert", "--no-edit", "HEAD")
+        with open(os.path.join(d, "tree.json"), "ab") as f:
+            f.write(b"\n")
+        with open(os.path.join(d, "scenes.json"), "ab") as f:
+            f.write(b"\n ")
+        git(root, "add", "-A")
+        git(root, "commit", "-q", "-m", "tree and scene text together (no card)")
+        both = git(root, "rev-parse", "HEAD")
+        refuses("9 a hand TEXT source on a commit that also touched tree.json", d, root, ["TEXT@" + both], "test text")
     finally:
         shutil.rmtree(root, ignore_errors=True)
 
@@ -626,6 +698,7 @@ def main():
 
         auto_sources_checks()
         late_approval_checks()
+        text_only_checks()
         first_pin_checks()
 
         # 4: the spend ceiling and his word that predates the park
