@@ -1,0 +1,1 @@
+A detached_helper.py launch piped into grep for 'has started' prints nothing while the launch is only slow: do not relaunch on silence. Read the launcher's own last lines or detached_helper.py status; a second launch is refused for the clone the first one holds (2026-11-24).

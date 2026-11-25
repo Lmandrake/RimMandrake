@@ -1,0 +1,1 @@
+git log origin/main..HEAD lists LOCAL commits that origin lacks: one line of it is not proof that a commit landed. After a publish, fetch and run git merge-base --is-ancestor <sha> origin/main before saying landed (2026-11-24: the Conductor told the owner a brief change was on origin; the publish had been refused twice).
