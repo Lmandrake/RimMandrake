@@ -1,0 +1,3 @@
+A reader of a folder that other tools also write must match its own record kind positively (a name form and a field inside, as detached_helper.record_unit/is_record do), never by excluding the suffixes known today: on 2026-11-24 the exclusion list missed <unit>.alive.json, 123 sign-of-life files read as broken run records, and list_dispatch held 11 ready items for about a day. When the planted unreadable folder was tested, it also showed live runs read as none, so check what a could-not-look hides, not only what it counts.
+item: RIMMANDRAKE_SCOPE_COULD_NOT_LOOK_ONE_STRAY_FILE_HELD_ELEVEN_TICKETS
+home: design/specs/2026-11-24-record-readers/boundary.md
