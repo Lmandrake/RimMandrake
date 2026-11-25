@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "stage": "in_game",
   "stage_label": "In-game acceptance (Stage 6)",
-  "since": "2026-11-24T09:27:17-08:00",
+  "since": "2026-11-24T20:21:36-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -429,6 +429,23 @@
       "confirmed": {
         "steward_confirms": "read visit_10/SUMMARY.md, rows.jsonl, strange.jsonl, both sc_hung_bridge evidence files, the diff and planted reading of the sc_moat_walkers repair 8eab92b6c2 (sound, not weakened), the visit's one edit of suspension_bridge_proof.py (verdict unchanged), maturation.py next --json: fix_readers_owed [], shortfalls [], paused_raids {}, undecided_bars inv_settings and walk_moat_season; verdict: exit not met stands, no item added, nothing classed without evidence",
         "game_only": "RIMMANDRAKE_TRACE_FLOWWORKS_UNDER_DECK_PATH_MISS_ONE_IN_28_RUNS"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "in_game",
+      "at": "2026-11-24T20:21:36-08:00",
+      "by": "BENCH",
+      "why": "visit 11 steward: 29 of 30 lines count; sc_ways_out spoiled twice on ArchBig (ENVIRONMENT FAULT, Cherry Picker refuses Apparel_PackJump), a check only to re-run on the walk build, game-only; filed by the driver as RIMMANDRAKE_RUN_FLOWWORKS_WAYS_OUT_WHERE_CHERRY_PICKER_KEEPS_JUMP_PACK (run on ArchSmall); mod bug RIMMANDRAKE_FIX_FLOWWORKS_LINE_LOOK_CAST_THROWS_WHEN_TANK_TOUCHES_PIPE is game-up, filed; strange-thing reasons were a reader fault of form, fixed 6e1a770f1e",
+      "unit": "rm-detached-bench-rimmandrake-route-flowworks-visit-eleven-1795577866",
+      "confirmed": {
+        "steward_confirms": "read visit_11 SUMMARY.md, rows.jsonl, strange.jsonl and maturation.py next: 0 FAIL, 0 undecided bars, 0 fix readers owed, sc_ways_out spoiled (game-only rerun), driver test edit 00a965aa56 a repair not a weakening; verdict: next visit"
       },
       "checks_passed": [
         "order",
