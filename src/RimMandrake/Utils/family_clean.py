@@ -27,11 +27,18 @@ Families (age line: a unit whose newest mtime is younger stays YOUNG):
                every other stage and tool dir stays: winbuild and the tools reuse.  canonical save the live one lacks.
   detached     D:\...\dispatcher/detached: KEPT. Reader: detached_helper.all_records (run history, spend, streaks).
   claude_projects  ~/.claude/projects: COVERED by Claude Code's own cleanupPeriodDays (default 30 d); measured here.
+  screenshots  a game's Screenshots folder (FAMILY_CLEAN_SCREENSHOTS), file by file. Only on a host that names it in
+               FAMILY_CLEAN_FAMILIES (SteveDesktop's test lane: infrastructure/stevedesktop/family_clean/). Reader: a
+               live result that names the file (every *.json under FAMILY_CLEAN_RESULTS, the lane's outboxes) or a
+               tracked file that names it. Young line 27 h; past it, the newest files stay while the folder (newest
+               first) is within a 3 GB budget; past 7 d, every file with no reader goes.
 
 Verdicts: REMOVE (no reader, past the age line) · YOUNG · KEEP (a reader holds it) · REFUSE (unlanded work or a
 canonical copy: judge by hand) · COVERED (another cleaner owns it) · UNMEASURED (could not look; never removed).
 Env for tests: FAMILY_CLEAN_DATA (data root), FAMILY_CLEAN_REPOS (pathsep list of clones whose Transient/ is cleaned),
 FAMILY_CLEAN_SAVES (Saves folder), FAMILY_CLEAN_CLAUDE (projects dir), FAMILY_CLEAN_STATE (state dir).
+Env of a host: FAMILY_CLEAN_FAMILIES (comma list: this host's whole run, which `check` reads; default every family but
+screenshots), FAMILY_CLEAN_SCREENSHOTS and FAMILY_CLEAN_RESULTS (pathsep lists), FAMILY_CLEAN_SHOT_BUDGET (bytes).
 """
 from __future__ import annotations
 
@@ -56,7 +63,17 @@ CLAUDE_RESIDUE_GB = 1.0
 # danger: a timer that died leaves trash growing unseen; the timer is daily, so 30 h is one missed run plus slack
 CHECK_MAX_AGE_H = 30.0
 FAMILIES = ("transient", "saves", "backups", "codex_wsl", "showings", "scratch", "kept_clones", "build", "detached",
-            "claude_projects")
+            "claude_projects", "screenshots")
+HOST_ONLY = ("screenshots",)        # run only where FAMILY_CLEAN_FAMILIES names them: their folders are per host
+# danger: a screenshot that a running lane job still reads at its result (worker.py evidence_missing) is deleted;
+# longest=2.7 h (the longest of 1923 acked SteveDesktop lane jobs, 2026-11-25); 10x that
+SHOT_YOUNG_H = 27.0
+# danger: C: of SteveDesktop fills (22.6 GB free of 931 GB on 2026-11-25; Windows and rm.vhdx live there) while the
+# lane writes 0.05 to 4.6 GB a day; 3 GB of history past the young line is under a seventh of that free space
+SHOT_BUDGET_B = 3 * 1024 ** 3
+# the age past which a screenshot with no reader goes even inside the budget: nothing reads an uncited one later
+SHOT_AGE_D = 7.0
+PNG_NAME = re.compile(r"[\w.-]+\.png")
 # Hang guards: each stops one call that hangs, so the daily run does not stall for good (systemd starts no second run).
 # budget: danger=a hung git call stalls the daily run; longest=25s (git grep -l, 2026-11-25)
 HANG_GIT_S = 3600
@@ -71,6 +88,7 @@ HANG_SYSTEMCTL_S = 120
 BUILD_SELFTEST = re.compile(r"(^selftest_|SelfTest|^VV_)")
 PROTECTED = {"scratch": {"save_keepers": "save_guard's keeper store (saves_prune reports it; save_guard reads it)"}}
 TRANSIENT_DIR = "Transient"
+FILE_FAMILIES = ("transient", "screenshots")     # their units are single files: unlink, and lstat to judge again
 
 
 # ---------------------------------------------------------------- places
@@ -99,6 +117,22 @@ def saves_dir() -> Path:
 
 def claude_dir() -> Path:
     return Path(os.environ.get("FAMILY_CLEAN_CLAUDE", str(Path.home() / ".claude" / "projects")))
+
+
+def host_families() -> list[str]:
+    """This host's whole run: FAMILY_CLEAN_FAMILIES, else every family that is not host-only."""
+    v = os.environ.get("FAMILY_CLEAN_FAMILIES")
+    if v:
+        fams = [f.strip() for f in v.split(",") if f.strip()]
+        bad = [f for f in fams if f not in FAMILIES]
+        if bad:
+            raise SystemExit("family_clean: FAMILY_CLEAN_FAMILIES names unknown families: %s" % ", ".join(bad))
+        return fams
+    return [f for f in FAMILIES if f not in HOST_ONLY]
+
+
+def env_paths(name: str) -> list[Path]:
+    return [Path(x) for x in os.environ.get(name, "").split(os.pathsep) if x]
 
 
 def state_dir() -> Path:
@@ -140,6 +174,40 @@ def tokens(text: str) -> set[str]:
     return out
 
 
+def repo_citations(names: list[str], errors: list[str]) -> dict[str, str]:
+    """name -> the first file that names it, word-bounded (as grep -w): tracked code, docs, configs and live items, and
+    the systemd user units. The ledger and closed items are log lines (a past mention is not a reader); conversations/
+    and Transient/ are output. `git grep -l` finds the files that name any name (~25 s); a token set per file then says
+    which name (a `git grep -o` over the same files took 5 min, over the whole repo >50). A search that could not look
+    appends its cause to errors."""
+    hits: dict[str, str] = {}
+    want = set(names)
+    if not want:
+        return hits
+    cmd = ["git", "-C", str(ROOT), "grep", "-z", "-I", "-F", "-w", "-l", "-f", "-", "--"] + CORPUS
+    try:
+        r = subprocess.run(cmd, input="\n".join(sorted(want)) + "\n", capture_output=True, text=True,
+                           timeout=HANG_GIT_S)
+    except subprocess.TimeoutExpired:
+        errors.append("citation search hung past %d s" % HANG_GIT_S)
+        return hits
+    if r.returncode not in (0, 1):
+        errors.append("citation search exited %d: %s" % (r.returncode, (r.stderr or "").strip()[:200]))
+        return hits
+    files = [ROOT / f for f in r.stdout.split("\0") if f]
+    units = Path.home() / ".config" / "systemd" / "user"
+    files += sorted(units.glob("*.service")) if units.is_dir() else []
+    for f in files:
+        try:
+            text = f.read_text(encoding="utf-8", errors="replace")
+        except OSError as e:
+            errors.append("citation search could not read %s: %s" % (f, e))
+            continue
+        for n in tokens(text) & want:
+            hits.setdefault(n, os.path.relpath(f, ROOT) if str(f).startswith(str(ROOT)) else str(f))
+    return hits
+
+
 class Readers:
     """The readers every D: unit is checked against, read once per run (live process state is read again before a
     delete)."""
@@ -147,7 +215,7 @@ class Readers:
     def __init__(self, names: list[str]):
         self.errors: list[str] = []
         self.live_items = {p.stem for p in (ROOT / "infrastructure" / "state" / "items").glob("*.md")}
-        self.cites = self._cited(sorted({n for n in names if n}))
+        self.cites = repo_citations(sorted({n for n in names if n}), self.errors)
         self.procs = live_processes()
         try:
             self.guard = canonical_guard()
@@ -155,38 +223,6 @@ class Readers:
             self.guard = None
             self.errors.append("canonical guard unreadable: %s" % e)
         self._saves: set[str] | None = None
-
-    def _cited(self, names: list[str]) -> dict[str, str]:
-        """name -> the first file that names it, word-bounded (as grep -w): tracked code, docs, configs and live items,
-        and the systemd user units. The ledger and closed items are log lines (a past mention is not a reader);
-        conversations/ and Transient/ are output. `git grep -l` finds the files that name any name (~25 s); a token
-        set per file then says which name (a `git grep -o` over the same files took 5 min, over the whole repo >50)."""
-        hits: dict[str, str] = {}
-        want = set(names)
-        if not want:
-            return hits
-        cmd = ["git", "-C", str(ROOT), "grep", "-z", "-I", "-F", "-w", "-l", "-f", "-", "--"] + CORPUS
-        try:
-            r = subprocess.run(cmd, input="\n".join(sorted(want)) + "\n", capture_output=True, text=True,
-                               timeout=HANG_GIT_S)
-        except subprocess.TimeoutExpired:
-            self.errors.append("citation search hung past %d s" % HANG_GIT_S)
-            return hits
-        if r.returncode not in (0, 1):
-            self.errors.append("citation search exited %d: %s" % (r.returncode, (r.stderr or "").strip()[:200]))
-            return hits
-        files = [ROOT / f for f in r.stdout.split("\0") if f]
-        units = Path.home() / ".config" / "systemd" / "user"
-        files += sorted(units.glob("*.service")) if units.is_dir() else []
-        for f in files:
-            try:
-                text = f.read_text(encoding="utf-8", errors="replace")
-            except OSError as e:
-                self.errors.append("citation search could not read %s: %s" % (f, e))
-                continue
-            for n in tokens(text) & want:
-                hits.setdefault(n, os.path.relpath(f, ROOT) if str(f).startswith(str(ROOT)) else str(f))
-        return hits
 
     def live_saves(self) -> set[str] | None:
         """The file names in the live Saves folder; None when it cannot be listed."""
@@ -543,6 +579,87 @@ def saves_rows(apply: bool) -> list[dict]:
     return rows
 
 
+# ---------------------------------------------------------------- screenshots
+def result_names(errors: list[str]) -> dict[str, str]:
+    """png file name -> the first result that names it: every *.json under FAMILY_CLEAN_RESULTS (a lane's outbox: its
+    acked results and the ones not yet sent). A folder that is named but cannot be read is an error, never "none"."""
+    out: dict[str, str] = {}
+    dirs = env_paths("FAMILY_CLEAN_RESULTS")
+    if not dirs:
+        errors.append("no results folder named (FAMILY_CLEAN_RESULTS)")
+    for d in dirs:
+        if not d.is_dir():
+            errors.append("results folder %s cannot be read" % d)
+            continue
+        for dp, _, fns in os.walk(d, onerror=lambda e: errors.append("results folder unreadable: %s" % e)):
+            for fn in fns:
+                if not fn.endswith(".json"):
+                    continue
+                fp = os.path.join(dp, fn)
+                try:
+                    text = open(fp, encoding="utf-8", errors="replace").read()
+                except OSError as e:
+                    errors.append("result %s unreadable: %s" % (fp, e))
+                    continue
+                for n in PNG_NAME.findall(text.replace("\\", "/")):
+                    out.setdefault(n.rsplit("/", 1)[-1], fp)
+    return out
+
+
+def shots_rows(now: float) -> list[dict]:
+    """Each file of each Screenshots folder, newest first: KEEP when a result or a tracked file names it, YOUNG inside
+    the young line or (to 7 d) while the folder's bytes so far are within the budget, else REMOVE."""
+    dirs = env_paths("FAMILY_CLEAN_SCREENSHOTS")
+    if not dirs:
+        return [{"family": "screenshots", "path": "(no folder)", "verdict": "UNMEASURED", "reader": "could not look",
+                 "why": "no Screenshots folder named (FAMILY_CLEAN_SCREENSHOTS)", "age_d": None, "bytes": None}]
+    budget = int(os.environ.get("FAMILY_CLEAN_SHOT_BUDGET") or SHOT_BUDGET_B)
+    listed: list[tuple[Path, list]] = []
+    rows: list[dict] = []
+    for d in dirs:
+        try:
+            ents = []
+            for e in os.scandir(d):
+                st = e.stat(follow_symlinks=False)
+                ents.append((Path(e.path), st.st_mtime, st.st_size, e.is_dir(follow_symlinks=False)))
+        except OSError as e:
+            rows.append({"family": "screenshots", "path": str(d), "verdict": "UNMEASURED", "reader": "could not look",
+                         "why": "Screenshots folder unreadable: %s" % e, "age_d": None, "bytes": None})
+            continue
+        listed.append((d, ents))
+    errors: list[str] = []
+    names = sorted({p.name for _, ents in listed for p, _, _, is_dir in ents if not is_dir})
+    named = result_names(errors)
+    cites = repo_citations(names, errors)
+    for d, ents in listed:
+        total = 0
+        for p, mt, sz, is_dir in sorted(ents, key=lambda x: -x[1]):
+            row = {"family": "screenshots", "path": str(p), "verdict": None, "reader": None, "why": "",
+                   "age_d": round((now - mt) / DAY, 1), "bytes": sz}
+            total += sz
+            if is_dir:
+                row.update(verdict="KEEP", reader="a folder: only files are judged")
+            elif p.name in named:
+                row.update(verdict="KEEP", reader="a live result names it: %s" % named[p.name])
+            elif p.name in cites:
+                row.update(verdict="KEEP", reader="named by %s" % cites[p.name])
+            elif now - mt < SHOT_YOUNG_H * 3600:
+                row.update(verdict="YOUNG", reader="no result, no citation",
+                           why="%.1f h < %.0f h" % ((now - mt) / 3600, SHOT_YOUNG_H))
+            elif now - mt < SHOT_AGE_D * DAY and total <= budget:
+                row.update(verdict="YOUNG", reader="no result, no citation",
+                           why="%.1f d, the folder's newest %s are within the %s budget" % (
+                               row["age_d"], human(total), human(budget)))
+            elif errors:                               # a blind reader is never "no reader"
+                row.update(verdict="UNMEASURED", reader="could not look: " + errors[0], why="would be removed")
+            else:
+                row.update(verdict="REMOVE", reader="no result, no citation",
+                           why=("%.1f d old" % row["age_d"]) if now - mt >= SHOT_AGE_D * DAY else
+                           "%.1f d old, past the %s budget (newest first)" % (row["age_d"], human(budget)))
+            rows.append(row)
+    return rows
+
+
 # ---------------------------------------------------------------- kept and covered families
 def detached_rows() -> list[dict]:
     d = data_root() / "dispatcher" / "detached"
@@ -596,6 +713,8 @@ def judge(families: list[str], apply_saves: bool = False) -> list[dict]:
             rows += detached_rows()
         elif f == "claude_projects":
             rows += claude_rows(now)
+        elif f == "screenshots":
+            rows += shots_rows(now)
     if d_fams:
         rows += judge_d_families(d_fams, now)
     return rows
@@ -603,7 +722,7 @@ def judge(families: list[str], apply_saves: bool = False) -> list[dict]:
 
 def remove(row: dict) -> tuple[bool, str]:
     p = Path(row["path"])
-    if row["family"] == "transient":
+    if row["family"] in FILE_FAMILIES:
         try:
             p.unlink()
             return True, "removed"
@@ -627,9 +746,10 @@ def apply_rows(rows: list[dict], acts: Path) -> None:
             continue
         p = Path(row["path"])
         # judged again just before the delete: its age and the processes in it
-        if row["family"] == "transient":
+        if row["family"] in FILE_FAMILIES:
+            line = SHOT_YOUNG_H * 3600 if row["family"] == "screenshots" else AGE_D * DAY
             try:
-                fresh = now - p.lstat().st_mtime < AGE_D * DAY
+                fresh = now - p.lstat().st_mtime < line
             except OSError:
                 row.update(verdict="KEEP", why="vanished since the scan")
                 continue
@@ -640,7 +760,7 @@ def apply_rows(rows: list[dict], acts: Path) -> None:
         if fresh or held:
             row.update(verdict="KEEP", why="changed since the scan: %s" % (held or "touched"))
             continue
-        if row["family"] != "transient" and row["bytes"] is None:
+        if row["family"] not in FILE_FAMILIES and row["bytes"] is None:
             row["bytes"] = size_of(p)
         ok, said = remove(row)
         row.update(verdict="REMOVED" if ok else "FAILED", why=said if not ok else row["why"])
@@ -714,7 +834,7 @@ def cmd_check() -> int:
         bad.append("last run %.1f h old (line %.0f h)" % (age_h, CHECK_MAX_AGE_H))
     if not lr.get("apply"):
         bad.append("the last run was a dry run")
-    missing = [f for f in FAMILIES if f not in lr.get("families", {})]
+    missing = [f for f in host_families() if f not in lr.get("families", {})]
     if missing:
         bad.append("families not run: %s" % ", ".join(missing))
     blind = [f for f, s in lr.get("families", {}).items() if s.get("rows", 0) and
@@ -744,7 +864,7 @@ def main(argv=None) -> int:
     a = ap.parse_args(argv)
     if a.verb == "check":
         return cmd_check()
-    fams = a.family or list(FAMILIES)
+    fams = a.family or host_families()
     t0 = time.time()
     rows = judge(fams, apply_saves=a.apply)
     if a.apply:

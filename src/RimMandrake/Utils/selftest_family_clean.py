@@ -11,7 +11,14 @@
   d_protected_and_young_kept       scratch/save_keepers is KEEP; a new backup is YOUNG
   every_family_has_a_reader        a whole dry run gives each family rows, and each row names the reader checked
   check_reads_the_last_apply       `check` fails with no --apply run, holds after one, and fails when it is stale
-Item: RIMMANDRAKE_EXTEND_CLEANER_TO_FAMILIES_NO_CLEANER_COVERS_265_GB_ON_D.
+  shots_old_uncited_removed        an 8-day-old screenshot that no result names is REMOVE, and --apply removes it
+  shots_result_named_kept          a 20-day-old screenshot that a live result names (escaped Windows path) is KEEP
+  shots_young_kept                 a 2-hour-old screenshot is YOUNG, whatever the budget
+  shots_budget_newest_kept         past the young line, the newest shots within the budget stay; the older go
+  shots_blind_results_unmeasured   a results folder that cannot be read makes the would-remove rows UNMEASURED
+  check_reads_host_families        on a host whose family set is `screenshots`, check holds after one --apply run
+Items: RIMMANDRAKE_EXTEND_CLEANER_TO_FAMILIES_NO_CLEANER_COVERS_265_GB_ON_D,
+RIMMANDRAKE_PRUNE_STEVE_LANE_SCREENSHOTS_HALF_GIG_A_DAY_ONTO_FULL_C (screenshots).
 """
 from __future__ import annotations
 
@@ -65,7 +72,8 @@ def verdicts(data: dict, family: str) -> dict[str, str]:
     return {r["path"]: r["verdict"] for r in data["rows"] if r["family"] == family}
 
 
-def main() -> int:
+def fixture_cases() -> list[str]:
+    """The first ten promises, on one planted clone, data root, Saves folder and projects dir."""
     fails: list[str] = []
     with tempfile.TemporaryDirectory(prefix="selftest_family_clean_") as td:
         td = Path(td)
@@ -125,8 +133,7 @@ def main() -> int:
         # ---- one whole dry run
         rc, d, err = run(env)
         if d is None:
-            print("FAIL: dry run gave no JSON (rc %s): %s" % (rc, err))
-            return 1
+            return ["fixture: dry run gave no JSON (rc %s): %s" % (rc, err)]
         tv = verdicts(d, "transient")
         if tv.get(str(old_unpinned)) != "REMOVE":
             fails.append("transient_old_unpinned_removed: %s is %s" % (old_unpinned.name, tv.get(str(old_unpinned))))
@@ -187,9 +194,80 @@ def main() -> int:
                 lr.write_text(json.dumps(j))
                 if chk().returncode != 1:
                     fails.append("check_reads_the_last_apply: check held on a 31 h old run")
+    return fails
+
+
+def shots_cases() -> list[str]:
+    """The screenshots family (SteveDesktop's test lane), on a planted Screenshots folder and results folder."""
+    fails: list[str] = []
+    H = 3600
+    with tempfile.TemporaryDirectory(prefix="selftest_family_clean_shots_") as td:
+        td = Path(td)
+        shots, res = td / "Screenshots", td / "outbox" / "acked"
+        res.mkdir(parents=True)
+        old = put(shots / ("%s_old_1795000000000_1.png" % TAG), 8)
+        named = put(shots / ("%s_named_1794000000000_2__cell_rect.png" % TAG), 20)
+        young = put(shots / ("%s_young_1795600000000_3.png" % TAG), 2 * H / DAY, b"y" * 400)
+        in_budget = put(shots / ("%s_inbudget_1795500000000_4.png" % TAG), 2, b"b" * 400)
+        over = put(shots / ("%s_over_1795400000000_5.png" % TAG), 3, b"o" * 400)
+        # a result names its shot as worker.py writes it: a Windows path inside JSON, so its backslashes are escaped
+        (res / "J1.a1.json").write_text(json.dumps({"rows": [{"png": "C:\\Users\\x\\Screenshots\\" + named.name}]}))
+        env = {"FAMILY_CLEAN_FAMILIES": "screenshots", "FAMILY_CLEAN_SCREENSHOTS": str(shots),
+               "FAMILY_CLEAN_RESULTS": str(td / "outbox"), "FAMILY_CLEAN_SHOT_BUDGET": "1000",
+               "FAMILY_CLEAN_STATE": str(td / "state")}
+        # every old root on an empty fixture too: a tool that ignores FAMILY_CLEAN_FAMILIES (the red run) must still
+        # see no real place, or its --apply runs on them
+        for k in ("FAMILY_CLEAN_DATA", "FAMILY_CLEAN_REPOS", "FAMILY_CLEAN_SAVES", "FAMILY_CLEAN_CLAUDE"):
+            (td / "empty" / k).mkdir(parents=True)
+            env[k] = str(td / "empty" / k)
+        rc, d, err = run(env)
+        if d is None:
+            return ["shots: dry run gave no JSON (rc %s): %s" % (rc, err)]
+        v = verdicts(d, "screenshots")
+        want = [("shots_old_uncited_removed", old, "REMOVE"), ("shots_result_named_kept", named, "KEEP"),
+                ("shots_young_kept", young, "YOUNG"), ("shots_budget_newest_kept", in_budget, "YOUNG"),
+                ("shots_budget_newest_kept", over, "REMOVE")]
+        for name, p, w in want:
+            if v.get(str(p)) != w:
+                fails.append("%s: %s is %s, want %s" % (name, p.name, v.get(str(p)), w))
+        blank = [r["path"] for r in d["rows"] if not r.get("reader")]
+        if blank:
+            fails.append("shots: rows with no reader: %s" % blank[:3])
+        # a results folder that cannot be read: nothing is "no reader"
+        rc, db, err = run(dict(env, FAMILY_CLEAN_RESULTS=str(td / "no_such_outbox")))
+        vb = verdicts(db, "screenshots") if db else {}
+        if not db or vb.get(str(old)) != "UNMEASURED" or vb.get(str(over)) != "UNMEASURED":
+            fails.append("shots_blind_results_unmeasured: old is %s, over is %s" % (vb.get(str(old)), vb.get(str(over))))
+        chk = lambda: subprocess.run([sys.executable, str(TOOL), "check"], capture_output=True, text=True,  # noqa: E731
+                                     env=dict(os.environ, FAMILY_CLEAN_SKIP_TIMER="1", **env))
+        rc, d2, err = run(env, "--apply")
+        if d2 is None:
+            return fails + ["shots: --apply gave no JSON (rc %s): %s" % (rc, err)]
+        if old.exists() or over.exists():
+            fails.append("shots_old_uncited_removed: --apply left %s" % [p.name for p in (old, over) if p.exists()])
+        lost = [p.name for p in (named, young, in_budget) if not p.exists()]
+        if lost:
+            fails.append("shots: --apply removed a kept shot: %s" % lost)
+        c = chk()
+        if c.returncode != 0:
+            fails.append("check_reads_host_families: check failed after a screenshots --apply run: %s" % c.stdout.strip())
+    return fails
+
+
+# The promises of design/specs/2026-11-25-family-clean/boundary.md, each bound to the case run that checks it.
+t_transient_old_unpinned_removed = t_transient_pinned_kept = t_transient_young_kept = fixture_cases
+t_saves_canonical_never_listed = t_d_uncited_old_removed = t_d_unlanded_clone_refused = fixture_cases
+t_d_canonical_only_copy_refused = t_d_protected_and_young_kept = t_every_family_has_a_reader = fixture_cases
+t_check_reads_the_last_apply = fixture_cases
+t_shots_old_uncited_removed = t_shots_result_named_kept = t_shots_young_kept = shots_cases
+t_shots_budget_newest_kept = t_shots_blind_results_unmeasured = t_check_reads_host_families = shots_cases
+
+
+def main() -> int:
+    fails = fixture_cases() + shots_cases()
     for f in fails:
         print("FAIL:", f)
-    print("selftest_family_clean: %s" % ("FAIL (%d)" % len(fails) if fails else "OK (10/10)"))
+    print("selftest_family_clean: %s" % ("FAIL (%d)" % len(fails) if fails else "OK (16/16)"))
     return 1 if fails else 0
 
 

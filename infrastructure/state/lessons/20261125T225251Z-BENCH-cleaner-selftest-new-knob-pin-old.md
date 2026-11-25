@@ -1,0 +1,2 @@
+A selftest case of a cleaner that selects its fixtures by a NEW env knob must also pin every old root (data, repos, saves, projects) to an empty fixture: in the red run the old tool ignores the knob and runs --apply on the real places. selftest_family_clean's first screenshots case did that on 2026-11-25 and removed 43 old build selftest stages (12.9 GB) under the build family's own rule, the act the daily timer does.
+item: RIMMANDRAKE_PRUNE_STEVE_LANE_SCREENSHOTS_HALF_GIG_A_DAY_ONTO_FULL_C

@@ -1,0 +1,23 @@
+# rm-family-clean on SteveDesktop: family_clean.py --apply on this host's one family, the test lane's game Screenshots
+# folders (Steve1 on C:, Steve2 on D:). The rule (a result or tracked file that names a shot keeps it; 27 h young line;
+# a 3 GB newest-first budget; 7 d line): the docstring of src/RimMandrake/Utils/family_clean.py.
+# Runs from the runner clone, which the daily runner-selfupgrade keeps on origin/main.
+# Reading: ~/.local/state/rm-family-clean/check_ok.txt, written only when `family_clean.py check` holds after a run.
+# Item: RIMMANDRAKE_PRUNE_STEVE_LANE_SCREENSHOTS_HALF_GIG_A_DAY_ONTO_FULL_C.  Install: install.sh beside this file.
+[Unit]
+Description=RimMandrake family cleaner on SteveDesktop (the test lane's game Screenshots folders)
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/rm/runner
+Environment=FAMILY_CLEAN_FAMILIES=screenshots
+Environment="FAMILY_CLEAN_SCREENSHOTS=/mnt/c/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Screenshots:/mnt/d/ClaudeWork/rimmandrake/instances/b/Screenshots"
+Environment=FAMILY_CLEAN_RESULTS=/mnt/d/RimTest/testq/outbox:/mnt/d/RimTest/testq.b/outbox
+Environment=FAMILY_CLEAN_STATE=%h/.local/state/rm-family-clean
+ExecStart=/usr/bin/python3 %h/rm/runner/src/RimMandrake/Utils/family_clean.py --apply
+ExecStartPost=/bin/bash -c 'cd %h/rm/runner && /usr/bin/python3 src/RimMandrake/Utils/family_clean.py check > "$FAMILY_CLEAN_STATE/check_ok.txt.tmp" && mv "$FAMILY_CLEAN_STATE/check_ok.txt.tmp" "$FAMILY_CLEAN_STATE/check_ok.txt"'
+Nice=19
+IOSchedulingClass=idle
+# budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=measured on the first run
+# (below 2 min expected: 6,000 files and one citation search); 2 h is far above that and below the next run
+TimeoutStartSec=2h

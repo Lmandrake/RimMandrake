@@ -517,6 +517,13 @@ RIMMANDRAKE_MOVE_STEVEDESKTOP_CLONES_TO_SSD_LINUX_DRIVE_SITS_ON_HARD_DISK holds 
 - **Room check:** `rm-pool-room.timer` (systemd --user, hourly) runs `~/.local/bin/rm_pool_room.py`. It writes
   `~/.local/state/rm-ssd/pool_room.json` (ROOM, SHORT or COULD_NOT_LOOK: free space, floor, each clone's size, how many
   more clones the pool admits) every run, and `pool_room_ok.json` only on ROOM: 10 runs fit.
+- **Screenshots cleaner:** the lane's games write screenshots that nothing pruned (Steve1's
+  `C:\Users\sjlewis\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Screenshots` held 15.4 GB on
+  2026-11-25; the lane wrote up to 4.6 GB in one day). `rm-family-clean.timer` (systemd --user, every 6 h) runs
+  `family_clean.py --apply` from `~/rm/runner` on that folder and on Steve2's `D:\ClaudeWork\rimmandrake\instances\b\Screenshots`.
+  A shot that a lane result or a tracked file names stays; the rule is in the docstring of
+  `src/RimMandrake/Utils/family_clean.py`. Reading: `~/.local/state/rm-family-clean/check_ok.txt`, written only when
+  `family_clean.py check` holds. Install: `bash infrastructure/stevedesktop/family_clean/install.sh`.
 - **`C:` cannot give the disk much more room.** Measured 2026-11-25: 977 GB used, 22.6 GB free. Steve's own files fill
   it (`C:\Users\sjlewis\OneDrive` 607 GB, his RimWorld save copies of 2020-2024 and `Ludeon Studios old` 27 GB);
   Windows, programs and `rm.vhdx` (86 GB) hold the rest. None of that is ours to delete.

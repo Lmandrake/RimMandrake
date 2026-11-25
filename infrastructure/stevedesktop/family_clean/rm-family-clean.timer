@@ -1,0 +1,12 @@
+# Every 6 h: see rm-family-clean.service. The lane wrote up to 4.6 GB in one day (2026-11-24), so a run four times a
+# day keeps the folder near its budget; `check` fails when the last --apply run is over 30 h old.
+[Unit]
+Description=RimMandrake family cleaner on SteveDesktop, every 6 h
+
+[Timer]
+OnCalendar=*-*-* 00/6:20:00
+RandomizedDelaySec=600
+Persistent=true
+
+[Install]
+WantedBy=timers.target
