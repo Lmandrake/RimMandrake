@@ -59,7 +59,10 @@ and the why are listed by `releases`, not printed there).
 The Conductor's hand judgements of 2026-11-13 to 11-15, applied by the tick (census:
 design/RimMandrake/pipeline_interventions_census_2026-11-15.md; selftest_maturation_hands.py):
   no stop       a run first seen with 0 refused bars had no build work to resolve and is never judged as a builder; a stop
-                written on an empty refused set lifts itself (RIMMANDRAKE_SKIP_BUILDER_STOP_ON_ZERO_REFUSED_BARS)
+                written on an empty refused set lifts itself (RIMMANDRAKE_SKIP_BUILDER_STOP_ON_ZERO_REFUSED_BARS); nor is
+                a run the tick did not launch as a builder (no launches or pilot_launches entry: a hand design run, an
+                exam retake), and a stop written on one lifts itself
+                (RIMMANDRAKE_SPARE_HAND_RUNS_FROM_BUILDER_STOP_REWORD_RAN)
   code retry    a launch that failed on a defect (not a transient fault) records the pipeline code it failed on
                 (pipeline_code: the git tree of src/RimMandrake/rimflow at this clone's HEAD) and is tried again once
                 that code changes, within launch_tries: at Stage 3 the stop lifts, a blind, in-game, steward or fixer
@@ -663,6 +666,18 @@ def autonomy_book(s, unit):
     return None
 
 
+def tick_builder(s, unit):
+    """-> True when `unit` is a builder the tick launched for this mod (its `launches` or `pilot_launches` book). The
+    builder-progress stop guards the tick's own automatic tries; a run launched by another hand (a design reword, an
+    exam retake) is no builder of the stage, and its end says nothing about build work
+    (RIMMANDRAKE_SPARE_HAND_RUNS_FROM_BUILDER_STOP_REWORD_RAN: ExplosiveKnockback 2026-11-25)."""
+    return bool(unit) and any(isinstance(x, dict) and x.get("unit") == unit
+                              for book in ("launches", "pilot_launches") for x in s.get(book) or [])
+
+
+_STOP_RUN = re.compile(r"^run (\S+) ended and ")
+
+
 def progressed(w, ids, fp_now):
     """-> (progress?, why). RIMMANDRAKE_DERIVE_CHECKS_FROM_LOCKED_BARS: progress is a refused bar resolved, by ids, not
     a fall in the count: no id may appear that was not refused before (a rename), and a resolved bar whose checks are
@@ -1113,12 +1128,15 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
             idle = was == 0 and not w.get("ids")
             if idle:
                 s["last_run"]["not_judged"] = "no build work was owed when it started (0 refused bars)"
+            hand = not book and not idle and not tick_builder(s, w.get("unit"))
+            if hand:
+                s["last_run"]["not_judged"] = "not a builder the tick launched (no launches or pilot_launches entry)"
             # a VOID run (hand, or killed / timed out / no result of its own: run_void.py) is never judged: it spends
             # no try at these refusals (RIMMANDRAKE_VOID_SYSTEM_KILLED_RUNS_NO_TRIAL_SPENT)
             vwhy = void_why(w.get("unit"))
             if vwhy:
                 s["last_run"]["not_judged"] = "VOID: %s" % vwhy
-            elif not prog and not book and not idle:
+            elif not prog and not book and not idle and not hand:
                 s["stopped"] = {"ids": ids, "at": now, "why": "run %s ended and %s" % (w.get("unit"), pwhy)}
         owed = f.get("owed")
         if owed in OWED:
@@ -1170,6 +1188,13 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
             s.pop("stopped")
             row["stop_lifted"], stop = "it judged the %s run %s as a builder" % (
                 autonomy_book(s, lr["unit"]), lr["unit"]), None
+        sm = _STOP_RUN.match(str((stop or {}).get("why") or ""))
+        if (stop and sm and stop.get("ids") != [] and not stop.get("ceiling") and not stop.get("launch_failed")
+                and not autonomy_book(s, sm.group(1)) and not tick_builder(s, sm.group(1))):
+            # a stop written before the progress test spared runs the tick did not launch as builders
+            s.pop("stopped")
+            row["stop_lifted"], stop = "it judged run %s, not a builder the tick launched, as a builder" % (
+                sm.group(1)), None
         if (stop and stop.get("ids") == [] and str(stop.get("why")).startswith("run ") and not stop.get("ceiling")
                 and " 0 -> " in str(stop.get("why"))):
             # written before a run seen with no refused bars stopped being judged as a builder: nothing shrinks an

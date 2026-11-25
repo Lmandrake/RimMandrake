@@ -92,11 +92,30 @@ def stop_main():
     ok("no build work" in str((s.get("last_run") or {}).get("not_judged")),
        "stop 1: the last-run record says why it was not judged", s.get("last_run"))
 
-    st = {}
+    own = [{"unit": "rm-builder", "item": "X", "at": NOW - 900, "stage": "offline_build"}]
+    st = {"mods": {"A": {"launches": list(own)}}}
     MD.decide(CFG, st, offline(["a", "b"], live=["rm-builder"]), NOW)
     rows, _ = MD.decide(CFG, st, offline(["a", "b"], last_end=NOW - 600), NOW + 60)
     ok(row_of(rows)["decision"] == "stopped" and "none resolved" in row_of(rows)["why"],
-       "stop 2 (control): a builder seen with 2 refused bars that resolved none still stops", row_of(rows))
+       "stop 2 (control): the tick's own builder seen with 2 refused bars that resolved none still stops", row_of(rows))
+    st = {"mods": {"A": {"pilot_launches": list(own)}}}
+    MD.decide(CFG, st, offline(["a", "b"], live=["rm-builder"]), NOW)
+    rows, _ = MD.decide(CFG, st, offline(["a", "b"], last_end=NOW - 600), NOW + 60)
+    ok(row_of(rows)["decision"] == "stopped",
+       "stop 2 (control): a builder launched through pilot-launch is a builder too and still stops", row_of(rows))
+
+    # RIMMANDRAKE_SPARE_HAND_RUNS_FROM_BUILDER_STOP_REWORD_RAN: ExplosiveKnockback 2026-11-25, a hand-launched
+    # design run (a bar reword and an exam retake) ended at the offline build with the 14 new bars unbuilt, and the tick
+    # judged it a builder that "resolved none": the Stage 3 builder never launched and a triage steward ran instead
+    st = {}
+    MD.decide(CFG, st, offline(["a", "b"], live=["rm-hand-design"]), NOW)
+    rows, launches = MD.decide(CFG, st, offline(["a", "b"], last_end=NOW - 600), NOW + 60)
+    s = st["mods"]["A"]
+    ok(not s.get("stopped") and row_of(rows)["decision"] == "launch" and launches == ["A"],
+       "stop 2b: a run the tick did not launch as a builder writes no stop when it ends; the builder launches",
+       (row_of(rows)["decision"], s.get("stopped")))
+    ok("not a builder" in str((s.get("last_run") or {}).get("not_judged")),
+       "stop 2b: the last-run record says why it was not judged", s.get("last_run"))
 
     st = {"mods": {"A": {"stopped": {"ids": [], "at": NOW - 900,
                                      "why": "run rm-hand-fix ended and the refused bars went 0 -> 0, none resolved"}}}}
@@ -106,11 +125,19 @@ def stop_main():
     ok("no refused bars" in str(row_of(rows).get("stop_lifted")), "stop 3: the reading says what lifted it",
        row_of(rows).get("stop_lifted"))
 
-    st = {"mods": {"A": {"stopped": {"ids": ["a"], "at": NOW - 900,
-                                     "why": "run rm-builder ended and the refused bars went 1 -> 1, none resolved"}}}}
+    st = {"mods": {"A": {"launches": list(own), "stopped": {
+        "ids": ["a"], "at": NOW - 900, "why": "run rm-builder ended and the refused bars went 1 -> 1, none resolved"}}}}
     rows, launches = MD.decide(CFG, st, offline(["a"]), NOW)
     ok(row_of(rows)["decision"] == "stopped" and not launches,
        "stop 4 (control): a stop on the same non-empty refusals stays", row_of(rows)["decision"])
+
+    st = {"mods": {"A": {"launches": list(own), "stopped": {
+        "ids": ["a"], "at": NOW - 900,
+        "why": "run rm-hand-design ended and the refused bars went 1 -> 1, none resolved"}}}}
+    rows, launches = MD.decide(CFG, st, offline(["a"]), NOW)
+    ok(row_of(rows)["decision"] == "launch" and launches == ["A"]
+       and "not a builder" in str(row_of(rows).get("stop_lifted")),
+       "stop 4b: a stop already written on a run the tick did not launch as a builder lifts itself", row_of(rows))
 
     st = {"mods": {"A": {"stopped": {"ids": [], "at": NOW - 900, "why": "USD 99.00 spent, at the ceiling",
                                      "ceiling": True}}}}
