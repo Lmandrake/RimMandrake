@@ -57,6 +57,25 @@ def verdict(rc, text):
     return "UNMEASURED", v
 
 
+def scene_rows(text):
+    """{scene: (STATUS, detail)} from the runner's per-scene lines 'name STATUS detail' (the 'advanced N/M ticks' lines are skipped)."""
+    out = {}
+    for m in re.finditer(r"^(\S+)\s+(PASS|FAIL|INVALID|ERROR)\b ?(.*)$", text, re.M):
+        out[m.group(1)] = (m.group(2), m.group(3))
+    return out
+
+
+def check_verdict(scenes, rows, rc, text):
+    """One check's verdict out of a shared process: FAIL when any of its scenes reads FAIL or ERROR; PASS when every one reads
+    PASS; else UNMEASURED (a scene with no row because the process crashed, INVALID). A neighbour's red never changes it."""
+    got = [rows.get(s) for s in scenes]
+    if any(g and g[0] in ("FAIL", "ERROR") for g in got):
+        return "FAIL", "FAIL"
+    if got and all(g and g[0] == "PASS" for g in got):
+        return "PASS", "PASS"
+    return "UNMEASURED", ",".join(g[0] if g else "NONE" for g in got)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--env", required=True, help="env file in the visit folder (activeMods, game build)")
@@ -84,8 +103,12 @@ def main():
     from rimbridge_client import RimBridge, resolve_endpoint
     host, port, token = resolve_endpoint()
     os.makedirs(os.path.join(VISIT, "evidence"), exist_ok=True)
+    # checks that name the same command share one process (one settings snapshot and restore); each check keeps its own
+    # row, read from the scene lines of that process. A crash or timeout of one process leaves the other processes' rows alone.
+    groups = {}
     for tid, t in tests:
-        cmd = t["command"].split("   (")[0].strip()
+        groups.setdefault(t["command"].split("   (")[0].strip(), []).append((tid, t))
+    for cmd, members in groups.items():
         argv = [sys.executable] + cmd.split()[1:]
         with RimBridge(host=host, port=port, token=token) as rb:
             if not a.no_sweep:      # every non-colonist off the map, the incident queue emptied (reviewmap.sweep_pawns)
@@ -95,24 +118,32 @@ def main():
             if not a.no_sweep:
                 st["swept_noncolonists"] = sw.get("matchedCount")
         t0 = time.time()
+        limit = a.timeout * len(members)    # hang guard only: a shared process runs its members' scenes one after another
         try:
-            p = subprocess.run(argv, cwd=REPO, capture_output=True, text=True, timeout=a.timeout)
+            p = subprocess.run(argv, cwd=REPO, capture_output=True, text=True, timeout=limit)
             rc, text = p.returncode, p.stdout + ("\n--- stderr ---\n" + p.stderr[-3000:] if p.stderr.strip() else "")
         except subprocess.TimeoutExpired as e:
-            rc, text = -9, "TIMEOUT after %d s\n%s" % (a.timeout, (e.stdout or b"")[-3000:] if isinstance(e.stdout, bytes) else e.stdout)
-        ev = os.path.join("design", "concepts", "ExplosiveKnockback", "version", "in_game", os.path.basename(VISIT), "evidence",
-                          tid + a.suffix + ".txt")
-        open(os.path.join(REPO, ev), "w", encoding="utf-8").write(text)
-        v, rv = verdict(rc, text)
-        held = [] if a.no_sweep else ["non-colonist pawns swept before the check", "incident queue emptied before the check"]
-        row = {"test": tid, "verdict": v, "outcome": "SUCCESS" if v == "PASS" else "UNRESOLVED", "forbidden": [], "runner_verdict": rv, "rc": rc, "held": held,
-               "site_checked": bool(st.get("map_ok")) and not st.get("nonplayer_left"), "site": st, "game": "archmagi.b",
-                              "dll_md5": md5, "modlist": a.env, **ident, "game": "archmagi.b",
-               "command": cmd, "evidence": ev.replace("\\", "/"),
-               "wall_s": round(time.time() - t0, 1), "at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S PST")}
-        with open(os.path.join(VISIT, a.rows), "a", encoding="utf-8") as f:
-            f.write(json.dumps(row) + "\n")
-        print("%-24s %-10s rc=%s %.0fs site=%s" % (tid, v, rc, row["wall_s"], row["site_checked"]), flush=True)
+            out = e.stdout.decode("utf-8", "replace") if isinstance(e.stdout, bytes) else (e.stdout or "")
+            rc, text = -9, "TIMEOUT after %d s\n%s" % (limit, out[-30000:])
+        rows = scene_rows(text)
+        wall = round(time.time() - t0, 1)
+        for tid, t in members:
+            ev = os.path.join("design", "concepts", "ExplosiveKnockback", "version", "in_game", os.path.basename(VISIT), "evidence",
+                              tid + a.suffix + ".txt")
+            scenes = t.get("scenes") or []
+            v, rv = check_verdict(scenes, rows, rc, text) if scenes else verdict(rc, text)
+            mine = "\n".join("%s %s %s" % (s, *rows[s]) for s in scenes if s in rows)
+            open(os.path.join(REPO, ev), "w", encoding="utf-8").write(
+                "shared process: %s\nscenes of this check: %s\n%s\n--- whole process output ---\n%s" % (cmd, ",".join(scenes), mine, text))
+            held = [] if a.no_sweep else ["non-colonist pawns swept before the check", "incident queue emptied before the check"]
+            row = {"test": tid, "verdict": v, "outcome": "SUCCESS" if v == "PASS" else "UNRESOLVED", "forbidden": [], "runner_verdict": rv, "rc": rc, "held": held,
+                   "site_checked": bool(st.get("map_ok")) and not st.get("nonplayer_left"), "site": st, "game": "archmagi.b",
+                   "dll_md5": md5, "modlist": a.env, **ident, "game": "archmagi.b",
+                   "command": cmd, "evidence": ev.replace("\\", "/"), "wall_s": wall, "shared_with": len(members),
+                   "at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S PST")}
+            with open(os.path.join(VISIT, a.rows), "a", encoding="utf-8") as f:
+                f.write(json.dumps(row) + "\n")
+            print("%-24s %-10s rc=%s %.0fs site=%s (process of %d checks)" % (tid, v, rc, wall, row["site_checked"], len(members)), flush=True)
 
 
 if __name__ == "__main__":

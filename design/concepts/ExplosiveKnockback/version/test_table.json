@@ -514,7 +514,11 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "storeroom_bomb_pit",
+    "storeroom_bomb_pit_control"
+   ]
   },
   "sc_mortar_throw": {
    "id": "sc_mortar_throw",
@@ -529,7 +533,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes calibration --ticks 300   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes calibration,over_sandbags,spared_states,mass_and_power,immunity_window,settings_off,wall_stop,pawn_hits_pawn,door_stop,shield_counter --ticks 300   (proof build, minimal list)",
    "why_game": "landing cell, alive and stunned are the PawnFlyer's runtime; the kernel only gives the planned cells",
    "why_full_list": null,
    "entry_exists": true,
@@ -545,7 +549,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "calibration"
+   ]
   },
   "sc_over_sandbags": {
    "id": "sc_over_sandbags",
@@ -560,7 +567,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes over_sandbags --ticks 300   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes calibration,over_sandbags,spared_states,mass_and_power,immunity_window,settings_off,wall_stop,pawn_hits_pawn,door_stop,shield_counter --ticks 300   (proof build, minimal list)",
    "why_game": "the flyer passing a real sandbag thing; the kernel's sandbag rule is K-06",
    "why_full_list": null,
    "entry_exists": true,
@@ -576,7 +583,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "over_sandbags"
+   ]
   },
   "sc_pawn_arc": {
    "id": "sc_pawn_arc",
@@ -607,7 +617,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "pawn_arc"
+   ]
   },
   "sc_spared": {
    "id": "sc_spared",
@@ -622,7 +635,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes spared_states --ticks 300   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes calibration,over_sandbags,spared_states,mass_and_power,immunity_window,settings_off,wall_stop,pawn_hits_pawn,door_stop,shield_counter --ticks 300   (proof build, minimal list)",
    "why_game": "in_pit, carrying, in_bed and flying are live pawn states read by the map component, not kernel inputs",
    "why_full_list": null,
    "entry_exists": true,
@@ -638,7 +651,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "spared_states"
+   ]
   },
   "sc_mass_and_power": {
    "id": "sc_mass_and_power",
@@ -653,7 +669,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes mass_and_power --ticks 300   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes calibration,over_sandbags,spared_states,mass_and_power,immunity_window,settings_off,wall_stop,pawn_hits_pawn,door_stop,shield_counter --ticks 300   (proof build, minimal list)",
    "why_game": "the explosion's real damage and the Mass stat as the game computes it reach the kernel only in game (the cell table itself is K-19, offline)",
    "why_full_list": null,
    "entry_exists": true,
@@ -669,7 +685,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "mass_and_power"
+   ]
   },
   "sc_recovery": {
    "id": "sc_recovery",
@@ -684,7 +703,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes immunity_window --ticks 300   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes calibration,over_sandbags,spared_states,mass_and_power,immunity_window,settings_off,wall_stop,pawn_hits_pawn,door_stop,shield_counter --ticks 300   (proof build, minimal list)",
    "why_game": "the stamps on the map component and their save and reload are runtime",
    "why_full_list": null,
    "entry_exists": true,
@@ -700,7 +719,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "immunity_window"
+   ]
   },
   "sc_hose_drop": {
    "id": "sc_hose_drop",
@@ -731,7 +753,11 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "hose_carry_drop",
+    "hose_carry_drop_off"
+   ]
   },
   "sc_settings_off": {
    "id": "sc_settings_off",
@@ -746,7 +772,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes settings_off --ticks 300   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes calibration,over_sandbags,spared_states,mass_and_power,immunity_window,settings_off,wall_stop,pawn_hits_pawn,door_stop,shield_counter --ticks 300   (proof build, minimal list)",
    "why_game": "the master switch silencing the real explosion hook (not the kernel) is runtime",
    "why_full_list": null,
    "entry_exists": true,
@@ -762,7 +788,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "settings_off"
+   ]
   },
   "sc_settings_sweep": {
    "id": "sc_settings_sweep",
@@ -793,7 +822,28 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "settings_sweep",
+    "settings_sweep_throwAnimals",
+    "settings_sweep_throwMechanoids",
+    "settings_sweep_throwDowned",
+    "settings_sweep_throwItems",
+    "settings_sweep_throwCorpses",
+    "settings_sweep_landingStun",
+    "settings_sweep_doorsTakeDamage",
+    "settings_sweep_debugDrawVectors",
+    "settings_sweep_vanillaCratesClosed",
+    "settings_sweep_heavyGoodsMinMass",
+    "settings_sweep_heavyGoodsKnock",
+    "settings_sweep_flyingGoods",
+    "settings_sweep_shoveClosedContainers",
+    "settings_sweep_gasChain",
+    "settings_sweep_lightMassLimit20",
+    "settings_sweep_closedGuard",
+    "settings_sweep_fireHalf",
+    "settings_sweep_after"
+   ]
   },
   "sc_wall_stop": {
    "id": "sc_wall_stop",
@@ -808,7 +858,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes wall_stop --ticks 300   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes calibration,over_sandbags,spared_states,mass_and_power,immunity_window,settings_off,wall_stop,pawn_hits_pawn,door_stop,shield_counter --ticks 300   (proof build, minimal list)",
    "why_game": "impact damage applied to a real pawn by the flyer; the stop cell is K-07 offline",
    "why_full_list": null,
    "entry_exists": true,
@@ -824,7 +874,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "wall_stop"
+   ]
   },
   "sc_pawn_hits_pawn": {
    "id": "sc_pawn_hits_pawn",
@@ -839,7 +892,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes pawn_hits_pawn --ticks 300   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes calibration,over_sandbags,spared_states,mass_and_power,immunity_window,settings_off,wall_stop,pawn_hits_pawn,door_stop,shield_counter --ticks 300   (proof build, minimal list)",
    "why_game": "two real pawns and the flyer's stop; the stop rule is K-09 offline",
    "why_full_list": null,
    "entry_exists": true,
@@ -855,7 +908,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "pawn_hits_pawn"
+   ]
   },
   "sc_door_water": {
    "id": "sc_door_water",
@@ -870,7 +926,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes door_stop --ticks 300   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes calibration,over_sandbags,spared_states,mass_and_power,immunity_window,settings_off,wall_stop,pawn_hits_pawn,door_stop,shield_counter --ticks 300   (proof build, minimal list)",
    "why_game": "door hit points and the colonist's injury are runtime; stop cells are K-07 offline",
    "why_full_list": null,
    "entry_exists": true,
@@ -886,7 +942,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "door_stop"
+   ]
   },
   "sc_shield": {
    "id": "sc_shield",
@@ -901,7 +960,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes shield_counter --ticks 300   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes calibration,over_sandbags,spared_states,mass_and_power,immunity_window,settings_off,wall_stop,pawn_hits_pawn,door_stop,shield_counter --ticks 300   (proof build, minimal list)",
    "why_game": "a real shield belt's energy after a real absorb; the debit maths is K-16 offline",
    "why_full_list": null,
    "entry_exists": true,
@@ -917,7 +976,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "shield_counter"
+   ]
   },
   "sc_storeroom_mortar": {
    "id": "sc_storeroom_mortar",
@@ -932,7 +994,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes goods_fly_wild --ticks 300   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes goods_fly_wild,all_fly_no_cap,open_storage,heavy_knock,blast_kinds,only_explosions,lookup_projectile,gas_chain,gas_census,cover_breaks --ticks 300   (proof build, minimal list)",
    "why_game": "a per-tick trace of real thrown things (height, rotation, rebound) exists only in game; the rebound maths is K-17 offline",
    "why_full_list": null,
    "entry_exists": true,
@@ -948,7 +1010,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "goods_fly_wild"
+   ]
   },
   "sc_all_fly_no_cap": {
    "id": "sc_all_fly_no_cap",
@@ -963,7 +1028,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes all_fly_no_cap --ticks 300   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes goods_fly_wild,all_fly_no_cap,open_storage,heavy_knock,blast_kinds,only_explosions,lookup_projectile,gas_chain,gas_census,cover_breaks --ticks 300   (proof build, minimal list)",
    "why_game": "over 60 real things reached in one tick, all moved; the no-cap rule is K-11 offline",
    "why_full_list": null,
    "entry_exists": true,
@@ -979,7 +1044,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "all_fly_no_cap"
+   ]
   },
   "sc_open_storage": {
    "id": "sc_open_storage",
@@ -994,7 +1062,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes open_storage --ticks 300   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes goods_fly_wild,all_fly_no_cap,open_storage,heavy_knock,blast_kinds,only_explosions,lookup_projectile,gas_chain,gas_census,cover_breaks --ticks 300   (proof build, minimal list)",
    "why_game": "real furniture emptied by a real blast; the open rule is K-14 and the census offline",
    "why_full_list": null,
    "entry_exists": true,
@@ -1010,7 +1078,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "open_storage"
+   ]
   },
   "sc_closed_containers": {
    "id": "sc_closed_containers",
@@ -1041,7 +1112,11 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "closed_containers",
+    "closed_containers_control"
+   ]
   },
   "sc_heavy_knock": {
    "id": "sc_heavy_knock",
@@ -1056,7 +1131,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes heavy_knock --ticks 300   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes goods_fly_wild,all_fly_no_cap,open_storage,heavy_knock,blast_kinds,only_explosions,lookup_projectile,gas_chain,gas_census,cover_breaks --ticks 300   (proof build, minimal list)",
    "why_game": "blunt damage and stagger on a real pawn",
    "why_full_list": null,
    "entry_exists": true,
@@ -1072,7 +1147,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "heavy_knock"
+   ]
   },
   "sc_blast_kinds": {
    "id": "sc_blast_kinds",
@@ -1087,7 +1165,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes blast_kinds --ticks 300   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes goods_fly_wild,all_fly_no_cap,open_storage,heavy_knock,blast_kinds,only_explosions,lookup_projectile,gas_chain,gas_census,cover_breaks --ticks 300   (proof build, minimal list)",
    "why_game": "the real damage defs reaching the hook at their real strengths; the patch values are T_LINT offline",
    "why_full_list": null,
    "entry_exists": true,
@@ -1103,7 +1181,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "blast_kinds"
+   ]
   },
   "sc_only_explosions": {
    "id": "sc_only_explosions",
@@ -1118,7 +1199,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes only_explosions --ticks 300   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes goods_fly_wild,all_fly_no_cap,open_storage,heavy_knock,blast_kinds,only_explosions,lookup_projectile,gas_chain,gas_census,cover_breaks --ticks 300   (proof build, minimal list)",
    "why_game": "a real melee hit and a real bullet producing no request line (the static half is T_ONLY_EXPLOSIONS_STATIC)",
    "why_full_list": null,
    "entry_exists": true,
@@ -1134,7 +1215,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "only_explosions"
+   ]
   },
   "sc_lookup": {
    "id": "sc_lookup",
@@ -1149,7 +1233,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes lookup_projectile --ticks 300   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes goods_fly_wild,all_fly_no_cap,open_storage,heavy_knock,blast_kinds,only_explosions,lookup_projectile,gas_chain,gas_census,cover_breaks --ticks 300   (proof build, minimal list)",
    "why_game": "which def on a real projectile, weapon and damage type the hook reads; the lookup order is K-13 offline",
    "why_full_list": null,
    "entry_exists": true,
@@ -1165,7 +1249,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "lookup_projectile"
+   ]
   },
   "sc_gas_chain": {
    "id": "sc_gas_chain",
@@ -1180,7 +1267,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes gas_chain --ticks 300   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes goods_fly_wild,all_fly_no_cap,open_storage,heavy_knock,blast_kinds,only_explosions,lookup_projectile,gas_chain,gas_census,cover_breaks --ticks 300   (proof build, minimal list)",
    "why_game": "a real gas grid lit by a real fire, bursts over ticks",
    "why_full_list": null,
    "entry_exists": true,
@@ -1196,7 +1283,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "gas_chain"
+   ]
   },
   "sc_cauldron_gas": {
    "id": "sc_cauldron_gas",
@@ -1211,7 +1301,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes gas_census --ticks 300   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes goods_fly_wild,all_fly_no_cap,open_storage,heavy_knock,blast_kinds,only_explosions,lookup_projectile,gas_chain,gas_census,cover_breaks --ticks 300   (proof build, minimal list)",
    "why_game": "the Cauldron's registered vent gas burning by registration, not by its own scan",
    "why_full_list": null,
    "entry_exists": true,
@@ -1227,7 +1317,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "gas_census"
+   ]
   },
   "sc_cover_breaks": {
    "id": "sc_cover_breaks",
@@ -1242,7 +1335,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes cover_breaks --ticks 300   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes goods_fly_wild,all_fly_no_cap,open_storage,heavy_knock,blast_kinds,only_explosions,lookup_projectile,gas_chain,gas_census,cover_breaks --ticks 300   (proof build, minimal list)",
    "why_game": "a real cover deck and a real descent (FlowWorks' break rule is T_FW_COVER offline)",
    "why_full_list": null,
    "entry_exists": true,
@@ -1258,7 +1351,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "cover_breaks"
+   ]
   },
   "sc_pit_fall": {
    "id": "sc_pit_fall",
@@ -1273,7 +1369,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes pit_colonist --ticks 300   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes pit_colonist,pit_enemy,killed_by_blast --ticks 300   (proof build, minimal list)",
    "why_game": "a real descent recorded by FlowWorks after a real throw; the stop-in-pit cell is K-08 offline",
    "why_full_list": null,
    "entry_exists": true,
@@ -1289,7 +1385,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "pit_colonist"
+   ]
   },
   "sc_pit_enemy": {
    "id": "sc_pit_enemy",
@@ -1304,7 +1403,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes pit_enemy --ticks 300   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes pit_colonist,pit_enemy,killed_by_blast --ticks 300   (proof build, minimal list)",
    "why_game": "a real raider's descent",
    "why_full_list": null,
    "entry_exists": true,
@@ -1320,7 +1419,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "pit_enemy"
+   ]
   },
   "sc_no_careless_fall": {
    "id": "sc_no_careless_fall",
@@ -1351,7 +1453,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "no_cross_ordered"
+   ]
   },
   "sc_pit_fetch": {
    "id": "sc_pit_fetch",
@@ -1382,7 +1487,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "pit_goods_fetch"
+   ]
   },
   "sc_frame_probe_check": {
    "id": "sc_frame_probe_check",
@@ -1413,7 +1521,11 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "frame_probe_selfcheck",
+    "frame_probe_selfcheck_paused"
+   ]
   },
   "sc_barrage_perf": {
    "id": "sc_barrage_perf",
@@ -1438,7 +1550,12 @@
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code"
    },
-   "cheaper_why": "the full list's share of a frame is not the mod's: the mod-off arm measures it (visit 5: 22.1 ms on, 21.7 ms off), so the tier list decides the mod's share and the sum decides the bar (owner, 2026-11-16: the smallest list to observe it is the best idea)"
+   "cheaper_why": "the full list's share of a frame is not the mod's: the mod-off arm measures it (visit 5: 22.1 ms on, 21.7 ms off), so the tier list decides the mod's share and the sum decides the bar (owner, 2026-11-16: the smallest list to observe it is the best idea)",
+   "scenes": [
+    "frame_probe_selfcheck",
+    "barrage_perf_off",
+    "barrage_perf"
+   ]
   },
   "sc_walk_blasts": {
    "id": "sc_walk_blasts",
@@ -1504,7 +1621,11 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "gas_into_pit",
+    "gas_into_pit_off"
+   ]
   },
   "sc_killed_thrown": {
    "id": "sc_killed_thrown",
@@ -1519,7 +1640,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes killed_by_blast --ticks 300   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes pit_colonist,pit_enemy,killed_by_blast --ticks 300   (proof build, minimal list)",
    "why_game": "a pawn killed by a real blast becoming a corpse that is thrown",
    "why_full_list": null,
    "entry_exists": true,
@@ -1535,7 +1656,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "killed_by_blast"
+   ]
   },
   "sc_goods_obstacles": {
    "id": "sc_goods_obstacles",
@@ -1566,7 +1690,11 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "goods_obstacles",
+    "goods_obstacles_control"
+   ]
   },
   "P_heavy_skip": {
    "id": "P_heavy_skip",
@@ -1580,7 +1708,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes heavy_skip   (proof build)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes heavy_skip,emp_no_throw,fire_half,harmful_unpatched,items,shelf,in_pit_skip,no_cross,corpse_into_pit,body_override   (proof build)",
    "why_game": "older scene kept as support; the locked scenes.json scene decides",
    "entry_exists": true,
    "support_only": true,
@@ -1594,7 +1722,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "heavy_skip"
+   ]
   },
   "P_emp_no_throw": {
    "id": "P_emp_no_throw",
@@ -1608,7 +1739,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes emp_no_throw   (proof build)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes heavy_skip,emp_no_throw,fire_half,harmful_unpatched,items,shelf,in_pit_skip,no_cross,corpse_into_pit,body_override   (proof build)",
    "why_game": "older scene kept as support; the locked scenes.json scene decides",
    "entry_exists": true,
    "support_only": true,
@@ -1622,7 +1753,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "emp_no_throw"
+   ]
   },
   "P_fire_half": {
    "id": "P_fire_half",
@@ -1636,7 +1770,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes fire_half   (proof build)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes heavy_skip,emp_no_throw,fire_half,harmful_unpatched,items,shelf,in_pit_skip,no_cross,corpse_into_pit,body_override   (proof build)",
    "why_game": "older scene kept as support; the locked scenes.json scene decides",
    "entry_exists": true,
    "support_only": true,
@@ -1650,7 +1784,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "fire_half"
+   ]
   },
   "P_harmful_unpatched": {
    "id": "P_harmful_unpatched",
@@ -1664,7 +1801,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes harmful_unpatched   (proof build)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes heavy_skip,emp_no_throw,fire_half,harmful_unpatched,items,shelf,in_pit_skip,no_cross,corpse_into_pit,body_override   (proof build)",
    "why_game": "older scene kept as support; the locked scenes.json scene decides",
    "entry_exists": true,
    "support_only": true,
@@ -1678,7 +1815,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "harmful_unpatched"
+   ]
   },
   "P_items": {
    "id": "P_items",
@@ -1692,7 +1832,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes items   (proof build)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes heavy_skip,emp_no_throw,fire_half,harmful_unpatched,items,shelf,in_pit_skip,no_cross,corpse_into_pit,body_override   (proof build)",
    "why_game": "older scene kept as support; the locked scenes.json scene decides",
    "entry_exists": true,
    "support_only": true,
@@ -1706,7 +1846,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "items"
+   ]
   },
   "P_shelf": {
    "id": "P_shelf",
@@ -1720,7 +1863,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes shelf   (proof build)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes heavy_skip,emp_no_throw,fire_half,harmful_unpatched,items,shelf,in_pit_skip,no_cross,corpse_into_pit,body_override   (proof build)",
    "why_game": "older scene kept as support; the locked scenes.json scene decides",
    "entry_exists": true,
    "support_only": true,
@@ -1734,7 +1877,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "shelf"
+   ]
   },
   "P_in_pit_skip": {
    "id": "P_in_pit_skip",
@@ -1748,7 +1894,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes in_pit_skip   (proof build)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes heavy_skip,emp_no_throw,fire_half,harmful_unpatched,items,shelf,in_pit_skip,no_cross,corpse_into_pit,body_override   (proof build)",
    "why_game": "older scene kept as support; the locked scenes.json scene decides",
    "entry_exists": true,
    "support_only": true,
@@ -1762,7 +1908,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "in_pit_skip"
+   ]
   },
   "P_no_cross": {
    "id": "P_no_cross",
@@ -1776,7 +1925,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes no_cross   (proof build)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes heavy_skip,emp_no_throw,fire_half,harmful_unpatched,items,shelf,in_pit_skip,no_cross,corpse_into_pit,body_override   (proof build)",
    "why_game": "older scene kept as support; the locked scenes.json scene decides",
    "entry_exists": true,
    "support_only": true,
@@ -1790,7 +1939,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "no_cross"
+   ]
   },
   "P_corpse_into_pit": {
    "id": "P_corpse_into_pit",
@@ -1804,7 +1956,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes corpse_into_pit   (proof build)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes heavy_skip,emp_no_throw,fire_half,harmful_unpatched,items,shelf,in_pit_skip,no_cross,corpse_into_pit,body_override   (proof build)",
    "why_game": "older scene kept as support; the locked scenes.json scene decides",
    "entry_exists": true,
    "support_only": true,
@@ -1818,7 +1970,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "corpse_into_pit"
+   ]
   },
   "P_body_override": {
    "id": "P_body_override",
@@ -1832,7 +1987,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes body_override   (proof build)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes heavy_skip,emp_no_throw,fire_half,harmful_unpatched,items,shelf,in_pit_skip,no_cross,corpse_into_pit,body_override   (proof build)",
    "why_game": "older scene kept as support; the locked scenes.json scene decides",
    "entry_exists": true,
    "support_only": true,
@@ -1846,7 +2001,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "body_override"
+   ]
   },
   "P_impact_factor": {
    "id": "P_impact_factor",
@@ -1860,7 +2018,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes impact_factor   (proof build)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes impact_factor,lookup_zero_wins,goods_fly_midair,goods_fly_lands,goods_fly_wall,goods_fly_rebound,goods_fly_off,container_thrown,land_no_bump,land_no_bump_pit   (proof build)",
    "why_game": "older scene kept as support; the locked scenes.json scene decides",
    "entry_exists": true,
    "support_only": true,
@@ -1874,7 +2032,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "impact_factor"
+   ]
   },
   "P_lookup_zero_wins": {
    "id": "P_lookup_zero_wins",
@@ -1888,7 +2049,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes lookup_zero_wins   (proof build)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes impact_factor,lookup_zero_wins,goods_fly_midair,goods_fly_lands,goods_fly_wall,goods_fly_rebound,goods_fly_off,container_thrown,land_no_bump,land_no_bump_pit   (proof build)",
    "why_game": "older scene kept as support; the locked scenes.json scene decides",
    "entry_exists": true,
    "support_only": true,
@@ -1902,7 +2063,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "lookup_zero_wins"
+   ]
   },
   "P_goods_fly_midair": {
    "id": "P_goods_fly_midair",
@@ -1916,7 +2080,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes goods_fly_midair   (proof build)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes impact_factor,lookup_zero_wins,goods_fly_midair,goods_fly_lands,goods_fly_wall,goods_fly_rebound,goods_fly_off,container_thrown,land_no_bump,land_no_bump_pit   (proof build)",
    "why_game": "older scene kept as support; the locked scenes.json scene decides",
    "entry_exists": true,
    "support_only": true,
@@ -1930,7 +2094,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "goods_fly_midair"
+   ]
   },
   "P_goods_fly_lands": {
    "id": "P_goods_fly_lands",
@@ -1944,7 +2111,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes goods_fly_lands   (proof build)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes impact_factor,lookup_zero_wins,goods_fly_midair,goods_fly_lands,goods_fly_wall,goods_fly_rebound,goods_fly_off,container_thrown,land_no_bump,land_no_bump_pit   (proof build)",
    "why_game": "older scene kept as support; the locked scenes.json scene decides",
    "entry_exists": true,
    "support_only": true,
@@ -1958,7 +2125,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "goods_fly_lands"
+   ]
   },
   "P_goods_fly_wall": {
    "id": "P_goods_fly_wall",
@@ -1972,7 +2142,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes goods_fly_wall   (proof build)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes impact_factor,lookup_zero_wins,goods_fly_midair,goods_fly_lands,goods_fly_wall,goods_fly_rebound,goods_fly_off,container_thrown,land_no_bump,land_no_bump_pit   (proof build)",
    "why_game": "older scene kept as support; the locked scenes.json scene decides",
    "entry_exists": true,
    "support_only": true,
@@ -1986,7 +2156,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "goods_fly_wall"
+   ]
   },
   "P_goods_fly_rebound": {
    "id": "P_goods_fly_rebound",
@@ -2000,7 +2173,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes goods_fly_rebound   (proof build)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes impact_factor,lookup_zero_wins,goods_fly_midair,goods_fly_lands,goods_fly_wall,goods_fly_rebound,goods_fly_off,container_thrown,land_no_bump,land_no_bump_pit   (proof build)",
    "why_game": "older scene kept as support; the locked scenes.json scene decides",
    "entry_exists": true,
    "support_only": true,
@@ -2014,7 +2187,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "goods_fly_rebound"
+   ]
   },
   "P_goods_fly_off": {
    "id": "P_goods_fly_off",
@@ -2028,7 +2204,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes goods_fly_off   (proof build)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes impact_factor,lookup_zero_wins,goods_fly_midair,goods_fly_lands,goods_fly_wall,goods_fly_rebound,goods_fly_off,container_thrown,land_no_bump,land_no_bump_pit   (proof build)",
    "why_game": "older scene kept as support; the locked scenes.json scene decides",
    "entry_exists": true,
    "support_only": true,
@@ -2042,7 +2218,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "goods_fly_off"
+   ]
   },
   "P_container_thrown": {
    "id": "P_container_thrown",
@@ -2056,7 +2235,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes container_thrown   (proof build)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes impact_factor,lookup_zero_wins,goods_fly_midair,goods_fly_lands,goods_fly_wall,goods_fly_rebound,goods_fly_off,container_thrown,land_no_bump,land_no_bump_pit   (proof build)",
    "why_game": "older scene kept as support; the locked scenes.json scene decides",
    "entry_exists": true,
    "support_only": true,
@@ -2070,7 +2249,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "container_thrown"
+   ]
   },
   "P_land_no_bump": {
    "id": "P_land_no_bump",
@@ -2084,7 +2266,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes land_no_bump   (proof build)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes impact_factor,lookup_zero_wins,goods_fly_midair,goods_fly_lands,goods_fly_wall,goods_fly_rebound,goods_fly_off,container_thrown,land_no_bump,land_no_bump_pit   (proof build)",
    "why_game": "older scene kept as support; the locked scenes.json scene decides",
    "entry_exists": true,
    "support_only": true,
@@ -2098,7 +2280,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "land_no_bump"
+   ]
   },
   "P_land_no_bump_pit": {
    "id": "P_land_no_bump_pit",
@@ -2112,7 +2297,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes land_no_bump_pit   (proof build)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes impact_factor,lookup_zero_wins,goods_fly_midair,goods_fly_lands,goods_fly_wall,goods_fly_rebound,goods_fly_off,container_thrown,land_no_bump,land_no_bump_pit   (proof build)",
    "why_game": "older scene kept as support; the locked scenes.json scene decides",
    "entry_exists": true,
    "support_only": true,
@@ -2126,7 +2311,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "land_no_bump_pit"
+   ]
   },
   "P_gas_clumps": {
    "id": "P_gas_clumps",
@@ -2154,7 +2342,10 @@
      "build": "proof"
     },
     "by": "testq_blocks.py"
-   }
+   },
+   "scenes": [
+    "gas_clumps"
+   ]
   },
   "LOOK_STAGE8": {
    "id": "LOOK_STAGE8",
