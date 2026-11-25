@@ -430,7 +430,7 @@
             <neverMultiSelect>True</neverMultiSelect>
             <graphicData>
               <shaderType>TransparentPostLight</shaderType>
-            <texPath>StandIn/Things/Projectiles/GaussShot_Small</texPath>
+            <texPath>Things/Projectiles/GaussShot_Small</texPath>
                     <graphicClass>Graphic_Single</graphicClass>
                     </graphicData>
           <defName>RSW_Jawa_TD_VGE_MassDriver</defName>

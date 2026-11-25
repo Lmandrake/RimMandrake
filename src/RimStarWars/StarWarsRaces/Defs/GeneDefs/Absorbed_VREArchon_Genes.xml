@@ -8,7 +8,7 @@
   (ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws) holds 13 `<def>VRE_ShortPregnancy</def>` gene instances on the
   founders, and a renamed def would drop them on load. Same rule as Absorbed_SovSith_Genes.xml.
   Same numbers as the donor. pregnancySpeedFactor is read by VEF.Genes.GeneExtension (Vanilla Expanded Framework,
-  already a hard dependency of this mod). Icon is a donor stand-in until regenerated.
+  already a hard dependency of this mod). Icon is our own render (artpipe dregen_VRE_ShortPregnancy_GenePregnancyShort_v1).
 -->
 <Defs>
 
@@ -20,7 +20,7 @@
       <li>AG_Fertility</li>
     </exclusionTags>
     <description>Carriers of this gene develop a child during pregnancy much faster. Pregnancy lasts 3 bimesters - 12 days.</description>
-    <iconPath>StandIn/UI/Icons/Genes/Gene_PregnancyShort</iconPath>
+    <iconPath>UI/Icons/Genes/Gene_PregnancyShort</iconPath>
     <displayCategory>Reproduction</displayCategory>
     <displayOrderInCategory>115.3</displayOrderInCategory>
     <biostatMet>-1</biostatMet>

@@ -3,7 +3,7 @@
   RM_Moss.xml - plain port of GRiNDTerra's GRimMoss (grimterra.biomesmod), 2026-10-18, so the donor can retire.
   Stats verbatim; the Ash'karr growth band (PlantTolerances_Ashkarr.xml: -8.6/-0.5/48.4/70.1) and the ground-cover
   altitudeLayer (RUT_GroundCoverDrawLayer.xml) are baked in here and those donor-targeting patch ops are deleted.
-  Art: donor pictures copied as marked stand-ins through the art ledger (donor_standins.py); regenerate later.
+  Art: our own artpipe renders, installed through the art ledger over the donor stand-ins (StandIn/ keeps the old copies).
 -->
 <Defs>
   <ThingDef ParentName="PlantBase">
@@ -26,7 +26,7 @@
       <fertilityMin>0.05</fertilityMin>
       <fertilitySensitivity>0</fertilitySensitivity>
       <growDays>4</growDays>
-      <leaflessGraphicPath>StandIn/Things/Plant/GRimMoss_Leafless</leaflessGraphicPath>
+      <leaflessGraphicPath>Things/Plant/GRimMoss_Leafless</leaflessGraphicPath>
       <pollutedGraphicPath>Things/Plant/Moss_Polluted</pollutedGraphicPath>
       <harvestWork>60</harvestWork>
       <maxMeshCount>9</maxMeshCount>

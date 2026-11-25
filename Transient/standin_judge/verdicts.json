@@ -1,0 +1,103 @@
+{
+ "judge": "rm-judge opus",
+ "brief": "design/RimMandrake/art_judge_brief.md",
+ "verdicts": [
+  {
+   "job": "dregen_Eyes_BurntOrange_Feline_BurntOrangeFeline_v1",
+   "verdict": "INSTALL",
+   "polish": "Feline and reptile renders share one slit-oval design; the colour reads as burnt orange. (check: eye centred on the canvas (stand-in sat ~0.06 right of centre; at drawSize 0.30 that is ~0.02 cell, still on the RightEye/LeftEye anchor); real alpha, no edge contact; thin dark rim is part of the eye, not a B1a keyline)"
+  },
+  {
+   "job": "dregen_Eyes_BurntOrange_Reptile_BurntOrangeReptile_v1",
+   "verdict": "INSTALL",
+   "polish": "About 1.6x the stand-in's height; reads as a large slit eye on the head. Same design as the feline render. (check: eye centred on the canvas (stand-in sat ~0.06 right of centre; at drawSize 0.30 that is ~0.02 cell, still on the RightEye/LeftEye anchor); real alpha, no edge contact; thin dark rim is part of the eye, not a B1a keyline)"
+  },
+  {
+   "job": "dregen_Eyes_FireRed_Feline_FireRedFeline_v1",
+   "verdict": "INSTALL",
+   "polish": "About 2x the stand-in's height (0.43 vs 0.22 canvas); may read as an oversized eye on small heads. (check: eye centred on the canvas (stand-in sat ~0.06 right of centre; at drawSize 0.30 that is ~0.02 cell, still on the RightEye/LeftEye anchor); real alpha, no edge contact; thin dark rim is part of the eye, not a B1a keyline)"
+  },
+  {
+   "job": "dregen_Eyes_FireRed_Reptile_FireRedReptile_v1",
+   "verdict": "INSTALL",
+   "polish": "Tall and narrow; may read thin at play zoom. (check: eye centred on the canvas (stand-in sat ~0.06 right of centre; at drawSize 0.30 that is ~0.02 cell, still on the RightEye/LeftEye anchor); real alpha, no edge contact; thin dark rim is part of the eye, not a B1a keyline)"
+  },
+  {
+   "job": "dregen_Eyes_MarsRed_Feline_MarsRedFeline_v1",
+   "verdict": "INSTALL",
+   "polish": "Close in size to the stand-in; muted red against fire red, so the two may be hard to tell apart. (check: eye centred on the canvas (stand-in sat ~0.06 right of centre; at drawSize 0.30 that is ~0.02 cell, still on the RightEye/LeftEye anchor); real alpha, no edge contact; thin dark rim is part of the eye, not a B1a keyline)"
+  },
+  {
+   "job": "dregen_Eyes_MarsRed_Reptile_MarsRedReptile_v1",
+   "verdict": "INSTALL",
+   "polish": "About 2.2x the stand-in's height (0.48 vs 0.22); the largest of the set. (check: eye centred on the canvas (stand-in sat ~0.06 right of centre; at drawSize 0.30 that is ~0.02 cell, still on the RightEye/LeftEye anchor); real alpha, no edge contact; thin dark rim is part of the eye, not a B1a keyline)"
+  },
+  {
+   "job": "dregen_Eyes_MidasGold_Feline_MidasGoldFeline_v1",
+   "verdict": "INSTALL",
+   "polish": "About 2x the stand-in's height; may read as an oversized eye on small heads. (check: eye centred on the canvas (stand-in sat ~0.06 right of centre; at drawSize 0.30 that is ~0.02 cell, still on the RightEye/LeftEye anchor); real alpha, no edge contact; thin dark rim is part of the eye, not a B1a keyline)"
+  },
+  {
+   "job": "dregen_Eyes_MidasGold_Reptile_MidasGoldReptile_v1",
+   "verdict": "INSTALL",
+   "polish": "Smaller than the stand-in's width; may read small. Size is inconsistent across the 12-eye set. (check: eye centred on the canvas (stand-in sat ~0.06 right of centre; at drawSize 0.30 that is ~0.02 cell, still on the RightEye/LeftEye anchor); real alpha, no edge contact; thin dark rim is part of the eye, not a B1a keyline)"
+  },
+  {
+   "job": "dregen_Eyes_Tangerine_Feline_TangerineFeline_v1",
+   "verdict": "INSTALL",
+   "polish": "Hard to tell apart from burnt orange at play zoom. (check: eye centred on the canvas (stand-in sat ~0.06 right of centre; at drawSize 0.30 that is ~0.02 cell, still on the RightEye/LeftEye anchor); real alpha, no edge contact; thin dark rim is part of the eye, not a B1a keyline)"
+  },
+  {
+   "job": "dregen_Eyes_Tangerine_Reptile_TangerineReptile_v1",
+   "verdict": "INSTALL",
+   "polish": "About 1.8x the stand-in's height. (check: eye centred on the canvas (stand-in sat ~0.06 right of centre; at drawSize 0.30 that is ~0.02 cell, still on the RightEye/LeftEye anchor); real alpha, no edge contact; thin dark rim is part of the eye, not a B1a keyline)"
+  },
+  {
+   "job": "dregen_Eyes_TaxiCab_Feline_TaxiCabFeline_v1",
+   "verdict": "INSTALL",
+   "polish": "Very narrow (0.14 x 0.44 canvas); may read as a yellow sliver. (check: eye centred on the canvas (stand-in sat ~0.06 right of centre; at drawSize 0.30 that is ~0.02 cell, still on the RightEye/LeftEye anchor); real alpha, no edge contact; thin dark rim is part of the eye, not a B1a keyline)"
+  },
+  {
+   "job": "dregen_Eyes_TaxiCab_Reptile_TaxiCabReptile_v1",
+   "verdict": "INSTALL",
+   "polish": "Literal taxi checker squares on the iris; odd look, but at ~10 px in game they blur to dark flecks. (check: eye centred on the canvas (stand-in sat ~0.06 right of centre; at drawSize 0.30 that is ~0.02 cell, still on the RightEye/LeftEye anchor); real alpha, no edge contact; thin dark rim is part of the eye, not a B1a keyline)"
+  },
+  {
+   "job": "dregen_RM_Moss_GRimMossLeaflessGRimMossLeaflessA_v1",
+   "verdict": "INSTALL",
+   "polish": "The prompt asked for bare stems, so it reads as a bare twiggy shrub filling the cell, not a low moss clump; a player may take the dormant moss for a different plant. Painterly, real alpha, no cut-off."
+  },
+  {
+   "job": "dregen_RM_Moss_GRimMossLeaflessGRimMossLeaflessB_v1",
+   "verdict": "INSTALL",
+   "polish": "The prompt asked for bare stems, so it reads as a bare twiggy shrub filling the cell, not a low moss clump; a player may take the dormant moss for a different plant. Painterly, real alpha, no cut-off."
+  },
+  {
+   "job": "dregen_RM_Uttaqar_RockTrollBaby_v1_east",
+   "verdict": "INSTALL",
+   "polish": "Faces right (correct for east). It fills the canvas (0.02-0.99 wide) where the stand-in filled 0.15-0.86, so the juvenile draws ~30% larger at the same drawSize; check it against the adult. No edge cut-off (0 opaque edge pixels)."
+  },
+  {
+   "job": "dregen_RM_Uttaqar_RockTrollBaby_v1_north",
+   "verdict": "INSTALL",
+   "polish": "Shows the back (rump, dorsal plates; the creature has no eyes and no face shows). Drawn as a 3/4 rear with the head turned up-right, not straight-on, so a pawn walking north may read as heading diagonally. Fills the canvas like the east facing."
+  },
+  {
+   "job": "dregen_RM_Uttaqar_RockTrollBaby_v1_south",
+   "verdict": "INSTALL",
+   "polish": "Faces the viewer head-down, symmetric, no eyes (fits the eyeless canon). Size and palette match east and north. Fills the canvas: larger footprint than the stand-in."
+  },
+  {
+   "job": "dregen_RSW_Jawa_TD_VGE_MassDriver_GaussShotSmall_v1",
+   "verdict": "INSTALL",
+   "polish": "Points up the canvas, centred, pale-blue glow. Narrower and shorter than the stand-in (0.14x0.56 vs 0.26x0.79), so the shot reads smaller in flight."
+  },
+  {
+   "job": "dregen_VRE_ShortPregnancy_GenePregnancyShort_v1",
+   "verdict": "INSTALL",
+   "polish": "Readable at 64 px (curled foetus plus fast-forward badge). Painterly greyscale disc, not a flat vanilla Biotech glyph; the badge is small."
+  }
+ ],
+ "brief_conflict": "For the eyes, F1 asks for a spawned-pawn screenshot before a face-part change is kept, and the brief's 'missing input = UNSURE' rule would make all 12 eyes UNSURE. The owner's ruling 'accept all art as currently rendered ... No more art blockers' sets the low bar here, so I applied the hard constraints only (real alpha D4, canvas/cut-off, correct facing C1, subject) and record F1 as owed. B3 sibling matching and D3 footprint are applied as polish only. E1 is consistent: these renders replace donor art.",
+ "owed": "F1: one in-game screenshot of a BTD_Hutt pawn showing the reptile eyes drawn whole (both anchors, flip on the left eye), after install."
+}
