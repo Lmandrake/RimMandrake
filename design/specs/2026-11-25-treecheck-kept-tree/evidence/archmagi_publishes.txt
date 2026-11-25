@@ -1,0 +1,12 @@
+# publish 1, 2026-11-25 12:28 AM PST (refused on two reds of its own; the third and fourth lines are the nested-tree defect it found, fixed before publish 2)
+tree checks: the commit is what lands, running them on a full checkout of HEAD replayed onto origin/main 835ce1431a17 d327a4d0ddde: the kept tree, made fresh (none kept yet) (35.4 s, wrote 4897 MB)
+tree checks: the commit is what lands, running them on a full checkout of HEAD 677208b49d4e: the kept tree, reused (1.4 s, wrote 46 MB)
+tree checks: the commit is what lands, running them on a full checkout of HEAD's commit 677208b49d4e: the kept tree, made fresh (none kept yet) (29.1 s, wrote 4897 MB)
+tree checks: a red test re-run, running them on a full checkout of the base 0070ebed21f1: a fresh tree of its own (another check of this clone holds the kept tree) (23.4 s, wrote 4897 MB)
+REFUSED: 2 pipeline check(s) red after your commit (it stays on HEAD; fix, then publish again):
+
+# publish 2, 2026-11-25 12:44 AM PST
+tree checks: the commit is what lands, running them on a full checkout of HEAD replayed onto origin/main dbe31905998a 91a5a34d4a7b: the kept tree, reused (3.8 s, wrote 40 MB)
+tree checks: the commit is what lands, running them on a full checkout of HEAD 19fcd5948c9f: the kept tree, reused (0.7 s, wrote 39 MB)
+pipeline checks: 197 green in 330.6 s
+PUBLISHED 46d2b57a5628ba4ea18a6c3431f6fd11ee5199b3

@@ -88,5 +88,16 @@ the checkout again. On Archmagi the same checkout takes about 27 s.
 
 ## PROOF
 
-- See the item's notes: the selftest red on the base commit and green on the fix, and the live publishes on Archmagi
-  and SteveDesktop (seconds and bytes written by the checkout).
+- The selftest, 2026-11-25 1:00 AM PST: red on the base commit 0070ebed21 (`evidence/selftest_red_on_base.txt`, 9
+  failing; its second checkout rewrote 41 of 41 files), green on the fix (`evidence/selftest_green_on_fix.txt`, 8 of 8;
+  1 of 41 files rewritten), and 14 of 14 planted faults caught (`evidence/selftest_mutants.txt`).
+- Archmagi, 2026-11-25 12:28 AM to 1:02 AM PST, two `./publish` runs of this item's clone
+  (`evidence/archmagi_publishes.txt`): the first checkout, a fresh kept tree, took 35.4 s and wrote 4,897 MB. Each
+  later checkout was a reuse: 1.4 s and 46 MB, 3.8 s and 40 MB, 0.7 s and 39 MB.
+- SteveDesktop, 2026-11-25 1:04 AM to 1:08 AM PST, two `./publish` runs of the seat clone `~/rm/bench`
+  (`evidence/stevedesktop_publish_fresh.txt`, `evidence/stevedesktop_publish_reuse.txt`, made by
+  `evidence/kept_measure.py`): the fresh kept tree took 127.0 s and wrote 4,898 MB; the reuse took 1.0 s and wrote
+  53 MB. `/proc/pressure/io` read `full avg10` 72 and 58 at the two starts, from the other runs on that disk, so the
+  pressure during the 1 s reuse cannot be told apart from theirs. The publish's wall fell from 205 s to 42 s.
+- Bytes written are the publish process's `/proc/self/io` `write_bytes` across the checkout (reaped git children
+  included); `full_head_tree` prints them on every use.
