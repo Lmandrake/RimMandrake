@@ -122,7 +122,7 @@ def _via(host, runner):
     def remote(argv, **kw):
         r = runner(["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=15", target, shlex.join(argv)], **kw)
         if r.returncode == 255:      # ssh itself failed: never let an empty stdout read as a unit's answer
-            raise OSError("ssh %s: %s" % (target, (r.stderr or "").strip()[-160:]))
+            raise OSError("ssh %s: %s" % (target, (r.stderr or "").strip()))
         return r
     return remote
 

@@ -271,5 +271,5 @@ def read_mod_digests(s):
     """Live: the digests of our mods now, through `jawa/mod_hooks action=digest` (05_build_design.md decision 8). -> mod_digests()."""
     r = s.raw("jawa/mod_hooks", action="digest", scope="")
     if not isinstance(r, dict) or r.get("success") is not True or not isinstance(r.get("digests"), list):
-        raise Refused("COULD_NOT_LOOK", "jawa/mod_hooks digest gave no digests: %s" % (str(r)[:200],))
+        raise Refused("COULD_NOT_LOOK", "jawa/mod_hooks digest gave no digests: %s" % (str(r),))
     return mod_digests(r["digests"])

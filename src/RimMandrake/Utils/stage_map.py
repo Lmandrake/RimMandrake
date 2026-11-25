@@ -88,12 +88,12 @@ def connect():
 
 def call(c, tool, **args):
     r = c.call(tool, args, check=False)
-    return r if isinstance(r, dict) else {"success": False, "raw": str(r)[:300]}
+    return r if isinstance(r, dict) else {"success": False, "raw": str(r)}
 
 
 def must(r, what):
     if r.get("success") is False or r.get("error"):
-        raise Stop(1, "%s: %s" % (what, str(r.get("message") or r.get("error") or r)[:400]))
+        raise Stop(1, "%s: %s" % (what, str(r.get("message") or r.get("error") or r)))
     return r
 
 
@@ -102,21 +102,21 @@ def maps(c):
     r = call(c, "jawa/set_current_map", mapId=-987654)
     ms = r.get("loadedMaps") or (r.get("details") or {}).get("loadedMaps")
     if not isinstance(ms, list):
-        raise Stop(2, "the loaded maps could not be read: %s" % str(r)[:300])
+        raise Stop(2, "the loaded maps could not be read: %s" % str(r))
     return ms
 
 
 def current(c):
     mi = call(c, "jawa/map_info")
     if mi.get("success") is not True:
-        raise Stop(2, "no current map: %s" % str(mi)[:300])
+        raise Stop(2, "no current map: %s" % str(mi))
     return mi
 
 
 def pawns_on(c, rect=None):
     r = call(c, "jawa/list_pawns", **({"rect": rect} if rect else {}))
     if r.get("success") is False or not isinstance(r.get("pawns"), list):
-        raise Stop(2, "the pawns of the map could not be read: %s" % str(r)[:300])
+        raise Stop(2, "the pawns of the map could not be read: %s" % str(r))
     return r["pawns"]
 
 
@@ -134,7 +134,7 @@ def empty_map(c, sx, sz, say):
     left = pawns_on(c)
     say("emptied: %d pawn(s) vanished, %s thing(s) cleared, terrain %s on %s cell(s) (read-back ok=%s), fog %s, %d pawn(s) left, %.1f s"
         % (gone, cl.get("destroyedCount"), TERRAIN, (te.get("readBack") or {}).get("rows"), (te.get("readBack") or {}).get("ok"),
-           "lifted" if fog.get("success") is not False else "NOT lifted: %s" % str(fog)[:120], len(left), time.time() - t0))
+           "lifted" if fog.get("success") is not False else "NOT lifted: %s" % str(fog), len(left), time.time() - t0))
     return left
 
 
@@ -145,7 +145,7 @@ def provision(c, say):
     r = call(c, "jawa/pawn_census", faction="player")
     col = [p for p in r.get("pawns") or [] if p.get("isColonist")]
     if not col:
-        raise Stop(2, "the green room's colonists could not be read: %s" % str(r)[:300])
+        raise Stop(2, "the green room's colonists could not be read: %s" % str(r))
     meals = 0
     for p in col:
         for dx in range(MEAL_STACKS):

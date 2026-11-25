@@ -118,7 +118,7 @@ def main(repo=REPO):
             return 2
         for b in bullets(dtext):
             if NOT_YET.search(b) and SCORER_WORDS.search(b):
-                why.append("design/concepts/%s/design.md still calls it not yet his: %s" % (head, b[:120]))
+                why.append("design/concepts/%s/design.md still calls it not yet his: %s" % (head, b))
         if why:
             fails.append("%s (%s): slider %s: %s" % (mod, head, ",".join(found), "; ".join(why)))
         else:

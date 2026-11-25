@@ -204,7 +204,7 @@ def read_refusals(unit, state_dir):
                     open_.pop(row["id"], None)
                     open_[row["id"]] = row
     except (OSError, ValueError) as e:
-        return None, "%s: %s: %s" % (path, type(e).__name__, str(e)[:200])
+        return None, "%s: %s: %s" % (path, type(e).__name__, str(e))
     return list(open_.values()), ""
 
 

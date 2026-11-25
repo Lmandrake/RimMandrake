@@ -29,6 +29,17 @@ os.environ["RM_CONDUCTOR_LOG"] = os.path.join(TMP, "conductor.md")
 os.environ.setdefault("RM_UNDER_SELFTEST", "1")
 sys.path.insert(0, HERE)
 import detached_helper as DH  # noqa: E402
+_LIVE_DRAIN = DH.drain_refusal
+
+
+def _drain_refusal(now, extra=None, resume_session=None, path=None):
+    """The account gate reads only a test's own notice: the machine's live plan is never this test's input. On a
+    follower machine (SteveDesktop) the live notice is old, and every continuation here read 'waits for the account
+    switch' (26 FAILs, 2026-11-25)."""
+    return _LIVE_DRAIN(now, extra, resume_session, path) if path is not None else None
+
+
+DH.drain_refusal = _drain_refusal
 import left_open_continue as LOC  # noqa: E402
 
 FAILS = []

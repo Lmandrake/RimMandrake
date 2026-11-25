@@ -55,7 +55,7 @@ def hold(call, map_size, rect, margin, cast=()):
     that the caller cannot undo with release(hold)."""
     r = call(LIST_PAWNS)
     if r.get("success") is False or not isinstance(r.get("pawns"), list):
-        raise HoldFault("COULD_NOT_LOOK", "the pawns of the colony map could not be read: %s" % str(r)[:200])
+        raise HoldFault("COULD_NOT_LOOK", "the pawns of the colony map could not be read: %s" % str(r))
     rects = free_rects(map_size, rect, margin)
     if not rects:
         raise HoldFault("NO_FREE_CELLS", "station %s with margin %d leaves no cell of the %dx%d map to stand in" % (tuple(rect), margin, *map_size))
@@ -64,7 +64,7 @@ def hold(call, map_size, rect, margin, cast=()):
         raise HoldFault("NO_AREA", "the allowed area %s could not be made: %s" % (AREA_LABEL, made.get("message") or made))
     p = call(PAINT, area=AREA_LABEL, ops=ops(rects), value=True, clearAreaFirst=True)
     if p.get("success") is not True or p.get("failedVerify") or p.get("outOfBounds"):
-        raise HoldFault("AREA_NOT_PAINTED", "the area %s did not read back as painted: %s" % (AREA_LABEL, str(p)[:200]))
+        raise HoldFault("AREA_NOT_PAINTED", "the area %s did not read back as painted: %s" % (AREA_LABEL, str(p)))
     h = {"area": AREA_LABEL, "held": [], "unbound": [], "forbidden": 0, "rects": rects}
     for pawn in r["pawns"]:
         pid = pawn.get("id")

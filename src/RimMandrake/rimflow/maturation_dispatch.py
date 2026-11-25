@@ -821,7 +821,7 @@ def lane_on_mod_files(unit, mod, record=None, run=None):
         except (OSError, subprocess.SubprocessError) as e:
             return PR.could_not_look("git %s in %s: %s: %s" % (a[0], clone, type(e).__name__, e))
         if r.returncode:
-            return PR.could_not_look("git %s in %s exited %d: %s" % (a[0], clone, r.returncode, (r.stderr or "")[:200]))
+            return PR.could_not_look("git %s in %s exited %d: %s" % (a[0], clone, r.returncode, (r.stderr or "")))
         for ln in (r.stdout or "").splitlines():
             ln = ln[3:] if a[0] == "status" else ln
             paths += [x for x in ln.split(" -> ") if x.strip()]

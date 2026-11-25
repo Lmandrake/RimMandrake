@@ -286,7 +286,7 @@ def t_a_pilot_sitting_launches_with_its_agent():
     check("tick pilot brief uses the agent text", "system prompt" in MA.pilot_brief(REPO, "X_ITEM", "FlowWorks", "w"))
     check("tick pilot env names the agent", MA.pilot_env({"RM_CONTROL_MOD": "FlowWorks"}).get(DH.AGENT_ENV)
           == "rm-testpilot", str(MA.pilot_env({})))
-    rec = {"clone": REPO, "unit": "u1", "seat": "BENCH", "item": "X_ITEM", "model": "fable", "max_s": None,
+    rec = {"clone": REPO, "unit": "u1", "seat": "BENCH", "item": "X_ITEM", "model": "opus", "max_s": None,
            "budget_usd": 0.0, "out": "/tmp/o", "err": "/tmp/e", "state": B.STATE, "env": {DH.AGENT_ENV: "rm-testpilot"}}
     argv = DH.launch_argv(rec, "brief", "/usr/bin/claude")
     check("launch_argv passes --agent rm-testpilot", "--agent" in argv and argv[argv.index("--agent") + 1]

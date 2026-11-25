@@ -37,7 +37,7 @@ def send_notice(alias, n):
         r = subprocess.run(SSH + [alias, cmd], input=json.dumps(n), capture_output=True, text=True, timeout=SSH_DEADLINE_S)
     except (OSError, subprocess.SubprocessError) as e:
         return False, "%s: %s" % (type(e).__name__, e)
-    return r.returncode == 0, (r.stderr or r.stdout).strip()[-200:] or "exit %d" % r.returncode
+    return r.returncode == 0, (r.stderr or r.stdout).strip() or "exit %d" % r.returncode
 
 
 def forget_machine(alias):
@@ -47,4 +47,4 @@ def forget_machine(alias):
                            capture_output=True, text=True, timeout=SSH_DEADLINE_S)
     except (OSError, subprocess.SubprocessError) as e:
         return False, "%s: %s" % (type(e).__name__, e)
-    return r.returncode == 0, (r.stderr or r.stdout).strip()[-200:]
+    return r.returncode == 0, (r.stderr or r.stdout).strip()

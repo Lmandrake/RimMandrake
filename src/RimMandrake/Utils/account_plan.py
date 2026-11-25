@@ -1558,7 +1558,7 @@ def account_lines(plan, f) -> list:
             elif gs[0] != "ok":
                 out.append("  %-10s UNMEASURED: %s" % (a, gs[1]))
             else:
-                out.append("  %-10s %s" % (a, " ".join(str(gs[1]).split())[:120]))
+                out.append("  %-10s %s" % (a, " ".join(str(gs[1]).split())))
             continue
         r = rd.get(a) or reading(None, now)
         rl = rule_of(plan, a, env)
@@ -2141,7 +2141,7 @@ def flush_ledger(plan) -> None:
             text = "ACCOUNT PLAN rev %s: %s. %s" % (h["rev"], h.get("cmd"), h.get("owner_said") or h.get("by_card") or "")
             rc, out = ing.rimflow("note", item, "--text", text, "--why", "account plan change (account_plan.py, no AI)")
             if rc:
-                print("account_plan: ledger note refused: %s" % str(out)[-300:], file=sys.stderr)
+                print("account_plan: ledger note refused: %s" % str(out), file=sys.stderr)
                 return
             write_atomic(d / "ledger_sent.json", {"rev": h["rev"]})
         print("account_plan: " + str(ing.publish(len(owed), message="ledger: account plan")))

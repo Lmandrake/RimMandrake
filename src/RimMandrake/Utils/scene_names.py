@@ -548,7 +548,7 @@ def _clean_station(s, rect, rec, did):
     rs = "%d,%d,%d,%d" % tuple(rect)
     r = s._call(LIST_PAWNS, rect=rs)
     if r.get("success") is False or not isinstance(r.get("pawns"), list):
-        raise Fault("COULD_NOT_LOOK", done=did, detail="the pawns on station %s could not be read: %s" % (rs, str(r)[:200]))
+        raise Fault("COULD_NOT_LOOK", done=did, detail="the pawns on station %s could not be read: %s" % (rs, str(r)))
     for p in r["pawns"]:
         v = s._call(VANISH, pawn=p.get("id"), action="vanish")
         if v.get("success") is False:
@@ -565,7 +565,7 @@ def stage_breaches(s):
         cast.update(v if isinstance(v, list) else [v])
     r = s._call(LIST_PAWNS)
     if r.get("success") is False or not isinstance(r.get("pawns"), list):
-        raise Fault("COULD_NOT_LOOK", detail="the pawns of the stage could not be read: %s" % str(r)[:200])
+        raise Fault("COULD_NOT_LOOK", detail="the pawns of the stage could not be read: %s" % str(r))
     return ["BREACH: %s %s (%s) at %s is on the stage and is not cast" % (p.get("id"), p.get("kind") or p.get("def"), p.get("faction"),
                                                                          p.get("position") or p.get("cell") or p.get("pos")
                                                                          or ("%s,%s" % (p.get("x"), p.get("z")) if "x" in p else "an unread cell"))

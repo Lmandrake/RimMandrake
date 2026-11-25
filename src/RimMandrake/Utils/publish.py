@@ -258,7 +258,7 @@ class PushLock:
         self.fd = fd
         try:
             os.ftruncate(fd, 0)
-            os.write(fd, ("%d %s\n" % (os.getpid(), " ".join(sys.argv)[:200])).encode())
+            os.write(fd, ("%d %s\n" % (os.getpid(), " ".join(sys.argv)[:200])).encode())   # cut-ok: the lock-holder line (pid and command), not stored text
         except OSError:
             pass                                                   # opened read-only: the lock holds all the same
 
