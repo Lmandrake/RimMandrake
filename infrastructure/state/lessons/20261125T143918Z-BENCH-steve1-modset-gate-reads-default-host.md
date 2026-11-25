@@ -1,0 +1,2 @@
+On SteveDesktop, modset_builder.py --tier X --apply refuses 'BENCH does not hold the bridge (holder: nobody)' even right after rimflow bridge take --host Steve1: game_instance.py env Steve1 leaves RM_GAME_INSTANCE unset, so rimflow model.bridge_gate reads the default host's game-a lock, not the Steve1 ledger entry. Pass --not-my-bridge '<why>' (it then writes Steve1's ModsConfig); otherwise the next launch runs the old list and costs a full restart (measured 2026-11-25: 315 mods loaded instead of 18).
+item: RIMMANDRAKE_SPREAD_SHADE_DASH_SEVEN_ANIMALS_ON_ONE_CELL
