@@ -1,0 +1,11 @@
+ordered rescue proof 2026-11-25T03:31:52 on ArchBig, driver prove:50244
+stage: save None, map 0, tick 1; rescuer Human826, victim Human829, standing Human832 near 112,130
+staged: bed Bed19046 at 112,135; victim Human829 downed (True) and in bed (['LayDown', 19046.0]); rescue by Human832
+PASS R1 a doctor ordered through DoctorTendToHumanlikes tends the downed colonist (the job ends Succeeded): reply given True started True via WorkGiverDef:DoctorTendToHumanlikes job TendPatient#65; run S1_20261125T113207_r1 hit; job_end [('TendPatient', 'Succeeded')]
+PASS R2 a doctor not assigned to Doctor is refused by the float menu before a tick: given False, reason 'Cannot tend to Tyon, Medic: Not assigned to doctoring', levelUsed None, tick 251 -> 251
+PASS R3 jawa/motive on a hostile with no lord is refused NO_LORD: hostile Human19085, lord None; refused NO_LORD: NO_LORD: 'Human19085' has no lord: a motive gives a lord a new job, it does not make a group
+PASS R4 the job tap's giver agrees with the receipt's level (giver: named; raw: not): tend: tap giver ['WorkGiverDef:DoctorTendToHumanlikes', 'direct', 'JobGiver_WanderColony', 'direct']; node: via JobGiver_WanderColony job GotoWander#958; raw: via raw job Goto#968; tap givers [('GotoWander', 'JobGiver_WanderColony'), ('Goto', 'ThinkNode_QueuedJob')]; force record {"rA": {"max": 4.0, "entries": [{"actor": "rA", "act": "order", "asked": 3.0, "via": "WorkGiverDef:DoctorTendToHumanlikes", "given": false, "started": false, "reason": "Cannot tend to Tyon, Medic: Not assigned to doctoring", "tick": 251.0, "class": "NOT UNDONE", "reach": "save"}, {"actor": "rA", "act": "order", "asked": 3.0, "via": "WorkGiverDef:DoctorTendToHumanlikes", "given": false, "started": 
+PASS R5 a giver made to refuse (target not downed): given false, nothing started: given False, reason 'the float menu offers no order of DoctorTendToHumanlikes for Thing_Human832', job 9.0 -> 9.0, tick 251 -> 251
+[bridge split] 103.4 s wall: load 5.5 / ticks 0.6 / reads 2.5 / other 17.4 / outside calls 77.4 s
+prove_ordered_rescue: 5 of 5 rows held, 0 failed
+[bridge split] WARN 409 calls of jawa/run_until (16.4 s): batch them

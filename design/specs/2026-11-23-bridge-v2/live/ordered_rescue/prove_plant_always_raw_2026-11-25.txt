@@ -1,0 +1,11 @@
+ordered rescue proof 2026-11-25T02:53:13 on ArchSmall, driver prove:51856
+stage: save None, map 0, tick 1; rescuer Human452, victim Human455, standing Human458 near 111,125
+staged: bed Bed27660 at 111,130; victim Human455 downed (True) and in bed (['LayDown', 27660.0]); rescue by Human458
+PASS R1 a doctor ordered through DoctorTendToHumanlikes tends the downed colonist (the job ends Succeeded): reply given True started True via WorkGiverDef:DoctorTendToHumanlikes job Goto#76; run S1_20261125T105341_r1 hit; job_end [('Goto', 'Succeeded')]
+PASS R2 a doctor not assigned to Doctor is refused by the float menu before a tick: given False, reason 'Cannot tend to Kagutsuchi, Cave explorer: Not assigned to doctoring', levelUsed None, tick 501 -> 501
+PASS R3 jawa/motive on a hostile with no lord is refused NO_LORD: hostile Human36611, lord None; refused NO_LORD: NO_LORD: 'Human36611' has no lord: a motive gives a lord a new job, it does not make a group
+FAIL R4 the job tap's giver agrees with the receipt's level (giver: named; raw: not): the tap's giver is 'ThinkNode_QueuedJob', the reply's via 'WorkGiverDef:DoctorTendToHumanlikes' | tend: tap giver ['ThinkNode_QueuedJob', 'JobGiver_WanderColony', 'direct', 'JobGiver_WanderColony']; node: via JobGiver_WanderColony job GotoWander#251; raw: via raw job Goto#257; tap givers [('GotoWander', 'JobGiver_WanderColony'), ('Goto', 'ThinkNode_QueuedJob')]; force record {"rA": {"max": 4.0, "entries": [{"actor": "rA", "act": "order", "asked": 3.0, "via": "WorkGiverDef:DoctorTendToHumanlikes", "given": false, "started": false, "reason": "Cannot tend to Kagutsuchi, Cave explorer: Not assigned to doctoring", "tick": 501.0, "class": "NOT UNDONE", "reach": "save"}, {"actor": "rA", "act": "order", "asked": 3.0, "via": "WorkGiverDef:DoctorTendToHumanlikes", "given": fals
+PASS R5 a giver made to refuse (target not downed): given false, nothing started: given False, reason 'the float menu offers no order of DoctorTendToHumanlikes for Thing_Human458', job 67.0 -> 67.0, tick 501 -> 501
+prove_ordered_rescue: 4 of 5 rows held, 1 failed
+[bridge split] 58.4 s wall: load 7.1 / ticks 1.9 / reads 2.4 / other 6.5 / outside calls 40.6 s
+[bridge split] WARN 120 calls of jawa/run_until (5.4 s): batch them

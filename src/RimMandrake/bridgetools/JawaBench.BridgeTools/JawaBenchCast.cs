@@ -118,9 +118,12 @@ namespace JawaBench.BridgeTools
 
         private static string Giver(Job j, ThinkNode giver, bool fromQueue)
         {
+            // A float-menu work order reaches StartJob from the job queue (TryTakeOrderedJob enqueues it, ThinkNode_QueuedJob
+            // starts it), so the node is the queue's: the work giver that made the job is the giver to name.
+            if (j != null && j.workGiverDef != null && (giver == null || giver is ThinkNode_QueuedJob || fromQueue))
+                return "WorkGiverDef:" + j.workGiverDef.defName;
             if (giver != null) return giver.GetType().Name;
             if (j != null && j.jobGiver != null) return j.jobGiver.GetType().Name;
-            if (j != null && j.workGiverDef != null) return "WorkGiverDef:" + j.workGiverDef.defName;   // a work giver's job given outside the tree (the float menu)
             if (fromQueue) return "queue";
             return j != null && j.playerForced ? "player" : "direct";
         }

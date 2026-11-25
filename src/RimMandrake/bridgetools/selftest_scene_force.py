@@ -118,7 +118,9 @@ def t_a_refused_giver_order_returns_the_reason_and_starts_nothing():
 def t_the_force_level_recorded_is_the_level_used():
     return both(wired("JawaBenchForce.cs", "opt.action();", "p.jobs.StartJob(res.Job, JobCondition.InterruptForced, res.SourceNode,",
                       "return JawaBenchHands.SessionRecord(rec, fields);"),
-                wired("JawaBenchCast.cs", "if (j != null && j.workGiverDef != null) return \"\" + j.workGiverDef.defName;"),
+                # a float-menu work order starts from the job queue: the tap names its work giver, not ThinkNode_QueuedJob
+                # (live/ordered_rescue/prove_base_577381c7_2026-11-25.txt: R4 red on the line that named the queue's node)
+                wired("JawaBenchCast.cs", "if (j != null && j.workGiverDef != null && (giver == null || giver is ThinkNode_QueuedJob || fromQueue)) return \"\" + j.workGiverDef.defName;"),
                 wired("JawaBenchHands.cs", "Core.Record(\"\", rec, fields)", "JawaBenchTerrainTools.ForceSummary("),
                 unit("the_force_level_recorded_is_the_level_used"))
 

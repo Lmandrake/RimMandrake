@@ -1,0 +1,11 @@
+ordered rescue proof 2026-11-25T03:01:07 on ArchBig, driver prove:9300
+stage: save None, map 0, tick 1; rescuer Human265, victim Human268, standing Human271 near 118,122
+staged: bed Bed42096 at 118,127; victim Human268 downed (True) and in bed (['LayDown', 42096.0]); rescue by Human271
+PASS R1 a doctor ordered through DoctorTendToHumanlikes tends the downed colonist (the job ends Succeeded): reply given True started True via WorkGiverDef:DoctorTendToHumanlikes job TendPatient#72; run S1_20261125T110150_r1 hit; job_end [('TendPatient', 'Succeeded')]
+[bridge split] 136.9 s wall: load 8.1 / ticks 2.5 / reads 3.5 / other 17.9 / outside calls 105.0 s
+PASS R2 a doctor not assigned to Doctor is refused by the float menu before a tick: given False, reason 'Cannot tend to Dankman, Fixer: Not assigned to doctoring', levelUsed None, tick 501 -> 501
+PASS R3 jawa/motive on a hostile with no lord is refused NO_LORD: hostile Human68378, lord None; refused NO_LORD: NO_LORD: 'Human68378' has no lord: a motive gives a lord a new job, it does not make a group
+FAIL R4 the job tap's giver agrees with the receipt's level (giver: named; raw: not): the tap's giver is 'ThinkNode_QueuedJob', the reply's via 'WorkGiverDef:DoctorTendToHumanlikes' | tend: tap giver ['ThinkNode_QueuedJob', 'direct', 'JobGiver_WanderColony', 'direct']; node: via JobGiver_WanderColony job GotoWander#678; raw: via raw job Goto#683; tap givers [('GotoWander', 'JobGiver_WanderColony'), ('Goto', 'ThinkNode_QueuedJob')]; force record {"rA": {"max": 4.0, "entries": [{"actor": "rA", "act": "order", "asked": 3.0, "via": "WorkGiverDef:DoctorTendToHumanlikes", "given": false, "started": false, "reason": "Cannot tend to Dankman, Fixer: Not assigned to doctoring", "tick": 501.0, "class": "NOT UNDONE", "reach": "save"}, {"actor": "rA", "act": "order", "asked": 3.0, "via": "WorkGiverDef:DoctorTendToHumanlikes", "given": false, "started
+PASS R5 a giver made to refuse (target not downed): given false, nothing started: given False, reason 'the float menu offers no order of DoctorTendToHumanlikes for Thing_Human271', job 70.0 -> 70.0, tick 501 -> 501
+prove_ordered_rescue: 4 of 5 rows held, 1 failed
+[bridge split] WARN 346 calls of jawa/run_until (16.7 s): batch them

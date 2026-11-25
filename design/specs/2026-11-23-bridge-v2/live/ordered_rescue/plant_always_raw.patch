@@ -1,0 +1,12 @@
+diff --git a/src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchForce.cs b/src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchForce.cs
+index 12cec70bfb..fe417b8620 100644
+--- a/src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchForce.cs
++++ b/src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchForce.cs
+@@ -270,6 +270,7 @@ namespace JawaBench.BridgeTools
+                 var p = P(r.Actor);
+                 var before = p.jobs.curJob;
+                 var opt = a.Job as FloatMenuOption;
++                if (opt != null) return StartRaw(new OrderReq { Actor = r.Actor, Level = r.Level, Giver = r.Giver, JobDef = "Goto", Target = r.Target });   // PLANT: always raw
+                 if (opt != null)
+                 {
+                     var wgd = DefDatabase<WorkGiverDef>.GetNamedSilentFail(a.Via.Substring("WorkGiverDef:".Length));

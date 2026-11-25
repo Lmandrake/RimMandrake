@@ -645,8 +645,17 @@ path that actually ran: 2, 3, 4, or null when nothing was forced), `via` (the gi
 or the node type; `raw` for a raw job), `given`, `started`, `reason`, class `NOT UNDONE`, reach `save`. The entry is a `force`
 record of the session trace when a session is open, and is in `jawa/session action=state` as `force` (per actor: each entry and
 the highest level used). The deviation record (`RIMMANDRAKE_BUILD_DEVIATION_RECORD_SETTINGS_FIELD_JOINS_FIRST`) takes these
-entries as its kind `force` when it is built. **The job tap's `giver`** names a work giver's job given outside the think tree as
+entries as its kind `force` when it is built. **The job tap's `giver`** names a work giver's job that the job queue starts as
 `WorkGiverDef:<defName>` (the `workGiverDef` that the float menu sets on the job), so the live proof compares `via` with the tap.
+A float-menu order reaches `StartJob` from the job queue: `TryTakeOrderedJob` enqueues the job and `ThinkNode_QueuedJob` starts
+it. So a tap that named the node would name the queue for every player order (measured on ArchBig, 2026-11-25:
+`live/ordered_rescue/prove_base_577381c7_2026-11-25.txt`). A queued job with no work giver (a raw order, the player's rescue)
+still reads `ThinkNode_QueuedJob`.
+
+A rescue is no work order: `DoctorRescue` is `directOrderable` false in 1.6, and the player's rescue
+(`FloatMenuOptionProvider_RescuePawn`) builds a plain `Rescue` job with no work giver on it. The tap cannot tell that job from a raw
+one. The live proof therefore stages the rescue to a bed and orders a tend (`DoctorTendToHumanlikes`) through the giver: a
+humanlike is tended only in bed (`WorkGiver_Tend.GoodLayingStatusForTend`).
 
 It accepts: an actor that is a session alias, `alias[n]`, or a pawn id; a target that is an alias, a thing id or `x,z`; a giver
 name that is a `WorkGiverDef` or a `ThinkNode_JobGiver` type. It does not survive (not promised): a JobGiver whose fresh node
@@ -660,6 +669,9 @@ given, not done; the run reads the rest); a work giver's option merged into an e
 | A motive for a pawn with no lord is refused `NO_LORD`, by name, and changes nothing. | `a_motive_for_a_pawn_with_no_lord_is_refused_by_name` |
 | A raw order is recorded as raw: used 4, `via` raw, "not shown reachable in play". | `a_raw_job_is_recorded_as_raw` |
 | Live: for an order through the giver, the job tap's `giver` names that giver; for a raw order it does not. | `prove_ordered_rescue.py` R4 |
+| Live: an order through a work giver completes in the game (a tend ends Succeeded). | `prove_ordered_rescue.py` R1 |
+| Live: a giver that refuses (not assigned to the work type; a target it has no job on) returns `given` false with its reason, and no tick passes and no job starts. | `prove_ordered_rescue.py` R2, R5 |
+| Live: a motive on a hostile with no lord is refused `NO_LORD`. | `prove_ordered_rescue.py` R3 |
 
 ## THE PATCH SWITCH (`JawaBenchPatchSwitch.cs`)
 
