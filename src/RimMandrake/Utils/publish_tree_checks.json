@@ -3,6 +3,7 @@
   "_timeout_s": "danger=a test in an endless loop holds a landing with no end; longest=599s (selftest_maturation_autonomy.py PASS at load 45, 2026-11-24). The backstop only: a check that does nothing ends on progress_guard.SILENCE_S. A check that is ended reads UNMEASURED and is not refused.", "timeout_s": 6000,
   "skip_when_only": ["infrastructure/state/ledger/events/*.jsonl", "infrastructure/state/lessons/*.md"],
   "checks": [
+    {"test": "src/RimMandrake/Utils/art/selftest_standin_shadowed.py", "seconds": 1.2, "fix": "retire each DEAD stand-in it names: python3 src/RimMandrake/Utils/art/retire_orphan_art.py --item <ITEM> --apply <path>"},
     {"test": "src/RimMandrake/Utils/selftest_canonical_saves_current.py", "seconds": 0.1, "fix": "run python3 src/RimMandrake/Utils/canonical_saves.py write and publish the generated file; when canon.yml names a new start, name it in the guard block of infrastructure/state/CANONICAL_SAVE.md first"},
     {"test": "src/RimMandrake/rimflow/selftest_modledger_tree.py", "seconds": 0.3, "fix": "never edit a mod ledger shard or view by hand: append with modledger.py append, then modledger.py views --mod <Mod>; run modledger.py lint --mod <Mod> to see the line"},
     {"test": "src/RimMandrake/rimflow/selftest_game_names_prose.py", "seconds": 0.1, "fix": "name the game ArchBig, ArchSmall, Steve1 or Steve2; an old key may stay only inside a `code span` (an alias) or an owner quote"},
@@ -33,7 +34,6 @@
     {"test": "src/RimMandrake/bridgetools/selftest_bridge_hooks.py", "seconds": 124.2, "why": "too slow for a publish"},
     {"test": "src/RimMandrake/Utils/selftest_static_game_state.py", "seconds": 0.2, "why": "red, parked on RIMMANDRAKE_REALIGN_FLOWWORKS_PROOFS_AFTER_UNDER_LIQUID_LAW; joins checks when green"},
     {"test": "src/RimMandrake/Utils/selftest_settings_screens.py", "seconds": 2.0, "why": "red, parked on RIMMANDRAKE_REGROUP_SETTINGS_SCREENS_FOUR_MODS_OUTGREW_AUDIT; joins checks when green"},
-    {"test": "src/RimMandrake/Utils/art/selftest_standin_shadowed.py", "seconds": 1.2, "why": "red, parked on RIMMANDRAKE_CLEAR_DEAD_STANDINS_AND_REFIT_MORAVATHA_PACK; joins checks when green"},
     {"test": "src/RimMandrake/Utils/selftest_proof_restore_check.py", "seconds": 7.0, "why": "red, parked on RIMMANDRAKE_RESTORE_ON_THROW_IN_KNOCKBACK_PROOF_TWO_LEAKS; joins checks when green"}
   ]
 }
