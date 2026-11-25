@@ -24,9 +24,8 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
 
         /// <summary>The slice bound: the game's frame budget (8 ms) plus one worst edge and the node/reach tail, well under
         /// the 20 ms the live re-measure requires.</summary>
-        // SyncLayBoundMs is for the budgeted lay on the caller, which the game no longer uses (it lays on a worker, AsyncLay, held to SliceBoundMs below) except for an edge whose
-        // worker lay threw. Since a cord can be laid again when it coils on a door or its end (pass 10), one edge there can cost several settles: 20 ms became 30 for that path only.
-        private const double BudgetMs = 8.0, SliceBoundMs = 20.0, SyncLayBoundMs = 30.0;
+        // The budgeted lay on the caller (which the game uses only for an edge whose worker lay threw) is checked in work, not ms (Slices); its 30 ms bound went red on a loaded host.
+        private const double BudgetMs = 8.0, SliceBoundMs = 20.0;
 
         internal static void Run()
         {
@@ -483,41 +482,22 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             return (slices, worst, outp, minPieces);
         }
 
-        /// <summary>The cold planned build's ms bound, as the graph worker's check holds its own (GSS_GRAPH_JOB_PROVE_SUSTAINED_CHANGE): wall-clock ms on a loaded machine is
-        /// split from the cause. The cause (an edge laid unbudgeted, the budget never deferring) is checked on every Build; the ms bound must hold on one of up to
-        /// <see cref="SliceAttempts"/> fresh cold builds, since a load spike is transient and a regression repeats. RIMMANDRAKE_STEADY_GSS_GATE_RED_ONCE_THEN_GREEN: one
-        /// Build read 30.7 ms against 30 once in five T_CORE runs; --slice-repeat read 3 of 20 cold builds over 30 ms, one of them with no collection in the Build, so
-        /// leaving out the Builds a collection ran in (the graph worker's other half) does not steady it: a collection ran in 42 of every ~75 Builds.</summary>
-        private static (double worst, int attempts) SliceBound(Func<CordWorld> world, BuildOptions opt, Func<Cell, bool> live, double first)
-        {
-            double best = first;
-            int attempts = 1;
-            while (best > SyncLayBoundMs && attempts < SliceAttempts)
-            {
-                var r = Converge(new CordBuilder(), world(), opt, live);
-                attempts++;
-                best = Math.Min(best, r.worst);
-            }
-            return (best, attempts);
-        }
-        private const int SliceAttempts = 3;
-
-        /// <summary>--slice-repeat: n fresh cold planned builds of the live scene, the old form (one build's slowest Build) beside the new (<see cref="SliceBound"/>).
-        /// -> 0 when the form asked for (<paramref name="oldForm"/>: the parent's one-build reading) held the bound in all n, else 1.</summary>
+        /// <summary>--slice-repeat: n fresh cold planned builds of the live scene under a spent budget, each counted in work (<see cref="CountedConverge"/>) with its ms beside.
+        /// -> 0 when every run counted the same work (the count is a function of the scene, never of the host), else 1.</summary>
         public static int SliceRepeat(int n, bool oldForm)
         {
             Func<Cell, bool> dead = c => false;
-            int oldOver = 0, newOver = 0;
+            var seen = new HashSet<string>();
             for (int i = 0; i < n; i++)
             {
-                var r = Converge(new CordBuilder(), RebuildPerDigChecks.LiveScene(), new BuildOptions { LayBudgetMs = BudgetMs }, dead);
-                var (best, attempts) = SliceBound(() => RebuildPerDigChecks.LiveScene(), new BuildOptions { LayBudgetMs = BudgetMs }, dead, r.worst);
-                if (r.worst > SyncLayBoundMs) oldOver++;
-                if (best > SyncLayBoundMs) newOver++;
-                Console.WriteLine($"slice-repeat {i + 1}/{n}: old form {r.worst:0.0} ms over {r.slices} Builds, new form {best:0.0} ms in {attempts} attempt(s) (bound {SyncLayBoundMs} ms)");
+                var sw = Stopwatch.StartNew();
+                var r = CountedConverge(new CordBuilder(), () => RebuildPerDigChecks.LiveScene(), new BuildOptions { LayBudgetMs = SpentBudgetMs }, dead);
+                string key = $"{r.builds} Builds, {r.draws} draws, at most {r.maxEdges} edge and {r.maxDraws} draws a Build";
+                seen.Add(key);
+                Console.WriteLine($"slice-repeat {i + 1}/{n}: {key} ({sw.Elapsed.TotalMilliseconds:0} ms, information only)");
             }
-            Console.WriteLine($"slice-repeat: over the bound, old form {oldOver} of {n}, new form {newOver} of {n}");
-            return (oldForm ? oldOver : newOver) == 0 ? 0 : 1;
+            Console.WriteLine($"slice-repeat: {seen.Count} distinct work count(s) over {n} runs (want 1)");
+            return seen.Count == 1 ? 0 : 1;
         }
 
         /// <summary>--lay-profile: one unbudgeted build of the live scene (dead ends, as Slices), each edge's lay ms split by LayEdge stage (CordBuilder.StepTrace), the
@@ -554,52 +534,104 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             }
         }
 
-        private static void Slices()
+        /// <summary>A lay budget that is spent the moment a Build starts (CordBuilder: layUntil = t0 + (long)(ms x ticks/ms) = t0), so a budgeted Build that is
+        /// correct lays exactly one edge on the caller whatever the host's speed or load: the work-count form of the slice check.</summary>
+        private const double SpentBudgetMs = 1e-9;
+
+        /// <summary>One run of budgeted Builds until nothing is pending, counted in work, not in ms: the edges each Build laid on the caller
+        /// (<see cref="CordBuilder.LastLaidOnCaller"/>) and the draws (one LayEdgeDraw each, the "unkink" StepTrace that ends every draw).</summary>
+        internal static (int builds, int maxEdges, int maxDraws, int draws, List<LaidPiece> last) CountedConverge(CordBuilder b, Func<CordWorld> world, BuildOptions opt, Func<Cell, bool> live)
+        {
+            int draws = 0, builds = 0, maxEdges = 0, maxDraws = 0;
+            List<LaidPiece> outp;
+            var was = CordBuilder.StepTrace;
+            CordBuilder.StepTrace = (st, ea, eb, P) => { if (st == "unkink") draws++; };
+            try
+            {
+                do
+                {
+                    int d0 = draws;
+                    outp = b.Build(world(), opt, live);
+                    builds++;
+                    maxEdges = Math.Max(maxEdges, b.LastLaidOnCaller);
+                    maxDraws = Math.Max(maxDraws, draws - d0);
+                } while (b.LastPending > 0 && builds < 20000);   // a Build that never converges: the bit-identical check below reads it
+            }
+            finally { CordBuilder.StepTrace = was; }
+            return (builds, maxEdges, maxDraws, draws, outp);
+        }
+
+        /// <summary>Draws one unbudgeted Build of <paramref name="world"/> makes on a fresh builder: the work a correct lay of every edge once needs.</summary>
+        private static int DrawsOfOneBuild(Func<CordWorld> world, BuildOptions opt, Func<Cell, bool> live, out ulong digest)
+        {
+            var r = CountedConverge(new CordBuilder(), world, opt, live);
+            digest = GssFuzz.Digest(r.last);
+            return r.draws;
+        }
+
+        /// <summary>Draws per edge one lay of the live scene may make: the danger is a redraw loop that stops too late (each edge drawn up to 1 + LayRedraws
+        /// times), which multiplies every Build's caller work. Measured 2026-11-25: 271 draws for 248 edges cold (1.09), 267 re-laid (1.08); a redraw loop that
+        /// never stops draws 9. The bound is about 1.5 times the measured mean.</summary>
+        private const double DrawsPerEdgeBound = 1.6;
+
+        /// <summary>The slice check (GSS_PLAN_FIX_SECOND_PER_FULL_BUILD). The danger: a planned build holds one frame on the caller (live round 4: 248 edges in one
+        /// frame, ~1 s). It was a 30 ms wall-clock bound on the slowest Build, which a loaded host moved (red 2026-11-22, -23, -25 with no change to the lay;
+        /// SELFTEST_FIX_GIMMESOMESLACK_NWML_JLWY). It is now counted in work that the host cannot move: under a budget spent at once, each Build lays one edge
+        /// (the budget is read before every edge), each Build draws no more than one edge may (1 + LayRedraws), the run of Builds draws exactly what one
+        /// unbudgeted Build draws (no edge laid twice, no quadratic re-lay), and the draws per edge stay under <see cref="DrawsPerEdgeBound"/>. The ms are printed only.</summary>
+        internal static void Slices()
         {
             Func<Cell, bool> dead = c => false;
-            ulong want = GssFuzz.Digest(new CordBuilder().Build(RebuildPerDigChecks.LiveScene(), new BuildOptions(), dead));
-            int edges = new CordBuilder().Build(RebuildPerDigChecks.LiveScene(), new BuildOptions(), dead).Count(p => p.EndA != null);
+            Func<CordWorld> scene = () => RebuildPerDigChecks.LiveScene();
+            int wantDraws = DrawsOfOneBuild(scene, new BuildOptions(), dead, out ulong want);
+            int edges = new CordBuilder().Build(scene(), new BuildOptions(), dead).Count(p => p.EndA != null);
+            int drawCap = 1 + CordBuilder.LayRedraws;
 
-            // a cold planned build (the first build on a loaded map, a lattice placed at once)
+            // a cold planned build (the first build on a loaded map, a lattice placed at once), under a budget spent at once
+            var bw = new CordBuilder();
+            var cold = CountedConverge(bw, scene, new BuildOptions { LayBudgetMs = SpentBudgetMs }, dead);
+            Program.Check(cold.maxEdges == 1, $"slice: a Build under a spent budget laid {cold.maxEdges} edges on the caller (want 1: the budget is read before every edge)");
+            Program.Check(cold.maxDraws <= drawCap, $"slice: one Build under a spent budget made {cold.maxDraws} draws (bound {drawCap}: one edge's 1 + LayRedraws)");
+            Program.Check(cold.draws == wantDraws && cold.builds == edges, $"slice: the cold budgeted build made {cold.draws} draws over {cold.builds} Builds, one unbudgeted Build {wantDraws} draws for {edges} edges (an edge laid twice or a re-lay)");
+            Program.Check(wantDraws <= DrawsPerEdgeBound * edges, $"slice: one unbudgeted Build of the live scene made {wantDraws} draws for {edges} edges ({(double)wantDraws / edges:0.00} an edge, bound {DrawsPerEdgeBound})");
+            Program.Check(GssFuzz.Digest(cold.last) == want, "slice: the Builds under a spent budget did not end bit-identical to one unbudgeted Build");
+
+            // the frame's own budget: it defers, and the run ends bit-identical (the ms are information, never a check)
             var opt = new BuildOptions { LayBudgetMs = BudgetMs };
             var b = new CordBuilder();
-            var (slices, worst0, last, _) = Converge(b, RebuildPerDigChecks.LiveScene(), opt, dead);
-            var (worst, attempts) = SliceBound(() => RebuildPerDigChecks.LiveScene(), new BuildOptions { LayBudgetMs = BudgetMs }, dead, worst0);
-            Program.Check(worst <= SyncLayBoundMs, $"slice: a planned build of the live scene (E={edges}) held one Build {worst:0.0} ms at best over {attempts} cold build(s), first {worst0:0.0} ms (bound {SyncLayBoundMs} ms, budget {BudgetMs} ms)");
+            var (slices, worst, last, _) = Converge(b, scene(), opt, dead);
             Program.Check(slices > 1, $"slice: the cold build finished in {slices} Build (the budget never deferred an edge: instrument blind)");
             Program.Check(b.LastPending == 0 && GssFuzz.Digest(last) == want, "slice: the budgeted Builds did not end bit-identical to one unbudgeted Build");
-            Console.WriteLine($"slice: cold E={edges} planned over {slices} Builds, worst {worst:0.0} ms (budget {BudgetMs} ms)");
+            Console.WriteLine($"slice: cold E={edges}: {wantDraws} draws; spent budget {cold.builds} Builds, at most {cold.maxEdges} edge and {cold.maxDraws} draws a Build; " +
+                              $"{BudgetMs} ms budget {slices} Builds, slowest {worst:0.0} ms (information only)");
 
             // every key changes at once (the slack setting moved): until the re-lay completes each edge keeps its previous cord
             var opt2 = new BuildOptions { LayBudgetMs = BudgetMs };
             opt2.Lay.SlackScale *= 0.8;
             var full2 = new BuildOptions();
             full2.Lay.SlackScale = opt2.Lay.SlackScale;
-            var (slices2, worst2, last2, minEdges2) = Converge(b, RebuildPerDigChecks.LiveScene(), opt2, dead);
-            ulong wantLit = GssFuzz.Digest(new CordBuilder().Build(RebuildPerDigChecks.LiveScene(), full2, dead));
-            // best of up to SliceAttempts re-lays, as the cold build above (SliceBound): one wall-clock reading went over the
-            // bound twice on a loaded machine with no change to the lay (32.1 ms 2026-11-22, 30.2 ms 2026-11-23 at load 13 on
-            // 14 cores; item RIMMANDRAKE_RETRY_SLACK_RELAY_SLICE_CHECK_RED_TWICE). Each retry warms a fresh builder
-            // the same way, so b keeps the first re-lay's state for the reuse checks below.
-            double first2 = worst2;
-            int relays = 1;
-            while (worst2 > SyncLayBoundMs && relays < SliceAttempts)
-            {
-                var bb = new CordBuilder();
-                Converge(bb, RebuildPerDigChecks.LiveScene(), opt, dead);
-                worst2 = Math.Min(worst2, Converge(bb, RebuildPerDigChecks.LiveScene(), opt2, dead).worst);
-                relays++;
-            }
-            Program.Check(worst2 <= SyncLayBoundMs && slices2 > 1, $"slice: an all-keys-changed re-lay held one Build {worst2:0.0} ms at best over {relays} re-lay(s), first {first2:0.0} ms, over {slices2} Builds");
-            Console.WriteLine($"slice: all-keys-changed re-lay worst {worst2:0.0} ms at best over {relays} re-lay(s) over {slices2} Builds (bound {SyncLayBoundMs} ms)");
+            var spent2 = new BuildOptions { LayBudgetMs = SpentBudgetMs };
+            spent2.Lay.SlackScale = opt2.Lay.SlackScale;
+            int wantDraws2 = DrawsOfOneBuild(scene, full2, dead, out ulong wantLit);
+            var relay = CountedConverge(bw, scene, spent2, dead);
+            Program.Check(relay.maxEdges == 1, $"slice: an all-keys-changed re-lay Build under a spent budget laid {relay.maxEdges} edges on the caller (want 1)");
+            Program.Check(relay.maxDraws <= drawCap, $"slice: one all-keys-changed re-lay Build under a spent budget made {relay.maxDraws} draws (bound {drawCap})");
+            Program.Check(relay.draws == wantDraws2 && relay.builds == edges, $"slice: the all-keys-changed re-lay made {relay.draws} draws over {relay.builds} Builds, one unbudgeted Build {wantDraws2} draws for {edges} edges");
+            Program.Check(wantDraws2 <= DrawsPerEdgeBound * edges, $"slice: one unbudgeted re-laid Build made {wantDraws2} draws for {edges} edges ({(double)wantDraws2 / edges:0.00} an edge, bound {DrawsPerEdgeBound})");
+            Program.Check(GssFuzz.Digest(relay.last) == wantLit, "slice: the all-keys-changed re-lay under a spent budget did not end bit-identical to one unbudgeted Build");
+
+            var (slices2, worst2, last2, minEdges2) = Converge(b, scene(), opt2, dead);
+            Program.Check(slices2 > 1, $"slice: the all-keys-changed re-lay finished in {slices2} Build (the budget never deferred an edge)");
             Program.Check(GssFuzz.Digest(last2) == wantLit, "slice: the all-keys-changed re-lay did not end bit-identical to one unbudgeted Build");
             Program.Check(minEdges2 == edges, $"slice: a mid-re-lay Build showed {minEdges2} of {edges} cords (a deferred edge must keep its previous piece)");
+            Console.WriteLine($"slice: all-keys-changed re-lay: {wantDraws2} draws; spent budget at most {relay.maxEdges} edge and {relay.maxDraws} draws a Build; " +
+                              $"{BudgetMs} ms budget {slices2} Builds, slowest {worst2:0.0} ms (information only)");
 
             // an all-reused Build is never sliced, and an unbudgeted Build never defers
-            b.Build(RebuildPerDigChecks.LiveScene(), opt2, dead);
+            b.Build(scene(), opt2, dead);
             Program.Check(b.LastPending == 0 && b.LastPlanned == 0, $"slice: an all-reused budgeted Build planned {b.LastPlanned}, pending {b.LastPending}");
             var u = new CordBuilder();
-            u.Build(RebuildPerDigChecks.LiveScene(), new BuildOptions(), dead);
+            u.Build(scene(), new BuildOptions(), dead);
             Program.Check(u.LastPending == 0 && u.LastPlanned == edges, $"slice: an unbudgeted Build planned {u.LastPlanned} of {edges}, pending {u.LastPending}");
         }
 

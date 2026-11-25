@@ -13,17 +13,17 @@
   "test_blob": "39ea3b4360cbee8337798b179acd787553dfd7e3"
  },
  "T_CORE": {
-  "at": "2026-11-24T20:49:02Z",
+  "at": "2026-11-25T12:29:29Z",
   "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py",
   "file": "src/RimMandrake/Utils/selftest_gimmesomeslack.py",
-  "last": "5910/5912 checks passed",
-  "patch": "diff --git a/src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs b/src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs\nindex 13bcaf80c7..0ca8cf520e 100644\n--- a/src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs\n@@ -472,7 +472,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial\n                     else\n                     {\n                         if (!plan.Grounded.Contains(partner)) plan.Grounded.Add(partner);\n-                        snapped = st == SpanState.Up;\n+                        snapped = false;\n                     }\n                 }\n                 if (!plan.Reseed.Contains(partner)) plan.Reseed.Add(partner);\n",
+  "last": "5917/5921 checks passed",
+  "patch": "--- a/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\n+++ b/src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs\n@@ -693,7 +693,7 @@\n                     LastPending++;\n                     continue;\n                 }\n-                if (LastLaidOnCaller > 0 && System.Diagnostics.Stopwatch.GetTimestamp() >= layUntil)\n+                if (LastLaidOnCaller > 0 && LastLaidOnCaller % 4 == 0 && System.Diagnostics.Stopwatch.GetTimestamp() >= layUntil)\n                 {\n                     // over the lay budget: keep showing this edge's previous piece (not cached under the new key) until a later Build\n                     if (shown.TryGetValue(ekey, out LaidPiece prev)) { outp.Add(prev); shownNext[ekey] = prev; }\n",
   "patch_files": [
-   "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs"
+   "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs"
   ],
-  "patch_sha": "b9d23f08afdbf914",
+  "patch_sha": "6811fbe785307ab9",
   "rc": 1,
-  "test_blob": "fb5928fb89719ded2385283f3d677868c9556be4"
+  "test_blob": "66996cc51098614aa14db5c62bca60e7a0bcc423"
  },
  "T_H_PLAYTEST_RUNNER": {
   "at": "2026-11-20T15:51:20Z",

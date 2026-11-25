@@ -56,6 +56,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             if (Environment.GetEnvironmentVariable("GSS_FIT_OFF") == "1") CordBuilder.FitEndsOff = true;   // diagnosis: the cords as laid before the fitted-end pass
             if (Environment.GetEnvironmentVariable("GSS_FIT_TRACE") == "1") CordBuilder.FitTrace = true;   // a strand with no fitted join names why in its Lay
             if (args.Contains("--lay-profile")) { SliceGateChecks.LayProfile(); return 0; }
+            if (args.Contains("--slice-only")) { SliceGateChecks.Slices(); Console.WriteLine($"{checks - fails}/{checks} checks passed (slice only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--slice-repeat")) return SliceGateChecks.SliceRepeat(20, args.Contains("--old-form"));
             // RIMMANDRAKE_SETTLE_SLACK_CUT_CENSUS_DEAD_END_POLL_LATE: --probe-read-old runs the read as before the fix (it never settles), which must go red
             if (args.Contains("--probe-read-only") || args.Contains("--probe-read-old")) { if (args.Contains("--probe-read-old")) ProbeReadChecks.Run((e, p, s) => false); else ProbeReadChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (probe read only)"); return fails == 0 ? 0 : 1; }
