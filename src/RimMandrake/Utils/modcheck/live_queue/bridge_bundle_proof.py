@@ -378,6 +378,8 @@ def v_PEN2(d):
         f.append("facing not restored: %s" % d["facingWrong"][:5])
     if (d.get("returnedHome") or 0) + len(d.get("homeOccupied") or []) < len(ids):   # a held cell: the tool's rule
         f.append("returned home %s of %d" % (d.get("returnedHome"), len(ids)))
+    if f and (d.get("jobsAfterRelease") or d.get("unmovedDetail")):
+        f.append("jobs right after release %s; unmoved kind/job %s" % (d.get("jobsAfterRelease"), d.get("unmovedDetail")))
     return (1 if f else 0), "; ".join(f) or "%d released, %d moved, all inside their pens, all home with their facing (%s)" % (
         len(ids), len(moved), d.get("save"))
 
@@ -1050,7 +1052,19 @@ def g_PEN2(L):
         held = any(_bare(h.get("pawn")) == i and " holds " in str(h.get("reason")) for h in pin.get("homeRefused") or [])
         if not held and str((pinned.get(i) or {}).get("rotation")) != str(b.get("rotation")):
             facing.append("%s: %s -> %s" % (i, b.get("rotation"), (pinned.get(i) or {}).get("rotation")))
+    unmoved = [i for i in ids if i not in moved]
+    census = dict((_bare(r.get("id") or r.get("pawn")), r) for r in
+                  (L.call("jawa/pawn_census", ids=",".join(unmoved[:80])).get("pawns") or [])) if unmoved else {}
+    kinds = dict((_bare(r.get("pawn")), r.get("kind")) for r in rel.get("pawns") or [])
+    detail = {}
+    for i in unmoved:            # what an unmoved animal is and does: the reading that classes a FAIL (mod, check, scene)
+        c = census.get(i) or {}
+        job = c.get("job")
+        key = "%s/%s%s" % (kinds.get(i), (job or {}).get("def") if isinstance(job, dict) else job,
+                           "/downed" if c.get("downed") else "")
+        detail[key] = detail.get(key, 0) + 1
     return {"save": review, "selected": rel.get("selected"), "released": rel.get("released"),
+            "jobsAfterRelease": rel.get("jobsAfter"), "unmovedDetail": detail,
             "notReleased": rel.get("notReleased"), "ids": ids, "moved": moved, "outside": outside,
             "facingWrong": facing, "returnedHome": pin.get("returnedHome"),
             "homeOccupied": [_bare(h.get("pawn")) for h in pin.get("homeRefused") or [] if " holds " in str(h.get("reason"))]}
