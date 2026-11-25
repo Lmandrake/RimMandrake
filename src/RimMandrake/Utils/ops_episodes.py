@@ -201,17 +201,31 @@ def evict(eps, now, days=WINDOW_D):
     return keep, n
 
 
-def update(state, mem, told_rows, now):
-    """Pure. state: episodes.json as last written. -> new state: {readings, incidents, evicted, unread, written_at}."""
+def drop_retired(eps, mem, retired):
+    """-> (kept, dropped count). An episode whose reading this generation does not hold and whose family was retired on
+    purpose (retired(subject) is True: ops_memory passes ops_watch's removed families and retired token-talk groups)
+    leaves, open or closed: that reading can never come back to resolve it, so it would stay OPEN for good. A store that
+    did not answer drops nothing."""
+    if retired is None or mem.get("store_error"):
+        return eps, 0
+    rds = mem.get("readings") or {}
+    keep = {k: e for k, e in eps.items() if e["subject"] in rds or not retired(e["subject"])}
+    return keep, len(eps) - len(keep)
+
+
+def update(state, mem, told_rows, now, retired=None):
+    """Pure. state: episodes.json as last written. -> new state: {readings, incidents, evicted, unread, written_at}.
+    retired: key -> True when its family was retired on purpose (see drop_retired); None drops nothing."""
     state = state or {}
     rd, unread = reading_episodes(state.get("readings"), mem, now)
+    rd, n0 = drop_retired(rd, mem, retired)
     rd, n1 = evict(rd, now)
     if told_rows == [] and state.get("incidents"):
         told_rows = None        # a told.jsonl gone missing is unread, never "no incidents ever": keep what was known
     inc = incident_episodes(told_rows) if told_rows is not None else (state.get("incidents") or {})
     inc, n2 = evict(inc, now)
     return {"readings": rd, "incidents": inc, "evicted": int(state.get("evicted", 0)) + n1,
-            "evicted_incidents": n2, "unread": unread, "told_unread": told_rows is None, "written_at": now}
+            "retired_dropped": int(state.get("retired_dropped", 0)) + n0, "evicted_incidents": n2, "unread": unread, "told_unread": told_rows is None, "written_at": now}
 
 
 def _n(x):
@@ -253,6 +267,8 @@ def render_episodes(state, max_lines=EPISODE_LINES):
         tail.append("%d older closed lines cut (all in episodes.json)" % cut)
     if state.get("evicted"):
         tail.append("%d reading episodes evicted 14 d after closing, all time" % state["evicted"])
+    if state.get("retired_dropped"):
+        tail.append("%d episodes of retired families dropped, all time" % state["retired_dropped"])
     tail.append("no source yet for %s (register of lives, step 3)" % " or ".join(NO_SOURCE))
     out.append("- (" + "; ".join(tail) + ")")
     return out
@@ -503,13 +519,13 @@ def pending_readings(notes, grades):
 
 
 # ========================================================================================================== publish
-def publish_extra(mem, samples, d, now, read_told, stale_of=None, rate_fn=None):
+def publish_extra(mem, samples, d, now, read_told, stale_of=None, rate_fn=None, retired=None):
     """Called by ops_memory.publish before it renders. Updates episodes.json and judge_grades.json, puts their
     summaries in mem, and returns the page lines. Each part fails alone, said on the page."""
     lines = []
     try:
         rows = read_told()
-        st = update(read_json(d / "episodes.json", {}), mem, rows, now)
+        st = update(read_json(d / "episodes.json", {}), mem, rows, now, retired)
         atomic_json(d / "episodes.json", st)
         mem["episodes"] = {"open": sum(1 for x in list(st["readings"].values()) + list(st["incidents"].values())
                                        if x["closed_t"] is None), "unread": st["unread"]}

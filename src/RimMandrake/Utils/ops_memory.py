@@ -584,10 +584,23 @@ def out_dir():
     return ow.ops_dir()
 
 
-def publish(mem, outdir=None, names=()):
+def retired_key(k, rules):
+    """A key whose family ops_watch retired on purpose: a removed collector family, or a token-talk group no longer
+    measured. A rules file that did not load retires only the removed families."""
+    if k.split(".", 1)[0] in ow.REMOVED_FAMILIES:
+        return True
+    return "_error" not in rules and ow.tt_retired(k, rules)
+
+
+def publish(mem, outdir=None, names=(), rules=None):
     """Write memory.md then memory.json, each whole and swapped in one step, both carrying the same generation."""
     d = Path(outdir) if outdir else out_dir()
     d.mkdir(parents=True, exist_ok=True)
+    if rules is None:
+        try:
+            rules = ow.load_rules()
+        except Exception as e:      # noqa: BLE001 - as build: a broken rules file retires only the removed families
+            rules = {"_error": str(e)}
     gen = 0
     try:
         gen = int(json.loads((d / "memory.json").read_text(encoding="utf-8")).get("generation", 0))
@@ -599,7 +612,7 @@ def publish(mem, outdir=None, names=()):
     extra = ops_episodes.publish_extra(
         mem, samples, d, mem["written_at"], lambda: ops_episodes.read_told(d),
         stale_of=lambda k: float((mem["readings"].get(k) or {}).get("stale_s") or ops_episodes.STALE_FLOOR_S),
-        rate_fn=to_rates)
+        rate_fn=to_rates, retired=lambda k: retired_key(k, rules))
     md = render(mem, gen, tuple(names) + tuple(mem.get("notes", {}).get("pending_readings", ())), extra)
     tmp = d / "memory.md.tmp"
     tmp.write_text(md, encoding="utf-8")

@@ -106,6 +106,22 @@ st2 = oe.update(oe.update({}, gen({"t.x": OUT}), [], NOW), gen({"t.y": NORM}), [
 ok(st2["readings"]["t.x|outside"]["closed_t"] is None and any("absent from this generation" in x
                                                               for x in oe.render_episodes(st2)),
    "absent: a reading missing from a generation keeps its episode open, said (never resolved by absence)")
+# a retired family (its collector removed on purpose): absent episodes leave the page, counted; nothing else does
+RET = lambda k: k.startswith("gone.")     # noqa: E731
+r0 = oe.update({}, gen({"gone.a": OUT, "gone.b": OUT, "gone.live": OUT, "t.x": OUT}), [], NOW)
+r0 = oe.update(r0, gen({"gone.b": NORM, "gone.live": OUT, "t.x": OUT}), [], NOW + 60)   # gone.b closed
+r1 = oe.update(r0, gen({"gone.live": OUT}), [], NOW + H, retired=RET)
+ok("gone.a|outside" not in r1["readings"] and "gone.b|outside" not in r1["readings"],
+   "retired: an absent episode of a retired family is dropped, open or closed")
+ok(r1["readings"]["gone.live|outside"]["closed_t"] is None,
+   "retired: a retired-family reading still in the generation keeps its episode")
+ok(r1["readings"]["t.x|outside"]["closed_t"] is None and r1["readings"]["t.x|outside"]["absent"],
+   "retired: an absent reading of a live family stays open, absent")
+ok(r1["retired_dropped"] == 2 and any("2 episodes of retired families dropped" in x for x in oe.render_episodes(r1)),
+   "retired: the drop is counted and said on the page")
+r2 = oe.update(r0, gen({}, store_error="ConnectionRefused"), [], NOW + H, retired=RET)
+ok("gone.a|outside" in r2["readings"], "retired: a store that did not answer drops nothing")
+ok("gone.a|outside" in oe.update(r0, gen({}), [], NOW + H)["readings"], "retired: no predicate drops nothing")
 st = oe.update(st, gen({}), None, NOW)
 ok(st["told_unread"] and "disk|incident" in st["incidents"]
    and any("told.jsonl did not read" in x for x in oe.render_episodes(st)), "torn told.jsonl: last episodes kept, said")
@@ -264,6 +280,17 @@ ok("## Episodes, 14 d" in md and "OPEN disk incident" in md and "OPEN t.x outsid
 ok("## Your notes, graded against assuming no change" in md and "pub#1" in md and "MISSED" in md,
    "publish: the graded note is on the page")
 ok(om.check(pd, NOW + 2 * H + 60)[0], "publish: still one generation by check")
+# publish drops the episodes of removed families and retired token-talk groups (the live page held 50 such, 2026-11-24)
+ep = json.loads((pd / "episodes.json").read_text())
+for k in ("relentless.churn_item.X", "tokentalk.FOUNDRY.share", "tokentalk.commits.FOUNDRY.share",
+          "tokentalk.BENCH.share"):
+    ep["readings"][k + "|blind"] = {"subject": k, "kind": "blind", "first_t": NOW, "opened_t": NOW, "closed_t": None,
+                                    "count": 1, "detail": "stale"}
+(pd / "episodes.json").write_text(json.dumps(ep))
+_g, md = om.publish(dict(mem, written_at=NOW + 2.5 * H), pd,
+                    rules={"token_talk": {"seats": ["BENCH"], "roles": []}})
+ok("relentless.churn_item.X" not in md and "FOUNDRY" not in md and "OPEN tokentalk.BENCH.share blind" in md,
+   "publish: removed-family and retired token-talk episodes leave the page; a live group's stays")
 # a pending note's reading is always listed, even normal-and-flat
 oe.add_note("pub2", "disk.free_gb", ">", 10, "+9h", memory=dict(MEM, written_at=NOW + 2 * H), incidents=INC,
             now=NOW + 2 * H, d=pd)
