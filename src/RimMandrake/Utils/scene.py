@@ -601,7 +601,7 @@ class Session(object):
     def _map_size(self):
         """-> (x, z) of the map. A size that could not be read is Fault COULD_NOT_LOOK; the caller says so in its receipt."""
         try:
-            r = self._call(names.READ_PATHS, reads=json.dumps([{"of": "map", "path": "info.size"}]))
+            r = self._call(names.READ_PATHS, reads=json.dumps([{"of": "map", "path": "info.sizeInt"}]))
         except (CallFailed, ReplyLost) as e:
             raise Fault("COULD_NOT_LOOK", detail="the map's size: %s" % e)
         v = (r.get("values") or [{}])[0]

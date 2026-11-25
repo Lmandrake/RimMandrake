@@ -18,6 +18,7 @@ from scene_core import NOT_APPLICABLE, CallFailed, Fault, Receipt, Refused, Repl
 READ_PATHS, ACT_BATCH, CAPTURE = "jawa/read_paths", "jawa/act_batch", "jawa/artboard_capture"
 SPAWN, BUILD, TERRAIN, CLEAN = "jawa/spawn_pawn", "jawa/build_batch", "jawa/set_terrain_batch", "jawa/destroy_batch"
 SESSION = "jawa/session"
+LIST_PAWNS, VANISH = "jawa/list_pawns", "jawa/pawn_force_incapacitate"
 KINDS = ("A", "B", "C")
 OWED_TAPS = "RIMMANDRAKE_BUILD_WORLD_EVENT_TAPS_SECOND_FAMILY"
 OWED_TUNE = "RIMMANDRAKE_BUILD_DEVIATION_RECORD_SETTINGS_FIELD_JOINS_FIRST"
@@ -515,6 +516,8 @@ def stage(s, cast=None, things=None, terrain=None, station=None):
         out[alias] = made if many else made[0]
         s._aliases[alias] = [m.id for m in made] if many else made[0].id
     _bind(s, rec, [a for _w, a, _m, _c, _d in plan if _w != "terrain"])
+    if request is not None:
+        did += stage_breaches(s)
     if bad:
         raise Fault("STAGING_FAULT", done=did + ["made: %s" % out], detail="; ".join(bad))
     out.receipt = s._finish(rec, did=did)
@@ -540,6 +543,35 @@ def _stage_of(s):
     return stage
 
 
+def _clean_station(s, rect, rec, did):
+    """Vanish every pawn on the station (jawa/destroy_batch keeps pawns), then destroy every thing. -> the clean's readBack block."""
+    rs = "%d,%d,%d,%d" % tuple(rect)
+    r = s._call(LIST_PAWNS, rect=rs)
+    if r.get("success") is False or not isinstance(r.get("pawns"), list):
+        raise Fault("COULD_NOT_LOOK", done=did, detail="the pawns on station %s could not be read: %s" % (rs, str(r)[:200]))
+    for p in r["pawns"]:
+        v = s._call(VANISH, pawn=p.get("id"), action="vanish")
+        if v.get("success") is False:
+            raise Fault("NO_CLEAN_STATION", done=did, detail="pawn %s on station %s did not vanish: %s" % (p.get("id"), rs, v.get("message") or v))
+    if r["pawns"]:
+        did.append("vanished %d pawn(s) on station %s" % (len(r["pawns"]), rs))
+    return _block(s, CLEAN, s._call(CLEAN, rects=rs, categories="All"), rec, did)
+
+
+def stage_breaches(s):
+    """-> one line for each pawn on the stage map that is not cast in this session (a stage holds cast and nothing else)."""
+    cast = set()
+    for v in s._aliases.values():
+        cast.update(v if isinstance(v, list) else [v])
+    r = s._call(LIST_PAWNS)
+    if r.get("success") is False or not isinstance(r.get("pawns"), list):
+        raise Fault("COULD_NOT_LOOK", detail="the pawns of the stage could not be read: %s" % str(r)[:200])
+    return ["BREACH: %s %s (%s) at %s is on the stage and is not cast" % (p.get("id"), p.get("kind") or p.get("def"), p.get("faction"),
+                                                                         p.get("position") or p.get("cell") or p.get("pos")
+                                                                         or ("%s,%s" % (p.get("x"), p.get("z")) if "x" in p else "an unread cell"))
+            for p in r["pawns"] if p.get("id") not in cast and str(p.get("id")).replace("Thing_", "") not in cast]
+
+
 def _take_station(s, stage, request, rec, did):
     """Give a station, clean it, and retire it and give another when the clean leaves a thing that blocks. -> its rect."""
     import scene_stations as ST
@@ -550,8 +582,7 @@ def _take_station(s, stage, request, rec, did):
             s.W.stage_save(s.key, stage.to_json())
             raise Refused(e.name, e.why)
         s.W.stage_save(s.key, stage.to_json())
-        r = s._call(CLEAN, rects="%d,%d,%d,%d" % got["rect"], categories="All")
-        b = _block(s, CLEAN, r, rec, did)
+        b = _clean_station(s, got["rect"], rec, did)
         if b.get("leftBlocking"):
             stage.retire(got["id"], "the clean left %s" % (b.get("left"),))
             s.W.stage_save(s.key, stage.to_json())
@@ -576,12 +607,14 @@ def put_back_stations(s):
     lines = []
     for sid in list(s._stations):
         st = next(x for x in stage.stations if x["id"] == sid)
-        r = s._call(CLEAN, rects="%d,%d,%d,%d" % tuple(st["rect"]), categories="All")
-        b = r.get("readBack") if isinstance(r, dict) else None
-        if not isinstance(b, dict):
-            stage.retire(sid, "the clean at close gave no readBack block")
-            lines.append("retired %s: its clean could not be read" % sid)
-        elif b.get("leftBlocking"):
+        try:
+            b = _clean_station(s, st["rect"], Receipt("close", {}), [])
+        except Fault as e:
+            stage.retire(sid, "the clean at close: %s" % (e.detail or e.name))
+            lines.append("retired %s: its clean failed: %s" % (sid, e.detail or e.name))
+            s._stations.remove(sid)
+            continue
+        if b.get("leftBlocking"):
             stage.retire(sid, "the clean at close left %s" % (b.get("left"),))
             lines.append("retired %s: the clean left %s" % (sid, b.get("left")))
         else:
@@ -589,6 +622,10 @@ def put_back_stations(s):
             lines.append("cleaned and released %s" % sid)
         s._stations.remove(sid)
     s.W.stage_save(s.key, stage.to_json())
+    try:
+        lines += stage_breaches(s)
+    except Fault as e:
+        lines.append("the breach census could not look: %s" % e.detail)
     return "; ".join(lines)
 
 

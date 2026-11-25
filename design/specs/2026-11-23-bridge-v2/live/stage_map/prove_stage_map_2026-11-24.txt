@@ -1,0 +1,25 @@
+make pocket: exit 0, 57.3 s wall
+  the game holds 2 maps: leaving it for the main menu (a test game is disposable)
+  the game stands at Entry: starting a quicktest for the green room
+  green room: map 0, tile 114408, RM_TheRot, 4 colonist(s)
+  green room fed: 90 meal(s) beside 3 colonist(s), food need full
+  made the pocket map (MetalHell, 100x100: the debug action's size): map 1, 100x100, 0.6 s
+  emptied: 0 pawn(s) vanished, 5453 thing(s) cleared, terrain Granite_Rough on 10000 cell(s) (read-back ok=True), fog lifted, 0 pawn(s) left, 2.0 s
+  MADE pocket stage RM_Stage_ArchSmall_pocket: 100x100, map 1 current, green room map 0; make 0.6 s, total 4.1 s; stage file D:\ClaudeWork\rimmandrake\scratch\scene_stages\made\RM_Stage_ArchSmall_pocket.json
+  [bridge split] 56.1 s wall: load 9.4 / ticks 0.0 / reads 2.8 / other 2.5 / outside calls 41.5 s
+make settlement: exit 0, 31.5 s wall
+  the game holds 2 maps: leaving it for the main menu (a test game is disposable)
+  the game stands at Entry: starting a quicktest for the green room
+  green room: map 0, tile 48123, TemperateForest, 4 colonist(s)
+  green room fed: 90 meal(s) beside 3 colonist(s), food need full
+  made the settlement map on tile 48087 (RM_TheRot): map 1, 100x100, 3.5 s
+  emptied: 4 pawn(s) vanished, 5973 thing(s) cleared, terrain Granite_Rough on 10000 cell(s) (read-back ok=True), fog lifted, 0 pawn(s) left, 0.8 s
+  MADE settlement stage RM_Stage_ArchSmall_settlement: 100x100, map 1 current, green room map 0; make 3.5 s, total 5.2 s; stage file D:\ClaudeWork\rimmandrake\scratch\scene_stages\made\RM_Stage_ArchSmall_settlement.json
+  [bridge split] 30.0 s wall: load 8.5 / ticks 0.0 / reads 2.1 / other 4.1 / outside calls 15.3 s
+PASS R1 the stage holds zero pawns after make, and an idle day: after load: stage map 1 holds 0 pawn(s); after 60000 idle ticks: 0 pawn(s) on the stage
+PASS R2 the green room's colonists are alive and fed after 60,000 ticks: 60000 ticks passed; 3 colonist(s) on green room map 0, food [('Human318', 0.205998436), ('Human322', 0.179998383), ('Human326', 0.215998456)], none malnourished
+PASS R6 a wild animal on the stage is a breach: BREACH: Muffalo49050 Muffalo (None) at 92,92 is on the stage and is not cast; close: ['cleaned and released st1; BREACH: Muffalo49050 Muffalo (None) at 92,92 is on the stage and is not cast']
+PAUSED R3 a raid at a settlement stage with cast defenders spawns raiders at an edge with an assault duty: REPLY_LOST: jawa/fire_incident: PAUSED: raid tests wait for the tools. Refused: jawa/fire_incident: the incident RaidEnemy. No raid in a test: use the cheaper test of the bar (standing_rulings.md §The cheapest test that decides the bar), ta
+PAUSED R4 a raid at a stage with no free colonist is reported called, not fired: REPLY_LOST: jawa/fire_incident: PAUSED: raid tests wait for the tools. Refused: jawa/fire_incident: the incident RaidEnemy. No raid in a test: use the cheaper test of the bar (standing_rulings.md §The cheapest test that decides the bar), ta
+PASS R5 the make time of each map kind is printed: settlement 3.5 s, pocket 0.6 s (the map's generation; the whole make with the empty: {'pocket': '4.1 s', 'settlement': '5.2 s'}); colony: no map is made, the walk save is registered (1.9 s wall, with the lock)
+prove_stage_map: 4 of 6 rows held, 0 failed, 2 paused (raid_pause.py)

@@ -62,9 +62,8 @@ def outer(argv):
     win = lambda p: subprocess.run(["wslpath", "-w", p], capture_output=True, text=True, timeout=60).stdout.strip()  # noqa: E731
     cmd = [sys.executable, os.path.join(REPO, "src", "RimMandrake", "rimflow", "game_lock.py"), "run", game,
            "--for", "%s: stage_map %s" % (ITEM, " ".join(a)), "--", "python.exe", win(os.path.abspath(__file__)), "--inner"] + a
-    # budget: danger=a make whose game never answers holds the game's driver lock; evidence=none seen, a hang guard;
-    # budget: longest=53s (prove_stage_map.py, make pocket with a quicktest start, 2026-11-24)
     try:
+        # budget: danger=a make whose game never answers holds the driver lock; evidence=none seen, a hang guard; longest=53s (prove_stage_map.py make pocket, 2026-11-24)
         return subprocess.run(cmd, env=e, stdin=subprocess.DEVNULL, timeout=1800).returncode
     except subprocess.TimeoutExpired:
         print("stage_map: COULD NOT FINISH: the make passed its 1800 s hang guard; the game is in an unknown state")
@@ -76,6 +75,7 @@ def connect():
     sys.path.insert(0, HERE)
     import rimbridge_client as rb
     h, p, tok = rb.resolve_endpoint()
+    # budget: danger=a bridge call that never answers holds the make and its game; evidence=none seen, a hang guard; longest=8s (a save load, bridge split of prove_stage_map.py, 2026-11-24)
     c = rb.RimBridge(host=h, port=p, token=tok, timeout=600)
     c.connect()
     return c
@@ -180,6 +180,7 @@ def make(c, kind, size, save, say):
             time.sleep(1)
     if (st.get("state") or {}).get("programState") != "Playing":
         say("the game stands at %s: starting a quicktest for the green room" % (st.get("state") or {}).get("programState"))
+        # budget: danger=a quicktest start that never answers holds the make; evidence=none seen, a hang guard; longest=8s (bridge split load, prove_stage_map.py, 2026-11-24)
         must(call(c, "rimworld/start_debug_game_ready", timeoutMs=280000, readiness="mapData", pauseIfNeeded=True), "quicktest")
         for _ in range(600):            # a quicktest is ready in about 90 s; 600 polls of 1 s guard a start that never ends
             s2 = (call(c, "rimworld/get_game_info").get("state") or {})

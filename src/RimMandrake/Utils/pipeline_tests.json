@@ -7,7 +7,7 @@
     "src/RimMandrake/Utils/scene_world.py", "src/RimMandrake/Utils/scene_fake.py", "src/RimMandrake/Utils/scene_recorded.json",
     "src/RimMandrake/Utils/scene_library_mutants.py", "src/RimMandrake/Utils/selftest_scene_library.py",
     "src/RimMandrake/Utils/scene_names.py", "src/RimMandrake/Utils/selftest_scene_conversion.py",
-    "src/RimMandrake/Utils/scene_stations.py", "src/RimMandrake/Utils/selftest_scene_stage_station.py", "src/RimMandrake/bridgetools/selftest_stage_stations.py",
+    "src/RimMandrake/Utils/scene_stations.py", "src/RimMandrake/Utils/stage_map.py", "src/RimMandrake/Utils/selftest_scene_stage_station.py", "src/RimMandrake/bridgetools/selftest_stage_stations.py",
     "src/RimMandrake/Utils/scene_contracts/*.md",
     "src/RimMandrake/rimflow/scene_judge.py", "src/RimMandrake/rimflow/selftest_scene_judge.py",
     "src/RimMandrake/rimflow/scene_verdicts.py", "src/RimMandrake/rimflow/selftest_scene_verdicts.py",

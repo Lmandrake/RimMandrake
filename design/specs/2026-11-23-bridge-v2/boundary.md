@@ -243,6 +243,7 @@ None of its own. The taps use the guards of `JawaBenchHookGuard`; the rows go th
 
 | proof | reading | evidence |
 |---|---|---|
+| `prove_stage_map.py` | 4 of 6 rows PASS (R1, R2, R5, R6), 2 PAUSED (R3, R4: the raid pause refused `jawa/fire_incident`), 0 FAIL | `design/specs/2026-11-23-bridge-v2/live/stage_map/prove_stage_map_2026-11-24.txt` (ArchSmall, the 18-mod list loaded there, 2026-11-24) |
 | `prove_run_life_cycle.py` | 3 of 3 rows PASS | `design/specs/2026-11-23-bridge-v2-life-cycle/live/` (ArchSmall, tier `explosiveknockback_visit`, companion and Explosive Knockback PROOF build from `ac24cfedbb`, 2026-11-24) |
 
 ## PLAY AGAINST STEP
@@ -303,3 +304,26 @@ cells are not one rectangle (rock, water: the stage map is bare ground of one te
 | A station on a `colony` stage is marked `shared_map`; on the other kinds it is not. | `a_colony_station_is_marked_shared_map` |
 | A released station may be given again; the state written to disk and read back keeps every retirement. | `a_released_station_is_given_again_and_retirement_survives_a_reload` |
 | A request or a stage of a wrong shape is refused by name and takes nothing. | `a_bad_request_is_refused_by_name` |
+
+## THE STAGE MAP (`src/RimMandrake/Utils/stage_map.py`)
+
+Item `RIMMANDRAKE_BUILD_STAGE_MAP_CAST_ONLY_NO_BYSTANDERS` (05_build_design.md §Decision 7). `stage_map.py make <game> --kind
+settlement|pocket` starts from the green room (the one map that the game holds, or a quicktest), feeds it, adds the stage map,
+empties it, saves the game as the fixture save `RM_Stage_<game>_<kind>`, and writes the stage file that `s.stage(station=dict(...))`
+reads. `register --save NAME` writes a `colony` stage file for a colony save. The live proof is
+`src/RimMandrake/bridgetools/prove_stage_map.py`; its last reading is under LIVE READINGS.
+
+It accepts: a game at the menu, or at a map with one map loaded (a game that holds more is left for the menu: a test game is
+disposable). It does not survive (not promised): a world with no flat settleable tile within 2000 tile ids of the green room's;
+a pocket generator list without MetalHell, Undercave or Labyrinth; an animal that the wild spawner puts on the stage while no
+calm holds it (the breach census names it; nothing stops it). Before the empty, `make` reads the stage map back as the current
+map and refuses otherwise, because a map switch can reply success and not take (measured 2026-11-24).
+
+| promise | test |
+|---|---|
+| After make, the stage holds no pawn, and with the calm on it gains none over 60,000 ticks. | `prove_stage_map.py` R1 |
+| The green room's colonists are alive, fed and not malnourished after 60,000 ticks of an idle stage. | `prove_stage_map.py` R2 |
+| A raid at a settlement stage with cast defenders spawns raiders at an edge with an assault duty. | `prove_stage_map.py` R3 |
+| A raid at a stage with no free colonist is reported "called, not fired". | `prove_stage_map.py` R4 |
+| The make time of each map kind is printed. | `prove_stage_map.py` R5 |
+| A pawn on the stage that is not cast is a `BREACH` line on the receipt of `s.stage` and of the close. | `prove_stage_map.py` R6; offline `a_pawn_on_a_station_is_vanished_and_a_pawn_not_cast_is_a_breach` |

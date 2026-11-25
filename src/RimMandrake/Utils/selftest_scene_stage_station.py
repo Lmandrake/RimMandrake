@@ -101,7 +101,22 @@ def a_map_that_is_not_a_made_stage_is_refused_no_stage():
         refused("STAGE_STALE", s.stage, cast={"d": dict(kind="Colonist", at=(1, 1))}, station=dict(size=(8, 8)))
 
 
-CHECKS = (a_station_request_draws_a_clean_station_and_positions_are_relative,
+def a_pawn_on_a_station_is_vanished_and_a_pawn_not_cast_is_a_breach():
+    W = world(size=(40, 40))
+    first = ST.Stage(STAGE, "settlement", (40, 40)).give(size=(10, 10))["rect"]
+    W.game.pawns_on["%d,%d,%d,%d" % first] = [{"id": "Human3", "kind": "Colonist"}]      # left by an earlier scene
+    with scene.open("ArchSmall", needs={"map": STAGE}) as s:
+        c = s.stage(cast={"x": dict(kind="Colonist", at=(0, 0))}, station=dict(size=(10, 10)))
+        must(W.game.vanished == ["Human3"], "the pawn on the station was not vanished: %s" % W.game.vanished)
+        must(not [d for d in c.receipt.did if d.startswith("BREACH")], "%s" % c.receipt.did)
+        W.game.pawns_on[None] = [{"id": c.x.id, "kind": "Colonist"}, {"id": "Muffalo9", "kind": "Muffalo", "faction": None, "position": "70,0,8"}]
+        c2 = s.stage(things={"lamp": dict(thing="WallLamp", at=(0, 0))}, station=dict(size=(10, 10)))
+        breach = [d for d in c2.receipt.did if d.startswith("BREACH")]
+        must(len(breach) == 1 and "Muffalo9" in breach[0], "a wild animal on the stage was not a breach: %s" % c2.receipt.did)
+    must(any("BREACH: Muffalo9" in x for x in s.closed_report.did), "the close did not name the breach: %s" % s.closed_report.did)
+
+
+CHECKS = (a_pawn_on_a_station_is_vanished_and_a_pawn_not_cast_is_a_breach, a_station_request_draws_a_clean_station_and_positions_are_relative,
           a_station_whose_clean_leaves_a_thing_is_retired_and_another_is_given,
           a_pocket_stage_refuses_a_raid_scene_before_any_change, a_colony_station_says_shared_map_on_its_receipt,
           a_map_that_is_not_a_made_stage_is_refused_no_stage)

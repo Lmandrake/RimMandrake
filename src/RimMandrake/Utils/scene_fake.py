@@ -45,6 +45,7 @@ class FakeGame(object):
         self.load_ready = [rec("status_initializing")]              # what a load shows before it is ready
         # the names of the conversion ticket (scene_names.py), from the wire pages; not recorded
         self.values = {}                # (of, path) -> (state, v): what jawa/read_paths reads
+        self.pawns_on, self.vanished = {}, []   # rect "x,z,w,h" (None: the whole map) -> pawns that jawa/list_pawns lists; vanished ids
         self.cleaned, self.dirty = [], {}   # the rects that jawa/destroy_batch cleaned; rects "x,z,w,h" -> things its clean leaves
         self.rect_values = []           # what a rect read gives: [{of, path, state, v}]
         self.kind_made = {}             # kindDef -> the kind the game makes instead (a replaced pawn kind)
@@ -130,13 +131,20 @@ class FakeGame(object):
             self.pictures[a["path"]] = self.pictures.get(a["path"], 0) + 1
             return {"success": True, "path": a["path"], "fileSizeBytes": 4096, "frame": [a["w"] * a["ppc"], a["h"] * a["ppc"]],
                     "foggedCells": 0, "cameraRestored": True}
+        if tool == "jawa/list_pawns":
+            return {"success": True, "pawns": [dict(p) for p in self.pawns_on.get(a.get("rect"), [])]}
+        if tool == "jawa/pawn_force_incapacitate":
+            self.vanished.append(a.get("pawn"))
+            for k in self.pawns_on:
+                self.pawns_on[k] = [p for p in self.pawns_on[k] if p.get("id") != a.get("pawn")]
+            return {"success": True}
         if tool in ("jawa/damage", "jawa/ordered_job"):
             return {"success": True, "accepted": True}
         return {"success": True, "tool": tool}
 
     # ---- the hands of the conversion ticket
     def _value(self, of, path):
-        if of == "map" and path == "info.size":
+        if of == "map" and path == "info.sizeInt":      # Verse.MapInfo.sizeInt (read live 2026-11-24: there is no field `size`)
             return "ok", "%d,0,%d" % self.map_size
         return self.values.get((of, path), ("error", None))
 
