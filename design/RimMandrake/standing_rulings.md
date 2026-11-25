@@ -2779,8 +2779,8 @@ repair drew new claims [measured, `design/specs/2026-11-18-review-growth-cycle/0
     - the same polish route (one line on `polish.md`, no ticket).
   - A finding that is not significant is one line on `polish.md`, never a ticket. Nobody works the finding.
   - A Codex or GPT reviewer that cannot write the clone returns its Problems. The run that launched it
-    judges each returned Problem by the significance rule. It fixes each significant one, test first, and writes each
-    other one as a line on `polish.md`. Then one fresh reader reads the fixed file once.
+    judges each returned Problem by the significance rule. That run fixes each significant Problem, test first, and
+    writes each other Problem as a line on `polish.md`. Then one fresh reader reads the fixed file once.
   - Codex does not apply the significance rule by itself (measured). Its traces are mostly true, but it calls rare
     inputs Problems. The first three reviews after the restart: 13 findings, 12 called Problems, 4 kept by the reader,
     2 landed (`design/specs/2026-11-18-review-growth-cycle/06-codex-first-three-reviews-20261124.md`). Six later
