@@ -18,5 +18,7 @@ ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/fami
 Nice=19
 IOSchedulingClass=idle
 CPUSchedulingPolicy=batch
-# budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=1171s (dry run 2026-11-25; an --apply run adds its deletes)
-TimeoutStartSec=14400
+# The first --apply (2026-11-25) deleted 36k files and about 1,400 D: trees; a dry run takes 1433 s. Each git, du and rm
+# call also has its own hang guard in family_clean.py.
+# budget: danger=a hung run stops this timer for good (systemd starts no second run); evidence=the first --apply ran past a 4 h guard; longest=16200s (the first --apply, 2026-11-25)
+TimeoutStartSec=162000
