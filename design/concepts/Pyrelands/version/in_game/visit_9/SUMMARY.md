@@ -56,6 +56,9 @@ animal took plants in the 09:47 run is not shown [guess ~80% it was one].
 
 ## The labelled savegame
 
+Restaged 2026-11-24 4:24 PM PST as `PYRELANDS_0.1.0_VISIT9_WALK_SIGNED.rws` (Cassandra, Peaceful, five signs in the save; the stations are untouched).
+The first save, below, is kept.
+
 `D:\ClaudeWork\rimmandrake\instances\b\Saves\PYRELANDS_0.1.0_VISIT9_WALK.rws` (ArchSmall, small list, five labelled stations, each looked at:
 screenshots/walk_small_closeups.jpg). The Saves folder of ArchBig was copied first: `D:\ClaudeWork\backups\rimmandrake\archbig_saves_before_pyre_visit9_20261124`.
 
@@ -91,6 +94,6 @@ Every check reads PASS and counts on the walk build. One thing is owed and it is
 ```
 ingame_rows: {sc_burn_line_walks: pass, sc_ash_watered: pass, sc_burn_compounds: pass, sc_grass_regreens: pass, sc_scorchfruit: pass, sc_ashwallow: pass, sc_ullai: pass, sc_no_rain: pass, sc_reload_keeps_the_burn: pass, sc_heat_dome: pass, sc_fire_dusts_ash: pass, P_mapgen_log: pass, P_grass_cover: pass, P_ambient_ash_drift: pass, P_blackrain: pass, P_gate: pass, sc_fire_walks_with_wind: pass, sc_firehawk_rewards: pass, firehawk_first_sighting_letter: pass, firehawk_crestfeather_yield: pass}
 strange_open: 0
-savegame: D:\ClaudeWork\rimmandrake\instances\b\Saves\PYRELANDS_0.1.0_VISIT9_WALK.rws
+savegame: D:\ClaudeWork\rimmandrake\instances\b\Saves\PYRELANDS_0.1.0_VISIT9_WALK_SIGNED.rws
 exit_met: true
 ```

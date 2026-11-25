@@ -1,0 +1,113 @@
+{
+ "name": "PYRELANDS_0.1.0_VISIT9_WALK_SIGNED",
+ "stations": [
+  [
+   "1",
+   "burn front",
+   [
+    18,
+    18,
+    24,
+    21
+   ],
+   [
+    30,
+    37
+   ]
+  ],
+  [
+   "2",
+   "creatures",
+   [
+    74,
+    20,
+    20,
+    19
+   ],
+   [
+    84,
+    37
+   ]
+  ],
+  [
+   "3",
+   "scorch-fruit",
+   [
+    130,
+    22,
+    14,
+    12
+   ],
+   [
+    138,
+    32
+   ]
+  ],
+  [
+   "4",
+   "roofed grass",
+   [
+    170,
+    33,
+    20,
+    13
+   ],
+   [
+    180,
+    44
+   ]
+  ],
+  [
+   "5",
+   "charred ruin",
+   [
+    149,
+    97,
+    20,
+    17
+   ],
+   [
+    159,
+    111
+   ]
+  ]
+ ],
+ "out": {
+  "storyteller": {
+   "storytellerDef": "Cassandra",
+   "difficultyDef": "Peaceful",
+   "threatScale": 0.1
+  },
+  "weather_unlock": true,
+  "queue": true,
+  "placed": 5,
+  "refused": [],
+  "signs": [
+   "SIGN 1 burn front - DO: unpause and watch for a day or two at speed 3",
+   "SIGN 2 creatures - DO: look while it is paused: once the clock runs they leave for shade",
+   "SIGN 3 scorch-fruit",
+   "SIGN 4 roofed grass - DO: run one day: the roofed patch withers, the open one stays",
+   "SIGN 5 charred ruin"
+  ],
+  "not_on_its_cell": [
+   [
+    84,
+    37
+   ]
+  ],
+  "hostiles": 0,
+  "hour": 12.8408,
+  "tick": 677102,
+  "save": {
+   "ok": true,
+   "new": [
+    "PYRELANDS_0.1.0_VISIT9_WALK_SIGNED.rws"
+   ],
+   "changed": [],
+   "gone": [],
+   "name": "PYRELANDS_0.1.0_VISIT9_WALK_SIGNED",
+   "tool": true,
+   "signs": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\JawaBenchReviewSigns\\PYRELANDS_0.1.0_VISIT9_WALK_SIGNED.txt"
+  }
+ }
+}

@@ -10,18 +10,18 @@ that arrival went back to the game the same morning, for the checks that the las
 
 ## What to open
 
-- **Savegame:** `D:\ClaudeWork\rimmandrake\instances\b\Saves\PYRELANDS_0.1.0_VISIT9_WALK.rws` (27,660,888 bytes, saved
-  2026-11-24 12:59 PM PST) [measured]. It opens on **ArchSmall**. A seat stages it: ArchSmall is now in use for your Explosive
-  Knockback walk [measured 3:10 PM]. **It needs a small restage first** (`RIMMANDRAKE_FREE_PYRE_WALK_SAVE_SKY_TUTOR_PINS_CLEAR`):
-  - Its storyteller is Tutor [measured], and under Tutor the sky stays clear for good. If you open it as it is, change the
-    storyteller to Cassandra (game options) to see ash fall, cinderfall or black rain.
-  - The five station signs are not in the save [measured]: a plain load shows no sign. Use the table below.
+- **Savegame:** `D:\ClaudeWork\rimmandrake\instances\b\Saves\PYRELANDS_0.1.0_VISIT9_WALK_SIGNED.rws` (27,675,481 bytes, saved
+  2026-11-24 4:24 PM PST) [measured]. It opens on **ArchSmall**; the same file is in ArchBig's Saves folder,
+  `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves\PYRELANDS_0.1.0_VISIT9_WALK_SIGNED.rws` [measured].
+  - The storyteller is Cassandra on Peaceful, so the sky is free and no raid comes. Played three days from this save, the sky went
+    Clear, black rain, ash drift, dry thunderstorm, volcanic ash, ash drift [measured].
+  - A sign stands at each of the five stations, in the save itself [measured].
 - **Mod list:** the Pyrelands small list, 18 mods: all five DLC, the zoom mod (`ray1203.simplecamerasetting`), the biomes, the
   bestiary and the Utinni patches that supply the cast [measured from the save]. Full-list testing is retired on your word.
 - **Build:** the newest mod code is `a6f05380df` (2026-11-24 4:45 AM PST). All 39 in-game checks count on it [measured]. No
   Pyrelands game file of ArchSmall or ArchBig differs from it [measured 3:18 PM].
 - **The map:** a hot test map (52 C in a picture of the session), 250 x 250, three colonists, a few survival meals, no base and no
-  history. The camera opens on station 5.
+  history. The camera opens on station 1.
 
 | station | where (x, z) | what it shows | as saved |
 |---|---|---|---|
