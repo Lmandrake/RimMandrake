@@ -48,6 +48,7 @@ EDIT_TOOLS = ("Edit", "Write", "NotebookEdit", "MultiEdit")
 STAGES = ("intake", "designer", "preflight", "offline_build", "blind_challenge", "in_game", "pre_human", "his_walk",
           "passed")                                                   # maturation.STAGES, in order
 VERDICTS = ("SINCERE", "NOT SINCERE", "COULD NOT JUDGE")
+NEWEST = "report_newest.md"     # a copy of the newest written report: the item's live promise reads its age
 SECTIONS = ("## The day's numbers", "## The worst pattern", "## Three repairs", "## The recommendation")
 # budget: danger=a transcript of several MB overflows the judge's context; the end before the set-down is where the
 # budget: attempt shows (the brief: "the part of the run's transcript before the set-down")
@@ -942,6 +943,10 @@ def daily(now=None, caller=None, S=None, say=None):
     with open(rp + ".tmp", "w", encoding="utf-8") as f:
         f.write(text.rstrip() + "\n")
     os.replace(rp + ".tmp", rp)
+    newest = os.path.join(od, NEWEST)          # the live promise's one fixed reading: only a written report renews it
+    with open(newest + ".tmp", "w", encoding="utf-8") as f:
+        f.write(text.rstrip() + "\n")
+    os.replace(newest + ".tmp", newest)
     write_json(os.path.join(od, "latest.json"), dict(summary(R, V, rp, "written", date), monitor_tokens=_spend(V, tok),
                                                       previous=prev, report_seconds=round(sec, 1)))
     (say or _say)("the report of %s is written: %s" % (date, native(rp)), time.time())

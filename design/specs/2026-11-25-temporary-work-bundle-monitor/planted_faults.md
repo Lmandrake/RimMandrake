@@ -22,3 +22,4 @@ string at a time; the before and after strings are given here.
 | a bundle UNRUN record counted as a live run | `live_work` counts every live run as run | bundle-live-ran-and-unrun |
 | every set-down read as one role | `role_of` drops the Maturation stage | setdowns-by-class-and-role |
 | the monitor's spend carried into the digest fields | `digest_fields` adds `monitor_tokens` | digest-line-blind |
+| a failed report renews the newest copy | `daily` writes `report_newest.md` before the failure check | report-needs-four-sections (1) |

@@ -336,9 +336,12 @@ def t_report_needs_four_sections():
         fails = [n for n in os.listdir(od) if n.endswith(".FAILED.md")]
         chk(len(fails) == 1 and "failed" in M.latest(od)["report_state"] and said and "FAILED" in said[0],
             "report-needs-four-sections: the failure is written and said")
+        chk(not os.path.exists(os.path.join(od, M.NEWEST)), "report-needs-four-sections: a failed report renews no newest copy")
         good = "\n\n".join(s + "\ntext" for s in M.SECTIONS)
         rc = M.daily(NOW, caller=lambda prompt, tier, *a: (good, None, 1, 1.0), S=S, say=lambda t, n: said.append(t))
         chk(rc == 0 and M.latest(od)["report_state"] == "written", "report-needs-four-sections: a whole report is written")
+        chk(open(os.path.join(od, M.NEWEST)).read().startswith("## The day's numbers"),
+            "report-needs-four-sections: a written report renews the newest copy")
     finally:
         os.environ["RM_WBM_OUT"] = os.path.join(TMP, "out")
 

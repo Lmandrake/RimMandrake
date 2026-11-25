@@ -115,4 +115,5 @@ its cause, or `failed` with its cause. A source that cannot be read prints `coul
 - **digest-line-blind.** The digest line carries the counts and the report as a handle through the blind page; an
   unreadable monitor reads UNMEASURED.
 - **report-needs-four-sections.** A report that lacks one of its four sections is not written as the report; the
-  failure is written as `report_<date>.FAILED.md` and in `latest.json`.
+  failure is written as `report_<date>.FAILED.md` and in `latest.json`. Only a written report renews
+  `report_newest.md`, the one fixed reading of the item's live promise.
