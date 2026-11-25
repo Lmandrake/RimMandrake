@@ -1,0 +1,16 @@
+planted build: C_LANDING_BRUISE_SWAPPED only (the RM_PawnFlyerPatches.cs hunk of plants/blind_cycle1_three_csharp_plants.patch; DLL sha256 db3e824e03ab0dbc), ArchSmall, 2026-11-25 11:35 PST. By hand: a scratch copy of scene_pawn_land_on_pawn_sizes.py whose one change is needs mods [] (the library refuses an uncommitted DLL for a named mod).
+PASS V_LAND_REC small: land_on_pawn {'pawn': 'Squirrel88278', 'mass': 60.83, 'otherMass': 12, 'amount': 6.682, 'otherAmount': 1.318}
+PASS V_HEDIFF small: walker's new Bruise+Crush 1.3181387186050415 (before (0.0, 0, False), after (1.3181387186050415, 1, False))
+PASS V_LAND_REC large: land_on_pawn {'pawn': 'Muffalo88283', 'mass': 60.83, 'otherMass': 144, 'amount': 2.376, 'otherAmount': 5.624}
+PASS V_HEDIFF large: walker's new Bruise+Crush 4.609533309936523 (before (0.0, 0, False), after (4.609533309936523, 2, False))
+PASS V_LAND_REC colonist: land_on_pawn {'pawn': 'Human88288', 'mass': 48.88, 'otherMass': 60.83, 'amount': 3.564, 'otherAmount': 4.436}
+PASS V_HEDIFF colonist: walker's new Bruise+Crush 4.435694217681885 (before (0.0, 1, False), after (4.435694217681885, 2, False))
+FAIL V_SMALL: colonist 6.682 vs squirrel 1.318; hediffs colonist +6.681861400604248 vs squirrel +1.3181387186050415 (squirrel dead False)
+FAIL V_LARGE: colonist 2.376 vs muffalo 5.624; hediffs colonist +2.295823335647583 vs muffalo +4.609533309936523
+FAIL V_ALIKE: amount 3.564 / otherAmount 4.436 = 0.8034265103697025; masses 48.88, 60.83 -> 1.2444762684124386 (limit +-0.05); both at most 4.45: True
+PASS V_NOT_DOWNED: thrower downed False, walker downed False
+PASS V_EMPTY: 1 launch record(s) to [[30, 56]], 0 land_on_pawn record(s)
+FAIL sc_pawn_land_on_pawn_sizes: 3 failing, 0 invalid row(s); pictures in D:\ClaudeWork\rimmandrake\scratch\scene_runs\20261125T113443_script_ArchSmall_10812
+[bridge split] WARN 98 calls of jawa/static_call (3.9 s): batch them
+[bridge split] WARN 97 calls of jawa/session (3.9 s): batch them
+[bridge split] WARN 72 calls of jawa/read_paths (3.0 s): batch them

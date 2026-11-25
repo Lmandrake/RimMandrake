@@ -1,0 +1,13 @@
+diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_PawnFlyerPatches.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_PawnFlyerPatches.cs
+index e6cdfb57bc..274d11ac43 100644
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_PawnFlyerPatches.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_PawnFlyerPatches.cs
+@@ -290,7 +290,7 @@ namespace RimMandrake.ExplosiveKnockback
+                     foreach (Pawn o in landedOn)
+                     {
+                         float own = RM_MapComponent_Knockback.PawnMass(__state), other = RM_MapComponent_Knockback.PawnMass(o);
+-                        float amount = RM_KnockbackMath.CollisionBruise(own, other, ks), otherAmount = RM_KnockbackMath.CollisionBruise(other, own, ks);
++                        float amount = RM_KnockbackMath.CollisionBruise(other, own, ks), otherAmount = RM_KnockbackMath.CollisionBruise(own, other, ks);
+                         if (otherAmount > 0f && !o.Dead)
+                         {
+                             o.TakeDamage(new DamageInfo(DamageDefOf.Blunt, otherAmount));

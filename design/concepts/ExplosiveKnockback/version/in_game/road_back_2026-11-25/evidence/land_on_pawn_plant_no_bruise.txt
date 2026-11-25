@@ -1,0 +1,19 @@
+ACCEPT src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_land_on_pawn_sizes.py at 0004125595a2
+PASS V_LAND_REC small: land_on_pawn {'pawn': 'Squirrel88278', 'mass': 60.83, 'otherMass': 12, 'amount': 0, 'otherAmount': 0}
+FAIL V_HEDIFF small: walker's new Bruise+Crush 0.0 (before (0.0, 0, False), after (0.0, 0, False))
+PASS V_LAND_REC large: land_on_pawn {'pawn': 'Muffalo88283', 'mass': 62.58, 'otherMass': 144, 'amount': 0, 'otherAmount': 0}
+FAIL V_HEDIFF large: walker's new Bruise+Crush 0.0 (before (0.0, 0, False), after (0.0, 0, False))
+PASS V_LAND_REC colonist: land_on_pawn {'pawn': 'Human88288', 'mass': 60.88, 'otherMass': 60.88, 'amount': 0, 'otherAmount': 0}
+FAIL V_HEDIFF colonist: walker's new Bruise+Crush 0.0 (before (0.0, 0, False), after (0.0, 0, False))
+FAIL V_SMALL: colonist 0.0 vs squirrel 0.0; hediffs colonist +0.0 vs squirrel +0.0 (squirrel dead False)
+FAIL V_LARGE: colonist 0.0 vs muffalo 0.0; hediffs colonist +0.0 vs muffalo +0.0
+FAIL V_ALIKE: amount 0.0 / otherAmount 0.0 = None; masses 60.88, 60.88 -> 1.0 (limit +-0.05); both at most 4.45: True
+PASS V_NOT_DOWNED: thrower downed False, walker downed False
+PASS V_EMPTY: 1 launch record(s) to [[30, 56]], 0 land_on_pawn record(s)
+FAIL sc_pawn_land_on_pawn_sizes: 6 failing, 0 invalid row(s); pictures in D:\ClaudeWork\rimmandrake\scratch\scene_runs\20261125T112826_scene_pawn_land_on_pawn_sizes_ArchSmall_28192
+ACCEPT src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_land_on_pawn_sizes.py: the script ended. For a kept run, use scene.py judge.
+[bridge split] 59.9 s wall: load 0.7 / ticks 0.0 / reads 3.1 / other 14.2 / outside calls 41.8 s
+[bridge split] WARN 142 calls of rimbridge/get_bridge_status (2.9 s): batch them
+[bridge split] WARN 97 calls of jawa/session (4.2 s): batch them
+[bridge split] WARN 95 calls of jawa/static_call (4.2 s): batch them
+[bridge split] WARN 69 calls of jawa/read_paths (3.0 s): batch them
