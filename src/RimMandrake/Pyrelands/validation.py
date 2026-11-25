@@ -180,20 +180,64 @@ STARVING_FOOD = 0.02              # at/below this after a row the colonists are 
 NEEDS_ROWS = ("scorchfruit_produces",)   # rows that MEASURE a colonist's Food need: never topped up
 
 
+def _hediff_rows(row):
+    """Pure. A vitals row's hediffs as {(def, part): (severity, text)}; None when the read carried no health."""
+    hs = (row or {}).get("hediffs")
+    if hs is None:
+        return None
+    out = {}
+    for h in hs:
+        if not isinstance(h, dict) or not h.get("def"):
+            continue
+        sev = h.get("severity")
+        sev = float(sev) if isinstance(sev, (int, float)) else None
+        text = str(h.get("def")) + ("" if sev is None else " %.2f" % sev)
+        if h.get("part"):
+            text += " on " + str(h.get("part"))
+        if h.get("lastInjury"):
+            text += " (by %s)" % h.get("lastInjury")
+        out[(h.get("def"), h.get("part"))] = (sev, text)
+    return out
+
+
+def harm_cause(b, a):
+    """Pure. -> ' (cause ...)': what the AFTER read shows that the BEFORE read did not, for a pawn the row downed or
+    killed. HARNESS_REPAIR_CAUSE_F6CADE57_2: a RESTART that named no cause left MOD, SITE and HARNESS undecidable from
+    the sighting. New or worse hediffs first, by severity; then the pawn's mental state. UNREAD when no health was read."""
+    if a is None:
+        return " (cause UNREAD: the pawn is on no list, corpses included)"
+    after, before = _hediff_rows(a), _hediff_rows(b)
+    if after is None:
+        return " (cause UNREAD: the vitals read carried no health)"
+    before = before or {}
+    worse = [(sev or 0.0, text) for k, (sev, text) in after.items()
+             if k not in before or (sev or 0.0) > (before[k][0] or 0.0) + 1e-6]
+    worse.sort(key=lambda x: -x[0])
+    parts = ["new or worse: " + (", ".join(t for _, t in worse[:5]) if worse else "none")]
+    if not worse and after:
+        parts.append("hediffs: " + ", ".join(t for _, t in sorted(after.values(), key=lambda x: -(x[0] or 0.0))[:5]))
+    if isinstance(a.get("bleed"), (int, float)) and a["bleed"] > 0:
+        parts.append("bleeding %.2f" % a["bleed"])
+    if a.get("mental"):
+        parts.append("mental state: %s" % a.get("mental"))
+    return " (cause read: %s)" % "; ".join(parts)
+
+
 def vitals_damage(before, after):
-    """Pure. before/after: {pawn id: {"dead": bool, "downed": bool, "food": float|None}}. -> [reason, ...]; empty = intact.
+    """Pure. before/after: {pawn id: {"dead": bool, "downed": bool, "food": float|None, "hediffs": [...]|absent,
+    "mental": str|None}}. -> [reason, ...]; empty = intact.
     Damage to the test itself (a colonist that was alive and is dead, newly downed, or starving) means the row's evidence
-    is void: it is RESTARTED, not scored."""
+    is void: it is RESTARTED, not scored. A death or a fall carries harm_cause(): what the health read says did it."""
     why = []
     for pid, b in sorted(before.items()):
         if b.get("dead"):
             continue
         a = after.get(pid)
         if a is None or a.get("dead"):
-            why.append("%s died during the row" % pid)
+            why.append("%s died during the row%s" % (pid, harm_cause(b, a)))
             continue
         if a.get("downed") and not b.get("downed"):
-            why.append("%s was downed during the row" % pid)
+            why.append("%s was downed during the row%s" % (pid, harm_cause(b, a)))
         f = a.get("food")
         if f is not None and f <= STARVING_FOOD:
             why.append("%s is starving (Food %.3f)" % (pid, f))
@@ -206,18 +250,42 @@ def _vitals(t, force=False):
     row crashed the whole run on None (pass 8, 2026-10-13, animal_distribution_correct)."""
     if t.session is None or (t.upstream_failed and not force):
         return None
-    r = t.session.call("jawa/list_pawns", faction="player", limit=100) or {}
+    # includeHealth + includeCorpses: a downed or dead colonist's hediffs name what did it (harm_cause); a corpse is a
+    # dead row, never an absent one.
+    r = t.session.call("jawa/list_pawns", faction="player", includeHealth=True, includeCorpses=True, limit=100) or {}
     out = {}
     for p in r.get("pawns") or []:
         if not p.get("id"):
             continue
-        row = {"dead": bool(p.get("dead")), "downed": bool(p.get("downed")), "food": None}
+        row = {"dead": bool(p.get("dead")), "downed": bool(p.get("downed")), "food": None,
+               "mental": p.get("mentalState")}
+        health = p.get("health")
+        if isinstance(health, dict) and isinstance(health.get("hediffs"), list):
+            row["hediffs"] = health["hediffs"]
+            row["bleed"] = health.get("bleedRate")
         if not row["dead"]:
             for n in (t.session.call("jawa/pawn_need", pawn=p["id"], action="list") or {}).get("needs") or []:
                 if n.get("need") == "Food":
                     row["food"] = n.get("level")
         out[p["id"]] = row
     return out
+
+
+def _hostiles_seen(t):
+    """One line: the hostile pawns on the current map when a row damaged the colony (def and mental state), so a RESTART
+    names an attacker if there was one. 'hostiles UNREAD' when the call fails: never 'none'."""
+    try:
+        r = t.session.call("jawa/list_pawns", faction="hostile", limit=20) or {}
+    except Exception as e:                               # noqa: BLE001 - a note, never a crash
+        return "hostiles UNREAD (%s)" % type(e).__name__
+    if not isinstance(r, dict) or r.get("success") is False or not isinstance(r.get("pawns"), list):
+        return "hostiles UNREAD (%r)" % (str(r)[:80],)
+    rows = [p for p in r["pawns"] if not p.get("dead")]
+    if not rows:
+        return "hostiles on the map: none"
+    return "hostiles on the map: " + ", ".join("%s%s" % (p.get("def") or p.get("id"),
+                                                         "(%s)" % p["mentalState"] if p.get("mentalState") else "")
+                                               for p in rows[:6])
 
 
 def _offsite(t):
@@ -316,6 +384,8 @@ def _comp(t, name, **kw):
             damage = [d for d in damage if not d.startswith(measured + " ")]
         for other in _GEN.pop("not_subjects", None) or []:   # pawns retired before the row, not part of it
             damage = [d for d in damage if not d.startswith(other + " ")]
+        if damage:   # who else stood on the map: a mad animal reads hostile (list_pawns hostile = HostileTo(player))
+            damage = damage + [_hostiles_seen(t)]
         off = _offsite(t)
         if off:     # PYRE_SITE_VITALS_REPAIR_HALF_THE_COLONY: colonists the current-map reads cannot see are unwatched
             damage = damage + ["%d colonist(s) live OFF the site map, unfed and unwatched (retire_offsite_colonies)" % off]

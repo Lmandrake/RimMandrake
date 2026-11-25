@@ -1163,6 +1163,31 @@ def test_probe_skips_rock_and_food_and_clock():
     check("starving -> damage", v.vitals_damage(ok, {"a": {"dead": False, "downed": False, "food": 0.0}}) != [])
     check("already-dead colonist is not new damage", v.vitals_damage({"a": {"dead": True}}, {"a": {"dead": True}}) == [])
     check("unreadable food is not damage", v.vitals_damage(ok, {"a": {"dead": False, "downed": False, "food": None}}) == [])
+    # HARNESS_REPAIR_CAUSE_F6CADE57_2: a fall or a death names what the health read shows did it
+    hb = {"a": {"dead": False, "downed": False, "food": 0.9, "hediffs": [{"def": "Heatstroke", "severity": 0.05}]}}
+    ha = {"a": {"dead": False, "downed": True, "food": 0.9, "mental": None, "bleed": 0.3,
+                "hediffs": [{"def": "Heatstroke", "severity": 0.05},
+                            {"def": "Bite", "severity": 9.0, "part": "Torso"},
+                            {"def": "Scratch", "severity": 2.0, "part": "LeftLeg"}]}}
+    why = " ".join(v.vitals_damage(hb, ha))
+    check("downed: the new injuries are named, worst first", "was downed during the row (cause read: new or worse: "
+          "Bite 9.00 on Torso, Scratch 2.00 on LeftLeg" in why, why)
+    check("downed: an unchanged hediff is not named as the cause", "Heatstroke" not in why, why)
+    check("downed: bleeding is named", "bleeding 0.30" in why, why)
+    hw = {"a": dict(ha["a"], hediffs=[{"def": "Heatstroke", "severity": 0.71}], bleed=0.0, mental="Berserk")}
+    why = " ".join(v.vitals_damage(hb, hw))
+    check("downed: a worse hediff and a mental state are named", "Heatstroke 0.71" in why and "mental state: Berserk" in why,
+          why)
+    why = " ".join(v.vitals_damage(hb, {"a": {"dead": True, "hediffs": [{"def": "MissingBodyPart", "severity": 0,
+                                                                         "part": "Neck", "lastInjury": "Burn"}]}}))
+    check("death: the corpse's hediffs name the killing damage", "died during the row (cause read: new or worse: "
+          "MissingBodyPart 0.00 on Neck (by Burn)" in why, why)
+    why = " ".join(v.vitals_damage(hb, {}))
+    check("death off every list: the cause is UNREAD, never a guess", "died during the row (cause UNREAD" in why, why)
+    why = " ".join(v.vitals_damage(ok, {"a": {"dead": False, "downed": True, "food": 0.5}}))
+    check("no health in the read: the cause is UNREAD", "was downed during the row (cause UNREAD" in why, why)
+    why = " ".join(v.vitals_damage(hb, {"a": dict(hb["a"], downed=True)}))
+    check("downed with nothing new: says none and lists what it has", "new or worse: none; hediffs: Heatstroke" in why, why)
 
     class _Sess(object):
         def __init__(self, die):
@@ -1227,6 +1252,11 @@ def test_probe_skips_rock_and_food_and_clock():
     c = t.components[-1]
     check("a death inside the row -> UNMEASURED RESTART, never FAIL", c.verdict == "UNMEASURED" and "RESTART" in c.detail, (c.verdict, c.detail))
     check("a death ends the chain (reload) and is listed", t.upstream_failed and v._GEN.get("restart") == ["some_row"])
+    lp = [c[1] for c in t.session.calls if c[0] == "jawa/list_pawns"]
+    check("the vitals read takes health and corpses", any(q.get("faction") == "player" and q.get("includeHealth")
+                                                          and q.get("includeCorpses") for q in lp), lp)
+    check("a RESTART names the hostiles on the map", "hostiles on the map:" in c.detail
+          and any(q.get("faction") == "hostile" for q in lp), c.detail)
     check("the ruins guard on ticksGame is gone", "RUIN_FILTH_MAX_AGE_TICKS" not in src and "site clock vs loose-ash" not in src)
 
 
