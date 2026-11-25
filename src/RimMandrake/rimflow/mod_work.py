@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""mod_work.py: is this ticket the work of one mod? The one rule that keeps mod tickets off the List Pipeline.
+"""mod_work.py: is this ticket the work of one mod? The one rule that keeps mod tickets off the Workshop Pipeline.
 
 Item RIMMANDRAKE_KEEP_MOD_TICKETS_OFF_LIST_PIPELINE_HUGETHINGS_WENT_TO_CODEX; page
 design/specs/2026-11-23-list-dispatch/boundary.md (promise a-mod-ticket-is-not-the-list-pipelines); selftest
@@ -16,7 +16,7 @@ The rule, in order:
   4. no home, or unplaced: the repo paths in its title, check and prose. Each one inside one mod's folder
      (src/<Tier>/<Mod>/ or design/concepts/<Mod>/), and no path outside it -> the work of that mod. A path outside
      every mod (rimflow, Utils, design/specs, ...) or paths in two mods -> not mod work: a pipeline ticket that names a
-     mod as its example stays in the List Pipeline. A mod named only by a word, with no path, stays too.
+     mod as its example stays in the Workshop Pipeline. A mod named only by a word, with no path, stays too.
 """
 import os
 import re
@@ -107,13 +107,13 @@ def of(item, modset, prose=""):
 
 
 def status(r):
-    """-> the status line of a ticket that is not the List Pipeline's, or None when it is."""
+    """-> the status line of a ticket that is not the Workshop Pipeline's, or None when it is."""
     if not isinstance(r, dict):
         return None
     if r.get("unreadable"):
         return "could not look whether it is mod work: %s; nothing launches it" % r["unreadable"]
     if r.get("mod"):
-        return "waits for the Maturation Pipeline run of %s (%s); the List Pipeline does not work it" % (r["mod"], r["why"])
+        return "waits for the Maturation Pipeline run of %s (%s); the Workshop Pipeline does not work it" % (r["mod"], r["why"])
     return None
 
 

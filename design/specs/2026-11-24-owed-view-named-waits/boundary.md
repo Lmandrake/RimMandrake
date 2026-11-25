@@ -6,7 +6,7 @@ whole owed view: `src/RimMandrake/rimflow/acceptance/owed_view_accept.py`.
 Item: `RIMMANDRAKE_SHOW_CONDUCTOR_THE_WAITS_THAT_NAME_IT_TWENTY_TWO_UNSEEN`, written 2026-11-24.
 
 Why. A detached run that finishes its part writes a `LEFT OPEN:` note and a dated wait whose reason is "the Conductor
-reads, rules, shows or releases". The List Pipeline reads a wait as Waiting. The no-home count reads it as a need that
+reads, rules, shows or releases". The Workshop Pipeline reads a wait as Waiting. The no-home count reads it as a need that
 has a home. The owed view read only items of kind `owed`. So no list asked the Conductor. Measured 2026-11-24: 21 open
 items of that shape, seven of them with a date that had passed, and 6 of the 15 items that the owner's question of
 2026-11-23 ("worked but didn't get closed") named.

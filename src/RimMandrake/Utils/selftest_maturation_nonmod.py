@@ -127,7 +127,7 @@ def stores(extra_filed=0, red_at=None):
                 "RIMMANDRAKE_LANE_HOLDS": {"decision": "close", "why": "the check holds"},
                 "RIMMANDRAKE_LANE_STOPPED": {"decision": "stopped", "why": "2 Work runs ended and the check still fails"},
                 "RIMMANDRAKE_LIVE_NO_MOD": {"decision": "live", "why": "u-nomod is live on it"},
-                "RIMMANDRAKE_LANE_READY": {"decision": "slots_full", "why": "2 live list-lane runs"}}}}
+                "RIMMANDRAKE_LANE_READY": {"decision": "slots_full", "why": "2 live Workshop Pipeline runs"}}}}
 
 
 def spend(r):
@@ -327,7 +327,7 @@ def t_four_answers_differ():
     assert failed.count("FAILED") == 1 and "Doing now" not in failed, failed
     nolane = stores()
     nolane["lane"] = None
-    nolane["causes"] = {"the List Pipeline tick's reading.json": "FileNotFoundError: gone"}
+    nolane["causes"] = {"the Workshop Pipeline tick's reading.json": "FileNotFoundError: gone"}
     y = sec(nolane)
     assert {y["stage_of"][i] for i in ("RIMMANDRAKE_LANE_READY", "RIMMANDRAKE_LANE_HOLDS")} == {"unmeasured"}, y["stage_of"]
     nl = "\n".join(N.markdown(y))
@@ -376,11 +376,11 @@ def t_page_is_a_picture_not_a_log():
     s = stores(extra_filed=15)
     (md, page), _ = built(page_dict(s))
     for x in (md, page):
-        assert N.PANEL_TITLE in x, "no List Pipeline picture on the page"
+        assert N.PANEL_TITLE in x, "no Workshop Pipeline picture on the page"
         hit = [w for w in LOG_WORDS if w in x]
         assert not hit, "log lines on the summary page: %s" % hit
         assert len(x) < 40000, len(x)
-    one = [ln for ln in md.splitlines() if "List Pipeline: open" in ln]
+    one = [ln for ln in md.splitlines() if "Workshop Pipeline: open" in ln]
     assert len(one) == 1 and one[0].startswith("<div>"), "the picture is one line of HTML (Typora)"
     import re as _re
     words = _re.findall(r">([^<>]+)</text>", one[0])

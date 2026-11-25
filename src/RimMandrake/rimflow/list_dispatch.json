@@ -1,5 +1,5 @@
 {
-  "_doc": "list_dispatch.py's settings: the List Pipeline's Waiting, Ready and Work stages (item RIMMANDRAKE_BUILD_LIST_LANE_ON_RED_DISPATCH_GOALS_FIRST; plan design/specs/2026-11-22-coordination-every-agent-must-use/plan.md step 2; page design/specs/2026-11-23-list-dispatch/boundary.md). One detached helper per open list item whose outcome check fails; the check runs again before every attempt; at most two Work runs per item.",
+  "_doc": "list_dispatch.py's settings: the Workshop Pipeline's Waiting, Ready and Work stages (item RIMMANDRAKE_BUILD_LIST_LANE_ON_RED_DISPATCH_GOALS_FIRST; plan design/specs/2026-11-22-coordination-every-agent-must-use/plan.md step 2; page design/specs/2026-11-23-list-dispatch/boundary.md). One detached helper per open list item whose outcome check fails; the check runs again before every attempt; at most two Work runs per item.",
   "enabled": true,
   "seat": "BENCH",
   "max_live": 2,

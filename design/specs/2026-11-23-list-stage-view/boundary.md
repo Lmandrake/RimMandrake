@@ -1,4 +1,4 @@
-# BOUNDARY: the List Pipeline's one stage function and its stage view, Design Version 0.1.0
+# BOUNDARY: the Workshop Pipeline's one stage function and its stage view, Design Version 0.1.0
 
 Code: `src/RimMandrake/rimflow/list_pipeline.py` (all of it: `stage_of`, `six`, `facts`, `lane_verdict`, `last_act`, `MOVED_BY`),
 the call in `src/RimMandrake/rimflow/list_dispatch.py` `tick` (each reading row carries its `stage`), and the stage view in
@@ -19,7 +19,7 @@ disagree.
   `{on, resumes, until}`), `run` (None, `live_shape`, `live_work` or `ended`), `stopped` (bool), `promise` (None,
   `kept` or `dead`), and optional `note` (the lane's words) and `age_h`.
 - **the-ledger-item-the-runs-and-the-lane-row.** `facts(...)` builds that dict from one ledger item (model.Item or a
-  dict), its detached-run records (oldest first), the List Pipeline tick's row for it (`list_dispatch` `reading.json`,
+  dict), its detached-run records (oldest first), the Workshop Pipeline tick's row for it (`list_dispatch` `reading.json`,
   `items[id]`) with the reading's time, whether `owner_queue.is_his` holds for it, whether a note says it is ready to
   show, and the time of its last ledger event.
 

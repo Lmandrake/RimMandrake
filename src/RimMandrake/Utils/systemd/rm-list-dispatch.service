@@ -1,4 +1,4 @@
-# The List Pipeline's Waiting, Ready and Work stages (rimflow/list_dispatch.py; item
+# The Workshop Pipeline's Waiting, Ready and Work stages (rimflow/list_dispatch.py; item
 # RIMMANDRAKE_BUILD_LIST_LANE_ON_RED_DISPATCH_GOALS_FIRST; page design/specs/2026-11-23-list-dispatch/boundary.md): one
 # detached helper per open list item whose outcome check fails, at most 2 live, at most 2 Work runs per item, the check
 # run again before every attempt. It obeys the pipeline's pause, `./pipe off` (all, family:list_dispatch,
@@ -9,7 +9,7 @@
 #           systemctl --user daemon-reload && systemctl --user enable --now rm-list-dispatch.timer
 # Off:      ./pipe off family:list_dispatch --why "..."   (or "enabled": false in rimflow/list_dispatch.json)
 [Unit]
-Description=RimMandrake List Pipeline: one helper per list item whose outcome check fails, every 10 min
+Description=RimMandrake Workshop Pipeline: one helper per list item whose outcome check fails, every 10 min
 
 [Service]
 Type=oneshot

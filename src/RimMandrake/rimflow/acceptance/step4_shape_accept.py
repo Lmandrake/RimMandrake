@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Acceptance for plan.md step 4 (the Shape stage of the List Pipeline): the program around the Shape run. What a
+"""Acceptance for plan.md step 4 (the Shape stage of the Workshop Pipeline): the program around the Shape run. What a
 Shape run writes is a model's work and is judged by the weekly audit; this script tests the exit rule.
 
 Contract: a new module src/RimMandrake/rimflow/list_shape.py

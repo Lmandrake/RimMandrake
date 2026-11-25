@@ -27,7 +27,7 @@ for _p in (HERE, os.path.join(os.path.dirname(HERE), "rimflow")):
     if _p not in sys.path:
         sys.path.insert(0, _p)
 
-# The window each source looks back over. Danger: an older window counts history from before the List Pipeline as
+# The window each source looks back over. Danger: an older window counts history from before the Workshop Pipeline as
 # today's needs (the run records and transcripts reach back months). Evidence: the plan's measurement reads "your typed
 # messages with no home in 3 days", and the probe of 2026-11-22 used the same 3 days.
 WINDOW_S = 3 * 86400
@@ -101,7 +101,7 @@ def left_open_notes(evs):
 def ended_runs(records, items, last_event, now, window=WINDOW_S, left_open=None):
     """-> "<unit> on <item>" for each run that ended in the window, newest per item, on an item that is open, has no
     outcome check, and has no ledger act after the run ended (an-ended-run-with-no-later-act-is-a-need). A run whose
-    item waits (a dated wait or a block: the List Pipeline's Waiting stage) or that left a LEFT OPEN: note since it
+    item waits (a dated wait or a block: the Workshop Pipeline's Waiting stage) or that left a LEFT OPEN: note since it
     began gave its end a home; so did a Maturation Pipeline stage run (RM_CONTROL_STAGE), read by the Dispatch tick."""
     by = {}
     for r in records or []:

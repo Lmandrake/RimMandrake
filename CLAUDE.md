@@ -292,7 +292,7 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - All other work goes in one list, the rimflow ledger. Write the work there. Close the work there.
 - A handoff, a log, a status page, a memory file, a result file or a reply does not hold owed work. If a debt is only
   in one of those, file it in the list.
-- A second pipeline works the list (the List Pipeline in the plan). The Maturation Pipeline page shows it beside the
+- A second pipeline works the list (the Workshop Pipeline in the plan). The Maturation Pipeline page shows it beside the
   mod pipeline, with its stages. A request to repair the pipeline is work for the second pipeline.
 - The second pipeline, not a seat, answers these questions: what it does now, what is next, what closed, what stays
   open and why, what is escalated, what is ready for the owner's review.

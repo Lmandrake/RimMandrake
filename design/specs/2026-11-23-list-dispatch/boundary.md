@@ -1,5 +1,7 @@
-# BOUNDARY: the List Pipeline's Waiting, Ready and Work stages (list_dispatch.py), Design Version 0.1.0
+# BOUNDARY: the Workshop Pipeline's Waiting, Ready and Work stages (list_dispatch.py), Design Version 0.1.0
 
+
+The program names keep the old word "list" (`list_dispatch`, `list_pipeline`, `list_home`, `list_effect`, the key `list_dispatch`); the pipeline's name is the Workshop Pipeline.
 Code: `src/RimMandrake/rimflow/list_dispatch.py` (all of it), `src/RimMandrake/rimflow/list_dispatch.json`,
 `src/RimMandrake/rimflow/mod_work.py` (all of it) and its callers `list_pipeline.facts`/`stage_of`, `list_home.offer`
 and `maturation_nonmod.section`,
@@ -50,7 +52,7 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   closes and launches nothing (decision `mod_work`); `list_home.py offer`, the feed of a Codex lane, does not offer it
   and counts it under its mod; its status line on the page (`stage_of`, stage `waiting`) says that it waits for the
   Maturation Pipeline run of that mod, and names the mod. A pipeline ticket that names a mod only as its example (a
-  path outside the mod, or paths in two mods) stays in the List Pipeline. A home that cannot be read, or prose that
+  path outside the mod, or paths in two mods) stays in the Workshop Pipeline. A home that cannot be read, or prose that
   cannot be read, launches nothing and is not offered: the row reads `blind` and the stage `unmeasured`, "could not
   look". A live run on such a ticket still shows as Work. Measured 2026-11-24: the Codex lane built two HugeThings tickets
   (home mod:HugeThings), because HugeThings has no version folder and the page counted them as list work.

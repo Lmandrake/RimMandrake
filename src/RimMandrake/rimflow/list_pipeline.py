@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""list_pipeline.py: the List Pipeline's one stage function. No model, no tokens, no reads of its own.
+"""list_pipeline.py: the Workshop Pipeline's one stage function. No model, no tokens, no reads of its own.
 
 Item RIMMANDRAKE_BUILD_ONE_OWNER_VIEW_NO_HOME_COUNT_BESIDE, step 3 of
 design/specs/2026-11-22-coordination-every-agent-must-use/plan.md (§The stages, §The six questions). Page
@@ -94,7 +94,7 @@ def stage_of(item, now):
     if isinstance(mw, dict) and mw.get("unreadable"):
         return _r("unmeasured", "could not look whether it is mod work: %s; nothing launches it" % mw["unreadable"])
     if isinstance(mw, dict) and mw.get("mod") and run not in ("live_work", "live_shape"):   # a live run shows as work
-        return _r("waiting", "waits for the Maturation Pipeline run of %s (%s); the List Pipeline does not work it"
+        return _r("waiting", "waits for the Maturation Pipeline run of %s (%s); the Workshop Pipeline does not work it"
                   % (mw["mod"], mw.get("why") or "it is that mod's work"), "the Maturation Pipeline run of %s" % mw["mod"])
     if item.get("stopped"):
         return _r("trouble", "stopped: %s" % (item.get("note") or "its run ended and nothing moved it on"))

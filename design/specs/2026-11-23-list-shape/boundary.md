@@ -1,4 +1,4 @@
-# BOUNDARY: the List Pipeline's Shape stage (list_shape.py), Design Version 0.1.0
+# BOUNDARY: the Workshop Pipeline's Shape stage (list_shape.py), Design Version 0.1.0
 
 Code: `src/RimMandrake/rimflow/list_shape.py` (all of it), the Shape run's brief `src/RimMandrake/rimflow/roles/list_shape.md`,
 the `shape` verb in `src/RimMandrake/rimflow/model.py` (`VERBS["shape"]`, its `_apply` branch, `Item.shape`,

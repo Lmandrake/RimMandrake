@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Acceptance for plan.md step 3 (the stage view of the List Pipeline): one stage function, and the six answers.
+"""Acceptance for plan.md step 3 (the stage view of the Workshop Pipeline): one stage function, and the six answers.
 
 Contract: a new module src/RimMandrake/rimflow/list_pipeline.py
   stage_of(item, now) -> {"stage": one of STAGES, "why": str, "resumes": str or None, "promise": None|"kept"|"dead"}

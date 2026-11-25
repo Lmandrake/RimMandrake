@@ -23,7 +23,7 @@ check(not bad and n >= 40, "the real tree passes (%d listed counters seen)" % n,
 rels = L.files()
 check(all(p in rels for p in ("src/RimMandrake/Utils/testq/visit_feed.py", "src/RimMandrake/rimflow/list_dispatch.py",
                               "src/RimMandrake/rimflow/maturation_dispatch.py", "infrastructure/stevedesktop/worker.py")),
-      "the scan sees the visit feed, the list lane, the dispatch tick and the SteveDesktop worker", len(rels))
+      "the scan sees the visit feed, the Workshop Pipeline, the dispatch tick and the SteveDesktop worker", len(rels))
 NEW = "src/RimMandrake/Utils/testq/new_feed.py"
 PLANTS = {
     "the visit feed's own counter of 2026-11-22": "FAILS_TO_STOP = 2\ndef waiting(fails, m, c):\n"

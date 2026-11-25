@@ -2,7 +2,7 @@
 
 Code: `src/RimMandrake/rimflow/list_effect.py` (all of it), `src/RimMandrake/rimflow/model.py` (the `effect` field of
 `file`, the `effect` verb, `Item.effect` and `Item.effect_seen`), `src/RimMandrake/rimflow/cli.py` (`file --effect`,
-`effect`, the shared live gate on a List Pipeline check-close), `src/RimMandrake/Utils/systemd/rm-list-effect.{service,timer}`.
+`effect`, the shared live gate on a Workshop Pipeline check-close), `src/RimMandrake/Utils/systemd/rm-list-effect.{service,timer}`.
 Item: `RIMMANDRAKE_BUILD_LIST_OUTCOME_CHECKS_SEVEN_DONE_NEVER_CLOSED`, step 1 of
 `design/specs/2026-11-22-coordination-every-agent-must-use/plan.md`. Why: 7 of the 48 Conductor debts in the census of
 2026-11-22 were done and never closed. Each promise has a test of its name in

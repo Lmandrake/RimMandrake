@@ -27,7 +27,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "rimflow"))
 from item_identity import named_mod  # noqa: E402  the one rule for the mod an item names
-import list_pipeline as LP  # noqa: E402  the List Pipeline's one stage rule (stage_of, six, facts)
+import list_pipeline as LP  # noqa: E402  the Workshop Pipeline's one stage rule (stage_of, six, facts)
 
 PAC = ZoneInfo("America/Los_Angeles")
 UNM = "UNMEASURED"
@@ -233,7 +233,7 @@ def read_stores(lf, mods):
             s["lane"] = json.load(f)
     except Exception as e:      # noqa: BLE001  no reading: every item with a check reads unmeasured, named
         s["lane"] = None
-        s["causes"]["the List Pipeline tick's reading.json"] = "%s: %s" % (e.__class__.__name__, e)
+        s["causes"]["the Workshop Pipeline tick's reading.json"] = "%s: %s" % (e.__class__.__name__, e)
     q = lf.get("questions")
     s["his"] = None if q is None else {x.get("item") for x in q if isinstance(x, dict)}
     if q is None:
@@ -264,7 +264,7 @@ def safe_section(s, now, spend=None, stage=None):
 
 
 def section(s, now, spend=None, stage=None):
-    """stage: the List Pipeline's stage function (list_pipeline.stage_of; maturation_now passes it)."""
+    """stage: the Workshop Pipeline's stage function (list_pipeline.stage_of; maturation_now passes it)."""
     stage_fn = stage or LP.stage_of
     items, evs, recs = s.get("items"), s.get("evs"), s.get("records")
     causes = dict(s.get("causes") or {})
@@ -307,10 +307,10 @@ def section(s, now, spend=None, stage=None):
     def title(i):
         return g(items.get(i), "title") if i in items else ""
 
-    # each open non-mod item has one stage, by the List Pipeline's one rule (list_pipeline.stage_of)
+    # each open non-mod item has one stage, by the Workshop Pipeline's one rule (list_pipeline.stage_of)
     lane = s.get("lane")
     lane_at = float(lane["at"]) if isinstance(lane, dict) and isinstance(lane.get("at"), (int, float)) else None
-    lane_cause = causes.get("the List Pipeline tick's reading.json") or "not read"
+    lane_cause = causes.get("the Workshop Pipeline tick's reading.json") or "not read"
     lane_rows = (lane.get("items") or {}) if isinstance(lane, dict) else {}
     his = s.get("his")
     open_set = {i for i, it in items.items() if g(it, "state") in OPEN_STATES}
@@ -399,11 +399,11 @@ def section(s, now, spend=None, stage=None):
         for i in ready:
             k = str((lane_rows.get(i) or {}).get("decision") or "not listed by the tick")
             gates[k] = gates.get(k, 0) + 1
-        nx.append("The List Pipeline tick (rm-list-dispatch.timer) starts the Ready items in this order: %d Ready; what "
+        nx.append("The Workshop Pipeline tick (rm-list-dispatch.timer) starts the Ready items in this order: %d Ready; what "
                   "each waits for now: %s." % (len(ready), ", ".join("%s %d" % kv for kv in sorted(gates.items()))))
         nx += _capped(ready, lambda i: "Ready: %s" % named(i, title(i)))
     else:
-        nx.append("The List Pipeline tick: no item is Ready (a failing check and nothing waited on); its reading: %s."
+        nx.append("The Workshop Pipeline tick: no item is Ready (a failing check and nothing waited on); its reading: %s."
                   % out["lane"])
     if rr is None:
         nx.append("The red dispatcher: could not look (%s)." % causes.get("the red dispatcher's reading.json",
@@ -577,7 +577,7 @@ def blocks(sec):
                 ("What this section cannot see", sec["cannot"])]
     out = []
     head = ["Each open item that is not mod work sits at one stage, decided by one rule (`list_pipeline.stage_of`), "
-            "which the List Pipeline tick also calls. %s" % sec["rule"],
+            "which the Workshop Pipeline tick also calls. %s" % sec["rule"],
             "Open items that are not mod work: %s. Could not class: %s%s. The tick's last reading: %s." % (
                 sec["open_total"], sec["unclassed"],
                 (" (%s)" % ", ".join("`%s`" % x for x in sec["unclassed_ids"])) if sec["unclassed"] else "",
@@ -736,7 +736,7 @@ def verbs(by):
 
 
 def picture(sec):
-    """The List Pipeline drawn like the mod picture: one line of SVG. sec must be state "ok"."""
+    """The Workshop Pipeline drawn like the mod picture: one line of SVG. sec must be state "ok"."""
     cnt = {x["stage"]: x["count"] for x in sec["stages"]}
     P = []
     y = 12
@@ -929,11 +929,11 @@ def picture(sec):
     words = ", ".join("%s %d" % (k, cnt.get(k, 0)) for k in STAGE_ORDER)
     return ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" width="100%%" role="img" aria-label="%s" '
             'style="max-width:%dpx;font-family:%s">%s%s</svg>' % (
-                PW, y, html.escape("The List Pipeline: open %d; %s; closed in the last day %s" % (tot, words, c["count"]),
+                PW, y, html.escape("The Workshop Pipeline: open %d; %s; closed in the last day %s" % (tot, words, c["count"]),
                                    quote=True), PW, FONT, _r(0, 0, PW, y, BG, 10), "".join(P)))
 
 
-PANEL_TITLE = "The List Pipeline: all work that is not mod work"
+PANEL_TITLE = "The Workshop Pipeline: all work that is not mod work"
 
 
 def panel(sec):

@@ -655,7 +655,7 @@ def plan_tick(date, world, runs, gate):
     elif runs["live"]:
         acts.append(("reader_live", ", ".join(runs["live"])))
     elif runs["n"]:
-        acts.append(("reader_ran", "%d run(s) ended with the item open: the List Pipeline works it now" % runs["n"]))
+        acts.append(("reader_ran", "%d run(s) ended with the item open: the Workshop Pipeline works it now" % runs["n"]))
     elif gate:
         acts.append(("held", gate))
     else:
@@ -669,7 +669,7 @@ def next_week(date):
 
 def plant(date, apply, cli=None):
     """File the planted need that the audit of the week ending `date` reads: a harmless item with an outcome check,
-    worked by the List Pipeline like any other. -> (rc, text)."""
+    worked by the Workshop Pipeline like any other. -> (rc, text)."""
     return (cli or _cli)(["file", planted_id(date), "--for", SEAT, "--kind", "task", "--title",
                           "Planted need of the follow-through audit, week ending %s: write %s holding the line '%s', "
                           "land it with ./publish, close this item with its sha" % (date, planted_path(date),

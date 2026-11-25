@@ -40,7 +40,7 @@ Why: on 2026-11-23 Fleet Now listed 4 things for him and Maturation Now's "Needs
   without an error as answered (a card a hook refused is not answered), and a card that is the session's last entry as
   still on screen (neither).
 - **an-ended-run-with-no-later-act-is-a-need.** `ended_runs(records, items, last_event, now)` lists each run that ended
-  in the window (`WINDOW_S`) on an item that is still open, carries no outcome check (the List Pipeline reads the end
+  in the window (`WINDOW_S`) on an item that is still open, carries no outcome check (the Workshop Pipeline reads the end
   of a run on an item with a check), and has no act after the run ended (`list_pipeline.last_act`: a program's note
   about a run's end is not an act). A run whose item waits (a dated wait or a block) or that left a `LEFT OPEN:` note
   since it began gave its end a home, and is not counted; so did a Maturation Pipeline stage run (`RM_CONTROL_STAGE` on

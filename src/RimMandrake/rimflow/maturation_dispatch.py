@@ -751,12 +751,12 @@ def one_run_fence(facts, rows, launches):
     return launches
 
 
-LIST_LANE = "list_dispatch"     # detached_helper's next_act_owner on every List Pipeline run
+LIST_LANE = "list_dispatch"     # detached_helper's next_act_owner on every Workshop Pipeline run
 
 
 def occupancy(facts):
     """-> the live runs on advancing mods, or None when any mod's live runs cannot be read: an unknown occupancy is
-    never counted as zero (RIMMANDRAKE_RESERVE_CAP_BEFORE_LAUNCH; it used to skip a non-list and launch). A List Pipeline
+    never counted as zero (RIMMANDRAKE_RESERVE_CAP_BEFORE_LAUNCH; it used to skip a non-list and launch). A Workshop Pipeline
     run on a mod's list item keeps the mod's files (it is live on the mod) and takes no mod slot: that lane has its own
     (design/specs/2026-11-23-list-dispatch/boundary.md, a-lane-run-on-a-mod-takes-no-mod-slot)."""
     occ = [f.get("live_units") for f in facts.values()]

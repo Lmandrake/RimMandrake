@@ -9,7 +9,7 @@ the old tickets grouped by mod, pipeline repair and other kinds once, and the li
     python3 src/RimMandrake/rimflow/list_home.py list [--home HOME] each home, its groups, its tickets (one home: --home)
     python3 src/RimMandrake/rimflow/list_home.py no-home            the open list tickets that have no home
     python3 src/RimMandrake/rimflow/list_home.py json               the whole view, for a program
-    python3 src/RimMandrake/rimflow/list_home.py offer [--by-mod]   the tickets the List Pipeline may hand to a lane or
+    python3 src/RimMandrake/rimflow/list_home.py offer [--by-mod]   the tickets the Workshop Pipeline may hand to a lane or
                                                                     to Codex: not one mod's work (mod_work.of); the rest
                                                                     are counted by mod (--by-mod: and listed)
     exit 0 read; 2 could not look (the ledger or the page's ticket set could not be read)

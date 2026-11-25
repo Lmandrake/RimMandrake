@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Acceptance for plan.md step 2 (the Ready and Work stages of the List Pipeline): the tick's decisions, over fake
+"""Acceptance for plan.md step 2 (the Ready and Work stages of the Workshop Pipeline): the tick's decisions, over fake
 facts. Nothing is launched.
 
 Contract: a new module src/RimMandrake/rimflow/list_dispatch.py with its settings list_dispatch.json beside it.
@@ -73,7 +73,7 @@ H.check("a launch that never started is not a spent attempt: launch again",
 H.check("max_live live list runs: slots_full for the next item",
         lambda: dec({"A": it(), "B": it(), "C": it()}, iid="C",
                     runs={"A": {"live": ["u1"], "ended": []}, "B": {"live": ["u2"], "ended": []}}) == ("slots_full", []))
-H.check("mod and nightly-test runs do not use the list lane's slots",
+H.check("mod and nightly-test runs do not use the Workshop Pipeline's slots",
         lambda: dec({"A": it()}, other_live=5) == ("launch", ["A"]))
 H.check("an account hold launches nothing", lambda: dec({"A": it()}, account=(False, "drain")) == ("account_hold", []))
 H.check("a chain that already holds max_chain_depth lane runs is not launched",

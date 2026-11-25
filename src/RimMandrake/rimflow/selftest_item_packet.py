@@ -433,7 +433,7 @@ def t_every_detached_launch_carries_the_packet():
     chk(lambda: src.index('rec["brief_src"]') < src.index("brief_message("),
         "every-detached-launch-carries-the-packet: the kept brief holds none, so a relaunch carries one, not two")
     chk(lambda: "ITEM PACKET" in LD.brief_text(IT, {"title": "t", "effect": "cmd:x"}, {"run_n": 1}),
-        "every-detached-launch-carries-the-packet: the list lane's Work brief reads it")
+        "every-detached-launch-carries-the-packet: the Workshop Pipeline's Work brief reads it")
 
 
 def t_a_launch_never_fails_on_the_packet():

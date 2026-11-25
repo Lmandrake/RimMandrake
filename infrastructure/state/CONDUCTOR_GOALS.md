@@ -43,7 +43,7 @@ game work".
    inform the decision).
 3. **Trials only if we KNOW they inform that decision**: such a trial runs now. Any other trial or new pipeline
    experiment waits until the study.
-4. **The List Pipeline runs without the Conductor.** The list's worker is a pipeline with stages, shown on the
+4. **The Workshop Pipeline runs without the Conductor.** The list's worker is a pipeline with stages, shown on the
    Maturation Pipeline page, and a pipeline that always needs the Conductor is incomplete (his words of Sun 2026-11-22
    10:47 PM and 10:48 PM PST, ledger, OWNER note on `RIMMANDRAKE_RESUME_PLAN_RUN_WITH_HIS_SECOND_PIPELINE_DIRECTION`:
    *"the Conductor should NOT be constantly required just to keep a pipeline running... if we're always in that mode,

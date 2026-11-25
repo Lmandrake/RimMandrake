@@ -8,7 +8,7 @@ Item RIMMANDRAKE_BUILD_MATURATION_PAGE_NO_TOKENS_SPENT; spec design/specs/2026-1
 program regenerates without tokens").
 
 Writes D:\\ClaudeWork\\rimmandrake\\conductor\\MATURATION_NOW.md (read in Typora) and MATURATION_NOW.html beside it: the
-summary (the needs, the mod picture, the List Pipeline picture, the graph of tickets by hour, every mod on one line).
+summary (the needs, the mod picture, the Workshop Pipeline picture, the graph of tickets by hour, every mod on one line).
 MATURATION_DETAIL.md and .html hold the lists, the cards and what could not be read (the owner, 2026-11-23: "This is
 supposed to be a summary page ... WAY less log noise").
 
@@ -1077,7 +1077,7 @@ def gather(root, live=True):
         needs["pipeline"] = dispatch_pipeline(now, lf["errors"])
     # the pipeline for work that is not mod work (design/specs/2026-11-22-non-mod-pipeline-section/boundary.md)
     nm_stores = (MNM.read_stores(lf, versioned) if live else MNM.off_stores("live reads off (--no-live)"))
-    import list_pipeline as LP  # noqa: E402  the List Pipeline's one stage rule, the one list_dispatch's tick calls
+    import list_pipeline as LP  # noqa: E402  the Workshop Pipeline's one stage rule, the one list_dispatch's tick calls
     nonmod = MNM.safe_section(nm_stores, now, spend=read_spend, stage=lambda item, t: LP.stage_of(item, t))
     return {"mods": mods, "others": other, "held": held, "needs": needs, "now": now, "nonmod": nonmod,
             "trend": trend(lf, versioned, now, live),
@@ -2118,8 +2118,8 @@ def write_again(path, data, waits=WRITE_WAITS):
 
 
 def phone_list(P, sec):
-    """The List Pipeline on the phone: the stage boxes with their counts, then three short lists."""
-    P.text("The List Pipeline (not mod work)", "h2", True, fill="#e6be7e", gap=10)
+    """The Workshop Pipeline on the phone: the stage boxes with their counts, then three short lists."""
+    P.text("The Workshop Pipeline (not mod work)", "h2", True, fill="#e6be7e", gap=10)
     st = (sec or {}).get("state")
     if st != "ok":
         P.text("%s: no count here is an answer (%s)." % ("FAILED" if st == "failed" else "COULD NOT LOOK", clip(

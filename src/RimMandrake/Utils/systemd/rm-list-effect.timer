@@ -1,6 +1,6 @@
 # Every 15 min - see rm-list-effect.service.
 [Unit]
-Description=RimMandrake list lane: outcome checks, every 15 min
+Description=RimMandrake Workshop Pipeline: outcome checks, every 15 min
 
 [Timer]
 OnBootSec=7min

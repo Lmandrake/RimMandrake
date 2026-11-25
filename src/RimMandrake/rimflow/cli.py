@@ -2136,7 +2136,7 @@ def cmd_shape(args, seat):
             return 0
         ev["enter"] = True
         _emit(ev, w, quiet=True)
-        print("%s: named for Shape. The list lane (list_dispatch.py) launches its Shape run through its gates." % args.id)
+        print("%s: named for Shape. the Workshop Pipeline (list_dispatch.py) launches its Shape run through its gates." % args.id)
         return 0
     parts, why = list_shape.read_parts(args.parts)
     if why:
@@ -2691,7 +2691,7 @@ def _live_gate(verb, args, it, sha):
 
 
 def _check_close_live(args, it, evs, seat):
-    """The shared List Pipeline close gate. Return (line, None), or (None, the CLI result that leaves it open)."""
+    """The shared Workshop Pipeline close gate. Return (line, None), or (None, the CLI result that leaves it open)."""
     import fcntl
     import list_effect as LE
     import live_line

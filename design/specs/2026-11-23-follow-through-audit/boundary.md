@@ -16,10 +16,10 @@ what was asked in a week reached its result without his hand. Each promise below
    files two items, once each: the reader item for that week, with an outcome check (`follow_through.py judged
    --week-ending <date>`), and the planted need of the NEXT week, so that each audit reads a need that had its whole
    week. The first planted need (week ending 2026-11-29) was filed by hand with `follow_through.py plant`. It then launches one fresh reader (opus) on the reader item
-   itself, through `detached_helper.py launch`, once. The audit does not wait for the List Pipeline to launch the
+   itself, through `detached_helper.py launch`, once. The audit does not wait for the Workshop Pipeline to launch the
    reader, because the audit watches that pipeline from outside (plan §Where I push back: a pipeline that reports false
    progress is the worse failure). A daily beat retries a launch that a gate held on Sunday. A reader run that ended
-   with the item open is left to the List Pipeline, which works the item by its check.
+   with the item open is left to the Workshop Pipeline, which works the item by its check.
 2. The reader (a fresh run that did none of the work) runs `follow_through.py sample --week-ending <date> --write`. The
    program draws the sample and writes the audit page and its record (`audit/<date>.md` and `audit/<date>.json` beside
    this page). The reader judges each drawn need against the real file or run and writes the verdicts into the record.

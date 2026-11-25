@@ -2367,7 +2367,7 @@ def main(argv=None):
                                                    "own clone under ~/rm/list/; default: this machine (run_host.py)")
     a.add_argument("--next-act-owner", metavar="NAME",
                    help="the program that reads this run's LEFT OPEN: note and decides its next run (list_dispatch: the "
-                        "List Pipeline's two-run rule); left_open_continue.py does not continue such a run")
+                        "Workshop Pipeline's two-run rule); left_open_continue.py does not continue such a run")
     f = sub.add_parser("finish")
     f.add_argument("--unit", required=True)
     b = sub.add_parser("return", help="give the run's pool clone back, bundled (the unit's last step; --all sweeps strays)")

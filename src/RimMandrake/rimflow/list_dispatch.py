@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""list_dispatch.py: the List Pipeline's Waiting, Ready and Work stages. No model, no tokens of its own.
+"""list_dispatch.py: the Workshop Pipeline's Waiting, Ready and Work stages. No model, no tokens of its own.
 
 Item RIMMANDRAKE_BUILD_LIST_LANE_ON_RED_DISPATCH_GOALS_FIRST, step 2 of
 design/specs/2026-11-22-coordination-every-agent-must-use/plan.md. Page design/specs/2026-11-23-list-dispatch/boundary.md;
@@ -212,7 +212,7 @@ def slot_free(cfg, live_total, new, load, *, recent=0):
     if live_total < most:
         return True, None
     line = cfg.get("load_line")
-    why = "%d live list-lane runs, the lane's own slots are %d" % (live_total, most)
+    why = "%d live Workshop Pipeline runs, the lane's own slots are %d" % (live_total, most)
     if not line:
         return False, why
     if load is None:
@@ -286,7 +286,7 @@ def decide(cfg, st, facts, now, account=(True, "")):
             put("blind", "could not look whether it is mod work: %s; nothing launches it" % mw["unreadable"])
             continue
         if isinstance(mw, dict) and mw.get("mod"):
-            put("mod_work", "waits for the Maturation Pipeline run of %s (%s); the List Pipeline does not work it"
+            put("mod_work", "waits for the Maturation Pipeline run of %s (%s); the Workshop Pipeline does not work it"
                 % (mw["mod"], mw.get("why") or "it is that mod's work"))
             continue
         if not cfg.get("enabled"):          # the lane's own acts all stop: no close, no adoption, no launch
@@ -702,7 +702,7 @@ def account_gate(gate=None, drain=None, now=None):
 # ---- the acts -------------------------------------------------------------------------------------------------------
 
 def brief_text(iid, it, row):
-    return """Work list item {item} (the List Pipeline's Work stage, run {n} of at most 2).
+    return """Work list item {item} (the Workshop Pipeline's Work stage, run {n} of at most 2).
 
 Title: {title}
 Its outcome check, which fails now:   {check}
@@ -712,7 +712,7 @@ The check is the judge of "done". The item is done when the check holds on origi
 {look}
 Steps:
 0. Start the item, before anything else:
-   python3 src/RimMandrake/rimflow/cli.py start {item} --seat BENCH --why "list lane Work run (list_dispatch.py)" --publish
+   python3 src/RimMandrake/rimflow/cli.py start {item} --seat BENCH --why "Workshop Pipeline Work run (list_dispatch.py)" --publish
 1. Read it whole: the ITEM PACKET below holds its prose, its notes and what earlier runs left. Run
    python3 src/RimMandrake/rimflow/cli.py show {item}
    only for a part that the packet left out or could not read, or when this brief holds no packet.
@@ -721,7 +721,7 @@ Steps:
 3. Run the check in your clone until it reads holds:
    python3 src/RimMandrake/rimflow/list_effect.py check '{check}'
 4. Land with ./publish -m "{item}: <what>" <explicit paths>, then close:
-   python3 src/RimMandrake/rimflow/cli.py close {item} --sha <published sha> --seat BENCH --why "list lane: the check holds at <sha>" --publish
+   python3 src/RimMandrake/rimflow/cli.py close {item} --sha <published sha> --seat BENCH --why "Workshop Pipeline: the check holds at <sha>" --publish
    (an operational item also takes its --live promise).
 5. If you cannot finish, end with exactly one of these on the item, and nothing else:
    - a note whose text starts `LEFT OPEN:` and names the ONE next act that a second run of yours would do. The lane gives
@@ -908,7 +908,7 @@ def tick(cfg, apply, fx=None, now=None, only=None):
 
 
 def row_stage(it, row, now):
-    """-> the List Pipeline stage of one tick row, from list_pipeline.stage_of over the tick's own facts (the page calls
+    """-> the Workshop Pipeline stage of one tick row, from list_pipeline.stage_of over the tick's own facts (the page calls
     the same function over the ledger, design/specs/2026-11-23-list-stage-view/boundary.md)."""
     import list_pipeline as LP
     if not it:

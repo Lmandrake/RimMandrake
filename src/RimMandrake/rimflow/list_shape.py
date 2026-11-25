@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""list_shape.py: the List Pipeline's Shape stage. An item with no outcome check gets parts, each with a check that tests
+"""list_shape.py: the Workshop Pipeline's Shape stage. An item with no outcome check gets parts, each with a check that tests
 the need (and its "what would pass this check and leave the need unmet?" line), or a route. No model, no tokens.
 
 Item RIMMANDRAKE_BUILD_SHAPE_STAGE_CHECK_TESTS_THE_NEED_NOT_PAPER, step 4 of

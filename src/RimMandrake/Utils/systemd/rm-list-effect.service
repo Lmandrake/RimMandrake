@@ -1,4 +1,4 @@
-# The list lane's first step (rimflow/list_effect.py; item RIMMANDRAKE_BUILD_LIST_OUTCOME_CHECKS_SEVEN_DONE_NEVER_CLOSED):
+# the Workshop Pipeline's first step (rimflow/list_effect.py; item RIMMANDRAKE_BUILD_LIST_OUTCOME_CHECKS_SEVEN_DONE_NEVER_CLOSED):
 # runs the outcome check of every open list item that carries one and closes an item whose check holds, as the
 # pipeline's act (seat BENCH, role_unit rm-list-effect.service), with the check's output as its evidence. It launches
 # nothing and files nothing. It obeys the pipeline's pause and `./pipe off` (all, family:list_effect, item:<ID>).
@@ -8,7 +8,7 @@
 #           systemctl --user daemon-reload && systemctl --user enable --now rm-list-effect.timer
 # Off:      ./pipe off family:list_effect --why "..."   (or systemctl --user disable --now rm-list-effect.timer)
 [Unit]
-Description=RimMandrake list lane: close list items whose outcome check holds, every 15 min
+Description=RimMandrake Workshop Pipeline: close list items whose outcome check holds, every 15 min
 
 [Service]
 Type=oneshot

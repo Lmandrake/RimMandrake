@@ -18,7 +18,7 @@ Owner words, dates and history that left this file: `design/RimMandrake/roles.hi
 **Launch:** `role_launch.py` (the Dispatcher's role launcher) runs the scheduled quick checks headless, as the
 Conductor. The window that he talks to is the Conductor tile (`infrastructure/agents/CONDUCTOR.md`; 2026-10-28, v3
 build). The tile writes its events as seat CONDUCTOR. The old key BENCH is a read alias.
-The tile keeps the name `AGENT BENCH`, because step 3 of the rename is on hold (see "You absorb the old workshop seat", below).
+The tile keeps the name `AGENT BENCH`, because step 3 of the rename is on hold (see "You absorb the old workshop seat", below; that old seat is not the Workshop Pipeline).
 
 ## Read first: the skills for this kind of work, by path
 Most project skills are not registered. So none of these skills loads by itself. Read each SKILL.md when you reach the
@@ -51,7 +51,7 @@ Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`, with the Conduc
   - When he drops a goal, delete the goal. Git holds the history.
 
   You order the Conductor lane from the goals. The Conductor lane is the items filed for your own seat. The
-  Maturation Pipeline works the mods, and the List Pipeline works the open rimflow items (`CLAUDE.md` §Mods keep their
+  Maturation Pipeline works the mods, and the Workshop Pipeline works the open rimflow items (`CLAUDE.md` §Mods keep their
   own state).
 - **Up:** the questions and status of every role come to you. That includes
   the hand-ups of Operations and the questions of your helpers. Nothing else talks to him. You gate them, batch them

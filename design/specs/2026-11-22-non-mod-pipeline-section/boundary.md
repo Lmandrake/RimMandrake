@@ -12,8 +12,8 @@ it, along with what's running and why."*
 
 Version 0.1.0 drew the path of non-mod work as it was on 2026-11-22. Version 0.2.0 (item
 `RIMMANDRAKE_BUILD_ONE_OWNER_VIEW_NO_HOME_COUNT_BESIDE`, step 3 of
-`design/specs/2026-11-22-coordination-every-agent-must-use/plan.md`) is the List Pipeline's stage view: each open
-non-mod item sits at the one stage that `list_pipeline.stage_of` gives it (the rule the List Pipeline tick also
+`design/specs/2026-11-22-coordination-every-agent-must-use/plan.md`) is the Workshop Pipeline's stage view: each open
+non-mod item sits at the one stage that `list_pipeline.stage_of` gives it (the rule the Workshop Pipeline tick also
 calls; its own page is `design/specs/2026-11-23-list-stage-view/boundary.md`), and each stage row says "program" or
 "by hand". A program builds the section from stores of record only; no model writes any of it.
 
@@ -137,7 +137,7 @@ MATURATION_DETAIL.
 ## LIFE CYCLES
 
 - **a page build:** `maturation_now.gather` reads the ledger and the run records once (`live_facts`) →
-  `maturation_nonmod.read_stores` reads the List Pipeline tick, the red dispatcher, alarms, games and showings →
+  `maturation_nonmod.read_stores` reads the Workshop Pipeline tick, the red dispatcher, alarms, games and showings →
   `section` places each item by `stage_of` and builds the lists with `list_pipeline.six` →
   `build` draws `panel` on MATURATION_NOW; `build_detail` places `markdown` and `html_block` on MATURATION_DETAIL.
   `rm-maturation-page.timer` regenerates both from the dispatch clone, 60 s after each build.

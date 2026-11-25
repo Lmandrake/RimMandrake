@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""selftest_list_shape.py - the List Pipeline's Shape stage (list_shape.py, `rimflow shape`, the lane's Shape lines).
+"""selftest_list_shape.py - the Workshop Pipeline's Shape stage (list_shape.py, `rimflow shape`, the lane's Shape lines).
 
 Item RIMMANDRAKE_BUILD_SHAPE_STAGE_CHECK_TESTS_THE_NEED_NOT_PAPER; page design/specs/2026-11-23-list-shape/boundary.md
 (each t_ function is one promise of it, by name). Offline: a throwaway ledger (RIMFLOW_LEDGER / RIMFLOW_ITEMS), a

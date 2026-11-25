@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""selftest_list_dispatch.py - the List Pipeline's Waiting, Ready and Work stages (list_dispatch.py).
+"""selftest_list_dispatch.py - the Workshop Pipeline's Waiting, Ready and Work stages (list_dispatch.py).
 
 Item RIMMANDRAKE_BUILD_LIST_LANE_ON_RED_DISPATCH_GOALS_FIRST; page design/specs/2026-11-23-list-dispatch/boundary.md
 (each t_ function is one promise of it, by name). Offline: fake facts, fake launch, close and need functions, a
@@ -347,7 +347,7 @@ def t_a_lane_run_on_a_mod_takes_no_mod_slot():
     chk(lambda: v.get("lane") == "list_dispatch", "a run's view carries the lane that launched it (%s)" % v.get("lane"))
     f = {"FlowWorks": {"live_units": ["u-drive", "u-lane"], "lane_units": ["u-lane"]},
          "Pyrelands": {"live_units": ["u-pyre"], "lane_units": []}, "ExplosiveKnockback": {"live_units": []}}
-    chk(lambda: MD.occupancy(f) == 2, "the mod tick's slots count mod runs, not the list lane's (%s)" % MD.occupancy(f))
+    chk(lambda: MD.occupancy(f) == 2, "the mod tick's slots count mod runs, not the Workshop Pipeline's (%s)" % MD.occupancy(f))
     chk(lambda: MD.occupancy({"A": {"live_units": MD.UNM, "lane_units": ["u"]}}) is None,
         "an unreadable mod is still an unknown occupancy")
     keep = MD.MN.gather, MD.M.build_facts, MD.M.load

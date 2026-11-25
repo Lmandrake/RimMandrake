@@ -271,7 +271,7 @@ def rule_lines(d):
         x = d["waiting"][c][-1] - d["waiting"][c][0]
         moved.append("%s %+d in all, %+d from opened and closed" % (
             NAME[c], x, sum(d["opened"][c][1:]) - sum(d["closed"][c][1:])))
-    L = ["Waiting here = open, nobody on it, and not left out; the List Pipeline's Waiting stage is a part of it. It also moves "
+    L = ["Waiting here = open, nobody on it, and not left out; the Workshop Pipeline's Waiting stage is a part of it. It also moves "
          "when a ticket goes stale, is parked, is taken up or comes back: %s." % "; ".join(moved),
          "Left out now: %d of %d open tickets. " % (out_total(d), d["open"])
          + " · ".join("%d %s" % (g[k], GROUP_WORDS[k]) for k in GROUPS) + ".",

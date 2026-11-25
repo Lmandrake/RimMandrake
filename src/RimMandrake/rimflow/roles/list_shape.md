@@ -1,4 +1,4 @@
-# List Pipeline: the Shape run, and its Work when the item is small
+# Workshop Pipeline: the Shape run, and its Work when the item is small
 
 `list_dispatch.py` launches this brief (decision `shape`) on an open list item that has no outcome check and no route.
 Page: `design/specs/2026-11-23-list-shape/boundary.md`. Plan: `design/specs/2026-11-22-coordination-every-agent-must-use/plan.md`
@@ -7,7 +7,7 @@ pipeline though due to the smaller nature of the work than a mod." So one run sh
 does the work with the same context. The text below the marker is the brief; `list_shape.brief_text` fills it.
 
 <!-- BRIEF -->
-Shape list item {item}, and do its work in this same run if it is small (the List Pipeline's Shape stage).
+Shape list item {item}, and do its work in this same run if it is small (the Workshop Pipeline's Shape stage).
 
 Title: {title}
 Why the lane sent it to Shape: {why_due}
@@ -19,7 +19,7 @@ tickets are routed correctly" is the right check.
 
 Steps:
 0. Start the item, before anything else:
-   python3 src/RimMandrake/rimflow/cli.py start {item} --seat BENCH --why "list lane Shape run (list_dispatch.py)" --publish
+   python3 src/RimMandrake/rimflow/cli.py start {item} --seat BENCH --why "Workshop Pipeline Shape run (list_dispatch.py)" --publish
 1. Read it whole: the ITEM PACKET below, and the files that it names. Run python3 src/RimMandrake/rimflow/cli.py show {item}
    only for a part that the packet left out or could not read, or when this brief holds no packet.
 2. Is it worth the touch (CLAUDE.md §Touching code has a cost)? If nobody would care, or other work already did it, or
@@ -39,7 +39,7 @@ Steps:
    Each check must fail now (the step-1 gate refuses a check that is never seen failing). A part that is done already
    takes "holds_why": "<why>".
 4. Write the split, with the size that you judge:
-   python3 src/RimMandrake/rimflow/cli.py shape {item} --parts '<json list>' --size small --seat BENCH --why "list lane Shape run" --publish
+   python3 src/RimMandrake/rimflow/cli.py shape {item} --parts '<json list>' --size small --seat BENCH --why "Workshop Pipeline Shape run" --publish
    A refusal names the part and the repair. Repair the split and run the command again.
    - small (the default): you can do every part that has a check in this run. Go on to step 5.
    - large: the parts need more than one run's work, or different skills or models, or you need help. Write
@@ -47,7 +47,7 @@ Steps:
 5. Small: do the work. Run the item's check (step 4 printed it) until it holds:
    python3 src/RimMandrake/rimflow/list_effect.py check '<the item check>'
    Land with ./publish -m "{item}: <what>" <explicit paths>, then close:
-   python3 src/RimMandrake/rimflow/cli.py close {item} --sha <published sha> --seat BENCH --why "list lane: the check holds at <sha>" --publish
+   python3 src/RimMandrake/rimflow/cli.py close {item} --sha <published sha> --seat BENCH --why "Workshop Pipeline: the check holds at <sha>" --publish
    An operational item also takes its --live promise. A taste call inside the work goes to a judge route, never to you.
 6. If you cannot finish, end with exactly one of these on the item:
    - a note whose text starts `LEFT OPEN:` and names the ONE next act that a second run would do. The lane gives the

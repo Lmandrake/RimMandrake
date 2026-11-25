@@ -96,7 +96,7 @@ def split(world, seat="BENCH", now=None):
 
 def named_waits(world, seat="BENCH", now=None):
     """-> [item], the soonest date first: the seat's open items that are not owed items and whose dated wait names the
-    Conductor. Nothing else starts such an item: the List Pipeline reads a wait as Waiting, and no owed item exists. Pure."""
+    Conductor. Nothing else starts such an item: the Workshop Pipeline reads a wait as Waiting, and no owed item exists. Pure."""
     seat = model.canonical(seat)
     return sorted((i for i in world.items.values()
                    if i.owner == seat and i.open and i.kind not in (KIND, "standing") and i.wait_until
