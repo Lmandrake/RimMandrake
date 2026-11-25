@@ -24,6 +24,7 @@ using HarmonyLib;
 using RimWorld;
 using RimBridgeServer.Sdk;
 using Verse;
+using Verse.AI;
 
 namespace JawaBench.BridgeTools
 {
@@ -70,15 +71,17 @@ namespace JawaBench.BridgeTools
         [Tool(
             "jawa/tap_fixture",
             Description =
-                "Four engine calls for a tap fixture. unpatch: remove Harmony owner 'owner' (must start 'jawabench.') from every " +
+                "Five engine calls for a tap fixture. unpatch: remove Harmony owner 'owner' (must start 'jawabench.') from every " +
                 "declared method 'methodName' of typeName that it patches. quest_add_again: Find.QuestManager.Add of a quest that " +
                 "is already there (questId, -1 = the newest). fire_attach: FireUtility.TryAttachFire(thing, size, instigator). " +
-                "explode: GenExplosion.DoExplosion(cell, current map, radius, damType, instigator or null). Main thread. TEST only.",
+                "explode: GenExplosion.DoExplosion(cell, current map, radius, damType, instigator or null). reserve_unforced: " +
+                "ReservationManager.Reserve(pawnId, an Equip job that is NOT player-forced, thingId, errorOnFailed false), released " +
+                "again if made. Main thread. TEST only.",
             ResultDescription = "success, action, what was done (unpatched methods, quest id, fire, explosion), ticksGame.")]
         public static async Task<object> TapFixture(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
-            [ToolParameter(Description = "unpatch | quest_add_again | fire_attach | explode.")] string action,
+            [ToolParameter(Description = "unpatch | quest_add_again | fire_attach | explode | reserve_unforced.")] string action,
             [ToolParameter(Description = "unpatch: Type.FullName, exact (e.g. Verse.AI.ReservationManager).")] string typeName = "",
             [ToolParameter(Description = "unpatch: method name.")] string methodName = "",
             [ToolParameter(Description = "unpatch: the Harmony owner id; must start 'jawabench.'.")] string owner = "",
@@ -88,7 +91,8 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "explode: the centre cell 'x,z'.")] string cell = "",
             [ToolParameter(Description = "explode: radius.")] float radius = 1.9f,
             [ToolParameter(Description = "explode: DamageDef defName.")] string damType = "Smoke",
-            [ToolParameter(Description = "fire_attach: fire size.")] float size = 0.5f)
+            [ToolParameter(Description = "fire_attach: fire size.")] float size = 0.5f,
+            [ToolParameter(Description = "reserve_unforced: the claimant pawn (ThingID or id number); thingId is the target.")] string pawnId = "")
         {
             return await ctx.MainThread.InvokeAsync<object>(() =>
             {
@@ -160,7 +164,26 @@ namespace JawaBench.BridgeTools
                     return new { success = true, action = a, cell = x + "," + z, radius, damType = def.defName, instigator = instigator != null ? instigator.ThingID : null, ticksGame = t };
                 }
 
-                return Fail("action must be unpatch, quest_add_again, fire_attach or explode, not '" + action + "'");
+                if (a == "reserve_unforced")
+                {
+                    // Why unforced: a player-forced job's Reserve takes the target from a holder and ends the holder's job
+                    // (measured live on ArchBig 2026-11-25: every jawa/ordered_job Equip on a held gun was made, and the
+                    // holder's Equip ended InterruptForced inside the second Reserve). jawa/ordered_job always forces, so
+                    // the refusal branch of Reserve is reached only by a job that is not forced, as the think tree's are.
+                    var claimant = StaticCallResolveThing(pawnId, out _) as Pawn;
+                    if (claimant == null || !claimant.Spawned) return Fail("pawnId is no spawned pawn: " + pawnId);
+                    Thing target = StaticCallResolveThing(thingId, out _);
+                    if (target == null || !target.Spawned) return Fail("thing not found or not spawned: " + thingId);
+                    if (target.Map != claimant.Map) return Fail("the pawn and the thing are on different maps");
+                    var job = JobMaker.MakeJob(JobDefOf.Equip, target);
+                    job.playerForced = false;
+                    var rm = claimant.Map.reservationManager;
+                    bool made = rm.Reserve(claimant, job, target, errorOnFailed: false);
+                    if (made) rm.Release(target, claimant, job);
+                    return new { success = true, action = a, pawn = claimant.ThingID, thing = target.ThingID, made, released = made, ticksGame = t };
+                }
+
+                return Fail("action must be unpatch, quest_add_again, fire_attach, explode or reserve_unforced, not '" + action + "'");
             });
         }
 #endif
