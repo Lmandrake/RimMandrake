@@ -4443,10 +4443,13 @@ def _bridge_other_host_locked(args, seat, w, hk):
                           if args.force else "took the %s bridge: %s" % (hk, why))
     _refuse_before_lock(ev)
     rc, out = _guard_call(hk, take)
-    if rc != 0:
+    if rc == host_guard.EX_HELD:
         die("%s guard refused (exit %d): %s\n  Its own driver lock is held — the batch lane or another window is "
             "driving that game.\n  check   rimflow bridge who --host %s\n  cut across it (recorded)  "
-            "rimflow bridge take --host %s --force --for \"<what for>\"" % (hn, rc, out, hn, hn))
+            "rimflow bridge take --host %s --force --for \"<what for>\"" % (hn, rc, out, hn, hn), code=host_guard.EX_HELD)
+    if rc != 0:     # not a held lock: the guard could not be reached or could not look; never reported as held
+        die("%s bridge NOT taken: its guard could not answer (exit %d): %s\n  check   rimflow bridge who --host %s"
+            % (hn, rc, out, hn))
     _emit(ev, w, quiet=True)
     print("%s bridge taken by %s%s" % (hn, seat, ("  (%s)" % why) if why else ""))
     print("  guard: %s\n  pass RM_HOST_GUARD_GEN to what you run there (rw_game.sh, modcheck) so it drives under "

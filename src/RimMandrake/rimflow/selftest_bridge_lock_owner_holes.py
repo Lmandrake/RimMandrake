@@ -242,9 +242,11 @@ def run(fn):
 
 def test_release_exit():
     clean()
-    real_guard, real_drv = cli._guard_call, cli._driver_release
+    real_guard, real_drv, real_read = cli._guard_call, cli._driver_release, cli.lock_reading
     args = types.SimpleNamespace(action="release", purpose=None, force=None)
     try:
+        cli.lock_reading = lambda hk=None: None      # stevedesktop as ANOTHER machine's game, on any host (on SteveDesktop
+        #                                              it is local, and its local test lock answered without the guard)
         n0 = len(released())
         cli._guard_call = lambda hk, a: (255, "ssh to stevedesktop timed out after 60 s")
         rc, out = run(lambda: cli._bridge_other_host_locked(args, "BENCH", cli.load()[1], "stevedesktop"))
@@ -265,13 +267,34 @@ def test_release_exit():
         check(rc == 0 and len(released()) == n0 + 1, "control: a driver lock that was never ours: released, exit 0",
               (rc, out))
     finally:
-        cli._guard_call, cli._driver_release = real_guard, real_drv
+        cli._guard_call, cli._driver_release, cli.lock_reading = real_guard, real_drv, real_read
+
+
+def test_take_exit():
+    """A refused take on another machine's game says what its guard said: 75 (held) passes through as held; an
+    unreachable guard is never reported as a held lock (A1 live check of BRIDGE_LOCK_HARDEN_ALIVE_MEANS_A_PID, 2026-11-25:
+    the held refusal exited 2, the could-not-look code)."""
+    clean()
+    real_guard, real_read = cli._guard_call, cli.lock_reading
+    args = types.SimpleNamespace(action="take", purpose="selftest take", force=None, idle_ok=False, flyer=False)
+    try:
+        cli.lock_reading = lambda hk=None: None      # another machine's game, as in test_release_exit
+        cli._guard_call = lambda hk, a: (75, "REFUSED driver lock held by BENCH (wsl pid 9), holder process pid 9 alive")
+        rc, out = run(lambda: cli._bridge_other_host_locked(args, "BENCH", cli.load()[1], "stevedesktop"))
+        check(rc == 75 and "driver lock is held" in out,
+              "take: a guard that says held exits 75 and names the held driver lock", (rc, out))
+        cli._guard_call = lambda hk, a: (255, "ssh to stevedesktop timed out after 60 s")
+        rc, out = run(lambda: cli._bridge_other_host_locked(args, "BENCH", cli.load()[1], "stevedesktop"))
+        check(rc not in (0, 75, None) and "is held" not in out and "could not" in out,
+              "take: an unreachable guard exits nonzero, not 75, and does not call the lock held", (rc, out))
+    finally:
+        cli._guard_call, cli.lock_reading = real_guard, real_read
 
 
 def main():
     sleeper = subprocess.Popen(["sleep", "120"])
     try:
-        for t in (test_fence, test_owner, test_fenced_release, test_release_exit):
+        for t in (test_fence, test_owner, test_fenced_release, test_release_exit, test_take_exit):
             try:
                 t(sleeper) if t is test_fence else t()
             except Exception as e:                       # a crash is a failure of that group, never a pass
