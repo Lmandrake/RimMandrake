@@ -256,6 +256,10 @@ def host_facts(cfg, live, runner=None):
         d = {"live": live.get(name, 0), "left": None, "left_why": None}
         try:
             import run_host
+            # every Claude run on the host counts, not only the lane runs this machine recorded (2026-11-24: 9 there
+            # against max_live 6); an unread count is no room
+            there = run_host.live_units(name, **({"runner": runner} if runner else {}))
+            d["live"] = None if there is None else max(there, d["live"])
             import account_usage as AU
             acct = run_host.read_facts(name, "-", **({"runner": runner} if runner else {})).get("account")
             row = (AU.read_now().get("accounts") or {}).get(acct) if acct else None

@@ -134,6 +134,23 @@ def remote_status(rec, runner=subprocess.run):
     return "dead", host_rec
 
 
+def live_units(host, runner=subprocess.run):
+    """-> the host's count of live rm-detached-* Claude units (its -return bookkeeping units left out), every run there
+    whoever launched it, or None when the host cannot be read (could not look is no room, never zero)."""
+    target = door(host)
+    if not target:
+        return None
+    try:
+        r = runner(_ssh(target, "systemctl --user list-units 'rm-detached-*' --state=active --no-legend --plain"),
+                   capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+    except Exception:  # noqa: BLE001
+        return None
+    if r.returncode:
+        return None
+    return sum(1 for ln in (r.stdout or "").splitlines()
+               if ln.split() and ln.split()[0].startswith("rm-detached-") and not ln.split()[0].endswith("-return.service"))
+
+
 def stop_argv(rec, mode="at_easy_spot", why="stopped from Archmagi"):
     """The host's own `./pipe stop <unit>` for a remote run (control.remote_stop runs it)."""
     target = door(rec.get("host"))

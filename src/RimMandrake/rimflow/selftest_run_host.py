@@ -201,11 +201,29 @@ def t_status_reads_a_remote_run_from_its_host():
     assert "DEAD" not in line and "running" in line and "SteveDesktop" in line, line
 
 
+def t_host_live_counts_every_claude_run_there():
+    """The host's live count is its own count of live rm-detached units, every run there, not only the lane runs this
+    machine recorded (measured 2026-11-24 7:32 PM PST: 9 Claude runs on SteveDesktop, max_live 6, load 25 on 18 cores);
+    a count that cannot be read is no room."""
+    import list_dispatch as LD
+    units = "\n".join("rm-detached-bench-x%d.service loaded active running x" % i for i in range(9))
+    units += "\nrm-detached-bench-x0-return.service loaded active running finish"
+    assert R.live_units("SteveDesktop", runner=Fake([(r"list-units", units)])) == 9
+    assert R.live_units("SteveDesktop", runner=Fake([])) is None, "unreachable is could not look"
+    cfg = {"hosts": {"SteveDesktop": {"max_live": 6, "min_left_pct": 5}}}
+    host = Fake([(r"list-units", units), (r"claude-account", json.dumps({"live": "a"}))])
+    f = LD.host_facts(cfg, {"SteveDesktop": 2}, runner=host)["SteveDesktop"]
+    assert f["live"] == 9, f
+    assert LD.host_room(cfg, {"SteveDesktop": dict(f, left=50.0)}, 0)[0] is None
+    f = LD.host_facts(cfg, {"SteveDesktop": 2}, runner=Fake([]))["SteveDesktop"]
+    assert f["live"] is None, f
+
+
 def main():
     tests = (t_refused_by_name, t_could_not_look_named, t_no_spend_stated, t_wsl_door, t_login_path, t_every_fact_reads,
              t_account_from_the_machine, t_launch_argv, t_record_names_host_unit_item, t_live_until_the_host_says_ended,
              t_stop_runs_the_hosts_pipe, t_pipe_stop_routes_a_remote_unit, t_host_room_for_the_lane,
-             t_status_reads_a_remote_run_from_its_host)
+             t_status_reads_a_remote_run_from_its_host, t_host_live_counts_every_claude_run_there)
     bad = 0
     for f in tests:
         try:
