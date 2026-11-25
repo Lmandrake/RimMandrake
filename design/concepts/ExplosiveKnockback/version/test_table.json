@@ -489,7 +489,7 @@
   "sc_storeroom_bomb_pit": {
    "id": "sc_storeroom_bomb_pit",
    "kind": "live_minimal",
-   "stage": "6",
+   "stage": "8",
    "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
    "entry": "storeroom_bomb_pit",
    "observes": "the colonist one cell east of the impact is carried through the air straight away from it, stops dead at the east wall two cells on with a wall hit, and lands alive and stunned; the colonist one cell south is carried about three cells strai",
@@ -520,7 +520,9 @@
    "scenes": [
     "storeroom_bomb_pit",
     "storeroom_bomb_pit_control"
-   ]
+   ],
+   "walk_staging": "LOOK_STAGE8",
+   "left_stage6": "RIMMANDRAKE_SHRINK_KNOCKBACK_SCENES_ONE_SAVE_IN_AIR (2026-11-25): eight claims in one blast and it decides no bar; each claim has its own scene. His walk keeps the staging (the flagship picture); it is not a Stage 6 test"
   },
   "sc_mortar_throw": {
    "id": "sc_mortar_throw",
@@ -1466,22 +1468,22 @@
    "stage": "6",
    "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
    "entry": "pit_goods_fetch",
-   "observes": "the stack reaches a stockpile and the corpse a grave or stockpile outside the pit; the hauler used the ladder",
+   "observes": "the two hauls are ordered (the stack, then the corpse, each to the storage HaulToStorageJob picks) with the hauler's needs held full; within 5000 ticks the stack reaches a stockpile and the corpse a grave or stockpile outside the pit; the hauler's path cells enter the pit (or it is seen on a pit cell), which only the lowered ladder allows; the raised-ladder control stack stays in its pit",
    "reads": [
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
     "design/concepts/ExplosiveKnockback/scenes.json",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes pit_goods_fetch --ticks 60000   (proof build, minimal list)",
-   "why_game": "a hauler's job and ladder route over up to a day of game time",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes pit_goods_fetch --ticks 5000   (proof build, minimal list)",
+   "why_game": "a hauler's ordered jobs and ladder route need a running map",
    "why_full_list": null,
    "entry_exists": true,
-   "partial": "the ladder is found by trying placements until FlowWorks reads it lowered (INVALID if none); 'the hauler used the ladder' is read as the hauler standing on a pit cell at a 30-tick sample",
+   "partial": "'the hauler used the ladder' is read as the hauler's path cells entering a pit cell, or the hauler seen on one at a 10-tick sample; whether the path crosses the ladder's own cell is printed, not judged",
    "item": "RIMMANDRAKE_PROVE_PIT_GOODS_RETRIEVABLE",
    "runs_today": {
     "ran": false,
-    "why": "live: this pilot is offline only; entry EXISTS in the proof code"
+    "why": "UNRUN in this form: hauls ordered and the window cut to 5000 ticks on 2026-11-25 (RIMMANDRAKE_SHRINK_KNOCKBACK_SCENES_ONE_SAVE_IN_AIR); offline layout guard selftest_explosiveknockback_pit_fetch.py PASS"
    },
    "testq": {
     "check": {
@@ -1492,7 +1494,9 @@
    },
    "scenes": [
     "pit_goods_fetch"
-   ]
+   ],
+   "shrunk": "sc_pit_fetch at --ticks 60000 (a hauler at large for up to a day; 12 runs, 6 not passed)",
+   "cheaper_why": "ordering the two hauls replaces a day of waiting for the hauler to choose them; the ladder route and the control need a real map and pathing, which no offline test has"
   },
   "sc_frame_probe_check": {
    "id": "sc_frame_probe_check",
@@ -1558,41 +1562,6 @@
     "barrage_perf_off",
     "barrage_perf"
    ]
-  },
-  "sc_walk_blasts": {
-   "id": "sc_walk_blasts",
-   "kind": "live_minimal",
-   "stage": "6",
-   "file": "src/RimMandrake/ExplosiveKnockback/validation.py",
-   "entry": "walk_storeroom_raid",
-   "observes": "(no raid staged) mortar impacts and throws recorded inside the storeroom rect; the pit trap's cover broken by the scripted grenade with one descent; the lit gas cloud bursts on many ticks, one per clump cell, ordered by distance from the lit edge, with good",
-   "reads": [
-    "src/RimMandrake/ExplosiveKnockback/validation.py",
-    "design/concepts/ExplosiveKnockback/scenes.json",
-    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
-    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
-   ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\proof\\stage_walk_colony.py --save EK_WALK_SMALL_COLONY_<stamp>   then   python.exe src\\RimMandrake\\ExplosiveKnockback\\validation.py --live walk_storeroom_raid --storeroom 97,37,7,7 --cover 102,36 --gas 100,41 --save EK_WALK_SMALL_COLONY_<stamp> --frame-pairs 21   (proof build, tier explosiveknockback_visit, AridShrubland quicktest, any free game; no raid, no --frame-evidence)",
-   "why_game": "throws, gas and a mid-air save and reload need a running map; the tier list shows the mod",
-   "entry_exists": true,
-   "runs_today": {
-    "ran": false,
-    "why": "UNRUN: replaced sc_walk_raid on 2026-11-23; offline oracle selftest_explosiveknockback_walk_raid.py W44-W47 (red on the parent, green); never the game in this form"
-   },
-   "replaces": [
-    "sc_walk_raid"
-   ],
-   "why_full_list": null,
-   "cheaper_why": "the whole walk is the cheapest place where two orders of blasts, a save in the air and the mod-off control share one colony; no row reads a raider, so the raid and the full list were dropped (owner, 2026-11-23)",
-   "partial": "shells and grenade are GenExplosion calls at the HE shell's and frag grenade's numbers; the plan row reads each journal line's own planned and kernel cells, not a fresh kernel run; on the small list A_GAS_CLUMP_BY_CLUMP read one straggler cell in 1 of 8 runs (road_back_2026-11-23/README.md): a sighting, not classed",
-   "owed_under": "RIMMANDRAKE_ENACT_NO_RAID_TESTS_UNLESS_FORCED_CHEAPER_TEST_FIRST",
-   "testq": {
-    "check": {
-     "tier": "explosiveknockback_visit",
-     "build": "proof"
-    },
-    "by": "testq_blocks.py"
-   }
   },
   "sc_gas_shove_into_pit": {
    "id": "sc_gas_shove_into_pit",
@@ -2359,7 +2328,8 @@
    "runs_today": {
     "ran": false,
     "why": "Stage 8"
-   }
+   },
+   "staging": "sc_storeroom_bomb_pit"
   },
   "T_WALK_FRAME_JUDGE_OFFLINE": {
    "stage": "4-5",
@@ -2977,6 +2947,103 @@
     "why": "live: UNRUN until Stage 6; command: python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_settings_sweep_show_switches.py"
    },
    "command": "python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_settings_sweep_show_switches.py"
+  },
+  "sc_save_in_air": {
+   "id": "sc_save_in_air",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/proof/scene_save_in_air.py",
+   "entry": "scene_save_in_air.py",
+   "observes": "one HE-shell blast (Bomb, radius 2.9) over three goods; a save 2 ticks later with goods in their carriers; a live arm and two loads of that save, each read at the save tick + 10: each thing older than the shell is counted once, the loads agree with the live game, the loads keep the flights, and after landing every thing is on the ground once with its count",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/proof/scene_save_in_air.py",
+    "src/RimMandrake/Utils/validation_core.py",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_ThingFlyer_Knockback.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_save_in_air.py   (proof build, tier explosiveknockback_visit, a quicktest map, any free game; plant: --plant lose_heavy must FAIL SA_EACH_ONCE and SA_LANDED)",
+   "why_game": "a save and two loads of a map with carriers in the air need a running game",
+   "why_full_list": null,
+   "entry_exists": true,
+   "cheaper_why": "the save in the air is the one claim of the walk that no other scene decides, beside its frame row (rows_moved); one shell on the tier list's quicktest map is the least that puts a thing in the air for a save; the offline oracle T_SAVE_IN_AIR_OFFLINE decides the judgment, not the round trip",
+   "shrunk": "sc_walk_blasts",
+   "split_from": "sc_walk_blasts",
+   "replaces": [
+    "sc_walk_blasts",
+    "sc_walk_raid"
+   ],
+   "partial": "goods only: a pawn saved in flight is pawn_flight_saveload.py's (5 of 5 PASS live, 2026-11-17, rescue_2026-11-17/live); the census counts things older than the shell, so a load-made twin under a new id reads as born, not as a duplicate",
+   "rows_moved": {
+    "A_SAVE_MIDAIR, A_RELOAD_NO_DUP_LOST": "sc_save_in_air",
+    "A_IMPACTS_IN_ROOM, B_IMPACTS_IN_ROOM": "goods_arc_spin_rebound (sc_storeroom_mortar), open_shelf_scatters (sc_open_storage), closed_container_holds (sc_closed_containers)",
+    "A_COVER_BROKEN_ONE_DESCENT, B_COVER_BROKEN_ONE_DESCENT": "blast_breaks_pit_cover (sc_cover_breaks), thrown_into_pit_falls (sc_pit_fall)",
+    "A_GAS_CLUMP_BY_CLUMP, A_GAS_GOODS_MOVED, B_GAS_CLUMP_BY_CLUMP, B_GAS_GOODS_MOVED": "gas_goes_clump_by_clump (sc_gas_chain)",
+    "A_REQUESTS_MATCH_PLAN, A_REACHED_ACCOUNTED, B_REQUESTS_MATCH_PLAN, B_REACHED_ACCOUNTED": "every_good_moves (T_KERNEL, sc_all_fly_no_cap)",
+    "C_OFF_IMPACTS_NO_THROWS": "settings_scale_and_switch (sc_settings_off)",
+    "FRAME_BUDGET": "sc_walk_frames, until RIMMANDRAKE_DECIDE_KNOCKBACK_FRAME_ROW_HIS_CARD_SET_IT rules (his card of 2026-11-16, OWNER:1794834159094900561)",
+    "CARRIER_TICK_COST": "recorded, never judged: no bar",
+    "W_PRECONDITIONS": "the walk's own staging: no bar"
+   },
+   "frame_card": "his card of 2026-11-16 (OWNER:1794834159094900561, 'How should the walk's frame row be judged? -> Compare to mod-off'): the walk's frame row passes when the mod-on p99 frame is within 10 percent of the same colony's mod-off arm in the same run, both arms MEASURED (and OWNER:1794836946186553250: the arms on the smallest list). The clause is NOT dropped with sc_walk_blasts: sc_walk_frames (the walk's own --frames-only run, small list, no raid) keeps deciding it until the Conductor rules on RIMMANDRAKE_DECIDE_KNOCKBACK_FRAME_ROW_HIS_CARD_SET_IT; sc_barrage_perf (mod-on beside the same session's mod-off) is the proposed home",
+   "item": "RIMMANDRAKE_SHRINK_KNOCKBACK_SCENES_ONE_SAVE_IN_AIR",
+   "runs_today": {
+    "ran": false,
+    "why": "UNRUN: written 2026-11-25 by RIMMANDRAKE_SHRINK_KNOCKBACK_SCENES_ONE_SAVE_IN_AIR; offline oracle selftest_explosiveknockback_save_in_air.py (11 cases, 4 planted judge faults red)"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
+   }
+  },
+  "T_SAVE_IN_AIR_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_save_in_air.py",
+   "observes": "Offline oracle of sc_save_in_air's judgment: a good evidence set PASSes every row; a duplicate, a save that drops a thing, two loads that disagree, nothing in the air, a lost flight, a carrier left, a short stack, a refused stage and a missed thing each turn their own row",
+   "reads": [],
+   "id": "T_SAVE_IN_AIR_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_save_in_air.py",
+   "note": "supports walk_storeroom_raid; decides nothing"
+  },
+  "sc_walk_frames": {
+   "id": "sc_walk_frames",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/validation.py",
+   "entry": "walk_storeroom_raid",
+   "observes": "the walk's frame row alone (W_PRECONDITIONS, FRAME_BUDGET): interleaved mod-on and mod-off frame arms over the stocked storeroom colony, each a fresh reload of the colony save; PASS when the mod-on p99 is within 10 percent of the same run's mod-off p99, both arms MEASURED (his card of 2026-11-16)",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/validation.py",
+    "src/RimMandrake/ExplosiveKnockback/proof/stage_walk_colony.py",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\proof\\stage_walk_colony.py --save EK_WALK_SMALL_COLONY_<stamp>   then   python.exe src\\RimMandrake\\ExplosiveKnockback\\validation.py --live walk_storeroom_raid --frames-only --storeroom 97,37,7,7 --cover 102,36 --gas 100,41 --save EK_WALK_SMALL_COLONY_<stamp> --frame-pairs 21   (proof build, tier explosiveknockback_visit, AridShrubland quicktest, any free game; no raid)",
+   "why_game": "frames exist only in a running game",
+   "why_full_list": null,
+   "entry_exists": true,
+   "cheaper_why": "his card of 2026-11-16 (OWNER:1794834159094900561) set this row; the frames-only run is the existing smallest run that reads it (small list, no raid, no gas, no grenade, no save in the air); it stays until the Conductor rules on RIMMANDRAKE_DECIDE_KNOCKBACK_FRAME_ROW_HIS_CARD_SET_IT, whose proposed home is sc_barrage_perf",
+   "split_from": "sc_walk_blasts",
+   "shrunk": "sc_walk_blasts",
+   "held_for": "RIMMANDRAKE_DECIDE_KNOCKBACK_FRAME_ROW_HIS_CARD_SET_IT",
+   "frame_card": "his card of 2026-11-16 (OWNER:1794834159094900561, 'How should the walk's frame row be judged? -> Compare to mod-off'): the walk's frame row passes when the mod-on p99 frame is within 10 percent of the same colony's mod-off arm in the same run, both arms MEASURED (and OWNER:1794836946186553250: the arms on the smallest list). The clause is NOT dropped with sc_walk_blasts: sc_walk_frames (the walk's own --frames-only run, small list, no raid) keeps deciding it until the Conductor rules on RIMMANDRAKE_DECIDE_KNOCKBACK_FRAME_ROW_HIS_CARD_SET_IT; sc_barrage_perf (mod-on beside the same session's mod-off) is the proposed home",
+   "item": "RIMMANDRAKE_SHRINK_KNOCKBACK_SCENES_ONE_SAVE_IN_AIR",
+   "runs_today": {
+    "ran": false,
+    "why": "UNRUN as its own test: split from sc_walk_blasts on 2026-11-25; offline oracle selftest_explosiveknockback_walk_raid.py (W31-W34, the frames-only mode)"
+   },
+   "testq": {
+    "check": {
+     "tier": "explosiveknockback_visit",
+     "build": "proof"
+    },
+    "by": "testq_blocks.py"
+   }
   }
  },
  "bars": [
@@ -3586,7 +3653,8 @@
    "kind": "walk",
    "proves_at": "8",
    "decides": [
-    "sc_walk_blasts",
+    "sc_save_in_air",
+    "sc_walk_frames",
     "LOOK_STAGE8"
    ],
    "supports": [
@@ -3594,7 +3662,8 @@
     "T_WALK_FRAME_JUDGE_OFFLINE",
     "T_LANDING_JOB_SEARCH_OFFLINE",
     "T_WALK_RAID_OFFLINE",
-    "T_STAGE6_VISIT1_GUARDS_OFFLINE"
+    "T_STAGE6_VISIT1_GUARDS_OFFLINE",
+    "T_SAVE_IN_AIR_OFFLINE"
    ],
    "held": [],
    "offline_decides": [],

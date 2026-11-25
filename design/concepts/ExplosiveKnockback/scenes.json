@@ -32,7 +32,9 @@
    },
    "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
    "hold": "owner_review",
-   "entry_point_item": "RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF"
+   "entry_point_item": "RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF",
+   "walk_staging": "LOOK_STAGE8",
+   "left_stage6": "RIMMANDRAKE_SHRINK_KNOCKBACK_SCENES_ONE_SAVE_IN_AIR (2026-11-25): eight claims in one blast, it decides no bar, and each claim has its own scene; his walk keeps this staging as the flagship picture"
   },
   {
    "id": "sc_mortar_throw",
@@ -724,8 +726,8 @@
     "a stack and a corpse thrown onto a pit floor with a lowered ladder (asserted: both on the pit floor)",
     "a stockpile that accepts the stack and a grave or corpse stockpile that accepts the corpse, both reachable, and a colonist able to haul and not busy (asserted: each accepts its thing, reachability read, hauling enabled; INVALID otherwise)"
    ],
-   "action": "queue hauling; step up to one day",
-   "expect": "the stack reaches a stockpile and the corpse a grave or stockpile outside the pit; the hauler used the ladder",
+   "action": "order the two hauls (the stack, then the corpse) with the hauler's needs held full; step 5000 ticks",
+   "expect": "the stack reaches a stockpile and the corpse a grave or stockpile outside the pit; the hauler's path entered the pit, which only the lowered ladder reaches",
    "control": {
     "case": "the same with the ladder raised",
     "expect": "neither is fetched",
@@ -733,7 +735,8 @@
    },
    "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
    "hold": "immediate",
-   "entry_point_item": "RIMMANDRAKE_PROVE_PIT_GOODS_RETRIEVABLE"
+   "entry_point_item": "RIMMANDRAKE_PROVE_PIT_GOODS_RETRIEVABLE",
+   "shrunk": "a hauler at large for up to a day"
   },
   {
    "id": "sc_frame_probe_check",
@@ -784,29 +787,72 @@
    "entry_point_item": "RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF"
   },
   {
-   "id": "sc_walk_raid",
+   "id": "sc_save_in_air",
+   "kind": "acceptance",
+   "requirement": [
+    "walk_storeroom_raid"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/ExplosiveKnockback/proof/scene_save_in_air.py::main",
+   "contract_kind": "A",
+   "claim": "a save taken while thrown goods are in the air, then a load, counts each thing once: none duplicated, none lost, the flights kept",
+   "start": [
+    "a quicktest map on the Explosive Knockback tier list, proof build (asserted: RM_KnockbackProof.Names answers; PROOF BUILD REQUIRED otherwise)",
+    "RM_KnockbackProof.Stage(items) at a clear origin: 75 Steel, 1 component and one minified building over the light-mass limit around one Bomb blast of radius 2.9, the HE shell's type and radius (asserted: STAGED, the three things read)"
+   ],
+   "action": "step 2 ticks; save; arm A plays on live, arms B and C are two loads of that save; each arm is read at the save tick + 10 on the measured clock (validation_core.saveload_triplet); then step until nothing is in the air",
+   "valid_opportunity": "at least one staged thing is inside a carrier at the save (SA_IN_AIR); else the run is UNMEASURED, never a pass",
+   "expect": "no arm counts a thing twice; live, load and load read the same things with the same counts (IDENTICAL); right after each load every carrier that had more than 3 ticks left still holds its thing; after the flights, no carrier is left and every staged thing is on the ground once, Steel still 75",
+   "forbidden": [
+    "a thing counted twice in any arm",
+    "a thing the save holds missing after the loads"
+   ],
+   "end": "the first tick after arm C with nothing in the air, at most 240 ticks",
+   "control": {
+    "case": "the plant lose_heavy: the minified building (it stays on its cell, too heavy to throw) destroyed right after each load",
+    "expect": "SA_EACH_ONCE and SA_LANDED FAIL",
+    "rules_out": "a census blind to a lost thing, which would pass a save that drops one"
+   },
+   "restore": "RM_KnockbackProof.Clear; the save EK_SAVE_IN_AIR_<stamp> and the quicktest map are throwaways",
+   "hold": "immediate",
+   "shrunk": "sc_walk_raid",
+   "split_from": "sc_walk_raid",
+   "replaces": [
+    "sc_walk_raid"
+   ],
+   "cheaper_why": "one shell on a quicktest map is the least that puts a thing in the air for a save; the walk's other rows are other scenes' bars (test_table.json sc_save_in_air.rows_moved)",
+   "entry_point_item": "RIMMANDRAKE_SHRINK_KNOCKBACK_SCENES_ONE_SAVE_IN_AIR"
+  },
+  {
+   "id": "sc_walk_frames",
    "kind": "acceptance",
    "requirement": [
     "walk_storeroom_raid"
    ],
    "staged_by": "script",
    "entry_point": "src/RimMandrake/ExplosiveKnockback/validation.py::walk_storeroom_raid",
+   "contract_kind": "A",
+   "claim": "the mod does not slow the stocked colony: the mod-on 99th-percentile frame is within 10 percent of the same run's mod-off arm (his card of 2026-11-16, OWNER:1794834159094900561)",
    "start": [
-    "full list colony (asserted: ModsConfig parsed, Explosive Knockback and FlowWorks active)",
-    "the gas staged is the Cauldron's vent gas, Cauldron on the list (asserted: RM_MapComponent_VentGas present and its grid registered with the gas chain; INVALID otherwise), added to the stated cells through the grid's own add call, and lit by a Fire set on the stated cell, the way it catches in play",
-    "a stocked storeroom of open shelves and closed containers, a covered pit trap, a Cauldron vent with its gas out (asserted)",
-    "the frame probe and tick-cost probe running; the frame arms on the Explosive Knockback tier list, the rest on the full list"
+    "the storeroom colony staged by proof/stage_walk_colony.py and saved, on the Explosive Knockback tier list (the smallest list, OWNER:1794836946186553250), proof build; no raid"
    ],
-   "action": "a mortar raid; one grenade thrown onto the pit trap's cover by a scripted grenadier (asserted: that explosion's cell is the cover cell; INVALID otherwise); save while at least one thrown thing is in the air (asserted) and reload; repeat the raid in a second order, gas first, then mortars",
-   "expect": "mortar impacts and throws recorded inside the storeroom rect; the pit trap's cover broken by the scripted grenade with one descent; the lit gas cloud bursts on many ticks, one per clump cell, ordered by distance from the lit edge, with goods near each burst moved, in both orders; in each order, every blast's throw requests match the kernel's plan for the things it reached (each request's cells equal the plan's cells for its distance, mass and tuning, wild cells for goods), and every thing reached has a request or a logged skip reason; no duplicated or lost thing after the reload; the frame row passes when the mod-on 99th-percentile frame time is within 10% of the same colony's mod-off arm measured in the same run, and is UNMEASURED (never a pass) unless both arms are measured (owner card 2026-11-16, OWNER:1794834159094900561; the 50 ms bar is barrage_frame_budget's); the frame arms run as interleaved mod-on/mod-off pairs on the smallest list that shows the mod (the Explosive Knockback tier, every DLC), same colony: validation.py --live walk_storeroom_raid --frames-only there, its json passed to the full-list run as --frame-evidence (owner 2026-11-16 5:43 AM PST, OWNER:1794836946186553250: \"the smallest list to observe it is the best idea\"); the carrier's tick cost recorded",
+   "action": "validation.py --live walk_storeroom_raid --frames-only: interleaved mod-on and mod-off arms, each a fresh reload of the colony save, the shells set off over the storeroom at speed 1",
+   "valid_opportunity": "both sides MEASURED, at least 30 unpaused frames in each arm's window",
+   "expect": "FRAME_BUDGET PASS: the median mod-on p99 at most 10 percent over the median mod-off p99; UNMEASURED, never a pass, unless both are measured",
+   "forbidden": [],
+   "end": "the last arm's window",
    "control": {
-    "case": "the same raid with the mod off",
-    "expect": "mortar impacts logged inside the storeroom rect and no throws",
-    "rules_out": "the raid never reaching the storeroom, which would pass the reload and order checks with nothing thrown"
+    "case": "the mod-off arms of the same run",
+    "expect": "their p99, the base the mod-on p99 is compared to",
+    "rules_out": "the colony's own stalls blamed on the mod"
    },
-   "restore": "a save is made before the raid and reloaded after; the colony is a throwaway copy",
-   "hold": "owner_review",
-   "entry_point_item": "RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF"
+   "restore": "each arm reloads the colony save; the save and the map are throwaways",
+   "hold": "immediate",
+   "split_from": "sc_walk_raid",
+   "shrunk": "sc_walk_raid",
+   "held_for": "RIMMANDRAKE_DECIDE_KNOCKBACK_FRAME_ROW_HIS_CARD_SET_IT",
+   "cheaper_why": "his card set this row; the frames-only run is the existing smallest run that reads it; it stays until the Conductor rules on RIMMANDRAKE_DECIDE_KNOCKBACK_FRAME_ROW_HIS_CARD_SET_IT (proposed home: sc_barrage_perf)",
+   "entry_point_item": "RIMMANDRAKE_SHRINK_KNOCKBACK_SCENES_ONE_SAVE_IN_AIR"
   },
   {
    "id": "sc_gas_shove_into_pit",

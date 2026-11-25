@@ -889,6 +889,9 @@ namespace RimMandrake.ExplosiveKnockback
 
         /// <summary>Bridge read, also after a reload (no scene state): every carrier on the current map as
         /// "id inner=def xN innerId=n at=x,z dest=x,z left=ticks bounces=n", one per line; "NONE" when there is none.</summary>
+        /// <summary>sc_pit_fetch's window: the two ordered hauls finish well inside it (RIMMANDRAKE_SHRINK_KNOCKBACK_SCENES_ONE_SAVE_IN_AIR).</summary>
+        private const int PitFetchTicks = 5000;
+
         public static string Flights(string _)
         {
             if (Map == null)
@@ -2623,14 +2626,51 @@ namespace RimMandrake.ExplosiveKnockback
                             prevForbid?.Invoke();
                         };
                         s.numbers["foreignForbidden"] = foreign.Count;
+                        // RIMMANDRAKE_SHRINK_KNOCKBACK_SCENES_ONE_SAVE_IN_AIR (2026-11-25): the hauler was left at large for up to a
+                        // day (60000 ticks) to choose its own work; 6 of 12 runs did not pass. The two hauls are now ORDERED (the
+                        // stack, then the corpse, each to the storage HaulToStorageJob picks), the hauler's needs are held full
+                        // so no meal or bed interrupts it, its path cells are read, and the scene runs 5000 ticks.
+                        Job jSt = HaulAIUtility.HaulToStorageJob(h, s.things["st"], true);
+                        Job jCorpse = HaulAIUtility.HaulToStorageJob(h, s.things["corpse"], true);
+                        if (jSt == null || jCorpse == null)
+                        {
+                            return "no storage job for the " + (jSt == null ? "stack" : "corpse") + " (HaulToStorageJob null: no reachable stockpile cell)";
+                        }
+                        if (!h.jobs.TryTakeOrderedJob(jSt, JobTag.Misc))
+                        {
+                            return "the hauler refused the ordered haul of the stack";
+                        }
+                        h.jobs.jobQueue.EnqueueLast(jCorpse, JobTag.Misc);
+                        s.numbers["ordered"] = 2;
                         Map m0 = Map;
-                        for (int d = 30; d <= 60000; d += 30)
+                        var ladderCells = new HashSet<IntVec3> { lad.Position, O(s, 2, 5), O(s, 3, 5) };
+                        for (int d = 10; d <= PitFetchTicks; d += 10)
                         {
                             RM_MapComponent_Knockback.ProofSchedule.Add(new KeyValuePair<int, Action>(s.stagedTick + d, () =>
                             {
-                                if (m0 == Find.CurrentMap && h.Spawned && RM_KnockbackCompat.IsSuperdeep(m0, h.Position))
+                                if (m0 != Find.CurrentMap || !h.Spawned)
+                                {
+                                    return;
+                                }
+                                foreach (Need n in new Need[] { h.needs?.food, h.needs?.rest, h.needs?.joy })
+                                {
+                                    if (n != null)
+                                    {
+                                        n.CurLevelPercentage = 1f;
+                                    }
+                                }
+                                if (RM_KnockbackCompat.IsSuperdeep(m0, h.Position))
                                 {
                                     s.numbers["haulerInPit"] = 1;
+                                }
+                                List<IntVec3> nodes = h.pather?.curPath?.NodesReversed;
+                                if (nodes != null && nodes.Any(c => RM_KnockbackCompat.IsSuperdeep(m0, c)))
+                                {
+                                    s.numbers["pathIntoPit"] = 1;
+                                    if (nodes.Any(c => ladderCells.Contains(c)))
+                                    {
+                                        s.numbers["pathViaLadder"] = 1;
+                                    }
                                 }
                             }));
                         }
@@ -2642,10 +2682,12 @@ namespace RimMandrake.ExplosiveKnockback
                         bool stOut = st.Spawned && !RM_KnockbackCompat.IsSuperdeep(m, st.Position) && m.zoneManager.ZoneAt(st.Position) is Zone_Stockpile;
                         bool corpseOut = corpse.Destroyed ? false : corpse.Spawned ? !RM_KnockbackCompat.IsSuperdeep(m, corpse.Position)
                             && m.zoneManager.ZoneAt(corpse.Position) is Zone_Stockpile : corpse.ParentHolder is Building_Grave;
-                        bool ladder = sc.numbers.ContainsKey("haulerInPit");
+                        bool inPit = sc.numbers.ContainsKey("haulerInPit"), pathIn = sc.numbers.ContainsKey("pathIntoPit");
+                        bool ladder = inPit || pathIn;
                         bool control = cst.Spawned && RM_KnockbackCompat.IsSuperdeep(m, cst.Position);
-                        return Result(sc, stOut && corpseOut && ladder && control, "stack out=" + stOut + " corpse out=" + corpseOut + " hauler in pit=" + ladder
-                            + " raised-ladder control stack still in its pit=" + control + " (step up to 60000 ticks)");
+                        return Result(sc, stOut && corpseOut && ladder && control, "stack out=" + stOut + " corpse out=" + corpseOut + " hauler in pit=" + inPit
+                            + " path into pit=" + pathIn + " path via ladder cell=" + sc.numbers.ContainsKey("pathViaLadder")
+                            + " raised-ladder control stack still in its pit=" + control + " (2 hauls ordered, needs held, step " + PitFetchTicks + " ticks)");
                     };
                     return null;
 
