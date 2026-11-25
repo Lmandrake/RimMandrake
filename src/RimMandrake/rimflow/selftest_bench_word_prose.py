@@ -71,7 +71,9 @@ def test_folded():
 
 
 def _grep(pattern):
-    r = subprocess.run(["git", "-C", ROOT, "grep", "-l", "-F", pattern], capture_output=True, text=True, timeout=120)
+    # Hang guard, far above a real run (seconds). 120 s was reached at ./publish tree checks under load 44 on
+    # 2026-11-24 and refused a ledger-only publish; never a speed bar.
+    r = subprocess.run(["git", "-C", ROOT, "grep", "-l", "-F", pattern], capture_output=True, text=True, timeout=900)
     if r.returncode not in (0, 1):
         return None
     return [f for f in r.stdout.splitlines() if f]
