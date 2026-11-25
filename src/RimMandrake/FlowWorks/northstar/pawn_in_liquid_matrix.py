@@ -425,11 +425,13 @@ def sheets():
 
 
 def verdict(names):
-    """No bridge: exit 0 when every named row PASSes in the newest read (pim_read_*.json in OUT), else 1, printing each
-    row's state (MISSING: the newest read has no such row, i.e. no read since the row was written)."""
-    reads = sorted(f for f in os.listdir(OUT) if f.startswith("pim_read_") and f.endswith(".json")) if os.path.isdir(OUT) else []
+    """No bridge: exit 0 when every named row PASSes in the newest read (pim_read_<stamp>.json, or pim_all_<stamp>.json
+    from the `all` step, in OUT; newest by its stamp), else 1, printing each row's state (MISSING: the newest read has no
+    such row, i.e. no read since the row was written)."""
+    names_ok = lambda f: f.endswith(".json") and (f.startswith("pim_read_") or f.startswith("pim_all_"))
+    reads = sorted((f for f in os.listdir(OUT) if names_ok(f)), key=lambda f: f.rsplit("_", 1)[-1]) if os.path.isdir(OUT) else []
     if not reads:
-        print("VERDICT: FAIL (no pim_read_*.json in %s)" % OUT)
+        print("VERDICT: FAIL (no pim_read_*.json or pim_all_*.json in %s)" % OUT)
         return 1
     rows = {r["row"]: r for r in json.load(open(os.path.join(OUT, reads[-1]), encoding="utf-8")).get("rows", [])}
     ok = True
