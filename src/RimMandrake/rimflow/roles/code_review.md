@@ -43,7 +43,8 @@ You read the page, the code and the tests, the whole file, once. You fix each Pr
 write a test and see it fail. Then fix the code and see the test pass. When you changed a file, do the polish of that
 file too, before the fresh reader reads it (`CLAUDE.md` §Touching code has a cost, the polish rule). Fix nothing else.
 A minor nit, or a finding that is not significant, in a file that you did not change goes on `polish.md` (below). The
-fresh reader must stay blind: it fixes only a Problem and writes each nit on `polish.md`. If you cannot write the clone (a `gpt_consult.py` call),
+fresh reader fixes each Problem that it finds, test first, then does the polish of each file that its fix changed, and
+writes each other nit on `polish.md`. If you cannot write the clone (a `gpt_consult.py` call),
 return your Problems. The run that launched you fixes them by this brief.
 
 When you fixed nothing, the review is over. When you fixed something, one fresh reader who did not make the fix reads

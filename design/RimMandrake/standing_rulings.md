@@ -706,8 +706,8 @@ The rule:
 - **Test 2, if you see it, do it.** You are the fixer. When you find a fault, fix it in this run, test first. A later
   run knows less. Hand it on only with test-2 evidence. The fixer writes the test, sees the test fail, fixes, sees the
   test pass, and publishes. Test-2 evidence is one of these:
-  - your verdict must stay independent of the work. A judge that fixed the work it judges would become its maker, and
-    nobody would judge the fix;
+  - your verdict must stay independent of the work. This never stops a blind judge that sees a fault: the judge fixes
+    the fault, test first, and a new blind judge validates the fix (the polish rule, below);
   - you lack the tools or the access (a read-only role; a live-only fault and no bridge);
   - the fix is not known after a real attempt: name what you tried;
   - it needs one of the owner's five acts, or it changes a north-star bar (a looser bar is the Conductor's act). The
@@ -739,6 +739,13 @@ The rule:
     make the fix, then validates the fix (owner, 2026-11-25: "A blind judge absolutely CAN fix and SHOULD fix! But it
     would then require a new blind judge run to validate its work thereafter.").
   - Polish never moves a bar. A pass never waits for a polish line that names a file that nobody changed.
+  - Three additions, the Conductor's ruling of 2026-11-25, about 12:50 PM PST, on the owner's concern that swept-in
+    polish brings back the old noise (item `RIMMANDRAKE_MERGE_BUILDER_ROLES_INTO_ONE_THREE_FILES_DIFFER_BY_SETTINGS`):
+    - A run takes an old polish line only after the run reads the line now and judges that the line is still true. A
+      stale or wrong line is deleted, not done (§Old work is filtered before any process takes it).
+    - Each polish change is its own commit, and its subject starts with `polish:`. So a regression can be traced and
+      reverted.
+    - Polish that the run's own tests do not cover stays out of files that the run did not otherwise change.
   - The block: in a helper run, `./publish` refuses, and hands back to the run, a new polish line that names a file of
     the run's own changes and has no `risk:` or `record:` part. The run does the polish and publishes again. Code:
     `src/RimMandrake/Utils/polish_door.py`; page: `design/specs/2026-11-25-polish-door/boundary.md`.
@@ -860,6 +867,29 @@ The rule:
   - That selftest finds the two tests in the root `CLAUDE.md`, the CHARTER and the six `.claude/agents/rm-*.md` files.
   - That selftest finds the two tests in the fixer, judge and monitor role files.
   - That selftest finds a stopping level in each judging brief that it names.
+
+## Old work is filtered before any process takes it — owner, 2026-11-25
+
+His words (Wed 2026-11-25, about 12:45 PM PST, item
+`RIMMANDRAKE_MERGE_BUILDER_ROLES_INTO_ONE_THREE_FILES_DIFFER_BY_SETTINGS`): *"We must ALWAYS Filter old tickets into
+any process, yes. The older, the more grinding required to prove they're not harmful."* He said it of the polish rule
+of the same day, which tells a Work Bundle to take the open polish lines of the files that it changes.
+
+The rule:
+
+- **What it binds.** Every process that takes old work: a Work Bundle, a fixer, a pipeline monitor, a sweep, a judge,
+  and a hand. Old work is a ticket or a polish line that was written before the run that takes it.
+- **The filter comes first.** Before a process takes old work, something checks two things:
+  - the work is still true: the fault, the gap or the nit is still in the code of now;
+  - the work is not harmful: doing it now does not undo a later change, break a promise or move a bar.
+- **The older, the more proof.** A line written in this run, or on the current build, needs only a read. An older
+  line or ticket needs a read against the code of now, and its test run on the current build where it has one. A
+  ticket from before a ruling that changed what it asks needs both, and a judgment against that ruling.
+- **What fails the filter.** A stale or wrong polish line is deleted, not done. A stale or wrong ticket is dropped with
+  its reason (`ALREADY FIXED` with the commit, or `not worth the touch: <why>`). The process does not do the work.
+- **How it fits.** The class step of a Work Bundle (`src/RimMandrake/rimflow/roles/builder.md`, "The work", step 1)
+  is the filter for its tickets. The polish rule (§Touching code has a cost) is the filter for its polish lines. Test
+  1 of §Touching code has a cost is still asked after the filter: work that is still true can still fail test 1.
 
 ## What is where
 
@@ -2810,7 +2840,8 @@ repair drew new claims [measured, `design/specs/2026-11-18-review-growth-cycle/0
     - the same significance rule;
     - the same stop level (one full read, one fresh read of a fix, never a third);
     - the same polish route (one line on `polish.md`, no ticket).
-  - A finding that is not significant is one line on `polish.md`, never a ticket. Nobody works the finding.
+  - A finding that is not significant is one line on `polish.md`, never a ticket. The next run that changes that file
+    does the line (the polish rule); nobody works the line before then.
   - A Codex or GPT reviewer that cannot write the clone returns its Problems. The run that launched it
     judges each returned Problem by the significance rule. That run fixes each significant Problem, test first, and
     writes each other Problem as a line on `polish.md`. Then one fresh reader reads the fixed file once.

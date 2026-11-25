@@ -39,7 +39,8 @@ PRESENT = {
     ".claude/agents/rm-fixer.md": ["Report `not worth the touch: <why>` to your parent, and stop."],
     ".claude/agents/rm-builder.md": ["Report `not worth the touch: <why>` to your parent."],
     ".claude/agents/rm-judge.md": ["## When the look is enough, and when to stop", "Never a third look",
-                                   "You do not fix the work that you judge."],
+                                   "A flaw that you see and can fix, you fix in your run, test first",
+                                   "a new judge that did not make the fix validates it"],
     "src/RimMandrake/rimflow/roles/operations.md": ["**When an alarm run is enough:**", "`not worth the touch: <why>`",
                                                     "Test 2: if yes, you make the fix in this run, test first."],
     "src/RimMandrake/rimflow/roles/conductor.md": ["carries the two tests", "NOT WORTH THE TOUCH",
@@ -72,7 +73,7 @@ WRONG = {
         "These loops are TOO LONG AND SLOW.",
         "**Any role that needs the live game to finish a fix takes it when it is free**"],
     "infrastructure/agents/CHARTER.md": ["A wrong check or scene is repaired in the same sitting",
-                                         "or removed from the test table when no bar needs it"],
+                                         "when no bar needs it (one `record:` polish line records the removal)"],
     "design/specs/2026-11-13-maturation-pipeline.md": ["A wrong check or scene never goes back",
                                                        "a fixed mod owes ONE fresh reader of each fix"],
 }

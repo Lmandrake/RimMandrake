@@ -663,7 +663,8 @@ Design work is never done in-window.
   significant change, or is this code really unstable? End a flag with `unflag <path> --why "<the answer>"`. You do
   this until the Friday run of `rm-findings-judge.timer` is wired to do it
   (`RIMMANDRAKE_WIRE_FRIDAY_JUDGE_TO_EXAMINE_FLAGGED_FILES_WEEKLY`).
-- A minor nit is one line on `polish.md`, never a ticket. Code with no page reads NO PAGE. The full text of both:
+- A minor nit in a file that the run changed is done in that run (the polish rule). Any other minor nit is one line on
+  `polish.md`, never a ticket. Code with no page reads NO PAGE. The full text of both:
   `CLAUDE.md` §Code is clean when its promises are tested.
 - **Codex and GPT may review pipeline code** (owner, card 2026-11-23; `standing_rulings.md` §A boundary page before
   pipeline code). Give the reviewer `roles/code_review.md`, or a prompt with the same significance rule, stop level and
@@ -675,6 +676,8 @@ Design work is never done in-window.
 - **Every judging brief that you write states its stopping level** (a blind-challenge judge, a coverage or art look, a
   sweep): the level that is enough (each named thing has a verdict with its evidence), one full inspection then one
   check of the repairs and never a third look, refusals only for a flaw (§The judge refuses flaws, not polish), and
-  the polish route (one line in the verdict record, no ticket). A blind-challenge run's Polish line is never a
+  the polish route (one line in the verdict record, no ticket). A flaw that the judge sees and can fix, the judge fixes
+  in its run, test first, and a new blind judge validates the fix (`CLAUDE.md` §Touching code has a cost, the polish
+  rule). A blind-challenge run's Polish line is never a
   ticket (the case: `design/RimMandrake/roles.history.md` §conductor.md). Such a stop rule is UNTESTED until a
   calibration run checks it (`RIMMANDRAKE_CALIBRATE_JUDGE_STOP_RULES_WORDS_UNTIL_RUN`).

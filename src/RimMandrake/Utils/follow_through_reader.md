@@ -34,6 +34,8 @@ hand? Page: `design/specs/2026-11-23-follow-through-audit/boundary.md`. Plan: `d
 - The level that is enough: one verdict and one evidence line per drawn need, the debt classes, the rates, and the
   page landed. Then stop.
 - Do not fix what you find. Write a need that was dropped as its verdict, not as a repair. If a drop is a pipeline
-  defect that nobody has filed, write one line for it under `"findings"` in the record. Do not file a ticket.
+  defect that nobody has filed, file it (`python3 src/RimMandrake/rimflow/cli.py file "<NAME>" ... --not-now
+  "independent: this audit measures follow-through and must not change it"`). Write its id under `"findings"` in
+  the record. A page line alone holds no owed work.
 - Do not change the draw, the seed or the program. If the program is wrong, write `LEFT OPEN:` with the defect and
   its evidence, and stop.

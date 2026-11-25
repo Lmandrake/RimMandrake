@@ -460,8 +460,10 @@ POLISH_RULE = ("Polish: you do the polish of every file that you change, in this
                "Also take each open line of the polish.md below (and of the polish.md beside the boundary page of each "
                "file that you change) that names a file you change: do it, and remove the line. A polish line stays only "
                "when it names a file that you did not change, names a concrete risk after `risk:`, or would move a bar, "
-               "add a feature or need one of the owner's five acts. Polish never moves a bar. ./publish refuses a new "
-               "line about your own changed file that has no `risk:` part, and hands it back to you.")
+               "add a feature or need one of the owner's five acts. Polish never moves a bar. Read each old line now "
+               "first: a stale or wrong line is deleted, not done. Commit each polish change by itself, with a subject "
+               "that starts `polish:`. ./publish refuses a new line about your own changed file that has no `risk:` "
+               "part, and hands it back to you.")
 
 
 def polish_of(system, root=REPO):

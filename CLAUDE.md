@@ -309,6 +309,15 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - Full text: `design/RimMandrake/standing_rulings.md` §Mods keep their own state. Plan:
   `design/specs/2026-11-22-coordination-every-agent-must-use/plan.md`.
 
+## Old work is filtered before any process takes it
+
+- Before any process takes an old ticket or an old polish line, something checks that the work is still true and not
+  harmful.
+- The older the work, the more proof it needs. Read it against the code of now. Run its test on the current build.
+- Drop a stale or wrong ticket with its reason. Delete a stale or wrong polish line. Do not do the work.
+- This applies to every process: a Work Bundle, a fixer, a sweep, a judge and a hand.
+- Full text: `design/RimMandrake/standing_rulings.md` §Old work is filtered before any process takes it.
+
 ## Correctness outranks seat ownership; wrong material is deleted
 
 - Fix a false statement on sight, in any file. Delete the wrong material; do not supersede it. This is a user-level
@@ -455,6 +464,11 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   - A blind judge that sees a fault fixes the fault in its run, test first. A new blind judge, a run that did not make
     the fix, then validates the fix. A judge that fixed is no longer blind to that fix.
   - Polish never moves a bar. A pass never waits for a polish line that names a file that nobody changed.
+  - Take an old polish line only after you read the line now and judge that it is still true. Delete a stale or wrong
+    line, and do not do the work that it names.
+  - Make each polish change its own commit, with a subject that starts `polish:`. Then a regression can be traced and
+    reverted.
+  - Polish that the run's own tests do not cover stays out of the files that the run did not otherwise change.
   - In a helper run, `./publish` refuses a new polish line that names a file of the run's changes and has no `risk:`
     part, and hands the line back to the run (`polish_door.py`). Do the polish, remove the line, and publish again.
 - Test 2: You are the fixer. When you find a fault, fix it in this run, test first. A later run knows less. Hand it on

@@ -297,6 +297,10 @@ def t_the_brief_carries_the_polish_of_its_files():
     b2 = W.brief(rec2, items, {"C1": None}, root=root)
     chk(lambda: W.POLISH_RULE in b2 and "boundary page" in b2,
         "brief: a pipeline bundle carries the rule and points at the polish.md beside each changed file's page")
+    # the polish rule's additions of 2026-11-25 (RIMMANDRAKE_MERGE_BUILDER_ROLES_INTO_ONE_THREE_FILES_DIFFER_BY_SETTINGS):
+    # an old line is read now and a stale one deleted, and each polish change is its own `polish:` commit
+    chk(lambda: "stale or wrong line is deleted, not done" in W.POLISH_RULE and "`polish:`" in W.POLISH_RULE,
+        "brief: the polish rule says an old line is read first and each polish change is a `polish:` commit")
 
 
 def t_the_lane_launches_one_bundle_per_system():

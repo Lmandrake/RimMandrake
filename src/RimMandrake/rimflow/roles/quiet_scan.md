@@ -37,8 +37,10 @@ false answer. Do not write a page.
    travels with its `.srchash`. Land with `./publish` and explicit paths.
    - Then start one fresh reader: the Agent tool, `subagent_type: "rm-fixer"`, `model: "sonnet"`,
      `run_in_background: false`, with the reader's text below and nothing else. No second reread follows.
-   - Never fix a style point, a stricter test, a tuning number or a rare failure. Each of those is one line on
-     `polish.md` beside the page, when the file has a page. When the file has no page, drop it.
+   - Never fix a stricter test, a tuning number or a rare failure. Each of those is one line on `polish.md` beside the
+     page, when the file has a page. When the file has no page, drop it.
+   - A style point in a file that your fix changed, you do now, before the fresh reader (`CLAUDE.md` §Touching code has a
+     cost, the polish rule). A style point in any other file is one line on `polish.md` beside its page.
    - A bar (a sentence about what the player sees or can do, in a mod's `## north star` section or its
      `version/locked_bars.json`) is never yours to change.
    - When the fix needs one of his five acts, is unknown after a real attempt, or needs a game while `python3

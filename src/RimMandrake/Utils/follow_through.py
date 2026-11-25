@@ -546,7 +546,7 @@ def render(rec):
                 L.append("- " + "; ".join("%s: %s" % (k, str(v).replace("\n", " ")) for k, v in row.items()) +
                          ("  **%s**" % cls[row["id"]] if row.get("id") in cls else ""))
     if rec.get("findings"):
-        L += ["", "## The reader's findings (one line each, no ticket)", ""] + ["- %s" % f for f in rec["findings"]]
+        L += ["", "## The reader's findings (each with its filed item)", ""] + ["- %s" % f for f in rec["findings"]]
     return "\n".join(L) + "\n"
 
 

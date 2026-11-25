@@ -53,8 +53,8 @@ policy."*).
   A wrong check or scene is repaired in the same sitting, seen FAIL on a planted fault and PASS on the real build, or
   removed from the mod's test table (`version/test_table.json`) when no bar needs it (one `record:` polish line records the removal). A wrong check never
   sends the mod back, and "independent verdict" does not excuse its repair. A mod fault the judge or driver can fix is fixed in
-  the sitting with a before/after test, and one fresh
-  reader checks that fix once; only a fault it could not fix goes down the road back, with the evidence why. A fix
+  the sitting with a before/after test, and one fresh reader (a new blind judge, a run that did not make the fix)
+  checks that fix once; only a fault it could not fix goes down the road back, with the evidence why. A fix
   that needs a game takes any free game (`rimflow bridge take --idle-ok`, with `--host` or `RM_GAME_INSTANCE` for a
   game other than ArchBig; "Game state and the bridge" below).
 - The pipeline never "blesses" a small change (owner, 2026-11-05). For a small change, the agent does a quick manual
