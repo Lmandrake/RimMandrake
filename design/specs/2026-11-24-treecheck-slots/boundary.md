@@ -49,7 +49,7 @@ Up to six door checks ran at once on one disk: the disk read 100% busy, load rea
 
 - **`SLOTS = 2`** (`RM_TREECHECK_SLOTS` sets another number for one machine). Danger: the 2026-11-24 SteveDesktop
   failure above. Evidence, measured on Archmagi 2026-11-24 9:47 to 10:01 PM PST at load 10 to 15
-  (`D:\ClaudeWork\scratch\treecheck_gate\measure_archmagi.jsonl`): one door check run (full checkout and the 23
+  (`evidence/measure_archmagi.jsonl`, made by `evidence/measure.py`): one door check run (full checkout and the 23
   checks) took 50 s alone. With 2, 4, 6 and 8 started at once, each took 44, 82, 133 and 179 s. So the machine's
   throughput is the same from 2 up (about 22 s of wall per run), and each run past 2 only adds wait and load (load 34 at
   4, 68 at 8). SteveDesktop was not measured: its disk was saturated by live runs, and a measurement there would have
@@ -57,3 +57,12 @@ Up to six door checks ran at once on one disk: the disk read 100% busy, load rea
 - **`SAY_S = 30`**. Not a limit: the interval of the waiting line. The wait goes on.
 - **The wait itself has no limit.** It is a guard on progress: the line moves while the holders live, and each holder's
   work is bounded by the limits named above.
+
+## PROOF
+
+- 2026-11-24 10:28 PM PST, Archmagi: four `./publish` runs of trivial commits, from four scratch clones, started at
+  once (`evidence/proof4.py`, timeline in `evidence/proof4.json`). All four printed `PUBLISHED`. At most 2 of them held a
+  check tree at the same time, and at most 2 slots were locked (`/proc/locks`). The two that waited printed the waiting
+  line at 0 s and 30 s, and took a slot after 51 s and 52 s.
+- The selftest was red on the code before the gate (`evidence/selftest_red_old_publish.txt`: 4 probes at once) and
+  caught 4 of 4 plants (`evidence/selftest_mutants.txt`).

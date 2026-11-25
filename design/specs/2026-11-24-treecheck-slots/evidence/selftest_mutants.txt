@@ -1,0 +1,6 @@
+ok   control: the unmutated copy is green
+ok   plant gate-ignored: FAIL at-most-the-limit-run-at-once: at most 2 probes ran at once (4)
+ok   plant dead-holder-never-freed: FAIL a-dead-holder-frees-its-slot: the waiter behind a killed holder and a killed waiter took the slot (never)
+ok   plant no-waiting-line: FAIL a-waiter-shows-progress: 0 waiting lines, the first []
+ok   plant held-env-ignored: FAIL a-check-under-a-held-slot-never-waits-again: a child of a holder passed in 2.63 s
+GREEN: 4 of 4 plants caught

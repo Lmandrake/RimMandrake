@@ -1,0 +1,14 @@
+ok   at-most-the-limit-run-at-once: the probe ran once per publish (4 of 4)
+ok   at-most-the-limit-run-at-once: all four publishes went green ([['DOOR GREEN'], ['DOOR GREEN'], ['DOOR GREEN'], ['DOOR GREEN']])
+FAIL at-most-the-limit-run-at-once: at most 2 probes ran at once (4)
+ok   waiters-go-first-come-first-served: order ['H', 'W1', 'W2', 'W3', 'W4']
+FAIL waiters-go-first-come-first-served: one at a time with the limit at 1
+ok   a-dead-holder-frees-its-slot: the waiter behind a killed holder and a killed waiter took the slot (0.01 s after the kill)
+ok   a-dead-holder-frees-its-slot: the dead waiter's ticket left the line ([])
+ok   a-waiter-shows-progress: 4 waiting lines, the first ['publish: waiting 0 s for a tree-check slot, 0 ahead, 1 running (pid 1821075); the tree checks start when one frees']
+ok   one-publish-holds-one-slot-across-both-checks: both checks ran (['-', '-'], None)
+FAIL one-publish-holds-one-slot-across-both-checks: one slot taken ([]), held by this publish in both (['-', '-'])
+ok   one-publish-holds-one-slot-across-both-checks: the slot is dropped after
+ok   a-check-under-a-held-slot-never-waits-again: a child of a holder passed in 0.01 s
+FAIL a-publish-with-no-door-checks-takes-no-slot: a ledger-only change asked for []
+RED: 4 red
