@@ -1,0 +1,82 @@
+{
+ "27b4bcccee37dbe6": {
+  "counts": true,
+  "key": {
+   "arm": "play1",
+   "companion": "26732953c132d668d4917ae027a0ebea2a31bb6da1741cf9931c281520cd8689",
+   "mod_list": "sha256:87ce560b1c402c3771e4def40bcd888b3059e747793bc96690dda09f96c5596a",
+   "mods": {
+    "Droidworks": "0dc0f32df7f96379fed30fd0f230e07a3d66cf4927d23c17e59e4bed9a041f08",
+    "DroidworksBoltCore": "fb4b58280ae76b2c7b7e042796367a9df6502e3410055fe300b43cd295743cae",
+    "Inhabited": "d8f1513ec49d5fad1a3a43c9ff36b7bac1186c876eb0619815486f2e769ac43f",
+    "JawaIonWeapons": "0550d9a89c25d8bc34045bcf1e72551504bdd9b8994828e0e24e87505c70d8e5",
+    "RimMandrake.Utinni.ShipMemory": "82f8125f28b9db12538cf6ba401e4d3284326b5a0d398ffdb27608d20988238d",
+    "RimMandrake.Utinni.StructureInjectionsRUT": "dbaa8bb53ab0fcc9535874702c96452fb604d7d8597778d3b8b56384165c05c7",
+    "RimMandrakeFlowWorks": "c5c6dc5a033bd3ef457c0bfeda8a345faca4a638352023992b01301b3e93ed7d",
+    "RimMandrakeStructureInjections": "5014c0c0fde7034460bbfe600474ffb32b662e8bf94ce68b96961ae8a78401df"
+   },
+   "plan": "508dc3fe38f72d99"
+  },
+  "line": "the reference is not repeatable: 4 of its 4 other runs diverge from run 1, first on tick 101 (track Human196.Position): run 1 ('ok', '108,125'), other ('ok', '109,125')"
+ },
+ "2acf8a1e3c9234aa": {
+  "counts": false,
+  "key": {
+   "arm": "ultra",
+   "companion": "26732953c132d668d4917ae027a0ebea2a31bb6da1741cf9931c281520cd8689",
+   "mod_list": "sha256:87ce560b1c402c3771e4def40bcd888b3059e747793bc96690dda09f96c5596a",
+   "mods": {
+    "Droidworks": "0dc0f32df7f96379fed30fd0f230e07a3d66cf4927d23c17e59e4bed9a041f08",
+    "DroidworksBoltCore": "fb4b58280ae76b2c7b7e042796367a9df6502e3410055fe300b43cd295743cae",
+    "Inhabited": "d8f1513ec49d5fad1a3a43c9ff36b7bac1186c876eb0619815486f2e769ac43f",
+    "JawaIonWeapons": "0550d9a89c25d8bc34045bcf1e72551504bdd9b8994828e0e24e87505c70d8e5",
+    "RimMandrake.Utinni.ShipMemory": "82f8125f28b9db12538cf6ba401e4d3284326b5a0d398ffdb27608d20988238d",
+    "RimMandrake.Utinni.StructureInjectionsRUT": "dbaa8bb53ab0fcc9535874702c96452fb604d7d8597778d3b8b56384165c05c7",
+    "RimMandrakeFlowWorks": "c5c6dc5a033bd3ef457c0bfeda8a345faca4a638352023992b01301b3e93ed7d",
+    "RimMandrakeStructureInjections": "5014c0c0fde7034460bbfe600474ffb32b662e8bf94ce68b96961ae8a78401df"
+   },
+   "plan": "508dc3fe38f72d99"
+  },
+  "line": "first diverging tick 51 (track Human199.Position): reference ('ok', '117,131'), arm ('ok', '119,131')"
+ },
+ "9d3841a2076baa0c": {
+  "counts": false,
+  "key": {
+   "arm": "play3",
+   "companion": "26732953c132d668d4917ae027a0ebea2a31bb6da1741cf9931c281520cd8689",
+   "mod_list": "sha256:87ce560b1c402c3771e4def40bcd888b3059e747793bc96690dda09f96c5596a",
+   "mods": {
+    "Droidworks": "0dc0f32df7f96379fed30fd0f230e07a3d66cf4927d23c17e59e4bed9a041f08",
+    "DroidworksBoltCore": "fb4b58280ae76b2c7b7e042796367a9df6502e3410055fe300b43cd295743cae",
+    "Inhabited": "d8f1513ec49d5fad1a3a43c9ff36b7bac1186c876eb0619815486f2e769ac43f",
+    "JawaIonWeapons": "0550d9a89c25d8bc34045bcf1e72551504bdd9b8994828e0e24e87505c70d8e5",
+    "RimMandrake.Utinni.ShipMemory": "82f8125f28b9db12538cf6ba401e4d3284326b5a0d398ffdb27608d20988238d",
+    "RimMandrake.Utinni.StructureInjectionsRUT": "dbaa8bb53ab0fcc9535874702c96452fb604d7d8597778d3b8b56384165c05c7",
+    "RimMandrakeFlowWorks": "c5c6dc5a033bd3ef457c0bfeda8a345faca4a638352023992b01301b3e93ed7d",
+    "RimMandrakeStructureInjections": "5014c0c0fde7034460bbfe600474ffb32b662e8bf94ce68b96961ae8a78401df"
+   },
+   "plan": "508dc3fe38f72d99"
+  },
+  "line": "first diverging tick 101 (track Human196.Position): reference ('ok', '108,125'), arm ('ok', '110,123')"
+ },
+ "ab3102218a62b9af": {
+  "counts": false,
+  "key": {
+   "arm": "step",
+   "companion": "26732953c132d668d4917ae027a0ebea2a31bb6da1741cf9931c281520cd8689",
+   "mod_list": "sha256:87ce560b1c402c3771e4def40bcd888b3059e747793bc96690dda09f96c5596a",
+   "mods": {
+    "Droidworks": "0dc0f32df7f96379fed30fd0f230e07a3d66cf4927d23c17e59e4bed9a041f08",
+    "DroidworksBoltCore": "fb4b58280ae76b2c7b7e042796367a9df6502e3410055fe300b43cd295743cae",
+    "Inhabited": "d8f1513ec49d5fad1a3a43c9ff36b7bac1186c876eb0619815486f2e769ac43f",
+    "JawaIonWeapons": "0550d9a89c25d8bc34045bcf1e72551504bdd9b8994828e0e24e87505c70d8e5",
+    "RimMandrake.Utinni.ShipMemory": "82f8125f28b9db12538cf6ba401e4d3284326b5a0d398ffdb27608d20988238d",
+    "RimMandrake.Utinni.StructureInjectionsRUT": "dbaa8bb53ab0fcc9535874702c96452fb604d7d8597778d3b8b56384165c05c7",
+    "RimMandrakeFlowWorks": "c5c6dc5a033bd3ef457c0bfeda8a345faca4a638352023992b01301b3e93ed7d",
+    "RimMandrakeStructureInjections": "5014c0c0fde7034460bbfe600474ffb32b662e8bf94ce68b96961ae8a78401df"
+   },
+   "plan": "508dc3fe38f72d99"
+  },
+  "line": "first diverging tick 101 (track Human196.Position): reference ('ok', '108,125'), arm ('ok', '109,125')"
+ }
+}

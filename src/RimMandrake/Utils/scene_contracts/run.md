@@ -22,7 +22,7 @@ later is not in the group.
 
 ## Which speed counts for a bar
 
-PLAY at speed 1 (`"Normal"`) is the reference. **An arm that was not compared with the reference counts for no bar.** An
+PLAY at speed 1 (`"Normal"`) is the reference, and **an arm that was not compared with the reference counts for no bar**. An
 arm is a speed (`"Superfast"`, `"Ultrafast"`, `"Step"`, ...). A comparison is `scene.py compare`: one plan, one fixture save
 loaded fresh for every run, the random state written back before every run, five runs of each arm, traces compared tick
 by tick (`scene_compare.py`). The comparison holds for one key: the plan's hash, the loaded hashes of our mods, the
@@ -47,7 +47,7 @@ state), `r.trace` (the file).
   game for that id's status until the run has ended. The script gets `r` or a fault that carries the id. When the
   script's own process died, `scene.attach` returns the same run.
 
-Receipt: `did`: "played ticks T1 to T2 at speed S; paused on T2"; `hands`: `jawa/run_until`, 1 call; `could_not_look`:
+Receipt: `entry.mode`: `PLAY` or `STEP`; `did`: "played ticks T1 to T2 at speed S; paused on T2"; `hands`: `jawa/run_until`, 1 call; `could_not_look`:
 each recorded value that was not readable on some tick (its state, the first tick, the count of ticks), and trace rows
 that were dropped. A value is written to the trace on the first tick, on the last tick, and on each tick on which it
 changed.

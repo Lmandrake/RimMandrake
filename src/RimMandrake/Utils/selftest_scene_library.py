@@ -896,6 +896,19 @@ def run(tests):
     return good
 
 
+def test_lock_child_env_names_no_dropped_variable():
+    """A Windows driver takes the lock through a WSL child. A variable it drops must leave WSLENV too: WSL passes a name that WSLENV
+    lists and the parent lacks as an EMPTY value, and an empty RIMFLOW_DRIVER_LOCK reads as "no lock path" for ArchBig (seen live
+    2026-11-24: scene.open on ArchBig refused COULD_NOT_LOOK while ArchSmall took its lock)."""
+    env = {"WSLENV": "RM_GAME_INSTANCE:RM_GAME_USERDATA/p:GABP_TOKEN:RIMFLOW_DRIVER_LOCK/p:RM_INSTANCES_ROOT/p", "RIMFLOW_DRIVER_LOCK": "x",
+           "RM_GAME_INSTANCE": "b", "RM_INSTANCES_ROOT": "D:\\i", "RM_SCENE_GEN": "4", "PATH": "p"}
+    out = scene_world.lock_child_env(env, "RM_SCENE_GEN")
+    assert "RIMFLOW_DRIVER_LOCK" not in out and "RM_GAME_INSTANCE" not in out and "RM_SCENE_GEN" not in out, out
+    names = [w.split("/")[0] for w in out["WSLENV"].split(":") if w]
+    assert "RIMFLOW_DRIVER_LOCK" not in names and "RM_GAME_INSTANCE" not in names, names
+    assert "RM_INSTANCES_ROOT" in names and "GABP_TOKEN" in names and out["PATH"] == "p", out
+
+
 def main():
     ticket = [test_open_refuses_unknown_game, test_open_refuses_game_held, test_open_refuses_owner_hold, test_open_refuses_session_open,
               test_open_refuses_mod_not_loaded, test_open_refuses_wrong_build, test_open_refuses_canonical_save, test_open_refuses_fixture_missing,
@@ -916,7 +929,7 @@ def main():
             test_close_waits_for_the_session_writer, test_session_of_another_is_lost_not_used, test_end_session_ends_a_dead_driver_only,
             test_attach_refuses_no_session, test_attach_refuses_driver_alive, test_attach_refuses_owner_hold, test_attach_refuses_unknown_game,
             test_attach_pauses_a_running_game, test_attach_then_run_is_refused, test_abort_writes_closing_record,
-            test_names_not_built_say_so, test_tools_and_raw_census]
+            test_names_not_built_say_so, test_tools_and_raw_census, test_lock_child_env_names_no_dropped_variable]
     a = run(ticket)
     print("scene library: %d of %d checks passed" % (a, len(ticket)))
     b = run(more)

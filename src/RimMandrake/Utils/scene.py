@@ -656,6 +656,7 @@ class Session(object):
         plan = self.hand.plan(tree, tracks)
         names = [self.hand.name(cond.probe_name(p)) for p, _o in cond.walk(tree) if p["p"] not in (cond.TICK, "value.state")]
         request = rec.entry["request"]
+        rec.entry["mode"] = "STEP" if speed == "Step" else "PLAY"     # an arm that was not compared with PLAY at speed 1 counts for no bar
         row, lost = self._start(request, plan, limit, speed, rand)
         if rand is not None and row.get("randWritten") is not True:
             rec.could_not_look.append("the random state %s was not written back: %s" % (rand, row.get("randWhy") or "the game did not say so"))

@@ -139,6 +139,8 @@ def compare(ref_rows, arm_rows):
 def refuse(sample, origin):
     """None when the sample may be compared, else (name, why). `origin` is the save identity and the random state that every run
     starts from: {"save": {"name", "sha256"}, "tick": start tick, "rand": decimal string}. Pure."""
+    if sample.get("failed"):
+        return ("COULD_NOT_LOOK", "the run gave no trace: %s" % sample["failed"])
     if sample.get("replayed"):
         return ("REPLAY", "the reply was a replay of an earlier request: it is not a new run")
     rows = sample.get("rows") or []
@@ -166,7 +168,11 @@ def judge_arms(samples, origin, n):
         if why is None:
             seen.add(run)
             counted.setdefault(s["arm"], []).append(s)
-    ref = counted[REFERENCE][0] if REFERENCE in counted else None      # None: no counted reference, so every arm is COULD_NOT_COMPARE
+    # the reference: the first counted reference run that ended by its own condition or limit (a run whose clock was stopped from
+    # outside covers only part of the range); None: no counted reference, so every arm is COULD_NOT_COMPARE
+    refs = counted[REFERENCE] if REFERENCE in counted else []
+    whole = [s for s in refs if timeline(s["rows"])["end"][0] in OWN_ENDS]
+    ref = whole[0] if whole else (refs[0] if refs else None)
     for arm, _speed in ARMS:
         got = counted.get(arm, [])
         refused = [s for s in samples if s["arm"] == arm and s.get("refused")]
@@ -183,7 +189,10 @@ def judge_arms(samples, origin, n):
             continue
         div = [c for c in rows if c["verdict"] == DIVERGED]
         cnc = [c for c in rows if c["verdict"] == COULD_NOT]
-        if div:
+        if arm == REFERENCE and div:
+            line = "the reference is not repeatable: %d of its %d other runs diverge from run 1, first on tick %s (%s): run 1 %s, other %s" % (
+                len(div), len(rows), div[0]["tick"], div[0]["what"], div[0]["ref"], div[0]["arm"])
+        elif div:
             line = "first diverging tick %s (%s): reference %s, arm %s" % (div[0]["tick"], div[0]["what"], div[0]["ref"], div[0]["arm"])
         elif cnc:
             line = "could not compare %d of %d runs: %s" % (len(cnc), len(rows), cnc[0]["why"])
@@ -194,7 +203,13 @@ def judge_arms(samples, origin, n):
         else:
             line = "no divergence observed in %d runs" % len(rows)
         tps = [s["ticks"] / s["wall_s"] for s in got if s.get("wall_s") and s.get("ticks")]
-        out[arm] = {"line": line, "counts": not div and not cnc and len(rows) >= want and len(got) >= n, "runs": len(got), "refused": len(refused),
+        pairs = [compare(x["rows"], y["rows"]) for i, x in enumerate(got) for y in got[i + 1:]]
+        same = sum(1 for c in pairs if c["verdict"] == EQUAL)
+        firsts = sorted({c["tick"] for c in pairs if c["verdict"] == DIVERGED})
+        own = "%d of %d pairs of its own runs equal%s" % (same, len(pairs), "; its own runs first differ on ticks %s" % firsts if firsts else "")
+        # the reference counts by being the reference (PLAY at speed 1 is the game); its own repeatability is reported beside it
+        counts = len(got) >= 1 if arm == REFERENCE else (not div and not cnc and len(rows) >= want and len(got) >= n)
+        out[arm] = {"line": line, "counts": counts, "runs": len(got), "self": own, "refused": len(refused),
                     "tps": (min(tps), sum(tps) / len(tps), max(tps)) if tps else None}
     return out
 
@@ -224,8 +239,8 @@ def counts_for_bar(store, k):
 # ------------------------------------------------------------------------------------------------- the result page
 def render(plan, origin, samples, judged, keys, full_list):
     lines = ["# PLAY against STEP: the result of `scene.py compare`", "",
-             "Item `RIMMANDRAKE_MEASURE_PLAY_AGAINST_PAUSED_STEP_NEVER_COMPARED`. Written by `scene_compare.py`; the traces are under the",
-             "run folder named below. Wall time is never compared; ticks per second are measured from the driver.", "",
+             "Item `RIMMANDRAKE_MEASURE_PLAY_AGAINST_PAUSED_STEP_NEVER_COMPARED`. Written by `scene_compare.py`; every run's trace is in",
+             "`<this page's name>_samples.jsonl` beside it. Wall time is never compared; ticks per second are measured from the driver.", "",
              "- plan: `%s` (sha %s)" % (plan["path"], plan["sha"]),
              "- start: save `%s` (sha256 %s), tick %s, random state %s written back before every run" % (
                  origin["save"]["name"], origin["save"]["sha256"], origin["tick"], origin["rand"]),
@@ -243,9 +258,11 @@ def render(plan, origin, samples, judged, keys, full_list):
         j = judged.get(arm)
         if j:
             t = tuple("%.0f" % x for x in j["tps"]) if j["tps"] else ("UNMEASURED",) * 3
-            lines.append("- **%s**: %s; ticks/s min %s, mean %s, max %s (13-mod list); key `%s`" % ((arm, j["line"]) + t + (keys[arm]["id"],)))
+            lines.append("- **%s**: against the reference: %s. Repeatability: %s. Ticks/s min %s, mean %s, max %s (%s); key `%s`" % (
+                (arm, j["line"], j["self"]) + t + (plan.get("list_size", "this run's mod list"), keys[arm]["id"])))
     lines += ["", "- full mod list: %s" % full_list, "",
-              "arms that count for a bar: %s" % (", ".join(a for a, _s in ARMS if judged.get(a, {}).get("counts")) or "none"), ""]
+              "arms that count for a bar: %s" % (", ".join(a + (" (the reference)" if a == REFERENCE else "") for a, _s in ARMS
+                                                           if judged.get(a, {}).get("counts")) or "none"), ""]
     return "\n".join(lines)
 
 
@@ -284,7 +301,31 @@ def run_live(plan_path, arms, n, game, out_md, store_path):
     if getattr(m, "CALM", None):
         needs["calm"] = m.CALM
 
+    log = os.path.splitext(out_md)[0] + "_samples.jsonl"
+    with open(log, "w"):
+        pass
+
     def one(arm, rand):
+        """One run, or a sample that names why it gave no trace. An open refused in its lock phase changed nothing, so it is asked
+        again: the WSL child that holds the lock for a Windows driver has died silently (exit -1) on this machine (2026-11-24)."""
+        for attempt in (1, 2, 3):
+            try:
+                got = _one(arm, rand)
+                break
+            except (scene.Fault, scene.Refused) as e:
+                rep = getattr(e, "report", None) or []
+                lock_only = bool(rep) and rep[0].get("state") == "refused" and all(x.get("state") == "not reached" for x in rep[1:])
+                if lock_only and attempt < 3:
+                    time.sleep(5)
+                    continue
+                got = {"arm": arm, "rows": [], "failed": "%s: %s" % (type(e).__name__, str(e).splitlines()[0]), "rand_want": rand,
+                       "save": {"name": m.SAVE, "sha256": None}, "attempts": attempt}
+                break
+        with open(log, "a") as f:
+            f.write(json.dumps({k: v for k, v in got.items() if k != "build"}, default=str) + "\n")
+        return got
+
+    def _one(arm, rand):
         with scene.open(game, needs=needs) as s:
             sha = _save_sha(s, m.SAVE)
             t0 = time.monotonic()
@@ -298,6 +339,8 @@ def run_live(plan_path, arms, n, game, out_md, store_path):
                 "replayed": bool(getattr(r, "replayed", False)), "build": build}
 
     first = one(REFERENCE, None)            # the arming run: records the random state; it is not a sample
+    if first.get("failed"):
+        raise SystemExit("COULD NOT LOOK: the arming run gave no trace: %s" % first["failed"])
     o = _open(first["rows"])
     origin = {"save": first["save"], "tick": int(o["tick"]), "rand": str(o.get("rand")) if o.get("rand") is not None else None}
     if origin["rand"] is None:
@@ -318,7 +361,8 @@ def run_live(plan_path, arms, n, game, out_md, store_path):
         record(store, keys[arm], j)
     with open(store_path, "w") as f:
         json.dump(store, f, indent=1, sort_keys=True)
-    page = render({"path": plan_path, "sha": plan_sha, "game": game, "mod_list": b.get("list")}, origin, samples, judged, keys,
+    page = render({"path": os.path.relpath(plan_path, os.path.join(HERE, "..", "..", "..")).replace("\\", "/"), "sha": plan_sha, "game": game,
+                   "mod_list": b.get("list"), "list_size": "%s active mods" % b.get("mods")}, origin, samples, judged, keys,
                   "UNMEASURED: no full-list load was scheduled to ride (full-list testing is retired until integration)")
     with open(out_md, "w") as f:
         f.write(page)

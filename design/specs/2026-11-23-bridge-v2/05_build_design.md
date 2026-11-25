@@ -669,7 +669,7 @@ The owner asked for creativity in removing variables. Beyond the three ideas at 
 | The raid that will not come | the scene fires the incident through its own worker with exact parms (`fire_incident` exists), the gate allows that one incident only, and the tap proves "fired", not only "called" | none |
 | The raider that will not choose | two scenes: the ordered act (kind A), and the choice as a budgeted kind B in side-by-side copies | pass one §5; unchanged |
 | A wrong check | re-judge the kept trace, when the trace holds what the repaired check reads | zero game time in that case |
-| A flaky scene that needs "the same moment again" | the keeper save and the random state, only for scenes in a hunt | half a second per run in a hunt |
+| A flaky scene that needs "the same moment again" | the keeper save and the random state, only for scenes in a hunt. These two do not give the same moment: runs from one save with the random state written back drifted within 51 ticks, in STEP as in PLAY (`experiments/play_vs_step_rand_draws.md`, 2026-11-24) | half a second per run in a hunt |
 | The camera | held by the kernel on a test game; the rate is recorded or pinned | none |
 | A stale build | the receipt's loaded-build hashes, checked in admit before a tick is spent | the sibling run builds it |
 | Another mod's ticker | scenes run on the smallest mod list that holds the claim; the full list is a named, separate check | the tiers exist |
@@ -681,8 +681,10 @@ own claim.
 
 ## What this design does not settle
 
-- Whether STEP, or a fast PLAY speed, agrees with PLAY at speed 1 for our scenes. Nobody has measured it. The
-  measurement ticket does.
+- Whether STEP, or a fast PLAY speed, agrees with PLAY at speed 1 for our scenes. Measured on one scene on 2026-11-24
+  (`experiments/play_vs_step_result.md`): no arm agrees, and PLAY at speed 1 does not agree with itself. Runs from one
+  save with the random state written back draw differently within the first 22 ticks
+  (`experiments/play_vs_step_rand_draws.md`).
 - Whether the joined parts hold one life cycle under a kill, a cancel and a thrown tick. The first ticket's slice
   shows it.
 - The cost of a second settlement map in a test game, and whether our mods' map components behave on a pocket map as

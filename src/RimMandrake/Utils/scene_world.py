@@ -30,6 +30,20 @@ def _import(name, *dirs):
     return __import__(name)
 
 
+LOCK_CHILD_DROPS = ("RM_GAME_INSTANCE", "RIMFLOW_DRIVER_LOCK")
+
+
+def lock_child_env(environ, gen_var):
+    """The environment of the WSL child that holds a lock for a Windows driver: without this process's generation and the game pins.
+    A dropped name leaves WSLENV too: WSL passes a name that WSLENV lists and this process lacks as an EMPTY value, and an empty
+    RIMFLOW_DRIVER_LOCK reads as "no lock path" (game_lock.lock_path), so ArchBig's lock could not be taken (2026-11-24)."""
+    drop = (gen_var,) + LOCK_CHILD_DROPS
+    env = {k: v for k, v in environ.items() if k not in drop}
+    if "WSLENV" in env:
+        env["WSLENV"] = ":".join(w for w in env["WSLENV"].split(":") if w and w.split("/")[0] not in drop)
+    return env
+
+
 class RealBridge(object):
     """One bridge socket to one named game. A lost reply is told apart from an answered error."""
 
@@ -125,7 +139,7 @@ class RealWorld(object):
             # budget: danger=a hung wsl.exe (interop) holds the lock take, and so the scene; never reached in the 14 days to
             # budget: 2026-11-24; no record of its run
             script = subprocess.run(["wsl.exe", "-d", distro, "wslpath", "-u", os.path.join(RIMFLOW, "game_lock.py")], capture_output=True, text=True, timeout=60).stdout.strip()
-        env = {k: v for k, v in os.environ.items() if k not in (hg.ENV_GEN, "RM_GAME_INSTANCE", "RIMFLOW_DRIVER_LOCK")}
+        env = lock_child_env(os.environ, hg.ENV_GEN)
         p = subprocess.Popen(["wsl.exe", "-d", distro, "python3", script, "run", letter, "--for", purpose, "--", "cat"], stdin=subprocess.PIPE,
                              stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True, env=env)
         said = p.stderr.readline().strip()          # one line: held, or the refusal; an end of file is a child that died

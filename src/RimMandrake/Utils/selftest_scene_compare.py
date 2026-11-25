@@ -90,8 +90,10 @@ def t_missing_tick_range_is_could_not_compare():
 def t_replay_is_never_a_sample():
     s = sample(replayed=True)
     assert SC.refuse(s, ORIGIN)[0] == "REPLAY"
-    j = SC.judge_arms([sample(), sample(rows=trace()), sample(replayed=True, rows=trace(run="s3_r1"))], ORIGIN, 2)
-    assert j["play1"]["runs"] == 1 and j["play1"]["refused"] == 2 and j["play1"]["counts"] is False, j
+    j = SC.judge_arms([sample(rows=trace(run="s0_r1")), sample(arm="step"), sample(arm="step", rows=trace()),
+                       sample(arm="step", replayed=True, rows=trace(run="s3_r1"))], ORIGIN, 2)
+    assert j["step"]["runs"] == 1 and j["step"]["refused"] == 2 and j["step"]["counts"] is False, j
+    assert "only 1 counted runs of 2" in j["step"]["line"], j
 
 
 def t_runs_not_from_one_save_are_refused():

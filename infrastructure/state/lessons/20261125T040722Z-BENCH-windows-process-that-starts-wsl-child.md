@@ -1,0 +1,3 @@
+A Windows process that starts a WSL child passes every name that WSLENV lists, and a name that the Windows process lacks arrives in WSL as an EMPTY value, not as unset. Dropping a variable from the child's env dict is not enough: drop it from WSLENV too. Seen 2026-11-24: scene.open from python.exe on ArchBig refused COULD_NOT_LOOK 'no lock path', because the lock child read RIMFLOW_DRIVER_LOCK='' and game_lock.lock_path reads an empty pin as no lock; ArchSmall escaped only because its lock is not the pinned one. Fix: scene_world.lock_child_env.
+item: RIMMANDRAKE_MEASURE_PLAY_AGAINST_PAUSED_STEP_NEVER_COMPARED
+home: infrastructure/state/facts/tool_traps.md

@@ -81,6 +81,10 @@
    "n": 1,
    "why": "git push races of a ledger-only landing; on giving up the ordinary publish route takes over, nothing is charged"
   },
+  "src/RimMandrake/Utils/scene_compare.py::one::attempt < 3": {
+   "n": 1,
+   "why": "asks scene.open again only after a refusal in its lock phase, which changed nothing (the WSL lock child of a Windows driver died with exit -1, 2026-11-24): a machine fault, so no run of the work is spent; the third such refusal is recorded as a COULD_NOT_LOOK sample, never as a mod or arm result. Danger of no bound: a lock that never answers loops for ever"
+  },
   "src/RimMandrake/Utils/testq/archmagi_switch.py::decide::(inp.get('arch_invalid_streak') or 0) >= LATCH_STREAK": {
    "n": 1,
    "why": "machine brake: INVALID runs latch the Archmagi lane itself; no chain is charged"
