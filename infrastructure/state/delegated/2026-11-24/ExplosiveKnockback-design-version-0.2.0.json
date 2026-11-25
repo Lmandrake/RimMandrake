@@ -1,0 +1,10 @@
+{
+ "item": "RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME",
+ "subject": "ExplosiveKnockback Design Version 0.2.0",
+ "class": "design",
+ "decision": "opened and locked 0.2.0 (MINOR) with 14 new bars: carried_thing_own_arc, collision_bruise_by_size, nine blast_show_* bars, gas_shoves_pawn_on_pit_cover, no_impact_without_contact, rebound_goes_shorter; every 0.1.0 bar kept",
+ "reasons": "Divergent additions from his own words of 2026-11-24 (OWNER:1795565769863524396), opened as a MINOR on the obvious reading: the carried thing on its own arc, collision bruises by size, our own blast show, and the polish lines the Conductor judged relevant. He ruled the version himself: \"Both of these re-openings will of course go to the NEXT version of the mod.\" (OWNER:1795565863812726726). No recorded evidence argues against 0.2.0 or against these bars (his Evidence-for-Ask ruling, 2026-11-15). Two readings are the Designer's and his to undo: 'size' in the bruise rule is the creature's mass, and the same rule covers a pawn that stops a thrown pawn.",
+ "evidence": "design/concepts/ExplosiveKnockback/version/VERSION.json",
+ "at": "2026-11-25T00:32:27Z",
+ "by": "Designer run RIMMANDRAKE_OPEN_KNOCKBACK_ZERO_TWO_BLAST_SHOW_HE_SAID_GET_CREATIVE"
+}

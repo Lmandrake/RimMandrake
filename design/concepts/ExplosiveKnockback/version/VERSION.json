@@ -1,24 +1,60 @@
 {
  "mod": "ExplosiveKnockback",
- "version": "0.1.0",
+ "version": "0.2.0",
+ "kind": "MINOR",
  "state": "locked",
- "locked_on": "2026-11-13",
- "locked_by": "owner",
- "owner_words": "\"Yes, fix it like that, and then please record this as an actual Pass.\" (owner, 2026-11-13T22:24:09Z, ledger OWNER:1794608649743135329); the Designer Lock stage landed on it in 1a52342277 (run bench-ek-owner-lock-st5-20261113, locked 2026-11-13T22:49:02Z)",
- "bars_total": 59,
- "bars_met": 56,
- "judge_rounds": 12,
- "tokens_spent": 97196907,
- "locked_from_commit": "237b79116781821545f7ac58c23ed40bfc0250c4",
+ "locked_on": "2026-11-24",
+ "locked_by": "pipeline",
+ "per_ruling": "RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME",
+ "why": "Divergent additions from his own words of 2026-11-24 (OWNER:1795565769863524396), opened as a MINOR on the obvious reading: the carried thing on its own arc, collision bruises by size, our own blast show, and the polish lines the Conductor judged relevant. He ruled the version himself: \"Both of these re-openings will of course go to the NEXT version of the mod.\" (OWNER:1795565863812726726). No recorded evidence argues against 0.2.0 or against these bars (his Evidence-for-Ask ruling, 2026-11-15).",
+ "opened_by": "Designer run RIMMANDRAKE_OPEN_KNOCKBACK_ZERO_TWO_BLAST_SHOW_HE_SAID_GET_CREATIVE (the Conductor's brief)",
+ "scope": [
+  "RIMMANDRAKE_FLING_KNOCKBACK_CARRY_ON_OWN_ARC",
+  "RIMMANDRAKE_BRUISE_KNOCKBACK_LANDING_ON_PAWN",
+  "RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS (design: design/specs/2026-11-24-knockback-blast-show/design.md)",
+  "RIMMANDRAKE_FOLD_KNOCKBACK_POLISH_LINES_INTO_ZERO_TWO_THREE_JUDGED_IN",
+  "RIMMANDRAKE_REWORD_KNOCKBACK_REBOUND_LEAF_THEN_RETAKE_WHOLE_EXAM"
+ ],
+ "bars_new": [
+  "carried_thing_own_arc",
+  "collision_bruise_by_size",
+  "blast_show_fire_and_flash",
+  "blast_show_screen_shake",
+  "blast_show_air_ripple",
+  "blast_show_smoke",
+  "blast_show_crater_scar",
+  "blast_show_soot_on_things",
+  "blast_show_soot_on_pawns",
+  "blast_show_scales_with_damage",
+  "blast_show_switches_off_clean",
+  "gas_shoves_pawn_on_pit_cover",
+  "no_impact_without_contact",
+  "rebound_goes_shorter"
+ ],
+ "art_items": {
+  "blast_show_fire_and_flash": "art is listed, not queued: design/specs/2026-11-24-knockback-blast-show/design.md §6; it goes through the art pipeline and its judge, and installs through art install only",
+  "blast_show_smoke": "art is listed, not queued: design/specs/2026-11-24-knockback-blast-show/design.md §6; it goes through the art pipeline and its judge, and installs through art install only",
+  "blast_show_crater_scar": "art is listed, not queued: design/specs/2026-11-24-knockback-blast-show/design.md §6; it goes through the art pipeline and its judge, and installs through art install only",
+  "blast_show_soot_on_pawns": "art is listed, not queued: design/specs/2026-11-24-knockback-blast-show/design.md §6; it goes through the art pipeline and its judge, and installs through art install only"
+ },
+ "mod_settings": "Every 0.1.0 switch stays. The blast show adds one on/off per part (fire and flash, smoke, screen shake, crater scars, soot on things, soot on pawns, air ripple), a screen shake strength slider and a choice of how long scars and soot last. All on by default; every switch off gives the unmodded look of a blast. No switch names a biome.",
+ "out_of_scope": {
+  "the later set of the blast show (water, snow and steam; roof dust; sound; stagger, thoughts and noise; heat shimmer; sand and ash; the looks of Stun, EMP, Smoke and Extinguish blasts; soot on goods; lights; the shell's warning)": "design.md §4: his words do not name them; a later version",
+  "the jolt-decay doc line, the fire switch on another mod's fire type, the two storeroom-raid check nits": "judged not relevant by the Conductor, 2026-11-24; they stay on version/polish.md",
+  "a check that throws with an Outer Rim weapon": "dropped on his word, 2026-11-24: \"we will own all our own weapons\"",
+  "dropping Extra Explosion Effects, Better Explosions and Dynamic Effects Forge from the full list": "a mod-list change after the show ships, not a bar; design.md §1.1 names what each drop loses"
+ },
+ "previous": "version/previous/0.1.0/VERSION.json",
+ "bars_total": 73,
+ "bars_met": "UNMEASURED",
+ "locked_from_commit": "c276d1b00edd3cab66fde8babf6a02a29a56d113",
  "measured_from": {
-  "bars_total": "coverage_judge.required_ids(): record.json inventory (30) + tree.json leaves (29), the coverage checklist rows the judge passes or refuses on",
-  "bars_met": "checklist rows with every part ok in the latest verdict rm-coverage-judge-1794599960 (2026-11-13T19:59:20Z), judged at tree_hash 0290003823 and sheet_hash 234fd3c20e = the files at the lock",
-  "judge_rounds": "coverage_judge.rounds(): 9 legacy rounds named by budget charges (2026-11-12) + 3 recorded in stage.json coverage_rounds (2026-11-13); judging is stopped (REFUSAL_NOTHING_COULD_EVER_PASS) after the released round 12",
-  "tokens_spent": "stage.json budget.spent (cap 4000000); every Designer stage run, helper, review and judge charge on this concept",
-  "locked_from_commit": "origin/main when this version was entered, 2026-11-13; per-file blob hashes in bars.md"
+  "bars_total": "required ids at locked_from_commit c276d1b00edd: record.json inventory (44) + tree.json leaves (29) = 73; the 59 bars of 0.1.0 (all kept, MINOR) plus the 14 of bars_new",
+  "bars_met": "not measured at the lock: preflight and the stages after it measure it"
  },
  "caveats": [
-  "29 of the budget charges are kind 'unmeasured' (estimates, 86476989 tokens of the 97196907 total); the measured part is 10719918",
-  "the judge said gaps g2-g6 'look fixed' but counted them open because no claim was written; claims for g2-g6 were written after (coverage_fixes.json), g1 has none"
+  "The Cold Reader exam is frozen against an older tree and is not retaken by this pass: a whole retake needs five fresh agents (RIMMANDRAKE_REWORD_KNOCKBACK_REBOUND_LEAF_THEN_RETAKE_WHOLE_EXAM).",
+  "locked by the pipeline under his Evidence-for-Ask ruling, not on his card; the delegated record is infrastructure/state/delegated/2026-11-24/ExplosiveKnockback-design-version-0.2.0.json",
+  "The 14 new bars are record.json inventory rows; tree.json is unchanged."
  ]
 }

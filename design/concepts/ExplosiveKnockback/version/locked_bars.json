@@ -1,8 +1,8 @@
 {
  "schema": 1,
  "mod": "ExplosiveKnockback",
- "version": "0.1.0",
- "locked_from_commit": "237b79116781821545f7ac58c23ed40bfc0250c4",
+ "version": "0.2.0",
+ "locked_from_commit": "c276d1b00edd3cab66fde8babf6a02a29a56d113",
  "ids": [
   "inv_kernel",
   "inv_hook",
@@ -34,6 +34,20 @@
   "inv_too_weak_skip",
   "inv_creature_mass_limit",
   "inv_blast_power_damage",
+  "carried_thing_own_arc",
+  "collision_bruise_by_size",
+  "blast_show_fire_and_flash",
+  "blast_show_screen_shake",
+  "blast_show_air_ripple",
+  "blast_show_smoke",
+  "blast_show_crater_scar",
+  "blast_show_soot_on_things",
+  "blast_show_soot_on_pawns",
+  "blast_show_scales_with_damage",
+  "blast_show_switches_off_clean",
+  "gas_shoves_pawn_on_pit_cover",
+  "no_impact_without_contact",
+  "rebound_goes_shorter",
   "people_thrown_three_cells",
   "pawn_flight_arc",
   "the_spared",
@@ -74,6 +88,16 @@
    "added": [],
    "removed": [],
    "count": 59
+  },
+  {
+   "at": "2026-11-25T00:32:13Z",
+   "by": "DESIGNER",
+   "why": "0.2.0 locked under Evidence-for-Ask: 59 bars of 0.1.0 kept plus 14 from his words of 2026-11-24, derived from locked_from_commit c276d1b00edd",
+   "how": "required_ids at locked_from_commit c276d1b00edd3cab66fde8babf6a02a29a56d113 (73), less bars_moved_to_next_version (0), plus bars_added_after_lock (0)",
+   "source": null,
+   "added": [],
+   "removed": [],
+   "count": 73
   }
  ]
 }

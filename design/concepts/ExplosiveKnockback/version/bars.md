@@ -1,3 +1,13 @@
+# ExplosiveKnockback 0.2.0: the bars, locked as they stood on 2026-11-24
+
+Locked by pipeline (RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME). Lock commit: `c276d1b00edd3cab66fde8babf6a02a29a56d113`. State: locked.
+
+- Bars: **73**, the ids in `locked_bars.json` (written by `maturation.py lock-bars`): the 59 bars of 0.1.0, all kept, plus 14 new inventory rows of `design/concepts/ExplosiveKnockback/record.json` (git blob `0a6f5b63e41395c0a979aae8bb79e7cdd76675f5` at the lock).
+- New in 0.2.0: `carried_thing_own_arc`, `collision_bruise_by_size`, `blast_show_fire_and_flash`, `blast_show_screen_shake`, `blast_show_air_ripple`, `blast_show_smoke`, `blast_show_crater_scar`, `blast_show_soot_on_things`, `blast_show_soot_on_pawns`, `blast_show_scales_with_damage`, `blast_show_switches_off_clean`, `gas_shoves_pawn_on_pit_cover`, `no_impact_without_contact`, `rebound_goes_shorter`. Their text is in `record.json`; the vision delta is in `vision.md`.
+- `tree.json`, `sheet.md`, `scenes.json`, `floor.json` and `exam.json` are unchanged by the 0.2.0 lock. The 0.1.0 pins and their history follow, as they stood. A copy of the 0.1.0 files is in `previous/0.1.0/`.
+
+---
+
 # ExplosiveKnockback 0.1.0: the bars, locked as they stood on 2026-11-13
 
 Owner, by card 2026-11-13: *"Lock today's bars as 0.1.0"*. Nothing here edits a bar: this file points at the bars and pins their bytes. State: locked, pending his read.
