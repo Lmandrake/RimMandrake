@@ -45,4 +45,5 @@ folders (`infrastructure/stevedesktop/family_clean/`).
   first) are within the budget; the older ones go.
 - **shots_blind_results_unmeasured.** When a results folder cannot be read, each screenshot that would go reads
   UNMEASURED, and nothing is removed.
-- **check_reads_host_families.** On a host whose family set is `screenshots`, `check` holds after one `--apply` run.
+- **check_reads_host_families.** On a host whose family set is `screenshots`, `check` holds after one `--apply` run,
+  and fails after an `--apply` run whose results folder could not be read.

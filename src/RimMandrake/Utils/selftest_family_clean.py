@@ -233,6 +233,13 @@ def shots_cases() -> list[str]:
         blank = [r["path"] for r in d["rows"] if not r.get("reader")]
         if blank:
             fails.append("shots: rows with no reader: %s" % blank[:3])
+        # "whatever the budget": a 1-byte budget that the young shot alone is past. Above, the young shot is also inside
+        # the 1000 B budget, so a tool without the young line read YOUNG there too.
+        rc, dy, err = run(dict(env, FAMILY_CLEAN_SHOT_BUDGET="1"))
+        vy = verdicts(dy, "screenshots") if dy else {}
+        if vy.get(str(young)) != "YOUNG" or vy.get(str(in_budget)) != "REMOVE":
+            fails.append("shots_young_kept: with a 1 B budget, young is %s (want YOUNG), in_budget is %s (want REMOVE)"
+                         % (vy.get(str(young)), vy.get(str(in_budget))))
         # a results folder that cannot be read: nothing is "no reader"
         rc, db, err = run(dict(env, FAMILY_CLEAN_RESULTS=str(td / "no_such_outbox")))
         vb = verdicts(db, "screenshots") if db else {}
@@ -240,6 +247,13 @@ def shots_cases() -> list[str]:
             fails.append("shots_blind_results_unmeasured: old is %s, over is %s" % (vb.get(str(old)), vb.get(str(over))))
         chk = lambda: subprocess.run([sys.executable, str(TOOL), "check"], capture_output=True, text=True,  # noqa: E731
                                      env=dict(os.environ, FAMILY_CLEAN_SKIP_TIMER="1", **env))
+        # a blind --apply run removes nothing, and check must not hold on it: else pruning stops and the reading holds
+        rc, dba, err = run(dict(env, FAMILY_CLEAN_RESULTS=str(td / "no_such_outbox")), "--apply")
+        if not old.exists():
+            fails.append("shots_blind_results_unmeasured: a blind --apply removed %s" % old.name)
+        c = chk()
+        if c.returncode != 1:
+            fails.append("check_reads_host_families: check held after a blind screenshots --apply run: %s" % c.stdout.strip())
         rc, d2, err = run(env, "--apply")
         if d2 is None:
             return fails + ["shots: --apply gave no JSON (rc %s): %s" % (rc, err)]

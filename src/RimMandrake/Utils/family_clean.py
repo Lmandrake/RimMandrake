@@ -60,7 +60,8 @@ AGE_D = 14.0
 CLAUDE_AGE_D = 30.0
 # danger: Claude Code's own cleanup stopped and transcripts pile up; measured residue past 30 d on 2026-11-25: 57 files, <0.1 GB
 CLAUDE_RESIDUE_GB = 1.0
-# danger: a timer that died leaves trash growing unseen; the timer is daily, so 30 h is one missed run plus slack
+# danger: a timer that died leaves trash growing unseen; Archmagi's timer is daily (SteveDesktop's every 6 h), so 30 h
+# is one missed daily run plus slack
 CHECK_MAX_AGE_H = 30.0
 FAMILIES = ("transient", "saves", "backups", "codex_wsl", "showings", "scratch", "kept_clones", "build", "detached",
             "claude_projects", "screenshots")
@@ -841,6 +842,11 @@ def cmd_check() -> int:
              s.get("verdicts", {}).get("UNMEASURED", 0) == s.get("rows")]
     if blind:
         bad.append("families wholly unmeasured: %s" % ", ".join(blind))
+    # a host-only family is one folder's whole rule: one blind reader there (a results folder gone) stops every removal
+    part = [f for f, s in lr.get("families", {}).items() if f in HOST_ONLY and s.get("verdicts", {}).get("UNMEASURED")]
+    if part:
+        bad.append("host families with unmeasured rows: %s (%s)" % (", ".join(part), "; ".join(
+            "; ".join(lr["families"][f].get("unmeasured", [])[:1]) for f in part)))
     if os.environ.get("FAMILY_CLEAN_SKIP_TIMER") != "1":
         r = subprocess.run(["systemctl", "--user", "is-enabled", "rm-family-clean.timer"], capture_output=True, text=True,
                            timeout=HANG_SYSTEMCTL_S)
