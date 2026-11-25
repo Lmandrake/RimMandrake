@@ -23,7 +23,7 @@ OWED_TAPS = "RIMMANDRAKE_BUILD_WORLD_EVENT_TAPS_SECOND_FAMILY"
 OWED_TUNE = "RIMMANDRAKE_BUILD_DEVIATION_RECORD_SETTINGS_FIELD_JOINS_FIRST"
 OWED_ORDER = "RIMMANDRAKE_BUILD_CAST_ASSERTS_AND_ORDER_THROUGH_GIVER"
 OWED_RELOAD = "RIMMANDRAKE_BUILD_LOAD_CROSSING_ACT_REBINDS_ALIASES"
-OWED_STATIONS = "RIMMANDRAKE_BUILD_STAGE_MAP_CAST_ONLY_NO_BYSTANDERS"
+STAGE_MAKE = "python3 src/RimMandrake/Utils/stage_map.py make <game> --kind settlement"
 DUMP = os.path.join("observed", "inventory", "DefDump_OFFICIAL")
 ALIAS = re.compile(r"^[A-Za-z_]\w*$")
 MEMBER = re.compile(r"^([A-Za-z_]\w*)(?:\[(\d+)\])?$")
@@ -355,8 +355,8 @@ def _cells(at):
 def _plan_stage(s, cast, things, terrain, station):
     """-> the staging plan, checked whole before any bridge call."""
     if station is not None and not (isinstance(station, tuple) and len(station) == 4 and all(isinstance(n, int) for n in station)):
-        raise Refused("BAD_ARGS", "station is (x, z, w, h) in map cells; with no station, positions are map cells (the list of "
-                      "clean stations is %s)" % OWED_STATIONS)
+        raise Refused("BAD_ARGS", "station is (x, z, w, h) in map cells, or a request to the stage's allocator, "
+                      "dict(size=(w, h), margin=, edge=, incident=, home=, weather=); with no station, positions are map cells")
     ox, oz = (station[0], station[1]) if station else (0, 0)
     plan, seen = [], set()
 
@@ -422,11 +422,21 @@ def stage(s, cast=None, things=None, terrain=None, station=None):
     """Put the cast, things and terrain on the map, and say what the game really made (scene_contracts/stage.md)."""
     if s.closed:
         raise Refused("SESSION_CLOSED", "this session has ended; open a session")
-    plan = _plan_stage(s, cast, things, terrain, station)
+    request = station if isinstance(station, dict) else None
+    if request is not None:
+        size = request.get("size")
+        if not (isinstance(size, tuple) and len(size) == 2 and all(isinstance(n, int) for n in size)):
+            raise Refused("BAD_ARGS", "a station request names its size=(w, h)")
+        _plan_stage(s, cast, things, terrain, (0, 0) + size)     # the whole plan is checked before a station is taken
+        stage = _stage_of(s)
+    plan = _plan_stage(s, cast, things, terrain, station) if request is None else None
     rec = s._begin("s.stage")
     _paused(s, "staging")
     did, bad, out = [], [], Cast()
-    if station:
+    if request is not None:
+        station = _take_station(s, stage, request, rec, did)
+        plan = _plan_stage(s, cast, things, terrain, station)
+    elif station:
         r = s._call(CLEAN, rects="%d,%d,%d,%d" % station, categories="All")
         b = _block(s, CLEAN, r, rec, did)
         did.append("cleaned the station %s" % (station,))
@@ -509,6 +519,77 @@ def stage(s, cast=None, things=None, terrain=None, station=None):
         raise Fault("STAGING_FAULT", done=did + ["made: %s" % out], detail="; ".join(bad))
     out.receipt = s._finish(rec, did=did)
     return out
+
+
+# ------------------------------------------------------------------ the stations of a stage map (scene_stations.py)
+def _stage_of(s):
+    """-> the allocator of the stage map that this game holds now. A map that is not a made stage is refused NO_STAGE."""
+    import scene_stations as ST
+    text = s.W.stage_state(s.key)
+    if not text:
+        raise Refused("NO_STAGE", "the map on %s is not a made stage, so no allocator gives stations on it: load a stage save "
+                      "(needs={'map': 'RM_Stage_<list>'}; make one with `%s`), or give station as a rect (x, z, w, h)" % (s.game, STAGE_MAKE))
+    try:
+        stage = ST.Stage.from_json(text)
+    except (ST.Refused, ValueError, KeyError) as e:
+        raise Fault("COULD_NOT_LOOK", detail="the stage file of %s could not be read: %s" % (s.game, e))
+    size = s._map_size()
+    if tuple(size) != stage.size:
+        raise Refused("STAGE_STALE", "the stage file of %s is for a %dx%d map and the map is %dx%d: load the stage save again" % (
+            s.game, stage.size[0], stage.size[1], size[0], size[1]))
+    return stage
+
+
+def _take_station(s, stage, request, rec, did):
+    """Give a station, clean it, and retire it and give another when the clean leaves a thing that blocks. -> its rect."""
+    import scene_stations as ST
+    while True:
+        try:
+            got = stage.give(**dict(request, scene=s.id))
+        except ST.Refused as e:
+            s.W.stage_save(s.key, stage.to_json())
+            raise Refused(e.name, e.why)
+        s.W.stage_save(s.key, stage.to_json())
+        r = s._call(CLEAN, rects="%d,%d,%d,%d" % got["rect"], categories="All")
+        b = _block(s, CLEAN, r, rec, did)
+        if b.get("leftBlocking"):
+            stage.retire(got["id"], "the clean left %s" % (b.get("left"),))
+            s.W.stage_save(s.key, stage.to_json())
+            did.append("retired station %s %s: the clean left %s" % (got["id"], got["rect"], b.get("left")))
+            continue
+        s._stations.append(got["id"])
+        did.append("took station %s %s on the %s stage %s, cleaned" % (got["id"], got["rect"], got["kind"], got["stage"]))
+        if got["shared_map"]:
+            rec.could_not_look.append("shared map: station %s is on a colony map; its bystanders are held per pawn, not removed" % got["id"])
+        return got["rect"]
+
+
+def put_back_stations(s):
+    """At close: clean each station this session took, release it, or retire it when the clean left a thing. -> one line."""
+    import scene_stations as ST
+    if not s._stations:
+        return "no station was taken"
+    text = s.W.stage_state(s.key)
+    if not text:
+        raise Fault("COULD_NOT_LOOK", detail="the stage file of %s is gone: stations %s were not cleaned" % (s.game, s._stations))
+    stage = ST.Stage.from_json(text)
+    lines = []
+    for sid in list(s._stations):
+        st = next(x for x in stage.stations if x["id"] == sid)
+        r = s._call(CLEAN, rects="%d,%d,%d,%d" % tuple(st["rect"]), categories="All")
+        b = r.get("readBack") if isinstance(r, dict) else None
+        if not isinstance(b, dict):
+            stage.retire(sid, "the clean at close gave no readBack block")
+            lines.append("retired %s: its clean could not be read" % sid)
+        elif b.get("leftBlocking"):
+            stage.retire(sid, "the clean at close left %s" % (b.get("left"),))
+            lines.append("retired %s: the clean left %s" % (sid, b.get("left")))
+        else:
+            stage.release(sid)
+            lines.append("cleaned and released %s" % sid)
+        s._stations.remove(sid)
+    s.W.stage_save(s.key, stage.to_json())
+    return "; ".join(lines)
 
 
 def _cell(v):

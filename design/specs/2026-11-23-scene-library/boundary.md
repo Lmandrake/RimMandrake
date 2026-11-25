@@ -124,3 +124,30 @@ mod does only through its own UI path (it goes through `s.raw`, and the run is E
   run counts (`t_a_run_after_a_changing_raw_call_does_not_count_for_a_bar`).
 - **a-trace-with-no-close-is-could-not-look.** (`t_a_trace_with_no_closing_record_is_could_not_look`)
 
+
+## STATIONS (`s.stage(station=dict(...))`)
+
+Code: the station functions of `src/RimMandrake/Utils/scene_names.py` (`_stage_of`, `_take_station`, `put_back_stations`), the
+stage files of `scene_world.py` (`stage_state`, `stage_save`, `stage_loaded`, `stage_made`), and the allocator
+`src/RimMandrake/Utils/scene_stations.py` (its own promises: `design/specs/2026-11-23-bridge-v2/boundary.md` §THE STATION
+ALLOCATOR). Item: `RIMMANDRAKE_BUILD_STAGE_MAP_CAST_ONLY_NO_BYSTANDERS`. Each promise has a check of its name in
+`src/RimMandrake/Utils/selftest_scene_stage_station.py`, on the fake game.
+
+It accepts a request `dict(size=(w, h), margin=, edge=, incident=, home=, weather=)` on a map that a made stage save put on
+the game (`stage_map.py make`), or a rect `(x, z, w, h)` on any map, as before. The stage files live under the agent storage
+root, `scratch/scene_stages/`: `made/<save>.json` for each stage save, `live/<game key>.json` for the map that a game holds
+now. It does not survive (not promised): a map loaded on the game by a tool that is not `scene.open` while the live file stays
+(the size check catches a map of another size only); two sessions on one game at once (the driver lock refuses the second).
+
+- **a-request-draws-a-clean-station.** The station comes from the allocator, is cleaned before anything is staged on it, and
+  every position is relative to its corner. At close each station that the session took is cleaned and released
+  (`a_station_request_draws_a_clean_station_and_positions_are_relative`).
+- **a-dirty-station-is-retired.** A station whose clean leaves a thing that blocks is retired with the thing named, and the
+  allocator gives another (`a_station_whose_clean_leaves_a_thing_is_retired_and_another_is_given`).
+- **a-refused-request-changes-nothing.** A request that the stage cannot serve (`POCKET_CANNOT_SERVE`, `NO_ROOM`), or a plan
+  whose cells are outside the station, is refused before any station is taken or cleaned
+  (`a_pocket_stage_refuses_a_raid_scene_before_any_change`).
+- **a-colony-station-says-shared-map.** The receipt of a station on a `colony` stage has a `could_not_look` line that starts
+  "shared map" (`a_colony_station_says_shared_map_on_its_receipt`).
+- **no-allocator-on-a-map-that-is-not-a-stage.** A request on a map that no stage save put there is `NO_STAGE` with the make
+  command; a live file for a map of another size is `STAGE_STALE` (`a_map_that_is_not_a_made_stage_is_refused_no_stage`).

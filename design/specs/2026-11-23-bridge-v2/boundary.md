@@ -154,3 +154,27 @@ wiring checks in the selftest read the call sites for this); a game that changes
 | A clean that leaves a thing of its filter in its cells names each such thing, and the block is `ok` false. A thing kept on purpose (a pawn, a thing the game cannot destroy) is named as kept and does not make the block false. | `a_clean_that_left_a_thing_names_it` |
 | A refusal by name gives `ok` false, the refusal's name, and the rows made before it. A refusal before the first write has no rows. | `a_refusal_by_name_leaves_nothing_made` |
 | The block's `digest` is a function of the rows' read values only: thing ids, frames and the row order do not change it. Two builds of one request give equal digests; a different read value gives a different digest. | `two_builds_of_one_request_give_equal_digests` |
+
+## THE STATION ALLOCATOR (`src/RimMandrake/Utils/scene_stations.py`)
+
+Item `RIMMANDRAKE_BUILD_STAGE_MAP_CAST_ONLY_NO_BYSTANDERS`. Pure Python, no game. It says where on a stage map a scene may
+stage (05_build_design.md §Decision 7). The scene library calls it from `s.stage(station=dict(...))`
+(`design/specs/2026-11-23-scene-library/boundary.md` §STATIONS). Each promise has a test of its name in
+`src/RimMandrake/bridgetools/selftest_stage_stations.py`; the planted faults and their red runs are in
+`design/specs/2026-11-23-bridge-v2/live/stage_map/plants.txt`.
+
+It accepts: a stage with its kind (`settlement`, `pocket`, `colony`) and the map's size as read from the game; requests
+`size=(w, h)`, `margin`, `edge`, `incident`, `home`, `weather`, `scene`. It does not survive (not promised): a map whose usable
+cells are not one rectangle (rock, water: the stage map is bare ground of one terrain); a placement that packs the map best
+(the first fit, row by row, is used).
+
+| promise | test |
+|---|---|
+| No two given or retired stations overlap when each is grown by its own margin. | `no_two_stations_overlap_margins_included` |
+| A request that cannot fit is `NO_ROOM`, and the reason names the sizes, the given and the retired counts. | `a_request_that_cannot_fit_says_why` |
+| A retired station is never given again, its cells stay taken, and it cannot be released. | `a_retired_station_is_never_given_again` |
+| A station given with `edge=n` is at least n cells (plus the edge band) from each map edge; when none fits, `NO_ROOM` names the distance. | `a_station_near_the_edge_is_refused_when_the_plan_asks_distance` |
+| A `pocket` stage refuses a request that fires an incident, or needs an edge, a home or weather (`POCKET_CANNOT_SERVE`), and takes nothing. | `a_pocket_stage_refuses_a_scene_that_fires_an_incident` |
+| A station on a `colony` stage is marked `shared_map`; on the other kinds it is not. | `a_colony_station_is_marked_shared_map` |
+| A released station may be given again; the state written to disk and read back keeps every retirement. | `a_released_station_is_given_again_and_retirement_survives_a_reload` |
+| A request or a stage of a wrong shape is refused by name and takes nothing. | `a_bad_request_is_refused_by_name` |

@@ -45,6 +45,7 @@ class FakeGame(object):
         self.load_ready = [rec("status_initializing")]              # what a load shows before it is ready
         # the names of the conversion ticket (scene_names.py), from the wire pages; not recorded
         self.values = {}                # (of, path) -> (state, v): what jawa/read_paths reads
+        self.cleaned, self.dirty = [], {}   # the rects that jawa/destroy_batch cleaned; rects "x,z,w,h" -> things its clean leaves
         self.rect_values = []           # what a rect read gives: [{of, path, state, v}]
         self.kind_made = {}             # kindDef -> the kind the game makes instead (a replaced pawn kind)
         self.echo = False               # planted: a staging tool whose block echoes the request (no readBack)
@@ -191,11 +192,15 @@ class FakeGame(object):
                 d, rest = op.split(":")
                 x, z = (int(n) for n in rest.split(",")[:2])
                 made.append({"op": "terrain", "id": None, "x": x, "z": z, "got": {"terrain": d}})
+        left = []
+        if tool == "jawa/destroy_batch":
+            self.cleaned.append(a.get("rects"))
+            left = list(self.dirty.get(a.get("rects")) or [])
         if self.echo:
             return {"success": True, "pawns": [{"id": "Human1", "kind": a.get("kindDef")}], "ops": a.get("ops")}
-        block = {"ok": not wrong, "tool": tool, "faults": ["read_back_wrong"] if wrong else [], "frameOpen": 7, "frameReply": 7,
-                 "sameFrame": True, "rows": len(made), "rowsWrong": len(wrong), "wrong": wrong, "made": made, "leftBlocking": 0,
-                 "leftKept": 0, "left": [], "digest": "d"}
+        block = {"ok": not wrong and not left, "tool": tool, "faults": ["read_back_wrong"] if wrong else [], "frameOpen": 7, "frameReply": 7,
+                 "sameFrame": True, "rows": len(made), "rowsWrong": len(wrong), "wrong": wrong, "made": made, "leftBlocking": len(left),
+                 "leftKept": 0, "left": left, "digest": "d"}
         return {"success": not wrong, "readBack": block}
 
     # ---- a run: its records in the recorded schema
@@ -323,6 +328,7 @@ class FakeWorld(object):
         self.wanted_rows, self.verdict = {}, {"verdict": "MATCH", "why": []}
         self.canon = (["ASHKARR_WORLDMAP_FULL"], ["CANON_"])
         self.repo, self.gits = repo, {}
+        self.stages = {}                # ("made", save) | ("live", game key) -> the stage file's text
 
     game = property(lambda self: self.games["b"])
 
@@ -391,6 +397,24 @@ class FakeWorld(object):
     def file_stamp(self, path):
         n = self.game.pictures.get(path)
         return None if n is None else (4096, n)
+
+    def stage_state(self, key):
+        return self.stages.get(("live", key))
+
+    def stage_save(self, key, text):
+        self.stages[("live", key)] = text
+
+    def stage_loaded(self, key, where):
+        made = self.stages.get(("made", where))
+        if made:
+            self.stages[("live", key)] = made
+            return "the stage of %s: its stations are all clean (a fresh load)" % where
+        self.stages.pop(("live", key), None)
+        return "%s is not a made stage: no station allocator" % where
+
+    def stage_made(self, save, text):
+        self.stages[("made", save)] = text
+        return "made/%s" % save
 
     def save(self, path, text, append=False):
         self.files[path] = (self.files.get(path, "") if append else "") + text

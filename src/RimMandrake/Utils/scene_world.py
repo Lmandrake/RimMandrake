@@ -266,6 +266,46 @@ class RealWorld(object):
         os.makedirs(d, exist_ok=True)
         return d
 
+    # ---- the stage files (scene_stations.py): one made file per stage save, one live file per game
+    def _stage_path(self, *parts):
+        import rmpaths
+        return (rmpaths.rm_win if os.name == "nt" else rmpaths.rm_str)("scratch", "scene_stages", *parts)
+
+    def stage_state(self, key):
+        """-> the live stage file of the map that this game holds, or None when the map is not a made stage."""
+        try:
+            with open(self._stage_path("live", key + ".json"), encoding="utf-8") as f:
+                return f.read()
+        except FileNotFoundError:
+            return None
+
+    def stage_save(self, key, text):
+        p = self._stage_path("live", key + ".json")
+        os.makedirs(os.path.dirname(p), exist_ok=True)
+        with open(p + ".tmp", "w", encoding="utf-8") as f:
+            f.write(text)
+        os.replace(p + ".tmp", p)
+
+    def stage_loaded(self, key, where):
+        """A save was loaded on this game: its made stage file becomes the live one, or the live one is removed. -> one line."""
+        made = None if where.startswith("fresh:") else self._stage_path("made", where + ".json")
+        if made and os.path.exists(made):
+            with open(made, encoding="utf-8") as f:
+                self.stage_save(key, f.read())
+            return "the stage of %s: its stations are all clean (a fresh load)" % where
+        try:
+            os.remove(self._stage_path("live", key + ".json"))
+        except FileNotFoundError:
+            pass
+        return "%s is not a made stage: no station allocator" % where
+
+    def stage_made(self, save, text):
+        p = self._stage_path("made", save + ".json")
+        os.makedirs(os.path.dirname(p), exist_ok=True)
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(text)
+        return p
+
     def save(self, path, text, append=False):
         with open(path, "a" if append else "w", encoding="utf-8") as f:
             f.write(text)

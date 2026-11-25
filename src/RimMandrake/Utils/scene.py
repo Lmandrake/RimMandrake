@@ -172,6 +172,7 @@ class Session(object):
         self._tools, self._hands, self._run, self._dir, self._loaded = {}, {}, None, None, None
         self._tick = None
         self._aliases, self._shots = {}, set()  # alias -> thing id or [ids] (s.stage); the names of this run's pictures
+        self._stations = []                     # the ids of the stage stations that s.stage took (scene_stations.py)
 
     # ---- the bridge
     def _call(self, tool, **args):
@@ -381,6 +382,7 @@ class Session(object):
             raise Fault("LOAD_FAILED", done=["asked for %s" % where], detail=str(r.get("message") or r.get("error") or r))
         self._loaded = where
         p["did"].append("loaded %s (the game's earlier map is gone)" % where)
+        p["did"].append(self.W.stage_loaded(self.key, where))
         if not fresh:
             rec.could_not_look.append("whether %s was saved in a marked process: a save does not carry the mark yet" % where)
 
@@ -526,6 +528,8 @@ class Session(object):
             if not line.startswith(("released", "already free")):
                 raise Fault("LOCK_NOT_RELEASED", detail=line)
             return "driver lock: %s" % line
+        if self._stations and self.bridge is not None:
+            step("stage", lambda: names.put_back_stations(self))
         if self._insession:
             step("arm", end_session)
         if self._recorded:

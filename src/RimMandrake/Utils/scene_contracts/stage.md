@@ -9,7 +9,7 @@
 | `cast` | pawns by alias: `kind`, `at` (a cell, or a list of cells for a group), `faction` (default `player`), `can`; or `take=` a thing id or a list of ids that the map already holds (a fixture save) | `{"digger": dict(kind="Colonist", at=(4, 4), can=["Mining"])}`, `{"raiders": dict(take=["Human21181", "Human21233"])}` |
 | `things` | things by alias: `thing` (a def), `at` (a cell or a list), `stuff`, `rot` (0 north, 1 east, 2 south, 3 west) | `{"lamp": dict(thing="WallLamp", at=(3, 7), rot=0)}` |
 | `terrain` | rectangles and their terrain: `rect` (x, z, w, h), `terrain` | `{"plot": dict(rect=(0, 0, 12, 6), terrain="Soil")}` |
-| `station` | a rectangle (x, z, w, h): it is cleaned first, and every position is relative to its corner. `None`: positions are map cells and nothing is cleaned (the list of clean stations is `RIMMANDRAKE_BUILD_STAGE_MAP_CAST_ONLY_NO_BYSTANDERS`) | `None` |
+| `station` | a request to the stage map's allocator, `dict(size=(w, h), margin=, edge=, incident=, home=, weather=)`: the allocator gives a station that keeps its margin from every other station, it is cleaned first, and every position is relative to its corner; at close it is cleaned and released, or retired when the clean leaves a thing. Or a rectangle (x, z, w, h) on any map, cleaned first. `None`: positions are map cells and nothing is cleaned | `dict(size=(12, 8), margin=3)` |
 
 A group (`at=[...]` or `take=[...]`) is bound as `alias[0]`, `alias[1]`, and so on, in the order given.
 
@@ -39,6 +39,10 @@ station. At close the station is cleaned again, unless the script asks to keep i
 | `UNKNOWN_DEF` | a kind, thing or terrain def is not in the frozen dump | read the name from the def |
 | `ALIAS_TAKEN` | an alias is already bound in this session | choose another alias |
 | `OUTSIDE_STATION` | a position is outside the station | move it inside, or ask for a larger station |
+| `NO_STAGE` | a station request on a map that no stage save put on the game | load a stage save, or make one: `python3 src/RimMandrake/Utils/stage_map.py make <game> --kind settlement` |
+| `STAGE_STALE` | the game's stage file is for a map of another size | load the stage save again |
+| `NO_ROOM` | no station of that size, margin and edge distance is free | release a station, or make the stage again |
+| `POCKET_CANNOT_SERVE` | a pocket stage, and the request fires an incident or needs an edge, a home or weather | stage on a settlement map |
 | `BAD_ARGS` | a spec of a wrong shape, or nothing to stage | the message names the spec |
 
 **Fault:** `NO_CLEAN_STATION`: the clean of the station left a thing that blocks; `detail` names it.

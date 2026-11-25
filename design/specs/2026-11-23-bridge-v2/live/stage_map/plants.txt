@@ -1,0 +1,28 @@
+# planted faults on scene_stations.py, 2026-11-24 21:13 PST, selftest_stage_stations.py
+## plant 1: margins left out of the overlap test
+1
+FAIL no_two_stations_overlap_margins_included: AssertionError: {'id': 'st1', 'rect': (1, 1, 9, 7), 'margin': 3, 'kind': 'settlement', 'stage': 't', 'shared_map': False} and {'id': 'st2', 'rect': (10, 1, 9, 7), 'margin': 0, 'kind': 'settlement', 'stage': 't', 'shared_map': False} overlap with their margins
+PASS a_request_that_cannot_fit_says_why
+PASS a_retired_station_is_never_given_again
+PASS a_station_near_the_edge_is_refused_when_the_plan_asks_distance
+PASS a_pocket_stage_refuses_a_scene_that_fires_an_incident
+PASS a_colony_station_is_marked_shared_map
+FAIL a_released_station_is_given_again_and_retirement_survives_a_reload: AssertionError: {'id': 'st3', 'rect': (21, 1, 10, 10), 'margin': 2, 'kind': 'settlement', 'stage': 'RM_Stage_quick', 'shared_map': False}
+PASS a_bad_request_is_refused_by_name
+selftest_stage_stations: 6 checks passed
+exit=1
+## plant 2: a pocket stage given to a raid scene (the pocket refusal skips incident)
+1
+PASS no_two_stations_overlap_margins_included
+PASS a_request_that_cannot_fit_says_why
+PASS a_retired_station_is_never_given_again
+PASS a_station_near_the_edge_is_refused_when_the_plan_asks_distance
+FAIL a_pocket_stage_refuses_a_scene_that_fires_an_incident: AssertionError: not refused (POCKET_CANNOT_SERVE wanted)
+PASS a_colony_station_is_marked_shared_map
+PASS a_released_station_is_given_again_and_retirement_survives_a_reload
+PASS a_bad_request_is_refused_by_name
+selftest_stage_stations: 7 checks passed
+exit=1
+## restored
+selftest_stage_stations: 8 checks passed
+exit=0
