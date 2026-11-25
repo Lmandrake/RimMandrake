@@ -311,7 +311,7 @@ namespace JawaBench.BridgeTools
             }
 
             /// <summary>A new run starts: the kill records of the last run are not this run's.</summary>
-            public void NewRun() { _killed.Clear(); }
+            public void NewRun() { _killed.Clear(); foreach (var g in Guards) g.Mark(); }
 
             public string Summary()
             {

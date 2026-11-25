@@ -315,6 +315,64 @@ and names each entry.
 - **with-a-canonical-save-loaded-every-gate-is-refused.** Under CAMPAIGN, arming each of the three gates and holding the queue is
   refused by name and changes nothing, and a gate armed on a test save lets go when a canonical save is loaded under it.
 
+## TAP CERTIFICATE
+
+Code: `src/RimMandrake/bridgetools/tap_certificate.py` (all of it: the pure core and the `audit` command), the witness counts of
+`src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchHookGuard.cs` (`Committed`, `Mark`, and `committed`, `runEntered`,
+`runCommitted` in `CoverageFields`), the `Mark` calls in `JawaBenchCastCore.Taps.NewRun` and `JawaBenchWorld.Join`, and the live
+session `src/RimMandrake/bridgetools/prove_tap_certificate.py`. Item `RIMMANDRAKE_BUILD_TAP_CERTIFICATE_CANARY_RUNS_OFF_STAGE`. Each
+promise has a check of its name in `src/RimMandrake/bridgetools/selftest_tap_certificate.py`. No new patch site.
+
+**The certificate** is made once for each loaded identity, in a disposable game, by `prove_tap_certificate.py`: route fixtures do
+each tapped act by its real engine route, a positive and a negative case each, and one hook is taken off by hand and must be reported
+blind. It holds, for each tap of `TAPS`: the routes shown, the routes not shown, and every other owner's patch on its methods. Its
+key is the MVID of `JawaBench.BridgeTools` as loaded, the fingerprint of the running mod list (`loaded_build.fingerprint`), the hash
+of every other owner's patch on a tapped method, and the hash of the settings of every mod that has such a patch.
+
+**The check at arm** (`arm_check`) reads the loaded identity with `jawa/running_mods` and `jawa/harmony_patches` only (`ARM_READS`),
+and does no act. A scene arms CERTIFIED only when the certificate's key equals the loaded identity, our patch is on each method of
+each tap that it needs, and each route that it needs is on the certificate's shown list. Else it is COULD NOT ARM (a difference, a
+route not shown, our hook not on the method) or COULD NOT LOOK (no certificate, a read that failed), and its receipt reads
+BOOTSTRAP. The receipt names each foreign prefix on a method of a tap that the scene needs.
+
+**The witness** (`witness`, `run_coverage`) reads a run's close record: for each hook of `cast.taps` and `world.taps`, `runEntered`
+(admitted entries since the run's `Mark`) against `runCommitted` (postfixes that ran on an admitted call whose original ran). An entry
+with no commit (the original was skipped, it threw, or the postfix did not run) voids that tap's coverage for the run.
+
+### LIMITS
+
+None of its own.
+
+### DOES NOT SURVIVE (not promised)
+
+- **a-foreign-prefix-that-acts-otherwise-this-run.** No check at arm can show that another mod's prefix acts in this run as it did in
+  the session. An absence on such a method reads "not provable here", and a judge uses it neither to excuse nor to convict.
+- **a-route-the-session-did-not-take.** A route that no fixture took is "not shown", and an event on it can come and go unseen.
+- **the-marker-row.** The arm check sends no marker row through the writer: the run's own first sample is the first row that the
+  writer acknowledges, and a run whose trace has no first sample is COULD NOT LOOK by the evidence contract.
+- **a-hook-with-no-prefix-entry.** The witness counts only admitted entries. A hook whose prefix never ran (our patch off) shows no
+  gap; the arm check's patch read and the session's blind plant catch that case.
+- **gates-and-the-kill-and-incident-taps-in-the-witness.** They have no `runEntered`/`runCommitted` row in the close record; their
+  coverage for a run rests on the certificate alone.
+
+### PROMISES (each one is owed a test of the same name)
+
+- **a-certificate-for-another-companion-is-refused.** A loaded companion MVID that differs from the key refuses the certificate.
+- **a-certificate-for-another-mod-list-is-refused.** A running mod list whose fingerprint differs refuses it.
+- **a-changed-patch-inventory-is-refused.** Another owner's patch added to, or taken off, a tapped method refuses it.
+- **a-route-not-shown-is-listed-never-covered.** A route that no fixture showed is on `not_shown` and never on `covered`.
+- **a-scene-that-needs-an-uncertified-tap-could-not-arm.** A needed route not shown, or a tapped method without our patch, is COULD NOT
+  ARM, and the receipt reads BOOTSTRAP; a scene whose every need is covered reads CERTIFIED.
+- **the-arm-check-calls-no-act.** The arm check calls only `ARM_READS`, and none of them is on the session's act list (`ACT_TOOLS`).
+- **a-foreign-prefix-is-named-on-the-receipt.** Each foreign prefix on a method of a needed tap is a receipt line with its owner.
+- **a-missing-certificate-is-could-not-look.** No certificate is COULD NOT LOOK on every need, never covered, and BOOTSTRAP.
+- **a-changed-setting-of-a-patching-mod-voids-the-certificate.** A changed settings hash of a mod with a patch on a tapped method
+  refuses the certificate; a setting of a mod with no such patch changes nothing.
+- **an-entry-with-no-record-voids-the-tap-for-the-run.** A hook with more run entries than run commits voids its tap for the run; a
+  hook row without the two counts is "could not look", never "ok".
+- **an-absence-under-a-foreign-prefix-is-not-provable-here.** An absence on a covered route of a method with a foreign prefix reads
+  "not provable here"; on a route not shown it reads "not covered".
+
 ## LIVE READINGS
 
 | proof | reading | evidence |

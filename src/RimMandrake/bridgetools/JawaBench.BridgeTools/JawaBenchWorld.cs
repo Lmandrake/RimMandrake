@@ -69,6 +69,7 @@ namespace JawaBench.BridgeTools
         {
             if (run == null) return;
             EnsurePatched();
+            foreach (var g in Tp.Guards) g.Mark();      // the witness of the tap certificate counts this run from here
             run.World = new K.Tracks(new Source(mapId), K.ClockMs, Tp);
             _run = run;
         }

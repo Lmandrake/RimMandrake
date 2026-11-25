@@ -45,6 +45,11 @@ namespace JawaBench.BridgeTools
         private int _depth;
         internal long Entered, ForeignRejected, NestedRejected, OrphanExits, Unbalanced, OriginalSkipped, OriginalThrew;
         internal long Faults;
+        /// <summary>Commits that returned true: the postfix ran on an admitted call whose original ran (a record was due).</summary>
+        internal long Committed;
+        // The run-time witness of the tap certificate (RIMMANDRAKE_BUILD_TAP_CERTIFICATE_CANARY_RUNS_OFF_STAGE): Entered and Committed
+        // when the run began (Mark). An entry of this run with no commit is an original skipped or a postfix that never ran.
+        private long _markEntered, _markCommitted;
         internal volatile bool Disabled;
         internal string LastFault;
 
@@ -109,8 +114,12 @@ namespace JawaBench.BridgeTools
                 return false;
             }
             if (!ranOriginal) { Interlocked.Increment(ref OriginalSkipped); return false; }
+            Committed++;
             return true;
         }
+
+        /// <summary>A run begins: the witness counts entries and commits from here. Main thread, at the run's Join.</summary>
+        internal void Mark() { _markEntered = Entered; _markCommitted = Committed; }
 
         /// <summary>Our own body failed but the recorder stays on: counted and named, coverage reads degraded.
         /// For recorders where one odd modded Thing must not blind the whole log; Fault() is the disabling form.</summary>
@@ -150,12 +159,14 @@ namespace JawaBench.BridgeTools
                    ",\"foreignRejected\":" + I(Interlocked.Read(ref ForeignRejected)) + ",\"nestedRejected\":" + I(NestedRejected) +
                    ",\"orphanExits\":" + I(OrphanExits) + ",\"unbalanced\":" + I(Unbalanced) +
                    ",\"originalSkipped\":" + I(Interlocked.Read(ref OriginalSkipped)) + ",\"originalThrew\":" + I(Interlocked.Read(ref OriginalThrew)) +
-                   ",\"faults\":" + I(Interlocked.Read(ref Faults)) + ",\"lastFault\":" + JawaBenchTpsMath.Json(LastFault);
+                   ",\"faults\":" + I(Interlocked.Read(ref Faults)) + ",\"lastFault\":" + JawaBenchTpsMath.Json(LastFault) +
+                   ",\"committed\":" + I(Committed) + ",\"runEntered\":" + I(Entered - _markEntered) + ",\"runCommitted\":" + I(Committed - _markCommitted);
         }
 
         internal void ResetForTest()
         {
             _depth = 0; Entered = ForeignRejected = NestedRejected = OrphanExits = Unbalanced = OriginalSkipped = OriginalThrew = Faults = 0;
+            Committed = _markEntered = _markCommitted = 0;
             Disabled = false; LastFault = null;
         }
     }
