@@ -1,0 +1,24 @@
+RUNS   IntVec3 arithmetic -> (4, 0, 5)
+RUNS   GenSight.PointsOnLineOfSight -> 11
+RUNS   GenRadial.RadialCellsAround r=5 -> 81
+RUNS   Rand seeded -> 511
+RUNS   CellRect.ExpandedBy -> 49
+RUNS   GenMath.LerpDouble -> 25
+RUNS   UnityEngine.Mathf.Sqrt -> 1.4142135
+RUNS   UnityEngine.Vector3 ops -> 7.483315
+THROWS UnityEngine.Mathf.PerlinNoise (native) -> SecurityException: ECall methods must be packaged into a system module.
+THROWS UnityEngine.Time.realtimeSinceStartup (native) -> SecurityException: ECall methods must be packaged into a system module.
+RUNS   new Map() -> made
+RUNS   map.info.Size = 50x50 -> (50, 1, 50)
+RUNS   map.cellIndices -> 2500
+RUNS   new EdificeGrid(map) -> made
+RUNS   GenSight.LineOfSight on an empty 50x50 shell -> True
+RUNS   hand-made wall ThingDef, uninitialized object (fillPercent 1) -> Full
+RUNS   new Building { def }, Position, edificeGrid.Register -> True
+RUNS   GenSight.LineOfSight through the wall (want False) -> False
+RUNS   GenSight.LineOfSight beside the wall (want True) -> True
+THROWS map.ConstructComponents() -> Exception: Constructed DefMap<Verse.DesignationDef, System.Collections.Generic.List`1[Verse.Designation]> without defs being initialized. Try constructing it in ResolveReferences instead of the constructor.
+RUNS   DefDatabase<ThingDef>.AllDefsListForReading.Count (no load) -> 0
+THROWS ThingMaker.MakeThing(null def) -> SecurityException: ECall methods must be packaged into a system module.
+THROWS Find.TickManager (no game) -> NullReferenceException: Object reference not set to an instance of an object.
+SUMMARY runs 18 throws 5

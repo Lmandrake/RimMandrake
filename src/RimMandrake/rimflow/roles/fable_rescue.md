@@ -120,9 +120,12 @@ produce for those bars, enumerated.**
 <!-- offline-model: begin. One source: maturation.OFFLINE_MODEL reads this block into the offline builder's and the
 road-back fixer's briefs (item RIMMANDRAKE_TEACH_OFFLINE_MODEL_FIRST_BUILD; selftest_offline_model_rule.py). -->
 **The offline model (owner, 2026-11-16 and 2026-11-17).** Hunt parameter regimes and regions, not examples.
-- Keep the mod's decision logic in code that does not depend on the game (no Verse types). Decision logic is where a
-  thing goes, which way, how far, and whether it fires. Then an offline test compiles and runs the SHIPPED decision,
-  not a copy of it. The Explosive Knockback rescue (2026-11-17) moved the throw decision into `RM_KnockbackPlan.cs`. It
+- Keep the mod's decision logic runnable offline, on real game code wherever it runs. Decision logic is where a thing
+  goes, which way, how far, and whether it fires. Then an offline test compiles and runs the SHIPPED decision, not a
+  copy of it. Verse code that needs no Unity player runs in an offline .NET test that links the game's
+  `Assembly-CSharp.dll`: cell and rect geometry, seeded `Rand`, and `GenSight.LineOfSight` on a hand-built `Map` with
+  hand-made walls. Calls into Unity's engine, `ThingMaker`, a def's constructor, loaded defs and `Find.*` do not run
+  there, so keep those at the edge of the decision. The Explosive Knockback rescue (2026-11-17) moved the throw decision into `RM_KnockbackPlan.cs`. It
   then read an enumerated map of lanes with the bars' own checks.
 - Before any fix or tuning, build what lets you SEE the problem: a generator of the situations the mod can be in, read
   by the same checks the bars use. On Gimme Some Slack, the generator varied what the cord comes from, run length,

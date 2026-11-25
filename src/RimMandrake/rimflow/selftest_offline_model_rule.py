@@ -5,7 +5,8 @@ be instructed to the mod builder in general, yes, from the get-go?"). Item RIMMA
 
 - one source: the marked block in roles/fable_rescue.md step 2; maturation.OFFLINE_MODEL is read from it, and no other
   brief source (rimflow .py, roles/*.md, .claude/agents/*.md) carries a pasted copy of its lines.
-- the block says: decision logic Verse-free so an offline test runs the SHIPPED decision; a generator of the situations
+- the block says: decision logic runnable offline, on real game code wherever it runs (Verse code that needs no Unity
+  player, measured by RIMMANDRAKE_PROBE_OFFLINE_MODEL_LINKING_REAL_GAME_CODE), so an offline test runs the SHIPPED decision; a generator of the situations
   read by the bars' own checks, built before fixing or tuning; the range declared (what it varies, how many cases, what
   it leaves out), never "every case"; proportional (no decision logic: one line instead).
 - the offline builder brief (brief_text, for a mod with no records yet: the first build) and the road-back fixer brief
@@ -47,6 +48,7 @@ check(callable(reader) and reader() == block, "OFFLINE_MODEL is read from fable_
 
 flatb = re.sub(r"\s+", " ", block)
 for words in ("Hunt parameter regimes and regions, not examples.", "Verse", "SHIPPED decision",
+              "runnable offline, on real game code wherever it runs",
               "a generator of the situations the mod can be in", "the same checks the bars use",
               "Before any fix or tuning", "what it varies, how many cases it makes, what it leaves out and why",
               "never \"every case\"", "no decision logic"):
