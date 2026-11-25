@@ -1,6 +1,6 @@
 {
  "mod": "ExplosiveKnockback",
- "version": "0.1.0",
+ "version": "0.2.0",
  "made": "2026-11-15T15:12:28-08:00",
  "made_by": "rm-builder, Maturation pilot row 2 (throwaway make_test_table.py)",
  "stages": {
@@ -2617,6 +2617,305 @@
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_stage6_visit1.py",
     "margins": []
    }
+  },
+  "T_KERNEL_CARRY_OWN_PLAN": {
+   "id": "T_KERNEL_CARRY_OWN_PLAN",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+   "new": true,
+   "item": "RIMMANDRAKE_FLING_KNOCKBACK_CARRY_ON_OWN_ARC",
+   "observes": "kernel case K_CARRY_OWN_PLAN: a thrown colonist's carried thing gets a flight plan of its own, apart from the colonist's; a carried thing too heavy to fly lands on the colonist's start cell; a colonist carrying nothing plans as before",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/SelfTest/Program.cs"
+   ],
+   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+   "runs_today": {
+    "ran": false,
+    "why": "specified for 0.2.0, not built: Stage 3 builds it, red first"
+   },
+   "marker": "K_CARRY_OWN_PLAN"
+  },
+  "T_CARRY_STATIC": {
+   "id": "T_CARRY_STATIC",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_carry_static.py",
+   "new": true,
+   "item": "RIMMANDRAKE_FLING_KNOCKBACK_CARRY_ON_OWN_ARC",
+   "observes": "static: the pawn throw no longer flies with its carried thing (no MakeFlyer(..., flyWithCarriedThing: true) on the throw path of RM_MapComponent_Knockback.cs)",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs"
+   ],
+   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_carry_static.py",
+   "runs_today": {
+    "ran": false,
+    "why": "specified for 0.2.0, not built: Stage 3 builds it, red first"
+   }
+  },
+  "T_KERNEL_COLLISION_BRUISE": {
+   "id": "T_KERNEL_COLLISION_BRUISE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+   "new": true,
+   "item": "RIMMANDRAKE_BRUISE_KNOCKBACK_LANDING_ON_PAWN",
+   "observes": "kernel case K_COLLISION_BRUISE over pairs of masses: a thrown pawn landing on a pawn bruises it by their sizes (a small one on a large one is a light bruise, a large one on a small one a heavy one)",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/SelfTest/Program.cs"
+   ],
+   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+   "runs_today": {
+    "ran": false,
+    "why": "specified for 0.2.0, not built: Stage 3 builds it, red first"
+   },
+   "marker": "K_COLLISION_BRUISE"
+  },
+  "T_KERNEL_GAS_COVER_SHOVE": {
+   "id": "T_KERNEL_GAS_COVER_SHOVE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+   "new": true,
+   "item": "RIMMANDRAKE_FOLD_KNOCKBACK_POLISH_LINES_INTO_ZERO_TWO_THREE_JUDGED_IN",
+   "observes": "a kernel case: a pawn on a covered superdeep cell under a gas burst is shoved one cell, as on any floor",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/SelfTest/Program.cs"
+   ],
+   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+   "runs_today": {
+    "ran": false,
+    "why": "specified for 0.2.0, not built: Stage 3 builds it, red first"
+   }
+  },
+  "T_KERNEL_NO_CONTACT": {
+   "id": "T_KERNEL_NO_CONTACT",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+   "new": true,
+   "item": "RIMMANDRAKE_FOLD_KNOCKBACK_POLISH_LINES_INTO_ZERO_TWO_THREE_JUDGED_IN",
+   "observes": "a kernel case lane | sandbag | pawn: a throw stopped by the sandbag gives the pawn beyond it no hit and no bruise",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/SelfTest/Program.cs"
+   ],
+   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+   "runs_today": {
+    "ran": false,
+    "why": "specified for 0.2.0, not built: Stage 3 builds it, red first"
+   }
+  },
+  "T_BLAST_SHOW_OFFLINE": {
+   "id": "T_BLAST_SHOW_OFFLINE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_blast_show.py",
+   "new": true,
+   "item": "RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS",
+   "observes": "the blast show's structure, grown from proof/absorb_blast_show_check.py: our own flecks with our own art, the explosion hook, one saved on/off per part with its default on, the strength scaled by the blast's damage, and no donor mod named (design/specs/2026-11-24-knockback-blast-show/design.md)",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/proof/absorb_blast_show_check.py",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs",
+    "design/specs/2026-11-24-knockback-blast-show/design.md"
+   ],
+   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_blast_show.py",
+   "runs_today": {
+    "ran": false,
+    "why": "specified for 0.2.0, not built: Stage 3 builds it, red first"
+   }
+  },
+  "T_SETTINGS_SWEEP_SHOW": {
+   "id": "T_SETTINGS_SWEEP_SHOW",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py",
+   "new": true,
+   "item": "RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS",
+   "observes": "the settings sweep gains the show's switches: each switch off changes only its own part, and every switch off gives the unmodded look of a blast with the throw unchanged",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json"
+   ],
+   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py",
+   "runs_today": {
+    "ran": false,
+    "why": "specified for 0.2.0, not built: Stage 3 builds it, red first"
+   }
+  },
+  "sc_pawn_arc_carried_thing": {
+   "id": "sc_pawn_arc_carried_thing",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "pawn_arc",
+   "new": true,
+   "item": "RIMMANDRAKE_FLING_KNOCKBACK_CARRY_ON_OWN_ARC",
+   "scene": "sc_pawn_arc",
+   "observes": "a revised sc_pawn_arc lane: a colonist carrying a stack is thrown; two things fly on two paths, the stack lands where its own flight ends with no loss and no copy, the colonist lands empty-handed; a too-heavy stack drops where the colonist stood; a colonist carrying nothing flies as before",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs"
+   ],
+   "why_game": "two real flyers (the pawn's and the thing's) and the haul state of a real pawn",
+   "why_full_list": null,
+   "entry_exists": false,
+   "partial": null,
+   "runs_today": {
+    "ran": false,
+    "why": "specified for 0.2.0, not built: Stage 3 builds it, red first"
+   }
+  },
+  "sc_pawn_arc_bruise_sizes": {
+   "id": "sc_pawn_arc_bruise_sizes",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "pawn_arc",
+   "new": true,
+   "item": "RIMMANDRAKE_BRUISE_KNOCKBACK_LANDING_ON_PAWN",
+   "scene": "sc_pawn_arc",
+   "observes": "a revised sc_pawn_arc lane with a small and a large second pawn: the landing bruises each by size",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs"
+   ],
+   "why_game": "a real landing on a real pawn and the injury the game records on it",
+   "why_full_list": null,
+   "entry_exists": false,
+   "partial": null,
+   "runs_today": {
+    "ran": false,
+    "why": "specified for 0.2.0, not built: Stage 3 builds it, red first"
+   }
+  },
+  "sc_pawn_arc_sandbag_no_contact": {
+   "id": "sc_pawn_arc_sandbag_no_contact",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "pawn_arc",
+   "new": true,
+   "item": "RIMMANDRAKE_FOLD_KNOCKBACK_POLISH_LINES_INTO_ZERO_TWO_THREE_JUDGED_IN",
+   "scene": "sc_pawn_arc",
+   "observes": "a revised sc_pawn_arc lane: a pawn behind a sandbag the throw cannot cross takes no impact and no bruise",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs"
+   ],
+   "why_game": "a real sandbag stopping a real flight, and the pawn beyond it read for injuries",
+   "why_full_list": null,
+   "entry_exists": false,
+   "partial": null,
+   "runs_today": {
+    "ran": false,
+    "why": "specified for 0.2.0, not built: Stage 3 builds it, red first"
+   }
+  },
+  "sc_gas_chain_pawn_on_cover": {
+   "id": "sc_gas_chain_pawn_on_cover",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "gas_chain",
+   "new": true,
+   "item": "RIMMANDRAKE_FOLD_KNOCKBACK_POLISH_LINES_INTO_ZERO_TWO_THREE_JUDGED_IN",
+   "scene": "sc_gas_chain",
+   "observes": "a lane of sc_gas_chain: a colonist on an intact pit cover is shoved one cell by a gas burst",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs"
+   ],
+   "why_game": "a real gas burst over a real FlowWorks pit cover",
+   "why_full_list": null,
+   "entry_exists": false,
+   "partial": null,
+   "runs_today": {
+    "ran": false,
+    "why": "specified for 0.2.0, not built: Stage 3 builds it, red first"
+   }
+  },
+  "sc_storeroom_mortar_rebound_legs": {
+   "id": "sc_storeroom_mortar_rebound_legs",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "storeroom_mortar",
+   "new": true,
+   "item": "RIMMANDRAKE_FOLD_KNOCKBACK_POLISH_LINES_INTO_ZERO_TWO_THREE_JUDGED_IN",
+   "scene": "sc_storeroom_mortar",
+   "observes": "sc_storeroom_mortar's trace: each rebound leg of a thrown good is shorter than the leg before, until it rests",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs"
+   ],
+   "why_game": "the legs of real thing flights off real walls and doors",
+   "why_full_list": null,
+   "entry_exists": false,
+   "partial": null,
+   "runs_today": {
+    "ran": false,
+    "why": "specified for 0.2.0, not built: Stage 3 builds it, red first"
+   }
+  },
+  "sc_blast_show": {
+   "id": "sc_blast_show",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "blast_show",
+   "new": true,
+   "item": "RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS",
+   "scene": "sc_blast_show",
+   "observes": "one grenade and one mortar shell on soil and on stone: fire and flash; camera shake after a small and a big blast at the same distance and with the slider at none; the air ring over a tiled floor; smoke at three times in still air and in wind with the thrown colonist visible in each; the scar after the blast, after a day and after cleaning; the paint of a wall, a door, a table and a floor cell inside and outside the blast and after the paint is removed; the soot of a colonist and an animal in the blast and of one outside it, then after rain; a grenade and an antigrain-class blast on two like pads, each part compared; each capture goes to the art judge (design/RimMandrake/art_judge_brief.md), whose keep is part of this verdict",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
+    "design/specs/2026-11-24-knockback-blast-show/design.md",
+    "design/RimMandrake/art_judge_brief.md"
+   ],
+   "why_game": "the blast's look is drawn by the game (flecks, camera, paint, overlays, weather); only a live frame shows what the player sees, and the look itself is the art judge's call (design/RimMandrake/art_judge_brief.md)",
+   "why_full_list": null,
+   "entry_exists": false,
+   "partial": null,
+   "runs_today": {
+    "ran": false,
+    "why": "specified for 0.2.0, not built: Stage 3 builds it, red first"
+   },
+   "cheaper_why": "every part of the show is drawn by the same blast, at the same moment, on the same pads: one staged grenade and one mortar shell show all eight parts in one set of frames, and a scene per part would stage the same blasts eight times over for the same reading; the scene holds one claim per part, each read and judged apart, so one part's fault names that part"
+  },
+  "sc_settings_sweep_show_switches": {
+   "id": "sc_settings_sweep_show_switches",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+   "entry": "settings_sweep",
+   "new": true,
+   "item": "RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS",
+   "scene": "sc_settings_sweep",
+   "observes": "sc_settings_sweep with each show switch off in turn, and a throw compared show-on against show-off",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+    "design/concepts/ExplosiveKnockback/scenes.json",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs"
+   ],
+   "why_game": "the drawn look of a real blast with each switch off, and the throw beside it",
+   "why_full_list": null,
+   "entry_exists": false,
+   "partial": null,
+   "runs_today": {
+    "ran": false,
+    "why": "specified for 0.2.0, not built: Stage 3 builds it, red first"
+   }
   }
  },
  "bars": [
@@ -3852,10 +4151,273 @@
    "offline_green_today": true,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true
+  },
+  {
+   "id": "carried_thing_own_arc",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_KERNEL_CARRY_OWN_PLAN",
+    "T_CARRY_STATIC",
+    "sc_pawn_arc_carried_thing"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_KERNEL_CARRY_OWN_PLAN",
+    "T_CARRY_STATIC"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "collision_bruise_by_size",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_KERNEL_COLLISION_BRUISE",
+    "sc_pawn_arc_bruise_sizes"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_KERNEL_COLLISION_BRUISE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "blast_show_fire_and_flash",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_BLAST_SHOW_OFFLINE",
+    "sc_blast_show"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_BLAST_SHOW_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "blast_show_screen_shake",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_BLAST_SHOW_OFFLINE",
+    "sc_blast_show"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_BLAST_SHOW_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "blast_show_air_ripple",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_BLAST_SHOW_OFFLINE",
+    "sc_blast_show"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_BLAST_SHOW_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "blast_show_smoke",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_BLAST_SHOW_OFFLINE",
+    "sc_blast_show"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_BLAST_SHOW_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "blast_show_crater_scar",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_BLAST_SHOW_OFFLINE",
+    "sc_blast_show"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_BLAST_SHOW_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "blast_show_soot_on_things",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_BLAST_SHOW_OFFLINE",
+    "sc_blast_show"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_BLAST_SHOW_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "blast_show_soot_on_pawns",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_BLAST_SHOW_OFFLINE",
+    "sc_blast_show"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_BLAST_SHOW_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "blast_show_scales_with_damage",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_BLAST_SHOW_OFFLINE",
+    "sc_blast_show"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_BLAST_SHOW_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "blast_show_switches_off_clean",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_BLAST_SHOW_OFFLINE",
+    "T_SETTINGS_SWEEP_SHOW",
+    "sc_settings_sweep_show_switches"
+   ],
+   "supports": [
+    "T_SETTINGS_SWEEP_OFFLINE"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_BLAST_SHOW_OFFLINE",
+    "T_SETTINGS_SWEEP_SHOW"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "gas_shoves_pawn_on_pit_cover",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_KERNEL_GAS_COVER_SHOVE",
+    "sc_gas_chain_pawn_on_cover"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_KERNEL_GAS_COVER_SHOVE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "no_impact_without_contact",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_KERNEL_NO_CONTACT",
+    "sc_pawn_arc_sandbag_no_contact"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_KERNEL_NO_CONTACT"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "rebound_goes_shorter",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_KERNEL",
+    "sc_storeroom_mortar_rebound_legs"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_KERNEL"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
   }
  ],
  "unlisted_suites": {
   "selftest_explosiveknockback_runner_advance.py": "pipeline machinery: tests knockback_runner.advance_scene (the live driver's tick advance) against a fake bridge, not the mod (RIMMANDRAKE_REGISTER_EK_SELFTESTS_THIRTEEN_NO_TABLE_ENTRY_SAW)",
   "selftest_explosiveknockback_stage6_visit2.py": "proof-harness guards: the scene and site faults Stage 6 visit 2 found (a quicktest pond's dry bed and the like), so these test the proof harness, not a bar (RIMMANDRAKE_REGISTER_EK_SELFTESTS_THIRTEEN_NO_TABLE_ENTRY_SAW)"
+ },
+ "made_0_2_0": {
+  "at": "2026-11-24T17:06:58-08:00",
+  "by": "steward run RIMMANDRAKE_STEWARD_EXPLOSIVEKNOCKBACK_PREFLIGHT_STAGE (version/pilot_throwaway/extend_test_table_0_2_0.py)",
+  "what": "the 59 rows of 0.1.0 kept; the 14 bars of 0.2.0 added with the deciders their record.json proof_note names, each new test specified (new: true) for Stage 3"
  }
 }

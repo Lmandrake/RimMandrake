@@ -470,3 +470,12 @@ answer the locked bar, his recorded words or the shipped code already gives; no 
 - Its numbered evidence (14 cycle, visit and arrival paths) is set aside in `version/previous/0.1.0`.
 - Was, "Stage now": - **Stage now:** Version passed on his word, since 2026-11-24 3:44 PM PST (`version/stage_record.json`).
 - Record: `version/stage_record.json`.
+
+### 2026-11-24 5:07 PM PST, Preflight (Stage 2) for 0.2.0 (steward run RIMMANDRAKE_STEWARD_EXPLOSIVEKNOCKBACK_PREFLIGHT_STAGE, BENCH)
+
+- First run of the 0.1.0 program on the 0.2.0 folder: 18 refusals. 14 were the 0.2.0 bars absent from `version/test_table.json` (C1). 4 were `version/bars.md` pins (C12): the 0.2.0 lock kept the last 0.1.0 pins, which predate his frame-row rulings of 2026-11-15 and 2026-11-16 (applied and passed in 0.1.0).
+- Re-pin, a fault of form: `version/bars.md` now pins each locked file at the 0.2.0 lock commit `c276d1b00edd`. Every file is byte-identical to its lock blob, so no bar's meaning moved. Its 0.1.0 text was a byte-for-byte copy of `version/previous/0.1.0/bars.md`; it was removed and that path is named.
+- Test table: the 14 bars added with the deciders that each bar's `record.json` proof_note names (`version/pilot_throwaway/extend_test_table_0_2_0.py`). The 14 new tests are `new: true`: specified, and Stage 3 builds each red first. `sc_blast_show` carries a `cheaper_why`.
+- Program: `version/pilot_throwaway/preflight_ek_0_2_0.py`, a copy of the 0.1.0 program. It reads the version from VERSION.json. C6 counts a `new: true` decider as Stage 3 work, not a refusal (spec, Stage 2 exit). C6 refuses a `new` flag whose kernel marker is already built. Planted faults gave red on C6 (2) and C12 (1).
+- Two scope items named in VERSION.json were not on the ledger (C15). They are filed now under their scope names: RIMMANDRAKE_FOLD_KNOCKBACK_POLISH_LINES_INTO_ZERO_TWO_THREE_JUDGED_IN and RIMMANDRAKE_REWORD_KNOCKBACK_REBOUND_LEAF_THEN_RETAKE_WHOLE_EXAM.
+- Result: `version/preflight.json` for 0.2.0, verdict pass, 0 refusals, about 11 s.

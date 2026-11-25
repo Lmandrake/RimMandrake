@@ -1,8 +1,8 @@
 {
  "mod": "ExplosiveKnockback",
- "version": "0.1.0",
- "program": "preflight_ek.py (throwaway, pilot row 3)",
- "at": "2026-11-14T21:20:17-08:00",
+ "version": "0.2.0",
+ "program": "design/concepts/ExplosiveKnockback/version/pilot_throwaway/preflight_ek_0_2_0.py (throwaway, no model)",
+ "at": "2026-11-24T17:07:10-08:00",
  "dump": {
   "path": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/defs.sqlite",
   "provenance": {
@@ -16,16 +16,16 @@
    "defs_total": "59262"
   }
  },
- "seconds": 3.05,
- "verdict": "refuse",
- "refusals": 1,
+ "seconds": 10.89,
+ "verdict": "pass",
+ "refusals": 0,
  "checks": [
   {
    "id": "C1_bars_complete",
    "what": "the table holds exactly the locked bars (tree leaves + record inventory)",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "59 locked, 59 in table",
+   "evidence": "73 locked, 73 in table",
    "smallest_fix": null,
    "route": null,
    "seconds": 0.0
@@ -35,7 +35,7 @@
    "what": "every bar names at least one deciding test, and every named test is defined",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "59 bars",
+   "evidence": "73 bars",
    "smallest_fix": null,
    "route": null,
    "seconds": 0.0
@@ -45,7 +45,7 @@
    "what": "every test names a stage of 2, 4-5, 6 or 8",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "73 tests",
+   "evidence": "99 tests",
    "smallest_fix": null,
    "route": null,
    "seconds": 0.0
@@ -73,14 +73,12 @@
   {
    "id": "C6_built_tests_run",
    "what": "built mod: every deciding test runs today (his card 2026-11-13, 'Built: runs. New: specified.'); measured live against the repo",
-   "verdict": "refuse",
-   "refusals": [
-    "sc_walk_raid (entry validation.py::walk_storeroom_raid absent; item RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF) decides walk_storeroom_raid"
-   ],
-   "evidence": "1 deciding tests not runnable; 0 built since the table was written (table flags stale: none)",
-   "smallest_fix": "build each named test, watched failing first, under its named item",
-   "route": "Stage 3 (reconcile): the bar is sound, the test is owed",
-   "seconds": 0.001
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "0 deciding tests not runnable; 14 specified for Stage 3 (new: T_KERNEL_CARRY_OWN_PLAN, T_CARRY_STATIC, T_KERNEL_COLLISION_BRUISE, T_KERNEL_GAS_COVER_SHOVE, T_KERNEL_NO_CONTACT, T_BLAST_SHOW_OFFLINE, T_SETTINGS_SWEEP_SHOW, sc_pawn_arc_carried_thing, sc_pawn_arc_bruise_sizes, sc_pawn_arc_sandbag_no_contact, sc_gas_chain_pawn_on_cover, sc_storeroom_mortar_rebound_legs, sc_blast_show, sc_settings_sweep_show_switches); 0 built since the table was written (table flags stale: none)",
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 0.004
   },
   {
    "id": "C7_game_reason_written",
@@ -100,7 +98,7 @@
    "evidence": "2 held rows found by file name",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.0
+   "seconds": 0.001
   },
   {
    "id": "C9_defs_real",
@@ -110,7 +108,7 @@
    "evidence": "17 names checked; dump defs.sqlite (4ad8ea9af8a56090, 51081 defs, 316 mods)",
    "smallest_fix": null,
    "route": null,
-   "seconds": 2.471
+   "seconds": 9.331
   },
   {
    "id": "C10_mods_real",
@@ -120,27 +118,27 @@
    "evidence": "6 named: lwm.deepstorage, mandrake.rm.cauldron, mandrake.rm.creaturebehaviors, mandrake.rm.environmentalhazards, mandrake.rm.flowworks, mandrake.rsw.armoury",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.002
+   "seconds": 0.005
   },
   {
    "id": "C11_settings_fields_real",
    "what": "every settings field named by the sweep scene, its offline split and the table exists in RM_KnockbackMod.cs",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "29 named, 46 fields in the settings class",
+   "evidence": "29 named, 48 fields in the settings class",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.004
+   "seconds": 0.005
   },
   {
    "id": "C12_locked_files_unchanged",
    "what": "the locked bar files match the blobs pinned in version/bars.md",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "8 pins",
+   "evidence": "9 pins",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.007
+   "seconds": 0.014
   },
   {
    "id": "C13_mass_scene_consistent",
@@ -167,10 +165,10 @@
    "what": "every ticket a test is owed under exists in the ledger",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "11 items",
+   "evidence": "16 items",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.521
+   "seconds": 1.44
   }
  ]
 }
