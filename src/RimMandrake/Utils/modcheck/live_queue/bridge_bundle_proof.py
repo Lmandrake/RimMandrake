@@ -181,7 +181,13 @@ def v_AWARE(d):
         f.append("GeneratePawn hook installed before any arm: %s" % d.get("detailBefore"))
     if not d.get("genAfter"):
         f.append("GeneratePawn not read as installed lazily by an arm after startup: %s" % d.get("detailAfter"))
-    return (1 if f else 0), "; ".join(f) or "GeneratePawn not installed at startup; %s" % d.get("detailAfter")
+    if d.get("campaignMeasured") and str(d.get("campaign")).startswith("installed"):
+        f.append("an arm in campaign installed GeneratePawn: %s" % d.get("campaign"))
+    if f:
+        return 1, "; ".join(f)
+    if not d.get("campaignMeasured"):
+        return 2, "test half holds (%s); the campaign half needs a game whose hook is not yet installed" % d.get("detailAfter")
+    return 0, "campaign arm leaves it off (%s); test arm: %s" % (d.get("campaign"), d.get("detailAfter"))
 
 
 def v_EPOCH(d):
@@ -394,9 +400,9 @@ def _profile(L):
 
 
 def g_PROFILE(L):
-    h = L.call("jawa/companion_handshake")
-    if "no save was loaded" in str(h.get("profileWhy")):
-        return {"why": "precondition: no save is loaded, so the companion reads test by design (run EPOCH first)"}
+    ok, msg = _ensure_loaded(L)
+    if not ok:
+        return {"why": "precondition: no loaded save (the companion reads test by design while none is): %s" % msg}
     prof, path = _profile(L)
     if not path:
         return {"why": "handshake names no profile file"}
@@ -503,13 +509,31 @@ def g_AWARE(L):
             early = False
     early = early or bool((st.get("options") or {}).get("install.generation-early"))
     det0 = str(st.get("generationHook") or "")
+    camp = None
+    if not det0.startswith("installed") and not early:
+        # campaign half: a fresh hook, a loaded save, the profile file at campaign -> an arm leaves GeneratePawn off
+        ok, msg = _ensure_loaded(L)
+        prof, path = _profile(L)
+        if ok and path:
+            path = path.replace("/", "\\") if os.name == "nt" else path
+            keep = open(path, "rb").read()
+            try:
+                _write_profile(path, "campaign", keep)
+                if _wait_profile(L, "campaign")[0] == "campaign":
+                    L.call("jawa/awareness", action="arm", minutes=5)
+                    camp = str(L.call("jawa/awareness", action="status").get("generationHook") or "")
+            finally:
+                with open(path, "wb") as fh:
+                    fh.write(keep)
+            _wait_profile(L, "test")
     L.call("jawa/awareness", action="arm", minutes=5)
     det1 = str(L.call("jawa/awareness", action="status").get("generationHook") or "")
     # installed at startup reads 'installed early ...'; a lazy install names the arm and its time, after the startup
     m = re.search(r"installed lazily by jawa/awareness arm at (\S+)", det1)
     lazy_after_start = bool(m) and m.group(1) > str(st.get("installedUtc") or "")
     return {"early": early, "genBefore": det0.startswith("installed") and "lazily" not in det0,
-            "genAfter": lazy_after_start, "detailBefore": det0[:300], "detailAfter": det1[:300]}
+            "genAfter": lazy_after_start, "detailBefore": det0[:300], "detailAfter": det1[:300],
+            "campaign": camp, "campaignMeasured": camp is not None}
 
 
 def _epoch(L):
@@ -519,6 +543,36 @@ def _epoch(L):
 def _load(L):
     r = L.call("rimworld/load_game_ready", saveName=SAVE, readiness="playable", timeoutMs=600000, pauseIfNeeded=True)
     return _ok(r), json.dumps(r)[:200]
+
+
+def _ensure_loaded(L):
+    """A loaded save (the companion reads test while none is): save the current game as SAVE and reload it, once."""
+    if "no save was loaded" not in str(L.call("jawa/companion_handshake").get("profileWhy")):
+        return True, "a save is loaded"
+    r = L.call("rimworld/save_game", saveName=SAVE)
+    if not _ok(r):
+        return False, "save_game failed: %s" % json.dumps(r)[:160]
+    return _load(L)
+
+
+def _write_profile(path, profile, keep):
+    try:
+        d = json.loads(keep.decode("utf-8"))
+    except ValueError:
+        d = {}
+    d["profile"] = profile
+    with open(path, "w") as fh:
+        json.dump(d, fh)
+
+
+def _wait_profile(L, want, limit=10.0):
+    t0 = time.time()
+    while time.time() - t0 < limit:
+        p, _ = _profile(L)
+        if p == want:
+            break
+        time.sleep(0.2)
+    return p, round(time.time() - t0, 2)
 
 
 def g_EPOCH(L):
@@ -550,9 +604,10 @@ def g_EPOCH(L):
 
 
 def g_FRAME(L):
-    ok, msg = _load(L)
+    ok, msg = _ensure_loaded(L)
+    ok, msg = _load(L) if ok else (ok, msg)
     if not ok:
-        return {"why": "no %s save to reload (run EPOCH first): %s" % (SAVE, msg)}
+        return {"why": "could not reload a save: %s" % msg}
     time.sleep(3)
     L.call("jawa/health", action="arm", minutes=5)
 

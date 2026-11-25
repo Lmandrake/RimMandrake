@@ -58,7 +58,11 @@ check("HOOKS all ok", "HOOKS", {"coverage": {"tps.Root.Update": "ok"}, "faults":
 check("HOOKS a hook dark", "HOOKS", {"coverage": {"tps.Root.Update": "never-entered"}, "faults": 0}, 1)
 check("HOOKS a fault", "HOOKS", {"coverage": {"tps.Root.Update": "ok"}, "faults": 2}, 1)
 
-check("AWARE lazy by arm", "AWARE", {"early": False, "genBefore": False, "genAfter": True, "detailAfter": "x"}, 0)
+check("AWARE lazy by arm, campaign off", "AWARE", {"early": False, "genBefore": False, "genAfter": True, "detailAfter": "x",
+                                                   "campaignMeasured": True, "campaign": "refused in campaign"}, 0)
+check("AWARE campaign arm installed it", "AWARE", {"genAfter": True, "campaignMeasured": True,
+                                                   "campaign": "installed lazily by jawa/awareness arm"}, 1)
+check("AWARE campaign half not measured", "AWARE", {"genAfter": True, "campaignMeasured": False}, 2)
 check("AWARE installed at startup", "AWARE", {"early": False, "genBefore": True, "genAfter": True}, 1)
 check("AWARE early set", "AWARE", {"early": True}, 2)
 

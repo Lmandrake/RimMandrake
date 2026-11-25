@@ -1,0 +1,2 @@
+# live proof of RIMMANDRAKE_REPAIR_FRAME_HIST_READS_THREE_WAYS_WRONG (bridge_bundle_proof.py FRAME reloads a save)
+live-proof A1: python3 src/RimMandrake/Utils/modcheck/live_queue/bridge_bundle_proof.py FRAME < /dev/null

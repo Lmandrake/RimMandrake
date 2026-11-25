@@ -1,0 +1,3 @@
+# live proofs of BRIDGE_TARGETS_HARDEN_STALE_AFTER_RELOAD (bridge_bundle_proof.py EPOCH saves and reloads)
+live-proof A1: python3 src/RimMandrake/Utils/modcheck/live_queue/bridge_bundle_proof.py EPOCH < /dev/null
+live-proof A2: python3 src/RimMandrake/Utils/modcheck/live_queue/bridge_bundle_proof.py EPOCH < /dev/null
