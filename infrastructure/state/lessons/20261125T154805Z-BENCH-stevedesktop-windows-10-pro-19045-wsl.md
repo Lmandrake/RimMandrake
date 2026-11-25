@@ -1,0 +1,3 @@
+On SteveDesktop (Windows 10 Pro 19045, WSL 3.0.5), wsl --mount --vhd <file> --bare from the elevated ssh door attaches a second disk to the RUNNING WSL VM with no distro restart; it survives nothing, so a Highest task re-attaches it, and a root systemd unit inside WSL can kick that task with schtasks.exe /run (interop works from system units; measured 2026-11-25: mounted 11 s after a wsl --shutdown, 19 s after a reboot). Also: git pack-objects cannot write its pack onto another filesystem (Invalid cross-device link on the temp rename); stream it: pack-objects --stdout | git --git-dir=<dest> index-pack --stdin.
+item: RIMMANDRAKE_MOVE_STEVEDESKTOP_CLONES_TO_SSD_LINUX_DRIVE_SITS_ON_HARD_DISK
+home: skills: wsl-windows-plumbing
