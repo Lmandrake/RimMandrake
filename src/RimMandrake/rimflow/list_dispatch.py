@@ -36,7 +36,10 @@ oldest item that another waits on, then oldest filing, one decision:
                   such runs, or a launch refused for its form: a Needs Conductor line, once
   system_wait     the last run died of a cause outside the work, or max_never_started launches in a row never started:
                   nothing is spent (failure_class), the next launch waits SYSTEM_WAIT_S
-  disabled | pipeline_paused | account_hold | chain_stop | slots_full | pool_full   the gates
+  disabled | pipeline_paused | account_hold | chain_stop | machine_load | slots_full | pool_full   the gates
+                  machine_load: the larger of the 1 and 5 minute load averages is at or over machine_load_per_core times
+                  the cores: nothing launches on this machine, own slots included (a host with room still takes it); a
+                  load or core count that cannot be read is said on the row (load_could_not_look) and the launch goes on
                   slots_full: the own slots are full and load plus recent and same-tick launches leaves no spare room
   launch          one detached helper (detached_helper.py launch --next-act-owner list_dispatch), sonnet when the check
                   runs a selftest or acceptance script, else opus
@@ -228,6 +231,24 @@ def slot_free(cfg, live_total, new, load, *, recent=0):
         return True, None
     return False, "%s; load average %.1f plus %d recent and %d same-tick launches reaches the machine's line of %g" % (
         why, load, recent, new, float(line))
+
+
+def machine_load(cfg, load, cores):
+    """-> (over, why, could_not_look). The machine's own line, before any slot: load (the larger of the 1 and 5 minute
+    load averages) at or over machine_load_per_core * cores launches nothing here. A load or a core count that cannot be
+    read is no verdict: it is said (could_not_look) and the launch goes on, never read as 0. Pure."""
+    per = cfg.get("machine_load_per_core")
+    if not per:
+        return False, None, None
+    if load is None:
+        return False, None, "the load average could not be read, so the machine_load gate did not look"
+    if not cores:
+        return False, None, "the core count could not be read, so the machine_load gate did not look"
+    line = float(per) * int(cores)
+    if float(load) >= line:
+        return True, "load average %.1f on %d cores is at or over the machine's line of %g (%g per core)" % (
+            float(load), int(cores), line, float(per)), None
+    return False, None, None
 
 
 def host_room(cfg, hosts, new=0):
@@ -513,13 +534,23 @@ def decide(cfg, st, facts, now, account=(True, "")):
             put("chain_stop", "its chain of causes already holds %s lane runs; %s is the most" % (
                 it.get("depth"), cfg.get("max_chain_depth", 2)))
             continue
-        free, full = slot_free(cfg, live_total, len(launches), facts.get("load"),
-                               recent=0 if recent is None else recent.value if recent.ok else None)
-        if not free and recent is not None and not recent.ok:
-            full += " (%s)" % recent
+        over, owhy, ocnl = machine_load(cfg, facts.get("load"), facts.get("cores"))
+        if ocnl:
+            row["load_could_not_look"] = ocnl
+        if over:
+            free, full = False, owhy
+        else:
+            free, full = slot_free(cfg, live_total, len(launches), facts.get("load"),
+                                   recent=0 if recent is None else recent.value if recent.ok else None)
+            if not free and recent is not None and not recent.ok:
+                full += " (%s)" % recent
         host = None
         if not free:
             host, hwhy = host_room(cfg, facts.get("hosts"), placed)
+            if not host and over:
+                put("machine_load", owhy + "; nothing launches on this machine" + (
+                    "; no host has room: " + hwhy if cfg.get("hosts") else ""))
+                continue
             if not host:
                 put("slots_full", full + ("; no host has room: " + hwhy if cfg.get("hosts") else ""))
                 if cfg.get("load_line") and (facts.get("load") is None or (recent is not None and not recent.ok)):
@@ -557,6 +588,8 @@ def decide(cfg, st, facts, now, account=(True, "")):
                 _one(it.get("out"), 120)))
         if host:
             row["why"] = "%s; on %s: the lane's own slots are full (%s)" % (row.get("why", ""), host, full)
+        if ocnl:
+            row["why"] = "%s; machine load: could not look (%s)" % (row.get("why", ""), ocnl)
         launches.append(iid)
     if facts.get("systems") is not None:     # work_bundle.py: one bundle per system, the first launch row leads it
         import work_bundle as WB
@@ -822,6 +855,7 @@ def gather(st, now=None, root=None, load_lag_s=None):
     return {"items": ordered, "runs": runs, "other_live": 0, "paused": paused, "systems": systems,
             "bundles_live": bundles_live,
             "pool": _pool(), "live_lane": live, "load": load.value if load.ok else None, "recent": recent,
+            "cores": os.cpu_count(),
             "hosts": host_facts(cfg, on_hosts), "unread_old": unread_old}
 
 

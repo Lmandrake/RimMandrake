@@ -96,7 +96,12 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   `family:list_dispatch`, the item or its mod), on an item whose mod is held by the owner, under an account hold (the plan's drain or the Dispatcher's pick), when
   the control store cannot be read, or when the clone pool refuses a new clone. Each reads its own decision. Disabled, the pause and `pipe off` (or a
   control store that cannot be read) also stop its closes and its adoptions, and the tick runs no check under the pause.
-- **the-lane-has-its-own-slots-and-chain-rule.** The lane keeps `max_live` slots for lane items at any load. Past them it
+  When the larger of the 1 and 5 minute load averages is at or over `machine_load_per_core` times the machine's cores, a
+  ready item reads `machine_load` and nothing launches on this machine, own slots included; a host of `hosts` with room
+  still takes the run. A load or core count that cannot be read is never read as 0: the row says so
+  (`load_could_not_look`, and "could not look" in its why) and the launch goes on.
+- **the-lane-has-its-own-slots-and-chain-rule.** The lane keeps `max_live` slots for lane items below the machine line
+  (`machine_load`, above). Past them it
   launches only while the larger of the 1 and 5 minute load averages, plus `load_per_run` for each launch of the same
   tick and each recent lane launch, is under `load_line`; a load that cannot be read is no spare room. Mod and nightly-test runs do not count. An item whose chain of causes (its `caused_by` ancestors) already holds `max_chain_depth` lane runs reads
   `chain_stop`. Live runs on items that carry no check do not fill the lane's slots, except Shape runs on items due for

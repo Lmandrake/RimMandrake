@@ -264,6 +264,21 @@ def t_the_gates_launch_nothing():
         == (False, "the plan drains steven"), "the switching plan's drain is an account hold, before any launch")
     chk(lambda: LD().account_gate(gate=lambda: (True, "KEEP"), drain=lambda now: None) == (True, "KEEP"),
         "no drain: the Dispatcher's pick decides")
+    ml = dict(CFG, machine_load_per_core=2)
+    chk(lambda: dec({"A": it()}, cfg=ml, load=40.0, cores=14) == ("machine_load", []),
+        "load 40 on 14 cores: a ready item reads machine_load and launches nothing, own slots free")
+    chk(lambda: "40.0" in run({"A": it()}, cfg=ml, load=40.0, cores=14)[0]["A"]["why"], "and the row names the load")
+    chk(lambda: dec({"A": it()}, cfg=ml, load=10.0, cores=14) == ("launch", ["A"]), "load 10 on 14 cores launches")
+    chk(lambda: dec({"A": it()}, cfg=ml, load=28.0, cores=14) == ("machine_load", []), "at the line launches nothing")
+    for what, top in (("load", {"load": None, "cores": 14}), ("core count", {"load": 40.0, "cores": None})):
+        r, l, _ = run({"A": it()}, cfg=ml, **top)
+        chk(lambda r=r, l=l: l == ["A"] and "could not be read" in r["A"].get("load_could_not_look", "")
+            and "could not look" in r["A"]["why"] and not r["A"].get("could_not_look"),
+            "an unreadable %s says could not look and launches (never read as 0, never a hold)" % what)
+    chk(lambda: dec({"A": it()}, cfg=dict(ml, hosts={"SteveDesktop": {"max_live": 2, "min_left_pct": 5}}), load=40.0,
+                    cores=14, hosts={"SteveDesktop": {"live": 0, "left": 50.0}}) == ("launch", ["A"]),
+        "over the line a host with room still takes the run: its load lands there")
+    chk(lambda: LD().load_cfg().get("machine_load_per_core") == 2, "the shipped lane carries the machine line")
     import control
     chk(lambda: "list_dispatch" in control.FAMILIES, "list_dispatch is a control family (pipe off family:list_dispatch)")
 
