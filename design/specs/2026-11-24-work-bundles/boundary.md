@@ -16,7 +16,7 @@ Words. A **system** is one home of `list_home.py` (`pipeline:<part>`, `game:<nee
 launch: its system, its members, the runs it took, each member's outcome so far, the step. A **member** keeps its own
 identity, its own test and its own close. An **outcome** is one of: `fixed` (closed `done` after the bundle began),
 `already_fixed` (closed by the reality sort), `dropped` (closed `dropped` or `superseded`), `refused` (a note on the member
-since the bundle began whose text starts `BUNDLE REFUSED:` and gives a reason), `waits` (a dated wait put on it since the
+since the bundle began whose text starts `REFUSED BY BUNDLE:` (the role's words; `BUNDLE REFUSED:` is read too) and gives a reason), `waits` (a dated wait put on it since the
 bundle began). A member with none of these is **open**.
 
 ## ACCEPTS (the only inputs this is built for)
@@ -61,24 +61,27 @@ bundle began). A member with none of these is **open**.
   names each id's system (two systems are never in one bundle). A `mod:` system is never launched by the Workshop
   Pipeline (`list_dispatch` leaves mod work to the Maturation Pipeline, as before).
 - **each-limit-names-its-danger.** Each number in `work_bundle.py` names the danger it guards beside it.
-
-## PLANNED (built part by part; each moves up to PROMISES, with its test, when its part lands)
-
-- *ready-members-only.* A hand launch takes the open members that are ready: not under another live lease, no dated
+- **ready-members-only.** A hand launch takes the open members that are ready: not under another live lease, no dated
   wait ahead, not blocked, not waiting on an open item, not refused since its last other event, not held by the owner.
   Each member left out is listed with its reason.
-- *one-live-bundle-per-system.* A launch for a system that has a `live` or `restarting` bundle is refused and names
+- **one-live-bundle-per-system.** A launch for a system that has a `live` or `restarting` bundle is refused and names
   that bundle. In the lane, a ready item of a system whose bundle is live reads `bundle_live`; a member of the live
   bundle reads `in_bundle`.
-- *the-lane-launches-one-bundle-per-system.* In a `list_dispatch` tick, the launch rows of one system become one
+- **the-lane-launches-one-bundle-per-system.** In a `list_dispatch` tick, the launch rows of one system become one
   bundle: the first is the lead and takes the slot; the others, and rows of the same system that read `slots_full`,
   read `bundled` and launch nothing of their own. A ticket with no home is a bundle of one (`item:<ID>`). Shape runs are
   not bundled.
-- *the-record-is-written-at-launch.* A launch writes the record before it starts the run: system, members, lead, why,
+- **the-record-is-written-at-launch.** A launch writes the record before it starts the run: system, members, lead, why,
   the state file path, `state` `live`, and the run unit when the launch returns one. A launch that started nothing
   sets `state` `launch_failed` with its output, and no member reads `in_bundle`.
-- *the-brief-names-every-member-and-the-role.* The brief lists each member with its title and its test, names the
+- **the-brief-names-every-member-and-the-role.** The brief lists each member with its title and its test, names the
   role file `roles/bundle_worker.md`, the state file and the bundle id, and states no spend, cap or remainder.
+- **context-reads-the-own-session.** `work_bundle.py context` prints the session's context tokens, the model's window
+  (the newest `contextWindow` in the run's result files, else UNMEASURED) and one verdict: `GO ON`, `SAVE AND RESTART`
+  (above half of the window) or `UNMEASURED` with its cause, never a guessed window.
+
+## PLANNED (built part by part; each moves up to PROMISES, with its test, when its part lands)
+
 - *outcomes-are-read-from-the-ledger.* Each member's outcome is read from the ledger as the Words above say; the
   record keeps what was read and when.
 - *restart-until-each-member-has-an-outcome.* When a bundle run ends (success, a spend stop, or a failure) and a
@@ -92,9 +95,6 @@ bundle began). A member with none of these is **open**.
   member's reason goes to the Conductor log, once.
 - *a-refused-member-is-stopped-with-its-reason.* In the lane, an open member refused in an ended bundle reads
   `stopped`, and its Needs Conductor line quotes the refusal.
-- *context-reads-the-own-session.* `work_bundle.py context` prints the session's context tokens, the model's window
-  (the newest `contextWindow` in the run's result files, else UNMEASURED) and one verdict: `GO ON`, `SAVE AND RESTART`
-  (above half of the window) or `UNMEASURED` with its cause, never a guessed window.
 - *live-pass-takes-a-free-game-or-says-unrun.* `work_bundle.py live <id> --for "..." -- CMD` asks `game_lock.py
   query` for ArchBig, then ArchSmall, and runs CMD under `game_lock.py run` on the first free one. When no game is free
   (held, his hold, `pipe off`, or could not look), it runs nothing and records `UNRUN` with the exact command and each

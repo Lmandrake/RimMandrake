@@ -40,6 +40,10 @@ oldest item that another waits on, then oldest filing, one decision:
                   slots_full: the own slots are full and load plus recent and same-tick launches leaves no spare room
   launch          one detached helper (detached_helper.py launch --next-act-owner list_dispatch), sonnet when the check
                   runs a selftest or acceptance script, else opus
+  in_bundle | bundled | bundle_live   work bundles (work_bundle.py, design/specs/2026-11-24-work-bundles): the launch rows
+                  of one system (its home, else item:<ID>) are ONE bundle run; the first leads and takes the slot, the
+                  others (and slots_full rows of that system) read bundled; a member of a live bundle reads in_bundle; a
+                  ready row of a system whose bundle is live reads bundle_live; a member its bundle refused reads stopped
 A run's end is read from the item: closed (done), a wait (Waiting), a `LEFT OPEN:` note (its next act: one more run),
 nothing (stopped). The tick files no item.
 Runs on rm-list-dispatch.timer from the dispatch clone. Reading: <RM_DISPATCHER_STATE>/list_dispatch/reading.json
@@ -406,6 +410,9 @@ def decide(cfg, st, facts, now, account=(True, "")):
         if runs_blind:
             put("blind", "whether a run is live on it is unknown (%s); nothing launches it" % facts.get("recent"))
             continue
+        if run.get("bundle"):      # work_bundle.py: the bundle's run works it, restarts included
+            put("in_bundle", "a member of the live work bundle %s; that bundle's run works it" % run["bundle"])
+            continue
         if run.get("live"):
             put("live", "%s is live on it" % ", ".join(run["live"]))
             continue
@@ -457,6 +464,12 @@ def decide(cfg, st, facts, now, account=(True, "")):
                      "read run %s's notes on %s, then shape it by hand (`rimflow shape %s --parts ...`), drop it, or "
                      "`list_dispatch.py clear %s --why ...` for one more Shape run" % (last.get("unit"), iid, iid, iid))
                 continue
+        refused = run.get("bundle_refused")
+        if refused and work and not shape:     # its bundle refused it, with a reason: the Conductor reads that reason
+            stop("work bundle %s refused it: %s" % (refused.get("id"), _one(refused.get("why"), 300)),
+                 "read the refusal on %s, then act on its reason: drop it, re-home it, or `list_dispatch.py clear %s --why "
+                 "...` for one more run" % (iid, iid))
+            continue
         if work and not shape:      # a Work run on an earlier, cleared check is no Shape run
             last = work[-1]
             if len(work) >= max_runs:
@@ -545,6 +558,9 @@ def decide(cfg, st, facts, now, account=(True, "")):
         if host:
             row["why"] = "%s; on %s: the lane's own slots are full (%s)" % (row.get("why", ""), host, full)
         launches.append(iid)
+    if facts.get("systems") is not None:     # work_bundle.py: one bundle per system, the first launch row leads it
+        import work_bundle as WB
+        rows, launches = WB.group(rows, launches, facts["systems"], facts.get("bundles_live") or {})
     return rows, launches
 
 
@@ -761,6 +777,25 @@ def gather(st, now=None, root=None, load_lag_s=None):
     on_hosts, unread_old = {}, []
     runs, recent = _runs(set(ordered), now, cfg["load_lag_s"] if load_lag_s is None else load_lag_s, on_hosts,
                          unread_old)
+    systems, bundles_live = None, {}
+    if runs is not None:
+        import work_bundle as WB
+        try:
+            bundles = WB.all_bundles()
+        except Exception as e:  # noqa: BLE001 - which items a live bundle holds is unknown: nothing launches
+            runs, recent = None, PR_could_not_look("the work-bundle store could not be read (%s: %s)" % (type(e).__name__, e))
+        else:
+            import detached_helper as DH
+            def unit_live(u):       # a record that cannot be read counts live: never a second launch on its members
+                rec = DH.read_record(u)
+                return rec is None or DH.live_status(rec) in ("launching", "running")
+            runs = WB.overlay(runs, ordered, bundles, live=unit_live)
+            bundles_live = WB.live_bundles(bundles)
+            systems = {}
+            for iid, d in ordered.items():
+                mwd = d.get("mod_work") or {}
+                if not (mwd.get("mod") or mwd.get("unreadable")):
+                    systems[iid] = WB.system_of(w.items[iid], lambda it, m=mwd: m)
     _read_next(st, ordered, runs or {})
     paused = _paused(now)
     for iid, d in ordered.items():
@@ -784,7 +819,8 @@ def gather(st, now=None, root=None, load_lag_s=None):
         d["clone_exists"] = _clone_exists(iid)
     live = None if runs is None else sum(len(r["live"]) for r in runs.values())
     load = load_now()
-    return {"items": ordered, "runs": runs, "other_live": 0, "paused": paused,
+    return {"items": ordered, "runs": runs, "other_live": 0, "paused": paused, "systems": systems,
+            "bundles_live": bundles_live,
             "pool": _pool(), "live_lane": live, "load": load.value if load.ok else None, "recent": recent,
             "hosts": host_facts(cfg, on_hosts), "unread_old": unread_old}
 
@@ -843,7 +879,12 @@ someone else can make it happen: put a new dated wait that names who and what. O
 """
 
 
-def launch(item, model, cap, brief, seat, mod, host=None):
+def PR_could_not_look(cause):
+    import probe_result as PR
+    return PR.could_not_look(cause)
+
+
+def launch(item, model, cap, brief, seat, mod, host=None, env=None):
     d = os.path.join(sdir(), "briefs")
     os.makedirs(d, exist_ok=True)
     path = os.path.join(d, "%s-%d.md" % (item, int(time.time())))
@@ -855,6 +896,8 @@ def launch(item, model, cap, brief, seat, mod, host=None):
         argv += ["--env", "RM_CONTROL_MOD=%s" % mod]
     if host:
         argv += ["--host", host]
+    for k, v in sorted((env or {}).items()):
+        argv += ["--env", "%s=%s" % (k, v)]
     r = subprocess.run(argv, capture_output=True, text=True, timeout=LAUNCH_TIMEOUT_S, stdin=subprocess.DEVNULL)
     out = ((r.stdout or "") + (r.stderr or "")).strip()
     m = re.search(r"^DETACHED (\S+)", r.stdout or "", re.M)
@@ -947,6 +990,9 @@ def execute(cfg, st, rows, launches, facts, now, fx=None):
             continue
         if iid not in launches:
             continue
+        if row.get("bundle"):       # work_bundle.py: one run for every ready member of the system
+            launch_bundle_row(cfg, st, row, items, now, do_launch)
+            continue
         if row.get("kind") == "shape":
             import list_shape as LS
             brief = LS.brief_text(iid, it, row)
@@ -964,6 +1010,39 @@ def execute(cfg, st, rows, launches, facts, now, fx=None):
             row.update(decision="launched", unit=unit)
         else:
             row.update(decision="launch_failed", why=_one(text, 300) or "rc %s" % rc)
+
+
+def launch_bundle_row(cfg, st, row, items, now, do_launch):
+    """A lead row launches its system's bundle (work_bundle.launch_bundle writes the record first). Each member gets the
+    same attempt, so its own run count and stop rule read the bundle's run. Opus for a bundle of more than one (design
+    section 5); a bundle of one keeps the row's model."""
+    import work_bundle as WB
+    b = row["bundle"]
+    model = row["model"] if len(b["members"]) == 1 else "opus"
+    cap = row["cap"] if model == row["model"] else cfg.get("opus_cap_usd", _shipped().get("opus_cap_usd"))
+    mod = (items.get(b["members"][0]) or {}).get("mod")
+
+    def launcher(rec, text):
+        return do_launch(rec["lead"], model, cap, text, cfg.get("seat", "BENCH"), mod, env={WB.ENV: rec["id"]})
+    rc, rec = WB.launch_bundle(b["system"], b["members"], items, "the Workshop Pipeline's ready tickets of %s (list_dispatch "
+                               "tick, %s)" % (b["system"], UNIT), "workshop", now=now, launcher=launcher,
+                               launched_by=UNIT)
+    sti = st.setdefault("items", {})
+    if rc == 2:
+        row.update(decision="bundle_live", why=str(rec))
+        return
+    unit = (rec.get("units") or [{}])[-1].get("unit") if rc == 0 else None
+    for m in b["members"]:
+        s = sti.setdefault(m, {})
+        s.pop("told", None)
+        s.setdefault("attempts", []).append({"at": now, "unit": unit, "model": model, "cap": cap, "kind": "work",
+                                             "bundle": rec["id"], "failed": None if unit else
+                                             "never started: " + (_one(rec.get("launch_out"), 400) or "rc %s" % rc)})
+    if unit:
+        row.update(decision="launched", unit=unit, model=model, bundle_id=rec["id"],
+                   why="work bundle %s of %s: %d member(s), %s" % (rec["id"], b["system"], len(b["members"]), model))
+    else:
+        row.update(decision="launch_failed", why=_one(rec.get("launch_out"), 300))
 
 
 def tick(cfg, apply, fx=None, now=None, only=None):
@@ -1050,7 +1129,7 @@ def row_stage(it, row, now):
     elif it.get("blocked"):
         waits = {"on": "a block: %s" % _one(it.get("blocked_reason") or "no reason given", 90),
                  "resumes": "the block is lifted", "until": None}
-    live = dec in ("live", "launched", "claimed")
+    live = dec in ("live", "launched", "claimed", "in_bundle")
     f = {"state": it.get("state"), "effect": it.get("effect"), "verdict": LP.lane_verdict(dec, bool(it.get("effect"))),
          "route": it.get("route"), "waits": waits,
          "run": ("live_work" if it.get("effect") else "live_shape") if live else None,

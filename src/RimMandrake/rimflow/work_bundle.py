@@ -7,6 +7,10 @@ design/specs/2026-11-24-work-bundles/design.md (section 7: the owner's four deci
 selftest selftest_work_bundle.py.
 
     python3 src/RimMandrake/rimflow/work_bundle.py sort <home | Mod | ID...> [--dry]   the reality sort (design step 0)
+    python3 src/RimMandrake/rimflow/work_bundle.py launch <home | Mod | ID...> --why "..."   (= ./pipe bundle ...) the
+                                                  sort, then ONE bundle of the ready rest; one live bundle per system
+    python3 src/RimMandrake/rimflow/work_bundle.py context            the worker's guard: GO ON | SAVE AND RESTART | UNMEASURED
+    python3 src/RimMandrake/rimflow/work_bundle.py step <bundle> "<step>"   the worker's step, shown on the page
 
 A system is a home of list_home.py (pipeline:<part>, game:<need>, machine:<name>), a mod (mod:<folder>), or item:<ID>
 for a ticket with no home. The sort runs each open member's test on this clone's build: a green test closes the member
@@ -248,6 +252,420 @@ def build_sha(root=REPO):
     return head.stdout.strip()[:10], None
 
 
+# ---- part 2: the record and the launcher ----------------------------------------------------------------------------
+
+ROLE = "src/RimMandrake/rimflow/roles/bundle_worker.md"
+STATE_FILES = "infrastructure/bundles"
+ENV = "RM_WORK_BUNDLE"
+LIVE_STATES = ("launching", "live", "restarting")
+REFUSED_HEAD = "REFUSED BY BUNDLE:"
+REFUSED_HEADS = (REFUSED_HEAD, "BUNDLE REFUSED:")     # the role (roles/bundle_worker.md) writes the first
+
+
+def store_dir(create=True):
+    d = os.environ.get("RM_WORK_BUNDLE_DIR")
+    if not d:
+        import doorbell
+        d = os.path.join(doorbell.state_dir(), "work_bundle")
+    d = os.path.join(d, "bundles")
+    if create:
+        os.makedirs(d, exist_ok=True)
+    return d
+
+
+def store_path(bid):
+    return os.path.join(store_dir(), bid + ".json")
+
+
+def store_write(rec):
+    p = store_path(rec["id"])
+    with open(p + ".tmp", "w", encoding="utf-8") as f:
+        json.dump(rec, f, indent=1, ensure_ascii=False, sort_keys=True)
+    os.replace(p + ".tmp", p)
+    return rec
+
+
+def store_read(bid):
+    """-> the record, or None when there is none; raises when it exists and cannot be read (could not look)."""
+    p = store_path(bid)
+    if not os.path.exists(p):
+        return None
+    with open(p, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def all_bundles():
+    """-> {id: record} of every bundle in the store; raises when the store cannot be read."""
+    d = store_dir()
+    out = {}
+    for n in sorted(os.listdir(d)):
+        if n.endswith(".json"):
+            with open(os.path.join(d, n), encoding="utf-8") as f:
+                r = json.load(f)
+            out[r["id"]] = r
+    return out
+
+
+def live_bundles(bundles=None):
+    """-> {system: bundle id} of the bundles that are launching, live or restarting."""
+    bundles = all_bundles() if bundles is None else bundles
+    return {r["system"]: r["id"] for r in bundles.values() if r.get("state") in LIVE_STATES}
+
+
+def bundle_id(system, now):
+    slug = re.sub(r"[^A-Za-z0-9]+", "-", system).strip("-")
+    return "WB-%s-%s" % (slug, time.strftime("%Y%m%d-%H%M%S", time.gmtime(now)))
+
+
+def new_record(system, members, why, pipeline, now, launched_by=None):
+    bid = bundle_id(system, now)
+    return {"schema": 1, "id": bid, "system": system, "pipeline": pipeline, "members": list(members),
+            "lead": members[0], "why": why, "at": now, "launched_by": launched_by or os.environ.get("RM_ROLE_UNIT") or "hand",
+            "state": "launching", "step": "launched", "state_file": "%s/%s.md" % (STATE_FILES, bid), "units": [],
+            "restarts": 0, "outcomes": {}}
+
+
+def ready_split(ids, items, now, refused, held, leased):
+    """-> ([ready ids], {left-out id: reason}). refused(id) -> the refusal text since its last other event or None;
+    held(id) -> the owner's hold text or None; leased(item) -> True under another live lease."""
+    ready, out = [], {}
+    for i in ids:
+        it = items[i]
+        wu = _g(it, "wait_until")
+        try:
+            ahead = bool(wu) and _ts(wu) > now
+        except ValueError:
+            out[i] = "its wait date %r cannot be read" % wu
+            continue
+        why = (("it is under another live lease (%s)" % _g(it, "owner")) if leased(it) else
+               ("it waits until %s: %s" % (wu, _g(it, "wait_reason") or "no reason given")) if ahead else
+               ("it is blocked: %s" % (_g(it, "blocked_reason") or "no reason given")) if _g(it, "blocked") else
+               refused(i) or held(i))
+        if why:
+            out[i] = why
+        else:
+            ready.append(i)
+    return ready, out
+
+
+def brief(rec, items, tests):
+    """The bundle run's brief: the role, the members with their tests, the state file. No spend, cap or remainder."""
+    rows = []
+    for i in rec["members"]:
+        t = tests.get(i)
+        rows.append("- `%s` %s\n  test: %s" % (i, _one(_g(items.get(i), "title"), 160),
+                                              t or "no test (step 1: class it; write its test if it is real)"))
+    return """You are the worker of work bundle {bid}: all the ready tickets of one system, {system}, in one run.
+
+Read your role first and follow it step by step: {role}
+
+The bundle id is {bid}. Its state file is {sf}: read it first if it exists (a restart), and write it after each group.
+Your first ticket is `{lead}`: claim it before anything else
+(`python3 src/RimMandrake/rimflow/cli.py claim {lead} --seat BENCH --why "work bundle {bid}" --publish`).
+
+The members ({n}), each with its own test and its own close:
+{rows}
+
+Why this bundle: {why}
+""".format(bid=rec["id"], system=rec["system"], role=ROLE, sf=rec["state_file"], lead=rec["lead"], n=len(rec["members"]),
+           rows="\n".join(rows), why=rec["why"])
+
+
+def tests_text(ids, items, prose_of):
+    out = {}
+    for i in ids:
+        t = test_of(items[i], prose_of(i))
+        out[i] = None if not t else t[1] if t[0] == "effect" else "python3 %s" % t[1]
+    return out
+
+
+def launch_run(rec, text, model="opus", cap=None, seat="BENCH", mod=None, next_act_owner=None):
+    """Start the bundle's first run: one detached helper on the lead, RM_WORK_BUNDLE in its env. -> (rc, out, unit)."""
+    import time_budget as TB
+    d = os.path.join(os.path.dirname(store_dir()), "briefs")
+    os.makedirs(d, exist_ok=True)
+    path = os.path.join(d, "%s.md" % rec["id"])
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(text)
+    if cap is None:
+        import list_dispatch as LD
+        cap = LD.load_cfg()["%s_cap_usd" % model]     # the lane's per-run stop; no guessed number
+    argv = [sys.executable, os.path.join(HERE, "detached_helper.py"), "launch", "--seat", seat, "--item", rec["lead"],
+            "--brief-file", path, "--model", model, "--budget-usd", "%g" % cap, "--env", "%s=%s" % (ENV, rec["id"])]
+    if mod:
+        argv += ["--env", "RM_CONTROL_MOD=%s" % mod]
+    if next_act_owner:
+        argv += ["--next-act-owner", next_act_owner]
+    r = subprocess.run(argv, capture_output=True, text=True, timeout=TB.LAUNCH_S, stdin=subprocess.DEVNULL)
+    out = ((r.stdout or "") + (r.stderr or "")).strip()
+    m = re.search(r"^DETACHED (\S+)", r.stdout or "", re.M)
+    return r.returncode, out, (m.group(1) if m and not r.returncode else None)
+
+
+def _lock():
+    import fcntl
+    f = open(os.path.join(os.path.dirname(store_dir()), "launch.lock"), "w")
+    fcntl.flock(f, fcntl.LOCK_EX)
+    return f
+
+
+def launch_bundle(system, members, items, why, pipeline, now=None, launcher=None, tests=None, launched_by=None):
+    """One bundle for `system`: refused (2, why) while another bundle of it is live; else the record is written, then
+    the run starts. -> (0, record) | (1, record with launch_failed) | (2, why)."""
+    now = time.time() if now is None else now
+    if not members:
+        return 2, "%s has no ready member" % system
+    lk = _lock()
+    try:
+        live = live_bundles()
+        if system in live:
+            return 2, "%s already has a live bundle, %s; one live bundle per system" % (system, live[system])
+        rec = new_record(system, members, why, pipeline, now, launched_by)
+        store_write(rec)
+    finally:
+        lk.close()
+    text = brief(rec, items, tests or {i: _g(items.get(i), "effect") for i in members})
+    rc, out, unit = (launcher or (lambda r, b: launch_run(r, b)))(rec, text)
+    rec = store_read(rec["id"]) or rec
+    if rc == 0 and unit:
+        rec.update(state="live", units=[{"unit": unit, "at": now, "kind": "launch", "ended_before": 0}])
+        store_write(rec)
+        return 0, rec
+    rec.update(state="launch_failed", launch_out=_one(out, 600) or "rc %s" % rc)
+    store_write(rec)
+    return 1, rec
+
+
+def group(rows, launches, systems, live):
+    """The lane's launch rows of one system become one bundle. -> (rows, launches). systems: {item: system}; live:
+    {system: live bundle id}. Pure; edits the rows in place."""
+    lead, keep = {}, []
+    for r in rows:
+        i = r["item"]
+        if r.get("kind") == "shape" or i not in systems:
+            if i in launches:
+                keep.append(i)
+            continue
+        s = systems[i]
+        if r["decision"] not in ("launch", "slots_full"):
+            continue
+        if s in live:
+            r.update(decision="bundle_live", why="waits for the live bundle %s of %s; it joins the next one" % (live[s], s))
+        elif r["decision"] == "launch" and s not in lead:
+            if r.get("host"):
+                r.pop("host")
+                r.update(decision="slots_full", why="a work bundle runs on this machine only (its record and its restart "
+                                                    "are here), and the lane's own slots are full")
+                continue
+            lead[s] = r
+            r["bundle"] = {"system": s, "members": [i]}
+            keep.append(i)
+        elif s in lead:
+            lead[s]["bundle"]["members"].append(i)
+            r.update(decision="bundled", why="joins the bundle of %s that %s leads this tick" % (s, lead[s]["item"]))
+    return rows, [i for i in launches if i in keep]
+
+
+def overlay(runs, ids, bundles, live):
+    """Fill runs[member] for the lane: "bundle" (its live bundle's id) and the units of every bundle it was in, under
+    "live" or "ended" by live(unit), so the lane's own run count reads a bundle run as that member's run."""
+    runs = dict(runs or {})
+    want = set(ids)
+    for b in bundles.values():
+        for m in b.get("members") or []:
+            if m not in want:
+                continue
+            r = runs.setdefault(m, {"live": [], "ended": []})
+            r.setdefault("live", [])
+            r.setdefault("ended", [])
+            for u in b.get("units") or []:
+                key = "live" if live(u["unit"]) else "ended"
+                if u["unit"] not in r["live"] + r["ended"] and key == "ended":
+                    r["ended"].append(u["unit"])
+            if b.get("state") in LIVE_STATES:
+                r["bundle"] = b["id"]
+            if (b.get("outcomes") or {}).get(m, {}).get("outcome") == "refused":
+                r["bundle_refused"] = {"id": b["id"], "why": b["outcomes"][m].get("why")}
+    return runs
+
+
+def refusals(events):
+    """-> {id: the newest BUNDLE REFUSED: note's text} for each ticket whose refusal is newer than its last other
+    event that is not a note (a re-home, an effect, a reopen starts it again). Pure over the ledger's events."""
+    last_other, refused = {}, {}
+    for e in events:
+        i = e.get("id")
+        try:
+            t = _ts(e.get("ts"))
+        except (TypeError, ValueError):
+            continue        # an event with no readable time orders nothing; the refusal it may be is not read
+        if not i:
+            continue
+        if e.get("event") == "note":
+            if str(e.get("text") or "").strip().upper().startswith(REFUSED_HEADS):
+                refused[i] = (t, str(e.get("text")).strip())
+        elif t >= last_other.get(i, 0):
+            last_other[i] = t
+    return {i: txt for i, (t, txt) in refused.items() if t > last_other.get(i, 0)}
+
+
+def member_held(it, reading, held):
+    """-> why a member's own mod is held by the owner, or None; a mod that cannot be read is said, never "not held"."""
+    r = reading(it)
+    if not isinstance(r, dict) or r.get("unreadable"):
+        return "could not look which mod it belongs to: %s" % (r.get("unreadable") if isinstance(r, dict) else r)
+    return "HELD BY OWNER: %s" % r["mod"] if r.get("mod") and held(r["mod"]) else None
+
+
+def mod_gate(mod):
+    """-> why a bundle of `mod` may not launch now (the owner's hold, a `pipe off`: the readiness switch), or None."""
+    import control as C
+    import mod_owner_hold as MOH
+    h = MOH.held(mod)
+    if h:
+        return "HELD BY OWNER: %s (%s)" % (mod, _one(h.get("said"), 120))
+    why = C.blocked({"family": "detached", "mod": mod})
+    return ("%s is off (%s); a mod's readiness list must read READY before it runs" % (mod, why)) if why else None
+
+
+def cmd_launch(o):
+    """The hand launch, `./pipe bundle <home | Mod | ID...> --why "..."`: the sort first, then one bundle of the
+    ready rest."""
+    import list_effect as LE
+    import model as LM
+    now = time.time()
+    w = world()
+    modset, reading = mod_reader()
+    system, ids, why = resolve(o.target if len(o.target) > 1 else o.target[0], w.items, modset, reading)
+    if not system:
+        print("REFUSED: %s" % why)
+        return 2
+    mod = system.split(":", 1)[1] if system.startswith("mod:") else None
+    if mod:
+        no = mod_gate(mod)
+        if no:
+            print("REFUSED: %s" % no)
+            return 2
+    prose = prose_reader()
+    sha, fault = build_sha()
+    rows = sort_apply(sort(ids, w.items, prose, LE.run, run_script, root=REPO), sha or "HEAD", dry=bool(fault))
+    for r in rows:
+        if r["verdict"] in ("holds", "holds_unproven", "unmeasured"):
+            print("sort: %-62s %s" % (r["id"], r["act"]))
+    if fault:
+        print("sort ran dry (%s): its green members stay in the bundle, for the worker to close" % fault)
+    gone = set(r["id"] for r in rows if r.get("closed"))
+    rest = [i for i in ids if i not in gone]
+    ref = refusals(LM.read())
+    import mod_owner_hold as MOH
+    ready, out = ready_split(rest, w.items, now, refused=ref.get,
+                             held=lambda i: None if mod else member_held(w.items[i], reading, MOH.held),
+                             leased=lambda it: _g(it, "state") == "doing" and LM.lease_status(it, now) == "live")
+    for i, y in sorted(out.items()):
+        print("left out: %-60s %s" % (i, _one(y, 160)))
+    if not ready:
+        print("NO BUNDLE: %s has no ready member (%d closed by the sort, %d left out)" % (system, len(gone), len(out)))
+        return 0 if gone else 2
+    tests = tests_text(ready, w.items, prose)
+    pipeline = "maturation" if mod else "workshop"
+    rc, rec = launch_bundle(system, ready, w.items, o.why, pipeline, now=now, tests=tests,
+                            launcher=lambda r, b: launch_run(r, b, mod=mod), launched_by="hand")
+    if rc == 2:
+        print("REFUSED: %s" % rec)
+        return 2
+    if rc:
+        print("LAUNCH FAILED %s: %s" % (rec["id"], rec.get("launch_out")))
+        return 1
+    print("BUNDLE %s of %s launched: %s; %d member(s): %s" % (rec["id"], system, rec["units"][0]["unit"], len(ready),
+                                                              ", ".join(ready)))
+    return 0
+
+
+# ---- part 3: the worker's context guard and its step ----------------------------------------------------------------
+
+# The guard's line, a share of the window: past it the worker finishes its group, saves its state and restarts.
+# budget: danger=a full context loses what the worker learned (design section 5: 480k after 18 tickets, measured
+# budget: 2026-11-24); longest=UNMEASURED (the first bundles record their context per group)
+SAVE_FRACTION = 0.5
+WINDOW_RX = re.compile(r'"contextWindow"\s*:\s*([0-9]+)[^}]*?"canonicalModel"\s*:\s*"([^"]+)"')
+# How many of the newest run result files are read for the window: each is a full result JSON. budget: danger=a scan
+# budget: of every result file of a month reads hundreds of MB for one number; longest=UNMEASURED (one file holds it)
+WINDOW_FILES_MOST = 40
+
+
+def _session_model_tokens(transcript):
+    """-> (context tokens of the last main-thread turn, its model) or (None, None)."""
+    import detached_helper as DH
+    tokens = DH.context_tokens(transcript) if os.path.isfile(transcript or "") else None
+    model = None
+    if tokens is not None:
+        with open(transcript, encoding="utf-8", errors="replace") as f:
+            for line in f:
+                if '"model"' in line and '"isSidechain": true' not in line and '"isSidechain":true' not in line:
+                    m = re.search(r'"model"\s*:\s*"([^"]+)"', line)
+                    model = m.group(1) if m else model
+    return tokens, model
+
+
+def window_of(model, runs_dir):
+    """-> (window tokens, None) from the newest run result files that name `model`, or (None, the cause)."""
+    try:
+        names = sorted((os.path.join(runs_dir, n) for n in os.listdir(runs_dir) if n.endswith((".out", ".out.json"))),
+                       key=os.path.getmtime, reverse=True)[:WINDOW_FILES_MOST]
+    except OSError as e:
+        return None, "the run results in %s could not be listed (%s)" % (runs_dir, e)
+    for p in names:
+        try:
+            with open(p, encoding="utf-8", errors="replace") as f:
+                text = f.read()
+        except OSError:
+            continue
+        for win, canon in WINDOW_RX.findall(text):
+            if not model or canon == model or model.startswith(canon):
+                return int(win), None
+    return None, "no run result in %s names the window of %s" % (runs_dir, model or "this model")
+
+
+def context_reading(transcript, runs_dir):
+    """-> {tokens, window, model, verdict: GO ON | SAVE AND RESTART | UNMEASURED, why}."""
+    tokens, model = _session_model_tokens(transcript)
+    if tokens is None:
+        return {"tokens": None, "window": None, "model": None, "verdict": "UNMEASURED",
+                "why": "no main-thread usage in %s" % transcript}
+    win, why = window_of(model, runs_dir)
+    if win is None:
+        return {"tokens": tokens, "window": None, "model": model, "verdict": "UNMEASURED", "why": why}
+    over = tokens > win * SAVE_FRACTION
+    return {"tokens": tokens, "window": win, "model": model, "verdict": "SAVE AND RESTART" if over else "GO ON",
+            "why": "%d of %d tokens, the line is %d" % (tokens, win, int(win * SAVE_FRACTION))}
+
+
+def cmd_context(o):
+    import detached_helper as DH
+    sid = o.session or os.environ.get("CLAUDE_CODE_SESSION_ID") or os.environ.get("CLAUDE_SESSION_ID")
+    t = DH.find_transcript(sid) if sid else None
+    r = context_reading(t or "", DH.runs_dir())
+    print("%s: context %s of window %s (%s); %s" % (r["verdict"], r["tokens"], r["window"], r.get("model") or "-", r["why"]))
+    return 0 if r["verdict"] != "UNMEASURED" else 5
+
+
+def cmd_step(o):
+    """The worker writes its step on the record (the page shows it). A missing bundle is said, never made up."""
+    lk = _lock()
+    try:
+        rec = store_read(o.bundle)
+        if not rec:
+            print("NO BUNDLE %s in %s" % (o.bundle, store_dir()))
+            return 2
+        rec["step"] = _one(o.step, 200)
+        rec["step_at"] = time.time()
+        store_write(rec)
+    finally:
+        lk.close()
+    print("STEP %s: %s" % (o.bundle, rec["step"]))
+    return 0
+
+
 # ---- reading the ledger ---------------------------------------------------------------------------------------------
 
 def world():
@@ -307,8 +725,16 @@ def main(argv=None):
     s = sub.add_parser("sort", help="the reality sort: run each member's test, close the green ones as already fixed")
     s.add_argument("target", nargs="+", help="a home (pipeline:ledger), a mod (FlowWorks) or ticket ids of one system")
     s.add_argument("--dry", action="store_true", help="print what it would close; write nothing")
+    s = sub.add_parser("launch", help="the hand launch (./pipe bundle): the sort, then one bundle of the ready rest")
+    s.add_argument("target", nargs="+", help="a home, a mod or ticket ids of one system")
+    s.add_argument("--why", required=True)
+    s = sub.add_parser("context", help="the worker's guard: its context against half of its window")
+    s.add_argument("--session", help="a session id (default: this session, CLAUDE_CODE_SESSION_ID)")
+    s = sub.add_parser("step", help="the worker writes the step it is on, for the page")
+    s.add_argument("bundle")
+    s.add_argument("step")
     o = ap.parse_args(argv)
-    return {"sort": cmd_sort}[o.cmd](o)
+    return {"sort": cmd_sort, "launch": cmd_launch, "context": cmd_context, "step": cmd_step}[o.cmd](o)
 
 
 if __name__ == "__main__":

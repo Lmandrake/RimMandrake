@@ -3123,6 +3123,10 @@ def main(argv=None):
         sys.path.insert(0, HERE) if HERE not in sys.path else None
         import pipeline_control as PC
         return PC.main(av)
+    if av[:1] == ["bundle"]:    # ./pipe bundle <home | Mod | ID...> --why "...": one work bundle (work_bundle.py)
+        sys.path.insert(0, HERE) if HERE not in sys.path else None
+        import work_bundle as WB
+        return WB.main(["launch"] + av[1:])
     if av[:1] == ["hook"]:      # the run's PostToolUse hook: as fast and as quiet as possible
         db = av[av.index("--db") + 1] if "--db" in av else None
         code, text = hook(db)
