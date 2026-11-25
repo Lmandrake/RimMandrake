@@ -1550,10 +1550,10 @@ def _new_probes(EXT, RIV, base):
 
     # tank loop (TANK_LOOP_REBUILD_BOTTLES_FIND_THE_RIVER): a stateful fake game. `moves` = the WorkGivers act; a Store tank
     # staged at TANK_STAGE_UNITS falls, a Fill tank staged empty rises, a bottle pond fill swaps empty -> filled.
-    def tank_game(moves, tank_refused=False):
+    def tank_game(moves, tank_refused=False, bottle="plot"):
         # realistic: one 1.5 L bottle (15 units) moves, the inspect line rounds like RM_Volume.FormatLitres (0.1 kL from
         # 1 kL up, so 12 kL - 1.5 L still reads "12 kL"), and a mode-only ProofTank keeps the stock and reads it exactly
-        st = {"mode": None, "units": 0, "polls": 0, "bottle_polls": 0, "moved": False}
+        st = {"mode": None, "units": 0, "polls": 0, "bottle_polls": 0, "moved": False, "bq": [], "bpolls": 0}
 
         def fmt(u):
             l = u / 10.0
@@ -1585,6 +1585,25 @@ def _new_probes(EXT, RIV, base):
             if tl == "jawa/inspect_string":
                 u = live_units()
                 return {"things": [{"inspect": ("Holding: Fresh water (%s / 16 kL)" % fmt(u)) if u else "Empty"}]}
+            if tl == "jawa/spawn_batch" and "RM_BottleEmpty" in str(p.get("ops")):
+                st["bq"].append(["E", True])                    # a staged empty, spawned on the plot
+                st["bpolls"] = 0
+            if tl == "jawa/static_call" and p.get("method") == "ProofBottleCount":
+                # RIMMANDRAKE_TRACE_FLOWWORKS_BOTTLE_LOOP_EMPTY_GONE_NONE_FILLED: the bottle rows count MAP-WIDE, held
+                # included. bottle="plot": the fill lands on the plot; "carry": the filled bottle is in a colonist's
+                # hands (the Steve2 2026-11-24 shape a plot census read as (0, 0)); "drunk": filled then drunk at once
+                # (a dirty bottle); "lost": the empty is picked up and never filled.
+                st["bpolls"] += 1
+                if moves and st["bpolls"] == 2:         # the first read after the baseline sees the fill
+                    b = next((b for b in st["bq"] if b[0] == "E"), None)
+                    if b is not None:
+                        b[:] = {"plot": ["F", True], "carry": ["F", False], "drunk": ["D", True], "lost": ["E", False]}[bottle]
+                parts = []
+                for k, d in (("E", "RM_BottleEmpty"), ("D", "RM_BottleDirty"), ("F", "RM_Bottle_FreshWater")):
+                    on = sum(1 for b in st["bq"] if b[0] == k and b[1])
+                    held = sum(1 for b in st["bq"] if b[0] == k and not b[1])
+                    parts.append("%s=%d/%d/%d" % (d, on, on, held))
+                return {"result": "BOTTLES " + " ".join(parts) + " holders=-"}
             if tl == "jawa/list_things":
                 st["bottle_polls"] += 1
                 done = moves and st["bottle_polls"] >= 4
@@ -1610,6 +1629,10 @@ def _new_probes(EXT, RIV, base):
     got = _ext_run(EXT, "toggle_bottle_loop", tank_game(False))
     if got.get("bottle_loop_on") != "FAIL":
         out.append("bottle loop that never fills must FAIL ON: %s" % got)
+    for shape, want in (("carry", "PASS"), ("drunk", "PASS"), ("lost", "FAIL")):
+        got = _ext_run(EXT, "toggle_bottle_loop", tank_game(True, bottle=shape)).get("bottle_loop_on")
+        if got != want:
+            out.append("bottle_loop_on when the bottle is %s: %s, want %s" % (shape, got, want))
     # BOTTLE_DIRTY_OFF_REPAIR_EMPTY_GOES_MISSING (L1 2026-10-15): the residue lands beside the DRINKER. The first drinker
     # works through the wash row and wanders off the plot; reusing him for bottle_dirty_off put the clean empty off the
     # census and read FAIL on a mod that did right. A stateful fake: pawns have positions, a drink places the residue

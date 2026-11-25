@@ -2474,34 +2474,46 @@ def _bottle_loop_plot(t):
     return x0, z0
 
 
-def _bottle_state(t, x0, z0):
-    """(empty bottles, filled fresh-water bottles) on the plot."""
-    return (_count(t, "RM_BottleEmpty", x0, z0, PW, PH), _count(t, "RM_Bottle_FreshWater", x0, z0, PW, PH))
-
-
 @suite.chain("toggle_bottle_loop")
 def toggle_bottle_loop(t):
     """bottleLoopEnabled gates WorkGiver_FillBottle: an empty bottle is carried to water terrain and filled. ON: within
-    3000 ticks the plot's RM_BottleEmpty is gone and an RM_Bottle_FreshWater exists (a fill COUNTED, not a spawned thing
-    re-read). OFF, same scene: after 2000 ticks the empty bottle is still empty."""
+    3000 ticks the map holds one empty bottle fewer and one filled bottle more (fresh, or dirty if a thirsty colonist
+    drank it at once) than before: a fill COUNTED, not a spawned thing re-read. OFF, same scene: after 2000 ticks no
+    empty bottle was filled. Counted MAP-WIDE, held bottles included (_bottles_everywhere), as the wash row is:
+    RIMMANDRAKE_TRACE_FLOWWORKS_BOTTLE_LOOP_EMPTY_GONE_NONE_FILLED (Steve2 2026-11-24) read (empty, filled) = (0, 0) on
+    the plot alone, which cannot tell a bottle in a colonist's hands or a stockpile off the plot from a fill that failed."""
     x0, z0 = _bottle_loop_plot(t)
     with t.component("bottle_loop_on", toggle="bottleLoopEnabled"):
-        st = (None, None)
+        w0, _ = _bottles_everywhere(t, x0, z0)
+        w, holders = w0, "-"
+
+        def filled(w):
+            return (_bottle_total(w, "RM_Bottle_FreshWater") + _bottle_total(w, "RM_BottleDirty")
+                    > _bottle_total(w0, "RM_Bottle_FreshWater") + _bottle_total(w0, "RM_BottleDirty"))
+
+        def emptied(w):
+            return _bottle_total(w, "RM_BottleEmpty") < _bottle_total(w0, "RM_BottleEmpty")
+
         for _ in range(24):                       # 3000 ticks
             t.wait_ticks(125)
-            st = _bottle_state(t, x0, z0)
-            if st[0] == 0 and (st[1] or 0) > 0:
+            w, holders = _bottles_everywhere(t, x0, z0)
+            if t._guard() and filled(w) and emptied(w):
                 break
         if t._guard():
-            _expect(st[0] == 0 and (st[1] or 0) > 0, "no fill: (empty, filled) bottles = %s after 3000 ticks (WorkGiver_FillBottle)" % (st,))
+            _expect(filled(w) and emptied(w),
+                    "no fill in 3000 ticks (WorkGiver_FillBottle): (plot, map, held) %s -> %s holders %s; fixture jobs %s"
+                    % (w0, w, holders, _fixture_jobs(t)))
     x0, z0 = _bottle_loop_plot(t)
     with t.component("bottle_loop_off", toggle="bottleLoopEnabled"):
         with _setting(t, "bottleLoopEnabled", False):
+            w0, _ = _bottles_everywhere(t, x0, z0)
             for _ in range(16):                   # 2000 ticks
                 t.wait_ticks(125)
-            st = _bottle_state(t, x0, z0)
+            w, holders = _bottles_everywhere(t, x0, z0)
             if t._guard():
-                _expect(st[0] == 1 and not st[1], "bottle filled with bottleLoopEnabled OFF: (empty, filled) = %s" % (st,))
+                _expect(_bottle_total(w, "RM_BottleEmpty") >= _bottle_total(w0, "RM_BottleEmpty")
+                        and _bottle_total(w, "RM_Bottle_FreshWater") <= _bottle_total(w0, "RM_Bottle_FreshWater"),
+                        "bottle filled with bottleLoopEnabled OFF: (plot, map, held) %s -> %s holders %s" % (w0, w, holders))
 
 
 def _drink(t, pid, cell, plot=None):
