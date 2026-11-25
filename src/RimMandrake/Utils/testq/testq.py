@@ -734,6 +734,8 @@ def cmd_tick(_a):
                 if steve2_on():
                     admit(remote(["status"], host=STEVE2)[1], host=STEVE2)
                 games_reading()
+                import idle_stop    # a game no job used for 30 min is stopped, for the memory (owner, 2026-11-25)
+                idle_stop.step(sys.modules[__name__])
             except SshDown as e:
                 S.dump({"down_since": S.utcnow(), "last_probe": time.time(), "last_error": str(e)},
                        q("ssh_state.json"))

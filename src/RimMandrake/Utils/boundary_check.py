@@ -93,6 +93,7 @@ PAGES = {
     "design/specs/2026-11-24-wait-lane-job/boundary.md": "src/RimMandrake/Utils/testq/selftest_testq.py",
     "design/specs/2026-11-24-ask-lane-after-host-facts/boundary.md": "src/RimMandrake/Utils/testq/selftest_ask_lane.py",
     "design/specs/2026-11-23-lane-stops-name-their-end/boundary.md": "src/RimMandrake/Utils/testq/selftest_lane_stop.py",
+    "design/specs/2026-11-25-steve-idle-game-stop/boundary.md": "src/RimMandrake/Utils/testq/selftest_idle_stop.py",
     "design/specs/2026-11-23-lane-cause-once/boundary.md": "src/RimMandrake/Utils/testq/selftest_testq_steward.py",
     "design/specs/2026-11-24-stage-six-checks-to-steve/boundary.md": "src/RimMandrake/Utils/testq/selftest_stage6_checks.py",
     "design/specs/2026-11-22-steve-idle-takeable/boundary.md": "src/RimMandrake/Utils/selftest_steve_idle_takeable.py",
