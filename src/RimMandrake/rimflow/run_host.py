@@ -25,6 +25,8 @@ HOSTS = {"stevedesktop": "mandrake@stevedesktop-wsl"}
 LOGIN = "export PATH=$HOME/.local/bin:$PATH; "     # claude and claude-account are on PATH only in a login shell
 BENCH = "~/rm/bench"                               # the host's own seat clone: its launcher makes the run's clone
 BRIEFS = "~/rm/list_briefs"
+SYNC_RC = 75                                       # the exit code of a remote command whose `./sync` failed (EX_TEMPFAIL)
+SYNC_FAILED = "COULD NOT LAUNCH: the host's seat clone could not sync"
 LAUNCHER = "src/RimMandrake/rimflow/detached_helper.py"
 LANE_CLONES = ("rm/runner", "rm/runner_b")         # the test lane's own clones: a session writing there pauses the lane
 FACTS = ("reachable", "claude", "account", "picked_account", "push", "launcher", "clone", "free_gb")
@@ -51,6 +53,13 @@ def _lane_clone(path):
 
 def _ssh(target, cmd):
     return ["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=10", target, LOGIN + cmd]
+
+
+def in_bench(cmd):
+    """`cmd` run in the host's seat clone after `./sync` has made it level with origin/main; when the sync fails, `cmd`
+    does not run: the command prints SYNC_FAILED and exits SYNC_RC. The one text for every remote launch (a detached
+    run here, a lane bundle in work_bundle.remote_argv)."""
+    return "cd %s && { ./sync || { echo %s; exit %d; }; } && %s" % (BENCH, shlex.quote(SYNC_FAILED), SYNC_RC, cmd)
 
 
 def plan(host, item, brief_path, facts, model="sonnet", budget=None, seat="BENCH", next_act_owner=None, env=(), effort=None):
@@ -87,8 +96,8 @@ def plan(host, item, brief_path, facts, model="sonnet", budget=None, seat="BENCH
     for kv in env or ():
         launch += ["--env", kv]
     # ~ stays unquoted so the host's shell expands it; every other word is quoted
-    cmd = "mkdir -p %s && cat > %s && cd %s && %s" % (BRIEFS, brief, BENCH, " ".join(
-        w if w.startswith("~/") else q(w) for w in launch))
+    cmd = "mkdir -p %s && cat > %s && %s" % (BRIEFS, brief, in_bench(" ".join(
+        w if w.startswith("~/") else q(w) for w in launch)))
     return {"verdict": "REMOTE", "why": "launch on %s in %s" % (host, facts["clone"]), "argv": _ssh(HOSTS[h], cmd),
             "stdin_path": brief_path}
 

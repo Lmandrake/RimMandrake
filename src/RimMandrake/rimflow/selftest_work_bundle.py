@@ -893,8 +893,8 @@ def t_a_bundle_on_another_host_launches_there():
     LD.execute({"enabled": True, "seat": "BENCH"}, st, rows2, launches2, {"items": items}, NOW,
                fx={"launch": lambda *a, **k: (9, "a local launch was made", None), "remote": runner})
     cmd = seen[0][-1] if seen else ""
-    chk(lambda: len(seen) == 1 and "mandrake@stevedesktop-wsl" in seen[0] and "cd ~/rm/bench && ./sync && ./pipe bundle "
-        "H1 H0 H2 --why" in cmd, "execute: the host lead's bundle is launched on the host after ./sync (%s)" % seen)
+    chk(lambda: len(seen) == 1 and "mandrake@stevedesktop-wsl" in seen[0] and "cd ~/rm/bench && { ./sync || " in cmd
+        and cmd.index("./sync") < cmd.index("./pipe bundle H1 H0 H2 --why"), "execute: the host lead's bundle is launched on the host after ./sync (%s)" % seen)
     chk(lambda: during and during[0][0] == "lock free" and during[0][1] and during[0][1] != bid,
         "launch_remote: during the ssh the store lock is free and a placeholder holds the system (%s)" % during)
     ph = [r for r in W.all_bundles().values() if r.get("replaced_by") == bid]

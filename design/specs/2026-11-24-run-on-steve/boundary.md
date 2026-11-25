@@ -1,5 +1,7 @@
 # run_host.py boundary: a detached list run on SteveDesktop
 
+Code: `src/RimMandrake/rimflow/run_host.py`
+
 ## ACCEPTS
 
 - A host name in any letter case, an item, a brief path, the facts read from the host, and the call's model, spend cap,
@@ -13,7 +15,8 @@
 ## DOES NOT SURVIVE
 
 - ssh that hangs past its timeout (a fact stays None; a live state reads live).
-- A host whose `~/rm/bench` is far behind origin: it launches with its own launcher code.
+- A `./sync` of the host's seat clone that cannot run (a dirty clone it refuses, git down): the launch stops there (see
+  **remote-launch-runs-origin-main**).
 
 ## PROMISES
 
@@ -27,6 +30,12 @@
 - **account-from-the-machine.** The account is `live` of the host's `claude-account --json status`; the pick defaults to it.
   The code names no account.
 - **launch-argv.** The brief goes over stdin to `~/rm/list_briefs/<ITEM>.md`; the launch carries the call's model and cap.
+- **remote-launch-runs-origin-main.** A remote launch runs the launcher of origin/main, or does not run: the remote
+  command is `cd ~/rm/bench && ./sync` and then the launcher (`in_bench`, the one text that `work_bundle.remote_argv`
+  also uses). A failed sync runs no launcher, prints `COULD NOT LAUNCH: the host's seat clone could not sync`, exits 75,
+  and `launch_on_host` reports it as could not launch (rc 5) and keeps no run record. The brief still reaches the host.
+  Test: `t_remote_launch_runs_origin_main`, `t_a_failed_sync_is_could_not_launch`,
+  `t_both_remote_launchers_share_the_sync`.
 - **record-names-host-unit-item.** The record on this machine names host, unit and item.
 - **live-until-the-host-says-ended.** A remote run is live while its unit is live or the host cannot be read; its end
   state is the host record's status, copied into this machine's record (`host_end`).

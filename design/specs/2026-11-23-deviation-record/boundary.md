@@ -1,5 +1,7 @@
 # Deviation record
 
+Code: `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchDeviationCore.cs`, `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchDeviations.cs`, `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchModSettingsFieldTools.cs`, `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchHands.cs`, `src/RimMandrake/Utils/scene.py`
+
 The deviation-record section of [Bridge v2](../2026-11-23-bridge-v2/05_build_design.md) is implemented here for settings.
 The owning files are `JawaBenchDeviationCore.cs`, `JawaBenchDeviations.cs`, and the deviation lines of
 `JawaBenchModSettingsFieldTools.cs`, `JawaBenchHands.cs` and `Utils/scene.py`.

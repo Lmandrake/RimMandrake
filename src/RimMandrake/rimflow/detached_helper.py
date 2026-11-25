@@ -2535,10 +2535,13 @@ def launch_on_host(args, brief, env, runner=subprocess.run, reader=None):
         if pl["verdict"] != "REMOTE":
             return 2 if pl["verdict"] == "REFUSED" else 5
         with open(fh.name, encoding="utf-8") as stdin:
-            r = runner(pl["argv"], stdin=stdin, capture_output=True, text=True, timeout=10800)  # budget: class=launch
+            r = runner(pl["argv"], stdin=stdin, capture_output=True, text=True, timeout=10800)  # budget: class=launch (hang guard; its remote command now runs ./sync: 6.6 s measured 2026-11-25, ssh to SteveDesktop with a real update)
     finally:
         os.unlink(fh.name)
     out = ((r.stdout or "") + (r.stderr or "")).strip()
+    if r.returncode == run_host.SYNC_RC and run_host.SYNC_FAILED in out:    # the host's launcher never ran: no record
+        print(out)      # its own cause line, after the sync's own words
+        return 5
     unit = run_host.parse_unit(r.stdout) if r.returncode == 0 else None
     if unit:
         rec = run_host.record(args.host, args.item, unit, args.model, args.budget_usd, seat=args.seat.upper(),

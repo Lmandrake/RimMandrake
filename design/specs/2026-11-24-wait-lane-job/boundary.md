@@ -1,5 +1,7 @@
 # Boundary for waiting on one testq lane job
 
+Code: `src/RimMandrake/Utils/testq/testq.py`
+
 `RIMMANDRAKE_WAIT_AND_WAKE_ON_ONE_LANE_JOB` covers `wait_for` and `cmd_wait` in
 `src/RimMandrake/Utils/testq/testq.py`, tested in `selftest_testq.py` beside it.
 

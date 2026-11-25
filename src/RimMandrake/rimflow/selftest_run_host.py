@@ -219,11 +219,90 @@ def t_host_live_counts_every_claude_run_there():
     assert f["live"] is None, f
 
 
+def _host_home(sync_rc):
+    """A fake host home: ~/rm/bench with a `sync` that exits sync_rc and a launcher that leaves a marker file."""
+    import tempfile
+    home = tempfile.mkdtemp(prefix="selftest_run_host_")
+    bench = os.path.join(home, "rm", "bench")
+    os.makedirs(os.path.join(bench, os.path.dirname(R.LAUNCHER)))
+    with open(os.path.join(bench, "sync"), "w") as fh:
+        fh.write("#!/bin/sh\necho 'REFUSED: the clone is dirty'\nexit %d\n" % sync_rc if sync_rc else
+                 "#!/bin/sh\necho 'SYNCED aaa -> bbb'\nexit 0\n")
+    os.chmod(os.path.join(bench, "sync"), 0o755)
+    with open(os.path.join(bench, R.LAUNCHER), "w") as fh:
+        fh.write("import sys\nopen(%r, 'w').write(' '.join(sys.argv))\nprint('DETACHED rm-detached-x-1')\n"
+                 % os.path.join(home, "launched"))
+    return home
+
+
+def _run_remote_cmd(home, pl, brief="the brief"):
+    """Run the plan's remote command in a local shell whose HOME is the fake host (the ssh door itself stripped)."""
+    return subprocess.run(["bash", "-c", pl["argv"][-1]], input=brief, capture_output=True, text=True,
+                          env=dict(os.environ, HOME=home))
+
+
+def t_remote_launch_runs_origin_main():
+    """A remote launch syncs the host's seat clone, then runs its launcher; a sync that fails runs no launcher and says
+    so by name (measured 2026-11-25 2:05 PM PST: a launch ran SteveDesktop's launcher from a clone an hour behind
+    origin: `unrecognized arguments: --effort high`). The brief reaches the host either way; a local launch has no
+    argv."""
+    cmd = P()["argv"][-1]
+    assert cmd.index("cat > ") < cmd.index("./sync") < cmd.index("detached_helper.py launch"), cmd
+    assert cmd.index("cd ~/rm/bench") < cmd.index("./sync"), cmd
+    home = _host_home(0)
+    r = _run_remote_cmd(home, P())
+    assert r.returncode == 0 and "DETACHED rm-detached-x-1" in r.stdout, (r.returncode, r.stdout, r.stderr)
+    assert "--item X" in open(os.path.join(home, "launched")).read()
+    assert open(os.path.join(home, "rm", "list_briefs", "X.md")).read() == "the brief"
+    home = _host_home(1)
+    r = _run_remote_cmd(home, P())
+    assert r.returncode == R.SYNC_RC and R.SYNC_FAILED in r.stdout, (r.returncode, r.stdout, r.stderr)
+    assert "DETACHED" not in r.stdout and not os.path.exists(os.path.join(home, "launched")), "a launcher ran unsynced"
+    assert open(os.path.join(home, "rm", "list_briefs", "X.md")).read() == "the brief", "the brief still reaches the host"
+    assert R.plan("archmagi", "X", "/b", GOOD, budget=5) == {"verdict": "LOCAL", "why": "this machine", "argv": []}
+
+
+def t_a_failed_sync_is_could_not_launch():
+    """launch_on_host reports a sync failure as `could not launch` with its cause, rc 5 (could not look), and keeps no
+    run record: it is a fault of the host's clone, not of the run or the item."""
+    import argparse
+    import contextlib
+    import io
+    import detached_helper as DH
+    args = argparse.Namespace(host="stevedesktop", item="X", model="sonnet", budget_usd=5, seat="bench",
+                              next_act_owner=None, effort=None)
+    wrote = []
+    keep = DH.write_record
+    DH.write_record = lambda rec: wrote.append(rec)
+
+    def runner(argv, **kw):
+        return subprocess.CompletedProcess(argv, R.SYNC_RC, "REFUSED: the clone is dirty\n" + R.SYNC_FAILED + "\n", "")
+    buf = io.StringIO()
+    try:
+        with contextlib.redirect_stdout(buf):
+            rc = DH.launch_on_host(args, "brief", {}, runner=runner, reader=lambda *a: GOOD)
+    finally:
+        DH.write_record = keep
+    out = buf.getvalue().lower()
+    assert rc == 5 and not wrote, (rc, wrote)
+    assert "could not launch" in out and "seat clone could not sync" in out and "the clone is dirty" in out, out
+
+
+def t_both_remote_launchers_share_the_sync():
+    """The bundle path (work_bundle.remote_argv) builds its command through run_host.in_bench, the same text."""
+    import work_bundle as WB
+    cmd = WB.remote_argv("stevedesktop", ["A"], "w")[-1]
+    assert R.in_bench("./pipe bundle A --why w") in cmd, cmd
+    assert cmd.index("./sync") < cmd.index("./pipe bundle"), cmd
+
+
 def main():
     tests = (t_refused_by_name, t_could_not_look_named, t_no_spend_stated, t_wsl_door, t_login_path, t_every_fact_reads,
              t_account_from_the_machine, t_launch_argv, t_record_names_host_unit_item, t_live_until_the_host_says_ended,
              t_stop_runs_the_hosts_pipe, t_pipe_stop_routes_a_remote_unit, t_host_room_for_the_lane,
-             t_status_reads_a_remote_run_from_its_host, t_host_live_counts_every_claude_run_there)
+             t_status_reads_a_remote_run_from_its_host, t_host_live_counts_every_claude_run_there,
+             t_remote_launch_runs_origin_main, t_a_failed_sync_is_could_not_launch,
+             t_both_remote_launchers_share_the_sync)
     bad = 0
     for f in tests:
         try:

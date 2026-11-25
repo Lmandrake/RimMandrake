@@ -598,8 +598,8 @@ def remote_argv(host, ids, why):
     target = RH.door(host)
     if not target:
         raise ValueError("no ssh door to host %r (run_host.HOSTS)" % host)
-    return RH._ssh(target, "cd %s && ./sync && ./pipe bundle %s --why %s" % (
-        RH.BENCH, " ".join(shlex.quote(i) for i in ids), shlex.quote(why)))
+    return RH._ssh(target, RH.in_bench("./pipe bundle %s --why %s" % (
+        " ".join(shlex.quote(i) for i in ids), shlex.quote(why))))
 
 
 LEFT_OUT_RX = re.compile(r"^left out: (\S+)\s+(.*)$", re.M)
