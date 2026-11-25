@@ -1,0 +1,3 @@
+A judge's calibration harness that copies the production reading must read its inputs at the same moment production does. coverage_calibration.judge read the entry texts AFTER the judge ran, production reads them BEFORE; harmless while the judge could not edit, but once it could fix scenes.json the fix erased the passage its late gap quoted, and bad_late_serious read advisory (calibration FAILED). When you give a judge a new power, rerun its calibration and diff the harness against run() for anything read after the judge acts.
+item: RIMMANDRAKE_LET_BLIND_READERS_FIX_TWO_STILL_FORBIDDEN_IN_CODE
+home: skills/rimworld-modding or design/specs/2026-11-25-blind-readers-fix/boundary.md
