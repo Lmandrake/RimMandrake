@@ -12102,3 +12102,4 @@
 {"seat":"RUNNER","event":"spawn","name":"STEVE_LANE_UNSTICK_PAUSED_UNOWNED_PAUSED_ARJYIP","kind":"task","needs":"offline","title":"SteveDesktop lane PAUSED, unowned 10 min: fill stopped: /mnt/d/ClaudeWork/rimmandrake/testq/fill.stop exists","for":"RELENTLESS","from":"STEVE_STEWARD_BUILD_NO_LLM_OWNER","ts":"2026-11-25T01:39:01Z","tsn":1795570741855377585}
 {"seat":"RUNNER","event":"note","id":"OPS_MATURATION_MOD_PAUSED_FYEB","text":"ops_watch: cleared at 2026-11-25T01:46:31Z (maturation.paused now 0)","ts":"2026-11-25T01:46:49Z","tsn":1795571209398588454}
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_UNITS","result":"kept","detail":"sweep: running again","ts":"2026-11-25T01:48:39Z","tsn":1795571319691704635}
+{"seat":"RUNNER","event":"raise","id":"STEVE_LANE_UNSTICK_PAUSED_UNOWNED_PAUSED_ARJYIP","reason":"steward: lane unowned 30 min (PAUSED)","ts":"2026-11-25T01:59:21Z","tsn":1795571961183921184}
