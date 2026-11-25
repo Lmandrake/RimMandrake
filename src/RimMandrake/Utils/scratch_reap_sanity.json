@@ -1,21 +1,22 @@
 {
- "_why": "End selftest_stale is 200 because it reads the top directory's age and the sweep waits on the newest file inside: on 2026-11-01, 170 fixtures read stale with contents 6-12 h old. Lines between a cleaner that keeps up and one that does not: start reads before any work, end reads what the run left. Over a line, the reaper writes sanity.json and the Dispatcher raises it to the Conductor log; ops_watch files or reopens one fixed item per end. The pool's own cap comes from scratch_clone, not from here. Start lines are the wildly-dirty ones, set near twice a quiet machine: 2026-11-01 it was 14,199 stale fixtures, and 16 clones at 94 GB in rm/scratch that the pool cap cannot see. End lines are what a finished run may honestly leave: young work, and refusals with a real reason. session_dirs is a reading, not a line: on 2026-11-05 eight Relentless workers kept 443 of 475 session dirs inside the 24 h TTL, so the old 400/300 lines alarmed on young work; session_stale counts the ones past the TTL by newest content (start) or left un-reaped by the run (end). The end counts of refused and session_stale have no line since 2026-11-23: no danger was ever named for a count of kept folders (CLAUDE.md, No limit without the danger it guards), and they held incident disk-20261115210535 open over 1.0 GB; refused_gb and root_disk_pct are the lines that guard the disk. rm_scratch_clones is the same at the end: on 2026-11-06 a live session's 17 young work-package clones read 17 over 8, so the end line is on rm_scratch_left, the rm/scratch clones the run left that are not young (start keeps the whole count; ops_watch reads it for clones outside the pool).",
+ "_why": "Lines between a cleaner that keeps up and one that does not: start reads before any work, end reads what the run left. Over a line, the reaper writes sanity.json; ops_watch files or reopens one fixed item per end. The pool's own cap comes from scratch_clone, not from here. Every line names its danger in _dangers (selftest_scratch_reap_sanity_dangers.py). Counts that name no danger are readings, not lines (CLAUDE.md, No limit without the danger it guards): selftest_stale, session_dirs, session_stale, refused and oldest_h rang SCRATCH_DIRTY_START/END about 300 times from 2026-11-23 to 2026-11-25 while / stood at 57% and every disk line read clear. rm_scratch_clones is a start line; at the end the line is rm_scratch_left, the rm/scratch clones the run left that are not young (2026-11-06: a live session's 17 young clones read 17 over 8). ops_watch reads the start rm_scratch_clones line for clones outside the pool.",
+ "_dangers": {
+  "rm_scratch_clones": "clones in rm/scratch sit outside the 16-clone pool cap and multiply fast; 2026-11-01 16 clones held 94 GB there, unseen by the pool",
+  "rm_scratch_left": "rm/scratch clones the run could not take outside the pool cap; they strand work and grow the disk, as on 2026-11-01 (94 GB)",
+  "rm_scratch_gb": "bytes in rm/scratch fill / outside the pool's disk floor; 2026-11-01 rm/scratch held 94 GB that the pool cap could not see",
+  "refused_gb": "bytes the cleaner may not take grow without bound; incident disk-20261115210535 held refused bytes over 1.0 GB",
+  "root_disk_pct": "a full / stops every clone, build, selftest and ledger write on the machine; it is the danger every other disk line stands in for"
+ },
  "start": {
   "rm_scratch_clones": 12,
   "rm_scratch_gb": 60,
-  "selftest_stale": 500,
-  "session_stale": 100,
-  "refused": 100,
   "refused_gb": 40,
-  "oldest_h": 720,
   "root_disk_pct": 85
  },
  "end": {
   "rm_scratch_left": 8,
   "rm_scratch_gb": 50,
-  "selftest_stale": 200,
   "refused_gb": 25,
-  "oldest_h": 480,
   "root_disk_pct": 80
  }
 }

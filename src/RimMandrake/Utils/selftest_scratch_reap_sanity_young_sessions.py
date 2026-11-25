@@ -65,8 +65,11 @@ def main():
     session(root, young + 1, age_s=R.ttl_s() + 3600)
     m = R.measure(time.time(), None, {})
     check(m.get("session_stale") == 1, f"a session past the TTL by its newest content is counted (session_stale={m.get('session_stale')})")
-    over = dict(m, session_stale=lim["start"].get("session_stale", 0) + 1)
-    check(any(p.startswith("session_stale") for p in R.judge_sanity("start", over)), "stale sessions over the start line are a problem")
+    if "session_stale" in lim["start"]:
+        over = dict(m, session_stale=lim["start"]["session_stale"] + 1)
+        check(any(p.startswith("session_stale") for p in R.judge_sanity("start", over)), "stale sessions over the start line are a problem")
+    else:       # a count with no named danger is a reading (selftest_scratch_reap_sanity_dangers.py)
+        check(about_sessions(R.judge_sanity("start", dict(m, session_stale=10 ** 6))) == [], "stale sessions with no line are a reading, not a problem")
     rows = [{"kind": "session", "verdict": "REFUSE", "bytes": 0, "age_h": 30.0, "why": ["held"]},
             {"kind": "session", "verdict": "YOUNG", "bytes": 0, "age_h": 1.0, "why": []},
             {"kind": "clone", "verdict": "REFUSE", "bytes": 0, "age_h": 30.0, "why": ["held"]}]

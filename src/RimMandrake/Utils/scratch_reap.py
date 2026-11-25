@@ -2053,6 +2053,27 @@ def rename_new(src: Path, dst: Path):
         raise OSError(n, os.strerror(n), str(dst))
 
 
+# A directory rename on drvfs (/mnt/d) is refused (EACCES) for a moment after files are written into it: a Windows scanner
+# or indexer holds a handle. Measured: 2026-11-19, 2026-11-25 05:47Z and 18:39Z each ended a reap with that refusal
+# (OPS_SCRATCH_DIRT_MEASURE_AT_END_YOGQ). The waits sum to about 60 s, a hang guard for a reap that runs about 40 min.
+RENAME_WAITS_S = (1, 2, 4, 8, 15, 30)
+RENAME_REFUSALS = (errno.EACCES, errno.EPERM, errno.EBUSY)
+
+
+def rename_retrying(tmp: Path, dest: Path):
+    """os.rename(tmp, dest), retried through a short Windows refusal. When it still refuses, tmp is removed (it holds only
+    copies; the source stays) and the refusal raises."""
+    for wait in RENAME_WAITS_S + (None,):
+        try:
+            os.rename(tmp, dest)
+            return
+        except OSError as e:
+            if e.errno not in RENAME_REFUSALS or wait is None:
+                shutil.rmtree(tmp, ignore_errors=True)
+                raise
+            time.sleep(wait)
+
+
 def preserve(row: dict) -> str:
     """Preserve one ARCHIVE row and record the checks performed, including a restore for a tar-only archive."""
     p = Path(row["path"])
@@ -2126,7 +2147,7 @@ def preserve(row: dict) -> str:
             durable(f)
         durable(tmp, False)
         dest = day / f"{slug}-{int(time.time())}-{os.path.basename(tmp)[-8:]}"
-        os.rename(tmp, dest)
+        rename_retrying(tmp, dest)
         for q in (day, day.parent, root):               # each new link, up to the root that outlives them
             durable(q, False)
     manifest = dest / "manifest.json"
