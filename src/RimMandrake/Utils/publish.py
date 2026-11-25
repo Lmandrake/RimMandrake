@@ -72,6 +72,9 @@ PUSH_LOCK_NAME = ".publish-push.lock"
 # a flock when its holder exits or is killed), and a holder's own git calls are each bounded by GIT_TIMEOUT_S.
 PUSH_LOCK_SAY_S = 30.0     # budget: ends no work: a waiting line on stderr; the wait goes on
 GIT_TIMEOUT_S = float(os.environ.get("PUBLISH_GIT_TIMEOUT", "300"))   # one git call, push included; a hang is a loud TimeoutExpired, not a stall
+# The tree checks' full clone and checkout write the whole tree: a hang guard only, far above a real run. 300 s was
+# reached by that checkout twice at load 40 on 2026-11-24 and refused two publishes.
+CHECKTREE_GIT_TIMEOUT_S = float(os.environ.get("PUBLISH_CHECKTREE_GIT_TIMEOUT", "1800"))
 before_push = None          # selftest hook: called(attempt) between rebase and push
 before_reset = None         # selftest hook: called() between the replay and the HEAD check
 LOCK_TIMEOUT = float(os.environ.get("PUBLISH_LOCK_TIMEOUT", "600"))
@@ -1274,7 +1277,7 @@ def full_head_tree(top, rev="HEAD", what="HEAD", lands=None):
                   ["-C", tmp, "checkout", "-q", "--detach", head],
                   *([["-C", tmp, "update-ref", "refs/remotes/origin/main", head]] if lands else [])):
             r = subprocess.run(["git", "-c", "core.hooksPath=/dev/null", *a], capture_output=True, text=True,
-                               timeout=GIT_TIMEOUT_S)
+                               timeout=CHECKTREE_GIT_TIMEOUT_S)
             if r.returncode:
                 raise Refuse("the full checkout of %s for the checks failed: git %s: %s"
                              % (what, a[0] if a[0] != "-C" else a[2], r.stderr.strip()))
