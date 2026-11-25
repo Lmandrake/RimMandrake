@@ -656,20 +656,21 @@ def t_driver_that_kills_the_colony_is_named_and_the_map_restored():
     one whose fresh map still has none raises (the canary then reads red naming it); an unreadable roster is never 0."""
     import validity as _V
     class C:
-        def __init__(self, live_before, live_after, ok=True):
+        def __init__(self, live_before, live_after, ok=True, dead_before=1, dead_after=0):
             self.live, self.after, self.ok, self.calls = live_before, live_after, ok, []
+            self.dead, self.dead_after = dead_before, dead_after
         def call(self, tool, p):
             self.calls.append(tool)
             if tool == "rimworld/start_debug_game_ready":
-                self.live = self.after
+                self.live, self.dead = self.after, self.dead_after
             if tool == "jawa/list_pawns":
                 return {"success": self.ok, "pawns": [{"isPlayer": True, "intelligence": "Humanlike", "dead": False}] * self.live
-                        + [{"isPlayer": True, "intelligence": "Humanlike", "dead": True}]}
+                        + [{"isPlayer": True, "intelligence": "Humanlike", "dead": True}] * self.dead}
             return {"success": True}
     del _V.COLONY_BREAKERS[:]
-    c = C(2, 2)
+    c = C(2, 2, dead_before=0)
     rec = {"driver": "lines_proof"}
-    check("runner: a driver that leaves colonists is left alone",
+    check("runner: a driver that leaves colonists and no colonist corpse is left alone",
           runner.ensure_live_colony(rec, _client=c) == "ok" and rec["colony"] == {"live": 2}
           and "rimworld/start_debug_game_ready" not in c.calls and not _V.COLONY_BREAKERS, (rec, c.calls))
     c = C(0, 3)
@@ -678,6 +679,20 @@ def t_driver_that_kills_the_colony_is_named_and_the_map_restored():
           runner.ensure_live_colony(rec, _client=c) == "restored" and rec["colony"].get("left_no_colonist")
           and rec["colony"].get("restored_live") == 3 and _V.COLONY_BREAKERS == ["droid_dig_live"]
           and "rimworld/start_debug_game_ready" in c.calls, (rec, c.calls))
+    # HARNESS_REPAIR_CAUSE_4AFBF8A2_3 (testq J20261124T073045Z-a73766): suspension_bridge_proof --fresh-map left 24 live
+    # colonists AND a colonist corpse; the first site hold read "dead colonists" and every chain of the job was UNMEASURED
+    _breakers = list(_V.COLONY_BREAKERS)
+    c = C(24, 3, dead_before=1)
+    rec = {"driver": "suspension_bridge_proof"}
+    check("runner: a driver that leaves a colonist corpse beside live colonists gets a fresh map before the first hold",
+          runner.ensure_live_colony(rec, _client=c) == "restored" and rec["colony"].get("left_dead") == 1
+          and rec["colony"].get("restored_live") == 3 and rec["colony"].get("restored_dead") == 0
+          and "rimworld/start_debug_game_ready" in c.calls and _V.COLONY_BREAKERS == _breakers, (rec, c.calls))
+    try:
+        runner.ensure_live_colony({"driver": "z"}, _client=C(2, 2, dead_before=1, dead_after=1))
+        check("runner: a fresh map that still holds a colonist corpse raises", False)
+    except RuntimeError as e:
+        check("runner: a fresh map that still holds a colonist corpse raises", "corpse" in str(e), e)
     try:
         runner.ensure_live_colony({"driver": "x"}, _client=C(0, 0))
         check("runner: a fresh map that still has no colonist raises", False)

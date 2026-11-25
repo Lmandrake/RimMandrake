@@ -287,13 +287,20 @@ def _rb_call(client, tool, args):
     return r if isinstance(r, dict) else {}
 
 
-def _live_colonists(client):
-    """-> int, or None when the roster cannot be read whole (never read a failed/truncated list as 'no colonist')."""
+def _colonists(client):
+    """-> (live, dead) colonist counts, or (None, None) when the roster cannot be read whole (never read a failed or
+    truncated list as 'no colonist')."""
     import helpers as _H  # noqa: E402
     r = _rb_call(client, "jawa/list_pawns", {"includeHealth": False, "includeCorpses": True, "limit": 500})
     if not r.get("success") or r.get("truncated"):
-        return None
-    return sum(1 for p in r.get("pawns") or [] if _H.is_colonist(p) and not p.get("dead"))
+        return None, None
+    col = [p for p in r.get("pawns") or [] if _H.is_colonist(p)]
+    return sum(1 for p in col if not p.get("dead")), sum(1 for p in col if p.get("dead"))
+
+
+def _live_colonists(client):
+    """-> int, or None when the roster cannot be read whole."""
+    return _colonists(client)[0]
 
 
 def ensure_live_colony(rec, _client=None):
@@ -303,32 +310,43 @@ def ensure_live_colony(rec, _client=None):
     (SteveDesktop 2026-10-26..29, J20261029T181522Z-6dc94b and the sweep -8afa44). A driver that leaves none is named
     (rec["colony"], a log line, validity.COLONY_BREAKERS for the canary's text) and the session is given a fresh debug
     map, the same start the drivers' own --fresh-map does; a map that still has no colonist after that raises, so the
-    canary goes red naming the driver. Returns "ok" | "restored"; an unreadable roster is recorded, never guessed."""
+    canary goes red naming the driver. A driver that leaves a colonist CORPSE beside live colonists spoils the site the
+    same way (HARNESS_REPAIR_CAUSE_4AFBF8A2_3: suspension_bridge_proof, testq J20261124T073045Z-a73766: the first site
+    hold read "dead colonists" and every chain of the job was UNMEASURED): it gets the same fresh map, and a fresh map
+    that still holds a colonist corpse raises. Returns "ok" | "restored"; an unreadable roster is recorded, never
+    guessed."""
     if _client is None:
         import rimbridge_client as rb
         host, port, token = rb.resolve_endpoint()
         _client = rb.RimBridge(host=host, port=port, token=token, timeout=320.0)
         _client.connect()
-    n = _live_colonists(_client)
+    n, dead = _colonists(_client)
     rec["colony"] = {"live": n}
     if n is None:
         rec["colony"]["unread"] = "list_pawns failed or truncated"
         return "unread"
-    if n > 0:
+    if n > 0 and not dead:
         return "ok"
     name = rec.get("driver") or "?"
-    import validity as _V  # noqa: E402
-    _V.COLONY_BREAKERS.append(name)
-    rec["colony"]["left_no_colonist"] = True
-    print("[modcheck] driver %s LEFT NO LIVE COLONIST: starting a fresh debug map before the canary" % name,
+    if n == 0:
+        import validity as _V  # noqa: E402
+        _V.COLONY_BREAKERS.append(name)
+        rec["colony"]["left_no_colonist"] = True
+        what = "LEFT NO LIVE COLONIST"
+    else:
+        rec["colony"]["left_dead"] = dead
+        what = "LEFT %d COLONIST CORPSE(S)" % dead
+    print("[modcheck] driver %s %s: starting a fresh debug map before the canary" % (name, what),
           file=sys.stderr, flush=True)
     _rb_call(_client, "rimworld/go_to_main_menu", {})
     _rb_call(_client, "rimworld/start_debug_game_ready",
              {"readiness": "mapData", "pauseIfNeeded": True, "timeoutMs": 280000})
-    n2 = _live_colonists(_client)
-    rec["colony"]["restored_live"] = n2
+    n2, dead2 = _colonists(_client)
+    rec["colony"]["restored_live"], rec["colony"]["restored_dead"] = n2, dead2
     if not n2:
         raise RuntimeError("driver %s left no live colonist and a fresh debug map has %s" % (name, n2))
+    if dead2:
+        raise RuntimeError("driver %s left a colonist corpse and a fresh debug map still holds %d" % (name, dead2))
     return "restored"
 
 
