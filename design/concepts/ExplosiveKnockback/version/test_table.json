@@ -231,11 +231,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.23,
+    "seconds": 0.18,
     "last": "MOCK: PASS (41/41 scenes staged, all_green=False)",
-    "at": "2026-11-25T07:27:28Z",
+    "at": "2026-11-25T12:36:54Z",
     "result": "PASS",
-    "build": "f2ab9ef224a10cc1af97",
+    "build": "c359405b9c55ff17976d",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_script.py",
     "margins": []
    }
@@ -255,11 +255,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 3.98,
+    "seconds": 3.78,
     "last": "PASS proofgate (R1 P1 G1)",
-    "at": "2026-11-25T07:27:32Z",
+    "at": "2026-11-25T12:36:58Z",
     "result": "PASS",
-    "build": "ee5623a3b27b14477c15",
+    "build": "55f035866e04fd9908a7",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py",
     "margins": []
    }
@@ -277,11 +277,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 17.25,
+    "seconds": 13.33,
     "last": "selftest_proof_restore_check: PASS (0 failure(s))",
-    "at": "2026-11-25T06:42:27Z",
+    "at": "2026-11-25T12:37:11Z",
     "result": "PASS",
-    "build": "527b01ddcbcb5a3da464",
+    "build": "57ad7dcde2f6e8218ff1",
     "command": "python3 src/RimMandrake/Utils/selftest_proof_restore_check.py",
     "margins": []
    }
@@ -350,11 +350,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.24,
+    "seconds": 2.34,
     "last": "explosive knockback settings sweep: PASS (24 runs, 0 faults, 2/2 coupling mutants caught) | static: 0 faults, 4/4 planted caught, 10/10 switch faults caught | PASS | halves: offline PASS",
-    "at": "2026-11-25T07:27:34Z",
+    "at": "2026-11-25T12:37:14Z",
     "result": "PASS",
-    "build": "a8810a75bcd0e9bd9ec4",
+    "build": "f1b5b4b8524cf367c2b8",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py --half offline",
     "margins": []
    }
@@ -452,11 +452,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.03,
+    "seconds": 0.02,
     "last": "PASS stage3 scenes: 0 failed",
-    "at": "2026-11-25T07:27:34Z",
+    "at": "2026-11-25T12:37:14Z",
     "result": "PASS",
-    "build": "1499978598d01188dda7",
+    "build": "accc6699014bd8fed4b5",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_stage3_scenes.py",
     "margins": []
    }
@@ -2496,10 +2496,11 @@
     "rc": 0,
     "seconds": 0.02,
     "last": "explosive knockback pit fetch geometry: PASS (0 faults; visit-2 layout caught: True)",
-    "at": "2026-11-19T03:42:00Z",
+    "at": "2026-11-25T12:37:14Z",
     "result": "PASS",
-    "build": "4a477519d18bce87ae8c",
-    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_pit_fetch.py"
+    "build": "997d1a1ba4e3963e48eb",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_pit_fetch.py",
+    "margins": []
    }
   },
   "T_STOREROOM_BOMB_PIT_OFFLINE": {
@@ -2602,11 +2603,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.1,
+    "seconds": 2.74,
     "last": "explosive knockback kernel: 277/277 passed",
-    "at": "2026-11-25T02:40:17-08:00",
+    "at": "2026-11-25T12:37:17Z",
     "result": "PASS",
-    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py"
+    "build": "7a58e66b3678999bc782",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+    "margins": []
    },
    "marker": "K_CARRY_OWN_PLAN"
   },
@@ -2625,11 +2628,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.0,
+    "seconds": 0.02,
     "last": "PASS carry static: 0 of 4 lines failing, 4 of 4 planted faults caught (cases read: 4 lines, 4 plants; limit 0 failing)",
-    "at": "2026-11-25T02:40:17-08:00",
+    "at": "2026-11-25T12:37:17Z",
     "result": "PASS",
-    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_carry_static.py"
+    "build": "b9b0ff61c7263c11aace",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_carry_static.py",
+    "margins": []
    }
   },
   "T_KERNEL_COLLISION_BRUISE": {
@@ -2649,11 +2654,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.9,
+    "seconds": 2.34,
     "last": "explosive knockback kernel: 277/277 passed",
-    "at": "2026-11-25T02:40:19-08:00",
+    "at": "2026-11-25T12:37:19Z",
     "result": "PASS",
-    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py"
+    "build": "7a58e66b3678999bc782",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+    "margins": []
    },
    "marker": "K_COLLISION_BRUISE"
   },
@@ -2674,11 +2681,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.8,
+    "seconds": 2.15,
     "last": "explosive knockback kernel: 277/277 passed",
-    "at": "2026-11-25T02:40:21-08:00",
+    "at": "2026-11-25T12:37:21Z",
     "result": "PASS",
-    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py"
+    "build": "7a58e66b3678999bc782",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+    "margins": []
    }
   },
   "T_KERNEL_NO_CONTACT": {
@@ -2698,11 +2707,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.9,
+    "seconds": 2.43,
     "last": "explosive knockback kernel: 277/277 passed",
-    "at": "2026-11-25T02:40:23-08:00",
+    "at": "2026-11-25T12:37:24Z",
     "result": "PASS",
-    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py"
+    "build": "7a58e66b3678999bc782",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+    "margins": []
    }
   },
   "T_BLAST_SHOW_OFFLINE": {
@@ -2721,11 +2732,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.4,
+    "seconds": 1.88,
     "last": "PASS blast show: 0 of 26 line(s) failing",
-    "at": "2026-11-25T02:40:24-08:00",
+    "at": "2026-11-25T12:37:25Z",
     "result": "PASS",
-    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_blast_show.py"
+    "build": "cca034cd343a6325ca67",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_blast_show.py",
+    "margins": []
    }
   },
   "T_SETTINGS_SWEEP_SHOW": {
@@ -2743,11 +2756,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 5.6,
+    "seconds": 6.55,
     "last": "explosive knockback settings sweep show: PASS (11 scenarios x 27648 blasts = 359424 rows; 0/30 checks failing; parts with their own switch 7/7, unbuilt: none; 2/2 planted map faults caught, 5/5 planted throw faults caught) | halves: show PASS",
-    "at": "2026-11-25T02:40:30-08:00",
+    "at": "2026-11-25T12:37:32Z",
     "result": "PASS",
-    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py --half show"
+    "build": "fa8692ea3e4a81d6956e",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py --half show",
+    "margins": []
    }
   },
   "sc_pawn_arc_carried_thing": {
@@ -3040,7 +3055,18 @@
    "id": "T_SAVE_IN_AIR_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_save_in_air.py",
-   "note": "supports walk_storeroom_raid; decides nothing"
+   "note": "supports walk_storeroom_raid; decides nothing",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.03,
+    "last": "explosive knockback save in air judgment: PASS (0 of 14 cases wrong)",
+    "at": "2026-11-25T12:37:32Z",
+    "result": "PASS",
+    "build": "c27c2a6648fc2fb65e4d",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_save_in_air.py",
+    "margins": []
+   }
   },
   "sc_walk_frames": {
    "id": "sc_walk_frames",
