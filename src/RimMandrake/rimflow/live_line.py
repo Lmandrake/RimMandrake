@@ -8,6 +8,9 @@
     role=Operations max_age=2d            a Dispatcher role's last launch
     once: one-off data repair
 
+A unit line may add `host=<machine>` (a key of HOSTS): off that machine, check() asks it over ssh, so a helper on one
+machine can prove a promise on another (design/specs/2026-11-24-live-line-host/boundary.md).
+
 parse() and needs_line() are pure. check() asks systemd and the disk; a reading must be younger than max_age AND newer
 than the commit it proves (`not_before`), or an old reading would prove a new commit. Shared by relentless.py and by
 LIVE_PROOF_ENFORCE_DONE_MEANS_RUNNING's `close --live`.
@@ -30,6 +33,8 @@ AGE_S = {"s": 1, "m": 60, "h": 3600, "d": 86400}
 # under the drive's mount. OPS_MEMORY_VET_THEN_WIRE_AFTER_WATCH: a live memory.json read "absent" for three gens.
 DRIVE_RX = re.compile(r"^([A-Za-z]):[\\/](.*)$")
 MOUNT_ROOT = "/mnt"
+# host= key -> (its hostname, the ssh target that reaches it). SteveDesktop reaches Archmagi as archmagi-wsl (RUNBOOK).
+HOSTS = {"archmagi": ("archmagi", "mandrake@archmagi-wsl"), "stevedesktop": ("stevedesktop", "mandrake@stevedesktop-wsl")}
 
 
 def local_path(path):
@@ -57,6 +62,15 @@ def parse(line):
         raise ValueError("not a live line: %r" % line)
     if not all(fields.values()):
         raise ValueError("empty value: %r" % line)
+    host = fields.pop("host", None)
+    if host is not None:
+        if host.lower() not in HOSTS:
+            raise ValueError("unknown host=%s (known: %s)" % (host, ", ".join(sorted(HOSTS))))
+        if "unit" not in fields:
+            raise ValueError("host= goes only on a unit line: %r" % line)
+        p = parse(" ".join("%s=%s" % kv for kv in fields.items()))
+        p["host"] = host.lower()
+        return p
     if set(fields) == {"hook"}:
         return {"kind": "hook", "hook": fields["hook"]}
     if set(fields) == {"unit"}:
@@ -91,6 +105,33 @@ def prose_only(paths):
         return False
     return all((p.startswith("design/") or (p.endswith(".md") and not p.startswith("infrastructure/state/")))
                for p in paths)
+
+
+def _here():
+    import socket
+    return (os.environ.get("RM_LIVE_HOSTNAME") or socket.gethostname()).lower()
+
+
+def _via(host, runner):
+    """-> a runner that runs argv on `host` (over ssh when it is not this machine), or `runner` itself."""
+    if not host or HOSTS[host][0] == _here():
+        return runner
+    import shlex
+    target = HOSTS[host][1]
+
+    def remote(argv, **kw):
+        r = runner(["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=15", target, shlex.join(argv)], **kw)
+        if r.returncode == 255:      # ssh itself failed: never let an empty stdout read as a unit's answer
+            raise OSError("ssh %s: %s" % (target, (r.stderr or "").strip()[-160:]))
+        return r
+    return remote
+
+
+def _remote_mtime(path, runner):
+    """-> the file's mtime on the far machine, or None when it is absent there."""
+    r = runner(["stat", "-c", "%Y", path], capture_output=True, text=True, timeout=30, stdin=subprocess.DEVNULL)
+    got = (r.stdout or "").strip()
+    return int(got) if r.returncode == 0 and got.isdigit() else None
 
 
 def _systemctl(verb, unit, runner):
@@ -255,6 +296,9 @@ def check(line, settings=None, now=None, not_before=0, runner=subprocess.run, st
         if now - t > p["max_age_s"]:
             return "role %s last launched %d s ago (max %d)" % (p["role"], now - t, p["max_age_s"])
         return None
+    host = p.get("host")
+    remote = _via(host, runner) is not runner
+    runner = _via(host, runner)
     unit, owner = p["unit"], metronome_owner(p["unit"], phases)
     if owner:          # disabled on purpose at cutover; the metronome runs its work now
         unit = METRONOME_TIMER
@@ -267,9 +311,11 @@ def check(line, settings=None, now=None, not_before=0, runner=subprocess.run, st
         return None
     if p["reading"]:
         try:
-            mt = os.path.getmtime(local_path(p["reading"]))
-        except OSError:
-            return "reading %s is absent" % p["reading"]
+            mt = _remote_mtime(p["reading"], runner) if remote else os.path.getmtime(local_path(p["reading"]))
+        except OSError as e:
+            return "reading %s is absent%s" % (p["reading"], " (%s)" % e if remote else "")
+        if mt is None:
+            return "reading %s is absent on %s" % (p["reading"], host)
         name = "reading %s" % p["reading"]
     else:
         mt = _timer_last(unit, runner)

@@ -108,6 +108,7 @@ PAGES = {
     "design/specs/2026-11-23-long-waits/boundary.md": "src/RimMandrake/Utils/selftest_waitalive.py",
     "design/specs/2026-11-23-item-packet/boundary.md": "src/RimMandrake/rimflow/selftest_item_packet.py",
     "design/specs/2026-11-22-list-outcome-checks/boundary.md": "src/RimMandrake/rimflow/selftest_list_effect.py",
+    "design/specs/2026-11-24-live-line-host/boundary.md": "src/RimMandrake/rimflow/selftest_live_line_host.py",
     "design/specs/2026-11-23-follow-through-audit/boundary.md": "src/RimMandrake/Utils/selftest_follow_through.py",
     "design/specs/2026-11-24-art-daemon-over-the-one-door/boundary.md": "src/RimMandrake/Utils/artpipe/selftest_artpipe_signin.py",
     "design/specs/2026-11-22-clone-pool-disk-floor/boundary.md": "src/RimMandrake/Utils/selftest_pool_floor.py",
