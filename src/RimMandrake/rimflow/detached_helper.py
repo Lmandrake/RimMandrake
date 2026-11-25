@@ -647,16 +647,56 @@ def clone_lock_path(dest):
 
 
 @contextlib.contextmanager
-def clone_lock(dest):
+def clone_lock(dest, _acquired=None):
     """One launch at a time takes a clone: held from the last holder check to the run's record
-    (RIMMANDRAKE_LOCK_DET_CLONE_TAKE_TWO_LAUNCHES_ONE_CLONE: two launches of one item both passed the check)."""
-    os.makedirs(os.path.dirname(clone_lock_path(dest)), exist_ok=True)
-    with open(clone_lock_path(dest), "a+") as fh:
-        fcntl.flock(fh, fcntl.LOCK_EX)
+    (RIMMANDRAKE_LOCK_DET_CLONE_TAKE_TWO_LAUNCHES_ONE_CLONE: two launches of one item both passed the check).
+    The return removes the lock file with the clone (drop_clone_lock), so a lock taken on a file that was unlinked
+    while this launch waited is let go and taken again on the file that stands now. `_acquired(path)` is a test's seam."""
+    lk = clone_lock_path(dest)
+    os.makedirs(os.path.dirname(lk), exist_ok=True)
+    while True:
+        fh = open(lk, "a+")
         try:
-            yield
-        finally:
-            fcntl.flock(fh, fcntl.LOCK_UN)
+            fcntl.flock(fh, fcntl.LOCK_EX)
+            if _acquired:
+                _acquired(lk)
+            try:
+                same = os.stat(lk).st_ino == os.fstat(fh.fileno()).st_ino
+            except FileNotFoundError:
+                same = False
+            if same:
+                break
+        except BaseException:
+            fh.close()
+            raise
+        fh.close()          # closing drops the lock on the unlinked file
+    try:
+        yield fh
+    finally:
+        fcntl.flock(fh, fcntl.LOCK_UN)
+        fh.close()
+
+
+def drop_clone_lock(dest):
+    """Remove <clone>.lock once the clone is given back (RIMMANDRAKE_CLEAN_STALE_LOCKS_AND_LEFTOVERS_OF_RETIRED_ERAS:
+    915 such files stood in the pool with no clone beside them). -> True when the file is gone, False when a launch
+    holds it (that launch owns the file and it stays). The file is unlinked while this call holds the lock."""
+    lk = clone_lock_path(dest)
+    try:
+        fh = open(lk, "r")
+    except FileNotFoundError:
+        return True
+    with fh:
+        try:
+            fcntl.flock(fh, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            return False
+        try:
+            if os.stat(lk).st_ino == os.fstat(fh.fileno()).st_ino:
+                os.unlink(lk)
+        except FileNotFoundError:
+            pass
+        return True
 
 
 def claude_bin():
@@ -965,6 +1005,12 @@ def return_clone(unit, now=None, runner=subprocess.run, evictor=None, busy=None,
     steps.append("bundle " + (bundle or "none (nothing left to bundle)"))
     if kept:
         steps.append("KEPT: " + kept)
+    elif not os.path.isdir(clone):
+        try:
+            if not drop_clone_lock(clone):
+                steps.append("lock file kept: a launch holds it")
+        except OSError as e:
+            steps.append("lock file not removed: %s" % e)
     # the return works for seconds to minutes on the record it read at its start. Another step of the same run (the
     # continuation step's "waits for the account switch") writes the record meanwhile: this write adds the return's
     # own fields to the record as it is NOW, and takes nothing away

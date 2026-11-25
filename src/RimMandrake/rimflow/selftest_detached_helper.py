@@ -586,6 +586,64 @@ def test_return_real_git():
         os.environ.pop("RM_DETACHED_POOL", None)
 
 
+def t_a_returned_clone_takes_its_lock_file_with_it():
+    """RIMMANDRAKE_CLEAN_STALE_LOCKS_AND_LEFTOVERS_OF_RETIRED_ERAS (2026-11-25: 915 <ITEM>.det.lock files with no clone
+    beside them in the pool): a return that gives the clone back also removes its lock file, unless a launch holds it;
+    a return that keeps the clone keeps the lock, and a lock that a launch holds stays."""
+    pool = os.path.join(TMP, "lockpool")
+    os.makedirs(os.path.join(pool, "clones"))
+    os.environ["RM_DETACHED_POOL"] = pool
+    try:
+        for item, kept in (("LOCK_GIVEN_BACK", False), ("LOCK_KEPT", True)):
+            unit = "rm-detached-%s-1" % item.lower().replace("_", "-")
+            c = os.path.join(pool, "clones", item + ".det")
+            os.makedirs(c)
+            with DH.clone_lock(c):
+                pass
+            DH.write_record({"seat": "BENCH", "item": item, "clone": c, "model": "sonnet", "max_s": 600,
+                             "budget_usd": 5.0, "at": T0, "state": os.environ["RM_DISPATCHER_STATE"], "status": "finished",
+                             "unit": unit, "out": os.path.join(TMP, unit + ".out"), "err": os.path.join(TMP, unit + ".err"),
+                             "clone_how": "made " + c})
+            calls, run = sh_runner()
+            DH.return_clone(unit, now=T0, runner=run, busy=not_busy, evictor=fake_evictor(kept="planted" if kept else None,
+                                                                                          remove=not kept)[1])
+            lk = DH.clone_lock_path(c)
+            if kept:
+                check(os.path.exists(lk), "lock: a kept clone keeps its lock file")
+            else:
+                check(not os.path.exists(lk), "lock: a returned clone's lock file is removed (%s)" % lk)
+        held = os.path.join(pool, "clones", "HELD.det")
+        with DH.clone_lock(held):
+            check(DH.drop_clone_lock(held) is False and os.path.exists(DH.clone_lock_path(held)),
+                  "lock: a lock that a launch holds is never removed")
+        check(DH.drop_clone_lock(held) is True and not os.path.exists(DH.clone_lock_path(held)),
+              "lock: a free lock is removed")
+        check(DH.drop_clone_lock(held) is True, "lock: a lock file already gone is a removal, not a failure")
+    finally:
+        os.environ.pop("RM_DETACHED_POOL", None)
+
+
+def t_a_launch_never_holds_an_unlinked_lock_file():
+    """A drop that unlinks <clone>.lock while a launch waits on it: the launch lets that file go and takes the one
+    that stands now, so two launches never both hold a lock on one clone."""
+    pool = os.path.join(TMP, "lockpool2")
+    os.makedirs(os.path.join(pool, "clones"))
+    try:
+        swapped = os.path.join(pool, "clones", "SWAPPED.det")
+        lk = DH.clone_lock_path(swapped)
+        once = []
+
+        def unlink_first(path):     # a drop that unlinked the file while this launch waited on it
+            if not once:
+                once.append(1)
+                os.unlink(path)
+        with DH.clone_lock(swapped, _acquired=unlink_first) as fh:
+            same = os.path.exists(lk) and os.fstat(fh.fileno()).st_ino == os.stat(lk).st_ino
+            check(same and once, "lock: a launch whose lock file was unlinked under it takes the file that stands now")
+    finally:
+        pass
+
+
 def shard_line(event, **kw):
     return json.dumps(dict({"seat": "BENCH", "event": event}, **kw))
 
@@ -1765,6 +1823,8 @@ def main():
     t_a_return_that_keeps_again_is_refused_with_its_reason()
     t_a_live_or_dead_holder_is_never_returned_by_the_launch()
     t_a_kept_return_records_why()
+    t_a_returned_clone_takes_its_lock_file_with_it()
+    t_a_launch_never_holds_an_unlinked_lock_file()
     print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0
 
