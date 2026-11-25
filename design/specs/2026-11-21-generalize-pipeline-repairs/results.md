@@ -222,3 +222,18 @@ conditions; the guiding principles), not repairs.
 
 - This waits for `RIMMANDRAKE_RENAME_GAMES_ARCHBIG_ARCHSMALL_STEVE1_STEVE2_LETTERS_UNREADABLE` to end. That run renames
   the games.
+
+## Reconcile, 2026-11-24
+
+- **Principle 2 (b), the game in the run record: done by `9f0336de6e`** (2026-11-21, item
+  `RIMMANDRAKE_FIX_OFFLINE_STEWARD_REFUSED_BY_GAME_A_WALK_HOLD`). `detached_helper.py` writes `"game": run_game(item, cenv)`
+  in every detached launch record, and `maturation_dispatch.run_game` reads the record's `game` first.
+- **Principle 7, call deadlines:** settled by the root rule "No limit without the danger it guards": a call or test
+  deadline is a hang guard, and the class names its danger once. No per-call number needs its own danger line.
+- **Principle 9, the merge of principles 1, 3 and 6:** done (`ac9cca02b4`, second run).
+- **Principle 2, next step 2 (a publish check that remakes each `GENERATED from` copy):** no failure from a stale copy is
+  on record. It fails test 1 of "Touching code has a cost". Polish line below, no ticket.
+
+### Polish (no ticket)
+
+- A publish check that remakes each `GENERATED from` copy (`mod_owner_hold.json`, the `WSLENV` list) and compares.

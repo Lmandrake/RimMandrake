@@ -293,6 +293,8 @@ ALLOW = {
     "src/RimMandrake/Utils/loadsweep/biome_load_proof.sh": "kills before each biome's tier write and launch",
     "src/RimMandrake/Utils/rimbench/gl_sheet_run.sh": "kills before each record's launch",
     "src/RimMandrake/Utils/game_instance.py": "the stopping tool itself: acts when asked, by pid, on no clock",
+    "src/RimMandrake/Utils/game_watch_tick.py": "stops a game in a named broken state (game_watcher.py), which "
+                                               "game_instance.stop(broken=True) confirms again; a clock alone never stops",
 }
 
 
