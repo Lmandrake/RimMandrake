@@ -2852,6 +2852,28 @@
    "partial": null,
    "command": "python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_pawn_land_on_pawn_sizes.py"
   },
+  "sc_lookup_sources": {
+   "id": "sc_lookup_sources",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/ExplosiveKnockback/proof/scene_lookup_sources.py",
+   "entry": "scene_lookup_sources.py",
+   "item": "RIMMANDRAKE_COVER_KNOCKBACK_BAR_HALVES_NO_LIVE_CHECK_SEES",
+   "scene": "sc_lookup",
+   "observes": "four live blasts, one colonist each: a Bomb with a weapon carrying its own extension reads source weapon at that force; the same with a projectile carrying one reads source projectile; a plain Bomb and a Flame read source damageDef at 1.0 and 0.5; the planned cells fall in that force order (sc_lookup lanes weapon source and damage-type source)",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/proof/scene_lookup_sources.py",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_Patch_DamageWorker_ExplosionKnockback.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+    "src/RimMandrake/ExplosiveKnockback/Patches/RM_Knockback_DamageDefs.xml"
+   ],
+   "why_game": "ConfigOf reads Explosion.weapon, Explosion.projectile and the DamageDef of a real explosion; the order itself is K-13 offline",
+   "cheaper_why": "T_KERNEL proves the order on KbConfig values; only a live Explosion shows which defs the hook hands the kernel",
+   "why_full_list": null,
+   "entry_exists": true,
+   "partial": null,
+   "command": "python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_lookup_sources.py"
+  },
   "sc_pawn_arc_sandbag_no_contact": {
    "id": "sc_pawn_arc_sandbag_no_contact",
    "kind": "live_minimal",
@@ -3499,7 +3521,8 @@
    "decides": [
     "T_KERNEL",
     "T_LINT",
-    "sc_lookup"
+    "sc_lookup",
+    "sc_lookup_sources"
    ],
    "supports": [
     "T_FUZZ",
