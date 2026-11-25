@@ -1154,7 +1154,9 @@ namespace JawaBench.BridgeTools
                                 .Want("rot", rot.AsInt.ToString()).Got("rot", spawned.Rotation.AsInt.ToString())
                                 .Got("faction", spawned.Faction?.def?.defName)
                                 .Got("hp", spawned.def.useHitPoints ? spawned.HitPoints.ToString() : null);
-                            if (fac != null) row.Want("faction", fac.def?.defName);
+                            // a thing that cannot hold a faction (a loose item, a shell, a stack of goods) is made with none:
+                            // wanting one read every staged item back as wrong (s.stage things=, 2026-11-24 ArchSmall)
+                            if (fac != null && spawned.def.CanHaveFaction) row.Want("faction", fac.def?.defName);
                             if (hitPoints >= 0 && spawned.def.useHitPoints) row.Want("hp", Mathf.Clamp(hitPoints, 1, spawned.MaxHitPoints).ToString());
                             var rq = spawned.TryGetComp<CompQuality>();
                             if (rq != null)
