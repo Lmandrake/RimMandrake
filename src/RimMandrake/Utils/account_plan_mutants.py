@@ -23,7 +23,7 @@ MARKER = ('        if not r["ok"]:\n            return False, False, "its level 
           '        if any(m.get("from") == a and m.get("under") for m in markers.values()):\n'
           '            return False, False, "a marker says that it was left at its line"\n'
           '        if not r["ok"]:\n            return False, False, "its level reads %s" % r["state"]')
-PULL = ('    until = bool(rl) and rl["until"] is not None and truth(parse(rl["until"]), env, live) is True',
+PULL = ('    until = ended(rl, env, live)',
         '    until = bool(can) and bool(order) and order[0] != live      # the old rule: the first in the order pulls')
 UNDO = ('commit(lambda _old: copy.deepcopy(h["before"]),', 'commit(lambda _old: copy.deepcopy(h["after"]),')
 # (promise its FAIL line must name, file, old, new)
@@ -38,13 +38,16 @@ PLANTS = [
     ("a_rescue_switch_waits_for_no_live_run", P, '    idle = runs is not None and not runs\n    delayed', '    idle = not runs\n    delayed'),
     ("an_unknown_burn_never_causes_a_switch", P, '    if rate is None or not live:\n        return None',
      '    if not live:\n        return None\n    rate = 4.0 if rate is None else rate'),
-    ("a_hand_switch_is_respected", P, '    if pin or f.get("hand"):', '    if pin:'),
+    ("a_hand_switch_is_respected", P, '    if pin or f.get("hand") or commanded(plan, f):', '    if pin or commanded(plan, f):'),
+    ("a_hand_switch_is_respected", P, '    if pin or f.get("hand") or commanded(plan, f):', '    if pin or f.get("hand"):'),
     ("the_reason_is_one_checkable_line", P, '    if alt is not None and stay:\n        gain = stay["cost"] - others[alt]["cost"]',
      '    if False:\n        gain = stay["cost"] - others[alt]["cost"]'),
     ("the_forecast_is_the_pick", P, 'nxt = best_of(ch, order) if ch else (can[0] if can else None)', 'nxt = can[0] if can else None'),
     ("no_marker_decides", P, *MARKER),
     ("an_account_left_at_its_line_is_no_target", P,
-     '    return AE.warning_line(line, None, N["account_end"]) + N["entry_margin_pct"]', '    return line'),
+     '    return max(AE.warning_line(rl["line"], None, N["account_end"]), rl["line"] + (rl["warn"] or 0)) + N["entry_margin_pct"]', '    return rl["line"]'),
+    ("an_account_left_at_its_line_is_no_target", P, 'rl["line"] + (rl["warn"] or 0)) + N[', 'rl["line"]) + N['),
+    ("an_account_left_at_its_line_is_no_target", P, 'if not ended(rules[a], env, a)] or (can if under else [])', ']'),
     ("a_refilled_account_is_a_target_at_once", P, *MARKER),
     ("unknown_never_gives_permission", P, '        return None if v is None else not v', '        return not v'),
     ("the_last_account_waits_at_its_wait_floor", P,
@@ -52,12 +55,17 @@ PLANTS = [
      '        line = rl["line"]\n        warn = max('),
     ("a_level_not_confirmed_near_the_line_refuses_starts", P,
      '    if near_old and lr["age_min"] is not None and lr["age_min"] > fr["max_age_min"]:', '    if False:'),
+    ("a_rescue_drain_in_flight_goes_on", P, 'f["draining"] or bool(last.get("draining"))', 'f["draining"]'),
+    ("a_request_is_done_by_the_switchers_log", P, 'for q in open_requests(plan, f))\n', 'for q in active(plan["requests"], f["now"]))\n'),
+    ("tick_drives_the_old_actuator", P, '        if near_end and not polled:', '        if False:'),
+    ("tick_drives_the_old_actuator", P, '            can = [a for a in can if take(a)[1]] or can\n', '            pass\n'),
+    ("tick_drives_the_old_actuator", P, 'if is_under and not (rl is None and pl is not None and pl > line):', 'if is_under:'),
     ("a_rescue_drain_in_flight_goes_on", P, '(0.0 if f.get("draining") else delayed):', 'delayed:'),
     ("an_account_outside_the_plan_is_left_alone", P, '    if live not in accts:       # somebody', '    if False:       # somebody'),
     ("a_step_that_is_not_alive_says_so", P, '" (NOT ALIVE NOW: %s)" % dead if dead else ""', '""'),
     ("one_file_binds_at_the_next_read", P,
-     '    return AE.warning_line(line, None, N["account_end"]) + N["entry_margin_pct"]',
-     '    return AE.warning_line(line, None, N["account_end"]) + 2'),
+     '    return max(AE.warning_line(rl["line"], None, N["account_end"]), rl["line"] + (rl["warn"] or 0)) + N["entry_margin_pct"]',
+     '    return AE.warning_line(rl["line"], None, N["account_end"]) + 2'),
     ("a_bad_write_keeps_the_old_plan", P, '        bad = problems(new)\n        if bad:\n            raise Refused("; ".join(bad))\n        new["rev"]',
      '        write_atomic(d / "plan.json", new)\n        bad = problems(new)\n        if bad:\n            raise Refused("; ".join(bad))\n        new["rev"]'),
     ("two_writers_lose_no_change", P, '        fcntl.flock(lk, fcntl.LOCK_EX)      # a write', '        pass      # a write'),

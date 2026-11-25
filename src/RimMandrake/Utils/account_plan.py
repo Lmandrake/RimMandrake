@@ -679,10 +679,21 @@ def order_now(plan, rules):
     return out
 
 
-def entry_line(plan, line):
-    """A switch never lands on an account at or under this: it would be inside its own warning zone."""
+def entry_line(plan, rl):
+    """A switch never lands on an account (its rule is rl) at or under this: it would be inside its own warning zone."""
     N = plan["numbers"]
-    return AE.warning_line(line, None, N["account_end"]) + N["entry_margin_pct"]
+    return max(AE.warning_line(rl["line"], None, N["account_end"]), rl["line"] + (rl["warn"] or 0)) + N["entry_margin_pct"]
+
+
+def ended(rl, env, a):
+    """The `until` of the rule of `a` is true: its step is finished."""
+    return bool(rl) and rl["until"] is not None and truth(parse(rl["until"]), env, a) is True
+
+
+def targets(can, rules, env, under):
+    """The accounts of `can` that a switch may land on: one whose step has ended (`until`) only where the live account
+    is at its own line and no other can take over. Else two ended steps would hand the machine to and fro."""
+    return [a for a in can if not ended(rules[a], env, a)] or (can if under else [])
 
 
 # ------------------------------------------------------------------ the week ahead (pure; the pick and the forecast)
@@ -752,14 +763,15 @@ def _run(plan, st, rate, horizon, dt):
         live = st["live"]
         rl = rules.get(live)
         can = [a for a in order_now(plan, rules) if a != live and st["left"][a] is not None
-               and st["left"][a] > entry_line(plan, rules[a]["line"])]
+               and st["left"][a] > entry_line(plan, rules[a])]
         if rl is None:
             done, under = True, True
         else:
             line = rl["line"] if can else max(rl["line"], N["last_account_floor_pct"])
             end = max(AE.warning_line(line, GOOD_BURN, cfg), line + (rl["warn"] or 0))
             under = st["left"][live] <= end
-            done = under or (rl["until"] is not None and truth(parse(rl["until"]), env, live) is True)
+            done = under or ended(rl, env, live)
+        can = targets(can, rules, env, under)
         if done and can:
             if len(can) == 1:
                 _switch(st, can[0], "its step is finished")
@@ -828,6 +840,15 @@ def open_requests(plan, f):
     return out
 
 
+def commanded(plan, f) -> bool:
+    """The last switch is the one that a `switch` request asked for: the first one to that account after the request."""
+    log = f.get("switches") or []
+    if not log or log[-1].get("to") != f.get("live"):
+        return False
+    return any(q["to"] == f["live"] and stamp(q["at"]) <= stamp_or(log[-1].get("ts"), 0) < stamp(q["ends"]) and not any(
+        s.get("to") == q["to"] and stamp_or(s.get("ts"), 0) >= stamp(q["at"]) for s in log[:-1]) for q in plan["requests"])
+
+
 def decide(plan, f, polled=True) -> dict:
     """-> the decision, in the words of the old actuator (do: passive|skip|poll|normal|soft|switch|hold|stop|stopped|
     start; to, account, line, pct_left, warn_line, under, key, why) plus next, pending, week (the counts)."""
@@ -865,7 +886,7 @@ def decide(plan, f, polled=True) -> dict:
             return False, False, "no step uses it now"
         if not r["ok"]:
             return False, False, "its level reads %s" % r["state"]
-        el = entry_line(plan, rl["line"])
+        el = entry_line(plan, rl)
         if r["left"] <= el:
             return False, False, "%s%% is not above its entry line %s%%" % (g(r["left"]), g(el))
         age = r["age_min"]
@@ -897,13 +918,13 @@ def decide(plan, f, polled=True) -> dict:
         return SP.drained(d, {"account_end": cfg}, runs)
 
     # ---- fresh readings before any act
-    need, near_old = [], False
+    need, near_old, near_end = [], False, False
     if not lr["ok"] and not blind:
         need.append("%s (live) reads %s" % (live, lr["state"]))
     elif lr["ok"] and warn is not None and pl - warn <= fr["near_pct"]:
         old = cfg["poll_min"] if pl <= warn + 1 else fr["max_age_min"]
         if lr["age_min"] is None or lr["age_min"] > old:
-            near_old = pl > warn
+            near_old, near_end = pl > warn, pl <= warn
             need.append("%s at %s%% is within %s of its %s%% warning line on a %s-min-old reading" % (
                 live, g(pl), g(fr["near_pct"]), g(warn), lr["age_min"]))
     for a in accts:
@@ -911,7 +932,8 @@ def decide(plan, f, polled=True) -> dict:
             need.append("%s's reset has passed and its reading is from before it" % a)
 
     under = rl is None or (pl is not None and warn is not None and pl <= warn)
-    until = bool(rl) and rl["until"] is not None and truth(parse(rl["until"]), env, live) is True
+    until = ended(rl, env, live)
+    can = targets(can, rules, env, under)
     if not under and not until and not lr["ok"] and not blind:
         if need and not polled:
             return {**base, "do": "poll", "poll": True, "why": "; ".join(need)}
@@ -930,7 +952,7 @@ def decide(plan, f, polled=True) -> dict:
                         "why": "%s (the switch target) was read %s min ago" % (a, rd[a]["age_min"])}
             if is_under and stopped_here:
                 return {**base, "do": "stopped", "why": "stopped on %s; %s cannot be confirmed after a poll" % (live, a)}
-            if is_under:
+            if is_under and not (rl is None and pl is not None and pl > line):
                 return out({"do": "stop", "key": SP.stop_key(live, f["rows"].get(live) or {}, now),
                             "why": "%s is finished and %s cannot be confirmed after a poll" % (live, a)})
             return {**base, "do": "normal", "to": None, "why": "the switch to %s waits: its reading is %s min old "
@@ -953,6 +975,10 @@ def decide(plan, f, polled=True) -> dict:
 
     # ---- the live account is finished: which account is next
     if under or until:
+        if near_end and not polled:     # the end of an account is read at poll_min: the waits below act on this level
+            return {**base, "do": "poll", "poll": True, "why": "; ".join(need)}
+        if under and polled:            # an account confirmed by a fresh reading beats a stop on one that is not
+            can = [a for a in can if take(a)[1]] or can
         ch = choices(plan, f, can, stay=False) if len(can) > 1 else {}
         nxt = best_of(ch, order) if ch else (can[0] if can else None)
         for q in open_requests(plan, f):
@@ -1042,10 +1068,11 @@ def decide(plan, f, polled=True) -> dict:
     gain = stay["cost"] - ch[best]["cost"]
     if gain < N["switch_cost_pts"]:     # leaving a live account before its line must itself be worth a switch
         return d
-    if pin or f.get("hand"):
+    if pin or f.get("hand") or commanded(plan, f):
         return {**d, "why": d["why"] + ". No rescue switch: " + (
             "pinned until %s" % pacific(stamp(pin[0]["ends"])) if pin else
-            "the last switch was made by hand, so %s is kept until it is finished (./acct switch %s goes)" % (live, best))}
+            "the last switch was made %s, so %s is kept until it is finished (./acct switch %s goes)" % (
+                "by hand" if f.get("hand") else "by command", live, best))}
     drain_h = dig(N, "rescue.drain_h")
     idle = runs is not None and not runs
     delayed = 0.0 if drain_h is None else rate * drain_h   # the work that a drain of that length delays, in points
@@ -1593,7 +1620,7 @@ def legacy_view(plan, f) -> dict:
                        "blind_zero_pct": N["blind_pct"]},
             "account_end": N["account_end"], "fresh": N["fresh"], "soft_margin_pct": 0,
             # the old actuator's drain before a switch above the line: a rescue's, never a `switch --now`'s
-            "pull_drain_max_s": 0 if any(q.get("now") for q in active(plan["requests"], f["now"]))
+            "pull_drain_max_s": 0 if any(q.get("now") for q in open_requests(plan, f))
             else (0 if dig(N, "rescue.drain_h") is None else N["rescue"]["drain_h"]) * 3600,
             "switch_lead_min": 0, "window_margin_min": 0, "exceptions": [], "level_model": None}
 
@@ -1667,6 +1694,9 @@ def tick(shadow=False, dry=False, seams=None) -> int:
         if p is None:
             return {"do": "passive", "why": w}
         f = frame_for_pass(SP, meter, live, now, state, markers, manual, live_runs, burn, p)
+        # the pass rewrites its own notice before it polls and before it calls the switcher: a drain that this pass
+        # found in flight stays in flight for each later decision of the pass
+        f["draining"] = last["draining"] = f["draining"] or bool(last.get("draining"))
         d = decide(p, f, polled=polled)
         last.update(plan=p, frame=f, decision=d)
         return d
@@ -1674,15 +1704,15 @@ def tick(shadow=False, dry=False, seams=None) -> int:
     def new_load_plan(path=None):
         p, _w = load_plan()
         rows = seams["meter_fn"]() if callable(seams.get("meter_fn")) else None
-        return legacy_view(p or plan, {"now": seams.get("now") or time.time(), "rows": rows} if rows is not None
-                           else gather_light(SP))
+        return legacy_view(p or plan, {"now": seams.get("now") or time.time(), "rows": rows, "switches": SP.switches()}
+                           if rows is not None else gather_light(SP))
     saved = SP.decide, SP.load_plan
     SP.decide, SP.load_plan = new_decide, new_load_plan
     try:
         rc = SP.check(dry=dry, **({"passes": 5} if not seams else {k: v for k, v in seams.items() if k != "frame"}))
     finally:
         SP.decide, SP.load_plan = saved
-    if last:
+    if "decision" in last:
         f, d = last["frame"], last["decision"]
         if not seams:
             slow = gather(slow=True)
@@ -1718,7 +1748,9 @@ def timer_pass(seams=None) -> int:
 def gather_light(SP) -> dict:
     import account_usage as AU
     now = time.time()
-    return {"now": now, "rows": AU.read_now(now).get("accounts") or {}}
+    sws = SP.switches()
+    return {"now": now, "rows": AU.read_now(now).get("accounts") or {}, "switches": sws,
+            "live": (sws or [{}])[-1].get("to")}
 
 
 def frame_for_pass(SP, meter, live, now, state, markers, manual, live_runs, burn, plan) -> dict:

@@ -60,7 +60,8 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
 - **an_unknown_burn_never_causes_a_switch.** With no measured burn rate there is no rescue switch, and the next
   account is by step order.
 - **a_hand_switch_is_respected.** When the last switch in the switcher's log was not this tool's, no rescue switch
-  leaves that account. A pin does the same until its end.
+  leaves that account. Nor when that switch is the one that a `switch` command asked for. A pin does the same until
+  its end.
 - **the_reason_is_one_checkable_line.** Each decision carries one line with the live account, its level and line,
   the next account, and the erased points and switches of the choice taken and of the best other choice.
 - **the_forecast_is_the_pick.** `forecast` and the decision call the same function: the first target of the week
@@ -68,7 +69,9 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
 - **no_marker_decides.** With the same plan and readings, the decision is the same whatever marker files exist. Only
   an act in flight changes an act: a `pending` marker under 40 min old (a switcher call), a `failed` one, and the
   actuator's notice of a rescue drain (`a_rescue_drain_in_flight_goes_on`).
-- **an_account_left_at_its_line_is_no_target.** An account at or under its entry line is never a switch target.
+- **an_account_left_at_its_line_is_no_target.** An account at or under its entry line (its step's `warn` leeway
+  counted) is never a switch target. An account whose step has ended (`until` true) is a target only where the live
+  account is at its own line and no other account can take over.
 - **a_refilled_account_is_a_target_at_once.** The same account, read above its entry line after its reset, is a
   target at the next pass, with no command.
 - **unknown_never_gives_permission.** A `when` condition that is unknown keeps its step not alive; an `until`
@@ -130,7 +133,9 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
 ### The old actuator, shadow and replay
 
 - **tick_drives_the_old_actuator.** `tick` makes the switch that the decision names through `switching_plan._check`
-  (arm, use, disarm), and the account-end sequence at the warning line is the old one.
+  (arm, use, disarm), and the account-end sequence at the warning line is the old one: the live level is read again
+  each `poll_min`, and an account confirmed by a fresh reading beats a stop. An account left only because no step uses
+  it now, above its line, waits for a fresh reading of the next account; the fleet is not stopped for that.
 - **the_timer_runs_the_driver_that_the_plan_names.** `./acct pass` is what the timer runs. With `driver` old (the
   value of a new plan file) the old engine runs as it is, and this tool's pick is logged beside it. With `driver` new
   this plan decides. `./acct driver new` and its undo are each one command. With a plan file that is missing or

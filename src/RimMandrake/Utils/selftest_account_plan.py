@@ -234,6 +234,18 @@ def t_a_hand_switch_is_respected():
     check(n + ": after the pin's end the rescue goes", d["do"] == "switch", d)
     d = AP.decide(p, F("lukas", {"steven": R(90, 20), "system": R(3, 100), "lukas": R(2, 150)}))
     check(n + ": a pinned account still ends at its line", d["do"] == "switch" and d.get("under"), d)
+    fresh(OPEN, rescue_frame(()))
+    acct("switch", "lukas", "--now", "--why", "t")
+    p = on_disk()
+    at = AP.stamp(p["requests"][0]["at"])
+    log = [{"op": "use", "changed": True, "from": "steven", "to": "lukas", "ts": AP.iso(at + 120)}]
+    d = AP.decide(p, rescue_frame((), now=at + 420, switches=log))
+    check(n + ": a switch that a command asked for is not undone 5 min later by a rescue", d["do"] == "normal"
+          and "by command" in d["why"], d)
+    log += [{"op": "use", "changed": True, "from": "lukas", "to": "steven", "ts": AP.iso(at + 500)},
+            {"op": "use", "changed": True, "from": "steven", "to": "lukas", "ts": AP.iso(at + 900)}]
+    d = AP.decide(p, rescue_frame((), now=at + 1000, switches=log))
+    check(n + ": a later switch to the same account is the plan's own, and a rescue may leave it", d["do"] == "switch", d)
 
 
 def t_the_reason_is_one_checkable_line():
@@ -299,6 +311,22 @@ def t_an_account_left_at_its_line_is_no_target():
         check("%s: steven at %s%% (line 5) is passed over" % (n, lv), d["do"] == "switch" and d["to"] == "system", d)
     d = AP.decide(OPEN, F("lukas", {"steven": R(9, 60), "system": R(80, 110), "lukas": R(2, 120)}, burn_h=None))
     check(n + ": above its entry line it is the target", d["to"] == "steven", d)
+    for lv in (10, 15, 17):      # line 5, warn 10 points before: its own warning is at 15, its entry line 17
+        d = AP.decide(plan(steven={"leave": 5, "when": None, "warn": 10}), F("lukas", {
+            "steven": R(lv, 60), "system": R(80, 110), "lukas": R(2, 120)}, burn_h=None))
+        check("%s: steven at %s%% inside the 10-point leeway of its own step is passed over" % (n, lv), d["to"] == "system", d)
+    ended = plan(steven={"leave": 5, "when": None, "until": "left <= 50"}, system={"until": "left <= 50"})
+    rows = {"steven": R(40, 100), "system": R(45, 110), "lukas": R(2, 120)}
+    for burn in (None, 4.0):
+        t0 = time.time()
+        d = AP.decide(ended, F("steven", rows, burn_h=burn))
+        check("%s: two steps ended by `until` do not hand the machine to and fro (burn %s)" % (n, burn), d["do"] == "normal"
+              and not d.get("pending") and time.time() - t0 < 1, d)
+    d = AP.decide(ended, F("steven", {**rows, "lukas": R(60, 120)}, burn_h=None))
+    check(n + ": the account whose step has not ended is the target", d["do"] == "switch" and d["to"] == "lukas", d)
+    d = AP.decide(ended, F("lukas", rows, burn_h=None))
+    check(n + ": at the live account's own line an ended step above its leave line is better than a stop",
+          d["do"] == "switch" and d["to"] == "steven", d)
 
 
 def t_a_refilled_account_is_a_target_at_once():
@@ -376,6 +404,26 @@ def t_a_rescue_drain_in_flight_goes_on():
     small = F("lukas", {"steven": R(97, 24), "system": R(3, 22), "lukas": R(18, 25)}, runs=RUN, draining=True)
     d = AP.decide(OPEN, small)
     check(n + ": a drain in flight ends when the rescue is no longer worth a switch", d["do"] == "normal", d)
+    rows = {"steven": R(90, 20), "system": R(3, 100), "lukas": R(60, 150)}
+    p = copy.deepcopy(OPEN)
+    p["numbers"]["rescue"]["drain_h"] = 2
+    rate, gain = 4.0, AP.week_ahead(p, F("lukas", rows, burn_h=4.0))["cost"] - AP.week_ahead(
+        p, F("lukas", rows, burn_h=4.0), first="steven")["cost"]
+    p["numbers"]["switch_cost_pts"] = 1         # the drain went down to a gain that only a drain in flight keeps
+    p["numbers"]["rescue"]["drain_h"] = 1000.0
+    fresh(p)
+    m, real = fake("lukas", RUN), AP.fleet_burn
+    AP.fleet_burn = lambda *a, **k: rate
+    try:
+        SP.write_atomic(SP.OUT / "notice.json", {"state": "soft", "drain": True, "account_end": False, "account": "lukas",
+                                                 "since": AP.iso(NOW - 1001 * 3600), "at": AP.iso(NOW - 300)})
+        m.go(rows)
+        check(n + ": at the drain's bound with a run still live the switch goes; the recheck under way (its own notice says "
+              "that nothing starts inside the switch) does not end it (worth %s points)" % AP.g(gain), m.acts() == ["use"],
+              (m.acts(), list(SP.read_markers().values())))
+    finally:
+        AP.fleet_burn = real
+        m.close()
 
 
 def t_an_account_outside_the_plan_is_left_alone():
@@ -575,6 +623,8 @@ def t_a_request_is_done_by_the_switchers_log():
     d = AP.decide(p, F("lukas", rows, runs=RUN, now=at + 60))
     v = AP.legacy_view(p, F("lukas", rows, runs=RUN, now=at + 60))
     check(n + ": --now goes with a run live, and with no drain", d["do"] == "switch" and v["pull_drain_max_s"] == 0, (d, v))
+    v = AP.legacy_view(p, F("system", rows, runs=RUN, now=at + 600, switches=log[:1]))
+    check(n + ": a --now request that is done takes no later rescue's drain away", v["pull_drain_max_s"] == 7200, v["pull_drain_max_s"])
     rc, text = acct("switch", "codex")
     check(n + ": a meter account is no switch target", rc == AP.REFUSED, text)
 
@@ -911,6 +961,25 @@ def t_tick_drives_the_old_actuator():
         check(n + ": the run ended -> the switch goes", m.acts() == ["use"], m.acts())
     finally:
         m.close()
+    polls = []
+    m = fake("system", runs=RUN)
+    try:
+        for _ in range(4):
+            m.go(rows, poll_fn=lambda: polls.append(m.t))
+            m.t += 60
+        check(n + ": while the account ends the live level is read again at each pass (poll_min), not each 6 min",
+              len(polls) == 4, polls)
+    finally:
+        m.close()
+    two = {"steven": R(90, 100), "system": R(2, 110), "lukas": R(60, 120)}
+    for old, want in (("steven", "lukas"), ("lukas", "steven")):
+        d = AP.decide(plan([old, want, "system"], steven={"leave": 5, "when": None}),
+                      F("system", {**two, old: R(80, 100, age=20.0)}, burn_h=None))
+        check("%s: %s cannot be confirmed after a poll -> the confirmed %s, not a stop of the fleet" % (n, old, want),
+              d["do"] == "switch" and d["to"] == want, d)
+    d = AP.decide(BASE, F("steven", {"steven": R(90, 100), "system": R(80, 110, age=8.0), "lukas": R(3, 120)}))
+    check(n + ": past its window with 90% left and the next account not confirmed: it waits, the fleet is not stopped",
+          d["do"] == "normal" and "after a poll" in d["why"], d)
     m = fake("lukas", runs=RUN)
     try:
         m.go({"steven": R(90, 100), "system": R(80, 110), "lukas": R(40, 120)})
