@@ -1468,6 +1468,162 @@ class RestoreRefused(Exception):
 
 
 SWAP_MARKER = "ModsConfig.swap-active.json"
+# A marker that names no holder (written before 2026-11-25) is stale past this age. Danger it guards: a sitting that a
+# pre-holder clone started is still mid-swap and would restore its before-copy later. Measured: the stranded markers that
+# were set aside by hand were 9 h, 22 h and 3 days old (2026-11-25); a tier sitting holds its swap for minutes to a few
+# hours. New markers name their holder, so only old markers ever read this.
+HOLDERLESS_STALE_S = 6 * 3600
+
+
+class SwapHeld(RestoreRefused):
+    """A refusal because the swap's holder lives, or because this tool could not look whether it lives. The SteveDesktop
+    preflight never moves such a marker aside."""
+
+
+def _read(path):
+    try:
+        with open(path) as fh:
+            return fh.read().strip()
+    except OSError:
+        return None
+
+
+def _posix_start(pid):
+    """-> field 22 of /proc/<pid>/stat (start time, clock ticks since boot); None when /proc cannot show it."""
+    s = _read("/proc/%d/stat" % pid)
+    try:
+        return int(s[s.rindex(")") + 2:].split()[19]) if s else None
+    except (ValueError, IndexError):
+        return None
+
+
+def _pidns():
+    try:
+        return os.readlink("/proc/self/ns/pid")
+    except OSError:
+        return None
+
+
+def _nt_process(pid):
+    """Native Windows: -> (exists, creation FILETIME or None); exists None when it could not look."""
+    import ctypes
+    from ctypes import wintypes
+    k32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    k32.OpenProcess.restype = wintypes.HANDLE
+    h = k32.OpenProcess(0x1000, False, int(pid))          # PROCESS_QUERY_LIMITED_INFORMATION
+    if not h:
+        err = ctypes.get_last_error()
+        return (False, None) if err == 87 else (None, "OpenProcess error %d" % err)   # 87: no such process
+    try:
+        code = wintypes.DWORD()
+        if not k32.GetExitCodeProcess(h, ctypes.byref(code)):
+            return None, "GetExitCodeProcess error %d" % ctypes.get_last_error()
+        if code.value != 259:                               # STILL_ACTIVE: a handle to an exited process
+            return False, None
+        times = [wintypes.FILETIME() for _ in range(4)]
+        if not k32.GetProcessTimes(h, *[ctypes.byref(t) for t in times]):
+            return True, None
+        return True, (times[0].dwHighDateTime << 32) | times[0].dwLowDateTime
+    finally:
+        k32.CloseHandle(h)
+
+
+def swap_holder():
+    """-> the record of the process that holds a swap this run writes: RM_MODSET_HOLDER_PID (a long-lived caller names
+    itself), else this tool's parent (the script or worker that ran --apply). host + boot + pid namespace say where a
+    later reader can see it; start tells a reused pid from the holder."""
+    import socket
+    pid = int(os.environ.get("RM_MODSET_HOLDER_PID") or os.getppid())
+    h = {"host": socket.gethostname(), "pid": pid, "kind": "nt" if os.name == "nt" else "posix",
+         "written": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
+    if os.name == "nt":
+        try:
+            alive, start = _nt_process(pid)
+            h["start"] = start if alive else None
+        except Exception:       # noqa: BLE001 - a holder with no start is still read by pid
+            h["start"] = None
+    else:
+        h.update(boot=_read("/proc/sys/kernel/random/boot_id"), pidns=_pidns(), start=_posix_start(pid))
+    return h
+
+
+def holder_state(m, marker):
+    """-> ("alive" | "dead" | "unknown" | "young", how). "dead" only on a reading that can see the holder's process;
+    "unknown" when this tool could not look (another host, another pid namespace, a Windows process read from POSIX or
+    the reverse); "young" when an old-style marker names no holder and is younger than HOLDERLESS_STALE_S."""
+    import socket
+    h = m.get("holder") if isinstance(m, dict) else None
+    if not isinstance(h, dict) or not isinstance(h.get("pid"), int):
+        try:
+            age = time.time() - os.path.getmtime(marker)
+        except OSError as e:
+            return "unknown", "could not look: the marker names no holder and its age cannot be read (%s)" % e
+        if age >= HOLDERLESS_STALE_S:
+            return "dead", "the marker names no holder and is %.1f h old (stale past %.0f h)" % (
+                age / 3600, HOLDERLESS_STALE_S / 3600)
+        return "young", ("could not tell: the marker names no holder and is only %.0f min old (under %.0f h, so a "
+                           "sitting may still hold it)" % (age / 60, HOLDERLESS_STALE_S / 3600))
+    pid, who = h["pid"], "holder pid %d on %s" % (h["pid"], h.get("host"))
+    if h.get("host") != socket.gethostname():
+        return "unknown", "could not look: %s, another host than %s" % (who, socket.gethostname())
+    mine = "nt" if os.name == "nt" else "posix"
+    if h.get("kind", "posix") != mine:
+        return "unknown", "could not look: %s is a %s process and this tool runs %s" % (
+            who, "Windows" if h.get("kind") == "nt" else "POSIX", "Windows" if mine == "nt" else "POSIX")
+    if mine == "nt":
+        try:
+            alive, start = _nt_process(pid)
+        except Exception as e:      # noqa: BLE001
+            return "unknown", "could not look: %s (%s)" % (who, e)
+        if alive is None:
+            return "unknown", "could not look: %s (%s)" % (who, start)
+        if not alive:
+            return "dead", "%s is gone" % who
+        if h.get("start") and start and start != h["start"]:
+            return "dead", "%s is another process now (pid reused)" % who
+        return "alive", "%s is alive" % who
+    boot = _read("/proc/sys/kernel/random/boot_id")
+    if h.get("boot") and boot and h["boot"] != boot:
+        return "dead", "%s ran in an earlier boot (boot id %s, now %s)" % (who, h["boot"][:8], boot[:8])
+    ns = _pidns()
+    if h.get("pidns") and h["pidns"] != ns:
+        return "unknown", "could not look: %s lives in pid namespace %s and this tool sees %s (another WSL distro?)" % (
+            who, h["pidns"], ns)
+    if not h.get("pidns") and ns is not None:
+        return "unknown", "could not look: %s names no pid namespace" % who
+    if ns is None:                          # no /proc (macOS): existence only
+        try:
+            os.kill(pid, 0)
+        except ProcessLookupError:
+            return "dead", "%s is gone" % who
+        except PermissionError:
+            return "alive", "%s is alive (another user's)" % who
+        except OSError as e:
+            return "unknown", "could not look: %s (%s)" % (who, e)
+        return "alive", "%s is alive" % who
+    if not os.path.exists("/proc/%d" % pid):
+        return "dead", "%s is gone" % who
+    start = _posix_start(pid)
+    if h.get("start") is not None and start is not None and start != h["start"]:
+        return "dead", "%s is another process now (pid reused: started at tick %s, holder at %s)" % (
+            who, start, h["start"])
+    return "alive", "%s is alive" % who
+
+
+def set_aside_or_refuse(marker, m, why):
+    """A marker on a refusing path: its holder dead -> renamed to <marker>.stale-<UTC> (kept for the record) and a
+    one-line note returned; alive or not seen -> SwapHeld naming the holder or the blindness; a young marker that
+    names no holder -> RestoreRefused (a pre-holder writer; the SteveDesktop preflight still moves that one aside)."""
+    state, how = holder_state(m, marker)
+    if state == "dead":
+        dst = "%s.stale-%s" % (marker, time.strftime("%Y%m%dT%H%M%SZ", time.gmtime()))
+        os.replace(marker, dst)
+        return "SET ASIDE a stale swap marker (%s) -> %s; it would have refused: %s" % (how, dst, why)
+    if state == "alive":
+        raise SwapHeld("%s The swap's holder is alive: %s. Let it finish (or stop it), then re-run." % (why, how))
+    if state == "young":
+        raise RestoreRefused("%s %s; nothing written. If the swap is over, delete %s." % (why, how, marker))
+    raise SwapHeld("%s %s; nothing written. If the swap is over, delete %s." % (why, how, marker))
 # One writer of the live ModsConfig at a time, across every clone on the machine: two concurrent --apply runs each took
 # a before-copy and a marker of their own, so one restore could hand back the other's tier list (Codex cd905b).
 CONFIG_LOCK = os.environ.get("RM_MODSET_LOCK", "/home/mandrake/rm/.modset-config.lock")
@@ -1598,40 +1754,52 @@ def take_before_copy(config, backups, tier):
         RimSort restore), so a fresh snapshot is the same content and is safe;
       - live list is the game's crash reset: the before-copy goes back first (repair_game_reset),
         then the case above;
-      - live list is anything else (hand-edited, or the game rewrote it): ambiguous, so refuse.
-    Returns the before-copy path."""
+      - live list is anything else (hand-edited, or the game rewrote it): ambiguous.
+    On each ambiguous path (and an unreadable marker, or a missing or changed before-copy) the marker's holder decides
+    (set_aside_or_refuse): a holder that a reading shows dead, or an old marker that names none, is set aside to
+    <marker>.stale-<UTC> with a printed note and a fresh snapshot is taken; a live holder, or one this tool cannot see,
+    raises SwapHeld. A new marker names its holder (swap_holder). Returns the before-copy path."""
     import json
     os.makedirs(backups, exist_ok=True)
     marker = os.path.join(backups, SWAP_MARKER)
     repaired = repair_game_reset(config, backups)
     if repaired:
         print("  " + repaired)
+    def stale(m, why):      # RIMMANDRAKE_CLEAR_STALE_SWAP_MARKER_NOBODY_OWNS_ARCHSMALL_LIST: a dead holder's marker
+        print("  " + set_aside_or_refuse(marker, m, why))
+
     if os.path.exists(marker):
+        m, cur, want = None, None, None
         try:
             with open(marker) as fh:
                 m = json.load(fh)
             cur = os.path.join(backups, m["before"])
             want = m["md5"]
         except (ValueError, KeyError, TypeError, OSError) as e:
-            raise RestoreRefused("swap marker %s unreadable (%s); the owner's original list cannot be "
-                                 "confirmed. Inspect it, then delete the marker to proceed." % (marker, e))
-        if not os.path.exists(cur) or _md5(cur) != want:
-            raise RestoreRefused("swap marker names before-copy %s but it is missing or changed; the live "
-                                 "ModsConfig may be a tier list. Recover the owner's list by hand, then "
-                                 "delete %s to proceed." % (cur, marker))
-        live = _md5(config)
-        if live == m.get("tier_md5"):
-            return cur                               # mid-swap: keep the ORIGINAL before-copy
-        if live != want:
-            raise RestoreRefused("swap %r is active but the live ModsConfig (md5 %s) is neither its tier "
-                                 "list nor its before-copy (%s); cannot tell whether it is the owner's. "
-                                 "Resolve by hand, then delete %s to proceed."
-                                 % (m.get("tier"), live[:8], want[:8], marker))
-        # live == before-copy: stale marker, owner's list is already back -> fall through, re-snapshot
+            stale(m if isinstance(m, dict) else {}, "swap marker %s unreadable (%s)." % (marker, e))
+        if cur is None:
+            pass
+        elif not os.path.exists(cur) or _md5(cur) != want:
+            stale(m, "swap marker names before-copy %s but it is missing or changed; the live ModsConfig may be a "
+                     "tier list." % cur)
+        else:
+            live = _md5(config)
+            if live == m.get("tier_md5"):
+                # mid-swap: keep the ORIGINAL before-copy; this run now holds the swap
+                m["holder"] = swap_holder()
+                tmp = marker + ".tmp"
+                with open(tmp, "w") as f:
+                    json.dump(m, f)
+                os.replace(tmp, marker)
+                return cur
+            if live != want:
+                stale(m, "swap %r is active but the live ModsConfig (md5 %s) is neither its tier list nor its "
+                         "before-copy (%s)." % (m.get("tier"), live[:8], want[:8]))
+            # live == before-copy: stale marker, owner's list is already back -> fall through, re-snapshot
     stamp = os.path.join(backups, "ModsConfig.before-tier-%s.xml" % tier)
     shutil.copy2(config, stamp)
     with open(marker, "w") as f:
-        json.dump({"tier": tier, "before": os.path.basename(stamp), "md5": _md5(stamp)}, f)
+        json.dump({"tier": tier, "before": os.path.basename(stamp), "md5": _md5(stamp), "holder": swap_holder()}, f)
     return stamp
 
 

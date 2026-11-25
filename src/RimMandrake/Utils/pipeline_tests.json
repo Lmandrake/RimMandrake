@@ -342,6 +342,7 @@
     {"test": "src/RimMandrake/rimflow/selftest_maturation.py", "seconds": 1.2},
     {"test": "src/RimMandrake/rimflow/selftest_build_match.py", "seconds": 0.1},
     {"test": "src/RimMandrake/Utils/selftest_modset_about_enomem.py", "inputs": ["src/RimMandrake/Utils/modset_builder.py"], "seconds": 0.3},
+    {"test": "src/RimMandrake/Utils/selftest_modset_stale_swap_marker.py", "inputs": ["src/RimMandrake/Utils/modset_builder.py", "infrastructure/stevedesktop/preflight.py"], "seconds": 0.2},
     {"test": "src/RimMandrake/rimflow/selftest_rerun_relation.py", "seconds": 3},
     {"test": "src/RimMandrake/rimflow/selftest_declaration_check.py", "seconds": 15, "inputs": ["src/RimMandrake/rimflow/testdata/declaration_check_pyrelands_20261124.json", "design/specs/2026-11-24-declaration-check/boundary.md"]},
     {"test": "src/RimMandrake/rimflow/selftest_tick_page_own_unit.py", "seconds": 2.3},

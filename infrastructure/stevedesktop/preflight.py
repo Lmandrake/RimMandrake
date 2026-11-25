@@ -10,7 +10,9 @@ Only causes that HAPPENED have a check (the census is in design/RimMandrake/test
   swap_marker   10 of 26: a stale ModsConfig.swap-active.json made `modset_builder --tier T --apply` refuse
                 (marker's before-copy gone, or the live list neither its tier list nor its before-copy). The check runs
                 modset_builder's own repair_game_reset + take_before_copy on a COPY of the marker, before-copy and live
-                list, so it can never disagree with the real swap. On a refusal the marker is moved aside to
+                list, so it can never disagree with the real swap. The builder itself sets aside a marker whose holder
+                is dead (RIMMANDRAKE_CLEAR_STALE_SWAP_MARKER_NOBODY_OWNS_ARCHSMALL_LIST); one whose holder lives, or
+                that it cannot see, is SwapHeld and is never moved here. On any other refusal the marker is moved aside to
                 `<marker>.stale-<UTC>` (the hand fix of 2026-11-12) and the move is logged in the result note; a fix
                 that does not clear the refusal is a PREFLIGHT refusal. TESTQ_PREFLIGHT_MARKER_FIX=0 only reports.
   dll_current   a job whose mod's committed DLL no longer matches its committed C# (dll_source_stamp.py MISMATCH) runs
@@ -78,8 +80,14 @@ def swap_refusal(MB, config, backups, tier):
         tc = os.path.join(tmp, "ModsConfig.xml")
         shutil.copy2(config, tc)
         try:
-            MB.take_before_copy(tc, tb, tier)
+            import contextlib
+            import io
+            with contextlib.redirect_stdout(io.StringIO()):     # its set-aside note names the temp copy: not news
+                MB.take_before_copy(tc, tb, tier)
             return None
+        except getattr(MB, "SwapHeld", ()) as e:
+            # its holder lives, or the builder could not see it: never moved aside (it would cut a live swap)
+            return "HELD: " + str(e).replace(tb, backups)
         except MB.RestoreRefused as e:
             return str(e).replace(tb, backups)
     finally:
@@ -104,7 +112,7 @@ def check_swap_marker(job, MB, config, backups, fix=True):
     why = swap_refusal(MB, config, backups, tier)
     if why is None:
         return None, None
-    if not fix:
+    if not fix or why.startswith("HELD: "):
         return "swap marker blocks the tier switch: " + why[-300:], None
     moved = move_marker_aside(MB, backups)
     note = "stale swap marker moved aside to %s (it blocked tier %s: %s)" % (moved, tier, why[:160])
