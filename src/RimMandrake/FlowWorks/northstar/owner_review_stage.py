@@ -267,6 +267,21 @@ def row_rect(stations, row, margin=2):
     return (x0, z0, x1 - x0, z1 - z0)
 
 
+def station_sign_ops(stations):
+    """[place-op] one sign book per station on its label cell (modcheck/reviewmap.sign_book, key = its number, name = its short
+    caption, the whole caption as LOOK): walk_twins.py and the walk exit read stations from sign books only (pure). No station
+    of this stager shows an aftermath (the fire station is staged unlit), so no name carries AFTER or START."""
+    um = os.path.join(HERE, "..", "..", "Utils", "modcheck")
+    if um not in sys.path:
+        sys.path.insert(0, um)
+    import reviewmap as RM  # noqa: E402
+    out = []
+    for st in stations:
+        x, z = station_label_cell(st)
+        out.append(RM.sign_book(x, z, "%d" % st["n"], st["short"], look=st["text"]))
+    return out
+
+
 class Stage(object):
     def __init__(self, w, dry):
         self.w, self.dry, self.plan, self.notes = w, dry, [], []
@@ -290,6 +305,13 @@ class Stage(object):
             r = self.w.call("jawa/review_label", action="add", ops="\n".join(ops), tag=LABEL_TAG) or {}
             if self.chk("review_label add", r) and r.get("refused"):
                 self.notes.append("station labels refused: %s" % str(r.get("refused"))[:200])
+        sops = station_sign_ops(self.stations)
+        self.say("  review_sign clear prefix 'SIGN '; place %d station sign books" % len(sops))
+        if not self.dry:
+            self.w.call("jawa/review_sign", action="clear", prefix="SIGN ")
+            r = self.w.call("jawa/review_sign", action="place", ops="\n".join(sops)) or {}
+            if self.chk("review_sign place", r) and r.get("refused"):
+                self.notes.append("station signs refused: %s" % str(r.get("refused"))[:200])
         return ops
 
     def say(self, s):

@@ -119,6 +119,16 @@ check("one world label per station, its text = the station's number",
       [o.split("|")[2] for o in ops] == [str(st["n"]) for st in d.stations], ops[:3])
 check("every label is pinned on the row north of its station",
       all(tuple(map(int, o.split("|")[:2])) == ORS.station_label_cell(st) for o, st in zip(ops, d.stations)))
+# RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ELEVEN: walk_twins.py reads only sign books (reviewmap.sign_book); a save with
+# number labels and no sign read COULD NOT LOOK (visit 4's save). One sign per station, key = its number, beside its label.
+sops = ORS.station_sign_ops(d.stations) if hasattr(ORS, "station_sign_ops") else []
+check("one sign book per station, title 'SIGN <n> <short>'",
+      [o.split("|")[2].split(" - DO:")[0] for o in sops] == ["SIGN %d %s" % (st["n"], " ".join(st["short"].replace("|", "/").split())) for st in d.stations],
+      sops[:2])
+check("every sign sits on its station's label cell",
+      len(sops) == len(d.stations) and all(tuple(map(int, o.split("|")[:2])) == ORS.station_label_cell(st) for o, st in zip(sops, d.stations)))
+check("no sign name ends in AFTER or START (no station of this stager shows an aftermath)",
+      sops and not any(o.split("|")[2].split(" - DO:")[0].split()[-1] in ("AFTER", "START") for o in sops))
 probs = ORS.layout_problems(d.stations, rows=ORS.ALL_ROWS)
 check("default rows are dense, no overlap, no label inside a station", not probs, probs[:6])
 bars = [st for st in d.stations if st["row"] in ORS.BARS_ROWS]
