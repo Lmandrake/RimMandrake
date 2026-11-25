@@ -1249,8 +1249,9 @@ def drain_refusal(now, extra=None, resume_session=None, path=None):
     """-> why a NEW run may not start now, or None. While the switching plan drains an account (its fresh notice reads
     soft with drain true), live runs finish on it and no new run starts there: a switch stops every Claude process, and
     a run started now would be killed by it (design/specs/2026-11-20-account-drain/boundary.md). A continuation of a
-    live run, or a resume of its session, is that run finishing and goes, unless the account is at its end (the notice's
-    `account_end`: its runs were told to save and end, page design/specs/2026-11-24-account-end/boundary.md). While the
+    live run, or a resume of its session, is that run finishing and goes, unless the account is at its line (the notice's
+    `account_end`: its runs were told to save and end, page design/specs/2026-11-24-account-end/boundary.md). Between the
+    warning line and the line nothing is refused: the notice then carries only a warning (account_warning). While the
     fleet is stopped (state stop) nothing starts. An unreadable or stale notice refuses
     nothing (a dead plan timer must not hold every launch)."""
     carried = bool((extra or {}).get("continued_from") or resume_session)
@@ -1276,6 +1277,24 @@ def drain_refusal(now, extra=None, resume_session=None, path=None):
             "run starts until the switch. Launch again after it (`python3 src/RimMandrake/Utils/switching_plan.py "
             "status` shows it). Why: %s" % (n.get("account") or "?", n.get("since") or "?",
                                              " ".join(str(n.get("why") or "").split())))
+
+
+def account_warning(now, path=None):
+    """-> the account's warning that a run starting now gets in its start package, or None. The switching plan's fresh
+    notice carries it while the live account is between its warning line and its line (switching_plan.write_notice):
+    the run saves a note, publishes what is done and keeps working. An unreadable or stale notice adds nothing."""
+    p = path or os.path.join(os.environ.get("RM_SWITCH_PLAN_DIR") or "/mnt/d/ClaudeWork/rimmandrake/switching_plan",
+                             "notice.json")
+    try:
+        with open(p, encoding="utf-8") as f:
+            n = json.load(f)
+    except (OSError, ValueError):
+        return None
+    at = _epoch(n.get("at")) if isinstance(n, dict) else None
+    if not (isinstance(n, dict) and at is not None and now - at <= DRAIN_NOTICE_FRESH_S):
+        return None
+    w = n.get("warning")
+    return w if isinstance(w, str) and w.strip() else None
 
 
 def card_refusal(item, brief, events_dir=None):
@@ -1615,6 +1634,10 @@ def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, 
     except OSError:
         rec.pop("brief_src", None)
     msg = brief_message(brief, item, seat, clone, max_s, rec.get("env"))
+    if runner is subprocess.run:        # a test's fake runner never reads the live switching notice
+        warned = account_warning(now)
+        if warned:                      # the live account is in its warning zone: this run starts warned
+            msg += "\n\n---\n" + warned + "\n"
     if runner is subprocess.run:        # its own TMPDIR, deleted by run_tmp.sweep when the unit is gone
         rec["tmp"] = run_tmp.prepare(unit)
         write_record(rec, root)

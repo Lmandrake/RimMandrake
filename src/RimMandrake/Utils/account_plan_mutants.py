@@ -29,6 +29,9 @@ UNDO = ('commit(lambda _old: copy.deepcopy(h["before"]),', 'commit(lambda _old: 
 # (promise its FAIL line must name, file, old, new)
 PLANTS = [
     ("live_account_stays_until_its_own_line", P, *PULL),
+    # the fault of 2026-11-24 4:56 PM PST (RIMMANDRAKE_BURN_TO_LINE_WARNING_SWITCHED_AT_THREE): finished at the warning line
+    ("the_account_burns_to_its_line", P, '    under = rl is None or (pl is not None and pl <= line)',
+     '    under = rl is None or (pl is not None and warn is not None and pl <= warn)'),
     ("order_only_answers_which_account_is_next", P, 'nxt = best_of(ch, order) if ch else (can[0] if can else None)',
      'nxt = best_of(ch, order) if ch else (sorted(can)[0] if can else None)'),
     ("no_start_is_refused_for_a_preference", P, '    eta = None if not rate else (pl - warn) / rate\n',

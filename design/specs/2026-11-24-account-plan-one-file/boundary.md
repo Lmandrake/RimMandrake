@@ -40,14 +40,18 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
 
 ### The decision
 
-- **live_account_stays_until_its_own_line.** With the live account above its warning line and no step condition that
-  ends it, the decision is never a switch because of the step order, whatever the order and the other levels.
+- **live_account_stays_until_its_own_line.** With the live account above its line and no step condition that ends
+  it, the decision is never a switch because of the step order, whatever the order and the other levels. The live
+  account is finished at its line, not at its warning line.
+- **the_account_burns_to_its_line.** Between the warning line and the line, with or without a live run and with
+  another account that can take over, the decision is no switch and no stop and refuses no start; it carries
+  `warning`, and the old actuator warns each live run (save a note, publish, keep working). At the line it switches.
 - **order_only_answers_which_account_is_next.** When the live account is finished and the burn is unknown, the next
   account is the first in step order that can take over. A change of order with the live account unfinished changes
   no act.
-- **no_start_is_refused_for_a_preference.** The decision is `soft` (the state that refuses new runs) only when the
-  live account is at or under its own warning line, or its level cannot be confirmed near that line (below). A small
-  rescue, a request, a reset that is near and the zone above the warning line all read `normal`.
+- **no_start_is_refused_for_a_preference.** New runs are refused only at the live account's own line (a drain that
+  waits for its runs), or when its level cannot be confirmed near its warning line (below). A small rescue, a request,
+  a reset that is near and the warning zone all read `normal`.
 - **a_rescue_switch_needs_points_worth_a_switch.** The live account is left before its line only when the week ahead
   of that switch costs less than the week ahead of staying by at least `switch_cost_pts`, each switch counted.
 - **a_rescue_switch_waits_for_no_live_run.** With a run live (unreadable runs count as live), a rescue is a switch
@@ -133,8 +137,8 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
 ### The old actuator, shadow and replay
 
 - **tick_drives_the_old_actuator.** `tick` makes the switch that the decision names through `switching_plan._check`
-  (arm, use, disarm), and the account-end sequence at the warning line is the old one: the live level is read again
-  each `poll_min`, and an account confirmed by a fresh reading beats a stop. An account left only because no step uses
+  (arm, use, disarm), and the account-end sequence is the old actuator's: the warning at the warning line, the steps
+  at the line, the live level read again each `poll_min`, and an account confirmed by a fresh reading beats a stop. An account left only because no step uses
   it now, above its line, waits for a fresh reading of the next account; the fleet is not stopped for that.
 - **the_timer_runs_the_driver_that_the_plan_names.** `./acct pass` is what the timer runs. With `driver` old (the
   value of a new plan file) the old engine runs as it is, and this tool's pick is logged beside it. With `driver` new

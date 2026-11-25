@@ -1,19 +1,22 @@
 # BOUNDARY: the end of an account: warn, save, pause, switch, sized from the burn rate, Design Version 0.1.0
 
 Code: `src/RimMandrake/Utils/account_end.py` (the numbers, the two orders, the records), `switching_plan.py` (`decide`,
-`_check`, `check`), `src/RimMandrake/rimflow/control.py` (`order_runs`, `withdraw_orders`),
-`src/RimMandrake/rimflow/detached_helper.py` (`drain_refusal`), `src/RimMandrake/rimflow/left_open_continue.py`
+`_check`, `check`), `src/RimMandrake/Utils/account_plan.py` (`decide`, the same steps through `tick`),
+`src/RimMandrake/rimflow/control.py` (`order_runs`, `withdraw_orders`, `hook`),
+`src/RimMandrake/rimflow/detached_helper.py` (`drain_refusal`, `account_warning`), `src/RimMandrake/rimflow/left_open_continue.py`
 (`account_end_wait`, `kick_waiting`). Numbers: `switching_plan.json` `account_end`.
-Item: `RIMMANDRAKE_BUILD_ACCOUNT_END_WARN_SAVE_PAUSE_SWITCH_SIZED_BY_BURN`, written 2026-11-24.
+Items: `RIMMANDRAKE_BUILD_ACCOUNT_END_WARN_SAVE_PAUSE_SWITCH_SIZED_BY_BURN`, written 2026-11-24;
+`RIMMANDRAKE_BURN_TO_LINE_WARNING_SWITCHED_AT_THREE` (the account is used down to its line), 2026-11-24.
 Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_end.py`.
 
-The owner, 2026-11-24 11:05 to 11:15 AM PST: "At 2% no new work is started and "wrap it up cleanly and safely save your
-work" is sent to everyone. At 1% "emergency: record your state immediately and prepare for termination." Give it a
-beat... don't just kill at 1%. After a brief pause that has <10% chance of reaching 0% account, initiate the switch.
-Don't bother manually killing everything, it will happen all by itself". By card, "Sized from the burn rate": "that may
-also initiate the "no new work / save now" warning up at 3% as well if the burn is going crazy fast. Scale both 3/2%
-(initiate saves) warning and the time-constant post 1% based on load. If the reading is believed to be stale, default
-to safe values. TELL THE PROCESSES these numbers. Estimate how long they have to complete their saves."
+The owner, 2026-11-24 4:32 PM PST: "Don't kill anything! Just start warning away." After the switch at 3% (4:56 PM
+PST), as the brief of `RIMMANDRAKE_BURN_TO_LINE_WARNING_SWITCHED_AT_THREE` quotes him: "Don't switch it until 1% ok? I
+want to use up as much as possible, as always." The steps at the line, 11:05 to 11:15 AM PST the same day: "At 1%
+"emergency: record your state immediately and prepare for termination." Give it a beat... don't just kill at 1%. After
+a brief pause that has <10% chance of reaching 0% account, initiate the switch. Don't bother manually killing
+everything, it will happen all by itself". By card, "Sized from the burn rate": "Scale both 3/2% (initiate saves)
+warning and the time-constant post 1% based on load. If the reading is believed to be stale, default to safe values.
+TELL THE PROCESSES these numbers. Estimate how long they have to complete their saves."
 
 ## ACCEPTS (the only inputs this is built for)
 
@@ -34,6 +37,9 @@ to safe values. TELL THE PROCESSES these numbers. Estimate how long they have to
 - **a-jump-over-the-warning.** A burn over about 0.5% a minute can pass 3% and 1% between two meter reads. Then the
   emergency order is the first order that a run gets.
 - **a-crash-between-an-order-and-its-record.** The order is sent once more.
+- **a-run-whose-clone-holds-an-older-hook.** A run started before the `warn` mode existed has a hook that cannot say the
+  warning (it fails on the unknown mode after each tool call, and the run works on unwarned). The save order and the
+  emergency order still reach it.
 
 ## PROMISES (each one is owed a check of the same name)
 
@@ -41,13 +47,17 @@ to safe values. TELL THE PROCESSES these numbers. Estimate how long they have to
   time from 2% to the emergency line (1%) is at least `save_need_min`.
 - **the-warning-fires-at-three-at-a-fast-burn.** When that time is shorter, the warning line is 3%. For any other
   account the warning line is its own line, and one point more at a fast burn.
-- **the-order-tells-the-numbers.** Each order says the percent left, the burn rate, and the minutes to the emergency
-  step (the warning) or the seconds of the pause (the emergency). It names the account end as the cause, and says how
-  the run's work is carried on.
-- **no-new-work-after-the-warning.** The notice then reads soft, `drain` true and `account_end` true, and
-  `drain_refusal` refuses a new run, a continuation and a resume alike. With `account_end` false, a continuation and a
-  resume go as before. While the fleet is stopped, or the switcher runs, nothing starts either.
-- **the-switch-goes-when-the-last-run-ends.** After the warning, with no live run, the switch goes at once, above 1%.
+- **the-order-tells-the-numbers.** Each order says the percent left and the burn rate. The warning says the minutes to
+  the line and tells the run to keep working; the save order at the line says the minutes to the emergency step and
+  how the run's work is carried on; the emergency says the seconds of the pause.
+- **the-account-burns-to-its-line.** Between the warning line and the line there is no switch and no stop, with or
+  without a live run, and no start is refused. Each live run gets the warning once (control mode `warn`, said once by
+  its hook), and it ends nothing. A run that starts there gets the warning in its start package (`account_warning`).
+  The switch goes at the line.
+- **no-new-work-at-the-line.** At the line of an account whose switch waits for its runs, the notice reads soft,
+  `drain` true and `account_end` true, each live run gets the save order, and `drain_refusal` refuses a new run, a
+  continuation and a resume alike. With `account_end` false, a continuation and a resume go as before. While the fleet
+  is stopped, or the switcher runs, nothing starts either.
 - **the-warning-is-latched.** A burn that slows after the warning does not take the warning back. A reading above the
   warning line plus `clear_pct` (a reset) does, or a line lowered after the warning (a dated exception); the undelivered
   orders are then withdrawn.
@@ -62,19 +72,20 @@ to safe values. TELL THE PROCESSES these numbers. Estimate how long they have to
 - **a-stale-reading-uses-the-safe-values.** A burn or a level that is older than `stale_min`, or cannot be read: the
   warning line is the fast one, the pause is the shortest, and each order says that the reading is stale. A read that
   failed is never "plenty left".
-- **a-kept-account-has-no-emergency.** An account whose line is over `emergency_max_line` gets the warning and the
-  switch at the end of the last run, and never an emergency order or a pause, at any percent. Its one brake with a run
+- **a-kept-account-has-no-emergency.** An account whose line is over `emergency_max_line` gets the warning, the save
+  order at its line and the switch at the end of the last run, and never an emergency order or a pause, at any percent. Its one brake with a run
   live is 1% (51 points under Steven's line): there the switch goes.
-- **the-last-account-goes-dark-and-comes-back.** With nowhere to go, the two orders go out and no switch; the fleet
-  stops at the account's own line when the runs end, or after the pause at 1%. After a reset reading the plan starts
+- **the-last-account-goes-dark-and-comes-back.** With nowhere to go, the warning goes out, then the save order at
+  the account's own line, and no switch; the fleet stops there when the runs end, or after the pause at 1%. After a reset reading the plan starts
   the fleet, or switches to the account that refilled.
-- **a-one-percent-line-is-not-killed-unwarned.** An account with a 1% line and a run live drains at 2%, and at 1% it
-  orders and pauses before the switch (the fault of 2026-11-24).
-- **unreadable-runs-count-as-live.** Runs that cannot be read: the plan drains, and at 1% it orders the store's runs,
-  pauses and switches.
-- **each-step-is-recorded-once.** The warning, the emergency and the switch each write one Conductor log line and one
-  ledger event with the step, the percent, the burn, the minutes and the runs. The switch's line says for each ordered
-  run: ended before the switch; saved a note (with its time); no note seen; or could not look.
+- **a-one-percent-line-is-not-killed-unwarned.** An account with a 1% line and a run live is warned at 2% and
+  refuses nothing, and at 1% it orders and pauses before the switch, even with no pass at 2%.
+- **unreadable-runs-count-as-live.** Runs that cannot be read: at a line above 1% the plan drains, and at 1% it
+  orders the store's runs, pauses and switches.
+- **each-step-is-recorded-once.** The warning, the save order at the line, the emergency and the switch each write
+  one Conductor log line and one ledger event with the step, the percent, the burn, the minutes and the runs. The
+  switch's line says for each ordered run: ended before the switch; saved a note (with its time); no note seen; or
+  could not look.
 - **an-order-spends-no-trial-and-blocks-nothing.** `order_runs` writes no OFF switch, voids no run, releases no
   reservation and sets no kill timer.
 - **a-wrapped-run-is-carried-on-after-the-switch.** A run that ended with a LEFT OPEN note is not continued while the

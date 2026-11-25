@@ -13,6 +13,7 @@
   "src/RimMandrake/rimflow/list_pipeline.py::epoch::except-returns-empty": 1,
   "src/RimMandrake/Utils/no_home.py::last::except-returns-empty": 1,
   "src/RimMandrake/rimflow/detached_helper.py::drain_refusal::except-returns-empty": 1,
+  "src/RimMandrake/rimflow/detached_helper.py::account_warning::except-returns-empty": 1,
   ".claude/hooks/role_result_before_stop.py::blocks_so_far::except-returns-empty": 1,
   ".claude/hooks/role_result_before_stop.py::blocks_so_far::or-empty": 1,
   ".claude/hooks/role_result_before_stop.py::main::except-returns-empty": 1,
@@ -316,6 +317,9 @@
   ],
   "src/RimMandrake/rimflow/detached_helper.py::drain_refusal::except-returns-empty": [
    "NOT A COLLAPSE: the gate fails open by its page's promise a-new-launch-waits-while-the-account-drains (design/specs/2026-11-20-account-drain/boundary.md): an unreadable switching notice means the plan's timer cannot be read, and a dead timer must not hold every launch; the plan's own hard line still stops runs"
+  ],
+  "src/RimMandrake/rimflow/detached_helper.py::account_warning::except-returns-empty": [
+   "NOT A COLLAPSE: the warning in a start package is advice that ends nothing and refuses nothing; an unreadable or stale notice adds none, and the run gets the same warning through its hook at the next pass (warn_step warns every live run that has not had it), page design/specs/2026-11-24-account-end/boundary.md promise the-account-burns-to-its-line"
   ],
   ".claude/hooks/role_result_before_stop.py::blocks_so_far::except-returns-empty": [
    "unread by owner's card 2026-11-19: only files that failed before are read"

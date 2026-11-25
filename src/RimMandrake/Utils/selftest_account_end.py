@@ -132,13 +132,14 @@ def t_the_warning_fires_at_two_at_an_ordinary_burn():
         check("%s: line %s" % (n, ln), AE.warning_line(ln, ORD, CFG) == 2, AE.warning_line(ln, ORD, CFG))
     for left, want in ((4, False), (3, False), (2, True)):
         d = D(m(left), "system", RUN)
-        check("%s: at %s%%" % (n, left), bool(d.get("account_end")) is want and d["do"] in ("soft", "normal"), d)
+        check("%s: at %s%%" % (n, left), bool(d.get("warning")) is want and d["do"] in ("soft", "normal")
+              and not d.get("drain"), d)
     f = Fake()
     for left, orders in ((4, 0), (3, 0), (2, 1)):
         f.go(m(left))
         check("%s: %d order(s) at %s%%" % (n, orders, left), len(f.sent) == orders, f.sent)
     check("%s: no switch while the run lives" % n, "use" not in f.acts(), f.acts())
-    check("%s: an easy-spot order to the run" % n, f.sent and f.sent[0]["mode"] == "at_easy_spot" and
+    check("%s: a warning to the run, which ends nothing" % n, f.sent and f.sent[0]["mode"] == "warn" and
           f.sent[0]["units"] == RUN, f.sent)
 
 
@@ -189,29 +190,34 @@ def t_the_burn_is_the_slope_of_this_week():
 def t_the_order_tells_the_numbers():
     n = "the-order-tells-the-numbers"
     w = AE.warn_text("lukas", 2, ORD, 1, CFG, False)
-    check("%s: percent, burn and minutes" % n, "2% of its week" in w and "0.067% a minute" in w and "14 minutes" in w
-          and "switches accounts" in w, w)
-    check("%s: his words and the note that carries the work on" % n,
-          "wrap it up cleanly and safely save your work" in w and "LEFT OPEN:" in w and "ACCOUNT END" in w, w)
+    check("%s: the warning: percent, burn and minutes to the line" % n, "2% of its week" in w and "0.067% a minute" in w
+          and "14 minutes to its 1% line" in w and "switches accounts" in w, w)
+    check("%s: the warning keeps the run working and ends nothing" % n, "ACCOUNT WARNING, not a stop" in w
+          and "keep working" in w and "new work still starts" in w and "end your turn" not in w, w)
     check("%s: no spend of the run" % n, "token" not in w and "$" not in w and "budget" not in w, w)
+    v = AE.save_text("steven", 52, ORD, 52, CFG, False)
+    check("%s: the save order at the line: his words and the note that carries the work on" % n,
+          "wrap it up cleanly and safely save your work" in v and "LEFT OPEN:" in v and "ACCOUNT END" in v
+          and "at its 52% line" in v and "end your turn" in v, v)
     e = AE.emergency_text("lukas", 1, ORD, 89, False)
     check("%s: the emergency's" % n, "1% of its week" in e and "0.067%" in e and "89 seconds" in e and
           "emergency: record your state immediately and prepare for termination" in e, e)
-    k = AE.warn_text("steven", 52, ORD, 52, CFG, False)
-    check("%s: a kept account's order promises no emergency" % n, "no emergency step" in k and "minutes to" not in k, k)
+    check("%s: a kept account's orders promise no emergency" % n, "no emergency step" in v and "minutes to" not in v
+          and "emergency" not in AE.warn_text("steven", 53, ORD, 52, CFG, False), v)
     z = AE.warn_text("lukas", 2, ORD, 2, CFG, True)
-    check("%s: the last account's order says that the machine stops" % n, "stops until an account resets" in z, z)
+    check("%s: the last account's warning says that the machine stops" % n, "stops until an account resets" in z, z)
     age = AE.minutes_left(2, dict(ORD, age_s=300), CFG)
     check("%s: the age of the reading comes off the minutes" % n, abs(age - (1 / 0.067 - 5)) < 0.01, age)
 
 
-def t_no_new_work_after_the_warning():
+def t_no_new_work_at_the_line():
     import detached_helper as DH
-    n = "no-new-work-after-the-warning"
-    f = Fake()
-    f.go(m(2))
+    n = "no-new-work-at-the-line"
+    f = Fake(live="lukas")
+    f.go({**OFF, "system": R(0.5, 100), "lukas": R(2, 120)})     # the last account, at its own 2% line, a run live
     nt = f.notice()
-    check("%s: the notice" % n, nt["state"] == "soft" and nt["drain"] is True and nt["account_end"] is True, nt)
+    check("%s: the notice" % n, nt["state"] == "soft" and nt["drain"] is True and nt["account_end"] is True
+          and not nt.get("warning"), nt)
     p = str(SP.OUT / "notice.json")
     for what, a in (("a new run", ({}, None)), ("a continuation", ({"continued_from": "rm-x"}, None)),
                     ("a resume", ({}, "sess-1"))):
@@ -223,21 +229,35 @@ def t_no_new_work_after_the_warning():
           and DH.drain_refusal(f.t + 30, {}, "s", path=p) is None and bool(DH.drain_refusal(f.t + 30, {}, None, path=p)))
 
 
-def t_the_switch_goes_when_the_last_run_ends():
-    n = "the-switch-goes-when-the-last-run-ends"
-    f = Fake()
-    f.go(m(2))
-    check("%s: not while the run lives" % n, "use" not in f.acts(), f.acts())
-    f.runs = []
-    f.t += 300
-    f.go(m(2))
-    check("%s: at 2%%, at once, with no pause" % n, f.acts() == ["use"] and not f.slept, (f.acts(), f.slept))
-    check("%s: no emergency order" % n, [s["mode"] for s in f.sent] == ["at_easy_spot"], f.sent)
-    f = Fake(burn=FAST)
+def t_the_account_burns_to_its_line():
+    """RIMMANDRAKE_BURN_TO_LINE_WARNING_SWITCHED_AT_THREE (2026-11-24 4:56 PM PST: lukas switched away at 3%, line 1%)."""
+    import detached_helper as DH
+    n = "the-account-burns-to-its-line"
+    p = str(SP.OUT / "notice.json")
+    for name, burn in (("ordinary", ORD), ("fast", FAST), ("stale", STALE)):
+        for left in (3, 2):
+            d = D(m(left), "system", [], burn)
+            check("%s: at %s%%, a %s burn, no run live, lukas with headroom: no switch, starts allowed" % (n, left, name),
+                  d["do"] not in ("switch", "stop") and not d.get("drain"), d)
+    f = Fake(runs=[], burn=FAST)
     f.go(m(3))
+    check("%s: at 3%% with no run live the pass switches nothing" % n, "use" not in f.acts(), f.acts())
+    check("%s: and refuses no new start" % n, DH.drain_refusal(f.t + 30, {}, None, path=p) is None, f.notice())
+    check("%s: a run that starts now gets the warning in its start package" % n,
+          "keep working" in (DH.account_warning(f.t + 30, path=p) or ""), f.notice())
+    f.runs = list(RUN)
+    f.t += 60
+    f.go(m(2))
+    check("%s: a live run is warned, not told to end" % n, [s["mode"] for s in f.sent] == ["warn"]
+          and "keep working" in f.sent[0]["text"] and "minutes to its 1% line" in f.sent[0]["text"], f.sent)
+    check("%s: no switch at 2%% with a run live" % n, "use" not in f.acts(), f.acts())
     f.runs = []
-    f.go(m(3))
-    check("%s: at 3%% too, after a fast burn" % n, "use" in f.acts(), f.acts())
+    f.t += 60
+    f.go(m(2))
+    check("%s: no switch at 2%% when the last run has ended" % n, "use" not in f.acts(), f.acts())
+    f.t += 60
+    f.go(m(1))
+    check("%s: at the 1%% line the switch goes" % n, f.acts() == ["use"], f.acts())
 
 
 def t_the_warning_is_latched():
@@ -247,10 +267,12 @@ def t_the_warning_is_latched():
     f.burn = ORD
     f.t += 300
     f.go(m(3))
-    check("%s: a slower burn keeps it" % n, f.notice()["account_end"] is True, f.notice())
+    d = D(m(3), "system", RUN, ORD, f.state())
+    check("%s: a slower burn keeps it" % n, f.state()["account_end"]["warn_line"] == 3 and d["warn_line"] == 3
+          and d.get("warning") and f.notice().get("warning"), (d, f.notice()))
     f.runs = []
     f.go(m(3))
-    check("%s: and the switch goes at 3%%" % n, "use" in f.acts(), f.acts())
+    check("%s: and it still only warns at 3%%: no switch above the line" % n, "use" not in f.acts(), f.acts())
     f = Fake()
     f.go(m(2))
     f.go(m(100))
@@ -311,8 +333,8 @@ def t_a_stale_reading_uses_the_safe_values():
         check("%s: the pause is the shortest" % n, AE.pause_s(b, CFG) == 20)
     f = Fake(burn=STALE)
     f.go(m(3))
-    check("%s: the order at 3%% says stale" % n, len(f.sent) == 1 and "STALE" in f.sent[0]["text"]
-          and "33 min old" in f.sent[0]["text"] and "assume 10 minutes" in f.sent[0]["text"], f.sent)
+    check("%s: the warning at 3%% says stale" % n, len(f.sent) == 1 and "STALE" in f.sent[0]["text"]
+          and "33 min old" in f.sent[0]["text"] and "assume about 10 minutes" in f.sent[0]["text"], f.sent)
     f.go(m(1))
     check("%s: the emergency says stale, the pause is 20 s" % n, "STALE" in f.sent[-1]["text"]
           and "20 seconds" in f.sent[-1]["text"] and sum(f.slept) == 20, (f.sent, f.slept))
@@ -321,7 +343,7 @@ def t_a_stale_reading_uses_the_safe_values():
              burn_fn=lambda *a: 1 / 0, orders=f)
     check("%s: a burn reader that raises is stale, not slow" % n, len(f.sent) == 1 and "STALE" in f.sent[0]["text"], f.sent)
     d = D({**OFF, "system": R(3, 100, src="ESTIMATE", age=40, stale=True), "lukas": R(98, 120)}, "system", RUN, STALE)
-    check("%s: a level that cannot be read again is warned at 3%%" % n, d.get("account_end") is True, d)
+    check("%s: a level that cannot be read again is warned at 3%%" % n, d.get("warning") is True, d)
     f = Fake()
     f.go({**OFF, "system": R(0.8, 100, src="ESTIMATE", age=40, stale=True), "lukas": R(98, 120)})
     check("%s: a blind meter at its last 0.8%%: the emergency, 20 s, the switch" % n,
@@ -337,6 +359,9 @@ def t_a_kept_account_has_no_emergency():
     for left in (1, 0):
         d = D({"steven": R(left, 150), "system": R(40, 100), "lukas": R(98, 120)}, "steven", RUN)
         check("%s: no emergency at %s%%" % (n, left), not d.get("emergency"), d)
+    d = D({"steven": R(53, 150), "system": R(40, 100), "lukas": R(98, 120)}, "steven", RUN, STALE)
+    check("%s: at 53%%, a stale burn: the warning, no drain" % n, d.get("warning") and not d.get("drain")
+          and d["do"] not in ("switch", "stop"), d)
     f = Fake(live="steven")
     f.go({"steven": R(52, 150), "system": R(40, 100), "lukas": R(98, 120)})
     f.go({"steven": R(49, 150), "system": R(40, 100), "lukas": R(98, 120)})
@@ -374,14 +399,15 @@ def t_the_last_account_goes_dark_and_comes_back():
           and f.notice()["state"] == "none", (f.acts(), f.notice()))
     f = Fake(live="lukas", runs=[], burn=FAST)
     f.go(last(3))
-    check("%s: at 3%% (a fast burn), above its 2%% line: no new start, no stop" % n, not f.acts()
-          and f.notice()["account_end"] is True, (f.acts(), f.notice()))
+    check("%s: at 3%% (a fast burn), above its 2%% line: the warning, new work starts, no stop" % n, not f.acts()
+          and not f.notice()["drain"] and "stops until an account resets" in (f.notice().get("warning") or ""),
+          (f.acts(), f.notice()))
 
 
 def t_a_one_percent_line_is_not_killed_unwarned():
     n = "a-one-percent-line-is-not-killed-unwarned"
     d = D(m(2), "system", RUN)
-    check("%s: 2%% drains" % n, d["do"] == "soft" and d.get("drain") is True, d)
+    check("%s: 2%% warns and refuses nothing" % n, d.get("warning") and not d.get("drain"), d)
     f = Fake()
     f.go(m(1))      # even with no pass at 2%
     check("%s: 1%% orders and pauses before the switch" % n, f.sent and not f.sent[0]["used"] and sum(f.slept) >= 20
@@ -390,8 +416,8 @@ def t_a_one_percent_line_is_not_killed_unwarned():
 
 def t_unreadable_runs_count_as_live():
     n = "unreadable-runs-count-as-live"
-    d = D(m(2), "system", None)
-    check("%s: 2%% drains, UNMEASURED" % n, d.get("account_end") is True and "UNMEASURED" in d["why"], d)
+    d = D({**OFF, "system": R(0.5, 100), "lukas": R(2, 120)}, "lukas", None)
+    check("%s: at its 2%% line it drains, UNMEASURED" % n, d.get("account_end") is True and "UNMEASURED" in d["why"], d)
     f = Fake()
     f.go(m(1), runs=lambda: None)
     check("%s: 1%% orders the store's runs, pauses whole and switches" % n, f.sent and f.sent[0]["units"] == RUN
@@ -406,7 +432,7 @@ def t_each_step_is_recorded_once():
     f.runs = RUN[:]
     f.go(m(1))
     st = f.steps()
-    check("%s: three steps, one line each" % n, [r["step"] for r in st] == ["save warning", "emergency", "switch"],
+    check("%s: three steps, one line each" % n, [r["step"] for r in st] == ["warning", "emergency", "switch"],
           [r["step"] for r in st])
     check("%s: each has percent, burn and runs" % n, all("% a minute" in r["text"] and "live run(s)" in r["text"] for r in st), st)
     check("%s: the switch says what each run had saved" % n, st and "other-1795180001: ended by itself before the switch"
@@ -448,7 +474,13 @@ def t_an_order_spends_no_trial_and_blocks_nothing():
                   (NOW,))
     o = AE.Orders()
     check("%s: the store's detached and role runs are the ones ordered" % n, o.store_runs() == [u], o.store_runs())
-    text = AE.warn_text("lukas", 2, ORD, 1, CFG, False)
+    w = AE.warn_text("lukas", 2, ORD, 1, CFG, False)
+    act0, err = o.send([u], "warn", w)
+    code, said = C.hook(unit=u)
+    check("the-account-burns-to-its-line: the run's hook says the warning, which is no stop order", act0 and err is None
+          and code == 2 and w in said and "STOP ORDER" not in said, (err, said))
+    check("the-account-burns-to-its-line: once", C.hook(unit=u) == (0, ""), C.hook(unit=u))
+    text = AE.save_text("lukas", 1.5, ORD, 1.5, CFG, False)
     act, err = o.send([u], "at_easy_spot", text)
     check("%s: the order is written" % n, bool(act) and err is None, err)
     with C.txn() as c:
@@ -553,20 +585,21 @@ def t_the_hold_file_stops_it():
 
 
 def t_the_pass_repeats_while_an_account_ends():
-    n = "the-switch-goes-when-the-last-run-ends"
-    f = Fake()
-    SP_t = {"n": 0}
+    n = "the-account-burns-to-its-line"
+    f = Fake(runs=[])
+    SP_t = {"n": 0, "left": 2}
 
     def meter():
-        return m(2)
+        return m(SP_t["left"])
 
     def slept():
         SP_t["n"] += 1
         if SP_t["n"] == 2:
-            f.runs = []
+            SP_t["left"] = 1
     f.on_sleep = slept
     f.go(meter, passes=5)
-    check("%s: seen inside the same 5-min beat" % n, f.acts() == ["use"] and f.slept == [60, 60], (f.acts(), f.slept))
+    check("%s: the line is seen inside the same 5-min beat" % n, f.acts() == ["use"] and f.slept == [60, 60],
+          (f.acts(), f.slept))
     f = Fake()
     f.go(lambda: m(40), passes=5)
     check("%s: a pass with no account ending does not repeat" % n, not f.slept, f.slept)
@@ -596,7 +629,7 @@ def t_the_reading_is_fresh_at_the_end():
 
 def t_the_dark_notice_starts_nothing():
     import detached_helper as DH
-    n = "no-new-work-after-the-warning"
+    n = "no-new-work-at-the-line"
     f = Fake(live="lukas", runs=[])
     f.go({**OFF, "system": R(0.5, 100), "lukas": R(1, 120)})
     p = str(SP.OUT / "notice.json")
@@ -618,7 +651,7 @@ def t_the_dark_notice_starts_nothing():
         return real(*a, **k)
     SP.armed_call = call
     try:
-        f.go(m(2))
+        f.go(m(1))
     finally:
         SP.armed_call = real
     check("%s: nor does a continuation start inside the switch" % n, f.acts() == ["use"] and seen and bool(seen[0]), seen)
@@ -682,8 +715,8 @@ def t_the_burn_is_only_of_the_time_it_was_live():
 def main():
     real_clock, real_sleep = SP.clock, SP.sleep
     for t in (t_the_warning_fires_at_two_at_an_ordinary_burn, t_the_warning_fires_at_three_at_a_fast_burn,
-              t_the_burn_is_the_slope_of_this_week, t_the_order_tells_the_numbers, t_no_new_work_after_the_warning,
-              t_the_switch_goes_when_the_last_run_ends, t_the_warning_is_latched,
+              t_the_burn_is_the_slope_of_this_week, t_the_order_tells_the_numbers, t_no_new_work_at_the_line,
+              t_the_account_burns_to_its_line, t_the_warning_is_latched,
               t_the_emergency_orders_pauses_then_switches, t_the_pause_keeps_the_chance_of_zero_under_ten_percent,
               t_a_stale_reading_uses_the_safe_values, t_a_kept_account_has_no_emergency,
               t_the_last_account_goes_dark_and_comes_back, t_a_one_percent_line_is_not_killed_unwarned,

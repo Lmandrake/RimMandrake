@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """The end of an account (RIMMANDRAKE_BUILD_ACCOUNT_END_WARN_SAVE_PAUSE_SWITCH_SIZED_BY_BURN; page
-design/specs/2026-11-24-account-end/boundary.md): the numbers (burn rate, warning line, pause), the text of the two
-orders, their delivery into the live runs, and the records. switching_plan.py decides and acts; this module holds no
+design/specs/2026-11-24-account-end/boundary.md): the numbers (burn rate, warning line, pause), the text of the three
+orders (the warning, the save order at the line, the emergency), their delivery into the live runs, and the records. switching_plan.py decides and acts; this module holds no
 decision of its own and never touches the meter or the switcher. The numbers are switching_plan.json `account_end`.
 
     account_end.py burn [ACCOUNT]    the burn rate of an account (default: the live one), and what it would size
@@ -123,12 +123,17 @@ def safe_rate(burn, cfg):
     return (cfg["warn_fast_pct"] - cfg["emergency_pct"]) / cfg["save_need_min"], True
 
 
-def minutes_left(pct, burn, cfg):
-    """Estimated minutes until the meter reads the emergency percent; None when nothing burns."""
+def minutes_to(pct, to_pct, burn, cfg):
+    """Estimated minutes until the meter reads `to_pct`; None when nothing burns."""
     rate, _ = safe_rate(burn, cfg)
     if rate <= 0:
         return None
-    return max(0.0, (pct - cfg["emergency_pct"]) / rate - ((burn or {}).get("age_s") or 0) / 60)
+    return max(0.0, (pct - to_pct) / rate - ((burn or {}).get("age_s") or 0) / 60)
+
+
+def minutes_left(pct, burn, cfg):
+    """Estimated minutes until the meter reads the emergency percent; None when nothing burns."""
+    return minutes_to(pct, cfg["emergency_pct"], burn, cfg)
 
 
 def pause_s(burn, cfg):
@@ -143,7 +148,7 @@ def pause_s(burn, cfg):
     return int(min(cfg["pause_max_s"], max(cfg["pause_min_s"], s)))
 
 
-# ------------------------------------------------------------------ the two orders (pure text)
+# ------------------------------------------------------------------ the three orders (pure text)
 def numbers(pct, burn):
     b = burn or {}
     if b.get("rate") is None or b.get("stale"):
@@ -160,7 +165,33 @@ CARRY = ("Start your last note with LEFT OPEN: in place of STOPPED, and say exac
          "your work is then carried on by itself after the switch. No trial of yours is spent")
 
 
+def at_the_line(line, cfg, last):
+    """What happens at the account's line, in the words of an order."""
+    then = "the machine stops until an account resets" if last else "the machine switches accounts"
+    if has_emergency(line, cfg) and line <= cfg["emergency_pct"]:
+        return ("At the line the emergency order comes (record your state at once), a pause of seconds, then %s and "
+                "every Claude process is stopped." % then)
+    return ("At the line every run is told to save and end, and %s when the last run has ended%s." % (
+        then, " or at %g%%" % cfg["emergency_pct"] if has_emergency(line, cfg) else ""))
+
+
 def warn_text(account, pct, burn, line, cfg, last):
+    """The warning at the warning line. It ends no run: the run saves a note, publishes what is done, and keeps
+    working (owner 2026-11-24: "Don't kill anything! Just start warning away.")."""
+    m = minutes_to(pct, line, burn, cfg)
+    mins = "an unknown number of" if m is None else "%d" % int(m)
+    if (burn or {}).get("stale", True):
+        when = "assume about %s minutes to its %g%% line (a safe value: the burn is unread)" % (mins, line)
+    else:
+        when = "about %s minutes to its %g%% line at this burn" % (mins, line)
+    return ("ACCOUNT WARNING, not a stop: account %s nears its line. %s; %s. Save a note on your item now (done, "
+            "half-done, next) and publish what is done, then keep working: new work still starts, and the machine "
+            "uses this account down to its line. %s" % (account, numbers(pct, burn), when, at_the_line(line, cfg, last)))
+
+
+def save_text(account, pct, burn, line, cfg, last):
+    """The save order at the line, for an account whose switch waits for its runs (a line above the emergency
+    percent): each run finishes its unit, saves and ends."""
     then = ("then the machine stops until an account resets" if last else "then the machine switches accounts")
     if has_emergency(line, cfg):
         m = minutes_left(pct, burn, cfg)
@@ -169,12 +200,12 @@ def warn_text(account, pct, burn, line, cfg, last):
         if (burn or {}).get("stale", True):
             when = "assume %d minutes at most to complete your save, until the emergency step at %g%%" % (
                 int(m or 0), cfg["emergency_pct"])
-        end = "%s; %s and every Claude process is stopped. " % (when, then)
+        end = "%s; when the last run has ended, or at the emergency step, %s. " % (when, then.replace("then ", ""))
     else:
         end = ("there is no emergency step on this account: when the last run has ended, %s. " % then.replace("then ", ""))
-    return ("ACCOUNT END, the save warning: wrap it up cleanly and safely save your work. Account %s: %s; %s"
-            "Let that decide what you still finish: publish what is done first, start nothing that does not fit. %s"
-            % (account, numbers(pct, burn), end, CARRY))
+    return ("ACCOUNT END, the save order at the line: wrap it up cleanly and safely save your work. Account %s is at its "
+            "%g%% line: %s; %sFinish the unit in hand, publish what is done, start nothing new, then end your turn. %s"
+            % (account, line, numbers(pct, burn), end, CARRY))
 
 
 def emergency_text(account, pct, burn, secs, last):

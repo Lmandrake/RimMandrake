@@ -1946,6 +1946,8 @@ STOP_TEXT = {
                     "what is finished; put a short handoff note on your item ({item}) with `python3 "
                     "src/RimMandrake/rimflow/cli.py note {item} --text \"STOPPED (at-easy-spot): done: ...; half-done: "
                     "...; next: ...\" --why \"pipe stop\"` and publish its shard; then end your turn.{deadline_text}",
+    # the account's warning (account_end.warn_text): said once, and it ends no run
+    "warn": "{why} (act {act} at {at}, by {who})",
 }
 
 
@@ -2100,9 +2102,10 @@ def _extra_units(run):
 
 
 def order_runs(units, mode, why, deadline=None, p=None, now=None):
-    """One stop order for each unit of `units` and nothing else: no OFF switch, no void, no reservation released, no kill
+    """One order for each unit of `units` and nothing else: no OFF switch, no void, no reservation released, no kill
     timer (the account's end, account_end.py: the switch itself ends what is left, and a run that finishes in time keeps
-    its result). `deadline` is only said in the order. -> the act's row. Raises Unreadable / Refused."""
+    its result). Mode `warn` is the account's warning: the hook says it once and the run keeps working. `deadline` is
+    only said in the order. -> the act's row. Raises Unreadable / Refused."""
     now = time.time() if now is None else now
     if mode not in STOP_TEXT:
         raise Refused("no stop order %r (%s)" % (mode, ", ".join(STOP_TEXT)))
@@ -2473,8 +2476,10 @@ def hook(p=None, unit=None, now=None, stdin=None):
                     return 2, ("STOP ORDER WITHDRAWN (act %s): the stop order you read earlier is taken back. Carry on "
                                "with your work as before." % w["act"])
                 return 0, ""
-            if not c.execute("UPDATE stops SET state='seen', seen_at=COALESCE(seen_at, ?), seen_n=seen_n+1 WHERE id=? "
-                             "AND state IN ('pending','seen')", (now, s["id"])).rowcount:
+            # a warning (mode warn) is said once and is then done; a stop order is said after each tool call
+            if not c.execute("UPDATE stops SET state=CASE WHEN mode='warn' THEN 'delivered' ELSE 'seen' END, "
+                             "seen_at=COALESCE(seen_at, ?), seen_n=seen_n+1, ended_at=CASE WHEN mode='warn' THEN ? "
+                             "ELSE ended_at END WHERE id=? AND state IN ('pending','seen')", (now, now, s["id"])).rowcount:
                 return 0, ""    # it ended between the lookup and the mark: a done order is never revived
             a = c.execute("SELECT * FROM acts WHERE id=?", (s["act"],)).fetchone()
             r = c.execute("SELECT item FROM runs WHERE unit=?", (unit,)).fetchone()

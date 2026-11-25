@@ -267,7 +267,11 @@ def main():
           and PLAN["account_end"]["emergency_pct"] == 1 and PLAN["floors"]["blind_zero_pct"] == 1,
           f"floors are 1 / 2, emergency 1, blind at 1 (got {PLAN['floors']})")
     d = D({**off, "system": R(1.5, 100), "lukas": R(98, 120)}, "system")
-    check(d["do"] == "switch", f"1.5%, under the 2% warning line with no live run: switch (owner 2026-11-24) (got {d['do']})")
+    check(d["do"] not in ("switch", "stop") and d.get("warning") and not d.get("drain"),
+          f"1.5%, under the 2% warning line with no live run: warned, used on down to its 1% line (owner 2026-11-24) "
+          f"(got {d['do']})")
+    d = D({**off, "system": R(1, 100), "lukas": R(98, 120)}, "system")
+    check(d["do"] == "switch", f"1%, at its line with no live run: switch (got {d['do']})")
     d = D({**off, "system": R(0.5, 100), "lukas": R(98, 120)}, "system")
     check(d["do"] == "switch", f"0.5%, under the 1% emergency line: switch (got {d['do']})")
     d = D({**off, "system": R(0, 100), "lukas": R(98, 120)}, "system")

@@ -42,7 +42,6 @@ WEEK = 7 * 86400
 SEED = HERE / "account_plan.seed.json"
 STEP_KEYS = {"name", "use", "leave", "warn", "until", "when", "from", "ends", "ends_at_reset_of", "why", "by"}
 DAYS = ("mon", "tue", "wed", "thu", "fri", "sat", "sun")
-GOOD_BURN = {"rate": 0.0, "stale": False}     # the week ahead uses the ordinary warning line, never the fast one
 
 
 class Refused(Exception):
@@ -742,7 +741,7 @@ def _cost(plan, st):
 
 
 def _run(plan, st, rate, horizon, dt):
-    N, cfg = plan["numbers"], plan["numbers"]["account_end"]
+    N = plan["numbers"]
     accts = claude_accounts(plan)
     while st["t"] < horizon:
         t = st["t"]
@@ -768,8 +767,7 @@ def _run(plan, st, rate, horizon, dt):
             done, under = True, True
         else:
             line = rl["line"] if can else max(rl["line"], N["last_account_floor_pct"])
-            end = max(AE.warning_line(line, GOOD_BURN, cfg), line + (rl["warn"] or 0))
-            under = st["left"][live] <= end
+            under = st["left"][live] <= line        # used down to its line; the warning zone is burned too
             done = under or ended(rl, env, live)
         can = targets(can, rules, env, under)
         if done and can:
@@ -911,6 +909,9 @@ def decide(plan, f, polled=True) -> dict:
             warn = max(warn, ep["warn_line"])       # a warning that fired is not taken back by a slower burn
     base = {"account": live, "line": line, "pct_left": pl if pl is not None else lr["last_left"], "to": None,
             "warn_line": warn, "step": rl["step"] if rl else None}
+    if warn is not None and pl is not None and line < pl <= warn:
+        # the warning zone: the runs are warned and keep working, new work starts; the account ends at its line
+        base.update(warning=True, last_account=not can)
     rate = f.get("burn_h")
 
     def out(d, **more):
@@ -931,7 +932,7 @@ def decide(plan, f, polled=True) -> dict:
         if a != live and (rd.get(a) or {}).get("reset_passed"):
             need.append("%s's reset has passed and its reading is from before it" % a)
 
-    under = rl is None or (pl is not None and warn is not None and pl <= warn)
+    under = rl is None or (pl is not None and pl <= line)       # finished at its line; the warning line only warns
     until = ended(rl, env, live)
     can = targets(can, rules, env, under)
     if not under and not until and not lr["ok"] and not blind:
@@ -986,7 +987,7 @@ def decide(plan, f, polled=True) -> dict:
                 nxt = q["to"]
         if nxt is not None:
             how = ("no step uses %s now" % live) if rl is None else (
-                "%s at %s%% is at its %s%% warning line (line %s%%)" % (live, g(pl), g(warn), g(line)) if under else
+                "%s at %s%% is at its %s%% line" % (live, g(pl), g(line)) if under else
                 "the step %s ends: %s" % (rl["step"], rl["until"]))
             why = "%s. Next: %s (%s%% left)" % (how, nxt, g(rd[nxt]["left"]))
             if ch:
@@ -1009,10 +1010,6 @@ def decide(plan, f, polled=True) -> dict:
         unread = [a for a in accts if a != live and rules.get(a) and not (rd.get(a) or {}).get("ok")]
         if unread and not polled:
             return {**base, "do": "poll", "poll": True, "why": "read %s before any stop" % ", ".join(unread)}
-        if rl is not None and pl is not None and pl > line:
-            return {**base, "do": "soft", "drain": True, "account_end": True,
-                    "why": "%s at %s%% is at its %s%% warning line and no account can take over (%s): no new start; "
-                           "the fleet stops at its %s%% line" % (live, g(pl), g(warn), blockers, g(line))}
         return out({"do": "stop", "key": SP.stop_key(live, f["rows"].get(live) or {}, now),
                     "why": "no account can take over (%s); %s at %s%% is finished%s" % (
                         blockers, live, "?" if pl is None else g(pl), " (blind meter)" if blind else "")})
@@ -1030,7 +1027,12 @@ def decide(plan, f, polled=True) -> dict:
         return {**base, "do": "start", "why": "%s has headroom again after the stop" % live}
     eta = None if not rate else (pl - warn) / rate
     head = "%s live at %s%% (line %s%%, warning at %s%%): it stays" % (live, g(pl), g(line), g(warn))
-    head += "" if eta is None else ", about %s h to its warning at %s points an hour" % (g(eta), g(rate))
+    if base.get("warning"):
+        head += ", inside its warning zone: the runs are warned, keep working and new work starts until its line"
+        eta = None if not rate else (pl - line) / rate
+        head += "" if eta is None else ", about %s h to its line at %s points an hour" % (g(eta), g(rate))
+    else:
+        head += "" if eta is None else ", about %s h to its warning at %s points an hour" % (g(eta), g(rate))
     for q in open_requests(plan, f):
         ok, _fresh, why_not = take(q["to"])
         if not ok:

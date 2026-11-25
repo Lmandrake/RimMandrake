@@ -45,8 +45,8 @@ More traps for this section: [references/traps.md](references/traps.md) § 1. Ch
 
 - An account's **line** is the percent left at which the machine leaves the account. Steven's line is his leave line.
   The line of `system` or `lukas` is a floor.
-- The **warning line** is the percent left at which the account starts to end. The warning line is max(line, 2%), and
-  one point more when the burn is fast or cannot be read.
+- The **warning line** is the percent left at which every live run is warned. The warning line is max(line, 2%), and
+  one point more when the burn is fast or cannot be read. The account is still used down to its line.
 - The **emergency line** is 1%. Only an account with a line of 10% or less has an emergency step.
 - A live run is an active detached run (an `rm-detached-*` unit). If the live runs cannot be read, they count as live.
 - A dated exception in `switching_plan.json` can replace the order, an account's line or its window, for at most 7 days.
@@ -61,17 +61,17 @@ More traps for this section: [references/traps.md](references/traps.md) § 1. Ch
 | Floors: **1%** when the machine switches away, **2%** when the machine waits on an account. With 2% left, the owner can still talk to a seat while the machine is idle. No account is driven to 0%. The meter reads whole percents (8,749 readings, none fractional). So 1% is the lowest line that the meter can see. | owner 2026-11-20: *"Actually 0.1% is even ok kept. We just don't want to crash to zero and get stuck."*, then *"Agreed for 1% at the moment"*. The 2% is delegated. |
 | **No share is kept for his evenings.** Each account runs to its line, at any hour. | owner, card 2026-11-23 8:57 AM PST: *"No, run to the line"* (`standing_rulings.md` §Account and capacity budget) |
 | **Soft line** (line + 2%): a notice. Land your commits with `./publish`, and start no new subagent inside an interactive window. A new detached run still starts. | card 10:20 "Soft line, then hard stop" |
-| **Save warning**, at the warning line (2%; 3% when the burn is over 0.1% a minute, stale or unread): no new work starts on the account: a new run, a continuation and a resume are refused. Each live run gets a stop order: wrap it up cleanly and safely save your work. The order says the percent left, the burn rate and the minutes left. | owner 2026-11-24: *"At 2% no new work is started and "wrap it up cleanly and safely save your work" is sent to everyone."* Card: *"up at 3% as well if the burn is going crazy fast ... TELL THE PROCESSES these numbers."* |
-| **Switch when the work has ended**: after the warning the switch goes as soon as the last live run has ended. The switch does not wait for 1%. | owner 2026-11-24: *"I agree with your switch when the last live run has ended when <2% remains."* |
+| **Warning**, at the warning line (2%; 3% when the burn is over 0.1% a minute, stale or unread): each live run gets a warning, said once by its hook: save a note, publish what is done, and keep working. The warning says the percent left, the burn rate and the minutes to the line. Nothing is refused: new work still starts, and a run that starts there gets the warning in its start package. | owner 2026-11-24 4:32 PM PST: *"Don't kill anything! Just start warning away."* After the switch at 3% (4:56 PM PST), as the brief of `RIMMANDRAKE_BURN_TO_LINE_WARNING_SWITCHED_AT_THREE` quotes him: *"Don't switch it until 1% ok? I want to use up as much as possible, as always."* Card: *"up at 3% as well if the burn is going crazy fast ... TELL THE PROCESSES these numbers."* |
+| **Switch at the line**: the switch goes when the live account reaches its line (1% for a floor account). The end of the last run above the line is not a reason to switch. At a line above 1%, each live run is told to save and end, and the switch goes when the last run has ended. | the same words |
 | **Emergency**, at 1% with a run live: each live run gets the order to record its state at once. The order says the seconds of the pause. Then the machine pauses: a fifth of the time from 0.5% to zero at the burn rate, 20 s to 180 s (20 s when the reading is stale). Then the switch goes and stops every Claude process. Nothing is killed by hand. | owner 2026-11-24: *"Give it a beat... don't just kill at 1%."* Card "Sized from the burn rate" |
-| **An account kept well above zero** (Steven at 52%) gets the warning and the switch at the end of the last run. It gets no emergency. | owner 2026-11-24: *"does not need the emergency kill at all"* |
-| **The last account** gets the same two orders. Then the machine stops at the account's line, and a reset starts it again. | owner 2026-11-24: *"wait for a reset if it's the last account"* |
+| **An account kept well above zero** (Steven at 52%) gets the warning (at a fast or unread burn, one point above its line), then at its line the save order, and the switch at the end of the last run. It gets no emergency. | owner 2026-11-24: *"does not need the emergency kill at all"* |
+| **The last account** gets the warning, then at its line the save order (and at 1% the emergency). Then the machine stops, and a reset starts it again. | owner 2026-11-24: *"wait for a reset if it's the last account"* |
 | A priority switch is a switch to an account that comes earlier in `order`, made above the live account's line. A priority switch also waits for live runs, at most `pull_drain_max_s` (2 h). | owner 2026-11-20, the same words as the soft line row; page `design/specs/2026-11-20-account-drain/boundary.md` |
 | **Do not stop runs or switch by hand at the soft line or at the warning.** The hand stop of 2026-11-18 6:43 PM and the hand switch of 6:59 PM (steven at 55%) killed 9 runs. Their resumes missed the prompt cache: 4.73M weighted. | the 2026-11-20 scan, `design/specs/2026-11-20-context-kept-not-reloaded/report.md` §1 row 3 |
 | **Blind meter = 0%**: the last MEASURED reading is <= 1%, and the meter is now blind (a failed /usage, a limit error, an ESTIMATE or a stale reading). Then the account counts as 0%, and the machine switches. | the rule relayed on 2026-10-28 at 11:2x |
 | **Pool pacing**: pace the whole pool "BECAUSE it spreads out the human review time cleanly to inform the process in a timely manner". | by card 10:20 |
 
-What enforces the soft line and the save warning today:
+What enforces the soft line and the warning today:
 
 - `switching_plan.py status` shows when the plan is soft. Either the `do` of `next_pass` is `soft`, or the `notice` has
   `state` `soft` and an `at` time under 20 min old. Then land your commits with `./publish`, and start no
@@ -198,8 +198,8 @@ More traps for this section: [references/traps.md](references/traps.md) § 6. Th
 - The dormant-account tie: two accounts can read the same newest time. Do not take the first dict key.
   `claude-account status` is the authority on which account is live. Without its answer, `pick_burn_account` prefers the
   "live login" method.
-- A DARK soft line is right while there is nowhere to go. A DARK soft line is wrong once a fresh account exists. Since
-  2026-11-24 the switch goes when the last run ends, so a drain that stops all work cannot strand the account.
+- A DARK soft line is right while there is nowhere to go. A DARK soft line is wrong once a fresh account exists. A
+  drain at the line ends when the last run has ended, so a drain that stops all work cannot strand the account.
 - If `use` times out at 600 s mid-switch, the journal stays. Recover (§4).
 - Selftests stub the CLI. So probe the real call once. More: `references/traps.md`.
 

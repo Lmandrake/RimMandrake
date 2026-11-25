@@ -142,7 +142,7 @@ def t_live_account_stays_until_its_own_line():
 
 def t_order_only_answers_which_account_is_next():
     n = "order_only_answers_which_account_is_next"
-    rows = {"steven": R(90, 150), "system": R(80, 110), "lukas": R(2, 120)}
+    rows = {"steven": R(90, 150), "system": R(80, 110), "lukas": R(1, 120)}
     for first in ("steven", "system"):
         p = plan([first, "system" if first == "steven" else "steven", "lukas"], steven={"when": None})
         d = AP.decide(p, F("lukas", rows, burn_h=None))
@@ -167,7 +167,10 @@ def t_no_start_is_refused_for_a_preference():
     d = AP.decide(BASE, F("lukas", {**FAR, "lukas": R(4, 120)}, runs=RUN))
     check(n + ": the zone above the warning line reads normal", d["do"] == "normal", d)
     d = AP.decide(BASE, F("lukas", {**FAR, "lukas": R(2, 120)}, runs=RUN))
-    check(n + ": at the warning line it reads soft, with the account-end flag", d["do"] == "soft" and d.get("account_end"), d)
+    check(n + ": inside the warning zone it reads normal, with the warning and no drain",
+          d["do"] == "normal" and d.get("warning") and not d.get("drain"), d)
+    d = AP.decide(BASE, F("lukas", {**FAR, "lukas": R(1, 120)}, runs=RUN))
+    check(n + ": at its 1% line with a run live: the emergency, then the switch", d["do"] == "switch" and d.get("emergency"), d)
 
 
 def t_a_rescue_switch_needs_points_worth_a_switch():
@@ -232,7 +235,7 @@ def t_a_hand_switch_is_respected():
     check(n + ": a pin -> no rescue", d["do"] == "normal" and "pinned" in d["why"], d)
     d = AP.decide(p, rescue_frame((), now=NOW + 7200))
     check(n + ": after the pin's end the rescue goes", d["do"] == "switch", d)
-    d = AP.decide(p, F("lukas", {"steven": R(90, 20), "system": R(3, 100), "lukas": R(2, 150)}))
+    d = AP.decide(p, F("lukas", {"steven": R(90, 20), "system": R(3, 100), "lukas": R(1, 150)}))
     check(n + ": a pinned account still ends at its line", d["do"] == "switch" and d.get("under"), d)
     fresh(OPEN, rescue_frame(()))
     acct("switch", "lukas", "--now", "--why", "t")
@@ -263,7 +266,7 @@ def t_the_reason_is_one_checkable_line():
 
 def t_the_forecast_is_the_pick():
     n = "the_forecast_is_the_pick"
-    rows = {"steven": R(90, 30), "system": R(80, 160), "lukas": R(2, 120)}
+    rows = {"steven": R(90, 30), "system": R(80, 160), "lukas": R(1, 120)}
     for mk in ({}, {"use_lukas_to_steven_x": {"phase": "done", "under": True, "from": "steven", "at": AP.iso(NOW - 9e4)}}):
         f = F("lukas", rows, markers=mk)
         d, w = AP.decide(OPEN, f), AP.week_ahead(OPEN, f)
@@ -290,11 +293,11 @@ def t_no_marker_decides():
     n = "no_marker_decides"
     old = {"use_steven_to_system_20261125": {"phase": "done", "under": True, "from": "steven", "to": "system",
                                              "at": AP.iso(NOW - 3 * 86400), "line": 5}}
-    for label, f in (("finished", F("lukas", {"steven": R(97, 24), "system": R(3, 22), "lukas": R(2, 25)})),
+    for label, f in (("finished", F("lukas", {"steven": R(97, 24), "system": R(3, 22), "lukas": R(1, 25)})),
                      ("unfinished", F("lukas", FAR)), ("rescue", rescue_frame())):
         a, b = AP.decide(OPEN, f), AP.decide(OPEN, {**f, "markers": old})
         check("%s: %s, the same with and without a done marker" % (n, label), (a["do"], a["to"]) == (b["do"], b["to"]), (a, b))
-    f = F("lukas", {"steven": R(97, 24), "system": R(3, 22), "lukas": R(2, 25)})
+    f = F("lukas", {"steven": R(97, 24), "system": R(3, 22), "lukas": R(1, 25)})
     key = AP.decide(OPEN, f)["key"]
     d = AP.decide(OPEN, {**f, "markers": {key: {"phase": "pending", "at": AP.iso(NOW - 60), "from": "lukas", "to": "steven"}}})
     check(n + ": a switcher call in flight is not repeated", d["do"] in ("stop", "hold", "soft") and d["do"] != "switch", d)
@@ -307,16 +310,16 @@ def t_no_marker_decides():
 def t_an_account_left_at_its_line_is_no_target():
     n = "an_account_left_at_its_line_is_no_target"
     for lv in (5, 6, 8):         # line 5: warning 6, entry line 8
-        d = AP.decide(OPEN, F("lukas", {"steven": R(lv, 60), "system": R(80, 110), "lukas": R(2, 120)}, burn_h=None))
+        d = AP.decide(OPEN, F("lukas", {"steven": R(lv, 60), "system": R(80, 110), "lukas": R(1, 120)}, burn_h=None))
         check("%s: steven at %s%% (line 5) is passed over" % (n, lv), d["do"] == "switch" and d["to"] == "system", d)
-    d = AP.decide(OPEN, F("lukas", {"steven": R(9, 60), "system": R(80, 110), "lukas": R(2, 120)}, burn_h=None))
+    d = AP.decide(OPEN, F("lukas", {"steven": R(9, 60), "system": R(80, 110), "lukas": R(1, 120)}, burn_h=None))
     check(n + ": above its entry line it is the target", d["to"] == "steven", d)
     for lv in (10, 15, 17):      # line 5, warn 10 points before: its own warning is at 15, its entry line 17
         d = AP.decide(plan(steven={"leave": 5, "when": None, "warn": 10}), F("lukas", {
-            "steven": R(lv, 60), "system": R(80, 110), "lukas": R(2, 120)}, burn_h=None))
+            "steven": R(lv, 60), "system": R(80, 110), "lukas": R(1, 120)}, burn_h=None))
         check("%s: steven at %s%% inside the 10-point leeway of its own step is passed over" % (n, lv), d["to"] == "system", d)
     ended = plan(steven={"leave": 5, "when": None, "until": "left <= 50"}, system={"until": "left <= 50"})
-    rows = {"steven": R(40, 100), "system": R(45, 110), "lukas": R(2, 120)}
+    rows = {"steven": R(40, 100), "system": R(45, 110), "lukas": R(1, 120)}
     for burn in (None, 4.0):
         t0 = time.time()
         d = AP.decide(ended, F("steven", rows, burn_h=burn))
@@ -331,7 +334,7 @@ def t_an_account_left_at_its_line_is_no_target():
 
 def t_a_refilled_account_is_a_target_at_once():
     n = "a_refilled_account_is_a_target_at_once"
-    rows = {"steven": R(5, 60), "system": R(3, 22), "lukas": R(2, 120)}
+    rows = {"steven": R(5, 60), "system": R(3, 22), "lukas": R(1, 120)}
     d = AP.decide(OPEN, F("lukas", rows))
     check(n + ": before the refill nobody can take over", d["do"] in ("soft", "stop") and d["to"] is None, d)
     left_at_line = {"use_steven_to_system_x": {"phase": "done", "under": True, "from": "steven", "to": "system",
@@ -350,11 +353,11 @@ def t_unknown_never_gives_permission():
     check(n + ": false and unknown is false; true or unknown is true",
           AP.truth(AP.parse("clock > 23:59 and left > 5"), env, "x") is False
           and AP.truth(AP.parse("clock >= 00:00 or left > 5"), env, "x") is True)
-    rows = {"steven": {**R(90, 100), "week_resets_at": None}, "system": R(80, 110), "lukas": R(2, 120)}
+    rows = {"steven": {**R(90, 100), "week_resets_at": None}, "system": R(80, 110), "lukas": R(1, 120)}
     d = AP.decide(BASE, F("lukas", rows, burn_h=None))
     check(n + ": a window on an unknown reset is not alive", d["to"] == "system", d)
     for src, stale in (("ESTIMATE", False), ("MEASURED", True)):
-        d = AP.decide(OPEN, F("lukas", {"steven": R(90, 60, src=src, stale=stale), "system": R(80, 110), "lukas": R(2, 120)},
+        d = AP.decide(OPEN, F("lukas", {"steven": R(90, 60, src=src, stale=stale), "system": R(80, 110), "lukas": R(1, 120)},
                               burn_h=None))
         check("%s: a %s%s level makes no target" % (n, src, " stale" if stale else ""), d["to"] == "system", d)
     p = plan(lukas={"until": "left:steven > 95"})
@@ -372,10 +375,11 @@ def t_the_last_account_waits_at_its_wait_floor():
     check(n + ": nobody can take over -> the line is the wait floor", d["line"] == 2, d)
     d = AP.decide(BASE, F("lukas", {**alone, "system": R(60, 110)}))
     check(n + ": somebody can -> the line is the floor", d["line"] == 1, d)
-    d = AP.decide(BASE, F("lukas", {**alone, "lukas": R(2, 120)}))
+    d = AP.decide(BASE, F("lukas", {**alone, "lukas": R(1, 120)}))
     check(n + ": at the wait floor with no run live the old stop is due", d["do"] == "stop" and d.get("key"), d)
     d = AP.decide(BASE, F("lukas", {**alone, "lukas": R(3, 120)}, runs=RUN, burn_h=None))
-    check(n + ": warned above it with nowhere to go: no new start, no stop yet", d["do"] == "soft" and d.get("account_end"), d)
+    check(n + ": warned above it with nowhere to go: it keeps working, new work starts, no stop yet",
+          d["do"] == "normal" and d.get("warning") and d.get("last_account") and not d.get("drain"), d)
 
 
 def t_a_level_not_confirmed_near_the_line_refuses_starts():
@@ -455,7 +459,7 @@ def t_a_step_that_is_not_alive_says_so():
 
 def t_one_file_binds_at_the_next_read():
     n = "one_file_binds_at_the_next_read"
-    rows = {"steven": R(90, 150), "system": R(80, 110), "lukas": R(2, 120)}
+    rows = {"steven": R(90, 150), "system": R(80, 110), "lukas": R(1, 120)}
     fresh(plan(steven={"when": None}), F("lukas", rows, burn_h=None))
     rc, a = acct("next", cwd="/tmp")
     acct("order", "system", "steven", "lukas", "--why", "t")
@@ -475,7 +479,7 @@ def t_one_file_binds_at_the_next_read():
     acct("set", "numbers.switch_cost_pts=500")
     after = acct("next")[1]
     check(n + ": a number of the plan file decides", "SWITCH" in before and "NORMAL" in after, (before, after))
-    thin = F("lukas", {"steven": R(30, 150), "system": R(3, 110), "lukas": R(2, 120)}, burn_h=None)
+    thin = F("lukas", {"steven": R(30, 150), "system": R(3, 110), "lukas": R(1, 120)}, burn_h=None)
     fresh(OPEN, thin)
     before = acct("next")[1]
     acct("set", "numbers.entry_margin_pct=50")
@@ -937,7 +941,7 @@ def fake(live, runs=RUN):
 
 def t_tick_drives_the_old_actuator():
     n = "tick_drives_the_old_actuator"
-    rows = {"steven": R(90, 100), "system": R(2, 110), "lukas": R(60, 120)}
+    rows = {"steven": R(90, 100), "system": R(1, 110), "lukas": R(60, 120)}
     fresh()
     m = fake("system", runs=[])
     try:
@@ -949,29 +953,37 @@ def t_tick_drives_the_old_actuator():
                                                              for v in mk.values()), mk)
     finally:
         m.close()
+    warned = {**rows, "system": R(2, 110)}
     m = fake("system", runs=RUN)
     try:
-        m.go(rows)
+        m.go(warned)
         nt = m.notice()
-        check(n + ": at the warning line with a run live: the old save order, the old notice, no switch yet",
-              m.acts() == [] and nt["state"] == "soft" and nt["account_end"] and m.sent and m.sent[0]["mode"] == "at_easy_spot", (m.acts(), nt))
+        check(n + ": at the warning line with a run live: the old pass's warning, a notice that refuses nothing, no switch",
+              m.acts() == [] and nt["state"] in ("none", "soft") and not nt["drain"] and nt["warning"] and m.sent
+              and m.sent[0]["mode"] == "warn", (m.acts(), nt))
         m.runs = []
         m.t += 60
+        m.go(warned)
+        check(n + ": the run ended above the line -> no switch", m.acts() == [], m.acts())
+        m.t += 60
         m.go(rows)
-        check(n + ": the run ended -> the switch goes", m.acts() == ["use"], m.acts())
+        check(n + ": at the line -> the switch goes", m.acts() == ["use"], m.acts())
     finally:
         m.close()
     polls = []
     m = fake("system", runs=RUN)
     try:
         for _ in range(4):
-            m.go(rows, poll_fn=lambda: polls.append(m.t))
+            m.go(warned, poll_fn=lambda: polls.append(m.t))
             m.t += 60
         check(n + ": while the account ends the live level is read again at each pass (poll_min), not each 6 min",
               len(polls) == 4, polls)
     finally:
         m.close()
-    two = {"steven": R(90, 100), "system": R(2, 110), "lukas": R(60, 120)}
+    d = AP.decide(BASE, F("system", {**rows, "system": R(1, 110, age=1.0)}, runs=RUN), polled=False)
+    check(n + ": at its line on a reading older than poll_min the pass reads the level again before it acts",
+          d["do"] == "poll", d)
+    two = {"steven": R(90, 100), "system": R(1, 110), "lukas": R(60, 120)}
     for old, want in (("steven", "lukas"), ("lukas", "steven")):
         d = AP.decide(plan([old, want, "system"], steven={"leave": 5, "when": None}),
                       F("system", {**two, old: R(80, 100, age=20.0)}, burn_h=None))
@@ -993,12 +1005,44 @@ def t_tick_drives_the_old_actuator():
         m.close()
 
 
+def t_the_account_burns_to_its_line():
+    """RIMMANDRAKE_BURN_TO_LINE_WARNING_SWITCHED_AT_THREE (2026-11-24 4:56 PM PST: lukas switched away at 3%, line 1%)."""
+    import detached_helper as DH
+    n = "the_account_burns_to_its_line"
+    rows = lambda left: {"steven": R(90, 100), "system": R(left, 110), "lukas": R(60, 120)}     # noqa: E731
+    for burn in (None, 1.0, 4.0, 15.0):
+        for left in (3, 2):
+            d = AP.decide(BASE, F("system", rows(left), runs=[], burn_h=burn))
+            check("%s: at %s%%, burn %s, no run live, lukas with headroom: no switch, starts allowed" % (n, left, burn),
+                  d["do"] not in ("switch", "stop", "stopped") and not d.get("drain"), d)
+    d = AP.decide(BASE, F("system", rows(1), runs=[], burn_h=4.0))
+    check(n + ": at its 1% line: the switch", d["do"] == "switch" and d["to"] == "lukas", d)
+    fresh()
+    m = fake("system", runs=[])
+    try:
+        m.go(rows(3))
+        p = str(SP.OUT / "notice.json")
+        check(n + ": at 3% with no run live the pass switches nothing", m.acts() == [], m.acts())
+        check(n + ": and refuses no new start", DH.drain_refusal(m.t + 30, {}, None, path=p) is None, m.notice())
+        m.runs = list(RUN)
+        m.t += 60
+        m.go(rows(2))
+        check(n + ": a live run is warned, not told to end", [s["mode"] for s in m.sent] == ["warn"]
+              and "keep working" in m.sent[0]["text"], m.sent)
+        m.runs = []
+        m.t += 60
+        m.go(rows(1))
+        check(n + ": at the 1% line the switch goes", m.acts() == ["use"], m.acts())
+    finally:
+        m.close()
+
+
 def t_shadow_acts_on_nothing():
     n = "shadow_acts_on_nothing"
     fresh()
     m = fake("system", runs=[])
     try:
-        rows = {"steven": R(90, 100), "system": R(2, 110), "lukas": R(60, 120)}
+        rows = {"steven": R(90, 100), "system": R(1, 110), "lukas": R(60, 120)}
         f = F("system", rows, runs=[])
         rc, text = m.go(rows, shadow=True, frame=f)
         rec = json.loads(text.strip().splitlines()[-1])
@@ -1021,7 +1065,7 @@ def t_shadow_acts_on_nothing():
 
 def t_a_hold_makes_the_pass_passive():
     n = "a_hold_makes_the_pass_passive"
-    rows = {"steven": R(90, 100), "system": R(2, 110), "lukas": R(60, 120)}
+    rows = {"steven": R(90, 100), "system": R(1, 110), "lukas": R(60, 120)}
     fresh()
     acct("hold", "--for", "1h", "--why", "t")
     m = fake("system", runs=[])
@@ -1129,9 +1173,9 @@ def t_census_lent_account_window_and_leave_line():
     n = "census_lent_account_window_and_leave_line"
     rc, text, p = one(["step", "set", "steven", "leave=50", "when=hours_since_reset <= 24", "--owner-said",
                        "Dispatcher can use Steve up to 50% after a fresh reset only"])
-    inside = F("lukas", {"steven": R(90, 150), "system": R(80, 110), "lukas": R(2, 120)}, burn_h=None)
-    outside = F("lukas", {"steven": R(90, 100), "system": R(80, 110), "lukas": R(2, 120)}, burn_h=None)
-    mid = F("lukas", {"steven": R(90, 138), "system": R(80, 110), "lukas": R(2, 120)}, burn_h=None)
+    inside = F("lukas", {"steven": R(90, 150), "system": R(80, 110), "lukas": R(1, 120)}, burn_h=None)
+    outside = F("lukas", {"steven": R(90, 100), "system": R(80, 110), "lukas": R(1, 120)}, burn_h=None)
+    mid = F("lukas", {"steven": R(90, 138), "system": R(80, 110), "lukas": R(1, 120)}, burn_h=None)
     check(n + ": 30 h after his reset is outside the new 24 h window", rule(p, "steven", mid) is None, rule(p, "steven", mid))
     check(n, rc == 0 and rule(p, "steven", inside)["line"] == 50 and rule(p, "steven", outside) is None
           and AP.decide(p, inside)["to"] == "steven" and AP.decide(p, outside)["to"] == "system", text)
@@ -1139,7 +1183,7 @@ def t_census_lent_account_window_and_leave_line():
 
 def t_census_fixed_priority_order():
     n = "census_fixed_priority_order"
-    rows = {"steven": R(90, 150), "system": R(80, 110), "lukas": R(2, 120)}
+    rows = {"steven": R(90, 150), "system": R(80, 110), "lukas": R(1, 120)}
     rc, text, p = one(["order", "system", "steven", "lukas", "--why", "t"], plan(steven={"when": None}), F("lukas", rows, burn_h=None))
     check(n, rc == 0 and [s["use"] for s in p["steps"]][:3] == ["system", "steven", "lukas"]
           and AP.decide(p, F("lukas", rows, burn_h=None))["to"] == "system", text)
@@ -1162,11 +1206,11 @@ def t_census_hold_with_why_and_end():
 
 def t_census_one_week_allowance_ends_at_reset():
     n = "census_one_week_allowance_ends_at_reset"
-    f = F("lukas", {"steven": R(60, 30), "system": R(80, 110), "lukas": R(2, 120)}, burn_h=None)
+    f = F("lukas", {"steven": R(60, 30), "system": R(80, 110), "lukas": R(1, 120)}, burn_h=None)
     rc, text, p = one(["line", "steven", "20", "--until-reset", "--owner-said", "He has authorized using another 20%"], frame=f)
     at = AP.stamp(p["steps"][0]["from"])
-    live = F("lukas", {"steven": R(60, 30, now=at), "system": R(80, 110), "lukas": R(2, 120)}, burn_h=None, now=at + 60)
-    after = F("lukas", {"steven": R(100, 30 + 168 - 1, now=at), "system": R(80, 110), "lukas": R(2, 120)}, burn_h=None,
+    live = F("lukas", {"steven": R(60, 30, now=at), "system": R(80, 110), "lukas": R(1, 120)}, burn_h=None, now=at + 60)
+    after = F("lukas", {"steven": R(100, 30 + 168 - 1, now=at), "system": R(80, 110), "lukas": R(1, 120)}, burn_h=None,
               now=at + 31 * 3600)
     check(n + ": this week the line is 20", rc == 0 and rule(p, "steven", live)["line"] == 20, (text, rule(p, "steven", live)))
     check(n + ": after his reset the 52 line and the window stand again, with no command",
@@ -1175,7 +1219,7 @@ def t_census_one_week_allowance_ends_at_reset():
 
 def t_census_leave_line_relative_to_entry_level():
     n = "census_leave_line_relative_to_entry_level"
-    f = F("steven", {"steven": R(70, 30), "system": R(80, 110), "lukas": R(2, 120)}, entry={"steven": 88.0})
+    f = F("steven", {"steven": R(70, 30), "system": R(80, 110), "lukas": R(1, 120)}, entry={"steven": 88.0})
     rc, text, p = one(["line", "steven", "entry-50", "--until-reset", "--owner-said", "use up to 50% lower than where it is now"], frame=f)
     at = AP.stamp(p["steps"][0]["from"])
     f = {**f, "now": at + 60, "rows": {**f["rows"], "steven": R(70, 30, now=at)}}
@@ -1195,14 +1239,14 @@ def t_census_pin_account_now_plan_does_not_fight():
 
 def t_census_temporary_order_and_line_until_reset():
     n = "census_temporary_order_and_line_until_reset"
-    f = F("system", {"steven": R(52, 30), "system": R(2, 110), "lukas": R(60, 120)}, burn_h=None)
+    f = F("system", {"steven": R(52, 30), "system": R(1, 110), "lukas": R(60, 120)}, burn_h=None)
     rc, text, p = one(["order", "system", "steven", "lukas", "--until-reset", "steven", "--line", "steven=35",
                        "--owner-said", "Use this account, then switch to Steve"], frame=f)
     at = AP.stamp(p["steps"][0]["from"])
-    f = F("system", {"steven": R(52, 30, now=at), "system": R(2, 110, now=at), "lukas": R(60, 120, now=at)}, burn_h=None, now=at + 60)
+    f = F("system", {"steven": R(52, 30, now=at), "system": R(1, 110, now=at), "lukas": R(60, 120, now=at)}, burn_h=None, now=at + 60)
     d = AP.decide(p, f)
     check(n + ": Steve is next, down to 35, outside his window", rc == 0 and d["to"] == "steven" and rule(p, "steven", f)["line"] == 35, (text, d))
-    later = F("system", {"steven": R(100, 30 + 167, now=at), "system": R(2, 110, now=at), "lukas": R(60, 120, now=at)},
+    later = F("system", {"steven": R(100, 30 + 167, now=at), "system": R(1, 110, now=at), "lukas": R(60, 120, now=at)},
               burn_h=None, now=at + 31 * 3600)
     check(n + ": after his reset the standing order and line are back", rule(p, "steven", later)["line"] == 52
           and AP.order_now(p, {a: rule(p, a, later) for a in ("steven", "system", "lukas")})[0] == "steven", rule(p, "steven", later))
@@ -1270,14 +1314,14 @@ def t_census_set_warn_and_emergency_numbers():
     rc, text, p = one(["set", "numbers.account_end.warn_pct=4", "numbers.account_end.warn_fast_pct=5", "numbers.account_end.pause_max_s=120",
                        "--owner-said", "At 4% no new work is started"])
     d = AP.decide(p, F("lukas", {**FAR, "lukas": R(4, 120)}, runs=RUN))
-    check(n, rc == 0 and d["warn_line"] == 4 and d["do"] == "soft" and AP.legacy_view(p, F("lukas", FAR))["account_end"]["pause_max_s"] == 120, (text, d))
+    check(n, rc == 0 and d["warn_line"] == 4 and d.get("warning") and AP.legacy_view(p, F("lukas", FAR))["account_end"]["pause_max_s"] == 120, (text, d))
 
 
 def t_census_refill_is_seen_from_the_meter_no_marker():
     n = "census_refill_is_seen_from_the_meter_no_marker"
     marker = {"use_steven_to_system_20261125": {"phase": "done", "under": True, "from": "steven", "to": "system",
                                                 "at": "2026-11-21T17:45:00-08:00", "line": 5}}
-    d = AP.decide(OPEN, F("lukas", {"steven": R(97, 24), "system": R(3, 22), "lukas": R(2, 25)}, markers=marker))
+    d = AP.decide(OPEN, F("lukas", {"steven": R(97, 24), "system": R(3, 22), "lukas": R(1, 25)}, markers=marker))
     check(n + ": 97% left and the 11-21 marker present: Steve's account is the target, with no command",
           d["do"] == "switch" and d["to"] == "steven", d)
 
@@ -1306,7 +1350,7 @@ def t_status_shows_pool_pace_not_sets_it():
 def t_fault_stale_marker_kept_a_refilled_account_out():
     marker = {"use_steven_to_system_20261125": {"phase": "done", "under": True, "from": "steven", "to": "system",
                                                 "at": "2026-11-21T17:45:00-08:00", "line": 5}}
-    d = AP.decide(OPEN, F("lukas", {"steven": R(97, 24), "system": R(3, 22), "lukas": R(2, 25)}, markers=marker))
+    d = AP.decide(OPEN, F("lukas", {"steven": R(97, 24), "system": R(3, 22), "lukas": R(1, 25)}, markers=marker))
     check("fault_stale_marker_kept_a_refilled_account_out: the 11-21 marker and 97% left: Steve's account is next",
           d["do"] == "switch" and d["to"] == "steven", d)
 
@@ -1315,7 +1359,7 @@ def t_fault_forecast_disagreed_with_the_pick():
     n = "fault_forecast_disagreed_with_the_pick"
     marker = {"use_steven_to_system_20261125": {"phase": "done", "under": True, "from": "steven", "to": "system",
                                                 "at": "2026-11-21T17:45:00-08:00", "line": 5}}
-    f = F("lukas", {"steven": R(97, 24), "system": R(3, 22), "lukas": R(2, 25)}, markers=marker)
+    f = F("lukas", {"steven": R(97, 24), "system": R(3, 22), "lukas": R(1, 25)}, markers=marker)
     d, w = AP.decide(OPEN, f), AP.week_ahead(OPEN, f)
     first = next(e["to"] for e in w["events"] if e["kind"] == "switch")
     check(n, d["to"] == first == "steven", (d["to"], first))
@@ -1341,7 +1385,7 @@ def t_fault_preference_switch_drained_at_eighteen_percent():
 
 def t_fault_plan_change_needed_edit_publish_pull():
     n = "fault_plan_change_needed_edit_publish_pull"
-    rows = {"steven": R(90, 150), "system": R(80, 110), "lukas": R(2, 120)}
+    rows = {"steven": R(90, 150), "system": R(80, 110), "lukas": R(1, 120)}
     fresh(plan(steven={"when": None}), F("lukas", rows, burn_h=None))
     t0 = time.time()
     rc, text = acct("order", "system", "lukas", "steven", "--owner-said", "use up Lukas first", cwd=str(TMP))
@@ -1360,7 +1404,7 @@ def t_fault_plan_change_needed_edit_publish_pull():
 
 def t_fault_hand_hold_six_seconds_before_a_pass():
     n = "fault_hand_hold_six_seconds_before_a_pass"
-    rows = {"steven": R(90, 100), "system": R(2, 110), "lukas": R(60, 120)}
+    rows = {"steven": R(90, 100), "system": R(1, 110), "lukas": R(60, 120)}
     fresh(BASE, F("system", rows))
     t0 = time.time()
     rc, text = acct("whatif", "--", "hold", "--for", "1h", cwd="/tmp")
@@ -1415,7 +1459,7 @@ def main():
               t_the_tool_never_touches_a_credential, t_burn_mode_enters_on_measured_allowance_at_risk,
               t_burn_mode_never_counts_under_a_leave_line, t_burn_mode_does_not_raise_on_a_loaded_machine,
               t_burn_mode_ends_at_the_reset, t_the_reset_day_rule_is_plan_data, t_measures_count_erased_points_and_switches,
-              t_tick_drives_the_old_actuator, t_shadow_acts_on_nothing, t_a_hold_makes_the_pass_passive,
+              t_tick_drives_the_old_actuator, t_the_account_burns_to_its_line, t_shadow_acts_on_nothing, t_a_hold_makes_the_pass_passive,
               t_the_timer_runs_the_driver_that_the_plan_names, t_shadow_drain_is_not_the_plan_tools,
               t_replay_names_each_difference,
               t_census_lent_account_window_and_leave_line, t_census_fixed_priority_order, t_census_set_floor_and_leave_line,

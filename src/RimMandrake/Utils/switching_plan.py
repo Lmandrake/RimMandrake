@@ -29,12 +29,15 @@ just don't want to crash to zero and get stuck."): `claude-account use` and `fle
 a switch or a stop that falls due WAITS while a detached run is live (the pass reads `soft` with `drain`). A switch made
 above the line (a priority or reset pull) waits at most pull_drain_max_s. Live runs that cannot be read count as live.
 
-The end of an account (owner 2026-11-24; account_end.py, page design/specs/2026-11-24-account-end/boundary.md): at the
-warning line (2%, 3% at a fast or unread burn; an account kept above zero: its own line) no new work starts and every
-live run is told to save and end, with the percent, the burn and the minutes it has; the switch goes when the last run
-has ended. At 1% with a run live every run is told to record its state at once, the pass pauses (sized from the burn,
-3 min at most), and the switch goes. An account kept well above zero has no such emergency. While an account ends, the
-pass repeats each minute inside its 5-min beat.
+The end of an account (owner 2026-11-24; account_end.py, page design/specs/2026-11-24-account-end/boundary.md): the
+account is used down to its own line. At the warning line (2%, 3% at a fast or unread burn; an account kept above zero:
+its own line, one point more at a fast burn) every live run is warned, with the percent, the burn and the minutes to
+the line: it saves a note, publishes what is done and keeps working. New work still starts, and a run that starts
+there gets the same warning in its start package. At the line the switch goes: at 1% with a run live every run is told
+to record its state at once, the pass pauses (sized from the burn, 3 min at most), and the switch goes. An account
+whose line is above 1% has no pause at its line: its runs are told to save and end, and the switch goes when the last
+has ended (or at 1%, if its line is at most emergency_max_line). While an account ends, the pass repeats each minute
+inside its 5-min beat.
 
 Brake: a file HOLD in the output dir makes every pass passive (the owner's or an agent's brake); it is the only
 gate.
@@ -474,9 +477,10 @@ def runs_why(live_runs) -> str:
 
 
 def drained(d: dict, plan: dict, live_runs) -> dict:
-    """A switch or stop due on a spent account waits while a detached run is live: -> the decision as a drain (`soft`,
-    drain and account_end true), or d, `emergency` true when it goes with a run live on an account at 1%. live_runs None
-    (unreadable) counts as live. An account kept well above zero waits for its runs (no emergency), down to 1%."""
+    """A switch or stop due on an account at its line waits while a detached run is live: -> the decision as a drain
+    (`soft`, drain and account_end true: the save order at the line), or d, `emergency` true when it goes with a run
+    live on an account at 1%. live_runs None (unreadable) counts as live. An account kept well above zero waits for its
+    runs (no emergency), down to 1%."""
     if d.get("do") not in ("switch", "stop") or (d["do"] == "switch" and not d.get("under")):
         return d
     if live_runs is not None and not live_runs:
@@ -492,7 +496,7 @@ def drained(d: dict, plan: dict, live_runs) -> dict:
                 "why": f"{d['account']} at {p}% must be left: the {d['do']} waits while live runs finish "
                        f"({runs_why(live_runs)}); no new start; it goes when they end. Was: " + str(d.get("why"))}
     return {**d, "do": "soft", "drain": True, "account_end": True, "drain_of": d["do"],
-            "why": f"{d['account']} at {p}% is at or under its {w}% warning line: the {d['do']} waits while live runs "
+            "why": f"{d['account']} at {p}% is at its {ln}% line: the {d['do']} waits while live runs "
                    f"save and end ({runs_why(live_runs)}); no new start; it goes when they end"
                    + (f" or at {cfg['emergency_pct']}%" if AE.has_emergency(ln, cfg) else "") + ". Was: "
                    + str(d.get("why"))}
@@ -542,13 +546,11 @@ def _decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dic
     lr = meter.get(live) or {}
     pl = left(plan, lr, now)
     warn = warn_at(plan, line, live, burn, state)
-    spent_at = {**line, live: max(line[live], warn)} if warn is not None else line  # spent at the warning line
+    spent_at = line     # the account is used down to its own line; the warning line only warns (owner 2026-11-24)
     cfg = plan["account_end"]
     for n in elig:  # no switch lands on an account that would be warned at once
         if n != live and elig[n] and AE.has_emergency(line[n], cfg):
             elig[n] = meter[n]["week_pct_left"] > AE.target_line(line[n], cfg)
-    if warn is not None and pl is not None and pl <= warn:
-        elig[live] = False
     if ((state.get("stopped") or {}).get("account") == live and live in elig and pl is not None
             and pl <= line[live] + plan["soft_margin_pct"]):
         elig[live] = False  # a fleet stopped in its soft zone never restarts there: another account with budget wins
@@ -563,6 +565,9 @@ def _decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dic
     blind = blind_zero(plan, lr, now)
     base = {"account": live, "line": line.get(live), "pct_left": left(plan, lr, now), "to": None, "warn_line": warn,
             "exception": plan.get("_exception")}
+    if warn is not None and pl is not None and live in line and line[live] < pl <= warn:
+        # inside the warning zone: the runs are warned and keep working, new work starts (RIMMANDRAKE_BURN_TO_LINE_...)
+        base.update(warning=True, last_account=not any(v for n, v in elig.items() if n != live))
     if plan.get("_exception"):
         base["exception_until"] = plan["_exception_until"]
     refused = exception_problems(raw)
@@ -619,11 +624,6 @@ def _decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dic
         if not under:
             return {**base, "do": "soft", "why": f"no account has headroom but {live}'s reading cannot prove its line "
                                                  f"({lr.get('source')}, {p}%): no new helpers, no stop yet"}
-        if not out and p is not None and p > line[live]:
-            # warned, nowhere to go, its own line not reached: nothing new starts, and the windows keep what is left
-            return {**base, "do": "soft", "drain": True, "account_end": True,
-                    "why": f"{live} at {p}% is at its {warn}% warning line and no account has headroom: no new start; "
-                           f"the fleet stops at its {line[live]}% line"}
         return {**base, "do": "stop", "key": stop_key(live, lr, now),
                 "why": f"no account has headroom (outside windows or at lines); {live} at {p}% is spent"
                        + (" (past its window)" if out else "")
@@ -990,14 +990,20 @@ def write_notice(d: dict, now: float) -> None:
     since = (d.get("stopped_at") if state == "stop" else None) or (
         prev.get("since") if prev.get("state") == state and prev.get("since")
         and bool(prev.get("drain")) == bool(d.get("drain")) else iso(now))     # a drain's own start bounds a pull
-    msg = {"soft": ("the account ends: save your work now and publish; no new start" if d.get("account_end") else
-                    "draining: no new start; live runs finish on this account, then it switches" if d.get("drain")
-                    else "switch pending: publish and finish; no new helpers"),
-           "stop": "hard stop: the fleet is stopped until a reset", "none": ""}[state]
+    warned = bool(d.get("warning")) and state in ("soft", "none") and not d.get("drain")
+    msg = {"soft": ("the account is at its line: save your work now and publish; no new start" if d.get("account_end")
+                    else "draining: no new start; live runs finish on this account, then it switches" if d.get("drain")
+                    else "the account nears its line: save a note, publish what is done, keep working; new work "
+                         "still starts" if warned else "switch pending: publish and finish; no new helpers"),
+           "stop": "hard stop: the fleet is stopped until a reset",
+           "none": "the account nears its line: save a note, publish what is done, keep working; new work still starts"
+                   if warned else ""}[state]
     write_atomic(OUT / "notice.json", {"state": state, "since": since, "at": iso(now), "account": d.get("account"),
                                        "line": d.get("line"), "pct_left": d.get("pct_left"), "message": msg,
                                        "why": d.get("why"), "drain": bool(d.get("drain")) and state == "soft",
                                        "account_end": bool(d.get("account_end")) and state == "soft",
+                                       # the warning's text, which a run that starts now gets in its start package
+                                       "warning": d.get("warning_text") if warned else None,
                                        **({k: d.get(k) or prev.get(k) for k in ("reset_at", "reset_account")}
                                           if state == "stop" else {})})
 
@@ -1201,29 +1207,51 @@ def facts(d: dict, plan: dict, burn, runs) -> str:
                "this account") + f"; {runs_why(runs)}")
 
 
+def open_episode(state: dict, d: dict, now: float) -> bool:
+    """The end of the live account is recorded (its warning line latched). -> True when it opens now."""
+    if (state.get("account_end") or {}).get("account") == d["account"]:
+        return False
+    state["account_end"] = {"account": d["account"], "warn_line": d.get("warn_line"), "line": d.get("line"),
+                            "warned_at": iso(now)}
+    save_state(state)
+    return True
+
+
 def warn_step(state: dict, d: dict, plan: dict, burn, runs, orders, now: float) -> None:
-    """Step 1: every live run is told to save and end; recorded once, a run that appears later gets its order too."""
-    first = (state.get("account_end") or {}).get("account") != d["account"]
+    """Step 1, at the warning line: every live run is warned (save a note, publish what is done, keep working); it ends
+    no run and refuses no start. Recorded once; a run that appears later gets the warning too."""
+    first = open_episode(state, d, now)
+    sent, err = send_orders(state, d, "warn", "warn", d["warning_text"], runs, orders, now)
     if first:
-        state["account_end"] = {"account": d["account"], "warn_line": d.get("warn_line"), "line": d.get("line"),
-                                "warned_at": iso(now)}
-        save_state(state)
-    last = d.get("drain_of") != "switch"
-    text = AE.warn_text(d["account"], d.get("pct_left"), burn, d.get("line"), plan["account_end"], last)
-    sent, err = send_orders(state, d, "warn", "at_easy_spot", text, runs, orders, now)
-    if first:
-        record_step(state, "save warning", facts(d, plan, burn, runs) + f"; ordered: {', '.join(sent) or 'none'}"
+        record_step(state, "warning", facts(d, plan, burn, runs) + f"; warned: {', '.join(sent) or 'none'}"
                     + (f"; {err}" if err else ""), now)
     elif err:
         log({"do": "account_end", "step": "warn", "text": err, "acted": False})
 
 
+def save_step(state: dict, d: dict, plan: dict, burn, runs, orders, now: float) -> None:
+    """Step 2, at the line of an account whose switch waits for its runs: every live run is told to save and end.
+    Recorded once; a run that appears later gets its order too."""
+    open_episode(state, d, now)
+    ep = state["account_end"]
+    first = not ep.get("save_at")
+    if first:
+        ep["save_at"] = iso(now)
+        save_state(state)
+    last = d.get("drain_of") != "switch"
+    text = AE.save_text(d["account"], d.get("pct_left"), burn, d.get("line"), plan["account_end"], last)
+    sent, err = send_orders(state, d, "save", "at_easy_spot", text, runs, orders, now)
+    if first:
+        record_step(state, "save order at the line", facts(d, plan, burn, runs) + f"; ordered: {', '.join(sent) or 'none'}"
+                    + (f"; {err}" if err else ""), now)
+    elif err:
+        log({"do": "account_end", "step": "save", "text": err, "acted": False})
+
+
 def emergency_step(state: dict, d: dict, plan: dict, burn, runs, runs_fn, orders, now: float) -> bool:
     """Step 3: the emergency order, then the pause. -> True to go on with the switch, False on a HOLD. A pass that died
     in the pause finds its start in the state and waits only what is left."""
-    if (state.get("account_end") or {}).get("account") != d["account"]:
-        state["account_end"] = {"account": d["account"], "warn_line": d.get("warn_line"), "line": d.get("line"),
-                                "warned_at": iso(now)}
+    open_episode(state, d, now)
     ep = state["account_end"]
     em, first = ep.get("emergency"), False
     if not em:
@@ -1341,6 +1369,10 @@ def _check(dry, now, meter_fn, poll_fn, runs_fn=default_runs, burn_fn=default_bu
         end_episode(state, d, orders, f"{live}'s line was lowered from {ep['line']}% to {d['line']}%")
     if d.get("account_end") and d["do"] == "soft":
         write_notice(d, now)    # first: nothing new starts while the orders go out
+        save_step(state, d, plan, burn, runs, orders, now)
+    elif d.get("warning"):      # the warning zone: the runs are warned and keep working; nothing is refused
+        d["warning_text"] = AE.warn_text(d["account"], d.get("pct_left"), burn, d.get("line"), plan["account_end"],
+                                         bool(d.get("last_account")))
         warn_step(state, d, plan, burn, runs, orders, now)
     if d.get("emergency") and (state.get("stopped") or {}).get("account") != live:
         write_notice({**d, "do": "soft", "drain": True, "account_end": True}, now)

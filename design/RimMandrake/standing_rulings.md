@@ -1006,17 +1006,19 @@ Please make that true everywhere."* About 6 AM PST: *"Agreed for 1% at the momen
   subagent inside an interactive window. A new detached run still starts there. A new detached run is refused only in a
   drain: the plan's notice has `drain` true, because a switch or a stop waits for live runs (the bullets on the end of
   an account and on the priority switch, below).
-- The end of an account (owner, 2026-11-24 11:05 to 11:15 AM PST): *"At 2% no new work is started and "wrap it up
-  cleanly and safely save your work" is sent to everyone. At 1% "emergency: record your state immediately and prepare
-  for termination." Give it a beat... don't just kill at 1%. After a brief pause that has <10% chance of reaching 0%
-  account, initiate the switch. Don't bother manually killing everything, it will happen all by itself"*. Then: *"I
-  agree with your switch when the last live run has ended when <2% remains. Correct, any account that has preserved
-  space well above zero (usually only Steven's) does not need the emergency kill at all. Correct, wait for a reset if
-  it's the last account."* By card ("Sized from the burn rate"): *"that may also initiate the "no new work / save now"
-  warning up at 3% as well if the burn is going crazy fast. Scale both 3/2% (initiate saves) warning and the
-  time-constant post 1% based on load. If the reading is believed to be stale, default to safe values. TELL THE
-  PROCESSES these numbers. Estimate how long they have to complete their saves. It may influence their choices."* Before
-  2026-11-24 the switch killed live runs at max(1%, line - 2%); that rule has ended. Page: `design/specs/2026-11-24-account-end/boundary.md`.
+- The end of an account: the account is used down to its own line. The owner, 2026-11-24 4:32 PM PST: *"Don't kill
+  anything! Just start warning away."* After the switch at 3% (4:56 PM PST), as the brief of `RIMMANDRAKE_BURN_TO_LINE_WARNING_SWITCHED_AT_THREE` quotes him: *"Don't switch it until
+  1% ok? I want to use up as much as possible, as always."* So at the warning line (2%, 3% at a fast or unread burn)
+  each live run is warned: it saves a note, publishes what is done and keeps working. New work still starts. The switch
+  goes at the line. The steps at the line (owner, 2026-11-24 11:05 to 11:15 AM PST): *"At 1% "emergency: record your
+  state immediately and prepare for termination." Give it a beat... don't just kill at 1%. After a brief pause that has
+  <10% chance of reaching 0% account, initiate the switch. Don't bother manually killing everything, it will happen all
+  by itself"*. Then: *"Correct, any account that has preserved space well above zero (usually only Steven's) does not
+  need the emergency kill at all. Correct, wait for a reset if it's the last account."* By card ("Sized from the burn
+  rate"): *"Scale both 3/2% (initiate saves) warning and the time-constant post 1% based on load. If the reading is
+  believed to be stale, default to safe values. TELL THE PROCESSES these numbers. Estimate how long they have to
+  complete their saves. It may influence their choices."* Before 2026-11-24 the switch killed live runs at max(1%, line
+  - 2%); that rule has ended. Page: `design/specs/2026-11-24-account-end/boundary.md`.
 - The meter reads whole percents (8,749 readings to 2026-11-20, none fractional). So 1% is the lowest line that the
   meter can see. A 0.1% line waits for a finer meter.
 - A switch that the priority pulls (above the line) waits for live runs too, at most 2 h.

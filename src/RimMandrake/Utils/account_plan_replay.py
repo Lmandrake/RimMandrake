@@ -37,8 +37,8 @@ OLD_LOG = Path("/mnt/d/ClaudeWork/rimmandrake/switching_plan/log.jsonl")
 CAUSES = {
     "STAY": "the old engine left an account that was not finished, for the order or for a reset; the plan stays",
     "NO_REFUSAL_ABOVE_THE_WARNING": "the old engine refused new work above the warning line (its soft zone, or a reset "
-                                    "that was near); the plan refuses only at the warning line",
-    "WARNING_LINE": "the plan ends an account at its warning line; the old engine of that day ended it at its line",
+                                    "that was near); the plan refuses new work only at the account's line",
+    "WARNING_LINE": "the two engines end the account at different levels (one at its warning line, one at its line)",
     "ENTRY_LINE": "the plan sends no switch to an account inside its own warning zone",
     "MARKER": "the old engine held or kept an account out by a marker; the plan reads the level",
     "NEXT_BY_WEEK_AHEAD": "both leave the account; the plan picks the next one by the week ahead, not by the order",
