@@ -1,0 +1,1 @@
+A git fetch run in the Conductor's clone while its own ./publish runs makes the publish end REFUSED ('fetching ref refs/remotes/origin/main failed: incorrect old value provided'). Run no git command in a clone while ./publish runs in that clone. Seen 2026-11-25 about 12:35 PM PST, load 60 on Archmagi, the publish took over 10 minutes.
