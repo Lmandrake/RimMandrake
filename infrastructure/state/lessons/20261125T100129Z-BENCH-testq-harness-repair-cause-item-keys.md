@@ -1,0 +1,3 @@
+A testq HARNESS_REPAIR_CAUSE item keys on the NORMALIZED cause (digits become #, the subject is cut), so 'seen again' notes can join different source events: on HARNESS_REPAIR_CAUSE_4D2C5B87_3 the swept stop was a staged throwaway bruised by the declared river hazard (SITE), and the plot_H stop was two bystanders (a different event). Before you fix a 'seen again' sighting, read surprises.stopBy.subjectId in each run sheet (SteveDesktop ~/rm/runner/Transient/modcheck/<sheet>.json, reached with ssh stevedesktop "wsl -e bash -c ...") and split by source event.
+item: HARNESS_REPAIR_CAUSE_4D2C5B87_3
+home: skills/live-debugging-proof-harness
