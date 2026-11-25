@@ -1,0 +1,440 @@
+{
+ "chains": [
+  {
+   "name": "machinery_pipes",
+   "components": [
+    {
+     "name": "pipe_feeds_far_tank",
+     "toggle": "universalPipesEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "execution": "ran",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 14807 examined.",
+        "matched": 1,
+        "examined": 14807,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank21170",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 122,
+          "z": 89,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holds big creatures up to breadth 2 (2 thick here)",
+           "Empty",
+           "Job: Store"
+          ]
+         }
+        ],
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_5fabcef150114cc0b1e7abf59f211fac",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 41
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(800) [watched] -> 800 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 800,
+        "requested": 800
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 14808 examined.",
+        "matched": 1,
+        "examined": 14808,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank21170",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 122,
+          "z": 89,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holds big creatures up to breadth 2 (2 thick here)",
+           "Holding: Fresh water (2 kL / 16 kL)",
+           "Job: Store"
+          ]
+         }
+        ],
+        "ticksGame": 802,
+        "operation": {
+         "OperationId": "op_234bb6cde8d84aa69da7474fb2965976",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 33
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 802
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null,
+     "freshness": "fresh",
+     "validity": null,
+     "suspected_cause": null,
+     "cause_confidence": null,
+     "lead": null
+    },
+    {
+     "name": "pipes_off_far_tank_idle",
+     "toggle": "universalPipesEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "execution": "ran",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.Machinery.RM_MachinerySettings, {'universalPipesEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 14808 examined.",
+        "matched": 1,
+        "examined": 14808,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank21170",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 122,
+          "z": 89,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holds big creatures up to breadth 2 (2 thick here)",
+           "Holding: Fresh water (2 kL / 16 kL)",
+           "Job: Store"
+          ]
+         }
+        ],
+        "ticksGame": 802,
+        "operation": {
+         "OperationId": "op_0e53d14437824c6889464d1fec5334e4",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 35
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 802
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(600) [watched] -> 600 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 600,
+        "requested": 600
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 14808 examined.",
+        "matched": 1,
+        "examined": 14808,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank21170",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 122,
+          "z": 89,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holds big creatures up to breadth 2 (2 thick here)",
+           "Holding: Fresh water (2 kL / 16 kL)",
+           "Job: Store"
+          ]
+         }
+        ],
+        "ticksGame": 1402,
+        "operation": {
+         "OperationId": "op_6a40224cd28c4f0ab46794d2317b1f51",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 36
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1402
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null,
+     "freshness": "fresh",
+     "validity": null,
+     "suspected_cause": null,
+     "cause_confidence": null,
+     "lead": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 4,
+    "fed": 0,
+    "ticks_spent": 1400,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": [],
+    "runValidity": {
+     "verdict": "CLEAN",
+     "note": "CLEAN: no visitor observed",
+     "visitors": [],
+     "letters": [],
+     "disruptions": [],
+     "observationFailures": [],
+     "abortedBy": null
+    },
+    "receipts": [],
+    "receiptProblems": [],
+    "baselineScene": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_THIRTEEN.det\\Transient\\modcheck\\surprises\\20261125T094725\\FlowWorksExtensions_machinery_pipes_scene_baseline.json"
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   },
+   "site_hold": null,
+   "site_reload": null,
+   "env_reset": {
+    "log_reset": "ok",
+    "weather": "ok",
+    "map_info": "ok",
+    "unroof": "ok",
+    "gas_ToxGas": "ok",
+    "gas_BlindSmoke": "ok",
+    "gas_RotStink": "ok",
+    "gas_DeadlifeDust": "ok",
+    "gas_things": "ok"
+   },
+   "phase_s": {
+    "hold": 7.095,
+    "body": 10.18,
+    "teardown": 1.167
+   }
+  }
+ ],
+ "all_green": true,
+ "findings": [],
+ "refused": "",
+ "walk": null,
+ "acceptance": {
+  "overall": "GREEN",
+  "rows": [
+   {
+    "row": "machinery_pipes/pipe_feeds_far_tank",
+    "verdict": "PASS",
+    "class": "other",
+    "grade": "PASS",
+    "notes": []
+   },
+   {
+    "row": "machinery_pipes/pipes_off_far_tank_idle",
+    "verdict": "PASS",
+    "class": "other",
+    "grade": "PASS",
+    "notes": []
+   }
+  ],
+  "spoils": [],
+  "counts": {
+   "PASS": 2,
+   "FAIL": 0,
+   "INDETERMINATE": 0,
+   "UNMEASURED": 0,
+   "NOT_RUN": 0
+  },
+  "classes": []
+ },
+ "reuse": {
+  "reused": [],
+  "reusable": []
+ },
+ "host": "Archmagi",
+ "offline_chains": [],
+ "fresh_green": true,
+ "invalid": [],
+ "leads": [],
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "run_validity": "CLEAN",
+ "anchor": [
+  113,
+  118
+ ],
+ "site_save": {
+  "site": "calm",
+  "save": "RM_TestSite_calm_v3",
+  "load_s": 5.3,
+  "ready_s": 9.8,
+  "verified": true
+ },
+ "wall_s": 41.8,
+ "chains_run": [
+  "machinery_pipes"
+ ],
+ "chains_declared": [
+  "current",
+  "swept",
+  "taken_by_land",
+  "works",
+  "placer",
+  "plot_A_dug_channel",
+  "plot_B_fill_tiers",
+  "plot_C_limitless_canal",
+  "plot_C2_tar_and_fluids",
+  "plot_D_limited_pond",
+  "plot_E_fire",
+  "plot_F_slime",
+  "plot_H_depth_ladder",
+  "plot_G_pit",
+  "toggle_fill_in",
+  "toggle_fill_in_displacement",
+  "toggle_recession",
+  "toggle_refill",
+  "toggle_liquid_ignition",
+  "all_off_still_digs",
+  "toggle_canal_fire",
+  "toggle_liquid_corrosion",
+  "toggle_superdeep_capture",
+  "toggle_ladder_required",
+  "ladder_prison_door",
+  "pit_cover_fall",
+  "canal_spikes",
+  "flow_doors",
+  "toggle_superdeep_shooting",
+  "toggle_pit_exposure",
+  "toggle_pit_depth_draw",
+  "pit_fill_effects",
+  "toggle_pit_fill_effects",
+  "slime_slip",
+  "toggle_bottle_loop",
+  "toggle_bottle_dirty",
+  "toggle_tank_loop",
+  "toggle_liquid_drilling",
+  "toggle_typed_shores",
+  "toggle_trap_trigger",
+  "toggle_fall_damage",
+  "toggle_river_steam",
+  "fluid_identity_recorded",
+  "swale_enrichment",
+  "fire_explosion",
+  "fire_foam",
+  "fire_rain",
+  "fire_queue_origin",
+  "fuel_moat_chemfuel",
+  "fuel_moat_astrofuel",
+  "fuel_moat_propane",
+  "pit_prison_room",
+  "liquid_pump",
+  "bottle_revert",
+  "wall_faces",
+  "dig_finds",
+  "machinery_pipes",
+  "machinery_found_works",
+  "liquid_heat"
+ ],
+ "script": "extension_proof",
+ "mod": "FlowWorks",
+ "mode": "live",
+ "mod_hash": "d2d19d8d7565355156ed002db140904f029719019d7e69896b400be347e883cd",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "dubwise.dubsbadhygiene.lite",
+   "owlchemist.cherrypicker",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "toastyman.moreritualseats",
+   "vanillaexpanded.vchemfuele",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.hugethings",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes",
+   "mandrake.rm.patches"
+  ],
+  "running_sha256": "53bde22dea2496fe1ef2d1554c35fc76803cf9981598068f911f7253121b6353",
+  "assembly_sha256": "0395259f5b5216b8058b6eae0b66377371ac688b7336f8f479a3458ff0616be8",
+  "assembly_matches": 1
+ },
+ "aborted": null,
+ "site": "dry"
+}

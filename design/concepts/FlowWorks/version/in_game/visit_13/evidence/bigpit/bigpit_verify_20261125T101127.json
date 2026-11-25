@@ -1,0 +1,4822 @@
+{
+ "log": [
+  {
+   "open_sky_before_verify": {
+    "ok": true,
+    "rect": [
+     34,
+     83,
+     89,
+     55
+    ],
+    "roofCells": [],
+    "rockCells": [],
+    "why": [],
+    "cleared": null
+   }
+  },
+  {
+   "UNMEASURED": {
+    "row": "label_onscreen_text",
+    "verdict": "UNMEASURED",
+    "got": "no bridge reader for RM_MapComponent_Excavation.PitLabelAt (instance method; mouseover only): expected text recorded, actual text owed (item RIMMANDRAKE_ADD_PIT_LABEL_STATE_READER_MOUSEOVER_HAS_NONE)"
+   }
+  },
+  {
+   "elapsed_s": 0.8
+  }
+ ],
+ "rows": [
+  {
+   "row": "site_no_geyser",
+   "verdict": "PASS",
+   "got": "no SteamGeyser within 3 of the site"
+  },
+  {
+   "row": "wildlife_none_on_map",
+   "verdict": "PASS",
+   "got": "no non-player pawn on the map"
+  },
+  {
+   "row": "BP0_dry_depth_fill",
+   "verdict": "PASS",
+   "got": "256 cells d=8 f=0"
+  },
+  {
+   "row": "BP0_dry_furn_SculptureGrand",
+   "verdict": "PASS",
+   "got": {
+    "def": "SculptureGrand",
+    "at": [
+     2,
+     2
+    ],
+    "planned": [
+     "SculptureGrand",
+     2,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 0.0,
+    "stuff": "Steel",
+    "hp": 300,
+    "hpBaseline": 300,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP0_dry_furn_DoubleBed",
+   "verdict": "PASS",
+   "got": {
+    "def": "DoubleBed",
+    "at": [
+     5,
+     2
+    ],
+    "planned": [
+     "DoubleBed",
+     5,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 0.0,
+    "stuff": "Steel",
+    "hp": 200,
+    "hpBaseline": 200,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP0_dry_furn_RM_GlowTank",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_GlowTank",
+    "at": [
+     8,
+     2
+    ],
+    "planned": [
+     "RM_GlowTank",
+     8,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 0.0,
+    "hp": 180,
+    "hpBaseline": 180,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP0_dry_furn_RM_HoseReel",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_HoseReel",
+    "at": [
+     11,
+     2
+    ],
+    "planned": [
+     "RM_HoseReel",
+     11,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 0.0,
+    "hp": 80,
+    "hpBaseline": 80,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP0_dry_furn_Table2x2c",
+   "verdict": "PASS",
+   "got": {
+    "def": "Table2x2c",
+    "at": [
+     2,
+     5
+    ],
+    "planned": [
+     "Table2x2c",
+     2,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 0.0,
+    "stuff": "Steel",
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP0_dry_furn_TableButcher",
+   "verdict": "PASS",
+   "got": {
+    "def": "TableButcher",
+    "at": [
+     5,
+     4
+    ],
+    "planned": [
+     "TableButcher",
+     5,
+     4
+    ],
+    "inPit": true,
+    "liquidOverM": 0.0,
+    "stuff": "Steel",
+    "hp": 180,
+    "hpBaseline": 180,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP0_dry_furn_HandTailoringBench",
+   "verdict": "PASS",
+   "got": {
+    "def": "HandTailoringBench",
+    "at": [
+     8,
+     4
+    ],
+    "planned": [
+     "HandTailoringBench",
+     8,
+     4
+    ],
+    "inPit": true,
+    "liquidOverM": 0.0,
+    "stuff": "Steel",
+    "hp": 180,
+    "hpBaseline": 180,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP0_dry_furn_SculptureLarge",
+   "verdict": "PASS",
+   "got": {
+    "def": "SculptureLarge",
+    "at": [
+     14,
+     4
+    ],
+    "planned": [
+     "SculptureLarge",
+     14,
+     4
+    ],
+    "inPit": true,
+    "liquidOverM": 0.0,
+    "stuff": "Steel",
+    "hp": 150,
+    "hpBaseline": 150,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP0_dry_furn_Bed",
+   "verdict": "PASS",
+   "got": {
+    "def": "Bed",
+    "at": [
+     13,
+     2
+    ],
+    "planned": [
+     "Bed",
+     13,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 0.0,
+    "stuff": "Steel",
+    "hp": 140,
+    "hpBaseline": 140,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP0_dry_furn_Shelf",
+   "verdict": "PASS",
+   "got": {
+    "def": "Shelf",
+    "at": [
+     11,
+     4
+    ],
+    "planned": [
+     "Shelf",
+     11,
+     4
+    ],
+    "inPit": true,
+    "liquidOverM": 0.0,
+    "stuff": "Steel",
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP0_dry_furn_Dresser",
+   "verdict": "PASS",
+   "got": {
+    "def": "Dresser",
+    "at": [
+     5,
+     5
+    ],
+    "planned": [
+     "Dresser",
+     5,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 0.0,
+    "stuff": "Steel",
+    "hp": 120,
+    "hpBaseline": 120,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP0_dry_furn_RM_ResinSealingJarShelf",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_ResinSealingJarShelf",
+    "at": [
+     8,
+     5
+    ],
+    "planned": [
+     "RM_ResinSealingJarShelf",
+     8,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 0.0,
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP0_dry_furn_Bedroll",
+   "verdict": "PASS",
+   "got": {
+    "def": "Bedroll",
+    "at": [
+     14,
+     2
+    ],
+    "planned": [
+     "Bedroll",
+     14,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 0.0,
+    "stuff": "Cloth",
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP0_dry_furn_Battery",
+   "verdict": "PASS",
+   "got": {
+    "def": "Battery",
+    "at": [
+     13,
+     5
+    ],
+    "planned": [
+     "Battery",
+     13,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 0.0,
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP0_dry_furn_PlantPot",
+   "verdict": "PASS",
+   "got": {
+    "def": "PlantPot",
+    "at": [
+     10,
+     5
+    ],
+    "planned": [
+     "PlantPot",
+     10,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 0.0,
+    "stuff": "Steel",
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP0_dry_furn_SculptureSmall",
+   "verdict": "PASS",
+   "got": {
+    "def": "SculptureSmall",
+    "at": [
+     11,
+     5
+    ],
+    "planned": [
+     "SculptureSmall",
+     11,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 0.0,
+    "stuff": "Steel",
+    "hp": 90,
+    "hpBaseline": 90,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP0_dry_furn_DiningChair",
+   "verdict": "PASS",
+   "got": {
+    "def": "DiningChair",
+    "at": [
+     12,
+     5
+    ],
+    "planned": [
+     "DiningChair",
+     12,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 0.0,
+    "stuff": "Steel",
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP0_dry_furn_Stool",
+   "verdict": "PASS",
+   "got": {
+    "def": "Stool",
+    "at": [
+     14,
+     5
+    ],
+    "planned": [
+     "Stool",
+     14,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 0.0,
+    "stuff": "Steel",
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP0_dry_furn_Armchair",
+   "verdict": "PASS",
+   "got": {
+    "def": "Armchair",
+    "at": [
+     4,
+     6
+    ],
+    "planned": [
+     "Armchair",
+     4,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 0.0,
+    "stuff": "Cloth",
+    "hp": 120,
+    "hpBaseline": 120,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP0_dry_furn_EndTable",
+   "verdict": "PASS",
+   "got": {
+    "def": "EndTable",
+    "at": [
+     5,
+     6
+    ],
+    "planned": [
+     "EndTable",
+     5,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 0.0,
+    "stuff": "Steel",
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP0_dry_furn_StandingLamp",
+   "verdict": "PASS",
+   "got": {
+    "def": "StandingLamp",
+    "at": [
+     6,
+     6
+    ],
+    "planned": [
+     "StandingLamp",
+     6,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 0.0,
+    "hp": 50,
+    "hpBaseline": 50,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP0_dry_furn_TorchLamp",
+   "verdict": "PASS",
+   "got": {
+    "def": "TorchLamp",
+    "at": [
+     7,
+     6
+    ],
+    "planned": [
+     "TorchLamp",
+     7,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 0.0,
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP0_dry_furn_Cooler",
+   "verdict": "PASS",
+   "got": {
+    "def": "Cooler",
+    "at": [
+     8,
+     6
+    ],
+    "planned": [
+     "Cooler",
+     8,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 0.0,
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP0_dry_furn_RM_BrineCrock",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_BrineCrock",
+    "at": [
+     9,
+     6
+    ],
+    "planned": [
+     "RM_BrineCrock",
+     9,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 0.0,
+    "hp": 80,
+    "hpBaseline": 80,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP0_dry_furn_RM_EvaporativeCrock",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_EvaporativeCrock",
+    "at": [
+     10,
+     6
+    ],
+    "planned": [
+     "RM_EvaporativeCrock",
+     10,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 0.0,
+    "stuff": "BlocksGranite",
+    "hp": 102,
+    "hpBaseline": 102,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP0_dry_furn_RM_AncientStasisLocker_Refurbished",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_AncientStasisLocker_Refurbished",
+    "at": [
+     11,
+     6
+    ],
+    "planned": [
+     "RM_AncientStasisLocker_Refurbished",
+     11,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 0.0,
+    "hp": 250,
+    "hpBaseline": 250,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP0_dry_mini_Armchair",
+   "verdict": "PASS",
+   "got": {
+    "def": "MinifiedThing",
+    "at": [
+     6,
+     9
+    ],
+    "planned": [
+     "MinifiedThing",
+     6,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 0.0
+   }
+  },
+  {
+   "row": "BP0_dry_mini_EndTable",
+   "verdict": "PASS",
+   "got": {
+    "def": "MinifiedThing",
+    "at": [
+     7,
+     9
+    ],
+    "planned": [
+     "MinifiedThing",
+     7,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 0.0
+   }
+  },
+  {
+   "row": "BP0_dry_mini_RM_BrineCrock",
+   "verdict": "PASS",
+   "got": {
+    "def": "MinifiedThing",
+    "at": [
+     8,
+     9
+    ],
+    "planned": [
+     "MinifiedThing",
+     8,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 0.0
+   }
+  },
+  {
+   "row": "BP0_dry_corpse_Muffalo",
+   "verdict": "PASS",
+   "got": {
+    "def": "Corpse_Muffalo",
+    "at": [
+     9,
+     9
+    ],
+    "planned": [
+     "Corpse_Muffalo",
+     9,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 0.0
+   }
+  },
+  {
+   "row": "BP0_dry_corpse_Villager",
+   "verdict": "PASS",
+   "got": {
+    "def": "Corpse_Human",
+    "at": [
+     10,
+     9
+    ],
+    "planned": [
+     "Corpse_Villager",
+     10,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 0.0
+   }
+  },
+  {
+   "row": "BP0_dry_nothing_unplanned",
+   "verdict": "PASS",
+   "got": "every thing is on a planned cell"
+  },
+  {
+   "row": "BP0_dry_inside_margin",
+   "verdict": "PASS",
+   "got": "every thing's cell is at least 1 cells from each pit wall"
+  },
+  {
+   "row": "BP0_dry_label_expected",
+   "verdict": "PASS",
+   "got": {
+    "distinct": [
+     "Pit, 4.0 m deep"
+    ],
+    "cells": 256
+   }
+  },
+  {
+   "row": "BP1_0.5m_depth_fill",
+   "verdict": "PASS",
+   "got": "256 cells d=8 f=1"
+  },
+  {
+   "row": "BP1_0.5m_furn_SculptureGrand",
+   "verdict": "PASS",
+   "got": {
+    "def": "SculptureGrand",
+    "at": [
+     2,
+     2
+    ],
+    "planned": [
+     "SculptureGrand",
+     2,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 0.5,
+    "stuff": "Steel",
+    "hp": 300,
+    "hpBaseline": 300,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP1_0.5m_furn_DoubleBed",
+   "verdict": "PASS",
+   "got": {
+    "def": "DoubleBed",
+    "at": [
+     5,
+     2
+    ],
+    "planned": [
+     "DoubleBed",
+     5,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 0.5,
+    "stuff": "Steel",
+    "hp": 200,
+    "hpBaseline": 200,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP1_0.5m_furn_RM_GlowTank",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_GlowTank",
+    "at": [
+     8,
+     2
+    ],
+    "planned": [
+     "RM_GlowTank",
+     8,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 0.5,
+    "hp": 180,
+    "hpBaseline": 180,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP1_0.5m_furn_RM_HoseReel",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_HoseReel",
+    "at": [
+     11,
+     2
+    ],
+    "planned": [
+     "RM_HoseReel",
+     11,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 0.5,
+    "hp": 80,
+    "hpBaseline": 80,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP1_0.5m_furn_Table2x2c",
+   "verdict": "PASS",
+   "got": {
+    "def": "Table2x2c",
+    "at": [
+     2,
+     5
+    ],
+    "planned": [
+     "Table2x2c",
+     2,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 0.5,
+    "stuff": "Steel",
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP1_0.5m_furn_TableButcher",
+   "verdict": "PASS",
+   "got": {
+    "def": "TableButcher",
+    "at": [
+     5,
+     4
+    ],
+    "planned": [
+     "TableButcher",
+     5,
+     4
+    ],
+    "inPit": true,
+    "liquidOverM": 0.5,
+    "stuff": "Steel",
+    "hp": 180,
+    "hpBaseline": 180,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP1_0.5m_furn_HandTailoringBench",
+   "verdict": "PASS",
+   "got": {
+    "def": "HandTailoringBench",
+    "at": [
+     8,
+     4
+    ],
+    "planned": [
+     "HandTailoringBench",
+     8,
+     4
+    ],
+    "inPit": true,
+    "liquidOverM": 0.5,
+    "stuff": "Steel",
+    "hp": 180,
+    "hpBaseline": 180,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP1_0.5m_furn_SculptureLarge",
+   "verdict": "PASS",
+   "got": {
+    "def": "SculptureLarge",
+    "at": [
+     14,
+     4
+    ],
+    "planned": [
+     "SculptureLarge",
+     14,
+     4
+    ],
+    "inPit": true,
+    "liquidOverM": 0.5,
+    "stuff": "Steel",
+    "hp": 150,
+    "hpBaseline": 150,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP1_0.5m_furn_Bed",
+   "verdict": "PASS",
+   "got": {
+    "def": "Bed",
+    "at": [
+     13,
+     2
+    ],
+    "planned": [
+     "Bed",
+     13,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 0.5,
+    "stuff": "Steel",
+    "hp": 140,
+    "hpBaseline": 140,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP1_0.5m_furn_Shelf",
+   "verdict": "PASS",
+   "got": {
+    "def": "Shelf",
+    "at": [
+     11,
+     4
+    ],
+    "planned": [
+     "Shelf",
+     11,
+     4
+    ],
+    "inPit": true,
+    "liquidOverM": 0.5,
+    "stuff": "Steel",
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP1_0.5m_furn_Dresser",
+   "verdict": "PASS",
+   "got": {
+    "def": "Dresser",
+    "at": [
+     5,
+     5
+    ],
+    "planned": [
+     "Dresser",
+     5,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 0.5,
+    "stuff": "Steel",
+    "hp": 120,
+    "hpBaseline": 120,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP1_0.5m_furn_RM_ResinSealingJarShelf",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_ResinSealingJarShelf",
+    "at": [
+     8,
+     5
+    ],
+    "planned": [
+     "RM_ResinSealingJarShelf",
+     8,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 0.5,
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP1_0.5m_furn_Bedroll",
+   "verdict": "PASS",
+   "got": {
+    "def": "Bedroll",
+    "at": [
+     14,
+     2
+    ],
+    "planned": [
+     "Bedroll",
+     14,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 0.5,
+    "stuff": "Cloth",
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP1_0.5m_furn_Battery",
+   "verdict": "PASS",
+   "got": {
+    "def": "Battery",
+    "at": [
+     13,
+     5
+    ],
+    "planned": [
+     "Battery",
+     13,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 0.5,
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP1_0.5m_furn_PlantPot",
+   "verdict": "PASS",
+   "got": {
+    "def": "PlantPot",
+    "at": [
+     10,
+     5
+    ],
+    "planned": [
+     "PlantPot",
+     10,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 0.5,
+    "stuff": "Steel",
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP1_0.5m_furn_SculptureSmall",
+   "verdict": "PASS",
+   "got": {
+    "def": "SculptureSmall",
+    "at": [
+     11,
+     5
+    ],
+    "planned": [
+     "SculptureSmall",
+     11,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 0.5,
+    "stuff": "Steel",
+    "hp": 90,
+    "hpBaseline": 90,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP1_0.5m_furn_DiningChair",
+   "verdict": "PASS",
+   "got": {
+    "def": "DiningChair",
+    "at": [
+     12,
+     5
+    ],
+    "planned": [
+     "DiningChair",
+     12,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 0.5,
+    "stuff": "Steel",
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP1_0.5m_furn_Stool",
+   "verdict": "PASS",
+   "got": {
+    "def": "Stool",
+    "at": [
+     14,
+     5
+    ],
+    "planned": [
+     "Stool",
+     14,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 0.5,
+    "stuff": "Steel",
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP1_0.5m_furn_Armchair",
+   "verdict": "PASS",
+   "got": {
+    "def": "Armchair",
+    "at": [
+     4,
+     6
+    ],
+    "planned": [
+     "Armchair",
+     4,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 0.5,
+    "stuff": "Cloth",
+    "hp": 120,
+    "hpBaseline": 120,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP1_0.5m_furn_EndTable",
+   "verdict": "PASS",
+   "got": {
+    "def": "EndTable",
+    "at": [
+     5,
+     6
+    ],
+    "planned": [
+     "EndTable",
+     5,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 0.5,
+    "stuff": "Steel",
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP1_0.5m_furn_StandingLamp",
+   "verdict": "PASS",
+   "got": {
+    "def": "StandingLamp",
+    "at": [
+     6,
+     6
+    ],
+    "planned": [
+     "StandingLamp",
+     6,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 0.5,
+    "hp": 50,
+    "hpBaseline": 50,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP1_0.5m_furn_TorchLamp",
+   "verdict": "PASS",
+   "got": {
+    "def": "TorchLamp",
+    "at": [
+     7,
+     6
+    ],
+    "planned": [
+     "TorchLamp",
+     7,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 0.5,
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP1_0.5m_furn_Cooler",
+   "verdict": "PASS",
+   "got": {
+    "def": "Cooler",
+    "at": [
+     8,
+     6
+    ],
+    "planned": [
+     "Cooler",
+     8,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 0.5,
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP1_0.5m_furn_RM_BrineCrock",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_BrineCrock",
+    "at": [
+     9,
+     6
+    ],
+    "planned": [
+     "RM_BrineCrock",
+     9,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 0.5,
+    "hp": 80,
+    "hpBaseline": 80,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP1_0.5m_furn_RM_EvaporativeCrock",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_EvaporativeCrock",
+    "at": [
+     10,
+     6
+    ],
+    "planned": [
+     "RM_EvaporativeCrock",
+     10,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 0.5,
+    "stuff": "BlocksGranite",
+    "hp": 102,
+    "hpBaseline": 102,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP1_0.5m_furn_RM_AncientStasisLocker_Refurbished",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_AncientStasisLocker_Refurbished",
+    "at": [
+     11,
+     6
+    ],
+    "planned": [
+     "RM_AncientStasisLocker_Refurbished",
+     11,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 0.5,
+    "hp": 250,
+    "hpBaseline": 250,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP1_0.5m_mini_Armchair",
+   "verdict": "PASS",
+   "got": {
+    "def": "MinifiedThing",
+    "at": [
+     6,
+     9
+    ],
+    "planned": [
+     "MinifiedThing",
+     6,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 0.5
+   }
+  },
+  {
+   "row": "BP1_0.5m_mini_EndTable",
+   "verdict": "PASS",
+   "got": {
+    "def": "MinifiedThing",
+    "at": [
+     7,
+     9
+    ],
+    "planned": [
+     "MinifiedThing",
+     7,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 0.5
+   }
+  },
+  {
+   "row": "BP1_0.5m_mini_RM_BrineCrock",
+   "verdict": "PASS",
+   "got": {
+    "def": "MinifiedThing",
+    "at": [
+     8,
+     9
+    ],
+    "planned": [
+     "MinifiedThing",
+     8,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 0.5
+   }
+  },
+  {
+   "row": "BP1_0.5m_corpse_Muffalo",
+   "verdict": "PASS",
+   "got": {
+    "def": "Corpse_Muffalo",
+    "at": [
+     9,
+     9
+    ],
+    "planned": [
+     "Corpse_Muffalo",
+     9,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 0.5
+   }
+  },
+  {
+   "row": "BP1_0.5m_corpse_Villager",
+   "verdict": "PASS",
+   "got": {
+    "def": "Corpse_Human",
+    "at": [
+     10,
+     9
+    ],
+    "planned": [
+     "Corpse_Villager",
+     10,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 0.5
+   }
+  },
+  {
+   "row": "BP1_0.5m_nothing_unplanned",
+   "verdict": "PASS",
+   "got": "every thing is on a planned cell"
+  },
+  {
+   "row": "BP1_0.5m_inside_margin",
+   "verdict": "PASS",
+   "got": "every thing's cell is at least 1 cells from each pit wall"
+  },
+  {
+   "row": "BP1_0.5m_label_expected",
+   "verdict": "PASS",
+   "got": {
+    "distinct": [
+     "Pit, 0.5 m water in 4.0 m"
+    ],
+    "cells": 256
+   }
+  },
+  {
+   "row": "BP2_1m_depth_fill",
+   "verdict": "PASS",
+   "got": "256 cells d=8 f=2"
+  },
+  {
+   "row": "BP2_1m_furn_SculptureGrand",
+   "verdict": "PASS",
+   "got": {
+    "def": "SculptureGrand",
+    "at": [
+     2,
+     2
+    ],
+    "planned": [
+     "SculptureGrand",
+     2,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 1.0,
+    "stuff": "Steel",
+    "hp": 300,
+    "hpBaseline": 300,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP2_1m_furn_DoubleBed",
+   "verdict": "PASS",
+   "got": {
+    "def": "DoubleBed",
+    "at": [
+     5,
+     2
+    ],
+    "planned": [
+     "DoubleBed",
+     5,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 1.0,
+    "stuff": "Steel",
+    "hp": 200,
+    "hpBaseline": 200,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP2_1m_furn_RM_GlowTank",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_GlowTank",
+    "at": [
+     8,
+     2
+    ],
+    "planned": [
+     "RM_GlowTank",
+     8,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 1.0,
+    "hp": 180,
+    "hpBaseline": 180,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP2_1m_furn_RM_HoseReel",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_HoseReel",
+    "at": [
+     11,
+     2
+    ],
+    "planned": [
+     "RM_HoseReel",
+     11,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 1.0,
+    "hp": 80,
+    "hpBaseline": 80,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP2_1m_furn_Table2x2c",
+   "verdict": "PASS",
+   "got": {
+    "def": "Table2x2c",
+    "at": [
+     2,
+     5
+    ],
+    "planned": [
+     "Table2x2c",
+     2,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 1.0,
+    "stuff": "Steel",
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP2_1m_furn_TableButcher",
+   "verdict": "PASS",
+   "got": {
+    "def": "TableButcher",
+    "at": [
+     5,
+     4
+    ],
+    "planned": [
+     "TableButcher",
+     5,
+     4
+    ],
+    "inPit": true,
+    "liquidOverM": 1.0,
+    "stuff": "Steel",
+    "hp": 180,
+    "hpBaseline": 180,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP2_1m_furn_HandTailoringBench",
+   "verdict": "PASS",
+   "got": {
+    "def": "HandTailoringBench",
+    "at": [
+     8,
+     4
+    ],
+    "planned": [
+     "HandTailoringBench",
+     8,
+     4
+    ],
+    "inPit": true,
+    "liquidOverM": 1.0,
+    "stuff": "Steel",
+    "hp": 180,
+    "hpBaseline": 180,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP2_1m_furn_SculptureLarge",
+   "verdict": "PASS",
+   "got": {
+    "def": "SculptureLarge",
+    "at": [
+     14,
+     4
+    ],
+    "planned": [
+     "SculptureLarge",
+     14,
+     4
+    ],
+    "inPit": true,
+    "liquidOverM": 1.0,
+    "stuff": "Steel",
+    "hp": 150,
+    "hpBaseline": 150,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP2_1m_furn_Bed",
+   "verdict": "PASS",
+   "got": {
+    "def": "Bed",
+    "at": [
+     13,
+     2
+    ],
+    "planned": [
+     "Bed",
+     13,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 1.0,
+    "stuff": "Steel",
+    "hp": 140,
+    "hpBaseline": 140,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP2_1m_furn_Shelf",
+   "verdict": "PASS",
+   "got": {
+    "def": "Shelf",
+    "at": [
+     11,
+     4
+    ],
+    "planned": [
+     "Shelf",
+     11,
+     4
+    ],
+    "inPit": true,
+    "liquidOverM": 1.0,
+    "stuff": "Steel",
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP2_1m_furn_Dresser",
+   "verdict": "PASS",
+   "got": {
+    "def": "Dresser",
+    "at": [
+     5,
+     5
+    ],
+    "planned": [
+     "Dresser",
+     5,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 1.0,
+    "stuff": "Steel",
+    "hp": 120,
+    "hpBaseline": 120,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP2_1m_furn_RM_ResinSealingJarShelf",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_ResinSealingJarShelf",
+    "at": [
+     8,
+     5
+    ],
+    "planned": [
+     "RM_ResinSealingJarShelf",
+     8,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 1.0,
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP2_1m_furn_Bedroll",
+   "verdict": "PASS",
+   "got": {
+    "def": "Bedroll",
+    "at": [
+     14,
+     2
+    ],
+    "planned": [
+     "Bedroll",
+     14,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 1.0,
+    "stuff": "Cloth",
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP2_1m_furn_Battery",
+   "verdict": "PASS",
+   "got": {
+    "def": "Battery",
+    "at": [
+     13,
+     5
+    ],
+    "planned": [
+     "Battery",
+     13,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 1.0,
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP2_1m_furn_PlantPot",
+   "verdict": "PASS",
+   "got": {
+    "def": "PlantPot",
+    "at": [
+     10,
+     5
+    ],
+    "planned": [
+     "PlantPot",
+     10,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 1.0,
+    "stuff": "Steel",
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP2_1m_furn_SculptureSmall",
+   "verdict": "PASS",
+   "got": {
+    "def": "SculptureSmall",
+    "at": [
+     11,
+     5
+    ],
+    "planned": [
+     "SculptureSmall",
+     11,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 1.0,
+    "stuff": "Steel",
+    "hp": 90,
+    "hpBaseline": 90,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP2_1m_furn_DiningChair",
+   "verdict": "PASS",
+   "got": {
+    "def": "DiningChair",
+    "at": [
+     12,
+     5
+    ],
+    "planned": [
+     "DiningChair",
+     12,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 1.0,
+    "stuff": "Steel",
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP2_1m_furn_Stool",
+   "verdict": "PASS",
+   "got": {
+    "def": "Stool",
+    "at": [
+     14,
+     5
+    ],
+    "planned": [
+     "Stool",
+     14,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 1.0,
+    "stuff": "Steel",
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP2_1m_furn_Armchair",
+   "verdict": "PASS",
+   "got": {
+    "def": "Armchair",
+    "at": [
+     4,
+     6
+    ],
+    "planned": [
+     "Armchair",
+     4,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 1.0,
+    "stuff": "Cloth",
+    "hp": 120,
+    "hpBaseline": 120,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP2_1m_furn_EndTable",
+   "verdict": "PASS",
+   "got": {
+    "def": "EndTable",
+    "at": [
+     5,
+     6
+    ],
+    "planned": [
+     "EndTable",
+     5,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 1.0,
+    "stuff": "Steel",
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP2_1m_furn_StandingLamp",
+   "verdict": "PASS",
+   "got": {
+    "def": "StandingLamp",
+    "at": [
+     6,
+     6
+    ],
+    "planned": [
+     "StandingLamp",
+     6,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 1.0,
+    "hp": 50,
+    "hpBaseline": 50,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP2_1m_furn_TorchLamp",
+   "verdict": "PASS",
+   "got": {
+    "def": "TorchLamp",
+    "at": [
+     7,
+     6
+    ],
+    "planned": [
+     "TorchLamp",
+     7,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 1.0,
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP2_1m_furn_Cooler",
+   "verdict": "PASS",
+   "got": {
+    "def": "Cooler",
+    "at": [
+     8,
+     6
+    ],
+    "planned": [
+     "Cooler",
+     8,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 1.0,
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP2_1m_furn_RM_BrineCrock",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_BrineCrock",
+    "at": [
+     9,
+     6
+    ],
+    "planned": [
+     "RM_BrineCrock",
+     9,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 1.0,
+    "hp": 80,
+    "hpBaseline": 80,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP2_1m_furn_RM_EvaporativeCrock",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_EvaporativeCrock",
+    "at": [
+     10,
+     6
+    ],
+    "planned": [
+     "RM_EvaporativeCrock",
+     10,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 1.0,
+    "stuff": "BlocksGranite",
+    "hp": 102,
+    "hpBaseline": 102,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP2_1m_furn_RM_AncientStasisLocker_Refurbished",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_AncientStasisLocker_Refurbished",
+    "at": [
+     11,
+     6
+    ],
+    "planned": [
+     "RM_AncientStasisLocker_Refurbished",
+     11,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 1.0,
+    "hp": 250,
+    "hpBaseline": 250,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP2_1m_mini_Armchair",
+   "verdict": "PASS",
+   "got": {
+    "def": "MinifiedThing",
+    "at": [
+     6,
+     9
+    ],
+    "planned": [
+     "MinifiedThing",
+     6,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 1.0
+   }
+  },
+  {
+   "row": "BP2_1m_mini_EndTable",
+   "verdict": "PASS",
+   "got": {
+    "def": "MinifiedThing",
+    "at": [
+     7,
+     9
+    ],
+    "planned": [
+     "MinifiedThing",
+     7,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 1.0
+   }
+  },
+  {
+   "row": "BP2_1m_mini_RM_BrineCrock",
+   "verdict": "PASS",
+   "got": {
+    "def": "MinifiedThing",
+    "at": [
+     8,
+     9
+    ],
+    "planned": [
+     "MinifiedThing",
+     8,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 1.0
+   }
+  },
+  {
+   "row": "BP2_1m_corpse_Muffalo",
+   "verdict": "PASS",
+   "got": {
+    "def": "Corpse_Muffalo",
+    "at": [
+     9,
+     9
+    ],
+    "planned": [
+     "Corpse_Muffalo",
+     9,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 1.0
+   }
+  },
+  {
+   "row": "BP2_1m_corpse_Villager",
+   "verdict": "PASS",
+   "got": {
+    "def": "Corpse_Human",
+    "at": [
+     10,
+     9
+    ],
+    "planned": [
+     "Corpse_Villager",
+     10,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 1.0
+   }
+  },
+  {
+   "row": "BP2_1m_nothing_unplanned",
+   "verdict": "PASS",
+   "got": "every thing is on a planned cell"
+  },
+  {
+   "row": "BP2_1m_inside_margin",
+   "verdict": "PASS",
+   "got": "every thing's cell is at least 1 cells from each pit wall"
+  },
+  {
+   "row": "BP2_1m_label_expected",
+   "verdict": "PASS",
+   "got": {
+    "distinct": [
+     "Pit, 1.0 m water in 4.0 m"
+    ],
+    "cells": 256
+   }
+  },
+  {
+   "row": "BP3_2m_depth_fill",
+   "verdict": "PASS",
+   "got": "256 cells d=8 f=4"
+  },
+  {
+   "row": "BP3_2m_furn_SculptureGrand",
+   "verdict": "PASS",
+   "got": {
+    "def": "SculptureGrand",
+    "at": [
+     2,
+     2
+    ],
+    "planned": [
+     "SculptureGrand",
+     2,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 2.0,
+    "stuff": "Steel",
+    "hp": 300,
+    "hpBaseline": 300,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP3_2m_furn_DoubleBed",
+   "verdict": "PASS",
+   "got": {
+    "def": "DoubleBed",
+    "at": [
+     5,
+     2
+    ],
+    "planned": [
+     "DoubleBed",
+     5,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 2.0,
+    "stuff": "Steel",
+    "hp": 200,
+    "hpBaseline": 200,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP3_2m_furn_RM_GlowTank",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_GlowTank",
+    "at": [
+     8,
+     2
+    ],
+    "planned": [
+     "RM_GlowTank",
+     8,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 2.0,
+    "hp": 180,
+    "hpBaseline": 180,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP3_2m_furn_RM_HoseReel",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_HoseReel",
+    "at": [
+     11,
+     2
+    ],
+    "planned": [
+     "RM_HoseReel",
+     11,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 2.0,
+    "hp": 80,
+    "hpBaseline": 80,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP3_2m_furn_Table2x2c",
+   "verdict": "PASS",
+   "got": {
+    "def": "Table2x2c",
+    "at": [
+     2,
+     5
+    ],
+    "planned": [
+     "Table2x2c",
+     2,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 2.0,
+    "stuff": "Steel",
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP3_2m_furn_TableButcher",
+   "verdict": "PASS",
+   "got": {
+    "def": "TableButcher",
+    "at": [
+     5,
+     4
+    ],
+    "planned": [
+     "TableButcher",
+     5,
+     4
+    ],
+    "inPit": true,
+    "liquidOverM": 2.0,
+    "stuff": "Steel",
+    "hp": 180,
+    "hpBaseline": 180,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP3_2m_furn_HandTailoringBench",
+   "verdict": "PASS",
+   "got": {
+    "def": "HandTailoringBench",
+    "at": [
+     8,
+     4
+    ],
+    "planned": [
+     "HandTailoringBench",
+     8,
+     4
+    ],
+    "inPit": true,
+    "liquidOverM": 2.0,
+    "stuff": "Steel",
+    "hp": 180,
+    "hpBaseline": 180,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP3_2m_furn_SculptureLarge",
+   "verdict": "PASS",
+   "got": {
+    "def": "SculptureLarge",
+    "at": [
+     14,
+     4
+    ],
+    "planned": [
+     "SculptureLarge",
+     14,
+     4
+    ],
+    "inPit": true,
+    "liquidOverM": 2.0,
+    "stuff": "Steel",
+    "hp": 150,
+    "hpBaseline": 150,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP3_2m_furn_Bed",
+   "verdict": "PASS",
+   "got": {
+    "def": "Bed",
+    "at": [
+     13,
+     2
+    ],
+    "planned": [
+     "Bed",
+     13,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 2.0,
+    "stuff": "Steel",
+    "hp": 140,
+    "hpBaseline": 140,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP3_2m_furn_Shelf",
+   "verdict": "PASS",
+   "got": {
+    "def": "Shelf",
+    "at": [
+     11,
+     4
+    ],
+    "planned": [
+     "Shelf",
+     11,
+     4
+    ],
+    "inPit": true,
+    "liquidOverM": 2.0,
+    "stuff": "Steel",
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP3_2m_furn_Dresser",
+   "verdict": "PASS",
+   "got": {
+    "def": "Dresser",
+    "at": [
+     5,
+     5
+    ],
+    "planned": [
+     "Dresser",
+     5,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 2.0,
+    "stuff": "Steel",
+    "hp": 120,
+    "hpBaseline": 120,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP3_2m_furn_RM_ResinSealingJarShelf",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_ResinSealingJarShelf",
+    "at": [
+     8,
+     5
+    ],
+    "planned": [
+     "RM_ResinSealingJarShelf",
+     8,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 2.0,
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP3_2m_furn_Bedroll",
+   "verdict": "PASS",
+   "got": {
+    "def": "Bedroll",
+    "at": [
+     14,
+     2
+    ],
+    "planned": [
+     "Bedroll",
+     14,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 2.0,
+    "stuff": "Cloth",
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP3_2m_furn_Battery",
+   "verdict": "PASS",
+   "got": {
+    "def": "Battery",
+    "at": [
+     13,
+     5
+    ],
+    "planned": [
+     "Battery",
+     13,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 2.0,
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP3_2m_furn_PlantPot",
+   "verdict": "PASS",
+   "got": {
+    "def": "PlantPot",
+    "at": [
+     10,
+     5
+    ],
+    "planned": [
+     "PlantPot",
+     10,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 2.0,
+    "stuff": "Steel",
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP3_2m_furn_SculptureSmall",
+   "verdict": "PASS",
+   "got": {
+    "def": "SculptureSmall",
+    "at": [
+     11,
+     5
+    ],
+    "planned": [
+     "SculptureSmall",
+     11,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 2.0,
+    "stuff": "Steel",
+    "hp": 90,
+    "hpBaseline": 90,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP3_2m_furn_DiningChair",
+   "verdict": "PASS",
+   "got": {
+    "def": "DiningChair",
+    "at": [
+     12,
+     5
+    ],
+    "planned": [
+     "DiningChair",
+     12,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 2.0,
+    "stuff": "Steel",
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP3_2m_furn_Stool",
+   "verdict": "PASS",
+   "got": {
+    "def": "Stool",
+    "at": [
+     14,
+     5
+    ],
+    "planned": [
+     "Stool",
+     14,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 2.0,
+    "stuff": "Steel",
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP3_2m_furn_Armchair",
+   "verdict": "PASS",
+   "got": {
+    "def": "Armchair",
+    "at": [
+     4,
+     6
+    ],
+    "planned": [
+     "Armchair",
+     4,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 2.0,
+    "stuff": "Cloth",
+    "hp": 120,
+    "hpBaseline": 120,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP3_2m_furn_EndTable",
+   "verdict": "PASS",
+   "got": {
+    "def": "EndTable",
+    "at": [
+     5,
+     6
+    ],
+    "planned": [
+     "EndTable",
+     5,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 2.0,
+    "stuff": "Steel",
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP3_2m_furn_StandingLamp",
+   "verdict": "PASS",
+   "got": {
+    "def": "StandingLamp",
+    "at": [
+     6,
+     6
+    ],
+    "planned": [
+     "StandingLamp",
+     6,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 2.0,
+    "hp": 50,
+    "hpBaseline": 50,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP3_2m_furn_TorchLamp",
+   "verdict": "PASS",
+   "got": {
+    "def": "TorchLamp",
+    "at": [
+     7,
+     6
+    ],
+    "planned": [
+     "TorchLamp",
+     7,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 2.0,
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP3_2m_furn_Cooler",
+   "verdict": "PASS",
+   "got": {
+    "def": "Cooler",
+    "at": [
+     8,
+     6
+    ],
+    "planned": [
+     "Cooler",
+     8,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 2.0,
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP3_2m_furn_RM_BrineCrock",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_BrineCrock",
+    "at": [
+     9,
+     6
+    ],
+    "planned": [
+     "RM_BrineCrock",
+     9,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 2.0,
+    "hp": 80,
+    "hpBaseline": 80,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP3_2m_furn_RM_EvaporativeCrock",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_EvaporativeCrock",
+    "at": [
+     10,
+     6
+    ],
+    "planned": [
+     "RM_EvaporativeCrock",
+     10,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 2.0,
+    "stuff": "BlocksGranite",
+    "hp": 102,
+    "hpBaseline": 102,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP3_2m_furn_RM_AncientStasisLocker_Refurbished",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_AncientStasisLocker_Refurbished",
+    "at": [
+     11,
+     6
+    ],
+    "planned": [
+     "RM_AncientStasisLocker_Refurbished",
+     11,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 2.0,
+    "hp": 250,
+    "hpBaseline": 250,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP3_2m_mini_Armchair",
+   "verdict": "PASS",
+   "got": {
+    "def": "MinifiedThing",
+    "at": [
+     6,
+     9
+    ],
+    "planned": [
+     "MinifiedThing",
+     6,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 2.0
+   }
+  },
+  {
+   "row": "BP3_2m_mini_EndTable",
+   "verdict": "PASS",
+   "got": {
+    "def": "MinifiedThing",
+    "at": [
+     7,
+     9
+    ],
+    "planned": [
+     "MinifiedThing",
+     7,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 2.0
+   }
+  },
+  {
+   "row": "BP3_2m_mini_RM_BrineCrock",
+   "verdict": "PASS",
+   "got": {
+    "def": "MinifiedThing",
+    "at": [
+     8,
+     9
+    ],
+    "planned": [
+     "MinifiedThing",
+     8,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 2.0
+   }
+  },
+  {
+   "row": "BP3_2m_corpse_Muffalo",
+   "verdict": "PASS",
+   "got": {
+    "def": "Corpse_Muffalo",
+    "at": [
+     9,
+     9
+    ],
+    "planned": [
+     "Corpse_Muffalo",
+     9,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 2.0
+   }
+  },
+  {
+   "row": "BP3_2m_corpse_Villager",
+   "verdict": "PASS",
+   "got": {
+    "def": "Corpse_Human",
+    "at": [
+     10,
+     9
+    ],
+    "planned": [
+     "Corpse_Villager",
+     10,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 2.0
+   }
+  },
+  {
+   "row": "BP3_2m_nothing_unplanned",
+   "verdict": "PASS",
+   "got": "every thing is on a planned cell"
+  },
+  {
+   "row": "BP3_2m_inside_margin",
+   "verdict": "PASS",
+   "got": "every thing's cell is at least 1 cells from each pit wall"
+  },
+  {
+   "row": "BP3_2m_label_expected",
+   "verdict": "PASS",
+   "got": {
+    "distinct": [
+     "Pit, 2.0 m water in 4.0 m"
+    ],
+    "cells": 256
+   }
+  },
+  {
+   "row": "BP4_3m_depth_fill",
+   "verdict": "PASS",
+   "got": "256 cells d=8 f=6"
+  },
+  {
+   "row": "BP4_3m_furn_SculptureGrand",
+   "verdict": "PASS",
+   "got": {
+    "def": "SculptureGrand",
+    "at": [
+     2,
+     2
+    ],
+    "planned": [
+     "SculptureGrand",
+     2,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 3.0,
+    "stuff": "Steel",
+    "hp": 300,
+    "hpBaseline": 300,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP4_3m_furn_DoubleBed",
+   "verdict": "PASS",
+   "got": {
+    "def": "DoubleBed",
+    "at": [
+     5,
+     2
+    ],
+    "planned": [
+     "DoubleBed",
+     5,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 3.0,
+    "stuff": "Steel",
+    "hp": 200,
+    "hpBaseline": 200,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP4_3m_furn_RM_GlowTank",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_GlowTank",
+    "at": [
+     8,
+     2
+    ],
+    "planned": [
+     "RM_GlowTank",
+     8,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 3.0,
+    "hp": 180,
+    "hpBaseline": 180,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP4_3m_furn_RM_HoseReel",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_HoseReel",
+    "at": [
+     11,
+     2
+    ],
+    "planned": [
+     "RM_HoseReel",
+     11,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 3.0,
+    "hp": 80,
+    "hpBaseline": 80,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP4_3m_furn_Table2x2c",
+   "verdict": "PASS",
+   "got": {
+    "def": "Table2x2c",
+    "at": [
+     2,
+     5
+    ],
+    "planned": [
+     "Table2x2c",
+     2,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 3.0,
+    "stuff": "Steel",
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP4_3m_furn_TableButcher",
+   "verdict": "PASS",
+   "got": {
+    "def": "TableButcher",
+    "at": [
+     5,
+     4
+    ],
+    "planned": [
+     "TableButcher",
+     5,
+     4
+    ],
+    "inPit": true,
+    "liquidOverM": 3.0,
+    "stuff": "Steel",
+    "hp": 180,
+    "hpBaseline": 180,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP4_3m_furn_HandTailoringBench",
+   "verdict": "PASS",
+   "got": {
+    "def": "HandTailoringBench",
+    "at": [
+     8,
+     4
+    ],
+    "planned": [
+     "HandTailoringBench",
+     8,
+     4
+    ],
+    "inPit": true,
+    "liquidOverM": 3.0,
+    "stuff": "Steel",
+    "hp": 180,
+    "hpBaseline": 180,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP4_3m_furn_SculptureLarge",
+   "verdict": "PASS",
+   "got": {
+    "def": "SculptureLarge",
+    "at": [
+     14,
+     4
+    ],
+    "planned": [
+     "SculptureLarge",
+     14,
+     4
+    ],
+    "inPit": true,
+    "liquidOverM": 3.0,
+    "stuff": "Steel",
+    "hp": 150,
+    "hpBaseline": 150,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP4_3m_furn_Bed",
+   "verdict": "PASS",
+   "got": {
+    "def": "Bed",
+    "at": [
+     13,
+     2
+    ],
+    "planned": [
+     "Bed",
+     13,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 3.0,
+    "stuff": "Steel",
+    "hp": 140,
+    "hpBaseline": 140,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP4_3m_furn_Shelf",
+   "verdict": "PASS",
+   "got": {
+    "def": "Shelf",
+    "at": [
+     11,
+     4
+    ],
+    "planned": [
+     "Shelf",
+     11,
+     4
+    ],
+    "inPit": true,
+    "liquidOverM": 3.0,
+    "stuff": "Steel",
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP4_3m_furn_Dresser",
+   "verdict": "PASS",
+   "got": {
+    "def": "Dresser",
+    "at": [
+     5,
+     5
+    ],
+    "planned": [
+     "Dresser",
+     5,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 3.0,
+    "stuff": "Steel",
+    "hp": 120,
+    "hpBaseline": 120,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP4_3m_furn_RM_ResinSealingJarShelf",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_ResinSealingJarShelf",
+    "at": [
+     8,
+     5
+    ],
+    "planned": [
+     "RM_ResinSealingJarShelf",
+     8,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 3.0,
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP4_3m_furn_Bedroll",
+   "verdict": "PASS",
+   "got": {
+    "def": "Bedroll",
+    "at": [
+     14,
+     2
+    ],
+    "planned": [
+     "Bedroll",
+     14,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 3.0,
+    "stuff": "Cloth",
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP4_3m_furn_Battery",
+   "verdict": "PASS",
+   "got": {
+    "def": "Battery",
+    "at": [
+     13,
+     5
+    ],
+    "planned": [
+     "Battery",
+     13,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 3.0,
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP4_3m_furn_PlantPot",
+   "verdict": "PASS",
+   "got": {
+    "def": "PlantPot",
+    "at": [
+     10,
+     5
+    ],
+    "planned": [
+     "PlantPot",
+     10,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 3.0,
+    "stuff": "Steel",
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP4_3m_furn_SculptureSmall",
+   "verdict": "PASS",
+   "got": {
+    "def": "SculptureSmall",
+    "at": [
+     11,
+     5
+    ],
+    "planned": [
+     "SculptureSmall",
+     11,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 3.0,
+    "stuff": "Steel",
+    "hp": 90,
+    "hpBaseline": 90,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP4_3m_furn_DiningChair",
+   "verdict": "PASS",
+   "got": {
+    "def": "DiningChair",
+    "at": [
+     12,
+     5
+    ],
+    "planned": [
+     "DiningChair",
+     12,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 3.0,
+    "stuff": "Steel",
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP4_3m_furn_Stool",
+   "verdict": "PASS",
+   "got": {
+    "def": "Stool",
+    "at": [
+     14,
+     5
+    ],
+    "planned": [
+     "Stool",
+     14,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 3.0,
+    "stuff": "Steel",
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP4_3m_furn_Armchair",
+   "verdict": "PASS",
+   "got": {
+    "def": "Armchair",
+    "at": [
+     4,
+     6
+    ],
+    "planned": [
+     "Armchair",
+     4,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 3.0,
+    "stuff": "Cloth",
+    "hp": 120,
+    "hpBaseline": 120,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP4_3m_furn_EndTable",
+   "verdict": "PASS",
+   "got": {
+    "def": "EndTable",
+    "at": [
+     5,
+     6
+    ],
+    "planned": [
+     "EndTable",
+     5,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 3.0,
+    "stuff": "Steel",
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP4_3m_furn_StandingLamp",
+   "verdict": "PASS",
+   "got": {
+    "def": "StandingLamp",
+    "at": [
+     6,
+     6
+    ],
+    "planned": [
+     "StandingLamp",
+     6,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 3.0,
+    "hp": 50,
+    "hpBaseline": 50,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP4_3m_furn_TorchLamp",
+   "verdict": "PASS",
+   "got": {
+    "def": "TorchLamp",
+    "at": [
+     7,
+     6
+    ],
+    "planned": [
+     "TorchLamp",
+     7,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 3.0,
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP4_3m_furn_Cooler",
+   "verdict": "PASS",
+   "got": {
+    "def": "Cooler",
+    "at": [
+     8,
+     6
+    ],
+    "planned": [
+     "Cooler",
+     8,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 3.0,
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP4_3m_furn_RM_BrineCrock",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_BrineCrock",
+    "at": [
+     9,
+     6
+    ],
+    "planned": [
+     "RM_BrineCrock",
+     9,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 3.0,
+    "hp": 80,
+    "hpBaseline": 80,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP4_3m_furn_RM_EvaporativeCrock",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_EvaporativeCrock",
+    "at": [
+     10,
+     6
+    ],
+    "planned": [
+     "RM_EvaporativeCrock",
+     10,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 3.0,
+    "stuff": "BlocksGranite",
+    "hp": 102,
+    "hpBaseline": 102,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP4_3m_furn_RM_AncientStasisLocker_Refurbished",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_AncientStasisLocker_Refurbished",
+    "at": [
+     11,
+     6
+    ],
+    "planned": [
+     "RM_AncientStasisLocker_Refurbished",
+     11,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 3.0,
+    "hp": 250,
+    "hpBaseline": 250,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP4_3m_mini_Armchair",
+   "verdict": "PASS",
+   "got": {
+    "def": "MinifiedThing",
+    "at": [
+     6,
+     9
+    ],
+    "planned": [
+     "MinifiedThing",
+     6,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 3.0
+   }
+  },
+  {
+   "row": "BP4_3m_mini_EndTable",
+   "verdict": "PASS",
+   "got": {
+    "def": "MinifiedThing",
+    "at": [
+     7,
+     9
+    ],
+    "planned": [
+     "MinifiedThing",
+     7,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 3.0
+   }
+  },
+  {
+   "row": "BP4_3m_mini_RM_BrineCrock",
+   "verdict": "PASS",
+   "got": {
+    "def": "MinifiedThing",
+    "at": [
+     8,
+     9
+    ],
+    "planned": [
+     "MinifiedThing",
+     8,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 3.0
+   }
+  },
+  {
+   "row": "BP4_3m_corpse_Muffalo",
+   "verdict": "PASS",
+   "got": {
+    "def": "Corpse_Muffalo",
+    "at": [
+     9,
+     9
+    ],
+    "planned": [
+     "Corpse_Muffalo",
+     9,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 3.0
+   }
+  },
+  {
+   "row": "BP4_3m_corpse_Villager",
+   "verdict": "PASS",
+   "got": {
+    "def": "Corpse_Human",
+    "at": [
+     10,
+     9
+    ],
+    "planned": [
+     "Corpse_Villager",
+     10,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 3.0
+   }
+  },
+  {
+   "row": "BP4_3m_nothing_unplanned",
+   "verdict": "PASS",
+   "got": "every thing is on a planned cell"
+  },
+  {
+   "row": "BP4_3m_inside_margin",
+   "verdict": "PASS",
+   "got": "every thing's cell is at least 1 cells from each pit wall"
+  },
+  {
+   "row": "BP4_3m_label_expected",
+   "verdict": "PASS",
+   "got": {
+    "distinct": [
+     "Pit, 3.0 m water in 4.0 m"
+    ],
+    "cells": 256
+   }
+  },
+  {
+   "row": "BP5_brim_depth_fill",
+   "verdict": "PASS",
+   "got": "256 cells d=8 f=8"
+  },
+  {
+   "row": "BP5_brim_furn_SculptureGrand",
+   "verdict": "PASS",
+   "got": {
+    "def": "SculptureGrand",
+    "at": [
+     2,
+     2
+    ],
+    "planned": [
+     "SculptureGrand",
+     2,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 4.0,
+    "stuff": "Steel",
+    "hp": 300,
+    "hpBaseline": 300,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP5_brim_furn_DoubleBed",
+   "verdict": "PASS",
+   "got": {
+    "def": "DoubleBed",
+    "at": [
+     5,
+     2
+    ],
+    "planned": [
+     "DoubleBed",
+     5,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 4.0,
+    "stuff": "Steel",
+    "hp": 200,
+    "hpBaseline": 200,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP5_brim_furn_RM_GlowTank",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_GlowTank",
+    "at": [
+     8,
+     2
+    ],
+    "planned": [
+     "RM_GlowTank",
+     8,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 4.0,
+    "hp": 180,
+    "hpBaseline": 180,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP5_brim_furn_RM_HoseReel",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_HoseReel",
+    "at": [
+     11,
+     2
+    ],
+    "planned": [
+     "RM_HoseReel",
+     11,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 4.0,
+    "hp": 80,
+    "hpBaseline": 80,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP5_brim_furn_Table2x2c",
+   "verdict": "PASS",
+   "got": {
+    "def": "Table2x2c",
+    "at": [
+     2,
+     5
+    ],
+    "planned": [
+     "Table2x2c",
+     2,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 4.0,
+    "stuff": "Steel",
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP5_brim_furn_TableButcher",
+   "verdict": "PASS",
+   "got": {
+    "def": "TableButcher",
+    "at": [
+     5,
+     4
+    ],
+    "planned": [
+     "TableButcher",
+     5,
+     4
+    ],
+    "inPit": true,
+    "liquidOverM": 4.0,
+    "stuff": "Steel",
+    "hp": 180,
+    "hpBaseline": 180,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP5_brim_furn_HandTailoringBench",
+   "verdict": "PASS",
+   "got": {
+    "def": "HandTailoringBench",
+    "at": [
+     8,
+     4
+    ],
+    "planned": [
+     "HandTailoringBench",
+     8,
+     4
+    ],
+    "inPit": true,
+    "liquidOverM": 4.0,
+    "stuff": "Steel",
+    "hp": 180,
+    "hpBaseline": 180,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP5_brim_furn_SculptureLarge",
+   "verdict": "PASS",
+   "got": {
+    "def": "SculptureLarge",
+    "at": [
+     14,
+     4
+    ],
+    "planned": [
+     "SculptureLarge",
+     14,
+     4
+    ],
+    "inPit": true,
+    "liquidOverM": 4.0,
+    "stuff": "Steel",
+    "hp": 150,
+    "hpBaseline": 150,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP5_brim_furn_Bed",
+   "verdict": "PASS",
+   "got": {
+    "def": "Bed",
+    "at": [
+     13,
+     2
+    ],
+    "planned": [
+     "Bed",
+     13,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 4.0,
+    "stuff": "Steel",
+    "hp": 140,
+    "hpBaseline": 140,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP5_brim_furn_Shelf",
+   "verdict": "PASS",
+   "got": {
+    "def": "Shelf",
+    "at": [
+     11,
+     4
+    ],
+    "planned": [
+     "Shelf",
+     11,
+     4
+    ],
+    "inPit": true,
+    "liquidOverM": 4.0,
+    "stuff": "Steel",
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP5_brim_furn_Dresser",
+   "verdict": "PASS",
+   "got": {
+    "def": "Dresser",
+    "at": [
+     5,
+     5
+    ],
+    "planned": [
+     "Dresser",
+     5,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 4.0,
+    "stuff": "Steel",
+    "hp": 120,
+    "hpBaseline": 120,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP5_brim_furn_RM_ResinSealingJarShelf",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_ResinSealingJarShelf",
+    "at": [
+     8,
+     5
+    ],
+    "planned": [
+     "RM_ResinSealingJarShelf",
+     8,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 4.0,
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP5_brim_furn_Bedroll",
+   "verdict": "PASS",
+   "got": {
+    "def": "Bedroll",
+    "at": [
+     14,
+     2
+    ],
+    "planned": [
+     "Bedroll",
+     14,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 4.0,
+    "stuff": "Cloth",
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP5_brim_furn_Battery",
+   "verdict": "PASS",
+   "got": {
+    "def": "Battery",
+    "at": [
+     13,
+     5
+    ],
+    "planned": [
+     "Battery",
+     13,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 4.0,
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP5_brim_furn_PlantPot",
+   "verdict": "PASS",
+   "got": {
+    "def": "PlantPot",
+    "at": [
+     10,
+     5
+    ],
+    "planned": [
+     "PlantPot",
+     10,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 4.0,
+    "stuff": "Steel",
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP5_brim_furn_SculptureSmall",
+   "verdict": "PASS",
+   "got": {
+    "def": "SculptureSmall",
+    "at": [
+     11,
+     5
+    ],
+    "planned": [
+     "SculptureSmall",
+     11,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 4.0,
+    "stuff": "Steel",
+    "hp": 90,
+    "hpBaseline": 90,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP5_brim_furn_DiningChair",
+   "verdict": "PASS",
+   "got": {
+    "def": "DiningChair",
+    "at": [
+     12,
+     5
+    ],
+    "planned": [
+     "DiningChair",
+     12,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 4.0,
+    "stuff": "Steel",
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP5_brim_furn_Stool",
+   "verdict": "PASS",
+   "got": {
+    "def": "Stool",
+    "at": [
+     14,
+     5
+    ],
+    "planned": [
+     "Stool",
+     14,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 4.0,
+    "stuff": "Steel",
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP5_brim_furn_Armchair",
+   "verdict": "PASS",
+   "got": {
+    "def": "Armchair",
+    "at": [
+     4,
+     6
+    ],
+    "planned": [
+     "Armchair",
+     4,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 4.0,
+    "stuff": "Cloth",
+    "hp": 120,
+    "hpBaseline": 120,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP5_brim_furn_EndTable",
+   "verdict": "PASS",
+   "got": {
+    "def": "EndTable",
+    "at": [
+     5,
+     6
+    ],
+    "planned": [
+     "EndTable",
+     5,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 4.0,
+    "stuff": "Steel",
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP5_brim_furn_StandingLamp",
+   "verdict": "PASS",
+   "got": {
+    "def": "StandingLamp",
+    "at": [
+     6,
+     6
+    ],
+    "planned": [
+     "StandingLamp",
+     6,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 4.0,
+    "hp": 50,
+    "hpBaseline": 50,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP5_brim_furn_TorchLamp",
+   "verdict": "PASS",
+   "got": {
+    "def": "TorchLamp",
+    "at": [
+     7,
+     6
+    ],
+    "planned": [
+     "TorchLamp",
+     7,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 4.0,
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP5_brim_furn_Cooler",
+   "verdict": "PASS",
+   "got": {
+    "def": "Cooler",
+    "at": [
+     8,
+     6
+    ],
+    "planned": [
+     "Cooler",
+     8,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 4.0,
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP5_brim_furn_RM_BrineCrock",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_BrineCrock",
+    "at": [
+     9,
+     6
+    ],
+    "planned": [
+     "RM_BrineCrock",
+     9,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 4.0,
+    "hp": 80,
+    "hpBaseline": 80,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP5_brim_furn_RM_EvaporativeCrock",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_EvaporativeCrock",
+    "at": [
+     10,
+     6
+    ],
+    "planned": [
+     "RM_EvaporativeCrock",
+     10,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 4.0,
+    "stuff": "BlocksGranite",
+    "hp": 102,
+    "hpBaseline": 102,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP5_brim_furn_RM_AncientStasisLocker_Refurbished",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_AncientStasisLocker_Refurbished",
+    "at": [
+     11,
+     6
+    ],
+    "planned": [
+     "RM_AncientStasisLocker_Refurbished",
+     11,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 4.0,
+    "hp": 250,
+    "hpBaseline": 250,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP5_brim_mini_Armchair",
+   "verdict": "PASS",
+   "got": {
+    "def": "MinifiedThing",
+    "at": [
+     6,
+     9
+    ],
+    "planned": [
+     "MinifiedThing",
+     6,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 4.0
+   }
+  },
+  {
+   "row": "BP5_brim_mini_EndTable",
+   "verdict": "PASS",
+   "got": {
+    "def": "MinifiedThing",
+    "at": [
+     7,
+     9
+    ],
+    "planned": [
+     "MinifiedThing",
+     7,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 4.0
+   }
+  },
+  {
+   "row": "BP5_brim_mini_RM_BrineCrock",
+   "verdict": "PASS",
+   "got": {
+    "def": "MinifiedThing",
+    "at": [
+     8,
+     9
+    ],
+    "planned": [
+     "MinifiedThing",
+     8,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 4.0
+   }
+  },
+  {
+   "row": "BP5_brim_corpse_Muffalo",
+   "verdict": "PASS",
+   "got": {
+    "def": "Corpse_Muffalo",
+    "at": [
+     9,
+     9
+    ],
+    "planned": [
+     "Corpse_Muffalo",
+     9,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 4.0
+   }
+  },
+  {
+   "row": "BP5_brim_corpse_Villager",
+   "verdict": "PASS",
+   "got": {
+    "def": "Corpse_Human",
+    "at": [
+     10,
+     9
+    ],
+    "planned": [
+     "Corpse_Villager",
+     10,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 4.0
+   }
+  },
+  {
+   "row": "BP5_brim_nothing_unplanned",
+   "verdict": "PASS",
+   "got": "every thing is on a planned cell"
+  },
+  {
+   "row": "BP5_brim_inside_margin",
+   "verdict": "PASS",
+   "got": "every thing's cell is at least 1 cells from each pit wall"
+  },
+  {
+   "row": "BP5_brim_label_expected",
+   "verdict": "PASS",
+   "got": {
+    "distinct": [
+     "Pit, 4.0 m water in 4.0 m"
+    ],
+    "cells": 256
+   }
+  },
+  {
+   "row": "BP6_tar1.5m_depth_fill",
+   "verdict": "PASS",
+   "got": "256 cells d=8 f=3"
+  },
+  {
+   "row": "BP6_tar1.5m_furn_SculptureGrand",
+   "verdict": "PASS",
+   "got": {
+    "def": "SculptureGrand",
+    "at": [
+     2,
+     2
+    ],
+    "planned": [
+     "SculptureGrand",
+     2,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 1.5,
+    "stuff": "Steel",
+    "hp": 300,
+    "hpBaseline": 300,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP6_tar1.5m_furn_DoubleBed",
+   "verdict": "PASS",
+   "got": {
+    "def": "DoubleBed",
+    "at": [
+     5,
+     2
+    ],
+    "planned": [
+     "DoubleBed",
+     5,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 1.5,
+    "stuff": "Steel",
+    "hp": 200,
+    "hpBaseline": 200,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP6_tar1.5m_furn_RM_GlowTank",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_GlowTank",
+    "at": [
+     8,
+     2
+    ],
+    "planned": [
+     "RM_GlowTank",
+     8,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 1.5,
+    "hp": 180,
+    "hpBaseline": 180,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP6_tar1.5m_furn_RM_HoseReel",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_HoseReel",
+    "at": [
+     11,
+     2
+    ],
+    "planned": [
+     "RM_HoseReel",
+     11,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 1.5,
+    "hp": 80,
+    "hpBaseline": 80,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP6_tar1.5m_furn_Table2x2c",
+   "verdict": "PASS",
+   "got": {
+    "def": "Table2x2c",
+    "at": [
+     2,
+     5
+    ],
+    "planned": [
+     "Table2x2c",
+     2,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 1.5,
+    "stuff": "Steel",
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP6_tar1.5m_furn_TableButcher",
+   "verdict": "PASS",
+   "got": {
+    "def": "TableButcher",
+    "at": [
+     5,
+     4
+    ],
+    "planned": [
+     "TableButcher",
+     5,
+     4
+    ],
+    "inPit": true,
+    "liquidOverM": 1.5,
+    "stuff": "Steel",
+    "hp": 180,
+    "hpBaseline": 180,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP6_tar1.5m_furn_HandTailoringBench",
+   "verdict": "PASS",
+   "got": {
+    "def": "HandTailoringBench",
+    "at": [
+     8,
+     4
+    ],
+    "planned": [
+     "HandTailoringBench",
+     8,
+     4
+    ],
+    "inPit": true,
+    "liquidOverM": 1.5,
+    "stuff": "Steel",
+    "hp": 180,
+    "hpBaseline": 180,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP6_tar1.5m_furn_SculptureLarge",
+   "verdict": "PASS",
+   "got": {
+    "def": "SculptureLarge",
+    "at": [
+     14,
+     4
+    ],
+    "planned": [
+     "SculptureLarge",
+     14,
+     4
+    ],
+    "inPit": true,
+    "liquidOverM": 1.5,
+    "stuff": "Steel",
+    "hp": 150,
+    "hpBaseline": 150,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP6_tar1.5m_furn_Bed",
+   "verdict": "PASS",
+   "got": {
+    "def": "Bed",
+    "at": [
+     13,
+     2
+    ],
+    "planned": [
+     "Bed",
+     13,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 1.5,
+    "stuff": "Steel",
+    "hp": 140,
+    "hpBaseline": 140,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP6_tar1.5m_furn_Shelf",
+   "verdict": "PASS",
+   "got": {
+    "def": "Shelf",
+    "at": [
+     11,
+     4
+    ],
+    "planned": [
+     "Shelf",
+     11,
+     4
+    ],
+    "inPit": true,
+    "liquidOverM": 1.5,
+    "stuff": "Steel",
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP6_tar1.5m_furn_Dresser",
+   "verdict": "PASS",
+   "got": {
+    "def": "Dresser",
+    "at": [
+     5,
+     5
+    ],
+    "planned": [
+     "Dresser",
+     5,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 1.5,
+    "stuff": "Steel",
+    "hp": 120,
+    "hpBaseline": 120,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP6_tar1.5m_furn_RM_ResinSealingJarShelf",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_ResinSealingJarShelf",
+    "at": [
+     8,
+     5
+    ],
+    "planned": [
+     "RM_ResinSealingJarShelf",
+     8,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 1.5,
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP6_tar1.5m_furn_Bedroll",
+   "verdict": "PASS",
+   "got": {
+    "def": "Bedroll",
+    "at": [
+     14,
+     2
+    ],
+    "planned": [
+     "Bedroll",
+     14,
+     2
+    ],
+    "inPit": true,
+    "liquidOverM": 1.5,
+    "stuff": "Cloth",
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP6_tar1.5m_furn_Battery",
+   "verdict": "PASS",
+   "got": {
+    "def": "Battery",
+    "at": [
+     13,
+     5
+    ],
+    "planned": [
+     "Battery",
+     13,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 1.5,
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP6_tar1.5m_furn_PlantPot",
+   "verdict": "PASS",
+   "got": {
+    "def": "PlantPot",
+    "at": [
+     10,
+     5
+    ],
+    "planned": [
+     "PlantPot",
+     10,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 1.5,
+    "stuff": "Steel",
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP6_tar1.5m_furn_SculptureSmall",
+   "verdict": "PASS",
+   "got": {
+    "def": "SculptureSmall",
+    "at": [
+     11,
+     5
+    ],
+    "planned": [
+     "SculptureSmall",
+     11,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 1.5,
+    "stuff": "Steel",
+    "hp": 90,
+    "hpBaseline": 90,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP6_tar1.5m_furn_DiningChair",
+   "verdict": "PASS",
+   "got": {
+    "def": "DiningChair",
+    "at": [
+     12,
+     5
+    ],
+    "planned": [
+     "DiningChair",
+     12,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 1.5,
+    "stuff": "Steel",
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP6_tar1.5m_furn_Stool",
+   "verdict": "PASS",
+   "got": {
+    "def": "Stool",
+    "at": [
+     14,
+     5
+    ],
+    "planned": [
+     "Stool",
+     14,
+     5
+    ],
+    "inPit": true,
+    "liquidOverM": 1.5,
+    "stuff": "Steel",
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP6_tar1.5m_furn_Armchair",
+   "verdict": "PASS",
+   "got": {
+    "def": "Armchair",
+    "at": [
+     4,
+     6
+    ],
+    "planned": [
+     "Armchair",
+     4,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 1.5,
+    "stuff": "Cloth",
+    "hp": 120,
+    "hpBaseline": 120,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP6_tar1.5m_furn_EndTable",
+   "verdict": "PASS",
+   "got": {
+    "def": "EndTable",
+    "at": [
+     5,
+     6
+    ],
+    "planned": [
+     "EndTable",
+     5,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 1.5,
+    "stuff": "Steel",
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP6_tar1.5m_furn_StandingLamp",
+   "verdict": "PASS",
+   "got": {
+    "def": "StandingLamp",
+    "at": [
+     6,
+     6
+    ],
+    "planned": [
+     "StandingLamp",
+     6,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 1.5,
+    "hp": 50,
+    "hpBaseline": 50,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP6_tar1.5m_furn_TorchLamp",
+   "verdict": "PASS",
+   "got": {
+    "def": "TorchLamp",
+    "at": [
+     7,
+     6
+    ],
+    "planned": [
+     "TorchLamp",
+     7,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 1.5,
+    "hp": 75,
+    "hpBaseline": 75,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP6_tar1.5m_furn_Cooler",
+   "verdict": "PASS",
+   "got": {
+    "def": "Cooler",
+    "at": [
+     8,
+     6
+    ],
+    "planned": [
+     "Cooler",
+     8,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 1.5,
+    "hp": 100,
+    "hpBaseline": 100,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP6_tar1.5m_furn_RM_BrineCrock",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_BrineCrock",
+    "at": [
+     9,
+     6
+    ],
+    "planned": [
+     "RM_BrineCrock",
+     9,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 1.5,
+    "hp": 80,
+    "hpBaseline": 80,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP6_tar1.5m_furn_RM_EvaporativeCrock",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_EvaporativeCrock",
+    "at": [
+     10,
+     6
+    ],
+    "planned": [
+     "RM_EvaporativeCrock",
+     10,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 1.5,
+    "stuff": "BlocksGranite",
+    "hp": 102,
+    "hpBaseline": 102,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP6_tar1.5m_furn_RM_AncientStasisLocker_Refurbished",
+   "verdict": "PASS",
+   "got": {
+    "def": "RM_AncientStasisLocker_Refurbished",
+    "at": [
+     11,
+     6
+    ],
+    "planned": [
+     "RM_AncientStasisLocker_Refurbished",
+     11,
+     6
+    ],
+    "inPit": true,
+    "liquidOverM": 1.5,
+    "hp": 250,
+    "hpBaseline": 250,
+    "hpVerdict": "PASS"
+   }
+  },
+  {
+   "row": "BP6_tar1.5m_mini_Armchair",
+   "verdict": "PASS",
+   "got": {
+    "def": "MinifiedThing",
+    "at": [
+     6,
+     9
+    ],
+    "planned": [
+     "MinifiedThing",
+     6,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 1.5
+   }
+  },
+  {
+   "row": "BP6_tar1.5m_mini_EndTable",
+   "verdict": "PASS",
+   "got": {
+    "def": "MinifiedThing",
+    "at": [
+     7,
+     9
+    ],
+    "planned": [
+     "MinifiedThing",
+     7,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 1.5
+   }
+  },
+  {
+   "row": "BP6_tar1.5m_mini_RM_BrineCrock",
+   "verdict": "PASS",
+   "got": {
+    "def": "MinifiedThing",
+    "at": [
+     8,
+     9
+    ],
+    "planned": [
+     "MinifiedThing",
+     8,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 1.5
+   }
+  },
+  {
+   "row": "BP6_tar1.5m_corpse_Muffalo",
+   "verdict": "PASS",
+   "got": {
+    "def": "Corpse_Muffalo",
+    "at": [
+     9,
+     9
+    ],
+    "planned": [
+     "Corpse_Muffalo",
+     9,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 1.5
+   }
+  },
+  {
+   "row": "BP6_tar1.5m_corpse_Villager",
+   "verdict": "PASS",
+   "got": {
+    "def": "Corpse_Human",
+    "at": [
+     10,
+     9
+    ],
+    "planned": [
+     "Corpse_Villager",
+     10,
+     9
+    ],
+    "inPit": true,
+    "liquidOverM": 1.5
+   }
+  },
+  {
+   "row": "BP6_tar1.5m_nothing_unplanned",
+   "verdict": "PASS",
+   "got": "every thing is on a planned cell"
+  },
+  {
+   "row": "BP6_tar1.5m_inside_margin",
+   "verdict": "PASS",
+   "got": "every thing's cell is at least 1 cells from each pit wall"
+  },
+  {
+   "row": "BP6_tar1.5m_label_expected",
+   "verdict": "PASS",
+   "got": {
+    "distinct": [
+     "Pit, 1.5 m tar in 4.0 m"
+    ],
+    "cells": 256
+   }
+  },
+  {
+   "row": "BP1_0.5m_same_as_dry_copy",
+   "verdict": "PASS",
+   "got": "66 things identical in def, offset and stack"
+  },
+  {
+   "row": "BP2_1m_same_as_dry_copy",
+   "verdict": "PASS",
+   "got": "66 things identical in def, offset and stack"
+  },
+  {
+   "row": "BP3_2m_same_as_dry_copy",
+   "verdict": "PASS",
+   "got": "66 things identical in def, offset and stack"
+  },
+  {
+   "row": "BP4_3m_same_as_dry_copy",
+   "verdict": "PASS",
+   "got": "66 things identical in def, offset and stack"
+  },
+  {
+   "row": "BP5_brim_same_as_dry_copy",
+   "verdict": "PASS",
+   "got": "66 things identical in def, offset and stack"
+  },
+  {
+   "row": "BP6_tar1.5m_same_as_dry_copy",
+   "verdict": "PASS",
+   "got": "66 things identical in def, offset and stack"
+  },
+  {
+   "row": "label_onscreen_text",
+   "verdict": "UNMEASURED",
+   "got": "no bridge reader for RM_MapComponent_Excavation.PitLabelAt (instance method; mouseover only): expected text recorded, actual text owed (item RIMMANDRAKE_ADD_PIT_LABEL_STATE_READER_MOUSEOVER_HAS_NONE)"
+  }
+ ]
+}

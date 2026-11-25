@@ -1,0 +1,25 @@
+{
+ "log": [
+  {
+   "plan": {
+    "origin": [
+     40,
+     89
+    ],
+    "things": 66,
+    "stuffed_defs": 21,
+    "geysers_on_map": 5
+   }
+  },
+  {
+   "elapsed_s": 5.8
+  }
+ ],
+ "rows": [
+  {
+   "row": "plan",
+   "verdict": "PASS",
+   "got": "origin (40, 89), 66 things, all inside the 14x14 interior (margin 1)"
+  }
+ ]
+}

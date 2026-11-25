@@ -1,0 +1,3 @@
+PASS \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_THIRTEEN.det\design\concepts\FlowWorks\version\in_game\visit_13\evidence\sc_pit_crowd_20261125T094844.json 
+[bridge split] 37.8 s wall: load 0.7 / ticks 1.2 / reads 4.0 / other 7.3 / outside calls 24.7 s
+[bridge split] WARN 57 calls of jawa/window_list_close (2.2 s): batch them

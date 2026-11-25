@@ -1,0 +1,1208 @@
+{
+ "origin": [
+  40,
+  89
+ ],
+ "map_size": 250,
+ "geysers": [
+  [
+   192,
+   184
+  ],
+  [
+   162,
+   97
+  ],
+  [
+   222,
+   69
+  ],
+  [
+   59,
+   141
+  ],
+  [
+   129,
+   211
+  ]
+ ],
+ "sizes": {
+  "Cloth": [
+   1,
+   1
+  ],
+  "Meat_Cow": [
+   1,
+   1
+  ],
+  "DoubleBed": [
+   2,
+   2
+  ],
+  "ChunkGranite": [
+   1,
+   1
+  ],
+  "Chocolate": [
+   1,
+   1
+  ],
+  "Novel": [
+   1,
+   1
+  ],
+  "Gun_Revolver": [
+   1,
+   1
+  ],
+  "RM_BrineCrock": [
+   1,
+   1
+  ],
+  "Leather_Plain": [
+   1,
+   1
+  ],
+  "Plasteel": [
+   1,
+   1
+  ],
+  "Apparel_Parka": [
+   1,
+   1
+  ],
+  "RM_AmberAgedMeat": [
+   1,
+   1
+  ],
+  "MedicineHerbal": [
+   1,
+   1
+  ],
+  "RM_ResinSealingJarShelf": [
+   2,
+   1
+  ],
+  "Gold": [
+   1,
+   1
+  ],
+  "SculptureLarge": [
+   1,
+   1
+  ],
+  "Silver": [
+   1,
+   1
+  ],
+  "Stool": [
+   1,
+   1
+  ],
+  "Pemmican": [
+   1,
+   1
+  ],
+  "TableButcher": [
+   3,
+   1
+  ],
+  "Shelf": [
+   2,
+   1
+  ],
+  "MealFine": [
+   1,
+   1
+  ],
+  "RawPotatoes": [
+   1,
+   1
+  ],
+  "ComponentIndustrial": [
+   1,
+   1
+  ],
+  "Table2x2c": [
+   2,
+   2
+  ],
+  "EndTable": [
+   1,
+   1
+  ],
+  "Dresser": [
+   2,
+   1
+  ],
+  "RM_ResinSealedFruit": [
+   1,
+   1
+  ],
+  "RM_HoseReel": [
+   2,
+   2
+  ],
+  "HandTailoringBench": [
+   3,
+   1
+  ],
+  "Steel": [
+   1,
+   1
+  ],
+  "Battery": [
+   1,
+   2
+  ],
+  "MedicineIndustrial": [
+   1,
+   1
+  ],
+  "RM_AncientStasisLocker_Refurbished": [
+   1,
+   1
+  ],
+  "ChunkSlagSteel": [
+   1,
+   1
+  ],
+  "RM_GlowTank": [
+   2,
+   2
+  ],
+  "PlantPot": [
+   1,
+   1
+  ],
+  "Shell_EMP": [
+   1,
+   1
+  ],
+  "Apparel_CowboyHat": [
+   1,
+   1
+  ],
+  "Cooler": [
+   1,
+   1
+  ],
+  "MeleeWeapon_LongSword": [
+   1,
+   1
+  ],
+  "MealSimple": [
+   1,
+   1
+  ],
+  "TorchLamp": [
+   1,
+   1
+  ],
+  "RM_ResinSealedMeat": [
+   1,
+   1
+  ],
+  "Armchair": [
+   1,
+   1
+  ],
+  "SculptureGrand": [
+   2,
+   2
+  ],
+  "Hay": [
+   1,
+   1
+  ],
+  "Apparel_FlakVest": [
+   1,
+   1
+  ],
+  "Shell_HighExplosive": [
+   1,
+   1
+  ],
+  "Gun_BoltActionRifle": [
+   1,
+   1
+  ],
+  "RM_EvaporativeCrock": [
+   1,
+   1
+  ],
+  "Jade": [
+   1,
+   1
+  ],
+  "Bed": [
+   1,
+   2
+  ],
+  "SculptureSmall": [
+   1,
+   1
+  ],
+  "Beer": [
+   1,
+   1
+  ],
+  "Neutroamine": [
+   1,
+   1
+  ],
+  "WoodLog": [
+   1,
+   1
+  ],
+  "StandingLamp": [
+   1,
+   1
+  ],
+  "DiningChair": [
+   1,
+   1
+  ],
+  "Bedroll": [
+   1,
+   2
+  ],
+  "MeleeWeapon_Knife": [
+   1,
+   1
+  ]
+ },
+ "stuff": {
+  "DoubleBed": "Steel",
+  "Apparel_Parka": "Cloth",
+  "SculptureLarge": "Steel",
+  "Stool": "Steel",
+  "TableButcher": "Steel",
+  "Shelf": "Steel",
+  "Table2x2c": "Steel",
+  "EndTable": "Steel",
+  "Dresser": "Steel",
+  "HandTailoringBench": "Steel",
+  "PlantPot": "Steel",
+  "Apparel_CowboyHat": "Cloth",
+  "MeleeWeapon_LongSword": "Steel",
+  "Armchair": "Cloth",
+  "SculptureGrand": "Steel",
+  "RM_EvaporativeCrock": "BlocksGranite",
+  "Bed": "Steel",
+  "SculptureSmall": "Steel",
+  "DiningChair": "Steel",
+  "Bedroll": "Cloth",
+  "MeleeWeapon_Knife": "Steel"
+ },
+ "things": [
+  [
+   "furn",
+   "furn:SculptureGrand",
+   "SculptureGrand",
+   "Core",
+   [
+    2,
+    2
+   ],
+   1
+  ],
+  [
+   "furn",
+   "furn:DoubleBed",
+   "DoubleBed",
+   "Core",
+   [
+    5,
+    2
+   ],
+   1
+  ],
+  [
+   "furn",
+   "furn:RM_GlowTank",
+   "RM_GlowTank",
+   "RimMandrake LuminousPigment",
+   [
+    8,
+    2
+   ],
+   1
+  ],
+  [
+   "furn",
+   "furn:RM_HoseReel",
+   "RM_HoseReel",
+   "RimMandrake FlowWorks",
+   [
+    11,
+    2
+   ],
+   1
+  ],
+  [
+   "furn",
+   "furn:Table2x2c",
+   "Table2x2c",
+   "Core",
+   [
+    2,
+    5
+   ],
+   1
+  ],
+  [
+   "furn",
+   "furn:TableButcher",
+   "TableButcher",
+   "Core",
+   [
+    5,
+    4
+   ],
+   1
+  ],
+  [
+   "furn",
+   "furn:HandTailoringBench",
+   "HandTailoringBench",
+   "Core",
+   [
+    8,
+    4
+   ],
+   1
+  ],
+  [
+   "furn",
+   "furn:SculptureLarge",
+   "SculptureLarge",
+   "Core",
+   [
+    14,
+    4
+   ],
+   1
+  ],
+  [
+   "furn",
+   "furn:Bed",
+   "Bed",
+   "Core",
+   [
+    13,
+    2
+   ],
+   1
+  ],
+  [
+   "furn",
+   "furn:Shelf",
+   "Shelf",
+   "Core",
+   [
+    11,
+    4
+   ],
+   1
+  ],
+  [
+   "furn",
+   "furn:Dresser",
+   "Dresser",
+   "Core",
+   [
+    5,
+    5
+   ],
+   1
+  ],
+  [
+   "furn",
+   "furn:RM_ResinSealingJarShelf",
+   "RM_ResinSealingJarShelf",
+   "RimMandrake ColdStorage",
+   [
+    8,
+    5
+   ],
+   1
+  ],
+  [
+   "furn",
+   "furn:Bedroll",
+   "Bedroll",
+   "Core",
+   [
+    14,
+    2
+   ],
+   1
+  ],
+  [
+   "furn",
+   "furn:Battery",
+   "Battery",
+   "Core",
+   [
+    13,
+    5
+   ],
+   1
+  ],
+  [
+   "furn",
+   "furn:PlantPot",
+   "PlantPot",
+   "Core",
+   [
+    10,
+    5
+   ],
+   1
+  ],
+  [
+   "furn",
+   "furn:SculptureSmall",
+   "SculptureSmall",
+   "Core",
+   [
+    11,
+    5
+   ],
+   1
+  ],
+  [
+   "furn",
+   "furn:DiningChair",
+   "DiningChair",
+   "Core",
+   [
+    12,
+    5
+   ],
+   1
+  ],
+  [
+   "furn",
+   "furn:Stool",
+   "Stool",
+   "Core",
+   [
+    14,
+    5
+   ],
+   1
+  ],
+  [
+   "furn",
+   "furn:Armchair",
+   "Armchair",
+   "Core",
+   [
+    4,
+    6
+   ],
+   1
+  ],
+  [
+   "furn",
+   "furn:EndTable",
+   "EndTable",
+   "Core",
+   [
+    5,
+    6
+   ],
+   1
+  ],
+  [
+   "furn",
+   "furn:StandingLamp",
+   "StandingLamp",
+   "Core",
+   [
+    6,
+    6
+   ],
+   1
+  ],
+  [
+   "furn",
+   "furn:TorchLamp",
+   "TorchLamp",
+   "Core",
+   [
+    7,
+    6
+   ],
+   1
+  ],
+  [
+   "furn",
+   "furn:Cooler",
+   "Cooler",
+   "Core",
+   [
+    8,
+    6
+   ],
+   1
+  ],
+  [
+   "furn",
+   "furn:RM_BrineCrock",
+   "RM_BrineCrock",
+   "RimMandrake ColdStorage",
+   [
+    9,
+    6
+   ],
+   1
+  ],
+  [
+   "furn",
+   "furn:RM_EvaporativeCrock",
+   "RM_EvaporativeCrock",
+   "RimMandrake ColdStorage",
+   [
+    10,
+    6
+   ],
+   1
+  ],
+  [
+   "furn",
+   "furn:RM_AncientStasisLocker_Refurbished",
+   "RM_AncientStasisLocker_Refurbished",
+   "RimMandrake ColdStorage",
+   [
+    11,
+    6
+   ],
+   1
+  ],
+  [
+   "item",
+   "item:0:WoodLog",
+   "WoodLog",
+   "Core",
+   [
+    12,
+    6
+   ],
+   75
+  ],
+  [
+   "item",
+   "item:1:Plasteel",
+   "Plasteel",
+   "Core",
+   [
+    14,
+    6
+   ],
+   10
+  ],
+  [
+   "item",
+   "item:2:Gold",
+   "Gold",
+   "Core",
+   [
+    1,
+    7
+   ],
+   50
+  ],
+  [
+   "item",
+   "item:3:ComponentIndustrial",
+   "ComponentIndustrial",
+   "Core",
+   [
+    2,
+    7
+   ],
+   3
+  ],
+  [
+   "item",
+   "item:4:Cloth",
+   "Cloth",
+   "Core",
+   [
+    3,
+    7
+   ],
+   60
+  ],
+  [
+   "item",
+   "item:5:Hay",
+   "Hay",
+   "Core",
+   [
+    4,
+    7
+   ],
+   40
+  ],
+  [
+   "item",
+   "item:6:Silver",
+   "Silver",
+   "Core",
+   [
+    5,
+    7
+   ],
+   500
+  ],
+  [
+   "item",
+   "item:7:Steel",
+   "Steel",
+   "Core",
+   [
+    6,
+    7
+   ],
+   1
+  ],
+  [
+   "item",
+   "item:8:Leather_Plain",
+   "Leather_Plain",
+   "Core",
+   [
+    7,
+    7
+   ],
+   30
+  ],
+  [
+   "item",
+   "item:9:MealSimple",
+   "MealSimple",
+   "Core",
+   [
+    8,
+    7
+   ],
+   1
+  ],
+  [
+   "item",
+   "item:10:MealFine",
+   "MealFine",
+   "Core",
+   [
+    9,
+    7
+   ],
+   5
+  ],
+  [
+   "item",
+   "item:11:RawPotatoes",
+   "RawPotatoes",
+   "Core",
+   [
+    10,
+    7
+   ],
+   40
+  ],
+  [
+   "item",
+   "item:12:Meat_Cow",
+   "Meat_Cow",
+   "Core",
+   [
+    11,
+    7
+   ],
+   60
+  ],
+  [
+   "item",
+   "item:13:Pemmican",
+   "Pemmican",
+   "Core",
+   [
+    12,
+    7
+   ],
+   75
+  ],
+  [
+   "item",
+   "item:14:Beer",
+   "Beer",
+   "Core",
+   [
+    13,
+    7
+   ],
+   10
+  ],
+  [
+   "item",
+   "item:15:Chocolate",
+   "Chocolate",
+   "Core",
+   [
+    14,
+    7
+   ],
+   20
+  ],
+  [
+   "item",
+   "item:16:MedicineIndustrial",
+   "MedicineIndustrial",
+   "Core",
+   [
+    1,
+    8
+   ],
+   5
+  ],
+  [
+   "item",
+   "item:17:MedicineHerbal",
+   "MedicineHerbal",
+   "Core",
+   [
+    2,
+    8
+   ],
+   1
+  ],
+  [
+   "item",
+   "item:18:Neutroamine",
+   "Neutroamine",
+   "Core",
+   [
+    3,
+    8
+   ],
+   25
+  ],
+  [
+   "item",
+   "item:19:MeleeWeapon_Knife",
+   "MeleeWeapon_Knife",
+   "Core",
+   [
+    4,
+    8
+   ],
+   1
+  ],
+  [
+   "item",
+   "item:20:Gun_BoltActionRifle",
+   "Gun_BoltActionRifle",
+   "Core",
+   [
+    5,
+    8
+   ],
+   1
+  ],
+  [
+   "item",
+   "item:21:Gun_Revolver",
+   "Gun_Revolver",
+   "Core",
+   [
+    6,
+    8
+   ],
+   1
+  ],
+  [
+   "item",
+   "item:22:MeleeWeapon_LongSword",
+   "MeleeWeapon_LongSword",
+   "Core",
+   [
+    7,
+    8
+   ],
+   1
+  ],
+  [
+   "item",
+   "item:23:Apparel_Parka",
+   "Apparel_Parka",
+   "Core",
+   [
+    8,
+    8
+   ],
+   1
+  ],
+  [
+   "item",
+   "item:24:Apparel_CowboyHat",
+   "Apparel_CowboyHat",
+   "Core",
+   [
+    9,
+    8
+   ],
+   1
+  ],
+  [
+   "item",
+   "item:25:Apparel_FlakVest",
+   "Apparel_FlakVest",
+   "Core",
+   [
+    10,
+    8
+   ],
+   1
+  ],
+  [
+   "item",
+   "item:26:ChunkGranite",
+   "ChunkGranite",
+   "Core",
+   [
+    11,
+    8
+   ],
+   1
+  ],
+  [
+   "item",
+   "item:27:ChunkSlagSteel",
+   "ChunkSlagSteel",
+   "Core",
+   [
+    12,
+    8
+   ],
+   1
+  ],
+  [
+   "item",
+   "item:28:Shell_HighExplosive",
+   "Shell_HighExplosive",
+   "Core",
+   [
+    13,
+    8
+   ],
+   5
+  ],
+  [
+   "item",
+   "item:29:Shell_EMP",
+   "Shell_EMP",
+   "Core",
+   [
+    14,
+    8
+   ],
+   1
+  ],
+  [
+   "item",
+   "item:30:Jade",
+   "Jade",
+   "Core",
+   [
+    1,
+    9
+   ],
+   10
+  ],
+  [
+   "item",
+   "item:31:Novel",
+   "Novel",
+   "Core",
+   [
+    2,
+    9
+   ],
+   1
+  ],
+  [
+   "item",
+   "item:32:RM_ResinSealedMeat",
+   "RM_ResinSealedMeat",
+   "RimMandrake ColdStorage",
+   [
+    3,
+    9
+   ],
+   10
+  ],
+  [
+   "item",
+   "item:33:RM_ResinSealedFruit",
+   "RM_ResinSealedFruit",
+   "RimMandrake ColdStorage",
+   [
+    4,
+    9
+   ],
+   10
+  ],
+  [
+   "item",
+   "item:34:RM_AmberAgedMeat",
+   "RM_AmberAgedMeat",
+   "RimMandrake ColdStorage",
+   [
+    5,
+    9
+   ],
+   4
+  ],
+  [
+   "mini",
+   "mini:0:Armchair",
+   "Armchair",
+   "Core",
+   [
+    6,
+    9
+   ],
+   1
+  ],
+  [
+   "mini",
+   "mini:1:EndTable",
+   "EndTable",
+   "Core",
+   [
+    7,
+    9
+   ],
+   1
+  ],
+  [
+   "mini",
+   "mini:2:RM_BrineCrock",
+   "RM_BrineCrock",
+   "RimMandrake ColdStorage",
+   [
+    8,
+    9
+   ],
+   1
+  ],
+  [
+   "corpse",
+   "corpse:0:Muffalo",
+   "Muffalo",
+   "Core (animal corpse)",
+   [
+    9,
+    9
+   ],
+   1
+  ],
+  [
+   "corpse",
+   "corpse:1:Villager",
+   "Villager",
+   "Core (human corpse)",
+   [
+    10,
+    9
+   ],
+   1
+  ]
+ ],
+ "copies": [
+  [
+   "BP0_dry",
+   42,
+   111,
+   0,
+   null
+  ],
+  [
+   "BP1_0.5m",
+   61,
+   111,
+   1,
+   null
+  ],
+  [
+   "BP2_1m",
+   80,
+   111,
+   2,
+   null
+  ],
+  [
+   "BP3_2m",
+   99,
+   111,
+   4,
+   null
+  ],
+  [
+   "BP4_3m",
+   42,
+   91,
+   6,
+   null
+  ],
+  [
+   "BP5_brim",
+   61,
+   91,
+   8,
+   null
+  ],
+  [
+   "BP6_tar1.5m",
+   80,
+   91,
+   3,
+   "RM_Fluid_Tar"
+  ]
+ ],
+ "spare": [
+  104,
+  96,
+  6,
+  8
+ ],
+ "site": [
+  40,
+  89,
+  77,
+  43
+ ],
+ "captures": [
+  {
+   "name": "deepest_BP5_brim",
+   "cx": 69.0,
+   "cz": 99.0,
+   "rootSize": 13.0,
+   "rect": [
+    61,
+    91,
+    16,
+    16
+   ],
+   "why": "the deepest water copy (brim): owner asked for this one"
+  },
+  {
+   "name": "BP0_dry",
+   "cx": 50.0,
+   "cz": 119.0,
+   "rootSize": 13.0,
+   "rect": [
+    42,
+    111,
+    16,
+    16
+   ],
+   "why": "water fill 0 notches"
+  },
+  {
+   "name": "BP1_0.5m",
+   "cx": 69.0,
+   "cz": 119.0,
+   "rootSize": 13.0,
+   "rect": [
+    61,
+    111,
+    16,
+    16
+   ],
+   "why": "water fill 1 notches"
+  },
+  {
+   "name": "BP2_1m",
+   "cx": 88.0,
+   "cz": 119.0,
+   "rootSize": 13.0,
+   "rect": [
+    80,
+    111,
+    16,
+    16
+   ],
+   "why": "water fill 2 notches"
+  },
+  {
+   "name": "BP3_2m",
+   "cx": 107.0,
+   "cz": 119.0,
+   "rootSize": 13.0,
+   "rect": [
+    99,
+    111,
+    16,
+    16
+   ],
+   "why": "water fill 4 notches"
+  },
+  {
+   "name": "BP4_3m",
+   "cx": 50.0,
+   "cz": 99.0,
+   "rootSize": 13.0,
+   "rect": [
+    42,
+    91,
+    16,
+    16
+   ],
+   "why": "water fill 6 notches"
+  },
+  {
+   "name": "BP5_brim",
+   "cx": 69.0,
+   "cz": 99.0,
+   "rootSize": 13.0,
+   "rect": [
+    61,
+    91,
+    16,
+    16
+   ],
+   "why": "water fill 8 notches"
+  },
+  {
+   "name": "BP6_tar1.5m",
+   "cx": 88.0,
+   "cz": 99.0,
+   "rootSize": 13.0,
+   "rect": [
+    80,
+    91,
+    16,
+    16
+   ],
+   "why": "tar fill 3 notches"
+  },
+  {
+   "name": "overview",
+   "cx": 78.5,
+   "cz": 107.5,
+   "rootSize": 30.0,
+   "rect": [
+    40,
+    89,
+    77,
+    43
+   ],
+   "why": "the whole series"
+  }
+ ]
+}

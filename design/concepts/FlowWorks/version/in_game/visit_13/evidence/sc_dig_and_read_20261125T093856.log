@@ -1,0 +1,6 @@
+site save calm: CLEAN load 5.9s ready 10.7s 
+extensions: {'PASS': 4} in 94.0s -> \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_THIRTEEN.det\design\concepts\FlowWorks\version\in_game\visit_13\evidence\sc_dig_and_read_20261125T093856.json
+[modcheck] chain plot_H_depth_ladder START 17:39:23Z
+[modcheck] chain plot_H_depth_ladder END 68s PASS=4 FAIL=0 UNMEASURED=0 NOT_RUN=0 hold=7.4s body=59.3s teardown=1.3s
+[bridge split] 94.2 s wall: load 0.1 / ticks 2.0 / reads 5.0 / other 51.2 / outside calls 35.8 s
+[bridge split] WARN 112 calls of jawa/time_clock (4.6 s): batch them

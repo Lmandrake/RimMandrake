@@ -1,0 +1,3375 @@
+{
+ "chains": [
+  {
+   "name": "slime_slip",
+   "components": [
+    {
+     "name": "slime_slips_the_wader",
+     "toggle": "slimeSlipEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "execution": "ran",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "SLIME 1 enabled=True | Human21169@81,160 D=2 W=20000dL fluid=RM_Fluid_SlimeGreen ground=none slip=1.00 slips=0 climbSlips=0 moving=False",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_554b633f055c4814a34f3ec55ff1aff9",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 45
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "SLIME 1 enabled=True | Human21169@81,160 D=2 W=20000dL fluid=RM_Fluid_SlimeGreen ground=none slip=1.00 slips=0 climbSlips=0 moving=False",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+         "OperationId": "op_2c8fd57d740a4507845301df30a2d65c",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 39
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": false,
+        "message": "0/1 pawn(s) standing on (82,160) after 64 tick(s); 0 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21169. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 0,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+         "x": 82,
+         "z": 160
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 64,
+        "ticksRequested": 60,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 9,
+        "waitedSeconds": 0.9,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21169"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21169",
+          "name": "Slick",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 82,
+           "z": 160
+          },
+          "start": {
+           "x": 81,
+           "z": 160
+          },
+          "end": {
+           "x": 81,
+           "z": 160
+          },
+          "arrived": false,
+          "moved": false,
+          "distanceBefore": 1.0,
+          "distanceAfter": 1.0,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": true,
+          "pathDestination": {
+           "x": 82,
+           "z": 160
+          },
+          "curJob": "Goto",
+          "downed": false,
+          "note": "Still walking \u2014 en route, not stalled. Re-read with a larger waitTicks, or call again with waitTicks=0 to sample the position."
+         }
+        ],
+        "ticksGame": 67,
+        "operation": {
+         "OperationId": "op_81e1a720faec4fb1b91ca665b89eb2f9",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 1123
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 67
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": false,
+        "message": "0/1 pawn(s) standing on (83,160) after 62 tick(s); 0 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21169. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 0,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+         "x": 83,
+         "z": 160
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 62,
+        "ticksRequested": 60,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 9,
+        "waitedSeconds": 0.9,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21169"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21169",
+          "name": "Slick",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 83,
+           "z": 160
+          },
+          "start": {
+           "x": 81,
+           "z": 160
+          },
+          "end": {
+           "x": 81,
+           "z": 160
+          },
+          "arrived": false,
+          "moved": false,
+          "distanceBefore": 2.0,
+          "distanceAfter": 2.0,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": true,
+          "pathDestination": {
+           "x": 82,
+           "z": 160
+          },
+          "curJob": "Goto",
+          "downed": false,
+          "note": "Still walking \u2014 en route, not stalled. Re-read with a larger waitTicks, or call again with waitTicks=0 to sample the position."
+         }
+        ],
+        "ticksGame": 130,
+        "operation": {
+         "OperationId": "op_30f5723e118e48aab9ab187ec865a473",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 1088
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 130
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": false,
+        "message": "0/1 pawn(s) standing on (84,160) after 64 tick(s); 0 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21169. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 0,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+         "x": 84,
+         "z": 160
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 64,
+        "ticksRequested": 60,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 9,
+        "waitedSeconds": 0.9,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21169"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21169",
+          "name": "Slick",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 84,
+           "z": 160
+          },
+          "start": {
+           "x": 81,
+           "z": 160
+          },
+          "end": {
+           "x": 81,
+           "z": 160
+          },
+          "arrived": false,
+          "moved": false,
+          "distanceBefore": 3.0,
+          "distanceAfter": 3.0,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": true,
+          "pathDestination": {
+           "x": 84,
+           "z": 160
+          },
+          "curJob": "Goto",
+          "downed": false,
+          "note": "Still walking \u2014 en route, not stalled. Re-read with a larger waitTicks, or call again with waitTicks=0 to sample the position."
+         }
+        ],
+        "ticksGame": 195,
+        "operation": {
+         "OperationId": "op_8f67607d6664416db635c9a0a88cb317",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 1122
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 195
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": false,
+        "message": "0/1 pawn(s) standing on (85,160) after 64 tick(s); 0 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21169. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 0,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+         "x": 85,
+         "z": 160
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 64,
+        "ticksRequested": 60,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 9,
+        "waitedSeconds": 0.9,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21169"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21169",
+          "name": "Slick",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 85,
+           "z": 160
+          },
+          "start": {
+           "x": 81,
+           "z": 160
+          },
+          "end": {
+           "x": 81,
+           "z": 160
+          },
+          "arrived": false,
+          "moved": false,
+          "distanceBefore": 4.0,
+          "distanceAfter": 4.0,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": true,
+          "pathDestination": {
+           "x": 85,
+           "z": 160
+          },
+          "curJob": "Goto",
+          "downed": false,
+          "note": "Still walking \u2014 en route, not stalled. Re-read with a larger waitTicks, or call again with waitTicks=0 to sample the position."
+         }
+        ],
+        "ticksGame": 260,
+        "operation": {
+         "OperationId": "op_05ba1e6ec56f4737b598e81c5762c5e5",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 1121
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 260
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "SLIME 1 enabled=True | Human21169@81,160 D=2 W=20000dL fluid=RM_Fluid_SlimeGreen ground=none slip=1.00 slips=1 climbSlips=0 moving=True",
+        "thingArgs": [],
+        "ticksGame": 260,
+        "operation": {
+         "OperationId": "op_b9aabbda930a4d40b1fe4db156a7e2d5",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 38
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 260
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "SLIME 1 enabled=True | Human21169@81,160 D=2 W=20000dL fluid=RM_Fluid_SlimeGreen ground=none slip=1.00 slips=1 climbSlips=0 moving=True",
+        "thingArgs": [],
+        "ticksGame": 260,
+        "operation": {
+         "OperationId": "op_15aaf65eeabb4ba1a1c1c9c2e34fc30a",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 39
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 260
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null,
+     "freshness": "fresh",
+     "validity": null,
+     "suspected_cause": null,
+     "cause_confidence": null,
+     "lead": null
+    },
+    {
+     "name": "slime_slip_off",
+     "toggle": "slimeSlipEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "execution": "ran",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'slimeSlipEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "SLIME 1 enabled=False | Human21169@81,160 D=2 W=20000dL fluid=RM_Fluid_SlimeGreen ground=none slip=1.00 slips=0 climbSlips=0 moving=True",
+        "thingArgs": [],
+        "ticksGame": 260,
+        "operation": {
+         "OperationId": "op_09bbc7f795f34866815c6228b01c87e3",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 36
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 260
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "SLIME 1 enabled=False | Human21169@81,160 D=2 W=20000dL fluid=RM_Fluid_SlimeGreen ground=none slip=1.00 slips=0 climbSlips=0 moving=True",
+        "thingArgs": [],
+        "ticksGame": 260,
+        "operation": {
+         "OperationId": "op_159826adfd004fefaa2e5b82515b64b9",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 39
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 260
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": false,
+        "message": "0/1 pawn(s) standing on (82,160) after 65 tick(s); 0 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21169. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 0,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+         "x": 82,
+         "z": 160
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 65,
+        "ticksRequested": 60,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 9,
+        "waitedSeconds": 0.9,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21169"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21169",
+          "name": "Slick",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 82,
+           "z": 160
+          },
+          "start": {
+           "x": 81,
+           "z": 160
+          },
+          "end": {
+           "x": 81,
+           "z": 160
+          },
+          "arrived": false,
+          "moved": false,
+          "distanceBefore": 1.0,
+          "distanceAfter": 1.0,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": true,
+          "pathDestination": {
+           "x": 82,
+           "z": 160
+          },
+          "curJob": "Goto",
+          "downed": false,
+          "note": "Still walking \u2014 en route, not stalled. Re-read with a larger waitTicks, or call again with waitTicks=0 to sample the position."
+         }
+        ],
+        "ticksGame": 326,
+        "operation": {
+         "OperationId": "op_cf312e3eade0490686b97a2a3116b17c",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 1135
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 326
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": false,
+        "message": "0/1 pawn(s) standing on (83,160) after 64 tick(s); 0 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21169. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 0,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+         "x": 83,
+         "z": 160
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 64,
+        "ticksRequested": 60,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 9,
+        "waitedSeconds": 0.9,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21169"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21169",
+          "name": "Slick",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 83,
+           "z": 160
+          },
+          "start": {
+           "x": 81,
+           "z": 160
+          },
+          "end": {
+           "x": 81,
+           "z": 160
+          },
+          "arrived": false,
+          "moved": false,
+          "distanceBefore": 2.0,
+          "distanceAfter": 2.0,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": true,
+          "pathDestination": {
+           "x": 83,
+           "z": 160
+          },
+          "curJob": "Goto",
+          "downed": false,
+          "note": "Still walking \u2014 en route, not stalled. Re-read with a larger waitTicks, or call again with waitTicks=0 to sample the position."
+         }
+        ],
+        "ticksGame": 391,
+        "operation": {
+         "OperationId": "op_1e59d60fe9d4491f98c00703d958923b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 1120
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 391
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": false,
+        "message": "0/1 pawn(s) standing on (84,160) after 63 tick(s); 1 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21169. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 0,
+        "movedCount": 1,
+        "pawnCount": 1,
+        "destination": {
+         "x": 84,
+         "z": 160
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 63,
+        "ticksRequested": 60,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 9,
+        "waitedSeconds": 0.9,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21169"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21169",
+          "name": "Slick",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 84,
+           "z": 160
+          },
+          "start": {
+           "x": 81,
+           "z": 160
+          },
+          "end": {
+           "x": 82,
+           "z": 160
+          },
+          "arrived": false,
+          "moved": true,
+          "distanceBefore": 3.0,
+          "distanceAfter": 2.0,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": true,
+          "pathDestination": {
+           "x": 84,
+           "z": 160
+          },
+          "curJob": "Goto",
+          "downed": false,
+          "note": "Still walking \u2014 en route, not stalled. Re-read with a larger waitTicks, or call again with waitTicks=0 to sample the position."
+         }
+        ],
+        "ticksGame": 455,
+        "operation": {
+         "OperationId": "op_0f7eb9036323417f85fa8bed4216b262",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 1102
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 455
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": false,
+        "message": "0/1 pawn(s) standing on (85,160) after 63 tick(s); 0 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21169. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 0,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+         "x": 85,
+         "z": 160
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 63,
+        "ticksRequested": 60,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 9,
+        "waitedSeconds": 0.9,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21169"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21169",
+          "name": "Slick",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 85,
+           "z": 160
+          },
+          "start": {
+           "x": 82,
+           "z": 160
+          },
+          "end": {
+           "x": 82,
+           "z": 160
+          },
+          "arrived": false,
+          "moved": false,
+          "distanceBefore": 3.0,
+          "distanceAfter": 3.0,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": true,
+          "pathDestination": {
+           "x": 85,
+           "z": 160
+          },
+          "curJob": "Goto",
+          "downed": false,
+          "note": "Still walking \u2014 en route, not stalled. Re-read with a larger waitTicks, or call again with waitTicks=0 to sample the position."
+         }
+        ],
+        "ticksGame": 519,
+        "operation": {
+         "OperationId": "op_886b782765d24f5ea1bfb3294366261f",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 1105
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 519
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": false,
+        "message": "0/1 pawn(s) standing on (86,160) after 64 tick(s); 1 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21169. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 0,
+        "movedCount": 1,
+        "pawnCount": 1,
+        "destination": {
+         "x": 86,
+         "z": 160
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 64,
+        "ticksRequested": 60,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 9,
+        "waitedSeconds": 0.9,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21169"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21169",
+          "name": "Slick",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 86,
+           "z": 160
+          },
+          "start": {
+           "x": 82,
+           "z": 160
+          },
+          "end": {
+           "x": 85,
+           "z": 161
+          },
+          "arrived": false,
+          "moved": true,
+          "distanceBefore": 4.0,
+          "distanceAfter": 1.41,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": true,
+          "pathDestination": {
+           "x": 86,
+           "z": 160
+          },
+          "curJob": "Goto",
+          "downed": false,
+          "note": "Still walking \u2014 en route, not stalled. Re-read with a larger waitTicks, or call again with waitTicks=0 to sample the position."
+         }
+        ],
+        "ticksGame": 584,
+        "operation": {
+         "OperationId": "op_b5d6c6d428cf4bad8940fcf842b7f775",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 1129
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 584
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": false,
+        "message": "0/1 pawn(s) standing on (87,160) after 64 tick(s); 0 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21169. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 0,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+         "x": 87,
+         "z": 160
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 64,
+        "ticksRequested": 60,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 9,
+        "waitedSeconds": 0.9,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21169"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21169",
+          "name": "Slick",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 87,
+           "z": 160
+          },
+          "start": {
+           "x": 85,
+           "z": 161
+          },
+          "end": {
+           "x": 85,
+           "z": 161
+          },
+          "arrived": false,
+          "moved": false,
+          "distanceBefore": 2.24,
+          "distanceAfter": 2.24,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": true,
+          "pathDestination": {
+           "x": 87,
+           "z": 160
+          },
+          "curJob": "Goto",
+          "downed": false,
+          "note": "Still walking \u2014 en route, not stalled. Re-read with a larger waitTicks, or call again with waitTicks=0 to sample the position."
+         }
+        ],
+        "ticksGame": 649,
+        "operation": {
+         "OperationId": "op_ab0d2c1832304a148f827cf35fb95b9c",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 1119
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 649
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": false,
+        "message": "0/1 pawn(s) standing on (88,160) after 63 tick(s); 0 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21169. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 0,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+         "x": 88,
+         "z": 160
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 63,
+        "ticksRequested": 60,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 9,
+        "waitedSeconds": 0.9,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21169"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21169",
+          "name": "Slick",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 88,
+           "z": 160
+          },
+          "start": {
+           "x": 85,
+           "z": 161
+          },
+          "end": {
+           "x": 85,
+           "z": 161
+          },
+          "arrived": false,
+          "moved": false,
+          "distanceBefore": 3.16,
+          "distanceAfter": 3.16,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": true,
+          "pathDestination": {
+           "x": 88,
+           "z": 160
+          },
+          "curJob": "Goto",
+          "downed": false,
+          "note": "Still walking \u2014 en route, not stalled. Re-read with a larger waitTicks, or call again with waitTicks=0 to sample the position."
+         }
+        ],
+        "ticksGame": 713,
+        "operation": {
+         "OperationId": "op_ab7be494c01242b9aca618513bfbb9c5",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 1103
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 713
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": false,
+        "message": "0/1 pawn(s) standing on (87,160) after 62 tick(s); 0 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21169. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 0,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+         "x": 87,
+         "z": 160
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 62,
+        "ticksRequested": 60,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 9,
+        "waitedSeconds": 0.9,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21169"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21169",
+          "name": "Slick",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 87,
+           "z": 160
+          },
+          "start": {
+           "x": 85,
+           "z": 161
+          },
+          "end": {
+           "x": 85,
+           "z": 161
+          },
+          "arrived": false,
+          "moved": false,
+          "distanceBefore": 2.24,
+          "distanceAfter": 2.24,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": true,
+          "pathDestination": {
+           "x": 87,
+           "z": 160
+          },
+          "curJob": "Goto",
+          "downed": false,
+          "note": "Still walking \u2014 en route, not stalled. Re-read with a larger waitTicks, or call again with waitTicks=0 to sample the position."
+         }
+        ],
+        "ticksGame": 776,
+        "operation": {
+         "OperationId": "op_0c5d69b413a64e50ad497d854fb2d3b3",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 1099
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 776
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": false,
+        "message": "0/1 pawn(s) standing on (86,160) after 62 tick(s); 0 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21169. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 0,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+         "x": 86,
+         "z": 160
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 62,
+        "ticksRequested": 60,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 9,
+        "waitedSeconds": 0.9,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21169"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21169",
+          "name": "Slick",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 86,
+           "z": 160
+          },
+          "start": {
+           "x": 85,
+           "z": 161
+          },
+          "end": {
+           "x": 85,
+           "z": 161
+          },
+          "arrived": false,
+          "moved": false,
+          "distanceBefore": 1.41,
+          "distanceAfter": 1.41,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": true,
+          "pathDestination": {
+           "x": 86,
+           "z": 160
+          },
+          "curJob": "Goto",
+          "downed": false,
+          "note": "Still walking \u2014 en route, not stalled. Re-read with a larger waitTicks, or call again with waitTicks=0 to sample the position."
+         }
+        ],
+        "ticksGame": 839,
+        "operation": {
+         "OperationId": "op_daa6138794cd47ffa334e30dd80b866f",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 1099
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 839
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": false,
+        "message": "0/1 pawn(s) standing on (85,160) after 63 tick(s); 1 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21169. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 0,
+        "movedCount": 1,
+        "pawnCount": 1,
+        "destination": {
+         "x": 85,
+         "z": 160
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 63,
+        "ticksRequested": 60,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 9,
+        "waitedSeconds": 0.9,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21169"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21169",
+          "name": "Slick",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 85,
+           "z": 160
+          },
+          "start": {
+           "x": 85,
+           "z": 161
+          },
+          "end": {
+           "x": 86,
+           "z": 160
+          },
+          "arrived": false,
+          "moved": true,
+          "distanceBefore": 1.0,
+          "distanceAfter": 1.0,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": true,
+          "pathDestination": {
+           "x": 85,
+           "z": 160
+          },
+          "curJob": "Goto",
+          "downed": false,
+          "note": "Still walking \u2014 en route, not stalled. Re-read with a larger waitTicks, or call again with waitTicks=0 to sample the position."
+         }
+        ],
+        "ticksGame": 903,
+        "operation": {
+         "OperationId": "op_0cf790f5b6944662bfbb29eb2b534d6c",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 1102
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 903
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": false,
+        "message": "0/1 pawn(s) standing on (84,160) after 61 tick(s); 0 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21169. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 0,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+         "x": 84,
+         "z": 160
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 61,
+        "ticksRequested": 60,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 9,
+        "waitedSeconds": 0.9,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21169"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21169",
+          "name": "Slick",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 84,
+           "z": 160
+          },
+          "start": {
+           "x": 86,
+           "z": 160
+          },
+          "end": {
+           "x": 86,
+           "z": 160
+          },
+          "arrived": false,
+          "moved": false,
+          "distanceBefore": 2.0,
+          "distanceAfter": 2.0,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": true,
+          "pathDestination": {
+           "x": 84,
+           "z": 160
+          },
+          "curJob": "Goto",
+          "downed": false,
+          "note": "Still walking \u2014 en route, not stalled. Re-read with a larger waitTicks, or call again with waitTicks=0 to sample the position."
+         }
+        ],
+        "ticksGame": 965,
+        "operation": {
+         "OperationId": "op_c85c592fa4824148851f8d96cb8eb31b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 1081
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 965
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": false,
+        "message": "0/1 pawn(s) standing on (83,160) after 64 tick(s); 0 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21169. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 0,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+         "x": 83,
+         "z": 160
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 64,
+        "ticksRequested": 60,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 9,
+        "waitedSeconds": 0.9,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21169"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21169",
+          "name": "Slick",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 83,
+           "z": 160
+          },
+          "start": {
+           "x": 86,
+           "z": 160
+          },
+          "end": {
+           "x": 86,
+           "z": 160
+          },
+          "arrived": false,
+          "moved": false,
+          "distanceBefore": 3.0,
+          "distanceAfter": 3.0,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": true,
+          "pathDestination": {
+           "x": 83,
+           "z": 160
+          },
+          "curJob": "Goto",
+          "downed": false,
+          "note": "Still walking \u2014 en route, not stalled. Re-read with a larger waitTicks, or call again with waitTicks=0 to sample the position."
+         }
+        ],
+        "ticksGame": 1030,
+        "operation": {
+         "OperationId": "op_a4e05e8f3dee4787a9eba6920b935b15",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 1120
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1030
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": false,
+        "message": "0/1 pawn(s) standing on (82,160) after 63 tick(s); 0 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21169. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 0,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+         "x": 82,
+         "z": 160
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 63,
+        "ticksRequested": 60,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 9,
+        "waitedSeconds": 0.9,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21169"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21169",
+          "name": "Slick",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 82,
+           "z": 160
+          },
+          "start": {
+           "x": 86,
+           "z": 160
+          },
+          "end": {
+           "x": 86,
+           "z": 160
+          },
+          "arrived": false,
+          "moved": false,
+          "distanceBefore": 4.0,
+          "distanceAfter": 4.0,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": true,
+          "pathDestination": {
+           "x": 82,
+           "z": 160
+          },
+          "curJob": "Goto",
+          "downed": false,
+          "note": "Still walking \u2014 en route, not stalled. Re-read with a larger waitTicks, or call again with waitTicks=0 to sample the position."
+         }
+        ],
+        "ticksGame": 1094,
+        "operation": {
+         "OperationId": "op_7417d92feec34281a9e80d3a67205a9d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 1104
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1094
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": false,
+        "message": "0/1 pawn(s) standing on (81,160) after 63 tick(s); 0 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21169. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 0,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+         "x": 81,
+         "z": 160
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 63,
+        "ticksRequested": 60,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 9,
+        "waitedSeconds": 0.9,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21169"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21169",
+          "name": "Slick",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 81,
+           "z": 160
+          },
+          "start": {
+           "x": 86,
+           "z": 160
+          },
+          "end": {
+           "x": 86,
+           "z": 160
+          },
+          "arrived": false,
+          "moved": false,
+          "distanceBefore": 5.0,
+          "distanceAfter": 5.0,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": true,
+          "pathDestination": {
+           "x": 81,
+           "z": 160
+          },
+          "curJob": "Goto",
+          "downed": false,
+          "note": "Still walking \u2014 en route, not stalled. Re-read with a larger waitTicks, or call again with waitTicks=0 to sample the position."
+         }
+        ],
+        "ticksGame": 1158,
+        "operation": {
+         "OperationId": "op_64d139dac2034b039c6924fa9cc4f79e",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 1103
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1158
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": false,
+        "message": "0/1 pawn(s) standing on (82,160) after 60 tick(s); 1 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21169. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 0,
+        "movedCount": 1,
+        "pawnCount": 1,
+        "destination": {
+         "x": 82,
+         "z": 160
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 60,
+        "ticksRequested": 60,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 9,
+        "waitedSeconds": 0.9,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21169"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21169",
+          "name": "Slick",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 82,
+           "z": 160
+          },
+          "start": {
+           "x": 86,
+           "z": 160
+          },
+          "end": {
+           "x": 85,
+           "z": 160
+          },
+          "arrived": false,
+          "moved": true,
+          "distanceBefore": 4.0,
+          "distanceAfter": 3.0,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": true,
+          "pathDestination": {
+           "x": 82,
+           "z": 160
+          },
+          "curJob": "Goto",
+          "downed": false,
+          "note": "Still walking \u2014 en route, not stalled. Re-read with a larger waitTicks, or call again with waitTicks=0 to sample the position."
+         }
+        ],
+        "ticksGame": 1219,
+        "operation": {
+         "OperationId": "op_564dc887f43443cdb36a4f31a74569de",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 1052
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1219
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": false,
+        "message": "0/1 pawn(s) standing on (83,160) after 63 tick(s); 0 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21169. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 0,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+         "x": 83,
+         "z": 160
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 63,
+        "ticksRequested": 60,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 9,
+        "waitedSeconds": 0.9,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21169"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21169",
+          "name": "Slick",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 83,
+           "z": 160
+          },
+          "start": {
+           "x": 85,
+           "z": 160
+          },
+          "end": {
+           "x": 85,
+           "z": 160
+          },
+          "arrived": false,
+          "moved": false,
+          "distanceBefore": 2.0,
+          "distanceAfter": 2.0,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": true,
+          "pathDestination": {
+           "x": 83,
+           "z": 160
+          },
+          "curJob": "Goto",
+          "downed": false,
+          "note": "Still walking \u2014 en route, not stalled. Re-read with a larger waitTicks, or call again with waitTicks=0 to sample the position."
+         }
+        ],
+        "ticksGame": 1283,
+        "operation": {
+         "OperationId": "op_b938e8f46d9a45afb7373aaf7ee20e4a",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 1101
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1283
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": false,
+        "message": "0/1 pawn(s) standing on (84,160) after 64 tick(s); 1 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21169. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 0,
+        "movedCount": 1,
+        "pawnCount": 1,
+        "destination": {
+         "x": 84,
+         "z": 160
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 64,
+        "ticksRequested": 60,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 9,
+        "waitedSeconds": 0.9,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21169"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21169",
+          "name": "Slick",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 84,
+           "z": 160
+          },
+          "start": {
+           "x": 85,
+           "z": 160
+          },
+          "end": {
+           "x": 84,
+           "z": 159
+          },
+          "arrived": false,
+          "moved": true,
+          "distanceBefore": 1.0,
+          "distanceAfter": 1.0,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": true,
+          "pathDestination": {
+           "x": 84,
+           "z": 160
+          },
+          "curJob": "Goto",
+          "downed": false,
+          "note": "Still walking \u2014 en route, not stalled. Re-read with a larger waitTicks, or call again with waitTicks=0 to sample the position."
+         }
+        ],
+        "ticksGame": 1348,
+        "operation": {
+         "OperationId": "op_7e63822f993d42feb645fadadb1f68bd",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 1121
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1348
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": false,
+        "message": "0/1 pawn(s) standing on (85,160) after 61 tick(s); 0 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21169. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 0,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+         "x": 85,
+         "z": 160
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 61,
+        "ticksRequested": 60,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 9,
+        "waitedSeconds": 0.9,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21169"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21169",
+          "name": "Slick",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 85,
+           "z": 160
+          },
+          "start": {
+           "x": 84,
+           "z": 159
+          },
+          "end": {
+           "x": 84,
+           "z": 159
+          },
+          "arrived": false,
+          "moved": false,
+          "distanceBefore": 1.41,
+          "distanceAfter": 1.41,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": true,
+          "pathDestination": {
+           "x": 85,
+           "z": 160
+          },
+          "curJob": "Goto",
+          "downed": false,
+          "note": "Still walking \u2014 en route, not stalled. Re-read with a larger waitTicks, or call again with waitTicks=0 to sample the position."
+         }
+        ],
+        "ticksGame": 1410,
+        "operation": {
+         "OperationId": "op_9bc7e9c3fd5543cab8ebc1bc85bd7860",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 1083
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1410
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": false,
+        "message": "0/1 pawn(s) standing on (86,160) after 60 tick(s); 0 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21169. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 0,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+         "x": 86,
+         "z": 160
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 60,
+        "ticksRequested": 60,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 9,
+        "waitedSeconds": 0.9,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21169"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21169",
+          "name": "Slick",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 86,
+           "z": 160
+          },
+          "start": {
+           "x": 84,
+           "z": 159
+          },
+          "end": {
+           "x": 84,
+           "z": 159
+          },
+          "arrived": false,
+          "moved": false,
+          "distanceBefore": 2.24,
+          "distanceAfter": 2.24,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": true,
+          "pathDestination": {
+           "x": 86,
+           "z": 160
+          },
+          "curJob": "Goto",
+          "downed": false,
+          "note": "Still walking \u2014 en route, not stalled. Re-read with a larger waitTicks, or call again with waitTicks=0 to sample the position."
+         }
+        ],
+        "ticksGame": 1471,
+        "operation": {
+         "OperationId": "op_9925a2a977a1440fb1082f8f058b89fd",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 1052
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1471
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": false,
+        "message": "0/1 pawn(s) standing on (87,160) after 63 tick(s); 0 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21169. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 0,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+         "x": 87,
+         "z": 160
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 63,
+        "ticksRequested": 60,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 9,
+        "waitedSeconds": 0.9,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21169"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21169",
+          "name": "Slick",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 87,
+           "z": 160
+          },
+          "start": {
+           "x": 84,
+           "z": 159
+          },
+          "end": {
+           "x": 84,
+           "z": 159
+          },
+          "arrived": false,
+          "moved": false,
+          "distanceBefore": 3.16,
+          "distanceAfter": 3.16,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": true,
+          "pathDestination": {
+           "x": 87,
+           "z": 160
+          },
+          "curJob": "Goto",
+          "downed": false,
+          "note": "Still walking \u2014 en route, not stalled. Re-read with a larger waitTicks, or call again with waitTicks=0 to sample the position."
+         }
+        ],
+        "ticksGame": 1535,
+        "operation": {
+         "OperationId": "op_df744fda05c64073ab1be4788dc2b0f4",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 1104
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1535
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "SLIME 0 enabled=False | ",
+        "thingArgs": [],
+        "ticksGame": 1535,
+        "operation": {
+         "OperationId": "op_c561b0c4e0e44adb86ecab4aad5e2a1b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 44
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1535
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": true,
+        "message": "1/1 pawn(s) standing on (81,160) after 606 tick(s); 1 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21169. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 1,
+        "movedCount": 1,
+        "pawnCount": 1,
+        "destination": {
+         "x": 81,
+         "z": 160
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 606,
+        "ticksRequested": 600,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 89,
+        "waitedSeconds": 8.9,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21169"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21169",
+          "name": "Slick",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 81,
+           "z": 160
+          },
+          "start": {
+           "x": 84,
+           "z": 159
+          },
+          "end": {
+           "x": 81,
+           "z": 160
+          },
+          "arrived": true,
+          "moved": true,
+          "distanceBefore": 3.16,
+          "distanceAfter": 0.0,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": false,
+          "curJob": "Wait_Combat",
+          "downed": false
+         }
+        ],
+        "ticksGame": 2142,
+        "operation": {
+         "OperationId": "op_e78079327efd4684b1266e428b76559f",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 10154
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2142
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "SLIME 1 enabled=False | Human21169@81,160 D=2 W=20000dL fluid=RM_Fluid_SlimeGreen ground=none slip=1.00 slips=0 climbSlips=0 moving=False",
+        "thingArgs": [],
+        "ticksGame": 2142,
+        "operation": {
+         "OperationId": "op_9b502b4b51d34af3b03c37c5f80e356d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 44
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2142
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null,
+     "freshness": "fresh",
+     "validity": null,
+     "suspected_cause": null,
+     "cause_confidence": null,
+     "lead": null
+    },
+    {
+     "name": "natural_slime_slips",
+     "toggle": "slimeSlipEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "execution": "ran",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/set_terrain_batch",
+       "result": {
+        "success": true,
+        "message": "Applied 1/1 op(s): 8 cell(s) changed, 0 already correct.",
+        "layer": "top",
+        "opsRequested": 1,
+        "opsApplied": 1,
+        "cellsRequested": 8,
+        "cellsChanged": 8,
+        "cellsAlreadyCorrect": 0,
+        "cellsOutOfBounds": 0,
+        "cellsFailedVerify": 0,
+        "refreshed": true,
+        "cellsRefreshed": 8,
+        "errors": [],
+        "samples": [
+         {
+          "x": 81,
+          "z": 164,
+          "before": "Soil",
+          "after": "RM_SlimeGreenShallow",
+          "applied": true
+         },
+         {
+          "x": 82,
+          "z": 164,
+          "before": "Soil",
+          "after": "RM_SlimeGreenShallow",
+          "applied": true
+         },
+         {
+          "x": 83,
+          "z": 164,
+          "before": "Soil",
+          "after": "RM_SlimeGreenShallow",
+          "applied": true
+         },
+         {
+          "x": 84,
+          "z": 164,
+          "before": "Soil",
+          "after": "RM_SlimeGreenShallow",
+          "applied": true
+         },
+         {
+          "x": 85,
+          "z": 164,
+          "before": "Soil",
+          "after": "RM_SlimeGreenShallow",
+          "applied": true
+         },
+         {
+          "x": 86,
+          "z": 164,
+          "before": "Soil",
+          "after": "RM_SlimeGreenShallow",
+          "applied": true
+         },
+         {
+          "x": 87,
+          "z": 164,
+          "before": "Soil",
+          "after": "RM_SlimeGreenShallow",
+          "applied": true
+         },
+         {
+          "x": 88,
+          "z": 164,
+          "before": "Soil",
+          "after": "RM_SlimeGreenShallow",
+          "applied": true
+         }
+        ],
+        "mapSize": {
+         "x": 250,
+         "z": 250
+        },
+        "readBack": {
+         "ok": true,
+         "tool": "jawa/set_terrain_batch",
+         "faults": [],
+         "frameOpen": 315103,
+         "frameReply": 315103,
+         "sameFrame": true,
+         "rows": 8,
+         "rowsWrong": 0,
+         "wrong": [],
+         "made": [
+          {
+           "op": "terrain",
+           "x": 81,
+           "z": 164,
+           "got": {
+            "terrain": "RM_SlimeGreenShallow"
+           }
+          },
+          {
+           "op": "terrain",
+           "x": 82,
+           "z": 164,
+           "got": {
+            "terrain": "RM_SlimeGreenShallow"
+           }
+          },
+          {
+           "op": "terrain",
+           "x": 83,
+           "z": 164,
+           "got": {
+            "terrain": "RM_SlimeGreenShallow"
+           }
+          },
+          {
+           "op": "terrain",
+           "x": 84,
+           "z": 164,
+           "got": {
+            "terrain": "RM_SlimeGreenShallow"
+           }
+          },
+          {
+           "op": "terrain",
+           "x": 85,
+           "z": 164,
+           "got": {
+            "terrain": "RM_SlimeGreenShallow"
+           }
+          },
+          {
+           "op": "terrain",
+           "x": 86,
+           "z": 164,
+           "got": {
+            "terrain": "RM_SlimeGreenShallow"
+           }
+          },
+          {
+           "op": "terrain",
+           "x": 87,
+           "z": 164,
+           "got": {
+            "terrain": "RM_SlimeGreenShallow"
+           }
+          },
+          {
+           "op": "terrain",
+           "x": 88,
+           "z": 164,
+           "got": {
+            "terrain": "RM_SlimeGreenShallow"
+           }
+          }
+         ],
+         "leftBlocking": 0,
+         "leftKept": 0,
+         "left": [],
+         "digest": "79fdda58848e233d"
+        },
+        "ticksGame": 2142,
+        "operation": {
+         "OperationId": "op_f17c83d7121b47428c90d4d2edb75a45",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 35
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2142
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human21176",
+          "name": "Naomi",
+          "kindRequested": "Colonist",
+          "kindActual": "Colonist",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 81,
+          "z": 164,
+          "spawned": true,
+          "xenotype": "Baseliner",
+          "xenotypeApplied": true
+         }
+        ],
+        "readBack": {
+         "ok": true,
+         "tool": "jawa/spawn_pawn",
+         "faults": [],
+         "frameOpen": 315111,
+         "frameReply": 315111,
+         "sameFrame": true,
+         "rows": 1,
+         "rowsWrong": 0,
+         "wrong": [],
+         "made": [
+          {
+           "op": "pawn",
+           "id": "Human21176",
+           "x": 81,
+           "z": 164,
+           "got": {
+            "cell": "81,164",
+            "faction": "PlayerColony",
+            "kind": "Colonist",
+            "spawned": "True",
+            "xenotype": "Baseliner"
+           }
+          }
+         ],
+         "leftBlocking": 0,
+         "leftKept": 0,
+         "left": [],
+         "digest": "e886d6ef1a36deb3"
+        },
+        "ticksGame": 2142,
+        "operation": {
+         "OperationId": "op_52a6bc4a7eca462bb26ac6a9f9a86d38",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 37
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2142
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_gear",
+       "result": {
+        "success": true,
+        "action": "clear",
+        "displaced": [],
+        "notes": [
+         "equipment destroyed",
+         "apparel destroyed",
+         "inventory destroyed"
+        ],
+        "readBack": {
+         "ok": true,
+         "tool": "jawa/pawn_gear",
+         "faults": [],
+         "frameOpen": 315122,
+         "frameReply": 315122,
+         "sameFrame": true,
+         "rows": 3,
+         "rowsWrong": 0,
+         "wrong": [],
+         "made": [
+          {
+           "op": "clear_equipment",
+           "id": "Human21176",
+           "x": 81,
+           "z": 164,
+           "got": {
+            "remaining": "0"
+           }
+          },
+          {
+           "op": "clear_apparel",
+           "id": "Human21176",
+           "x": 81,
+           "z": 164,
+           "got": {
+            "remaining": "0"
+           }
+          },
+          {
+           "op": "clear_inventory",
+           "id": "Human21176",
+           "x": 81,
+           "z": 164,
+           "got": {
+            "remaining": "0"
+           }
+          }
+         ],
+         "leftBlocking": 0,
+         "leftKept": 0,
+         "left": [],
+         "digest": "e3c12d4426513b19"
+        },
+        "pawn": {
+         "thingId": "Human21176",
+         "thingIdNumber": 21176,
+         "name": "Naomi van Aerle",
+         "nameShort": "Naomi",
+         "title": "colonist",
+         "kindDef": "Colonist",
+         "faction": "PlayerColony",
+         "factionName": "New Arrivals",
+         "gender": "Female",
+         "ageBiologicalYears": 13,
+         "ageChronologicalYears": 34,
+         "developmentalStage": "Adult",
+         "xenotype": "Baseliner",
+         "ideo": "Cell of Faith",
+         "childhood": "VatgrownSoldier8",
+         "adulthood": "Colonist97",
+         "headType": "Female_NarrowPointy",
+         "bodyType": "Female",
+         "hair": "Ponytails",
+         "beard": "NoBeard",
+         "position": {
+          "x": 81,
+          "z": 164
+         },
+         "traits": [
+          {
+           "def": "FastLearner",
+           "degree": 0,
+           "label": "Fast learner",
+           "forced": false
+          },
+          {
+           "def": "GreatMemory",
+           "degree": 0,
+           "label": "Great memory",
+           "forced": false
+          }
+         ],
+         "skills": [
+          {
+           "skill": "Shooting",
+           "levelRaw": 4,
+           "levelEffective": 4,
+           "passion": "Minor",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Melee",
+           "levelRaw": 3,
+           "levelEffective": 3,
+           "passion": "Minor",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Construction",
+           "levelRaw": 2,
+           "levelEffective": 2,
+           "passion": "Minor",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Mining",
+           "levelRaw": 2,
+           "levelEffective": 2,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Cooking",
+           "levelRaw": 0,
+           "levelEffective": 0,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Plants",
+           "levelRaw": 1,
+           "levelEffective": 1,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Animals",
+           "levelRaw": 1,
+           "levelEffective": 1,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Crafting",
+           "levelRaw": 2,
+           "levelEffective": 2,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Artistic",
+           "levelRaw": 3,
+           "levelEffective": 3,
+           "passion": "Minor",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Medicine",
+           "levelRaw": 0,
+           "levelEffective": 0,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": true
+          },
+          {
+           "skill": "Social",
+           "levelRaw": 0,
+           "levelEffective": 0,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": true
+          },
+          {
+           "skill": "Intellectual",
+           "levelRaw": 2,
+           "levelEffective": 2,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          }
+         ],
+         "apparel": [],
+         "equipment": [],
+         "hediffs": [
+          {
+           "def": "Scarification",
+           "part": "Torso",
+           "severity": 0.5
+          },
+          {
+           "def": "Scarification",
+           "part": "Leg",
+           "severity": 0.5
+          },
+          {
+           "def": "Scarification",
+           "part": "Eye",
+           "severity": 0.5
+          },
+          {
+           "def": "Scarification",
+           "part": "Torso",
+           "severity": 0.5
+          },
+          {
+           "def": "Scarification",
+           "part": "Leg",
+           "severity": 0.5
+          }
+         ],
+         "needs": [
+          {
+           "need": "Mood",
+           "level": 0.5,
+           "pct": 0.5
+          },
+          {
+           "need": "Food",
+           "level": 0.8,
+           "pct": 0.8
+          },
+          {
+           "need": "Rest",
+           "level": 0.9325673,
+           "pct": 0.9325673
+          },
+          {
+           "need": "Hygiene",
+           "level": 0.615832746,
+           "pct": 0.615832746
+          },
+          {
+           "need": "Joy",
+           "level": 0.5756349,
+           "pct": 0.5756349
+          },
+          {
+           "need": "Beauty",
+           "level": 0.5,
+           "pct": 0.5
+          },
+          {
+           "need": "Outdoors",
+           "level": 1.0,
+           "pct": 1.0
+          },
+          {
+           "need": "DrugDesire",
+           "level": 0.5,
+           "pct": 0.5
+          },
+          {
+           "need": "RoomSize",
+           "level": 0.5,
+           "pct": 0.5
+          },
+          {
+           "need": "Bladder",
+           "level": 1.0,
+           "pct": 1.0
+          },
+          {
+           "need": "RM_Thirst",
+           "level": 0.8,
+           "pct": 0.8
+          }
+         ]
+        },
+        "ticksGame": 2142,
+        "operation": {
+         "OperationId": "op_5ebaad57fadb4af386c5dbb5e515ef9d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 41
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2142
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "SLIME 2 enabled=True | Human21169@81,160 D=2 W=20000dL fluid=RM_Fluid_SlimeGreen ground=none slip=1.00 slips=0 climbSlips=0 moving=False | Human21176@81,164 D=4 W=0dL fluid=none ground=RM_SlimeGreenShallow slip=1.00 slips=0 climbSlips=0 moving=False",
+        "thingArgs": [],
+        "ticksGame": 2142,
+        "operation": {
+         "OperationId": "op_c5b764af584f42fe8e50eb050bd2c8c5",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 40
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2142
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "SLIME 2 enabled=True | Human21169@81,160 D=2 W=20000dL fluid=RM_Fluid_SlimeGreen ground=none slip=1.00 slips=0 climbSlips=0 moving=False | Human21176@81,164 D=4 W=0dL fluid=none ground=RM_SlimeGreenShallow slip=1.00 slips=0 climbSlips=0 moving=False",
+        "thingArgs": [],
+        "ticksGame": 2142,
+        "operation": {
+         "OperationId": "op_baca431f53484fe2a1c6aa9d31e0cc48",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 34
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2142
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": false,
+        "message": "0/1 pawn(s) standing on (82,164) after 63 tick(s); 0 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21176. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 0,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+         "x": 82,
+         "z": 164
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 63,
+        "ticksRequested": 60,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 9,
+        "waitedSeconds": 0.9,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21176"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21176",
+          "name": "Naomi",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 82,
+           "z": 164
+          },
+          "start": {
+           "x": 81,
+           "z": 164
+          },
+          "end": {
+           "x": 81,
+           "z": 164
+          },
+          "arrived": false,
+          "moved": false,
+          "distanceBefore": 1.0,
+          "distanceAfter": 1.0,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": true,
+          "pathDestination": {
+           "x": 82,
+           "z": 164
+          },
+          "curJob": "Goto",
+          "downed": false,
+          "note": "Still walking \u2014 en route, not stalled. Re-read with a larger waitTicks, or call again with waitTicks=0 to sample the position."
+         }
+        ],
+        "ticksGame": 2206,
+        "operation": {
+         "OperationId": "op_d32451f04a6d48c18a6fcd742a7d3644",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 1115
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2206
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": false,
+        "message": "0/1 pawn(s) standing on (83,164) after 63 tick(s); 0 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21176. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 0,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+         "x": 83,
+         "z": 164
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 63,
+        "ticksRequested": 60,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 9,
+        "waitedSeconds": 0.9,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21176"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21176",
+          "name": "Naomi",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 83,
+           "z": 164
+          },
+          "start": {
+           "x": 81,
+           "z": 164
+          },
+          "end": {
+           "x": 81,
+           "z": 164
+          },
+          "arrived": false,
+          "moved": false,
+          "distanceBefore": 2.0,
+          "distanceAfter": 2.0,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": true,
+          "pathDestination": {
+           "x": 83,
+           "z": 164
+          },
+          "curJob": "Goto",
+          "downed": false,
+          "note": "Still walking \u2014 en route, not stalled. Re-read with a larger waitTicks, or call again with waitTicks=0 to sample the position."
+         }
+        ],
+        "ticksGame": 2270,
+        "operation": {
+         "OperationId": "op_5cec0e144d6a4f24af68cd323312c896",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 1102
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2270
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": false,
+        "message": "0/1 pawn(s) standing on (84,164) after 63 tick(s); 0 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21176. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 0,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+         "x": 84,
+         "z": 164
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 63,
+        "ticksRequested": 60,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 9,
+        "waitedSeconds": 0.9,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21176"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21176",
+          "name": "Naomi",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 84,
+           "z": 164
+          },
+          "start": {
+           "x": 81,
+           "z": 164
+          },
+          "end": {
+           "x": 81,
+           "z": 164
+          },
+          "arrived": false,
+          "moved": false,
+          "distanceBefore": 3.0,
+          "distanceAfter": 3.0,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": true,
+          "pathDestination": {
+           "x": 84,
+           "z": 164
+          },
+          "curJob": "Goto",
+          "downed": false,
+          "note": "Still walking \u2014 en route, not stalled. Re-read with a larger waitTicks, or call again with waitTicks=0 to sample the position."
+         }
+        ],
+        "ticksGame": 2334,
+        "operation": {
+         "OperationId": "op_d56a90f34dc541958933bb4437db9d84",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 1101
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2334
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/order_pawn",
+       "result": {
+        "success": false,
+        "message": "0/1 pawn(s) standing on (85,164) after 64 tick(s); 0 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human21176. Pass undraftAfter=true or undraft them yourself.",
+        "arrivedCount": 0,
+        "movedCount": 0,
+        "pawnCount": 1,
+        "destination": {
+         "x": 85,
+         "z": 164
+        },
+        "pathEndMode": "OnCell",
+        "ticksElapsed": 64,
+        "ticksRequested": 60,
+        "timedOut": false,
+        "waitEnded": "ticks",
+        "pausedDuringWait": false,
+        "polls": 9,
+        "waitedSeconds": 0.9,
+        "speedBefore": "Paused",
+        "speedRestored": true,
+        "leftDrafted": [
+         "Human21176"
+        ],
+        "noDrafter": [],
+        "pawns": [
+         {
+          "id": "Human21176",
+          "name": "Naomi",
+          "kind": "Colonist",
+          "drafted": true,
+          "hasDrafter": true,
+          "requested": {
+           "x": 85,
+           "z": 164
+          },
+          "start": {
+           "x": 81,
+           "z": 164
+          },
+          "end": {
+           "x": 81,
+           "z": 164
+          },
+          "arrived": false,
+          "moved": false,
+          "distanceBefore": 4.0,
+          "distanceAfter": 4.0,
+          "canReach": true,
+          "orderAccepted": true,
+          "stillMoving": true,
+          "pathDestination": {
+           "x": 84,
+           "z": 164
+          },
+          "curJob": "Goto",
+          "downed": false,
+          "note": "Still walking \u2014 en route, not stalled. Re-read with a larger waitTicks, or call again with waitTicks=0 to sample the position."
+         }
+        ],
+        "ticksGame": 2399,
+        "operation": {
+         "OperationId": "op_9e20e998c10b446ca4413b8b96b3b47a",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 1121
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2399
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "SLIME 2 enabled=True | Human21169@81,160 D=2 W=20000dL fluid=RM_Fluid_SlimeGreen ground=none slip=1.00 slips=0 climbSlips=0 moving=False | Human21176@81,164 D=4 W=0dL fluid=none ground=RM_SlimeGreenShallow slip=1.00 slips=1 climbSlips=0 moving=True",
+        "thingArgs": [],
+        "ticksGame": 2399,
+        "operation": {
+         "OperationId": "op_fdd3017b830f41b181028f5e6114696b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 40
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2399
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "SLIME 2 enabled=True | Human21169@81,160 D=2 W=20000dL fluid=RM_Fluid_SlimeGreen ground=none slip=1.00 slips=0 climbSlips=0 moving=False | Human21176@81,164 D=4 W=0dL fluid=none ground=RM_SlimeGreenShallow slip=1.00 slips=1 climbSlips=0 moving=True",
+        "thingArgs": [],
+        "ticksGame": 2399,
+        "operation": {
+         "OperationId": "op_0ceab0463bbb425f94f0b231535ebb80",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 40
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2399
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null,
+     "freshness": "fresh",
+     "validity": null,
+     "suspected_cause": null,
+     "cause_confidence": null,
+     "lead": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 2397,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": [],
+    "runValidity": {
+     "verdict": "CLEAN",
+     "note": "CLEAN: no visitor observed",
+     "visitors": [],
+     "letters": [],
+     "disruptions": [],
+     "observationFailures": [],
+     "abortedBy": null
+    },
+    "receipts": [
+     {
+      "actionId": "A1",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human21169"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "A2",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Colonist",
+      "returnedIds": [
+       "Human21176"
+      ],
+      "toolKinds": [
+       "Colonist"
+      ],
+      "readBackKinds": [
+       "Colonist"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     }
+    ],
+    "receiptProblems": [],
+    "baselineScene": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_THIRTEEN.det\\Transient\\modcheck\\surprises\\20261125T094301\\FlowWorksExtensions_slime_slip_scene_baseline.json"
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   },
+   "site_hold": null,
+   "site_reload": null,
+   "env_reset": {
+    "log_reset": "ok",
+    "weather": "ok",
+    "map_info": "ok",
+    "unroof": "ok",
+    "gas_ToxGas": "ok",
+    "gas_BlindSmoke": "ok",
+    "gas_RotStink": "ok",
+    "gas_DeadlifeDust": "ok",
+    "gas_things": "ok"
+   },
+   "phase_s": {
+    "hold": 7.126,
+    "body": 50.897,
+    "teardown": 1.167
+   }
+  }
+ ],
+ "all_green": true,
+ "findings": [],
+ "refused": "",
+ "walk": null,
+ "acceptance": {
+  "overall": "GREEN",
+  "rows": [
+   {
+    "row": "slime_slip/slime_slips_the_wader",
+    "verdict": "PASS",
+    "class": "other",
+    "grade": "PASS",
+    "notes": []
+   },
+   {
+    "row": "slime_slip/slime_slip_off",
+    "verdict": "PASS",
+    "class": "other",
+    "grade": "PASS",
+    "notes": []
+   },
+   {
+    "row": "slime_slip/natural_slime_slips",
+    "verdict": "PASS",
+    "class": "other",
+    "grade": "PASS",
+    "notes": []
+   }
+  ],
+  "spoils": [],
+  "counts": {
+   "PASS": 3,
+   "FAIL": 0,
+   "INDETERMINATE": 0,
+   "UNMEASURED": 0,
+   "NOT_RUN": 0
+  },
+  "classes": []
+ },
+ "reuse": {
+  "reused": [],
+  "reusable": []
+ },
+ "host": "Archmagi",
+ "offline_chains": [],
+ "fresh_green": true,
+ "invalid": [],
+ "leads": [],
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "run_validity": "CLEAN",
+ "anchor": [
+  113,
+  118
+ ],
+ "site_save": {
+  "site": "calm",
+  "save": "RM_TestSite_calm_v3",
+  "load_s": 5.2,
+  "ready_s": 9.7,
+  "verified": true
+ },
+ "wall_s": 82.4,
+ "chains_run": [
+  "slime_slip"
+ ],
+ "chains_declared": [
+  "current",
+  "swept",
+  "taken_by_land",
+  "works",
+  "placer",
+  "plot_A_dug_channel",
+  "plot_B_fill_tiers",
+  "plot_C_limitless_canal",
+  "plot_C2_tar_and_fluids",
+  "plot_D_limited_pond",
+  "plot_E_fire",
+  "plot_F_slime",
+  "plot_H_depth_ladder",
+  "plot_G_pit",
+  "toggle_fill_in",
+  "toggle_fill_in_displacement",
+  "toggle_recession",
+  "toggle_refill",
+  "toggle_liquid_ignition",
+  "all_off_still_digs",
+  "toggle_canal_fire",
+  "toggle_liquid_corrosion",
+  "toggle_superdeep_capture",
+  "toggle_ladder_required",
+  "ladder_prison_door",
+  "pit_cover_fall",
+  "canal_spikes",
+  "flow_doors",
+  "toggle_superdeep_shooting",
+  "toggle_pit_exposure",
+  "toggle_pit_depth_draw",
+  "pit_fill_effects",
+  "toggle_pit_fill_effects",
+  "slime_slip",
+  "toggle_bottle_loop",
+  "toggle_bottle_dirty",
+  "toggle_tank_loop",
+  "toggle_liquid_drilling",
+  "toggle_typed_shores",
+  "toggle_trap_trigger",
+  "toggle_fall_damage",
+  "toggle_river_steam",
+  "fluid_identity_recorded",
+  "swale_enrichment",
+  "fire_explosion",
+  "fire_foam",
+  "fire_rain",
+  "fire_queue_origin",
+  "fuel_moat_chemfuel",
+  "fuel_moat_astrofuel",
+  "fuel_moat_propane",
+  "pit_prison_room",
+  "liquid_pump",
+  "bottle_revert",
+  "wall_faces",
+  "dig_finds",
+  "machinery_pipes",
+  "machinery_found_works",
+  "liquid_heat"
+ ],
+ "script": "extension_proof",
+ "mod": "FlowWorks",
+ "mode": "live",
+ "mod_hash": "d2d19d8d7565355156ed002db140904f029719019d7e69896b400be347e883cd",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "dubwise.dubsbadhygiene.lite",
+   "owlchemist.cherrypicker",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "toastyman.moreritualseats",
+   "vanillaexpanded.vchemfuele",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.hugethings",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes",
+   "mandrake.rm.patches"
+  ],
+  "running_sha256": "53bde22dea2496fe1ef2d1554c35fc76803cf9981598068f911f7253121b6353",
+  "assembly_sha256": "0395259f5b5216b8058b6eae0b66377371ac688b7336f8f479a3458ff0616be8",
+  "assembly_matches": 1
+ },
+ "aborted": null,
+ "site": "dry"
+}

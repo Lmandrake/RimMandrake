@@ -1,0 +1,186 @@
+{
+ "log": [
+  {
+   "reset": "RESET cells=0 levels=0 rolled=0 released=0 bodies=0 swim=0 left=0"
+  },
+  {
+   "open_sky_before_stage": {
+    "ok": true,
+    "rect": [
+     34,
+     83,
+     89,
+     55
+    ],
+    "roofCells": [],
+    "rockCells": [],
+    "why": [],
+    "cleared": {
+     "roofOp": {
+      "success": true,
+      "cellsChanged": 233,
+      "cellsFailedVerify": 0
+     },
+     "rockDestroyed0": 327
+    }
+   }
+  },
+  {
+   "cleared": {
+    "success": true,
+    "destroyed": 606
+   }
+  },
+  {
+   "open_sky_after_clear": {
+    "ok": true,
+    "rect": [
+     34,
+     83,
+     89,
+     55
+    ],
+    "roofCells": [],
+    "rockCells": [],
+    "why": [],
+    "cleared": null
+   }
+  },
+  {
+   "dig_failed_calls": 0
+  },
+  {
+   "routes": {
+    "SculptureGrand": [
+     "spawn_batch ok"
+    ],
+    "DoubleBed": [
+     "spawn_batch ok"
+    ],
+    "RM_GlowTank": [
+     "spawn_batch ok"
+    ],
+    "RM_HoseReel": [
+     "spawn_batch ok"
+    ],
+    "Table2x2c": [
+     "spawn_batch ok"
+    ],
+    "TableButcher": [
+     "spawn_batch ok"
+    ],
+    "HandTailoringBench": [
+     "spawn_batch ok"
+    ],
+    "SculptureLarge": [
+     "spawn_batch ok"
+    ],
+    "Bed": [
+     "spawn_batch ok"
+    ],
+    "Shelf": [
+     "spawn_batch ok"
+    ],
+    "Dresser": [
+     "spawn_batch ok"
+    ],
+    "RM_ResinSealingJarShelf": [
+     "spawn_batch ok"
+    ],
+    "Bedroll": [
+     "spawn_batch ok"
+    ],
+    "Battery": [
+     "spawn_batch ok"
+    ],
+    "PlantPot": [
+     "spawn_batch ok"
+    ],
+    "SculptureSmall": [
+     "spawn_batch ok"
+    ],
+    "DiningChair": [
+     "spawn_batch ok"
+    ],
+    "Stool": [
+     "spawn_batch ok"
+    ],
+    "Armchair": [
+     "spawn_batch ok"
+    ],
+    "EndTable": [
+     "spawn_batch ok"
+    ],
+    "StandingLamp": [
+     "spawn_batch ok"
+    ],
+    "TorchLamp": [
+     "spawn_batch ok"
+    ],
+    "Cooler": [
+     "spawn_batch ok"
+    ],
+    "RM_BrineCrock": [
+     "spawn_batch ok"
+    ],
+    "RM_EvaporativeCrock": [
+     "spawn_batch ok"
+    ],
+    "RM_AncientStasisLocker_Refurbished": [
+     "spawn_batch ok"
+    ],
+    "minify Armchair": [
+     "True"
+    ],
+    "minify EndTable": [
+     "True"
+    ],
+    "minify RM_BrineCrock": [
+     "True"
+    ],
+    "corpse Muffalo": [
+     "ids ['Muffalo21262'] damage [True]",
+     "ids ['Muffalo21353'] damage [True]",
+     "ids ['Muffalo21429'] damage [True]",
+     "ids ['Muffalo21505'] damage [True]",
+     "ids ['Muffalo21580'] damage [True]",
+     "ids ['Muffalo21666'] damage [True]",
+     "ids ['Muffalo21741'] damage [True]"
+    ],
+    "corpse Villager": [
+     "ids ['Human21264'] damage [True]",
+     "ids ['Human21355'] damage [True]",
+     "ids ['Human21431'] damage [True]",
+     "ids ['Human21507'] damage [True]",
+     "ids ['Human21582'] damage [True]",
+     "ids ['Human21668'] damage [True]",
+     "ids ['Human21743'] damage [True]"
+    ]
+   }
+  },
+  {
+   "labels": {
+    "success": false,
+    "added": 7
+   }
+  },
+  {
+   "elapsed_s": 167.8
+  }
+ ],
+ "rows": [
+  {
+   "row": "wildlife_none_left",
+   "verdict": "PASS",
+   "got": {
+    "killed": 0,
+    "left": []
+   }
+  },
+  {
+   "row": "site_no_geyser",
+   "verdict": "PASS",
+   "got": "no SteamGeyser within 3 of the site"
+  }
+ ]
+}
