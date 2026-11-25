@@ -28,6 +28,9 @@ oldest item that another waits on, then oldest filing, one decision:
                   wait passed and the check fails on an old item that nobody named (a date never launches old work). A due
                   item with no check whose wait passed reads shape. A lane item (named, or filed after shape_from) whose
                   wait passed gets one second look: a Work run, opus, inside max_runs_per_item
+  mod_work        its home is mod:<folder>, or every repo path it names is inside one mod's folder (mod_work.of): it
+                  waits for that mod's Maturation Pipeline run; no check runs, nothing is adopted, closed or launched.
+                  A home that cannot be read reads blind ("could not look")
   held | off      its mod is held by the owner | a `pipe off` (all, family:list_dispatch, family:detached, item, mod)
   stopped         a run ended on its own merits and the check fails with no named next act, or after max_runs_per_item
                   such runs, or a launch refused for its form: a Needs Conductor line, once
@@ -277,6 +280,14 @@ def decide(cfg, st, facts, now, account=(True, "")):
 
         if it.get("state") in CLOSED:
             put("closed", "the item is %s" % it.get("state"))
+            continue
+        mw = it.get("mod_work")     # mod_work.of: a mod's ticket is the Maturation Pipeline's, never the lane's
+        if isinstance(mw, dict) and mw.get("unreadable"):
+            put("blind", "could not look whether it is mod work: %s; nothing launches it" % mw["unreadable"])
+            continue
+        if isinstance(mw, dict) and mw.get("mod"):
+            put("mod_work", "waits for the Maturation Pipeline run of %s (%s); the List Pipeline does not work it"
+                % (mw["mod"], mw.get("why") or "it is that mod's work"))
             continue
         if not cfg.get("enabled"):          # the lane's own acts all stop: no close, no adoption, no launch
             put("disabled", "list_dispatch.json has enabled: false")
@@ -604,7 +615,12 @@ def gather(st, now=None, root=None, load_lag_s=None):
             if b:
                 waited_on.add(b)
     import list_shape as LS
+    import mod_work as MW
     mods = _mods()
+    try:
+        mw_mods, mw_cause = MW.mods(), None
+    except Exception as e:  # noqa: BLE001 - no mod list: every item reads "could not look", none is launched
+        mw_mods, mw_cause = None, "the mod folders could not be read (%s: %s)" % (type(e).__name__, e)
     adopt_ok = os.path.isdir(LM.ITEMS)
     cfg = _shipped()
     items = {}
@@ -620,10 +636,12 @@ def gather(st, now=None, root=None, load_lag_s=None):
         if not x.effect and not acc and not sdue and not sf["route"]:
             continue
         waits, blocked = block_facts(w, x, now)
+        mw = ({"mod": None, "why": mw_cause, "unreadable": mw_cause} if mw_mods is None else
+              MW.reading(x, mw_mods, LM.ITEMS))
         d = {"state": x.state, "blocked": blocked, "blocked_reason": x.blocked_reason,
              "effect": x.effect, "waits_on": waits, "events": len(x.history), "title": x.title,
              "filed": LM.epoch(x.created_at) if x.created_at else None, "blocks_others": iid in waited_on,
-             "caused_by": x.caused_by, "shape_due": sdue, "shape_why": swhy, "route": sf["route"],
+             "caused_by": x.caused_by, "mod_work": mw, "shape_due": sdue, "shape_why": swhy, "route": sf["route"],
              "shape_size": sf["size"], "shape_at": sf["shape_at"], "shape_unit": sf["shape_unit"],
              "raised": LM.raise_key(x) if x.raised is not None else None,
              "second_look": bool(sf["named"] or (sf["filed"] and cfg.get("shape_from")
@@ -637,7 +655,7 @@ def gather(st, now=None, root=None, load_lag_s=None):
                 d["blocked"], d["blocked_reason"] = True, "its wait date %r cannot be read" % x.wait_until
         if acc:
             d["accept"] = acc
-            if not d.get("claimed"):
+            if not d.get("claimed") and not (mw.get("mod") or mw.get("unreadable")):   # a mod's script is not timed
                 d["accept_s"] = timed_accept(iid, acc, d["events"], st, float(_shipped().get("max_adopt_check_s")))
                 d["accept_why"] = ((st.get("items") or {}).get(iid) or {}).get("accept_timed", {}).get("why")
         items[iid] = d
@@ -650,7 +668,9 @@ def gather(st, now=None, root=None, load_lag_s=None):
         d["off"], cnl = _off(iid, d["mod"])
         if cnl:
             d["off_unreadable"] = cnl
-        if not (d.get("effect") or d.get("shape_due")) or paused or d["off"] or cnl:   # no check runs where the lane may not act
+        mwd = d.get("mod_work") or {}
+        if (not (d.get("effect") or d.get("shape_due")) or paused or d["off"] or cnl   # no check runs where the lane may not act
+                or mwd.get("mod") or mwd.get("unreadable")):
             continue
         if d.get("effect"):
             d["verdict"], d["out"] = LE.run(d["effect"], root)
@@ -907,7 +927,8 @@ def row_stage(it, row, now):
     f = {"state": it.get("state"), "effect": it.get("effect"), "verdict": LP.lane_verdict(dec, bool(it.get("effect"))),
          "route": it.get("route"), "waits": waits,
          "run": ("live_work" if it.get("effect") else "live_shape") if live else None,
-         "stopped": dec == "stopped", "note": "%s: %s" % (dec, _one(row.get("why"), 140))}
+         "stopped": dec == "stopped", "note": "%s: %s" % (dec, _one(row.get("why"), 140)),
+         "mod_work": it.get("mod_work")}
     return LP.stage_of(f, now)["stage"]
 
 

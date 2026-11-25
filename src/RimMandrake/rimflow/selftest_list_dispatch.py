@@ -499,6 +499,87 @@ def t_only_narrows_the_items_never_the_gates():
     chk(lambda: rd2["items"]["B"]["decision"] == "account_hold", "--only still passes every gate")
 
 
+def t_a_mod_ticket_is_not_the_list_pipelines():
+    """A ticket whose home is mod:<folder>, or whose repo paths all lie in one mod's folder, is not offered, launched,
+    checked or fed to Codex; its status line names the mod's Maturation Pipeline run. A pipeline ticket that names a
+    mod only as its example stays. A home that cannot be read launches nothing and says could not look."""
+    import list_effect as LE
+    import list_home as LH
+    import list_pipeline as LP
+    import model as LM
+    import mod_work as MW
+    mods = {"HugeThings", "FlowWorks"}
+    of = MW.of
+    home = {"home": "mod:HugeThings", "group": "g", "flag": "LOOKS CURRENT"}
+    chk(lambda: of({"home": home, "title": "keep the warned edge"}, mods)["mod"] == "HugeThings", "a home mod:X: X's work")
+    chk(lambda: of({"title": "crash in src/RimMandrake/HugeThings/Source/Titan.cs"}, mods)["mod"] == "HugeThings",
+        "no home, every path inside src/**/HugeThings/: HugeThings' work")
+    chk(lambda: of({"title": "t"}, mods, "see design/concepts/FlowWorks/version/bars.md")["mod"] == "FlowWorks",
+        "no home, a prose path inside design/concepts/FlowWorks/: FlowWorks' work")
+    ex = of({"title": "list_dispatch launches HugeThings twice",
+             "effect": "cmd:python3 src/RimMandrake/rimflow/selftest_list_dispatch.py"}, mods,
+            "for example src/RimMandrake/HugeThings/About/About.xml")
+    chk(lambda: ex["mod"] is None and not ex["unreadable"], "a pipeline ticket that names a mod as its example stays")
+    chk(lambda: of({"title": "HugeThings titans rot"}, mods)["mod"] is None, "a mod named by a word only stays")
+    chk(lambda: of({"title": "src/RimMandrake/HugeThings/a src/RimMandrake/FlowWorks/b"}, mods)["mod"] is None,
+        "paths in two mods: not one mod's work")
+    chk(lambda: of({"home": dict(home, home="pipeline:list"), "title": "src/RimMandrake/HugeThings/a"}, mods)["mod"]
+        is None, "a home pipeline:<part> stays, whatever its paths")
+    chk(lambda: all(of({"home": h, "title": "t"}, mods)["unreadable"] for h in ("mod:HugeThings", {"home": None}, {})),
+        "a home that is not a {home: <kind>:<name>} record: could not look")
+    chk(lambda: of({"title": "t"}, mods, None)["unreadable"], "prose that could not be read: could not look")
+    # the tick: no check, no launch; the row names the mod's run
+    mw_mod, mw_ex = of({"home": home}, mods), ex
+    mw_blind = of({"home": "x"}, mods)
+    rows, launches, _ = run({"A": it(mod_work=mw_mod), "B": it(mod_work=mw_ex), "C": it(mod_work=mw_blind)})
+    chk(lambda: rows["A"]["decision"] == "mod_work" and "Maturation Pipeline run of HugeThings" in rows["A"]["why"]
+        and "A" not in launches, "decide: a mod ticket reads mod_work, names the mod's run, launches nothing (%s)"
+        % rows["A"])
+    chk(lambda: rows["B"]["decision"] == "launch" and "B" in launches, "decide: the pipeline example is launched")
+    chk(lambda: rows["C"]["decision"] == "blind" and "could not look" in rows["C"]["why"] and "C" not in launches,
+        "decide: an unreadable home is blind, could not look, no launch")
+    rows2, _l, _ = run({"A": it(mod_work=mw_mod, effect=None, verdict=None, accept="x_accept.py")})
+    chk(lambda: rows2["A"]["decision"] == "mod_work", "decide: a mod ticket's acceptance script is not adopted")
+    # the status line on the page: one stage function
+    st_mod = LP.stage_of(LP.facts({"state": "ready", "effect": "cmd:false"}, mod_work=mw_mod, now=NOW), NOW)
+    st_bl = LP.stage_of(LP.facts({"state": "ready", "effect": "cmd:false"}, mod_work=mw_blind, now=NOW), NOW)
+    st_ex = LP.stage_of(LP.facts({"state": "ready", "effect": "cmd:false"}, lane_row={"decision": "launch", "why": "w"},
+                                 lane_at=NOW, mod_work=mw_ex, now=NOW), NOW)
+    chk(lambda: st_mod["stage"] == "waiting" and "Maturation Pipeline run of HugeThings" in st_mod["why"],
+        "stage_of: waits for the Maturation Pipeline run of the mod (%s)" % st_mod)
+    chk(lambda: st_bl["stage"] == "unmeasured" and "could not look" in st_bl["why"], "stage_of: could not look (%s)" % st_bl)
+    chk(lambda: st_ex["stage"] == "ready", "stage_of: the pipeline example stays ready (%s)" % st_ex)
+    # the gather of a real tick: the mod ticket's check is not run
+    ids = ["RIMMANDRAKE_TEST_MODWORK_" + c for c in "ABC"]
+    evs = [{"id": iid, "event": "file", "for": "BENCH", "seat": "BENCH", "kind": "task", "title": t, "effect": "cmd:false",
+            "ts": "2026-11-22T00:00:00Z"} for iid, t in zip(ids, ("keep the warned edge",
+                                                                    "fix src/RimMandrake/HugeThings/Source/T.cs",
+                                                                    "list_dispatch.py names HugeThings as an example"))]
+    evs.append(dict(home, id=ids[0], event="home", seat="BENCH", ts="2026-11-22T00:01:00Z"))
+    world = LM.replay(evs)
+    ran = []
+    ld = LD()
+    with tempfile.TemporaryDirectory(prefix="ld_mw_") as d, patch.dict(os.environ, RM_DISPATCHER_STATE=d,
+                                                                         RM_CONTROL_MOD_FOLDERS="HugeThings,FlowWorks",
+                                                                         RM_CONTROL_MODS="FlowWorks"), \
+            patch.object(LE, "_world", return_value=world), patch.object(ld, "_off", return_value=(None, None)), \
+            patch.object(ld, "_paused", return_value=None), patch.object(ld, "_held", return_value=None), \
+            patch.object(ld, "_pool", return_value=None), patch.object(ld, "_clone_exists", return_value=False), \
+            patch.object(LE, "run", lambda eff, root: ran.append(eff) or ("fails", "red")):
+        rd = ld.tick(dict(CFG), apply=False, fx={"account": lambda: (True, "")}, now=NOW)["items"]
+        chk(lambda: [rd[i]["decision"] for i in ids] == ["mod_work", "mod_work", "would_launch"] and len(ran) == 1,
+            "the tick: home and path tickets read mod_work and their checks never run; the example would launch (%s, %d "
+            "checks run)" % ([rd.get(i, {}).get("decision") for i in ids], len(ran)))
+        # the Codex feed: list_home offer hands out only the example; a broken home is not offered
+        world.items[ids[2]].home, keep = "garbled", world.items[ids[2]].home
+        o = LH.offer(world.items, ids, MW.mods())
+        world.items[ids[2]].home = keep
+        o2 = LH.offer(world.items, ids, MW.mods())
+    chk(lambda: o2["offer"] == [ids[2]] and o2["mods"] == {"HugeThings": ids[:2]} and not o2["blind"],
+        "list_home offer: only the pipeline ticket is offered; the two are counted under HugeThings (%s)" % o2)
+    chk(lambda: o["offer"] == [] and list(o["blind"]) == [ids[2]], "list_home offer: an unreadable home is not offered")
+
+
 def t_each_limit_names_its_danger():
     c = LD().load_cfg()
     nums = [k for k, v in c.items() if isinstance(v, (int, float)) and not isinstance(v, bool) and not k.startswith("_")]
@@ -528,6 +609,7 @@ def main():
               t_a_write_that_stands_unlanded_is_not_a_refusal,
               t_a_dry_tick_writes_nothing,
               t_only_narrows_the_items_never_the_gates,
+              t_a_mod_ticket_is_not_the_list_pipelines,
               t_each_limit_names_its_danger):
         try:
             t()

@@ -9,6 +9,9 @@ the old tickets grouped by mod, pipeline repair and other kinds once, and the li
     python3 src/RimMandrake/rimflow/list_home.py list [--home HOME] each home, its groups, its tickets (one home: --home)
     python3 src/RimMandrake/rimflow/list_home.py no-home            the open list tickets that have no home
     python3 src/RimMandrake/rimflow/list_home.py json               the whole view, for a program
+    python3 src/RimMandrake/rimflow/list_home.py offer [--by-mod]   the tickets the List Pipeline may hand to a lane or
+                                                                    to Codex: not one mod's work (mod_work.of); the rest
+                                                                    are counted by mod (--by-mod: and listed)
     exit 0 read; 2 could not look (the ledger or the page's ticket set could not be read)
 
 The write is `rimflow home <ID> --home H --group G --flag F [--reason R]`, or `rimflow home --from <rows.tsv>` (ID, HOME,
@@ -155,6 +158,43 @@ def read():
     return open_homes(stores["items"], list(sec["stage_of"])), stores["items"]
 
 
+def offer(items, ids, modset, reading=None):
+    """-> {"offer": [ids], "mods": {mod: [ids]}, "blind": {id: cause}} over the open list tickets `ids`. A ticket that is
+    one mod's work waits for that mod's Maturation Pipeline run; a ticket whose home cannot be read is not offered."""
+    import mod_work as MW
+    reading = reading or (lambda it: MW.reading(it, modset))
+    out = {"offer": [], "mods": collections.defaultdict(list), "blind": {}}
+    for i in sorted(ids):
+        it = items[i]
+        if it.state in CLOSED:
+            continue
+        r = reading(it)
+        if r.get("unreadable"):
+            out["blind"][i] = r["unreadable"]
+        elif r.get("mod"):
+            out["mods"][r["mod"]].append(i)
+        else:
+            out["offer"].append(i)
+    out["mods"] = dict(out["mods"])
+    return out
+
+
+def offer_lines(o, items, by_mod=False):
+    out = ["offered to a lane or to Codex: %d open list tickets (not one mod's work)" % len(o["offer"])]
+    for i in o["offer"]:
+        out.append("    %s  [%s]  %s" % (i, "check" if items[i].effect else "no check",
+                                         " ".join(str(items[i].title or "").split())[:100]))  # cut-ok: terminal display
+    n = sum(map(len, o["mods"].values()))
+    out.append("kept off, each waits for its mod's Maturation Pipeline run: %d, in %d mods" % (n, len(o["mods"])))
+    for m in sorted(o["mods"], key=lambda m: (-len(o["mods"][m]), m)):
+        out.append("    %-28s %d" % (m, len(o["mods"][m])))
+        if by_mod:
+            out += ["        %s" % i for i in o["mods"][m]]
+    out.append("could not look, not offered: %d" % len(o["blind"]))
+    out += ["    %s: %s" % kv for kv in sorted(o["blind"].items())]
+    return out
+
+
 def main(argv=None, read=read):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -163,6 +203,8 @@ def main(argv=None, read=read):
     s.add_argument("--home", help="one home, for example mod:FlowWorks")
     sub.add_parser("no-home")
     sub.add_parser("json")
+    s = sub.add_parser("offer")
+    s.add_argument("--by-mod", action="store_true", help="list the kept-off tickets under each mod")
     o = ap.parse_args(argv)
     try:
         homes, items = read()
@@ -170,6 +212,15 @@ def main(argv=None, read=read):
         print("UNMEASURED: the list could not be read (%s: %s)" % (type(e).__name__, e))
         return 2
     v = view(homes)
+    if o.cmd == "offer":
+        import mod_work as MW
+        try:
+            modset = MW.mods()
+        except Exception as e:  # noqa: BLE001 - could not look is never an empty offer
+            print("UNMEASURED: the mod folders could not be read (%s: %s)" % (type(e).__name__, e))
+            return 2
+        print("\n".join(offer_lines(offer(items, list(homes), modset), items, o.by_mod)))
+        return 0
     if o.cmd == "json":
         print(json.dumps(dict(v, tickets={i: h for i, h in homes.items() if h}), indent=1))
     elif o.cmd == "no-home":

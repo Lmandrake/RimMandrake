@@ -657,6 +657,9 @@ Design work is never done in-window.
   pipeline code). Give the reviewer `roles/code_review.md`, or a prompt with the same significance rule, stop level and
   polish route. Read the first three reviews and count the findings and the significant ones. Until then, that
   Codex obeys the rule is UNMEASURED.
+- **A Codex builder lane takes its tickets from `python3 src/RimMandrake/rimflow/list_home.py offer`**, never from
+  `list_home.py list`. `offer` leaves out each ticket that is one mod's work (`mod_work.of`: a home `mod:<folder>`, or
+  every repo path inside one mod's folder). Such a ticket waits for that mod's Maturation Pipeline run.
 - **Every judging brief that you write states its stopping level** (a blind-challenge judge, a coverage or art look, a
   sweep): the level that is enough (each named thing has a verdict with its evidence), one full inspection then one
   check of the repairs and never a third look, refusals only for a flaw (§The judge refuses flaws, not polish), and

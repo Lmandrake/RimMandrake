@@ -95,6 +95,7 @@
     "src/RimMandrake/rimflow/acceptance/step1_outcome_check_accept.py",
     "src/RimMandrake/Utils/systemd/rm-list-effect.*",
     "src/RimMandrake/rimflow/list_dispatch*.py",
+    "src/RimMandrake/rimflow/mod_work.py",
     "src/RimMandrake/rimflow/list_dispatch*.json",
     "src/RimMandrake/rimflow/selftest_list_dispatch.py",
     "src/RimMandrake/rimflow/acceptance/step2_list_lane_accept.py",

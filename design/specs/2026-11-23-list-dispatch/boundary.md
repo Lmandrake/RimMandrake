@@ -1,6 +1,8 @@
 # BOUNDARY: the List Pipeline's Waiting, Ready and Work stages (list_dispatch.py), Design Version 0.1.0
 
 Code: `src/RimMandrake/rimflow/list_dispatch.py` (all of it), `src/RimMandrake/rimflow/list_dispatch.json`,
+`src/RimMandrake/rimflow/mod_work.py` (all of it) and its callers `list_pipeline.facts`/`stage_of`, `list_home.offer`
+and `maturation_nonmod.section`,
 `maturation_dispatch.occupancy` (the lane's runs only),
 `src/RimMandrake/Utils/systemd/rm-list-dispatch.{service,timer}`, the `list_dispatch` family in
 `src/RimMandrake/rimflow/control.py`, `detached_helper.py launch --next-act-owner` and the one line in
@@ -30,6 +32,9 @@ waited for the Conductor's hand, because no program launched them. Each promise 
 - **an-item-whose-mod-is-not-named-in-its-id-or-title.** The mod of a list item is read from its id and title words.
   An item about a held mod that names no mod is launched. `detached_helper.launch` refuses it only if its brief sets
   `RM_CONTROL_MOD`.
+- **a-mod-ticket-that-names-no-home-and-no-mod-path.** `mod_work.of` reads the ticket's home, then the repo paths in its
+  title, check and prose. A ticket about one mod that has no home and names the mod only by a word stays in the List
+  Pipeline. A ticket with an explicit non-mod home (`pipeline:`, `game:`, `machine:`) stays, whatever its paths say.
 - **a-check-that-passes-for-the-wrong-reason.** Step 1's page says it. The lane trusts the check.
 - **two-ticks-at-once.** The tick holds a file lock; a second tick on another clone with another state directory is not
   seen.
@@ -39,6 +44,16 @@ waited for the Conductor's hand, because no program launched them. Each promise 
 - **decide-is-pure-and-says-why-on-every-row.** `decide(cfg, st, facts, now, account)` reads only its inputs, writes
   only `st`, and returns one row per item with a non-empty `why`. A ledger that could not be read (`facts["items"]` is
   None) is one `blind` row and no launch.
+- **a-mod-ticket-is-not-the-list-pipelines.** A ticket whose home is `mod:<folder>`, or that has no home (or `unplaced`)
+  and whose every repo path (title, check, prose) lies inside one mod's folder (`src/<Tier>/<Mod>/` or
+  `design/concepts/<Mod>/`), is one mod's work (`mod_work.of`, the one rule). The tick runs no check on it, adopts,
+  closes and launches nothing (decision `mod_work`); `list_home.py offer`, the feed of a Codex lane, does not offer it
+  and counts it under its mod; its status line on the page (`stage_of`, stage `waiting`) says that it waits for the
+  Maturation Pipeline run of that mod, and names the mod. A pipeline ticket that names a mod only as its example (a
+  path outside the mod, or paths in two mods) stays in the List Pipeline. A home that cannot be read, or prose that
+  cannot be read, launches nothing and is not offered: the row reads `blind` and the stage `unmeasured`, "could not
+  look". A live run on such a ticket still shows as Work. Measured 2026-11-24: the Codex lane built two HugeThings tickets
+  (home mod:HugeThings), because HugeThings has no version folder and the page counted them as list work.
 - **the-check-runs-before-every-attempt.** An item whose check holds reads `close`, whatever its runs; the tick closes it
   as the pipeline's act (`list_effect.close_item`, role unit `rm-list-dispatch.service`) if its live gate allows it,
   and launches nothing on it. Both ticks share the live gate on the outcome-check boundary page. An

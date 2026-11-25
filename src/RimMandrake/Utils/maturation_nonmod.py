@@ -328,10 +328,21 @@ def section(s, now, spend=None, stage=None):
         rn = ready_note(i)
         f = LP.facts(it, rs, lane_row=lane_rows.get(i), lane_at=lane_at, lane_cause=lane_cause,
                      his=bool(his and i in his), ready_note=(rn or {}).get("text"), last_event=last_ev.get(i),
-                     end_kind=kind, open_ids=open_set, now=now)
+                     end_kind=kind, open_ids=open_set, now=now, mod_work=mod_work(it))
         if recs is None and not f.get("note"):
             f["note"] = "the run records could not be read"
         return f
+
+    import mod_work as MW      # a ticket that is one mod's work waits for that mod's Maturation Pipeline run
+    try:
+        mw_mods, mw_cause = MW.mods(), None
+    except Exception as e:  # noqa: BLE001 - no mod list: each ticket reads could not look, none reads as list work
+        mw_mods, mw_cause = None, "the mod folders could not be read (%s: %s)" % (type(e).__name__, e)
+
+    def mod_work(it):
+        if mw_mods is None:
+            return {"mod": None, "why": mw_cause, "unreadable": mw_cause}
+        return MW.reading(it, mw_mods)
 
     facts = {i: fact(i) for i in open_nm}
     stage = {i: stage_fn(f, now) for i, f in facts.items()}

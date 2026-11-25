@@ -46,7 +46,7 @@ MOVED_BY = {
 
 # list_dispatch decisions taken before the item's check ran (lane-row-to-verdict)
 _NOT_RUN = ("disabled", "pipeline_paused", "off", "adopt", "would_adopt", "adopted", "adopt_refused", "adopt_too_heavy",
-            "no_effect", "not_found", "closed")
+            "no_effect", "not_found", "closed", "mod_work")
 _HOLDS = ("close", "would_close", "closed_by_check", "close_refused")
 
 
@@ -90,6 +90,12 @@ def stage_of(item, now):
             return _r("conflict", "the item is closed done, and its check fails" + _note(item), promise=promise)
         return _r("closed", "the item is %s%s" % (state, "; its check holds" if verdict == "holds" else ""),
                   promise=promise)
+    mw = item.get("mod_work")       # mod_work.of: a mod's ticket waits for that mod's Maturation Pipeline run
+    if isinstance(mw, dict) and mw.get("unreadable"):
+        return _r("unmeasured", "could not look whether it is mod work: %s; nothing launches it" % mw["unreadable"])
+    if isinstance(mw, dict) and mw.get("mod") and run not in ("live_work", "live_shape"):   # a live run shows as work
+        return _r("waiting", "waits for the Maturation Pipeline run of %s (%s); the List Pipeline does not work it"
+                  % (mw["mod"], mw.get("why") or "it is that mod's work"), "the Maturation Pipeline run of %s" % mw["mod"])
     if item.get("stopped"):
         return _r("trouble", "stopped: %s" % (item.get("note") or "its run ended and nothing moved it on"))
     if run == "live_work":
@@ -159,19 +165,19 @@ def _run_state(r):
 
 
 def facts(it, runs=(), lane_row=None, lane_at=None, lane_cause=None, his=False, ready_note=None, last_event=None,
-          end_kind=None, open_ids=None, now=None, age_from=None):
+          end_kind=None, open_ids=None, now=None, age_from=None, mod_work=None):
     """-> the plain item dict stage_of reads, from one ledger item and what is known about it.
     runs: its detached-run records, oldest first; lane_row: list_dispatch's reading row ({decision, why}) or None;
     lane_at: that reading's time, None when unreadable (lane_cause says why); his: owner_queue.is_his; ready_note: the
     note text that says it is ready to show, or None; last_event: the time of its last ledger event; end_kind: the class
     of its newest ended run (maturation_nonmod.run_end: stopped, capped, refused, left open, said nothing);
-    open_ids: the ids of open items (None: every named item counts as open)."""
+    open_ids: the ids of open items (None: every named item counts as open); mod_work: mod_work.of's reading of it."""
     now = 0.0 if now is None else now
     eff = g(it, "effect")
     if not eff:
         eff = None                      # an empty check text is no check
     d = {"state": g(it, "state"), "effect": eff, "verdict": None, "route": None, "waits": None, "run": None,
-         "stopped": False, "promise": None, "note": None}
+         "stopped": False, "promise": None, "note": None, "mod_work": mod_work}
     if g(it, "live"):
         d["promise"] = "dead" if g(it, "live_broken") else "kept"
     filed = epoch(g(it, "created_at"))
