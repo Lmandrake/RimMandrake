@@ -30,6 +30,14 @@ namespace JawaBench.BridgeTools
         internal static bool Busy { get { return Core.Busy; } }
         internal static void Frame() { Core.Frame(); }
         internal static PathValue ReadValue(string of, string path) { return P.Read(Host, of, path); }
+        /// <summary>The open session's id, or null (the force record names it: JawaBenchForce.cs).</summary>
+        internal static string SessionId { get { return Core.Cur != null && Core.Cur.Stage == "open" ? Core.Cur.Id : null; } }
+        /// <summary>A record of the open session's trace; -2 when no session is open.</summary>
+        internal static long SessionRecord(string rec, string fields) { return Core.Record("force", rec, fields); }
+        /// <summary>The thing bound to `alias` or `alias[n]` in this session, or null.</summary>
+        internal static Thing BoundThing(string of) { return Host.BoundThing(of); }
+        /// <summary>The context that runs a tool body inline, in this hop (as an act of a batch is run).</summary>
+        internal static IRimBridgeContext InlineCtx { get { return OneHopTools.InlineContext.One; } }
 
         // ============================================================================================ the hands (main thread)
         /// <summary>open | state | bind | take | close | abort.</summary>
@@ -37,7 +45,10 @@ namespace JawaBench.BridgeTools
         {
             switch ((action ?? "").Trim().ToLowerInvariant())
             {
-                case "state": return More(Core.State());
+                case "state":
+                    var st = More(Core.State());
+                    st["force"] = JawaBenchTerrainTools.ForceSummary(Core.Cur != null ? Core.Cur.Id : null);
+                    return st;
                 case "open":
                     if (!JawaBenchVitals.GameReady()) return H.Refusal("NO_GAME", "no game is playing", "load a map first");
                     if (!W.Running) return H.Refusal("CANNOT_RUN", "the disk writer is not running: no trace could be kept", "read jawa/tps_report");
@@ -264,6 +275,18 @@ namespace JawaBench.BridgeTools
             }
 
             public void Unbind(string alias) { _bound.Remove(alias); }
+
+            internal Thing BoundThing(string of)
+            {
+                if (string.IsNullOrEmpty(of) || !Core.Busy) return null;
+                int i = of.IndexOf('[');
+                string alias = i < 0 ? of : of.Substring(0, i);
+                int n = 0;
+                if (i >= 0 && (!of.EndsWith("]", StringComparison.Ordinal) || !int.TryParse(of.Substring(i + 1, of.Length - i - 2), NumberStyles.None, CultureInfo.InvariantCulture, out n))) return null;
+                Thing[] a;
+                if (!_bound.TryGetValue(alias, out a) || n >= a.Length) return null;
+                return a[n];
+            }
 
             /// <summary>The cast of a run: every bound pawn, named by its alias, or `alias[i]` in a group.</summary>
             internal List<KeyValuePair<string, Thing>> CastPawns(Func<string, int> sizeOf)
@@ -648,7 +671,7 @@ namespace JawaBench.BridgeTools
         internal static void Observe(Task t) { var _ = t.Exception; }
 
         /// <summary>The context of a tool body inside a hop. There is no other queue to go to, so the body ends where it starts.</summary>
-        private sealed class InlineContext : IRimBridgeContext
+        internal sealed class InlineContext : IRimBridgeContext
         {
             internal static readonly InlineContext One = new InlineContext();
             private readonly InlineMainThread _main = new InlineMainThread();

@@ -285,6 +285,9 @@ namespace JawaBench.BridgeTools
 
             long Row(string phase, string rec, string fields) { return Cur.Trace.Emit(_h, null, _h.Tick(), phase, rec, fields); }
 
+            /// <summary>A record of the open session's trace, outside any run (the force record); -2 when no session is open.</summary>
+            public long Record(string phase, string rec, string fields) { return Cur == null || Cur.Stage != "open" ? -2 : Row(phase, rec, fields); }
+
             /// <summary>The caller may drive. Its call renews the lease.</summary>
             Dictionary<string, object> RefuseTaken()
             {

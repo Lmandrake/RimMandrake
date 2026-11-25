@@ -120,6 +120,7 @@ namespace JawaBench.BridgeTools
         {
             if (giver != null) return giver.GetType().Name;
             if (j != null && j.jobGiver != null) return j.jobGiver.GetType().Name;
+            if (j != null && j.workGiverDef != null) return "WorkGiverDef:" + j.workGiverDef.defName;   // a work giver's job given outside the tree (the float menu)
             if (fromQueue) return "queue";
             return j != null && j.playerForced ? "player" : "direct";
         }

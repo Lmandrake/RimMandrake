@@ -486,3 +486,48 @@ map and refuses otherwise, because a map switch can reply success and not take (
 | A raid at a stage with no free colonist: the incident journal's outcome (fired, or called and not fired) agrees with the raiders on the stage. | `prove_stage_map.py` R4; offline `selftest_prove_stage_map_rows.py` |
 | The make time of each map kind is printed. | `prove_stage_map.py` R5 |
 | A pawn on the stage that is not cast is a `BREACH` line on the receipt of `s.stage` and of the close. | `prove_stage_map.py` R6; offline `a_pawn_on_a_station_is_vanished_and_a_pawn_not_cast_is_a_breach` |
+
+## THE ORDER THROUGH THE GIVER, THE MOTIVE, THE FORCE RECORD
+
+Item `RIMMANDRAKE_BUILD_CAST_ASSERTS_AND_ORDER_THROUGH_GIVER` (the C# duty; `02_needs_design.md` §5 is the ladder). Code:
+`src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchForceCore.cs` (all of it, pure, no RimWorld type) and
+`src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchForce.cs` (the Verse half: `jawa/order`, `jawa/motive`, the game
+host), the `Giver` function of `JawaBenchCast.cs`, and the `Record`/`BoundThing` seams of the hands. Each promise has a test of
+its name in `src/RimMandrake/bridgetools/selftest_scene_force.py` (harness `bridgetools/ForceSelfTest`). The live proof is
+`src/RimMandrake/bridgetools/prove_ordered_rescue.py`; its reading goes to `live/ordered_rescue/reading.md`.
+
+**`jawa/order`** gives one pawn one order at a level of the Minimum Force ladder:
+- `level=giver` (level 3) asks the game's own giver and starts only the job that the giver makes. A `WorkGiverDef` goes through
+  the player's float menu code (`FloatMenuOptionProvider_WorkGivers`, the option for that giver and that target; a disabled
+  option's label is the giver's reason), and its job starts by the option's own action (`TryTakeOrderedJobPrioritizedWork`). A
+  `ThinkNode_JobGiver` type is found in the pawn's duty node, main tree or constant tree (a fresh node when none holds it, said in
+  `node`), is asked through `TryIssueJobPackage`, and its job starts as the think tree starts one (`StartJob`, the node as giver).
+  Python never copies a giver's rules, and neither does this tool.
+- `level=raw` (level 4) builds the job (`JobMaker.MakeJob`) and starts it through `TryTakeOrderedJob`: no giver ran.
+- `fallback=raw` on a level-3 order: when the giver refuses, the raw order is given instead, and the record says so.
+
+A giver's refusal is a fact about the mod, not a fault of the bridge: the reply is `success` true, `given` false, `reason` (the
+giver's own words), and no job is started. **`jawa/motive`** (level 2) gives the pawn's lord a new `LordJob` through the body of
+`jawa/lord_set_job`; the duty read back after is in the reply. A pawn with no lord is refused `NO_LORD`: a motive does not make a
+group.
+
+**The force record.** Each order and motive writes one entry: `actor`, `act`, `asked` (the level asked), `used` (the level of the
+path that actually ran: 2, 3, 4, or null when nothing was forced), `via` (the giver that made the job: a `WorkGiverDef:<defName>`
+or the node type; `raw` for a raw job), `given`, `started`, `reason`, class `NOT UNDONE`, reach `save`. The entry is a `force`
+record of the session trace when a session is open, and is in `jawa/session action=state` as `force` (per actor: each entry and
+the highest level used). The deviation record (`RIMMANDRAKE_BUILD_DEVIATION_RECORD_SETTINGS_FIELD_JOINS_FIRST`) takes these
+entries as its kind `force` when it is built. **The job tap's `giver`** names a work giver's job given outside the think tree as
+`WorkGiverDef:<defName>` (the `workGiverDef` that the float menu sets on the job), so the live proof compares `via` with the tap.
+
+It accepts: an actor that is a session alias, `alias[n]`, or a pawn id; a target that is an alias, a thing id or `x,z`; a giver
+name that is a `WorkGiverDef` or a `ThinkNode_JobGiver` type. It does not survive (not promised): a JobGiver whose fresh node
+lacks the XML fields that the tree's copy has (the reply says `node: fresh`); a giver whose job a later tick ends (an order is
+given, not done; the run reads the rest); a work giver's option merged into an equivalence group under another giver's label.
+
+| promise | test |
+|---|---|
+| An order declared through the giver that the giver refuses returns `given` false with the giver's reason, and starts no job. | `a_refused_giver_order_returns_the_reason_and_starts_nothing` |
+| The force level on the record is the level of the path that ran, not the level asked: a refused giver order with `fallback=raw` records asked 3, used 4. | `the_force_level_recorded_is_the_level_used` |
+| A motive for a pawn with no lord is refused `NO_LORD`, by name, and changes nothing. | `a_motive_for_a_pawn_with_no_lord_is_refused_by_name` |
+| A raw order is recorded as raw: used 4, `via` raw, "not shown reachable in play". | `a_raw_job_is_recorded_as_raw` |
+| Live: for an order through the giver, the job tap's `giver` names that giver; for a raw order it does not. | `prove_ordered_rescue.py` R4 |
