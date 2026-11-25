@@ -22,13 +22,18 @@ FREE, CANON = "rm_proof_canonical_guard", "CANONICAL_rm_proof_guard_%d" % os.get
 
 def profile(name, save, want):
     """The handshake names the loaded save and the profile, and a test tool agrees."""
-    h = P.call("jawa/companion_handshake")
-    got, seen = h.get("effectiveProfile"), (h.get("game") or {}).get("save")
-    if got not in ("test", "campaign") or (seen or "") != save:
-        return P.row(name, None, "handshake save %r, profile %r: %s" % (seen, got, h.get("_error")))
+    for _ in range(60):  # just after a load the lifecycle may not have entered the game yet: CAMPAIGN by "unknown", not by the list
+        h = P.call("jawa/companion_handshake")
+        if "unknown" not in str(h.get("profileWhy")):
+            break
+        time.sleep(1)
+    got, seen, why = h.get("effectiveProfile"), (h.get("game") or {}).get("save"), str(h.get("profileWhy"))
+    if got not in ("test", "campaign") or (seen or "") != save or "unknown" in why:
+        return P.row(name, None, "handshake save %r, profile %r (%s): %s" % (seen, got, why, h.get("_error")))
     r = P.call("jawa/quiet_site", action="read")
     refused = r.get("refused") is True or "REFUSED in the CAMPAIGN" in str(r)
-    return P.row(name, got == want and refused == (want == "campaign"), "%s (%s); quiet_site refused: %s" % (got, h.get("profileWhy"), refused))
+    by_list = want != "campaign" or "is a listed canonical save" in why  # the row proves the LIST, not the unknown-save default
+    return P.row(name, got == want and refused == (want == "campaign") and by_list, "%s (%s); quiet_site refused: %s" % (got, why, refused))
 
 
 def load(name):
@@ -44,7 +49,10 @@ def load(name):
 
 def main():
     P.connect()
-    path = P.call("jawa/companion_handshake").get("profileFile")
+    h = P.call("jawa/companion_handshake")
+    print("companionSha: %s" % h.get("companionSha"), flush=True)  # the record names the build it proved
+    print("profileFile: %s" % h.get("profileFile"), flush=True)
+    path = h.get("profileFile")
     if not path:
         P.row("saves_folder", None, "the handshake gave no profileFile")
         return 2

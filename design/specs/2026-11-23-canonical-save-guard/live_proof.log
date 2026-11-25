@@ -1,0 +1,9 @@
+# prove_canonical_guard.py on ArchSmall, 2026-11-24 19:47 PST
+ArchSmall: held for `python.exe src/RimMandrake/bridgetools/prove_canonical_guard.py` (gen 108)
+companionSha: d9678136b400e793a9363ecb55f26c7f2ba83f35
+profileFile: D:\ClaudeWork\rimmandrake\instances\b\JawaBench\companion_profile.json
+a_new_game_is_test                           PASS       test (no save was loaded, so no canonical save to guard: test); quiet_site refused: False
+a_canonical_name_is_campaign                 PASS       campaign (loaded save 'CANONICAL_rm_proof_guard_8532' is a listed canonical save: campaign); quiet_site refused: True
+the_same_save_under_a_test_name_is_test      PASS       test (profile file says test, and the loaded save is not a listed canonical save); quiet_site refused: False
+[bridge split] 32.1 s wall: load 9.5 / ticks 0.0 / reads 4.4 / other 0.1 / outside calls 18.1 s
+exit: 0

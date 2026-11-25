@@ -46,6 +46,6 @@ With a guarded save loaded, the profile is CAMPAIGN and the companion refuses th
 
 ## The live proof
 
-`src/RimMandrake/bridgetools/prove_canonical_guard.py`, on a game after its companion deploy: UNRUN.
+`src/RimMandrake/bridgetools/prove_canonical_guard.py`, on a game after its companion deploy. Its record is `design/specs/2026-11-23-canonical-save-guard/live_proof.log` (the companion sha it ran on is the first line after the lock line). The canonical row passes only when the reason names the list; a save copied under a name off the list makes that row FAIL.
 
 Later lists beside this page: `polish.md`.

@@ -61,8 +61,12 @@ def playing(limit=240):
 
 
 def quicktest():
-    call("rimworld/start_debug_game_ready", timeoutMs=280000, readiness="mapData", pauseIfNeeded=True)
-    return playing()
+    """A NEW debug game. From a Playing game, start_debug_game_ready times out on the entry scene and the old map stays
+    (measured on ArchSmall 2026-11-24), so go to the main menu first, and a failed start is no map."""
+    if (call("jawa/companion_handshake").get("game") or {}).get("programState") != "Entry":
+        call("rimworld/go_to_main_menu")
+    r = call("rimworld/start_debug_game_ready", timeoutMs=280000, readiness="mapData", pauseIfNeeded=True)
+    return r.get("success") is not False and playing()
 
 
 def step(n):
