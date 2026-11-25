@@ -840,6 +840,15 @@ def t_the_other_doors_take_the_same_check():
     check("a PROGRESS note's lower-case next: is no defer", defer("note", "PROGRESS: theory: x | next: the Conductor "
                                                                     "reads the table").go)
     check("a LEFT OPEN that names no one passes the program", defer("note", "LEFT OPEN: part 3 is not built yet").go)
+    st2 = scratch("defer-again")
+
+    def again(door_, text):
+        return FG.at_defer(door_, SD["id"], text, unit=UNIT, owner=False, program="", state_dir=st2,
+                           live_units=live, judge_fn=None, now="2026-11-25T10:21:00Z")
+    first = again("note", "DONE. NEXT: the Conductor rules whether the ruling covers Codex")
+    second = again("note", "DONE. NEXT: read the first real ladder climb when a stuck run ends")
+    check("the same act done again, passing, resolves its refusal (the refusal text promises it)",
+          not first.go and second.go and FG.read_refusals(UNIT, st2) == ([], ""), FG.read_refusals(UNIT, st2))
     check("the owner, the window and a program pass", defer("wait", real_wait, owner=True).go and
           defer("wait", real_wait, unit="").go and defer("wait", real_wait, program="p.f").go)
     src = open(CLI, encoding="utf-8").read()

@@ -114,7 +114,8 @@ there is of a promise here. The hook has its own selftest, `.claude/hooks/selfte
   defers to the Conductor or the owner (`LEFT OPEN:` or `NEXT:`) go through the same program check and the same judge.
   A wait or block whose reason names a reset, a timer, or a run that is live passes the program. A reason that names
   the Conductor or the owner passes only when it names one of the five acts, a looser bar, or a hold to lift. A refusal
-  exits 6, writes no event and is recorded. The owner, the Conductor window and a program are never refused.
+  exits 6, writes no event and is recorded. The same act done again that passes resolves that refusal. The owner,
+  the Conductor window and a program are never refused.
 - **the-blind-brief-asks-three-theories.** The blind judge's brief (`maturation.blind_brief_text`) names "the cause is
   still unknown after three theories, each tested", not "the fix is not known".
 - **a-run-mod-that-cannot-be-read-is-not-a-refusal.** When the mod of the run cannot be read, `other-mod` is filed, the

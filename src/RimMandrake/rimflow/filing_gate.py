@@ -514,7 +514,19 @@ def at_defer(door, iid, text, unit, owner, program, state_dir, live_units, judge
                         HOW_TO_RESOLVE + ".", None, _err(err))
     if rec is not None:
         after_filed(unit, state_dir, iid, rec, now=now)
+    else:       # the refusal says "do the act again with a reason that meets the requirement": a passing act does that
+        resolve_again(unit, state_dir, iid, door, now=now)
     return Door(True, 0, "", rec, "")
+
+
+def resolve_again(unit, state_dir, iid, door, now=None):
+    """A passing act at `door` on `iid` resolves that item's open refusal at the same door (RIMMANDRAKE_PASS_EFFORT_ON_
+    EVERY_LAUNCH_STEVEDESKTOP_RAN_MEDIUM: a redone note passed and its refusal stayed open, so the run read as stuck at
+    its end). A record that cannot be read resolves nothing."""
+    left, _why = read_refusals(unit, state_dir)
+    for r in left or []:
+        if r.get("id") == iid and r.get("door") == door:
+            record_resolution(unit, state_dir, "filed", iid, now=now, door=door, again="the act was done again and passed")
 
 
 def _err(why):
