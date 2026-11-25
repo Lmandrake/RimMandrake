@@ -216,6 +216,39 @@ namespace RimMandrake.CreatureBehaviors
             }
         }
 
+        private static readonly HashSet<int> takenCells = new HashSet<int>();
+
+        /// <summary>RIMMANDRAKE_SPREAD_SHADE_DASH_SEVEN_ANIMALS_ON_ONE_CELL: a
+        /// free landing cell of target's patch, nearest to target. A cell is
+        /// taken when another pawn stands on it, another dash is landing on
+        /// it, or nothing can stand there. So a herd that dashes for one rim
+        /// spreads over the patch instead of resting in a heap on one cell.</summary>
+        public static IntVec3 SpreadLanding(Pawn pawn, RM_ShadePatchGraph graph, IntVec3 target)
+        {
+            Map map = pawn.Map;
+            CellIndices ci = map.cellIndices;
+            takenCells.Clear();
+            IReadOnlyList<Pawn> all = map.mapPawns.AllPawnsSpawned;
+            for (int i = 0; i < all.Count; i++)
+            {
+                Pawn other = all[i];
+                if (other == pawn)
+                {
+                    continue;
+                }
+                takenCells.Add(ci.CellToIndex(other.Position));
+                Job j = other.CurJob;
+                if (j != null && j.def == RM_JobDefOf.RM_ShadeDash && j.targetB.Cell.InBounds(map))
+                {
+                    takenCells.Add(ci.CellToIndex(j.targetB.Cell));
+                }
+            }
+            int pick = graph.SpreadLanding(ci.CellToIndex(target),
+                i => takenCells.Contains(i) || !ci.IndexToCell(i).Standable(map));
+            takenCells.Clear();
+            return ci.IndexToCell(pick);
+        }
+
         /// <summary>In the sun: the nearest shade within dash range (graph
         /// field or a lure), or false.</summary>
         public static bool TryFindEscape(Pawn pawn, RM_ShadePatchGraph graph, int range, out IntVec3 target)
@@ -227,7 +260,12 @@ namespace RimMandrake.CreatureBehaviors
             int d = graph.distToShade[idx];
             if (d != RM_ShadePatchGraph.Unreached && d <= range && graph.nearestShade[idx] >= 0)
             {
-                IntVec3 c = map.cellIndices.IndexToCell(graph.nearestShade[idx]);
+                IntVec3 nearest = map.cellIndices.IndexToCell(graph.nearestShade[idx]);
+                IntVec3 c = SpreadLanding(pawn, graph, nearest);
+                if (!pawn.CanReach(c, PathEndMode.OnCell, Danger.Deadly))
+                {
+                    c = nearest;
+                }
                 if (pawn.CanReach(c, PathEndMode.OnCell, Danger.Deadly))
                 {
                     target = c;
@@ -285,10 +323,15 @@ namespace RimMandrake.CreatureBehaviors
                 {
                     break;
                 }
-                if (pawn.CanReach(pick.to, PathEndMode.OnCell, Danger.Deadly))
+                IntVec3 to = SpreadLanding(pawn, graph, pick.to);
+                if (!pawn.CanReach(to, PathEndMode.OnCell, Danger.Deadly))
+                {
+                    to = pick.to;
+                }
+                if (pawn.CanReach(to, PathEndMode.OnCell, Danger.Deadly))
                 {
                     rim = pick.from;
-                    landing = pick.to;
+                    landing = to;
                     found = true;
                     break;
                 }

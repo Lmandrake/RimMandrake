@@ -277,6 +277,54 @@ namespace RimMandrake.CreatureBehaviors
             return index >= 0 && index < patchOf.Length ? patchOf[index] : NoPatch;
         }
 
+        /// <summary>RIMMANDRAKE_SPREAD_SHADE_DASH_SEVEN_ANIMALS_ON_ONE_CELL:
+        /// the landing cell for a dash aimed at `target`. Every animal near
+        /// one rim gets the same nearestShade / edge toCell, so without this a
+        /// herd lands, and then rests, on one cell. Returns the cell of
+        /// target's own patch nearest to target (8-connected walk inside the
+        /// patch, ring by ring) that `taken` does not refuse; target itself
+        /// when it is free, when it is in no patch, or when every cell of the
+        /// patch is taken. The walk stops at the first free cell, so its cost
+        /// is the size of the crowd, never of the patch.</summary>
+        public int SpreadLanding(int target, Func<int, bool> taken)
+        {
+            int patch = PatchAt(target);
+            if (patch == NoPatch || taken == null || !taken(target))
+            {
+                return target;
+            }
+            HashSet<int> seen = new HashSet<int> { target };
+            Queue<int> queue = new Queue<int>();
+            queue.Enqueue(target);
+            while (queue.Count > 0)
+            {
+                int u = queue.Dequeue();
+                int ux = u % width, uz = u / width;
+                for (int dz = -1; dz <= 1; dz++)
+                {
+                    for (int dx = -1; dx <= 1; dx++)
+                    {
+                        int vx = ux + dx, vz = uz + dz;
+                        if ((dx == 0 && dz == 0) || vx < 0 || vz < 0 || vx >= width || vz >= height)
+                        {
+                            continue;
+                        }
+                        int v = vz * width + vx;
+                        if (patchOf[v] != patch || !seen.Add(v))
+                        {
+                            continue;
+                        }
+                        if (!taken(v))
+                        {
+                            return v;
+                        }
+                        queue.Enqueue(v);
+                    }
+                }
+            }
+            return target;
+        }
+
         /// <summary>Octile distance in cost units between two cells, the
         /// straight-line lower bound on a walk between them.</summary>
         public static int Octile(int ax, int az, int bx, int bz)

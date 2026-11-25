@@ -455,6 +455,36 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                 Assert(g.patchOf[5 * w + 5] == RM_ShadePatchGraph.NoPatch && g.distToShade[5 * w + 5] > 0, "fleck cell is shade");
             });
 
+            Case("patch graph: a herd dashing for one rim lands on distinct cells of that patch", () =>
+            {
+                // RIMMANDRAKE_SPREAD_SHADE_DASH_SEVEN_ANIMALS_ON_ONE_CELL: 12 x 3 strip,
+                // shade patch A at x=0..2, patch B at x=8..11. Seven animals all
+                // aim at B's rim cell (8,1), one after another, each seeing the
+                // landings already claimed.
+                const int w = 12, h = 3;
+                bool[] sh = new bool[w * h], wk = new bool[w * h];
+                for (int i = 0; i < w * h; i++) { wk[i] = true; int x = i % w; sh[i] = x <= 2 || x >= 8; }
+                var g = RM_ShadePatchGraph.Build(w, h, sh, wk, 400, 2);
+                int target = 1 * w + 8;
+                var taken = new HashSet<int>();
+                Assert(g.SpreadLanding(target, taken.Contains) == target, "a free target was not kept");
+                for (int k = 0; k < 7; k++)
+                {
+                    int c = g.SpreadLanding(target, taken.Contains);
+                    Assert(taken.Add(c), "animal " + k + " landed on taken cell " + c);
+                    Assert(g.patchOf[c] == g.patchOf[target], "animal " + k + " landed outside the target's patch (x=" + c % w + ")");
+                }
+                // Nearest first: the first six landings lie within one step of
+                // the rim cell's column pair x=8..9.
+                foreach (int c in taken) Assert(c % w <= 10, "landing at x=" + c % w + " skipped nearer free cells");
+                // Planted fault guard: a full patch, an unshaded target and a null predicate return the target.
+                var all = new HashSet<int>();
+                for (int i = 0; i < w * h; i++) if (g.patchOf[i] == g.patchOf[target]) all.Add(i);
+                Assert(g.SpreadLanding(target, all.Contains) == target, "a full patch did not fall back to the target");
+                Assert(g.SpreadLanding(1 * w + 5, i => true) == 1 * w + 5, "an open-sun target moved");
+                Assert(g.SpreadLanding(target, null) == target, "a null predicate moved the target");
+            });
+
             Case("patch graph: diagonal steps cost 14, and every edge is symmetric", () =>
             {
                 const int w = 9, h = 9;
