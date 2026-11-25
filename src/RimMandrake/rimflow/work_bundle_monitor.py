@@ -545,7 +545,8 @@ NOTES = {
     "moves.backward": "a move to an earlier stage, or to the same stage: a road back that opens a new cycle "
                       "(maturation.ROADS_BACK has in_game -> in_game and blind_challenge -> blind_challenge); by design, "
                       "not a defect of the reader",
-    "born": "tickets born (file/spawn ids) per ticket closed (close ids). day: the whole ledger in the window; by_kind and "
+    "born": "tickets born (distinct file/spawn ids) per ticket closed (distinct close ids; deferral.filed and "
+            "deferral.closed count events, so a ticket closed twice makes them larger). day: the whole ledger in the window; by_kind and "
             "bundles: the runs that ended in the window (born = tickets their units filed, any time; closed = their "
             "closes). 'no close' is no ratio. Under 1 the list shrinks by closes; dropped (drop/supersede) shrink it "
             "further and are not in the ratio.",
