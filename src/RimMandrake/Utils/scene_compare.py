@@ -172,9 +172,13 @@ def judge_arms(samples, origin, n):
         refused = [s for s in samples if s["arm"] == arm and s.get("refused")]
         rows = []
         for s in got:
+            if s is ref:                        # run 1 of the reference is what the others are compared with, not a comparison
+                s["comparison"] = {"verdict": "REFERENCE"}
+                continue
             c = compare(ref["rows"], s["rows"]) if ref is not None else {"verdict": COULD_NOT, "why": "no counted reference run"}
             s["comparison"] = c
             rows.append(c)
+        want = n - 1 if arm == REFERENCE else n
         if not got and not refused:
             continue
         div = [c for c in rows if c["verdict"] == DIVERGED]
@@ -183,12 +187,14 @@ def judge_arms(samples, origin, n):
             line = "first diverging tick %s (%s): reference %s, arm %s" % (div[0]["tick"], div[0]["what"], div[0]["ref"], div[0]["arm"])
         elif cnc:
             line = "could not compare %d of %d runs: %s" % (len(cnc), len(rows), cnc[0]["why"])
-        elif len(rows) < n:
-            line = "only %d counted runs of %d (refused: %s)" % (len(rows), n, "; ".join("%s %s" % s["refused"] for s in refused) or "none")
+        elif len(got) < n:
+            line = "only %d counted runs of %d (refused: %s)" % (len(got), n, "; ".join("%s %s" % s["refused"] for s in refused) or "none")
+        elif arm == REFERENCE:
+            line = "no divergence observed in %d runs (runs 2 to %d compared with run 1)" % (len(got), len(got))
         else:
             line = "no divergence observed in %d runs" % len(rows)
         tps = [s["ticks"] / s["wall_s"] for s in got if s.get("wall_s") and s.get("ticks")]
-        out[arm] = {"line": line, "counts": not div and not cnc and len(rows) >= n, "runs": len(rows), "refused": len(refused),
+        out[arm] = {"line": line, "counts": not div and not cnc and len(rows) >= want and len(got) >= n, "runs": len(got), "refused": len(refused),
                     "tps": (min(tps), sum(tps) / len(tps), max(tps)) if tps else None}
     return out
 
