@@ -84,7 +84,7 @@ Page: `design/specs/2026-11-25-effort-ladder/boundary.md`.
   Every model reads high. No run of ours uses low or medium. `effort.py` refuses a level under high.
 - A launch passes `EF.effort_args(model)`. `detached_helper.py launch --effort xhigh` sets a run's level, and the run
   record keeps it. `claude_bounded.sh` adds the table's level when its caller gave none.
-- `launch_permissions.py effort` reads every launch in the tree. It is red on a launch with no `--effort`. The
+- `launch_permissions.py effort` reads every launch in the tree. The reader is red on a launch with no `--effort`. The
   remote-control server takes no `--effort`; its sessions read the machine's settings file (`effortLevel`).
 - **A worker is stuck** when it ends success with its item open and a `LEFT OPEN:` note that says its test is still
   red, or that names no cause outside the work. A cause outside the work is the owner or the Conductor, a held or paused
@@ -97,8 +97,8 @@ Page: `design/specs/2026-11-25-effort-ladder/boundary.md`.
      5.2. A model change writes the whole context again, so a fresh start is cheaper than a resume.
   3. A stuck Fable run launches nothing. A `RAISE FIRST` line goes to the Conductor log, with the note. Nothing files a
      ticket before this step.
-- A ladder step is a continuation (`continued_from`). It spends no counted run of a mod stage and no slot of
-  `MAX_PER_DAY`. It writes no failed run on the ticket. The ladder's end guards the danger of a run that climbs without
+- A ladder step is a continuation (`continued_from`). A ladder step spends no counted run of a mod stage and no slot of
+  `MAX_PER_DAY`. A ladder step writes no failed run on the ticket. The ladder's end guards the danger of a run that climbs without
   end on a fault that needs the owner.
 
 ### 🔴 Sonnet vs Opus — owner ruling, 2026-10-29 (replaces "Sonnet default, self-escalate after one failed attempt")
