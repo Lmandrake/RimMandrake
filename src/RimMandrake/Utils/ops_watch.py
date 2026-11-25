@@ -4755,7 +4755,8 @@ def build_digest(points, hist, flags, alarms, now, run_s):
 
 
 def digest_md(dg):
-    L = ["# Ops watch %s (pass %.1f s)" % (dg["at"], dg["run_s"] or 0), "", dg["headline"], ""]
+    import pages_index as PX  # the line that links the other kept pages
+    L = ["# Ops watch %s (pass %.1f s)" % (dg["at"], dg["run_s"] or 0), "", dg["headline"], "", PX.crossref_md("ops"), ""]
     al = {k: a for k, a in dg["alarms"].items()}
     if al:
         L.append("## Alarms")

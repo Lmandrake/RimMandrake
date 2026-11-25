@@ -40,6 +40,7 @@ sys.path.insert(0, HERE)
 import boundary_check as BC  # noqa: E402
 import code_review_status as CRS  # noqa: E402  the one authority on the review record and on page states
 import codebase_health as CH  # noqa: E402  the code extensions, the excluded trees, the line counter
+import pages_index as PX  # noqa: E402  the line that links the other kept pages
 
 PAGE_NAME = "CODEBASE_NOW.html"
 FACTS_NAME = "CODEBASE_NOW.json"
@@ -622,6 +623,7 @@ def render(facts, native_out):
                    e("%s (%s)" % (head["sha"], head["time"])) if head else "UNMEASURED",
                    e(span(facts["fetch_age_s"]) + " ago") if facts["fetch_age_s"] is not None else "UNMEASURED",
                    e(facts["newest_record"] or "UNMEASURED")),
+         PX.crossref_html("codebase"),
          '<div id="stale" class="stale" hidden></div>']
     if causes:
         b.append('<div class="unm"><b>UNMEASURED.</b> This run could not measure the codebase, so no total and no '

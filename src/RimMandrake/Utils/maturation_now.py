@@ -79,6 +79,7 @@ from item_identity import item_mod  # noqa: E402  the one rule for the mod an it
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import maturation_nonmod as MNM  # noqa: E402  the section for work that is not mod work
 import maturation_trend as MT  # noqa: E402  the graph of tickets by hour
+import pages_index as PX  # noqa: E402  the line that links the other kept pages
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
@@ -1891,7 +1892,7 @@ def build(d, now):
     nm, tr = d.get("nonmod"), d.get("trend")
     note = unread_note(d)
     tail = "Everything behind these numbers: `%s\\%s.html`." % (NATIVE_OUT, DETAIL)
-    parts_md = ["# " + title, "", measured, "", needs_panel(d), ""]
+    parts_md = ["# " + title, "", measured, "", PX.crossref_md("maturation"), "", needs_panel(d), ""]
     if tr:
         parts_md += ["## " + MT.TITLE, "", MT.block(tr), ""]
     if nm:
@@ -1900,7 +1901,7 @@ def build(d, now):
     parts_md += ["## Every mod, one line", ""] + one_line_md(d)
     parts_md += ["---", ""] + ([note, ""] if note else []) + [tail, ""]
     md = "\n".join(parts_md)
-    body = [needs_panel(d)]
+    body = [PX.crossref_html("maturation"), needs_panel(d)]
     if tr:
         body += ["<h2>%s</h2>" % esc(MT.TITLE), MT.block(tr)]
     if nm:
@@ -1927,7 +1928,7 @@ def build_detail(d, now):
     measured = "**Measured from disk %s.** Made by `maturation_now.py`, no model, no tokens." % pac(now)
     lead = ("The lists behind MATURATION_NOW. "
             "The map is the spec's (`%s\\design\\specs\\2026-11-13-maturation-pipeline.md`)." % NATIVE_REPO)
-    md = ["# " + title, "", measured, ""] + needs_md(d) + nonmod_md(d) + [top_chips(d), "", lead, ""]
+    md = ["# " + title, "", measured, "", PX.crossref_md("detail"), ""] + needs_md(d) + nonmod_md(d) + [top_chips(d), "", lead, ""]
     md += convergence_md(d) + ["## Each mod", ""]
     for m in d["mods"]:
         md += [card(m), ""]
@@ -1944,7 +1945,7 @@ def build_detail(d, now):
     others = "".join("<li><code>%s</code>: no <code>version/VERSION.json</code>, so not placed on the map.</li>"
                      % esc(o["name"]) for o in d["others"])
     cant = "".join("<li>%s</li>" % inline_md(x) for x in unread_lines(d))
-    body = ["<p class='m'><a href='MATURATION_NOW.html'>The summary</a></p>", needs_html(d), nonmod_html(d),
+    body = ["<p class='m'><a href='MATURATION_NOW.html'>The summary</a></p>", PX.crossref_html("detail"), needs_html(d), nonmod_html(d),
             "<p>%s</p>" % top_chips(d), "<p class='m'>%s</p>" % inline_md(lead), convergence_html(d),
             "<h2>Each mod</h2>"] + [card(m) for m in d["mods"]]
     if others:
