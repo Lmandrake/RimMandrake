@@ -8,7 +8,7 @@ The top part, **the mod as it stands**, is rewritten at every stage change and s
 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Code exists:
   `src/RimMandrake/ExplosiveKnockback/`.
-- **Stage now:** Version passed on his word, since 2026-11-24 3:44 PM PST (`version/stage_record.json`).
+- **Stage now:** Stage 2, preflight, since 2026-11-24 4:34 PM PST (`version/stage_record.json`).
 - **Bars:** 59 (30 inventory rows of `record.json` + 29 leaves of `tree.json`). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`).
 - **Measured 2026-11-14 12:45 PST:** 53 of 59 bars have at least one test that runs today; 47 have every deciding test
@@ -461,4 +461,12 @@ answer the locked bar, his recorded words or the shipped code already gives; no 
 - Owner said: OWNER:1795563826491035058
 - Was, "Stage now": - **Stage now:** Stage 8, his live walk, since 2026-11-24 2:58 PM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-24 2:58 PM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-24 4:34 PM PST, version change: 0.1.0 to 0.2.0 (by CONDUCTOR)
+
+- Why: 0.2.0 (MINOR) opened on his words of 2026-11-24 (OWNER:1795565769863524396, OWNER:1795565863812726726): the carried thing on its own arc, collision bruises by size, our own blast show (design/specs/2026-11-24-knockback-blast-show/design.md) and three polish lines the Conductor judged relevant; 73 bars, every 0.1.0 bar kept; item RIMMANDRAKE_OPEN_KNOCKBACK_ZERO_TWO_BLAST_SHOW_HE_SAID_GET_CREATIVE
+- The 0.1.0 record (at Version passed (Passed)) is kept as `version/stage_record_0.1.0.json`.
+- Its numbered evidence (14 cycle, visit and arrival paths) is set aside in `version/previous/0.1.0`.
+- Was, "Stage now": - **Stage now:** Version passed on his word, since 2026-11-24 3:44 PM PST (`version/stage_record.json`).
 - Record: `version/stage_record.json`.

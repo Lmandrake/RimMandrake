@@ -1,10 +1,10 @@
 {
  "_view": {
-  "body_sha256": "0f94d393e16c72ce37c05fcef6cec80ef6104977f7e1d0185fd0e540fc66ce86",
+  "body_sha256": "c06af729f5d9c58ae2c2d7112501620cd50b82e7c0eb03fd1f015cc3d5e3d968",
   "reducer": 1,
   "shards": {
    "BACKFILL": 341359,
-   "DISPATCH": 44369,
+   "DISPATCH": 44972,
    "HOLDER.run-1794813483": 1382,
    "HOLDER.run-1794824768": 1788,
    "HOLDER.run-1794830532": 2304,
@@ -884,7 +884,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 723,
+  "events": 724,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -4016,6 +4016,6 @@
     "where": "design/concepts/ExplosiveKnockback/version/in_game/visit_1/screenshots/jolt_*.jpg"
    }
   },
-  "version": "0.1.0"
+  "version": "0.2.0"
  }
 }

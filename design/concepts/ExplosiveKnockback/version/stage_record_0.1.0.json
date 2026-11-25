@@ -1,0 +1,478 @@
+{
+  "schema": 1,
+  "mod": "ExplosiveKnockback",
+  "version": "0.1.0",
+  "stage": "passed",
+  "stage_label": "Version passed (Passed)",
+  "since": "2026-11-24T15:44:08-08:00",
+  "since_from": "advance by CONDUCTOR",
+  "at_door": false,
+  "seeded": {
+    "at": "2026-11-14T16:02:19-08:00",
+    "by": "maturation.py seed",
+    "stage_read_from": "journal",
+    "stage_line": "Stage 3 (\"reconcile\") done as far as it goes offline, 2026-11-14 12:45 PST. Preflight re-run:",
+    "run_records": "read"
+  },
+  "cycles": {
+    "visit": 2,
+    "total": 6
+  },
+  "pre_human_arrivals": 2,
+  "moves": [
+    {
+      "from": "offline_build",
+      "to": "blind_challenge",
+      "at": "2026-11-14T21:28:26-08:00",
+      "by": "CONDUCTOR",
+      "why": "Stage 3 exit: all 59 bars have a check that runs after tonight's builder; the one walk bar proves at Stage 8",
+      "confirmed": {
+        "steward_confirms": "walk_storeroom_raid: a walk bar proving at Stage 8, decided by scene sc_walk_raid and his Stage 8 look; correctly not runnable offline (Conductor read the test table 2026-11-14 9:29 PM PST)"
+      },
+      "checks_passed": [
+        "order",
+        "version",
+        "hold",
+        "every_bar_has_a_check_that_runs",
+        "walk_bars_confirmed",
+        "table_version",
+        "fourth_cycle"
+      ]
+    },
+    {
+      "from": "blind_challenge",
+      "to": "blind_challenge",
+      "at": "2026-11-15T00:34:12-08:00",
+      "by": "CONDUCTOR",
+      "why": "Cycle 1 of the blind challenge did not meet the exit (inv_proof_scenes red, four notes for the Conductor); cycle 2 starts with the Conductor's rulings in its brief",
+      "confirmed": {},
+      "checks_passed": [
+        "order",
+        "version",
+        "hold",
+        "fourth_cycle"
+      ]
+    },
+    {
+      "from": "blind_challenge",
+      "to": "in_game",
+      "at": "2026-11-15T02:14:08-08:00",
+      "by": "CONDUCTOR",
+      "why": "Blind challenge cycle 2 exit met by the program's reading after a neutral reconcile (ed645c5495, 709c740f76); night order of 2026-11-15",
+      "confirmed": {
+        "steward_confirms": "Read the cycle 2 judge's report and the neutral fixer's: both offline bars green on real reruns (5 deciders), all 10 Problems fixed and shown red at each fix's parent and green at the fix by the fixer's own runs, 29 of 29 planted faults caught, no assertion weakened. The storeroom-mortar criterion was repaired by the neutral fixer (refusal record, re-pin). Held for the owner: the container bar's wording in tree.json and sheet.md (RIMMANDRAKE_RECERTIFY_KNOCKBACK_TREE_AFTER_HIS_OWN_REWORDING). Every live test is UNRUN and owed to Stage 6."
+      },
+      "checks_passed": [
+        "order",
+        "version",
+        "hold",
+        "steward_confirms"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "offline_build",
+      "at": "2026-11-15T08:34:08-08:00",
+      "by": "BENCH",
+      "why": "steward run, visit 1 exit not met: 4 FAIL (sc_pit_fetch; gas chain sc_gas_chain/sc_cauldron_gas/P_gas_clumps, one scene) and 5 UNMEASURED (sc_storeroom_bomb_pit, sc_gas_shove_into_pit, sc_goods_obstacles, sc_walk_raid: no entry; sc_closed_containers heavy lane unstageable); not every failure is a blind-lane check (pit_fetch and the gas chain are MOD or Cauldron behaviour), so the road back is offline_build; 8 items filed caused by RIMMANDRAKE_ROUTE_EXPLOSIVEKNOCKBACK_VISIT_ONE_FAILURES",
+      "confirmed": {
+        "steward_confirms": "read design/concepts/ExplosiveKnockback/version/in_game/visit_1/SUMMARY.md exit block (47 pass, 4 fail, 5 unmeasured of 56, exit_met false) and evidence; verdict: road back to offline_build"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
+      ]
+    },
+    {
+      "from": "offline_build",
+      "to": "blind_challenge",
+      "at": "2026-11-15T09:04:49-08:00",
+      "by": "BENCH",
+      "why": "steward run: Stage 3 exit met after the visit-1 road back; all 9 items caused by RIMMANDRAKE_ROUTE_EXPLOSIVEKNOCKBACK_VISIT_ONE_FAILURES closed with L0 verifies; every live row UNRUN and owed to Stage 6",
+      "confirmed": {
+        "steward_confirms": "read maturation next (exit tests order, version, hold, every_bar_has_a_check_that_runs, table_version, fourth_cycle pass) and the ledger: storeroom_bomb_pit 5298951585, gas_into_pit d4e34dda04, goods_obstacles 16a4636cf1, walk_raid live mode 3d1f9ae2ca, heavy locker lane 7c910364ce, gas chain fix d1817022db (cauldron fuzz 17002 cases), pit_fetch runner advance 266aaf93ef, pit_fetch control fixed ladder 7c17ebc622, steward git-lock retry 79a4ef9107: each closed with a pass verify, base watched red; live reruns UNRUN with commands recorded. Verdict: advance to blind_challenge"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "every_bar_has_a_check_that_runs",
+        "table_version",
+        "fourth_cycle"
+      ]
+    },
+    {
+      "from": "blind_challenge",
+      "to": "blind_challenge",
+      "at": "2026-11-15T14:08:41-08:00",
+      "by": "BENCH",
+      "why": "delegated: steward road back: cycle 3 fixed 3 Problems (RIMMANDRAKE_SWITCH_ELECTRICAL_BURN_WITH_FIRE_HALF_FLAME_HEIR, RIMMANDRAKE_PROVE_PROOF_GATE_EXIT_AN_OR_PASSED_GREEN, RIMMANDRAKE_RUN_STOREROOM_RESTORE_WAIVER_TAKEN_ON_TRUST, red first); his road back sends a fixed mod to a new blind judgement pass; judge's exit_met true came from the brief defect fixed in 228cb916de; nothing new filed (3 Polish already filed by the judge)",
+      "unit": "rm-detached-bench-rimmandrake-route-explosiveknockback-cyc-1794780263",
+      "confirmed": {
+        "owner_said": "per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: delegated: steward road back: cycle 3 fixed 3 Problems (RIMMANDRAKE_SWITCH_ELECTRICAL_BURN_WITH_FIRE_HALF_FLAME_HEIR, RIMMANDRAKE_PROVE_PROOF_GATE_EXIT_AN_OR_PASSED_GREEN, RIMMANDRAKE_RUN_STOREROOM_RESTORE_WAIVER_TAKEN_ON_TRUST, red first); his road back sends a fixed mod to a new blind judgement pass; judge's exit_met true came from the brief defect fixed in 228cb916de; nothing new filed (3 Polish already filed by the judge)"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "fourth_cycle"
+      ]
+    },
+    {
+      "from": "blind_challenge",
+      "to": "in_game",
+      "at": "2026-11-15T15:13:51-08:00",
+      "by": "BENCH",
+      "why": "delegated: steward advance: blind cycle 4 exit met, verified against its own files; Polish call on L1_PATH_RANDOM_CONSERVATION concurred (his confirmation of the Polish-list move asked by card)",
+      "unit": "rm-detached-bench-rimmandrake-confirm-explosiveknockback-c-1794784057",
+      "confirmed": {
+        "steward_confirms": "Read version/blind_challenge/cycle_4/SUMMARY.md, lane1/lane1_rows.jsonl (60 rows: 22 PASS, 1 FAIL, 6 INFO, 31 UNSETTLED not_kernel), lane2/faults.json (0 Problems, 1 Polish), reruns.jsonl (16/16 PASS), planted_results (41 of 50 caught, 9 misses carried to Stage 6) and tests_edited.json ([]; no test or mod file changed after the cycle opened 14:14 PST, last EK edit bace1c29cc 13:36). Reran the five offline deciders myself: T_KERNEL 180/180, T_FUZZ 42001 OK, T_SCRIPT, T_PROOFGATE, T_RESTORE all PASS. Judge the judge: maturation next gives no not-met reason, so nothing to sort as record gap, criterion flaw or real miss. The one FAIL, L1_PATH_RANDOM_CONSERVATION (a hit across a sandbag with no contact, 42/30000 random grids), I read as Polish: no bar's words break, and in game it reads as blast damage to a pawn that does not move. Verdict: exit met; advance to in_game. Test table regenerated by its maker (stale known_reds of closed items dropped, inv_proof_scenes now offline-green).",
+        "owner_said": "per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: delegated: steward advance: blind cycle 4 exit met, verified against its own files; Polish call on L1_PATH_RANDOM_CONSERVATION concurred (his confirmation of the Polish-list move asked by card)"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "steward_confirms"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "offline_build",
+      "at": "2026-11-15T17:50:11-08:00",
+      "by": "BENCH",
+      "why": "delegated: steward road back: in-game visit 2 exit not met (52 PASS, 3 FAIL, 1 UNMEASURED of 56); 4 lines filed caused by RIMMANDRAKE_ROUTE_EXPLOSIVEKNOCKBACK_VISIT_TWO_FAILURES; offline_build because pit_fetch and walk_raid may be mod defects, not only blind-lane checks",
+      "unit": "rm-detached-bench-rimmandrake-route-explosiveknockback-vis-1794793602",
+      "confirmed": {
+        "steward_confirms": "read design/concepts/ExplosiveKnockback/version/in_game/visit_2/SUMMARY.md and rows.jsonl: sc_storeroom_bomb_pit UNMEASURED (REAL MISS, harness never staged), sc_pit_fetch FAIL (REAL MISS), sc_walk_raid FAIL (REAL MISS), sc_barrage_perf FAIL (CRITERION FLAW suspected: mod-off control fails the 50 ms bar too; neutral fixer + refusal record); no RECORD GAP; cycle 4 tests_edited.json empty; verdict: road back to offline_build",
+        "owner_said": "per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: delegated: steward road back: in-game visit 2 exit not met (52 PASS, 3 FAIL, 1 UNMEASURED of 56); 4 lines filed caused by RIMMANDRAKE_ROUTE_EXPLOSIVEKNOCKBACK_VISIT_TWO_FAILURES; offline_build because pit_fetch and walk_raid may be mod defects, not only blind-lane checks"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
+      ]
+    },
+    {
+      "from": "offline_build",
+      "to": "in_game",
+      "at": "2026-11-16T01:18:11-08:00",
+      "by": "BENCH",
+      "why": "every open road-back item of the visit 2 road back needs the live game: the dry-pit hauler fault has no offline cause yet (only a live job-logging experiment can show it); walk-raid and barrage have their offline halves landed and green, and only their live reruns remain, being worked now by live holder rm-detached-bench-rimmandrake-fix-dry-pit-hauler-descent-s-1794816095. Offline stages never wait for a game (RIMMANDRAKE_CLOSE_OFFLINE_STAGE_ITEMS_OFFLINE_GAME_WAS_DEMANDED)",
+      "unit": "rm-detached-bench-rimmandrake-close-offline-stage-items-of-1794819538",
+      "confirmed": {
+        "game_only": "RIMMANDRAKE_FIX_DRY_PIT_HAULER_DESCENT_SWIMS_HID_IT, RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES, RIMMANDRAKE_REPAIR_BARRAGE_FRAME_CRITERION_BASELINE_FAILS_TOO"
+      },
+      "checks_passed": [
+        "order",
+        "game_only",
+        "by",
+        "version",
+        "hold"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "offline_build",
+      "at": "2026-11-16T12:28:55-08:00",
+      "by": "BENCH",
+      "why": "steward run: visit 3 exit not met; the one FAIL (sc_storeroom_bomb_pit cover half, REAL MISS: no code breaks a cover under a landing stack) is offline-fixable C#, filed RIMMANDRAKE_BREAK_COVER_UNDER_LANDING_STACK_STILL_WHOLE --needs offline; sc_walk_raid UNMEASURED already resolved by closed RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES (773b9baea3, 18/18 PASS), the next visit reruns it",
+      "unit": "rm-detached-bench-rimmandrake-route-explosiveknockback-vis-1794860788",
+      "confirmed": {
+        "steward_confirms": "read visit_3 SUMMARY.md and rows.jsonl last rows: 54 PASS, sc_storeroom_bomb_pit FAIL (cover gone=False; goods half harness fix 6ab864cf7e judged a repair aligned with inv_too_weak_skip, not a weakening), sc_walk_raid UNMEASURED (later PASS by the pilot); verdict: road back to offline_build for one MOD fix",
+        "owner_said": "per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: steward run: visit 3 exit not met; the one FAIL (sc_storeroom_bomb_pit cover half, REAL MISS: no code breaks a cover under a landing stack) is offline-fixable C#, filed RIMMANDRAKE_BREAK_COVER_UNDER_LANDING_STACK_STILL_WHOLE --needs offline; sc_walk_raid UNMEASURED already resolved by closed RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES (773b9baea3, 18/18 PASS), the next visit reruns it"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
+      ]
+    },
+    {
+      "from": "offline_build",
+      "to": "blind_challenge",
+      "at": "2026-11-16T13:43:22-08:00",
+      "by": "BENCH",
+      "why": "steward: every Stage 3 exit test passes (order, version, hold, every_bar_has_a_check_that_runs, table_version, fourth_cycle, judge_certificate); the visit-3 REAL MISS RIMMANDRAKE_BREAK_COVER_UNDER_LANDING_STACK_STILL_WHOLE closed at a9eedde493 with tests added only, certificate rerun 81519824c0",
+      "unit": "rm-detached-bench-rimmandrake-advance-explosiveknockback-p-1794865353",
+      "confirmed": {
+        "steward_confirms": "read maturation.py next: no not-met reasons to sort (no RECORD GAP, CRITERION FLAW or REAL MISS); a9eedde493 adds 20 selftest lines, deletes none; verdict: advance"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "every_bar_has_a_check_that_runs",
+        "table_version",
+        "fourth_cycle",
+        "judge_certificate"
+      ]
+    },
+    {
+      "from": "blind_challenge",
+      "to": "blind_challenge",
+      "at": "2026-11-16T22:21:38-08:00",
+      "by": "BENCH",
+      "why": "steward road back: blind cycle 5 exit not met; 2 Problems filed under RIMMANDRAKE_ROUTE_EXPLOSIVEKNOCKBACK_CYCLE_FIVE_FAILURES (RIMMANDRAKE_DROP_THROWS_INTO_COVERED_PITS_K08_MUST_FLIP, RIMMANDRAKE_LIFT_PROOF_VERDICTS_INTO_TESTED_CODE_NINE_SLIPPED); cycle 6 judges their fixes and the judge's own fix 42225e0686",
+      "unit": "rm-detached-bench-rimmandrake-route-explosiveknockback-cyc-1794895555",
+      "confirmed": {
+        "steward_confirms": "Read cycle_5/SUMMARY.md, lane2/faults.json, planted_results.jsonl, tests_edited.json (K-25 added, 14 insertions, 0 deletions: no assertion weakened). Judge the judge: RIMMANDRAKE_STOP_THROWS_OVER_COVERED_PITS_K08_SAYS_GROUND = REAL MISS (sc_pit_fall's locked expect demands the covered lane; accept_covered_pit.py rc 1, 2 of 6 at 10abd71ff0, watched). RIMMANDRAKE_PIN_KNOCKBACK_PROOF_VERDICTS_NINE_MUTANTS_UNSEEN = REAL MISS, not a criterion flaw (a correct build can lift verdict arithmetic into tested code, the judge's own would_pass); re-pin not taken (it would change what decides inv_proof_scenes). Stale T_KERNEL runs_today = RECORD GAP, redone: certificate --run, 16 offline tests; T_RESTORE red on Pyrelands wind_burn_live.py:56 was a checker false positive, fixed 20eca8db5d. Certificate OK. Verdict: exit not met; road back to blind_challenge, cycle 6 (visit 2 of 3).",
+        "owner_said": "per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: steward road back: blind cycle 5 exit not met; 2 Problems filed under RIMMANDRAKE_ROUTE_EXPLOSIVEKNOCKBACK_CYCLE_FIVE_FAILURES (RIMMANDRAKE_DROP_THROWS_INTO_COVERED_PITS_K08_MUST_FLIP, RIMMANDRAKE_LIFT_PROOF_VERDICTS_INTO_TESTED_CODE_NINE_SLIPPED); cycle 6 judges their fixes and the judge's own fix 42225e0686"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "fourth_cycle",
+        "judge_certificate"
+      ]
+    },
+    {
+      "from": "blind_challenge",
+      "to": "in_game",
+      "at": "2026-11-23T06:21:40-08:00",
+      "by": "BENCH",
+      "why": "delegated: steward advance: blind cycle 6 exit met at 6586e989e2 (the judge was killed; the steward completed its record from its own reruns at e0e997836e; the one fresh reader read the mod fix fa2de6ee4b sound); certificate --to in_game rc 0",
+      "unit": "rm-detached-bench-rimmandrake-route-explosiveknockback-cyc-1795442063",
+      "confirmed": {
+        "steward_confirms": "run-1795441975 read cycle_6 SUMMARY, faults, fixes, tests_edited (M04 narrowed: stronger; restore BASELINE: check repair shown red on a planted EK leak), planted results (12 not caught, all in the two open findings' classes), and read fa2de6ee4b once: sound. Polish confirmed for lane-1 rows L1_FIRE_SWITCH_ON_UNPATCHED_FIRE_TYPE and L1_GAS_SHOVE_PAWN_ON_INTACT_COVER (no failure, no concrete case in normal play; test 1 fails). Verdict: exit met."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "steward_confirms",
+        "exit_met",
+        "judge_certificate"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "in_game",
+      "at": "2026-11-23T11:44:19-08:00",
+      "by": "BENCH",
+      "why": "steward road back: visit 4 exit not met; every open line is game-only: sc_spared (SITE, four bars undecided, RIMMANDRAKE_HOLD_SPARED_CARRIER_IN_BLAST_IT_WALKED_AWAY) and sc_walk_raid (HARNESS/SITE, RIMMANDRAKE_RUN_KNOCKBACK_WALK_FRAME_ARMS_SMALL_COLONY_ABSENT); no mod-wrong line open: fix 2590111487 read sound dc7550420b; koth.isid identity fixed 4ecd015e866f",
+      "unit": "rm-detached-bench-rimmandrake-route-explosiveknockback-vis-1795461526",
+      "confirmed": {
+        "steward_confirms": "run-1795461416 read visit_4 SUMMARY, rows, strange, the three commits that touched tests (cabe962231, 092b2e358b: lanes and a memory reset added, no assertion weakened) and read fix 2590111487 once: sound. 22 of 23 EK offline selftests rc 0, selftest_explosiveknockback_map.py past my 110 s limit: UNMEASURED. Verdict: next visit, never a stage back.",
+        "owner_said": "per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: steward road back: visit 4 exit not met; every open line is game-only: sc_spared (SITE, four bars undecided, RIMMANDRAKE_HOLD_SPARED_CARRIER_IN_BLAST_IT_WALKED_AWAY) and sc_walk_raid (HARNESS/SITE, RIMMANDRAKE_RUN_KNOCKBACK_WALK_FRAME_ARMS_SMALL_COLONY_ABSENT); no mod-wrong line open: fix 2590111487 read sound dc7550420b; koth.isid identity fixed 4ecd015e866f"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "pre_human",
+      "at": "2026-11-23T18:14:49-08:00",
+      "by": "BENCH",
+      "why": "Stage 6 exit met at visit 5 (run-1795478277, unit rm-detached-bench-rimmandrake-drive-explosiveknockback-in-1795478768): build match counts 56 of 56, SUMMARY and rows read by the steward bear it out",
+      "unit": "rm-detached-bench-rimmandrake-confirm-explosiveknockback-v-1795485915",
+      "confirmed": {
+        "steward_confirms": "visit 5 (run-1795478277): read SUMMARY.md, all 10 rows, their evidence, strange.jsonl, screenshots and the diffs fa3f95313d and 6dfc987697. sc_spared, sc_frame_probe_check, sc_barrage_perf (p99 22.1 ms, limit 50, mod off 21.7) and sc_walk_raid (18 of 18) PASS; the reload repair waits only, seen FAIL on planted goods lost on reload and PASS on the real build; the mod's own code is unchanged since visit 4, so its 52 rows stand; build_match rerun: 56 count, 0 to run. Verdict: exit met."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "steward_confirms",
+        "exit_met",
+        "build_match"
+      ]
+    },
+    {
+      "from": "pre_human",
+      "to": "his_walk",
+      "at": "2026-11-23T19:31:41-08:00",
+      "by": "BENCH",
+      "why": "walk brief arrival_1 written",
+      "unit": "rm-detached-bench-rimmandrake-steward-explosiveknockback-p-1795487378",
+      "confirmed": {},
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "walk_brief",
+        "walk_items_closed"
+      ]
+    },
+    {
+      "from": "his_walk",
+      "to": "in_game",
+      "at": "2026-11-23T19:31:47-08:00",
+      "by": "BENCH",
+      "why": "steward road back, before he walks: the mod's code changed at db80fab783 (gas corner, the Conductor's call of 2026-11-23 6:24 PM PST: a Problem of 0.1.0, fixed before his walk). build_match: 54 of 56 count, sc_barrage_perf and sc_walk_raid (full list, ArchBig) to run; both need the game (RIMMANDRAKE_RUN_KNOCKBACK_FULL_LIST_CHECKS_AFTER_GAS_CORNER_FIX). Back to Stage 6 for exactly those 2; no mod-wrong line open; fix db80fab783 read sound. Precedent: FlowWorks his_walk to in_game 2026-11-21",
+      "unit": "rm-detached-bench-rimmandrake-steward-explosiveknockback-p-1795487378",
+      "confirmed": {
+        "steward_confirms": "read db80fab783 once (sound, visit_5/fix_reviews.jsonl), selftest map PASS 31 of 31 faults, before DISAGREE / after AGREE 123 of 123, build_match 54 of 56"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "pre_human",
+      "at": "2026-11-24T11:41:51-08:00",
+      "by": "BENCH",
+      "why": "Stage 6 exit met at visit 6 (run-1795510833): 56 of 56 checks PASS and count on the walk build e089dc2573; ArchBig's DLL equals the committed one; steward read SUMMARY, 140 rows and evidence",
+      "unit": "rm-detached-bench-rimmandrake-confirm-explosiveknockback-v-1795548754",
+      "confirmed": {
+        "steward_confirms": "visit 6 (drive run-1795510833, read by run-1795548573): SUMMARY.md, 140 rows, strange, planted, fix_reviews (1acc05e0ed, d61b1e2b31, e089dc2573 read sound by an earlier steward; none owed) and the evidence files. Last rows 57 of 57 PASS on e089dc2573 (56 checks, 1 map agreement); no evidence file has FAIL, UNMEASURED or INVALID; build_match 56 of 56, 0 to run, no undecided bar; ArchBig DLL md5 equals the committed DLL (c41f0c11); only a proof script changed since. sc_walk_blasts repair a1dd0592dc planted FAIL, real PASS. sc_blast_kinds stages no Outer Rim lane (table partial): its bar is decided by P_harmful_unpatched (untuned Thump 100 percent, 3 cells as Bomb) and P_fire_half, and OuterRim_Sonic is DamageWorker_AddInjury, untuned, so the same path. Verdict: exit met.",
+        "owner_said": "per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: Stage 6 exit met at visit 6 (run-1795510833): 56 of 56 checks PASS and count on the walk build e089dc2573; ArchBig's DLL equals the committed one; steward read SUMMARY, 140 rows and evidence"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "steward_confirms",
+        "exit_met",
+        "build_match",
+        "unrun_run"
+      ]
+    },
+    {
+      "from": "pre_human",
+      "to": "his_walk",
+      "at": "2026-11-24T14:58:53-08:00",
+      "by": "BENCH",
+      "why": "walk brief arrival_2 written",
+      "unit": "rm-detached-bench-rimmandrake-steward-explosiveknockback-p-1795560743",
+      "confirmed": {},
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "walk_checks_stand",
+        "walk_brief",
+        "walk_items_closed"
+      ]
+    },
+    {
+      "from": "his_walk",
+      "to": "passed",
+      "at": "2026-11-24T15:44:08-08:00",
+      "by": "CONDUCTOR",
+      "why": "his live walk of Explosive Knockback 0.1.0 on ArchSmall, save EK_VISIT6_WALK_20261124_C, walk brief arrival_2.md, 2026-11-24; item RIMMANDRAKE_RECORD_KNOCKBACK_VERSION_PASS_HE_CALLED_THE_WALK_VERY_FUN",
+      "unit": null,
+      "confirmed": {
+        "owner_said": "OWNER:1795563826491035058"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "owner_said",
+        "walk_build",
+        "raid_bars_decided",
+        "pass_record_new"
+      ]
+    }
+  ],
+  "spend": [
+    {
+      "stage": "designer",
+      "stages": [
+        "designer"
+      ],
+      "tokens": 97196907,
+      "usd": "UNMEASURED",
+      "wall_s": "UNMEASURED",
+      "source": "design/concepts/ExplosiveKnockback/version/VERSION.json tokens_spent",
+      "kind": "mixed: measured and estimated charges, see VERSION.json measured_from",
+      "token_unit": "weighted_v1"
+    },
+    {
+      "stage": "designer",
+      "stages": [
+        "designer"
+      ],
+      "tokens": 184111,
+      "usd": 6.3,
+      "usd_from": "the run's own words",
+      "wall_s": 1565,
+      "cap_usd": 15.0,
+      "source": "detached run rm-detached-bench-rimmandrake-design-knockback-first-touch-1794558096 (item RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH)",
+      "kind": "measured",
+      "token_unit": "weighted_v1"
+    },
+    {
+      "stage": "designer",
+      "stages": [
+        "designer"
+      ],
+      "tokens": 2414644,
+      "usd": 9.2,
+      "usd_from": "the run's own words",
+      "wall_s": 1995,
+      "cap_usd": 15.0,
+      "source": "detached run rm-detached-bench-rimmandrake-design-knockback-first-touch-1794592461 (item RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH)",
+      "kind": "measured",
+      "token_unit": "weighted_v1"
+    },
+    {
+      "stage": "designer",
+      "stages": [
+        "designer"
+      ],
+      "tokens": 1112400,
+      "usd": 3.1,
+      "usd_from": "the run's own words",
+      "wall_s": 720,
+      "cap_usd": 20.0,
+      "source": "detached run rm-detached-bench-rimmandrake-design-knockback-first-touch-1794599583 (item RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH)",
+      "kind": "measured",
+      "token_unit": "weighted_v1"
+    },
+    {
+      "stage": "designer",
+      "stages": [
+        "designer",
+        "preflight"
+      ],
+      "tokens": 1645334,
+      "usd": "UNMEASURED",
+      "usd_from": "UNMEASURED",
+      "wall_s": 1214,
+      "cap_usd": 15.0,
+      "source": "detached run rm-detached-bench-rimmandrake-design-maturation-pipeline-w-1794683669 (item RIMMANDRAKE_DESIGN_MATURATION_PIPELINE_WHOLE_MOD_IS_THE_UNIT)",
+      "kind": "measured",
+      "token_unit": "weighted_v1"
+    },
+    {
+      "stage": "offline_build",
+      "stages": [
+        "offline_build"
+      ],
+      "tokens": 3668301,
+      "usd": "UNMEASURED",
+      "usd_from": "UNMEASURED",
+      "wall_s": 1881,
+      "cap_usd": 15.0,
+      "source": "detached run rm-detached-bench-rimmandrake-design-maturation-pipeline-w-1794687322 (item RIMMANDRAKE_DESIGN_MATURATION_PIPELINE_WHOLE_MOD_IS_THE_UNIT)",
+      "kind": "measured",
+      "token_unit": "weighted_v1"
+    }
+  ]
+}
