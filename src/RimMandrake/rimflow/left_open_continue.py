@@ -25,8 +25,15 @@ A run that carries RM_WORK_BUNDLE follows the bundle's rule instead (work_bundle
 design/specs/2026-11-24-work-bundles/boundary.md): it restarts FRESH from the bundle's state file while a member has no
 outcome, after a success, a spend stop or a death; a restart that ended no member is the alarm; the daily count does not
 apply; these gates still bind.
+A run that a writing stop order ended (`pipe stop --at-easy-spot | --write-now`) has its trial voided, but the void
+does not bar its carry-on (control.carry_stop): it is planned like any run that ended success, and its continuation
+starts only once the cause of the stop is gone: the stop's scope switch is lifted (the step waits, and the timed pass
+kicks it after `pipe on`), and the account gate takes it as a NEW run, so a drain holds it until the switch. A stop
+with --end, a kill or a hand void stays void (RIMMANDRAKE_CONTINUE_A_RUN_THE_CONDUCTOR_STOPPED_VOIDED_MEANS_NO_CARRY_ON:
+2026-11-24, two runs stopped for the account switch wrote LEFT OPEN notes, read "the run is voided", and the Conductor
+relaunched both by hand).
 Boundary: design/specs/2026-11-19-run-end-continue/boundary.md. Never continued:
-a killed, voided or failed run, a closed item (a lane with every ticket closed), an owner-held mod, a paused pipeline,
+a killed, voided (but see above) or failed run, a closed item (a lane with every ticket closed), an owner-held mod, a paused pipeline,
 a `pipe off` switch on its scope; a gate that cannot be read is a named no. At most MAX_PER_DAY continuations per item
 (its chain's first item) in 24 h; the next one is the alarm ALARM_ID in the Conductor log and no launch. The header
 carries no spend, cap or remainder (owner 2026-11-16: no launched agent is told its spend).
@@ -174,22 +181,44 @@ def _blocked(spec):
     return C.blocked(spec)
 
 
-GATES = {"paused": _paused, "held": _held, "voided": _voided, "blocked": _blocked}
+def _stopped(unit):
+    """-> the writing stop order that voided the unit and leaves it to be carried on, or None (control.carry_stop)."""
+    import control as C
+    import run_void
+    return C.carry_stop(unit, books=run_void.active().get(unit))
 
 
-def gate_no(rec, item, gates):
-    """-> why no continuation may start now, or None."""
+GATES = {"paused": _paused, "held": _held, "voided": _voided, "blocked": _blocked, "stopped": _stopped}
+SWITCH_WAIT = "switch: "    # recheck's answer for a stopped run whose stop's switch (or another) still blocks it
+
+
+def gate_why(rec, item, gates, seen=None, carry=True):
+    """-> (the gate's name, why no continuation may start now), or (None, None). A run voided only by a writing stop
+    that carries it on (the `stopped` gate) passes the voided gate; `seen["stopped"]` then holds that stop. carry
+    False: every void is a no (a work bundle's restart, which waits for no stop's cause)."""
     g = dict(GATES, **(gates or {}))
     mod = (rec.get("env") or {}).get("RM_CONTROL_MOD")
     spec = {"family": "detached", "item": item, "mod": mod, "stage": (rec.get("env") or {}).get("RM_CONTROL_STAGE")}
     for name, arg in (("voided", rec.get("unit")), ("held", mod), ("paused", mod), ("blocked", spec)):
         try:
             v = g[name](arg)
+            if name == "voided" and v and carry:
+                st = g["stopped"](arg)
+                if st:
+                    v = None
+                    if seen is not None:
+                        seen["stopped"] = st
         except Exception as e:  # noqa: BLE001  a gate that cannot be read never lets a launch through
-            return "the %s gate could not be read (%s: %s)" % (name, type(e).__name__, e)
+            return name, "the %s gate could not be read (%s: %s)" % (name, type(e).__name__, e)
         if v:
-            return "the run is voided" if name == "voided" else str(v)
-    return None
+            return name, ("the run is voided" if name == "voided" else str(v))
+    return None, None
+
+
+def gate_no(rec, item, gates):
+    """-> why no continuation may start now, or None. Every void is a no here: work_bundle.loc_plan's gate, whose
+    restart does not wait for a stop's cause to go."""
+    return gate_why(rec, item, gates, carry=False)[1]
 
 
 def today(rec, now, root=None):
@@ -387,8 +416,10 @@ def plan(rec, got, lane_states, now=None, gates=None, root=None):
     waits = waiting(got, now) if target == item else None
     if waits:
         return dict(base, act="none", why=waits)
-    no = gate_no(rec, target, gates)
-    if no:
+    seen = {}
+    gname, no = gate_why(rec, target, gates, seen)
+    stopped = seen.get("stopped")
+    if no and not (stopped and gname == "blocked"):     # a stop's switch still on: the step waits for its lift
         return dict(base, act="none", why=no)
     ladder = None
     if target == item and not cap:
@@ -411,10 +442,12 @@ def plan(rec, got, lane_states, now=None, gates=None, root=None):
     if said:
         progress.append({"ts": "its result text", "text": said})
     return dict(base, act="continue", target=target, open_lane=open_lane, capped=cap, kind=kind, progress=progress,
-                ladder=ladder,
+                ladder=ladder, stopped=stopped, waits_on=(SWITCH_WAIT + no) if no else None,
                 note={"ts": noted.get("ts"), "text": noted.get("text")} if noted else None,
                 n=int(rec.get("continue_n") or 0) + 1,
                 why=("stopped from outside; --continue-on-cap %d" % opt) if cap else
+                    ("ended by stop order %s (%s), carried on once its cause is gone" % (
+                        stopped["act"], stopped["mode"])) if stopped else
                     "ended success with its item open and nothing said (OWED)" if kind == "owed" else
                     ("LEFT OPEN note" + (" in its result" if said else "") if noted and target == item
                      else "%d lane ticket(s) open" % len(open_lane)))
@@ -555,7 +588,7 @@ def header(rec, p, now):
                     p["target"], p.get("state_file") or "-"))
     lines = ["CONTINUED BY ITSELF (left_open_continue.py, %s): continuation %d of at most %d a day for %s." % (
         local(now), p["n"], MAX_PER_DAY, rec.get("continue_root_item") or rec["item"])]
-    if p.get("capped"):
+    if p.get("capped") or (p.get("stopped") and p.get("kind") != "owed"):
         lines.append("Your previous run %s on %s was interrupted before it finished." % (rec["unit"], rec["item"]))
     elif p.get("kind") == "owed":
         lines.append("Your previous run %s on %s ended success but left the item open and said nothing: no close, no "
@@ -648,9 +681,9 @@ def recheck(rec, now, gates=None, root=None, reader=None):
     later = relaunched(rec, [p["target"]] + list(p.get("open_lane") or []), now, root)
     if later:
         return "already relaunched as %s" % later
-    no = gate_no(rec, p["target"], gates)
+    gname, no = gate_why(rec, p["target"], gates)
     if no:
-        return no
+        return (SWITCH_WAIT + no) if p.get("stopped") and gname == "blocked" else no
     if not p.get("bundle") and len(today(rec, now, root)) >= MAX_PER_DAY:    # a bundle's guard is on progress
         return "limit"
     try:
@@ -667,8 +700,10 @@ def recheck(rec, now, gates=None, root=None, reader=None):
     return waiting(got, now)
 
 
-def run(unit, now=None, launch_fn=None, gates=None, root=None, log_path=None, reader=None, projects=None):
-    """The continuation unit's step: launch the planned continuation once. -> {act, why, ...}."""
+def run(unit, now=None, launch_fn=None, gates=None, root=None, log_path=None, reader=None, projects=None,
+        plan_dir=None):
+    """The continuation unit's step: launch the planned continuation once. -> {act, why, ...}. plan_dir: a test's
+    account plan folder (account_end_wait)."""
     now = now or time.time()
     rec = DH.read_record(unit, root)
     if not rec:
@@ -677,6 +712,11 @@ def run(unit, now=None, launch_fn=None, gates=None, root=None, log_path=None, re
     why = recheck(rec, now, gates, root, reader)
     if why == "limit":
         return alarm(rec, dict(p, why="%d continuations in 24 h already" % MAX_PER_DAY), now, log_path, root)
+    if why and why.startswith(SWITCH_WAIT):      # a stopped run: its stop's cause (a switch) is not gone yet
+        rec["continue_waits"] = {"at": now, "why": why, "on": "switch"}
+        DH.write_record(rec, root)
+        journal({"at": DH.iso(now), "unit": unit, "item": rec.get("item"), "act": "waits", "why": why}, root)
+        return {"unit": unit, "act": "none", "why": "waits for the switch to lift: " + why[len(SWITCH_WAIT):][:200]}  # cut-ok: terminal display
     if why:
         if p.get("act") == "continue":
             rec["continue_skipped"] = {"at": now, "why": why}
@@ -685,7 +725,7 @@ def run(unit, now=None, launch_fn=None, gates=None, root=None, log_path=None, re
             if p.get("bundle") and not why.startswith(("already continued", "another continuation step")):
                 bundle_unstarted(p["bundle"], "the continuation step refused: " + why, now)
         return {"unit": unit, "act": "none", "why": why}
-    waits_for = account_end_wait(now)
+    waits_for = account_end_wait(now, plan_dir, carried=not p.get("stopped"))
     if waits_for:       # its run was told to save and end because the account ends: kick_waiting starts it after
         rec["continue_waits"] = {"at": now, "why": waits_for}
         DH.write_record(rec, root)
@@ -782,16 +822,18 @@ def bundle_unstarted(bid, why, now):
         print("work bundle %s not marked gated: %s: %s" % (bid, type(e).__name__, e), file=sys.stderr)
 
 
-def account_end_wait(now, plan_dir=None):
+def account_end_wait(now, plan_dir=None, carried=True):
     """-> why no continuation may start while the account ends (drain_refusal's text), or None. plan_dir: a test's
-    folder; then only its notice is read."""
-    return DH.drain_refusal(now, {"continued_from": "-"},
+    folder; then only its notice is read. carried False: the gate of a NEW run, for a run a stop order ended (it is no
+    longer live, so a drain holds its carry-on until the switch)."""
+    return DH.drain_refusal(now, {"continued_from": "-"} if carried else {},
                             path=os.path.join(plan_dir, "notice.json") if plan_dir else None)
 
 
-def kick_waiting(now=None, root=None, runner=subprocess.run, plan_dir=None):
+def kick_waiting(now=None, root=None, runner=subprocess.run, plan_dir=None, gates=None):
     """Start the continuations that waited for the account switch, once the plan has headroom (the account plan's
-    timed pass calls this after each pass, through the actuator's check). -> one line."""
+    timed pass calls this after each pass, through the actuator's check). A run that a stop order ended waits also
+    for the gate of a new run and for its gates (its stop's switch) to open. -> one line."""
     import stop_resume as SR
     now = now or time.time()
     waiting_recs = [r for r in SR.recent_records(root, now) if r.get("continue_waits") and not r.get("continued_by")]
@@ -801,8 +843,17 @@ def kick_waiting(now=None, root=None, runner=subprocess.run, plan_dir=None):
     if not ok or account_end_wait(now, plan_dir):
         return "left_open: %d wait (%s)" % (len(waiting_recs), why)
     said = []
+    new_gate, looked = None, False
     for r in waiting_recs:
         r = DH.read_record(r["unit"], root) or r
+        q = r.get("continue_plan") or {}
+        if q.get("stopped"):        # its cause is gone only when a new run may start and no switch blocks it
+            if not looked:
+                new_gate, looked = account_end_wait(now, plan_dir, carried=False), True
+            hold = new_gate or gate_why(r, q.get("target"), gates)[1]
+            if hold:
+                said.append("left_open: %s waits (%s)" % (r["unit"], " ".join(str(hold).split())[:160]))  # cut-ok: terminal display
+                continue
         kept = r.pop("continue_waits")
         DH.write_record(r, root)
         line = kick(r, r.get("continue_plan") or {}, runner)

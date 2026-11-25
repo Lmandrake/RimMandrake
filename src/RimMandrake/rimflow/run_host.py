@@ -162,12 +162,13 @@ def live_units(host, runner=subprocess.run):
                if ln.split() and ln.split()[0].startswith("rm-detached-") and not ln.split()[0].endswith("-return.service"))
 
 
-def stop_argv(rec, mode="at_easy_spot", why="stopped from Archmagi"):
-    """The host's own `./pipe stop <unit>` for a remote run (control.remote_stop runs it)."""
+def stop_argv(rec, mode="at_easy_spot", why="stopped from Archmagi", end=False):
+    """The host's own `./pipe stop <unit>` for a remote run (control.remote_stop runs it). end: the stop ends the work
+    (`--end`; named only when set, so a host on older code still takes the default stop)."""
     target = door(rec.get("host"))
     if not target:
         raise ValueError("record names no known host: %r" % rec.get("host"))
-    flag = "--" + mode.replace("_", "-")
+    flag = "--" + mode.replace("_", "-") + (" --end" if end else "")
     return _ssh(target, "cd %s && ./pipe stop %s %s --why %s" % (BENCH, shlex.quote(rec["unit"]), flag,
                                                                   shlex.quote(why)))
 

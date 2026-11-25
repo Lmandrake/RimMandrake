@@ -523,7 +523,7 @@ def t_a_restart_that_ended_no_member_raises():
 def _step(LOC, unit, now, launch_fn, reader=lambda t: {"state": "proposed"}):
     """LOC.run as the continuation unit runs it, offline: no gate, no account end, the fake launch."""
     keep = LOC.account_end_wait
-    LOC.account_end_wait = lambda now, plan_dir=None: None
+    LOC.account_end_wait = lambda now, plan_dir=None, **kw: None
     try:
         return LOC.run(unit, now=now, launch_fn=launch_fn, gates={k: (lambda a: None) for k in LOC.GATES},
                        log_path=os.path.join(TMP, "conductor.log"), reader=reader)

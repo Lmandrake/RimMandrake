@@ -27,6 +27,7 @@ TMP = tempfile.mkdtemp(prefix="selftest_left_open_continue_")
 os.environ["RM_DISPATCHER_STATE"] = os.path.join(TMP, "state")
 os.environ["RM_CONDUCTOR_LOG"] = os.path.join(TMP, "conductor.md")
 os.environ.setdefault("RM_UNDER_SELFTEST", "1")
+os.environ["RM_RUN_VOIDS_FILE"] = os.path.join(TMP, "voids.jsonl")     # a stop's void reaches the books, as live
 sys.path.insert(0, HERE)
 import detached_helper as DH  # noqa: E402
 _LIVE_DRAIN = DH.drain_refusal
@@ -130,14 +131,15 @@ def open_reader(state="claimed", wait_until=None):
 def go(rec, got, states=None, gates=None, now=T0 + 700, reader=None):
     """plan at finish, then the continuation unit's step."""
     del LAUNCHES[:]
+    gates = gates or Gates()
+    gates = gates if isinstance(gates, dict) else gates.as_dict()     # a dict: only these gates are faked
     lane = (states or states_for(got.get("state")))(None, LOC.lane_tickets_of(rec))
-    p = LOC.plan(rec, got, lane, now=now, gates=(gates or Gates()).as_dict())
+    p = LOC.plan(rec, got, lane, now=now, gates=gates)
     if p["act"] == "continue":
         rec = DH.read_record(rec["unit"])
         rec["continue_plan"] = p
         DH.write_record(rec)
-        res = LOC.run(rec["unit"], now=now + 30, launch_fn=fake_launch, gates=(gates or Gates()).as_dict(),
-                      reader=reader or open_reader())
+        res = LOC.run(rec["unit"], now=now + 30, launch_fn=fake_launch, gates=gates, reader=reader or open_reader())
     elif p["act"] == "alarm":
         res = LOC.alarm(rec, p, now)
     else:
@@ -721,6 +723,156 @@ def t_a_blind_role_never_resumes():
           str(LAUNCHES[-1].get("extra") if LAUNCHES else None))
 
 
+# ---------------------------------------------------------------- a run that a Conductor stop order ended
+# RIMMANDRAKE_CONTINUE_A_RUN_THE_CONDUCTOR_STOPPED_VOIDED_MEANS_NO_CARRY_ON (2:23 PM PST 2026-11-24): two runs stopped
+# at an easy spot for the account switch wrote LEFT OPEN notes and read "the run is voided"; the Conductor relaunched
+# both by hand. These use the real control store (a test's own file) and the real `pipe stop`.
+STOP_GATES = {"paused": lambda mod: None, "held": lambda mod: None}
+
+
+def stopped_run(at, mode="at_easy_spot", then=None, item_scope=False, **kw):
+    import control as C
+    rec = make_run(at=at, **kw)
+    a = C.admit({"family": "detached", "unit": rec["unit"], "item": rec["item"]})
+    C.condition(a["run"])
+    extra = {} if then is None else {"then": then}
+    C.stop("item:" + rec["item"] if item_scope else rec["unit"], mode, "the account switch waits for every live run",
+           escalator=lambda *x: "-", **extra)
+    C.ended(a["run"], "success/exited/0")
+    return rec, a["run"]
+
+
+def _plan_dir(name, notice):
+    pd = os.path.join(TMP, name)
+    os.makedirs(pd, exist_ok=True)
+    with open(os.path.join(pd, "notice.json"), "w") as f:
+        json.dump(notice, f)
+    with open(os.path.join(pd, "log.jsonl"), "w") as f:
+        f.write(json.dumps({"do": "normal", "at": notice["at"]}) + "\n")
+    return pd
+
+
+def t_a_run_stopped_at_an_easy_spot_with_a_left_open_note_is_continued():
+    for mode in ("at_easy_spot", "write_now"):
+        clear_continuations()
+        rec, _ = stopped_run(T0 + 80000 + (0 if mode == "at_easy_spot" else 50), mode)
+        got = {"state": "doing", "notes": [note(LEFT, rec["at"] + 500)]}
+        p, res = go(rec, got, gates=STOP_GATES, now=rec["at"] + 700)
+        check("a-run-stopped-at-an-easy-spot-with-a-left-open-note-is-continued: %s plans a continuation" % mode,
+              p["act"] == "continue" and (p.get("stopped") or {}).get("mode") == mode, str(p))
+        check("a-run-stopped-at-an-easy-spot-with-a-left-open-note-is-continued: %s launches once, interrupted" % mode,
+              len(LAUNCHES) == 1 and "interrupted" in LAUNCHES[0]["brief"]
+              and not SPEND.search(LAUNCHES[0]["brief"].split("---- the previous run's brief ----")[0]),
+              str(res))
+
+
+def t_a_stop_that_ends_the_work_is_never_continued():
+    clear_continuations()
+    rec, _ = stopped_run(T0 + 81000, then="end")
+    p, _ = go(rec, {"state": "doing", "notes": [note(LEFT, rec["at"] + 500)]}, gates=STOP_GATES, now=rec["at"] + 700)
+    check("a-stop-that-ends-the-work-is-never-continued", p["act"] == "none" and "voided" in p["why"]
+          and not LAUNCHES, str(p))
+    import control as C
+    try:
+        C.stop(rec["unit"], "at_easy_spot", "x", then="later")
+        refused = False
+    except C.Refused:
+        refused = True
+    check("a-stop-that-ends-the-work-is-never-continued: an unknown --then is refused", refused)
+
+
+def t_a_hand_void_beside_a_stop_still_bars_the_carry_on():
+    import control as C
+    clear_continuations()
+    rec, run_id = stopped_run(T0 + 82000)
+    C.void(rec["unit"], "the run measured a broken apparatus")
+    p, _ = go(rec, {"state": "doing", "notes": [note(LEFT, rec["at"] + 500)]}, gates=STOP_GATES, now=rec["at"] + 700)
+    check("a-hand-void-beside-a-stop-still-bars-the-carry-on: a second void act", p["act"] == "none"
+          and "voided" in p["why"], str(p))
+    clear_continuations()
+    rec, _ = stopped_run(T0 + 82100)
+    import run_void
+    run_void._append({"act": "void", "ts": DH.iso(T0), "unit": rec["unit"], "mod": None, "item": None,
+                      "why": "maturation_dispatch.py void by hand", "by": "test", "kind": "hand"})
+    p, _ = go(rec, {"state": "doing", "notes": [note(LEFT, rec["at"] + 500)]}, gates=STOP_GATES, now=rec["at"] + 700)
+    check("a-hand-void-beside-a-stop-still-bars-the-carry-on: a books void with no stop act", p["act"] == "none"
+          and "voided" in p["why"], str(p))
+
+
+def t_a_stopped_run_waits_for_the_account_gate_as_a_new_run():
+    """The cause of the 2026-11-24 stops was the account drain: a continuation of a live run passes a drain, but a
+    run that a stop order ended is no longer live, so its carry-on waits for the switch like a new run."""
+    import control as C
+    clear_continuations()
+    rec, _ = stopped_run(T0 + 83000)
+    now = rec["at"] + 700
+    p = LOC.plan(rec, {"state": "doing", "notes": [note(LEFT, rec["at"] + 500)]}, {}, now=now, gates=STOP_GATES)
+    r = DH.read_record(rec["unit"])
+    r["continue_plan"] = p
+    DH.write_record(r)
+    del LAUNCHES[:]
+    drain = _plan_dir("plan_drain", {"state": "soft", "drain": True, "account": "lukas", "at": DH.iso(now)})
+    res = LOC.run(rec["unit"], now=now + 30, launch_fn=fake_launch, gates=STOP_GATES, reader=open_reader("doing"),
+                  plan_dir=drain)
+    check("a-stopped-run-waits-for-the-account-gate-as-a-new-run: no launch while the account drains",
+          not LAUNCHES and "waits for the account switch" in res["why"]
+          and DH.read_record(rec["unit"]).get("continue_waits"), str(res))
+    kicks = []
+
+    class Ran:
+        returncode, stdout, stderr, refused, why = 0, "", "", False, ""
+    real, C.launch_unit = C.launch_unit, lambda argv, spec, **k: kicks.append(spec) or Ran()
+    try:
+        LOC.kick_waiting(now + 60, plan_dir=_plan_dir("plan_drain2", {"state": "soft", "drain": True,
+                                                                      "account": "lukas", "at": DH.iso(now + 60)}),
+                         gates=STOP_GATES)
+        mine = [k for k in kicks if k["unit"].startswith(rec["unit"])]
+        check("a-stopped-run-waits-for-the-account-gate-as-a-new-run: the timed pass does not kick it during the drain",
+              not mine, str(kicks))
+        LOC.kick_waiting(now + 120, plan_dir=_plan_dir("plan_switched", {"state": "none", "at": DH.iso(now + 120)}), gates=STOP_GATES)
+        mine = [k for k in kicks if k["unit"].startswith(rec["unit"])]
+        check("a-stopped-run-waits-for-the-account-gate-as-a-new-run: the first pass after the switch kicks it",
+              [k["unit"] for k in mine] == [rec["unit"] + "-continue"], str(kicks))
+    finally:
+        C.launch_unit = real
+
+
+def t_a_stopped_run_waits_for_its_stop_switch_to_lift():
+    """A stop on a scope (`pipe stop item:X`) leaves its switch on: the carry-on waits for `pipe on`, then starts."""
+    import control as C
+    clear_continuations()
+    rec, _ = stopped_run(T0 + 84000, item_scope=True, item="RIMMANDRAKE_STOPPED_ON_ITS_ITEM_SCOPE")
+    now = rec["at"] + 700
+    got = {"state": "doing", "notes": [dict(note(LEFT, rec["at"] + 500), id=rec["item"])]}
+    p = LOC.plan(rec, got, {}, now=now, gates=STOP_GATES)
+    check("a-stopped-run-waits-for-its-stop-switch-to-lift: planned, to wait", p["act"] == "continue", str(p))
+    r = DH.read_record(rec["unit"])
+    r["continue_plan"] = p
+    DH.write_record(r)
+    del LAUNCHES[:]
+    free = _plan_dir("plan_free", {"state": "none", "at": DH.iso(now)})
+    res = LOC.run(rec["unit"], now=now + 30, launch_fn=fake_launch, gates=STOP_GATES, reader=open_reader("doing"),
+                  plan_dir=free)
+    check("a-stopped-run-waits-for-its-stop-switch-to-lift: no launch while the switch is on",
+          not LAUNCHES and DH.read_record(rec["unit"]).get("continue_waits"), str(res))
+    kicks = []
+
+    class Ran:
+        returncode, stdout, stderr, refused, why = 0, "", "", False, ""
+    real, C.launch_unit = C.launch_unit, lambda argv, spec, **k: kicks.append(spec) or Ran()
+    try:
+        LOC.kick_waiting(now + 60, plan_dir=_plan_dir("plan_free2", {"state": "none", "at": DH.iso(now + 60)}), gates=STOP_GATES)
+        check("a-stopped-run-waits-for-its-stop-switch-to-lift: not kicked while the switch is on",
+              not [k for k in kicks if k["unit"].startswith(rec["unit"])], str(kicks))
+        C.switch("item:" + rec["item"], False, "the cause is gone")
+        LOC.kick_waiting(now + 120, plan_dir=_plan_dir("plan_free3", {"state": "none", "at": DH.iso(now + 120)}), gates=STOP_GATES)
+        check("a-stopped-run-waits-for-its-stop-switch-to-lift: kicked once the switch is lifted",
+              [k["unit"] for k in kicks if k["unit"].startswith(rec["unit"])] == [rec["unit"] + "-continue"],
+              str(kicks))
+    finally:
+        C.launch_unit = real
+
+
 def main():
     for t in (test_open_with_note, test_closed, test_lane, test_limit, test_capped, test_killed_voided, test_gates,
               test_finish_kicks, test_launch_records_opt_in, test_waiting,
@@ -731,7 +883,10 @@ def main():
               t_the_step_rereads_the_target_before_launch, t_launch_checks_are_skipped_only_for_the_same_item,
               t_an_open_lane_item_is_its_own_target, t_a_refused_continuation_spends_no_daily_slot,
               t_an_alarm_whose_log_write_failed_is_retried, t_the_alarm_honours_the_run_root,
-              t_the_run_end_note_carries_no_spend_sentence, t_a_blind_role_never_resumes):
+              t_the_run_end_note_carries_no_spend_sentence, t_a_blind_role_never_resumes,
+              t_a_run_stopped_at_an_easy_spot_with_a_left_open_note_is_continued,
+              t_a_stop_that_ends_the_work_is_never_continued, t_a_hand_void_beside_a_stop_still_bars_the_carry_on,
+              t_a_stopped_run_waits_for_the_account_gate_as_a_new_run, t_a_stopped_run_waits_for_its_stop_switch_to_lift):
         try:
             t()
         except Exception as e:  # noqa: BLE001

@@ -107,6 +107,10 @@ FAMILIES = {                        # the 7 launch families of the re-measure (0
 STAGES = ("intake", "designer", "preflight", "offline_build", "blind_challenge", "in_game", "pre_human", "his_walk",
           "passed")
 STOP_MODES = ("write_now", "at_easy_spot", "kill")
+# what a writing stop leaves behind: "continue" (the default) carries the run on in a fresh run once the cause of the
+# stop is gone (its scope switch lifted, the account gate open to a new run: left_open_continue); "end" ends the work
+# for good. A kill is never carried on (RIMMANDRAKE_CONTINUE_A_RUN_THE_CONDUCTOR_STOPPED_VOIDED_MEANS_NO_CARRY_ON)
+STOP_THEN = ("continue", "end")
 DEFAULT_STOP_MODE = "at_easy_spot"  # his default (card 2026-11-18); `pipe` always prints which mode it used
 # budget: danger=a run that is told to write now never stops; evidence=3 of 15 write_now stops reached it and were escalated;
 # budget: longest=599s (control.db stops, 14 days to 2026-11-24); stays=the owner's stop, and the deadline is part of the stop
@@ -926,6 +930,35 @@ def voided(runs=None, p=None):
     """-> the set of voided run ids (of `runs`, when given). Raises Unreadable."""
     allv = {r["run"] for r in _q("SELECT run FROM voids", p=p)}
     return allv if runs is None else allv & set(runs)
+
+
+def carry_stop(unit, books=None, p=None):
+    """-> the stop that voided `unit` and leaves it to be carried on ({act, mode, scope, then, why}), or None. Yes only
+    when EVERY void of the unit (the store's, by unit or run id, and the dispatch books' standing line `books`, from
+    run_void.active()) comes from a writing stop act (at_easy_spot or write_now) that does not end the work
+    (stop_then). A kill, a hand void (`pipe void`, `maturation_dispatch.py void`) or a stop with --end is None: that
+    run stays void and is not carried on. No void at all is None too. Raises Unreadable."""
+    rr = _q("SELECT id FROM runs WHERE unit=? OR id=?", (unit, unit), p=p, one=True)
+    ids = sorted({unit, "run_" + unit} | ({rr["id"]} if rr else set()))
+    acts = {r["act"] for r in _q("SELECT act FROM voids WHERE run IN (%s)" % ",".join("?" * len(ids)), ids, p=p)}
+    if books and books.get("act") == "void":
+        if not books.get("control_act"):
+            return None     # a void by hand in the books, with no act of the store behind it
+        acts.add(books["control_act"])
+    out = None
+    for aid in sorted(acts):
+        a = _q("SELECT * FROM acts WHERE id=?", (aid,), p=p, one=True)
+        a = dict(a) if a else None
+        if not a or a["kind"] != "stop":
+            return None
+        try:
+            mode = json.loads(a["after"] or "{}").get("mode")
+        except (TypeError, ValueError, AttributeError) as e:
+            raise Unreadable("act %s: its after is not a JSON object (%s: %s)" % (aid, type(e).__name__, e))
+        if mode not in ("at_easy_spot", "write_now") or stop_then(a) != "continue":
+            return None
+        out = {"act": a["id"], "mode": mode, "scope": a["scope"], "then": "continue", "why": a["why"]}
+    return out
 
 
 def grant(mod, resource, n, why, win="", owner_said=None, per_ruling=None, idem=None, p=None, now=None, base=0,
@@ -1939,16 +1972,32 @@ STOP_TEXT = {
     "write_now": "STOP ORDER, write now (pipe stop --write-now, act {act} at {at}, by {who}: {why}). Stop what you are "
                  "doing NOW and start no new work. Write where you are: commit and ./publish only units that are "
                  "finished; put a short handoff note on your item ({item}) with `python3 src/RimMandrake/rimflow/cli.py "
-                 "note {item} --text \"STOPPED (write-now): done: ...; half-done: ...; next: ...\" --why \"pipe stop\"` "
-                 "and publish its shard; then end your turn. At {deadline} the run is killed.",
+                 "note {item} --text \"{note_head}STOPPED (write-now): done: ...; half-done: ...; next: ...\" --why "
+                 "\"pipe stop\"` and publish its shard; then end your turn. {then_text}At {deadline} the run is killed.",
     "at_easy_spot": "STOP ORDER, at the next easy spot (pipe stop --at-easy-spot, act {act} at {at}, by {who}: {why}). "
                     "Finish the unit of work in hand, start no other, then write where you are: commit and ./publish "
                     "what is finished; put a short handoff note on your item ({item}) with `python3 "
-                    "src/RimMandrake/rimflow/cli.py note {item} --text \"STOPPED (at-easy-spot): done: ...; half-done: "
-                    "...; next: ...\" --why \"pipe stop\"` and publish its shard; then end your turn.{deadline_text}",
+                    "src/RimMandrake/rimflow/cli.py note {item} --text \"{note_head}STOPPED (at-easy-spot): done: ...; "
+                    "half-done: ...; next: ...\" --why \"pipe stop\"` and publish its shard; then end your turn. "
+                    "{then_text}{deadline_text}",
     # the account's warning (account_end.warn_text): said once, and it ends no run
     "warn": "{why} (act {act} at {at}, by {who})",
 }
+STOP_THEN_TEXT = {      # (the order's last sentence, the head of the note it asks for)
+    "continue": ("A fresh run carries this work on from that note once the cause of the stop is gone; do not close "
+                 "the item for the stop.", "LEFT OPEN: "),
+    "end": ("This stop ends the work: no run carries it on.", ""),
+}
+
+
+def stop_then(act):
+    """-> "continue" | "end": what a stop act (an `acts` row as a dict) leaves behind. An act written before --end
+    existed reads "continue", the writing modes' default."""
+    try:
+        v = json.loads((act or {}).get("after") or "{}").get("then")
+    except (TypeError, ValueError, AttributeError):
+        v = None
+    return v if v in STOP_THEN else "continue"
 
 
 # budget: danger=a hung systemd holds the pipeline's control; never reached in the 14 days to 2026-11-24; no record of its run
@@ -2133,15 +2182,19 @@ def withdraw_orders(acts, why, p=None, now=None):
 
 
 def stop(target, mode, why, deadline_s=None, owner_said=None, per_ruling=None, p=None, now=None, killer=None,
-         reaper=None, escalator=None, idem=None):
+         reaper=None, escalator=None, idem=None, then="continue"):
     """`pipe stop`: block new launches on the scope at once (a control switch, every unstarted run cancelled, in one
     transaction), release the live runs' trials (void, fail_system), and per live run: write_now / at_easy_spot write a
-    stop order its hook delivers; kill SIGKILLs its whole cgroup (and its claude scope) and verifies it dead. A unit
+    stop order its hook delivers; kill SIGKILLs its whole cgroup (and its claude scope) and verifies it dead. `then`
+    (STOP_THEN) is booked on the act: a writing stop's run is carried on (carry_stop) unless it is "end". A unit
     kill never waits on the store: on a locked store it kills first and records the kill once the store frees. `idem`:
     a replayed key changes nothing (out["replayed"]). -> dict."""
     now = time.time() if now is None else now
     if mode not in STOP_MODES:
         raise Refused("no stop mode %r (%s)" % (mode, ", ".join(STOP_MODES)))
+    if then not in STOP_THEN:
+        raise Refused("no stop --then %r (%s)" % (then, ", ".join(STOP_THEN)))
+    plan_after = {"mode": mode, "deadline_s": deadline_s, "then": "end" if mode == "kill" else then}
     killer = killer or kill_units
     t = str(target or "").strip()
     if t.endswith(".service"):  # `pipe stop rm-x.service` is rm-x: the run row and its claude scope (round-four claim 2)
@@ -2163,8 +2216,8 @@ def stop(target, mode, why, deadline_s=None, owner_said=None, per_ruling=None, p
         act = None
         if not unit_target:
             old = c.execute("SELECT * FROM switches WHERE scope=? AND layer='control'", (scope,)).fetchone()
-            act = _act(c, "stop", scope, dict(old) if old else None, {"mode": mode, "deadline_s": deadline_s}, why,
-                       owner_said, per_ruling, idem, now=now)
+            act = _act(c, "stop", scope, dict(old) if old else None, plan_after, why, owner_said, per_ruling, idem,
+                       now=now)
             c.execute("INSERT OR REPLACE INTO switches (scope, layer, why, said, date, until, act, at_pacific, who)"
                       " VALUES (?,?,?,?,?,?,?,?,?)", (scope, "control", "stopped (%s): %s" % (mode, why.strip()),
                                                       owner_said, utc(now)[:10], None, act["id"],
@@ -2182,8 +2235,7 @@ def stop(target, mode, why, deadline_s=None, owner_said=None, per_ruling=None, p
             if done and done["state"] not in LIVE_STATES:
                 runs[0]["terminal"] = done["state"]     # its bookkeeping was its own end's or kill's: no second reap
         if unit_target:
-            act = _act(c, "stop", scope, None, {"mode": mode, "deadline_s": deadline_s}, why, owner_said,
-                       per_ruling, idem, now=now)
+            act = _act(c, "stop", scope, None, plan_after, why, owner_said, per_ruling, idem, now=now)
         for r in runs:
             if r["id"]:     # its trials released: a stopped run is void and charges nothing (fail_system)
                 c.execute("INSERT OR IGNORE INTO voids VALUES (?,?,?,?,?,?)",
@@ -2489,9 +2541,11 @@ def hook(p=None, unit=None, now=None, stdin=None):
         return 0, ""
     item = (r["item"] if r else None) or os.environ.get("RM_CONTROL_ITEM") or "<your item>"
     dl = s["deadline"]
+    then_text, note_head = STOP_THEN_TEXT[stop_then(dict(a) if a else {})]
     text = STOP_TEXT[s["mode"]].format(act=s["act"], at=(a["at_pacific"] if a else "?"), who=(a["who"] if a else "?"),
                                        why=s["why"], item=item, deadline=pac(dl) if dl else "no deadline",
-                                       deadline_text=" At %s the run is killed." % pac(dl) if dl else "")
+                                       deadline_text=" At %s the run is killed." % pac(dl) if dl else "",
+                                       then_text=then_text + " ", note_head=note_head)
     return 2, text
 
 
@@ -2954,7 +3008,7 @@ def cmd_switch(o, off):
     return lines0 + lines
 
 
-def remote_stop(target, mode, why, root=None, runner=subprocess.run):
+def remote_stop(target, mode, why, root=None, runner=subprocess.run, end=False):
     """A unit whose detached record names a host (run_host.py) is stopped by that host's own `./pipe stop`; nothing
     here holds it. -> (code, lines), or None when the target is not such a unit."""
     t = str(target or "").strip()
@@ -2967,7 +3021,7 @@ def remote_stop(target, mode, why, root=None, runner=subprocess.run):
     rec = DH.read_record(t, root)
     if not (isinstance(rec, dict) and rec.get("host") and run_host.door(rec["host"])):
         return None
-    argv = run_host.stop_argv(rec, mode, why)
+    argv = run_host.stop_argv(rec, mode, why, end=end)
     try:
         r = runner(argv, capture_output=True, text=True, timeout=120, stdin=subprocess.DEVNULL)  # budget: class=call
         rc, said = r.returncode, ((r.stdout or "") + (r.stderr or "")).strip()
@@ -2983,11 +3037,15 @@ def cmd_stop(o):
         raise Refused("one stop mode, not %s" % ", ".join(modes))
     mode = modes[0] if modes else DEFAULT_STOP_MODE
     named = bool(modes)
-    remote = remote_stop(o.target, mode, o.why)
+    then = "end" if getattr(o, "end", False) else "continue"
+    if then == "end" and mode == "kill":
+        raise Refused("--end goes with a writing stop; a --kill is never carried on anyway")
+    remote = remote_stop(o.target, mode, o.why, end=then == "end")
     if remote is not None:
         return remote
     dl = parse_dur(o.deadline) if o.deadline else None
-    r = stop(o.target, mode, o.why, deadline_s=dl, owner_said=o.owner_said, per_ruling=o.per_ruling, idem=o.idem)
+    r = stop(o.target, mode, o.why, deadline_s=dl, owner_said=o.owner_said, per_ruling=o.per_ruling, idem=o.idem,
+             then=then)
     if r["replayed"]:
         return OK, ["%s stop: already done as %s (idempotency key %s): nothing changed" % (r["scope"], r["act"]["id"],
                                                                                          o.idem)]
@@ -3001,7 +3059,10 @@ def cmd_stop(o):
                     "; cancelled before start: %s" % ", ".join(r["cancelled"]) if r["cancelled"] else ""))
     if mode == "kill":
         l2 += "; " + "; ".join(u.get("bookkeeping", "") for u in r["units"])[:300]  # cut-ok: terminal display
-    return (FAILED if bad else OK), [head[:400], l2[:400],  # cut-ok: terminal display
+    then_line = [] if mode == "kill" else [
+        "then END: no run carries the work on" if then == "end" else
+        "then CARRIED ON: a fresh run picks the work up from its LEFT OPEN note once the cause is gone (--end ends it)"]
+    return (FAILED if bad else OK), [head[:400], l2[:400]] + then_line + [  # cut-ok: terminal display
                                                              "undo: pipe undo %s --why \"...\" (withdraws the order while the run has not obeyed it)" % (
                                                                  r["act"]["id"] if r["act"] else "<act>")]
 
@@ -3154,6 +3215,8 @@ def main(argv=None):
                                                                "(the default; name it anyway)")
     p.add_argument("--kill", action="store_true", help="FORCE KILL: SIGKILL the whole cgroup, no write")
     p.add_argument("--deadline", help="after it, a writing stop escalates to --kill (default 5m for --write-now)")
+    p.add_argument("--end", action="store_true", help="the work ends with this writing stop: no run carries it on "
+                                                      "(default: a fresh run carries it on once the cause is gone)")
     p = sub.add_parser("show")
     p.add_argument("mod", nargs="?")
     p.add_argument("--json", action="store_true", dest="json2")

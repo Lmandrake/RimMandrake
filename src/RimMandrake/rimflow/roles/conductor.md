@@ -438,6 +438,10 @@ moment that it starts. So an act binds at once, with no publish and no tick wait
 ./pipe stop <scope|unit> --at-easy-spot --why "..."   finish the unit in hand, write where you are, end (the default)
 ./pipe stop <scope|unit> --write-now [--deadline 5m] --why "..."   stop now, write where you are, end; then --kill
 ./pipe stop <scope|unit> --kill --why "..."  SIGKILL the whole cgroup, verified dead; record killed, return the clone
+./pipe stop <scope|unit> --at-easy-spot|--write-now --end --why "..."   the work ends with the stop. Without --end, a
+                                             fresh run carries the work on from its LEFT OPEN note once the cause is
+                                             gone: the stop's switch is lifted and a new run may start on the account
+                                             (left_open_continue.py). A kill is never carried on
 ./pipe void <run> --why "..."                the run spends no trial or look (store and dispatch books); no stage moves
 ./pipe grant <Mod> look +1 --why "..." --owner-said "<his words>"   one more granted look
 ./pipe set|add|reset|limit|queue|undo ...     counts, limits and the queue (pipeline_control.py)

@@ -28,6 +28,12 @@ Each promise has a check of its name in `src/RimMandrake/rimflow/selftest_left_o
   on origin/main that this clone has not pulled is not seen, and the run's own `relaunched` and launch checks stay the
   only other guards.
 
+- **a-work-bundle-run-that-a-stop-ended.** A work bundle's restart (work_bundle.loc_plan) reads every void as a no,
+  a stop's void included: a bundle that a stop order ended is restarted by hand.
+- **a-switch-wait-older-than-the-lookback.** A run that waits for its stop's switch is read by the timed pass only
+  while its record is inside stop_resume's lookback (`LAUNCH_LOOKBACK_S`); a switch left on longer leaves the run
+  waiting, and nothing starts it.
+
 ## PROMISES (each one is owed a check of the same name)
 
 - **an-owed-run-is-continued-to-close-or-say.** A run that ended success, its item open, no `LEFT OPEN:` note since it
@@ -66,6 +72,20 @@ Each promise has a check of its name in `src/RimMandrake/rimflow/selftest_left_o
   was given.
 - The choice between a resume and a fresh start (context size, progress record) has its own page:
   `design/specs/2026-11-21-live-sitting-context-burn/boundary.md`.
+- **a-run-stopped-at-an-easy-spot-with-a-left-open-note-is-continued.** A run that a writing stop order
+  (`pipe stop --at-easy-spot` or `--write-now`) ended, its item open with a `LEFT OPEN:` note, is planned a
+  continuation: the stop's void spends its trial and does not bar the carry-on (control.carry_stop). Its header says
+  only that the run was interrupted.
+- **a-stop-that-ends-the-work-is-never-continued.** A stop with `--end` (control.stop `then="end"`) leaves the run
+  void: nothing is planned. An unknown `then` is refused.
+- **a-hand-void-beside-a-stop-still-bars-the-carry-on.** A run that also carries a void that is not a writing stop's
+  (`pipe void`, or a dispatch-books void by hand with no control act) is never continued.
+- **a-stopped-run-waits-for-the-account-gate-as-a-new-run.** The continuation of a stopped run passes the account
+  gate only as a NEW run would: while the account drains, the step writes `continue_waits` and launches nothing, and
+  the timed pass (`kick_waiting`) starts it at the first pass after the switch, once.
+- **a-stopped-run-waits-for-its-stop-switch-to-lift.** A stop on a scope (`pipe stop item:X`) leaves its switch on:
+  the step waits and the timed pass starts nothing until the switch is lifted (`pipe on`); the next pass then starts
+  the continuation.
 - **a-blind-role-never-resumes.** A run whose role is to read without the maker's context starts fresh, every time: a
   blind judge (stage `blind_challenge`, or an item named BLIND with a judge's verb), a fresh or second reader, an
   examiner, a challenger, a coverage judge, or any brief that declares itself a judge, reviewer or reader. The why
