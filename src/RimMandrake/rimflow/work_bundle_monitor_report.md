@@ -22,12 +22,27 @@ below). The judge agreed with the Conductor on 19 of 25 labelled set-downs (2026
   number as a good or a bad sign.
 - Name each run, ticket and bundle by its full id.
 - Plain sentences, one idea each. Write times in Pacific time (PST).
-- Write the report in Markdown with exactly these four sections, in this order, each heading exactly as written:
+- Write the report in Markdown with these four sections, in this order, each heading exactly as written (and the fifth
+  below only when a line is crossed):
   `## The day's numbers`, `## The worst pattern`, `## Three repairs`, `## The recommendation`.
 - The day's numbers: the share of runs, closes and tokens through bundles against single-ticket runs, per pipeline;
   the headline (ripe day and today's provisional), with the count of runs beside each number; tokens before the first
   edit; the baseline where it exists; the set-downs by class and by role; the sincerity verdicts by role; the backward
   moves; the other deferrals; the live work of each bundle (live checks run, UNRUN). A short table is good.
+- The day's numbers also hold the polish watch (the owner's question, 2026-11-25: "is the code becoming buggier due
+  to the Polish inclusions?"), from the reading's `born`, `regress`, `polish` and `lines`:
+  - tickets born per ticket closed: the day, bundle runs, bundles of one, single-ticket runs, each bundle. Under 1
+    the list shrinks; over 1 the old ticket trap is back. "no close" is no ratio.
+  - for files bundles changed, the later fixes, reverts, reopened tickets and nightly reds within 3 days: the files
+    with polish against the files without polish, the ripe day (final) and today (provisional). A pending file is not
+    a clean file. The `before_rule` column predates the `polish:` subject: its polish split is NOT MEASURED.
+  - the polish changes and the fresh reader's records on them (finding, read clean, no recorded read). "not
+    measured" is not 0.
+  - Say plainly which of these numbers are too young or too thin to mean anything.
+- If a line in `lines` has `crossed` true, add a fifth section after the recommendation, headed exactly
+  `## Lines crossed`. For each crossed line: the line, its danger and its evidence (copied from `lines`), the day's
+  reading against it, three repairs (different places to act, as above), and the one you recommend. A line with
+  `line` null draws no line: never say it was crossed.
 - The worst pattern: the ONE pattern of the day that costs the most finished work, with its evidence (ticket ids,
   units, the judge's evidence and cause lines). Prefer a pattern that repeats across runs or roles over one event.
 - Three repairs: three different repairs of that pattern. Different means a different place to act (for example: a

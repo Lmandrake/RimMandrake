@@ -83,6 +83,76 @@ its cause, or `failed` with its cause. A source that cannot be read prints `coul
   transcript of several MB would overflow the judge's context.
 - `TimeoutStartSec` of the service: a hang guard; danger: a hung run stops the timer for good.
 
+## The polish watch (item RIMMANDRAKE_WATCH_POLISH_FOR_NEW_BUGS_HE_FEARS_THE_OLD_NOISE)
+
+The owner asked on 2026-11-25 (12:41 PM PST): "is the code becoming buggier due to the Polish inclusions?" Three
+measures answer it, in part 1, with no model call. Each is in the reading (`born`, `regress`, `polish`, `lines`), the
+report's day's numbers, the page section and the digest line.
+
+| source | where | read for |
+|---|---|---|
+| commits | `git log --name-only` of the clone the unit runs from, back 5 days | subject, committer time, files |
+| published shas | each bundle unit's transcript, the lines `PUBLISHED <sha>` (bundles of the last 5 days) | which commits a bundle made |
+| nightly reds | `known_reds.log_path()` (`Transient/selftests_nightly.log` of the data clone), `known_reds.nights` | the red tests of each whole night |
+| fresh reader records | `infrastructure/state/code_review/<SEAT>.jsonl` (clean marks), `code_review/flags/<SEAT>.jsonl` (flags) | the reader's verdict on a file after a change |
+
+- **Tickets born per ticket closed** (measure 1). Born: the distinct ids of `file` and `spawn` events. Closed: the
+  distinct ids of `close` events. The day reads the whole ledger in the window. Per kind (bundle, bundle of one,
+  single) and per bundle, it reads the runs that ended in the window: born is the tickets their units filed
+  (`role_unit`), closed is their closes (the same closes as the headline). Under 1 the list shrinks by closes; over 1
+  the old ticket trap is back. A group with no close reads `no close`, never a ratio and never 0. Drops and supersedes
+  are counted beside the day (`dropped`), not in the ratio: on 2026-11-22 and 2026-11-23 drops were 224 and 254 of the
+  ids that left the list (measured 2026-11-25), so with drops in it the ratio would hide the trap behind a cleanup.
+- **A bundle's commits.** A commit is the bundle's when one of its units printed it as `PUBLISHED <sha>`, or when it
+  lies in the bundle's life (launch to 5 minutes after its last unit ended) and its subject names a member. A subject
+  that starts `ledger:` or `chore(sync)` is never a change of the bundle.
+- **A file a bundle changed** (measure 2) is any path of those commits except a tool's record: `infrastructure/state/`,
+  `Transient/`, `*.jsonl`, `DEPLOYED_SHA`, `*.srchash`, `*.dll`. Its change time is the bundle's last commit on it.
+- **The columns.** `polish`: one of the bundle's commits on the file has a subject that starts `polish:`. `no_polish`:
+  none has. `before_rule`: a commit of that change predates the `polish:` rule (b39aa9f4e1, on origin/main 2026-11-25
+  2:54 PM PST). A polish change then had no such subject, so the polish split of those days is NOT MEASURED: those
+  files are never counted in `no_polish`, and never as 0 polish.
+- **A regression of a file**: in the 3 days after the change, by a commit that is not the bundle's: a fix commit, a
+  revert, a member ticket that reopened (`stayed`) and whose commit named the file, or a whole night that read red on
+  the file or its `selftest_<stem>.py`. A fix commit has a fix word (fix, fixes, fixed, repair, repairs, repaired, mend,
+  mends, mended, regression, broke, broken) among its lead words: the first three words of its item id, and the first
+  six words of its description. A revert starts `Revert` or has a revert word among the same lead words. A polish
+  commit is never a fix. The lead-word rule exists because "fix" and "reverting" anywhere in a long subject matched
+  prose ("where it can fix", "undo by reverting this commit") in the first real reading (2026-11-25).
+- **Ripe and pending.** A file younger than 3 days is `pending`: its events so far are shown, and it is never counted
+  as clean. The comparison is the ripe day (the bundle changes of the 24 hours that ended 3 days ago); today is
+  provisional. The first file changed after the rule ripens 2026-11-28 about 2:54 PM PST. The daily run's ripe day
+  first holds such files on the run of 2026-11-29 6:30 AM PST (its ripe day is 2026-11-25 6:30 AM to 2026-11-26 6:30
+  AM PST). Until then the `polish` and `no_polish` ripe counts read 0 of 0: no comparison yet, not a clean result.
+- **Polish changes** (measure 3): the commits whose subject starts `polish:`, after the rule, in the window, split by
+  in a bundle or not. Each is classed by the fresh reader's record on its files in the 3 days after it: `finding` (a
+  code_review flag, or a later commit on the file whose subject names a fresh read), `read clean` (only a clean mark),
+  `no recorded read`. A window that ends before the rule reads `not measured`; one that starts before it is `partial`
+  and counted from the rule.
+- **The probe.** Before a day after the rule may read 0 polish changes, `polish_probe` makes a throwaway repo with one
+  `polish:` commit and one other commit and reads it with the same reader. If the reader does not see exactly that one
+  polish commit, the polish count reads `could not look` with the cause.
+
+**The lines.** Each line that makes the monitor speak, with the danger it guards and the evidence for its number
+(`LINES` in the code; a crossed line owes the report's `## Lines crossed` section with its evidence, three repairs
+and one recommended):
+
+| line | number | danger | evidence |
+|---|---|---|---|
+| `bundle_born_per_closed` | bundle runs' born per closed over 1, on the day and the day before (born with no close counts as over) | the old ticket trap: bundle work, now with polish, files more tickets than it closes | 1 by arithmetic (over 1, more enter than leave by close). Two days: the Conductor's brief named "over 1 for two days"; one day of bundles is thin (2 bundle runs on 2026-11-25). The whole ledger read over 1 on 13 of the 25 days of 2026-11-01..25, so the day's ratio alone is no line. |
+| `regress` | none | — | no evidence yet for a normal share of regressed files; the first ripe comparison is the run of 2026-11-29 |
+| `polish` | none | — | no evidence yet; the `polish:` subject began 2026-11-25 2:54 PM PST |
+
+**DOES NOT SURVIVE (not promised), the polish watch**
+- **a-fix-that-names-no-fix-word.** A fix commit whose lead words hold no fix word is not seen; a commit whose lead
+  words hold one but which fixes another fault is counted. Both columns share the error.
+- **a-bundle-commit-on-another-machine.** A SteveDesktop bundle unit's transcript is not here: its commits are found
+  only by a subject that names a member (`regress.transcripts_unread` counts the units).
+- **a-red-of-a-test-with-another-name.** A nightly red counts on a file only when the red test is the file or its
+  `selftest_<stem>.py`; the nightly checks FINISHED mods only.
+- **an-unrecorded-fresh-read.** A fresh reader that recorded no mark, flag or "fresh read" commit reads `no recorded
+  read`, not clean.
+
 ## PROMISES (each one is owed a test of the same name)
 
 - **bundle-unit-is-bundle-run.** A unit listed in a bundle record with two or more members is a bundle run, whatever its
@@ -121,3 +191,25 @@ its cause, or `failed` with its cause. A source that cannot be read prints `coul
 - **report-needs-four-sections.** A report that lacks one of its four sections is not written as the report; the
   failure is written as `report_<date>.FAILED.md` and in `latest.json`. Only a written report renews
   `report_newest.md`, the one fixed reading of the item's live promise.
+- **polish-then-fix-one-regression.** A polish commit of a bundle on a file, then a later fix commit by another run on
+  that file within 3 days, counts as exactly one regressed file in the `polish` column.
+- **no-polish-fix-counts-no-polish.** A file a bundle changed with no polish commit, then fixed later within 3 days,
+  counts in the `no_polish` column.
+- **regression-kinds-and-window.** A revert, a reopened member whose commit named the file and a nightly red of the
+  file's selftest each count; a fix after 3 days, a ledger commit and "fix" or "reverting" in late prose do not; a run
+  record (`*.jsonl`, ledger shard) is no file; a sha the unit printed as PUBLISHED is the bundle's; a file younger than
+  3 days is pending, never clean.
+- **before-rule-not-measured.** A bundle change before the `polish:` rule is in the `before_rule` column, never in
+  `no_polish`; the polish count of a window that ends before the rule reads `not measured`.
+- **polish-zero-needs-probe.** A window after the rule with no polish commit reads 0 only when the probe saw its one
+  planted `polish:` commit; a failed probe reads could not look.
+- **polish-findings-from-reader.** A polish change with a flag or a later "fresh read" commit on its file after it reads
+  finding; with only a clean mark after it, read clean; with neither, no recorded read.
+- **born-per-closed-per-bundle-and-day.** A bundle that files 3 tickets and closes 2 reads 1.5; the day reads born over
+  closed of the whole ledger; a group with no close reads `no close`; an unread ledger reads could not look.
+- **born-line-two-days.** The born line crosses only when bundle runs' born per closed is over 1 on the day and on the
+  day before; the regress and polish measures draw no line.
+- **lines-crossed-section.** A report whose reading has a crossed line, and that lacks `## Lines crossed`, is not
+  written as the report.
+- **polish-watch-on-page-and-digest.** The page shows the three measures and the line, with no token figure; the digest
+  fields carry their counts, and the blind digest line renders them and the crossed line.

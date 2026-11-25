@@ -227,11 +227,17 @@ def mods_list(concepts=CONCEPTS):
                   and os.path.exists(os.path.join(concepts, f, "version", "VERSION.json")))
 
 
-def gather(root_state=None, ledger=LEDGER, concepts=CONCEPTS):
+def gather(root_state=None, ledger=LEDGER, concepts=CONCEPTS, repo=REPO, now=None):
     st = root_state or state_dir()
-    return {"runs": read_runs(os.path.join(st, "detached")), "roles": read_role_runs(os.path.join(st, "roles")),
-            "bundles": read_bundles(os.path.join(st, "work_bundle", "bundles")), "ledger": read_ledger(ledger),
-            "moves": read_moves(concepts), "live": read_live_rows(concepts), "mods": mods_list(concepts)}
+    now = time.time() if now is None else now
+    S = {"runs": read_runs(os.path.join(st, "detached")), "roles": read_role_runs(os.path.join(st, "roles")),
+         "bundles": read_bundles(os.path.join(st, "work_bundle", "bundles")), "ledger": read_ledger(ledger),
+         "moves": read_moves(concepts), "live": read_live_rows(concepts), "mods": mods_list(concepts)}
+    # the polish watch: commits back to the ripe day's bundles (3 days, the window, and a day of slack)
+    since = now - (REGRESS_DAYS + 2) * DAY
+    S.update(commits=read_commits(repo, since), nights=read_nights(), reviews=read_reviews(),
+             published=read_published(S["runs"]["value"], S["bundles"]["value"], since))
+    return S
 
 
 # ------------------------------------------------------------------------------------------------ part 1 --------
@@ -539,6 +545,24 @@ NOTES = {
     "moves.backward": "a move to an earlier stage, or to the same stage: a road back that opens a new cycle "
                       "(maturation.ROADS_BACK has in_game -> in_game and blind_challenge -> blind_challenge); by design, "
                       "not a defect of the reader",
+    "born": "tickets born (file/spawn ids) per ticket closed (close ids). day: the whole ledger in the window; by_kind and "
+            "bundles: the runs that ended in the window (born = tickets their units filed, any time; closed = their "
+            "closes). 'no close' is no ratio. Under 1 the list shrinks by closes; dropped (drop/supersede) shrink it "
+            "further and are not in the ratio.",
+    "regress": "measure 2: per file a bundle changed (not a tool's record: infrastructure/state/, Transient/, *.jsonl, "
+               "DEPLOYED_SHA), in the 3 days after that change: later fix commits (the item's verb or the first six "
+               "words of the description is fix/repair/mend/regression/broke; never a polish: commit), reverts (a subject that starts 'Revert' or a revert word among "
+               "the same lead words), reopened member tickets whose commit named the "
+               "file, and nightly reds of the file or its selftest_<stem>.py. column: polish (the bundle's change held a "
+               "polish: commit), no_polish, before_rule (the change predates the polish: rule, so its polish is NOT "
+               "MEASURED). A file younger than 3 days is pending, never clean. ripe_day is the comparison; today is "
+               "provisional.",
+    "polish": "measure 3: polish: commits in the window after the rule, each classed by the fresh reader's record on its "
+              "files in the 3 days after: finding (a code_review flag or a later 'fresh read' commit), read clean (a "
+              "clean mark only), no recorded read. 'not measured' = the window predates the rule; 0 is said only after "
+              "the probe saw its planted polish: commit.",
+    "lines": "a line that makes the monitor speak, with its danger and evidence; line None = no evidence yet, no line "
+             "drawn. A crossed line owes the report's '## Lines crossed' section.",
     "live": "per bundle: bundle_live_ran/unrun from the bundle record's live_runs (work_bundle.py live); early_rows and "
             "unrun_rows from the mod's version/in_game files for the members while the bundle lived. 0 and 0 does not "
             "say whether the bundle owed a live check.",
@@ -606,6 +630,9 @@ def measure(S, t0, t1, now, projects=PROJECTS, transcripts=True):
             "first_bundle": iso(min(b.get("at") for b in bundles.values())) if bundles else None}
         R["runs"] = [{k: v for k, v in r.items() if k != "closes"} | {"closes": [c["item"] for c in r["closes"]]}
                      for r in rows]
+    rows_prev = day_rows(t0 - DAY, t0) if runs is not None and closes is not None else None
+    R["born"], R["lines"], R["regress"], R["polish"] = polish_watch(
+        S, rows if runs is not None and closes is not None else None, rows_prev, closes, t0, t1, now)
     # stage moves
     mv = S["moves"]["value"]
     if mv is None:
@@ -710,6 +737,409 @@ def live_work(S, t0, t1):
                 row[kind + "_rows_undated"] = sum(1 for t in ts if t is None)
         out[bid] = row
     return {"state": "measured", "bundles": out}
+
+
+
+# ------------------------------------------------------------------------------------------------ the polish watch --
+# Item RIMMANDRAKE_WATCH_POLISH_FOR_NEW_BUGS_HE_FEARS_THE_OLD_NOISE (the owner, 2026-11-25 12:41 PM PST: "is the code
+# becoming buggier due to the Polish inclusions?"). Three measures, no model call: tickets born per ticket closed; the
+# later fixes, reverts, reopened tickets and nightly reds on each file a bundle changed, split by polish; the polish
+# changes and the fresh reader's records on them. Page: boundary.md §The polish watch.
+
+# The commit that made `polish:` the subject of every polish change (CLAUDE.md §Touching code has a cost), b39aa9f4e1,
+# landed on origin/main 2026-11-25 2:54 PM PST (its committer time). A polish change before it had no such subject, so
+# a window before it reads "not measured", never 0.
+POLISH_RULE_SHA = "b39aa9f4e1"
+POLISH_RULE_T = 1795647287.0
+REGRESS_DAYS = 3               # the owner's item: a fix, revert, reopen or red "within 3 days" of the bundle's change
+POLISH_RX = re.compile(r"^\s*polish:", re.I)
+REVERT_WORDS = frozenset("revert reverts reverted".split())   # git revert's own subject starts "Revert"
+FIX_WORDS = frozenset("fix fixes fixed repair repairs repaired mend mends mended regression broke broken".split())
+FIX_LEAD_WORDS = 6             # a fix says so early: "ID: fix the crash", "ID: fresh-reader fixes: ..." (measured 2026-11-25:
+                               # "fix" anywhere in a long subject matched prose such as "where it can fix")
+FRESH_RX = re.compile(r"\bfresh[ -]?read", re.I)
+SKIP_SUBJECT = re.compile(r"^\s*(ledger:|chore\(sync\))")          # the ledger's own commits and the hourly sweep
+RECORD_PATHS = ("infrastructure/state/", "Transient/")             # records written by tools, not code a run changed
+RECORD_NAMES = re.compile(r"(\.jsonl|/DEPLOYED_SHA|\.srchash|\.dll)$")  # appended run records and build stamps
+PUB_RX = re.compile(r"PUBLISHED ([0-9a-f]{40})")
+REVIEWS = os.path.join(REPO, "infrastructure", "state", "code_review")
+COLUMNS = ("polish", "no_polish", "before_rule")
+LINES_SECTION = "## Lines crossed"
+# Each line that makes the monitor speak, with the danger it guards and the evidence for its number (boundary.md).
+LINES = {
+    "bundle_born_per_closed": {
+        "line": 1.0, "days": 2,
+        "danger": "the old ticket trap: bundle runs, now taking polish, file more tickets than they close, so the list "
+                  "grows from its own work",
+        "evidence": "1 by arithmetic: over 1, more tickets enter than leave by close. Two days: the Conductor's brief "
+                    "(2026-11-25) named the line 'over 1 for two days'; one day of bundles is thin (2 bundle runs on "
+                    "2026-11-25). The whole ledger read over 1 on 13 of the 25 days of 2026-11-01..25 (measured "
+                    "2026-11-25), so the day's ratio alone is no line."},
+    "regress": {"line": None, "why": "no evidence yet for what share of regressed files is normal: the first file "
+                                     "after the polish: rule ripens 2026-11-28; the first ripe comparison is the "
+                                     "daily run of 2026-11-29"},
+    "polish": {"line": None, "why": "no evidence yet: the polish: subject began 2026-11-25 2:54 PM PST"},
+}
+
+
+def is_polish(subject):
+    return bool(POLISH_RX.match(subject or ""))
+
+
+def is_record(path):
+    return path.startswith(RECORD_PATHS) or bool(RECORD_NAMES.search(path))
+
+
+def _lead_words(subject):
+    """The words a commit says what it is with: the first three words of its item id (before the colon) and the first
+    FIX_LEAD_WORDS words of its description."""
+    head, sep, desc = (subject or "").partition(": ")
+    if not sep or not re.fullmatch(r"[A-Z][A-Z0-9_]+", head.strip()):
+        head, desc = "", subject or ""
+    return [w.lower() for w in head.strip().split("_")[:3]] + [w.lower() for w in re.findall(r"[A-Za-z]+", desc)
+                                                                [:FIX_LEAD_WORDS]]
+
+
+def is_revert(subject):
+    return bool(re.match(r"\s*Revert\b", subject or "")) or any(w in REVERT_WORDS for w in _lead_words(subject))
+
+
+def is_fix(subject):
+    """A fix commit: a fix word among its lead words (_lead_words). A polish: commit and a revert are never a fix."""
+    return not is_polish(subject) and not is_revert(subject) and any(w in FIX_WORDS for w in _lead_words(subject))
+
+
+def read_commits(repo, since):
+    """-> src([{sha, t, subject, files}]) of the commits since `since` (epoch), oldest first, or could not look."""
+    try:
+        r = subprocess.run(["git", "-C", repo, "log", "--no-merges", "--since=%s" % iso(since),
+                            "--format=%x1e%H%x1f%ct%x1f%s", "--name-only"], capture_output=True, text=True,
+                           timeout=TB.CALL_S)  # budget: class=call
+    except (OSError, subprocess.SubprocessError) as e:
+        return src(None, CNL, "git log in %s: %s" % (repo, e))
+    if r.returncode:
+        return src(None, CNL, "git log in %s exited %d: %s" % (repo, r.returncode, (r.stderr or "").strip()[:200]))
+    out, bad = [], []
+    for block in r.stdout.split("\x1e")[1:]:
+        head, _, rest = block.partition("\n")
+        parts = head.split("\x1f")
+        if len(parts) != 3 or not parts[1].isdigit():
+            bad.append(head[:60])
+            continue
+        out.append({"sha": parts[0], "t": float(parts[1]), "subject": parts[2],
+                    "files": [f for f in rest.splitlines() if f.strip()]})
+    out.sort(key=lambda c: c["t"])
+    return src(out, bad=bad)
+
+
+def polish_probe(reader=None):
+    """-> (True, None) when the commit reader sees the probe's one planted `polish:` commit in a throwaway repo (and only
+    it, with its file); else (False, cause). A day with no polish change reads 0 only after this passes."""
+    import shutil
+    import tempfile
+    reader = reader or read_commits
+    d = tempfile.mkdtemp(prefix="wbm_polish_probe_")
+    env = dict(os.environ, GIT_AUTHOR_NAME="probe", GIT_AUTHOR_EMAIL="probe@invalid", GIT_COMMITTER_NAME="probe",
+               GIT_COMMITTER_EMAIL="probe@invalid")
+    try:
+        def g(*a):
+            subprocess.run(["git", "-C", d, "-c", "commit.gpgsign=false", "-c", "core.hooksPath=/dev/null", *a],
+                           check=True, capture_output=True, env=env, timeout=TB.CALL_S)  # budget: class=call
+        g("init", "-q")
+        for name, subject in (("a.py", "PROBE_PLANT_ONE_CHANGE_ONLY: a change"),
+                              ("b.py", "polish: PROBE_PLANT_ONE_CHANGE_ONLY: the probe's planted polish change")):
+            with open(os.path.join(d, name), "w") as f:
+                f.write(name + "\n")
+            g("add", name)
+            g("commit", "-q", "--no-verify", "-m", subject)
+        got = reader(d, time.time() - DAY)
+    except (OSError, subprocess.SubprocessError) as e:
+        return False, "the probe could not make its repo: %s" % e
+    finally:
+        shutil.rmtree(d, ignore_errors=True)
+    if got.get("state") != "measured":
+        return False, "the probe's reader could not look: %s" % got.get("cause")
+    cs = got["value"] or []
+    pol = [c for c in cs if is_polish(c["subject"])]
+    if len(cs) != 2 or len(pol) != 1 or pol[0]["files"] != ["b.py"]:
+        return False, "the probe saw %d of its 1 planted polish: commit (%d of its 2 commits)" % (len(pol), len(cs))
+    return True, None
+
+
+def read_nights(path=None):
+    """The nightly selftest log (known_reds.nights): [{t, reds: {test path}}], whole nights only."""
+    import known_reds as KR
+    p = path or str(KR.log_path())
+    try:
+        with open(p, encoding="utf-8", errors="replace") as f:
+            ns = KR.nights(f.read())
+    except OSError as e:
+        return src(None, CNL, "the nightly log %s: %s" % (p, e))
+    if not ns:
+        return src(None, CNL, "the nightly log %s holds no whole night" % p)
+    return src([{"t": float(n["t"]), "reds": set(n["reds"])} for n in ns])
+
+
+def read_reviews(d=REVIEWS):
+    """The fresh reader's records (code_review_status.py): marks [{path, t, verdict}] from code_review/<SEAT>.jsonl and
+    flags [{path, t, why}] from code_review/flags/<SEAT>.jsonl."""
+    if not os.path.isdir(d):
+        return src(None, CNL, "the review record folder %s does not exist" % d)
+    out, bad = {"marks": [], "flags": []}, []
+    for kind, pat in (("marks", "*.jsonl"), ("flags", os.path.join("flags", "*.jsonl"))):
+        for p in sorted(glob.glob(os.path.join(d, pat))):
+            with open(p, encoding="utf-8", errors="replace") as f:
+                for ln in f:
+                    try:
+                        e = json.loads(ln)
+                    except ValueError:
+                        if ln.strip():
+                            bad.append(os.path.basename(p))
+                        continue
+                    t = ep(e.get("ts")) if isinstance(e, dict) else None
+                    if t is None or not e.get("path"):
+                        continue
+                    if kind == "flags" and e.get("event") == "flag":
+                        out["flags"].append({"path": e["path"], "t": t, "why": str(e.get("why") or "")[:200]})
+                    elif kind == "marks":
+                        out["marks"].append({"path": e["path"], "t": t, "verdict": e.get("verdict")})
+    return src(out, bad=bad)
+
+
+def read_published(runs, bundles, since, projects=PROJECTS):
+    """-> src({unit: [sha]}): the shas each bundle unit printed as `PUBLISHED <sha>` in its transcript (bundles launched
+    since `since`). A unit whose transcript cannot be read is named in `unreadable`; its commits are found by subject."""
+    import role_launch as RL
+    out, blind = {}, []
+    for b in (bundles or {}).values():
+        if (b.get("at") or 0) < since:
+            continue
+        for u in b.get("units") or []:
+            unit = u.get("unit") if isinstance(u, dict) else None
+            rec = (runs or {}).get(unit)
+            files = RL._transcript_files(rec, projects) if rec else []
+            if not files:
+                blind.append(str(unit))
+                continue
+            shas = set()
+            for fp in files:
+                try:
+                    with open(fp, encoding="utf-8", errors="replace") as f:
+                        for ln in f:
+                            if "PUBLISHED " in ln:
+                                shas.update(PUB_RX.findall(ln))
+                except OSError:
+                    blind.append(str(unit))
+            out[unit] = sorted(shas)
+    return src(out, bad=blind)
+
+
+def bundle_commits(b, runs, published, commits, now):
+    """The commits of one bundle: a sha one of its units printed as PUBLISHED, or a commit in the bundle's life (launch
+    to 5 minutes after its last unit ended) whose subject names a member. Ledger and sweep commits are not its changes."""
+    units = [u.get("unit") for u in b.get("units") or [] if isinstance(u, dict)]
+    shas = {x for u in units for x in (published or {}).get(u) or []}
+    ends = [ep(((runs or {}).get(u) or {}).get("ended")) for u in units]
+    hi = now if (not ends or any(e is None for e in ends)) else max(ends) + 300
+    lo = b.get("at") or 0
+    members = sorted({m for m in b.get("members") or [] if m}, key=len, reverse=True)
+    rx = re.compile(r"(?<![A-Z0-9_])(%s)(?![A-Z0-9_])" % "|".join(map(re.escape, members))) if members else None
+    return [c for c in commits if not SKIP_SUBJECT.match(c["subject"])
+            and (c["sha"] in shas or (rx is not None and lo <= c["t"] <= hi and rx.search(c["subject"])))]
+
+
+def red_matches(path, test):
+    """A nightly red is on `path` when the red test is the file itself or its selftest (selftest_<stem>.py)."""
+    stem = os.path.splitext(os.path.basename(path))[0]
+    return test == path or os.path.basename(test) == "selftest_%s.py" % stem
+
+
+def regress_rows(bundles, runs, published, commits, nights, closes, t_lo, t_hi, now, rule_t=POLISH_RULE_T):
+    """Measure 2. One row per (bundle, file) whose bundle change ended in [t_lo, t_hi): its column (polish, no_polish, or
+    before_rule when a commit of that change predates the polish: rule) and, in the 3 days after the change, the later
+    fix commits, reverts, reopened member tickets and nightly reds on the file. nights None: reds could not look."""
+    rows = []
+    for bid, b in sorted((bundles or {}).items()):
+        mine = bundle_commits(b, runs, published, commits, now)
+        if not mine:
+            continue
+        own = {c["sha"] for c in mine}
+        members = set(b.get("members") or [])
+        reopened_members = {c["item"] for c in (closes or []) if c["item"] in members and c["t"] >= (b.get("at") or 0)
+                            and stayed(c, now) == "reopened"}
+        per = {}
+        for c in mine:
+            for f in c["files"]:
+                if not is_record(f):
+                    per.setdefault(f, []).append(c)
+        for f, cs in sorted(per.items()):
+            tch = max(c["t"] for c in cs)
+            if not (t_lo <= tch < t_hi):
+                continue
+            first = min(c["t"] for c in cs)
+            col = "before_rule" if first < rule_t else ("polish" if any(is_polish(c["subject"]) for c in cs)
+                                                         else "no_polish")
+            hi = tch + REGRESS_DAYS * DAY
+            later = [c for c in commits if c["sha"] not in own and tch < c["t"] <= hi and f in c["files"]
+                     and not SKIP_SUBJECT.match(c["subject"])]
+            reverts = [c["sha"][:10] for c in later if is_revert(c["subject"])]
+            fixes = [c["sha"][:10] for c in later if is_fix(c["subject"])]
+            named = {m for m in members for c in cs if re.search(r"(?<![A-Z0-9_])%s(?![A-Z0-9_])" % re.escape(m),
+                                                                 c["subject"])}
+            if nights is None:
+                reds, seen = None, None
+            else:
+                ns = [n for n in nights if tch < n["t"] <= hi]
+                reds = [iso(n["t"]) for n in ns if any(red_matches(f, t) for t in n["reds"])]
+                seen = len(ns)
+            rows.append({"bundle": bid, "members": len(members), "file": f, "column": col, "changed": iso(tch),
+                         "state": "ripe" if now >= hi else "pending", "fixes": fixes, "reverts": reverts,
+                         "reopened": sorted(named & reopened_members), "reds": reds, "nights_seen": seen,
+                         "polish_commits": [c["sha"][:10] for c in cs if is_polish(c["subject"])]})
+    return rows
+
+
+def regressed(r):
+    return bool(r["fixes"] or r["reverts"] or r["reopened"] or r["reds"])
+
+
+def regress_summary(rows):
+    """Per column: files, ripe files and how many regressed, pending files and how many regressed so far, events by kind.
+    A pending file is never counted clean; reds_blind counts rows whose nightly reds could not be read."""
+    out = {}
+    for col in COLUMNS:
+        rs = [r for r in rows if r["column"] == col]
+        ripe = [r for r in rs if r["state"] == "ripe"]
+        pend = [r for r in rs if r["state"] == "pending"]
+        out[col] = {"files": len(rs), "ripe": len(ripe), "ripe_regressed": sum(1 for r in ripe if regressed(r)),
+                    "pending": len(pend), "pending_regressed_so_far": sum(1 for r in pend if regressed(r)),
+                    "events": {"fix": sum(len(r["fixes"]) for r in rs), "revert": sum(len(r["reverts"]) for r in rs),
+                               "reopened": sum(len(r["reopened"]) for r in rs),
+                               "red": sum(len(r["reds"] or []) for r in rs)}}
+    out["reds_blind"] = sum(1 for r in rows if r["reds"] is None)
+    return out
+
+
+def polish_numbers(commits, bundle_of_sha, reviews, t_lo, t_hi, now, probe, rule_t=POLISH_RULE_T):
+    """Measure 3. The `polish:` commits in [t_lo, t_hi) after the rule, each classed by the fresh reader's record on its
+    files in the 3 days after it: finding (a code_review flag, or a later commit on the file whose subject names a fresh
+    read), read clean (only a clean mark), no recorded read. Before the rule: not measured; a failed probe: could not
+    look."""
+    if t_hi <= rule_t:
+        return {"state": "not measured", "cause": "the window ends before the polish: rule landed (%s, %s): a polish "
+                                                  "change then had no polish: subject" % (POLISH_RULE_SHA, pac(rule_t))}
+    if commits is None:
+        return {"state": CNL, "cause": "the commits could not be read"}
+    if not probe or not probe[0]:
+        return {"state": CNL, "cause": (probe or (None, "the probe did not run"))[1]}
+    lo = max(t_lo, rule_t)
+    rv = reviews["value"] if (reviews or {}).get("state") == "measured" else None
+    rows = []
+    for c in commits:
+        if not (lo <= c["t"] < t_hi) or not is_polish(c["subject"]):
+            continue
+        files = [f for f in c["files"] if not is_record(f)]
+        hi = c["t"] + REGRESS_DAYS * DAY
+        flags = [x for x in rv["flags"] if x["path"] in files and c["t"] < x["t"] <= hi] if rv is not None else []
+        marks = ([x for x in rv["marks"] if x["path"] in files and c["t"] < x["t"] <= hi and x.get("verdict") == "clean"]
+                 if rv is not None else [])
+        fr = [d["sha"][:10] for d in commits if d["sha"] != c["sha"] and c["t"] < d["t"] <= hi
+              and set(d["files"]) & set(files) and FRESH_RX.search(d["subject"])]
+        read = ("finding" if flags or fr else "read clean" if marks else
+                "no recorded read" if rv is not None else CNL)
+        rows.append({"sha": c["sha"][:10], "at": iso(c["t"]), "subject": c["subject"][:160], "files": files,
+                     "bundle": (bundle_of_sha or {}).get(c["sha"]), "read": read, "significant": len(flags),
+                     "fresh_read_commits": fr})
+    return {"state": "measured", "since": iso(lo), "until": iso(t_hi), "partial": t_lo < rule_t,
+            "reviews": "measured" if rv is not None else "%s: %s" % (CNL, (reviews or {}).get("cause")),
+            "changes": len(rows), "in_bundles": sum(1 for r in rows if r["bundle"]),
+            "in_other_runs": sum(1 for r in rows if not r["bundle"]),
+            "with_finding": sum(1 for r in rows if r["read"] == "finding"),
+            "significant": sum(1 for r in rows if r["significant"]),
+            "read_clean": sum(1 for r in rows if r["read"] == "read clean"),
+            "no_recorded_read": sum(1 for r in rows if r["read"] == "no recorded read"), "rows": rows}
+
+
+def _ratio2(born, closed):
+    return round(born / closed, 2) if closed else "no close"
+
+
+def born_numbers(ev, rows, t0, t1):
+    """Measure 1. Tickets born (file/spawn ids) per ticket closed (close ids): the day over the whole ledger; per kind
+    and per bundle over the runs that ended in the window (born = the tickets their units filed, closed = their closes).
+    A group with no close reads "no close", never a ratio; drops and supersedes are counted beside, not in the ratio."""
+    day = [e for e in ev if ep(e.get("ts")) is not None and t0 <= ep(e["ts"]) < t1]
+    born = {e.get("id") or e.get("name") for e in day if e.get("event") in ("file", "spawn")}
+    closed = {e.get("id") for e in day if e.get("event") == "close"}
+    dropped = {e.get("id") for e in day if e.get("event") in ("drop", "supersede")}
+    by_unit = {}
+    for e in ev:
+        if e.get("event") in ("file", "spawn") and e.get("role_unit"):
+            by_unit.setdefault(e["role_unit"], set()).add(e.get("id") or e.get("name"))
+    out = {"state": "measured", "day": {"born": len(born), "closed": len(closed), "dropped": len(dropped),
+                                        "ratio": _ratio2(len(born), len(closed))}}
+    if rows is None:
+        out["by_kind"] = out["bundles"] = {"state": CNL, "cause": "the runs could not be read"}
+        return out
+
+    def group(rs):
+        b = set().union(*[by_unit.get(r["unit"], set()) for r in rs]) if rs else set()
+        c = {c["item"] for r in rs for c in r["closes"]}
+        return {"runs": len(rs), "born": len(b), "closed": len(c), "ratio": _ratio2(len(b), len(c))}
+    out["by_kind"] = {"bundle": group([r for r in rows if r["kind"] == "bundle"]),
+                      "bundle_of_one": group([r for r in rows if r["kind"] == "bundle_of_one"]),
+                      "single": group([r for r in rows if r["kind"] == "single"])}
+    out["bundles"] = {bid: group([r for r in rows if r["bundle"] == bid])
+                      for bid in sorted({r["bundle"] for r in rows if r["bundle"]})}
+    return out
+
+
+def lines_of(born, born_prev):
+    """-> {name: the line, its reading and whether it is crossed}. A group is over the born line when it filed tickets
+    and closed none, or filed more than LINE times its closes."""
+    out = {k: dict(v) for k, v in LINES.items()}
+    L = out["bundle_born_per_closed"]
+
+    def over(g):
+        return g["born"] > 0 and (g["closed"] == 0 or g["born"] / g["closed"] > L["line"])
+    try:
+        g, p = born["by_kind"]["bundle"], born_prev["by_kind"]["bundle"]
+        L.update(today=g["ratio"], day_before=p["ratio"], crossed=over(g) and over(p))
+    except (KeyError, TypeError):
+        L.update(today=UNM, day_before=UNM, crossed=None)
+    for k in ("regress", "polish"):
+        out[k]["crossed"] = None
+    return out
+
+
+def polish_watch(S, rows, rows_prev, closes, t0, t1, now, probe_fn=None):
+    """The three measures and their lines -> (born, lines, regress, polish), each a JSON-safe dict."""
+    ev = S["ledger"]["value"]
+    if ev is None:
+        born = {"state": CNL, "cause": S["ledger"]["cause"]}
+        lines = lines_of(born, born)
+    else:
+        born = born_numbers(ev, rows, t0, t1)
+        lines = lines_of(born, born_numbers(ev, rows_prev, t0 - DAY, t0))
+    cm, nt = S.get("commits") or src(None, CNL, "not gathered"), S.get("nights") or src(None, CNL, "not gathered")
+    bundles, runs = S["bundles"]["value"], S["runs"]["value"]
+    pub = (S.get("published") or src({}))["value"] or {}
+    windows = {"ripe_day": (t0 - REGRESS_DAYS * DAY, t1 - REGRESS_DAYS * DAY), "today": (t0, t1)}
+    if cm["value"] is None or bundles is None or closes is None:
+        why = cm["cause"] if cm["value"] is None else (S["bundles"]["cause"] if bundles is None else S["ledger"]["cause"])
+        regress = {"state": CNL, "cause": why}
+        bos = {}
+    else:
+        regress = {"state": "measured", "nights": nt["state"] if nt["value"] is not None else "%s: %s" % (CNL, nt["cause"]),
+                   "transcripts_unread": len((S.get("published") or src({}))["unreadable"])}
+        for w, (lo, hi) in windows.items():
+            rs = regress_rows(bundles, runs, pub, cm["value"], nt["value"], closes, lo, hi, now)
+            regress[w] = {"since": iso(lo), "until": iso(hi), "summary": regress_summary(rs),
+                          "regressed_rows": [r for r in rs if regressed(r)]}
+        bos = {c["sha"]: bid for bid, b in bundles.items() for c in bundle_commits(b, runs, pub, cm["value"], now)}
+    probe = (probe_fn or polish_probe)() if cm["value"] is not None and t1 > POLISH_RULE_T else None
+    polish = {w: polish_numbers(cm["value"], bos, S.get("reviews"), lo, hi, now, probe) for w, (lo, hi) in windows.items()}
+    return born, lines, regress, polish
 
 
 # ------------------------------------------------------------------------------------------------ part 2 --------
@@ -898,9 +1328,13 @@ def report_prompt(R, V, date, template=None):
             .replace("{VERDICTS}", json.dumps(V, indent=1, default=str)))
 
 
-def report_ok(text):
-    """-> None, or the first of the four sections the report lacks."""
-    for s in SECTIONS:
+def crossed_lines(R):
+    return sorted(k for k, v in ((R or {}).get("lines") or {}).items() if isinstance(v, dict) and v.get("crossed"))
+
+
+def report_ok(text, R=None):
+    """-> None, or the first section the report lacks: the four, and the lines section when a line is crossed."""
+    for s in SECTIONS + ((LINES_SECTION,) if crossed_lines(R) else ()):
         if s not in (text or ""):
             return s
     return None
@@ -926,7 +1360,23 @@ def summary(R, V, report_path, report_state, date):
                 "state") == "measured" else UNM,
             "verdicts": vc if vc is not None else UNM,
             "not_sincere_by_role": _by_role(V), "report": native(report_path) if report_path else None,
-            "report_state": report_state}
+            "report_state": report_state, "polish_watch": watch_summary(R)}
+
+
+def watch_summary(R):
+    """The polish watch's closed counts for the page and the digest: no rows, no token figure."""
+    b = R.get("born") or {}
+    born = ({k: b.get(k) for k in ("state", "day", "by_kind")} | {"bundles": {
+        k: v for k, v in (b.get("bundles") or {}).items() if isinstance(v, dict)}} if b.get("state") == "measured"
+        else {"state": b.get("state", UNM), "cause": b.get("cause")})
+    lines = {k: {x: v.get(x) for x in ("line", "crossed", "today", "day_before")}
+             for k, v in (R.get("lines") or {}).items() if isinstance(v, dict)}
+    rg = R.get("regress") or {}
+    regress = ({w: (rg.get(w) or {}).get("summary") for w in ("ripe_day", "today")} | {"state": "measured"}
+               if rg.get("state") == "measured" else {"state": rg.get("state", UNM), "cause": rg.get("cause")})
+    pol = {w: {k: v for k, v in (((R.get("polish") or {}).get(w)) or {"state": UNM}).items() if k != "rows"}
+           for w in ("ripe_day", "today")}
+    return {"born": born, "lines": lines, "regress": regress, "polish": pol}
 
 
 def _by_role(V):
@@ -962,7 +1412,7 @@ def daily(now=None, caller=None, S=None, say=None):
     text, err, tok, sec = (caller or call_model)(report_prompt(R, V, date), "opus", REPORT_TIMEOUT_S,
                                                  "WBM REPORT %s" % date)
     rp = os.path.join(od, "report_%s.md" % date)
-    bad = err or (report_ok(text) and "the report lacks the section %r" % report_ok(text))
+    bad = err or (report_ok(text, R) and "the report lacks the section %r" % report_ok(text, R))
     if bad:
         fp = os.path.join(od, "report_%s.FAILED.md" % date)
         with open(fp, "w", encoding="utf-8") as f:
@@ -1027,6 +1477,25 @@ def digest_fields(L):
            "backward_moves": L.get("backward_moves"), "report": L.get("report")}
     if isinstance(v, dict):
         out.update(not_sincere=v.get("NOT SINCERE"), sincere=v.get("SINCERE"), could_not_judge=v.get("COULD NOT JUDGE"))
+    W = L.get("polish_watch") or {}
+    b = W.get("born") or {}
+    if b.get("state") == "measured":
+        bk = (b.get("by_kind") or {}).get("bundle") or {}
+        out.update(born=(b.get("day") or {}).get("born"), closed=(b.get("day") or {}).get("closed"),
+                   bundle_born=bk.get("born"), bundle_closed=bk.get("closed"))
+    cr = ((W.get("lines") or {}).get("bundle_born_per_closed") or {}).get("crossed")
+    if isinstance(cr, bool):
+        out["born_line_crossed"] = cr
+    rg = W.get("regress") or {}
+    if rg.get("state") == "measured":
+        sm = rg.get("ripe_day") or {}
+        out.update(polish_files_ripe=(sm.get("polish") or {}).get("ripe"),
+                   polish_files_regressed=(sm.get("polish") or {}).get("ripe_regressed"),
+                   plain_files_ripe=(sm.get("no_polish") or {}).get("ripe"),
+                   plain_files_regressed=(sm.get("no_polish") or {}).get("ripe_regressed"))
+    p = (W.get("polish") or {}).get("today") or {}
+    if p.get("state") == "measured":
+        out.update(polish_changes=p.get("changes"), polish_findings=p.get("with_finding"))
     return {k: x for k, x in out.items() if x is not None}
 
 
@@ -1066,7 +1535,61 @@ def page_md(L):
     out.append("")
     out.append("Sincerity (a Sonnet judge, each set-down and backward move): %s; not sincere by role: %s." % (
         _kv(v) if isinstance(v, dict) else v, _kv(L.get("not_sincere_by_role")) or "none"))
-    return out + [""]
+    out.append("")
+    return out + _watch_md(L.get("polish_watch")) + [""]
+
+
+WINDOW_LABEL = {"ripe_day": "the ripe day (3 days old: final)", "today": "today (provisional: pending until 3 days old)"}
+
+
+def _watch_md(W):
+    """The polish watch on the page: the three measures and the born line. Counts and ratios only."""
+    if not W:
+        return ["The polish watch: UNMEASURED (this reading predates it), not 0."]
+    out = []
+    b = W.get("born") or {}
+
+    def g(x):
+        return ("%s born, %s closed, born per closed %s" % (x.get("born"), x.get("closed"), x.get("ratio"))
+                if isinstance(x, dict) and "born" in x else "could not look")
+    if b.get("state") == "measured":
+        k, d = b.get("by_kind") or {}, b.get("day") or {}
+        per = "; ".join("%s %s" % (bid, x.get("ratio")) for bid, x in sorted((b.get("bundles") or {}).items())) or "none"
+        out.append("Tickets born per closed (the polish watch): the day %s (dropped %s, not in the ratio); bundle runs "
+                   "%s; bundles of one %s; single-ticket runs %s. Per bundle: %s." % (
+                       g(d), d.get("dropped"), g(k.get("bundle")), g(k.get("bundle_of_one")), g(k.get("single")), per))
+    else:
+        out.append("Tickets born per closed: could not look: %s." % b.get("cause"))
+    Ln = (W.get("lines") or {}).get("bundle_born_per_closed") or {}
+    out.append(("LINE CROSSED: bundle runs' born per closed over %s on the day (%s) and the day before (%s); the report "
+                "gives the evidence and three repairs." if Ln.get("crossed") else
+                "The line (bundle runs' born per closed over %s two days running): not crossed (the day %s, the day "
+                "before %s).") % (Ln.get("line"), Ln.get("today"), Ln.get("day_before")))
+    rg = W.get("regress") or {}
+    for w in ("ripe_day", "today"):
+        if rg.get("state") != "measured":
+            out.append("Regressions on files bundles changed, %s: could not look: %s." % (WINDOW_LABEL[w], rg.get("cause")))
+            continue
+        sm = rg.get(w) or {}
+
+        def col(c):
+            x = sm.get(c) or {}
+            return "%s of %s ripe files regressed, %s of %s pending so far" % (
+                x.get("ripe_regressed"), x.get("ripe"), x.get("pending_regressed_so_far"), x.get("pending"))
+        out.append("Files bundles changed with a later fix, revert, reopened ticket or nightly red within 3 days, %s: "
+                   "with polish %s; without polish %s; before the polish: rule (polish not measured) %s." % (
+                       WINDOW_LABEL[w], col("polish"), col("no_polish"), col("before_rule")))
+    for w in ("today", "ripe_day"):
+        p = (W.get("polish") or {}).get(w) or {}
+        if p.get("state") == "measured":
+            out.append("Polish changes (subject polish:), %s: polish changes %s (in bundles %s, outside bundles %s); the "
+                       "fresh reader: finding %s (significant %s), read clean %s, no recorded read %s%s." % (
+                           WINDOW_LABEL[w], p.get("changes"), p.get("in_bundles"), p.get("in_other_runs"),
+                           p.get("with_finding"), p.get("significant"), p.get("read_clean"), p.get("no_recorded_read"),
+                           " (counted from the rule, %s)" % p.get("since") if p.get("partial") else ""))
+        else:
+            out.append("Polish changes, %s: %s: %s." % (WINDOW_LABEL[w], p.get("state", UNM), p.get("cause")))
+    return out
 
 
 def _kv(d):

@@ -26,3 +26,36 @@ string at a time; the before and after strings are given here.
 | a home's past runs not read | `baseline` matches only by mod name | baseline-same-system-before-first-bundle |
 | a ticket closed twice counted twice | `kind_numbers` keys the closes by close event, not by ticket | headline-tokens-per-stayed-close |
 | a lost transcript shown as no acts | `judge_row` passes an empty acts text | judge-failure-could-not-judge (seen red before the fix) |
+
+## The polish watch (item RIMMANDRAKE_WATCH_POLISH_FOR_NEW_BUGS_HE_FEARS_THE_OLD_NOISE, measured 2026-11-25)
+
+The harness is `polish_watch_mutants.py` in this folder (run it from the clone root). It mutates
+`work_bundle_monitor.py` or `contracts/blind.py` in place, one string at a time, runs the selftest with no bytecode,
+restores the file and byte-compares it. A row counts as RED only when the selftest exits 1 with a FAIL line of the
+named promise. The unmutated control was green before and after. Result: 23 of 23 red on their promise.
+
+| fault | red promise |
+|---|---|
+| the polish column lost (every file reads no_polish) | polish-then-fix-one-regression |
+| fixes seen only on polished files | no-polish-fix-counts-no-polish |
+| the window 5 days, not 3 | regression-kinds-and-window |
+| a revert ignored | regression-kinds-and-window |
+| a nightly red of the file's selftest not matched | regression-kinds-and-window |
+| a reopened member ignored | regression-kinds-and-window |
+| a pending file read as ripe | regression-kinds-and-window |
+| "fix" anywhere in the subject (the first rule, before the real reading) | regression-kinds-and-window |
+| a run record (`*.jsonl`) read as a file | regression-kinds-and-window |
+| the PUBLISHED shas ignored | regression-kinds-and-window |
+| a before-rule change put in no_polish | before-rule-not-measured |
+| a pre-rule day read as 0 polish changes | before-rule-not-measured |
+| the probe skipped | polish-zero-needs-probe |
+| the probe accepts a blind reader | polish-zero-needs-probe |
+| the reader's flag ignored | polish-findings-from-reader |
+| a clean mark from before the change counted | polish-findings-from-reader |
+| no close read as 0 | born-per-closed-per-bundle-and-day |
+| a bundle's born read as the day's born | born-per-closed-per-bundle-and-day |
+| the born line crossed on one day | born-line-two-days |
+| the lines section not owed | lines-crossed-section |
+| the page drops the watch | polish-watch-on-page-and-digest |
+| the digest fields drop born | polish-watch-on-page-and-digest |
+| the blind digest line drops the crossed line | polish-watch-on-page-and-digest |

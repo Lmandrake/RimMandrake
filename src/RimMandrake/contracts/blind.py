@@ -279,6 +279,18 @@ class MonitorLine(_Closed):
     sincere: Optional[Count] = None
     could_not_judge: Optional[Count] = None
     backward_moves: Optional[Count] = None
+    # the polish watch (RIMMANDRAKE_WATCH_POLISH_FOR_NEW_BUGS_HE_FEARS_THE_OLD_NOISE): counts and one closed flag
+    born: Optional[Count] = None
+    closed: Optional[Count] = None
+    bundle_born: Optional[Count] = None
+    bundle_closed: Optional[Count] = None
+    born_line_crossed: Optional[bool] = None
+    polish_changes: Optional[Count] = None
+    polish_findings: Optional[Count] = None
+    polish_files_ripe: Optional[Count] = None
+    polish_files_regressed: Optional[Count] = None
+    plain_files_ripe: Optional[Count] = None
+    plain_files_regressed: Optional[Count] = None
     report: Optional[MonitorReport] = None
 
 
@@ -550,7 +562,9 @@ def project_owner_asks(asks, ids):
 
 
 MONITOR_COUNTS = ("bundle_runs", "bundle_of_one_runs", "single_runs", "set_downs", "prev_set_downs", "not_sincere",
-                  "sincere", "could_not_judge", "backward_moves")
+                  "sincere", "could_not_judge", "backward_moves", "born", "closed", "bundle_born", "bundle_closed",
+                  "polish_changes", "polish_findings", "polish_files_ripe", "polish_files_regressed", "plain_files_ripe",
+                  "plain_files_regressed")
 
 
 def project_monitor(m):
@@ -567,6 +581,8 @@ def project_monitor(m):
         v = m.get(k)
         if type(v) is int and 0 <= v <= C.COUNT_MAX:
             out[k] = v
+    if type(m.get("born_line_crossed")) is bool:
+        out["born_line_crossed"] = m["born_line_crossed"]
     r = m.get("report")
     if isinstance(r, str) and re.fullmatch(r"[A-Z]:\\ClaudeWork\\rimmandrake\\work_bundle_monitor\\report_20\d\d-\d\d-\d\d\.md", r):
         out["report"] = r
@@ -925,6 +941,7 @@ Open asks oldest age days hours since filed wait waiting direct live chain block
 recommended decide yes how many whose The This Withheld ask block cut items ledger of on one
 Temporary Work Bundle Monitor bundle bundles runs single ticket set downs day before judged sincere SINCERE NOT JUDGE
 COULD backward moves report Conductor reads full monitor
+tickets born polish changes fresh reader findings ripe files with regressed without LINE CROSSED per over two
 """.split())
 SRC_LABELS = ("ledger events", "judge verdict files", "Delegated commits", "art mark acts", "delegated art installs",
               "leftover deletions", "ceiling releases", "ledger deletions")
@@ -1065,6 +1082,29 @@ def _monitor_section(P, m):
     n(m.could_not_judge)
     P.lit("; backward moves ")
     n(m.backward_moves)
+    P.lit("; tickets born ")
+    n(m.born)
+    P.lit(", closed ")
+    n(m.closed)
+    P.lit(" (bundle runs born ")
+    n(m.bundle_born)
+    P.lit(", closed ")
+    n(m.bundle_closed)
+    P.lit(")")
+    if m.born_line_crossed:
+        P.lit(", LINE CROSSED: bundle runs born per closed over one on two days")
+    P.lit("; polish changes ")
+    n(m.polish_changes)
+    P.lit(", fresh reader findings ")
+    n(m.polish_findings)
+    P.lit("; ripe files with polish regressed ")
+    n(m.polish_files_regressed)
+    P.lit(" of ")
+    n(m.polish_files_ripe)
+    P.lit(", without polish ")
+    n(m.plain_files_regressed)
+    P.lit(" of ")
+    n(m.plain_files_ripe)
     P.lit("; the Conductor reads the full report ")
     if m.report:
         P.handle("path", m.report)
