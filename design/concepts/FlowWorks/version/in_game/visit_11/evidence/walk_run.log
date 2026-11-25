@@ -1,0 +1,7 @@
+sc_walk PASS rc=0 site=True 105s  design/concepts/FlowWorks/version/in_game/visit_11/evidence/sc_walk_20261124T182755.json
+  | PASS \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ELEVEN.det\design\concepts\FlowWorks\version\in_game\visit_11\evidence\sc_walk_20261124T182755.json 
+  | [bridge split] 103.7 s wall: load 1.4 / ticks 4.0 / reads 9.3 / other 25.3 / outside calls 63.7 s
+  | [bridge split] WARN 95 calls of jawa/window_list_close (4.1 s): batch them
+  | [bridge split] WARN 76 calls of rimbridge/list_logs (2.4 s): batch them
+  | [bridge split] WARN 58 calls of jawa/flowworks_excavation_drive (2.5 s): batch them
+  | [bridge split] WARN 53 calls of jawa/static_call (2.3 s): batch them

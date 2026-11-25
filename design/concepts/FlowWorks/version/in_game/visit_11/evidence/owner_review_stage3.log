@@ -1,0 +1,1206 @@
+OWNER REVIEW MAP FLOWWORKS_OWNER_REVIEW_VISIT11_SMALL_20261124_1859  origin (24, 100)  rect (21, 94, 64, 70)  rows ['ladders', 'spikes', 'gates', 'shallows', 'sprinklers', 'bars_joint', 'bars_dry', 'bars_trench', 'bars_access', 'bars_bridges', 'bars_bridge_kinds', 'bars_bridges_ns']
+ROW ladders: 4 pits, lowered on wall k (N,E,S,W), raised on the opposite wall
+  dig (24, 100) depth 3
+  dig (24, 101) depth 3
+  dig (24, 102) depth 3
+  dig (25, 100) depth 3
+  dig (25, 101) depth 3
+  dig (25, 102) depth 3
+  dig (26, 100) depth 3
+  dig (26, 101) depth 3
+  dig (26, 102) depth 3
+  place RM_Ladder at (25, 102) rot=0(North)
+  place RM_Ladder at (25, 100) rot=2(South)
+  ladder (25, 100) -> RAISED (ProofLadder)
+  station 1 (ladders) (24, 100, 3, 3): North pit: lowered on North wall (game reads North), raised on South wall (reads South)
+  dig (29, 100) depth 3
+  dig (29, 101) depth 3
+  dig (29, 102) depth 3
+  dig (30, 100) depth 3
+  dig (30, 101) depth 3
+  dig (30, 102) depth 3
+  dig (31, 100) depth 3
+  dig (31, 101) depth 3
+  dig (31, 102) depth 3
+  place RM_Ladder at (31, 101) rot=1(East)
+  place RM_Ladder at (29, 101) rot=3(West)
+  ladder (29, 101) -> RAISED (ProofLadder)
+  station 2 (ladders) (29, 100, 3, 3): East pit: lowered on East wall (game reads East), raised on West wall (reads West)
+  dig (34, 100) depth 3
+  dig (34, 101) depth 3
+  dig (34, 102) depth 3
+  dig (35, 100) depth 3
+  dig (35, 101) depth 3
+  dig (35, 102) depth 3
+  dig (36, 100) depth 3
+  dig (36, 101) depth 3
+  dig (36, 102) depth 3
+  place RM_Ladder at (35, 100) rot=2(South)
+  place RM_Ladder at (35, 102) rot=0(North)
+  ladder (35, 102) -> RAISED (ProofLadder)
+  station 3 (ladders) (34, 100, 3, 3): South pit: lowered on South wall (game reads South), raised on North wall (reads North)
+  dig (39, 100) depth 3
+  dig (39, 101) depth 3
+  dig (39, 102) depth 3
+  dig (40, 100) depth 3
+  dig (40, 101) depth 3
+  dig (40, 102) depth 3
+  dig (41, 100) depth 3
+  dig (41, 101) depth 3
+  dig (41, 102) depth 3
+  place RM_Ladder at (39, 101) rot=3(West)
+  place RM_Ladder at (41, 101) rot=1(East)
+  ladder (41, 101) -> RAISED (ProofLadder)
+  station 4 (ladders) (39, 100, 3, 3): West pit: lowered on West wall (game reads West), raised on East wall (reads East)
+ROW spikes: dry pit and pit with 1 m of water
+  dig (24, 108) depth 4
+  dig (24, 109) depth 4
+  dig (24, 110) depth 4
+  dig (25, 108) depth 4
+  dig (25, 109) depth 4
+  dig (25, 110) depth 4
+  dig (26, 108) depth 4
+  dig (26, 109) depth 4
+  dig (26, 110) depth 4
+  place RM_Spikes at (24, 108) rot=-
+  place RM_Spikes at (24, 109) rot=-
+  place RM_Spikes at (24, 110) rot=-
+  place RM_Spikes at (25, 108) rot=-
+  place RM_Spikes at (25, 110) rot=-
+  place RM_Spikes at (26, 108) rot=-
+  place RM_Spikes at (26, 109) rot=-
+  place RM_Spikes at (26, 110) rot=-
+  station 5 (spikes) (24, 108, 3, 3): RM_Spikes dry pit floor
+  dig (29, 108) depth 4
+  dig (29, 109) depth 4
+  dig (29, 110) depth 4
+  dig (30, 108) depth 4
+  dig (30, 109) depth 4
+  dig (30, 110) depth 4
+  dig (31, 108) depth 4
+  dig (31, 109) depth 4
+  dig (31, 110) depth 4
+  place RM_Spikes at (29, 108) rot=-
+  place RM_Spikes at (29, 109) rot=-
+  place RM_Spikes at (29, 110) rot=-
+  place RM_Spikes at (30, 108) rot=-
+  place RM_Spikes at (30, 110) rot=-
+  place RM_Spikes at (31, 108) rot=-
+  place RM_Spikes at (31, 109) rot=-
+  place RM_Spikes at (31, 110) rot=-
+  fill (29, 108) = 2 notches (1.0 m)
+  fill (29, 109) = 2 notches (1.0 m)
+  fill (29, 110) = 2 notches (1.0 m)
+  fill (30, 108) = 2 notches (1.0 m)
+  fill (30, 109) = 2 notches (1.0 m)
+  fill (30, 110) = 2 notches (1.0 m)
+  fill (31, 108) = 2 notches (1.0 m)
+  fill (31, 109) = 2 notches (1.0 m)
+  fill (31, 110) = 2 notches (1.0 m)
+  station 6 (spikes) (29, 108, 3, 3): RM_Spikes under 1 m of water
+ROW gates: RM_Sluice (E-W and N-S canals, four facings closed + one held open)
+  dig (24, 119) depth 1
+  dig (25, 119) depth 1
+  dig (26, 119) depth 1
+  dig (27, 119) depth 1
+  dig (28, 119) depth 1
+  fill (24, 119) = 1 notches (0.5 m)
+  fill (25, 119) = 1 notches (0.5 m)
+  fill (27, 119) = 1 notches (0.5 m)
+  fill (28, 119) = 1 notches (0.5 m)
+  place RM_Sluice at (26, 119) rot=1(East) stuff=WoodLog
+  station 7 (gates_sluice) (24, 116, 5, 5): EW canal, RM_Sluice, facing East, closed
+  dig (31, 119) depth 1
+  dig (32, 119) depth 1
+  dig (33, 119) depth 1
+  dig (34, 119) depth 1
+  dig (35, 119) depth 1
+  fill (31, 119) = 1 notches (0.5 m)
+  fill (32, 119) = 1 notches (0.5 m)
+  fill (34, 119) = 1 notches (0.5 m)
+  fill (35, 119) = 1 notches (0.5 m)
+  place RM_Sluice at (33, 119) rot=3(West) stuff=WoodLog
+  station 8 (gates_sluice) (31, 116, 5, 5): EW canal, RM_Sluice, facing West, closed
+  dig (39, 116) depth 1
+  dig (39, 117) depth 1
+  dig (39, 118) depth 1
+  dig (39, 119) depth 1
+  dig (39, 120) depth 1
+  fill (39, 116) = 1 notches (0.5 m)
+  fill (39, 117) = 1 notches (0.5 m)
+  fill (39, 119) = 1 notches (0.5 m)
+  fill (39, 120) = 1 notches (0.5 m)
+  place RM_Sluice at (39, 118) rot=0(North) stuff=WoodLog
+  station 9 (gates_sluice) (38, 116, 5, 5): NS canal, RM_Sluice, facing North, closed
+  dig (46, 116) depth 1
+  dig (46, 117) depth 1
+  dig (46, 118) depth 1
+  dig (46, 119) depth 1
+  dig (46, 120) depth 1
+  fill (46, 116) = 1 notches (0.5 m)
+  fill (46, 117) = 1 notches (0.5 m)
+  fill (46, 119) = 1 notches (0.5 m)
+  fill (46, 120) = 1 notches (0.5 m)
+  place RM_Sluice at (46, 118) rot=2(South) stuff=WoodLog
+  station 10 (gates_sluice) (45, 116, 5, 5): NS canal, RM_Sluice, facing South, closed
+  dig (52, 119) depth 1
+  dig (53, 119) depth 1
+  dig (54, 119) depth 1
+  dig (55, 119) depth 1
+  dig (56, 119) depth 1
+  fill (52, 119) = 1 notches (0.5 m)
+  fill (53, 119) = 1 notches (0.5 m)
+  fill (55, 119) = 1 notches (0.5 m)
+  fill (56, 119) = 1 notches (0.5 m)
+  place RM_Sluice at (54, 119) rot=1(East) stuff=WoodLog
+  hold open (54, 119) (Hold open button + a colonist walks in)
+  station 11 (gates_sluice) (52, 116, 5, 5): EW canal, RM_Sluice, facing East, HELD OPEN [DOOR RM_Sluice open=False seals=True | depth 1 water 10000dL]
+ROW gates: RM_SecurityGrateDoor (E-W and N-S canals, four facings closed + one held open)
+  dig (24, 128) depth 1
+  dig (25, 128) depth 1
+  dig (26, 128) depth 1
+  dig (27, 128) depth 1
+  dig (28, 128) depth 1
+  fill (24, 128) = 1 notches (0.5 m)
+  fill (25, 128) = 1 notches (0.5 m)
+  fill (27, 128) = 1 notches (0.5 m)
+  fill (28, 128) = 1 notches (0.5 m)
+  place RM_SecurityGrateDoor at (26, 128) rot=1(East) stuff=Steel
+  station 12 (gates_grate) (24, 125, 5, 5): EW canal, RM_SecurityGrateDoor, facing East, closed
+  dig (31, 128) depth 1
+  dig (32, 128) depth 1
+  dig (33, 128) depth 1
+  dig (34, 128) depth 1
+  dig (35, 128) depth 1
+  fill (31, 128) = 1 notches (0.5 m)
+  fill (32, 128) = 1 notches (0.5 m)
+  fill (34, 128) = 1 notches (0.5 m)
+  fill (35, 128) = 1 notches (0.5 m)
+  place RM_SecurityGrateDoor at (33, 128) rot=3(West) stuff=Steel
+  station 13 (gates_grate) (31, 125, 5, 5): EW canal, RM_SecurityGrateDoor, facing West, closed
+  dig (39, 125) depth 1
+  dig (39, 126) depth 1
+  dig (39, 127) depth 1
+  dig (39, 128) depth 1
+  dig (39, 129) depth 1
+  fill (39, 125) = 1 notches (0.5 m)
+  fill (39, 126) = 1 notches (0.5 m)
+  fill (39, 128) = 1 notches (0.5 m)
+  fill (39, 129) = 1 notches (0.5 m)
+  place RM_SecurityGrateDoor at (39, 127) rot=0(North) stuff=Steel
+  station 14 (gates_grate) (38, 125, 5, 5): NS canal, RM_SecurityGrateDoor, facing North, closed
+  dig (46, 125) depth 1
+  dig (46, 126) depth 1
+  dig (46, 127) depth 1
+  dig (46, 128) depth 1
+  dig (46, 129) depth 1
+  fill (46, 125) = 1 notches (0.5 m)
+  fill (46, 126) = 1 notches (0.5 m)
+  fill (46, 128) = 1 notches (0.5 m)
+  fill (46, 129) = 1 notches (0.5 m)
+  place RM_SecurityGrateDoor at (46, 127) rot=2(South) stuff=Steel
+  station 15 (gates_grate) (45, 125, 5, 5): NS canal, RM_SecurityGrateDoor, facing South, closed
+  dig (52, 128) depth 1
+  dig (53, 128) depth 1
+  dig (54, 128) depth 1
+  dig (55, 128) depth 1
+  dig (56, 128) depth 1
+  fill (52, 128) = 1 notches (0.5 m)
+  fill (53, 128) = 1 notches (0.5 m)
+  fill (55, 128) = 1 notches (0.5 m)
+  fill (56, 128) = 1 notches (0.5 m)
+  place RM_SecurityGrateDoor at (54, 128) rot=1(East) stuff=Steel
+  hold open (54, 128) (Hold open button + a colonist walks in)
+  station 16 (gates_grate) (52, 125, 5, 5): EW canal, RM_SecurityGrateDoor, facing East, HELD OPEN [DOOR RM_SecurityGrateDoor open=True seals=False | depth 1 wa]
+ROW shallows: 0.2 / 0.5 / 1 / 1.5 / 2 / 5 m
+  dig (24, 135) depth 1
+  dig (25, 135) depth 1
+  dig (26, 135) depth 1
+  dig (27, 135) depth 1
+  dig (28, 135) depth 1
+  fill (24, 135) = 1 notches (0.5 m)
+  fill (25, 135) = 1 notches (0.5 m)
+  station 17 (shallows) (24, 135, 5, 1): 0.2 m: 5-square strip, 2 notches levelled over 5 squares
+  dig (31, 134) depth 1
+  dig (31, 135) depth 1
+  dig (31, 136) depth 1
+  dig (32, 134) depth 1
+  dig (32, 135) depth 1
+  dig (32, 136) depth 1
+  dig (33, 134) depth 1
+  dig (33, 135) depth 1
+  dig (33, 136) depth 1
+  fill (31, 134) = 1 notches (0.5 m)
+  fill (31, 135) = 1 notches (0.5 m)
+  fill (31, 136) = 1 notches (0.5 m)
+  fill (32, 134) = 1 notches (0.5 m)
+  fill (32, 135) = 1 notches (0.5 m)
+  fill (32, 136) = 1 notches (0.5 m)
+  fill (33, 134) = 1 notches (0.5 m)
+  fill (33, 135) = 1 notches (0.5 m)
+  fill (33, 136) = 1 notches (0.5 m)
+  station 18 (shallows) (31, 134, 3, 3): 0.5 m: pit 1 deep, 1 notches
+  dig (36, 134) depth 2
+  dig (36, 135) depth 2
+  dig (36, 136) depth 2
+  dig (37, 134) depth 2
+  dig (37, 135) depth 2
+  dig (37, 136) depth 2
+  dig (38, 134) depth 2
+  dig (38, 135) depth 2
+  dig (38, 136) depth 2
+  fill (36, 134) = 2 notches (1.0 m)
+  fill (36, 135) = 2 notches (1.0 m)
+  fill (36, 136) = 2 notches (1.0 m)
+  fill (37, 134) = 2 notches (1.0 m)
+  fill (37, 135) = 2 notches (1.0 m)
+  fill (37, 136) = 2 notches (1.0 m)
+  fill (38, 134) = 2 notches (1.0 m)
+  fill (38, 135) = 2 notches (1.0 m)
+  fill (38, 136) = 2 notches (1.0 m)
+  station 19 (shallows) (36, 134, 3, 3): 1.0 m: pit 2 deep, 2 notches
+  dig (41, 134) depth 3
+  dig (41, 135) depth 3
+  dig (41, 136) depth 3
+  dig (42, 134) depth 3
+  dig (42, 135) depth 3
+  dig (42, 136) depth 3
+  dig (43, 134) depth 3
+  dig (43, 135) depth 3
+  dig (43, 136) depth 3
+  fill (41, 134) = 3 notches (1.5 m)
+  fill (41, 135) = 3 notches (1.5 m)
+  fill (41, 136) = 3 notches (1.5 m)
+  fill (42, 134) = 3 notches (1.5 m)
+  fill (42, 135) = 3 notches (1.5 m)
+  fill (42, 136) = 3 notches (1.5 m)
+  fill (43, 134) = 3 notches (1.5 m)
+  fill (43, 135) = 3 notches (1.5 m)
+  fill (43, 136) = 3 notches (1.5 m)
+  station 20 (shallows) (41, 134, 3, 3): 1.5 m: pit 3 deep, 3 notches
+  dig (46, 134) depth 4
+  dig (46, 135) depth 4
+  dig (46, 136) depth 4
+  dig (47, 134) depth 4
+  dig (47, 135) depth 4
+  dig (47, 136) depth 4
+  dig (48, 134) depth 4
+  dig (48, 135) depth 4
+  dig (48, 136) depth 4
+  fill (46, 134) = 4 notches (2.0 m)
+  fill (46, 135) = 4 notches (2.0 m)
+  fill (46, 136) = 4 notches (2.0 m)
+  fill (47, 134) = 4 notches (2.0 m)
+  fill (47, 135) = 4 notches (2.0 m)
+  fill (47, 136) = 4 notches (2.0 m)
+  fill (48, 134) = 4 notches (2.0 m)
+  fill (48, 135) = 4 notches (2.0 m)
+  fill (48, 136) = 4 notches (2.0 m)
+  station 21 (shallows) (46, 134, 3, 3): 2.0 m: pit 4 deep, 4 notches
+  dig (51, 134) depth 10
+  dig (51, 135) depth 10
+  dig (51, 136) depth 10
+  dig (52, 134) depth 10
+  dig (52, 135) depth 10
+  dig (52, 136) depth 10
+  dig (53, 134) depth 10
+  dig (53, 135) depth 10
+  dig (53, 136) depth 10
+  fill (51, 134) = 10 notches (5.0 m)
+  fill (51, 135) = 10 notches (5.0 m)
+  fill (51, 136) = 10 notches (5.0 m)
+  fill (52, 134) = 10 notches (5.0 m)
+  fill (52, 135) = 10 notches (5.0 m)
+  fill (52, 136) = 10 notches (5.0 m)
+  fill (53, 134) = 10 notches (5.0 m)
+  fill (53, 135) = 10 notches (5.0 m)
+  fill (53, 136) = 10 notches (5.0 m)
+  station 22 (shallows) (51, 134, 3, 3): 5.0 m: pit 10 deep, 10 notches
+  dig (56, 134) depth 2
+  dig (56, 135) depth 2
+  dig (56, 136) depth 2
+  dig (57, 134) depth 2
+  dig (57, 135) depth 2
+  dig (57, 136) depth 2
+  dig (58, 134) depth 2
+  dig (58, 135) depth 2
+  dig (58, 136) depth 2
+  station 23 (shallows) (56, 134, 3, 3): dry: 1 m hole, no water
+  advance 1750 ticks
+ROW sprinklers: four looks, pipe restyled before the head is built
+  place RM_LiquidTank at (24, 155) rot=-
+  place RM_UniversalPipe at (26, 155) rot=-
+  place RM_UniversalPipe at (27, 155) rot=-
+  place RM_UniversalPipe at (28, 155) rot=-
+  place RM_UniversalPipe at (29, 155) rot=-
+  place RM_LiquidPump at (27, 155) rot=-
+  place PowerConduit at (27, 154) rot=-
+  place PowerConduit at (27, 153) rot=-
+  place Battery at (27, 151) rot=-
+  battery_set charge battery at (27, 151) to 100%
+  fill tank (24, 155) with RM_Liquid_FreshWater 100000 dL (ProofTank)
+  Choose style Futuristic on the whole pipe run via the pipe's gizmo (objects_sheet.choose_look run=True)
+  fill tank (24, 155) with RM_Liquid_FreshWater 100000 dL (ProofTank)
+  place RM_SprinklerHead at (29, 155) rot=-
+  station 24 (sprinklers) (24, 151, 6, 6): sprinkler Futuristic: head at (29, 155) (look read back in notes)
+  place RM_LiquidTank at (32, 155) rot=-
+  place RM_UniversalPipe at (34, 155) rot=-
+  place RM_UniversalPipe at (35, 155) rot=-
+  place RM_UniversalPipe at (36, 155) rot=-
+  place RM_UniversalPipe at (37, 155) rot=-
+  place RM_LiquidPump at (35, 155) rot=-
+  place PowerConduit at (35, 154) rot=-
+  place PowerConduit at (35, 153) rot=-
+  place Battery at (35, 151) rot=-
+  battery_set charge battery at (35, 151) to 100%
+  fill tank (32, 155) with RM_Liquid_FreshWater 100000 dL (ProofTank)
+  Choose style Industrial on the whole pipe run via the pipe's gizmo (objects_sheet.choose_look run=True)
+  fill tank (32, 155) with RM_Liquid_FreshWater 100000 dL (ProofTank)
+  place RM_SprinklerHead at (37, 155) rot=-
+  station 25 (sprinklers) (32, 151, 6, 6): sprinkler Industrial: head at (37, 155) (look read back in notes)
+  place RM_LiquidTank at (40, 155) rot=-
+  place RM_UniversalPipe at (42, 155) rot=-
+  place RM_UniversalPipe at (43, 155) rot=-
+  place RM_UniversalPipe at (44, 155) rot=-
+  place RM_UniversalPipe at (45, 155) rot=-
+  place RM_LiquidPump at (43, 155) rot=-
+  place PowerConduit at (43, 154) rot=-
+  place PowerConduit at (43, 153) rot=-
+  place Battery at (43, 151) rot=-
+  battery_set charge battery at (43, 151) to 100%
+  fill tank (40, 155) with RM_Liquid_FreshWater 100000 dL (ProofTank)
+  Choose style Modern on the whole pipe run via the pipe's gizmo (objects_sheet.choose_look run=True)
+  fill tank (40, 155) with RM_Liquid_FreshWater 100000 dL (ProofTank)
+  place RM_SprinklerHead at (45, 155) rot=-
+  station 26 (sprinklers) (40, 151, 6, 6): sprinkler Modern: head at (45, 155) (look read back in notes)
+  place RM_LiquidTank at (48, 155) rot=-
+  place RM_UniversalPipe at (50, 155) rot=-
+  place RM_UniversalPipe at (51, 155) rot=-
+  place RM_UniversalPipe at (52, 155) rot=-
+  place RM_UniversalPipe at (53, 155) rot=-
+  place RM_LiquidPump at (51, 155) rot=-
+  place PowerConduit at (51, 154) rot=-
+  place PowerConduit at (51, 153) rot=-
+  place Battery at (51, 151) rot=-
+  battery_set charge battery at (51, 151) to 100%
+  fill tank (48, 155) with RM_Liquid_FreshWater 100000 dL (ProofTank)
+  Choose style Scrapper on the whole pipe run via the pipe's gizmo (objects_sheet.choose_look run=True)
+  fill tank (48, 155) with RM_Liquid_FreshWater 100000 dL (ProofTank)
+  place RM_SprinklerHead at (53, 155) rot=-
+  station 27 (sprinklers) (48, 151, 6, 6): sprinkler Scrapper: head at (53, 155) (look read back in notes)
+  advance 2800 ticks
+ROW bars_joint: 1 m of water in 1/2/4 m holes (north); 0.5/1/2 m of water in 4 m holes (south)
+  dig (174, 106) depth 2 fill 2
+  dig (174, 107) depth 2 fill 2
+  dig (174, 108) depth 2 fill 2
+  dig (175, 106) depth 2 fill 2
+  dig (175, 107) depth 2 fill 2
+  dig (175, 108) depth 2 fill 2
+  dig (176, 106) depth 2 fill 2
+  dig (176, 107) depth 2 fill 2
+  dig (176, 108) depth 2 fill 2
+  station 28 (bars_joint) (174, 106, 3, 3): 1 m of water in a 1 m hole
+  dig (179, 106) depth 4 fill 2
+  dig (179, 107) depth 4 fill 2
+  dig (179, 108) depth 4 fill 2
+  dig (180, 106) depth 4 fill 2
+  dig (180, 107) depth 4 fill 2
+  dig (180, 108) depth 4 fill 2
+  dig (181, 106) depth 4 fill 2
+  dig (181, 107) depth 4 fill 2
+  dig (181, 108) depth 4 fill 2
+  station 29 (bars_joint) (179, 106, 3, 3): 1 m of water in a 2 m hole
+  dig (184, 106) depth 8 fill 2
+  dig (184, 107) depth 8 fill 2
+  dig (184, 108) depth 8 fill 2
+  dig (185, 106) depth 8 fill 2
+  dig (185, 107) depth 8 fill 2
+  dig (185, 108) depth 8 fill 2
+  dig (186, 106) depth 8 fill 2
+  dig (186, 107) depth 8 fill 2
+  dig (186, 108) depth 8 fill 2
+  station 30 (bars_joint) (184, 106, 3, 3): 1 m of water in a 4 m hole
+  dig (174, 100) depth 8 fill 1
+  dig (174, 101) depth 8 fill 1
+  dig (174, 102) depth 8 fill 1
+  dig (175, 100) depth 8 fill 1
+  dig (175, 101) depth 8 fill 1
+  dig (175, 102) depth 8 fill 1
+  dig (176, 100) depth 8 fill 1
+  dig (176, 101) depth 8 fill 1
+  dig (176, 102) depth 8 fill 1
+  station 31 (bars_joint) (174, 100, 3, 3): 0.5 m of water in a 4 m hole
+  dig (179, 100) depth 8 fill 2
+  dig (179, 101) depth 8 fill 2
+  dig (179, 102) depth 8 fill 2
+  dig (180, 100) depth 8 fill 2
+  dig (180, 101) depth 8 fill 2
+  dig (180, 102) depth 8 fill 2
+  dig (181, 100) depth 8 fill 2
+  dig (181, 101) depth 8 fill 2
+  dig (181, 102) depth 8 fill 2
+  station 32 (bars_joint) (179, 100, 3, 3): 1 m of water in a 4 m hole
+  dig (184, 100) depth 8 fill 4
+  dig (184, 101) depth 8 fill 4
+  dig (184, 102) depth 8 fill 4
+  dig (185, 100) depth 8 fill 4
+  dig (185, 101) depth 8 fill 4
+  dig (185, 102) depth 8 fill 4
+  dig (186, 100) depth 8 fill 4
+  dig (186, 101) depth 8 fill 4
+  dig (186, 102) depth 8 fill 4
+  station 33 (bars_joint) (184, 100, 3, 3): 2 m of water in a 4 m hole
+  colonist at (185, 101) (swims: 2 m of water)
+  colonist at (185, 107) (swims in 1 m water in a 4 m hole)
+ROW bars_dry: dry holes 0.5 / 1 / 1.5 / 2 / 4 / 8 m, a colonist in each
+  dig (174, 114) depth 1
+  dig (174, 115) depth 1
+  dig (174, 116) depth 1
+  dig (175, 114) depth 1
+  dig (175, 115) depth 1
+  dig (175, 116) depth 1
+  dig (176, 114) depth 1
+  dig (176, 115) depth 1
+  dig (176, 116) depth 1
+  colonist at (175, 115) (stands in a 0.5 m hole)
+  station 34 (bars_dry) (174, 114, 3, 3): dry 0.5 m hole, colonist standing in it
+  dig (179, 114) depth 2
+  dig (179, 115) depth 2
+  dig (179, 116) depth 2
+  dig (180, 114) depth 2
+  dig (180, 115) depth 2
+  dig (180, 116) depth 2
+  dig (181, 114) depth 2
+  dig (181, 115) depth 2
+  dig (181, 116) depth 2
+  colonist at (180, 115) (stands in a 1 m hole)
+  station 35 (bars_dry) (179, 114, 3, 3): dry 1 m hole, colonist standing in it
+  dig (184, 114) depth 3
+  dig (184, 115) depth 3
+  dig (184, 116) depth 3
+  dig (185, 114) depth 3
+  dig (185, 115) depth 3
+  dig (185, 116) depth 3
+  dig (186, 114) depth 3
+  dig (186, 115) depth 3
+  dig (186, 116) depth 3
+  colonist at (185, 115) (stands in a 1.5 m hole)
+  station 36 (bars_dry) (184, 114, 3, 3): dry 1.5 m hole, colonist standing in it
+  dig (189, 114) depth 4
+  dig (189, 115) depth 4
+  dig (189, 116) depth 4
+  dig (190, 114) depth 4
+  dig (190, 115) depth 4
+  dig (190, 116) depth 4
+  dig (191, 114) depth 4
+  dig (191, 115) depth 4
+  dig (191, 116) depth 4
+  colonist at (190, 115) (stands in a 2 m hole)
+  station 37 (bars_dry) (189, 114, 3, 3): dry 2 m hole, colonist standing in it
+  dig (194, 114) depth 8
+  dig (194, 115) depth 8
+  dig (194, 116) depth 8
+  dig (195, 114) depth 8
+  dig (195, 115) depth 8
+  dig (195, 116) depth 8
+  dig (196, 114) depth 8
+  dig (196, 115) depth 8
+  dig (196, 116) depth 8
+  colonist at (195, 115) (stands in a 4 m hole)
+  station 38 (bars_dry) (194, 114, 3, 3): dry 4 m hole, colonist standing in it
+  dig (199, 114) depth 16
+  dig (199, 115) depth 16
+  dig (199, 116) depth 16
+  dig (200, 114) depth 16
+  dig (200, 115) depth 16
+  dig (200, 116) depth 16
+  dig (201, 114) depth 16
+  dig (201, 115) depth 16
+  dig (201, 116) depth 16
+  colonist at (200, 115) (stands in a 8 m hole)
+  station 39 (bars_dry) (199, 114, 3, 3): dry 8 m hole, colonist standing in it
+ROW bars_trench: waist-deep (1 m) and chest-deep (1.5 m) colonist, a shooter 8 squares east on flat ground
+  dig (174, 122) depth 2
+  dig (174, 123) depth 2
+  dig (174, 124) depth 2
+  dig (175, 122) depth 2
+  dig (175, 123) depth 2
+  dig (175, 124) depth 2
+  dig (176, 122) depth 2
+  dig (176, 123) depth 2
+  dig (176, 124) depth 2
+  colonist at (176, 123) (waist-deep)
+  colonist at (184, 123) (shooter)
+  station 40 (bars_trench) (174, 122, 11, 3): waist-deep colonist (1.0 m hole, against the wall) with a shooter 8 squares east
+  proof RM_TrenchCover.ProofTrenchCover(Human21271;Human21274)
+  dig (186, 122) depth 3
+  dig (186, 123) depth 3
+  dig (186, 124) depth 3
+  dig (187, 122) depth 3
+  dig (187, 123) depth 3
+  dig (187, 124) depth 3
+  dig (188, 122) depth 3
+  dig (188, 123) depth 3
+  dig (188, 124) depth 3
+  colonist at (188, 123) (chest-deep)
+  colonist at (196, 123) (shooter)
+  station 41 (bars_trench) (186, 122, 11, 3): chest-deep colonist (1.5 m hole, against the wall) with a shooter 8 squares east
+  proof RM_TrenchCover.ProofTrenchCover(Human21278;Human21281)
+ROW bars_access: portable ladder (2 m pit, 4 m wall), climbing gear on the ground and worn, a concealed pit
+  dig (174, 130) depth 4
+  dig (174, 131) depth 4
+  dig (174, 132) depth 4
+  dig (175, 130) depth 4
+  dig (175, 131) depth 4
+  dig (175, 132) depth 4
+  dig (176, 130) depth 4
+  dig (176, 131) depth 4
+  dig (176, 132) depth 4
+  place RM_LadderPortable at (175, 132) rot=0(North)
+  station 42 (bars_access) (174, 130, 3, 3): portable ladder leaning in a 2 m pit
+  dig (179, 130) depth 8
+  dig (179, 131) depth 8
+  dig (179, 132) depth 8
+  dig (180, 130) depth 8
+  dig (180, 131) depth 8
+  dig (180, 132) depth 8
+  dig (181, 130) depth 8
+  dig (181, 131) depth 8
+  dig (181, 132) depth 8
+  place RM_LadderPortable at (180, 132) rot=0(North)
+  station 43 (bars_access) (179, 130, 3, 3): portable ladder against a 4 m wall (too short: lies flat)
+  dig (184, 130) depth 8
+  dig (184, 131) depth 8
+  dig (184, 132) depth 8
+  dig (185, 130) depth 8
+  dig (185, 131) depth 8
+  dig (185, 132) depth 8
+  dig (186, 130) depth 8
+  dig (186, 131) depth 8
+  dig (186, 132) depth 8
+  colonist at (185, 131) (WEARS climbing gear, 4 m sheer pit) wearing RM_ClimbingGear
+  station 44 (bars_access) (184, 130, 3, 3): climbing gear worn: colonist in a 4 m sheer pit
+  dig (189, 130) depth 8
+  dig (189, 131) depth 8
+  dig (189, 132) depth 8
+  dig (190, 130) depth 8
+  dig (190, 131) depth 8
+  dig (190, 132) depth 8
+  dig (191, 130) depth 8
+  dig (191, 131) depth 8
+  dig (191, 132) depth 8
+  colonist at (190, 131) (no gear, 4 m sheer pit (control))
+  station 45 (bars_access) (189, 130, 3, 3): no gear: control colonist in a 4 m sheer pit
+  item RM_ClimbingGear at (194, 131) (spawn_batch)
+  station 46 (bars_access) (194, 131, 1, 1): climbing gear item on the ground
+  dig (197, 130) depth 4
+  dig (197, 131) depth 4
+  dig (197, 132) depth 4
+  dig (198, 130) depth 4
+  dig (198, 131) depth 4
+  dig (198, 132) depth 4
+  dig (199, 130) depth 4
+  dig (199, 131) depth 4
+  dig (199, 132) depth 4
+  place RM_PitCover_PlankLattice at (197, 130) rot=-
+  place RM_PitCover_PlankLattice at (197, 131) rot=-
+  place RM_PitCover_PlankLattice at (197, 132) rot=-
+  place RM_PitCover_PlankLattice at (198, 130) rot=-
+  place RM_PitCover_PlankLattice at (198, 131) rot=-
+  place RM_PitCover_PlankLattice at (198, 132) rot=-
+  place RM_PitCover_PlankLattice at (199, 130) rot=-
+  place RM_PitCover_PlankLattice at (199, 131) rot=-
+  place RM_PitCover_PlankLattice at (199, 132) rot=-
+  station 47 (bars_access) (197, 130, 3, 3): concealed pit (planks) over a 2 m pit
+ROW bars_bridges: rope/timber/steel/heavy, railings on (north lane) and off (south lane), concealed pit beside
+  dig (175, 143) depth 8
+  dig (175, 144) depth 8
+  dig (175, 145) depth 8
+  dig (176, 143) depth 8
+  dig (176, 144) depth 8
+  dig (176, 145) depth 8
+  dig (177, 143) depth 8
+  dig (177, 144) depth 8
+  dig (177, 145) depth 8
+  dig (178, 143) depth 8
+  dig (178, 144) depth 8
+  dig (178, 145) depth 8
+  proof RM_SuspensionProofs.ProofBuild(174,144;179,144;rope;god)
+  proof RM_SuspensionProofs.ProofRails(176,144;on)
+  station 48 (bars_bridges) (174, 143, 6, 3): rope suspension bridge over a 4 m pit, railings on (north lane)
+  dig (175, 139) depth 8
+  dig (175, 140) depth 8
+  dig (175, 141) depth 8
+  dig (176, 139) depth 8
+  dig (176, 140) depth 8
+  dig (176, 141) depth 8
+  dig (177, 139) depth 8
+  dig (177, 140) depth 8
+  dig (177, 141) depth 8
+  dig (178, 139) depth 8
+  dig (178, 140) depth 8
+  dig (178, 141) depth 8
+  proof RM_SuspensionProofs.ProofBuild(174,140;179,140;rope;god)
+  proof RM_SuspensionProofs.ProofRails(176,140;off)
+  station 49 (bars_bridges) (174, 139, 6, 3): rope suspension bridge over a 4 m pit, railings off (south lane)
+  dig (183, 143) depth 8
+  dig (183, 144) depth 8
+  dig (183, 145) depth 8
+  dig (184, 143) depth 8
+  dig (184, 144) depth 8
+  dig (184, 145) depth 8
+  dig (185, 143) depth 8
+  dig (185, 144) depth 8
+  dig (185, 145) depth 8
+  dig (186, 143) depth 8
+  dig (186, 144) depth 8
+  dig (186, 145) depth 8
+  proof RM_SuspensionProofs.ProofBuild(182,144;187,144;timber;god)
+  proof RM_SuspensionProofs.ProofRails(184,144;on)
+  station 50 (bars_bridges) (182, 143, 6, 3): timber suspension bridge over a 4 m pit, railings on (north lane)
+  dig (183, 139) depth 8
+  dig (183, 140) depth 8
+  dig (183, 141) depth 8
+  dig (184, 139) depth 8
+  dig (184, 140) depth 8
+  dig (184, 141) depth 8
+  dig (185, 139) depth 8
+  dig (185, 140) depth 8
+  dig (185, 141) depth 8
+  dig (186, 139) depth 8
+  dig (186, 140) depth 8
+  dig (186, 141) depth 8
+  proof RM_SuspensionProofs.ProofBuild(182,140;187,140;timber;god)
+  proof RM_SuspensionProofs.ProofRails(184,140;off)
+  station 51 (bars_bridges) (182, 139, 6, 3): timber suspension bridge over a 4 m pit, railings off (south lane)
+  dig (191, 143) depth 8
+  dig (191, 144) depth 8
+  dig (191, 145) depth 8
+  dig (192, 143) depth 8
+  dig (192, 144) depth 8
+  dig (192, 145) depth 8
+  dig (193, 143) depth 8
+  dig (193, 144) depth 8
+  dig (193, 145) depth 8
+  dig (194, 143) depth 8
+  dig (194, 144) depth 8
+  dig (194, 145) depth 8
+  proof RM_SuspensionProofs.ProofBuild(190,144;195,144;steel;god)
+  proof RM_SuspensionProofs.ProofRails(192,144;on)
+  station 52 (bars_bridges) (190, 143, 6, 3): steel suspension bridge over a 4 m pit, railings on (north lane)
+  dig (191, 139) depth 8
+  dig (191, 140) depth 8
+  dig (191, 141) depth 8
+  dig (192, 139) depth 8
+  dig (192, 140) depth 8
+  dig (192, 141) depth 8
+  dig (193, 139) depth 8
+  dig (193, 140) depth 8
+  dig (193, 141) depth 8
+  dig (194, 139) depth 8
+  dig (194, 140) depth 8
+  dig (194, 141) depth 8
+  proof RM_SuspensionProofs.ProofBuild(190,140;195,140;steel;god)
+  proof RM_SuspensionProofs.ProofRails(192,140;off)
+  station 53 (bars_bridges) (190, 139, 6, 3): steel suspension bridge over a 4 m pit, railings off (south lane)
+  dig (199, 143) depth 8
+  dig (199, 144) depth 8
+  dig (199, 145) depth 8
+  dig (200, 143) depth 8
+  dig (200, 144) depth 8
+  dig (200, 145) depth 8
+  dig (201, 143) depth 8
+  dig (201, 144) depth 8
+  dig (201, 145) depth 8
+  dig (202, 143) depth 8
+  dig (202, 144) depth 8
+  dig (202, 145) depth 8
+  proof RM_SuspensionProofs.ProofBuild(198,144;203,144;heavy;god)
+  proof RM_SuspensionProofs.ProofRails(200,144;on)
+  station 54 (bars_bridges) (198, 143, 6, 3): heavy suspension bridge over a 4 m pit, railings on (north lane)
+  dig (199, 139) depth 8
+  dig (199, 140) depth 8
+  dig (199, 141) depth 8
+  dig (200, 139) depth 8
+  dig (200, 140) depth 8
+  dig (200, 141) depth 8
+  dig (201, 139) depth 8
+  dig (201, 140) depth 8
+  dig (201, 141) depth 8
+  dig (202, 139) depth 8
+  dig (202, 140) depth 8
+  dig (202, 141) depth 8
+  proof RM_SuspensionProofs.ProofBuild(198,140;203,140;heavy;god)
+  proof RM_SuspensionProofs.ProofRails(200,140;off)
+  station 55 (bars_bridges) (198, 139, 6, 3): heavy suspension bridge over a 4 m pit, railings off (south lane)
+  dig (206, 139) depth 4
+  dig (206, 140) depth 4
+  dig (206, 141) depth 4
+  dig (207, 139) depth 4
+  dig (207, 140) depth 4
+  dig (207, 141) depth 4
+  dig (208, 139) depth 4
+  dig (208, 140) depth 4
+  dig (208, 141) depth 4
+  place RM_PitCover_PlankLattice at (206, 139) rot=-
+  place RM_PitCover_PlankLattice at (206, 140) rot=-
+  place RM_PitCover_PlankLattice at (206, 141) rot=-
+  place RM_PitCover_PlankLattice at (207, 139) rot=-
+  place RM_PitCover_PlankLattice at (207, 140) rot=-
+  place RM_PitCover_PlankLattice at (207, 141) rot=-
+  place RM_PitCover_PlankLattice at (208, 139) rot=-
+  place RM_PitCover_PlankLattice at (208, 140) rot=-
+  place RM_PitCover_PlankLattice at (208, 141) rot=-
+  station 56 (bars_bridges) (206, 139, 3, 3): concealed pit (planks, east end) beside the bridges: a concealed pit passes for ground, a bridge does not
+ROW bars_bridge_kinds: grated steel/heavy, steel/heavy jetties, steel bridge in four looks
+  dig (175, 147) depth 8
+  dig (175, 148) depth 8
+  dig (175, 149) depth 8
+  dig (176, 147) depth 8
+  dig (176, 148) depth 8
+  dig (176, 149) depth 8
+  dig (177, 147) depth 8
+  dig (177, 148) depth 8
+  dig (177, 149) depth 8
+  dig (178, 147) depth 8
+  dig (178, 148) depth 8
+  dig (178, 149) depth 8
+  proof RM_SuspensionProofs.ProofBuild(174,148;179,148;steelgrated;god)
+  station 57 (bars_bridge_kinds) (174, 147, 6, 3): steelgrated suspension bridge over a 4 m pit
+  dig (183, 147) depth 8
+  dig (183, 148) depth 8
+  dig (183, 149) depth 8
+  dig (184, 147) depth 8
+  dig (184, 148) depth 8
+  dig (184, 149) depth 8
+  dig (185, 147) depth 8
+  dig (185, 148) depth 8
+  dig (185, 149) depth 8
+  dig (186, 147) depth 8
+  dig (186, 148) depth 8
+  dig (186, 149) depth 8
+  proof RM_SuspensionProofs.ProofBuild(182,148;187,148;heavygrated;god)
+  station 58 (bars_bridge_kinds) (182, 147, 6, 3): heavygrated suspension bridge over a 4 m pit
+  dig (175, 151) depth 8
+  dig (175, 152) depth 8
+  dig (175, 153) depth 8
+  dig (176, 151) depth 8
+  dig (176, 152) depth 8
+  dig (176, 153) depth 8
+  dig (177, 151) depth 8
+  dig (177, 152) depth 8
+  dig (177, 153) depth 8
+  dig (178, 151) depth 8
+  dig (178, 152) depth 8
+  dig (178, 153) depth 8
+  proof RM_SuspensionProofs.ProofJetty(174,152;176,152;steel;god)
+  station 59 (bars_bridge_kinds) (174, 151, 6, 3): steel jetty reaching out over a 4 m pit
+  dig (183, 151) depth 8
+  dig (183, 152) depth 8
+  dig (183, 153) depth 8
+  dig (184, 151) depth 8
+  dig (184, 152) depth 8
+  dig (184, 153) depth 8
+  dig (185, 151) depth 8
+  dig (185, 152) depth 8
+  dig (185, 153) depth 8
+  dig (186, 151) depth 8
+  dig (186, 152) depth 8
+  dig (186, 153) depth 8
+  proof RM_SuspensionProofs.ProofJetty(182,152;184,152;heavy;god)
+  station 60 (bars_bridge_kinds) (182, 151, 6, 3): heavy jetty reaching out over a 4 m pit
+  dig (175, 155) depth 8
+  dig (175, 156) depth 8
+  dig (175, 157) depth 8
+  dig (176, 155) depth 8
+  dig (176, 156) depth 8
+  dig (176, 157) depth 8
+  dig (177, 155) depth 8
+  dig (177, 156) depth 8
+  dig (177, 157) depth 8
+  dig (178, 155) depth 8
+  dig (178, 156) depth 8
+  dig (178, 157) depth 8
+  proof RM_SuspensionProofs.ProofLook(Scrapper;174,156;179,156)
+  station 61 (bars_bridge_kinds) (174, 155, 6, 3): steel bridge over a 4 m pit, Scrapper look, railings on
+  dig (183, 155) depth 8
+  dig (183, 156) depth 8
+  dig (183, 157) depth 8
+  dig (184, 155) depth 8
+  dig (184, 156) depth 8
+  dig (184, 157) depth 8
+  dig (185, 155) depth 8
+  dig (185, 156) depth 8
+  dig (185, 157) depth 8
+  dig (186, 155) depth 8
+  dig (186, 156) depth 8
+  dig (186, 157) depth 8
+  proof RM_SuspensionProofs.ProofLook(Industrial;182,156;187,156)
+  station 62 (bars_bridge_kinds) (182, 155, 6, 3): steel bridge over a 4 m pit, Industrial look, railings on
+  dig (191, 155) depth 8
+  dig (191, 156) depth 8
+  dig (191, 157) depth 8
+  dig (192, 155) depth 8
+  dig (192, 156) depth 8
+  dig (192, 157) depth 8
+  dig (193, 155) depth 8
+  dig (193, 156) depth 8
+  dig (193, 157) depth 8
+  dig (194, 155) depth 8
+  dig (194, 156) depth 8
+  dig (194, 157) depth 8
+  proof RM_SuspensionProofs.ProofLook(Modern;190,156;195,156)
+  station 63 (bars_bridge_kinds) (190, 155, 6, 3): steel bridge over a 4 m pit, Modern look, railings on
+  dig (199, 155) depth 8
+  dig (199, 156) depth 8
+  dig (199, 157) depth 8
+  dig (200, 155) depth 8
+  dig (200, 156) depth 8
+  dig (200, 157) depth 8
+  dig (201, 155) depth 8
+  dig (201, 156) depth 8
+  dig (201, 157) depth 8
+  dig (202, 155) depth 8
+  dig (202, 156) depth 8
+  dig (202, 157) depth 8
+  proof RM_SuspensionProofs.ProofLook(Futuristic;198,156;203,156)
+  station 64 (bars_bridge_kinds) (198, 155, 6, 3): steel bridge over a 4 m pit, Futuristic look, railings on
+ROW bars_bridges_ns: every bridge and jetty laid north/south, and an unlit chemfuel pit under a timber deck
+  dig (207, 163) depth 8
+  dig (208, 163) depth 8
+  dig (209, 163) depth 8
+  dig (207, 164) depth 8
+  dig (208, 164) depth 8
+  dig (209, 164) depth 8
+  dig (207, 165) depth 8
+  dig (208, 165) depth 8
+  dig (209, 165) depth 8
+  dig (207, 166) depth 8
+  dig (208, 166) depth 8
+  dig (209, 166) depth 8
+  proof RM_SuspensionProofs.ProofLook(Scrapper;208,162;208,167)
+  station 65 (bars_bridges_ns) (207, 162, 3, 6): steel bridge north/south over a 4 m pit, Scrapper look, railings on
+  dig (212, 163) depth 8
+  dig (213, 163) depth 8
+  dig (214, 163) depth 8
+  dig (212, 164) depth 8
+  dig (213, 164) depth 8
+  dig (214, 164) depth 8
+  dig (212, 165) depth 8
+  dig (213, 165) depth 8
+  dig (214, 165) depth 8
+  dig (212, 166) depth 8
+  dig (213, 166) depth 8
+  dig (214, 166) depth 8
+  proof RM_SuspensionProofs.ProofLook(Industrial;213,162;213,167)
+  station 66 (bars_bridges_ns) (212, 162, 3, 6): steel bridge north/south over a 4 m pit, Industrial look, railings on
+  dig (217, 163) depth 8
+  dig (218, 163) depth 8
+  dig (219, 163) depth 8
+  dig (217, 164) depth 8
+  dig (218, 164) depth 8
+  dig (219, 164) depth 8
+  dig (217, 165) depth 8
+  dig (218, 165) depth 8
+  dig (219, 165) depth 8
+  dig (217, 166) depth 8
+  dig (218, 166) depth 8
+  dig (219, 166) depth 8
+  proof RM_SuspensionProofs.ProofLook(Modern;218,162;218,167)
+  station 67 (bars_bridges_ns) (217, 162, 3, 6): steel bridge north/south over a 4 m pit, Modern look, railings on
+  dig (222, 163) depth 8
+  dig (223, 163) depth 8
+  dig (224, 163) depth 8
+  dig (222, 164) depth 8
+  dig (223, 164) depth 8
+  dig (224, 164) depth 8
+  dig (222, 165) depth 8
+  dig (223, 165) depth 8
+  dig (224, 165) depth 8
+  dig (222, 166) depth 8
+  dig (223, 166) depth 8
+  dig (224, 166) depth 8
+  proof RM_SuspensionProofs.ProofLook(Futuristic;223,162;223,167)
+  station 68 (bars_bridges_ns) (222, 162, 3, 6): steel bridge north/south over a 4 m pit, Futuristic look, railings on
+  dig (227, 163) depth 8
+  dig (228, 163) depth 8
+  dig (229, 163) depth 8
+  dig (227, 164) depth 8
+  dig (228, 164) depth 8
+  dig (229, 164) depth 8
+  dig (227, 165) depth 8
+  dig (228, 165) depth 8
+  dig (229, 165) depth 8
+  dig (227, 166) depth 8
+  dig (228, 166) depth 8
+  dig (229, 166) depth 8
+  proof RM_FluidIdentityProof.ProofFillWithFluid(228,163,1,RM_Fluid_Chemfuel)
+  proof RM_FluidIdentityProof.ProofFillWithFluid(228,164,1,RM_Fluid_Chemfuel)
+  proof RM_FluidIdentityProof.ProofFillWithFluid(228,165,1,RM_Fluid_Chemfuel)
+  proof RM_FluidIdentityProof.ProofFillWithFluid(228,166,1,RM_Fluid_Chemfuel)
+  proof RM_SuspensionProofs.ProofBuild(228,162;228,167;timber;god)
+  station 69 (bars_bridges_ns) (227, 162, 3, 6): fire under a deck: timber bridge north/south over 1 m of chemfuel in a 4 m pit, UNLIT. To light it: jawa/map_fire action=start rect="228,163,1,4" fireSize=1.2 (or a molotov from the lip); the deck above burns
+  dig (207, 155) depth 8
+  dig (208, 155) depth 8
+  dig (209, 155) depth 8
+  dig (207, 156) depth 8
+  dig (208, 156) depth 8
+  dig (209, 156) depth 8
+  dig (207, 157) depth 8
+  dig (208, 157) depth 8
+  dig (209, 157) depth 8
+  dig (207, 158) depth 8
+  dig (208, 158) depth 8
+  dig (209, 158) depth 8
+  proof RM_SuspensionProofs.ProofBuild(208,154;208,159;rope;god)
+  proof RM_SuspensionProofs.ProofRails(208,156;on)
+  station 70 (bars_bridges_ns) (207, 154, 3, 6): rope suspension bridge north/south over a 4 m pit
+  dig (212, 155) depth 8
+  dig (213, 155) depth 8
+  dig (214, 155) depth 8
+  dig (212, 156) depth 8
+  dig (213, 156) depth 8
+  dig (214, 156) depth 8
+  dig (212, 157) depth 8
+  dig (213, 157) depth 8
+  dig (214, 157) depth 8
+  dig (212, 158) depth 8
+  dig (213, 158) depth 8
+  dig (214, 158) depth 8
+  proof RM_SuspensionProofs.ProofBuild(213,154;213,159;timber;god)
+  proof RM_SuspensionProofs.ProofRails(213,156;on)
+  station 71 (bars_bridges_ns) (212, 154, 3, 6): timber suspension bridge north/south over a 4 m pit
+  dig (217, 155) depth 8
+  dig (218, 155) depth 8
+  dig (219, 155) depth 8
+  dig (217, 156) depth 8
+  dig (218, 156) depth 8
+  dig (219, 156) depth 8
+  dig (217, 157) depth 8
+  dig (218, 157) depth 8
+  dig (219, 157) depth 8
+  dig (217, 158) depth 8
+  dig (218, 158) depth 8
+  dig (219, 158) depth 8
+  proof RM_SuspensionProofs.ProofBuild(218,154;218,159;steel;god)
+  proof RM_SuspensionProofs.ProofRails(218,156;on)
+  station 72 (bars_bridges_ns) (217, 154, 3, 6): steel suspension bridge north/south over a 4 m pit
+  dig (222, 155) depth 8
+  dig (223, 155) depth 8
+  dig (224, 155) depth 8
+  dig (222, 156) depth 8
+  dig (223, 156) depth 8
+  dig (224, 156) depth 8
+  dig (222, 157) depth 8
+  dig (223, 157) depth 8
+  dig (224, 157) depth 8
+  dig (222, 158) depth 8
+  dig (223, 158) depth 8
+  dig (224, 158) depth 8
+  proof RM_SuspensionProofs.ProofBuild(223,154;223,159;heavy;god)
+  proof RM_SuspensionProofs.ProofRails(223,156;on)
+  station 73 (bars_bridges_ns) (222, 154, 3, 6): heavy suspension bridge north/south over a 4 m pit
+  dig (227, 155) depth 8
+  dig (228, 155) depth 8
+  dig (229, 155) depth 8
+  dig (227, 156) depth 8
+  dig (228, 156) depth 8
+  dig (229, 156) depth 8
+  dig (227, 157) depth 8
+  dig (228, 157) depth 8
+  dig (229, 157) depth 8
+  dig (227, 158) depth 8
+  dig (228, 158) depth 8
+  dig (229, 158) depth 8
+  proof RM_SuspensionProofs.ProofBuild(228,154;228,159;steelgrated;god)
+  station 74 (bars_bridges_ns) (227, 154, 3, 6): steelgrated suspension bridge north/south over a 4 m pit
+  dig (232, 155) depth 8
+  dig (233, 155) depth 8
+  dig (234, 155) depth 8
+  dig (232, 156) depth 8
+  dig (233, 156) depth 8
+  dig (234, 156) depth 8
+  dig (232, 157) depth 8
+  dig (233, 157) depth 8
+  dig (234, 157) depth 8
+  dig (232, 158) depth 8
+  dig (233, 158) depth 8
+  dig (234, 158) depth 8
+  proof RM_SuspensionProofs.ProofBuild(233,154;233,159;heavygrated;god)
+  station 75 (bars_bridges_ns) (232, 154, 3, 6): heavygrated suspension bridge north/south over a 4 m pit
+  dig (207, 147) depth 8
+  dig (208, 147) depth 8
+  dig (209, 147) depth 8
+  dig (207, 148) depth 8
+  dig (208, 148) depth 8
+  dig (209, 148) depth 8
+  dig (207, 149) depth 8
+  dig (208, 149) depth 8
+  dig (209, 149) depth 8
+  dig (207, 150) depth 8
+  dig (208, 150) depth 8
+  dig (209, 150) depth 8
+  proof RM_SuspensionProofs.ProofJetty(208,146;208,148;steel;god)
+  station 76 (bars_bridges_ns) (207, 146, 3, 6): steel jetty reaching north from the south ledge over a 4 m pit
+  dig (212, 147) depth 8
+  dig (213, 147) depth 8
+  dig (214, 147) depth 8
+  dig (212, 148) depth 8
+  dig (213, 148) depth 8
+  dig (214, 148) depth 8
+  dig (212, 149) depth 8
+  dig (213, 149) depth 8
+  dig (214, 149) depth 8
+  dig (212, 150) depth 8
+  dig (213, 150) depth 8
+  dig (214, 150) depth 8
+  proof RM_SuspensionProofs.ProofJetty(213,151;213,149;steel;god)
+  station 77 (bars_bridges_ns) (212, 146, 3, 6): steel jetty reaching south from the north ledge over a 4 m pit
+  dig (217, 147) depth 8
+  dig (218, 147) depth 8
+  dig (219, 147) depth 8
+  dig (217, 148) depth 8
+  dig (218, 148) depth 8
+  dig (219, 148) depth 8
+  dig (217, 149) depth 8
+  dig (218, 149) depth 8
+  dig (219, 149) depth 8
+  dig (217, 150) depth 8
+  dig (218, 150) depth 8
+  dig (219, 150) depth 8
+  proof RM_SuspensionProofs.ProofJetty(218,146;218,148;heavy;god)
+  station 78 (bars_bridges_ns) (217, 146, 3, 6): heavy jetty reaching north from the south ledge over a 4 m pit
+  dig (222, 147) depth 8
+  dig (223, 147) depth 8
+  dig (224, 147) depth 8
+  dig (222, 148) depth 8
+  dig (223, 148) depth 8
+  dig (224, 148) depth 8
+  dig (222, 149) depth 8
+  dig (223, 149) depth 8
+  dig (224, 149) depth 8
+  dig (222, 150) depth 8
+  dig (223, 150) depth 8
+  dig (224, 150) depth 8
+  proof RM_SuspensionProofs.ProofJetty(223,151;223,149;heavy;god)
+  station 79 (bars_bridges_ns) (222, 146, 3, 6): heavy jetty reaching south from the north ledge over a 4 m pit
+  review_label clear tag=owner_review_stage; add 79 station labels
+    label 25|103|1|ladder low N|#ffd27f|small|owner_review_stage
+    label 30|103|2|ladder low E|#ffd27f|small|owner_review_stage
+    label 35|103|3|ladder low S|#ffd27f|small|owner_review_stage
+    label 40|103|4|ladder low W|#ffd27f|small|owner_review_stage
+    label 25|111|5|spikes dry|#ffd27f|small|owner_review_stage
+    label 30|111|6|spikes wet|#ffd27f|small|owner_review_stage
+    label 26|121|7|EW E|#ffd27f|small|owner_review_stage
+    label 33|121|8|EW W|#ffd27f|small|owner_review_stage
+    label 40|121|9|NS N|#ffd27f|small|owner_review_stage
+    label 47|121|10|NS S|#ffd27f|small|owner_review_stage
+    label 54|121|11|EW E OPEN|#ffd27f|small|owner_review_stage
+    label 26|130|12|EW E|#ffd27f|small|owner_review_stage
+    label 33|130|13|EW W|#ffd27f|small|owner_review_stage
+    label 40|130|14|NS N|#ffd27f|small|owner_review_stage
+    label 47|130|15|NS S|#ffd27f|small|owner_review_stage
+    label 54|130|16|EW E OPEN|#ffd27f|small|owner_review_stage
+    label 26|136|17|0.2 m|#ffd27f|small|owner_review_stage
+    label 32|137|18|0.5 m|#ffd27f|small|owner_review_stage
+    label 37|137|19|1.0 m|#ffd27f|small|owner_review_stage
+    label 42|137|20|1.5 m|#ffd27f|small|owner_review_stage
+    label 47|137|21|2.0 m|#ffd27f|small|owner_review_stage
+    label 52|137|22|5.0 m|#ffd27f|small|owner_review_stage
+    label 57|137|23|dry|#ffd27f|small|owner_review_stage
+    label 27|157|24|Futuristic|#ffd27f|small|owner_review_stage
+    label 35|157|25|Industrial|#ffd27f|small|owner_review_stage
+    label 43|157|26|Modern|#ffd27f|small|owner_review_stage
+    label 51|157|27|Scrapper|#ffd27f|small|owner_review_stage
+    label 175|109|28|1m in 1m|#ffd27f|small|owner_review_stage
+    label 180|109|29|1m in 2m|#ffd27f|small|owner_review_stage
+    label 185|109|30|1m in 4m|#ffd27f|small|owner_review_stage
+    label 175|103|31|0.5m in 4m|#ffd27f|small|owner_review_stage
+    label 180|103|32|1m in 4m|#ffd27f|small|owner_review_stage
+    label 185|103|33|2m in 4m|#ffd27f|small|owner_review_stage
+    label 175|117|34|dry 0.5 m|#ffd27f|small|owner_review_stage
+    label 180|117|35|dry 1 m|#ffd27f|small|owner_review_stage
+    label 185|117|36|dry 1.5 m|#ffd27f|small|owner_review_stage
+    label 190|117|37|dry 2 m|#ffd27f|small|owner_review_stage
+    label 195|117|38|dry 4 m|#ffd27f|small|owner_review_stage
+    label 200|117|39|dry 8 m|#ffd27f|small|owner_review_stage
+    label 179|125|40|waist-deep|#ffd27f|small|owner_review_stage
+    label 191|125|41|chest-deep|#ffd27f|small|owner_review_stage
+    label 175|133|42|ladder 2m|#ffd27f|small|owner_review_stage
+    label 180|133|43|ladder 4m|#ffd27f|small|owner_review_stage
+    label 185|133|44|gear worn|#ffd27f|small|owner_review_stage
+    label 190|133|45|no gear|#ffd27f|small|owner_review_stage
+    label 194|132|46|gear item|#ffd27f|small|owner_review_stage
+    label 198|133|47|planks|#ffd27f|small|owner_review_stage
+    label 177|146|48|rope rails on|#ffd27f|small|owner_review_stage
+    label 177|142|49|rope rails off|#ffd27f|small|owner_review_stage
+    label 185|146|50|timber rails on|#ffd27f|small|owner_review_stage
+    label 185|142|51|timber rails off|#ffd27f|small|owner_review_stage
+    label 193|146|52|steel rails on|#ffd27f|small|owner_review_stage
+    label 193|142|53|steel rails off|#ffd27f|small|owner_review_stage
+    label 201|146|54|heavy rails on|#ffd27f|small|owner_review_stage
+    label 201|142|55|heavy rails off|#ffd27f|small|owner_review_stage
+    label 207|142|56|planks|#ffd27f|small|owner_review_stage
+    label 177|150|57|steelgrated|#ffd27f|small|owner_review_stage
+    label 185|150|58|heavygrated|#ffd27f|small|owner_review_stage
+    label 177|154|59|steel jetty|#ffd27f|small|owner_review_stage
+    label 185|154|60|heavy jetty|#ffd27f|small|owner_review_stage
+    label 177|158|61|steel Scrapper|#ffd27f|small|owner_review_stage
+    label 185|158|62|steel Industrial|#ffd27f|small|owner_review_stage
+    label 193|158|63|steel Modern|#ffd27f|small|owner_review_stage
+    label 201|158|64|steel Futuristic|#ffd27f|small|owner_review_stage
+    label 208|168|65|N-S steel Scra~|#ffd27f|small|owner_review_stage
+    label 213|168|66|N-S steel Indu~|#ffd27f|small|owner_review_stage
+    label 218|168|67|N-S steel Mode~|#ffd27f|small|owner_review_stage
+    label 223|168|68|N-S steel Futu~|#ffd27f|small|owner_review_stage
+    label 228|168|69|fire under dec~|#ffd27f|small|owner_review_stage
+    label 208|160|70|N-S rope|#ffd27f|small|owner_review_stage
+    label 213|160|71|N-S timber|#ffd27f|small|owner_review_stage
+    label 218|160|72|N-S steel|#ffd27f|small|owner_review_stage
+    label 223|160|73|N-S heavy|#ffd27f|small|owner_review_stage
+    label 228|160|74|N-S steelgrated|#ffd27f|small|owner_review_stage
+    label 233|160|75|N-S heavygrated|#ffd27f|small|owner_review_stage
+    label 208|152|76|steel jetty no~|#ffd27f|small|owner_review_stage
+    label 213|152|77|steel jetty so~|#ffd27f|small|owner_review_stage
+    label 218|152|78|heavy jetty no~|#ffd27f|small|owner_review_stage
+    label 223|152|79|heavy jetty so~|#ffd27f|small|owner_review_stage
+  review_sign clear prefix 'SIGN '; place 79 station sign books
+SWATCH: vanilla WaterShallow (22, 95, 3, 3), photographed and measured before the save (water must read blue over red)
+FINISH: kill hostiles, Clear weather, step toward midday, frame, shoot, save 'FLOWWORKS_OWNER_REVIEW_VISIT11_SMALL_20261124_1859'
+SAVE reported C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\Saves\FLOWWORKS_OWNER_REVIEW_VISIT11_SMALL_20261124_1859.rws -- VERIFY the file exists and is new (save_game has written the wrong slot before)
+NOTE: map biome AridShrubland
+NOTE: 0.2 m strip (24, 135) readout {'kind': 'water', 'hole_m': 0.5, 'water_m': 0.5, 'litres': 1000, 'dl': 10000, 'text': 'Hole 0.5 m � Water 0.50 m (1,000 L)'}
+NOTE: 0.2 m strip (25, 135) readout {'kind': 'water', 'hole_m': 0.5, 'water_m': 0.5, 'litres': 1000, 'dl': 10000, 'text': 'Hole 0.5 m � Water 0.50 m (1,000 L)'}
+NOTE: 0.2 m strip (26, 135) readout {'kind': 'water', 'hole_m': 0.5, 'water_m': 0.5, 'litres': 1000, 'dl': 10000, 'text': 'Hole 0.5 m � Water 0.50 m (1,000 L)'}
+NOTE: 0.2 m strip (27, 135) readout {'kind': 'water', 'hole_m': 0.5, 'water_m': 0.5, 'litres': 1000, 'dl': 10000, 'text': 'Hole 0.5 m � Water 0.50 m (1,000 L)'}
+NOTE: 0.2 m strip (28, 135) readout {'kind': 'water', 'hole_m': 0.5, 'water_m': 0.5, 'litres': 1000, 'dl': 10000, 'text': 'Hole 0.5 m � Water 0.50 m (1,000 L)'}
+NOTE: pipe look for net 0: asked Futuristic, game reads Scrapper
+NOTE: pipe look for net 1: asked Industrial, game reads Scrapper
+NOTE: pipe look for net 2: asked Modern, game reads Scrapper
+NOTE: trench cover waist-deep: TRENCH trench=0.441 vanilla=0.000 combined=0.441 hit=0.204 hitNoTrench=0.364 cage=False target=176,123 shooter=184,123 size=1.000
+NOTE: trench cover chest-deep: TRENCH trench=0.662 vanilla=0.000 combined=0.662 hit=0.052 hitNoTrench=0.152 cage=False target=188,123 shooter=196,123 size=1.000
+NOTE: approx hour 10.7 (ticksAbs mod day, longitude ignored)
+NOTE: water swatch (22, 95, 3, 3) mean RGB [84.0, 95.8, 100.1] -> reads as water
+SHOT: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ELEVEN.det\Transient\owner_review_stage\row_ladders_labelled.png
+SHOT: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ELEVEN.det\Transient\owner_review_stage\row_spikes_labelled.png
+SHOT: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ELEVEN.det\Transient\owner_review_stage\row_gates_sluice_labelled.png
+SHOT: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ELEVEN.det\Transient\owner_review_stage\row_gates_grate_labelled.png
+SHOT: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ELEVEN.det\Transient\owner_review_stage\row_shallows_labelled.png
+SHOT: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ELEVEN.det\Transient\owner_review_stage\row_sprinklers_labelled.png
+SHOT: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ELEVEN.det\Transient\owner_review_stage\row_bars_joint_labelled.png
+SHOT: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ELEVEN.det\Transient\owner_review_stage\row_bars_dry_labelled.png
+SHOT: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ELEVEN.det\Transient\owner_review_stage\row_bars_trench_labelled.png
+SHOT: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ELEVEN.det\Transient\owner_review_stage\row_bars_access_labelled.png
+SHOT: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ELEVEN.det\Transient\owner_review_stage\row_bars_bridges_labelled.png
+SHOT: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ELEVEN.det\Transient\owner_review_stage\row_bars_bridge_kinds_labelled.png
+SHOT: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ELEVEN.det\Transient\owner_review_stage\row_bars_bridges_ns_labelled.png
+SHOT: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ELEVEN.det\Transient\owner_review_stage\overview.png
+SHOT: \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ELEVEN.det\Transient\owner_review_stage\water_swatch.png
+[bridge split] 227.4 s wall: load 0.4 / ticks 12.6 / reads 10.3 / other 60.0 / outside calls 144.0 s
+[bridge split] WARN 811 calls of jawa/flowworks_excavation_drive (34.3 s): batch them
+[bridge split] WARN 209 calls of jawa/list_things (9.2 s): batch them
+[bridge split] WARN 94 calls of jawa/build_batch (4.0 s): batch them
+[bridge split] WARN 66 calls of jawa/static_call (2.8 s): batch them
+save_guard: 725 keepers hashed and backed up in /mnt/d/ClaudeWork/rimmandrake/scratch/save_keepers
+save_guard: command exit 0; changed files: FLOWWORKS_OWNER_REVIEW_VISIT11_SMALL_20261124_1859.rws
+save_guard: VERIFIED - no keeper changed

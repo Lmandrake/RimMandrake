@@ -1,0 +1,74 @@
+LIVE SESSION PLAN  zones on 250x250:
+  zone covers     (15, 15, 26, 10)
+  zone trench     (15, 15, 30, 16)
+  zone thirst     (15, 15, 96, 42)
+  zone access     (47, 15, 40, 14)
+  zone climb      (51, 15, 46, 12)
+  zone digdepth   (93, 15, 12, 8)
+  zone sprinkler  (103, 15, 16, 86)
+  zone reservoir  (111, 15, 16, 26)
+  zone l2         (125, 15, 30, 18)
+  zone grenade    (133, 15, 20, 10)
+  zone raillip    (159, 15, 16, 14)
+  zone l2b        (161, 15, 30, 18)
+  zone ride       (181, 15, 6, 6)
+  zone tanks      (193, 15, 12, 6)
+  zone l6         (197, 15, 30, 18)
+  zone readout    (228, 15, 22, 16)
+  zone ice        (15, 47, 16, 8)
+  zone flood      (37, 47, 18, 10)
+  zone suspension (61, 47, 40, 16)
+  zone props      (107, 47, 30, 10)
+  zone l4         (15, 107, 30, 18)
+  zone l5         (51, 107, 30, 18)
+  zone owner      (18, 157, 216, 78)
+B0   preflight: tier truth, log revive, calm, clock rate                                ~    0 ticks ~   0 s (ESTIMATED)
+B4   shared clock: covers, pit access, dig depth, reservoir, grenade, rail lip, dehydra ~ 8500 ticks ~ 178 s (ESTIMATED)
+       SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT       A3                     native cover_tiers (ProofCover, pawn_stats Mass)
+       PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS      A1                     native pit_access (ProofClimb pawn:<id>)
+       PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS      A2                     native pit_access (ProofClimb pawn:<id>)
+       PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS      A3                     native pit_access (ProofClimb pawn:<id>)
+       PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS      A4                     native pit_access (ProofClimb pawn:<id>)
+       PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT          A2                     native dig_depth (drive to 8 m, ProofReadout, job probe)
+       DIG_COST_TUNE_DEEP_IS_A_MEGAPROJECT          A2                     native dig_depth (RM_DigDepthMath.WorkToCut live + job_probe)
+       THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY       T6                     native dehydration_ride (rides the whole session clock)
+       FISH_ROLL_MEND_PONDS_BORN_BARREN             A2                     native dug_reservoir (jawa/fishing water-body fish roll)
+       POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD         A7                     native dug_reservoir (map_zones fishing + jawa/fishing + ordered_job F
+       TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT     A4                     native grenade (explosion_at Bomb, pawn_get hediffs)
+       FALL_GUARDRAILS_BUILD_REAL_OBJECT            A3                     native rail_lip (records: AI never steps off an unrailed lip)
+OUT OF THIS LOAD: CONTAGION_DIVE_FIX_FOUR_WALLED_CELLS, CONTAGION_DIVE_HARDEN_WANDERERS_WELCOME, SUSPENSION_BRIDGE_BUILD_POSTS_AT_BOTH_ENDS, SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP, SUSPENSION_JETTY_BUILD_WALK_THE_PLANK, SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD, SUSPENSION_WATERS_BUILD_MAY_BACKTRACK, THIRST_ROWS_DIAGNOSE_SLIME_SITS_STILL, WALL_SCALING_BUILD_ROPE_OVER_RAMPARTS, WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES
+ESTIMATED wall for the selected blocks: 178 s (+ one cold load, MEASURED 44-70 s, + one quicktest map, 2-8 s)
+=== B0 preflight: tier truth, log revive, calm, clock rate  (t+0s, tick 2)
+  B0_tier_truth                      PASS       HARNESS - - {"running": 13, "flowworks": true, "why": ""}
+  B0_assembly_identity               PASS       HARNESS - - {"loaded": "c5c6dc5a033b", "repo": "c5c6dc5a033b", "mvidMatchesFile": true, "location": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Flow
+  B0_clock_rate                      PASS       HARNESS - - {"ticks": 600, "wall_s": 0.53, "ticks_per_s": 1124.9, "frameBudgetMs": 150.0}
+=== B4 shared clock: covers, pit access, dig depth, reservoir, grenade, rail lip, dehydration ride  (t+4s, tick 602)
+  B4_dig_8m_readout                  PASS       MOD     PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGH A2 {"readout": "OK Hole 8 m \u00b7 Water 0.00 m (0 L)", "owed": "'machine labour digs it by Dig to depth' (colonists stop at 2 m: DEEP_DIG_BUILD_DROIDS_TAKE_THE_SH
+  B4_dig_cost_notch16                PASS       MOD     DIG_COST_TUNE_DEEP_IS_A_MEGAPROJEC A2 {"work": 51200.0, "want": 51200, "setting": "True", "why": "", "designator": {"accepted": true}, "how": "INFERRED: the job's per-cut work function read live, th
+  B4_cover_40                        PASS       MOD     SUSPENSION_BASE_REWIRE_COVERS_STEP A3 {"def_": "RM_PitCover_WovenScrap", "rating": 40.0, "trail": [{"n": 1, "total": 60.7, "depths": [4.0], "covers_left": 0}]}
+  B4_grenade_no_blast_cover          PASS       MOD     TRENCH_COVER_BUILD_SANDBAGS_MADE_O A4 {"trench": 25.0, "open": 30.83, "n": 6, "trials": [{"trench": 20.0, "open": 25.0, "ok": true, "healed": [true, true], "added": {"trench": {"Shredded": 20.0}, "o
+  B4_cover_120                       PASS       MOD     SUSPENSION_BASE_REWIRE_COVERS_STEP A3 {"def_": "RM_PitCover_PlankLattice", "rating": 120.0, "trail": [{"n": 1, "total": 60.7, "depths": [4.0], "covers_left": 6}, {"n": 2, "total": 121.5, "depths": [
+  B4_cover_220                       PASS       MOD     SUSPENSION_BASE_REWIRE_COVERS_STEP A3 {"def_": "RM_PitCover_ReinforcedFrame", "rating": 220.0, "trail": [{"n": 1, "total": 49.3, "depths": [4.0], "covers_left": 6}, {"n": 2, "total": 110.1, "depths"
+  B4_reservoir_fish_rolled           UNMEASURED SITE    FISH_ROLL_MEND_PONDS_BORN_BARREN A2 {"why": "a 96-square body lost the game's size roll (certain only at 200+)", "waterBody": {"hasBody": true, "type": "Freshwater", "size": 96, "hasFish": false, 
+  B4_reservoir_catch                 FAIL       MOD     POND_DEPTH_BUILD_SHALLOWS_BEFORE_M A7 {"why": "fishing zone refused on the dug reservoir", "biomeFish": true, "refusals": ["no water-body type here (terrain RM_Channel_Mid)"], "error": "NOTHING was 
+  B4_access_portable_ladder_out      PASS       MOD     PIT_ACCESS_BUILD_LADDERS_CLIMBING_ A1 {"ladder": {"def_": "RM_LadderPortable", "asked": [49, 18], "rot_asked": 0, "rot_read": 0, "survived": true, "note": ""}, "pawn": {"cell": [52, 25], "depth": 0.
+  B4_access_gear_climbs_sheer_4m     PASS       MOD     PIT_ACCESS_BUILD_LADDERS_CLIMBING_ A2 {"gear": "{'success': True, 'action': 'wear', 'displaced': [], 'notes': [], 'pawn': {'thingId': 'Human21182', 'thingIdNumber': 21182, 'name': \"David 'Scottish'
+  B4_access_no_gear_stays_in         PASS       MOD     PIT_ACCESS_BUILD_LADDERS_CLIMBING_ A2 {"pawn": {"cell": [58, 16], "depth": 8.0, "held": "False", "trapped": "False", "raw": "CLIMB k=2 held=False trapped=False cell=58,16 | POCKET k=2 comp=2 pocket=
+  B4_access_jump_pack_in_no_fall     UNMEASURED HARNESS PIT_ACCESS_BUILD_LADDERS_CLIMBING_ A3 {"pack": "{'success': False, 'message': \"'Apparel_PackJump' is not in the pawn's WornApparel after Wear() (see the game log for a ", "jump": "{}", "pawn": {"ce
+  B4_rail_unrailed_control           UNMEASURED OWED    FALL_GUARDRAILS_BUILD_REAL_OBJECT A3 {"pawn": {"cell": [172, 11], "depth": 0.0, "held": "False", "trapped": "False", "raw": "CLIMB k=2 held=False trapped=False cell=172,11 | POCKET k=2 comp=0 pocke
+  B4_access_rescue_ladder_queued     PASS       MOD     PIT_ACCESS_BUILD_LADDERS_CLIMBING_ A4 {"ladderSeen": true, "afterTicks": 1030, "downed": {"cell": [76, 17], "depth": 10.0, "held": "False", "trapped": "False", "raw": "CLIMB k=2 held=False trapped=F
+  B4_dehydration_rate                FAIL       MOD     THIRST_BUILD_OWN_BOTTLES_DUBS_FRIE T6 {"sev": [0.00225, 0.0164999943], "ticks": 6000, "projected60k": 0.14249994300000002, "home": [183, 17], "wandered": [], "how": "INFERRED from the measured rate"
+DONE 18 rows {'PASS': 13, 'UNMEASURED': 3, 'FAIL': 2}  verify lines 10 -> design\concepts\FlowWorks\version\in_game\visit_11\evidence\ls_b4_site\verify_lines.txt  session design\concepts\FlowWorks\version\in_game\visit_11\evidence\ls_b4_site\session.json
+OWNER EYES (0): 
+\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ELEVEN.det\src\RimMandrake\FlowWorks\northstar\live_session.py:2344: SyntaxWarning: invalid escape sequence '\.'
+  """Repo-relative when it can be: python.exe runs the repo from \\wsl.localhost\... and --out-dir is on D:, and relpath
+\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ELEVEN.det\src\RimMandrake\FlowWorks\northstar\live_session.py:2344: SyntaxWarning: invalid escape sequence '\.'
+  """Repo-relative when it can be: python.exe runs the repo from \\wsl.localhost\... and --out-dir is on D:, and relpath
+[bridge split] 157.5 s wall: load 0.0 / ticks 13.2 / reads 12.9 / other 35.5 / outside calls 95.9 s
+[bridge split] WARN 297 calls of jawa/flowworks_excavation_drive (12.7 s): batch them
+[bridge split] WARN 149 calls of jawa/pawn_need (6.3 s): batch them
+[bridge split] WARN 128 calls of jawa/flowworks_engine_state (5.5 s): batch them
+[bridge split] WARN 128 calls of jawa/list_things (5.7 s): batch them
+[bridge split] WARN 80 calls of rimbridge/list_logs (0.1 s): batch them
+[bridge split] WARN 59 calls of jawa/safe_advance (13.2 s): batch them
+[bridge split] WARN 58 calls of jawa/static_call (2.4 s): batch them

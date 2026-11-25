@@ -1,0 +1,5 @@
+PASS \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ELEVEN.det\design\concepts\FlowWorks\version\in_game\visit_11\evidence\sc_moat_walkers_20261124T190805.json 
+[bridge split] 177.8 s wall: load 0.6 / ticks 14.3 / reads 6.9 / other 47.3 / outside calls 108.7 s
+[bridge split] WARN 484 calls of jawa/flowworks_excavation_drive (20.5 s): batch them
+[bridge split] WARN 431 calls of jawa/static_call (18.1 s): batch them
+[bridge split] WARN 57 calls of jawa/window_list_close (2.4 s): batch them

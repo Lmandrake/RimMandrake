@@ -1,0 +1,53 @@
+== section posts
+SB_drag_6_timber_builds            PASS       {"read": "BUILD ok=True anchors=2 decks=6 blueprints=0 records=1 reason=-"}
+SB_path_crosses_on_deck            PASS       {"read": "PATH found=True cells=10 decked=6", "walls": true}
+SB_load_over_rating_whole_span_falls PASS       {"empty": "SPAN tier=timber load=0.0 rating=600 state=Ok decks=6 railings=False deckNotches=0 span=1/1 line=Load 0 / 600 kg", "before": "SPAN tier=timber load=623.3 rating=600 state=Over decks=6 railings=False deckNotches=0 span=1/1 line=Load 623 / 600 kg", "inspect_line": "Load", "after": "SPAN tie
+SB_drag_9_timber_refused           PASS       {"read": "BUILD ok=False anchors=0 decks=0 blueprints=0 records=0 reason=A timber suspension bridge spans at most 8 squares between supports (this span: 9). Fill a ground island back in (cheap) or build a tower on the hole floor (very expensive) to go further."}
+SB_rails_off_some_fall             PASS       {"read": "KNOCK trials=20 fell=6 railed=False edge=True", "build": "BUILD ok=True anchors=2 decks=4 blueprints=0 records=1 reason=-"}
+SB_rails_on_nobody_falls           PASS       {"rails": "RAILS on=True railed=4", "read": "KNOCK trials=20 fell=0 railed=True edge=True", "build": "BUILD ok=True anchors=2 decks=4 blueprints=0 records=1 reason=-"}
+SB_anchor_lost_swings_from_that_end PASS       {"read": "SWING 141,152@187 142,152@207 143,152@227 144,152@247", "lane": [[141, 187], [142, 207], [143, 227], [144, 247]], "build": "BUILD ok=True anchors=2 decks=4 blueprints=0 records=1 reason=-", "destroy": {"success": true, "message": "Destroyed 1 thing(s) across 1 cell(s).", "destroyed": 1}}
+SB_vanilla_bridge_refused_over_dug PASS       {"read": "VANILLA accepted=False reason=Use a suspension bridge over dug ground"}
+SB_settings_off_no_button_never_breaks UNMEASURED {"owed": true, "why": "OWED: toggle suspensionBridgesBuildable / suspensionWeightCollapse via jawa/mod_settings_field on RimMandrake.FlowWorks.Pits.RM_SuspensionSettings and re-run LOAD; not scripted yet"}
+== section grate
+GRATE_fire_burns_people_above      PASS       {"grateBurns": 9, "solidBurns": 0, "reads": {"steelgrated": [9, "LIT (141, 0, 160) | FIRE burning 1 | front pending 1 | burned levels 0 | detonations 0 cells 0 queued 0", "GRATE grated=True deck=True fire=True attach=0.75 splash=0.50 scorches=12 drainedDl=7500"], "steel": [0, "LIT (141, 0, 164) | FI
+GRATE_pour_drains_to_body          PASS       {"build": "BUILD ok=True anchors=2 decks=4 blueprints=0 records=1 reason=-", "read": "POUR dl=500 bodyBefore=80000 bodyAfter=80500 rise=500 filthBefore=0 filthAfter=0"}
+GRATE_item_stays_on_deck           PASS       {"things": ["RM_SuspensionDeck_SteelGrated", "Steel"], "build": "BUILD ok=True anchors=2 decks=4 blueprints=0 records=1 reason=-", "dropped": true}
+== section underpass
+UND_floor_path_walks_under         PASS       {"read": "UNDERPATH found=True cells=8 decked=2 view=floor", "reachAfter": {"paused_polls": 0, "ticks": 0}}
+UND_both_arrive                    PASS       {"a": [148, 180], "b": [144, 182]}
+UND_shallow_trench_is_a_wall       PASS       {"read": "UNDERPATH found=False cells=0 decked=0 view=floor"}
+UND_item_slides_to_open_floor      PASS       {"read": "DROPUNDER under=True at=143,180 underDeck=False slid=16"}
+UND_shot_solid_deck                PASS       {"want": "False", "read": "SHOT can=False shooterUnder=True targetUnder=False ranged=True", "target": "BAND under=False onDeck=True passes=True view=deck deckNotches=0"}
+UND_shot_grate_deck                PASS       {"want": "True", "read": "SHOT can=True shooterUnder=True targetUnder=False ranged=True", "target": "BAND under=False onDeck=True passes=True view=deck deckNotches=0"}
+UND_crush_below_and_wreck          PASS       {"before": {"crushed": "42", "wrecks": "144", "slid": "16"}, "after": "FELL crushed=45 wrecks=144 slid=16", "hediffs": [6, 7], "newHarm": [["MissingBodyPart", "Eye"]], "owed": "wreck blocks the floor until a clear job runs: read RM_SuspensionWreck on (4,40) and its deconstruct"}
+UND_sunken_bridge_crossed          PASS       {"build": "BUILD ok=True anchors=2 decks=2 blueprints=0 records=1 reason=-", "span": "SPAN tier=steel load=0.0 rating=2000 state=Ok decks=2 railings=False deckNotches=8 span=1/1 line=Load 0 / 2,000 kg", "path": "PATH found=True cells=8 decked=2"}
+UND_raiders_walk_under_moat        UNMEASURED {"owed": true, "why": "OWED: a raid into a 4 m moat with a bridge over it, recorded with modcheck (behaviour is the ruling, not a bug)"}
+UND_L4_picture_pawn_under_deck     UNMEASURED {"owed": true, "why": "OWED: one joint screenshot of a pawn passing under a deck"}
+== section waters
+WAT_river_cross_no_drift           UNMEASURED {"why": "no --river x1,z1,x2,z2 given (this map's river crossing)"}
+WAT_lake_tower_two_spans           UNMEASURED {"why": "no --lake x1,z1,x2,z2 given (a crossing longer than 10 squares)"}
+WAT_flood_damages_timber_not_steel UNMEASURED {"timber": [{"hp": "312", "max": "312", "decks": "4", "awash": "0", "floodHits": "0"}, {"hp": "312", "max": "312", "decks": "4", "awash": "0", "floodHits": "0"}], "steel": [{"hp": "1000", "max": "1000", "decks": "4", "awash": "0", "floodHits": "0"}, {"hp": "1000", "max": "1000", "decks": "4", "awash
+WAT_sea_or_backtrack               UNMEASURED {"why": "no --sea x1,z1,x2,z2 given (a coast crossing)"}
+== section jetty
+JET_two_square_steel_accepted      PASS       {"read": "JETTY ok=True anchors=1 decks=2 blueprints=0 railed=2 reason=-"}
+JET_three_square_refused           PASS       {"read": "JETTY ok=False anchors=0 decks=0 blueprints=0 railed=0 reason=A jetty reaches at most 2 squares out (this one: 3)."}
+JET_overload_drops_whole_at_root   PASS       {"one": "SPAN tier=steel load=60.7 rating=120 state=Ok decks=2 railings=True deckNotches=0 span=1/1 line=Load 61 / 120 kg", "two": "SPAN tier=steel load=121.5 rating=120 state=Over decks=2 railings=True deckNotches=0 span=1/1 line=Load 121 / 120 kg", "after": "SPAN tier=steel load=0.0 rating=120 sta
+JET_open_edge_drop_on_order        UNMEASURED {"owed": true, "why": "OWED: railings off, order the 'Jump into pit' float-menu job on a pawn on the jetty (no bridge call drives that menu yet); the rail-off knock row (SB_rails_off_some_fall) proves the edge"}
+== section looks
+LOOK_Scrapper_resolves             PASS       {"read": "LOOK look=Scrapper parts=8 styled=8 pink=0 paths=RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor_Steel|null|RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionRailing_Edge"}
+LOOK_Industrial_resolves           PASS       {"read": "LOOK look=Industrial parts=8 styled=8 pink=0 paths=RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionAnchor_Steel|null|RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionRailing_Edge"}
+LOOK_Modern_resolves               PASS       {"read": "LOOK look=Modern parts=8 styled=8 pink=0 paths=RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor_Steel|null|RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionRailing_Edge"}
+LOOK_Futuristic_resolves           PASS       {"read": "LOOK look=Futuristic parts=8 styled=8 pink=0 paths=RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionAnchor_Steel|null|RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionRailing_Edge"}
+== section islands
+SB_islands_mid_channel_two_bridges PASS       {"read": "BUILD ok=True anchors=4 decks=16 blueprints=0 records=2 reason=-", "claim": "an 18-hole timber crossing (cap 8 per span) stands over a 2-square island as two bridges"}
+SB_islands_control_no_island_refused PASS       {"read": "BUILD ok=False anchors=0 decks=0 blueprints=0 records=0 reason=A timber suspension bridge spans at most 8 squares between supports (this span: 18). Fill a ground island back in (cheap) or build a tower on the hole floor (very expensive) to go further."}
+SB_islands_tower_cost_charged      PASS       {"read": "TOWERCOST stuff=200 Steel=100 work=12000 mult=1.00 steelBuilt=Steel:300", "want_at_x1": "stuff=200 Steel=100 work=12000 steelBuilt=Steel:300 (no ComponentIndustrial)"}
+SB_tower_row_per_lane              PASS       {"one_tower": "BUILD ok=False anchors=0 decks=0 blueprints=0 records=0 reason=A tower holds one row of the bridge: this one is 2 squares wide, so it needs 2 towers side by side at square 9 of the drag (there is 1). Drag the tower across the hole to plan the rest.", "two_towers": "BUILD ok=True ancho
+SB_islands_restore_ground_ordered  PASS       {"read": "RESTORE accepted=4 refused=0 tracked=4 fillOrders=4 first=-"}
+== section reach
+SB_islands_restore_reach           PASS       {"outcome": "reached_and_grounded", "why": "lone mid refused; causeway edge 8 -> 0 in 8 jobs, mid 8 -> 0 in 8 jobs, both let go", "depth0": 8, "loneMidCanReach": false, "loneMidHasJobOnCell": true, "edge": {"depths": [7, 6, 5, 4, 3, 2, 1, 0], "jobs": [true, true, true, true, true, true, true, true],
+suspension bridge proof: 40 rows, 0 FAIL -> \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_ELEVEN.det\design\concepts\FlowWorks\version\in_game\visit_11\evidence\sc_hung_bridge_20261124T181614.json
+[bridge split] 240.6 s wall: load 0.0 / ticks 84.2 / reads 2.3 / other 51.3 / outside calls 102.8 s
+[bridge split] WARN 337 calls of jawa/flowworks_excavation_drive (15.4 s): batch them
+[bridge split] WARN 91 calls of jawa/safe_advance (83.2 s): batch them
+[bridge split] WARN 79 calls of jawa/static_call (3.4 s): batch them
