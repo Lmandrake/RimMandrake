@@ -19,6 +19,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from unittest.mock import patch
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -169,6 +170,17 @@ def io_checks(tmp):
             shutil.rmtree(ci, ignore_errors=True)
     else:
         check(True, "case alias: no case-folding drive here (%s), not testable" % ci_base)
+
+    # Exercise the same cycle on a case-sensitive test host: realpath can spell the reached directory
+    # differently while scandir and stat still see the same inode.
+    top = os.path.join(tmp, "BmCase")
+    link = os.path.join(top, "self")
+    write(os.path.join(top, "x"), "x")
+    os.symlink(top, link)
+    realpath = os.path.realpath
+    with patch.object(os.path, "realpath", side_effect=lambda p: top.lower() if p == link else realpath(p)):
+        seen = [r for r, _ in B._files(top)]
+    check(seen == ["x"], "a differently spelt path to the same directory inode still ends the cycle: %s" % seen)
 
     # ---- the deployed folder is found by packageId, not by name ------------------------------------------------------
     root = os.path.join(tmp, "repo")
@@ -523,6 +535,120 @@ def cli_checks(tmp):
               r.returncode, r.stdout.strip().splitlines()[-1:] if r.stdout.strip() else r.stderr[-200:]))
 
 
+def tick_walk_checks(tmp):
+    sys.path.insert(0, B.UTILS)
+    import deploy_custom_mods as D
+    import maturation as M
+    import maturation_dispatch as MD
+
+    root = os.path.join(tmp, "tick")
+    mod = "Comp"
+    vdir = os.path.join(M.mod_dir(root, mod), "version")
+    visit = os.path.join(vdir, "in_game", "visit_1")
+    src = os.path.join(root, "src", "RimMandrake")
+    mods = os.path.join(tmp, "TickMods")
+    folder = os.path.join(mods, "RimMandrake.Biomes")
+    write(os.path.join(src, mod, "About", "About.xml"), ABOUT % "mandrake.rm.comp")
+    write(os.path.join(src, "Biomes.compose.json"), json.dumps({
+        "compose_wave": 1, "entries": [{"key": mod, "wave": 1}], "about": {"packageId": "mandrake.rm.biomes"},
+        "target": "RimMandrake.Biomes"}))
+    write(os.path.join(folder, "About", "About.xml"), ABOUT % "mandrake.rm.biomes")
+    for i in range(32):
+        write(os.path.join(folder, "Biomes", mod, "Defs", "%d.xml" % i), "<Defs/>")
+    ver = os.path.join(tmp, "TickVersion.txt")
+    write(ver, "1.6.4871 rev590\n")
+    save = os.path.join(tmp, "tick.rws")
+    write(save, "<?xml version=\"1.0\"?><savegame><meta><modIds><li>mandrake.rm.biomes</li></modIds></meta></savegame>")
+    state = {"stage": "in_game", "version": "0.1.0", "moves": [{"to": "in_game"}]}
+    write(os.path.join(M.mod_dir(root, mod), M.RECORD), json.dumps(state))
+    write(os.path.join(vdir, "VERSION.json"), json.dumps({"version": "0.1.0"}))
+    table = {"tests": {"full_t": {"kind": "live_full", "stage": 6, "why_full_list": "walk test"}}}
+    write(os.path.join(vdir, "test_table.json"), json.dumps(table))
+    h = B.deployed_hash(folder)
+    write(os.path.join(visit, "rows.jsonl"), json.dumps(row(
+        "full_t", mod_hash=h, game_build="1.6.4871 rev590", active_mods=["mandrake.rm.biomes"],
+        site_checked=True, site="fixture site checked", mod_sha="abc1234")) + "\n")
+    write(os.path.join(visit, "strange.jsonl"), "")
+    write(os.path.join(visit, "SUMMARY.md"), "## Exit\ningame_rows: {full_t: pass}\nstrange_open: 0\n"
+          "savegame: %s\nexit_met: true\n" % save)
+    stamp = os.path.join(mods, ".RimMandrake.Biomes.walk-build.json")
+    config = os.path.join(tmp, "tick-config.xml")
+    write(config, "<ModsConfigData/>")
+    applying = []
+
+    def compose_apply(change, apply=True):
+        # Run the CLI's orchestration with its writer and staging build replaced. No deployment runs.
+        staged = os.path.join(tmp, "staged", "RimMandrake.Biomes")
+        os.makedirs(staged, exist_ok=True)
+
+        def run(args, targets, holds, mods_dir, active):
+            if args.apply:
+                applying.append(not os.path.exists(stamp))
+                change()
+            return 0
+
+        argv = [D.__file__, "--compose", "biomes"] + (["--apply"] if apply else [])
+        with patch.object(sys, "argv", argv), patch.object(D, "_MODS", [mods]), patch.object(D, "_CONFIG", [config]), \
+                patch.object(D, "_is_real_game", return_value=False), patch.object(D, "mod_dirs", return_value=[]), \
+                patch.object(D, "load_holds", return_value=[]), patch.object(D, "folded_refusal"), \
+                patch.object(D.biomes_compose, "folded_ids", return_value=[]), \
+                patch.object(D.biomes_compose, "build", return_value=("RimMandrake.Biomes", staged, [])), \
+                patch.object(D, "_run", side_effect=run):
+            return D.main()
+
+    check(compose_apply(lambda: None, apply=False) == 0 and not os.path.exists(stamp),
+          "a compose plan leaves the walk build stamp alone")
+    check(compose_apply(lambda: None) == 0 and os.path.isfile(stamp) and
+          json.load(open(stamp, encoding="utf-8"))["mod_hash"] == h,
+          "a compose apply stamps the bytes of the deployed folder, including its extra files")
+    hash_files = B._hash_files
+    with patch.dict(os.environ, {"RM_MATURATION_DISPATCH_DIR": os.path.join(tmp, "dispatch")}), \
+            patch.object(B.socket, "gethostname", return_value="archmagi"), \
+            patch.object(B, "_paths", return_value=(mods, None, ver)), \
+            patch.object(B, "_hash_files", side_effect=lambda d, files, cache_dir: hash_files(
+                d, files, os.path.join(tmp, "tick_cache") if cache_dir else None)), \
+            patch.object(B, "_files", wraps=B._files) as walk, \
+            patch.object(M, "certificate", return_value={}), patch.object(MD, "rerun_result", return_value=None):
+        def tick_match():
+            return MD.add_ingame(root, mod, {"stage": "in_game"}, [])["exit"]["build_match"]
+
+        matches = [tick_match() for _ in range(2)]
+        check(walk.call_count == 0 and all(m["count"] == 1 for m in matches),
+              "tick-uses-deploy-build-without-walking: %d deployed tree walks on two ticks" % walk.call_count)
+        strict = M.read_ingame_exit(root, mod, 1)["build_match"]
+        f = os.path.join(folder, "Biomes", mod, "Defs", "0.xml")
+        s = os.stat(f)
+        write(f, "<Defz/>")
+        os.utime(f, ns=(s.st_atime_ns, s.st_mtime_ns))
+        fresh = M.read_ingame_exit(root, mod, 1)["build_match"]
+        check(strict["count"] == 1 and fresh["count"] == 0 and fresh["walk"]["mod_hash"] != h,
+              "the explicit exit reader detects a same-size manual edit with its mtime restored, even with a stamp")
+        before = walk.call_count
+        check(tick_match()["walk"].get("deploy_stamp") == stamp and walk.call_count == before,
+              "the Dispatch forecast identifies the deploy stamp it used")
+        check(compose_apply(lambda: write(f, "<Defy/>")) == 0 and all(applying),
+              "a second apply invalidates yesterday's stamp before the writer runs")
+        before = walk.call_count
+        new = tick_match()
+        check(new["count"] == 0 and new["walk"]["mod_hash"] not in (h, fresh["walk"]["mod_hash"])
+              and walk.call_count == before, "the next tick uses the changed deploy's hash without walking")
+        if not os.path.isfile(stamp):
+            return  # the stamp-writing check above reports its absence
+        old_stamp = os.path.join(mods, ".RimMandrake.Biomes.previous")
+        os.rename(stamp, old_stamp)
+        check(tick_match()["walk"]["mod_hash"] == new["walk"]["mod_hash"] and walk.call_count == before + 1,
+              "a legacy install without a stamp still hashes the deployed files")
+        os.rename(old_stamp, stamp)
+        os.rename(folder, os.path.join(tmp, "old-biomes"))
+        write(os.path.join(folder, "About", "About.xml"), ABOUT % "mandrake.rm.biomes")
+        fallback = tick_match()
+        check(fallback["walk"]["mod_hash"] != new["walk"]["mod_hash"] and walk.call_count == before + 2,
+              "a replacement folder cannot borrow the old folder's stamp")
+        write(stamp, "invalid stamp")
+        check(tick_match()["walk"]["mod_hash"] == fallback["walk"]["mod_hash"] and walk.call_count == before + 3,
+              "an invalid stamp falls back to hashing the deployed files")
+
+
 def _regex_active(path):
     return re.findall(r"<li>([^<]*)</li>", open(path).read().split("<activeMods>")[-1].split("</activeMods>")[0])
 
@@ -663,6 +789,7 @@ MUTANTS = {
     "modsconfig_grepped": lambda: setattr(B, "active_mods", _regex_active),
     "hash_names_only": lambda: setattr(B, "_digest_file", lambda p, h: None),
     "any_host_walks": lambda: setattr(B, "WALK_HOST", None),
+    "walk_stamp_ignored": lambda: setattr(B, "_stamped_hash", lambda folder: None),
     "transient_read_not_retried": lambda: setattr(B, "READ_TRIES", 1),
     "unreadable_as_not_deployed": lambda: setattr(
         B, "deployed_hash_why", (lambda o: lambda f, cache_dir=None: (o(f, cache_dir)[0], "no folder"))(B.deployed_hash_why)),
@@ -703,6 +830,8 @@ def main():
         compare_checks()
         if "--mutant" not in sys.argv:
             cli_checks(tmp)
+        if "--mutant" not in sys.argv or "walk_stamp_ignored" in sys.argv:
+            tick_walk_checks(tmp)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print("%d of %d checks failed" % (len(FAILS), CASES[0]))

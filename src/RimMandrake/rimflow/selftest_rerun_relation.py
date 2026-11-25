@@ -1154,6 +1154,21 @@ def _mutate(kind):
         raise SystemExit("unknown mutation %s" % kind)
 
 
+def t_tick_uses_deploy_build_without_walking():
+    """The page's promise of that name: its checks live in selftest_build_match.tick_walk_checks (a compose apply
+    stamps the deployed folder; two Dispatch ticks read the stamp and walk no tree). Run here so the page's test of
+    the same name runs them."""
+    import selftest_build_match as SBM
+    tmp = tempfile.mkdtemp(prefix="rerun_relation_tickwalk_")
+    try:
+        before = len(SBM.FAILS)
+        SBM.tick_walk_checks(tmp)
+        bad = SBM.FAILS[before:]
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+    ok("tick-uses-deploy-build-without-walking", not bad, "; ".join(bad))
+
+
 def main():
     if "--mutate" in sys.argv:
         _mutate(sys.argv[sys.argv.index("--mutate") + 1])
@@ -1189,6 +1204,7 @@ def main():
     t_reached_part_follows_the_declared_csharp()
     t_changed_member_no_check_declares_is_listed()
     t_declared_none_is_read_as_no_csharp()
+    t_tick_uses_deploy_build_without_walking()
     ok("the run left infrastructure/state/ledger/events/ unchanged", _ledger_digest() == before)
     print("%d of %d checks failed" % (len(FAILS), len(SEEN)))
     return 1 if FAILS else 0

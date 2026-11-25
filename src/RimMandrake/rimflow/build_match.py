@@ -55,8 +55,10 @@ import socket
 import stat
 import subprocess
 import sys
+import tempfile
 import time
 import xml.etree.ElementTree as ET
+from contextlib import contextmanager
 from functools import cache
 
 import live_kinds as LK
@@ -172,6 +174,68 @@ def deployed_hash_why(folder, cache_dir=None):
         return _hash_files(folder, _files(folder), cache_dir), None
     except OSError as e:
         return None, "a part of %s could not be read: %s" % (folder, e)
+
+
+def _deploy_stamp(folder):
+    return os.path.join(os.path.dirname(folder), ".%s.walk-build.json" % os.path.basename(folder))
+
+
+def _folder_id(folder):
+    st = os.stat(folder)
+    return [st.st_dev, st.st_ino]
+
+
+def _stamped_hash(folder):
+    try:
+        with open(_deploy_stamp(folder), encoding="utf-8") as f:
+            stamp = json.load(f)
+        h = stamp.get("mod_hash") if isinstance(stamp, dict) else None
+        if isinstance(h, str) and re.fullmatch(r"sha256:[0-9a-f]{64}", h) and stamp.get("folder") == _folder_id(folder):
+            return h
+    except (OSError, ValueError):
+        pass                                     # no usable stamp: read the deployed files
+    return None
+
+
+@contextmanager
+def stamp_composed_deploy(folder):
+    """Invalidate the forecast's stamp before composing into Mods, then publish the actual deployed hash. The
+    writer lock keeps two applies from publishing through one another. An interrupted apply leaves no stamp."""
+    import fcntl
+
+    stamp = _deploy_stamp(folder)
+    with open(stamp + ".lock", "a") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        try:
+            os.unlink(stamp)
+        except FileNotFoundError:
+            pass
+        yield
+        try:
+            folder_id = _folder_id(folder)
+        except OSError:
+            return
+        h = deployed_hash(folder)
+        if h is None:
+            return
+        tmp = None
+        try:
+            if folder_id != _folder_id(folder):
+                return
+            with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=os.path.dirname(stamp),
+                                             prefix=os.path.basename(stamp) + ".", delete=False) as f:
+                tmp = f.name
+                json.dump({"folder": folder_id, "mod_hash": h}, f)
+            os.replace(tmp, stamp)
+            tmp = None
+        except OSError as e:
+            print("Could not write the composed walk build stamp for %s: %s" % (folder, e), file=sys.stderr)
+        finally:
+            if tmp is not None:
+                try:
+                    os.unlink(tmp)
+                except OSError:
+                    pass
 
 
 def _cache_key(folder, files, cache_dir):
@@ -438,8 +502,9 @@ def walk_paths(savegame):
     return os.path.join(d, "Mods"), os.path.join(d, "Version.txt")
 
 
-def walk_build(root, mod, savegame, host=None, mods_dir=None, version_txt=None, cache_dir=None):
-    """The build he will walk: {game, mod_hash, game_build, active_mods, why[]} (why non-empty: unreadable here)."""
+def walk_build(root, mod, savegame, host=None, mods_dir=None, version_txt=None, cache_dir=None, *, deploy_stamp=False):
+    """The build he will walk: {game, mod_hash, game_build, active_mods, why[]} (why non-empty: unreadable here).
+    The Dispatch forecast can use the composed deploy's stamp. The game version and save are read live."""
     sp = os.environ.get(STANDIN_ENV)
     if sp:
         with open(sp, encoding="utf-8") as f:
@@ -466,7 +531,10 @@ def walk_build(root, mod, savegame, host=None, mods_dir=None, version_txt=None, 
     out["walk_game"] = walk_letter(savegame)
     _, folder = _mod_folder(root, mod, mods_dir)
     out["deployed_folder"] = folder
-    out["mod_hash"], err = deployed_hash_why(folder, cache_dir=cache_dir)
+    stamped = _stamped_hash(folder) if deploy_stamp and folder else None
+    if stamped:
+        out["deploy_stamp"] = _deploy_stamp(folder)
+    out["mod_hash"], err = (stamped, None) if stamped else deployed_hash_why(folder, cache_dir=cache_dir)
     out["game_build"] = game_build(version_txt)
     if not out["mod_hash"]:
         out["why"].append("%s is not deployed in %s" % (mod, mods_dir) if err == "no folder"
@@ -794,6 +862,8 @@ def compare(tests, last_rows, walk, tiers, relation=None, deploy=None):
            "walk": {k: walk.get(k) for k in ("game", "mod_hash", "game_build", "active_mods", "standin")},
            "deploy": deploy, "undeclared": list((relation or {}).get("undeclared") or []),
            "unreadable": list((relation or {}).get("unreadable") or []), "new": (relation or {}).get("new")}
+    if walk.get("deploy_stamp"):
+        out["walk"]["deploy_stamp"] = walk["deploy_stamp"]
     for t, spec in tests:
         ok, why = judge_row(t, spec, last_rows.get(t), walk, tiers, relation, deploy)
         # relation: what the source change relation says of the row (None: not read); walk_owed reads it
@@ -937,12 +1007,12 @@ def walk_source(root, mod, walk):
     return None, sha
 
 
-def check_visit(root, mod, n, tt, savegame, cache_dir=CACHE_DIR, runner=None):
+def check_visit(root, mod, n, tt, savegame, cache_dir=CACHE_DIR, runner=None, *, deploy_stamp=False):
     """The reading maturation.py's Stage 6 exit makes: each check's last row (visit n's, else an earlier visit's)
-    against the walk build, through the change relation."""
+    against the walk build, through the change relation. Dispatch can forecast against the last composed deploy."""
     import maturation as M
     last = carried_rows(root, mod, n)
-    walk = walk_build(root, mod, savegame, cache_dir=cache_dir)
+    walk = walk_build(root, mod, savegame, cache_dir=cache_dir, deploy_stamp=deploy_stamp)
     tests = M.ingame_tests(tt)
     deploy, _ = walk_source(root, mod, walk) if not walk.get("why") else (None, None)
     kw = {"runner": runner} if runner else {}

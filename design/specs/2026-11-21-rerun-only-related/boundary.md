@@ -2,6 +2,8 @@
 
 Code: `src/RimMandrake/rimflow/rerun_relation.py` and `src/RimMandrake/rimflow/build_match.py`. Tests of the same
 names: `src/RimMandrake/rimflow/selftest_rerun_relation.py`.
+The Dispatch forecast also uses `deploy_custom_mods.py`, `build_match.py`, `maturation.py` and
+`maturation_dispatch.py`. The stamp checks live in `src/RimMandrake/rimflow/selftest_build_match.py`.
 
 Rule: root `CLAUDE.md` §After a change, only the checks that the change touches run again; full text
 `design/RimMandrake/standing_rulings.md` §After a change, only the checks that the change touches run again (item
@@ -43,6 +45,9 @@ stage (the in-game build match, the Stage 6 exit, the visit brief, `./pipe why`,
   relation.
 - **lookup-by-a-computed-key.** A dict read with a key the code computes is related through the keys the check's own
   strings name. A key computed from something else is not seen.
+- **edits-outside-the-compose-deploy.** Dispatch's forecast reflects the last stamped compose deploy. A direct edit
+  inside the same deployed folder can change the current build before the next deploy stamps it. The steward's
+  `maturation.py next`, the advance gate, and `build_match.py check` read the current files.
 
 ## PROMISES (each one is owed a test of the same name)
 
@@ -149,5 +154,9 @@ stage (the in-game build match, the Stage 6 exit, the visit brief, `./pipe why`,
   however many checks declare or import that file: a git blob at a resolved commit never changes. (Measured
   2026-11-23: the tick's three relations parsed 1166 files for 107 checks, 86 s of a 204 s profiled tick; item
   RIMMANDRAKE_SLIM_TICK_MEMORY_PAGE_BUILD_HITS_ONE_GIG_TICK_TOOK_FIVE_MIN.)
+- **tick-uses-deploy-build-without-walking.** A compose apply replaces the build stamp with the hash of the actual
+  deployed folder, including held or extra files. Dispatch reuses a valid stamp for that installation and folder
+  without enumerating its tree. Missing or invalid stamps, including older installs before their first stamped apply,
+  fall back to the direct read. An explicit build check or advancement still verifies the current tree.
 
 Later lists beside this page: `polish.md`.

@@ -4692,10 +4692,10 @@ def _ledger_relation(root, mod, specs):
     return rel
 
 
-def read_ingame_exit(root, mod, n, tt=None):
+def read_ingame_exit(root, mod, n, tt=None, *, deploy_stamp=False):
     """-> {visit, state, why[], claimed, rows}: the program's reading of visit n's exit. state: absent (no visit_n folder,
     or one that holds only the test lane's rows, lane_rows_only: its driver is still owed) | no_exit_block (no Exit block with the four keys: a visit in progress, or one that ended without writing it) | met |
-    not_met. See the record layout above this section."""
+    not_met. Dispatch can forecast with the composed deploy's stamp. See the record layout above this section."""
     if tt is None:
         tt, _ = read_json(root, mod, "version/test_table.json")
     base = "%s/visit_%d" % (INGAME_DIR, n)
@@ -4898,7 +4898,7 @@ def read_ingame_exit(root, mod, n, tt=None):
     # the BUILD MATCH (owner, 2026-11-17, RIMMANDRAKE_FOLD_STAGE_SEVEN_INTO_WALK_BRIEF_NO_VETO): a check's last row counts
     # only when its game build matches, and any changes to the mod or its reference list leave the check untouched.
     try:
-        bm = BM.check_visit(root, mod, n, tt, blk["savegame"])
+        bm = BM.check_visit(root, mod, n, tt, blk["savegame"], **({"deploy_stamp": True} if deploy_stamp else {}))
     except Exception as e:      # a build match that cannot run counts nothing
         bm = None
         why.append("%s(%s: %s): no in-game check counts until it does" % (
@@ -5592,7 +5592,7 @@ def unrun_lines_of(rows, tt, moved=()):
         r.get("item"), r.get("offline"), r.get("sha"), r.get("check"), r.get("command")) for r in rows]
 
 
-def ingame_facts(root, mod):
+def ingame_facts(root, mod, *, deploy_stamp=False):
     """-> what in-game acceptance owes now: visit (the moves into in_game so far), exit (read_ingame_exit of visit_N),
     checks (the stage-6 ids), testq (those carrying a testq block: what SteveDesktop's queue may admit), and owed:
     "run" (no visit_N folder, or only the test lane's rows in it: a live driver is owed) | "no exit block" | "exit met" | "exit not met" | "blocked" (a
@@ -5622,7 +5622,7 @@ def ingame_facts(root, mod):
     past = [k for k in have if k > n]
     if past:
         blocked.append("visit folder(s) %s are past the record's visit %d" % (past, n))
-    ex = read_ingame_exit(root, mod, n, tt)
+    ex = read_ingame_exit(root, mod, n, tt, deploy_stamp=deploy_stamp)
     out.update({"visit": n, "visits_present": have, "exit": ex, "opened": ingame_openings(rec).get(n) or rec.get("since"),
                 "blocked": blocked, "checks": [k for k, _ in checks],
                 "tag_flaws": LK.table_flaws(tt),

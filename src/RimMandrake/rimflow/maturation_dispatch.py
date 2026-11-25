@@ -563,7 +563,7 @@ def add_ingame(root, mod, f, runs):
     f["ingame_games"] = {r.get("unit"): run_game(r) for r in runs or [] if r.get("live") and _is_ingame_item(r.get("item"))}
     if f.get("stage") != "in_game":
         return f
-    f.update(M.ingame_facts(root, mod))
+    f.update(M.ingame_facts(root, mod, deploy_stamp=True))
     f["certificate"] = M.certificate(root, mod, "in_game")
     f["known_red"] = known_red(root, mod)          # cert_wait's red-decider route reads which items owe them
     f["cert_rerun_result"] = rerun_result(mod)     # cert_wait's zero-token rerun reads its last result
@@ -2355,17 +2355,22 @@ def decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge
         b = "; ".join(f.get("blocked") or [])
         put("held" if "hold" in b else "blocked", b)
         return False
+    stamp = ((ex.get("build_match") or {}).get("walk") or {}).get("deploy_stamp")
+    forecast = (" Dispatch used the last composed deploy's build. Verify the current build with maturation.py next %s."
+                % mod) if stamp else ""
     if owed == "exit met":
         put("exit_met", "in-game visit %s: exit met (%s)" % (n, (ex.get("why") or ["-"])[0]),
             "in-game visit %s: exit met (a program's reading of %s, its build match counting every check on the walk "
             "build); the steward reads it and confirms: maturation.py advance %s --to pre_human --steward-confirms "
             "\"...\" (a Conductor step; the program never advances)"
-            % (n, summ, mod))
+            % (n, summ, mod) + forecast)
         return False
     if owed == "exit not met":
-        put("exit_not_met", "; ".join((ex.get("why") or [])[:3]),
+        failed = "; ".join((ex.get("why") or [])[:3])
+        put("exit_not_met", failed,
             "in-game visit %s ended, exit not met (%s); nothing more launches on it: the Conductor reads %s and sends "
-            "each mod-wrong line, and each undecided bar, down its road back (a wrong check or scene never goes back)" % (n, "; ".join((ex.get("why") or [])[:3]), summ))
+            "each mod-wrong line, and each undecided bar, down its road back (a wrong check or scene never goes back)"
+            % (n, failed, summ) + forecast)
         return False
     mine = [x for x in ours if x.get("visit") == n]
     retry = mine[-1] if mine and retriable(cfg, mine[-1], f.get("killed"), mod) else None

@@ -1958,7 +1958,7 @@ def item_names_main():
     scratch = tempfile.mkdtemp(prefix="item_names_dispatch_")
     os.environ["RM_MATURATION_DISPATCH_DIR"] = scratch
     try:
-        MD.M.ingame_facts = lambda root, mod: {"opened": "2026-11-16T03:25:09-08:00"}
+        MD.M.ingame_facts = lambda root, mod, **kw: {"opened": "2026-11-16T03:25:09-08:00"}
         MD.M.certificate = lambda root, mod, stage: {}
         t0 = MD._ts("2026-11-16T03:25:09-08:00")
         runs = [{"unit": "u-failed", "item": "RIMMANDRAKE_DRIVE_X_IN_GAME_VISIT_ONE", "at": t0 + 60, "end": None,

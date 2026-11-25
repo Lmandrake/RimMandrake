@@ -747,6 +747,11 @@ def main():
         names = args.mod or sorted(known_mods)
         targets = [(n, mod_dir(n)) for n in names]
     try:
+        if args.apply and args.compose:
+            sys.path.insert(0, os.path.join(os.path.dirname(HERE), "rimflow"))
+            from build_match import stamp_composed_deploy
+            with stamp_composed_deploy(os.path.join(mods_dir, args.compose_target)):
+                return _run(args, targets, holds, mods_dir, active)
         return _run(args, targets, holds, mods_dir, active)
     finally:
         forget_all()
