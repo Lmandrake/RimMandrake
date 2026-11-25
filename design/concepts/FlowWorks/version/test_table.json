@@ -3126,11 +3126,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.33,
+    "seconds": 0.28,
     "last": "PASS",
-    "at": "2026-11-24T19:41:30Z",
+    "at": "2026-11-25T06:01:00Z",
     "result": "PASS",
-    "build": "058dc41a42d4cb51e14a",
+    "build": "42740b985b43ca8ac7ac",
     "command": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only toss_flame",
     "margins": []
    },
@@ -3152,11 +3152,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.55,
+    "seconds": 0.48,
     "last": "PASS",
-    "at": "2026-11-24T19:41:30Z",
+    "at": "2026-11-25T06:01:00Z",
     "result": "PASS",
-    "build": "058dc41a42d4cb51e14a",
+    "build": "42740b985b43ca8ac7ac",
     "command": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only fetch_fallen",
     "margins": []
    },
@@ -3970,11 +3970,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.71,
+    "seconds": 0.49,
     "last": "PASS",
-    "at": "2026-11-24T19:41:31Z",
+    "at": "2026-11-25T06:01:01Z",
     "result": "PASS",
-    "build": "058dc41a42d4cb51e14a",
+    "build": "42740b985b43ca8ac7ac",
     "command": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only coating",
     "margins": []
    },
@@ -4020,11 +4020,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 202.41,
-    "last": "--only PitLook1114*: 7 case(s) and 0 hose suite(s) ran, 1477 filtered out",
-    "at": "2026-11-24T19:44:54Z",
+    "seconds": 221.78,
+    "last": "--only PitLook1114*: 7 case(s) and 0 hose suite(s) ran, 1478 filtered out",
+    "at": "2026-11-25T06:04:43Z",
     "result": "PASS",
-    "build": "ee5ca7150bb5d54d165f",
+    "build": "c2df4846cdff2c4dc070",
     "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only PitLook1114*",
     "margins": []
    }
