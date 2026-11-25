@@ -1,0 +1,3 @@
+A new Explosive Knockback Mod Setting turns three selftests red until it is registered in four places: GAME_SIDE (or the kernel sweep) in selftest_explosiveknockback_settings_sweep.py, SweepFields and a lane in RM_KnockbackProof_StageThree.cs, the key named in sc_settings_sweep's action in scenes.json, and a new settings group in selftest_settings_screens.py's ExplosiveKnockback table. Register the setting; do not edit the checks to pass. Each edited deciding test then needs its red-seen run.
+item: RIMMANDRAKE_AUTOBUILD_EXPLOSIVEKNOCKBACK_FOURTEEN_BARS_LEFT
+home: skills/rimworld-modding/references/project-engine-facts.md
