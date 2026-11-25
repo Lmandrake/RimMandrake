@@ -1,0 +1,2 @@
+FAIL \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES.det\design\concepts\FlowWorks\version\in_game\bundle_shrink_20261125\evidence\sc_lake_endless_20261125T015004.json AssertionError("rows not all PASS: [('SRC_lake_reads_endless', 'UNMEASURED')]")
+[bridge split] 45.6 s wall: load 0.7 / ticks 0.0 / reads 5.0 / other 4.7 / outside calls 35.2 s

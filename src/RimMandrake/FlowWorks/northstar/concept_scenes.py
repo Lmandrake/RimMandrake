@@ -784,11 +784,12 @@ def _source_pays(S):
 # oversized-scenes/table.md section 1: about eight claims, two mod lists, up to 8,000 pulses and 14,000 ticks; 13 runs, 10 not
 # passed). sc_source_draws: one draw and the tap-0 control. sc_source_refills: rain on an emptied pond, two reads 1,000 ticks
 # apart once the rain reaches it. sc_lake_endless: the edge body on the river site (its own tier, fw_gss_sitting).
-SRC_RAIN_STEP = 500       # ticks between reads while the rain has not yet reached the pond
-SRC_RAIN_GAP = 1000       # ticks between the two reads that show the refill rising
+SRC_RAIN_STEP = 500       # ticks between reads, before the first water and while waiting for the next rise
 # The bound on waiting for the rain to reach the pond. Danger: a pond the rain never reaches holds the bridge forever.
 # Measured need: visit 12 (2026-11-24, sc_source_pays_20261124T231728) read the emptied pond 0 L 4,000 ticks into locked
 # rain and 2,327 L at 9,000; this is ten times 9,000. Past it the row reads FAIL (the rain fell, the pond never refilled).
+# The same bound holds the wait for the next rise after the first water: rain lands in lumps more than 1,000 ticks apart
+# (live 2026-11-25, bundle_shrink_20261125: 0 L until 4,500 ticks, then 1,250 L, and 1,250 L again 1,000 ticks later).
 SRC_RAIN_ONSET_MAX = 90000
 
 
@@ -813,8 +814,8 @@ def _src_brim(hole_txt, wet_txt):
 
 def _source_refills(S):
     """sc_source_refills: rain refills an emptied pond with visible progress. The pond is dug and left empty, rain is
-    locked on, and once the probe first reads water the next read 1,000 ticks later is higher, and the first is below the
-    hole's brim (false pass: the refill is instant)."""
+    locked on, and once the probe first reads water it reads more again later (the next lump of rain), and the first read
+    is below the hole's brim (false pass: the refill is instant)."""
     core = [(O[0] + i, O[1] + j) for i in range(20) for j in range(1, 9)]
     shelf = [(O[0] + i, O[1] + j) for i in range(20) for j in (0, 9)]
     probe = '%d,%d' % (O[0] + 10, O[1] + 5)
@@ -833,11 +834,16 @@ def _source_refills(S):
         if first is None or first > 0:
             break
     rain = _src_rain(S)
-    S.ticks(SRC_RAIN_GAP)
-    second = _litres(S.sc(NSP, 'ProofReadout', probe))
+    rose, second = 0, first
+    while first and rose < SRC_RAIN_ONSET_MAX:
+        S.ticks(SRC_RAIN_STEP); rose += SRC_RAIN_STEP
+        second = _litres(S.sc(NSP, 'ProofReadout', probe))
+        if second is None or second != first:
+            break
     S.call('jawa/weather_set', unlock=True)
     brim = _src_brim(hole, first_txt)
-    why = {'litres': (start, first, second), 'brim': brim, 'onset_ticks': waited, 'rainRate': rain, 'hole': hole[:60]}
+    why = {'litres': (start, first, second), 'brim': brim, 'onset_ticks': waited, 'rise_ticks': rose, 'rainRate': rain,
+           'hole': hole[:60]}
     if not rain:
         S.row('SRC_refill_visible', False, ('no rain fell: the refill was never asked', why), unmeasured=True)
     elif start != 0:

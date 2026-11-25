@@ -1,0 +1,306 @@
+{
+  "script": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES.det\\src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py",
+  "started": 1795600205.5840175,
+  "mode": "live",
+  "calls": [
+    {
+      "tool": "jawa/flowworks_pulse",
+      "args": {
+        "count": 1,
+        "x": 0,
+        "z": 0,
+        "w": 0,
+        "h": 0,
+        "includeBodies": true
+      },
+      "result": {
+        "success": true,
+        "pulsesRequested": 1,
+        "pulsesRun": 1,
+        "mapId": 0,
+        "cellCount": 0,
+        "cells": [],
+        "pulses": [
+          {
+            "pulse": 0,
+            "depth": [],
+            "dl": [],
+            "sumDl": 0,
+            "cellsDlChanged": 0,
+            "cellsDepthChanged": 0,
+            "rawWaterAboveDepth": 0,
+            "sinkTransferredTotal": 0.0,
+            "overflowDestroyedTotal": 0.0,
+            "bodies": []
+          },
+          {
+            "pulse": 1,
+            "depth": [],
+            "dl": [],
+            "sumDl": 0,
+            "cellsDlChanged": 0,
+            "cellsDepthChanged": 0,
+            "rawWaterAboveDepth": 0,
+            "sinkTransferredTotal": 0.0,
+            "overflowDestroyedTotal": 0.0,
+            "bodies": []
+          }
+        ],
+        "nextPulseTickBefore": 251,
+        "nextPulseTickAfter": 251,
+        "nextPulseTickUntouched": true,
+        "pulseIntervalTicks": 250,
+        "flowPerPulse": 1,
+        "depthEngineEnabled": true,
+        "gamePaused": true,
+        "ticksBefore": 2,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_79653aadbe984320965fe2f3d19e1502",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 34
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    }
+  ],
+  "site": {
+    "site": "calm",
+    "save": "RM_TestSite_calm_v3",
+    "utc": "2026-11-25T09:50:05Z",
+    "problems": [],
+    "load_s": 5.3,
+    "quietMap": {
+      "profile": "quiet_site",
+      "suite": "isolated",
+      "row": "test_site_saves_load_calm",
+      "topic": null,
+      "controls": [
+        {
+          "name": "threat_structures_cleared",
+          "what": "hostile threat structures vanished at setup (vitals classifier: turret, spawner, dormant, condition causer, non-humanlike faction); keep_defs spared",
+          "hides": "hive/infestation/mech-cluster interactions; insect-faction behaviour on the site",
+          "readBack": {
+            "removed": [],
+            "threatsAfter": 0,
+            "kept": 0,
+            "errors": []
+          }
+        },
+        {
+          "name": "hostiles_removed",
+          "what": "hostile pawns present at setup removed by Vanish (no death action, no corpse)",
+          "hides": "combat interactions with the mod's things",
+          "readBack": {
+            "acted": 0,
+            "residue": []
+          }
+        },
+        {
+          "name": "proximity_letters_sent",
+          "what": "every CompProximityLetter marked sent (the mapgen void monolith's 'Fallen monolith')",
+          "hides": "the Anomaly monolith discovery letter and any mod building's proximity letter",
+          "readBack": {
+            "letters": [
+              [
+                "VoidMonolith",
+                "Fallen monolith",
+                true
+              ]
+            ],
+            "unsentAfter": 0
+          }
+        },
+        {
+          "name": "modal_broker",
+          "what": "explicit window handlers only (MODAL_HANDLERS); an unknown force-pause window is CAPTURED and blocks the row, never closed blindly; the same window still open after its handler escalates",
+          "hides": "the handled dialog's other choices (VEF new-faction: 'Do nothing' means the faction is not spawned)",
+          "readBack": {
+            "handled": [
+              {
+                "type": "VEF.Factions.Dialog_NewFactionSpawning",
+                "window": 236,
+                "title": null,
+                "handler": "click Do nothing",
+                "target": "ui-element:199:4:24",
+                "closed": true,
+                "error": null
+              },
+              {
+                "type": "VEF.Factions.Dialog_NewFactionSpawning",
+                "window": 237,
+                "title": null,
+                "handler": "click Do nothing",
+                "target": "ui-element:200:4:24",
+                "closed": true,
+                "error": null
+              },
+              {
+                "type": "VEF.Factions.Dialog_NewFactionSpawning",
+                "window": 238,
+                "title": null,
+                "handler": "click Do nothing",
+                "target": "ui-element:201:4:24",
+                "closed": true,
+                "error": null
+              },
+              {
+                "type": "VEF.Factions.Dialog_NewFactionSpawning",
+                "window": 239,
+                "title": null,
+                "handler": "click Do nothing",
+                "target": "ui-element:202:4:24",
+                "closed": true,
+                "error": null
+              },
+              {
+                "type": "VEF.Factions.Dialog_NewFactionSpawning",
+                "window": 240,
+                "title": null,
+                "handler": "click Do nothing",
+                "target": "ui-element:203:4:29",
+                "closed": true,
+                "error": null
+              },
+              {
+                "type": "VEF.Factions.Dialog_NewFactionSpawning",
+                "window": 241,
+                "title": null,
+                "handler": "click Do nothing",
+                "target": "ui-element:204:4:29",
+                "closed": true,
+                "error": null
+              },
+              {
+                "type": "VEF.Factions.Dialog_NewFactionSpawning",
+                "window": 242,
+                "title": null,
+                "handler": "click Do nothing",
+                "target": "ui-element:205:4:29",
+                "closed": true,
+                "error": null
+              },
+              {
+                "type": "VEF.Factions.Dialog_NewFactionSpawning",
+                "window": 243,
+                "title": null,
+                "handler": "click Do nothing",
+                "target": "ui-element:206:4:24",
+                "closed": true,
+                "error": null
+              },
+              {
+                "type": "VEF.Factions.Dialog_NewFactionSpawning",
+                "window": 244,
+                "title": null,
+                "handler": "click Do nothing",
+                "target": "ui-element:207:4:24",
+                "closed": true,
+                "error": null
+              }
+            ],
+            "unknown": []
+          }
+        }
+      ],
+      "notSuppressed": [
+        "active quests and their parts (never ended by default: ending a quest changes the world)",
+        "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+        "existing game conditions, map/world/game components and mod tickers",
+        "hives and other pawn-spawning structures, births, egg hatching, breeders",
+        "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+        "weather transitions, fires, existing hostile behaviour"
+      ],
+      "keepDefs": [],
+      "events": [],
+      "problems": [],
+      "verify": null,
+      "arrivals": [],
+      "note": "enableStoryteller is not saved with the game: re-apply after any load"
+    },
+    "sky": {
+      "weather": [
+        {
+          "after": "Clear",
+          "ok": true
+        },
+        {
+          "after": "Clear",
+          "ok": true
+        }
+      ],
+      "extinguished": 0,
+      "strayFires": 0,
+      "verified": true,
+      "error": null
+    },
+    "check": {
+      "site": "calm",
+      "utc": "2026-11-25T09:50:16Z",
+      "problems": [],
+      "map": {
+        "tile": 112579,
+        "mapId": 0,
+        "sizeX": 250,
+        "sizeZ": 250,
+        "mapBiome": "AridShrubland",
+        "outdoorTempNow": 13.9428368
+      },
+      "foggedCells": 0,
+      "triggers": 0,
+      "danger": [],
+      "ruins": 0,
+      "hostiles": [],
+      "threatStructures": [],
+      "fires": 0,
+      "weather": {
+        "current": "Clear",
+        "rainRate": 0.0
+      },
+      "colonists": [
+        [
+          "Human475",
+          false
+        ],
+        [
+          "Human478",
+          false
+        ],
+        [
+          "Human483",
+          false
+        ]
+      ],
+      "verified": true
+    },
+    "ready_s": 11.8,
+    "verified": true
+  },
+  "scene": "scene_lake_endless",
+  "rows": [
+    {
+      "id": "SRC_lake_reads_endless",
+      "status": "UNMEASURED",
+      "kind": "HARNESS",
+      "detail": "the river site did not load verified (it is built on the fw_gss_sitting tier): [\"the load logged ['Could not resolve cross refs: System.NullReferenceException: Object reference no', 'Could not resolve cross refs: System.InvalidOperationException: Failed to compar']\"]"
+    }
+  ],
+  "lake_site": {
+    "site": "river",
+    "save": "RM_TestSite_river_v3",
+    "verified": false,
+    "problems": [
+      "the load logged ['Could not resolve cross refs: System.NullReferenceException: Object reference no', 'Could not resolve cross refs: System.InvalidOperationException: Failed to compar']"
+    ]
+  },
+  "status": "FAIL",
+  "error": "AssertionError(\"rows not all PASS: [('SRC_lake_reads_endless', 'UNMEASURED')]\")",
+  "finished": 1795600251.159343
+}

@@ -1,0 +1,4 @@
+PASS \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES.det\design\concepts\FlowWorks\version\in_game\bundle_shrink_20261125\evidence\sc_hole_prison_20261125T013127.json 
+[bridge split] 73.7 s wall: load 0.8 / ticks 10.8 / reads 4.3 / other 17.8 / outside calls 39.9 s
+[bridge split] WARN 76 calls of jawa/window_list_close (3.1 s): batch them
+[bridge split] WARN 70 calls of jawa/static_call (3.3 s): batch them

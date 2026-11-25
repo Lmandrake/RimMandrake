@@ -1,0 +1,7936 @@
+{
+  "script": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES.det\\src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py",
+  "started": 1795598945.853855,
+  "mode": "live",
+  "calls": [
+    {
+      "tool": "jawa/weather_set",
+      "args": {
+        "weather": "Clear",
+        "lockWeather": true
+      },
+      "result": {
+        "success": true,
+        "before": "Clear",
+        "after": "Clear",
+        "lockInForce": true,
+        "gamePaused": true,
+        "notes": [
+          "registered a PERMANENT GameCondition_ForceWeather - this is the only durable weather control"
+        ],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_957df24354ca48c9ba8530e54388b235",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 40
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 60,
+        "z": 60,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 60
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_f0291e7a2e6741a98c852591c7e3473d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 60,
+        "z": 69,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 69
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_b7718549e0a640dc821753353193bb09",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 61,
+        "z": 60,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 61,
+          "z": 60
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_387dbbe7333d40829affc9f3c626db34",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 41
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 61,
+        "z": 69,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 61,
+          "z": 69
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_c2541e7480364856affba184f170a5d9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 62,
+        "z": 60,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 62,
+          "z": 60
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_96c88596c9894b2f996a2af668a88133",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 62,
+        "z": 69,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 62,
+          "z": 69
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_d374be346648405dbb7ef8afa1791778",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 63,
+        "z": 60,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 63,
+          "z": 60
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_a8afdac9eb0147c6a6581f6bb1c9b931",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 63,
+        "z": 69,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 63,
+          "z": 69
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_72eab167edfb40a596cfcdcbade403ab",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 41
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 64,
+        "z": 60,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 64,
+          "z": 60
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_39f4a422c2954638bbf2925743b0e687",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 41
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 64,
+        "z": 69,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 64,
+          "z": 69
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_05ff69f71f3f464490cb2a980ded1782",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 46
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 65,
+        "z": 60,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 65,
+          "z": 60
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_d53e769a356c4b4eb15e5c01e443aa8e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 45
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 65,
+        "z": 69,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 65,
+          "z": 69
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_011b8aaf7c174d2ebe57ee431b3cb4d7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 66,
+        "z": 60,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 66,
+          "z": 60
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_c5facdb726f847738eef217027da8343",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 66,
+        "z": 69,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 66,
+          "z": 69
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_127e06b573ea4e2b83156a9602d5222e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 67,
+        "z": 60,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 67,
+          "z": 60
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_7dfea3e0b4614c40be7b1e77b99b86c7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 40
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 67,
+        "z": 69,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 67,
+          "z": 69
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_3b16b5412ab94ce2803bdc5914b647bc",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 68,
+        "z": 60,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 68,
+          "z": 60
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_1ee811ebfadb4383ba6f433f99f5ad5d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 68,
+        "z": 69,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 68,
+          "z": 69
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_3f8dbdc44bc6439591d1887013b94999",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 34
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 69,
+        "z": 60,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 69,
+          "z": 60
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_e6359d5afb2145a98f9e9ad5d6a7f28e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 69,
+        "z": 69,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 69,
+          "z": 69
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_10cd4e16cda642d8bb7e4cb4099678bc",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 34
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 70,
+        "z": 60,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 70,
+          "z": 60
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_a6285bf0bae6487e84583954348e42ea",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 70,
+        "z": 69,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 70,
+          "z": 69
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_1f3f5bd25d594684a04585dd2ba104e9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 71,
+        "z": 60,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 71,
+          "z": 60
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_95aa7391c0d5418d961642e50f901e89",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 71,
+        "z": 69,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 71,
+          "z": 69
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_dec250f520494d2096bac03db9c4df9b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 72,
+        "z": 60,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 72,
+          "z": 60
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_9a34ee1cce3648bb9ee7b6442836cd54",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 46
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 72,
+        "z": 69,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 72,
+          "z": 69
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_c7bdb55115594784a5053fa3f69441a6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 34
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 73,
+        "z": 60,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 73,
+          "z": 60
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_c50b74e163a043c499e6accb299e7b2a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 73,
+        "z": 69,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 73,
+          "z": 69
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_b721af9ccf054077a4e3ebb019e92fd7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 74,
+        "z": 60,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 74,
+          "z": 60
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_32812ab5c314408eb3b71e367b74ef01",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 74,
+        "z": 69,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 74,
+          "z": 69
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_f79aaf6f63154246a9138e7da1bfcd52",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 33
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 75,
+        "z": 60,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 75,
+          "z": 60
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_011d3718d84b41d28eaed20f034ade19",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 41
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 75,
+        "z": 69,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 75,
+          "z": 69
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_1635c7ed9b63441ea54f5cd7af4e63ac",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 41
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 76,
+        "z": 60,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 76,
+          "z": 60
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_ad54b5a2bea142709f95174147fa9d3d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 76,
+        "z": 69,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 76,
+          "z": 69
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_76055b091a1941bc9ba47aaf835f9b1b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 77,
+        "z": 60,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 77,
+          "z": 60
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_5369081fd65a41b8a77b774eec6bb1e1",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 40
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 77,
+        "z": 69,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 77,
+          "z": 69
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_91fe728f56814911930faa5b3eda8a69",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 34
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 78,
+        "z": 60,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 78,
+          "z": 60
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_aefdfe3e438e40db90f188b7230a157a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 40
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 78,
+        "z": 69,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 78,
+          "z": 69
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_991d18da94ba4cd78534a49563727e27",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 40
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 79,
+        "z": 60,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 79,
+          "z": 60
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_c6bf9de8fb774cf7a355cd632f0677f9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 79,
+        "z": 69,
+        "deepenLevels": 1,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 79,
+          "z": 69
+        },
+        "depth": 1,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_3b40c11b6e1c4017a0e97760000bd58f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 34
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 60,
+        "z": 61,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 61
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_e5a4bfd31e1b4c24b0509360875d6fe8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 60,
+        "z": 62,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 62
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_f08379f533bb475fbf2dcb33054fa0ea",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 60,
+        "z": 63,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 63
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_914688edb7ec427eabad93c3ea2b48f1",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 40
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 60,
+        "z": 64,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 64
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_5f08791d20b54d96a15dc82da1f39764",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 34
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 60,
+        "z": 65,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 65
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_5401cb7dd0cc47b7b9ac93fa39c24806",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 33
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 60,
+        "z": 66,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 66
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_8cb928b3bf754a0f920ea35df0ba8ec7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 60,
+        "z": 67,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 67
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_1a3f6c023f3d48aa869e79ddcadcf265",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 60,
+        "z": 68,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 60,
+          "z": 68
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_236ec4350c3f4820a3b42cc3bab7ebe3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 61,
+        "z": 61,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 61,
+          "z": 61
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_17e5a27c9a1f41deb2dfe13f14ba512c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 61,
+        "z": 62,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 61,
+          "z": 62
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_14b0377902734f87af2f346ad5b26db9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 34
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 61,
+        "z": 63,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 61,
+          "z": 63
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_69fd7ea955bf40fea7f52485150918b5",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 61,
+        "z": 64,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 61,
+          "z": 64
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_56f981c3eeb548d1a00762714c5254c1",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 61,
+        "z": 65,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 61,
+          "z": 65
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_3204b6e5fc314c2b8740b66698e47827",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 61,
+        "z": 66,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 61,
+          "z": 66
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_abcbdc24120d4597aca2f939ad0d3b85",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 61,
+        "z": 67,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 61,
+          "z": 67
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_d2067dfdc0384bff8dfe74fb06b6ae2d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 61,
+        "z": 68,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 61,
+          "z": 68
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_56a5ed4985ce49e492ea0873e30c9a80",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 34
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 62,
+        "z": 61,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 62,
+          "z": 61
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_e454f5131a214828853187ab3cc4812f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 45
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 62,
+        "z": 62,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 62,
+          "z": 62
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_4a46a021ea5f47dea4f50e945f0c999e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 33
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 62,
+        "z": 63,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 62,
+          "z": 63
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_7b9de94e685949789ad2dea0ea5ec9a8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 45
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 62,
+        "z": 64,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 62,
+          "z": 64
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_e77f9e6c90e74078b2302c0e59f0824a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 52
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 62,
+        "z": 65,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 62,
+          "z": 65
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_69013db591b3489fab83e2fe6c04b92c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 62,
+        "z": 66,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 62,
+          "z": 66
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_89dc5ebac00842f8a80d2656fb00951c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 62,
+        "z": 67,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 62,
+          "z": 67
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_227d0e6bddf54930812273738e0dfc5b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 38
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 62,
+        "z": 68,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 62,
+          "z": 68
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_c12c6702ca14406584e5a6de2da33b27",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 63,
+        "z": 61,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 63,
+          "z": 61
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_92fb23685dc44c9788e7a9a13b3c8af6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 63,
+        "z": 62,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 63,
+          "z": 62
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_6920b0e2781a410da1cd4d2e85f2b721",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 41
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 63,
+        "z": 63,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 63,
+          "z": 63
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_24e7b7cbee334584b66d1c7bfb3ad8bb",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 46
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 63,
+        "z": 64,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 63,
+          "z": 64
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_cdc98857e06e481091f44cb291dfe347",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 63,
+        "z": 65,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 63,
+          "z": 65
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_690b93499bd44e08ae9854e85a9db90e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 63,
+        "z": 66,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 63,
+          "z": 66
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_5f6c7407a5b24ac1bba126ae204ba8a0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 38
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 63,
+        "z": 67,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 63,
+          "z": 67
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_e901bb6473524f1cb61ea566d3b3a2d0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 63,
+        "z": 68,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 63,
+          "z": 68
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_c0e4021c20d84f1eab6909accc5d04bb",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 64,
+        "z": 61,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 64,
+          "z": 61
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_633261288169426bb340c084f70f1aca",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 64,
+        "z": 62,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 64,
+          "z": 62
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_06123ed7b5a34d5ebf19dfa353151790",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 45
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 64,
+        "z": 63,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 64,
+          "z": 63
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_4e0f1220ee36480c80228c9c2c294cbe",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 40
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 64,
+        "z": 64,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 64,
+          "z": 64
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_274b6a93bc834605bbe5f5f42fe12104",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 64,
+        "z": 65,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 64,
+          "z": 65
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_dd861006dbe04d15bd450ade103f67f8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 64,
+        "z": 66,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 64,
+          "z": 66
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_e8c7afd44a324d559f8915eb2f18b4d3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 64,
+        "z": 67,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 64,
+          "z": 67
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_5f8e9dd8beef4c7abd57669f8e9db3ce",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 41
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 64,
+        "z": 68,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 64,
+          "z": 68
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_509d6be7e85f46c38808bccb46acda6b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 65,
+        "z": 61,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 65,
+          "z": 61
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_9ee7ec1345854e2f9fccbc131466eb66",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 38
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 65,
+        "z": 62,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 65,
+          "z": 62
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_6ca5c02bd3ab4fe68dcbb15a2ef0936b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 65,
+        "z": 63,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 65,
+          "z": 63
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_6b41c4e9c79540fab14babc14f0b12bc",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 65,
+        "z": 64,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 65,
+          "z": 64
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_792f23e2fe81473890a1d5ba4da1563a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 65,
+        "z": 65,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 65,
+          "z": 65
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_11dfbe6185b244f5b1bac1044ac7ae12",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 65,
+        "z": 66,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 65,
+          "z": 66
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_3604f591362340dca54191dc4dddd3c2",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 65,
+        "z": 67,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 65,
+          "z": 67
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_a0dec64400a2416792dd5734d2f9b21d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 33
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 65,
+        "z": 68,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 65,
+          "z": 68
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_0d747c7fc4af4ff7b9a8709da50de795",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 66,
+        "z": 61,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 66,
+          "z": 61
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_ecdaaa51fd784605956ffa6957840242",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 66,
+        "z": 62,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 66,
+          "z": 62
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_6b74d7a0ac8d41d7bb0bb858c9f1f8f8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 41
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 66,
+        "z": 63,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 66,
+          "z": 63
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_fddc0f1f61b2480eb8e31715a36bb50e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 46
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 66,
+        "z": 64,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 66,
+          "z": 64
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_b30dff47af6f4dacb7889b65f35876a3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 33
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 66,
+        "z": 65,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 66,
+          "z": 65
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_d476c545772f4403a78f7701d0797177",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 66,
+        "z": 66,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 66,
+          "z": 66
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_136b71e7775741acac8c4bcc7d2cbf56",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 66,
+        "z": 67,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 66,
+          "z": 67
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_e5c1746d1c274220b96f92f04aaa9a27",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 66,
+        "z": 68,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 66,
+          "z": 68
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_3daa90bf4f134005a60639998a76c4ca",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 67,
+        "z": 61,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 67,
+          "z": 61
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_7a423eb43e7e40688852e9ba42e5c0ab",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 46
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 67,
+        "z": 62,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 67,
+          "z": 62
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_44f8cf00730c4bd8b6d22dd0a2bbed27",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 38
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 67,
+        "z": 63,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 67,
+          "z": 63
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_08272acee86a419dbe59995880d0d52a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 33
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 67,
+        "z": 64,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 67,
+          "z": 64
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_9f0da741630941bf80ea06564964058f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 67,
+        "z": 65,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 67,
+          "z": 65
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_5d5a0e150eed41d2ba7d85d7b2f4b692",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 67,
+        "z": 66,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 67,
+          "z": 66
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_44bdd47466c9453db007420d57bbe6e1",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 67,
+        "z": 67,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 67,
+          "z": 67
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_bc33dd6165d845908aacbb5c512b5c59",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 67,
+        "z": 68,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 67,
+          "z": 68
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_30754f8c2a524140a829974abf2c968e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 45
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 68,
+        "z": 61,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 68,
+          "z": 61
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_47dc46cda4cc4202afa0b09f83eddd4c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 68,
+        "z": 62,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 68,
+          "z": 62
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_99bba51d62f04c858e481574ff13f389",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 68,
+        "z": 63,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 68,
+          "z": 63
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_f9bda2a43e5446729fe8fdb2b1d1bb45",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 41
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 68,
+        "z": 64,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 68,
+          "z": 64
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_732ca66162464c739f7948b136f39de8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 45
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 68,
+        "z": 65,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 68,
+          "z": 65
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_950cd1d893eb4617b2c7be8f6cecac51",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 68,
+        "z": 66,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 68,
+          "z": 66
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_85af1dfd17164a928251467fb3356c53",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 68,
+        "z": 67,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 68,
+          "z": 67
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_b135cf1e2f2e438095c574a24c1282c8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 68,
+        "z": 68,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 68,
+          "z": 68
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_f41c2dd4c16c4819ab06b1b88b7475ab",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 45
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 69,
+        "z": 61,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 69,
+          "z": 61
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_087dfda504454312b8e05b0ee8ddc411",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 69,
+        "z": 62,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 69,
+          "z": 62
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_aed871e974e141428e8cb029ea56b6ca",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 69,
+        "z": 63,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 69,
+          "z": 63
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_e1cff52c3d494386b14e3e3d388ce754",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 46
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 69,
+        "z": 64,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 69,
+          "z": 64
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_aa6f5a2458114393952b5abf7f7ac44f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 69,
+        "z": 65,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 69,
+          "z": 65
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_c2f68a08a6044b00a71ddb118e3bcc3f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 69,
+        "z": 66,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 69,
+          "z": 66
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_22893203e3884cda990f43c1074fcccf",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 69,
+        "z": 67,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 69,
+          "z": 67
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_b2d3ec11cbe34bdfa01a7f2bf9adc995",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 69,
+        "z": 68,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 69,
+          "z": 68
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_3d17017a3a36461e979e412e71851040",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 70,
+        "z": 61,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 70,
+          "z": 61
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_a2aba69d890f460aa8189e342741fe20",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 45
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 70,
+        "z": 62,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 70,
+          "z": 62
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_f432b640d055468f8301a76d09101db2",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 70,
+        "z": 63,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 70,
+          "z": 63
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_9a87587585694de89f93c4964dfb7aac",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 40
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 70,
+        "z": 64,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 70,
+          "z": 64
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_d6f083daf4eb407db8d2a715659c0d67",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 70,
+        "z": 65,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 70,
+          "z": 65
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_6fe41dae2a154e649b25d706c26cf509",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 70,
+        "z": 66,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 70,
+          "z": 66
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_3c3bfeaeca1b41668313c53e19450888",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 34
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 70,
+        "z": 67,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 70,
+          "z": 67
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_41440b03c42a406cad01d269e732f961",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 70,
+        "z": 68,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 70,
+          "z": 68
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_53c0454d80d746eebe16a5695bca7cb6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 71,
+        "z": 61,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 71,
+          "z": 61
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_28be96502e274eb2bb517eac5a5571a8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 33
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 71,
+        "z": 62,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 71,
+          "z": 62
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_f5c8f5ff0511480fa305917b556142a8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 45
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 71,
+        "z": 63,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 71,
+          "z": 63
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_d0693ac9bd8645c09d276e8390310e0d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 41
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 71,
+        "z": 64,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 71,
+          "z": 64
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_36ff6ccf5c274cceb13e8ff9e69828a2",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 71,
+        "z": 65,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 71,
+          "z": 65
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_b6879718befd42c99ffb4532e13b06da",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 71,
+        "z": 66,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 71,
+          "z": 66
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_58ed118292f54043a514265da43c973f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 71,
+        "z": 67,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 71,
+          "z": 67
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_50485648c66b4cf2aea5f68cd73e24a0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 71,
+        "z": 68,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 71,
+          "z": 68
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_6a69a1a56d3c4e5ead0cb87a8b42ca12",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 38
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 72,
+        "z": 61,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 72,
+          "z": 61
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_a7c8850aadf644a7b4d718a7d511ace5",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 72,
+        "z": 62,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 72,
+          "z": 62
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_6ff5d3ecfd734ecd8cb47319261f62b1",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 33
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 72,
+        "z": 63,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 72,
+          "z": 63
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_aeb4f966ae644bf6b294322a9c94912c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 72,
+        "z": 64,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 72,
+          "z": 64
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_d0f48a3cc44642e59c58db8a49ccf976",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 72,
+        "z": 65,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 72,
+          "z": 65
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_2a317fe5dd494eba9db0cfdc41ea4edc",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 72,
+        "z": 66,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 72,
+          "z": 66
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_76871f9ad97b41ca97cfa0c04d1a64c5",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 72,
+        "z": 67,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 72,
+          "z": 67
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_22cc0d9351804a12979c440c01c3dab4",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 33
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 72,
+        "z": 68,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 72,
+          "z": 68
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_6dd091981d0548638566e886ae63847e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 73,
+        "z": 61,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 73,
+          "z": 61
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_8a209151d359493baceda0418163ddb0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 73,
+        "z": 62,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 73,
+          "z": 62
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_0599930df74541d58d88412d909d5186",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 73,
+        "z": 63,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 73,
+          "z": 63
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_dd4679d53c314bfead6a5cdbe71a00fc",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 73,
+        "z": 64,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 73,
+          "z": 64
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_3408e6f45ac24c39b92537286145e884",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 73,
+        "z": 65,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 73,
+          "z": 65
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_3ccf0eed65304f04b3f8fa2a251ea98d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 73,
+        "z": 66,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 73,
+          "z": 66
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_da07c7b341cf4de8a31d47953f40a24a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 73,
+        "z": 67,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 73,
+          "z": 67
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_31c4c689ecb94699845123e0e24695f5",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 73,
+        "z": 68,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 73,
+          "z": 68
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_fce67dac72ee444f8c31bf0650373b25",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 74,
+        "z": 61,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 74,
+          "z": 61
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_d02feafffd964c92b14ab5fbd9c9e7ed",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 34
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 74,
+        "z": 62,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 74,
+          "z": 62
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_fe21322da5c348fba5cd6d2c29b7e844",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 40
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 74,
+        "z": 63,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 74,
+          "z": 63
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_dc105bd99e464c668e43e3cfb08a060e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 74,
+        "z": 64,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 74,
+          "z": 64
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_00dc6d52d5a849e583b44aebd98574db",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 74,
+        "z": 65,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 74,
+          "z": 65
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_e4c38e51fbed435dbe40a3656c86bc41",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 74,
+        "z": 66,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 74,
+          "z": 66
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_8812f708de024381a3fc58b0d88c43a7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 74,
+        "z": 67,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 74,
+          "z": 67
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_7c7fd647e54e4e42b004b68a510d2d97",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 45
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 74,
+        "z": 68,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 74,
+          "z": 68
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_72a6112fe5be4bf3a33508fe301a95b9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 46
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 75,
+        "z": 61,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 75,
+          "z": 61
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_b91ef3a2fbf54f6a9946a7509aec03c8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 75,
+        "z": 62,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 75,
+          "z": 62
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_f1110c9e39224bcfa81b1b710df09583",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 75,
+        "z": 63,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 75,
+          "z": 63
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_c7672cf123b24af38ca5ae0218301ee3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 75,
+        "z": 64,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 75,
+          "z": 64
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_2d71cd60080f48929bcf9a56a8ffb0e7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 41
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 75,
+        "z": 65,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 75,
+          "z": 65
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_637a6f93830e49d2a1661898a44231d9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 75,
+        "z": 66,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 75,
+          "z": 66
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_7603c824323f4bd49220d5a8d9ae5405",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 40
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 75,
+        "z": 67,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 75,
+          "z": 67
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_f2f068957be44857a7c043fb77ed4c75",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 38
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 75,
+        "z": 68,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 75,
+          "z": 68
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_7d1f688c7b1847119053b10fe031246e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 76,
+        "z": 61,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 76,
+          "z": 61
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_b2337c823e034ed68802bdb16e231b76",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 76,
+        "z": 62,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 76,
+          "z": 62
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_2a53f08536b64b628fc7d4cb72d1cc35",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 76,
+        "z": 63,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 76,
+          "z": 63
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_766345372b854045ae0de90711e47dea",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 76,
+        "z": 64,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 76,
+          "z": 64
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_9d4afe3b261d450d8333aebb7cf79411",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 76,
+        "z": 65,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 76,
+          "z": 65
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_e608c3d1fc844cec8a797025bdc05427",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 38
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 76,
+        "z": 66,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 76,
+          "z": 66
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_864909d346864ee29dbe155483702b1a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 38
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 76,
+        "z": 67,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 76,
+          "z": 67
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_5b3ed466ce0a41099aee45385204a1a3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 34
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 76,
+        "z": 68,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 76,
+          "z": 68
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_5ebcba200f404dd79e728aaee2bce5ce",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 77,
+        "z": 61,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 77,
+          "z": 61
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_aa26697bea17413f866219d4e97e9e98",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 77,
+        "z": 62,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 77,
+          "z": 62
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_0ff5280790fd476f95e3a0160e6a97ee",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 40
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 77,
+        "z": 63,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 77,
+          "z": 63
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_00591375a6634d9f91d35b126f92848a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 77,
+        "z": 64,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 77,
+          "z": 64
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_7daf718914814be0b08555c1a793cbe5",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 77,
+        "z": 65,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 77,
+          "z": 65
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_d319ca65ec41417f9012cc632b001e00",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 77,
+        "z": 66,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 77,
+          "z": 66
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_11998add4d83401ba9eff39027acab80",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 77,
+        "z": 67,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 77,
+          "z": 67
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_8ea7a1de41334d35bff670391eddc0b8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 77,
+        "z": 68,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 77,
+          "z": 68
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_d3d27ea204474a279eaa98cb3833153d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 45
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 78,
+        "z": 61,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 78,
+          "z": 61
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_41a8c8d3fbda4ffc9757faff80d7133d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 33
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 78,
+        "z": 62,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 78,
+          "z": 62
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_aaa5f0aff9c94a4f9efa2c68358688d4",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 78,
+        "z": 63,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 78,
+          "z": 63
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_a1b9ad0cb3f14b5297057e994b0eb132",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 41
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 78,
+        "z": 64,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 78,
+          "z": 64
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_a521f0a33b7a453ba702a80070fa32fb",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 33
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 78,
+        "z": 65,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 78,
+          "z": 65
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_7f3ac49cb15343d5adcc39da293cf2b9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 45
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 78,
+        "z": 66,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 78,
+          "z": 66
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_dd79af569eb94176b186db70ff8de7c7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 34
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 78,
+        "z": 67,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 78,
+          "z": 67
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_c1a549d42aa947ba9531d4ba24ff81f0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 78,
+        "z": 68,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 78,
+          "z": 68
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_35e2c24ffe04419abd1a9dfcff94e508",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 45
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 79,
+        "z": 61,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 79,
+          "z": 61
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_72d6959419034e07921760f9cf122964",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 79,
+        "z": 62,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 79,
+          "z": 62
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_8b8af61553294c34a30eae40f35097fb",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 79,
+        "z": 63,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 79,
+          "z": 63
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_8ce12b3ee83440d7a25d381351d7569d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 79,
+        "z": 64,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 79,
+          "z": 64
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_41d7284987f7407d913df0556162953a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 79,
+        "z": 65,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 79,
+          "z": 65
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_6ed16bb52f254d359e4d2e3a0061ea75",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 79,
+        "z": 66,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 79,
+          "z": 66
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_819912b60f21417b8341fa0a7fd324b8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 79,
+        "z": 67,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 79,
+          "z": 67
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_dbf9ce29d0ec463aac6bb4c9289dfa15",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/flowworks_excavation_drive",
+      "args": {
+        "x": 79,
+        "z": 68,
+        "deepenLevels": 4,
+        "setBodyWaterM": -1
+      },
+      "result": {
+        "success": true,
+        "cell": {
+          "x": 79,
+          "z": 68
+        },
+        "depth": 4,
+        "waterSet": false,
+        "waterM": 0.0,
+        "waterDl": 0,
+        "bodyCells": 0,
+        "bodyDl": 0,
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_d07d0b4b1c274a65aa84e218b72bab9d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofReadout",
+        "70,65"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofReadout(System.String)",
+        "result": "OK Hole 2 m \u00b7 Water 0.00 m (0 L)",
+        "thingArgs": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_b48ff8665d35458ab1cea124d9dcd849",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/weather_set",
+      "args": {
+        "unlock": true
+      },
+      "result": {
+        "success": true,
+        "before": "Clear",
+        "after": "Clear",
+        "lockInForce": true,
+        "lockCaveat": "lockInForce still reads true because the condition expires on the NEXT TICK and the game is PAUSED.",
+        "gamePaused": true,
+        "notes": [
+          "weather lock ended (Duration = TicksPassed; there is no EndNow())"
+        ],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_c5dc2db7fffc47b7a370b3ffb7c50b76",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/weather_set",
+      "args": {
+        "weather": "Rain",
+        "lockWeather": true
+      },
+      "result": {
+        "success": true,
+        "before": "Clear",
+        "after": "Rain",
+        "lockInForce": true,
+        "gamePaused": true,
+        "notes": [
+          "registered a PERMANENT GameCondition_ForceWeather - this is the only durable weather control"
+        ],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_4993db69908a4fd5b25575346b5d5419",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofReadout",
+        "70,65"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofReadout(System.String)",
+        "result": "OK Hole 2 m \u00b7 Water 0.00 m (0 L)",
+        "thingArgs": [],
+        "ticksGame": 502,
+        "operation": {
+          "OperationId": "op_12acfca32d534307ae24253089011ebc",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 24
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 502
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofReadout",
+        "70,65"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofReadout(System.String)",
+        "result": "OK Hole 2 m \u00b7 Water 0.00 m (0 L)",
+        "thingArgs": [],
+        "ticksGame": 1002,
+        "operation": {
+          "OperationId": "op_78d33f7d2c5f41699bf056270d7070b3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1002
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofReadout",
+        "70,65"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofReadout(System.String)",
+        "result": "OK Hole 2 m \u00b7 Water 0.00 m (0 L)",
+        "thingArgs": [],
+        "ticksGame": 1502,
+        "operation": {
+          "OperationId": "op_250f753323684cc18913df73b43a7f1b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1502
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofReadout",
+        "70,65"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofReadout(System.String)",
+        "result": "OK Hole 2 m \u00b7 Water 0.00 m (0 L)",
+        "thingArgs": [],
+        "ticksGame": 2002,
+        "operation": {
+          "OperationId": "op_2695c63d33a2491ba7f2d95992d34d0b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2002
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofReadout",
+        "70,65"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofReadout(System.String)",
+        "result": "OK Hole 2 m \u00b7 Water 0.00 m (0 L)",
+        "thingArgs": [],
+        "ticksGame": 2502,
+        "operation": {
+          "OperationId": "op_e16a869202ba4c73a0ccb13187be34c5",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2502
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofReadout",
+        "70,65"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofReadout(System.String)",
+        "result": "OK Hole 2 m \u00b7 Water 0.00 m (0 L)",
+        "thingArgs": [],
+        "ticksGame": 3002,
+        "operation": {
+          "OperationId": "op_893d67a70ffc487db6e849f59e965a64",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3002
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofReadout",
+        "70,65"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofReadout(System.String)",
+        "result": "OK Hole 2 m \u00b7 Water 0.00 m (0 L)",
+        "thingArgs": [],
+        "ticksGame": 3502,
+        "operation": {
+          "OperationId": "op_80f2458b83f64a7c8b4f6377cf290672",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3502
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofReadout",
+        "70,65"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofReadout(System.String)",
+        "result": "OK Hole 2 m \u00b7 Water 0.00 m (0 L)",
+        "thingArgs": [],
+        "ticksGame": 4002,
+        "operation": {
+          "OperationId": "op_c1df464a70aa4cf2aa18a30cecb1f857",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 4002
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofReadout",
+        "70,65"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofReadout(System.String)",
+        "result": "OK Hole 2 m \u00b7 Water 0.63 m (1,250 L)",
+        "thingArgs": [],
+        "ticksGame": 4502,
+        "operation": {
+          "OperationId": "op_a0a6153955ea41998bdcee355c3a17b1",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 41
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 4502
+        }
+      }
+    },
+    {
+      "tool": "jawa/weather_get",
+      "args": {},
+      "result": {
+        "success": true,
+        "readErrors": [],
+        "weather": {
+          "current": "Rain",
+          "last": "Clear",
+          "curWeatherAge": 4500,
+          "rainRate": 1.0,
+          "snowRate": 0.0
+        },
+        "activeConditionCount": 3,
+        "conditions": [
+          {
+            "def": "WeatherController",
+            "label": "Forced weather",
+            "scope": "map",
+            "affectsThisMap": true,
+            "permanent": true,
+            "ticksPassed": 4500,
+            "ticksLeft": -1
+          },
+          {
+            "def": "WeatherController",
+            "label": "Forced weather",
+            "scope": "map",
+            "affectsThisMap": true,
+            "permanent": true,
+            "ticksPassed": 4500,
+            "ticksLeft": -1
+          },
+          {
+            "def": "WeatherController",
+            "label": "Forced weather",
+            "scope": "map",
+            "affectsThisMap": true,
+            "permanent": true,
+            "ticksPassed": 4500,
+            "ticksLeft": -1
+          }
+        ],
+        "threatPoints": 38.403862,
+        "wealth": {
+          "total": 18201.46,
+          "items": 12653.1064,
+          "buildings": 3258.35547,
+          "pawns": 2290.0
+        },
+        "storyteller": {
+          "def": "Cassandra",
+          "difficulty": "Rough",
+          "threatScale": 1.0,
+          "allowBigThreats": true
+        },
+        "note": "TransitionTo does not HOLD - WeatherDecider rerolls when the duration expires. Use jawa/weather_set lock=true.",
+        "ticksGame": 4502,
+        "operation": {
+          "OperationId": "op_93405398b5f3403c8fbbee6fe6a6e41a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 4502
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofReadout",
+        "70,65"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofReadout(System.String)",
+        "result": "OK Hole 2 m \u00b7 Water 0.63 m (1,250 L)",
+        "thingArgs": [],
+        "ticksGame": 5502,
+        "operation": {
+          "OperationId": "op_b99ecb0b45434c7cb93967c928290d8c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 5502
+        }
+      }
+    },
+    {
+      "tool": "jawa/weather_set",
+      "args": {
+        "unlock": true
+      },
+      "result": {
+        "success": true,
+        "before": "Rain",
+        "after": "Rain",
+        "lockInForce": true,
+        "lockCaveat": "lockInForce still reads true because the condition expires on the NEXT TICK and the game is PAUSED.",
+        "gamePaused": true,
+        "notes": [
+          "weather lock ended (Duration = TicksPassed; there is no EndNow())"
+        ],
+        "ticksGame": 5502,
+        "operation": {
+          "OperationId": "op_e9de64f2a9a74a9c857cb0f6d1630647",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 5502
+        }
+      }
+    }
+  ],
+  "site": {
+    "site": "calm",
+    "save": "RM_TestSite_calm_v3",
+    "utc": "2026-11-25T09:29:05Z",
+    "problems": [],
+    "load_s": 5.1,
+    "quietMap": {
+      "profile": "quiet_site",
+      "suite": "isolated",
+      "row": "test_site_saves_load_calm",
+      "topic": null,
+      "controls": [
+        {
+          "name": "threat_structures_cleared",
+          "what": "hostile threat structures vanished at setup (vitals classifier: turret, spawner, dormant, condition causer, non-humanlike faction); keep_defs spared",
+          "hides": "hive/infestation/mech-cluster interactions; insect-faction behaviour on the site",
+          "readBack": {
+            "removed": [],
+            "threatsAfter": 0,
+            "kept": 0,
+            "errors": []
+          }
+        },
+        {
+          "name": "hostiles_removed",
+          "what": "hostile pawns present at setup removed by Vanish (no death action, no corpse)",
+          "hides": "combat interactions with the mod's things",
+          "readBack": {
+            "acted": 0,
+            "residue": []
+          }
+        },
+        {
+          "name": "proximity_letters_sent",
+          "what": "every CompProximityLetter marked sent (the mapgen void monolith's 'Fallen monolith')",
+          "hides": "the Anomaly monolith discovery letter and any mod building's proximity letter",
+          "readBack": {
+            "letters": [
+              [
+                "VoidMonolith",
+                "Fallen monolith",
+                true
+              ]
+            ],
+            "unsentAfter": 0
+          }
+        },
+        {
+          "name": "modal_broker",
+          "what": "explicit window handlers only (MODAL_HANDLERS); an unknown force-pause window is CAPTURED and blocks the row, never closed blindly; the same window still open after its handler escalates",
+          "hides": "the handled dialog's other choices (VEF new-faction: 'Do nothing' means the faction is not spawned)",
+          "readBack": {
+            "handled": [
+              {
+                "type": "VEF.Factions.Dialog_NewFactionSpawning",
+                "window": 110,
+                "title": null,
+                "handler": "click Do nothing",
+                "target": "ui-element:91:4:24",
+                "closed": true,
+                "error": null
+              },
+              {
+                "type": "VEF.Factions.Dialog_NewFactionSpawning",
+                "window": 111,
+                "title": null,
+                "handler": "click Do nothing",
+                "target": "ui-element:92:4:24",
+                "closed": true,
+                "error": null
+              },
+              {
+                "type": "VEF.Factions.Dialog_NewFactionSpawning",
+                "window": 112,
+                "title": null,
+                "handler": "click Do nothing",
+                "target": "ui-element:93:4:24",
+                "closed": true,
+                "error": null
+              },
+              {
+                "type": "VEF.Factions.Dialog_NewFactionSpawning",
+                "window": 113,
+                "title": null,
+                "handler": "click Do nothing",
+                "target": "ui-element:94:4:24",
+                "closed": true,
+                "error": null
+              },
+              {
+                "type": "VEF.Factions.Dialog_NewFactionSpawning",
+                "window": 114,
+                "title": null,
+                "handler": "click Do nothing",
+                "target": "ui-element:95:4:29",
+                "closed": true,
+                "error": null
+              },
+              {
+                "type": "VEF.Factions.Dialog_NewFactionSpawning",
+                "window": 115,
+                "title": null,
+                "handler": "click Do nothing",
+                "target": "ui-element:96:4:29",
+                "closed": true,
+                "error": null
+              },
+              {
+                "type": "VEF.Factions.Dialog_NewFactionSpawning",
+                "window": 116,
+                "title": null,
+                "handler": "click Do nothing",
+                "target": "ui-element:97:4:29",
+                "closed": true,
+                "error": null
+              },
+              {
+                "type": "VEF.Factions.Dialog_NewFactionSpawning",
+                "window": 117,
+                "title": null,
+                "handler": "click Do nothing",
+                "target": "ui-element:98:4:24",
+                "closed": true,
+                "error": null
+              },
+              {
+                "type": "VEF.Factions.Dialog_NewFactionSpawning",
+                "window": 118,
+                "title": null,
+                "handler": "click Do nothing",
+                "target": "ui-element:99:4:24",
+                "closed": true,
+                "error": null
+              }
+            ],
+            "unknown": []
+          }
+        }
+      ],
+      "notSuppressed": [
+        "active quests and their parts (never ended by default: ending a quest changes the world)",
+        "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+        "existing game conditions, map/world/game components and mod tickers",
+        "hives and other pawn-spawning structures, births, egg hatching, breeders",
+        "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+        "weather transitions, fires, existing hostile behaviour"
+      ],
+      "keepDefs": [],
+      "events": [],
+      "problems": [],
+      "verify": null,
+      "arrivals": [],
+      "note": "enableStoryteller is not saved with the game: re-apply after any load"
+    },
+    "sky": {
+      "weather": [
+        {
+          "after": "Clear",
+          "ok": true
+        },
+        {
+          "after": "Clear",
+          "ok": true
+        }
+      ],
+      "extinguished": 0,
+      "strayFires": 0,
+      "verified": true,
+      "error": null
+    },
+    "check": {
+      "site": "calm",
+      "utc": "2026-11-25T09:29:16Z",
+      "problems": [],
+      "map": {
+        "tile": 112579,
+        "mapId": 0,
+        "sizeX": 250,
+        "sizeZ": 250,
+        "mapBiome": "AridShrubland",
+        "outdoorTempNow": 13.9428368
+      },
+      "foggedCells": 0,
+      "triggers": 0,
+      "danger": [],
+      "ruins": 0,
+      "hostiles": [],
+      "threatStructures": [],
+      "fires": 0,
+      "weather": {
+        "current": "Clear",
+        "rainRate": 0.0
+      },
+      "colonists": [
+        [
+          "Human475",
+          false
+        ],
+        [
+          "Human478",
+          false
+        ],
+        [
+          "Human483",
+          false
+        ]
+      ],
+      "verified": true
+    },
+    "ready_s": 11.1,
+    "verified": true
+  },
+  "scene": "scene_source_refills",
+  "rows": [
+    {
+      "id": "SRC_refill_visible",
+      "status": "FAIL",
+      "kind": "MOD",
+      "detail": "{'litres': (0.0, 1250.0, 1250.0), 'brim': 3968.253968253968, 'onset_ticks': 4500, 'rainRate': 1.0, 'hole': 'OK Hole 2 m \u00b7 Water 0.00 m (0 L)'}"
+    }
+  ],
+  "status": "FAIL",
+  "error": "AssertionError(\"rows not all PASS: [('SRC_refill_visible', 'FAIL')]\")",
+  "finished": 1795598997.7137017
+}

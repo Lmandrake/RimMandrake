@@ -179,8 +179,8 @@
    "start": [
     "the calm site; the same pond dug and left empty (asserted 0 L)"
    ],
-   "action": "lock rain on; read the probe until it first holds water, then 1,000 ticks later",
-   "expect": "the first read is above 0 and below the brim, the second higher",
+   "action": "lock rain on; read the probe until it first holds water, then until it reads more",
+   "expect": "the first read is above 0 and below the brim, a later read higher",
    "control": {
     "case": "the read before the rain",
     "expect": "0 L",

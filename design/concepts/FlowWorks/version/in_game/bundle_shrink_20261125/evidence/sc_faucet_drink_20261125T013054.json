@@ -1,0 +1,2114 @@
+{
+  "script": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES.det\\src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py",
+  "started": 1795599055.0683823,
+  "mode": "live",
+  "calls": [
+    {
+      "tool": "jawa/destroy_batch",
+      "args": {
+        "rects": "56,54,30,32",
+        "categories": "Building,Plant,Item,Filth"
+      },
+      "result": {
+        "success": true,
+        "message": "Destroyed 192 thing(s) across 960 cell(s).",
+        "cellsExamined": 960,
+        "outOfBounds": 0,
+        "destroyed": 192,
+        "pawnsSkipped": 0,
+        "undestroyableSkipped": 0,
+        "perCategory": {
+          "Plant": 71,
+          "Filth": 87,
+          "Item": 34
+        },
+        "samples": [
+          {
+            "x": 56,
+            "z": 59,
+            "def": "Plant_Bush",
+            "category": "Plant"
+          },
+          {
+            "x": 56,
+            "z": 75,
+            "def": "Plant_Grass",
+            "category": "Plant"
+          },
+          {
+            "x": 56,
+            "z": 80,
+            "def": "Plant_Grass",
+            "category": "Plant"
+          },
+          {
+            "x": 56,
+            "z": 82,
+            "def": "Plant_Grass",
+            "category": "Plant"
+          },
+          {
+            "x": 57,
+            "z": 58,
+            "def": "Plant_Grass",
+            "category": "Plant"
+          },
+          {
+            "x": 57,
+            "z": 76,
+            "def": "Plant_PincushionCactus",
+            "category": "Plant"
+          },
+          {
+            "x": 57,
+            "z": 81,
+            "def": "Plant_Grass",
+            "category": "Plant"
+          },
+          {
+            "x": 58,
+            "z": 80,
+            "def": "Plant_Dandelion",
+            "category": "Plant"
+          }
+        ],
+        "readBack": {
+          "ok": true,
+          "tool": "jawa/destroy_batch",
+          "faults": [],
+          "frameOpen": 109340,
+          "frameReply": 109340,
+          "sameFrame": true,
+          "rows": 192,
+          "rowsWrong": 0,
+          "wrong": [],
+          "made": [
+            {
+              "op": "gone",
+              "id": "Plant_Bush6111",
+              "x": 56,
+              "z": 59,
+              "got": {
+                "def": "Plant_Bush",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass3821",
+              "x": 56,
+              "z": 75,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass8765",
+              "x": 56,
+              "z": 80,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass4957",
+              "x": 56,
+              "z": 82,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass7521",
+              "x": 57,
+              "z": 58,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_PincushionCactus5175",
+              "x": 57,
+              "z": 76,
+              "got": {
+                "def": "Plant_PincushionCactus",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass5441",
+              "x": 57,
+              "z": 81,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Dandelion5529",
+              "x": 58,
+              "z": 80,
+              "got": {
+                "def": "Plant_Dandelion",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass6693",
+              "x": 58,
+              "z": 81,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_PincushionCactus5980",
+              "x": 59,
+              "z": 60,
+              "got": {
+                "def": "Plant_PincushionCactus",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass5568",
+              "x": 59,
+              "z": 62,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Bush5142",
+              "x": 59,
+              "z": 72,
+              "got": {
+                "def": "Plant_Bush",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass6660",
+              "x": 59,
+              "z": 73,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass9604",
+              "x": 59,
+              "z": 82,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Bush5778",
+              "x": 60,
+              "z": 71,
+              "got": {
+                "def": "Plant_Bush",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass9749",
+              "x": 60,
+              "z": 79,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_PincushionCactus9865",
+              "x": 60,
+              "z": 80,
+              "got": {
+                "def": "Plant_PincushionCactus",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass5996",
+              "x": 61,
+              "z": 54,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Filth_RubbleRock12502",
+              "x": 61,
+              "z": 56,
+              "got": {
+                "def": "Filth_RubbleRock",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Filth_RubbleRock12567",
+              "x": 61,
+              "z": 60,
+              "got": {
+                "def": "Filth_RubbleRock",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Filth_RubbleRock12564",
+              "x": 61,
+              "z": 61,
+              "got": {
+                "def": "Filth_RubbleRock",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass5536",
+              "x": 61,
+              "z": 82,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass5246",
+              "x": 62,
+              "z": 54,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Filth_RubbleRock12494",
+              "x": 62,
+              "z": 54,
+              "got": {
+                "def": "Filth_RubbleRock",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "ChunkMarble18581",
+              "x": 62,
+              "z": 55,
+              "got": {
+                "def": "ChunkMarble",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Filth_RubbleRock12503",
+              "x": 62,
+              "z": 55,
+              "got": {
+                "def": "Filth_RubbleRock",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "ChunkMarble18596",
+              "x": 62,
+              "z": 56,
+              "got": {
+                "def": "ChunkMarble",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Filth_RubbleRock12499",
+              "x": 62,
+              "z": 56,
+              "got": {
+                "def": "Filth_RubbleRock",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "ChunkMarble18657",
+              "x": 62,
+              "z": 61,
+              "got": {
+                "def": "ChunkMarble",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass7066",
+              "x": 62,
+              "z": 78,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Bush9863",
+              "x": 62,
+              "z": 80,
+              "got": {
+                "def": "Plant_Bush",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Filth_RubbleRock12501",
+              "x": 63,
+              "z": 54,
+              "got": {
+                "def": "Filth_RubbleRock",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "ChunkMarble18582",
+              "x": 63,
+              "z": 55,
+              "got": {
+                "def": "ChunkMarble",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Filth_RubbleRock12495",
+              "x": 63,
+              "z": 55,
+              "got": {
+                "def": "Filth_RubbleRock",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "ChunkMarble18597",
+              "x": 63,
+              "z": 56,
+              "got": {
+                "def": "ChunkMarble",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass8870",
+              "x": 63,
+              "z": 57,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Filth_RubbleRock12497",
+              "x": 63,
+              "z": 57,
+              "got": {
+                "def": "Filth_RubbleRock",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass4749",
+              "x": 63,
+              "z": 60,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Filth_RubbleRock12565",
+              "x": 63,
+              "z": 60,
+              "got": {
+                "def": "Filth_RubbleRock",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Filth_RubbleRock12566",
+              "x": 63,
+              "z": 62,
+              "got": {
+                "def": "Filth_RubbleRock",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass6348",
+              "x": 63,
+              "z": 64,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Dandelion3407",
+              "x": 63,
+              "z": 72,
+              "got": {
+                "def": "Plant_Dandelion",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_SaguaroCactus7174",
+              "x": 63,
+              "z": 79,
+              "got": {
+                "def": "Plant_SaguaroCactus",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_SaguaroCactus6748",
+              "x": 63,
+              "z": 81,
+              "got": {
+                "def": "Plant_SaguaroCactus",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Filth_RubbleRock12485",
+              "x": 64,
+              "z": 54,
+              "got": {
+                "def": "Filth_RubbleRock",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "ChunkMarble18583",
+              "x": 64,
+              "z": 55,
+              "got": {
+                "def": "ChunkMarble",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Filth_RubbleRock12489",
+              "x": 64,
+              "z": 55,
+              "got": {
+                "def": "Filth_RubbleRock",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_Grass7964",
+              "x": 64,
+              "z": 56,
+              "got": {
+                "def": "Plant_Grass",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Filth_RubbleRock12476",
+              "x": 64,
+              "z": 56,
+              "got": {
+                "def": "Filth_RubbleRock",
+                "destroyed": "True"
+              }
+            },
+            {
+              "op": "gone",
+              "id": "Plant_TreeDrago9501",
+              "x": 64,
+              "z": 57,
+              "got": {
+                "def": "Plant_TreeDrago",
+                "destroyed": "True"
+              }
+            }
+          ],
+          "leftBlocking": 0,
+          "leftKept": 0,
+          "left": [],
+          "digest": "a7ee304a150426f5"
+        },
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_ad593e60d5594812bc84bd3fd013eb2a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 54
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/set_terrain_batch",
+      "args": {
+        "ops": "Soil:56,54,30,32"
+      },
+      "result": {
+        "success": true,
+        "message": "Applied 1/1 op(s): 707 cell(s) changed, 253 already correct.",
+        "layer": "top",
+        "opsRequested": 1,
+        "opsApplied": 1,
+        "cellsRequested": 960,
+        "cellsChanged": 707,
+        "cellsAlreadyCorrect": 253,
+        "cellsOutOfBounds": 0,
+        "cellsFailedVerify": 0,
+        "refreshed": true,
+        "cellsRefreshed": 707,
+        "errors": [],
+        "samples": [
+          {
+            "x": 56,
+            "z": 54,
+            "before": "Sand",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 56,
+            "z": 55,
+            "before": "Gravel",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 56,
+            "z": 56,
+            "before": "Gravel",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 56,
+            "z": 57,
+            "before": "Gravel",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 56,
+            "z": 58,
+            "before": "Gravel",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 56,
+            "z": 59,
+            "before": "Gravel",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 56,
+            "z": 60,
+            "before": "Gravel",
+            "after": "Soil",
+            "applied": true
+          },
+          {
+            "x": 56,
+            "z": 61,
+            "before": "Gravel",
+            "after": "Soil",
+            "applied": true
+          }
+        ],
+        "mapSize": {
+          "x": 250,
+          "z": 250
+        },
+        "readBack": {
+          "ok": true,
+          "tool": "jawa/set_terrain_batch",
+          "faults": [],
+          "frameOpen": 109346,
+          "frameReply": 109346,
+          "sameFrame": true,
+          "rows": 960,
+          "rowsWrong": 0,
+          "wrong": [],
+          "made": [
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 54,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 55,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 56,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 57,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 58,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 59,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 60,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 61,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 62,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 63,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 64,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 65,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 66,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 67,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 68,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 69,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 70,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 71,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 72,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 73,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 74,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 75,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 76,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 77,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 78,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 79,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 80,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 81,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 82,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 83,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 84,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 56,
+              "z": 85,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 54,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 55,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 56,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 57,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 58,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 59,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 60,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 61,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 62,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 63,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 64,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 65,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 66,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 67,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 68,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 69,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 70,
+              "got": {
+                "terrain": "Soil"
+              }
+            },
+            {
+              "op": "terrain",
+              "x": 57,
+              "z": 71,
+              "got": {
+                "terrain": "Soil"
+              }
+            }
+          ],
+          "leftBlocking": 0,
+          "leftKept": 0,
+          "left": [],
+          "digest": "f43ee67564a027bd"
+        },
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_a29db246f3aa448baf0d24a11ba51c46",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 41
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/set_roof_batch",
+      "args": {
+        "ops": "None:56,54,30,32"
+      },
+      "result": {
+        "success": true,
+        "message": "Roofed 0 cell(s) across 1 op(s).",
+        "opsRequested": 1,
+        "cellsChanged": 0,
+        "cellsFailedVerify": 0,
+        "cellsOutOfBounds": 0,
+        "perDef": {},
+        "errors": [],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_5d43177b5d5d4b839a9ef48a0dd15642",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/weather_set",
+      "args": {
+        "weather": "Clear",
+        "lockWeather": true
+      },
+      "result": {
+        "success": true,
+        "before": "Clear",
+        "after": "Clear",
+        "lockInForce": true,
+        "gamePaused": true,
+        "notes": [
+          "registered a PERMANENT GameCondition_ForceWeather - this is the only durable weather control"
+        ],
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_f91e957eeb2049e39ee048d2d6ee797f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/build_batch",
+      "args": {
+        "ops": "RM_LiquidTank:60,72;RM_UniversalPipe:62,72;RM_UniversalPipe:63,72;RM_UniversalPipe:64,72;RM_UniversalPipe:65,72",
+        "faction": "player",
+        "wipeExisting": false
+      },
+      "result": {
+        "success": true,
+        "partial": false,
+        "placed": 5,
+        "survived": 5,
+        "lostToLaterOps": 0,
+        "failedCount": 0,
+        "failed": [],
+        "displacedCount": 0,
+        "displaced": [],
+        "placeWorkerWarningsCount": 0,
+        "placeWorkerWarnings": [],
+        "qualityIgnoredForDefs": [],
+        "message": "5 placed.",
+        "note": "Walls create NO roof - roof separately. Run jawa/map_commit after the batch.",
+        "things": [
+          {
+            "def": "RM_LiquidTank",
+            "x": 60,
+            "z": 72,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 220,
+            "maxHitPoints": 220,
+            "destroyed": false
+          },
+          {
+            "def": "RM_UniversalPipe",
+            "x": 62,
+            "z": 72,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 100,
+            "maxHitPoints": 100,
+            "destroyed": false
+          },
+          {
+            "def": "RM_UniversalPipe",
+            "x": 63,
+            "z": 72,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 100,
+            "maxHitPoints": 100,
+            "destroyed": false
+          },
+          {
+            "def": "RM_UniversalPipe",
+            "x": 64,
+            "z": 72,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 100,
+            "maxHitPoints": 100,
+            "destroyed": false
+          },
+          {
+            "def": "RM_UniversalPipe",
+            "x": 65,
+            "z": 72,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 100,
+            "maxHitPoints": 100,
+            "destroyed": false
+          }
+        ],
+        "readBack": {
+          "ok": true,
+          "tool": "jawa/build_batch",
+          "faults": [],
+          "frameOpen": 109361,
+          "frameReply": 109361,
+          "sameFrame": true,
+          "rows": 5,
+          "rowsWrong": 0,
+          "wrong": [],
+          "made": [
+            {
+              "op": "thing",
+              "id": "RM_LiquidTank21169",
+              "x": 60,
+              "z": 72,
+              "got": {
+                "cell": "60,72",
+                "def": "RM_LiquidTank",
+                "faction": "PlayerColony",
+                "hp": "220",
+                "rot": "0",
+                "standing": "True"
+              }
+            },
+            {
+              "op": "thing",
+              "id": "RM_UniversalPipe21170",
+              "x": 62,
+              "z": 72,
+              "got": {
+                "cell": "62,72",
+                "def": "RM_UniversalPipe",
+                "faction": "PlayerColony",
+                "hp": "100",
+                "rot": "0",
+                "standing": "True"
+              }
+            },
+            {
+              "op": "thing",
+              "id": "RM_UniversalPipe21171",
+              "x": 63,
+              "z": 72,
+              "got": {
+                "cell": "63,72",
+                "def": "RM_UniversalPipe",
+                "faction": "PlayerColony",
+                "hp": "100",
+                "rot": "0",
+                "standing": "True"
+              }
+            },
+            {
+              "op": "thing",
+              "id": "RM_UniversalPipe21172",
+              "x": 64,
+              "z": 72,
+              "got": {
+                "cell": "64,72",
+                "def": "RM_UniversalPipe",
+                "faction": "PlayerColony",
+                "hp": "100",
+                "rot": "0",
+                "standing": "True"
+              }
+            },
+            {
+              "op": "thing",
+              "id": "RM_UniversalPipe21173",
+              "x": 65,
+              "z": 72,
+              "got": {
+                "cell": "65,72",
+                "def": "RM_UniversalPipe",
+                "faction": "PlayerColony",
+                "hp": "100",
+                "rot": "0",
+                "standing": "True"
+              }
+            }
+          ],
+          "leftBlocking": 0,
+          "leftKept": 0,
+          "left": [],
+          "digest": "706381e5189fa211"
+        },
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_fa294ba70a72455a83540cf0928b241a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/build_batch",
+      "args": {
+        "ops": "RM_PipeFaucet:65,72",
+        "faction": "player",
+        "wipeExisting": false
+      },
+      "result": {
+        "success": true,
+        "partial": false,
+        "placed": 1,
+        "survived": 1,
+        "lostToLaterOps": 0,
+        "failedCount": 0,
+        "failed": [],
+        "displacedCount": 0,
+        "displaced": [],
+        "placeWorkerWarningsCount": 0,
+        "placeWorkerWarnings": [],
+        "qualityIgnoredForDefs": [],
+        "message": "1 placed.",
+        "note": "Walls create NO roof - roof separately. Run jawa/map_commit after the batch.",
+        "things": [
+          {
+            "def": "RM_PipeFaucet",
+            "x": 65,
+            "z": 72,
+            "rot": 0,
+            "faction": "PlayerColony",
+            "hitPoints": 60,
+            "maxHitPoints": 60,
+            "destroyed": false
+          }
+        ],
+        "readBack": {
+          "ok": true,
+          "tool": "jawa/build_batch",
+          "faults": [],
+          "frameOpen": 109366,
+          "frameReply": 109366,
+          "sameFrame": true,
+          "rows": 1,
+          "rowsWrong": 0,
+          "wrong": [],
+          "made": [
+            {
+              "op": "thing",
+              "id": "RM_PipeFaucet21174",
+              "x": 65,
+              "z": 72,
+              "got": {
+                "cell": "65,72",
+                "def": "RM_PipeFaucet",
+                "faction": "PlayerColony",
+                "hp": "60",
+                "rot": "0",
+                "standing": "True"
+              }
+            }
+          ],
+          "leftBlocking": 0,
+          "leftKept": 0,
+          "left": [],
+          "digest": "5aa6c88354fcad37"
+        },
+        "ticksGame": 2,
+        "operation": {
+          "OperationId": "op_acd9d0bf4e46463bab392163542d74a8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_things",
+      "args": {
+        "defName": "RM_PipeFaucet",
+        "rect": "65,72,1,1",
+        "limit": 2
+      },
+      "result": {
+        "success": true,
+        "things": [
+          {
+            "id": "RM_PipeFaucet21174",
+            "def": "RM_PipeFaucet",
+            "label": "Pipe faucet",
+            "x": 65,
+            "z": 72,
+            "spawned": true,
+            "rot": 0,
+            "stackCount": 1,
+            "hitPoints": 60,
+            "maxHitPoints": 60,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals"
+          }
+        ],
+        "scanned": 14919,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {
+          "RM_PipeFaucet": 1
+        },
+        "ticksGame": 2,
+        "message": "1 of 1 matching thing(s) returned, 14919 examined.",
+        "operation": {
+          "OperationId": "op_1312b090063c484ba9fa451753940440",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofTank",
+        "60,72;Store;RM_Liquid_FreshWater;100000"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofTank(System.String)",
+        "result": "TANK mode=Store effective=Store liquid=RM_Liquid_FreshWater units=100000",
+        "thingArgs": [],
+        "ticksGame": 252,
+        "operation": {
+          "OperationId": "op_5c123fa621d14f5382fae297b3fad004",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 41
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 252
+        }
+      }
+    },
+    {
+      "tool": "jawa/spawn_pawn",
+      "args": {
+        "kindDef": "Colonist",
+        "x": 65,
+        "z": 73,
+        "faction": "player",
+        "count": 1,
+        "xenotype": "Baseliner"
+      },
+      "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony as Baseliner.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": "Baseliner",
+        "pawns": [
+          {
+            "ok": true,
+            "id": "Human21176",
+            "name": "Anfisa",
+            "kindRequested": "Colonist",
+            "kindActual": "Colonist",
+            "kindSubstituted": false,
+            "faction": "PlayerColony",
+            "hostile": false,
+            "x": 65,
+            "z": 73,
+            "spawned": true,
+            "xenotype": "Baseliner",
+            "xenotypeRequested": "Baseliner",
+            "xenotypeApplied": true
+          }
+        ],
+        "readBack": {
+          "ok": true,
+          "tool": "jawa/spawn_pawn",
+          "faults": [],
+          "frameOpen": 109401,
+          "frameReply": 109401,
+          "sameFrame": true,
+          "rows": 1,
+          "rowsWrong": 0,
+          "wrong": [],
+          "made": [
+            {
+              "op": "pawn",
+              "id": "Human21176",
+              "x": 65,
+              "z": 73,
+              "got": {
+                "cell": "65,73",
+                "faction": "PlayerColony",
+                "kind": "Colonist",
+                "spawned": "True",
+                "xenotype": "Baseliner"
+              }
+            }
+          ],
+          "leftBlocking": 0,
+          "leftKept": 0,
+          "left": [],
+          "digest": "538246029284f46f"
+        },
+        "ticksGame": 252,
+        "operation": {
+          "OperationId": "op_f7f25e55bded4345a251044d2ecebc87",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 252
+        }
+      }
+    },
+    {
+      "tool": "jawa/pawn_need",
+      "args": {
+        "pawn": "Human21176",
+        "action": "need",
+        "need": "RM_Thirst",
+        "level": 0.05
+      },
+      "result": {
+        "success": true,
+        "action": "need",
+        "notes": [
+          "RM_Thirst reads 0.05"
+        ],
+        "needs": [
+          {
+            "need": "Mood",
+            "level": 0.5,
+            "pct": 0.5
+          },
+          {
+            "need": "Food",
+            "level": 0.8,
+            "pct": 0.8
+          },
+          {
+            "need": "Rest",
+            "level": 0.9921152,
+            "pct": 0.9921152
+          },
+          {
+            "need": "Joy",
+            "level": 0.523555338,
+            "pct": 0.523555338
+          },
+          {
+            "need": "Beauty",
+            "level": 0.5,
+            "pct": 0.5
+          },
+          {
+            "need": "Outdoors",
+            "level": 1.0,
+            "pct": 1.0
+          },
+          {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+          },
+          {
+            "need": "RoomSize",
+            "level": 0.5,
+            "pct": 0.5
+          },
+          {
+            "need": "RM_Thirst",
+            "level": 0.05,
+            "pct": 0.05
+          }
+        ],
+        "memories": [],
+        "readBack": {
+          "ok": true,
+          "tool": "jawa/pawn_need",
+          "faults": [],
+          "frameOpen": 109406,
+          "frameReply": 109406,
+          "sameFrame": true,
+          "rows": 1,
+          "rowsWrong": 0,
+          "wrong": [],
+          "made": [
+            {
+              "op": "need",
+              "id": "Human21176",
+              "x": 65,
+              "z": 73,
+              "got": {
+                "level": "0.05",
+                "need": "RM_Thirst",
+                "percentage": "0.05"
+              }
+            }
+          ],
+          "leftBlocking": 0,
+          "leftKept": 0,
+          "left": [],
+          "digest": "b80cc307ec3fc969"
+        },
+        "ticksGame": 252,
+        "operation": {
+          "OperationId": "op_1c1cf481d40f494da9a5d3ed4f5794c3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 34
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 252
+        }
+      }
+    },
+    {
+      "tool": "jawa/list_pawns",
+      "args": {
+        "faction": "player"
+      },
+      "result": {
+        "success": true,
+        "message": "4 pawn(s).",
+        "pawns": [
+          {
+            "id": "Human475",
+            "name": "Rowan",
+            "kind": "Colonist",
+            "kindDef": "Colonist",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Baseliner",
+            "xenotypeLabel": "baseliner",
+            "uniqueXenotype": false,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "isPlayer": true,
+            "hostile": false,
+            "factionHostile": false,
+            "x": 120,
+            "z": 116,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human478",
+            "name": "Ellison",
+            "kind": "Colonist",
+            "kindDef": "Colonist",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Baseliner",
+            "xenotypeLabel": "baseliner",
+            "uniqueXenotype": false,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "isPlayer": true,
+            "hostile": false,
+            "factionHostile": false,
+            "x": 120,
+            "z": 115,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human483",
+            "name": "Shiki",
+            "kind": "Colonist",
+            "kindDef": "Colonist",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Baseliner",
+            "xenotypeLabel": "baseliner",
+            "uniqueXenotype": false,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "isPlayer": true,
+            "hostile": false,
+            "factionHostile": false,
+            "x": 121,
+            "z": 114,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          },
+          {
+            "id": "Human21176",
+            "name": "Anfisa",
+            "kind": "Colonist",
+            "kindDef": "Colonist",
+            "def": "Human",
+            "hasGenes": true,
+            "xenotype": "Baseliner",
+            "xenotypeLabel": "baseliner",
+            "uniqueXenotype": false,
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "isPlayer": true,
+            "hostile": false,
+            "factionHostile": false,
+            "x": 65,
+            "z": 73,
+            "spawned": true,
+            "dead": false,
+            "downed": false,
+            "stunned": false,
+            "stunTicksLeft": 0,
+            "fleshType": "Normal",
+            "isMechanoid": false,
+            "isFlesh": true,
+            "intelligence": "Humanlike",
+            "bodySize": 1.0
+          }
+        ],
+        "returned": 4,
+        "truncated": 0,
+        "totalOnMap": 4,
+        "ticksGame": 252,
+        "operation": {
+          "OperationId": "op_2333aa0b81d34cd29a94a7cd0ef6ce12",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 252
+        }
+      }
+    },
+    {
+      "tool": "jawa/static_call",
+      "args": [
+        "RimMandrake.FlowWorks.RM_NorthstarProofs",
+        "ProofTank",
+        "60,72;Store"
+      ],
+      "result": {
+        "success": true,
+        "method": "System.String ProofTank(System.String)",
+        "result": "TANK mode=Store effective=Store liquid=RM_Liquid_FreshWater units=99985",
+        "thingArgs": [],
+        "ticksGame": 2752,
+        "operation": {
+          "OperationId": "op_3262b0285abc4caeb46c9ba610791e6e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+        },
+        "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2752
+        }
+      }
+    }
+  ],
+  "site": {
+    "site": "calm",
+    "save": "RM_TestSite_calm_v3",
+    "utc": "2026-11-25T09:30:55Z",
+    "problems": [],
+    "load_s": 5.1,
+    "quietMap": {
+      "profile": "quiet_site",
+      "suite": "isolated",
+      "row": "test_site_saves_load_calm",
+      "topic": null,
+      "controls": [
+        {
+          "name": "threat_structures_cleared",
+          "what": "hostile threat structures vanished at setup (vitals classifier: turret, spawner, dormant, condition causer, non-humanlike faction); keep_defs spared",
+          "hides": "hive/infestation/mech-cluster interactions; insect-faction behaviour on the site",
+          "readBack": {
+            "removed": [],
+            "threatsAfter": 0,
+            "kept": 0,
+            "errors": []
+          }
+        },
+        {
+          "name": "hostiles_removed",
+          "what": "hostile pawns present at setup removed by Vanish (no death action, no corpse)",
+          "hides": "combat interactions with the mod's things",
+          "readBack": {
+            "acted": 0,
+            "residue": []
+          }
+        },
+        {
+          "name": "proximity_letters_sent",
+          "what": "every CompProximityLetter marked sent (the mapgen void monolith's 'Fallen monolith')",
+          "hides": "the Anomaly monolith discovery letter and any mod building's proximity letter",
+          "readBack": {
+            "letters": [
+              [
+                "VoidMonolith",
+                "Fallen monolith",
+                true
+              ]
+            ],
+            "unsentAfter": 0
+          }
+        },
+        {
+          "name": "modal_broker",
+          "what": "explicit window handlers only (MODAL_HANDLERS); an unknown force-pause window is CAPTURED and blocks the row, never closed blindly; the same window still open after its handler escalates",
+          "hides": "the handled dialog's other choices (VEF new-faction: 'Do nothing' means the faction is not spawned)",
+          "readBack": {
+            "handled": [
+              {
+                "type": "VEF.Factions.Dialog_NewFactionSpawning",
+                "window": 152,
+                "title": null,
+                "handler": "click Do nothing",
+                "target": "ui-element:127:4:24",
+                "closed": true,
+                "error": null
+              },
+              {
+                "type": "VEF.Factions.Dialog_NewFactionSpawning",
+                "window": 153,
+                "title": null,
+                "handler": "click Do nothing",
+                "target": "ui-element:128:4:24",
+                "closed": true,
+                "error": null
+              },
+              {
+                "type": "VEF.Factions.Dialog_NewFactionSpawning",
+                "window": 154,
+                "title": null,
+                "handler": "click Do nothing",
+                "target": "ui-element:129:4:24",
+                "closed": true,
+                "error": null
+              },
+              {
+                "type": "VEF.Factions.Dialog_NewFactionSpawning",
+                "window": 155,
+                "title": null,
+                "handler": "click Do nothing",
+                "target": "ui-element:130:4:24",
+                "closed": true,
+                "error": null
+              },
+              {
+                "type": "VEF.Factions.Dialog_NewFactionSpawning",
+                "window": 156,
+                "title": null,
+                "handler": "click Do nothing",
+                "target": "ui-element:131:4:29",
+                "closed": true,
+                "error": null
+              },
+              {
+                "type": "VEF.Factions.Dialog_NewFactionSpawning",
+                "window": 157,
+                "title": null,
+                "handler": "click Do nothing",
+                "target": "ui-element:132:4:29",
+                "closed": true,
+                "error": null
+              },
+              {
+                "type": "VEF.Factions.Dialog_NewFactionSpawning",
+                "window": 158,
+                "title": null,
+                "handler": "click Do nothing",
+                "target": "ui-element:133:4:29",
+                "closed": true,
+                "error": null
+              },
+              {
+                "type": "VEF.Factions.Dialog_NewFactionSpawning",
+                "window": 159,
+                "title": null,
+                "handler": "click Do nothing",
+                "target": "ui-element:134:4:24",
+                "closed": true,
+                "error": null
+              },
+              {
+                "type": "VEF.Factions.Dialog_NewFactionSpawning",
+                "window": 160,
+                "title": null,
+                "handler": "click Do nothing",
+                "target": "ui-element:135:4:24",
+                "closed": true,
+                "error": null
+              }
+            ],
+            "unknown": []
+          }
+        }
+      ],
+      "notSuppressed": [
+        "active quests and their parts (never ended by default: ending a quest changes the world)",
+        "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+        "existing game conditions, map/world/game components and mod tickers",
+        "hives and other pawn-spawning structures, births, egg hatching, breeders",
+        "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+        "weather transitions, fires, existing hostile behaviour"
+      ],
+      "keepDefs": [],
+      "events": [],
+      "problems": [],
+      "verify": null,
+      "arrivals": [],
+      "note": "enableStoryteller is not saved with the game: re-apply after any load"
+    },
+    "sky": {
+      "weather": [
+        {
+          "after": "Clear",
+          "ok": true
+        },
+        {
+          "after": "Clear",
+          "ok": true
+        }
+      ],
+      "extinguished": 0,
+      "strayFires": 0,
+      "verified": true,
+      "error": null
+    },
+    "check": {
+      "site": "calm",
+      "utc": "2026-11-25T09:31:05Z",
+      "problems": [],
+      "map": {
+        "tile": 112579,
+        "mapId": 0,
+        "sizeX": 250,
+        "sizeZ": 250,
+        "mapBiome": "AridShrubland",
+        "outdoorTempNow": 13.9428368
+      },
+      "foggedCells": 0,
+      "triggers": 0,
+      "danger": [],
+      "ruins": 0,
+      "hostiles": [],
+      "threatStructures": [],
+      "fires": 0,
+      "weather": {
+        "current": "Clear",
+        "rainRate": 0.0
+      },
+      "colonists": [
+        [
+          "Human475",
+          false
+        ],
+        [
+          "Human478",
+          false
+        ],
+        [
+          "Human483",
+          false
+        ]
+      ],
+      "verified": true
+    },
+    "ready_s": 10.8,
+    "verified": true
+  },
+  "scene": "scene_faucet_drink",
+  "rows": [
+    {
+      "id": "GARDEN_faucet_drinks_from_its_tank",
+      "status": "PASS",
+      "kind": "MOD",
+      "detail": "{'filled': 100000, 'end': 99985}"
+    }
+  ],
+  "garden_log": [
+    {
+      "t": {
+        "F": [
+          99985,
+          2752
+        ]
+      },
+      "drill": null,
+      "yard": null,
+      "headW": null,
+      "headP": null
+    }
+  ],
+  "status": "PASS",
+  "finished": 1795599082.5390944
+}

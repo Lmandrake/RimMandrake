@@ -3353,7 +3353,7 @@
    "runs_today": {
     "ran": false,
     "entry_exists": true,
-    "why": "UNRUN: written 2026-11-25 (RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES), offline selftest green; never the game"
+    "why": "UNRUN: written 2026-11-25 (RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES), offline selftest_source_pays_scene.py (e) green; never the game"
    },
    "cheaper_why": "the claim is what the player sees of a pond on a live map (litres and shore together after a real moat draw); the emptied pond's stop is arithmetic and is decided offline by T_STOCK (planted endless pond red there 2026-11-25)",
    "split_from": "sc_source_pays",
@@ -3371,7 +3371,7 @@
    "stage": "6",
    "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
    "entry": "scene_source_refills",
-   "observes": "rain locked on an emptied dug pond: once the probe first reads water, it reads more 1,000 ticks later, and the first read is below the brim",
+   "observes": "rain locked on an emptied dug pond: once the probe first reads water it reads more again later, and the first read is below the brim",
    "claims": [
     "rain refills an emptied pond with visible progress"
    ],
@@ -3385,7 +3385,7 @@
    "runs_today": {
     "ran": false,
     "entry_exists": true,
-    "why": "UNRUN: written 2026-11-25 (RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES), offline selftest green; never the game"
+    "why": "UNRUN: written 2026-11-25 (RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES), offline selftest_source_pays_scene.py (e) green; never the game"
    },
    "cheaper_why": "the claim is the live weather filling a live hole; the offline Refill cases of T_STOCK read the math, never rain on a map",
    "split_from": "sc_source_pays",

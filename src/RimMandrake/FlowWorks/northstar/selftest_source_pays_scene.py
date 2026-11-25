@@ -119,7 +119,14 @@ class Fake:
                 self.water[q] = frozen.get(q, max(0.0, h + self.dug[q]))
 
     def one_pulse(self):
-        if self.weather == 'Rain' and self.fault not in ('never_refills', 'no_rain'):
+        if self.weather == 'Rain' and self.fault == 'stepped_rain':
+            # live 2026-11-25 (bundle_shrink_20261125, sc_source_refills): the emptied pond read 0 L for 4,500 ticks of rain,
+            # then 1,250 L, and 1,250 L again 1,000 ticks later: rain lands in lumps more than 1,000 ticks apart
+            self.rain_pulses = getattr(self, 'rain_pulses', 0) + 1
+            if self.rain_pulses >= 18 and self.rain_pulses % 10 == 8:
+                for q in self.dug:
+                    self.water[q] = min(self.dug[q], self.water.get(q, 0.0) + 1.25)
+        elif self.weather == 'Rain' and self.fault not in ('never_refills', 'no_rain'):
             for q in self.dug:
                 self.water[q] = self.dug[q] if self.fault == 'instant_refill' else min(self.dug[q], self.water.get(q, 0.0) + 0.1)
         for (sx, sz), s in self.sinks.items():
@@ -413,6 +420,42 @@ def film_sweep(C, sigs):
     check('(d) the film sweep reads every case as the fake\'s truth (%d cases)' % len(cases), not bad, (seen, bad[:6]))
 
 
+def split_scenes(C, sigs):
+    """(e) sc_source_pays's split scenes (RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES): each asks only its
+    rows, reads them PASS on the healthy fake, and each planted fault turns its row red, never PASS; _src_brim's arithmetic."""
+    if not hasattr(C, 'scene_source_draws'):
+        check('(e) the split scenes exist', False, 'no scene_source_draws in this revision')
+        return
+
+    def go(name, fault=None):
+        F = Fake(fault, False, sigs)
+        out = getattr(C, name)(F, lambda: None, lambda: None, {'calls': []})
+        return {r['id']: r['status'] for r in out['rows']}, out, F
+    draws = ('SRC_pond_drops', 'SRC_shore_recedes', 'SRC_control_tap_zero')
+    r, o, F = go('scene_source_draws')
+    check('(e) sc_source_draws asks exactly its three rows, all PASS on the healthy fake',
+          r == {k: 'PASS' for k in draws} and o['status'] == 'PASS', r)
+    check('(e) sc_source_draws makes only declared bridge calls and leaves no sink or weather lock', not F.bad and not F.sinks
+          and F.weather == 'Clear', (F.bad, F.sinks, F.weather))
+    for fault, rid, want in (('pays_nothing', 'SRC_pond_drops', 'FAIL'), ('shore_frozen', 'SRC_shore_recedes', 'FAIL'),
+                             ('zero_tap_drains', 'SRC_control_tap_zero', 'FAIL'),
+                             ('refused_readout', 'SRC_pond_drops', 'UNMEASURED'), ('zero_rect', 'SRC_shore_recedes', 'UNMEASURED'),
+                             ('sink_refused', 'SRC_control_tap_zero', 'UNMEASURED')):
+        r, o, _ = go('scene_source_draws', fault)
+        check('(e) sc_source_draws, fault %s: %s reads %s' % (fault, rid, want), r.get(rid) == want and o['status'] != 'PASS', r)
+    for fault, want in ((None, 'PASS'), ('stepped_rain', 'PASS'), ('never_refills', 'FAIL'), ('instant_refill', 'FAIL'),
+                        ('no_rain', 'UNMEASURED'), ('refused_readout', 'UNMEASURED')):
+        r, o, F = go('scene_source_refills', fault)
+        check('(e) sc_source_refills, %s: SRC_refill_visible reads %s' % (fault or 'healthy', want),
+              r == {'SRC_refill_visible': want} and (o['status'] == 'PASS') == (want == 'PASS') and F.weather == 'Clear', r)
+    b = C._src_brim('OK Hole 2 m · Water 0.00 m (0 L)', 'OK Hole 2 m · Water 0.63 m (1,250 L)')
+    check('(e) _src_brim: a 2 m hole read wet at 0.63 m (1,250 L) has its brim at 2 x 1250 / 0.63 L',
+          b is not None and abs(b - 2 * 1250 / 0.63) < 1e-6, b)
+    check('(e) _src_brim cannot say from an unreadable line or a dry one',
+          C._src_brim('REFUSED', 'OK Hole 2 m · Water 0.63 m (1,250 L)') is None
+          and C._src_brim('OK Hole 2 m', 'OK Hole 2 m · Water 0.00 m (0 L)') is None, None)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--rev', help='run against concept_scenes.py at this commit (2b4bffe212 = the visit-1 draft: RED)')
@@ -457,6 +500,7 @@ def main():
         r, o, _ = run(C, sigs, fault, lk)
         check('(c) fault %s: %s reads %s' % (fault, rid, verdict), r.get(rid) == verdict and o['status'] != 'PASS', (r.get(rid), r))
     film_sweep(C, sigs)
+    split_scenes(C, sigs)
     n = len(FAILS)
     print('selftest_source_pays_scene [%s]: %s (%d failed)' % (where, 'FAIL' if FAILS else 'ok', n))
     sys.exit(1 if FAILS else 0)

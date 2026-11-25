@@ -1,0 +1,4 @@
+PASS \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES.det\design\concepts\FlowWorks\version\in_game\bundle_shrink_20261125\evidence\sc_walk_reload_20261125T012512.json 
+[bridge split] 55.7 s wall: load 1.2 / ticks 0.4 / reads 5.5 / other 10.0 / outside calls 38.5 s
+[bridge split] WARN 76 calls of jawa/window_list_close (3.1 s): batch them
+[bridge split] WARN 53 calls of rimbridge/list_logs (1.0 s): batch them
