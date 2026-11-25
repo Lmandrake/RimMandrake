@@ -1,0 +1,10 @@
+{
+ "leaf": "heavier_flies_less",
+ "base_tree": "1b35bfc1f5e684411be85c01305cba548bb981533dcb41b9377b19906bd98bce",
+ "base_sheet": "22a3215f5781450b7b0d8c4325cbe252d4acbc40e69b17f82360fbd000acd086",
+ "by": "designer_stage.py exam-control",
+ "strip": [
+  "the heavier something is, the less it should fly"
+ ],
+ "at": "2026-11-25T02:21:17Z"
+}

@@ -759,10 +759,45 @@
     "ref": "run bench-ek-owner-lock-st5-20261113",
     "stage": 5,
     "tokens": 0
+   },
+   {
+    "at": "2026-11-25T02:29:00Z",
+    "kind": "helper",
+    "ref": "exam12 examiner rm-judge ae851dce7100c6139 (opus; RIMMANDRAKE_REWORD_KNOCKBACK_REBOUND_LEAF_THEN_RETAKE_WHOLE_EXAM)",
+    "stage": 5,
+    "tokens": 72920
+   },
+   {
+    "at": "2026-11-25T02:29:01Z",
+    "kind": "helper",
+    "ref": "exam12 challenger rm-judge aa72447d0b1fd9db6 (opus; RIMMANDRAKE_REWORD_KNOCKBACK_REBOUND_LEAF_THEN_RETAKE_WHOLE_EXAM)",
+    "stage": 5,
+    "tokens": 62869
+   },
+   {
+    "at": "2026-11-25T02:29:01Z",
+    "kind": "helper",
+    "ref": "exam12 readerA rm-judge ab97362bfa1051846 (opus; RIMMANDRAKE_REWORD_KNOCKBACK_REBOUND_LEAF_THEN_RETAKE_WHOLE_EXAM)",
+    "stage": 5,
+    "tokens": 66028
+   },
+   {
+    "at": "2026-11-25T02:29:01Z",
+    "kind": "helper",
+    "ref": "exam12 readerB rm-judge a56dec3e799e4eff4 (opus; RIMMANDRAKE_REWORD_KNOCKBACK_REBOUND_LEAF_THEN_RETAKE_WHOLE_EXAM)",
+    "stage": 5,
+    "tokens": 67478
+   },
+   {
+    "at": "2026-11-25T02:29:01Z",
+    "kind": "helper",
+    "ref": "exam12 control rm-judge ab882a445d0744fa2 (opus; RIMMANDRAKE_REWORD_KNOCKBACK_REBOUND_LEAF_THEN_RETAKE_WHOLE_EXAM)",
+    "stage": 5,
+    "tokens": 68377
    }
   ],
   "reserve": 60000,
-  "spent": 97196907
+  "spent": 97534579
  },
  "coverage_releases": [
   {

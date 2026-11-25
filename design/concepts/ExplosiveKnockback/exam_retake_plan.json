@@ -1,0 +1,10 @@
+{
+ "outcome": "whole",
+ "why": "no read map recorded for the last exam (exam_reads.json): the map cannot tell, retake the whole exam",
+ "retake": [],
+ "carry": [],
+ "changed": [],
+ "against": null,
+ "by": "exam_retake.py plan",
+ "at": "2026-11-25T02:14:21Z"
+}
