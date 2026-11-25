@@ -236,6 +236,17 @@ def t_a_blind_beat_changes_nothing():
 
 
 def t_a_run_on_another_host_is_not_gone():
+    # The test reads as Archmagi wherever it runs: on SteveDesktop the real hostname made its own runs local (red there).
+    import socket
+    real = socket.gethostname
+    socket.gethostname = lambda: "Archmagi"
+    try:
+        _a_run_on_another_host_is_not_gone()
+    finally:
+        socket.gethostname = real
+
+
+def _a_run_on_another_host_is_not_gone():
     # measured 2026-11-24 9:30 PM PST: Archmagi's beat read 8 live SteveDesktop runs as "gone: its unit is not running",
     # because their units live in SteveDesktop's systemd and this machine's systemctl answers inactive for them.
     c, tok = new_clone("remote")

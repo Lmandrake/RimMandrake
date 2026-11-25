@@ -1109,7 +1109,8 @@ READING_RX = re.compile(r"'\d+(?:\.\d+)?'|\b\d+(?:\.\d+)?\s?(?:ms|s|MB|GB|KB|%)(
 
 # 2026-11-24 on SteveDesktop: a Windows python's traceback spells the check tree \\wsl.localhost\Ubuntu\...\rm-treecheck-<random>,
 # which the tree's own path does not match, and a FAIL line can name a commit sha; both move between the two runs
-TREE_NAME_RX = re.compile(r"rm-treecheck-[A-Za-z0-9_]+")
+# a check tree, or a run of check trees nested in each other (HEAD's re-run sits inside the door's tree), in any spelling
+TREE_NAME_RX = re.compile(r"rm-treecheck-[A-Za-z0-9_]+(?:[\\/]+\.git[\\/]+rm-treecheck-[A-Za-z0-9_]+)*")
 SHA_RX = re.compile(r"\b(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,40}\b")
 
 

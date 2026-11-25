@@ -484,6 +484,12 @@ def measured_readings_cases():
     kl1, _ = P.red_signature(l1 + "\n", "/nowhere", 1)
     kl2, _ = P.red_signature(l2 + "\n", "/nowhere", 1)
     check(kl1 == kl2, "a load-average reading in a FAIL line is the same red (%s / %s)" % (list(kl1), list(kl2)))
+    # the same day: HEAD's check tree sits nested in another check tree
+    n1 = "FAIL x  {'error': 'File \"\\\\wsl.localhost\\h\\c.det\\.git\\rm-treecheck-hidtch9g\\.git\\rm-treecheck-bz2qwn_1\\x.py\"'}"
+    n2 = "FAIL x  {'error': 'File \"\\\\wsl.localhost\\h\\c.det\\.git\\rm-treecheck-q1w2e3r4\\x.py\"'}"
+    kn1, _ = P.red_signature(n1 + "\n", "/nowhere", 1)
+    kn2, _ = P.red_signature(n2 + "\n", "/nowhere", 1)
+    check(kn1 == kn2, "a check tree nested in another check tree is the same red (%s / %s)" % (list(kn1), list(kn2)))
     k3, _ = P.red_signature("FAIL took 3 of 9 rows\n", "/nowhere", 1)
     k4, _ = P.red_signature("FAIL took 4 of 9 rows\n", "/nowhere", 1)
     check(k3 != k4, "a count is kept")
