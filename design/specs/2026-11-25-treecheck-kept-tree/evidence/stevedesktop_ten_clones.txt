@@ -1,0 +1,21 @@
+SteveDesktop, 2026-11-25 1:17 PM PST: ten pool clones on the ~/rm disk at one time
+(RIMMANDRAKE_SHRINK_STEVEDESKTOP_CLONES_FOUR_FILL_ITS_EIGHTY_GIG; code b6cc987452)
+
+Before (12:11 PM to 12:20 PM PST): ~/rm 79 GB, 8.5 to 13 GB free. A helper clone was 10 to 11 GB: work tree 4.8 GB (3.6 GB of
+it media), .git/rm-treecheck-kept 4.7 GB (publish's check tree, one per clone), .git/objects 0.9 GB of its own (the store
+was a day behind origin, so each --fetch pulled that day from GitHub), Transient 0.7 GB. At 11:56 AM PST the pool refused
+a fifth run: "disk floor: 4.48 GB free on /, less the largest clone (11.46 GB), is under the 12 GB floor".
+
+Steps: the per-clone check trees of the idle clones removed under their locks; both warm clones made slim and repacked
+against the refreshed store; mirror.git fetched and the store refreshed (rm-pool-room.service, ExecStartPre).
+
+The run: 8 clones made at once by `scratch_clone.py clone --slim --fetch` in the pool (RM_SCRATCH_ROOT=~/rm/relentless,
+RM_SEAT=clones), beside the 2 live helper runs (AWARENESS_GENPAWN_TAME_ARM_BEFORE_USE, OPS_DESIGNER_UNSTICK_READY_AND_
+WAITING_GZKV, full clones of the old code). All 8 exit 0 in 22 s of wall: 2 reused the warm clones (4.6 s each), 6 fresh
+(19 to 22 s each), each fresh one 1.42 GB of work tree and 0.16 GB of own .git.
+  before: 30 GB free    after: 22 GB free (floor 12 GB)    clones standing: 10
+rm_pool_room.py at 1:18 PM PST: ROOM "10 clones now + 1 more = 11 runs >= 10: 22.6 GB free, floor 12.0 GB, largest clone
+6.68 GB" (the largest is a live full clone; with all clones slim the same disk admits more). The machine's second kept
+check tree (4.96 GB, made by the first two publishes at once) is not yet made: with it, 17.6 GB free, still above the
+floor.
+This file was landed by ./publish from POOLTEST_1, one of the slim clones (no media files on its disk).
