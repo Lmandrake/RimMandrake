@@ -296,6 +296,20 @@
   "why": "RIMMANDRAKE_AUTOMATE_MATURATION_HAND_STEPS_MODS_SAT_WAITING (the owner, 2026-11-15: \"at least then it's paused animation instead of manual replication of no automation\"): the Dispatch step has PAUSED a mod (a run that did not move it, an unreadable input, a hold, a spent steward or fixer); `python3 src/RimMandrake/rimflow/maturation_dispatch.py status` says why and what un-pauses it; one fixed id, a repeat reopens it"
  },
  {
+  "key": "maturation.list_gate_blind_passes",
+  "op": ">",
+  "value": 3,
+  "alarm": true,
+  "worse": {"factor": 2},
+  "tag": "LIST_GATE_BLIND",
+  "name": "OPS_LIST_GATE_HOLDS_READY_WORK_ON_COULD_NOT_LOOK",
+  "title_field": "said",
+  "marks": [
+   "MEASURED"
+  ],
+  "why": "RIMMANDRAKE_SCOPE_COULD_NOT_LOOK_ONE_STRAY_FILE_HELD_ELEVEN_TICKETS: a list_dispatch gate held work on a reading that could not be made for more than 3 applied ticks in a row (the danger: 2026-11-24, 11 ready items held for about a day on 123 unreadable sign-of-life files and nobody was told). 3 ticks is 30 min at the 10 min timer; how often a blind tick clears by itself is UNMEASURED, and 30 min of held work is cheap beside a day. The title names the gate, the file and the count; `python3 src/RimMandrake/rimflow/list_dispatch.py status` shows each held row"
+ },
+ {
   "key": "maturation.stalled",
   "op": ">",
   "value": 0,

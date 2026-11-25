@@ -136,15 +136,17 @@ def detached_done(hours, now=None, root=DETACHED, unit_state=None, item_state=No
     commits = commits or (lambda item, since: real_count(sh("git", "log", "origin/main", "--since=@%d" % int(since),
                                                             "--format=@@%h", "--name-only", "-F", "--grep=" + item)))
     out = []
+    import detached_helper as DH    # the one rule of what a run record is (RECORD_NAME): the folder is shared
     for p in sorted(glob.glob(os.path.join(root, "*.json"))):
-        if p.endswith(".out.json"):
+        u = DH.record_unit(p)
+        if not u:
             continue
         try:
             with open(p) as f:
                 r = json.load(f)
         except (OSError, ValueError):
             continue
-        if not isinstance(r, dict) or not r.get("item") or now - r.get("at", 0) > hours * 3600:
+        if not DH.is_record(r, u) or not r.get("item") or now - r.get("at", 0) > hours * 3600:
             continue
         if unit_state(r.get("unit", "")) in ("active", "activating"):
             continue  # still building: not a receipt yet

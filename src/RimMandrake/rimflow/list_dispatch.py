@@ -290,8 +290,10 @@ def decide(cfg, st, facts, now, account=(True, "")):
     """-> (rows, launches). Pure over (cfg, st, facts, now, account); writes only st. One row per item, in order."""
     items = (facts or {}).get("items")
     if items is None:
-        return [{"item": "-", "decision": "blind", "why": "the ledger could not be read; nothing launches"}], []
+        why = "the ledger could not be read; nothing launches"
+        return [{"item": "-", "decision": "blind", "why": why, "could_not_look": why}], []
     sti = st.setdefault("items", {})
+    runs_blind = "runs" in facts and facts["runs"] is None     # the run-record folder could not be listed
     runs = facts.get("runs") or {}
     lane = facts.get("lane_items") or items         # --only narrows `items`; the slots are the whole lane's
     live_total = sum(len((runs.get(i) or {}).get("live") or []) - len((runs.get(i) or {}).get("host_live") or [])
@@ -316,6 +318,8 @@ def decide(cfg, st, facts, now, account=(True, "")):
 
         def put(decision, why, row=row):
             row["decision"], row["why"] = decision, why
+            if decision == "blind":
+                row["could_not_look"] = why     # held on a reading that could not be made (blind_hold counts it)
 
         def stop(why, smallest, row=row, it=it, s=s, iid=iid, att=att):
             put("stopped", why)
@@ -394,6 +398,9 @@ def decide(cfg, st, facts, now, account=(True, "")):
         if it.get("route"):     # an open routed part holds the item: its answer re-shapes it (list_shape.py)
             r = it["route"]
             put("routed", "a part is routed to %s: %s; resumes on: %s" % (r.get("who"), r.get("ask"), r.get("resumes")))
+            continue
+        if runs_blind:
+            put("blind", "whether a run is live on it is unknown (%s); nothing launches it" % facts.get("recent"))
             continue
         if run.get("live"):
             put("live", "%s is live on it" % ", ".join(run["live"]))
@@ -498,6 +505,10 @@ def decide(cfg, st, facts, now, account=(True, "")):
             host, hwhy = host_room(cfg, facts.get("hosts"), placed)
             if not host:
                 put("slots_full", full + ("; no host has room: " + hwhy if cfg.get("hosts") else ""))
+                if cfg.get("load_line") and (facts.get("load") is None or (recent is not None and not recent.ok)):
+                    # no spare room was counted only because a reading could not be made, not because the room is used
+                    row["could_not_look"] = ("the load average could not be read" if facts.get("load") is None
+                                             else recent.cause)
                 continue
         if pool and not it.get("clone_exists"):
             put("pool_full", pool)
@@ -586,14 +597,35 @@ def _clone_exists(iid):
     return os.path.isdir(os.path.join(DH.pool_root(), "clones", iid + ".det"))
 
 
-def _runs(ids, now, lag, hosts=None):
-    """hosts: filled with {host: live lane runs there}; such runs stay live on their item, and take no own slot."""
+def _could_be_recent(path, now, lag):
+    """-> None when the record file at `path` was last written `lag` or more seconds before `now`, so the launch it holds
+    cannot be inside the lag (a record is written at launch, and only rewritten later); else the cause why it may be."""
+    try:
+        age = now - os.stat(path).st_mtime
+    except OSError as e:
+        return "its file time could not be read (%s: %s)" % (type(e).__name__, e)
+    return None if age >= lag else "it was written %d s ago, inside the %d s lag" % (max(age, 0), lag)
+
+
+def _runs(ids, now, lag, hosts=None, unread_old=None):
+    """-> ({item: {"live", "ended", "system"?}}, probe_result of the recent lane launches). hosts: filled with {host:
+    live lane runs there}; such runs stay live on their item, and take no own slot. An unreadable record blinds
+    the recent count only when it could hold a recent launch (_could_be_recent); an older one goes to `unread_old`
+    (a list) and changes no answer. A folder that cannot be listed blinds the count."""
     import detached_helper as DH
     import probe_result as PR
     out, unreadable, recent = {}, [], 0
     hosts = {} if hosts is None else hosts
+
+    def unread(name):
+        p = os.path.join(DH.runs_dir(), name)
+        why = _could_be_recent(p, now, lag)
+        if why:
+            unreadable.append("the run record %s could not be read and %s" % (p, why))
+        elif unread_old is not None:
+            unread_old.append(p)
     try:
-        for rec in DH.all_records(unreadable=unreadable.append):
+        for rec in DH.all_records(unreadable=unread):
             item = rec.get("item")
             lane = rec.get("next_act_owner") == FAMILY
             if item not in ids and not lane:
@@ -607,7 +639,7 @@ def _runs(ids, now, lag, hosts=None):
             elif live and lane:
                 at = rec.get("at")
                 if type(at) not in (int, float) or not 0 < at < float("inf"):
-                    unreadable.append("%s has no readable launch time" % rec["unit"])
+                    unreadable.append("the run record %s has no readable launch time" % DH.record_path(rec["unit"]))
                 elif 0 < now - at < lag:
                     recent += 1
             if item in ids:
@@ -616,8 +648,8 @@ def _runs(ids, now, lag, hosts=None):
                 fc = FC.of_run(rec)
                 if not live and not fc.counts:
                     r.setdefault("system", {})[rec["unit"]] = "%s (%s)" % (fc.word, fc.why)
-    except OSError as e:
-        unreadable.append(str(e))
+    except OSError as e:     # no run is seen at all: which items have a live run is unknown too (runs None)
+        return None, PR.could_not_look("the run-record folder could not be listed (%s: %s)" % (type(e).__name__, e))
     return out, PR.could_not_look(unreadable[0]) if unreadable else PR.value(recent)
 
 
@@ -722,9 +754,10 @@ def gather(st, now=None, root=None, load_lag_s=None):
                 d["accept_why"] = ((st.get("items") or {}).get(iid) or {}).get("accept_timed", {}).get("why")
         items[iid] = d
     ordered = {i: items[i] for i in order_ids(items)}
-    on_hosts = {}
-    runs, recent = _runs(set(ordered), now, cfg["load_lag_s"] if load_lag_s is None else load_lag_s, on_hosts)
-    _read_next(st, ordered, runs)
+    on_hosts, unread_old = {}, []
+    runs, recent = _runs(set(ordered), now, cfg["load_lag_s"] if load_lag_s is None else load_lag_s, on_hosts,
+                         unread_old)
+    _read_next(st, ordered, runs or {})
     paused = _paused(now)
     for iid, d in ordered.items():
         d["mod"] = mod_of(iid, d.get("title"), mods)
@@ -745,11 +778,11 @@ def gather(st, now=None, root=None, load_lag_s=None):
             d["off_unreadable"] = "the owner's mod holds could not be read (%s: %s)" % (type(e).__name__, e)
         d["depth"] = chain_depth(iid, lambda i: (w.items.get(i).caused_by if w.items.get(i) else None), st)
         d["clone_exists"] = _clone_exists(iid)
-    live = sum(len(r["live"]) for r in runs.values())
+    live = None if runs is None else sum(len(r["live"]) for r in runs.values())
     load = load_now()
     return {"items": ordered, "runs": runs, "other_live": 0, "paused": paused,
             "pool": _pool(), "live_lane": live, "load": load.value if load.ok else None, "recent": recent,
-            "hosts": host_facts(cfg, on_hosts)}
+            "hosts": host_facts(cfg, on_hosts), "unread_old": unread_old}
 
 
 def account_gate(gate=None, drain=None, now=None):
@@ -891,6 +924,8 @@ def execute(cfg, st, rows, launches, facts, now, fx=None):
                     row["why"] = "closed; the event is written, not landed yet: %s" % _one(said, 200)
             elif rc in (LE.LIVE_WAIT, LE.LIVE_BLIND):
                 row.update(decision="blind" if rc == LE.LIVE_BLIND else "close_refused", why=_one(said, 600))
+                if rc == LE.LIVE_BLIND:
+                    row["could_not_look"] = row["why"]
             else:
                 s["close_refused"] = {"fp": [it.get("effect"), it.get("events")], "why": _one(said, 600), "at": now}
                 row.update(decision="close_refused", why=_one(said, 300))
@@ -958,7 +993,11 @@ def tick(cfg, apply, fx=None, now=None, only=None):
         counts = {}
         for r in rows:
             counts[r["decision"]] = counts.get(r["decision"], 0) + 1
-        rd = {"schema": 1, "at": now, "at_pac": pac(now), "apply": apply, "account": list(account), "counts": counts,
+        # a run-now (--only) tick sees part of the lane: it neither counts nor ends the streak; a dry tick writes nothing
+        bh = blind_hold(st.get("blind_hold"), rows, now) if apply and not only else st.get("blind_hold")
+        if apply and not only:
+            st["blind_hold"] = bh
+        rd = {"schema": 1, "blind_hold": bh, "at": now, "at_pac": pac(now), "apply": apply, "account": list(account), "counts": counts,
               "launched": [{"item": r["item"], "unit": r.get("unit"), "model": r.get("model")} for r in rows
                            if r.get("decision") == "launched"],
               "items": {r["item"]: dict({k: r.get(k) for k in ("decision", "why", "model", "unit", "need")},
@@ -973,6 +1012,22 @@ def tick(cfg, apply, fx=None, now=None, only=None):
     finally:
         if lock:
             lock.close()
+
+
+def blind_hold(prev, rows, now):
+    """-> the streak of applied ticks in a row that held work on a could-not-look: {"passes": n, "since", "held": the
+    count of items held this tick, "gate": decision of the first, "cause": its reading that could not be made, "items":
+    the first few}. passes 0 when this tick held nothing on one. ops_watch reads it from reading.json and raises
+    OPS_LIST_GATE_HOLDS_READY_WORK_ON_COULD_NOT_LOOK past its line (design/specs/2026-11-23-list-dispatch/boundary.md
+    §a-gate-held-on-could-not-look-is-told)."""
+    held = [r for r in rows if r.get("could_not_look")]
+    if not held:
+        return {"passes": 0, "held": 0, "at": now}
+    prev = prev if isinstance(prev, dict) and isinstance(prev.get("passes"), int) and prev["passes"] > 0 else {}
+    first = held[0]
+    return {"passes": prev.get("passes", 0) + 1, "since": prev.get("since", now), "at": now, "held": len(held),
+            "gate": "list_dispatch %s" % first.get("decision"), "cause": _one(first["could_not_look"], 300),
+            "items": [r["item"] for r in held[:4]]}
 
 
 def row_stage(it, row, now):

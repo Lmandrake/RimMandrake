@@ -382,17 +382,42 @@ def remote_live_status(rec, runner=subprocess.run, root=None):
     return st
 
 
+# The run-record folder is shared: run_alive.py writes <unit>.alive.json there, finish <unit>.out.json, and .err, .log,
+# .md and .jsonl files sit beside them. A reader that took every *.json for a record read 123 sign-of-life files as
+# broken records, and list_dispatch then counted no spare room and held 11 ready items for about a day (2026-11-24).
+# So a reader names what a record is: the file <unit>.json, where a unit holds no dot (unit_name), and the record in
+# it names the same unit. Every other file is another writer's, and no reader of run records looks at it.
+# (RIMMANDRAKE_SCOPE_COULD_NOT_LOOK_ONE_STRAY_FILE_HELD_ELEVEN_TICKETS; design/specs/2026-11-24-record-readers/boundary.md)
+RECORD_NAME = re.compile(r"([^./]+)\.json")
+
+
+def record_unit(name):
+    """-> the unit whose run record a file of this name is, or None when the name is another writer's file."""
+    m = RECORD_NAME.fullmatch(os.path.basename(name))
+    return m.group(1) if m else None
+
+
+def is_record(rec, unit):
+    """True when `rec` (a parsed <unit>.json) is the run record of `unit`: a dict that names that unit."""
+    return isinstance(rec, dict) and rec.get("unit") == unit
+
+
+def record_units(root=None):
+    """-> the sorted units that have a record file in the folder (no other writer's file). An OSError when the folder
+    cannot be listed: could not look is never "no records"."""
+    return sorted(u for u in map(record_unit, os.listdir(runs_dir(root))) if u)
+
+
 def all_records(root=None, unreadable=None):
-    d = runs_dir(root)
-    for n in sorted(os.listdir(d)):
-        # <unit>.alive.json is run_alive.py's look, not a record: read as one, each such file reported unreadable and
-        # list_dispatch then counted no spare room (2026-11-24: 123 files, 11 ready items at slots_full at load 6)
-        if n.endswith(".json") and not n.endswith((".out.json", ".alive.json")):
-            rec = read_record(n[:-5], root)
-            if isinstance(rec, dict) and rec.get("unit"):
-                yield rec
-            elif unreadable is not None:
-                unreadable(n)
+    """Each run record in the folder. A file named as a record that cannot be read or parsed goes to
+    `unreadable(name)`; one that parses but does not name its unit is not a record, and is not looked at, like every
+    other writer's file. An OSError when the folder cannot be listed."""
+    for u in record_units(root):
+        rec = read_record(u, root)
+        if is_record(rec, u):
+            yield rec
+        elif rec is None and unreadable is not None:
+            unreadable(u + ".json")
 
 
 def clone_holders(dest, runner=subprocess.run, now=None, root=None, kept_ok=False):
@@ -967,12 +992,9 @@ def return_all(runner=subprocess.run, evictor=None, busy=None, publish_ledger=Tr
     a run that ended less than grace_s ago: whoever launched it may still be reading the clone."""
     out, worst = [], 0
     now = now or time.time()
-    d = runs_dir(root)
-    for n in sorted(os.listdir(d)):
-        if not n.endswith(".json") or n.endswith(".out.json"):
-            continue
-        rec = read_record(n[:-5], root)
-        if rec and rec.get("status") == "finished" and not rec.get("returned") and owns_clone(rec) \
+    for u in record_units(root):
+        rec = read_record(u, root)
+        if is_record(rec, u) and rec.get("status") == "finished" and not rec.get("returned") and owns_clone(rec) \
                 and os.path.isdir(rec["clone"]) and now - (rec.get("ended") or rec.get("at") or 0) >= grace_s:
             rc, text = return_clone(rec["unit"], now=now, runner=runner, evictor=evictor, busy=busy, publish_ledger=publish_ledger, root=root)
             out.append(text)
@@ -1997,13 +2019,13 @@ def earlier_session_totals(rec, sid, root=None):
     TOTAL_LOGGED has no `session`: its result file is read instead."""
     import role_launch as RL
     best = [None, None]
-    for p in glob.glob(os.path.join(runs_dir(root), "*.json")):
-        try:
-            with open(p, encoding="utf-8") as f:
-                r = json.load(f)
-        except (OSError, ValueError):
-            continue
-        if not isinstance(r, dict) or r.get("unit") == rec["unit"] or not (_num(r.get("at")) and r["at"] < rec["at"]):
+    try:
+        units = record_units(root)
+    except OSError:
+        return tuple(best)      # the folder cannot be listed: none is readable, as the docstring says
+    for u in units:
+        r = read_record(u, root)
+        if not is_record(r, u) or r.get("unit") == rec["unit"] or not (_num(r.get("at")) and r["at"] < rec["at"]):
             continue
         if "session" in r:
             if r["session"] != sid:

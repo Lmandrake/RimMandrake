@@ -2920,11 +2920,9 @@ def live_twins(mod, stage, item, status=None):
     except OSError as e:
         return None, "%s: %s" % (type(e).__name__, e)
     out = []
-    for n in names:
-        if not n.endswith(".json") or n.endswith(".out.json"):
-            continue
-        rec = DH.read_record(n[:-5])
-        if not rec or not rec.get("unit"):
+    for u in filter(None, map(DH.record_unit, names)):     # run records by name, never another writer's file
+        rec = DH.read_record(u)
+        if not DH.is_record(rec, u):
             continue
         env = rec.get("env") if isinstance(rec.get("env"), dict) else {}
         same = env.get("RM_CONTROL_MOD") == mod and env.get("RM_CONTROL_STAGE") == stage

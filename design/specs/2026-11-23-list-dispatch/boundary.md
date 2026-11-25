@@ -5,7 +5,8 @@ The program names keep the old word "list" (`list_dispatch`, `list_pipeline`, `l
 Code: `src/RimMandrake/rimflow/list_dispatch.py` (all of it), `src/RimMandrake/rimflow/list_dispatch.json`,
 `src/RimMandrake/rimflow/mod_work.py` (all of it) and its callers `list_pipeline.facts`/`stage_of`, `list_home.offer`
 and `maturation_nonmod.section`,
-`maturation_dispatch.occupancy` (the lane's runs only),
+`maturation_dispatch.occupancy` (the lane's runs only), `ops_watch.list_gate_blind` and its target in
+`src/RimMandrake/Utils/ops_watch_rules.json`,
 `src/RimMandrake/Utils/systemd/rm-list-dispatch.{service,timer}`, the `list_dispatch` family in
 `src/RimMandrake/rimflow/control.py`, `detached_helper.py launch --next-act-owner` and the one line in
 `left_open_continue.plan` that reads it.
@@ -37,6 +38,10 @@ waited for the Conductor's hand, because no program launched them. Each promise 
 - **a-mod-ticket-that-names-no-home-and-no-mod-path.** `mod_work.of` reads the ticket's home, then the repo paths in its
   title, check and prose. A ticket about one mod that has no home and names the mod only by a word stays in the List
   Pipeline. A ticket with an explicit non-mod home (`pipeline:`, `game:`, `machine:`) stays, whatever its paths say.
+- **an-old-unreadable-record-of-a-live-run.** An unreadable record last written before the lag is not a recent launch,
+  and its item and liveness are not read: if it is in fact a live run, its item can read as having no run. A record is
+  written whole (`write_record` replaces the file), so no such record is known; such a record is listed in
+  the tick's `unread_old` fact.
 - **a-check-that-passes-for-the-wrong-reason.** Step 1's page says it. The lane trusts the check.
 - **two-ticks-at-once.** The tick holds a file lock; a second tick on another clone with another state directory is not
   seen.
@@ -98,7 +103,24 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   Shape, which do.
 - **the-tick-counts-recent-lane-launches-before-taking-spare-room.** For the load gate, the tick counts live detached
   records marked `next_act_owner=list_dispatch` whose launch time is within `load_lag_s` before the tick, including
-  records outside the tick's item selection. An unreadable record or launch time means no spare room.
+  records outside the tick's item selection. An unreadable launch time, or an unreadable record that could hold a
+  recent launch (its file was written inside `load_lag_s`, or its file time cannot be read), means no spare room, and
+  the row names the record's file.
+- **an-unreadable-record-blinds-only-what-it-can-change.** An unreadable record last written `load_lag_s` or more
+  before the tick cannot hold a launch inside the lag: room is still counted, and the record goes to the tick's
+  `unread_old` fact, out of the load decision. Another writer's file in the run-record folder is no record and blinds nothing
+  (`detached_helper.record_unit`, design/specs/2026-11-24-record-readers/boundary.md). A run-record folder that cannot
+  be listed hides which runs are live: every row past the check reads `blind`, says so, and nothing launches.
+- **a-gate-held-on-could-not-look-is-told.** A row held only because a reading could not be made (every `blind` row:
+  the ledger, the mod work, the off store, the check, the run records, or a close whose live check could not decide;
+  and `slots_full` where the load or the recent launches could not be read) carries `could_not_look`. Each applied tick
+  of the whole lane keeps `blind_hold` in its state and its reading: the passes in a row that held a row so, the count
+  held, the gate and the cause (it names the file). A tick that holds none sets passes to 0. A run-now (`--only`) tick
+  sees part of the lane, so it neither counts nor ends the streak. Room used up, read, is not such a hold.
+  `ops_watch.py` reads it as `maturation.list_gate_blind_passes` (UNMEASURED when the reading is missing, a dry tick's
+  or older than an hour, never 0), and past 3 passes its target files the one item
+  `OPS_LIST_GATE_HOLDS_READY_WORK_ON_COULD_NOT_LOOK`, its title naming the gate, the file and the count. The danger
+  and the line's reason are on the target in `ops_watch_rules.json`.
 - **a-lane-run-on-a-mod-takes-no-mod-slot.** The mod tick (`maturation_dispatch.occupancy`) does not count a live run that
   this lane launched (`next_act_owner` list_dispatch) in its own `max_live`. The run is still live on its mod, so no mod
   run starts beside it on the same files. Measured 2026-11-24: lane runs on FlowWorks held the Gimme Some Slack walk brief

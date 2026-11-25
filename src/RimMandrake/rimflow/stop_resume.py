@@ -154,9 +154,10 @@ def recent_records(root, now):
         return []
     out = []
     for n in names:
-        if not n.endswith(".json") or n.endswith(".out.json"):
+        u = DH.record_unit(n)       # a run record by name, never another writer's file (detached_helper.RECORD_NAME)
+        if not u:
             continue
-        t = launched_at(n[:-5])
+        t = launched_at(u)
         if t is not None and t < now - LAUNCH_LOOKBACK_S:
             try:     # an old launch is still read while its record was written within the stop lookback (a long run
                 fresh = os.stat(os.path.join(d, n)).st_mtime >= now - STOP_LOOKBACK_S    # that died lately, or a parked one)
@@ -164,8 +165,8 @@ def recent_records(root, now):
                 fresh = False
             if not fresh:
                 continue
-        rec = DH.read_record(n[:-5], root)
-        if rec and rec.get("unit") and rec.get("item"):
+        rec = DH.read_record(u, root)
+        if DH.is_record(rec, u) and rec.get("item"):
             out.append(rec)
     return out
 

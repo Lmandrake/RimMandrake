@@ -87,6 +87,7 @@ PAGES = {
     "design/specs/2026-11-22-steve-idle-takeable/boundary.md": "src/RimMandrake/Utils/selftest_steve_idle_takeable.py",
     "design/specs/2026-11-24-ingame-visit-owed/boundary.md": "src/RimMandrake/Utils/selftest_ingame_visit_owed.py",
     "design/specs/2026-11-23-list-dispatch/boundary.md": "src/RimMandrake/rimflow/selftest_list_dispatch.py",
+    "design/specs/2026-11-24-record-readers/boundary.md": "src/RimMandrake/rimflow/selftest_record_readers.py",
     "design/specs/2026-11-23-list-stage-view/boundary.md": "src/RimMandrake/rimflow/selftest_list_pipeline.py",
     "design/specs/2026-11-23-owner-one-view/boundary.md": "src/RimMandrake/Utils/selftest_owner_one_view.py",
     "design/specs/2026-11-23-ticket-trend-graph/boundary.md": "src/RimMandrake/Utils/selftest_maturation_trend.py",

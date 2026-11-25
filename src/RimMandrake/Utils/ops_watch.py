@@ -3447,6 +3447,44 @@ def ingame_visit_owed(now, rd, last, rules):
              said="%s visit %s has %d bridge check(s) owed and no driver (waiting %d min)" % (mod, visit, n, minutes))
 
 
+# danger: a dead list tick whose last streak still reads as now. rm-list-dispatch.timer ticks every 10 min; 6 missed ticks
+# is a dead tick. It ends no work: the metric reads UNMEASURED.
+LIST_READING_MAX_AGE_S = 3600
+LIST_BLIND_KEY = "maturation.list_gate_blind_passes"
+
+
+def list_gate_blind(now):
+    """LIST_BLIND_KEY: the applied list_dispatch ticks in a row that held work on a reading that could not be made
+    (list_dispatch.blind_hold), with the gate, the cause (it names the file) and the count of held items. Its alarm
+    OPS_LIST_GATE_HOLDS_READY_WORK_ON_COULD_NOT_LOOK fires past the rules' line. A missing, torn or stale reading is
+    UNMEASURED, never 0 (RIMMANDRAKE_SCOPE_COULD_NOT_LOOK_ONE_STRAY_FILE_HELD_ELEVEN_TICKETS: 11 ready items held for
+    about a day on 123 unreadable sign-of-life files, and nothing told)."""
+    rf = str(HERE.parent / "rimflow")
+    if rf not in sys.path:
+        sys.path.insert(0, rf)
+    try:
+        import list_dispatch as LD
+        p = os.path.join(LD.sdir(create=False), "reading.json")
+        with open(p, encoding="utf-8") as f:
+            rd = json.load(f)
+        age = now - float(rd.get("at") or 0)
+        if age > LIST_READING_MAX_AGE_S:
+            return U("list_dispatch reading %s is %d min old (the tick is not ticking)" % (p, age / 60), "passes")
+        if not rd.get("apply"):
+            return U("list_dispatch reading %s is a dry tick's" % p, "passes")
+        bh = rd.get("blind_hold")
+        if not isinstance(bh, dict) or not isinstance(bh.get("passes"), int):
+            return U("no blind_hold block in %s" % p, "passes")
+        if not bh["passes"]:
+            return M(0, "passes", held=0)
+        said = "%s held %s item(s) on a could-not-look for %d passes: %s" % (
+            bh.get("gate"), bh.get("held"), bh["passes"], bh.get("cause"))
+        return M(bh["passes"], "passes", held=bh.get("held"), gate=bh.get("gate"), cause=bh.get("cause"),
+                 items=",".join(bh.get("items") or []), said=said)
+    except Exception as e:  # noqa: BLE001  could not look is never "nothing held"
+        return U("%s: %s" % (type(e).__name__, e), "passes")
+
+
 def c_maturation(now, rules, ctx):
     """RIMMANDRAKE_WIRE_DISPATCH_TO_LAUNCH_BUILDERS_MODS_SAT_IDLE: the longest an advancing mod at the offline build has
     had work owed (build, a hand step, ready to advance) with nothing running on it, from maturation_dispatch.py's
@@ -3492,6 +3530,7 @@ def c_maturation(now, rules, ctx):
             out[INGAME_VISIT_OWED_KEY] = ingame_visit_owed(now, rd, ctx.get("last_record") or {}, rules)
         except (ValueError, KeyError, AttributeError, TypeError) as e:
             out[INGAME_VISIT_OWED_KEY] = U("in-game visit reading unreadable: %s: %s" % (type(e).__name__, e))
+    out[LIST_BLIND_KEY] = list_gate_blind(now)      # its own reading: a fault of the mod step's reading never blanks it
     return out
 
 

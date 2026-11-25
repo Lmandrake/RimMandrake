@@ -95,12 +95,13 @@ with tempfile.TemporaryDirectory() as td:
         with open(os.path.join(td, name), "w") as f:
             json.dump(rec, f)
 
-    outp = os.path.join(td, "a.out.json")
-    put("a.out.json", {"usage": {"input_tokens": 10, "output_tokens": 5}})
-    put("a.json", {"unit": "u-a", "item": "D_DONE", "at": now - 600, "out": outp})
-    put("b.json", {"unit": "u-b", "item": "D_LIVE", "at": now - 600})
-    put("c.json", {"unit": "u-c", "item": "D_OLD", "at": now - 50 * 3600})
-    put("d.json", {"unit": "u-d", "item": "D_QUIET", "at": now - 300})
+    # a record is <unit>.json naming its own unit, as detached_helper.write_record makes it (RECORD_NAME)
+    outp = os.path.join(td, "u-a.out.json")
+    put("u-a.out.json", {"usage": {"input_tokens": 10, "output_tokens": 5}})
+    put("u-a.json", {"unit": "u-a", "item": "D_DONE", "at": now - 600, "out": outp})
+    put("u-b.json", {"unit": "u-b", "item": "D_LIVE", "at": now - 600})
+    put("u-c.json", {"unit": "u-c", "item": "D_OLD", "at": now - 50 * 3600})
+    put("u-d.json", {"unit": "u-d", "item": "D_QUIET", "at": now - 300})
     dd = {r["item"]: r for r in M.detached_done(24, now=now, root=td,
                                                 unit_state=lambda u: "active" if u == "u-b" else "inactive",
                                                 item_state=lambda i: "closed" if i == "D_DONE" else "doing",
@@ -129,9 +130,9 @@ def fake_show(item):
 real_states, real_show = getattr(M, "_ledger_states", None), M._item_state
 M._ledger_states, M._item_state = fake_states, fake_show
 with tempfile.TemporaryDirectory() as td:
-    for name, item in (("a.json", "D_DONE"), ("d.json", "D_QUIET")):
-        with open(os.path.join(td, name), "w") as f:
-            json.dump({"unit": "u-" + name, "item": item, "at": now - 300}, f)
+    for unit, item in (("u-a", "D_DONE"), ("u-d", "D_QUIET")):
+        with open(os.path.join(td, unit + ".json"), "w") as f:
+            json.dump({"unit": unit, "item": item, "at": now - 300}, f)
     try:
         dd = {r["item"]: r for r in M.detached_done(24, now=now, root=td, unit_state=lambda u: "inactive",
                                                     commits=lambda i, since: 0)}

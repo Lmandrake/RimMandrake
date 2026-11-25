@@ -351,10 +351,149 @@ def t_the_tick_counts_recent_lane_launches_before_taking_spare_room():
             "the tick refuses spare room at load 20 plus four recent lane launches (got %s)" % r["decision"])
         with open(DH.record_path("unreadable"), "w", encoding="utf-8") as f:
             f.write("{")
+        os.utime(DH.record_path("unreadable"), (NOW - 1, NOW - 1))     # written inside the lag: it could be recent
         record(3, 91)
         r = row()
         chk(lambda: r["decision"] == "slots_full" and "could not be read" in r["why"],
             "unreadable detached records are no spare room (got %s)" % r["decision"])
+
+
+def _lag_world():
+    """The load-gate fixture: three lane items, two recent lane launches at load 20 (20 + 2 x 2 < 28: room)."""
+    import detached_helper as DH
+    import list_effect as LE
+    import model as LM
+    import probe_result as PR
+    ld = LD()
+    ids = ["RIMMANDRAKE_TEST_UNREAD_" + c for c in "ABC"]
+    world = LM.replay([{"id": iid, "event": "file", "for": "BENCH", "seat": "BENCH", "kind": "task",
+                        "title": iid, "effect": "cmd:false", "ts": "2026-11-22T00:00:00Z"} for iid in ids])
+    cfg = dict(CFG, load_line=28, load_per_run=2, load_lag_s=90)
+    pats = [patch.object(LE, "_world", return_value=world), patch.object(ld, "_mods", return_value=[]),
+            patch.object(ld, "_off", return_value=(None, None)), patch.object(ld, "_paused", return_value=None),
+            patch.object(ld, "_held", return_value=None), patch.object(ld, "_pool", return_value=None),
+            patch.object(ld, "_clone_exists", return_value=False),
+            patch.object(DH, "live_status", lambda rec, *a: rec["status"]),
+            patch.object(ld, "load_now", return_value=PR.value(20))]
+    return ld, ids, cfg, pats
+
+
+def _plant(path, text, age):
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(text)
+    os.utime(path, (NOW - age, NOW - age))
+
+
+def t_an_unreadable_record_blinds_only_what_it_can_change():
+    import contextlib
+    import detached_helper as DH
+    ld, ids, cfg, pats = _lag_world()
+    fx = {"account": lambda: (True, "")}
+    with tempfile.TemporaryDirectory(prefix="ld_unread_") as d, patch.dict(os.environ, RM_DISPATCHER_STATE=d), \
+            contextlib.ExitStack() as es:
+        for p in pats:
+            es.enter_context(p)
+        for n in range(2):
+            DH.write_record({"unit": "u%d" % n, "item": ids[n], "at": NOW - 1 - n, "status": "running",
+                             "next_act_owner": "list_dispatch"})
+
+        def row():
+            return ld.tick(cfg, apply=False, fx=fx, now=NOW, only=[ids[2]])["items"][ids[2]]
+        chk(lambda: row()["decision"] == "would_launch", "the fixture leaves room: load 20 plus two recent launches")
+        _plant(os.path.join(DH.runs_dir(), "old.json"), "{", 3600)
+        r = row()
+        chk(lambda: r["decision"] == "would_launch",
+            "an unreadable record last written an hour ago cannot be a launch inside the 90 s lag: room is still "
+            "counted (got %s: %s)" % (r["decision"], r["why"]))
+        facts = ld.gather({}, NOW, load_lag_s=90)
+        chk(lambda: facts["unread_old"] == [os.path.join(DH.runs_dir(), "old.json")] and facts["recent"].ok,
+            "the old unreadable record is kept in facts, out of the decision (%s)" % facts.get("unread_old"))
+        _plant(os.path.join(DH.runs_dir(), "u0.heartbeat.json"), "{", 1)
+        _plant(os.path.join(DH.runs_dir(), "u1.alive.json"), '{"act": "renewed"}', 1)
+        r = row()
+        chk(lambda: r["decision"] == "would_launch",
+            "another writer's fresh file in the folder is not a record and blinds nothing (got %s: %s)"
+            % (r["decision"], r["why"]))
+        fresh = os.path.join(DH.runs_dir(), "fresh.json")
+        _plant(fresh, "{", 5)
+        r = row()
+        chk(lambda: r["decision"] == "slots_full" and fresh in r["why"] and "could not be read" in r["why"],
+            "an unreadable record written inside the lag is no spare room, and the row names its file (got %s: %s)"
+            % (r["decision"], r["why"]))
+        os.remove(fresh)
+        notdir = os.path.join(d, "not_a_folder")
+        _plant(notdir, "", 1)
+        with patch.object(DH, "runs_dir", lambda root=None: notdir):
+            r = row()
+        chk(lambda: r["decision"] == "blind" and "could not be listed" in r["why"],
+            "a run-record folder that cannot be listed hides which runs are live: the row is blind, said, and nothing "
+            "launches (got %s: %s)" % (r["decision"], r["why"]))
+
+
+def t_a_gate_held_on_could_not_look_is_told():
+    import list_effect as LE
+    import probe_result as PR
+    import ops_watch as OW
+    d = tempfile.mkdtemp(prefix="ld_blind_")
+    os.environ["RM_LIST_DISPATCH_DIR"] = d
+    spare = dict(CFG, load_line=28, load_per_run=2)
+    runs = {"A": {"live": ["u1"], "ended": []}, "B": {"live": ["u2"], "ended": []}}
+    cause = "the run record /x/detached/rm-detached-y.json could not be read and it was written 5 s ago"
+    blind = {"items": {"A": it(), "B": it(), "C": it()}, "runs": runs, "other_live": 0, "load": 20.0,
+             "recent": PR.could_not_look(cause)}
+    clear = dict(blind, recent=PR.value(0), load=99.0)      # no room, read: held, but not on a could-not-look
+    acts = []
+    fx = {"account": lambda: (True, ""), "launch": lambda *a: acts.append("launch") or (0, "", "u"),
+          "need": lambda *a: acts.append("need"), "close": lambda *a: acts.append("close") or (0, ""),
+          "effect": lambda *a: acts.append("effect") or (0, "")}
+
+    def tick(facts, t):
+        return LD().tick(dict(spare), apply=True, fx=dict(fx, facts=lambda st: facts), now=t)
+    rd = None
+    for k in range(4):
+        rd = tick(blind, NOW + 600 * k)
+    bh = rd.get("blind_hold") or {}
+    chk(lambda: rd["items"]["C"]["decision"] == "slots_full" and bh.get("passes") == 4 and bh.get("held") == 1
+        and bh.get("gate") == "list_dispatch slots_full" and "rm-detached-y.json" in str(bh.get("cause")),
+        "four ticks held on an unreadable record: the reading counts 4 passes, 1 held item, the gate and the file (%s)" % bh)
+    pt = OW.list_gate_blind(NOW + 1800)
+    tg = [t for t in json.load(open(os.path.join(REPO, "src", "RimMandrake", "Utils", "ops_watch_rules.json")))["targets"]
+          if t.get("key") == OW.LIST_BLIND_KEY]
+    chk(lambda: pt.get("m") == "MEASURED" and pt["v"] == 4 and "rm-detached-y.json" in pt["x"]["said"]
+        and "1 item" in pt["x"]["said"] and "list_dispatch slots_full" in pt["x"]["said"],
+        "ops_watch reads the streak with the gate, the file and the count in the alarm's title field (%s)" % pt)
+    chk(lambda: len(tg) == 1 and tg[0].get("alarm") is True and tg[0]["name"] ==
+        "OPS_LIST_GATE_HOLDS_READY_WORK_ON_COULD_NOT_LOOK" and tg[0]["op"] == ">" and tg[0]["value"] < pt["v"]
+        and tg[0].get("title_field") == "said" and "danger" in tg[0].get("why", ""),
+        "one alarm with one fixed item id crosses at 4 passes, and its line names its danger (%s)" % tg)
+    chk(lambda: tg and tg[0]["value"] >= 3, "a pass or two held does not cross the line")
+    rd = tick(clear, NOW + 2400)
+    chk(lambda: rd["blind_hold"]["passes"] == 0 and rd["items"]["C"]["decision"] == "slots_full"
+        and OW.list_gate_blind(NOW + 2500)["v"] == 0,
+        "room used up, read, is no could-not-look: the streak ends at 0, measured (%s)" % rd["blind_hold"])
+    rd = tick(dict(blind, recent=PR.value(0), load=None), NOW + 3000)
+    chk(lambda: rd["blind_hold"]["passes"] == 1 and "load average" in rd["blind_hold"]["cause"],
+        "a load that could not be read starts a new streak and says so (%s)" % rd["blind_hold"])
+    chk(lambda: OW.list_gate_blind(NOW + 3000 + OW.LIST_READING_MAX_AGE_S + 1)["m"] == "UNMEASURED",
+        "a stale reading is UNMEASURED, never 0")
+    os.environ["RM_LIST_DISPATCH_DIR"] = tempfile.mkdtemp(prefix="ld_none_")
+    chk(lambda: OW.list_gate_blind(NOW)["m"] == "UNMEASURED", "no reading is UNMEASURED, never 0")
+    chk(lambda: acts == [], "held ticks launched nothing (%s)" % acts)
+    os.environ["RM_LIST_DISPATCH_DIR"] = tempfile.mkdtemp(prefix="ld_blind2_")
+    rd = None
+    for k in range(2):
+        rd = LD().tick(dict(spare), apply=True, fx=dict(fx, facts=lambda st: {"items": None}), now=NOW + 600 * k)
+    chk(lambda: rd["blind_hold"]["passes"] == 2 and "ledger" in rd["blind_hold"]["cause"],
+        "an unreadable ledger is a hold on a could-not-look too (%s)" % rd["blind_hold"])
+    rd = LD().tick(dict(spare), apply=True, fx=dict(fx, facts=lambda st: clear), now=NOW + 1300, only=["C"])
+    chk(lambda: rd["blind_hold"]["passes"] == 2,
+        "a run-now (--only) tick sees part of the lane: it neither ends nor counts the streak (%s)" % rd["blind_hold"])
+    rd = LD().tick(dict(spare), apply=True, now=NOW + 1900, fx=dict(
+        fx, facts=lambda st: {"items": {"Z": it(verdict="holds", out="x")}, "runs": {}, "other_live": 0},
+        close=lambda *a: (LE.LIVE_BLIND, "the check could not be read live")))
+    chk(lambda: rd["items"]["Z"]["decision"] == "blind" and rd["blind_hold"]["passes"] == 3,
+        "a close that the live check could not decide is a hold on a could-not-look (%s, %s)"
+        % (rd["items"]["Z"], rd["blind_hold"]))
 
 
 def t_a_lane_run_on_a_mod_takes_no_mod_slot():
@@ -617,6 +756,8 @@ def main():
               t_the_lane_has_its_own_slots_and_chain_rule,
               t_a_full_lane_places_on_a_host_with_room,
               t_the_tick_counts_recent_lane_launches_before_taking_spare_room,
+              t_an_unreadable_record_blinds_only_what_it_can_change,
+              t_a_gate_held_on_could_not_look_is_told,
               t_a_raised_item_goes_first,
               t_a_lane_run_on_a_mod_takes_no_mod_slot,
               t_a_passed_wait_gets_one_second_look,
