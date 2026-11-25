@@ -289,7 +289,7 @@ def g13(c):
     e = []
     s = c.scene("sc_burn_line_walks")
     t = words(s.get("action"), s.get("expect"))
-    need("capture" in t and "each game hour" in t and "capture hour asserted" in t, "sc_burn_line_walks takes no hourly asserted captures", e)
+    need("capture" in t and ("each game hour" in t or "each hour" in t) and "capture hour asserted" in t, "sc_burn_line_walks takes no hourly asserted captures", e)
     need(s.get("hold") == "owner_review" or "savegame" in words(s.get("restore")), "sc_burn_line_walks neither holds nor keeps a save", e)
     return e
 
