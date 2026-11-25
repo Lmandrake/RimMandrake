@@ -1,0 +1,3 @@
+A new state store read from inside an existing pipeline function is reached by every older selftest of that function, and those selftests do not isolate a store they never knew about: work_bundle's store got a fake WB-mod-WreckedMachines record (live, unit u) from selftest_tick_game_only_exit. Make the new store refuse a test process that names no store of its own (RM_UNDER_SELFTEST or a selftest_* argv0), and run every suite that calls the hooked function before publishing.
+item: RIMMANDRAKE_BATCH_ONE_MODS_OPEN_WORK_INTO_ONE_RUN_PIPELINE_SPLITS_PER_TICKET
+home: skills/live-debugging-proof-harness or NONE
