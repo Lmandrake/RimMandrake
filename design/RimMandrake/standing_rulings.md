@@ -983,8 +983,9 @@ roughly half of it is available for our use."*
 - The order of the accounts in that quote is replaced. The replacement is his standard switching plan of 2026-10-28
   (item `ACCOUNTS_PLAN_BUILD_STANDARD_SWITCHING`). That plan burns steven first inside its window after its reset, then
   system, then lukas. The plan keeps "about half" of steven as the leave line.
-- The order, the leave lines, and each dated exception (one is in force from 2026-11-20) are in
-  `src/RimMandrake/Utils/switching_plan.json`. Obey that file.
+- The order, the leave lines and each temporary rule are steps of the account plan, one file that only `./acct`
+  writes (`./acct plan` prints it; page `design/specs/2026-11-24-account-plan-one-file/boundary.md`). Obey that plan.
+  Since 2026-11-24 the live account stays live until its own line, and the order answers only which account is next.
 - He was answering the card question "How much should be kept free for you?". Two parts of that quote are
   ended: the share for his evenings, and the rough daily partition. (Owner, by card Mon 2026-11-23 8:57 AM PST, item
   `RIMMANDRAKE_ENACT_FOUR_CARD_ANSWERS_ON_HIS_TWO_WAY_RULINGS`.) The card asked *"Must agents keep account capacity for
@@ -1021,10 +1022,12 @@ Please make that true everywhere."* About 6 AM PST: *"Agreed for 1% at the momen
   - 2%); that rule has ended. Page: `design/specs/2026-11-24-account-end/boundary.md`.
 - The meter reads whole percents (8,749 readings to 2026-11-20, none fractional). So 1% is the lowest line that the
   meter can see. A 0.1% line waits for a finer meter.
-- A switch that the priority pulls (above the line) waits for live runs too, at most 2 h.
-- Do not stop runs or switch accounts by hand at the soft line. The plan drains them.
-- The numbers live in `src/RimMandrake/Utils/switching_plan.json` and nowhere else. The page is
-  `design/specs/2026-11-20-account-drain/boundary.md`.
+- A switch above the line that rescues allowance from a reset waits for live runs too, at most 2 h
+  (`numbers.rescue.drain_h` of the plan).
+- Do not stop runs or switch accounts by hand at the warning line. The plan drains them at the line.
+- The numbers live in the account plan file and nowhere else (`./acct plan` prints them; `./acct set numbers.K=V`
+  changes one). The pages are `design/specs/2026-11-24-account-plan-one-file/boundary.md` (the plan) and
+  `design/specs/2026-11-20-account-drain/boundary.md` (the drain).
 
 ## Nobody plays during development; only the canonical world saves are protected — owner, 2026-11-23
 
@@ -1579,6 +1582,8 @@ otherwise we would). GPT doesn't typically drive/orchestrate, so we can drain to
 - A Claude account drains to its floor on its reset day, never to 0%. An agent on a Claude account at 0% is stuck.
 - The Conductor reads this as a rule for Codex, system and lukas. Steve's account keeps its own rulings (§Account and
   capacity budget) and his dated exceptions, until the owner says that this rule covers it too.
+- The rule is data of the account plan (`numbers.reset_day`, which `./acct plan` prints): the plan applies it with no
+  command, and `./acct can-use codex` answers by it.
 
 ## Codex agents run with full machine access — owner, 2026-11-09
 

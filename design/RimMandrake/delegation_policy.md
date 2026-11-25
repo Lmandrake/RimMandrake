@@ -99,7 +99,7 @@ text: `standing_rulings.md` §Only five acts stay his. Code: `src/RimMandrake/ri
 3. **The pass at his walk**, and his judgement of gameplay, fun, theme and UI. By his design, the pipeline ends at his
    walk. `maturation.owner_event` takes only an OWNER event that carries his words or his card, never a ruling.
 4. **Spending money or a purchase.** Nothing here buys capacity. A wider budget inside the account lines
-   (`src/RimMandrake/Utils/switching_plan.json`) is not a purchase.
+   (the account plan, `./acct plan`) is not a purchase.
 5. **Publishing outside the private repos** — a Steam Workshop upload, a public post.
 
 **Everything else is the Conductor's to do, mindfully.** The Conductor is the window that he talks to (seat BENCH, no

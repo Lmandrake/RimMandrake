@@ -72,7 +72,7 @@ These words are for the files that agents read, not for talk with Mandrake. Each
 | **Tick** | One timed run of the pipeline: `maturation_dispatch.py tick`. In a game sentence, a tick is the game's own time step. |
 | **Clone pool** | The reused helper clones under `/home/mandrake/rm/relentless/clones` (`src/RimMandrake/Utils/scratch_clone.py`). |
 | **Disk floor** | The free space below which no new clone is made: `ops.disk_brake_free_gb` in `src/RimMandrake/Utils/slot_rules.json`. |
-| **Leave line** | The percent left on an account at which work moves to the next account (`leave_pct_left` in `src/RimMandrake/Utils/switching_plan.json`). |
+| **Leave line** | The percent left on an account at which work moves to the next account (the `leave` of that account's step in the account plan; `./acct plan` prints it, `./acct line <account> <percent>` sets it). |
 | **Companion** | The JawaBench DLL that adds tools to the bridge (`skills/rimbridge-companion/SKILL.md`). |
 | **Calibrated brief** | A judge brief whose planted cases ran on its present text and came out as planted (`infrastructure/state/judge_calibration.json`). |
 | **Design Version** | The numbered version of a mod's design that the mod is built towards (`CLAUDE.md` §Each mod has its own Design Version). |
