@@ -1316,7 +1316,7 @@ def t_refused_publish_keeps_a_peer_commit_made_during_the_checks(a, b):
     during the checks off the branch too. A refused publish never removes a commit it did not make."""
     real = P.tree_checks
 
-    def peer_commits_then_red(top, changed):
+    def peer_commits_then_red(top, changed, gate=None):
         write(a, "peer.txt", "peer\n")
         sh(a, "add", "peer.txt")
         sh(a, "commit", "-q", "-m", "peer, by hand")

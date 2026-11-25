@@ -939,7 +939,7 @@ def warn_owner_shard(top, named):
 TREE_CHECKS = os.path.join("src", "RimMandrake", "Utils", "publish_tree_checks.json")
 
 
-def tree_checks(top, changed):
+def tree_checks(top, changed, gate=None):
     """Owner by card 2026-11-12 ~8:25 PM PST: publish runs the fast whole-tree checks and refuses on red, naming it
     (validation_map_and_rules.md rule 10). The list is TREE_CHECKS; a repo without it (a test fixture) runs nothing.
     `changed`: the paths the local commits touch; only skip_when_only paths -> nothing runs. A check that times out
@@ -955,6 +955,8 @@ def tree_checks(top, changed):
     cfg = json.load(open(cfg_path, encoding="utf-8"))
     if changed and all(any(fnmatch.fnmatch(p, g) for g in cfg.get("skip_when_only", ())) for p in changed):
         return None
+    if gate is not None:
+        gate.take("tree checks")                         # the full checkout and the checks wait for a machine slot
     if is_clone_top(top):
         rev, what = landing_rev(top)
         with full_head_tree(top, rev=rev, what=what, lands=True) as full:
@@ -986,6 +988,19 @@ def landing_rev(top):
 
 
 PIPELINE_TESTS = os.path.join("src", "RimMandrake", "Utils", "pipeline_tests.json")
+TREECHECK_GATE = ".treecheck-slots"      # under RM_ROOT: one line per machine (treecheck_slots.py)
+
+
+def door_checks(top, changed):
+    """The whole-tree checks, then the pipeline checks, under one per-machine slot (treecheck_slots.SLOTS run at once,
+    the rest wait first come first served; RIMMANDRAKE_THROTTLE_TREECHECKS_WHEN_DISK_SATURATES_HANG_GUARDS_FIRE: six at
+    once saturated SteveDesktop's disk, 2026-11-24). A change that runs no door check takes no slot. Page:
+    design/specs/2026-11-24-treecheck-slots/boundary.md. Raises Refuse as tree_checks and pipeline_checks do."""
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import treecheck_slots
+    with treecheck_slots.Gate(os.path.join(RM_ROOT, TREECHECK_GATE)) as gate:
+        tree_checks(top, changed, gate)
+        pipeline_checks(top, changed, gate)
 
 
 def door_inputs(top, test):
@@ -1027,7 +1042,7 @@ def pipeline_selection(top, changed, cfg):
         fnmatch.fnmatch(p, g) for p in ch for g in c.get("inputs", ())))]
 
 
-def pipeline_checks(top, changed):
+def pipeline_checks(top, changed, gate=None):
     """The Maturation Pipeline's tests at the door (pipeline_tests.json; owner by card 2026-11-15, nightly is the wrong
     phase for fluid code): a change touching a pipeline file runs the pipeline tests whose inputs it touches and
     refuses on a red. -> seconds added (0.0 when nothing ran), or raises Refuse."""
@@ -1043,6 +1058,8 @@ def pipeline_checks(top, changed):
         print("pipeline checks: the change set is unknown (no origin/main here), so every pipeline test runs")
     elif not any(fnmatch.fnmatch(p, g) for p in changed for g in cfg.get("pipeline_files", ())):
         return 0.0
+    if gate is not None:
+        gate.take("pipeline checks")                     # a no-op when this publish's tree checks hold a slot already
     base = door_base(top)
     if is_clone_top(top):
         with full_head_tree(top) as full:
@@ -1509,8 +1526,7 @@ def _publish(top, paths, msg, cwd=None):
                             "record cannot be told" % track, _undo(top, made, named)))
     changed = _changed_since_origin(top)
     try:
-        tree_checks(top, changed)
-        pipeline_checks(top, changed)
+        door_checks(top, changed)
     except Refuse as e:
         if not made:
             raise
