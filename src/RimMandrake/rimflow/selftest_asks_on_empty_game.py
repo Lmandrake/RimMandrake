@@ -147,7 +147,36 @@ def t_csharp_and_scene_scripts_are_not_executed():
        "both are named as having no empty-game adapter, never skipped silently (%s)" % held)
 
 
+SLEEPER = '''
+import time
+
+def scene_waits(B, snapshot, reload_snapshot, receipt, save_mid=None, load_mid=None):
+    deadline = time.time() + 600       # a scene polling the game for a state, as scene_lake_endless does for 180 s
+    while time.time() < deadline:
+        time.sleep(5)
+    return {"rows": [{"id": "W_pass_after_wait", "status": "PASS"}]}
+
+STAGE3_SCENES = {"scene_waits": scene_waits}
+'''
+
+
+def t_waiting_scene_runs_on_virtual_time():
+    """RIMMANDRAKE_REPAIR_FLOWWORKS_FORM_REFUSAL_AT_THE_RUN_SIX: a FlowWorks scene that waits on real time ran out the
+    certificate's hang guard (scene_lake_endless: 180 s of sleep against 120 s), so the clause never looked. On an empty
+    game time is free: the wait runs out at once and the scene's rows are judged."""
+    tt = {"tests": {"sc_w": {"kind": "live_minimal", "file": FW, "entry": "scene_waits", "command": "x"}},
+          "bars": [{"id": "bar_w", "proves_at": "6", "decides": ["sc_w"]}]}
+    keep, JC.EMPTY_GAME_TIMEOUT_S = JC.EMPTY_GAME_TIMEOUT_S, 30   # 600 s of scene sleep against 30 s: red on real time
+    try:
+        v = JC.certify(root_with(SLEEPER, tt), "M", to="in_game")
+    finally:
+        JC.EMPTY_GAME_TIMEOUT_S = keep
+    ok(not v["did_not_run"] and [r["bar"] for r in v["rows"] if r["clause"] == "asks_on_empty_game"] == ["bar_w"],
+       "a scene that waits 600 s on the clock runs on virtual time and its vacuous row is judged (%s)" % v["did_not_run"])
+
+
 def main():
+    t_waiting_scene_runs_on_virtual_time()
     v = JC.certify(root_with(SCENES, table()), "M", to="in_game")
     aoeg = [r for r in v["rows"] if r["clause"] == "asks_on_empty_game"]
     ok([r["bar"] for r in aoeg] == ["bar_vac"] and "V_pass_on_nothing" in aoeg[0]["observed"]

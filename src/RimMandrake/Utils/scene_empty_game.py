@@ -105,7 +105,10 @@ def flowworks_vacuous(root):
     if not isinstance(scenes, dict) or not scenes:
         return None, "%s has no STAGE3_SCENES table" % FLOWWORKS_SCENES
     _LOADED["scenes"] = list(scenes)
-    return vacuous(scenes), None
+    # a scene that polls the game for a state (scene_lake_endless: 180 s of real sleep) ran out the certificate's hang
+    # guard on an empty game; on virtual time its wait runs out at once (RIMMANDRAKE_REPAIR_FLOWWORKS_FORM_REFUSAL_AT_THE_RUN_SIX)
+    with _VirtualClock():
+        return vacuous(scenes), None
 
 
 class _VirtualClock:
