@@ -53,6 +53,8 @@ import tempfile
 import threading
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "rimflow"))  # rimflow/effort.py, appended: shadows nothing
+import effort as EF  # noqa: E402  the one effort table (RIMMANDRAKE_PASS_EFFORT_ON_EVERY_LAUNCH_STEVEDESKTOP_RAN_MEDIUM)
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _UTILS = os.path.dirname(_HERE)
@@ -227,7 +229,7 @@ def claude_runner(model, timeout):
             local = os.path.join(d, "shot" + (os.path.splitext(image)[1] or ".png"))
             shutil.copyfile(image, local)
             cmd = [CLAUDE, "-p", prompt_for(local), "--output-format", "json",
-                   "--model", model, "--dangerously-skip-permissions", "--allowed-tools", "Read"]
+                   "--model", model, "--dangerously-skip-permissions", "--allowed-tools", "Read"] + EF.effort_args(model)
             try:
                 r = harness_run.run(cmd, timeout, cwd=d)  # rm-harness.slice, not the seat
             except FileNotFoundError:

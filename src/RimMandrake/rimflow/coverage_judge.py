@@ -61,6 +61,7 @@ unreadable concept.
 What this cannot do, said plainly: a verdict of "covered" is one model's judgment, not proof; RM_ROLE_UNIT is an
 environment variable, so a writer who sets it by hand forges the ledger note too (an attributable line in git).
 """
+import effort as EF  # the one effort table (RIMMANDRAKE_PASS_EFFORT_ON_EVERY_LAUNCH_STEVEDESKTOP_RAN_MEDIUM)
 import argparse
 import json
 import os
@@ -1243,7 +1244,7 @@ def judge_tail(name, schema):
     and the editing tools denied."""
     return ["--model", MODEL, "--name", name, "--output-format", "json", "--json-schema",
             json.dumps(schema, separators=(",", ":")), "--disallowedTools", READ_ONLY_DENY,
-            "--dangerously-skip-permissions"]
+            "--dangerously-skip-permissions"] + EF.effort_args(MODEL)
 
 
 def llm_reader(d, repo, unit, charge=True, runner=None):

@@ -186,13 +186,14 @@ def t_the_one_launcher_adds_a_forgotten_flag():
                                stdin=subprocess.DEVNULL, env=dict(os.environ, PATH=d + ":" + os.environ["PATH"], HOME=d,
                                                                   SEAT_TMP_ROOT=d + "/t", XDG_CONFIG_HOME=d + "/c"))
             return r.stdout.split("\n")[:-1]
-        check("claude_bounded adds a forgotten flag", bounded("-p", "go now") == [F, "-p", "go now"], bounded("-p", "go now"))
-        check("claude_bounded leaves the caller's flag alone", bounded("-p", "x", F) == ["-p", "x", F])
-        check("claude_bounded leaves a closed tool list walled", bounded("-p", "--tools", "", "x") == ["-p", "--tools", "", "x"])
+        EFF = ["--effort", "high"]      # claude_bounded also adds the effort table's level (selftest_effort_ladder.py)
+        check("claude_bounded adds a forgotten flag", bounded("-p", "go now") == EFF + [F, "-p", "go now"], bounded("-p", "go now"))
+        check("claude_bounded leaves the caller's flag alone", bounded("-p", "x", F) == EFF + ["-p", "x", F])
+        check("claude_bounded leaves a closed tool list walled", bounded("-p", "--tools", "", "x") == EFF + ["-p", "--tools", "", "x"])
         check("claude_bounded gives remote-control its own form", bounded("remote-control", "--name", "S") ==
               ["remote-control", "--permission-mode", "bypassPermissions", "--name", "S"], bounded("remote-control", "--name", "S"))
         check("claude_bounded adds nothing to auth", bounded("auth", "status") == ["auth", "status"])
-        check("claude_bounded with no argument skips too", bounded() == [F], bounded())
+        check("claude_bounded with no argument skips too", bounded() == EFF + [F], bounded())
 
 
 def t_every_launch_specification_in_this_tree():

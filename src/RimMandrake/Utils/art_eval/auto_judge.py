@@ -42,6 +42,8 @@ import shutil
 import subprocess
 import sys
 import time
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "rimflow"))  # rimflow/effort.py, appended: shadows nothing
+import effort as EF  # noqa: E402  the one effort table (RIMMANDRAKE_PASS_EFFORT_ON_EVERY_LAUNCH_STEVEDESKTOP_RAN_MEDIUM)
 from datetime import datetime
 from pathlib import Path
 
@@ -319,7 +321,7 @@ def probe() -> tuple:
     import runner as RN
     try:
         r = subprocess.run([CLAUDE, "-p", "--output-format", "json", "--model", RN.model_for("opus"),
-                            "--dangerously-skip-permissions"],
+                            "--dangerously-skip-permissions"] + EF.effort_args(RN.model_for("opus")),
                            input="Reply with the single word OK.", capture_output=True, text=True, timeout=120,
                            cwd=str(SCRATCH))
     except (subprocess.TimeoutExpired, OSError) as e:

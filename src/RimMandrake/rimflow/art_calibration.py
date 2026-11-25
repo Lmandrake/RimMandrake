@@ -41,6 +41,7 @@ judge per case, capped from outside by spend_watchdog at CASE_BUDGET_USD, plus a
     python3 src/RimMandrake/rimflow/art_calibration.py run          judge every case, print one line each
     python3 src/RimMandrake/rimflow/art_calibration.py stage <dir>  stage the cases there, judge none
 """
+import effort as EF  # the one effort table (RIMMANDRAKE_PASS_EFFORT_ON_EVERY_LAUNCH_STEVEDESKTOP_RAN_MEDIUM)
 import hashlib
 import json
 import os
@@ -366,7 +367,7 @@ def judge(c, d, runner=None):
     base = [CLAUDE, "-p", None, "--model", MODEL, "--output-format", "json",
             "--json-schema", json.dumps(SCHEMA, separators=(",", ":")), "--dangerously-skip-permissions",
             "--allowed-tools", "Read",
-            "--name", "ART CALIBRATION %s" % c["id"]]
+            "--name", "ART CALIBRATION %s" % c["id"]] + EF.effort_args(MODEL)
     argv = list(base)
     argv[2] = prompt(d, c["id"])
     so, res, err = _call(argv, d, runner)

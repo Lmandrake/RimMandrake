@@ -3,6 +3,7 @@
 Moved verbatim from rimflow/relentless_exam.py (RIMMANDRAKE_SPLIT_LIVE_CODE_OUT_OF_RELENTLESS_NAMED_MODULES):
 only the functions live code reaches (design/RimMandrake/retired_eras_index_2026-11-18.md).
 """
+import effort as EF  # the one effort table (RIMMANDRAKE_PASS_EFFORT_ON_EVERY_LAUNCH_STEVEDESKTOP_RAN_MEDIUM)
 import hashlib
 import json
 import os
@@ -216,7 +217,8 @@ def run_setter(cwd, prompt, cfg, out, session=None, resume=None, runner=subproce
     claude = shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")
     sid = resume or session or str(uuid.uuid4())
     argv = [claude, "-p", prompt, "--agent", cfg.get("setter_agent", "rm-judge"), "--model", cfg.get("setter_model", "opus"),
-            "--output-format", "json", "--dangerously-skip-permissions"] + (["--resume", resume] if resume else ["--session-id", sid])
+            "--output-format", "json", "--dangerously-skip-permissions"] + EF.effort_args(cfg.get("setter_model", "opus")) \
+        + (["--resume", resume] if resume else ["--session-id", sid])
     with open(out, "a", encoding="utf-8") as f:
         try:
             r = runner(argv, cwd=cwd, stdout=f, stderr=subprocess.STDOUT, timeout=int(cfg.get("setter_max_s", 1200)),

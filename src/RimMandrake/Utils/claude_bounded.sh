@@ -132,6 +132,39 @@ if [ "${#SKIP[@]}" -gt 0 ]; then
   if [ "${1:-}" = remote-control ]; then shift; set -- remote-control "${SKIP[@]}" "$@"; else set -- "${SKIP[@]}" "$@"; fi
 fi
 
+# Every session states its effort (owner by card 2026-11-25: "No medium anywhere"). A caller that gave none gets the
+# level of the one table, rimflow/effort.py, for its --model. Nothing is added to auth, update and the like, to
+# `-p /usage` (no model work), or to the remote-control server (it takes no --effort; its sessions read the machine's
+# settings file). A table that cannot be read adds nothing and says so: no level is guessed here.
+effort_wanted() {
+  local a
+  case "${1:-}" in
+    remote-control|auth|update|mcp|doctor|install|plugin|setup-token|daemon|agents|--version|-v|--help|-h) return 1 ;;
+  esac
+  for a in "$@"; do
+    case "$a" in
+      --) break ;;
+      --effort|--effort=*|/usage) return 1 ;;
+    esac
+  done
+  return 0
+}
+if effort_wanted "$@"; then
+  EFFORT_MODEL=""
+  _prev=""
+  for _a in "$@"; do
+    [ "$_prev" = --model ] && EFFORT_MODEL="$_a"
+    case "$_a" in --model=*) EFFORT_MODEL="${_a#--model=}" ;; esac
+    _prev="$_a"
+  done
+  EFFORT_TABLE="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)/../rimflow/effort.py"
+  if EFFORT_LEVEL="$(python3 "$EFFORT_TABLE" level ${EFFORT_MODEL:+--model "$EFFORT_MODEL"} 2>/dev/null)" && [ -n "$EFFORT_LEVEL" ]; then
+    set -- --effort "$EFFORT_LEVEL" "$@"
+  else
+    echo "!!! claude_bounded: the effort table $EFFORT_TABLE could not be read: this session states no --effort." >&2
+  fi
+fi
+
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 # Seat temp dir on ext4 (header §2), set up before the scope probe so even an
 # unbounded seat keeps its temp off tmpfs. Failure is loud, never fatal. fd 9

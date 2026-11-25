@@ -34,6 +34,8 @@ import subprocess
 import sys
 import tempfile
 import time
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "rimflow"))  # rimflow/effort.py, appended: shadows nothing
+import effort as EF  # noqa: E402  the one effort table (RIMMANDRAKE_PASS_EFFORT_ON_EVERY_LAUNCH_STEVEDESKTOP_RAN_MEDIUM)
 from concurrent.futures import ThreadPoolExecutor
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -423,7 +425,7 @@ def ask_model(prompt):
     """-> the model's answer text. One fresh call, no tools, no settings, an empty folder: it reads only the prompt."""
     with tempfile.TemporaryDirectory(prefix="rm-gprose-") as d:
         r = subprocess.run([CLAUDE, "-p", "--model", READER_MODEL, "--tools", "", "--setting-sources", "", "--strict-mcp-config",
-                            "--no-session-persistence", "--output-format", "json", "--system-prompt",
+                            "--no-session-persistence", "--output-format", "json"] + EF.effort_args(READER_MODEL) + ["--system-prompt",
                             "You check rule text for terms that a reader cannot resolve. You answer with one JSON object."],
                            input=prompt, capture_output=True, text=True, cwd=d, timeout=READER_TIMEOUT_S)
     if r.returncode != 0:

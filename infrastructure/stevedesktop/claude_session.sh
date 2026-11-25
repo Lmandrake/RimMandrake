@@ -20,5 +20,7 @@ cd "$DIR" || { echo "missing $DIR" >&2; read -r -p "press enter"; exit 1; }
 export AGENT_SEAT="$SEAT"
 W="$HOME/rm/runner/src/RimMandrake/Utils/claude_bounded.sh"
 [ -x "$W" ] || W=claude
-"$W" --dangerously-skip-permissions --name "$NAME" --remote-control "$RC" "$PROMPT"
+# the one effort table (rimflow/effort.py); claude_bounded.sh adds it too when this line could not read it
+EFFORT="$(python3 "$HOME/rm/runner/src/RimMandrake/rimflow/effort.py" level)" || echo "effort table unreadable: no --effort on this window" >&2
+"$W" --dangerously-skip-permissions ${EFFORT:+--effort "$EFFORT"} --name "$NAME" --remote-control "$RC" "$PROMPT"
 exec bash -l

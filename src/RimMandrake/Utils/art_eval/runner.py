@@ -37,6 +37,8 @@ import shutil
 import subprocess
 import sys
 import tempfile
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "rimflow"))  # rimflow/effort.py, appended: shadows nothing
+import effort as EF  # noqa: E402  the one effort table (RIMMANDRAKE_PASS_EFFORT_ON_EVERY_LAUNCH_STEVEDESKTOP_RAN_MEDIUM)
 import time
 from pathlib import Path
 
@@ -88,7 +90,7 @@ def now():
 # ------------------------------------------------------------------ transports
 def call_claude(prompt: str, cwd: Path, rung: str = "opus", timeout: int = 420, tools: str = "Read") -> tuple[str, dict]:
     model = model_for(rung)
-    cmd = [CLAUDE, "-p", "--output-format", "json", "--model", model, "--dangerously-skip-permissions"]
+    cmd = [CLAUDE, "-p", "--output-format", "json", "--model", model, "--dangerously-skip-permissions"] + EF.effort_args(model)
     if tools:
         cmd += ["--allowed-tools", tools]
     t0 = time.time()

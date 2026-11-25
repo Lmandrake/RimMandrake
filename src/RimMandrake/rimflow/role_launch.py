@@ -77,6 +77,7 @@ Every launch, refusal, finish and stop is a dispatcher action: journaled, and no
 (an alarm-run's note goes on its alarm item) when --apply. Dry-run launches nothing.
 Names no host, account or model id.
 """
+import effort as EF  # the one effort table (RIMMANDRAKE_PASS_EFFORT_ON_EVERY_LAUNCH_STEVEDESKTOP_RAN_MEDIUM)
 import calendar
 import hashlib
 import json
@@ -3360,7 +3361,7 @@ def launch_argv(role, unit, msg, out, err, claude, session=None, tmpdir=None):
     if FF.BRIEF_LINE.strip() not in msg:
         msg = msg.rstrip() + "\n\n" + FF.BRIEF_LINE
     cmd = [bounded, "-p", msg, "--model", role["model"], "--name", "ROLE %s %s" % (role["name"], unit)] \
-        + ["--settings", _control_settings(role)] \
+        + EF.effort_args(role["model"], role.get("effort")) + ["--settings", _control_settings(role)] \
         + list(role.get("launch_args") or []) + ["--output-format", "json", "--dangerously-skip-permissions"] \
         + (["--resume", role["resume_session"]] if role.get("resume_session")      # continues that session (resume_due)
            else ["--session-id", session] if session else [])     # its transcript, found when no result is

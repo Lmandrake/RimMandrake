@@ -44,6 +44,8 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "rimflow"))  # rimflow/effort.py, appended: shadows nothing
+import effort as EF  # noqa: E402  the one effort table (RIMMANDRAKE_PASS_EFFORT_ON_EVERY_LAUNCH_STEVEDESKTOP_RAN_MEDIUM)
 
 from PIL import Image
 
@@ -97,7 +99,7 @@ def viewpoint_south(path):
     """
     try:
         out = subprocess.run(
-            [CLAUDE, "-p", VIEWPOINT_PROMPT.format(path=path), "--dangerously-skip-permissions"],
+            [CLAUDE, "-p", VIEWPOINT_PROMPT.format(path=path), "--dangerously-skip-permissions"] + EF.effort_args(),
             capture_output=True, text=True, timeout=VIEWPOINT_TIMEOUT_S)
         word = (out.stdout or "").strip().split()[-1].upper() if out.stdout.strip() else ""
         if word in ("EYELEVEL", "OVERHEAD"):

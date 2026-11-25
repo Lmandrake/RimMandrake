@@ -34,6 +34,8 @@ import shutil
 import subprocess
 import sys
 import tempfile
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "rimflow"))  # rimflow/effort.py, appended: shadows nothing
+import effort as EF  # noqa: E402  the one effort table (RIMMANDRAKE_PASS_EFFORT_ON_EVERY_LAUNCH_STEVEDESKTOP_RAN_MEDIUM)
 
 CANT = "cannot tell"
 BARS = ("canal_reads_as_dug", "fill_level_legible", "pit_reads_as_hole", "covered_pit_springs", "hose_reads_as_hose",
@@ -261,7 +263,7 @@ def claude_reader(prompt, pics_dir, model="opus", timeout=900):
     cmd = [os.path.expanduser("~/.local/bin/claude"), "-p", prompt, "--model", model, "--tools", "Read", "--strict-mcp-config",
            "--permission-mode", "dontAsk", "--allowedTools", "Read(/%s/**)" % pics_dir,
            "--disallowedTools", *["Read(%s%s/**)" % (sl, d) for d in DENY for sl in ("/", "//")],
-           "--no-session-persistence", "--output-format", "text"]
+           "--no-session-persistence", "--output-format", "text"] + EF.effort_args(model)
     r = subprocess.run(cmd, cwd=pics_dir, capture_output=True, text=True, timeout=timeout)
     if r.returncode != 0:
         raise RuntimeError("claude -p rc %d: %s" % (r.returncode, (r.stderr or r.stdout)[-400:]))

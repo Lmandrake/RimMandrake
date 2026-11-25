@@ -49,6 +49,7 @@ up to MAX_CLAIMS times for an unanswered restart, and a window without the token
 Every step is journalled (dispatcher journal.jsonl); failures alarm and note the ticket. Off unless the schedule key
 `seat_restart.enabled` is true (design/RimMandrake/dispatcher_golive_wave1.md, "Seat restart: enable steps").
 """
+import effort as EF  # the one effort table (RIMMANDRAKE_PASS_EFFORT_ON_EVERY_LAUNCH_STEVEDESKTOP_RAN_MEDIUM)
 import argparse
 import contextlib
 import datetime
@@ -1244,7 +1245,7 @@ def relaunch_argv(seat, cfg, why="ticket ended", gen=None):
     if kind == "conductor" and stop_reason:
         kind, why = "conductor_stop", stop_reason
     return [BOUNDED.format(clone=cfg["clone"]), "--dangerously-skip-permissions", "--name", label,
-            "--model", cfg.get("model") or "sonnet", "--remote-control", label,
+            "--model", cfg.get("model") or "sonnet"] + EF.effort_args(cfg.get("model") or "sonnet") + ["--remote-control", label,
             PROMPTS[kind].format(seat=seat, why=why, gen=" --gen %s" % gen if gen else "")]
 
 

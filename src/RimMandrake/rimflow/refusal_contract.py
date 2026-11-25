@@ -51,6 +51,7 @@ answers a repeat (same item, clause, criterion hash, evidence content and sha) f
 The rows live in RM_REFUSAL_DIR, default /mnt/d/ClaudeWork/rimmandrake/refusal_contract (a program reads them: scratch,
 not the repo). The told row goes through incident.signal when dispatcher_schedule.json has the incident ledger on.
 """
+import effort as EF  # the one effort table (RIMMANDRAKE_PASS_EFFORT_ON_EVERY_LAUNCH_STEVEDESKTOP_RAN_MEDIUM)
 import fcntl
 import hashlib
 import json
@@ -837,7 +838,8 @@ def default_fixer(prompt, timeout):
     claude = shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")
     p = subprocess.run([claude, "-p", prompt, "--model", "opus", "--output-format", "json",
                         "--json-schema", json.dumps(FIXER_SCHEMA, separators=(",", ":")),
-                        "--name", "CRITERIA FIXER", "--dangerously-skip-permissions"], capture_output=True, text=True, timeout=timeout)
+                        "--name", "CRITERIA FIXER", "--dangerously-skip-permissions"] + EF.effort_args("opus"),
+                       capture_output=True, text=True, timeout=timeout)
     try:
         return json.loads(p.stdout or "null").get("structured_output")
     except (ValueError, AttributeError):

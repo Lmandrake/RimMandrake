@@ -59,6 +59,7 @@ directory is "-"-prefixed, so its ExecStopPost steps still run (in /) once the c
 Records: <RM_DISPATCHER_STATE>/detached/<unit>.json. Use it for anything expected to run over ~20 min; the Agent
 tool stays for short work (CONDUCTOR.md "Checkpoint, so a drain never freezes him").
 """
+import effort as EF  # the one effort table (RIMMANDRAKE_PASS_EFFORT_ON_EVERY_LAUNCH_STEVEDESKTOP_RAN_MEDIUM)
 import argparse
 import contextlib
 import fcntl
@@ -1278,6 +1279,12 @@ def agent_repair(rec, clone, msg):
             "on origin/main, read it in full first, as your role file.\n\n" % (name, name)) + msg
 
 
+def effort_of(rec):
+    """-> the effort the run states: its record's `effort` (checked against the floor), else the table's level for its
+    model (effort.py; owner by card 2026-11-25: "No medium anywhere")."""
+    return EF.level(rec.get("model"), rec.get("effort"))
+
+
 def launch_argv(rec, msg, claude):
     """role_launch.launch_argv's shape, plus ExecStopPost=finish so the outcome is recorded even on a kill."""
     clone, unit, seat = rec["clone"], rec["unit"], rec["seat"]
@@ -1292,7 +1299,8 @@ def launch_argv(rec, msg, claude):
     back = "-" + shlex.join(return_argv(rec))
     via_file = rec.get("brief_file")    # the brief: claude -p reads it from stdin (StandardInput=file:), never argv
     cmd = [bounded, "-p"] + ([] if via_file else [msg]) + [
-           "--model", _RL().launch_model(rec["model"]), "--name", "DETACHED %s %s" % (seat, rec["item"]),
+           "--model", _RL().launch_model(rec["model"]), *EF.effort_args(rec["model"], effort_of(rec)),
+           "--name", "DETACHED %s %s" % (seat, rec["item"]),
            "--output-format", "json", "--dangerously-skip-permissions",
            "--settings", _control_settings(rec)]     # its PostToolUse hook: the stop channel (`pipe stop --write-now`)
     if rec.get("resume_session"):       # a mod's holder session (modledger.resume_plan), carried into this clone
@@ -1761,6 +1769,7 @@ def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, 
     rec = {"seat": seat, "item": item, "clone": clone, "model": model, "max_s": max_s,
            "budget_usd": float(budget), "at": now, "state": root, "status": "launching", "clone_how": how}
     rec.update({k: v for k, v in (extra or {}).items() if k not in rec})
+    rec["effort"] = effort_of(rec)      # the record keeps the effort its command states
     if skip_launch_checks:
         rec["launch_checks_skipped"] = skip_launch_checks
     if env:
@@ -2521,7 +2530,7 @@ def launch_on_host(args, brief, env, runner=subprocess.run, reader=None):
     try:
         pl = run_host.plan(args.host, args.item, fh.name, facts, model=args.model, budget=args.budget_usd,
                            seat=args.seat.upper(), next_act_owner=args.next_act_owner,
-                           env=["%s=%s" % kv for kv in env.items()])
+                           env=["%s=%s" % kv for kv in env.items()], effort=args.effort)
         print("%s: %s" % (pl["verdict"], pl["why"]))
         if pl["verdict"] != "REMOTE":
             return 2 if pl["verdict"] == "REFUSED" else 5
@@ -2550,6 +2559,8 @@ def main(argv=None):
     g.add_argument("--brief")
     g.add_argument("--brief-file")
     a.add_argument("--model", default="sonnet")
+    a.add_argument("--effort", metavar="LEVEL", help="the run's effort: high (the floor) or xhigh; default: the table in "
+                                                     "rimflow/effort.py for its model")
     a.add_argument("--max-s", default=DEFAULT_MAX_S, help="seconds, or none/0 for no wall-time limit (default)")
     a.add_argument("--budget-usd", type=float, default=None,
                    help="the run's spend cap, stated per job (0 = none); required, no default. A --resume without it "
@@ -2602,6 +2613,12 @@ def main(argv=None):
         if args.agent:
             env[AGENT_ENV] = args.agent
         bad = [k for k in env if not re.match(r"^RM_[A-Z0-9_]+$", k)]
+        if args.effort:
+            try:
+                EF.checked(args.effort)
+            except EF.UnderFloor as e:
+                print("REFUSED: --effort %s: %s" % (args.effort, e))
+                return 2
         if args.host and args.host.strip().lower() not in ("archmagi", "local"):
             return launch_on_host(args, brief, env)
         budget, carried = args.budget_usd, ""
@@ -2620,6 +2637,8 @@ def main(argv=None):
             rc, text = 2, "REFUSED: --budget-usd %g is negative (0 = no cap)" % budget
         else:
             extra = {"continue_on_cap": args.continue_on_cap} if args.continue_on_cap > 0 else {}
+            if args.effort:
+                extra["effort"] = args.effort
             if args.next_act_owner:
                 extra["next_act_owner"] = args.next_act_owner
             session, first, written = args.resume, "", brief

@@ -1997,7 +1997,7 @@ def helper_line(st):
         return None
     return ("You run on Codex; your exam helpers do not. The Examiner, Challenger, both Readers and the Control are Claude "
             "(Opus), so the maker and its examiners are different models. Start each as its own fresh process from the "
-            "repo root: `src/RimMandrake/Utils/claude_bounded.sh -p --model opus --output-format json "
+            "repo root: `src/RimMandrake/Utils/claude_bounded.sh -p --model opus --effort high --output-format json "
             "--dangerously-skip-permissions \"<its brief>\"`, "
             "give it only the files its rule allows, name it in exam.json by the session_id its JSON returns, and charge "
             "its usage with `designer_stage.py charge --kind helper`. Never play a helper yourself.")

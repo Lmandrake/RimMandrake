@@ -51,6 +51,7 @@ confirmed serious). It spends (one Opus judge per case, each capped at CASE_BUDG
     python3 src/RimMandrake/rimflow/coverage_calibration.py run        judge every case, print one line each
     python3 src/RimMandrake/rimflow/coverage_calibration.py stage <dir>  write the planted concepts there, judge none
 """
+import effort as EF  # the one effort table (RIMMANDRAKE_PASS_EFFORT_ON_EVERY_LAUNCH_STEVEDESKTOP_RAN_MEDIUM)
 import copy
 import json
 import os
@@ -418,7 +419,7 @@ def judge(root, d, route=None, reader="auto", _resume=None):
             else CJ.prompt(d, root, CJ.required_ids(d, tree), prior is not None, 2 if prior else 1))
     argv = [CJ.CLAUDE, "-p", text, "--model", CJ.MODEL, "--output-format", "json",
             "--json-schema", json.dumps(CJ.SCHEMA, separators=(",", ":")), "--dangerously-skip-permissions",
-            "--name", "COVERAGE CALIBRATION %s" % os.path.basename(d)]
+            "--name", "COVERAGE CALIBRATION %s" % os.path.basename(d), *EF.effort_args(CJ.MODEL)]
     if _resume:
         argv = [CJ.CLAUDE, "-p", "Your verdict's refusal records do not meet the refusal contract:\n%s\nAnswer again "
                 "with the whole verdict, every row and every gap, each gap a complete record."

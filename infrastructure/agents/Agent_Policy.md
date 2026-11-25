@@ -71,9 +71,35 @@ Cheap models are safe exactly where failure is loud, and dangerous exactly where
 
 | | Alias | For |
 |---|---|---|
-| **Fable 5.2** | `fable` | **The Conductor's window.** One agent finishing a whole mod against its checklist. Design from a blank page. One escalation attempt on a clean ticket that Opus failed at high effort. Every run has a hard dollar budget, enforced from outside by `spend_watchdog.py`. Never use `--max-budget-usd`, and no agent is told its spend (owner 2026-11-16). Never a helper, a rerun, a fleet worker or a game-waiter. **Exception, the Test Pilot (`rm-testpilot`): Fable 5.2,** although a sitting waits on a live game. Owner, 2026-11-16 10:13 PM PST: "Test Pilot should also run as Fable 5.2 when it's called. For obvious reasons." Do not move the Test Pilot back to Opus under the game-waiter rule. Price: 2× Opus fresh, 1× cached. |
+| **Fable 5.2** | `fable` | **The Conductor's window.** One agent finishing a whole mod against its checklist. Design from a blank page. One escalation attempt, at high effort, on a clean ticket that Opus failed at xhigh (the stuck-worker ladder below). Every run has a hard dollar budget, enforced from outside by `spend_watchdog.py`. Never use `--max-budget-usd`, and no agent is told its spend (owner 2026-11-16). Never a helper, a rerun, a fleet worker or a game-waiter. **Exception, the Test Pilot (`rm-testpilot`): Fable 5.2,** although a sitting waits on a live game. Owner, 2026-11-16 10:13 PM PST: "Test Pilot should also run as Fable 5.2 when it's called. For obvious reasons." Do not move the Test Pilot back to Opus under the game-waiter rule. Price: 2× Opus fresh, 1× cached. |
 | **Opus 5.5** (+fast mode) | `opus` | **Design** that is not a blank page, always as a backgrounded subagent from the Conductor: design judgment, decision drafting, synthesis across contradictory evidence, rosters, specs, skill curation. **Complex code generation**: Harmony/C#, new systems, multi-file forensics, bridge writes, the frozen world. |
 | **Sonnet 5.5** | `sonnet` | **Well-defined coding with a checkable outcome**: patches, defs, deploys, quicktests, fixes that a selftest or validator proves. Log triage, interpretive sweeps, first drafts. **OS-level searches**: greps, globs, censuses, existence checks, inventories (folded in 2026-10-01 when Haiku was struck from the ladder). The default for helpers that build. |
+
+### 🔴 Effort: the floor is high; a stuck worker climbs effort, then model — owner by card, 2026-11-25
+
+Owner, by card: "No medium anywhere"; a stuck worker: "Effort up, then model up"; a Fable run on stuck work: "High".
+Page: `design/specs/2026-11-25-effort-ladder/boundary.md`.
+
+- **Every launch states its effort.** The level comes from the one table, `EFFORT` in `src/RimMandrake/rimflow/effort.py`.
+  Every model reads high. No run of ours uses low or medium. `effort.py` refuses a level under high.
+- A launch passes `EF.effort_args(model)`. `detached_helper.py launch --effort xhigh` sets a run's level, and the run
+  record keeps it. `claude_bounded.sh` adds the table's level when its caller gave none.
+- `launch_permissions.py effort` reads every launch in the tree. It is red on a launch with no `--effort`. The
+  remote-control server takes no `--effort`; its sessions read the machine's settings file (`effortLevel`).
+- **A worker is stuck** when it ends success with its item open and a `LEFT OPEN:` note that says its test is still
+  red, or that names no cause outside the work. A cause outside the work is the owner or the Conductor, a held or paused
+  game, lane or account, a wait, another run, or a task that is not a helper's. `left_open_continue.py` reads the note
+  (`stuck_why`).
+- **The ladder** (`left_open_continue.ladder_step`):
+  1. Same model, same session, one level up: high to xhigh. The resume keeps the prompt cache while the cache lives
+     (1 hour). The ladder stops at xhigh: max effort rarely pays.
+  2. At xhigh, the next model starts FRESH at high, from the worker's PROGRESS: notes: Sonnet to Opus, Opus to Fable
+     5.2. A model change writes the whole context again, so a fresh start is cheaper than a resume.
+  3. A stuck Fable run launches nothing. A `RAISE FIRST` line goes to the Conductor log, with the note. Nothing files a
+     ticket before this step.
+- A ladder step is a continuation (`continued_from`). It spends no counted run of a mod stage and no slot of
+  `MAX_PER_DAY`. It writes no failed run on the ticket. The ladder's end guards the danger of a run that climbs without
+  end on a fault that needs the owner.
 
 ### 🔴 Sonnet vs Opus — owner ruling, 2026-10-29 (replaces "Sonnet default, self-escalate after one failed attempt")
 
@@ -294,8 +320,9 @@ answer the accepted-work rate per model.
   - To overwrite an existing doc, pass `if_version`.
   - `CLAUDE_CODE_DISABLE_CLAUDE_MDS=1` + `--disable-slash-commands` cut ~8k uncached tokens/run.
   - Working example: `src/RimMandrake/Utils/fleet_refresh.py`.
-- **A `claude -p` loop launched with `--setting-sources project` skips the user's effort setting and runs at medium
-  with no warning.** Pass `--effort`. A running pass does not take a changed settings file; its next pass does.
+- **A `claude -p` loop launched with `--setting-sources project` or `--setting-sources ""` skips the user's effort
+  setting and runs at medium with no warning.** So every launch passes `--effort` from the table (§Effort above). A
+  running pass does not take a changed settings file; its next pass does.
 
 ## Hooks that route or refuse
 - **A hook whose refusal text names a route must be tested against that route.** `block_shared_tree_merge.py` sent

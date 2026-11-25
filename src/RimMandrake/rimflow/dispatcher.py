@@ -62,6 +62,7 @@ pull --rebase + ledger lint + push of one shard), lease.py's leases via `rimflow
     dispatcher.py status [--schedule PATH]
 Names no host or account.
 """
+import effort as EF  # the one effort table (RIMMANDRAKE_PASS_EFFORT_ON_EVERY_LAUNCH_STEVEDESKTOP_RAN_MEDIUM)
 import argparse
 import contextlib
 import fcntl
@@ -229,7 +230,7 @@ RAISE_OBS_NONE = {"ending": lambda seat, sess, cfg: ("window_gone", "unknown"), 
 # systemd kills when the tick exits.
 DEFAULT_RECOVER = ["{clone}/src/RimMandrake/Utils/claude_bounded.sh", "--bg", "--resume", "{session_id}",
                    "--dangerously-skip-permissions", "--name", "{name}", "--model", "{model}",
-                   "--remote-control", "{name}", "{message}"]
+                   "--effort", EF.level(), "--remote-control", "{name}", "{message}"]
 
 
 # ---------------------------------------------------------------- schedule and state

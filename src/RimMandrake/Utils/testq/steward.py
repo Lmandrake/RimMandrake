@@ -552,7 +552,9 @@ def launch_wake(clone, brief_path, log_path, budget, max_s):
         "status = runpy.run_path(sys.argv[1])['main'](sys.argv[2:])\n"
         "os.write(3, str(status).encode('ascii'))"
     )
-    claude = "%s -p \"$(cat %s)\" --dangerously-skip-permissions" % (shlex.quote(exe), shlex.quote(brief_path))
+    import effort as EF     # RIMFLOW_DIR is on the path (above): the one effort table
+    claude = "%s -p \"$(cat %s)\" --effort %s --dangerously-skip-permissions" % (
+        shlex.quote(exe), shlex.quote(brief_path), EF.level())
     cmd = 'status=$(%s%s 3>&1 > %s 2>&1); echo "${status:-$?}" > %s' % (
         spend_watchdog.wrap_shell(claude, budget, python="python3 -c " + shlex.quote(record_exit)),
         (" --model " + shlex.quote(os.environ["TESTQ_WAKE_MODEL"])) if os.environ.get("TESTQ_WAKE_MODEL") else "",

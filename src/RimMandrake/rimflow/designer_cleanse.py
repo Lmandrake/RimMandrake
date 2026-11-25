@@ -40,6 +40,7 @@ The owner's hold (mod_owner_hold.json) stays on builds; `run` refuses a held mod
 for a design-only pass (mod_owner_hold.py allow-design). Nothing here launches a build, a chain or a Dispatch run.
 Selftest: selftest_designer_cleanse.py.
 """
+import effort as EF  # the one effort table (RIMMANDRAKE_PASS_EFFORT_ON_EVERY_LAUNCH_STEVEDESKTOP_RAN_MEDIUM)
 import argparse
 import concurrent.futures
 import contextlib
@@ -929,7 +930,7 @@ class Effects:
         bounded = os.path.join(cwd, "src", "RimMandrake", "Utils", "claude_bounded.sh")
         if not os.path.exists(bounded):
             bounded = os.path.join(UTILS, "claude_bounded.sh")
-        cmd = [bounded, "-p", "--model", model or "opus", "--output-format", "json"]
+        cmd = [bounded, "-p", "--model", model or "opus", "--output-format", "json"] + EF.effort_args(model or "opus")
         cmd += claude_tool_args(tools)
         env = dict(os.environ)
         env.setdefault("AGENT_SEAT", "BENCH")

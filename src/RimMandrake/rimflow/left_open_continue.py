@@ -204,7 +204,7 @@ def today(rec, now, root=None):
         return bool(fc and fc.classed and not fc.counts)
     key = rec.get("continue_root_item") or rec.get("item")
     return sorted((r for r in SR.recent_records(root, now)
-                   if r.get("continued_from") and (r.get("at") or 0) >= now - DAY_S
+                   if r.get("continued_from") and not r.get("ladder_step") and (r.get("at") or 0) >= now - DAY_S
                    and r.get("status") not in ("refused", "launch_failed") and not died(r)
                    and key in (r.get("continue_root_item"), r.get("item"))), key=lambda r: r.get("at") or 0)
 
@@ -229,6 +229,92 @@ def waiting(got, now):
     if t is None:
         return "its wait date %r could not be read, so it is treated as still running" % (until,)
     return "it waits until %s (rimflow wait), so a continuation now has nothing to do" % local(t) if t > now else None
+
+
+# ---------------------------------------------------------------- the stuck-worker ladder
+# Owner by card 2026-11-25: a stuck worker gets "Effort up, then model up"; a Fable run on stuck work uses "High".
+# Page design/specs/2026-11-25-effort-ladder/boundary.md. Case two of stuck (the only case read now): the run ended with
+# its test still red, or with a LEFT OPEN: note that names no cause outside the work. Case one (the ticket filer refuses
+# its set-down) waits for the filer of RIMMANDRAKE_TIGHTEN_SET_DOWN_CLASSES_ANY_TWELVE_LETTERS_PASS.
+# A cause outside the work: the owner or the Conductor acts next, a game, lane, file or account is held or paused, it
+# waits for a date or another run, or it is not a helper's to do.
+OUTSIDE_RX = re.compile(
+    r"\b(?:owner|his (?:word|act|call|decision|look|walk|ruling)|five acts|Conductor|held|holds? (?:the|its) "
+    r"(?:files?|game|bridge)|paused|cancel+ed|wait(?:s|ing)? (?:for|until|on)|until \d|account|quota|"
+    r"leave line|no (?:free )?(?:game|lane)|no lane|lane is|is busy|another (?:live )?run|other mod|"
+    r"(?:after|when) \S+ (?:lands|ends|is landed)|not (?:yet )?landed by|n[o']t a helper's|none a helper's|no tool|"
+    r"no access|independent|blind|dated wait|SteveDesktop lane|for the SSD)", re.I)
+# The work's own test is still red.
+RED_RX = re.compile(r"\b(?:FAIL(?:S|ED)?|still red|stays red|not met|not reproduced|did not hold|could not (?:fix|find)|"
+                    r"cause (?:is )?unknown|no fix (?:found|worked)|stuck)\b", re.I)
+# The run moved its work on: a part holds, a commit landed.
+PROGRESS_RX = re.compile(r"\b(?:holds?|landed|published|built|done|closed|fixed)\b[^.;]{0,60}?\b[0-9a-f]{7,40}\b|"
+                         r"\b(?:part|step) \S+ (?:holds|is done|landed)\b", re.I)
+
+
+def stuck_why(text):
+    """-> (stuck?, why) for a LEFT OPEN: note's words."""
+    t = str(text or "")
+    m = OUTSIDE_RX.search(t)
+    if m:
+        return False, "the note names a cause outside the work (%r)" % m.group(0)
+    m = RED_RX.search(t)
+    if m:
+        return True, "the note says its test is still red (%r) and names no cause outside the work" % m.group(0)
+    m = PROGRESS_RX.search(t)
+    if m:
+        return False, "the note names work that moved on (%r)" % m.group(0)
+    return True, "the note names no cause outside the work"
+
+
+def ladder_step(rec, why):
+    """-> the ladder's next step for a stuck run: {"step": effort | model | conductor, "model", "effort", "why"}.
+    high -> xhigh on the same model and session; at xhigh, the next model FRESH at high (Sonnet -> Opus -> Fable 5.2);
+    a Fable run goes to the Conductor (the fleet allows one Fable attempt on a ticket). -> None for a run the ladder
+    does not climb: a model of no tier (no step is guessed for it) or a blind role (its verdict is calibrated for its
+    model and effort, and its point is not to carry on another's work)."""
+    import effort as EF
+    model = rec.get("model")
+    if EF.tier(model) is None or blind_role(rec, rec.get("item")):
+        return None
+    try:
+        cur = EF.level(model, rec.get("effort"))
+    except EF.UnderFloor:
+        cur = EF.FLOOR      # an old record under the floor climbs from the floor
+    if EF.tier(model) == "fable":
+        return {"step": "conductor", "model": model, "effort": cur,
+                "why": "%s; %s is the top of the ladder, so it goes to the Conductor" % (why, model)}
+    nxt = EF.up(cur)
+    if nxt:
+        return {"step": "effort", "model": model, "effort": nxt,
+                "why": "%s: effort up, %s -> %s, same model %s" % (why, cur, nxt, model)}
+    m2 = EF.model_up(model)
+    return {"step": "model", "model": m2, "effort": EF.level(m2),
+            "why": "%s at %s: model up, %s -> %s at %s, fresh from its progress record" % (why, cur, model, m2,
+                                                                                         EF.level(m2))}
+
+
+def raise_first(rec, p, now, log_path=None, root=None):
+    """The ladder's end: one RAISE FIRST line in the Conductor log, with the note, once per run. Nothing is launched
+    and nothing is filed. -> plan with act raised | raise_failed | none."""
+    rec = DH.read_record(rec["unit"], root) or rec
+    if rec.get("ladder_raised"):
+        return dict(p, act="none", why="the ladder's end was raised already")
+    note = (p.get("note") or {}).get("text") or ""
+    text = ("STUCK WORKER at the ladder's end: %s on %s (model %s, effort %s). %s.\n  RAISE FIRST: %s is stuck after "
+            "every step of the effort ladder; nothing is launched and nothing is filed. Its note: %s" % (
+                rec["unit"], rec["item"], rec.get("model"), rec.get("effort") or "table", p["why"], rec["item"],
+                " ".join(str(note).split())))
+    try:
+        DH.conductor_line(text, now, log_path, head="EFFORT LADDER")
+    except Exception as e:  # noqa: BLE001
+        rec["ladder_raise_failed"] = {"at": now, "why": "%s: %s" % (type(e).__name__, e)}
+        DH.write_record(rec, root)
+        return dict(p, act="raise_failed", log_failed="%s: %s" % (type(e).__name__, e))
+    rec["ladder_raised"] = {"at": now, "why": p["why"]}
+    DH.write_record(rec, root)
+    journal({"at": DH.iso(now), "unit": rec["unit"], "item": rec["item"], "act": "raise", "why": p["why"]}, root)
+    return dict(p, act="raised")
 
 
 def plan(rec, got, lane_states, now=None, gates=None, root=None):
@@ -288,6 +374,14 @@ def plan(rec, got, lane_states, now=None, gates=None, root=None):
     no = gate_no(rec, target, gates)
     if no:
         return dict(base, act="none", why=no)
+    ladder = None
+    if target == item and noted and not cap and kind is None:
+        stuck, swhy = stuck_why(noted.get("text"))
+        if stuck:
+            ladder = ladder_step(rec, swhy)
+    if ladder and ladder["step"] == "conductor":
+        return dict(base, act="raise", why=ladder["why"], ladder=ladder,
+                    note={"ts": noted.get("ts"), "text": noted.get("text")})
     done = today(rec, now, root)
     if len(done) >= MAX_PER_DAY:
         return dict(base, act="alarm", why="%d continuations of %s in 24 h already (%s)" % (
@@ -297,6 +391,7 @@ def plan(rec, got, lane_states, now=None, gates=None, root=None):
     if said:
         progress.append({"ts": "its result text", "text": said})
     return dict(base, act="continue", target=target, open_lane=open_lane, capped=cap, kind=kind, progress=progress,
+                ladder=ladder,
                 note={"ts": noted.get("ts"), "text": noted.get("text")} if noted else None,
                 n=int(rec.get("continue_n") or 0) + 1,
                 why=("stopped from outside; --continue-on-cap %d" % opt) if cap else
@@ -455,6 +550,14 @@ def header(rec, p, now):
     if p.get("note"):
         lines.append("Its LEFT OPEN note (%s), verbatim:" % (p["note"].get("ts") or "?"))
         lines += ["> " + ln for ln in str(p["note"].get("text") or "").splitlines() or [""]]
+    if p.get("ladder"):
+        lad = p["ladder"]
+        lines.append("You were stuck, so the effort ladder carries you on one step up (%s). Use the Test Pilot's method "
+                     "now: write each theory before you test it, and change one thing per experiment." % lad["why"])
+        lines.append("If you are still stuck when you end, first write a note whose text starts PROGRESS: with each "
+                     "theory, its experiment, its reading, and the files that matter, then your LEFT OPEN: note. %s" % (
+                         "A higher model starts fresh from that record." if lad["step"] == "effort" else
+                         "The Conductor reads that record next."))
     if p.get("open_lane"):
         lines.append("Still open: %s (lane tickets in the brief below; you work %s first)."
                      % (", ".join("`%s`" % t for t in p["open_lane"]), p["target"]))
@@ -572,6 +675,12 @@ def run(unit, now=None, launch_fn=None, gates=None, root=None, log_path=None, re
     DH.write_record(rec, root)
     root_brief = rec.get("continue_brief_src") or rec.get("brief_src")
     sid, fresh_why, resume_why = resume_choice(rec, p, now, projects)
+    lad = p.get("ladder") or {}
+    if lad.get("step") == "model":      # a model change writes the whole context again: the fresh start is cheaper
+        sid, fresh_why, resume_why = None, "the effort ladder moves to a higher model (%s -> %s): a model change " \
+            "writes the whole context again, so it starts fresh from the worker's progress record" % (
+                rec.get("model"), lad.get("model")), None
+    model = lad.get("model") if lad.get("step") == "model" else rec.get("model")
     import stop_resume as SR
 
     def written(resumed):
@@ -586,6 +695,10 @@ def run(unit, now=None, launch_fn=None, gates=None, root=None, log_path=None, re
              "cap_continues_used": int(rec.get("cap_continues_used") or 0) + (1 if p.get("capped") else 0)}
     if p.get("kind"):
         extra["continue_kind"] = p["kind"]
+    extra["effort"] = lad.get("effort") or DH.effort_of(rec)      # not stuck: the same effort as the run it carries on
+    if lad:
+        extra["ladder_step"] = lad["step"]
+        extra["ladder_why"] = lad["why"]
     launch_fn = launch_fn or DH.launch
 
     def go(session, why):
@@ -596,7 +709,7 @@ def run(unit, now=None, launch_fn=None, gates=None, root=None, log_path=None, re
             x["continue_resume_why"] = resume_why
         kw = {"resume_session": session, "projects": projects} if session else {}
         try:
-            return launch_fn(rec.get("seat"), p["target"], written(bool(session)), rec.get("model"),
+            return launch_fn(rec.get("seat"), p["target"], written(bool(session)), model,
                              rec.get("max_s") or "none", rec.get("budget_usd") or 0.0, now=now,
                              env=rec.get("env") or None, clone=SR.given_clone(rec), extra=x,
                              skip_launch_checks=("continuation of %s: the same work, whose launch checks already ran"
@@ -616,8 +729,9 @@ def run(unit, now=None, launch_fn=None, gates=None, root=None, log_path=None, re
         if p.get("bundle"):
             import work_bundle as WB
             WB.note_restart(p["bundle"], m.group(1), now, int(p.get("bundle_ended_now") or 0))
-        line = "%s on %s ended with work left (%s); continued as %s on %s, same model %s, %s (%d of at most %d today)" % (
-            unit, rec["item"], p.get("why"), m.group(1), p["target"], rec.get("model"),
+        line = "%s on %s ended with work left (%s); continued as %s on %s, %s, %s (%d of at most %d today)" % (
+            unit, rec["item"], p.get("why"), m.group(1), p["target"],
+            ("EFFORT LADDER: " + lad["why"]) if lad else "same model %s" % rec.get("model"),
             "its session resumed" if sid else "fresh: " + str(fresh_why), p["n"], MAX_PER_DAY)
         try:
             DH.conductor_line(line, now, log_path, head=HEAD)
@@ -751,6 +865,9 @@ def at_finish(rec, got, clone, now, runner=subprocess.run, continuer=None, state
     if p["act"] == "alarm":
         alarm(fresh, p, now)
         return p, "continue: ALARM %s (%s)" % (ALARM_ID, p["why"])
+    if p["act"] == "raise":
+        r = raise_first(fresh, p, now)
+        return p, "continue: RAISE FIRST, the effort ladder's end (%s; %s)" % (p["why"], r.get("act"))
     if p["act"] != "continue":
         return p, "continue: none (%s)" % p["why"]
     line = (continuer or (lambda r, q: kick(r, q, runner)))(fresh, p)

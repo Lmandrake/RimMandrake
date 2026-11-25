@@ -34,6 +34,8 @@ import sys
 _UTILS = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if _UTILS not in sys.path:
     sys.path.insert(0, _UTILS)
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "rimflow"))  # rimflow/effort.py, appended: shadows nothing
+import effort as EF  # noqa: E402  the one effort table (RIMMANDRAKE_PASS_EFFORT_ON_EVERY_LAUNCH_STEVEDESKTOP_RAN_MEDIUM)
 import harness_run  # noqa: E402  (Utils/harness_run.py: runs claude -p in rm-harness.slice)
 
 CLAUDE = shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")  # systemd's PATH lacks ~/.local/bin (OPS_TIMER_REPAIR_PRXC)
@@ -161,7 +163,7 @@ def _run_claude(prompt, cwd=None):
     hand-write the output a verifier would have produced)."""
     cmd = [CLAUDE, "-p", prompt,
            "--output-format", "json", "--dangerously-skip-permissions",
-           "--allowed-tools", "Read"]
+           "--allowed-tools", "Read"] + EF.effort_args()
     try:
         r = harness_run.run(cmd, CLAUDE_TIMEOUT_S, cwd=cwd)  # rm-harness.slice, not the seat
     except FileNotFoundError:

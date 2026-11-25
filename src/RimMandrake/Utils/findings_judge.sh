@@ -20,6 +20,7 @@ if [ "$(date +%u)" = 5 ] || [ "${FINDINGS_JUDGE_FRIDAY:-}" = 1 ]; then
 $(cat src/RimMandrake/Utils/findings_judge_friday.md)"
 fi
 src/RimMandrake/Utils/claude_bounded.sh -p "$prompt" --model "$MODEL" --name "FINDINGS JUDGE $started" \
+  --effort "$(python3 src/RimMandrake/rimflow/effort.py level --model "$MODEL")" \
   --output-format json --dangerously-skip-permissions >"$OUT/run.json" 2>"$OUT/run.err"
 rc=$?
 python3 - "$OUT" "$started" "$rc" "$friday" "$MODEL" <<'PY'

@@ -38,6 +38,7 @@ PAGES = {
         "src/RimMandrake/rimflow/selftest_close_remainder.py",
     "design/specs/2026-11-24-declaration-check/boundary.md": "src/RimMandrake/rimflow/selftest_declaration_check.py",
     "design/specs/2026-11-24-run-on-steve/boundary.md": "src/RimMandrake/rimflow/selftest_run_host.py",
+    "design/specs/2026-11-25-effort-ladder/boundary.md": "src/RimMandrake/rimflow/selftest_effort_ladder.py",
     "design/specs/2026-11-24-full-list-walk-not-per-mod/boundary.md":
         "src/RimMandrake/rimflow/selftest_walk_small_list.py",
     "design/specs/2026-11-24-walk-save-start-twin/boundary.md": "src/RimMandrake/rimflow/selftest_walk_twins.py",

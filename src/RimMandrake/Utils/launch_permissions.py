@@ -45,6 +45,7 @@ NO_LAUNCH = {
     "src/RimMandrake/Utils/agent_runner.py": "runs Codex, not Claude",
     "infrastructure/stevedesktop/bootstrap_wsl.sh": "installs and updates the program, and writes the settings default",
     "infrastructure/stevedesktop/claude_account.sh": "reads the login (auth status)",
+    "src/RimMandrake/rimflow/run_host.py": "reads the program's version over ssh (claude --version)",
 }
 
 SKIP_DIRS = ("design/", "conversations/", "Transient/", "infrastructure/state/", "infrastructure/output/", "observed/",
@@ -62,6 +63,17 @@ PROG_RX = (r"(?:(?:%s|\{(?:script|bounded|claude|exe)\}|(?:[~\w./${}\\-]*/)?clau
            r"(?=-p\s+(?:--[a-z]|[\"'$<\\{%])|--(?:dangerously|bg|resume|continue|name|permission|remote)|remote-control\s+--)"
            r"|^[ \t]*remote-control\s+(?=--))")
 STRING_RX = re.compile(r"(?<![\w-])" + PROG_RX)
+
+
+E_YES, E_NO = "EFFORT", "NO EFFORT"
+
+
+def text_effort(t):
+    """A command line as text -> True (it states --effort), False, or None (the remote-control server, which takes
+    none: its sessions read the machine's settings file)."""
+    if re.search(r"(?:^|[\s\"'])remote-control\s", t) and not re.search(r"--remote-control\b", t):
+        return None
+    return bool(re.search(r"--effort(?:[= ]|$)", t))
 
 
 def text_verdict(t):
@@ -213,8 +225,53 @@ class Py:
                         out |= self.consts(v, scope, depth + 1)
         return out
 
+    def effort_in(self, e, scope, depth=0):
+        """True when an argv expression is sure to carry --effort (on every branch): the literal `--effort` or
+        `--effort=L`, or the table's words (a call of effort.effort_args), followed through names, `+`, list() and the
+        returns of a def in this file or an imported one, as verdict() follows the permission flag."""
+        if depth > 8 or e is None:
+            return False
+        if isinstance(e, ast.Constant):
+            return isinstance(e.value, str) and bool(re.match(r"--effort(=|$)", e.value))
+        if isinstance(e, (ast.List, ast.Tuple)):
+            return any(self.effort_in(x.value if isinstance(x, ast.Starred) else x, scope, depth + 1) for x in e.elts)
+        if isinstance(e, ast.BinOp) and isinstance(e.op, ast.Add):
+            return self.effort_in(e.left, scope, depth + 1) or self.effort_in(e.right, scope, depth + 1)
+        if isinstance(e, ast.IfExp):
+            return self.effort_in(e.body, scope, depth + 1) and self.effort_in(e.orelse, scope, depth + 1)
+        if isinstance(e, ast.Name):
+            vs = self.assigned(e.id, scope, self.line(e))
+            return bool(vs) and self.effort_in(vs[0], scope, depth + 1)
+        if isinstance(e, ast.Subscript) and isinstance(e.slice, ast.Slice):
+            return self.effort_in(e.value, scope, depth + 1)
+        if isinstance(e, ast.Call):
+            f = e.func
+            name = f.id if isinstance(f, ast.Name) else f.attr if isinstance(f, ast.Attribute) else None
+            if name == "effort_args":
+                return True
+            if name in ("list", "tuple") and e.args:
+                return self.effort_in(e.args[0], scope, depth + 1)
+            mod = self
+            if isinstance(f, ast.Attribute) and isinstance(f.value, ast.Name) and f.value.id in self.imports:
+                mod = self.loader(self.imports[f.value.id], self.path) if self.loader else None
+            d = mod and mod.defs.get(name)
+            if not d:
+                return False
+            rets = [r.value for r in ast.walk(d) if isinstance(r, ast.Return) and mod.scope(r) is d]
+            return bool(rets) and all(mod.effort_in(r, d, depth + 1) for r in rets)
+        return False
+
     def sites(self):
         """-> [(line, verdict, what)]"""
+        return [s[:3] for s in self._sites()]
+
+    def effort_sites(self):
+        """-> [(line, EFFORT | NO EFFORT)] for each launch that starts a session (not auth, /usage, the remote-control
+        server)."""
+        return [(ln, E_YES if eff else E_NO) for ln, v, _w, eff in self._sites() if v != NOSESSION and eff is not None]
+
+    def _sites(self):
+        """-> [(line, verdict, what, carries --effort: True | False | None where no flag applies)]"""
         out = []
         for n in self.nodes:
             if not isinstance(n, ast.List) or not n.elts:
@@ -229,29 +286,43 @@ class Py:
             if not cs & (START | NOT_SESSION):
                 continue
             v = self.verdict(whole, sc)
+            eff = self.effort_in(whole, sc)
             tgt = self.parent.get(whole)
             if isinstance(tgt, ast.Assign) and isinstance(tgt.targets[0], ast.Name):
                 for g in ast.walk(sc):      # an unconditional `cmd += ...` in the same block
                     if isinstance(g, ast.AugAssign) and isinstance(g.target, ast.Name) and g.lineno > tgt.lineno and \
                             g.target.id == tgt.targets[0].id and self.parent.get(g) is self.parent.get(tgt):
                         v = self.best(v, self.verdict(g.value, sc))
-            out.append((n.lineno, v or LACKS, "argv"))
+                        eff = eff or self.effort_in(g.value, sc)
+            out.append((n.lineno, v or LACKS, "argv", None if "remote-control" in cs and "-p" not in cs else eff))
         for n in self.nodes:
             if not (isinstance(n, ast.Constant) and isinstance(n.value, str)) or n in self.docs:
                 continue
+            upto = -1      # a match inside a command already read is a word of it (`--effort %s --dangerously-...`)
             for m in STRING_RX.finditer(n.value):
+                if m.start() < upto:
+                    continue
                 if m.group(0).lstrip().startswith("%s"):
                     p = self.parent.get(n)
                     if not (isinstance(p, ast.BinOp) and isinstance(p.op, ast.Mod) and any(
                             isinstance(c, ast.Name) and self.is_claude(c, self.scope(n)) for c in ast.walk(p.right))):
                         continue
                 cmd = re.split(r"[`\n;]", n.value[m.start():])[0]
-                out.append((n.lineno, text_verdict(cmd), "command text"))
+                upto = m.start() + len(cmd)
+                out.append((n.lineno, text_verdict(cmd), "command text", text_effort(cmd)))
         return out
 
 
 # ---------------------------------------------------------------- shell, PowerShell, unit files, JSON, C#
 def shell_sites(src, unit=False):
+    return [s[:3] for s in _shell_sites(src, unit)]
+
+
+def shell_effort_sites(src, unit=False):
+    return [(ln, E_YES if e else E_NO) for ln, v, _w, e in _shell_sites(src, unit) if v != NOSESSION and e is not None]
+
+
+def _shell_sites(src, unit=False):
     src = re.sub(r"(?s)<#.*?#>", lambda m: "\n" * m.group(0).count("\n"), src)     # a PowerShell comment block
     joined = re.sub(r"[\\`]\n\s*", " ", src)
     names = set(re.findall(r"(?m)^\s*(?:export\s+)?\$?(\w+)\s*=\s*[^\n]*?(?:/claude|claude_bounded\.sh|-v claude\b|=claude)\b",
@@ -265,31 +336,39 @@ def shell_sites(src, unit=False):
         if ln.lstrip().startswith(("#", "echo ", "::", "rem ")) or (unit and not re.match(r"\s*Exec\w*=", ln)):
             continue
         for m in rx.finditer(ln):
-            out.append((i, text_verdict(ln[m.start():]), "command line"))
+            out.append((i, text_verdict(ln[m.start():]), "command line", text_effort(ln[m.start():])))
     return out
 
 
 def json_sites(src):
+    return [r[:3] for r in _json_sites(src)]
+
+
+def _json_sites(src):
     out = []
 
     def walk(x):
         if isinstance(x, list):
             if x and all(isinstance(y, str) for y in x) and PROGRAM.search(x[0]) and set(x) & START:
                 v = Py(repr(x), "json").verdict(ast.parse(repr(x), mode="eval").body, None)
-                out.append((0, v or LACKS, "argv"))
+                out.append((0, v or LACKS, "argv", any(re.match(r"--effort(=|$)", y) for y in x)))
             for y in x:
                 walk(y)
         elif isinstance(x, dict):
             for y in x.values():
                 walk(y)
         elif isinstance(x, str) and re.match(r"\S*claude(_bounded\.sh)?\s+(-p\b|--|remote-control)", x):
-            out.append((0, text_verdict(x), "command text"))
+            out.append((0, text_verdict(x), "command text", text_effort(x)))
     walk(json.loads(src))
     return out
 
 
 def cs_sites(src):
-    return [(src[:m.start()].count("\n") + 1, text_verdict(m.group(0)), "C# argument text")
+    return [r[:3] for r in _cs_sites(src)]
+
+
+def _cs_sites(src):
+    return [(src[:m.start()].count("\n") + 1, text_verdict(m.group(0)), "C# argument text", text_effort(m.group(0)))
             for m in re.finditer(r"\"-p --[^\"]*\"", src)]
 
 
@@ -332,13 +411,18 @@ MAYBE = re.compile(r"claude[\"']|claude_bounded|claude_bin|claude_exe|CLAUDE\b|c
 
 def read_one(root, p, kind, loader=None):
     """-> [(line, verdict, what)] for one file; an unreadable file is one COULD NOT LOOK."""
+    return [r[:3] for r in read_one4(root, p, kind, loader)]
+
+
+def read_one4(root, p, kind, loader=None):
+    """-> [(line, verdict, what, carries --effort or None)] for one file."""
     if not os.path.lexists(os.path.join(root, p)):
         return []       # deleted in this tree: no file, so no launch in it
     try:
         with open(os.path.join(root, p), encoding="utf-8", errors="strict") as f:
             src = f.read()
     except (OSError, UnicodeDecodeError) as e:
-        return [(0, BLIND, type(e).__name__)] if kind != "?" else []
+        return [(0, BLIND, type(e).__name__, None)] if kind != "?" else []
     if not MAYBE.search(src) or not (TOKEN.search(src) or NAMES_PROGRAM.search(src)):
         return []
     if kind == "?":
@@ -346,12 +430,12 @@ def read_one(root, p, kind, loader=None):
         if not kind:
             return []
     try:
-        got = {".py": lambda: Py(src, p, loader).sites(), ".sh": lambda: shell_sites(src, p.endswith(".service")), ".cs": lambda: cs_sites(src),
-               ".json": lambda: json_sites(src)}[kind]()
+        got = {".py": lambda: Py(src, p, loader)._sites(), ".sh": lambda: _shell_sites(src, p.endswith(".service")), ".cs": lambda: _cs_sites(src),
+               ".json": lambda: _json_sites(src)}[kind]()
     except (SyntaxError, ValueError) as e:
-        return [(0, BLIND, "%s: %s" % (type(e).__name__, e))] if NAMES_PROGRAM.search(src) else []
+        return [(0, BLIND, "%s: %s" % (type(e).__name__, e), None)] if NAMES_PROGRAM.search(src) else []
     if not got and kind != ".json" and p not in NO_LAUNCH and NAMES_PROGRAM.search(code_lines(p, src)):
-        got = [(0, BLIND, "the file names the Claude program and no launch could be read in it")]
+        got = [(0, BLIND, "the file names the Claude program and no launch could be read in it", None)]
     return got
 
 
@@ -384,6 +468,58 @@ def scan(root=ROOT, paths=None):
         for p in sorted(set(EXCEPTIONS) - used):
             rows.append((p, 0, LACKS, "a stale exception: no launch here needs it; take it off EXCEPTIONS"))
     return rows
+
+
+# A launch whose effort is set elsewhere, with the reason. An entry that no longer matches a launch is itself a fault.
+EFFORT_EXCEPTIONS = {
+    "src/RimMandrake/Oracle/Source/Kernel/OracleKernel.cs":
+        "the shipped game's own call on a player's machine: the player's CLI keeps the player's own effort",
+    "src/RimMandrake/Utils/claude_bounded.sh":
+        "passes its caller's arguments through and adds the table's --effort itself when the caller gave none",
+}
+
+
+def effort_scan(root=ROOT, paths=None):
+    """-> [(path, line, EFFORT | NO EFFORT | EXCEPTION | COULD NOT LOOK, what)]: every launch that starts a session,
+    and whether it states --effort (RIMMANDRAKE_PASS_EFFORT_ON_EVERY_LAUNCH_STEVEDESKTOP_RAN_MEDIUM). Auth, /usage and
+    the remote-control server start no session of their own and are not rows."""
+    cache = {}
+
+    def loader(mod, frm):
+        for d in (os.path.dirname(frm), "src/RimMandrake/rimflow", "src/RimMandrake/Utils"):
+            p = os.path.join(d, mod + ".py")
+            if p in cache:
+                return cache[p]
+            f = os.path.join(root, p)
+            if os.path.exists(f):
+                with open(f, encoding="utf-8") as h:
+                    cache[p] = Py(h.read(), p, loader)
+                return cache[p]
+        return None
+    rows, used = [], set()
+    for p in (files(root) if paths is None else paths):
+        kind = wanted(p)
+        if not kind:
+            continue
+        for line, v, what, eff in read_one4(root, p, kind, loader):
+            if v == BLIND:
+                ev = BLIND
+            elif v == NOSESSION or eff is None:
+                continue
+            else:
+                ev = E_YES if eff else E_NO
+            if ev in (E_NO, BLIND) and p in EFFORT_EXCEPTIONS:
+                ev, what = EXCEPTION, EFFORT_EXCEPTIONS[p]
+                used.add(p)
+            rows.append((p, line, ev, what))
+    if paths is None:
+        for p in sorted(set(EFFORT_EXCEPTIONS) - used):
+            rows.append((p, 0, E_NO, "a stale effort exception: no launch here needs it; take it off EFFORT_EXCEPTIONS"))
+    return rows
+
+
+def effort_code(verdicts):
+    return 1 if E_NO in verdicts else 3 if BLIND in verdicts else 0
 
 
 # ---------------------------------------------------------------- what is installed and running
@@ -495,11 +631,21 @@ def code(verdicts):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("cmd", choices=("repo", "live"))
+    ap.add_argument("cmd", choices=("repo", "live", "effort"))
     ap.add_argument("--root", default=ROOT)
     ap.add_argument("--reading", default=None, help="live: write the reading here, only when every machine was looked at")
     ap.add_argument("--all", action="store_true", help="print the good rows too")
     a = ap.parse_args(argv)
+    if a.cmd == "effort":       # every launch states --effort (design/specs/2026-11-25-effort-ladder/boundary.md)
+        rows = effort_scan(a.root)
+        vs = [r[2] for r in rows]
+        for p, ln, v, w in rows:
+            if a.all or v in (E_NO, BLIND):
+                print("%-14s %s:%s  (%s)" % (v, p, ln, w))
+        rc = effort_code(vs)
+        print("%s: %s" % ({0: "OK", 1: "NO EFFORT", 3: "COULD NOT LOOK"}[rc],
+                          ", ".join("%d %s" % (vs.count(v), v) for v in sorted(set(vs)))))
+        return rc
     rows = [("%s:%s" % (p, ln), "", v, w) for p, ln, v, w in scan(a.root)]
     if a.cmd == "live":     # the tree this runs from is a launch specification too: one not caught at ./publish is, here
         rows += live()

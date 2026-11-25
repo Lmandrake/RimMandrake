@@ -20,14 +20,17 @@ import concurrent.futures
 import json
 import re
 import subprocess
+import os
 import sys
 import tempfile
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "src", "RimMandrake", "rimflow"))  # rimflow/effort.py, appended: shadows nothing
+import effort as EF  # noqa: E402  the one effort table (RIMMANDRAKE_PASS_EFFORT_ON_EVERY_LAUNCH_STEVEDESKTOP_RAN_MEDIUM)
 
 OVERRIDE = re.compile(r"\[owner-asked\]", re.I)
 MODEL = "sonnet"     # a CLI alias: the account behind it is the environment's business
 CALL_TIMEOUT_S = 13  # two stages must fit inside the hook's 30 s in .claude/settings.json
 CLI = ["claude", "-p", "--model", MODEL, "--setting-sources", "", "--strict-mcp-config", "--disable-slash-commands",
-       "--tools", "", "--no-session-persistence", "--system-prompt"]  # then the prompt, then PREFIX + the card
+       "--tools", "", "--no-session-persistence"] + EF.effort_args(MODEL) + ["--system-prompt"]  # then the prompt, then PREFIX + the card
 PREFIX = "CARD QUESTION:\n"
 
 JUDGE = """You classify one question an AI agent wants to put to its human owner on a decision card, in a RimWorld modding project. Agents were told which classes they must decide alone. Decide whether this card is a leak.

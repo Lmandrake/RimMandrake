@@ -12,6 +12,7 @@ paths that exist) and keeps its own deterministic state, shas and refs: a readin
 
     python3 src/RimMandrake/rimflow/modledger_backfill.py run --mod GimmeSomeSlack --read --read-budget 6
 """
+import effort as EF  # the one effort table (RIMMANDRAKE_PASS_EFFORT_ON_EVERY_LAUNCH_STEVEDESKTOP_RAN_MEDIUM)
 import concurrent.futures
 import hashlib
 import json
@@ -170,7 +171,8 @@ def _call(prompt, model, timeout=600, system=None):
     """-> (answer dict, usd). One `claude -p` call, no tools, no settings, no MCP; run from /tmp (no project files)."""
     claude = shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")   # systemd's PATH lacks ~/.local/bin
     r = subprocess.run([claude, "-p", "--model", model, "--output-format", "json", "--strict-mcp-config", "--tools",
-                        "", "--setting-sources", "", "--system-prompt", system or SYSTEM], input=prompt, capture_output=True,
+                        "", "--setting-sources", "", "--system-prompt", system or SYSTEM] + EF.effort_args(model),
+                       input=prompt, capture_output=True,
                        text=True, timeout=timeout, cwd="/tmp")
     try:
         out = json.loads(r.stdout)

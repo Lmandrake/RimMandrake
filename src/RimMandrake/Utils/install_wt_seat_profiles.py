@@ -74,6 +74,8 @@ to defaults silently, so that one file is the whole recovery path.
 import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
 _rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
 from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
+_rm_sys.path.append(str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "rimflow"))
+import effort as EF  # noqa: E402  the one effort table (RIMMANDRAKE_PASS_EFFORT_ON_EVERY_LAUNCH_STEVEDESKTOP_RAN_MEDIUM)
 import argparse
 import datetime
 import glob
@@ -142,8 +144,8 @@ DISTRO = "Ubuntu"
 # explicitly — a bare `--remote-control` followed by another token could swallow
 # it as the name. The standalone server is the separate SERVER tile below.
 LAUNCH = ("{script} "
-          "--dangerously-skip-permissions --name '{label}' --model {model} "
-          "--remote-control '{label}'")
+          "--dangerously-skip-permissions --name '{label}' --model {model} --effort EFFORT_LEVEL "
+          "--remote-control '{label}'").replace("EFFORT_LEVEL", EF.level())    # the one effort table (rimflow/effort.py)
 
 # 🔴 THE TWO SEATS LAUNCH WITH A FIRST PROMPT — owner, 2026-10-28 14:13 PDT: "Why did we not start up bench or
 # foundry upon wake? The agents reappered but static. ... Then let's fix the wake ritual to start the agent."

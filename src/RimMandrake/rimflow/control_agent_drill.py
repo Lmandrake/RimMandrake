@@ -23,6 +23,7 @@ ended or killed, seconds after the order), and its spend in weighted tokens (wei
 Prints one line per mode and a JSON record (--json-out), then its verdict LAST: `DRILL PASS ...` (exit 0),
 `DRILL FAIL <cause>` (exit 1), or `DRILL UNMEASURED <cause>` (exit 3: user systemd or claude cannot be reached; not a
 pass). A failed drill keeps its temp dir as evidence and names it."""
+import effort as EF  # the one effort table (RIMMANDRAKE_PASS_EFFORT_ON_EVERY_LAUNCH_STEVEDESKTOP_RAN_MEDIUM)
 import argparse
 import json
 import os
@@ -130,7 +131,8 @@ def launch(mode, hooked):
     out, err = os.path.join(TMP, "out-%s.json" % mode), os.path.join(TMP, "err-%s.txt" % mode)
     scope = "claude-seat-%s-%s" % (SEAT, u)
     claude = shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")
-    cmd = [BOUNDED, "-p", BRIEF, "--model", "sonnet", "--output-format", "json", "--dangerously-skip-permissions"]
+    cmd = [BOUNDED, "-p", BRIEF, "--model", "sonnet", "--output-format", "json", "--dangerously-skip-permissions"] \
+        + EF.effort_args("sonnet")
     if hooked:
         cmd += ["--settings", C.claude_settings(DB)]
     envs = dict(env_passthrough(), AGENT_SEAT=SEAT, RM_ROLE_UNIT=u, RM_DETACHED_UNIT=u, CLAUDE_SCOPE_UNIT=scope,

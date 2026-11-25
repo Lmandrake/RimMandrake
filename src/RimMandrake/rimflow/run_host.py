@@ -53,7 +53,7 @@ def _ssh(target, cmd):
     return ["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=10", target, LOGIN + cmd]
 
 
-def plan(host, item, brief_path, facts, model="sonnet", budget=None, seat="BENCH", next_act_owner=None, env=()):
+def plan(host, item, brief_path, facts, model="sonnet", budget=None, seat="BENCH", next_act_owner=None, env=(), effort=None):
     h = _norm(host)
     if h in LOCAL_NAMES:
         return {"verdict": "LOCAL", "why": "this machine", "argv": []}
@@ -82,6 +82,8 @@ def plan(host, item, brief_path, facts, model="sonnet", budget=None, seat="BENCH
               "--budget-usd", "%g" % budget]
     if next_act_owner:
         launch += ["--next-act-owner", next_act_owner]
+    if effort:          # else the host's own launcher states its table's level (rimflow/effort.py)
+        launch += ["--effort", effort]
     for kv in env or ():
         launch += ["--env", kv]
     # ~ stays unquoted so the host's shell expands it; every other word is quoted
@@ -180,7 +182,7 @@ def read_facts(host, item, picked_account=None, runner=subprocess.run):
     f["reachable"] = up == "up"
     if up != "up":
         return f
-    f["claude"] = sh("claude --version") or None
+    f["claude"] = sh("$HOME/.local/bin/claude --version") or None     # its full path: a systemd PATH lacks ~/.local/bin
     import account_live as AL       # the one reader of `live` in `claude-account --json status`
 
     def run_status(argv, timeout):  # its ssh argv, through this door with the login PATH

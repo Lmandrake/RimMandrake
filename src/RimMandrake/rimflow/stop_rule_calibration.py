@@ -17,6 +17,7 @@ model could not answer writes no row (judge_cases then reads the family UNTESTED
 Run only by `refusal_contract.py calibrate --model <family>` (it spends: one model call per case), never on a schedule.
 `python3 stop_rule_calibration.py run <family>` is that command. Never edit a case to make a family pass.
 """
+import effort as EF  # the one effort table (RIMMANDRAKE_PASS_EFFORT_ON_EVERY_LAUNCH_STEVEDESKTOP_RAN_MEDIUM)
 import json
 import os
 import re
@@ -172,7 +173,7 @@ def ask_model(model, text):
     """-> the model's answer text. One fresh call, no tools, no settings, an empty folder: it reads only the prompt."""
     with tempfile.TemporaryDirectory(prefix="rm-stoprule-") as d:
         r = subprocess.run([CLAUDE, "-p", "--model", model, "--tools", "", "--setting-sources", "", "--strict-mcp-config",
-                            "--no-session-persistence", "--output-format", "json"],
+                            "--no-session-persistence", "--output-format", "json"] + EF.effort_args(model),
                            input=text, capture_output=True, text=True, cwd=d, timeout=CALL_TIMEOUT_S)
     if r.returncode != 0:
         raise OSError("claude exit %s: %s" % (r.returncode, (r.stderr or r.stdout).strip()))
