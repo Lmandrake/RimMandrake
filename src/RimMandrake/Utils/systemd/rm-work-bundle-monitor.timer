@@ -1,0 +1,9 @@
+[Unit]
+Description=Temporary Work Bundle Monitor: one report a day to the Conductor, at 06:30 local
+
+[Timer]
+OnCalendar=*-*-* 06:30:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

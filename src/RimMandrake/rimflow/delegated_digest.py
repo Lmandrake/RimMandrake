@@ -535,8 +535,19 @@ def owner_asks(world, cut):
 
 
 # -------------------------------------------------------------------------------------------------- build -----
-def build(date, floor, cut, reads, seen_other=frozenset(), ids=None, resolve=None, asks=None):
-    """-> (page text, {source: [identities on the page]}). asks: owner_asks(); None = that section is UNMEASURED."""
+def monitor_read():
+    """The Temporary Work Bundle Monitor's day (work_bundle_monitor.digest_fields), or None when it cannot be read: the
+    page then says UNMEASURED. Counts and the report path only (the blind page shows the path as a handle)."""
+    try:
+        import work_bundle_monitor as WBM
+        return WBM.digest_fields(WBM.latest())
+    except Exception:  # noqa: BLE001 - could not look: the section says UNMEASURED
+        return None
+
+
+def build(date, floor, cut, reads, seen_other=frozenset(), ids=None, resolve=None, asks=None, monitor=None):
+    """-> (page text, {source: [identities on the page]}). asks: owner_asks(); None = that section is UNMEASURED.
+    monitor: monitor_read(); None = the Temporary Work Bundle Monitor line reads UNMEASURED."""
     from contracts import blind as BL
     raw, seen, status = [], {}, {}
     for s in SOURCES:
@@ -552,7 +563,7 @@ def build(date, floor, cut, reads, seen_other=frozenset(), ids=None, resolve=Non
                 continue
             seen[s].append(ident)
             raw.append(rec)
-    page = BL.project_digest(date, floor, cut, raw, status, ids, resolve, asks)
+    page = BL.project_digest(date, floor, cut, raw, status, ids, resolve, asks, monitor)
     return BL.render_digest(page), seen
 
 
@@ -652,7 +663,8 @@ def run(a, sources=None):
         if lost:
             raise RuntimeError("refusing to rebuild the %s digest: %s read before and is UNMEASURED now, so its "
                                "records would leave the page and its identities the state" % (date, ", ".join(lost)))
-    text, seen = build(date, floor, cut, reads, seen_elsewhere(st, date), ids, resolve, owner_asks(world, cut))
+    text, seen = build(date, floor, cut, reads, seen_elsewhere(st, date), ids, resolve, owner_asks(world, cut),
+                       monitor_read() if sources is None else None)
     sha = hashlib.sha256(text.encode("utf-8")).hexdigest()
     if not a.dry_run:
         st["digests"][date] = {"floor": iso(floor) if floor else None, "cut": iso(cut), "complete": False,

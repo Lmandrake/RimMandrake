@@ -1,0 +1,18 @@
+# The Temporary Work Bundle Monitor (item RIMMANDRAKE_BUILD_TEMPORARY_WORK_BUNDLE_MONITOR_DAILY; owner by card
+# 2026-11-25): part 1 measures the last 24 hours (no model), part 2 a Sonnet judge per set-down and backward move,
+# part 3 one Opus report to the Conductor. Page: design/specs/2026-11-25-temporary-work-bundle-monitor/boundary.md.
+# Reading: <agent storage>/rimmandrake/work_bundle_monitor/report_<date>.md and latest.json. Temporary: removed with
+# the monitor when the Work Bundle evaluation ends. Runs on the dispatch deploy (level with origin/main), writes no repo
+# file. Install: python3 src/RimMandrake/Utils/ops_clocks.py install rm-work-bundle-monitor --apply --enable
+[Unit]
+Description=Temporary Work Bundle Monitor (daily report to the Conductor)
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/dispatch
+Environment=PATH=/home/mandrake/.local/bin:/usr/local/bin:/usr/bin:/bin
+Nice=15
+# budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=672s (the first daily run,
+# budget: 2026-11-25 12:03 PM PST: 34 judge calls and one report call of 267 s)
+TimeoutStartSec=14400
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/rimflow/work_bundle_monitor.py daily

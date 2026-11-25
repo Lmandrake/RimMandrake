@@ -1080,7 +1080,7 @@ def gather(root, live=True):
     import list_pipeline as LP  # noqa: E402  the Workshop Pipeline's one stage rule, the one list_dispatch's tick calls
     nonmod = MNM.safe_section(nm_stores, now, spend=read_spend, stage=lambda item, t: LP.stage_of(item, t))
     return {"mods": mods, "others": other, "held": held, "needs": needs, "now": now, "nonmod": nonmod,
-            "bundles": bundle_page(now),
+            "bundles": bundle_page(now), "monitor": monitor_page(),
             "trend": trend(lf, versioned, now, live),
             "view": lf.get("view"),
             "intake": {"count": lf["intake"], "questions_total": UNM if lf["questions"] is None else len(lf["questions"])},
@@ -1707,6 +1707,25 @@ def bundle_page(now):
         return {"state": "unmeasured", "cause": "work_bundle could not be read (%s: %s)" % (type(e).__name__, e), "rows": []}
 
 
+def monitor_page():
+    """The Temporary Work Bundle Monitor's newest day (work_bundle_monitor.latest): counts and verdicts, no tokens."""
+    try:
+        import work_bundle_monitor as WBM
+        return WBM.latest()
+    except Exception as e:  # noqa: BLE001 - could not look: the section says so
+        return {"state": "could not look", "cause": "work_bundle_monitor could not be read (%s: %s)" % (type(e).__name__, e)}
+
+
+def monitor_md(d):
+    import work_bundle_monitor as WBM
+    return WBM.page_md(d["monitor"]) if d.get("monitor") else []
+
+
+def monitor_html(d):
+    import work_bundle_monitor as WBM
+    return WBM.page_html(d["monitor"]) if d.get("monitor") else ""
+
+
 def bundles_md(d):
     import work_bundle as WB
     return WB.page_md(d["bundles"]) if d.get("bundles") else []
@@ -1918,6 +1937,7 @@ def build(d, now):
     if nm:
         parts_md += ["## " + MNM.PANEL_TITLE, "", MNM.panel(nm), ""]
     parts_md += bundles_md(d)
+    parts_md += monitor_md(d)
     parts_md += ["## The mod pipeline", "", pipeline_line(d), "", "<div>" + picture(d) + "</div>", ""]
     parts_md += ["## Every mod, one line", ""] + one_line_md(d)
     parts_md += ["---", ""] + ([note, ""] if note else []) + [tail, ""]
@@ -1928,6 +1948,7 @@ def build(d, now):
     if nm:
         body += ["<h2>%s</h2>" % esc(MNM.PANEL_TITLE), MNM.panel(nm)]
     body.append(bundles_html(d))
+    body.append(monitor_html(d))
     body += ["<h2>The mod pipeline</h2><p class='m'>%s</p>" % esc(pipeline_line(d)), picture(d)]
     rows = [r for m, r in zip(d["mods"], summary_rows(d)) if not folded(m)]
     off = ["%s (%s, %s)" % (m["label"], where_word(m), "held" if m["held"] or str(m["waits_on"]).startswith("held") else "off")

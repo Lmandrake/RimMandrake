@@ -261,6 +261,27 @@ class OwnerAsks(_Closed):
     malformed: Count = 0                     # an ask with no readable filing time or an unknown state/needs
 
 
+MonitorReport = Annotated[str, Field(pattern=r"^[A-Z]:\\ClaudeWork\\rimmandrake\\work_bundle_monitor\\report_20\d\d-\d\d-\d\d\.md$")]
+
+
+class MonitorLine(_Closed):
+    """The Temporary Work Bundle Monitor's day (work_bundle_monitor.latest; item
+    RIMMANDRAKE_BUILD_TEMPORARY_WORK_BUNDLE_MONITOR_DAILY): counts only, None = UNMEASURED, and the report's path, shown
+    only as a handle. No token or spend figure is a field."""
+    state: SourceState
+    date: Optional[Date] = None
+    bundle_runs: Optional[Count] = None
+    bundle_of_one_runs: Optional[Count] = None
+    single_runs: Optional[Count] = None
+    set_downs: Optional[Count] = None
+    prev_set_downs: Optional[Count] = None
+    not_sincere: Optional[Count] = None
+    sincere: Optional[Count] = None
+    could_not_judge: Optional[Count] = None
+    backward_moves: Optional[Count] = None
+    report: Optional[MonitorReport] = None
+
+
 class DigestPage(_Closed):
     schema_: Literal["rimflow.blind-digest/1"] = Field(alias="schema")
     date: Date
@@ -269,6 +290,7 @@ class DigestPage(_Closed):
     records: tuple[DigestRecord, ...]
     sources: tuple[DigestSource, ...]
     owner_asks: OwnerAsks
+    monitor: MonitorLine
 
 
 # raw fields a reader may hand the projection, per source (the allow-list: nothing else of a record is looked at)
@@ -527,7 +549,31 @@ def project_owner_asks(asks, ids):
     return {"state": "measured", "asks": tuple(out), "withheld": held, "malformed": bad}
 
 
-def project_digest(date, floor, cut, raw, status, ids=None, resolve=None, asks=None):
+MONITOR_COUNTS = ("bundle_runs", "bundle_of_one_runs", "single_runs", "set_downs", "prev_set_downs", "not_sincere",
+                  "sincere", "could_not_judge", "backward_moves")
+
+
+def project_monitor(m):
+    """m: work_bundle_monitor.digest_fields() (a dict of the closed counts, the date and the report path), or None when
+    it could not be read. A count that is not a whole number reads UNMEASURED; a report path of any other shape is not
+    carried. Nothing but these closed fields is read."""
+    if not isinstance(m, dict) or m.get("state") != "measured":
+        return {"state": "unmeasured"}
+    out = {"state": "measured"}
+    d = m.get("date")
+    if isinstance(d, str) and re.fullmatch(r"20\d\d-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])", d):
+        out["date"] = d
+    for k in MONITOR_COUNTS:
+        v = m.get(k)
+        if type(v) is int and 0 <= v <= C.COUNT_MAX:
+            out[k] = v
+    r = m.get("report")
+    if isinstance(r, str) and re.fullmatch(r"[A-Z]:\\ClaudeWork\\rimmandrake\\work_bundle_monitor\\report_20\d\d-\d\d-\d\d\.md", r):
+        out["report"] = r
+    return out
+
+
+def project_digest(date, floor, cut, raw, status, ids=None, resolve=None, asks=None, monitor=None):
     """THE way to make a DigestPage. raw: [{"source": <Source>, <RAW_FIELDS of it>...}] (readers extract these from
     the records); status: {source: {"state", "fault", "malformed", "all_time"?, "newest"?}}; ids: Identity, or None
     when the ledger could not be read (every record naming an item is then withheld: fail closed); resolve: the sha
@@ -561,7 +607,8 @@ def project_digest(date, floor, cut, raw, status, ids=None, resolve=None, asks=N
                 d[k] = st[k]
         sources.append(d)
     return _issue(DigestPage, {"schema": SCHEMA, "date": date, "floor": floor, "cut": cut, "records": tuple(recs),
-                               "sources": tuple(sources), "owner_asks": project_owner_asks(asks, ids)}, ids)
+                               "sources": tuple(sources), "owner_asks": project_owner_asks(asks, ids),
+                               "monitor": project_monitor(monitor)}, ids)
 
 
 # -------------------------------------------------------------------------------------- queue / item ------
@@ -876,6 +923,8 @@ text the this time times titles to To took unassigned under UNMEASURED UTC verb 
 you
 Open asks oldest age days hours since filed wait waiting direct live chain blocks reaches Visibility default applied
 recommended decide yes how many whose The This Withheld ask block cut items ledger of on one
+Temporary Work Bundle Monitor bundle bundles runs single ticket set downs day before judged sincere SINCERE NOT JUDGE
+COULD backward moves report Conductor reads full monitor
 """.split())
 SRC_LABELS = ("ledger events", "judge verdict files", "Delegated commits", "art mark acts", "delegated art installs",
               "leftover deletions", "ceiling releases", "ledger deletions")
@@ -980,6 +1029,48 @@ def _rec_line(P, r):
             P.lit(" ")
             P.handle("path", C.evidence_native(p))
     P.lit("\n")
+
+
+def _monitor_section(P, m):
+    """The Temporary Work Bundle Monitor's one line: the day's counts and the report as a handle (the Conductor reads
+    the full report; no token figure is on this page)."""
+    P.lit("## Temporary Work Bundle Monitor\n\n")
+    if m.state != "measured":
+        P.lit("UNMEASURED: the monitor could not be read. This is UNMEASURED, not empty.\n\n")
+        return
+
+    def n(v):
+        if v is None:
+            P.lit("UNMEASURED")
+        else:
+            P.num(v, "monitor_count")
+    if m.date:
+        P.date(m.date)
+        P.lit(": ")
+    for k, (label, v) in enumerate((("bundle runs ", m.bundle_runs), ("bundles of one ", m.bundle_of_one_runs),
+                                    ("single ticket runs ", m.single_runs))):
+        P.lit((", " if k else "") + label)
+        n(v)
+    P.lit("; set downs ")
+    n(m.set_downs)
+    if m.prev_set_downs is not None:
+        P.lit(" (the day before ")
+        n(m.prev_set_downs)
+        P.lit(")")
+    P.lit("; judged NOT SINCERE ")
+    n(m.not_sincere)
+    P.lit(", SINCERE ")
+    n(m.sincere)
+    P.lit(", COULD NOT JUDGE ")
+    n(m.could_not_judge)
+    P.lit("; backward moves ")
+    n(m.backward_moves)
+    P.lit("; the Conductor reads the full report ")
+    if m.report:
+        P.handle("path", m.report)
+    else:
+        P.lit("UNMEASURED")
+    P.lit(".\n\n")
 
 
 def _asks_section(P, oa):
@@ -1102,6 +1193,7 @@ def render_digest(page):
             P.lit("-")
         P.lit(".\n\n")
     _asks_section(P, page.owner_asks)
+    _monitor_section(P, page.monitor)
     groups = {}
     for r in page.records:
         groups.setdefault(r.cls, []).append(r)

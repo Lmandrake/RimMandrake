@@ -293,7 +293,9 @@
   "src/RimMandrake/Utils/scene_names.py::_def_names::except-returns-empty": 1,
   "src/RimMandrake/Utils/scene_world.py::RealWorld.file_stamp::except-returns-empty": 1,
   "src/RimMandrake/rimflow/build_match.py::_early_or_none::except-returns-empty": 1,
-  "src/RimMandrake/rimflow/detached_helper.py::drop_clone_lock::except-returns-empty": 1
+  "src/RimMandrake/rimflow/detached_helper.py::drop_clone_lock::except-returns-empty": 1,
+  "src/RimMandrake/rimflow/work_bundle_monitor.py::ep::except-returns-empty": 1,
+  "src/RimMandrake/rimflow/work_bundle_monitor.py::read_moves::or-empty": 1
  },
  "reasons": {
   "src/RimMandrake/rimflow/maturation.py::move_item::or-empty": [
@@ -1232,6 +1234,12 @@
   ],
   "src/RimMandrake/rimflow/detached_helper.py::drop_clone_lock::except-returns-empty": [
    "NOT A COLLAPSE: False is the measured answer 'a launch holds this lock now' (only BlockingIOError from a non-blocking flock, which is that reading); the lock file then stays and the return says so; every other OSError raises to return_clone, which names it in its steps"
+  ],
+  "src/RimMandrake/rimflow/work_bundle_monitor.py::ep::except-returns-empty": [
+   "NOT A COLLAPSE: None is the unknown time; each caller skips that row or counts it apart (work_bundle_monitor boundary.md, Words)"
+  ],
+  "src/RimMandrake/rimflow/work_bundle_monitor.py::read_moves::or-empty": [
+   "NOT A COLLAPSE: a stage record with no moves list is a mod that has not moved; an unreadable record is counted in unreadable and names its file"
   ]
  }
 }

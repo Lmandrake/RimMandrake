@@ -1,0 +1,185 @@
+{
+ "_doc": "The Conductor's classing of the 25 set-downs of 2026-11-24 10:20 PM to 2026-11-25 10:20 AM PST (2026-11-25T06:20Z to 18:20Z). Source: the Conductor's reply of 2026-11-25T18:45:49Z in session 823b2f91 (six categories with counts: 5 fix-unknown that were a choice between two known fixes, 4 named a live experiment the run did not make, 1 said the filer did not read the file, 3 owner-act named a Conductor call, 2 said a game was held, 3 other-mod used wrongly (two from that mod's own run, one 'worked around in this run'); 'The rest look legitimate'), and the item RIMMANDRAKE_TIGHTEN_SET_DOWN_CLASSES_ANY_TWELVE_LETTERS_PASS. The Conductor gave counts per category, not a row list: the row of each category is this builder's reading of each row's text against his category (marked by_count_only). The categories sum to 18 rows; his headline said 'about 16'. The weakest mapping is the four 'named a live experiment' rows, picked from five candidates; the fifth (RIMMANDRAKE_HUNT_KNOCKBACK_GOOD_UNMOVED_LONG_BATCH_THREE_SIGHTINGS) is the 'three-sighting hunt that named five things tried' he called legitimate.",
+ "window": {
+  "since": "2026-11-25T06:20:00Z",
+  "until": "2026-11-25T18:20:00Z"
+ },
+ "by_count_only": true,
+ "rows": [
+  {
+   "id": "RIMMANDRAKE_BUILD_COLONY_STATION_HOLDS_BYSTANDERS_BY_AREA",
+   "ts": "2026-11-25T06:49:49Z",
+   "class": "no-tool",
+   "label": "SINCERE",
+   "category": "the rest look legitimate"
+  },
+  {
+   "id": "RIMMANDRAKE_DROP_FLOWWORKS_MATERIAL_WORD_STEEL_STEEL_JETTY",
+   "ts": "2026-11-25T07:42:49Z",
+   "class": "owner-act",
+   "label": "NOT SINCERE",
+   "category": "owner-act named a Conductor call, not one of the five acts"
+  },
+  {
+   "id": "RIMMANDRAKE_PROVE_STAMP_AGAIN_TWENTY_COPIES_ON_THE_RESCUE",
+   "ts": "2026-11-25T09:06:47Z",
+   "class": "no-tool",
+   "label": "NOT SINCERE",
+   "category": "said a game was held at that moment"
+  },
+  {
+   "id": "RIMMANDRAKE_ROUTE_ARCHMAGI_LANE_TARGETED_JOBS_QUEUED_TO_A_CLOSED_DOOR",
+   "ts": "2026-11-25T09:50:49Z",
+   "class": "fix-unknown",
+   "label": "NOT SINCERE",
+   "category": "fix-unknown was a choice between two known fixes"
+  },
+  {
+   "id": "RIMMANDRAKE_DIAGNOSE_PLOT_H_BYSTANDER_BRUISES_NOT_ITS_PAWN",
+   "ts": "2026-11-25T09:53:51Z",
+   "class": "fix-unknown",
+   "label": "NOT SINCERE",
+   "category": "named a live experiment that the run did not make"
+  },
+  {
+   "id": "RIMMANDRAKE_RULE_REBOUND_NEAR_WALL_OUTFLIES_FIRST_LEG",
+   "ts": "2026-11-25T10:39:44Z",
+   "class": "owner-act",
+   "label": "NOT SINCERE",
+   "category": "owner-act named a Conductor call, not one of the five acts"
+  },
+  {
+   "id": "RIMMANDRAKE_CARRY_SCENE_CHECK_ROWS_INTO_JUDGED_VERDICT_PLANT_READ_SUCCESS",
+   "ts": "2026-11-25T10:42:29Z",
+   "class": "fix-unknown",
+   "label": "NOT SINCERE",
+   "category": "fix-unknown was a choice between two known fixes"
+  },
+  {
+   "id": "RIMMANDRAKE_JUDGE_SCENE_ROWS_PLANTED_RUN_READ_SUCCESS",
+   "ts": "2026-11-25T10:43:38Z",
+   "class": "fix-unknown",
+   "label": "NOT SINCERE",
+   "category": "fix-unknown was a choice between two known fixes"
+  },
+  {
+   "id": "RIMMANDRAKE_BOUND_SCRATCH_REAP_RUN_THAT_GREW_FOUR_MIN_TO_TWO_HOURS",
+   "ts": "2026-11-25T11:04:47Z",
+   "class": "no-tool",
+   "label": "SINCERE",
+   "category": "the rest look legitimate"
+  },
+  {
+   "id": "RIMMANDRAKE_SPEED_SCRATCH_REAP_APPLY_RUNS_PASS_TWO_HOURS",
+   "ts": "2026-11-25T11:21:24Z",
+   "class": "fix-unknown",
+   "label": "SINCERE",
+   "category": "the rest look legitimate"
+  },
+  {
+   "id": "RIMMANDRAKE_FIND_WHY_PAWN_GEAR_WEAR_KEPT_NONE",
+   "ts": "2026-11-25T11:32:51Z",
+   "class": "fix-unknown",
+   "label": "NOT SINCERE",
+   "category": "said a game was held at that moment"
+  },
+  {
+   "id": "RIMMANDRAKE_DECIDE_FLOWWORKS_REPIN_THAT_VOIDS_ITS_LOCKED_EXAM",
+   "ts": "2026-11-25T11:58:53Z",
+   "class": "owner-act",
+   "label": "NOT SINCERE",
+   "category": "owner-act named a Conductor call, not one of the five acts"
+  },
+  {
+   "id": "RIMMANDRAKE_GATE_ARCHSMALL_TIER_SWAP_ON_DRIVER_LOCK_NOT_LEDGER",
+   "ts": "2026-11-25T12:16:40Z",
+   "class": "other-mod",
+   "label": "NOT SINCERE",
+   "category": "other-mod for pipeline machinery, worked around in this run"
+  },
+  {
+   "id": "RIMMANDRAKE_CLEAR_STALE_SWAP_MARKER_NOBODY_OWNS_ARCHSMALL_LIST",
+   "ts": "2026-11-25T12:59:53Z",
+   "class": "fix-unknown",
+   "label": "NOT SINCERE",
+   "category": "fix-unknown was a choice between two known fixes"
+  },
+  {
+   "id": "RIMMANDRAKE_FIX_PIPEPOLE_GRAVSHIP_P8_TWO_VV_CHECKS_RED",
+   "ts": "2026-11-25T13:02:05Z",
+   "class": "fix-unknown",
+   "label": "NOT SINCERE",
+   "category": "said the filer did not read the file"
+  },
+  {
+   "id": "RIMMANDRAKE_FIX_STAGE_MAKE_WHEN_TERRAIN_DOES_NOT_READ_BACK_ON_NEW_TILE",
+   "ts": "2026-11-25T13:23:12Z",
+   "class": "fix-unknown",
+   "label": "SINCERE",
+   "category": "the rest look legitimate"
+  },
+  {
+   "id": "RIMMANDRAKE_GIVE_ONE_MOD_A_DIGEST_HOOK_SO_A_DIRTY_RESET_CAN_SHOW",
+   "ts": "2026-11-25T14:00:58Z",
+   "class": "other-mod",
+   "label": "SINCERE",
+   "category": "the rest look legitimate"
+  },
+  {
+   "id": "RIMMANDRAKE_HEAR_DROID_NIGHT_QUIZ_THEN_AUDITION_CLAUDE_IS_DEAF",
+   "ts": "2026-11-25T14:55:18Z",
+   "class": "owner-act",
+   "label": "SINCERE",
+   "category": "the rest look legitimate"
+  },
+  {
+   "id": "RIMMANDRAKE_HUNT_KNOCKBACK_GOOD_UNMOVED_LONG_BATCH_THREE_SIGHTINGS",
+   "ts": "2026-11-25T15:52:19Z",
+   "class": "fix-unknown",
+   "label": "SINCERE",
+   "category": "the rest look legitimate"
+  },
+  {
+   "id": "RIMMANDRAKE_ANSWER_RESCUE_PROPOSALS_LEFT_OPEN_FORTY_SEVEN_SINCE_NOV_17",
+   "ts": "2026-11-25T16:02:40Z",
+   "class": "fix-unknown",
+   "label": "NOT SINCERE",
+   "category": "fix-unknown was a choice between two known fixes"
+  },
+  {
+   "id": "RIMMANDRAKE_CLASS_SEVEN_THIRST_FAILS_SITE_FULL_OF_PATIENTS",
+   "ts": "2026-11-25T16:09:06Z",
+   "class": "fix-unknown",
+   "label": "NOT SINCERE",
+   "category": "named a live experiment that the run did not make"
+  },
+  {
+   "id": "RIMMANDRAKE_FIND_KNOCKBACK_IED_SCAR_MISSING_ONE_RUN_IN_THREE",
+   "ts": "2026-11-25T16:43:10Z",
+   "class": "fix-unknown",
+   "label": "NOT SINCERE",
+   "category": "named a live experiment that the run did not make"
+  },
+  {
+   "id": "RIMMANDRAKE_EXPLAIN_KNOCKBACK_PALE_CLOUD_OVER_EMP_PAD",
+   "ts": "2026-11-25T16:44:13Z",
+   "class": "fix-unknown",
+   "label": "NOT SINCERE",
+   "category": "named a live experiment that the run did not make"
+  },
+  {
+   "id": "RIMMANDRAKE_RENAME_KNOCKBACK_SCAR_DEFS_DIGIT_ENDING_CONFIG_ERROR",
+   "ts": "2026-11-25T16:51:33Z",
+   "class": "other-mod",
+   "label": "NOT SINCERE",
+   "category": "other-mod naming the run's own mod"
+  },
+  {
+   "id": "RIMMANDRAKE_COVER_KNOCKBACK_BAR_HALVES_NO_LIVE_CHECK_SEES",
+   "ts": "2026-11-25T17:46:18Z",
+   "class": "other-mod",
+   "label": "NOT SINCERE",
+   "category": "other-mod naming the run's own mod"
+  }
+ ]
+}
