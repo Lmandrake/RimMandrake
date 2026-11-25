@@ -23,7 +23,6 @@ UTILS = os.path.join(REPO, "src", "RimMandrake", "Utils")
 sys.path.insert(0, UTILS)
 from game_paths import LOCALLOW  # noqa: E402
 PROBE = os.path.join(LOCALLOW, "BeskarArmorerProbe.jsonl")
-WIN_PROBE = os.path.expandvars(r"%USERPROFILE%\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\BeskarArmorerProbe.jsonl")
 PLAYER_LOG = os.path.join(LOCALLOW, "Player.log")
 OUT = "/mnt/d/ClaudeWork/rimmandrake/scratch/beskar_armorer_proof.json"
 CRITERIA = {
@@ -143,7 +142,7 @@ def drive():
 
 
 def probe_rows(path=None):
-    with open(path or WIN_PROBE) as f:
+    with open(path or PROBE) as f:
         return [json.loads(line) for line in f if line.strip()]
 
 
@@ -162,7 +161,7 @@ def heat_tool(g):
     r = g.call("jawa/heat_events")
     ev = r.get("events") or []
     ok = r.get("modLoaded") is True and any(e["amount"] == 30 and e["faction"] == "Empire" for e in ev)
-    with open(WIN_PROBE, "a") as f:
+    with open(PROBE, "a") as f:
         f.write(json.dumps({"row": "L9.heat_tool_reads_it", "pass": ok, "detail": str(ev)[:300]}) + "\n")
 
 
