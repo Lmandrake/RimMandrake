@@ -296,6 +296,24 @@ def t_the_lane_has_its_own_slots_and_chain_rule():
         "chain depth counts spent lane runs on the ancestors only")
 
 
+def t_a_full_lane_places_on_a_host_with_room():
+    """Past its own slots (and spare load) the lane places a run on a host of cfg["hosts"] under its max_live, while
+    the host's account has more than min_left_pct left; a host run takes no own slot (run_host.py)."""
+    hcfg = dict(CFG, hosts={"SteveDesktop": {"max_live": 2, "min_left_pct": 5}})
+    room = {"SteveDesktop": {"live": 0, "left": 50.0}}
+    rows, l, _ = run({k: it() for k in "ABCDE"}, cfg=hcfg, hosts=room)
+    chk(lambda: l == ["A", "B", "C", "D"] and rows["C"].get("host") == "SteveDesktop" and not rows["A"].get("host")
+        and rows["E"]["decision"] == "slots_full" and "SteveDesktop" in rows["E"]["why"],
+        "two own slots, then two on the host, then full, and the row names the host (%s)" % l)
+    chk(lambda: dec({k: it() for k in "ABC"}, iid="C", cfg=hcfg, hosts={"SteveDesktop": {"live": 0, "left": 4.0}})
+        == ("slots_full", ["A", "B"]), "an account at or under its line takes no run")
+    chk(lambda: dec({k: it() for k in "ABC"}, iid="C", cfg=hcfg) == ("slots_full", ["A", "B"]),
+        "a host that could not be read takes no run")
+    runs = {"A": {"live": ["u1"], "ended": [], "host_live": ["u1"]}}
+    chk(lambda: dec({"A": it(), "B": it(), "C": it()}, iid="C", runs=runs, cfg=hcfg) == ("launch", ["B", "C"]),
+        "a live host run holds its item but no own slot")
+
+
 def t_the_tick_counts_recent_lane_launches_before_taking_spare_room():
     import detached_helper as DH
     import list_effect as LE
@@ -597,6 +615,7 @@ def main():
               t_a_block_whose_predecessor_is_done_is_not_a_block,
               t_the_gates_launch_nothing,
               t_the_lane_has_its_own_slots_and_chain_rule,
+              t_a_full_lane_places_on_a_host_with_room,
               t_the_tick_counts_recent_lane_launches_before_taking_spare_room,
               t_a_raised_item_goes_first,
               t_a_lane_run_on_a_mod_takes_no_mod_slot,

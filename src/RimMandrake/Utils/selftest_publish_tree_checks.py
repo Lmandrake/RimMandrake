@@ -456,6 +456,17 @@ def measured_readings_cases():
     k1, _ = P.red_signature("FAIL unit 1 is wrong\n", "/nowhere", 1)
     k2, _ = P.red_signature("FAIL unit 2 is wrong\n", "/nowhere", 1)
     check(k1 != k2, "a short number that is not a reading still tells two FAIL lines apart")
+    # 2026-11-24 on SteveDesktop: selftest_game_lock and selftest_scene_library, red on origin/main the same way, were
+    # refused as "new": a Windows-spelt path to the check tree (\\wsl.localhost\Ubuntu\...rm-treecheck-<random>) and a
+    # commit sha in the line differ between the two runs
+    w1 = "FAIL crossing  {'error': 'File \"\\\\wsl.localhost\\Ubuntu\\h\\c.det\\.git\\rm-treecheck-e6cb8dh5\\x.py\"'}"
+    w2 = "FAIL crossing  {'error': 'File \"\\\\wsl.localhost\\Ubuntu\\h\\c.det\\.git\\rm-treecheck-q1w2e3r4\\x.py\"'}"
+    kw1, _ = P.red_signature(w1 + "\n", "/nowhere", 1)
+    kw2, _ = P.red_signature(w2 + "\n", "/nowhere", 1)
+    check(kw1 == kw2, "a check tree's random name in any spelling of its path is the same red (%s / %s)" % (list(kw1), list(kw2)))
+    ks1, _ = P.red_signature("FAIL accept: rc 3, ACCEPT s/good.py at e84717789cca\n", "/nowhere", 1)
+    ks2, _ = P.red_signature("FAIL accept: rc 3, ACCEPT s/good.py at 1a2b3c4d5e6f\n", "/nowhere", 1)
+    check(ks1 == ks2, "a commit sha in a FAIL line is the same red (%s / %s)" % (list(ks1), list(ks2)))
     k3, _ = P.red_signature("FAIL took 3 of 9 rows\n", "/nowhere", 1)
     k4, _ = P.red_signature("FAIL took 4 of 9 rows\n", "/nowhere", 1)
     check(k3 != k4, "a count is kept")

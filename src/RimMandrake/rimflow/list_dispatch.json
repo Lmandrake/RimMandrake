@@ -4,6 +4,8 @@
   "seat": "BENCH",
   "max_live": 2,
   "_max_live_doc": "Starvation: list work and mod work each keep their own slots, so a burst of one does not drop the other (plan.md §Shares; 25 list debts sat untouched over a day while mods ran). These slots are the lane's at any load. Live detached runs on lane items, hand launches included; mod and nightly-test runs are not counted, and the mod tick does not count the lane's (2026-11-24 it did: lane runs on FlowWorks held the Gimme Some Slack walk brief at slots_full from 7:24 to 8:02 AM PST).",
+  "hosts": {"SteveDesktop": {"max_live": 6, "min_left_pct": 5}},
+  "_hosts_doc": "Starved games: SteveDesktop (18 cores, 62 GB for WSL) also runs the two test-lane games Steve1 and Steve2, so at most max_live lane runs live there; they are placed only when the lane's own slots here are full (run_host.py, RIMMANDRAKE_FINISH_STEVE_HOST_LAUNCH_NEVER_RAN_ON_REAL_MACHINE). Spent account: only while the host's live account has more than min_left_pct of the week left (owner by card 2026-11-24: 'Use Steve down to 5% left').",
   "load_line": 28,
   "_load_line_doc": "Machine load: at load average 50 on 14 cores with ten runs live, timing tests read false reds (2026-11-23 3:46 AM PST, maturation_dispatch.json _max_live_doc, whose line is the same 28). Past max_live the lane launches only while the larger of the 1 and 5 minute load averages, plus load_per_run for each launch of this tick and each recent lane launch, is under this line.",
   "load_per_run": 2,

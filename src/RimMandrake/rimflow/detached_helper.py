@@ -362,8 +362,24 @@ def live_status(rec, runner=subprocess.run, now=None):
         return st
     if st == "launching" and (now or time.time()) - (rec.get("at") or 0) < LAUNCH_GRACE_S:
         return st
+    if rec.get("host"):     # a run on another host (run_host.py): its live state and its end are the host's own
+        return remote_live_status(rec, runner)
     import role_launch as RL
     return "dead" if RL.unit_state(rec["unit"], runner=runner) in DEAD_STATES else st
+
+
+def remote_live_status(rec, runner=subprocess.run, root=None):
+    """The host's reading of a remote run; an end it reports is copied into this machine's record (host_end)."""
+    import run_host
+    st, host_rec = run_host.remote_status(rec, runner=runner)
+    if st not in ("launching", "running"):
+        keep = {k: v for k, v in (host_rec or {}).items() if k in ("status", "ended", "outcome", "cost_usd", "rc",
+                                                                   "result", "note")}
+        try:
+            write_record(dict(rec, status=st, host_end=keep or None), root)
+        except OSError:
+            pass
+    return st
 
 
 def all_records(root=None, unreadable=None):
@@ -2334,6 +2350,36 @@ def status(show_all=False, runner=subprocess.run):
     return "\n".join(lines) or "no detached runs" + ("" if show_all else " running (--all lists finished ones)")
 
 
+def launch_on_host(args, brief, env, runner=subprocess.run, reader=None):
+    """`launch --host H`: the host's own launcher runs it (run_host.py); this machine keeps a record naming host, unit
+    and item. -> rc: 0 started, 2 refused, 5 could not look, else the host's rc."""
+    import tempfile
+    import run_host
+    facts = (reader or run_host.read_facts)(args.host, args.item, os.environ.get("RM_PICKED_ACCOUNT"))
+    with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False, encoding="utf-8") as fh:
+        fh.write(brief)
+    try:
+        pl = run_host.plan(args.host, args.item, fh.name, facts, model=args.model, budget=args.budget_usd,
+                           seat=args.seat.upper(), next_act_owner=args.next_act_owner,
+                           env=["%s=%s" % kv for kv in env.items()])
+        print("%s: %s" % (pl["verdict"], pl["why"]))
+        if pl["verdict"] != "REMOTE":
+            return 2 if pl["verdict"] == "REFUSED" else 5
+        with open(fh.name, encoding="utf-8") as stdin:
+            r = runner(pl["argv"], stdin=stdin, capture_output=True, text=True, timeout=10800)  # budget: class=launch
+    finally:
+        os.unlink(fh.name)
+    out = ((r.stdout or "") + (r.stderr or "")).strip()
+    unit = run_host.parse_unit(r.stdout) if r.returncode == 0 else None
+    if unit:
+        rec = run_host.record(args.host, args.item, unit, args.model, args.budget_usd, seat=args.seat.upper(),
+                              next_act_owner=args.next_act_owner)
+        write_record(rec)
+        out = "DETACHED %s\nREMOTE on %s, record %s\n%s" % (unit, args.host, record_path(unit), out)
+    print(out)
+    return r.returncode if r.returncode else (0 if unit else 5)
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -2394,15 +2440,7 @@ def main(argv=None):
             env[AGENT_ENV] = args.agent
         bad = [k for k in env if not re.match(r"^RM_[A-Z0-9_]+$", k)]
         if args.host and args.host.strip().lower() not in ("archmagi", "local"):
-            import run_host
-            facts = run_host.read_facts(args.host, "~/rm/list/%s" % args.item, os.environ.get("RM_PICKED_ACCOUNT"))
-            pl = run_host.plan(args.host, args.item, "~/rm/list/%s.brief.md" % args.item, facts)
-            print("%s: %s" % (pl["verdict"], pl["why"]))
-            if pl["verdict"] != "REMOTE":
-                return 2 if pl["verdict"] == "REFUSED" else 5
-            r = subprocess.run(pl["argv"], capture_output=True, text=True, timeout=10800)  # budget: class=launch
-            print((r.stdout + r.stderr).strip())
-            return r.returncode
+            return launch_on_host(args, brief, env)
         budget, carried = args.budget_usd, ""
         if budget is None and args.resume:
             budget, src = earlier_cap(args.resume)

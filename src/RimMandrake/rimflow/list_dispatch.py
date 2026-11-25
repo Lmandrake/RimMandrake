@@ -226,6 +226,51 @@ def slot_free(cfg, live_total, new, load, *, recent=0):
         why, load, recent, new, float(line))
 
 
+def host_room(cfg, hosts, new=0):
+    """-> (host, why not). A lane run whose own slots are full goes to a host of cfg["hosts"] that has fewer live lane
+    runs (its own, plus `new` placed there this tick) than its max_live, and whose live account has more than its
+    min_left_pct of the week left. A reading that is missing (None) is no room. Pure."""
+    whys = []
+    for name, hc in sorted((cfg.get("hosts") or {}).items()):
+        f = (hosts or {}).get(name) or {}
+        most, floor = int(hc.get("max_live", 0)), float(hc.get("min_left_pct", 5))
+        placed = new.get(name, 0) if isinstance(new, dict) else int(new or 0)
+        if f.get("live") is None:
+            whys.append("%s: its live lane runs could not be read" % name)
+        elif f["live"] + placed >= most:
+            whys.append("%s: %d live and %d placed this tick, its max_live is %d" % (name, f["live"], placed, most))
+        elif f.get("left") is None:
+            whys.append("%s: what is left on its account could not be read (%s)" % (name, f.get("left_why") or "no reading"))
+        elif float(f["left"]) <= floor:
+            whys.append("%s: its account has %g%% of the week left, the line is %g%%" % (name, f["left"], floor))
+        else:
+            return name, None
+    return None, "; ".join(whys) or "no host is configured"
+
+
+def host_facts(cfg, live, runner=None):
+    """{host: {"live", "left", "left_why"}}: live lane runs per host (from _runs), and the week left on the host's live
+    account, read from account_usage's latest readings by the name the host itself reports."""
+    out = {}
+    for name in (cfg.get("hosts") or {}):
+        d = {"live": live.get(name, 0), "left": None, "left_why": None}
+        try:
+            import run_host
+            import account_usage as AU
+            acct = run_host.read_facts(name, "-", **({"runner": runner} if runner else {})).get("account")
+            row = (AU.read_now().get("accounts") or {}).get(acct) if acct else None
+            if not acct:
+                d["left_why"] = "the host's live account could not be read"
+            elif not row:
+                d["left_why"] = "account_usage has no reading of %s" % acct
+            else:
+                d["left"] = AU.week_left_for(row)[0]
+        except Exception as e:  # noqa: BLE001 - could not look: no room
+            d["left_why"] = "%s: %s" % (type(e).__name__, e)
+        out[name] = d
+    return out
+
+
 def load_now():
     """-> probe_result: the larger of the 1 and 5 minute load averages, or could_not_look(cause)."""
     import probe_result as PR
@@ -249,8 +294,9 @@ def decide(cfg, st, facts, now, account=(True, "")):
     sti = st.setdefault("items", {})
     runs = facts.get("runs") or {}
     lane = facts.get("lane_items") or items         # --only narrows `items`; the slots are the whole lane's
-    live_total = sum(len((runs.get(i) or {}).get("live") or []) for i in lane
-                     if (lane[i] or {}).get("effect") or (lane[i] or {}).get("shape_due"))
+    live_total = sum(len((runs.get(i) or {}).get("live") or []) - len((runs.get(i) or {}).get("host_live") or [])
+                     for i in lane if (lane[i] or {}).get("effect") or (lane[i] or {}).get("shape_due"))
+    placed = {}     # this tick's launches per host
     paused, pool = facts.get("paused"), facts.get("pool")
     recent = facts.get("recent")
     max_runs = int(cfg.get("max_runs_per_item", 2))
@@ -447,9 +493,12 @@ def decide(cfg, st, facts, now, account=(True, "")):
                                recent=0 if recent is None else recent.value if recent.ok else None)
         if not free and recent is not None and not recent.ok:
             full += " (%s)" % recent
+        host = None
         if not free:
-            put("slots_full", full)
-            continue
+            host, hwhy = host_room(cfg, facts.get("hosts"), placed)
+            if not host:
+                put("slots_full", full + ("; no host has room: " + hwhy if cfg.get("hosts") else ""))
+                continue
         if pool and not it.get("clone_exists"):
             put("pool_full", pool)
             continue
@@ -463,7 +512,11 @@ def decide(cfg, st, facts, now, account=(True, "")):
         if not (isinstance(cap, (int, float)) and not isinstance(cap, bool) and cap > 0):
             put("no_cap", "list_dispatch.json has no positive %s_cap_usd; nothing launches without a cap" % model)
             continue
-        live_total += 1
+        if host:
+            placed[host] = placed.get(host, 0) + 1
+            row["host"] = host
+        else:
+            live_total += 1
         if shape:
             row.update(model=model, cap=cap, run_n=1, kind="shape")
             put("shape", "Shape run: %s (%s); %s" % (model, mwhy, it.get("shape_why") or "due for Shape"))
@@ -474,6 +527,8 @@ def decide(cfg, st, facts, now, account=(True, "")):
             put("launch", "Work run %d%s: %s (%s); the check fails: %s" % (
                 len(work) + 1, ", a second look (its wait to %s passed)" % pac(wu) if look else "", model, mwhy,
                 _one(it.get("out"), 120)))
+        if host:
+            row["why"] = "%s; on %s: the lane's own slots are full (%s)" % (row.get("why", ""), host, full)
         launches.append(iid)
     return rows, launches
 
@@ -531,10 +586,12 @@ def _clone_exists(iid):
     return os.path.isdir(os.path.join(DH.pool_root(), "clones", iid + ".det"))
 
 
-def _runs(ids, now, lag):
+def _runs(ids, now, lag, hosts=None):
+    """hosts: filled with {host: live lane runs there}; such runs stay live on their item, and take no own slot."""
     import detached_helper as DH
     import probe_result as PR
     out, unreadable, recent = {}, [], 0
+    hosts = {} if hosts is None else hosts
     try:
         for rec in DH.all_records(unreadable=unreadable.append):
             item = rec.get("item")
@@ -542,7 +599,12 @@ def _runs(ids, now, lag):
             if item not in ids and not lane:
                 continue
             live = DH.live_status(rec) in ("launching", "running")
-            if live and lane:
+            if rec.get("host"):
+                if live and lane:
+                    hosts[rec["host"]] = hosts.get(rec["host"], 0) + 1
+                if live and item in ids:
+                    out.setdefault(item, {"live": [], "ended": []}).setdefault("host_live", []).append(rec["unit"])
+            elif live and lane:
                 at = rec.get("at")
                 if type(at) not in (int, float) or not 0 < at < float("inf"):
                     unreadable.append("%s has no readable launch time" % rec["unit"])
@@ -660,7 +722,8 @@ def gather(st, now=None, root=None, load_lag_s=None):
                 d["accept_why"] = ((st.get("items") or {}).get(iid) or {}).get("accept_timed", {}).get("why")
         items[iid] = d
     ordered = {i: items[i] for i in order_ids(items)}
-    runs, recent = _runs(set(ordered), now, cfg["load_lag_s"] if load_lag_s is None else load_lag_s)
+    on_hosts = {}
+    runs, recent = _runs(set(ordered), now, cfg["load_lag_s"] if load_lag_s is None else load_lag_s, on_hosts)
     _read_next(st, ordered, runs)
     paused = _paused(now)
     for iid, d in ordered.items():
@@ -685,7 +748,8 @@ def gather(st, now=None, root=None, load_lag_s=None):
     live = sum(len(r["live"]) for r in runs.values())
     load = load_now()
     return {"items": ordered, "runs": runs, "other_live": 0, "paused": paused,
-            "pool": _pool(), "live_lane": live, "load": load.value if load.ok else None, "recent": recent}
+            "pool": _pool(), "live_lane": live, "load": load.value if load.ok else None, "recent": recent,
+            "hosts": host_facts(cfg, on_hosts)}
 
 
 def account_gate(gate=None, drain=None, now=None):
@@ -742,7 +806,7 @@ someone else can make it happen: put a new dated wait that names who and what. O
 """
 
 
-def launch(item, model, cap, brief, seat, mod):
+def launch(item, model, cap, brief, seat, mod, host=None):
     d = os.path.join(sdir(), "briefs")
     os.makedirs(d, exist_ok=True)
     path = os.path.join(d, "%s-%d.md" % (item, int(time.time())))
@@ -752,6 +816,8 @@ def launch(item, model, cap, brief, seat, mod):
             "--brief-file", path, "--model", model, "--budget-usd", "%g" % cap, "--next-act-owner", FAMILY]
     if mod:
         argv += ["--env", "RM_CONTROL_MOD=%s" % mod]
+    if host:
+        argv += ["--host", host]
     r = subprocess.run(argv, capture_output=True, text=True, timeout=LAUNCH_TIMEOUT_S, stdin=subprocess.DEVNULL)
     out = ((r.stdout or "") + (r.stderr or "")).strip()
     m = re.search(r"^DETACHED (\S+)", r.stdout or "", re.M)
@@ -847,10 +913,12 @@ def execute(cfg, st, rows, launches, facts, now, fx=None):
             brief = LS.brief_text(iid, it, row)
         else:
             brief = brief_text(iid, it, row)
-        rc, text, unit = do_launch(iid, row["model"], row["cap"], brief, cfg.get("seat", "BENCH"), it.get("mod"))
+        rc, text, unit = do_launch(iid, row["model"], row["cap"], brief, cfg.get("seat", "BENCH"), it.get("mod"),
+                                   **({"host": row["host"]} if row.get("host") else {}))
         ok = rc == 0 and bool(unit)
         s.pop("told", None)
         s.setdefault("attempts", []).append({"at": now, "unit": unit, "model": row["model"], "cap": row["cap"],
+                                             **({"host": row["host"]} if row.get("host") else {}),
                                              "kind": row.get("kind") or "work",
                                              "failed": None if ok else "never started: " + (_one(text, 400) or "rc %s" % rc)})
         if ok:

@@ -2954,12 +2954,38 @@ def cmd_switch(o, off):
     return lines0 + lines
 
 
+def remote_stop(target, mode, why, root=None, runner=subprocess.run):
+    """A unit whose detached record names a host (run_host.py) is stopped by that host's own `./pipe stop`; nothing
+    here holds it. -> (code, lines), or None when the target is not such a unit."""
+    t = str(target or "").strip()
+    t = t[len("unit:"):] if t.startswith("unit:") else t
+    t = t[:-len(".service")] if t.endswith(".service") else t
+    if not t.startswith("rm-"):
+        return None
+    import detached_helper as DH
+    import run_host
+    rec = DH.read_record(t, root)
+    if not (isinstance(rec, dict) and rec.get("host") and run_host.door(rec["host"])):
+        return None
+    argv = run_host.stop_argv(rec, mode, why)
+    try:
+        r = runner(argv, capture_output=True, text=True, timeout=120, stdin=subprocess.DEVNULL)  # budget: class=call
+        rc, said = r.returncode, ((r.stdout or "") + (r.stderr or "")).strip()
+    except Exception as e:  # noqa: BLE001 - could not look: the unit is not known stopped
+        rc, said = 99, "%s: %s" % (type(e).__name__, e)
+    head = "unit:%s stop on %s: %s" % (t, rec["host"], "done" if rc == 0 else "NOT DONE (rc %s)" % rc)
+    return (OK if rc == 0 else FAILED), [head, said[-400:] or "(the host said nothing)"]  # cut-ok: terminal display
+
+
 def cmd_stop(o):
     modes = [m for m, f in (("write_now", o.write_now), ("at_easy_spot", o.at_easy_spot), ("kill", o.kill)) if f]
     if len(modes) > 1:
         raise Refused("one stop mode, not %s" % ", ".join(modes))
     mode = modes[0] if modes else DEFAULT_STOP_MODE
     named = bool(modes)
+    remote = remote_stop(o.target, mode, o.why)
+    if remote is not None:
+        return remote
     dl = parse_dur(o.deadline) if o.deadline else None
     r = stop(o.target, mode, o.why, deadline_s=dl, owner_said=o.owner_said, per_ruling=o.per_ruling, idem=o.idem)
     if r["replayed"]:

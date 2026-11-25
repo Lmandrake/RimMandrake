@@ -954,11 +954,19 @@ TMP_RX = re.compile(r"(?:/private)?(?:/tmp|/var/folders|%s)/\S*" % re.escape(tem
 READING_RX = re.compile(r"'\d+(?:\.\d+)?'|\b\d+(?:\.\d+)?\s?(?:ms|s|MB|GB|KB|%)(?![A-Za-z])")
 
 
+# 2026-11-24 on SteveDesktop: a Windows python's traceback spells the check tree \\wsl.localhost\Ubuntu\...\rm-treecheck-<random>,
+# which the tree's own path does not match, and a FAIL line can name a commit sha; both move between the two runs
+TREE_NAME_RX = re.compile(r"rm-treecheck-[A-Za-z0-9_]+")
+SHA_RX = re.compile(r"\b(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,40}\b")
+
+
 def _norm(ln, tree):
     """What moves between two runs of the same code, blanked: the tree's own path, temp paths, measured readings
     (READING_RX) and numbers of four or more digits (pids, timestamps, unit names). A short number (a count, a case number) is kept, so "unit 2" is not "unit 1"."""
     ln = ln.strip().replace(os.path.realpath(tree), "<TOP>").replace(tree, "<TOP>")
     ln = READING_RX.sub("R", ln)
+    ln = TREE_NAME_RX.sub(CHECKTREE_PREFIX + "X", ln)     # the check tree's random name, in any spelling of its path
+    ln = SHA_RX.sub("SHA", ln)
     return re.sub(r"\d{4,}", "N", TMP_RX.sub("<TMP>", ln))
 
 

@@ -136,9 +136,9 @@ def t_remote_list_preflight_reads_the_live_field():
     status = CASES["stevedesktop-real-over-ssh"]["out"]
 
     def run(argv, **kwargs):
-        cmd = argv[-1]
+        cmd = argv[-1][len(run_host.LOGIN):] if argv[-1].startswith(run_host.LOGIN) else argv[-1]
         out = {"echo up": "up", "claude --version": "2.1.331"}.get(cmd, "")
-        if "claude-account --json status" in cmd and argv[-2] == "stevedesktop":
+        if "claude-account --json status" in cmd and argv[-2] == run_host.HOSTS["stevedesktop"]:
             out = "Last login for lukas\n" + status
         elif cmd.startswith("claude-account status"):
             out = "lukas"
