@@ -41,7 +41,8 @@ namespace JawaBench.BridgeTools
         private static long _beatTicks;           // Stopwatch ticks of the last heartbeat (Interlocked)
         private static volatile int _phase;
         private static long _phaseSinceTicks;
-        internal static volatile int LastTicksGame;
+        private static volatile int _ticksGame;
+        internal static int LastTicksGame => _ticksGame;
         // SHOULD 6: the main thread caches NUMBERS every frame (no per-frame string formatting); the watchdog
         // thread formats them only when it writes a row.
         private static long _multBits = BitConverter.DoubleToInt64Bits(double.NaN);
@@ -80,8 +81,15 @@ namespace JawaBench.BridgeTools
             LastPaused = paused;
             Interlocked.Exchange(ref _multBits, BitConverter.DoubleToInt64Bits(mult));
             _speed = speed;
-            if (LastTicksGame != ticksGame) Interlocked.Exchange(ref _lastTickChange, W.Clock.ElapsedTicks);
-            LastTicksGame = ticksGame;
+            NoteTicks(ticksGame);
+        }
+
+        /// <summary>The one writer of the tick count. A second writer hid every tick: the frame's postfix wrote the count
+        /// before the next prefix compared it, so lastTickMono never moved on a ticking game (live, 2026-11-24).</summary>
+        internal static void NoteTicks(int ticksGame)
+        {
+            if (_ticksGame != ticksGame) Interlocked.Exchange(ref _lastTickChange, W.Clock.ElapsedTicks);
+            _ticksGame = ticksGame;
         }
 
         internal static string LastSpeed { get { int sp = _speed; return sp >= 0 && sp < SpeedNames.Length ? SpeedNames[sp] : sp < 0 ? "" : sp.ToString(); } }
@@ -249,6 +257,7 @@ namespace JawaBench.BridgeTools
             }
         }
 
+        internal static void SetTickChangeForTest(double s) => Interlocked.Exchange(ref _lastTickChange, (long)(s * System.Diagnostics.Stopwatch.Frequency));
         internal static void SetBeatForTest(double secondsAgo) =>
             Interlocked.Exchange(ref _beatTicks, W.Clock.ElapsedTicks - (long)(secondsAgo * Stopwatch.Frequency));
 

@@ -59,7 +59,7 @@ namespace JawaBench.BridgeTools
             string d = TempDir();
             SD.Reset();
             WD.HeartbeatPath = Path.Combine(d, "hb_abcdef.json");
-            WD.LastTicksGame = 777;
+            WD.NoteTicks(777);
             WD.SetPhasesForTest(WD.PTick, WD.PTlRare);
             SD.CaptureMainThread();                                  // this test thread plays the main thread
             SD.Probe = () => "{\"ticksGameNow\":777,\"tickList\":\"Rare\",\"pawns\":[{\"id\":\"Human12\",\"job\":\"Wait\"}]}";

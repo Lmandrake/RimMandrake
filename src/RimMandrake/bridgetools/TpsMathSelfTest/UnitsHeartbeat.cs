@@ -28,6 +28,14 @@ namespace JawaBench.BridgeTools
             Check(text.Contains("\"scene\":\"map\"") && text.Contains("\"paused\":true"), "watcher scene and pause fields");
             Check(text.Contains("\"frames\":4,\"frameFaultStreak\":2") &&
                   !text.Contains("\"frameFaultSinceMono\":null"), "watcher counts frames and resets the fault streak after success");
+            WD.SetFrameState(false, 1, 1, 4242);             // before the tick
+            WD.SetTickChangeForTest(0.5);
+            WD.NoteTicks(4243);                              // after the tick, same frame
+            WD.SetFrameState(false, 1, 1, 4243);             // the next frame sees no difference
+            WD.WriteHeartbeatForTest();
+            string ticked = File.ReadAllText(WD.HeartbeatPath);
+            Check(ticked.Contains("\"ticksGame\":4243") && !ticked.Contains("\"lastTickMono\":0.5"),
+                  "a tick counted at the end of the frame moves lastTickMono: " + ticked);
             Check(Directory.GetFiles(d).Length == 1, "no temp file left beside the heartbeat: " + Directory.GetFiles(d).Length + " files");
         }
     }

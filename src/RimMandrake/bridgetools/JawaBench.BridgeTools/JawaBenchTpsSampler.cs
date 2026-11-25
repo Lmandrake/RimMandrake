@@ -668,7 +668,7 @@ namespace JawaBench.BridgeTools
                 _lastSim = sim;
                 _gcAtPreLast = __state.I1;
                 int ticks = __instance.TicksGame;
-                WD.LastTicksGame = ticks;
+                WD.NoteTicks(ticks);
                 Acc.Post(__instance.TickRateMultiplier, ticks, sim);
             }
             catch (Exception e) { GTmu.Fault("tick-finalizer", e); Fail("tick-finalizer", e); }
