@@ -1032,10 +1032,33 @@ def gate_open(w, cell):
     it; Hold open keeps it open), then is sent home. The walk itself spends game ticks: they are reported."""
     t0 = w.tick_now()
     tg = _hold_open_toggle(w, cell)
+    if not tg:
+        # A sluice has no Hold open (RM_FlowDoors.GetGizmos drops it): the player lifts it with its Gate toggle and a
+        # colonist works it from the bank. Visit 12 (2026-11-24): station 11 of every walk save since the gate rebuild read
+        # "HELD OPEN [... open=False seals=True]" because this looked only for Hold open. Order the lift, then apply it now.
+        lifted = _sluice_lift(w, cell)
+        _, st = w.proof(GATES, "ProofLiquid", "current|%d,%d" % cell)
+        return "%s (sluice lifted: Gate toggle ordered lifted [%s] + god-mode Force open [%s])" % (
+            st, "pressed" if lifted[0] else "NOT PRESSED", "pressed" if lifted[1] else "NOT PRESSED")
     wk = _walk_in(w, cell)
     _, st = w.proof(GATES, "ProofLiquid", "current|%d,%d" % cell)
     return "%s (opening took %s ticks: Hold open on [button %s] + a colonist walked in and left [%s])" % (
         st, (w.tick_now() or 0) - (t0 or 0), "pressed" if tg else "NOT PRESSED", "walked" if wk else "NO COLONIST")
+
+
+def _sluice_lift(w, cell):
+    """-> (toggle pressed, force open pressed): the sluice's own Gate toggle (label 'Gate down' while lowered) orders it
+    lifted, so no colonist lowers it again; god-mode 'Force open' lifts it now."""
+    w.call("rimworld/set_god_mode", enabled=True)
+    out = []
+    for want in (lambda l: l.startswith("Gate down"), lambda l: l == "Force open"):
+        w.call("rimworld/clear_selection")
+        w.call("rimworld/click_cell", x=cell[0], z=cell[1])
+        gz = (w.call("rimworld/list_selected_gizmos") or {}).get("gizmos") or []
+        g = next((q for q in gz if want(q.get("label") or "")), None)
+        out.append(bool(g is not None and (w.call("rimworld/execute_gizmo", gizmoId=g.get("gizmoId") or g.get("id")) or {}).get("success")))
+    w.call("rimworld/clear_selection")
+    return tuple(out)
 
 
 def gate_shut(w, cell):

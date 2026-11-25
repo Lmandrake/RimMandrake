@@ -3344,7 +3344,7 @@
     "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
     "design/concepts/FlowWorks/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_source_pays --out <json>  (bridge held; minimal list + FlowWorks)",
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_source_pays --out <json>  (bridge held; tier fw_gss_sitting: its lake case loads the river site save, built on that tier, and on the minimal list reads UNMEASURED)",
    "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
    "owed_under": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL",
    "runs_today": {
