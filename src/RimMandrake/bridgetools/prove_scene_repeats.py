@@ -17,7 +17,8 @@ onto the victim; a run of 1500 ticks at Normal; SUCCESS when the victim then lie
   R3 a mod state left dirty on purpose changes the reset digest and stops the repeat RESET_DIGEST_DIFFERS. It needs a loaded
      mod of ours with a digest hook ([RMDigest], jawa/mod_hooks list) and that mod's dirtying act (--dirty-tool,
      --dirty-args); without them the row reads UNRUN and names what is missing.
-Exit 0 every row PASS, 1 a row FAIL, 2 no verdict (no game, no stage, no jawa/order), 3 no row failed and a row is UNRUN."""
+Exit 0 every row PASS, 1 a row FAIL, 2 no verdict (no game, no stage, no jawa/order, a row that could not look), 3 no row failed
+and a row is UNRUN."""
 import argparse
 import datetime
 import hashlib
@@ -393,7 +394,7 @@ def main(argv=None):
     if not a.no_make:
         import prove_stage_map as PSM
         rc, text, wall = PSM.wsl_make(a.game, "make", "--kind", "settlement", "--save", save)
-        log("make settlement: exit %s, %.1f s wall; %s" % (rc, wall, (text.strip().splitlines() or [""])[-1][:200]))
+        log("make settlement: exit %s, %.1f s wall\n  %s" % (rc, wall, "\n  ".join(text.strip().splitlines()[-12:])))
         if rc != 0:
             log("NO VERDICT: the stage was not made")
             return finish(a, 2)
@@ -408,14 +409,16 @@ def main(argv=None):
                 return finish(a, 2)
             except Exception as e:  # noqa: BLE001  a row that threw is named and the next row runs
                 rows.append(("%s (threw)" % r, "COULD NOT LOOK: %s: %s" % (type(e).__name__, str(e)[:600]), ""))
-    fails = unrun = 0
+    fails = unrun = blind = 0
     for name, bad, info in rows:
-        unrun += bad == "UNRUN"
-        fails += bad not in (None, "UNRUN")
-        log("%s %s: %s" % ("PASS" if bad is None else ("UNRUN" if bad == "UNRUN" else "FAIL"), name,
-                           info if bad in (None, "UNRUN") else "%s | %s" % (bad, info)))
-    log("prove_scene_repeats: %d of %d rows held, %d failed, %d unrun" % (len(rows) - fails - unrun, len(rows), fails, unrun))
-    return finish(a, 1 if fails else (3 if unrun else 0))
+        word = "PASS" if bad is None else ("UNRUN" if bad == "UNRUN" else ("COULD NOT LOOK" if str(bad).startswith("COULD NOT LOOK") else "FAIL"))
+        unrun += word == "UNRUN"
+        blind += word == "COULD NOT LOOK"
+        fails += word == "FAIL"
+        log("%s %s: %s" % (word, name, info if bad in (None, "UNRUN") else "%s | %s" % (bad, info)))
+    log("prove_scene_repeats: %d of %d rows held, %d failed, %d could not look, %d unrun" % (
+        len(rows) - fails - unrun - blind, len(rows), fails, blind, unrun))
+    return finish(a, 1 if fails else (2 if blind else (3 if unrun else 0)))
 
 
 def finish(a, rc):
