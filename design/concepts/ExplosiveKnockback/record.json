@@ -638,6 +638,18 @@
    ],
    "date": "2026-11-13",
    "what": "Per the Conductor (CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM): the concept was held blocked off Designer and judge runs until the owner-certified lock was written; the hold is lifted only by designer_stage.py unblock when that lock is written."
+  },
+  {
+   "id": "dc_open_0_2_0",
+   "kind": "ruling",
+   "speaker": "agent",
+   "source": [
+    "OWNER:1795565769863524396",
+    "OWNER:1795565863812726726",
+    "ITEM:RIMMANDRAKE_OPEN_KNOCKBACK_ZERO_TWO_BLAST_SHOW_HE_SAID_GET_CREATIVE"
+   ],
+   "date": "2026-11-24",
+   "what": "Design Version 0.2.0 (MINOR) opened by the Designer pass the Conductor briefed on his words of 2026-11-24: 14 new bars as inventory rows (the carried thing on its own arc, collision bruises by size, nine parts of our own blast show, three polish lines the Conductor judged relevant). Every 0.1.0 bar is kept. Judged not relevant and left on the polish list by the Conductor: the jolt-decay doc line, the fire switch on another mod's fire type, the two storeroom-raid check nits. His word of 2026-11-24 drops 'no check throws with an Outer Rim weapon' (\"we will own all our own weapons\"). His word of 2026-11-24 to drop all the explosion-visual mods replaces his card of 2026-11-12 that kept Better Explosions and Dynamic Effects Forge."
   }
  ],
  "asks": [
@@ -1204,6 +1216,272 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs"
    ],
    "proof_note": "kernel K-18 to K-20 pass (selftest_explosiveknockback_kernel.py); the live proof, sc_mass_and_power, is UNRUN (Stage 6). Bookkeeping corrected 2026-11-14 (steward, journal questions 3 and 9)."
+  },
+  {
+   "id": "carried_thing_own_arc",
+   "what": "When a blast throws a colonist who carries something, the carried thing leaves their hands at the blast and flies on its own path, apart from the colonist: the player sees two things in the air on two different paths, the thing lands where its own flight ends with nothing lost and nothing doubled, and the colonist lands with empty hands. A carried thing too heavy to fly drops where the colonist stood. A colonist who carries nothing flies as before.",
+   "impl": "absent",
+   "search_scope": "2026-11-24: src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs line 1084 still calls PawnFlyer.MakeFlyer(..., flyWithCarriedThing: true); no separate plan for the carried thing exists",
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1795565769863524396",
+   "source": [
+    "OWNER:1795565769863524396",
+    "ITEM:RIMMANDRAKE_OPEN_KNOCKBACK_ZERO_TWO_BLAST_SHOW_HE_SAID_GET_CREATIVE",
+    "ITEM:RIMMANDRAKE_FLING_KNOCKBACK_CARRY_ON_OWN_ARC",
+    "OWNER:1794696650663248428"
+   ],
+   "speaker": "owner",
+   "quote": "Thing thrown colonist carries flies on own arc: YES.",
+   "note": "0.2.0 MINOR. His first word was 2026-11-14 (OWNER:1794696650663248428: 'Next version it should go flying independently of the person holding it. Different trajectories.'). The hose-end bar hose_drops_at_takeoff stays. 0.1.0 flies the pawn with what it carries (RM_MapComponent_Knockback.cs, MakeFlyer flyWithCarriedThing true). The haul-memory static (RM_PawnFlyerPatches.Hauling) that outlives a pawn that dies in flight is cleared in this work only if this work changes that code (the Conductor's call, 2026-11-24). A plain sentence about what the player sees, never a tuning number.",
+   "proof_note": "offline: kernel case K_CARRY_OWN_PLAN and a static check that the pawn throw no longer flies with the carried thing (Stage 3, red first); live: a revised sc_pawn_arc (Stage 6). Full test: the item"
+  },
+  {
+   "id": "collision_bruise_by_size",
+   "what": "When a thrown pawn meets another pawn, by landing on it or by being stopped by it, both are bruised, and each one's bruise follows the size of the other: a big creature that meets a small one really hurts the small one and is itself nearly unhurt, and two of about the same size bruise each other lightly and alike. A person who lands on a dog hurts the dog more than the dog hurts the person; a rat that lands on a muffalo is hurt and the muffalo hardly notices. A landing on an empty cell bruises nobody.",
+   "impl": "absent",
+   "search_scope": "2026-11-24: src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs holds no bruise function; the journal writes land_on_pawn with no damage",
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1795565769863524396",
+   "source": [
+    "OWNER:1795565769863524396",
+    "ITEM:RIMMANDRAKE_OPEN_KNOCKBACK_ZERO_TWO_BLAST_SHOW_HE_SAID_GET_CREATIVE",
+    "ITEM:RIMMANDRAKE_BRUISE_KNOCKBACK_LANDING_ON_PAWN",
+    "OWNER:1794696661272423650"
+   ],
+   "speaker": "owner",
+   "quote": "Thrown pawn lands on another bruises both, and the bruising should be proportional to the size of the thing that hit you (BIG creature on small creature really hurts small creature, big creature relatively unaffected, tune to common sense elephant/rat, person on dog or dog on person, etc.).",
+   "note": "0.2.0 MINOR. His card of 2026-11-14 chose 'Bruise in the next version' (OWNER:1794696661272423650). The Designer's reading, his to undo: size is read as the creature's mass, the measure this mod already throws by (his cards of 2026-11-13); the same rule covers the pawn that stops a thrown pawn (leaf pawn_hits_pawn_stops), so one collision has one rule. No living creature over the mass limit is ever thrown, so an elephant is only ever the one landed on. 0.1.0 keeps the harmless landing (journal line land_on_pawn). A plain sentence about what the player sees, never a tuning number.",
+   "proof_note": "offline: kernel case K_COLLISION_BRUISE over pairs of masses (Stage 3, red first); live: a revised sc_pawn_arc lane with a small and a large second pawn (Stage 6). Full test: the item"
+  },
+  {
+   "id": "blast_show_fire_and_flash",
+   "what": "A harmful blast shows a bright fiery burst: a white flash, a fireball that swells and dies, sparks and thrown dirt or stone from the ground it hit. A flame blast shows fire without the thrown dirt. Nothing of it is the vanilla puff or another mod's art.",
+   "impl": "absent",
+   "search_scope": "2026-11-24: grep of src/RimMandrake/ExplosiveKnockback/Source and src/RimMandrake/ExplosiveKnockback/Defs for FleckDef, DoShake, ChangePaint, Filth and overlay: none; proof/absorb_blast_show_check.py is red on its lines A1, A3, A4 and A5 (no build exists)",
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1795565769863524396",
+   "source": [
+    "OWNER:1795565769863524396",
+    "ITEM:RIMMANDRAKE_OPEN_KNOCKBACK_ZERO_TWO_BLAST_SHOW_HE_SAID_GET_CREATIVE",
+    "ITEM:RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS",
+    "design/specs/2026-11-24-knockback-blast-show/design.md"
+   ],
+   "speaker": "owner",
+   "quote": "Our own blast show YES. They look horrible right now. Let's drop all those mods and replace them with SO MUCH BETTER stuff. Screen shake, bright fiery explosions. Air distortion ripples. Proportional to the damage done. Realistic and wonderful. Smoke that looks like smoke, not rotating cartoon cotton. Ugly crater scars that look like ugly crater scars. Black soot like Pyrelands (black paint left on things). Soot on affected pawns.",
+   "note": "0.2.0 MINOR. His words of 2026-11-24 on this concept's item. The design of the whole blast show, its ranked set and its art list: design/specs/2026-11-24-knockback-blast-show/design.md. A plain sentence about what the player sees, never a tuning number.",
+   "proof_note": "offline: T_BLAST_SHOW_OFFLINE (Stage 3 builds it, red first; it grows from proof/absorb_blast_show_check.py); live: sc_blast_show, a capture of one grenade and one mortar shell on soil and on stone (Stage 6); the look itself is the art judge's call (design/RimMandrake/art_judge_brief.md)"
+  },
+  {
+   "id": "blast_show_screen_shake",
+   "what": "The screen shakes when a blast goes off in view, harder for a bigger blast and for a nearer one, and a far small blast does not shake it at all. One slider in Mod Settings sets how hard, down to none.",
+   "impl": "absent",
+   "search_scope": "2026-11-24: grep of src/RimMandrake/ExplosiveKnockback/Source and src/RimMandrake/ExplosiveKnockback/Defs for FleckDef, DoShake, ChangePaint, Filth and overlay: none; proof/absorb_blast_show_check.py is red on its lines A1, A3, A4 and A5 (no build exists)",
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1795565769863524396",
+   "source": [
+    "OWNER:1795565769863524396",
+    "ITEM:RIMMANDRAKE_OPEN_KNOCKBACK_ZERO_TWO_BLAST_SHOW_HE_SAID_GET_CREATIVE",
+    "ITEM:RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS",
+    "design/specs/2026-11-24-knockback-blast-show/design.md"
+   ],
+   "speaker": "owner",
+   "quote": "Our own blast show YES. They look horrible right now. Let's drop all those mods and replace them with SO MUCH BETTER stuff. Screen shake, bright fiery explosions. Air distortion ripples. Proportional to the damage done. Realistic and wonderful. Smoke that looks like smoke, not rotating cartoon cotton. Ugly crater scars that look like ugly crater scars. Black soot like Pyrelands (black paint left on things). Soot on affected pawns.",
+   "note": "0.2.0 MINOR. His words of 2026-11-24 on this concept's item. The design of the whole blast show, its ranked set and its art list: design/specs/2026-11-24-knockback-blast-show/design.md. A plain sentence about what the player sees, never a tuning number.",
+   "proof_note": "offline: T_BLAST_SHOW_OFFLINE (Stage 3 builds it, red first; it grows from proof/absorb_blast_show_check.py); live: sc_blast_show reads the camera shake after a small and a big blast at the same distance, and with the slider at none (Stage 6); the look itself is the art judge's call (design/RimMandrake/art_judge_brief.md)"
+  },
+  {
+   "id": "blast_show_air_ripple",
+   "what": "A ring of bent air runs out from a blast to about its edge and is gone in a moment; the ground seen through it wobbles. A small blast shows a small faint ring and a big blast a wide strong one.",
+   "impl": "absent",
+   "search_scope": "2026-11-24: grep of src/RimMandrake/ExplosiveKnockback/Source and src/RimMandrake/ExplosiveKnockback/Defs for FleckDef, DoShake, ChangePaint, Filth and overlay: none; proof/absorb_blast_show_check.py is red on its lines A1, A3, A4 and A5 (no build exists)",
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1795565769863524396",
+   "source": [
+    "OWNER:1795565769863524396",
+    "ITEM:RIMMANDRAKE_OPEN_KNOCKBACK_ZERO_TWO_BLAST_SHOW_HE_SAID_GET_CREATIVE",
+    "ITEM:RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS",
+    "design/specs/2026-11-24-knockback-blast-show/design.md"
+   ],
+   "speaker": "owner",
+   "quote": "Our own blast show YES. They look horrible right now. Let's drop all those mods and replace them with SO MUCH BETTER stuff. Screen shake, bright fiery explosions. Air distortion ripples. Proportional to the damage done. Realistic and wonderful. Smoke that looks like smoke, not rotating cartoon cotton. Ugly crater scars that look like ugly crater scars. Black soot like Pyrelands (black paint left on things). Soot on affected pawns.",
+   "note": "0.2.0 MINOR. His words of 2026-11-24 on this concept's item. The design of the whole blast show, its ranked set and its art list: design/specs/2026-11-24-knockback-blast-show/design.md. A plain sentence about what the player sees, never a tuning number.",
+   "proof_note": "offline: T_BLAST_SHOW_OFFLINE (Stage 3 builds it, red first; it grows from proof/absorb_blast_show_check.py); live: sc_blast_show, a frame sequence of the ring over a tiled floor (Stage 6); the look itself is the art judge's call (design/RimMandrake/art_judge_brief.md)"
+  },
+  {
+   "id": "blast_show_smoke",
+   "what": "After the fire, smoke that reads as smoke: dark at the root, rolling upward, thinning to grey, leaning with the wind outdoors and gone in a while. It does not spin, and it does not hide the pawns and goods in flight.",
+   "impl": "absent",
+   "search_scope": "2026-11-24: grep of src/RimMandrake/ExplosiveKnockback/Source and src/RimMandrake/ExplosiveKnockback/Defs for FleckDef, DoShake, ChangePaint, Filth and overlay: none; proof/absorb_blast_show_check.py is red on its lines A1, A3, A4 and A5 (no build exists)",
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1795565769863524396",
+   "source": [
+    "OWNER:1795565769863524396",
+    "ITEM:RIMMANDRAKE_OPEN_KNOCKBACK_ZERO_TWO_BLAST_SHOW_HE_SAID_GET_CREATIVE",
+    "ITEM:RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS",
+    "design/specs/2026-11-24-knockback-blast-show/design.md"
+   ],
+   "speaker": "owner",
+   "quote": "Our own blast show YES. They look horrible right now. Let's drop all those mods and replace them with SO MUCH BETTER stuff. Screen shake, bright fiery explosions. Air distortion ripples. Proportional to the damage done. Realistic and wonderful. Smoke that looks like smoke, not rotating cartoon cotton. Ugly crater scars that look like ugly crater scars. Black soot like Pyrelands (black paint left on things). Soot on affected pawns.",
+   "note": "0.2.0 MINOR. His words of 2026-11-24 on this concept's item. The design of the whole blast show, its ranked set and its art list: design/specs/2026-11-24-knockback-blast-show/design.md. A plain sentence about what the player sees, never a tuning number.",
+   "proof_note": "offline: T_BLAST_SHOW_OFFLINE (Stage 3 builds it, red first; it grows from proof/absorb_blast_show_check.py); live: sc_blast_show, captures at three times after a blast in still air and in wind; the thrown colonist stays visible in each (Stage 6); the look itself is the art judge's call (design/RimMandrake/art_judge_brief.md)"
+  },
+  {
+   "id": "blast_show_crater_scar",
+   "what": "A blast on open ground leaves an ugly scar: torn, burnt ground with a dark ragged rim, bigger for a bigger blast. The scar is still there days later. Rain and time wear it away, and a colonist can clean it.",
+   "impl": "absent",
+   "search_scope": "2026-11-24: grep of src/RimMandrake/ExplosiveKnockback/Source and src/RimMandrake/ExplosiveKnockback/Defs for FleckDef, DoShake, ChangePaint, Filth and overlay: none; proof/absorb_blast_show_check.py is red on its lines A1, A3, A4 and A5 (no build exists)",
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1795565769863524396",
+   "source": [
+    "OWNER:1795565769863524396",
+    "ITEM:RIMMANDRAKE_OPEN_KNOCKBACK_ZERO_TWO_BLAST_SHOW_HE_SAID_GET_CREATIVE",
+    "ITEM:RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS",
+    "design/specs/2026-11-24-knockback-blast-show/design.md"
+   ],
+   "speaker": "owner",
+   "quote": "Our own blast show YES. They look horrible right now. Let's drop all those mods and replace them with SO MUCH BETTER stuff. Screen shake, bright fiery explosions. Air distortion ripples. Proportional to the damage done. Realistic and wonderful. Smoke that looks like smoke, not rotating cartoon cotton. Ugly crater scars that look like ugly crater scars. Black soot like Pyrelands (black paint left on things). Soot on affected pawns.",
+   "note": "0.2.0 MINOR. His words of 2026-11-24 on this concept's item. The design of the whole blast show, its ranked set and its art list: design/specs/2026-11-24-knockback-blast-show/design.md. A plain sentence about what the player sees, never a tuning number.",
+   "proof_note": "offline: T_BLAST_SHOW_OFFLINE (Stage 3 builds it, red first; it grows from proof/absorb_blast_show_check.py); live: sc_blast_show reads the scar thing after the blast, after a day, and after cleaning; a capture goes to the art judge (Stage 6); the look itself is the art judge's call (design/RimMandrake/art_judge_brief.md)"
+  },
+  {
+   "id": "blast_show_soot_on_things",
+   "what": "A blast leaves black soot on what stands near it: walls, doors, furniture and built floors turn the same charred black that Pyrelands ruins wear, strongest at the centre. The soot stays until a colonist removes it or repaints, and nothing under it is lost: the thing takes back the paint it had.",
+   "impl": "absent",
+   "search_scope": "2026-11-24: grep of src/RimMandrake/ExplosiveKnockback/Source and src/RimMandrake/ExplosiveKnockback/Defs for FleckDef, DoShake, ChangePaint, Filth and overlay: none; proof/absorb_blast_show_check.py is red on its lines A1, A3, A4 and A5 (no build exists)",
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1795565769863524396",
+   "source": [
+    "OWNER:1795565769863524396",
+    "ITEM:RIMMANDRAKE_OPEN_KNOCKBACK_ZERO_TWO_BLAST_SHOW_HE_SAID_GET_CREATIVE",
+    "ITEM:RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS",
+    "design/specs/2026-11-24-knockback-blast-show/design.md"
+   ],
+   "speaker": "owner",
+   "quote": "Our own blast show YES. They look horrible right now. Let's drop all those mods and replace them with SO MUCH BETTER stuff. Screen shake, bright fiery explosions. Air distortion ripples. Proportional to the damage done. Realistic and wonderful. Smoke that looks like smoke, not rotating cartoon cotton. Ugly crater scars that look like ugly crater scars. Black soot like Pyrelands (black paint left on things). Soot on affected pawns.",
+   "note": "0.2.0 MINOR. His words of 2026-11-24 on this concept's item. The design of the whole blast show, its ranked set and its art list: design/specs/2026-11-24-knockback-blast-show/design.md. A plain sentence about what the player sees, never a tuning number.",
+   "proof_note": "offline: T_BLAST_SHOW_OFFLINE (Stage 3 builds it, red first; it grows from proof/absorb_blast_show_check.py); live: sc_blast_show reads the paint of a wall, a door, a table and a floor cell inside and outside the blast, and again after the paint is removed (Stage 6); the look itself is the art judge's call (design/RimMandrake/art_judge_brief.md)"
+  },
+  {
+   "id": "blast_show_soot_on_pawns",
+   "what": "A person or animal caught near a blast is visibly blackened with soot. The soot wears off in time and washes off sooner in rain or water. It is a look only: it harms nobody.",
+   "impl": "absent",
+   "search_scope": "2026-11-24: grep of src/RimMandrake/ExplosiveKnockback/Source and src/RimMandrake/ExplosiveKnockback/Defs for FleckDef, DoShake, ChangePaint, Filth and overlay: none; proof/absorb_blast_show_check.py is red on its lines A1, A3, A4 and A5 (no build exists)",
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1795565769863524396",
+   "source": [
+    "OWNER:1795565769863524396",
+    "ITEM:RIMMANDRAKE_OPEN_KNOCKBACK_ZERO_TWO_BLAST_SHOW_HE_SAID_GET_CREATIVE",
+    "ITEM:RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS",
+    "design/specs/2026-11-24-knockback-blast-show/design.md"
+   ],
+   "speaker": "owner",
+   "quote": "Our own blast show YES. They look horrible right now. Let's drop all those mods and replace them with SO MUCH BETTER stuff. Screen shake, bright fiery explosions. Air distortion ripples. Proportional to the damage done. Realistic and wonderful. Smoke that looks like smoke, not rotating cartoon cotton. Ugly crater scars that look like ugly crater scars. Black soot like Pyrelands (black paint left on things). Soot on affected pawns.",
+   "note": "0.2.0 MINOR. His words of 2026-11-24 on this concept's item. The design of the whole blast show, its ranked set and its art list: design/specs/2026-11-24-knockback-blast-show/design.md. A plain sentence about what the player sees, never a tuning number.",
+   "proof_note": "offline: T_BLAST_SHOW_OFFLINE (Stage 3 builds it, red first; it grows from proof/absorb_blast_show_check.py); live: sc_blast_show reads the soot state of a colonist and an animal in the blast and of one outside it, then again after rain (Stage 6); the look itself is the art judge's call (design/RimMandrake/art_judge_brief.md)"
+  },
+  {
+   "id": "blast_show_scales_with_damage",
+   "what": "A small blast and a big blast side by side: the big one is plainly the bigger show in every part: flash, fireball, shake, ripple, smoke, scar and the reach of its soot.",
+   "impl": "absent",
+   "search_scope": "2026-11-24: grep of src/RimMandrake/ExplosiveKnockback/Source and src/RimMandrake/ExplosiveKnockback/Defs for FleckDef, DoShake, ChangePaint, Filth and overlay: none; proof/absorb_blast_show_check.py is red on its lines A1, A3, A4 and A5 (no build exists)",
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1795565769863524396",
+   "source": [
+    "OWNER:1795565769863524396",
+    "ITEM:RIMMANDRAKE_OPEN_KNOCKBACK_ZERO_TWO_BLAST_SHOW_HE_SAID_GET_CREATIVE",
+    "ITEM:RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS",
+    "design/specs/2026-11-24-knockback-blast-show/design.md"
+   ],
+   "speaker": "owner",
+   "quote": "Our own blast show YES. They look horrible right now. Let's drop all those mods and replace them with SO MUCH BETTER stuff. Screen shake, bright fiery explosions. Air distortion ripples. Proportional to the damage done. Realistic and wonderful. Smoke that looks like smoke, not rotating cartoon cotton. Ugly crater scars that look like ugly crater scars. Black soot like Pyrelands (black paint left on things). Soot on affected pawns.",
+   "note": "0.2.0 MINOR. His words of 2026-11-24 on this concept's item. The design of the whole blast show, its ranked set and its art list: design/specs/2026-11-24-knockback-blast-show/design.md. A plain sentence about what the player sees, never a tuning number.",
+   "proof_note": "offline: T_BLAST_SHOW_OFFLINE (Stage 3 builds it, red first; it grows from proof/absorb_blast_show_check.py); live: sc_blast_show sets a grenade and an antigrain-class blast on two like pads and compares each part's reading (Stage 6); the look itself is the art judge's call (design/RimMandrake/art_judge_brief.md)"
+  },
+  {
+   "id": "blast_show_switches_off_clean",
+   "what": "Each part of the blast show has its own on/off switch in Mod Settings, all on by default. With every switch off, a blast looks as it does in the unmodded game, and the throws are the same with the show on or off.",
+   "impl": "absent",
+   "search_scope": "2026-11-24: grep of src/RimMandrake/ExplosiveKnockback/Source and src/RimMandrake/ExplosiveKnockback/Defs for FleckDef, DoShake, ChangePaint, Filth and overlay: none; proof/absorb_blast_show_check.py is red on its lines A1, A3, A4 and A5 (no build exists)",
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1795565769863524396",
+   "source": [
+    "OWNER:1795565769863524396",
+    "ITEM:RIMMANDRAKE_OPEN_KNOCKBACK_ZERO_TWO_BLAST_SHOW_HE_SAID_GET_CREATIVE",
+    "ITEM:RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS",
+    "design/specs/2026-11-24-knockback-blast-show/design.md"
+   ],
+   "speaker": "owner",
+   "quote": "Our own blast show YES. They look horrible right now. Let's drop all those mods and replace them with SO MUCH BETTER stuff. Screen shake, bright fiery explosions. Air distortion ripples. Proportional to the damage done. Realistic and wonderful. Smoke that looks like smoke, not rotating cartoon cotton. Ugly crater scars that look like ugly crater scars. Black soot like Pyrelands (black paint left on things). Soot on affected pawns.",
+   "note": "0.2.0 MINOR. His words of 2026-11-24 on this concept's item. The design of the whole blast show, its ranked set and its art list: design/specs/2026-11-24-knockback-blast-show/design.md. A plain sentence about what the player sees, never a tuning number.",
+   "proof_note": "offline: T_BLAST_SHOW_OFFLINE (Stage 3 builds it, red first; it grows from proof/absorb_blast_show_check.py); live: selftest_explosiveknockback_settings_sweep.py gains the show's switches (offline); live: sc_settings_sweep with each switch off in turn, and a throw compared show-on against show-off (Stage 6); the look itself is the art judge's call (design/RimMandrake/art_judge_brief.md)"
+  },
+  {
+   "id": "gas_shoves_pawn_on_pit_cover",
+   "what": "A burning gas burst shoves a person who stands on an intact pit cover one cell, unhurt, as it shoves a person on any other ground. A person down in an open pit is still not shoved.",
+   "impl": "absent",
+   "search_scope": "2026-11-24: src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs line 130 returns in_pit for every pawn on a superdeep cell",
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1795565769863524396",
+   "source": [
+    "OWNER:1795565769863524396",
+    "ITEM:RIMMANDRAKE_OPEN_KNOCKBACK_ZERO_TWO_BLAST_SHOW_HE_SAID_GET_CREATIVE",
+    "design/concepts/ExplosiveKnockback/version/polish.md"
+   ],
+   "speaker": "owner",
+   "quote": "Include all polish items too, but judge each of them first as relevant or not (or card me if you don't want the responsibility)",
+   "note": "0.2.0 MINOR. A polish line the Conductor judged relevant (2026-11-24): a covered pit is ground to the player. 0.1.0 skips any pawn on a superdeep cell as in_pit, covered or not (RM_KnockbackPlan.cs, PawnSkipReason). A plain sentence about what the player sees, never a tuning number.",
+   "proof_note": "offline: a kernel case for a pawn on a covered superdeep cell under a gas burst (Stage 3, red first); live: a lane of sc_gas_chain with a colonist on an intact cover (Stage 6)"
+  },
+  {
+   "id": "no_impact_without_contact",
+   "what": "A thrown pawn that a sandbag stops before it reaches another pawn hits nobody: the other pawn shows no impact and takes no bruise.",
+   "impl": "absent",
+   "search_scope": "2026-11-24: src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs Resolve, the case recorded in design/concepts/ExplosiveKnockback/version/polish.md",
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1795565769863524396",
+   "source": [
+    "OWNER:1795565769863524396",
+    "ITEM:RIMMANDRAKE_OPEN_KNOCKBACK_ZERO_TWO_BLAST_SHOW_HE_SAID_GET_CREATIVE",
+    "design/concepts/ExplosiveKnockback/version/polish.md"
+   ],
+   "speaker": "owner",
+   "quote": "Include all polish items too, but judge each of them first as relevant or not (or card me if you don't want the responsibility)",
+   "note": "0.2.0 MINOR. A polish line the Conductor judged relevant (2026-11-24): with collision bruises, the 0.1.0 report of a hit across a sandbag would be a bruise on a pawn nothing touched (RM_KnockbackMath.Resolve backs the pawn off the sandbag and still reports the hit). A plain sentence about what the player sees, never a tuning number.",
+   "proof_note": "offline: a kernel case lane | sandbag | pawn that expects no hit and no bruise (Stage 3, red first); live: a lane of the revised sc_pawn_arc (Stage 6)"
+  },
+  {
+   "id": "rebound_goes_shorter",
+   "what": "Each time a thrown good rebounds off a wall or a closed door, the player sees it carry on a clearly shorter way than the flight before, until it comes to rest.",
+   "impl": "present",
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1795565769863524396",
+   "source": [
+    "OWNER:1795565769863524396",
+    "ITEM:RIMMANDRAKE_OPEN_KNOCKBACK_ZERO_TWO_BLAST_SHOW_HE_SAID_GET_CREATIVE",
+    "design/concepts/ExplosiveKnockback/version/polish.md"
+   ],
+   "speaker": "owner",
+   "quote": "Include all polish items too, but judge each of them first as relevant or not (or card me if you don't want the responsibility)",
+   "note": "0.2.0 MINOR. A polish line the Conductor judged relevant (2026-11-24): the 0.1.0 leaf goods_arc_spin_rebound speaks of speed kept, while the build keeps a share of the cells left. This row says what the player sees. The leaf's own words in tree.json and sheet.md are reworded to match, and the frozen Cold Reader exam is retaken whole, under RIMMANDRAKE_REWORD_KNOCKBACK_REBOUND_LEAF_THEN_RETAKE_WHOLE_EXAM. A plain sentence about what the player sees, never a tuning number.",
+   "proof_note": "offline: the kernel's rebound cases already pass on cells left; live: sc_storeroom_mortar's trace, each rebound leg shorter than the leg before (Stage 6)",
+   "impl_evidence": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_ThingFlyer_Knockback.cs"
+   ]
   }
  ],
  "built_reviewed": [],

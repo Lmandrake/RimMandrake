@@ -21,4 +21,11 @@ rule (bar hose_drops_at_takeoff, owner Q6: a hose end drops where the carrier st
    positions differ on at least one mid-flight tick; the stack lands on its own kernel cell, count unchanged, no
    duplicate; the colonist lands on its planned cell with empty hands. Control: a colonist carrying nothing flies as today.
 
+Owner, 2026-11-24 (OWNER:1795565769863524396): "Thing thrown colonist carries flies on own arc: YES." It is bar
+`carried_thing_own_arc` of Design Version 0.2.0 (`design/concepts/ExplosiveKnockback/record.json`).
+
+Also in this work, only if it changes `RM_PawnFlyerPatches.Hauling` (the Conductor's call, 2026-11-24): an entry of that
+static map is removed when its pawn dies or is destroyed in flight. Test first: a kernel or static case that a pawn killed
+in flight leaves no entry. If this work does not touch that code, leave the static as it is.
+
 Listed in `design/concepts/ExplosiveKnockback/version/next_version/README.md`.

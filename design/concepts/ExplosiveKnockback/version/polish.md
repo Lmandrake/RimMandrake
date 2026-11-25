@@ -19,3 +19,11 @@ This section is a record, not the Polish list above: nothing here was moved by h
 - walk_storeroom_raid, small list only (2026-11-23): C_OFF_IMPACTS_NO_THROWS counts a stack dropped by its own destroyed vanilla shelf as moved (0 of 11 on every full-list run, so no bar needs the touch; `ev.off_moved` now names it).
 - walk_storeroom_raid (2026-11-23): GAS_CLUMP_BY_CLUMP's mean-distance order FAILs on one late straggler cell (1 of 8 orders on the small list, 0 of 18 on the full list); not touched.
 - 2026-11-24, steward reading after in-game visit 6: the rebound keeps 70% of the cells left, while its bar speaks of speed. Polish, by the Conductor's call; no bar moves and no ticket is filed.
+
+## Judged for 0.2.0 by the Conductor (2026-11-24)
+
+His words, 2026-11-24 (OWNER:1795565769863524396): *"Include all polish items too, but judge each of them first as relevant or not (or card me if you don't want the responsibility)"*. The Conductor judged each line above. This section is the record of that call; the lines above stay as they were written.
+
+- **Work of 0.2.0** (bars in `../record.json`): the burning-gas shove of a person on an intact pit cover (`gas_shoves_pawn_on_pit_cover`; both lines above that name it); the hit across a sandbag (`no_impact_without_contact`); the rebound bar's sentence (`rebound_goes_shorter`); the haul-memory static, only if the carried-thing work changes that code (`carried_thing_own_arc`); the Cold Reader exam retake (RIMMANDRAKE_REWORD_KNOCKBACK_REBOUND_LEAF_THEN_RETAKE_WHOLE_EXAM); the dark haze line is answered by our own blast show (the `blast_show_*` bars).
+- **Not relevant, left as they are:** the jolt-decay doc line; the fire switch on another mod's fire type; the two storeroom-raid check nits (raid tests are paused; his word: *"Drop one gas check."*).
+- **Dropped on his word:** a check that throws with an Outer Rim weapon (*"Drop No check throws thing... we will own all our own weapons."*).
