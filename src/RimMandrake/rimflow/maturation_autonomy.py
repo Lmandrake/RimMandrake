@@ -348,6 +348,27 @@ def chain_owed(dst):
     return lc[-1] if all(t > a for a in after) else None
 
 
+def coverage_signed(root, mod):
+    """-> True when the concept's tree carries a valid coverage signature on its current tree and sheet (a judge's, or
+    the owner certificate, carried or not), False when it carries none, else a could-not-look answer (probe_result)
+    naming why. Only True spares the chain (the caller tests `is True`). A chain's one look is moot on a signed tree:
+    coverage_judge.plan skips it ("already signed"), so no chain is owed for it
+    (RIMMANDRAKE_SKIP_CHAIN_LOOK_ON_SIGNED_TREE_CARRIED_CERTIFICATE)."""
+    import concept_tree as CT
+    import probe_result as PR
+    d = os.path.join(root, "design", "concepts", mod)
+    try:
+        tree = CT.load(d)
+    except (OSError, ValueError) as e:
+        return PR.could_not_look("tree.json of %s unreadable: %s" % (mod, e))
+    if not isinstance(tree, dict):
+        return PR.could_not_look("tree.json of %s is not an object" % mod)
+    try:
+        return CT.coverage_problem(d, root, tree) is None
+    except (OSError, ValueError, KeyError, TypeError) as e:
+        return PR.could_not_look("coverage signature of %s unreadable: %s" % (mod, e))
+
+
 def final_stop(dst):
     """-> (release, stop) when judging stopped after the FINAL look (a release coverage_judge applied from his grant,
     RIMMANDRAKE_GRANT_LOOK_AFTER_FIXES_CLOSE) and nothing he does (a lock, another release) has followed the stop: the
@@ -912,7 +933,8 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
             _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx.get("designer_unit", designer_unit),
                    fx.get("designer_chain", lambda m: designer_chain(m, now)), now=now, fx_evidence=evidence,
                    fx_exam=fx.get("exam_gate", lambda m: exam_gate(root, m)), endings=endings, fx_version_bugs=vbugs,
-                   fx_walk_owed=fx.get("walk_owed"), fx_walk_game=fx.get("walk_game"))
+                   fx_walk_owed=fx.get("walk_owed"), fx_walk_game=fx.get("walk_game"),
+                   fx_signed=fx.get("coverage_signed"))
             if row.get("decision") == "designer_blocked":
                 # a Designer blocked on a filed fix item (a pipeline defect) gets that item's one fixer run; the mod
                 # stays paused meanwhile (RIMMANDRAKE_BUDGET_DESIGNER_EXAM_HELPERS_FIVE_READERS_ZERO_SLOTS)
@@ -1455,10 +1477,13 @@ def _blind_match(f):
 
 
 def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=designer_unit, fx_dchain=None, now=None,
-           fx_evidence=None, fx_exam=None, endings=None, fx_version_bugs=None, fx_walk_owed=None, fx_walk_game=None):
+           fx_evidence=None, fx_exam=None, endings=None, fx_version_bugs=None, fx_walk_owed=None, fx_walk_game=None,
+           fx_signed=None):
     mod, dec, stage = row["mod"], row.get("decision"), row.get("stage")
     dst = dstate(mod)
     lc = chain_owed(dst)
+    if lc and (fx_signed or (lambda m: coverage_signed(root, m)))(mod) is True:
+        lc = None       # a signed tree has had its look (the owner certificate carried past the change included)
     if lc:
         # RIMMANDRAKE_SPARE_EXAM_RETAKE_WHEN_ONLY_SCENES_MOVED: an exam still passing its gate on the current tree and
         # sheet (a change that moved only scenes) stands; its Readers would re-answer identical inputs

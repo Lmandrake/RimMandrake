@@ -770,6 +770,23 @@ def exam_gate_checks(root):
                  extra={"exam_gate": lambda m: ([], None)})
     ok("retake the Cold Reader exam on the new tree" in str(r.get("steward_need")),
        "exam gate: a chain whose exam gate could not be read (no tree hash) retakes it in full")
+    # RIMMANDRAKE_SKIP_CHAIN_LOOK_ON_SIGNED_TREE_CARRIED_CERTIFICATE: ExplosiveKnockback 2026-11-24, the Conductor
+    # carried the owner certificate onto the reworded tree (644106e197) and the tick still launched a chain steward for
+    # a look coverage_judge.plan refuses on a signed tree ("already signed"); its next brief would order a whole paid
+    # exam retake for a floor.hash re-pin
+    r, la = _res(root, {"mods": {}}, lc, dec="not_offline", stage="designer",
+                 extra={"exam_gate": gate["exam_gate"], "coverage_signed": lambda m: True})
+    ok(r.get("steward_kind") != "chain" and not any("chain" in str(x) for x in la),
+       "signed tree: a locked change on a tree whose coverage signature is valid owes no chain look (read %s, %s)" % (
+           r.get("steward_kind"), r.get("decision")))
+    r, la = _res(root, {"mods": {}}, lc, dec="not_offline", stage="designer",
+                 extra={"exam_gate": gate["exam_gate"], "coverage_signed": lambda m: False})
+    ok(r.get("steward_kind") == "chain",
+       "signed tree: an unsigned tree after a locked change still owes the chain (read %s)" % r.get("steward_kind"))
+    r, la = _res(root, {"mods": {}}, lc, dec="not_offline", stage="designer",
+                 extra={"exam_gate": gate["exam_gate"], "coverage_signed": lambda m: None})
+    ok(r.get("steward_kind") == "chain",
+       "signed tree: a signature that could not be read (None) still owes the chain (read %s)" % r.get("steward_kind"))
 
 
 def worked_after_checks(root):
