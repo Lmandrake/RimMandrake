@@ -1,0 +1,106 @@
+{
+ "job": {
+  "id": "DIRECT-F6CADE57_b-20261125T080006",
+  "mod": "Pyrelands",
+  "selector": {
+   "chains": [
+    "ash_fertility_watered",
+    "burrowers",
+    "fresh_burn_bonus",
+    "burn_line"
+   ]
+  },
+  "source": "825f30b523",
+  "lane": "direct:ArchBig"
+ },
+ "result": {
+  "outcome": "DONE",
+  "cause": null,
+  "rows": [
+   {
+    "chain": "burn_line",
+    "row": "burn_line_present",
+    "verdict": "UNMEASURED",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "UNMEASURED: site is not a fresh map: 1528 cells burned outside the suite's fire pads; a fresh-map census is not measurable here -- reload the site"
+   },
+   {
+    "chain": "burn_line",
+    "row": "burn_line_walks_hourly",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "burn_line",
+    "row": "burn_line_burned_share",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "burn_line",
+    "row": "burn_line_off_control",
+    "verdict": "FAIL",
+    "validity": "valid",
+    "freshness": "fresh",
+    "detail": "ExpectationFailed: 9 free-standing fires after the window with burnLineEnabled False and every other fire source held off: the burn line relit what was put out"
+   },
+   {
+    "chain": "ash_fertility_watered",
+    "row": "ash_fertile_when_watered",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "ash_fertility_watered",
+    "row": "wet_roots_cool_the_crop",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "ash_fertility_watered",
+    "row": "growth_rate_factor_temperature",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "fresh_burn_bonus",
+    "row": "fresh_burn_feeds_the_field",
+    "verdict": "UNMEASURED",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "UNMEASURED: the cell carried a burn bonus before the test burn: {'fertility': 0.77, 'terrain': 'RM_FE_Ash_Deep', 'ashField': 'True', 'watered': False, 'bonus': 0.07, 'burnTick': '646034', 'base': 0.7, 'wateredFertility': 1.4, 'raining': 'False', 'blackRainWateredUntil': '-1', 'now': '955403', 'active': 'True', 'lift': '0.000', 'bonusAgeDays': '5.16', 'bonusDaysLeft': '0.84', 'rainOnCell': 'False', 'expected': '0.770', 'consistent': 'True'}"
+   },
+   {
+    "chain": "fresh_burn_bonus",
+    "row": "burn_compounds_with_black_rain",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "burrowers",
+    "row": "burrowers_dive",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   }
+  ],
+  "sheet": "/home/mandrake/rm/relentless/clones/RIMMANDRAKE_RERUN_TWO_HARNESS_REPAIRS_ON_FREE_ARCHMAGI_GAME.det/Transient/modcheck/Pyrelands_20261125T160006Z.json",
+  "game": "ArchBig",
+  "runner_sha": "825f30b523",
+  "note": "direct run on ArchBig; {'UNMEASURED': 2, 'PASS': 7, 'FAIL': 1}"
+ }
+}

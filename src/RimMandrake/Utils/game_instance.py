@@ -128,6 +128,7 @@ REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), 
 PREFS_TEMPLATE = os.path.join(REPO, "infrastructure", "stevedesktop", "Prefs.template.xml")
 RIMFLOW_CLI = os.path.join(REPO, "src", "RimMandrake", "rimflow", "cli.py")
 MINIMAL_LIST = os.path.join(REPO, "infrastructure", "state", "modlists", "ModsConfig.MINIMAL.xml")
+SITE_REGISTRY = os.path.join(REPO, "src", "RimMandrake", "Utils", "modcheck", "test_site_saves.json")
 INSTALL_SUB = "game"                # <root>/<letter>/game: a named game's own install
 # What a named game's install copies from game a's (MEASURED 2026-11-20 on Archmagi: about 2.5 GB with Mods). Anything
 # else in game a's folder (ModsRetired, _ModsAside, Source, Transient, crash dumps) is not the game's to load.
@@ -650,6 +651,51 @@ def _unseeded(name, d):
     return gaps + ([] if _seeded_prefs(os.path.join(d, "Config", "Prefs.xml")) is None else ["Config/Prefs.xml"])
 
 
+def a_saves_dir():
+    """ArchBig's own Saves folder (LocalLow), whatever game this shell names: the registered site saves live there."""
+    import game_paths
+    return game_paths.resolve(os.path.join(game_paths._DEF_LOW_WIN, "Saves"), os.path.join(game_paths._DEF_LOW_WSL, "Saves"))
+
+
+def _registered_saves(registry):
+    """Every save name the site registry (modcheck/test_site_saves.json) records, at any depth under a `save` key."""
+    with open(registry, encoding="utf-8") as f:
+        doc = json.load(f)
+    names, todo = set(), [doc]
+    while todo:
+        x = todo.pop()
+        if isinstance(x, dict):
+            for k, v in x.items():
+                if k == "save" and isinstance(v, str) and v:
+                    names.add(v)
+                else:
+                    todo.append(v)
+        elif isinstance(x, list):
+            todo.extend(x)
+    return names
+
+
+def seed_site_saves(name=None, source=None, registry=SITE_REGISTRY):
+    """-> the names copied. A named game has its own Saves folder, and the registered site saves were made on ArchBig, so a
+    Pyrelands check on ArchSmall read "SiteError: programState 'Entry'" for a save it never had (2026-11-25 06:18 PST,
+    RIMMANDRAKE_RERUN_TWO_HARNESS_REPAIRS_ON_FREE_ARCHMAGI_GAME). Copies each registered save the named game lacks from
+    ArchBig's folder; never overwrites one it has, never copies one ArchBig lacks, never writes ArchBig's folder."""
+    name = check_name(name or current())
+    if name == DEFAULT:
+        return []
+    src, dst = source or a_saves_dir(), os.path.join(data_dir(name), "Saves")
+    os.makedirs(dst, exist_ok=True)
+    done = []
+    for n in sorted(_registered_saves(registry)):
+        s, d = os.path.join(src, n + ".rws"), os.path.join(dst, n + ".rws")
+        if os.path.exists(d) or not os.path.isfile(s):
+            continue
+        shutil.copyfile(s, d + ".part")
+        os.replace(d + ".part", d)
+        done.append(n)
+    return done
+
+
 def prepare(name=None):
     """Seed the folder a named instance needs. It reads no other game's state, so it works while A runs; it refuses while
     its own game runs and the folder is not seeded yet: that game rewrites Prefs from memory on exit. A running game whose
@@ -666,6 +712,10 @@ def prepare(name=None):
             _n(name), ", ".join(_unseeded(name, d))))
     for sub in ("Config", "JawaBench"):
         os.makedirs(os.path.join(d, sub), exist_ok=True)
+    try:
+        seed_site_saves(name)
+    except (OSError, ValueError) as e:      # a check on a save b lacks still says so by name (SiteError), so go on
+        sys.stderr.write("game_instance: could not seed %s's site saves from ArchBig's: %s\n" % (_n(name), e))
     if not up:
         install(name)
         ensure_token(name)

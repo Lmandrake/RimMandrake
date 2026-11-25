@@ -1,0 +1,668 @@
+{
+ "script": "sheet_overflow_proof.py",
+ "started": "2026-11-25T06:01:36",
+ "rows": [
+  {
+   "id": "PUMP_FULL_CANAL_SPILLS_SHEET",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED",
+   "detail": {
+    "pulsesWaited": 1,
+    "tank": [
+     30000,
+     10000
+    ],
+    "canal": [
+     60000,
+     60000
+    ],
+    "inPump": 20000,
+    "lips": "SHEETRECT dl=20000 wet=2 maxDl=10000 edgeMaxDl=10000 ice=0 film=0 sheet=0 pool=2",
+    "destroyed": 0,
+    "closes": true,
+    "pump": "PUMP running=False moved=0 pour=True tank=RM_Liquid_FreshWater:30000"
+   }
+  },
+  {
+   "id": "RAIN_FULL_CANAL_SPILLS_SHEET",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED",
+   "detail": {
+    "weather": true,
+    "pulsesWaited": 7,
+    "inRain": 120000,
+    "canal": [
+     60000,
+     60000
+    ],
+    "lips": "SHEETRECT dl=50000 wet=5 maxDl=10000 edgeMaxDl=10000 ice=0 film=0 sheet=0 pool=5",
+    "destroyed": 0,
+    "closes": true
+   }
+  },
+  {
+   "id": "FILLIN_HOMELESS_SPILLS",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED",
+   "detail": {
+    "fillin": "FILLIN homeless=10000 spilled=10000 destroyed=0",
+    "inFillIn": 10000,
+    "destroyed": 0,
+    "closes": true
+   }
+  },
+  {
+   "id": "SHEET_RETURNS_TO_PIT",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED",
+   "detail": {
+    "pulsesWaited": 15,
+    "settled": true,
+    "pitEdge": "SHEETRECT dl=555 wet=3 maxDl=197 edgeMaxDl=0 ice=0 film=3 sheet=0 pool=0",
+    "pit": [
+     0,
+     6386
+    ],
+    "returned": 6386,
+    "left": "SHEETRECT dl=12284 wet=53 maxDl=412 edgeMaxDl=203 ice=0 film=52 sheet=1 pool=0",
+    "retention": 200,
+    "closes": true
+   }
+  },
+  {
+   "id": "SPILL_EXTENT_FINITE",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED",
+   "detail": {
+    "wetSeries": [
+     30,
+     48,
+     60,
+     67,
+     71,
+     74,
+     75,
+     75,
+     77,
+     77,
+     77,
+     77
+    ],
+    "bound": 200,
+    "minReceive": 100,
+    "retention": 200,
+    "final": "SHEETRECT dl=19141 wet=77 maxDl=496 edgeMaxDl=424 ice=0 film=74 sheet=3 pool=0",
+    "stableFor": 3
+   }
+  },
+  {
+   "id": "BACKPRESSURE_REFUSES_DESTROYS_NOTHING",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED",
+   "detail": {
+    "room": 110000,
+    "offer1": "SPILL offered=330000 accepted=40000",
+    "offer2": "SPILL offered=110000 accepted=0",
+    "yard": "SHEETRECT dl=40000 wet=4 maxDl=10000 edgeMaxDl=10000 ice=0 film=0 sheet=0 pool=4",
+    "outsideOnly": 0,
+    "destroyed": 0,
+    "closes": true
+   }
+  },
+  {
+   "id": "DOOR_LEAKS_SLOWLY",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED",
+   "detail": {
+    "door": "SHEETCELL dl=0 tier=None kind=Door stand=0 fluid=- burning=False",
+    "doorRingLost": 719,
+    "gapRingLost": 26553,
+    "outsideDoor": "SHEETRECT dl=48 wet=1 maxDl=48 edgeMaxDl=48 ice=0 film=1 sheet=0 pool=0",
+    "inside": [
+     "SHEETRECT dl=29281 wet=9 maxDl=3410 edgeMaxDl=0 ice=0 film=0 sheet=0 pool=9",
+     "SHEETRECT dl=3447 wet=9 maxDl=574 edgeMaxDl=0 ice=0 film=5 sheet=4 pool=0"
+    ],
+    "closes": true
+   }
+  },
+  {
+   "id": "SETTING_OFF_STOPS_NEW_KEEPS_DRAINING",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED",
+   "detail": {
+    "offerWhileOff": "SPILL offered=10000 accepted=0",
+    "standing": [
+     281796,
+     271260
+    ],
+    "exits": 10536,
+    "purged": 0,
+    "in": 0,
+    "closes": true
+   }
+  },
+  {
+   "id": "CROPS_IRRIGATE_THEN_DROWN",
+   "status": "FAIL",
+   "class": "MOD",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED",
+   "detail": {
+    "field": "cropDrownPulses",
+    "shipped": "1680",
+    "aliveEarly": 12,
+    "soakedEarly": 1402,
+    "drownedAfterPulses": 6,
+    "filmAlive": 3,
+    "control": 4,
+    "tiers": {
+     "sheet": 9,
+     "film": 3
+    }
+   }
+  },
+  {
+   "id": "SHEET_FREEZES_AND_THAWS",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED",
+   "detail": {
+    "conditions": [
+     true,
+     true
+    ],
+    "frozeAfterTicks": 8000,
+    "temps": [
+     6.95334435,
+     5.570097,
+     4.171406,
+     2.75680542,
+     0.9655609,
+     -0.486280441,
+     -1.95523071,
+     -3.44156837
+    ],
+    "frozen": {
+     "dl": 17303,
+     "wet": 76,
+     "maxDl": 406,
+     "edgeMaxDl": 394,
+     "ice": 76,
+     "film": 0,
+     "sheet": 0,
+     "pool": 0
+    },
+    "frozenLater": {
+     "dl": 17303,
+     "wet": 76,
+     "maxDl": 406,
+     "edgeMaxDl": 394,
+     "ice": 76,
+     "film": 0,
+     "sheet": 0,
+     "pool": 0
+    },
+    "keptWhileFrozen": true,
+    "rectFellWhileCooling": 4281,
+    "mapExitsWhileCooling": 62392,
+    "thawAfterTicks": 500,
+    "thawed": "SHEETRECT dl=16979 wet=76 maxDl=401 edgeMaxDl=391 ice=0 film=76 sheet=0 pool=0",
+    "closes": true
+   }
+  },
+  {
+   "id": "LOWERED_CAP_KEEPS_DEEPER_WATER",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED",
+   "detail": {
+    "field": "sheetCapCm",
+    "shipped": "50",
+    "offerAfterLower": "SPILL offered=10000 accepted=0",
+    "yardFell": 108,
+    "losses": 9416,
+    "yard": "SHEETRECT dl=95880 wet=12 maxDl=8181 edgeMaxDl=0 ice=0 film=0 sheet=0 pool=12",
+    "closes": true
+   }
+  },
+  {
+   "id": "LEDGER_CONSERVES_TO_THE_DL",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED",
+   "detail": {
+    "in": 506000,
+    "standing": 348641,
+    "exits": 157359,
+    "destroyed": 0,
+    "closes": true,
+    "balances": 4,
+    "badBalances": [],
+    "ledgerEnd": "SHEETLEDGER enabled=True in=506000 inPump=30000 inRain=120000 inFlood=346000 inFillIn=10000 inGravity=0 standing=348641 wet=1089 returned=9799 joined=0 soaked=125594 evaporated=21966 burned=0 purged=0 closes=True releaseLost=0 burning=0 destroyedDl=0 pulse=99 pulseTicks=250 retention=200 minReceive=100 cap=10000 maxWet=4000 irrigated=75586"
+   }
+  },
+  {
+   "id": "SAVE_LOAD_CONTINUES_IDENTICAL",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED",
+   "detail": {
+    "h0": "b989fe7fa2a167e1",
+    "h0AfterLoad": "b989fe7fa2a167e1",
+    "hContinued": "5dc1d47f7684dfea",
+    "hLoadedContinued": "5dc1d47f7684dfea",
+    "closes": true,
+    "save": "RM_SHEET_OVERFLOW_20261125T060445",
+    "parts": {
+     "pulse": [
+      "114",
+      "114"
+     ],
+     "dl": [
+      "85605bf40bb6fadc",
+      "85605bf40bb6fadc"
+     ],
+     "rem": [
+      "aae2138f009cdbe2",
+      "aae2138f009cdbe2"
+     ],
+     "calm": [
+      "7fe7eb2a870a56fe",
+      "7fe7eb2a870a56fe"
+     ],
+     "inputs": [
+      "d47b5167624d2300",
+      "d47b5167624d2300"
+     ],
+     "indoorWet": [
+      "21",
+      "21"
+     ],
+     "inKind": [
+      "dcaafe8dd2d3dff1",
+      "dcaafe8dd2d3dff1"
+     ],
+     "inTemp": [
+      "f14c4c482947d3a2",
+      "f14c4c482947d3a2"
+     ],
+     "inEvap": [
+      "56b600da3d2dec9f",
+      "56b600da3d2dec9f"
+     ],
+     "inSoak": [
+      "fe2e746d3e87c48b",
+      "fe2e746d3e87c48b"
+     ],
+     "outdoorQ": [
+      "392",
+      "392"
+     ],
+     "outdoorTick": [
+      "648971",
+      "648971"
+     ],
+     "lastPulseTick": [
+      "28741",
+      "28741"
+     ],
+     "nextPulseTick": [
+      "29001",
+      "29001"
+     ],
+     "ticksGame": [
+      "28971",
+      "28971"
+     ],
+     "pulseOutdoorTick": [
+      "648741",
+      "648741"
+     ],
+     "pulseOutdoorC": [
+      "24.6094112",
+      "24.6094112"
+     ],
+     "pulseQ": [
+      "393",
+      "393"
+     ],
+     "pulseOffsetC": [
+      "0",
+      "0"
+     ],
+     "evapVals": [
+      "136:10;139:9;146:1;452:1;512:1909",
+      "136:10;139:9;146:1;452:1;512:1909"
+     ]
+    },
+    "split": [],
+    "ticks": {
+     "save": 28221,
+     "live": 28971,
+     "afterLoad": 28222,
+     "loaded": 28971,
+     "loadRan": 1
+    }
+   }
+  }
+ ],
+ "perf": [
+  {
+   "id": "PERF_250_CONCENTRATED",
+   "status": "FAIL",
+   "class": "MOD",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED",
+   "detail": {
+    "sheetPerf": "SHEETPERF pulses=5 kernelMs=0.484 pulseMs=1.876 maxPulseMs=2.024 allocB=147456 dirtySections=189 terrainWrites=0 active=1226 wetMax=1226",
+    "excavationMsPerTick": null,
+    "map": [
+     null,
+     null
+    ],
+    "mods": 20,
+    "ticks": 1250,
+    "provisional": true,
+    "barMs": 1.0
+   }
+  },
+  {
+   "id": "PERF_250_SCATTERED",
+   "status": "FAIL",
+   "class": "MOD",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED",
+   "detail": {
+    "sheetPerf": "SHEETPERF pulses=5 kernelMs=0.847 pulseMs=3.613 maxPulseMs=7.164 allocB=348160 dirtySections=678 terrainWrites=0 active=1869 wetMax=1869",
+    "excavationMsPerTick": null,
+    "map": [
+     null,
+     null
+    ],
+    "mods": 20,
+    "ticks": 1250,
+    "provisional": true,
+    "barMs": 1.0
+   }
+  },
+  {
+   "id": "PERF_325",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED",
+   "detail": {
+    "why": "this run is not on a 325x325 map",
+    "map": [
+     null,
+     null
+    ],
+    "mods": 20,
+    "provisional": true,
+    "barMs": 1.0
+   }
+  },
+  {
+   "id": "PERF_FULL_MODPACK",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED",
+   "detail": {
+    "why": "this run is not on the owner's full mod list",
+    "map": [
+     null,
+     null
+    ],
+    "mods": 20,
+    "provisional": true,
+    "barMs": 1.0
+   }
+  }
+ ],
+ "args": {
+  "out": null,
+  "origin": "30,30",
+  "fresh_map": true,
+  "only": "",
+  "no_perf": false,
+  "cold_ticks": 24000,
+  "mock": false,
+  "mock_faults": ""
+ },
+ "owedProofs": [
+  "ProofSheetCell",
+  "ProofSheetFeatures",
+  "ProofSheetFillIn",
+  "ProofSheetHash",
+  "ProofSheetLedger",
+  "ProofSheetPerf",
+  "ProofSheetRect",
+  "ProofSheetSpill"
+ ],
+ "balances": [
+  {
+   "row": "PUMP_FULL_CANAL_SPILLS_SHEET",
+   "what": "tank -> canal + sheet",
+   "sourceLoss": 20000,
+   "arrived": {
+    "canal": 0,
+    "sheetPump": 20000
+   },
+   "ok": true
+  },
+  {
+   "row": "FILLIN_HOMELESS_SPILLS",
+   "what": "homeless -> sheet",
+   "sourceLoss": 10000,
+   "arrived": {
+    "sheetFillIn": 10000
+   },
+   "ok": true
+  },
+  {
+   "row": "SHEET_RETURNS_TO_PIT",
+   "what": "sheet -> pit",
+   "sourceLoss": 6386,
+   "arrived": {
+    "pit": 6386
+   },
+   "ok": true
+  },
+  {
+   "row": "BACKPRESSURE_REFUSES_DESTROYS_NOTHING",
+   "what": "offer -> yard",
+   "sourceLoss": 40000,
+   "arrived": {
+    "yard": 40000
+   },
+   "ok": true
+  }
+ ],
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "d2d19d8d7565355156ed002db140904f029719019d7e69896b400be347e883cd",
+ "manifest": {
+  "schema": 1,
+  "script": "northstar/sheet_overflow_proof.py",
+  "runtime": "eeebb0c0502aee83b8191ab11df60d33bab11e8e61e14b7fb3b602f70aac0e84",
+  "test": "ddc2744faafa0fd80afa2eeb078b588e342297a686f9171092388b40e7525258",
+  "test_files": [
+   "FlowWorks/northstar/driver_stamp.py",
+   "FlowWorks/northstar/proof_hose.py",
+   "FlowWorks/northstar/sheet_overflow_proof.py",
+   "FlowWorks/validation_hose.py",
+   "FlowWorks/validation_style_hose.py",
+   "Utils/await_lifecycle.py",
+   "Utils/biomes_compose.py",
+   "Utils/close_evidence.py",
+   "Utils/conds.py",
+   "Utils/conds_dsl.py",
+   "Utils/deploy_custom_mods.py",
+   "Utils/deploy_def_guard.py",
+   "Utils/evidence_covers.py",
+   "Utils/focus_heal.py",
+   "Utils/game_focus.py",
+   "Utils/game_instance.py",
+   "Utils/game_paths.py",
+   "Utils/game_watcher.py",
+   "Utils/harness_run.py",
+   "Utils/health_observer.py",
+   "Utils/known_results.py",
+   "Utils/live_def_check.py",
+   "Utils/load_policy.json",
+   "Utils/load_policy.py",
+   "Utils/modcheck/__init__.py",
+   "Utils/modcheck/biome_site.py",
+   "Utils/modcheck/bland_world.py",
+   "Utils/modcheck/clockgate.py",
+   "Utils/modcheck/contract.py",
+   "Utils/modcheck/detectors.py",
+   "Utils/modcheck/drivers.py",
+   "Utils/modcheck/floor.py",
+   "Utils/modcheck/gate.py",
+   "Utils/modcheck/helpers.py",
+   "Utils/modcheck/jev_questions.py",
+   "Utils/modcheck/jev_triage.py",
+   "Utils/modcheck/judge.py",
+   "Utils/modcheck/launch_gate.py",
+   "Utils/modcheck/northstar.py",
+   "Utils/modcheck/play_zoom.py",
+   "Utils/modcheck/preconditions.py",
+   "Utils/modcheck/quiet_site.py",
+   "Utils/modcheck/report.py",
+   "Utils/modcheck/reuse.py",
+   "Utils/modcheck/run_identity.py",
+   "Utils/modcheck/runner.py",
+   "Utils/modcheck/save_uncompress.py",
+   "Utils/modcheck/scene_report.py",
+   "Utils/modcheck/settings_keep.py",
+   "Utils/modcheck/snapshot.py",
+   "Utils/modcheck/spoil_gate.py",
+   "Utils/modcheck/status.py",
+   "Utils/modcheck/suite.py",
+   "Utils/modcheck/surprise.py",
+   "Utils/modcheck/targeting.py",
+   "Utils/modcheck/test_site_saves.json",
+   "Utils/modcheck/test_site_saves.py",
+   "Utils/modcheck/testenv_guards.py",
+   "Utils/modcheck/validity.py",
+   "Utils/modcheck/walklint.py",
+   "Utils/modcheck/watch.py",
+   "Utils/modset_builder.py",
+   "Utils/nightly_scope.py",
+   "Utils/northstar_driver/__init__.py",
+   "Utils/northstar_driver/session.py",
+   "Utils/northstar_driver/tool_schemas.json",
+   "Utils/northstar_driver/transport.py",
+   "Utils/pipeline_tests.json",
+   "Utils/progress_guard.py",
+   "Utils/retired_mods.py",
+   "Utils/rimbridge_client.py",
+   "Utils/rimdrive/__init__.py",
+   "Utils/rimdrive/session.py",
+   "Utils/rimdrive/verify.py",
+   "Utils/rmpaths.py",
+   "Utils/run_selftests.py",
+   "Utils/selftest_cache.py",
+   "Utils/suite_evidence.py",
+   "Utils/tickburst_step.py",
+   "Utils/tps_record.py",
+   "Utils/validation_core.py",
+   "Utils/waitalive.py",
+   "Utils/winbuild.py",
+   "Utils/wrapup_debt.py",
+   "Utils/zoom_guard.py"
+  ],
+  "unresolved": []
+ },
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "dubwise.dubsbadhygiene.lite",
+   "owlchemist.cherrypicker",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "toastyman.moreritualseats",
+   "vanillaexpanded.vchemfuele",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.hugethings",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes",
+   "mandrake.rm.patches"
+  ],
+  "assembly_sha256": "0395259f5b5216b8058b6eae0b66377371ac688b7336f8f479a3458ff0616be8"
+ },
+ "features": {
+  "crops": "True",
+  "soak": "True",
+  "capSetting": "True",
+  "capField": "sheetCapCm",
+  "cropDelayField": "cropDrownPulses",
+  "gravity": "True",
+  "floods": "True",
+  "pawns": "True",
+  "fire": "True",
+  "fuel": "True"
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "RM_Brullith35544",
+    "RM_Durrok35539",
+    "RM_Durrok35540",
+    "RM_Durrok35550",
+    "RM_Durrok35551",
+    "RM_Dustveil35553",
+    "RM_Dustveil35554",
+    "RM_Dustveil35555",
+    "RM_Dustveil35556",
+    "RM_Dustveil35557",
+    "RM_Grellik35541",
+    "RM_Grellik35542",
+    "RM_Grellik35543",
+    "RM_Grellik35547",
+    "RM_Grellik35548",
+    "RM_Grellik35549",
+    "RM_MycoidColossus35552",
+    "RM_Shambles35545",
+    "RM_ThozzikQueen35546"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  },
+  "fed": [
+   "Human991",
+   "Human994",
+   "Human997"
+  ]
+ },
+ "switchBefore": "False",
+ "ledgerStart": "SHEETLEDGER enabled=True in=0 inPump=0 inRain=0 inFlood=0 inFillIn=0 inGravity=0 standing=0 wet=0 returned=0 joined=0 soaked=0 evaporated=0 burned=0 purged=0 closes=True releaseLost=0 burning=0 destroyedDl=0 pulse=0 pulseTicks=250 retention=200 minReceive=100 cap=10000 maxWet=4000 irrigated=0",
+ "finished": "2026-11-25T06:04:56"
+}

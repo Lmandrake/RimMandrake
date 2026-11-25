@@ -1,6 +1,6 @@
 # BOUNDARY: the per-game hold and ArchSmall's own install, Design Version 0.1.0
 
-Code: `src/RimMandrake/rimflow/control.py` (the `game:` scope, `game_held`, `game_holds`), `src/RimMandrake/rimflow/maturation_dispatch.py` (`game_hold`, `full_list_only`, `pick_game`), `src/RimMandrake/rimflow/host_guard.py` (`crossing` with `new_run`), `src/RimMandrake/rimflow/detached_helper.py` (`run_game`), `src/RimMandrake/Utils/game_instance.py` (`install`, `game_dir`, `hold_refusal`, `held_by_anyone`, `leftovers`, `stop`, `brief`), `src/RimMandrake/Utils/game_paths.py` (`GAME_DIR`, `LOCAL_MODS`, `GAME_DATA`, `A_GAME_DIR`), `src/RimMandrake/Utils/deploy_custom_mods.py` (`--instance`, the hold on `--apply`), `src/RimMandrake/bridgetools/build.py` (`aim`, `--instance`), `src/RimMandrake/Utils/modset_builder.py` (`owned_backups`).
+Code: `src/RimMandrake/rimflow/control.py` (the `game:` scope, `game_held`, `game_holds`), `src/RimMandrake/rimflow/maturation_dispatch.py` (`game_hold`, `full_list_only`, `pick_game`), `src/RimMandrake/rimflow/host_guard.py` (`crossing` with `new_run`), `src/RimMandrake/rimflow/detached_helper.py` (`run_game`), `src/RimMandrake/Utils/game_instance.py` (`install`, `game_dir`, `seed_site_saves`, `hold_refusal`, `held_by_anyone`, `leftovers`, `stop`, `brief`), `src/RimMandrake/Utils/game_paths.py` (`GAME_DIR`, `LOCAL_MODS`, `GAME_DATA`, `A_GAME_DIR`), `src/RimMandrake/Utils/deploy_custom_mods.py` (`--instance`, the hold on `--apply`), `src/RimMandrake/bridgetools/build.py` (`aim`, `--instance`), `src/RimMandrake/Utils/modset_builder.py` (`owned_backups`).
 Item: `RIMMANDRAKE_SPLIT_SECOND_GAME_MODS_FOLDER_SHARED_WITH_FIRST`, written 2026-11-20. The owner walked ArchBig twice
 that day while every in-game run waited, although ArchSmall existed. His words at 6:20 AM PST: *"We can run two games you
 know..."*; at 3:40 PM PST: *"You should not have been waiting for the game. there are two games"*. Each promise has a
@@ -69,6 +69,11 @@ A game's name (ArchBig, ArchSmall, Steve1, Steve2) and the map from its letter a
 - **install-writes-only-under-the-named-game.** `install` writes only under the named game's own install folder, copies
   the game's files and `Mods` and not the rest of ArchBig's folder, keeps an install that exists (copying only a top-level
   game file it lacks), and refuses an install folder that overlaps ArchBig's.
+- **a-named-game-gets-the-registered-site-saves-it-lacks.** `prepare` (so every `launch` of a named game) copies each
+  save that `modcheck/test_site_saves.json` registers and the named game's own `Saves` lacks, from ArchBig's `Saves`. It
+  never overwrites a save the named game has, never copies one that ArchBig lacks, never writes ArchBig's folder, and copies
+  nothing for ArchBig. A copy that cannot be made does not stop the launch: the check that needs the save still says so by
+  name. (2026-11-25: Pyrelands on ArchSmall read `SiteError: programState 'Entry'` for a save made on ArchBig.)
 - **a-named-games-list-swap-is-its-own.** `modset_builder.owned_backups(<seat>)` with a named game is
   `modset_swaps/<seat>.<game>`, so a seat's list swap on ArchBig never refuses a list for ArchSmall; ArchBig keeps
   `modset_swaps/<seat>`.

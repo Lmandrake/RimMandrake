@@ -1,0 +1,66 @@
+{
+ "job": {
+  "id": "DIRECT-F6CADE57_a-20261125T073510",
+  "mod": "Pyrelands",
+  "selector": {
+   "chains": [
+    "full_list_smoke",
+    "reload_keeps_the_burn",
+    "scorchfruit_spoils",
+    "opening_front"
+   ]
+  },
+  "source": "825f30b523",
+  "lane": "direct:ArchBig"
+ },
+ "result": {
+  "outcome": "DONE",
+  "cause": null,
+  "rows": [
+   {
+    "chain": "opening_front",
+    "row": "opening_front_old_save_inert",
+    "verdict": "UNMEASURED",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "UNMEASURED: SITE: the map is 1501 ticks old (window 2500): a fresh map, not a loaded old save"
+   },
+   {
+    "chain": "opening_front",
+    "row": "opening_front",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "scorchfruit_spoils",
+    "row": "scorchfruit_spoils_fast",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "reload_keeps_the_burn",
+    "row": "reload_keeps_the_burn",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "full_list_smoke",
+    "row": "full_list_one_front_walks_clean_log",
+    "verdict": "UNMEASURED",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "UNMEASURED: not his full list: 0.053968253968254 of it runs, missing ['zetrith.prepatcher', 'aleksey.betterstacktraces', 'mandrake.rm.loadtracer', 'krkr.rule56', 'aoba.framework']"
+   }
+  ],
+  "sheet": "/home/mandrake/rm/relentless/clones/RIMMANDRAKE_RERUN_TWO_HARNESS_REPAIRS_ON_FREE_ARCHMAGI_GAME.det/Transient/modcheck/Pyrelands_20261125T153510Z.json",
+  "game": "ArchBig",
+  "runner_sha": "825f30b523",
+  "note": "direct run on ArchBig; {'UNMEASURED': 2, 'PASS': 3}"
+ }
+}

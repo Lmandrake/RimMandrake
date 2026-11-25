@@ -456,6 +456,31 @@ def t_game_bs_brief_names_its_own_install_and_its_unmeasured_full_list_checks(X)
     chk(lambda: "sc_walk" in text and "UNMEASURED" in text, "brief: b's full-list checks are recorded UNMEASURED")
 
 
+def t_a_named_game_gets_the_registered_site_saves_it_lacks(X):
+    import game_instance as GI
+    reg = os.path.join(X.top, "sites.json")
+    with open(reg, "w") as f:
+        json.dump({"pyrelands": {"save": "NS_site_x", "load": "..."}, "calm": {"save": "RM_calm_v1"},
+                   "river": {"save": "RM_river_v2"}, "note": "no save here"}, f)
+    src = os.path.join(X.top, "a_saves")
+    os.makedirs(src, exist_ok=True)
+    for n in ("NS_site_x", "RM_calm_v1", "NS_unregistered"):
+        with open(os.path.join(src, n + ".rws"), "w") as f:
+            f.write("a:" + n)
+    bsaves = os.path.join(GI.data_dir("b"), "Saves")
+    os.makedirs(bsaves, exist_ok=True)
+    with open(os.path.join(bsaves, "RM_calm_v1.rws"), "w") as f:
+        f.write("b's own")
+    done = _safe(lambda: GI.seed_site_saves("b", source=src, registry=reg), None)
+    chk(lambda: done == ["NS_site_x"], "site saves: b gets the registered save it lacks, only that one (%r)" % (done,))
+    chk(lambda: open(os.path.join(bsaves, "NS_site_x.rws")).read() == "a:NS_site_x", "site saves: the copy is a's file")
+    chk(lambda: open(os.path.join(bsaves, "RM_calm_v1.rws")).read() == "b's own", "site saves: b's own save is never overwritten")
+    chk(lambda: not os.path.exists(os.path.join(bsaves, "NS_unregistered.rws")), "site saves: an unregistered save is not copied")
+    chk(lambda: not os.path.exists(os.path.join(bsaves, "RM_river_v2.rws")), "site saves: a save a lacks is skipped, not invented")
+    chk(lambda: _safe(lambda: GI.seed_site_saves("a", source=src, registry=reg), None) == [],
+        "site saves: ArchBig is the source and is never written")
+
+
 def main():
     top = tempfile.mkdtemp(prefix="game_hold_split_")
     a_dir, b_dir = fake_install(top)
@@ -485,7 +510,8 @@ def main():
                   t_the_in_game_gate_reads_the_runs_own_game,
                   t_install_writes_only_under_the_named_game,
                   t_a_named_games_list_swap_is_its_own,
-                  t_game_bs_brief_names_its_own_install_and_its_unmeasured_full_list_checks):
+                  t_game_bs_brief_names_its_own_install_and_its_unmeasured_full_list_checks,
+                  t_a_named_game_gets_the_registered_site_saves_it_lacks):
             try:
                 t(X)
             except Exception as e:  # noqa: BLE001

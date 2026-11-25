@@ -1,0 +1,82 @@
+PREVIEW 4 of 49 chains, 5 rows to execute
+  chain opening_front [full]: named by --chains
+    whole chain: executed 2 row(s)
+  chain scorchfruit_spoils [full]: named by --chains
+    whole chain: executed 1 row(s)
+  chain reload_keeps_the_burn [full]: named by --chains
+    whole chain: executed 1 row(s)
+  chain full_list_smoke [full]: named by --chains
+    whole chain: executed 1 row(s)
+EXPECTED_ROWS ["opening_front_old_save_inert", "opening_front", "scorchfruit_spoils_fast", "reload_keeps_the_burn", "full_list_one_front_walks_clean_log"]
+EXPECTED_ROW_CHAINS {"opening_front_old_save_inert": "opening_front", "opening_front": "opening_front", "scorchfruit_spoils_fast": "scorchfruit_spoils", "reload_keeps_the_burn": "reload_keeps_the_burn", "full_list_one_front_walks_clean_log": "full_list_smoke"}
+EXPECTED_DRIVERS []
+[modcheck] Pyrelands TARGETED: 4 of 49 chains: opening_front, scorchfruit_spoils, reload_keeps_the_burn, full_list_smoke
+[modcheck] canary GREEN: programState Playing; 3 live colonists; spawn_batch Steel at 125,125: success=True; destroyed; left at cell: []
+[modcheck] chain opening_front START 15:29:12Z
+[pyre-note] heat guard (row start, row opening_front_old_save_inert): {"cleared": [["Human75828", 0.0094], ["Human75831", 0.0026]], "failed": [], "read": true}
+[pyre-note] opening front on the loaded save, before any re-arm: {"probe": {"done": "True", "lit": "5", "litTick": "377519", "origin": "33,67", "mapAge": "1501", "now": "379001", "scarLaid": "False", "scarCentre": "invalid", "scarSide": "none", "scarRadius": "0.0", "scarCells": "0", "bare": "0", "sprouts": "0", "pods": "0", "ash": "0", "arcCandidates": "0", "arcLit": "True"}}
+[pyre-note] colony vitals after opening_front_old_save_inert: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 07:29:33 opening_front_old_save_inert UNMEASURED UNMEASURED: SITE: the map is 1501 ticks old (window 2500): a fresh map, not a loaded old save
+[pyre-note] opening front after a re-arm: {"probe": {"done": "True", "lit": "29", "litTick": "379019", "origin": "126,38", "mapAge": "1861", "now": "379361", "scarLaid": "True", "scarCentre": "127,0", "scarSide": "south", "scarRadius": "38.6", "scarCells": "2360", "bare": "2303", "sprouts": "52", "pods": "5", "ash": "525", "arcCandidates": "86", "arcLit": "True"}, "waitTicks": 360, "freeStandingFires": 30}
+[pyre-note] colony vitals after opening_front: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 07:29:39 opening_front PASS 
+[modcheck] chain opening_front END 27s PASS=1 FAIL=0 UNMEASURED=1 NOT_RUN=0 hold=6.4s body=21.1s teardown=0.0s
+[modcheck] chain scorchfruit_spoils START 15:29:41Z
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["Human75828", 0.0388], ["Human75831", 0.0393]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["Human75828", 0.007], ["Human75831", 0.0056]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["Human75828", 0.0408], ["Human75831", 0.0407]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["Human75828", 0.0375], ["Human75831", 0.0086]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["Human75828", 0.0075], ["Human75831", 0.0071]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["Human75828", 0.0165], ["Human75831", 0.0019]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["Human75828", 0.0374], ["Human75831", 0.0378]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["Human75828", 0.051], ["Human75831", 0.0075]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["Human75828", 0.0597], ["Human75831", 0.0595]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["Human75828", 0.0501], ["Human75831", 0.0045]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["Human75828", 0.0376], ["Human75831", 0.0376]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["Human75828", 0.0112], ["Human75831", 0.0109]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["Human75828", 0.021], ["Human75831", 0.0214]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["Human75828", 0.0304], ["Human75831", 0.0064]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["Human75828", 0.0375], ["Human75831", 0.0375]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["Human75828", 0.0274], ["Human75831", 0.0049]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["Human75828", 0.0127], ["Human75831", 0.0124]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["Human75828", 0.0011], ["Human75831", 0.0015]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["Human75828", 0.0285], ["Human75831", 0.0368]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["Human75828", 0.0387], ["Human75831", 0.0016]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["Human75828", 0.0378], ["Human75831", 0.0366]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["Human75828", 0.0375], ["Human75831", 0.0371]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["Human75828", 0.0105], ["Human75831", 0.0101]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["Human75828", 0.024], ["Human75831", 0.0244]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["Human75828", 0.0388], ["Human75831", 0.0384]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["Human75828", 0.0555], ["Human75831", 0.0556]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["Human75828", 0.0653], ["Human75831", 0.0653]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["Human75828", 0.0589], ["Human75831", 0.0588]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["Human75828", 0.0413], ["Human75831", 0.0408]], "failed": [], "read": true}
+[pyre-note] heat guard (every 6000 ticks, row scorchfruit_spoils_fast): {"cleared": [["Human75828", 0.0353], ["Human75831", 0.0349]], "failed": [], "read": true}
+[pyre-note] rot samples: [{"day": 0.5, "present": true, "inspectRead": true, "yieldOnMap": 1, "near": [["RM_FE_ScorchFruitYield78017", 125, 165, 10]], "yield": ["Fresh (Unrefrigerated, spoils in <color=#87F6F6FF>3.5 days</color>)"], "ref": ["Fresh (Unrefrigerated, spoils in <color=#87F6F6FF>1.5 days</color>)"]}, {"day": 1.0, "present": true, "inspectRead": true, "yieldOnMap": 1, "near": [["RM_FE_ScorchFruitYield78017", 125, 165, 10]], "yield": ["Fresh (Unrefrigerated, spoils in <color=#87F6F6FF>3 days</color>)"], "ref": ["Fresh (Unrefrigerated, spoils in <color=#87F6F6FF>1 day</color>)"]}, {"day": 1.5, "present": true, "inspectRead": true, "yieldOnMap": 1, "near": [["RM_FE_ScorchFruitYield78017", 125, 165, 10]], "yield": ["Fresh (Unrefrigerated, spoils in <color=#87F6F6FF>2.5 days</color>)"], "ref": ["Fresh (Unrefrigerated, spoils in <color=#87F6F6FF>12 hours</color>)"]}, {"day": 2.0, "present": true, "inspectRead": true, "yieldOnMap": 1, "near": [["RM_FE_ScorchFruitYield78017", 125, 165, 10]], "yield": ["Fresh (Unrefrigerated, spoils in <color=#87F6F6FF>2 days</color>)"], "ref": []}, {"day": 2.5, "present": true, "inspectRead": true, "yieldOnMap": 1, "near": [["RM_FE_ScorchFruitYield78017", 125, 165, 10]], "yield": ["Fresh (Unrefrigerated, spoils in <color=#87F6F6FF>1.5 days</color>)"], "ref": []}, {"day": 3.0, "present": true, "inspectRead": true, "yieldOnMap": 1, "near": [["RM_FE_ScorchFruitYield78017", 125, 165, 10]], "yield": ["Fresh (Unrefrigerated, spoils in <color=#87F6F6FF>1 day</color>)"], 
+[pyre-note] colony vitals after scorchfruit_spoils_fast: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 07:33:51 scorchfruit_spoils_fast PASS 
+[modcheck] chain scorchfruit_spoils END 251s PASS=1 FAIL=0 UNMEASURED=0 NOT_RUN=0 hold=5.5s body=245.1s teardown=0.0s
+[modcheck] chain reload_keeps_the_burn START 15:33:52Z
+[pyre-note] ScorchFruit left on the map after the cap-budget clear: 0
+[pyre-note] the pad before any fire, at the save and after its reload: {"pre": "{'fires': [], 'fruit': [], 'scar': {(180, 60): {'fertility': 0.7, 'bonus': 0.0, 'burnTick': '-1', 'base': 0.7, 'wateredFertility': 0.0, 'bonusAgeDays': '-1', 'bonusDaysLeft': '0.00'}, (182, 60): {'fertility': 0.7, 'bonus': 0.0, 'burnTick': '-1', 'base': 0.7, 'wateredFertility': 0.0, 'bonusAgeDays': '-1', 'bonusDaysLeft': '0.00'}, (184, 60): {'fertility': 0.7, 'bonus': 0.0, 'burnTick': '-1', 'base': 0.7, 'wateredFertility': 0.0, 'bonusAgeDays': '-1', 'bonusDaysLeft': '0.00'}}}", "mid": "{'fires': [(192, 58), (193, 58), (192, 59), (193, 59), (192, 60), (193, 60), (192, 61), (193, 61)], 'fruit': [(185, 65), (178, 56), (184, 56), (183, 69), (187, 51), (179, 60), (180, 63), (187, 50), (186, 70), (184, 66), (186, 58), (187, 56), (183, 59), (186, 66), (183, 67), (186, 71), (178, 53), (185, 62), (180, 50), (181, 50), (182, 50)], 'scar': {(180, 60): {'fertility': 0.7, 'bonus': 0.5, 'burnTick': '654351', 'base': 0.7, 'wateredFertility': 0.0, 'bonusAgeDays': '0.00', 'bonusDaysLeft': '6.00'}, (182, 60): {'fertility': 0.7, 'bonus': 0.5, 'burnTick': '654350', 'base': 0.7, 'wateredFertility': 0.0, 'bonusAgeDays': '0.00', 'bonusDaysLeft': '6.00'}, (184, 60): {'fertility': 0.7, 'bonus': 0.5, 'burnTick': '654355', 'base': 0.7, 'wateredFertility': 0.0, 'bonusAgeDays': '0.00', 'bonusDaysLeft': '6.00'}}}", "again": "{'fires': [(192, 58), (193, 58), (192, 59), (193, 59), (192, 60), (193, 60), (192, 61), (193, 61)], 'fruit': [(185, 65), (178, 56), (184, 56), (183, 69), (187, 51), (179, 60)
+[pyre-note] colony vitals after reload_keeps_the_burn: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 07:34:50 reload_keeps_the_burn PASS 
+[modcheck] chain reload_keeps_the_burn END 59s PASS=1 FAIL=0 UNMEASURED=0 NOT_RUN=0 hold=5.2s body=53.7s teardown=0.0s
+[modcheck] chain full_list_smoke START 15:34:51Z
+[pyre-note] walk: ailments the colonists were generated with, taken off: {"Human75828": [], "Human75831": [], "Human75834": []}
+[pyre-note] colony vitals after full_list_one_front_walks_clean_log: {"colonists": 3, "offsite": 0, "damage": []}
+[pyre] 07:34:58 full_list_one_front_walks_clean_log UNMEASURED UNMEASURED: not his full list: 0.053968253968254 of it runs, missing ['zetrith.prepatcher', 'aleksey.betterstacktraces', 'mandrake.rm.loadtracer', 'krkr.rule56', 'aoba.framework']
+[modcheck] chain full_list_smoke END 7s PASS=0 FAIL=0 UNMEASURED=1 NOT_RUN=0 hold=5.0s body=2.1s teardown=0.0s
+harness_run: NOT CONTAINED (systemd-run unavailable (FileNotFoundError: [WinError 2] The system cannot find the file specified)) - running in the caller
+[modcheck] Pyrelands: seat UNKNOWN (no --seat, RIMFLOW_SEAT or AGENT_SEAT here): ledger verify and findings NOT written; record it by hand: python3 src/RimMandrake/rimflow/cli.py verify MODCHECK_PYRELANDS_RUN_1 --result fail --config 'min+Pyrelands TARGETED chains=opening_front,scorchfruit_spoils,reload_keeps_the_burn,full_list_smoke' --evidence /home/mandrake/rm/relentless/clones/RIMMANDRAKE_RERUN_TWO_HARNESS_REPAIRS_ON_FREE_ARCHMAGI_GAME.det/Transient/modcheck/Pyrelands_20261125T153510Z.html --seat <SEAT>
+[modcheck] Pyrelands: targeted run, status entry untouched; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_RERUN_TWO_HARNESS_REPAIRS_ON_FREE_ARCHMAGI_GAME.det\Transient\modcheck\Pyrelands_20261125T153510Z.html
+Pyrelands            TARGETED 4/49 chains (opening_front,scorchfruit_spoils,reload_keeps_the_burn,full_list_smoke) RED  (state; judge: pyre_scorchfruit_spoils_fast=UNJUDGEABLE)
+[bridge split] 437.1 s wall: load 1.7 / ticks 194.7 / reads 22.1 / other 64.5 / outside calls 154.1 s
+[bridge split] WARN 538 calls of jawa/pawn_need (21.8 s): batch them
+[bridge split] WARN 297 calls of jawa/list_pawns (11.7 s): batch them
+[bridge split] WARN 198 calls of rimworld/get_game_info (1.3 s): batch them
+[bridge split] WARN 142 calls of jawa/safe_advance (194.7 s): batch them
+[bridge split] WARN 87 calls of jawa/map_info (3.7 s): batch them
+[bridge split] WARN 75 calls of jawa/debug_settings (3.4 s): batch them
+[bridge split] WARN 74 calls of jawa/pawn_health (3.0 s): batch them
+MODCHECK_RC=1

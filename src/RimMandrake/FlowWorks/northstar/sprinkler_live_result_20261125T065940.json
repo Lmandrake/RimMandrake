@@ -1,0 +1,831 @@
+{
+ "script": "sprinkler_live.py",
+ "started": "2026-11-25T06:59:40",
+ "rows": [
+  {
+   "id": "sprinkler.draws_and_wets",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "units": [
+     99875,
+     99750
+    ],
+    "drop": 125,
+    "cells": 25,
+    "inspect": "Spraying fresh water \u00b7 12.5 L/h \u00b7 25 cells",
+    "pulseAfterTicks": 2500,
+    "sprayedUnits": [
+     125,
+     250
+    ],
+    "soakedCovered": true,
+    "soakedFar": false,
+    "probe": {
+     "success": true,
+     "cmd": "sprinkler:125,140",
+     "id": 18326,
+     "def": "RM_SprinklerHead",
+     "cell": [
+      125,
+      140
+     ],
+     "state": "Spraying",
+     "status": "Spraying fresh water \u00b7 12.5 L/h \u00b7 25 cells",
+     "featureEnabled": true,
+     "switchOn": true,
+     "pumpOnNet": true,
+     "radius": 2.9,
+     "liquid": "RM_Liquid_FreshWater",
+     "lastUnits": 125,
+     "lastLitres": 12.5,
+     "lastCells": 25,
+     "lastNeed": 125,
+     "lastAvailable": 97875,
+     "totalUnits": 250,
+     "nextPulseTick": 7674,
+     "sprayCells": 25,
+     "wetOwnCells": 25,
+     "sample": [
+      {
+       "cell": [
+        125,
+        140
+       ],
+       "wetUntil": 7924,
+       "wet": true,
+       "owner": 18326,
+       "liquid": "RM_Fluid_Water"
+      },
+      {
+       "cell": [
+        124,
+        140
+       ],
+       "wetUntil": 7924,
+       "wet": true,
+       "owner": 18326,
+       "liquid": "RM_Fluid_Water"
+      },
+      {
+       "cell": [
+        125,
+        139
+       ],
+       "wetUntil": 7924,
+       "wet": true,
+       "owner": 18326,
+       "liquid": "RM_Fluid_Water"
+      },
+      {
+       "cell": [
+        125,
+        141
+       ],
+       "wetUntil": 7924,
+       "wet": true,
+       "owner": 18326,
+       "liquid": "RM_Fluid_Water"
+      },
+      {
+       "cell": [
+        126,
+        140
+       ],
+       "wetUntil": 7924,
+       "wet": true,
+       "owner": 18326,
+       "liquid": "RM_Fluid_Water"
+      },
+      {
+       "cell": [
+        124,
+        139
+       ],
+       "wetUntil": 7924,
+       "wet": true,
+       "owner": 18326,
+       "liquid": "RM_Fluid_Water"
+      },
+      {
+       "cell": [
+        124,
+        141
+       ],
+       "wetUntil": 7924,
+       "wet": true,
+       "owner": 18326,
+       "liquid": "RM_Fluid_Water"
+      },
+      {
+       "cell": [
+        126,
+        139
+       ],
+       "wetUntil": 7924,
+       "wet": true,
+       "owner": 18326,
+       "liquid": "RM_Fluid_Water"
+      }
+     ],
+     "liveCellsMap": 25,
+     "pulses": 2,
+     "sprayedUnits": 250,
+     "tick": 5251
+    },
+    "bad": []
+   }
+  },
+  {
+   "id": "sprinkler.no_pressure",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "pumpOff": "No pressure: no pump on this network",
+    "units": [
+     99750,
+     99750
+    ],
+    "pumpBackOn": "Spraying fresh water \u00b7 12.5 L/h \u00b7 25 cells",
+    "bad": [],
+    "probePumpOff": {
+     "success": true,
+     "cmd": "sprinkler:125,140",
+     "id": 18326,
+     "def": "RM_SprinklerHead",
+     "cell": [
+      125,
+      140
+     ],
+     "state": "NoPressure",
+     "status": "No pressure: no pump on this network",
+     "featureEnabled": true,
+     "switchOn": true,
+     "pumpOnNet": false,
+     "radius": 2.9,
+     "liquid": "RM_Liquid_FreshWater",
+     "lastUnits": 0,
+     "lastLitres": 0,
+     "lastCells": 25,
+     "lastNeed": 125,
+     "lastAvailable": 0,
+     "totalUnits": 250,
+     "nextPulseTick": 10174,
+     "sprayCells": 25,
+     "wetOwnCells": 25,
+     "sample": [
+      {
+       "cell": [
+        125,
+        140
+       ],
+       "wetUntil": 7924,
+       "wet": true,
+       "owner": 18326,
+       "liquid": "RM_Fluid_Water"
+      },
+      {
+       "cell": [
+        124,
+        140
+       ],
+       "wetUntil": 7924,
+       "wet": true,
+       "owner": 18326,
+       "liquid": "RM_Fluid_Water"
+      },
+      {
+       "cell": [
+        125,
+        139
+       ],
+       "wetUntil": 7924,
+       "wet": true,
+       "owner": 18326,
+       "liquid": "RM_Fluid_Water"
+      },
+      {
+       "cell": [
+        125,
+        141
+       ],
+       "wetUntil": 7924,
+       "wet": true,
+       "owner": 18326,
+       "liquid": "RM_Fluid_Water"
+      },
+      {
+       "cell": [
+        126,
+        140
+       ],
+       "wetUntil": 7924,
+       "wet": true,
+       "owner": 18326,
+       "liquid": "RM_Fluid_Water"
+      },
+      {
+       "cell": [
+        124,
+        139
+       ],
+       "wetUntil": 7924,
+       "wet": true,
+       "owner": 18326,
+       "liquid": "RM_Fluid_Water"
+      },
+      {
+       "cell": [
+        124,
+        141
+       ],
+       "wetUntil": 7924,
+       "wet": true,
+       "owner": 18326,
+       "liquid": "RM_Fluid_Water"
+      },
+      {
+       "cell": [
+        126,
+        139
+       ],
+       "wetUntil": 7924,
+       "wet": true,
+       "owner": 18326,
+       "liquid": "RM_Fluid_Water"
+      }
+     ],
+     "liveCellsMap": 25,
+     "pulses": 2,
+     "sprayedUnits": 250,
+     "tick": 7751
+    },
+    "how": "the pump stops through liquidPumpEnabled (Building_LiquidPump.Running), not a despawn: a despawn by cell also destroys the pipe under it"
+   }
+  },
+  {
+   "id": "sprinkler_switch_flips.flip_sprinklersEnabled",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "inspect": "Sprinklers are off in Mod Settings",
+    "units": [
+     99625,
+     99625
+    ]
+   }
+  },
+  {
+   "id": "sprinkler.dries_when_starved",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "last": [
+     "Dry: nothing in the tanks on this network",
+     false
+    ],
+    "ticks": 2375,
+    "wetBefore": true
+   }
+  },
+  {
+   "id": "sprinkler.thick_clogs",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "inspect": "Clogged: tar too thick to spray",
+    "units": [
+     50000,
+     50000
+    ]
+   }
+  },
+  {
+   "id": "sprinkler.walls_stop_spray",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "behindWall": [
+     [
+      125,
+      171
+     ],
+     false
+    ],
+    "openSide": [
+     [
+      125,
+      166
+     ],
+     true
+    ],
+    "inspect": "Spraying fresh water \u00b7 10.5 L/h \u00b7 21 cells"
+   }
+  },
+  {
+   "id": "T22_no_brine_spray",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "brineOnly": "Dry: nothing in the tanks on this network",
+    "withFresh": "Spraying fresh water \u00b7 9 L/h \u00b7 18 cells",
+    "brineUnits": [
+     50000,
+     50000
+    ],
+    "freshUnits": 19910,
+    "bad": []
+   }
+  },
+  {
+   "id": "sprinkler.acid_hurts_fuel_puddles",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "acid": "Spraying acid water \u00b7 12.5 L/h \u00b7 25 cells",
+    "harm": [
+     0,
+     0.928,
+     0.64
+    ],
+    "fuel": "Spraying chemfuel \u00b7 12.5 L/h \u00b7 25 cells",
+    "filth": [
+     0,
+     3
+    ],
+    "bad": [],
+    "notRun": "the chemfuel arm with the setting off"
+   }
+  },
+  {
+   "id": "T21_drinking_reserve",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "reserveL": 200.0,
+    "startUnits": 2200,
+    "trace": [
+     [
+      2075,
+      "Spraying fresh water \u00b7 12.5 L/h \u00b7 25 cells"
+     ],
+     [
+      2075,
+      "Dry: net has 7.5 L of fresh water, needs 12.5 L"
+     ],
+     [
+      2075,
+      "Dry: net has 7.5 L of fresh water, needs 12.5 L"
+     ]
+    ],
+    "drinkJobs": [
+     "RM_DrinkFromTank"
+    ],
+    "bad": [],
+    "notRun": "the salt tank on a still draining to 0"
+   }
+  }
+ ],
+ "args": {
+  "out": null,
+  "only": "",
+  "dry_run": false,
+  "mock": false,
+  "mock_faults": "",
+  "origin": "120,140"
+ },
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "d2d19d8d7565355156ed002db140904f029719019d7e69896b400be347e883cd",
+ "manifest": {
+  "schema": 1,
+  "script": "northstar/sprinkler_live.py",
+  "runtime": "eeebb0c0502aee83b8191ab11df60d33bab11e8e61e14b7fb3b602f70aac0e84",
+  "test": "3cc985e24fe71985ea952463911203ed584d916d6d2ed4878189a15ba46a8c09",
+  "test_files": [
+   "FlowWorks/northstar/driver_stamp.py",
+   "FlowWorks/northstar/sprinkler_fake.py",
+   "FlowWorks/northstar/sprinkler_live.py",
+   "FlowWorks/validation_hose.py",
+   "Utils/await_lifecycle.py",
+   "Utils/biomes_compose.py",
+   "Utils/close_evidence.py",
+   "Utils/conds.py",
+   "Utils/conds_dsl.py",
+   "Utils/deploy_custom_mods.py",
+   "Utils/deploy_def_guard.py",
+   "Utils/evidence_covers.py",
+   "Utils/focus_heal.py",
+   "Utils/game_focus.py",
+   "Utils/game_instance.py",
+   "Utils/game_paths.py",
+   "Utils/game_watcher.py",
+   "Utils/harness_run.py",
+   "Utils/health_observer.py",
+   "Utils/known_results.py",
+   "Utils/live_def_check.py",
+   "Utils/load_policy.json",
+   "Utils/load_policy.py",
+   "Utils/modcheck/__init__.py",
+   "Utils/modcheck/biome_site.py",
+   "Utils/modcheck/bland_world.py",
+   "Utils/modcheck/clockgate.py",
+   "Utils/modcheck/contract.py",
+   "Utils/modcheck/detectors.py",
+   "Utils/modcheck/drivers.py",
+   "Utils/modcheck/floor.py",
+   "Utils/modcheck/gate.py",
+   "Utils/modcheck/helpers.py",
+   "Utils/modcheck/jev_questions.py",
+   "Utils/modcheck/jev_triage.py",
+   "Utils/modcheck/judge.py",
+   "Utils/modcheck/launch_gate.py",
+   "Utils/modcheck/northstar.py",
+   "Utils/modcheck/play_zoom.py",
+   "Utils/modcheck/preconditions.py",
+   "Utils/modcheck/quiet_site.py",
+   "Utils/modcheck/report.py",
+   "Utils/modcheck/reuse.py",
+   "Utils/modcheck/run_identity.py",
+   "Utils/modcheck/runner.py",
+   "Utils/modcheck/save_uncompress.py",
+   "Utils/modcheck/scene_report.py",
+   "Utils/modcheck/settings_keep.py",
+   "Utils/modcheck/snapshot.py",
+   "Utils/modcheck/spoil_gate.py",
+   "Utils/modcheck/status.py",
+   "Utils/modcheck/suite.py",
+   "Utils/modcheck/surprise.py",
+   "Utils/modcheck/targeting.py",
+   "Utils/modcheck/test_site_saves.json",
+   "Utils/modcheck/test_site_saves.py",
+   "Utils/modcheck/testenv_guards.py",
+   "Utils/modcheck/validity.py",
+   "Utils/modcheck/walklint.py",
+   "Utils/modcheck/watch.py",
+   "Utils/modset_builder.py",
+   "Utils/nightly_scope.py",
+   "Utils/northstar_driver/__init__.py",
+   "Utils/northstar_driver/session.py",
+   "Utils/northstar_driver/tool_schemas.json",
+   "Utils/northstar_driver/transport.py",
+   "Utils/pipeline_tests.json",
+   "Utils/progress_guard.py",
+   "Utils/retired_mods.py",
+   "Utils/rimbridge_client.py",
+   "Utils/rimdrive/__init__.py",
+   "Utils/rimdrive/session.py",
+   "Utils/rimdrive/verify.py",
+   "Utils/rmpaths.py",
+   "Utils/run_selftests.py",
+   "Utils/selftest_cache.py",
+   "Utils/suite_evidence.py",
+   "Utils/tickburst_step.py",
+   "Utils/tps_record.py",
+   "Utils/validation_core.py",
+   "Utils/waitalive.py",
+   "Utils/winbuild.py",
+   "Utils/wrapup_debt.py",
+   "Utils/zoom_guard.py"
+  ],
+  "unresolved": []
+ },
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "dubwise.dubsbadhygiene.lite",
+   "owlchemist.cherrypicker",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "toastyman.moreritualseats",
+   "vanillaexpanded.vchemfuele",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.hugethings",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes",
+   "mandrake.rm.patches"
+  ],
+  "assembly_sha256": "0395259f5b5216b8058b6eae0b66377371ac688b7336f8f479a3458ff0616be8"
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "Hare18242",
+    "Hare18244",
+    "Hare18252",
+    "Iguana18249",
+    "RM_Diplocaulus18245",
+    "RM_Diplocaulus18246",
+    "RM_Diplocaulus18255",
+    "RM_Diplocaulus18256",
+    "RM_Diplocaulus18257",
+    "RM_Diplocaulus18258",
+    "RM_Protovermes18243",
+    "RM_Protovermes18248",
+    "RM_Termitotron18247",
+    "Rat18241",
+    "Rat18250",
+    "Rat18251",
+    "Rat18253",
+    "Rat18254"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [
+    [
+     "Hive",
+     "Hive4116"
+    ],
+    [
+     "GlowPod",
+     "GlowPod4130"
+    ],
+    [
+     "GlowPod",
+     "GlowPod4131"
+    ]
+   ],
+   "threatsAfter": 0,
+   "error": null
+  },
+  "fed": [
+   "Human823",
+   "Human826",
+   "Human829"
+  ]
+ },
+ "mend": [
+  {
+   "fed": 3,
+   "removed": [],
+   "residue": [],
+   "failed": []
+  },
+  {
+   "fed": 3,
+   "removed": [],
+   "residue": [],
+   "failed": []
+  },
+  {
+   "fed": 3,
+   "removed": [],
+   "residue": [],
+   "failed": []
+  },
+  {
+   "fed": 3,
+   "removed": [],
+   "residue": [],
+   "failed": []
+  },
+  {
+   "fed": 3,
+   "removed": [],
+   "residue": [],
+   "failed": []
+  },
+  {
+   "fed": 4,
+   "removed": [],
+   "residue": [],
+   "failed": []
+  }
+ ],
+ "net0": {
+  "tank": [
+   120,
+   140
+  ],
+  "pump": [
+   123,
+   140
+  ],
+  "head": [
+   125,
+   140
+  ],
+  "covered": [
+   126,
+   141
+  ],
+  "far": [
+   130,
+   144
+  ],
+  "build": [
+   [
+    5,
+    []
+   ],
+   [
+    5,
+    []
+   ]
+  ],
+  "charge": 1.0,
+  "headId": "RM_SprinklerHead18326",
+  "pumpId": "RM_LiquidPump18325",
+  "powered": true
+ },
+ "net1": {
+  "tank": [
+   120,
+   154
+  ],
+  "pump": [
+   123,
+   154
+  ],
+  "head": [
+   125,
+   154
+  ],
+  "covered": [
+   126,
+   155
+  ],
+  "far": [
+   130,
+   158
+  ],
+  "build": [
+   [
+    5,
+    []
+   ],
+   [
+    5,
+    []
+   ]
+  ],
+  "charge": 1.0,
+  "headId": "RM_SprinklerHead18354",
+  "pumpId": "RM_LiquidPump18353",
+  "powered": true
+ },
+ "net2": {
+  "tank": [
+   120,
+   168
+  ],
+  "pump": [
+   123,
+   168
+  ],
+  "head": [
+   125,
+   168
+  ],
+  "covered": [
+   126,
+   169
+  ],
+  "far": [
+   130,
+   172
+  ],
+  "build": [
+   [
+    5,
+    []
+   ],
+   [
+    5,
+    []
+   ]
+  ],
+  "charge": 1.0,
+  "headId": "RM_SprinklerHead18367",
+  "pumpId": "RM_LiquidPump18366",
+  "powered": true
+ },
+ "net3": {
+  "tank": [
+   120,
+   182
+  ],
+  "pump": [
+   123,
+   182
+  ],
+  "head": [
+   125,
+   182
+  ],
+  "covered": [
+   126,
+   183
+  ],
+  "far": [
+   130,
+   186
+  ],
+  "build": [
+   [
+    5,
+    []
+   ],
+   [
+    5,
+    []
+   ]
+  ],
+  "charge": 1.0,
+  "headId": "RM_SprinklerHead18386",
+  "pumpId": "RM_LiquidPump18385",
+  "powered": true
+ },
+ "net4": {
+  "tank": [
+   120,
+   196
+  ],
+  "pump": [
+   123,
+   196
+  ],
+  "head": [
+   125,
+   196
+  ],
+  "covered": [
+   126,
+   197
+  ],
+  "far": [
+   130,
+   200
+  ],
+  "build": [
+   [
+    5,
+    []
+   ],
+   [
+    5,
+    []
+   ]
+  ],
+  "charge": 1.0,
+  "headId": "RM_SprinklerHead18402",
+  "pumpId": "RM_LiquidPump18401",
+  "powered": true
+ },
+ "net5": {
+  "tank": [
+   120,
+   210
+  ],
+  "pump": [
+   123,
+   210
+  ],
+  "head": [
+   125,
+   210
+  ],
+  "covered": [
+   126,
+   211
+  ],
+  "far": [
+   130,
+   214
+  ],
+  "build": [
+   [
+    5,
+    []
+   ],
+   [
+    5,
+    []
+   ]
+  ],
+  "charge": 1.0,
+  "headId": "RM_SprinklerHead18432",
+  "pumpId": "RM_LiquidPump18431",
+  "powered": true
+ },
+ "ended": "2026-11-25T07:01:16"
+}
