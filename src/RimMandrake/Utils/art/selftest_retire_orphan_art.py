@@ -8,6 +8,9 @@
     store BEFORE the repo file goes, plus a `live` event with sha None — never a bare delete;
   * refuse a picture shown on a review-sheet snapshot (SHEET), and refuse everything (UNMEASURED) when no
     snapshot sha can be read at all;
+  * NOT refuse as SHEET a shadowed stand-in (Textures/StandIn/<rel> whose twin Textures/<rel> holds our render):
+    nothing draws it, and the sheet shows its bytes from the art store, so it retires like any orphan; a stand-in
+    with no twin on a sheet is still SHEET;
   * change nothing on a dry run.
 Runs entirely in a temp tree (ART_SRC_ROOT / ART_LEDGER_DIR / ARTSTORE / RETIRED_TREES_DIR)."""
 from __future__ import annotations
@@ -59,6 +62,10 @@ def main() -> int:
     files["face_m"] = w(tex / "Face" / "Face_m.png", png("facem1"))
     files["rand_a"] = w(tex / "Rand" / "Rand_a.png", png("rand"))
     files["dryrun"] = w(tex / "dryrun.png", png("dryrun"))
+    sin = mod / "Textures" / "StandIn" / "Things" / "A"
+    files["shadowed"] = w(sin / "Shadow" / "ShadowA.png", png("shadowed-donor"))
+    files["shadowed_twin"] = w(tex / "Shadow" / "ShadowA.png", png("our-render"))
+    files["lonely_si"] = w(sin / "Lonely.png", png("lonely-donor"))
     w(mod / "Defs" / "d.xml", "<Defs><ThingDef><graphicData><texPath>Things/A/named</texPath></graphicData>"
                               "<x><texPath>Things/A/Face/Face</texPath></x><y><texPath>Things/A/Rand</texPath></y>"
                               "</ThingDef></Defs>")
@@ -73,6 +80,8 @@ def main() -> int:
       json.dumps({**A.owner_keep_ruling(kept_sha, owner_said="keep this one"), "ts": "2026-10-26T00:00:00"}) + "\n")
 
     sheet_sha = hashlib.sha256(files["onsheet"].read_bytes()).hexdigest()
+    shadow_sha = hashlib.sha256(files["shadowed"].read_bytes()).hexdigest()
+    lonely_sha = hashlib.sha256(files["lonely_si"].read_bytes()).hexdigest()
 
     def run(*args):
         buf = io.StringIO()
@@ -85,7 +94,8 @@ def main() -> int:
     check(rc != 0 and "UNMEASURED" in out and files["dryrun"].is_file(),
           "no review-sheet snapshot readable: UNMEASURED, nothing retired")
     w(tmp / "sheets" / "s_2026-10-01.snapshot.json",
-      json.dumps({"rows": {"R": {"columns": {"A": {"south": sheet_sha}}}}}))
+      json.dumps({"rows": {"R": {"columns": {"A": {"south": sheet_sha}, "B": {"single": shadow_sha},
+                                             "C": {"single": lonely_sha}}}}}))
 
     # a picture shown on a review sheet leaves by his ruling there, not as an orphan
     rc, out = run("--apply", str(files["onsheet"]))
@@ -96,6 +106,15 @@ def main() -> int:
     rc, out = run(str(files["dryrun"]))
     check(rc == 0 and "WOULD" in out and files["dryrun"].is_file() and not (tmp / "retired").exists(),
           "dry run reports WOULD and moves nothing")
+
+    # a shadowed stand-in on a sheet: nothing draws it and the store keeps the sheet's bytes, so it retires
+    rc, out = run("--apply", str(files["shadowed"]))
+    check(rc == 0 and "SHEET" not in out and not files["shadowed"].exists() and A.store_has(shadow_sha)
+          and files["shadowed_twin"].read_bytes() == png("our-render"),
+          "--apply: a shadowed stand-in on a sheet retires (bytes in the store, our render untouched)")
+    rc, out = run("--apply", str(files["lonely_si"]))
+    check(rc != 0 and "SHEET" in out and files["lonely_si"].is_file(),
+          "--apply: a stand-in with no twin on a sheet is still refused as SHEET")
 
     # owner-kept: refused both ways, file untouched, no copy anywhere
     rc, out = run(str(files["kept"]))

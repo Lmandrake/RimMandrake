@@ -10,7 +10,9 @@ RimWorld has no texture fallback, so such a copy is dead weight that still loads
 
     python3 src/RimMandrake/Utils/art/standin_shadowed.py list    # every shadowed stand-in: DEAD (unread) or READ
     python3 src/RimMandrake/Utils/art/standin_shadowed.py check   # exit 1 while any DEAD shadowed stand-in remains
-                                                                  # (SHEET: dead but on a review sheet: his ruling, named)
+                                                                  # (one on a review sheet is DEAD too: retire_orphan_art
+                                                                  # retires a shadowed copy; the sheet keeps its bytes
+                                                                  # in the art store)
 
 A READ shadowed stand-in (XML still draws StandIn/<rel> although our render sits at <rel>) is listed, not failed:
 which picture should be drawn is an art call, not a mechanical one.
@@ -58,18 +60,11 @@ def main(argv: list[str]) -> int:
     src = A.src_root()
     rows = classify(src)
     root = src.parent
-    # a dead copy shown on a review sheet leaves by his ruling there (art.py enact): retire_orphan_art refuses it as SHEET,
-    # so no agent can clear it and it is named SHEET, never counted dead (a sheet that answers nothing is not news here)
-    on_sheet = R.sheet_shas()
-    rows = [("SHEET", f, [on_sheet[A.sha256_file(f)]]) if k == "DEAD" and A.sha256_file(f) in on_sheet else (k, f, h)
-            for k, f, h in rows]
     dead = [r for r in rows if r[0] == "DEAD"]
     for kind, f, hits in rows:
-        if argv[0] == "list" or kind in ("DEAD", "SHEET"):
+        if argv[0] == "list" or kind == "DEAD":
             print("%-4s %s%s" % (kind, f.relative_to(root), ("  <- " + ", ".join(hits[:2])) if hits else ""))
-    held = sum(1 for r in rows if r[0] == "SHEET")
-    print("shadowed stand-ins: %d (dead %d, read %d, on a review sheet awaiting his ruling %d) under %s"
-          % (len(rows), len(dead), len(rows) - len(dead) - held, held, src))
+    print("shadowed stand-ins: %d (dead %d, read %d) under %s" % (len(rows), len(dead), len(rows) - len(dead), src))
     return 1 if (argv[0] == "check" and dead) else 0
 
 

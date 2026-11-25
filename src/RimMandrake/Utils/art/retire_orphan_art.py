@@ -11,6 +11,9 @@ file that anything still names, so the reason it writes is a verifiable mechanic
 Owner-KEPT pictures are refused (dry run and --apply alike) and reported, never forced: retiring one needs his words.
 A picture shown on a review sheet (its sha in any `infrastructure/state/art/sheets/*.snapshot.json`, env
 ART_SHEETS_DIR overrides) is refused as SHEET: it leaves by his ruling on that sheet (`art.py enact`), not as an orphan.
+A shadowed stand-in is not refused as SHEET: `Textures/StandIn/<rel>` whose twin `Textures/<rel>` holds our render.
+Nothing draws it, the sheet draws its bytes from the art store (which retire fills), and a pick of it on the sheet
+installs from the store, so the sheet loses nothing (RIMMANDRAKE_RETIRE_SIXTEEN_DEAD_DONOR_PICTURES_HELD_BY_SHEETS).
 This is THE route for leftover pictures: `leftovers.py` only pre-filters them and refuses to delete or retire one.
 --apply MOVES, never just deletes: a byte-identical copy goes to the retired-trees root
 (`D:\\ClaudeWork\\rimmandrake\\retired-trees\\<ITEM>_<YYYYMMDD>\\<mod>\\Textures\\<rel>`, env RETIRED_TREES_DIR
@@ -102,6 +105,16 @@ def copy_out(path: Path, mod: str, rel: str, item: str) -> Path:
     return dst
 
 
+def shadowed_twin(path: Path) -> Path | None:
+    """For Textures/StandIn/<rel>, the twin Textures/<rel> in the same mod when it exists (our render took the slot)."""
+    parts = path.parts
+    ks = [k for k in range(len(parts) - 1) if parts[k] == "Textures" and parts[k + 1] == "StandIn"]
+    if not ks:
+        return None
+    twin = Path(*parts[:ks[-1] + 1], *parts[ks[-1] + 2:])
+    return twin if twin.is_file() else None
+
+
 def needles_for(rel: str) -> list[str]:
     stem = rel[:-4] if rel.lower().endswith(".png") else rel
     out = [FACING.sub("", stem)]
@@ -152,7 +165,7 @@ def main(argv: list[str]) -> int:
             bad += 1
             print("KEPT    %s  %s  owner-kept; retiring it needs his words or a Conductor instruction" % (sha[:12], p))
             continue
-        if sha in on_sheet:
+        if sha in on_sheet and shadowed_twin(path) is None:
             bad += 1
             print("SHEET   %s  %s  shown on review sheet %s; it leaves by his ruling there (art.py enact)"
                   % (sha[:12], p, on_sheet[sha]))
