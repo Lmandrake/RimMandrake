@@ -112,7 +112,7 @@ def t_ordinary_stop_matches_parent():
         kill.reset_mock()
         assert cli(str(PID), "--force", "--for", "a reason", "--despite-hold", "permission") == (7, b"first\nsecond\n", b"")
         hold.assert_called_with("a", "permission")
-        bridge.assert_called_with("a", "a reason", seat=None)
+        bridge.assert_called_with("a", "a reason", seat=None, despite="permission")
         kill.assert_called_once_with(["taskkill.exe", "/F", "/PID", str(PID)])
         kill.reset_mock()
         hold.return_value = "held"

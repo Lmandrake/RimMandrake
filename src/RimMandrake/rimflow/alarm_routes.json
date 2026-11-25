@@ -117,6 +117,7 @@
     {"match": "selftest_false_hit", "route": "role", "reader": "Operations", "cause": "selftest_ledger"},
     {"match": "stalled:*", "route": "role", "reader": "Operations", "cause": "replay"},
     {"match": "twice_dead:*", "route": "role", "reader": "Operations", "cause": "replay"},
+    {"match": "game_watcher.stopped", "route": "role", "reader": "Conductor", "cause": "game_stopped", "_why": "game_watch_tick.py stopped (or failed to stop) a broken game; the row names the game, the state and the evidence"},
     {"match": "REFUSAL_NOTHING_COULD_EVER_PASS", "route": "role", "reader": "Conductor", "cause": "refusals", "_why": "refusal contract (spec 2026-11-12): one fixed id for a refusal loop no fix can end; one row per subject in refusal_contract.py alarms.json, a repeat trip updates it (RIMMANDRAKE_STOP_COVERAGE_LOOP_AT_THIRD_REFUSAL)"}
   ]
 }

@@ -1,0 +1,11 @@
+# Every 2 min - see rm-game-watch.service.
+[Unit]
+Description=RimMandrake: look at each local game and stop a broken one, every 2 min
+
+[Timer]
+OnBootSec=3min
+OnUnitActiveSec=2min
+AccuracySec=10s
+
+[Install]
+WantedBy=timers.target

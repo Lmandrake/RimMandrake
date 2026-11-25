@@ -33,7 +33,8 @@
     "rm-list-dispatch": "rm-list-dispatch.timer",
     "rm-quiet-scan": "rm-quiet-scan.timer",
     "rm-maturation-page": "rm-maturation-page.timer",
-    "rm-run-alive": "rm-run-alive.timer"
+    "rm-run-alive": "rm-run-alive.timer",
+    "rm-game-watch": "rm-game-watch.timer"
   },
   "outside": {
     "rm-relentless": "the Relentless tick: retired by the owner 2026-11-13, unit masked (design/RimMandrake/retired_loops_2026-11-13.md)",

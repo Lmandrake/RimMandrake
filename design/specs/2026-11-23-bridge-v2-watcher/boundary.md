@@ -61,7 +61,7 @@ reading it continues with the scene's normal checks and adds one watcher line to
 - **an-exception-swallowed-silently.** The watcher sees exceptions that escape Root.Update or that Verse reports as
   root-level exceptions. Errors elsewhere in Unity and a missing log hook reduce exception coverage.
 
-The Conductor wires periodic reads for each local game (including ArchBig) and routes a broken reading to
-`game_instance.py stop --broken --instance <game>`. The verb confirms again and returns the result for reporting.
+`rm-game-watch.timer` reads each local game (including ArchBig) every 2 minutes and routes a broken reading to the same
+stop ([its page](../2026-11-24-game-watch-tick/boundary.md)). The verb confirms again and returns the result for reporting.
 The stop verb returns 0 for a successful stop, 1 for a stop failure, 2 for a blind reading and 3 for a refusal.
 Keep the named game's Player.log and existing stall dump with the report. The watcher owns no timer or state file.

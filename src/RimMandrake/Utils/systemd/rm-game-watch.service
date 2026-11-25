@@ -1,0 +1,19 @@
+# The game watch tick (Utils/game_watch_tick.py; item RIMMANDRAKE_BUILD_GAME_WATCHER_NAMES_THE_BROKEN_STATE; page
+# design/specs/2026-11-24-game-watch-tick/boundary.md): reads the heartbeat of ArchBig and ArchSmall and stops a game whose
+# broken episode is at least 18 minutes old, held or not. No bridge call, no model. Runs from the dispatch clone.
+# Reading: D:\ClaudeWork\rimmandrake\dispatcher\game_watch\reading.json; stops: stops.jsonl beside it
+# Install:  python3 src/RimMandrake/Utils/ops_clocks.py install rm-game-watch --apply --enable
+# Off:      ./pipe off family:game_watch --why "..."   (it still looks; it stops nothing)
+[Unit]
+Description=RimMandrake: look at each local game and stop a broken one
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/dispatch
+Environment=PATH=/home/mandrake/.local/bin:/usr/local/bin:/usr/bin:/bin
+Environment=PYTHONUNBUFFERED=1
+Environment=RM_ROLE_UNIT=rm-game-watch.service
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/game_watch_tick.py tick
+Nice=10
+# budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=23.2s (a measured look of 3.2 s plus a 10 s confirm for each of the two games)
+TimeoutStartSec=20min
