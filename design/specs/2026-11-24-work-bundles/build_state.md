@@ -16,6 +16,7 @@ The figure is the context of the last main-thread turn (`detached_helper.context
 | 4. restart and keep going | 342k | |
 | 5. live pass | ~370k | |
 | 7. the page | 384k | built before part 6, the smaller part first |
+| 6. the Maturation Pipeline (holder = the mod's bundle) | 437k | |
 
 ## Done
 
@@ -25,8 +26,13 @@ The figure is the context of the last main-thread turn (`detached_helper.context
 - Part 4: the restart branch in `left_open_continue.py`, at `aafc60da65` and `ae0656172f` (end line, gated replaced).
 - Part 5: `work_bundle.py live`, at `40e3d9db51`. Real run: UNRUN, both games held by BENCH runs (2026-11-25 00:25 PST).
 - Part 7: the page block on MATURATION_NOW and MATURATION_DETAIL, at `8c0c85ad9f`.
-- Proof by use: `WB-pipeline-judges-20261125-082122` launched by `./pipe bundle pipeline:judges` (3 members, 1 left out
-  with its wait). The lane itself launched three bundles of one from 00:02 PST on.
+- Part 6: a pilot mod's road-back holder is the mod's one bundle, at `9b2aabb5ed`.
+- Proof by use: `WB-pipeline-judges-20261125-082122` (`./pipe bundle pipeline:judges`, 3 members, 1 left out with its
+  dated wait). ENDED 2026-11-25 1:25 AM PST: 3 of 3 closed done, 0 restarts, one run of 3840 s, 1,012,508 weighted
+  tokens (Opus), its own fresh reader, its state file `infrastructure/bundles/WB-pipeline-judges-20261125-082122.md`,
+  context 161,502 after its one group [measured]. About 337k weighted tokens per member closed, against 2.27M per ticket
+  fixed in the 8 one-ticket runs of the week (design section 8) [measured, one bundle: not yet a rate].
+- The lane launched bundles of one on its own from 00:02 PST on (part 2 live).
 
 ## Learned
 
@@ -41,10 +47,11 @@ The figure is the context of the last main-thread turn (`detached_helper.context
 
 - A `killed:` result is both a hand stop (`pipe stop --kill` writes its reason) and a death (`killed: signal`); a bare
   `systemctl stop` reads as a death, so the bundle restarts it.
+- A new store read inside an old pipeline function is reached by that function's old selftests: the store refuses a
+  test process with no store of its own (a fake `WB-mod-WreckedMachines` record leaked once, deleted).
 - `argparse.REMAINDER` after a positional swallows later options: `live` splits at `--` first (seen on real use).
 - The Conductor wrote `roles/bundle_worker.md` mid-build; refusals there start `REFUSED BY BUNDLE:`, which the code reads.
 
 ## Next
 
-- Part 6: the steward routes a mod's road-back failures as ONE bundle (maturation_autonomy / maturation_dispatch).
-- Watch `WB-pipeline-judges-20261125-082122` end: its line in `D:\ClaudeWork\rimmandrake\conductor\log.md`.
+- One fresh reader of the changed files (the code-review rule), then close the item.
