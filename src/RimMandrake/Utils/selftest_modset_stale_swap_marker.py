@@ -167,6 +167,18 @@ with tempfile.TemporaryDirectory() as d:      # a fresh swap records its holder:
     check(h.get("pid") == os.getpid() and h.get("start") == start_of(os.getpid()) and h.get("host"),
           "a fresh marker names its holder pid, start and host (%s)" % h)
 
+# --clear-stale, the command line: a dead holder's marker set aside, a live one refused, no list written
+for hold, rc_want, what in ((None, 0, "--clear-stale, holderless 3 days old"), ("live", 1, "--clear-stale, holder alive")):
+    with tempfile.TemporaryDirectory() as d:
+        cfg, bk, marker = stranded(d, holder(os.getpid()) if hold else None, old_s=0 if hold else 3 * 86400)
+        r = subprocess.run([sys.executable, os.path.join(HERE, "modset_builder.py"), "--clear-stale", bk],
+                           capture_output=True, text=True, env=dict(os.environ, RM_MODSET_LOCK=os.path.join(d, "lk")))
+        moved = bool(glob.glob(marker + ".stale-*"))
+        check(r.returncode == rc_want and moved == (rc_want == 0) and get(cfg) == ELSE
+              and ("SET ASIDE" in r.stdout if rc_want == 0 else "alive" in r.stdout),
+              "%s: rc %d, marker %s, list untouched (%s)" % (what, r.returncode, "moved" if moved else "kept",
+                                                              r.stdout.strip()[-160:]))
+
 # the SteveDesktop preflight moves a refusing marker aside: never one whose holder lives
 sys.path.insert(0, os.path.join(HERE, "..", "..", "..", "infrastructure", "stevedesktop"))
 sys.path.insert(0, os.path.join(HERE, "testq"))
@@ -185,6 +197,12 @@ if P is not None:
         cfg, bk, marker = stranded(d, holder(dead_pid()))
         why, note = P.check_swap_marker({"profile": "tier:new"}, mb, cfg, bk, fix=True)
         check(why is None, "preflight: a dead holder's marker does not refuse the job (%r)" % why)
+        check(note and "moved aside" in note and not os.path.exists(marker) and glob.glob(marker + ".stale-*"),
+              "preflight: and it moves the real marker aside, for a job pinned before the fix (%r)" % note)
+    with tempfile.TemporaryDirectory() as d:
+        cfg, bk, marker = stranded(d, holder(dead_pid()), live=TIER)      # mid-swap: nothing to set aside
+        r = P.check_swap_marker({"profile": "tier:new"}, mb, cfg, bk, fix=True)
+        check(r == (None, None) and os.path.exists(marker), "preflight: a mid-swap marker is left alone (%r)" % (r,))
 
 print("\n%s" % ("FAIL: %d" % len(FAILS) if FAILS else "PASS"))
 sys.exit(1 if FAILS else 0)

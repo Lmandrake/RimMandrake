@@ -30,6 +30,7 @@ the OS whether the game runs, and refuses, loudly. Always back up first; --apply
     python src/RimMandrake/Utils/modset_builder.py --tier ratchet_pilot --apply --by relentless   # an OWNED swap
     python src/RimMandrake/Utils/modset_builder.py --restore-own relentless                     # undo only that one
     python src/RimMandrake/Utils/modset_builder.py --repair-reset                               # a crash reset the list to Core+DLC mid-swap: before-copy back
+    python src/RimMandrake/Utils/modset_builder.py --clear-stale [DIR]                          # set aside a marker whose holder is dead; no list written
 
 OWNED SWAPS (LANE_TIER_WIRE_A_WHOLE_LIST_LOAD). `--by NAME` keeps the swap's marker and before-copy in agent storage
 (<agent storage>/modset_swaps/NAME/), not in this clone's deployed/config: Relentless's staging worker writes the tier
@@ -1618,7 +1619,7 @@ def set_aside_or_refuse(marker, m, why):
     if state == "dead":
         dst = "%s.stale-%s" % (marker, time.strftime("%Y%m%dT%H%M%SZ", time.gmtime()))
         os.replace(marker, dst)
-        return "SET ASIDE a stale swap marker (%s) -> %s; it would have refused: %s" % (how, dst, why)
+        return "SET ASIDE a stale swap marker (%s) -> %s; the case: %s" % (how, dst, why)
     if state == "alive":
         raise SwapHeld("%s The swap's holder is alive: %s. Let it finish (or stop it), then re-run." % (why, how))
     if state == "young":
@@ -1873,6 +1874,21 @@ def record_tier_written(config, backups, md5=None):
     os.replace(tmp, marker)
 
 
+def clear_stale(backups):
+    """--clear-stale: set the swap marker in `backups` aside when its holder is dead (set_aside_or_refuse) -> a one-line
+    account; RestoreRefused (SwapHeld) when the holder lives or cannot be seen. Writes no list."""
+    import json
+    marker = os.path.join(backups, SWAP_MARKER)
+    if not os.path.exists(marker):
+        return "no swap marker in %s; nothing to do" % backups
+    try:
+        with open(marker) as fh:
+            m = json.load(fh)
+    except (ValueError, OSError) as e:
+        m = {"unreadable": str(e)}
+    return set_aside_or_refuse(marker, m if isinstance(m, dict) else {}, "--clear-stale was asked to clear it.")
+
+
 def clear_swap_marker(backups):
     """--restore-full ends the swap: a left-behind marker would pin a stale before-copy."""
     marker = os.path.join(backups, SWAP_MARKER)
@@ -1943,10 +1959,21 @@ def main():
     ap.add_argument("--repair-reset", action="store_true",
                     help="if a crash reset the live list to Core+DLC mid-swap, put the swap's before-copy back "
                          "(--by OWNER for an owned swap); allowed with the game up")
+    ap.add_argument("--clear-stale", nargs="?", const="", metavar="DIR",
+                    help="set aside the swap marker in DIR (default: this clone's swap book; --by OWNER for an owned "
+                         "swap) when its holder is dead; refuses when it lives or cannot be seen. Writes no list")
     ap.add_argument("--not-my-bridge", metavar="REASON",
                     help="write anyway although this window does not hold the bridge (recorded on stdout)")
     a = ap.parse_args()
 
+    if a.clear_stale is not None:       # writes no list, so no bridge gate and the game may be up
+        try:
+            with config_lock():
+                print(clear_stale(a.clear_stale or (owned_backups(a.by) if a.by else BACKUPS)))
+        except (RestoreRefused, ValueError) as e:
+            print("REFUSING --clear-stale: %s" % e)
+            return 1
+        return 0
     if a.repair_reset:      # needs no mod scan, and may run with the game up: same reasoning as --restore-own
         if not bridge_ok(a.not_my_bridge):
             return 1

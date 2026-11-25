@@ -59,9 +59,10 @@ def load_modset_builder(runner):
         return None
 
 
-def swap_refusal(MB, config, backups, tier):
+def swap_refusal(MB, config, backups, tier, notes=None):
     """-> the RestoreRefused text modset_builder.take_before_copy WOULD raise for this tier, else None.
-    Runs the real functions on a temp copy of the marker, the before-copy it names and the live list."""
+    Runs the real functions on a temp copy of the marker, the before-copy it names and the live list. `notes` (a list)
+    gets what the builder printed (its SET ASIDE line, when it set a dead holder's marker aside on the copy)."""
     marker = os.path.join(backups, MB.SWAP_MARKER)
     if not os.path.exists(marker) or not os.path.exists(config):
         return None
@@ -82,8 +83,11 @@ def swap_refusal(MB, config, backups, tier):
         try:
             import contextlib
             import io
-            with contextlib.redirect_stdout(io.StringIO()):     # its set-aside note names the temp copy: not news
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):     # its set-aside note names the temp copy: returned, not printed
                 MB.take_before_copy(tc, tb, tier)
+            if notes is not None:
+                notes.append(buf.getvalue().replace(tb, backups))
             return None
         except getattr(MB, "SwapHeld", ()) as e:
             # its holder lives, or the builder could not see it: never moved aside (it would cut a live swap)
@@ -109,8 +113,14 @@ def check_swap_marker(job, MB, config, backups, fix=True):
     tier = S.tier_of(job)
     if not tier or MB is None:
         return None, None
-    why = swap_refusal(MB, config, backups, tier)
+    notes = []
+    why = swap_refusal(MB, config, backups, tier, notes)
     if why is None:
+        if fix and any("SET ASIDE" in n for n in notes):
+            # the builder at main sets this dead holder's marker aside itself, but the swap runs at the job's source_sha,
+            # whose builder may predate that and refuse it: move the real one aside now
+            moved = move_marker_aside(MB, backups)
+            return None, "stale swap marker moved aside to %s (%s)" % (moved, " ".join(notes).strip()[:200])
         return None, None
     if not fix or why.startswith("HELD: "):
         return "swap marker blocks the tier switch: " + why[-300:], None
