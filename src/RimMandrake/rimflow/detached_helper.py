@@ -2361,9 +2361,15 @@ def status(show_all=False, runner=subprocess.run):
     for rec in all_records():
         if rec.get("status") == "finished" and not show_all:
             continue
-        live = RL.unit_state(rec["unit"], runner=runner) if rec.get("status") != "finished" else "-"
         st = rec.get("status")
-        if live in DEAD_STATES and (st == "running" or (st == "launching" and time.time() - (rec.get("at") or 0) >= LAUNCH_GRACE_S)):
+        if rec.get("host") and st in ("launching", "running"):
+            # a remote run: its unit lives on the host, so local systemd always reads it gone (live_status asks the host)
+            st, live = live_status(rec, runner), "on " + rec["host"]
+            if st == "dead":
+                st = "DEAD (its unit on %s is gone and the host has no end record)" % rec["host"]
+        else:
+            live = RL.unit_state(rec["unit"], runner=runner) if st != "finished" else "-"
+        if not rec.get("host") and live in DEAD_STATES and (st == "running" or (st == "launching" and time.time() - (rec.get("at") or 0) >= LAUNCH_GRACE_S)):
             st = "DEAD (unit %s, finish never ran: detached_helper.py finish --unit %s)" % (live, rec["unit"])
         lines.append("%s  %s  %s  item %s  %s  started %s" % (rec["unit"], st, live, rec["item"],
                                                                rec.get("model"), iso(rec["at"])))

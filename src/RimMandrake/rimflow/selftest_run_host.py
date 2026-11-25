@@ -181,10 +181,31 @@ def t_host_room_for_the_lane():
     assert LD.host_room({}, {"SteveDesktop": {"live": 0, "left": 50}}, 0)[0] is None, "no host configured"
 
 
+def t_status_reads_a_remote_run_from_its_host():
+    """`detached_helper.py status` on Archmagi reads a remote run's state from its host, never from local systemd
+    (measured 2026-11-24 6:33 PM PST: a live SteveDesktop run read "DEAD ... finish never ran" on Archmagi)."""
+    import detached_helper as DH
+    rec = R.record("SteveDesktop", "X", "rm-detached-remote-2", "opus", 12, 100.0)
+
+    def runner(argv, **kw):
+        if argv[0] == "ssh":
+            return subprocess.CompletedProcess(argv, 0, json.dumps({"active": "active", "record": {"status": "running"}}), "")
+        return subprocess.CompletedProcess(argv, 0, "inactive\n", "")   # local systemd has no such unit
+    keep = DH.all_records
+    DH.all_records = lambda *a, **k: iter([dict(rec)])
+    try:
+        out = DH.status(runner=runner)
+    finally:
+        DH.all_records = keep
+    line = out.splitlines()[0]
+    assert "DEAD" not in line and "running" in line and "SteveDesktop" in line, line
+
+
 def main():
     tests = (t_refused_by_name, t_could_not_look_named, t_no_spend_stated, t_wsl_door, t_login_path, t_every_fact_reads,
              t_account_from_the_machine, t_launch_argv, t_record_names_host_unit_item, t_live_until_the_host_says_ended,
-             t_stop_runs_the_hosts_pipe, t_pipe_stop_routes_a_remote_unit, t_host_room_for_the_lane)
+             t_stop_runs_the_hosts_pipe, t_pipe_stop_routes_a_remote_unit, t_host_room_for_the_lane,
+             t_status_reads_a_remote_run_from_its_host)
     bad = 0
     for f in tests:
         try:
