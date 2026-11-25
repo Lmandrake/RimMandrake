@@ -670,6 +670,8 @@ def main(argv):
     try:
         with Session(lock=None, focus=False, strict=False, quiet=True) as s:
             L = Live(s)
+            from common import ensure_map
+            ensure_map(s)
             mi = L.call("jawa/map_info")
             if not mi.get("success", True) or mi.get("sizeX") is None:
                 print("%s UNMEASURED: no current map: %s" % (clause, str(mi)[:200]))

@@ -661,6 +661,11 @@ def main(argv):
     try:
         with Session(lock=None, focus=False, strict=False, quiet=True) as s:
             L = Live(s)
+            from common import ensure_map
+            why = ensure_map(s)
+            if why:
+                print("%s UNMEASURED: %s" % (clause, why))
+                return 2
             try:
                 d = globals()["g_" + clause](L)
             finally:

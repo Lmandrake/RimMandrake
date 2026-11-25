@@ -229,3 +229,17 @@ def main(job_id, body, fake_builder=None, argv=None):
     if rec["status"] == UNMEASURED:
         return 2
     return 0 if rec["verdict"] == PASS else 1
+
+
+def ensure_map(s):
+    """-> None when the game has a current map, else the reason it still has none. A game sitting at the main menu
+    (the SteveDesktop lane leaves a mods__base game there, 2026-11-25: five clauses read 'No game is currently
+    loaded') gets ONE rimworld/start_debug_game_ready; a refusal or a timeout is returned, never retried."""
+    mi = call(s, "jawa/map_info")
+    if mi.get("success", True) and mi.get("sizeX") is not None:
+        return None
+    r = call(s, "rimworld/start_debug_game_ready", timeoutMs=900000, readiness="mapData", pauseIfNeeded=True)
+    mi = call(s, "jawa/map_info")
+    if mi.get("success", True) and mi.get("sizeX") is not None:
+        return None
+    return "no current map, and start_debug_game_ready gave none: %s" % str(r)[:200]
