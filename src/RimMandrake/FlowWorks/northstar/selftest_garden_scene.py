@@ -175,7 +175,7 @@ class Fake:
                     g['heads'][k] = 'Dry: nothing in the tanks on this network'
             if d in CONV:
                 self.convert(k, *CONV[d])
-            if d == 'RM_PipeFaucet':
+            if d == 'RM_PipeFaucet' and self.fault != 'FAUCET_NO_DRAW':
                 for p in g['pawns'].values():
                     if p[1] < 0.3 and self.draw(self.tanks_on(k), 'RM_Liquid_FreshWater', 250):
                         p[1] = 1.0
@@ -436,6 +436,20 @@ def check(ok, what):
         FAILS.append(what)
 
 
+def def_rates_match(xml_text):
+    """-> the converter defs whose inputLitresPerDay differs from the rate sc_garden was built on (C.STILL, C.FILTER:
+    per rare tick x 240 rare ticks a day / 10 units a litre); a def that cannot be read is listed too."""
+    import xml.etree.ElementTree as ET
+    want = {'RM_SunPanStill': C.STILL['per'] * 240 / 10.0, 'RM_DripFilter': C.FILTER['per'] * 240 / 10.0}
+    root, bad = ET.fromstring(xml_text), []
+    for name, rate in sorted(want.items()):
+        d = next((x for x in root.iter('ThingDef') if x.findtext('defName') == name), None)
+        got = None if d is None else d.find('.//inputLitresPerDay')
+        if got is None or abs(float(got.text) - rate) > 1e-6:
+            bad.append(name)
+    return bad
+
+
 def main():
     healthy, f = run()
     check(not f.contract, 'every staging call keeps its tool contract %s' % f.contract[:3])
@@ -469,6 +483,42 @@ def main():
     dropped = C._conv_batches(241, C.FILTER['per'] * C.CONV_MULT, C.FILTER['inp'], keep=False, a0=C.FILTER['per'] * C.CONV_MULT + 1) \
         if hasattr(C, '_conv_batches') else 0
     check(dropped < lo_hi[0], 'the filter window %s excludes a dropped-clip run (%d batches at its best)' % (lo_hi, dropped))
+    # sc_garden's two supports (RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES): each stages only its nets,
+    # asks only its rows, reads them PASS on the healthy fake, and its planted fault turns its row FAIL
+    for name, rows_, plants in (('scene_sprinkler_pump', ('GARDEN_head_draws_its_net', 'GARDEN_no_pump_no_spray'),
+                                 {'CALLER_SPR_SPRAYS_WITHOUT_PUMP': 'GARDEN_no_pump_no_spray'}),
+                                ('scene_faucet_drink', ('GARDEN_faucet_drinks_from_its_tank',),
+                                 {'FAUCET_NO_DRAW': 'GARDEN_faucet_drinks_from_its_tank'})):
+        def srun(fault=None):
+            fk = Fake(fault)
+            out = C.STAGE3_SCENES[name](fk, lambda: fk.save('begin'), lambda: fk.load('begin'), {'calls': []})
+            return {r['id']: r['status'] for r in out['rows']}, fk, out
+        got, fk, out = srun()
+        check(not fk.contract, '%s: every staging call keeps its tool contract %s' % (name, fk.contract[:3]))
+        check(got == {r: 'PASS' for r in rows_}, '%s: the healthy fake reads exactly its rows PASS (got %s)' % (name, got))
+        built = {op.split(':')[0] for c in out['calls'] if c['tool'] == 'jawa/build_batch'
+                 for op in c['args']['ops'].split(';')}      # the calls, not the map: the scene's last reload empties it
+        check('RM_PipeFaucet' in built or 'RM_SprinklerHead' in built,
+              '%s: the build census sees its own machines (built %s)' % (name, sorted(built)))
+        check(not built & {'RM_DripFilter', 'RM_SunPanStill', 'RM_LiquidDrill', 'Wall'},
+              '%s builds none of the converter, still, drill or yard (built %s)' % (name, sorted(built)))
+        for plant, rid in plants.items():
+            g2, _, _ = srun(plant)
+            check(g2.get(rid) == 'FAIL', '%s: planted %s turns %s FAIL (got %s)' % (name, plant, rid, g2.get(rid)))
+        t = [c for c in out['calls'] if c['tool'] == 'jawa/static_call' and c['args'][1] == 'ProofTank']
+        check(t, '%s reads its tanks through ProofTank' % name)
+    # DEF_STILL_RATE_TENFOLD, offline: sc_garden's still row read the def's rate against the scene's design figure; that
+    # row left the live suite with the garden window, so the same comparison is read from the def itself. Red on the
+    # cycle-1 plant (6000 -> 60000), green on the shipped def.
+    stills = ROOT / 'src/RimMandrake/FlowWorks/Defs/Machinery/RM_LiquidStills.xml'
+    text = stills.read_text(encoding='utf-8')
+    check(def_rates_match(text) == [], 'the still and the filter defs run at the rates the garden scene was built on %s'
+          % def_rates_match(text))
+    planted = text.replace('<inputLitresPerDay>6000</inputLitresPerDay>', '<inputLitresPerDay>60000</inputLitresPerDay>', 1)
+    check(planted != text and def_rates_match(planted) == ['RM_SunPanStill'],
+          'planted DEF_STILL_RATE_TENFOLD turns the def-rate check red on RM_SunPanStill (got %s)' % def_rates_match(planted))
+    got, _ = run('FAUCET_NO_DRAW')
+    check(got['rows'].get('GARDEN_faucet_drinks_from_its_tank') == 'FAIL', 'sc_garden: FAUCET_NO_DRAW turns the faucet row FAIL')
     print('selftest_garden_scene: %s' % ('ok' if not FAILS else 'FAIL (%d)' % len(FAILS)))
     return 1 if FAILS else 0
 

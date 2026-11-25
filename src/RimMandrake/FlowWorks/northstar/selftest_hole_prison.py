@@ -107,7 +107,7 @@ class Bridge:
             pid = 'Pawn'+str(len(self.pawns))
             if kw['faction'] == 'hostile': self.hostile_ids.add(pid)
             self.pawns[pid] = {'id':pid,'x':kw['x'],'z':kw['z'],'downed':'False','dead':'False',
-                              'prisoner':'False','kept':'False','food':'0.1','rest':('0.1' if self.fault == 'sleepy_fixture' else '0.8'),'inBed':'False'}
+                              'prisoner':'False','kept':'False','held':'True' if self.fault == 'held_blind' else 'False','food':'0.1','rest':('0.1' if self.fault == 'sleepy_fixture' else '0.8'),'inBed':'False'}
             return {'success':True,'pawns':[{'id':pid}]}
         if tool == 'jawa/pawn_force_incapacitate':
             if kw.get('action') == 'vanish':
@@ -126,6 +126,7 @@ class Bridge:
             if not enabled and kw['jobDef'] == 'RM_CaptureDown' and self.fault == 'off_unattempted':
                 return {'success': False, 'accepted': False, 'requestedJobDef': 'RM_CaptureDown'}
             if capture: p['prisoner'] = p['kept'] = 'True'
+            if capture and kw['jobDef'] == 'RM_CaptureDown' and self.fault != 'unheld': p['held'] = 'True'
             if self.fault == 'remote_warp' and self.beds: p['x'] = 49; p['kept'] = 'False'
         if tool == 'jawa/build_batch': self.beds.append({'id':'bed'})
         if tool == 'jawa/ordered_job':
@@ -166,7 +167,9 @@ def check(fault=None, abort=False, occupied=False):
     print('ok', fault or ('injected_abort' if abort else 'complete_scene'))
 
 def run_driver_checks():
+    # unheld: the hole keeps him but holds no way out shut; held_blind: the read says held for a ground-bed prisoner too
     for f in (None, 'no_capture', 'off_captures', 'remote_warp', 'no_feed', 'escape', 'wet', 'bad_snapshot', 'incapable_worker', 'no_order', 'off_unattempted', 'no_supply',
+              'unheld', 'held_blind',
               'first_incapable', 'off_refuses', 'sleeps_after_day', 'sleepy_fixture'):
         check(f)
     check(abort=True)

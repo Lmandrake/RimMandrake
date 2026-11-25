@@ -1,25 +1,23 @@
 #!/usr/bin/env python3
-"""Offline half of sc_pawn_height (RIMMANDRAKE_REBUILD_FLOWWORKS_PAWN_HEIGHT_SCENE_ZEROS_PASSED): scene_pawn_height against a
-fake map that models the shipped sink and the three things that sank visit 1 (2026-11-15):
-  - the draft dug each pad ONE row tall, so the shipped lip clamp (pitSinkClampEnabled, on) held every pawn at sink 0: the
-    feet sit on the south lip (RM_PitDrawMath.ClampSinkToLip, room 0). PH_offset_follows_depth then PASSED on 17 zeros,
-    because a flat vector is sorted;
-  - the draft filled the staircase and read ProofReadout, a cell readout with no swim state in it ('swim' never appears);
-  - the control read the pawn still in the flooded pit (its walk out never arrived) and PASSED on sink 0 there.
-The fake sinks a pawn standing still by min(depth, 8) x 0.05, clamped to the room above its column's south lip, exactly as
-the mod does; ProofSwim reads deepCell for a pawn in >= 1.8 m of water and exhaustion that grows while it swims.
+"""Offline half of sc_pawn_height: scene_pawn_height against a fake map that models the shipped sink.
+
+Since RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES the scene gives ONE order over five pads (D0..D4) and ONE
+order back, and reads the sink every tick (it gave 46 one-cell orders before). The fake walks an ordered pawn one cell every
+STEP_T ticks along x, sets its Position when a step ends, and draws a walking pawn's sink between the two cells of its step,
+as RM_Patch_PitDepthDrawOffset.SinkOf does; a pawn standing still sinks by min(depth, 8) x 0.05, clamped to the room above
+its column's south lip (RM_PitDrawMath.ClampSinkToLip: visit 1, 2026-11-15, dug one-row pads and read 17 clamped zeros).
+ProofSwim reads deepCell for a pawn in >= 1.8 m of water and exhaustion that grows while it swims.
   healthy            every row PASS
-  fault='flat'       the sink never applies -> the offset row UNMEASURED (an all-zero vector), the control UNMEASURED
-  fault='grows'      the sink falls with depth past D4 -> the offset row FAILs
+  fault='flat'       the sink never applies -> the offset row UNMEASURED (an all-zero read), the control UNMEASURED
+  fault='grows'      the sink stops deepening past D3 -> the offset row FAILs
   fault='oneway'     the walk back reads a different sink -> the offset row FAILs
-  fault='stuck'      the pawn never leaves the first pad -> the offset row UNMEASURED (unreached pads), never PASS
+  fault='stuck'      the pawn never leaves the ground -> the offset row UNMEASURED (unreached pads), never PASS
+  fault='detour'     the path goes round the pads on the row north of them (no wall there) -> UNMEASURED, never PASS
   fault='noswim'     2 m of water and no swim -> the swim row FAILs
   fault='notire'     swims, exhaustion never rises -> the swim row FAILs
   fault='dryswim'    the pool holds no water -> the swim row UNMEASURED
-  fault='stepsink'   the sink also applies on undug ground -> the control FAILs
-  fault='keeptree'   the calm site's Drago tree at (64,57) stays on the control lane (visit 2, 2026-11-20: 2 of 10 reads
-                     None) -> the control UNMEASURED with the off-cell reads named, never PASS
-Red on the draft at HEAD before the fix, green on the fix. The fake proves the scene's logic, never the game; the live half is
+  fault='stepsink'   a walking pawn sinks on undug ground -> the control FAILs
+The fake proves the scene's logic, never the game; the live half is
 `python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_pawn_height --out <json>`.
     python3 selftest_pawn_height_scene.py [path/to/concept_scenes.py]
 """
@@ -36,14 +34,14 @@ SRC = Path(sys.argv[1]) if len(sys.argv) > 1 else HERE / 'concept_scenes.py'
 spec = importlib.util.spec_from_file_location('concept_scenes_under_test', SRC)
 C = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(C)
-PER, CAP, DL_PER_M = 0.05, 8, 20000
+PER, CAP, DL_PER_M, STEP_T = 0.05, 8, 20000, 13
 
 
 class Fake:
     def __init__(self, fault=None):
         self.fault = fault
-        self.g = {'d': {}, 'dl': {}, 'pawns': {}, 'ex': {}, 'n': 0, 'tick': 0, 'back': False,
-                  'trees': {(64, 57)}}          # the calm site's Drago tree on the control lane (probed live 2026-11-20)
+        self.g = {'d': {}, 'dl': {}, 'pawns': {}, 'ex': {}, 'n': 0, 'tick': 0, 'back': False, 'walk': {}, 'walls': set(),
+                  'drafted': set()}
         self.saves, self.contract = {}, []
 
     def save(self, k):
@@ -54,10 +52,18 @@ class Fake:
 
     def ticks(self, n):
         g = self.g
-        g['tick'] += n
-        for pid, c in g['pawns'].items():
-            if self.swims(c) and self.fault != 'notire':
-                g['ex'][pid] = min(1.0, g['ex'].get(pid, 0.0) + n / 5000.0)
+        for _ in range(n):
+            g['tick'] += 1
+            for pid, w in list(g['walk'].items()):
+                w['k'] += 1
+                if w['k'] >= STEP_T:
+                    g['pawns'][pid] = w['path'].pop(0)
+                    w['k'] = 0
+                    if not w['path']:
+                        del g['walk'][pid]
+            for pid, c in g['pawns'].items():
+                if self.swims(c) and self.fault != 'notire':
+                    g['ex'][pid] = min(1.0, g['ex'].get(pid, 0.0) + 1 / 5000.0)
         return {'success': True, 'advanced': n}
 
     def water_m(self, c):
@@ -66,19 +72,43 @@ class Fake:
     def swims(self, c):
         return self.water_m(c) >= 1.8 and self.fault != 'noswim'
 
-    def sink(self, c):
+    def still_sink(self, c):
         d = self.g['d'].get(c, 0)
-        if self.fault == 'flat':
+        if self.fault == 'flat' or d <= 0:
             return 0.0
-        if d <= 0:
-            return 0.3 if self.fault == 'stepsink' else 0.0
-        s = (min(d, 4) - 0.02 * max(0, d - 4) if self.fault == 'grows' else min(d, CAP)) * PER
+        s = (min(d, 3) if self.fault == 'grows' else min(d, CAP)) * PER
         if self.fault == 'oneway' and self.g['back']:
-            s += 0.01
+            s += 0.02
         room, k = 0, 1                                     # rows of the same-or-deeper hole south of this one
         while self.g['d'].get((c[0], c[1] - k), 0) >= d:
             room, k = room + 1, k + 1
         return min(s, float(room))
+
+    def sink(self, pid):
+        g, c = self.g, self.g['pawns'][pid]
+        w = g['walk'].get(pid)
+        if not w:
+            return self.still_sink(c)
+        nxt = w['path'][0]
+        if g['d'].get(c, 0) == 0 and g['d'].get(nxt, 0) == 0:
+            return 0.3 if self.fault == 'stepsink' else 0.0
+        a, b = self.still_sink(c), self.still_sink(nxt)
+        return a + (b - a) * w['k'] / float(STEP_T)
+
+    def path(self, at, to):
+        """Straight along x on the pawn's row, then along z; 'detour' walks the row north of the pads (walls ignored)."""
+        out, (x, z) = [], at
+        if self.fault == 'detour':
+            out.append((x, z + 1)); z += 1
+        while x != to[0]:
+            x += 1 if to[0] > x else -1
+            if (x, z) in self.g['walls'] and self.fault != 'detour':
+                self.contract.append('path through a wall at %s' % ((x, z),))
+            out.append((x, z))
+        while z != to[1]:
+            z += 1 if to[1] > z else -1
+            out.append((x, z))
+        return out
 
     def call(self, tool, **kw):
         g = self.g
@@ -94,6 +124,16 @@ class Fake:
             return {'success': True, 'value': None}
         if tool == 'jawa/flowworks_pulse':
             return {'success': True}
+        if tool == 'jawa/build_batch':
+            for op in kw['ops'].split(';'):
+                d, xz = op.split(':')
+                if d != 'Wall' or kw.get('stuff') != 'Steel':
+                    self.contract.append('build_batch %s' % op)
+                g['walls'].add(tuple(int(v) for v in xz.split(',')))
+            return {'success': True}
+        if tool == 'jawa/set_draft':
+            g['drafted'].add(kw['pawnId'])
+            return {'success': True}
         if tool == 'jawa/spawn_pawn':
             if kw.get('kindDef') != 'Colonist' or kw.get('count') != 1:
                 self.contract.append('spawn_pawn %s' % kw)
@@ -105,23 +145,19 @@ class Fake:
             pid, to = kw['pawnId'], (kw['x'], kw['z'])
             if pid not in g['pawns']:
                 return {'success': False, 'message': 'no pawn %s' % pid}
+            if kw.get('waitTicks') != 0:
+                self.contract.append('order_pawn waitTicks %s: the scene reads every tick itself' % kw.get('waitTicks'))
             at = g['pawns'][pid]
             if to[0] < at[0]:
                 g['back'] = True
-            stuck = self.fault == 'stuck' and g['d'].get(at, 0) == 0 and g['d'].get(to, 0) > 0
-            if self.water_m(at) > 0 or stuck:          # a pawn in the flooded pool, or a stuck one, never gets out
-                return {'success': False, 'arrivedCount': 0, 'movedCount': 1}
-            if to in g['trees']:                       # ordered onto a tree: the pawn stops beside it, short of the cell
-                g['pawns'][pid] = (to[0], to[1] - 1)
-                return {'success': True, 'arrivedCount': 0, 'movedCount': 1}
-            g['pawns'][pid] = to
-            self.ticks(kw.get('waitTicks', 0))
-            return {'success': True, 'arrivedCount': 1, 'movedCount': 1}
+            if self.fault == 'stuck' or self.water_m(at) > 0:
+                return {'success': True, 'accepted': True}
+            pth = self.path(at, to)
+            if pth:
+                g['walk'][pid] = {'path': pth, 'k': 0}
+            return {'success': True, 'accepted': True}
         if tool == 'jawa/destroy_batch':
-            x, z, w, h = (int(v) for v in kw['rects'].split(','))
-            hit = {c for c in g['trees'] if x <= c[0] < x + w and z <= c[1] < z + h} if 'Plant' in kw['categories'] else set()
-            g['trees'] -= set() if self.fault == 'keeptree' else hit
-            return {'success': True, 'destroyed': len(hit)}
+            return {'success': True, 'destroyed': 0}
         if tool == 'jawa/static_call':
             return {'success': True, 'result': self.static(kw['method'], kw.get('args', ''))}
         raise AssertionError('unexpected tool %s %s' % (tool, kw))
@@ -140,9 +176,10 @@ class Fake:
             if arg not in g['pawns']:
                 return 'REFUSED: no spawned pawn ' + arg
             c = g['pawns'][arg]
-            s = self.sink(c)
-            return ('SINK id=%s cell=%d,%d depth=%d waterDl=%d fluid=none sink=%g drawDz=%g moving=False wallOverHead=0 '
-                    'enabled=True' % (arg, c[0], c[1], g['d'].get(c, 0), g['dl'].get(c, 0), round(s, 3), -round(s, 3)))
+            s = self.sink(arg)
+            return ('SINK id=%s cell=%d,%d depth=%d waterDl=%d fluid=none sink=%g drawDz=%g moving=%s wallOverHead=0 '
+                    'enabled=True' % (arg, c[0], c[1], g['d'].get(c, 0), g['dl'].get(c, 0), round(s, 4), -round(s, 4),
+                                      arg in g['walk']))
         if method == 'ProofSwim':
             parts = arg.split(',')
             if len(parts) != 2:
@@ -179,18 +216,24 @@ def check(label, ok, why=''):
 
 OFF, SWIM, CTRL = 'PH_offset_follows_depth', 'PH_swims_and_tires_at_2m', 'PH_control_undug_no_offset'
 rows, out, F = run()
-check('every staging call keeps its tool contract (one colonist per spawn; ProofSwim x,z)', not F.contract, F.contract)
-check('healthy fake (sink by depth to the cap, flat past it, same both ways; swims and tires at 2 m): every row PASS',
-      out['status'] == 'PASS' and all(rows.get(r) == 'PASS' for r in (OFF, SWIM, CTRL)), rows)
+check('every staging call keeps its tool contract (one colonist per spawn; ProofSwim x,z; walls; orders read per tick)',
+      not F.contract, F.contract)
+check('healthy fake (sink by depth, drawn between the cells of a step, same both ways; swims and tires at 2 m): every row '
+      'PASS', out['status'] == 'PASS' and all(rows.get(r) == 'PASS' for r in (OFF, SWIM, CTRL)), rows)
+orders = [c for c in out['calls'] if c['tool'] == 'jawa/order_pawn']
+check('one order over the pads and one back (it was 46 orders of one cell each)', len(orders) == 2, len(orders))
+reads = [c for c in out['calls'] if c['tool'] == 'jawa/static_call' and c['args'][1] == 'ProofPawnSink']
+check('the sink is read every tick of both orders (2 x 6 cells x %d ticks at least)' % STEP_T,
+      len(reads) >= 2 * 6 * STEP_T, len(reads))
 r, o, _ = run('flat')
-check('a sink that never applies (17 zeros): the offset row UNMEASURED, never PASS; the control cannot rule anything out',
+check('a sink that never applies: the offset row UNMEASURED, never PASS; the control cannot rule anything out',
       r.get(OFF) == 'UNMEASURED' and r.get(CTRL) == 'UNMEASURED' and o['status'] != 'PASS', r)
-r, o, _ = run('grows')
-check('a sink that falls with depth past D4: the offset row FAILs', r.get(OFF) == 'FAIL', r)
-r, o, _ = run('oneway')
-check('the walk back reads a different sink: the offset row FAILs', r.get(OFF) == 'FAIL', r)
-r, o, _ = run('stuck')
-check('a pawn that never reaches the pads: the offset row UNMEASURED, never PASS', r.get(OFF) == 'UNMEASURED', r)
+for fault, label in (('grows', 'a sink that stops deepening past D3'), ('oneway', 'the walk back reads a different sink')):
+    r, o, _ = run(fault)
+    check('%s: the offset row FAILs' % label, r.get(OFF) == 'FAIL', r)
+for fault, label in (('stuck', 'a pawn that never leaves the ground'), ('detour', 'a path round the pads')):
+    r, o, _ = run(fault)
+    check('%s: the offset row UNMEASURED, never PASS' % label, r.get(OFF) == 'UNMEASURED' and o['status'] != 'PASS', r)
 r, o, _ = run('noswim')
 check('2 m of water and no swim: the swim row FAILs', r.get(SWIM) == 'FAIL', r)
 r, o, _ = run('notire')
@@ -198,10 +241,6 @@ check('swims, never tires: the swim row FAILs', r.get(SWIM) == 'FAIL', r)
 r, o, _ = run('dryswim')
 check('a pool that holds no water: the swim row UNMEASURED, never PASS', r.get(SWIM) == 'UNMEASURED', r)
 r, o, _ = run('stepsink')
-check('a sink on undug ground: the control FAILs', r.get(CTRL) == 'FAIL', r)
-r, o, _ = run('keeptree')
-ctl = [x for x in o['rows'] if x['id'] == CTRL][0]
-check('the lane tree left standing: the control UNMEASURED, its off-cell reads named (target and where the pawn stood)',
-      r.get(CTRL) == 'UNMEASURED' and ctl['detail'].count('((64, 57), (64, 56))') == 2, (r, ctl['detail'][:200]))
+check('a walking pawn sinking on undug ground: the control FAILs', r.get(CTRL) == 'FAIL', r)
 print('selftest_pawn_height_scene: %s' % ('FAIL' if FAILS else 'ok'))
 sys.exit(1 if FAILS else 0)

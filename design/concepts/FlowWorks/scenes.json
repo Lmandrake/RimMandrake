@@ -133,11 +133,89 @@
    },
    "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
    "hold": "immediate",
+   "entry_point_item": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL",
+   "requirement_moved_to": [
+    "sc_source_draws",
+    "sc_source_refills",
+    "sc_lake_endless"
+   ],
+   "split_into": [
+    "sc_source_draws",
+    "sc_source_refills",
+    "sc_lake_endless"
+   ],
+   "split_by": "RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES"
+  },
+  {
+   "id": "sc_source_draws",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_source_draws",
+   "start": [
+    "the calm site; a 200-square dug pond, full (asserted litres)",
+    "a dry 60-cell moat"
+   ],
+   "action": "dig the moat onto the pond",
+   "expect": "the pond's litres drop and its wet-square count falls",
+   "control": {
+    "case": "a Sink at tap 0 beside the drawn pond",
+    "expect": "the pond does not drop beyond the moat's take",
+    "rules_out": "a pond drawn by a hidden script"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
    "requirement": [
     "source_pays_and_refills",
     "no_full_source_after_draw"
    ],
-   "entry_point_item": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL"
+   "split_from": "sc_source_pays",
+   "entry_point_item": "RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES"
+  },
+  {
+   "id": "sc_source_refills",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_source_refills",
+   "start": [
+    "the calm site; the same pond dug and left empty (asserted 0 L)"
+   ],
+   "action": "lock rain on; read the probe until it first holds water, then 1,000 ticks later",
+   "expect": "the first read is above 0 and below the brim, the second higher",
+   "control": {
+    "case": "the read before the rain",
+    "expect": "0 L",
+    "rules_out": "a refill that was there before the rain"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
+   "requirement": [
+    "source_pays_and_refills"
+   ],
+   "split_from": "sc_source_pays",
+   "entry_point_item": "RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES"
+  },
+  {
+   "id": "sc_lake_endless",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_lake_endless",
+   "start": [
+    "the river site save (built on fw_gss_sitting): an edge-touching body (asserted limitless)"
+   ],
+   "action": "dig a dry 10-square moat beside the Endless probe cell",
+   "expect": "the probe reads Endless; the body's stock does not drop although the moat took water",
+   "control": {
+    "case": "the moat's own cells",
+    "expect": "they hold water after the draw",
+    "rules_out": "an Endless read on a body that was never drawn"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
+   "requirement": [
+    "source_pays_and_refills"
+   ],
+   "split_from": "sc_source_pays",
+   "entry_point_item": "RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES"
   },
   {
    "id": "sc_canal_fire",
@@ -190,13 +268,13 @@
    "staged_by": "script",
    "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_pawn_height",
    "start": [
-    "the D0..D16 pad ladder, dry then filled to 2 m (asserted)"
+    "five pads D0..D4 walled on both sides, and a 4 m pool filled to 2 m (asserted)"
    ],
-   "action": "walk a colonist across and back",
-   "expect": "draw offset follows depth both ways; swims and tires at 2 m",
+   "action": "one order across the pads and one back, the sink read every tick; a colonist in the pool",
+   "expect": "the sink rises with depth on the way out and falls on the way back, the same at each depth; swims and tires at 2 m",
    "control": {
-    "case": "the same walk on undug ground",
-    "expect": "no offset change, no swim",
+    "case": "the same orders' cells on undug ground before the pads",
+    "expect": "no offset, no swim",
     "rules_out": "an offset applied by path step rather than cell depth"
    },
    "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
@@ -204,7 +282,8 @@
    "requirement": [
     "pawn_height_follows_depth"
    ],
-   "entry_point_item": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL"
+   "entry_point_item": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL",
+   "shrunk": "RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES: one order each way over five pads (it was 46 orders over 17 pads)"
   },
   {
    "id": "sc_pit_reads",
@@ -385,7 +464,8 @@
    "requirement": [
     "hung_bridge_spans"
    ],
-   "entry_point_item": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL"
+   "entry_point_item": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL",
+   "shrunk": "RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES: --only posts,under"
   },
   {
    "id": "sc_ice",
@@ -462,8 +542,8 @@
    "start": [
     "a drained D4 moat, two downed raiders, no bed anywhere in it (asserted)"
    ],
-   "action": "order capture from the rim; one day passes",
-   "expect": "both prisoners, held in the hole, needs met",
+   "action": "order capture from the rim; feed; 5,000 ticks pass",
+   "expect": "both prisoners, held in the hole with no way out, needs met",
    "control": {
     "case": "the same with the bed-less prison setting off",
     "expect": "capture refused",
@@ -474,7 +554,8 @@
    "requirement": [
     "drained_hole_is_a_prison"
    ],
-   "entry_point_item": "FLOWWORKS_PRISON_BUILD_NO_BED_REQUIRED"
+   "entry_point_item": "FLOWWORKS_PRISON_BUILD_NO_BED_REQUIRED",
+   "shrunk": "RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES: the hold is 5,000 ticks, not a day"
   },
   {
    "id": "sc_toss_flame",
@@ -538,10 +619,88 @@
    },
    "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
    "hold": "immediate",
+   "entry_point_item": "FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED",
+   "requirement_moved_to": [
+    "sc_walk_reload",
+    "sc_walk_switch",
+    "sc_walk_second_order"
+   ],
+   "split_into": [
+    "sc_walk_reload",
+    "sc_walk_switch",
+    "sc_walk_second_order"
+   ],
+   "split_by": "RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES"
+  },
+  {
+   "id": "sc_walk_reload",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_walk_reload",
+   "start": [
+    "the calm site; a dug 2 m pond and a 2 m swim pool, filled (asserted); one colonist swimming"
+   ],
+   "action": "save, 60 ticks, load",
+   "expect": "the state digest equal; the swimmer in the same cell, still in deep water; log clean",
+   "control": {
+    "case": "a reload from the scene-begin save, made before the fill",
+    "expect": "the digest differs",
+    "rules_out": "a digest that hashes nothing that moves"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
    "requirement": [
     "walk_moat_season"
    ],
-   "entry_point_item": "FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED"
+   "split_from": "sc_walk",
+   "entry_point_item": "RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES"
+  },
+  {
+   "id": "sc_walk_switch",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_walk_switch",
+   "start": [
+    "the calm site; a dug 2 m pond, filled, and a dry moat joined to it (asserted)"
+   ],
+   "action": "the master switch off and on; off, dig a dry moat onto the wet one and wait 600 ticks; on",
+   "expect": "the digest equal after off and on; the dug moat stays dry and the pond keeps its litres while off; on, the pond pays it; no leftover fluid; log clean",
+   "control": {
+    "case": "the first moat dug with the switch on",
+    "expect": "the pond pays it",
+    "rules_out": "an instrument that cannot see a draw"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
+   "requirement": [
+    "walk_moat_season",
+    "inv_settings"
+   ],
+   "split_from": "sc_walk",
+   "entry_point_item": "RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES"
+  },
+  {
+   "id": "sc_walk_second_order",
+   "kind": "acceptance",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_walk_second_order",
+   "start": [
+    "the calm site; a dug 2 m pond, filled, and a chemfuel pit beside it, filled (asserted)"
+   ],
+   "action": "chemfuel first, then dig a moat that drains the pond",
+   "expect": "the pond pays; the fuel keeps its stock; the census holds exactly water and chemfuel, every wet cell recorded; log clean",
+   "control": {
+    "case": "the fuel pit's stock read before the moat",
+    "expect": "the same stock after",
+    "rules_out": "a fuel read that cannot see a change"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
+   "requirement": [
+    "walk_moat_season"
+   ],
+   "split_from": "sc_walk",
+   "entry_point_item": "RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES"
   },
   {
    "id": "sc_garden",
@@ -565,7 +724,55 @@
     "one_liquid_network",
     "hose_reads_as_hose"
    ],
-   "entry_point_item": "FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED"
+   "entry_point_item": "FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED",
+   "split_into": [
+    "sc_sprinkler_pump",
+    "sc_faucet_drink"
+   ],
+   "split_by": "RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES"
+  },
+  {
+   "id": "sc_sprinkler_pump",
+   "kind": "interaction",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_sprinkler_pump",
+   "start": [
+    "the calm site; a tank, a pipe, a powered pump and a sprinkler head over potatoes; beside it the same net with no pump (asserted)"
+   ],
+   "action": "three chunks of 2,500 ticks",
+   "expect": "the pumped head draws its tank by its cells times 5 over one clean pulse; the head with no pump reads No pressure and its tank stays full",
+   "control": {
+    "case": "the head with no pump on its net",
+    "expect": "never sprays",
+    "rules_out": "a head that sprays without pressure"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
+   "features": [
+    "one_liquid_network"
+   ],
+   "split_from": "sc_garden",
+   "entry_point_item": "RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES"
+  },
+  {
+   "id": "sc_faucet_drink",
+   "kind": "interaction",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py::scene_faucet_drink",
+   "start": [
+    "the calm site; a tank, a pipe and a pipe faucet; one thirsty colonist beside it (asserted)"
+   ],
+   "action": "one chunk of 2,500 ticks",
+   "expect": "the faucet's tank is drawn",
+   "control": {
+    "case": "the filled tank's units before the chunk",
+    "expect": "fewer after",
+    "rules_out": "a tank drawn by something other than the drink"
+   },
+   "restore": "restore terrain, liquid and things from the snapshot recorded at scene-begin; reset every setting poked to its prior value",
+   "hold": "immediate",
+   "split_from": "sc_garden",
+   "entry_point_item": "RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES"
   }
  ],
  "showcases": [
@@ -640,7 +847,7 @@
   {
    "capability": "inv_map_controls",
    "by": [
-    "sc_source_pays"
+    "sc_source_draws"
    ],
    "why": "a map-maker tool; the source scene drives the Sink tap and flow meter and its zero-rate control checks they do what they say"
   },

@@ -234,6 +234,49 @@ for fault, rid, want in CASES:
     r, o, _ = run(fault)
     check('fault %s: %s reads %s' % (fault, rid, want), r.get(rid) == want and o['status'] != 'PASS', (r.get(rid), r))
 
+# the three split scenes (RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES): each asks only its own rows, reads
+# all PASS on the healthy fake, and each fault turns the row it owns red (never PASS) in the scene that owns it
+SPLIT = {
+    'scene_walk_reload': ('WALK_reload_digest_matches', 'WALK_swimmer_survives_reload', 'WALK_control_prefill_reload_differs',
+                          'WALK_log_clean'),
+    'scene_walk_switch': ('WALK_pond_pays', 'WALK_toggle_off_on_digest_matches', 'WALK_switch_off_holds_water',
+                          'WALK_pond_pays_again', 'WALK_no_leftovers', 'WALK_log_clean'),
+    'scene_walk_second_order': ('WALK_second_order_pond_pays', 'WALK_second_order_fuel_holds',
+                                'WALK_second_order_no_leftovers', 'WALK_log_clean'),
+}
+
+
+def run_split(name, fault=None):
+    F = Fake(fault)
+    receipt = {'calls': []}
+    hooks = {} if fault == 'no_hooks' else {'save_mid': lambda: F.save('mid'), 'load_mid': lambda: F.load('mid')}
+    out = C.STAGE3_SCENES[name](F, lambda: F.save('begin'), lambda: F.load('begin'), receipt, **hooks)
+    return {r['id']: r['status'] for r in out['rows']}, out, F
+
+
+covered = set()
+for name, want_rows in SPLIT.items():
+    r, o, f = run_split(name)
+    check('%s asks exactly its own rows' % name, sorted(r) == sorted(want_rows), sorted(r))
+    check('%s: the healthy fake reads every row PASS' % name, o['status'] == 'PASS' and set(r.values()) == {'PASS'}, r)
+    check('%s restores the settings it poked' % name,
+          f.settings == {'depthEngineEnabled': True, 'depthEngineLiveForTests': False}, f.settings)
+    covered |= set(want_rows)
+check('the three split scenes ask every sc_walk bar row between them', set(BAR) <= covered, sorted(set(BAR) - covered))
+for fault, rid, want in CASES:
+    owner = next(n for n, rows_ in SPLIT.items() if rid in rows_ and rid != 'WALK_log_clean') if rid != 'WALK_log_clean' \
+        else 'scene_walk_switch'
+    r, o, _ = run_split(owner, fault)
+    check('split %s, fault %s: %s reads %s' % (owner, fault, rid, want), r.get(rid) == want and o['status'] != 'PASS',
+          (r.get(rid), r))
+for name in ('scene_walk_reload', 'scene_walk_second_order'):     # the log row is each scene's own
+    for fault, want in (('fw_error', 'FAIL'), ('lost', 'UNMEASURED')):
+        r, o, _ = run_split(name, fault)
+        check('split %s, fault %s: WALK_log_clean reads %s' % (name, fault, want), r.get('WALK_log_clean') == want, r)
+r, o, _ = run_split('scene_walk_reload')
+ticks_gap = [c for c in o['calls'] if c['tool'] == 'jawa/flowworks_excavation_drive']
+check('sc_walk_reload stages only the pond and the swim pool (18 squares dug, no moat)', len(ticks_gap) == 18, len(ticks_gap))
+
 check('vacuous reads: None, REFUSED, an all-zero vector', C._vacuous(None) and C._vacuous('REFUSED x') and C._vacuous((0, 0, None))
       and C._vacuous((0, 0.0)) and not C._vacuous((21, 21, 0, C.WATER, 'FLUIDID wet 21', 400.0)))
 check('litres parse: the live readout line, a dry hole, a blind line',

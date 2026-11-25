@@ -10,7 +10,7 @@
   "8": "his live walk"
  },
  "rule": "a bar passes when every test in decides passes; proves_at is the highest stage among them; supports add evidence but decide nothing",
- "settings_move": "inv_settings: the per-toggle default check is decided offline by T_SETTINGS_SWEEP_OFFLINE (C# SettingsReset/MachinerySettings/Settings cases, the settings registry selftest, the settings search selftest, the northstar selftest's registry rows, and validation_v2.py --offline O2's C# toggle census). The game keeps only sc_walk's master switch off and on mid-game, which needs a running colony. validation_v2's live L2 'settings_default' read stays a harness precondition (installed settings equal shipped), not a bar. No bar text is edited.",
+ "settings_move": "inv_settings: the per-toggle default check is decided offline by T_SETTINGS_SWEEP_OFFLINE (C# SettingsReset/MachinerySettings/Settings cases, the settings registry selftest, the settings search selftest, the northstar selftest's registry rows, and validation_v2.py --offline O2's C# toggle census). The game keeps only the master switch off and on mid-game (sc_walk_switch), which needs a running colony. validation_v2's live L2 'settings_default' read stays a harness precondition (installed settings equal shipped), not a bar. No bar text is edited.",
  "corrections": [],
  "corrections_note": "FlowWorks has no coverage_verdict.json and no coverage_fixes.json: the Arbiter signed all 59 rows covered on 2026-11-05 at the locked tree and sheet; no judge correction is open (version/gaps_sorted.md)",
  "held_statements": [
@@ -3333,25 +3333,95 @@
     "by": "testq_blocks.py"
    }
   },
-  "sc_source_pays": {
-   "id": "sc_source_pays",
+  "sc_source_draws": {
+   "id": "sc_source_draws",
    "kind": "live_minimal",
    "stage": "6",
    "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
-   "entry": "scene_source_pays",
-   "observes": "pond and shore drop, flow stops when empty, refill visible; the lake never drops and reads Endless",
+   "entry": "scene_source_draws",
+   "observes": "a moat drawing a full pond lowers its litres and its wet-square count; control: a sink at tap 0 takes nothing",
+   "claims": [
+    "a draw lowers the pond's litres and pulls its shore back"
+   ],
    "reads": [
     "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
     "design/concepts/FlowWorks/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_source_pays --out <json>  (bridge held; tier fw_gss_sitting: its lake case loads the river site save, built on that tier, and on the minimal list reads UNMEASURED)",
-   "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
-   "owed_under": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL",
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_source_draws --out <json>  (bridge held; tier flowworks, the 13-mod FlowWorks list)",
+   "why_game": "a live state change on a running map: the calm site save loads in about 90 s",
+   "owed_under": "RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES",
    "runs_today": {
     "ran": false,
     "entry_exists": true,
-    "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
+    "why": "UNRUN: written 2026-11-25 (RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES), offline selftest green; never the game"
    },
+   "cheaper_why": "the claim is what the player sees of a pond on a live map (litres and shore together after a real moat draw); the emptied pond's stop is arithmetic and is decided offline by T_STOCK (planted endless pond red there 2026-11-25)",
+   "split_from": "sc_source_pays",
+   "testq": {
+    "check": {
+     "tier": "flowworks",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
+   }
+  },
+  "sc_source_refills": {
+   "id": "sc_source_refills",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+   "entry": "scene_source_refills",
+   "observes": "rain locked on an emptied dug pond: once the probe first reads water, it reads more 1,000 ticks later, and the first read is below the brim",
+   "claims": [
+    "rain refills an emptied pond with visible progress"
+   ],
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_source_refills --out <json>  (bridge held; tier flowworks, the 13-mod FlowWorks list)",
+   "why_game": "a live state change on a running map: the calm site save loads in about 90 s",
+   "owed_under": "RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "UNRUN: written 2026-11-25 (RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES), offline selftest green; never the game"
+   },
+   "cheaper_why": "the claim is the live weather filling a live hole; the offline Refill cases of T_STOCK read the math, never rain on a map",
+   "split_from": "sc_source_pays",
+   "testq": {
+    "check": {
+     "tier": "flowworks",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
+   }
+  },
+  "sc_lake_endless": {
+   "id": "sc_lake_endless",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+   "entry": "scene_lake_endless",
+   "observes": "on the river site save a body touching the map edge reads Endless, and its stock does not drop when a moat beside it takes water",
+   "claims": [
+    "a body touching the map edge is marked Endless and never drops"
+   ],
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_lake_endless --out <json>  (bridge held; tier fw_gss_sitting: it loads the river site save, built on that tier; on the 13-mod list that save reads UNMEASURED)",
+   "why_game": "a live state change on a running map: the calm site save loads in about 90 s",
+   "owed_under": "RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "UNRUN: written 2026-11-25 (RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES), offline selftest green; never the game"
+   },
+   "cheaper_why": "an edge body exists only on a map with one: the river site save holds it, and the calm site has none; it loads that save, built on fw_gss_sitting, and reads one probe and one moat",
+   "split_from": "sc_source_pays",
+   "tier": "fw_gss_sitting",
    "testq": {
     "check": {
      "tier": "fw_gss_sitting",
@@ -3418,7 +3488,7 @@
    "stage": "6",
    "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
    "entry": "scene_pawn_height",
-   "observes": "draw offset follows depth both ways; swims and tires at 2 m",
+   "observes": "one order over five pads (D0..D4) and one back, the sink read every tick: it rises with depth on the way out and falls on the way back, the same at each depth; undug cells read 0; swims and tires at 2 m",
    "reads": [
     "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
     "design/concepts/FlowWorks/scenes.json"
@@ -3431,6 +3501,8 @@
     "entry_exists": true,
     "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
    },
+   "shrunk": "RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES: one order each way over five pads, the sink read every tick (it was 46 orders of one cell over 17 pads)",
+   "cheaper_why": "the claim is how a walking pawn is drawn on a live map; the draw math is offline, the pawn's drawn position is only in the game",
    "testq": {
     "check": {
      "tier": "flowworks",
@@ -3627,7 +3699,7 @@
     "src/RimMandrake/FlowWorks/northstar/suspension_bridge_proof.py",
     "design/concepts/FlowWorks/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\suspension_bridge_proof.py  (entry posts; bridge held, minimal list)",
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\suspension_bridge_proof.py --only posts,under  (bridge held, minimal list)",
    "why_game": "an on-screen look and a live state change: needs a running map, which a dev quicktest colony gives in ~90 s",
    "owed_under": "FLOWWORKS_SCENES_BUILD_EACH_WITH_A_FOIL",
    "runs_today": {
@@ -3635,6 +3707,8 @@
     "entry_exists": true,
     "why": "offline only: never the game in this run"
    },
+   "shrunk": "RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES: --only posts,under: posts holds the over-path and the anchor-lost control, under (U1 of underpass) the walk under the deck and the walk over it; grate, the rest of underpass (shots, crush), waters, jetty, looks, islands and reach each keep their section, run only when a change touches them",
+   "cheaper_why": "the bar is two live paths, over and under a hung deck: only a running map paths a pawn; posts is the one section that stages them",
    "testq": {
     "chains": [
      "suspension_bridges_and_covers"
@@ -3743,7 +3817,7 @@
    "stage": "6",
    "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
    "entry": "scene_hole_prison",
-   "observes": "both prisoners, held in the hole, needs met",
+   "observes": "captured from the rim with no bed, fed by an ordinary work giver, held in the hole (held, no way out) for 5,000 ticks; control: the bed-less setting off refuses the capture; a ground-bed prisoner reads not held",
    "reads": [
     "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
     "design/concepts/FlowWorks/scenes.json"
@@ -3756,6 +3830,8 @@
     "entry_exists": true,
     "why": "offline only: never the game in this run"
    },
+   "shrunk": "RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES: the hold after capture is 5,000 ticks, not a game day; each hold read asks held",
+   "cheaper_why": "capture, feeding and the hold are live work givers and pathing in a running map; the hold is the least that shows a fed, kept prisoner",
    "testq": {
     "check": {
      "tier": "flowworks",
@@ -3817,55 +3893,158 @@
     "by": "testq_blocks.py"
    }
   },
-  "sc_walk": {
-   "id": "sc_walk",
+  "sc_walk_reload": {
+   "id": "sc_walk_reload",
    "kind": "live_minimal",
    "stage": "6",
    "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
-   "entry": "scene_walk_moat_season",
-   "observes": "state digests match across the reload; the pond pays again; no leftovers; log clean",
+   "entry": "scene_walk_reload",
+   "observes": "state digest equal across a save, 60 ticks and a load; the swimmer in the same cell, still in deep water; control: the pre-fill save differs",
+   "claims": [
+    "a save and reload keep the pond, the moat and the swimmer"
+   ],
    "reads": [
     "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
     "design/concepts/FlowWorks/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_walk_moat_season --out <json>  (bridge held; tier flowworks_list, design/concepts/FlowWorks/version/small_list.json)",
-   "why_game": "the breadth failure only shows with every FlowWorks system at once, and a reload from a mid-way save",
-   "owed_under": "FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED",
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_walk_reload --out <json>  (bridge held; tier flowworks, the 13-mod FlowWorks list)",
+   "why_game": "a live state change on a running map: the calm site save loads in about 90 s",
+   "owed_under": "RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES",
    "runs_today": {
     "ran": false,
     "entry_exists": true,
-    "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
+    "why": "UNRUN: written 2026-11-25 (RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES), offline selftest green; never the game"
    },
-   "cheaper_why": "its bar is that every FlowWorks system holds together across a reload from a mid-way save; each system's own check runs alone, and only this scene runs them all on one map, so no one-system scene decides it",
-   "tier": "flowworks_list",
-   "list_note": "owner, 2026-11-24 (RIMMANDRAKE_PROPOSE_FULL_LIST_WALK_NOT_PER_MOD_ARCHBIG_IS_THE_LINE): full-list testing is retired until the integration phase",
+   "cheaper_why": "a save and a load are a game act: only a running map has a save to make; the scene stages one pond, one swim pool and one swimmer and nothing else, the least that the claim reads",
+   "split_from": "sc_walk",
    "testq": {
     "check": {
-     "tier": "flowworks_list",
+     "tier": "flowworks",
      "build": "release"
     },
     "by": "testq_blocks.py"
    }
   },
-  "sc_garden": {
-   "id": "sc_garden",
+  "sc_walk_switch": {
+   "id": "sc_walk_switch",
    "kind": "live_minimal",
    "stage": "6",
    "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
-   "entry": "scene_garden",
-   "observes": "sprinkled rows grow, the hose fills the tank, colonists drink from bottles, the flood is drunk down",
+   "entry": "scene_walk_switch",
+   "observes": "off and on leaves the digest equal; off, a moat dug onto the wet one stays dry and the pond keeps its litres for 600 ticks; on, the pond pays it; no leftover fluid",
+   "claims": [
+    "the master switch off and on leaves the water alone, and off stops the engine"
+   ],
    "reads": [
     "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
     "design/concepts/FlowWorks/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_garden --out <json>  (bridge held; minimal list + FlowWorks)",
-   "why_game": "an interaction scene of a showcase (scenes.json kind interaction): a raid or a season of play runs only in a played map",
-   "owed_under": "FLOWWORKS_SHOWCASES_BUILD_THREE_FACES_STAGED",
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_walk_switch --out <json>  (bridge held; tier flowworks, the 13-mod FlowWorks list)",
+   "why_game": "a live state change on a running map: the calm site save loads in about 90 s",
+   "owed_under": "RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES",
    "runs_today": {
     "ran": false,
     "entry_exists": true,
-    "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
+    "why": "UNRUN: written 2026-11-25 (RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES), offline selftest green; never the game"
    },
+   "cheaper_why": "the claim is the running engine's answer to its switch mid-game; the offline settings sweep (T_SETTINGS_SWEEP_OFFLINE) reads defaults, never a live engine stopped and started",
+   "split_from": "sc_walk",
+   "testq": {
+    "check": {
+     "tier": "flowworks",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
+   }
+  },
+  "sc_walk_second_order": {
+   "id": "sc_walk_second_order",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+   "entry": "scene_walk_second_order",
+   "observes": "chemfuel poured first into its own pit, then the pond drained into a moat: the pond pays, the fuel keeps its stock, the census holds exactly water and chemfuel",
+   "claims": [
+    "fuel first, then water, works on one map"
+   ],
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_walk_second_order --out <json>  (bridge held; tier flowworks, the 13-mod FlowWorks list)",
+   "why_game": "a live state change on a running map: the calm site save loads in about 90 s",
+   "owed_under": "RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "UNRUN: written 2026-11-25 (RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES), offline selftest green; never the game"
+   },
+   "cheaper_why": "the claim is two liquids' order on one live map (fluid identity across the kernel and the census); the kernel tests run one liquid per case",
+   "split_from": "sc_walk",
+   "testq": {
+    "check": {
+     "tier": "flowworks",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
+   }
+  },
+  "sc_sprinkler_pump": {
+   "id": "sc_sprinkler_pump",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+   "entry": "scene_sprinkler_pump",
+   "observes": "a pumped sprinkler head draws its net by its cells for one clean pulse; the same head with no pump never sprays and its tank stays full",
+   "claims": [
+    "a sprinkler sprays only from a pumped net"
+   ],
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_sprinkler_pump --out <json>  (bridge held; tier flowworks, the 13-mod FlowWorks list)",
+   "why_game": "a live state change on a running map: the calm site save loads in about 90 s",
+   "owed_under": "RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "UNRUN: written 2026-11-25 (RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES), offline selftest green; never the game"
+   },
+   "cheaper_why": "a support, deciding no bar: the planted CALLER_SPR_SPRAYS_WITHOUT_PUMP is red offline in T_SPRINKLER too; the scene shows the live net, two nets and three chunks, the least that a clean pulse needs",
+   "split_from": "sc_garden",
+   "testq": {
+    "check": {
+     "tier": "flowworks",
+     "build": "release"
+    },
+    "by": "testq_blocks.py"
+   }
+  },
+  "sc_faucet_drink": {
+   "id": "sc_faucet_drink",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+   "entry": "scene_faucet_drink",
+   "observes": "a thirsty colonist drinks at a pipe faucet and the faucet's tank is drawn, in one chunk of 2,500 ticks",
+   "claims": [
+    "a colonist drinks from a faucet's tank"
+   ],
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
+    "design/concepts/FlowWorks/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_faucet_drink --out <json>  (bridge held; tier flowworks, the 13-mod FlowWorks list)",
+   "why_game": "a live state change on a running map: the calm site save loads in about 90 s",
+   "owed_under": "RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "UNRUN: written 2026-11-25 (RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES), offline selftest green; never the game"
+   },
+   "cheaper_why": "a support, deciding no bar: one net, one colonist, one chunk; the thirst math is offline (T_THIRST)",
+   "split_from": "sc_garden",
    "testq": {
     "check": {
      "tier": "flowworks",
@@ -4943,7 +5122,9 @@
     "T_STOCK",
     "PY_FLOWWORKS_POND_OUTLET_FRACTIONAL",
     "PY_PUMP_DRAW_CONSERVES",
-    "sc_source_pays"
+    "sc_source_draws",
+    "sc_source_refills",
+    "sc_lake_endless"
    ],
    "supports": [
     "T_CONSERVATION_ROUNDTRIP_OFFLINE",
@@ -4970,7 +5151,6 @@
     "PY_FLOWWORKS_SHEET_DROWN_MESSAGE"
    ],
    "supports": [
-    "sc_garden",
     "T_FROZEN_HANDOVER_OFFLINE",
     "T_GPT_BATCH_A_FIXES_OFFLINE",
     "T_REVIEW1022_SHEET_OFFLINE",
@@ -5233,7 +5413,6 @@
     "sc_hose_look"
    ],
    "supports": [
-    "sc_garden",
     "T_FREEZE_BIG_MAP_OFFLINE",
     "T_HOSE_PIPE_SADDLE_OFFLINE",
     "T_HOSE_PORT_OFFLINE",
@@ -5264,11 +5443,11 @@
     "sc_one_network"
    ],
    "supports": [
-    "sc_garden",
     "T_CALL_SITES_OFFLINE",
     "T_REVIEW1022_LIQUIDNET_OFFLINE",
     "T_FREEZE_BIG_MAP_OFFLINE",
-    "T_THERMOSTAT_SUBNOTCH_OFFLINE"
+    "T_THERMOSTAT_SUBNOTCH_OFFLINE",
+    "sc_sprinkler_pump"
    ],
    "held": [],
    "offline_decides": [
@@ -5289,9 +5468,7 @@
    "decides": [
     "T_CONVERT"
    ],
-   "supports": [
-    "sc_garden"
-   ],
+   "supports": [],
    "held": [],
    "offline_decides": [
     "T_CONVERT"
@@ -5311,7 +5488,7 @@
     "PY_NATIVES_DRINK_OWN_WATER"
    ],
    "supports": [
-    "sc_garden"
+    "sc_faucet_drink"
    ],
    "held": [],
    "offline_decides": [
@@ -5331,9 +5508,7 @@
    "decides": [
     "T_DRILL"
    ],
-   "supports": [
-    "sc_garden"
-   ],
+   "supports": [],
    "held": [],
    "offline_decides": [
     "T_DRILL"
@@ -5351,7 +5526,7 @@
     "T_SPRINKLER"
    ],
    "supports": [
-    "sc_garden"
+    "sc_sprinkler_pump"
    ],
    "held": [],
    "offline_decides": [
@@ -5394,7 +5569,7 @@
    "proves_at": "6",
    "decides": [
     "T_MAP_CONTROLS",
-    "sc_source_pays"
+    "sc_source_draws"
    ],
    "supports": [],
    "held": [
@@ -5438,7 +5613,7 @@
     "PY_SETTINGS_SEARCH",
     "PY_FLOWWORKS_NORTHSTAR",
     "PY_VALIDATION_V2_OFFLINE",
-    "sc_walk"
+    "sc_walk_switch"
    ],
    "supports": [
     "T_BELT_FIXES_H_OFFLINE",
@@ -5766,7 +5941,9 @@
     "T_STOCK",
     "PY_FLOWWORKS_POND_OUTLET_FRACTIONAL",
     "PY_PUMP_DRAW_CONSERVES",
-    "sc_source_pays"
+    "sc_source_draws",
+    "sc_source_refills",
+    "sc_lake_endless"
    ],
    "supports": [],
    "held": [],
@@ -6006,9 +6183,9 @@
     "sc_one_network"
    ],
    "supports": [
-    "sc_garden",
     "T_REVIEW1022_LIQUIDNET_OFFLINE",
-    "T_PUMP_STATION_PORTS_COMPILED_OFFLINE"
+    "T_PUMP_STATION_PORTS_COMPILED_OFFLINE",
+    "sc_sprinkler_pump"
    ],
    "held": [],
    "offline_decides": [
@@ -6243,7 +6420,7 @@
     "T_STOCK",
     "PY_FLOWWORKS_POND_OUTLET_FRACTIONAL",
     "PY_PUMP_DRAW_CONSERVES",
-    "sc_source_pays"
+    "sc_source_draws"
    ],
    "supports": [
     "T_POND_FILM_OFFLINE"
@@ -6325,7 +6502,9 @@
    "kind": "walk",
    "proves_at": "6",
    "decides": [
-    "sc_walk"
+    "sc_walk_reload",
+    "sc_walk_switch",
+    "sc_walk_second_order"
    ],
    "supports": [
     "LOOK_STAGE8",

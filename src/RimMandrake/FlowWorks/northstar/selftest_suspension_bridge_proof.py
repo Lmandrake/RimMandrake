@@ -39,6 +39,19 @@ def main():
             fails.append("a mock row claimed a live verdict")
         if len(ids) != len(set(ids)):
             fails.append("duplicate row ids")
+        # sc_hung_bridge's command (RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES): --only posts,under asks
+        # both halves of hung_bridge_spans (over, under) and the anchor control, and none of underpass's other rows
+        po = os.path.join(d, "posts_under.json")
+        run(["--mock", po, "--only", "posts,under"])
+        got_ids = {r["id"] for r in json.load(open(po, encoding="utf-8"))["rows"]}
+        want = {"SB_path_crosses_on_deck", "SB_anchor_lost_swings_from_that_end", "UND_floor_path_walks_under", "UND_both_arrive"}
+        if not want <= got_ids or any(i.startswith(("UND_shot", "UND_crush", "GRATE_", "JET_", "WAT_")) for i in got_ids):
+            fails.append("--only posts,under rows: missing %s, extra %s" % (sorted(want - got_ids), sorted(
+                i for i in got_ids if i.startswith(("UND_shot", "UND_crush", "GRATE_", "JET_", "WAT_")))))
+        tt = json.load(open(os.path.join(HERE, "..", "..", "..", "..", "design/concepts/FlowWorks/version/test_table.json"),
+                            encoding="utf-8"))
+        if "--only posts,under" not in tt["tests"]["sc_hung_bridge"]["command"]:
+            fails.append("sc_hung_bridge's command does not run --only posts,under")
         # can-fail: a refusal where the build must pass turns the first row's mock verdict to FAIL
         orig = SBP.FakeBridge.static
         SBP.FakeBridge.static = lambda self, m, a: ("BUILD ok=False anchors=0 decks=0 blueprints=0 reason=x" if m == "ProofBuild"

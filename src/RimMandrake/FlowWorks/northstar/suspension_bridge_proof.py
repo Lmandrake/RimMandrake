@@ -244,7 +244,7 @@ def main(argv=None):
             only = set()            # unprepared ground: every section would measure the site, not the mod (review 2026-10-20)
     ctx = dict(args=a, B=B, P=P, xz=xz, row=row, proof=proof, stage=stage, dig=dig, spawn=spawn, pawns_by_id=pawns_by_id, ticks=ticks, settle_reach=settle_reach, ox=ox, oz=oz)
     for name in SECTIONS:
-        if name in only:
+        if name in only and not (name == "under" and "underpass" in only):    # underpass runs under's rows itself
             print("== section %s" % name, flush=True)
             with V.scope(name):
                 SECTIONS[name](ctx) if name != "posts" else posts(ctx)
@@ -485,8 +485,16 @@ def grate(ctx):
             {"things": names, "build": txtb, "dropped": dropped.get("success")})
 
 
-def underpass(ctx):
-    """SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD rows (verify L2 x7; raiders and the picture owed)."""
+def under(ctx):
+    """The two paths of hung_bridge_spans only: U1's bridge, colonist A along the trench floor under it and colonist B over
+    it (UND_floor_path_walks_under, UND_both_arrive). sc_hung_bridge runs `--only posts,under`: posts holds the over-path
+    and the anchor-lost control (RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES). A run that also asks for
+    underpass runs these rows there, once."""
+    return underpass(ctx, paths_only=True)
+
+
+def underpass(ctx, paths_only=False):
+    """SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD rows (verify L2 x7; raiders and the picture owed). paths_only: under()."""
     B, P, xz, row, proof, stage, dig, spawn, ticks = (ctx[k] for k in ("B", "P", "xz", "row", "proof", "stage", "dig", "spawn", "ticks"))
     def trench(z, depth):
         for i in range(1, 9):
@@ -499,12 +507,13 @@ def underpass(ctx):
     with V.scope("U1_build") as u1:       # each bridge's trench is dug inside its own scope, adopted by the rows standing on it
         trench(40, 8)
         stage("ProofBuild", "%s;%s;steel;god" % (xz(P(4, 39)), xz(P(5, 41))))
-    with V.scope("U2_build") as u2:
-        trench(46, 3)
-        stage("ProofBuild", "%s;%s;steel;god" % (xz(P(4, 45)), xz(P(4, 47))))
-    with V.scope("U5_build") as u5:
-        trench(50, 8)
-        stage("ProofBuild", "%s;%s;steelgrated;god" % (xz(P(4, 49)), xz(P(5, 51))))
+    if not paths_only:
+        with V.scope("U2_build") as u2:
+            trench(46, 3)
+            stage("ProofBuild", "%s;%s;steel;god" % (xz(P(4, 45)), xz(P(4, 47))))
+        with V.scope("U5_build") as u5:
+            trench(50, 8)
+            stage("ProofBuild", "%s;%s;steelgrated;god" % (xz(P(4, 49)), xz(P(5, 51))))
     with V.scope("U_pawn_a") as fa:
         a_ = spawn(P(1, 40))
     with V.scope("U_pawn_b") as fb:
@@ -536,6 +545,8 @@ def underpass(ctx):
         V.require(a_ in at and b_ in at, "order_pawn read back both pawns", {"a": oa, "b": ob})
         good = at.get(a_) == P(8, 40) and at.get(b_) == P(4, 42)
         row("UND_both_arrive", "PASS" if good else "FAIL", {"a": at.get(a_), "b": at.get(b_)})
+    if paths_only:
+        return
     with V.scope("UND_shallow"):
         V.adopt(u2)
         c_ = spawn(P(1, 46))
@@ -1000,7 +1011,7 @@ def reach(ctx):
                                                       "the causeway edge then the mid square by Restore"})
 
 
-SECTIONS = {"posts": None, "grate": grate, "underpass": underpass, "waters": waters, "jetty": jetty, "looks": looks,
+SECTIONS = {"posts": None, "grate": grate, "under": under, "underpass": underpass, "waters": waters, "jetty": jetty, "looks": looks,
             "islands": islands, "reach": reach}
 
 

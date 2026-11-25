@@ -28,6 +28,7 @@ ROOMS = 'RimMandrake.FlowWorks.RM_PitRooms'
 SETTINGS = 'RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings'
 RECT = '30,30,24,18'
 PIT = [(38, z) for z in range(35, 41)]
+PRISON_HOLD_TICKS, PRISON_HOLD_STEP = 5000, 2500    # the hold after capture, feeding and the awake meal; read each step
 
 
 def kv(s):
@@ -45,7 +46,10 @@ def scene_hole_prison(B, snapshot, reload_snapshot, receipt, *, relative=True, a
 
     Capture jobs use the player job, care jobs come from registered vanilla work
     givers. Only initial hunger is written. Every subsequent food gain is ingestion.
-    The day uses real ticks, never time_set_ticks. Finally runs even on an assertion.
+    The hold uses real ticks, never time_set_ticks. Finally runs even on an assertion.
+    The hold is PRISON_HOLD_TICKS, not a day (RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES, table.md
+    section 1: a day adds only other ways to spoil it); each read asks held (RM_SuperdeepTrap.IsHeld: no way out of
+    the hole), and the ground-bed prisoner of the last phase is its foil (held False).
     """
     prior = {}
     prior_debug = {}
@@ -303,19 +307,20 @@ def scene_hole_prison(B, snapshot, reload_snapshot, receipt, *, relative=True, a
         receipt['awake_transition'].update({'after': s, 'workgiver': job})
         for w in wardens:
             call('jawa/set_draft', pawnId=w, drafted=False)
-        # Real day of normal work. Observe at intervals, no need refills or healing.
+        # The hold: normal work, observed at intervals, no need refills or healing; every read asks for the way out.
         start = clock()
         receipt['day'] = []
-        for _ in range(24):
-            step(2500)
+        for _ in range(PRISON_HOLD_TICKS // PRISON_HOLD_STEP):
+            step(PRISON_HOLD_STEP)
             states = [state(p) for p in raiders]
             for s in states:
                 require(s['kept'] == 'True' and s['dead'] == 'False', 'prisoner escaped or died: '+str(s))
                 require((int(s['x']), int(s['z'])) in PIT, 'prisoner moved out of hole')
+                require(s.get('held') == 'True', 'the hole does not hold the prisoner (an escape route): '+str(s))
                 require(float(s['food']) > 0, 'prisoner starved')
             receipt['day'].append({'tick': clock(), 'prisoners': states})
         receipt['day_ticks'] = clock()-start
-        require(receipt['day_ticks'] >= 60000, 'less than one day simulated')
+        require(receipt['day_ticks'] >= PRISON_HOLD_TICKS, 'the hold was cut short')
         # Ordinary bed prison still functions with pit rooms OFF (remote ground bed).
         setting('superdeepRoomsEnabled', False)
         sc('RebuildAllMaps', typ=ROOMS)
@@ -328,6 +333,8 @@ def scene_hole_prison(B, snapshot, reload_snapshot, receipt, *, relative=True, a
         receipt['ordinary_off'] = state(ordinary)
         require(receipt['ordinary_off']['prisoner'] == 'True' and receipt['ordinary_off']['inBed'] == 'True',
                 'ordinary bed capture broken with pit rooms OFF')
+        require(receipt['ordinary_off'].get('held') == 'False',
+                'the held read calls a prisoner in a ground bed held: it cannot see a way out (foil)')
         receipt['behavior'] = 'PASS'
     finally:
         receipt['restore'] = {'settings': {}, 'errors': []}
@@ -636,37 +643,50 @@ def _src_lake_site(S):
     return _src_lake(S)
 
 
-def _source_pays(S):
-    core = [(O[0] + i, O[1] + j) for i in range(20) for j in range(1, 9)]
-    shelf = [(O[0] + i, O[1] + j) for i in range(20) for j in (0, 9)]
-    pond = shelf + core
-    probe = (O[0] + 10, O[1] + 5)
-    moat = _line(O[0] + 20, O[1] + 5, SRC_MOAT_N)          # joined to the core square (O+19, O+5)
-    sink_at = (O[0] - 1, O[1] + 5)                         # undug, beside the core square (O, O+5): the sink reaches it
-    read = lambda: _litres(S.sc(NSP, 'ProofReadout', '%d,%d' % probe))
+def _src_pond(S):
+    """The pond every source scene stages: a 20 x 10 basin dug and filled brim-full (a 0.5 m shelf ring round a 2 m core,
+    one surface), clear weather locked so no rain falls while draws are read. -> P: the cells, the probe read and the
+    full pond's readings (full litres, its squares' dL, the wet line, the wet-square count)."""
+    import types
+    P = types.SimpleNamespace()
+    P.core = [(O[0] + i, O[1] + j) for i in range(20) for j in range(1, 9)]
+    P.shelf = [(O[0] + i, O[1] + j) for i in range(20) for j in (0, 9)]
+    P.pond = P.shelf + P.core
+    P.probe = (O[0] + 10, O[1] + 5)
+    P.moat = _line(O[0] + 20, O[1] + 5, SRC_MOAT_N)        # joined to the core square (O+19, O+5)
+    P.sink_at = (O[0] - 1, O[1] + 5)                       # undug, beside the core square (O, O+5): the sink reaches it
+    P.read = lambda: _litres(S.sc(NSP, 'ProofReadout', '%d,%d' % P.probe))
     S.call('jawa/weather_set', weather='Clear', lockWeather=True)   # no rain while the draws are read
-    S.dig(shelf, SRC_SHELF_LV); S.dig(core, SRC_CORE_LV)
-    S.fill(shelf, SRC_SHELF_LV * 0.5, WATER); S.fill(core, SRC_CORE_LV * 0.5, WATER)
+    S.dig(P.shelf, SRC_SHELF_LV); S.dig(P.core, SRC_CORE_LV)
+    S.fill(P.shelf, SRC_SHELF_LV * 0.5, WATER); S.fill(P.core, SRC_CORE_LV * 0.5, WATER)
     S.pulse(5)
-    full, d0 = read(), S.dl(pond)
-    require(full is None or full > 0, 'the filled pond reads no water at %s: %s' % (probe, full))
-    wet_dl = (max(v for v in d0 if v is not None) / (SRC_CORE_LV * 10.0)) if not _vacuous(tuple(d0)) and None not in d0 else 0
-    wet0 = _src_wet(d0, wet_dl)
-    S.dig(moat, SRC_MOAT_LV); S.pulse(200)
-    drawn, d1, took = read(), S.dl(pond), S.dl(moat)
+    P.full, P.d0 = P.read(), S.dl(P.pond)
+    require(P.full is None or P.full > 0, 'the filled pond reads no water at %s: %s' % (P.probe, P.full))
+    P.wet_dl = ((max(v for v in P.d0 if v is not None) / (SRC_CORE_LV * 10.0))
+                if not _vacuous(tuple(P.d0)) and None not in P.d0 else 0)
+    P.wet0 = _src_wet(P.d0, P.wet_dl)
+    P.blind = P.wet0 is None                               # the filled pond's own squares read empty: the rect is blind
+    return P
+
+
+def _src_draw_rows(S, P):
+    """SRC_pond_drops, SRC_shore_recedes (a dry 3 m moat joined to the pond draws it: litres AND wet squares fall) and
+    SRC_control_tap_zero (a sink at tap 0 takes nothing). -> the litres after the moat's draw."""
+    full, wet_dl, wet0, read = P.full, P.wet_dl, P.wet0, P.read
+    S.dig(P.moat, SRC_MOAT_LV); S.pulse(200)
+    drawn, d1, took = read(), S.dl(P.pond), S.dl(P.moat)
     wet1 = _src_wet(d1, wet_dl)
     paid = not _vacuous(tuple(took)) and None not in took
-    blind = wet0 is None                                   # the filled pond's own squares read empty: the rect is blind
-    if full is None or drawn is None or blind:
-        S.row('SRC_pond_drops', False, ('the readout carried no litres or the pond squares read empty', full, drawn, d0[:4]),
+    if full is None or drawn is None or P.blind:
+        S.row('SRC_pond_drops', False, ('the readout carried no litres or the pond squares read empty', full, drawn, P.d0[:4]),
               unmeasured=True)
     else:
         S.row('SRC_pond_drops', paid and drawn < full, ('litres', full, drawn, 'moat took', sum(v or 0 for v in took)))
     if wet0 is None or wet1 is None:
-        S.row('SRC_shore_recedes', False, ('the wet-square vector was empty or all zero', d0[:4], d1[:4]), unmeasured=True)
+        S.row('SRC_shore_recedes', False, ('the wet-square vector was empty or all zero', P.d0[:4], d1[:4]), unmeasured=True)
     else:   # the bar's no_full_source_after_draw: fewer wet squares after the draw than before, not just a smaller number
         S.row('SRC_shore_recedes', paid and wet1 < wet0, ('wet squares', wet0, wet1))
-    tid, rep = _src_sink(S, sink_at, 0)
+    tid, rep = _src_sink(S, P.sink_at, 0)
     if tid is None:
         S.row('SRC_control_tap_zero', False, ('the tap-0 sink was not placed', rep), unmeasured=True)
     else:
@@ -677,48 +697,60 @@ def _source_pays(S):
         else:   # scenes.json control: the Sink tap set to zero -> the pond does not drop beyond the moat's take
             S.row('SRC_control_tap_zero', dz == 0 and held >= drawn * 0.98, ('litres', drawn, held, 'drained', dz))
         S.sc(SRC_MAPCTL, 'Remove', tid)
-    tid, rep = _src_sink(S, sink_at, -1)
+    return drawn
+
+
+def _src_empty_rows(S, P):
+    """SRC_flow_stops_when_empty: an unlimited sink draws the pond to its wet line, then follows the film to 0 L and 0 dL;
+    PASS only on a pond at 0 L and 0 dL whose drained total then stands still."""
+    read, wet_dl, pond, blind = P.read, P.wet_dl, P.pond, P.blind
+    tid, rep = _src_sink(S, P.sink_at, -1)
     if tid is None:
         S.row('SRC_flow_stops_when_empty', False, ('the unlimited sink was not placed', rep), unmeasured=True)
-    else:
-        # Draw to the wet line first, followed while the sink still drains (visit 3, 2026-11-21: after a flat 500 pulses the
-        # pond held 208 L and the sink was still drawing, 502.6 -> 514.3, so the row read a pond not yet empty as one that
-        # never stops: HARNESS). Same bound as the film follow: a pond not dry by then never empties (FAIL, the endless_pond case).
-        wet_pulses = 0
-        while wet_pulses < SRC_FILM_PULSES:
-            before = _src_drained(S, tid)
-            S.pulse(100); wet_pulses += 100
-            if all(v is not None and v <= wet_dl for v in S.dl(pond)) or before is None or _src_drained(S, tid) == before:
-                break
-        dry = all(v is not None and v <= wet_dl for v in S.dl(pond))
-        # His ruling POND_PUMP_FIX_LAST_DROP_COUNTS ('ponds pump to last dL'): under the wet line the sink still draws the
-        # film, slowly, so the draw is followed to 0 L and 0 dL, not stopped at the wet line
-        # (RIMMANDRAKE_REPIN_SOURCE_PAYS_FILM_IS_NOT_A_LEAK). A chunk that draws nothing ends the follow (stuck film).
-        film = 0
-        while dry and film < SRC_FILM_PULSES:
-            left = read()
-            if left is None or (left <= 0 and not any(S.dl(pond))):
-                break
-            before = _src_drained(S, tid)
-            S.pulse(100); film += 100
-            if before is None or _src_drained(S, tid) == before:
-                break
-        dr1, dp = _src_drained(S, tid), S.dl(pond)
-        S.pulse(50)
-        dr2, empty = _src_drained(S, tid), read()
-        why = ('pond dry', dry, 'drained', dr1, dr2, 'litres', empty, 'max dL', max(dp) if None not in dp else dp,
-               'film pulses', film, 'wet-line pulses', wet_pulses)
-        if dr1 is None or dr2 is None or not dr1 > 0 or blind or empty is None or None in dp:
-            S.row('SRC_flow_stops_when_empty', False, ('no drained total, no litres, the sink drained nothing (the draw never '
-                                                       'happened) or the pond squares read empty when full', rep, why, blind),
-                  unmeasured=True)
-        elif dry and (empty > 0 or any(dp)) and dr2 > dr1 and film >= SRC_FILM_PULSES:
-            S.row('SRC_flow_stops_when_empty', False, ('the film was still draining after %d pulses: the last dL was not '
-                                                       'reached in the bound' % film,) + why, unmeasured=True)
-        else:   # PASS only on a pond at 0 L and 0 dL whose drained total then stands still
-            S.row('SRC_flow_stops_when_empty', dry and empty == 0 and not any(dp) and dr2 == dr1, why)
-        rm = S.sc(SRC_MAPCTL, 'Remove', tid)
-        require(rm.startswith('OK removed'), 'the sink would not come off before the rain: %s' % rm)
+        return
+    # Draw to the wet line first, followed while the sink still drains (visit 3, 2026-11-21: after a flat 500 pulses the
+    # pond held 208 L and the sink was still drawing, 502.6 -> 514.3, so the row read a pond not yet empty as one that
+    # never stops: HARNESS). Same bound as the film follow: a pond not dry by then never empties (FAIL, the endless_pond case).
+    wet_pulses = 0
+    while wet_pulses < SRC_FILM_PULSES:
+        before = _src_drained(S, tid)
+        S.pulse(100); wet_pulses += 100
+        if all(v is not None and v <= wet_dl for v in S.dl(pond)) or before is None or _src_drained(S, tid) == before:
+            break
+    dry = all(v is not None and v <= wet_dl for v in S.dl(pond))
+    # His ruling POND_PUMP_FIX_LAST_DROP_COUNTS ('ponds pump to last dL'): under the wet line the sink still draws the
+    # film, slowly, so the draw is followed to 0 L and 0 dL, not stopped at the wet line
+    # (RIMMANDRAKE_REPIN_SOURCE_PAYS_FILM_IS_NOT_A_LEAK). A chunk that draws nothing ends the follow (stuck film).
+    film = 0
+    while dry and film < SRC_FILM_PULSES:
+        left = read()
+        if left is None or (left <= 0 and not any(S.dl(pond))):
+            break
+        before = _src_drained(S, tid)
+        S.pulse(100); film += 100
+        if before is None or _src_drained(S, tid) == before:
+            break
+    dr1, dp = _src_drained(S, tid), S.dl(pond)
+    S.pulse(50)
+    dr2, empty = _src_drained(S, tid), read()
+    why = ('pond dry', dry, 'drained', dr1, dr2, 'litres', empty, 'max dL', max(dp) if None not in dp else dp,
+           'film pulses', film, 'wet-line pulses', wet_pulses)
+    if dr1 is None or dr2 is None or not dr1 > 0 or blind or empty is None or None in dp:
+        S.row('SRC_flow_stops_when_empty', False, ('no drained total, no litres, the sink drained nothing (the draw never '
+                                                   'happened) or the pond squares read empty when full', rep, why, blind),
+              unmeasured=True)
+    elif dry and (empty > 0 or any(dp)) and dr2 > dr1 and film >= SRC_FILM_PULSES:
+        S.row('SRC_flow_stops_when_empty', False, ('the film was still draining after %d pulses: the last dL was not '
+                                                   'reached in the bound' % film,) + why, unmeasured=True)
+    else:   # PASS only on a pond at 0 L and 0 dL whose drained total then stands still
+        S.row('SRC_flow_stops_when_empty', dry and empty == 0 and not any(dp) and dr2 == dr1, why)
+    rm = S.sc(SRC_MAPCTL, 'Remove', tid)
+    require(rm.startswith('OK removed'), 'the sink would not come off before the rain: %s' % rm)
+
+
+def _src_refill_long(S, P):
+    """sc_source_pays' rain: 14,000 ticks of locked rain on the emptied pond, read three times (some, not instant, rising)."""
+    read, full = P.read, P.full
     S.call('jawa/weather_set', unlock=True)
     S.call('jawa/weather_set', weather='Rain', lockWeather=True)
     start = read()
@@ -735,7 +767,87 @@ def _source_pays(S):
         S.row('SRC_refill_visible', False, ('the readout carried no litres', series), unmeasured=True)
     else:   # some water came back, not all at once (false_pass: refill is instant), and it kept rising
         S.row('SRC_refill_visible', s3 > start and s1 < full and s1 <= s2 <= s3 and s3 > s1, ('litres', series, 'full', full))
+
+
+def _source_pays(S):
+    """sc_source_pays, the composite (his look; it decides no bar since the split, RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_
+    HUNG_BRIDGE_RAN_27_TIMES): sc_source_draws, the empty-pond follow, sc_source_refills' long form and sc_lake_endless
+    on one run."""
+    P = _src_pond(S)
+    _src_draw_rows(S, P)
+    _src_empty_rows(S, P)
+    _src_refill_long(S, P)
     _src_lake_site(S)
+
+
+# sc_source_pays split in three (RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES, design/specs/2026-11-24-
+# oversized-scenes/table.md section 1: about eight claims, two mod lists, up to 8,000 pulses and 14,000 ticks; 13 runs, 10 not
+# passed). sc_source_draws: one draw and the tap-0 control. sc_source_refills: rain on an emptied pond, two reads 1,000 ticks
+# apart once the rain reaches it. sc_lake_endless: the edge body on the river site (its own tier, fw_gss_sitting).
+SRC_RAIN_STEP = 500       # ticks between reads while the rain has not yet reached the pond
+SRC_RAIN_GAP = 1000       # ticks between the two reads that show the refill rising
+# The bound on waiting for the rain to reach the pond. Danger: a pond the rain never reaches holds the bridge forever.
+# Measured need: visit 12 (2026-11-24, sc_source_pays_20261124T231728) read the emptied pond 0 L 4,000 ticks into locked
+# rain and 2,327 L at 9,000; this is ten times 9,000. Past it the row reads FAIL (the rain fell, the pond never refilled).
+SRC_RAIN_ONSET_MAX = 90000
+
+
+def _source_draws(S):
+    """sc_source_draws: a moat drawing a full pond lowers its litres and pulls its shore back; a sink at tap 0 takes
+    nothing (the control: no hidden draw). The emptied pond's stop is decided offline (T_STOCK, PY_PUMP_DRAW_CONSERVES)."""
+    P = _src_pond(S)
+    _src_draw_rows(S, P)
+    S.call('jawa/weather_set', unlock=True)
+
+
+def _src_brim(hole_txt, wet_txt):
+    """The brim litres of the probe cell: the hole's depth (from its empty readout 'OK Hole 2 m') times the readout's own
+    litres per metre (from a wet readout 'Water 0.40 m (800 L)'); None when either line cannot say."""
+    import re
+    h = re.match(r'OK Hole ([\d.]+) m', str(hole_txt or ''))
+    w = re.search(r'Water\s+([\d.]+)\s*m\s*\(([\d,.]+)\s*L\)', str(wet_txt or ''))
+    if not h or not w or float(w.group(1)) <= 0:
+        return None
+    return float(h.group(1)) * float(w.group(2).replace(',', '')) / float(w.group(1))
+
+
+def _source_refills(S):
+    """sc_source_refills: rain refills an emptied pond with visible progress. The pond is dug and left empty, rain is
+    locked on, and once the probe first reads water the next read 1,000 ticks later is higher, and the first is below the
+    hole's brim (false pass: the refill is instant)."""
+    core = [(O[0] + i, O[1] + j) for i in range(20) for j in range(1, 9)]
+    shelf = [(O[0] + i, O[1] + j) for i in range(20) for j in (0, 9)]
+    probe = '%d,%d' % (O[0] + 10, O[1] + 5)
+    S.call('jawa/weather_set', weather='Clear', lockWeather=True)
+    S.dig(shelf, SRC_SHELF_LV); S.dig(core, SRC_CORE_LV)
+    S.pulse(2)
+    hole = S.sc(NSP, 'ProofReadout', probe)
+    start = _litres(hole)
+    S.call('jawa/weather_set', unlock=True)
+    S.call('jawa/weather_set', weather='Rain', lockWeather=True)
+    waited, first_txt, first = 0, None, None
+    while waited < SRC_RAIN_ONSET_MAX:
+        S.ticks(SRC_RAIN_STEP); waited += SRC_RAIN_STEP
+        first_txt = S.sc(NSP, 'ProofReadout', probe)
+        first = _litres(first_txt)
+        if first is None or first > 0:
+            break
+    rain = _src_rain(S)
+    S.ticks(SRC_RAIN_GAP)
+    second = _litres(S.sc(NSP, 'ProofReadout', probe))
+    S.call('jawa/weather_set', unlock=True)
+    brim = _src_brim(hole, first_txt)
+    why = {'litres': (start, first, second), 'brim': brim, 'onset_ticks': waited, 'rainRate': rain, 'hole': hole[:60]}
+    if not rain:
+        S.row('SRC_refill_visible', False, ('no rain fell: the refill was never asked', why), unmeasured=True)
+    elif start != 0:
+        S.row('SRC_refill_visible', False, ('the dug pond did not read empty before the rain', why), unmeasured=True)
+    elif first == 0:
+        S.row('SRC_refill_visible', False, ('the rain fell for %d ticks and the pond never refilled' % waited, why))
+    elif None in (first, second, brim):
+        S.row('SRC_refill_visible', False, ('the readout carried no litres or no depth', why), unmeasured=True)
+    else:   # some water came back, not all at once, and it kept rising
+        S.row('SRC_refill_visible', 0 < first < brim and second > first, why)
 
 
 # sc_pawn_height. Visit 1 (2026-11-15) dug each pad ONE row tall, so the shipped lip clamp (pitSinkClampEnabled, on) held the
@@ -745,7 +857,19 @@ def _source_pays(S):
 # HEIGHT_SCENE_ZEROS_PASSED). Now each pad is a PH_ROWS-tall column walked on its north row (room PH_ROWS - 1 cells: the
 # shipped clamp never binds, no setting is poked), every read is checked against the pad it claims, the swim is a separate
 # 4 m pool held at 2 m and read by RM_Swim.ProofSwim (deepCell, exhaustion), and a vacuous read is UNMEASURED, never PASS.
-PH_PADS, PH_ROWS, PH_WAIT, PH_SWIM_M, PH_SWIM_TICKS = 17, 3, 400, 2.0, 1500
+# RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES (table.md section 1: 46 orders of one cell each, 11 runs and 5
+# not passed, 351 s in visit 12): ONE order over five pads (D0..D4) and ONE order back, the sink read every tick. Walls on the
+# rows beside the pad block keep the path on the pads (a path round them would never descend). The mod draws a walking pawn's
+# sink between the two cells of its step (RM_Patch_PitDepthDrawOffset.SinkOf), so on a line that deepens cell by cell the
+# sink rises with time: the lowest read on each depth on the way out and the highest on the way back are that depth's sink.
+PH_PADS, PH_ROWS, PH_WAIT, PH_SWIM_M, PH_SWIM_TICKS = 5, 3, 400, 2.0, 1500
+PH_STEP = 1             # the offset is read every tick of both orders
+PH_SETTLE = 60          # ticks standing at the end of an order before its still read (the tween catches up)
+PH_AGREE = 0.01         # m: the way-out and way-back reads of one depth agree within this (one tick of a step's tween)
+# The bound on one order. Danger: a pawn that never arrives (a refused path, a stuck pawn) holds the bridge forever.
+# Measured need: none yet for one order over seven cells; a colonist crosses a cell in about 13 ticks, so a leg needs about
+# 100; ten times that. Past it the row reads UNMEASURED (the pad was never reached), never PASS.
+PH_LEG_TICKS = 1000
 
 
 def _ph_read(S, pid):
@@ -756,7 +880,7 @@ def _ph_read(S, pid):
         return None
     try:
         return {'cell': tuple(int(v) for v in d['cell'].split(',')), 'depth': int(d['depth']), 'sink': float(d['sink']),
-                'drawDz': float(d['drawDz']), 'enabled': d.get('enabled')}
+                'drawDz': float(d['drawDz']), 'enabled': d.get('enabled'), 'moving': d.get('moving')}
     except (KeyError, ValueError):
         return None
 
@@ -784,36 +908,87 @@ def _ph_swim(S, pid, pool):
     return (kv(txt) if txt.startswith('SWIM ' + pid + ' ') else None), txt
 
 
+def _ph_leg(S, pid, to):
+    """One order to `to`, the sink read every tick until the pawn stands there, then PH_SETTLE ticks still. -> (the reads
+    of the walk (None for a vacuous read), the still read at the end or None when it never arrived)."""
+    S.call('jawa/order_pawn', pawnId=pid, x=to[0], z=to[1], waitTicks=0, draft=True)
+    reads, t = [], 0
+    while t < PH_LEG_TICKS:
+        S.ticks(PH_STEP); t += PH_STEP
+        r = _ph_read(S, pid)
+        reads.append(r)
+        if r and r['cell'] == tuple(to) and r.get('moving') != 'True':
+            S.ticks(PH_SETTLE)
+            end = _ph_read(S, pid)
+            return reads, (end if end and end['cell'] == tuple(to) else None)
+    return reads, None
+
+
+def _ph_by_depth(reads, pick):
+    """{depth: pick(sinks read standing on that depth)} over the reads that carry a verdict."""
+    out = {}
+    for r in reads:
+        if r is not None:
+            out.setdefault(r['depth'], []).append(r['sink'])
+    return {d: pick(v) for d, v in out.items()}
+
+
+def _ph_monotone(reads, up):
+    v = [r['sink'] for r in reads if r is not None]
+    return all((b >= a - 1e-4) if up else (b <= a + 1e-4) for a, b in zip(v, v[1:]))
+
+
 def _pawn_height(S):
     x0, z0 = O
     walk_z = z0 + PH_ROWS - 1
-    # The control lane (z0 - 3) crosses the calm site's Drago tree at (64,57) (probed 2026-11-20): a pawn ordered onto a tree
-    # stops beside it, so 2 of 10 control reads came back off-cell and None in visit 2 (RIMMANDRAKE_READ_FLOWWORKS_PAWN_
-    # HEIGHT_CONTROL_SINK_NONE). Clear plants and items off the lane and its start cell; the strict cell check stays.
-    cleared = S.call('jawa/destroy_batch', rects='%d,%d,%d,1' % (x0 - 2, z0 - 3, PH_PADS + 2), categories='Plant,Item')
+    start, far = (x0 - 2, walk_z), (x0 + PH_PADS - 1, walk_z)
+    # The calm site's Drago tree stands at (64,57) (probed 2026-11-20): clear plants and items off the whole staging block.
+    cleared = S.call('jawa/destroy_batch', rects='%d,%d,%d,%d' % (x0 - 3, z0 - 1, PH_PADS + 4, PH_ROWS + 2),
+                     categories='Plant,Item')
     for i in range(PH_PADS):
         S.dig([(x0 + i, z0 + j) for j in range(PH_ROWS)], i)       # pad i: D=i half-metre levels (D0 is undug ground)
-    pads = [(x0 + i, walk_z) for i in range(PH_PADS)]
-    col = S.pawn('Colonist', (x0 - 2, walk_z), 'player')
-    out = _ph_walk(S, col, pads)
-    back = _ph_walk(S, col, pads[::-1])[::-1]
-    got = [None if r is None else r['sink'] for r in out]
-    detail = {'out': got, 'back': [None if r is None else r['sink'] for r in back],
-              'depths': [None if r is None else r['depth'] for r in out]}
-    unreached = [i for i in range(PH_PADS) if out[i] is None or back[i] is None
-                 or out[i]['depth'] != i or back[i]['depth'] != i]
+    # walls on the row north of the pads and the row south of them, from behind the start to past the far pad
+    S.call('jawa/build_batch', ops=';'.join('Wall:%d,%d' % (x, z) for x in range(x0 - 3, x0 + PH_PADS + 1)
+                                           for z in (z0 - 1, z0 + PH_ROWS)), stuff='Steel', faction='player',
+           wipeExisting=False)
+    col = S.pawn('Colonist', start, 'player')
+    S.call('jawa/set_draft', pawnId=col, drafted=True)             # drafted: it stands where it was put until ordered
+    S.ticks(PH_SETTLE)
+    still0 = _ph_read(S, col)
+    out, end_far = _ph_leg(S, col, far)
+    back, end_home = _ph_leg(S, col, start)
+    lo_out = _ph_by_depth(out, min)
+    hi_back = _ph_by_depth(back, max)
+    depths = list(range(PH_PADS))
+    detail = {'out': [None if r is None else (r['cell'][0] - x0, r['depth'], r['sink']) for r in out],
+              'back': [None if r is None else (r['cell'][0] - x0, r['depth'], r['sink']) for r in back],
+              'lowest_out': lo_out, 'highest_back': hi_back, 'end_far': end_far and end_far['sink'],
+              'end_home': end_home and end_home['sink']}
     seen = [r for r in out + back if r is not None]
+    unreached = end_far is None or end_home is None or any(d not in lo_out or d not in hi_back for d in depths)
     flat = bool(seen) and all(abs(r['sink']) < 1e-3 for r in seen)
-    ok = (not unreached and abs(got[0]) < 1e-3 and all(s > 1e-3 for s in got[1:])
-          and all(b >= a - 1e-4 for a, b in zip(got, got[1:]))
-          and all(abs(o['sink'] - k['sink']) < 1e-3 for o, k in zip(out, back))
-          and all(abs(r['drawDz'] + r['sink']) < 0.05 for r in seen))
+    ok = (not unreached and _ph_monotone(out, True) and _ph_monotone(back, False)
+          and abs(lo_out[0]) < 1e-3 and lo_out[1] > 1e-3
+          and all(lo_out[d + 1] > lo_out[d] + 1e-3 and hi_back[d + 1] > hi_back[d] + 1e-3 for d in depths[:-1])
+          and all(abs(lo_out[d] - hi_back[d]) <= PH_AGREE for d in depths)
+          and abs(end_far['sink'] - hi_back[PH_PADS - 1]) <= PH_AGREE and abs(end_home['sink']) < 1e-3
+          and all(abs(r['drawDz'] + r['sink']) < 0.05 for r in (end_far, end_home)))
     if unreached:
-        detail['unreached'] = unreached
+        detail['unreached'] = 'the pawn did not stand on every pad both ways, or an order never arrived'
     if flat:
         detail['why'] = 'every sink read 0: the instrument has not shown it can see a sink'
-    S.row('PH_offset_follows_depth', ok, detail, unmeasured=bool(unreached) or flat)
-    S.walk(col, (x0 - 2, walk_z), PH_WAIT)                              # off the pads, onto ground the pool never touches
+    S.row('PH_offset_follows_depth', ok, detail, unmeasured=unreached or flat)
+
+    # the control: the same orders cross two undug cells before the pads (x0 - 2, x0 - 1) and end on one; a sink applied
+    # by the walking step, not the cell's depth, shows there. No swim on undug ground.
+    ground = [r for r in out + back if r is not None and r['cell'][0] < x0]
+    sw = S.sc(SWIMP, 'ProofSwim', '%d,%d' % start)
+    dry = kv(sw).get('deepCell') == 'False' if sw.startswith('SWIM ' + col + ' ') else None
+    S.row('PH_control_undug_no_offset', bool(ground) and all(abs(r['sink']) < 1e-3 and r['depth'] == 0 for r in ground)
+          and bool(still0) and abs(still0['sink']) < 1e-3 and bool(dry),
+          {'ground_sinks': [r['sink'] for r in ground], 'still0': still0 and still0['sink'], 'swim': sw,
+           'cleared': {k: cleared.get(k) for k in ('success', 'destroyed')} if isinstance(cleared, dict) else cleared},
+          unmeasured=not ground or dry is None or flat or not seen or still0 is None)
 
     pool = [(x0 + 4 + i, z0 + PH_ROWS + 3 + j) for i in range(3) for j in range(3)]
     S.dig(pool, 8)                                                     # 4 m: room for 2 m of water and nothing to stand on
@@ -835,19 +1010,6 @@ def _pawn_height(S):
     S.row('PH_swims_and_tires_at_2m', swam and e1 > e0 if e0 is not None else False,
           {'water': water, 'readout': lv, 'before': t0, 'after': t1},
           unmeasured=water is None or abs(water - PH_SWIM_M) > 0.2 or e0 is None)
-
-    lane = [(x0 + i, z0 - 3) for i in range(0, PH_PADS, 4)]           # the same walk, on undug ground south of the pads
-    S.walk(col, (x0 - 2, z0 - 3), PH_WAIT)
-    miss = []
-    ctl = _ph_walk(S, col, lane, miss) + _ph_walk(S, col, lane[::-1], miss)
-    sw = S.sc(SWIMP, 'ProofSwim', '%d,%d' % lane[0])
-    dry = kv(sw).get('deepCell') == 'False' if sw.startswith('SWIM ' + col + ' ') else None
-    S.row('PH_control_undug_no_offset', all(abs(r['sink']) < 1e-3 and r['depth'] == 0 for r in ctl if r) and bool(dry),
-          {'sinks': [None if r is None else r['sink'] for r in ctl],
-           'offcell': [(m['to'], m['read'] and m['read']['cell']) for m in miss],
-           'lane_cleared': {k: cleared.get(k) for k in ('success', 'destroyed')} if isinstance(cleared, dict) else cleared,
-           'swim': sw},
-          unmeasured=None in ctl or dry is None or flat or not seen)
 
 
 # sc_hose_look, staged from proof_hose.py's realflow plot (scene 0, measured live): a 3-cell channel dug 2 and filled 1 m, the
@@ -2490,24 +2652,19 @@ def _litres(readout):
 FW_MARKS = ('flowworks', 'rm_fluid', 'rm_mapcomponent_excavation', 'rm_liquid')   # a journal entry that names FlowWorks
 
 
-def _walk(S):
-    """sc_walk on his full list. The bar: state digests match across a mid-way reload (control: a pre-fill reload differs);
-    the pond pays again after the reload and an off/on of the master switch; no leftovers; the log clean (FlowWorks lines).
-    Stage 6 visit 1 (RIMMANDRAKE_FINISH_FLOWWORKS_WALK_SCENE_HALF_THE_BAR_UNASKED): the draft compared 'stock'/'cells', keys
-    engine_state never returns (None == None passed); and depthEngineEnabled snaps at game load unless depthEngineLiveForTests
-    is set, so its off/on never stopped anything. Every row below refuses a vacuous read (UNMEASURED, never PASS).
-    Holder run-1794816885 added the bar's swimmer (one in 2 m of water at the mid-way save, read again after the reload: same
-    cell, still in deep water; "the swimmers stand on the bed" is its red) and its second order on the same map (chemfuel
-    into its own pit first, then the pond drained into a third moat). Not here: prisoners at the save, the wetted garden
-    (moved to 0.2.0), and a PUMPED chemfuel fill (the scene pours it through ProofFillWithFluid)."""
+def _walk_kit(S):
+    """The walk's map and its reads, shared by sc_walk (his walk) and its three split scenes: the cells, the journal tap
+    opened at scene start, the pond's litres, the state digest and pays() (a row: the pond's litres fell and the cells it
+    paid into are wet)."""
+    import types
     import validation_core as V
-    tap = V.tap_start(S.B)
-    pond = [(O[0] - 4 + i, O[1] - 1 + j) for i in range(3) for j in range(3)]
-    swim = [(O[0] + 2 + i, O[1] - 6 + j) for i in range(3) for j in range(3)]      # apart from the pond, moat and fuel pit
-    fuel_pit = [(O[0] + 2 + i, O[1] + 4 + j) for i in range(3) for j in range(3)]
-    moat3 = _line(O[0] - 14, O[1], 10)                                                 # west of the pond, joins (O-4, O)
+    K = types.SimpleNamespace(tap=V.tap_start(S.B))
+    K.pond = [(O[0] - 4 + i, O[1] - 1 + j) for i in range(3) for j in range(3)]
+    K.swim = [(O[0] + 2 + i, O[1] - 6 + j) for i in range(3) for j in range(3)]      # apart from the pond, moat and fuel pit
+    K.fuel_pit = [(O[0] + 2 + i, O[1] + 4 + j) for i in range(3) for j in range(3)]
+    K.moat3 = _line(O[0] - 14, O[1], 10)                                               # west of the pond, joins (O-4, O)
     moat = _line(O[0] - 1, O[1], 21)
-    moat1, moat2 = moat[:10], moat[10:]
+    K.moat1, K.moat2 = moat[:10], moat[10:]
     keys = ('excavatedCellCount', 'superdeepCellCount', 'bodyCount', 'activeFluid')
 
     def litres():
@@ -2522,6 +2679,34 @@ def _walk(S):
         bad = _vacuous((p_before,)) or p_after is None or None in wet
         S.row(rid, not bad and p_after < p_before and any(wet), (p_before, p_after, wet), unmeasured=bad)
         return p_after
+    K.litres, K.digest, K.pays = litres, digest, pays
+    return K
+
+
+def _walk_log_row(S, K, tag):
+    """WALK_log_clean: no warning or error naming FlowWorks since the scene's tap opened, on a journal proven live and read
+    without a gap (a lost or dead journal is UNMEASURED, never clean)."""
+    import validation_core as V
+    tap = K.tap
+    alive = V.log_alive(S.B, tag).get('alive')
+    ours = [str(x.get('Message', ''))[:160] for x in tap.since() if any(k in str(x.get('Message', '')).lower() for k in FW_MARKS)]
+    S.row('WALK_log_clean', not ours, {'flowworks_lines': ours[:5], 'lost': tap.lost, 'alive': alive, 'gaps': tap.gaps[:3],
+          'warn_plus_all_mods': len(tap.entries)}, unmeasured=bool(tap.lost) or not alive)
+
+
+def _walk(S):
+    """sc_walk on his full list. The bar: state digests match across a mid-way reload (control: a pre-fill reload differs);
+    the pond pays again after the reload and an off/on of the master switch; no leftovers; the log clean (FlowWorks lines).
+    Stage 6 visit 1 (RIMMANDRAKE_FINISH_FLOWWORKS_WALK_SCENE_HALF_THE_BAR_UNASKED): the draft compared 'stock'/'cells', keys
+    engine_state never returns (None == None passed); and depthEngineEnabled snaps at game load unless depthEngineLiveForTests
+    is set, so its off/on never stopped anything. Every row below refuses a vacuous read (UNMEASURED, never PASS).
+    Holder run-1794816885 added the bar's swimmer (one in 2 m of water at the mid-way save, read again after the reload: same
+    cell, still in deep water; "the swimmers stand on the bed" is its red) and its second order on the same map (chemfuel
+    into its own pit first, then the pond drained into a third moat). Not here: prisoners at the save, the wetted garden
+    (moved to 0.2.0), and a PUMPED chemfuel fill (the scene pours it through ProofFillWithFluid)."""
+    K = _walk_kit(S)
+    tap, pond, swim, fuel_pit, moat1, moat2, moat3 = K.tap, K.pond, K.swim, K.fuel_pit, K.moat1, K.moat2, K.moat3
+    litres, digest, pays = K.litres, K.digest, K.pays
 
     S.setting('depthEngineLiveForTests', True)        # the off/on below must reach the running engine, not the next load
     S.dig(pond, 4); S.fill(pond, 2.0, WATER)
@@ -2595,11 +2780,102 @@ def _walk(S):
     S.row('WALK_second_order_no_leftovers', m2 is not None and m2.group(1) == '0' and fl == {WATER, FUEL}, census2,
           unmeasured=m2 is None)
 
-    # the log: no warning or error naming FlowWorks over the whole scene, on a journal proven live and read without a gap
-    alive = V.log_alive(S.B, 'sc_walk').get('alive')
-    ours = [str(x.get('Message', ''))[:160] for x in tap.since() if any(k in str(x.get('Message', '')).lower() for k in FW_MARKS)]
-    S.row('WALK_log_clean', not ours, {'flowworks_lines': ours[:5], 'lost': tap.lost, 'alive': alive, 'gaps': tap.gaps[:3],
-          'warn_plus_all_mods': len(tap.entries)}, unmeasured=bool(tap.lost) or not alive)
+    _walk_log_row(S, K, 'sc_walk')
+
+
+# sc_walk split in three (RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES, design/specs/2026-11-24-oversized-
+# scenes/table.md section 1: about eight claims in one scene, 11 runs and 3 not passed). Each scene stages only what its claim
+# reads, on the FlowWorks tier list; no row reads another mod. The rows keep sc_walk's ids and logic (_walk_kit), so a fault
+# that turned an sc_walk row red turns the same row red here (selftest_walk_scene.py).
+WALK_RELOAD_GAP = 60     # ticks between the mid-way save and its load: the save must survive game time, not only a reload
+
+
+def _walk_reload(S):
+    """sc_walk_reload: a save and reload keep the pond and the swimmer. Dig and fill the pond and the swim pool, put a
+    swimmer in 2 m of water, save, 60 ticks, load: the state digest is equal and the swimmer is in the same cell, still in
+    deep water. Control: the scene-begin save (made before the fill) differs."""
+    K = _walk_kit(S)
+    S.setting('depthEngineLiveForTests', True)
+    S.dig(K.pond, 4); S.fill(K.pond, 2.0, WATER)
+    S.dig(K.swim, 4); S.fill(K.swim, 2.0, WATER)
+    S.pulse(5)
+    swimmer = S.pawn('Colonist', K.swim[4], 'player')
+    a = K.digest()
+    if S.save_mid is None:
+        for rid in ('WALK_reload_digest_matches', 'WALK_swimmer_survives_reload', 'WALK_control_prefill_reload_differs'):
+            S.row(rid, False, 'no mid-way save hook passed to the scene', unmeasured=True)
+    else:
+        r0 = _ph_read(S, swimmer)
+        k0, t0 = _ph_swim(S, swimmer, K.swim)
+        S.save_mid(); S.ticks(WALK_RELOAD_GAP); S.load_mid()
+        b = K.digest()
+        S.row('WALK_reload_digest_matches', a == b, (a, b), unmeasured=_vacuous(a) or _vacuous(b))
+        r1 = _ph_read(S, swimmer)
+        k1, t1 = _ph_swim(S, swimmer, K.swim)
+        afloat = bool(k0) and k0.get('deepCell') == 'True'
+        S.row('WALK_swimmer_survives_reload', afloat and bool(k1) and bool(r1) and r1['cell'] == r0['cell']
+              and k1.get('deepCell') == 'True' and k1.get('water') == k0.get('water'),
+              {'before': (r0 and r0['cell'], t0), 'after': (r1 and r1['cell'], t1)},
+              unmeasured=not afloat or r0 is None or _vacuous(b))
+        S.again()                                      # the control: the scene-begin save, made before the fill
+        c = K.digest()
+        S.row('WALK_control_prefill_reload_differs', c != a, (c, a), unmeasured=_vacuous(a) or c[0] is None)
+    _walk_log_row(S, K, 'sc_walk_reload')
+
+
+def _walk_switch(S):
+    """sc_walk_switch: off and on leaves the water alone, and the switch reaches the running engine. The pond pays its
+    first moat (the instrument sees a draw); off then on, the digest is equal; off, a dry moat dug onto the wet one stays
+    dry for 600 ticks and the pond keeps its litres; on, the pond pays it; no leftover fluid."""
+    import re
+    K = _walk_kit(S)
+    S.setting('depthEngineLiveForTests', True)        # the off/on must reach the running engine, not the next load
+    S.dig(K.pond, 4); S.fill(K.pond, 2.0, WATER)
+    p0 = K.litres()
+    S.dig(K.moat1, 4); S.pulse(40)
+    K.pays('WALK_pond_pays', p0, K.moat1)
+    a2 = K.digest()
+    S.setting('depthEngineEnabled', False); S.ticks(600); S.setting('depthEngineEnabled', True); S.ticks(600)
+    b2 = K.digest()
+    S.row('WALK_toggle_off_on_digest_matches', a2 == b2, (a2, b2), unmeasured=_vacuous(a2) or _vacuous(b2))
+    p2 = K.litres()
+    S.setting('depthEngineEnabled', False)
+    S.dig(K.moat2, 4); S.ticks(600)
+    held, p_off = S.dl(K.moat2), K.litres()
+    bad = None in held or _vacuous((p2,)) or p_off is None
+    S.row('WALK_switch_off_holds_water', not bad and not any(held) and p_off == p2, (p2, p_off, held), unmeasured=bad)
+    S.setting('depthEngineEnabled', True); S.ticks(600); S.pulse(40)
+    K.pays('WALK_pond_pays_again', p2, K.moat2)
+    e, census = S.call('jawa/flowworks_engine_state'), S.sc(FLUIDID, 'ProofCensus')
+    m = re.search(r'unrecorded (\d+) \| fluids \[([^\]]*)\]', census)
+    bad = m is None or e.get('bodyCount') is None or a2[2] is None
+    S.row('WALK_no_leftovers', not bad and m.group(1) == '0' and m.group(2) == WATER and e.get('bodyCount') == a2[2],
+          (census, e.get('bodyCount'), a2[2]), unmeasured=bad)
+    _walk_log_row(S, K, 'sc_walk_switch')
+
+
+def _walk_second_order(S):
+    """sc_walk_second_order: fuel first, then water, works. Chemfuel poured into its own pit first, then the pond drained
+    into a moat: the pond pays, the fuel keeps its stock, and the census holds exactly water and chemfuel with every wet
+    cell recorded."""
+    import re
+    K = _walk_kit(S)
+    S.setting('depthEngineLiveForTests', True)
+    S.dig(K.pond, 4); S.fill(K.pond, 2.0, WATER)
+    S.dig(K.fuel_pit, 4); S.fill(K.fuel_pit, 1.0, FUEL); S.pulse(10)
+    f0, p3 = S.dl(K.fuel_pit), K.litres()
+    S.dig(K.moat3, 4); S.pulse(40)
+    K.pays('WALK_second_order_pond_pays', p3, K.moat3)
+    f1 = S.dl(K.fuel_pit)
+    bad = None in f0 or None in f1 or not any(f0)
+    S.row('WALK_second_order_fuel_holds', not bad and all(abs(x - y) <= 1e-6 for x, y in zip(f0, f1)), (f0, f1),
+          unmeasured=bad)
+    census2 = S.sc(FLUIDID, 'ProofCensus')
+    m2 = re.search(r'unrecorded (\d+) \| fluids \[([^\]]*)\]', census2)
+    fl = None if m2 is None else {x.strip() for x in m2.group(2).split(',') if x.strip()}
+    S.row('WALK_second_order_no_leftovers', m2 is not None and m2.group(1) == '0' and fl == {WATER, FUEL}, census2,
+          unmeasured=m2 is None)
+    _walk_log_row(S, K, 'sc_walk_second_order')
 
 
 # RIMMANDRAKE_REBUILD_FLOWWORKS_GARDEN_SCENE_MACHINES_NEVER_PIPED (visit 1, 2026-11-15): the draft spawned drill, pump, head,
@@ -2664,7 +2940,9 @@ def _num(txt, key):
     return float(m.group(1)) if m else None
 
 
-def _garden(S):
+def _garden(S, nets='WPFCSDY', chunks=GARDEN_W // GARDEN_CHUNK):
+    """sc_garden on every net (his look), or the nets a support scene names: the layout, each tool call and each row are
+    the same ones whichever nets are staged, so a support reads its rows exactly as sc_garden did."""
     ox, oz = O
     W, P, F, Cn, St = (ox, oz), (ox, oz + 6), (ox, oz + 12), (ox, oz + 18), (ox, oz + 24)
     D, Y = (ox + 16, oz), (ox + 16, oz + 10)
@@ -2672,9 +2950,12 @@ def _garden(S):
     S.call('jawa/set_terrain_batch', ops='Soil:%d,%d,30,32' % (ox - 4, oz - 6))
     S.call('jawa/set_roof_batch', ops='None:%d,%d,30,32' % (ox - 4, oz - 6))
     S.call('jawa/weather_set', weather='Clear', lockWeather=True)     # the still needs sun; the reload drops the lock
-    S.setting('converterRateMultiplier', CONV_MULT, typ=MACH)
-    S.setting('drillUnitsPerCycle', DRILL_PER_CYCLE)
-    S.setting('sheetOverflowEnabled', True, typ=SHEET_SET)
+    if 'C' in nets or 'S' in nets:
+        S.setting('converterRateMultiplier', CONV_MULT, typ=MACH)
+    if 'D' in nets:
+        S.setting('drillUnitsPerCycle', DRILL_PER_CYCLE)
+    if 'Y' in nets:
+        S.setting('sheetOverflowEnabled', True, typ=SHEET_SET)
 
     def build(ops, **kw):
         return S.call('jawa/build_batch', ops=';'.join(ops), faction='player', wipeExisting=False, **kw)
@@ -2682,26 +2963,32 @@ def _garden(S):
     def pipe(at, n):
         return ['RM_UniversalPipe:%d,%d' % (at[0] + i, at[1]) for i in range(2, 2 + n)]
 
-    build(['RM_LiquidTank:%d,%d' % W] + pipe(W, 5) + ['RM_LiquidTank:%d,%d' % P] + pipe(P, 4)
-          + ['RM_LiquidTank:%d,%d' % F] + pipe(F, 4) + ['RM_LiquidTankTall:%d,%d' % Cn] + pipe(Cn, 5)
-          + ['RM_LiquidTank:%d,%d' % (Cn[0] + 7, Cn[1])] + ['RM_LiquidTankTall:%d,%d' % St] + pipe(St, 6)
-          + ['RM_LiquidTank:%d,%d' % (St[0] + 8, St[1])])
-    build(['RM_LiquidPump:%d,%d' % (W[0] + 3, W[1]), 'RM_SprinklerHead:%d,%d' % (W[0] + 5, W[1]),
-           'RM_SprinklerHead:%d,%d' % (P[0] + 5, P[1]), 'RM_PipeFaucet:%d,%d' % (F[0] + 5, F[1]),
-           'RM_DripFilter:%d,%d' % (Cn[0] + 4, Cn[1]), 'RM_SunPanStill:%d,%d' % (St[0] + 3, St[1]),
-           'PowerConduit:%d,%d' % (W[0] + 3, W[1] - 1), 'PowerConduit:%d,%d' % (W[0] + 3, W[1] - 2),
-           'Battery:%d,%d,0' % (W[0] + 3, W[1] - 4), 'RM_LiquidDrill:%d,%d,0' % D,
-           'PowerConduit:%d,%d' % (D[0] - 1, D[1]), 'Battery:%d,%d,0' % (D[0] - 2, D[1] - 1)])
-    build(['Wall:%d,%d' % (Y[0] + i, Y[1] + j) for i in range(-1, 6) for j in range(-1, 6) if i in (-1, 5) or j in (-1, 5)],
-          stuff='Steel')
-    for b in ((W[0] + 3, W[1] - 4), (D[0] - 2, D[1] - 1)):
+    part = {'W': ['RM_LiquidTank:%d,%d' % W] + pipe(W, 5), 'P': ['RM_LiquidTank:%d,%d' % P] + pipe(P, 4),
+            'F': ['RM_LiquidTank:%d,%d' % F] + pipe(F, 4),
+            'C': ['RM_LiquidTankTall:%d,%d' % Cn] + pipe(Cn, 5) + ['RM_LiquidTank:%d,%d' % (Cn[0] + 7, Cn[1])],
+            'S': ['RM_LiquidTankTall:%d,%d' % St] + pipe(St, 6) + ['RM_LiquidTank:%d,%d' % (St[0] + 8, St[1])]}
+    build([op for k in 'WPFCS' if k in nets for op in part[k]])
+    mach = {'W': ['RM_LiquidPump:%d,%d' % (W[0] + 3, W[1]), 'RM_SprinklerHead:%d,%d' % (W[0] + 5, W[1]),
+                  'PowerConduit:%d,%d' % (W[0] + 3, W[1] - 1), 'PowerConduit:%d,%d' % (W[0] + 3, W[1] - 2),
+                  'Battery:%d,%d,0' % (W[0] + 3, W[1] - 4)],
+            'P': ['RM_SprinklerHead:%d,%d' % (P[0] + 5, P[1])], 'F': ['RM_PipeFaucet:%d,%d' % (F[0] + 5, F[1])],
+            'C': ['RM_DripFilter:%d,%d' % (Cn[0] + 4, Cn[1])], 'S': ['RM_SunPanStill:%d,%d' % (St[0] + 3, St[1])],
+            'D': ['RM_LiquidDrill:%d,%d,0' % D, 'PowerConduit:%d,%d' % (D[0] - 1, D[1]), 'Battery:%d,%d,0' % (D[0] - 2, D[1] - 1)]}
+    build([op for k in 'WPFCSD' if k in nets for op in mach[k]])
+    if 'Y' in nets:
+        build(['Wall:%d,%d' % (Y[0] + i, Y[1] + j) for i in range(-1, 6) for j in range(-1, 6) if i in (-1, 5) or j in (-1, 5)],
+              stuff='Steel')
+    for k, b in (('W', (W[0] + 3, W[1] - 4)), ('D', (D[0] - 2, D[1] - 1))):
+        if k not in nets:
+            continue
         # jawa/battery_set, not jawa/gss_stage: gss_stage resolves Gimme Some Slack types and is refused (TypeLoad) on a list
         # without it, which left this scene unstaged on 2026-11-20 (owner_review_stage.py carries the same lesson).
         bat = S.call('jawa/list_things', defName='Battery', rect='%d,%d,1,1' % b, limit=2).get('things') or []
         require(bool(bat), 'no Battery at %s to charge' % (b,))
         got = S.call('jawa/battery_set', thing=bat[0].get('id'), mode='setPct', value=1.0)
         require((got.get('storedEnergyPctAfter') or 0) >= 0.99, 'battery at %s not charged: %s' % (b, str(got)[:160]))
-    S.call('jawa/set_plants', ops='Plant_Potato:%d,%d,5,3' % (W[0] + 4, W[1] + 1), density=1.0, growth=0.1)
+    if 'W' in nets:
+        S.call('jawa/set_plants', ops='Plant_Potato:%d,%d,5,3' % (W[0] + 4, W[1] + 1), density=1.0, growth=0.1)
 
     def tank(at, liquid=None, units=None):
         """(units, ticksGame) through ProofTank (its read form sets Store, the mode every tank here runs in)."""
@@ -2723,33 +3010,41 @@ def _garden(S):
             return ' | '.join(t.get('inspect') or [])
         return None
 
-    ids = {k: thing(d, at) for k, d, at in (('headW', 'RM_SprinklerHead', (W[0] + 5, W[1])),
-                                           ('headP', 'RM_SprinklerHead', (P[0] + 5, P[1])),
-                                           ('pump', 'RM_LiquidPump', (W[0] + 3, W[1])),
-                                           ('faucet', 'RM_PipeFaucet', (F[0] + 5, F[1])),
-                                           ('filter', 'RM_DripFilter', (Cn[0] + 4, Cn[1])),
-                                           ('still', 'RM_SunPanStill', (St[0] + 3, St[1])), ('drill', 'RM_LiquidDrill', D))}
+    ids = {k: thing(d, at) for k, d, at, n in (('headW', 'RM_SprinklerHead', (W[0] + 5, W[1]), 'W'),
+                                              ('headP', 'RM_SprinklerHead', (P[0] + 5, P[1]), 'P'),
+                                              ('pump', 'RM_LiquidPump', (W[0] + 3, W[1]), 'W'),
+                                              ('faucet', 'RM_PipeFaucet', (F[0] + 5, F[1]), 'F'),
+                                              ('filter', 'RM_DripFilter', (Cn[0] + 4, Cn[1]), 'C'),
+                                              ('still', 'RM_SunPanStill', (St[0] + 3, St[1]), 'S'),
+                                              ('drill', 'RM_LiquidDrill', D, 'D')) if n in nets}
     missing = sorted(k for k, v in ids.items() if not v)
+    ids.setdefault('headW', None); ids.setdefault('headP', None)
     require(not missing, 'not built: %s' % missing)
-    drill = S.sc(NSP, 'ProofDrill', '%d,%d;%s;200' % (D[0], D[1], FRESH))
-    require(drill.startswith('DRILL'), 'drill yield: %s' % drill)
-    outlet = tuple(int(v) for v in drill.split('outlet=')[1].split()[0].split(','))
-    S.dig([outlet], 8)
+    d0 = None
+    if 'D' in nets:
+        drill = S.sc(NSP, 'ProofDrill', '%d,%d;%s;200' % (D[0], D[1], FRESH))
+        require(drill.startswith('DRILL'), 'drill yield: %s' % drill)
+        outlet = tuple(int(v) for v in drill.split('outlet=')[1].split()[0].split(','))
+        S.dig([outlet], 8)
     S.ticks(250)                                   # sprinkler_live.COLD_WAIT: the pump's power switches on first
 
-    fill = {'W': tank(W, FRESH, 100000), 'P': tank(P, FRESH, 100000), 'F': tank(F, FRESH, 100000),
-            'C': tank(Cn, TOXIC, 250000), 'S': tank(St, SALT, 250000)}
+    fill = {k: tank(at, liq, u) for k, at, liq, u in (('W', W, FRESH, 100000), ('P', P, FRESH, 100000),
+                                                      ('F', F, FRESH, 100000), ('C', Cn, TOXIC, 250000),
+                                                      ('S', St, SALT, 250000)) if k in nets}
     require(all(v[0] for v in fill.values()), 'a tank would not fill: %s' % fill)
-    spill = S.sc(SHEET, 'ProofSheetSpill', '%d,%d;15000;Pump' % (Y[0] + 2, Y[1] + 2))
-    drinker = S.pawn('Colonist', (F[0] + 5, F[1] + 1), 'player')
-    S.call('jawa/pawn_need', pawn=drinker, action='need', need='RM_Thirst', level=0.05)
-    d0 = S.sc(NSP, 'ProofDrill', '%d,%d' % D)
+    spill = S.sc(SHEET, 'ProofSheetSpill', '%d,%d;15000;Pump' % (Y[0] + 2, Y[1] + 2)) if 'Y' in nets else None
+    drinker = None
+    if 'F' in nets:
+        drinker = S.pawn('Colonist', (F[0] + 5, F[1] + 1), 'player')
+        S.call('jawa/pawn_need', pawn=drinker, action='need', need='RM_Thirst', level=0.05)
+    if 'D' in nets:
+        d0 = S.sc(NSP, 'ProofDrill', '%d,%d' % D)
 
     def feed():
         # the drinker stays thirsty only until the faucet's tank has paid its drink: after that a thirsty drinker took a
         # second drink from the filter's fresh output tank (visit 3, 2026-11-21: C2 63985 = 32 x 2000 - 15, one tank drink
         # at tick ~40000), so the filter row read a drink as a lost batch (SITE)
-        drank = bool(log) and log[-1]['t'].get('F') and log[-1]['t']['F'][0] < fill['F'][0]
+        drank = 'F' in fill and bool(log) and log[-1]['t'].get('F') and log[-1]['t']['F'][0] < fill['F'][0]
         for p in S.call('jawa/list_pawns', faction='player').get('pawns') or []:
             needs = dict((x.get('need'), x.get('level')) for x in
                          (S.B.call('jawa/pawn_need', pawn=p['id'], action='list') or {}).get('needs') or [])
@@ -2761,17 +3056,18 @@ def _garden(S):
 
     log = []                                       # one entry a chunk: tank units, drill read, yard read, head lines
     stop, cells_prior = None, None
-    for k in range(GARDEN_W // GARDEN_CHUNK):
+    tanks = [(n, at) for n, at in (('W', W), ('P', P), ('F', F), ('C', Cn), ('C2', (Cn[0] + 7, Cn[1])), ('S', St),
+                                   ('S2', (St[0] + 8, St[1]))) if n[0] in nets]
+    for k in range(chunks):
         feed()
         try:
             S.ticks(GARDEN_CHUNK)
         except Exception as e:                     # noqa: BLE001 - a GovernorStop: the window is broken, rows say so
             stop = repr(e)[:300]
             break
-        log.append({'t': {n: tank(at) for n, at in (('W', W), ('P', P), ('F', F), ('C', Cn), ('C2', (Cn[0] + 7, Cn[1])),
-                                                      ('S', St), ('S2', (St[0] + 8, St[1])))},
-                    'drill': S.sc(NSP, 'ProofDrill', '%d,%d' % D),
-                    'yard': S.sc(SHEET, 'ProofSheetRect', '%d;%d;5;5' % Y),
+        log.append({'t': {n: tank(at) for n, at in tanks},
+                    'drill': S.sc(NSP, 'ProofDrill', '%d,%d' % D) if 'D' in nets else None,
+                    'yard': S.sc(SHEET, 'ProofSheetRect', '%d;%d;5;5' % Y) if 'Y' in nets else None,
                     'headW': inspect(ids['headW']), 'headP': inspect(ids['headP'])})
         # the yard's 25 squares, read on every chunk that still holds half the spill: it dries through the window (live
         # 2026-11-20: 14552 dL after one chunk, 3695 after 24), so an end-of-window read would see a film, not the 3 cm
@@ -2782,114 +3078,122 @@ def _garden(S):
             cells_prior = got or cells_prior
     S.r['garden_log'] = log
     why = ('the clock stopped: %s; ' % stop) if stop else ''
-    _garden_rows(S, fill, log, d0, spill, why, full=stop is None)
+    _garden_rows(S, fill, log, d0, spill, why, full=stop is None, nets=nets)
 
 
-def _garden_rows(S, fill, log, d0, spill, why, full):
+def _garden_rows(S, fill, log, d0, spill, why, full, nets='WPFCSDY'):
     import re
     u = lambda e, n: (e['t'][n][0] if e and e['t'].get(n) else None)            # noqa: E731
     tk = lambda e, n: (e['t'][n][1] if e and e['t'].get(n) else None)           # noqa: E731
     last = log[-1] if log else None
 
-    # W: one pulse a chunk; chunk 0 holds the cold pulse, so chunks 1 -> 2 are one clean pulse
-    if len(log) >= 3 and None not in (u(log[1], 'W'), u(log[2], 'W')):
-        m = re.search(r'(\d+) cells', log[2]['headW'] or '')
-        drop, cells = u(log[1], 'W') - u(log[2], 'W'), (int(m.group(1)) if m else None)
-        S.row('GARDEN_head_draws_its_net', cells is not None and drop == cells * SPR_UNITS_PER_CELL
-              and 'Spraying' in (log[2]['headW'] or ''), {'drop': drop, 'cells': cells, 'head': log[2]['headW']},
-              unmeasured=cells is None or drop == 0)
-    else:
-        S.row('GARDEN_head_draws_its_net', False, why + 'fewer than three chunk reads', unmeasured=True)
-    sprayed = len(log) >= 3 and None not in (u(log[1], 'W'), u(log[2], 'W')) and u(log[1], 'W') > u(log[2], 'W')
+    sprayed = False
+    if 'W' in nets:
+        # W: one pulse a chunk; chunk 0 holds the cold pulse, so chunks 1 -> 2 are one clean pulse
+        if len(log) >= 3 and None not in (u(log[1], 'W'), u(log[2], 'W')):
+            m = re.search(r'(\d+) cells', log[2]['headW'] or '')
+            drop, cells = u(log[1], 'W') - u(log[2], 'W'), (int(m.group(1)) if m else None)
+            S.row('GARDEN_head_draws_its_net', cells is not None and drop == cells * SPR_UNITS_PER_CELL
+                  and 'Spraying' in (log[2]['headW'] or ''), {'drop': drop, 'cells': cells, 'head': log[2]['headW']},
+                  unmeasured=cells is None or drop == 0)
+        else:
+            S.row('GARDEN_head_draws_its_net', False, why + 'fewer than three chunk reads', unmeasured=True)
+        sprayed = len(log) >= 3 and None not in (u(log[1], 'W'), u(log[2], 'W')) and u(log[1], 'W') > u(log[2], 'W')
 
-    # P: the same head with no pump on its net never sprays (and only means something when W's head did)
-    p_end = u(last, 'P')
-    S.row('GARDEN_no_pump_no_spray', p_end == fill['P'][0] and (last['headP'] or '').startswith('No pressure'),
-          why + str({'filled': fill['P'][0], 'end': p_end, 'head': last and last['headP'], 'pumpedHeadSprayed': sprayed}),
-          unmeasured=p_end is None or not sprayed or not full)
+    if 'P' in nets:
+        # P: the same head with no pump on its net never sprays (and only means something when W's head did)
+        p_end = u(last, 'P')
+        S.row('GARDEN_no_pump_no_spray', p_end == fill['P'][0] and (last['headP'] or '').startswith('No pressure'),
+              why + str({'filled': fill['P'][0], 'end': p_end, 'head': last and last['headP'], 'pumpedHeadSprayed': sprayed}),
+              unmeasured=p_end is None or not sprayed or not full)
 
-    # F: the faucet's tank is drawn by the thirsty colonist (no other fixture on its net)
-    f_end = u(last, 'F')
-    S.row('GARDEN_faucet_drinks_from_its_tank', f_end is not None and f_end < fill['F'][0],
-          why + str({'filled': fill['F'][0], 'end': f_end}), unmeasured=f_end is None or not full)
+    if 'F' in nets:
+        # F: the faucet's tank is drawn by the thirsty colonist (no other fixture on its net)
+        f_end = u(last, 'F')
+        S.row('GARDEN_faucet_drinks_from_its_tank', f_end is not None and f_end < fill['F'][0],
+              why + str({'filled': fill['F'][0], 'end': f_end}), unmeasured=f_end is None or not full)
 
-    # C: input drawn in whole batches, the output made to match, the count inside the healthy window
-    c_end, c2_end = u(last, 'C'), u(last, 'C2')
-    if None in (c_end, c2_end, tk(last, 'C'), fill['C'][1]) or not full:
-        S.row('GARDEN_filter_keeps_its_rate', False, why + 'unreadable %s' % [c_end, c2_end], unmeasured=True)
-    else:
-        took, dt = fill['C'][0] - c_end, tk(last, 'C') - fill['C'][1]
-        lo, hi = _conv_window(dt, FILTER, CONV_MULT)
-        n = took / float(FILTER['inp'])
-        S.row('GARDEN_filter_keeps_its_rate', n == int(n) and lo <= n <= hi and c2_end == int(n) * FILTER['out'],
-              {'batches': n, 'window': [lo, hi], 'made': c2_end, 'ticks': dt}, unmeasured=took == 0)
+    if 'C' in nets:
+        # C: input drawn in whole batches, the output made to match, the count inside the healthy window
+        c_end, c2_end = u(last, 'C'), u(last, 'C2')
+        if None in (c_end, c2_end, tk(last, 'C'), fill['C'][1]) or not full:
+            S.row('GARDEN_filter_keeps_its_rate', False, why + 'unreadable %s' % [c_end, c2_end], unmeasured=True)
+        else:
+            took, dt = fill['C'][0] - c_end, tk(last, 'C') - fill['C'][1]
+            lo, hi = _conv_window(dt, FILTER, CONV_MULT)
+            n = took / float(FILTER['inp'])
+            S.row('GARDEN_filter_keeps_its_rate', n == int(n) and lo <= n <= hi and c2_end == int(n) * FILTER['out'],
+                  {'batches': n, 'window': [lo, hi], 'made': c2_end, 'ticks': dt}, unmeasured=took == 0)
 
-    # S: no chunk draws more than the def's rate could at full sun; it must have run at all
-    drops, bad = [], []
-    for a, b in zip([{'t': {'S': fill['S']}}] + log, log):
-        if None in (u(a, 'S'), u(b, 'S'), tk(a, 'S'), tk(b, 'S')):
-            bad.append('unreadable'); continue
-        dt, d = tk(b, 'S') - tk(a, 'S'), u(a, 'S') - u(b, 'S')
-        cap = (int(((dt // 250) + 1) * STILL['per'] * CONV_MULT + STILL['inp']) // STILL['inp']) * STILL['inp']
-        drops.append(d)
-        if d > cap:
-            bad.append('chunk drew %d over %d ticks, the def allows %d' % (d, dt, cap))
-    made = u(last, 'S2')
-    S.row('GARDEN_still_within_its_def_rate', not bad and made == sum(drops) // STILL['inp'] * STILL['out'],
-          why + str({'drops': drops, 'bad': bad[:3], 'made': made}), unmeasured=not drops or not sum(drops) or 'unreadable' in bad)
+    if 'S' in nets:
+        # S: no chunk draws more than the def's rate could at full sun; it must have run at all
+        drops, bad = [], []
+        for a, b in zip([{'t': {'S': fill['S']}}] + log, log):
+            if None in (u(a, 'S'), u(b, 'S'), tk(a, 'S'), tk(b, 'S')):
+                bad.append('unreadable'); continue
+            dt, d = tk(b, 'S') - tk(a, 'S'), u(a, 'S') - u(b, 'S')
+            cap = (int(((dt // 250) + 1) * STILL['per'] * CONV_MULT + STILL['inp']) // STILL['inp']) * STILL['inp']
+            drops.append(d)
+            if d > cap:
+                bad.append('chunk drew %d over %d ticks, the def allows %d' % (d, dt, cap))
+        made = u(last, 'S2')
+        S.row('GARDEN_still_within_its_def_rate', not bad and made == sum(drops) // STILL['inp'] * STILL['out'],
+              why + str({'drops': drops, 'bad': bad[:3], 'made': made}), unmeasured=not drops or not sum(drops) or 'unreadable' in bad)
 
-    # D: the drill pours, and the reserve it spent is what landed plus what it still holds
-    reads = [d0] + [e['drill'] for e in log]
-    r0 = _num(d0, 'reserve')
-    pick = next((x for x in reads[1:] if (_num(x, 'outletUnits') or 0) > 0), None)
-    S.row('GARDEN_drill_pours_its_yield', pick is not None, why + str(reads[-1])[:200],
-          unmeasured=not log or r0 is None)
-    if pick is None or r0 is None:
-        S.row('GARDEN_drill_charges_what_landed', False, why + 'nothing landed: %s' % str(reads[-1])[:200], unmeasured=True)
-    else:
-        # deltas from the baseline read: the drill may already have poured during the staging ticks
-        spent = r0 - _num(pick, 'reserve')
-        landed = _num(pick, 'outletUnits') - (_num(d0, 'outletUnits') or 0.0)
-        pend = _num(pick, 'pending')
-        gain = pend - (_num(d0, 'pending') or 0.0)
-        S.row('GARDEN_drill_charges_what_landed', abs(spent - landed - gain) <= 0.02 + 0.01 * spent and pend >= -1e-4,
-              {'spent': spent, 'landed': landed, 'pendingGain': gain, 'base': d0[:200], 'read': pick[:200]},
-              unmeasured=spent <= 0)
+    if 'D' in nets:
+        # D: the drill pours, and the reserve it spent is what landed plus what it still holds
+        reads = [d0] + [e['drill'] for e in log]
+        r0 = _num(d0, 'reserve')
+        pick = next((x for x in reads[1:] if (_num(x, 'outletUnits') or 0) > 0), None)
+        S.row('GARDEN_drill_pours_its_yield', pick is not None, why + str(reads[-1])[:200],
+              unmeasured=not log or r0 is None)
+        if pick is None or r0 is None:
+            S.row('GARDEN_drill_charges_what_landed', False, why + 'nothing landed: %s' % str(reads[-1])[:200], unmeasured=True)
+        else:
+            # deltas from the baseline read: the drill may already have poured during the staging ticks
+            spent = r0 - _num(pick, 'reserve')
+            landed = _num(pick, 'outletUnits') - (_num(d0, 'outletUnits') or 0.0)
+            pend = _num(pick, 'pending')
+            gain = pend - (_num(d0, 'pending') or 0.0)
+            S.row('GARDEN_drill_charges_what_landed', abs(spent - landed - gain) <= 0.02 + 0.01 * spent and pend >= -1e-4,
+                  {'spent': spent, 'landed': landed, 'pendingGain': gain, 'base': d0[:200], 'read': pick[:200]},
+                  unmeasured=spent <= 0)
 
-    # Y: the walled yard's 3 cm lies level over all 25 squares (no dry island); the latest read still holding half of it.
-    # Level means the SURFACE (depth + the kernel's ±1 cm micro-relief, D8/D9), not equal depths: visit 2 (2026-11-19)
-    # read maxDl 461 over a mean of 312 on every one of 24 reads, the relief's own signature, and the old depth test
-    # failed it (RIMMANDRAKE_PROBE_FLOWWORKS_GARDEN_YARD_MOUND_RELIEF_OR_KERNEL). The read must also see a mound planted
-    # after it, or the row is UNMEASURED.
-    took = _num(spill, 'accepted') if str(spill).startswith('SPILL') else None
-    good = [e['yard'] for e in log if took and (_num(e['yard'], 'dl') or 0) >= took / 2]
-    y = good[-1] if good else (log[-1]['yard'] if log else None)
-    wet, Y = _num(y, 'wet'), (O[0] + 16, O[1] + 10)            # _garden's yard
-    held = [e for e in log if took and (_num(e['yard'], 'dl') or 0) >= took / 2]
-    lvs = [(log.index(e), _yard_level(e['cells'])) for e in held if e.get('cells')]
-    lvs = [(i, lv) for i, lv in lvs if lv]
-    err = next((e.get('cellsErr') for e in held if not e.get('cells')), None) or (None if held else 'no chunk holds half the spill')
-    worst = max(lvs, key=lambda t: t[1]['spread']) if lvs else None
-    lows = [(i, lv['low']) for i, lv in lvs if lv['low']]
-    # the instrument's own foil, after the window: 4 cm more on the corner square, read back before a pulse can level it.
-    # It must rise there by most of the foil and nowhere else, or the per-square read cannot see a mound (UNMEASURED).
-    base = _yard_cells(S, Y, held[-1]['cells'])[0] if held and held[-1].get('cells') else None
-    rise = others = None
-    if base:
-        S.sc(SHEET, 'ProofSheetSpill', '%d,%d;%d;Pump' % (Y[0], Y[1], YARD_MOUND_DL))
-        mound = _yard_cells(S, Y, base)[0]
-        if mound:
-            d = {(a[0], a[1]): b[2] - a[2] for a, b in zip(base, mound)}
-            rise, others = d.pop(Y), max([abs(v) for v in d.values()] or [0])
-    sees = rise is not None and rise >= 0.9 * YARD_MOUND_DL and others <= YARD_LEVEL_DL
-    whole = bool(lvs) and len(lvs) == len(held)
-    S.row('GARDEN_walled_yard_lies_level', bool(good) and wet == 25 and whole and worst[1]['spread'] <= YARD_LEVEL_DL
-          and not lows,
-          why + str({'worstSurfaceSpread': worst and worst[1]['spread'], 'atChunk': worst and worst[0], 'limit': YARD_LEVEL_DL,
-                     'chunksRead': len(lvs), 'chunksHeld': len(held), 'depthSpread': worst and worst[1]['depthSpread'],
-                     'free': worst and worst[1]['free'], 'low': lows[:2], 'foil': {'rise': rise, 'others': others},
-                     'err': err, 'read': y, 'spill': spill[:40]}),
-          unmeasured=not good or not whole or not sees)
+    if 'Y' in nets:
+        # Y: the walled yard's 3 cm lies level over all 25 squares (no dry island); the latest read still holding half of it.
+        # Level means the SURFACE (depth + the kernel's ±1 cm micro-relief, D8/D9), not equal depths: visit 2 (2026-11-19)
+        # read maxDl 461 over a mean of 312 on every one of 24 reads, the relief's own signature, and the old depth test
+        # failed it (RIMMANDRAKE_PROBE_FLOWWORKS_GARDEN_YARD_MOUND_RELIEF_OR_KERNEL). The read must also see a mound planted
+        # after it, or the row is UNMEASURED.
+        took = _num(spill, 'accepted') if str(spill).startswith('SPILL') else None
+        good = [e['yard'] for e in log if took and (_num(e['yard'], 'dl') or 0) >= took / 2]
+        y = good[-1] if good else (log[-1]['yard'] if log else None)
+        wet, Y = _num(y, 'wet'), (O[0] + 16, O[1] + 10)            # _garden's yard
+        held = [e for e in log if took and (_num(e['yard'], 'dl') or 0) >= took / 2]
+        lvs = [(log.index(e), _yard_level(e['cells'])) for e in held if e.get('cells')]
+        lvs = [(i, lv) for i, lv in lvs if lv]
+        err = next((e.get('cellsErr') for e in held if not e.get('cells')), None) or (None if held else 'no chunk holds half the spill')
+        worst = max(lvs, key=lambda t: t[1]['spread']) if lvs else None
+        lows = [(i, lv['low']) for i, lv in lvs if lv['low']]
+        # the instrument's own foil, after the window: 4 cm more on the corner square, read back before a pulse can level it.
+        # It must rise there by most of the foil and nowhere else, or the per-square read cannot see a mound (UNMEASURED).
+        base = _yard_cells(S, Y, held[-1]['cells'])[0] if held and held[-1].get('cells') else None
+        rise = others = None
+        if base:
+            S.sc(SHEET, 'ProofSheetSpill', '%d,%d;%d;Pump' % (Y[0], Y[1], YARD_MOUND_DL))
+            mound = _yard_cells(S, Y, base)[0]
+            if mound:
+                d = {(a[0], a[1]): b[2] - a[2] for a, b in zip(base, mound)}
+                rise, others = d.pop(Y), max([abs(v) for v in d.values()] or [0])
+        sees = rise is not None and rise >= 0.9 * YARD_MOUND_DL and others <= YARD_LEVEL_DL
+        whole = bool(lvs) and len(lvs) == len(held)
+        S.row('GARDEN_walled_yard_lies_level', bool(good) and wet == 25 and whole and worst[1]['spread'] <= YARD_LEVEL_DL
+              and not lows,
+              why + str({'worstSurfaceSpread': worst and worst[1]['spread'], 'atChunk': worst and worst[0], 'limit': YARD_LEVEL_DL,
+                         'chunksRead': len(lvs), 'chunksHeld': len(held), 'depthSpread': worst and worst[1]['depthSpread'],
+                         'free': worst and worst[1]['free'], 'low': lows[:2], 'foil': {'rise': rise, 'others': others},
+                         'err': err, 'read': y, 'spill': spill[:40]}),
+              unmeasured=not good or not whole or not sees)
 
 
 SHEET_MATH = 'RimMandrake.FlowWorks.RM_SheetMath'
@@ -3027,6 +3331,9 @@ def _coating_wash(S):
 scene_fill_front = _run('scene_fill_front', _fill_front)
 scene_one_surface = _run('scene_one_surface', _one_surface)
 scene_source_pays = _run('scene_source_pays', _source_pays)
+scene_source_draws = _run('scene_source_draws', _source_draws)
+scene_source_refills = _run('scene_source_refills', _source_refills)
+scene_lake_endless = _run('scene_lake_endless', _src_lake_site)
 scene_pawn_height = _run('scene_pawn_height', _pawn_height)
 scene_hose_look = _run('scene_hose_look', _hose_look)
 scene_trench_cover = _run('scene_trench_cover', _trench_cover)
@@ -3040,15 +3347,26 @@ scene_fetch_fallen = _run('scene_fetch_fallen', _fetch_fallen_scene)
 scene_islands = _run('scene_islands', _islands)
 scene_islands_walker = _run('scene_islands_walker', _islands_walker)
 scene_walk_moat_season = _run('scene_walk_moat_season', _walk)
+scene_walk_reload = _run('scene_walk_reload', _walk_reload)
+scene_walk_switch = _run('scene_walk_switch', _walk_switch)
+scene_walk_second_order = _run('scene_walk_second_order', _walk_second_order)
 scene_pit_trap_raid = _run('scene_pit_trap_raid', _pit_trap_raid)
 scene_garden = _run('scene_garden', _garden)
+# sc_garden's two supports (RIMMANDRAKE_SHRINK_FLOWWORKS_SCENES_HUNG_BRIDGE_RAN_27_TIMES; table.md section 1: a game day,
+# seven machines in one staging, a fed colony, deciding no bar). The pumped head beside the head with no pump, over one clean
+# pulse (the first chunk holds the cold pulse); the faucet drink, one colonist, one chunk.
+SUPPORT_PUMP_CHUNKS, SUPPORT_FAUCET_CHUNKS = 3, 1
+scene_sprinkler_pump = _run('scene_sprinkler_pump', lambda S: _garden(S, nets='WP', chunks=SUPPORT_PUMP_CHUNKS))
+scene_faucet_drink = _run('scene_faucet_drink', lambda S: _garden(S, nets='F', chunks=SUPPORT_FAUCET_CHUNKS))
 scene_geyser_tub = _run('scene_geyser_tub', _geyser_tub)
 scene_coating_wash = _run('scene_coating_wash', _coating_wash)
 STAGE3_SCENES = {f.__name__: f for f in (scene_fill_front, scene_one_surface, scene_source_pays, scene_pawn_height,
                  scene_hose_look, scene_trench_cover, scene_ice, scene_moat_raid, scene_moat_walkers,
                  scene_trench_cover_pawns, scene_islands_walker, scene_toss_flame, scene_wetting,
                  scene_fetch_fallen, scene_islands, scene_walk_moat_season, scene_pit_trap_raid, scene_garden,
-                 scene_geyser_tub, scene_coating_wash)}
+                 scene_geyser_tub, scene_coating_wash, scene_walk_reload, scene_walk_switch,
+                 scene_walk_second_order, scene_source_draws, scene_source_refills, scene_lake_endless,
+                 scene_sprinkler_pump, scene_faucet_drink)}
 
 
 def _hole_prison_stage(B, snapshot, reload_snapshot, receipt, save_mid=None, load_mid=None):
