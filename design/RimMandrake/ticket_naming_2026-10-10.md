@@ -146,8 +146,7 @@ the ledger's rule for new work.
   naming the reason. A sequel to a legacy series gets a fresh name with a twist
   (`COLD_LOAD_RUN_SHEET_4` would become something like
   `COLD_LOAD_SHEET_RETRY_FOURTH_PASS`).
-- Legacy ids are still cited bare. B-style ids are still cited with their title
-  attached, as before.
+- Legacy ids, `_N` and B-style alike, carry their title when cited (global 27-named-not-numbered).
 
 ## What the machine enforces
 

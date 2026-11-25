@@ -102,9 +102,8 @@ repo".
 
 ## Queue
 
-An item is one line: `SUBJECT_INTENT_TWIST · lane · the ask`. The lane is the seat that `rimflow file --for` names. The
-grammar is in
-`design/RimMandrake/ticket_naming_2026-10-10.md`. Only an expensive-list item gets optional prose, in
+An item is one line: `RIMMANDRAKE_VERB_INTENTION_TWIST · lane · the ask`. The lane is the seat that `rimflow file --for` names. The
+grammar is in the global named-not-numbered section (`~/.claude/CLAUDE.md`); check a name with `rimflow namecheck`. Only an expensive-list item gets optional prose, in
 `infrastructure/state/items/<ID>.md`.
 
 🔑 **On close/drop/supersede the prose moves to `items/closed/<ID>.md`.** So `items/*.md` is the LIVE set, and a sweep
