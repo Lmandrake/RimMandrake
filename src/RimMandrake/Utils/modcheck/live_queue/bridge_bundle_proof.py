@@ -45,8 +45,9 @@ Any non-canonical game will do; the test lane's games are disposable.
              after) artboard_stage killHostiles=true and mod_settings_field set refuse by the profile
   SETTLE     the same item (5): world_settlements_import apply clearExisting with a row on the player's mapped tile
              refuses "REFUSING before clearing" and the settlement count is unchanged (python.exe: the game reads the CSV)
-  PEN2       PEN_ANIMALS_UNSTICK_STATUES_LEARN_TO_WALK A2: the newest RM_pyre_review_*.rws in <data root>/fixtures is
-             copied in as bundle_pen2_review and loaded (tier pyrelands); human_review.py's --release-pens call releases
+  PEN2       PEN_ANIMALS_UNSTICK_STATUES_LEARN_TO_WALK A2: human_review.py --build --save makes a review keeper save from
+             the newest NS_Pyrelands_site_*.rws in <data root>/fixtures (tier ratchet_pilot holds its mods), the keeper
+             is loaded from the menu, and human_review.py's --release-pens call releases
              every pen specimen; after 600 ticks at least half have moved and each is inside its pen; its --pin-pens
              call brings every one home and restores the facing it was released with
   KEEPER     KEEPER_SAVES_HARDEN_WRONG_SLOT_WRITES A1: save_guard.snapshot on this game's real Saves folder hashes every
@@ -984,21 +985,37 @@ def _bare(i):
 def g_PEN2(L):
     import glob
     import shutil
+    import subprocess
     import rmpaths
     from game_paths import SAVES
+    from await_lifecycle import await_lifecycle
     fx = rmpaths.rm_win("fixtures") if os.name == "nt" else rmpaths.rm_str("fixtures")
-    keep = sorted(glob.glob(os.path.join(fx, "RM_pyre_review_*.rws")))
-    if not keep:
-        return {"why": "no RM_pyre_review_*.rws fixture in %s" % fx}
-    name = "bundle_pen2_review"
-    staged = os.path.join(SAVES, name + ".rws")
-    shutil.copyfile(keep[-1], staged)
+    sites = sorted(glob.glob(os.path.join(fx, "NS_Pyrelands_site_*.rws")))
+    if not sites:
+        return {"why": "no NS_Pyrelands_site_*.rws fixture in %s" % fx}
+    site, review = "bundle_pen2_site", "bundle_pen2_review_%d" % int(time.time())
+    shutil.copyfile(sites[-1], os.path.join(SAVES, site + ".rws"))
+    hr = os.path.join(HERE, "..", "..", "..", "Pyrelands", "human_review.py")
     try:
-        r = L.call("rimworld/load_game_ready", saveName=name, readiness="playable", timeoutMs=900000, pauseIfNeeded=True)
+        # the review keeper save is made now, on this list (a keeper of an older list does not load: 2026-11-25)
+        b = subprocess.run([sys.executable, hr, "--build", "--load", site, "--save", "--name", review],
+                           capture_output=True, text=True, timeout=5400, stdin=subprocess.DEVNULL)  # hang guard
+        m = re.search(r"^save (\S+): ok=True", b.stdout or "", re.M)
+        if b.returncode != 0 or not m:
+            return {"why": "human_review.py --build --save did not save a keeper (exit %d): %s" % (
+                b.returncode, ((b.stdout or "") + (b.stderr or ""))[-300:])}
+        review = m.group(1)
+        L.call("rimworld/go_to_main_menu")                     # loading over a live game NREs (human_review Review.load)
+        if not await_lifecycle(lambda t, **k: L.call(t, **k), "menu", 120).ok:
+            return {"why": "never reached the main menu before loading %s" % review}
+        r = L.call("rimworld/load_game_ready", saveName=review, readiness="playable", timeoutMs=900000,
+                   pauseIfNeeded=True)
+        if not _ok(r):
+            return {"why": "the review keeper save did not load: %s" % json.dumps(r)[:200]}
     finally:
-        os.remove(staged)                     # the loaded game holds it now; the proof's own copy, never a keeper
-    if not _ok(r):
-        return {"why": "the review save did not load: %s" % json.dumps(r)[:200]}
+        for n in [site, review]:                               # the proof's own saves, never anyone's keeper
+            for f in glob.glob(os.path.join(SAVES, n + ".rws")):
+                os.remove(f)
     sys.path.insert(0, os.path.join(HERE, "..", "..", "..", "Pyrelands"))
     import human_review as HR
     S = HR.station_list()
@@ -1028,7 +1045,7 @@ def g_PEN2(L):
             outside.append("%s at %s,%s" % (i, n.get("x"), n.get("z")))
         if str((pinned.get(i) or {}).get("rotation")) != str(b.get("rotation")):
             facing.append("%s: %s -> %s" % (i, b.get("rotation"), (pinned.get(i) or {}).get("rotation")))
-    return {"save": os.path.basename(keep[-1]), "selected": rel.get("selected"), "released": rel.get("released"),
+    return {"save": review, "selected": rel.get("selected"), "released": rel.get("released"),
             "notReleased": rel.get("notReleased"), "ids": ids, "moved": moved, "outside": outside,
             "facingWrong": facing, "returnedHome": pin.get("returnedHome")}
 

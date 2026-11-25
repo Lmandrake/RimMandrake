@@ -1,4 +1,4 @@
 # live proofs of PEN_ANIMALS_UNSTICK_STATUES_LEARN_TO_WALK (bridge_bundle_proof.py; work bundle WB-pipeline-bridge-20261125-192133)
 live-proof A1: python3 src/RimMandrake/Utils/modcheck/live_queue/bridge_bundle_proof.py PEN < /dev/null
-live-tier A2: pyrelands
+live-tier A2: ratchet_pilot
 live-proof A2: python3 src/RimMandrake/Utils/modcheck/live_queue/bridge_bundle_proof.py PEN2 < /dev/null
