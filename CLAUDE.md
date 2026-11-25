@@ -315,7 +315,7 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   harmful.
 - The older the work, the more proof it needs. Read it against the code of now. Run its test on the current build.
 - Drop a stale or wrong ticket with its reason. Delete a stale or wrong polish line. Do not do the work.
-- This applies to every process: a Work Bundle, a fixer, a sweep, a judge and a hand.
+- The filter applies to every process: a Work Bundle, a fixer, a sweep, a judge and a hand.
 - Full text: `design/RimMandrake/standing_rulings.md` §Old work is filtered before any process takes it.
 
 ## Correctness outranks seat ownership; wrong material is deleted

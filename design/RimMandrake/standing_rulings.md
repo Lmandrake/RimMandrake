@@ -706,8 +706,8 @@ The rule:
 - **Test 2, if you see it, do it.** You are the fixer. When you find a fault, fix it in this run, test first. A later
   run knows less. Hand it on only with test-2 evidence. The fixer writes the test, sees the test fail, fixes, sees the
   test pass, and publishes. Test-2 evidence is one of these:
-  - your verdict must stay independent of the work. This never stops a blind judge that sees a fault: the judge fixes
-    the fault, test first, and a new blind judge validates the fix (the polish rule, below);
+  - your verdict must stay independent of the work. That evidence never stops a blind judge that sees a fault: the
+    judge fixes the fault, test first, and a new blind judge validates the fix (the polish rule, below);
   - you lack the tools or the access (a read-only role; a live-only fault and no bridge);
   - the fix is not known after a real attempt: name what you tried;
   - it needs one of the owner's five acts, or it changes a north-star bar (a looser bar is the Conductor's act). The
