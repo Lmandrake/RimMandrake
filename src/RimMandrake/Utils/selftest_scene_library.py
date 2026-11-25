@@ -918,6 +918,29 @@ def run(tests):
     return good
 
 
+FACTION_DIALOG = {"type": "VEF.Factions.Dialog_NewFactionSpawning", "forcePause": True, "buttons": ["Spawn", "Do nothing"]}
+
+
+def test_load_answers_the_known_load_windows_only():
+    """A save made before a mod's factions existed opens VEF's Dialog_NewFactionSpawning once per missing faction (live on ArchBig
+    2026-11-25: the storeroom-pit fixture under the Knockback small list; the calm then refused NOT_CALM force_pause_windows). The load
+    gives each one its approved answer, 'Do nothing', and says so; a window with no approved answer stays open for the calm to refuse."""
+    W = world()
+    W.game.saves.append("RM_TestSite_river")
+    W.game.load_windows = [dict(FACTION_DIALOG, ID=7), dict(FACTION_DIALOG, ID=8)]
+    with scene.open("ArchSmall", needs={"map": "RM_TestSite_river"}) as s:
+        did = s.opened[2]["did"]
+    must(W.game.windows == [] and getattr(W.game, "clicked", []) == ["Do nothing", "Do nothing"], "windows %s clicked %s" % (
+        W.game.windows, getattr(W.game, "clicked", None)))
+    must(any("answered 2 load window" in x and "Do nothing" in x for x in did), "the load does not say what it answered: %s" % did)
+    W = world()
+    W.game.saves.append("RM_TestSite_river")
+    W.game.load_windows = [{"ID": 9, "type": "Dialog_MessageBox", "forcePause": True, "buttons": ["OK"]}]
+    with scene.open("ArchSmall", needs={"map": "RM_TestSite_river"}) as s:
+        pass
+    must([w["ID"] for w in W.game.windows] == [9] and not getattr(W.game, "clicked", None), "an unknown window was touched")
+
+
 def test_lock_child_env_names_no_dropped_variable():
     """A Windows driver takes the lock through a WSL child. A variable it drops must leave WSLENV too: WSL passes a name that WSLENV
     lists and the parent lacks as an EMPTY value, and an empty RIMFLOW_DRIVER_LOCK reads as "no lock path" for ArchBig (seen live
@@ -952,6 +975,7 @@ def main():
             test_attach_refuses_no_session, test_attach_refuses_driver_alive, test_attach_refuses_owner_hold, test_attach_refuses_unknown_game,
             test_attach_pauses_a_running_game, test_attach_then_run_is_refused, test_abort_writes_closing_record,
             test_names_not_built_say_so, test_tools_and_raw_census, test_lock_child_env_names_no_dropped_variable,
+            test_load_answers_the_known_load_windows_only,
             test_accept_keeps_its_identity_when_the_judge_appends_the_scene_ledger]
     a = run(ticket)
     print("scene library: %d of %d checks passed" % (a, len(ticket)))

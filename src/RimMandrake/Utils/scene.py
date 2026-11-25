@@ -433,9 +433,38 @@ class Session(object):
             sha, why = self._fixture_sha(where)
             self.fixture = {"name": where, "sha256": sha} if sha else {"name": where, "sha256": None, "could_not_look": why}
         p["did"].append("loaded %s (the game's earlier map is gone)" % where)
+        if not fresh:
+            p["did"].append(self._answer_load_windows(p))
         p["did"].append(self.W.stage_loaded(self.key, where))
         if not fresh:
             rec.could_not_look.append("whether %s was saved in a marked process: a save does not carry the mark yet" % where)
+
+    def _answer_load_windows(self, p):
+        """A save made before a mod's factions existed opens VEF's Dialog_NewFactionSpawning, one per missing faction (live on
+        ArchBig 2026-11-25: the storeroom-pit fixture under the Knockback small list; the calm then refused NOT_CALM
+        force_pause_windows). Each window of quiet_site.MODAL_HANDLERS gets its one approved answer ('Do nothing': the save's
+        world stays as it is). Any other window stays open, for the calm to refuse by name."""
+        md = os.path.join(HERE, "modcheck")
+        if md not in sys.path:
+            sys.path.append(md)
+        import quiet_site
+
+        scene_self = self
+
+        class _Hands(object):
+            def call(self, tool, **args):
+                return scene_self._look(tool, **args)
+
+        qs = quiet_site.QuietSite(_Hands(), controls=["modal_broker"])
+        qs.sleep = self.W.sleep
+        got = qs.modals()
+        failed = [x for x in qs.problems if not x.startswith("unknown force-pause")]
+        if failed:
+            raise Fault("LOAD_NOT_SETTLED", done=list(p["did"]), detail="a load window was not answered: %s" % "; ".join(failed))
+        if not got["handled"]:
+            return "no load window to answer"
+        return "answered %d load window(s): %s" % (len(got["handled"]), ", ".join(
+            "%s -> %s" % (h["type"].rsplit(".", 1)[-1], h["handler"].split(" ", 1)[-1]) for h in got["handled"]))
 
     def _fixture_sha(self, name):
         """-> (the sha256 of the save file, None), or (None, why it could not be read): then two runs are never one fixture."""

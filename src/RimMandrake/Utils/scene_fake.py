@@ -52,6 +52,7 @@ class FakeGame(object):
         self.echo = False               # planted: a staging tool whose block echoes the request (no readBack)
         self.serial_id, self.acts_done, self.bound, self.pictures = 20000, {}, {}, {}
         self.map_size = (250, 250)
+        self.load_windows, self.windows = [], []    # the windows that a save load opens; the windows open now
 
     # ---- the tools
     def call(self, tool, a):
@@ -96,6 +97,18 @@ class FakeGame(object):
                 return {"success": False, "message": "Timed out waiting for RimWorld entry scene readiness."}
             self.loads.append(a.get("saveName") or "fresh")
             self.status = rec("status_playing")
+            if a.get("saveName"):
+                self.windows = [dict(w) for w in self.load_windows]
+            return {"success": True}
+        if tool == "jawa/window_list_close" and a.get("action") == "list":
+            return {"success": True, "windows": [dict(w) for w in self.windows]}
+        if tool == "rimworld/get_ui_layout":
+            return {"success": True, "surfaces": [{"type": w["type"], "children": [{"label": b, "targetId": "%s/%s" % (w["ID"], b)}
+                                                                                    for b in w.get("buttons", ())]} for w in self.windows]}
+        if tool == "rimworld/click_ui_target":
+            wid, label = a["targetId"].split("/", 1)
+            self.windows = [w for w in self.windows if str(w["ID"]) != wid]
+            self.clicked = getattr(self, "clicked", []) + [label]
             return {"success": True}
         if tool == "rimworld/go_to_main_menu":
             self.menu_polls = 2

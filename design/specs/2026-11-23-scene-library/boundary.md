@@ -126,6 +126,10 @@ mod does only through its own UI path (it goes through `s.raw`, and the run is E
 - **a-marked-run-counts-for-no-bar.** A run after a changing `s.raw`, or a planted run, counts for no bar; a clean accepted
   run counts (`t_a_run_after_a_changing_raw_call_does_not_count_for_a_bar`).
 - **a-trace-with-no-close-is-could-not-look.** (`t_a_trace_with_no_closing_record_is_could_not_look`)
+- **load-answers-the-known-load-windows-only.** After a save load, each window that `quiet_site.MODAL_HANDLERS` names gets its
+  one approved answer (VEF's `Dialog_NewFactionSpawning`: "Do nothing", the save's world unchanged), and the load phase says
+  what it answered. Any other window stays open, for the calm to refuse by name
+  (`test_load_answers_the_known_load_windows_only`).
 
 
 ## STATIONS (`s.stage(station=dict(...))`)
