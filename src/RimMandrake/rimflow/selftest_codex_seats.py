@@ -33,7 +33,7 @@ for seat in model.CODEX_SEATS:
     with tempfile.TemporaryDirectory() as d:
         env = dict(os.environ, RIMFLOW_SEAT=seat, AGENT_SEAT=seat, RIMFLOW_BRIDGE_SEAT=seat,
                    RIMFLOW_LEDGER=d+'/events.jsonl', RIMFLOW_ITEMS=d+'/items',
-                   RIMFLOW_DRIVER_LOCK='',
+                   RIMFLOW_DRIVER_LOCK=d+'/driver.lock',   # its own lock: on SteveDesktop the Steve1 take is local
                    RIMFLOW_DISPATCH_LOCK=d+'/dispatch.lock', RIMFLOW_BRIDGE_LOCK=d+'/bridge.lock',
                    RIMFLOW_PROBE='no-reading', RIMFLOW_OWNER_ACT_STAMP=d+'/act.json')
         Path(d+'/items').mkdir()
