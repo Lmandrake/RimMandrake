@@ -1,7 +1,7 @@
 # WB-pipeline-bridge-20261125-192133 state
 
 Worker run 1 on SteveDesktop, 2026-11-25 11:22 AM to about 1:15 PM PST (context 420k at its save). Run 2 (restart 1)
-from 1:20 PM PST: context 150k at start, 330k at the first save, about 420k at the second (window 1M, line 500k). Restart from here.
+from 1:20 PM PST: context 150k at start, 330k at the first save, about 420k at the second (window 1M, line 500k). Run 3 (restart 2) from 2:29 PM PST. Restart from here.
 
 ## What the next context must know
 - Run live checks as SteveDesktop lane jobs, not by hand: Steve1 and Steve2 are the lane's busy games. Every member
@@ -48,6 +48,7 @@ from 1:20 PM PST: context 150k at start, 330k at the first save, about 420k at t
 | RIMMANDRAKE_PROVE_COMPANION_REFUSALS_THE_MINIMAL_LIST_CANNOT | done | PLAYTEST J20261125T220551Z-9be74a, SETTLE and CAMPAIGN J20261125T214629Z-889e6f PASS; full-inventory refusal unreachable (ThingOwner maxStacks 999999); flight remainder RIMMANDRAKE_PROVE_FLIGHT_MAINTAIN_HOLDS_ONLY_STARTED_PAWNS (owner act 1) |
 | step 4 fresh reader (run 2) | done | 1 significant finding fixed (89136970f9); nits done in 6ca2e748c0 and 80ede465f9 |
 | (no ticket) PLAYTEST scene: the FlowWorks 'fluids' run ended in 4 frames, before the cross-call | scene repaired | 80ede465f9 |
+| BRIDGE_LOCK_HARDEN_ALIVE_MEANS_A_PID | done (run 3) | A1 live on Steve1 by hand (a live `claude`-named holder, then this session): refused naming the driver lock, who shows the holder pid, FREE on exit; a99e90a41d (a held --host take exits 75, not 2; an unreachable guard is not called held), 955d54f81c (4 lock selftests were red on SteveDesktop: they now pin RM_HOST=archmagi) |
 
 ## Next, in order
 1. PEN A2: two lane runs on a freshly built keeper (J20261125T220757Z-226592, J20261125T222034Z-4d50a4, sha
