@@ -41,10 +41,14 @@ Steps:
 4. Write the split, with the size that you judge:
    python3 src/RimMandrake/rimflow/cli.py shape {item} --parts '<json list>' --size small --seat BENCH --why "Workshop Pipeline Shape run" --publish
    A refusal names the part and the repair. Repair the split and run the command again.
-   - small (the default): you can do every part that has a check in this run. Go on to step 5.
-   - large: the parts need more than one run's work, or different skills or models, or you need help. Write
-     `--size large` and stop here. The lane gives the item its own Work runs.
-5. Small: do the work. Run the item's check (step 4 printed it) until it holds:
+   - small (the default): go on to step 5 and do the work in this run. Use small for every item that you can start.
+     A long item is still small: a run has no limit of time, and a second run must read again all that you read.
+   - large: only with evidence that this run cannot do the work. The evidence is one of these: the work needs a model
+     or a tool that you do not have; another live run holds the files; every game is held and the next part needs a
+     game. "It is much work", "it has several parts" and "it needs a build and a live proof" are not evidence. With
+     the evidence, first do each part that the evidence does not stop. Then write `--size large`, and name the
+     evidence and what is built in the `LEFT OPEN:` note of step 6.
+5. Do the work. Run the item's check (step 4 printed it) until it holds:
    python3 src/RimMandrake/rimflow/list_effect.py check '<the item check>'
    Land with ./publish -m "{item}: <what>" <explicit paths>, then close:
    python3 src/RimMandrake/rimflow/cli.py close {item} --sha <published sha> --seat BENCH --why "Workshop Pipeline: the check holds at <sha>" --publish
