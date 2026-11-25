@@ -966,6 +966,10 @@ namespace JawaBench.BridgeTools
                 }
 
                 int placed = 0; var failures = new List<object>(); var spawnedThings = new List<Thing>();
+                // RIMMANDRAKE_BUILD_STAGE_OPS_READ_BACK_NEVER_ECHO: each spawn is read back in this hop; the reply is built from it.
+                // `standing` is read after the last op (a later op can destroy an earlier one) and has no want: displaced[] owns it.
+                var rb = StageReadBack.Open("jawa/build_batch", Time.frameCount);
+                var rbRows = new List<KeyValuePair<StageReadBack.Row, Thing>>();
                 // 🔴 WHAT THIS BATCH DESTROYS ON ITS WAY IN. BUILD_BATCH_OVERWRITES_SILENTLY_1:
                 // eight calls reported placed 81 with failed:[] everywhere and the map held 78.
                 // Three things had been destroyed by a LATER op whose multi-cell footprint
@@ -1140,8 +1144,31 @@ namespace JawaBench.BridgeTools
                                 });
                         }
 
-                        if (spawned != null) { placed++; spawnedThings.Add(spawned); }
-                        else failures.Add(new { op, why = "GenSpawn.Spawn returned null" });
+                        if (spawned != null)
+                        {
+                            placed++; spawnedThings.Add(spawned);
+                            var row = rb.Made("thing", spawned.ThingID, c.x, c.z)
+                                .Want("def", td.defName).Got("def", spawned.def.defName)
+                                .Want("stuff", useStuff?.defName).Got("stuff", spawned.Stuff?.defName)
+                                .Want("cell", c.x + "," + c.z).Got("cell", spawned.Position.x + "," + spawned.Position.z)
+                                .Want("rot", rot.AsInt.ToString()).Got("rot", spawned.Rotation.AsInt.ToString())
+                                .Got("faction", spawned.Faction?.def?.defName)
+                                .Got("hp", spawned.def.useHitPoints ? spawned.HitPoints.ToString() : null);
+                            if (fac != null) row.Want("faction", fac.def?.defName);
+                            if (hitPoints >= 0 && spawned.def.useHitPoints) row.Want("hp", Mathf.Clamp(hitPoints, 1, spawned.MaxHitPoints).ToString());
+                            var rq = spawned.TryGetComp<CompQuality>();
+                            if (rq != null)
+                            {
+                                row.Got("quality", rq.Quality.ToString());
+                                if (setQ) row.Want("quality", q.ToString());
+                            }
+                            rbRows.Add(new KeyValuePair<StageReadBack.Row, Thing>(row, spawned));
+                        }
+                        else
+                        {
+                            rb.Made("thing", null, c.x, c.z).Want("def", td.defName).Got("def", null);
+                            failures.Add(new { op, why = "GenSpawn.Spawn returned null" });
+                        }
                     }
                     catch (Exception e) { failures.Add(new { op, why = e.GetType().Name + ": " + e.Message }); }
                 }
@@ -1174,12 +1201,14 @@ namespace JawaBench.BridgeTools
                 int survived = 0;
                 foreach (var t in spawnedThings) if (t != null && !t.Destroyed) survived++;
                 int lostToLaterOps = placed - survived;
+                foreach (var kv in rbRows) kv.Key.Got("standing", kv.Value.Destroyed || !kv.Value.Spawned ? "False" : "True");
+                var stageBack = StageReadBack.Reply(rb, Time.frameCount);   // `readBack` is the parameter (things[] cap)
 
                 return (object)new
                 {
                     // c05.F1 (bridge GPT review 2026-11-15): success means every op spawned. A batch with a failed op
                     // is success=false, and partial says whether any op spawned at all.
-                    success = failures.Count == 0,
+                    success = failures.Count == 0 && (bool)stageBack["ok"],
                     partial = failures.Count > 0 && placed > 0,
                     error = failures.Count == 0 ? null
                         : failures.Count + " op(s) failed, " + placed + " spawned. See failed[].",
@@ -1208,6 +1237,7 @@ namespace JawaBench.BridgeTools
                             : placed + " placed."),
                     note = "Walls create NO roof - roof separately. Run jawa/map_commit after the batch.",
                     things = back,
+                    readBack = stageBack,
                     ticksGame = TicksGameSafe(),
                 };
             });

@@ -282,6 +282,8 @@ namespace JawaBench.BridgeTools
 
                 var grid = map.terrainGrid;
                 var size = map.Size;
+                // RIMMANDRAKE_BUILD_STAGE_OPS_READ_BACK_NEVER_ECHO: each cell is read back in this hop; the reply is built from it
+                var rb = StageReadBack.Open("jawa/set_terrain_batch", UnityEngine.Time.frameCount);
 
                 int changed = 0, alreadyCorrect = 0, outOfBounds = 0, verifyFailed = 0;
                 int opsApplied = 0, cellsRequested = 0;
@@ -353,6 +355,7 @@ namespace JawaBench.BridgeTools
                             }
 
                             var after = ReadLayer(grid, cell, layer);
+                            rb.Made("terrain", null, cx, cz).Want("terrain", def.defName).Got("terrain", after?.defName);
                             if (after != def)
                             {
                                 verifyFailed++;
@@ -393,7 +396,8 @@ namespace JawaBench.BridgeTools
                 }
 
                 var inBounds = cellsRequested - outOfBounds;
-                var success = verifyFailed == 0 && errors.Count == 0 && inBounds > 0;
+                var readBack = StageReadBack.Reply(rb, UnityEngine.Time.frameCount);
+                var success = verifyFailed == 0 && errors.Count == 0 && inBounds > 0 && (bool)readBack["ok"];
 
                 return new
                 {
@@ -416,6 +420,7 @@ namespace JawaBench.BridgeTools
                     errors,
                     samples,
                     mapSize = new { x = size.x, z = size.z },
+                    readBack,
                     ticksGame = TicksGameSafe()
                 };
             }, cancellationToken).ConfigureAwait(false);
@@ -991,6 +996,8 @@ namespace JawaBench.BridgeTools
                     return Fail("No current map. Load a game first.");
 
                 var size = map.Size;
+                // RIMMANDRAKE_BUILD_STAGE_OPS_READ_BACK_NEVER_ECHO: each destroy and each cleaned cell is read back in this hop
+                var rb = StageReadBack.Open("jawa/destroy_batch", UnityEngine.Time.frameCount);
                 var perCategory = new Dictionary<string, int>();
                 var samples = new List<object>();
                 int destroyed = 0, skippedPawns = 0, skippedUndestroyable = 0, outOfBounds = 0;
@@ -1025,6 +1032,7 @@ namespace JawaBench.BridgeTools
                                 if (samples.Count < 8)
                                     samples.Add(new { x = cx, z = cz, def = thing.def.defName, category = cat });
                                 thing.Destroy(DestroyMode.Vanish);
+                                rb.Made("gone", thing.ThingID, cx, cz).Want("destroyed", "True").Got("destroyed", thing.Destroyed ? "True" : "False").Got("def", thing.def.defName);
                                 destroyed++;
                                 perCategory.TryGetValue(cat, out var n);
                                 perCategory[cat] = n + 1;
@@ -1036,7 +1044,20 @@ namespace JawaBench.BridgeTools
                 // Fixed 2026-09-02 (opus code review): was unconditional success=true,
                 // so a rect entirely off the map (destroyed=0, cellsExamined=0)
                 // reported the exact same success shape as a real destroy.
-                bool ok = seen.Count > 0 && outOfBounds == 0;
+                // The clean read back: what of the filter still stands in the cells is named. A pawn and a thing the game
+                // cannot destroy are kept on purpose (named, not blocking); anything else of the filter is left behind.
+                foreach (var cell in seen)
+                    foreach (var thing in map.thingGrid.ThingsListAtFast(cell))
+                    {
+                        if (thing == null || thing.Destroyed) continue;
+                        var cat = thing.def.category.ToString();
+                        if (!all && !wanted.Contains(cat)) continue;
+                        if (thing is Pawn || cat == "Pawn") rb.Left(thing.def.defName, thing.ThingID, cell.x, cell.z, "a pawn: never destroyed by this tool", false);
+                        else if (!thing.def.destroyable) rb.Left(thing.def.defName, thing.ThingID, cell.x, cell.z, "not destroyable", false);
+                        else rb.Left(thing.def.defName, thing.ThingID, cell.x, cell.z, "still standing after the clean", true);
+                    }
+                var readBack = StageReadBack.Reply(rb, UnityEngine.Time.frameCount);
+                bool ok = seen.Count > 0 && outOfBounds == 0 && (bool)readBack["ok"];
                 return new
                 {
                     success = ok,
@@ -1053,6 +1074,7 @@ namespace JawaBench.BridgeTools
                     undestroyableSkipped = skippedUndestroyable,
                     perCategory,
                     samples,
+                    readBack,
                     ticksGame = TicksGameSafe()
                 };
             }, cancellationToken).ConfigureAwait(false);
@@ -2154,6 +2176,8 @@ namespace JawaBench.BridgeTools
                 var rows = new List<object>();
                 var landed = 0;
                 var substituted = 0;
+                // RIMMANDRAKE_BUILD_STAGE_OPS_READ_BACK_NEVER_ECHO: each pawn is read back in this hop; the reply is built from it
+                var rb = StageReadBack.Open("jawa/spawn_pawn", UnityEngine.Time.frameCount);
                 // map awareness: every pawn generated/spawned in this loop carries `bridge:jawa/spawn_pawn` in its chain
                 var awareness = JawaBenchAwareness.BridgeBegin("jawa/spawn_pawn");
                 try {
@@ -2225,6 +2249,7 @@ namespace JawaBench.BridgeTools
                     }
                     catch (Exception ex)
                     {
+                        rb.Made("pawn", null, cell.x, cell.z).Want("spawned", "True").Got("spawned", "False").Got("threw", ex.GetType().Name);
                         rows.Add(new
                         {
                             ok = false,
@@ -2259,6 +2284,13 @@ namespace JawaBench.BridgeTools
                     // pawn counted as a clean spawn.
                     var kindNow = pawn.kindDef?.defName;
                     var kindOk = kindNow == kind.defName;
+                    var made = rb.Made("pawn", pawn.ThingID, cell.x, cell.z)
+                        .Want("kind", kind.defName).Got("kind", kindNow)
+                        .Want("spawned", "True").Got("spawned", pawn.Spawned ? "True" : "False")
+                        .Want("cell", cell.x + "," + cell.z).Got("cell", pawn.Spawned ? pawn.Position.x + "," + pawn.Position.z : null)
+                        .Got("faction", pawn.Faction?.def?.defName).Got("xenotype", xenoNow);
+                    if (fac != null) made.Want("faction", fac.def?.defName);
+                    if (xeno != null) made.Want("xenotype", xeno.defName);
                     if (!kindOk) substituted++;
                     if (pawn.Spawned && xenoOk && kindOk) landed++;
 
@@ -2281,6 +2313,7 @@ namespace JawaBench.BridgeTools
                     });
                 }
                 } finally { JawaBenchAwareness.BridgeEnd(awareness); }
+                var readBack = StageReadBack.Reply(rb, UnityEngine.Time.frameCount);
 
                 // ⚠️ This used to be `rows.Count > 0`. Rows are added for pawns that
                 // THREW during generation too, so a batch in which every single pawn
@@ -2288,7 +2321,7 @@ namespace JawaBench.BridgeTools
                 // with the xenotype asked for, if one was -- count.
                 return new
                 {
-                    success = landed > 0 && landed == rows.Count,
+                    success = landed > 0 && landed == rows.Count && (bool)readBack["ok"],
                     message = $"Spawned {landed}/{rows.Count} {kind.defName} in faction " +
                               $"{fac?.def?.defName ?? "(none)"}" +
                               (xeno != null ? $" as {xeno.defName}" : "") + "." +
@@ -2306,6 +2339,7 @@ namespace JawaBench.BridgeTools
                     substitutedCount = substituted,
                     xenotypeRequested = xeno?.defName,
                     pawns = rows,
+                    readBack,
                     ticksGame = TicksGameSafe()
                 };
             }, cancellationToken).ConfigureAwait(false);

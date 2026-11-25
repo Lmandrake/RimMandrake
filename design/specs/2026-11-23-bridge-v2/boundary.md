@@ -123,3 +123,28 @@ The [watcher boundary](../2026-11-23-bridge-v2-watcher/boundary.md) names the te
 ## PLAY AGAINST STEP
 
 `scene.py compare` (`src/RimMandrake/Utils/scene_compare.py`) has its own page: `design/specs/2026-11-24-play-vs-step/boundary.md`.
+
+## THE STAGE READ-BACK (`JawaBenchStageReadBack.cs`)
+
+Item: `RIMMANDRAKE_BUILD_STAGE_OPS_READ_BACK_NEVER_ECHO`. Code: `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchStageReadBack.cs`
+(all of it, pure, no RimWorld type), and its calls in `jawa/set_terrain_batch`, `jawa/destroy_batch`, `jawa/spawn_pawn`
+(`JawaBenchTerrainTools.cs`) and `jawa/build_batch` (`JawaBenchMapTools.cs`). Each promise has a test of its name in
+`src/RimMandrake/bridgetools/selftest_stage_ops.py` (harness `src/RimMandrake/bridgetools/StageOpsSelfTest/`). The live proof is
+`src/RimMandrake/bridgetools/prove_stage_ops.py`.
+
+A staging tool opens one `StageReadBack` inside its main-thread hop, before its first write. After each write it reads the
+thing back from the game and records what the game holds (`Row`). It builds the `readBack` block of its reply with
+`StageReadBack.Reply`, in the same hop. The tool's `success` is false when the block's `ok` is false.
+
+It accepts: rows with a wanted value and a value read from the game; a frame number at the open and at the reply; names of
+things a clean left; one refusal by name. It does not survive: a tool that passes the request value as the read value (the
+wiring checks in the selftest read the call sites for this); a game that changes a thing after the hop.
+
+| promise | test |
+|---|---|
+| A reply's values are the values read from the game. A row whose read value differs from the wanted value is `ok` false, and the block is `ok` false. | `a_reply_is_built_from_the_read_back_never_the_request` |
+| A pawn whose kind the game replaced is reported with the kind as made, and is a staging fault. | `a_replaced_pawn_kind_is_reported_as_made` |
+| The block names the frame at the open and at the reply. When the two differ, the block is `ok` false (`frame_moved`). Each of the four tools opens and replies inside one `InvokeAsync` lambda. | `the_write_and_the_read_back_share_one_frame` |
+| A clean that leaves a thing of its filter in its cells names each such thing, and the block is `ok` false. A thing kept on purpose (a pawn, a thing the game cannot destroy) is named as kept and does not make the block false. | `a_clean_that_left_a_thing_names_it` |
+| A refusal by name gives `ok` false, the refusal's name, and the rows made before it. A refusal before the first write has no rows. | `a_refusal_by_name_leaves_nothing_made` |
+| The block's `digest` is a function of the rows' read values only: thing ids, frames and the row order do not change it. Two builds of one request give equal digests; a different read value gives a different digest. | `two_builds_of_one_request_give_equal_digests` |

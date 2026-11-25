@@ -170,6 +170,34 @@ def build_staged(clean, gm):
                 shutil.rmtree(ARTIFACT_DIR)
     extra = ["--no-incremental", "-p:JawaGmTools=%s" % ("true" if gm else "false"), src_hash_prop()]
     extra_dirs, late = [], []
+    # SteveDesktop's install is not the csproj's default (C:\Program Files (x86)\Steam): testcentre_env.sh sets RM_STEAMAPPS.
+    sa = os.environ.get("RM_STEAMAPPS")
+    if sa and os.path.isfile(os.path.join(sa, "common", "RimWorld", "RimWorldWin64_Data", "Managed", "Assembly-CSharp.dll")):
+        extra.append("-p:RimWorldDir=%s" % winbuild.win(os.path.join(sa, "common", "RimWorld")))
+        # its Workshop folder, or the copy in Mods/<id> (sync_test_mods.py copies, it does not subscribe)
+        for prop, rel, dll in (("RimBridgeSdkDir", "3727949765/1.6/Assemblies", "RimBridgeServer.Sdk.dll"),
+                               ("HarmonyDir", "2009463077/1.6/Assemblies", "0Harmony.dll")):
+            ws, copy = os.path.join(sa, "workshop", "content", "294100", rel), os.path.join(sa, "common", "RimWorld", "Mods", rel)
+            for d in (ws, copy):
+                if os.path.isfile(os.path.join(d, dll)):
+                    extra.append("-p:%s=%s" % (prop, winbuild.win(d)))
+                    break
+        # our own mods: the game's copy, else the DLL committed in the repo (a compile reference only, Private=false)
+        mods = os.path.join(sa, "common", "RimWorld", "Mods")
+        for env, prop, folder, dll in (("ORACLE_MOD_DIR", "OracleModDir", "Oracle/Assemblies", "RimMandrakeOracle.dll"),
+                                       ("RIMDEFDUMP_MOD_DIR", "RimDefDumpModDir", "RimDefDump/1.6/Assemblies", "RimDefDump.dll"),
+                                       ("DROIDWORKS_MOD_DIR", "DroidworksModDir", "Droidworks/Assemblies", None),
+                                       ("INHABITED_MOD_DIR", "InhabitedModDir", "Inhabited/Assemblies", None),
+                                       ("GSS_MOD_DIR", "GssModDir", "GimmeSomeSlack/Assemblies", None),
+                                       ("FLOWWORKS_MOD_DIR", "FlowWorksModDir", "FlowWorks/Assemblies", None)):
+            if os.environ.get(env):
+                continue
+            here = os.path.join(mods, folder)
+            repo = os.path.join(REPO_ROOT, "src", "RimMandrake", folder)
+            if os.path.isdir(here) and (dll is None or os.path.isfile(os.path.join(here, dll))):
+                extra.append("-p:%s=%s" % (prop, winbuild.win(here)))
+            elif dll and os.path.isfile(os.path.join(repo, dll)):
+                extra.append("-p:%s=%s" % (prop, winbuild.win(repo)))
     for env, prop in (("ORACLE_MOD_DIR", "OracleModDir"), ("INHABITED_MOD_DIR", "InhabitedModDir"), ("GSS_MOD_DIR", "GssModDir"),
                       ("FLOWWORKS_MOD_DIR", "FlowWorksModDir")):
         v = os.environ.get(env)
