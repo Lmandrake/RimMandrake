@@ -17,6 +17,7 @@ The figure is the context of the last main-thread turn (`detached_helper.context
 | 5. live pass | ~370k | |
 | 7. the page | 384k | built before part 6, the smaller part first |
 | 6. the Maturation Pipeline (holder = the mod's bundle) | 437k | |
+| two fresh readers, their fixes, the item's acceptance test | 470k | the readers' own contexts are not in this figure |
 
 ## Done
 
@@ -33,6 +34,13 @@ The figure is the context of the last main-thread turn (`detached_helper.context
   context 161,502 after its one group [measured]. About 337k weighted tokens per member closed, against 2.27M per ticket
   fixed in the 8 one-ticket runs of the week (design section 8) [measured, one bundle: not yet a rate].
 - The lane launched bundles of one on its own from 00:02 PST on (part 2 live).
+- Fresh reader 1 found 2 significant faults, both fixed test first at `a16f94dce5`: the progress guard read 0 on every
+  real restart (a restart that ended none would restart for good), and a restart that never started left the bundle
+  `restarting` (live) for good. Its polish line 5 was significant too (a raised launch left a live `launching`
+  record), fixed in the same commit. Fresh reader 2 on the fixes: nothing significant.
+- The item's acceptance (five tickets, two fixed, one run) is `t_five_tickets_two_fixed_one_run`, at `01630f9219`.
+- Deviation: non-pilot mods keep one fixer per road-back item. Every advancing mod is a pilot (ExplosiveKnockback,
+  GimmeSomeSlack, FlowWorks), so ordinary operation does not reach it now (test 1).
 
 ## Learned
 
@@ -54,4 +62,5 @@ The figure is the context of the last main-thread turn (`detached_helper.context
 
 ## Next
 
-- One fresh reader of the changed files (the code-review rule), then close the item.
+- Nothing in this build. Owed by use: the first restart of a real bundle (none restarted yet), the first mod bundle
+  (the next pilot road back), and a live pass that finds a free game.
