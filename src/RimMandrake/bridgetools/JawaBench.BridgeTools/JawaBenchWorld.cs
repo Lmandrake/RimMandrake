@@ -42,6 +42,8 @@ namespace JawaBench.BridgeTools
         internal static string PatchStatus = "not patched";
         private static T.SceneRun _run;
         private static readonly Sink TheSink = new Sink();
+        /// <summary>The live run's tap sink (outside any run: -2). The scene gates write their `gate` rows here.</summary>
+        internal static ICastSink LiveSink { get { return TheSink; } }
         private static FieldInfo _live;      // Messages.liveMessages, private static
 
         private sealed class Sink : ICastSink

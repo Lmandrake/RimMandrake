@@ -233,18 +233,24 @@ namespace JawaBench.BridgeTools
         }
 
         // ------------------------------------------------------------------ incident journal
-        internal sealed class IncState { internal A.Token Adopted, Mine; internal A.IncidentRec Rec; internal long T0, Pre, Post; }
+        internal sealed class IncState { internal A.Token Adopted, Mine; internal A.IncidentRec Rec; internal long T0, Pre, Post; internal bool Held; }
 
-        private static void IncPre(IncidentWorker __instance, IncidentParms parms, out IncState __state)
+        // The scene incident gate (JawaBenchGates.IncidentGate, RIMMANDRAKE_BUILD_INCIDENT_QUEST_MENTAL_GATES_BEFORE_CERTIFICATE) is
+        // decided here, on this present hook, first: an off gate returns at once. A held incident returns false from TryExecute
+        // (the worker never runs) and its journal row says so; the recorder runs either way.
+        private static bool IncPre(IncidentWorker __instance, IncidentParms parms, bool __runOriginal, ref bool __result, out IncState __state)
         {
             __state = null;
             long t0 = Now();
+            bool run = true;
             try
             {
-                if (!Sw.On(A.MIncident) && !Sw.On(A.MContext)) return;
+                run = JawaBenchGates.IncidentGate(__instance, parms, __runOriginal);
+                if (!run) __result = false;
+                if (!Sw.On(A.MIncident) && !Sw.On(A.MContext)) return run;
                 NoteThread();
                 int ep = Epoch();
-                var st = new IncState { T0 = t0 };
+                var st = new IncState { T0 = t0, Held = !run };
                 __state = st;      // FIRST: anything pushed below is popped by IncFin even if a later line throws
                 if (parms != null && A.Scope.Current(ep) == null && Scheduled.TryGetValue(parms, out var tok))
                     st.Adopted = A.Scope.Adopt(tok, ep);
@@ -274,6 +280,7 @@ namespace JawaBench.BridgeTools
             }
             catch (Exception e) { Rec.Fault(e); }
             finally { if (__state != null) __state.Pre = Now() - t0; }
+            return run;
         }
 
         private static void IncPost(bool __result, bool __runOriginal, IncState __state)
@@ -285,7 +292,8 @@ namespace JawaBench.BridgeTools
                 if (r == null) return;
                 r.OuterBodyRan = __runOriginal ? "true" : "false";
                 r.Returned = __result ? "true" : "false";
-                if (!__runOriginal) { r.WorkerEntered = "unknown"; r.WorkerEnteredWhy = "the original was skipped by another prefix; whatever ran instead is not observed"; }
+                if (__state.Held) { r.WorkerEntered = "false"; r.WorkerEnteredWhy = "held by the scene incident gate (JawaBenchGates)"; }
+                else if (!__runOriginal) { r.WorkerEntered = "unknown"; r.WorkerEnteredWhy = "the original was skipped by another prefix; whatever ran instead is not observed"; }
             }
             catch (Exception e) { Rec.Fault(e); }
             finally { if (__state != null) __state.Post = Now() - p0; }

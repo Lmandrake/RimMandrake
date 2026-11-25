@@ -239,6 +239,82 @@ None of its own. The taps use the guards of `JawaBenchHookGuard`; the rows go th
 - **the-world-tracks-write-on-change-and-their-cost-is-in-the-result.** One row per change of each world track, and `close.world` holds
   their ms, the most of one sample, the mean per tick and the six taps' coverage.
 
+## SCENE GATES
+
+Code: `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchGatesCore.cs` (all of it, the pure half),
+`src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchGates.cs` (all of it, the Verse half and its two patch sites), the gate
+call in `JawaBenchAwareness.IncPre` (the incident gate sits on that present hook, no site of its own), and `JawaBenchWorld.LiveSink`.
+Item `RIMMANDRAKE_BUILD_INCIDENT_QUEST_MENTAL_GATES_BEFORE_CERTIFICATE`. Each promise has a test of its name in
+`src/RimMandrake/bridgetools/selftest_scene_gates.py` (harness `bridgetools/GatesSelfTest`). The hooks are on
+`src/RimMandrake/bridgetools/HOOKS.md`.
+
+**Three gates**, each a mechanism for the calm profile (`RIMMANDRAKE_BUILD_CALM_PROFILE_BREACH_LOG_AND_LEASE` joins them into a
+profile with its lease and its tool call; this ticket gives them no tool of their own):
+
+| gate | where | the name on the allow list | a held attempt |
+|---|---|---|---|
+| `incident` | `IncidentWorker.TryExecute`, decided first inside the awareness prefix `IncPre` | the incident def | `TryExecute` returns false; the worker never runs; the incident journal row reads `workerEntered` false, "held by the scene incident gate" |
+| `quest` | a prefix on `QuestManager.Add` | the quest's root def | the quest is not added |
+| `mental` | a prefix on `MentalStateHandler.TryStartMentalState` | the mental state def | the call returns false, as the game's own refusals do |
+
+`JawaBenchGates.Arm(kind, allow)` arms one gate for the game now loaded, on the main thread. While armed, every attempt that reaches
+the gate is counted. An attempt whose name is on the allow list goes through and uses up that entry: a name listed once goes through
+once, a name listed twice goes through twice. Every other attempt is held, counted and logged with its caller (the first stack frame
+that is not ours, not Harmony's replacement and not the gated method), its tick and a detail; while a run is running it is also a
+`gate` row of the run's trace (`gate`, `outcome` `held` or `allowed`, `name`, `caller`, `detail`, `gseq`, `gtick`). An off gate
+returns at once. A gate whose game changed, or whose game is now under a canonical save, lets the attempt run and releases itself,
+with the reason in `lastRelease`.
+
+**The incident queue held aside.** `JawaBenchGates.HoldQueue` copies every entry of the storyteller's incident queue aside, with its
+fire tick and the end of its retry window as absolute ticks, and empties the queue. `GiveBackQueue` puts each entry back with both
+ticks moved by the ticks held, so an entry keeps its distance to its fire tick and the length of its retry window (`retryDurationTicks`
+is unchanged; a return that moved the fire tick only would leave a tried entry past its window at once). An entry that was already
+past its retry window when it was held (tried, and `fireTick + retryDurationTicks` at or before the hold tick: the engine drops it
+on its next tick) is named at the hold and at the give-back, and is not given back. A give-back into another game returns nothing
+and names each entry.
+
+### LIMITS
+
+- **the gate log: 200 rows per gate.** The danger: a gate left armed on a busy map grows without end. The counts stay exact; a row
+  pushed out is counted in `rowsDropped`.
+
+### DOES NOT SURVIVE (not promised)
+
+- **a-hook-that-is-not-connected.** An offline test proves the rules, never that Harmony put the prefixes on the methods, or that
+  another mod's prefix with a higher priority did not run first. The live proof is the tap certificate
+  (`RIMMANDRAKE_BUILD_TAP_CERTIFICATE_CANARY_RUNS_OFF_STAGE`), which shows a held route and a refused route for each gate.
+- **a-route-around-the-gated-method.** A mental state set without `TryStartMentalState` (a load restores one), a quest put in the
+  manager without `QuestManager.Add`, or an incident body that a mod runs without `IncidentWorker.TryExecute` is not gated.
+- **the-offer-letter-of-a-held-quest.** `QuestUtility.GenerateQuestAndMakeAvailable` returns the quest whatever `Add` did, so its
+  caller can still send the offer letter. The letter tap records it.
+- **a-driver-that-never-gives-back.** A gate and a held queue stay until released, given back, a load or a new game. A driver that
+  dies leaves them on; the lease is the calm profile ticket's. A save made while the queue is held saves it empty.
+- **entries-queued-while-held.** An incident queued while the queue is held stays in the queue and fires by its own ticks.
+- **a-call-from-another-thread.** It runs, and is counted in `foreignPassed`; the gates decide on the main thread only.
+
+### PROMISES (each one is owed a test of the same name)
+
+- **the-allow-list-lets-one-named-incident-through-once.** An incident named once on the allow list runs once; the same incident
+  again, and any other, is held. The incident gate is decided inside `IncPre`, which returns false and sets the result false for a
+  held incident.
+- **a-held-attempt-is-counted-and-recorded-with-its-caller.** Each held attempt adds one to `held` and `attempts`, and is a log row
+  and a trace row that name the gate, the name, the caller and the tick. A caller that cannot be read reads `unknown`.
+- **a-gate-that-is-off-changes-nothing-and-records-nothing.** An off or released gate lets every call run, counts nothing, logs
+  nothing, writes no row and reads neither the caller nor the detail.
+- **a-held-queue-entry-comes-back-with-its-fire-tick-moved.** Each entry given back has its fire tick moved by the ticks held, and
+  keeps its tried flag.
+- **a-held-queue-entry-comes-back-with-its-retry-window-moved.** Each entry given back has the end of its retry window moved by the
+  same ticks, so its retry duration is unchanged and a tried entry is not past its window at once.
+- **an-entry-past-its-retry-window-when-held-is-reported-never-dropped-in-silence.** Such an entry is named at the hold and at the
+  give-back, and counted in `expired`; every entry held is given back or named.
+- **the-quest-gate-follows-the-hook-rules.** The quest prefix: an off gate first, then the thread (a foreign call runs, counted, reads
+  nothing), then an original that another prefix already skipped (not held, counted), then the decision; a nested attempt is decided
+  on its own; a fault of ours is counted and never lets a held attempt through, nor throws into the game; a dropped row and a row
+  outside any run are counted; a game change releases the gate. The prefix is on `HOOKS.md`, and `selftest_bridge_hooks.py` passes.
+- **the-mental-gate-follows-the-hook-rules.** The same, for the mental prefix, which also sets the result false for a held attempt.
+- **with-a-canonical-save-loaded-every-gate-is-refused.** Under CAMPAIGN, arming each of the three gates and holding the queue is
+  refused by name and changes nothing, and a gate armed on a test save lets go when a canonical save is loaded under it.
+
 ## LIVE READINGS
 
 | proof | reading | evidence |
