@@ -38,9 +38,11 @@ check("STATICCALL whole id lost", "STATICCALL", {"calls": {"a": {"ok": False, "m
 check("TILECACHE cycle", "TILECACHE", {"staleBefore": True, "verifiedNull": True, "staleAfter": False, "tile": 1}, 0)
 check("TILECACHE reset left stale", "TILECACHE", {"staleBefore": True, "verifiedNull": True, "staleAfter": True}, 1)
 
-good = {"noFileProfile": "campaign", "spawnRan": True, "staticRefused": True, "backProfile": "test", "flipS": 0.4}
+good = {"noFileProfile": "campaign", "spawnRan": True, "staticRefused": True, "backProfile": "test", "flipS": 0.4,
+        "listedProfile": "campaign"}
 check("PROFILE both halves", "PROFILE", good, 0)
 check("PROFILE static_call allowed in campaign", "PROFILE", dict(good, staticRefused=False), 1)
+check("PROFILE a listed campaign save reads test", "PROFILE", dict(good, listedProfile="test"), 1)
 check("PROFILE slow flip", "PROFILE", dict(good, flipS=5.0), 1)
 
 pen = {"ids": [1, 2], "waitBefore": 2, "release": {"released": 2, "notReleased": 0}, "waitAfter": 0,

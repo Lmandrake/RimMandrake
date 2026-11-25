@@ -122,7 +122,9 @@ def v_PROFILE(d):
         f.append("static_call not refused in campaign: %s" % d.get("staticMsg"))
     if d.get("backProfile") != "test" or (d.get("flipS") or 99) > 2.0:
         f.append("test file back reads %s after %s s, want test within 2 s" % (d.get("backProfile"), d.get("flipS")))
-    return (1 if f else 0), "; ".join(f) or "campaign with no file (spawn runs, static_call refused); test again in %.2f s" % d["flipS"]
+    if d.get("listedProfile") != "campaign":
+        f.append("a test file listing the loaded save in campaignSaves reads %s, want campaign" % d.get("listedProfile"))
+    return (1 if f else 0), "; ".join(f) or "campaign with no file (spawn runs, static_call refused); test again in %.2f s; a listed save reads campaign" % d["flipS"]
 
 
 def v_PEN(d):
@@ -406,7 +408,9 @@ def _profile(L):
 
 
 def g_PROFILE(L):
-    ok, msg = _ensure_loaded(L)
+    # always the bundle's own save: A2 lists the loaded save's name in campaignSaves
+    r = L.call("rimworld/save_game", saveName=SAVE)
+    ok, msg = _load(L) if _ok(r) else (False, "save_game failed: %s" % json.dumps(r)[:160])
     if not ok:
         return {"why": "precondition: no loaded save (the companion reads test by design while none is): %s" % msg}
     prof, path = _profile(L)
@@ -440,6 +444,16 @@ def g_PROFILE(L):
             break
         time.sleep(0.2)
     out["backProfile"], out["flipS"] = p, round(time.time() - t0, 2)
+    try:
+        d = json.loads(keep.decode("utf-8"))
+        d["campaignSaves"] = SAVE
+        with open(path, "w") as fh:
+            json.dump(d, fh)
+        out["listedProfile"], _ = _wait_profile(L, "campaign")
+    finally:
+        with open(path, "wb") as fh:
+            fh.write(keep)
+    _wait_profile(L, "test")
     return out
 
 
