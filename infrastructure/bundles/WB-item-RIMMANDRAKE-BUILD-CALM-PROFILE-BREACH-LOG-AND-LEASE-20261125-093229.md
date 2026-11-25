@@ -15,10 +15,14 @@ System: the calm profile of BRIDGE v2.0 (boundary.md §CALM PROFILE). One member
   SpawnPost (arrival watch). LiveToolsSelfTest needs a stub JawaBenchCalmProfile (UnitsCalmLifecycle.cs).
 - A new [Tool] needs tool_schemas.json refreshed (pre-commit refuses otherwise).
 
-## Next, in order
-1. Fresh reader of the changed files (code_review.md).
-2. Live pass: prove_calm_profile.py on a free game (ArchSmall or ArchBig) after build.py --gm --apply and a restart.
-3. Close the member with the sha and the live reading (or UNRUN with its command).
+## Group 2 and the live pass
+- Fresh reader: 3 significant findings fixed test first at 69a553b3f6 (exceptions and deadline over a re-arm; read-before-driver order).
+- Live on ArchBig: the re-arm read CAMPAIGN on the first frame after a load (save unknown); fixed at 9f35354006. The raid pause refused RaidEnemy; the proof plants Eclipse (4df311b91b). Final: 7 of 7 PASS.
+- Member closed (done at 5059d3e18b by the outcome tick); evidence note added.
+
+## Next
+Nothing: the bundle is finished.
 
 ## Context
-- after group 1: 216k of 1M (GO ON).
+- after group 1: 308k of 1M (GO ON).
+- after group 2 and the live pass: about 420k of 1M.
