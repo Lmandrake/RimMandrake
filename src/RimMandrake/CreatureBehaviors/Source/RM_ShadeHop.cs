@@ -237,6 +237,10 @@ namespace RimMandrake.CreatureBehaviors
                     continue;
                 }
                 takenCells.Add(ci.CellToIndex(other.Position));
+                if (other.pather != null && other.pather.Moving && other.pather.Destination.Cell.InBounds(map))
+                {
+                    takenCells.Add(ci.CellToIndex(other.pather.Destination.Cell));
+                }
                 Job j = other.CurJob;
                 if (j != null && j.def == RM_JobDefOf.RM_ShadeDash && j.targetB.Cell.InBounds(map))
                 {
@@ -247,6 +251,20 @@ namespace RimMandrake.CreatureBehaviors
                 i => takenCells.Contains(i) || !ci.IndexToCell(i).Standable(map));
             takenCells.Clear();
             return ci.IndexToCell(pick);
+        }
+
+        /// <summary>True when another pawn stands on this pawn's cell.</summary>
+        public static bool Crowded(Pawn pawn)
+        {
+            List<Thing> here = pawn.Map.thingGrid.ThingsListAtFast(pawn.Position);
+            for (int i = 0; i < here.Count; i++)
+            {
+                if (here[i] is Pawn other && other != pawn)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         /// <summary>In the sun: the nearest shade within dash range (graph
@@ -408,6 +426,20 @@ namespace RimMandrake.CreatureBehaviors
             // Hot = carrying half its dash budget or more in Heatstroke. That
             // only drains below the comfortable max, so on a hot map a
             // cooked animal stays in the shade.
+            // RIMMANDRAKE_SPREAD_SHADE_DASH_SEVEN_ANIMALS_ON_ONE_CELL: never rest
+            // in a heap. An animal that shares its cell steps to the nearest
+            // free cell of its patch first, so a heap made before this fix
+            // (or by any other path) breaks up at the next think.
+            if (patch != RM_ShadePatchGraph.NoPatch && RM_ShadeHop.Crowded(pawn))
+            {
+                IntVec3 free = RM_ShadeHop.SpreadLanding(pawn, graph, pawn.Position);
+                if (free != pawn.Position && pawn.CanReach(free, PathEndMode.OnCell, Danger.Deadly))
+                {
+                    Job step = JobMaker.MakeJob(JobDefOf.GotoWander, free);
+                    step.locomotionUrgency = LocomotionUrgency.Walk;
+                    return step;
+                }
+            }
             bool hot = (pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.Heatstroke)?.Severity ?? 0f)
                        >= ext.dashHeatstrokeBudget * 0.5f;
             if (hot || !Rand.Chance(ext.hopChance))
