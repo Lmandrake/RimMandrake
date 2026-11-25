@@ -70,6 +70,7 @@ namespace JawaBench.BridgeTools
             public bool Has;
             public CondRead Last;
             public long Reads;                      // samples taken, the first and the last included
+            public double Ms, MsMax;                // what its reads cost
             public int BadTicks;                    // samples that were not ok
             public long BadFrom;
             public string BadState, BadDetail;      // of the first of them
@@ -98,6 +99,7 @@ namespace JawaBench.BridgeTools
             readonly List<Track> _tracks = new List<Track>();
             readonly List<Act> _acts;
             readonly string _mode, _speed;
+            readonly double _budgetMs;              // the caller's own bound on one tick's reading; 0 = none
             readonly Trace _trace;
             readonly List<string> _faults = new List<string>();
             int _rows, _dropped, _randFaults, _skipped, _emitted;
@@ -121,6 +123,8 @@ namespace JawaBench.BridgeTools
             public bool Drained { get { return _drained; } }
             public IList<string> Faults { get { return _faults; } }
             public IList<Track> Tracks { get { return _tracks; } }
+            /// <summary>What the run lock refused and let through while this run was live.</summary>
+            public readonly JawaBenchRunLockCore.LockLog Lock = new JawaBenchRunLockCore.LockLog();
 
             /// <summary>The probe of the condition value that could not be read, with its state; null when there is none.</summary>
             public Dictionary<string, object> UnknownValue()
@@ -142,8 +146,9 @@ namespace JawaBench.BridgeTools
 
             /// <summary>The compiled spec's `sample` probes are the tracks: they are read here, once a tick, and not by the
             /// condition run.</summary>
-            public SceneRun(string id, JawaBenchCondCore.Compiled c, IProbeSource src, IList<Act> acts, ISceneHost h, string mode, string speed, Trace trace = null)
+            public SceneRun(string id, JawaBenchCondCore.Compiled c, IProbeSource src, IList<Act> acts, ISceneHost h, string mode, string speed, Trace trace = null, double tickBudgetMs = 0)
             {
+                _budgetMs = tickBudgetMs;
                 Id = id; _trace = trace ?? new Trace(); _h = h; _c = c; _mode = mode; _speed = speed;
                 _acts = new List<Act>(acts);
                 if (c.Sample != null) foreach (var kv in c.Sample) _tracks.Add(new Track { Name = kv.Key, Probe = kv.Value });
@@ -174,7 +179,11 @@ namespace JawaBench.BridgeTools
                 for (int i = 0; i < _tracks.Count; i++)
                 {
                     var t = _tracks[i];
+                    double t0 = _h.NowMs();
                     var r = _read.ReadProbe(t.Probe);
+                    double ms = _h.NowMs() - t0;
+                    t.Ms += ms;
+                    if (ms > t.MsMax) t.MsMax = ms;
                     t.Reads++;
                     if (r.Status != "ok" && phase != "last" && t.BadTicks++ == 0) { t.BadFrom = tick; t.BadState = r.Status; t.BadDetail = r.Detail; }
                     if (!all && t.Has && r.Status == t.Last.Status && JawaBenchCondCore.SameValue(r.V, t.Last.V)) continue;
@@ -204,28 +213,42 @@ namespace JawaBench.BridgeTools
                 foreach (var t in _tracks) tracks.Add(t.Name);
                 Emit(tick, "first", "open", "\"schema\":" + S(Schema) + ",\"mode\":" + S(_mode) + ",\"speed\":" + S(_speed) + ",\"epoch\":" + S(epoch) +
                                             ",\"maxTicks\":" + _c.MaxTicks + ",\"tracks\":" + S(tracks) + ",\"acts\":" + S(acts) + ",\"cond\":" + S(_c.Canonical));
-                ulong r0 = _h.RandState();
-                Sample(tick, "first", true);
-                _cond.Arm(tick, epoch);
-                RandCheck(r0, tick, "first");
+                try
+                {
+                    ulong r0 = _h.RandState();
+                    Sample(tick, "first", true);
+                    _cond.Arm(tick, epoch);
+                    RandCheck(r0, tick, "first");
+                }
+                catch (Exception e) { Force("aborted", "the arm threw " + e.GetType().Name + ": " + e.Message, tick); return; }
                 if (_cond.State != "running") End(tick, "first");
             }
 
             /// <summary>The end of one tick: sample, conditions, end test, act steps. A run never ends on a tick that did an
-            /// act step, because the end is tested before the act steps and an ended run does none.</summary>
-            public void OnTickEnd(long tick, object epoch, bool runOriginal)
+            /// act step, because the end is tested before the act steps and an ended run does none. `stop` is the safety trigger that
+            /// fired on this tick (a step loop has one), or null.</summary>
+            public void OnTickEnd(long tick, object epoch, bool runOriginal, string stop = null)
             {
                 if (Stage != "running") return;
                 if (!runOriginal) { _skipped++; return; }
                 int emitted = _emitted;
                 long? a0 = _h.AllocBytes();
+                double ms0 = _h.NowMs();
                 ulong r0 = _h.RandState();
                 Sample(tick, "end_of_tick", false);
-                _cond.Step(tick, epoch, null);
+                _cond.Step(tick, epoch, stop);
+                double ms = _h.NowMs() - ms0;
                 RandCheck(r0, tick, "end_of_tick");
                 long? a1 = _h.AllocBytes();
                 _endTick = tick;
                 if (_cond.State != "running") { End(tick, "end_of_tick"); return; }
+                if (_budgetMs > 0 && ms > _budgetMs)
+                {
+                    var c = Costliest();
+                    Force("budget", "reading one tick took " + Ms(ms) + " ms, over the " + Ms(_budgetMs) + " ms that the caller gave; the costliest is " +
+                                    (c == null ? "unknown" : c["node"] + " (" + c["value"] + "), " + Ms((double)c["msMax"]) + " ms in one tick"), tick);
+                    return;
+                }
                 if (a0.HasValue && a1.HasValue && emitted == _emitted) Meter(a1.Value - a0.Value);
                 long k = tick - _from;
                 for (int i = 0; i < _acts.Count; i++)
@@ -246,23 +269,47 @@ namespace JawaBench.BridgeTools
                 if (d > 0) { _steadyBytes += d; _steadyDirty++; }
             }
 
+            static string Ms(double ms) { return Math.Round(ms, 3).ToString(CultureInfo.InvariantCulture); }
+
+            /// <summary>The condition node or the track whose reads took the most time: node, value, ms, msMax. Null when there is none.</summary>
+            public Dictionary<string, object> Costliest()
+            {
+                string id = null, key = null;
+                double ms = -1, max = 0;
+                Walk(_c.Tree, ref id, ref key, ref ms, ref max);
+                foreach (var t in _tracks)
+                    if (t.Ms > ms) { id = "track " + t.Name; key = t.Probe.Key; ms = t.Ms; max = t.MsMax; }
+                if (id == null) return null;
+                return new Dictionary<string, object> { { "node", id }, { "value", key }, { "ms", Math.Round(ms, 3) }, { "msMax", Math.Round(max, 3) } };
+            }
+
+            static void Walk(JawaBenchCondCore.Node n, ref string id, ref string key, ref double ms, ref double max)
+            {
+                if (n.Probe != null && n.Ms > ms) { id = n.Id; key = n.Probe.Key; ms = n.Ms; max = n.MsMax; }
+                foreach (var c in n.Children) Walk(c, ref id, ref key, ref ms, ref max);
+            }
+
             void End(long tick, string phase)
             {
+                if (_ended) return;
                 _ended = true;
                 _endTick = tick;
-                _paused = _h.Pause();
-                if (!_paused) Fault(tick, phase, "pause_refused", "the speed read back is not Paused");
+                Stage = "settling";                  // first: whatever throws below, the evaluator is off and the run will close
+                try { _paused = _h.Pause(); }
+                catch (Exception e) { _paused = false; Fault(tick, phase, "threw", "the pause: " + e.GetType().Name + ": " + e.Message); }
+                if (!_paused && State == "epoch") Fault(tick, phase, "game_replaced", "the game or the map of the run is gone: what is there now was not paused");
+                else if (!_paused) Fault(tick, phase, "pause_refused", "the speed read back is not Paused");
                 var r = _cond.Result();
                 var cov = (Dictionary<string, object>)r["coverage"];
                 Emit(tick, phase, "end", "\"state\":" + S(State) + ",\"why\":" + S(_forcedWhy) + ",\"hitTick\":" + S(r["hitTick"]) + ",\"executed\":" + (tick - _from) +
-                                         ",\"triggers\":" + S(r["triggers"]) + ",\"unknown\":" + S(UnknownValue()) + ",\"complete\":" + S(cov["complete"]) + ",\"cost\":" + S(r["cost"]));
-                Stage = "settling";
+                                         ",\"triggers\":" + S(r["triggers"]) + ",\"unknown\":" + S(UnknownValue()) + ",\"complete\":" + S(cov["complete"]) + ",\"cost\":" + S(r["cost"]) + ",\"costliest\":" + S(Costliest()));
             }
 
-            /// <summary>End the run from outside the tick: `cancelled`, `epoch`, `aborted`.</summary>
+            /// <summary>End the run from outside the condition: `cancelled`, `epoch`, `aborted`, `threw` (the game's tick threw, so the
+            /// tick is not whole), `budget`.</summary>
             public void Force(string state, string why, long tick)
             {
-                if (_ended || Stage == "closed") return;
+                if (_ended || Stage == "closed" || Stage == "new") return;
                 _forced = state; _forcedWhy = why;
                 End(tick, "end_of_tick");
             }
@@ -278,9 +325,13 @@ namespace JawaBench.BridgeTools
                     _lastTaken = true;
                     _settleFrom = _h.NowMs();
                     if (tick != _endTick && State != "epoch") Fault(tick, "last", "ran_past_end", "ended on " + _endTick + ", the game is on " + tick);
-                    ulong r0 = _h.RandState();
-                    Sample(tick, "last", true);
-                    RandCheck(r0, tick, "last");
+                    try
+                    {
+                        ulong r0 = _h.RandState();
+                        Sample(tick, "last", true);
+                        RandCheck(r0, tick, "last");
+                    }
+                    catch (Exception e) { Fault(tick, "last", "threw", "the last sample: " + e.GetType().Name + ": " + e.Message); }
                     return;
                 }
                 bool drained = _h.Drained();
@@ -292,7 +343,8 @@ namespace JawaBench.BridgeTools
                 _drained = drained;
                 Emit(tick, "last", "close", "\"rows\":" + _rows + ",\"dropped\":" + _dropped + ",\"drained\":" + (drained ? "true" : "false") +
                                             ",\"paused\":" + (_paused ? "true" : "false") + ",\"tickAfter\":" + tick + ",\"skipped\":" + _skipped +
-                                            ",\"randFaults\":" + _randFaults + ",\"actsNotDone\":" + S(left) + ",\"alloc\":" + alloc);
+                                            ",\"randFaults\":" + _randFaults + ",\"actsNotDone\":" + S(left) + ",\"alloc\":" + alloc +
+                                            ",\"lockReads\":" + Lock.Reads + ",\"breaches\":" + S(Lock.Breaches()));
                 Stage = "closed";
             }
         }

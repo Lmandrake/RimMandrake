@@ -63,6 +63,6 @@ On visit 9 that save was not on ArchSmall. Here that is `FIXTURE_MISSING` with t
 With no `map`, nothing is loaded and the receipt says so. `fresh:quicktest` is the one fresh map. A mod that ships no DLL and the cast
 taps that are not built are lines of `could_not_look`. `NOT_CALM`, `LOAD_FAILED`, `LOAD_NOT_SETTLED`, `NO_MAP`, `NO_GAME` and
 `WRONG_GAME` are faults, and each carries the phase report. `WRONG_BUILD` compares the needed mods' DLLs with the DLLs of this commit;
-the companion is compared and reported (`is_source_at_this_commit`), and a difference does not refuse. Until `scene.attach` is built,
-`scene.py end-session <game>` ends the session of a dead driver. It does six things in one call. The phase report is the guard; if agents cannot diagnose a refusal from the report,
+the companion is compared and reported (`is_source_at_this_commit`), and a difference does not refuse. `scene.attach` takes the session of a dead driver;
+`scene.py end-session <game>` ends it without a look. It does six things in one call. The phase report is the guard; if agents cannot diagnose a refusal from the report,
 `open` is split. A load on the full mod list takes many minutes, and `open` does not hide that time.

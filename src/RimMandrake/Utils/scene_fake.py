@@ -35,6 +35,7 @@ class FakeGame(object):
         if run_until:
             for n in ("jawa/session", "jawa/run_until"):
                 self.tools.append({"name": n, "description": "from the wire page", "inputSchema": {"properties": {}}, "parameters": []})
+        self.open_act = None
         self.session = None             # the game's own session (run_until only)
         self.run, self.rows, self.serial, self.starts = None, [], 0, 0
         self.script = {"state": "hit", "ticks": 20, "tracks": {}}   # how the next run goes
@@ -172,12 +173,23 @@ class FakeGame(object):
         if a["action"] == "open":
             self.session = {"session": "g1", "driver": a["driver"], "stage": "open"}
             return {"success": True, "session": "g1", "state": "open"}
+        if a["action"] == "take":
+            if not self.session or self.session["stage"] != "open":
+                return {"success": False, "refused": "NO_SESSION", "message": "no session is open"}
+            if a.get("from") != self.session["driver"]:
+                return {"success": False, "refused": "DRIVER_ALIVE", "message": "another driver"}
+            self.session.update(driver=a["driver"], taken=True)
+            if self.run and self.run["polls"] > 0:
+                self.run.update(polls=0, state="cancelled", why="cancelled")
+            self.status["paused"] = True
+            return dict({"success": True, "openAct": self.open_act}, **self.session)
         if a["action"] in ("close", "abort"):
             old, self.session = self.session or {}, None
             return {"success": True, "session": old.get("session"), "stage": "closed" if a["action"] == "close" else "aborted"}
         out = {"success": True, "stage": "none", "lastRun": None, "recordDir": "D:\\rec", "writerSession": "w"}
         out.update(self.session or {})
-        out["lastRun"] = self.run and {"request": self.run["request"], "run": self.run["run"], "stage": "running" if self.run["polls"] > 0 else "closed"}
+        out["lastRun"] = self.run and {"request": self.run["request"], "run": self.run["run"], "stage": "running" if self.run["polls"] > 0 else "closed",
+                                        "why": self.run.get("why"), "state": self.run.get("state"), "tick": self.run.get("tick")}
         return out
 
     def _run_until(self, a):

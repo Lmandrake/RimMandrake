@@ -43,7 +43,10 @@ namespace JawaBench.BridgeTools
             public MethodInfo begin, end;
             public string beginText;
             public int lastFrame = -1;
+            public string until;                 // the condition that ends each scene's ticks, or null
         }
+
+        private const string SceneRunnerTool = "jawa/run_scenes";
 
         /// <summary>One main-thread slice's answer: ticks stepped (also when a tick then threw), whether it ran on a new
         /// frame, and why it stopped early (null = it did not).</summary>
@@ -52,6 +55,7 @@ namespace JawaBench.BridgeTools
             public int ticks;
             public bool newFrame;
             public string stop;
+            public bool ended;                   // the condition run ended on the last tick stepped
         }
 
         [Tool(
@@ -80,8 +84,11 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "Main-thread ms per frame spent stepping (5..200).", DefaultValue = 40.0)]
             double frameBudgetMs = 40,
             [ToolParameter(Description = "Wall budget for the whole run; scenes not reached are UNMEASURED.", DefaultValue = 600000)]
-            int timeoutMs = 600000)
+            int timeoutMs = 600000,
+            [ToolParameter(Description = "A condition (JSON node, the grammar of jawa/cond_eval), tested at the end of every tick of each scene: the scene's ticks end ON the tick where it turns true. Empty = each scene plays all its ticks.", DefaultValue = "")]
+            string until = "")
         {
+            string stopWhen = until ?? "";
             string typeName = (type ?? "").Trim(), csv = scenes ?? "";
             int tickOverride = ticks;
             double budget = Math.Max(5, Math.Min(200, frameBudgetMs));
@@ -122,7 +129,15 @@ namespace JawaBench.BridgeTools
                 }
                 else origins = SR.Grid(map.Size.x, map.Size.z, SR.DefaultPitch, chosen.Count);
                 if (origins.Count < chosen.Count) return Fail("Only " + origins.Count + " plots on this map for " + chosen.Count + " scenes.");
-                st = new SceneRunState { suite = t, specs = chosen, origins = origins, game = Current.Game, map = map, begin = bm, end = em };
+                if (stopWhen.Trim().Length > 0)
+                {
+                    JawaBenchSceneTick.MakeStep(SceneRunnerTool, stopWhen, null, SR.MaxSceneTicks, 0, map, out string whyNot, out var condRefused);
+                    if (whyNot != null || condRefused != null) return condRefused ?? Fail(whyNot);
+                }
+                string held = JawaBenchSceneTick.StepOwner;
+                if (held != null) return Fail(held + " is running");
+                JawaBenchSceneTick.StepOwner = SceneRunnerTool;
+                st = new SceneRunState { until = stopWhen.Trim().Length > 0 ? stopWhen : null, suite = t, specs = chosen, origins = origins, game = Current.Game, map = map, begin = bm, end = em };
                 return null;
             });
             if (refused != null) return refused;
@@ -158,6 +173,7 @@ namespace JawaBench.BridgeTools
             }
             finally
             {
+                JawaBenchSceneTick.StepOwner = null;
                 if (armed)
                 {
                     // never the request's token: the suite's own state goes back even when the call was cancelled
@@ -211,12 +227,33 @@ namespace JawaBench.BridgeTools
                 sceneInfo.Add(new { scene = spec.name, origin = ox + "," + oz, ticksWanted = want, ticksStepped = 0, frames = 0, stageMs, tickMs = 0L, judgeMs = 0L });
                 return;
             }
+            JawaBenchSceneTickCore.SceneRun cond = null;
+            if (run.until != null && want > 0)
+            {
+                object armedRun = await SceneDispatch(ctx, () =>
+                {
+                    string h = halt();
+                    if (h != null) return new SceneStop(h);
+                    if (!SceneSameGame(run)) return new SceneStop(Changed);
+                    var c = JawaBenchSceneTick.MakeStep(SceneRunnerTool, run.until, null, want, 0, run.map, out string whyNot, out var condRefused);
+                    if (c == null) return new SceneStop("the condition: " + (whyNot ?? condRefused["refused"] + " at " + condRefused["at"] + ": " + condRefused["detail"]));
+                    JawaBenchSceneTick.ArmStep(c, run.map);
+                    return c;
+                }, msLeft());
+                cond = armedRun as JawaBenchSceneTickCore.SceneRun;
+                if (cond == null)
+                {
+                    rows.Add(SR.Unmeasured_(spec.name, "UNTIL", armedRun is SceneStop us ? us.why : "the condition run was not armed"));
+                    sceneInfo.Add(new { scene = spec.name, origin = ox + "," + oz, ticksWanted = want, ticksStepped = 0, frames = 0, stageMs, tickMs = 0L, judgeMs = 0L });
+                    return;
+                }
+            }
             // the ticks: one main-thread slice per NEW Unity frame, each stepping until the frame budget or the target
             sw.Restart();
             int stepped = 0, frames = 0;
             string shortWhy = null;
             var sinceFrame = Stopwatch.StartNew();
-            while (stepped < want)
+            while (stepped < want && (cond == null || cond.Running))
             {
                 int left = want - stepped;
                 object got = await SceneDispatch(ctx, () =>
@@ -238,6 +275,7 @@ namespace JawaBench.BridgeTools
                         {
                             tm.DoSingleTick();
                             o.ticks++;
+                            if (cond != null && !cond.Running) { o.ended = true; break; }      // ON the tick of the condition
                             if (!SceneSameGame(run)) { o.stop = "a tick changed the game or map"; break; }
                             string hh = halt();
                             if (hh != null) { o.stop = hh; break; }
@@ -252,6 +290,7 @@ namespace JawaBench.BridgeTools
                 stepped += sl.ticks;                             // counted before the stop: ticks that ran stay in the evidence
                 if (sl.newFrame) { frames++; sinceFrame.Restart(); }
                 if (sl.stop != null) { shortWhy = sl.stop; break; }
+                if (sl.ended) break;
                 if (sl.newFrame && sl.ticks == 0) { shortWhy = "a frame stepped no tick"; break; }
                 if (stepped < want)
                 {
@@ -260,6 +299,19 @@ namespace JawaBench.BridgeTools
                 }
             }
             long tickMs = sw.ElapsedMilliseconds;
+            if (cond != null)
+            {
+                string why = shortWhy;
+                // never the run's deadline: a run left armed would lock the game
+                await ctx.MainThread.InvokeAsync<object>(() => { if (cond.Running) cond.Force("aborted", "the scene's ticks ended: " + (why ?? "all were stepped"), TicksGameSafe()); return null; });
+                // danger: a game that stopped drawing closes nothing, and this call would never answer; the bound is the writer's drain
+                // limit and the frame stall above. A run that is still open then closes by itself when frames come back.
+                var settle = Stopwatch.StartNew();
+                while (cond.Stage != "closed" && settle.ElapsedMilliseconds < JawaBenchSceneTickCore.DrainMs + SceneFrameStallMs) await Task.Delay(20).ConfigureAwait(false);
+                if (cond.Stage != "closed" && shortWhy == null) shortWhy = "run " + cond.Id + " did not close (the game is not drawing, or its writer is stuck)";
+                if (cond.State == "hit" || cond.State == "done") want = stepped;                 // the condition ended the scene: no tick is owed
+                else if (shortWhy == null) shortWhy = "the condition run ended as " + cond.State + (cond.Why == null ? "" : ": " + cond.Why);
+            }
             sw.Restart();
             object judgedAnswer = await SceneDispatch(ctx, () =>
             {
@@ -282,8 +334,10 @@ namespace JawaBench.BridgeTools
                 ? new List<SR.Row> { SR.Unmeasured_(spec.name, "VERDICT", "not judged: " + js.why) }
                 : judgedAnswer as List<SR.Row>;
             long judgeMs = sw.ElapsedMilliseconds;
+            int wanted = want;
             rows.AddRange(SR.ShortAdvance(sceneRows ?? new List<SR.Row> { SR.Unmeasured_(spec.name, "VERDICT", "no rows came back") }, stepped, want, shortWhy));
-            sceneInfo.Add(new { scene = spec.name, origin = ox + "," + oz, ticksWanted = want, ticksStepped = stepped, frames, stageMs, tickMs, judgeMs });
+            sceneInfo.Add(new { scene = spec.name, origin = ox + "," + oz, ticksWanted = wanted, ticksStepped = stepped, frames, stageMs, tickMs, judgeMs,
+                untilRun = cond?.Id, untilState = cond?.State, untilHitTick = cond?.HitTick });
         }
 
         private sealed class SceneStop

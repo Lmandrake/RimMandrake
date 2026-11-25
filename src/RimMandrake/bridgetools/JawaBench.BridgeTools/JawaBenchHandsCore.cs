@@ -260,7 +260,7 @@ namespace JawaBench.BridgeTools
             public string Id, Driver, Stage = "open";        // open -> closing -> closed | aborted
             public string End;
             public double LeaseMs, RenewedAt, ClosingFrom = -1;
-            public bool LeaseEnded;
+            public bool LeaseEnded, Taken;                  // taken over from a dead driver: it may be read and ended, not played
             public T.Trace Trace;
             public readonly Dictionary<string, int> Bound = new Dictionary<string, int>(StringComparer.Ordinal);   // -1 one thing, else the group's size
             public readonly Dictionary<string, List<string>> Ids = new Dictionary<string, List<string>>(StringComparer.Ordinal);
@@ -286,6 +286,11 @@ namespace JawaBench.BridgeTools
             long Row(string phase, string rec, string fields) { return Cur.Trace.Emit(_h, null, _h.Tick(), phase, rec, fields); }
 
             /// <summary>The caller may drive. Its call renews the lease.</summary>
+            Dictionary<string, object> RefuseTaken()
+            {
+                return Cur.Taken ? Refusal("TAKEN_OVER", "session " + Cur.Id + " lost its first driver: it makes no more evidence", "read it, then close or abort it") : null;
+            }
+
             Dictionary<string, object> Admit(string driver)
             {
                 if (!IsOpen) return Refusal("NO_SESSION", Cur == null ? "no session is open" : "session " + Cur.Id + " is " + Cur.Stage, "open a session first");
@@ -320,7 +325,7 @@ namespace JawaBench.BridgeTools
                     foreach (var x in kv.Value) l.Add(x);
                     bound[kv.Key] = Cur.Bound[kv.Key] < 0 ? l[0] : l;
                 }
-                d["session"] = Cur.Id; d["stage"] = Cur.Stage; d["driver"] = Cur.Driver; d["leaseEnded"] = Cur.LeaseEnded;
+                d["session"] = Cur.Id; d["stage"] = Cur.Stage; d["driver"] = Cur.Driver; d["taken"] = Cur.Taken; d["leaseEnded"] = Cur.LeaseEnded;
                 d["leaseLeftS"] = Math.Round((Cur.LeaseMs - (_h.NowMs() - Cur.RenewedAt)) / 1000, 1);
                 d["lastRun"] = Cur.Last == null ? null : RunReply(Cur.Last, false);
                 d["openAct"] = Cur.OpenAct; d["bound"] = bound; d["rows"] = (double)Cur.Trace.Rows; d["dropped"] = (double)Cur.Trace.Dropped;
@@ -330,6 +335,8 @@ namespace JawaBench.BridgeTools
             public Dictionary<string, object> Bind(string driver, string bindings)
             {
                 var no = Admit(driver);
+                if (no != null) return no;
+                no = RefuseTaken();
                 if (no != null) return no;
                 if (RunLive) return Refusal("RUN_ACTIVE", "run " + Cur.Last.Run.Id + " is " + Cur.Last.Run.Stage, "read its status, then cancel it");
                 Dictionary<string, object> d;
@@ -370,6 +377,28 @@ namespace JawaBench.BridgeTools
             {
                 int n;
                 return Cur != null && alias != null && Cur.Bound.TryGetValue(alias, out n) ? n : -1;
+            }
+
+            /// <summary>A new driver takes the session of a dead one, to read it and to end it. A live lease is taken only with the
+            /// dead driver's own text: the caller looked and that process is gone. The live run is cancelled and the game paused.</summary>
+            public Dictionary<string, object> Take(string driver, string from)
+            {
+                bool open = IsOpen;
+                if (!open) return Refusal("NO_SESSION", Cur == null ? "no session is open" : "session " + Cur.Id + " is " + Cur.Stage, "open a session");
+                if (string.IsNullOrEmpty(driver)) return Refusal("BAD_ARGS", "driver is empty", "give the caller's own name");
+                string old = Cur.Driver;
+                if (driver == old) return Refusal("BAD_ARGS", "'" + driver + "' is the driver already", "close or abort the session");
+                if (!string.IsNullOrEmpty(from) ? from != old : !Cur.LeaseEnded)
+                    return Refusal("DRIVER_ALIVE", "session " + Cur.Id + " is driven by '" + old + "'" + (string.IsNullOrEmpty(from) ? " and its lease has not ended" : ", not by '" + from + "'"),
+                                   "look whether that process is alive; when it is dead, give its text as `from`");
+                if (RunLive) Cur.Last.Run.Force("cancelled", "the session was taken over from '" + old + "'", _h.Tick());
+                bool p = _h.Pause();
+                Cur.Driver = driver;
+                Cur.Taken = true;
+                Cur.RenewedAt = _h.NowMs();
+                Cur.LeaseEnded = false;
+                Row("session", "session_taken", "\"from\":" + S(old) + ",\"to\":" + S(driver) + ",\"paused\":" + (p ? "true" : "false"));
+                return State();
             }
 
             public Dictionary<string, object> Finish(string driver, bool abort)
@@ -472,6 +501,8 @@ namespace JawaBench.BridgeTools
             {
                 var no = Admit(driver);
                 if (no != null) return no;
+                no = RefuseTaken();
+                if (no != null) return no;
                 if (acts.Count == 0) return Refusal("BAD_ARGS", "the batch holds no act", "give at least one act");
                 no = RefuseActs(acts);
                 if (no != null) return no;
@@ -492,6 +523,8 @@ namespace JawaBench.BridgeTools
                                                        Func<string, IList<T.Act>, T.Trace, T.SceneRun> make, object epoch, Action<T.SceneRun> armed, Action go)
             {
                 var no = Admit(driver);
+                if (no != null) return no;
+                no = RefuseTaken();
                 if (no != null) return no;
                 if (string.IsNullOrEmpty(request)) return Refusal("NO_REQUEST", "the run has no request id", "make the id before you send the call");
                 RunRec known;
@@ -588,6 +621,7 @@ namespace JawaBench.BridgeTools
                 var faults = new List<object>();
                 foreach (var f in run.Faults) faults.Add(f);
                 d["faults"] = faults;
+                d["lockReads"] = (double)run.Lock.Reads; d["breaches"] = run.Lock.Breaches();
                 if (!values) return d;
                 var acts = new List<object>();
                 foreach (var a in rec.Acts)
@@ -611,7 +645,7 @@ namespace JawaBench.BridgeTools
                 if (run.Dropped > 0) blind.Add(new Dictionary<string, object> { { "value", "trace rows" }, { "state", "dropped" }, { "ticks", (double)run.Dropped } });
                 d["values"] = vals;
                 d["couldNotLook"] = blind;
-                d["cost"] = run.Result()["cost"];
+                d["cost"] = run.Result()["cost"]; d["costliest"] = run.Costliest();
                 return d;
             }
         }

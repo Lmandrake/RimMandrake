@@ -20,6 +20,7 @@ using UnityEngine;
 using Verse;
 using C = JawaBench.BridgeTools.JawaBenchCondCore;
 using T = JawaBench.BridgeTools.JawaBenchSceneTickCore;
+using LK = JawaBench.BridgeTools.JawaBenchRunLockCore;
 using W = JawaBench.BridgeTools.JawaBenchTpsWriter;
 
 namespace JawaBench.BridgeTools
@@ -28,6 +29,9 @@ namespace JawaBench.BridgeTools
     {
         internal static volatile T.SceneRun Cur;
         internal static Game RunGame;
+        internal static Map RunMap;                 // null: the run has no map of its own
+        /// <summary>The step loop that drives the tick now (jawa/run_scenes), or null. Nobody else may arm a run beside it.</summary>
+        internal static volatile string StepOwner;
         internal static string LastFault;
         /// <summary>The most ticks that one frame of the run played, and the ticks of the frame it ended in.</summary>
         internal static int MaxFrameTicks, FrameTicks;
@@ -68,11 +72,12 @@ namespace JawaBench.BridgeTools
         internal static bool SameGame() { return Current.Game != null && ReferenceEquals(Current.Game, RunGame); }
 
         /// <summary>Null when a run may start, else why not. Changes nothing.</summary>
-        internal static string Refuse()
+        internal static string Refuse(string caller = null)
         {
             if (!JawaBenchVitals.GameReady()) return "no game is playing";
-            if (Cur != null && Cur.Stage != "closed") return "run " + Cur.Id + " is live (" + Cur.Stage + ")";
-            if (JawaBenchSafeAdvance.Cur != null && JawaBenchSafeAdvance.Cur.State == "running") return "jawa/safe_advance is running";
+            var adv = JawaBenchSafeAdvance.Cur;
+            string held = LK.RefuseArm(Cur?.Id, Cur?.Stage, adv != null && adv.State == "running", StepOwner, caller);
+            if (held != null) return held;
             if (!W.Running) return "the disk writer is not running: no trace could be kept";
             if (_rand == null)
             {
@@ -89,14 +94,83 @@ namespace JawaBench.BridgeTools
 
         internal static string NewId() { return "s" + DateTime.UtcNow.ToString("yyyyMMddTHHmmss") + "_" + (++_serial); }
 
-        /// <summary>From JawaBenchVitals.TickPost, after the tick and after the monitor's own work.</summary>
-        internal static void TickEnd(bool runOriginal)
+        /// <summary>The gate's question, from any thread: the live run's id and its log, or null.</summary>
+        internal static T.SceneRun LockHolder() { var r = Cur; return r != null && (r.Running || r.Stage == "settling") ? r : null; }
+
+        /// <summary>The run itself is doing an act on this thread: the lock lets its tool through.</summary>
+        [ThreadStatic] internal static int InsideAct;
+
+        /// <summary>Why the run's game or map is not the one that is there, or null.</summary>
+        private static string Gone()
+        {
+            if (!SameGame() || Current.ProgramState != ProgramState.Playing) return "the game was replaced under the run";
+            return RunMap != null && !Find.Maps.Contains(RunMap) ? "map " + RunMap.uniqueID + " left the game under the run" : null;
+        }
+
+        /// <summary>Arm a run that one of the tools made. Main thread, after Refuse said null.</summary>
+        internal static void Take(T.SceneRun run, Map map)
+        {
+            RunGame = Current.Game;
+            RunMap = map;
+            LastFault = null;
+            MaxFrameTicks = FrameTicks = 0;
+            Cur = run;
+        }
+
+        /// <summary>A condition run for a step loop (jawa/safe_advance, jawa/run_scenes): compiled, not armed. Null, with why or the
+        /// refusal, when it cannot run. Changes nothing. The loop steps the tick; the run says when to stop.</summary>
+        internal static T.SceneRun MakeStep(string caller, string until, string record, int maxTicks, double tickBudgetMs, Map map,
+                                            out string why, out Dictionary<string, object> refusal)
+        {
+            refusal = null;
+            why = JawaBenchHands.Busy ? "a session is open: its driver runs jawa/run_until" : Refuse(caller);
+            if (why == null) why = JawaBenchVitals.EnsureTickHook();
+            if (why == null && !(tickBudgetMs >= 0)) why = "tickBudgetMs is less than 0";
+            if (why != null) return null;
+            try
+            {
+                var spec = new Dictionary<string, object> { { "until", C.ParseSpec(until) }, { "max_ticks", (double)maxTicks }, { "mapId", (double)map.uniqueID } };
+                if (!string.IsNullOrWhiteSpace(record))
+                {
+                    var probes = C.ParseSpec(record) as Dictionary<string, object>;
+                    if (probes == null) { why = "record is a JSON object name -> probe"; return null; }
+                    if (probes.Count > 0) spec["sample"] = new Dictionary<string, object> { { "every", 1.0 }, { "probes", probes } };
+                }
+                var src = JawaBenchTerrainTools.NewProbeSource();
+                var c = new C.Compiler(src, "run").CompileSpec(spec);
+                return new T.SceneRun(NewId(), c, src, new List<T.Act>(), new Host(), "STEP", caller, null, tickBudgetMs);
+            }
+            catch (CondRefused e) { refusal = C.Refusal(e); refusal["success"] = false; return null; }
+        }
+
+        internal static void ArmStep(T.SceneRun run, Map map)
+        {
+            Find.TickManager.CurTimeSpeed = TimeSpeed.Paused;
+            Take(run, map);
+            run.Arm(Find.TickManager.TicksGame, EpochBox());
+        }
+
+        /// <summary>From JawaBenchVitals.TickFin: the game's own tick threw, so the postfix did not run and the tick is not whole.</summary>
+        internal static void TickThrew(Exception e)
         {
             var r = Cur;
             if (r == null || !r.Running) return;
+            string why = "the game's tick threw " + e.GetType().Name + ": " + e.Message;
+            try { r.Force("threw", why, SameGame() ? Find.TickManager.TicksGame : r.EndTick); }
+            catch (Exception x) { LastFault = why + " | " + x.GetType().Name + ": " + x.Message; }
+        }
+
+        /// <summary>From JawaBenchVitals.TickPost, after the tick and after the monitor's own work. `stop` is the safety trigger of
+        /// this tick, or null.</summary>
+        internal static void TickEnd(bool runOriginal, string stop = null)
+        {
+            var r = Cur;
+            if (r == null || !r.Running) return;
+            string gone = Gone();
+            if (gone != null) { r.Force("epoch", gone, SameGame() ? Find.TickManager.TicksGame : r.EndTick); return; }
             if (Time.frameCount != _frame) { _frame = Time.frameCount; FrameTicks = 0; }
             if (++FrameTicks > MaxFrameTicks) MaxFrameTicks = FrameTicks;
-            try { r.OnTickEnd(Find.TickManager.TicksGame, EpochBox(), runOriginal); }
+            try { r.OnTickEnd(Find.TickManager.TicksGame, EpochBox(), runOriginal, stop); }
             catch (Exception e) { Abort(r, "the tick step threw " + e.GetType().Name + ": " + e.Message); }
         }
 
@@ -121,7 +195,8 @@ namespace JawaBench.BridgeTools
             {
                 if (r.Running)
                 {
-                    if (!SameGame() || Current.ProgramState != ProgramState.Playing) r.Force("epoch", "the game was replaced under the run", r.EndTick);
+                    string gone = Gone();
+                    if (gone != null) r.Force("epoch", gone, r.EndTick);
                     return;
                 }
                 if (Time.frameCount == _endFrame) return;      // the tick count is read after the ending frame is over
@@ -235,10 +310,7 @@ namespace JawaBench.BridgeTools
                 var tm = Find.TickManager;
                 tm.CurTimeSpeed = TimeSpeed.Paused;
                 if (tm.CurTimeSpeed != TimeSpeed.Paused) return Fail("the pause did not hold");
-                JawaBenchSceneTick.RunGame = Current.Game;
-                JawaBenchSceneTick.LastFault = null;
-                JawaBenchSceneTick.MaxFrameTicks = JawaBenchSceneTick.FrameTicks = 0;
-                JawaBenchSceneTick.Cur = run;
+                JawaBenchSceneTick.Take(run, p.Map);
                 run.Arm(tm.TicksGame, JawaBenchSceneTick.EpochBox());
                 if (run.Running) tm.CurTimeSpeed = sp;
                 return SceneTickStatus();
@@ -255,6 +327,7 @@ namespace JawaBench.BridgeTools
                 { "hitTick", r?.HitTick }, { "endTick", r?.EndTick }, { "rows", r?.Rows }, { "dropped", r?.Dropped },
                 { "paused", tm != null && tm.CurTimeSpeed == TimeSpeed.Paused }, { "speed", tm?.CurTimeSpeed.ToString() },
                 { "ticksGame", TicksGameSafe() }, { "recordDir", W.Dir }, { "session", W.Session },
+                { "lockReads", r?.Lock.Reads }, { "breaches", r?.Lock.Breaches() }, { "costliest", r?.Costliest() },
                 { "result", r?.Result() }, { "lastFault", JawaBenchSceneTick.LastFault }, { "maxFrameTicks", JawaBenchSceneTick.MaxFrameTicks }, { "endFrameTicks", JawaBenchSceneTick.FrameTicks },
             };
         }

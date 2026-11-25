@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Compile Include="$(CoreDir)JawaBenchCondCore.cs" />
+    <Compile Include="..\JawaBench.BridgeTools\JawaBenchRunLockCore.cs" />
     <Compile Include="$(CoreDir)JawaBenchSceneTickCore.cs" />
     <Compile Include="$(CoreDir)JawaBenchPathCore.cs" />
     <Compile Include="$(CoreDir)JawaBenchHandsCore.cs" />

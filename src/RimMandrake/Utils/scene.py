@@ -5,7 +5,7 @@
     python3   scene.py judge <run_dir> [--rejudge] judge a kept call (no game)
     python.exe scene.py accept <script.py>       run a committed script: clean tree, commit hash on each receipt, no keyboard
     python.exe scene.py explore <game> [--map M] an interactive prompt on an open session; each run is EXPLORED
-    python.exe scene.py end-session <game>       end the session of a driver that died (until scene.attach is built)
+    python.exe scene.py end-session <game>       end the session of a driver that died, and look at nothing (else: scene.attach)
     python3   scene.py tools <words>             find a bridge tool (no game)
     python3   scene.py raw-census                every s.raw call in the committed scenes, a proposal for a reviewer
 
@@ -31,9 +31,9 @@ from scene_core import (CallFailed, Fault, NotBuilt, Receipt, Refused, Reply, Re
 VERSION = "0.2.0"
 PAGES = os.path.join(HERE, "scene_contracts")
 NAMES = ("contract", "open", "stage", "run", "act", "read", "judge", "shot", "attach", "raw")
-BUILT = ("open", "run", "judge", "raw")
+BUILT = ("open", "run", "judge", "attach", "raw")
 CONVERT = "RIMMANDRAKE_CONVERT_THREE_SCENES_SHOW_IF_TEN_NAMES_HELP"
-OWED = {"attach": "RIMMANDRAKE_HARDEN_RUN_LIFE_CYCLE_KILL_CANCEL_THROWN_TICK"}
+OWED = {}
 GAME_STATE = "RM_SCENE_STATE"           # the text in the game process: {"pid", "stamps", "session"}
 EXPLORED = "EXPLORED"
 SPEEDS = ("Normal", "Fast", "Superfast", "Ultrafast")
@@ -67,7 +67,7 @@ def _world():
 
 
 def __getattr__(name):
-    if name in ("contract", "attach"):
+    if name == "contract":
         raise _not_built(name)
     raise AttributeError("module 'scene' has no attribute %r; the ten names: %s" % (name, ", ".join(NAMES)))
 
@@ -165,6 +165,8 @@ class Session(object):
         self.bridge, self.closed, self.opened, self.receipt = None, False, None, None
         self.build, self.pid, self.stamps, self.hand = None, None, [], None
         self._locked = self._calmed = self._recorded = self._insession = False
+        self._taken = None                      # the id of the dead driver's session, when scene.attach made this one
+        self._open_act = None
         self._tools, self._hands, self._run, self._dir, self._loaded = {}, {}, None, None, None
         self._tick = None
 
@@ -331,8 +333,8 @@ class Session(object):
                 open_s = {"id": st.get("session"), "driver": None, "text": st.get("driver")}
         if open_s is not None:
             alive = self.W.alive(open_s.get("driver")) if open_s.get("driver") else None
-            raise Refused("SESSION_OPEN", "session %s is open on %s; its driver %s. scene.attach(%r) takes it over (not built yet); until then, when its "
-                          "driver is dead: python.exe src/RimMandrake/Utils/scene.py end-session %s" % (
+            raise Refused("SESSION_OPEN", "session %s is open on %s; its driver %s. When it is dead: scene.attach(%r) takes it over, to read it and end it; "
+                          "or python.exe src/RimMandrake/Utils/scene.py end-session %s" % (
                               open_s.get("id"), self.game, {True: "is alive: wait for it, or stop that process", False: "is dead",
                                                             None: "could not be inspected"}[alive], self.game, self.game))
         if where and not where.startswith("fresh:") and not self._has_save(where):
@@ -472,8 +474,8 @@ class Session(object):
         return bad is None
 
     # ---- the end
-    def _put_back(self):
-        """-> [(phase, line)], each thing that open changed, in reverse order. Never raises."""
+    def _put_back(self, how="close"):
+        """-> [(phase, line)], each thing that open changed, in reverse order (`abort` leaves the calm). Never raises."""
         out = []
 
         def step(phase, fn):
@@ -484,7 +486,7 @@ class Session(object):
 
         def end_session():
             self._insession = False
-            r = self._look(hands.SESSION, action="close", driver=self.id)
+            r = self._look(hands.SESSION, action=how, driver=self.id)
             if r.get("success") is not True:
                 raise Fault(r.get("refused") or "SESSION_NOT_CLOSED", detail=str(r.get("message") or r))
             session = r.get("session")
@@ -496,7 +498,7 @@ class Session(object):
                     raise Fault("SESSION_NOT_CLOSED", detail="could not confirm the close of session %s: %s" % (session, str(r)))
             if r.get("stage") not in ("closed", "aborted"):
                 raise Fault("SESSION_NOT_CLOSED", detail="session %s still reports stage %s" % (session, r.get("stage")))
-            return "closed the game's session"
+            return "%s the game's session" % ("closed" if how == "close" else "aborted")
 
         def forget():
             d = self._get_state()
@@ -524,7 +526,7 @@ class Session(object):
             step("arm", end_session)
         if self._recorded:
             step("arm", forget)
-        if self._calmed:
+        if self._calmed and how == "close":
             step("calm", uncalm)
         if self._loaded:
             out.append(("load", "NOT PUT BACK: the map that was there before %s was replaced" % self._loaded))
@@ -537,12 +539,18 @@ class Session(object):
             step("lock", unlock)
         return out
 
-    def close(self):
+    def abort(self):
+        """End the session as aborted: its closing record and the lock. The calm stays until its own lease ends; the game stays paused."""
+        self.close(how="abort")
+
+    def close(self, how="close"):
         """End the session: the run, the record, the calm and the lock. The game stays paused."""
         if self.closed:
             return
         self.closed = True
-        rec = self._receipt("close")
+        rec = self._receipt(how)
+        if how == "abort" and self._calmed:
+            rec.could_not_look.append("the calm was left on: its own lease ends it")
         try:
             live = self.hand.live() if self.hand else None
             if live:
@@ -553,8 +561,8 @@ class Session(object):
                 rec.did.append("paused the game")
         except (Fault, Refused, CallFailed, ReplyLost) as e:
             rec.could_not_look.append("the last run and the pause: %s" % str(e).split("\n")[0])
-        self._mark_record("scene session %s closed" % self.id, rec)
-        lines = [ln for _ph, ln in self._put_back() if "the map that was there before" not in ln]
+        self._mark_record("scene session %s %s" % (self.id, "closed" if how == "close" else "aborted"), rec)
+        lines = [ln for _ph, ln in self._put_back(how) if "the map that was there before" not in ln]
         self._finish(rec, did=lines)
         self.closed_report = rec
         bad = [x for x in lines if x.startswith("NOT PUT BACK")]
@@ -577,14 +585,14 @@ class Session(object):
     def __getattr__(self, name):
         if name in ("stage", "act", "read", "read_many", "shot"):
             raise _not_built("s." + name)
-        raise AttributeError("a session has no %r; built: s.run, s.raw, s.state, s.cancel_run, s.close, s.run_dir" % name)
+        raise AttributeError("a session has no %r; built: s.run, s.raw, s.state, s.cancel_run, s.close, s.abort, s.run_dir" % name)
 
     # ---- state
     @property
     def state(self):
         rec = self._begin("s.state")
         st = self._status()
-        out = State(paused=st.get("paused"), tick=st.get("tick"), last_run=self._run, open_act=None, stamps=list(self.stamps),
+        out = State(paused=st.get("paused"), tick=st.get("tick"), last_run=self._run, open_act=self._open_act, stamps=list(self.stamps),
                     trace=self._run and self._run.get("trace"), live_run=self.hand.live() if self.hand else None)
         out.receipt = self._finish(rec)
         return out
@@ -602,6 +610,7 @@ class Session(object):
         """Let the game play to an exact tick, and record values on every tick (scene_contracts/run.md)."""
         if self.closed:
             raise Refused("SESSION_CLOSED", "this session has ended; open a session")
+        self._require_own_driver("a run")
         if isinstance(limit, bool) or not isinstance(limit, int) or limit < 1:
             raise Refused("NO_LIMIT", "limit=%r: give the most ticks the run may play" % (limit,))
         if speed not in SPEEDS:
@@ -753,6 +762,75 @@ class Session(object):
                 return rows or [{"rec": "none", "n": 0}]
             self.W.sleep(POLL_S)
 
+    def _require_own_driver(self, what):
+        if self._taken:
+            raise Refused("TAKEN_OVER", "session %s lost its driver and was taken over: it makes no more evidence, so %s is refused. Read it, then s.close() or "
+                          "s.abort(); then scene.open" % (self._taken, what))
+
+    # ---- attach
+    def _take(self, rec):
+        """Take the dead driver's session, stop its run, pause the game."""
+        self._lock({"did": rec.did})
+        self.bridge = self.W.connect(self.letter)
+        self._tools = {t["name"]: t for t in self.bridge.tools()}
+        self.pid = (self._look("jawa/running_mods", details=False, assembly="", loadedOf="ours").get("loaded") or {}).get("pid")
+        if self.pid is None:
+            raise Fault("COULD_NOT_LOOK", detail="the game's process id")
+        d = self._get_state()
+        old, hand = d["session"], hands.SESSION in self._tools
+        st = self._look(hands.SESSION, action="state") if hand else {}
+        there = st.get("stage") in ("open", "closing")
+        if old is None and not there:
+            raise Refused("NO_SESSION", "no session is open on %s: nothing to attach; scene.open" % self.game)
+        alive = self.W.alive(old["driver"]) if old and old.get("driver") else None
+        if alive is not False and not (old is None and st.get("leaseEnded") is True):
+            who = old.get("driver") if old else st.get("driver")
+            raise Refused("DRIVER_ALIVE", "the driver of %s %s: %s. Wait for it, or stop that process" % (
+                (old or {}).get("id") or st.get("session"), "is alive" if alive else "could not be inspected (its lease has %s s left)" % st.get("leaseLeftS"), who))
+        self.stamps, self._calmed = d["stamps"], bool(old and old.get("calm"))
+        self._taken = (old or {}).get("id") or st.get("session")
+        if there and st.get("stage") == "open":
+            r = self._look(hands.SESSION, action="take", driver=self.id, **({"from": st.get("driver")} if st.get("driver") else {}))
+            if r.get("success") is not True:
+                raise Fault(r.get("refused") or "NOT_TAKEN", detail=str(r.get("message") or r))
+            self._insession, self._open_act = True, r.get("openAct")
+            self.hand = hands.RunUntil(self._call, self.id)
+        elif hands.SLICE in self._tools:
+            self.hand = hands.Slice(self._call)
+            live = self.hand.live()
+            if live:
+                self.hand.cancel(live)
+        if self._status().get("paused") is not True:
+            self._look("rimworld/pause_game", pause=True)
+            rec.did.append("paused the game")
+        d["session"] = {"id": self.id, "driver": self.W.me(), "script": (old or {}).get("script"), "calm": self._calmed, "taken_from": self._taken}
+        self._recorded = True
+        self._set_state(d)
+        rec.did.append("took the session %s from driver %s, which is dead" % (self._taken, old.get("driver") if old else st.get("driver")))
+        self._found_run(rec)
+
+    def _found_run(self, rec):
+        """The dead driver's last run: ended or not, why, where its trace is and whether that is whole."""
+        end = self.W.clock() + CLOSE_RECORD_S
+        while self.hand is not None and self.hand.live() and self.W.clock() < end:
+            self.W.sleep(POLL_S)
+        last = (self._look(hands.SESSION, action="state").get("lastRun") if self._insession else
+                self._look(hands.SLICE, action="status") if isinstance(self.hand, hands.Slice) else None)
+        if not isinstance(last, dict) or not last.get("run"):
+            return
+        row = {k: last.get(k) for k in ("run", "request", "stage", "state", "why", "tick", "tickFrom")}
+        row.update(recordDir=last.get("recordDir"), writer=last.get("session") if not self._insession else None)
+        try:
+            rows = self._trace(row)
+            row["trace"] = "whole" if hands.trace_fault(rows) is None else "not whole: %s" % hands.trace_fault(rows)
+        except Fault as e:
+            row["trace"] = "could not look: %s" % e.detail
+        if row["trace"] != "whole":
+            rec.could_not_look.append("the trace of run %s is %s" % (row["run"], row["trace"]))
+        if row["stage"] != "closed":
+            rec.could_not_look.append("the last run is %s: the game may have played past its condition" % row["stage"])
+        self._run = row
+
     # ---- raw
     def raw(self, tool, /, **args):
         """Call any bridge tool by name while you explore (scene_contracts/raw.md)."""
@@ -767,8 +845,10 @@ class Session(object):
         why = _bad_args(d, args)
         if why:
             raise Refused("BAD_ARGS", "%s: %s. Its schema: %s" % (tool, why, json.dumps(d.get("parameters") or d.get("inputSchema"), default=str)))
-        rec = self._begin("s.raw")
         changing = not _read_only(d)
+        if changing:
+            self._require_own_driver("a raw call that can change the game (%s)" % tool)
+        rec = self._begin("s.raw")
         if changing and EXPLORED not in self.stamps:
             st = self._get_state()
             st["stamps"] = sorted(set(st["stamps"]) | {EXPLORED})
@@ -872,7 +952,7 @@ def page(name):
 
 def signature(name):
     """-> the argument names that a built name takes (its own self left out)."""
-    fn = {"open": open, "run": Session.run, "judge": judge, "raw": Session.raw, "tools": tools}[name]
+    fn = {"open": open, "run": Session.run, "judge": judge, "raw": Session.raw, "attach": attach, "tools": tools}[name]
     return [p for p in inspect.signature(fn).parameters if p != "self"]
 
 
@@ -1019,6 +1099,23 @@ def explore(game, where=None):
         code.interact(banner="s is the open session on %s; c is scene.cond. Each run here is EXPLORED and counts for no bar." % game,
                       local={"s": s, "scene": sys.modules[__name__], "c": cond}, exitmsg="")
     return 0
+
+
+def attach(game):
+    """Take over the session of a driver that is dead, to read it and to end it (scene_contracts/attach.md)."""
+    W = _world()
+    name, key, letter = _game_key(game)
+    s = Session(W, name, key, letter)
+    rec = s._receipt("scene.attach")
+    try:
+        s._take(rec)
+    except BaseException:
+        s.closed = True
+        s._calmed = s._insession = s._recorded = False      # only the lock and the socket are put back: what was taken stays open,
+        s._put_back()                                       # for the next attach
+        raise
+    s.receipt = s._finish(rec)
+    return s
 
 
 def end_session(game):

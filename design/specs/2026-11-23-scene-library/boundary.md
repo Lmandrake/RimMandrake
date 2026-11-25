@@ -46,7 +46,7 @@ has a test of its name in `src/RimMandrake/Utils/selftest_scene_library.py`, aga
 - **a-raw-call-made-outside-the-library.** The bridge client and the older layers leave no mark.
 - **a-hand-that-wants-to-cheat.** A raw `jawa/static_call` can write the text of the mark.
 - **a-campaign-game.** `jawa/static_call` is refused there, so the mark cannot be read. The name that needs it says so.
-- **a-driver-that-died.** Its session stays open. `scene.attach` is not built; `scene.py end-session <game>` ends it.
+- **a-driver-that-died.** Its session stays open. `scene.attach` takes it over, to read it and end it; `scene.py end-session <game>` ends it.
 
 ## PROMISES (each one is owed a test of the same name)
 

@@ -21,7 +21,7 @@ CS = os.path.join(HERE, "JawaBench.BridgeTools")
 CORES = ["JawaBenchCondCore.cs", "JawaBenchSceneTickCore.cs", "JawaBenchPathCore.cs", "JawaBenchHandsCore.cs"]
 HANDS = os.path.join(CS, "JawaBenchHands.cs")
 PROJ = os.path.join(HERE, "RunUntilSelfTest", "RunUntilSelfTest.csproj")
-N_UNITS = 18                    # fewer printed = the harness did not run whole
+N_UNITS = 19                    # fewer printed = the harness did not run whole
 
 
 class Unmeasured(Exception):
@@ -152,6 +152,10 @@ def t_only_the_driver_drives_an_open_session():
     return unit("only_the_driver_drives_an_open_session")
 
 
+def t_a_taken_session_is_read_and_ended_never_played():
+    return unit("a_taken_session_is_read_and_ended_never_played")
+
+
 def t_a_session_past_its_lease_stays_open_and_paused():
     """Also: the session's clock is wired into the game's frame."""
     if "JawaBenchHands.Frame()" not in code(os.path.join(CS, "JawaBenchSceneTick.cs")):
@@ -221,6 +225,9 @@ PLANTS = [
      [("if (string.IsNullOrEmpty(driver) || driver != Cur.Driver)", "if (true)")]),
     ("a session that anyone drives", "only_the_driver_drives_an_open_session", HC,
      [("if (string.IsNullOrEmpty(driver) || driver != Cur.Driver)", "if (false)")]),
+    ("a taken session may be played", "a_taken_session_is_read_and_ended_never_played", HC, [("return Cur.Taken ? Refusal(", "return false ? Refusal(")]),
+    ("a live lease is taken with no name", "a_taken_session_is_read_and_ended_never_played", HC, [("if (!string.IsNullOrEmpty(from) ? from != old : !Cur.LeaseEnded)", "if (!string.IsNullOrEmpty(from) && from != old)")]),
+    ("a take leaves the run playing", "a_taken_session_is_read_and_ended_never_played", HC, [("if (RunLive) Cur.Last.Run.Force(\"cancelled\", \"the session was taken over from", "if (false) Cur.Last.Run.Force(\"cancelled\", \"the session was taken over from")]),
     ("a lease that closes the session", "a_session_past_its_lease_stays_open_and_paused", HC,
      [("Cur.LeaseEnded = true;\n", "Cur.LeaseEnded = true; Cur.End = \"aborted\"; Cur.Stage = \"closing\";\n")]),
     ("a lease that pauses nothing", "a_session_past_its_lease_stays_open_and_paused", HC,
@@ -275,7 +282,7 @@ def main(argv):
     item = [t_the_slice_promises_hold_in_a_session, t_one_session_one_trace_no_gap, t_true_at_start_plays_no_tick, t_hit_wins_over_limit,
             t_an_unreadable_value_ends_as_unknown_and_is_named, t_a_group_is_frozen, t_private_fields_and_statics_are_read,
             t_a_wrong_field_is_an_error_with_the_fields, t_an_unreviewed_method_is_refused_by_name, t_a_thousand_reads_change_nothing,
-            t_only_the_driver_drives_an_open_session, t_a_session_past_its_lease_stays_open_and_paused, t_no_session_no_run,
+            t_only_the_driver_drives_an_open_session, t_a_taken_session_is_read_and_ended_never_played, t_a_session_past_its_lease_stays_open_and_paused, t_no_session_no_run,
             t_the_slice_tool_still_passes, t_no_frame_inside_a_batch, t_a_repeated_id_returns_the_first_reply, t_a_changed_repeat_is_refused,
             t_a_thrown_act_keeps_the_acts_before_it]
     added = [t_an_act_at_zero_shares_the_hop_that_starts_the_clock, t_an_act_on_a_tick_is_any_tool_call]

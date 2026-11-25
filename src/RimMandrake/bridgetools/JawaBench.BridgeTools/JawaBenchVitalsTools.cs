@@ -177,11 +177,13 @@ namespace JawaBench.BridgeTools
                 "anything above 1,200,000 ticks. Arms the monitor if it is not armed. action=start (default, waits up to timeoutMs) " +
                 "| cancel | status. Never reassigns the clock: for a time of day, prepare the fixture before pawns exist. A return to " +
                 "the main menu, a load or new game ends the run as aborted with abortWhy 'game_changed: ...'; the start map leaving " +
-                "Find.Maps ends it with 'map_gone: ...'; tickTo is then the last tick the run stepped.",
+                "Find.Maps ends it with 'map_gone: ...'; tickTo is then the last tick the run stepped. until = a jawa/cond_eval tree: it is " +
+                "tested at the end of EVERY tick and the advance stops ON the tick where it turns true (state hit); a safety stop on the same " +
+                "tick is reported beside it. While such an advance is live, every changing tool is refused by its run's id.",
             ResultDescription =
-                "success, state (done | stopped | cancelled | aborted | refused | running), requested, executed, tickFrom, tickTo, " +
+                "success, state (done | hit | unknown | budget | stopped | cancelled | aborted | refused | running), requested, executed, tickFrom, tickTo, " +
                 "stopBy{kind, severity, detail}, triggers[] since start, refused (reason), wallS, chunk, frameBudgetMs, perFrameTickCap, " +
-                "stepMs (summed in-frame stepping ms), maxFrameMs, frameStats (with frameSamples=true).")]
+                "stepMs (summed in-frame stepping ms), maxFrameMs, frameStats (with frameSamples=true), scene (with until: the run, as jawa/scene_slice status says it; its trace is on disk).")]
         public static async Task<object> SafeAdvance(
             IRimBridgeContext ctx, CancellationToken cancellationToken,
             [ToolParameter(Description = "start | cancel | status", DefaultValue = "start")] string action = "start",
@@ -194,7 +196,10 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "most ticks stepped in one frame (0 = unlimited: only frameBudgetMs ends a frame); a chunk is cut short, never overshoots", DefaultValue = 0)] int perFrameTickCap = 0,
             [ToolParameter(Description = "include per-frame stats (ticks-per-frame histogram, p50/p99/max frame ms); raw=true adds every sample", DefaultValue = false)] bool frameSamples = false,
             [ToolParameter(Description = "with frameSamples: the raw per-frame tick and ms arrays too (at most 20000 frames)", DefaultValue = false)] bool raw = false,
-            [ToolParameter(Description = "start: ms to wait for completion before returning state=running", DefaultValue = 300000)] int timeoutMs = 300000)
+            [ToolParameter(Description = "start: ms to wait for completion before returning state=running", DefaultValue = 300000)] int timeoutMs = 300000,
+            [ToolParameter(Description = "start: a condition (JSON node, the grammar of jawa/cond_eval) that ends the advance on its tick")] string until = null,
+            [ToolParameter(Description = "start, with until: values to record on change, a JSON object name -> probe")] string record = null,
+            [ToolParameter(Description = "start, with until: the most ms that reading one tick may take; 0 = no bound", DefaultValue = 0.0)] double tickBudgetMs = 0)
         {
             string a = (action ?? "start").Trim().ToLowerInvariant();
             if (a == "cancel") { SA.CancelRequested = true; }
@@ -225,6 +230,12 @@ namespace JawaBench.BridgeTools
                     return new { success = false, state = "refused", refused = refuse, requested = ticks, budget, populated = pop, timeException = exc,
                                  ticksGame = TicksGameSafe() };
                 }
+                JawaBenchSceneTickCore.SceneRun scene = null;
+                if (!string.IsNullOrWhiteSpace(until))
+                {
+                    scene = JawaBenchSceneTick.MakeStep("jawa/safe_advance", until, record, (int)ticks, tickBudgetMs, Find.CurrentMap, out string whyNot, out var condRefused);
+                    if (scene == null) return condRefused ?? Fail(whyNot);
+                }
                 // RIMMANDRAKE_RENEW_SAFE_ADVANCE_AUTO_ARM_HOURLY: safe_advance's own arm is renewed at every advance start and
                 // end and never lapses mid-advance; an explicit arm by a governor row keeps its own TTL ("keep").
                 string armAct = V.AdvanceArmAction(VT.Armed, VT.AutoArmed);
@@ -238,11 +249,12 @@ namespace JawaBench.BridgeTools
                     Requested = ticks, Chunk = chunk, FrameBudgetMs = Math.Max(5, Math.Min(200, frameBudgetMs)), Stop = kinds, PerFrameTickCap = perFrameTickCap,
                     StartSeq = VT.Latch.Seq, StartTick = tm.TicksGame, EndTick = tm.TicksGame, StartMono = VT.Mono, MaxWallS = Math.Max(60, timeoutMs / 1000.0 * 4),
                     TimeException = exc, PrevSpeed = tm.CurTimeSpeed,
-                    Game = Current.Game, Map = Find.CurrentMap, MapId = Find.CurrentMap.uniqueID,
+                    Game = Current.Game, Map = Find.CurrentMap, MapId = Find.CurrentMap.uniqueID, Scene = scene,
                 };
                 tm.CurTimeSpeed = TimeSpeed.Paused;
                 VT.Emit(V.ChClock, "advance", "\"state\":\"start\",\"requested\":" + ticks + ",\"budget\":" + budget + ",\"populated\":" + V.B(pop) +
                                               ",\"timeException\":" + V.B(exc) + ",\"autoArmed\":" + V.B(armedHere) + ",\"armAction\":" + V.J(armAct));
+                if (scene != null) { JawaBenchSceneTick.ArmStep(scene, Find.CurrentMap); SA.EndedByScene(SA.Cur); }
                 return null;
             });
             if (err != null) return err;
@@ -250,7 +262,7 @@ namespace JawaBench.BridgeTools
             // is replaced by the next advance, whose state and numbers this reply used to report as its own.
             var run = SA.Cur;
             var sw = System.Diagnostics.Stopwatch.StartNew();
-            while (run.State == "running" && sw.ElapsedMilliseconds < timeoutMs)
+            while ((run.State == "running" || (run.Scene != null && run.Scene.Stage != "closed")) && sw.ElapsedMilliseconds < timeoutMs)
                 await Task.Delay(100, cancellationToken).ConfigureAwait(false);
             int waited = timeoutMs;     // captured on purpose (see above)
             bool wantFs = frameSamples, wantRaw = raw;
@@ -261,13 +273,14 @@ namespace JawaBench.BridgeTools
                 var trig = VT.Latch.Since(r.StartSeq);
                 return new
                 {
-                    success = r.State == "done", state = r.State, requested = r.Requested, executed = r.Executed, tickFrom = r.StartTick,
+                    success = r.State == "done" || r.State == "hit", state = r.State, requested = r.Requested, executed = r.Executed, tickFrom = r.StartTick,
                     tickTo = r.State == "running" ? TicksGameSafe() : r.EndTick, stopBy = Json(r.StopBy), abortWhy = r.AbortWhy,
                     triggers = TrigList(trig, 0, Math.Min(40, trig.Count)), triggersTotal = trig.Count,
                     wallS = Math.Round((r.State == "running" ? VT.Mono : r.EndMono) - r.StartMono, 2), frames = r.Frames,
                     chunk = r.Chunk, frameBudgetMs = r.FrameBudgetMs, perFrameTickCap = r.PerFrameTickCap,
                     stepMs = Math.Round(r.StepMs, 3), maxFrameMs = Math.Round(r.MaxFrameMs, 3),
                     frameStats = wantFs ? FrameStats(r, wantRaw) : null,
+                    scene = r.Scene != null && ReferenceEquals(JawaBenchSceneTick.Cur, r.Scene) ? SceneTickStatus() : null,
                     note = r.State == "running" ? "still running after timeoutMs: poll action=status or cancel" : null,
                     ticksGame = TicksGameSafe(),
                 };

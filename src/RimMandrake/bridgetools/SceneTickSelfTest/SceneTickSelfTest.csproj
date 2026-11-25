@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Compile Include="..\JawaBench.BridgeTools\JawaBenchCondCore.cs" />
+    <Compile Include="..\JawaBench.BridgeTools\JawaBenchRunLockCore.cs" />
     <Compile Include="..\JawaBench.BridgeTools\JawaBenchSceneTickCore.cs" Condition="'$(CoreFile)' == ''" />
     <Compile Include="$(CoreFile)" Condition="'$(CoreFile)' != ''" />
     <Compile Include="Program.cs" />

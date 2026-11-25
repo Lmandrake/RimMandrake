@@ -434,6 +434,7 @@ namespace JawaBench.BridgeTools
             public bool? RV;
             public string RStatus, RDetail;
             public object RPv;
+            public double Ms, MsMax;                // what its probe cost, when the evaluator has a clock
             public Node(string kind, string id) { Kind = kind; Id = id; }
             public void Reset() { HasPrev = false; Prev = null; HasStart = false; Start = 0; }
         }
@@ -930,6 +931,7 @@ namespace JawaBench.BridgeTools
             readonly IProbeSource _src;
             public int Reads, NodeEvals;
             public string FirstError;
+            public Func<double> Clock;              // null: the cost of a node is not measured
             readonly Dictionary<string, CondRead> _ringBase = new Dictionary<string, CondRead>();
 
             public Evaluator(IProbeSource src) { _src = src; }
@@ -954,6 +956,17 @@ namespace JawaBench.BridgeTools
             {
                 foreach (var p in probes)
                     if (p.Name == "ring.count" && !_ringBase.ContainsKey(p.Key)) _ringBase[p.Key] = Raw(p.Key, p, -1, -1, "num");
+            }
+
+            CondRead ReadNode(Node n)
+            {
+                if (Clock == null) return ReadProbe(n.Probe);
+                double t0 = Clock();
+                var r = ReadProbe(n.Probe);
+                double ms = Clock() - t0;
+                n.Ms += ms;
+                if (ms > n.MsMax) n.MsMax = ms;
+                return r;
             }
 
             public CondRead ReadProbe(Probe p)
@@ -1031,7 +1044,7 @@ namespace JawaBench.BridgeTools
                 }
                 else if (n.Kind == "cmp")
                 {
-                    var rd = ReadProbe(n.Probe);
+                    var rd = ReadNode(n);
                     pv = rd.V; st = rd.Status; de = rd.Detail;
                     if (st == "ok")
                     {
@@ -1043,7 +1056,7 @@ namespace JawaBench.BridgeTools
                 }
                 else if (n.Kind == "changed")
                 {
-                    var rd = ReadProbe(n.Probe);
+                    var rd = ReadNode(n);
                     pv = rd.V; st = rd.Status; de = rd.Detail;
                     NoteError(st, de);
                     if (st != "ok")
@@ -1241,7 +1254,7 @@ namespace JawaBench.BridgeTools
             public CondRun(Compiled c, IProbeSource src, Func<double> clockMs)
             {
                 _c = c;
-                _ev = new Evaluator(src);
+                _ev = new Evaluator(src) { Clock = clockMs };
                 _clockMs = clockMs;
             }
 

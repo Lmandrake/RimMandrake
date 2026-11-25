@@ -10,7 +10,7 @@ from scene_core import Fault, Refused, ReplyLost
 
 RUN_UNTIL, SLICE, SESSION = "jawa/run_until", "jawa/scene_slice", "jawa/session"
 WHY = {"hit": "hit", "done": "limit", "limit": "limit", "unknown": "unknown", "cancelled": "cancelled", "stopped": "fault",
-       "error": "fault", "epoch": "fault", "aborted": "fault", "fault": "fault"}
+       "error": "fault", "epoch": "fault", "aborted": "fault", "threw": "fault", "budget": "fault", "fault": "fault"}
 # the game's refusal name -> the page's (scene_contracts/run.md); every other name of the game stays itself, as a Fault
 REFUSALS = {"NO_LIMIT": "NO_LIMIT", "GAME_RUNNING": "GAME_RUNNING", "RUN_ACTIVE": "RUN_ACTIVE", "BAD_PATH": "BAD_PATH",
             "PATH_CALLS_METHOD": "BAD_PATH", "UNKNOWN_GROUP": "BAD_PATH", "EMPTY_GROUP": "BAD_PATH",

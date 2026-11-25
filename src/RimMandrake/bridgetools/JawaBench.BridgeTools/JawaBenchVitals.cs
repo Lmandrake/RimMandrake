@@ -197,7 +197,8 @@ namespace JawaBench.BridgeTools
                 };
                 HookStatus = JawaBenchTpsInstall.Run(targets, (name, m) =>
                     h.Patch((MethodInfo)m, prefix: new HarmonyMethod(t.GetMethod(nameof(TickPre), BindingFlags.Static | BindingFlags.NonPublic)),
-                                           postfix: new HarmonyMethod(t.GetMethod(nameof(TickPost), BindingFlags.Static | BindingFlags.NonPublic))),
+                                           postfix: new HarmonyMethod(t.GetMethod(nameof(TickPost), BindingFlags.Static | BindingFlags.NonPublic)),
+                                           finalizer: new HarmonyMethod(t.GetMethod(nameof(TickFin), BindingFlags.Static | BindingFlags.NonPublic))),
                     () => h.UnpatchAll(HarmonyId), out HookDetail);
             }
             catch (Exception e) { HookStatus = "failed"; HookDetail = e.GetType().Name + ": " + e.Message; }
@@ -284,7 +285,14 @@ namespace JawaBench.BridgeTools
                 catch (Exception e) { Fault("tick-post", e); }
             }
             // the scene run last, in its own containment: a pause it makes ends the game's loop on this tick
-            try { JawaBenchSceneTick.TickEnd(true); } catch (Exception e) { Fault("scene-tick", e); }
+            try { JawaBenchSceneTick.TickEnd(true, JawaBenchSafeAdvance.StopOfTick()); } catch (Exception e) { Fault("scene-tick", e); }
+        }
+
+        /// <summary>A tick that threw ran no postfix: the scene run ends here, and the exception goes on unchanged.</summary>
+        private static void TickFin(Exception __exception)
+        {
+            if (__exception == null) return;
+            try { JawaBenchSceneTick.TickThrew(__exception); } catch (Exception e) { Fault("scene-threw", e); }
         }
 
         /// <summary>From JawaBenchEventRecorder.KillPostfix (only real deaths reach it). The tombstone outlives the corpse.</summary>
@@ -767,6 +775,28 @@ namespace JawaBench.BridgeTools
             internal Game Game;            // identity at start: a different Current.Game ends the run (game_changed)
             internal Map Map;              // the start map: gone from Find.Maps ends the run (map_gone)
             internal int MapId;
+            internal JawaBenchSceneTickCore.SceneRun Scene;   // the condition run that ends this advance on its tick, or null
+        }
+
+        /// <summary>The safety trigger that stops this advance, read on each tick when a condition run is armed on it, so that a hit and a
+        /// stop on one tick are both in the run's record. Null when there is none.</summary>
+        internal static string StopOfTick()
+        {
+            var r = Cur;
+            if (r == null || r.State != "running" || r.Scene == null || JawaBenchVitals.Latch.Seq == r.StartSeq) return null;
+            var t = V.FirstStop(JawaBenchVitals.Latch.Since(r.StartSeq), r.Stop);
+            return t == null ? null : t.Kind;
+        }
+
+        /// <summary>The condition run ended: so does the advance, on the same tick. True when it did.</summary>
+        internal static bool EndedByScene(Run r)
+        {
+            if (r.Scene == null || r.Scene.Running) return false;
+            string s = r.Scene.State;
+            var by = s == "stopped" ? V.FirstStop(JawaBenchVitals.Latch.Since(r.StartSeq), r.Stop) : null;
+            bool own = s == "hit" || s == "unknown" || s == "budget" || s == "done" || s == "stopped" || s == "cancelled";
+            Finish(r, own ? s : "aborted", by, own ? r.Scene.Why : "the condition run ended as " + s + ": " + r.Scene.Why);
+            return true;
         }
 
         internal static Run Cur;
@@ -804,9 +834,13 @@ namespace JawaBench.BridgeTools
                         if (sw.Elapsed.TotalMilliseconds >= r.FrameBudgetMs) return;
                         int n = V.NextChunk(r.Chunk, r.Requested - r.Executed, r.PerFrameTickCap, doneThisFrame);
                         if (n <= 0) return;            // the per-frame tick cap is spent: the rest waits for the next frame
-                        for (int i = 0; i < n; i++) tm.DoSingleTick();
-                        r.Executed += n; doneThisFrame += n;
-                        r.EndTick = tm.TicksGame;      // last good tick: an end that cannot read the clock keeps this, not the start tick
+                        for (int i = 0; i < n; i++)
+                        {
+                            tm.DoSingleTick();
+                            r.Executed++; doneThisFrame++;
+                            r.EndTick = tm.TicksGame;  // last good tick: an end that cannot read the clock keeps this, not the start tick
+                            if (EndedByScene(r)) return;
+                        }
                     }
                 }
                 finally { RecordFrame(r, doneThisFrame, sw.Elapsed.TotalMilliseconds); }
@@ -827,6 +861,9 @@ namespace JawaBench.BridgeTools
         internal static void Finish(Run r, string state, V.Trigger by, string why = null)
         {
             r.StopBy = by; r.AbortWhy = why; r.EndMono = JawaBenchVitals.Mono;
+            if (r.Scene != null && r.Scene.Running)
+                try { r.Scene.Force(state == "cancelled" || state == "stopped" ? state : "aborted", "jawa/safe_advance ended as " + state + (why == null ? "" : ": " + why), r.EndTick); }
+                catch (Exception e) { JawaBenchSceneTick.LastFault = "advance end: " + e.GetType().Name + ": " + e.Message; }
             // Read and pause only the run's OWN game: after a load the new game's clock is not this run's tickTo.
             if (Current.Game != null && ReferenceEquals(Current.Game, r.Game))
                 try { r.EndTick = Find.TickManager.TicksGame; Find.TickManager.CurTimeSpeed = TimeSpeed.Paused; } catch { }

@@ -729,15 +729,113 @@ def test_end_session_ends_a_dead_driver_only():
     scene.open("ArchSmall").close()
 
 
+def dead_driver(**game):
+    """A session whose driver died with its run live. -> (world, the dead session)."""
+    W, s = opened(world(run_until=True), calm="standard")
+    s.run(until=20, limit=200)
+    W.game.run.update(polls=5)                          # the run is live, and the clock runs
+    W.game.status["paused"] = False
+    for k, v in game.items():
+        setattr(W.game, k, v)
+    W.lock, W.dead = None, True                         # a dead process holds no lock
+    return W, s
+
+
+def test_attach_refuses_no_session():
+    for W in (world(), world(run_until=True)):
+        refused("NO_SESSION", scene.attach, "ArchSmall")
+        must(W.lock is None, "the lock is still held")
+
+
+def test_attach_refuses_driver_alive():
+    W, s = dead_driver()
+    W.dead = False
+    e = refused("DRIVER_ALIVE", scene.attach, "ArchSmall")
+    must(s.id in e.repair and "4242" in e.repair, "the driver is not named: %s" % e.repair)
+    must(W.lock is None and W.game.calm_on and W.game.run["polls"] == 5 and W.game.session["driver"] == s.id, "something was changed")
+    W.alive = lambda ident: None                        # could not look is not dead
+    refused("DRIVER_ALIVE", scene.attach, "ArchSmall")
+    W.game.env.clear()                                  # the game's session has no record of a process: only its lease can say
+    refused("DRIVER_ALIVE", scene.attach, "ArchSmall")
+    W.game.session["leaseEnded"] = True
+    scene.attach("ArchSmall").close()
+
+
+def test_attach_refuses_owner_hold():
+    W, _s = dead_driver()
+    W.lock_code = 3
+    refused("OWNER_HOLD", scene.attach, "ArchSmall")
+    W.lock_code = 75
+    refused("GAME_HELD", scene.attach, "ArchSmall")
+
+
+def test_attach_refuses_unknown_game():
+    world()
+    e = refused("UNKNOWN_GAME", scene.attach, "ArchHuge")
+    must("ArchSmall" in e.repair and "Steve2" in e.repair, "the four names are not in the message")
+
+
+def test_attach_pauses_a_running_game():
+    W, old = dead_driver(open_act="act_7")
+    s = scene.attach("ArchSmall")
+    must(W.game.status["paused"] is True and W.game.session["driver"] == s.id, "%s" % W.game.session)
+    st = s.state
+    must(st.paused is True and st.open_act == "act_7" and st.last_run["why"] == "cancelled" and st.last_run["stage"] == "closed", "%r" % st)
+    must(st.last_run["trace"] == "whole", "%r" % st.last_run)
+    must(any("took the session %s" % old.id in x and "dead" in x for x in s.receipt.did), "%s" % s.receipt.did)
+    s.close()
+    must(not W.game.calm_on and W.lock is None and W.game.session is None, "what the dead driver left was not put back")
+    W, _old = dead_driver()                             # a run with no closing record
+    W.game.rows = [r for r in W.game.rows if r["rec"] != "close"]
+    s = scene.attach("ArchSmall")
+    must("not whole" in s.state.last_run["trace"] and any("not whole" in x for x in s.receipt.could_not_look), "%r" % s.state.last_run)
+    W, s = opened()                                     # the older hand, with no session of its own
+    s.run(until=20, limit=200)
+    W.game.run.update(polls=500)
+    W.lock, W.dead = None, True
+    s2 = scene.attach("ArchSmall")
+    must(W.game.run["state"] == "cancelled" and s2.state.last_run["run"] == W.game.run["run"], "the run of the older hand plays on")
+    s2.close()
+
+
+def test_attach_then_run_is_refused():
+    W, _old = dead_driver()
+    s = scene.attach("ArchSmall")
+    n = W.game.starts
+    refused("TAKEN_OVER", s.run, until=20, limit=200)
+    refused("TAKEN_OVER", s.raw, "jawa/static_call", type="T", method="M", args="")
+    must(W.game.starts == n and scene.EXPLORED not in s.state.stamps, "the new driver went on with the scene")
+    s.raw("jawa/map_info")                              # a read is allowed
+    s.close()
+    W.dead = False
+    with scene.open("ArchSmall") as t:
+        t.run(until=20, limit=200)                      # the next session is its own
+
+
+def test_abort_writes_closing_record():
+    W, _old = dead_driver()
+    s = scene.attach("ArchSmall")
+    s.abort()
+    must([a["action"] for t, a in W.game.log if t == "jawa/session"][-1] == "abort" and W.game.session is None, "the game's session was not aborted")
+    must(W.lock is None and json.loads(W.game.env[scene.GAME_STATE])["session"] is None, "the lock or the record is left")
+    must(W.game.calm_on and any("calm" in x for x in s.closed_report.could_not_look), "abort changes nothing else, and says what it leaves")
+    refused("SESSION_CLOSED", s.run, until=20, limit=200)
+    W, _old = dead_driver()                             # a driver that dies while it attaches leaves the session for the next one
+    W.game.fail = {"rimbridge/get_bridge_status": "broken"}
+    faulted("COULD_NOT_LOOK", scene.attach, "ArchSmall")
+    must(W.lock is None and W.game.session, "a half attach closed the session, or kept the lock")
+    W.game.fail = {}
+    scene.attach("ArchSmall").abort()
+
+
 def test_names_not_built_say_so():
     W, s = opened()
-    for n in ("contract", "attach"):
-        e = refused("NOT_BUILT", getattr, scene, n)
-        must("RIMMANDRAKE_" in e.repair, "no ticket")
+    e = refused("NOT_BUILT", getattr, scene, "contract")
+    must("RIMMANDRAKE_" in e.repair, "no ticket")
     for n in ("stage", "act", "read", "shot"):
         refused("NOT_BUILT", getattr, s, n)
     must(not hasattr(s, "act") and not hasattr(s, "nothing"), "hasattr")
-    must(sorted(scene.BUILT + ("contract", "attach", "stage", "act", "read", "shot")) == sorted(scene.NAMES), "the ten names")
+    must(sorted(scene.BUILT + ("contract", "stage", "act", "read", "shot")) == sorted(scene.NAMES), "the ten names")
 
 
 def test_tools_and_raw_census():
@@ -816,6 +914,8 @@ def main():
             test_raw_call_without_a_mark_is_not_made,
             test_lock_that_could_not_be_read_is_a_fault, test_trace_that_is_not_whole, test_game_that_ran_on, test_close_puts_back_also_after_an_error,
             test_close_waits_for_the_session_writer, test_session_of_another_is_lost_not_used, test_end_session_ends_a_dead_driver_only,
+            test_attach_refuses_no_session, test_attach_refuses_driver_alive, test_attach_refuses_owner_hold, test_attach_refuses_unknown_game,
+            test_attach_pauses_a_running_game, test_attach_then_run_is_refused, test_abort_writes_closing_record,
             test_names_not_built_say_so, test_tools_and_raw_census]
     a = run(ticket)
     print("scene library: %d of %d checks passed" % (a, len(ticket)))

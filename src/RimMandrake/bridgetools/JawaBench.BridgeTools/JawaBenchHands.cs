@@ -32,8 +32,8 @@ namespace JawaBench.BridgeTools
         internal static PathValue ReadValue(string of, string path) { return P.Read(Host, of, path); }
 
         // ============================================================================================ the hands (main thread)
-        /// <summary>open | state | bind | close | abort.</summary>
-        public static Dictionary<string, object> Session(string action, string driver = null, double leaseS = H.DefaultLeaseS, string bindings = null)
+        /// <summary>open | state | bind | take | close | abort.</summary>
+        public static Dictionary<string, object> Session(string action, string driver = null, double leaseS = H.DefaultLeaseS, string bindings = null, string from = null)
         {
             switch ((action ?? "").Trim().ToLowerInvariant())
             {
@@ -47,15 +47,16 @@ namespace JawaBench.BridgeTools
                     if (!Core.Busy) Host.Enter();
                     return More(Core.Open(driver, leaseS));
                 case "bind": return More(Core.Bind(driver, bindings));
+                case "take": return More(Core.Take(driver, from));
                 case "close": return More(Core.Finish(driver, false));
                 case "abort": return More(Core.Finish(driver, true));
             }
-            return H.Refusal("BAD_ARGS", "action is open, state, bind, close or abort, not '" + action + "'", "correct it");
+            return H.Refusal("BAD_ARGS", "action is open, state, bind, take, close or abort, not '" + action + "'", "correct it");
         }
 
         /// <summary>start | status | cancel.</summary>
         public static Dictionary<string, object> RunUntil(string action, string driver = null, string request = null, string until = null, int limit = 0,
-                                                          string speed = "Normal", string record = null, string acts = null)
+                                                          string speed = "Normal", string record = null, string acts = null, double tickBudgetMs = 0)
         {
             string a = (action ?? "").Trim().ToLowerInvariant();
             if (a == "status") return More(Core.RunStatus(driver, request));
@@ -67,12 +68,15 @@ namespace JawaBench.BridgeTools
                 if (!Enum.TryParse(speed, true, out sp) || !Enum.IsDefined(typeof(TimeSpeed), sp) || sp == TimeSpeed.Paused)
                     return H.Refusal("BAD_ARGS", "speed is Normal, Fast, Superfast or Ultrafast, not '" + speed + "'", "correct it");
                 var list = H.ParseActs(acts, true);
-                string canon = C.Canon(new List<object> { until, (double)limit, sp.ToString(), record, acts });
+                if (!(tickBudgetMs >= 0)) return H.Refusal("BAD_ARGS", "tickBudgetMs is less than 0", "0 is no budget");
+                var what = new List<object> { until, (double)limit, sp.ToString(), record, acts };
+                if (tickBudgetMs > 0) what.Add(tickBudgetMs);
+                string canon = C.Canon(what);
                 return More(Core.StartRun(driver, request, canon, list, limit, (id, ticks, trace) =>
                 {
                     var plan = H.MakePlan(until, record, limit, Host.MapId, Core.GroupSize);
                     var src = JawaBenchTerrainTools.NewProbeSource();
-                    return new T.SceneRun(id, plan.Compile(src), src, ticks, Host, "PLAY", sp.ToString(), trace);
+                    return new T.SceneRun(id, plan.Compile(src), src, ticks, Host, "PLAY", sp.ToString(), trace, tickBudgetMs);
                 }, JawaBenchSceneTick.EpochBox(), Armed, () => Find.TickManager.CurTimeSpeed = sp));
             }
             catch (H.Refused e) { return H.Refusal(e); }
@@ -81,10 +85,7 @@ namespace JawaBench.BridgeTools
 
         private static void Armed(T.SceneRun run)
         {
-            JawaBenchSceneTick.RunGame = Current.Game;
-            JawaBenchSceneTick.LastFault = null;
-            JawaBenchSceneTick.MaxFrameTicks = JawaBenchSceneTick.FrameTicks = 0;
-            JawaBenchSceneTick.Cur = run;
+            JawaBenchSceneTick.Take(run, Host.TheMap());
         }
 
         /// <summary>Many value paths on one tick. Changes nothing.</summary>
@@ -271,8 +272,10 @@ namespace JawaBench.BridgeTools
                 string why = OneHopTools.BindArgs(m, args, out bound);
                 if (why != null) return new ActOutcome { State = "failed", Error = why };
                 object r;
+                JawaBenchSceneTick.InsideAct++;
                 try { r = m.Invoke(null, bound); }
                 catch (TargetInvocationException e) { var x = e.InnerException ?? e; return new ActOutcome { State = "failed", Error = x.GetType().Name + ": " + x.Message }; }
+                finally { JawaBenchSceneTick.InsideAct--; }
                 var task = r as Task;
                 if (task != null)
                 {
@@ -644,22 +647,25 @@ namespace JawaBench.BridgeTools
                 "trace over several runs and batches, request ids. action=open pauses the game. action=state reads, for anyone. " +
                 "action=bind binds aliases to thing ids ({\"pawn_1\": \"Human12\", \"raiders\": [\"Human3\", \"Human4\"]}); a list is a frozen group. " +
                 "action=close | abort writes the closing record after the trace has drained (poll state until stage is closed or aborted). " +
-                "When the driver's lease ends with no call from it, the game is paused and the session stays open; then abort takes any caller.",
+                "When the driver's lease ends with no call from it, the game is paused and the session stays open; then abort takes any caller. " +
+                "action=take gives the session of a dead driver to a new one (the live run is cancelled, the game paused): it may then be read and " +
+                "ended, not played.",
             ResultDescription =
                 "success, session, stage (none | open | closing | closed | aborted), driver, leaseEnded, leaseLeftS, paused, tick, lastRun, openAct, " +
                 "bound, rows, dropped, recordDir, writerSession. A refusal: success false, refused (name), message, repair; nothing was changed.")]
         public static async Task<object> HandsSession(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
-            [ToolParameter(Description = "open, state, bind, close or abort.")] string action = "state",
+            [ToolParameter(Description = "open, state, bind, take, close or abort.")] string action = "state",
             [ToolParameter(Description = "The caller's own name; the same text on each call.")] string driver = null,
             [ToolParameter(Description = "open: seconds without a call from the driver after which the game is paused.")] double leaseS = 600,
-            [ToolParameter(Description = "bind: a JSON object alias -> thing id, or a list of ids (a frozen group), or null (not bound).")] string bindings = null)
+            [ToolParameter(Description = "bind: a JSON object alias -> thing id, or a list of ids (a frozen group), or null (not bound).")] string bindings = null,
+            [ToolParameter(Description = "take: the text of the dead driver, as action=state says it. Not needed after its lease has ended.")] string from = null)
         {
             return await ctx.MainThread.InvokeAsync<object>(() =>
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                return JawaBenchHands.Session(action, driver, leaseS, bindings);
+                return JawaBenchHands.Session(action, driver, leaseS, bindings, from);
             }, cancellationToken);
         }
 
@@ -687,12 +693,13 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "start: the most ticks to play, at least 1.")] int limit = 0,
             [ToolParameter(Description = "start: Normal, Fast, Superfast or Ultrafast.")] string speed = "Normal",
             [ToolParameter(Description = "start: a JSON list of {of, path} or {name, probe}: more values to record.")] string record = null,
-            [ToolParameter(Description = "start: a JSON list of {id, tool, args, at}: acts in the starting hop (at 0) or on a tick (at N).")] string acts = null)
+            [ToolParameter(Description = "start: a JSON list of {id, tool, args, at}: acts in the starting hop (at 0) or on a tick (at N).")] string acts = null,
+            [ToolParameter(Description = "start: the most ms that reading one tick (tracks and condition) may take; over it the run ends in state budget and names the costliest value. 0 = no bound.")] double tickBudgetMs = 0)
         {
             return await ctx.MainThread.InvokeAsync<object>(() =>
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                return JawaBenchHands.RunUntil(action, driver, request, until, limit, speed, record, acts);
+                return JawaBenchHands.RunUntil(action, driver, request, until, limit, speed, record, acts, tickBudgetMs);
             }, cancellationToken);
         }
 

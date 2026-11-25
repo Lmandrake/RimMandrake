@@ -434,6 +434,45 @@ namespace JawaBench.BridgeTools
                 Eq(G(w.Hands.Bind("drv", "{\"p\":\"Nobody\"}"), "refused"), "UNKNOWN_THING", "binding a thing that is not there");
                 Eq(G(w.Hands.RunStatus("other", "a"), "why"), "hit", "anyone may read");
             });
+            Check("a_taken_session_is_read_and_ended_never_played", () =>
+            {
+                var w = new World();
+                w.Add("P1");
+                Eq(G(w.Hands.Take("new", "drv"), "refused"), "NO_SESSION", "no session");
+                w.Hands.Open("drv", 600);
+                w.Run("drv", "a", Until(900000), limit: 800000);
+                w.Play(5);
+                Eq(G(w.Hands.Take("new", null), "refused"), "DRIVER_ALIVE", "a live lease with no name of the dead driver");
+                Eq(G(w.Hands.Take("new", "somebody"), "refused"), "DRIVER_ALIVE", "another driver's name");
+                Eq(G(w.Hands.Take("drv", "drv"), "refused"), "BAD_ARGS", "its own driver");
+                True(!w.PausedNow, "a refused take changed the game");
+                var s = w.Hands.Take("new", "drv");
+                Eq(G(s, "success"), true, "take");
+                Eq(G(s, "driver"), "new", "driver");
+                Eq(G(s, "taken"), true, "taken");
+                Eq(w.PausedNow, true, "paused");
+                w.Play(5);
+                Eq(G(D(G(w.Hands.State(), "lastRun")), "why"), "cancelled", "the live run");
+                Eq(w.Rec("close").Count, 1, "closing records of the run");
+                Eq(w.Rec("session_taken").Single().r.GetProperty("from").GetString(), "drv", "the record");
+                Eq(G(w.Run("new", "b", Until(900000)), "refused"), "TAKEN_OVER", "a run");
+                Eq(G(w.Batch("new", "[{\"id\":\"x\",\"tool\":\"jawa/hit\"}]"), "refused"), "TAKEN_OVER", "a batch");
+                Eq(G(w.Hands.Bind("new", "{\"p\":\"P1\"}"), "refused"), "TAKEN_OVER", "a bind");
+                Eq(w.Done.Count, 0, "acts");
+                Eq(G(w.Hands.RunStatus("new", "a"), "stage"), "closed", "the run can be read");
+                Eq(G(w.Hands.Finish("drv", false), "refused"), "NOT_THE_DRIVER", "the dead driver's text");
+                Eq(G(w.Hands.Finish("new", false), "success"), true, "close");
+                w.Play(5);
+                Eq(G(w.Hands.State(), "stage"), "closed", "stage");
+                Eq(G(w.Hands.Open("next", 600), "success"), true, "the next session");
+                Eq(G(w.Hands.State(), "taken"), false, "the next session is not a taken one");
+                // past its lease no name is needed
+                var x = new World();
+                x.Hands.Open("drv", 10);
+                x.Clock += 20000;
+                x.Play(2);
+                Eq(G(x.Hands.Take("new", null), "success"), true, "after the lease");
+            });
             Check("a_session_past_its_lease_stays_open_and_paused", () =>
             {
                 var w = new World();

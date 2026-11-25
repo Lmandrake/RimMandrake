@@ -48,6 +48,10 @@ namespace JawaBench.BridgeTools
         }
         private static readonly object Gate = new object();
         private static readonly Dictionary<MethodBase, string> ToolOf = new Dictionary<MethodBase, string>();
+        private static readonly Dictionary<MethodBase, int> ActionArg = new Dictionary<MethodBase, int>();    // the place of `action`
+        private static readonly Dictionary<MethodBase, int> MethodArg = new Dictionary<MethodBase, int>();    // jawa/static_call: its action is type.method
+        private static readonly HashSet<MethodBase> DeclaredReads = new HashSet<MethodBase>();
+        internal static long LockRefusals;
         internal static string GateStatus = "not installed", GateDetail;
         internal static int Guarded;
         internal static readonly List<string> Unguarded = new List<string>();
@@ -154,7 +158,18 @@ namespace JawaBench.BridgeTools
                         try { attr = m.GetCustomAttribute<ToolAttribute>(inherit: false); }
                         catch (Exception e) { Unguarded.Add(t.Name + "." + m.Name + " (attribute read " + e.GetType().Name + ")"); continue; }
                         if (attr == null || attr.Name == S.HandshakeTool) continue;   // the handshake is always allowed
-                        lock (Gate) ToolOf[m] = attr.Name;
+                        lock (Gate)
+                        {
+                            ToolOf[m] = attr.Name;
+                            var ps = m.GetParameters();
+                            for (int i = 0; i < ps.Length; i++)
+                            {
+                                if (ps[i].Name == "action" && ps[i].ParameterType == typeof(string)) ActionArg[m] = i;
+                                if (attr.Name == JawaBenchRunLockCore.NeverARead && ps[i].Name == "type") ActionArg[m] = i;
+                                if (attr.Name == JawaBenchRunLockCore.NeverARead && ps[i].Name == "method") MethodArg[m] = i;
+                            }
+                            if (JawaBenchRunLockCore.DeclaredRead(attr.Description)) DeclaredReads.Add(m);
+                        }
                         try
                         {
                             if (m.ReturnType == typeof(Task<object>)) h.Patch(m, prefix: pTask);
@@ -181,16 +196,28 @@ namespace JawaBench.BridgeTools
         }
 
         /// <summary>Null = run the tool. Otherwise the refusal text. Fail CLOSED on any internal error.</summary>
-        private static string Check(MethodBase m)
+        private static string Check(MethodBase m, object[] args)
         {
             try
             {
                 string tool;
-                lock (Gate) ToolOf.TryGetValue(m, out tool);
+                int at, at2;
+                bool read;
+                lock (Gate) { ToolOf.TryGetValue(m, out tool); if (!ActionArg.TryGetValue(m, out at)) at = -1; if (!MethodArg.TryGetValue(m, out at2)) at2 = -1; read = DeclaredReads.Contains(m); }
                 if (tool == null) tool = "(unmapped " + m?.Name + ")";
                 string why, declared;
                 string eff = Effective(out why, out declared);
-                if (S.Allowed(tool, eff)) return null;
+                if (S.Allowed(tool, eff))
+                {
+                    // the run lock: while a scene run is live, nothing but the run changes the game
+                    var run = JawaBenchSceneTick.LockHolder();
+                    if (run == null) return null;
+                    string act = args != null && at >= 0 && at < args.Length ? args[at] as string : null;
+                    if (act != null && args != null && at2 >= 0 && at2 < args.Length) act = act.Trim() + "." + (args[at2] as string ?? "").Trim();
+                    string no = JawaBenchRunLockCore.Refuse(tool, read, act, run.Id, JawaBenchSceneTick.InsideAct > 0, run.Lock);
+                    if (no != null) Interlocked.Increment(ref LockRefusals);
+                    return no;
+                }
                 Interlocked.Increment(ref Refusals);
                 LastRefusal = tool;
                 return S.RefusalText(tool, why);
@@ -210,17 +237,17 @@ namespace JawaBench.BridgeTools
             return new { success = false, refused = true, error = text, message = text, effectiveProfile = eff, compileProfile = CompileProfile };
         }
 
-        private static bool GateTask(MethodBase __originalMethod, ref Task<object> __result)
+        private static bool GateTask(MethodBase __originalMethod, object[] __args, ref Task<object> __result)
         {
-            string r = Check(__originalMethod);
+            string r = Check(__originalMethod, __args);
             if (r == null) return true;
             __result = Task.FromResult(Refusal(r));
             return false;
         }
 
-        private static bool GateObject(MethodBase __originalMethod, ref object __result)
+        private static bool GateObject(MethodBase __originalMethod, object[] __args, ref object __result)
         {
-            string r = Check(__originalMethod);
+            string r = Check(__originalMethod, __args);
             if (r == null) return true;
             __result = Refusal(r);
             return false;

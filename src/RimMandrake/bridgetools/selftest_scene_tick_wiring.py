@@ -128,7 +128,7 @@ PLANTS = [
     ("* the closing record before the writer drained", "the_close_counts_the_dropped_and_waits_for_the_drain",
      [("if (!drained && _h.NowMs() - _settleFrom < DrainMs) return;", "")]),
     ("* a stop that lets one more tick run", "a_hit_on_tick_t_executes_t",
-     [("                _paused = _h.Pause();\n", "                _paused = true;\n"),
+     [("try { _paused = _h.Pause(); }", "try { _paused = true; }"),
       ("                if (Stage != \"running\") return;\n", "                if (Stage == \"settling\") _h.Pause();\n                if (Stage != \"running\") return;\n")]),
     ("a true start that runs a tick", "true_at_arm_executes_nothing", [("if (_cond.State != \"running\") End(tick, \"first\");", "")]),
     ("a row on every tick", "a_track_writes_on_change_only",

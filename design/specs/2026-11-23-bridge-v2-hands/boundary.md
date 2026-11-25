@@ -19,7 +19,7 @@ null means: `ok` with no `v` is a null that was read; `gone`, `unbound` and `err
 
 ### `jawa/session`
 
-`action` is `open`, `state`, `bind`, `close` or `abort`. `driver` is any text that the caller chooses; the caller sends the
+`action` is `open`, `state`, `bind`, `take`, `close` or `abort`. `driver` is any text that the caller chooses; the caller sends the
 same text on each call.
 
 | action | does |
@@ -27,14 +27,15 @@ same text on each call.
 | `open` (`driver`, `leaseS`) | opens the one session of this game process. Pauses the game. Reply: `session`, `state` |
 | `state` | reads: `session`, `stage` (`none`, `open`, `closing`, `closed`, `aborted`), `driver`, `leaseEnded`, `leaseLeftS`, `paused`, `tick`, `lastRun`, `openAct`, `bound`, `rows`, `dropped`, `recordDir`, `writerSession`. No driver is needed |
 | `bind` (`driver`, `bindings`) | `bindings` is JSON: `{"pawn_1": "Human12"}` binds one thing; `{"raiders": ["Human3", "Human4"]}` freezes a group; `null` in place of an id declares an alias that is not bound. The thing must exist, or the call is refused (`UNKNOWN_THING`) |
+| `take` (`driver`, `from`) | gives the open session of a dead driver to `driver`: the live run is cancelled, the game paused, a `session_taken` row written. `from` is the dead driver's text (the caller looked: that process is gone); it is not needed after the lease has ended. A taken session is read and ended, never played (`TAKEN_OVER`) |
 | `close`, `abort` (`driver`) | writes the closing record after the writer has drained. A live run is cancelled first. After the lease has ended, `abort` takes any driver |
 
-Refusals: `SESSION_OPEN`, `NO_SESSION`, `NOT_THE_DRIVER`, `NO_GAME`, `BAD_ARGS`, `UNKNOWN_THING`.
+Refusals: `SESSION_OPEN`, `NO_SESSION`, `NOT_THE_DRIVER`, `DRIVER_ALIVE`, `TAKEN_OVER`, `NO_GAME`, `BAD_ARGS`, `UNKNOWN_THING`.
 
 ### `jawa/run_until`
 
 `action` is `start`, `status` or `cancel`. `start` takes `driver`, `request` (the id that the caller made before it sent the
-call), `until` (a JSON condition tree), `limit`, `speed`, `record`, `acts`.
+call), `until` (a JSON condition tree), `limit`, `speed`, `record`, `acts`, `tickBudgetMs` (0 = no bound on what reading one tick may take).
 
 - `until`: the nodes and probes of `jawa/cond_eval`, two more probes and two group nodes.
   `{"p": "value", "of": T, "path": P}` reads a value path. `{"p": "value.state", "of": T, "path": P}` gives its state as text
@@ -47,7 +48,7 @@ call), `until` (a JSON condition tree), `limit`, `speed`, `record`, `acts`.
   the same main-thread hop that starts the clock. No paused frame sees it. `at` N: done on tick N after the start, after that tick's sample.
 - Reply: `request`, `run`, `stage` (`running`, `settling`, `closed`), `why` (`hit`, `limit`, `unknown`, `cancelled`, `fault`;
   null while it runs), `state`, `tickFrom`, `tick`, `values` (name -> `state`, `v`, `detail`, `reads`: the samples taken), `couldNotLook`, `unknownValue`,
-  `faults`, `acts`, `rows`, `dropped`, `drained`, `replayed`.
+  `faults`, `acts`, `rows`, `dropped`, `drained`, `replayed`, `lockReads`, `breaches`, `costliest`.
 
 Refusals: those of the session, and `NO_LIMIT`, `GAME_RUNNING`, `RUN_ACTIVE`, `REQUEST_CONFLICT`, `NO_REQUEST`, `BAD_PATH`,
 `PATH_CALLS_METHOD`, `UNKNOWN_GROUP`, `EMPTY_GROUP`, `OPTIONAL_COUNTS_UNKNOWN_FALSE`, `BAD_CONDITION`, `CANNOT_RUN`, `UNKNOWN_REQUEST`.
@@ -92,8 +93,8 @@ The records of `scene_trace_v1`, with one more field `sess`, and with `n` counte
 ## DOES NOT SURVIVE (not promised)
 
 - **a-load-inside-a-session.** Each bound thing reads `gone`. The load barrier is another item.
-- **a-changing-tool-from-a-caller-outside-the-session.** The lock covers the hands and `jawa/scene_slice`, not the other
-  tools (`RIMMANDRAKE_HARDEN_RUN_LIFE_CYCLE_KILL_CANCEL_THROWN_TICK`). Taking over a session is in that item also.
+- **a-changing-tool-from-a-caller-outside-the-session, between runs.** The run lock holds while a run is live
+  (`../2026-11-23-bridge-v2-life-cycle/boundary.md`). Between two runs of a session, another caller can change the game.
 - **a-tool-of-the-bridge-host.** A batch calls companion tools only. `rimworld/` tools go through the host's own queue.
 - **a-side-effect-inside-a-reviewed-property.** The list is read by a person; a Harmony patch on a listed getter runs.
 - **a-type-that-was-never-used.** The first read of a static field runs the type's own initializer, as any first use does.
@@ -114,6 +115,7 @@ The records of `scene_trace_v1`, with one more field `sess`, and with `n` counte
 - **only-the-driver-drives-an-open-session.** Another caller is refused by the session hands. While the session is open
   or closing, `jawa/scene_slice` refuses `start` and `cancel` and allows `status`. The driver can cancel a session run
   through `jawa/run_until`. The offline check covers the slice guard and the driver's cancel.
+- **a-taken-session-is-read-and-ended-never-played.** A live lease is taken only with the dead driver's own text.
 - **a-session-past-its-lease-stays-open-and-paused.** It is not closed by itself, it can be read, and the game is paused.
 - **no-session-no-run.** A run or a batch with no open session is refused by name.
 - **the-slice-tool-still-passes.** `jawa/scene_slice` passes its own selftest.

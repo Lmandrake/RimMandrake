@@ -56,6 +56,10 @@ PLANTS = [
     ("explore leaves no stamp", "scene.py", '({EXPLORED} if LAUNCH["mode"] == "explore" else set())', "set()", "test_explore_run_is_explored"),
     ("an error in the script keeps the session open", "scene.py", "    def __exit__(self, et, ev, tb):\n        try:\n            self.close()", "    def __exit__(self, et, ev, tb):\n        try:\n            et or self.close()", "test_close_puts_back_also_after_an_error"),
     ("what was not put back is not said", "scene.py", "        if bad:\n            raise Fault(\"CLOSE_INCOMPLETE\"", "        if False:\n            raise Fault(\"CLOSE_INCOMPLETE\"", "test_close_puts_back_also_after_an_error"),
+    ("an attach that lets the new driver go on", "scene.py", "        if self._taken:\n            raise Refused(\"TAKEN_OVER\"", "        if False:\n            raise Refused(\"TAKEN_OVER\"", "test_attach_then_run_is_refused"),
+    ("an attach takes a live driver's session", "scene.py", "        if alive is not False and not (old is None", "        if False and not (old is None", "test_attach_refuses_driver_alive"),
+    ("an attach leaves the older hand's run", "scene.py", "            if live:\n                self.hand.cancel(live)\n        if self._status()", "            if False:\n                self.hand.cancel(live)\n        if self._status()", "test_attach_pauses_a_running_game"),
+    ("an abort releases the calm", "scene.py", 'if self._calmed and how == "close":', "if self._calmed:", "test_abort_writes_closing_record"),
     ("a live driver's session is ended", "scene.py", "        if alive is not False:\n", "        if False:\n", "test_end_session_ends_a_dead_driver_only"),
     ("another session's process is used", "scene.py", '        if (d["session"] or {}).get("id") != self.id:\n            raise Fault("SESSION_LOST"', '        if False:\n            raise Fault("SESSION_LOST"', "test_session_of_another_is_lost_not_used"),
 ]

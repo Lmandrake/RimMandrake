@@ -1,9 +1,10 @@
-# BOUNDARY: the scene run in the tick (BRIDGE v2.0 slice), Design Version 0.1.0
+# BOUNDARY: the scene run in the tick (BRIDGE v2.0), Design Version 0.2.0
 
 Code: `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchSceneTickCore.cs` (all of it),
 `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchSceneTick.cs` (all of it), and the scene lines of `TickPre`,
-`TickPost` and `Frame` in `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchVitals.cs`.
-Item: `RIMMANDRAKE_WIRE_COND_RUN_INTO_TICK_BUILT_NEVER_JOINED`. Design: `05_build_design.md` beside this page. Each promise
+`TickPost`, `TickFin` and `Frame` and the condition run of `JawaBenchSafeAdvance` in
+`src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchVitals.cs`.
+Items: `RIMMANDRAKE_WIRE_COND_RUN_INTO_TICK_BUILT_NEVER_JOINED`, `RIMMANDRAKE_HARDEN_RUN_LIFE_CYCLE_KILL_CANCEL_THROWN_TICK`. Design: `05_build_design.md` beside this page. Each promise
 has a test of its name in `src/RimMandrake/bridgetools/selftest_scene_tick_wiring.py`. The live proof is
 `src/RimMandrake/bridgetools/prove_scene_tick_wiring.py`.
 
@@ -30,15 +31,15 @@ Each record is one line of kind `scene` in the game's `JawaBench` record, writte
 | `phase` | `first` (before any act), `end_of_tick`, `last` (after the pause) |
 | `rec` | `open`, `track`, `act`, `fault`, `end`, `close` |
 
-- `open`: `schema`, `mode` (`PLAY`), `speed`, `epoch`, `cond` (the condition as compiled, with its tracks), `acts`,
+- `open`: `schema`, `mode` (`PLAY`; `STEP` when a step loop drives the tick, and `speed` then names the loop), `speed`, `epoch`, `cond` (the condition as compiled, with its tracks), `acts`,
   `maxTicks`.
 - `track`: `name`, `st` (`ok`, `gone`, `oob`, `unbound`, `error`), `v`, and `detail` when `st` is not `ok`. Written at `first`
   and `last` for every track, and at `end_of_tick` only when `v` or `st` changed.
 - `act`: `name`, `ok`, `detail`. Written after the act step was done, on the tick on which it was done.
-- `fault`: `what` (`rand_in_sample`, `ran_past_end`, `pause_refused`, `threw`), `detail`.
-- `end`: `state` (`hit`, `unknown`, `done`, `stopped`, `error`, `epoch`, `cancelled`, `aborted`), `hitTick`, `executed`, `why`,
-  `triggers`, `unknown`, `complete`, `cost`.
-- `close`: `rows`, `dropped`, `drained`, `paused`, `tickAfter`, `skipped`, `randFaults`, `actsNotDone`, `alloc`. The last
+- `fault`: `what` (`rand_in_sample`, `ran_past_end`, `pause_refused`, `game_replaced`, `threw`), `detail`.
+- `end`: `state` (`hit`, `unknown`, `done`, `stopped`, `error`, `epoch`, `cancelled`, `aborted`, `threw`, `budget`), `hitTick`, `executed`, `why`,
+  `triggers`, `unknown`, `complete`, `cost`, `costliest` (the condition node or track whose reads took the most time).
+- `close`: `rows`, `dropped`, `drained`, `paused`, `tickAfter`, `skipped`, `randFaults`, `actsNotDone`, `alloc`, `lockReads`, `breaches` (tool -> refused calls). The last
   record of a run. A trace with no `close` is incomplete.
 
 ## THE EVIDENCE CONTRACT (what a judge may assume; each point that fails is COULD NOT LOOK)
@@ -54,6 +55,10 @@ Each record is one line of kind `scene` in the game's `JawaBench` record, writte
 Not yet in the trace, each with its ticket in `06_build_order.md`: the tap records with their two sequence numbers; the alias
 links; the plan and checker versions; the reviewed list of readers (a track may read a property today).
 
+## THE LIFE CYCLE, THE RUN LOCK
+
+On their own page: `design/specs/2026-11-23-bridge-v2-life-cycle/boundary.md`.
+
 ## LIMITS
 
 - **60 s for the writer to drain, then `close` says `drained` false.** Danger: a full or dead disk leaves the run open for
@@ -61,10 +66,7 @@ links; the plan and checker versions; the reviewed list of readers (a track may 
 
 ## DOES NOT SURVIVE (not promised)
 
-- **a-thrown-tick, a-killed-driver, a-second-driver, a-load.** The run ends (`error`, `epoch`) or is cancelled, but its whole
-  life cycle is `RIMMANDRAKE_HARDEN_RUN_LIFE_CYCLE_KILL_CANCEL_THROWN_TICK`.
-- **a-paused-step-loop.** The run is for the game's own loop. `jawa/run_scenes` and `jawa/safe_advance` end at their own
-  budget, not on this condition.
+- The faults of a run from outside its tick: `../2026-11-23-bridge-v2-life-cycle/boundary.md`.
 - **a-value-that-changes-twice-in-one-tick.** Only its last state is seen.
 - **zero-allocation-with-a-changing-number.** A number that changes every tick (`game.tick`) costs one 24-byte box a tick, and
   a condition over a rectangle allocates its cells.

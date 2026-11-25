@@ -42,7 +42,7 @@ Column meanings:
 | `JawaBenchHealth.cs` | 2 | armed | off | rejected | PumpPrefix[c,th] PumpFinalizer[vf,or] RootPrefix[c] | `HealthSelfTest/Program.cs` |
 | `JawaBenchHealthProfiler.cs` | 1 | armed | off | rejected | Pre[c,th] Fin[vf,or] | `HealthSelfTest/Program.cs` |
 | `JawaBenchAwareness.cs` | 3 | startup, except GeneratePawn, which is lazy (off until the first `jawa/awareness action=arm`) | on | accepted: thread-static scopes, locked stores, counted | IncPre[c] IncPost[c,ro] IncFin[vf,c] GenPre[c] GenPost[c,ro] GenFin[vf,or] SpawnPost[c,ro] MapgenPre[c] WildPre[c] SpawnerPre[c] HatchPre[c] BirthPre[c] CtxFin[vf,c] WildTickPre[c] | `AwarenessSelfTest/Program.cs` |
-| `JawaBenchVitals.cs` | 1 | armed | off | main only (prefix gates on a loaded game) | TickPre[c] TickPost[c,ro,or] | static audit (armed per test, never always-on) |
+| `JawaBenchVitals.cs` | 1 | armed | off | main only (prefix gates on a loaded game) | TickPre[c] TickPost[c,ro,or] TickFin[vf,c] | static audit (armed per test, never always-on) |
 | `JawaBenchGameCompTiming.cs` | 2 | armed | off | rejected | StagePre[c,th] StageFin[vf,c,or] Pre[c,th] Fin[vf,c,or] | `TpsMathSelfTest/UnitsCompTiming.cs` |
 | `JawaBenchMapCompTiming.cs` | 1 | armed | off | rejected | Pre[c,th] Fin[vf,c,or] | static audit (armed per run, never always-on) |
 | `JawaBenchAllocProbe.cs` | 2 | armed | off | main only (Live() checks IsInMainThread, foreign calls counted) | Pre[c] Fin[vf,c,or] TickPre[c] TickFin[vf,c,or] FrameFin[vf,c] CollectPre[c] | static audit (armed per run by `jawa/alloc_probe start`, TEST profile only, never always-on) |
