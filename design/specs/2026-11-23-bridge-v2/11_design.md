@@ -162,7 +162,7 @@ capability that nobody used because nobody could find it.
 | `jawa/act_batch`, and request ids | FlowWorks `sc_fill_front` starts two fills that the design wants on one tick; a lost reply can do an act twice `[READ, 08]` | the same ticket |
 | the session that outlives its driver, paused | 22 of the 51 were harness or transport faults `[READ]`; visit 9 `sc_pit_trap_raid` "an unfinished capture" | `RIMMANDRAKE_HARDEN_RUN_LIFE_CYCLE_KILL_CANCEL_THROWN_TICK` |
 | the read-back in the same hop as the write | visit 9: two staging faults found only after their scenes failed `[READ]` | `RIMMANDRAKE_BUILD_STAGE_OPS_READ_BACK_NEVER_ECHO` (its C# duty) |
-| the overlay for live writes, with the stamp | his ask; the test pilot sitting of 2026-11-23 switched the melee rule off through `jawa/mod_settings_field`, with no stamp on the result `[READ: selftest_flowworks_moat_rim_stabs.py]` | `RIMMANDRAKE_BUILD_DEVIATION_RECORD_SETTINGS_FIELD_JOINS_FIRST`, then `RIMMANDRAKE_BUILD_DEF_FIELD_OVERLAY_WITH_WRITE_RECIPES` |
+| the overlay for live writes, with the stamp | his ask; the test pilot sitting of 2026-11-23 switched the melee rule off through `jawa/mod_settings_field`, with no stamp on the result `[READ: selftest_flowworks_moat_rim_stabs.py]` | `RIMMANDRAKE_BUILD_DEVIATION_RECORD_SETTINGS_FIELD_JOINS_FIRST` (built); def fields: dropped until a def value that is not a setting needs a live write (`06_build_order.md`, Later tickets) |
 | event taps (spawn, death, damage, job), the load barrier, the order through the game's giver | pass two's evidence stands (`05`, decisions 4 and 2) | the tap tickets; the C# duties of the two split tickets |
 
 ## What serves Inhabited later
