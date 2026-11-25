@@ -64,6 +64,7 @@ from concurrent.futures import ThreadPoolExecutor
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import coverage_judge as CJ  # noqa: E402
+import concept_tree as CT  # noqa: E402
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 ROLES = ("src/RimMandrake/rimflow/roles/designer_scene_contract.md", "src/RimMandrake/rimflow/roles/designer_lock.md")
@@ -408,11 +409,15 @@ def _stage_pyrelands(root, cid):
     return d
 
 
-def judge(root, d, route=None, reader="auto", _resume=None):
+def judge(root, d, route=None, reader="auto", _resume=None, _before=None):
     """One real coverage judge on a planted concept, its blocking gaps read by the real second reader. Refusal records
     the contract finds broken are re-asked once in the same session, as coverage_judge.run() re-asks them (_resume:
-    (session, errors, cost so far)). -> (got, detail)."""
+    (session, errors, cost so far)). The judge may fix scenes.json (coverage_judge.JUDGE_FIX_TEXT): as run() does, the
+    entry texts and input hashes are read BEFORE it runs (_before), a gap it fixed still blocks, and its covered word
+    over its own fix is not_covered (judge_fix). -> (got, detail)."""
     tree = json.load(open(os.path.join(d, "tree.json"), encoding="utf-8"))
+    if _before is None:
+        _before = (CJ.entry_texts(d), CJ.fresh_key(d, CT.load(d)))
     prior = CJ.prior_verdict(d)
     dp = CJ.delta_plan(d, prior) if prior else None   # as production: a re-judge with hashes and gap numbers is a delta
     text = (CJ.delta_prompt(d, root, dp, 2) if dp is not None
@@ -441,6 +446,11 @@ def judge(root, d, route=None, reader="auto", _resume=None):
         return None, detail
     gaps = [g for g in list(so.get("gaps") or []) if isinstance(g, dict)] + [
         dict(g, from_rows=True) for g in CJ.failed_part_gaps(so.get("checklist") or [], so.get("gaps") or [])]
+    fixrec = {"judge": "calibration", "verdict": so["verdict"], "gaps": gaps}
+    CJ.judge_fix(fixrec, None, CJ.moved_inputs(d, _before[1]))
+    if fixrec.get("judge_fixed") or fixrec.get("judge_fix_refused"):
+        detail.update(judge_fixed=fixrec.get("judge_fixed"), judge_fix_refused=fixrec.get("judge_fix_refused"))
+        so = dict(so, verdict=fixrec["verdict"])
     adv = []
     owed = dp["ids"] if dp is not None else CJ.required_ids(d, tree)
     missing = CJ.missing_rows(owed, so.get("checklist") or [])
@@ -458,7 +468,7 @@ def judge(root, d, route=None, reader="auto", _resume=None):
             rec["gaps"] = list(rec["gaps"]) + [{k: v for k, v in g.items() if k != "dropped"} for g in back]
         else:
             CJ.rejudge_slots(rec, prior, repairs)
-        CJ.classify_new(rec, prior.get("entry_text"), CJ.entry_texts(d), prior.get("judge"))
+        CJ.classify_new(rec, prior.get("entry_text"), _before[0], prior.get("judge"))   # as run(): the texts it judged
         gaps, adv = rec["gaps"], list(rec.get("advisory_gaps") or [])
         detail["answered"] = [a.get("gid") for a in rec.get("answered") or []]
     # the gate run() applies: only a gap the bar rule lets block refuses (bar_rule.blocks), after the second reader
@@ -500,7 +510,7 @@ def judge(root, d, route=None, reader="auto", _resume=None):
         if errs:
             session = (res or {}).get("session_id") if isinstance(res, dict) else None
             if session and not _resume:
-                return judge(root, d, route, reader, _resume=(session, errs, detail.get("cost_usd")))
+                return judge(root, d, route, reader, _resume=(session, errs, detail.get("cost_usd")), _before=_before)
             detail["malformed"] = errs[:6]
             return "refuse, malformed records", detail
     return outcome(route, gaps), detail
