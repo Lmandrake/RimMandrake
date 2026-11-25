@@ -1,0 +1,2 @@
+A live driver's bridge writes from python.exe are refused once its driver-lock heartbeat is about 20 minutes old (the refusal comes back as a per-call error, so a stager reads it as 'def unreadable'); run every live command under game_lock.py run <game>. A waitalive job runs outside the holder's process tree, so release the lock and let the job's own game_lock.py run take it, then claim it again.
+item: RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_THIRTEEN
