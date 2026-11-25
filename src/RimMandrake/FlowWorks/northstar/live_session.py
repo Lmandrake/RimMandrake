@@ -2689,14 +2689,14 @@ def main(argv=None):
         s.say("DRY RUN: no bridge touched.")
         return 0
     if not a.mock:
-        # live 2026-10-19: companion_profile.json lapsed at 06:00Z mid-run and every test-only tool (static_call,
-        # job_probe, log sentinel) came back REFUSED in the CAMPAIGN profile; refuse to start inside the run's budget
+        # live 2026-10-19: the companion read CAMPAIGN mid-run and every test-only tool (static_call, job_probe,
+        # log sentinel) came back REFUSED; refuse to start unless the loaded companion's profile is test
         md = os.path.join(REPO, "src", "RimMandrake", "Utils", "modcheck")
         if md not in sys.path:
             sys.path.insert(0, md)
         import runner as MR
         try:
-            MR.ensure_test_profile(min_minutes=90)
+            MR.ensure_test_profile()
         except RuntimeError as ex:
             s.say("REFUSING TO START: %s" % ex)
             return 2

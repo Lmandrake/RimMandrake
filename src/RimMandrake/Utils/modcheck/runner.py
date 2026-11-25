@@ -332,14 +332,14 @@ def ensure_live_colony(rec, _client=None):
     return "restored"
 
 
-PROFILE_MIN_MINUTES = 45      # a suite is ~5 min; a grant this close to lapsing would lapse mid-batch
 
 
-def ensure_test_profile(_client=None, _now=None, min_minutes=PROFILE_MIN_MINUTES):
-    """Refuse to run when the companion is not in the TEST profile, or its grant lapses within `min_minutes`.
-    Night 2026-10-16: companion_profile.json expired at 09:00Z between two rounds; every safe_advance came back
-    `refused` (CAMPAIGN profile) and three suites recorded every time-advancing chain UNMEASURED as a 'surprise'.
-    That is the harness's own state, not a disturbance, so the run stops before any chain with the companion's reason.
+def ensure_test_profile(_client=None):
+    """Refuse to run when the loaded companion's effective profile is not TEST.
+    Night 2026-10-16: every safe_advance came back `refused` (CAMPAIGN profile) and three suites recorded every
+    time-advancing chain UNMEASURED as a 'surprise'. That is the harness's own state, not a disturbance, so the run
+    stops before any chain with the companion's reason. expiresUtc is not read: the companion ignores it since
+    f3c90ff50c (RIMMANDRAKE_REMOVE_GRANT_EXPIRY_CHECKS_ONCE_FOUR_COMPANIONS_REDEPLOYED).
     Returns the effective profile; raises RuntimeError otherwise."""
     try:
         if _client is None:
@@ -362,25 +362,7 @@ def ensure_test_profile(_client=None, _now=None, min_minutes=PROFILE_MIN_MINUTES
     eff = r.get("effectiveProfile")
     if eff != "test":
         raise RuntimeError("companion profile is %r, not 'test' (%s); test-only tools such as jawa/safe_advance are "
-                           "refused. Renew %s with a later expiresUtc." % (eff, r.get("profileWhy"), r.get("profileFile")))
-    exp = None
-    try:
-        with open(r.get("profileFile") or "", encoding="utf-8") as fh:
-            exp = json.load(fh).get("expiresUtc")
-    except Exception:  # noqa: BLE001 - unreadable from this interpreter: the handshake's 'test' still stands
-        pass
-    if exp:
-        import datetime as _dt
-        try:
-            t = _dt.datetime.fromisoformat(str(exp).strip().replace("Z", "+00:00"))
-            if t.tzinfo is None:
-                t = t.replace(tzinfo=_dt.timezone.utc)
-        except ValueError:
-            raise RuntimeError("companion profile expiresUtc %r is unparseable; fix %s" % (exp, r.get("profileFile")))
-        now = _now or _dt.datetime.now(_dt.timezone.utc)
-        if t is not None and (t - now).total_seconds() < min_minutes * 60:
-            raise RuntimeError("companion test profile expires at %s, under %d min from now; renew %s first"
-                               % (exp, min_minutes, r.get("profileFile")))
+                           "refused. Set %s to a test profile." % (eff, r.get("profileWhy"), r.get("profileFile")))
     return eff
 
 

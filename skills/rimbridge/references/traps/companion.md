@@ -103,9 +103,6 @@ gate" implicitly assumed a debug-action hook would be bridge-drivable), budget f
 UNREACHABLE from the bridge and route the actual proof through a `[Tool]` instead — don't
 discover this mid-verification by re-guessing path strings.
 
-## JawaBench companion test grant expires
-The JawaBench `companion_profile.json` test grant carries `expiresUtc`. Once lapsed, `P03_LOG_ALIVE` is refused as CAMPAIGN, the L1 log tap goes blind, and whole suites silently read UNMEASURED. Renew with the same keys and a new expiry before a round.
-
 ## Census the companion before you trust any `jawa/` call
 - **Check the bridge tool list before declaring a mechanism unreachable.** `jawa/gravship_launch` and `jawa/gravship_land` are closed, proven tools reaching the real vanilla path (`WorldComponent_GravshipController.InitiateTakeoff` -> `GravshipUtility.GenerateGravship`; `Gravship.TickInterval` fires ArriveExistingMap/ArriveNewMap by itself). Six passes concluded "no debug shortcut exists" because they checked only the debug-action tree, never the `jawa/` surface. Proven ~10 minute route: `prove_gravship.py` minimal-ship recipe, then `gravship_launch`, `step_game_ticks`, `gravship_land`.
 - **ModsConfig can hold a phantom id** such as `rimmandrake.biomes` next to the real `mandrake.rm.biomes` (suspected: `modlist_swap --enable` keeps a lowercased folder name when no About resolves). Harmless to the load, but "every one is already active" then proves nothing about that mod: read `jawa/running_mods` for the real packageId (the deployed About.xml).

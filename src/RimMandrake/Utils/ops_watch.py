@@ -2786,27 +2786,27 @@ def c_evidence(now, rules, ctx):
 
 
 def c_companion(now, rules, ctx):
-    """companion.grant_hours_left: hours until the companion's test-profile grant lapses (COMPANION_GRANT_WIRE_LAPSES_AT_
-    BEDTIME), read by rimflow/companion_grant.py. A lapsed grant (expired, absent, torn, non-test) is MEASURED at or
-    under 0, since the companion reads it as campaign; only an unseeable folder is UNMEASURED. The alarm target in
-    ops_watch_rules.json is the early warning.
+    """companion.grant_test (1/0): the companion's grant file names a test profile (COMPANION_GRANT_WIRE_LAPSES_AT_
+    BEDTIME), read by rimflow/companion_grant.py. An absent, torn or non-test file is MEASURED 0, since the companion
+    reads it as campaign and `rimflow next` withholds bridge/game-up work; only an unseeable folder is UNMEASURED.
+    expiresUtc is not read (RIMMANDRAKE_REMOVE_GRANT_EXPIRY_CHECKS_ONCE_FOUR_COMPANIONS_REDEPLOYED).
     companion.grant_visible (1/0) is MEASURED always: a folder that cannot be seen, or a reader that fails, is 0 and
-    alarms on its own target, so a blind grant fails closed instead of holding the hours alarm silent forever (blind
+    alarms on its own target, so a blind grant fails closed instead of holding the test alarm silent forever (blind
     review 2026-10-29 #1)."""
     try:
         rf = str(HERE.parent / "rimflow")
         if rf not in sys.path:
             sys.path.insert(0, rf)
         import companion_grant as cg
-        g = cg.read(now=now)
+        g = cg.read()
     except Exception as e:  # noqa: BLE001 - a reader that cannot run is a grant nobody can see
         why = "grant reader raised %s: %s" % (type(e).__name__, e)
-        return {"companion.grant_hours_left": U(why, "h"), "companion.grant_visible": M(0, why=why)}
+        return {"companion.grant_test": U(why), "companion.grant_visible": M(0, why=why)}
     if g["state"] == "UNMEASURED":
-        return {"companion.grant_hours_left": U(g["why"], "h"),
+        return {"companion.grant_test": U(g["why"]),
                 "companion.grant_visible": M(0, why=g["why"], file=g["file"])}
-    return {"companion.grant_hours_left": M(g["hours_left"], "h", state=g["state"], expires=g["expires"],
-                                            profile=g["profile"], file=g["file"], why=g["why"]),
+    return {"companion.grant_test": M(1 if g["state"] == "OK" else 0, state=g["state"], profile=g["profile"],
+                                      file=g["file"], why=g["why"]),
             "companion.grant_visible": M(1, file=g["file"])}
 
 
@@ -4835,9 +4835,9 @@ TOKEN_FAMILIES = ("accounts", "codex", "tokentalk")
 # not named here is withheld by default, so a new collector, or a quota reading phrased without a token word
 # (production.B, "% of the week used"), can never reach them. Adding a key is a decision: name it here, with care.
 # Deliberately absent: every accounts.*, codex.*, tokentalk.* key, production.B (the week used), and anything new.
-# companion.grant_hours_left is machine health: a lapsing grant stalls every live seat, so the blind roles see it.
+# companion.grant_test is machine health: a grant that reads campaign stalls every live seat, so the blind roles see it.
 BLIND_KEYS = frozenset("""
-companion.grant_hours_left companion.grant_visible
+companion.grant_test companion.grant_visible
 disk.c_free_gb disk.c_used_gb disk.d_free_gb disk.d_used_gb disk.root_free_gb disk.root_used_gb
 disk.scratch_dirty_end disk.scratch_dirty_start disk.scratch_ok_age_h disk.scratch_outside_blind disk.scratch_outside_cap
 disk.scratch_outside_distressed disk.scratch_refused_gb disk.scratch_total_gb

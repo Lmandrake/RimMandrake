@@ -1,11 +1,15 @@
 {
- "_why": "COMPANION_GRANT_WIRE_LAPSES_AT_BEDTIME: the companion's test-profile grant lapsed at 03:00Z 2026-10-29 and bounced 4 FOUNDRY tickets unseen. companion_grant.py reads it; ops_watch warns early (its alarm line lives in ops_watch_rules.json targets); `rimflow next` holds grant work. Set to 2036 by the owner, 2026-11-07 ('Set into far future.'). If it ever lapses, the Conductor renews it (owner by card 2026-11-07); other seats raise it to the Conductor.",
+ "_why": "COMPANION_GRANT_WIRE_LAPSES_AT_BEDTIME: a companion test-profile grant that read campaign bounced 4 FOUNDRY tickets unseen on 2026-10-29. companion_grant.py reads it; ops_watch alarms when it names no test profile (its alarm line lives in ops_watch_rules.json targets); `rimflow next` holds grant work. expiresUtc is not read: the companion ignores it since f3c90ff50c (RIMMANDRAKE_REMOVE_GRANT_EXPIRY_CHECKS_ONCE_FOUR_COMPANIONS_REDEPLOYED).",
  "profile_file": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/JawaBench/companion_profile.json",
  "_profile_file_why": "<SaveData>\\JawaBench\\companion_profile.json per design/RimMandrake/companion_handshake.md (the runtime profile layer); path read on disk 2026-10-29. RM_COMPANION_PROFILE overrides it (tests).",
- "test_profiles": ["test", "gm"],
- "_test_profiles_why": "companion_handshake.md: runtime profile `test` (`gm` is an alias) or `campaign`; absent, invalid, expired or unknown = campaign, so anything else is LAPSED",
- "hold_within_min": 120,
- "_hold_within_min_why": "a live ticket runs up to ~2 h (a suite batch, a proof round); one started with less left lapses mid-run, the 2026-10-16 and 2026-10-19 failures (modcheck/runner.py ensure_test_profile holds 45 min for a single ~5 min suite)",
- "hold_needs": ["bridge", "game-up"],
+ "test_profiles": [
+  "test",
+  "gm"
+ ],
+ "_test_profiles_why": "companion_handshake.md: runtime profile `test` (`gm` is an alias) or `campaign`; absent, invalid or unknown = campaign, so anything else is LAPSED",
+ "hold_needs": [
+  "bridge",
+  "game-up"
+ ],
  "_hold_needs_why": "the needs that drive the live companion and so hit its test-only tools; deploy (files to the Mods folder) and harvest (logs on disk) do not touch the grant"
 }

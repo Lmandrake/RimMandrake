@@ -69,7 +69,7 @@ handoffs, conversations, closed items and dated evidence were not read row by ro
    guard it, and the two other names are no save on disk. Closed by
    `RIMMANDRAKE_LIST_CANONICAL_SAVES_IN_COMPANION_PROFILE_CURRENT_START_MISSING`: the list is compiled in from
    `CANONICAL_SAVE.md`.
-2. `companion_grant.py`, `ensure_test_profile` and the ops alarm still treat an old `expiresUtc` as a stop. A companion
-   built before this change needs it. Remove them when all four games run a companion with the new rule.
+2. `companion_grant.py`, `ensure_test_profile` and the ops alarm no longer read `expiresUtc`: removed 2026-11-24, once
+   all four games loaded a companion with the new rule (`RIMMANDRAKE_REMOVE_GRANT_EXPIRY_CHECKS_ONCE_FOUR_COMPANIONS_REDEPLOYED`).
 3. `testq/archmagi_phases.py` never stops or deploys to ArchBig, so a wedged ArchBig under that lane is reported, not
    stopped. The lane is off by default. Removal needs a deploy path that does not exist: not built.

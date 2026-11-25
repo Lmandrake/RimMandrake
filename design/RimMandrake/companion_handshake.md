@@ -8,8 +8,8 @@ Items: `COMPANION_HANDSHAKE_BUILD_SAY_WHAT_LOADED`, `COMPANION_PROFILE_ENFORCE_S
 `JawaBenchCompanionSafety.cs` (Harmony gate, binder check, the tool).
 
 **State: the gate runs in the live companions.** Two rules of 2026-11-23 are built and unit-tested. The profile guards a
-canonical world save only (§1), and the list of canonical saves is compiled in. Each is live in a game from that game's next
-companion deploy. Until then that game's companion still refuses on an old `expiresUtc`, and guards only its own `campaignSaves`.
+canonical world save only (§1), and the list of canonical saves is compiled in. All four games (ArchBig, ArchSmall, Steve1,
+Steve2) load a companion at or after f3c90ff50c (handshake read 2026-11-24).
 
 ## 1. The profile: CAMPAIGN guards a canonical world save, and nothing else
 
@@ -75,8 +75,8 @@ slowdown it explains. The real verdict needs the C0-C5 restart protocol
 {"profile": "test", "expiresUtc": "2036-01-01T00:00:00Z", "campaignSaves": ""}
 ```
 
-`expiresUtc` ends nothing in the companion. A companion built before 2026-11-23 and the host checks
-(`companion_grant.py`, `ensure_test_profile`) still read it. Unknown keys are tolerated.
+`expiresUtc` ends nothing. The companion and the host checks (`companion_grant.py`, `ensure_test_profile`) do not
+read it. Unknown keys are tolerated.
 
 ## 2. `jawa/companion_handshake` (schema `companion_handshake/1`)
 

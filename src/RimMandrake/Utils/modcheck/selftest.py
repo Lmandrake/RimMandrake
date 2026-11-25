@@ -706,27 +706,23 @@ def t_driver_that_kills_the_colony_is_named_and_the_map_restored():
 
 
 def t_ensure_test_profile():
-    """Night 2026-10-16: an expired companion test profile made every safe_advance a 'surprise'; the run must stop."""
-    import datetime as dt
+    """Night 2026-10-16: a companion in the CAMPAIGN profile made every safe_advance a 'surprise'; the run must stop.
+    An old expiresUtc in the grant file does not stop it: the companion ignores expiry since f3c90ff50c."""
     import json
     class C:
         def __init__(self, r): self.r = r
         def call(self, tool, p): return self.r
     pf = os.path.join(tempfile.mkdtemp(), "companion_profile.json")
     with open(pf, "w", encoding="utf-8") as fh:
-        json.dump({"profile": "test", "expiresUtc": "2026-10-16T14:00:00Z"}, fh)
-    now = dt.datetime(2026, 10, 16, 10, 0, tzinfo=dt.timezone.utc)
-    check("runner: live test profile passes", runner.ensure_test_profile(
-        _client=C({"effectiveProfile": "test", "profileFile": pf}), _now=now) == "test")
-    for label, r, n in (("campaign (expired) profile refuses the run",
-                         {"effectiveProfile": "campaign", "profileWhy": "test profile expired at X", "profileFile": pf}, now),
-                        ("a grant about to lapse refuses the run",
-                         {"effectiveProfile": "test", "profileFile": pf}, now.replace(hour=13, minute=40))):
-        try:
-            runner.ensure_test_profile(_client=C(r), _now=n)
-            check("runner: " + label, False)
-        except RuntimeError as e:
-            check("runner: " + label, "profile" in str(e) and pf in str(e), str(e))
+        json.dump({"profile": "test", "expiresUtc": "2020-01-01T00:00:00Z"}, fh)
+    check("runner: live test profile passes, an old expiresUtc included", runner.ensure_test_profile(
+        _client=C({"effectiveProfile": "test", "profileFile": pf})) == "test")
+    try:
+        runner.ensure_test_profile(_client=C({"effectiveProfile": "campaign", "profileWhy": "canonical save loaded",
+                                              "profileFile": pf}))
+        check("runner: campaign profile refuses the run", False)
+    except RuntimeError as e:
+        check("runner: campaign profile refuses the run", "profile" in str(e) and pf in str(e), str(e))
 
 
 # --------------------------------------------------------- deploy skip rule

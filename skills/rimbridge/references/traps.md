@@ -110,7 +110,6 @@ Admission test and entry format: `skills/rimworld-modding/references/traps.md`.
 - ⚠️ A docstring containing `jawa/world_*` made build.py report a phantom lost tool
 - ⚠️ A bare `catch {}` in your own tool is the same bug you are hunting
 - 🔴 A mod's own `[DebugAction]` methods do not surface through the bridge's debug-action tree
-- JawaBench companion test grant expires
 - Census the companion before you trust any `jawa/` call
 
 ## [Reading a result: defs, cells, instruments that are blind, denominators](traps/reading-results.md)
