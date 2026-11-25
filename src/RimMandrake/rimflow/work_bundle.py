@@ -973,7 +973,10 @@ READ_MEMBERS = r"""
 import json, os, sys
 sys.path.insert(0, os.path.join("src", "RimMandrake", "rimflow"))
 import model
-from work_bundle import is_refusal
+try:
+    from work_bundle import is_refusal
+except ImportError:     # a run clone older than is_refusal: the prefix test it had
+    is_refusal = lambda t: str(t or "").strip().upper().startswith(("REFUSED BY BUNDLE", "BUNDLE REFUSED"))
 evs = model.read()
 items = model.replay(evs).items
 out = {}

@@ -281,7 +281,11 @@ def v_ORIGIN(d):
     if not wild:
         return (1 if f else 2), "; ".join(f + ["the first map holds no wild animal to read"])
     ch = d.get("chains") or {}
-    bad = [w for w in wild if not re.search(r"\bmapgen\b.*>.*\bwild-spawner\b", str(ch.get(w) or ""))]
+    first = [w for w in wild if re.search(r"\bmapgen\b.*>.*\bwild-spawner\b", str(ch.get(w) or ""))]
+    late = [w for w in wild if str(ch.get(w) or "").startswith("wild-spawner")]   # arrived after mapgen: honest
+    bad = [w for w in wild if w not in first and w not in late]
+    if not first:
+        f.append("no wild animal reads mapgen > wild-spawner (%d late arrivals)" % len(late))
     if bad:
         f.append("%d of %d wild animals do not read mapgen > wild-spawner: %s" % (
             len(bad), len(wild), ", ".join("%s=%s" % (w, ch.get(w)) for w in bad[:5])))
@@ -372,7 +376,7 @@ def v_PEN2(d):
         f.append("outside their pen: %s" % d["outside"][:5])
     if d.get("facingWrong"):
         f.append("facing not restored: %s" % d["facingWrong"][:5])
-    if (d.get("returnedHome") or 0) < len(ids):
+    if (d.get("returnedHome") or 0) + len(d.get("homeOccupied") or []) < len(ids):   # a held cell: the tool's rule
         f.append("returned home %s of %d" % (d.get("returnedHome"), len(ids)))
     return (1 if f else 0), "; ".join(f) or "%d released, %d moved, all inside their pens, all home with their facing (%s)" % (
         len(ids), len(moved), d.get("save"))
@@ -1043,11 +1047,13 @@ def g_PEN2(L):
             moved.append(i)
         if home is None or rect_of(n.get("x"), n.get("z")) != home:
             outside.append("%s at %s,%s" % (i, n.get("x"), n.get("z")))
-        if str((pinned.get(i) or {}).get("rotation")) != str(b.get("rotation")):
+        held = any(_bare(h.get("pawn")) == i and " holds " in str(h.get("reason")) for h in pin.get("homeRefused") or [])
+        if not held and str((pinned.get(i) or {}).get("rotation")) != str(b.get("rotation")):
             facing.append("%s: %s -> %s" % (i, b.get("rotation"), (pinned.get(i) or {}).get("rotation")))
     return {"save": review, "selected": rel.get("selected"), "released": rel.get("released"),
             "notReleased": rel.get("notReleased"), "ids": ids, "moved": moved, "outside": outside,
-            "facingWrong": facing, "returnedHome": pin.get("returnedHome")}
+            "facingWrong": facing, "returnedHome": pin.get("returnedHome"),
+            "homeOccupied": [_bare(h.get("pawn")) for h in pin.get("homeRefused") or [] if " holds " in str(h.get("reason"))]}
 
 
 def g_ORIGIN_cold(Session):

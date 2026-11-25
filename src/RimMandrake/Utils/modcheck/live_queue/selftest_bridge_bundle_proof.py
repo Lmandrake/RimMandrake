@@ -155,5 +155,11 @@ check("PEN2 one walked out of its pen", "PEN2", dict(pn, outside=["b"]), 1)
 check("PEN2 a facing not restored", "PEN2", dict(pn, facingWrong=["c: South -> North"]), 1)
 check("PEN2 one stayed pinned", "PEN2", dict(pn, released=2, notReleased=1), 1)
 check("PEN2 the layout selects nobody", "PEN2", dict(pn, selected=0, ids=[]), 2)
+check("ORIGIN a wild animal that arrived after mapgen is not a FAIL", "ORIGIN",
+      dict(og, wild=["Thing_A1", "Thing_A3"], chains={"Thing_A1": "mapgen > wild-spawner", "Thing_A3": "wild-spawner"}), 0)
+check("ORIGIN only late arrivals: no mapgen wildlife read", "ORIGIN",
+      dict(og, wild=["Thing_A3"], chains={"Thing_A3": "wild-spawner"}), 1)
+check("PEN2 a home cell held by another pen animal is the tool's rule, not a FAIL", "PEN2",
+      dict(pn, returnedHome=2, homeOccupied=["c"]), 0)
 print("RESULT: %s" % ("FAIL (%d failing)" % len(FAILS) if FAILS else "PASS (0 failing)"))
 sys.exit(1 if FAILS else 0)
