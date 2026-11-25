@@ -271,7 +271,7 @@
  {
   "key": "maturation.clone_behind_min",
   "op": ">",
-  "value": 5,
+  "value": 15,
   "alarm": true,
   "worse": {
    "add": 30
@@ -281,7 +281,7 @@
   "marks": [
    "MEASURED"
   ],
-  "why": "RIMMANDRAKE_UNJAM_DISPATCH_CLONE_TWO_WRITERS_BLOCK_EACH_REBASE: every timer runs from /home/mandrake/rm/dispatch, so behind origin/main they run old code while every other reading is sane (ahead 7 / behind 49 for 40 min, 2026-11-15 11:41-12:20 PST). Measured each minute by rm-maturation-dispatch's own fetch, counted from the first tick behind; it levels in one tick when its publishes land. `python3 src/RimMandrake/rimflow/maturation_dispatch.py status` shows the clone line; `git -C /home/mandrake/rm/dispatch status` shows what blocks it"
+  "why": "RIMMANDRAKE_UNJAM_DISPATCH_CLONE_TWO_WRITERS_BLOCK_EACH_REBASE: every timer runs from /home/mandrake/rm/dispatch, so behind origin/main they run old code while every other reading is sane (ahead 7 / behind 49 for 40 min, 2026-11-15 11:41-12:20 PST). Measured each minute by rm-maturation-dispatch's own fetch, counted from the first tick behind; it levels in one tick when its publishes land. `python3 src/RimMandrake/rimflow/maturation_dispatch.py status` shows the clone line; `git -C /home/mandrake/rm/dispatch status` shows what blocks it. The line is 15 min: the danger is a clone stuck behind (40 min 2026-11-15, 86 min 2026-11-19); at 5 min, single readings of 5.4-7.0 min that level on the next tick opened OPS_DISPATCH_CLONE_BEHIND_UNSTICK_YUYW 22 times (selftest_dispatch_clone_behind_line)"
  },
  {
   "key": "maturation.paused",

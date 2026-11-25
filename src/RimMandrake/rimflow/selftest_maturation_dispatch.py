@@ -665,8 +665,8 @@ def main():
            "ops_watch reads the dispatch clone's minutes behind from the reading (%s)" % got)
         t = [x for x in rules["targets"] if x.get("name") == MD.CLONE_ALARM_NAME]
         ok(len(t) == 1 and t[0]["key"] == "maturation.clone_behind_min" and t[0]["alarm"] is True
-           and t[0]["op"] == ">" and t[0]["value"] == 5,
-           "one fixed-id alarm, %s, when the dispatch clone is behind over 5 min" % MD.CLONE_ALARM_NAME)
+           and t[0]["op"] == ">" and t[0]["value"] == 15,
+           "one fixed-id alarm, %s, when the dispatch clone is behind over 15 min" % MD.CLONE_ALARM_NAME)
         rd = MD.tick(root, gss, True, fx=dict(fx, facts=lambda: facts_for(gss)), now=CLOCK + 60, page=False)
         got = OW.c_maturation(CLOCK + 90, {}, {}).get("maturation.clone_behind_min") or {}
         ok(got.get("v") == 0 and got.get("m") == "MEASURED", "synced again: the reading is 0, so the alarm re-arms (%s)"
