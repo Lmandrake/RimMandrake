@@ -656,13 +656,22 @@ def t_driver_that_kills_the_colony_is_named_and_the_map_restored():
     one whose fresh map still has none raises (the canary then reads red naming it); an unreadable roster is never 0."""
     import validity as _V
     class C:
-        def __init__(self, live_before, live_after, ok=True, dead_before=1, dead_after=0):
+        def __init__(self, live_before, live_after, ok=True, dead_before=1, dead_after=0, campaign_reads=0):
             self.live, self.after, self.ok, self.calls = live_before, live_after, ok, []
-            self.dead, self.dead_after = dead_before, dead_after
+            self.dead, self.dead_after, self.campaign_reads = dead_before, dead_after, campaign_reads
         def call(self, tool, p):
             self.calls.append(tool)
             if tool == "rimworld/start_debug_game_ready":
                 self.live, self.dead = self.after, self.dead_after
+            if tool == "rimworld/get_ui_state":
+                return {"programState": "Playing"}
+            if tool == "rimworld/get_game_info":
+                return {"mapCount": 1}
+            if tool == "rimbridge/get_bridge_status":
+                return {"state": {"automationReady": True, "longEventPending": False}}
+            if tool == "jawa/companion_handshake":
+                self.campaign_reads -= 1
+                return {"effectiveProfile": "campaign" if self.campaign_reads >= 0 else "test"}
             if tool == "jawa/list_pawns":
                 return {"success": self.ok, "pawns": [{"isPlayer": True, "intelligence": "Humanlike", "dead": False}] * self.live
                         + [{"isPlayer": True, "intelligence": "Humanlike", "dead": True}] * self.dead}
@@ -688,6 +697,19 @@ def t_driver_that_kills_the_colony_is_named_and_the_map_restored():
           runner.ensure_live_colony(rec, _client=c) == "restored" and rec["colony"].get("left_dead") == 1
           and rec["colony"].get("restored_live") == 3 and rec["colony"].get("restored_dead") == 0
           and "rimworld/start_debug_game_ready" in c.calls and _V.COLONY_BREAKERS == _breakers, (rec, c.calls))
+    # J20261125T082455Z-f27001: the fresh map was started, and ensure_test_profile read 'campaign' at once ("the TPS
+    # lifecycle has not entered this game (still loading ...)"): the restore waits for a ready map and a TEST profile
+    c = C(24, 3, dead_before=1, campaign_reads=2)
+    check("runner: a restored map is waited on until the companion reads the TEST profile",
+          runner.ensure_live_colony({"driver": "suspension_bridge_proof"}, _client=c, _sleep=lambda s: None) == "restored"
+          and c.calls.count("jawa/companion_handshake") == 3
+          and c.calls.index("rimworld/start_debug_game_ready") < c.calls.index("rimworld/get_game_info"), c.calls)
+    try:
+        runner.ensure_live_colony({"driver": "w"}, _client=C(24, 3, campaign_reads=10 ** 6), _sleep=lambda s: None,
+                                  _patience_s=0)
+        check("runner: a restored map whose profile never reads TEST raises", False)
+    except RuntimeError as e:
+        check("runner: a restored map whose profile never reads TEST raises", "profile" in str(e), e)
     try:
         runner.ensure_live_colony({"driver": "z"}, _client=C(2, 2, dead_before=1, dead_after=1))
         check("runner: a fresh map that still holds a colonist corpse raises", False)

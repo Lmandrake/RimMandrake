@@ -303,7 +303,32 @@ def _live_colonists(client):
     return _colonists(client)[0]
 
 
-def ensure_live_colony(rec, _client=None):
+RESTORE_PATIENCE_S = 420.0   # hang guard on a restored map's readiness and profile, far above a real start (the 420 s of
+                             # every loader here, _load_site_again); never a speed bar
+
+
+def _await_restored_map(client, name, patience_s, sleep):
+    """A fresh map answers start_debug_game_ready while it is still being made, and the companion reads 'campaign' until
+    its TPS lifecycle enters the game (J20261125T082455Z-f27001: ensure_test_profile refused the run right after the
+    restore). Wait for a settled map, then for the TEST profile; raise naming the driver when either never comes."""
+    from await_lifecycle import await_lifecycle  # noqa: E402
+    def call(tool, **p):
+        return _rb_call(client, tool, p)
+    lc = await_lifecycle(call, "map_ready", patience_s, settle=True, sleep=sleep)
+    if not lc.ok:
+        raise RuntimeError("driver %s: the fresh debug map never got ready: %s" % (name, lc.reason))
+    give_up, eff = time.monotonic() + patience_s, None
+    while True:
+        eff = _rb_call(client, "jawa/companion_handshake", {}).get("effectiveProfile")
+        if eff == "test":
+            return
+        if time.monotonic() >= give_up:
+            raise RuntimeError("driver %s: the fresh debug map's companion profile is %r, not 'test', after %d s"
+                               % (name, eff, patience_s))
+        sleep(2)
+
+
+def ensure_live_colony(rec, _client=None, _patience_s=RESTORE_PATIENCE_S, _sleep=time.sleep):
     """After each live driver (STEVE_LANE_FIX_DEAD_COLONY_CANARY_RED): the map must still hold a live colonist.
     droid_dig_live vanished the whole colony and its own pawns, and the vanilla canary, which runs after the drivers,
     read "no live colonist" and voided every live chain of the job -- and, the game being kept, of the next jobs too
@@ -341,6 +366,7 @@ def ensure_live_colony(rec, _client=None):
     _rb_call(_client, "rimworld/go_to_main_menu", {})
     _rb_call(_client, "rimworld/start_debug_game_ready",
              {"readiness": "mapData", "pauseIfNeeded": True, "timeoutMs": 280000})
+    _await_restored_map(_client, name, _patience_s, _sleep)
     n2, dead2 = _colonists(_client)
     rec["colony"]["restored_live"], rec["colony"]["restored_dead"] = n2, dead2
     if not n2:
