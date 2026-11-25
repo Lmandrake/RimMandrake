@@ -1,0 +1,4 @@
+- 2026-11-25 (fresh read of c87107226a, steward watcher long-tick excuse): the excuse does not check that steward.json came from the previous tick (age minus tick_running_s under STALE_S + 65 s), so a steward step that crashes each tick is seen about one tick later.
+- 2026-11-25 (same read): a hung tick is now silent for up to TICK_HUNG_S (4 h, the service's own kill time) instead of 5 min.
+- 2026-11-25 (same read): the excused path skips flush_bench, retirement and claim-cover accounting, so an open incident's unowned_s overcounts (errs toward escalating sooner).
+- 2026-11-25 (same read): tick_run_start's systemctl timeout is the class=call 1800 s, long for a one-line query.
