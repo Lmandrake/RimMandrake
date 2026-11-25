@@ -180,11 +180,44 @@ def suite_vacuous(suite, chains=None):
     return out
 
 
+def _no_suite_statically(full):
+    """-> why `full` cannot hold a module-level modcheck `suite`, read without running it, or None when it may.
+    RIMMANDRAKE_REPAIR_JUDGE_CERTIFICATE_LOADS_CSHARP_AS_PYTHON_AND_CLAIMS_GAME: exec of a C# proof file was a
+    SyntaxError, and exec of a scene-library script (scene.open at module level) claimed a live game, so the reading
+    hung on which games were held. Only a Python file that binds `suite` at module level is run."""
+    import ast
+    if not full.endswith(".py"):
+        return "not a Python file: it runs in the game, and no empty-game adapter reads it"
+    try:
+        with open(full, encoding="utf-8") as fh:
+            tree = ast.parse(fh.read(), full)
+    except (SyntaxError, ValueError, UnicodeDecodeError) as e:
+        return "not readable as Python: %s: %s" % (type(e).__name__, e)
+
+    def binds(node):
+        if isinstance(node, (ast.Assign, ast.AnnAssign, ast.AugAssign)):
+            targets = node.targets if isinstance(node, ast.Assign) else [node.target]
+            return any(isinstance(n, ast.Name) and n.id == "suite" for t in targets for n in ast.walk(t))
+        if isinstance(node, (ast.Import, ast.ImportFrom)):
+            return any((a.asname or a.name.split(".")[0]) == "suite" for a in node.names)
+        if isinstance(node, (ast.If, ast.Try, ast.With)):
+            kids = list(node.body) + list(getattr(node, "orelse", [])) + list(getattr(node, "finalbody", []))
+            kids += [b for h in getattr(node, "handlers", []) for b in h.body]
+            return any(binds(k) for k in kids)
+        return False
+    if not any(binds(n) for n in tree.body):
+        return "no module-level `suite` binding: a script of another harness (the scene library's runs at import)"
+    return None
+
+
 def suite_file_vacuous(root, path, chains=None):
     """-> (result, None) for the module-level modcheck `suite` in `path` (repo-relative), or (None, why)."""
     full = os.path.join(root, path)
     if not os.path.isfile(full):
         return None, "%s is not there" % path
+    no_suite = _no_suite_statically(full)
+    if no_suite:    # never executed: a C# proof is not Python, and a scene-library script opens a game at import
+        return None, "%s has no module-level modcheck suite (%s)" % (path, no_suite)
     utils = os.path.join(root, "src/RimMandrake/Utils")
     added = [p for p in (os.path.dirname(full), utils, os.path.join(utils, "modcheck")) if p not in sys.path]
     sys.path[:0] = added

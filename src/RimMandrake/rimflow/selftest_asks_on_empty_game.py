@@ -107,6 +107,46 @@ def t_refused_act_is_named():
        "the refused acts are named with their count, never silent (%s)" % v["did_not_run"])
 
 
+def t_csharp_and_scene_scripts_are_not_executed():
+    """RIMMANDRAKE_REPAIR_JUDGE_CERTIFICATE_LOADS_CSHARP_AS_PYTHON_AND_CLAIMS_GAME: a C# proof file is never parsed as
+    Python, and a scene-library script (imperative: it opens a game at import) is never run to look for a suite, so the
+    reading is the same whether a game is held or free. Both are named as having no empty-game adapter."""
+    work = tempfile.mkdtemp(prefix="aoeg_lock_")
+    ROOTS.append(work)
+    lock = os.path.join(work, "lock")
+    script = ('with open(%r) as fh:\n    held = fh.read() == "held"\n'
+              'if held:\n    raise RuntimeError("Refused: GAME_HELD: ArchSmall: HELD by another process")\n'
+              'open(%r + ".claim", "w").write("claimed")\nprint("PASS V_row")\n') % (lock, lock)
+    tt = {"tests": {"sc_cs": {"kind": "live_minimal", "file": "src/RimMandrake/M/Source/Proof.cs", "entry": "calib",
+                              "command": "x"},
+                    "sc_scene": {"kind": "live_minimal", "file": "src/RimMandrake/M/proof/scene_x.py",
+                                 "entry": "sc_x", "command": "x"}},
+          "bars": [{"id": "bar_cs", "proves_at": "6", "decides": ["sc_cs"]},
+                   {"id": "bar_scene", "proves_at": "6", "decides": ["sc_scene"]}]}
+    root = root_with(None, tt)
+    os.makedirs(os.path.join(root, "src/RimMandrake/M/Source"))
+    os.makedirs(os.path.join(root, "src/RimMandrake/M/proof"))
+    with open(os.path.join(root, "src/RimMandrake/M/Source/Proof.cs"), "w", encoding="utf-8") as f:
+        f.write("// \u00a7 the proof scenes\nnamespace M { public static class Proof { } }\n")
+    with open(os.path.join(root, "src/RimMandrake/M/proof/scene_x.py"), "w") as f:
+        f.write(script)
+    seen = {}
+    for state in ("held", "free"):
+        with open(lock, "w") as f:
+            f.write(state)
+        seen[state] = JC.certify(root, "M", to="in_game")["did_not_run"]
+    held = seen["held"]
+    ok(not any("SyntaxError" in d or ("Proof.cs" in d and "did not load" in d) for d in held),
+       "a C# proof file is not parsed as Python (%s)" % held)
+    ok(not any("GAME_HELD" in d or "did not load" in d for d in held),
+       "a scene script is not run to look for a suite, so a held game never reaches the certificate (%s)" % held)
+    ok(seen["held"] == seen["free"], "the reading is the same with the game held as with it free (%s | %s)"
+       % (seen["held"], seen["free"]))
+    ok(not os.path.exists(lock + ".claim"), "loading a scene script never claims a game")
+    ok(any("no empty-game adapter" in d and "Proof.cs" in d and "scene_x.py" in d for d in held),
+       "both are named as having no empty-game adapter, never skipped silently (%s)" % held)
+
+
 def main():
     v = JC.certify(root_with(SCENES, table()), "M", to="in_game")
     aoeg = [r for r in v["rows"] if r["clause"] == "asks_on_empty_game"]
@@ -144,6 +184,7 @@ def main():
     ok(any("proof.py" in d for d in vg["did_not_run"]), "an in-game test with no entry is did_not_run, not skipped")
     t_suite_run_writes_and_launches_nothing()
     t_refused_act_is_named()
+    t_csharp_and_scene_scripts_are_not_executed()
     td = table()
     td["bars"].append({"id": "bar_undecided", "proves_at": "2", "decides": []})
     vd = JC.certify(root_with(SCENES, td), "M", to="in_game")

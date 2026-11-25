@@ -255,11 +255,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 3.78,
-    "last": "PASS proofgate (R1 P1 G1)",
-    "at": "2026-11-25T12:36:58Z",
+    "seconds": 2.68,
+    "last": "PASS proofgate (R1 P1 D1 G1)",
+    "at": "2026-11-25T14:21:20Z",
     "result": "PASS",
-    "build": "55f035866e04fd9908a7",
+    "build": "8575fd1efc73977e2e2a",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py",
     "margins": []
    }
