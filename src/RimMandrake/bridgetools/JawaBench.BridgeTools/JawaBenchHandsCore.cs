@@ -294,7 +294,7 @@ namespace JawaBench.BridgeTools
                 return Cur.Taken ? Refusal("TAKEN_OVER", "session " + Cur.Id + " lost its first driver: it makes no more evidence", "read it, then close or abort it") : null;
             }
 
-            Dictionary<string, object> Admit(string driver)
+            internal Dictionary<string, object> Admit(string driver)
             {
                 if (!IsOpen) return Refusal("NO_SESSION", Cur == null ? "no session is open" : "session " + Cur.Id + " is " + Cur.Stage, "open a session first");
                 if (string.IsNullOrEmpty(driver) || driver != Cur.Driver)

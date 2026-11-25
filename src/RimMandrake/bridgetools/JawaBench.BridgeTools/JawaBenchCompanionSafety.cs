@@ -433,6 +433,7 @@ namespace JawaBench.BridgeTools
                 available = true, epoch = ep, programState = Current.ProgramState.ToString(), save = string.IsNullOrEmpty(save) ? null : save,
                 ticksGame = g != null && Find.TickManager != null ? Find.TickManager.TicksGame : -1,
                 mapIds = ids, currentMapId = g?.CurrentMap?.uniqueID ?? -1,
+                deviation = JawaBenchDeviations.Record.Receipt(),
                 saveNote = "save is the name the TPS lifecycle saw loaded (null for a new game, or when the sampler is off)"
             };
         }

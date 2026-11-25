@@ -473,6 +473,7 @@ driver is refused, and is a breach of class APPARATUS. `read` is open to anyone 
 
 The flight probes and the flapping-bird judge have their own page: `../2026-11-24-flight-frames/boundary.md`.
 
+The settings writer and its deviation record have their own [boundary and offline checks](../2026-11-23-deviation-record/boundary.md).
 
 ## LIVE READINGS
 

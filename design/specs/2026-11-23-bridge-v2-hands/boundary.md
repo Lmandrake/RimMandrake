@@ -24,13 +24,16 @@ same text on each call.
 
 | action | does |
 |---|---|
-| `open` (`driver`, `leaseS`) | opens the one session of this game process. Pauses the game. Reply: `session`, `state` |
+| `open` (`driver`, `leaseS`, optional `overlay`) | opens the one session of this game process. Pauses the game. Reply: `session`, `state` |
 | `state` | reads: `session`, `stage` (`none`, `open`, `closing`, `closed`, `aborted`), `driver`, `leaseEnded`, `leaseLeftS`, `paused`, `tick`, `lastRun`, `openAct`, `bound`, `rows`, `dropped`, `recordDir`, `writerSession`. No driver is needed |
 | `bind` (`driver`, `bindings`) | `bindings` is JSON: `{"pawn_1": "Human12"}` binds one thing; `{"raiders": ["Human3", "Human4"]}` freezes a group; `null` in place of an id declares an alias that is not bound. The thing must exist, or the call is refused (`UNKNOWN_THING`) |
 | `take` (`driver`, `from`) | gives the open session of a dead driver to `driver`: the live run is cancelled, the game paused, a `session_taken` row written. `from` is the dead driver's text (the caller looked: that process is gone); it is not needed after the lease has ended. A taken session is read and ended, never played (`TAKEN_OVER`) |
 | `close`, `abort` (`driver`) | writes the closing record after the writer has drained. A live run is cancelled first. After the lease has ended, `abort` takes any driver |
 
 Refusals: `SESSION_OPEN`, `NO_SESSION`, `NOT_THE_DRIVER`, `DRIVER_ALIVE`, `TAKEN_OVER`, `NO_GAME`, `BAD_ARGS`, `UNKNOWN_THING`.
+
+The session also reports the [deviation record](../2026-11-23-deviation-record/boundary.md). Close, abort and lease
+expiry put back the session's settings entries. On lease expiry the session remains open for inspection.
 
 ### `jawa/run_until`
 

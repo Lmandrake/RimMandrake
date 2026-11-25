@@ -52,7 +52,10 @@ class Receipt(object):
         self.did, self.hands, self.could_not_look, self.stamps = [], {}, [], []
 
     def as_dict(self):
-        return {f: getattr(self, f) for f in self.FIELDS}
+        row = {f: getattr(self, f) for f in self.FIELDS}
+        if hasattr(self, "deviation"):
+            row["deviation"] = self.deviation
+        return row
 
     def __repr__(self):
         return "did: %s\ncould not look: %s" % ("; ".join(self.did) or "[]", "; ".join(self.could_not_look) or "[]")

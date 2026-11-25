@@ -10,6 +10,7 @@
 | `needs["mods"]` | the mods that must be loaded (a tier name or mod names) | `["FlowWorks"]` |
 | `needs["map"]` | a fixture save by name, or `"fresh:<kind>"` | `"RM_TestSite_river"` |
 | `needs["calm"]` | the calm profile | `"standard"` |
+| `needs["overlay"]` | named settings entries, or `"none"` to require a clean game | `{"name": "fall", "entries": [{"typeName": "...", "field": "fallDamageMultiplier", "value": "2"}]}` |
 | `contract` | the scene's contract | `moat` |
 
 Use it as `with scene.open(...) as s:`. The session closes at the end of the block, also after an error.
@@ -23,11 +24,14 @@ Receipt: `game` and `build` as read from the game in the identify phase; `did`: 
 was loaded, each calm control that was changed, each recorder that was armed; `hands`: the tools of each phase;
 `could_not_look`: for example "the mod list fingerprint of the save differs from the loaded list: 2 mods".
 
+The companion reports the live deviation record and stamps a tuned process on each receipt. An explicit overlay
+requires a companion that can return this record.
+
 ## State changes
 
 It takes the driver lock of that game. It may load a map. It applies the calm profile. It arms the recorders that the
 contract needs, and the standard cast taps (spawn, death, damage), for the whole session. At close: the trace gets its
-closing record, calm is undone, the lock is released, and the game stays paused. It never restarts a game, never
+closing record, live settings are put back, calm is undone, the lock is released, and the game stays paused. It never restarts a game, never
 changes the mod list, and never puts the game in focus or in fullscreen.
 
 ## Refuses
@@ -40,6 +44,7 @@ changes the mod list, and never puts the game in focus or in fullscreen.
 | `SESSION_OPEN` | a session is already open on that game | `scene.attach(game)` |
 | `MOD_NOT_LOADED` | a needed mod is not in the loaded list | the message gives the mod list command and `./game` line |
 | `WRONG_BUILD` | a loaded DLL of ours does not match the source at this commit | the message gives the deploy command |
+| `OVERLAY_REFUSED` | the settings cannot be applied or the explicit clean requirement failed | read the deviation record and the refusal |
 | `CANONICAL_SAVE` | the map asked for is a canonical world save | name a fixture or a fresh map |
 | `FIXTURE_MISSING` | the fixture save is not on that game | the message gives the copy command |
 

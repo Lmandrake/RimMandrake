@@ -28,7 +28,25 @@ namespace JawaBench.BridgeTools
         private static readonly H.Hands Core = new H.Hands(Host);
 
         internal static bool Busy { get { return Core.Busy; } }
-        internal static void Frame() { Core.Frame(); }
+        internal static void Frame()
+        {
+            bool expired = Core.Cur != null && Core.Cur.LeaseEnded;
+            Core.Frame();
+            if (!expired && Core.Cur != null && Core.Cur.LeaseEnded)
+                PutBackSettings();
+        }
+
+        private static string PutBackSettings() => JawaBenchDeviations.Record.Holder == Core.Cur.Driver
+            ? JawaBenchDeviations.Revert(Core.Cur.Driver) : null;
+
+        internal static bool SettingsSessionOpen => Core.IsOpen;
+
+        internal static string SettingsDriver(string driver)
+        {
+            if (!SettingsSessionOpen) return null;
+            var no = Core.Admit(driver);
+            return no == null ? null : no["refused"] + ": " + no["message"];
+        }
         internal static PathValue ReadValue(string of, string path) { return P.Read(Host, of, path); }
         /// <summary>The open session's id, or null (the force record names it: JawaBenchForce.cs).</summary>
         internal static string SessionId { get { return Core.Cur != null && Core.Cur.Stage == "open" ? Core.Cur.Id : null; } }
@@ -41,7 +59,7 @@ namespace JawaBench.BridgeTools
 
         // ============================================================================================ the hands (main thread)
         /// <summary>open | state | bind | take | close | abort.</summary>
-        public static Dictionary<string, object> Session(string action, string driver = null, double leaseS = H.DefaultLeaseS, string bindings = null, string from = null)
+        public static Dictionary<string, object> Session(string action, string driver = null, double leaseS = H.DefaultLeaseS, string bindings = null, string from = null, string overlay = null)
         {
             switch ((action ?? "").Trim().ToLowerInvariant())
             {
@@ -55,12 +73,30 @@ namespace JawaBench.BridgeTools
                     string hook = JawaBenchVitals.EnsureTickHook();
                     if (hook != null) return H.Refusal("CANNOT_RUN", "the end-of-tick hook is not on: " + hook, "read jawa/vitals");
                     if (JawaBenchSceneTick.Cur != null && JawaBenchSceneTick.Cur.Stage != "closed") return H.Refusal("RUN_ACTIVE", "run " + JawaBenchSceneTick.Cur.Id + " is live", "jawa/scene_slice action=cancel");
+                    if (JawaBenchDeviations.Record.Spoiled) return H.Refusal("SPOILED", "the deviation record could not put values back", "restart the game");
                     if (!Core.Busy) Host.Enter();
-                    return More(Core.Open(driver, leaseS));
+                    var opened = Core.Open(driver, leaseS);
+                    if (Equals(opened["success"], true))
+                    {
+                        string error = JawaBenchDeviations.ApplyPlan(driver, overlay);
+                        if (error != null)
+                        {
+                            Core.Finish(driver, true);
+                            return H.Refusal("OVERLAY_REFUSED", error, "read the deviation record and correct the overlay");
+                        }
+                    }
+                    return More(opened);
                 case "bind": return More(Core.Bind(driver, bindings));
                 case "take": return More(Core.Take(driver, from));
-                case "close": return More(Core.Finish(driver, false));
-                case "abort": return More(Core.Finish(driver, true));
+                case "close":
+                case "abort":
+                    var ended = Core.Finish(driver, action.Trim().Equals("abort", StringComparison.OrdinalIgnoreCase));
+                    if (Equals(ended["success"], true))
+                    {
+                        string error = PutBackSettings();
+                        if (error != null) ended["deviationError"] = error;
+                    }
+                    return More(ended);
             }
             return H.Refusal("BAD_ARGS", "action is open, state, bind, take, close or abort, not '" + action + "'", "correct it");
         }
@@ -74,6 +110,7 @@ namespace JawaBench.BridgeTools
             if (a == "status") return More(Core.RunStatus(driver, request));
             if (a == "cancel") return More(Core.Cancel(driver, request));
             if (a != "start") return H.Refusal("BAD_ARGS", "action is start, status or cancel, not '" + action + "'", "correct it");
+            if (JawaBenchDeviations.Record.Spoiled) return H.Refusal("SPOILED", "the deviation record could not put values back", "restart the game");
             try
             {
                 // STEP (RIMMANDRAKE_MEASURE_PLAY_AGAINST_PAUSED_STEP_NEVER_COMPARED): the game stays paused and the scene frame steps
@@ -198,6 +235,7 @@ namespace JawaBench.BridgeTools
             if (!d.ContainsKey("paused")) d["paused"] = Host.Paused();
             d["recordDir"] = W.Dir; d["writerSession"] = W.Session; d["lastFault"] = JawaBenchSceneTick.LastFault;
             d["maxFrameTicks"] = JawaBenchSceneTick.MaxFrameTicks;
+            d["deviation"] = JawaBenchDeviations.Record.Receipt();
             return d;
         }
 
@@ -724,12 +762,13 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "The caller's own name; the same text on each call.")] string driver = null,
             [ToolParameter(Description = "open: seconds without a call from the driver after which the game is paused.")] double leaseS = 600,
             [ToolParameter(Description = "bind: a JSON object alias -> thing id, or a list of ids (a frozen group), or null (not bound).")] string bindings = null,
-            [ToolParameter(Description = "take: the text of the dead driver, as action=state says it. Not needed after its lease has ended.")] string from = null)
+            [ToolParameter(Description = "take: the text of the dead driver, as action=state says it. Not needed after its lease has ended.")] string from = null,
+            [ToolParameter(Description = "open: none to require a clean game, or a JSON object with name and ordered settings entries.")] string overlay = null)
         {
             return await ctx.MainThread.InvokeAsync<object>(() =>
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                return JawaBenchHands.Session(action, driver, leaseS, bindings, from);
+                return JawaBenchHands.Session(action, driver, leaseS, bindings, from, overlay);
             }, cancellationToken);
         }
 

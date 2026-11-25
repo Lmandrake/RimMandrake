@@ -21,6 +21,9 @@ has a test of its name in `src/RimMandrake/Utils/selftest_scene_library.py`, aga
 - **The process mark and the session record.** One text in the environment block of the game's own process
   (`System.Environment`, through `jawa/static_call`), with the game's process id in it. It dies with the process. A
   process that the game starts inherits the text, and the id in it then names another process, so it is not read as a mark.
+- **The deviation record.** When the companion exposes it, receipts carry its live entries and marks. An explicit
+  `needs["overlay"]` declaration arms settings through the session hand. See the
+  [deviation boundary and offline checks](../2026-11-23-deviation-record/boundary.md).
 - **The run:** `jawa/run_until` in a `jawa/session` when the game has both tools, else `jawa/scene_slice`, and the
   receipt says which. `jawa/scene_slice` has no request id and needs a pawn: the library knows its run as the first run
   that began after the call, and names the pawn that it used.

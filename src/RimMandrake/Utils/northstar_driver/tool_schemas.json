@@ -1868,6 +1868,7 @@
   "jawa/mod_settings_field": {
    "parameters": [
     "action",
+    "driver",
     "field",
     "key",
     "typeName",
@@ -2860,7 +2861,8 @@
     "bindings",
     "driver",
     "from",
-    "leaseS"
+    "leaseS",
+    "overlay"
    ],
    "required": [],
    "source": "csharp"

@@ -110,11 +110,23 @@ def open(game, contract=None, needs=None):  # noqa: A001 - the name of the contr
     W = _world()
     name, key, letter = _game_key(game)
     needs = dict(needs or {})
-    odd = sorted(set(needs) - {"mods", "map", "calm"})
+    odd = sorted(set(needs) - {"mods", "map", "calm", "overlay"})
     if odd:
-        raise Refused("BAD_ARGS", "needs takes mods, map and calm, not %s" % ", ".join(odd))
+        raise Refused("BAD_ARGS", "needs takes mods, map, calm and overlay, not %s" % ", ".join(odd))
     if needs.get("calm") not in (None,) + CALM_PROFILES:
         raise Refused("BAD_ARGS", "no calm profile %r; the profiles: %s" % (needs["calm"], ", ".join(CALM_PROFILES)))
+    overlay = needs.get("overlay")
+    if overlay is not None and overlay != "none":
+        if (not isinstance(overlay, dict) or set(overlay) != {"name", "entries"}
+                or not isinstance(overlay["name"], str) or not overlay["name"].strip()
+                or not isinstance(overlay["entries"], list) or not overlay["entries"]):
+            raise Refused("BAD_ARGS", "needs['overlay'] takes 'none' or a name and a nonempty list of settings entries")
+        for entry in overlay["entries"]:
+            if (not isinstance(entry, dict) or not {"typeName", "field", "value"} <= set(entry)
+                    or set(entry) - {"typeName", "field", "value", "key"}
+                    or any(not isinstance(value, str) for value in entry.values())):
+                raise Refused("BAD_ARGS", "an overlay entry takes string typeName, field, value and optional key")
+        overlay = json.dumps(overlay, sort_keys=True)
     where = needs.get("map")
     if where is not None and not isinstance(where, str):
         raise Refused("BAD_ARGS", "needs['map'] is a fixture save by name or 'fresh:<kind>', not %r" % (where,))
@@ -135,7 +147,7 @@ def open(game, contract=None, needs=None):  # noqa: A001 - the name of the contr
     at = 0
     try:
         for at, step in enumerate((s._lock, lambda p: s._identify(p, wanted, where, rec), lambda p: s._load(p, where, rec),
-                                   lambda p: s._settle(p, where), lambda p: s._calm(p, needs.get("calm"), rec), lambda p: s._arm(p, contract, rec))):
+                                   lambda p: s._settle(p, where), lambda p: s._calm(p, needs.get("calm"), rec), lambda p: s._arm(p, contract, rec, overlay))):
             step(report[at])
             report[at]["state"] = "done"
     except BaseException as e:
@@ -174,6 +186,8 @@ class Session(object):
         self._aliases, self._shots = {}, set()  # alias -> thing id or [ids] (s.stage); the names of this run's pictures
         self._holds = {}                        # station id -> its colony hold (colony_holds.py), put back at the close
         self._stations = []                     # the ids of the stage stations that s.stage took (scene_stations.py)
+        self._deviation = None
+        self._deviation_supported = False
 
     # ---- the bridge
     def _call(self, tool, **args):
@@ -237,13 +251,33 @@ class Session(object):
         rec.game["tick_before"] = self._status().get("tick")
         return rec
 
+    def _read_deviation(self, reply):
+        self._deviation = reply.get("deviation")
+        self._deviation_supported |= isinstance(self._deviation, dict)
+
     def _finish(self, rec, did=()):
         rec.did += list(did)
         rec.build = self.build
+        if self._deviation_supported:
+            if self._insession:
+                try:
+                    reply = self._look(hands.SESSION, action="state")
+                    self._read_deviation(reply if reply.get("success") is True and reply.get("driver") == self.id else {})
+                except Fault:
+                    self._deviation = None
+            rec.deviation = self._deviation
+            if self._deviation is None:
+                rec.could_not_look.append("the game's deviation record could not be read")
         rec.hands = dict(self._hands)
         rec.game["tick_after"] = self._tick
         rec.stamps = sorted(set(self.stamps) | ({EXPLORED} if LAUNCH["mode"] == "explore" else set()) |
                             ({"PLANTED %s" % LAUNCH["plant"]} if LAUNCH.get("plant") else set()))
+        if self._deviation_supported:
+            row = self._deviation
+            marks = {"DEVIATION_UNREADABLE"} if row is None else {
+                stamp for field, stamp in (("tainted", "TUNED"), ("spoiled", "SPOILED"), ("processDirty", "PROCESS_DIRTY"),
+                                           ("saveDirty", "SAVE_DIRTY"), ("stationDirty", "STATION_DIRTY")) if row.get(field) is True}
+            rec.stamps = sorted(set(rec.stamps) | marks)
         self.W.save(os.path.join(self.run_dir, "receipts.jsonl"), json.dumps(rec.as_dict(), sort_keys=True, default=str) + "\n", append=True)
         return rec
 
@@ -448,7 +482,7 @@ class Session(object):
             raise Fault("NOT_CALM", done=list(p["did"]), detail="%s: %s" % (r.get("verdict"), [
                 (c.get("name"), c.get("detail"), c.get("things")) for c in r.get("controls") or [] if c.get("status") in ("NOT_CALM", "COULD_NOT_READ")]))
 
-    def _arm(self, p, contract, rec):
+    def _arm(self, p, contract, rec, overlay=None):
         d = self._get_state()
         self.stamps = d["stamps"]
         d["session"] = {"id": self.id, "driver": self.W.me(), "script": LAUNCH["script"] or LAUNCH["mode"], "calm": self._calmed}
@@ -456,12 +490,18 @@ class Session(object):
         self._set_state(d)
         p["did"].append("wrote the session record in the game process")
         if hands.RUN_UNTIL in self._tools and hands.SESSION in self._tools:
-            r = self._look(hands.SESSION, action="open", driver=self.id)
+            args = {} if overlay is None else {"overlay": overlay}
+            r = self._look(hands.SESSION, action="open", driver=self.id, **args)
             if r.get("success") is not True:
                 raise Fault(r.get("refused") or "SESSION_NOT_OPENED", done=list(p["did"]), detail=str(r.get("message") or r))
             self._insession = True
+            self._read_deviation(r)
+            if overlay is not None and not self._deviation_supported:
+                raise Fault("COULD_NOT_LOOK", detail="the companion did not return the requested deviation record")
             p["did"].append("opened the game's session %s" % r.get("session"))
             self.hand = hands.RunUntil(self._call, self.id)
+        elif overlay is not None:
+            raise Fault("NO_HAND", detail="the companion has no session overlay hand")
         elif hands.SLICE in self._tools:
             self.hand = hands.Slice(self._call)
         self._mark_record("scene session %s opened" % self.id, rec)
@@ -505,6 +545,9 @@ class Session(object):
                     raise Fault("SESSION_NOT_CLOSED", detail="could not confirm the close of session %s: %s" % (session, str(r)))
             if r.get("stage") not in ("closed", "aborted"):
                 raise Fault("SESSION_NOT_CLOSED", detail="session %s still reports stage %s" % (session, r.get("stage")))
+            self._read_deviation(r)
+            if self._deviation and self._deviation.get("spoiled"):
+                raise Fault("SPOILED", detail="the game could not put all deviations back")
             return "%s the game's session" % ("closed" if how == "close" else "aborted")
 
         def forget():

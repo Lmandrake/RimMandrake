@@ -36,6 +36,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using RimBridgeServer.Sdk;
 using Verse;
+using D = JawaBench.BridgeTools.JawaBenchDeviationCore;
 
 namespace JawaBench.BridgeTools
 {
@@ -142,6 +143,73 @@ namespace JawaBench.BridgeTools
 
         private static string SafeFieldToString(object v) => v?.ToString();
 
+        private static string SettingsWriteRefusal(Type settingsType, string typeName, FieldInfo fi, string key, out object details)
+        {
+            details = null;
+            string immutable = key == null ? JawaBenchDeviationCore.FieldRefusal(fi) : null;
+            if (immutable != null) return immutable;
+            Assembly asm = settingsType.Assembly;
+            bool modAsm = LoadedModManager.RunningMods.Any(m => m.assemblies?.loadedAssemblies?.Contains(asm) == true)
+                && asm.GetTypes().Any(t => typeof(ModSettings).IsAssignableFrom(t));
+            if (!JawaBenchSafetyCore.SettingsTypeWritable(typeof(ModSettings).IsAssignableFrom(settingsType),
+                    settingsType.IsAbstract && settingsType.IsSealed, modAsm, settingsType.FullName))
+                return "REFUSED: '" + typeName + "' is neither a Verse.ModSettings class nor a static *Settings class of a running mod's assembly; set writes only a mod's settings (list and get still read any type).";
+            string why, declared;
+            if (JawaBenchCompanionSafety.Effective(out why, out declared) == JawaBenchSafetyCore.Test)
+            {
+                // The profile is cached. Check the loaded save again before journaling a write.
+                why = JawaBenchDeviations.CanonicalRefusal();
+                if (why == null) return null;
+            }
+            details = new { profile = JawaBenchSafetyCore.Campaign, profileWhy = why };
+            return "REFUSED: set is off under the CAMPAIGN profile (" + why + "); change a campaign game's settings in the Mod Settings dialog. list and get stay available.";
+        }
+
+        private static object SettingsSetFailure(Type settingsType, string typeName, FieldInfo fi, string key, string value)
+        {
+            string no = SettingsWriteRefusal(settingsType, typeName, fi, key, out object details);
+            if (no != null) return Fail(no, details);
+            return value == null ? Fail("Give 'value' for action='set'.") : null;
+        }
+
+        private static Type SettingsDictionaryValueType(Type ft)
+        {
+            Type dictIface = ft.GetInterfaces().FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IDictionary<,>));
+            Type[] kv = dictIface?.GetGenericArguments();
+            return kv != null && kv[0] == typeof(string) ? kv[1] : null;
+        }
+
+        internal static D.Entry PrepareOverlaySetting(Dictionary<string, object> fields)
+        {
+            string Text(string key) => fields.TryGetValue(key, out object v) ? v as string : null;
+            string typeName = Text("typeName"), field = Text("field"), value = Text("value"), key = Text("key");
+            if (string.IsNullOrEmpty(typeName) || string.IsNullOrEmpty(field) || value == null ||
+                fields.Keys.Any(k => k != "typeName" && k != "field" && k != "value" && k != "key") ||
+                (fields.ContainsKey("key") && key == null))
+                throw new ArgumentException("each entry takes string typeName, field, value and optional key");
+            Type type = ResolveSettingsType(typeName);
+            if (type == null) throw new ArgumentException("No loaded type '" + typeName + "' found");
+            object instance = null;
+            bool looked = false;
+            string error = ResolveSettingsField(type, field, ref instance, ref looked, out FieldInfo fi, out object target, out _);
+            if (error == null) error = SettingsWriteRefusal(type, typeName, fi, key, out _);
+            if (error != null) throw new ArgumentException(error);
+            Type valueType = key == null ? fi.FieldType : SettingsDictionaryValueType(fi.FieldType);
+            if (valueType == null) throw new ArgumentException(field + " is not a dictionary with string keys");
+            JawaBenchDeviations.ObserveDefault(type, fi, target);
+            return JawaBenchDeviations.Setting(type, fi, target, key, CoerceSettingsValue(value, valueType));
+        }
+
+        private static object SettingsDeviations(string action, string driver)
+        {
+            if (action == "revert")
+            {
+                string error = JawaBenchDeviations.Revert(JawaBenchHands.SettingsSessionOpen ? driver : null);
+                if (error != null) return Fail(error);
+            }
+            return new { success = true, deviation = JawaBenchDeviations.Record.Receipt() };
+        }
+
         [Tool(
             "jawa/mod_settings_field",
             Description = "Read or write ANY public field (static OR instance) on a mod's " +
@@ -161,25 +229,31 @@ namespace JawaBench.BridgeTools
                 "(present=false when absent), set writes it, coerced to the dictionary's value type.",
             ResultDescription = "list: success, fields[] (name, type, kind, value). " +
                 "get: success, field, fieldKind, value (with key: key, present). " +
-                "set: success, field, fieldKind, valueBefore, valueAfter (with key: key, presentBefore).")]
+                "set: success, field, fieldKind, valueBefore, valueAfter (with key: key, presentBefore). " +
+                "deviations/revert: success, deviation (the process record).")]
         public static async Task<object> ModSettingsField(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
             [ToolParameter(Description = "Type.FullName of the settings class, e.g. 'RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings' - exact, not guessed; use action='list' on a near-miss to see what's actually loaded, or jawa/get_defs-adjacent source reading to confirm the real namespace.")]
             string typeName,
-            [ToolParameter(Description = "'list' (default), 'get', or 'set'.")]
+            [ToolParameter(Description = "'list' (default), 'get', 'set', 'deviations' or 'revert'.")]
             string action = "list",
             [ToolParameter(Description = "get/set: the field name.")]
             string field = null,
             [ToolParameter(Description = "set: the value as a string, coerced to the field's real type ('true'/'false' for bool, parsed for numeric, verbatim for string, name for enum).")]
             string value = null,
             [ToolParameter(Description = "get/set on a Dictionary<string,T> field: the entry's key (RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN: the Baroque Biomes roster toggle is RM_BiomesSettings.enabled[key]).", DefaultValue = null)]
-            string key = null)
+            string key = null,
+            [ToolParameter(Description = "Session driver for set or revert while a session is open.")] string driver = null)
         {
             return await ctx.MainThread.InvokeAsync<object>(() =>
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
+                string a = (action ?? "list").Trim().ToLowerInvariant();
+                string driverRefusal = a == "set" || a == "revert" ? JawaBenchHands.SettingsDriver(driver) : null;
+                if (driverRefusal != null) return Fail(driverRefusal);
+                if (a == "deviations" || a == "revert") return SettingsDeviations(a, driver);
                 Type settingsType = ResolveLiveType(typeName, out string resolvedVia, out int copies);
                 // Said out loud in every reply: copies > 1 means a stale twin exists, and resolvedVia must then be GenTypes.
                 var typeIdentity = new { resolvedVia, copiesInAppDomain = copies, assembly = settingsType?.Assembly.GetName().Name };
@@ -188,18 +262,18 @@ namespace JawaBench.BridgeTools
                     return Fail("No loaded type '" + typeName + "' found - mod not active, or the name is wrong (pass Type.FullName exactly).");
                 }
 
-                string a = (action ?? "list").Trim().ToLowerInvariant();
-
                 if (a == "list")
                 {
                     object instance = FindModSettingsInstance(settingsType);
                     var rows = new List<object>();
                     foreach (FieldInfo staticField in settingsType.GetFields(BindingFlags.Public | BindingFlags.Static))
                     {
+                        JawaBenchDeviations.ObserveDefault(settingsType, staticField, null);
                         rows.Add(new { name = staticField.Name, type = staticField.FieldType.Name, kind = "static", value = SafeFieldToString(staticField.GetValue(null)) });
                     }
                     foreach (FieldInfo instanceField in settingsType.GetFields(BindingFlags.Public | BindingFlags.Instance))
                     {
+                        if (instance != null) JawaBenchDeviations.ObserveDefault(settingsType, instanceField, instance);
                         rows.Add(new
                         {
                             name = instanceField.Name,
@@ -241,16 +315,12 @@ namespace JawaBench.BridgeTools
                     }
                 }
 
+                JawaBenchDeviations.ObserveDefault(settingsType, fi, target);
                 if (key != null && (a == "get" || a == "set"))
                 {
-                    Type ft = fi.FieldType;
-                    Type dictIface = ft.IsGenericType && ft.GetGenericTypeDefinition() == typeof(Dictionary<,>) ? ft
-                        : ft.GetInterfaces().FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IDictionary<,>));
-                    Type[] kv = dictIface?.GetGenericArguments();
-                    if (kv == null || kv[0] != typeof(string))
-                    {
-                        return Fail("'" + field + "' is a " + ft.Name + ", not a dictionary with string keys: key= applies only to one.");
-                    }
+                    Type valueType = SettingsDictionaryValueType(fi.FieldType);
+                    if (valueType == null)
+                        return Fail("'" + field + "' is a " + fi.FieldType.Name + ", not a dictionary with string keys: key= applies only to one.");
                     var dict = fi.GetValue(target) as System.Collections.IDictionary;
                     if (dict == null)
                     {
@@ -262,34 +332,19 @@ namespace JawaBench.BridgeTools
                     {
                         return (object)new { success = true, action = "get", field = fi.Name, fieldKind = kind, key, present = presentBefore, value = entryBefore, typeIdentity, ticksGame = TicksGameSafe() };
                     }
-                    Assembly asmK = settingsType.Assembly;
-                    bool modAsmK = LoadedModManager.RunningMods.Any(m => m.assemblies?.loadedAssemblies?.Contains(asmK) == true)
-                        && asmK.GetTypes().Any(t => typeof(ModSettings).IsAssignableFrom(t));
-                    if (!JawaBenchSafetyCore.SettingsTypeWritable(typeof(ModSettings).IsAssignableFrom(settingsType),
-                            settingsType.IsAbstract && settingsType.IsSealed, modAsmK, settingsType.FullName))
-                    {
-                        return Fail("REFUSED: '" + typeName + "' is neither a Verse.ModSettings class nor a static *Settings class of a running mod's assembly; set writes only a mod's settings (list and get still read any type).");
-                    }
-                    string whyK, declaredK;
-                    if (JawaBenchCompanionSafety.Effective(out whyK, out declaredK) != JawaBenchSafetyCore.Test)
-                    {
-                        return Fail("REFUSED: set is off under the CAMPAIGN profile (" + whyK + "); change a campaign game's settings in the Mod Settings dialog. list and get stay available.",
-                            new { profile = JawaBenchSafetyCore.Campaign, profileWhy = whyK });
-                    }
-                    if (value == null)
-                    {
-                        return Fail("Give 'value' for action='set'.");
-                    }
+                    object no = SettingsSetFailure(settingsType, typeName, fi, key, value);
+                    if (no != null) return no;
                     object coercedK;
                     try
                     {
-                        coercedK = CoerceSettingsValue(value, kv[1]);
+                        coercedK = CoerceSettingsValue(value, valueType);
                     }
                     catch (Exception e)
                     {
-                        return Fail("Could not coerce '" + value + "' to " + kv[1].Name + ": " + e.Message);
+                        return Fail("Could not coerce '" + value + "' to " + valueType.Name + ": " + e.Message);
                     }
-                    dict[key] = coercedK;
+                    string error = JawaBenchDeviations.ApplySettings(driver, null, JawaBenchDeviations.Setting(settingsType, fi, target, key, coercedK));
+                    if (error != null) return Fail(error);
                     return (object)new
                     {
                         success = true, action = "set", field = fi.Name, fieldKind = kind, key, presentBefore,
@@ -305,26 +360,8 @@ namespace JawaBench.BridgeTools
 
                 if (a == "set")
                 {
-                    // RIMMANDRAKE_CLOSE_CAMPAIGN_GATE_BYPASSES (GPT c01.F1): the type resolver takes ANY loaded type, so
-                    // set wrote any public static field in the AppDomain - a debug-invoke bypass of the campaign gate.
-                    Assembly asm = settingsType.Assembly;
-                    bool modAsmWithSettings = LoadedModManager.RunningMods.Any(m => m.assemblies?.loadedAssemblies?.Contains(asm) == true)
-                        && asm.GetTypes().Any(t => typeof(ModSettings).IsAssignableFrom(t));
-                    if (!JawaBenchSafetyCore.SettingsTypeWritable(typeof(ModSettings).IsAssignableFrom(settingsType),
-                            settingsType.IsAbstract && settingsType.IsSealed, modAsmWithSettings, settingsType.FullName))
-                    {
-                        return Fail("REFUSED: '" + typeName + "' is neither a Verse.ModSettings class nor a static *Settings class of a running mod's assembly; set writes only a mod's settings (list and get still read any type).");
-                    }
-                    string why, declared;
-                    if (JawaBenchCompanionSafety.Effective(out why, out declared) != JawaBenchSafetyCore.Test)
-                    {
-                        return Fail("REFUSED: set is off under the CAMPAIGN profile (" + why + "); change a campaign game's settings in the Mod Settings dialog. list and get stay available.",
-                            new { profile = JawaBenchSafetyCore.Campaign, profileWhy = why });
-                    }
-                    if (value == null)
-                    {
-                        return Fail("Give 'value' for action='set'.");
-                    }
+                    object no = SettingsSetFailure(settingsType, typeName, fi, null, value);
+                    if (no != null) return no;
                     object coerced;
                     try
                     {
@@ -335,14 +372,8 @@ namespace JawaBench.BridgeTools
                         return Fail("Could not coerce '" + value + "' to " + fi.FieldType.Name + ": " + e.Message);
                     }
                     string before = SafeFieldToString(fi.GetValue(target));
-                    try
-                    {
-                        fi.SetValue(target, coerced);
-                    }
-                    catch (Exception e)
-                    {
-                        return Fail("SetValue threw " + e.GetType().Name + ": " + e.Message);
-                    }
+                    string error = JawaBenchDeviations.ApplySettings(driver, null, JawaBenchDeviations.Setting(settingsType, fi, target, null, coerced));
+                    if (error != null) return Fail(error);
                     return (object)new
                     {
                         success = true,

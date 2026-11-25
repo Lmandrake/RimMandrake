@@ -889,6 +889,8 @@ namespace JawaBench.BridgeTools
             // the binder hook (stale-target refusals) with it. Both never throw.
             try { JawaBenchCompanionSafety.Install("bridge-registration"); }
             catch { }
+            try { JawaBenchDeviations.InstallSaveHook(); }
+            catch (Exception e) { Log.Error("[JawaBench] deviation save hook: " + e.Message); }
             try { JawaBenchArgGuard.Install(); }
             catch { }
             // LOG_AUTOOPEN_FIX_WAITS_FOR_FIRST_HELLO: the error-log auto-open suppressor (owner 2026-09-02, "Autoopen of

@@ -104,8 +104,11 @@ the unit test fails if the composed object differs; changing it means bumping th
 | `hooks` | `{tps, attribution, awareness, argGuard, wildSpawner}`: install status, detail, runtime error, and per-hook `coverage` (`ok`/`degraded`/`disabled` with counters) |
 | `rimBridgeServer` | `{loaded, version, informationalVersion, path}` |
 | `harmony` | `{version, path}` |
-| `game` | `{available, epoch, programState, save, ticksGame, mapIds[], currentMapId}`, filled on the main thread with a 5 s limit, else `{available:false, why}` |
+| `game` | `{available, epoch, programState, save, ticksGame, mapIds[], currentMapId, deviation}`, filled on the main thread with a 5 s limit, else `{available:false, why}` |
 | `reservedArgs` | `["expectGameEpoch","expectMapId","expectCurrentMapId"]` |
+
+`game.deviation` gives the current deviation record. Its `priorJournal` field reports settings debt left by a
+previous process, and `journalCouldNotLook` reports an unreadable journal.
 
 How preflight should read it:
 

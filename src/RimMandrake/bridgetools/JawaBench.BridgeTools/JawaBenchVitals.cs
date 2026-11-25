@@ -44,6 +44,7 @@ namespace JawaBench.BridgeTools
     internal sealed class JawaBenchVitalsDriver : MonoBehaviour
     {
         private void Update() { JawaBenchVitals.Frame(); }
+        private void OnGUI() { JawaBenchDeviations.Draw(); }
     }
 
     internal static class JawaBenchVitals
@@ -204,7 +205,7 @@ namespace JawaBench.BridgeTools
             catch (Exception e) { HookStatus = "failed"; HookDetail = e.GetType().Name + ": " + e.Message; }
         }
 
-        private static void EnsureDriver()
+        internal static void EnsureDriver()
         {
             if (_driverGo != null && _driverGo.GetComponent<JawaBenchVitalsDriver>() != null) return;
             try
