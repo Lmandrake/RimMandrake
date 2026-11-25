@@ -12119,3 +12119,6 @@
 {"seat":"RUNNER","event":"live","id":"OPS_TIMER_REPAIR_PRXC_XKGA","result":"broken","detail":"Ops alarm TIMER_FAILED: timers.failed_units = 1 failed user units (MEASURED), line > 0","ts":"2026-11-25T03:00:24Z","tsn":1795575624526678207}
 {"seat":"RUNNER","event":"raise","id":"OPS_TIMER_REPAIR_PRXC_XKGA","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-25T03:00:37Z","tsn":1795575637075804044}
 {"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_OUTSIDE_CAP_DRAIN_CLCI_TBVP","result":"kept","detail":"sweep: running again","ts":"2026-11-25T03:01:40Z","tsn":1795575700265920721}
+{"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_DIRT_MEASURE_AT_START_SANF","result":"broken","detail":"Ops alarm SCRATCH_DIRTY_START: disk.scratch_dirty_start = 1 sanity problems at the start of the last run (MEASURED), line > 0","ts":"2026-11-25T03:12:03Z","tsn":1795576323112933297}
+{"seat":"RUNNER","event":"raise","id":"OPS_SCRATCH_DIRT_MEASURE_AT_START_SANF","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-25T03:12:15Z","tsn":1795576335269614636}
+{"seat":"RUNNER","event":"note","id":"OPS_WORKER_CLONE_POOL_RESTORE_HMOQ_PBAL","text":"ops_watch: cleared at 2026-11-25T03:11:49Z (disk.pool_breach now 0)","ts":"2026-11-25T03:12:27Z","tsn":1795576347839426307}
