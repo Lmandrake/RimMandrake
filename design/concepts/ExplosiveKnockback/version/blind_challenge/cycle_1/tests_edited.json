@@ -1,0 +1,15 @@
+{
+ "tests_edited": [
+  {
+   "path": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py",
+   "test_ids": [
+    "T_PROOFGATE"
+   ],
+   "why": "check D1 added: every RM_KnockbackProof.SceneNames name reaches a Build case (RIMMANDRAKE_CHECK_KNOCKBACK_SCENE_DISPATCH_NO_DECIDER_LOOKED); nothing removed or weakened",
+   "before_blob": "386e6f1136ffb5c294b41ddcaf97985183e4c230",
+   "after_blob": "f77fa2f2ce6bc5036310c6727d28080f66491f68",
+   "sha": "08b632f259b7f17e59b041c844bbdcb008eda095",
+   "red_seen": "maturation.py red-seen ExplosiveKnockback T_PROOFGATE --patch lane2/plants/P_SCENE_CASE_RENAMED.patch (recorded in version/evidence/red_seen.json)"
+  }
+ ]
+}

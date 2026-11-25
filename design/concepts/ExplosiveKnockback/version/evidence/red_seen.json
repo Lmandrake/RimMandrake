@@ -130,17 +130,17 @@
   "test_blob": "7fba2721ca1cdbd40279fb828bf359dcfbe810a0"
  },
  "T_PROOFGATE": {
-  "at": "2026-11-23T12:20:21Z",
+  "at": "2026-11-25T14:11:12Z",
   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py",
   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py",
-  "last": "FAIL G1 gate misreads [False, True, True, True, True, False, True]",
-  "patch": "diff --git a/src/RimMandrake/ExplosiveKnockback/proof_build_gate.py b/src/RimMandrake/ExplosiveKnockback/proof_build_gate.py\nindex be3442a71f..ac92abb9b9 100644\n--- a/src/RimMandrake/ExplosiveKnockback/proof_build_gate.py\n+++ b/src/RimMandrake/ExplosiveKnockback/proof_build_gate.py\n@@ -24,7 +24,7 @@ MESSAGE = (\"PROOF BUILD REQUIRED: the running ExplosiveKnockback DLL has no %s (\n def is_release_answer(resp):\n     \"\"\"True when a jawa/static_call answer says the proof type is not loaded.\"\"\"\n     text = repr(resp)\n-    return \"Type not found\" in text and \"RM_KnockbackProof\" in text\n+    return \"Type not loaded\" in text and \"RM_KnockbackProof\" in text\n \n \n def require_proof_build(resp, out=None):\n",
+  "last": "FAIL D1 no Build case for wall_stop",
+  "patch": "diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs\nindex 3dfbba7a32..bb86af6398 100644\n--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs\n@@ -969,7 +969,7 @@ namespace RimMandrake.ExplosiveKnockback\n                     };\n                     return null;\n \n-                case \"wall_stop\":\n+                case \"wall_stopx\":\n                     Colonist(s, \"p\", O(s, 1, 0));\n                     Build(\"Wall\", O(s, 3, 0), \"BlocksGranite\");\n                     Blast(s.o, 2.9f);\n",
   "patch_files": [
-   "src/RimMandrake/ExplosiveKnockback/proof_build_gate.py"
+   "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs"
   ],
-  "patch_sha": "5e39b12367f9ced5",
+  "patch_sha": "598e7eaa0a9f11d7",
   "rc": 1,
-  "test_blob": "386e6f1136ffb5c294b41ddcaf97985183e4c230"
+  "test_blob": "f77fa2f2ce6bc5036310c6727d28080f66491f68"
  },
  "T_RESTORE": {
   "at": "2026-11-25T06:42:08Z",

@@ -1,0 +1,1 @@
+{"test": "T_PROOFGATE", "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py", "rc": 0, "result": "PASS", "recorded_result": "PASS", "last": "PASS proofgate (R1 P1 D1 G1)", "recorded_last": "PASS proofgate (R1 P1 G1)", "line_match": false, "match": true, "seconds": 1.59, "recorded_seconds": 3.78, "recorded_at": "2026-11-25T12:36:58Z"}

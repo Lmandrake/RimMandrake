@@ -1,0 +1,66 @@
+{
+ "faults": [
+  {
+   "id": "RIMMANDRAKE_CHECK_KNOCKBACK_SCENE_DISPATCH_NO_DECIDER_LOOKED",
+   "class": "Problem",
+   "against": "check",
+   "bar": "inv_proof_scenes",
+   "criterion": "inv_proof_scenes: the live scenes RM_KnockbackProof stages (mortar 3 cells, wall, door, sandbags, too big, EMP, items, shelf, corpse, pits, cover, caps, master off, config, guards) and the runner that drives them; deciders T_SCRIPT, T_PROOFGATE, T_RESTORE",
+   "evidence": [
+    "lane2/planted_results.jsonl P_SCENE_CASE_RENAMED: case \"wall_stop\" renamed in RM_KnockbackProof.Build; T_SCRIPT, T_PROOFGATE and T_RESTORE all stayed green (deciders_red []), only lane 1's L1_FIXED_PROOF_SCENES_DISPATCH went red",
+    "RM_KnockbackProof.Build ends `return \"unknown scene \" + s.name`: a named scene with no case cannot be staged, so its bar's scene cannot run",
+    "T_SCRIPT --mock stages through a fake session that never runs the C# switch; the per-scene checks (goods_obstacles, gas_into_pit) read their own names only"
+   ],
+   "would_pass": "a decider of inv_proof_scenes goes red when any name of RM_KnockbackProof.SceneNames has no case in Build, and stays green on the real build",
+   "smallest_fix": "T_PROOFGATE check D1: every SceneNames name reaches a case of Build, none listed twice (selftest_explosiveknockback_proofgate.py)",
+   "verdict_on_criterion": "the criterion is right and the mod is right (69 of 69 names handled on the real build); the deciders could not see a dispatch break",
+   "status": "FIXED 08b632f259b7f17e59b041c844bbdcb008eda095"
+  },
+  {
+   "id": "RIMMANDRAKE_CHECK_KNOCKBACK_RULES_MAPPING_OFFLINE_LIKE_KERNEL",
+   "class": "Polish",
+   "against": "check",
+   "bar": "settings_scale_and_switch",
+   "criterion": "each Mod Settings line takes effect (settings_scale_and_switch, proves at Stage 6; offline decider T_SETTINGS_SWEEP_OFFLINE)",
+   "evidence": [
+    "lane2/planted_results.jsonl P_RULES_REBOUND_KEEP_FIXED: Rules() hard-codes goodsReboundKeepPercent = 100f; no offline suite and no lane-1 row went red",
+    "T_SETTINGS_SWEEP_OFFLINE checks every Kernel() field against its own setting (P_KERNEL_IGNORES_PITS_SETTING was caught) but checks Rules() only for the three sheet switches; goodsReboundKeepPercent is named only by the live scene sc_settings_sweep",
+    "the real build maps it correctly (RM_KnockbackMod.Rules: goodsReboundKeepPercent = goodsReboundKeepPercent); the live sc_settings_sweep and sc_storeroom_mortar_rebound_legs (plant keep_all) decide it at Stage 6, so no bar goes undecided"
+   ],
+   "would_pass": "n/a (Polish)",
+   "smallest_fix": "in the sweep's static half, check every KbRules field of Rules() the way MAPPING checks Kernel()",
+   "verdict_on_criterion": "fails test 1: no failure happened, the real build is right, a Stage 6 decider covers it",
+   "status": "PENDING"
+  },
+  {
+   "id": "RIMMANDRAKE_CROSSCHECK_KNOCKBACK_REBOUND_LEFT_FLYER_GRADES_ITSELF",
+   "class": "Polish",
+   "against": "scene",
+   "bar": "rebound_goes_shorter",
+   "criterion": "each rebound carries on for only part of the way the throw still had left (deciders T_KERNEL and sc_storeroom_mortar_rebound_legs V_SHORTER)",
+   "evidence": [
+    "lane2/planted_results.jsonl C_FLYER_REBOUND_FROM_WHOLE_THROW: RM_ThingFlyer_Knockback.StartLeg cellsLeft = res.cellsPlanned (the whole throw); every offline suite stayed green, the situation map included",
+    "V_SHORTER compares each rebound leg with the journal's item_rebound `left`, the very value the flyer computes, so under that fault a rebound longer than the true cells left (planned 6, first leg 4: left 2, rebound floor(0.7 x 6) = 4) reads 4 of 6 and passes",
+    "the real build is right: StartLeg sets cellsLeft = cellsPlanned - cellsTravelled, and that one value feeds both KbPlanner.Rebound and the journal; the scene is UNRUN until Stage 6"
+   ],
+   "would_pass": "n/a (Polish)",
+   "smallest_fix": "V_SHORTER also derives the cells left from the leg's own budget (item_move planned, or the rebound's cells) less the leg flown from positions, and refuses a `left` that disagrees",
+   "verdict_on_criterion": "fails test 1: no failure happened and the shipped flyer logs the true value; the live check gives the right verdict on the real build",
+   "status": "PENDING"
+  },
+  {
+   "id": "RIMMANDRAKE_SAVE_KNOCKBACK_LANDING_IMPACT_FACTOR_ACROSS_RELOAD",
+   "class": "Polish",
+   "against": "mod",
+   "bar": "collision_bruise_by_size",
+   "criterion": "a landing on a pawn bruises both by size, by the throwing blast's impact factor (a palm thumper's 0 bruises nobody)",
+   "evidence": [
+    "RM_MapComponent_Knockback.landingImpactFactor is not saved (its own comment: 'after a load the landing reads 1'); a pawn thrown by an impact-factor-0 weapon, saved in mid-flight and reloaded, bruises a pawn that walked onto its landing cell at factor 1"
+   ],
+   "would_pass": "n/a (Polish)",
+   "smallest_fix": "Scribe landingImpactFactor with thrownBy",
+   "verdict_on_criterion": "fails test 1: it needs a save inside a sub-second flight, a pawn walking onto the landing cell and a factor-0 weapon; no failure seen",
+   "status": "PENDING"
+  }
+ ]
+}

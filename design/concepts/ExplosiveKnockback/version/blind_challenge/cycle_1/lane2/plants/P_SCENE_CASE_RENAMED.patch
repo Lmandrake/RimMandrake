@@ -1,0 +1,13 @@
+diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs
+index 3dfbba7a32..bb86af6398 100644
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs
+@@ -969,7 +969,7 @@ namespace RimMandrake.ExplosiveKnockback
+                     };
+                     return null;
+ 
+-                case "wall_stop":
++                case "wall_stopx":
+                     Colonist(s, "p", O(s, 1, 0));
+                     Build("Wall", O(s, 3, 0), "BlocksGranite");
+                     Blast(s.o, 2.9f);
