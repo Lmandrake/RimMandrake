@@ -30,9 +30,9 @@ allowance is at least `lent_min_draw_pct`; a lent account the machine is ON is s
 allowance falls under that line. The lent rules unreadable (or the allocator not importable) -> no account can be
 told lent from owned, so no switch is recommended at all (fail closed) and that is alarmed.
 
-Ranking among fit candidates: the OWNER'S FIXED PRIORITY, read from the file the switching plan reads (`order` in
-src/RimMandrake/Utils/switching_plan.json, or the rule's `priority_plan`): one source of truth (item
-ACCOUNTPICK_CORRECT_OWNER_PRIORITY; the owner's words of 2026-10-28 10:15 are quoted in that file's `_owner`). A lent
+Ranking among fit candidates: the order of the account plan (`./acct plan`; read through account_plan.old_shape, so
+the one plan file answers; the rule's `priority_plan` names a JSON file with an `order` in its place, a test's seam):
+one source of truth (item ACCOUNTPICK_CORRECT_OWNER_PRIORITY). A lent
 account in that order is ranked by it too: its lent allowance (his window after a reset, his cap, the floor) already decides whether it is fit
 at all, and inside it the owner put it first. Accounts outside the order come after it, owned before lent, by the
 schedule's `rank`: "soonest_reset" (the week that ends first) or "most_runway". The plan unreadable -> no switch is
@@ -50,7 +50,7 @@ import role_launch as RL  # noqa: E402
 
 HOLDABLE = ("role_launch", "ring", "recover")
 RANKS = ("soonest_reset", "most_runway")
-PRIORITY_PLAN = "src/RimMandrake/Utils/switching_plan.json"  # the switching plan's own rules: its `order` is the priority
+PRIORITY_PLAN = "the account plan (./acct plan)"     # the default source of the priority, in words for an alarm line
 
 
 def labels_in(status):
@@ -101,15 +101,22 @@ def load_lent(rule):
 
 
 def load_priority(rule):
-    """The owner's account priority: `order` of the switching plan (rule `priority_plan`, default PRIORITY_PLAN).
-    -> list of labels, or None when unreadable or not a non-empty list of distinct strings."""
-    path = RL.wsl_path((rule or {}).get("priority_plan") or PRIORITY_PLAN)
-    if not os.path.isabs(path):
-        path = os.path.join(REPO, path)
+    """The account priority: the order of the account plan (the rule's `priority_plan` names a JSON file with an
+    `order` in its place). -> list of labels, or None when unreadable or not a non-empty list of distinct strings."""
     try:
-        with open(path, encoding="utf-8") as f:
-            order = json.load(f).get("order")
-    except (OSError, ValueError, TypeError, AttributeError):
+        if (rule or {}).get("priority_plan"):
+            path = RL.wsl_path(rule["priority_plan"])
+            if not os.path.isabs(path):
+                path = os.path.join(REPO, path)
+            with open(path, encoding="utf-8") as f:
+                order = json.load(f).get("order")
+        else:
+            utils = os.path.join(REPO, "src", "RimMandrake", "Utils")
+            if utils not in sys.path:
+                sys.path.insert(0, utils)
+            import account_plan
+            order = account_plan.old_shape()[0].get("order")
+    except Exception:  # noqa: BLE001  an unreadable plan is no priority: the pick then recommends no switch
         return None
     if (not isinstance(order, list) or not order or not all(isinstance(x, str) and x for x in order)
             or len(set(order)) != len(order)):

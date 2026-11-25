@@ -1393,11 +1393,14 @@ def t_fault_plan_change_needed_edit_publish_pull():
     rc2, nxt = acct("next", cwd="/")
     check(n + ": one command from one folder, and a process in another follows it (%.2f s)" % dt,
           rc == 0 and rc2 == 0 and "Next: system" in nxt and dt < 3, (text, nxt))
-    kept = os.environ.pop("RM_ACCOUNT_PLAN_DIR")
+    kept, under = os.environ.pop("RM_ACCOUNT_PLAN_DIR"), os.environ.pop("RM_UNDER_SELFTEST")
     try:
         home = AP.plan_dir()
+        os.environ["RM_UNDER_SELFTEST"] = under
+        check(n + ": a test child that names no folder reads no plan and can write none (%s)" % AP.plan_dir(),
+              not AP.plan_dir().exists() and AP.load_plan()[0] is None and "nonexistent" in str(AP.plan_dir()))
     finally:
-        os.environ["RM_ACCOUNT_PLAN_DIR"] = kept
+        os.environ["RM_ACCOUNT_PLAN_DIR"], os.environ["RM_UNDER_SELFTEST"] = kept, under
     check(n + ": the plan file's home is outside every clone (%s)" % home,
           home == Path.home() / ".local/state/rimmandrake/account_plan" and HERE.parents[2] not in home.parents, home)
 
@@ -1443,6 +1446,358 @@ def t_fault_stop_and_undo_crossed():
     check(n + ": no act follows the withdrawn request", d["do"] == "normal" and not d.get("pending"), d)
 
 
+# ------------------------------------------------------------------ the gate, the machines, the readers' door
+def NT(state="soft", age_s=60, **kw):
+    n = {"state": state, "since": AP.iso(NOW - 600), "at": AP.iso(NOW - age_s), "account": "lukas", "why": "planted",
+         "drain": False, "account_end": False, "warning": None, "message": "planted"}
+    n.update(kw)
+    return n
+
+
+def NEW(p=None):
+    p = copy.deepcopy(p or OPEN)
+    p["driver"] = "new"
+    return p
+
+
+LVL = {"steven": R(90, 100), "system": R(80, 110), "lukas": R(18, 120)}
+
+
+def t_can_use_is_the_one_answer_for_a_new_run():
+    n = "can_use_is_the_one_answer_for_a_new_run"
+    p = NEW()
+    rc, text = AP.can_use(p, F("lukas", LVL), "lukas")
+    check(n + ": the live account above its line, no notice: yes", rc == AP.OK and text.startswith("yes"), text)
+    rc, text = AP.can_use(p, F("lukas", LVL), "steven")
+    check(n + ": an account that is not live on this machine: NO, and the line names the live one",
+          rc == AP.NO and "lukas is" in text, text)
+    rc, text = AP.can_use(p, F(None, LVL, live_why="the switcher is silent"), "lukas")
+    check(n + ": the live account unknown: COULD NOT LOOK, never yes", rc == AP.COULD_NOT_LOOK and "COULD NOT LOOK" in text, text)
+    rc, text = AP.can_use(p, F("lukas", LVL, notice=NT("stop")), "lukas")
+    check(n + ": the actuator's fresh stop notice: NO", rc == AP.NO and "stopped" in text, text)
+    rc, text = AP.can_use(p, F("lukas", LVL, notice=NT("soft", drain=True)), "lukas")
+    check(n + ": the actuator's fresh drain notice: NO", rc == AP.NO and "draining" in text, text)
+    rc, text = AP.can_use(p, F("lukas", LVL, notice=NT("soft", drain=True, age_s=21 * 60)), "lukas")
+    check(n + ": a drain notice older than 20 min refuses nothing: the plan decides now", rc == AP.OK and "decided now" in text, text)
+    rc, text = AP.can_use(p, F("lukas", LVL, notice=NT("none", warning="ACCOUNT WARNING, not a stop")), "lukas")
+    check(n + ": the warning zone's notice refuses nothing", rc == AP.OK, text)
+    zone = {**LVL, "lukas": R(2, 120)}
+    d = AP.decide(p, F("lukas", zone))
+    rc, text = AP.can_use(p, F("lukas", zone), "lukas")
+    check(n + ": inside the warning zone a new run starts", d.get("warning") and rc == AP.OK, (d, text))
+    line = {**LVL, "lukas": R(1, 120)}
+    rc, text = AP.can_use(p, F("lukas", line, runs=RUN), "lukas")
+    check(n + ": at its line with a run live (decided now): NO, with the reason line", rc == AP.NO and "line" in text, text)
+    near = {**LVL, "lukas": R(4, 120, age=30.0)}
+    rc, text = AP.can_use(p, F("lukas", near, runs=RUN), "lukas")
+    check(n + ": a level not confirmed near the line, decided now: NO", rc == AP.NO and "confirm" in text, text)
+    pub = {"at": AP.iso(NOW - 120), "shadow": False, "rev": p.get("rev"), "account": "lukas", "do": "normal",
+           "why": "lukas live at 4%: it stays (the pass read it after its poll)"}
+    rc, text = AP.can_use(p, F("lukas", near, runs=RUN, published=pub), "lukas")
+    check(n + ": the decision that the last pass published is the answer while it is fresh", rc == AP.OK and "the pass of" in text, text)
+    rc, text = AP.can_use(p, F("lukas", LVL, published={**pub, "do": "soft", "why": "planted soft"}), "lukas")
+    check(n + ": a published soft decision: NO", rc == AP.NO and "planted soft" in text, text)
+    rc, text = AP.can_use(p, F("lukas", near, runs=RUN, published={**pub, "at": AP.iso(NOW - 21 * 60)}), "lukas")
+    check(n + ": a published decision older than 20 min is not the answer", rc == AP.NO and "decided now" in text, text)
+    rc, text = AP.can_use(p, F("lukas", near, runs=RUN, published={**pub, "account": "steven"}), "lukas")
+    check(n + ": nor one for another account", rc == AP.NO, text)
+    rc, text = AP.can_use(p, F("lukas", near, runs=RUN, published={**pub, "shadow": True}), "lukas")
+    check(n + ": nor a shadow pass's", rc == AP.NO, text)
+    rc, text = AP.can_use(p, F("lukas", near, runs=RUN, published={**pub, "rev": 999}), "lukas")
+    check(n + ": nor one of another plan revision (a write binds at the next read)", rc == AP.NO, text)
+    old = copy.deepcopy(OPEN)
+    rc, text = AP.can_use(old, F("lukas", line, runs=RUN), "lukas")
+    check(n + ": with the old engine as the driver only its notice refuses", rc == AP.OK and "old engine" in text, text)
+    rc, text = AP.can_use(old, F("lukas", line, runs=RUN, notice=NT("soft", drain=True)), "lukas")
+    check(n + ": and it does", rc == AP.NO, text)
+    fresh(NEW(), F("lukas", line, runs=RUN))
+    rc, text = acct("can-use")
+    check(n + ": `./acct can-use` with no account asks for the live account of this machine: exit 1 at its line",
+          rc == AP.NO and text.startswith("NO"), (rc, text))
+    rc, text = acct("can-use", frame=F("lukas", LVL))
+    check(n + ": and exit 0 above it", rc == AP.OK and text.startswith("yes"), (rc, text))
+    import detached_helper as DH
+    (TMP / "frame.json").write_text(json.dumps(F(None, LVL, live_why="the switcher is silent")))
+    rc, text, role = AP.launch_gate(NOW)
+    check(n + ": on the deciding machine a gate that cannot look says so (exit 2) and its launcher refuses nothing",
+          rc == AP.COULD_NOT_LOOK and role == "decider" and DH.drain_refusal(NOW, {}, None) is None, (rc, text, role))
+    (TMP / "frame.json").write_text(json.dumps(F("lukas", line, runs=RUN)))
+    r = DH.drain_refusal(NOW, {}, None)
+    check(n + ": the launcher refuses a new run at the line, with the gate's mark and the reason",
+          bool(r) and r.startswith("refused: ACCOUNT GATE (./acct can-use): ") and "line" in r, r)
+    import maturation_autonomy as MA
+    check(n + ": and the pipeline reads that refusal as a wait that ends by itself, no fault", bool(MA.WAIT_REFUSAL.search(r or "")), r)
+    check(n + ": the launcher's gate has no notice reader of its own (one definition)",
+          "notice_refusal" in Path(DH.__file__).read_text() and '"draining"' not in Path(DH.__file__).read_text())
+
+
+def t_a_carried_run_goes_until_the_line():
+    n = "a_carried_run_goes_until_the_line"
+    p = NEW()
+    f = F("lukas", LVL, notice=NT("soft", drain=True))
+    check(n + ": a drain above the line refuses a new run", AP.can_use(p, f, "lukas")[0] == AP.NO)
+    check(n + ": and lets a carried run go (it is a live run finishing)", AP.can_use(p, f, "lukas", carried=True)[0] == AP.OK)
+    f = F("lukas", LVL, notice=NT("soft", drain=True, account_end=True))
+    check(n + ": at the line (account_end) a carried run is refused too", AP.can_use(p, f, "lukas", carried=True)[0] == AP.NO)
+    f = F("lukas", LVL, notice=NT("stop"))
+    check(n + ": a stop refuses a carried run", AP.can_use(p, f, "lukas", carried=True)[0] == AP.NO)
+    pub = {"at": AP.iso(NOW - 60), "shadow": False, "rev": p.get("rev"), "account": "lukas", "do": "soft", "why": "w"}
+    check(n + ": a published drain that is no account end lets a carried run go",
+          AP.can_use(p, F("lukas", LVL, published=pub), "lukas", carried=True)[0] == AP.OK)
+    check(n + ": a published account end does not",
+          AP.can_use(p, F("lukas", LVL, published={**pub, "account_end": True}), "lukas", carried=True)[0] == AP.NO)
+    check(n + ": a published stop does not",
+          AP.can_use(p, F("lukas", LVL, published={**pub, "do": "stop"}), "lukas", carried=True)[0] == AP.NO)
+    line = {**LVL, "lukas": R(1, 120)}
+    d = AP.decide(p, F("lukas", line))
+    rc, text = AP.can_use(p, F("lukas", line), "lukas", carried=True)
+    check(n + ": at its line with no run live the decision is a switch (no account_end on it), and a carried run is "
+          "still refused (decided now)", d["do"] == "switch" and d.get("under") and rc == AP.NO, (d.get("do"), rc, text))
+    rc, text = AP.can_use(p, F("lukas", line, published={**pub, "do": "switch", "under": True, "pct_left": 1,
+                                                         "line": 1}), "lukas", carried=True)
+    check(n + ": and so is one under a published switch at the line", rc == AP.NO, (rc, text))
+
+
+def t_each_machine_on_the_account_gets_its_decision():
+    n = "each_machine_on_the_account_gets_its_decision"
+    p = NEW()
+    f = F("lukas", {"steven": R(60, 20), "system": R(80, 110), "lukas": R(18, 120)})
+    nt = AP.machine_notice(p, f, "steven", NOW, "box2")
+    check(n + ": a machine on another account, above its line: nothing is refused there",
+          nt["state"] == "none" and nt["account"] == "steven" and not nt["drain"] and nt["machine"] == "box2", nt)
+    f = F("lukas", {"steven": R(5, 20), "system": R(80, 110), "lukas": R(18, 120)})
+    nt = AP.machine_notice(p, f, "steven", NOW, "box2")
+    check(n + ": the same machine with its account at its 5% line: no new run, save and publish (account_end)",
+          nt["state"] == "soft" and nt["drain"] and nt["account_end"] and nt["line"] == 5, nt)
+    check(n + ": and the notice it gets refuses a new run and a carried one", AP.notice_refusal(nt, NOW)
+          and AP.notice_refusal(nt, NOW, carried=True), nt)
+    f = F("steven", {"steven": R(60, 20), "system": R(80, 110), "lukas": R(2, 120)})
+    d = AP.decide(p, {**f, "live": "lukas"})
+    nt = AP.machine_notice(p, f, "lukas", NOW, "box2")
+    check(n + ": inside the warning zone it carries the warning for a run that starts, and refuses nothing",
+          d.get("warning") and nt["state"] == "none" and "ACCOUNT WARNING" in str(nt["warning"]) and not nt["drain"], (d, nt))
+    f = F("steven", {"steven": R(5, 20), "system": R(80, 110), "lukas": R(18, 120)}, runs=[])
+    d = AP.decide(p, f)
+    nt = AP.machine_notice(p, f, "steven", NOW, "box2")
+    check(n + ": from one reading: this machine switches (no run live here), the other machine on the account drains",
+          d["do"] == "switch" and nt["state"] == "soft" and nt["account_end"], (d["do"], nt))
+    nt = AP.machine_notice(p, f, None, NOW, "box2", why_unread="ssh: timed out")
+    check(n + ": a machine whose account could not be read gets COULD NOT LOOK and no new run",
+          nt["could_not_look"] and "COULD NOT LOOK" in AP.notice_refusal(nt, NOW) and "timed out" in nt["message"], nt)
+    f = F("lukas", {"steven": R(None, 20, src="UNMEASURED"), "system": R(80, 110), "lukas": R(18, 120)})
+    nt = AP.machine_notice(p, f, "steven", NOW, "box2")
+    check(n + ": a machine on an account whose level is unread: no new run there (unknown never gives permission)",
+          nt["state"] == "soft" and nt["drain"], nt)
+    held = copy.deepcopy(p)
+    held["holds"] = [{"id": "H1", "at": AP.iso(NOW - 60), "ends": AP.iso(NOW + 3600), "why": "t"}]
+    nt = AP.machine_notice(held, f, "steven", NOW, "box2")
+    check(n + ": under a hold the plan acts on nothing and refuses nothing, on each machine", nt["state"] == "none", nt)
+    # the timed pass sends it
+    sent, asked = [], []
+    ms = {"account_of": lambda alias: (asked.append(alias) or ("steven", None)),
+          "send": lambda alias, nt: (sent.append((alias, nt)) or (True, ""))}
+    pm = NEW()
+    pm["machines"] = {"box2": {"ssh": "box2-wsl"}}
+    fresh(pm)
+    m = fake("lukas", runs=RUN)
+    try:
+        m.go({"steven": R(5, 20), "system": R(80, 110), "lukas": R(18, 120)}, machines=ms)
+        check(n + ": the timed pass asks the machine for its account and sends it the notice", asked == ["box2-wsl"]
+              and len(sent) == 1 and sent[0][0] == "box2-wsl" and sent[0][1]["account_end"], (asked, sent))
+        check(n + ": this machine, on another account, is left as it is", m.acts() == [], m.acts())
+        check(n + ": the pass's log names what each machine got", (AP.own_log()[-1].get("machines") or {}).get(
+            "box2", {}).get("ok") is True, AP.own_log()[-1])
+        rc, text = acct("status", frame=F("lukas", LVL, now=m.t + 60))
+        check(n + ": status has a line for the machine", "MACHINE box2: on steven" in text, text)
+        sent.clear()
+        m.t += 60
+        m.go({"steven": R(5, 20), "system": R(80, 110), "lukas": R(18, 120)}, shadow=True, machines=ms)
+        check(n + ": a shadow pass sends it too (the other machine has no engine of its own)", len(sent) == 1, sent)
+        sent.clear()
+        acct("hold", "--for", "1h", "--why", "t")
+        m.go({"steven": R(5, 20), "system": R(80, 110), "lukas": R(18, 120)}, machines=ms)
+        check(n + ": under a hold the machine is told that nothing is refused", len(sent) == 1 and sent[0][1]["state"] == "none", sent)
+    finally:
+        m.close()
+
+
+def t_a_push_that_fails_leaves_the_pass_whole():
+    n = "a_push_that_fails_leaves_the_pass_whole"
+    pm = NEW()
+    pm["machines"] = {"box2": {"ssh": "box2-wsl"}, "box3": {"ssh": "box3-wsl"}}
+    f = F("lukas", LVL)
+    got = []
+
+    def boom(alias):
+        raise OSError("no route")
+    out = AP.push_machines(pm, f, NOW, account_of=boom, send=lambda a, nt: (True, ""))
+    check(n + ": a reader that raises is could not look for that machine, by name, and the next machine is tried",
+          set(out) == {"box2", "box3"} and all(not v["ok"] and "COULD NOT LOOK" in v["line"] for v in out.values()), out)
+    fresh(pm)
+    out = AP.push_machines(pm, f, NOW, account_of=lambda a: ("steven", None), send=lambda a, nt: (
+        got.append(a) or (a == "box3-wsl", "Connection timed out")))
+    check(n + ": a send that fails is could not look; the other machine still gets its notice",
+          got == ["box2-wsl", "box3-wsl"] and not out["box2"]["ok"] and "did not reach" in out["box2"]["line"]
+          and out["box3"]["ok"], out)
+    check(n + ": only a notice that arrived is kept as the machine's last", not (TMP / "plan" / "machine.box2.json").exists()
+          and (TMP / "plan" / "machine.box3.json").exists())
+    m = fake("lukas", runs=RUN)
+    try:
+        rc, _text = m.go(LVL, machines={"account_of": boom, "send": boom})
+        check(n + ": the pass ends as it would with no machine (exit 0), and its log says could not look",
+              rc == 0 and "COULD NOT LOOK" in AP.own_log()[-1]["machines"]["box2"]["line"], (rc, AP.own_log()[-1]))
+    finally:
+        m.close()
+    rc, text = acct("machine", "add", "box4")
+    check(n + ": a machine with no ssh name is refused with its repair", rc == AP.REFUSED and "--ssh" in text, text)
+    rc, text = acct("machine", "add", "box4", "--ssh", "box4-wsl")
+    check(n + ": one command adds a machine, with its undo", rc == 0 and "box4" in on_disk()["machines"] and "undo:" in text, text)
+    rc, text = acct("machine", "rm", "nobody")
+    check(n + ": removing a machine that is not listed is NONE, exit 5", rc == AP.NONE, (rc, text))
+    rc, text = acct("plan")
+    check(n + ": the plan lists its machines", "box4 (ssh box4-wsl)" in text, text[-600:])
+
+
+def t_a_following_machine_that_cannot_look_refuses():
+    n = "a_following_machine_that_cannot_look_refuses"
+    import detached_helper as DH
+    out, pd = TMP / "follower_out", TMP / "follower_plan"
+    for d in (out, pd):
+        d.mkdir(exist_ok=True)
+        for x in d.iterdir():
+            x.unlink()
+    saved = {k: os.environ.get(k) for k in ("RM_SWITCH_PLAN_DIR", "RM_ACCOUNT_PLAN_DIR")}
+    os.environ.update(RM_SWITCH_PLAN_DIR=str(out), RM_ACCOUNT_PLAN_DIR=str(pd))
+    try:
+        rc, text, role = AP.launch_gate(NOW)
+        check(n + ": a machine with no plan and no mark follows nothing: NONE, and its launcher refuses nothing",
+              rc == AP.NONE and role == "none" and DH.drain_refusal(NOW, {}, None) is None, (rc, text))
+        (out / "follows.json").write_text(json.dumps({"of": "archmagi", "at": AP.iso(NOW)}))
+        rc, text, role = AP.launch_gate(NOW)
+        check(n + ": a following machine with no notice cannot look: exit 2, and the line names the deciding machine",
+              rc == AP.COULD_NOT_LOOK and role == "follower" and "COULD NOT LOOK" in text and "archmagi" in text, (rc, text))
+        r = DH.drain_refusal(NOW, {}, None)
+        check(n + ": its launcher starts no new run, and says could not look", bool(r) and "COULD NOT LOOK" in r, r)
+        (out / "notice.json").write_text(json.dumps(NT("none", age_s=60)))
+        rc, text, role = AP.launch_gate(NOW)
+        check(n + ": with a fresh notice that refuses nothing it starts runs", rc == AP.OK and DH.drain_refusal(NOW, {}, None) is None, text)
+        (out / "notice.json").write_text(json.dumps(NT("none", age_s=21 * 60)))
+        rc, text, role = AP.launch_gate(NOW)
+        check(n + ": a notice older than 20 min is could not look again", rc == AP.COULD_NOT_LOOK and "21 min old" in text
+              and "COULD NOT LOOK" in (DH.drain_refusal(NOW, {}, None) or ""), text)
+        (out / "notice.json").write_text(json.dumps(NT("soft", drain=True, account_end=True, account="steven")))
+        rc, text, role = AP.launch_gate(NOW)
+        r = DH.drain_refusal(NOW, {}, None)
+        check(n + ": a fresh notice at the line refuses a new run by its reason", rc == AP.NO and bool(r) and "steven" in r, (text, r))
+        (out / "notice.json").write_text("{broken")
+        check(n + ": a notice that cannot be read is could not look", AP.launch_gate(NOW)[0] == AP.COULD_NOT_LOOK)
+        rc, text = acct("can-use")
+        check(n + ": `./acct can-use` answers on a machine with no plan file (exit 2 here)", rc == AP.COULD_NOT_LOOK, (rc, text))
+        # the deciding machine: a broken gate never opens for a follower, and never closes the decider
+        (out / "follows.json").unlink()
+        (out / "notice.json").write_text(json.dumps(NT("soft", drain=True, age_s=21 * 60)))
+        check(n + ": on a machine that follows nothing an old notice refuses nothing (a stopped timer holds no launch)",
+              DH.drain_refusal(NOW, {}, None) is None)
+    finally:
+        for k, v in saved.items():
+            os.environ[k] = v
+
+
+def t_readers_take_the_rules_through_one_door():
+    n = "readers_take_the_rules_through_one_door"
+    import account_usage
+    saved = account_usage.read_now
+    account_usage.read_now = lambda now=None: {"accounts": {"steven": R(90, 150), "system": R(80, 110), "lukas": R(18, 120)}}
+    try:
+        fresh(BASE)                                     # driver old
+        v, src = AP.old_shape(now=NOW)
+        check(n + ": while the old engine drives, the readers get switching_plan.json", "switching_plan.json" in src
+              and v["order"] == LEGACY["order"], (src, v.get("order")))
+        p = NEW(plan(["lukas", "system", "steven"], steven={"leave": 40}))
+        fresh(p)
+        v, src = AP.old_shape(now=NOW)
+        check(n + ": while the plan drives, the order and the lines are the plan file's", "rev" in src
+              and v["order"] == ["lukas", "system", "steven"] and v["accounts"]["steven"]["leave_pct_left"] == 40
+              and v["exceptions"] == [], (src, v))
+        acct("line", "lukas", "9")
+        check(n + ": a write binds at the readers' next read", AP.old_shape(now=NOW)[0]["accounts"]["lukas"]["leave_pct_left"] == 9)
+        import slot_allocator as SA
+        pi = SA.plan_inputs({"steven": R(90, 150), "system": R(80, 110), "lukas": R(18, 120)}, "lukas", NOW)
+        check(n + ": the allocator's pool is computed from the plan file's lines (lukas down to 9, not to 1)",
+              pi.get("pool") and not pi.get("plan_error") and any(abs(x - 9.0) < 0.01 for x in [
+                  (pt.get("pct") if isinstance(pt, dict) else None) or -1 for pt in (pi["pool"].get("parts") or [])])
+              or "9" in json.dumps(pi.get("pool")), pi)
+        sys.path.insert(0, str(HERE.parent / "rimflow"))
+        import account_pick as PK
+        check(n + ": the Dispatcher's priority is the plan's order", PK.load_priority({}) == ["lukas", "system", "steven"],
+              PK.load_priority({}))
+        (TMP / "plan" / "plan.json").write_text("{broken")
+        v, src = AP.old_shape(now=NOW)
+        check(n + ": a plan file that is refused: the old engine runs, and the readers get its file, said by name",
+              v["order"] == LEGACY["order"] and "not JSON" in src, src)
+        for name in ("slot_allocator.py", "ops_watch.py"):
+            code = (HERE / name).read_text()
+            check("%s: %s reads no rule from switching_plan.json itself" % (n, name), "SP.load_plan()" not in code, name)
+        check(n + ": account_pick.py names no switching_plan.json",
+              "switching_plan.json" not in (HERE.parent / "rimflow" / "account_pick.py").read_text())
+    finally:
+        account_usage.read_now = saved
+
+
+def t_the_allocator_raises_its_pace_to_the_target_burn():
+    n = "the_allocator_raises_its_pace_to_the_target_burn"
+    import slot_allocator as SA
+    p = NEW()
+    f = F("steven", {"steven": R(90, 20), "system": R(3, 100), "lukas": R(3, 150)}, burn_h=2.0)
+    fresh(p, f)
+    AP.publish_state(p, f, AP.decide(p, f), False)
+    bm = SA.burn_mode_input()
+    row = (bm or {}).get("accounts", {}).get("steven") or {}
+    check(n + ": the pass publishes Burn Mode on with its target, and the allocator reads that file",
+          row.get("state") == "on" and row.get("target_burn_pct_h") == 4.25 and bm.get("raise_ok") is True, bm)
+    t, why = SA.burn_target({"account": "steven", "burn_mode": bm}, NOW + 60)
+    check(n + ": the target that the allocator paces to is the plan's (4.25 points an hour)", t == 4.25 and why is None, (t, why))
+    t, why = SA.burn_target({"account": "steven", "burn_mode": bm}, NOW + 21 * 60)
+    check(n + ": a record older than 20 min raises nothing", t is None and "old" in why, (t, why))
+    f2 = {**f, "load": 99.0}
+    AP.publish_state(p, f2, AP.decide(p, f2), False)
+    t, why = SA.burn_target({"account": "steven", "burn_mode": SA.burn_mode_input()}, NOW + 60)
+    check(n + ": on a loaded machine the plan says raise_ok false, and the allocator raises nothing and says why",
+          t is None and "load" in why, (t, why))
+    t, why = SA.burn_target({"account": "lukas", "burn_mode": bm}, NOW + 60)
+    check(n + ": Burn Mode of another account raises nothing", t is None, (t, why))
+    check(n + ": the tool itself calls no allocator write", "slot_allocator" not in SRC)
+
+
+def t_codex_door_asks_the_plan():
+    n = "codex_door_asks_the_plan"
+    import codex_advice as CA
+    fresh(BASE, F("lukas", FAR, codex=CX(20, 100)))
+    a = CA.advice()
+    check(n + ": Codex at 20% with a 25% line: the door's answer is LINE, with the plan's line", a["state"] == "LINE"
+          and "25% line" in a["why"], a)
+    err = io.StringIO()
+    with contextlib.redirect_stderr(err):
+        rc = CA.gate("a caller", "a rule that requires it", adv=a)
+    check(n + ": the gate refuses (exit 4), required or not, and names the command that changes the line",
+          rc == CA.EXIT_LINE == 4 and "./acct line codex" in err.getvalue(), err.getvalue())
+    (TMP / "frame.json").write_text(json.dumps(F("lukas", FAR, codex=CX(20, 10))))
+    check(n + ": on Codex's reset day the same level is OK", CA.advice()["state"] == "OK", CA.advice())
+    (TMP / "frame.json").write_text(json.dumps(F("lukas", FAR)))
+    a = CA.advice()
+    err = io.StringIO()
+    with contextlib.redirect_stderr(err):
+        rc = CA.gate("a caller", adv=a)
+    check(n + ": a meter that is not read: UNMEASURED, the gate says COULD NOT LOOK and sends (exit 0)",
+          a["state"] == "UNMEASURED" and rc == 0 and "COULD NOT LOOK" in err.getvalue(), (a, err.getvalue()))
+    (TMP / "plan" / "plan.json").unlink()
+    a = CA.advice()
+    check(n + ": no plan file: UNMEASURED with the cause, never a refusal", a["state"] == "UNMEASURED" and "no plan file" in a["why"], a)
+    src = (HERE / "codex_advice.py").read_text()
+    check(n + ": the door holds no line and no runway rule of its own", "codex_conserve_runway" not in src
+          and "runway" not in src.split('"""')[2])
+
+
 def main():
     for t in (t_live_account_stays_until_its_own_line, t_order_only_answers_which_account_is_next,
               t_no_start_is_refused_for_a_preference, t_a_rescue_switch_needs_points_worth_a_switch,
@@ -1472,7 +1827,11 @@ def main():
               t_census_codex_leave_line_in_the_same_plan, t_status_shows_pool_pace_not_sets_it,
               t_fault_stale_marker_kept_a_refilled_account_out, t_fault_forecast_disagreed_with_the_pick,
               t_fault_preference_switch_drained_at_eighteen_percent, t_fault_plan_change_needed_edit_publish_pull,
-              t_fault_hand_hold_six_seconds_before_a_pass, t_fault_stop_and_undo_crossed):
+              t_fault_hand_hold_six_seconds_before_a_pass, t_fault_stop_and_undo_crossed,
+              t_can_use_is_the_one_answer_for_a_new_run, t_a_carried_run_goes_until_the_line,
+              t_each_machine_on_the_account_gets_its_decision, t_a_push_that_fails_leaves_the_pass_whole,
+              t_a_following_machine_that_cannot_look_refuses, t_readers_take_the_rules_through_one_door,
+              t_the_allocator_raises_its_pace_to_the_target_burn, t_codex_door_asks_the_plan):
         try:
             t()
         except Exception as e:  # noqa: BLE001  a check that broke is a FAIL of its promise, by name

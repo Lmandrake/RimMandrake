@@ -196,7 +196,7 @@
   ],
   "tests": [
   {"test": "src/RimMandrake/Utils/selftest_pages_index.py", "seconds": 1, "inputs": ["src/RimMandrake/Utils/pages_index.py", "src/RimMandrake/Utils/maturation_now.py", "src/RimMandrake/Utils/codebase_now.py", "src/RimMandrake/Utils/ops_watch.py", "design/specs/2026-11-24-monitors-consolidated/boundary.md"]},
-    {"test": "src/RimMandrake/Utils/selftest_account_plan.py", "seconds": 6, "inputs": ["src/RimMandrake/Utils/account_plan*", "src/RimMandrake/Utils/switching_plan.py", "src/RimMandrake/Utils/account_end.py", "acct", "design/specs/2026-11-24-account-plan-one-file/boundary.md"]},
+    {"test": "src/RimMandrake/Utils/selftest_account_plan.py", "seconds": 20, "inputs": ["src/RimMandrake/Utils/account_plan*", "src/RimMandrake/Utils/switching_plan.py", "src/RimMandrake/Utils/account_end.py", "src/RimMandrake/Utils/codex_advice.py", "src/RimMandrake/Utils/slot_allocator.py", "src/RimMandrake/rimflow/detached_helper.py", "src/RimMandrake/rimflow/account_pick.py", "acct", "design/specs/2026-11-24-account-plan-one-file/boundary.md"]},
     {"test": "src/RimMandrake/Utils/selftest_account_end.py", "seconds": 2, "inputs": ["src/RimMandrake/Utils/account_end*.py", "src/RimMandrake/rimflow/left_open_continue.py", "design/specs/2026-11-24-account-end/boundary.md"]},
     {"test": "src/RimMandrake/Utils/selftest_switching_plan_drain.py", "seconds": 2, "inputs": ["src/RimMandrake/Utils/switching_plan.*", "design/specs/2026-11-20-account-drain/boundary.md"]},
     {"test": "src/RimMandrake/Utils/selftest_scene_compare.py", "seconds": 0.2, "inputs": ["src/RimMandrake/Utils/scene_compare.py", "design/specs/2026-11-24-play-vs-step/boundary.md"]},

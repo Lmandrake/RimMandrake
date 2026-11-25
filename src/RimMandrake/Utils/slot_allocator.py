@@ -615,16 +615,16 @@ def ops_inputs(now, rules):
                                   if isinstance(a, dict) and a.get("state") in ("OPEN", "PENDING"))}
 
 
-def codex_brakes(ops, o) -> bool:
-    """Does the Codex runway brake? Below the conserve line, unless a MEASURED reading shows less than
-    codex_brake_min_used_pct of the week used: that early, the runway is one burst projected over the week. A used %
-    that is missing or only a floor (ESTIMATE is dropped by ops_inputs) lifts nothing. One rule, two readers: this
-    allocator's advice line and codex_advice's gate."""
-    cx = ops.get("codex_runway")
-    if cx is None or not cx < o["codex_conserve_runway"]:
-        return False
-    used = ops.get("codex_used_pct")
-    return cx <= 0 or used is None or not used < o["codex_brake_min_used_pct"]
+def codex_use(now):
+    """-> (OK | LINE | UNMEASURED, the plan's one line): may our work send Codex a job, by the account plan's answer on
+    its last timed reading (`./acct can-use codex`). One rule, two readers: this allocator's advice line and
+    codex_advice's gate."""
+    try:
+        import account_plan as AP
+        rc, line = AP.meter_answer("codex", now)
+    except Exception as e:  # noqa: BLE001
+        return "UNMEASURED", "COULD NOT LOOK: %s: %s" % (type(e).__name__, e)
+    return {AP.OK: "OK", AP.NO: "LINE"}.get(rc, "UNMEASURED"), line
 
 
 def _ops(inp, rules, total, why):
@@ -650,12 +650,11 @@ def _ops(inp, rules, total, why):
             else:
                 why.append(f"disk brake: {free:.0f} GB free on / (< {o['disk_brake_free_gb']} GB); total already "
                            f"{total}")
-    cx = ops.get("codex_runway")
-    if cx is not None:
-        adv["codex"] = "CONSERVE" if codex_brakes(ops, o) else "OK"
-        if adv["codex"] == "CONSERVE":
-            why.append(f"Codex runway {cx:.2f} (< {o['codex_conserve_runway']}): send GPT/Codex consults only where "
-                       f"a review is required")
+    cu = inp.get("codex_use")
+    if isinstance(cu, (list, tuple)) and len(cu) == 2 and cu[0] in ("OK", "LINE"):
+        adv["codex"] = cu[0]
+        if cu[0] == "LINE":
+            why.append(f"Codex is at its leave line: no GPT/Codex job is sent ({cu[1]})")
     stall, inv = ops.get("steve_unowned_stall_min"), ops.get("steve_invalid_streak")
     if stall is not None or inv is not None:
         adv["steve_lane"] = "OK"
@@ -687,6 +686,8 @@ def gather(now=None, rules=None, model=None):
         acc, how = pick_burn_account(meter, rules, here, login)
         inp["account_how"], inp["live_login"] = how, login
         inp.update(plan_inputs(meter, acc, now))
+        inp["burn_mode"] = burn_mode_input()
+        inp["codex_use"] = codex_use(now)
         a = meter.get(acc) if acc else None
         if a:
             inp.update(account=acc, source=a.get("source") if not a.get("stale") else "STALE",
@@ -772,7 +773,7 @@ def _pool_rate(inp):
     return float(r) if isinstance(r, (int, float)) and math.isfinite(r) and r >= 0 else None
 
 
-PLAN_NOTICE_FRESH_S = 20 * 60  # switching_plan.py writes every 5 min: an older notice means its timer stopped
+PLAN_NOTICE_FRESH_S = 20 * 60  # the account plan's pass writes every 5 min: an older notice means its timer stopped
 
 
 def _plan_notice_live(pn, now):
@@ -783,17 +784,60 @@ def _plan_notice_live(pn, now):
     return pn if at is not None and -300 <= now - at <= PLAN_NOTICE_FRESH_S else None
 
 
+# budget: danger=a Burn Mode record that outlived its pass (the plan's timer stopped) raises the pace for a reset that
+# budget: has passed; evidence=the pass writes it every 5 min, so 20 min is four missed passes; ends no work: an old
+# budget: record raises nothing
+BURN_MODE_FRESH_S = 20 * 60
+
+
+def burn_mode_input(path=None):
+    """-> the account plan's published Burn Mode (account_plan.publish_state writes burn_mode.json each pass;
+    `./acct burn-mode` prints it), or None when there is none or it cannot be read. None is could not look: it raises
+    nothing."""
+    try:
+        import account_plan as AP
+        d = read_json(Path(path) if path else AP.plan_dir() / "burn_mode.json")
+    except Exception:  # noqa: BLE001  an unreadable plan folder never stops the allocator
+        return None
+    return d if isinstance(d, dict) else None
+
+
+def burn_target(inp, now):
+    """-> (the target burn in points of a week an hour, None) while Burn Mode is on for the burn account and a raise
+    is allowed, else (None, why not; '' when Burn Mode is not on for it). The record must be under BURN_MODE_FRESH_S
+    old. The pace is raised TO this figure, never past it (decide's fit)."""
+    bm = inp.get("burn_mode")
+    if not isinstance(bm, dict):
+        return None, ""
+    row = (bm.get("accounts") or {}).get(inp.get("account")) if isinstance(bm.get("accounts"), dict) else None
+    if not isinstance(row, dict) or row.get("state") != "on":
+        return None, ""
+    at = epoch(bm.get("at"))
+    if at is None or not -300 <= now - at <= BURN_MODE_FRESH_S:
+        return None, "Burn Mode record is %s old: no raise" % ("of no known time" if at is None else
+                                                              "%.0f min" % ((now - at) / 60))
+    t = row.get("target_burn_pct_h")
+    if not (isinstance(t, (int, float)) and not isinstance(t, bool) and math.isfinite(t) and t > 0):
+        return None, "Burn Mode names no target burn: no raise"
+    if bm.get("raise_ok") is not True:
+        return None, "Burn Mode is on for %s, but no raise is allowed (%s)" % (
+            inp.get("account"), bm.get("load_why") or "raise_ok is not true")
+    return float(t), None
+
+
 def plan_inputs(meter, live, now):
-    """-> {pool, plan_notice} from the standard switching plan (switching_plan.py), both None while its HOLD file
-    is present (the engine is paused: the allocator paces as before) or when the plan is unreadable. A notice older
-    than PLAN_NOTICE_FRESH_S (the engine's timer stopped) is ignored by _plan_notice_live."""
+    """-> {pool, plan_notice} from the account plan (./acct; account_plan.old_shape gives its rules, the plan's pass
+    writes the notice), both None while a HOLD file is present (the engine is paused: the allocator paces as before)
+    or when the plan is unreadable. A notice older than PLAN_NOTICE_FRESH_S (the timer stopped) is ignored by
+    _plan_notice_live."""
     out = {"pool": None, "plan_notice": None}
     try:
+        import account_plan as AP
         import switching_plan as SP
         d = Path(os.environ.get("RM_SWITCH_PLAN_DIR") or SP.OUT)
         if (d / "HOLD").exists():
             return out
-        plan = SP.load_plan()
+        plan, out["plan_source"] = AP.old_shape(meter, now)
         if plan.get("pool_pacing"):
             out["pool"] = SP.pool(meter, now, plan, live)
         pn = read_json(d / "notice.json")
@@ -1035,12 +1079,18 @@ def _lent_view(sp):
 
 
 def _plan_exception(name, now, h, plan=None):
-    """(exception id, until, leave line) when the switching plan's dated exception (switching_plan.json
-    `exceptions`, its own guard and expiry) sets this account's line now, else None. One source: the plan file.
+    """(id, until, leave line) when a temporary rule of the account plan sets this account's line now, else None. One
+    source: the plan file (./acct plan), where a temporary rule is a step with a life in front of the account's standing
+    step. While the old engine drives (or with `plan`, a seam), the rule is a dated exception of that file's shape.
     Unreadable plan -> None: the standing lent rule (the stricter one) applies."""
     try:
+        import account_plan as AP
         import switching_plan as SP
-        plan = plan if plan is not None else SP.load_plan()
+        if plan is None:
+            ap, _why = AP.load_plan()
+            if ap is not None and ap.get("driver", "old") == "new":
+                return AP.temporary_line(ap, name, now, h)
+            plan = AP.old_shape({}, now)[0]
         meter = {name: {"week_resets_at": SP.iso(now + h * HOUR)}} if h is not None else {}
         eff = SP.at(plan, now, meter)
     except Exception:  # noqa: BLE001
@@ -1186,6 +1236,13 @@ def _decide_core(inp, state, rules, now, advisory=False):
             else:
                 why.append(f"pool pacing: the plan still spends {inp['pool'].get('pct')}% by its deadlines "
                            f"(binding {inp['pool'].get('deadline_h')} h)")
+            target, no_raise = burn_target(inp, now)
+            if target is not None and target > sust:
+                why.append(f"Burn Mode: the pace rises from {sust:.2f} to the target burn {target:.2f}%/h, which uses "
+                           f"what {inp['account']}'s reset would erase (./acct burn-mode)")
+                sust = target
+            elif no_raise:
+                why.append(no_raise)
             raw = mh * sust / rate
             total = max(1, min(ceiling, int(math.floor(raw))))
             why.append(f"burning {rate:.2f}%/h with {mh:.1f} helpers on average; sustainable {sust:.2f}%/h "

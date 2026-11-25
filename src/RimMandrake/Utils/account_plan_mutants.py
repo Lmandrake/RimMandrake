@@ -135,15 +135,52 @@ PLANTS = [
     ("fault_hand_hold_six_seconds_before_a_pass", P, '        p, w = load_plan()\n        if p is None:\n            return {"do": "passive", "why": w}',
      '        p, w = plan, None\n        if p is None:\n            return {"do": "passive", "why": w}'),
     ("fault_stop_and_undo_crossed", P, *UNDO),
+    # the gate, the machines, the readers' door (RIMMANDRAKE_WIRE_PLAN_READERS_NOBODY_READS_BURN_MODE_YET)
+    ("can_use_is_the_one_answer_for_a_new_run", P, '    if a != live:\n        return NO, "NO: %s is not the live account', '    if False:\n        return NO, "NO: %s is not the live account'),
+    ("can_use_is_the_one_answer_for_a_new_run", P, '    why = notice_refusal(f.get("notice"), now, carried)\n    if why:', '    why = notice_refusal(f.get("notice"), now, carried)\n    if False:'),
+    ("can_use_is_the_one_answer_for_a_new_run", P, '    return at is not None and now - at <= NOTICE_FRESH_S', '    return at is not None'),
+    ("can_use_is_the_one_answer_for_a_new_run", P, 'if fresh_record(pd, now) and not pd.get("shadow") and pd.get("account") == a and pd.get("rev") == plan.get("rev"):',
+     'if fresh_record(pd, now) and pd.get("account") == a and pd.get("rev") == plan.get("rev"):'),
+    ("can_use_is_the_one_answer_for_a_new_run", P, 'and not pd.get("shadow") and pd.get("account") == a and pd.get("rev") == plan.get("rev"):',
+     'and not pd.get("shadow") and pd.get("account") == a:'),
+    ("can_use_is_the_one_answer_for_a_new_run", P, 'REFUSES = ("soft", "stop", "stopped", "switch", "hold")', 'REFUSES = ("stop", "stopped", "switch", "hold")'),
+    ("can_use_is_the_one_answer_for_a_new_run", "rimflow/detached_helper.py", '        rc, text, role = AP.launch_gate(now, carried)\n',
+     '        rc, text, role = AP.launch_gate(now, carried)\n        draining = "draining"  # noqa: F841\n'),
+    ("a_carried_run_goes_until_the_line", P, 'and n.get("drain") and not (carried and not n.get("account_end")):', 'and n.get("drain") and not carried:'),
+    ("a_carried_run_goes_until_the_line", P, 'if d["do"] in REFUSES and not (carried and not d.get("account_end") and d["do"] != "stop" and d["do"] != "stopped"):',
+     'if d["do"] in REFUSES and not (carried and not d.get("account_end")):'),
+    ("each_machine_on_the_account_gets_its_decision", P, '    fm = {**f, "live": account, "runs": None,', '    fm = {**f, "runs": None,'),
+    ("each_machine_on_the_account_gets_its_decision", P, '        dm = {**d, "do": "soft", "drain": True, "account_end": under}', '        dm = {**d, "do": "soft", "drain": True, "account_end": False}'),
+    ("each_machine_on_the_account_gets_its_decision", P, '    if not account:\n        msg = "COULD NOT LOOK: the live account of %s', '    if False:\n        msg = "COULD NOT LOOK: the live account of %s'),
+    ("each_machine_on_the_account_gets_its_decision", P, '        if plan.get("machines"):    # a hold acts on nothing', '        if False:    # a hold acts on nothing'),
+    ("each_machine_on_the_account_gets_its_decision", P, '        if plan.get("machines"):\n            rec["machines"] = push_machines(plan, f, pass_now(seams)', '        if False:\n            rec["machines"] = push_machines(plan, f, pass_now(seams)'),
+    ("each_machine_on_the_account_gets_its_decision", P, '        if d.get("warning"):\n            dm["warning_text"]', '        if False:\n            dm["warning_text"]'),
+    ("a_push_that_fails_leaves_the_pass_whole", P, '        except Exception as e:  # noqa: BLE001  the pass goes on; the machine\'s own gate handles a missing notice',
+     '        except ZeroDivisionError as e:  # noqa: BLE001  the pass goes on; the machine\'s own gate handles a missing notice'),
+    ("a_push_that_fails_leaves_the_pass_whole", P, '            if ok:\n                write_atomic(keep, n)', '            if True:\n                write_atomic(keep, n)'),
+    ("a_following_machine_that_cannot_look_refuses", P, '        if not fresh_record(n, now):\n            at = stamp(n.get("at")) if isinstance(n, dict) else None',
+     '        if False:\n            at = stamp(n.get("at")) if isinstance(n, dict) else None'),
+    ("a_following_machine_that_cannot_look_refuses", "rimflow/detached_helper.py", '    if rc == AP.NO or (rc == AP.COULD_NOT_LOOK and role == "follower"):', '    if rc == AP.NO:'),
+    ("can_use_is_the_one_answer_for_a_new_run", "rimflow/detached_helper.py", '    if rc == AP.NO or (rc == AP.COULD_NOT_LOOK and role == "follower"):', '    if rc == AP.NO or rc == AP.COULD_NOT_LOOK:'),
+    ("readers_take_the_rules_through_one_door", P, '    if plan is None or plan.get("driver", "old") != "new":\n        return SP.load_plan(), "switching_plan.json',
+     '    if True:\n        return SP.load_plan(), "switching_plan.json'),
+    ("readers_take_the_rules_through_one_door", "Utils/slot_allocator.py", '        plan, out["plan_source"] = AP.old_shape(meter, now)', '        plan, out["plan_source"] = SP.load_plan(), "x"'),
+    ("readers_take_the_rules_through_one_door", "rimflow/account_pick.py", '            order = account_plan.old_shape()[0].get("order")', '            order = ["steven", "system", "lukas"]'),
+    ("the_allocator_raises_its_pace_to_the_target_burn", "Utils/slot_allocator.py", '    if bm.get("raise_ok") is not True:', '    if False:'),
+    ("the_allocator_raises_its_pace_to_the_target_burn", "Utils/slot_allocator.py", '    if at is None or not -300 <= now - at <= BURN_MODE_FRESH_S:', '    if at is None:'),
+    ("the_allocator_raises_its_pace_to_the_target_burn", "Utils/slot_allocator.py", '(bm.get("accounts") or {}).get(inp.get("account"))', '(bm.get("accounts") or {}).get("steven")'),
+    ("codex_door_asks_the_plan", "Utils/codex_advice.py", '    return {"state": {AP.OK: "OK", AP.NO: "LINE"}.get(rc, "UNMEASURED"), "why": line}', '    return {"state": {AP.OK: "OK", AP.NO: "OK"}.get(rc, "UNMEASURED"), "why": line}'),
+    ("codex_door_asks_the_plan", "Utils/codex_advice.py", '    return {"state": {AP.OK: "OK", AP.NO: "LINE"}.get(rc, "UNMEASURED"), "why": line}', '    return {"state": {AP.OK: "OK", AP.NO: "LINE"}.get(rc, "LINE"), "why": line}'),
+    ("codex_door_asks_the_plan", "Utils/codex_advice.py", '    if adv["state"] == "LINE":\n        print(', '    if adv["state"] == "LINE" and not required:\n        print('),
 ]
 
 
 def run(plant=None):
-    """-> (rc, output) of the selftest in a copy of src/RimMandrake's two folders, with the plant in."""
+    """-> (rc, output) of the selftest in a copy of src/RimMandrake's code folders, with the plant in."""
     tmp = Path(tempfile.mkdtemp(prefix="account_plan_mutant_"))
     try:
         root = tmp / "src" / "RimMandrake"
-        for d in ("Utils", "rimflow"):
+        for d in ("Utils", "rimflow", "contracts"):     # contracts: account_pick imports role_launch, which reads it
             shutil.copytree(SRC / d, root / d, ignore=shutil.ignore_patterns("__pycache__", "*.png", "*.dll"))
         if plant:
             p = root / plant[1]

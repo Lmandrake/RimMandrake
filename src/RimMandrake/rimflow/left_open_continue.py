@@ -622,8 +622,8 @@ def account_end_wait(now, plan_dir=None):
 
 
 def kick_waiting(now=None, root=None, runner=subprocess.run, plan_dir=None):
-    """Start the continuations that waited for the account switch, once the plan has headroom (switching_plan.py calls
-    this after each pass). -> one line."""
+    """Start the continuations that waited for the account switch, once the plan has headroom (the account plan's
+    timed pass calls this after each pass, through the actuator's check). -> one line."""
     import stop_resume as SR
     now = now or time.time()
     waiting_recs = [r for r in SR.recent_records(root, now) if r.get("continue_waits") and not r.get("continued_by")]

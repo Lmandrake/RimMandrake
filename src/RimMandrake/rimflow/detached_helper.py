@@ -1285,57 +1285,52 @@ def prose_after(brief, item):
         return "GUIDING PROSE: UNMEASURED, the check did not load (%s: %s). The run has started." % (type(e).__name__, e)
 
 
-# budget: danger=a stopped switching plan holds every launch; ends no work: an older notice is not obeyed
-DRAIN_NOTICE_FRESH_S = 20 * 60     # switching_plan.py writes its notice every 5 min: an older one means its timer stopped
+def _account_plan():
+    """The account plan tool (src/RimMandrake/Utils/account_plan.py): the one definition of the gate and of a notice."""
+    utils = os.path.join(REPO, "src", "RimMandrake", "Utils")
+    if utils not in sys.path:
+        sys.path.insert(0, utils)
+    import account_plan
+    return account_plan
+
+
+GATE = "ACCOUNT GATE (./acct can-use)"      # the mark of this refusal: maturation_autonomy.WAIT_REFUSAL reads it
 
 
 def drain_refusal(now, extra=None, resume_session=None, path=None):
-    """-> why a NEW run may not start now, or None. While the switching plan drains an account (its fresh notice reads
-    soft with drain true), live runs finish on it and no new run starts there: a switch stops every Claude process, and
-    a run started now would be killed by it (design/specs/2026-11-20-account-drain/boundary.md). A continuation of a
-    live run, or a resume of its session, is that run finishing and goes, unless the account is at its line (the notice's
-    `account_end`: its runs were told to save and end, page design/specs/2026-11-24-account-end/boundary.md). Between the
-    warning line and the line nothing is refused: the notice then carries only a warning (account_warning). While the
-    fleet is stopped (state stop) nothing starts. An unreadable or stale notice refuses
-    nothing (a dead plan timer must not hold every launch)."""
+    """-> why a NEW run may not start now, or None. The answer is the account plan's (`./acct can-use`,
+    account_plan.launch_gate; page design/specs/2026-11-24-account-plan-one-file/boundary.md): no new run while the
+    live account drains or is stopped, or while the plan's decision refuses new runs. A continuation of a live run, or
+    a resume of its session, is that run finishing and goes until the account is at its line. Between the warning line
+    and the line nothing is refused (account_warning). On a machine that takes its plan from another one, a notice
+    that is missing or old is COULD NOT LOOK, and nothing new starts. On the deciding machine a gate that cannot answer
+    refuses nothing (a broken tool must not hold every launch) and says so on stderr.
+    path: a test's notice file; then only that notice is read."""
     carried = bool((extra or {}).get("continued_from") or resume_session)
-    p = path or os.path.join(os.environ.get("RM_SWITCH_PLAN_DIR") or "/mnt/d/ClaudeWork/rimmandrake/switching_plan",
-                             "notice.json")
     try:
-        with open(p, encoding="utf-8") as f:
-            n = json.load(f)
-    except (OSError, ValueError):
+        AP = _account_plan()
+        if path is not None:
+            why = AP.notice_refusal(AP.read_json(path), now, carried)
+            return "refused: %s: %s" % (GATE, why) if why else None
+        rc, text, role = AP.launch_gate(now, carried)
+    except Exception as e:  # noqa: BLE001
+        print("account gate: COULD NOT LOOK (%s: %s); nothing is refused" % (type(e).__name__, e), file=sys.stderr)
         return None
-    at = _epoch(n.get("at")) if isinstance(n, dict) else None
-    if not (isinstance(n, dict) and at is not None and now - at <= DRAIN_NOTICE_FRESH_S):
-        return None
-    if n.get("state") == "stop":    # the fleet is stopped on an account that is out: a run here would take it to zero
-        return ("refused: the account %s is out (switching plan notice since %s): the fleet is stopped and nothing starts "
-                "until an account resets (`python3 src/RimMandrake/Utils/switching_plan.py status` shows it)." % (
-                    n.get("account") or "?", n.get("since") or "?"))
-    if not (n.get("state") == "soft" and n.get("drain")):
-        return None
-    if carried and not n.get("account_end"):
-        return None
-    return ("refused: the account %s is draining (switching plan notice since %s): live runs finish on it and no new "
-            "run starts until the switch. Launch again after it (`python3 src/RimMandrake/Utils/switching_plan.py "
-            "status` shows it). Why: %s" % (n.get("account") or "?", n.get("since") or "?",
-                                             " ".join(str(n.get("why") or "").split())))
+    if rc == AP.NO or (rc == AP.COULD_NOT_LOOK and role == "follower"):
+        return "refused: %s: %s" % (GATE, text[4:] if text.startswith("NO: ") else text)
+    return None
 
 
 def account_warning(now, path=None):
-    """-> the account's warning that a run starting now gets in its start package, or None. The switching plan's fresh
-    notice carries it while the live account is between its warning line and its line (switching_plan.write_notice):
+    """-> the account's warning that a run starting now gets in its start package, or None. The actuator's fresh
+    notice carries it while the live account is between its warning line and its line (switching_plan.notice_of):
     the run saves a note, publishes what is done and keeps working. An unreadable or stale notice adds nothing."""
-    p = path or os.path.join(os.environ.get("RM_SWITCH_PLAN_DIR") or "/mnt/d/ClaudeWork/rimmandrake/switching_plan",
-                             "notice.json")
     try:
-        with open(p, encoding="utf-8") as f:
-            n = json.load(f)
-    except (OSError, ValueError):
-        return None
-    at = _epoch(n.get("at")) if isinstance(n, dict) else None
-    if not (isinstance(n, dict) and at is not None and now - at <= DRAIN_NOTICE_FRESH_S):
+        AP = _account_plan()
+        n = AP.read_json(path or AP.notice_dir() / "notice.json")
+        if not AP.fresh_record(n, now):
+            return None
+    except Exception:  # noqa: BLE001  a warning that cannot be read adds nothing
         return None
     w = n.get("warning")
     return w if isinstance(w, str) and w.strip() else None

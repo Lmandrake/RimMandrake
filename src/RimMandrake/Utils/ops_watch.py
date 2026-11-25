@@ -594,7 +594,8 @@ def fleet_rate(meter, now, rules, slope_of):
 def fleet_readings(meter, live, now, rules, slope_of, plan=None):
     """-> points: accounts.fleet_burn_pct_h, accounts.fleet_stop_h and accounts.<name>.moved_runway for every account
     of the switching plan. meter: account_usage.read_now()'s accounts; live: this machine's account label (None when
-    unreadable); slope_of: slot_allocator.slope; plan: switching_plan.json (read when None).
+    unreadable); slope_of: slot_allocator.slope; plan: the rules in force in the old engine's shape (read through
+    account_plan.old_shape when None: the account plan file while it drives, else switching_plan.json).
       fleet_stop_h   hours until the plan has no account to run the fleet on, the plan's own lines() + pick() run
                      forward at the fleet's burn (switching_plan.simulate, resets refill), capped at fleet_fit.horizon_h.
                      0 = the plan has no account now: the fleet is stopped.
@@ -603,7 +604,9 @@ def fleet_readings(meter, live, now, rules, slope_of, plan=None):
     An account with no week figure counts as no room in the forecast (a stop may come later than it says: ESTIMATE),
     an ESTIMATE figure as its upper bound (ESTIMATE). No burn rate: every point UNMEASURED."""
     import switching_plan as SP
-    plan = SP.load_plan() if plan is None else plan
+    if plan is None:
+        import account_plan
+        plan = account_plan.old_shape(meter, now)[0]
     ff = rules["fleet_fit"]
     unit_h = "h until the plan has no account for the fleet (capped at %g)" % ff["horizon_h"]
     unit_rw = "x the time to reset, at the fleet's burn"

@@ -18,6 +18,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
+os.environ.setdefault("RM_UNDER_SELFTEST", "1")   # no live account plan, Burn Mode or Codex brake is read
 import slot_allocator as SA  # noqa: E402
 import account_live as AL  # noqa: E402
 _CA = tempfile.mkdtemp(prefix="slotalloc_ca_")  # fake switchers: the live login, never the real claude-account
@@ -457,7 +458,7 @@ OPS_OK = {"ok": True, "age_min": 5, "root_free_gb": 450.0, "codex_runway": 3.0, 
           "steve_unowned_stall_min": 0.0, "steve_invalid_streak": 0, "alarms_open": []}
 ops = lambda **k: dict(OPS_OK, **k)  # noqa: E731
 base_seats = seats(d())
-r = d(ops=ops())
+r = d(ops=ops(), codex_use=("OK", "yes: codex has 60% left, over its 25% line"))
 check("ops all OK changes no seat", seats(r) == base_seats and r["ops"] == {"disk": "OK", "codex": "OK", "steve_lane": "OK"},
       (seats(r), r["ops"]))
 r = d(ops=ops(root_free_gb=150.0))
@@ -469,9 +470,16 @@ check("his word stands over the disk brake (BENCH 7) and says so", r["seats"]["B
 r = d(ops=ops(root_free_gb=None))
 check("an UNMEASURED disk brakes nothing (never read as 0 GB)", seats(r) == base_seats and r["ops"]["disk"] == "UNMEASURED",
       (seats(r), r["ops"]))
-r = d(ops=ops(codex_runway=0.6))
-check("Codex runway 0.6 -> CONSERVE advice, seats unchanged", r["ops"]["codex"] == "CONSERVE" and seats(r) == base_seats
-      and "Codex runway 0.60" in r["why"], (r["ops"], r["why"]))
+r = d(ops=ops(codex_runway=0.6), codex_use=("OK", "yes: codex has 60% left, over its 25% line"))
+check("a low Codex runway is no brake: the account plan's line is the one rule", r["ops"]["codex"] == "OK"
+      and "Codex" not in r["why"], (r["ops"], r["why"]))
+r = d(ops=ops(), codex_use=("LINE", "NO: codex has 20% left, at or under its 25% line"))
+check("Codex at its leave line (the plan's answer) -> LINE advice with the plan's line, seats unchanged",
+      r["ops"]["codex"] == "LINE" and seats(r) == base_seats and "at or under its 25% line" in r["why"], (r["ops"], r["why"]))
+r = d(ops=ops(), codex_use=("UNMEASURED", "COULD NOT LOOK: no timed pass has read codex in the last 20 min"))
+check("the plan could not be looked at -> the Codex advice is UNMEASURED, never OK", r["ops"]["codex"] == "UNMEASURED", r["ops"])
+r = d(ops=ops())
+check("no answer from the plan at all -> UNMEASURED", r["ops"]["codex"] == "UNMEASURED", r["ops"])
 r = d(ops=ops(steve_unowned_stall_min=45.0))
 check("Steve stalled 45 min unowned -> STALLED advice", r["ops"]["steve_lane"] == "STALLED" and "Steve lane STALLED" in r["why"],
       r["ops"])
@@ -1072,6 +1080,48 @@ pi = SA.plan_inputs(_m, "system", NOW)
 check("plan inputs: no HOLD (no state.json, no gate) -> the pool (49 + 96: system to its 1% floor, binding at lukas's reset, 120 h) and the notice",
       pi.get("pool") and abs(pi["pool"]["pct"] - 145) < 0.01 and abs(pi["pool"]["deadline_h"] - 120) < 0.01 and pi.get("plan_notice", {}).get("state") == "soft", pi)
 os.environ.pop("RM_SWITCH_PLAN_DIR")
+
+# ---- Burn Mode: the account plan's published state (./acct burn-mode) raises the pace to its target burn, never past it
+_BMD = Path(tempfile.mkdtemp(prefix="slotalloc_bm_"))
+
+
+def _bm(target=0.9, state="on", raise_ok=True, age_s=60, account="system"):
+    return {"at": SA.iso_local(NOW - age_s), "raise_ok": raise_ok,
+            "accounts": {account: {"state": state, "target_burn_pct_h": target}}}
+
+
+_slow = dict(rate_pct_per_h=1.2, mean_helpers=6.0, pool={"pct": 40.0, "rate_pct_h": 0.4, "deadline_h": 100.0})
+r = d(**_slow)
+check("burn_mode: with no Burn Mode the pool pace fits 2", r["n_total"] == 2 and "Burn Mode" not in r["why"], (r["n_total"], r["why"]))
+r = d(**_slow, burn_mode=_bm(0.9))
+check("burn_mode: on and raise_ok true -> the pace rises to the target burn (0.9 points an hour fits 4), never past it",
+      r["n_total"] == 4 and "Burn Mode" in r["why"] and "0.90" in r["why"], (r["n_total"], r["why"]))
+r = d(**_slow, burn_mode=_bm(0.9, raise_ok=False))
+check("burn_mode: raise_ok false -> no rise, and the why says so", r["n_total"] == 2 and "no raise" in r["why"], (r["n_total"], r["why"]))
+r = d(**_slow, burn_mode=_bm(0.9, age_s=21 * 60))
+check("burn_mode: a file older than 20 min -> no rise", r["n_total"] == 2, (r["n_total"], r["why"]))
+r = d(**_slow, burn_mode=_bm(0.9, state="off"))
+check("burn_mode: state off -> no rise", r["n_total"] == 2, (r["n_total"], r["why"]))
+r = d(**_slow, burn_mode=_bm(0.9, state="unmeasured"))
+check("burn_mode: state unmeasured -> no rise", r["n_total"] == 2, (r["n_total"], r["why"]))
+r = d(**_slow, burn_mode=_bm(0.9, account="lukas"))
+check("burn_mode: on for another account -> no rise", r["n_total"] == 2, (r["n_total"], r["why"]))
+r = d(**_slow, burn_mode=_bm(0.2))
+check("burn_mode: a target under the pace never lowers it", r["n_total"] == 2, (r["n_total"], r["why"]))
+r = d(**_slow, burn_mode=_bm(None))
+check("burn_mode: a target that is no number -> no rise", r["n_total"] == 2, (r["n_total"], r["why"]))
+r = d(**_slow, burn_mode=_bm(float("inf")))
+check("burn_mode: a target that is not finite -> no rise", r["n_total"] == 2, (r["n_total"], r["why"]))
+r = d(**_slow, burn_mode="garbage")
+check("burn_mode: an unreadable record -> no rise", r["n_total"] == 2, (r["n_total"], r["why"]))
+os.environ["RM_ACCOUNT_PLAN_DIR"] = str(_BMD)
+check("burn_mode: no file -> the reader gives None (could not look is not a state)", SA.burn_mode_input() is None)
+(_BMD / "burn_mode.json").write_text(json.dumps(_bm(0.9)))
+check("burn_mode: the reader gives the file that the account plan's pass wrote",
+      (SA.burn_mode_input() or {}).get("accounts", {}).get("system", {}).get("target_burn_pct_h") == 0.9)
+(_BMD / "burn_mode.json").write_text("{not json")
+check("burn_mode: a broken file -> None", SA.burn_mode_input() is None)
+os.environ.pop("RM_ACCOUNT_PLAN_DIR")
 
 print(f"\n{'GREEN' if not FAILS else 'RED'}: {len(FAILS)} failed")
 sys.exit(1 if FAILS else 0)

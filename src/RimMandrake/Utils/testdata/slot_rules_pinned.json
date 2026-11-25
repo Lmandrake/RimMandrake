@@ -97,7 +97,6 @@
   "stale_min": 45,
   "disk_brake_free_gb": 210,
   "disk_brake_total": 1,
-  "codex_conserve_runway": 1.0,
   "steve_stall_min": 30,
   "steve_invalid_streak": 3
  }

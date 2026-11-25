@@ -54,7 +54,12 @@ def clock() -> float:
 
 
 def plan_dir() -> Path:
-    return Path(os.environ.get("RM_ACCOUNT_PLAN_DIR") or Path.home() / ".local/state/rimmandrake/account_plan")
+    """The folder of the plan file. A test child (RM_UNDER_SELFTEST) that names no folder of its own gets one that
+    does not exist: it reads no plan and can write none, so no test ever reaches the live plan."""
+    d = os.environ.get("RM_ACCOUNT_PLAN_DIR")
+    if not d and os.environ.get("RM_UNDER_SELFTEST"):
+        return Path("/nonexistent/rm_account_plan_of_a_test")
+    return Path(d or Path.home() / ".local/state/rimmandrake/account_plan")
 
 
 # ------------------------------------------------------------------ times
@@ -364,6 +369,15 @@ def problems(plan) -> list:
                 out.append(f"{tag}: `ends_at_reset_of` names no account of the plan")
             if f is None:
                 out.append(f"{tag}: `ends_at_reset_of` needs a `from` (the reset meant is the first one after it)")
+    ms = plan.get("machines", {})
+    if not isinstance(ms, dict):
+        out.append("`machines` must be an object; repair: ./acct undo")
+    else:
+        for m, c in ms.items():
+            if not re.fullmatch(r"[A-Za-z0-9_.\-]+", str(m)) or not isinstance(c, dict) or not re.fullmatch(
+                    r"[A-Za-z0-9_.@\-]+", str(c.get("ssh") or "")):
+                out.append("machine %s: needs `ssh`, the ssh name of that machine; repair: ./acct machine add %s --ssh "
+                           "<name>" % (m, m))
     if not any(accts.get(s.get("use"), {}).get("kind") == "claude" for s in steps if isinstance(s, dict)):
         out.append("no step uses a Claude account; repair: ./acct step add <name> --use <account> --leave <percent>")
     for kind, need in (("holds", ("id", "at", "ends")), ("pins", ("account", "at", "ends")),
@@ -592,6 +606,7 @@ def gather(now=None, slow=False) -> dict:
                                  accounts=set(rows)),
             "switches": sws, "hand": bool(SP.manual_switch((sws or [None])[-1], markers, live)) if sws else False,
             "draining": draining(SP),
+            "notice": read_json(notice_dir() / "notice.json"), "published": read_json(plan_dir() / "decision.json"),
             "markers": markers, "state": SP.load_state(), "hold_file": (SP.OUT / "HOLD").exists(),
             "codex": codex, "genai": cache.get("genai"), "slow_at": cache.get("at"), "entry": entry,
             "load": load, "ncpu": os.cpu_count() or 1}
@@ -1142,13 +1157,16 @@ def burn_mode(plan, f) -> dict:
             "on": sorted(a for a, v in out.items() if v["state"] == "on")}
 
 
-def can_use(plan, f, a):
-    """May our work send `a` a job now? -> (OK | NO | COULD_NOT_LOOK, one line)."""
+def can_use(plan, f, a, carried=False):
+    """May our work send `a` a job now? -> (OK | NO | COULD_NOT_LOOK, one line). A meter account (Codex): its level is
+    over its line. A Claude account: a new run may start on it on this machine (new_run_gate)."""
     now = f["now"]
     rd = readings_of(f)
     rd["codex"] = f.get("codex") or reading(None, now)
     if a not in plan["accounts"]:
         return COULD_NOT_LOOK, "COULD NOT LOOK: %s is no account of the plan" % a
+    if plan["accounts"][a]["kind"] == "claude":
+        return new_run_gate(plan, f, a, carried)
     r = rd.get(a) or reading(None, now)
     env = Env(now, lambda x: (rd.get(x) or {}).get("left"), lambda x: (rd.get(x) or {}).get("reset"))
     rl = rule_of(plan, a, env)
@@ -1160,6 +1178,247 @@ def can_use(plan, f, a):
         return OK, "yes: %s has %s%% left, over its %s%% line%s" % (
             a, g(r["left"]), g(rl["line"]), " (reset day: the line is lifted)" if rl["reset_day"] else "")
     return NO, "NO: %s has %s%% left, at or under its %s%% line" % (a, g(r["left"]), g(rl["line"]))
+
+
+def meter_answer(a, now=None, slow=False):
+    """`./acct can-use <a meter account>` for a program (Codex's door, the allocator's advice line). -> (OK | NO |
+    COULD_NOT_LOOK, one line). slow: read the meter now (about 2 s); else the last timed pass's reading, which is could
+    not look once it is older than NOTICE_FRESH_S. No plan file is could not look: a caller then sends its job."""
+    now = clock() if now is None else now
+    plan, why = load_plan()
+    if plan is None:
+        return COULD_NOT_LOOK, "COULD NOT LOOK: " + why
+    if os.environ.get("RM_ACCOUNT_PLAN_FRAME"):
+        return can_use(plan, gather(now), a)
+    if slow:
+        try:
+            import account_usage as AU
+            codex = meter_reading(AU.read_codex_points(), now)
+        except Exception as e:  # noqa: BLE001  the reader failing is could not look, by name
+            return COULD_NOT_LOOK, "COULD NOT LOOK: the reader of %s failed (%s: %s)" % (a, type(e).__name__, e)
+    else:
+        cache = read_json(plan_dir() / "frame.json", {})
+        cache = cache if isinstance(cache, dict) else {}
+        codex, at = cache.get("codex"), cache.get("at")
+        if not isinstance(codex, dict) or not is_num(at) or now - at > NOTICE_FRESH_S:
+            return COULD_NOT_LOOK, "COULD NOT LOOK: no timed pass has read %s in the last %d min" % (a, NOTICE_FRESH_S // 60)
+    return can_use(plan, {"now": now, "rows": {}, "codex": codex}, a)
+
+
+# ------------------------------------------------------------------ the gate: may a new run start now (one answer)
+# budget: danger=a notice that outlived the pass that wrote it (its timer stopped) holds every launch of the deciding
+# budget: machine; evidence=a stopped engine's HOLD file held launches on 2026-11-05, and the pass writes each 5 min, so
+# budget: 20 min is four missed passes; ends no work: on the deciding machine an older notice refuses nothing and the
+# budget: plan decides at once. On a following machine an older notice is could not look, and no NEW run starts there
+# budget: (the owner's order of 2026-11-24 for two machines on one account); its live runs go on.
+NOTICE_FRESH_S = 20 * 60
+REFUSES = ("soft", "stop", "stopped", "switch", "hold")       # the decisions under which no new run starts
+
+
+def notice_dir() -> Path:
+    """The folder of the actuator's notice, which each machine's launch gate and hooks read."""
+    import switching_plan as SP
+    return Path(os.environ.get("RM_SWITCH_PLAN_DIR") or SP.LIVE_OUT)
+
+
+def fresh_record(n, now) -> bool:
+    """n is a record written under NOTICE_FRESH_S ago (its `at`)."""
+    at = stamp(n.get("at")) if isinstance(n, dict) else None
+    return at is not None and now - at <= NOTICE_FRESH_S
+
+
+def notice_refusal(n, now, carried=False):
+    """Why the actuator's notice n refuses a new run now, or None. A stop refuses each start. A drain refuses a new
+    run; a carried run (the continuation of a live run, or a resume of its session) is that run finishing, and goes
+    until the account is at its line (`account_end`). The warning zone refuses nothing. A notice that cannot be read,
+    or is older than NOTICE_FRESH_S, refuses nothing here: the caller says what that means on its machine."""
+    if not fresh_record(n, now):
+        return None
+    acc, since = n.get("account") or "?", n.get("since") or "?"
+    if n.get("could_not_look"):
+        return str(n.get("message") or "COULD NOT LOOK: the account of this machine could not be read; no new start")
+    if n.get("state") == "stop":
+        return ("the account %s is out (notice since %s): the fleet is stopped and nothing starts until an account "
+                "resets (./acct status shows it)" % (acc, since))
+    if n.get("state") == "soft" and n.get("drain") and not (carried and not n.get("account_end")):
+        return ("the account %s is draining (notice since %s): live runs finish on it and no new run starts until the "
+                "switch (./acct status shows it). Why: %s" % (acc, since, " ".join(str(n.get("why") or "").split())))
+    return None
+
+
+def new_run_gate(plan, f, a, carried=False):
+    """May a new run start on the Claude account `a` on this machine now? -> (OK | NO | COULD_NOT_LOOK, one line).
+    NO when `a` is not the live account here; when the actuator's fresh notice refuses (a stop, a drain); when the
+    decision refuses new runs. The decision is the one that the last pass published; with no pass inside
+    NOTICE_FRESH_S (its timer stopped), or with another account live since, the plan decides now on the last readings."""
+    now, live = f["now"], f.get("live")
+    if not live:
+        return COULD_NOT_LOOK, "COULD NOT LOOK: the live account of this machine is unknown (%s)" % (
+            f.get("live_why") or "the switcher gave no status")
+    if a != live:
+        return NO, "NO: %s is not the live account of this machine (%s is); ./acct switch %s asks for it" % (a, live, a)
+    why = notice_refusal(f.get("notice"), now, carried)
+    if why:
+        return NO, "NO: " + why
+    pd = f.get("published")
+    if fresh_record(pd, now) and not pd.get("shadow") and pd.get("account") == a and pd.get("rev") == plan.get("rev"):
+        d, how = pd, "the pass of %s" % pacific(stamp(pd["at"]))
+    elif plan.get("driver", "old") != "new":
+        return OK, "yes: the old engine drives this machine, and its notice refuses nothing"
+    else:
+        d, how = decide(plan, f), "decided now (no pass has published this plan for %s in the last %d min)" % (
+            a, NOTICE_FRESH_S // 60)
+    if d["do"] == "skip":
+        return COULD_NOT_LOOK, d["why"]
+    # at the line: the save order, or a switch due under the line with no run live (SP.drained leaves it a switch)
+    at_line = d.get("account_end") or d.get("under") or (
+        is_num(d.get("pct_left")) and is_num(d.get("line")) and d["pct_left"] <= d["line"])
+    if d["do"] in REFUSES and not (carried and not at_line and d["do"] != "stop" and d["do"] != "stopped"):
+        return NO, "NO: no new run starts on %s (%s): %s" % (a, how, d["why"])
+    return OK, "yes (%s): %s" % (how, d["why"])
+
+
+def launch_gate(now=None, carried=False):
+    """The one answer that a launcher asks before it starts a run on this machine (`./acct can-use`). -> (exit, one
+    line, role). role: `decider` (this machine holds the plan file), `follower` (its notice comes from the deciding
+    machine: follows.json beside the notice), `none`. The actuator's fresh notice refuses on every machine. A following
+    machine whose notice is missing or older than NOTICE_FRESH_S cannot look: COULD_NOT_LOOK, and its launcher starts
+    nothing. A test reads no live plan (plan_dir): it names its own folder, or only the notice counts."""
+    now = clock() if now is None else now
+    nd = notice_dir()
+    n = read_json(nd / "notice.json")
+    # a test world that names its notice folder names its plan folder too, or has no plan
+    own = (plan_dir() / "plan.json").exists() and not (
+        os.environ.get("RM_SWITCH_PLAN_DIR") and not os.environ.get("RM_ACCOUNT_PLAN_DIR"))
+    if own:
+        plan, why = load_plan()
+        if plan is None:        # a plan file that is refused: the pass runs the old engine, and its notice is the answer
+            r = notice_refusal(n, now, carried)
+            return (NO, "NO: " + r, "decider") if r else (
+                OK, "yes: by the actuator's notice alone (%s)" % why, "decider")
+        f = gather(now)
+        if not f.get("live"):
+            return COULD_NOT_LOOK, "COULD NOT LOOK: the live account of this machine is unknown (%s)" % (
+                f.get("live_why") or "the switcher gave no status"), "decider"
+        rc, text = can_use(plan, f, f["live"], carried)
+        return rc, text, "decider"
+    fol = read_json(nd / "follows.json")
+    if isinstance(fol, dict):
+        of = fol.get("of") or "the deciding machine"
+        if not fresh_record(n, now):
+            at = stamp(n.get("at")) if isinstance(n, dict) else None
+            return COULD_NOT_LOOK, ("COULD NOT LOOK: this machine takes its account plan from %s, and %s; no new run "
+                                    "starts here until a notice arrives (on %s: ./acct status)" % (
+                                        of, "it has no notice" if at is None else "its last notice is %d min old" % (
+                                            (now - at) / 60), of)), "follower"
+        r = notice_refusal(n, now, carried)
+        return (NO, "NO: " + r, "follower") if r else (
+            OK, "yes: the notice of %s from %s refuses nothing" % (pacific(stamp(n["at"])), of), "follower")
+    r = notice_refusal(n, now, carried)
+    return (NO, "NO: " + r, "none") if r else (
+        NONE, "NONE: this machine holds no account plan and follows none; nothing is refused", "none")
+
+
+# ------------------------------------------------------------------ the machines on the plan's accounts
+def machine_notice(plan, f, account, now, name, prev=None, why_unread=None) -> dict:
+    """The notice for the machine `name`, which is on `account`: the plan's decision for that account from the same
+    readings (pure). A decision under which no new run starts is a drain there (at the line: `account_end`, save and
+    publish); the warning zone carries the warning text; an account that could not be read refuses new runs and says
+    could not look. A following machine is never switched from here: its switch is a hand act."""
+    import switching_plan as SP
+    prev = prev if isinstance(prev, dict) else {}
+    tag = {"machine": name, "follows": os.uname().nodename}
+    if not account:
+        msg = "COULD NOT LOOK: the live account of %s could not be read (%s); no new run starts there" % (
+            name, why_unread or "no cause given")
+        return {"state": "soft", "since": prev.get("since") if prev.get("could_not_look") and prev.get("since")
+                else iso(now), "at": iso(now), "account": None, "line": None, "pct_left": None, "message": msg,
+                "why": msg, "drain": True, "account_end": False, "warning": None, "could_not_look": True, **tag}
+    fm = {**f, "live": account, "runs": None, "state": {}, "markers": {}, "hand": True, "draining": False,
+          "burn_live": f.get("burn_live") if account == f.get("live") else None}
+    d = decide(plan, fm)
+    if d["do"] in REFUSES:
+        under = is_num(d.get("pct_left")) and is_num(d.get("line")) and d["pct_left"] <= d["line"]
+        dm = {**d, "do": "soft", "drain": True, "account_end": under}
+    else:
+        dm = {**d, "do": "normal", "account": account}
+        if d.get("warning"):
+            dm["warning_text"] = AE.warn_text(account, d.get("pct_left"), fm["burn_live"], d.get("line"),
+                                              plan["numbers"]["account_end"], bool(d.get("last_account")))
+    return {**SP.notice_of(dm, now, prev), **tag}
+
+
+def push_machines(plan, f, now, account_of=None, send=None) -> dict:
+    """Each machine of the plan gets the plan's decision for the account that it is on, from the readings of this pass.
+    -> {machine: {ok, account, state, line}}. Never raises: a machine that could not be reached is said, and its own
+    gate refuses new runs once its notice is older than NOTICE_FRESH_S."""
+    import account_plan_machines as MS      # the ssh transport: this file starts no process
+    out = {}
+    for name, m in (plan.get("machines") or {}).items():
+        try:
+            account, why = (account_of or MS.machine_account)(m["ssh"])
+            keep = plan_dir() / ("machine.%s.json" % name)
+            n = machine_notice(plan, f, account, now, name, read_json(keep, {}), why)
+            ok, err = (send or MS.send_notice)(m["ssh"], n)
+            if ok:
+                write_atomic(keep, n)
+            out[name] = {"ok": bool(ok), "account": account, "state": n["state"], "drain": n["drain"],
+                         "line": ("sent: " + (n["message"] or "nothing is refused")) if ok else
+                         "COULD NOT LOOK: the notice did not reach %s (%s)" % (name, err)}
+        except Exception as e:  # noqa: BLE001  the pass goes on; the machine's own gate handles a missing notice
+            out[name] = {"ok": False, "account": None, "state": None, "drain": None,
+                         "line": "COULD NOT LOOK: %s: %s" % (type(e).__name__, e)}
+    return out
+
+
+def machine_lines(plan, now) -> list:
+    """One line for each machine of the plan: the account it is on and the last notice that reached it."""
+    out = []
+    for name in plan.get("machines") or {}:
+        n = read_json(plan_dir() / ("machine.%s.json" % name))
+        if not isinstance(n, dict) or stamp(n.get("at")) is None:
+            out.append("MACHINE %s: UNMEASURED: no notice has reached it yet" % name)
+            continue
+        age = (now - stamp(n["at"])) / 60
+        out.append("MACHINE %s: on %s; %s (the last notice reached it %s min ago%s)" % (
+            name, n.get("account") or "an account that could not be read",
+            n.get("message") or "nothing is refused", g(age),
+            "" if age * 60 <= NOTICE_FRESH_S else ": it now refuses new runs, could not look"))
+    return out
+
+
+def old_shape(rows=None, now=None):
+    """The rules in force, in the shape that the old engine's functions read (order, lines, floors): for a program
+    that still calls one of them (the allocator's pool, the fleet runway of ops_watch, the Dispatcher's priority).
+    -> (plan, where it came from). The plan file while it drives; else switching_plan.json, which then drives. A
+    step's `when` has no place in this shape: an account is in the order while its step is alive now."""
+    import switching_plan as SP
+    plan, why = load_plan()
+    if plan is None or plan.get("driver", "old") != "new":
+        return SP.load_plan(), "switching_plan.json (%s)" % (why or "the plan file names the old engine as the driver")
+    now = time.time() if now is None else now
+    if rows is None:
+        import account_usage as AU
+        rows = AU.read_now(now).get("accounts") or {}
+    return ({**legacy_view(plan, {"now": now, "rows": rows, "switches": None}), "pool_pacing": True},
+            "the account plan, rev %s" % plan.get("rev"))
+
+
+def temporary_line(plan, a, now, hours_to_reset=None):
+    """(step name, its end as ISO or None, leave line) when the rule of `a` now is a step with a life (a temporary
+    line: `./acct line A N --until-reset`) and no `when`, else None. hours_to_reset: the caller's reading of a's reset."""
+    reset = None if hours_to_reset is None else now + hours_to_reset * 3600
+    env = Env(now, lambda x: None, lambda x: reset if x == a else None)
+    rl = rule_of(plan, a, env)
+    if rl is None:
+        return None
+    s = plan["steps"][find_step(plan, rl["step"])]
+    if s.get("when") or not (s.get("ends") or s.get("ends_at_reset_of")) or not is_num(s.get("leave")):
+        return None
+    ends = [stamp(s.get("ends"))] + ([env.first_reset_after(s["ends_at_reset_of"], stamp(s.get("from")))]
+                                     if s.get("ends_at_reset_of") and stamp(s.get("from")) is not None else [])
+    ends = [e for e in ends if e is not None]
+    return s["name"], iso(min(ends)) if ends else None, rl["line"]
 
 
 # ------------------------------------------------------------------ the measures (pure)
@@ -1349,6 +1608,7 @@ def status_text(plan, f):
         for h in active(plan[kind], f["now"]):
             out.append("%s %s until %s: %s" % (kind[:-1].upper(), h.get("id") or h.get("account") or h.get("to"),
                                                pacific(stamp(h["ends"])), h.get("why") or "no reason given"))
+    out += machine_lines(plan, f["now"])
     if f.get("hold_file"):
         out.append("HOLD  a HOLD file made by hand stands in the old engine's folder: no pass acts until it is removed")
     return "\n".join(out), rc
@@ -1379,6 +1639,8 @@ def plan_text(plan, f=None) -> str:
         out.append("%s: %s" % (kind.upper(), "none" if not live else "; ".join(
             "%s until %s (%s)" % (h.get("id") or h.get("account") or h.get("to"), pacific(stamp(h["ends"])),
                                   h.get("why") or "no reason given") for h in live)))
+    out.append("MACHINES that get this plan's decision for the account they are on: %s" % (", ".join(
+        "%s (ssh %s)" % (m, c["ssh"]) for m, c in (plan.get("machines") or {}).items()) or "none but this one"))
     out.append("NUMBERS: " + json.dumps(plan["numbers"], sort_keys=True))
     return "\n".join(out)
 
@@ -1567,6 +1829,19 @@ def change_of(a, now):
         return fn, {"hold": "hold", "pin": "pin %s" % getattr(a, "account", ""),
                     "switch": "switch to %s%s" % (getattr(a, "account", ""), " now" if getattr(a, "now", False) else
                                                   " when no run is live")}[c]
+    if c == "machine":
+        def fn(p):
+            ms = p.setdefault("machines", {})
+            if a.act == "add":
+                if not a.ssh:
+                    raise Refused("a machine needs its ssh name; repair: ./acct machine add %s --ssh <name>" % a.name)
+                ms[a.name] = {"ssh": a.ssh}
+            elif a.name not in ms:
+                raise LookupError("NONE: no machine is named %s (%s)" % (a.name, ", ".join(ms) or "the plan lists none"))
+            else:
+                del ms[a.name]
+            return p
+        return fn, "machine %s %s" % (a.act, a.name)
     if c == "driver":
         def fn(p):
             p["driver"] = a.which
@@ -1679,13 +1954,19 @@ def tick(shadow=False, dry=False, seams=None) -> int:
             rec["old"] = {k: old.get(k) for k in ("do", "to", "why", "pct_left", "line")}
             rec["agree"] = same_pick(old, new)
             rc = OK if rec["agree"] else NO
+        if plan.get("machines"):
+            rec["machines"] = push_machines(plan, f, pass_now(seams), **(seams.get("machines") or {}))
         log(rec)
         publish_state(plan, f, new, True)
         print(json.dumps(rec, sort_keys=True))
         return rc
     if active(plan["holds"], clock()):
         h = active(plan["holds"], clock())[0]
-        log({"do": "passive", "why": "hold %s: %s" % (h["id"], h.get("why"))})
+        rec = {"do": "passive", "why": "hold %s: %s" % (h["id"], h.get("why"))}
+        if plan.get("machines"):    # a hold acts on nothing and refuses nothing: the other machines are told so
+            rec["machines"] = push_machines(plan, {"now": clock(), "rows": {}}, pass_now(seams),
+                                            **(seams.get("machines") or {}))
+        log(rec)
         print("PASSIVE: hold %s until %s" % (h["id"], pacific(stamp(h["ends"]))))
         return OK
     last = {}
@@ -1711,7 +1992,8 @@ def tick(shadow=False, dry=False, seams=None) -> int:
     saved = SP.decide, SP.load_plan
     SP.decide, SP.load_plan = new_decide, new_load_plan
     try:
-        rc = SP.check(dry=dry, **({"passes": 5} if not seams else {k: v for k, v in seams.items() if k != "frame"}))
+        rc = SP.check(dry=dry, **({"passes": 5} if not seams else {k: v for k, v in seams.items()
+                                                                   if k not in ("frame", "machines")}))
     finally:
         SP.decide, SP.load_plan = saved
     if "decision" in last:
@@ -1720,8 +2002,11 @@ def tick(shadow=False, dry=False, seams=None) -> int:
             slow = gather(slow=True)
             f.update(codex=slow["codex"], genai=slow["genai"], slow_at=slow["slow_at"], load=slow["load"],
                      ncpu=slow["ncpu"])
-        log({"do": d["do"], "to": d.get("to"), "live": f.get("live"), "why": d.get("why"), "pct_left": d.get("pct_left"),
-             "line": d.get("line"), "runs": None if f["runs"] is None else len(f["runs"]), "rev": last["plan"].get("rev")})
+        rec = {"do": d["do"], "to": d.get("to"), "live": f.get("live"), "why": d.get("why"), "pct_left": d.get("pct_left"),
+               "line": d.get("line"), "runs": None if f["runs"] is None else len(f["runs"]), "rev": last["plan"].get("rev")}
+        if not dry and last["plan"].get("machines"):
+            rec["machines"] = push_machines(last["plan"], f, pass_now(seams), **(seams.get("machines") or {}))
+        log(rec)
         if not dry:
             publish_state(last["plan"], f, d, False)
             flush_ledger(last["plan"])
@@ -1738,13 +2023,19 @@ def timer_pass(seams=None) -> int:
         return tick(seams=seams)
     if plan is None:
         print("account_plan: %s; the old engine runs" % why)
-    rc = SP.check(**({"passes": 5} if not seams else {k: v for k, v in seams.items() if k != "frame"}))
+    rc = SP.check(**({"passes": 5} if not seams else {k: v for k, v in seams.items() if k not in ("frame", "machines")}))
     if plan is not None:
         try:
             tick(shadow=True, seams=seams)
         except Exception as e:  # noqa: BLE001  a shadow that broke is said, and the old pass stands
             print("account_plan: the shadow pass broke: %s: %s" % (type(e).__name__, e), file=sys.stderr)
     return rc
+
+
+def pass_now(seams) -> float:
+    """The time of an act of the pass: a test's clock, else now (a pass can last minutes)."""
+    import switching_plan as SP
+    return SP.clock() if seams else time.time()
 
 
 def gather_light(SP) -> dict:
@@ -1842,8 +2133,13 @@ def parser():
     p.add_argument("--rate", type=float, default=None, help="points an hour (default: the last 24 h)")
     p = sub.add_parser("measures")
     p.add_argument("--weeks", type=int, default=4)
-    p = sub.add_parser("can-use")
-    p.add_argument("account")
+    p = sub.add_parser("can-use", help="may a job go to this account now; with no account: may a new run start here")
+    p.add_argument("account", nargs="?")
+    p.add_argument("--carried", action="store_true", help="the run is a continuation of a live run")
+    p = sub.add_parser("machine", parents=[who], help="a machine that gets this plan's decision for its account")
+    p.add_argument("act", choices=("add", "rm"))
+    p.add_argument("name")
+    p.add_argument("--ssh", default=None)
     p = sub.add_parser("tick")
     p.add_argument("--shadow", action="store_true")
     p.add_argument("--dry-run", action="store_true")
@@ -1887,7 +2183,7 @@ def parser():
     return ap
 
 
-WRITES = ("order", "line", "step", "set", "switch", "pin", "unpin", "hold", "release", "driver")
+WRITES = ("order", "line", "step", "set", "switch", "pin", "unpin", "hold", "release", "driver", "machine")
 
 
 def main(argv=None) -> int:
@@ -1938,6 +2234,10 @@ def run(argv) -> int:
             new_rev, rev, " (this also takes back rev %s)" % ", ".join(map(str, later)) if later else "", new_rev))
         return OK
     plan, why = load_plan()
+    if a.cmd == "can-use" and (a.account is None or plan is None):
+        rc, text, _role = launch_gate(now, a.carried)
+        print(text)
+        return rc
     if plan is None:
         print(why if why.startswith(("NONE", "COULD NOT LOOK")) else "REFUSED: " + why)
         return NONE if why.startswith("NONE") else COULD_NOT_LOOK if why.startswith("COULD") else REFUSED
@@ -1955,6 +2255,11 @@ def run(argv) -> int:
         rev, new = commit(fn, meta_of(a, argv))
         f = gather(now)
         dead = not_alive(plan, new, f)
+        if a.cmd == "machine" and a.act == "rm" and not os.environ.get("RM_ACCOUNT_PLAN_FRAME"):
+            import account_plan_machines as MS
+            ok, err = MS.forget_machine(plan["machines"][a.name]["ssh"])
+            what += "" if ok else (" (its follower mark could not be removed: %s; repair: ssh %s rm %s/follows.json)" % (
+                err, plan["machines"][a.name]["ssh"], MS.REMOTE_DIR))
         print("DONE rev %s: %s%s\n%s\nundo: ./acct undo %s" % (
             rev, what, " (NOT ALIVE NOW: %s)" % dead if dead else "", next_line(new, f), rev))
         return OK
@@ -1974,7 +2279,7 @@ def run(argv) -> int:
             what, next_line(plan, f), say(wa) if wa else "COULD NOT LOOK", next_line(new, f),
             say(wb) if wb else "COULD NOT LOOK"))
         return OK
-    f = gather(now)
+    f = gather(now, slow=a.cmd == "can-use" and dig(plan, "accounts.%s.kind" % a.account) == "meter")
     if a.cmd == "status":
         text, rc = status_text(plan, f)
         print(text)
@@ -1997,7 +2302,7 @@ def run(argv) -> int:
         print(json.dumps(burn_mode(plan, f), indent=1))
         return OK
     if a.cmd == "can-use":
-        rc, text = can_use(plan, f, a.account)
+        rc, text = can_use(plan, f, a.account, a.carried)
         print(text)
         return rc
     if a.cmd == "measures":

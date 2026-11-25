@@ -18,17 +18,17 @@ Every call is metered in gpt_call_log (job, model, rc, real tokens, seconds, fil
 same name, record what it found with `gpt_consult_rounds.py yield`, and `gpt_consult_rounds.py report` prints cost and
 yield per round (GPT_CONSULT_MEASURE_COST_UNLOGGED).
 
-Every call first passes codex_advice.gate (slot_allocator's Codex advice): on HOLD only a call given
-`--required "<rule that requires this review>"` (or env RM_CODEX_REQUIRED) runs, exit 4 otherwise; on EXHAUSTED
-every call is refused, exit 5. No Claude fallback (owner routing ruling 2026-10-28).
+Every call first passes codex_advice.gate, which asks the account plan (`./acct can-use codex`): with Codex at or
+under its leave line every call is refused with that line, exit 4, a call marked `--required` too; a plan or a meter
+that cannot be read says COULD NOT LOOK and the job is sent. The line and its reset-day rule are in the plan
+(`./acct plan`), not here. No Claude fallback (owner routing ruling 2026-10-28).
 
 🔴 NO ANSWER IS NEVER EXIT 0, AND EVERY KIND OF NO-ANSWER HAS ITS OWN CODE (owner, 2026-11-17: "make that
 outcome intentionally different than no failure somehow... we must not suffer such errors"). The codes are
 the GPT door's (Dispatch providers/chatgpt/bin/gpt_door.py EXIT):
 
     0   an answer arrived and is non-empty
-    4   Codex advice says HOLD and this call was not --required
-    5   Codex advice says EXHAUSTED
+    4   Codex is at or under its leave line in the account plan (./acct can-use codex): no job was sent
     20  AUTH: no usable login (no CODEX_HOME, 401/invalid_grant)  -> the agent renews it: gpt_door.py renew
     21  ALLOWANCE: usage limit, 429, quota                                 -> wait for the reset
     22  TRANSPORT: the route is broken (no interpreter, bad flag, 400 model_not_found, container down)
@@ -147,8 +147,8 @@ def main(argv=None):
                     help="no tools: --ephemeral, every tool feature disabled, web search off, strict config")
     ap.add_argument("--events", help="run codex --json and write its event stream (the transcript) here, plus "
                                      "<EVENTS>.meta.json naming the job dir and home")
-    ap.add_argument("--required", help="the rule that requires this review round: lets it run while the Codex "
-                                       "advice is HOLD (never while EXHAUSTED)")
+    ap.add_argument("--required", help="the rule that requires this review round: recorded with a refusal. It does "
+                                       "not pass Codex's leave line; ./acct line codex changes that line")
     a = ap.parse_args(argv)
     side = door.resolve_side(a.codex or os.environ.get("RM_CODEX_SIDE") or None)
     if a.round is not None and not ROUND_RE.match(a.round):

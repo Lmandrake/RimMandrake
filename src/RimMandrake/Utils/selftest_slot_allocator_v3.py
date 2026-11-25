@@ -9,11 +9,13 @@ after he leaves (his rule in slot_rules.json presence._doc). His word (the overr
 """
 import copy
 import json
+import os
 import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
+os.environ.setdefault("RM_UNDER_SELFTEST", "1")   # no live account plan, Burn Mode or Codex brake is read
 import slot_allocator as SA  # noqa: E402
 
 FAILS = []

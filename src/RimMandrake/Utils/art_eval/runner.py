@@ -138,8 +138,8 @@ def call_gpt(prompt: str, images: list, workdir: Path, timeout: int = 900,
     meta = {"model_reported": m.group(1) if m else "UNMEASURED", "seconds": round(time.time() - t0, 1)}
     if r.returncode or not out.is_file():
         meta["error"] = (r.stderr or "")[-500:]
-        if r.returncode in (4, 5):   # codex_advice EXIT_HOLD / EXIT_EXHAUSTED: refused before Codex ran
-            meta["codex_refused"] = "HOLD" if r.returncode == 4 else "EXHAUSTED"
+        if r.returncode == 4:   # codex_advice.EXIT_LINE: Codex is at its leave line; refused before Codex ran
+            meta["codex_refused"] = "LINE"
         return "", meta
     return out.read_text(), meta
 

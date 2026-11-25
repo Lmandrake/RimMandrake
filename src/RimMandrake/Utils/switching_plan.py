@@ -985,8 +985,12 @@ def record_stop(state: dict, d: dict, now: float) -> None:
 
 
 def write_notice(d: dict, now: float) -> None:
+    write_atomic(OUT / "notice.json", notice_of(d, now, read_json(OUT / "notice.json", {}) or {}))
+
+
+def notice_of(d: dict, now: float, prev: dict) -> dict:
+    """The notice of the decision d (pure). prev: the notice before it, whose `since` goes on while the state does."""
     state = {"soft": "soft", "stop": "stop", "stopped": "stop"}.get(d["do"], "none")
-    prev = read_json(OUT / "notice.json", {}) or {}
     since = (d.get("stopped_at") if state == "stop" else None) or (
         prev.get("since") if prev.get("state") == state and prev.get("since")
         and bool(prev.get("drain")) == bool(d.get("drain")) else iso(now))     # a drain's own start bounds a pull
@@ -998,14 +1002,13 @@ def write_notice(d: dict, now: float) -> None:
            "stop": "hard stop: the fleet is stopped until a reset",
            "none": "the account nears its line: save a note, publish what is done, keep working; new work still starts"
                    if warned else ""}[state]
-    write_atomic(OUT / "notice.json", {"state": state, "since": since, "at": iso(now), "account": d.get("account"),
-                                       "line": d.get("line"), "pct_left": d.get("pct_left"), "message": msg,
-                                       "why": d.get("why"), "drain": bool(d.get("drain")) and state == "soft",
-                                       "account_end": bool(d.get("account_end")) and state == "soft",
-                                       # the warning's text, which a run that starts now gets in its start package
-                                       "warning": d.get("warning_text") if warned else None,
-                                       **({k: d.get(k) or prev.get(k) for k in ("reset_at", "reset_account")}
-                                          if state == "stop" else {})})
+    return {"state": state, "since": since, "at": iso(now), "account": d.get("account"),
+            "line": d.get("line"), "pct_left": d.get("pct_left"), "message": msg,
+            "why": d.get("why"), "drain": bool(d.get("drain")) and state == "soft",
+            "account_end": bool(d.get("account_end")) and state == "soft",
+            # the warning's text, which a run that starts now gets in its start package
+            "warning": d.get("warning_text") if warned else None,
+            **({k: d.get(k) or prev.get(k) for k in ("reset_at", "reset_account")} if state == "stop" else {})}
 
 
 def armed_call(st: dict, argv: list, still=None) -> dict:

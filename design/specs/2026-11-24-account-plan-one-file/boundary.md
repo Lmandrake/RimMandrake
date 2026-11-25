@@ -1,8 +1,13 @@
 # BOUNDARY: the account plan as one file, commanded in one line, Design Version 0.1.0
 
 Code: `src/RimMandrake/Utils/account_plan.py` (the plan file, the decision, the forecast, Burn Mode, the measures, the
-commands, the timed pass), `src/RimMandrake/Utils/account_plan_replay.py` (both engines over the recorded readings),
-`acct` (the one-line door), `src/RimMandrake/Utils/account_plan.seed.json` (the numbers of a first plan only).
+gate, the notice of each machine, the commands, the timed pass), `src/RimMandrake/Utils/account_plan_machines.py` (the
+ssh transport to another machine), `src/RimMandrake/Utils/account_plan_replay.py` (both engines over the recorded
+readings), `acct` (the one-line door), `src/RimMandrake/Utils/account_plan.seed.json` (the numbers of a first plan only).
+Readers: `src/RimMandrake/rimflow/detached_helper.py` (`drain_refusal`, the launcher's gate),
+`src/RimMandrake/Utils/codex_advice.py` (Codex's door), `src/RimMandrake/Utils/slot_allocator.py` (Burn Mode, the pool,
+the Codex advice line), `src/RimMandrake/Utils/ops_watch.py` (the fleet runway), `src/RimMandrake/rimflow/account_pick.py`
+(the priority).
 Design: `design.md` beside this page. Item: `RIMMANDRAKE_DESIGN_ACCOUNT_PLAN_ONE_FILE_COMMANDED_IN_ONE_LINE`.
 Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_plan.py`. The planted faults:
 `src/RimMandrake/Utils/account_plan_mutants.py`.
@@ -15,7 +20,11 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
   `read_genai_status()`. No other reader of a level.
 - **the-live-account.** `account_live` (the switcher's status), and the switcher's own `log.jsonl` for past switches.
 - **the-live-runs.** The live `rm-detached-*` units, or None when systemd cannot be read.
-- **the-old-actuator.** `switching_plan._check` and `account_end.py`, unchanged.
+- **the-old-actuator.** `switching_plan._check` and `account_end.py`. Its notice (`notice.json`, built by
+  `switching_plan.notice_of`) is what each machine's launch gate and hooks read.
+- **another-machine.** A machine that the plan lists (`./acct machine add <name> --ssh <ssh name>`): reachable by ssh
+  with no password, with the switcher (`claude-account --json status`) and the folder
+  `/mnt/d/ClaudeWork/rimmandrake/switching_plan`.
 - **a-command-line.** One `./acct` command, from the owner, the Conductor or a program.
 
 ## DOES NOT SURVIVE (not promised)
@@ -34,7 +43,16 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
   Claude accounts of today; with more than about five it gets slow.
 - **a-switch-that-neither-log-names.** A switch made by copying credentials by hand, outside `claude-account`.
 - **a-lost-history-file.** Undo then has nothing to read, and answers NONE.
-- **two-machines.** The file is this machine's. Another machine has its own plan.
+- **a-run-on-another-machine-that-does-not-end.** At the line a listed machine gets a notice: no new run starts there,
+  and its hooks tell each live run to save and publish. A run there that keeps working burns the account under its
+  line: this tool stops no process on another machine and never switches one. Both are hand acts
+  (`ssh -t <machine> claude-account-switch ...`).
+- **a-machine-that-the-plan-does-not-list.** It has no notice and no gate from here. It is as it was before.
+- **the-deciding-machine-off.** While this machine is off or its pass is dead, each listed machine refuses new runs
+  (could not look) from 20 min after its last notice, until a notice arrives.
+- **clocks-that-differ-by-minutes.** A listed machine reads the age of its notice by its own clock.
+- **a-plan-file-on-two-machines.** One machine holds the plan file. A second plan file on a listed machine makes that
+  machine decide for itself.
 
 ## PROMISES (each one is owed a check of the same name)
 
@@ -117,6 +135,34 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
   and no Codex reader, and answer in under a second on a full plan.
 - **the_tool_never_touches_a_credential.** The code opens no credential file and calls the switcher only for `status`
   (and, in `tick`, through the old actuator).
+
+### The gate, the machines and the readers
+
+- **can_use_is_the_one_answer_for_a_new_run.** `./acct can-use` (no account: the live account of this machine) is the
+  one question that a launcher asks. NO when the account is not live here; when the actuator's fresh notice refuses (a
+  stop, a drain); when the decision that the last pass published for this plan revision refuses new runs. With no
+  such pass inside 20 min the plan decides at once on the last readings. The warning zone is yes. An unknown live
+  account is exit 2, and on the deciding machine a launcher then refuses nothing. The launcher's refusal carries the
+  mark `ACCOUNT GATE`, which the pipeline reads as a wait and no fault.
+- **a_carried_run_goes_until_the_line.** A continuation of a live run, or a resume of its session, passes a drain that
+  is no account end, by the notice and by the published decision. At the line and under a stop it is refused.
+- **each_machine_on_the_account_gets_its_decision.** Each timed pass (new driver, shadow, hold) asks each listed machine
+  which account it is on, decides for that account with the same readings and rules, and writes the result there as
+  its notice: nothing refused, the warning text, or no new run (at the line: save and publish). An account that could
+  not be read is could not look and no new run. `status` has one line for each machine.
+- **a_push_that_fails_leaves_the_pass_whole.** A machine that cannot be reached is said by name in the pass's log; the
+  pass and the other machines go on; a notice that did not arrive is not kept as that machine's last.
+- **a_following_machine_that_cannot_look_refuses.** A machine that got a notice from the deciding machine starts no
+  new run when that notice is missing, unreadable or older than 20 min, and says COULD NOT LOOK with the name of the
+  deciding machine. A machine that follows nothing and holds no plan refuses nothing.
+- **readers_take_the_rules_through_one_door.** `old_shape` gives a program that calls an old-engine function (the
+  allocator's pool, the fleet runway, the Dispatcher's priority) the order and the lines of the plan file while it
+  drives, and `switching_plan.json` while the old engine drives or the plan file is refused; it says which.
+- **the_allocator_raises_its_pace_to_the_target_burn.** `slot_allocator.py` reads `burn_mode.json` and raises its pace to
+  `target_burn_pct_h` while Burn Mode is on for its burn account and `raise_ok` is true; never past it, never from a
+  record older than 20 min, and it says why when it does not raise.
+- **codex_door_asks_the_plan.** `codex_advice.gate` (every direct Codex caller) refuses a job, exit 4, when the plan
+  answers NO for Codex, required or not; a plan or meter that cannot be read is COULD NOT LOOK and the job is sent.
 
 ### Burn Mode and the measures
 
@@ -216,5 +262,15 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
   reason (census rows 4, 5, 8).
 - The pass deadlines (600 s a switcher call, 420 s a poll, the 40-min `pending` marker) are the old actuator's hang
   guards and stay in its code.
+
+- `NOTICE_FRESH_S` = 20 min (`account_plan.py`), `BURN_MODE_FRESH_S` = 20 min (`slot_allocator.py`): how old a record of
+  the timed pass may be. Danger of none: a record that outlived its pass (the timer stopped) holds every launch, or
+  raises the pace for a reset that has passed. Evidence: the pass writes each 5 min, so 20 min is four missed passes;
+  a stopped engine's HOLD file held launches on 2026-11-05. On a listed machine the same age is the line for could
+  not look.
+- `SSH_DEADLINE_S` = 120 s and `ACCOUNT_DEADLINE_S` = 180 s (`account_plan_machines.py`): hang guards on the two ssh
+  calls of the pass for each listed machine. Danger: a hung ssh holds the pass and the next pass waits on its lock.
+  Measured 2026-11-24 on stevedesktop-wsl: three pushes took 0.3 to 0.6 s; four reads of that machine's account took
+  4.0 to 16.8 s. A read that is cut is could not look, and that machine then gets a notice that refuses new runs.
 
 Later lists beside this page: `polish.md`.

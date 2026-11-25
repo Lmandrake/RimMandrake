@@ -100,10 +100,31 @@ def _priority(ok, off, d, json):
           "priority: the plan unreadable -> no switch recommended, alarmed (fail closed) (%s)" % p["why"])
     p = AP.pick(rule, status({"system": (3.0, 90), "lukas": (3.0, 90)}), "system", lent, ok, NOW)
     check(p["state"] == "KEEP", "priority: not under the switch line -> KEEP (priority only picks a target)")
-    real = AP.load_priority({})
-    with open(os.path.join(AP.REPO, "src", "RimMandrake", "Utils", "switching_plan.json")) as f:
-        want = json.load(f)["order"]
-    check(real == want and real, "priority: the default is switching_plan.json's own order %s" % real)
+    import tempfile
+    utils = os.path.join(AP.REPO, "src", "RimMandrake", "Utils")
+    sys.path.insert(0, utils)
+    import account_plan as PLAN
+    world = tempfile.mkdtemp(prefix="selftest_account_pick_plan_")
+    had = os.environ.get("RM_ACCOUNT_PLAN_DIR")
+    os.environ["RM_ACCOUNT_PLAN_DIR"] = world       # never the live plan file
+    try:
+        real = AP.load_priority({})
+        with open(os.path.join(utils, "switching_plan.json")) as f:
+            legacy = json.load(f)
+        check(real == legacy["order"] and real, "priority: with no account plan file the order is the old engine's %s" % real)
+        with open(os.path.join(utils, "account_plan.seed.json")) as f:
+            p = PLAN.convert_legacy(dict(legacy, exceptions=[], order=list(reversed(legacy["order"]))), json.load(f))
+        for s_ in p["steps"]:
+            s_.pop("when", None)
+        p["driver"] = "new"
+        PLAN.commit(lambda _old: p, {"why": "selftest", "create": True}, base=None)
+        real = AP.load_priority({})
+        check(real == list(reversed(legacy["order"])), "priority: the default is the account plan's order %s" % real)
+    finally:
+        if had is None:
+            os.environ.pop("RM_ACCOUNT_PLAN_DIR")
+        else:
+            os.environ["RM_ACCOUNT_PLAN_DIR"] = had
 
 
 if __name__ == "__main__":
