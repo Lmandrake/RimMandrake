@@ -406,6 +406,59 @@ def t_an_alarm_pass_in_a_beat_files_nothing_inside_it():
     os.environ["RM_OPS_WATCH_DIR"] = str(_TMP / "ops")
 
 
+def t_an_unreadable_series_is_not_blind():
+    """2026-11-24 08:18 PST: 9p reads of /mnt/d failed with ENOMEM, read_series returned [] for 5 families that had
+    read 1 to 11 min before, and the pass alarmed them as "no record in the series window"
+    (OPS_SENSE_FAMILY_READING_RESTORE_XAOE)."""
+    import builtins
+    import errno
+    os.environ["RM_OPS_WATCH_DIR"] = str(_TMP / "ops_unreadable")
+    store = _TMP / "ops_unreadable"
+    tu = time.time() - 3600
+    OW.run(now=tu, rules=rules)                    # a whole pass: every family read now
+    bad = {str(OW.series_path("disk")), str(OW.series_path("timers"))}
+    real_open = builtins.open
+
+    def enomem_open(f, *a, **k):
+        if str(f) in bad:
+            raise OSError(errno.ENOMEM, "Cannot allocate memory", str(f))
+        return real_open(f, *a, **k)
+    filed = []
+
+    def filer(todo, conf):
+        filed.extend(todo)
+        return dict({a["name"]: None for a in todo}, _publish="published")
+    OW.open = enomem_open
+    try:
+        OW.run(now=tu + 120, rules=rules, families=["flow"], compose=True, filer=filer)
+    finally:
+        del OW.open
+    st = json.loads((store / "status.json").read_text())
+    bp = st["points"].get("sense.families_blind") or {}
+    why = str(bp.get("why"))
+    check("an-unreadable-series-is-not-blind: the count reads UNMEASURED, naming each family and its error",
+          bp.get("m") == "UNMEASURED" and "disk" in why and "timers" in why and "Cannot allocate memory" in why
+          and "no record in the series window" not in why, bp)
+    check("an-unreadable-series-is-not-blind: no blind alarm is filed on a read that failed",
+          not [a for a in filed if a.get("key") == "sense.families_blind"], [a.get("name") for a in filed])
+    dw = str((st["points"].get("disk._collector") or {}).get("why"))
+    check("an-unreadable-series-is-not-blind: the family's carried points say its series could not be read",
+          "could not read" in dw and "round robin has not reached it" not in dw, dw)
+    OW.run(now=tu + 240, rules=rules, families=["flow"], compose=True, filer=filer)
+    st = json.loads((store / "status.json").read_text())
+    bp = st["points"].get("sense.families_blind") or {}
+    check("an-unreadable-series-is-not-blind: once the series reads again, the count is a measured 0",
+          bp.get("m") == "MEASURED" and bp.get("v") == 0, bp)
+    OW.series_path("pager").unlink()               # a missing file is the empty set: looked, found no record
+    OW.run(now=tu + 360, rules=rules, families=["flow"], compose=True, filer=filer)
+    st = json.loads((store / "status.json").read_text())
+    bp = st["points"].get("sense.families_blind") or {}
+    check("an-unreadable-series-is-not-blind: a family with no series file still counts as blind (no record)",
+          bp.get("m") == "MEASURED" and bp.get("v") == 1 and "pager no record in the series window"
+          in str((bp.get("x") or {}).get("cause")), bp)
+    os.environ["RM_OPS_WATCH_DIR"] = str(_TMP / "ops")
+
+
 def main():
     for t in (t_a_family_left_unread_raises_the_blind_alarm,
               t_a_blind_familys_points_say_why,
@@ -417,7 +470,8 @@ def main():
               t_codex_skips_day_folders_past_the_lookback,
               t_the_ledger_and_the_stamps_are_read_once,
               t_a_light_pass_files_nothing_inside_the_beat,
-              t_an_alarm_pass_in_a_beat_files_nothing_inside_it):
+              t_an_alarm_pass_in_a_beat_files_nothing_inside_it,
+              t_an_unreadable_series_is_not_blind):
         try:
             t()
         except (Exception, SystemExit) as e:  # noqa: BLE001  a test that raises is a red, named

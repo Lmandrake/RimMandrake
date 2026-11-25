@@ -62,6 +62,12 @@ written Sun 2026-11-22, 8:40 PM PST. Each promise has a test of its name in
 - **a-family-left-unread-raises-the-blind-alarm.** A compose pass counts in `sense.families_blind` every family whose
   newest series record is older than the blind bound, and names each one. The alarm pass files it on one fixed item,
   `OPS_SENSE_FAMILY_READING_RESTORE_<twist>`. A family inside the bound does not count.
+- **an-unreadable-series-is-not-blind.** A family whose series file cannot be read in a compose pass (any `OSError`
+  but a missing file, e.g. `ENOMEM` on the 9p read of `/mnt/d`) is never counted blind and never reads "no record in
+  the series window": `sense.families_blind` reads UNMEASURED, naming each such family with its error and the blind
+  count of the rest, and the family's `._collector` point says its series could not be read. A missing series file is
+  the empty set and still counts as blind. Item: `OPS_SENSE_FAMILY_READING_RESTORE_XAOE` (2026-11-24 8:18 AM PST, 5
+  fresh families alarmed while the box returned `ENOMEM` on `/mnt/c` and `/mnt/d` reads).
 - **a-blind-familys-points-say-why.** The carried UNMEASURED points of a blind family say how many sense passes on it
   were killed since it last read, and the stage the last one was in.
 - **a-killed-pass-leaves-its-stage.** SIGTERM to a `run --compose` pass appends one line to `sense_kills.jsonl` with its

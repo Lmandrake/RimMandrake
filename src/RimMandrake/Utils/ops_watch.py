@@ -3578,7 +3578,13 @@ def series_path(fam) -> Path:
     return ops_dir() / "series" / ("%s.jsonl" % fam)
 
 
+SERIES_FAULTS = {}      # family -> why its series could not be read on its last read_series: could not look, not "no record"
+
+
 def read_series(fam, since, max_bytes=32 << 20):
+    """-> the family's records since `since`. A missing file is the empty set (no record); any other read error also
+    returns [] but is kept in SERIES_FAULTS[fam] until the next good read, so a caller can tell "could not look" from
+    "none" (2026-11-24: ENOMEM on the 9p read of /mnt/d read 5 fresh families as blind)."""
     p = series_path(fam)
     out = []
     try:
@@ -3587,8 +3593,13 @@ def read_series(fam, since, max_bytes=32 << 20):
             size = f.tell()
             f.seek(max(0, size - max_bytes))
             data = f.read()
-    except OSError:
+    except FileNotFoundError:
+        SERIES_FAULTS.pop(fam, None)
         return out
+    except OSError as e:
+        SERIES_FAULTS[fam] = "could not read %s: %s: %s" % (p, type(e).__name__, e)
+        return out
+    SERIES_FAULTS.pop(fam, None)
     lines = data.split(b"\n")
     if size > max_bytes:
         lines = lines[1:]
@@ -5220,13 +5231,14 @@ def sense_kills():
         return []
 
 
-def blind_families(prev, now, max_age, kills, measured=()):
+def blind_families(prev, now, max_age, kills, measured=(), unreadable=()):
     """-> {family: cause} for each family (ORDER) whose newest series record is older than max_age, or which has none in
-    the series window; a family measured by this pass is never blind. The cause names its age and the sense passes on it
+    the series window; a family measured by this pass is never blind, nor one whose series could not be read
+    (`unreadable`: its age is unknown, blind_point says so). The cause names its age and the sense passes on it
     killed since it last read (sense_kills), with the stage of the last one."""
     out = {}
     for fam in ORDER:
-        if fam in measured:
+        if fam in measured or fam in unreadable:
             continue
         ts = [r["t"] for r in prev.get(fam) or [] if isinstance(r, dict) and is_num(r.get("t")) and r["t"] <= now + 300]
         last = max(ts) if ts else None
@@ -5242,8 +5254,15 @@ def blind_families(prev, now, max_age, kills, measured=()):
     return out
 
 
-def blind_point(blind, max_age):
+def blind_point(blind, max_age, unreadable=None):
+    """The count of blind families; UNMEASURED when a family's series could not be read (`unreadable` {family: why}):
+    that family's age is unknown, so no count of the rest is the whole answer."""
     cause = "; ".join("%s %s" % (f, c) for f, c in sorted(blind.items()))
+    if unreadable:
+        return U("the series of %d famil%s could not be read, so its age is unknown: %s; among the rest, %d blind%s" % (
+            len(unreadable), "y" if len(unreadable) == 1 else "ies",
+            "; ".join("%s %s" % (f, w) for f, w in sorted(unreadable.items())), len(blind),
+            (" (%s)" % cause) if cause else ""), "families unread past the round robin's bound")
     return M(len(blind), "families unread past the round robin's bound", names=",".join(sorted(blind)) or None,
              cause=cause or None, bound_s=round(max_age))
 
@@ -5328,17 +5347,23 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
         max_age, bound_flag = compose_max_age_s(rules)
         if bound_flag:
             sick.append(bound_flag)
+        unreadable = {}
         for fam in ORDER:
             if fam not in families:
                 prev[fam] = read_series(fam, since)
-        blind = blind_families(prev, now, max_age, sense_kills(), measured=families)
+                if fam in SERIES_FAULTS:
+                    unreadable[fam] = SERIES_FAULTS[fam]
+        blind = blind_families(prev, now, max_age, sense_kills(), measured=families, unreadable=unreadable)
         carried = {}
         for fam in ORDER:
             if fam in families:
                 continue
+            if fam in unreadable:       # could not look: never "not measured yet" nor "no record"
+                carried.update({"%s._collector" % fam: U(unreadable[fam])})
+                continue
             carried.update(carry_family(fam, prev[fam], now, max_age, cause=blind.get(fam)))
         points = dict(carried, **points)        # this pass's own readings win
-        points[BLIND_KEY] = blind_point(blind, max_age)
+        points[BLIND_KEY] = blind_point(blind, max_age, unreadable)
     elif whole:     # a whole pass measures every family: none is blind, and the target still has its reading
         points[BLIND_KEY] = blind_point({}, compose_max_age_s(rules)[0])
     if release is not None:
