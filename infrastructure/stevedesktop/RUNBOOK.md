@@ -355,6 +355,11 @@ First remote run GREEN: `JawaIonWeapons --chains def_wiring`, driven from Archma
 - `kit/automation.ps1`: the idempotent "nobody at the keyboard" fixes, run elevated over SSH
   (see the audit below).
 
+**A game no job uses is stopped; a job composes its list first (since 2026-11-25).** The testq tick sends a game's own
+`rw_game.sh down` after 30 min with no running or pending job (`src/RimMandrake/Utils/testq/idle_stop.py`; `down` refuses
+while a holder drives the game), and the next job's load starts it again. Before each modcheck job the worker runs
+`modcheck compose <Mod>`, so the game starts on the job's list instead of restarting after a stale load.
+
 **Steve2 takes lane jobs beside Steve1 (since 2026-11-23).** The testq tick drives Steve2 while
 `D:\ClaudeWork\rimmandrake\testq\steve2.on` exists and `steve2.stop` does not (create `steve2.stop` to stop new jobs on
 Steve2; its running job still finishes). Steve2 has its own install (`D:\ClaudeWork\rimmandrake\instances\b\game`, from
