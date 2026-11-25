@@ -266,6 +266,9 @@ REFUSED_HEADS = (REFUSED_HEAD, "BUNDLE REFUSED:")     # the role (roles/bundle_w
 
 def store_dir(create=True):
     d = os.environ.get("RM_WORK_BUNDLE_DIR")
+    if not d and (os.environ.get("RM_UNDER_SELFTEST") or os.path.basename(sys.argv[0] or "").startswith("selftest")):
+        raise RuntimeError("a test process writes no real work-bundle store: set RM_WORK_BUNDLE_DIR to a throwaway "
+                           "folder (measured 2026-11-25: a holder selftest wrote WB-mod-WreckedMachines into it)")
     if not d:
         import doorbell
         d = os.path.join(doorbell.state_dir(), "work_bundle")
@@ -934,6 +937,85 @@ def cmd_live(o):
         print("REFUSED: no command after --; the form: work_bundle.py live <bundle> --for \"<what>\" -- <command>")
         return 2
     return live_pass(o.bundle, o.what, cmd)
+
+
+# ---- part 6: the Maturation Pipeline's road back is one bundle ------------------------------------------------------
+
+def mod_members(mod, exclude, now, items=None, reading=None, prose_of=None, refused=None, leased=None):
+    """-> the ready open tickets of `mod` (mod_work's one rule) that carry a test, not in `exclude`, in id order: they
+    join the mod's bundle. A ticket with no test stays out: 66 of 67 FlowWorks tickets had none on 2026-11-24, and the
+    road back would become every old ticket of the mod; `./pipe bundle <Mod>` takes them all by hand."""
+    if items is None:
+        import model as LM
+        w = world()
+        items = w.items
+        _m, reading = mod_reader()
+        prose_of = prose_reader()
+        refused = refusals(LM.read())
+        leased = lambda it: _g(it, "state") == "doing" and LM.lease_status(it, now) == "live"  # noqa: E731
+    out = []
+    for i in sorted(items):
+        it = items[i]
+        if i in exclude or _g(it, "state") in CLOSED:
+            continue
+        r = reading(it)
+        if not isinstance(r, dict) or r.get("mod") != mod:
+            continue
+        if not test_of(it, prose_of(i)):
+            continue
+        ready, _out = ready_split([i], items, now, refused=(refused or {}).get, held=lambda x: None, leased=leased)
+        if ready:
+            out.append(i)
+    return out
+
+
+def holder_bundle(mod, lead, ids, extra, now, why=None):
+    """The mod's road-back holder run as its one bundle: refused (2, why) while a bundle of the mod is live; else the
+    record is written (launching). -> (0, record) | (2, why)."""
+    system = "mod:%s" % mod
+    members = [lead] + [i for i in ids if i != lead] + [i for i in extra if i != lead and i not in ids]
+    lk = _lock()
+    try:
+        live = live_bundles()
+        if system in live:
+            return 2, "the work bundle %s of %s is live; one live bundle per system" % (live[system], mod)
+        rec = new_record(system, members, why or "the road back of %s: its open items and its ready tickets with a "
+                         "test, in the holder run (maturation_dispatch.road_back_holder)" % mod, "maturation", now,
+                         launched_by="maturation_dispatch holder")
+        store_write(rec)
+    finally:
+        lk.close()
+    return 0, rec
+
+
+def holder_note(rec, items, tests):
+    """The lines the holder's brief gains: the bundle, its state file, the role, and the joined tickets."""
+    road = [m for m in rec["members"] if m not in tests] if tests else []
+    joined = [m for m in rec["members"] if m in tests]
+    lines = ["", "This holder run is work bundle %s of %s. Follow the role %s with this brief: its state file is %s "
+             "(read it first if it exists; write it after each group), and `python3 src/RimMandrake/rimflow/"
+             "work_bundle.py context` after each group. The bundle restarts you fresh from that file until each member "
+             "has an outcome." % (rec["id"], rec["system"], ROLE, rec["state_file"])]
+    if joined:
+        lines.append("The bundle also holds these ready tickets of the mod, each with its own test and its own close:")
+        lines += ["- `%s` %s\n  test: %s" % (m, _one(_g(items.get(m), "title"), 160), tests.get(m)) for m in joined]
+    del road
+    return "\n".join(lines) + "\n"
+
+
+def holder_launched(bid, unit, now, out=None):
+    lk = _lock()
+    try:
+        rec = store_read(bid)
+        if not rec:
+            return None
+        if unit:
+            rec.update(state="live", units=[{"unit": unit, "at": now, "kind": "launch", "ended_before": 0}])
+        else:
+            rec.update(state="launch_failed", launch_out=_one(out, 600) or "no unit")
+        return store_write(rec)
+    finally:
+        lk.close()
 
 
 # ---- part 7: the page -----------------------------------------------------------------------------------------------

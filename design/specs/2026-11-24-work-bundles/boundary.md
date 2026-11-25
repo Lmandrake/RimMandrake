@@ -101,15 +101,22 @@ bundle began). A member with none of these is **open**.
   query` for ArchBig, then ArchSmall, and runs CMD under `game_lock.py run` on the first free one. When no game is free
   (held, his hold, `pipe off`, or could not look), it runs nothing and records `UNRUN` with the exact command and each
   game's answer, in the record and on stdout.
+- **a-test-never-writes-the-real-store.** A process under a selftest with no `RM_WORK_BUNDLE_DIR` is refused by name
+  (measured 2026-11-25: a holder selftest wrote `WB-mod-WreckedMachines` into the real store).
 - **the-page-shows-each-live-bundle.** The Maturation Pipeline page has one block per bundle that is not ended: system,
   step, restarts, each member with its outcome, and the state; a store that cannot be read is one UNMEASURED line,
   never an empty block.
+- **the-maturation-road-back-is-one-bundle.** On a pilot mod's road back, the holder run (`maturation_dispatch.
+  road_back_holder`, which already took every open road-back item in one run) is that mod's one bundle: its record,
+  `RM_WORK_BUNDLE` in its env, the bundle named in its brief, and the mod's ready tickets that carry a test joined to it
+  (`work_bundle.mod_members`; a ticket with no test stays out: 66 of 67 FlowWorks tickets had none on 2026-11-24, and
+  `./pipe bundle <Mod>` takes them by hand). A store that cannot be read leaves the holder as before, its line saying
+  `work bundle UNMEASURED`. A mod that the owner holds, a mod whose readiness
+  list is not READY, and a mod with a live bundle launch no bundle. The mod's version, bars and stage records are not
+  written by this step.
 
 ## PLANNED (built part by part; each moves up to PROMISES, with its test, when its part lands)
 
-- *the-maturation-road-back-is-one-bundle.* On a mod's road back, the open road-back items and the ready tickets with
-  that mod's home are one bundle of that mod, not one fixer run each. A mod that the owner holds, a mod whose readiness
-  list is not READY, and a mod with a live bundle launch no bundle. The mod's version, bars and stage records are not
-  written by this step.
+(none)
 
 Later lists beside this page: `polish.md`.

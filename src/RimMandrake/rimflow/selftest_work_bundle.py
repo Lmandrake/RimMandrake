@@ -544,6 +544,40 @@ def t_live_pass_takes_a_free_game_or_says_unrun():
         "live: the command line parses --for and the command after -- (%s)" % vars(o))
 
 
+# ---- part 6: the Maturation Pipeline's road back is one bundle ------------------------------------------------------
+
+def t_the_maturation_road_back_is_one_bundle():
+    W = WB()
+    items = {"MT_RED": item("MT_RED", home="mod:FlowWorks", effect="cmd:python3 x_accept.py"),
+             "MT_NOTEST": item("MT_NOTEST", home="mod:FlowWorks"),
+             "MT_WAITS": item("MT_WAITS", home="mod:FlowWorks", effect="cmd:y",
+                              wait_until="2099-01-01T00:00:00Z"),
+             "MT_ROAD": item("MT_ROAD", home="mod:FlowWorks", effect="cmd:z"),
+             "OTHER_MOD": item("OTHER_MOD", home="mod:Pyrelands", effect="cmd:q")}
+    def reading(it):
+        h = (it.home or {}).get("home", "")
+        return {"mod": h[4:] if h.startswith("mod:") else None}
+    got = W.mod_members("FlowWorks", {"MT_ROAD"}, NOW, items=items, reading=reading, prose_of=lambda i: "",
+                        refused={}, leased=lambda it: False)
+    chk(lambda: got == ["MT_RED"], "maturation: a ready ticket of the mod with a test joins; no test, a wait, the road "
+                                   "back's own and another mod's do not (%s)" % got)
+    rc, rec = W.holder_bundle("FlowWorks", "MT_ROAD", ["MT_ROAD"], ["MT_RED"], NOW)
+    chk(lambda: rc == 0 and rec["system"] == "mod:FlowWorks" and rec["members"] == ["MT_ROAD", "MT_RED"]
+        and rec["pipeline"] == "maturation" and W.store_read(rec["id"])["state"] == "launching",
+        "maturation: the holder's road back and the joined tickets are one bundle of the mod (%s)" % rec.get("members"))
+    rc2, why = W.holder_bundle("FlowWorks", "MT_ROAD", ["MT_ROAD"], [], NOW + 5)
+    chk(lambda: rc2 == 2 and rec["id"] in why, "maturation: a mod with a live bundle launches no second (%s)" % why)
+    note = W.holder_note(rec, items, {"MT_RED": "cmd:python3 x_accept.py"})
+    chk(lambda: rec["id"] in note and rec["state_file"] in note and "roles/bundle_worker.md" in note and "MT_RED" in note
+        and "write it after each group" in note and "work_bundle.py context" in note,
+        "maturation: the holder's brief names the bundle, its state file, the role and each joined ticket")
+    W.holder_launched(rec["id"], "rm-holder-9", NOW)
+    chk(lambda: W.store_read(rec["id"])["state"] == "live" and W.store_read(rec["id"])["units"][0]["unit"] == "rm-holder-9",
+        "maturation: the started holder is the bundle's run")
+    W.holder_launched(rec["id"], None, NOW, "refused: off")
+    chk(lambda: W.store_read(rec["id"])["state"] == "launch_failed", "maturation: a holder that never started fails the bundle")
+
+
 # ---- part 7: the page ------------------------------------------------------------------------------------------------
 
 def t_the_page_shows_each_live_bundle():
@@ -575,6 +609,19 @@ def t_the_page_shows_each_live_bundle():
     chk(lambda: "none" in "\n".join(W.page_md(none)), "page: no live bundle says none, looked")
 
 
+def t_a_test_never_writes_the_real_store():
+    """measured 2026-11-25: a holder selftest with no RM_WORK_BUNDLE_DIR wrote WB-mod-WreckedMachines into the real
+    store, where it read as a live bundle"""
+    W = WB()
+    import subprocess as sp
+    env = {k: v for k, v in os.environ.items() if k != "RM_WORK_BUNDLE_DIR"}
+    env["RM_UNDER_SELFTEST"] = "1"
+    r = sp.run([sys.executable, "-c", "import sys; sys.path.insert(0, %r); import work_bundle as W; W.store_dir()" % HERE],
+               env=env, capture_output=True, text=True)
+    chk(lambda: r.returncode != 0 and "RM_WORK_BUNDLE_DIR" in r.stderr, "store: a test process with no store of its own "
+                                                                         "is refused by name (%s)" % r.stderr[-200:])
+
+
 def t_each_limit_names_its_danger():
     import re
     src = open(os.path.join(HERE, "work_bundle.py"), encoding="utf-8").read().splitlines()
@@ -596,6 +643,7 @@ def main():
               t_a_restart_that_ended_no_member_raises,
               t_a_bundle_with_every_outcome_ends, t_a_refused_member_is_stopped_with_its_reason,
               t_live_pass_takes_a_free_game_or_says_unrun, t_the_page_shows_each_live_bundle,
+              t_the_maturation_road_back_is_one_bundle, t_a_test_never_writes_the_real_store,
               t_each_limit_names_its_danger]:
         print("-- %s" % t.__name__)
         try:

@@ -3138,6 +3138,19 @@ def road_back_holder(root, cfg, st, mod, stage, opened, item, cap, now, fx, game
         if not game:
             return None, ("REFUSED: %s's open items all need a game and no game is free (%s); "
                           "one bridge holder per game" % (mod, "; ".join(whys))), None, item
+    # the holder is the mod's one work bundle: its road back and its ready tickets with a test (work_bundle.py; design
+    # design/specs/2026-11-24-work-bundles section 6); a live bundle of the mod is a wait, nothing booked
+    import work_bundle as WB
+    bundle, bnote, bcause = None, "", None
+    try:
+        extra = (fx.get("bundle_extra") or (lambda m, ex: WB.mod_members(m, ex, now)))(mod, set(ids) | set(game6) | set(busy))
+        brc, bundle = WB.holder_bundle(mod, item, ids, extra, now)
+        if brc:
+            return None, "%s %s" % (M.WAIT_MARK, bundle), None, item
+        w_items = WB.world().items if extra else {}
+        bnote = WB.holder_note(bundle, w_items, WB.tests_text(extra, w_items, WB.prose_reader()) if extra else {})
+    except Exception as e:  # noqa: BLE001 - could not look: the holder runs as before, and its line says so
+        bundle, bcause = None, "work bundle UNMEASURED (%s: %s)" % (type(e).__name__, e)
     plan = modledger.resume_plan(root, mod)     # the holder's recorded session is resumed, not restarted
     rkw = {"session": plan["session_id"]} if plan.get("action") == "resume" and plan.get("session_id") else {}
     led = ledger_open(root, mod, "fixer", AUT.fixer_brief(item, mod, cap, live=live) + (
@@ -3149,17 +3162,20 @@ def road_back_holder(root, cfg, st, mod, stage, opened, item, cap, now, fx, game
             ", ".join(game6), "s" if len(game6) == 1 else "") if game6 else "") + (
         "\n" + M.game_brief(game) if game else "") + (
         "Not yours: %s, each worked by its own live run; work none of them here.\n" % ", ".join(
-            "%s (%s)" % kv for kv in sorted(busy.items())) if busy else "")), stage=stage, now=now, fx=fx)
+            "%s (%s)" % kv for kv in sorted(busy.items())) if busy else "") + bnote), stage=stage, now=now, fx=fx)
     rc, text, unit = (fx.get("launch_brief") or AUT.launch_brief)(
         item, led["brief"], MM.for_mod(cfg, mod).get("steward_model", "opus"), cap, cfg.get("seat", "BENCH"),
-        env=dict(led["env"], **control_env(mod, stage), **({"RM_GAME_INSTANCE": game} if game else {})), **rkw)
+        env=dict(led["env"], **control_env(mod, stage), **({"RM_GAME_INSTANCE": game} if game else {}),
+                 **({WB.ENV: bundle["id"]} if bundle else {})), **rkw)
     unit = unit if rc == 0 else None
+    if bundle:
+        WB.holder_launched(bundle["id"], unit, now, text)
     text = "%s%s%s; %s%s" % ("live holder on %s (bridge and game allowed): " % _GN.show(game) if live else "",
                              "%s; " % plan["why"] if rkw else "",
                              (text or "").splitlines()[0] if text else rc,
                              ledger_after(root, st, mod, led, unit, item, now, fx),
                              "; live run UNMEASURED on %s: worked as free, the launcher's clone gate decides" % (
-                                 ", ".join(blind)) if blind else "")
+                                 ", ".join(blind)) if blind else "") + ("; " + bcause if bcause else "")
     if not unit and AUT.wait_refusal(text):     # a wait is no try at the items: nothing booked, the next tick decides
         return rc, text, unit, item
     st.setdefault("mods", {}).setdefault(mod, {}).setdefault("holder_road_back", []).append(

@@ -19,6 +19,7 @@ for _p in (HERE, os.path.join(REPO, "src", "RimMandrake", "Utils")):
 sys.dont_write_bytecode = True
 os.environ["RM_UNDER_SELFTEST"] = "1"
 os.environ["RM_LIST_DISPATCH_DIR"] = tempfile.mkdtemp(prefix="ld_selftest_")
+os.environ["RM_WORK_BUNDLE_DIR"] = tempfile.mkdtemp(prefix="ld_bundles_")     # gather reads the work-bundle store
 
 FAILS = []
 CFG = {"enabled": True, "max_live": 2, "max_chain_depth": 2, "max_runs_per_item": 2, "max_never_started": 2,

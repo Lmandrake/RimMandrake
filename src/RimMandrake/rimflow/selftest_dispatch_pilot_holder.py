@@ -115,6 +115,7 @@ os.environ["MATURATION_BRIEF_DIR"] = os.path.join(tmp, "briefs")
 os.makedirs(os.environ["MATURATION_BRIEF_DIR"])
 os.environ["RM_MATURATION_DISPATCH_DIR"] = os.path.join(tmp, "dispatch")
 os.makedirs(os.environ["RM_MATURATION_DISPATCH_DIR"])
+os.environ["RM_WORK_BUNDLE_DIR"] = os.path.join(tmp, "bundles")     # the holder's work-bundle record stays here
 SENT = "SENTINEL_EARLIER_CYCLE_FINDING_TEXT"
 CLAIM = "SENTINEL_HOLDER_STORY_OF_THE_FIX"
 F1 = "finding:RIMMANDRAKE_TRACE_PILOT_HOLDER_FIXTURE_FINDING"
@@ -127,7 +128,8 @@ ML.append(root, PILOT, "HOLDER.H0", "finding.claimed_fixed", F1, token=TOK0, cod
           body={"text": CLAIM, "test": "python3 t.py"})
 ML.record_session(root, PILOT, "0a1b2c3d-1111-2222-3333-444455556666", 120000, lease="H0")
 landed = []
-FX = {"land_ledger": lambda paths: landed.append(paths) or "landed", "ready": lambda r, m: (True, "ready")}
+FX = {"land_ledger": lambda paths: landed.append(paths) or "landed", "ready": lambda r, m: (True, "ready"),
+      "bundle_extra": lambda mod, exclude: []}
 
 
 # ---- 5. a blind judge writes as JUDGE.<run> ------------------------------------------------------------------------
@@ -298,6 +300,9 @@ def t2_road_back_holder():
         check("2 one holder run is started on all the open road-back items together", len(launched) == 1 and
               "RIMMANDRAKE_FIX_A_ONE" in launched[0]["text"] and "RIMMANDRAKE_FIX_B_TWO" in launched[0]["text"] and
               (launched[0]["env"] or {}).get("RM_MODLEDGER_WRITER", "").startswith("HOLDER."), launched)
+        check("2 the holder run is the mod's work bundle: RM_WORK_BUNDLE in its env, the bundle named in its brief",
+              (launched[0]["env"] or {}).get("RM_WORK_BUNDLE", "").startswith("WB-mod-") and
+              launched[0]["env"]["RM_WORK_BUNDLE"] in launched[0]["text"], launched[0].get("env"))
         check("2 the launch is booked on the mod with its item set", (st["mods"][PILOT].get("holder_road_back") or [{}])
               [-1].get("ids") == ["RIMMANDRAKE_FIX_A_ONE", "RIMMANDRAKE_FIX_B_TWO"], st["mods"][PILOT])
         facts[PILOT]["live_units"] = ["rm-holder-1"]
