@@ -12,10 +12,15 @@ The figure is the context of the last main-thread turn (`detached_helper.context
 |---|---|---|
 | read once (design, list_dispatch, list_home, list_effect, left_open_continue, detached_helper parts) | 176k | |
 | 1. reality sort | 251k | includes 3 publish refusals repaired (could-not-look lint, page check, close form) |
+| 2. record and launcher, 3. role and context guard | 300k | read at the guard's first real run (292k) |
+| 4. restart and keep going | 342k | |
 
 ## Done
 
 - Part 1, the reality sort: `work_bundle.py sort`, at `f408c9e466` and `cf3fe8f324`.
+- Parts 2 and 3: the record, the lane's grouping, `./pipe bundle`, the role's commands and `work_bundle.py context`, at
+  `4909b0eff4`. The role text is the Conductor's (`60ed8da703`); this build added only its commands section.
+- Part 4: the restart branch in `left_open_continue.py`, at `aafc60da65`.
 
 ## Learned
 
@@ -28,6 +33,11 @@ The figure is the context of the last main-thread turn (`detached_helper.context
   its own guard gate (a fix that died once owes a class guard test). The sort reports that and keeps the ticket.
 - `boundary_check.py` wants each promise's test named inside `main()`; promises of unbuilt parts sit under PLANNED.
 
+- A `killed:` result is both a hand stop (`pipe stop --kill` writes its reason) and a death (`killed: signal`); a bare
+  `systemctl stop` reads as a death, so the bundle restarts it.
+- The Conductor wrote `roles/bundle_worker.md` mid-build; refusals there start `REFUSED BY BUNDLE:`, which the code reads.
+
 ## Next
 
-- Part 2: the bundle record and the launcher (`list_dispatch` grouping, `work_bundle.py launch`, `./pipe bundle`).
+- The proof by use: `./pipe bundle pipeline:judges --why ...`, watch it end.
+- Part 5 `work_bundle.py live`, part 6 the steward's mod bundle, part 7 the page.
