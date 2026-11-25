@@ -2,10 +2,10 @@
   "schema": 1,
   "mod": "FlowWorks",
   "version": "0.1.0",
-  "stage": "in_game",
-  "stage_label": "In-game acceptance (Stage 6)",
-  "since": "2026-11-25T02:17:23-08:00",
-  "since_from": "advance by DISPATCH",
+  "stage": "pre_human",
+  "stage_label": "Walk brief (Stage 7)",
+  "since": "2026-11-25T12:00:39-08:00",
+  "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
     "at": "2026-11-14T16:02:19-08:00",
@@ -18,7 +18,7 @@
     "visit": 3,
     "total": 4
   },
-  "pre_human_arrivals": 3,
+  "pre_human_arrivals": 4,
   "moves": [
     {
       "from": "offline_build",
@@ -507,6 +507,29 @@
         "by",
         "version",
         "hold"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "pre_human",
+      "at": "2026-11-25T12:00:39-08:00",
+      "by": "BENCH",
+      "why": "steward: in-game visit 13 exit met; the driver's exit_met false was only for 033392ed2d's fresh reader, read sound at 6470bcda9d (reader fix 32df3b51c5)",
+      "unit": "rm-detached-bench-rimmandrake-route-flowworks-visit-thirte-1795632207",
+      "item": "RIMMANDRAKE_ROUTE_FLOWWORKS_VISIT_THIRTEEN_FAILURES_BACK",
+      "confirmed": {
+        "steward_confirms": "read visit_13/SUMMARY.md and rows: 22 of 22 run checks PASS (10 Steve2, 12 ArchBig), 13 carried PASS counted by build_match (35/35), strange_open 0, no FAIL or UNMEASURED line, no mod change in the sitting, no check repaired; the only not-met reason was the owed fresh reader of 033392ed2d, a RECORD GAP: rm-detached-bench-rimmandrake-read-flowworks-height-fix-on-1795631843 landed it sound at 6470bcda9d; this run independently saw selftest_flowworks_humanlike_height.py rc=1 (5 FAIL) at 033392ed2d^, PASS at the fix and HEAD, --mutate 4 RED + real GREEN; sc_pawn_height re-passed on 6b07457e86, which holds the fix. Verdict: exit met"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "road_back_items",
+        "steward_confirms",
+        "exit_met",
+        "build_match",
+        "unrun_run"
       ]
     }
   ],

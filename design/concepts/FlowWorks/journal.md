@@ -12,7 +12,7 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`: "Yes, lock the other four mods").
   Code exists and is large: `src/RimMandrake/FlowWorks/` (C# mod, a 325+ case C# SelfTest, about 168 Python selftests,
   a northstar proof harness).
-- **Stage now:** Stage 6, in-game acceptance, since 2026-11-25 2:17 AM PST (`version/stage_record.json`).
+- **Stage now:** Stage 7, the walk brief, since 2026-11-25 12:00 PM PST (`version/stage_record.json`).
 - **Bars:** 55 = 28 inventory rows of `record.json` + 27 leaves of `tree.json` (`coverage_judge.required_ids()`); 59 at the
   lock, his card of 2026-11-14 added `inv_geyser_tub` and `inv_liquid_coating` (61), and his card of 2026-11-14 ~9:43 PM
   PST moved the four wetting bars to 0.2.0 (57), and his word of 2026-11-23 ~11:05 PM PST moved the raid proof to 0.2.0
@@ -23,7 +23,7 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - **Held look statements for this mod:** 103 rows in five files of `design/RimMandrake/validation_holding/` (2026-11-12:
   56 rows; 2026-11-13 morning: 18; 2026-11-13 dig interface: 2; 2026-11-13 evening: 5; 2026-11-14: 22); 83 are placed
   in `version/test_table.json`, all 103 placed. [measured, preflight C8, 2:40 PM PST]
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-25 2:17 AM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-25 12:00 PM PST).
 
 ### The vision (his root paragraph, approved 2026-11-04, OWNER:1793794915205594887; eight lines in `version/vision.md`)
 
@@ -559,4 +559,13 @@ None open; question 3 (the dig speed) is answered in the history entry of 2026-1
 - Checks passed: order, by, version, hold.
 - Was, "Stage now": - **Stage now:** Stage 8, his live walk, since 2026-11-25 1:01 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-25 1:01 AM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-25 12:00 PM PST, stage change: In-game acceptance (Stage 6) to Walk brief (Stage 7) (by BENCH)
+
+- Why: steward: in-game visit 13 exit met; the driver's exit_met false was only for 033392ed2d's fresh reader, read sound at 6470bcda9d (reader fix 32df3b51c5)
+- Checks passed: order, by, version, hold, road_back_items, steward_confirms, exit_met, build_match, unrun_run.
+- Steward confirms: read visit_13/SUMMARY.md and rows: 22 of 22 run checks PASS (10 Steve2, 12 ArchBig), 13 carried PASS counted by build_match (35/35), strange_open 0, no FAIL or UNMEASURED line, no mod change in the sitting, no check repaired; the only not-met reason was the owed fresh reader of 033392ed2d, a RECORD GAP: rm-detached-bench-rimmandrake-read-flowworks-height-fix-on-1795631843 landed it sound at 6470bcda9d; this run independently saw selftest_flowworks_humanlike_height.py rc=1 (5 FAIL) at 033392ed2d^, PASS at the fix and HEAD, --mutate 4 RED + real GREEN; sc_pawn_height re-passed on 6b07457e86, which holds the fix. Verdict: exit met
+- Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-25 2:17 AM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-25 2:17 AM PST).
 - Record: `version/stage_record.json`.
