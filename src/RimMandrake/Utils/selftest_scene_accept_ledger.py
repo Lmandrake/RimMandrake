@@ -83,6 +83,25 @@ def t_explore_run_adds_nothing():
         assert not os.path.exists(SV.path(root, MOD)), "a ledger was written"
 
 
+def t_mod_source_scene_adds_a_line():
+    # the scene library's scenes live beside their mod's code (src/RimMandrake/<Mod>/proof/, northstar/); the first form of
+    # the append read only design/concepts/<Mod>/, so no accepted scene of any mod reached the ledger (2026-11-24)
+    for script, scene in (("src/RimMandrake/WMod/proof/s1.py", "s1"), ("src\\RimMandrake\\WMod\\northstar\\s2.py", "s2")):
+        with tempfile.TemporaryDirectory() as root:       # one root each: the fixture's run id is the same in both
+            os.makedirs(os.path.join(root, "design", "concepts", MOD))
+            folder, _ = kept(root, MARKS, script=script)
+            J.judge(folder, ledger_root=root)
+            lines = ledger(root)
+            assert [x["scene"] for x in lines] == [scene] and lines[0]["rec"] == "run", (script, lines)
+
+
+def t_source_folder_of_no_mod_adds_nothing():
+    with tempfile.TemporaryDirectory() as root:
+        folder, _ = kept(root, MARKS, script="src/RimMandrake/Utils/s1.py")
+        J.judge(folder, ledger_root=root)
+        assert not os.path.exists(SV.path(root, "Utils")), "a ledger was written for a folder that is no mod"
+
+
 def main():
     names = [n for n in sorted(globals()) if n.startswith("t_")]
     bad = 0

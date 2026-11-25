@@ -450,7 +450,7 @@ def ledger_append(run, run_receipt, record, result, rejudge, root=None):
     a class line, never a second run line. An explore run (or a script outside design/concepts/<Mod>/) adds nothing.
     -> the line added, or None."""
     script = str((run or {}).get("script") or "").replace("\\", "/")
-    m = re.match(r"design/concepts/([^/]+)/", script)
+    m = re.match(r"design/concepts/([^/]+)/", script) or re.match(r"src/RimMandrake/([^/]+)/", script)
     if (run or {}).get("mode") != "accept" or not m:
         return None
     here = os.path.dirname(os.path.abspath(__file__))
@@ -459,6 +459,10 @@ def ledger_append(run, run_receipt, record, result, rejudge, root=None):
     import scene_verdicts as SV
     root = root or SV.REPO
     mod = m.group(1)
+    # a scene beside its mod's code (src/RimMandrake/<Mod>/proof/, northstar/) belongs to the mod whose design folder is
+    # <Mod>; a src folder with no design/concepts/<Mod>/ (Utils, rimflow) is no mod, and adds nothing
+    if script.startswith("src/") and not os.path.isdir(os.path.join(root, "design", "concepts", mod)):
+        return None
     request = record["request"]
     rid = "%s:%s" % (run.get("session"), request)
     line = {"run": rid, "scene": os.path.splitext(os.path.basename(script))[0],
