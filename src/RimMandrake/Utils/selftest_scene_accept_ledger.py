@@ -102,6 +102,18 @@ def t_source_folder_of_no_mod_adds_nothing():
         assert not os.path.exists(SV.path(root, "Utils")), "a ledger was written for a folder that is no mod"
 
 
+def t_ledger_appends_where_there_is_no_fcntl():
+    # scene.py accept runs under Windows Python (the bridge answers only it), which has no fcntl: the ledger import
+    # crashed the judge at the end of every accepted run once a src/ scene reached it (2026-11-24, ArchSmall)
+    import importlib
+    import subprocess
+    code = ("import sys; sys.modules['fcntl'] = None; sys.path.insert(0, %r); import scene_verdicts as SV; import tempfile; "
+            "r = tempfile.mkdtemp(); SV._append(r, 'WMod', {'rec': 'run', 'run': 'x'}); SV._append(r, 'WMod', {'rec': 'run', 'run': 'y'}); "
+            "print(len(open(SV.path(r, 'WMod')).read().splitlines()))" % str(RIMFLOW))
+    out = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True)
+    assert out.returncode == 0 and out.stdout.strip() == "2", (out.returncode, out.stdout, out.stderr[-300:])
+
+
 def main():
     names = [n for n in sorted(globals()) if n.startswith("t_")]
     bad = 0

@@ -14,7 +14,10 @@ Page: design/specs/2026-11-23-scene-verdicts/boundary.md. Tests: selftest_scene_
     python3 scene_verdicts.py class <Mod> <run> --outcome W --why "..." --by UNIT [--rejudged] [--spoiled-by "..."]"""
 import argparse
 import datetime
-import fcntl
+try:
+    import fcntl            # POSIX; Windows Python (scene.py accept, the only one the bridge answers) has none
+except ImportError:
+    fcntl = None
 import json
 import os
 import sys
@@ -77,7 +80,15 @@ def _append(root, mod, line):
     p = path(root, mod)
     os.makedirs(os.path.dirname(p), exist_ok=True)
     with open(p, "a", encoding="utf-8") as f:
-        fcntl.flock(f, fcntl.LOCK_EX)
+        if fcntl is not None:
+            fcntl.flock(f, fcntl.LOCK_EX)
+        else:
+            # Windows: one line through one append-mode write; msvcrt's byte lock where the file system takes it
+            try:
+                import msvcrt
+                msvcrt.locking(f.fileno(), msvcrt.LK_LOCK, 1)
+            except (ImportError, OSError):
+                pass
         f.write(json.dumps(line, sort_keys=True) + "\n")
     return line
 
