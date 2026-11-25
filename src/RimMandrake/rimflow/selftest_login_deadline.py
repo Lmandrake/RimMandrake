@@ -179,6 +179,35 @@ def t_a_renewed_login_ends_the_warning():
         check("a-renewed-login-ends-the-warning", len(kinds(a1)) == 1 and not kinds(a2), repr(a2))
 
 
+def t_one_deadline_read_a_second_apart_is_one_alarm_kind():
+    """RIMMANDRAKE_FIX_LOGIN_DEADLINE_ALARM_REKEYS_EACH_REFRESH: one fixed deadline read as ...366, ...367 and ...368
+    (told.jsonl 2026-11-24) made three alarm kinds, and each new kind called an Operations run. A new sign-in, days
+    later, is a new deadline and a new kind."""
+    if not have():
+        return
+    with tempfile.TemporaryDirectory() as d:
+        st, seen = {}, []
+        for i, jitter in enumerate((0.0, 1.0, -1.0, 2.0)):
+            vault(d, {"steven": NOW + 2 * DAY + jitter})
+            _, a = run(st, obs(d), NOW + 600 * i)
+            seen += [x["kind"] for x in kinds(a)]
+        check("one-deadline-read-a-second-apart-is-one-alarm-kind: one kind for one deadline", len(set(seen)) == 1,
+              repr(sorted(set(seen))))
+        vault(d, {"steven": NOW + 6 * DAY})              # a new sign-in four days later, read when it is near
+        _, a = run(st, obs(d), NOW + 4 * DAY)
+        new = [x["kind"] for x in kinds(a)]
+        check("one-deadline-read-a-second-apart-is-one-alarm-kind: a new sign-in is a new kind",
+              len(new) == 1 and new[0] not in seen, repr((new, sorted(set(seen)))))
+
+        warned = "login:deadline:Archmagi:steven:%d" % (NOW + 2 * DAY - 1)
+        st = {"alarms": {warned: NOW - 600}}            # Dispatcher state from before the fix
+        vault(d, {"steven": NOW + 2 * DAY + 2})
+        _, a = run(st, obs(d))
+        got = [x["kind"] for x in kinds(a)]
+        check("one-deadline-read-a-second-apart-is-one-alarm-kind: reuses an already told kind",
+              got == [warned], repr(got))
+
+
 def t_a_broken_deadline_check_never_stops_the_login_probe():
     if not have():
         return
@@ -257,7 +286,8 @@ def main():
     for t in (t_a_login_near_its_deadline_alarms, t_the_live_login_renews_from_a_plain_terminal,
               t_a_past_deadline_says_expired, t_a_login_far_from_its_deadline_is_quiet,
               t_an_unreadable_deadline_is_unmeasured_not_quiet, t_the_deadline_check_never_reads_a_token,
-              t_a_renewed_login_ends_the_warning, t_a_broken_deadline_check_never_stops_the_login_probe,
+              t_a_renewed_login_ends_the_warning, t_one_deadline_read_a_second_apart_is_one_alarm_kind,
+              t_a_broken_deadline_check_never_stops_the_login_probe,
               t_the_dispatcher_wires_the_reader, t_each_vault_host_warns_of_its_own_deadlines,
               t_an_unreadable_host_names_its_cause):
         t()

@@ -38,6 +38,9 @@ login after it dies. This page adds the warning before the deadline.
 - **a-login-near-its-deadline-alarms.** A login whose deadline is within `deadline_warn_s` raises one alarm kind,
   `login:deadline:<host>:<account>:<deadline epoch>`, into the ledger and the Conductor log. The alarm gives the deadline in
   Pacific time and the way to renew. The Dispatcher repeats the kind every `alarm_every_s` until the login is renewed.
+- **one-deadline-read-a-second-apart-is-one-alarm-kind.** For each host and account, a reading within three whole seconds
+  of the stored warning epoch reuses its kind. On the first warning with this rule, the most recently told matching kind
+  in Dispatcher state supplies that epoch if one exists. A new sign-in with a deadline days away gets its own kind.
 - **the-live-login-renews-from-a-plain-terminal.** For the local live account, the alarm says so and names
   `claude auth login` from a plain terminal, not /login in a window. A vault account is told to use
   `claude-account enroll <account>`.
@@ -66,5 +69,8 @@ login after it dies. This page adds the warning before the deadline.
 - `deadline_warn_s` = 3 days. Danger: a login dies mid-session, and every window and run on it stops until he signs in
   again. Evidence: 2026-11-22, the lukas login, dead 10:42 to 11:21 AM PST (above). Three days gives him several
   sittings to renew the login at a time he picks.
+- The three-second match covers the observed whole-second variation on 2026-11-24, when epochs ending in 366, 367
+  and 368 for one login produced separate incident metrics and called Operations again. The stored epoch stays fixed
+  across matching readings.
 - The SSH read has an 8-second connection timeout and a 10-second total timeout so SteveDesktop cannot indefinitely
   delay the local login probe. The connection timeout matches the account usage poller's.

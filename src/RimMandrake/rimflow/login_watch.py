@@ -67,6 +67,7 @@ DEFAULTS = {
     "deadline_warn_s": 3 * 86400, "vault_root": "~/.claude-accounts"}
 SCRUB_ENV = ("ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN", "ANTHROPIC_BASE_URL", "CLAUDE_CODE_OAUTH_TOKEN",
              "CLAUDE_CONFIG_DIR", "CLAUDE_SECURESTORAGE_CONFIG_DIR")    # the login the windows use, nothing else
+DEADLINE_JITTER_S = 3  # one login read as ...366, ...367 and ...368 on 2026-11-24; a new sign-in moves it by days
 
 
 RESET_RX = re.compile(r"resets (?:(?P<mon>[A-Z][a-z]{2}) (?P<day>\d{1,2}),? (?:at )?)?(?P<h>\d{1,2})(?::(?P<m>\d{2}))?\s*(?P<ap>am|pm) \((?P<tz>[\w/+-]+)\)", re.I)
@@ -385,11 +386,11 @@ def host_login_deadlines(host, run=None, *, on_unmeasured=None):
     return None
 
 
-def _deadline_step(cfg, lo, now, act):
+def _deadline_step(cfg, st, lo, now, act):
     if not lo.get("deadlines"):
         return
     local = "SteveDesktop" if (machine(cfg) or "").lower() == "stevedesktop" else "Archmagi"
-    _deadline_alarms(cfg, lo["deadlines"](), now, act, local)
+    _deadline_alarms(cfg, st, lo["deadlines"](), now, act, local)
     if local == "Archmagi" and lo.get("host_deadlines"):
         def unmeasured(why):
             act(do="alarm", kind="login:deadline:blind:SteveDesktop", note=True, conductor_log=False,
@@ -397,10 +398,27 @@ def _deadline_step(cfg, lo, now, act):
                 raise_first="SteveDesktop login deadline check is blind.")
         r = lo["host_deadlines"]("SteveDesktop", on_unmeasured=unmeasured)
         if r is not None:
-            _deadline_alarms(cfg, r, now, act, "SteveDesktop", remote=True)
+            _deadline_alarms(cfg, st, r, now, act, "SteveDesktop", remote=True)
 
 
-def _deadline_alarms(cfg, r, now, act, host, remote=False):
+def _deadline_kind(st, host, account, deadline):
+    prefix = "login:deadline:%s:%s:" % (host, account)
+    warned = st["login"].setdefault("warned_deadlines", {})
+    epoch = int(deadline)
+    anchor = warned.get(prefix)
+    if anchor is None:
+        # Keep a kind already told before warned_deadlines was recorded in Dispatcher state.
+        alarms = st.get("alarms") or {}
+        nearby = (n for n in range(epoch - DEADLINE_JITTER_S, epoch + DEADLINE_JITTER_S + 1)
+                  if prefix + str(n) in alarms)
+        anchor = max(nearby, key=lambda n: alarms[prefix + str(n)], default=epoch)
+    elif abs(epoch - anchor) > DEADLINE_JITTER_S:
+        anchor = epoch
+    warned[prefix] = anchor
+    return prefix + str(anchor)
+
+
+def _deadline_alarms(cfg, st, r, now, act, host, remote=False):
     """One alarm kind per host, account and deadline. A new sign-in ends the old warning."""
     if r is None:
         act(do="alarm", kind="login:deadline:blind", note=True, conductor_log=False,
@@ -425,7 +443,7 @@ def _deadline_alarms(cfg, r, now, act, host, remote=False):
                else "`claude auth login` from a plain terminal, not /login in a window" if is_live
                else "`claude-account enroll %s` from a plain terminal (the account's owner signs in)" % a)
         when = ("EXPIRED %s" % _local(dl)) if left <= 0 else ("dies %s, in %.1f h" % (_local(dl), left / 3600.0))
-        act(do="alarm", kind="login:deadline:%s:%s:%d" % (host, a, int(dl)), note=True, conductor_log=True,
+        act(do="alarm", kind=_deadline_kind(st, host, a, dl), note=True, conductor_log=True,
             why="%s login %s on %s %s. A refresh cannot move this deadline (the CLI keeps the earlier one); only a new"
                 " sign-in does.%s" % ("the live" if is_live else "vault", a, host, when,
                               " Every window and run on it stops then." if is_live and left > 0 else
@@ -442,7 +460,7 @@ def step(sch, st, obs, now, act, iso):
         return None
     L = st.setdefault("login", {})
     try:
-        _deadline_step(cfg, lo, now, act)
+        _deadline_step(cfg, st, lo, now, act)
     except Exception as e:  # noqa: BLE001 - the deadline check never stops the probe below
         act(do="alarm", kind="login:deadline:watch", note=True, conductor_log=True,
             why="the login deadline check raised %s: %s" % (type(e).__name__, e),
