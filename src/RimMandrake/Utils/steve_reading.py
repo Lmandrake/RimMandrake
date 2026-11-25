@@ -225,6 +225,9 @@ def steve_view_block(env, cache, now):
         return [{"name": r["desc"], "where": r["where"], "since": r["since"], "id": r["id"]} for r in keep]
     return {"schema": VIEW_SCHEMA, "host": "SteveDesktop", "written_at": now, "machine": machine, "games": games,
             "services": g["services"], "services_why": g["services_why"],      # by unit name, without the lane's own jobs and dbus
+            "claude_runs": ({"unknown": g["machine_why"]} if g["machine_why"] else
+                            {"unknown": g["services_why"] or "no service list"} if g["claude_runs"] is None else
+                            {"observed_at": cache["good_t"], "rows": g["claude_runs"]}),
             "jobs": {"observed_at": now, "running": mine(jobs["running_jobs"], "running"), "running_why": jobs["running_why"],
                      "queued": mine(jobs["pending_jobs"], "pending"), "queued_why": jobs["pending_why"]}}
 
@@ -358,7 +361,22 @@ def collect_steve_games(cache, now, jobs):
             out["services_why"] = "broken systemctl service list"
         else:
             out["services"] = sorted(u for u in units if u != "dbus.service" and not u.startswith("testq-"))
+            out["claude_runs"] = sorted((claude_run(line) for line in services.splitlines()
+                                         if line.split() and line.split()[0].startswith("rm-detached-")), key=lambda r: r["unit"])
+    out.setdefault("claude_runs", None)
     return out
+
+
+def claude_run(line):
+    """One detached Claude run from its systemctl line: the unit, and the item, seat and model that detached_helper.py put
+    in the claude argv (--name "DETACHED <SEAT> <ITEM>", --model). The unit name ends in its launch epoch. A part the line
+    does not carry is null, never guessed."""
+    unit = line.split()[0]
+    name = re.search(r'--name\s+\\?"DETACHED\s+(\S+)\s+([A-Za-z0-9_]+)', line)
+    model = re.search(r"--model\s+([\w.\-\[\]]+)", line)
+    since = re.search(r"-(\d{9,11})(?:-\d+)?\.service$", unit)
+    return {"unit": unit, "item": name.group(2) if name else None, "seat": name.group(1) if name else None,
+            "model": model.group(1) if model else None, "since": int(since.group(1)) if since else None}
 
 
 def check(path=None):

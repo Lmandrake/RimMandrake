@@ -135,6 +135,30 @@ def t_steve_services_in_view():
         assert v["services"] == want and ((why or "") in (v["services_why"] or "")) and bool(why) == bool(v["services_why"]), (text, v["services"], v["services_why"])
 
 
+DETACHED_LINE = ("rm-detached-bench-rimmandrake-finish-steve-host-launch-nev-1795566993.service loaded active running [systemd-run] "
+                 "/usr/bin/python3 /x/spend_watchdog.py --cap-usd 30 -- /x/claude_bounded.sh -p --model opus "
+                 "--name \"DETACHED BENCH RIMMANDRAKE_FINISH_STEVE_HOST_LAUNCH_NEVER_RAN_ON_REAL_MACHINE\" --output-format json\n")
+
+
+def t_steve_claude_runs_by_unit_and_item():
+    e = Fake()
+    e.reading["services_json"] = json.dumps({"out": DETACHED_LINE + "rm-detached-bench-odd-1795567095-2.service loaded active running [systemd-run] x\n"
+                                                    "dbus.service loaded active running dbus\n"})
+    c = view_of(e)["claude_runs"]
+    assert c["observed_at"] == NOW and len(c["rows"]) == 2, c
+    b, a = c["rows"]          # sorted by unit name
+    assert a == {"unit": "rm-detached-bench-rimmandrake-finish-steve-host-launch-nev-1795566993.service",
+                 "item": "RIMMANDRAKE_FINISH_STEVE_HOST_LAUNCH_NEVER_RAN_ON_REAL_MACHINE", "seat": "BENCH", "model": "opus",
+                 "since": 1795566993}, a
+    assert b["item"] is None and b["model"] is None and b["seat"] is None and b["since"] == 1795567095, b
+    e = Fake()          # the lane fixture runs no Claude: a read list with no detached unit is [], never unknown
+    assert view_of(e)["claude_runs"] == {"observed_at": NOW, "rows": []}, view_of(e)["claude_runs"]
+    e = Fake()
+    e.reading["services_json"] = json.dumps({"why": "systemctl exited 1: no bus"})
+    c = view_of(e)["claude_runs"]
+    assert set(c) == {"unknown"} and "no bus" in c["unknown"], c
+
+
 def t_steve_every_reading_has_its_time():
     v = view_of(Fake())
     assert v["written_at"] == NOW and v["machine"]["observed_at"] == NOW and v["games"]["observed_at"] == NOW and v["jobs"]["observed_at"] == NOW
@@ -263,7 +287,7 @@ def t_steve_check_tells_old_unread_and_decoded_apart():
 
 def main():
     bad = 0
-    tests = [t_steve_games_up_and_driver, t_steve_jobs_by_name, t_steve_services_in_view, t_steve_every_reading_has_its_time,
+    tests = [t_steve_games_up_and_driver, t_steve_jobs_by_name, t_steve_services_in_view, t_steve_claude_runs_by_unit_and_item, t_steve_every_reading_has_its_time,
              t_steve_unread_is_unknown_with_cause, t_steve_one_ssh_per_probe, t_steve_view_for_augur,
              t_steve_check_tells_old_unread_and_decoded_apart]
     for t in tests:

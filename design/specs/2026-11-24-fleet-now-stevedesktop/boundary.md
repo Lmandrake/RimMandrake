@@ -32,6 +32,9 @@ of its name in `src/RimMandrake/Utils/selftest_steve_reading.py`.
   its place and its start time. Another machine's running job is not in this host's view.
 - **steve-services-in-view.** `services` lists each running service of SteveDesktop that is not a lane job or dbus; a list
   that cannot be read is null and `services_why` names the cause. A list that was read and is empty is `[]`.
+- **steve-claude-runs-by-unit-and-item.** `claude_runs` lists each running `rm-detached-*` unit of SteveDesktop with the
+  item, seat and model from its claude argv and its launch time from the unit name; a part the line lacks is null. A
+  list that was read with no such unit is `{"observed_at", "rows": []}`; an unread list is `{"unknown": cause}`.
 - **steve-every-reading-has-its-time.** The write, the machine figures, the games and the jobs each carry the time of
   their reading.
 - **steve-unread-is-unknown-with-cause.** A missing, broken or old source is `{"unknown": cause}`, a null list with its
