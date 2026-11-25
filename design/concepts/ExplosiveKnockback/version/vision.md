@@ -34,8 +34,8 @@ mod."* (OWNER:1795565863812726726).
     version: `design/specs/2026-11-24-knockback-blast-show/design.md`.
 13. Three polish lines join as work of this version, judged relevant by the Conductor on his word (*"Include all polish
     items too, but judge each of them first as relevant or not"*): a burning gas burst also shoves a person on an intact
-    pit cover; a pawn that a sandbag stops short of another pawn hits nobody; each rebound of a thrown good visibly goes a
-    shorter way.
+    pit cover; a pawn that a sandbag stops short of another pawn hits nobody; each rebound of a thrown good visibly carries
+    it on for only part of the way the throw still had left, so the bounces die away.
 
 The bars of the delta are the fourteen new rows of `../record.json` (`carried_thing_own_arc`, `collision_bruise_by_size`,
 the nine `blast_show_*` rows, `gas_shoves_pawn_on_pit_cover`, `no_impact_without_contact`, `rebound_goes_shorter`).

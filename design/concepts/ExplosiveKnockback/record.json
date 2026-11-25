@@ -1464,7 +1464,7 @@
   },
   {
    "id": "rebound_goes_shorter",
-   "what": "Each time a thrown good rebounds off a wall or a closed door, the player sees it carry on a clearly shorter way than the flight before, until it comes to rest.",
+   "what": "Each time a thrown good rebounds off a wall or a closed door, the player sees it carry on for only part of the way the throw still had left, so the bounces die away until it comes to rest.",
    "impl": "present",
    "proof": "missing",
    "scope": "opened_by_owner",
@@ -1476,8 +1476,8 @@
    ],
    "speaker": "owner",
    "quote": "Include all polish items too, but judge each of them first as relevant or not (or card me if you don't want the responsibility)",
-   "note": "0.2.0 MINOR. A polish line the Conductor judged relevant (2026-11-24): the 0.1.0 leaf goods_arc_spin_rebound speaks of speed kept, while the build keeps a share of the cells left. This row says what the player sees. The leaf's own words in tree.json and sheet.md are reworded to match, and the frozen Cold Reader exam is retaken whole, under RIMMANDRAKE_REWORD_KNOCKBACK_REBOUND_LEAF_THEN_RETAKE_WHOLE_EXAM. A plain sentence about what the player sees, never a tuning number.",
-   "proof_note": "offline: the kernel's rebound cases already pass on cells left; live: sc_storeroom_mortar's trace, each rebound leg shorter than the leg before (Stage 6)",
+   "note": "0.2.0 MINOR. A polish line the Conductor judged relevant (2026-11-24): the 0.1.0 leaf goods_arc_spin_rebound speaks of speed kept, while the build keeps a share of the cells left. This row says what the player sees. The leaf's own words in tree.json and sheet.md are reworded to match, and the frozen Cold Reader exam is retaken whole, under RIMMANDRAKE_REWORD_KNOCKBACK_REBOUND_LEAF_THEN_RETAKE_WHOLE_EXAM. A plain sentence about what the player sees, never a tuning number. Reworded 2026-11-25 to agree with the leaf (RIMMANDRAKE_RULE_REBOUND_NEAR_WALL_OUTFLIES_FIRST_LEG, the Conductor's option a): near a wall a first leg is cut short and leaves most of the throw, so a rebound can go as far as the leg before; the bar no longer compares a rebound with the flight before.",
+   "proof_note": "offline: the kernel's rebound cases already pass on cells left; live: sc_storeroom_mortar_rebound_legs, each rebound leg less than the cells the throw had left at that rebound, and the good comes to rest (Stage 6)",
    "impl_evidence": [
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_ThingFlyer_Knockback.cs"

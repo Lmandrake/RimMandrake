@@ -2895,7 +2895,7 @@
    "entry": "scene_storeroom_mortar_rebound_legs.py",
    "item": "RIMMANDRAKE_FOLD_KNOCKBACK_POLISH_LINES_INTO_ZERO_TWO_THREE_JUDGED_IN",
    "scene": "sc_storeroom_mortar",
-   "observes": "sc_storeroom_mortar's trace: each rebound leg of a thrown good is shorter than the leg before, until it rests",
+   "observes": "the journal trace of one Steel thrown across three walled storerooms: each rebound leg is less than the cells the throw had left at that rebound (V_SHORTER), and the good comes to rest (V_RESTS)",
    "reads": [
     "src/RimMandrake/ExplosiveKnockback/proof/scene_storeroom_mortar_rebound_legs.py",
     "design/concepts/ExplosiveKnockback/scenes.json",
@@ -2918,7 +2918,15 @@
     "command": "python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_storeroom_mortar_rebound_legs.py",
     "early_row": true
    },
-   "command": "python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_storeroom_mortar_rebound_legs.py"
+   "command": "python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_storeroom_mortar_rebound_legs.py",
+   "repair": {
+    "at": "2026-11-25",
+    "item": "RIMMANDRAKE_RULE_REBOUND_NEAR_WALL_OUTFLIES_FIRST_LEG",
+    "check": "V_SHORTER: each rebound leg flown < the cells the throw had left at that rebound (item_rebound left); was leg[i+1] / leg[i] < 1, which the reworded bar rebound_goes_shorter no longer asks",
+    "decided_from_record": "python3 design/concepts/ExplosiveKnockback/version/pilot_throwaway/decide_rebound_legs_from_record.py (the scene's own good_legs and rebound_ratios on the two live runs of 2026-11-25 on ArchSmall; left = planned - flown, cross-checked against ReboundCells for every leg)",
+    "red": "FAIL on the plant keep_all (goodsReboundKeepPercent 100): worst ratio 1.000 (narrow leg 3: 1 of 1 cells left), 6 rebound legs; design/concepts/ExplosiveKnockback/version/in_game/early/sc_storeroom_mortar_rebound_legs_plant_ek-v-storeroom_mortar_rebound_legs-keep_all.log",
+    "green": "PASS on the real build (keep 70): worst ratio 0.500 (mid leg 1: 2 of 4 cells left), narrow 2 of 5, wide 1 of 2; V_RESTS PASS in all three rooms; design/concepts/ExplosiveKnockback/version/in_game/early/sc_storeroom_mortar_rebound_legs_ek-u-rebound.log"
+   }
   },
   "sc_blast_show": {
    "id": "sc_blast_show",
