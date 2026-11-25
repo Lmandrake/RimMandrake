@@ -14,3 +14,4 @@ A record of minor points that are not significant (`CLAUDE.md` §Code is clean w
 - `prove_ordered_rescue.py` R3: a hostile that fails to spawn reads FAIL (exit 1); the docstring calls a missing scene NO VERDICT (exit 2).
 - `prove_tap_certificate.py` `judge_job`: the think-tree route now also accepts a queued `WorkGiverDef:<defName>` row as evidence (real tree rows are plentiful).
 - `JawaBenchCast.cs` `Giver()`: with no node, `workGiverDef` now wins over `j.jobGiver`; no reader depends on the old order.
+- A held incident's `caller` names Harmony's replacement (`...IncidentWorker.TryExecute_Patch4`), not the real caller, when the call came from a tool (live, 2026-11-25).

@@ -469,6 +469,13 @@ driver is refused, and is a breach of class APPARATUS. `read` is open to anyone 
   no control are refused by name, and nothing is armed.
 - **a-not-undone-control-is-listed-as-such.** A NOT UNDONE entry is never put back and is listed in `notUndone` with its reach.
 
+**LIVE PROOF** (2026-11-25): ArchBig, `prove_calm_profile.py` at 4df311b91b, 7 of 7 PASS (`live/calm_profile_live_2026-11-25_ArchBig.log`):
+the planted Eclipse, the Muffalo at the edge (an act inside a run) and the locked Rain each gave one breach that names it; the
+incident check read red with the incident gate excepted; a save and load re-armed the profile with every status unchanged; a killed
+driver's 0.1-minute lease put everything back. The certificate did not match this mod list, so every control read ARMED UNPROVEN.
+The load row was red on 69a553b3f6 (the re-arm read CAMPAIGN before the loaded save was known) and green after the fix. On ArchSmall
+one run of the edge row could not look (the run did not start); not seen again.
+
 ## Flight probes
 
 The flight probes and the flapping-bird judge have their own page: `../2026-11-24-flight-frames/boundary.md`.

@@ -1,0 +1,51 @@
+ArchBig: held for `/mnt/d/ClaudeWork/scratch/calm_profile_live/live.sh ArchBig` (gen 1671)
+SUCCESS: Sent termination signal to the process with PID 35600.
+canonical saves: list is current
+staging src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBench.BridgeTools.csproj -> D:\ClaudeWork\rimmandrake\build\JawaBench
+  src/RimMandrake/bridgetools/JawaBench.BridgeTools/
++ dotnet.exe build D:\ClaudeWork\rimmandrake\build\JawaBench\src\RimMandrake\bridgetools\JawaBench.BridgeTools\JawaBench.BridgeTools.csproj -c Release
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  JawaBench.BridgeTools -> D:\ClaudeWork\rimmandrake\build\JawaBench\src\RimMandrake\bridgetools\artifacts\BridgeTools\JawaBench\JawaBench.BridgeTools.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:04.28
+
+bundle contents (/home/mandrake/rm/relentless/clones/RIMMANDRAKE_BUILD_CALM_PROFILE_BREACH_LOG_AND_LEASE.det/src/RimMandrake/bridgetools/artifacts/BridgeTools/JawaBench):
+  JawaBench.BridgeTools.dll                 5746176 B
+
+OK: bundle ships only JawaBench.BridgeTools.dll
+source hash embedded: 22e8aa729c19f2cd (companion_identity.py checks it on every lane)
+
+*** GM TOOLS INCLUDED - this build can act on the player. ***
+  jawa/fire_incident       in DLL
+  jawa/send_letter         in DLL
+
+closure_scan: clean - 725 fields on 2 shared types, none names an optional mod's type
+deploy target: ArchBig, /mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/BridgeTools/JawaBench
+
+deploy plan
+  from : /home/mandrake/rm/relentless/clones/RIMMANDRAKE_BUILD_CALM_PROFILE_BREACH_LOG_AND_LEASE.det/src/RimMandrake/bridgetools/artifacts/BridgeTools/JawaBench/JawaBench.BridgeTools.dll
+  to   : /mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/BridgeTools/JawaBench/JawaBench.BridgeTools.dll
+  state: differs -- built from a DIFFERENT COMMIT (expected after any commit)
+         game copy : 66c6f29462d9
+         this build: 4df311b91b65
+         The build is deterministic per commit, so this alone does NOT mean
+         the tool code changed. Deploy to make them agree.
+  readback sha256 2277942dbedb5ff8 matches the verified build
+
+deployed. RimBridgeServer only discovers companions at startup, so this does nothing until RimWorld restarts.
+started ArchBig through Steam (Steam is launching it), pid 8688, bridge on port 5174 after 166 s
+certified lines: [] (refused: companion differs: certified 635245a0-0965-4164-b3c2-0b2a1bb1f5d9, loaded b6327c4f-1fab-4926-9282-117e8ca99770; mod list differs: certified sha256:73be868885c0faeb8c90d4832a8dc04444c6ea0cac9f36c84c1d54d245aa25e4, loaded sha256:9d48b3f6511a30b9089e20f5b7509be155ce1939c3fabe4f537e29e9da2516aa; patch inventory on the tapped methods differs from the certified one; the settings of a mod with a patch on a tapped method differ from the certified ones)
+arm                                          PASS       {'storyteller': 'ARMED UNPROVEN', 'random_mental_states': 'ARMED UNPROVEN', 'random_diseases': 'ARMED UNPROVEN', 'incident_gate': 'ARMED UNPROVEN', 'quest_gate': 'ARMED UNPROVEN', 'mental_gate': 'ARMED UNPROVEN', 'incident_queue': 'ARMED UNPROVEN', 'wild_spawner': 'ARMED UNPROVEN', 'weather': 'ARMED UNPROVEN', 'proximity_letters': 'ARMED UNPROVEN', 'needs_hold': 'OFF', 'clear_site': 'OFF'}; None
+planted_incident_is_one_breach               PASS       fired=False breaches=[{'seq': 1, 'class': 'ENVIRONMENT', 'kind': 'incident_held', 'tick': 1, 'what': 'Eclipse held by the incident gate; caller MonoMod.Utils.DynamicMethodDefinition.RimWorld.IncidentWorker.TryExecute_Patch4; map 0, forced'}]; reply {"success": false, "message": "Eclipse did NOT fire. canFireNow=True.", "incident": "Eclipse", "category": "Misc", "canFireNow": true, "forced": true, "fired": false, "windowsOpened": [], "blockedByDialog": false, "points": 35.0, "ticksGame": 1, "oper
+planted_incident_check_red_with_the_gate_excepted PASS       fired=True breaches=[]
+planted_wild_animal_at_the_edge_is_one_breach PASS       run S1_20261125T121839_r1 hit; acts ['done']; breaches=[{'seq': 2, 'class': 'ENVIRONMENT', 'kind': 'arrival', 'tick': 3, 'what': 'Muffalo44141 Muffalo (no faction) at 2,125'}]; placed=0; reply 
+planted_weather_change_is_one_breach         PASS       breaches=[{'seq': 3, 'class': 'ENVIRONMENT', 'kind': 'weather', 'tick': 7, 'what': 'the weather is Rain (forced Rain), not Clear'}]
+a_load_in_the_middle_changes_no_status       PASS       rearms=1 policy=test: profile file says test, and the loaded save is not a listed canonical save; before {'storyteller': 'ARMED UNPROVEN', 'random_mental_states': 'ARMED UNPROVEN', 'random_diseases': 'ARMED UNPROVEN', 'incident_gate': 'ARMED UNPROVEN', 'quest_gate': 'ARMED UNPROVEN', 'mental_gate': 'ARMED UNPROVEN', 'incident_queue': 'ARMED UNPROVEN', 'wild_spawner': 'ARMED UNPROVEN', 'weather': 'ARMED UNPROVEN', 'proximity_letters': 'ARMED UNPROVEN', 'needs_hold': 'OFF', 'clear_site': 'OFF'}; a
+a_killed_driver_leaves_no_control_on         PASS       child ARMED; armed then True; now armed=False leaseEnd=lease ended notPutBack=[] storyteller={'def': 'Cassandra', 'enabledBefore': True, 'enabledAfter': True} gates={"gates":[{"gate":"incident","on":false,"allowLeft":"","attempts":1,"held":1,"allowed":0,"foreignPassed":0,"alreadySkipped":0,"faults":0,"lastFault":null,"rowsDropped":0,"outside":1,"sinkDropped":0,"l
+calm profile live: 7 PASS, 0 FAIL, 0 UNMEASURED
+[bridge split] 73.0 s wall: load 8.3 / ticks 0.0 / reads 3.8 / other 1.5 / outside calls 59.4 s
