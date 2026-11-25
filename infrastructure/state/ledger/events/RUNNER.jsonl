@@ -12216,3 +12216,4 @@
 {"seat":"RUNNER","event":"note","id":"OPS_SCRATCH_DIRT_MEASURE_AT_END_YOGQ","text":"ops_watch: cleared at 2026-11-25T15:50:51Z (disk.scratch_dirty_end now 0)","ts":"2026-11-25T15:50:58Z","tsn":1795621858880008739}
 {"seat":"RUNNER","event":"live","id":"OPS_STEVE_DIAGNOSE_INVALID_SHARE_UKDG","result":"broken","detail":"Ops alarm STEVE_INVALID_SHARE: steve.invalid_share_24h = 0.153 share of jobs INVALID, 24 h (MEASURED), line >= 0.15","ts":"2026-11-25T15:59:21Z","tsn":1795622361884546577}
 {"seat":"RUNNER","event":"raise","id":"OPS_STEVE_DIAGNOSE_INVALID_SHARE_UKDG","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-25T15:59:28Z","tsn":1795622368737803930}
+{"seat":"RUNNER","event":"note","id":"OPS_STEVE_SEATS_RESTORE_QTWK_RGFZ","text":"ops_watch: cleared at 2026-11-25T16:09:47Z (steve.seats_absent_min now 0.0)","ts":"2026-11-25T16:09:56Z","tsn":1795622996352736055}
