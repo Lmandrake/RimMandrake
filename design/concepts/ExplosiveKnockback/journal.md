@@ -8,13 +8,13 @@ The top part, **the mod as it stands**, is rewritten at every stage change and s
 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Code exists:
   `src/RimMandrake/ExplosiveKnockback/`.
-- **Stage now:** Stage 6, in-game acceptance, since 2026-11-25 6:33 AM PST (`version/stage_record.json`).
+- **Stage now:** Stage 3, offline build, since 2026-11-25 9:58 AM PST (`version/stage_record.json`).
 - **Bars:** 59 (30 inventory rows of `record.json` + 29 leaves of `tree.json`). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`).
 - **Measured 2026-11-14 12:45 PST:** 53 of 59 bars have at least one test that runs today; 47 have every deciding test
   runnable; 41 have all their offline deciding tests green. All 15 offline tests are built (13 PASS, 2 known red,
   unchanged). In-game scenes: 56, entry exists 50, absent 6. Every in-game scene is UNRUN (Stage 6); commands in the table.
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-25 6:33 AM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-25 9:58 AM PST).
 - **Open questions:** see "Questions" at the end of the history.
 
 ### The vision (his root paragraph, approved by card 2026-11-11, OWNER:1794468835221748501)
@@ -524,4 +524,13 @@ answer the locked bar, his recorded words or the shipped code already gives; no 
 - Steward confirms: read blind_challenge/cycle_1 SUMMARY.md, faults.json, fixes.jsonl, tests_edited.json and row files: lane1 after fix 28 PASS/0 FAIL/1 INFO/71 UNSETTLED (all not_kernel, game-side, none on inv_kernel or inv_proof_scenes); reruns 36/36 PASS; planted 31/35 caught, 4 misses explained (2 Polish owned by Stage 6 scenes, 1 owned by sc_pawn_arc_bruise_sizes, 1 equivalent mutant); 1 Problem (check) FIXED 08b632f259, T_PROOFGATE D1 additive only, nothing weakened; I reran D1 myself: PASS on HEAD, FAIL 'no Build case for wall_stop' on P_SCENE_CASE_RENAMED; red_seen recorded. No mod fix, so no fix reader owed. Verdict: exit met.
 - Was, "Stage now": - **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-25 4:42 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-25 4:42 AM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-25 9:58 AM PST, stage change: In-game acceptance (Stage 6) to Offline build (Stage 3) (by BENCH)
+
+- Why: Conductor's brief (steward act after in-game visit 1): send ExplosiveKnockback 0.2.0 down its road back to the nearest stage that repairs every mod-wrong line. offline_build: the scar-def rename (RIMMANDRAKE_RENAME_KNOCKBACK_SCAR_DEFS_DIGIT_ENDING_CONFIG_ERROR) and the missing IED scar (RIMMANDRAKE_FIND_KNOCKBACK_IED_SCAR_MISSING_ONE_RUN_IN_THREE, sc_blast_show MOD FAILURE) are changes of mod code/defs; RIMMANDRAKE_COVER_KNOCKBACK_BAR_HALVES_NO_LIVE_CHECK_SEES and RIMMANDRAKE_CLASS_KNOCKBACK_SHELL_KILLS_COLONIST_TWO_OF_FIVE_RUNS go with it; P_goods_fly_wall/P_goods_fly_rebound stay UNRESOLVED, owned by RIMMANDRAKE_HUNT_KNOCKBACK_GOOD_UNMOVED_LONG_BATCH_THREE_SIGHTINGS
+- Checks passed: order, by, version, hold.
+- Owner said: per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: Conductor's brief (steward act after in-game visit 1): send ExplosiveKnockback 0.2.0 down its road back to the nearest stage that repairs every mod-wrong line. offline_build: the scar-def rename (RIMMANDRAKE_RENAME_KNOCKBACK_SCAR_DEFS_DIGIT_ENDING_CONFIG_ERROR) and the missing IED scar (RIMMANDRAKE_FIND_KNOCKBACK_IED_SCAR_MISSING_ONE_RUN_IN_THREE, sc_blast_show MOD FAILURE) are changes of mod code/defs; RIMMANDRAKE_COVER_KNOCKBACK_BAR_HALVES_NO_LIVE_CHECK_SEES and RIMMANDRAKE_CLASS_KNOCKBACK_SHELL_KILLS_COLONIST_TWO_OF_FIVE_RUNS go with it; P_goods_fly_wall/P_goods_fly_rebound stay UNRESOLVED, owned by RIMMANDRAKE_HUNT_KNOCKBACK_GOOD_UNMOVED_LONG_BATCH_THREE_SIGHTINGS
+- Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-25 6:33 AM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-25 6:33 AM PST).
 - Record: `version/stage_record.json`.
