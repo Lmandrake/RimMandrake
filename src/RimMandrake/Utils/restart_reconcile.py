@@ -3,8 +3,8 @@
 design/RimMandrake/operating_requirements_2026-11-01.md, RESTART_JOIN_BUILD_EVERY_GOODBYE_ENDS).
 
 Why it is a separate program: on 2026-11-01 two goodbyes were cancelled by a peer message and nobody heard. Each past fix
-sat on the code path that dropped them, so this one trusts nothing there. No AI; its own timer (rm-restart-reconcile,
-every restart_reconcile_pass_s); it imports the Dispatcher's readers but never runs a tick and never tells through it.
+sat on the code path that dropped them, so this one trusts nothing there. No AI; the metronome raise phase runs it
+(every beat, below); it imports the Dispatcher's readers but never runs a tick and never tells through it.
 
 A REQUEST is any of, joined on seat and time:
   <dispatcher state>/restart/<SEAT>.request.json   written by the seat, whether or not any tick ever read it

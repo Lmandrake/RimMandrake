@@ -31,6 +31,9 @@ os.environ["RM_DISPATCHER_STATE"] = os.path.join(TMP, "state")
 os.environ["TESTQ_QUEUE"] = os.path.join(TMP, "testq")
 os.environ["RM_SEAT_LOG_DIR"] = os.path.join(TMP, "seat_log")
 os.environ["SEAT_RESTART_NO_TICK"] = "1"
+# hermetic on any machine: a launch argv needs a Fable id (role_launch.launch_model), and SteveDesktop's settings carry
+# none (2026-11-24: the test crashed there before any verdict). The id is a fixture; no check reads its value.
+os.environ.setdefault("ANTHROPIC_DEFAULT_FABLE_MODEL", "claude-fable-selftest")
 sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.dirname(HERE))
 sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
@@ -759,8 +762,9 @@ def test_game_a_lock_record_keeps_its_takers_identity():
     from rimflow import model as M
     import driver_lock as DL
     p = os.path.join(TMP, "DRIVER_LOCK_a.json")
-    saved = {k: os.environ.get(k) for k in ("RIMFLOW_DRIVER_LOCK", "RM_ROLE_UNIT", "RM_GAME_INSTANCE")}
-    os.environ.update(RIMFLOW_DRIVER_LOCK=p, RM_ROLE_UNIT="rm-detached-x-1")
+    saved = {k: os.environ.get(k) for k in ("RIMFLOW_DRIVER_LOCK", "RM_ROLE_UNIT", "RM_GAME_INSTANCE", "RM_HOST")}
+    # game a's lock is read on Archmagi only (model.game_a_lock_path); pin the host so the test runs on any machine
+    os.environ.update(RIMFLOW_DRIVER_LOCK=p, RM_ROLE_UNIT="rm-detached-x-1", RM_HOST="archmagi")
     os.environ.pop("RM_GAME_INSTANCE", None)
     try:
         me = DL.my_identity()

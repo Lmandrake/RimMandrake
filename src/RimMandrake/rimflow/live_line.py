@@ -293,3 +293,49 @@ def can_see(runner=subprocess.run):
     except Exception:  # noqa: BLE001
         return False
     return (r.stdout or "").strip() in ("running", "degraded", "starting", "initializing", "maintenance")
+
+
+# The close gate off the pipeline host (design/specs/2026-11-24-live-gate-on-pipeline-host/boundary.md): a SteveDesktop
+# helper closing an Archmagi promise read rm-metronome.timer as "not-found" here and was refused (2026-11-24).
+DEADMAN_TIMER = "rm-deadman.timer"
+LIVE_SSH_DEFAULT = "mandrake@archmagi-wsl"
+LIVE_CLONE_DEFAULT = "~/rm/dispatch"
+SSH_TIMEOUT_S = 90      # hang guard only (a read-only ssh + one live check: ~2 s measured 2026-11-24), far above a real call
+_REMOTE_PY = ("import sys; sys.path.insert(0, 'src/RimMandrake/rimflow'); import live_line as L; "
+              "r = L.check(sys.argv[1], not_before=float(sys.argv[2])); "
+              "print('HOLDS' if r is None else ('NOTYET ' if L.not_yet(r) else 'WHY ') + ' '.join(str(r).split()))")
+
+
+def pipeline_host_answers(runner=subprocess.run):
+    """Is this machine the pipeline host? The deadman rechecks every promise where it runs, so there the local answer is final."""
+    return _systemctl("is-enabled", DEADMAN_TIMER, runner) == "enabled"
+
+
+def check_where_run(line, not_before=0, runner=subprocess.run, env=None):
+    """-> None when the line holds where the pipeline runs, else why not. A local hold, or a local failure on the
+    pipeline host, is the answer; off it, the host's own live_line.check decides, read-only over ssh."""
+    why = check(line, not_before=not_before, runner=runner)
+    env = os.environ if env is None else env
+    target = env.get("RIMFLOW_LIVE_SSH", LIVE_SSH_DEFAULT)
+    if why is None or not target or pipeline_host_answers(runner):
+        return why
+    import shlex
+    clone = env.get("RIMFLOW_LIVE_CLONE", LIVE_CLONE_DEFAULT)
+    cmd = "cd %s && python3 -B -c %s %s %s" % (clone, shlex.quote(_REMOTE_PY), shlex.quote(line),
+                                                shlex.quote(repr(float(not_before or 0))))
+    blind = "COULD NOT LOOK at the pipeline host %s (here: %s)" % (target, why)
+    try:
+        r = runner(["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=20", target, cmd], capture_output=True,
+                   text=True, timeout=SSH_TIMEOUT_S, stdin=subprocess.DEVNULL)
+    except Exception as e:  # noqa: BLE001
+        return "%s: %s" % (blind, type(e).__name__)
+    if r.returncode != 0:
+        return "%s: ssh exit %s" % (blind, r.returncode)
+    last = next((s.strip() for s in reversed((r.stdout or "").splitlines()) if s.strip()), "")
+    if last == "HOLDS":
+        return None
+    if last.startswith("NOTYET "):
+        return NotYet("on %s: %s" % (target, last[7:]))
+    if last.startswith("WHY "):
+        return "on %s: %s" % (target, last[4:])
+    return "%s: no verdict printed" % blind

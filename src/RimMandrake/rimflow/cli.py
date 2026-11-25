@@ -2744,7 +2744,7 @@ def _live_gate(verb, args, it, sha):
             "    --live \"unit=rm-foo.timer reading=<path> max_age=6h\"\n    --live \"hook=block_foo.py\"\n"
             "    --live \"once: <why this is a real one-off>\"\nNothing changed: the item is as it was."
             % (verb, args.id, ("%s touches %s" % (sha, touched[0])) if touched else "it is an Operations alarm"))
-    why = live_line.check(line, not_before=_sha_time(sha) if sha else 0)
+    why = live_line.check_where_run(line, not_before=_sha_time(sha) if sha else 0)
     if why:
         die("%s: %s: the live line does not hold: %s\nThe promise is checked, not recorded on trust. Fix what it "
             "names, then run this again. Nothing changed." % (verb, args.id, why))
@@ -2789,7 +2789,7 @@ def _check_close_live(args, it, evs, seat):
     since = max((at for _, _, at, _ in changes), default=0)
     why = "no live line was declared"
     for line in candidates:
-        why = live_line.check(line, not_before=since)
+        why = live_line.check_where_run(line, not_before=since)
         if not why:
             return line, None
 
