@@ -38,6 +38,13 @@ Any non-canonical game will do; the test lane's games are disposable.
              until the next launch (AWARE reads that game as a precondition, not a FAIL)
   WILDBLOCK  THING_LOOKUP_BUILD_OWNER_IS_NOT_PAINTER A4: wild_spawner_block block reads back blocked, skippedTicks rises
              by every spawner tick over 1213+ ticks, and release restores it (no tick skipped after)
+  PLAYTEST   RIMMANDRAKE_PROVE_COMPANION_REFUSALS_THE_MINIMAL_LIST_CANNOT (1): jawa/playtest_start and
+             jawa/gss_playtest_start refuse each other while one runs (needs FlowWorks + Gimme Some Slack: tier
+             ratchet_pilot; it modifies the scratch map)
+  CAMPAIGN   the same item (2): under the CAMPAIGN profile (a loaded disposable save, the profile file set, restored
+             after) artboard_stage killHostiles=true and mod_settings_field set refuse by the profile
+  SETTLE     the same item (5): world_settlements_import apply clearExisting with a row on the player's mapped tile
+             refuses "REFUSING before clearing" and the settlement count is unchanged (python.exe: the game reads the CSV)
   KEEPER     KEEPER_SAVES_HARDEN_WRONG_SLOT_WRITES A1: save_guard.snapshot on this game's real Saves folder hashes every
              keeper and holds a store copy of each; a save_base through the guard writes a new save, verified, with no
              keeper changed (the new save is deleted after: it is the proof's own)
@@ -52,7 +59,7 @@ import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CLAUSES = ("EVIDENCE", "TPS", "NORTHSTAR", "STATICCALL", "TILECACHE", "PROFILE", "PEN", "EXPLAIN", "HOOKS", "AWARE",
-           "EPOCH", "FRAME", "KEEPER", "ORIGIN", "WILDBLOCK")
+           "EPOCH", "FRAME", "KEEPER", "ORIGIN", "WILDBLOCK", "PLAYTEST", "CAMPAIGN", "SETTLE")
 
 
 def _ok(r):
@@ -295,6 +302,49 @@ def v_WILDBLOCK(d):
         f.append("%s spawner ticks skipped after the release" % d["skippedAfter"])
     return (1 if f else 0), "; ".join(f) or "blocked; %d of %d ticks skipped; released, then 0 skipped in %s ticks" % (
         d["skipped"], d["ticks"], d.get("afterTicks"))
+
+
+def v_PLAYTEST(d):
+    if d.get("why"):
+        return 2, d["why"]
+    if not d.get("gssStarted") or not d.get("fwStarted"):
+        return 2, "a first run did not start (gss %s, flowworks %s): %s" % (d.get("gssStarted"), d.get("fwStarted"),
+                                                                           d.get("startMsg"))
+    f = []
+    if not (d.get("fwRefused") and "GSS playtest run is active" in str(d.get("fwRefusal"))):
+        f.append("playtest_start beside a GSS run: %s" % (d.get("fwRefusal") or "it started"))
+    if not (d.get("gssRefused") and "FlowWorks playtest run is active" in str(d.get("gssRefusal"))):
+        f.append("gss_playtest_start beside a FlowWorks run: %s" % (d.get("gssRefusal") or "it started"))
+    return (1 if f else 0), "; ".join(f) or "each runner refused while the other ran"
+
+
+def v_CAMPAIGN(d):
+    if d.get("why"):
+        return 2, d["why"]
+    if d.get("profile") != "campaign":
+        return 2, "precondition: the profile read %s, not campaign" % d.get("profile")
+    f = []
+    if not (d.get("artRefused") and "CAMPAIGN profile" in str(d.get("artMsg")) and "killHostiles" in str(d.get("artMsg"))):
+        f.append("artboard_stage killHostiles: %s" % (d.get("artMsg") or "it ran"))
+    if not (d.get("setRefused") and "CAMPAIGN profile" in str(d.get("setMsg"))):
+        f.append("mod_settings_field set: %s" % (d.get("setMsg") or "it wrote"))
+    if d.get("restored") != "test":
+        f.append("the profile after the restore reads %s, want test" % d.get("restored"))
+    return (1 if f else 0), "; ".join(f) or "killHostiles and settings set both refused by the CAMPAIGN profile"
+
+
+def v_SETTLE(d):
+    if d.get("why"):
+        return 2, d["why"]
+    msg = str(d.get("msg") or "")
+    if "REFUSING the whole import" in msg:
+        return 2, "precondition: the probe row did not resolve, so the clear check was not reached: %s" % msg[:200]
+    f = []
+    if not (d.get("refused") and "REFUSING before clearing" in msg):
+        f.append("the import did not refuse before clearing: %s" % (msg[:200] or "it applied"))
+    if d.get("after") != d.get("before"):
+        f.append("settlements %s -> %s" % (d.get("before"), d.get("after")))
+    return (1 if f else 0), "; ".join(f) or "refused before clearing; %s settlements before and after" % d.get("before")
 
 
 VERDICTS = dict((c, globals()["v_" + c]) for c in CLAUSES)
@@ -775,6 +825,111 @@ def g_WILDBLOCK(L):
     return {"blocked": bool(b.get("blocked")) and bool(g.get("blocked")), "ticks": n,
             "skipped": (g.get("skippedTicks") or 0) - s0, "releasedBlocked": g2.get("blocked"),
             "lastRelease": g2.get("lastRelease") or r.get("lastRelease"), "afterTicks": n2, "skippedAfter": s3 - s2}
+
+
+def _refusal(r):
+    """-> (refused, message) of a reply or a raised refusal."""
+    if not isinstance(r, dict):
+        return False, str(r)[:300]
+    return r.get("success") is False or bool(r.get("_error")), str(r.get("message") or r.get("error") or r.get("_error")
+                                                                  or json.dumps(r))[:300]
+
+
+def _call_or_err(L, tool, **p):
+    try:
+        return L.call(tool, **p)
+    except Exception as e:                                      # noqa: BLE001 - a refusal may arrive as an error
+        return {"success": False, "_error": "%s: %s" % (type(e).__name__, e)}
+
+
+def _await_run(L, status_tool, run_id, limit=600.0):
+    """Wait for a playtest run to leave running (hang guard: a quick run is a minute; the run steps itself)."""
+    t0 = time.time()
+    while time.time() - t0 < limit:
+        st = L.call(status_tool, runId=run_id).get("state")
+        if st != "running":
+            return st
+        time.sleep(3)
+    return "running"
+
+
+def g_PLAYTEST(L):
+    out = {}
+    g = _call_or_err(L, "jawa/gss_playtest_start", recipe="quick")
+    out["gssStarted"] = _ok(g) and bool(g.get("runId"))
+    if not out["gssStarted"]:
+        out["startMsg"] = _refusal(g)[1]
+        return out
+    out["fwRefused"], out["fwRefusal"] = _refusal(_call_or_err(L, "jawa/playtest_start", recipe="fluids"))
+    _await_run(L, "jawa/gss_playtest_status", g["runId"])
+    L.call("jawa/gss_playtest_collect", runId=g["runId"])
+    p = _call_or_err(L, "jawa/playtest_start", recipe="fluids")
+    out["fwStarted"] = _ok(p) and bool(p.get("runId"))
+    if not out["fwStarted"]:
+        out["startMsg"] = _refusal(p)[1]
+        return out
+    out["gssRefused"], out["gssRefusal"] = _refusal(_call_or_err(L, "jawa/gss_playtest_start", recipe="quick"))
+    _await_run(L, "jawa/playtest_status", p["runId"])
+    L.call("jawa/playtest_collect", runId=p["runId"])
+    return out
+
+
+SETTINGS_TYPE, SETTINGS_FIELD = "RimMandrake.GimmeSomeSlack.Aerial.AerialSettings", "enabled"   # a GSS ModSettings field
+
+
+def g_CAMPAIGN(L):
+    ok, msg = _ensure_loaded(L)
+    if not ok:
+        return {"why": "no loaded save: %s" % msg}
+    prof, path = _profile(L)
+    if not path:
+        return {"why": "the handshake names no profile file"}
+    path = path.replace("/", "\\") if os.name == "nt" else path
+    keep = open(path, "rb").read()
+    out = {}
+    try:
+        _write_profile(path, "campaign", keep)
+        out["profile"] = _wait_profile(L, "campaign")[0]
+        if out["profile"] == "campaign":
+            out["artRefused"], out["artMsg"] = _refusal(_call_or_err(L, "jawa/artboard_stage", phase="subjects",
+                                                                     killHostiles=True))
+            cur = L.call("jawa/mod_settings_field", typeName=SETTINGS_TYPE, action="get", field=SETTINGS_FIELD)
+            # restore-check: ok writes the field's own current value, so a set that is not refused changes nothing
+            out["setRefused"], out["setMsg"] = _refusal(_call_or_err(
+                L, "jawa/mod_settings_field", typeName=SETTINGS_TYPE, action="set", field=SETTINGS_FIELD,
+                value=str(cur.get("value", "True"))))
+    finally:
+        with open(path, "wb") as fh:
+            fh.write(keep)
+        out["restored"] = _wait_profile(L, "test")[0]
+    return out
+
+
+def g_SETTLE(L):
+    if os.name != "nt":
+        return {"why": "run under python.exe: the game reads the probe CSV from a Windows path"}
+    import tempfile
+    rows = L.call("jawa/world_objects_get", **{"def": "Settlement", "limit": 5000})   # def is a Python keyword
+    objs = [o for o in rows.get("objects") or [] if o.get("isSettlement")]
+    before = rows.get("settlements")
+    player = [o for o in objs if str(o.get("faction") or "").startswith("Player")]
+    names = {}
+    for o in objs:
+        if o.get("faction") and not str(o["faction"]).startswith("Player"):
+            names.setdefault(o["faction"], set()).add(o.get("factionName"))
+    one = sorted(fd for fd, ns in names.items() if len(ns) == 1)
+    if not player or not one:
+        return {"why": "no player settlement (%d) or no faction def with one live faction (%s)" % (len(player), sorted(names))}
+    path = os.path.join(tempfile.gettempdir(), "bundle_settle_probe_%d.csv" % int(time.time()))
+    with open(path, "w") as fh:
+        fh.write("faction_def,name,tile\n%s,BundleProbe,%d\n" % (one[0], player[0]["tile"]))
+    try:
+        r = _call_or_err(L, "jawa/world_settlements_import", path=path, apply=True, clearExisting=True)
+    finally:
+        os.remove(path)
+    refused, msg = _refusal(r)
+    after = L.call("jawa/world_objects_get", limit=1).get("settlements")
+    return {"refused": refused, "msg": msg, "before": before, "after": after, "row": [one[0], player[0]["tile"]]}
 
 
 def g_ORIGIN_cold(Session):

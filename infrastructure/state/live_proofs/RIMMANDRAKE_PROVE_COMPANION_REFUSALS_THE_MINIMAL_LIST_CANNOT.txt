@@ -1,0 +1,5 @@
+# live proofs of RIMMANDRAKE_PROVE_COMPANION_REFUSALS_THE_MINIMAL_LIST_CANNOT (bridge_bundle_proof.py; work bundle WB-pipeline-bridge-20261125-192133). Tier ratchet_pilot (FlowWorks + Gimme Some Slack). Run A1, A2, then A3 (A3 loads a save). Refusal (3) inventory_transfer into a full inventory is unreachable in vanilla (ThingOwner maxStacks 999999); (4) flight maintain is owner-present only.
+live-tier A1: ratchet_pilot
+live-proof A1: python3 src/RimMandrake/Utils/modcheck/live_queue/bridge_bundle_proof.py PLAYTEST < /dev/null
+live-proof A2: python3 src/RimMandrake/Utils/modcheck/live_queue/bridge_bundle_proof.py SETTLE < /dev/null
+live-proof A3: python3 src/RimMandrake/Utils/modcheck/live_queue/bridge_bundle_proof.py CAMPAIGN < /dev/null

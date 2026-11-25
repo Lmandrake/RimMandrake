@@ -119,5 +119,23 @@ check("WILDBLOCK skips nothing over 1300 ticks", "WILDBLOCK", dict(wb, skipped=0
 check("WILDBLOCK still skipping after the release", "WILDBLOCK", dict(wb, skippedAfter=120), 1)
 check("WILDBLOCK block not read back", "WILDBLOCK", dict(wb, blocked=False), 1)
 check("WILDBLOCK the clock moved too little", "WILDBLOCK", dict(wb, ticks=400, skipped=400), 2)
+pt = {"gssStarted": True, "fwRefusal": "A GSS playtest run is active: g1. Collect or abort it", "fwRefused": True,
+      "fwStarted": True, "gssRefusal": "A FlowWorks playtest run is active: p1.", "gssRefused": True}
+check("PLAYTEST each runner refuses while the other runs", "PLAYTEST", pt, 0)
+check("PLAYTEST FlowWorks started beside a GSS run", "PLAYTEST", dict(pt, fwRefused=False, fwRefusal=""), 1)
+check("PLAYTEST GSS refused for another reason", "PLAYTEST", dict(pt, gssRefusal="No current map."), 1)
+check("PLAYTEST the first run never started", "PLAYTEST", dict(pt, gssStarted=False), 2)
+cp = {"profile": "campaign", "artRefused": True, "artMsg": "REFUSED under the CAMPAIGN profile: killHostiles destroys",
+      "setRefused": True, "setMsg": "REFUSED: set is off under the CAMPAIGN profile (x)", "restored": "test"}
+check("CAMPAIGN both writes refused", "CAMPAIGN", cp, 0)
+check("CAMPAIGN killHostiles ran", "CAMPAIGN", dict(cp, artRefused=False, artMsg=""), 1)
+check("CAMPAIGN set refused for the type, not the profile", "CAMPAIGN", dict(cp, setMsg="REFUSED: 'x' is neither"), 1)
+check("CAMPAIGN the profile never read campaign", "CAMPAIGN", dict(cp, profile="test"), 2)
+check("CAMPAIGN the profile file not restored", "CAMPAIGN", dict(cp, restored="campaign"), 1)
+st = {"refused": True, "msg": "REFUSING before clearing: 1 row(s) land on a tile", "before": 40, "after": 40}
+check("SETTLE refused before clearing, nothing removed", "SETTLE", st, 0)
+check("SETTLE cleared the roster", "SETTLE", dict(st, refused=False, msg="", after=1), 1)
+check("SETTLE refused but removed some", "SETTLE", dict(st, after=39), 1)
+check("SETTLE the import refused a row instead", "SETTLE", dict(st, msg="REFUSING the whole import: 1 of 1"), 2)
 print("RESULT: %s" % ("FAIL (%d failing)" % len(FAILS) if FAILS else "PASS (0 failing)"))
 sys.exit(1 if FAILS else 0)
