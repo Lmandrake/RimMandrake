@@ -1,0 +1,2 @@
+A walk-save stager that cuts a station's read-back to fit a sign can hide its own failure: FlowWorks station 11 read 'HELD OPEN [... open=False]' for 11 visits because the 60-char cut dropped 'button NOT PRESSED' (the sluice had lost its Hold open gizmo). Read the state field of every station label against its claim, not only that a read exists.
+item: RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_ACCEPTANCE_VISIT_TWELVE
