@@ -1,10 +1,10 @@
 {
  "_view": {
-  "body_sha256": "98f851543c081ba188f4d7e88e9953c46a373a037e04204ef1a19f160e637986",
+  "body_sha256": "279de34628ea7e8b6ac51e4d8837f3aed85bd35a78aa83b3a5b04357b0f4b420",
   "reducer": 1,
   "shards": {
    "BACKFILL": 890449,
-   "DISPATCH": 85546,
+   "DISPATCH": 85884,
    "HOLDER.run-1794816885": 928,
    "HOLDER.run-1794848129": 1121,
    "HOLDER.run-1794861652": 2822,
@@ -1740,7 +1740,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1702,
+  "events": 1703,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7970,7 +7970,7 @@
   ],
   "spend_tokens": 45401435,
   "spend_usd": 78.9355,
-  "stage": "his_walk",
+  "stage": "in_game",
   "superseded": [],
   "tests": [
    {

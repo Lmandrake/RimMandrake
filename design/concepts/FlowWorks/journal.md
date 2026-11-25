@@ -12,7 +12,7 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`: "Yes, lock the other four mods").
   Code exists and is large: `src/RimMandrake/FlowWorks/` (C# mod, a 325+ case C# SelfTest, about 168 Python selftests,
   a northstar proof harness).
-- **Stage now:** Stage 8, his live walk, since 2026-11-25 1:01 AM PST (`version/stage_record.json`).
+- **Stage now:** Stage 6, in-game acceptance, since 2026-11-25 2:17 AM PST (`version/stage_record.json`).
 - **Bars:** 55 = 28 inventory rows of `record.json` + 27 leaves of `tree.json` (`coverage_judge.required_ids()`); 59 at the
   lock, his card of 2026-11-14 added `inv_geyser_tub` and `inv_liquid_coating` (61), and his card of 2026-11-14 ~9:43 PM
   PST moved the four wetting bars to 0.2.0 (57), and his word of 2026-11-23 ~11:05 PM PST moved the raid proof to 0.2.0
@@ -23,7 +23,7 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - **Held look statements for this mod:** 103 rows in five files of `design/RimMandrake/validation_holding/` (2026-11-12:
   56 rows; 2026-11-13 morning: 18; 2026-11-13 dig interface: 2; 2026-11-13 evening: 5; 2026-11-14: 22); 83 are placed
   in `version/test_table.json`, all 103 placed. [measured, preflight C8, 2:40 PM PST]
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-25 1:01 AM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-25 2:17 AM PST).
 
 ### The vision (his root paragraph, approved 2026-11-04, OWNER:1793794915205594887; eight lines in `version/vision.md`)
 
@@ -551,4 +551,12 @@ None open; question 3 (the dig speed) is answered in the history entry of 2026-1
 - Checks passed: order, by, version, hold, walk_checks_stand, walk_brief, walk_items_closed.
 - Was, "Stage now": - **Stage now:** Stage 7, the walk brief, since 2026-11-25 12:15 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-25 12:15 AM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-25 2:17 AM PST, stage change: His live walk (Stage 8) to In-game acceptance (Stage 6) (by DISPATCH)
+
+- Why: in-game checks are owed before he walks (OL_OWNER_LOOK_READS, sc_canal_fire, sc_coating_wash, sc_covered_pit, sc_dig_and_read, sc_dig_finds, sc_fill_front, sc_fill_tiers, sc_geyser_tub, sc_hole_prison, sc_hose_look, sc_hung_bridge, sc_ice, sc_islands_walker, sc_moat_walkers, sc_one_network, sc_one_surface, sc_pawn_height, sc_pit_crowd, sc_pit_reads, sc_slime, sc_sluice, sc_toss_flame, sc_trench_cover_pawns, sc_ways_out): the Maturation tick opens the next visit for only these (RIMMANDRAKE_FIX_CHANGE_RELATION_BLIND_TO_CSHARP_NINE_ROWS_MISSED)
+- Checks passed: order, by, version, hold.
+- Was, "Stage now": - **Stage now:** Stage 8, his live walk, since 2026-11-25 1:01 AM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-25 1:01 AM PST).
 - Record: `version/stage_record.json`.

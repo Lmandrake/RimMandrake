@@ -2,10 +2,10 @@
   "schema": 1,
   "mod": "FlowWorks",
   "version": "0.1.0",
-  "stage": "his_walk",
-  "stage_label": "His live walk (Stage 8)",
-  "since": "2026-11-25T01:01:10-08:00",
-  "since_from": "advance by BENCH",
+  "stage": "in_game",
+  "stage_label": "In-game acceptance (Stage 6)",
+  "since": "2026-11-25T02:17:23-08:00",
+  "since_from": "advance by DISPATCH",
   "at_door": false,
   "seeded": {
     "at": "2026-11-14T16:02:19-08:00",
@@ -492,6 +492,21 @@
         "walk_checks_stand",
         "walk_brief",
         "walk_items_closed"
+      ]
+    },
+    {
+      "from": "his_walk",
+      "to": "in_game",
+      "at": "2026-11-25T02:17:23-08:00",
+      "by": "DISPATCH",
+      "why": "in-game checks are owed before he walks (OL_OWNER_LOOK_READS, sc_canal_fire, sc_coating_wash, sc_covered_pit, sc_dig_and_read, sc_dig_finds, sc_fill_front, sc_fill_tiers, sc_geyser_tub, sc_hole_prison, sc_hose_look, sc_hung_bridge, sc_ice, sc_islands_walker, sc_moat_walkers, sc_one_network, sc_one_surface, sc_pawn_height, sc_pit_crowd, sc_pit_reads, sc_slime, sc_sluice, sc_toss_flame, sc_trench_cover_pawns, sc_ways_out): the Maturation tick opens the next visit for only these (RIMMANDRAKE_FIX_CHANGE_RELATION_BLIND_TO_CSHARP_NINE_ROWS_MISSED)",
+      "unit": null,
+      "confirmed": {},
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
       ]
     }
   ],
