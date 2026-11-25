@@ -169,6 +169,27 @@ def t_evasions_that_used_to_work_are_closed():
     denied("grep -c biome /x/save.rws # per rimbench")     # comment as an alibi
 
 
+def t_the_four_sibling_forms_are_refused():
+    """HOOKS_SCANGUARD_WIDEN_FOUR_SIBLINGS_SLIP: measured allowed 2026-11-07; each form is a scan of the artifact."""
+    denied('bash -lc "grep -c biome /x/save.rws"')         # a login shell, one quote deep
+    denied("sleep 1 & grep -c biome /x/save.rws")          # after a background &
+    denied("(grep -c biome /x/save.rws)")                  # a subshell
+    denied("x=$(grep -c biome /x/save.rws)")               # a command substitution
+    denied("echo `grep -c biome /x/save.rws`")             # the backtick form of the same
+    denied('echo "$(grep -c "a|b" /x/save.rws)"')         # the inner command has its own quotes
+    denied('echo "`grep -c biome /x/save.rws`"')
+    allowed('bash -lc "grep -c foo README.md"')
+    allowed("sleep 1 & grep -c foo README.md")
+    allowed("(grep -c foo README.md)")
+    allowed("echo `grep -c foo README.md`")
+    allowed("echo '$(grep -c biome /x/save.rws) `grep -c biome /x/save.rws`'")
+    allowed(r'echo "\$(grep -c biome /x/save.rws) \`grep -c biome /x/save.rws\`"')
+    allowed("args=(grep -c biome /x/save.rws)")
+    allowed("echo hi 2>&grep -c biome /x/save.rws")
+    allowed("echo $(grep -c biome /x/save.rws")             # an unclosed substitution runs nothing
+    allowed("x=$(grep -c foo README.md); (wc -l CHANGELOG.md) & true")   # ordinary greps in those forms stay free
+
+
 def t_a_relative_path_is_resolved_against_the_shell_cwd():
     """`cd DefDump && grep -c X defs/ThingDef.json` names no absolute path.
 
@@ -327,9 +348,44 @@ def t_the_tool_list_covers_everything_the_skill_gates_on():
     assert not lost, "add to SCAN_TOOLS: %s" % sorted(lost)
 
 
-if __name__ == "__main__":
-    for k, v in sorted(globals().items()):
-        if k.startswith("t_"):
-            case(k[2:], v)
+def main():
+    for test in (
+        t_a_bare_filename_with_no_directory_is_still_the_artifact,
+        t_a_command_with_no_scanner_never_imports_the_skill,
+        t_a_comment_ends_at_its_newline_and_runs_nothing,
+        t_a_compound_command_is_caught_in_any_position,
+        t_a_failing_skill_import_fails_open,
+        t_a_heredoc_body_cannot_swallow_what_follows_it,
+        t_a_line_continuation_joins_one_command,
+        t_a_non_bash_tool_is_ignored,
+        t_a_pattern_is_never_mistaken_for_a_path,
+        t_a_quoted_separator_is_not_a_command_of_its_own,
+        t_a_refusal_always_names_the_instrument_to_use_instead,
+        t_a_relative_path_is_resolved_against_the_shell_cwd,
+        t_a_scanner_behind_a_quoted_separator_imports_the_skill,
+        t_a_scanner_or_reader_in_any_position_imports_the_skill,
+        t_a_search_pattern_is_never_mistaken_for_the_target,
+        t_a_separator_inside_a_quoted_argument_does_not_hide_the_scan,
+        t_a_separator_inside_quotes_runs_no_command_and_imports_nothing,
+        t_an_absent_skill_fails_open,
+        t_an_explicit_override_gets_through,
+        t_an_unbalanced_quote_falls_back_to_the_plain_split,
+        t_evasions_that_used_to_work_are_closed,
+        t_grep_on_a_savegame_is_refused,
+        t_grep_on_the_def_dump_is_refused,
+        t_it_fails_open_on_garbage,
+        t_non_scanners_are_untouched,
+        t_ordinary_greps_are_untouched,
+        t_strings_on_an_assembly_is_refused,
+        t_the_four_sibling_forms_are_refused,
+        t_the_instrument_allowlist_matches_tokens_not_substrings,
+        t_the_real_instruments_may_name_the_artifact,
+        t_the_tool_list_covers_everything_the_skill_gates_on,
+    ):
+        case(test.__name__[2:], test)
     print("\n%d/%d passed" % (len(PASS), len(PASS) + len(FAIL)))
-    sys.exit(1 if FAIL else 0)
+    return 1 if FAIL else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

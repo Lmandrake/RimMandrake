@@ -130,19 +130,20 @@ REDIR = re.compile(r"^(<<-?|<|>>|>|\d*>&?\d*)")
 HEREDOC = re.compile(r"""<<(-?)\s*(?:'([^']*)'|"([^"]*)"|\\?([^\s;&|<>()'"]+))""")
 
 
-def _commands(cmd):
-    """The commands a line runs, split only on separators outside quotes.
+def _commands(cmd, start=0, closing=None):
+    """Read commands up to the matching closer, or to the end at top level.
 
     A separator inside quotes is text: splitting on it first left pieces shlex
     refuses, so `grep "a|b" save.rws` was skipped unseen. A comment runs nothing,
     and neither its apostrophes nor a heredoc body's may open a quote over the
     commands after them, so both are stepped over; each body line is still read
-    as a command, because `bash <<EOF` runs them. Returns the plain split when a
-    quote stays open: a misread line must not blind the guard.
+    as a command, because `bash <<EOF` runs them. Substitutions have their own
+    quotes and leave a placeholder in the outer word. An unclosed group returns
+    no commands. At top level an open quote still falls back to the plain split.
     """
     out, buf, heredocs = [], [], []
     quote = None
-    i, n = 0, len(cmd)
+    i, n = start, len(cmd)
 
     def flush():
         seg = "".join(buf)
@@ -152,6 +153,19 @@ def _commands(cmd):
 
     while i < n:
         c = cmd[i]
+        if not quote and c == closing:
+            flush()
+            return out, i + 1
+
+        if quote != "'" and (c == "`" or cmd.startswith("$(", i)):
+            inner_start = i + (2 if c == "$" else 1)
+            inner, i = _commands(cmd, inner_start, "`" if c == "`" else ")")
+            if i is None:
+                return [], None
+            out.extend(inner)
+            buf.append("_")
+            continue
+
         if quote:
             if c == "\\" and quote == '"':
                 buf.append(cmd[i:i + 2])
@@ -180,10 +194,18 @@ def _commands(cmd):
             heredocs.append((m.group(1), m.group(2) or m.group(3) or m.group(4) or ""))
             buf.append(m.group(0))
             i = m.end()
-        elif cmd.startswith(("||", "&&"), i):
+        elif c == "(" and not any(part.strip() for part in buf):
+            inner, i = _commands(cmd, i + 1, ")")
+            if i is None:
+                return [], None
+            out.extend(inner)
+        elif cmd.startswith((">&", "<&", "&>"), i):
+            buf.append(cmd[i:i + 2])
+            i += 2
+        elif cmd.startswith(("||", "&&", "|&"), i):
             flush()
             i += 2
-        elif c in "|;\n":
+        elif c in "|;&\n":
             flush()
             i += 1
             while c == "\n" and heredocs and i < n:
@@ -194,23 +216,26 @@ def _commands(cmd):
                 if (line.lstrip("\t") if dash else line) == word:
                     heredocs.pop(0)
                 else:
-                    out.extend(_commands(line))
+                    body, _ = _commands(line)
+                    out.extend(body)
         else:
             buf.append(c)
             i += 1
+    if closing:
+        return [], None
     if quote:
-        return [s for s in re.split(r"\|\||&&|\||;|\n", cmd) if s.strip()]
+        return [s for s in re.split(r"\|\||&&|\||;|\n", cmd) if s.strip()], n
     flush()
-    return out
+    return out, n
 
 
 def segments(cmd):
     """Split a compound command into the individual commands it runs.
 
-    Also unwraps `bash -c "..."` / `sh -c "..."`, because a scan hidden one
-    quote deep is still a scan. Found by red team 2026-08-21.
+    Also unwraps shell command strings such as `bash -c "..."` and
+    `bash -lc "..."`.
     """
-    parts = _commands(cmd)
+    parts, _ = _commands(cmd)
     out = []
     for seg in parts:
         out.append(seg)
@@ -218,10 +243,9 @@ def segments(cmd):
             tok = shlex.split(seg)
         except ValueError:
             continue
-        for i, t in enumerate(tok[:-1]):
-            if os.path.basename(t) in ("bash", "sh", "zsh") and tok[i + 1] == "-c":
-                if i + 2 < len(tok):
-                    out.extend(segments(tok[i + 2]))
+        for i, t in enumerate(tok[:-2]):
+            if os.path.basename(t) in ("bash", "sh", "zsh") and tok[i + 1] in ("-c", "-lc"):
+                out.extend(segments(tok[i + 2]))
     return out
 
 
@@ -348,7 +372,10 @@ def main():
     if os.environ.get("MEASURE_ALLOW_SCAN") or "MEASURE_ALLOW_SCAN=1" in cmd:
         return 0
 
-    hit = offence(cmd, payload.get("cwd"))
+    try:
+        hit = offence(cmd, payload.get("cwd"))
+    except RecursionError:                          # shell nesting beyond the parser's limit
+        return 0
     if hit:
         art, tool, path = hit
         print(json.dumps({
