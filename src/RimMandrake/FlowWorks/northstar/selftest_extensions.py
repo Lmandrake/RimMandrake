@@ -1717,6 +1717,19 @@ def _new_probes(EXT, RIV, base):
                     st["returned"] = True
                 elif st["returned"]:
                     st["stayed"] = True             # the row's read after its stay wait
+                    # HARNESS_REPAIR_CAUSE_4D2C5B87_3 (testq J20261124T075639Z-b97376, live): Seraph, a staged throwaway
+                    # the current had NOT carried off, took a river Bruise 15 ticks into this stay wait. The stay wait is
+                    # the same hazard on the same staged pawns, so it carries the same declaration (or the clock stops).
+                    import clockgate
+                    sid = int(st["spawned"][-1][1:]) if st["spawned"] else -1
+                    st["stay_label"] = clockgate.expected_stop_label(
+                        {"state": "stopped", "stopBy": {"kind": "hurt", "severity": "damage", "subjectId": sid,
+                                                        "detail": "health 1 -> 0.94; newest hediff Bruise/Arm age 45"},
+                         "triggers": []})
+                    st["stay_label_other"] = clockgate.expected_stop_label(
+                        {"state": "stopped", "stopBy": {"kind": "hurt", "severity": "damage", "subjectId": 99999,
+                                                        "detail": "health 1 -> 0.94; newest hediff Bruise/Arm age 45"},
+                         "triggers": []})
                     if held_escapes and st["villagers"]:
                         st["gone"].add(st["villagers"][0])
                 elif wash and st["spawned"] and st["ticks"] >= 1:
@@ -1773,6 +1786,10 @@ def _new_probes(EXT, RIV, base):
     got, st = swept(held_gone=True)
     if not st["stayed"]:
         out.append("returns_home must re-read the map after a %d-tick stay when a prisoner came back" % RIV.PRISONER_STAY_TICKS)
+    if not (st.get("stay_label") or "").startswith("swept bruise") or st.get("stay_label_other"):
+        out.append("returns_home must declare a river Bruise on ITS staged pawns (only) during the %d-tick prisoner stay "
+                   "(HARNESS_REPAIR_CAUSE_4D2C5B87_3): own %r, other pawn %r"
+                   % (RIV.PRISONER_STAY_TICKS, st.get("stay_label"), st.get("stay_label_other")))
     got, st = swept()
     if not st["spawned"] or len(st["spawned"]) > 12:
         out.append("returns_home staged %d colonists (want 1..12)" % len(st["spawned"]))

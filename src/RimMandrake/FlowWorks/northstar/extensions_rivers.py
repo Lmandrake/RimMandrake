@@ -347,8 +347,16 @@ def swept(t):
                 # ticks. Each prisoner/slave that came back must still be on the map PRISONER_STAY_TICKS later.
                 back_held = sorted(pid for pid in held_kind if pid in swept_ids and pid in back_ids)
                 if back_held:
-                    t.wait_ticks(PRISONER_STAY_TICKS)
-                    book = _proof(t, "ProofSwept", "read")     # a second sweep would show here, not as a loss
+                    # HARNESS_REPAIR_CAUSE_4D2C5B87_3 (testq J20261124T075639Z-b97376, SITE): the throwaways the current did
+                    # not carry off still stand drafted on the edge river cells through this stay, so the shipped hazard
+                    # bruises them here too (Seraph, 'Bruise/Arm', 60 ticks in) -> the same declaration as the sweep
+                    # wait, on the same staged pawns; any other harm still stops the clock.
+                    import clockgate
+                    import testenv_guards as TG
+                    with clockgate.expected_disturbance("swept bruise/swim exhaustion (FlowWorks river hazard, owner card 2; "
+                                                        "prisoner stay)", TG.expected_hurt(staged, SWEPT_EXPECTED_HEDIFF)):
+                        t.wait_ticks(PRISONER_STAY_TICKS)
+                        book = _proof(t, "ProofSwept", "read")     # a second sweep would show here, not as a loss
                     still = _map_pawn_ids(t)
                     for pid in back_held:
                         if pid not in still:
