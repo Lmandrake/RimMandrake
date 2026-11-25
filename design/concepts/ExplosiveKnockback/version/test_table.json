@@ -510,13 +510,6 @@
     "ran": false,
     "why": "live: this pilot is offline only; entry EXISTS in the proof code (RM_KnockbackProof_StoreroomBombPit.cs, with its control lane)"
    },
-   "testq": {
-    "check": {
-     "tier": "explosiveknockback_visit",
-     "build": "proof"
-    },
-    "by": "testq_blocks.py"
-   },
    "scenes": [
     "storeroom_bomb_pit",
     "storeroom_bomb_pit_control"
@@ -3037,13 +3030,6 @@
     "result": "PASS",
     "at": "2026-11-25T03:41:27-08:00",
     "why": "live ArchBig on a regenerated quicktest map: 5 of 5 rows PASS; plant lose_heavy FAIL on SA_EACH_ONCE and SA_LANDED in the same sitting (early_rows.jsonl); offline oracle selftest_explosiveknockback_save_in_air.py 14 cases"
-   },
-   "testq": {
-    "check": {
-     "tier": "explosiveknockback_visit",
-     "build": "proof"
-    },
-    "by": "testq_blocks.py"
    }
   },
   "T_SAVE_IN_AIR_OFFLINE": {
@@ -3073,22 +3059,14 @@
    "why_game": "frames exist only in a running game",
    "why_full_list": null,
    "entry_exists": true,
-   "cheaper_why": "his card of 2026-11-16 (OWNER:1794834159094900561) set this row; the frames-only run is the existing smallest run that reads it (small list, no raid, no gas, no grenade, no save in the air); it stays until the Conductor rules on RIMMANDRAKE_DECIDE_KNOCKBACK_FRAME_ROW_HIS_CARD_SET_IT, whose proposed home is sc_barrage_perf",
+   "cheaper_why": "his card of 2026-11-16 (OWNER:1794834159094900561) set this row; the frames-only run is the existing smallest run that reads it (small list, no raid, no gas, no grenade, no save in the air); RIMMANDRAKE_DECIDE_KNOCKBACK_FRAME_ROW_HIS_CARD_SET_IT (2026-11-25) kept it: sc_barrage_perf cannot decide the same comparison, because it judges a fixed 50 ms p99 budget (and the full list's recorded 21.7 ms mod-off p99 plus the mod's own share) over a six-shell barrage, not the mod-on p99 within 10 percent of the same colony's mod-off arm",
    "split_from": "sc_walk_blasts",
    "shrunk": "sc_walk_blasts",
-   "held_for": "RIMMANDRAKE_DECIDE_KNOCKBACK_FRAME_ROW_HIS_CARD_SET_IT",
    "frame_card": "his card of 2026-11-16 (OWNER:1794834159094900561, 'How should the walk's frame row be judged? -> Compare to mod-off'): the walk's frame row passes when the mod-on p99 frame is within 10 percent of the same colony's mod-off arm in the same run, both arms MEASURED (and OWNER:1794836946186553250: the arms on the smallest list). The clause is NOT dropped with sc_walk_blasts: sc_walk_frames (the walk's own --frames-only run, small list, no raid) keeps deciding it until the Conductor rules on RIMMANDRAKE_DECIDE_KNOCKBACK_FRAME_ROW_HIS_CARD_SET_IT; sc_barrage_perf (mod-on beside the same session's mod-off) is the proposed home",
    "item": "RIMMANDRAKE_SHRINK_KNOCKBACK_SCENES_ONE_SAVE_IN_AIR",
    "runs_today": {
     "ran": false,
     "why": "UNRUN as its own test: split from sc_walk_blasts on 2026-11-25; offline oracle selftest_explosiveknockback_walk_raid.py (W31-W34, the frames-only mode)"
-   },
-   "testq": {
-    "check": {
-     "tier": "explosiveknockback_visit",
-     "build": "proof"
-    },
-    "by": "testq_blocks.py"
    }
   }
  },
