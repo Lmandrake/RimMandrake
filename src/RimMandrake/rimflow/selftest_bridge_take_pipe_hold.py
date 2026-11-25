@@ -36,6 +36,7 @@ def main():
         env = {k: v for k, v in os.environ.items()
                if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID", "RM_HOST_GUARD_GEN", "RM_GAME_INSTANCE",
                             "GABP_SERVER_PORT", "GABP_TOKEN", "RM_HOST")}
+        env.update(RM_HOST="archmagi")     # games a and b are Archmagi's: on SteveDesktop a host-less take means Steve1
         env.update(RIMFLOW_LEDGER=ledger, RIMFLOW_ITEMS=os.path.join(tmp, "items"), RIMFLOW_PROBE="no-reading",
                    RIMFLOW_DRIVER_LOCK=a_lock, RM_INSTANCES_ROOT=root, RM_CONTROL_DB=db, PYTHONDONTWRITEBYTECODE="1")
         saved = dict(os.environ)

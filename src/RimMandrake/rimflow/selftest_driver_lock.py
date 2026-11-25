@@ -53,6 +53,8 @@ def main():
     D.process_alive = lambda i: alive.get((i.get("pid"), i.get("start")), False)
     real_boot = D.current_boot_id
     D.current_boot_id = lambda: "boot-1"
+    D._local_host = lambda: "archmagi"      # ident() names host archmagi: on any other machine a foreign boot_id
+    #                                         is never read as a reboot, and the boot case would read the holder alive
 
     A, B = ident(10), ident(20)
     alive[(10, 100.0)] = True
@@ -290,7 +292,7 @@ def cli_cases():
     b = subprocess.Popen(["sleep", "120"])
     base = {k: v for k, v in os.environ.items() if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID")}
     base.update(RIMFLOW_LEDGER=os.path.join(tmp, "events.jsonl"), RIMFLOW_ITEMS=os.path.join(tmp, "items"),
-                RIMFLOW_PROBE="no-reading",
+                RIMFLOW_PROBE="no-reading", RM_HOST="archmagi",    # the host-less take locks only on Archmagi
                 RIMFLOW_DRIVER_LOCK=os.path.join(tmp, "DRIVER_LOCK.json"))
 
     def rf(seat, pid, *args):

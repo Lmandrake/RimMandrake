@@ -62,6 +62,7 @@ def test_cli_end_to_end():
             f.write("#!/bin/sh\ntouch '%s'\necho 'RMIDLE|5000|99000000|1|RimWorldWin64'\n" % marker)
         os.chmod(fake, 0o755)
         env = {k: v for k, v in os.environ.items() if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID")}
+        env["RM_HOST"] = "archmagi"     # the host-less take reads Archmagi's lock: on SteveDesktop it means Steve1
         env.update(RIMFLOW_LEDGER=os.path.join(tmp, "events.jsonl"), RIMFLOW_ITEMS=os.path.join(tmp, "items"),
                    RIMFLOW_PROBE="no-reading",
                    RIMFLOW_SEAT="BENCH", RIMFLOW_POWERSHELL=fake, PATH=tmp + os.pathsep + env.get("PATH", ""))
@@ -137,6 +138,7 @@ def test_delegated_reach():
     try:
         os.makedirs(os.path.join(tmp, "items"))
         env = {k: v for k, v in os.environ.items() if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID")}
+        env["RM_HOST"] = "archmagi"     # the host-less take reads Archmagi's lock: on SteveDesktop it means Steve1
         env.update(RIMFLOW_LEDGER=os.path.join(tmp, "events.jsonl"), RIMFLOW_ITEMS=os.path.join(tmp, "items"),
                    RIMFLOW_SEAT="BENCH", RIMFLOW_OWNER_CHAT_DIRS="",
                    RIMFLOW_OWNER_ACT_STAMP=os.path.join(tmp, "OWNER_LAST_ACT.json"))
