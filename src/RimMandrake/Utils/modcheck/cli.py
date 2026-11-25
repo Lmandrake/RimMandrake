@@ -441,6 +441,10 @@ def main(argv=None):
                 print(line)
             import json as _json                    # machine line: the worker marks planned rows that never ran NOT_RUN
             print("EXPECTED_ROWS " + _json.dumps(list(sel.get("rows_run", []))))
+            # HARNESS_REPAIR_CAUSE_AC81755A: the chain of each planned row, so a row that never reached the sheet is
+            # charged to its chain's own stop (a site hold before any component) instead of a second repair item
+            print("EXPECTED_ROW_CHAINS " + _json.dumps({r: n for n, sc in (sel.get("scope") or {}).items()
+                                                        for r in sc.get("executed", [])}))
             import drivers  # noqa: E402            # the "pre" drivers --drivers on would start, with their timeouts
             print("EXPECTED_DRIVERS " + _json.dumps(drivers.need_s(suite, sel["chains"])[1]))
             if args.preview:

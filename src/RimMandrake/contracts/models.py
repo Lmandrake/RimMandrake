@@ -153,6 +153,9 @@ class TestqRow(Strict):
     validity: Any = None
     freshness: Any = None
     detail: str = Field(default="", max_length=4000)
+    # a row the sheet never reached (chain None): the chain modcheck's preview planned it in (EXPECTED_ROW_CHAINS), so
+    # retest.split_rows holds it under that chain's own stop (HARNESS_REPAIR_CAUSE_AC81755A)
+    planned_chain: Optional[str] = None
 
 
 class TestqArtifact(Open):

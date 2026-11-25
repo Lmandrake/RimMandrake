@@ -131,6 +131,7 @@ import subprocess
 print("HEAD_AT_RUN", subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip())
 if mode == "expect":
     print('EXPECTED_ROWS ["r1", "r2", "r_lost"]')
+    print('EXPECTED_ROW_CHAINS {"r1": "c1", "r2": "c1", "r_lost": "c1"}')
 print("args:", " ".join(sys.argv[1:]))
 print("[modcheck] sheet \\\\wsl.localhost\\Ubuntu\\x\\Transient\\modcheck\\%s.html" % name)
 sys.exit(1)
@@ -903,6 +904,9 @@ def main():
         res = wait_result(o.get("attempt", "x"))
         vx = {r["row"]: r["verdict"] for r in res.get("rows", [])}
         check(vx == {"r1": "PASS", "r2": "FAIL", "r_lost": "NOT_RUN"}, "EXPECTED_ROWS absent from the sheet -> NOT_RUN: %s" % vx)
+        lost = [r for r in res.get("rows", []) if r["row"] == "r_lost"]
+        check(lost and lost[0].get("chain") is None and lost[0].get("planned_chain") == "c1",
+              "HARNESS_REPAIR_CAUSE_AC81755A: an absent planned row stays chainless and names its planned chain: %s" % lost)
 
         # 14. RELAPSE_STEVE_FIX_DIED_TWICE: Attempt.deploy() is where the Steve lane deploys, and it must put the mods
         # of ours the composed list names in the game too. TerminalBiomes composes mandrake.rm.luminouspigment; a deploy

@@ -72,14 +72,19 @@ def split_rows(rows):
             order.append(k)
         by.setdefault(k, []).append(r)
     causes = {}
-    for k in order:
+    # the chains first, then ORPHAN: a row the sheet never reached whose planned_chain (the worker's, from modcheck's
+    # EXPECTED_ROW_CHAINS) is a chain the harness stopped is that stop's consequence, held under the chain's cause, not
+    # a second repair item for one event (HARNESS_REPAIR_CAUSE_AC81755A: a site hold before any component filed both)
+    for k in [k for k in order if k != ORPHAN] + [k for k in order if k == ORPHAN]:
         if k == ORPHAN or not any(r.get("verdict") == "FAIL" for r in by[k]):
             kinds = {}          # every KIND of fault: closing the repair of one must not release the other
-            for c in map(row_cause, by[k]):
-                if c:
+            for r in by[k]:
+                c = row_cause(r)
+                if c and not (k == ORPHAN and r.get("planned_chain") in causes):
                     kinds.setdefault(c.split(":")[0], c)
             if kinds:
                 causes[k] = " + ".join(kinds.values())
+    causes = {k: causes[k] for k in order if k in causes}      # first-seen order, as before
     if causes:          # a chain stopped by a harness chain's failure: not a verdict on it either
         first = next(iter(causes.values()))
         for k in order:
@@ -240,10 +245,30 @@ def remote_record(job_id, qhome):
         return None, ", and %s returned an unreadable record" % target
 
 
+def passed_since(recs, mod, chain, since, item):
+    """-> (job id or None, why): the first done record of MOD whose selector names CHAIN, submitted at or after SINCE
+    (ISO, compared as text: testq stamps are all `YYYY-MM-DDTHH:MM:SSZ`), whose result passes repair ITEM. The item's
+    "re-run the same job" pass, for an outcome check that cannot know the re-run's job id when it is written."""
+    seen = 0
+    for rec in sorted(recs or [], key=lambda r: str(((r or {}).get("job") or {}).get("submitted") or "")):
+        job = (rec or {}).get("job") or {}
+        if job.get("mod") != mod or chain not in ((job.get("selector") or {}).get("chains") or []) \
+                or str(job.get("submitted") or "") < since:
+            continue
+        seen += 1
+        ok, why = repaired_by(rec.get("result"), item)
+        if ok:
+            return job.get("id"), why
+    return None, "%d done %s job(s) naming %s since %s, none passes %s" % (seen, mod, chain, since, item)
+
+
 def main(argv=None):
     """`retest.py passed <job-id|record.json> <REPAIR_ITEM>`: exit 0 when that job's result passes the repair item, 1
-    when it does not, 2 when there is no finished record to read."""
+    when it does not, 2 when there is no finished record to read. `retest.py passed-since <MOD> <CHAIN> <ISO>
+    <REPAIR_ITEM>`: exit 0 when a done job of that mod and chain, submitted since then, passes; 1 when none does; 2
+    when the queue cannot be read here."""
     import argparse
+    import glob
     import json
     import os
     import sys
@@ -252,7 +277,27 @@ def main(argv=None):
     p = sub.add_parser("passed", help="does a finished job's result pass a HARNESS_REPAIR_CAUSE_ item?")
     p.add_argument("job", help="a testq job id (looked up in the queue) or a path to its done record")
     p.add_argument("item")
+    ps = sub.add_parser("passed-since", help="does any done job of MOD naming CHAIN since ISO pass the item?")
+    for n in ("mod", "chain", "since", "item"):
+        ps.add_argument(n)
     a = ap.parse_args(argv)
+    if a.cmd == "passed-since":
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        import testq as T
+        done = os.path.join(T.QHOME, "done")
+        if not os.path.isdir(done):
+            print("UNMEASURED: no done queue at %s on this host" % done)
+            return 2
+        recs = []
+        for f in glob.glob(os.path.join(done, "*.json")):
+            try:
+                with open(f, encoding="utf-8") as fh:
+                    recs.append(json.load(fh))
+            except (OSError, ValueError):
+                continue        # a record mid-write: the next check reads it
+        jid, why = passed_since(recs, a.mod, a.chain, a.since, a.item)
+        print("%s: %s" % ("PASS %s" % jid if jid else "FAIL", why))
+        return 0 if jid else 1
     rec = None
     if os.path.isfile(a.job):
         try:

@@ -1819,17 +1819,20 @@ class Attempt:
             and any("canary" in (r["detail"] or "").lower() for r in rows)
         wanted = self.job["selector"].get("rows") or []
         seen = {r["row"] for r in rows}
+        # HARNESS_REPAIR_CAUSE_AC81755A: the row stays chainless (the sheet never reached it), and planned_chain names
+        # the chain modcheck planned it in, so retest.split_rows charges it to that chain's own harness stop
+        planned = expected_row_chains(text)
         for w in wanted:
             if w not in seen:
                 rows.append({"chain": None, "row": w, "verdict": "NOT_RUN", "validity": None, "freshness": None,
-                             "detail": "requested, absent from the sheet"})
+                             "detail": "requested, absent from the sheet", "planned_chain": planned.get(w)})
                 seen.add(w)
         # bolt 2: modcheck's own preview (EXPECTED_ROWS) names every row the run was planned to execute, so a row
         # that never reached the sheet is NOT_RUN here instead of silently absent
         for w in expected_rows(text):
             if w not in seen:
                 rows.append({"chain": None, "row": w, "verdict": "NOT_RUN", "validity": None, "freshness": None,
-                             "detail": "in modcheck's preview plan, absent from the sheet"})
+                             "detail": "in modcheck's preview plan, absent from the sheet", "planned_chain": planned.get(w)})
                 seen.add(w)
         self.res["rows"] = rows
         self.res["chain_versions"] = S.chain_versions(data.get("summary") or {})
@@ -1950,6 +1953,18 @@ def expected_rows(log_text):
         try:
             out += [str(x) for x in json.loads(m.group(1))]
         except ValueError:
+            pass
+    return out
+
+
+def expected_row_chains(log_text):
+    """{row id: chain} from modcheck's preview (`EXPECTED_ROW_CHAINS {json}`); {} when it printed none (an older
+    modcheck: its absent rows then stay unattributed, as before)."""
+    out = {}
+    for m in re.finditer(r"^EXPECTED_ROW_CHAINS (\{.*\})\s*$", log_text, re.M):
+        try:
+            out.update({str(k): str(v) for k, v in json.loads(m.group(1)).items()})
+        except (ValueError, AttributeError):
             pass
     return out
 

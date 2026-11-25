@@ -251,6 +251,50 @@ def main():
     check(R.repair_open(deep, cause_many), "the thirteenth generation still holds")
     two = R.split_rows([row("a", "r1", "UNMEASURED", NOSELFTEST), row("a", "r2", "NOT_RUN", DIED)])[2].get("a") or ""
     check(" + " in two, "two kinds of fault in one chain are both named: one repair must not release the other")
+    # HARNESS_REPAIR_CAUSE_AC81755A: J20261124T073045Z-a73766 -- the site hold stopped each chain before any component,
+    # and the planned rows the sheet never reached filed a SECOND repair item for the same event. A row the worker
+    # charges to its planned chain (planned_chain) is held under that chain's own cause; one source event, one item.
+    hold = "could not hold the site quiet -- not a verdict on the mod: dead colonists: ['Human1']"
+
+    def absent(name, chain):
+        return dict(row(None, name, "NOT_RUN", DIED), planned_chain=chain)
+    sighting = [row("sb", "<site hold, before any component>", "UNMEASURED", hold),
+                row("mp", "<site hold, before any component>", "UNMEASURED", hold),
+                absent("sb_r1", "sb"), absent("sb_r2", "sb"), absent("mp_r1", "mp")]
+    kept, held, sigs = R.split_rows(sighting)
+    check(R.ORPHAN not in sigs and sorted(sigs) == ["mp", "sb"] and all(v.startswith("site_hold:") for v in sigs.values())
+          and len(held) == 5 and not kept,
+          "absent rows of a chain its site hold stopped are that chain's: no absent_from_sheet cause of their own: %s" % sigs)
+    sc = R.causes_of({"outcome": "DONE", "rows": sighting})
+    check(len(sc) == 1 and sc[0].startswith("site_hold:") and R.repair_base(sc[0]) != R.repair_base(
+              R.row_cause(row(None, "r", "NOT_RUN", DIED))),
+          "the sighting carries one cause per stopped chain, none for its absent rows")
+    lone = R.split_rows([row("sb", "r1", "PASS"), absent("sb_r2", "sb")])[2]
+    check(list(lone) == [R.ORPHAN] and lone[R.ORPHAN].startswith("absent_from_sheet:"),
+          "a row lost from a chain that measured (no stop of its own) is still its own fault: %s" % lone)
+    other = R.split_rows([row("sb", "<site hold, before any component>", "UNMEASURED", hold), absent("x_r1", "x")])[2]
+    check(other.get(R.ORPHAN, "").startswith("absent_from_sheet:"),
+          "a row planned in a chain with no stop of its own is still its own fault: %s" % other)
+    # passed-since: the item's re-run pass, found by mod, chain and time (the check is written before the re-run exists)
+    sit_item = R.repair_base(R.row_cause(row(None, "r", "NOT_RUN", DIED)))
+    old = dict(rec(1, [row(None, "sb_r1", "NOT_RUN", DIED), row("sb", "<site hold, before any component>", "UNMEASURED", hold)],
+                   selector={"chains": ["sb"]}))
+    good = rec(26, [row("sb", "sb_r1", "PASS"), row("sb", "sb_r2", "FAIL", "x", "valid")], selector={"chains": ["sb"]})
+    still = rec(25, [row("sb", "<site hold, before any component>", "UNMEASURED", hold), absent("sb_r1", "sb")],
+                selector={"chains": ["sb"]})
+    check(R.passed_since([old], MOD, "sb", "2026-10-01T00:00:00Z", sit_item)[0] is None,
+          "passed-since: the sighting itself never passes (negative control)")
+    check(R.passed_since([old, still], MOD, "sb", "2026-10-01T00:00:00Z", sit_item)[0] is None,
+          "passed-since: a re-run the site hold still stopped is no verdict, so no pass")
+    check(R.passed_since([old, still, good], MOD, "sb", "2026-10-01T00:00:00Z", sit_item)[0] == "J26",
+          "passed-since: a re-run that measured (a FAIL counts) passes")
+    check(R.passed_since([good], MOD, "sb", "2026-10-27T00:00:00Z", sit_item)[0] is None
+          and R.passed_since([good], MOD, "other", "2026-10-01T00:00:00Z", sit_item)[0] is None
+          and R.passed_since([good], "Pyrelands", "sb", "2026-10-01T00:00:00Z", sit_item)[0] is None,
+          "passed-since: a job before SINCE, of another chain or of another mod does not count")
+    bare = R.split_rows([row("sb", "<site hold, before any component>", "UNMEASURED", hold), row(None, "r9", "NOT_RUN", DIED)])[2]
+    check(bare.get(R.ORPHAN, "").startswith("absent_from_sheet:"),
+          "an absent row with no planned_chain (an older worker) is still its own fault: %s" % bare)
     full = rec(29, [row(None, "r9", "NOT_RUN", DIED), row("a", "r1", "PASS")], selector={"full": True})
     frun = G.valid_runs(MOD, [full])
     held_full = G.harness_last(MOD, frun, [full], ["a", "b", "c"])
