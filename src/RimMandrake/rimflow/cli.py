@@ -2030,7 +2030,7 @@ def _filing_door(door, iid, title, kind, args):
     d = filing_gate.at_door(door, iid, title, kind, unit=unit, owner=_filing_owner(),
                             program=os.environ.get("RM_FILING_PROGRAM", ""), not_now=getattr(args, "not_now", None),
                             did_it=getattr(args, "did_it", None), not_worth_it=getattr(args, "not_worth_it", None),
-                            state_dir=filing_gate.state_dir(), facts_fn=lambda: filing_gate.facts(str(model.ROOT)),
+                            state_dir=filing_gate.state_dir(), facts_fn=lambda: filing_gate.facts(str(model.ROOT), unit),
                             look_sha=_did_it_look)
     if d.err:
         sys.stderr.write(d.err + "\n")

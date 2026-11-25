@@ -1,4 +1,4 @@
-# BOUNDARY: the filing gate (`filing_gate.py`), Design Version 0.2.0
+# BOUNDARY: the filing gate (`filing_gate.py`), Design Version 0.3.0
 
 Code: `src/RimMandrake/rimflow/filing_gate.py` (all of it); its two doors in `cli.py` (`_filing_door`, called by `_file`
 and by `cmd_spawn`, with the flags `--not-now`, `--did-it` and `--not-worth-it`); the Stop hook
@@ -23,6 +23,8 @@ there is of a promise here. The hook has its own selftest, `.claude/hooks/selfte
   env of its nearest test program, `/proc/<pid>/environ`) is not its own.
 - **the-live-runs.** The units that `detached_helper` shows launching or running, or `None` when they cannot be read.
 - **the-mod-folders.** A function that says if a folder of that name is in `design/concepts/` or `src/RimMandrake/`.
+- **the-mod-of-the-run.** `RM_CONTROL_MOD` in the env of the filing unit's launch record (`detached_helper.py`; every
+  maturation and Dispatch launch sets it), or `None` when the record cannot be read, has no such key, or says `none`.
 - **a-sha.** For `--did-it`: what git says of it in the clone (`RIMFLOW_GIT_CWD`, or else the repository): it exists,
   it is on `origin/main`, and it changes a path that is not a ledger path. Or that git cannot be read.
 
@@ -46,6 +48,13 @@ there is of a promise here. The hook has its own selftest, `.claude/hooks/selfte
   included. The refusal lists the classes.
 - **files-held-names-a-live-run.** Class `files-held` passes only when its evidence names a unit that is live.
 - **other-mod-names-a-mod-folder.** Class `other-mod` passes only when its evidence names a mod folder that exists.
+- **other-mod-refuses-the-mod-of-the-run.** Class `other-mod` whose evidence names only the mod of the filing run (any
+  letter case) is refused (item `RIMMANDRAKE_REFUSE_OWN_MOD_HANDOFF_DRIVER_RENAMED_NOTHING`: on 2026-11-25 a visit
+  driver filed the rename of 12 of its own mod's defNames as other-mod). The refusal says: fix the fault in this
+  sitting, red test first; if the cause is unknown after a sincere attempt, file with `fix-unknown` and name what you
+  tried. Evidence that also names another mod folder passes, and the other mod is recorded.
+- **a-run-mod-that-cannot-be-read-is-not-a-refusal.** When the mod of the run cannot be read, `other-mod` is filed, the
+  record says `could not look` (`own_mod`), and the door prints one note on stderr.
 - **could-not-look-is-not-a-refusal.** When the live runs cannot be read, `files-held` is filed and the record says
   `could not look`.
 - **the-owner-and-the-conductor-are-never-refused.** A filing with the owner's authority, and a filing from a window

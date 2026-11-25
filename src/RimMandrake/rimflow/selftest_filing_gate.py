@@ -34,9 +34,9 @@ def check(what, ok, got=None):
         FAILS.append(what)
 
 
-def gate(kind="bug", unit=UNIT, owner=False, program="", not_now=None, live=LIVE, mods=("FlowWorks",)):
+def gate(kind="bug", unit=UNIT, owner=False, program="", not_now=None, live=LIVE, mods=("FlowWorks",), own_mod=None):
     return FG.decide(kind=kind, unit=unit, owner=owner, program=program, not_now=not_now, live_units=live,
-                     mod_exists=lambda m: m in mods)
+                     mod_exists=lambda m: m in mods, own_mod=own_mod)
 
 
 def t_a_helper_work_ticket_with_no_evidence_is_refused():
@@ -82,6 +82,61 @@ def t_other_mod_names_a_mod_folder():
     check("a mod folder passes", gate(not_now="other-mod: FlowWorks, the pit cover scene").ok)
     d = gate(not_now="other-mod: NoSuchMod, its walk scene needs work")
     check("an unknown mod is refused", not d.ok and "mod" in d.text, d)
+
+
+def t_other_mod_refuses_the_mod_of_the_run():
+    # 2026-11-25: Explosive Knockback's visit-1 driver filed the rename of 12 of its own defNames as other-mod
+    mods = ("FlowWorks", "ExplosiveKnockback")
+    d = gate(not_now="other-mod: ExplosiveKnockback, rename the 12 scar defNames", mods=mods, own_mod="ExplosiveKnockback")
+    check("its own mod is refused", not d.ok, d)
+    check("the refusal says fix it in this sitting, red test first, and names fix-unknown",
+          "in this sitting" in d.text and "red test first" in d.text and "fix-unknown" in d.text
+          and "what you tried" in d.text, d.text)
+    check("letter case does not hide its own mod", not gate(not_now="other-mod: ExplosiveKnockback, rename the defs",
+                                                            mods=mods, own_mod="explosiveknockback").ok)
+    d = gate(not_now="other-mod: FlowWorks, the pit cover scene", mods=mods, own_mod="ExplosiveKnockback")
+    check("another mod passes, and is the one recorded", d.ok and d.record.get("checked") == "mod: FlowWorks", d)
+    d = gate(not_now="other-mod: ExplosiveKnockback needs FlowWorks to expose its lane", mods=mods,
+             own_mod="ExplosiveKnockback")
+    check("its own mod named beside another passes, the other recorded", d.ok and d.record.get("checked") == "mod: FlowWorks", d)
+    recs = {"u-own": {"env": {"RM_CONTROL_MOD": "ExplosiveKnockback"}}, "u-none": {"env": {"RM_CONTROL_MOD": "none"}},
+            "u-bare": {"env": {}}}
+    a = FG.own_mod_of("u-own", read_record=recs.get)
+    check("the run's mod is its launch record's RM_CONTROL_MOD", a.kind == "value" and a.value == "ExplosiveKnockback", a)
+    for u in ("u-none", "u-bare"):
+        a = FG.own_mod_of(u, read_record=recs.get)
+        check("%s: looked, no mod" % u, a.kind == "empty" and FG.own_mod_read(a)[0] is None, a)
+    a = FG.own_mod_of("u-missing", read_record=recs.get)
+    check("no record: could not look, never empty", a.kind == "could_not_look" and "could not look" in FG.own_mod_read(a)[1], a)
+
+    def boom(unit):
+        raise OSError("no record dir")
+    a = FG.own_mod_of("u-own", read_record=boom)
+    check("a record that cannot be read: could not look", a.kind == "could_not_look" and "no record dir" in a.cause, a)
+    dd = FG.at_door("file", "RIMMANDRAKE_SOME_WORK_LEFT_HERE", "t", "bug", unit=UNIT, owner=False, program="",
+                    not_now="other-mod: ExplosiveKnockback, rename the 12 scar defNames", did_it=None, not_worth_it=None,
+                    state_dir=scratch("own_mod_answer"), facts_fn=lambda: (LIVE, lambda m: m in mods,
+                                                                           FG.own_mod_of("u-own", read_record=recs.get)),
+                    look_sha=lambda s: {}, now="2026-11-24T00:00:00Z")
+    check("the door reads the answer facts gives: its own mod refused", not dd.go and dd.rc == 6, dd)
+
+
+def t_a_run_mod_that_cannot_be_read_is_not_a_refusal():
+    d = gate(not_now="other-mod: FlowWorks, the pit cover scene", own_mod=None)
+    check("filed", d.ok, d)
+    check("the record notes the run's mod could not be read", "could not look" in (d.record or {}).get("own_mod", ""),
+          d.record)
+    st = scratch("own_mod_unread")
+    dd = FG.at_door("file", "RIMMANDRAKE_SOME_WORK_LEFT_HERE", "t", "bug", unit=UNIT, owner=False, program="",
+                    not_now="other-mod: FlowWorks, the pit cover scene", did_it=None, not_worth_it=None, state_dir=st,
+                    facts_fn=lambda: (LIVE, lambda m: m == "FlowWorks", None), look_sha=lambda s: {},
+                    now="2026-11-24T00:00:00Z")
+    check("the door files it and prints a note", dd.go and "could not read" in dd.err and "mod" in dd.err, dd)
+    dd = FG.at_door("file", "RIMMANDRAKE_SOME_WORK_LEFT_HERE", "t", "bug", unit=UNIT, owner=False, program="",
+                    not_now="other-mod: FlowWorks, the pit cover scene", did_it=None, not_worth_it=None, state_dir=st,
+                    facts_fn=lambda: (LIVE, lambda m: m in ("FlowWorks", "ExplosiveKnockback"), "FlowWorks"),
+                    look_sha=lambda s: {}, now="2026-11-24T00:00:00Z")
+    check("the door refuses its own mod, read through facts", not dd.go and dd.rc == 6, dd)
 
 
 def t_could_not_look_is_not_a_refusal():
@@ -510,6 +565,8 @@ def main():
         t_an_unknown_class_is_refused,
         t_files_held_names_a_live_run,
         t_other_mod_names_a_mod_folder,
+        t_other_mod_refuses_the_mod_of_the_run,
+        t_a_run_mod_that_cannot_be_read_is_not_a_refusal,
         t_could_not_look_is_not_a_refusal,
         t_the_owner_and_the_conductor_are_never_refused,
         t_only_a_reminder_kind_passes_with_no_flag,

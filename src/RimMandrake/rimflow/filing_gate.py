@@ -33,8 +33,16 @@ CLASSES = collections.OrderedDict((
     ("owner-act", "the work is one of the owner's five acts, or changes a north-star bar: name the act"),
     ("files-held", "another live run holds the files: name its unit"),
     ("independent", "your verdict must stay independent of the work: name the verdict"),
-    ("other-mod", "the work belongs to a mod's own Maturation Pipeline run: name the mod folder"),
+    ("other-mod", "the work belongs to another mod's own Maturation Pipeline run: name the mod folder (never the mod "
+                  "of this run)"),
 ))
+# RIMMANDRAKE_REFUSE_OWN_MOD_HANDOFF_DRIVER_RENAMED_NOTHING: on 2026-11-25 Explosive Knockback's visit-1 driver filed the
+# rename of 12 of its own defNames as other-mod. A fault of the run's own mod is fixed in the sitting (CLAUDE.md
+# §Touching code has a cost, "Fix a fault in the sitting").
+OWN_MOD_REFUSAL = ("other-mod names %s, the mod of this run. Fix the fault in this sitting, red test first: a test red "
+                   "on the parent build and green on the fix, then the fix, then run again the checks it touches. If "
+                   "the cause is unknown after a sincere attempt, file with --not-now \"fix-unknown: <what you tried, "
+                   "each thing>\".")
 MIN_EVIDENCE = 12  # danger: a one-word reason passes as evidence (page, LIMITS)
 _UNIT = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.@:-]{5,95}")
 _WORD = re.compile(r"[A-Za-z][A-Za-z0-9_]+")
@@ -55,10 +63,11 @@ def _evidence_left(cls, evidence):
     return " ".join(w for w in re.split(r"\s+", evidence) if w.strip(".,;:").lower() not in words)
 
 
-def decide(kind, unit, owner, program, not_now, live_units, mod_exists):
+def decide(kind, unit, owner, program, not_now, live_units, mod_exists, own_mod=None):
     """-> Decision(ok, text, record). kind: the ticket's kind (None reads as task). unit: RM_ROLE_UNIT of the filing run,
     empty in a window. owner: the filing carries --owner-said or --by-card (--per-ruling alone is not the owner). program: RM_FILING_PROGRAM. not_now: the
-    flag's text or None. live_units: the units that are live, or None when they cannot be read. mod_exists(name) -> bool."""
+    flag's text or None. live_units: the units that are live, or None when they cannot be read. mod_exists(name) -> bool.
+    own_mod: the mod of the filing run (own_mod_of), or None when it cannot be read: other-mod then is not refused on it."""
     if program:
         return Decision(True, "", {"program": program})
     if owner or not (unit or "").strip() or (kind or "task").strip().lower() in REMINDER_KINDS:
@@ -88,13 +97,48 @@ def decide(kind, unit, owner, program, not_now, live_units, mod_exists):
         if not named:
             return Decision(False, refusal("other-mod names no mod folder that exists "
                                            "(design/concepts/<Mod> or src/RimMandrake/<Mod>)."), None)
-        record["checked"] = "mod: " + named[0]
+        own = (own_mod or "").strip().lower()
+        others = [w for w in named if w.lower() != own] if own else named
+        if not others:
+            return Decision(False, refusal(OWN_MOD_REFUSAL % named[0]), None)
+        record["checked"] = "mod: " + others[0]
+        if not own:
+            record["own_mod"] = "could not look: the mod of this run could not be read"
     return Decision(True, "", record)
 
 
-def facts(repo):
-    """-> (live_units or None, mod_exists) read from this machine, for the door."""
-    import os
+def own_mod_of(unit, read_record=None):
+    """-> a probe_result answer: value(the mod of the run `unit`, RM_CONTROL_MOD in its launch record's env;
+    detached_helper.py, set by every maturation and Dispatch launch, maturation.launch_mod), empty() when the record names
+    no mod (absent, blank or "none"), or could_not_look(cause) when there is no record or it cannot be read."""
+    import probe_result as PR
+    try:
+        if read_record is None:
+            import detached_helper as DH
+            read_record = DH.read_record
+        rec = read_record(unit)
+    except Exception as e:  # noqa: BLE001 - could not look: the gate does not refuse on it, and says so
+        return PR.could_not_look("the launch record of %s: %s: %s" % (unit, type(e).__name__, e))
+    if not isinstance(rec, dict):
+        return PR.could_not_look("no launch record of %s" % unit)
+    env = rec.get("env")
+    mod = env.get("RM_CONTROL_MOD") if isinstance(env, dict) else None
+    mod = mod.strip() if isinstance(mod, str) else ""
+    return PR.value(mod) if mod and mod.lower() != "none" else PR.empty()
+
+
+def own_mod_read(answer):
+    """-> (the mod or None, why it is None: "" when a mod was read) from own_mod_of's answer (None: not read at all)."""
+    if answer is None:
+        return None, "not read"
+    if answer.kind == "value":
+        return answer.value, ""
+    return None, ("its launch record names no mod (no RM_CONTROL_MOD)" if answer.kind == "empty" else
+                  "could not look: %s" % answer.cause)
+
+
+def facts(repo, unit=None):
+    """-> (live_units or None, mod_exists, the run's own mod or None) read from this machine, for the door."""
     try:
         import detached_helper as DH
         live = {r["unit"] for r in DH.all_records() if DH.live_status(r) in ("launching", "running")}
@@ -103,7 +147,7 @@ def facts(repo):
 
     def mod_exists(name):
         return any(os.path.isdir(os.path.join(repo, d, name)) for d in ("design/concepts", "src/RimMandrake"))
-    return live, mod_exists
+    return live, mod_exists, (own_mod_of(unit) if unit else None)     # facts_fn's third: an answer, or a mod (tests)
 
 
 # ---- the record of refusals, and their resolution ------------------------------------------------------------------
@@ -225,14 +269,18 @@ def at_door(door, iid, title, kind, unit, owner, program, not_now, did_it, not_w
         err = record_resolution(unit, state_dir, "dropped", iid, now=now, why=why) if unit else None
         return Door(False, 0, "nothing filed: %s dropped as not worth the touch: %s" % (iid, why), {"why": why},
                     _err(err))
-    live, mod_exists = facts_fn() if unit and not owner and not program else (None, lambda m: False)
-    d = decide(kind, unit, owner, program, not_now, live, mod_exists)
+    got = tuple(facts_fn()) if unit and not owner and not program else (None, lambda m: False)
+    live, mod_exists, own = (got + (None,))[:3]
+    own, own_why = (own, "") if isinstance(own, str) else own_mod_read(own)
+    d = decide(kind, unit, owner, program, not_now, live, mod_exists, own_mod=own)
     if not d.ok:
         why = d.text.splitlines()[0][len("REFUSED: "):]
         err = record_refusal(unit, state_dir, iid, title, kind, why, door=door, now=now)
         return Door(False, 6, d.text + "\nThe refusal is recorded; this run must resolve it before it ends: " +
                     HOW_TO_RESOLVE + ".", None, _err(err))
-    return Door(True, 0, "", d.record, "")
+    note = ("filing_gate: note: could not read the mod of run %s (%s), so other-mod was not checked against it"
+            % (unit, own_why or "not read")) if (d.record or {}).get("own_mod") else ""
+    return Door(True, 0, "", d.record, note)
 
 
 def _err(why):
