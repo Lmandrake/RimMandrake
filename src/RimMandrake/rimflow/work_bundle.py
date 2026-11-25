@@ -421,6 +421,9 @@ def launch_bundle(system, members, items, why, pipeline, now=None, launcher=None
         if system in live:
             return 2, "%s already has a live bundle, %s; one live bundle per system" % (system, live[system])
         rec = new_record(system, members, why, pipeline, now, launched_by)
+        for old in all_bundles().values():      # a gated bundle of this system is the new one's to carry on
+            if old.get("system") == system and old.get("state") == "gated":
+                store_write(dict(old, state="replaced", replaced_by=rec["id"]))
         store_write(rec)
     finally:
         lk.close()
@@ -798,6 +801,9 @@ def note_end(bid, q, unit, now, say=None):
             lines.append("ALARM work bundle %s (%s) is not restarted: %s. Look at its state file %s; restart it by hand "
                          "with `./pipe bundle <ids> --why ...` or end it" % (bid, rec["system"], q["why"], rec["state_file"]))
             told.add("raise")
+        if rec["state"] in ("ended", "stopped", "gated") and "end:%s" % rec["state"] not in told:
+            lines.append("work bundle %s (%s) %s: %s" % (bid, rec["system"], rec["state"].upper(), _one(q["why"], 400)))
+            told.add("end:%s" % rec["state"])
         rec["told"] = sorted(told)
         store_write(rec)
     finally:

@@ -411,6 +411,11 @@ def t_restart_until_each_member_has_an_outcome():
              "runs": over, "recent": None}
     rws, ln = LD.decide({"enabled": True, "max_live": 2}, st, facts, NOW + 200)
     chk(lambda: rws[0]["decision"] == "launch", "restart: once the gate lifts the lane launches it again (%s)" % rws[0])
+    rc, newer = W.launch_bundle(rec["system"], ["P2"], {"P2": item("P2")}, "again", "workshop", now=NOW + 300,
+                                launcher=lambda r, b: (0, "DETACHED u-z", "u-z"))
+    chk(lambda: rc == 0 and W.store_read(rec["id"])["state"] == "replaced",
+        "restart: a new bundle of the system replaces the gated one (%s)" % W.store_read(rec["id"])["state"])
+    W.store_write(dict(newer, state="ended"))
     sid, fresh, _ = LOC.resume_choice(run_rec(W, rec), {"target": "P2", "bundle": rec["id"]}, NOW)
     chk(lambda: sid is None and "state file" in str(fresh), "restart: always fresh, never a resume (%s)" % fresh)
     h = LOC.header(run_rec(W, rec), {"n": 2, "target": "P2", "bundle": rec["id"], "open_lane": ["P2", "P3"],
@@ -480,10 +485,11 @@ def t_a_bundle_with_every_outcome_ends():
     on = W.store_read(rec["id"])
     chk(lambda: on["state"] == "ended" and on["outcomes"]["E2"]["outcome"] == "refused",
         "end: the record reads ended, with each outcome")
-    chk(lambda: len(lines) == 1 and "E2" in lines[0] and "flight test" in lines[0],
+    chk(lambda: len(lines) == 2 and "E2" in lines[0] and "flight test" in lines[0],
         "end: each refusal goes to the Conductor log with its reason, once (%s)" % lines)
+    chk(lambda: "ENDED" in lines[1] and rec["id"] in lines[1], "end: one line says the bundle ended (%s)" % lines[1:])
     W.note_end(rec["id"], p, "u-first", NOW + 200, say=lines.append)
-    chk(lambda: len(lines) == 1, "end: a second end says nothing again")
+    chk(lambda: len(lines) == 2, "end: a second end says nothing again")
     rec2 = bundle_rec(W, ["E3"])
     W.note_restart(rec2["id"], "u-new", NOW + 300, ended_before=0)
     on2 = W.store_read(rec2["id"])
