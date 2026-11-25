@@ -36,7 +36,7 @@ The checks (each prints PASS or FAIL with what it read):
   V_TRACE           every thrown good has one item_land, and its item_rebound count equals the land's `bounces`
   V_RESTS           every thrown good came to rest within MaxBounces = 6 (RM_ThingFlyer_Knockback.cs:26)
   V_SHORTER <room>  every rebound leg (the cells flown after a rebound) is less than the cells the throw had left at that
-                    rebound (item_rebound `left`): ratio leg / left < 1 (limit 1, from the bar's "only part of the way the
+                    rebound (the leg before's budget less the cells it flew, read by the scene; the mod's `left` is printed, never used): ratio leg / left < 1 (limit 1, from the bar's "only part of the way the
                     throw still had left"); prints the worst ratio, its good, the rebounds and legs read; a room with no
                     rebound leg says why (UNLAID: no rebound). A rebound whose `left` cannot be read is UNMEASURED, never PASS.
                     Legs are straight distances; in this scene every leg runs along one row, so a leg and `left` are the
@@ -80,6 +80,15 @@ GAME = "ArchSmall"
 # colonist was gone by tick 3 under collapsed rocks and the stack buried (APPARATUS FAULT of the first run).
 STAGE = "RM_Stage_ExplosiveKnockback"
 SETTINGS = "RimMandrake.ExplosiveKnockback.RimMandrakeExplosiveKnockbackSettings"
+
+def put(s, field, value, strict=True):
+    """Set one static settings field inside the open session, as its driver, and read the write back. Inside a session the
+    bridge refuses a set that names no driver (JawaBenchHands.SettingsDriver); this scene sent none and never read the
+    reply, so on ArchSmall (visit 1 of 0.2.0) its writes never applied: the damage-1 blast threw nothing."""
+    r = s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=field, value=value, driver=s.id) or {}
+    if strict and (r.get("success") is not True or str(r.get("valueAfter")) != str(value)):
+        raise RuntimeError("SETTING_REFUSED: %s=%s was not written (%s)" % (field, value, {k: r.get(k) for k in ("success", "valueAfter", "error", "message")}))
+    return r
 JOURNAL = "RimMandrake.ExplosiveKnockback.RM_KnockbackJournal"
 STATION = (20, 20, 28, 10)
 SHELL = "Shell_HighExplosive"   # Bomb, explosiveRadius 2.9 (Items_Resource_Shell.xml)
@@ -207,14 +216,14 @@ with scene.open(GAME, contract=legs_bar, needs={"mods": ["ExplosiveKnockback"], 
     rows = {}
     try:
         if planted:
-            s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="goodsReboundKeepPercent", value="100")
+            put(s, "goodsReboundKeepPercent", "100")
         keep_now = setting(s, "goodsReboundKeepPercent")
         for room in ORDER:
             blast(s, room, rows)
     finally:
         for f, v in prior.items():   # back to what it read before, on every exit path
             if v is not None:
-                s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=f, value=str(v))
+                put(s, f, str(v), strict=False)
     folder = s.run_dir
 
 fails = 0
@@ -272,7 +281,16 @@ def good_legs(recs, tid):
         return g
     g["legs"] = [dist(points[i], points[i + 1]) for i in range(len(points) - 1)]
     g["budgets"] = budgets[:len(g["legs"])]
-    g["lefts"] = lefts[:len(g["legs"])]
+    g["lefts_mod"] = lefts[:len(g["legs"])]
+    # the cells left at each rebound, read by the scene itself: the budget of the leg before less the cells it flew (a
+    # wallFirst good's first rebound is the hit in place: the throw's whole plan is left). The mod's own `left` is printed
+    # beside it, never used: visit 1 of 0.2.0 planted C_FLYER_REBOUND_FROM_WHOLE_THROW (cellsLeft = the whole throw) and
+    # V_SHORTER read the corrupted `left` and passed (wide room: a 4-cell rebound with 2 cells left read as 4 of 6)
+    own = [(int(m.get("planned")) if wf and m.get("planned") is not None else None)]
+    for i in range(1, len(g["legs"])):
+        b = g["budgets"][i - 1]
+        own.append(int(b) - int(round(g["legs"][i - 1])) if b is not None else None)
+    g["lefts"] = own
     return g
 
 
@@ -288,8 +306,11 @@ def rebound_ratios(legs, lefts):
         except (TypeError, ValueError):
             unread += 1
             continue
-        if left <= 0:
+        if left < 0:
             unread += 1
+            continue
+        if left == 0:                      # nothing was left, and any rebound flight at all is more than nothing
+            ratios.append((i, float("inf") if legs[i] > 0 else 0.0))
             continue
         ratios.append((i, legs[i] / left))
     return ratios, unread
@@ -319,8 +340,8 @@ for room in ORDER:
                 worst, worst_of = ratio, "%s leg %d: %.2f of %s cells left" % (r["ids"][t], i, legs[i], g["lefts"][i])
         if not ratios and not un:
             why.append("%s %s" % (r["ids"][t], "no rebound leg"))
-        print("INFO budgets %s %s: legs flown %s, planned cells %s, cells left at each leg's rebound %s, bounces %d%s" % (
-            room, r["ids"][t], ["%.2f" % x for x in legs], g["budgets"], g["lefts"], len(g["rebs"]),
+        print("INFO budgets %s %s: legs flown %s, planned cells %s, cells left at each leg's rebound %s (the mod's `left` %s), bounces %d%s" % (
+            room, r["ids"][t], ["%.2f" % x for x in legs], g["budgets"], g["lefts"], g.get("lefts_mod"), len(g["rebs"]),
             " (" + g["note"] + ")" if g["note"] else ""))
     all_unread += unread
     if unread:

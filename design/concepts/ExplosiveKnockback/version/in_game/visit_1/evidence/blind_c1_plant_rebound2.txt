@@ -1,0 +1,22 @@
+INFO journal mark: 114 line(s) before this run
+INFO goodsRebound = True; goodsReboundKeepPercent = 70 during the blasts (default 70; plant none)
+PASS V_THROWN narrow: 1 of 1 goods moved; [('Steel', {'planned': 6, 'cells': 1, 'stop': 'Wall', 'wallFirst': False, 'flightTicks': 6}, [])]
+INFO budgets narrow Steel: legs flown ['1.00', '2.00', '2.00'], planned cells [6, 4, 2], cells left at each leg's rebound [None, 5, 2] (the mod's `left` [None, 6, 4]), bounces 2
+FAIL V_SHORTER narrow: worst ratio 1.000 (Steel leg 2: 2.00 of 2 cells left), limit < 1.0, 2 rebound leg(s) of 3 leg(s) read
+PASS V_TRACE narrow: 1 thrown good(s) read; mismatched (good, lands, rebounds, land bounces): []
+PASS V_RESTS narrow: worst bounce count 2, limit 6, 1 good(s) read; over or never landed: []
+PASS V_THROWN mid: 1 of 1 goods moved; [('Steel', {'planned': 6, 'cells': 2, 'stop': 'Wall', 'wallFirst': False, 'flightTicks': 9}, [])]
+INFO budgets mid Steel: legs flown ['2.00', '3.00', '2.00'], planned cells [6, 4, 2], cells left at each leg's rebound [None, 4, 1] (the mod's `left` [None, 6, 4]), bounces 2
+FAIL V_SHORTER mid: worst ratio 2.000 (Steel leg 2: 2.00 of 1 cells left), limit < 1.0, 2 rebound leg(s) of 3 leg(s) read
+PASS V_TRACE mid: 1 thrown good(s) read; mismatched (good, lands, rebounds, land bounces): []
+PASS V_RESTS mid: worst bounce count 2, limit 6, 1 good(s) read; over or never landed: []
+PASS V_THROWN wide: 1 of 1 goods moved; [('Steel', {'planned': 6, 'cells': 4, 'stop': 'Wall', 'wallFirst': False, 'flightTicks': 18}, [])]
+INFO budgets wide Steel: legs flown ['4.00', '4.00'], planned cells [6, 4], cells left at each leg's rebound [None, 2] (the mod's `left` [None, 6]), bounces 1
+FAIL V_SHORTER wide: worst ratio 2.000 (Steel leg 1: 4.00 of 2 cells left), limit < 1.0, 1 rebound leg(s) of 2 leg(s) read
+PASS V_TRACE wide: 1 thrown good(s) read; mismatched (good, lands, rebounds, land bounces): []
+PASS V_RESTS wide: worst bounce count 1, limit 6, 1 good(s) read; over or never landed: []
+FAIL V_SHORTER all: worst ratio 2.000, limit < 1.0, 5 rebound leg(s) read over 3 room(s)
+FAIL sc_storeroom_mortar_rebound_legs: 4 failing row(s); pictures in D:\ClaudeWork\rimmandrake\scratch\scene_runs\20261125T092614_script_ArchSmall_45380
+[bridge split] 68.8 s wall: load 0.5 / ticks 0.0 / reads 22.4 / other 9.8 / outside calls 36.0 s
+[bridge split] WARN 80 calls of rimbridge/get_bridge_status (1.9 s): batch them
+[bridge split] WARN 57 calls of jawa/run_until (2.2 s): batch them

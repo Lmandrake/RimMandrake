@@ -1,0 +1,38 @@
+diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs
+index 25ce284703..46d94abdb1 100644
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs
+@@ -559,7 +559,6 @@ namespace RimMandrake.ExplosiveKnockback
+                 return p; // None
+             }
+             Direction(f, b, out p.dx, out p.dz);
+-            s.intoPits = false; // an open pit is a wall for a container's path
+             p.dist = Dist(f, b);
+             p.overLimit = f.mass > q.containerMassLimit;
+             p.planned = RM_KnockbackMath.ContainerThrowCells(f.oneByOne, f.mass, q.containerMassLimit, p.dist, b.radius, b.force, s);
+diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_PawnFlyerPatches.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_PawnFlyerPatches.cs
+index e6cdfb57bc..274d11ac43 100644
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_PawnFlyerPatches.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_PawnFlyerPatches.cs
+@@ -290,7 +290,7 @@ namespace RimMandrake.ExplosiveKnockback
+                     foreach (Pawn o in landedOn)
+                     {
+                         float own = RM_MapComponent_Knockback.PawnMass(__state), other = RM_MapComponent_Knockback.PawnMass(o);
+-                        float amount = RM_KnockbackMath.CollisionBruise(own, other, ks), otherAmount = RM_KnockbackMath.CollisionBruise(other, own, ks);
++                        float amount = RM_KnockbackMath.CollisionBruise(other, own, ks), otherAmount = RM_KnockbackMath.CollisionBruise(own, other, ks);
+                         if (otherAmount > 0f && !o.Dead)
+                         {
+                             o.TakeDamage(new DamageInfo(DamageDefOf.Blunt, otherAmount));
+diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_ThingFlyer_Knockback.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_ThingFlyer_Knockback.cs
+index 0b6be334f1..1898bae44b 100644
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_ThingFlyer_Knockback.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_ThingFlyer_Knockback.cs
+@@ -197,7 +197,7 @@ namespace RimMandrake.ExplosiveKnockback
+             startVec = from.ToVector3ShiftedWithAltitude(def.Altitude);
+             destCell = new IntVec3(res.destX, 0, res.destZ);
+             destinationOffset = new Vector3(res.pitEntryOffsetX, 0f, res.pitEntryOffsetZ);
+-            cellsLeft = res.cellsPlanned - res.cellsTravelled;
++            cellsLeft = res.cellsPlanned;
+             stop = res.stop;
+             hasBlock = res.hasBlock;
+             blockX = res.blockX;

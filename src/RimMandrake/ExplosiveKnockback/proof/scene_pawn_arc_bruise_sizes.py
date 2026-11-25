@@ -55,6 +55,15 @@ GAME = "ArchSmall"
 # colonist was gone by tick 3 under collapsed rocks and the stack buried (APPARATUS FAULT of the first run).
 STAGE = "RM_Stage_ExplosiveKnockback"
 SETTINGS = "RimMandrake.ExplosiveKnockback.RimMandrakeExplosiveKnockbackSettings"
+
+def put(s, field, value, strict=True):
+    """Set one static settings field inside the open session, as its driver, and read the write back. Inside a session the
+    bridge refuses a set that names no driver (JawaBenchHands.SettingsDriver); this scene sent none and never read the
+    reply, so on ArchSmall (visit 1 of 0.2.0) its writes never applied: the damage-1 blast threw nothing."""
+    r = s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=field, value=value, driver=s.id) or {}
+    if strict and (r.get("success") is not True or str(r.get("valueAfter")) != str(value)):
+        raise RuntimeError("SETTING_REFUSED: %s=%s was not written (%s)" % (field, value, {k: r.get(k) for k in ("success", "valueAfter", "error", "message")}))
+    return r
 JOURNAL = "RimMandrake.ExplosiveKnockback.RM_KnockbackJournal"
 STATION = (20, 20, 30, 44)
 RADIUS = 2.9                    # Shell_HighExplosive's explosiveRadius (Items_Resource_Shell.xml)
@@ -182,9 +191,9 @@ with scene.open(GAME, contract=bruise_sizes, needs={"mods": ["ExplosiveKnockback
     prior = {f: (s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="get", field=f) or {}).get("value") for f in fields}
     rows = {}
     try:
-        s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="blastPowerFromDamage", value="False")
+        put(s, "blastPowerFromDamage", "False")
         if scene.plant() == "no_bruise":
-            s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="impactDamageEnabled", value="False")
+            put(s, "impactDamageEnabled", "False")
         # every lane's blast on one paused tick, then one settle: the cast is not drafted, and in the first form (a
         # settle per lane) the later lanes' pawns walked off their cells before their blast (2026-11-24, ArchSmall: the
         # large lane's colonist and elephant 4 cells away; APPARATUS FAULT). The lanes lie 10 cells apart; a blast reaches 2.9
@@ -196,7 +205,7 @@ with scene.open(GAME, contract=bruise_sizes, needs={"mods": ["ExplosiveKnockback
     finally:
         for f, v in prior.items():   # each setting back to what it read before, on every exit path
             if v is not None:
-                s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=f, value=str(v))
+                put(s, f, str(v), strict=False)
     folder = s.run_dir
 
 fails = 0

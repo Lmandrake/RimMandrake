@@ -1,0 +1,18 @@
+INFO journal mark: 8 line(s) before this run
+PASS V_BRUISE_REC small: bruise {'other': 'Squirrel88278', 'mass': 60.83, 'otherMass': 12, 'amount': 1.318, 'otherAmount': 6.682} (thrower Human88274, standing Squirrel88278, thrower started at 28,26, 7 record(s) read)
+PASS V_HEDIFF small: standing pawn's new Bruise+Crush severity 6.661861419677734 (before (0.0, 1, False), after (6.661861419677734, 2, False))
+PASS V_BRUISE_REC large: bruise {'other': 'Elephant88292', 'mass': 60.88, 'otherMass': 240, 'amount': 6.381, 'otherAmount': 1.619} (thrower Human88279, standing Elephant88292, thrower started at 28,36, 7 record(s) read)
+PASS V_HEDIFF large: standing pawn's new Bruise+Crush severity 1.330717921257019 (before (0.0, 0, False), after (1.330717921257019, 1, False))
+PASS V_BRUISE_REC colonist: bruise {'other': 'Human88297', 'mass': 60.83, 'otherMass': 60.88, 'amount': 4.002, 'otherAmount': 3.998} (thrower Human88293, standing Human88297, thrower started at 28,46, 7 record(s) read)
+PASS V_HEDIFF colonist: standing pawn's new Bruise+Crush severity 3.998356819152832 (before (0.0, 1, False), after (3.998356819152832, 2, False))
+PASS V_SMALL: journal colonist 1.318 vs squirrel 6.682; hediffs colonist +0.0 vs squirrel +6.661861419677734 (squirrel dead False)
+PASS V_LARGE: journal colonist 6.381 vs elephant 1.619; hediffs colonist +6.301281929016113 vs elephant +1.330717921257019
+PASS V_ALIKE: amount 4.002 / otherAmount 3.998 = 1.001000500250125; masses 60.83, 60.88 -> otherMass/mass 1.0008219628472794 (limit +-0.05); both at most 4.45: True
+PASS V_NOT_DOWNED: thrower downed False, standing colonist downed False
+PASS V_EMPTY: 0 bruise record(s), launch [{'stop': 'Distance', 'hitOther': False, 'cells': 1}]
+PASS sc_pawn_arc_bruise_sizes: 0 failing row(s); pictures in D:\ClaudeWork\rimmandrake\scratch\scene_runs\20261125T092210_script_ArchSmall_50612
+[bridge split] 41.1 s wall: load 0.5 / ticks 0.0 / reads 1.9 / other 12.4 / outside calls 26.3 s
+[bridge split] WARN 130 calls of rimbridge/get_bridge_status (1.7 s): batch them
+[bridge split] WARN 90 calls of jawa/session (3.6 s): batch them
+[bridge split] WARN 89 calls of jawa/static_call (3.6 s): batch them
+[bridge split] WARN 73 calls of jawa/read_paths (2.9 s): batch them

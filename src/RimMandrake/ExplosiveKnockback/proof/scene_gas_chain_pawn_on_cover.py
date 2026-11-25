@@ -65,6 +65,15 @@ GAME = "ArchSmall"
 # colonist was gone by tick 3 under collapsed rocks and the stack buried (APPARATUS FAULT of the first run).
 STAGE = "RM_Stage_ExplosiveKnockback"
 SETTINGS = "RimMandrake.ExplosiveKnockback.RimMandrakeExplosiveKnockbackSettings"
+
+def put(s, field, value, strict=True):
+    """Set one static settings field inside the open session, as its driver, and read the write back. Inside a session the
+    bridge refuses a set that names no driver (JawaBenchHands.SettingsDriver); this scene sent none and never read the
+    reply, so on ArchSmall (visit 1 of 0.2.0) its writes never applied: the damage-1 blast threw nothing."""
+    r = s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=field, value=value, driver=s.id) or {}
+    if strict and (r.get("success") is not True or str(r.get("valueAfter")) != str(value)):
+        raise RuntimeError("SETTING_REFUSED: %s=%s was not written (%s)" % (field, value, {k: r.get(k) for k in ("success", "valueAfter", "error", "message")}))
+    return r
 JOURNAL = "RimMandrake.ExplosiveKnockback.RM_KnockbackJournal"
 VENT = "RimMandrake.Cauldron.RM_MapComponent_VentGas"
 COVERS = "RimMandrake.FlowWorks.Pits.RM_PitCoverUtility"
@@ -250,7 +259,7 @@ with scene.open(GAME, contract=on_cover, needs={"mods": ["ExplosiveKnockback", "
     rows = {}
     try:
         if planted:
-            s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="gasChain", value="False")
+            put(s, "gasChain", "False")
         for name in ORDER:
             gas(s, "ClearOf", "current")
             lane(s, name, rows)
@@ -259,7 +268,7 @@ with scene.open(GAME, contract=on_cover, needs={"mods": ["ExplosiveKnockback", "
         s.raw("jawa/map_fire", action="extinguish", rect="%d,%d,%d,%d" % STATION)
         for f, v in prior.items():   # back to what it read before, on every exit path
             if v is not None:
-                s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=f, value=str(v))
+                put(s, f, str(v), strict=False)
     folder = s.run_dir
 
 fails = 0
