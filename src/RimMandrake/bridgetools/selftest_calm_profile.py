@@ -183,19 +183,20 @@ def t_a_hold_on_needs_is_two_entries():
 
 
 def t_the_put_back_runs_in_reverse_order_with_read_back():
-    return both(wired(VERSE, "var lines = S.R.PutBackAll(", "S.Leave(", "JawaBenchGates.GiveBackQueue(back);"),
+    return both(wired(VERSE, "S.Leave(", "JawaBenchGates.GiveBackQueue(back);"), wired(CORE, "lines?.AddRange(R.PutBackAll(", "lines.AddRange(R.PutBackAll(why, npb));"),
                 unit("the_put_back_runs_in_reverse_order_with_read_back"))
 
 
 def t_a_lease_that_ran_out_puts_back():
     return both(wired(CALM, "JawaBenchCalmProfile.Frame();"),
                 wired(VERSE, "var left = S.Tick(Now, Current.Game, out rearm);", "if (rearm) { Rearm(); return; }",
-                      "var hook = JawaBenchCalm.EnsurePatched();", "keepLease: true"),
+                      "var hook = JawaBenchCalm.EnsurePatched();",
+                      "var why = S.Rearm(Current.Game, Campaign(), Now, (c, r) => Apply(c, r, map, p, minutes), lines);"),
                 unit("a_lease_that_ran_out_puts_back"))
 
 
 def t_a_value_that_could_not_be_put_back_is_named():
-    return both(wired(VERSE, "S.LastNotPutBack = npb;", '[""] = S.LastNotPutBack,'),
+    return both(wired(CORE, "LastNotPutBack = npb;"), wired(VERSE, '[""] = S.LastNotPutBack,'),
                 unit("a_value_that_could_not_be_put_back_is_named"))
 
 
@@ -210,11 +211,25 @@ def t_attempts_stopped_and_scheduling_switched_off_are_two_numbers():
                 unit("attempts_stopped_and_scheduling_switched_off_are_two_numbers"))
 
 
+def blank(text):
+    """code() on a text instead of a file."""
+    s = re.sub(r'@"(?:[^"]|"")*"|"(?:\\.|[^"\\\n])*"', '""', text)
+    return re.sub(r"\s+", " ", re.sub(r"//[^\n]*", "", re.sub(r"/\*.*?\*/", "", s, flags=re.S)))
+
+
+def call_order(text):
+    """None when the tool answers a read before the driver check, and asks the driver check before the first write, else why not."""
+    s = blank(text)
+    i_read, i_call, i_arm = s.find('if (a == "") return Done(null);'), s.find("var no = S.Call(driver, a, t);"), s.find('if (a == "") { string bad;')
+    if not 0 <= i_read < i_call:
+        return "FAIL %s does not answer a read before the driver check (a read by anyone is no breach)" % VERSE
+    if not i_call < i_arm:
+        return "FAIL %s does not ask S.Call before the first write action" % VERSE
+    return None
+
+
 def t_a_second_driver_is_an_apparatus_breach():
-    s = code(os.path.join(CS, VERSE))
-    i_call, i_arm = s.find("var no = S.Call(driver, a, t);"), s.find('if (a == "") { string bad;')
-    order = None if 0 <= i_call < i_arm else "FAIL %s does not ask S.Call before the first write action" % VERSE
-    return both(order, wired(VERSE, 'if (a == "") return Done(null);', "S.B.Sink = () => JawaBenchWorld.LiveSink;"),
+    return both(call_order(read(os.path.join(CS, VERSE))), wired(VERSE, "S.B.Sink = () => JawaBenchWorld.LiveSink;"),
                 unit("a_second_driver_is_an_apparatus_breach"))
 
 
@@ -254,6 +269,10 @@ PLANTS = [
      [('if (L.Expired(nowS)) return Leave("lease ended");', "")]),
     ("a lease end that switches off without putting back", "a_lease_that_ran_out_puts_back",
      [('if (L.Expired(nowS)) return Leave("lease ended");', 'if (L.Expired(nowS)) { Armed = false; L.End("lease ended"); return new List<string> { "lease ended" }; }')]),
+    ("a re-arm after a load that renews the lease", "a_lease_that_ran_out_puts_back",
+     [("if (!keepLease || !L.On) L.Arm(nowS, p.Minutes);", "L.Arm(nowS, p.Minutes);")]),
+    ("exceptions dropped at a re-arm after a load", "a_scene_exception_opens_one_gate_for_one_named_event",
+     [("if (x.Gate.TakeBack(x.Name) > 0) carry.Add(x);", "if (x.Gate.TakeBack(x.Name) > 0) { }")]),
     ("a value that reads otherwise counted as put back", "a_value_that_could_not_be_put_back_is_named",
      [("if (err == null && now != e.Before)", "if (false)")]),
     ("a failed put-back left unnamed", "a_value_that_could_not_be_put_back_is_named",
@@ -272,6 +291,15 @@ PLANTS = [
      [('if (!Keys.Contains(k)) { refusal = "REFUSED: unknown profile key', 'if (false) { refusal = "REFUSED: unknown profile key')]),
     ("a NOT UNDONE entry put back", "a_not_undone_control_is_listed_as_such",
      [("if (e.Class == NotUndone) { NotUndoneDone.Add(e); continue; }", "if (false) { NotUndoneDone.Add(e); continue; }")]),
+]
+
+# Plants on a copy of the Verse half's tool body, judged by call_order: the order of the read, the driver check and the writes.
+_CALL = '                var no = S.Call(driver, a, t);\n                if (no != null) return Done(no);\n'
+_READ = '                if (a == "read") return Done(null);\n'
+_ARMED = '                if (!S.Armed) return Done("REFUSED: no calm profile is armed");\n'
+VERSE_PLANTS = [
+    ("a read that meets the driver check (another driver's read is a breach)", [(_READ, ""), (_CALL, _CALL + _READ)]),
+    ("a write before the driver check", [(_CALL, ""), (_ARMED, _ARMED + _CALL)]),
 ]
 
 PY_PLANTS = [
@@ -302,6 +330,13 @@ def plants():
         hit = ok and must in red
         good = good and hit
         print("%s plant %r turns red: %s" % ("ok  " if hit else "FAIL", name, red), flush=True)
+    verse = read(os.path.join(CS, VERSE))
+    for name, subs in VERSE_PLANTS:
+        text, ok = plant(verse, subs, VERSE)
+        v = call_order(text)
+        hit = ok and v is not None
+        good = good and hit
+        print("%s plant %r turns a_second_driver_is_an_apparatus_breach red: %s" % ("ok  " if hit else "FAIL", name, v), flush=True)
     py = read(PY)
     for name, subs in PY_PLANTS:
         text, ok = plant(py, subs, "calm_profile.py")

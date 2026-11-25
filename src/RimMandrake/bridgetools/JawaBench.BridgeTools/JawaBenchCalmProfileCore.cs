@@ -358,6 +358,32 @@ namespace JawaBench.BridgeTools
                 return lines;
             }
 
+            /// <summary>After a load: close every exception (a used one is named closed, an unused one is carried), put back what can be
+            /// put back on the old game, arm the same profile on the new game with its deadline kept, and open the carried exceptions
+            /// again on their gates (the re-arm cleared the allow lists). null when armed, else the refusal (the profile is then left).</summary>
+            internal string Rearm(object game, bool campaign, double nowS, Func<ControlDef, Record, Applied> apply, List<string> lines)
+            {
+                var carry = new List<Exception1>();
+                foreach (var x in _exceptions)
+                {
+                    if (x.Gate.TakeBack(x.Name) > 0) carry.Add(x);
+                    else lines?.Add("exception " + x.Gate.Kind + ":" + x.Name + " closed, used");
+                }
+                _exceptions.Clear();
+                var npb = new List<string>();
+                lines?.AddRange(R.PutBackAll("the game changed (a load)", npb));
+                LastNotPutBack = npb;
+                Rearms++;
+                var why = Arm(P, game, campaign, nowS, apply, keepLease: true);
+                if (why != null) { Leave("re-arm refused: " + why); return why; }
+                foreach (var x in carry)
+                {
+                    if (x.Gate.On) { x.Gate.AllowOne(x.Name); _exceptions.Add(x); lines?.Add("exception " + x.Gate.Kind + ":" + x.Name + " carried over the load"); }
+                    else lines?.Add("exception " + x.Gate.Kind + ":" + x.Name + " closed UNUSED: its gate did not arm again");
+                }
+                return null;
+            }
+
             /// <summary>Each frame: a lease that ran out puts back now; a game that changed under the profile asks for a re-arm.</summary>
             internal List<string> Tick(double nowS, object game, out bool rearm)
             {

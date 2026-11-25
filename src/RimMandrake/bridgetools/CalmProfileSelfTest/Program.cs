@@ -92,6 +92,29 @@ namespace JawaBench.BridgeTools
                 True(!Try("ManhunterPack"), "a closed exception still lets its event through");
                 Eq(g.AllowLeft(), "", "allow entries left after leave");
                 True(s.Except(g, "RaidEnemy") != null, "an exception after leave was taken");
+
+                // across a re-arm after a load: the unused exception stays open on the new game, the used one is closed and named
+                var g2 = new K.Gate(K.Incident);
+                object cur = Game;
+                Func<P.ControlDef, P.Record, P.Applied> armG = (c, r) =>
+                {
+                    if (c.Name == P.IncidentGate) { True(g2.Arm(cur, false, "") == null, "gate re-arm refused"); r.Add(c.Name, P.PutBack, "off", () => { g2.Release("put back"); return null; }, () => g2.On ? "on" : "off"); }
+                    return P.Applied.Ok();
+                };
+                var s2 = new P.Session();
+                True(s2.Arm(Prof(), Game, false, 0, armG) == null, "arm refused");
+                True(s2.Except(g2, "RaidEnemy") == null && s2.Except(g2, "Eclipse") == null, "exceptions refused");
+                True(g2.Decide(true, true, Game, false, "Eclipse", () => "c", () => "d", 1), "the excepted Eclipse did not go through");
+                cur = OtherGame;
+                var rl = new List<string>();
+                True(s2.Rearm(OtherGame, false, 5, armG, rl) == null, "re-arm refused");
+                True(rl.Any(l => l.Contains("exception incident:Eclipse closed, used")), "the used exception is not named at the re-arm: " + string.Join(" | ", rl));
+                True(rl.Any(l => l.Contains("exception incident:RaidEnemy carried")), "the unused exception is not carried: " + string.Join(" | ", rl));
+                True(s2.OpenExceptions().SequenceEqual(new[] { "incident:RaidEnemy" }), "open after the re-arm: " + string.Join(",", s2.OpenExceptions()));
+                True(g2.Decide(true, true, OtherGame, false, "RaidEnemy", () => "c", () => "d", 9), "the carried exception did not let its event through on the new game");
+                True(!g2.Decide(true, true, OtherGame, false, "RaidEnemy", () => "c", () => "d", 10), "the carried exception let its event through twice");
+                var l2 = s2.Leave("scene left");
+                True(l2.Any(l => l.Contains("exception incident:RaidEnemy closed, used")), "the carried exception is not closed at leave: " + string.Join(" | ", l2));
             });
 
             Check("a_hold_on_needs_is_two_entries", () =>
@@ -146,6 +169,17 @@ namespace JawaBench.BridgeTools
                 Eq(s.L.LastEnd, "lease ended", "the lease's end");
                 Eq(s.Tick(200, Game, out rearm), null, "a second leave");
                 Eq(put, 1, "put back twice");
+
+                // a re-arm after a load keeps the deadline: a load never renews the lease
+                var s3 = new P.Session();
+                True(s3.Arm(Prof("minutes", "1"), Game, false, 100, AllOk(null)) == null, "arm refused");
+                Eq(s3.Tick(130, OtherGame, out rearm), null, "a leave at the load");
+                True(rearm, "a game change did not ask for a re-arm");
+                True(s3.Rearm(OtherGame, false, 130, AllOk(null), new List<string>()) == null, "re-arm refused");
+                Eq(s3.Tick(159, OtherGame, out rearm), null, "a leave before the first deadline");
+                True(!rearm, "a re-arm asked again on the same game");
+                var l3 = s3.Tick(160, OtherGame, out rearm);
+                True(l3 != null && !s3.Armed, "the lease did not end at its first deadline after a re-arm");
             });
 
             Check("a_value_that_could_not_be_put_back_is_named", () =>

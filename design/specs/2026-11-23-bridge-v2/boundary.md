@@ -380,11 +380,6 @@ None of its own.
   run with the cast bound and with none is a measurement, not a bar. Both runs completed (state hit, the ticks asked, a close record,
   a wall time; the cast run carried the cast and the no-cast run did not) is PASS with the numbers; anything else is COULD NOT LOOK.
 
-## Flight probes
-
-The flight probes and the flapping-bird judge have their own page: `../2026-11-24-flight-frames/boundary.md`.
-
-
 ## CALM PROFILE
 
 Code: `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchCalmProfileCore.cs` (all of it, the pure half),
@@ -413,7 +408,9 @@ A control reads **HELD** only when its mechanism was read back in place **and** 
 that is valid for the loaded identity, `calm_profile.certificate_lines`) hold its line. With the mechanism read back and no line it
 reads **ARMED UNPROVEN**. A mechanism that did not arm reads **COULD NOT ARM** with the cause; a control that the scene takes off
 reads **EXCEPTED**; a control that the profile does not switch on (`needs_hold` with no pawn, `clear_site` without `clear`) reads
-**OFF**; under CAMPAIGN every control reads **REFUSED** by name.
+**OFF**. Under CAMPAIGN the companion refuses the tool `jawa/calm_profile` as a whole (the quiet-world family), so no driver can arm
+it on a canonical save; a profile armed on a test save that re-arms after a load into a canonical save reads every control
+**REFUSED** by name, the destructive one named DESTRUCTIVE, and applies none.
 
 **The record.** Each change is an entry with its class and its before value. At leave, at lease end and before a re-arm, the PUT
 BACK and GIVEN BACK entries are put back in reverse order, and each is read back: a value that reads otherwise, or a put-back that
@@ -426,7 +423,7 @@ of the run's trace. 200 rows are kept; the counts are exact.
 
 **The lease.** The profile holds for `minutes` of wall time (default 30, at most 240), renewed by `renew`. When it runs out, the
 put-back runs on the next frame, paused or not. **After a load** the profile puts back what it can on the old game and arms again on
-the new one, with the same arguments, certified lines and lease; a load into a canonical save arms nothing (every control REFUSED).
+the new one, with the same arguments, certified lines, open exceptions and deadline (a load never renews the lease); a load into a canonical save arms nothing (every control REFUSED).
 
 **One driver.** The `driver` that armed the profile owns it until leave. A write (`arm`, `renew`, `except`, `leave`) by another
 driver is refused, and is a breach of class APPARATUS. `read` is open to anyone and changes nothing.
@@ -453,11 +450,13 @@ driver is refused, and is a breach of class APPARATUS. `read` is open to anyone 
   and ARMED UNPROVEN without it; a control with no line in the certificate never reads HELD; a line comes only from a valid
   certificate that shows the route.
 - **a-scene-exception-opens-one-gate-for-one-named-event.** An exception lets one named event through its gate once; the same event
-  again is held; at leave an exception not used is closed and named.
+  again is held; at leave an exception not used is closed and named. Across a re-arm after a load an unused exception stays open,
+  and a used one is closed and named.
 - **a-hold-on-needs-is-two-entries.** A hold on needs writes a PUT BACK entry (the hold) and a NOT UNDONE entry of reach save (what
   did not happen).
 - **the-put-back-runs-in-reverse-order-with-read-back.** The entries are put back last first, and each is read back after its put-back.
-- **a-lease-that-ran-out-puts-back.** At the first tick after the lease ends, every entry is put back and the profile is off.
+- **a-lease-that-ran-out-puts-back.** At the first frame after the lease ends, every entry is put back and the profile is off. A
+  re-arm after a load keeps the deadline: the lease ends when it would have ended with no load.
 - **a-value-that-could-not-be-put-back-is-named.** A put-back that throws, or a value that reads otherwise afterwards, is named in
   `notPutBack` with the control; the other entries are still put back.
 - **a-destructive-control-is-refused-under-campaign-only.** With a canonical save loaded every control is refused by name and none

@@ -67,16 +67,13 @@ namespace JawaBench.BridgeTools
         {
             var map = Find.CurrentMap;
             if (map == null || Current.ProgramState != ProgramState.Playing) return;      // still loading: the next frame
-            var npb = new List<string>();
-            var lines = S.R.PutBackAll("the game changed (a load)", npb);
             var p = S.P;
             double minutes = S.L.SecondsLeft(Now) / 60.0;
-            var why = S.Arm(p, Current.Game, Campaign(), Now, (c, r) => Apply(c, r, map, p, minutes), keepLease: true);
-            S.Rearms++;
+            var lines = new List<string>();
+            var why = S.Rearm(Current.Game, Campaign(), Now, (c, r) => Apply(c, r, map, p, minutes), lines);
             S.LastLeave = lines;
-            S.LastNotPutBack = npb;
             if (why == null) Watch(map, p);
-            else { LastFault = "re-arm after a load refused: " + why; S.Leave("re-arm refused"); }
+            else LastFault = "re-arm after a load refused: " + why;
         }
 
         private static void Watch(Map map, P.Profile p)
