@@ -144,8 +144,15 @@ def t_the_baked_row_reads_the_shipped_frames(t: Path) -> list[str]:
 
 def t_a_facing_it_cannot_read_is_unmeasured(t: Path) -> list[str]:
     (t / "empty").mkdir(exist_ok=True)
+    out = []
     rc, txt = tool(t, cfg(), "alias", "--src", str(t / "empty"))
-    return [] if rc == 2 and "UNMEASURED" in txt and "GREEN" not in txt else ["an unreadable facing is not UNMEASURED: " + txt]
+    if not (rc == 2 and "UNMEASURED" in txt and "GREEN" not in txt):
+        out.append("an unreadable facing is not UNMEASURED: " + txt)
+    spec = {"path": str(seed(t) / "master.png"), "rev": None, "pad": 0}     # a recorded source, but no frames to read
+    rc, txt = tool(t, cfg(area=True, source=spec), "alias", "--src", str(t / "empty"))
+    if not (rc == 2 and "BAKED   Striped east: UNMEASURED" in txt and ": RED" not in txt):
+        out.append("a sourced facing with no frames is not UNMEASURED: " + txt)
+    return out
 
 
 def bellied() -> Image.Image:

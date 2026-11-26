@@ -234,14 +234,15 @@ def alias_rows(config: dict, src: Path, only: str | None = None) -> tuple[list[t
 
 
 def installed_rows(config: dict, src: Path, only: str | None = None) -> list[tuple[str, bool, str]]:
-    """(facing, the frames in SRC equal the bake of the recorded source, detail) for each facing with a source."""
+    """(facing, the frames in SRC equal the bake of the recorded source, detail) for each facing with a source.
+    The middle field is None when SRC holds no frames of that facing (UNMEASURED)."""
     out = []
     for facing, fc in config["facings"].items():
         if (only and facing != only) or not fc.get("source"):
             continue
         paths = FC.FL.frame_paths(src, config["prefix"], facing)
         if not paths:
-            out.append((facing, False, f"no frames in {src}"))
+            out.append((facing, None, f"no frames in {src}"))          # could not look: never a RED
             continue
         frames = [np.asarray(Image.open(p).convert("RGBA")) for p in paths]
         baked, _, _ = FC.compose_facing(FC.source_master(fc["source"], frames[0].shape[0]), fc, len(frames))
@@ -259,7 +260,8 @@ def alias(a) -> int:
         print(f"ALIAS   {config['set']} {b}: UNMEASURED")
     shipped = installed_rows(config, src, a.facing)
     for facing, ok, detail in shipped:
-        print(f"BAKED   {config['set']} {facing}: {'GREEN' if ok else 'RED'}, {detail}")
+        print(f"BAKED   {config['set']} {facing}: {'UNMEASURED' if ok is None else 'GREEN' if ok else 'RED'}, {detail}")
+    blind += [f"BAKED {r[0]}" for r in shipped if r[1] is None]
     red = [r for r in rows if r[3] > ALIAS_MAX]
     if rows:
         worst = max(rows, key=lambda r: r[3])
@@ -267,7 +269,7 @@ def alias(a) -> int:
               f"sy {worst[2]} (max {ALIAS_MAX}); {len(red)} of {len(rows)} squashed poses over")
     elif not blind:
         print(f"ALIAS   {config['set']}: GREEN, no wing pose under |sy| {SQUASH_MIN}")
-    return 1 if red or any(not r[1] for r in shipped) else (2 if blind else 0)
+    return 1 if red or any(r[1] is False for r in shipped) else (2 if blind else 0)
 
 
 def belly_rows(config: dict, src: Path) -> tuple[list[tuple[str, int, int]], list[str]]:
