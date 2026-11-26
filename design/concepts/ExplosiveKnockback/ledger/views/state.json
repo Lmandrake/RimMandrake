@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "2c8a59e3fcf760d8f9c0e747800adb59e9da2bd7ee520cb3a48898685138c9a3",
+  "body_sha256": "1cb378d8d534728e28680512d20d3365f11ccc9f67d91dfb9a8c8dd57b8e44a2",
   "reducer": 1,
   "shards": {
    "BACKFILL": 348917,
@@ -24,6 +24,7 @@
    "HOLDER.run-1795538786": 1751,
    "HOLDER.run-1795548573": 1024,
    "HOLDER.run-1795560492": 1077,
+   "HOLDER.run-1795660419": 2599,
    "JUDGE.judge-1794890427": 18837,
    "JUDGE.judge-1795437145": 6544,
    "OWNER": 1207
@@ -768,11 +769,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795560492",
-   "done": "Walk brief arrival 2 written by a fresh reader from the save, rows and screenshots; 0.1.0 advanced to his_walk (Stage 8)",
-   "next": "Stage EK_VISIT6_WALK_20261124_C on tier explosiveknockback_visit for the owner walk, after deploying FlowWorks to ArchBig or Gimme Some Slack to ArchSmall",
-   "ruled_out": "ArchBig is not on an older Explosive Knockback: both games hold DLL md5 c41f0c11 and equal Defs and Patches; covers unseen at START 11 and 12 are FlowWorks concealment, not missing",
-   "ts": "2026-11-24T22:59:07Z"
+   "by": "HOLDER.run-1795660419",
+   "done": "T_RESTORE green: proof_restore_check finds setter wrappers by shape (9f285a25b6), joins ./publish checks; certificate --to blind_challenge exits 0 (796986d64f)",
+   "next": "Enter the blind challenge (Stages 4 and 5) for 0.2.0",
+   "ruled_out": "No settings leak in the nine EK scenes: every put() call sits in a try whose finally writes the read prior back; the red was the checker missing a wrapper named put",
+   "ts": "2026-11-26T02:51:47Z"
   },
   "decisions": {
    "bar:inv_items_teleport": {
@@ -968,7 +969,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 744,
+  "events": 748,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -2187,15 +2188,15 @@
      "inv_proof_scenes"
     ],
     "by": "JUDGE.judge-1795437145",
-    "claim": null,
+    "claim": "The red of 2026-11-25 was nine put() setter wrappers the checker could not see as setters, not a mod leak; the checker now finds wrappers by shape.",
     "class": "problem",
-    "code_sha": null,
+    "code_sha": "9f285a25b6942e960604b0f34b0b80ffa4b50a5d",
     "proposed_fix": "proof_restore_check.py: BASELINE keys under filed item RIMMANDRAKE_RESTORE_FLOWWORKS_PIT_PROOF_SETTINGS_FOUR_NEW_LEAKS",
-    "status": "open",
+    "status": "claimed_fixed",
     "tags": [],
     "text": "Check wrong, not mod: decider T_RESTORE (inv_proof_scenes) reran FAIL; proof_restore_check reads the whole repo and 4 FlowWorks proof-restore leaks of 2026-11-22 are outside its filed BASELINE.",
-    "ts": "2026-11-23T12:59:14Z",
-    "version": "0.1.0"
+    "ts": "2026-11-26T02:51:39Z",
+    "version": "0.2.0"
    },
    "finding:RIMMANDRAKE_SHOVE_PAWNS_STANDING_ON_COVERS_IN_BURNING_GAS": {
     "accept": "none, a new offline case the fix writes; would_pass: a pawn on a cover's deck beside a burning clump is shoved one cell, and goods on a deck scatter.",
@@ -2574,7 +2575,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-26T02:35:08Z",
+   "last": "2026-11-26T02:51:47Z",
    "lease": "run-1795660419",
    "released": false,
    "token": 29
@@ -2622,6 +2623,7 @@
    "HOLDER.run-1795538786",
    "HOLDER.run-1795548573",
    "HOLDER.run-1795560492",
+   "HOLDER.run-1795660419",
    "JUDGE.judge-1794890427",
    "JUDGE.judge-1795437145",
    "OWNER"
@@ -3786,6 +3788,14 @@
     "ts": "2026-11-19T23:33:00Z",
     "version": "0.1.0",
     "where": "test_table.json T_JOURNAL_JOLT_OFFLINE, T_BLIND_CYCLE1_OFFLINE"
+   },
+   "trap:restore-check-setter-wrapper-name": {
+    "by": "HOLDER.run-1795660419",
+    "status": "noted",
+    "text": "proof_restore_check judged a settings wrapper at its call sites only when its name held set|poke|flip|toggle, so a put(s, field, value) wrapper read as one leak per scene (nine, 2026-11-25). Since 9f285a25b6 a module-level wrapper is found by shape; a waived or self-guarded one keeps its place.",
+    "ts": "2026-11-26T02:51:39Z",
+    "version": "0.2.0",
+    "where": "src/RimMandrake/Utils/proof_restore_check.py check_py setter discovery"
    },
    "trap:sc-pit-fetch-failed-once-the-main-lane": {
     "by": "BACKFILL",
