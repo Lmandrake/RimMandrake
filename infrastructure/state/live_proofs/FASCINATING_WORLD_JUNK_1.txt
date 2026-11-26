@@ -1,7 +1,8 @@
+# The worker runs each line as written and stages no map: live_site.py --game makes a quicktest map when none is up.
 # FASCINATING_WORLD_JUNK_1: the junk roster on a map made fresh on this build (a quicktest map is enough; the cut and the
 # re-text act on every map that the vanilla junk steps reach). A1 reads the whole map's junk by jawa/list_things against
 # design/Jawa/worldbuilding/junk/junk_roster.json; A2 reads FallLineOldJunk.Report and Player.log. Read-only, no flyer.
 # Under 5 junk things on the map is UNMEASURED (the sanity floor), never a pass. All five DLC.
 live-mods: StarWarsPatches, FallLineArrivals
-live-proof A1: python.exe src/RimStarWars/StarWarsPatches/prove_junk_roster_live.py A1 < /dev/null
-live-proof A2: python.exe src/RimStarWars/StarWarsPatches/prove_junk_roster_live.py A2 < /dev/null
+live-proof A1: python.exe src/RimMandrake/Utils/live_site.py --game --max-ticks 100000000 < /dev/null || exit 2; python.exe src/RimStarWars/StarWarsPatches/prove_junk_roster_live.py A1 < /dev/null
+live-proof A2: python.exe src/RimMandrake/Utils/live_site.py --game --max-ticks 100000000 < /dev/null || exit 2; python.exe src/RimStarWars/StarWarsPatches/prove_junk_roster_live.py A2 < /dev/null
