@@ -176,13 +176,11 @@ namespace RimMandrake.Biomes
         {
             Instance = this;
             settings = GetSettings<RM_BiomesSettings>();
-            // What the planet was last drawn with = the loaded settings, so the first change after a load redraws it.
-            worldLookShown = RM_BiomesSettings.worldBorderBlend + "/" + RM_BiomesSettings.worldSeaDepth + "/" + RM_BiomesSettings.worldBiomeSwirls;
-            peaksShown = RM_BiomesSettings.worldSunPeaks;
-            canopyShown = RM_BiomesSettings.canopyEnabled;
-            // seeded from the SAVED settings: an all-on seed missed the redraw when a saved-off toggle was turned on
+            // What the planet was last drawn with = the SAVED settings, so the first change after a load redraws it
+            // (an all-on seed missed the redraw when a saved-off toggle was turned on).
             worldLookShown = WorldLookKey();
             peaksShown = RM_BiomesSettings.worldSunPeaks;
+            canopyShown = RM_BiomesSettings.canopyEnabled;
             RM_BiomesSettings.Instance = settings;
             roster = ReadRoster(Path.Combine(content.RootDir, "Biomes.roster.xml"));
         }
