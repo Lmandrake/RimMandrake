@@ -32,7 +32,8 @@ Relations:
 - `design/NAMING_SCHEME_PLAN.md` — new defs are `RSW_` (any Star Wars game) unless
   campaign-specific (`RUT_`).
 
-## spec — four phases, each a sitting-sized deliverable
+## spec
+Four phases, each a sitting-sized deliverable.
 
 ### Phase 1 — CENSUS: what IS all the junk, and who spawns it
 MEASURED off the live def dump and `measure`, never a grep guess (`0` means measured
@@ -105,8 +106,22 @@ read it.
   `jawa/list_things` over the whole map, diffed against the roster — say the count);
   the owner LOOKS at the screenshot and at the contact sheet before and after.
 - One Fall Line map the same way, and its wrecks read fresh, not old.
-- Full-list load, zero new Config errors; every retextured def renders (no magenta —
-  prove the art is missing/present before generating, `prove-art-missing-first`).
+- A load on the small list of StarWarsPatches and FallLineArrivals, zero new Config errors; every retextured def renders
+  (no magenta). Full-list testing is retired until integration (CLAUDE.md §Mod development runs on small lists).
+
+## criteria
+- A freshly generated map on the current build carries no def that the roster cuts, every junk def on it is in a kept
+  kind, and no junk label on it says car, truck or tank (live, the whole map by `jawa/list_things`).
+- In the running game, the Fall Line mutator carries the no-old-junk step and a junk factor of 0.
+- A judge (a delegated taste call, CLAUDE.md §Only five acts stay his) looks at a screenshot of that map and at the
+  roster contact sheet, and finds the wrecks read as Star Wars scavenger junk.
+
+## refs
+file: design/Jawa/worldbuilding/junk/junk_roster.json
+file: src/RimStarWars/StarWarsPatches/Patches/AncientJunk_RosterCut.xml
+file: src/RimStarWars/StarWarsPatches/Patches/AncientJunk_RosterText.xml
+file: src/RimUtinni/FallLineArrivals/Defs/GenStepDefs/RUT_FallLine_NoOldJunk.xml
+file: src/RimUtinni/FallLineArrivals/Source/FallLineArrivalsMod.cs
 
 ## status
 
@@ -160,14 +175,22 @@ sandcrawler yards, Jakku's Starship Graveyard, Raxus Prime, Bracca/Scrapper Guil
 Lotho Minor) each tied to one of the three registers (Fall Line fresh / Zeddo's
 Yard accumulation / Rakatan ancient).
 
-**Phase 3 (ROSTER) and Phase 4 (RE-GRAPHIC + RE-TEXT) — not started, and Phase 3
-is explicitly NOT an agent's call.** The item's own ask is "card the roster to the
-owner, one card per junk kind... Let's get creative!" — a creative/design ruling
-that belongs to the owner at a sitting (per `ask-with-question-cards` and the
-`option-portfolio`/`review-sheets` pattern this repo already uses for exactly this
-kind of judgment call), not something FOUNDRY should pre-decide and hand him a
-fait accompli. Item left `doing`, not closed — multi-phase, and Phase 3 needs the
-owner present.
+**Phase 3 (ROSTER) — built 2026-11-11 at `29b71f8f34`, as a delegated design call.** The owner's card of 2026-10-09
+("appearance now, flavours later") ordered the phases, and the appearance work shipped first (STARWARS_JUNK_RESKIN_1,
+done). The roster is data: `design/Jawa/worldbuilding/junk/junk_roster.json` (regions, kinds with what each was,
+yields and risks, the kept defs, the cut defs and the cut prefabs). The owner can overrule any row.
+
+**Phase 4 (RE-GRAPHIC + RE-TEXT) — built 2026-11-11 at `29b71f8f34` and `274e6da319`.**
+- The cut patch `src/RimStarWars/StarWarsPatches/Patches/AncientJunk_RosterCut.xml` and the re-text patch
+  `AncientJunk_RosterText.xml` are generated from the roster by `gen_junk_roster_cut.py`. Edit the roster, never the XML.
+- The vehicle and war-machine defs carry the judged Star Wars art of STARWARS_JUNK_RESKIN_1.
+- On Fall Line tiles, `RUT_FallLine_NoOldJunk` (`src/RimUtinni/FallLineArrivals/`) prevents the vanilla old-junk
+  steps, and the mutator's junk factor is 0.
+- Mod Settings: `junkRosterCut` (StarWarsPatches) and `noOldJunk` (FallLineArrivals), both default on; off is vanilla.
+- Offline proof: `selftest_junk_roster.py`.
+
+**Open: the live step.** No game has yet generated a map on this build and read it. A map made before this change
+keeps its old junk (existing maps are not migrated).
 
 ## traps
 - Donor art is **loose PNG vs AssetBundle** — a texture that "does not exist" on disk

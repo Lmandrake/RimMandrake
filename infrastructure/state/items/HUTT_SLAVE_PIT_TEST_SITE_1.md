@@ -13,6 +13,12 @@ and a fixed `RM_HoistFrame` over the pit.
 - A peaceful landing, a sale of each of the three cargo kinds, and silver received.
 - The oubliette is unreachable while the Hutts hold the site, and liftable by the ship's hoist after conquest.
 
+## refs
+file: src/RimMandrake/KeelHoist/Source/RM_PitBuyer.cs
+file: src/RimMandrake/KeelHoist/Source/RM_HoistFrame.cs
+file: src/RimUtinni/UtinniPatches/Defs/HuttSlavePit/RUT_HuttSlavePit.xml
+def: SitePartDef/RUT_HuttSlavePit
+
 ## Watch out
 - This site's **oubliette** is a sealed map feature, not the pit "oubliette fitting" the owner CUT on 2026-09-17
   (`PIT_SUPERDEEP_COLLAPSE_1`). With FlowWorks it is simply an enclosed superdeep (D=4) room with no ladder:

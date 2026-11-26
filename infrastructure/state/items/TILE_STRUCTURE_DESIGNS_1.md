@@ -49,6 +49,12 @@ compiler.
 - The remaining ~40 rows are explicitly left open for further batches,
   not silently declared done.
 
+## refs
+file: src/RimMandrake/StructureInjections/Source/GenStep_RimplacePlan.cs
+file: src/RimMandrake/StructureInjections/Templates/dwelling_test.txt
+new: src/RimMandrake/StructureInjections/prove_plan_ordering_live.py
+tier: mods__mandrake_rm_injections
+
 ## 2026-08-31 batch 2 (FOUNDRY) — three more roster rows authored
 
 Per the roster's own §5 protocol (batch of 3-5, offline verify, no live
