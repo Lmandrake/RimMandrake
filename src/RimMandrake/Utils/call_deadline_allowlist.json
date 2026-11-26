@@ -66,7 +66,6 @@
   "src/RimMandrake/Utils/gen_plant_register.py::_native::run": 1,
   "src/RimMandrake/Utils/gen_vehicle_register.py::_native::run": 1,
   "src/RimMandrake/Utils/gen_weapon_register.py::_native::run": 1,
-  "src/RimMandrake/Utils/health_minidump.py::find_game_pids::run": 1,
   "src/RimMandrake/Utils/hose_replay.py::stage::run": 2,
   "src/RimMandrake/Utils/ledger_lint.py::_git::run": 1,
   "src/RimMandrake/Utils/ledger_sync.py::git::run": 1,

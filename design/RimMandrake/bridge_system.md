@@ -74,7 +74,7 @@ functional script and is debugged through it*. The bridge is what those scripts 
 | **FOUNDRY** | the main driver: belt suites, proofs, deploy→restart cycles | "FOUNDRY now owns bridge driving directly" (DOC `skills/rimbridge/SKILL.md:47-57`). It may reboot the game without asking (DOC `GAME_STATE_WORKFLOW.md:44-67`) |
 | **BENCH** | drives only for L3 evaluation sittings and joint live reviews with the owner | DOC `skills/rimbridge/SKILL.md:54-57` |
 | **subagents** of either seat | do the actual driving in belt mode ("one subagent engaged with the Bridge whenever it is available", the retired FOUNDRY.md, in git history) | inherit the parent seat's lease. **No per-subagent identity exists** (MEASURED, §4.1) |
-| **scheduled observers** | `tps_observer.py` (every 2 min) and `health_observer.py` (every 5 min) run as Windows scheduled tasks, per their docstrings | read-only. They do not take the lease |
+| **scheduled observers** | `tps_observer.py` (every 2 min) runs as a Windows scheduled task, per its docstring | read-only. They do not take the lease |
 
 ### 1.3 Principles (owner rulings, in order of authority)
 
@@ -651,7 +651,6 @@ on every driver (including subagents and ad-hoc `Transient/*.py` scripts) choosi
 |---|---|---|---|
 | `\WSL Keepalive` | Windows Task Scheduler | n/a | keeps the WSL VM alive so the systemd timers run (DOC `~/.claude/CLAUDE.md`). Not defined in this repo |
 | `RimMandrake\TPS Observer` | Windows Task Scheduler, `pythonw.exe` from the D: mirror | 2 min | copies Player-prev.log into `tps\logs`, writes `observer.jsonl` and `observer_last.json` (docstring `tps_observer.py:15-18`). **Installation is not in the repo**; existence on the machine is UNVERIFIED |
-| `RimMandrake\Health Observer` | Windows Task Scheduler | 5 min restart of a long-lived, locked collector | tails Player.log and writes `JawaBench\health\observer_*.jsonl` (docstring `health_observer.py:22-24`). Installation UNVERIFIED |
 | `rm-memwatch.timer` | WSL systemd user | 1 min | cgroup OOM/shmem toasts; a `HOST_BUSY_SECS` mode while RimWorld runs |
 | `rm-codebase-health.timer`, `rm-objstore.timer`, `rm-pulse*` | WSL systemd user | 15 min / 1 h / 2 min and daemon | not bridge-specific |
 | mirror refresh of `D:\Luke\dev\RimMandrake` | "every 5 min" | 5 min | `mirror.py sync --timer` supports it; **the unit file is not in the repo** (UNVERIFIED) |
@@ -674,7 +673,6 @@ marked otherwise.
 | session / heartbeat | sampler / watchdog | `…\tps\session_<s>.json`, `hb_<s>.json` (tmp then move) | start / periodic | pruned with the segments | observers |
 | settings | companion | `…\tps\tps_settings.json`, `awareness_settings.json` | first start (defaults) | static. **Retention can only be raised** | companion |
 | observer findings | `tps_observer.py`, `belt_watchdog.py` (through `tps_record`) | `…\tps\observer.jsonl` (append, **no rotation**), `observer_last.json` | 2 min / per watchdog pass | unbounded but small (DOC: "a few rows a day") | `tps_record.read_record` |
-| health stream | `health_observer.py` | `SaveData\JawaBench\health\observer_*.jsonl`, `collector_last.json` | scheduled task | 4 MiB segments, **14 days / 256 MB** | `health_observer.py --read`, `tps_record.py --health` |
 | awareness journal / origins / damage / lineage | companion | **memory only** (rings 512 / 2048 / 8192 / 16384; 4096 ×2) | Harmony patches, installed lazily on the first `jawa/` call | lost at exit; events before the first call are not seen | `jawa/incident_journal`, `pawn_origin`, `thing_explain`, `damage_log`, `thing_lineage` |
 | playtest journals and checkpoints | `GssPlaytest`, `FlowWorksPlaytest` | `SaveData\JawaBench\playtest\<runId>.jsonl`, `*.checkpoint.txt` | per run | **no cap or rotation found** | playtest collect tools |
 | exports / PNGs | various tools | `SaveData\DefDump\world_tiles_*`, `world_neighbors.csv`, artboard PNGs, `GenFilePaths.ScreenshotFolderPath` | on call | overwritten or unbounded | `worldview.py`, humans |

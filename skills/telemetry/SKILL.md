@@ -63,7 +63,7 @@ functionality as needed by debugging."*
 ```
 producers                                  Windows, E:\telemetry  (survives wsl --shutdown)
  JawaBench TPS record  C:\…\JawaBench\tps ─┐
- health_observer       C:\…\JawaBench\health┤   telemetryd (pythonw, kept alive by supervise.py,
+ (health observer: cut)                       ┤   telemetryd (pythonw, kept alive by supervise.py,
  rimbridge_client      <data root>\scratch\bridge_calls.jsonl ├─►  scheduled task "RimMandrake\Telemetry", 1 min)
  artpipe               D:\ClaudeWork\rimmandrake\artpipe ┤     ├─► VictoriaMetrics 127.0.0.1:8428  (series, 2 y)
  ops_watch             <data root>\ops_watch\series ─────┤     ├─► events.db SQLite WAL             (events, calls, proofs)

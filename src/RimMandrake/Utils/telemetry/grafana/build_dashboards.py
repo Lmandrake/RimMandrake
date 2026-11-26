@@ -195,8 +195,6 @@ def host_disk():
     b.panel("WSL cgroups (memwatch)", [prom("rm_cg_mem_bytes", "{{cg}}")], w=12, unit="bytes", legend_right=True)
     b.panel("WSL memory", [prom("rm_wsl_mem_avail_bytes", "available"), prom("rm_wsl_mem_total_bytes", "total", "B"),
                            prom("rm_wsl_swap_used_bytes", "swap used", "C")], w=12, unit="bytes")
-    b.panel("Game process (health observer)", [prom("rm_proc_working_set_mb", "working set {{pid}}"),
-                                               prom("rm_proc_cpu_cores", "cores {{pid}}", "B")], w=12)
     b.panel("OOM and memwatch events", [sql_target(ev_table(["oom", "memwatch_shmem", "memwatch_oom_kill"]))],
             kind="table", w=24)
     return b.write("host_disk.json")

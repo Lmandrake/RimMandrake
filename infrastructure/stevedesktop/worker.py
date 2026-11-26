@@ -160,13 +160,10 @@ ATTEMPT_RE = re.compile(S.JOB_ID_RE.pattern[:-1] + r"\.a\d+$")
 SEAT = "RUNNER"
 # the machine this worker runs on, named in every result: the testq Archmagi backfill runs this same worker locally
 HOST = os.environ.get("TESTQ_WORKER_HOST") or "stevedesktop"
-# Steve1 ("stevedesktop") and Steve2 ("stevedesktop.b") own their games: the list repair, the kept-game probe and the
-# dump are theirs; the archmagi lane's game is the owner's (design/specs/2026-11-23-steve-two-games-lane/boundary.md)
+# Steve1 ("stevedesktop") and Steve2 ("stevedesktop.b") own their games: the list repair and the kept-game probe are
+# theirs; the archmagi lane's game is the owner's (design/specs/2026-11-23-steve-two-games-lane/boundary.md)
 STEVE_LANE = HOST.split(".")[0] == "stevedesktop"
 GAME = "infrastructure/stevedesktop/rw_game.sh"
-# budget: danger=a hung minidump of a hung game holds the kill of that game; never reached in the 14 days to 2026-11-24; no
-# budget: record of its run
-DUMP_TIMEOUT_S = 180      # one small (no full memory) dump before a kill; the kill follows either way
 # budget: danger=a wedged kept game holds the lane at its bridge probe; never reached in the 14 days to 2026-11-24; no record of
 # budget: its run
 PROBE_TIMEOUT_S = 30    # the kept-game bridge probe: modcheck's own client timeout (ensure_playing_map)
@@ -1225,7 +1222,6 @@ class Attempt:
                        else "kept game %s" % (overgrown or unmappable))
                 self.say(why + ": restarting it")
                 if wedged:
-                    self.dump_game("wedged")
                     self.keep_game_log("Player_wedged.log")
                 if unmappable:
                     # the next cold start overwrites Player.log and the one after takes its -prev copy (keep_game_log):
@@ -1729,7 +1725,6 @@ class Attempt:
             self.res["retries"] += 1
             self.phase = "restart"
             self.beat()
-            self.dump_game("hang%d" % attempt_no)
             self.keep_game_log("Player_hang%d.log" % attempt_no)
             # budget: danger=a hung game stop (taskkill over WSL interop) holds the attempt, and so one game of the lane; never
             # budget: reached in the 14 days to 2026-11-24; no record of its run
@@ -1816,49 +1811,6 @@ class Attempt:
         fault = "first fatal: " + fatal[0].strip()[:200] if fatal else (
             "last exception: " + other[-1].strip()[:200] if other else "no exception in it")
         self.res["note"] = (self.res.get("note") or "") + "; game log kept at %s, %s" % (dst, fault)
-
-    def dump_game(self, name):
-        """FLOWWORKS_DIAGNOSE_FREEZE_AFTER_DRAWBRIDGE: the frozen game of 10-26 was killed with no stack, so it could not
-        be classed. Before a stop that kills a frozen game, take one small dump of it (health_minidump.py --before-kill,
-        Windows python, headroom-checked, retention capped, one per incident key) into TESTQ_HOME/dumps and put its path
-        or its failure in the note. Its next act is the kill, so a dumper that strands the game suspended costs
-        nothing. Never fails the result; a dump that hangs is cut off after DUMP_TIMEOUT_S. Only on SteveDesktop: the
-        archmagi lane never stops ArchBig (archmagi_phases.py down REFUSED), so no kill follows a dump there."""
-        cmd = os.environ.get("TESTQ_CMD_DUMP")
-        if cmd is None and not STEVE_LANE:
-            self.res["note"] = (self.res.get("note") or "") + "; game dump (%s) skipped: %s never kills its game" % (
-                name, HOST)
-            return
-        if cmd is None:
-            ddir = os.path.join(HOME, "dumps")
-            try:
-                os.makedirs(ddir, exist_ok=True)
-                wdir = subprocess.run(["wslpath", "-w", ddir], capture_output=True, text=True,
-                                      # budget: danger=a hung wslpath holds the dump of a hung game, and the kill after it; its
-                                      # budget: reach leaves no record; no record of its run
-                                      timeout=30).stdout.strip() or ddir
-            except (OSError, subprocess.SubprocessError):
-                wdir = ddir
-            cmd = "python.exe src/RimMandrake/Utils/health_minidump.py --before-kill --incident %s --dir %s" % (
-                shlex.quote("%s_%s" % (os.path.basename(self.d), name)), shlex.quote(wdir))
-        rc, tail = self.sh(cmd, log_name="dump_%s.log" % name, timeout=DUMP_TIMEOUT_S)
-        rec = {}
-        for ln in reversed((tail or "").splitlines()):
-            if ln.startswith("{"):
-                try:
-                    rec = json.loads(ln)
-                except ValueError:
-                    rec = {}
-                break
-        if rc is None:
-            got = "game dump (%s) timed out after %ss" % (name, DUMP_TIMEOUT_S)
-        elif rec.get("status") == "ok":
-            got = "game dump (%s) kept at %s, %s bytes in %s ms" % (name, rec.get("path"), rec.get("sizeBytes"),
-                                                                 rec.get("durationMs"))
-        else:
-            got = "game dump (%s) NOT taken (%s)" % (name, rec.get("reason") or "rc %s: %s" % (rc, (tail or "")[-120:]))
-        self.say(got)
-        self.res["note"] = (self.res.get("note") or "") + "; " + got
 
     def stop_game_for_next_job(self, why):
         """STEVE_LANE_FIX_DEAD_COLONY_CANARY_RED: the game a red canary ran on is not handed to the next job. A kept game

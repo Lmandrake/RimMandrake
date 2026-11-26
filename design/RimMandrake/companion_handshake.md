@@ -59,7 +59,8 @@ slowdown it explains. The real verdict needs the C0-C5 restart protocol
 - A tool that is not listed stays available. The unit test (`UnitsSafety.cs`) checks three things against the
   real source census: every listed name exists, the owner's must-stay authoring tools are allowed, and the
   must-be-off tools are refused.
-- `jawa/awareness action=arm` still arms disk rows in campaign. Only the `GeneratePawn` hook stays off.
+- `jawa/awareness action=arm` in campaign installs nothing that writes: disk rows were cut 2026-11-25, and the
+  `GeneratePawn` hook stays off.
 - A new game was loaded from no save, so it is **test** with no file. A loaded save is **test** when the file says test
   and the save is not canonical. Nothing a bridge client sends can change the profile.
 - The canonical saves are compiled in, from `infrastructure/state/CANONICAL_SAVE.md`

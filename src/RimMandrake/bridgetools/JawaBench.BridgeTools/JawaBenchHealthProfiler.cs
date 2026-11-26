@@ -1,6 +1,5 @@
 // JawaBenchHealthProfiler.cs - opt.profiler (game_health_record.md), with opt.own-counters MERGED into it as the
-// preset "own": an ON-DEMAND, EXPIRING timer on an EXACT allowlist of named methods. Also
-// JawaBenchHealthCapabilities: the read-only tps.capability-inventory probe.
+// preset "own": an ON-DEMAND, EXPIRING timer on an EXACT allowlist of named methods.
 //
 // Why the merge: "own counters" needs timers on our own mods' hot paths. Without editing (and redeploying) every mod,
 // the only way to get them is a Harmony timer on a named list of our methods - which is exactly this profiler with a
@@ -26,9 +25,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using HarmonyLib;
-using Unity.Profiling;
-using UnityEngine;
-using UnityEngine.Scripting;
 using Verse;
 using H = JawaBench.BridgeTools.JawaBenchHealthCore;
 
@@ -176,94 +172,6 @@ namespace JawaBench.BridgeTools
                 methods = rows, refused = Refused.ToArray(), foreignThreadCalls = Interlocked.Read(ref ForeignCalls),
                 faults = Interlocked.Read(ref Faults), lastFault = LastFault, mergedFrom = H.MergedIds,
             };
-        }
-    }
-
-    /// <summary>tps.capability-inventory: what this build can measure, and why the rest cannot. Read-only except
-    /// for the ProfilerRecorder probe, which starts a few Unity recorders on `probe` and disposes them on probe_end /
-    /// disarm (they own unmanaged resources).</summary>
-    internal static class JawaBenchHealthCapabilities
-    {
-        private struct Probe { internal string Category, Name, Unit; internal bool Started; internal string Error; internal ProfilerRecorder Rec; }
-        private static Probe[] _probes;
-        internal static string ProbeStartedUtc;
-
-        // GPT review 1.1: Unity 2022.3 documents the first four as release-player counters and GC Allocated In Frame
-        // as NOT; that is exactly what the probe exists to confirm or refute in this player.
-        private static readonly string[][] Wanted =
-        {
-            new[] { "Memory", "Total Used Memory", "bytes" }, new[] { "Memory", "GC Used Memory", "bytes" },
-            new[] { "Memory", "GC Reserved Memory", "bytes" }, new[] { "Memory", "System Used Memory", "bytes" },
-            new[] { "Memory", "GC Allocated In Frame", "bytes" },
-            new[] { "Render", "Draw Calls Count", "count" }, new[] { "Render", "Batches Count", "count" }, new[] { "Render", "SetPass Calls Count", "count" },
-        };
-
-        internal static void StartProbe()
-        {
-            StopProbe();
-            var list = new Probe[Wanted.Length];
-            for (int i = 0; i < Wanted.Length; i++)
-            {
-                var p = new Probe { Category = Wanted[i][0], Name = Wanted[i][1], Unit = Wanted[i][2] };
-                try
-                {
-                    var cat = p.Category == "Memory" ? ProfilerCategory.Memory : ProfilerCategory.Render;
-                    p.Rec = ProfilerRecorder.StartNew(cat, p.Name, 1, ProfilerRecorderOptions.Default);
-                    if (p.Rec.Valid && !p.Rec.IsRunning) p.Rec.Start();
-                    p.Started = true;
-                }
-                catch (Exception e) { p.Error = e.GetType().Name + ": " + e.Message; }
-                list[i] = p;
-            }
-            _probes = list;
-            ProbeStartedUtc = DateTime.UtcNow.ToString("o");
-        }
-
-        internal static void StopProbe()
-        {
-            var list = _probes;
-            _probes = null;
-            if (list == null) return;
-            for (int i = 0; i < list.Length; i++) { try { if (list[i].Started) list[i].Rec.Dispose(); } catch { } }
-        }
-
-        internal static Dictionary<string, object> Inventory()
-        {
-            var rows = new List<KeyValuePair<string, H.Reading>>();
-            var o = new Dictionary<string, object>();
-            string Try(Func<string> f) { try { return f(); } catch (Exception e) { return "unavailable: " + e.GetType().Name; } }
-            o["unityVersion"] = Try(() => Application.unityVersion);
-            o["gameVersion"] = Try(() => RimWorld.VersionControl.CurrentVersionStringWithRev);
-            o["harmonyVersion"] = Try(() => typeof(Harmony).Assembly.GetName().Version.ToString());
-            o["gcMode"] = Try(() => GarbageCollector.GCMode.ToString());
-            o["gcIncremental"] = Try(() => GarbageCollector.isIncremental ? "true" : "false");
-            o["gcTiming"] = "GC pause time: unsupported (no validated timing source in this player); spike.gc-timing records coincidence only";
-            o["presentationFps"] = "unsupported: Root.Update cadence is not displayed FPS (tps.presentation-fps)";
-            var cap = JawaBenchHealth.ReadCap();
-            o["verseLog"] = new { state = cap.Word, text = cap.Text, headroom = cap.Headroom.Render(), capResets = JawaBenchHealth.CapResets.Resets };
-
-            foreach (var id in H.MetricIds)
-                if (id != H.MCapInv && id != H.MProfiler) rows.Add(new KeyValuePair<string, H.Reading>(id, JawaBenchHealth.SourceReading(id)));
-            rows.Add(new KeyValuePair<string, H.Reading>(H.MProfiler, !JawaBenchHealth.Sw.On(H.MProfiler) ? H.Reading.SwitchedOff()
-                : JawaBenchHealthProfiler.Running ? H.Reading.Ok(JawaBenchHealthProfiler.Keys.Length, "methods timed")
-                : H.Reading.Unavailable("not running (" + JawaBenchHealthProfiler.Status + ")")));
-
-            var list = _probes;
-            if (list == null)
-                rows.Add(new KeyValuePair<string, H.Reading>("unity.recorders", H.Reading.Unavailable("not probed: jawa/health action=probe, then status a few frames later")));
-            else
-                foreach (var p in list)
-                {
-                    H.Reading r;
-                    try { r = H.ClassifyRecorder(p.Started, p.Error, p.Started && p.Rec.Valid, p.Started && p.Rec.Valid ? p.Rec.Count : 0,
-                                                  p.Started && p.Rec.Valid ? p.Rec.LastValue : 0, p.Unit); }
-                    catch (Exception e) { r = H.Reading.Failed(e.GetType().Name + ": " + e.Message); }
-                    rows.Add(new KeyValuePair<string, H.Reading>("unity." + p.Category + "/" + p.Name, r));
-                }
-            o["sources"] = rows.ToDictionary(kv => kv.Key, kv => (object)new { status = kv.Value.Word, value = kv.Value.IsOk ? (object)kv.Value.Value : null, unit = kv.Value.IsOk ? kv.Value.Unit : null, reason = kv.Value.Reason });
-            o["summary"] = H.InventorySummary(rows);
-            o["probeStartedUtc"] = ProbeStartedUtc;
-            return o;
         }
     }
 }

@@ -33,10 +33,9 @@ namespace JawaBench.BridgeTools
         internal const string MContext = "aware.origin-context";
         internal const string MGeneration = "aware.origin-generation";
         internal const string MSpawn = "aware.origin-spawn";
-        internal const string MDisk = "aware.disk-rows";
         internal const string MWild = "aware.wild-spawner-block";
         internal const string MExplain = "aware.thing-explain";
-        internal static readonly string[] MetricIds = { MIncident, MContext, MGeneration, MSpawn, MDisk, MWild, MExplain };
+        internal static readonly string[] MetricIds = { MIncident, MContext, MGeneration, MSpawn, MWild, MExplain };
 
         /// <summary>Install options (not metrics): install.generation-early = patch PawnGenerator.GeneratePawn at bridge
         /// registration (world generation and the first map pay for it) instead of lazily on the first arm
@@ -50,7 +49,6 @@ namespace JawaBench.BridgeTools
         internal const int SeenCapacity = 16384;        // pawn ids seen spawned this epoch (classification)
         internal const int MaxDepth = 12;               // context chain depth bound
         internal const int MaxLabel = 80;               // a context label is truncated to this
-        internal const double DefaultTtlMinutes = 30, MaxTtlMinutes = 240;
 
         internal static string Clip(string s, int n = MaxLabel) => s == null ? null : (s.Length <= n ? s : s.Substring(0, n));
 
@@ -416,21 +414,6 @@ namespace JawaBench.BridgeTools
                     return best;
                 }
             }
-        }
-
-        // ------------------------------------------------------------------ disk arming (TTL)
-        internal sealed class Arm
-        {
-            private DateTime _until = DateTime.MinValue;
-            internal string By;
-            internal void Set(DateTime nowUtc, double minutes, string by)
-            {
-                double m = double.IsNaN(minutes) || minutes <= 0 ? DefaultTtlMinutes : Math.Min(minutes, MaxTtlMinutes);
-                _until = nowUtc.AddMinutes(m); By = by;
-            }
-            internal void Clear() { _until = DateTime.MinValue; By = null; }
-            internal bool Armed(DateTime nowUtc) => nowUtc < _until;
-            internal DateTime Until => _until;
         }
 
         // ------------------------------------------------------------------ thing_explain pure rules

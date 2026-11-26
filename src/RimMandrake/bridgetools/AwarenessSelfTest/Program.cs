@@ -135,22 +135,17 @@ namespace JawaBench.BridgeTools
             Check(A.IncidentStatement(ir).Contains("exception observed"), "incident_exception_observed");
 
             // --- 10. switches
-            var sw = A.Switches.Parse("{\"aware.disk-rows\": false, \"aware.bogus\": true, \"aware.origin-spawn\": 3}");
-            Check(!sw.On(A.MDisk) && sw.On(A.MSpawn) && sw.On(A.MIncident) && sw.Note.Contains("aware.bogus: unknown metric id")
+            var sw = A.Switches.Parse("{\"aware.wild-spawner-block\": false, \"aware.bogus\": true, \"aware.origin-spawn\": 3}");
+            Check(!sw.On(A.MWild) && sw.On(A.MSpawn) && sw.On(A.MIncident) && sw.Note.Contains("aware.bogus: unknown metric id")
                   && sw.Note.Contains("aware.origin-spawn: not a bool"), "switches_parse_and_note", sw.Note);
-            var sw2 = A.Switches.Parse("{\"aware.disk-rows\": fal");
-            Check(sw2.On(A.MDisk) && sw2.Note.StartsWith("invalid settings"), "invalid_settings_keep_defaults", sw2.Note);
+            var sw2 = A.Switches.Parse("{\"aware.wild-spawner-block\": fal");
+            Check(sw2.On(A.MWild) && sw2.Note.StartsWith("invalid settings"), "invalid_settings_keep_defaults", sw2.Note);
             Check(A.Switches.Parse(null).On(A.MGeneration), "no_file_all_on");
             Check(!sw.Set("aware.nope", true), "unknown_switch_refused");
-
-            // --- 11. disk arming TTL
-            var arm = new A.Arm();
-            var t0 = new DateTime(2026, 10, 10, 12, 0, 0, DateTimeKind.Utc);
-            Check(!arm.Armed(t0), "disarmed_by_default");
-            arm.Set(t0, 0, "test");
-            Check(arm.Armed(t0.AddMinutes(29)) && !arm.Armed(t0.AddMinutes(31)), "default_ttl_30min");
-            arm.Set(t0, 10000, "test");
-            Check(arm.Armed(t0.AddMinutes(239)) && !arm.Armed(t0.AddMinutes(241)), "ttl_capped_240min");
+            // a settings file written before the 2026-11-25 cut still names aware.disk-rows: noted, never fatal
+            var swCut = A.Switches.Parse("{\"aware.disk-rows\": false}");
+            Check(swCut.Note.Contains("aware.disk-rows: unknown metric id") && swCut.On(A.MIncident) && A.MetricIds.Length == 6,
+                  "cut_disk_rows_id_is_unknown_and_harmless", swCut.Note);
 
             // --- 12. thing_explain rules
             Check(A.SelectorProblem(null, null, null, false) != null, "no_selector_refused");

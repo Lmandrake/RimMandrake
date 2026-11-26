@@ -1,8 +1,9 @@
 // JawaBenchHealthCore.cs - the game-health metrics, the PURE half (no Verse, no Unity, no Harmony).
 //
-// Spec + ledger: design/RimMandrake/game_health_record.md (metric ids tps.frame-hist, tps.log-counts,
-// tps.bridge-occupancy, tps.capability-inventory, opt.profiler [opt.own-counters merged into it as preset "own"],
-// spike.gc-timing). Item HEALTH_METRICS_JUDGE_EARN_THEIR_KEEP. The Verse half is JawaBenchHealth.cs (hooks) and
+// Spec + ledger: design/RimMandrake/game_health_record.md (metric ids tps.frame-hist, tps.log-counts, opt.profiler
+// [opt.own-counters merged into it as preset "own"]). Item HEALTH_METRICS_JUDGE_EARN_THEIR_KEEP cut the bridge-pump
+// occupancy, capability inventory and GC-coincidence metrics (no program read them; census
+// design/RimMandrake/game_health_metric_census_2026-11-25.md). The Verse half is JawaBenchHealth.cs (hooks) and
 // JawaBenchHealthTools.cs (jawa/health, jawa/health_profile).
 //
 // ⛔ NO Verse/Unity/Harmony here: this file is compiled into the offline harness bridgetools/HealthSelfTest (net8.0)
@@ -15,7 +16,6 @@
 //   3. Process-scoped counters (log tallies, cap resets) are never reset at a game change.
 //   4. Merge histograms, never average p99s: FrameHist carries its bucket version and refuses a mismatched merge;
 //      quantiles are bucket RANGES recomputed from merged counts, never interpolated values.
-//   6. A coincidence is labelled as one: GapGc reports gcCountChangedDuringGap beside the per-frame base rate.
 //   7. The Verse.Log cap is 10,000 (decompiled 1.6 Verse/Log.cs StopLoggingAtMessageCount); past it, or while the
 //      Unity logger is disabled or Log.LockMessages is held, the wording is "emission suppressed; error activity unknown".
 
@@ -32,11 +32,8 @@ namespace JawaBench.BridgeTools
         // ------------------------------------------------------------------ metric ids (game_health_record.md)
         internal const string MFrameHist = "tps.frame-hist";
         internal const string MLogCounts = "tps.log-counts";
-        internal const string MBridgeOcc = "tps.bridge-occupancy";
-        internal const string MCapInv = "tps.capability-inventory";
         internal const string MProfiler = "opt.profiler";
-        internal const string MGc = "spike.gc-timing";
-        internal static readonly string[] MetricIds = { MFrameHist, MLogCounts, MBridgeOcc, MCapInv, MProfiler, MGc };
+        internal static readonly string[] MetricIds = { MFrameHist, MLogCounts, MProfiler };
         /// <summary>Ids that exist in the ledger but are not separate switches here, with where they went.</summary>
         internal static readonly Dictionary<string, string> MergedIds = new Dictionary<string, string>(StringComparer.Ordinal)
         {
@@ -359,111 +356,6 @@ namespace JawaBench.BridgeTools
             else sb.Append("emitted: ");
             for (int i = 0; i < 5; i++) sb.Append(i == 0 ? "" : ", ").Append(LogTypeNames[i]).Append(' ').Append(I(t.Of(i)));
             return sb.ToString();
-        }
-
-        // ------------------------------------------------------------------ tps.bridge-occupancy
-        /// <summary>Main-thread time inside the bridge's pumps (interval UNION, so overlap is never double-counted) and
-        /// an UPPER BOUND on queue delay: a work item found in a pump was enqueued after the previous pump of the same
-        /// target began, so it waited at most (this start - previous start). Main thread only.</summary>
-        internal sealed class Occupancy
-        {
-            internal long Calls, CallsWithWork, BusyTicks, MaxCallTicks, Rejected;
-            internal long DelayBoundSamples, DelayBoundSumTicks, DelayBoundMaxTicks;
-            internal int MaxPending;
-            private long _lastEnd = long.MinValue;
-            private readonly long[] _lastStart;
-            internal Occupancy(int targets) { _lastStart = new long[targets]; for (int i = 0; i < targets; i++) _lastStart[i] = -1; }
-
-            internal void Note(int target, long start, long end, int pendingAtStart)
-            {
-                if (end < start || target < 0 || target >= _lastStart.Length) { Rejected++; return; }
-                Calls++;
-                long d = end - start;
-                if (d > MaxCallTicks) MaxCallTicks = d;
-                if (start >= _lastEnd) BusyTicks += d;
-                else if (end > _lastEnd) BusyTicks += end - _lastEnd;
-                if (end > _lastEnd) _lastEnd = end;
-                if (pendingAtStart > 0)
-                {
-                    CallsWithWork++;
-                    if (pendingAtStart > MaxPending) MaxPending = pendingAtStart;
-                    if (_lastStart[target] >= 0)
-                    {
-                        long b = start - _lastStart[target];
-                        DelayBoundSamples++; DelayBoundSumTicks += b;
-                        if (b > DelayBoundMaxTicks) DelayBoundMaxTicks = b;
-                    }
-                }
-                _lastStart[target] = start;
-            }
-
-            /// <summary>Busy share of a wall window; unavailable for an empty window.</summary>
-            internal Reading Share(long windowTicks) => windowTicks <= 0
-                ? Reading.Unavailable("empty window")
-                : Reading.Ok((double)BusyTicks / windowTicks, "share of main-thread wall time");
-        }
-
-        // ------------------------------------------------------------------ tps.capability-inventory
-        /// <summary>A Unity ProfilerRecorder counter: ok only when the handle is valid AND it collected samples. A
-        /// valid handle or a zero alone does not prove collection (GPT review 1.1).</summary>
-        internal static Reading ClassifyRecorder(bool started, string startError, bool valid, int sampleCount, long lastValue, string unit)
-        {
-            if (!started) return Reading.Failed("StartNew threw: " + (startError ?? "?"));
-            if (!valid) return Reading.Unavailable("recorder handle invalid: counter not exposed in this player");
-            if (sampleCount <= 0) return Reading.Unavailable("valid handle but no samples collected: collection not proven");
-            return Reading.Ok(lastValue, unit);
-        }
-
-        /// <summary>Word counts across an inventory. Deliberately no overall verdict: a partial build never reads as
-        /// "health capture complete".</summary>
-        internal static string InventorySummary(IEnumerable<KeyValuePair<string, Reading>> rows)
-        {
-            int ok = 0, un = 0, fa = 0, off = 0;
-            foreach (var r in rows)
-            {
-                switch (r.Value?.Word)
-                {
-                    case WOk: ok++; break;
-                    case WFailed: fa++; break;
-                    case WOff: off++; break;
-                    default: un++; break;
-                }
-            }
-            return "ok " + ok + ", unavailable " + un + ", failed " + fa + ", off " + off + " (per source; no overall verdict)";
-        }
-
-        // ------------------------------------------------------------------ spike.gc-timing (rule 6)
-        internal sealed class GapGc
-        {
-            internal const double GapMs = 250;
-            internal long Frames, FramesWithGcChange, Gaps, GapsWithGcChange;
-            internal struct Ev { internal double AtS, GapMs; internal int GcDelta; }
-            private readonly Ev[] _ring = new Ev[64]; private int _next, _count;
-            internal long Evicted;
-
-            internal void Observe(double intervalMs, int gcDelta, double atS)
-            {
-                if (double.IsNaN(intervalMs) || intervalMs < 0) return;
-                Frames++;
-                if (gcDelta > 0) FramesWithGcChange++;
-                if (intervalMs < GapMs) return;
-                Gaps++;
-                if (gcDelta > 0) GapsWithGcChange++;
-                if (_count == _ring.Length) Evicted++; else _count++;
-                _ring[_next] = new Ev { AtS = atS, GapMs = intervalMs, GcDelta = gcDelta };
-                _next = (_next + 1) % _ring.Length;
-            }
-
-            internal List<Ev> Events() { var l = new List<Ev>(); for (int k = 0; k < _count; k++) l.Add(_ring[(_next - _count + k + _ring.Length) % _ring.Length]); return l; }
-
-            /// <summary>Both rates, side by side: a GC count change in a gap means little unless it is rarer in ordinary
-            /// frames. Never a pause time and never a cause.</summary>
-            internal string Text()
-            {
-                if (Frames == 0) return "unavailable: no frames observed";
-                return "gaps >= " + F(GapMs) + " ms: " + Gaps + "; gcCountChangedDuringGap in " + GapsWithGcChange + " of them; base rate: GC count changed in " +
-                       FramesWithGcChange + " of " + Frames + " frames. A coincidence, not a cause: no GC pause time is measured.";
-            }
         }
 
         // ------------------------------------------------------------------ opt.profiler (+ merged opt.own-counters)

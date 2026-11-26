@@ -520,68 +520,6 @@
   },
   {
    "datasource": {
-    "type": "prometheus",
-    "uid": "vm"
-   },
-   "description": "",
-   "fieldConfig": {
-    "defaults": {
-     "custom": {
-      "fillOpacity": 10,
-      "lineWidth": 1,
-      "showPoints": "never",
-      "spanNulls": false,
-      "stacking": {
-       "mode": "none"
-      }
-     }
-    },
-    "overrides": []
-   },
-   "gridPos": {
-    "h": 8,
-    "w": 12,
-    "x": 12,
-    "y": 26
-   },
-   "id": 10,
-   "options": {
-    "legend": {
-     "displayMode": "list",
-     "placement": "bottom"
-    },
-    "tooltip": {
-     "mode": "multi",
-     "sort": "desc"
-    }
-   },
-   "targets": [
-    {
-     "datasource": {
-      "type": "prometheus",
-      "uid": "vm"
-     },
-     "expr": "rm_proc_working_set_mb",
-     "legendFormat": "working set {{pid}}",
-     "range": true,
-     "refId": "A"
-    },
-    {
-     "datasource": {
-      "type": "prometheus",
-      "uid": "vm"
-     },
-     "expr": "rm_proc_cpu_cores",
-     "legendFormat": "cores {{pid}}",
-     "range": true,
-     "refId": "B"
-    }
-   ],
-   "title": "Game process (health observer)",
-   "type": "timeseries"
-  },
-  {
-   "datasource": {
     "type": "frser-sqlite-datasource",
     "uid": "events"
    },
@@ -598,7 +536,7 @@
     "x": 0,
     "y": 34
    },
-   "id": 11,
+   "id": 10,
    "options": {},
    "targets": [
     {

@@ -83,7 +83,6 @@ def _defaults() -> dict:
         "poll_slow_s": 15.0,
         "host_every_s": 60.0,
         "dirs_every_s": 3600.0,
-        "run_health_observer": False,  # owner-gated (game_health_record.md: not during MUST 17)
     }
 
 

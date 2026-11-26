@@ -39,7 +39,8 @@
 //     awareness hook can slow the cold load itself (TPS sampler header: RimBridgeStartup.OnRuntimeReady).
 //   * Threads: these hooks ACCEPT foreign threads by design (thread-static scopes, locked stores) and count them
 //     (foreignThreadCalls), unlike the TPS hooks, which reject them.
-//   * Disk rows only while ARMED (TTL) and only through the TPS record's ordered bounded writer (kind "awareness").
+//   * No disk rows: aware.disk-rows was cut (game_health_metric_census_2026-11-25.md); readings live in memory and
+//     reach a reader only through the jawa/awareness, incident_journal and thing_explain tools.
 
 using System;
 using System.Collections.Generic;
@@ -52,7 +53,6 @@ using HarmonyLib;
 using RimWorld;
 using Verse;
 using A = JawaBench.BridgeTools.JawaBenchAwarenessCore;
-using W = JawaBench.BridgeTools.JawaBenchTpsWriter;
 
 namespace JawaBench.BridgeTools
 {
@@ -60,11 +60,9 @@ namespace JawaBench.BridgeTools
     {
         internal static readonly A.Recorder Rec = new A.Recorder();
         internal static A.Switches Sw = new A.Switches();
-        internal static readonly A.Arm DiskArm = new A.Arm();
         internal static readonly Dictionary<string, A.Meter> Meters = new Dictionary<string, A.Meter>();
         internal static string InstallStatus = "not installed", InstallDetail, StartedBy, SettingsPath;
         internal static DateTime InstalledUtc;
-        internal static long DiskRows, DiskDropped;
         private static readonly object Gate = new object();
         private static bool _attempted;
         private static Harmony _harmony;
@@ -310,7 +308,6 @@ namespace JawaBench.BridgeTools
                 if (__state.Mine.Valid) lock (Open) Open.Remove(__state.Mine.Mine.Id);
                 A.Scope.Pop(__state.Mine);
                 A.Scope.Pop(__state.Adopted);
-                if (r != null) DiskRow("incident", IncidentFields(r));
                 CostTicks(A.MIncident, __state.Pre + __state.Post + (Now() - f0));
             }
             catch (Exception e) { Rec.Fault(e); }
@@ -384,10 +381,9 @@ namespace JawaBench.BridgeTools
                 if (respawningAfterLoad) { Rec.NoteLoadRespawn(ep, __instance.thingIDNumber, mapId); return; }
                 var c = A.Scope.Current(ep);
                 var pos = __instance.Position;
-                var s = Rec.AddSpawn(ep, Tick(), mapId, __instance.thingIDNumber, __instance.kindDef?.defName, __instance.def?.defName,
-                                     __instance.Faction?.def?.defName, pos.x, pos.z, c?.Chain, __runOriginal);
+                Rec.AddSpawn(ep, Tick(), mapId, __instance.thingIDNumber, __instance.kindDef?.defName, __instance.def?.defName,
+                             __instance.Faction?.def?.defName, pos.x, pos.z, c?.Chain, __runOriginal);
                 BumpOpen(true);
-                if (s != null) DiskRow("arrival", SpawnFields(s, __instance.ThingID));
             }
             catch (Exception e) { Rec.Fault(e); }
             finally { Cost(A.MSpawn, t0); }
@@ -452,39 +448,6 @@ namespace JawaBench.BridgeTools
                 return false;
             }
             catch (Exception e) { try { Rec.Fault(e); } catch { } return true; }
-        }
-
-        // ------------------------------------------------------------------ disk rows (armed, through the TPS writer)
-        private static void DiskRow(string what, string fields)
-        {
-            try
-            {
-                if (!Sw.On(A.MDisk) || !DiskArm.Armed(DateTime.UtcNow)) return;
-                if (!W.Running) { DiskDropped++; return; }
-                long seq = W.Enqueue("awareness", "\"what\":" + A.J(what) + "," + fields);
-                if (seq < 0) DiskDropped++; else DiskRows++;
-            }
-            catch { DiskDropped++; }
-        }
-
-        internal static string IncidentFields(A.IncidentRec r)
-        {
-            return "\"aseq\":" + A.I(r.Seq) + ",\"epoch\":" + r.Epoch + ",\"tick\":" + r.Tick + ",\"def\":" + A.J(r.Def) +
-                   ",\"target\":" + A.J(r.Target) + ",\"faction\":" + A.J(r.Faction) + ",\"forced\":" + (r.Forced ? "true" : "false") +
-                   ",\"strategy\":" + A.J(r.Strategy) + ",\"arrival\":" + A.J(r.Arrival) + ",\"quest\":" + A.J(r.Quest) +
-                   ",\"called\":true,\"outerBodyRan\":" + A.J(r.OuterBodyRan) + ",\"returned\":" + A.J(r.Returned) +
-                   ",\"exception\":" + A.J(r.Exception) + ",\"workerEntered\":" + A.J(r.WorkerEntered) +
-                   ",\"pawnsGenerated\":" + r.PawnsGeneratedDuring + ",\"pawnsSpawned\":" + r.PawnsSpawnedDuring +
-                   ",\"chain\":" + A.J(r.Chain) + ",\"statement\":" + A.J(A.IncidentStatement(r));
-        }
-
-        internal static string SpawnFields(A.SpawnObs s, string thingId)
-        {
-            return "\"aseq\":" + A.I(s.Seq) + ",\"epoch\":" + s.Epoch + ",\"tick\":" + s.Tick + ",\"map\":" + s.MapId +
-                   ",\"id\":" + A.J(thingId) + ",\"pawnKind\":" + A.J(s.Kind) + ",\"faction\":" + A.J(s.Faction) +
-                   ",\"x\":" + s.X + ",\"z\":" + s.Z + ",\"classification\":" + A.J(s.Classification) +
-                   ",\"generation\":" + A.J(s.Gen?.Chain) + ",\"reuse\":" + A.J(s.Gen?.Reuse) + ",\"spawnChain\":" + A.J(s.SpawnChain) +
-                   ",\"statement\":" + A.J(A.Statement(s));
         }
     }
 }

@@ -1,6 +1,6 @@
-// JawaBenchHealthTools.cs - jawa/health (status / arm / disarm / switch / probe / probe_end) and jawa/health_profile
+// JawaBenchHealthTools.cs - jawa/health (status / arm / disarm / switch) and jawa/health_profile
 // (status / start / stop). The game-health metrics of design/RimMandrake/game_health_record.md; hooks in
-// JawaBenchHealth.cs, profiler + capability inventory in JawaBenchHealthProfiler.cs, pure rules in
+// JawaBenchHealth.cs, profiler in JawaBenchHealthProfiler.cs, pure rules in
 // JawaBenchHealthCore.cs (unit-tested offline: src/RimMandrake/Utils/selftest_health_core.py).
 //
 // Every reading is a status word first (ok | unavailable | failed | off); a value appears only beside "ok".
@@ -23,16 +23,14 @@ namespace JawaBench.BridgeTools
             "jawa/health",
             Description =
                 "Game-health metrics beyond TPS (game_health_record.md): tps.frame-hist (frame-interval histogram, merged per " +
-                "window, never averaged p99), spike.gc-timing (GC count change during a >=250 ms gap: a coincidence, with its " +
-                "base rate), tps.log-counts (messages per type + Verse.Log cap/logger state), tps.bridge-occupancy (main-thread " +
-                "time in the bridge pumps + queue-delay upper bound), tps.capability-inventory. NOTHING records until " +
-                "action=arm minutes=N (default 30, max 240); disarm makes the hooks inert. action=switch metric=<id> on=bool. " +
-                "action=probe starts Unity ProfilerRecorder counters for the inventory; probe_end disposes them. " +
-                "Each arm starts fresh frame histograms. sinceMinutes merges the retained minute windows of that span.",
-            ResultDescription = "success, armed, install, switches, frameHist, gc, log, bridge, inventory, cost.")]
+                "window, never averaged p99) and tps.log-counts (messages per type + Verse.Log cap/logger state). NOTHING " +
+                "records until action=arm minutes=N (default 30, max 240); disarm makes the hooks inert. action=switch " +
+                "metric=<id> on=bool. Each arm starts fresh frame histograms. sinceMinutes merges the retained minute " +
+                "windows of that span.",
+            ResultDescription = "success, armed, install, switches, frameHist, log, cost.")]
         public static async Task<object> Health(
             IRimBridgeContext ctx, CancellationToken cancellationToken,
-            [ToolParameter(Description = "status | arm | disarm | switch | probe | probe_end", DefaultValue = "status")] string action = "status",
+            [ToolParameter(Description = "status | arm | disarm | switch", DefaultValue = "status")] string action = "status",
             [ToolParameter(Description = "arm: minutes (default 30, max 240)", DefaultValue = 30)] double minutes = 30,
             [ToolParameter(Description = "switch: metric id", DefaultValue = null)] string metric = null,
             [ToolParameter(Description = "switch: true = on", DefaultValue = true)] bool on = true,
@@ -51,9 +49,7 @@ namespace JawaBench.BridgeTools
                     if (!HL.Sw.Set(id, on)) return Fail("unknown metric id '" + metric + "'", new { metricIds = H.MetricIds });
                     HL.RefreshFlags();
                 }
-                else if (a == "probe") JawaBenchHealthCapabilities.StartProbe();
-                else if (a == "probe_end") JawaBenchHealthCapabilities.StopProbe();
-                else if (a != "status") return Fail("action must be status, arm, disarm, switch, probe or probe_end");
+                else if (a != "status") return Fail("action must be status, arm, disarm or switch");
                 if (note != null && !note.StartsWith("armed")) return Fail(note, HealthStatus(sinceMinutes));
                 return HealthStatus(sinceMinutes);
             }, cancellationToken).ConfigureAwait(false);
@@ -68,7 +64,6 @@ namespace JawaBench.BridgeTools
             string p99Text, p50Text;
             merged.Quantile(0.99, out p99Text); merged.Quantile(0.5, out p50Text);
             var cap = HL.ReadCap();
-            var o = HL.Occ;
             var cost = new Dictionary<string, object>();
             foreach (var id in H.MetricIds)
             {
@@ -80,9 +75,9 @@ namespace JawaBench.BridgeTools
             {
                 success = true,
                 armed = HL.Live, armedBy = HL.ArmedBy, armedAtUtc = HL.ArmedAtUtc,
-                install = new { status = HL.InstallStatus, detail = HL.InstallDetail, bridgePumps = HL.PumpStatus, settings = HL.SettingsPath, switchNote = HL.Sw.Note },
+                install = new { status = HL.InstallStatus, detail = HL.InstallDetail, settings = HL.SettingsPath, switchNote = HL.Sw.Note },
                 switches = HL.Sw.Snapshot(),
-                guards = new[] { "{" + HL.GRoot.CoverageFields() + "}", "{" + HL.GPump.CoverageFields() + "}" },
+                guards = new[] { "{" + HL.GRoot.CoverageFields() + "}" },
                 frameHist = new
                 {
                     reading = HL.SourceReading(H.MFrameHist).Render(),
@@ -92,24 +87,12 @@ namespace JawaBench.BridgeTools
                     measures = "interval between successive Root.Update prefixes in the same playing game, outside long events (update cadence, NOT displayed FPS)",
                     ringEvicted = HL.Ring.Evicted,
                 },
-                gc = new { reading = HL.SourceReading(H.MGc).Render(), text = HL.Gc.Text(), recentGaps = HL.Gc.Events().ConvertAll(e => new { atS = Math.Round(e.AtS, 3), gapMs = Math.Round(e.GapMs, 3), gcCountChangedDuringGap = e.GcDelta > 0, gcCountDelta = e.GcDelta }), evicted = HL.Gc.Evicted },
                 log = new
                 {
                     reading = HL.SourceReading(H.MLogCounts).Render(), state = cap.Word, text = cap.Text, line = H.LogLine(HL.Logs, cap),
                     headroom = cap.Headroom.Render(), capResets = HL.CapResets.Resets, countingSinceUtc = HL.LogCountingSinceUtc,
                     measures = "messages that REACHED Application.logMessageReceivedThreaded; process-scoped, never reset at a game change",
                 },
-                bridge = new
-                {
-                    reading = HL.SourceReading(H.MBridgeOcc).Render(),
-                    busyShare = o.Share(double.IsNaN(HL.OccSinceS) ? 0 : (long)((nowS - HL.OccSinceS) * f)).Render(),
-                    busyMs = Math.Round(o.BusyTicks * 1000.0 / f, 3), pumps = o.Calls, pumpsWithWork = o.CallsWithWork,
-                    maxPumpMs = Math.Round(o.MaxCallTicks * 1000.0 / f, 3), maxPending = o.MaxPending,
-                    queueDelayUpperBoundMaxMs = o.DelayBoundSamples == 0 ? "unavailable: no pump found work after an earlier pump" : (object)Math.Round(o.DelayBoundMaxTicks * 1000.0 / f, 3),
-                    queueDelayUpperBoundMeanMs = o.DelayBoundSamples == 0 ? null : (object)Math.Round(o.DelayBoundSumTicks * 1000.0 / f / o.DelayBoundSamples, 3),
-                    measures = "main-thread time inside RimBridgeServer's main-thread and async pumps (includes these health calls); a tool's work done outside a pump is not counted; queue delay is an UPPER BOUND, pending counts are unlocked reads",
-                },
-                inventory = JawaBenchHealthCapabilities.Inventory(),
                 cost,
                 merged = H.MergedIds,
                 verdict = "observations only; no cause is established",

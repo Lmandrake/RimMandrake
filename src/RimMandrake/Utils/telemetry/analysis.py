@@ -36,7 +36,6 @@ RULES = {  # thresholds (design §8); one place, quoted by the skill
     "exc_per_s": 50, "exc_min_n": 20, "exc_min_window_s": 1.0,
     "stall_bridge_pad_s": 20, "stall_bridge_frac": 0.8,
     "tps_blind_s": 90, "wsl_blind_s": 600,
-    "recent_event_s": 24 * 3600,
     # test-state monitor (TELEMETRY_COLONY_VITALS_BUILD_SPEC_SAID_SO); only while its rows are fresh
     "vitals_fresh_s": 180, "modal_stuck_s": 60,
 }
@@ -134,11 +133,6 @@ def evaluate(latest: dict, con, sources: dict, vm_error: str | None, now: float)
         rate = t["exc"] / max(t["dReal"], 0.1)
         if rate > R["exc_per_s"]:
             out.append(_alert("exc_storm", "amber", f"exception storm: {rate:.0f}/s in game log", t["ts"]))
-    since = now - R["recent_event_s"]
-    for r in con.execute("SELECT ts,kind,subject FROM events WHERE ts>? AND kind='log_milestone' ORDER BY ts",
-                         (since,)):
-        if "cap" in str(r["subject"]).lower():
-            out.append(_alert(f"logcap:{int(r['ts'])}", "amber", "game log hit its message cap", r["ts"]))
     # test-state monitor alarms: alive colonists 0, a colonist hostile, hostiles on a test map, a modal stuck
     vt = latest.get("vitals") or {}
     if vt.get("ts") and now - vt["ts"] < R["vitals_fresh_s"]:

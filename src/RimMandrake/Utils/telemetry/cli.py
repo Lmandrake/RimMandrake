@@ -247,8 +247,7 @@ def parse_moment(s: str) -> float:
 
 
 AT_SERIES = ["rm_game_tps", "rm_game_ratio", "rm_game_tick_ms", "rm_game_worst_tick_ms", "rm_game_heap_mb",
-             "rm_game_exc", "rm_game_gap_max_ms", "rm_game_bridge_main_ms", "rm_host_mem_avail_bytes",
-             "rm_proc_cpu_cores"]
+             "rm_game_exc", "rm_game_gap_max_ms", "rm_game_bridge_main_ms", "rm_host_mem_avail_bytes"]
 
 
 def cmd_at(a) -> int:

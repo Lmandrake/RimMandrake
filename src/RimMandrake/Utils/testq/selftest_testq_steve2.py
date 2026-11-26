@@ -65,7 +65,7 @@ class Rig:
             TESTQ_SHEET_DIR=p("sheets"), TESTQ_MODS_DIR=p("mods"), TESTQ_SKIP_PULL="1", TESTQ_NO_SYSTEMD="1",
             TESTQ_CMD_DEPLOY="true", TESTQ_CMD_LOAD="true", TESTQ_CMD_DOWN="true", TESTQ_CMD_RUN=mock,
             TESTQ_CMD_STATUS="echo 'running pid=4242'", TESTQ_CMD_PROBE="true", TESTQ_CMD_MAPS="true",
-            TESTQ_CMD_RESETREPAIR="true", TESTQ_CMD_DUMP="true", TESTQ_CMD_BRIDGE="true",
+            TESTQ_CMD_RESETREPAIR="true", TESTQ_CMD_BRIDGE="true",
             RIMFLOW_LEDGER=p("ledger", "events.jsonl"), RM_HOST="archmagi", RM_GAME_USERDATA=self.tmp,
             TESTQ_LEDGER_EVENTS=p("ledger"), MOCK_SLEEP="4")
         sha = subprocess.run(["git", "-C", REPO, "merge-base", "HEAD", "origin/main"], capture_output=True,

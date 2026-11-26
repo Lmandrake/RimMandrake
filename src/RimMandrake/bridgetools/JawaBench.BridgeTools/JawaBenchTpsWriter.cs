@@ -205,7 +205,7 @@ namespace JawaBench.BridgeTools
 
         internal static int SideDepth { get { lock (Q) return Side.Count; } }
 
-        internal static bool IsBulk(string kind) => kind == "sample" || kind == "context" || kind == "marker" || kind == "awareness" || kind == "mapcomp" || kind == "vitals" || kind == "scene";
+        internal static bool IsBulk(string kind) => kind == "sample" || kind == "context" || kind == "marker" || kind == "mapcomp" || kind == "vitals" || kind == "scene";
 
         private static long _dropFirst = -1, _dropLast = -1, _dropPending;
         internal static long DroppedCritical;

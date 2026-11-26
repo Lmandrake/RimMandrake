@@ -5,12 +5,12 @@
     python3 src/RimMandrake/Utils/modaudit/memory_attribution.py --check        # exit 0 only when every resolved mod
                                                                                 # of the list is attributed; writes
                                                                                 # the report
-    python3 src/RimMandrake/Utils/modaudit/memory_attribution.py --reconcile    # (Windows game up) also read the
-                                                                                # game's private bytes beside it
+    python3 src/RimMandrake/Utils/modaudit/memory_attribution.py --reconcile    # reports the game's private bytes as
+                                                                                # UNMEASURED (its source was cut), rc 1
 
 Why: the 550-mod list held 30.6 GB private with ~5 GB managed heap (FULL_LIST_MEMORY_AUDIT_THIRTY_GB_PRIVATE). This
 says which mods the ~25 GB native share most plausibly belongs to. Every number here is an ESTIMATE from files on
-disk under the engine's own load rules; only --reconcile touches a measurement, and it measures the whole process.
+disk under the engine's own load rules; --reconcile asks for a whole-process measurement that this tool no longer has (UNMEASURED).
 
 Load rules, read from the 1.6 decompile (D:\\ClaudeWork\\rimmandrake\\decomp\\rw16\\all\\Verse), not guessed:
   folders    ModContentPack.InitLoadFolders: LoadFolders.xml <v1.6> (else the highest defined version <= 1.6, else
@@ -43,7 +43,6 @@ import json
 import os
 import re
 import struct
-import subprocess
 import sys
 import time
 import xml.etree.ElementTree as ET
@@ -365,19 +364,12 @@ def fingerprint(active, compression):
 
 
 def game_private_mb():
-    """Private MB of every running RimWorld process, from health_observer under Windows python.exe; None if no read."""
-    import shutil
-    exe = shutil.which("python.exe")
-    if not exe:
-        print("UNMEASURED: python.exe is not on PATH (Windows interop), so the game's private bytes cannot be read")
-        return None
-    try:
-        r = subprocess.run([exe, "src/RimMandrake/Utils/health_observer.py", "--once", "--print"],
-                           cwd=REPO, capture_output=True, text=True, timeout=120)
-    except (OSError, subprocess.TimeoutExpired):
-        return None
-    vals = [float(x) for x in re.findall(r'"privateMB":\s*([0-9.]+)', r.stdout)]
-    return vals or None
+    """Private MB of every running RimWorld process. UNMEASURED here: the external health observer that read it was
+    cut (owner, 2026-11-24, "only whatever the most modern tracker"); the TPS record's context rows carry privateMB.
+    Returns None (never 0) and says why."""
+    print("UNMEASURED: no private-bytes source in this tool (the health observer was cut); read privateMB from the "
+          "TPS record's context rows")
+    return None
 
 
 def atlas_for(ids, recs, active, compression, dump_dir):
@@ -429,12 +421,12 @@ def write_report(rows, recs, compression, measured, list_path, report, atlas=Non
     L.append("- total attributed: **%.1f GB**" % ((tot_tex + tot_snd + tot_atl) / 1024))
     tot_all = tot_tex + tot_snd + tot_atl
     if measured:
-        L.append("- MEASURED game private bytes now: %s MB (health_observer); attribution / private = %.0f%%;"
+        L.append("- MEASURED game private bytes now: %s MB (TPS record); attribution / private = %.0f%%;"
                  " unattributed residual %.1f GB" % (", ".join("%.0f" % m for m in measured),
                                                     100.0 * tot_all / max(measured),
                                                     (max(measured) - tot_all) / 1024))
     else:
-        L.append("- game private bytes: UNMEASURED (no --reconcile, or no game process)")
+        L.append("- game private bytes: UNMEASURED (no --reconcile, or no private-bytes source: the health observer was cut)")
     L += ["", "Unattributed by design: pawn atlases, RenderTextures, AssetBundles, resources.assets, assemblies,"
           " Mono/Unity overhead. GPU texture memory counts in private bytes only where the driver backs it there.", "",
           "| # | packageId | tex GB | atlas MB | RGBA32 MB | tex files | audio MB | biggest texture |",

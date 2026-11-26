@@ -4,8 +4,8 @@
 Items THING_LOOKUP_BUILD_OWNER_IS_NOT_PAINTER / INCIDENT_JOURNAL_BUILD_CALLED_IS_NOT_FIRED /
 PAWN_ORIGIN_BUILD_SAY_ORIGIN_UNKNOWN. Builds bridgetools/AwarenessSelfTest (net8.0, no RimWorld references) through
 winbuild staging and runs its unit group: context chain, explicit cross-thread tokens, skip-safe scopes, epochs,
-bounded tags and seen-set, reuse-not-overwrite, spawn classification, forbidden-upgrade lint, switches, TTL arming,
-thing_explain selector and provider rules.
+bounded tags and seen-set, reuse-not-overwrite, spawn classification, forbidden-upgrade lint, switches (a cut id is
+noted, never fatal), thing_explain selector and provider rules.
 
 Without dotnet.exe this FAILS as UNMEASURED (pass --no-cs to accept that). No game, no bridge.
 Run: python3 src/RimMandrake/Utils/selftest_map_awareness_core.py
@@ -23,17 +23,20 @@ def main(argv):
     if "--no-cs" in argv:
         print("map awareness core: SKIPPED by --no-cs")
         return 0
-    if not any(os.path.exists(c) for c in ["/mnt/c/Users/Mandrake/.dotnet/dotnet.exe", "/mnt/c/Program Files/dotnet/dotnet.exe"]):
-        print("FAIL map awareness core UNMEASURED: no dotnet.exe on this machine (pass --no-cs to accept)")
-        return 1
     import winbuild
+    try:
+        dotnet = winbuild.dotnet_exe()      # the one discovery rule (WINBUILD_DOTNET, any Windows user, Program Files)
+    except SystemExit as e:
+        print("FAIL map awareness core UNMEASURED: %s (pass --no-cs to accept)" % e)
+        return 1
     proj = os.path.join(REPO, "src", "RimMandrake", "bridgetools", "AwarenessSelfTest")
     rc, rec = winbuild.stage_build(os.path.join(proj, "AwarenessSelfTest.csproj"), stage_name="AwarenessSelfTest")
     if rc:
         print("FAIL harness build FAILED (rc %s)" % rc)
         return 1
     dll = winbuild.staged_win(rec, proj) + "\\bin\\Release\\net8.0\\AwarenessSelfTest.dll"
-    p = winbuild.run_interop_captured([winbuild.dotnet_exe(), dll], capture_output=True, text=True, cwd="/mnt/d/Luke/dev")
+    os.makedirs(winbuild.BUILD_ROOT, exist_ok=True)
+    p = winbuild.run_interop_captured([dotnet, dll], capture_output=True, text=True, cwd=winbuild.BUILD_ROOT)
     lines = [ln.strip() for ln in p.stdout.splitlines() if ln.startswith("U ")]
     count = [ln for ln in p.stdout.splitlines() if ln.startswith("U-count ")]
     bad = [ln for ln in lines if " FAIL" in ln]

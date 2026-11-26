@@ -2,7 +2,7 @@
 
   <!--
     Offline unit harness for the game-health metrics (game_health_record.md: tps.frame-hist, tps.log-counts,
-    tps.bridge-occupancy, tps.capability-inventory, opt.profiler incl. the merged opt.own-counters, spike.gc-timing).
+    opt.profiler incl. the merged opt.own-counters).
     Plain net8.0, zero RimWorld/Unity references: ..\JawaBench.BridgeTools\JawaBenchHealthCore.cs is the PRODUCTION
     file the companion compiles, pulled in directly - a `using Verse;` landing in it breaks this build, which is the
     guard rail. Lives BESIDE the companion folder, never inside it.

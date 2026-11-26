@@ -176,4 +176,4 @@ A mod setting written with `jawa/mod_settings_field` does NOT fire the mod's `Wr
 - **A released animal on a plain Wait is not always stuck:** RM_JobGiver_ShadeHop gives a shaded animal a Wait of 600-1500 ticks. Tell a pin from behaviour by Job.jobGiver (null for a directly started job), now in `jawa/pawn_census` job rows.
 
 ## Dumping the game process
-- **`PssCaptureSnapshot` (VA clone) on a 1 GB process failed with error 1450 `ERROR_NO_SYSTEM_RESOURCES`** when ~3 GB commit was free (2 of 4 runs): a snapshot dump of a multi-GB game can fail under memory pressure. `health_minidump.py` falls back to a direct `MiniDumpWriteDump` and records `fallbackFrom`/`pssError`.
+- **`PssCaptureSnapshot` (VA clone) on a 1 GB process failed with error 1450 `ERROR_NO_SYSTEM_RESOURCES`** when ~3 GB commit was free (2 of 4 runs): a snapshot dump of a multi-GB game can fail under memory pressure. (`health_minidump.py`, which took such dumps, was cut 2026-11-25.)

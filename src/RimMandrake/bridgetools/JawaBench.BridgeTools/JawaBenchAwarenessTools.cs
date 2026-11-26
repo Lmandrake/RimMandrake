@@ -43,15 +43,14 @@ namespace JawaBench.BridgeTools
             Description =
                 "Map awareness recorder status and control (incident journal + pawn origin recorder). action=status " +
                 "(default): install status, recording epoch, retained rows, evictions, faults, per-metric switches and " +
-                "MEASURED cost per hook call. action=arm minutes=N: write awareness rows into the TPS record (kind " +
-                "'awareness') for N minutes (default 30, max 240), and install the GeneratePawn hook if it is not yet " +
-                "installed (it is lazy by default: see generationHook). action=disarm. action=switch metric=<id> on=true|false: " +
+                "MEASURED cost per hook call. action=arm: install the GeneratePawn hook if it is not yet installed (it is " +
+                "lazy by default: see generationHook); it writes nothing to disk. action=switch metric=<id> on=true|false: " +
                 "turn one metric on or off for this session (the file JawaBench/tps/awareness_settings.json sets launch defaults).",
-            ResultDescription = "success, installed, installStatus, startedBy, epoch, counts, evictions, switches, meters, disk.")]
+            ResultDescription = "success, installed, installStatus, startedBy, epoch, counts, evictions, switches, meters, wildSpawner, generationHook.")]
         public static async Task<object> Awareness(
             IRimBridgeContext ctx, CancellationToken cancellationToken,
-            [ToolParameter(Description = "status | arm | disarm | switch", DefaultValue = "status")] string action = "status",
-            [ToolParameter(Description = "arm: minutes (default 30, max 240)", DefaultValue = 30)] double minutes = 30,
+            [ToolParameter(Description = "status | arm | switch", DefaultValue = "status")] string action = "status",
+            [ToolParameter(Description = "unused (accepted so older arm calls still bind)", DefaultValue = 30)] double minutes = 30,
             [ToolParameter(Description = "switch: metric id (aware.*)", DefaultValue = null)] string metric = null,
             [ToolParameter(Description = "switch: true = on", DefaultValue = true)] bool on = true)
         {
@@ -61,18 +60,14 @@ namespace JawaBench.BridgeTools
                 var a = (action ?? "status").Trim().ToLowerInvariant();
                 string genNote = null;
                 if (a == "arm")
-                {
-                    AW.DiskArm.Set(DateTime.UtcNow, minutes, "jawa/awareness");
                     genNote = AW.EnsureGenerationHook("jawa/awareness arm");   // lazy GeneratePawn (AWARENESS_GENPAWN_TAME_ARM_BEFORE_USE)
-                }
-                else if (a == "disarm") AW.DiskArm.Clear();
                 else if (a == "switch")
                 {
                     if (string.IsNullOrWhiteSpace(metric) || !AW.Sw.Set(metric.Trim(), on))
                         return Fail("unknown metric id '" + metric + "'", new { metricIds = A.MetricIds });
                 }
-                else if (a != "status") return Fail("action must be status, arm, disarm or switch");
-                if (genNote != null && genNote.StartsWith("refused")) { /* campaign: disk rows armed, GeneratePawn stays off by policy */ }
+                else if (a != "status") return Fail("action must be status, arm or switch");
+                if (genNote != null && genNote.StartsWith("refused")) { /* campaign: GeneratePawn stays off by policy; not a failure */ }
                 else if (genNote != null) return Fail("armed, but the GeneratePawn hook did not install: " + genNote, AwarenessStatus());
                 return AwarenessStatus();
             }, cancellationToken).ConfigureAwait(false);
@@ -104,8 +99,6 @@ namespace JawaBench.BridgeTools
                         totalMs = Math.Round(AW.Meters[id].TotalMs(f), 3),
                         note = "hook body only; Harmony dispatch not included"
                     }),
-                    disk = new { armed = AW.DiskArm.Armed(DateTime.UtcNow), until = AW.DiskArm.Until == DateTime.MinValue ? null : AW.DiskArm.Until.ToString("o"),
-                                 rows = AW.DiskRows, dropped = AW.DiskDropped, writerRunning = JawaBenchTpsWriter.Running },
                     wildSpawner = new { blocked = AW.WildBlocked, skippedTicks = AW.WildSkipped, patch = AW.WildPatch, by = AW.Wild.By, lastRelease = AW.Wild.LastRelease },
                     generationHook = AW.GenerationHook, options = AW.Sw.Options(), foreignThreadCalls = AW.ForeignThreadCalls,
                     ticksGame = TicksGameSafe()

@@ -452,7 +452,6 @@ def place(r, ep=None):
 
 KINDS = {"sample", "incident", "session", "marker", "game", "menu", "context", "save", "silence", "resumed",
          "shutdown", "shutdown-complete", "error", "log", "observer", "dropped",
-         "awareness",   # map awareness rows (incident called / pawn arrival), only while armed: design/RimMandrake/map_awareness.md
          "flight", "mapcomp",   # test tier (telemetry P2): flight-dump reference rows; persisted jawa/map_comp_timing replies
          # side rows the mod's writer also puts on the record (each consumes a seq: refused, it read as invalid AND as a
          # seq hole that broke the sustained streak; selftest_tps_record writer_kind_checks scans the C# for every kind)
@@ -1170,8 +1169,6 @@ def render_row(r, tz):
             r.get("phase"), r.get("speed"), r.get("mult"), r.get("multAfter", r.get("mult")), r.get("heapMB"))
     if k == "silence":
         return "%s  SILENCE  main thread silent %ss, phase %s (watchdog thread)" % (t, r.get("silentS"), r.get("phase"))
-    if k == "awareness":
-        return "%s  AWARE    %s: %s" % (t, r.get("what"), (r.get("statement") or ""))
     return "%s  %-8s %s" % (t, (k or "?").upper(), json.dumps({kk: v for kk, v in r.items()
                                                               if not kk.startswith("_") and kk not in ("utc", "kind")}))
 
@@ -1211,9 +1208,6 @@ def main(argv=None):
     ap.add_argument("--json", action="store_true")
     ap.add_argument("--recent", action="store_true", help="verdict only: read just the segments written within the "
                     "window (+%d s); the counts then cover those segments" % TPS_RECENT_SLACK_S)
-    ap.add_argument("--health", action="store_true", help="with --at/--since: join the external health observer's "
-                    "stream (health_observer.py) to the timeline and its incidents; evidence only, no causes")
-    ap.add_argument("--health-dir", default=None, help="observer stream directory (default <LocalLow>/JawaBench/health)")
     a = ap.parse_args(argv)
     if a.game and a.dir:
         print("tps_record: --game and --dir both name a record; give one", file=sys.stderr)
@@ -1261,10 +1255,6 @@ def main(argv=None):
         else:
             print(render_timeline(tl, a.tz))
             print(health)
-            if a.health:
-                import health_observer
-                inc = [r for r in tl["rows"] if r.get("kind") in ("incident", "silence")]
-                print("\n".join(health_observer.health_section(t0, t1, inc, a.health_dir)))
         return 0
     s = summarise(rows, window_s=a.window)
     level, detail = verdict(s)

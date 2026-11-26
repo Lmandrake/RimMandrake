@@ -168,7 +168,6 @@ def main():
                    TESTQ_CMD_PROBE="true", TESTQ_PROBE_GAP_S="0", TESTQ_CMD_COMPOSE="true",  # the kept game answers unless a case says not
                    TESTQ_CMD_RUN="%s %s run" % (sys.executable, mock), RIMFLOW_DRIVER_LOCK=lock,
                    TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",  # never the real rw_game.sh status
-                   TESTQ_CMD_DUMP="echo '{\"status\": \"refused\", \"reason\": \"selftest\"}'",  # never a real dump
                    RM_HOST="stevedesktop", RM_GAME_USERDATA=tmp, RIMFLOW_LEDGER=os.path.join(tmp, "ev.jsonl"))
         # never the real rimbridge_client: on a host with a real bridge it lists that machine's own UNKNOWN-outcome
         # markers and every kept-game case restarts for them (seen on Archmagi 2026-11-06); a case that wants
@@ -263,11 +262,9 @@ def main():
         with open(hlog, "wb") as f:
             f.write(hfix)
         horder = os.path.join(tmp, "hang_order")
-        hdump = ("echo dump >> %s; [ -f %s ] && echo log-still-there >> %s; "
-                 "echo '{\"status\": \"ok\", \"path\": \"D:/dumps/rimworld_1_x.dmp\", \"sizeBytes\": 77, "
-                 "\"durationMs\": 5}'") % (horder, hlog, horder)
+        hcheck = "[ -f %s ] && echo log-still-there >> %s" % (hlog, horder)    # runs in the stop's place: the log is still there
         rc, o = w(["start"], job(), MOCK_MODE="hang", TESTQ_RUN_TIMEOUT_S="2", RM_GAME_LOGDIR=hlogdir,
-                  TESTQ_CMD_DOWN="echo down >> %s; rm -f %s" % (horder, hlog), TESTQ_CMD_DUMP=hdump)
+                  TESTQ_CMD_DOWN="%s; echo down >> %s; rm -f %s" % (hcheck, horder, hlog))
         res = wait_result(o.get("attempt", "x"))
         hkept = os.path.join(home, "attempts", o.get("attempt", "x"), "Player_hang1.log")
         check(not os.path.exists(hlog) and os.path.exists(hkept) and open(hkept, "rb").read() == hfix
@@ -275,9 +272,8 @@ def main():
               "a hung run keeps Player.log before the restart, byte for byte: %s %s" % (hkept, res.get("note")))
         hseq = open(horder).read().split()
         hwlog = open(os.path.join(home, "attempts", o.get("attempt", "x"), "worker.log"), errors="replace").read()
-        check(hseq[:3] == ["dump", "log-still-there", "down"]
-              and "game dump (hang1) kept at D:/dumps/rimworld_1_x.dmp" in hwlog,
-              "a hung run is dumped and keeps Player.log before the restart (dump, then down): %s %s"
+        check(hseq[:2] == ["log-still-there", "down"] and "game dump" not in hwlog,
+              "a hung run keeps Player.log before the restart (log still there at the stop, then down), takes no dump: %s %s"
               % (hseq, [ln for ln in hwlog.splitlines() if "game dump" in ln]))
 
         # 3a. STEVE_LANE_UNSTICK_BRAKED_UNOWNED_8EB8: the game came up on FULL, modcheck refused the stale load and
@@ -509,12 +505,9 @@ def main():
         with open(wgame, "wb") as f:
             f.write(wfix)
         worder = os.path.join(tmp, "wedge_order")
-        wdump = ("echo dump >> %s; echo '{\"status\": \"ok\", \"path\": \"D:/dumps/rimworld_4242_y.dmp\", "
-                 "\"sizeBytes\": 88, \"durationMs\": 6}'") % worder
         rc, o = w(["start"], job(), TESTQ_CMD_LOAD=flaky,
                   TESTQ_CMD_DOWN="echo down >> %s; echo down >> %s; rm -f %s" % (wdowns, worder, wgame),
-                  TESTQ_CMD_PROBE=deaf, TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'", RM_GAME_LOGDIR=wlogdir,
-                  TESTQ_CMD_DUMP=wdump)
+                  TESTQ_CMD_PROBE=deaf, TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'", RM_GAME_LOGDIR=wlogdir)
         res = wait_result(o.get("attempt", "x"))
         wkept = os.path.join(home, "attempts", o.get("attempt", "x"), "Player_wedged.log")
         check(res.get("outcome") == "DONE" and not os.path.exists(wgame) and os.path.exists(wkept)
@@ -522,20 +515,9 @@ def main():
               "a wedged kept game keeps Player.log before the restart takes it: %s %s" % (wkept, res.get("note")))
         wseq = open(worder).read().split()
         wwlog = open(os.path.join(home, "attempts", o.get("attempt", "x"), "worker.log"), errors="replace").read()
-        check(wseq == ["dump", "down"] and "game dump (wedged) kept at D:/dumps/rimworld_4242_y.dmp" in wwlog,
-              "a wedged kept game is dumped, then its Player.log kept, before the restart: %s %s"
+        check(wseq == ["down"] and "game dump" not in wwlog,
+              "a wedged kept game is stopped once (its Player.log kept first), no dump taken: %s %s"
               % (wseq, [ln for ln in wwlog.splitlines() if "game dump" in ln]))
-        os.remove(wdowns)
-        # a dump that fails (or hangs) never fails the job: the stop and the run go on, the note says why
-        rc, o = w(["start"], job(), TESTQ_CMD_LOAD=flaky, TESTQ_CMD_DOWN="echo down >> %s" % wdowns,
-                  TESTQ_CMD_PROBE=deaf, TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",
-                  TESTQ_CMD_DUMP="echo 'dbghelp exploded' >&2; exit 9")
-        res = wait_result(o.get("attempt", "x"))
-        fwlog = open(os.path.join(home, "attempts", o.get("attempt", "x"), "worker.log"), errors="replace").read()
-        check(res.get("outcome") == "DONE" and len(open(wdowns).read().split()) == 1
-              and "game dump (wedged) NOT taken" in fwlog,
-              "a failed dump never fails the job: %s %s" % (res.get("outcome"),
-                                                             [ln for ln in fwlog.splitlines() if "game dump" in ln]))
         os.remove(wdowns)
         rc, o = w(["start"], job(), TESTQ_CMD_LOAD=kept, TESTQ_CMD_DOWN="echo down >> %s; exit 1" % wdowns,
                   TESTQ_CMD_PROBE=deaf)

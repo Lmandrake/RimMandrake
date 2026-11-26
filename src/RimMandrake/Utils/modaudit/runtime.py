@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-r"""modaudit/runtime.py - runtime evidence per mod from the last FULL-LIST session (Player.log, TPS record, health).
+r"""modaudit/runtime.py - runtime evidence per mod from the last FULL-LIST session (Player.log, TPS record).
 
     python3 src/RimMandrake/Utils/modaudit/runtime.py [--log <Player log>] [--session <tps session prefix>]
 
@@ -28,7 +28,7 @@ CHATTER. Lines (not errors) beginning with a [Tag] that maps to a mod: a log-noi
 STATIC CTORS. LoadTracer's per-type ctor lines counted per mod (startup work it registers; a FLAG of size, not time).
 TPS. The TPS record attributes time to engine STAGES (tl:Normal, mapComp, world ...), not to mods or assemblies, so
 per-mod TPS cost is UNMEASURED; the session-level stage profile is recorded as context.
-MEMORY. The health observer measures the whole game process; per-mod memory is UNMEASURED (diskfacts' decoded
+MEMORY. Per-mod memory is UNMEASURED (diskfacts' decoded
 texture estimate is the INFERRED proxy).
 """
 import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
@@ -206,39 +206,6 @@ def tps_summary(session_prefix):
                        "jawa/map_comp_timing (91f9c0a14) can name MapComponents but had not been run on a full list"}
 
 
-def health_summary(pid=1568):
-    d = os.path.join(LOCALLOW, "JawaBench", "health")
-    best = {"privateMB": 0, "peakWorkingSetMB": 0, "mainthread_cores_max": 0, "availPhysMB_min": None, "samples": 0}
-    for f in sorted(os.listdir(d)):
-        if not f.startswith("observer_"):
-            continue
-        for ln in open(os.path.join(d, f)):
-            try:
-                o = json.loads(ln)
-            except ValueError:
-                continue
-            if o.get("kind") != "sample":
-                continue
-            s = o.get("sources") or {}
-            gm = (((s.get("game.memory") or {}).get("value") or {}).get("procs") or [])
-            gm = [p for p in gm if p.get("pid") == pid]
-            if not gm:
-                continue
-            best["samples"] += 1
-            best["privateMB"] = max(best["privateMB"], gm[0].get("privateMB") or 0)
-            best["peakWorkingSetMB"] = max(best["peakWorkingSetMB"], gm[0].get("peakWorkingSetMB") or 0)
-            mt = [p for p in ((s.get("game.mainthread") or {}).get("value") or {}).get("procs") or [] if p.get("pid") == pid]
-            if mt and mt[0].get("cores") is not None:
-                best["mainthread_cores_max"] = max(best["mainthread_cores_max"], mt[0]["cores"])
-            sm = (s.get("sys.memory") or {}).get("value") or {}
-            if sm.get("availPhysMB") is not None:
-                best["availPhysMB_min"] = sm["availPhysMB"] if best["availPhysMB_min"] is None else min(
-                    best["availPhysMB_min"], sm["availPhysMB"])
-    best["status"] = "MEASURED" if best["samples"] else "UNMEASURED"
-    best["scope"] = "whole game process pid %d (all mods together); per-mod memory UNMEASURED" % pid
-    return best
-
-
 def main(argv=None):
     import shutil
     from universe import UNIVERSE_JSON
@@ -313,14 +280,14 @@ def main(argv=None):
         "loadtracer_ctor_lines": len(ctor_pairs), "ns_map_size": len(maps["ns"]),
         "attribution": "CANDIDATE (path/frame/def/tag evidence; see runtime.py docstring)",
         "warnings": "UNMEASURED - Player.log has no consistent warning prefix; only error openers are counted",
-        "tps": tps_summary(a.session), "health": health_summary(), "mods": out_mods,
+        "tps": tps_summary(a.session), "mods": out_mods,
     }
     with open(CACHE, "w") as fh:
         json.dump(out, fh, indent=1)
     print("runtime: %d error blocks (= measure %d), %d attributed to >=1 mod, %d mods with errors, %d ctor lines, "
-          "tps %s, health %s -> %s" % (len(bl), want, out["attributed_blocks"],
+          "tps %s -> %s" % (len(bl), want, out["attributed_blocks"],
                                        sum(1 for v in out_mods.values() if v["error_occurrences"]),
-                                       len(ctor_pairs), out["tps"]["status"], out["health"]["status"], CACHE))
+                                       len(ctor_pairs), out["tps"]["status"], CACHE))
 
 
 if __name__ == "__main__":

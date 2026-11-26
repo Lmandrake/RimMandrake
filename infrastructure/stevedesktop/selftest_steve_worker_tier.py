@@ -82,7 +82,6 @@ def main():
                    TESTQ_CMD_DOWN="echo down >> %s" % downs, TESTQ_CMD_PROBE="true", TESTQ_PROBE_GAP_S="0",
                    TESTQ_CMD_RUN="echo modcheck-must-not-run >> %s; false" % log,
                    TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",
-                   TESTQ_CMD_DUMP="echo '{\"status\": \"refused\", \"reason\": \"selftest\"}'",
                    TESTQ_CMD_BRIDGE="true",
                    TESTQ_CMD_TIERCHECK="%s %s" % (sys.executable, check_py),
                    TESTQ_CMD_TIERSWAP="%s %s" % (sys.executable, swap_py), TESTQ_PROOFS_DIR=proofs,

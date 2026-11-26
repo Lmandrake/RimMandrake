@@ -91,7 +91,7 @@ def main():
                    TESTQ_CMD_DEPLOY="true", TESTQ_CMD_LOAD="%s %s" % (py, paths["load"]),
                    TESTQ_CMD_DOWN="true", TESTQ_CMD_PROBE="true", TESTQ_PROBE_GAP_S="0", TESTQ_CMD_RUN="false",
                    TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",
-                   TESTQ_CMD_DUMP="echo '{\"status\": \"refused\", \"reason\": \"selftest\"}'", TESTQ_CMD_BRIDGE="true",
+                   TESTQ_CMD_BRIDGE="true",
                    TESTQ_CMD_TIERCHECK="%s %s" % (py, paths["check"]),
                    TESTQ_CMD_TIERSWAP="%s %s swap" % (py, paths["mb"]),
                    TESTQ_CMD_RESETREPAIR="%s %s repair" % (py, paths["mb"]),

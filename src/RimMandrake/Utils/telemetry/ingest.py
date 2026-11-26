@@ -107,7 +107,7 @@ SAMPLE_ALWAYS = {
     "werr": "rm_game_writer_err", "profEstMs": "rm_game_prof_est_ms",
 }
 TPS_EVENT_KINDS = {"incident", "silence", "resumed", "session", "game", "menu", "save", "marker", "log",
-                   "shutdown", "shutdown-complete", "error", "awareness", "dropped", "flight", "tier", "vitals"}
+                   "shutdown", "shutdown-complete", "error", "dropped", "flight", "tier", "vitals"}
 
 
 HIST_R = 16000 ** (1 / 26)
@@ -310,41 +310,6 @@ def parse_vitals(r: dict, E: Emit, ref: str, ts: float, sess: str, modlab: dict)
         v.update({"armed": True, "row": r.get("row"), "ts": ts, "session": sess})
     elif what == "disarm":
         v["armed"] = False
-
-
-def parse_health(r: dict, E: Emit, ref: str) -> bool | None:
-    ts = parse_ts(r.get("utc"))
-    if ts is None:
-        return False
-    if r.get("kind") != "sample":
-        E.event(ts, "health_" + str(r.get("kind")), (r.get("collector") or {}).get("id"),
-                {k: v for k, v in r.items() if k != "sources"}, "health", ref)
-        return
-    src = r.get("sources") or {}
-
-    def val(name):
-        s = src.get(name) or {}
-        return s.get("value") if s.get("status") == "ok" else None
-
-    for p in (val("game.cpu") or {}).get("procs", []):
-        E.point("rm_proc_cpu_cores", {"pid": p.get("pid")}, p.get("cores"), ts)
-    for p in (val("game.mainthread") or {}).get("procs", []):
-        E.point("rm_proc_mainthread_cores", {"pid": p.get("pid")}, p.get("cores"), ts)
-        E.point("rm_proc_otherthreads_cores", {"pid": p.get("pid")}, p.get("otherThreadsCores"), ts)
-    for p in (val("game.memory") or {}).get("procs", []):
-        E.point("rm_proc_working_set_mb", {"pid": p.get("pid")}, p.get("workingSetMB"), ts)
-        E.point("rm_proc_private_mb", {"pid": p.get("pid")}, p.get("privateMB"), ts)
-    sm = val("sys.memory") or {}
-    for f in ("availPhysMB", "memoryLoadPct", "commitTotalMB", "commitLimitMB", "commitHeadroomMB"):
-        E.point("rm_obs_sys_" + re.sub(r"(?<!^)([A-Z])", r"_\1", f).lower(), {}, sm.get(f), ts)
-    lg = val("log.growth") or {}
-    E.point("rm_log_bytes_per_s", {}, lg.get("bytesPerS"), ts)
-    E.point("rm_log_size_bytes", {}, lg.get("size"), ts)
-    ms = val("log.milestones") or {}
-    for m in ms.get("new") or []:
-        E.event(ts, "log_milestone", m, None, "health", f"{ref}:{m}")
-    hb = val("obs.heartbeat") or {}
-    E.point("rm_obs_sample_ms", {}, hb.get("sampleMs"), ts)
 
 
 _BRIDGE_OPEN: dict = {}   # (bucket_ts, tool) -> [count, ms_sum, ms_max, errors]
@@ -616,9 +581,6 @@ def make_sources() -> list[Source]:
                           ordered=True, desc=f"rimbridge_client per-call evidence of {machine}", machine=machine,
                           rate="per bridge call, pulled each minute", producer="rimbridge_client.py _evidence"))
     return out + [
-        Source("health", lambda: [_j(jb, "health", "observer_*.jsonl")], parse_health,
-               desc="health_observer.py: game CPU/main thread/memory, sys memory, log growth",
-               rate="5 s game up, 30 s idle", producer="health_observer.py"),
         Source("bridge", lambda: [c["bridge_calls"], c["bridge_calls"] + ".1"], parse_bridge, fast=True, ordered=True,
                desc="rimbridge_client per-call evidence; per-call rows -> SQLite, 10 s aggregates -> VM",
                rate="per bridge call", producer="rimbridge_client.py _evidence"),
