@@ -188,7 +188,7 @@ and one recommended):
   under each label and at most one evidence number after it. It shows no ticket id, no bundle id, no ISO or UTC stamp,
   no class, role key or field name as a word, and no sentence over 20 words. Times are local Pacific.
 - **page-too-young-says-too-early.** A reading whose ripe day ends before the first bundle says `too early to tell`
-  with the local time of the first daily reading whose ripe day holds that bundle; a ripe reading says yes or no.
+  with the local time after which the first daily reading's ripe day holds that bundle (first bundle plus 3 days); a ripe reading says yes or no.
 - **page-line-crossed-needs-person.** A crossed born line makes `What needs a person?` name the Conductor's act; a
   reading over two days old names Operations; a failed report names the Conductor; an unreadable reading answers
   each question could not look and names Operations.
@@ -240,8 +240,8 @@ writes them. The report's top is the same five answers (`compose_report`).
 - **Are bundles cheaper?** From `cheaper_of(R)`, a word in `latest.json` and never a figure (the page stays
   token-blind; the figures are in the report). On the ripe day, bundle weighted tokens per ticket that stays closed
   over the single-ticket figure: under 0.9 yes, over 1.1 no, else about the same (`CHEAPER_MARGIN`, a guess). When
-  the ripe day ends before the first bundle: too early to tell, until the first daily run at or after the first
-  bundle plus 3 days. When the ripe day holds bundles but no ripe figure: not known.
+  the ripe day ends before the first bundle: too early to tell, until the first daily reading after the first
+  bundle plus 3 days (that time, not a guessed timer hour: the timer runs at 6:30 AM, the first reading was by hand). When the ripe day holds bundles but no ripe figure: not known.
 - **Do bundles make new tickets?** Bundle runs' born per closed (`born.by_kind.bundle`). The line crossed: yes, and
   the alarm is on. No close: not known. Over 1 today only: today only, the alarm waits a second day. Else no.
 - **Is work set down honestly?** The judge's NOT SINCERE count over every verdict, and the role with the most (ties

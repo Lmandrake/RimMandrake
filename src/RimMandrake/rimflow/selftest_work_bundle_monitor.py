@@ -727,8 +727,9 @@ def t_page_too_young_says_too_early():
     L = _planted_latest("young", R)
     ans, _o = _answers_of("\n".join(M.page_md(L, now=NOW + 60)))
     a = ans.get("Are bundles cheaper?", "")
-    first = M.when(NOW + 2 * M.DAY)
-    chk("too early to tell" in a.lower() and first in a, "page-too-young-says-too-early: too early, with %r (%s)" % (first, a))
+    first = M.when(T0 - M.DAY + 10 + 3 * M.DAY)        # the first bundle plus 3 days, whatever hour the timer runs
+    chk("too early to tell" in a.lower() and first in a and "daily reading after" in a,
+        "page-too-young-says-too-early: too early, with %r (%s)" % (first, a))
     R2 = _planted_reading(headline={"bundle": 400000, "single": 1000000})
     R2["efficiency"]["first_bundle"] = iso(NOW - 10 * M.DAY)
     a2 = _answers_of("\n".join(M.page_md(_planted_latest("ripe", R2), now=NOW + 60)))[0].get("Are bundles cheaper?", "")

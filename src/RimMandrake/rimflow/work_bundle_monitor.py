@@ -1586,9 +1586,8 @@ def cheaper_of(R):
     if fb is None or made is None:
         return {"verdict": "too early", "first_final": None}
     need = fb + STAY_DAYS * DAY
-    if made < need:        # the ripe day ends before the first bundle: the first daily run whose ripe day holds it
-        k = int(-(-(need - made) // DAY))
-        return {"verdict": "too early", "first_final": iso(made + k * DAY)}
+    if made < need:        # the ripe day ends before the first bundle: the first daily run after `need` holds it
+        return {"verdict": "too early", "first_final": iso(need)}
     return {"verdict": "no ripe close"}
 
 
@@ -1635,9 +1634,8 @@ def answers(L, now=None):
         out.append((ANSWER_LABELS[1], "About the same: the two costs differ by less than a tenth.", None))
     elif cv == "too early":
         ff = ep(c.get("first_final"))
-        out.append((ANSWER_LABELS[1], ("Too early to tell until %s, when the first bundle tickets have stayed closed "
-                                       "three days." % when(ff)) if ff else "Too early to tell: no bundle has run yet.",
-                    None))
+        out.append((ANSWER_LABELS[1], ("Too early to tell until the first daily reading after %s." % when(ff)) if ff else
+                    "Too early to tell: no bundle has run yet.", None))
     elif cv == "no ripe close":
         out.append((ANSWER_LABELS[1], "Not known: no bundle ticket from three days ago stayed closed.", None))
     elif cv == "could not look":
