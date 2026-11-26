@@ -549,6 +549,24 @@ def status_text(unit, now=None, root=None):
                                                          got.get("line") or "no ALIVE: line yet")
 
 
+def relay_host_ends(runner=subprocess.run, me=None):
+    """Each beat on this machine also writes the DETACHED RUN ENDED line of each run that ended on another host
+    (run_host.relay_ends): that host's finish cannot reach this machine's Conductor log. -> its lines. Never raises: a
+    host that cannot be read is said, and the beat's own exit code stands."""
+    import socket
+    import run_host
+    me = (me or os.environ.get("RM_HOST") or socket.gethostname()).strip().lower()
+    out = []
+    for host in sorted(run_host.HOSTS):
+        if host == me:
+            continue
+        try:
+            out.append(run_host.relay_ends(host, runner=runner)[1])
+        except Exception as e:  # noqa: BLE001
+            out.append("relay ends: %s FAILED: %s: %s" % (host, type(e).__name__, e))
+    return "\n".join(out)
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -559,6 +577,8 @@ def main(argv=None):
     if a.cmd == "beat":
         rc, text = beat(dry=a.dry)
         print(text)
+        if not a.dry:
+            print(relay_host_ends())
         return rc
     try:
         with open(reading_path(), encoding="utf-8") as fh:

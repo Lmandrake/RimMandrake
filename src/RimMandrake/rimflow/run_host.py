@@ -162,6 +162,90 @@ def live_units(host, runner=subprocess.run):
                if ln.split() and ln.split()[0].startswith("rm-detached-") and not ln.split()[0].endswith("-return.service"))
 
 
+# budget: danger=a Conductor log that is trimmed or rotated would have every old host run announced again as new, since
+# budget: the host's record folder only grows (35 records in 2 days on SteveDesktop, 2026-11-25); ends no work: a run
+# budget: older than this is still in the host's record and `rimflow show`
+RELAY_WINDOW_S = 7 * 86400
+RELAY_HEAD = "DETACHED RUN ENDED"
+# The host's finished records since a time, with the run's report tail for a record that holds no line text (records
+# from before conductor_text). The host's own code reads them: one ssh, no model.
+_ENDS_PY = (
+    "import json,sys; sys.path.insert(0,'src/RimMandrake/rimflow'); import detached_helper as D, role_launch as RL\n"
+    "out=[]\n"
+    "for r in D.all_records():\n"
+    "    if r.get('status')!='finished' or not isinstance(r.get('ended'),(int,float)) or r['ended']<%r: continue\n"
+    "    x={k:r.get(k) for k in ('unit','item','seat','status','at','ended','result','tokens','out','owed_close',"
+    "'filing_refusals','conductor_text')}\n"
+    "    if not x['conductor_text']:\n"
+    "        try: x['tail']=' '.join(D.run_report(r, RL.read_result({'out':r.get('out') or '','err':r.get('err') or ''})).split())\n"
+    "        except Exception as e: x['tail']='report UNMEASURED (%%s: %%s)'%%(type(e).__name__,e)\n"
+    "    out.append(x)\n"
+    "print(json.dumps(out))\n")
+
+
+def host_ends(host, since, runner=subprocess.run):
+    """-> the host's finished run records that ended at `since` or later (a list, [] when none), or None when the host
+    cannot be read (could not look is never "no ends")."""
+    target = door(host)
+    if not target:
+        return None
+    try:
+        r = runner(_ssh(target, "cd %s && python3 -c %s" % (BENCH, shlex.quote(_ENDS_PY % float(since)))),
+                   capture_output=True, text=True, timeout=120, stdin=subprocess.DEVNULL)  # budget: class=ssh (hang guard)
+        d = json.loads((r.stdout or "").strip().splitlines()[-1]) if r.returncode == 0 else None
+    except Exception:  # noqa: BLE001
+        return None
+    return d if isinstance(d, list) else None
+
+
+def end_line(host, x):
+    """The Conductor log text for a host run's end: the host's own line text (its finish keeps it in conductor_text),
+    else one made from its record, in the shape detached_helper.finish writes."""
+    if x.get("conductor_text"):
+        return "%s [on %s]" % (x["conductor_text"], host)
+    import fulltext
+    tok = x.get("tokens")
+    took = int(x["ended"] - x["at"]) if isinstance(x.get("at"), (int, float)) else "UNMEASURED"
+    owed = (" OWED: %s." % x["owed_close"]) if x.get("owed_close") else ""
+    refused = "".join(" %s." % y for y in (x.get("filing_refusals") or []))
+    return ("%s on %s (%s seat) on %s: %s, %s s, %s weighted tokens. %s. Output %s:%s. READ: rimflow show %s.%s%s"
+            % (x.get("unit"), x.get("item"), x.get("seat"), host, x.get("result") or "UNMEASURED", took,
+               "{:,}".format(tok) if isinstance(tok, (int, float)) else "UNMEASURED",
+               fulltext.clip(x.get("tail"), 200, "%s:%s" % (host, x.get("out"))) or "-", host, x.get("out"),
+               x.get("item"), owed, refused))
+
+
+def relay_ends(host, now=None, runner=subprocess.run, log_path=None):
+    """Each run that ended on `host` in the last RELAY_WINDOW_S and has no DETACHED RUN ENDED line in this machine's
+    Conductor log gets one (the host's own finish cannot write it: the log is on this machine). -> (rc, text): 0 looked
+    (n written, maybe none), 2 unknown host, 5 could not look (nothing written)."""
+    import detached_helper as D
+    now = time.time() if now is None else now
+    if not door(host):
+        return 2, "relay ends: unknown host %r" % host
+    path = log_path or D.conductor_log_path()
+    try:
+        with open(path, encoding="utf-8", errors="replace") as f:
+            seen = [ln for ln in f.read().splitlines() if RELAY_HEAD in ln]
+    except FileNotFoundError:
+        seen = []
+    except OSError as e:
+        return 5, "relay ends: COULD NOT LOOK at the Conductor log %s: %s" % (path, e)
+    ends = host_ends(host, now - RELAY_WINDOW_S, runner)
+    if ends is None:
+        return 5, "relay ends: COULD NOT LOOK at %s's run records (ssh)" % host
+    wrote = []
+    for x in sorted(ends, key=lambda y: y.get("ended") or 0):
+        u = x.get("unit")
+        if not u or any(u in ln for ln in seen):
+            continue
+        D.conductor_line(end_line(host, x), now, path, head=RELAY_HEAD)
+        seen.append(u)
+        wrote.append(u)
+    return 0, "relay ends: %s: %d ended in %d days, %d new line(s) in %s%s" % (
+        host, len(ends), RELAY_WINDOW_S // 86400, len(wrote), path, "".join("\n  " + u for u in wrote))
+
+
 def stop_argv(rec, mode="at_easy_spot", why="stopped from Archmagi", end=False):
     """The host's own `./pipe stop <unit>` for a remote run (control.remote_stop runs it). end: the stop ends the work
     (`--end`; named only when set, so a host on older code still takes the default stop)."""

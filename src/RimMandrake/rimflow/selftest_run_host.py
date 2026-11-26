@@ -296,13 +296,51 @@ def t_both_remote_launchers_share_the_sync():
     assert cmd.index("./sync") < cmd.index("./pipe bundle"), cmd
 
 
+def t_host_ends_reach_the_conductor_log():
+    """A run that ended on the host gets ONE DETACHED RUN ENDED line in this machine's Conductor log: the host's own line
+    text when its record holds one, else one made from the record. A unit that already has a line gets no second one; a
+    host that cannot be read writes nothing and says could not look (RIMMANDRAKE_LOG_STEVE_RUN_ENDS_FOR_CONDUCTOR_EIGHT_UNREAD:
+    35 SteveDesktop ends, 2026-11-24/25, none reached the log, because the host's finish writes a path it does not have)."""
+    import tempfile
+    now = 2000000.0
+    ends = [{"unit": "rm-old", "item": "IT_OLD", "seat": "BENCH", "status": "finished", "at": now - 900, "ended": now - 600,
+             "result": "success (0 -)", "tokens": 1234, "out": "/h/rm-old.out.json", "tail": "did the old thing"},
+            {"unit": "rm-new", "item": "IT_NEW", "seat": "BENCH", "status": "finished", "at": now - 500, "ended": now - 60,
+             "conductor_text": "rm-new on IT_NEW (BENCH seat): the host's own words"},
+            {"unit": "rm-seen", "item": "IT_SEEN", "seat": "BENCH", "status": "finished", "at": now - 500,
+             "ended": now - 60, "result": "success (0 -)"}]
+    with tempfile.TemporaryDirectory() as d:
+        log = os.path.join(d, "log.md")
+        with open(log, "w") as f:
+            f.write("\n2026 - DETACHED RUN ENDED: rm-seen on IT_SEEN (BENCH seat): already here\n")
+        host = Fake([(r"all_records", json.dumps(ends))])
+        rc, text = R.relay_ends("SteveDesktop", now=now, runner=host, log_path=log)
+        lines = [ln for ln in open(log).read().splitlines() if "DETACHED RUN ENDED" in ln]
+        assert rc == 0, (rc, text)
+        assert sum("rm-old" in ln for ln in lines) == 1 and sum("rm-new" in ln for ln in lines) == 1, lines
+        assert sum("rm-seen" in ln for ln in lines) == 1, "a unit with a line gets no second one: %r" % lines
+        old = [ln for ln in lines if "rm-old" in ln][0]
+        for want in ("IT_OLD", "SteveDesktop", "success", "1,234", "did the old thing", "rimflow show IT_OLD"):
+            assert want in old, (want, old)
+        assert "the host's own words" in [ln for ln in lines if "rm-new" in ln][0]
+        assert ".local/bin" in host.calls[0][-1] and R.HOSTS["stevedesktop"] in host.calls[0]
+        rc, _ = R.relay_ends("SteveDesktop", now=now, runner=host, log_path=log)
+        assert rc == 0 and len([ln for ln in open(log).read().splitlines() if "DETACHED RUN ENDED" in ln]) == 3, \
+            "a second beat writes nothing new"
+        before = open(log).read()
+        rc, text = R.relay_ends("SteveDesktop", now=now, runner=Fake([]), log_path=log)
+        assert rc == 5 and "COULD NOT LOOK" in text and open(log).read() == before, (rc, text)
+        rc, text = R.relay_ends("steve9", now=now, runner=host, log_path=log)
+        assert rc == 2 and open(log).read() == before, (rc, text)
+
+
 def main():
     tests = (t_refused_by_name, t_could_not_look_named, t_no_spend_stated, t_wsl_door, t_login_path, t_every_fact_reads,
              t_account_from_the_machine, t_launch_argv, t_record_names_host_unit_item, t_live_until_the_host_says_ended,
              t_stop_runs_the_hosts_pipe, t_pipe_stop_routes_a_remote_unit, t_host_room_for_the_lane,
              t_status_reads_a_remote_run_from_its_host, t_host_live_counts_every_claude_run_there,
              t_remote_launch_runs_origin_main, t_a_failed_sync_is_could_not_launch,
-             t_both_remote_launchers_share_the_sync)
+             t_both_remote_launchers_share_the_sync, t_host_ends_reach_the_conductor_log)
     bad = 0
     for f in tests:
         try:

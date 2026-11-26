@@ -511,6 +511,22 @@ def t_it_raises_no_alarm():
     check("a hung look stops nothing and posts nothing", not bad and not os.path.exists(os.environ["RM_CONDUCTOR_LOG"]), bad)
 
 
+def t_the_beat_relays_host_ends():
+    """The beat relays each other host's run ends (run_host.relay_ends, tested in selftest_run_host); a host never relays
+    to itself, and a host that raises is said, never stops the beat."""
+    import run_host
+    calls = []
+    check("the host itself relays nothing to itself",
+          RA.relay_host_ends(runner=lambda *a, **k: calls.append(a), me="stevedesktop") == "" and not calls, calls)
+    real = run_host.relay_ends
+    try:
+        run_host.relay_ends = lambda host, runner=None: (_ for _ in ()).throw(OSError("boom"))
+        text = RA.relay_host_ends(me="archmagi")
+    finally:
+        run_host.relay_ends = real
+    check("a host that raises is said", "stevedesktop FAILED: OSError: boom" in text, text)
+
+
 def main():
     tests = (t_a_live_run_keeps_its_lease, t_a_long_wait_is_not_hung, t_a_dead_run_loses_its_lease,
              t_a_hung_run_loses_its_lease, t_a_blind_beat_changes_nothing, t_a_run_on_another_host_is_not_gone,
@@ -518,7 +534,7 @@ def main():
              t_the_alive_line_is_the_runs_own, t_one_file_beside_the_record, t_the_status_shows_it,
              t_the_ledger_gets_it_once, t_one_run_never_stops_the_others,
              t_a_beat_that_could_not_look_writes_no_reading, t_the_brief_asks_only_while_no_timer_lives,
-             t_it_raises_no_alarm)
+             t_it_raises_no_alarm, t_the_beat_relays_host_ends)
     for fn in tests:
         try:
             fn()

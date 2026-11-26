@@ -41,6 +41,12 @@ Code: `src/RimMandrake/rimflow/run_host.py`
   state is the host record's status, copied into this machine's record (`host_end`).
 - **stop-runs-the-hosts-pipe.** `stop_argv` runs the host's own `./pipe stop <unit> --<mode>`.
 - **pipe-stop-routes-a-remote-unit.** `./pipe stop <unit>` on a unit whose record names a host runs that stop, nothing here.
+- **host-ends-reach-the-conductor-log.** Each run that ended on the host in the last `RELAY_WINDOW_S` and has no
+  `DETACHED RUN ENDED` line in this machine's Conductor log gets one (`relay_ends`), from each `rm-run-alive` beat
+  (`run_alive.relay_host_ends`). The text is the host finish's own line (`conductor_text`) or one made from the host
+  record. A unit with a line gets no second one. A host that cannot be read writes nothing and reads COULD NOT LOOK
+  (rc 5). Test: `t_host_ends_reach_the_conductor_log`. Live check:
+  `src/RimMandrake/rimflow/acceptance/steve_ends_in_conductor_log_accept.py`.
 - **host-room-for-the-lane.** `list_dispatch.py` places a lane run on a host only when its own slots are full, under the
   host's `max_live`, and while the host's live account has more than `min_left_pct` of the week left. An unread reading is
   no room.

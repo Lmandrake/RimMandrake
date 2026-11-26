@@ -2455,12 +2455,14 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
         pub = ((r.stdout or "") + (r.stderr or "")).strip()
         m = re.search(r"PUBLISHED ([0-9a-f]{7,40})", pub)
         steps.append("publish " + (m.group(1)[:10] if m else "exit %d: %s" % (r.returncode, pub)))
+    # the line is kept on the record: a host without this machine's Conductor log (SteveDesktop) has its line relayed
+    # from there by Archmagi's run_alive beat (run_host.relay_ends; RIMMANDRAKE_LOG_STEVE_RUN_ENDS_FOR_CONDUCTOR_EIGHT_UNREAD)
+    rec["conductor_text"] = ("%s on %s (%s seat): %s, %d s, %s weighted tokens%s. %s. Output %s. READ: rimflow show %s.%s"
+                             % (unit, item, seat, st, took, unmeasured if tokens is None else "{:,}".format(tokens), resumed,
+                                fulltext.clip(tail, 200, rec["out"]) or "-", rec["out"], item,
+                                (" OWED: " + owed + "." if owed else "") + "".join(" " + x + "." for x in refused)))
     try:
-        path = conductor_line("%s on %s (%s seat): %s, %d s, %s weighted tokens%s. %s. Output %s. READ: rimflow show %s.%s"
-                              % (unit, item, seat, st, took, unmeasured if tokens is None else "{:,}".format(tokens), resumed,
-                                 fulltext.clip(tail, 200, rec["out"]) or "-", rec["out"], item,
-                                 (" OWED: " + owed + "." if owed else "") + "".join(" " + x + "." for x in refused)),
-                              now, log_path)
+        path = conductor_line(rec["conductor_text"], now, log_path)
         steps.append("conductor log " + path)
     except Exception as e:  # noqa: BLE001
         steps.append("conductor log FAILED: %s" % e)

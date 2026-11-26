@@ -64,6 +64,10 @@ Each promise has a check of its name in `src/RimMandrake/rimflow/selftest_run_al
 - **a-beat-that-could-not-look-writes-no-reading.** When the run records cannot be listed, the beat exits 1 and leaves the
   old reading, which then goes stale.
 - **it-raises-no-alarm.** It stops no run, writes no rimflow note and posts nothing.
+- **the-beat-relays-host-ends.** After its look, each beat (not `--dry`) writes the `DETACHED RUN ENDED` line of each run
+  that ended on another host and has none here (`run_host.relay_ends`, page
+  `design/specs/2026-11-24-run-on-steve/boundary.md`). A host never relays to itself. A host that raises is said in the
+  beat's output; the beat's exit code stands. The relay writes the Conductor log only: no note, no post.
 
 ## LIMITS
 
