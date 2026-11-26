@@ -6,6 +6,7 @@ every station zoomed plus the whole yard at default zoom. A person LOOKS at ever
 Run from the repo root with the bridge on a game holding FlowWorks (tier `flowworks`) and a quicktest map up:
     eval "$(python3 src/RimMandrake/Utils/game_instance.py env ArchSmall)"
     python3 src/RimMandrake/Utils/../FlowWorks/northstar/live_deck_art_picks.py [--origin X,Z] [--out DIR]
+    ... --jetties     only the jetty yard: steel and heavy, each look, 2 squares east and 2 north (16 stations)
 Writes DIR/<station>.png, DIR/yard_default.png, DIR/walk_*.png and DIR/readings.json (default Transient/deck_art_picks).
 """
 import argparse
@@ -69,19 +70,40 @@ def plan(ox, oz):
     return out
 
 
+LOOKS = ("Scrapper", "Industrial", "Modern", "Futuristic")
+
+
+def plan_jetties(ox, oz):
+    """RIMMANDRAKE_JOIN_JETTY_SQUARES_SEAMLESS_STILL_TWO_BLOCKS: each jetty tier in each of the four looks, 2 squares
+    reaching east and 2 squares reaching north, one look per column (7 apart), one tier and direction per row -- pure.
+    His walk 2026-11-25: stations 78/79 "still look like two blocks stuck together rather than a seamless whole"."""
+    out = []
+    for r, (tier, way) in enumerate((("steel", "E"), ("heavy", "E"), ("steel", "N"), ("heavy", "N"))):
+        for c, look in enumerate(LOOKS):
+            x, z = ox + c * 7, oz + r * 7
+            if way == "E":
+                pit = [(px, z + dz) for px in range(x + 1, x + 4) for dz in (-1, 0, 1)]
+                out.append(("jetty_%s_E2_%s" % (tier, look), "jetty", look, tier, (x, z), (x + 2, z), pit, (x - 1, z - 2, 6, 5)))
+            else:
+                pit = [(x + dx, pz) for pz in range(z + 1, z + 4) for dx in (-1, 0, 1)]
+                out.append(("jetty_%s_N2_%s" % (tier, look), "jetty", look, tier, (x, z), (x, z + 2), pit, (x - 2, z - 1, 5, 6)))
+    return out
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--origin", default=None)
     ap.add_argument("--out", default=os.path.join(C.REPO, "Transient", "deck_art_picks"))
     ap.add_argument("--no-build", action="store_true", help="the yard is already built: capture and read only")
+    ap.add_argument("--jetties", action="store_true", help="build only the jetty yard: each tier in each look, east and north")
     a = ap.parse_args(argv)
     a.mock = False
     a.no_shots = False
     w = C.make_walk(a, a.out)
     sx, sz = C.map_size(w)
     ox, oz = map(int, a.origin.split(",")) if a.origin else (sx // 2 - 25, sz // 2 - 20)
-    stations = plan(ox, oz)
-    yard = (ox - 3, oz - 3, 56, 40)
+    stations = plan_jetties(ox, oz) if a.jetties else plan(ox, oz)
+    yard = (ox - 3, oz - 3, 31, 31) if a.jetties else (ox - 3, oz - 3, 56, 40)
     readings = {}
     if not a.no_build:
         w.clear_site(yard)
@@ -112,7 +134,8 @@ def main(argv=None):
     # HARNESS (2026-11-22, RIMMANDRAKE_DEPLOY_THIN_OUTLINE_ULLAI_INSTALLED_BUT_NO_GAME_HAS_IT): the old walk ordered a map
     # colonist across ew4_steel_Industrial and took 0 shots in 60 x 15 ticks (the pawn never reached the deck), so the
     # cable-over-pawn look went undecided. jawa/spawn_pawn on the deck square is deterministic.
-    on_deck = {"ew4_steel_Industrial": 2, "ew4_heavy_Industrial": 2, "ns4_steel_Industrial": 2, "jetty_steel_E2": 1}
+    on_deck = {"ew4_steel_Industrial": 2, "ew4_heavy_Industrial": 2, "ns4_steel_Industrial": 2, "jetty_steel_E2": 1,
+               "jetty_heavy_E2_Scrapper": 1, "jetty_heavy_N2_Scrapper": 1}
     shots = []
     for s in stations:
         if s[0] not in on_deck:

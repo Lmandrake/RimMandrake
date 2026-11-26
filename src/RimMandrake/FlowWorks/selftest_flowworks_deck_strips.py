@@ -4,7 +4,9 @@ are what the game draws.
 1. Every installed piece, post and cable equals his pick's generated file byte for byte (sha256).
 2. Exactly the seven picked ThingStyleDefs carry RM_DeckArtExtension; its paths name those files, and its numbers equal the
    geometry the pick was generated on (art_source/JettyBridgeRedesign/gen_render.py spec_for), so the game's posts and cables
-   stand where his picture had them. Every other look keeps its old art (not generated; design.md §6).
+   stand where his picture had them. The jetty looks he did not have generated carry their own look's picture re-cut into
+   a strip (art_source/JettyBridgeRedesign/seam_strips.py, checked by selftest_flowworks_jetty_seams.py); no other style
+   carries the extension, and none of those strips is one of his picked strips.
 3. The C# piece chooser, strip turn, cable sag, hanger places and jetty cable targets (RM_DeckArt.cs RM_DeckArtMath) agree
    with this file's mirror on every length 1..8 and every direction.
 
@@ -119,7 +121,13 @@ def check(canfail=False):
         li = [e for e in sd.findall("modExtensions/li") if e.get("Class") == EXT]
         if li:
             carrying[sd.findtext("defName")] = li[0]
-    extra = sorted(set(carrying) - set(PICKS))
+    sys.path.insert(0, GEN)
+    import seam_strips as SS
+    extra = sorted(set(carrying) - set(PICKS) - set(SS.SOURCES))
+    picked = {R + look + "/" + base + "_Strip" for (_, look, base, _) in PICKS.values()}
+    for style in sorted(set(carrying) & set(SS.SOURCES)):
+        if carrying[style].findtext("strip") in picked:
+            fails.append("%s (a derived jetty look) draws one of his picked strips: %s" % (style, carrying[style].findtext("strip")))
     if extra:
         fails.append("styles he did not pick carry the picked art: %s" % extra)
     for style, (key, look, base, cab) in PICKS.items():

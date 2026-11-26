@@ -346,6 +346,24 @@
       <texPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionJetty_Steel</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
     </graphicData>
+    <modExtensions>
+      <!-- RIMMANDRAKE_JOIN_JETTY_SQUARES_SEAMLESS_STILL_TWO_BLOCKS: this look's own jetty picture re-cut into one seamless strip
+           (art_source/JettyBridgeRedesign/seam_strips.py; deckWidth = its painted deck, measured); post, cable and their numbers
+           = his Scrapper steel bridge pick; fan and doubled = his Industrial steel jetty pick -->
+      <li Class="RimMandrake.FlowWorks.Pits.RM_DeckArtExtension">
+        <strip>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionJetty_Steel_Strip</strip>
+        <post>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck_Steel_Post</post>
+        <cable>RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Chain</cable>
+        <deckWidth>0.65</deckWidth>
+        <postHeight>1</postHeight>
+        <postWidth>0.08</postWidth>
+        <postOut>0.09</postOut>
+        <postInset>0.16</postInset>
+        <cableThick>0.114</cableThick>
+        <fan>2</fan>
+        <doubled>false</doubled>
+      </li>
+    </modExtensions>
   </ThingStyleDef>
 
   <ThingStyleDef>
@@ -385,6 +403,24 @@
       <texPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionJetty_Steel</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
     </graphicData>
+    <modExtensions>
+      <!-- RIMMANDRAKE_JOIN_JETTY_SQUARES_SEAMLESS_STILL_TWO_BLOCKS: this look's own jetty picture re-cut into one seamless strip
+           (art_source/JettyBridgeRedesign/seam_strips.py; deckWidth = its painted deck, measured); post, cable and their numbers
+           = his Modern steel bridge pick; fan and doubled = his Industrial steel jetty pick -->
+      <li Class="RimMandrake.FlowWorks.Pits.RM_DeckArtExtension">
+        <strip>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionJetty_Steel_Strip</strip>
+        <post>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck_Steel_Post</post>
+        <cable>RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Galv</cable>
+        <deckWidth>0.71</deckWidth>
+        <postHeight>1.35</postHeight>
+        <postWidth>0.075</postWidth>
+        <postOut>0.09</postOut>
+        <postInset>0.16</postInset>
+        <cableThick>0.036</cableThick>
+        <fan>2</fan>
+        <doubled>false</doubled>
+      </li>
+    </modExtensions>
   </ThingStyleDef>
 
   <ThingStyleDef>
@@ -395,6 +431,24 @@
       <texPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionJetty_Steel</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
     </graphicData>
+    <modExtensions>
+      <!-- RIMMANDRAKE_JOIN_JETTY_SQUARES_SEAMLESS_STILL_TWO_BLOCKS: this look's own jetty picture re-cut into one seamless strip
+           (art_source/JettyBridgeRedesign/seam_strips.py; deckWidth = its painted deck, measured); post, cable and their numbers
+           = his Futuristic steel bridge pick; fan and doubled = his Industrial steel jetty pick -->
+      <li Class="RimMandrake.FlowWorks.Pits.RM_DeckArtExtension">
+        <strip>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionJetty_Steel_Strip</strip>
+        <post>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeck_Steel_Post</post>
+        <cable>RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Cyan</cable>
+        <deckWidth>0.64</deckWidth>
+        <postHeight>1.55</postHeight>
+        <postWidth>0.1</postWidth>
+        <postOut>0.09</postOut>
+        <postInset>0.16</postInset>
+        <cableThick>0.042</cableThick>
+        <fan>2</fan>
+        <doubled>false</doubled>
+      </li>
+    </modExtensions>
   </ThingStyleDef>
 
   <ThingStyleDef>
@@ -405,6 +459,24 @@
       <texPath>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionJetty</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
     </graphicData>
+    <modExtensions>
+      <!-- RIMMANDRAKE_JOIN_JETTY_SQUARES_SEAMLESS_STILL_TWO_BLOCKS: this look's own jetty picture re-cut into one seamless strip
+           (art_source/JettyBridgeRedesign/seam_strips.py; deckWidth = its painted deck, measured); post, cable and their numbers
+           = his Scrapper steel bridge pick; fan and doubled = his Industrial heavy jetty pick -->
+      <li Class="RimMandrake.FlowWorks.Pits.RM_DeckArtExtension">
+        <strip>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionJetty_Heavy_Strip</strip>
+        <post>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck_Steel_Post</post>
+        <cable>RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Chain</cable>
+        <deckWidth>0.7</deckWidth>
+        <postHeight>1</postHeight>
+        <postWidth>0.08</postWidth>
+        <postOut>0.09</postOut>
+        <postInset>0.16</postInset>
+        <cableThick>0.114</cableThick>
+        <fan>1</fan>
+        <doubled>true</doubled>
+      </li>
+    </modExtensions>
   </ThingStyleDef>
 
   <ThingStyleDef>
@@ -444,6 +516,24 @@
       <texPath>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionJetty</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
     </graphicData>
+    <modExtensions>
+      <!-- RIMMANDRAKE_JOIN_JETTY_SQUARES_SEAMLESS_STILL_TWO_BLOCKS: this look's own jetty picture re-cut into one seamless strip
+           (art_source/JettyBridgeRedesign/seam_strips.py; deckWidth = its painted deck, measured); post, cable and their numbers
+           = his Modern steel bridge pick; fan and doubled = his Industrial heavy jetty pick -->
+      <li Class="RimMandrake.FlowWorks.Pits.RM_DeckArtExtension">
+        <strip>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionJetty_Heavy_Strip</strip>
+        <post>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck_Steel_Post</post>
+        <cable>RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Galv</cable>
+        <deckWidth>0.7</deckWidth>
+        <postHeight>1.35</postHeight>
+        <postWidth>0.075</postWidth>
+        <postOut>0.09</postOut>
+        <postInset>0.16</postInset>
+        <cableThick>0.036</cableThick>
+        <fan>1</fan>
+        <doubled>true</doubled>
+      </li>
+    </modExtensions>
   </ThingStyleDef>
 
   <ThingStyleDef>
@@ -454,6 +544,24 @@
       <texPath>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionJetty_Heavy</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
     </graphicData>
+    <modExtensions>
+      <!-- RIMMANDRAKE_JOIN_JETTY_SQUARES_SEAMLESS_STILL_TWO_BLOCKS: this look's own jetty picture re-cut into one seamless strip
+           (art_source/JettyBridgeRedesign/seam_strips.py; deckWidth = its painted deck, measured); post, cable and their numbers
+           = his Futuristic steel bridge pick; fan and doubled = his Industrial heavy jetty pick -->
+      <li Class="RimMandrake.FlowWorks.Pits.RM_DeckArtExtension">
+        <strip>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionJetty_Heavy_Strip</strip>
+        <post>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeck_Steel_Post</post>
+        <cable>RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Cyan</cable>
+        <deckWidth>0.72</deckWidth>
+        <postHeight>1.55</postHeight>
+        <postWidth>0.1</postWidth>
+        <postOut>0.09</postOut>
+        <postInset>0.16</postInset>
+        <cableThick>0.042</cableThick>
+        <fan>1</fan>
+        <doubled>true</doubled>
+      </li>
+    </modExtensions>
   </ThingStyleDef>
 
   <ThingStyleDef>

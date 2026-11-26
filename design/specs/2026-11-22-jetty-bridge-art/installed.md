@@ -32,9 +32,11 @@ Item: `RIMMANDRAKE_INSTALL_JETTY_BRIDGE_PICKS_HEAVY_B_CHOSEN_TWO_PICKS_OPEN`. Wr
 
 ## Not changed, and why
 
-- **The jetties' other three looks** (Scrapper, Modern, Futuristic) keep their old framed pictures: only the Industrial
-  finish was generated. **The default look is Scrapper**, so a jetty or heavy bridge built without picking a look still
-  draws the old art. His walk stations 59-60 and 54-55 build in the default look.
+- **The jetties' other three looks** (Scrapper, Modern, Futuristic) were not generated. Since
+  RIMMANDRAKE_JOIN_JETTY_SQUARES_SEAMLESS_STILL_TWO_BLOCKS (his walk 2026-11-25: stations 78/79 "still look like two blocks
+  stuck together") each draws its own look's picture re-cut into one seamless strip (`art_source/JettyBridgeRedesign/seam_strips.py`),
+  with the post and cable of his picked steel bridge in that look; `selftest_flowworks_jetty_seams.py` checks every jetty
+  look. **The default look is Scrapper**, so a heavy bridge built without picking a look still draws the old art.
 - The anchor blocks keep their current pictures (the generated scenes used placeholders). The new posts stand on them.
 - Drawbridges, raid planks and grated decks are not changed. A bridge with towers draws one main cable end to end.
 - The four steel-bridge looks share one silhouette (polish line on `design/concepts/FlowWorks/version/polish.md`).
