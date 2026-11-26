@@ -30,7 +30,7 @@ Framework pillar 2 — *pulsed spread only, no per-tick fluid sim, ever* — is 
 everything below stays inside it.
 
 **The pit's visual/art direction lives in the pit item, not a separate spec:**
-`infrastructure/state/items/PIT_SUPERDEEP_COLLAPSE_1.md`. Ruling 33 (2026-09-16) settles the
+`infrastructure/state/items/closed/PIT_SUPERDEEP_COLLAPSE_1.md`. Ruling 33 (2026-09-16) settles the
 depth read — Quarry-style perspective, where **the wall faces carry the depth, not the occupant**
 — and the item also carries the sprite economy that agrees with it. The old
 `pit_trap_visual_interface_spec.md` was DELETED 2026-09-19: it designed a TRAP's five states

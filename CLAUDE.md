@@ -192,7 +192,7 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 
 ## A pit is a superdeep cell, not a building
 
-- Before you design or build a pit, read the item `infrastructure/state/items/PIT_SUPERDEEP_COLLAPSE_1.md`. Then read
+- Before you design or build a pit, read the item `infrastructure/state/items/closed/PIT_SUPERDEEP_COLLAPSE_1.md`. Then read
   `design/RimMandrake/standing_rulings.md` §A pit is a SUPERDEEP cell.
 - Do not act on the 1127-line spec `design/RimMandrake/pit_superdeep_collapse_spec.md` before you read the item. Ten
   of the spec's answers changed after the spec was written.
