@@ -666,7 +666,7 @@
     "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs",
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
    ],
-   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes calibration,over_sandbags,spared_states,mass_and_power,immunity_window,settings_off,wall_stop,pawn_hits_pawn,door_stop,shield_counter --ticks 300   (proof build, minimal list)",
+   "command": "python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes mass_and_power,mass_and_power_x2,mass_and_power_250,mass_and_power_250_x2 --ticks 300   (proof build, minimal list)",
    "why_game": "the explosion's real damage and the Mass stat as the game computes it reach the kernel only in game (the cell table itself is K-19, offline)",
    "why_full_list": null,
    "entry_exists": true,
@@ -684,8 +684,12 @@
     "by": "testq_blocks.py"
    },
    "scenes": [
-    "mass_and_power"
-   ]
+    "mass_and_power",
+    "mass_and_power_x2",
+    "mass_and_power_250",
+    "mass_and_power_250_x2"
+   ],
+   "repair_note": "visit 2 of 0.2.0: the decider ran only the ratio-1.0 lane, so PF_HOOK_BLAST_POWER_DROPPED (the hook drops force x damage ratio) stayed green; the x2 lanes read it (colonist 3 against 5 wanted). The four lanes the proof already holds now decide it."
   },
   "sc_recovery": {
    "id": "sc_recovery",
