@@ -1678,7 +1678,7 @@ def answers(L, now=None):
             lead = ("Mostly: the judge found a few set-downs not honest" if ns * 4 <= judged else
                     "Often not: the judge found many set-downs not honest" if ns * 2 <= judged else
                     "No: the judge found most set-downs not honest")
-            out.append((ANSWER_LABELS[3], "%s, with the most from %s." % (lead, most), "%d of %d not honest" % (ns, judged)))
+            out.append((ANSWER_LABELS[3], "%s, and %s had the most." % (lead, most), "%d of %d not honest" % (ns, judged)))
     # 5. What needs a person? the first that holds: a stale reading, a failed report, the crossed line; else Nothing
     made = ep(L.get("made"))
     if made is None or now - made > STALE_S:
