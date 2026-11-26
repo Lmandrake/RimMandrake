@@ -679,7 +679,7 @@ namespace RimMandrake.ExplosiveKnockback
             return GenSpawn.Spawn(t, c, Map);
         }
 
-        private static Thing Item(Scene s, string key, string def, int count, IntVec3 c)
+        private static Thing Item(Scene s, string key, string def, int count, IntVec3 c, bool haulable = false)
         {
             Thing t = ThingMaker.MakeThing(DefDatabase<ThingDef>.GetNamed(def));
             t.stackCount = count;
@@ -692,6 +692,14 @@ namespace RimMandrake.ExplosiveKnockback
                 s.placeFault = (s.placeFault == null ? "" : s.placeFault + "; ") + "could not place " + count + " " + def + " at "
                     + c.x + "," + c.z + ", the cell holds [" + string.Join(", ", c.GetThingList(Map).Select(x => x.def.defName + x.thingIDNumber
                     + " x" + x.stackCount + " " + x.def.category)) + "]";
+            }
+            // RIMMANDRAKE_HUNT_KNOCKBACK_GOOD_UNMOVED_LONG_BATCH_THREE_SIGHTINGS (2026-11-26, the printed line of long batch 1:
+            // gone(destroyed=False stack=1 holder=Pawn_CarryTracker:<a stage-save colonist> job=HaulToCell)): a free colonist of
+            // the stage save hauled the scene's good between staging and the verdict. A forbidden good is never hauled by free
+            // will; a scene whose claim is a haul of its good passes haulable: true.
+            if (!haulable && placed != null && placed.Spawned)
+            {
+                placed.SetForbidden(true, warnOnFail: false);
             }
             Track(s, key, placed ?? t);
             return placed ?? t;
@@ -2393,7 +2401,7 @@ namespace RimMandrake.ExplosiveKnockback
                         Action prev = s.restore;
                         s.restore = () => { if (zone.zoneManager != null) zone.Delete(); prev?.Invoke(); };
                         Pawn p = Colonist(s, "p", O(s, 1, 0), drafted: false);
-                        Thing st = Item(s, "st", "Steel", 20, O(s, 1, 0));
+                        Thing st = Item(s, "st", "Steel", 20, O(s, 1, 0), haulable: true);
                         Job haul = JobMaker.MakeJob(JobDefOf.HaulToCell, st, O(s, 1, -5));
                         haul.count = st.stackCount;
                         haul.haulMode = HaulMode.ToCellStorage;
@@ -2596,8 +2604,8 @@ namespace RimMandrake.ExplosiveKnockback
                         {
                             return "the raised control ladder still reads lowered (FlowWorks' ladders can be raised and lowered setting off?)";
                         }
-                        Item(s, "st", "Steel", 20, O(s, 4, 5));
-                        Item(s, "cst", "Steel", 20, O(s, -6, -6));
+                        Item(s, "st", "Steel", 20, O(s, 4, 5), haulable: true);
+                        Item(s, "cst", "Steel", 20, O(s, -6, -6), haulable: true);
                         Pawn dead = Colonist(s, "dead", O(s, 6, 5), drafted: false);
                         dead.Kill(null);
                         // live 2026-11-16: vanilla forbids a corpse that dies outside the home area (Pawn.Kill ->
