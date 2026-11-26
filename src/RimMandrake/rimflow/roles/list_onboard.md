@@ -64,7 +64,7 @@ and end. The pipeline restarts a fresh run of you from that file.
 
 Every member ends with one outcome: closed (fixed or done already), dropped, superseded, routed, a dated wait (`cli.py
 wait <ID> --until <YYYY-MM-DD> --reason "<who acts next and on what>"`), or a note
-that starts `REFUSED BY BUNDLE:` with its reason (the role's section "A refusal has a reason"). A full context, a long
+that starts `REFUSED BY BUNDLE:` with its reason (the section "A refusal has a reason" of src/RimMandrake/rimflow/roles/builder.md). A full context, a long
 run or a spend stop is never a reason.
 
 {fixer}
