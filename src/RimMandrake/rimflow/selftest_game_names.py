@@ -127,6 +127,12 @@ def t_every_reader_prints_the_games_name_never_a_bare_letter():
         GL.games, GL.lock_path, GL.query = saved
     d = C.describe({"layer": "owner", "scope": "game:b", "date": "2026-11-22", "said": "walk", "why": ""})
     check("ArchSmall" in d and not BARE.search(d), "a game switch's description names ArchSmall", d)
+    # `pipe undo` of a game's OFF names the game (polish line of 2026-11-22, taken 2026-11-26)
+    C.init(os.environ["RM_CONTROL_DB"])
+    off = C.switch("game:b", True, "selftest: undo names the game")
+    u = C.undo(off["act"]["id"] if isinstance(off.get("act"), dict) else off.get("act"), "selftest: undo names the game")
+    check(u["ok"] and "ArchSmall" in u["line"] and not BARE.search(u["line"]), "pipe undo of a game OFF names ArchSmall",
+          u["line"])
 
     # the tick's reasons per game
     import maturation_dispatch as MD

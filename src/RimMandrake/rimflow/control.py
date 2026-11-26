@@ -1194,6 +1194,12 @@ def undo(act_id, why, owner_said=None, per_ruling=None, p=None, now=None, base=0
     return r
 
 
+def _shown(scope):
+    """A scope as a printed line names it: a game's by its name (game:ArchSmall), any other as it is."""
+    import game_names
+    return game_names.show_scope(scope)
+
+
 def _undo(act_id, why, owner_said, per_ruling, p, now, base):
     no = lambda w: {"ok": False, "why": w, "act": None, "line": "NOT undone: " + w, "after": None}
     with txn(p) as c:
@@ -1245,7 +1251,7 @@ def _undo(act_id, why, owner_said, per_ruling, p, now, base):
             sw = c.execute("SELECT * FROM switches WHERE scope=? AND layer='control'", (a["scope"],)).fetchone()
             if not sw or sw["act"] != act_id:
                 return no("%s OFF is no longer the switch's own act (now %s): `pipe on %s` lifts the current one" % (
-                    act_id, sw["act"] if sw else "no switch", a["scope"]))
+                    act_id, sw["act"] if sw else "no switch", _shown(a["scope"])))
             prior = json.loads(a["before"] or "null")     # the switch row this off replaced (before-is-read)
             if not (isinstance(prior, dict) and prior.get("layer") == "control" and prior.get("scope") == a["scope"]):
                 prior = None
@@ -1253,13 +1259,13 @@ def _undo(act_id, why, owner_said, per_ruling, p, now, base):
             if prior is None:
                 c.execute("DELETE FROM switches WHERE scope=? AND layer='control'", (a["scope"],))
                 return {"ok": True, "why": None, "act": u, "after": "ON", "line": "%s: OFF %s undone (ON)" % (
-                    a["scope"], act_id)}
+                    _shown(a["scope"]), act_id)}
             cols = [r[1] for r in c.execute("PRAGMA table_info(switches)").fetchall()]
             c.execute("INSERT OR REPLACE INTO switches (%s) VALUES (%s)" % (",".join(cols), ",".join("?" * len(cols))),
                       [prior.get(k) for k in cols])
             after = "OFF" if _live(prior, now) else "ON"
             return {"ok": True, "why": None, "act": u, "after": after, "line": "%s: OFF %s undone; the OFF it replaced "
-                    "is back, %s (%s)%s" % (a["scope"], act_id, prior.get("act") or "no act", str(prior.get("why"))[:60],
+                    "is back, %s (%s)%s" % (_shown(a["scope"]), act_id, prior.get("act") or "no act", str(prior.get("why"))[:60],
                                             "" if after == "OFF" else ", lapsed at its until: ON")}
         if a["kind"] == "stop":     # withdrawn while its run has not obeyed it (RIMMANDRAKE_NEVER_REFUSE_THE_CONDUCTOR_...)
             if a.get("owner_said") and not owner_said:
