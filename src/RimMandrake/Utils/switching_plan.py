@@ -1458,7 +1458,8 @@ def _check(dry, now, meter_fn, poll_fn, runs_fn=default_runs, burn_fn=default_bu
                 state.pop("account_end", None)
                 save_state(state)
         rec["result"], rc = res, 0 if ok else 1
-        if not ok and not lapsed and d.get("under") and (state.get("stopped") or {}).get("account") != live:
+        if not ok and not lapsed and d.get("under") and not d.get("above_line") \
+                and (state.get("stopped") or {}).get("account") != live:
             # a failed switch off a spent account never leaves it burning: stop now, retry the switch from the stop
             res2 = armed_call(switcher_status() or st, ["fleet-stop"])
             rec["brake"] = res2

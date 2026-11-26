@@ -60,6 +60,9 @@ PLANTS = [
      '    if near_old and lr["age_min"] is not None and lr["age_min"] > fr["max_age_min"]:', '    if False:'),
     ("a_rescue_drain_in_flight_goes_on", P, 'f["draining"] or bool(last.get("draining"))', 'f["draining"]'),
     # the sweep of 2026-11-25: a run that did not end after its save order held the fleet at steven's line for 30 h
+    ("a_level_not_read_is_no_pending_switch", P, ' and d["pct_left"] <= d["line"] and not d.get("unread")', ' and d["pct_left"] <= d["line"]'),
+    ("a_failed_switch_off_an_account_above_its_line_stops_nothing", P, 'is_under and not stopped_here and not above:',
+     'is_under and not stopped_here:'),
     ("a_stopped_fleet_switches_when_an_account_refills", P, '    under = under or stopped_end\n', ''),
     ("an_account_end_drain_ends_at_its_bound", P, 'and now - since >= bound * 3600 and not AE.has_emergency',
      'and False and not AE.has_emergency'),

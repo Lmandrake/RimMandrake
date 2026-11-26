@@ -419,6 +419,16 @@ def t_a_level_not_read_is_no_pending_switch():
     check(n + ": another machine on an account whose level is unread: no new run there, and no switch said",
           nt["drain"] and nt["switch_pending"] is False and "not read" in why and "switch" not in why
           and "switch" not in nt["message"].lower(), (nt, why))
+    # the sweep, 2026-11-25: no account readable while system's last reading sat at its 2% wait floor; the deciding machine
+    # read soft and unread, and SteveDesktop's notice said 'at its line: save your work now', switch pending
+    blind = {a: R(lv, h, src="UNMEASURED", age=50.0) for a, lv, h in (("steven", 99, 140), ("system", 2, 110),
+                                                                      ("lukas", 60, 120))}
+    f = F("lukas", blind)
+    dm = AP.decide(NEW(), AP.machine_facts(f, "system"))
+    nt = AP.machine_notice(NEW(), f, "system", NOW, "box2")
+    check(n + ": another machine on an account whose last reading is at its line and that is not read now: no new run "
+              "there, no save order and no switch said", dm.get("unread") and nt["drain"] and not nt["account_end"]
+          and nt["switch_pending"] is False and "not read" in nt["message"], (dm.get("do"), nt))
     real = SP.notice_of({"do": "soft", "drain": True, "account": "steven", "pct_left": 52, "line": 52,
                          "why": "the switch to system waits while live runs finish"}, NOW, {})
     check(n + ": a real drain before a switch still says that a switch is pending",
@@ -494,6 +504,27 @@ def t_a_stopped_fleet_switches_when_an_account_refills():
     check(n + ": no account can take over: it stays stopped", d["do"] == "stopped", d)
     d = AP.decide(BASE, F("system", {**rows, "system": R(30, 70)}, runs=[], state=st))
     check(n + ": the stopped account itself has headroom again: the fleet starts on it", d["do"] == "start", d)
+
+
+def t_a_failed_switch_off_an_account_above_its_line_stops_nothing():
+    """RIMMANDRAKE_SWEEP_ACCOUNT_BURN_REGIMES_TWO_FAULTS_ONE_DAY (the sweep, 2026-11-25): steven at 59%, its 48 h window
+    over, was left for system; the switcher failed once and the pass stopped the whole fleet, though steven was 7
+    points above its line and system could take over (the stop is the brake for a spent account)."""
+    n = "a_failed_switch_off_an_account_above_its_line_stops_nothing"
+    rows = {"steven": R(59, 100), "system": R(80, 110), "lukas": R(20, 140)}
+    key = SP.switch_key("steven", "system", rows["system"])
+    mk = {key: {"phase": "failed", "at": AP.iso(NOW - 300), "from": "steven", "to": "system", "under": True}}
+    d = AP.decide(BASE, F("steven", rows, runs=RUN, markers=mk, burn_h=None))
+    check(n + ": the switch is tried again, and the fleet is not stopped", d["do"] != "stop" and d.get("above_line"), d)
+    spent = {**rows, "system": R(1, 110), "steven": R(90, 100)}
+    k2 = SP.switch_key("system", "lukas", spent["lukas"])
+    d = AP.decide(BASE, F("system", spent, runs=RUN, markers={k2: {"phase": "failed", "at": AP.iso(NOW - 300),
+                                                                   "from": "system", "to": "lukas", "under": True}}))
+    check(n + ": a failed switch off a spent account still stops the fleet (the brake), and the switch is tried "
+              "again from the stop", d["do"] == "stop" or (d["do"] == "soft" and d.get("drain_of") == "stop"), d)
+    src = (HERE / "switching_plan.py").read_text()
+    check(n + ": the actuator's brake after a failed switch skips an account above its line",
+          'd.get("under") and not d.get("above_line")' in src, "the brake reads no above_line")
 
 
 def t_an_account_end_drain_ends_at_its_bound():
@@ -2005,6 +2036,7 @@ def main():
               t_a_level_not_confirmed_near_the_line_refuses_starts, t_a_level_not_read_is_no_pending_switch,
               t_a_rescue_drain_in_flight_goes_on, t_an_account_end_drain_ends_at_its_bound,
               t_a_stopped_fleet_switches_when_an_account_refills,
+              t_a_failed_switch_off_an_account_above_its_line_stops_nothing,
               t_an_account_outside_the_plan_is_left_alone, t_a_step_that_is_not_alive_says_so,
               t_one_file_binds_at_the_next_read, t_a_bad_write_keeps_the_old_plan, t_two_writers_lose_no_change,
               t_every_write_has_an_undo, t_a_write_is_never_refused_for_a_missing_flag,

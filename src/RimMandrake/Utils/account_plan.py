@@ -991,7 +991,10 @@ def decide(plan, f, polled=True) -> dict:
         key = SP.switch_key(live, a, f["rows"].get(a))
         m = markers.get(key) or {}
         age = now - stamp_or(m.get("at"), 0)       # a marker with no time is old: it guards nothing
-        if m.get("phase") == "failed" and is_under and not stopped_here:
+        # a_failed_switch_off_an_account_above_its_line_stops_nothing: left only because no step uses it, above its
+        # line, the account is not spent: a failed switch is tried again and the fleet goes on
+        above = rl is None and pl is not None and pl > line
+        if m.get("phase") == "failed" and is_under and not stopped_here and not above:
             return out({"do": "stop", "key": SP.stop_key(live, f["rows"].get(live) or {}, now),
                         "why": "the switch %s failed and %s is finished: stop; the switch is tried again from the "
                                "stopped fleet" % (key, live)})
@@ -1002,7 +1005,8 @@ def decide(plan, f, polled=True) -> dict:
                 return out({"do": "stop", "key": SP.stop_key(live, f["rows"].get(live) or {}, now),
                             "why": "the switch %s is in flight yet %s is still live at its line: stop" % (key, live)})
             return {**base, "do": "hold", "to": a, "key": key, "why": "the switch %s is in flight" % key}
-        return out({"do": "switch", "to": a, "key": key, "under": is_under, "why": why}, week=week)
+        return out({"do": "switch", "to": a, "key": key, "under": is_under, "why": why}, week=week,
+                   **({"above_line": True} if above else {}))
 
     # ---- the live account is finished: which account is next
     if under or until:
@@ -1357,8 +1361,8 @@ def machine_notice(plan, f, account, now, name, prev=None, why_unread=None) -> d
                 "why": msg, "drain": True, "account_end": False, "warning": None, "could_not_look": True, **tag}
     fm = machine_facts(f, account)
     d = decide(plan, fm)
-    if d["do"] in REFUSES:
-        under = is_num(d.get("pct_left")) and is_num(d.get("line")) and d["pct_left"] <= d["line"]
+    if d["do"] in REFUSES:      # a last level that is not read now is no level at the line (no save order on it)
+        under = is_num(d.get("pct_left")) and is_num(d.get("line")) and d["pct_left"] <= d["line"] and not d.get("unread")
         dm = {**d, "do": "soft", "drain": True, "account_end": under}
     else:
         dm = {**d, "do": "normal", "account": account}

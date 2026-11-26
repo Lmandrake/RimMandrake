@@ -110,6 +110,10 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
   (the level is inside its warning zone plus `entry_margin_pct`) is finished there once another account can take over
   (a reset refilled it): the decision is the switch to it, behind the same fresh-reading guard as every switch. Found by
   the sweep (`design/specs/2026-11-25-account-plan-sweep/`).
+- **a_failed_switch_off_an_account_above_its_line_stops_nothing.** A switch that failed off an account that no step uses
+  now and that is above its line is tried again; neither the decision nor the actuator's brake stops the fleet for it.
+  The brake (a stop, and the switch tried again from the stopped fleet) stays for an account at or under its line.
+  Found by the sweep.
 - **unknown_never_gives_permission.** A `when` condition that is unknown keeps its step not alive; an `until`
   condition that is unknown does not end a step; a level that is not MEASURED and fresh makes no account a target.
 - **a_level_not_confirmed_near_the_line_refuses_starts.** Within `fresh.near_pct` of its warning line, a level that is
@@ -120,7 +124,9 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
   notice reads `switch_pending` false and says that no new run starts until the level is read and that live runs go
   on; on another machine it still refuses a new run, with the same words. A notice of a real drain, or of a switch due
   before its poll, reads `switch_pending` true. The checkpoint hook (`.claude/hooks/switch_checkpoint_signal.py`) tells
-  a run or a window that a switch is pending only on a notice that reads it.
+  a run or a window that a switch is pending only on a notice that reads it. On another machine a last level at
+  its line that is not read now is no level at the line: its notice carries no save order (found by the sweep, with no
+  account readable and the account's last reading at its 2% wait floor).
 - **an_account_outside_the_plan_is_left_alone.** When the live account is no account of the plan, the decision is
   `normal`: no switch, no stop, no refusal. The reason names the repair. An account of the plan that no step uses now
   (Steve's account past its window) is left when its live runs end.
