@@ -1265,6 +1265,22 @@ def t_an_old_ticket_with_a_live_run_leads_no_onboarding_run():
     chk(lambda: all(len(x) == len(set(x)) for x in seen), "onboard_step: no launched id has a second row (%s)" % seen)
 
 
+def t_an_old_ticket_with_any_hold_row_leads_no_onboarding_run():
+    """2026-11-26 04:10 PST (after the `live` fix): an old ticket whose own row read `system_wait` (two launches never
+    started) led the onboarding run of its home; two rows under one id, and execute() died on KeyError 'model' on every
+    tick. Any own row that is not a Shape row holds the ticket out of onboarding."""
+    import list_dispatch as LD
+    W = WB()
+    items = onboard_world()
+    for dec in ("system_wait", "chain_stop", "blind", "waiting", "close_refused", "stopped"):
+        ob = onboard_facts_of(W, items)
+        rows, launches = LD.onboard_step({"onboard_classes": ON}, [{"item": "S1", "decision": dec, "why": "held"}], [],
+                                         dict(ob, systems={}), {}, lambda: ("", None))
+        dup = [i for i in launches if sum(1 for r in rows if r["item"] == i) > 1]
+        chk(lambda: not dup and "S1" not in launches,
+            "onboard_step: a ticket whose own row reads %s leads no onboarding run and has no second row (%s)" % (dec, dup))
+
+
 def t_the_onboard_classes_are_data():
     W = WB()
     chk(lambda: W.onboard_class("pipeline:bridge", ON)[0] and W.onboard_class("machine:SteveDesktop", ON)[0],
@@ -1473,7 +1489,7 @@ def main():
               t_the_maturation_road_back_is_one_bundle, t_a_test_never_writes_the_real_store,
               t_the_conductor_ends_a_dead_bundle, t_five_tickets_two_fixed_one_run,
               t_each_limit_names_its_danger, t_old_tickets_are_onboarded_by_home,
-              t_an_onboarding_member_is_ready_or_left_out_with_its_reason, t_an_old_ticket_with_a_live_run_leads_no_onboarding_run,
+              t_an_onboarding_member_is_ready_or_left_out_with_its_reason, t_an_old_ticket_with_a_live_run_leads_no_onboarding_run, t_an_old_ticket_with_any_hold_row_leads_no_onboarding_run,
               t_the_onboard_classes_are_data,
               t_one_onboarding_beside_no_live_bundle, t_an_onboarding_that_could_not_look_starts_nothing,
               t_a_home_lead_takes_its_old_tickets, t_the_onboarding_brief_sorts_before_it_checks,
