@@ -285,6 +285,60 @@ namespace RimMandrake.KeelHoist
     /// <summary>Dev proofs, called through jawa/static_call (the pattern every later suite uses).</summary>
     public static class RM_PitBuyerProof
     {
+        /// <summary>
+        /// Stages a real buyer-pit site for the live proofs: the site part's faction (made if this world has none, set
+        /// neutral if hostile, as the quest node needs), a Site a few tiles from the colony by SiteMaker (the quest node's
+        /// own call), its map generated, and that map made current. A loaded map of such a site is reused, so the clauses
+        /// of one sitting share one site. On a player colony map the pit gate is open by rule and keepers never buy, so
+        /// the sale and the seal can only be read here.
+        /// </summary>
+        public static string ProofMakeSite(string sitePartDefName)
+        {
+            SitePartDef def = DefDatabase<SitePartDef>.GetNamedSilentFail(sitePartDefName);
+            RM_BuyerPitSiteExtension ext = def?.GetModExtension<RM_BuyerPitSiteExtension>();
+            Map home = Find.AnyPlayerHomeMap;
+            if (ext == null || ext.factionDef == null || home == null)
+            {
+                return "UNMEASURED no player home map, or no RM_BuyerPitSiteExtension with a faction on " + sitePartDefName;
+            }
+            Map map = Find.Maps.FirstOrDefault(m => m.Parent is Site st && st.parts.Any(pt => pt.def == def));
+            string how = "reused";
+            Faction faction = Find.FactionManager.AllFactions.FirstOrDefault(f => f.def == ext.factionDef && !f.defeated);
+            if (map == null)
+            {
+                how = "made";
+                if (faction == null)
+                {
+                    faction = FactionGenerator.NewGeneratedFaction(new FactionGeneratorParms(ext.factionDef));
+                    Find.FactionManager.Add(faction);
+                    how += "+faction";
+                }
+                if (faction.HostileTo(Faction.OfPlayer))
+                {
+                    faction.SetRelationDirect(Faction.OfPlayer, FactionRelationKind.Neutral, canSendHostilityLetter: false);
+                    how += "+neutral";
+                }
+                if (!TileFinder.TryFindNewSiteTile(out PlanetTile tile, home.Tile, ext.tileDistance.min, ext.tileDistance.max))
+                {
+                    return "UNMEASURED no free tile for the site near the colony";
+                }
+                Site site = SiteMaker.MakeSite(def, tile, faction);
+                Find.WorldObjects.Add(site);
+                map = GetOrGenerateMapUtility.GetOrGenerateMap(site.Tile, null);
+                if (map == null)
+                {
+                    return "UNMEASURED the site's map did not generate";
+                }
+            }
+            Current.Game.CurrentMap = map;
+            RM_KeelHoist frame = map.listerThings.AllThings.OfType<RM_KeelHoist>().FirstOrDefault(h => h.targetHolder != null
+                && h.targetHolder.def.HasModExtension<RM_PitBuyerExtension>());
+            int keepers = faction == null ? 0 : map.mapPawns.SpawnedPawnsInFaction(faction).Count(k => !k.Dead && !k.Downed);
+            return string.Format("SITE {0} map={1} parentFaction={2} keepers={3} hostile={4} frame={5} gate={6}",
+                how, map.uniqueID, map.ParentFaction?.Name ?? "none", keepers, faction != null && faction.HostileTo(Faction.OfPlayer),
+                frame?.ThingID ?? "none", frame == null ? "-" : frame.targetHolder.GateOpen(out _).ToString());
+        }
+
         /// <summary>Lays out the named site part's pit on the current map, owned by its faction.</summary>
         public static string ProofLayOut(string sitePartDefName)
         {
@@ -310,11 +364,16 @@ namespace RimMandrake.KeelHoist
         }
 
         /// <summary>
-        /// Sells one pawn through the pit's frame: a fresh prisoner of the colony (kind) is put straight into transit
-        /// down the cable, the clock is run past its cycle, and the silver that came up is counted.
+        /// Sells one pawn through the pit's frame: a fresh pawn of `kind` is put straight into transit down the cable, the
+        /// clock is run past its cycle, and the silver that came up is counted (silverUp, the rise in the map's silver).
+        /// The argument is `Kind` or `Kind:cargo`. Cargo `prisoner` (a humanlike's default): a prisoner of the colony;
+        /// `slave`: a slave of the colony; `tame` (an animal's default): a colony animal; `downed`: a wild animal, downed.
         /// </summary>
-        public static string ProofSell(string pawnKindDefName)
+        public static string ProofSell(string arg)
         {
+            string[] parts = (arg ?? "").Split(':');
+            string pawnKindDefName = parts[0];
+            string cargo = parts.Length > 1 ? parts[1].Trim().ToLowerInvariant() : "";
             Map map = Find.CurrentMap;
             RM_KeelHoist frame = map?.listerThings.AllThings.OfType<RM_KeelHoist>().FirstOrDefault(h => h.targetHolder != null
                 && h.targetHolder.def.HasModExtension<RM_PitBuyerExtension>());
@@ -324,17 +383,37 @@ namespace RimMandrake.KeelHoist
                 return "UNMEASURED no buyer pit with a frame on this map (run ProofLayOut first) or no kind " + pawnKindDefName;
             }
             RM_SealedHolder pit = frame.targetHolder;
+            if (cargo == "")
+            {
+                cargo = kind.RaceProps.Humanlike ? "prisoner" : "tame";
+            }
+            if (kind.RaceProps.Humanlike != (cargo == "prisoner" || cargo == "slave"))
+            {
+                return "UNMEASURED cargo " + cargo + " does not fit kind " + pawnKindDefName;
+            }
             int heldBefore = pit.HeldCount;
+            int silverBefore = map.listerThings.ThingsOfDef(ThingDefOf.Silver).Sum(t => t.stackCount);
             Pawn p = PawnGenerator.GeneratePawn(new PawnGenerationRequest(kind, null, PawnGenerationContext.NonPlayer, forceGenerateNewPawn: true));
             GenSpawn.Spawn(p, CellFinder.StandableCellNear(frame.Position, map, 5f), map);
-            if (p.RaceProps.Humanlike)
+            switch (cargo)
             {
-                p.guest.CapturedBy(Faction.OfPlayer);
+                case "prisoner":
+                    p.guest.CapturedBy(Faction.OfPlayer);
+                    break;
+                case "slave":
+                    p.guest.CapturedBy(Faction.OfPlayer);
+                    p.guest.SetGuestStatus(Faction.OfPlayer, GuestStatus.Slave);
+                    break;
+                case "tame":
+                    p.SetFaction(Faction.OfPlayer);
+                    break;
+                case "downed":
+                    HealthUtility.DamageUntilDowned(p, allowBleedingWounds: false);
+                    break;
+                default:
+                    return "UNMEASURED unknown cargo " + cargo;
             }
-            else
-            {
-                p.SetFaction(Faction.OfPlayer);
-            }
+            string status = string.Format("cargo={0} slave={1} prisoner={2} downed={3}", cargo, p.IsSlave, p.IsPrisoner, p.Downed);
             int expected = RM_PitBuyerUtility.PriceFor(p, pit);
             frame.BeginTransit(p, up: false, from: "proof");
             frame.DebugArriveAllNow();
@@ -342,9 +421,9 @@ namespace RimMandrake.KeelHoist
             int silverAfter = map.listerThings.ThingsOfDef(ThingDefOf.Silver).Sum(t => t.stackCount);
             // a humanlike buyer's slave keeps its own Faction; the buyer is its HostFaction (guest status Slave)
             bool sold = pit.HeldCount == heldBefore + 1 && (p.Faction == pit.Faction || p.HostFaction == pit.Faction);
-            return string.Format("{0} pawn={1} price={2} silverOnMap={3} held={4}->{5} faction={6} sales={7}",
+            return string.Format("{0} pawn={1} price={2} silverOnMap={3} silverUp={8} held={4}->{5} faction={6} sales={7} {9}",
                 sold ? "SOLD" : "NOTSOLD", p.LabelShort, expected, silverAfter, heldBefore, pit.HeldCount, (p.Faction?.Name ?? "none") + "/host=" + (p.HostFaction?.Name ?? "none"),
-                pit.sales.Count);
+                pit.sales.Count, silverAfter - silverBefore, status);
         }
 
         /// <summary>Raises the cradle and reports the gate: sealed while keepers stand, open once they are gone.</summary>

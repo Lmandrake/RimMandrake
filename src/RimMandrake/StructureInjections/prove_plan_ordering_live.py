@@ -112,6 +112,16 @@ def selftest():
         got = cells_of(ops)
         print("%s  ops %r read" % ("ok  " if got == want else "FAIL", ops))
         bad += got != want
+    row = {'id': 'Wall37430', 'def': 'Wall', 'x': 125, 'z': 125, 'spawned': True}   # a real row, Steve2 2026-11-26
+    got = wall_cell(row)
+    print("%s  a real list_things row reads (125, 125)" % ("ok  " if got == (125, 125) else "FAIL"))
+    bad += got != (125, 125)
+    try:
+        wall_cell({"id": "Wall1", "position": {"x": 1, "z": 2}})
+        print("FAIL  a row with no x/z raises")
+        bad += 1
+    except RuntimeError:
+        print("ok    a row with no x/z raises")
     print("selftest %s" % ("passed" if not bad else "FAILED"))
     return 1 if bad else 0
 
@@ -124,15 +134,16 @@ def must(b, tool, **kw):
 
 
 def walls(b, rect):
-    """-> {(x, z)} of the Walls standing in rect. A row with no position dict is a reader fault, raised."""
+    """-> {(x, z)} of the Walls standing in rect (list_things rows carry x and z at the top level, measured on Steve2
+    2026-11-26). A row with no x or z is a reader fault, raised."""
     r = must(b, "jawa/list_things", defName="Wall", rect=rect, limit=2000)
-    out = set()
-    for t in r.get("things") or []:
-        pos = t.get("position")
-        if not isinstance(pos, dict):
-            raise RuntimeError("list_things gave a row with no position: %r" % (str(t)[:200],))
-        out.add((int(pos["x"]), int(pos["z"])))
-    return out
+    return {wall_cell(t) for t in r.get("things") or []}
+
+
+def wall_cell(t):
+    if not isinstance(t.get("x"), int) or not isinstance(t.get("z"), int):
+        raise RuntimeError("list_things gave a row with no x/z: %r" % (str(t)[:200],))
+    return (t["x"], t["z"])
 
 
 def live():

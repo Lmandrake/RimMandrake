@@ -18,6 +18,7 @@ file: src/RimMandrake/KeelHoist/Source/RM_PitBuyer.cs
 file: src/RimMandrake/KeelHoist/Source/RM_HoistFrame.cs
 file: src/RimUtinni/UtinniPatches/Defs/HuttSlavePit/RUT_HuttSlavePit.xml
 def: SitePartDef/RUT_HuttSlavePit
+new: src/RimMandrake/KeelHoist/prove_hutt_pit_site_live.py
 
 ## Watch out
 - This site's **oubliette** is a sealed map feature, not the pit "oubliette fitting" the owner CUT on 2026-09-17
