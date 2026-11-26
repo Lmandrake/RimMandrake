@@ -295,8 +295,9 @@ def repo(tmp):
 
 def publish(c, *paths, **env):
     e = dict(os.environ, **env)
+    import time_budget      # a publish waits for a tree-check slot on a loaded machine: 120 s cut it (2026-11-26, 336 s wait)
     return subprocess.run([sys.executable, os.path.join(HERE, "publish.py"), "-m", "s", *paths], cwd=c, capture_output=True,
-                          text=True, env=e, timeout=120)
+                          text=True, env=e, timeout=time_budget.PUBLISH_S)
 
 
 def t_a_publish_with_faults_still_lands():
@@ -320,7 +321,7 @@ def t_a_publish_with_faults_still_lands():
         with open(p, "a") as f:
             f.write("\n- The clerk should go to the belt.\n")
         r = subprocess.run([sys.executable, os.path.join(HERE, "publish.py"), "-m", "s", "design/RimMandrake/debug_process.md"], cwd=c,
-                           capture_output=True, text=True, env=other, timeout=120)
+                           capture_output=True, text=True, env=other, timeout=__import__("time_budget").PUBLISH_S)
         check(r.returncode == 0 and "GUIDING PROSE" not in r.stdout and not os.path.exists(os.path.join(TMP, "other", "guiding_prose")),
               "publish: a throwaway clone with no guiding_prose.json is not read or recorded (%s)" % (r.stdout + r.stderr)[-200:])
         with open(os.path.join(c, "x.txt"), "w") as f:
