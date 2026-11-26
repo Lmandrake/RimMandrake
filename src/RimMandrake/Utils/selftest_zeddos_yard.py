@@ -169,6 +169,56 @@ def load_planet(path):
     return doc.get("planet") or {}, None
 
 
+def b10_run(added):
+    """-> (exit code, printed lines) of zeddos_yard_live_proof.main(['x', 'A1']) against a fake bridge on a 250 map: the
+    map holds one plan-def building (id OLD) in the clearing before the GenStep; with added, the GenStep puts another
+    (id NEW) there. The yard's growth and the megastructure cell read as a real yard."""
+    import contextlib
+    import importlib.util
+    import io
+    spec = importlib.util.spec_from_file_location("zy_live_b10", os.path.join(REPO, LIVE_SCRIPT))
+    m = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(m)
+    st = {"ran": False}
+
+    class Fake:
+        def __init__(self, *a, **k):
+            pass
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+
+        def call(self, method, params=None):
+            params = params or {}
+            if method == "jawa/map_info":
+                return {"mapId": 7, "sizeX": 250, "sizeZ": 250}
+            if method == "jawa/run_genstep":
+                st["ran"] = True
+                return {"success": True}
+            if method == "jawa/get_terrain_batch":
+                return {"success": True, "cellsRead": 1, "distinctTerrains": [m.gen.MEGA_TERRAIN]}
+            if method == "jawa/list_things":
+                if params.get("rect"):
+                    rows = [{"id": "OLD"}] + ([{"id": "NEW"}] if st["ran"] and added else [])
+                    return {"success": True, "things": rows, "isCompleteList": True, "countMatched": len(rows)}
+                n = (100 if "AncientFortifiedWall" not in params["defName"] else 20) if st["ran"] else 0
+                return {"success": True, "countMatched": n}
+            raise AssertionError(method)
+    m.rb.resolve_endpoint = lambda: ("h", 1, "t")
+    m.rb.RimBridge = Fake
+    out = io.StringIO()
+    try:
+        with contextlib.redirect_stdout(out):
+            rc = m.main(["x", "A1"])
+    except SystemExit as e:         # the old proof raised on a reply it could not read
+        rc = 2
+        out.write(str(e))
+    return rc, out.getvalue().strip()
+
+
 def main():
     text = open(PLAN, encoding="utf-8").read()
     bar("B1 plan == generator output", text == gen.render())
@@ -249,6 +299,13 @@ def main():
         and os.path.isfile(os.path.join(REPO, LIVE_SCRIPT)) and re.search(r"(?m)^A1\b", crit) is not None
         and why is None and bad_dollar is not None and bad_apply is not None,
         "lines=%d why=%r crit_A1=%s sanity_dollar=%r sanity_apply=%r" % (len(a1), why, "A1" in crit, bad_dollar, bad_apply))
+
+    # B10 the A1 proof judges the clearing on what the GenStep ADDS (fake bridge, no game): a building the map held before
+    # stays and PASSes; one the GenStep adds FAILs. J20261126T192339Z-57e668 failed on 1 pre-existing quicktest thing.
+    held, added = b10_run(added=False), b10_run(added=True)
+    bar("B10 A1 clearing counts only new things", held[0] == 0 and "need 0; 1 the map held before stayed" in held[1]
+        and added[0] == 1 and "new inside clearing (75, 78, 100, 94) = 1" in added[1],
+        "held=%r added=%r" % (held, added))
 
     print("RESULT: %s" % ("GREEN" if not fails else "RED " + ", ".join(fails)))
     return 1 if fails else 0

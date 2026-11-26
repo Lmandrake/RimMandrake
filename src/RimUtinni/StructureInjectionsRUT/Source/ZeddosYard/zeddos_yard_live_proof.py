@@ -11,8 +11,10 @@ on a canonical save. Exit 0 when the clause holds, 1 when it does not, 2 on usag
 A1 holds when, after one run of the GenStep:
   * the ship-wreck defs the plan names grew by >= 60 things on the map and AncientFortifiedWall by >= 10
     (before/after delta, so pre-existing map content cannot pass for the yard);
-  * none of the plan's defNames stands inside the map-placed landing clearing (the plan's centred
-    100x94 rect, at least the item's fixed 96x90, offset exactly as RM_PlanKernel.Offset centres a footprint on map.Center);
+  * the GenStep puts none of the plan's defNames inside the map-placed landing clearing (the plan's centred
+    100x94 rect, at least the item's fixed 96x90, offset exactly as RM_PlanKernel.Offset centres a footprint on
+    map.Center): a thing there whose ThingID the map did not hold before the GenStep (before/after ids, so a
+    building the map already held, which CLEAR "all" does not remove, cannot fail the yard);
   * a cell the plan paints AncientMegastructure reads back as AncientMegastructure.
 """
 import json
@@ -42,6 +44,17 @@ def count(b, defs, rect=None):
     if r.get("success") is not True or not isinstance(n, int) or isinstance(n, bool):
         raise SystemExit("A1 FAIL: jawa/list_things gave no count evidence: %s" % json.dumps(r)[:300])
     return n
+
+
+def ids(b, defs, rect):
+    """the ThingIDs of one complete jawa/list_things read in RECT; a reply without success, a things list or a complete
+    list is a FAIL, never an empty set (a missing baseline would make every old thing look new)."""
+    r = b.call("jawa/list_things", {"defName": ",".join(sorted(defs)), "limit": 5000,
+                                    "rect": "%d,%d,%d,%d" % rect}) or {}
+    rows = r.get("things")
+    if r.get("success") is not True or not isinstance(rows, list) or r.get("isCompleteList") is not True:
+        raise SystemExit("A1 FAIL: jawa/list_things gave no complete id list: %s" % json.dumps(r)[:300])
+    return {x.get("id") for x in rows}
 
 
 def main(argv):
@@ -76,6 +89,10 @@ def main(argv):
             if now != map_id:
                 raise SystemExit("A1 FAIL: the current map changed at %s (mapId %r -> %r)" % (step, map_id, now))
 
+        # The clearing is judged on what the GenStep ADDS there. CLEAR "all" removes plants, filth, items and mineable
+        # rock, never a standing building, so a building the map already held (a quicktest map's ancient junk) is not
+        # the plan's: J20261126T192339Z-57e668 read 1 such thing on a quicktest desert map, and the plan places none.
+        before = ids(b, plan_defs, clearing); same_map("baseline clearing")
         ships0 = count(b, ship_defs); same_map("baseline ships")
         walls0 = count(b, {gen.MEGA_WALL}); same_map("baseline walls")
         r = b.call("jawa/run_genstep", {"genStepDef": GENSTEP}) or {}
@@ -85,7 +102,8 @@ def main(argv):
             return 1
         ships1 = count(b, ship_defs); same_map("after ships")
         walls1 = count(b, {gen.MEGA_WALL}); same_map("after walls")
-        inside = count(b, plan_defs, clearing); same_map("clearing")
+        after = ids(b, plan_defs, clearing); same_map("clearing")
+        inside = len(after - before)
         mx, mz, _ = lay["terrain"][len(lay["terrain"]) // 2]
         t = b.call("jawa/get_terrain_batch", {"rects": "%d,%d,1,1" % (mx + dx, mz + dz), "mapId": map_id}) or {}
         same_map("terrain")
@@ -93,9 +111,10 @@ def main(argv):
         mega_ok = (t.get("success") is True and t.get("cellsRead") == 1
                    and t.get("distinctTerrains") == [gen.MEGA_TERRAIN])
     ok = ships1 - ships0 >= 60 and walls1 - walls0 >= 10 and inside == 0 and mega_ok
-    print("A1 %s: ship wrecks +%d (need >=60), wall stubs +%d (need >=10), plan things inside clearing %s = %d (need 0), "
-          "megastructure at (%d,%d) = %s" % ("PASS" if ok else "FAIL", ships1 - ships0, walls1 - walls0, clearing, inside,
-                                              mx + dx, mz + dz, mega_ok))
+    print("A1 %s: ship wrecks +%d (need >=60), wall stubs +%d (need >=10), plan things new inside clearing %s = %d "
+          "(need 0; %d the map held before stayed), megastructure at (%d,%d) = %s" % (
+              "PASS" if ok else "FAIL", ships1 - ships0, walls1 - walls0, clearing, inside, len(after & before),
+              mx + dx, mz + dz, mega_ok))
     return 0 if ok else 1
 
 
