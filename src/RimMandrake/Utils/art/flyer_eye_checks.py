@@ -23,6 +23,10 @@ Verbs:
         ink. RED over ALIAS_MAX. The owner's FireHawk east ("static-like noise", 2026-11-07) read 34 here; frames he
         called good read under 4. BAKED: a facing with `"area": true` and a recorded `"source"` ({"path", "rev", "pad"})
         must hold exactly the area bake of that source, or it is RED. A facing whose master frame is not in DIR is UNMEASURED (exit 2 unless a row is RED)
+  belly CONFIG [--src DIR]   body pixels a wing would carry away: pale pixels (value >= BELLY_VALUE, saturation <=
+        BELLY_SAT) joined to the protected body, counted inside each wing layer as split() cuts it. RED over BELLY_MAX
+        in a layer (the owner's Porg, 2026-11-07: "white flesh appears to rip away from the body"; it read 461 and 348).
+        The master is the facing's recorded `source`, else its master frame in DIR
   parts CONFIG --src DIR --out PNG   the plate alone and each wing layer alone, per facing, on a colour neither uses. A
         wing in the plate (two wings at once) or body in a wing layer (flesh ripping away) shows here before any build
 
@@ -50,6 +54,8 @@ EXTREME_SHARE = 0.15      # a pose this close to the largest or smallest silhoue
 CHANGED = 24              # a pixel moved if a channel differs by more than this between frames
 SEARCH_PX = 64
 REF_ROWS = 16             # the alias reference averages this many sub-rows per output row
+BELLY_VALUE, BELLY_SAT = 140, 0.16   # Porg's belly read value 150..210, saturation 4..15%; its feathers 60..130, 20..45%
+BELLY_MAX = 20                       # a few anti-aliased edge pixels; the Porg rip carried 348..461 per wing
 ALIAS_MAX = 8.0           # basis: FireHawk east 34 (his "static-like noise"); his good frames 1.4..3.7 (truth set)
 
 
@@ -264,6 +270,39 @@ def alias(a) -> int:
     return 1 if red or any(not r[1] for r in shipped) else (2 if blind else 0)
 
 
+def belly_rows(config: dict, src: Path) -> tuple[list[tuple[str, int, int]], list[str]]:
+    """(facing, wing index, body-pale px in that wing layer) per cut-out facing, and the facings that could not be read."""
+    rows, blind = [], []
+    rule = {"min_value": BELLY_VALUE, "max_sat": BELLY_SAT}
+    for facing, fc in config["facings"].items():
+        if fc.get("translate") or fc.get("layer_bake") or "master" not in fc or not fc.get("wings"):
+            continue
+        paths = FC.FL.frame_paths(src, config["prefix"], facing)
+        if fc.get("source"):
+            size = np.asarray(Image.open(paths[0])).shape[0] if paths else None
+            master = FC.source_master(fc["source"], size) if size else None
+        else:
+            master = np.asarray(Image.open(paths[fc["master"] - 1]).convert("RGBA")) if len(paths) >= fc["master"] else None
+        if master is None:
+            blind.append(f"{facing} (no frames in {src})")
+            continue
+        body = FC.pale_body(master, FC.poly_mask(master.shape[:2], fc.get("protect")), rule)
+        _, wings = FC.split(master, fc)
+        rows += [(facing, i, int(((w[..., 3] > 0) & body).sum())) for i, w in enumerate(wings)]
+    return rows, blind
+
+
+def belly(a) -> int:
+    config = json.loads(Path(a.config).read_text())
+    rows, blind = belly_rows(config, Path(a.src) if a.src else FC.REPO / config["folder"])
+    for b in blind:
+        print(f"BELLY   {config['set']} {b}: UNMEASURED")
+    red = [r for r in rows if r[2] > BELLY_MAX]
+    for facing, i, n in rows:
+        print(f"BELLY   {config['set']} {facing} wing {i}: {'RED' if n > BELLY_MAX else 'GREEN'}, {n} body-pale px (max {BELLY_MAX})")
+    return 1 if red else (2 if blind or not rows else 0)
+
+
 def parts(a) -> int:
     config = json.loads(Path(a.config).read_text())
     src = Path(a.src)
@@ -311,12 +350,15 @@ def main() -> int:
     al.add_argument("config")
     al.add_argument("--src")
     al.add_argument("--facing")
+    be = sub.add_parser("belly")
+    be.add_argument("config")
+    be.add_argument("--src")
     pa = sub.add_parser("parts")
     pa.add_argument("config")
     pa.add_argument("--src", required=True)
     pa.add_argument("--out", required=True)
     a = ap.parse_args()
-    return {"audit": audit, "alias": alias, "parts": parts}[a.verb](a)
+    return {"audit": audit, "alias": alias, "belly": belly, "parts": parts}[a.verb](a)
 
 
 if __name__ == "__main__":

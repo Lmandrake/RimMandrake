@@ -148,11 +148,58 @@ def t_a_facing_it_cannot_read_is_unmeasured(t: Path) -> list[str]:
     return [] if rc == 2 and "UNMEASURED" in txt and "GREEN" not in txt else ["an unreadable facing is not UNMEASURED: " + txt]
 
 
+def bellied() -> Image.Image:
+    """A body with a pale belly that bulges past the protect box into a brown wing's polygon (the Porg rip)."""
+    im = Image.new("RGBA", (SIZE, SIZE), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    d.rectangle([20, 30, 60, 100], fill=(110, 80, 50, 255))                      # brown wing, folded at the side
+    d.ellipse([44, 30, 100, 100], fill=(200, 196, 190, 255))                       # pale belly, wider than the box
+    return im
+
+
+BELLY_CFG = {"master": 1, "falloff": 0, "protect": [[[60, 30], [100, 30], [100, 100], [60, 100]]],
+             "wings": [{"poly": [[0, 20], [60, 20], [60, 110], [0, 110]], "hinge": [58, 40], "sign": 1,
+                        "poses": [[30, 1, 1.0]] * N}]}
+
+
+def t_keep_pale_keeps_the_belly_in_the_plate(t: Path) -> list[str]:
+    m = np.asarray(bellied())
+    rule = {"min_value": 140, "max_sat": 0.16}
+    _, w0 = FC.split(m, BELLY_CFG)
+    plate, w1 = FC.split(m, dict(BELLY_CFG, keep_pale=rule))
+    pale = (m[..., :3].min(-1) > 180) & (m[..., 3] > 0)
+    before, after = int(((w0[0][..., 3] > 0) & pale).sum()), int(((w1[0][..., 3] > 0) & pale).sum())
+    brown_kept = int(((w1[0][..., 3] > 0) & ~pale).sum()) == int(((w0[0][..., 3] > 0) & ~pale).sum())
+    out = []
+    if not (before > 100 and after == 0):
+        out.append(f"belly in the wing layer: {before} px without keep_pale, {after} with it (want >100, then 0)")
+    if not brown_kept:
+        out.append("keep_pale moved brown wing pixels out of the wing layer")
+    return out
+
+
+def t_a_wing_layer_carrying_belly_is_red(t: Path) -> list[str]:
+    src = t / "src"
+    src.mkdir()
+    for k in range(1, N + 1):
+        bellied().save(src / f"{PREFIX}{k}_east.png")
+    out = []
+    for c, rc_want, word in ((BELLY_CFG, 1, "RED"), (dict(BELLY_CFG, keep_pale={"min_value": 140, "max_sat": 0.16}), 0, "GREEN")):
+        rc, txt = tool(t, {"set": "Striped", "prefix": PREFIX, "facings": {"east": c}}, "belly", "--src", str(src))
+        if rc != rc_want or f"east wing 0: {word}" not in txt:
+            out.append(f"want {word} (exit {rc_want}), got exit {rc}: {txt}")
+    rc, txt = tool(t, {"set": "Striped", "prefix": PREFIX, "facings": {"east": BELLY_CFG}}, "belly", "--src", str(t / "none"))
+    if rc != 2 or "UNMEASURED" not in txt:
+        out.append(f"no frames is not UNMEASURED: exit {rc}: {txt}")
+    return out
+
+
 def main() -> int:
     fails = 0
     for test in (t_a_facing_without_area_bakes_as_before, t_a_squashed_pose_with_area_reads_every_row,
                  t_the_squash_row_honours_area, t_build_re_bakes_from_the_recorded_source,
-                 t_the_baked_row_reads_the_shipped_frames, t_a_facing_it_cannot_read_is_unmeasured):
+                 t_the_baked_row_reads_the_shipped_frames, t_a_facing_it_cannot_read_is_unmeasured,
+                 t_keep_pale_keeps_the_belly_in_the_plate, t_a_wing_layer_carrying_belly_is_red):
         with tempfile.TemporaryDirectory() as d:
             errs = test(Path(d))
         print(("FAIL " if errs else "ok   ") + test.__name__ + "".join("\n     " + e for e in errs))

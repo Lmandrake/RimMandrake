@@ -206,9 +206,28 @@ def over(bottom: np.ndarray, top: np.ndarray) -> np.ndarray:
     return np.asarray(Image.alpha_composite(Image.fromarray(bottom, "RGBA"), Image.fromarray(top, "RGBA")))
 
 
+def pale_body(master: np.ndarray, protect: np.ndarray, rule: dict) -> np.ndarray:
+    """`"keep_pale": {"min_value": V, "max_sat": S}`: the pale pixels (HSV value >= V of 255, saturation <= S) joined
+    4-ways to a pale pixel inside PROTECT. They are body (a belly under a folded wing), so split() keeps them in the
+    plate even inside a wing polygon, and the wing lifts off without tearing the belly away (Porg, owner 2026-11-07:
+    "some of the white flesh appears to rip away from the body")."""
+    rgb = master[..., :3].astype(np.int32)
+    mx, mn = rgb.max(-1), rgb.min(-1)
+    sat = np.where(mx > 0, (mx - mn) / np.maximum(mx, 1), 0.0)
+    pale = (master[..., 3] > 128) & (mx >= int(rule["min_value"])) & (sat <= float(rule["max_sat"]))
+    grown = pale & protect
+    while True:                                   # flood fill; ends when a pass adds no pixel
+        nxt = FL._dilate(grown) & pale
+        if (nxt == grown).all():
+            return grown
+        grown = nxt
+
+
 def split(master: np.ndarray, fc: dict) -> tuple[np.ndarray, list[np.ndarray]]:
     shape = master.shape[:2]
     protect = poly_mask(shape, fc.get("protect"))
+    if fc.get("keep_pale"):
+        protect = protect | pale_body(master, protect, fc["keep_pale"])
     used = np.zeros(shape, bool)
     wings = []
     for wg in fc["wings"]:

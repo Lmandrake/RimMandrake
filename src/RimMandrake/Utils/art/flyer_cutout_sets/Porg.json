@@ -122,7 +122,12 @@
      174,
      138
     ]
-   ]
+   ],
+   "source": {
+    "path": "src/RimStarWars/SWBestiary/Textures/swanimals/Porg/Porg_south.png",
+    "rev": null,
+    "pad": 32
+   }
   },
   "east": {
    "master": 1,
@@ -275,7 +280,12 @@
      210,
      72
     ]
-   ]
+   ],
+   "source": {
+    "path": "src/RimStarWars/SWBestiary/Textures/swanimals/Porg/Porg_east.png",
+    "rev": null,
+    "pad": 32
+   }
   },
   "north": {
    "master": 1,
@@ -393,7 +403,12 @@
       285
      ]
     ]
-   ]
+   ],
+   "source": {
+    "path": "src/RimStarWars/SWBestiary/Textures/swanimals/Porg/Porg_north.png",
+    "rev": null,
+    "pad": 32
+   }
   }
  }
 }

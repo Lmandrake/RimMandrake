@@ -1,8 +1,9 @@
-# BOUNDARY: area-sampled squash poses in the flyer cut-out bake, and the alias check, Design Version 0.1.0
+# BOUNDARY: area-sampled squash poses and a kept belly in the flyer cut-out bake, with their checks, Design Version 0.1.0
 
-Code: `src/RimMandrake/Utils/art/flyer_cutout.py` (`area_rows`, `bend`, `source_master`, `build`) and
-`src/RimMandrake/Utils/art/flyer_eye_checks.py` (`alias`, `ref_bend`, `installed_rows`, the SQUASH row).
-Item: `RIMMASTER_AUDIT_CUTOUT_EASTS_THIRTEEN_SHARE_SQUASH_NOISE`, written 2026-11-26 by work bundle
+Code: `src/RimMandrake/Utils/art/flyer_cutout.py` (`area_rows`, `bend`, `source_master`, `pale_body`, `split`, `build`)
+and `src/RimMandrake/Utils/art/flyer_eye_checks.py` (`alias`, `ref_bend`, `installed_rows`, `belly`, the SQUASH row).
+Items: `RIMMASTER_AUDIT_CUTOUT_EASTS_THIRTEEN_SHARE_SQUASH_NOISE` and
+`RIMMASTER_FIX_PORG_WINGS_RIP_BELLY_ACCEPTED_FROM_STILLS`, written 2026-11-26 by work bundle
 WB-game-flight-20261126-154837. Tests: `src/RimMandrake/Utils/art/selftest_flyer_cutout_area.py`.
 
 The owner saw "strange static-like noise" on FireHawk's east wing on 2026-11-07
@@ -10,11 +11,16 @@ The owner saw "strange static-like noise" on FireHawk's east wing on 2026-11-07
 once, so a pose squashed under |sy| 0.5 skips source rows. `alias` measured it: FireHawk east 34, and 11 of the 13
 other cut-out sets with such poses 9 to 35; frames he called good read under 4.
 
+The owner called the live Porg (Bird G) "terrifying ... some of the white flesh appears to rip away from the body"
+(2026-11-07). Cause: its wing polygons hold belly pixels, so a lifted wing carries them; `belly` read 461 and 348 in the
+south wings. `keep_pale` keeps body-pale pixels in the plate.
+
 ## ACCEPTS (the only inputs this is built for)
 
 - **a-cut-out-config.** A `flyer_cutout_sets/<Set>.json` whose facings carry `master` and `wings` with `poses`
   (`[deg, scale, sy]`) or a `cycle`. A facing may set `"area": true` and a `"source"`
-  (`{"path": repo path, "rev": git revision or null, "pad": px, "opaque_from": alpha, optional}`).
+  (`{"path": repo path, "rev": git revision or null, "pad": px, "opaque_from": alpha, optional}`), and
+  `"keep_pale": {"min_value": V, "max_sat": S}`.
 
 ## DOES NOT SURVIVE (not promised)
 
@@ -26,6 +32,11 @@ other cut-out sets with such poses 9 to 35; frames he called good read under 4.
   still samples once per pixel. No set does that below 0.6 today.
 
 ## PROMISES
+
+- **keep-pale-keeps-the-belly-in-the-plate.** With `keep_pale`, the pale pixels joined to the protected body leave the
+  wing layer and stay in the plate; no brown wing pixel moves.
+- **a-wing-layer-carrying-belly-is-red.** `belly` reads RED (exit 1) for a wing layer holding over `BELLY_MAX` body-pale
+  pixels, GREEN with `keep_pale`, and UNMEASURED (exit 2) with no frames to read.
 
 - **a-facing-without-area-bakes-as-before.** With `area` absent or false, `bend()` takes one sample per pixel, so every
   set that does not opt in bakes byte-identically to the bake before `area` existed.
