@@ -13,9 +13,14 @@ For each jetty tier (steel, heavy) in each of the four looks, the ThingStyleDef 
    and the deck runs to every piece edge that meets another piece;
 3. the post and cable it names are installed, and (a derived look) its deckWidth is the painted deck's measured width;
 4. a look's derived pieces (seam_strips.py, the looks he did not have generated) equal what the deriver makes now from the
-   look's own shipped picture, so the art is the look's painting and nothing else.
+   look's own shipped picture, so the art is the look's painting and nothing else;
+5. a derived look shows no seam INSIDE a piece either: the body's own end meets its own start once per square, at column
+   T/2 of every piece (seam_strips.py rolls it there), and that column scores within the same seam limit. The fresh reader
+   of 2026-11-25 measured a hard cut there in Steel Scrapper (1.53: plank lines out of line across the whole deck), which
+   checks 1-4 could not see.
 
-Can-fail: --canfail plants a framed piece (the shipped east picture) as one jetty's MID in memory, and must FAIL.
+Can-fail: --canfail plants a framed piece (the shipped east picture) as one jetty's MID, and Steel Scrapper's pieces made with
+a hard wrap cut (the 2026-11-25 defect), both in memory; it must FAIL on both, each by its own check.
     python3 src/RimMandrake/FlowWorks/selftest_flowworks_jetty_seams.py [--canfail]
 """
 from __future__ import annotations
@@ -42,6 +47,31 @@ import seam_strips as SS    # noqa: E402
 
 def tex(path):
     return os.path.join(TEX, path + ".png")
+
+
+def wrap_ratios(strip, cols, win=3):
+    """gen_tiles.seam_ratios' statistic at the given columns of a composed strip (the jump between column x and x+1, mean over
+    deck rows, windowed max, over the 90th percentile of that windowed max away from the given columns)."""
+    al = strip[..., 3]
+    rows = np.where(al.mean(1) > 0.5 * 255)[0]
+    s = strip[rows]
+    d = np.abs(np.diff(s, axis=1)).sum(2).mean(0)
+    near = np.zeros(len(d), bool)
+    for j in cols:
+        near[max(0, j - win):j + win + 1] = True
+    wmax = np.array([d[max(0, x - win):x + win + 1].max() for x in range(len(d))])
+    ref = np.percentile(wmax[~near], 90) + 1e-3
+    return [float(d[max(0, j - win):j + win + 1].max() / ref) for j in cols]
+
+
+def hard_wrap_pieces(name):
+    """The 2026-11-25 defect, for --canfail: the style's pieces made with a hard wrap cut (wrap fade 0)."""
+    src = SS.SOURCES[name]
+    SS.SOURCES[name] = src[:5] + (0,)
+    try:
+        return {k: np.round(v).clip(0, 255) for k, v in SS.pieces_for(name).items()}
+    finally:
+        SS.SOURCES[name] = src
 
 
 def check(canfail=False):
@@ -107,6 +137,14 @@ def check(canfail=False):
                 dw = float(e.findtext("deckWidth") or "nan")
                 if not abs(dw - len(rows) / float(GT.T)) <= 0.02:
                     fails.append("%s: deckWidth %s, the painted deck is %.2f of a cell" % (name, dw, len(rows) / float(GT.T)))
+                wl = hard_wrap_pieces(name) if canfail and name == "RM_SuspensionJetty_Steel_Scrapper" else tl
+                four = GT.compose([wl["root"], wl["mid"], wl["mid"], wl["tip"]])
+                for r in wrap_ratios(four, [k * GT.T + GT.T // 2 - 1 for k in range(4)]):
+                    cases += 1
+                    worst = max(worst, r)
+                    if r > GT.SEAM_MAX:
+                        fails.append("%s: the body's wrap inside a piece scores %.2f > %.2f (a seam at mid-square)" % (
+                            name, r, GT.SEAM_MAX))
                 made = SS.pieces_for(name)
                 for p in PIECES:
                     d = np.abs(np.round(made[p]).clip(0, 255) - tl[p]).max()
@@ -120,10 +158,11 @@ def main():
     fails, worst, cases = check(canfail)
     for f in fails:
         print("FAIL", f)
-    print("read %d piece joints over 8 jetty looks; worst seam ratio %s, limit %.2f" % (cases, round(worst, 2), GT.SEAM_MAX))
+    print("read %d piece joints and wraps over 8 jetty looks; worst seam ratio %s, limit %.2f" % (cases, round(worst, 2), GT.SEAM_MAX))
     if canfail:
-        print("CANFAIL", "OK (failed as planted)" if fails else "BROKEN (passed with planted faults)")
-        return 0 if fails else 1
+        both = any("seam ratio inf" in f or "seam ratio" in f for f in fails) and any("wrap inside a piece" in f for f in fails)
+        print("CANFAIL", "OK (failed as planted, by both checks)" if both else "BROKEN (a planted fault passed)")
+        return 0 if both else 1
     print("PASS selftest_flowworks_jetty_seams" if not fails else "FAIL selftest_flowworks_jetty_seams (%d)" % len(fails))
     return 1 if fails else 0
 

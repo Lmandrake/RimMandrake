@@ -42,15 +42,22 @@ OUT = None
 T = GT.T
 F = 32          # the body's periodic fade (an eighth of a cell)
 
-# style defName -> (look folder, shipped picture base, left end [0, a), right end [b, 256), body columns cut out, wrap fade)
+# style defName -> (look folder, shipped picture base, left end [0, a), right end [b, 256), body columns cut out, wrap fade:
+# columns, or "rows")
 # The columns were read off each 256 px picture with a ruler (scratch sheet six_east.png, 2026-11-25): a = where the
 # ledge-end frame stops, b = where the tip-end frame starts, cuts = a cross-member that would repeat once per square.
-# wrap fade: the body's own end meets its own start once per square. Scrapper's body starts on a rust plate's edge, so a
-# fade there ghosts half a plate into the planks (seen 2026-11-25): its wrap is a hard cut, a plank or plate edge, which
-# the painting already has everywhere. The other looks' bodies start and end on even panel or concrete: a fade of F.
+# wrap fade: the body's own end meets its own start once per square. The modern looks' bodies start and end on even panel or
+# concrete: a fade of F. Scrapper's body starts on a rust plate's edge: a fade over every row ghosts half a plate into the
+# planks (seen 2026-11-25), and a hard cut leaves the plank lines out of line across the whole deck, a seam at mid-square
+# (fresh reader 2026-11-25, 1.53 by seam_ratios' statistic). So "rows": a row with plank on both sides fades over PLANK_FADE
+# columns, and a row that holds a rust plate on either side keeps the plate's own hard edge. 32, not 48: a hard row drops the
+# body's last PLANK_FADE (stretched) columns, and at 48 those reached into Steel Scrapper's upper plate, cutting it mid-plate
+# in line with the lower plate's edge (wrap 2.39); at 32 the wrap scores 1.00 (Heavy 0.86), as strong as the strip's own
+# plank and plate edges (measured 2026-11-25, selftest_flowworks_jetty_seams.py check 5).
+PLANK_FADE = 32
 SOURCES = {
-    "RM_SuspensionJetty_Steel_Scrapper": ("Scrapper", "RM_SuspensionJetty_Steel", 30, 230, [(124, 138)], 0),
-    "RM_SuspensionJetty_Heavy_Scrapper": ("Scrapper", "RM_SuspensionJetty", 12, 208, [(116, 132)], 0),
+    "RM_SuspensionJetty_Steel_Scrapper": ("Scrapper", "RM_SuspensionJetty_Steel", 30, 230, [(124, 138)], "rows"),
+    "RM_SuspensionJetty_Heavy_Scrapper": ("Scrapper", "RM_SuspensionJetty", 12, 208, [(116, 132)], "rows"),
     "RM_SuspensionJetty_Steel_Modern": ("Modern", "RM_SuspensionJetty_Steel", 24, 228, [], F),
     "RM_SuspensionJetty_Heavy_Modern": ("Modern", "RM_SuspensionJetty", 12, 220, [], F),
     "RM_SuspensionJetty_Steel_Futuristic": ("Futuristic", "RM_SuspensionJetty_Steel", 30, 226, [], F),
@@ -91,10 +98,17 @@ def pieces_for(style):
     body = src[:, a:b][:, keep]
     # stretched to one cell plus the fade, then made periodic: the first `fade` columns fade from B[T..T+fade) (what
     # follows B[T-1]) into B[0..fade), so Bp[T-1] -> Bp[0] is one continuous painting (fade 0: a hard cut on an edge)
-    B = _resize_cols(body, T + fade)
+    f = PLANK_FADE if fade == "rows" else fade
+    B = _resize_cols(body, T + f)
     Bp = B[:, :T].copy()
-    if fade:
-        Bp[:, :fade] = GT._lerp(B[:, T:T + fade], B[:, :fade], GT._ramp(fade))
+    if f:
+        blend = GT._lerp(B[:, T:T + f], B[:, :f], GT._ramp(f))
+        if fade == "rows":
+            plate = lambda a: ((a[..., 1] < 0.62 * a[..., 0]) & (a[..., 0] > 100) & (a[..., 3] > 128)).any(1)
+            fades = ~(plate(B[:, T:T + f]) | plate(B[:, :f]))
+            Bp[fades, :f] = blend[fades]
+        else:
+            Bp[:, :f] = blend
     # the wrap moves to mid-square, so every piece joint (ROOT|MID, MID|MID, MID|TIP) falls inside the body's own painting
     Bp = np.roll(Bp, T // 2, axis=1)
     la, e = left.shape[1], right.shape[1]
