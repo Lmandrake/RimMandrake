@@ -10,9 +10,8 @@ found; the grandest find there could ever be; a people who name a ship after
 the noise they make on finding something have told you their whole theology in
 one word. Every player-facing string uses *The Utinni*, already applied in the
 starting save. **`Kolyska` survives only inside the hull** — the Cradle
-nursery, and the Cradle-Mind, *which never accepted the rename*: the only
-voice aboard that still says Kolyska is the machine quietly grieving a name
-nobody else uses.
+nursery, and the Cradle-Mind, *which never accepted the rename*: the only voice aboard that still says Kolyska is the Narrator, the old
+mind's remnant — with no mood about it, the old name simply kept.
 
 ## The mind — nine tenants and no landlord [owner 2026-08-15]
 
@@ -125,11 +124,12 @@ funerary use) · the engine IS the god — the shrine-core is not a metaphor ·
 asymmetry as identity — the mandible arm visibly from a different wreck ·
 **the dead prong** — one mandible tip stays a broken, unrepaired stump forever
 · **running lights as the repair progress bar** — only restored wings glow;
-readable from orbit · a small altar to each pod's trade — the factory floor as
-temple complex · **hammocks among the machines** — the crew sleeps in the
+readable from orbit · a small altar to each pod's trade — the factory floor as temple complex · hull
+graffiti and clan glyphs — territory marks and raid tallies by the airlocks · **hammocks among the machines** — the crew sleeps in the
 working guts, machine-dwelling as doctrine · heat vents that glow when the
-factory runs hot · the hull RESONATES with the gods' moods — ambient divine
-status lighting.
+factory runs hot · the hull RESONATES with the gods' moods — ambient divine status lighting, which
+the player learns to read before acting (on a water tile the ship dims for
+Ishko and turns blue for Oomo).
 
 ## Flight [ruled 2026-08-14]
 

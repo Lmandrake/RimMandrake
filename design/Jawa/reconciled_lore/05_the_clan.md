@@ -47,14 +47,24 @@ egg chambers are a biological necessity — a design pillar, not a bug. Do not
   (worn gear auto-repairs via the adopted mod; unused gear simply isn't). That
   triad is what makes them tinkers, not hoarders.
 - Never-Nudes: the body is covered; mating happens in total darkness (Ishko).
+- **Comedy lives in the precepts** [owner 2026-08-05]: reverence for working
+  scrap (wasting a repairable part is sin), haggling as a devotional act,
+  funerals for a dead droid, a taboo on discarding still-good scrap. Guardrail:
+  a comedic precept is identity and mood only — never a production multiplier,
+  a specialist role, a ritual payout or a fluid-development hook. They worship
+  scrap; worship does not make scrap.
+- Romance with visitors stays in the SFW scope: flirtation and drama, not
+  lovin' [owner 2026-08-07].
 - Pets: MANY strange gross little creatures underfoot — pets, not herds; no
   creature becomes a meat/wealth printer.
 
 ## The Salvation — the player's faith (and the Trade Moot's)
 
 Memes: Scavenger structure + Trader, VME_Scrapper, VME_Trader, VME_Nomad —
-the faith itself forces the rhythm; settled-too-long is a mood wound
-[owner 2026-08-30]. Artifact of record: `src/Jawa/ideoligion/The Salvation.rid` (the owner's own;
+the faith PRESSURES toward roaming and does not demand it: settled-too-long
+is a mood wound, Jawa settlements exist, settling is hard and costly, and the
+player's forced movement comes from the Empire, not the theology [owner
+2026-08-30]. Artifact of record: `src/Jawa/ideoligion/The Salvation.rid` (the owner's own;
 103 precepts, rituals, roles, one relic). Memes: `AM_Structure_Scavenger` ·
 Trader · VME_Scrapper · VME_Trader (+`VME_Nomad` on the NPC tribes — the two
 legitimately differ; do not "fix" either side [owner 2026-08-21]). Secular

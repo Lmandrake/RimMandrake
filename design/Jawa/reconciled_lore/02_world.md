@@ -1,7 +1,7 @@
 # Ash'karr — The Sundered
 
-A tidally locked desert world: one face forever under twin suns, one forever
-dark, life in the band between. **The axis of everything is ARC from the
+A tidally locked desert world: one face forever under its one sun that never sets
+[owner 2026-08-30, card V.3], one forever dark, life in the band between. **The axis of everything is ARC from the
 substellar point, never latitude** — this world does not spin, so there is no
 day, season, or latitude gradient. Every number about the painted planet lives
 in `infrastructure/state/canon.yml > planet` (tiles, water %, temperature
