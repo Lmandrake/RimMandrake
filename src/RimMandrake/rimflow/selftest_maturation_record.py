@@ -252,6 +252,31 @@ def t_next_version_refuses_a_move_made_meanwhile():
     check(M.cycle_numbers(root, MOD) == [1, 2], "the old evidence is moved back", M.cycle_numbers(root, MOD))
 
 
+def t_next_version_refuses_evidence_a_slim_clone_does_not_hold():
+    """RIMMANDRAKE_OPEN_PYRELANDS_NEXT_VERSION_HE_ASKED_FASTER_FIRE (2026-11-26): in a slim clone a tracked media file
+    of the old evidence is skip-worktree and absent from disk, so a folder rename leaves it at the old path (Pyrelands
+    0.1.0: 518 of 2166 files). next_version refuses before anything moves, names such files and the repair (shape the
+    clone full); a git root whose evidence is all on disk moves as before."""
+    import subprocess
+    root = rollover_root("slim")
+    g = lambda *a: subprocess.run(["git", "-C", root] + list(a), capture_output=True, text=True)
+    pic = "version/in_game/visit_1/shot.png"
+    M.write_text(root, MOD, pic, "png bytes\n")
+    g("init", "-q"); g("add", "-A"); g("-c", "user.name=t", "-c", "user.email=t@t", "commit", "-qm", "base")
+    g("update-index", "--skip-worktree", M.rel(MOD, pic))
+    os.remove(os.path.join(M.mod_dir(root, MOD), pic))
+    r = M.next_version(root, MOD, "BENCH", "selftest")
+    why = str(r.get("why"))
+    check(not r.get("ok") and M.load(root, MOD).get("version") == "0.1.0" and M.cycle_numbers(root, MOD) == [1, 2],
+          "a slim clone's evidence refuses the move, and nothing moves", r)
+    check(M.rel(MOD, pic) in why and "shape" in why and "--full" in why, "the refusal names the file and the repair", why)
+    g("update-index", "--no-skip-worktree", M.rel(MOD, pic))
+    g("checkout", "--", M.rel(MOD, pic))
+    r = M.next_version(root, MOD, "BENCH", "selftest")
+    check(r.get("ok") and M.read_text(root, MOD, pic.replace("version/", "version/previous/0.1.0/", 1)) == "png bytes\n",
+          "a full clone moves the media with the rest", r)
+
+
 def t_next_version_waits_for_his_scope_answer():
     """RIMMANDRAKE_CARRY_HIS_WORD_NEXT_VERSION_SCOPE_IS_HIS_REVIEW: a mod's next Design Version opens only when
     VERSION.json's scope_answer names his recorded answer (an OWNER event with ownerSaid or byCard) or the Conductor
@@ -416,6 +441,7 @@ def main(argv=None):
     for t in (t_spend_write_holds_the_mod_lock, t_stage_spend_unmeasured_when_no_row_measured,
               t_build_facts_refuses_what_evaluate_refuses, t_next_version_sets_aside_numbered_evidence,
               t_next_version_refuses_a_move_made_meanwhile, t_next_version_waits_for_his_scope_answer,
+              t_next_version_refuses_evidence_a_slim_clone_does_not_hold,
               t_seed_writes_under_the_mod_lock,
               t_spend_rows_carry_their_unit, t_stage_spend_sums_one_unit):
         if only is not None and t.__name__ not in only:

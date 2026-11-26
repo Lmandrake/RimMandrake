@@ -53,6 +53,11 @@ this one, `design/specs/2026-11-19-maturation-reads/boundary.md`; the record's o
   the scope page `version/next_version/scope_proposal_<version>.md`, the missing answer, and who brings it (the
   Conductor). A record whose version is not MAJOR.MINOR.PATCH (seeded before the first lock) is not a next version
   (owner, 2026-11-26).
+- **next-version-refuses-evidence-a-slim-clone-does-not-hold.** In a git work tree, `next_version` refuses before
+  anything moves when a tracked file of the evidence it would set aside is skip-worktree and absent from disk (a slim
+  clone's media: Pyrelands 0.1.0 left 518 of 2166 files at the old paths, 2026-11-26). The refusal names the files and
+  the repair (`scratch_clone.py shape <root> --full`). A root that is not a work tree moves as before; a work tree that
+  git cannot list raises, never reads as none.
 - **next-version-refuses-a-move-made-meanwhile.** `next_version` writes its new record only if the record on disk
   still has the stage, version and number of moves that it read (`commit_move`'s `expect`). When a move landed in
   between, it returns `ok` False, keeps that move and moves the set-aside evidence back.

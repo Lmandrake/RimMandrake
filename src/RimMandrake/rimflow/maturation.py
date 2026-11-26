@@ -1762,6 +1762,13 @@ def next_version(root, mod, by, why):
     if taken:
         return {"ok": False, "why": "the previous version's evidence cannot be set aside: %s already exist(s)"
                 % ", ".join(rel(mod, b) for b in taken)}
+    unheld = not_on_disk(root, [rel(mod, a) for a, _ in moves])
+    if unheld:
+        return {"ok": False, "why": "%d tracked file(s) of the previous version's evidence are not on disk (a slim clone "
+                "skips media), so setting the folders aside would leave them at the old paths: %s. Repair: python3 "
+                "src/RimMandrake/Utils/scratch_clone.py shape %s --full, then run next-version again; nothing moved"
+                % (len(unheld), ", ".join(unheld[:5]) + (" ..." if len(unheld) > 5 else ""), root),
+                "owed": "a full checkout", "who": "the caller"}
     jtext = read_text(root, mod, "journal.md")
     if jtext is not None:
         when = pac_heading(t)
@@ -1809,6 +1816,27 @@ def numbered_evidence(root, mod):
     for d, rx in ((BLIND_DIR, r"cycle_\d+$"), (INGAME_DIR, r"visit_\d+$"), (WALK_BRIEF_DIR, r"arrival_\d+\.md$")):
         full = os.path.join(mod_dir(root, mod), d)
         out += ["%s/%s" % (d, f) for f in sorted(os.listdir(full) if os.path.isdir(full) else []) if re.match(rx, f)]
+    return out
+
+
+def not_on_disk(root, paths):
+    """-> the tracked files under paths that the index marks skip-worktree and the disk does not hold (a slim clone's
+    media), which a folder rename would leave behind. [] when root is not a git work tree (no index, nothing to leave).
+    Raises OSError when root is a work tree and git cannot list it: could not look is never 'none'."""
+    if not paths:
+        return []
+    top = subprocess.run(["git", "-C", root, "rev-parse", "--is-inside-work-tree"], capture_output=True, text=True,
+                         timeout=1800)      # budget: class=call
+    if top.returncode != 0 or top.stdout.strip() != "true":
+        return []
+    r = subprocess.run(["git", "-C", root, "ls-files", "-v", "-z", "--"] + list(paths), capture_output=True, text=True,
+                       timeout=1800)        # budget: class=call
+    if r.returncode != 0:
+        raise OSError("git ls-files under %s failed (rc %s): %s" % (root, r.returncode, r.stderr.strip()))
+    out = []
+    for row in r.stdout.split("\0"):
+        if len(row) > 2 and row[0] == "S" and not os.path.lexists(os.path.join(root, row[2:])):
+            out.append(row[2:])
     return out
 
 
