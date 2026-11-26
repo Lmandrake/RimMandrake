@@ -71,10 +71,59 @@ def main():
             f.write("{not json")
         g = gate("FOUNDRY")
         check(g.startswith("REFUSE") and "could not look" in g, "lock: an unreadable lock refuses (never free): " + g)
+        archsmall_by_its_lock(tmp, base)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print("\n%d failed" % len(FAILS))
     return 1 if FAILS else 0
+
+
+def archsmall_by_its_lock(tmp, base):
+    """RIMMANDRAKE_GATE_ARCHSMALL_TIER_SWAP_ON_DRIVER_LOCK_NOT_LEDGER: ArchSmall (archmagi.b) is judged by its own driver
+    lock, the one record, as ArchBig is. Seen 2026-11-25: `game_lock.py run ArchSmall -- drive.sh` held the lock, the
+    ledger's archmagi.b entry read nobody, and modset_builder's tier swap inside the hold was refused."""
+    env = {k: v for k, v in base.items() if k not in ("RIMFLOW_DRIVER_LOCK",)}
+    env.update(RM_INSTANCES_ROOT=os.path.join(tmp, "instances"), RM_HOST="archmagi", RM_DRIVER_PID=str(os.getpid()),
+               RM_GAME_INSTANCE="b")
+    os.makedirs(os.path.join(tmp, "instances", "b"), exist_ok=True)
+    lock = os.path.join(tmp, "instances", "b", "DRIVER_LOCK.json")
+    root = os.path.dirname(HERE)
+
+    def gate(seat):
+        code = ("import sys; sys.path.insert(0, %r); from rimflow import model as m; "
+                "r = m.bridge_gate(%r, m.ambient_bridge_host()); print('PASS' if r is None else 'REFUSE ' + r)"
+                % (root, seat))
+        p = subprocess.run([sys.executable, "-c", code], env=env, capture_output=True, text=True)
+        return (p.stdout.strip() or p.stderr.strip()[-300:])
+
+    g = gate("BENCH")
+    check(g.startswith("REFUSE") and "nobody" in g, "ArchSmall: a free lock and an empty ledger entry refuse: " + g)
+    code = ("import sys; sys.path.insert(0, %r); import game_lock as gl; r = gl.claim('b', 'tier swap', seat='BENCH'); "
+            "print(r.get('ok'), r.get('line'))" % HERE)
+    p = subprocess.run([sys.executable, "-c", code], env=env, capture_output=True, text=True)
+    check(p.stdout.startswith("True") and os.path.exists(lock),
+          "ArchSmall: the test claims game b's lock: " + (p.stdout + p.stderr).strip()[-300:])
+    g = gate("BENCH")
+    check(g == "PASS", "ArchSmall: the lock's live holder passes while the ledger's archmagi.b entry reads nobody: " + g)
+    g = gate("FOUNDRY")
+    check(g.startswith("REFUSE") and "BENCH" in g, "ArchSmall: another seat is refused, naming the lock's holder: " + g)
+    with open(lock) as f:
+        cur = json.load(f)
+    with open(lock, "w") as f:           # its process has ended: free at once
+        json.dump(dict(cur, identity=dict(cur["identity"], pid=999999, start=1.0)), f)
+    g = gate("BENCH")
+    check(g.startswith("REFUSE") and "nobody" in g, "ArchSmall: a holder whose process is gone holds nothing: " + g)
+    with open(lock, "w") as f:
+        f.write("{not json")
+    g = gate("BENCH")
+    check(g.startswith("REFUSE") and "could not look" in g, "ArchSmall: an unreadable lock refuses (never free): " + g)
+    os.remove(lock)
+    # another machine's game: still judged by its ledger entry
+    code = ("import sys; sys.path.insert(0, %r); from rimflow import model as m; r = m.bridge_gate('BENCH', 'stevedesktop.b'); "
+            "print('PASS' if r is None else 'REFUSE ' + r)" % root)
+    g = subprocess.run([sys.executable, "-c", code], env=dict(base, RM_HOST="archmagi"), capture_output=True,
+                       text=True).stdout.strip()
+    check(g.startswith("REFUSE") and "stevedesktop.b" in g, "Steve2 is still judged by its ledger entry: " + g)
 
 
 if __name__ == "__main__":

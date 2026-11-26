@@ -1357,26 +1357,28 @@ def _host_guard():
     return host_guard
 
 
-def game_a_lock_path():
-    """-> Archmagi's game a lock, or None: another game host (SteveDesktop's own lock is its lane's, read there; = cli
-    lock_reading), or no lock path here (a test ledger without RIMFLOW_DRIVER_LOCK, the Mac)."""
+def game_a_lock_path(g="a"):
+    """-> Archmagi's lock of game g (default a, ArchBig; "b" is ArchSmall), or None: another game host (SteveDesktop's
+    own lock is its lane's, read there; = cli lock_reading), or no lock path here (a test ledger without
+    RIMFLOW_DRIVER_LOCK / RM_INSTANCES_ROOT, the Mac)."""
     if _host_guard().local_machine() not in (None, DEFAULT_BRIDGE_HOST):
         return None
-    return _game_lock().lock_path("a")
+    return _game_lock().lock_path(g)
 
 
-def game_a_lock_record():
-    """-> game a's holder from its driver lock: {holder, since, touched, purpose, clone, identity, role_unit, alive}, or
-    None when nobody holds it, or when no lock is readable here (a test ledger without RIMFLOW_DRIVER_LOCK, the Mac).
-    holder is the seat of a live holder, or OWNER (his lock holds live or not; game_lock.query). touched is now for a
-    live holder, else its last heartbeat. Raises game_lock.Blind when the lock could not be looked at: never free."""
+def game_a_lock_record(g="a"):
+    """-> game g's holder (default a) from its driver lock: {holder, since, touched, purpose, clone, identity,
+    role_unit, alive}, or None when nobody holds it, or when no lock is readable here (a test ledger without
+    RIMFLOW_DRIVER_LOCK, the Mac). holder is the seat of a live holder, or OWNER (his lock holds live or not;
+    game_lock.query). touched is now for a live holder, else its last heartbeat. Raises game_lock.Blind when the lock
+    could not be looked at: never free."""
     gl = _game_lock()
-    path = game_a_lock_path()
+    path = game_a_lock_path(g)
     if not path:
         return None
-    r = gl.query("a", pipe=False, path=path)
+    r = gl.query(g, pipe=False, path=path)
     if r.get("state") == "UNKNOWN":
-        raise gl.Blind(r.get("cause") or "could not look at ArchBig's lock")
+        raise gl.Blind(r.get("cause") or "could not look at %s's lock" % ("ArchBig" if g == "a" else "game " + g))
     seat = r.get("seat")
     if not seat or not (r.get("alive") or seat == "OWNER"):
         return None
@@ -3197,13 +3199,35 @@ def ambient_window_seat():
 def bridge_gate(seat, host=None):
     """-> None if `seat` may touch the game (it holds that game's bridge), else the refusal text. seat None (the owner) always passes. `host` names which machine's game
     (BRIDGE_LOCK_WIDEN_ONE_PER_HOST); another host's game is judged by that host's ledger entry alone - its own driver
-    lock is checked by host_guard there. Game a is judged by its driver lock, the one record (game_lock.py)."""
+    lock is checked by host_guard there. Each game of Archmagi (ArchBig, ArchSmall) is judged by its own driver lock,
+    the one record (game_lock.py): RIMMANDRAKE_GATE_ARCHSMALL_TIER_SWAP_ON_DRIVER_LOCK_NOT_LEDGER, where a run inside
+    `game_lock.py run ArchSmall` was refused by the ledger's empty archmagi.b entry."""
     if not seat:
         return None
     hk = bridge_host_key(host)
     global EVENTS
     if os.environ.get("RIMFLOW_LEDGER"):                 # same redirect the CLI's _bind_paths makes
         EVENTS = os.environ["RIMFLOW_LEDGER"]
+    machine, _dot, inst = hk.partition(".")
+    g = inst or "a"
+    if machine == DEFAULT_BRIDGE_HOST and g != "a":      # another game of Archmagi: its lock, when one is readable here
+        try:
+            lpath = game_a_lock_path(g)
+            rec = game_a_lock_record(g) if lpath else None
+        except Exception as e:  # noqa: BLE001  a lock that could not be looked at is never free
+            return None if os.environ.get("RIMFLOW_GATE_LENIENT") else \
+                "could not look at %s's lock to check the bridge: %s" % (hk, e)
+        if lpath:
+            holder = rec.get("holder") if rec else None
+            try:
+                from . import game_names
+            except ImportError:
+                import game_names
+            if holder != seat:
+                return "%s does not hold the %s bridge (holder: %s). Take it first: python3 " \
+                    "src/RimMandrake/rimflow/game_lock.py claim %s --for \"<what for>\"" % (
+                        seat, hk, holder or "nobody", game_names.show_key(hk))
+            return None
     if hk != DEFAULT_BRIDGE_HOST:
         try:
             ent = replay(read()).bridge_hosts.get(hk) or {}
