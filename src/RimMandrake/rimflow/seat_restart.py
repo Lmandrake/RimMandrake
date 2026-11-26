@@ -1592,15 +1592,15 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
                                                         else "requested", seat, req.get("reason")))
             R[seat] = new
             if req.get("seat") not in (None, seat):
-                return _cancel(new, seat, "request is for seat %s" % req.get("seat"), now, act)
+                return _cancel(new, seat, cfg, "request is for seat %s" % req.get("seat"), now, act)
             if now - ts > cfg["request_max_age_s"]:
-                return _cancel(new, seat, "request is %d s old (stale)" % (now - ts), now, act)
+                return _cancel(new, seat, cfg, "request is %d s old (stale)" % (now - ts), now, act)
             if cur is None or cur.get("sessionId") != req.get("session_id"):
                 return _gone(seat, cfg, new, obs, ro, now, act, "request names session %s, the seat runs %s" % (
                     req.get("session_id"), (cur or {}).get("sessionId") or "none/ambiguous"))
             spin = _handoff_spin(seat, cfg, new, rs, ro, now, act)
             if spin:
-                return _cancel(new, seat, spin, now, act)
+                return _cancel(new, seat, cfg, spin, now, act)
             new["state"] = "pending"
             rs = new
         elif cur and _mode(seat, cfg, ro, cur)["mode"] == RM.READY and (state != "failed" or rs.get("cooldown_until", 0) <= now):
@@ -1827,9 +1827,15 @@ def _ring_taken(obs, seat, ring):
                 or (callable(obs.get("consumed")) and obs["consumed"](seat, ring.get("ring_id"))))
 
 
-def _cancel(rs, seat, why, now, act):
+def _cancel(rs, seat, cfg, why, now, act):
     rs.update(state="cancelled", why=why, ended_at=now)
     act(do="restart_cancel", seat=seat, ticket=rs.get("ticket"), why=why)
+    if _goodbye(cfg, rs):
+        # GOODBYE_CANCEL_FIX_PEER_ATE_THE_NIGHT (2026-11-01): a goodbye cancelled with one journal line left his window
+        # running all night. No text cancels one now (_goodbye); what still does is a fault the Conductor must see.
+        act(do="alarm", kind="restart:%s:goodbye_cancelled" % seat, seat=seat, ticket=rs.get("ticket"), note=True,
+            conductor_log=True, why="the goodbye restart of %s was CANCELLED and will not fire: %s. Ask for it again "
+            "(seat_restart.py request) or restart the window by hand." % (seat, why))
 
 
 def _gone(seat, cfg, rs, obs, ro, now, act, why):
@@ -1843,12 +1849,12 @@ def _gone(seat, cfg, rs, obs, ro, now, act, why):
     else:
         alive = ro["start"](rs.get("pid")) == rs.get("start") if callable(ro.get("start")) and rs.get("pid") else True
     if cfg.get("kind") != "conductor" or alive or rs.get("start") is None or not callable(ro.get("owed")):
-        return _cancel(rs, seat, why, now, act)
+        return _cancel(rs, seat, cfg, why, now, act)
     owed = ro["owed"](rs)
     if owed == []:
-        return _cancel(rs, seat, why, now, act)
+        return _cancel(rs, seat, cfg, why, now, act)
     if _find((obs.get("agents") or {}).get("sessions"), SM.names_of(cfg)):    # never a second window beside a live one
-        _cancel(rs, seat, why, now, act)
+        _cancel(rs, seat, cfg, why, now, act)
         act(do="alarm", kind="restart:%s:orphan" % seat, seat=seat, ticket=rs.get("ticket"), note=True,
             why="%s window %s died with his message unanswered, and another window already runs: read %s after byte %s" % (
                 seat, rs.get("session_id"), rs.get("tx_path"), rs.get("tx_offset")))
@@ -1976,7 +1982,7 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
         act(do="restart_hold", seat=seat, why="pending restart found killed at %s (state reconciled)" % _iso(rec["killed_at"]))
         return
     if rs.get("source") in FORCED and cfg.get("backstop") is not True:
-        return _cancel(rs, seat, "the backstop is off for this seat: a pending forced restart does not outlive it", now, act)
+        return _cancel(rs, seat, cfg, "the backstop is off for this seat: a pending forced restart does not outlive it", now, act)
     if cur is None or cur.get("sessionId") != rs.get("session_id"):
         return _gone(seat, cfg, rs, obs, ro, now, act,
                      "the window's session changed or is gone (%s)" % ((cur or {}).get("sessionId")))
@@ -1984,13 +1990,13 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
         _join_request(seat, cfg, rs, ro, now, act)   # before anything that cancels: his goodbye must not wait a tick
     tx = ro["tx"](seat, cur)
     if rs.get("source") in FORCED and _hold_stands(seat, cfg, st, ro, cur, tx, now, act):
-        return _cancel(rs, seat, "he set the reset switch to hold: this context restart stands down", now, act)
+        return _cancel(rs, seat, cfg, "he set the reset switch to hold: this context restart stands down", now, act)
     if rs.get("source") == READY and _mode(seat, cfg, ro, cur)["mode"] != RM.READY:
-        return _cancel(rs, seat, "he took the reset switch off ready", now, act)
+        return _cancel(rs, seat, cfg, "he took the reset switch off ready", now, act)
     after = rs.get("cancel_after", rs["ts"])
     goodbye = _goodbye(cfg, rs)
     if not goodbye and tx and tx.get("last_user_at") and tx["last_user_at"] > after:
-        return _cancel(rs, seat, "new input in the window at %s, after the request" % _iso(tx["last_user_at"]), now,
+        return _cancel(rs, seat, cfg, "new input in the window at %s, after the request" % _iso(tx["last_user_at"]), now,
                        act)
     hard = rs.get("hard") is True
     size = (tx or {}).get("ctx_tokens")
@@ -1999,7 +2005,7 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
         line = _size_line(cfg, rs)
         if size < line:
             _context_memo(st, seat, cur).pop("hard_since", None)
-            return _cancel(rs, seat, "context fell to %d tokens, under %d (compacted): no restart owed" % (size, line),
+            return _cancel(rs, seat, cfg, "context fell to %d tokens, under %d (compacted): no restart owed" % (size, line),
                            now, act)
         rs["ctx_tokens"] = size
     if hard:
@@ -2013,7 +2019,7 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
             sc = None
     verdict, cursor_why = cursor_verdict(cfg, rs, sc, now)
     if verdict == "cancel":
-        return _cancel(rs, seat, cursor_why, now, act)
+        return _cancel(rs, seat, cfg, cursor_why, now, act)
     cursor_hold = cursor_why if verdict == "hold" else None
     # SEAT_RESTART_FIX_KILL_AFTER_NEW_WORK (Codex review 2026-10-29 P1 1): machine input no longer cancels (0cf054ade8),
     # so a seat that took a ticket after its request and then idled on external input would be killed mid-ticket.
@@ -2034,7 +2040,7 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
     work = ro["work"](seat, rs.get("work_from", rs["ts"])) if ro.get("work") else None
     nw = None if deferred and (live or hs is None) else new_work(work, rs.get("ticket"), drain=deferred)
     if nw and not sized and rs.get("source") != READY and not goodbye:  # forced: taking work is exactly what a busy window does, and the limit stands
-        return _cancel(rs, seat, _work_why(nw), now, act)
+        return _cancel(rs, seat, cfg, _work_why(nw), now, act)
     if not goodbye and not instant and now - rs["ts"] < cfg["grace_s"]:
         act(do="restart_hold", seat=seat, why="grace: %d s left" % (cfg["grace_s"] - (now - rs["ts"])))
         return
@@ -2134,7 +2140,7 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
         act(do="restart_hold", seat=seat, why=why)
         return
     if rs.get("pid") is not None and cur.get("pid") != rs["pid"]:
-        return _cancel(rs, seat, "the window's pid %s is not the requester's %s" % (cur.get("pid"), rs["pid"]), now,
+        return _cancel(rs, seat, cfg, "the window's pid %s is not the requester's %s" % (cur.get("pid"), rs["pid"]), now,
                        act)
     _clone_tidy(seat, rs, ro, act)
     ss.pop("ring", None)                 # a taken ring dies with the window it reached: nothing is left to verify

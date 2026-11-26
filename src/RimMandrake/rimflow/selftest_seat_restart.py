@@ -1642,6 +1642,31 @@ def test_g5_live_schedule_has_the_conductor_entry():
     check((SR.config(live).get("FOUNDRY") or {}).get("kind", "doorbell") == "doorbell", "G5 FOUNDRY stays a doorbell seat")
 
 
+def test_gc_a_cancelled_goodbye_alarms_the_conductor():
+    """GOODBYE_CANCEL_FIX_PEER_ATE_THE_NIGHT (2026-11-01): a peer's message cancelled his goodbye with one journal line,
+    and the window ran all night. Text no longer cancels a goodbye (G2), but a stale request, an ambiguous window or a
+    changed pid still does. Each such cancel alarms the Conductor log, so a goodbye never dies unseen."""
+    sch = bsched()
+
+    def bye_alarm(a):
+        return [x for x in a if x["do"] == "alarm" and x.get("kind") == "restart:BENCH:goodbye_cancelled"
+                and x.get("conductor_log") and x.get("note")]
+    st = fresh()
+    a = run(sch, st, obs(sessions=[bsess()], request=breq()), T0 + SR.DEFAULTS["request_max_age_s"] + 60)
+    check(bstate(st) == "cancelled" and bye_alarm(a), "GC a stale goodbye request is cancelled AND alarmed (%s)" % dos(a))
+    st = fresh()
+    a = run(sch, st, obs(sessions=[bsess(), bsess(sid="sid-2", pid=9, name="AGENT BENCH")], request=breq()), T0 + 1)
+    check(bstate(st) == "cancelled" and bye_alarm(a), "GC two Conductor windows: the goodbye is cancelled AND alarmed (%s)" % dos(a))
+    st = fresh()
+    run(sch, st, obs(sessions=[bsess()], request=breq()), T0 + 1)
+    a = run(sch, st, obs(sessions=[bsess(pid=777)]), T0 + 605)      # past the fixture's 600 s countdown
+    check(bstate(st) == "cancelled" and bye_alarm(a), "GC a goodbye whose window pid changed is cancelled AND alarmed (%s)" % dos(a))
+    st = fresh()
+    a = run(sched(), st, obs(sessions=[sess()], request=req()), T0 + SR.DEFAULTS["request_max_age_s"] + 60)
+    check(state(st) == "cancelled" and not [x for x in a if "goodbye_cancelled" in (x.get("kind") or "")],
+          "GC control: a doorbell seat's stale request cancels with no goodbye alarm (%s)" % dos(a))
+
+
 def test_g6_wake_lists_his_messages_after_the_goodbye():
     import contextlib
     import io
