@@ -85,12 +85,21 @@ def checks(mc, math_cs, all_src, plan):
         f.append("the rim: ItemWillBeThrown does not require a kernel throw of a cell")
     # the proof's goods plans go through RM_KnockbackVerdicts.GoodCells (kernel-tested, V-02) with the real wild factor
     # (RIMMANDRAKE_LIFT_PROOF_VERDICTS_INTO_TESTED_CODE_NINE_SLIPPED: a plan passing 1f there is the plain kernel again)
-    calls = re.findall(r"RM_KnockbackVerdicts\.GoodCells\(([^;]*)\);", all_src.split(SELFTEST_MARK)[0])
+    src = all_src.split(SELFTEST_MARK)[0]
+    calls = list(re.finditer(r"RM_KnockbackVerdicts\.GoodCells\(([^;]*)\);", src))
     if len(calls) < 4:
         f.append("proof goods plans: %d RM_KnockbackVerdicts.GoodCells calls, want WantCells, WantCellsFrom, the items want and PlanGood" % len(calls))
-    for c in calls:
-        if not c.rstrip().endswith("RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild"):
-            f.append("a proof goods plan passes %r, not GoodsThrowWild, as the wild factor" % c.split(",")[-1].strip())
+    for m in calls:
+        last = m.group(1).split(",")[-1].strip()
+        if last == "RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild":
+            continue
+        # a local that holds GoodsThrowWild (WantCells keeps it to print it, bedd128cf7): its last declaration before the call,
+        # within the method, is the constant, and nothing assigns it again before the call
+        decl = list(re.finditer(r"\b(?:float|var)\s+%s\s*=\s*([^;]+);" % re.escape(last), src[:m.start()])) if re.fullmatch(r"\w+", last) else []
+        if decl and decl[-1].group(1).strip() == "RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild" and m.start() - decl[-1].end() < 600 \
+                and not re.search(r"\b%s\s*=(?!=)" % re.escape(last), src[decl[-1].end():m.start()]):
+            continue
+        f.append("a proof goods plan passes %r, not GoodsThrowWild, as the wild factor" % last)
     return f
 
 
@@ -157,6 +166,8 @@ def main(argv):
         "item prediction skips the kernel": P("return RM_KnockbackMath.ThrowCells(dist, b.radius, b.force, f.mass, s) > 0\n                && ", "return "),
         "item prediction on default rules": (mc.replace("KbPlanner.GoodWillBeThrown(f, blast, RimMandrakeExplosiveKnockbackSettings.Rules(),", "KbPlanner.GoodWillBeThrown(f, blast, new KbRules(),", 1), km, every, plan),
         "proof plan wild 1": (mc, km, every.replace("mass, k, RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild);\n            if (cells <= 0)", "mass, k, 1f);\n            if (cells <= 0)", 1), plan),
+        "WantCells' local wild 1": (mc, km, every.replace("float wild = RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild;", "float wild = 1f;", 1), plan),
+        "WantCells' local wild reassigned": (mc, km, every.replace("float wild = RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild;", "float wild = RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild; wild = 1f;", 1), plan),
     }
     base = (mc, km, every, plan)
     missed = [n for n, x in planted.items() if x == base or not checks(*x)]
