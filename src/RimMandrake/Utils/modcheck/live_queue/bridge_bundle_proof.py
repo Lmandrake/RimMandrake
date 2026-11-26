@@ -1430,6 +1430,7 @@ C3_RAMP_STEPS, C3_RAMP_BUDGET_S = 40, 900    # our own: the ramp's caps
 C3_RAMP_DEFS = ("Steel", "Plant_Grass")      # one item and one plant per cell (an item displaces items, a plant wipes plants)
 C3_FILL_SMALL = 2000                         # our own: the fine fill mark, to stand within C3_FILL_SLACK of the boundary
 C3_FILL_SLACK = 4096
+C3_SETTLE_S = 3.0                            # our own: frames resume between a stalling call and the save after it
 
 
 class _C3Stop(Exception):
@@ -1587,7 +1588,17 @@ def _c3_item1(T, d, rdir, label, r):
         time.sleep(1)
     if not c.get("session"):
         return None
-    c["hbs"] = []
+    c["hbs"], c["preMenuHbs"] = [], 0
+    # the heartbeat's scene is "" until the main thread's first frame at the menu (JawaBenchTpsWatchdog._scene):
+    # the session row can precede it (J20261126T000829Z-98bb6f cold E read '' first). Item 1's three reads are
+    # MENU heartbeats, so they start at the first menu one; a game that never reaches the menu leaves none (red).
+    end = time.time() + 120
+    while time.time() < end:
+        hb, _mt = _c3_hb(T, rdir, c["session"])
+        if hb and hb.get("scene") == "menu":
+            break
+        c["preMenuHbs"] += 1
+        time.sleep(1)
     for k in range(C3_HB_READS):
         if k:
             time.sleep(C3_HB_GAP_S)
@@ -1678,9 +1689,12 @@ def _c3_save(T, d, rdir, sess, name):
         return e
     r = sv[-1]
     e["saveS"] = r.get("saveS")
+    # the save's own incident is the gap that ENDS with the save (its frame resumes within a frame of the save row);
+    # one that merely overlaps may be the stall of the call before it (J20261126T000829Z-98bb6f: spawn_fill_area's
+    # 10-17 s stalls ended just before the ramp's saves and were read as theirs)
     a, z = r["_t"] - (r.get("saveS") or 0) - C3_MONO_TOL_S, r["_t"] + C3_MONO_TOL_S
     e["incidents"] = [{"type": i.get("type"), "gapS": i.get("gapS"), "explainedS": i.get("explainedS")}
-                      for i in rows if i.get("kind") == "incident" and i["_t0"] <= z and i["_t"] >= a]
+                      for i in rows if i.get("kind") == "incident" and a <= i["_t"] <= z]
     return e
 
 
@@ -1707,6 +1721,7 @@ def _c3_ramp(T, d, rdir, sess):
                 r = call(s, "jawa/spawn_fill_area", rect="%d,%d,50,50" % (x, z), thingDef=defs[k])
                 filled += int(r.get("cellsFilled") or 0)
         done = min(len(rects), done + n)
+        time.sleep(C3_SETTLE_S)                     # the spawns' own stall ends before the save starts
         last = _c3_save(T, d, rdir, sess, C3_RAMP_SAVE).get("saveS") or last
     d["rampWhy"] = "map %dx%d, %d of %d rects (%s), %d cells filled, base save %.3f s, last %.3f s, %.0f s" % (
         X, Z, done, len(rects), "+".join(C3_RAMP_DEFS), filled, base, last, time.time() - t0)
@@ -1724,7 +1739,8 @@ def _c3_hang(T, O, d, rdir, sess):
                 s.call("jawa/tps_test_block", seconds=C3_HANG_S)
         except Exception:                           # noqa: BLE001 - the kill ends the call
             pass
-    threading.Thread(target=blocker, daemon=True).start()
+    th = threading.Thread(target=blocker, daemon=True)
+    th.start()
     t0 = time.time()
     for at in (15, 25, 35, 45):                     # after the 10 s silence threshold, inside the 120 s block
         time.sleep(max(0, t0 + at - time.time()))
@@ -1742,6 +1758,8 @@ def _c3_hang(T, O, d, rdir, sess):
     pid = d["item1"][0]["pid"]
     h["killed"] = _c3_kill(pid) and time.time() < t0 + C3_HANG_S
     h["killWhy"] = "pid %s, %.0f s into the %.0f s block" % (pid, time.time() - t0, C3_HANG_S)
+    th.join(30)
+    h["settled"] = _c3_settle("jawa/tps_test_block", "TPSC3 hang: the block ran until the proof killed the game (pid %s)" % pid)
     _hb, mt = _c3_hb(T, rdir, sess)
     time.sleep(max(0, (mt or time.time()) + T.HB_FRESH_SECONDS + 1 - time.time()))
     p = O.one_pass()
@@ -1761,6 +1779,19 @@ def _c3_hang(T, O, d, rdir, sess):
                   for ln in open(os.path.join(ut, n), encoding="utf-8", errors="replace"))]
     h["retention"] = {"patterns": sorted(pats), "sane": any(fnmatch.fnmatch("tps_x_1_2_000.jsonl", p) for p in pats),
                       "hits": [p for p in sorted(pats) if fnmatch.fnmatch("observer.jsonl", p)] + py}
+
+
+def _c3_settle(tool, note):
+    """The kill cut this process's own call off mid-reply, so the client marked it INDETERMINATE and refuses every
+    later mutation (J20261126T000829Z-98bb6f aborted at load_game_ready). Its outcome is known here: the block ran
+    until the kill. Only THIS process's markers of THIS tool are settled; any other marker still refuses."""
+    import rimbridge_client as rb
+    n = 0
+    for rec in rb.outstanding_indeterminate():
+        if rec.get("tool") == tool and rec.get("pid") == os.getpid() and rec.get("cid"):
+            rb.reconcile_resolve(rec["cid"], "applied", note)
+            n += 1
+    return n
 
 
 def _c3_observer_rows(T, rdir, sess):

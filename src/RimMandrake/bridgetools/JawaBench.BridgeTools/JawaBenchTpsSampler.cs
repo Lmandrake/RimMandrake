@@ -680,7 +680,7 @@ namespace JawaBench.BridgeTools
         {
             Incidents++;
             JawaBenchTpsTier.RequestDump(JawaBenchTpsTierCore.TrigIncident);
-            string quiet = Interlocked.Exchange(ref WD.QuietPhase, null);
+            string quiet = M.QuietPhaseFor(g, Interlocked.Exchange(ref WD.Quiet, null));
             W.Enqueue("incident", "\"game\":" + Life.GameSeq + "," + M.IncidentFields(g, quiet, _lastSim, GC.CollectionCount(0) - _gcAtPreLast, Life.SaveTotal,
                                                    WD.LastSave, WD.ContextFields()));
         }

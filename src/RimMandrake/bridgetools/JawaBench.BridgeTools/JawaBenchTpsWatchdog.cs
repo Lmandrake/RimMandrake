@@ -96,9 +96,10 @@ namespace JawaBench.BridgeTools
         internal static string LastMultJson => M.F(BitConverter.Int64BitsToDouble(Interlocked.Read(ref _multBits)), 2);
         internal static volatile bool LastPaused, LastFocused = true, LastLongEvent;
         internal static volatile string LastSave = "";
-        /// <summary>The phase the watchdog saw while the main thread was quiet > 1.5 s; read+cleared by the
-        /// main thread when it writes the recovered-stall incident (covers 2-10 s stalls, below SilenceSeconds).</summary>
-        internal static string QuietPhase;
+        /// <summary>The phase the watchdog last saw while the main thread was quiet > M.QuietTagSeconds, tagged with the beat
+        /// it measured from; taken+cleared by the main thread when it writes the recovered-gap incident, which keeps it only
+        /// when the beat belongs to that gap (M.QuietPhaseFor; covers 2-10 s stalls, below SilenceSeconds).</summary>
+        internal static M.QuietTag Quiet;
 
         private static readonly int[] Stack = new int[32];
         private static int _depth;
@@ -222,11 +223,12 @@ namespace JawaBench.BridgeTools
             {
                 try
                 {
-                    Thread.Sleep(1000);
+                    Thread.Sleep((int)(M.WatchdogPeriodSeconds * 1000));
                     double now = Now;
                     double beat = Seconds(Interlocked.Read(ref _beatTicks));
                     double quiet = now - beat;
-                    if (quiet > 1.5) Interlocked.Exchange(ref QuietPhase, PhaseName + "@" + M.F(quiet, 1) + "s");
+                    var tag = M.TagQuiet(beat, quiet, PhaseName);
+                    if (tag != null) Interlocked.Exchange(ref Quiet, tag);
                     if (quiet > M.SilenceSeconds)
                     {
                         if (!silent || now - lastSilenceLine >= M.SilenceRepeatSeconds)

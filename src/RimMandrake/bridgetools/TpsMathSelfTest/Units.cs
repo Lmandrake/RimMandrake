@@ -17,6 +17,8 @@ namespace JawaBench.BridgeTools
     {
         private static readonly List<Action> All = new List<Action>();
         private static string _cur;
+        /// <summary>A unit's measurement (worst value, limit, case count), printed after its "ok"/FAIL; cleared per unit.</summary>
+        internal static string Note;
         private static readonly List<string> Fails = new List<string>();
 
         internal static void Check(bool cond, string why)
@@ -45,13 +47,14 @@ namespace JawaBench.BridgeTools
             {
                 _cur = m.Name.Substring(2);
                 Fails.Clear();
+                Note = null;
                 try { m.Invoke(null, null); }
                 catch (Exception e)
                 {
                     var ie = e is System.Reflection.TargetInvocationException && e.InnerException != null ? e.InnerException : e;
                     Fails.Add("threw " + ie.GetType().Name + ": " + ie.Message);
                 }
-                Console.WriteLine("U " + _cur + (Fails.Count == 0 ? " ok" : " FAIL " + string.Join(" | ", Fails).Replace("\n", " ")));
+                Console.WriteLine("U " + _cur + (Fails.Count == 0 ? " ok" : " FAIL " + string.Join(" | ", Fails).Replace("\n", " ")) + (Note == null ? "" : " [" + Note + "]"));
             }
             Console.WriteLine("U-count " + tests.Count);
         }

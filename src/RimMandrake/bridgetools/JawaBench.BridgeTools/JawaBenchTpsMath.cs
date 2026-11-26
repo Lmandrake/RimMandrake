@@ -111,6 +111,35 @@ namespace JawaBench.BridgeTools
             public string Kind => Explained >= ExplainedShare * Seconds ? StateLongEvent : StateStall;
         }
 
+        /// <summary>The watchdog thread wakes once per this many seconds (its Thread.Sleep).</summary>
+        public const double WatchdogPeriodSeconds = 1.0;
+        /// <summary>The watchdog tags the main thread's phase when it has been quiet longer than this. It must sit below
+        /// GapSeconds - the real wakeup period so every gap (> GapSeconds, the bar's 2 s) is seen by at least one wakeup:
+        /// 0.5 s leaves 0.5 s of slack over the 1 s sleep (Windows timer slack, a slow heartbeat write). The old 1.5 s
+        /// left none (J20261126T000829Z-98bb6f: 3 of 15 hitches of 2.05-2.25 s had no phase). T_QuietPhaseSampledEveryGap.</summary>
+        public const double QuietTagSeconds = 0.5;
+
+        /// <summary>Where the watchdog saw the main thread blocked, and the beat (frame start, Stopwatch s) it measured from.</summary>
+        public sealed class QuietTag
+        {
+            public double Beat, Quiet;
+            public string Phase;
+        }
+
+        /// <summary>Watchdog wakeup: the tag for this quiet, or null when the main thread is not quiet enough to name.</summary>
+        public static QuietTag TagQuiet(double beat, double quiet, string phase, double threshold = QuietTagSeconds)
+        {
+            return quiet > threshold ? new QuietTag { Beat = beat, Quiet = quiet, Phase = phase + "@" + F(quiet, 1) + "s" } : null;
+        }
+
+        /// <summary>The incident's quietPhase: the tag's phase only when its beat belongs to THIS gap - the frame that
+        /// opened it (its start precedes g.Start by less than GapSeconds, or that frame would itself have ended a gap)
+        /// through the frame that closed it. A tag from any earlier quiet frame never names this gap.</summary>
+        public static string QuietPhaseFor(Gap g, QuietTag t)
+        {
+            return t != null && t.Beat > g.Start - GapSeconds && t.Beat <= g.Start + g.Seconds ? t.Phase : null;
+        }
+
         public sealed class Window
         {
             public double DReal, RunS, PausedS, ExplainedS, StallS, AmbigS, Expected, ExpectedLo, GapMaxS, SimS, SimMaxS;

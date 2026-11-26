@@ -74,6 +74,10 @@ namespace JawaBench.BridgeTools
                               "the thread that called Start (" + mainTid + ") is the one flagged main: [" + string.Join(",", flagged) + "]");
                     }
                 }
+                // the same wakeups tag the blocked phase for the incident (quietPhase), with the beat they measured from
+                var qt = Interlocked.Exchange(ref WD.Quiet, null);
+                Check(qt != null && qt.Quiet >= 60.0 && qt.Phase.StartsWith("tl:Rare@", StringComparison.Ordinal),
+                      "Loop's quiet tag: " + (qt == null ? "none" : qt.Phase + " quiet " + qt.Quiet));
                 WD.SetBeatForTest(0.0);                               // quiet again before the process exits
                 done.Set();
             }

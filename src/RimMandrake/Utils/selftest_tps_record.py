@@ -665,7 +665,8 @@ CS_UNITS = ["IncidentRowComposition", "StagesSkipSafe", "StagesWorstTick", "Stag
             "GuardOrphanFinalizerIsCountedNotApplied", "GuardInnerLeftOpenClosedByOuter", "GuardFaultDisablesAndIsVisible",
             "GuardOriginalSkippedAndThrewCounted", "RecorderForeignThreadRejectedBeforeState", "RecorderReentrantCallsStandAlone", "RecorderSkippedOriginalRecordsNothing", "RecorderSkippedPrefixIsOrphanNotZero", "RecorderGameExceptionCountedNotSwallowed", "RecorderOwnFaultCountedRecorderStaysOn", "WriterFaultNeverBlocksEnqueue", "StallDumpDecision", "StallDumpAt60s", "StallDumpRetriesFailedWrite", "StallDumpWarmLeavesNothing", "StallDumpWatchdogLoop",
             "CompTimingOneOffSpikeIsNamedNotDrowned", "CompTimingStallAfterLoadCarriesSinceLoad", "CompTimingArmedAtMenuFirstGameIsALoad",
-            "CompTimingSpikeCapKeepsLargest", "CompTimingRollsUpByOwner", "CompTimingStageMaxNamesItsOwnComponent"]
+            "CompTimingSpikeCapKeepsLargest", "CompTimingRollsUpByOwner", "CompTimingStageMaxNamesItsOwnComponent",
+            "QuietPhaseSampledEveryGap"]
 
 
 def unit_checks(lines):
@@ -680,6 +681,8 @@ def unit_checks(lines):
             units[parts[1]] = parts[2] if len(parts) > 2 else "?"
             if len(parts) < 3 or parts[2] != "ok":   # a status-less line (output cut mid-write) is not a pass
                 FAILS.append("C# unit %s: %s" % (parts[1], ln[len("U " + parts[1]) + 1:][:400]))
+            elif len(parts) > 3:                      # the unit's measurement: worst value, limit, cases
+                print("C# unit %s ok %s" % (parts[1], parts[3][:400]))
     for name in CS_UNITS:
         if name not in units:
             FAILS.append("C# unit %s did not run" % name)
@@ -955,7 +958,11 @@ def sampler_seam(text):
     sustained = one(r"^\s*sustained = (.*),\s*$", "the sustained expression")
     # one road into each of the two stores, and the frame hook feeding Emit: the seam below is the only writer
     for pat, what in [(r"\bRing\.Add\(", "Ring.Add"), (r"\bStreak\.Add\(", "Streak.Add"),
-                      (r"^\s*if \(closed != null\) Emit\(closed, __instance\);", "the frame hook's Emit")]:
+                      (r"^\s*if \(closed != null\) Emit\(closed, __instance\);", "the frame hook's Emit"),
+                      # the incident's quietPhase: the watchdog's tag, kept only when its beat belongs to this gap
+                      # (T_QuietPhaseSampledEveryGap); the only reader of the tag
+                      (r"^\s*string quiet = M\.QuietPhaseFor\(g, Interlocked\.Exchange\(ref WD\.Quiet, null\)\);",
+                       "the incident's quietPhase"), (r"\bWD\.Quiet\b", "a WD.Quiet reader")]:
         one(pat, what)
     marker = "string state = w.State;"
     if text.count(marker) != 1 or "lock (Gate)" not in text[text.find(marker):]:
@@ -977,7 +984,7 @@ def sampler_text():
 
 
 # (name, sampler text, broken text). Each must turn SamplerWiring or the seam's shape checks red. The first two are the
-# blind checker's gaps and run on every selftest; --mutants runs them all. Only the text handed to the seam changes.
+# blind checker's gaps and run on every selftest, as does the last (a live-found quietPhase leak); --mutants runs them all. Only the text handed to the seam changes.
 SAMPLER_MUTANTS = [
     ("streak_seconds_constant", "new M.StreakWindow(M.StreakValue(w.Ratio), M.StreakValue(w.DReal))",
      "new M.StreakWindow(M.StreakValue(w.Ratio), 5.0)"),
@@ -993,6 +1000,8 @@ SAMPLER_MUTANTS = [
     ("second_ring_writer", "private static void BreakStreak() { lock (Gate) Streak.Clear(); }",
      "private static void BreakStreak() { lock (Gate) Streak.Clear(); Ring.Add(0, \"\"); }"),
     ("frame_hook_drops_emit", "if (closed != null) Emit(closed, __instance);", "if (closed != null) { }"),
+    ("incident_takes_any_tag", "M.QuietPhaseFor(g, Interlocked.Exchange(ref WD.Quiet, null))",
+     "Interlocked.Exchange(ref WD.Quiet, null)?.Phase"),
 ]
 
 
@@ -1070,7 +1079,8 @@ def main(argv):
         FAILS.append("C# parity UNMEASURED: no dotnet.exe on this machine (pass --no-cs to accept Python-only)")
     else:
         cs_parity(tr, res)
-        mutant_checks(tr, res, None if "--mutants" in argv else ("streak_seconds_constant", "ring_clock_times_five"))
+        mutant_checks(tr, res, None if "--mutants" in argv else ("streak_seconds_constant", "ring_clock_times_five",
+                                                                      "incident_takes_any_tag"))
     for f in FAILS:
         print("FAIL " + f)
     print("selftest_tps_record: %s (%d failures)" % ("PASS" if not FAILS else "FAIL", len(FAILS)))
