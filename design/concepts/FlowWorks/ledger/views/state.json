@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "ecf25268d7a1811e638461afc1a3093dbcdd2e769f561dc375c48b7a0d90ee7d",
+  "body_sha256": "cafaad2d36ab8036fbc833af179cd389f649a18f7287340ddaee6c084d4e98df",
   "reducer": 1,
   "shards": {
    "BACKFILL": 892335,
@@ -43,7 +43,7 @@
    "HOLDER.run-1795461568": 2159,
    "HOLDER.run-1795471235": 562,
    "HOLDER.run-1795503470": 1774,
-   "HOLDER.run-1795670514": 8064,
+   "HOLDER.run-1795670514": 9857,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1294,10 +1294,10 @@
   },
   "checkpoint": {
    "by": "HOLDER.run-1795670514",
-   "done": "timber bridge closed (2cdfa80e72, live PASS, judge KEEP); RIMMANDRAKE_STORE_FLOWWORKS_HELD_FLAG_WHERE_A_READ_REACHES_IT dropped by test 1 (its reader sc_moat_raid is next-version and raid-paused)",
-   "next": "Class the thirst_live non-passes of RIMMANDRAKE_CLASS_SEVEN_THIRST_FAILS_SITE_FULL_OF_PATIENTS in a live sitting on ArchSmall",
-   "ruled_out": "a stored held flag for 0.1.0: no 0.1.0 bar reads it",
-   "ts": "2026-11-26T10:20:05Z"
+   "done": "thirst non-passes classed as scene/check faults, repaired 3dc910eb70; live CS7A ArchSmall all thirst rows PASS (fa0db5d03b)",
+   "next": "Diagnose CROPS_IRRIGATE_THEN_DROWN live (still FAIL after the TickLong poll fix), then re-file the item effect on CS7A_record.json and close",
+   "ruled_out": "T25/T26/T29/T10/T15/T17/T28/T9 as mod faults; CROPS poll-length as the whole cause",
+   "ts": "2026-11-26T11:34:07Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1749,7 +1749,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1735,
+  "events": 1740,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7849,7 +7849,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-26T10:20:05Z",
+   "last": "2026-11-26T11:34:07Z",
    "lease": "run-1795670514",
    "released": false,
    "token": 60
