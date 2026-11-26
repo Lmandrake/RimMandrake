@@ -112,6 +112,30 @@ def t_tick_unit_absent(W):
         W.subprocess.run = real
 
 
+def t_steward_does_not_cry_idle_empty_on_a_chain_the_filler_drops(W, T, reset, now):
+    """2026-11-26: the filler said `FlowWorks no longer declares proofs; not ranked` and queued nothing (exhausted), while
+    the steward read fill_plan's pick [proofs] and raised IDLE_EMPTY `fill would queue FlowWorks: proofs but nothing is
+    pending (the fill failed?)`, escalated two levels and woke a paid session over a lane that owed nothing. The REAL
+    fill_plan runs here (no lambda): history holds only a chain modcheck no longer declares."""
+    import gaps
+    import selftest_testq as ST
+    saved = (T.QHOME, T.bad_selection, gaps.probe, gaps.owed_items)
+    tmp = tempfile.mkdtemp(prefix="rf_steward_undecl_")
+    try:
+        reset()
+        ST._undeclared_fixture(T, gaps, tmp, ["renamed_away_zz"], {"X_OWES": ["renamed_away_zz"]})
+        ls = W.lane_state(now, ["FlowWorks"])
+        check(not (ls["state"] == "IDLE_EMPTY" and ls["reason"].startswith("fill would queue")),
+              "a chain the filler drops is not `fill would queue` (no false IDLE_EMPTY); state=%s fault_at=%s: %s"
+              % (ls["state"], ls["fault_at"], ls["reason"][:120]))
+        check(ls["state"] == "EXHAUSTED" and ls["fault_at"] is None,
+              "the lane the filler calls exhausted reads EXHAUSTED, not a fault: %s %s" % (ls["state"], ls["fault_at"]))
+    finally:
+        T.QHOME, T.bad_selection, gaps.probe, gaps.owed_items = saved
+        shutil.rmtree(tmp, ignore_errors=True)
+        reset()
+
+
 def main():
     tmp = tempfile.mkdtemp(prefix="rf_steward_")
     try:
@@ -639,6 +663,7 @@ def main():
         ls = W.lane_state(base, ["Mock"])
         check(ls["state"] == "IDLE_EMPTY" and ls["fault_at"] == 0, "an empty queue with nothing selectable: "
               "IDLE_EMPTY, a fault (an evidence gap): %s" % ls["reason"])
+        t_steward_does_not_cry_idle_empty_on_a_chain_the_filler_drops(W, T, reset, base)
         real = T.fill_plan
         try:
             T.fill_plan = lambda *a, **k: {"verdict": "exhausted", "text": "nothing to fill"}

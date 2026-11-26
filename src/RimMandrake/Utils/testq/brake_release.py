@@ -151,7 +151,7 @@ def releasable(tails, now):
 
 def canary_request(mod, tails, now):
     """-> (chains, purpose, row_items, retest_why) or None if nothing can be asked of the lane."""
-    plan = T.fill_rank(mod, 1, now)
+    plan = T.fill_rank_declared(mod, 1, now)   # a chain modcheck no longer declares is refused at submit: same drop as the filler
     if plan["verdict"] == "pick" and plan.get("pick"):
         pick = plan["pick"][:1]
         rows = {k: v for k, v in (plan.get("row_items") or {}).items() if k in pick}

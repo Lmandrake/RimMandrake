@@ -351,6 +351,79 @@ def t_fill_drops_unknown_chains():
         shutil.rmtree(tmp, ignore_errors=True)
 
 
+def _undeclared_fixture(T, gaps, tmp, hist, item_chains, offline_chains=()):
+    """A temp queue for FlowWorks: one PASS done record per chain in HIST (history modcheck may no longer declare), gaps
+    faked to the catalogue {thirst live} with ITEM_CHAINS owing live levels, and a modcheck faked to refuse a chain
+    that is not live: `unknown chain(s) for FlowWorks: ...` for an undeclared one, `every selected chain of FlowWorks is
+    offline (...)` when every selected chain is in OFFLINE_CHAINS. -> the temp restores nothing: the caller restores."""
+    T.QHOME = tmp
+    T.ensure_dirs()
+    for i, chain in enumerate(hist):
+        fin, jid = "2026-0%d-01T00:00:00Z" % (i + 1), "JUND%d" % i
+        with open(os.path.join(tmp, "done", jid + ".json"), "w") as fh:
+            json.dump({"finished": fin, "job": {"id": jid, "mod": "FlowWorks", "submitted": fin,
+                                                "requested_by": "someone"},
+                       "result": {"outcome": "DONE", "started": fin, "finished": fin,
+                                  "rows": [{"chain": chain, "row": "r", "verdict": "PASS"}]}}, fh)
+    gaps.probe = lambda mod, items, since: {"chains": ["thirst"], "offline": [], "item_chains": item_chains,
+                                            "changed": {}}
+    gaps.owed_items = lambda world=None: {}
+
+    def refuse(mod, sel):
+        chains = sel.get("chains") or []
+        if chains and all(c in offline_chains for c in chains):
+            return "every selected chain of %s is offline (%s)" % (mod, ", ".join(chains))
+        bad = [c for c in chains if c not in ("thirst",) and c not in offline_chains]
+        return "unknown chain(s) for %s: %s; chains are: thirst" % (mod, ", ".join(bad)) if bad else None
+    T.bad_selection = refuse
+
+
+def t_fill_plan_drops_undeclared_chain_like_the_filler():
+    """fill_plan is what `fill MOD` would do now (the steward reads it): a chain modcheck no longer declares, or
+    declares offline-only, is dropped from the plan before the verdict, as the filler drops it (2026-11-26: the steward
+    read pick [proofs] and raised a false IDLE_EMPTY while the filler had said `no longer declares proofs`)."""
+    import testq as T
+    import gaps
+    import argparse
+    saved = (T.QHOME, T.cmd_submit, T.bad_selection, T.log, gaps.probe, gaps.owed_items)
+    cases = (   # name, history chains, item_chains, offline chains, want verdict is pick, want pick, want gone
+        ("only-undeclared", ["renamed_away_zz"], {"X_OWES": ["renamed_away_zz"]}, (), False, [], ["renamed_away_zz"]),
+        ("undeclared-and-declared", ["renamed_away_zz"], {"X_OWES_A": ["renamed_away_zz"], "X_OWES_B": ["thirst"]}, (),
+         True, ["thirst"], ["renamed_away_zz"]),
+        ("all-declared", [], {"X_OWES_B": ["thirst"]}, (), True, ["thirst"], []),
+        ("offline-only", ["off_zz"], {"X_OWES": ["off_zz"]}, ("off_zz",), False, [], ["off_zz"]),
+    )
+    n = 0
+    try:
+        for name, hist, items, offline, want_pick, want, want_gone in cases:
+            tmp = tempfile.mkdtemp(prefix="rf_testq_undecl_")
+            try:
+                logs = []
+                T.log = lambda msg, *a, **k: logs.append(msg)
+                _undeclared_fixture(T, gaps, tmp, hist, items, offline)
+                p = T.fill_plan("FlowWorks", 4, T.FILL_CAP_DEFAULT, now=time.time())
+                n += 1
+                check((p["verdict"] == "pick") == want_pick and sorted(p.get("pick") or []) == want
+                      and p.get("gone") == want_gone,
+                      "fill_plan drops an undeclared chain like the filler (%s): verdict=%s pick=%s gone=%s (want pick=%s "
+                      "gone=%s)" % (name, p["verdict"], p.get("pick"), p.get("gone"), want, want_gone))
+                check(not [m for m in logs if "no longer declares" in m],
+                      "fill_plan itself never logs the drop (the steward reads it every heartbeat; %s): %s" % (name, logs))
+                logs[:] = []
+                sent = []
+                T.cmd_submit = lambda sub: sent.append(sub.chains) or 0
+                T.cmd_fill(argparse.Namespace(mod="FlowWorks", n=4, cap=T.FILL_CAP_DEFAULT))
+                said = [m for m in logs if "no longer declares" in m]
+                check(len(said) == (1 if want_gone else 0) and
+                      (sorted(sent[0].split(",")) if sent else []) == want,
+                      "the filler logs the drop once and queues the plan's pick (%s): logs=%s sent=%s" % (name, said, sent))
+            finally:
+                shutil.rmtree(tmp, ignore_errors=True)
+        print("  fill_plan undeclared-chain cases read: %d (limit: plan == filler's action in every case)" % n)
+    finally:
+        T.QHOME, T.cmd_submit, T.bad_selection, T.log, gaps.probe, gaps.owed_items = saved
+
+
 def t_fill_no_day_budget():
     """FILL_NO_DANGERLESS_DAY_BUDGET (2026-11-22): the filler runs only when nothing is ready or running (fill_plan's
     `busy`), so it cannot take lane time from fix/sweep work; a lane-time day budget on it guarded no danger and left
@@ -786,6 +859,7 @@ def main():
         t_sweep_split()
         t_fill_policy()
         t_fill_drops_unknown_chains()
+        t_fill_plan_drops_undeclared_chain_like_the_filler()
         t_fill_no_day_budget()
         t_fill_brake_released_by_proof()
         t_fill_brake_stale_companion_out_of_the_window()

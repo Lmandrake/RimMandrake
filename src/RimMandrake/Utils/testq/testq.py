@@ -2330,7 +2330,7 @@ def fill_plan(mod, n, cap, *, now=None):   # now keyword-only: an old (.., day_s
     hold = facts_hold(mod, now)
     if hold:
         return dict(out, verdict="facts", text=hold, since=now)
-    return dict(out, **fill_rank(mod, n, now, today))
+    return dict(out, **fill_rank_declared(mod, n, now, today))
 
 
 def facts_hold(mod, now):
@@ -2341,6 +2341,24 @@ def facts_hold(mod, now):
     import host_facts as HF
     why = HF.unmet(mod, kept=HF.read(q("host_facts.json"), now))
     return why and "host facts hold: %s: %s" % (mod, why)
+
+
+def fill_rank_declared(mod, n, now, today=None):
+    """fill_rank, then the chains modcheck no longer declares dropped from the pick: the plan the filler really acts on
+    (RIMMANDRAKE_FIX_STEWARD_FORECAST_KEEPS_CHAIN_FILLER_DROPS: the steward read the undropped pick and raised a false
+    IDLE_EMPTY on 2026-11-26). A chain the history still holds but modcheck no longer declares (renamed, removed), or
+    declares offline-only, would be re-submitted every tick and refused every time, and Steve would idle for good: drop
+    it and rank again (3 rounds at most). -> fill_rank's plan plus "gone": the dropped chains, sorted ([] for none)."""
+    plan = fill_rank(mod, n, now, today)
+    gone_all = set()
+    for _ in range(3):
+        why = bad_selection(mod, {"chains": plan["pick"]}) if plan["pick"] else None
+        gone = unknown_chains(why) if why else set()
+        if not gone & set(plan["pick"]):
+            break
+        gone_all |= gone
+        plan = dict(plan, **fill_rank(mod, n, now, today, exclude=gone_all))
+    return dict(plan, gone=sorted(gone_all))
 
 
 def fill_rank(mod, n, now, today=None, exclude=()):
@@ -2399,24 +2417,12 @@ def cmd_fill(a):
 def fill_once(a):
     now = time.time()
     plan = fill_plan(a.mod, a.n, a.cap, now=now)
-    if plan["verdict"] != "pick":
+    if plan.get("gone"):    # fill_plan dropped them (fill_rank_declared); only the filler says so, the steward reads quietly
+        log("filler: %s no longer declares %s; not ranked" % (a.mod, ",".join(plan["gone"])))
+    if plan["verdict"] != "pick":    # also the plan the drop left with nothing to pick
         print(plan["text"])
         return 0
     n_today, spent = plan["n_today"], plan["spent"]
-    # A chain the history still holds but modcheck no longer declares (renamed, removed) would be re-submitted every
-    # tick and refused every time, and Steve would idle for good: drop it and rank again.
-    gone_all = set()
-    for _ in range(3):
-        why = bad_selection(a.mod, {"chains": plan["pick"]}) if plan["pick"] else None
-        gone = unknown_chains(why) if why else set()
-        if not gone & set(plan["pick"]):
-            break
-        gone_all |= gone
-        log("filler: %s no longer declares %s; not ranked" % (a.mod, ",".join(sorted(gone))))
-        plan = dict(plan, **fill_rank(a.mod, a.n, now, exclude=gone_all))
-    if plan["verdict"] != "pick":
-        print(plan["text"])
-        return 0
     pick = plan["pick"]
     r = subprocess.run(["git", "-C", REPO, "rev-parse", "--short", "origin/main"], capture_output=True, text=True,
                        timeout=60)

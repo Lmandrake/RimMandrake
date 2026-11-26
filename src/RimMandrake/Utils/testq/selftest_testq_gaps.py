@@ -332,10 +332,13 @@ def t_real_probe():
 def t_fill_plan():
     import testq as T
     tmp = tempfile.mkdtemp(prefix="rf_testq_gaps_")
-    saved = (T.QHOME, G.probe, G.owed_items, G.git)
+    saved = (T.QHOME, G.probe, G.owed_items, G.git, T.bad_selection)
     try:
         T.QHOME = tmp
         T.ensure_dirs()
+        # the fixture's chains are made up for the real mod FlowWorks: they model chains modcheck declares (fill_plan now
+        # drops one it does not, as the filler does; that drop has its own test in selftest_testq.py)
+        T.bad_selection = lambda mod, sel: None
         fin = "2026-10-25T10:00:00Z"
 
         def put(r):
@@ -359,7 +362,7 @@ def t_fill_plan():
         check(p["verdict"] == "exhausted" and p["flaky"] == ["beta_b"], "fill_plan: a flipped chain is only reported: %s"
               % p["text"])
     finally:
-        T.QHOME, G.probe, G.owed_items, G.git = saved
+        T.QHOME, G.probe, G.owed_items, G.git, T.bad_selection = saved
         shutil.rmtree(tmp, ignore_errors=True)
 
 
@@ -370,10 +373,13 @@ def t_filler_queues_only_owed_work():
     check, harness or mod-list fault. rank() still counts the two gap ranks; fill_plan never picks them."""
     import testq as T
     tmp = tempfile.mkdtemp(prefix="rf_testq_owed_")
-    saved = (T.QHOME, G.probe, G.owed_items, G.git)
+    saved = (T.QHOME, G.probe, G.owed_items, G.git, T.bad_selection)
     try:
         T.QHOME = tmp
         T.ensure_dirs()
+        # the fixture's chains are made up for the real mod FlowWorks: they model chains modcheck declares (fill_plan now
+        # drops one it does not, as the filler does; that drop has its own test in selftest_testq.py)
+        T.bad_selection = lambda mod, sel: None
 
         def put(r):
             with open(os.path.join(tmp, "done", r["job"]["id"] + ".json"), "w") as fh:
@@ -394,7 +400,7 @@ def t_filler_queues_only_owed_work():
         check(p["verdict"] == "pick" and p["pick"] == ["gamma_c"] and p["rank"] == "fix_landed",
               "fill_plan: a FAIL whose fix landed is owed: its retest is queued: %s" % p["text"])
     finally:
-        T.QHOME, G.probe, G.owed_items, G.git = saved
+        T.QHOME, G.probe, G.owed_items, G.git, T.bad_selection = saved
         shutil.rmtree(tmp, ignore_errors=True)
 
 
