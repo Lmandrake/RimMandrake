@@ -8,13 +8,13 @@ The top part, **the mod as it stands**, is rewritten at every stage change and s
 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Code exists:
   `src/RimMandrake/ExplosiveKnockback/`.
-- **Stage now:** Stage 3, offline build, since 2026-11-25 9:58 AM PST (`version/stage_record.json`).
+- **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-25 7:01 PM PST (`version/stage_record.json`).
 - **Bars:** 59 (30 inventory rows of `record.json` + 29 leaves of `tree.json`). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`).
 - **Measured 2026-11-14 12:45 PST:** 53 of 59 bars have at least one test that runs today; 47 have every deciding test
   runnable; 41 have all their offline deciding tests green. All 15 offline tests are built (13 PASS, 2 known red,
   unchanged). In-game scenes: 56, entry exists 50, absent 6. Every in-game scene is UNRUN (Stage 6); commands in the table.
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-25 9:58 AM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-25 7:01 PM PST).
 - **Open questions:** see "Questions" at the end of the history.
 
 ### The vision (his root paragraph, approved by card 2026-11-11, OWNER:1794468835221748501)
@@ -533,4 +533,14 @@ answer the locked bar, his recorded words or the shipped code already gives; no 
 - Owner said: per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: Conductor's brief (steward act after in-game visit 1): send ExplosiveKnockback 0.2.0 down its road back to the nearest stage that repairs every mod-wrong line. offline_build: the scar-def rename (RIMMANDRAKE_RENAME_KNOCKBACK_SCAR_DEFS_DIGIT_ENDING_CONFIG_ERROR) and the missing IED scar (RIMMANDRAKE_FIND_KNOCKBACK_IED_SCAR_MISSING_ONE_RUN_IN_THREE, sc_blast_show MOD FAILURE) are changes of mod code/defs; RIMMANDRAKE_COVER_KNOCKBACK_BAR_HALVES_NO_LIVE_CHECK_SEES and RIMMANDRAKE_CLASS_KNOCKBACK_SHELL_KILLS_COLONIST_TWO_OF_FIVE_RUNS go with it; P_goods_fly_wall/P_goods_fly_rebound stay UNRESOLVED, owned by RIMMANDRAKE_HUNT_KNOCKBACK_GOOD_UNMOVED_LONG_BATCH_THREE_SIGHTINGS
 - Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-25 6:33 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-25 6:33 AM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-25 7:01 PM PST, stage change: Offline build (Stage 3) to Blind challenge, tests first (Stages 4 and 5) (by BENCH)
+
+- Why: steward: every Stage 3 exit test passes (maturation.py next); certificate --to blind_challenge OK at HEAD, 58 bars certified
+- Checks passed: order, by, version, hold, road_back_items, every_bar_has_a_check_that_runs, table_version, fourth_cycle, judge_certificate.
+- Steward confirms: read maturation.py next (all 8 exit tests passing, no fix reader owed) and certificate --to blind_challenge (OK, 58 bars, 7 grandfathered red_seen); verdict: advance
+- Blind cycle 1 of this visit (2 in all).
+- Was, "Stage now": - **Stage now:** Stage 3, offline build, since 2026-11-25 9:58 AM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-25 9:58 AM PST).
 - Record: `version/stage_record.json`.

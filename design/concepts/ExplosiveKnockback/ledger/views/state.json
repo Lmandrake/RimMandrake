@@ -1,10 +1,10 @@
 {
  "_view": {
-  "body_sha256": "ef9142e76aac549398bb640c7b422900f9781737b4990f42ff54d6696d23ddec",
+  "body_sha256": "1cf9e5fa7af7c52772dcd28e90f25ef246047530ee68760e4467bf9f27410343",
   "reducer": 1,
   "shards": {
    "BACKFILL": 348917,
-   "DISPATCH": 48417,
+   "DISPATCH": 48773,
    "HOLDER.run-1794813483": 1382,
    "HOLDER.run-1794824768": 1788,
    "HOLDER.run-1794830532": 2304,
@@ -25,6 +25,7 @@
    "HOLDER.run-1795548573": 1024,
    "HOLDER.run-1795560492": 1077,
    "HOLDER.run-1795660419": 2599,
+   "HOLDER.run-1795661891": 608,
    "JUDGE.judge-1794890427": 18837,
    "JUDGE.judge-1795437145": 6544,
    "OWNER": 1207
@@ -769,11 +770,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795660419",
-   "done": "T_RESTORE green: proof_restore_check finds setter wrappers by shape (9f285a25b6), joins ./publish checks; certificate --to blind_challenge exits 0 (796986d64f)",
-   "next": "Enter the blind challenge (Stages 4 and 5) for 0.2.0",
-   "ruled_out": "No settings leak in the nine EK scenes: every put() call sits in a try whose finally writes the read prior back; the red was the checker missing a wrapper named put",
-   "ts": "2026-11-26T02:51:47Z"
+   "by": "HOLDER.run-1795661891",
+   "done": "Advanced 0.2.0 from offline_build to blind_challenge: all 8 Stage 3 exit tests pass, certificate --to blind_challenge OK at HEAD (58 bars)",
+   "next": "Run the blind challenge (Stages 4 and 5) for 0.2.0",
+   "ruled_out": "No fix reader owed at Stage 3; no undecided bar or unclassed line in maturation.py next",
+   "ts": "2026-11-26T03:02:04Z"
   },
   "decisions": {
    "bar:inv_items_teleport": {
@@ -969,7 +970,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 752,
+  "events": 754,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -2575,7 +2576,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-26T02:59:18Z",
+   "last": "2026-11-26T03:02:04Z",
    "lease": "run-1795661891",
    "released": false,
    "token": 30
@@ -2624,13 +2625,14 @@
    "HOLDER.run-1795548573",
    "HOLDER.run-1795560492",
    "HOLDER.run-1795660419",
+   "HOLDER.run-1795661891",
    "JUDGE.judge-1794890427",
    "JUDGE.judge-1795437145",
    "OWNER"
   ],
   "spend_tokens": 171672717,
   "spend_usd": 178.6086,
-  "stage": "offline_build",
+  "stage": "blind_challenge",
   "superseded": [],
   "tests": [
    {

@@ -1,16 +1,16 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":348917,"DISPATCH":48417,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":3294,"HOLDER.run-1795478277":3184,"HOLDER.run-1795485747":1414,"HOLDER.run-1795487290":2197,"HOLDER.run-1795510833":4164,"HOLDER.run-1795525975":3126,"HOLDER.run-1795538786":1751,"HOLDER.run-1795548573":1024,"HOLDER.run-1795560492":1077,"HOLDER.run-1795660419":2599,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"OWNER":1207} body_sha256=540f21a92934619f40aac40a2c03a79b0f536bd253b0de5e1aefe7a64f2d09a7 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":348917,"DISPATCH":48773,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":3294,"HOLDER.run-1795478277":3184,"HOLDER.run-1795485747":1414,"HOLDER.run-1795487290":2197,"HOLDER.run-1795510833":4164,"HOLDER.run-1795525975":3126,"HOLDER.run-1795538786":1751,"HOLDER.run-1795548573":1024,"HOLDER.run-1795560492":1077,"HOLDER.run-1795660419":2599,"HOLDER.run-1795661891":608,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"OWNER":1207} body_sha256=88aad298a32c7755ef017ca78e2f853f713d2fb9f2959a7aa3df7dbae043630d -->
 # ExplosiveKnockback — mod ledger packet
-version 0.2.0 · stage offline_build · 752 events in 25 shards · reducer 1
-holder lease run-1795661891, token 30, last active 2026-11-26T02:59:18Z
+version 0.2.0 · stage blind_challenge · 754 events in 26 shards · reducer 1
+holder lease run-1795661891, token 30, last active 2026-11-26T03:02:04Z
 holder session 672832f2-8ad1-46e7-a92a-842ed8cf72d3, context 187372 of ceiling 400000
 
-## Last checkpoint (HOLDER.run-1795660419, 2026-11-26T02:51:47Z)
-- done: T_RESTORE green: proof_restore_check finds setter wrappers by shape (9f285a25b6), joins ./publish checks; certificate --to blind_challenge exits 0 (796986d64f)
-- next: Enter the blind challenge (Stages 4 and 5) for 0.2.0
-- ruled out: No settings leak in the nine EK scenes: every put() call sits in a try whose finally writes the read prior back; the red was the checker missing a wrapper named put
+## Last checkpoint (HOLDER.run-1795661891, 2026-11-26T03:02:04Z)
+- done: Advanced 0.2.0 from offline_build to blind_challenge: all 8 Stage 3 exit tests pass, certificate --to blind_challenge OK at HEAD (58 bars)
+- next: Run the blind challenge (Stages 4 and 5) for 0.2.0
+- ruled out: No fix reader owed at Stage 3; no undecided bar or unclassed line in maturation.py next
 
 ## Open findings (43)
-(claimed fixes, awaiting a judge, on one line each with the oldest 41 open findings, named without their 'finding:': `modledger.py show --mod ExplosiveKnockback finding:<NAME>`)
+(claimed fixes, awaiting a judge, on one line each with the oldest 40 open findings, named without their 'finding:': `modledger.py show --mod ExplosiveKnockback finding:<NAME>`)
 - RIMMANDRAKE_RETIRE_UNUSED_CONTAINER_SHOVE_KERNEL [open, polish · bars closed_container_holds]: RM_KnockbackMath.ContainerShove (slide-or-jolt, parameter lightMassLimit) is called by no game code; ThrowContainer thr…
 - RIMMANDRAKE_STAGE_KERNEL_SELFTEST_COPY_INSIDE_LOCK [open, polish · bars inv_kernel]: selftest_explosiveknockback_kernel.py copies RM_KnockbackMath.cs into the machine-wide ExplosiveKnockbackSelfTest build…
 - RIMMANDRAKE_ASK_GOODS_WILD_FACTOR_BECOME_A_SLIDER [open, polish · bars settings_scale_and_switch, goods_arc_spin_rebound]: The goods wild factor ships as a constant 1.6 because adding a saved setting (goodsThrowWild) turns T_STAGE3_SCENES red…
@@ -51,7 +51,9 @@ holder session 672832f2-8ad1-46e7-a92a-842ed8cf72d3, context 187372 of ceiling 4
 - RIMMANDRAKE_REPOINT_EK_JOURNAL_JOLT_CHECKS_AFTER_PLAN_MOVE [open, problem]: selftest_explosiveknockback_journal_jolt.py greps RM_MapComponent_Knockback.cs for throw rules that ffc3937ee7 moved in…
 - RIMMANDRAKE_RESCUE_KNOCKBACK_PAST_CEILING_CYCLE_SIX [open, problem]: Explosive Knockback 0.1.0 was stuck at Stages 4+5 with blind cycle 6 unrun and paused at its stage spend ceiling. Live…
 - RIMMANDRAKE_FIX_KNOCKBACK_RAID_NULL_PAWN_STORM_780_TICKS [open, problem]: The raid walk logs 780x 'Exception ticking Levin' (vanilla Pawn.Tick+0x60 at (246,0,36)) and 447x root Update NRE in Pa…
-- RIMMANDRAKE_STOP_GAS_SHOVE_PAST_WALL_CORNER_UNSEEN [open, problem · bars gas_goes_clump_by_clump]: RM_MapComponent_Knockback.GasBurst queues every pawn, corpse and good within gasBurstRadius by GenRadial alone, with no…
+- finding:RIMMANDRAKE_STOP_GAS_SHOVE_PAST_WALL_CORNER_UNSEEN [open, problem] by BACKFILL, 2026-11-19T23:33:03Z · bars gas_goes_clump_by_clump: RM_MapComponent_Knockback.GasBurst queues every pawn, corpse and good within gasBurstRadius by GenRadial alone, with no line of sight. A burning clump can shove a thing diagonally past a wall corner into another room, which a real explosion never reaches.
+  proposed fix: Skip cells GenSight.LineOfSight(c, cell, map) refuses, and give the map's model the same rule for gas (KnockbackMap.cs A5).
+  accept: Live only, not yet watched fail: map_agreement.py case 'c:wall:1:0;c:wall:0:1;t:a:steel2:1:1;b:gas:1.9' expects a stays on 1,1 (DISAGREE today); after the fix AGREE and selftest_explosiveknockback_map.py green.
 - RIMMANDRAKE_MOVE_KNOCKBACK_GOODS_PINNED_AGAINST_WALLS_SHELVES on fa2de6ee4b
 - RIMMANDRAKE_SCOPE_KNOCKBACK_RESTORE_DECIDER_RED_ON_FLOWWORKS on 9f285a25b6942e960604b0f34b0b80ffa4b50a5d
 
@@ -245,8 +247,8 @@ spend recorded: USD 178.61, 171672717 tokens
 - closed findings: 53, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - tests: 106, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - claimed fixes in brief: 2 on one line (name and sha), their claim, test and fix by `show`
-- open findings in brief: the oldest 41 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
+- open findings in brief: the oldest 40 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
 - his answers and the bars' texts in brief (cut at 160 and 60 chars)
-- the full history: 752 events (views/history.md; never read whole)
+- the full history: 754 events (views/history.md; never read whole)
 
-cursor: t=2026-11-26T02:59:21Z.1795661961008933590 (modledger.py since --mod ExplosiveKnockback t=2026-11-26T02:59:21Z.1795661961008933590 prints what changed after this packet)
+cursor: t=2026-11-26T03:02:04Z.1795662124322908256 (modledger.py since --mod ExplosiveKnockback t=2026-11-26T03:02:04Z.1795662124322908256 prints what changed after this packet)

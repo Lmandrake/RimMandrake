@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "ExplosiveKnockback",
   "version": "0.2.0",
-  "stage": "offline_build",
-  "stage_label": "Offline build (Stage 3)",
-  "since": "2026-11-25T09:58:04-08:00",
+  "stage": "blind_challenge",
+  "stage_label": "Blind challenge, tests first (Stages 4 and 5)",
+  "since": "2026-11-25T19:01:53-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -15,7 +15,7 @@
   },
   "cycles": {
     "visit": 1,
-    "total": 1
+    "total": 2
   },
   "pre_human_arrivals": 0,
   "spend": [],
@@ -103,6 +103,29 @@
         "by",
         "version",
         "hold"
+      ]
+    },
+    {
+      "from": "offline_build",
+      "to": "blind_challenge",
+      "at": "2026-11-25T19:01:53-08:00",
+      "by": "BENCH",
+      "why": "steward: every Stage 3 exit test passes (maturation.py next); certificate --to blind_challenge OK at HEAD, 58 bars certified",
+      "unit": "rm-detached-bench-rimmandrake-advance-explosivekn1c15-past-1795661968",
+      "item": "RIMMANDRAKE_ADVANCE_EXPLOSIVEKN1C15_PAST_OFFLINE_BUILD_RUN_THREE",
+      "confirmed": {
+        "steward_confirms": "read maturation.py next (all 8 exit tests passing, no fix reader owed) and certificate --to blind_challenge (OK, 58 bars, 7 grandfathered red_seen); verdict: advance"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "road_back_items",
+        "every_bar_has_a_check_that_runs",
+        "table_version",
+        "fourth_cycle",
+        "judge_certificate"
       ]
     }
   ]
