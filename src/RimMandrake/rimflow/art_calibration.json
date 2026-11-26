@@ -1,5 +1,5 @@
 {
- "_doc": "The art judge brief's calibration pictures (art_calibration.py, RIMMANDRAKE_BUILD_ART_BRIEF_CALIBRATION_NOTHING_TO_RUN). Every case is art already made and already ruled by the owner: the regression set's cards (infrastructure/state/art_eval/regression.jsonl) as the art-eval regress run `source_run` staged them under the agent storage root (art_eval/runs/<source_run>/<subject>__<candidate>/), each picture pinned by sha256 here. A picture missing or changed is a case that did not run (the brief stays UNTESTED), never a substitute. `planted` adds the two cases the item asked for, built from the same pictures: an owner-kept subject (checklist step 2, E3) and a north facing that is its south picture (point 27: the fix is a rear-view redraw). No new art is generated.",
+ "_doc": "The art judge brief's calibration pictures (art_calibration.py, RIMMANDRAKE_BUILD_ART_BRIEF_CALIBRATION_NOTHING_TO_RUN). Every case is art already made and already ruled by the owner: the regression set's cards (infrastructure/state/art_eval/regression.jsonl) as the art-eval regress run `source_run` staged them under the agent storage root (art_eval/runs/<source_run>/<subject>__<candidate>/), each picture pinned by sha256 here. A picture missing or changed is a case that did not run (the brief stays UNTESTED), never a substitute. `planted` adds the two cases the item asked for, built from the same pictures: an owner-kept subject (checklist step 2, E3) and a north facing that is its south picture (point 27: the fix is a rear-view redraw). No new art is generated. `card_sources` names the run of a card added to the regression set after `source_run` (the flyer rows of CL-047/CL-048 live only in regress_flyer_c5a_full_20261126, which also gave the judge each flight frame and the parts sheet).",
  "source_run": "regress_departures_v3c_20261105",
  "pins": {
   "RM_Danglemaw__r1": {
@@ -81,6 +81,59 @@
    "east.png": "2f90cedb52183f247fad266f554bd8e058dbfa7e4bedd98e555b25afd24c3e21",
    "north.png": "85253bf558fc200d92b052b47fd4f64145af4a8caf3093b253e026df4c27921d",
    "scale.png": "e1d7de048f1d695390fd67fdd26d3481fd470ee19ef5b82d956f4792b8a9ab9c"
+  },
+  "RM_FireHawk__birdA_af2991860e": {
+   "east.png": "cfb637c25dcfcb570704886e8442e6f49533214417dba4df33ae3d0fd77c7fce",
+   "flight_1.png": "b20bff382806ddf9706048a2376689b1064b54d07130563b9eea0eefbf2d1995",
+   "flight_10.png": "1d5a1566ce253a7f266ce20dfaabb2619e6af40be19bc7fa0a19f4b66395314b",
+   "flight_11.png": "0f5ba868d2a9c438399dee44c76a5587b60e73df951313690abf94a093537573",
+   "flight_12.png": "369f335252bc2b1101a023bdc9c068d20c7659e4e82660fab5c6ec77dd7b73a8",
+   "flight_13.png": "a8dfed0f452628e7f822127978ca184c03be275da4cf32aac99ab1345572b829",
+   "flight_14.png": "52a37cb318e8d1d0600d89caf64685384e74e6bcc8409befee0eed2a8cf9a14c",
+   "flight_15.png": "d03872c47cae4fe12b5c026902bb1c0ba4e5047803875ee02f2252e1df77d151",
+   "flight_2.png": "ab8ed57a9d1d7f06ada1e990a9e214b5a9f4a9e0b6f556d1d8602c32d4249b39",
+   "flight_3.png": "169d07c3e956fdfa3f8689bb4542c9269a4900a8f0f2d94c0a274e107c1ae35d",
+   "flight_4.png": "a73aa372ae7223af64248b156dc6e5f58117cf4d92987bcbe91892442f606a9e",
+   "flight_5.png": "4c48780eb102b34c265dedc1124f060b35b4e8ea576936af3bed26d93f217527",
+   "flight_6.png": "187804217522e7a4e10a983c9f35fc9bf4838529a3b1e6d28c8dc5c5598c9014",
+   "flight_7.png": "2a62567f4786a30b408c36eaa12ac009c709fed77f436b6c04cbe4eee90e4d83",
+   "flight_8.png": "edf58c06e8b6d4b50e12ee558dbb072beaf99f6d790d21d8ae213dba2d8d052a",
+   "flight_9.png": "569b61659edc42020987e394237c4dceabf057d717290134fe76406aad1841fe",
+   "north.png": "3f78134d1ed0bb1c989af3548b5744d4a26c44ad9c6bb391eb0eb940002b26f7",
+   "parts_1.png": "014ca0c5c8160f44e090b5365fc45b246ac2960f42c84705c7c0b1461f54500d",
+   "scale.png": "6c58c9371555138a0ec361bd7b3c05ff1073bca375bc7a89cc4504dc0b2410e2",
+   "south.png": "0c9e2df5386b98d10b2f3d987cbe6df82fe67aefac92d464b831cbf1e2f3b2f8"
+  },
+  "RSW_Porg__birdG_5ee3fc2dc2": {
+   "east.png": "1cdff86706bab47c59a13d4b0399f2321d31e235e48540e96760b657fd2fb85d",
+   "flight_1.png": "133db3dc8cd5695ac3db9b756b0f057317a97f9a2332b01c9aab2b3d9ab37219",
+   "flight_10.png": "62b583a46e770639fd70702f95f3f8388e6369a5b75a32ae169fa7c85d98c4ba",
+   "flight_11.png": "038b93590f92cf7b4513de0390ad239ae914733c17878da20b5f51fb3955d541",
+   "flight_12.png": "5c9b0690e4405c043105ffd62cd8dfe01bd559a89f5416a506ea8fad42b80b8a",
+   "flight_13.png": "f4b3e83dbc9035ba21623ebe9583b5720c3e89b894578bd25b8f18550647be76",
+   "flight_14.png": "5c9b0690e4405c043105ffd62cd8dfe01bd559a89f5416a506ea8fad42b80b8a",
+   "flight_15.png": "038b93590f92cf7b4513de0390ad239ae914733c17878da20b5f51fb3955d541",
+   "flight_16.png": "62b583a46e770639fd70702f95f3f8388e6369a5b75a32ae169fa7c85d98c4ba",
+   "flight_17.png": "3f8137ebf10504510c7c1bc4f12f0098a4fb6c6f2a5e9cb7393d88a17f29adf3",
+   "flight_18.png": "75ac3593c6e0ecd90b0b04c03c00514471563241f9821cec37545b1aa28733eb",
+   "flight_19.png": "9c4203fab06ef0f84674d0f3c550c313fb08d399020e3901a09b426312a05149",
+   "flight_2.png": "82bcc099e5bfe7c84f8753dff51c1c05e3140e1df19a6931c14db896f17f6cdd",
+   "flight_20.png": "9083a397d21de173668aba0e3daa85853b2457f65918d925730f6aa25312ecbc",
+   "flight_21.png": "23e8896bdd4f18cb838a82c1bd5f98090511e178b447015ee17cdddcc3076733",
+   "flight_22.png": "9083a397d21de173668aba0e3daa85853b2457f65918d925730f6aa25312ecbc",
+   "flight_23.png": "9c4203fab06ef0f84674d0f3c550c313fb08d399020e3901a09b426312a05149",
+   "flight_24.png": "75ac3593c6e0ecd90b0b04c03c00514471563241f9821cec37545b1aa28733eb",
+   "flight_3.png": "02c49cc0899792bbbadf071a9599cf3038a28968f4bee3cdf87ecd12cc4e61f1",
+   "flight_4.png": "b92c001729ccf075d5f3b217b8b0e061356f14da98233fc7ac687067ea9d4a81",
+   "flight_5.png": "9479a8c867fa077c36e084c939eeb51b64a2701cde857f8c22bc1b6ee5cb3131",
+   "flight_6.png": "b92c001729ccf075d5f3b217b8b0e061356f14da98233fc7ac687067ea9d4a81",
+   "flight_7.png": "02c49cc0899792bbbadf071a9599cf3038a28968f4bee3cdf87ecd12cc4e61f1",
+   "flight_8.png": "82bcc099e5bfe7c84f8753dff51c1c05e3140e1df19a6931c14db896f17f6cdd",
+   "flight_9.png": "ba3bd37d9f1817c98a553eba01782298b50062d69c7fba6d7d06142c7703176a",
+   "north.png": "07afcea3520e8d2e2af2335d9e5aa874fe19c7efbcadcfe7b2f6ecd494d27f71",
+   "parts_1.png": "b5832461651adf0b906ba14c695f602071f4fdd5e36b8d17295fcffda497ee3b",
+   "scale.png": "1c2efc5ec6e709045c72c6d271fb1e998214229c3db1a5c8cd929c77dab7d754",
+   "south.png": "f3439223abb49560b268d5095ebee17215492ad88a79408b3e0112f6ba36a06d"
   }
  },
  "planted": [
@@ -120,5 +173,9 @@
    "card": "RM_DecayDrake__p3",
    "why": "RM_DecayDrake r2 (owner-picked), altered offline by design/specs/2026-11-19-plain-english-rule-docs/make_b2_planted_cases.py: nearly grey, darker than the ground, every shape kept: plain but legible, which B2 does not refuse"
   }
- ]
+ ],
+ "card_sources": {
+  "RM_FireHawk__birdA_af2991860e": "regress_flyer_c5a_full_20261126",
+  "RSW_Porg__birdG_5ee3fc2dc2": "regress_flyer_c5a_full_20261126"
+ }
 }

@@ -143,7 +143,7 @@ def stage_cases(AC):
         src, root = os.path.join(tmp, "src"), os.path.join(tmp, "root")
         os.makedirs(src)
         pins = fake_source(src, AC)
-        staged = {c["id"]: (c, d, err) for c, d, err in AC.stage(root, source=src, pins=pins)}
+        staged = {c["id"]: (c, d, err) for c, d, err in AC.stage(root, source=src, pins=pins, sources={})}
         check("stage: every case staged", all(d for _c, d, _e in staged.values()),
               {k: e for k, (_c, d, e) in staged.items() if not d})
         n = next(v for v in staged.values() if v[0].get("plant") == "north_from_south")
@@ -178,7 +178,7 @@ def stage_cases(AC):
         # a changed picture is a case that did not run, never a substitute
         victim = next(c for c in AC.cases() if not c.get("plant"))
         png(os.path.join(src, victim["card"], "scale.png"), (1, 2, 3))
-        again = {c["id"]: (d, err) for c, d, err in AC.stage(os.path.join(tmp, "root2"), source=src, pins=pins)}
+        again = {c["id"]: (d, err) for c, d, err in AC.stage(os.path.join(tmp, "root2"), source=src, pins=pins, sources={})}
         check("stage: a picture off its pin is not staged", again[victim["id"]][0] is None
               and "sha" in str(again[victim["id"]][1]), again[victim["id"]])
 
@@ -232,7 +232,7 @@ def judge_cases(AC):
         src, root = os.path.join(tmp, "src"), os.path.join(tmp, "root")
         os.makedirs(src)
         pins = fake_source(src, AC)
-        staged = [(c, d) for c, d, _e in AC.stage(root, source=src, pins=pins)]
+        staged = [(c, d) for c, d, _e in AC.stage(root, source=src, pins=pins, sources={})]
         c, d = next((c, d) for c, d in staged if c.get("plant") == "north_from_south")
         g = AC.given(d)
         good = answer([REDO_N] + [{"picture": f, "facing": f[:-4], "verdict": "KEEP", "notes": "ok"}
@@ -259,6 +259,50 @@ def judge_cases(AC):
         check("judge: malformed twice is not the planted refusal", got == "refuse, malformed", (got, det.get("errors")))
 
 
+def flyer_cases(AC):
+    """The flyer rows (CL-047 FireHawk, CL-048 Porg) are cases like any other: their cards are pinned, their pictures
+    come from the run that holds them, and the judge gets each flight frame and the parts sheet that C5a asks for."""
+    cfg = AC.config()
+    missing = [c["card"] for c in AC.cases() if c["card"] not in cfg["pins"]]
+    check("config: every case's card is pinned (else it never runs and the brief stays UNTESTED)", not missing, missing)
+    with tempfile.TemporaryDirectory() as tmp:
+        runs = os.path.join(tmp, "runs")
+        main_src, other = os.path.join(runs, "main_run"), os.path.join(runs, "flyer_run")
+        os.makedirs(main_src)
+        pins = fake_source(main_src, AC)
+        card = "RM_TestFlyer__birdZ"
+        d = os.path.join(other, card)
+        os.makedirs(d)
+        files = ("south.png", "east.png", "north.png", "scale.png", "flight_1.png", "flight_2.png", "parts_1.png")
+        for j, f in enumerate(files):
+            png(os.path.join(d, f), (200, 10 + j * 30, 40))
+        with open(os.path.join(d, "card.json"), "w") as f:
+            json.dump({"subject": "RM_TestFlyer", "template": "creature", "module": "flyer", "body_plan": "flyer",
+                       "size": {"drawSize": [1.0, 1.0]}, "description": "A test flyer."}, f)
+        pins = dict(pins, **{card: {f: hashlib.sha256(open(os.path.join(d, f), "rb").read()).hexdigest()
+                                    for f in files}})
+        orig = AC.cases
+        AC.cases = lambda: orig() + [{"id": "regress_RM_TestFlyer_birdZ", "expect": "refuse", "card": card}]
+        try:
+            staged = {c["id"]: (dd, err) for c, dd, err in
+                      AC.stage(os.path.join(tmp, "root"), source=main_src, pins=pins, sources={card: "flyer_run"})}
+        finally:
+            AC.cases = orig
+        fd, err = staged.get("regress_RM_TestFlyer_birdZ", (None, "absent"))
+        check("stage: a card named in card_sources is read from that run", fd is not None, err)
+        check("stage: the other cards still come from the main run", all(v[0] for k, v in staged.items()),
+              {k: v[1] for k, v in staged.items() if not v[0]})
+        if fd:
+            facts = json.load(open(os.path.join(fd, "subject.json")))
+            check("stage: subject.json names the flight frames and the parts sheet",
+                  facts.get("flight_frames") == ["flight_1.png", "flight_2.png"]
+                  and facts.get("parts_sheet") == ["parts_1.png"], facts)
+            text = AC.prompt(fd)
+            check("prompt: each flight frame is named as a flight frame to look at alone",
+                  "- flight_2.png: flight frame 2" in text and "one at a time" in text, text[:600])
+            check("prompt: the parts sheet is named as the cut-out parts", "- parts_1.png: the cut-out parts sheet" in text)
+
+
 def main():
     contract_cases()
     try:
@@ -267,7 +311,7 @@ def main():
         check("art_calibration imports", False, "%s: %s" % (type(e).__name__, e))
         AC = None
     if AC:
-        for f in (registry_cases, planted_cases, criteria_cases, stage_cases, outcome_cases, judge_cases):
+        for f in (registry_cases, planted_cases, criteria_cases, stage_cases, flyer_cases, outcome_cases, judge_cases):
             try:
                 f(AC)
             except Exception as e:  # noqa: BLE001

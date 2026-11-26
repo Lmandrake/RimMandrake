@@ -75,6 +75,18 @@ ROLE = {"south": "south facing, full resolution", "east": "east facing, full res
         "north": "north facing, full resolution", "west": "west facing, full resolution",
         "single": "the plant's one picture, full resolution", "scale": "true-scale panel beside a vanilla human"}
 
+FRAME_RE = re.compile(r"^(flight|parts)_(\d+)$")   # fauna_spec's flyer panels: one per flight frame, the cut-out parts sheet
+
+
+def role_of(stem):
+    m = FRAME_RE.match(stem)
+    if m and m.group(1) == "flight":
+        return "flight frame %s, full resolution: look at each frame one at a time (C5a)" % m.group(2)
+    if m:
+        return "the cut-out parts sheet: the body plate and each wing layer apart (C5a)"
+    return ROLE.get(stem, "picture")
+
+
 CLAUSE_RE = re.compile(r"^- ([A-F]\d+a?)\. (.*)$")
 REAR_RE = re.compile(r"\b(rear|back view|from behind|back of)\b")
 ROTATE_RE = re.compile(r"rotat|180|\bflip")
@@ -230,6 +242,10 @@ def stage_one(c, src, pins, d):
     facts = {k: card.get(k) for k in FACT_KEYS if card.get(k) is not None}
     facts["candidate"] = c["card"].split("__", 1)[1]
     pictures = {f[:-4]: f for f in sorted(pin) if f[:-4] in ROLE and f != "scale.png"}
+    frames = sorted((f for f in pin if FRAME_RE.match(f[:-4])), key=lambda f: int(FRAME_RE.match(f[:-4]).group(2)))
+    if frames:
+        facts["flight_frames"] = [f for f in frames if f.startswith("flight_")]
+        facts["parts_sheet"] = [f for f in frames if f.startswith("parts_")]
     zoom = {}
     draw = (card.get("size") or {}).get("drawSize")
     if draw:
@@ -245,14 +261,18 @@ def stage_one(c, src, pins, d):
     return None
 
 
-def stage(root, source=None, pins=None):
-    """Stage every case under root. -> [(case, dir or None, why not staged or None)]."""
+def stage(root, source=None, pins=None, sources=None):
+    """Stage every case under root. -> [(case, dir or None, why not staged or None)]. A card named in `sources`
+    (art_calibration.json `card_sources`: card -> run id) is read from that sibling run of the source run: a regression
+    row added after `source_run` (the flyer rows) lives only in the regress run that first judged it."""
     src = source or source_dir()
     pins = pins if pins is not None else config()["pins"]
+    sources = sources if sources is not None else config().get("card_sources") or {}
     out = []
     for c in cases():
         d = os.path.join(root, c["id"])
-        err = stage_one(c, src, pins, d)
+        run = sources.get(c["card"])
+        err = stage_one(c, os.path.join(os.path.dirname(os.path.normpath(src)), run) if run else src, pins, d)
         out.append((c, None if err else d, err))
     return out
 
@@ -278,7 +298,7 @@ def prompt(d, item=None):
         stem = f[:-4]
         role[f] = ("the def facts, description, keep record, his notes, sibling keeps and donor art" if f == "subject.json"
                    else "play-zoom copy at %d px/cell of %s" % (PX_PER_CELL, stem[9:]) if stem.startswith("playzoom_")
-                   else ROLE.get(stem, "picture"))
+                   else role_of(stem))
     files = "\n".join("- %s: %s" % (f, role[f]) for f in g["inputs"])
     return ("You are the judge the brief below describes: a fresh agent, not the one that made the art. The subject's "
             "inputs are these files in your working directory:\n%s\n\nRead subject.json and look at every picture with "
