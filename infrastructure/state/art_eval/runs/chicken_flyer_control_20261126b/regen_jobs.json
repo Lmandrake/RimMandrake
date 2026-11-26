@@ -1,0 +1,21 @@
+[
+ {
+  "id": "arteval_Chicken__birdE_vanilla_r1_flight",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "Chicken",
+  "prompt": "A domesticated farm hen, drawn as new original art for a RimWorld mod, in a painterly, realistic style that matches vanilla RimWorld pawns in scale and finish. Transparent background. Soft painted edges: value and colour contrast carry the silhouette, with bright soft-shaded white feathers set against the darker ground and no drawn outline. The body is plump and rounded, with a deep breast, a short neck, a small head and a fanned, upturned tail. The feathers are layered and textured: overlapping rows of body feathers with warm cream and pale grey shadows and bright white highlights; long primary and secondary feathers in the wing; fine hackle feathers around the neck; soft downy feathers at the thighs. The head has a small, pale yellow-orange beak, a glossy red single comb with soft volume, a red wattle and a pink-white earlobe. The eye is natural: a glossy orange-brown iris, a dark pupil and a small catchlight, set in the side of the head. The legs are anatomically real: yellow, scaled shanks with a small spur, three forward toes and one rear toe, with short dark claws. Warm, soft light from the upper left gives gradual modelling across the body, with a gentle shadow under the belly and the tail. The sprite shows the grounded hen standing, in three facings drawn from one body: the south view is the front view, with the eyes toward the viewer and the breast and both legs visible; the east view is the side view, with the head and beak toward the right; the north view shows the rear: the back, folded wings, tail and haunches, with the eyes hidden. The flight frames show the same hen startled and fluttering a short way: the wings open wide with the primary feathers spread, the tail fanned, the legs drawn up beneath the body, and the body slightly raised. Palette, proportions and feather detail stay the same in every facing and every flight frame. The size matches a drawSize of 2.088 by 2.088 tiles.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DONOR, STYLE_OFF, STYLE_CARTOON; flight reroll held for the layered recipe: no wing design for Chicken in design/RimMandrake/flyer_wing_designs.json; no accepted body master (derive_from); acceptance: flyer_gate.py flipbook <Chicken cut-out set, owed> (exit 0), never a judge's look at a whole-creature frame",
+  "reference": "",
+  "priority": 40,
+  "source_run": "chicken_flyer_control_20261126b",
+  "drawsize": 2.088,
+  "module": "flyer"
+ }
+]

@@ -1,0 +1,9 @@
+{
+ "run_id": "chicken_flyer_control_20261126b",
+ "test": true,
+ "started": "2026-11-26T03:46:09-08:00",
+ "subjects": [
+  "Chicken"
+ ],
+ "versions_key": "departures_brief@v3#50b472+gpt_targeted_second_look@v2#4640d0+opus_first_pass@v3#d22c47+preamble@v4#815246+regen_prompt_edit@v2#209449+severity@v6#6f57c5+creature@v5#78b1be"
+}
