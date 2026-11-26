@@ -116,7 +116,37 @@ def a_pawn_on_a_station_is_vanished_and_a_pawn_not_cast_is_a_breach():
     must(any("BREACH: Muffalo9" in x for x in s.closed_report.did), "the close did not name the breach: %s" % s.closed_report.did)
 
 
-CHECKS = (a_pawn_on_a_station_is_vanished_and_a_pawn_not_cast_is_a_breach, a_station_request_draws_a_clean_station_and_positions_are_relative,
+def a_station_loses_its_roof_before_anything_is_staged():
+    """The clean destroys the rock under a mountain roof and leaves that roof unsupported: on the first tick it collapses,
+    kills every thing on the station and crushes what the scene staged (RIMMANDRAKE_FIND_KNOCKBACK_IED_SCAR_MISSING_ONE_RUN_IN_THREE:
+    24 staged IEDs went off at once and each blast's scar died under the rock)."""
+    for station, needs in (((5, 5, 8, 8), "fresh:quicktest"), (dict(size=(10, 8)), STAGE)):
+        W = world()
+        with scene.open("ArchSmall", needs={"map": needs}) as s:
+            n = len(W.game.log)
+            c = s.stage(cast={"d": dict(kind="Colonist", at=(1, 1))}, station=station)
+            log = W.game.log[n:]
+            tools = [t for t, _a in log]
+            rect = "%d,%d,%d,%d" % (station if isinstance(station, tuple) else tuple(next(x["rect"] for x in live(W).stations if x["state"] == "given")))
+            must(("jawa/set_roof_batch", {"ops": "None:" + rect}) in log, "the station %s kept its roof: %s" % (rect, tools))
+            i = tools.index("jawa/set_roof_batch")
+            must(tools.index("jawa/destroy_batch") < i < tools.index("jawa/spawn_pawn"), "the roof came off out of order: %s" % tools)
+            must(any("roof" in d for d in c.receipt.did), "the receipt does not say the roof came off: %s" % c.receipt.did)
+    W = world()
+    real = W.game._do
+    W.game._do = lambda tool, a: ({"success": False, "cellsFailedVerify": 3, "message": "3 FAILED VERIFY"}
+                                  if tool == "jawa/set_roof_batch" else real(tool, a))
+    with scene.open("ArchSmall", needs={"map": "fresh:quicktest"}) as s:
+        try:
+            s.stage(cast={"d": dict(kind="Colonist", at=(1, 1))}, station=(5, 5, 8, 8))
+        except scene.Fault as e:
+            must(e.name == "NO_CLEAN_STATION" and "roof" in str(e), "%s" % e)
+        else:
+            raise AssertionError("a roof that stayed on the station staged silently")
+
+
+CHECKS = (a_station_loses_its_roof_before_anything_is_staged,
+          a_pawn_on_a_station_is_vanished_and_a_pawn_not_cast_is_a_breach, a_station_request_draws_a_clean_station_and_positions_are_relative,
           a_station_whose_clean_leaves_a_thing_is_retired_and_another_is_given,
           a_pocket_stage_refuses_a_raid_scene_before_any_change, a_colony_station_says_shared_map_on_its_receipt,
           a_map_that_is_not_a_made_stage_is_refused_no_stage)

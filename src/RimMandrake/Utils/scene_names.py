@@ -17,6 +17,7 @@ from scene_core import NOT_APPLICABLE, CallFailed, Fault, Receipt, Refused, Repl
 
 READ_PATHS, ACT_BATCH, CAPTURE = "jawa/read_paths", "jawa/act_batch", "jawa/artboard_capture"
 SPAWN, BUILD, TERRAIN, CLEAN = "jawa/spawn_pawn", "jawa/build_batch", "jawa/set_terrain_batch", "jawa/destroy_batch"
+ROOF = "jawa/set_roof_batch"
 SESSION = "jawa/session"
 LIST_PAWNS, VANISH = "jawa/list_pawns", "jawa/pawn_force_incapacitate"
 KINDS = ("A", "B", "C")
@@ -419,6 +420,19 @@ def _block(s, tool, reply, rec, done):
     return b
 
 
+def _unroof(s, station, did):
+    """Take the roof off a cleaned station, before anything is staged on it. The clean destroys the rock under a mountain
+    roof and leaves that roof unsupported: on the first tick it collapses, kills every thing under it and crushes what the
+    scene staged (RIMMANDRAKE_FIND_KNOCKBACK_IED_SCAR_MISSING_ONE_RUN_IN_THREE: 24 staged IEDs went off at once and each
+    blast's scar died under the rock). The tool reads every cell back; a roof that stays stops the stage by name."""
+    rect = "%d,%d,%d,%d" % tuple(station)
+    r = s._call(ROOF, ops="None:" + rect)
+    if not (isinstance(r, dict) and r.get("success") is True and not r.get("cellsFailedVerify")):
+        raise Fault("NO_CLEAN_STATION", done=did, detail="the roof over the station %s did not come off: %s" % (
+            rect, (r or {}).get("message") if isinstance(r, dict) else r))
+    did.append("took the roof off the station %s (%s cell(s) were roofed)" % (rect, r.get("cellsChanged", "unknown")))
+
+
 def stage(s, cast=None, things=None, terrain=None, station=None):
     """Put the cast, things and terrain on the map, and say what the game really made (scene_contracts/stage.md)."""
     if s.closed:
@@ -437,12 +451,14 @@ def stage(s, cast=None, things=None, terrain=None, station=None):
     if request is not None:
         station = _take_station(s, stage, request, rec, did)
         plan = _plan_stage(s, cast, things, terrain, station)
+        _unroof(s, station, did)
     elif station:
         r = s._call(CLEAN, rects="%d,%d,%d,%d" % station, categories="All")
         b = _block(s, CLEAN, r, rec, did)
         did.append("cleaned the station %s" % (station,))
         if b.get("leftBlocking"):
             raise Fault("NO_CLEAN_STATION", done=did, detail="the clean left %s" % b.get("left"))
+        _unroof(s, station, did)
     for what, alias, many, cells, d in sorted(plan, key=lambda p: ("terrain", "thing", "pawn", "take").index(p[0])):
         made = []
         if what == "terrain":

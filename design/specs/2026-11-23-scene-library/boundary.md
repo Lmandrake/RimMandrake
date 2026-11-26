@@ -149,6 +149,10 @@ now. It does not survive (not promised): a map loaded on the game by a tool that
 - **a-request-draws-a-clean-station.** The station comes from the allocator, is cleaned before anything is staged on it, and
   every position is relative to its corner. At close each station that the session took is cleaned and released
   (`a_station_request_draws_a_clean_station_and_positions_are_relative`).
+- **a-cleaned-station-has-no-roof.** After the clean and before anything is staged, the roof over the station comes off
+  (`jawa/set_roof_batch`, every cell read back). The clean destroys the rock under a mountain roof, and that roof would
+  collapse on the first tick and crush the stage. A roof that stays is `NO_CLEAN_STATION`
+  (`a_station_loses_its_roof_before_anything_is_staged`).
 - **a-dirty-station-is-retired.** A station whose clean leaves a thing that blocks is retired with the thing named, and the
   allocator gives another (`a_station_whose_clean_leaves_a_thing_is_retired_and_another_is_given`).
 - **a-refused-request-changes-nothing.** A request that the stage cannot serve (`POCKET_CANNOT_SERVE`, `NO_ROOM`), or a plan

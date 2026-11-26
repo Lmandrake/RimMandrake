@@ -28,7 +28,7 @@ Receipt: `did`: one line for each object made and each cell changed; `hands`: th
 
 ## State changes
 
-It cleans the station, changes its terrain, and spawns the cast and the things. It touches no cell outside the
+It cleans the station, takes the roof off it (a roof left over cleaned rock collapses on the first tick), changes its terrain, and spawns the cast and the things. It touches no cell outside the
 station. At close the station is cleaned again, unless the script asks to keep it for reading.
 
 ## Refuses
@@ -45,7 +45,7 @@ station. At close the station is cleaned again, unless the script asks to keep i
 | `POCKET_CANNOT_SERVE` | a pocket stage, and the request fires an incident or needs an edge, a home or weather | stage on a settlement map |
 | `BAD_ARGS` | a spec of a wrong shape, or nothing to stage | the message names the spec |
 
-**Fault:** `NO_CLEAN_STATION`: the clean of the station left a thing that blocks; `detail` names it.
+**Fault:** `NO_CLEAN_STATION`: the clean of the station left a thing that blocks, or the roof over it did not come off; `detail` names it.
 **Fault:** `COULD_NOT_LOOK`: a staging tool gave no `readBack` block (an older companion), so what it made is not known.
 **Fault:** `STAGING_FAULT`. The game made something other than what was asked: a replaced pawn kind, a pawn that cannot
 do what `can` asks, a build that the ground refused. `done` lists what was made and what was not. The scene's run is
