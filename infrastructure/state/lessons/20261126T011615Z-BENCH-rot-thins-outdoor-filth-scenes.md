@@ -1,0 +1,3 @@
+A filth-based mark (blast scar, soot) that is laid and then missing in a live check: on The Rot biome EnvironmentalHazards RM_MapComponent_AcceleratedRot.ThinOutdoorFilth thins every outdoor filth 15% each 250 ticks, so a thickness-1 filth often dies inside a 300-tick settle; fresh quicktest maps and RM_Stage_ExplosiveKnockback lie on The Rot. Find a remover in one run with a Filth.DeSpawn prefix that journals the call stack; hold acceleratedRotEnabled off in a scene that judges a filth of another mod.
+item: RIMMANDRAKE_FIND_KNOCKBACK_IED_SCAR_MISSING_ONE_RUN_IN_THREE
+home: skills/live-debugging-proof-harness/SKILL.md

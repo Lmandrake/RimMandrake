@@ -1,6 +1,6 @@
 # Work bundle WB-mod-ExplosiveKnockback-20261126-000018 (mod:ExplosiveKnockback)
 
-Updated 2026-11-25 17:15 PST. One group: both members share the scar defs and LayScar.
+Updated 2026-11-25 17:17 PST. Both members closed. One group: both members share the scar defs and LayScar.
 
 ## Done
 | ticket | class | outcome | commits |
@@ -10,9 +10,10 @@ Updated 2026-11-25 17:15 PST. One group: both members share the scar defs and La
 
 Evidence: design/concepts/ExplosiveKnockback/version/evidence/ied_scar_2026-11-25/README.md
 
-## Next
-- Fresh reader (rm-builder, Opus) running on the changed files; fix any significant finding test-first.
-- Close both tickets with their shas.
+## Finished
+- Fresh reader (Opus): nothing significant; its four nits done (art jobs renamed 422444cbf4; polish fb515d1dc3, 1cd9e0e961, 4168159c89); red_seen T_BLAST_SHOW_OFFLINE 11c7411358.
+- Closed: RIMMANDRAKE_RENAME_KNOCKBACK_SCAR_DEFS_DIGIT_ENDING_CONFIG_ERROR at d62ff67597; RIMMANDRAKE_FIND_KNOCKBACK_IED_SCAR_MISSING_ONE_RUN_IN_THREE at 1e03d4da73.
+- ArchSmall holds the final committed build (11c7411358's DLL), bridge released.
 
 ## Context after the group
 357,782 of 1,000,000 (work_bundle.py context: GO ON).
