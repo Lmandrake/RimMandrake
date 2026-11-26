@@ -324,7 +324,7 @@ packages (VS Code, gh, Sysinternals) install fine straight over SSH. `winget sou
 - A live mod is a mod that `./pipe show` reads ON and that is in the pipeline's advancing list, and not on the owner's hold.
   `pipeline_admit.live_mod` is the one reader.
 - While the switch is set, these refuse work:
-  - Claude work that builds or fixes a mod: mod bundles and the list launcher's host room.
+  - Claude work that builds or fixes a mod: mod bundles and the list launcher's host room, a `game:` home included.
   - A test job of a mod that is not live (held, OFF, not in the pipeline, or a state that could not be read): testq
     submit, the idle filler and the fault-window rerun. A job of a live mod passes, whatever its purpose (commission,
     fix, guard, stage-6 checks).

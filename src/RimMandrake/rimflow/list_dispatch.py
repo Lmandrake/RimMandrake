@@ -281,6 +281,8 @@ def switch_refuses(host, it):
         return "%s: its mod could not be read (%s), and %s" % (host, mw["unreadable"], sw)
     if mw.get("mod") or it.get("mod"):
         return "%s takes no mod work (%s): %s" % (host, mw.get("mod") or it.get("mod"), sw)
+    if str(it.get("home") or "").startswith("game:"):    # a game home's tickets build or fix mods, not the pipeline
+        return "%s takes no game work (%s): %s" % (host, it["home"], sw)
     return None
 
 
@@ -714,7 +716,8 @@ def decide(cfg, st, facts, now, account=(True, "")):
 
         def room(home=None):
             """-> (host, None) | ("", None) for Archmagi | (None, why): the room a launch row takes, through its gates.
-            A home of cfg archmagi_only_homes needs Archmagi's own tools, so it never takes a host."""
+            A home of cfg archmagi_only_homes needs Archmagi's own tools, and a home with a member that needs more
+            than offline (its `needs`: a deploy, the game, a harvest) needs Archmagi's games, so neither takes a host."""
             if not cfg.get("enabled"):
                 return None, "list_dispatch.json has enabled: false"
             if paused:
@@ -722,7 +725,11 @@ def decide(cfg, st, facts, now, account=(True, "")):
             if not account[0]:
                 return None, account[1] or "the account gate holds launches"
             only = (cfg.get("archmagi_only_homes") or {}).get(home)
-            host, hwhy = host_first(cfg, facts.get("hosts"), placed, {"needs": "archmagi (%s)" % only if only else "offline"})
+            needs = (((facts.get("onboard") or {}).get("homes") or {}).get(home) or {}).get("needs") or {}
+            if not only and needs:
+                only = "; ".join("%s needs %s" % kv for kv in sorted(needs.items()))
+            host, hwhy = host_first(cfg, facts.get("hosts"), placed,
+                                    {"home": home, "needs": "archmagi (%s)" % only if only else "offline"})
             if host:
                 placed[host] = placed.get(host, 0) + 1
                 return host, None

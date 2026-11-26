@@ -217,3 +217,8 @@ commands run, nothing committed/pushed — left for the owner to review.
 - A5 L1: a patch emits the two columns into the live defs, and the def dump shows a faction-held row (e.g. `VFEP_Warcaskets`) with `heldByFactionCategoryTags` = `[Pirate, HuttCartel]` and a common row with `techprintCount` 0
 - A6 L2: a quicktest trade with the Hutt Cartel shows a faction-held techprint in stock
 - A7 L0: follow-on item filed for the ship-only reveal trigger (QuestNode or Harmony patch)
+
+## refs
+file: src/RimUtinni/ResearchRetag/Patches/RUT_TechprintGating.xml
+file: design/Jawa/research_review/build_techprint_patches.py
+def: ResearchProjectDef/VFEP_Warcaskets

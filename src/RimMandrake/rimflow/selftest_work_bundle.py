@@ -1234,6 +1234,42 @@ def t_an_archmagi_only_home_runs_on_archmagi():
         "host (%s)" % got)
 
 
+def t_an_onboarding_run_goes_where_its_members_can_be_worked():
+    """2026-11-26: WB-game-research-tree-20261126-210323 went to SteveDesktop. Its one member needs the bridge (an L1 def
+    read and an L2 trade), which only Archmagi's lane gives, and SteveDesktop's work switch takes pipeline work only."""
+    import list_dispatch as LD
+    W = WB()
+    items = onboard_world()
+    items["G1"].needs = "bridge"
+    ob = onboard_facts_of(W, items)
+    chk(lambda: ob["homes"]["game:flight"].get("needs") == {"G1": "bridge"}
+        and not ob["homes"]["pipeline:bridge"].get("needs"),
+        "onboard_homes: a home carries what its members need beyond offline (%s)"
+        % {s: h.get("needs") for s, h in ob["homes"].items()})
+    hosts_cfg = {"hosts": {"SteveDesktop": {"max_live": 6, "min_left_pct": 5}}, "max_live": 6, "onboard_classes": SHIPPED}
+    hosts = {"SteveDesktop": {"live": 0, "left": 60.0, "left_why": None, "pool_more": 5}}
+    real = LD.switch_refuses
+    try:
+        LD.switch_refuses = lambda host, it: None       # an unswitched host: only the members' needs decide
+        rows, _l, _by = lane_decide(ob, cfg=hosts_cfg, facts_extra={"hosts": hosts})
+        got = {r["bundle"]["system"]: r.get("host") for r in rows if r.get("bundle")}
+        chk(lambda: "game:flight" in got and got["game:flight"] is None and got.get("pipeline:bridge") == "SteveDesktop",
+            "lane: a home with a member that needs the bridge runs on Archmagi; a home of offline members still goes to "
+            "the host (%s)" % got)
+    finally:
+        LD.switch_refuses = real
+    # a switched host takes no game home: game work builds or fixes a mod, not the pipeline
+    import host_work_switch as HWS
+    real_sw = HWS.switched
+    try:
+        HWS.switched = lambda host, path=None: "fixture: pipeline improvements only"
+        chk(lambda: real("SteveDesktop", {"home": "game:research-tree"})
+            and real("SteveDesktop", {"home": "pipeline:bridge"}) is None,
+            "switch_refuses: a switched host refuses a game home and takes a pipeline home")
+    finally:
+        HWS.switched = real_sw
+
+
 def t_an_onboarding_member_is_ready_or_left_out_with_its_reason():
     W = WB()
     items = onboard_world()
@@ -1505,6 +1541,7 @@ def main():
               t_the_maturation_road_back_is_one_bundle, t_a_test_never_writes_the_real_store,
               t_the_conductor_ends_a_dead_bundle, t_five_tickets_two_fixed_one_run,
               t_each_limit_names_its_danger, t_old_tickets_are_onboarded_by_home, t_an_archmagi_only_home_runs_on_archmagi,
+              t_an_onboarding_run_goes_where_its_members_can_be_worked,
               t_an_onboarding_member_is_ready_or_left_out_with_its_reason, t_an_old_ticket_with_a_live_run_leads_no_onboarding_run, t_an_old_ticket_with_any_hold_row_leads_no_onboarding_run,
               t_the_onboard_classes_are_data,
               t_one_onboarding_beside_no_live_bundle, t_an_onboarding_that_could_not_look_starts_nothing,

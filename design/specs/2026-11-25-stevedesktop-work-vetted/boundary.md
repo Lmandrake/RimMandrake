@@ -38,7 +38,8 @@ The testq readers have their own page: `testq/boundary.md` beside this one.
   - a newer ticket with a red test or a recorded failure.
 - **bundle-command-filters.** `bundle_command` leaves the unvetted members out, each with its reason.
 - **mod-work-not-sent-to-a-switched-host.** A mod bundle is not sent to a switched host, and no ssh runs. The list
-  launcher gives a mod ticket, or a ticket whose mod cannot be read, no room on that host.
+  launcher gives a mod ticket, a ticket whose mod cannot be read, or a ticket of a `game:` home (game work builds or
+  fixes mods), no room on that host.
 - **status-page-shows-it.** The status page names the switch and its lift, or says that no machine is switched.
 
 ## LIMITS

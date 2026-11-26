@@ -125,6 +125,8 @@ def t_mod_work_not_sent_to_a_switched_host():
     check(bool(L.switch_refuses("SteveDesktop", {"mod_work": {"unreadable": "x"}})),
           "a ticket whose mod cannot be read gets no room there either")
     check(L.switch_refuses("SteveDesktop", {"mod_work": {"mod": None}}) is None, "a pipeline ticket gets room")
+    check(bool(L.switch_refuses("SteveDesktop", {"mod_work": {"mod": None}, "home": "game:research-tree"})),
+          "a ticket of a game home gets no room there: game work builds or fixes mods")
 
 
 def t_status_page_shows_it():

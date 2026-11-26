@@ -1571,9 +1571,10 @@ def onboard_class(system, classes):
 
 
 def onboard_homes(old, system, left_out):
-    """-> {"homes": {system: {"members", "left_out": {id: why}, "open"}}, "no_system": {id: why}} over the old tickets
-    `old` ({id: item}). system(id) -> its system or None (could not look); left_out(id) -> why it may not join now, or
-    None. Pure."""
+    """-> {"homes": {system: {"members", "left_out": {id: why}, "open", "needs": {id: need}}}, "no_system": {id: why}}
+    over the old tickets `old` ({id: item}). system(id) -> its system or None (could not look); left_out(id) -> why it
+    may not join now, or None. "needs" holds each member whose `needs` is not offline: the room must give it (a
+    host gives offline only; list_dispatch.onboard_step). Pure."""
     homes, nos = {}, {}
     for i in sorted(old):
         s = system(i)
@@ -1587,6 +1588,9 @@ def onboard_homes(old, system, left_out):
             h["left_out"][i] = why
         else:
             h["members"].append(i)
+            need = getattr(old[i], "needs", None) or "offline"
+            if need != "offline":
+                h.setdefault("needs", {})[i] = need
     return {"homes": homes, "no_system": nos}
 
 

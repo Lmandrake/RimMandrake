@@ -188,6 +188,11 @@ onboarding lines of `gather` in `list_dispatch.py`, `onboard_classes` in `list_d
   every other home still goes to a host first. Measured 2026-11-26: the onboarding run of `game:art-canon` went to
   SteveDesktop, where the art queue, art_eval and its observed inventory are absent. Test:
   `t_an_archmagi_only_home_runs_on_archmagi`.
+- **an-onboarding-run-goes-where-its-members-can-be-worked.** A home with a member whose `needs` is not offline (a
+  deploy, the game, a harvest) takes Archmagi's room for its onboarding run, never a host's: a host gives offline work
+  only. A host whose work switch reads pipeline work only refuses a `game:` home, whose tickets build or fix mods.
+  Measured 2026-11-26: `WB-game-research-tree-20261126-210323` went to SteveDesktop, a switched host, though its one
+  member needs the bridge. Test: `t_an_onboarding_run_goes_where_its_members_can_be_worked`.
 - **an-onboarding-member-is-ready-or-left-out-with-its-reason.** A ticket that is blocked, waits on an open item, has a
   dated wait ahead, is under a live lease, has a live run, is `pipe off`, is held by the owner, is in a live bundle or
   was refused by a bundle since its last other event (a verify, a run's result, is not one) is left out, and the tick's reading names it with its reason.
