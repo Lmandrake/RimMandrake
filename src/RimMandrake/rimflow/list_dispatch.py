@@ -891,8 +891,9 @@ def gather(st, now=None, root=None, load_lag_s=None):
             bdue, bwhy = block_age(x, op, now, cfg)
             if bdue:
                 stale = bwhy
-                if not sdue and LS.needs_shape_run(sf):     # no check, no route, no split: the age line makes it due
-                    sdue, swhy = True, bwhy
+                if LS.needs_shape_run(sf):     # no check, no route, no split: the age line makes it due, and an item
+                    # already due by itself launches past its block now, so its Shape why names the block either way
+                    sdue, swhy = True, ("%s; and %s" % (swhy, bwhy)) if sdue else bwhy
         if not x.effect and adopt_ok:
             p = os.path.join(LM.ITEMS, iid + ".md")
             if os.path.isfile(p):

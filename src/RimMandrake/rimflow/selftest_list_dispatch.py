@@ -899,6 +899,27 @@ def t_blocked_idle_window_open_is_due():
     chk(lambda: dec({"A": it(blocked=True)}) == ("blocked", []), "a block that is not stale still reads blocked")
     chk(lambda: dec({"A": it(blocked=True, block_stale=stale, held="held by the owner")})[0] == "held",
         "every later gate still stops a stale block (held)")
+    # gather: an item already due for Shape by itself (filed after shape_from, past its grace) whose block is stale.
+    # Before the age line its block held it; now it launches, so its Shape why must still name the block.
+    import contextlib
+    import list_effect as LE
+    ld, _ids, _cfg, pats = _lag_world()
+    iid = "LD_AGE_LINE_ITEM_ONE"
+    base = NOW - 5 * day
+    evs = [{"seat": "BENCH", "ts": ts(base - 60), "tsn": 1, "event": "file", "id": iid, "title": "t", "kind": "task",
+            "needs": "game-up", "for": "BENCH"},
+           {"seat": "BENCH", "ts": ts(base), "tsn": 2, "event": "block", "id": iid, "reason": "needs a live game",
+            "kind": "external"}] + [{"seat": "OWNER", "ts": ts(base + k * day), "tsn": 2 + k, "event": "game",
+                                     "state": "UP"} for k in (1, 2)]
+    with tempfile.TemporaryDirectory(prefix="ld_age_") as d, patch.dict(os.environ, RM_DISPATCHER_STATE=d), \
+            contextlib.ExitStack() as es:
+        for p in pats[1:]:
+            es.enter_context(p)
+        es.enter_context(patch.object(LE, "_world", lambda observe=None: LM.replay(evs, observe=observe)))
+        g = ld.gather({}, NOW, load_lag_s=90)["items"][iid]
+    chk(lambda: g["shape_due"] and g["block_stale"] and "unblock" in (g["shape_why"] or ""),
+        "an item already due for Shape whose block is stale: its Shape why still names the block and `rimflow "
+        "unblock` (got due=%s, why=%s)" % (g["shape_due"], g["shape_why"]))
 
 
 def t_a_lead_takes_the_ready_tickets_of_its_home():
