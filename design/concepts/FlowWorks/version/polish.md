@@ -43,7 +43,7 @@ Each ticket below was dropped as `not worth the touch` (test 1 of standing_rulin
 - `DEEP_STONE_FIX_NOBODY_PICKS_UP_SHOVEL`: deep_stone_live: superdeep-cut row stayed UNMEASURED on a spore map (SITE); rerun on a spore-free tile.
 - `DEEP_STONE_PROOF_FIX_RERUN_LETTER_FAILS`: deep_stone_live.py fails a correct rerun on the same map because it demands a second first-find letter; use --fresh-map.
 - `FIRE_RAIN_DIAGNOSE_BRIDGE_NAPS_MID_DOUSE`: testq fire_rain: a bridge 30 s timeout reads as FAIL instead of a harness cause (2026-11-04, once).
-- `FLOWWORKS_PROOF_POKES_RESTORE_PRIOR`: Seven C# proof probes (HoseProbe, RM_SuspensionProofs, RM_WaterLookProofs) leave DevMode/godMode/water-look toggles set if they throw (proof_restore_check BASELINE).
+- `FLOWWORKS_PROOF_POKES_RESTORE_PRIOR`: C# proof probes in HoseProbe and RM_WaterLookProofs leave DevMode/godMode/water-look toggles set if they throw (RM_SuspensionProofs restores godMode in a finally on every set, read 2026-11-26) (proof_restore_check BASELINE).
 - `FLOWWORKS_TOGGLES_BUILD_SIX_PREDICATES_OWED`: FlowWorks: liquid_drilling and typed_shores toggle chains still read 'owed, no predicate yet' (EXTENSION_TOGGLES_OWED); 4 of the 6 were written 2026-11-12.
 - `FUEL_FIRE_SELFTEST_FIX_SQUARE_COVERAGE`: Fuel-fire detonation selftest checks a square, not BlastRadiusFor's real radius (GPT review FE_cs_selftests_1.2).
 - `GLOW_TANK_PROOF_FIX_BLIND_READ_PASSES`: glow_tank_live.py setting-off row reads PASS when the final inspect returns nothing; should read UNMEASURED.
