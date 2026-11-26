@@ -125,6 +125,7 @@ PAGES = {
     "design/specs/2026-11-24-art-daemon-over-the-one-door/boundary.md": "src/RimMandrake/Utils/artpipe/selftest_artpipe_signin.py",
     "design/specs/2026-11-22-clone-pool-disk-floor/boundary.md": "src/RimMandrake/Utils/selftest_pool_floor.py",
     "design/specs/2026-11-22-disk-sense-reads-only/boundary.md": "src/RimMandrake/Utils/selftest_disk_sense.py",
+    "design/specs/2026-11-26-scratch-row-aged-by-write/boundary.md": "src/RimMandrake/Utils/selftest_scratch_reap_row_age.py",
     "design/specs/2026-11-22-sense-families-cheap/boundary.md": "src/RimMandrake/Utils/selftest_ops_sense_blind.py",
     "design/specs/2026-11-23-sense-apart-from-beat/boundary.md": "src/RimMandrake/Utils/selftest_metronome_apart.py",
     "design/specs/2026-11-23-telemetry-any-game/boundary.md":

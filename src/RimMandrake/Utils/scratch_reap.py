@@ -3021,7 +3021,9 @@ def run(a, sd: Path) -> int:
     lap("apply")
     rotate(sd / "runs.jsonl")
     with open(sd / "runs.jsonl", "a") as f:
-        f.write(json.dumps({"ts": stamp, "apply": a.apply, "rows": rows}) + "\n")
+        # end_epoch: the moment the row's verdicts hold. ops_watch ages the row by it; aged by `ts` (the start), a 2 h run
+        # read 2 h stale on landing (RIMMANDRAKE_SPEED_SCRATCH_REAP_APPLY_RUNS_PASS_TWO_HOURS)
+        f.write(json.dumps({"ts": stamp, "end_epoch": time.time(), "apply": a.apply, "rows": rows}) + "\n")
     new_alarms(rows, sd, stamp, a.apply)
     done = [r for r in rows if r["verdict"] == "DELETED"] + [r for r in tmp_rows if r["verdict"] == "DELETED"]
     if done:

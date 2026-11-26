@@ -2000,6 +2000,46 @@ def c_disk(now, rules, ctx):
         ex.shutdown(wait=True)
 
 
+def scratch_reading(now, out):
+    """disk.scratch_total_gb and disk.scratch_refused_gb from the reaper's last runs.jsonl row. The row is aged from
+    `end_epoch`, when it was written (an old row without it: from `ts`, its run's start). Aged by the start, a 2 h run
+    read 2 h stale the moment it landed (RIMMANDRAKE_SPEED_SCRATCH_REAP_APPLY_RUNS_PASS_TWO_HOURS). The 3 h bound: danger,
+    a dead or hung reaper writes no row and its last reading freezes; evidence, runs ended 1.5-2.3 h apart on Archmagi
+    (journal, 2026-11-24..26), so a live reaper's row is never 3 h old."""
+    p = scratch_runs_path()
+    try:
+        r = json.loads(last_line(p) or "null")
+        t = r["end_epoch"] if "end_epoch" in r else epoch(r["ts"])
+        if not (is_num(t) and finite(t)):
+            raise ValueError("the reaper's last row has a bad end_epoch (%r)" % (t,))
+        age_h = (now - t) / HOUR
+        tot, nob = {}, 0
+        rows = r.get("rows")
+        if not rows:
+            raise ValueError("the reaper's last run has no rows (a scan that saw nothing is not 0 GB)")
+        for row in rows:
+            if not isinstance(row, dict) or not isinstance(row.get("verdict"), str):
+                nob += 1
+                continue
+            if row.get("verdict") != "DELETED":
+                if not (is_num(row.get("bytes")) and finite(row["bytes"])):
+                    nob += 1
+                    continue
+                tot[row.get("verdict")] = tot.get(row.get("verdict"), 0) + row["bytes"]
+        if age_h < -5 / 60:
+            raise ValueError("the reaper's last row is dated in the future (%s)" % iso(t))
+        if age_h > 3:
+            raise ValueError("the reaper's last row was written %.1f h ago (run of %s)" % (age_h, r["ts"]))
+        mk = M if not nob else (lambda v, u, **x: E(v, "%d scratch row(s) with no byte count (not counted)" % nob, u, **x))
+        out["disk.scratch_total_gb"] = mk(round(sum(tot.values()) / 1e9, 1), "GB of agent scratch the reaper sees",
+                                         run=r["ts"], written=iso(t), young_gb=round(tot.get("YOUNG", 0) / 1e9, 1),
+                                         refuse_gb=round(tot.get("REFUSE", 0) / 1e9, 1))
+        out["disk.scratch_refused_gb"] = mk(round(tot.get("REFUSE", 0) / 1e9, 1), "GB old enough to reap but refused")
+    except (OSError, ValueError, KeyError, TypeError) as e:
+        out["disk.scratch_total_gb"] = U("scratch_reap runs.jsonl (%s): %s" % (p, e))
+        out["disk.scratch_refused_gb"] = U("scratch_reap runs.jsonl: %s" % e)
+
+
 def _c_disk(now, rules, ctx, f_pool, f_scr, f_seat):
     out = {}
     for name, mnt in disk_mounts().items():
@@ -2022,35 +2062,7 @@ def _c_disk(now, rules, ctx, f_pool, f_scr, f_seat):
             if name == "tmp":
                 out["disk.tmp_used_pct"] = U("%s: %s" % (mnt or name, e))
     p = scratch_runs_path()
-    try:
-        r = json.loads(last_line(p) or "null")
-        t = epoch(r["ts"])
-        age_h = (now - t) / HOUR
-        tot, nob = {}, 0
-        rows = r.get("rows")
-        if not rows:
-            raise ValueError("the reaper's last run has no rows (a scan that saw nothing is not 0 GB)")
-        for row in rows:
-            if not isinstance(row, dict) or not isinstance(row.get("verdict"), str):
-                nob += 1
-                continue
-            if row.get("verdict") != "DELETED":
-                if not (is_num(row.get("bytes")) and finite(row["bytes"])):
-                    nob += 1
-                    continue
-                tot[row.get("verdict")] = tot.get(row.get("verdict"), 0) + row["bytes"]
-        if age_h < -5 / 60:
-            raise ValueError("the reaper's last run is dated in the future (%s)" % r["ts"])
-        if age_h > 3:
-            raise ValueError("the reaper's last run is %.1f h old (%s)" % (age_h, r["ts"]))
-        mk = M if not nob else (lambda v, u, **x: E(v, "%d scratch row(s) with no byte count (not counted)" % nob, u, **x))
-        out["disk.scratch_total_gb"] = mk(round(sum(tot.values()) / 1e9, 1), "GB of agent scratch the reaper sees",
-                                         run=r["ts"], young_gb=round(tot.get("YOUNG", 0) / 1e9, 1),
-                                         refuse_gb=round(tot.get("REFUSE", 0) / 1e9, 1))
-        out["disk.scratch_refused_gb"] = mk(round(tot.get("REFUSE", 0) / 1e9, 1), "GB old enough to reap but refused")
-    except (OSError, ValueError, KeyError, TypeError) as e:
-        out["disk.scratch_total_gb"] = U("scratch_reap runs.jsonl (%s): %s" % (p, e))
-        out["disk.scratch_refused_gb"] = U("scratch_reap runs.jsonl: %s" % e)
+    scratch_reading(now, out)
     # The expiry's own record. A missing or torn record is the alarm, not silence: nothing proves the expiry runs.
     rec = p.with_name("last_run.json")
     try:
