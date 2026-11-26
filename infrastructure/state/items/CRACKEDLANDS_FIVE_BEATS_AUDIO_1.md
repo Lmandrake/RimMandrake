@@ -21,3 +21,16 @@ its neighbors down the line" — pick the vanilla call closest to that.
 
 Each beat audibly distinct in a joint session with the owner. The tarruq calls on an ordinary day,
 and `DebugStateReport` shows `tarruqSilenced=True` from beat 3 until the recede.
+
+## spec
+
+The `## owed` and `## criteria` sections above are the spec (the owner's 2026-10-03 vanilla-audio ruling bounds it).
+
+## verify
+
+`cd src/RimMandrake/CrackedLands && python3 -c "import validation as v; assert not v._tarruq_call_findings()"` (the static check `tarruq_call`); live: `DebugStateReport` `tarruqSilenced`.
+
+## refs
+file: src/RimMandrake/CrackedLands/Defs/ThingDefs_Races/RM_IrqitTarruq.xml
+file: src/RimMandrake/CrackedLands/Source/RM_TarruqHushPatch.cs
+def: ThingDef/RM_Tarruq
