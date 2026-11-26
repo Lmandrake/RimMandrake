@@ -379,7 +379,11 @@ def _fold_his_walk(now):
     folds = read_folds()
     for a in read_acts():
         w = str(a.get("what") or "")
-        if a["id"] in folds or a.get("kind") != "hand_move" or not w.startswith(WALK_VERDICT) or " by OWNER," not in w:
+        if a["id"] in folds or a.get("kind") != "hand_move" or not w.startswith(WALK_VERDICT):
+            continue
+        # the Conductor records HIS words as his verdict (ExplosiveKnockback 0.2.0, 2026-11-26: "his words pass the
+        # version"): the recording is not a hand's judgement. A Conductor move with no words of his stays a hand act.
+        if " by OWNER," not in w and not (" by CONDUCTOR," in w and "his words" in str(a.get("why") or "")):
             continue
         _append(FOLDS, {"id": a["id"], "at": now, "by": "maturation_hands",
                         "why": "his walk verdict: his act, one of his five acts (the pass at his walk), not a hand's"})

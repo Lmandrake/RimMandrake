@@ -915,7 +915,11 @@ def his_walk_main():
                 {"from": "his_walk", "to": "passed", "at": MH.iso(t0 + 100), "by": "OWNER", "why": "his walk of W"},
                 {"from": "his_walk", "to": "offline_build", "at": MH.iso(t0 + 200), "by": "OWNER", "why": "walk 2"},
                 {"from": "his_walk", "to": "in_game", "at": MH.iso(t0 + 300), "by": "DISPATCH", "why": "checks owed"},
-                {"from": "in_game", "to": "passed", "at": MH.iso(t0 + 400), "by": "OWNER", "why": "skip"}]}, f)
+                {"from": "in_game", "to": "passed", "at": MH.iso(t0 + 400), "by": "OWNER", "why": "skip"},
+                # 2026-11-26 (ExplosiveKnockback 0.2.0): the Conductor records HIS words as the walk verdict
+                {"from": "his_walk", "to": "passed", "at": MH.iso(t0 + 500), "by": "CONDUCTOR",
+                 "why": "his live walk on ArchBig; his words pass the version: ALL WALK ITEMS PASS"},
+                {"from": "his_walk", "to": "in_game", "at": MH.iso(t0 + 600), "by": "CONDUCTOR", "why": "tick stuck"}]}, f)
         st = {"hands": {"since": t0 - 10, "last_tick": NOW + 2 * 86400 - 60}, "mods": {"W": {}}}
         fx = {"events": lambda: [], "known": lambda: set()}
         rd = {"needs_conductor": []}
@@ -929,11 +933,16 @@ def his_walk_main():
            "itself", (walk, sorted(folds)))
         ok(all("five acts" in (folds.get(i) or {}).get("why", "") for i in walk),
            "his walk 2: the fold names why (his act, one of his five)", [folds.get(i) for i in walk])
-        others = [i for w, i in acts if i not in walk]
+        cwalk = [i for w, i in acts if w.startswith("moved his_walk -> passed by CONDUCTOR")]
+        cstuck = [i for w, i in acts if w.startswith("moved his_walk -> in_game by CONDUCTOR")]
+        ok(len(cwalk) == 1 and cwalk[0] in folds and len(cstuck) == 1 and cstuck[0] not in folds,
+           "his walk 5: the Conductor's move that records his words folds; his move with no words of his stays open",
+           (cwalk, cstuck, sorted(folds)))
+        others = [i for w, i in acts if i not in walk and i not in cwalk + cstuck]
         ok(len(others) == 2 and not any(i in folds for i in others),
            "his walk 3 (control): a move off his_walk by DISPATCH, and a move by OWNER from another stage, stay open",
            (others, sorted(folds)))
-        ok(rd["hand_acts"]["overdue"] == 2, "his walk 4: only the two real hand moves read overdue", rd["hand_acts"])
+        ok(rd["hand_acts"]["overdue"] == 3, "his walk 4: only the two real hand moves and the wordless Conductor move read overdue", rd["hand_acts"])
     finally:
         if was is None:
             os.environ.pop("RM_MATURATION_DISPATCH_DIR", None)
