@@ -1187,6 +1187,55 @@
      "note": "the art exists (AshwallowDome_*, adf45e2103, 2026-10-15, the day before his sheet); whether his sheet showed it is UNMEASURED, so it is judged with the rest"
     }
    ]
+  },
+  {
+   "capability": "fire_catches_and_runs",
+   "by": [
+    "sc_burn_line_walks",
+    "sc_fire_walks_with_wind"
+   ],
+   "checks": [
+    "T_FIRE_PACE_MODEL_OFFLINE",
+    "sc_fire_catches_and_runs"
+   ],
+   "why": "the two scenes that already stage a burn and read how it walks; the catch and the faster head are read by the whole-map model (T_FIRE_PACE_MODEL_OFFLINE, from one lit cell) and one short staged spark (sc_fire_catches_and_runs), the cheaper cover than a showcase that plays days. New at 0.2.0 (2026-11-26, RIMMANDRAKE_OPEN_PYRELANDS_NEXT_VERSION_HE_ASKED_FASTER_FIRE): the deciding rows are in version/test_table.json; Stage 3 builds them red first."
+  },
+  {
+   "capability": "roofed_grass_declines_visibly",
+   "by": [
+    "sc_roof_withers"
+   ],
+   "checks": [
+    "T_ROOF_WITHER_OFFLINE",
+    "sc_roofed_grass_declines"
+   ],
+   "why": "the scene that roofs grass today; the spread of the deaths and the remains are a pure rule read offline (T_ROOF_WITHER_OFFLINE), and the look, the cut and the log are read in one staged roofed patch (sc_roofed_grass_declines), cheaper than a showcase. New at 0.2.0 (2026-11-26, RIMMANDRAKE_OPEN_PYRELANDS_NEXT_VERSION_HE_ASKED_FASTER_FIRE): the deciding rows are in version/test_table.json; Stage 3 builds them red first."
+  },
+  {
+   "capability": "pyre_smoke_weather_chokes",
+   "by": [
+    "sc_three_skies",
+    "sc_no_rain"
+   ],
+   "checks": [
+    "T_SMOKE_WEATHER_ACCEPT",
+    "sc_smoke_weather_chokes"
+   ],
+   "why": "the sky scene and the no-rain scene, which read the weather table that the smoke joins; the defs are read offline by its acceptance test and the harm in one forced weather (sc_smoke_weather_chokes), cheaper than waiting for the weather in a showcase. New at 0.2.0 (2026-11-26, RIMMANDRAKE_OPEN_PYRELANDS_NEXT_VERSION_HE_ASKED_FASTER_FIRE): the deciding rows are in version/test_table.json; Stage 3 builds them red first."
+  },
+  {
+   "capability": "mechanics_switch_plain_no_biome",
+   "by": [
+    "sc_fire_sense",
+    "sc_ashwallow",
+    "sc_burn_line_walks"
+   ],
+   "checks": [
+    "T_CONDITIONS_NOT_BIOME_OFFLINE",
+    "T_SETTINGS_SWEEP_OFFLINE",
+    "T_SETTINGS_SCREENS"
+   ],
+   "why": "a settings and code-shape promise: the gates are read statically (T_CONDITIONS_NOT_BIOME_OFFLINE) and the switches by the settings checks; the mechanics keep their home-biome scenes, re-run because the change touches them (no foreign-map test is owed, his card 'Home only, as ruled in October'). New at 0.2.0 (2026-11-26, RIMMANDRAKE_OPEN_PYRELANDS_NEXT_VERSION_HE_ASKED_FASTER_FIRE): the deciding rows are in version/test_table.json; Stage 3 builds them red first."
   }
  ]
 }
