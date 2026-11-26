@@ -68,6 +68,13 @@ def t_a_planted_fault_is_seen():
     got, _ = faults(planted)
     kinds = sorted({f["kind"] for f in got})
     chk("pronoun" in kinds, "a planted pronoun sentence in the footer is seen (%s)" % kinds)
+    if os.environ.get("RM_FOOTER_PROSE_INNER"):
+        return
+    import subprocess
+    env = dict(os.environ, CLEAR_FINDINGS_TOOLS="/nonexistent", RM_FOOTER_PROSE_INNER="1")
+    r = subprocess.run([sys.executable, os.path.abspath(__file__)], env=env, capture_output=True, text=True,
+                       timeout=300)  # hang guard: a whole run of this test takes about 5 s
+    chk(r.returncode == 3 and "UNMEASURED" in r.stdout, "with no STE lint the test exits 3 and says UNMEASURED (rc %s)" % r.returncode)
 
 
 def main():
