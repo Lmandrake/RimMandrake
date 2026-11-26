@@ -42,18 +42,7 @@
    "item": "GRAVSHIP_FACING_GAPS_REDRAW_BORROWED_SIDES",
    "defs": [
     "RM_ArchiveVat",
-    "RM_SlimeCompressor",
-    "KOTOR_PazaakTable",
-    "RM_FungiponicsBasin"
-   ]
-  },
-  {
-   "group": "FIXED_BUT_FACED",
-   "item": "GRAVSHIP_VENTS_WIRE_ART_DRAWN_NEVER_SHOWN",
-   "defs": [
-    "RUT_VentForge",
-    "RUT_VentKiln",
-    "RUT_VentSmelter"
+    "RM_SlimeCompressor"
    ]
   },
   {
@@ -69,7 +58,12 @@
   "guy762_SecretFloorPanel_DoomgiverTile": "top-down floor panel (looks like deck): spins correctly",
   "guy762_SecretFloorPanel_DreadnaughtCabinTile_black": "top-down floor panel (looks like deck): spins correctly",
   "guy762_SecretFloorPanel_DreadnaughtCabinTile_blue": "top-down floor panel (looks like deck): spins correctly",
-  "guy762_SecretFloorPanel_darkwhiteoutlines": "top-down floor panel (looks like deck): spins correctly"
+  "guy762_SecretFloorPanel_darkwhiteoutlines": "top-down floor panel (looks like deck): spins correctly",
+  "RUT_VentForge": "placed on a steam geyser (PlaceWorker_OnSteamGeyser): a turn would move its 2x2 off the geyser's 2x2, so it must stay rotatable=false; the dead _north/_east art never draws and nothing the player sees is wrong (GRAVSHIP_VENTS_WIRE_ART_DRAWN_NEVER_SHOWN dropped 2026-11-26)",
+  "RUT_VentKiln": "placed on a steam geyser (PlaceWorker_OnSteamGeyser): a turn would move its 2x2 off the geyser's 2x2, so it must stay rotatable=false; the dead _north/_east art never draws and nothing the player sees is wrong (GRAVSHIP_VENTS_WIRE_ART_DRAWN_NEVER_SHOWN dropped 2026-11-26)",
+  "RUT_VentSmelter": "placed on a steam geyser (PlaceWorker_OnSteamGeyser): a turn would move its 2x2 off the geyser's 2x2, so it must stay rotatable=false; the dead _north/_east art never draws and nothing the player sees is wrong (GRAVSHIP_VENTS_WIRE_ART_DRAWN_NEVER_SHOWN dropped 2026-11-26)",
+  "KOTOR_PazaakTable": "top-down table art: the engine draws _north for south (Graphic_Multi.Init), and that picture already reads as the front view; east is west flipped",
+  "RM_FungiponicsBasin": "top-down symmetric basin art: the engine draws _north for south and _east flipped for west, both correct"
  },
  "reviewed": [
   {

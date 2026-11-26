@@ -16,6 +16,13 @@ defines `RSW_Doonium` and `RSW_Phrik`).
 3. Both smelts run on the ship's smelter (`VFEFactory_AutomatedSmelter`, VFE ProcessDefs).
 4. Amounts go in the registry, not in this item. Mod Settings toggle per ore.
 
+## refs
+file: src/RimStarWars/Armoury/Patches/RSW_Smelter_Alloys.xml
+file: src/RimStarWars/Armoury/Patches/RSW_OdysseyAsteroid_Doonium.xml
+file: src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_PhrikiteDesertLumps.xml
+def: ThingDef/RSW_Phrik
+def: ThingDef/RSW_Doonium
+
 ## criteria
 - L1 L0: doonium ore generates on asteroid maps and on no planet biome; it smelts with glower crust into `RSW_Doonium` aboard
 - L2 L0: phrikite is placed in one desert biome per the registry; it smelts into `RSW_Phrik` aboard
