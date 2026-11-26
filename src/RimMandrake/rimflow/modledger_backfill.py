@@ -9,6 +9,7 @@ other or with the ledger.
     python3 src/RimMandrake/rimflow/modledger_backfill.py run --mod ExplosiveKnockback        # writes the ledger
     python3 src/RimMandrake/rimflow/modledger_backfill.py run --mod ExplosiveKnockback --dry  # counts only
     python3 src/RimMandrake/rimflow/modledger_backfill.py compare --mod ExplosiveKnockback    # shadow disagreements
+    python3 src/RimMandrake/rimflow/modledger_backfill.py bars --mod ExplosiveKnockback       # bars = locked_bars.json
 
 Stores read (each optional; a missing one is said, never guessed): version/VERSION.json, version/stage_record.json,
 version/locked_bars.json, version/test_table.json, version/in_game/visit_*/rows.jsonl,
@@ -2205,6 +2206,80 @@ def compare(root, mod):
     return out
 
 
+def sync_bars(root, mod, views=True):
+    """Bring the mod ledger's bars level with version/locked_bars.json, the record `maturation.py lock-bars` writes
+    (RIMMANDRAKE_REPAIR_KNOCKBACK_LEDGER_READINESS_STOPS_TICK_HOLDER: Explosive Knockback 0.2.0's lock recorded 73 ids
+    and its ledger still read 0.1.0's 59). A BACKFILL bar.locked for each locked id the ledger lacks, a bar.deferred
+    for each ledger bar the record does not lock; each cites locked_bars.json and names the record it came from.
+    -> None for a mod with no ledger; {"ok": False, "why"} with nothing written when locked_bars.json cannot be read
+    or records another version than the ledger's; else {"ok", "version", "locked": [ids], "deferred": [ids], "why"},
+    ok False when the ledger is still not level after the writes (said, never assumed)."""
+    evs = M.read(root, mod)
+    if not evs:
+        return None
+    vdir = os.path.join(root, "design", "concepts", mod, "version")
+    lbp = os.path.join(vdir, "locked_bars.json")
+    rel = _rel(root, lbp)
+    lb = _load(lbp)
+    if not isinstance(lb, dict) or not isinstance(lb.get("ids"), list):
+        return {"ok": False, "why": "%s could not be read as a lock record (no ids list): the ledger's bars are left "
+                "as they are" % rel}
+    st = M.reduce(evs)
+    if lb.get("version") != st["version"]:
+        return {"ok": False, "why": "%s records version %r and the mod ledger reads %r: nothing written (a lock of "
+                "another version is no record of this one's bars)" % (rel, lb.get("version"), st["version"])}
+    ids = list(dict.fromkeys(i for i in lb["ids"] if isinstance(i, str) and i))
+    hist = [h for h in lb.get("history") or [] if isinstance(h, dict)]
+    rec = "record %d%s" % (len(hist), " of %s" % hist[-1]["at"] if hist and hist[-1].get("at") else "")
+    tt = _load(os.path.join(vdir, "test_table.json"))
+    unread = [] if isinstance(tt, dict) else ["version/test_table.json unread: bars locked without the table's words"]
+    table = {b["id"]: b for b in (tt.get("bars") if unread == [] and isinstance(tt.get("bars"), list) else [])
+             if isinstance(b, dict) and b.get("id")}     # the record locks a bar; the table only words its event
+    S = M.std()["caps"]
+    have = {b.partition(":")[2] for b in st["bars"]}
+    locked, deferred = [], []
+    try:
+        _sync_write(root, mod, st, ids, rel, rec, table, S, have, locked, deferred)
+    finally:    # views follow every event written, also when an append refused partway
+        if (locked or deferred) and views:
+            M.write_views(root, mod)
+    now = {b.partition(":")[2] for b in M.reduce(M.read(root, mod))["bars"]}
+    level = now == set(ids)
+    return {"ok": level, "version": st["version"], "locked": locked, "deferred": deferred, "notes": unread,
+            "why": ("the ledger's %d bars equal %s" % (len(now), rel)) if level else (
+                "the ledger still differs from %s: lacks %s, holds %s" % (
+                    rel, sorted(set(ids) - now), sorted(now - set(ids))))}
+
+
+def _sync_write(root, mod, st, ids, rel, rec, table, S, have, locked, deferred):
+    """sync_bars' appends; appends each id it wrote to `locked` / `deferred` as it goes."""
+    for bid in ids:
+        if bid in have:
+            continue
+        b = table.get(bid, {})
+        what = ", ".join(x for x in ("%s bar" % b["kind"] if b.get("kind") else "", "from %s" % b["source"]
+                                     if b.get("source") else "", "proves at stage %s" % b["proves_at"]
+                                     if b.get("proves_at") else "") if x)
+        body = {"text": fit("locked for %s in version/locked_bars.json (%s)%s" % (
+            st["version"], rec, ": " + what if what else ""), S["text"])}
+        if b.get("decides"):
+            body["decides"] = fit("; ".join(b["decides"]), S["decides"])
+        _, created = M.append(root, mod, W, "bar.locked", "bar:" + bid, body=body, version=st["version"],
+                              evidence=["path:" + rel], env_writer=None, views=False)
+        if created:
+            locked.append(bid)
+    for sb in sorted(st["bars"]):
+        bid = sb.partition(":")[2]
+        if bid in ids:
+            continue
+        body = {"text": fit("not among the %d bars version/locked_bars.json records for %s (%s): out of this "
+                            "version" % (len(ids), st["version"], rec), S["text"])}
+        _, created = M.append(root, mod, W, "bar.deferred", sb, body=body, version=st["version"],
+                              evidence=["path:" + rel], env_writer=None, views=False)
+        if created:
+            deferred.append(bid)
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--root", default=None)
@@ -2217,8 +2292,23 @@ def main(argv=None):
                    "backfill_reader.budget_usd)")
     c = sub.add_parser("compare")
     c.add_argument("--mod", required=True)
+    sb = sub.add_parser("bars", help="bring the ledger's bars level with version/locked_bars.json (sync_bars)")
+    sb.add_argument("--mod", required=True)
     o = ap.parse_args(argv)
     root = o.root or M.default_root()
+    if o.verb == "bars":
+        try:
+            r = sync_bars(root, o.mod)
+        except (M.ModLedgerError, M.Refusal) as e:
+            print("bars %s: the mod ledger refused an event (%s: %s); views follow what was written"
+                  % (o.mod, type(e).__name__, e))
+            return 1
+        if r is None:
+            print("bars %s: no mod ledger" % o.mod)
+            return 2
+        print("bars %s: %s; locked %s; deferred %s" % (o.mod, r["why"], r.get("locked") or "none",
+                                                        r.get("deferred") or "none"))
+        return 0 if r["ok"] else 1
     if o.verb == "run":
         res = run(root, o.mod, o.dry, o.read, o.read_budget)
         for n in res["notes"]:

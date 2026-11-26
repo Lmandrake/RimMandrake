@@ -232,10 +232,17 @@ def _filed_ids(root):
 
 def cited_file_exists(root, ref):
     """A cited repo file exists: `ref` is a path, optionally typed `path:`, with a #locator or :line. An item prose file
-    moves to items/closed/ when its item closes, so a citation of items/<ID>.md also resolves there."""
+    moves to items/closed/ when its item closes, so a citation of items/<ID>.md also resolves there; a mod's version/
+    file that next-version set aside resolves in version/previous/<version>/."""
     ref = re.sub(r"^path:", "", ref).split("#")[0]
     ref = re.sub(r":\d+$", "", ref)
     if os.path.exists(os.path.join(root, ref)):
+        return True
+    # maturation.py next-version sets an earlier version's numbered evidence aside in version/previous/<version>/
+    # (Explosive Knockback 0.2.0: 105 cited 0.1.0 files moved, RIMMANDRAKE_REPAIR_KNOCKBACK_LEDGER_READINESS_STOPS_TICK_HOLDER)
+    m = re.match(r"^(design/concepts/[^/]+/version)/(?!previous/)(.+)$", ref)
+    if m and glob.glob(os.path.join(glob.escape(os.path.join(root, m.group(1), "previous")), "*",
+                                    glob.escape(m.group(2)))):
         return True
     d, f = os.path.split(ref)
     return d == "infrastructure/state/items" and os.path.exists(os.path.join(root, d, "closed", f))
@@ -1143,7 +1150,8 @@ def reduce(events):
     events = [e for e in events if isinstance(e, dict)]
     superseded = sorted({e["supersedes"] for e in events if isinstance(e.get("supersedes"), str)})
     by, current = leases(events)
-    st = {"reducer": REDUCER_VERSION, "version": None, "stage": None, "exit_claims": [], "bars": {}, "findings": {},
+    st = {"reducer": REDUCER_VERSION, "version": None, "stage": None, "exit_claims": [], "bars": {},
+          "bars_deferred": {}, "findings": {},
           "causes": {}, "traps": {}, "questions": {}, "answers": {}, "decisions": {}, "checkpoint": None,
           "session": None,
           "lease": None, "spend_usd": 0.0, "spend_tokens": 0, "tests": [], "notes": [], "superseded": superseded, "fenced": [],
@@ -1181,13 +1189,21 @@ def reduce(events):
         elif k == "stage.exit_confirmed":
             st["exit_claims"] = [dict(c, confirmed_by=w) for c in st["exit_claims"]]
         elif k and k.startswith("bar."):
-            bar = st["bars"].setdefault(s, {"verdict": None})
+            # a deferred bar leaves the version's bars (moved to a later version, kept in bars_deferred); a later
+            # bar.locked or bar.added brings it back (RIMMANDRAKE_REPAIR_KNOCKBACK_LEDGER_READINESS_STOPS_TICK_HOLDER)
+            into, out_of = (("bars_deferred", "bars") if k == "bar.deferred" else ("bars", "bars_deferred"))
+            if k not in ("bar.deferred", "bar.locked", "bar.added") and s in st["bars_deferred"]:
+                into = out_of = "bars_deferred"     # an eased deferred bar stays deferred
+            bar = st[out_of].pop(s, None) or st[into].get(s) or {"verdict": None}
+            st[into][s] = bar
             bar.update({"status": k.split(".", 1)[1], "text": _text(ev) or bar.get("text"), "ts": when})
         elif k in ("test.run", "live.run"):
             st["tests"].append({"ts": when, "kind": k, "subject": s, "result": b.get("result"), "sha":
                                 ev.get("code_sha"), "text": _text(ev), "by": w})
             if isinstance(b.get("bar"), str) and b["bar"]:
-                st["bars"].setdefault("bar:" + b["bar"], {"verdict": None})["verdict"] = b.get("result")
+                sb = "bar:" + b["bar"]
+                st["bars_deferred" if sb in st["bars_deferred"] else "bars"].setdefault(
+                    sb, {"verdict": None})["verdict"] = b.get("result")
         elif k == "finding.open":
             st["findings"][s] = {"status": "open", "text": _text(ev), "proposed_fix": b.get("proposed_fix"),
                                  "accept": b.get("accept"), "class": b.get("class"), "bars": b.get("bars") or [],
@@ -1253,6 +1269,8 @@ def reduce(events):
     if current:
         g = by[current]
         st["lease"] = {"lease": current, "token": g["token"], "last": g["last"], "released": g["released"]}
+    if not st["bars_deferred"]:     # present only when a bar is deferred: a ledger with none reduces (and its views
+        del st["bars_deferred"]     # read) byte for byte as before the key existed; read it with .get()
     return st
 
 
@@ -1435,6 +1453,9 @@ def packet_from(mod, events, budget=None, stale=None):
                 out.append("- %s [%s] verdict %s%s" % (k, b.get("status") or "?", b.get("verdict") or "none",
                                                       (": " + (cut(b["text"], 60) if lv >= 4 else cl(b["text"], k)))
                                                       if b.get("text") and not ids else ""))
+            if st.get("bars_deferred"):     # out of this version: ids only
+                out.append("- deferred out of this version (%d): %s" % (
+                    len(st["bars_deferred"]), ", ".join(sorted(st["bars_deferred"]))))
             return out
         cuts = one(False)
         if lv < 13:
@@ -1722,7 +1743,7 @@ def index_path(root, mod):
 def _status_of(st, subject):
     cls = subject_class(subject)
     table = {"finding": st["findings"], "cause": st["causes"], "trap": st["traps"], "q": st["questions"],
-             "bar": st["bars"]}.get(cls)
+             "bar": dict(st.get("bars_deferred") or {}, **st["bars"])}.get(cls)
     if table is None or subject not in table:
         return "decided" if subject in st["decisions"] else None
     return table[subject].get("status")

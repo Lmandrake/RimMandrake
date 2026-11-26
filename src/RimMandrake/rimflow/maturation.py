@@ -1638,7 +1638,32 @@ def lock_bars(root, mod, by, why, add=(), remove=(), source=None, show=None, blo
     write_text(root, mod, LOCKED_BARS, json.dumps(out, indent=1) + "\n")
     if not (isinstance(cur, dict) and cur.get("version") == v.get("version") and isinstance(cur.get("ids"), list)):
         pin_bars_md(root, mod, v, ids, blob)
-    return {"ok": True, "why": how, "ids": ids}
+    total = None
+    n0 = v.get("bars_total")
+    if isinstance(n0, int) and not isinstance(n0, bool) and n0 != len(ids):
+        # VERSION.json counts the version's bars: a record that adds or removes one keeps the count level (Gimme Some
+        # Slack 0.2.0 read 57 against the 59 his order of 2026-11-24 locked, and its ledger readiness test failed)
+        v2 = dict(v, bars_total=len(ids))
+        if isinstance(v.get("measured_from"), (dict, type(None))):
+            v2["measured_from"] = dict(v.get("measured_from") or {}, bars_total="the %d ids of %s (lock-bars, %s; was %d)"
+                                       % (len(ids), LOCKED_BARS, hist[-1]["at"], n0))
+        write_text(root, mod, "version/VERSION.json", json.dumps(v2, indent=1, ensure_ascii=False) + "\n")
+        total = {"was": n0, "now": len(ids)}
+    return {"ok": True, "why": how, "ids": ids, "bars_total": total, "ledger": ledger_bars_sync(root, mod)}
+
+
+def ledger_bars_sync(root, mod):
+    """A mod that has a ledger takes each lock record's bars into it (modledger_backfill.sync_bars): lock-bars wrote
+    Explosive Knockback 0.2.0's 73 ids to locked_bars.json while its ledger kept 0.1.0's 59, and the readiness test
+    stopped the tick's holder (RIMMANDRAKE_REPAIR_KNOCKBACK_LEDGER_READINESS_STOPS_TICK_HOLDER). After the record is
+    written: a ledger that cannot take it never rolls the lock back, and says why. -> sync_bars' result, None for a
+    mod with no ledger, or {"ok": False, "why"} when the sync raised."""
+    import modledger_backfill
+    try:
+        return modledger_backfill.sync_bars(root, mod)
+    except Exception as e:      # noqa: BLE001  the lock stands; the ledger's refusal is said, never swallowed
+        return {"ok": False, "why": "the mod ledger did not take the lock record (%s: %s); run modledger_backfill.py "
+                "bars --mod %s" % (type(e).__name__, e, mod)}
 
 
 def next_version(root, mod, by, why):
@@ -6765,7 +6790,15 @@ def main(argv=None):
         r = lock_bars(root, o.mod, o.by, o.why, o.add, o.remove, o.source)
         print(("LOCKED BARS %s: %d recorded in %s (%s)" % (o.mod, len(r["ids"]), rel(o.mod, LOCKED_BARS), r["why"]))
               if r["ok"] else "REFUSED: %s" % r["why"])
-        return 0 if r["ok"] else 2
+        if r["ok"] and r.get("bars_total"):
+            print("VERSION.json bars_total %d -> %d (the ids recorded); land also %s" % (
+                r["bars_total"]["was"], r["bars_total"]["now"], rel(o.mod, "version/VERSION.json")))
+        lg = r.get("ledger") if r["ok"] else None
+        if lg:      # the mod ledger took the record (sync_bars): land its BACKFILL shard and views with the lock
+            print("%s: %s; locked %s, deferred %s; land also design/concepts/%s/ledger/BACKFILL.jsonl and its views"
+                  % ("LEDGER" if lg["ok"] else "LEDGER NOT LEVEL", lg["why"], lg.get("locked") or "none",
+                     lg.get("deferred") or "none", o.mod))
+        return (0 if not lg or lg["ok"] else 3) if r["ok"] else 2
     if o.cmd == "next-version":
         r = next_version(root, o.mod, o.by, o.why)
         print(("NEXT VERSION %s: %s -> %s, at %s (old record kept as %s%s)" % (
