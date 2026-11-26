@@ -1,8 +1,8 @@
-# The worker runs each line as written and stages no map: live_site.py --game makes a quicktest map when none is up.
+# The worker runs each clause's default site first (live_site.py --game: a quicktest map only when none is up).
 # TILE_STRUCTURE_DESIGNS_1 A1: GenStep_RimplacePlan.ApplyPlan lands a plan's terrain, walls and roof as the plan says,
 # and the roof and walls still stand 2500 ticks later. The proof clears a rect at the map centre, replays
 # Templates/dwelling_test.txt there by the mod's debug action (the same ApplyPlan that Generate calls) and reads every
 # planned cell back (get_terrain_batch, get_roof_batch, list_things). A quicktest map is enough; dwelling_test.txt names
 # vanilla defs only. All five DLC. No flyer.
 live-mods: StructureInjections
-live-proof A1: python.exe src/RimMandrake/Utils/live_site.py --game --max-ticks 100000000 < /dev/null || exit 2; python.exe src/RimMandrake/StructureInjections/prove_plan_ordering_live.py < /dev/null
+live-proof A1: python.exe src/RimMandrake/StructureInjections/prove_plan_ordering_live.py < /dev/null

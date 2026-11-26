@@ -1,9 +1,9 @@
-# The worker runs each line as written and stages no map: live_site.py --game makes a quicktest colony when none is up.
+# The worker runs each clause's default site first (live_site.py --game: a quicktest map only when none is up).
 # HUTT_SLAVE_PIT_TEST_SITE_1: each clause stages (or reuses) a real Hutt slave pit Site next to that colony
 # (RM_PitBuyerProof.ProofMakeSite: SiteMaker, the site's own map, made current), because on a player colony the pit gate
 # is open by rule and keepers never buy. A2 sells a prisoner, a slave and a downed wild beast; A3 kills the keepers, so it
 # runs last. KeelHoist and UtinniPatches both load (the Hutt defs are MayRequire'd on the keel hoist). All five DLC.
 live-mods: KeelHoist, UtinniPatches
-live-proof A1: python.exe src/RimMandrake/Utils/live_site.py --game --max-ticks 100000000 < /dev/null || exit 2; python.exe src/RimMandrake/KeelHoist/prove_hutt_pit_site_live.py A1 < /dev/null
-live-proof A2: python.exe src/RimMandrake/Utils/live_site.py --game --max-ticks 100000000 < /dev/null || exit 2; python.exe src/RimMandrake/KeelHoist/prove_hutt_pit_site_live.py A2 < /dev/null
-live-proof A3: python.exe src/RimMandrake/Utils/live_site.py --game --max-ticks 100000000 < /dev/null || exit 2; python.exe src/RimMandrake/KeelHoist/prove_hutt_pit_site_live.py A3 < /dev/null
+live-proof A1: python.exe src/RimMandrake/KeelHoist/prove_hutt_pit_site_live.py A1 < /dev/null
+live-proof A2: python.exe src/RimMandrake/KeelHoist/prove_hutt_pit_site_live.py A2 < /dev/null
+live-proof A3: python.exe src/RimMandrake/KeelHoist/prove_hutt_pit_site_live.py A3 < /dev/null
