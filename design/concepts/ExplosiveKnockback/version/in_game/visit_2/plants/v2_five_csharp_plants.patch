@@ -1,0 +1,55 @@
+diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs
+index 9408fcb648..c6294b798b 100644
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs
+@@ -525,7 +525,7 @@ namespace RimMandrake.ExplosiveKnockback
+                     }
+                 }
+                 string why = Build(s);
+-                if (why == null && s.placeFault != null)
++                if (false && why == null && s.placeFault != null)
+                 {
+                     why = "site: " + s.placeFault;
+                 }
+@@ -602,7 +602,6 @@ namespace RimMandrake.ExplosiveKnockback
+         {
+             Action r = s.restore;
+             s.restore = null;
+-            r?.Invoke();
+         }
+ 
+         // ── scene construction ───────────────────────────────────────────
+@@ -812,7 +811,6 @@ namespace RimMandrake.ExplosiveKnockback
+             s.restore = () =>
+             {
+                 d.modExtensions.Remove(ext);
+-                prev?.Invoke();
+             };
+         }
+ 
+diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_Patch_DamageWorker_ExplosionKnockback.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_Patch_DamageWorker_ExplosionKnockback.cs
+index 10d6a6899b..a3515fa4d4 100644
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_Patch_DamageWorker_ExplosionKnockback.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_Patch_DamageWorker_ExplosionKnockback.cs
+@@ -67,7 +67,7 @@ namespace RimMandrake.ExplosiveKnockback
+                 c.damage = dmg;
+                 c.damageRatio = RM_KnockbackMath.DamageRatio(dmg, RefDamageOf(def),
+                     RimMandrakeExplosiveKnockbackSettings.blastPowerRefPercent, RimMandrakeExplosiveKnockbackSettings.blastPowerFromDamage);
+-                c.force *= c.damageRatio;
++                // c.force *= c.damageRatio;
+             }
+             return c;
+         }
+diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_PawnFlyerPatches.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_PawnFlyerPatches.cs
+index e6cdfb57bc..364f45f31d 100644
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_PawnFlyerPatches.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_PawnFlyerPatches.cs
+@@ -293,7 +293,7 @@ namespace RimMandrake.ExplosiveKnockback
+                         float amount = RM_KnockbackMath.CollisionBruise(own, other, ks), otherAmount = RM_KnockbackMath.CollisionBruise(other, own, ks);
+                         if (otherAmount > 0f && !o.Dead)
+                         {
+-                            o.TakeDamage(new DamageInfo(DamageDefOf.Blunt, otherAmount));
++                            o.TakeDamage(new DamageInfo(DamageDefOf.Blunt, amount));
+                         }
+                         if (amount > 0f && !__state.Dead)
+                         {

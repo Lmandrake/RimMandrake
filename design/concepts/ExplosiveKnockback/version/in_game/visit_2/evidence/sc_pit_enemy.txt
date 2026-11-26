@@ -1,0 +1,19 @@
+shared process: python.exe src\RimMandrake\ExplosiveKnockback\knockback_runner.py --scenes pit_colonist,pit_enemy,killed_by_blast --ticks 300
+scenes of this check: pit_enemy
+pit_enemy PASS p 58,12->60,12 (2 cells) landedOnFirstPitCell=True stillInPit=True descents=1
+--- whole process output ---
+scenes available: calibration,wall_stop,door_stop,over_sandbags,pit_colonist,pit_enemy,no_cross,cover_breaks,items,corpse_into_pit,killed_by_blast,shelf,in_pit_skip,heavy_skip,all_fly_no_cap,settings_off,emp_no_throw,lookup_projectile,lookup_zero_wins,impact_factor,body_override,immunity_window,shield_counter,goods_fly_midair,goods_fly_lands,goods_fly_wall,goods_fly_rebound,goods_fly_off,fire_half,harmful_unpatched,container_thrown,heavy_knock,land_no_bump,land_no_bump_pit,gas_clumps,mass_and_power,mass_and_power_x2,mass_and_power_off,mass_and_power_off_x2,mass_and_power_250,mass_and_power_250_x2,pawn_hits_pawn,only_explosions,open_storage,no_cross_ordered,spared_states,blast_kinds,goods_fly_wild,gas_chain,gas_census,pawn_arc,pit_goods_fetch,hose_carry_drop,hose_carry_drop_off,closed_containers,closed_containers_control,settings_sweep,settings_sweep_after,frame_probe_selfcheck,frame_probe_selfcheck_paused,barrage_perf,barrage_perf_off,gas_into_pit,gas_into_pit_off,goods_obstacles,goods_obstacles_control,storeroom_bomb_pit,storeroom_bomb_pit_control,pit_colonist_control flowworks=True hoses=True
+pit_colonist     advanced 300/300 ticks in 1 s via jawa/safe_advance
+pit_colonist     PASS open: p planned=3 landed=45,12 descents=1 inPit=True; s planned=6 landed=45,12 lands=1 inPit=True | covered: pc planned=3 landed=39,12 descents=1 inPit=True; sc planned=6 landed=39,12 lands=1 inPit=True coverGone=True breaksByLanding=1 | solo pn: landed=42,15 descents=1 inPit=True coverGone=True breaksByOwnLanding=1 | solo ss: landed=42,9 descents=0 inPit=True coverGone=True breaksByOwnLanding=1
+pit_colonist     SETTINGS after verdict: all at the run's defaults
+pit_enemy        advanced 300/300 ticks in 1 s via jawa/safe_advance
+pit_enemy        PASS p 58,12->60,12 (2 cells) landedOnFirstPitCell=True stillInPit=True descents=1
+pit_enemy        SETTINGS after verdict: all at the run's defaults
+killed_by_blast  advanced 300/300 ticks in 1 s via jawa/safe_advance
+killed_by_blast  PASS dead=3 corpsesThrown=3 corpsesSpun=3 [p0:432deg/25t p1:432deg/25t p2:360deg/21t]
+killed_by_blast  SETTINGS after verdict: all at the run's defaults
+VERDICT PASS  (3 scenes) -> \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_GAME_VISIT_TWO_RUN_TWO.det\Transient\explosive_knockback\run_20261125T213629.jsonl
+
+--- stderr ---
+[bridge split] 28.7 s wall: load 0.0 / ticks 2.6 / reads 0.0 / other 14.4 / outside calls 11.7 s
+[bridge split] WARN 342 calls of jawa/mod_settings_field (13.8 s): batch them

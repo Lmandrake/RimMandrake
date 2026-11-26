@@ -1,0 +1,40 @@
+shared process: python.exe src\RimMandrake\ExplosiveKnockback\knockback_runner.py --scenes goods_fly_wild,all_fly_no_cap,open_storage,heavy_knock,blast_kinds,only_explosions,lookup_projectile,gas_chain,gas_census,cover_breaks --ticks 300
+scenes of this check: lookup_projectile
+lookup_projectile PASS p 133,12->140,12 (7 cells) want~7 [type=request tick=76801 exp=19314 thing=Human19309 from=133,12 centre=132,12 radius=2.9 force=2.5 damType=Bomb source=projectile shieldAbsorbed=False typeForce=2.5 damage=50 damageRatio=1]
+--- whole process output ---
+scenes available: calibration,wall_stop,door_stop,over_sandbags,pit_colonist,pit_enemy,no_cross,cover_breaks,items,corpse_into_pit,killed_by_blast,shelf,in_pit_skip,heavy_skip,all_fly_no_cap,settings_off,emp_no_throw,lookup_projectile,lookup_zero_wins,impact_factor,body_override,immunity_window,shield_counter,goods_fly_midair,goods_fly_lands,goods_fly_wall,goods_fly_rebound,goods_fly_off,fire_half,harmful_unpatched,container_thrown,heavy_knock,land_no_bump,land_no_bump_pit,gas_clumps,mass_and_power,mass_and_power_x2,mass_and_power_off,mass_and_power_off_x2,mass_and_power_250,mass_and_power_250_x2,pawn_hits_pawn,only_explosions,open_storage,no_cross_ordered,spared_states,blast_kinds,goods_fly_wild,gas_chain,gas_census,pawn_arc,pit_goods_fetch,hose_carry_drop,hose_carry_drop_off,closed_containers,closed_containers_control,settings_sweep,settings_sweep_after,frame_probe_selfcheck,frame_probe_selfcheck_paused,barrage_perf,barrage_perf_off,gas_into_pit,gas_into_pit_off,goods_obstacles,goods_obstacles_control,storeroom_bomb_pit,storeroom_bomb_pit_control,pit_colonist_control flowworks=True hoses=True
+goods_fly_wild   advanced 300/300 ticks in 2 s via jawa/safe_advance
+goods_fly_wild   PASS comp 43,12->41,12 (2 cells) want=6 back=3 rebounds=1 impactAtRebound=True [type=item_rebound tick=75007 exp=18900 thing=ComponentIndustrial18898 at=44,12 hit=Wall left=5 cells=3 to=41,12 bounce=1]
+goods_fly_wild   SETTINGS after verdict: all at the run's defaults
+all_fly_no_cap   advanced 300/300 ticks in 2 s via jawa/safe_advance
+all_fly_no_cap   PASS no_cap=True all_fly=True every_request_answered=True kernelSaysMove=80 requests=90 launches=10 itemMoves=80 maxMovesInOneTick=24 cappedSkips=0 pawns=10 items=80
+all_fly_no_cap   SETTINGS after verdict: all at the run's defaults
+open_storage     advanced 300/300 ticks in 2 s via jawa/safe_advance
+open_storage     PASS g0 73,12->79,12 (6 cells) | floor control 6 cells; g1 71,12->65,12 (6 cells) | floor control 6 cells; g2 72,13->72,19 (6 cells) | floor control 6 cells; g3 72,10->72,6 (4 cells) | floor control 4 cells;
+open_storage     SETTINGS after verdict: all at the run's defaults
+heavy_knock      advanced 300/300 ticks in 1 s via jawa/safe_advance
+heavy_knock      PASS hit=True pass=True heavyMass=15 heavyAt=91,12 ph=91,12 phHp=0.965 lightAt=80,12 [type=heavy_hit tick=75912 exp=19212 thing=Steel19202 pawn=Human19204 pawnId=19204 at=91,12 mass=15 damage=2.698648 stunTicks=30 pawnDead=False] passes=1
+heavy_knock      SETTINGS after verdict: all at the run's defaults
+blast_kinds      advanced 300/300 ticks in 1 s via jawa/safe_advance
+blast_kinds      PASS flame%=50 swapped%=100 cells 1/2 frag%=100 bombsuper%=100 harmless quiet=True
+blast_kinds      SETTINGS after verdict: all at the run's defaults
+only_explosions  advanced 300/300 ticks in 2 s via jawa/safe_advance
+only_explosions  PASS melee+bullet requests=0 moved=0; grenade p 119,12->120,12 (1 cells)
+only_explosions  SETTINGS after verdict: all at the run's defaults
+lookup_projectile advanced 300/300 ticks in 2 s via jawa/safe_advance
+lookup_projectile PASS p 133,12->140,12 (7 cells) want~7 [type=request tick=76801 exp=19314 thing=Human19309 from=133,12 centre=132,12 radius=2.9 force=2.5 damType=Bomb source=projectile shieldAbsorbed=False typeForce=2.5 damage=50 damageRatio=1]
+lookup_projectile SETTINGS after verdict: all at the run's defaults
+gas_chain        advanced 300/300 ticks in 1 s via jawa/safe_advance
+gas_chain        PASS chain=True goods=True shove=True cover=True noHeavyHit=True maxGoodsTravel=2 maxGoodsDisplacement=2 bursts=23 burstTicks=4 goodsMoves=4 maxGoodsPlanned=2 pawnShoves=1 cooldownOk=True gasReg=True coverHp=158/160
+gas_chain        SETTINGS after verdict: all at the run's defaults
+gas_census       advanced 300/300 ticks in 1 s via jawa/safe_advance
+gas_census       PASS chain=True goods=True shove=True cover=True noHeavyHit=True maxGoodsTravel=2 maxGoodsDisplacement=2 bursts=22 burstTicks=4 goodsMoves=4 maxGoodsPlanned=2 pawnShoves=1 cooldownOk=True gasReg=True coverHp=158/160
+gas_census       SETTINGS after verdict: all at the run's defaults
+cover_breaks     advanced 300/300 ticks in 1 s via jawa/safe_advance
+cover_breaks     PASS coversLeft=0 pawnInPit=True descents=1 at 179,12
+cover_breaks     SETTINGS after verdict: all at the run's defaults
+VERDICT PASS  (10 scenes) -> \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_GAME_VISIT_TWO_RUN_TWO.det\Transient\explosive_knockback\run_20261125T213418.jsonl
+
+--- stderr ---
+[bridge split] 78.5 s wall: load 0.0 / ticks 13.8 / reads 0.0 / other 32.7 / outside calls 31.9 s
+[bridge split] WARN 741 calls of jawa/mod_settings_field (31.5 s): batch them

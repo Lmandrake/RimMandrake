@@ -1,0 +1,55 @@
+  daylight: 6.0 h -> 12.0 h (jumped 14999 ticks; time-dated filth and ash aged by that)
+STATION 01 calibration          PASS
+STATION 02 over_sandbags        PASS
+STATION 03 wall_stop            PASS
+STATION 04 door_stop            PASS
+STATION 05 pawn_hits_pawn       PASS
+STATION 06 goods_fly_wild       PASS
+STATION 07 open_storage         PASS
+STATION 08 closed_containers    PASS
+STATION 09 heavy_knock          PASS
+STATION 10 gas_chain            PASS
+STATION 11 cover_breaks         PASS
+STATION 12 pit_colonist         PASS
+STATION 13 killed_by_blast      PASS
+STATION 14 storeroom_bomb_pit   PASS
+STATION 15 shield_counter       PASS
+STATION 16 goods_obstacles      PASS
+START  01 calibration          STAGED calibration at 12,42 tick=15300 explosions removed 1 left 0
+START  02 over_sandbags        STAGED over_sandbags at 27,42 tick=15300 explosions removed 1 left 0
+START  03 wall_stop            STAGED wall_stop at 42,42 tick=15300 explosions removed 1 left 0
+START  04 door_stop            STAGED door_stop at 57,42 tick=15300 explosions removed 1 left 0
+START  05 pawn_hits_pawn       STAGED pawn_hits_pawn at 72,42 tick=15300 explosions removed 3 left 0
+START  06 goods_fly_wild       STAGED goods_fly_wild at 87,42 tick=15300 explosions removed 1 left 0
+START  07 open_storage         STAGED open_storage at 102,42 tick=15300 explosions removed 2 left 0
+START  08 closed_containers    STAGED closed_containers at 117,42 tick=15300 explosions removed 1 left 0
+START  09 heavy_knock          STAGED heavy_knock at 132,42 tick=15300 explosions removed 1 left 0
+START  10 gas_chain by hand: seeded=13 total=3250
+START  11 cover_breaks         STAGED cover_breaks at 162,42 tick=15300 explosions removed 1 left 0
+START  12 pit_colonist         STAGED pit_colonist at 177,42 tick=15300 explosions removed 1 left 0
+START  13 killed_by_blast      STAGED killed_by_blast at 192,42 tick=15300 explosions removed 1 left 0
+START  14 storeroom_bomb_pit   STAGED storeroom_bomb_pit at 207,42 tick=15300 explosions removed 1 left 0
+START  15 shield_counter       STAGED shield_counter at 222,42 tick=15300 explosions removed 1 left 0
+START  16 goods_obstacles      STAGED goods_obstacles at 237,42 tick=15300 explosions removed 3 left 0
+START  01 scars removed 1 left 0
+START  02 scars removed 1 left 0
+START  03 scars removed 1 left 0
+START  04 scars removed 1 left 0
+START  05 scars removed 3 left 0
+START  06 scars removed 1 left 0
+START  07 scars removed 2 left 0
+START  08 scars removed 1 left 0
+START  09 scars removed 1 left 0
+START  10 scars removed 0 left 0
+START  11 scars removed 1 left 0
+START  12 scars removed 1 left 0
+START  13 scars removed 1 left 0
+START  14 scars removed 1 left 0
+START  15 scars removed 1 left 0
+START  16 scars removed 3 left 0
+signs placed: 32
+{"save": {"ok": true, "new": ["EK_V020_VISIT2_WALK_20261125.rws"], "changed": [], "gone": [], "name": "EK_V020_VISIT2_WALK_20261125", "tool": true, "signs": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\JawaBenchReviewSigns\\EK_V020_VISIT2_WALK_20261125.txt"}, "stations": [[1, "calibration", "PASS"], [2, "over_sandbags", "PASS"], [3, "wall_stop", "PASS"], [4, "door_stop", "PASS"], [5, "pawn_hits_pawn", "PASS"], [6, "goods_fly_wild", "PASS"], [7, "open_storage", "PASS"], [8, "closed_containers", "PASS"], [9, "heavy_knock", "PASS"], [10, "gas_chain", "PASS"], [11, "cover_breaks", "PASS"], [12, "pit_colonist", "PASS"], [13, "killed_by_blast", "PASS"], [14, "storeroom_bomb_pit", "PASS"], [15, "shield_counter", "PASS"], [16, "goods_obstacles", "PASS"]]}
+[bridge split] 35.8 s wall: load 0.5 / ticks 0.9 / reads 2.6 / other 9.6 / outside calls 22.3 s
+[bridge split] WARN 114 calls of jawa/mod_settings_field (4.9 s): batch them
+[bridge split] WARN 62 calls of jawa/list_things (2.4 s): batch them
+[bridge split] WARN 52 calls of jawa/static_call (2.6 s): batch them

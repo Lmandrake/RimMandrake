@@ -1,0 +1,40 @@
+shared process: python.exe src\RimMandrake\ExplosiveKnockback\knockback_runner.py --scenes impact_factor,lookup_zero_wins,goods_fly_midair,goods_fly_lands,goods_fly_wall,goods_fly_rebound,goods_fly_off,container_thrown,land_no_bump,land_no_bump_pit
+scenes of this check: lookup_zero_wins
+lookup_zero_wins FAIL p 28,12->35,12 (7 cells) requests=1
+--- whole process output ---
+scenes available: calibration,wall_stop,door_stop,over_sandbags,pit_colonist,pit_enemy,no_cross,cover_breaks,items,corpse_into_pit,killed_by_blast,shelf,in_pit_skip,heavy_skip,all_fly_no_cap,settings_off,emp_no_throw,lookup_projectile,lookup_zero_wins,impact_factor,body_override,immunity_window,shield_counter,goods_fly_midair,goods_fly_lands,goods_fly_wall,goods_fly_rebound,goods_fly_off,fire_half,harmful_unpatched,container_thrown,heavy_knock,land_no_bump,land_no_bump_pit,gas_clumps,mass_and_power,mass_and_power_x2,mass_and_power_off,mass_and_power_off_x2,mass_and_power_250,mass_and_power_250_x2,pawn_hits_pawn,only_explosions,open_storage,no_cross_ordered,spared_states,blast_kinds,goods_fly_wild,gas_chain,gas_census,pawn_arc,pit_goods_fetch,hose_carry_drop,hose_carry_drop_off,closed_containers,closed_containers_control,settings_sweep,settings_sweep_after,frame_probe_selfcheck,frame_probe_selfcheck_paused,barrage_perf,barrage_perf_off,gas_into_pit,gas_into_pit_off,goods_obstacles,goods_obstacles_control,storeroom_bomb_pit,storeroom_bomb_pit_control,pit_colonist_control flowworks=True hoses=True
+impact_factor    advanced 300/300 ticks in 2 s via jawa/safe_advance
+impact_factor    FAIL p 13,12->14,12 (1 cells) [type=launch tick=75001 exp=60003 thing=Human59998 from=13,12 to=14,12 planned=7 cells=1 stop=Wall impact=23.16452 otherImpact=0 door=False mass=60.74998 hoseDropped=False carried=none onCover=False gas=False hitOther=False faction=PlayerColony]
+impact_factor    SETTINGS after verdict: all at the run's defaults
+lookup_zero_wins advanced 300/300 ticks in 1 s via jawa/safe_advance
+lookup_zero_wins FAIL p 28,12->35,12 (7 cells) requests=1
+lookup_zero_wins SETTINGS after verdict: all at the run's defaults
+goods_fly_midair advanced 300/300 ticks in 1 s via jawa/safe_advance
+goods_fly_midair PASS in carrier at +2 ticks, count=75 dest=49,12 ticksLeft=59
+goods_fly_midair SETTINGS after verdict: {"goodsFlightSpeed": ["14", "6"]}
+goods_fly_lands  advanced 300/300 ticks in 1 s via jawa/safe_advance
+goods_fly_lands  PASS steel 58,12->64,12 (6 cells) want=6 count=75 flying=True item_land=1 carrierLeft=False [type=item_land tick=75961 exp=60044 thing=Steel60043 from=58,12 to=64,12 dest=64,12 bounces=0 stop=Distance count=75 spawnFallback=False residentsMoved=0 ticks=60 place=Direct]
+goods_fly_lands  SETTINGS after verdict: {"goodsFlightSpeed": ["14", "6"]}
+goods_fly_wall   advanced 300/300 ticks in 1 s via jawa/safe_advance
+goods_fly_wall   PASS comp 73,12->74,12 (1 cells) want=6 flying=True [type=goods_impact tick=76211 exp=60053 thing=ComponentIndustrial60051 stop=Wall left=5 damage=50 destroyed=False at=landed]
+goods_fly_wall   SETTINGS after verdict: {"goodsFlightSpeed": ["14", "6"], "goodsRebound": ["True", "False"]}
+goods_fly_rebound advanced 300/300 ticks in 1 s via jawa/safe_advance
+goods_fly_rebound PASS comp 88,12->86,12 (2 cells) want=6 back=3 rebounds=1 impactAtRebound=True [type=item_rebound tick=76511 exp=60059 thing=ComponentIndustrial60057 at=89,12 hit=Wall left=5 cells=3 to=86,12 bounce=1]
+goods_fly_rebound SETTINGS after verdict: {"goodsFlightSpeed": ["14", "6"]}
+goods_fly_off    advanced 300/300 ticks in 1 s via jawa/safe_advance
+goods_fly_off    PASS steel 103,12->103,12 (0 cells) wantIfOn=6 flyingOffSkip=True itemMoves=0 seenInCarrier=False
+goods_fly_off    SETTINGS after verdict: {"flyingGoods": ["True", "False"], "goodsFlightSpeed": ["14", "6"]}
+container_thrown advanced 300/300 ticks in 1 s via jawa/safe_advance
+container_thrown INVALID control: loose goods did not move or were not hurt: loosePistol 117,11->117,11 (0 cells) looseRevolverHp=70
+container_thrown SETTINGS after verdict: {"flyingGoods": ["True", "False"], "goodsFlightSpeed": ["14", "6"]}
+land_no_bump     advanced 300/300 ticks in 1 s via jawa/safe_advance
+land_no_bump     INVALID the revolver did not head for the resident's cell 139,12 no landing line
+land_no_bump     SETTINGS after verdict: {"flyingGoods": ["True", "False"], "goodsFlightSpeed": ["14", "6"]}
+land_no_bump_pit advanced 300/300 ticks in 1 s via jawa/safe_advance
+land_no_bump_pit INVALID the revolver did not head for the resident's cell 150,12 no landing line
+land_no_bump_pit SETTINGS after verdict: {"flyingGoods": ["True", "False"], "goodsFlightSpeed": ["14", "6"]}
+VERDICT FAIL  (10 scenes) -> \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_GAME_VISIT_TWO_RUN_TWO.det\Transient\explosive_knockback\run_20261125T222744.jsonl
+
+--- stderr ---
+[bridge split] 60.5 s wall: load 0.0 / ticks 6.7 / reads 0.0 / other 29.8 / outside calls 24.0 s
+[bridge split] WARN 741 calls of jawa/mod_settings_field (28.8 s): batch them
