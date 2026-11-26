@@ -426,7 +426,7 @@ namespace RimMandrake.ExplosiveKnockback
         public static void Postfix(Type defType, ref string __result)
         {
             if (__result == null || defType != typeof(ThingDef) || !__result.StartsWith(RM_KnockbackShow.ScarPrefix, StringComparison.Ordinal)
-                || __result.Length == 0 || !char.IsDigit(__result[__result.Length - 1]))
+                || !char.IsDigit(__result[__result.Length - 1]))
             {
                 return;
             }
