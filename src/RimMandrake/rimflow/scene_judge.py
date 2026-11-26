@@ -390,9 +390,31 @@ def no_reading(error, receipt=None):
     return Verdict(NO_LOOK, 3, error.failure or observation(str(error)), {"missing": error.missing}, False, receipt.as_dict())
 
 
-def classify(plan, rows, receipts, *, accepted=True):
-    """Pure classification of the script's checker, one kept call and its receipt facts."""
+CHECK_WORDS = ("PASS", "FAIL", "INVALID", "UNMEASURED")
+
+
+def checks_check(checks):
+    """A scene's own check rows, computed after its session: [{"id", "verdict" PASS|FAIL|INVALID|UNMEASURED, "text"}]."""
+    if not isinstance(checks, list) or not checks:
+        raise Refused("BAD_CHECKS", "checks must be a nonempty list of rows")
+    for r in checks:
+        if not isinstance(r, dict) or not isinstance(r.get("id"), str) or not r["id"] or r.get("verdict") not in CHECK_WORDS \
+                or not isinstance(r.get("text", ""), str) or r.keys() - {"id", "verdict", "text"}:
+            raise Refused("BAD_CHECKS", "a check row needs id, verdict (%s) and text: %r" % (" | ".join(CHECK_WORDS), r))
+
+
+def failed_check(checks, word):
+    r = next((r for r in checks or () if r["verdict"] == word), None)
+    return None if r is None else observation("check " + r["id"], None, r.get("text", ""))
+
+
+def classify(plan, rows, receipts, *, accepted=True, checks=None):
+    """Pure classification of the script's checker, one kept call and its receipt facts. checks: the scene's own check rows;
+    a FAIL row reads as a failed success, an INVALID row (the opportunity was not staged) as an apparatus fault, an UNMEASURED
+    row (the row could not be read) as COULD NOT LOOK; FAIL comes first."""
     plan_check(plan)
+    if checks is not None:
+        checks_check(checks)
     run_receipt = next((r for r in receipts if isinstance(r.get("entry"), dict) and r["entry"].get("name") == "s.run"), {})
     game, build, commit = (run_receipt.get(k) for k in ("game", "build", "commit"))
     receipt = Receipt("scene.judge", run_receipt.get("entry", {}).get("request"), game, build, commit)
@@ -417,12 +439,19 @@ def classify(plan, rows, receipts, *, accepted=True):
         fault = apparatus(trace)
         first, hits, misses, final = readings(plan, trace)
         evidence = {"trace": "held", "build": "held", "exposure": "exposure" in hits}
+        if checks is not None:
+            evidence["checks"] = "%d of %d rows PASS" % (sum(r["verdict"] == "PASS" for r in checks), len(checks))
         if "forbidden" in hits:
             return verdict(MOD_FAILURE, 1, hits["forbidden"], **evidence)
         if first.get("success") is True:
             fault = observation("success already true at first sample", trace.start, hits["success"]["observed"])
+        failed = failed_check(checks, "FAIL")
+        fault = fault or (None if failed else failed_check(checks, "INVALID"))
         if fault:
             return verdict(APPARATUS, 2, fault, **evidence)
+        unmeasured = None if failed else failed_check(checks, "UNMEASURED")
+        if unmeasured:
+            raise NoReading("an unmeasured check row", unmeasured)
         state = trace.end.get("state")
         if state not in ("hit", "done") or trace.end.get("complete") is not True:
             raise NoReading("run ended %s" % state, observation("run end", trace.stop, trace.end.get("unknown") or trace.end.get("why")))
@@ -435,8 +464,9 @@ def classify(plan, rows, receipts, *, accepted=True):
         if "exposure" not in hits:
             return verdict(UNRESOLVED, 9, final.get("exposure", observation("exposure was not declared")), **evidence)
         success = final["success"]
-        if success["observed"][0]["v"] is True:
+        if success["observed"][0]["v"] is True and not failed:
             return verdict(SUCCESS, 6, **evidence)
+        success = failed if success["observed"][0]["v"] is True else success
         if plan.get("kind", "A") == "A":
             return verdict(MOD_FAILURE, 8, success, **evidence)
         if plan.get("allowed_miss"):
@@ -497,17 +527,40 @@ def ledger_append(run, run_receipt, record, result, rejudge, root=None):
     return None
 
 
-def judge(run_dir, rejudge=False, ledger_root=None):
-    """Classify the call selected by contract.json and keep the verdict in this run folder."""
+def keep_checks(folder, checks):
+    """Keep a scene's check rows beside its trace as checks.json, once: they are evidence, like the trace."""
+    path = Path(folder) / "checks.json"
+    if checks is None:
+        return
+    checks_check(checks)
+    text = json.dumps(checks, indent=1, sort_keys=True) + "\n"
+    if path.exists():
+        if path.read_text(encoding="utf-8") != text:
+            raise Refused("EVIDENCE_CHANGED", "the check rows differ from the kept checks.json")
+        return
+    if (Path(folder) / "verdict.json").exists():
+        raise Refused("EVIDENCE_CHANGED", "the run was judged without check rows; its first verdict stands")
+    with tempfile.TemporaryDirectory(dir=folder) as d:
+        temp = Path(d) / path.name
+        temp.write_text(text, encoding="utf-8")
+        try:
+            os.link(temp, path)
+        except FileExistsError:
+            keep_checks(folder, checks)
+
+
+def judge(run_dir, rejudge=False, ledger_root=None, checks=None):
+    """Classify the call selected by contract.json and keep the verdict in this run folder. checks: the scene's own check
+    rows (checks_check), kept as checks.json; a later judgement reads the kept file."""
     try:
-        return _judge(run_dir, rejudge, ledger_root)
+        return _judge(run_dir, rejudge, ledger_root, checks)
     except NoReading as e:
         return no_reading(e)
     except (OSError, ValueError) as e:
         return no_reading(NoReading(str(e)))
 
 
-def _judge(run_dir, rejudge, ledger_root=None):
+def _judge(run_dir, rejudge, ledger_root=None, checks=None):
     folder = Path(run_dir)
     contract = folder / "contract.json"
     if not contract.is_file():
@@ -531,13 +584,15 @@ def _judge(run_dir, rejudge, ledger_root=None):
     previous = _load(first_path) if first_path.exists() else None
     if rejudge and previous is None:
         raise Refused("NO_VERDICT", "judge the kept run before rejudging it")
-    receipt_path, run_path = folder / "receipts.jsonl", folder / "run.json"
+    keep_checks(folder, checks)                 # after every refusal that would leave it written on a refused call
+    receipt_path, run_path, checks_path = folder / "receipts.jsonl", folder / "run.json", folder / "checks.json"
     try:
         kept = hashlib.sha256()
-        for f in (path, receipt_path, run_path):
+        for f in (path, receipt_path, run_path) + ((checks_path,) if checks_path.exists() else ()):   # a run with no rows keeps its old hash
             kept.update(hashlib.sha256(f.read_bytes()).digest())
         evidence_hash = kept.hexdigest()
         rows, receipts, run = _load(path, lines=True), _load(receipt_path, lines=True), _load(run_path)
+        checks = _load(checks_path) if checks_path.exists() else None
     except (OSError, ValueError) as e:
         raise NoReading("could not read the kept trace, run metadata or receipts: " + str(e)) from e
     if previous is not None and (previous["request"], previous["evidence_hash"]) != (request, evidence_hash):
@@ -557,7 +612,11 @@ def _judge(run_dir, rejudge, ledger_root=None):
     ):
         raise NoReading("no receipt matches request " + request + " and the kept session")
     accepted = run.get("mode") == "accept" and run.get("commit") == matching[0].get("commit")
-    result = classify(plan, rows, matching + [r for r in receipts if r not in matching], accepted=accepted)
+    try:
+        checks_check(checks) if checks is not None else None
+    except Refused as e:
+        raise NoReading("the kept checks.json: %s" % e) from e
+    result = classify(plan, rows, matching + [r for r in receipts if r not in matching], accepted=accepted, checks=checks)
     if rejudge and result.evidence.get("missing"):
         return result
     old_plan = previous["checker_plan"] if previous else plan
@@ -576,7 +635,7 @@ def _judge(run_dir, rejudge, ledger_root=None):
             try:
                 os.link(temp, first_path)
             except FileExistsError:
-                return _judge(run_dir, rejudge, ledger_root)
+                return _judge(run_dir, rejudge, ledger_root)     # checks.json is kept already
     ledger_append(run, matching[0], record, result, rejudge, ledger_root)
     return result
 

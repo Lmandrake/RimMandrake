@@ -197,6 +197,7 @@ with scene.open(GAME, contract=land_sizes, needs={"mods": ["ExplosiveKnockback"]
     folder = s.run_dir
 
 fails = invalid = 0
+CHECKS = []
 
 
 def row(verdict, ident, text):
@@ -204,6 +205,7 @@ def row(verdict, ident, text):
     fails += verdict == "FAIL"
     invalid += verdict == "INVALID"
     print("%s %s: %s" % (verdict, ident, text))
+    CHECKS.append({"id": ident, "verdict": verdict, "text": text})   # the judge reads these rows (scene_contracts/judge.md)
 
 
 def rec_of(name, kind):
@@ -297,4 +299,4 @@ row("PASS" if len(el) == 1 and not eh else "FAIL", "V_EMPTY", "%d launch record(
     len(el), [x.get("to") for x in el], len(eh)))
 print("%s sc_pawn_land_on_pawn_sizes: %d failing, %d invalid row(s); pictures in %s" % (
     "PASS" if fails == 0 and invalid == 0 else ("FAIL" if fails else "INVALID"), fails, invalid, folder))
-print(scene.judge(folder))
+print(scene.judge(folder, checks=CHECKS))

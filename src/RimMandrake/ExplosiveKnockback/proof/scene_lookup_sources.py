@@ -176,6 +176,7 @@ with scene.open(GAME, contract=lookup, needs={"mods": ["ExplosiveKnockback"], "m
     folder = s.run_dir
 
 fails = invalid = 0
+CHECKS = []
 
 
 def row(verdict, ident, text):
@@ -183,6 +184,7 @@ def row(verdict, ident, text):
     fails += verdict == "FAIL"
     invalid += verdict == "INVALID"
     print("%s %s: %s" % (verdict, ident, text))
+    CHECKS.append({"id": ident, "verdict": verdict, "text": text})   # the judge reads these rows (scene_contracts/judge.md)
 
 
 def num(v):
@@ -218,4 +220,4 @@ row("PASS" if all(cells[i] > cells[i + 1] for i in range(len(cells) - 1)) else "
     "planned cells %s for %s (want strictly falling); ends %s" % (cells, ORDER, [rows[n]["end"] for n in ORDER]))
 print("%s sc_lookup_sources: %d failing, %d invalid row(s); extensions %s; pictures in %s" % (
     "PASS" if fails == 0 and invalid == 0 else ("FAIL" if fails else "INVALID"), fails, invalid, json.dumps(setup), folder))
-print(scene.judge(folder))
+print(scene.judge(folder, checks=CHECKS))

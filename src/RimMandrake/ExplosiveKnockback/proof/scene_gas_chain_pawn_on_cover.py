@@ -272,12 +272,14 @@ with scene.open(GAME, contract=on_cover, needs={"mods": ["ExplosiveKnockback", "
     folder = s.run_dir
 
 fails = 0
+CHECKS = []
 
 
 def row(ok, ident, text):
     global fails
     fails += not ok
     print("%s %s: %s" % ("PASS" if ok else "FAIL", ident, text))
+    CHECKS.append({"id": ident, "verdict": "PASS" if ok else "FAIL", "text": text})   # the judge reads these rows (scene_contracts/judge.md)
 
 
 def as_bool(v):
@@ -334,4 +336,4 @@ for name in ORDER:
     row(added is not None and all(d in ("Burn", "ToxGasExposure", "ToxicBuildup") for d in added), "V_UNHURT " + name,
         "hediffs added: %s (Burn is the fire's, ToxGasExposure and ToxicBuildup the cloud's)" % added)
 print("%s sc_gas_chain_pawn_on_cover: %d failing row(s); pictures in %s" % ("PASS" if fails == 0 else "FAIL", fails, folder))
-print(scene.judge(folder))
+print(scene.judge(folder, checks=CHECKS))

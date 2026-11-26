@@ -209,12 +209,14 @@ with scene.open(GAME, contract=bruise_sizes, needs={"mods": ["ExplosiveKnockback
     folder = s.run_dir
 
 fails = 0
+CHECKS = []
 
 
 def row(ok, ident, text):
     global fails
     fails += not ok
     print("%s %s: %s" % ("PASS" if ok else "FAIL", ident, text))
+    CHECKS.append({"id": ident, "verdict": "PASS" if ok else "FAIL", "text": text})   # the judge reads these rows (scene_contracts/judge.md)
 
 
 def bruise_of(name):
@@ -285,4 +287,4 @@ el = [x for x in er["recs"] if x.get("type") == "launch" and x.get("thing") == t
 row(not eb and len(el) == 1 and str(el[0].get("hitOther")).lower() == "false", "V_EMPTY",
     "%d bruise record(s), launch %s" % (len(eb), [{k: x.get(k) for k in ("stop", "hitOther", "cells")} for x in el]))
 print("%s sc_pawn_arc_bruise_sizes: %d failing row(s); pictures in %s" % ("PASS" if fails == 0 else "FAIL", fails, folder))
-print(scene.judge(folder))
+print(scene.judge(folder, checks=CHECKS))

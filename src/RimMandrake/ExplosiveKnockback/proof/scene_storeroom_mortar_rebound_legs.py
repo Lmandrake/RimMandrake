@@ -227,12 +227,14 @@ with scene.open(GAME, contract=legs_bar, needs={"mods": ["ExplosiveKnockback"], 
     folder = s.run_dir
 
 fails = 0
+CHECKS = []
 
 
 def row(ok, ident, text):
     global fails
     fails += not ok
     print("%s %s: %s" % ("PASS" if ok else "FAIL", ident, text))
+    CHECKS.append({"id": ident, "verdict": "PASS" if ok else "FAIL", "text": text})   # the judge reads these rows (scene_contracts/judge.md)
 
 
 def cell(v):
@@ -347,6 +349,7 @@ for room in ORDER:
     if unread:
         fails += 1
         print("UNMEASURED V_SHORTER %s: %d rebound leg(s) with no readable `left`; %d read" % (room, unread, pairs))
+        CHECKS.append({"id": "V_SHORTER " + room, "verdict": "UNMEASURED", "text": "%d rebound leg(s) with no readable `left`; %d read" % (unread, pairs)})
     elif pairs:
         row(worst < LIMIT_RATIO, "V_SHORTER " + room, "worst ratio %.3f (%s), limit < %.1f, %d rebound leg(s) of %d leg(s) read" % (
             worst, worst_of, LIMIT_RATIO, pairs, nlegs))
@@ -365,10 +368,11 @@ for room in ORDER:
 if all_unread:
     fails += 1
     print("UNMEASURED V_SHORTER all: %d rebound leg(s) with no readable `left`" % all_unread)
+    CHECKS.append({"id": "V_SHORTER all", "verdict": "UNMEASURED", "text": "%d rebound leg(s) with no readable `left`" % all_unread})
 elif all_pairs:
     row(all_worst < LIMIT_RATIO, "V_SHORTER all", "worst ratio %.3f, limit < %.1f, %d rebound leg(s) read over %d room(s)" % (
         all_worst, LIMIT_RATIO, all_pairs, len(ORDER)))
 else:
     row(False, "V_SHORTER all", "no rebound leg read in any room: UNLAID (the scene made no rebound to compare)")
 print("%s sc_storeroom_mortar_rebound_legs: %d failing row(s); pictures in %s" % ("PASS" if fails == 0 else "FAIL", fails, folder))
-print(scene.judge(folder))
+print(scene.judge(folder, checks=CHECKS))

@@ -1226,9 +1226,10 @@ def _judge_module():
     return scene_judge
 
 
-def judge(run_dir, rejudge=False):
-    """Read a kept run from disk and return its verdict."""
-    return _judge_module().judge(run_dir, rejudge)
+def judge(run_dir, rejudge=False, checks=None):
+    """Read a kept run from disk and return its verdict. checks: the scene's own check rows, computed after its session
+    ([{"id", "verdict": PASS|FAIL|INVALID, "text"}]); a FAIL row makes the run no SUCCESS (scene_contracts/judge.md)."""
+    return _judge_module().judge(run_dir, rejudge, checks=checks)
 
 
 def plant():

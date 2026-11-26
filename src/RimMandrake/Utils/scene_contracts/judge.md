@@ -6,6 +6,7 @@
 |---|---|
 | `run_dir` | folder containing `run.json`, `receipts.jsonl`, `trace_<request>.jsonl` and `contract.json` |
 | `rejudge` | apply the current checker again to the original evidence. Default `False` |
+| `checks` | the scene's own check rows, computed after its session: a list of `{"id", "verdict", "text"}`, where the verdict is `PASS`, `FAIL`, `INVALID` or `UNMEASURED`. Default `None` |
 
 The script can save a checker in `contract.json` using `c.to_tree(condition)` for each condition. For example, a
 recording of a pawn's health before and after an act can use this checker.
@@ -25,6 +26,13 @@ for the other keys. A named track can be read with a probe `{"p":"track","name":
 counts matching events so far. `c.seq("damage", "death")` tests for those entries in order. `c.before("damage", "death")`
 and `c.after("death", "damage")` compare first entries. A tap must have been armed to show a measured zero. The landed
 writer records tracks and acts. Tap and alias-link records are exercised by offline fixtures.
+
+A scene that decides its bar by rows that it computes after its session passes those rows as `checks`. Otherwise the judge
+reads only the contract. The judge keeps the rows as `checks.json` beside the trace, and a later judgement reads that file.
+A `FAIL` row makes the run no SUCCESS, also when the contract's success holds: in kind A it is MOD FAILURE. With no `FAIL`
+row, an `INVALID` row (the opportunity was not staged) is an APPARATUS FAULT and an `UNMEASURED` row gives COULD NOT LOOK.
+`selftest_scene_library.py` refuses a committed scene that prints rows (a `def row`, or a "failing row" summary) and
+calls `scene.judge` without `checks=`.
 
 ## Returns
 
@@ -46,7 +54,8 @@ checker version and hash, and whether the checker changed. The first verdict sta
 | `BAD_PLAN` or `BAD_CONDITION` | a checker key or condition is invalid |
 | `CONTRACT_MISMATCH` | the checker changed and rejudge was left off |
 | `NO_VERDICT` | a rejudgement has no original verdict |
-| `EVIDENCE_CHANGED` | the selected call or its kept evidence changed |
+| `EVIDENCE_CHANGED` | the selected call or its kept evidence changed, the rows differ from the kept `checks.json`, or rows come for a run already judged without them |
+| `BAD_CHECKS` | a check row has no id, or its verdict is not one of the four words |
 
 Incomplete evidence gives COULD NOT LOOK. A rejudgement that needs an unrecorded track or tap names it and leaves
 history alone.

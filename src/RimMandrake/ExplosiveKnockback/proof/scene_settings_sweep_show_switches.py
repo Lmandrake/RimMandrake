@@ -315,12 +315,14 @@ with scene.open(GAME, contract=show, needs={"mods": ["ExplosiveKnockback"], "map
 
 
 fails = 0
+CHECKS = []
 
 
 def row(ok, ident, text):
     global fails
     fails += not ok
     print("%s %s: %s" % ("PASS" if ok else "FAIL", ident, text))
+    CHECKS.append({"id": ident, "verdict": "PASS" if ok else "FAIL", "text": text})   # the judge reads these rows (scene_contracts/judge.md)
 
 
 for pad in ORDER:
@@ -365,4 +367,4 @@ if "launch" in on and "launch" in off:
         "(2 throws read, limit 0 cells apart)" % (offs(lo, "to"), lo.get("cells"), land_on, offs(lf, "to"), lf.get("cells"), land_off))
 print("%s sc_settings_sweep_show: %d failing row(s) over %d blasts and 2 throws; the pictures in %s go to the art judge"
       % ("PASS" if fails == 0 else "FAIL", fails, len(ORDER), folder))
-print(scene.judge(folder))
+print(scene.judge(folder, checks=CHECKS))

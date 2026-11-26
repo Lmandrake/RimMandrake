@@ -356,6 +356,48 @@ def t_first_outcome_kept():
         assert (folder / "verdict.json").read_bytes() == original, "rejudgement overwrote the first outcome"
 
 
+def t_check_rows_decide():
+    """A scene whose checks are rows it computes after its session: a FAIL row is no SUCCESS, also when its contract's success
+    holds (the ExplosiveKnockback scenes' success is only 'the run played'); an INVALID row is an apparatus fault."""
+    rows = lambda *v: [{"id": "V_%d" % i, "verdict": w, "text": "read %d" % i} for i, w in enumerate(v)]
+    data = fixture()
+    expect(classify(data), "SUCCESS", 6)
+    expect(module().classify(*data, checks=rows("PASS", "PASS")), "SUCCESS", 6)
+    expect(module().classify(*data, checks=rows("PASS", "FAIL", "INVALID")), "MOD FAILURE", 8, "check V_1")
+    expect(module().classify(*data, checks=rows("PASS", "INVALID")), "APPARATUS FAULT", 2, "check V_1")
+    expect(module().classify(*data, checks=rows("UNMEASURED", "PASS")), "COULD NOT LOOK", 3, "check V_0")
+    expect(module().classify(*data, checks=rows("UNMEASURED", "FAIL")), "MOD FAILURE", 8, "check V_1")
+    plan, trace, receipts = fixture()
+    plan.update(kind="B", allowed_miss=True)
+    expect(module().classify(plan, trace, receipts, checks=rows("FAIL")), "RANDOM MISS", 7, "check V_0")
+    for bad in ([], [{"id": "V", "verdict": "ok"}], [{"id": "", "verdict": "PASS"}], [{"id": "V", "verdict": "PASS", "x": 1}]):
+        try:
+            module().classify(*fixture(), checks=bad)
+        except module().Refused as e:
+            assert e.name == "BAD_CHECKS", str(e)
+        else:
+            raise AssertionError("bad check rows were taken: %r" % bad)
+    with tempfile.TemporaryDirectory() as d:     # kept beside the trace; a later judgement reads the kept rows
+        folder = Path(d)
+        keep(folder, fixture())
+        expect(module().judge(folder, checks=rows("PASS", "FAIL")), "MOD FAILURE", 8, "check V_1")
+        assert (folder / "checks.json").is_file(), "the rows were not kept"
+        p = cli(folder, library=True)
+        assert p.returncode == 1 and "MOD FAILURE" in p.stdout, p.stdout + p.stderr
+        expect_refused(module().judge, "EVIDENCE_CHANGED", "check rows differ", folder, False, None, rows("PASS", "PASS"))
+    with tempfile.TemporaryDirectory() as d:     # a run judged without rows keeps its first verdict; nothing is written
+        folder = Path(d)
+        keep(folder, fixture())
+        expect(module().judge(folder), "SUCCESS", 6)
+        expect_refused(module().judge, "EVIDENCE_CHANGED", "without check rows", folder, False, None, rows("FAIL"))
+        assert not (folder / "checks.json").exists(), "a refused judgement wrote checks.json"
+    with tempfile.TemporaryDirectory() as d:     # a refused rejudge of an unjudged run writes nothing
+        folder = Path(d)
+        keep(folder, fixture())
+        expect_refused(module().judge, "NO_VERDICT", "before rejudging", folder, True, None, rows("FAIL"))
+        assert not (folder / "checks.json").exists(), "a refused rejudge wrote checks.json"
+
+
 def t_alias_needs_link():
     plan, rows, receipts = fixture()
     first, last = [r for r in rows if r.get("name") == "hediffs" and r["phase"] in ("first", "last")]
@@ -529,7 +571,7 @@ def main():
         t_success_at_first_sample, t_success_without_exposure, t_advisory_record, t_cast_went_to_hazard, t_giver_refusal,
         t_same_checker_adds_history, t_unrecorded_value_named, t_first_outcome_kept, t_alias_needs_link,
         t_forbidden_wins_over_an_unreadable_success, t_standard_cast_and_world_tracks_are_read,
-        t_in_tick_tap_rows_are_read_in_the_span, t_cast_link_is_proved_by_the_cast_taps)]
+        t_in_tick_tap_rows_are_read_in_the_span, t_cast_link_is_proved_by_the_cast_taps, t_check_rows_decide)]
     tests += [("exit code 0", t_exit_codes)] + [("exit code %s" % n, lambda n=n: exit_case(n)) for n in range(1, 7)]
     tests.append(("unknown key named", t_unknown_key_named))
     good = 0
@@ -542,7 +584,7 @@ def main():
             print("ok   " + name)
             good += 1
     print("scene judge: %d of %d checks passed" % (good, len(tests)))
-    return 0 if good == len(tests) == 35 else 1
+    return 0 if good == len(tests) == 36 else 1
 
 
 if __name__ == "__main__":

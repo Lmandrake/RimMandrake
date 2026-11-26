@@ -52,6 +52,10 @@ up to and including the spoiler's tick. A mod's advisory records provide no cond
 - **first-outcome-kept.** A new reading leaves the original verdict intact. Changed evidence is refused, and
   applying a changed checker requires rejudgement.
 - **alias-needs-link.** An object change without a named link joining the recorded objects gives COULD NOT LOOK.
+- **check-rows-decide.** A scene's own check rows, passed as `checks` and kept as `checks.json`, take part in the verdict.
+  A `FAIL` row makes the run no SUCCESS, also when the contract's success holds. With no `FAIL` row, an `INVALID` row is an
+  apparatus fault and an `UNMEASURED` row gives COULD NOT LOOK. Changed rows, or rows for a run already judged without them,
+  are refused, and nothing is written.
 - **exit-codes.** The CLI has a distinct exit code for every outcome. Unreadable kept inputs or a missing
   matching receipt give COULD NOT LOOK.
 - **unknown-key-named.** An unknown checker key is refused with its name. Invalid checker data or conditions,

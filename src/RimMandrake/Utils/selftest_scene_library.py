@@ -917,6 +917,44 @@ def test_tools_and_raw_census():
     must(looked == 2 and len(blind) == 1, "%s looked, %s blind" % (looked, blind))
 
 
+def row_scenes_without_checks(paths):
+    """-> the scene scripts that print their own check rows (a module-level `def row`, or a 'failing row' summary) and call
+    scene.judge without checks=: their verdict would read SUCCESS whatever their rows say."""
+    import ast
+    bad = []
+    for path in paths:
+        try:
+            with open(path, encoding="utf-8") as f:
+                text = f.read()
+            tree = ast.parse(text)
+        except (OSError, SyntaxError, UnicodeDecodeError, ValueError):
+            continue
+        calls = [n for n in ast.walk(tree) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == "judge"
+                 and isinstance(n.func.value, ast.Name) and n.func.value.id == "scene"]
+        prints_rows = "failing row" in text or any(isinstance(n, ast.FunctionDef) and n.name == "row" for n in tree.body)
+        if prints_rows and any(not any(k.arg == "checks" for k in n.keywords) for n in calls):
+            bad.append(path)
+    return bad
+
+
+def test_row_scenes_hand_their_rows_to_the_judge():
+    with tempfile.TemporaryDirectory() as d:          # the lint itself, both ways
+        for n, t in (("bare.py", "import scene\ndef row(ok, i, t):\n    print(i)\nprint(scene.judge(folder))\n"),
+                     ("kept.py", "import scene\nCHECKS = []\ndef row(ok, i, t):\n    CHECKS.append(i)\nprint(scene.judge(folder, checks=CHECKS))\n"),
+                     ("none.py", "import scene\nprint(scene.judge(folder))\n")):
+            with open(os.path.join(d, n), "w") as f:
+                f.write(t)
+        got = row_scenes_without_checks([os.path.join(d, n) for n in ("bare.py", "kept.py", "none.py")])
+        must([os.path.basename(x) for x in got] == ["bare.py"], "the lint read %s" % got)
+    # through rimflow's real path: scene_library_mutants runs this file in a copy whose src/RimMandrake/<dir> link to the clone
+    repo = os.path.abspath(os.path.join(os.path.realpath(os.path.join(HERE, "..", "rimflow")), "..", "..", ".."))
+    listed = subprocess.run(["git", "-C", repo, "ls-files", "-z", "--", "*.py"], capture_output=True, text=True, check=True).stdout
+    paths = [os.path.join(repo, x) for x in listed.split("\0") if x and "selftest" not in os.path.basename(x)]
+    must(len(paths) > 100, "git listed %d python files" % len(paths))
+    bad = row_scenes_without_checks(paths)
+    must(not bad, "%d scene(s) print check rows but judge without checks=: %s" % (len(bad), [os.path.relpath(x, repo) for x in bad]))
+
+
 def t_a_refusal_changes_nothing():
     """The eight refusals above each end in untouched(); here the order: no changing call was made before the refusal."""
     for needs, name in (({"mods": ["Absent"]}, "MOD_NOT_LOADED"), ({"map": "RM_none"}, "FIXTURE_MISSING")):
@@ -1019,7 +1057,7 @@ def main():
             test_attach_pauses_a_running_game, test_attach_then_run_is_refused, test_abort_writes_closing_record,
             test_names_not_built_say_so, test_tools_and_raw_census, test_lock_child_env_names_no_dropped_variable,
             test_load_answers_the_known_load_windows_only,
-            test_accept_keeps_its_identity_when_the_judge_appends_the_scene_ledger]
+            test_accept_keeps_its_identity_when_the_judge_appends_the_scene_ledger, test_row_scenes_hand_their_rows_to_the_judge]
     a = run(ticket)
     print("scene library: %d of %d checks passed" % (a, len(ticket)))
     b = run(more)

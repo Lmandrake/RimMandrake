@@ -213,12 +213,14 @@ with scene.open(GAME, contract=show, needs={"mods": ["ExplosiveKnockback"], "map
     folder = s.run_dir
 
 fails = 0
+CHECKS = []
 
 
 def row(ok, ident, text):
     global fails
     fails += not ok
     print("%s %s: %s" % ("PASS" if ok else "FAIL", ident, text))
+    CHECKS.append({"id": ident, "verdict": "PASS" if ok else "FAIL", "text": text})   # the judge reads these rows (scene_contracts/judge.md)
 
 
 for pad in ORDER:
@@ -237,4 +239,4 @@ row(paint == "RM_FE_Charred", "V_SOOT_THING", "the wall by he_tile wears %s, wan
 soot = rows["ied_soil"].get("sooted")
 row(soot is True, "V_SOOT_PAWN", "the muffalo by ied_soil carries RM_KnockbackSoot: %s" % soot)
 print("%s sc_blast_show: %d failing row(s); the pictures in %s go to the art judge" % ("PASS" if fails == 0 else "FAIL", fails, folder))
-print(scene.judge(folder))
+print(scene.judge(folder, checks=CHECKS))
