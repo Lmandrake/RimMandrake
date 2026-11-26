@@ -9,6 +9,7 @@ heartbeat (E:\\telemetry\\state\\heartbeat.json) is older than 3 minutes, kick t
 from __future__ import annotations
 
 import os
+import shutil
 import subprocess
 import sys
 import time
@@ -17,6 +18,13 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from tcommon import cfg, read_json  # noqa: E402
 
 STALE_S = 180
+# A systemd user unit runs with a bare PATH, so the bare name raised FileNotFoundError and the unit went failed
+# without kicking (5 failures 2026-11-23..26). Windows interop keeps the exe at a fixed path.
+SCHTASKS_FALLBACK = "/mnt/c/Windows/System32/schtasks.exe"
+
+
+def schtasks() -> str:
+    return shutil.which("schtasks.exe") or SCHTASKS_FALLBACK
 
 
 def main(argv=None) -> int:
@@ -35,7 +43,7 @@ def main(argv=None) -> int:
         return 0
     print(f"telemetryd heartbeat {'missing' if agev is None else f'{agev:.0f}s old'}: kicking RimMandrake\\Telemetry")
     if "--kick" in argv:
-        r = subprocess.run(["schtasks.exe", "/Run", "/TN", "RimMandrake\\Telemetry"], capture_output=True, text=True, timeout=60)
+        r = subprocess.run([schtasks(), "/Run", "/TN", "RimMandrake\\Telemetry"], capture_output=True, text=True, timeout=60)
         print("kicked" if r.returncode == 0 else f"kick FAILED: {r.stderr.strip()}")
         return 0 if r.returncode == 0 else 1
     return 1

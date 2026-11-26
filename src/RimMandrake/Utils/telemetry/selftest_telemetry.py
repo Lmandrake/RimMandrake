@@ -1187,6 +1187,30 @@ def main(argv) -> int:
 
         vm_outage(tmp, now)
 
+        # [kick] the watchdog's kick must find schtasks.exe without it being on PATH (systemd user units
+        # run with a bare PATH: the bare name raised FileNotFoundError, exit 1, the unit went failed
+        # and the stale telemetryd was never kicked; 5 failures 2026-11-23..26)
+        import health
+        st = c["state"]
+        os.makedirs(st, exist_ok=True)
+        with open(os.path.join(st, "heartbeat.json"), "w") as f:
+            json.dump({"at": time.time() - 600}, f)
+        calls = []
+
+        class _R:
+            returncode = 0
+            stderr = ""
+
+        def fake_run(argv, **kw):
+            calls.append(argv[0])
+            if os.path.basename(argv[0]) == argv[0]:  # bare name: not on a bare PATH
+                raise FileNotFoundError(2, "No such file or directory", argv[0])
+            return _R()
+        with patch.object(health, "cfg", lambda: c), patch.object(health.subprocess, "run", fake_run), \
+                patch("shutil.which", lambda n, *a, **k: None):
+            rc = health.main(["--kick"])
+        check("[kick] stale heartbeat + schtasks.exe off PATH still kicks (rc 0)", rc == 0 and calls, (rc, calls))
+
         # dashboards are generated, not hand-edited
         sys.path.insert(0, os.path.join(HERE, "grafana"))
         import build_dashboards
