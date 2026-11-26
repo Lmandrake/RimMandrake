@@ -44,6 +44,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 UTILS = os.path.join(os.path.dirname(HERE), "Utils")
 ROOT = os.environ.get("RM_ROLE_CLONE_ROOT", "/home/mandrake/rm/roles")     # = seat_dirt.ROLE_CLONE_ROOT
 LAND_SH = os.path.join(UTILS, "land.sh")
+SEAT_SYNC = os.path.join(UTILS, "seat_sync.py")
 SHARD_RE = re.compile(r"^infrastructure/state/ledger/events/[^/]+\.jsonl$")
 STRANDED = "STRANDED:"      # a launch refused by level starts with it; the dispatcher alarms role:<name>:not_running
 SYNC_FAILED_EXIT = 75       # EX_TEMPFAIL: the clone could not be levelled; nothing ran (a system failure, not a trial)
@@ -187,16 +188,18 @@ def fix_line(clone, rows):
     lands = ["%s sh %s %s %s" % (env, shlex.quote(LAND_SH), r["sha"][:12], " ".join(shlex.quote(t) for t in r["touched"]))
              for r in rows]
     return " && ".join(lands + ["python3 %s --repo %s%s" % (
-        shlex.quote(os.path.join(UTILS, "seat_sync.py")), shlex.quote(clone),
+        shlex.quote(SEAT_SYNC), shlex.quote(clone),
         "".join(" --superseded %s" % r["sha"][:12] for r in rows))])
 
 
 def level(clone, land_sh=None):
     """Land what a role clone holds that is not on origin/main, when that is safe. -> {"state", "landed", "left", "fix",
-    "why"}; never raises. state: "level" (nothing ahead of the clone's own origin/main ref: no fetch made) · "landed"
-    (every stranded commit was ledger-only and is now published with land.sh <sha> <paths>) · "stranded" (a commit
-    that is not ledger-only, a merge, or one land.sh refused, stays; `fix` is the line that lands it) · "UNMEASURED"
-    (a git read or the fetch failed: could not look, never "level")."""
+    "why"}; never raises. state: "level" (HEAD is origin/main: nothing was ahead of the clone's own origin/main ref, no
+    fetch made; or all that was ahead was already on origin and seat_sync moved the clone) · "landed" (every stranded
+    commit was ledger-only, is now published with land.sh <sha> <paths>, and the clone moved) · "stranded" (a commit
+    that is not ledger-only, a merge, or one land.sh refused, stays; or seat_sync could not move the clone past commits
+    already on origin; `fix` is the line that passes) · "UNMEASURED" (a git read or the fetch failed: could not look,
+    never "level")."""
     out = {"clone": clone, "state": None, "landed": [], "left": [], "fix": None, "why": None}
     tool = land_sh or LAND_SH
     try:
@@ -225,15 +228,31 @@ def level(clone, land_sh=None):
                 done.append(row["sha"])
         if out["landed"]:
             _git(clone, "fetch", "-q", "origin")
-            sync = os.path.join(UTILS, "seat_sync.py")
-            subprocess.run(["python3", sync, "--no-fetch", "--repo", clone] + sum((["--superseded", c] for c in done), []),
-                           # budget: danger=a hung seat_sync holds the launch of a role; never reached in the 14 days to
-                           # budget: 2026-11-24; no record of its run
-                           capture_output=True, text=True, timeout=600, stdin=subprocess.DEVNULL)
+        # Move the clone whenever all it holds ahead is on origin: a twin that ./publish landed while it left the
+        # branch unmoved ("LANDED, CLONE NOT MOVED") is not unlanded, so the clone stayed ahead and read "level"
+        # (RIMMANDRAKE_TRACE_DESIGNER_TWIN_COMMIT_LAND_SAID_LEVEL, the Designer clone, 2026-11-21).
+        sync_said = None
+        if out["landed"] or not seat_sync.unlanded(seat_sync.Git(clone)):
+            s = subprocess.run(["python3", SEAT_SYNC, "--no-fetch", "--repo", clone]
+                               + sum((["--superseded", c] for c in done), []),
+                               # budget: danger=a hung seat_sync holds the launch of a role; never reached in the 14 days
+                               # budget: to 2026-11-24; no record of its run
+                               capture_output=True, text=True, timeout=600, stdin=subprocess.DEVNULL)
+            sync_said = ((s.stdout or "") + (s.stderr or "")).strip()
         left = seat_sync.unlanded(seat_sync.Git(clone))
+        ahead = _git(clone, "rev-list", "--reverse", "refs/remotes/origin/main..HEAD")   # _git's hang guard
+        if ahead.returncode:
+            return dict(out, state="UNMEASURED", why="git rev-list exit %d: %s" % (ahead.returncode, ahead.stderr.strip()))
     except Exception as e:  # noqa: BLE001 - one JSON answer, its cause named
         return dict(out, state="UNMEASURED", why="%s: %s" % (type(e).__name__, str(e)))
     out["left"] = [{"sha": r["sha"], "subject": r["subject"], "paths": r["touched"]} for r in left]
+    if not left and ahead.stdout.strip():
+        shas = ahead.stdout.split()
+        out["fix"] = "python3 %s --repo %s%s" % (shlex.quote(SEAT_SYNC), shlex.quote(clone),
+                                                 "".join(" --superseded %s" % c[:12] for c in shas))
+        out["why"] = ("%d commit(s) ahead of origin/main are already on it, but seat_sync did not move the clone: %s"
+                      % (len(shas), sync_said or "seat_sync did not run"))
+        return dict(out, state="stranded")
     if not left:
         return dict(out, state="landed" if out["landed"] else "level")
     out["fix"] = fix_line(clone, left)

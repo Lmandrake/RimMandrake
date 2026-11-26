@@ -263,6 +263,55 @@ def t_a_mixed_strand_lands_the_ledger_and_refuses_the_rest():
           "a-mixed-strand-lands-the-ledger-and-refuses-the-rest", "%s landed=%s" % (got.get("state"), got.get("landed")))
 
 
+def _twin_fixture():
+    """-> (clone, peer, origin, mine): the clone holds a ledger commit whose twin (a cherry-pick) is on origin, and
+    origin moved on past it: ahead 1, behind 3, nothing unlanded. RIMMANDRAKE_TRACE_DESIGNER_TWIN_COMMIT_LAND_SAID_LEVEL
+    (2026-11-21): the Designer clone sat 3 h at ahead 1 / behind 82 like this while every land unit said `level`."""
+    clone, peer, origin = fixture("DesignerTwin")
+    mine = commit(clone, SHARD, '{"n":"twin"}', "ledger: BENCH role run (role clone Designer)")
+    with open(os.path.join(peer, "peer.txt"), "w") as f:        # origin moves first, so the twin is its own commit
+        f.write("peer\n")
+    git(peer, "add", "--", "peer.txt")
+    git(peer, "commit", "-q", "-m", "origin moved first", "--", "peer.txt")
+    git(peer, "fetch", "-q", clone, "main")
+    git(peer, "cherry-pick", mine)
+    assert git(peer, "rev-parse", "HEAD") != mine
+    commit(peer, "code.txt", "origin moved on", "a later commit on origin")
+    git(peer, "push", "-q", "origin", "main")
+    return clone, peer, origin, mine
+
+
+def t_a_twin_only_clone_is_moved_never_read_level_while_ahead():
+    RC, RL = mods()
+    clone, peer, origin, mine = _twin_fixture()
+    got = RC.level(clone)
+    ahead = git(clone, "rev-list", "refs/remotes/origin/main..HEAD")
+    check(got.get("state") in ("level", "landed") and not ahead and level_after(clone)
+          and git(origin, "rev-list", "--count", "main") == "4",
+          "a-twin-only-clone-is-moved-never-read-level-while-ahead",
+          "state=%s ahead=%s" % (got.get("state"), len(ahead.split())))
+    # the land unit (ExecStopPost) on the same shape: ok, and the clone is level after it
+    clone, peer, origin, mine = _twin_fixture()
+    res = RC.land(clone, "BENCH", tidy=lambda c, settle_min: "nothing to land", leveller=RC.level)
+    check(res["ok"] and not git(clone, "rev-list", "refs/remotes/origin/main..HEAD") and level_after(clone),
+          "a-twin-only-clone-is-moved-never-read-level-while-ahead", "land: ok=%s level=%s" % (res["ok"], res["level"]))
+
+
+def t_a_twin_held_by_dirt_is_stranded_with_its_fix():
+    RC, RL = mods()
+    clone, peer, origin, mine = _twin_fixture()
+    with open(os.path.join(clone, "code.txt"), "w") as f:      # a real overlap with origin's later code.txt
+        f.write("one\nMY UNCOMMITTED EDIT\n")
+    got = RC.level(clone)
+    fix = got.get("fix") or ""
+    still_ahead = bool(git(clone, "rev-list", "refs/remotes/origin/main..HEAD"))
+    res = RC.land(clone, "BENCH", tidy=lambda c, settle_min: "nothing to land", leveller=RC.level)
+    check(got.get("state") == "stranded" and still_ahead and "seat_sync.py" in fix and mine[:12] in fix
+          and "code.txt" in (got.get("why") or "") and not res["ok"] and "seat_sync.py" in (res.get("why") or ""),
+          "a-twin-held-by-dirt-is-stranded-with-its-fix",
+          "state=%s why=%s fix=%s land ok=%s" % (got.get("state"), (got.get("why") or "")[:160], fix[-120:], res["ok"]))
+
+
 def t_could_not_look_is_unmeasured_not_level():
     RC, RL = mods()
     level = getattr(RC, "level", None)
@@ -340,6 +389,8 @@ def main():
     t_a_stranded_code_commit_refuses_with_the_exact_fix()
     t_a_stranded_code_commit_fix_holds_when_origin_moved_the_same_files()
     t_a_mixed_strand_lands_the_ledger_and_refuses_the_rest()
+    t_a_twin_only_clone_is_moved_never_read_level_while_ahead()
+    t_a_twin_held_by_dirt_is_stranded_with_its_fix()
     t_could_not_look_is_unmeasured_not_level()
     t_the_launch_refuses_a_stranded_clone_before_systemd_run()
     t_the_stop_post_land_lands_a_committed_shard()

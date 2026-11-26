@@ -24,8 +24,9 @@ PST. Each promise has a test of its name in `src/RimMandrake/rimflow/selftest_ro
 - **a-merge-commit.** A local merge commit is never landed; it is left, and refused as not ledger-only.
 - **a-run-still-writing.** Levelling assumes no run of the role is writing in the clone (the launcher starts one run
   per role; ExecStopPost runs after the unit stopped).
-- **a-dirty-tree-the-sync-refuses.** Dirt that `./sync` refuses is still the unit's `./sync` refusal (exit 75); level
-  looks at commits only.
+- **a-dirty-tree-the-sync-refuses.** Dirt that `./sync` refuses is still the unit's `./sync` refusal (exit 75). Level
+  does not clear dirt; when that dirt holds the clone ahead of origin/main, level reads `stranded` (promise
+  a-twin-held-by-dirt-is-stranded-with-its-fix).
 
 ## PROMISES (each one is owed a test of the same name)
 
@@ -39,6 +40,14 @@ PST. Each promise has a test of its name in `src/RimMandrake/rimflow/selftest_ro
   clone, also when origin changed the commit's files (its shard included) after it was made.
 - **a-mixed-strand-lands-the-ledger-and-refuses-the-rest.** With both kinds stranded, the ledger-only commits are
   landed and only the others are named in `fix`.
+- **a-twin-only-clone-is-moved-never-read-level-while-ahead.** When every commit ahead of origin/main is already on
+  it (a landed twin: `./publish` pushed it but left the branch unmoved, "LANDED, CLONE NOT MOVED"), level runs
+  `seat_sync` and the clone's HEAD is origin/main after it; `level` or `landed` is never read while HEAD is ahead
+  (`RIMMANDRAKE_TRACE_DESIGNER_TWIN_COMMIT_LAND_SAID_LEVEL`: the Designer clone sat ahead 1 / behind 82 for 3 h on
+  2026-11-21 while every land unit said `level`). `land` on the same clone is ok and leaves it level.
+- **a-twin-held-by-dirt-is-stranded-with-its-fix.** When that `seat_sync` refuses (dirt that really overlaps
+  origin's change), the state is `stranded`; `why` carries seat_sync's refusal, which names the path, and `fix` is the
+  `seat_sync.py --repo <clone> --superseded <sha>...` line to run once the dirt is dealt with. `land` reports it not ok.
 - **could-not-look-is-unmeasured-not-level.** When a commit is ahead and the fetch (or any git read) fails, the state is
   `UNMEASURED` with its cause; it is never `level`, and nothing raises.
 - **the-launch-refuses-a-stranded-clone-before-systemd-run.** `role_launch.launch` on a `stranded` clone returns not
