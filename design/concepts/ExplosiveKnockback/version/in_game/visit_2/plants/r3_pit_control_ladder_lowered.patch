@@ -1,0 +1,10 @@
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs
+@@ -2723,6 +2723,7 @@
+                         h.jobs.jobQueue.EnqueueLast(jCorpse, JobTag.Misc);
+                         s.numbers["ordered"] = 2;
+                         Map m0 = Map;
++                        RM_MapComponent_Knockback.ProofSchedule.Add(new KeyValuePair<int, Action>(s.stagedTick + 1, () => setRaised.Invoke(comp, new object[] { false })));   // PLANT pit_control_ladder_lowered
+                         RM_MapComponent_Knockback.ProofSchedule.Add(new KeyValuePair<int, Action>(s.stagedTick + FreeWillReadTicks, () =>
+                         {
+                             if (m0 != Find.CurrentMap || !h.Spawned)

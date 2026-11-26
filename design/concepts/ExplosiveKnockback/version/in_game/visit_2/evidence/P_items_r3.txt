@@ -1,0 +1,40 @@
+shared process: python.exe src\RimMandrake\ExplosiveKnockback\knockback_runner.py --scenes heavy_skip,emp_no_throw,fire_half,harmful_unpatched,items,shelf,in_pit_skip,no_cross,corpse_into_pit,body_override
+scenes of this check: items
+items PASS steel 13,42->19,42 (6 cells) mass=37.5 want=6; comp 12,43->12,49 (6 cells) mass=0.6 want=6; heavy 11,42->11,42 (0 cells) mass=3000 want=0; steelCount=75
+--- whole process output ---
+scenes available: calibration,wall_stop,door_stop,over_sandbags,pit_colonist,pit_enemy,no_cross,cover_breaks,items,corpse_into_pit,killed_by_blast,shelf,in_pit_skip,heavy_skip,all_fly_no_cap,settings_off,emp_no_throw,lookup_projectile,lookup_zero_wins,impact_factor,body_override,immunity_window,shield_counter,goods_fly_midair,goods_fly_lands,goods_fly_wall,goods_fly_rebound,goods_fly_off,fire_half,harmful_unpatched,container_thrown,heavy_knock,land_no_bump,land_no_bump_pit,gas_clumps,mass_and_power,mass_and_power_x2,mass_and_power_off,mass_and_power_off_x2,mass_and_power_250,mass_and_power_250_x2,pawn_hits_pawn,only_explosions,open_storage,no_cross_ordered,spared_states,blast_kinds,goods_fly_wild,gas_chain,gas_census,pawn_arc,pit_goods_fetch,hose_carry_drop,hose_carry_drop_off,closed_containers,closed_containers_control,settings_sweep,settings_sweep_after,frame_probe_selfcheck,frame_probe_selfcheck_paused,barrage_perf,barrage_perf_off,gas_into_pit,gas_into_pit_off,goods_obstacles,goods_obstacles_control,storeroom_bomb_pit,storeroom_bomb_pit_control,pit_colonist_control flowworks=True hoses=True
+heavy_skip       advanced 300/300 ticks in 1 s via jawa/safe_advance
+heavy_skip       PASS gromma 240.0 kg: big 13,27->16,23 (4 cells) skips(too_heavy_creature)=1 [type=skip tick=29584 exp=50946 thing=RM_Agaripod50945 reason=too_heavy_creature mass=240 limit=150]
+heavy_skip       SETTINGS after verdict: all at the run's defaults
+emp_no_throw     advanced 300/300 ticks in 1 s via jawa/safe_advance
+emp_no_throw     PASS p 28,27->28,27 (0 cells) (EMP force 0: no request)
+emp_no_throw     SETTINGS after verdict: all at the run's defaults
+fire_half        advanced 300/300 ticks in 1 s via jawa/safe_advance
+fire_half        PASS flameForce=0.5 bombForce=1 flameCells=1 bombCells=3
+fire_half        SETTINGS after verdict: all at the run's defaults
+harmful_unpatched advanced 300/300 ticks in 1 s via jawa/safe_advance
+harmful_unpatched PASS thumpForce=1 source=unpatched bombForce=1 thumpCells=3 bombCells=3 unpatchedHarmfulPercent=100
+harmful_unpatched SETTINGS after verdict: all at the run's defaults
+items            advanced 300/300 ticks in 1 s via jawa/safe_advance
+items            PASS steel 13,42->19,42 (6 cells) mass=37.5 want=6; comp 12,43->12,49 (6 cells) mass=0.6 want=6; heavy 11,42->11,42 (0 cells) mass=3000 want=0; steelCount=75
+items            SETTINGS after verdict: all at the run's defaults
+shelf            advanced 300/300 ticks in 1 s via jawa/safe_advance
+shelf            PASS steel 28,42->34,42 (6 cells) (on an open shelf: must move)
+shelf            SETTINGS after verdict: all at the run's defaults
+in_pit_skip      advanced 300/300 ticks in 1 s via jawa/safe_advance
+in_pit_skip      PASS p 43,42->43,42 (0 cells) skips(in_pit)=1
+in_pit_skip      SETTINGS after verdict: all at the run's defaults
+no_cross         advanced 300/300 ticks in 1 s via jawa/safe_advance
+no_cross         PASS p 57,42->59,42 (2 cells) (1-wide pit at x+2; must stop IN it)
+no_cross         SETTINGS after verdict: all at the run's defaults
+corpse_into_pit  advanced 300/300 ticks in 1 s via jawa/safe_advance
+corpse_into_pit  PASS corpse 73,42->75,42 (2 cells) onPitFloor=True forbidden=True
+corpse_into_pit  SETTINGS after verdict: all at the run's defaults
+body_override    advanced 300/300 ticks in 1 s via jawa/safe_advance
+body_override    PASS Baseopsis 180.0 kg: big 13,57->23,56 (10 cells); control 11,60->9,56 (4 cells) bigLaunches=1 controlLaunches=0 controlTooHeavy=True
+body_override    SETTINGS after verdict: all at the run's defaults
+VERDICT PASS  (10 scenes) -> \\wsl.localhost\Ubuntu\home\mandrake\rm\runs\clones\RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_GAME_VISIT_TWO_RUN_TWO.det\Transient\explosive_knockback\run_20261126T021136.jsonl
+
+--- stderr ---
+[bridge split] 66.5 s wall: load 0.0 / ticks 6.1 / reads 0.0 / other 11.5 / outside calls 48.8 s
+[bridge split] WARN 741 calls of jawa/mod_settings_field (11.0 s): batch them

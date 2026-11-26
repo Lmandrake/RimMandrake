@@ -2570,15 +2570,21 @@ namespace RimMandrake.ExplosiveKnockback
                         {
                             return "the FlowWorks ladder defs or RM_ClimbJoins.LoweredLadderAt is not loaded";
                         }
-                        Thing Ladder(ThingDef def, IntVec3 rim, IntVec3 edge)
+                        // visit 2 run 3 (2026-11-26, SITE): FlowWorks joins two levels only through a lowered ladder in the DEEP
+                        // cell hung toward the shallow one (RM_ClimbJoins.Structural). Rim first stood the control RM_Ladder on the
+                        // rim, where it never joins: lowered again in a planted run, its pit stayed shut, so raised and lowered
+                        // read alike. deepFirst puts it in the pit's edge cell, hung toward the rim (RM_LadderUtility.HangsToward).
+                        var hangs = AccessTools.Method(AccessTools.TypeByName("RimMandrake.FlowWorks.RM_LadderUtility"), "HangsToward", new[] { typeof(Thing), typeof(IntVec3) });
+                        Thing Ladder(ThingDef def, IntVec3 rim, IntVec3 edge, bool deepFirst = false)
                         {
-                            foreach (IntVec3 at in new[] { rim, edge })
+                            foreach (IntVec3 at in deepFirst ? new[] { edge } : new[] { rim, edge })
                             {
                                 foreach (Rot4 r in new[] { Rot4.East, Rot4.West, Rot4.North, Rot4.South })
                                 {
                                     Thing l = GenSpawn.Spawn(ThingMaker.MakeThing(def, def.MadeFromStuff ? GenStuff.DefaultStuffFor(def) : null), at, Map, r);
                                     l.SetFactionDirect(Faction.OfPlayer);
-                                    if ((bool)lowered.Invoke(null, new object[] { Map, rim }) || (bool)lowered.Invoke(null, new object[] { Map, edge }))
+                                    bool joins = !deepFirst || (hangs != null && (bool)hangs.Invoke(null, new object[] { l, rim }));
+                                    if (joins && ((bool)lowered.Invoke(null, new object[] { Map, rim }) || (bool)lowered.Invoke(null, new object[] { Map, edge })))
                                     {
                                         return l;
                                     }
@@ -2588,7 +2594,7 @@ namespace RimMandrake.ExplosiveKnockback
                             return null;
                         }
                         Thing lad = Ladder(ld, O(s, 2, 5), O(s, 3, 5));
-                        Thing ctl = Ladder(fixedLd, O(s, -6, -4), O(s, -6, -5));
+                        Thing ctl = Ladder(fixedLd, O(s, -6, -4), O(s, -6, -5), deepFirst: true);
                         if (lad == null || ctl == null)
                         {
                             return "no placement of RM_LadderPortable / RM_Ladder reads as a lowered ladder at the pit rim";
@@ -2697,8 +2703,9 @@ namespace RimMandrake.ExplosiveKnockback
                         // answer is read first and judged: the lowered-ladder pit's goods haulable, the raised-ladder control's
                         // not (fresh reader, 2026-11-25: a reach veto that shut the lowered pit would else pass on the order).
                         // visit 2 run 3 (2026-11-26, SITE): read in this tick, right after SetRaised, the control stack read
-                        // haulable (control 1) on two origins of one map: FlowWorks' climb masks take a raise only on the next
-                        // path update (RM_CompLadder.SetRaised: Notify_CellDelta), so a same-tick read sees the ladder as it was.
+                        // haulable (control 1) on two origins of one map: FlowWorks' climb masks take a raise only in the next
+                        // PathFinderMapData.GatherData (RM_CompLadder.SetRaised: Notify_CellDelta), so a same-tick read sees the
+                        // ladder as it was.
                         // The same-tick reads stay for the record; the verdict reads the answers FreeWillReadTicks later.
                         s.numbers["autoHaulMainT0"] = HaulAIUtility.PawnCanAutomaticallyHaulFast(h, s.things["st"], false)
                             && HaulAIUtility.PawnCanAutomaticallyHaulFast(h, s.things["corpse"], false) ? 1 : 0;
@@ -2722,6 +2729,10 @@ namespace RimMandrake.ExplosiveKnockback
                             {
                                 return;
                             }
+                            // FlowWorks' climb masks are a path-data source: they take the raise only in PathFinderMapData.GatherData,
+                            // which runs on a path request in a later tick, and a quiet map may make none (live, planted: a ladder
+                            // lowered at +1 still read closed at +5). Gather here, as the hauler's own path request would.
+                            m0.pathFinder?.MapData?.GatherData(new List<PathRequest>());
                             // the stack is reserved by the hauler's own ordered job by now: CanReserve passes for its claimant
                             s.numbers["autoHaulMain"] = HaulAIUtility.PawnCanAutomaticallyHaulFast(h, s.things["st"], false)
                                 && HaulAIUtility.PawnCanAutomaticallyHaulFast(h, s.things["corpse"], false) ? 1 : 0;

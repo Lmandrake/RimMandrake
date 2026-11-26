@@ -59,7 +59,12 @@ def layout(b):
         "cst": one(r'Item\(s, "cst", "Steel", \d+, ' + O + HAULABLE + r"\)", "the control stack"),
         "dead": one(r'Colonist\(s, "dead", ' + O, "the corpse"),
         "lad": one(r"Thing lad = Ladder\(ld, " + O + r", " + O + r"\)", "the main ladder"),
-        "ctl": one(r"Thing ctl = Ladder\(fixedLd, " + O + r", " + O + r"\)", "the control ladder"),
+        "ctl": one(r"Thing ctl = Ladder\(fixedLd, " + O + r", " + O + r"(?:, deepFirst: true)?\)", "the control ladder"),
+        # G9 (visit 2 run 3, 2026-11-26): FlowWorks joins two levels only through a ladder in the DEEP cell hung toward the
+        # shallow one (RM_ClimbJoins.Structural); a rim-first placement stood the control ladder on the rim, where it never
+        # joins, raised or lowered, and the control could not tell the two apart
+        "ctl_deep": bool(re.search(r"Thing ctl = Ladder\(fixedLd, " + O + r", " + O + r", deepFirst: true\)", b))
+                    and "HangsToward" in b,
         "zones": [tuple(int(v) for v in m) for m in re.findall(r"z[ab]\.AddCell\(" + O + r"\)", b)],
         "hauler": one(r'Colonist\(s, "h", ' + O, "the hauler"),
         "corpse_allowed": bool(re.search(r"dead\.Kill\(null\);.{0,400}?dead\.Corpse\?\.SetForbidden\(false", b, re.S)),
@@ -107,9 +112,12 @@ def check(lay):
     if not lay.get("free_will_reach"):
         faults.append("G7 the ordered hauls are not preceded by a free-will reach read of stack, corpse and control: a reach "
                       "veto that shuts the lowered-ladder pit would pass")
+    if lay.get("ctl_deep") is False:
+        faults.append("G9 the control ladder may stand on the rim, where FlowWorks never joins it: raised and lowered read alike")
     if lay.get("late_reach") is False:
         faults.append("G8 the free-will answers the verdict reads are taken in the tick the control ladder is raised: "
-                      "FlowWorks' climb masks take a raise only on the next path update, so a same-tick read sees the old ladder")
+                      "FlowWorks' climb masks take a raise only in the next PathFinderMapData.GatherData, so a read before one sees the old "
+                      "ladder; the read must sit in a ProofSchedule action at least one tick on that gathers first")
     if lay.get("verdict_reach") is False:
         faults.append("G7 the verdict does not require the free-will reach (autoHaulMain true, autoHaulControl false)")
     return faults
@@ -130,7 +138,9 @@ def main():
             j = b.rfind("ProofSchedule.Add(", 0, at)
             m = re.match(r"ProofSchedule\.Add\(new KeyValuePair<int, Action>\(s\.stagedTick \+ (\w+)", b[j:]) if j >= 0 else None
             n = m and (int(m.group(1)) if m.group(1).isdigit() else int((re.search(r"const int %s = (\d+);" % m.group(1), text) or [0, 0])[1]))
-            return bool(n and n >= 1)
+            # the masks learn a raise only in PathFinderMapData.GatherData (the next path request): the action gathers first
+            gathered = "GatherData(" in b[j:at]
+            return bool(n and n >= 1 and gathered)
         lay["late_reach"] = bool(writes) and all(late(w) for w in writes)
         faults = check(lay)
     except ValueError as e:

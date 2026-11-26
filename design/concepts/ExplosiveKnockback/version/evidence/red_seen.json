@@ -142,6 +142,19 @@
   "rc": 1,
   "test_blob": "7fba2721ca1cdbd40279fb828bf359dcfbe810a0"
  },
+ "T_PIT_FETCH_OFFLINE": {
+  "at": "2026-11-26T11:11:53Z",
+  "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_pit_fetch.py",
+  "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_pit_fetch.py",
+  "last": "explosive knockback pit fetch geometry: FAIL (1 faults; visit-2 layout caught: True)",
+  "patch": "--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs\t2026-11-26 03:05:33.349388415 -0800\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs\t2026-11-26 03:11:52.644978468 -0800\n@@ -938,7 +938,7 @@\n \n         /// <summary>sc_pit_fetch's window: the two ordered hauls finish well inside it (RIMMANDRAKE_SHRINK_KNOCKBACK_SCENES_ONE_SAVE_IN_AIR).</summary>\n         private const int PitFetchTicks = 5000;\n-        private const int FreeWillReadTicks = 5;   // sc_pit_fetch's free-will reach read, past FlowWorks' next path update\n+        private const int FreeWillReadTicks = 0;   // sc_pit_fetch's free-will reach read, past FlowWorks' next path update\n \n         /// <summary>Bridge read, also after a reload (no scene state): every carrier on the current map as\n         /// \"id inner=def xN innerId=n at=x,z dest=x,z left=ticks bounces=n\", one per line; \"NONE\" when there is none.</summary>\n",
+  "patch_files": [
+   "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs"
+  ],
+  "patch_sha": "417aff19516e8552",
+  "rc": 1,
+  "test_blob": "008f263fb1e03fedfe29956b9e47ddf354df2592"
+ },
  "T_PROOFGATE": {
   "at": "2026-11-26T04:04:09Z",
   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py",
@@ -221,16 +234,16 @@
   "test_blob": "8ca4bd7eb06fc6ecc2de3a653d365b49fb05b73b"
  },
  "T_STAGE3_SCENES": {
-  "at": "2026-11-24T09:32:03Z",
+  "at": "2026-11-26T11:11:54Z",
   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_stage3_scenes.py",
   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_stage3_scenes.py",
   "last": "FAIL stage3 scenes: 1 failed",
-  "patch": "diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof_StageThree.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof_StageThree.cs\nindex db7692a8ca..fa7f0767a9 100644\n--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof_StageThree.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof_StageThree.cs\n@@ -325,7 +325,7 @@ namespace RimMandrake.ExplosiveKnockback\n                     bool jolt = line.Count == 1 && (string)line[0][\"action\"] == \"jolt\";\n                     bool held = k == \"sec\" || GoodsOn(b).Count == (int)sc.numbers[\"goods_\" + k];\n                     float drawn = RM_MapComponent_Knockback.JoltDrawn.TryGetValue(b.thingIDNumber, out float jd) ? jd : 0f;\n-                    bool row = stayed && jolt && held && drawn > 0f;\n+                    bool row = stayed && jolt && held;\n                     ok &= row;\n                     rows.Add(k + \"=\" + (row ? \"jolted\" : \"FAIL\") + \" stayed=\" + stayed + \" held=\" + held + \" lines=\" + line.Count\n                         + \" action=\" + (line.Count > 0 ? (string)line[0][\"action\"] : \"none\") + \" drawnOffset=\" + drawn.ToString(\"0.000\"));\n",
+  "patch": "--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof_StageThree.cs\t2026-11-26 02:22:29.591293800 -0800\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof_StageThree.cs\t2026-11-26 03:11:52.652162861 -0800\n@@ -620,7 +620,7 @@\n         {\n             Map map = Map;\n             Pawn P = Colonist(s, \"P\", O(s, 1, 0));\n-            Pawn A = Adult(GroundedByMass(\"under 90 kg\", 5f, 90f, \"middle\"));\n+            Pawn A = Adult(ByMass(\"under 90 kg\", 5f, 90f, \"middle\"));\n             GenSpawn.Spawn(A, O(s, -1, 0), map);\n             Track(s, \"A\", A);\n             PawnKindDef mk = DefDatabase<PawnKindDef>.AllDefsListForReading.Where(k => k.RaceProps != null && k.RaceProps.IsMechanoid\n",
   "patch_files": [
    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof_StageThree.cs"
   ],
-  "patch_sha": "a9b544872e0dcf27",
+  "patch_sha": "42b99297677d484b",
   "rc": 1,
-  "test_blob": "3790029d0cb6e1a62b0cc2057c92ada3e08edbb1"
+  "test_blob": "61b7460f602e1d2805f743328250de69bd9744a6"
  }
 }

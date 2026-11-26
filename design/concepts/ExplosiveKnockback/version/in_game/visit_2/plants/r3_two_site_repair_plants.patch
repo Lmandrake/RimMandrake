@@ -1,0 +1,25 @@
+diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs
+index 25ce284703..2513d34059 100644
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs
+@@ -126,7 +126,7 @@ namespace RimMandrake.ExplosiveKnockback
+             if (f.inBed) return "in_bed";
+             if (f.carryingPawn) return "carrying_pawn";
+             if (f.downed && !q.throwDowned) return "downed_off";
+-            if (f.animal && !q.throwAnimals) return "animals_off";
++            if (false && f.animal && !q.throwAnimals) return "animals_off";   // PLANT throw_animals_ignored
+             if (f.mechanoid && !q.throwMechanoids) return "mechanoids_off";
+             // GPT #1 + "you can't climb out. Period." A person on an intact cover stands on ground to the player: burning gas
+             // shoves them as on any floor (bar gas_shoves_pawn_on_pit_cover); a blast breaks that cover, so it still skips them
+diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs
+index 5435eef345..42c46c728a 100644
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs
+@@ -2716,6 +2716,7 @@ namespace RimMandrake.ExplosiveKnockback
+                         h.jobs.jobQueue.EnqueueLast(jCorpse, JobTag.Misc);
+                         s.numbers["ordered"] = 2;
+                         Map m0 = Map;
++                        RM_MapComponent_Knockback.ProofSchedule.Add(new KeyValuePair<int, Action>(s.stagedTick + 1, () => setRaised.Invoke(comp, new object[] { false })));   // PLANT pit_control_ladder_lowered
+                         RM_MapComponent_Knockback.ProofSchedule.Add(new KeyValuePair<int, Action>(s.stagedTick + FreeWillReadTicks, () =>
+                         {
+                             if (m0 != Find.CurrentMap || !h.Spawned)
