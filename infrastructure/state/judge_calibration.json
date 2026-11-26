@@ -1090,10 +1090,10 @@
    ],
    "cases": {
     "bad": [
-     "planted (code_review_calibration.py): the 14 claims that break a promise in ordinary operation by the owner's page rule (card 2026-11-19 13:27:48Z; c2.2, c2.3, c2.6, c2.7, c2.8, c3.1, c3.6, c3.9, c4.1, c4.2, c4.10, c4.11, c4.12, c4.13); must be admitted"
+     "planted (code_review_calibration.py): the 16 claims that break a promise in ordinary operation by the owner's page rule (card 2026-11-19 13:27:48Z; c2.2, c2.3, c2.6, c2.7, c2.8, c2.9, c3.1, c3.4, c3.6, c3.9, c4.2, c4.10, c4.11, c4.12, c4.13, c4.14; four labels corrected by a blind relabel 2026-11-25: c2.9, c3.4, c4.14 real, c4.1 not); must be admitted"
     ],
     "good": [
-     "planted (code_review_calibration.py): the 21 claims that are a rare failure the page lists as not handled, or polish, by the same rule; must not be admitted as Problems"
+     "planted (code_review_calibration.py): the 19 claims that are a rare failure the page lists as not handled, or polish, by the same rule; must not be admitted as Problems"
     ]
    },
    "hash": "7efd8085380bc3f9",
@@ -1109,7 +1109,7 @@
     "src/RimMandrake/rimflow/code_review_calibration.py",
     "run"
    ],
-   "note": "Codex and GPT reviews of pipeline code are on (owner, card 2026-11-23), whatever this row reads; only a CALIBRATED row's refusal sends work back. Labels: `page_rule` in src/RimMandrake/rimflow/code_review_calibration_set.json (owner card 2026-11-19 13:27:48Z); this row needs all 35 as labelled, and the run's last line is the owner's pass mark on the 12 agreed claims.",
+   "note": "Codex and GPT reviews of pipeline code are on (owner, card 2026-11-23), whatever this row reads; only a CALIBRATED row's refusal sends work back. Labels: `page_rule` in src/RimMandrake/rimflow/code_review_calibration_set.json (owner card 2026-11-19 13:27:48Z); this row needs all 35 as labelled, and the run's last line is the owner's pass mark on the 10 agreed claims.",
    "planted": [
     {
      "expect": "pass",
@@ -1144,7 +1144,7 @@
      "id": "c2.8"
     },
     {
-     "expect": "pass",
+     "expect": "refuse",
      "id": "c2.9"
     },
     {
@@ -1160,7 +1160,7 @@
      "id": "c3.3"
     },
     {
-     "expect": "pass",
+     "expect": "refuse",
      "id": "c3.4"
     },
     {
@@ -1192,7 +1192,7 @@
      "id": "c3.11"
     },
     {
-     "expect": "refuse",
+     "expect": "pass",
      "id": "c4.1"
     },
     {
@@ -1244,7 +1244,7 @@
      "id": "c4.13"
     },
     {
-     "expect": "pass",
+     "expect": "refuse",
      "id": "c4.14"
     },
     {

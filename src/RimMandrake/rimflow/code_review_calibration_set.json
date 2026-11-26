@@ -1,5 +1,5 @@
 {
- "about": "The code_review family's calibration set (RIMMANDRAKE_WRITE_REVIEW_BRIEF_CALIBRATE_ON_THIRTY_FIVE_CLAIMS): the 35 claims of Codex's control-store review rounds two to four, 2026-11-18, with one analyst's labels (about 70% sure). expect refuse = a Problem, pass = polish or next_version. `claim` is the analyst's plain description with its trailing ticket or fix note removed; only `id` and `claim` reach the reviewer. Source: D:\\ClaudeWork\\rimmandrake\\conductor\\control_review_rounds_real_or_treadmill_20261118.md. `page_rule` (real or not) and `page_rule_why` are the labels by the owner's page rule (card 2026-11-19 13:27:48Z, standing_rulings.md section A, Decision 4: a rare failure is not handled, not a Problem), set beside `expect`, which stays the analyst's; the calibration scores against `page_rule`. Table: design/specs/2026-11-18-review-growth-cycle/05-three-way-labels-20261119.md. `agreed` marks the 12 claims all three readers (analyst, Codex, a blind reader) and the page rule label alike; the pass mark is read on them (05-three-way-labels-20261119.md, 'a fair pass mark').",
+ "about": "The code_review family's calibration set (RIMMANDRAKE_WRITE_REVIEW_BRIEF_CALIBRATE_ON_THIRTY_FIVE_CLAIMS): the 35 claims of Codex's control-store review rounds two to four, 2026-11-18, with one analyst's labels (about 70% sure). expect refuse = a Problem, pass = polish or next_version. `claim` is the analyst's plain description with its trailing ticket or fix note removed; only `id` and `claim` reach the reviewer. Source: D:\\ClaudeWork\\rimmandrake\\conductor\\control_review_rounds_real_or_treadmill_20261118.md. `page_rule` (real or not) and `page_rule_why` are the labels by the owner's page rule (card 2026-11-19 13:27:48Z, standing_rulings.md section A, Decision 4: a rare failure is not handled, not a Problem), set beside `expect`, which stays the analyst's; the calibration scores against `page_rule`. Table: design/specs/2026-11-18-review-growth-cycle/05-three-way-labels-20261119.md. `agreed` marks the 10 claims all readers (analyst, Codex, a blind reader) and the page rule label alike (c4.1 and c4.14 left the set on 2026-11-25: a second blind reader and Codex read them the other way; c2.9, c3.4, c4.1, c4.14 relabelled, record 07-blind-relabel-four-20261125.md); the pass mark is read on them (05-three-way-labels-20261119.md, 'a fair pass mark').",
  "page": "design/specs/2026-11-18-pipeline-control-surface/boundary.md",
  "claims": [
   {
@@ -90,8 +90,8 @@
    "expect": "pass",
    "analyst": "POLISH: test strength",
    "tag": "measured",
-   "page_rule": "not",
-   "page_rule_why": "polish: test strength with no broken verb; \"usually\" is now each verb's own p95"
+   "page_rule": "real",
+   "page_rule_why": "the page promises each verb its own p95 (\"verbs-answer-in-a-second\"); a pooled p95 lets one slow verb hide and no test goes red (blind relabel 2026-11-25, 80%)"
   },
   {
    "id": "c3.1",
@@ -130,8 +130,8 @@
    "expect": "pass",
    "analyst": "POLISH: needs a failed systemctl kill plus an unreadable cgroup. Not worse than before the fix (no re-read at all).",
    "tag": "measured",
-   "page_rule": "not",
-   "page_rule_why": "rare: a failed kill and an unreadable cgroup at once (DNS two-failures-at-once)"
+   "page_rule": "real",
+   "page_rule_why": "probe-never-lies names an unreadable cgroup.procs as its own subject, met alone; scoring it empty reports killed unverified; the claim text names no failed kill, so two-failures-at-once does not apply (blind relabel 2026-11-25, 70%)"
   },
   {
    "id": "c3.5",
@@ -211,9 +211,8 @@
    "expect": "refuse",
    "analyst": "PROBLEM, mild: \"kill it again\" is an ordinary input. It interrupts an in-flight clone return and doubles the ledger finish note.",
    "tag": "blame measured; class guess ~50%",
-   "page_rule": "real",
-   "page_rule_why": "killing again is ordinary; same-command-twice; fixed 9a8593dc91, t_review_round_four_p1",
-   "agreed": true
+   "page_rule": "not",
+   "page_rule_why": "same-command-twice promises once-only effect for a void, a settlement, an import or a keyed command; a plain repeated kill is not named, so the ask is next-version work (blind relabel 2026-11-25, 55%)"
   },
   {
    "id": "c4.2",
@@ -350,9 +349,8 @@
    "expect": "pass",
    "analyst": "POLISH: test strength",
    "tag": "measured",
-   "page_rule": "not",
-   "page_rule_why": "polish: test strength",
-   "agreed": true
+   "page_rule": "real",
+   "page_rule_why": "the page promises each verb's own 95th percentile; an estimator that passes one slow call in five reads about the 80th, so the gate is wrong and no test goes red (blind relabel 2026-11-25, 65%)"
   },
   {
    "id": "c4.15",

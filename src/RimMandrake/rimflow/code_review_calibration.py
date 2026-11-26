@@ -8,8 +8,8 @@ here) as problem, polish or next_version. It reads no code: the call runs `gpt_c
 A problem is a refusal (`got: refuse`), anything else a pass; one row per claim goes to $RM_CALIBRATION_RESULTS, and
 refusal_contract.judge_cases compares them with the labels. The labels are `page_rule` (owner card 2026-11-19
 13:27:48Z: a rare failure is "not handled", not a Problem), not the analyst's `expect`. The run also prints the pass
-mark on the 12 `agreed` claims (every agreed real one caught, at most one agreed polish called a problem; "always
-polish" scores 9 of 12) and the agreement on all 35, unscored.
+mark on the 10 `agreed` claims (every agreed real one caught, at most one agreed polish called a problem; "always
+polish" scores 8 of 10) and the agreement on all 35, unscored.
 
 It spends one Codex call, so it runs only from `refusal_contract.py calibrate --model code_review`, never on a
 schedule. Owner card 2026-11-19 about 12:40 AM PST: "Codex sorts the 35 old complaints one time. It reviews no new
