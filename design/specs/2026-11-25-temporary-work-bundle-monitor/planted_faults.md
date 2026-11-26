@@ -59,3 +59,32 @@ named promise. The unmutated control was green before and after. Result: 23 of 2
 | the page drops the watch | polish-watch-on-page-and-digest |
 | the digest fields drop born | polish-watch-on-page-and-digest |
 | the blind digest line drops the crossed line | polish-watch-on-page-and-digest |
+
+## The page by meaning (RIMMANDRAKE_REWRITE_BUNDLE_MONITOR_PAGE_BY_MEANING_NOT_NAMES, 2026-11-25)
+
+The old renderer, on the planted reading of `t_page_answers_five_questions`, failed four checks: a bundle id, ISO and
+UTC stamps, `fix-unknown` and `in_game` as words, and two sentences over 20 words; it had none of the five labels.
+19 planted faults, each applied in place to `work_bundle_monitor.py` or `work_bundle.py`, made its selftest exit 1
+(19 of 19); the unmutated files were green before and after:
+
+| fault | red in |
+|---|---|
+| a bundle id in the lead line | selftest_work_bundle_monitor |
+| an ISO time from `when()` | selftest_work_bundle_monitor |
+| the five labels reversed | selftest_work_bundle_monitor |
+| too early without its date | selftest_work_bundle_monitor |
+| the crossed line ignored by What needs a person | selftest_work_bundle_monitor |
+| a stale reading not caught | selftest_work_bundle_monitor |
+| the model's title kept | selftest_work_bundle_monitor |
+| a rerender stacks a second top | selftest_work_bundle_monitor |
+| a raw role key on the page | selftest_work_bundle_monitor |
+| two sentences in one verdict | selftest_work_bundle_monitor |
+| a lead sentence over 20 words | selftest_work_bundle_monitor |
+| cheaper and dearer swapped | selftest_work_bundle_monitor |
+| daily writes the model's text without the top | selftest_work_bundle_monitor |
+| an unreadable reading answers nothing | selftest_work_bundle_monitor |
+| member ticket names on a bundle line | selftest_work_bundle |
+| a failed launch shown as a row | selftest_work_bundle |
+| a step note that names a ticket shown | selftest_work_bundle |
+| the raw system key on a line | selftest_work_bundle |
+| no count line for ended and failed bundles | selftest_work_bundle |

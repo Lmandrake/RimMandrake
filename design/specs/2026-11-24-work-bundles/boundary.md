@@ -136,9 +136,11 @@ bundle began). A member with none of these is **open**.
   game's answer, in the record and on stdout.
 - **a-test-never-writes-the-real-store.** A process under a selftest with no `RM_WORK_BUNDLE_DIR` is refused by name
   (measured 2026-11-25: a holder selftest wrote `WB-mod-WreckedMachines` into the real store).
-- **the-page-shows-each-live-bundle.** The Maturation Pipeline page has one block per bundle that is not ended: system,
-  step, restarts, each member with its outcome, and the state; a store that cannot be read is one UNMEASURED line,
-  never an empty block.
+- **the-page-shows-each-live-bundle.** The Maturation Pipeline page has one short line per live bundle, by meaning:
+  the system in plain words (the mod's name, or the pipeline part), the state in plain words, how many of its tickets
+  are done, the local start time, a step note that names no ticket, the restarts and a call for help. No ticket name,
+  bundle id or unit name is on the page (the records keep them). Bundles that ended or failed to launch are one count
+  line. A store that cannot be read is one UNMEASURED line, never an empty block.
 - **the-maturation-road-back-is-one-bundle.** On a pilot mod's road back, the holder run (`maturation_dispatch.
   road_back_holder`, which already took every open road-back item in one run) is that mod's one bundle: its record,
   `RM_WORK_BUNDLE` in its env, the bundle named in its brief, and the mod's ready tickets that carry a test joined to it

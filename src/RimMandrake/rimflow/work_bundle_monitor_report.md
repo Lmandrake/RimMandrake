@@ -22,7 +22,10 @@ below). The judge agreed with the Conductor on 19 of 25 labelled set-downs (2026
   number as a good or a bad sign.
 - Name each run, ticket and bundle by its full id.
 - Plain sentences, one idea each. Write times in Pacific time (PST).
-- Write the report in Markdown with these four sections, in this order, each heading exactly as written (and the fifth
+- The program puts the report's title and its section `What a person needs to know` on top: five plain answers
+  (are bundles used, are they cheaper, do they make new tickets, is work set down honestly, what needs a person).
+  You write only the detail below them. Write no title line and do not repeat those five answers.
+- Write the detail in Markdown with these four sections, in this order, each heading exactly as written (and the fifth
   below only when a line is crossed):
   `## The day's numbers`, `## The worst pattern`, `## Three repairs`, `## The recommendation`.
 - The day's numbers: the share of runs, closes and tokens through bundles against single-ticket runs, per pipeline;

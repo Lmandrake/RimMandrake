@@ -15,6 +15,7 @@ python3 src/RimMandrake/rimflow/work_bundle_monitor.py measure [--since ISO] [--
 python3 src/RimMandrake/rimflow/work_bundle_monitor.py judge  [--since ISO] [--until ISO]            part 2, Sonnet per row
 python3 src/RimMandrake/rimflow/work_bundle_monitor.py calibrate                                     part 2 on the 25 labelled rows
 python3 src/RimMandrake/rimflow/work_bundle_monitor.py daily                                         parts 1, 2 and 3 (the timer)
+python3 src/RimMandrake/rimflow/work_bundle_monitor.py rerender --date YYYY-MM-DD                      the report's top and latest.json again, no model
 ```
 
 ## What it reads
@@ -183,6 +184,18 @@ and one recommended):
   no budget flag.
 - **page-section-no-tokens.** The page section shows no token or spend figure, and names the report's full Windows path;
   an unreadable reading says could not look.
+- **page-answers-five-questions.** The page section answers the five questions below, in order, one verdict sentence
+  under each label and at most one evidence number after it. It shows no ticket id, no bundle id, no ISO or UTC stamp,
+  no class, role key or field name as a word, and no sentence over 20 words. Times are local Pacific.
+- **page-too-young-says-too-early.** A reading whose ripe day ends before the first bundle says `too early to tell`
+  with the local time of the first daily reading whose ripe day holds that bundle; a ripe reading says yes or no.
+- **page-line-crossed-needs-person.** A crossed born line makes `What needs a person?` name the Conductor's act; a
+  reading over two days old names Operations; a failed report names the Conductor; an unreadable reading answers
+  each question could not look and names Operations.
+- **report-opens-with-answers.** The written report opens with its title and `## What a person needs to know` (the
+  same five answers, written by the program), then `# Detail for the Conductor: ...`, then the model's sections; the
+  model's own title is dropped. `rerender --date D` writes the day's report and `latest.json` again from its reading,
+  verdicts and the model's text, with no model call, and a second rerender adds no second top.
 - **digest-line-blind.** The digest line carries the counts and the report as a handle through the blind page; an
   unreadable monitor reads UNMEASURED.
 - **baseline-same-system-before-first-bundle.** The baseline of a bundle system takes the single-ticket runs that
@@ -211,5 +224,29 @@ and one recommended):
   day before; the regress and polish measures draw no line.
 - **lines-crossed-section.** A report whose reading has a crossed line, and that lacks `## Lines crossed`, is not
   written as the report.
-- **polish-watch-on-page-and-digest.** The page shows the three measures and the line, with no token figure; the digest
+- **polish-watch-on-page-and-digest.** The page shows the born answer and the line, with no token figure; the
+  regression and polish counts answer none of the five questions and stay in the reading and the report. The digest
   fields carry their counts, and the blind digest line renders them and the crossed line.
+
+## The page section answers five questions
+
+The owner, 2026-11-25: "That Temporary Work Bundle Monitor is spamming me with nonsensical log numbers. Please have it
+summarize the meaningful outcome that a human needs to know, not lists of ticket names. Format it by meaning, not just
+run-on text." `answers()` in `work_bundle_monitor.py` writes each verdict from `latest.json` by these rules. No model
+writes them. The report's top is the same five answers (`compose_report`).
+
+- **Are bundles used?** b = the day's closes by bundle runs (two or more members), n = the closes of every run kind.
+  n = 0: not known. b = 0: no. b/n under 25%: rarely. Up to 50%: sometimes. Over 50%: yes. Evidence: `b of n closes`.
+- **Are bundles cheaper?** From `cheaper_of(R)`, a word in `latest.json` and never a figure (the page stays
+  token-blind; the figures are in the report). On the ripe day, bundle weighted tokens per ticket that stays closed
+  over the single-ticket figure: under 0.9 yes, over 1.1 no, else about the same (`CHEAPER_MARGIN`, a guess). When
+  the ripe day ends before the first bundle: too early to tell, until the first daily run at or after the first
+  bundle plus 3 days. When the ripe day holds bundles but no ripe figure: not known.
+- **Do bundles make new tickets?** Bundle runs' born per closed (`born.by_kind.bundle`). The line crossed: yes, and
+  the alarm is on. No close: not known. Over 1 today only: today only, the alarm waits a second day. Else no.
+- **Is work set down honestly?** The judge's NOT SINCERE count over every verdict, and the role with the most (ties
+  name two), in plain words (`ROLE_WORDS`). None judged: nothing to judge. None not sincere: yes. Up to a quarter:
+  mostly. Up to half: often not. Over half: no.
+- **What needs a person?** The first rule that holds: the reading is over two days old (`STALE_S`) → Operations
+  restarts the daily run; the report failed → the Conductor reruns it; the born line is crossed → the Conductor picks
+  one of the report's three repairs. Else `Nothing.`

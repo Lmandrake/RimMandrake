@@ -312,7 +312,7 @@ def t_page_section_no_tokens():
         and "weighted" not in (md + html).lower(), "page-section-no-tokens: no token or spend figure")
     chk("D:\\ClaudeWork\\rimmandrake\\work_bundle_monitor\\report_2026-11-25.md" in md,
         "page-section-no-tokens: the report's full Windows path")
-    chk("NOT SINCERE 1" in md and "Set-downs 1" in md, "page-section-no-tokens: the verdicts and the set-downs")
+    chk("1 of 1 not honest" in md and "helper runs" in md, "page-section-no-tokens: the verdicts and the role (%s)" % md)
     bad = M.latest(os.path.join(TMP, "nothing-here"))
     chk("Could not look" in "\n".join(M.page_md(bad)), "page-section-no-tokens: an unreadable reading says could not look")
 
@@ -370,8 +370,9 @@ def t_report_needs_four_sections():
         good = "\n\n".join(s + "\ntext" for s in M.SECTIONS)
         rc = M.daily(NOW, caller=lambda prompt, tier, *a: (good, None, 1, 1.0), S=S, say=lambda t, n: said.append(t))
         chk(rc == 0 and M.latest(od)["report_state"] == "written", "report-needs-four-sections: a whole report is written")
-        chk(open(os.path.join(od, M.NEWEST)).read().startswith("## The day's numbers"),
-            "report-needs-four-sections: a written report renews the newest copy")
+        nw = open(os.path.join(od, M.NEWEST)).read()
+        chk(nw.startswith("# Temporary Work Bundle Monitor") and 0 < nw.find(M.REPORT_TOP) < nw.find("## The day's numbers"),
+            "report-needs-four-sections: a written report renews the newest copy, the five answers on top")
     finally:
         os.environ["RM_WBM_OUT"] = os.path.join(TMP, "out")
 
@@ -593,8 +594,9 @@ def t_polish_watch_on_page_and_digest():
     M.write_json(os.path.join(od, "latest.json"), L)
     L = M.latest(od)
     md = "\n".join(M.page_md(L))
-    chk("born per closed" in md and "1.5" in md and "polish changes 3" in md and "not measured" in md,
-        "polish-watch-on-page-and-digest: the page shows the three measures (%s)" % md[-600:])
+    chk("1.5 new tickets for each ticket closed" in md and "alarm is on" in md and "polish changes" not in md,
+        "polish-watch-on-page-and-digest: the page shows the born answer and the line, and leaves the counts that "
+        "answer no question to the report (%s)" % md[-600:])
     chk("token" not in md.lower() and "weighted" not in md.lower(), "polish-watch-on-page-and-digest: no token figure on the page")
     f = M.digest_fields(L)
     chk(f.get("born") == 4 and f.get("closed") == 4 and f.get("bundle_born") == 3 and f.get("bundle_closed") == 2
@@ -609,6 +611,196 @@ def t_polish_watch_on_page_and_digest():
         text.split("## Temporary Work Bundle Monitor")[-1][:500])
 
 
+# ------------------------------------------------------------------------- the page section by meaning (owner, 2026-11-25)
+
+import re as _re  # noqa: E402
+
+ANSWER_LABELS = ("Are bundles used?", "Are bundles cheaper?", "Do bundles make new tickets?",
+                 "Is work set down honestly?", "What needs a person?")
+TICKET_RX = _re.compile(r"\b[A-Z][A-Z0-9]+(?:_[A-Z0-9]+){2,}\b")          # RIMMANDRAKE_FIX_..., HARNESS_REPAIR_...
+BUNDLE_RX = _re.compile(r"\bWB-[A-Za-z0-9-]+")
+STAMP_RX = _re.compile(r"\d{4}-\d\d-\d\dT\d\d:\d\d|\b\d\d:\d\d:\d\dZ\b|\bUTC\b")
+FIELD_RX = _re.compile(r"\b[a-z]+_[a-z_]+\b|\b[a-z]+\.[a-z_]+\.[a-z_]+\b|\bfix-unknown\b|\bno-tool\b|\bowner-act\b")
+REAL_BID = "WB-mod-FlowWorks-20261125-080228"
+
+
+def _sentences(text):
+    t = _re.sub(r"`[^`]*`", "PATH", _re.sub(r"\*\*|<[^>]+>", "", text))
+    return [s.strip() for s in _re.split(r"(?<=[.?!:;])\s+(?=[A-Z(])|\n+", t) if s.strip()]
+
+
+def _words(s):
+    return len([w for w in s.split() if _re.search(r"[A-Za-z0-9]", w)])
+
+
+def _planted_reading(prev_bundle=(0, 0), today_bundle=(1, 4), bundle_at=None, headline=None):
+    """A reading with real-shaped names: a bundle id and ticket ids that must never reach the page."""
+    tb = T0 + 100
+    at = T0 - M.DAY + 10 if bundle_at is None else bundle_at
+    mem = ["RIMMANDRAKE_FIX_FLOW_PIPE_%s_TWICE" % w for w in ("ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX")]
+    units = ["rm-detached-b"] + (["rm-detached-b0"] if prev_bundle != (0, 0) else [])
+    by = {REAL_BID: bundle(REAL_BID, mem, units, at, system="mod:FlowWorks", pipeline="maturation")}
+    runs = {"rm-detached-b": rec("rm-detached-b", mem[0], tb + 3000),
+            "rm-detached-s": rec("rm-detached-s", "RIMMANDRAKE_SOLO_TICKET_ALONE", tb + 4000)}
+    evs = [ev("file", "RIMMANDRAKE_NEW_FROM_BUNDLE_%d" % i, tb + 10 + i, role_unit="rm-detached-b")
+           for i in range(today_bundle[0])]
+    evs += [ev("close", mem[i], tb + 100 + i, role_unit="rm-detached-b") for i in range(today_bundle[1])]
+    evs += [ev("close", "RIMMANDRAKE_SOLO_TICKET_ALONE", tb + 300, role_unit="rm-detached-s"),
+            ev("file", "RIMMANDRAKE_SET_DOWN_FOR_LATER", tb + 400, role_unit="rm-detached-s",
+               not_now={"class": "fix-unknown", "evidence": "e"})]
+    if prev_bundle != (0, 0):
+        runs["rm-detached-b0"] = rec("rm-detached-b0", mem[4], T0 - 1000)
+        evs += [ev("file", "RIMMANDRAKE_OLD_FROM_BUNDLE_%d" % i, T0 - 3000 + i, role_unit="rm-detached-b0")
+                for i in range(prev_bundle[0])]
+        evs += [ev("close", mem[i + 4], T0 - 2000 + i, role_unit="rm-detached-b0") for i in range(prev_bundle[1])]
+    evs.sort(key=lambda e: e["ts"])
+    R = measure(world(runs=runs, bundles=by, events=evs))
+    if headline:
+        for k, v in headline.items():
+            R["efficiency"]["headline_window"][k]["tokens_per_ticket_stayed_closed"] = v
+    return R
+
+
+def _planted_latest(name, R, verdicts=None, report_state="written"):
+    od = os.path.join(TMP, name)
+    os.makedirs(od, exist_ok=True)
+    V = verdicts if verdicts is not None else [
+        {"verdict": "NOT SINCERE", "role": "maturation in_game"}, {"verdict": "NOT SINCERE", "role": "maturation in_game"},
+        {"verdict": "NOT SINCERE", "role": "detached helper"}, {"verdict": "SINCERE", "role": "bundle worker"}]
+    L = M.summary(R, V, "/mnt/d/ClaudeWork/rimmandrake/work_bundle_monitor/report_2026-11-25.md", report_state,
+                  "2026-11-25")
+    L["monitor_tokens"] = {"judge_tokens": 4242424, "unit": "weighted_v2"}
+    M.write_json(os.path.join(od, "latest.json"), L)
+    return M.latest(od)
+
+
+def _answers_of(md):
+    """-> {label: the text after it on its line}, and the labels in the order they appear."""
+    found = []
+    for ln in md.splitlines():
+        for lab in ANSWER_LABELS:
+            if ("**%s**" % lab) in ln:
+                found.append((lab, ln.split("**%s**" % lab, 1)[1].strip()))
+    return dict(found), [f[0] for f in found]
+
+
+def _section_ok(md, what):
+    chk(not TICKET_RX.search(md), "%s: no ticket id (%s)" % (what, TICKET_RX.findall(md)[:3]))
+    chk(not BUNDLE_RX.search(md), "%s: no bundle id (%s)" % (what, BUNDLE_RX.findall(md)[:3]))
+    chk(not STAMP_RX.search(md), "%s: no ISO or UTC stamp (%s)" % (what, STAMP_RX.findall(md)[:3]))
+    chk(not FIELD_RX.search(_re.sub(r"`[^`]*`", "", md)), "%s: no field, class or role key as a word (%s)" % (
+        what, FIELD_RX.findall(_re.sub(r"`[^`]*`", "", md))[:3]))
+    long = [s for s in _sentences(md.split("\n", 1)[1]) if _words(s) > 20]
+    chk(not long, "%s: no sentence over 20 words (%s)" % (what, long[:2]))
+
+
+def t_page_answers_five_questions():
+    L = _planted_latest("answers", _planted_reading())
+    md = "\n".join(M.page_md(L, now=NOW + 60))
+    html = M.page_html(L, now=NOW + 60)
+    _section_ok(md, "page-answers-five-questions")
+    ans, order = _answers_of(md)
+    chk(order == list(ANSWER_LABELS), "page-answers-five-questions: the five labels, once each, in order (%s)" % order)
+    for lab in ANSWER_LABELS:
+        body = _re.sub(r"\s*\([^)]*\)\s*$", "", ans.get(lab, ""))          # the one evidence number, in brackets
+        n = len([s for s in _re.split(r"(?<=[.!?])\s+", body) if s.strip()])
+        chk(n == 1, "page-answers-five-questions: one verdict sentence under %r (%r)" % (lab, ans.get(lab)))
+    chk("Nov 25" in md and "PST" in md, "page-answers-five-questions: the day in local Pacific (%s)" % md[:300])
+    chk("D:\\ClaudeWork\\rimmandrake\\work_bundle_monitor\\report_2026-11-25.md" in md,
+        "page-answers-five-questions: the report's full Windows path, once")
+    chk(md.count("report_2026-11-25.md") == 1, "page-answers-five-questions: the path is given once")
+    chk("(4 of 5 closes, 80%)" in ans.get("Are bundles used?", ""),
+        "page-answers-five-questions: the share of closes through a bundle is the evidence (%s)" % ans.get("Are bundles used?"))
+    chk("in-game" in ans.get("Is work set down honestly?", "") and "3 of 4 not honest" in ans.get("Is work set down honestly?", ""),
+        "page-answers-five-questions: not sincere count and the one role with the most, in plain words (%s)" %
+        ans.get("Is work set down honestly?"))
+    chk(ans.get("What needs a person?", "").startswith("Nothing"), "page-answers-five-questions: nothing crossed reads "
+        "Nothing (%s)" % ans.get("What needs a person?"))
+    chk(all(lab in html for lab in ANSWER_LABELS) and not BUNDLE_RX.search(html) and not TICKET_RX.search(html),
+        "page-answers-five-questions: the HTML carries the same five answers and no id")
+    chk("token" not in (md + html).lower() and "weighted" not in (md + html).lower() and "4242424" not in md + html,
+        "page-answers-five-questions: still no token figure")
+
+
+def t_page_too_young_says_too_early():
+    R = _planted_reading()                         # the bundle began two days ago: the ripe day predates it
+    L = _planted_latest("young", R)
+    ans, _o = _answers_of("\n".join(M.page_md(L, now=NOW + 60)))
+    a = ans.get("Are bundles cheaper?", "")
+    first = M.when(NOW + 2 * M.DAY)
+    chk("too early to tell" in a.lower() and first in a, "page-too-young-says-too-early: too early, with %r (%s)" % (first, a))
+    R2 = _planted_reading(headline={"bundle": 400000, "single": 1000000})
+    R2["efficiency"]["first_bundle"] = iso(NOW - 10 * M.DAY)
+    a2 = _answers_of("\n".join(M.page_md(_planted_latest("ripe", R2), now=NOW + 60)))[0].get("Are bundles cheaper?", "")
+    chk(a2.startswith("Yes") and "too early" not in a2.lower(), "page-too-young-says-too-early: a ripe cheaper bundle "
+        "reads Yes (%s)" % a2)
+    R3 = _planted_reading(headline={"bundle": 1500000, "single": 1000000})
+    R3["efficiency"]["first_bundle"] = iso(NOW - 10 * M.DAY)
+    a3 = _answers_of("\n".join(M.page_md(_planted_latest("dear", R3), now=NOW + 60)))[0].get("Are bundles cheaper?", "")
+    chk(a3.startswith("No"), "page-too-young-says-too-early: a ripe dearer bundle reads No (%s)" % a3)
+
+
+def t_page_line_crossed_needs_person():
+    R = _planted_reading(prev_bundle=(3, 1), today_bundle=(5, 2))
+    chk(R["lines"]["bundle_born_per_closed"]["crossed"] is True, "page-line-crossed-needs-person: the planted line is "
+        "crossed (%s)" % R["lines"]["bundle_born_per_closed"])
+    L = _planted_latest("crossed", R)
+    md = "\n".join(M.page_md(L, now=NOW + 60))
+    ans, _o = _answers_of(md)
+    need = ans.get("What needs a person?", "")
+    chk(need and not need.startswith("Nothing") and "Conductor" in need,
+        "page-line-crossed-needs-person: the crossed line names an act and who does it (%s)" % need)
+    chk(ans.get("Do bundles make new tickets?", "").startswith("Yes"),
+        "page-line-crossed-needs-person: the new-ticket answer says yes (%s)" % ans.get("Do bundles make new tickets?"))
+    _section_ok(md, "page-line-crossed-needs-person")
+    stale = "\n".join(M.page_md(_planted_latest("stale", _planted_reading()), now=NOW + 3 * M.DAY))
+    chk("Operations" in _answers_of(stale)[0].get("What needs a person?", ""),
+        "page-line-crossed-needs-person: a reading over two days old asks Operations (%s)" %
+        _answers_of(stale)[0].get("What needs a person?"))
+    failed = "\n".join(M.page_md(_planted_latest("failed", _planted_reading(), report_state="failed: x"), now=NOW + 60))
+    chk("Conductor" in _answers_of(failed)[0].get("What needs a person?", ""),
+        "page-line-crossed-needs-person: a failed report asks the Conductor")
+    bad = "\n".join(M.page_md(M.latest(os.path.join(TMP, "nothing-here-either")), now=NOW))
+    a_bad, o_bad = _answers_of(bad)
+    chk(o_bad == list(ANSWER_LABELS) and "Could not look" in bad and "Operations" in a_bad.get("What needs a person?", ""),
+        "page-line-crossed-needs-person: an unreadable reading answers could not look and asks Operations")
+
+
+def t_report_opens_with_answers():
+    L = _planted_latest("report", _planted_reading())
+    body = "# Temporary Work Bundle Monitor: daily report\n\n## The day's numbers\n\nx\n\n## The worst pattern\n\ny\n"
+    text = M.compose_report(L, body, now=NOW + 60)
+    i_need, i_detail, i_nums = (text.find("## What a person needs to know"), text.find("# Detail"),
+                                text.find("## The day's numbers"))
+    chk(0 < i_need < i_detail < i_nums, "report-opens-with-answers: the five answers, then a detail heading, then the "
+        "tables (%s, %s, %s)" % (i_need, i_detail, i_nums))
+    top = text[i_need:i_detail]
+    _o = _answers_of(top)[1]
+    chk(_o == list(ANSWER_LABELS), "report-opens-with-answers: the five labels in order (%s)" % _o)
+    chk(text.count("\n# ") + text.startswith("# ") == 2 and "daily report\n\n## The day" not in text,
+        "report-opens-with-answers: one title, the model's own title dropped")
+    chk(M.report_ok(text, {}) is None or M.report_ok(text, {}) in M.SECTIONS,
+        "report-opens-with-answers: the composed report still carries the model's sections")
+    od = os.path.join(TMP, "rerender")
+    os.makedirs(od, exist_ok=True)
+    R = _planted_reading()
+    M.write_json(os.path.join(od, "reading_2026-11-25.json"), R)
+    with open(os.path.join(od, "verdicts_2026-11-25.jsonl"), "w") as f:
+        f.write(json.dumps({"verdict": "NOT SINCERE", "role": "operations"}) + "\n")
+    with open(os.path.join(od, "report_2026-11-25.md"), "w") as f:
+        f.write(body)
+    M.write_json(os.path.join(od, "latest.json"), {"date": "2026-11-25", "monitor_tokens": {"judge_tokens": 5}})
+    chk(M.rerender("2026-11-25", od=od, now=NOW + 60) == 0 and M.rerender("2026-11-25", od=od, now=NOW + 60) == 0,
+        "report-opens-with-answers: rerender writes the day again from its files, twice")
+    again = open(os.path.join(od, "report_2026-11-25.md")).read()
+    chk(again.count(M.REPORT_TOP) == 1 and again.count("## The day's numbers") == 1 and
+        again == open(os.path.join(od, M.NEWEST)).read(), "report-opens-with-answers: a second rerender adds no second top")
+    L2 = M.latest(od)
+    chk(L2.get("cheaper", {}).get("verdict") == "too early" and L2.get("monitor_tokens") == {"judge_tokens": 5},
+        "report-opens-with-answers: rerender writes latest.json with the cost word and keeps the old spend record")
+    chk(M.rerender("2026-01-01", od=od) == 2, "report-opens-with-answers: a day with no files is could not look")
+
+
 def main():
     for t in [t_bundle_unit_is_bundle_run, t_bundle_of_one_counts_single, t_unreadable_record_not_zero,
               t_missing_source_unmeasured, t_unpriced_run_not_zero_tokens, t_reopened_close_not_stayed,
@@ -619,7 +811,8 @@ def main():
               t_polish_then_fix_one_regression, t_no_polish_fix_counts_no_polish, t_regression_kinds_and_window,
               t_before_rule_not_measured, t_polish_zero_needs_probe, t_polish_findings_from_reader,
               t_born_per_closed_per_bundle_and_day, t_born_line_two_days, t_lines_crossed_section,
-              t_polish_watch_on_page_and_digest]:
+              t_polish_watch_on_page_and_digest, t_page_answers_five_questions, t_page_too_young_says_too_early,
+              t_page_line_crossed_needs_person, t_report_opens_with_answers]:
         print("-- %s" % t.__name__)
         try:
             t()

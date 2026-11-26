@@ -31,7 +31,7 @@ F = [
     ("bundle born = the day's born", MON, 'b = set().union(*[by_unit.get(r["unit"], set()) for r in rs]) if rs else set()', "b = born if rs else set()", "born-per-closed-per-bundle-and-day"),
     ("born line on one day", MON, "crossed=over(g) and over(p))", "crossed=over(g))", "born-line-two-days"),
     ("lines section not owed", MON, "for s in SECTIONS + ((LINES_SECTION,) if crossed_lines(R) else ()):", "for s in SECTIONS:", "lines-crossed-section"),
-    ("page drops the watch", MON, "return out + _watch_md(L.get(\"polish_watch\")) + [\"\"]", "return out + [\"\"]", "polish-watch-on-page-and-digest"),
+    ("page drops the watch", MON, "    ln = (W.get(\"lines\") or {}).get(\"bundle_born_per_closed\") or {}", "    ln = {}", "polish-watch-on-page-and-digest"),
     ("digest drops born", MON, "out.update(born=(b.get(\"day\") or {}).get(\"born\"),", "out.update(", "polish-watch-on-page-and-digest"),
     ("digest line drops the crossed line", BL, "    if m.born_line_crossed:\n", "    if False:\n", "polish-watch-on-page-and-digest"),
 ]

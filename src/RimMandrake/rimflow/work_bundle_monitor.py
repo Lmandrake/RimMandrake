@@ -1361,7 +1361,7 @@ def summary(R, V, report_path, report_state, date):
                 "state") == "measured" else UNM,
             "verdicts": vc if vc is not None else UNM,
             "not_sincere_by_role": _by_role(V), "report": native(report_path) if report_path else None,
-            "report_state": report_state, "polish_watch": watch_summary(R)}
+            "report_state": report_state, "polish_watch": watch_summary(R), "cheaper": cheaper_of(R)}
 
 
 def watch_summary(R):
@@ -1414,6 +1414,8 @@ def daily(now=None, caller=None, S=None, say=None):
                                                  "WBM REPORT %s" % date)
     rp = os.path.join(od, "report_%s.md" % date)
     bad = err or (report_ok(text, R) and "the report lacks the section %r" % report_ok(text, R))
+    if not bad:
+        text = compose_report(dict(summary(R, V, rp, "written", date), state="measured"), text, now)
     if bad:
         fp = os.path.join(od, "report_%s.FAILED.md" % date)
         with open(fp, "w", encoding="utf-8") as f:
@@ -1434,6 +1436,34 @@ def daily(now=None, caller=None, S=None, say=None):
     write_json(os.path.join(od, "latest.json"), dict(summary(R, V, rp, "written", date), monitor_tokens=_spend(V, tok),
                                                       previous=prev, report_seconds=round(sec, 1)))
     (say or _say)("the report of %s is written: %s" % (date, native(rp)), time.time())
+    print("WROTE %s" % native(rp))
+    return 0
+
+
+def rerender(date, od=None, now=None):
+    """Write the day's report and latest.json again from the day's reading, verdicts and the model's written text, with
+    no model call: the five answers on top are the program's (compose_report). -> 0 written, 2 could not look."""
+    od = od or out_dir()
+    try:
+        R = json.load(open(os.path.join(od, "reading_%s.json" % date), encoding="utf-8"))
+        with open(os.path.join(od, "verdicts_%s.jsonl" % date), encoding="utf-8") as f:
+            V = [json.loads(x) for x in f if x.strip()]
+        rp = os.path.join(od, "report_%s.md" % date)
+        body = open(rp, encoding="utf-8").read()
+    except (OSError, ValueError) as e:
+        print("COULD NOT LOOK %s: %s" % (type(e).__name__, e))
+        return 2
+    if REPORT_DETAIL in body:                  # a report already composed: keep only the model's part
+        body = body.split(REPORT_DETAIL, 1)[1]
+    old = latest(od)
+    L = summary(R, V, rp, "written", date)
+    text = compose_report(dict(L, state="measured"), body, now)
+    for p in (rp, os.path.join(od, NEWEST)):
+        with open(p + ".tmp", "w", encoding="utf-8") as f:
+            f.write(text)
+        os.replace(p + ".tmp", p)
+    keep = {k: old[k] for k in ("monitor_tokens", "previous", "report_seconds") if k in old}
+    write_json(os.path.join(od, "latest.json"), dict(L, **keep))
     print("WROTE %s" % native(rp))
     return 0
 
@@ -1502,124 +1532,225 @@ def digest_fields(L):
 
 PAGE_TITLE = "Temporary Work Bundle Monitor"
 
+# The page section answers five questions, each with one verdict sentence written by a stated rule from latest.json
+# (the rules: the boundary page, §The page section answers five questions). No model writes it, and it shows no token
+# or spend figure, no ticket id, no bundle id and no UTC stamp (the owner, 2026-11-25: "summarize the meaningful
+# outcome that a human needs to know, not lists of ticket names. Format it by meaning").
+ANSWER_LABELS = ("Are bundles used?", "Are bundles cheaper?", "Do bundles make new tickets?",
+                 "Is work set down honestly?", "What needs a person?")
+REPORT_TOP = "## What a person needs to know"
+REPORT_DETAIL = "# Detail for the Conductor: the day's tables, by field name"
+# A gap under a tenth either way reads "about the same": the danger is calling one day's noise a saving. A guess, not
+# measured: the first ripe bundle figure arrives 2026-11-28.
+CHEAPER_MARGIN = 0.10
+# A reading older than two days asks Operations: the danger is a page that shows a dead monitor's last day as today's.
+# The daily timer runs once a day (measured: rm-work-bundle-monitor.timer), so two days means at least one run missed.
+STALE_S = 2 * DAY
+ROLE_WORDS = {"maturation in_game": "in-game test runs", "maturation offline_build": "offline build runs",
+              "maturation designer": "design runs", "maturation blind_challenge": "blind judge runs",
+              "maturation preflight": "preflight runs", "maturation pre_human": "evidence check runs",
+              "maturation his_walk": "walk preparation runs", "maturation intake": "intake runs",
+              "workshop shape": "Workshop shaping runs", "detached helper": "helper runs",
+              "resumed helper": "resumed helper runs", "bundle worker": "bundle runs",
+              "Conductor's hand brief": "helpers the Conductor briefed by hand", "conductor": "the Conductor",
+              "operations": "Operations", "designer": "the Designer", "dispatcher": "the Dispatcher"}
 
-def page_md(L):
-    """The page section: shares, deferral counts and sincerity verdicts. No token and no spend figure."""
-    out = ["## " + PAGE_TITLE, ""]
+
+def when(t):
+    """epoch -> 'Nov 25, 3:28 PM PST' (local Pacific; the owner's form for every time on the page)."""
+    from zoneinfo import ZoneInfo
+    d = dt.datetime.fromtimestamp(t, ZoneInfo("America/Los_Angeles"))
+    return "%s %d, %s %s" % (d.strftime("%b"), d.day, d.strftime("%I:%M %p").lstrip("0"), d.strftime("%Z"))
+
+
+def role_words(role):
+    if role in ROLE_WORDS:
+        return ROLE_WORDS[role]
+    r = str(role or "unknown").replace("rm-role-", "").replace("_", " ").replace("-", " ")
+    return r + " runs"
+
+
+def cheaper_of(R):
+    """-> {"verdict": yes | no | same | too early | no ripe close | could not look, "first_final"?: ISO, "cause"?}.
+    No token figure: the page and the digest read this word, the report gives the figures."""
+    e = R.get("efficiency") or {}
+    if e.get("state") != "measured":
+        return {"verdict": "could not look", "cause": e.get("cause")}
+    h = e.get("headline_window") or {}
+    b = (h.get("bundle") or {}).get("tokens_per_ticket_stayed_closed")
+    s = (h.get("single") or {}).get("tokens_per_ticket_stayed_closed")
+    if type(b) is int and type(s) is int and s > 0:
+        r = b / s
+        return {"verdict": "yes" if r < 1 - CHEAPER_MARGIN else "no" if r > 1 + CHEAPER_MARGIN else "same"}
+    fb, made = ep(e.get("first_bundle")), ep(R.get("made"))
+    if fb is None or made is None:
+        return {"verdict": "too early", "first_final": None}
+    need = fb + STAY_DAYS * DAY
+    if made < need:        # the ripe day ends before the first bundle: the first daily run whose ripe day holds it
+        k = int(-(-(need - made) // DAY))
+        return {"verdict": "too early", "first_final": iso(made + k * DAY)}
+    return {"verdict": "no ripe close"}
+
+
+def _int(x):
+    return x if type(x) is int else None
+
+
+def answers(L, now=None):
+    """latest() -> [(label, verdict sentence, evidence or None)], one per ANSWER_LABELS, by the boundary page's rules."""
+    now = time.time() if now is None else now
     if L.get("state") != "measured":
-        return out + ["Could not look: %s. These numbers are UNMEASURED, not 0." % L.get("cause"), ""]
-    w = L.get("window") or {}
-    out.append("Day %s to %s (UTC), made %s. The Conductor reads the report: `%s` (%s)." % (
-        w.get("since"), w.get("until"), L.get("made"), L.get("report") or "no report", L.get("report_state")))
-    out.append("")
-    if L.get("share_state") == "measured":
-        out += ["| pipeline | bundle runs (closes) | bundles of one (closes) | single-ticket runs (closes) |",
-                "|---|---|---|---|"]
-        for pl in ("maturation", "workshop"):
-            s = L["share"][pl]
-            out.append("| %s | %s (%s) | %s (%s) | %s (%s) |" % (
-                pl, s["bundle"]["runs"], s["bundle"]["closes"], s["bundle_of_one"]["runs"],
-                s["bundle_of_one"]["closes"], s["single"]["runs"], s["single"]["closes"]))
-    else:
-        out.append("Share: could not look: %s." % L.get("share_cause"))
-    out.append("")
-    d = L.get("deferral") or {}
-    if d.get("state") == CNL:
-        out.append("Deferral: could not look: %s." % d.get("cause"))
-    else:
-        out.append("Set-downs %s (by class: %s; by role: %s); program filings %s; backward moves %s; open waits that "
-                   "name the Conductor %s; LEFT OPEN notes %s; runs that ended with work owed %s; filed %s, closed %s."
-                   % (d.get("set_downs"), _kv(d.get("by_class")), _kv(d.get("by_role")), d.get("program_filings"),
-                      L.get("backward_moves"), d.get("waits_naming_conductor_open"), d.get("left_open_notes"),
-                      d.get("runs_ending_with_work_owed"), d.get("filed"), d.get("closed")))
-    v = L.get("verdicts")
-    out.append("")
-    out.append("Sincerity (a Sonnet judge, each set-down and backward move): %s; not sincere by role: %s." % (
-        _kv(v) if isinstance(v, dict) else v, _kv(L.get("not_sincere_by_role")) or "none"))
-    out.append("")
-    return out + _watch_md(L.get("polish_watch")) + [""]
-
-
-WINDOW_LABEL = {"ripe_day": "the ripe day (3 days old: final)", "today": "today (provisional: pending until 3 days old)"}
-
-
-def _watch_md(W):
-    """The polish watch on the page: the three measures and the born line. Counts and ratios only."""
-    if not W:
-        return ["The polish watch: UNMEASURED (this reading predates it), not 0."]
+        cnl = "Could not look: the monitor's reading could not be read."
+        return [(lab, cnl, None) for lab in ANSWER_LABELS[:-1]] + [
+            (ANSWER_LABELS[-1], "Operations: repair the monitor's daily run, because its reading cannot be read.", None)]
     out = []
-    b = W.get("born") or {}
-
-    def g(x):
-        return ("%s born, %s closed, born per closed %s" % (x.get("born"), x.get("closed"), x.get("ratio"))
-                if isinstance(x, dict) and "born" in x else "could not look")
-    if b.get("state") == "measured":
-        k, d = b.get("by_kind") or {}, b.get("day") or {}
-        per = "; ".join("%s %s" % (bid, x.get("ratio")) for bid, x in sorted((b.get("bundles") or {}).items())) or "none"
-        out.append("Tickets born per closed (the polish watch): the day %s (dropped %s, not in the ratio); bundle runs "
-                   "%s; bundles of one %s; single-ticket runs %s. Per bundle: %s." % (
-                       g(d), d.get("dropped"), g(k.get("bundle")), g(k.get("bundle_of_one")), g(k.get("single")), per))
+    # 1. Are bundles used? closes through a bundle of two or more over every run's closes
+    sh = L.get("share") or {}
+    if L.get("share_state") != "measured":
+        out.append((ANSWER_LABELS[0], "Could not look: the day's runs could not be read.", None))
     else:
-        out.append("Tickets born per closed: could not look: %s." % b.get("cause"))
-    Ln = (W.get("lines") or {}).get("bundle_born_per_closed") or {}
-    out.append(("LINE CROSSED: bundle runs' born per closed over %s on the day (%s) and the day before (%s); the report "
-                "gives the evidence and three repairs." if Ln.get("crossed") else
-                "The line (bundle runs' born per closed over %s two days running): not crossed (the day %s, the day "
-                "before %s).") % (Ln.get("line"), Ln.get("today"), Ln.get("day_before")))
-    rg = W.get("regress") or {}
-    for w in ("ripe_day", "today"):
-        if rg.get("state") != "measured":
-            out.append("Regressions on files bundles changed, %s: could not look: %s." % (WINDOW_LABEL[w], rg.get("cause")))
-            continue
-        sm = rg.get(w) or {}
-
-        def col(c):
-            x = sm.get(c) or {}
-            return "%s of %s ripe files regressed, %s of %s pending so far" % (
-                x.get("ripe_regressed"), x.get("ripe"), x.get("pending_regressed_so_far"), x.get("pending"))
-        out.append("Files bundles changed with a later fix, revert, reopened ticket or nightly red within 3 days, %s: "
-                   "with polish %s; without polish %s; before the polish: rule (polish not measured) %s." % (
-                       WINDOW_LABEL[w], col("polish"), col("no_polish"), col("before_rule")))
-    for w in ("today", "ripe_day"):
-        p = (W.get("polish") or {}).get(w) or {}
-        if p.get("state") == "measured":
-            out.append("Polish changes (subject polish:), %s: polish changes %s (in bundles %s, outside bundles %s); the "
-                       "fresh reader: finding %s (significant %s), read clean %s, no recorded read %s%s." % (
-                           WINDOW_LABEL[w], p.get("changes"), p.get("in_bundles"), p.get("in_other_runs"),
-                           p.get("with_finding"), p.get("significant"), p.get("read_clean"), p.get("no_recorded_read"),
-                           " (counted from the rule, %s)" % p.get("since") if p.get("partial") else ""))
+        cl = {k: [_int(((sh.get(pl) or {}).get(k) or {}).get("closes")) for pl in ("maturation", "workshop")]
+              for k in ("bundle", "bundle_of_one", "single")}
+        if any(x is None for v in cl.values() for x in v):
+            out.append((ANSWER_LABELS[0], "Could not look: a close count is missing from the reading.", None))
         else:
-            out.append("Polish changes, %s: %s: %s." % (WINDOW_LABEL[w], p.get("state", UNM), p.get("cause")))
+            b, n = sum(cl["bundle"]), sum(sum(v) for v in cl.values())
+            pct = 100.0 * b / n if n else 0
+            v = ("Not known: no run closed a ticket today." if not n else
+                 "No: no ticket closed today came through a bundle." if not b else
+                 "Rarely: few of the day's ticket closes came through a bundle." if pct < 25 else
+                 "Sometimes: a fair part of the day's ticket closes came through a bundle." if pct <= 50 else
+                 "Yes: most of the day's ticket closes came through a bundle.")
+            out.append((ANSWER_LABELS[0], v, ("%d of %d closes, %d%%" % (b, n, round(pct))) if n else None))
+    # 2. Are bundles cheaper? the word cheaper_of wrote; the figures stay in the report
+    c = L.get("cheaper") or {}
+    cv = c.get("verdict")
+    if cv == "yes":
+        out.append((ANSWER_LABELS[1], "Yes: a bundle ticket that stays closed costs less than a single-run ticket.",
+                    None))
+    elif cv == "no":
+        out.append((ANSWER_LABELS[1], "No: a bundle ticket that stays closed costs more than a single-run ticket.",
+                    None))
+    elif cv == "same":
+        out.append((ANSWER_LABELS[1], "About the same: the two costs differ by less than a tenth.", None))
+    elif cv == "too early":
+        ff = ep(c.get("first_final"))
+        out.append((ANSWER_LABELS[1], ("Too early to tell until %s, when the first bundle tickets have stayed closed "
+                                       "three days." % when(ff)) if ff else "Too early to tell: no bundle has run yet.",
+                    None))
+    elif cv == "no ripe close":
+        out.append((ANSWER_LABELS[1], "Not known: no bundle ticket from three days ago stayed closed.", None))
+    elif cv == "could not look":
+        out.append((ANSWER_LABELS[1], "Could not look: the day's spend could not be read.", None))
+    else:
+        out.append((ANSWER_LABELS[1], "Not known: this reading was made before the page judged cost.", None))
+    # 3. Do bundles make new tickets? bundle runs' born per closed, and the monitor's own line
+    W = L.get("polish_watch") or {}
+    bw = W.get("born") or {}
+    ln = (W.get("lines") or {}).get("bundle_born_per_closed") or {}
+    bk = (bw.get("by_kind") or {}).get("bundle") or {}
+    if bw.get("state") != "measured":
+        out.append((ANSWER_LABELS[2], "Could not look: the day's new tickets could not be counted.", None))
+    elif ln.get("crossed"):
+        out.append((ANSWER_LABELS[2], "Yes, and the alarm is on: bundle runs filed more new tickets than they closed "
+                    "two days running.", "%s new tickets for each ticket closed" % bk.get("ratio")))
+    elif not isinstance(bk.get("ratio"), (int, float)):
+        out.append((ANSWER_LABELS[2], "Not known: bundle runs closed no ticket today.", None))
+    elif bk["ratio"] > 1:
+        out.append((ANSWER_LABELS[2], "Today only: bundle runs filed more new tickets than they closed, so the alarm "
+                    "waits for a second day.", "%s new tickets for each ticket closed" % bk["ratio"]))
+    else:
+        out.append((ANSWER_LABELS[2], "No: bundle runs did not file more new tickets than they closed.",
+                    "%s new for %s closed" % (bk.get("born"), bk.get("closed"))))
+    # 4. Is work set down honestly? the judge's NOT SINCERE count and the role with the most
+    v = L.get("verdicts")
+    if not isinstance(v, dict):
+        out.append((ANSWER_LABELS[3], "Could not look: the judge's verdicts could not be read.", None))
+    else:
+        ns, judged = int(v.get("NOT SINCERE") or 0), sum(int(x or 0) for x in v.values())
+        by = L.get("not_sincere_by_role") or {}
+        top = max(by.values()) if by else 0
+        roles = sorted(r for r, n in by.items() if n == top and top)
+        most = " and ".join(role_words(r) for r in roles[:2]) + (" (tied)" if len(roles) > 1 else "")
+        if not judged:
+            out.append((ANSWER_LABELS[3], "Nothing to judge: no run set work down today.", None))
+        elif not ns:
+            out.append((ANSWER_LABELS[3], "Yes: the judge found every set-down it read honest.", "%d read" % judged))
+        else:
+            lead = ("Mostly: the judge found a few set-downs not honest" if ns * 4 <= judged else
+                    "Often not: the judge found many set-downs not honest" if ns * 2 <= judged else
+                    "No: the judge found most set-downs not honest")
+            out.append((ANSWER_LABELS[3], "%s, with the most from %s." % (lead, most), "%d of %d not honest" % (ns, judged)))
+    # 5. What needs a person? the first that holds: a stale reading, a failed report, the crossed line; else Nothing
+    made = ep(L.get("made"))
+    if made is None or now - made > STALE_S:
+        out.append((ANSWER_LABELS[4], "Operations: restart the monitor's daily run, which has not run since %s." % (
+            when(made) if made else "an unknown time"), None))
+    elif str(L.get("report_state") or "").startswith("failed"):
+        out.append((ANSWER_LABELS[4], "The Conductor: read why today's report failed, then run the report again.", None))
+    elif ln.get("crossed"):
+        out.append((ANSWER_LABELS[4], "The Conductor: pick one of the report's three repairs for bundles that make new "
+                    "tickets.", None))
+    else:
+        out.append((ANSWER_LABELS[4], "Nothing.", None))
     return out
 
 
-def _kv(d):
-    return ", ".join("%s %s" % (k, v) for k, v in sorted((d or {}).items())) or "none"
+def lead_lines(L, with_path=True):
+    """The two lines above the answers: what the words mean, the day, and the report's full path once."""
+    w = L.get("window") or {}
+    a, b = ep(w.get("since")), ep(w.get("until"))
+    day = ("These answers cover %s to %s." % (when(a), when(b))) if a and b else "The day could not be read."
+    rp = L.get("report")
+    where = ((" Names and figures are in the report: `%s`." % rp) if rp else " No report was written today."
+             ) if with_path else ""
+    return ["A bundle is one run that works two or more tickets of one mod or pipeline part. "
+            "A set-down is work a run put off instead of doing.", "", day + where]
 
 
-def page_html(L):
+def _answer_line(lab, verdict, evidence):
+    return "- **%s** %s%s" % (lab, verdict, (" (%s)" % evidence) if evidence else "")
+
+
+def page_md(L, now=None):
+    """The page section: five questions, one plain verdict each. No token or spend figure, no id, no UTC stamp."""
+    out = ["## " + PAGE_TITLE, ""]
+    if L.get("state") == "measured":
+        out += lead_lines(L) + [""]
+    else:
+        out += ["Could not look: %s. These answers are UNMEASURED, not 0." % L.get("cause"), ""]
+    return out + [_answer_line(*a) for a in answers(L, now)] + [""]
+
+
+def page_html(L, now=None):
     import html
-    rows = page_md(L)[2:]
-    body = []
-    for ln in rows:
-        if ln.startswith("|---"):
-            continue
-        if ln.startswith("|"):
-            cells = [c.strip() for c in ln.strip("|").split("|")]
-            tag = "th" if "pipeline" in cells[0] else "td"
-            body.append("<tr>%s</tr>" % "".join("<%s>%s</%s>" % (tag, html.escape(c), tag) for c in cells))
-        elif ln:
-            body.append("<p class='m'>%s</p>" % html.escape(ln).replace("`", ""))
-    tbl = "".join(b for b in body if b.startswith("<tr>"))
-    ps = "".join(b for b in body if b.startswith("<p"))
-    return "<h2>%s</h2>%s%s" % (html.escape(PAGE_TITLE), ("<table>%s</table>" % tbl) if tbl else "", ps)
+    lead = lead_lines(L) if L.get("state") == "measured" else [
+        "Could not look: %s. These answers are UNMEASURED, not 0." % L.get("cause")]
+    ps = "".join("<p class='m'>%s</p>" % html.escape(x).replace("`", "") for x in lead if x)
+    items = "".join("<li><b>%s</b> %s%s</li>" % (html.escape(lab), html.escape(v), html.escape(" (%s)" % e) if e else "")
+                    for lab, v, e in answers(L, now))
+    return "<h2>%s</h2>%s<ul>%s</ul>" % (html.escape(PAGE_TITLE), ps, items)
+
+
+def compose_report(L, body, now=None):
+    """The written report: the program's five answers first, then the model's text under a heading that marks it as
+    detail. The model's own title line, if it wrote one, is dropped: the report has one title."""
+    date = L.get("date") or "?"
+    lines = (body or "").strip().splitlines()
+    if lines and lines[0].startswith("# "):
+        lines = lines[1:]
+    top = ["# Temporary Work Bundle Monitor: daily report for %s" % date, "", REPORT_TOP, ""]
+    top += lead_lines(L, with_path=False) + [""]
+    top += [_answer_line(*a) for a in answers(L, now)] + ["", REPORT_DETAIL, ""]
+    return "\n".join(top + lines).rstrip() + "\n"
 
 
 # ------------------------------------------------------------------------------------------------ cli -----------
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("cmd", choices=("measure", "judge", "calibrate", "daily", "page"))
+    ap.add_argument("cmd", choices=("measure", "judge", "calibrate", "daily", "page", "rerender"))
+    ap.add_argument("--date", help="rerender: the day (YYYY-MM-DD) whose reading, verdicts and report are written again")
     ap.add_argument("--since")
     ap.add_argument("--until")
     ap.add_argument("--json", action="store_true")
@@ -1629,6 +1760,8 @@ def main(argv=None):
     t0 = ep(o.since) or (t1 - DAY)
     if o.cmd == "daily":
         return daily(now)
+    if o.cmd == "rerender":
+        return rerender(o.date or dt.datetime.now().strftime("%Y-%m-%d"))
     if o.cmd == "page":
         print("\n".join(page_md(latest())))
         return 0

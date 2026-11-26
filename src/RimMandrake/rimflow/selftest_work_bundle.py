@@ -716,8 +716,31 @@ def t_the_page_shows_each_live_bundle():
     d = next(x for x in page["rows"] if x["id"] == dead["id"])
     chk(lambda: "dead, no finish" in d["state"], "page: a live bundle whose unit is gone reads dead, no finish (%s)" % d)
     md, ht = "\n".join(W.page_md(page)), W.page_html(page)
-    chk(lambda: all(x in md and x in ht for x in (live["id"], "pipeline:docs", "G1", "fixed", "3 fix in order")),
-        "page: the markdown and the HTML both show the block")
+    chk(lambda: all(x in md and x in ht for x in ("docs part of the pipeline", "1 of 2 tickets done", "3 fix in order",
+                                                  "restarted 2 times", W.when(NOW))),
+        "page: the markdown and the HTML both show the bundle by meaning (%s)" % md)
+    # the owner, 2026-11-25: "summarize the meaningful outcome that a human needs to know, not lists of ticket names"
+    import re
+    mod = W.new_record("mod:ExplosiveKnockback", ["RIMMANDRAKE_BRUISE_KNOCKBACK_LANDING_ON_PAWN",
+                                                  "RIMMANDRAKE_FLING_KNOCKBACK_CARRY_ON_OWN_ARC"], "why", "maturation", NOW)
+    mod.update(state="live", step="live pass on RIMMANDRAKE_FLING_KNOCKBACK_CARRY_ON_OWN_ARC",
+               units=[{"unit": "u-live", "at": NOW, "kind": "launch"}], raised={"why": "RIMMANDRAKE_X_Y_Z is stuck"},
+               outcomes={"RIMMANDRAKE_BRUISE_KNOCKBACK_LANDING_ON_PAWN": {"outcome": "dropped"}})
+    fails = [dict(W.new_record("mod:ExplosiveKnockback", ["RIMMANDRAKE_A_B_C"], "why", "maturation", NOW + i),
+                  id="WB-mod-ExplosiveKnockback-2026112%d-180116" % i, state="launch_failed") for i in range(2)]
+    pg = W.page_rows(NOW + 60, bundles={b["id"]: b for b in [live, dead, ended, mod] + fails},
+                     unit_live=lambda u: u == "u-live")
+    md2, ht2 = "\n".join(W.page_md(pg)), W.page_html(pg)
+    tid = re.compile(r"\b[A-Z][A-Z0-9]+(?:_[A-Z0-9]+){2,}\b|\bWB-[A-Za-z0-9-]+|\d{4}-\d\d-\d\dT|\bUTC\b")
+    chk(lambda: not tid.search(md2) and not tid.search(ht2), "page: no ticket name, bundle id or UTC stamp (%s)" %
+        tid.findall(md2 + ht2)[:3])
+    chk(lambda: "Explosive Knockback mod" in md2 and "1 of 2 tickets done" in md2 and "asked the Conductor" in md2,
+        "page: a mod bundle reads by the mod's name, its tickets done and its call for help (%s)" % md2)
+    live_lines = [x for x in md2.splitlines() if x.startswith("- **")]
+    chk(lambda: len(live_lines) == 3, "page: one line per live bundle, none for an ended or failed one (%s)" % live_lines)
+    chk(lambda: sum(1 for x in md2.splitlines() if "failed to launch" in x) == 1 and "2 failed to launch" in md2
+        and "1 ended" in md2, "page: ended and failed launches are one count line (%s)" % md2)
+    chk(lambda: all(len(x.split()) <= 40 for x in live_lines), "page: each bundle line is short (%s)" % live_lines)
     blind = W.page_rows(NOW, bundles=None, reader=lambda: 1 / 0)
     chk(lambda: blind["state"] == "unmeasured" and "UNMEASURED" in "\n".join(W.page_md(blind)) and
         "UNMEASURED" in W.page_html(blind), "page: a store that cannot be read is one UNMEASURED line, never empty")

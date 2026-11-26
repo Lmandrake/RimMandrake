@@ -1476,8 +1476,50 @@ def cmd_end(o):
 
 # ---- part 7: the page -----------------------------------------------------------------------------------------------
 
-PAGE_TITLE = "Work bundles (one run per system; work_bundle.py)"
-SHOWN_STATES_NOT = ("ended", "replaced")
+PAGE_TITLE = "Work bundles now"
+SHOWN_STATES_NOT = ("ended", "replaced", "launch_failed")
+DONE_OUTCOMES = ("fixed", "already_fixed", "dropped")
+# The page by meaning (the owner, 2026-11-25: "summarize the meaningful outcome that a human needs to know, not lists of
+# ticket names. Format it by meaning"): no ticket name, bundle id or unit name on a line; the ids stay in the records.
+ID_RX = re.compile(r"\b[A-Z][A-Z0-9]+(?:_[A-Z0-9]+){2,}\b|\bWB-[A-Za-z0-9-]+|\brm-[a-z0-9-]+")
+# budget: a worker's step note is cut at 80 characters; the danger is one long note turning the one-line row into prose
+STEP_CHARS = 80
+STATE_WORDS = {"launching": "starting", "live": "running", "restarting": "restarting after its run stopped",
+               "gated": "waiting at a gate"}
+
+
+def when(t):
+    """epoch -> 'Nov 25, 3:28 PM PST' (local Pacific)."""
+    import datetime
+    from zoneinfo import ZoneInfo
+    d = datetime.datetime.fromtimestamp(t, ZoneInfo("America/Los_Angeles"))
+    return "%s %d, %s %s" % (d.strftime("%b"), d.day, d.strftime("%I:%M %p").lstrip("0"), d.strftime("%Z"))
+
+
+def _mod_label(folder):
+    """The mod's About.xml name, else its folder name spaced (FlowWorks has no space to add; ExplosiveKnockback has)."""
+    import xml.etree.ElementTree as ET
+    spaced = re.sub(r"(?<=[a-z])(?=[A-Z])", " ", folder)
+    try:
+        root = ET.parse(os.path.join(REPO, "src", "RimMandrake", folder, "About", "About.xml")).getroot()
+    except (OSError, ET.ParseError):
+        return spaced
+    name = re.sub(r"^RimMandrake:\s*", "", (root.findtext("name") or spaced).strip())
+    return name if name else spaced
+
+
+def system_words(system):
+    """'mod:ExplosiveKnockback' -> 'the Explosive Knockback mod'; 'pipeline:judges' -> 'the judges part of the pipeline'."""
+    kind, _, name = str(system or "").partition(":")
+    if kind == "mod":
+        return "the %s mod" % _mod_label(name)
+    if kind == "pipeline":
+        return "the %s part of the pipeline" % name.replace("_", " ").replace("-", " ")
+    if kind == "cause":
+        return "tickets that share one cause"
+    if kind == "item":
+        return "one ticket and its follow-ups"
+    return "an unnamed system"
 
 
 def _unit_live(u):
@@ -1487,47 +1529,76 @@ def _unit_live(u):
 
 
 def page_rows(now, bundles=None, unit_live=None, reader=None):
-    """-> {"state": ok | unmeasured, "cause"?, "rows": [{id, system, state, step, restarts, members: [(id, outcome)],
-    since}]}: one row per bundle that is not ended."""
+    """-> {"state": ok | unmeasured, "cause"?, "rows": [{id, system, state, plain, step, restarts, members: [(id,
+    outcome)], done, since}], "counts": {ended, launch_failed}}: one row per bundle that is live; ended, replaced and
+    failed launches are counted."""
     unit_live = unit_live or _unit_live
     if bundles is None:
         try:
             bundles = (reader or all_bundles)()
         except Exception as e:  # noqa: BLE001 - could not look: said, never an empty block
             return {"state": "unmeasured", "cause": "the work-bundle store could not be read (%s: %s)" % (
-                type(e).__name__, _one(e, 160)), "rows": []}
-    rows = []
+                type(e).__name__, _one(e, 160)), "rows": [], "counts": {}}
+    rows, counts = [], {"ended": 0, "launch_failed": 0}
     for b in sorted(bundles.values(), key=lambda b: b.get("at") or 0):
         if b.get("state") in SHOWN_STATES_NOT:
+            k = "launch_failed" if b.get("state") == "launch_failed" else "ended"
+            counts[k] += 1
             continue
         st = b.get("state")
+        plain = STATE_WORDS.get(st, str(st).replace("_", " "))
         units = b.get("units") or []
         if b.get("host"):
             st = "%s on %s%s" % (st, b["host"], (" (the host could not be read: %s)" % _one(b["host_unread"], 160))
                                  if b.get("host_unread") else "")
+            plain = "%s on %s%s" % (plain, b["host"], ", which could not be read" if b.get("host_unread") else "")
         elif st in LIVE_STATES and units and not unit_live(units[-1]["unit"]) and st != "restarting":
             st = "%s, dead, no finish (unit %s is gone and its end was never recorded; `work_bundle` cannot restart it)" % (
                 st, units[-1]["unit"])
+            plain = "stopped: its run is gone and never recorded an end, so nothing restarts it"
         oc = b.get("outcomes") or {}
-        rows.append({"id": b["id"], "system": b.get("system"), "state": st, "step": b.get("step") or "-",
-                     "restarts": int(b.get("restarts") or 0), "since": b.get("at"),
-                     "members": [(m, (oc.get(m) or {}).get("outcome") or "no outcome yet") for m in b.get("members") or []],
+        members = [(m, (oc.get(m) or {}).get("outcome") or "no outcome yet") for m in b.get("members") or []]
+        rows.append({"id": b["id"], "system": b.get("system"), "state": st, "plain": plain, "step": b.get("step") or "-",
+                     "restarts": int(b.get("restarts") or 0), "since": b.get("at"), "members": members,
+                     "done": sum(1 for _m, o in members if o in DONE_OUTCOMES),
                      "unit": units[-1]["unit"] if units else None, "raised": (b.get("raised") or {}).get("why")})
-    return {"state": "ok", "rows": rows}
+    return {"state": "ok", "rows": rows, "counts": counts}
 
 
 def _line(r):
-    mem = ", ".join("`%s` %s" % (m, o) for m, o in r["members"])
-    return "**%s** · %s · %s · step: %s · restarts: %d · run: %s%s · members: %s" % (
-        r["id"], r["system"], r["state"], r["step"], r["restarts"], r["unit"] or "-",
-        (" · raised: %s" % _one(r["raised"], 200)) if r.get("raised") else "", mem)
+    """One live bundle by meaning: the system, its state, the tickets done, the start time, the step when it is a plain
+    note, the restarts and a call for help. No ticket name, bundle id or unit name."""
+    sw = system_words(r["system"])
+    parts = ["**%s**: %s" % (sw[:1].upper() + sw[1:], r.get("plain") or r["state"]),
+             "%d of %d tickets done" % (r.get("done", 0), len(r["members"]))]
+    if isinstance(r.get("since"), (int, float)):
+        parts.append("started %s" % when(r["since"]))
+    step = str(r.get("step") or "").strip()
+    if step and step not in ("-", "launched") and not ID_RX.search(step):
+        parts.append("now at: %s" % (step if len(step) <= STEP_CHARS else step[:STEP_CHARS - 1].rstrip() + "…"))
+    if r.get("restarts"):
+        parts.append("restarted %d time%s" % (r["restarts"], "" if r["restarts"] == 1 else "s"))
+    if r.get("raised"):
+        parts.append("it asked the Conductor for help")
+    return "; ".join(parts) + "."
+
+
+def _count_line(page):
+    c = page.get("counts") or {}
+    return "Since the first bundle: %d ended and %d failed to launch." % (c.get("ended", 0), c.get("launch_failed", 0))
+
+
+def _items(page):
+    if page["state"] != "ok":
+        return ["UNMEASURED: %s." % page["cause"]]
+    return ([_line(r) for r in page["rows"]] or ["No bundle is running (looked: the work-bundle store holds none live)."]) + [_count_line(page)]
 
 
 def page_md(page):
     out = ["## " + PAGE_TITLE, ""]
-    if page["state"] != "ok":
-        return out + ["- UNMEASURED: %s." % page["cause"], ""]
-    return out + (["- " + _line(r) for r in page["rows"]] or ["- none (looked: the work-bundle store; no bundle is open)"]) + [""]
+    if page["state"] == "ok":
+        out += ["Each bundle is one run that works several tickets of one mod or pipeline part.", ""]
+    return out + ["- " + x for x in _items(page)] + [""]
 
 
 def page_html(page):
@@ -1536,11 +1607,7 @@ def page_html(page):
         s = html.escape(str(s), quote=False)
         s = re.sub(r"\*\*([^*]+)\*\*", r"<b>\1</b>", s)
         return re.sub(r"`([^`]+)`", r"<code>\1</code>", s)
-    if page["state"] != "ok":
-        items = ["UNMEASURED: %s." % page["cause"]]
-    else:
-        items = [_line(r) for r in page["rows"]] or ["none (looked: the work-bundle store; no bundle is open)"]
-    return "<h2>%s</h2><ul>%s</ul>" % (html.escape(PAGE_TITLE), "".join("<li>%s</li>" % inline(x) for x in items))
+    return "<h2>%s</h2><ul>%s</ul>" % (html.escape(PAGE_TITLE), "".join("<li>%s</li>" % inline(x) for x in _items(page)))
 
 
 # ---- reading the ledger ---------------------------------------------------------------------------------------------
