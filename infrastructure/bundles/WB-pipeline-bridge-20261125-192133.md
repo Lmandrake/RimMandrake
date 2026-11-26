@@ -50,15 +50,8 @@ from 1:20 PM PST: context 150k at start, 330k at the first save, about 420k at t
 | (no ticket) PLAYTEST scene: the FlowWorks 'fluids' run ended in 4 frames, before the cross-call | scene repaired | 80ede465f9 |
 | BRIDGE_LOCK_HARDEN_ALIVE_MEANS_A_PID | done (run 3) | A1 live on Steve1 by hand (a live `claude`-named holder, then this session): refused naming the driver lock, who shows the holder pid, FREE on exit; a99e90a41d (a held --host take exits 75, not 2; an unreachable guard is not called held), 955d54f81c (4 lock selftests were red on SteveDesktop: they now pin RM_HOST=archmagi) |
 | PEN_ANIMALS_UNSTICK_STATUES_LEARN_TO_WALK | done (run 3) | heat theory refuted (lane J20261125T224621Z-837802: all inside comfortable range); cause RM_JobGiver_ShadeHop rests penned animals 600-1500 ticks by design. b931622136: pen_release counts only a giverless Wait as pinned, census job rows carry startTick/expiry/giver, PEN2 proves its pin reading on the pinned state and reads moves at 600 and 9000 ticks. Lane J20261125T225920Z-f8bd9f PASS (65 released, givers ShadeHop 57, wander 8; 47 moved by 9000) |
+| BRIDGE_TPS_REVIEW2_FIXES_1 | C3 PASS, C4 REFUSED (full list) | clause TPSC3 (builder subagent): e64fbc6cc4 QuietPhase C# fix test first (2.0-2.5 s gaps lost their phase), b13b0ea7ea save ramp, a78c2e4be9 reader learns 22 writer kinds (stall_dump, vitals, health, scene read as invalid); fresh reader f7a35356fe (two gaps in one frame); lane J20261126T010137Z-149a46 PASS, rerun J20261126T014127Z-2340de PASS (seqMissing 0) |
+| (no ticket) polish of bridge_bundle_proof.py | done | 216a9f645c: TPS/FRAME/HOOKS restore the speed, EXPLAIN counts only the tool's refusal, TILECACHE reads a failed re-audit as failure |
 
 ## Next, in order
-1. BRIDGE_TPS_REVIEW2_FIXES_1 C3: a builder subagent (run 3) builds clause TPSC3 in bridge_bundle_proof.py (design and
-   progress: /mnt/d/ClaudeWork/rimmandrake/bundles/WB-pipeline-bridge-20261125-192133/tps_c3/PROGRESS.md): autostart
-   with no bridge client, hitches 2-10 s, 40/90 s blocks, a save as longevent, hang+kill, kills at boundaries, a
-   2.05-2.45 s edge sweep for its finding that the watchdog sets QuietPhase only when a 1 s sample sees quiet > 1.5 s
-   (JawaBenchTpsWatchdog.cs:229), so a gap of 2.0-2.5 s can miss its 'blocked in' phase. On SteveDesktop python.exe
-   needed tzdata (pip install --user tzdata, done 2026-11-25). C4: REFUSE (full list).
-2. Polish of bridge_bundle_proof.py once TPSC3 lands (this bundle changes it): the two lines in
-   design/specs/2026-11-23-steve-two-games-lane/polish.md that name it (TPS/FRAME/HOOKS leave the game Paused; an
-   unrelated failed call reads as refused or fresh).
-Run 3's fresh reader (a99e90a41d, b931622136): nothing significant; its pen_job_class nit goes in with TPSC3.
+Nothing. Every member has an outcome (done, a dated wait, or a REFUSED BY BUNDLE note). Run 3 ended 2026-11-25 ~6:10 PM PST.
