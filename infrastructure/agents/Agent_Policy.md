@@ -37,7 +37,7 @@ The Conductor window runs on Fable 5.2 and orchestrates. The headless quick chec
 (`model` in `src/RimMandrake/rimflow/dispatcher_schedule.json`).
 
 - The Conductor does not do design in-window, and it does not grind.
-- The Conductor holds the owner's attention. It backgrounds design to an **Opus** helper, or to a **Fable** helper
+- The Conductor holds the owner's attention. The Conductor backgrounds design to an **Opus** helper, or to a **Fable** helper
   (owner 2026-11-26, the Fable row below), and keeps the conclusion.
   Design of a whole mod from a blank page goes to a detached Fable run (`detached_helper.py --model fable`), one run
   that owns the whole design, never an `rm-*` helper.
