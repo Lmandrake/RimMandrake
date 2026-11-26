@@ -23,6 +23,27 @@ namespace RimMandrake.FlowWorks
 	/// </summary>
 	public static class RM_PitDrawMath
 	{
+		/// <summary>Half the length of a lying pawn's picture, in squares: RM_PawnCutMath's 1.5-square pawn quad.</summary>
+		public const float LyingHalfLength = 0.75f;
+
+		/// <summary>RIMMANDRAKE_SHIFT_SUNK_BODY_OFF_THE_EAST_PIT_WALL: the drawn x of a pawn lying in a dug square at
+		/// <paramref name="cellX"/>, moved inward so its picture ends at the pit's edge where the square beside it is not dug.
+		/// A square dug on both sides, or on neither (a 1-wide pit, where nothing fits), keeps <paramref name="x"/>.</summary>
+		public static float LyingInsideX(float x, int cellX, bool eastDug, bool westDug)
+		{
+			if (eastDug == westDug)
+			{
+				return x;
+			}
+			if (!eastDug)
+			{
+				float most = cellX + 1f - LyingHalfLength;
+				return x > most ? most : x;
+			}
+			float least = cellX + LyingHalfLength;
+			return x < least ? least : x;
+		}
+
 		/// <summary>The sink stops growing at 4 m (8 levels of 0.5 m): a visual rule only, NOT the dig cap.
 		/// SINK_CAP_WIDEN_PAWNS_SINK_TO_FOUR: the owner's pawn_height_ladder_legible card (2026-10-20) says a colonist keeps
 		/// sinking to 4 m; the old cap of 4 levels stopped it at 2 m (validation_v2 X1 read red on it). Deeper than 4 m draws as

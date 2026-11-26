@@ -1,6 +1,7 @@
 using System;
 using HarmonyLib;
 using UnityEngine;
+using RimWorld;
 using Verse;
 using Verse.AI;
 
@@ -55,7 +56,26 @@ namespace RimMandrake.FlowWorks
 			if (sink > 0f)
 			{
 				__result.z -= sink;
+				KeepLyingInside(pawn, ref __result);
 			}
+		}
+
+		/// <summary>RIMMANDRAKE_SHIFT_SUNK_BODY_OFF_THE_EAST_PIT_WALL: a pawn lying down in a pit is drawn so its picture stays
+		/// over the dug squares, east and west (RM_PitDrawMath.LyingInsideX).</summary>
+		private static void KeepLyingInside(Pawn pawn, ref Vector3 drawPos)
+		{
+			if (pawn.GetPosture() == PawnPosture.Standing || pawn.pather != null && pawn.pather.Moving)
+			{
+				return;
+			}
+			RM_MapComponent_Excavation ex = RM_SuperdeepTrap.EngineOf(pawn.Map);
+			IntVec3 c = pawn.Position;
+			if (ex == null || !ex.IsExcavated(c))
+			{
+				return;
+			}
+			IntVec3 e = c + IntVec3.East, w = c + IntVec3.West;
+			drawPos.x = RM_PitDrawMath.LyingInsideX(drawPos.x, c.x, e.InBounds(pawn.Map) && ex.IsExcavated(e), w.InBounds(pawn.Map) && ex.IsExcavated(w));
 		}
 
 		/// <summary>RIMMANDRAKE_FIX_CLIMB_SLOW_OUTLASTS_LADDER (owner 2026-11-12: pawns "remain in the slowed/climbing mode long

@@ -19,6 +19,21 @@ namespace RimMandrake.FlowWorks.SelfTest
 
 		public static void Run(Action<string, Action> Case)
 		{
+			// RIMMANDRAKE_SHIFT_SUNK_BODY_OFF_THE_EAST_PIT_WALL (his walk 2026-11-25, station 33): a body lying on a pit's east
+			// column square drew its 1.5-square picture half a square onto the east wall
+			Case("PitDraw_lying_body_kept_inside_the_dug_squares", () =>
+			{
+				const float H = RM_PitDrawMath.LyingHalfLength;
+				// east column of a pit (east neighbour not dug): the picture's east end at the pit edge (x = 11)
+				float x = RM_PitDrawMath.LyingInsideX(10.5f, 10, eastDug: false, westDug: true);
+				Assert(Math.Abs(x + H - 11f) < 1e-4f, "east wall: the body's east end is on the pit edge, not past it: " + x);
+				x = RM_PitDrawMath.LyingInsideX(10.5f, 10, eastDug: true, westDug: false);
+				Assert(Math.Abs(x - H - 10f) < 1e-4f, "west wall: the body's west end is on the pit edge: " + x);
+				Assert(RM_PitDrawMath.LyingInsideX(10.5f, 10, true, true) == 10.5f, "a middle square: no shift");
+				Assert(RM_PitDrawMath.LyingInsideX(10.5f, 10, false, false) == 10.5f, "a 1-wide pit: nothing fits, no shift");
+				Assert(RM_PitDrawMath.LyingInsideX(10.2f, 10, false, true) == 10.2f, "a body already inside is not moved");
+			});
+
 			Case("PawnCut_human_waist_not_chin", () =>
 			{
 				// 1 m of water on a 1.75 m colonist: the straight law put the line at 57% of her picture, over her chin (0.52)
