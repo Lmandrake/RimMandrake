@@ -9,7 +9,7 @@ colonist to walk under any cover kind. This scene does, on every kind.
 The opportunity is the walk save that walk_map.py stages (stations 43-45): three 3 m pits 3 x 9, each with one cover kind over
 its middle 3 x 3 (woven scrap, planks, reinforced frame), one colonist already under the cover and one walker in the open south
 end. The pit is 3 wide and the cover spans it, so a walker who reaches the open north end has walked under the cover.
-Between the order and the far end, each walker's cell under the cover is read by state (RM_PromotionProofs.ProofBeneath:
+On a first walk to the middle of each cover, each walker's cell is read by state (RM_PromotionProofs.ProofBeneath:
 band or beneath True, faded True), never by picture.
 
     python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\FlowWorks\\northstar\\scene_walk_under_cover.py
@@ -46,25 +46,38 @@ overlay = {"name": "walk_under_off", "entries": [{"typeName": SUSP, "field": "su
 
 with scene.open(GAME, contract=walk, needs={"mods": ["FlowWorks"], "map": SAVE, "calm": "standard", "overlay": overlay}) as s:
     s.stage(cast={"walkers": dict(take=WALKERS)})
-    with s.act.batch() as b:
-        for w, x0 in zip(W, PITS):
-            b.job(w, "Goto", cell=(x0 + 1, OZ + 7), name="walk north")
-    for e in b.effects:      # an order the game did not take is the apparatus's fault, never a result about the mod
-        if not getattr(e, "accepted", False):
-            raise scene.Fault("ACT_NOT_DONE", detail="a walk order was not taken: %r" % (e,))
-    under = s.run(until=c.any_(*[z_of(w).in_(OZ + 3, OZ + 5) for w in W]), limit=TICKS)
+
+    def order(cell_of, what):
+        with s.act.batch() as b:
+            for w, x0 in zip(W, PITS):
+                b.job(w, "Goto", cell=cell_of(x0), name=what)
+        for e in b.effects:      # an order the game did not take is the apparatus's fault, never a result about the mod
+            if not getattr(e, "accepted", False):
+                raise scene.Fault("ACT_NOT_DONE", detail="a walk order was not taken: %r" % (e,))
+
+    # 1. each walker to the middle of its cover, and the cover over her read by state (not judged: the judge reads the last run)
+    order(lambda x0: (x0 + 1, OZ + 4), "walk under")
+    s.run(until=c.all_(*[z_of(w) == OZ + 4 for w in W]), limit=TICKS)
     fades = []
     for w, x0 in zip(W, PITS):
         v = s.read(w, "positionInt")
         x, *_y, z = (int(n) for n in str(v.v).split(",")) if v.state == "ok" else (None, None)
-        if z is not None and OZ + 3 <= z <= OZ + 5:
+        if z == OZ + 4:
             r = s.raw("jawa/static_call", type="RimMandrake.FlowWorks.RM_PromotionProofs", method="ProofBeneath", args="%d,%d" % (x, z)) or {}
             txt = str(r.get("result") or r.get("message") or r)
-            fades.append("%s at %d,%d: %s" % (w, x, z, txt[:200]))
+            ok = ("band=True" in txt or "beneath=True" in txt) and "faded=True" in txt
+        else:
+            txt, ok = "not under its cover: at %s" % (v.v,), False
+        fades.append((ok, "%s: %s" % (w, txt[:200])))
+    # 2. back to the open south end, then 3. the judged walk: south end, under the cover, out the north end
+    order(lambda x0: (x0 + 1, OZ + 1), "back south")
+    s.run(until=c.all_(*[z_of(w) == OZ + 1 for w in W]), limit=TICKS)
+    order(lambda x0: (x0 + 1, OZ + 7), "walk north")
     run = s.run(until=walk.end, limit=TICKS)
     print(run, run.receipt)
     folder = s.run_dir
 print("FADE READS (want band=True or beneath=True, faded=True for each walker under its cover):")
-for f in fades:
-    print("  " + f)
+for ok, f in fades:
+    print("  %s %s" % ("ok  " if ok else "NOT", f))
+print("FADE: %d of %d walkers read under a faded cover" % (sum(1 for ok, _f in fades if ok), len(fades)))
 print(scene.judge(folder))
