@@ -26,7 +26,8 @@ The checks (each prints PASS, FAIL or INVALID with what it read):
   V_ALIKE      two colonists: the split follows the masses (amount / otherAmount = otherMass / mass within 0.05) and each
                hit is at most 4.45 (a like pair's two cells of wall impact, 1.25 / 2.25 x 2 x 4 per cell)
   V_NOT_DOWNED colonist lane: neither colonist is downed
-  V_HEDIFF <lane>  the walker gained a Bruise or Crush hediff
+  V_HEDIFF <lane>  the walker gained a Bruise or Crush hediff; on the animal lanes (small, large: no armour) its gain is the
+                   record's otherAmount within 25 percent, so the walker took its own share and not the thrower's
   V_EMPTY      empty lane: the colonist launched, and no `land_on_pawn` record names it
 
     python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_pawn_land_on_pawn_sizes.py
@@ -34,7 +35,10 @@ The checks (each prints PASS, FAIL or INVALID with what it read):
 
 The plant no_bruise turns impactDamageEnabled off: V_SMALL, V_LARGE and V_HEDIFF must FAIL. The build plant
 C_LANDING_BRUISE_SWAPPED (design/concepts/ExplosiveKnockback/version/in_game/visit_1/plants/) must make V_SMALL and V_LARGE
-FAIL. The 0.05 and 4.45 are the same rule as scene_pawn_arc_bruise_sizes.
+FAIL. The 0.05 and 4.45 are the same rule as scene_pawn_arc_bruise_sizes. Visit 2 of 0.2.0 (ArchBig) ran that build plant
+(PF_LANDING_BRUISE_SWAPPED, the walker given the thrower's amount): V_SMALL and V_LARGE stayed PASS (squirrel +1.318 against
+colonist +1.100; colonist +5.624 against muffalo +4.946), so V_HEDIFF now reads the share itself: under the plant small
+gains 1.318 against an otherAmount of 6.682 and large 4.946 against 2.376, both FAIL.
 """
 import json
 
@@ -237,8 +241,11 @@ for name in ("small", "large", "colonist"):
     if name in land:
         g = gain(name, "walker")
         dead = r["after"]["walker"] is None or r["after"]["walker"][2]
-        row("PASS" if (g is not None and g > 0) or dead else "FAIL", "V_HEDIFF " + name,
-            "walker's new Bruise+Crush %s (before %s, after %s)" % (g, r["before"]["walker"], r["after"]["walker"]))
+        share = num(hits[0], "otherAmount")
+        fits = name not in ("small", "large") or (g is not None and share is not None and abs(g - share) <= 0.25 * share)
+        row("PASS" if dead or (g is not None and g > 0 and fits) else "FAIL", "V_HEDIFF " + name,
+            "walker's new Bruise+Crush %s, its share otherAmount %s%s (before %s, after %s)" % (
+                g, share, " (within 25 percent: %s)" % fits if name in ("small", "large") else "", r["before"]["walker"], r["after"]["walker"]))
 
 
 def pair(name):
