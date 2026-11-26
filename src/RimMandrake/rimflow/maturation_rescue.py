@@ -26,7 +26,9 @@ never guessed:
             nothing
     python3 src/RimMandrake/rimflow/maturation_rescue.py status          per criterion: proposals, launched, solved,
             false alarms (one screen)
-    python3 src/RimMandrake/rimflow/maturation_rescue.py list            every proposal with its outcome so far
+    python3 src/RimMandrake/rimflow/maturation_rescue.py list            every proposal with its outcome so far; an
+            open one that later proposals on the same mod cover criterion by criterion reads [lapsed by <pid>] and
+            needs no answer (lapsed())
     python3 src/RimMandrake/rimflow/maturation_rescue.py outcome PID launched --item ID [--unit U]
     python3 src/RimMandrake/rimflow/maturation_rescue.py outcome PID declined --why "..." [--false-alarm]
     python3 src/RimMandrake/rimflow/maturation_rescue.py outcome PID ended --solved yes|no [--usd N] [--tokens N]
@@ -643,15 +645,39 @@ def observe(root, cfg, st, facts, rows, now, rd, fx=None):
 
 # ---- status: per criterion, one screen -------------------------------------------------------------------------------
 
+def lapsed(rows):
+    """-> {pid: superseding pid} for each OPEN proposal (no outcome) whose every criterion a later proposal on the same
+    mod also carries; the superseding pid is the latest one needed to cover them all. Derived at read time, nothing is
+    written: a lapsed proposal needs no answer, the newest proposal per mod and criterion carries the question.
+    (Item RIMMANDRAKE_ANSWER_RESCUE_PROPOSALS_LEFT_OPEN_FORTY_SEVEN_SINCE_NOV_17: 47 open, most superseded.)"""
+    answered = {r.get("pid") for r in rows if r.get("kind") == "outcome"}
+    props = [r for r in rows if r.get("kind") == "proposal"]     # file order is time order: the stats are append only
+    out = {}
+    for n, p in enumerate(props):
+        if p["id"] in answered or not p.get("criteria"):
+            continue
+        by = {}
+        for q in props[n + 1:]:
+            if q.get("mod") != p.get("mod"):
+                continue
+            for c in q.get("criteria") or []:
+                if c in p["criteria"] and c not in by:
+                    by[c] = q["id"]
+            if len(by) == len(set(p["criteria"])):
+                out[p["id"]] = q["id"]
+                break
+    return out
+
+
 def tally(rows):
     """-> {criterion: {proposals, launched, declined, solved, unsolved, false_alarms, usd}} from the stats rows."""
     props = {r["id"]: r for r in rows if r.get("kind") == "proposal"}
-    last = {}
+    last, lap = {}, lapsed(rows)
     for r in rows:
         if r.get("kind") == "outcome" and r.get("pid") in props:
             last.setdefault(r["pid"], []).append(r)
     out = {c: {"proposals": 0, "launched": 0, "declined": 0, "solved": 0, "unsolved": 0, "false_alarms": 0,
-               "open": 0, "usd": 0.0} for c in CRITERIA + tuple(RETIRED)}
+               "open": 0, "lapsed": 0, "usd": 0.0} for c in CRITERIA + tuple(RETIRED)}
     for pid, p in props.items():
         outs = last.get(pid, [])
         kinds = {o.get("outcome") for o in outs}
@@ -665,21 +691,23 @@ def tally(rows):
             t["solved"] += any(o.get("outcome") == "ended" and o.get("solved") is True for o in outs)
             t["unsolved"] += any(o.get("outcome") == "ended" and o.get("solved") is False for o in outs)
             t["false_alarms"] += any(o.get("false_alarm") for o in outs)
-            t["open"] += not kinds
+            t["open"] += not kinds and pid not in lap
+            t["lapsed"] += pid in lap
             t["usd"] += sum(float(o.get("usd") or 0) for o in outs if o.get("outcome") == "ended")
     return out
 
 
 def status_text(rows):
     t = tally(rows)
-    lines = ["Rescue proposals by criterion (first-guess thresholds; tune from this):",
-             "  %-3s %-44s %5s %5s %5s %5s %5s %5s %8s" % ("", "criterion", "prop", "open", "launc", "solvd", "decl",
-                                                          "false", "usd")]
+    lines = ["Rescue proposals by criterion (first-guess thresholds; tune from this; lapsed = a later proposal on the "
+             "mod carries its criteria):",
+             "  %-3s %-44s %5s %5s %5s %5s %5s %5s %5s %8s" % ("", "criterion", "prop", "open", "lapse", "launc",
+                                                              "solvd", "decl", "false", "usd")]
     for c in CRITERIA + tuple(RETIRED):
         x = t[c]
-        lines.append("  %-3s %-44s %5d %5d %5d %5d %5d %5d %8.2f" % (
-            c, "retired: " + NAMES[c] if c in RETIRED else NAMES[c], x["proposals"], x["open"], x["launched"], x["solved"], x["declined"], x["false_alarms"],
-            x["usd"]))
+        lines.append("  %-3s %-44s %5d %5d %5d %5d %5d %5d %5d %8.2f" % (
+            c, "retired: " + NAMES[c] if c in RETIRED else NAMES[c], x["proposals"], x["open"], x["lapsed"],
+            x["launched"], x["solved"], x["declined"], x["false_alarms"], x["usd"]))
     hand = [r for r in rows if r.get("kind") == "rescue"]
     lines.append("  hand rescues (no proposal): %d; settings: %s" % (len(hand), ", ".join(
         "%s=%s" % kv for kv in sorted(SETTINGS.items()))))
@@ -766,14 +794,15 @@ def main(argv=None):
         print("  stats: %s" % stats_path())
         return 0
     if a.cmd == "list":
-        outs = {}
+        outs, lap = {}, lapsed(rows)
         for r in rows:
             if r.get("kind") == "outcome":
                 outs.setdefault(r.get("pid"), []).append(r.get("outcome"))
         for r in rows:
             if r.get("kind") == "proposal":
                 print("%s %s %s %s [%s]" % (r["id"], r["at"], r["mod"], ",".join(r["criteria"]),
-                                            ",".join(outs.get(r["id"], [])) or "open"))
+                                            ",".join(outs.get(r["id"], [])) or (
+                                                "lapsed by %s" % lap[r["id"]] if r["id"] in lap else "open")))
                 for e in r.get("evidence") or []:
                     print("    %s %s" % (e["criterion"], json.dumps(e["evidence"], default=str)[:220]))  # cut-ok: terminal display
             elif r.get("kind") == "rescue":

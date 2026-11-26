@@ -357,6 +357,7 @@ def stats_main(tmp):
     pid2 = rd["rescue"]["proposed"][0]["id"] if rd["rescue"]["proposed"] else "none"
     rc, out = cli("outcome", pid2, "declined", "--why", "the number moved for a reason", "--false-alarm")
     ok(rc == 0 and R.tally(R.read_stats(stats))["C2"]["false_alarms"] == 1, "declined --false-alarm counts", out)
+    lapse_main()
     # the real Conductor log is never written by a test (conductor_log_guard)
     real = R.conductor_log_path()
     size = os.path.getsize(real) if os.path.exists(real) else None
@@ -410,6 +411,36 @@ def tick_main(tmp):
                  page=False)
     ok("rescue_error" in rd and "ZeroDivisionError" in rd["rescue_error"],
        "tick: a failing rescue pass is named in the reading and never costs the tick", rd.get("rescue_error"))
+
+
+def lapse_main():
+    """An open proposal lapses when later proposals on the same mod carry every criterion it carries (item
+    RIMMANDRAKE_ANSWER_RESCUE_PROPOSALS_LEFT_OPEN_FORTY_SEVEN_SINCE_NOV_17: 47 piled up open, most superseded)."""
+    def p(pid, at, mod, crit):
+        return {"kind": "proposal", "id": pid, "at": iso(NOW + at), "mod": mod, "criteria": crit, "keys": [pid],
+                "evidence": []}
+    rows = [p("rp-a-1", 0, "A", ["C1", "C3"]), p("rp-a-2", 10, "A", ["C1"]), p("rp-a-3", 20, "A", ["C3"]),
+            p("rp-a-4", 30, "A", ["C2"]), p("rp-b-1", 0, "B", ["C1"]), p("rp-a-5", 40, "A", ["C2"]),
+            p("rp-c-1", 0, "C", ["C1"]), p("rp-c-2", 10, "C", ["C1"]),
+            {"kind": "outcome", "pid": "rp-c-1", "outcome": "declined", "why": "x"}]
+    lap = R.lapsed(rows)
+    ok(lap.get("rp-a-1") == "rp-a-3", "lapse: C1,C3 lapses when later proposals carry C1 and C3 (by the last)", lap)
+    ok("rp-a-2" not in lap and "rp-a-3" not in lap and "rp-a-5" not in lap and lap.get("rp-a-4") == "rp-a-5",
+       "lapse: only a later proposal with the same criterion supersedes; the newest per mod and class stays open", lap)
+    ok("rp-b-1" not in lap, "lapse: another mod's proposal never supersedes", lap)
+    ok("rp-c-1" not in lap, "lapse: an answered proposal keeps its answer, it does not lapse", lap)
+    # the acceptance test of the item: `list` shows no [open] proposal older than its mod's newest open one per class
+    stats = R.stats_path()
+    for r in rows:
+        R.append(r, stats)
+    rc, out = cli("list")
+    opened = [x.split()[0] for x in out.split("\n") if x.startswith("rp-") and "[open]" in x]
+    ok(rc == 0 and {"rp-a-1", "rp-a-4"}.isdisjoint(opened) and {"rp-a-3", "rp-a-5", "rp-b-1"} <= set(opened)
+       and "[lapsed by rp-a-5]" in out, "list: a superseded proposal reads [lapsed by <pid>], the newest reads [open]",
+       out[:600])
+    t = R.tally(R.read_stats(stats))
+    ok(t["C2"].get("lapsed", 0) >= 1 and "lapsed" in R.status_text(R.read_stats(stats)),
+       "tally and status count lapsed apart from open", t["C2"])
 
 
 def main():
