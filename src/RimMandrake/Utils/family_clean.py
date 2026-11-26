@@ -54,6 +54,8 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
 sys.path.insert(0, str(HERE))
+sys.path.insert(0, str(HERE.parent / "rimflow"))
+import fulltext  # noqa: E402
 
 DAY = 86400.0
 AGE_D = 14.0
@@ -193,7 +195,7 @@ def repo_citations(names: list[str], errors: list[str]) -> dict[str, str]:
         errors.append("citation search hung past %d s" % HANG_GIT_S)
         return hits
     if r.returncode not in (0, 1):
-        errors.append("citation search exited %d: %s" % (r.returncode, (r.stderr or "").strip()[:200]))
+        errors.append("citation search exited %d: %s" % (r.returncode, fulltext.fit((r.stderr or "").strip(), 200)))
         return hits
     files = [ROOT / f for f in r.stdout.split("\0") if f]
     units = Path.home() / ".config" / "systemd" / "user"
@@ -266,7 +268,7 @@ def process_in(p: Path, procs) -> str | None:
         if cwd == s or cwd.startswith(s + "/"):
             return "a process works in it (cwd %s)" % cwd
         if s in cmd or w in cmd:
-            return "a process names it: %s" % cmd[:160]
+            return "a process names it: %s" % fulltext.fit(cmd, 160)
     return None
 
 
@@ -511,7 +513,7 @@ def transient_repo(repo: Path, now: float) -> list[dict]:
         r = subprocess.CompletedProcess([], 124, "", "hung past %d s" % HANG_GIT_S)
     if r.returncode not in (0, 1):
         return [{"family": "transient", "path": str(tdir), "verdict": "UNMEASURED", "reader": "could not look",
-                 "why": "git check-ignore exited %d: %s" % (r.returncode, r.stderr.strip()[:200]), "age_d": None,
+                 "why": "git check-ignore exited %d: %s" % (r.returncode, fulltext.fit(r.stderr.strip(), 200)), "age_d": None,
                  "bytes": None}]
     ignored = set(x for x in r.stdout.split("\0") if x)
     os.environ["TRANSIENT_PIN_ROOT"] = str(repo)
@@ -559,7 +561,7 @@ def saves_rows(apply: bool) -> list[dict]:
         data = None
     if r.returncode or not isinstance(data, dict):
         return [{"family": "saves", "path": str(saves_dir()), "verdict": "UNMEASURED", "reader": "could not look",
-                 "why": "saves_prune exit %d: %s" % (r.returncode, (out[:i] if i > 0 else out + r.stderr).strip()[:300]),
+                 "why": "saves_prune exit %d: %s" % (r.returncode, fulltext.fit((out[:i] if i > 0 else out + r.stderr).strip(), 300)),
                  "age_d": None, "bytes": None}]
     try:
         guard = canonical_guard()
@@ -734,7 +736,7 @@ def remove(row: dict) -> tuple[bool, str]:
     except subprocess.TimeoutExpired:
         return False, "rm hung past %d s (part may be gone)" % HANG_RM_S
     if r.returncode or p.exists():
-        return False, "rm exit %d: %s" % (r.returncode, r.stderr.strip()[:200])
+        return False, "rm exit %d: %s" % (r.returncode, fulltext.fit(r.stderr.strip(), 200))
     return True, "removed"
 
 

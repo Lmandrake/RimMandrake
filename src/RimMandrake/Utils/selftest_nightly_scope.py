@@ -201,10 +201,13 @@ put(D, "src/RimMandrake/rimflow/selftest_maturation_fix.py",
     "import sys\nimport maturation_fix\nsys.exit(0 if maturation_fix.f() == 2 else 1)\n")
 put(D, "src/RimMandrake/rimflow/selftest_live_one.py", "import sys\nsys.exit(1)\n")
 put(D, "src/RimMandrake/Utils/other.py", "x = 1\n")
+put(D, "src/RimMandrake/rimflow/selftest_any_change.py", "import sys\nsys.exit(1)\n")
 put(D, P.PIPELINE_TESTS, json.dumps({"nightly": False, "timeout_s": 60,
                                      "pipeline_files": ["src/RimMandrake/rimflow/maturation*.py"],
                                      "tests": [{"test": "src/RimMandrake/rimflow/selftest_maturation_fix.py"},
-                                               {"test": "src/RimMandrake/rimflow/selftest_live_one.py"}],
+                                               {"test": "src/RimMandrake/rimflow/selftest_live_one.py"},
+                                               {"test": "src/RimMandrake/rimflow/selftest_any_change.py",
+                                                "any_change": True, "inputs": ["src/RimMandrake/Utils/*.py"]}],
                                      "live_excluded": {"src/RimMandrake/rimflow/selftest_live_one.py": "live"}}))
 subprocess.run(["git", "init", "-q", D], check=True)
 subprocess.run(["git", "-C", D, "add", "-A"], check=True)
@@ -214,8 +217,14 @@ try:
 except P.Refuse as e:
     check("6 a change touching a pipeline file with a failing pipeline test is refused at publish",
           "selftest_maturation_fix.py" in str(e) and "selftest_live_one" not in str(e), str(e))
-check("6 a change touching no pipeline file adds no tests",
-      P.pipeline_checks(D, ["src/RimMandrake/Utils/other.py"]) == 0.0)
+check("6 a change touching no pipeline file and no any_change input adds no tests",
+      P.pipeline_checks(D, ["src/RimMandrake/rimflow/unrelated.py"]) == 0.0)
+try:
+    P.pipeline_checks(D, ["src/RimMandrake/Utils/other.py"])
+    check("6 an any_change test runs at the door for a change to a non-pipeline file it reads, and refuses on red", False)
+except P.Refuse as e:
+    check("6 an any_change test runs at the door for a change to a non-pipeline file it reads, and refuses on red",
+          "selftest_any_change.py" in str(e), str(e))
 put(D, "src/RimMandrake/rimflow/maturation_fix.py", "def f():\n    return 2   # fixed (a new size: a same-size rewrite in the same second reuses the stale .pyc)\n")
 check("6 the same change, fixed, passes the door", P.pipeline_checks(D, ["src/RimMandrake/rimflow/maturation_fix.py"]) > 0)
 check("6 a live_excluded test never runs at the door",
@@ -245,7 +254,7 @@ TREE_13 = (
 gone = [t for t in TREE_13 if t not in {c.get("test") for c in tc["checks"]}]
 check("6 the 13 publish tree checks stay, and publish still runs them before the pipeline checks",
       len(TREE_13) == 13 and not gone   # in order, at any indent (c3dfdd7293 moved both into a try)
-      and re.search(r"\n([ \t]+)tree_checks\(top, changed\)\n\1pipeline_checks\(top, changed\)\n", src) is not None,
+      and re.search(r"\n([ \t]+)tree_checks\(top, changed(?:, gate)?\)\n\1pipeline_checks\(top, changed(?:, gate)?\)\n", src) is not None,
       gone or len(tc["checks"]))
 pc = json.load(open(os.path.join(REPO, P.PIPELINE_TESTS), encoding="utf-8"))
 check("6 the shipped pipeline set is out of the nightly (one line, nightly: false) and lists only existing tests",

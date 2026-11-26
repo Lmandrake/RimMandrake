@@ -58,6 +58,7 @@ EXCERPT_CHARS = 60000
 # returns holds its caller). Measured here: the 50 calibration calls of 2026-11-25 took 14.3 s at most; the report call of
 # the first daily run (2026-11-25) took 267 s.
 import time_budget as TB  # noqa: E402
+import fulltext  # noqa: E402
 JUDGE_TIMEOUT_S = TB.JUDGE_S  # budget: class=judge
 REPORT_TIMEOUT_S = TB.JUDGE_S  # budget: class=judge
 
@@ -416,7 +417,7 @@ def role_of(unit, runs):
         except (OSError, TypeError):
             continue
         for mark, role in ROLE_MARKS:
-            if mark in text[:4000]:
+            if mark in text[:4000]:  # cut-ok: a search window for the role mark in a transcript head, no text is stored from it
                 return role
         r = re.search(r"roles/([a-z_]+)\.md", text)
         if r:
@@ -506,7 +507,7 @@ def kind_numbers(rows, now):
     why = {}
     for r in rows:
         if r["tokens"] is None:
-            k = re.sub(r"'[^']*'", "'…'", str(r.get("unpriced_why") or "no cause"))[:120]
+            k = re.sub(r"'[^']*'", "'…'", str(r.get("unpriced_why") or "no cause"))[:120]  # cut-ok: a grouping key of causes, shown only as a count line; whole causes stay in the rows
             why[k] = why.get(k, 0) + 1
     return {"runs": len(rows), "priced_runs": len(priced), "unpriced_runs": len(rows) - len(priced),
             "unpriced_why": why, "close_events": sum(len(r["closes"]) for r in rows),
@@ -819,7 +820,7 @@ def read_commits(repo, since):
     except (OSError, subprocess.SubprocessError) as e:
         return src(None, CNL, "git log in %s: %s" % (repo, e))
     if r.returncode:
-        return src(None, CNL, "git log in %s exited %d: %s" % (repo, r.returncode, (r.stderr or "").strip()[:200]))
+        return src(None, CNL, "git log in %s exited %d: %s" % (repo, r.returncode, fulltext.fit((r.stderr or "").strip(), 200)))
     out, bad = [], []
     for block in r.stdout.split("\x1e")[1:]:
         head, _, rest = block.partition("\n")
@@ -901,7 +902,7 @@ def read_reviews(d=REVIEWS):
                     if t is None or not e.get("path"):
                         continue
                     if kind == "flags" and e.get("event") == "flag":
-                        out["flags"].append({"path": e["path"], "t": t, "why": str(e.get("why") or "")[:200]})
+                        out["flags"].append({"path": e["path"], "t": t, "why": fulltext.fit(str(e.get("why") or ""), 200)})
                     elif kind == "marks":
                         out["marks"].append({"path": e["path"], "t": t, "verdict": e.get("verdict")})
     return src(out, bad=bad)
@@ -1048,7 +1049,7 @@ def polish_numbers(commits, bundle_of_sha, reviews, t_lo, t_hi, now, probe, rule
               and set(d["files"]) & set(files) and FRESH_RX.search(d["subject"])]
         read = ("finding" if flags or fr else "read clean" if marks else
                 "no recorded read" if rv is not None else CNL)
-        rows.append({"sha": c["sha"][:10], "at": iso(c["t"]), "subject": c["subject"][:160], "files": files,
+        rows.append({"sha": c["sha"][:10], "at": iso(c["t"]), "subject": fulltext.fit(c["subject"], 160), "files": files,
                      "bundle": (bundle_of_sha or {}).get(c["sha"]), "read": read, "significant": len(flags),
                      "fresh_read_commits": fr})
     return {"state": "measured", "since": iso(lo), "until": iso(t_hi), "partial": t_lo < rule_t,
@@ -1177,24 +1178,24 @@ def excerpt(path, before_t, chars=EXCERPT_CHARS):
             m = e.get("message") or {}
             c = m.get("content")
             if e.get("type") == "user" and not brief and isinstance(c, str):
-                brief = c[:6000]
+                brief = c[:6000]  # cut-ok: a judge prompt piece; danger: a bundle brief of tens of thousands of characters crowds the transcript out of the judge context; the whole transcript stays on disk
                 continue
             for b in c if isinstance(c, list) else []:
                 if not isinstance(b, dict):
                     continue
                 ty = b.get("type")
                 if ty == "text" and e.get("type") == "assistant":
-                    acts.append("ASSISTANT: " + b["text"][:1500])
+                    acts.append("ASSISTANT: " + b["text"][:1500])  # cut-ok: a judge prompt piece; danger: whole transcript crowds the judge context; whole text stays in the transcript file
                 elif ty == "text" and e.get("type") == "user" and not brief:
-                    brief = b["text"][:6000]
+                    brief = b["text"][:6000]  # cut-ok: a judge prompt piece; danger: see the brief cut above
                 elif ty == "tool_use":
                     inp = b.get("input") or {}
-                    what = inp.get("command") or inp.get("file_path") or inp.get("pattern") or json.dumps(inp)[:300]
-                    acts.append("TOOL %s: %s" % (b.get("name"), str(what)[:800]))
+                    what = inp.get("command") or inp.get("file_path") or inp.get("pattern") or json.dumps(inp)[:300]  # cut-ok: a judge prompt piece; danger: a tool input of any size crowds the judge context
+                    acts.append("TOOL %s: %s" % (b.get("name"), str(what)[:800]))  # cut-ok: a judge prompt piece; danger: see above
                 elif ty == "tool_result":
                     cc = b.get("content")
                     s = cc if isinstance(cc, str) else " ".join(x.get("text", "") for x in cc or [] if isinstance(x, dict))
-                    acts.append("RESULT: " + s[:400])
+                    acts.append("RESULT: " + s[:400])  # cut-ok: a judge prompt piece; danger: a tool result of megabytes crowds the judge context
     text = "\n".join(acts)
     return brief, text[-chars:]
 
@@ -1227,14 +1228,14 @@ def call_model(prompt, tier, timeout, name, runner=None):
     try:
         res = json.loads(r.stdout or "")
     except ValueError:
-        return None, "exit %s, no JSON result: %s" % (r.returncode, ((r.stderr or "") + (r.stdout or ""))[-300:]), \
+        return None, "exit %s, no JSON result: %s" % (r.returncode, fulltext.fit((r.stderr or "") + (r.stdout or ""), 300, tail=True)), \
             None, sec
     try:
         tok = RL.run_tokens(res, tier)
     except RL.UnknownModel:
         tok = None
     if r.returncode or res.get("is_error"):
-        return None, "exit %s: %s" % (r.returncode, str(res.get("result") or res.get("subtype"))[:300]), tok, sec
+        return None, "exit %s: %s" % (r.returncode, fulltext.fit(str(res.get("result") or res.get("subtype")), 300)), tok, sec
     return str(res.get("result") or ""), None, tok, sec
 
 
@@ -1273,7 +1274,7 @@ def judge_row(row, runs, roles, projects=PROJECTS, caller=None):
     v = parse_verdict(text)
     if v is None:
         return dict(out, verdict="COULD NOT JUDGE", evidence="", cause="the judge gave no verdict line: " +
-                    (text or "")[-200:])
+                    fulltext.fit(text or "", 200, tail=True))
     return dict(out, **v)
 
 
@@ -1777,7 +1778,7 @@ def main(argv=None):
         return 0
     print(json.dumps(R, indent=1, default=str) if o.json else json.dumps(
         {k: R[k] for k in ("window", "sources", "share", "deferral", "moves", "live") if k in R}, indent=1,
-        default=str)[:20000])
+        default=str))
     return 0
 
 

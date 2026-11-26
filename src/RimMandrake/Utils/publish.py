@@ -1052,11 +1052,19 @@ def pipeline_selection(top, changed, cfg):
     live = set(cfg.get("live_excluded", {}))
     if changed is None:
         return [c for c in cfg.get("tests", ()) if c["test"] not in live]
-    if not any(fnmatch.fnmatch(p, g) for p in changed for g in cfg.get("pipeline_files", ())):
-        return []
     ch = set(changed)
-    return [c for c in cfg.get("tests", ()) if c["test"] not in live and (door_inputs(top, c["test"]) & ch or any(
-        fnmatch.fnmatch(p, g) for p in ch for g in c.get("inputs", ())))]
+    touched = any(fnmatch.fnmatch(p, g) for p in changed for g in cfg.get("pipeline_files", ()))
+    return [c for c in cfg.get("tests", ()) if c["test"] not in live and (
+        (touched and door_inputs(top, c["test"]) & ch) or (
+            (touched or c.get("any_change")) and any(fnmatch.fnmatch(p, g) for p in ch for g in c.get("inputs", ()))))]
+
+
+def _any_change_hit(changed, cfg):
+    """True when a test marked `any_change` in pipeline_tests.json has an `inputs` glob that the change matches. Such a
+    test guards a rule over files that are not all pipeline files (selftest_no_bare_cuts: a cut can land in any rimflow or
+    Utils tool), so it runs at the door even when no pipeline_files path changed."""
+    return any(c.get("any_change") and fnmatch.fnmatch(p, g) for c in cfg.get("tests", ())
+               for p in changed for g in c.get("inputs", ()))
 
 
 def pipeline_checks(top, changed, gate=None):
@@ -1073,7 +1081,8 @@ def pipeline_checks(top, changed, gate=None):
     cfg = json.load(open(cfg_path, encoding="utf-8"))
     if changed is None:     # no origin/main to diff against: what the change touches is unknown, so nothing is skipped
         print("pipeline checks: the change set is unknown (no origin/main here), so every pipeline test runs")
-    elif not any(fnmatch.fnmatch(p, g) for p in changed for g in cfg.get("pipeline_files", ())):
+    elif not any(fnmatch.fnmatch(p, g) for p in changed for g in cfg.get("pipeline_files", ())) \
+            and not _any_change_hit(changed, cfg):
         return 0.0
     if gate is not None:
         gate.take("pipeline checks")                     # a no-op when this publish's tree checks hold a slot already

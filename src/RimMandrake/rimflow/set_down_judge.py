@@ -25,6 +25,7 @@ import tempfile
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import filing_gate as FG  # noqa: E402
+import fulltext as FT  # noqa: E402
 
 FAMILY = "set_down_judge"
 BRIEF = os.path.join(HERE, "roles", "set_down_judge.md")
@@ -56,10 +57,10 @@ def ask_model(prompt, timeout=JUDGE_TIMEOUT_S, env=None):
         r = subprocess.run(judge_argv(env), input=prompt, capture_output=True, text=True, cwd=d, timeout=timeout,
                            stdin=None)
     if r.returncode != 0:
-        raise OSError("claude exit %s: %s" % (r.returncode, (r.stderr or r.stdout).strip()[:300]))
+        raise OSError("claude exit %s: %s" % (r.returncode, FT.fit((r.stderr or r.stdout).strip(), 300)))
     out = json.loads(r.stdout)
     if out.get("is_error"):
-        raise OSError("claude: %s" % str(out.get("result"))[:300])
+        raise OSError("claude: %s" % FT.fit(str(out.get("result")), 300))
     return str(out.get("result") or "")
 
 
@@ -205,7 +206,7 @@ def judge(sd, transcript, earlier, ask=ask_model, until=None):
     except subprocess.TimeoutExpired:
         return {"verdict": "could not judge", "why": "no answer in %d s" % JUDGE_TIMEOUT_S, "transcript": why or "read"}
     except (OSError, ValueError) as e:
-        return {"verdict": "could not judge", "why": "%s: %s" % (type(e).__name__, str(e)[:300]),
+        return {"verdict": "could not judge", "why": "%s: %s" % (type(e).__name__, FT.fit(str(e), 300)),
                 "transcript": why or "read"}
     v, bad = parse(ans)
     if v is None:

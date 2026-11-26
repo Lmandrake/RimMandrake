@@ -37,6 +37,8 @@ FINAL_RX = re.compile(r"^Status:\s*FINAL\b", re.M)
 TERMINAL = ("done", "dropped", "superseded")
 sys.path.insert(0, HERE)
 import time_budget  # noqa: E402
+sys.path.insert(0, RIMFLOW)
+import fulltext  # noqa: E402
 
 LAUNCH_TIMEOUT_S = time_budget.LAUNCH_S     # hang guard on one `cli.py file` or `detached_helper.py launch`
 # budget: danger=a spend-capped pass relaunched without end; one continuation after a cap stop, then the week waits for
@@ -176,7 +178,7 @@ def tick(apply, now=None):
                          "--effect", "cmd:python3 src/RimMandrake/Utils/crystallize_weekly.py report %s" % week,
                          "--seat", "BENCH", "--why", "rm-crystallize.timer: the week has no Crystallize report",
                          "--publish"])
-            out.append(o[-600:])
+            out.append(fulltext.fit(o, 600, tail=True))
             if rc:
                 rec.update(ok=False, out="\n".join(out), rc=rc)
                 record(rdir, rec)
@@ -190,7 +192,7 @@ def tick(apply, now=None):
         rc, o = run([sys.executable, os.path.join(RIMFLOW, "detached_helper.py"), "launch", "--by-program",
                      "crystallize_weekly", "--seat", "BENCH", "--item", iid, "--brief-file", bpath, "--model", "opus",
                      "--budget-usd", "%g" % opus_cap(), "--continue-on-cap", str(CONTINUE_ON_CAP)])
-        out.append(o[-600:])
+        out.append(fulltext.fit(o, 600, tail=True))
         m = re.search(r"^DETACHED (\S+)", o, re.M)
         rec.update(ok=rc == 0, rc=rc, out="\n".join(out), brief=bpath, unit=m.group(1) if m else None)
     if apply:

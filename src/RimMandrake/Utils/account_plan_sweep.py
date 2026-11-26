@@ -39,6 +39,7 @@ import account_end as AE  # noqa: E402
 import account_plan as AP  # noqa: E402
 import account_usage as AU  # noqa: E402
 import switching_plan as SP  # noqa: E402
+import fulltext  # noqa: E402
 
 HOOK = HERE.parent.parent.parent / ".claude" / "hooks" / "switch_checkpoint_signal.py"
 WEEK = 7 * 86400
@@ -640,7 +641,7 @@ def run_regime(reg, hours=None, stop_at_first=False, trace=None):
                         w.h(), w.arch.live, dd.get("do"), dd.get("to"), len(w.arch.runs), w.stopped,
                         {a: round(w.left(a), 1) for a in ACCTS},
                         {a: (r.get("week_pct_used"), round((w.t - AP.stamp(r["measured_at"])) / 60))
-                         for a, r in w.reads.items()}, w.steve.live, str(dd.get("why"))[:220]))
+                         for a, r in w.reads.items()}, w.steve.live, fulltext.fit(str(dd.get("why")), 220)))
                 check_pass(w, reg, st, flag, machine_ds, ev0, live0)
                 if stop_at_first and viol:
                     break
@@ -674,7 +675,7 @@ def check_pass(w, reg, st, flag, machine_ds, ev0, live0):
         if st["arch_refused"] > K_STUCK:
             flag("STUCK", {"machine": "Archmagi", "key": "Archmagi", "refused_passes": st["arch_refused"],
                            "live": live, "left": round(w.left(live), 1), "can_take_over": can,
-                           "why": " ".join(str(why_gate).split())[:300]})
+                           "why": fulltext.fit(" ".join(str(why_gate).split()), 300)})
     else:
         st["arch_refused"] = 0
     key = (d.get("do"), d.get("to"), ok_gate, live, tuple(round(w.left(a)) for a in ACCTS))
@@ -700,7 +701,7 @@ def check_pass(w, reg, st, flag, machine_ds, ev0, live0):
                 flag("STOP_WITH_TAKER", {"key": "stop", "live": e["live"], "can_take_over": c,
                                           "after_failed_switch": bool(failed), "left": round(w.left(e["live"]), 1),
                                           "line": line,
-                                          "why": str(d.get("why"))[:300]})
+                                          "why": fulltext.fit(str(d.get("why")), 300)})
     # switch pending: told only when one is pending, always when one is
     if not acted and live == live0 and d:
         told = HK.switch_pending(n)
@@ -708,14 +709,14 @@ def check_pass(w, reg, st, flag, machine_ds, ev0, live0):
         if told != truth and n.get("state") == "soft" or (truth and n.get("state") != "soft" and w.arch.runs):
             flag("FALSE_PENDING" if told and not truth else "MISSED_PENDING",
                  {"key": "Archmagi:%s:%s" % (d.get("do"), told), "do": d.get("do"), "notice_state": n.get("state"),
-                  "switch_pending": n.get("switch_pending"), "why": str(d.get("why"))[:300]})
+                  "switch_pending": n.get("switch_pending"), "why": fulltext.fit(str(d.get("why")), 300)})
     for account, mn, md in machine_ds:
         if account and md is not None:
             told, truth = HK.switch_pending(mn), md.get("do") in AP.REFUSES and not md.get("unread")
             if told != truth:
                 flag("FALSE_PENDING" if told else "MISSED_PENDING",
                      {"key": "Steve:%s:%s" % (md.get("do"), told), "machine": STEVE, "do": md.get("do"),
-                      "switch_pending": mn.get("switch_pending"), "why": str(md.get("why"))[:300]})
+                      "switch_pending": mn.get("switch_pending"), "why": fulltext.fit(str(md.get("why")), 300)})
     # an unread level never causes a switch or a stop by itself; no act at a line that the true level is far above
     for e in acted:
         frm = e.get("from") or e.get("live")
@@ -731,7 +732,7 @@ def check_pass(w, reg, st, flag, machine_ds, ev0, live0):
         if line is not None and under and true_left > line + slack:
             flag("UNREAD_ACT" if unread else "ACT_ABOVE_LINE",
                  {"key": "act:%s" % frm, "act": e["kind"], "from": frm, "true_left": round(true_left, 1),
-                  "line": line, "why": str(d.get("why"))[:300]})
+                  "line": line, "why": fulltext.fit(str(d.get("why")), 300)})
     # no switch to an account at or under its line; no A -> B -> A with no reset between
     for e in new:
         if e["kind"] != "switch":
@@ -767,7 +768,7 @@ def check_pass(w, reg, st, flag, machine_ds, ev0, live0):
             if not stated:
                 flag("SWITCH_ABOVE_LINE", {"key": "above:%s" % e["machine"], "machine": e["machine"],
                                             "from": e["from"], "left": round(e["left"][e["from"]], 1),
-                                            "line": rl_from["line"], "why": why[:300]})
+                                            "line": rl_from["line"], "why": fulltext.fit(why, 300)})
     # the live account's overshoot under its line while the fleet is on it
     rl = w.line_of(live)
     if rl is not None and can:
@@ -789,7 +790,7 @@ def check_pass(w, reg, st, flag, machine_ds, ev0, live0):
             if st["steve_refused"] > K_STUCK + 6:      # one pass of ssh lag and the retry wait of a failed switch
                 flag("STUCK", {"machine": STEVE, "key": STEVE, "refused_passes": st["steve_refused"], "on": sl,
                                "left": round(w.left(sl), 1) if sl in ACCTS else None, "can_take_over": can_s,
-                               "runs": len(w.steve.runs), "why": " ".join(str(why_s).split())[:300]})
+                               "runs": len(w.steve.runs), "why": fulltext.fit(" ".join(str(why_s).split()), 300)})
         else:
             st["steve_refused"] = 0
 
@@ -1103,7 +1104,7 @@ def report(results, title):
         out.append("- **%s**: %s (%d regimes, %.0f s)" % (r["name"], r["verdict"], r["n"], r["seconds"]))
         for c, v in sorted(r["violations"].items()):
             out.append("  - %s in %d regime(s); smallest: seed %d, at hour %s: %s" % (
-                c, v["count"], v["seed"], v["h_first"], json.dumps(v["detail"], sort_keys=True)[:400]))
+                c, v["count"], v["seed"], v["h_first"], fulltext.fit(json.dumps(v["detail"], sort_keys=True), 400)))
             out.append("    - regime: `%s`" % regime_line(v["regime"]))
         if r["verdict"] == "COSTLY":
             c = max(r["costly"], key=lambda x: x["by"])

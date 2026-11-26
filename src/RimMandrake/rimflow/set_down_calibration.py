@@ -25,6 +25,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 sys.path.insert(0, HERE)
 import filing_gate as FG  # noqa: E402
+import fulltext as FT  # noqa: E402
 import set_down_judge as SJ  # noqa: E402
 
 PAGE_DIR = os.path.join(REPO, "design", "specs", "2026-11-24-filing-gate")
@@ -97,7 +98,7 @@ def table(cases, raw, at):
         rows.append("| %d | %s | %s%s | %s | %s | %s | %s | %s | %s |" % (
             c["n"], c["class"], c["label"], " (unsure)" if c.get("unsure") else "", v.get("verdict"),
             "yes" if agree else "**no**", prog, gate if gate == c["label"] else "**%s**" % gate,
-            str(v.get("missing") or v.get("why") or "").replace("|", "/")[:160], v.get("seconds")))
+            FT.fit(str(v.get("missing") or v.get("why") or "").replace("|", "/"), 160), v.get("seconds")))
     n = len(cases)
     secs = [raw[case_id(c)].get("seconds") or 0 for c in cases]
     binds = len(wrong) <= BIND_TOLERATE

@@ -205,7 +205,7 @@ def main(argv=None):
         return 1
     print("%s %s: %s" % ("SWITCHED" if o.verb == "set" else "LIFTED", row["host"], json.dumps(row, ensure_ascii=False)))
     if o.publish:
-        return _publish("host_work_switch: %s %s (%s)" % (o.verb, row["host"], (o.said or o.why or "").strip()[:120]))
+        return _publish("host_work_switch: %s %s (%s)" % (o.verb, row["host"], (o.said or o.why or "").strip()[:120]))  # cut-ok: a git commit subject; the whole text is in the stored row (danger: a subject of several hundred characters buries the log view)
     print("not landed: run it again with --publish, or ./publish %s" % os.path.relpath(PATH, REPO))
     return 0
 

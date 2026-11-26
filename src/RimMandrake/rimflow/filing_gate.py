@@ -25,6 +25,10 @@ import datetime
 import json
 import os
 import re
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import fulltext  # noqa: E402
 
 Decision = collections.namedtuple("Decision", "ok text record")
 Door = collections.namedtuple("Door", "go rc text record err")
@@ -437,7 +441,7 @@ def _judged(sd, unit, state_dir, judge_fn, binds, record, now=None):
         v = dict(res) if isinstance(res, dict) else {"verdict": "could not judge",
                                                       "why": "the judge returned no verdict (%r)" % (res,)}
     except Exception as e:  # noqa: BLE001 - a dead judge never stops filing (page, a-judge-that-cannot-answer...)
-        v = {"verdict": "could not judge", "why": "%s: %s" % (type(e).__name__, str(e)[:300])}
+        v = {"verdict": "could not judge", "why": "%s: %s" % (type(e).__name__, fulltext.fit(str(e), 300))}
     if v.get("verdict") not in ("PASS", "REFUSED"):
         v["verdict"] = "could not judge"
         v.setdefault("why", "no verdict")
@@ -500,15 +504,15 @@ def at_defer(door, iid, text, unit, owner, program, state_dir, live_units, judge
         return Door(True, 0, "", None, "")
     stop, rec = defer_check(door, text, unit, live_units)
     if stop:
-        err = record_refusal(unit, state_dir, iid, (text or "")[:120], door, stop.splitlines()[0][len("REFUSED: "):],
-                             door=door, now=now)
+        err = record_refusal(unit, state_dir, iid, fulltext.fit(text or "", 120), door,
+                             stop.splitlines()[0][len("REFUSED: "):], door=door, now=now)
         return Door(False, 6, stop + "\nThe refusal is recorded; this run must resolve it before it ends: " +
                     HOW_TO_RESOLVE + ", or do the act again with a reason that meets the requirement.", None, _err(err))
     if rec is not None and judge_fn is not None and not rec.get("checked"):
         sd = {"door": door, "id": iid, "title": "", "kind": door, "class": door, "evidence": rec["reason"]}
         stop = _judged(sd, unit, state_dir, judge_fn, binds, rec, now)
         if stop:
-            err = record_refusal(unit, state_dir, iid, (text or "")[:120], door,
+            err = record_refusal(unit, state_dir, iid, fulltext.fit(text or "", 120), door,
                                  stop.splitlines()[0][len("REFUSED: "):], door=door, now=now)
             return Door(False, 6, stop + "\nThe refusal is recorded; this run must resolve it before it ends: " +
                         HOW_TO_RESOLVE + ".", None, _err(err))

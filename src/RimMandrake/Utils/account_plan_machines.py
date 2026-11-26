@@ -9,7 +9,12 @@ refuses new runs with COULD NOT LOOK when the notice is missing or older than ac
 """
 import json
 import shlex
+import os
 import subprocess
+import sys
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "rimflow"))
+import fulltext  # noqa: E402
 
 REMOTE_DIR = "/mnt/d/ClaudeWork/rimmandrake/switching_plan"     # switching_plan.LIVE_OUT on each machine
 SSH = ["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=10"]
@@ -62,7 +67,7 @@ def machine_runs(alias):
     except (OSError, subprocess.SubprocessError) as e:
         return None, "%s: %s" % (type(e).__name__, e)
     if r.returncode != 0:
-        return None, (r.stderr or r.stdout).strip()[-200:] or "exit %d" % r.returncode
+        return None, fulltext.fit((r.stderr or r.stdout).strip(), 200, tail=True) or "exit %d" % r.returncode
     return sum(1 for ln in r.stdout.splitlines() if len(ln.split()) > 1 and ln.split()[1] == "running"), None
 
 
@@ -74,4 +79,4 @@ def switch_machine(alias, name, account):
         r = subprocess.run(SSH + [alias, cmd], capture_output=True, text=True, timeout=1800)  # budget: class=call
     except (OSError, subprocess.SubprocessError) as e:
         return False, "%s: %s" % (type(e).__name__, e)
-    return r.returncode == 0, ((r.stdout + r.stderr).strip()[-300:] or "exit %d" % r.returncode)
+    return r.returncode == 0, (fulltext.fit((r.stdout + r.stderr).strip(), 300, tail=True) or "exit %d" % r.returncode)
