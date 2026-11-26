@@ -26,15 +26,15 @@ def check(name, cond):
 
 
 # ---- the C# line formats parse (RM_WaterLookProofs.ProofWaterLook's own docstring shape)
-LINE = ("WATERLOOK cell=46,41 terrain=WaterDeep still=True dug=True hollow=22 waterM=11 dlPerMetre=2000 tint=2 tn=0 tw=0 key=2 "
-        "watchKey=2 tintOn=True bandOn=True facesOn=True tintVisible=True bandVisible=True lookDirty=False")
+LINE = ("WATERLOOK cell=46,41 terrain=WaterDeep still=True dug=True hollow=22 waterM=11 dlPerMetre=2000 tint=2 key=2 "
+        "watchKey=2 tintOn=True facesOn=True tintVisible=True lookDirty=False")
 kv = W.parse(LINE)
 check("parse: every field of the read line", all(k in kv for k in (
-    "cell", "terrain", "still", "dug", "hollow", "waterM", "dlPerMetre", "tint", "tn", "tw", "key", "watchKey", "tintOn", "bandOn",
-    "facesOn", "tintVisible", "bandVisible", "lookDirty")))
+    "cell", "terrain", "still", "dug", "hollow", "waterM", "dlPerMetre", "tint", "key", "watchKey", "tintOn",
+    "facesOn", "tintVisible", "lookDirty")))
 check("parse: numbers read as numbers", W.fnum(kv, "tint") == 2 and W.fnum(kv, "waterM") == 11 and W.fnum(kv, "dlPerMetre") == 2000)
-check("parse: an unread / NaN field is None", W.fnum({"watchKey": "unread"}, "watchKey") is None and W.fnum({"tn": "NaN"}, "tn") is None)
-check("parse: the set and take lines", W.parse("WATERLOOKSET tintOn=False bandOn=True")["tintOn"] == "False"
+check("parse: an unread / NaN field is None", W.fnum({"watchKey": "unread"}, "watchKey") is None and W.fnum({"tint": "NaN"}, "tint") is None)
+check("parse: the set and take lines", W.parse("WATERLOOKSET tintOn=False")["tintOn"] == "False"
       and W.parse("WATERTAKE cells=9 took=63000")["took"] == "63000")
 
 
@@ -64,18 +64,6 @@ check("A1 off: never visible ON (control): UNMEASURED/HARNESS", W.off_verdict(R(
       == ("UNMEASURED", "HARNESS"))
 check("A1 off: visibility unread: UNMEASURED/HARNESS", W.off_verdict(R(tintVisible="unread"), off, "tintVisible", "tint")
       == ("UNMEASURED", "HARNESS"))
-b1, b2 = R(hollow=10, waterM=4, tn=0.17, tw=0.17), R(hollow=10, waterM=3, tn=0.34, tw=0.34)
-check("A2 widen: 2 m gap wider than 1 m: PASS", W.widen_verdict(b1, b2) == ("PASS", "MOD"))
-check("can-fail A2 widen: same width: FAIL", W.widen_verdict(b1, R(hollow=10, waterM=3, tn=0.17, tw=0.17))[0] == "FAIL")
-check("can-fail A2 widen: no band at all: FAIL", W.widen_verdict(R(hollow=10, waterM=4, tn=0, tw=0), b2)[0] == "FAIL")
-check("A2 widen: a shallow dig: UNMEASURED/SITE", W.widen_verdict(R(hollow=6, waterM=4, tn=0.1, tw=0.1), b2) == ("UNMEASURED", "SITE"))
-brim = R(hollow=10, waterM=5, tn=0, tw=0)
-check("A2 brim: none: PASS", W.brim_verdict(brim, b1) == ("PASS", "MOD"))
-check("can-fail A2 brim: a band: FAIL", W.brim_verdict(R(hollow=10, waterM=5, tn=0.1, tw=0), b1)[0] == "FAIL")
-check("A2 brim: the control never read a band: UNMEASURED/HARNESS", W.brim_verdict(brim, R(tn=0)) == ("UNMEASURED", "HARNESS"))
-check("A2 off: needs wall faces on: UNMEASURED/SITE",
-      W.off_verdict(R(bandVisible="False", facesOn="False", tn=0.34), R(bandVisible="False", tn=0.34), "bandVisible", "tn",
-                    needs=("facesOn", "True")) == ("UNMEASURED", "SITE"))
 dd = [R(waterM=11, tint=2), R(waterM=7.5, tint=1), R(waterM=4, tint=0)]
 check("A3 drawdown: terrain kept, tint follows: PASS", W.drawdown_verdict(dd) == ("PASS", "MOD"))
 check("can-fail A3 drawdown: terrain written: FAIL",
@@ -93,7 +81,7 @@ check("A3 fresh: baseline key != watch key (blind or unready): UNMEASURED/HARNES
 check("A3 fresh: watch key unread: UNMEASURED/HARNESS", W.fresh_verdict(base, [R(key=1, watchKey="unread"), a2])[:2]
       == ("UNMEASURED", "HARNESS"))
 check("A3 fresh: no crossing happened: UNMEASURED/SITE", W.fresh_verdict(base, [R(key=2, watchKey=2), a2])[:2] == ("UNMEASURED", "SITE"))
-check("every row is A1/A2/A3 of the item", all(r.split("_")[0] in ("A1", "A2", "A3") for r in W.ROW_IDS))
+check("every row is A1/A3 of the item (A2, the wet-wall band, is gone)", all(r.split("_")[0] in ("A1", "A3") for r in W.ROW_IDS))
 check("pits are disjoint with dry squares between", all(W.PITS[b][0] - W.PITS[a][0] >= 6 for a, b in zip(list(W.PITS), list(W.PITS)[1:])))
 
 # ---- every planted defect lands on its row (mock end to end)
@@ -106,11 +94,7 @@ EXPECT = {"": {}, "old_deploy": A, "no_dig": S,
                         "A3_TINT_FRESH_AFTER_DRAWDOWN": ("UNMEASURED", "SITE")},
           "terrain_write": {"A1_TERRAIN_STILL_WATERDEEP": ("FAIL", "MOD"), "A3_DRAWDOWN_NO_TERRAIN_WRITE": ("FAIL", "MOD")},
           "off_shows": {"A1_OFF_HIDES_TINT": ("FAIL", "MOD")},
-          "no_draw": {"A1_OFF_HIDES_TINT": ("UNMEASURED", "HARNESS"), "A2_OFF_HIDES_BAND": ("UNMEASURED", "HARNESS")},
-          "faces_off": {"A2_OFF_HIDES_BAND": ("UNMEASURED", "SITE")},
-          "band_flat": {"A2_BAND_WIDENS_WITH_GAP": ("FAIL", "MOD")},
-          "band_brim": {"A2_BRIM_FULL_NO_BAND": ("FAIL", "MOD")},
-          "band_off_shows": {"A2_OFF_HIDES_BAND": ("FAIL", "MOD")},
+          "no_draw": {"A1_OFF_HIDES_TINT": ("UNMEASURED", "HARNESS")},
           "take_terrain": {"A3_DRAWDOWN_NO_TERRAIN_WRITE": ("FAIL", "MOD")},
           "stale": {"A3_TINT_FRESH_AFTER_DRAWDOWN": ("FAIL", "MOD")},
           "blind_watch": {"A3_TINT_FRESH_AFTER_DRAWDOWN": ("UNMEASURED", "HARNESS")}}
@@ -129,12 +113,12 @@ for fault, want in EXPECT.items():
         check("stale: the row records stale=True", [r for r in res["rows"] if r["id"] == "A3_TINT_FRESH_AFTER_DRAWDOWN"][0]
               ["detail"].get("stale") is True)
     if fault == "":
-        check("clean: settings restored to ON at the end", "tintOn=True bandOn=True" in res.get("settingsAfter", ""))
+        check("clean: settings restored to ON at the end", "tintOn=True" in res.get("settingsAfter", ""))
         check("clean: stale=False recorded", [r for r in res["rows"] if r["id"] == "A3_TINT_FRESH_AFTER_DRAWDOWN"][0]
               ["detail"].get("stale") is False)
 out = os.path.join(tmp, "wl_only.json")
 with contextlib.redirect_stdout(io.StringIO()):
-    W.main(["--mock", out, "--only", "A2_BRIM_FULL_NO_BAND"])
-check("--only writes just that row", [r["id"] for r in json.load(open(out))["rows"]] == ["A2_BRIM_FULL_NO_BAND"])
+    W.main(["--mock", out, "--only", "A1_TEN_METRES_DARKER"])
+check("--only writes just that row", [r["id"] for r in json.load(open(out))["rows"]] == ["A1_TEN_METRES_DARKER"])
 print("%d FAIL" % len(fails))
 sys.exit(1 if fails else 0)

@@ -145,7 +145,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 				string draw = RiverSwitchFlipChecks.Src("Superdeep/RM_SubmergeDraw.cs");
 				Assert(gates.Contains("RM_SubmergeDraw.Wet(this, out int depth, out float levelM, out float clarity, false) && RM_UnderLiquid.GateShowsLiquid(Rotation.AsInt)"),
 					"can-fail: the shipped gate draw cuts water over the gate only when GateShowsLiquid says so (unfixed: every rotation)");
-				Assert(draw.Contains("kind = \"gate\";") && draw.Contains("!RM_UnderLiquid.GateShowsLiquid(t.Rotation.AsInt) ? 0f"),
+				Assert(draw.Contains("kind = \"gate\";") && draw.Contains("!RM_UnderLiquid.GateShowsLiquid(t.Rotation.AsInt) || ((Building_RM_FlowDoor)t).FaceDry() ? 0f"),
 					"can-fail: the submerge proof read reports a side-view gate's share as 0, as it is drawn");
 			});
 			Case("Submerge_water_edge_draws_no_pale_frame", () =>
@@ -159,7 +159,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 				string walls = RiverSwitchFlipChecks.Src("Superdeep/RM_ExcavationWalls.cs");
 				int at = walls.IndexOf("private void WetEdges(", StringComparison.Ordinal);
 				Assert(at >= 0, "WetEdges is where a wet square's edges are drawn");
-				int end = walls.IndexOf("private void SideUnder(", at, StringComparison.Ordinal);
+				int end = walls.IndexOf("private readonly System.Collections.Generic.List<float[]> band0", at, StringComparison.Ordinal);
 				string edges = walls.Substring(at, (end > at ? end : walls.Length) - at);
 				int sheetDraws = Regex.Matches(edges, @"RM_FaceMaterial\.SheetMat|lineMat").Count;
 				Console.WriteLine("  WetEdges light-material draws=" + sheetDraws + " (limit 0)");

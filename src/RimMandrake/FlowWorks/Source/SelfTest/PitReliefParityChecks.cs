@@ -793,9 +793,6 @@ namespace RimMandrake.FlowWorks.SelfTest
 						Assert(Near(r[k], RectGolden[i, 8 + k]), "can-fail: FloorRects row " + i + " value " + k + " = " + r[k] + ", model " + RectGolden[i, 8 + k]);
 					}
 				}
-				RM_PitReliefMath.DrownedBandX(0.11f, 0.06f, out float x0, out float x1);
-				Assert(Near(x0, 0.11f) && Near(x1, 0.94f), "can-fail: the drowned band spans between the side walls' full feet only");
-				Assert(Near(RM_PitReliefMath.SideUnderTop(0.65f), 0.65f), "can-fail: a drowned side strip stops at the far wall's waterline");
 			});
 			Case("PitRelief_redraw_and_concealment_rules", () =>
 			{

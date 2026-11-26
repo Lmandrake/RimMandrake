@@ -315,8 +315,8 @@ class FakeBridge(object):
         x, z = (int(v) for v in arg.split(","))
         cell = self.cells.get((x, z))
         hollow, wm = cell if cell else (0, 0.0)
-        return ("WATERLOOK cell=%d,%d terrain=Soil still=%s dug=%s hollow=%d waterM=%.4f dlPerMetre=2000 tint=0 tn=0 tw=0 key=0 "
-                "watchKey=0 tintOn=True bandOn=True facesOn=True tintVisible=True bandVisible=True lookDirty=False") % (
+        return ("WATERLOOK cell=%d,%d terrain=Soil still=%s dug=%s hollow=%d waterM=%.4f dlPerMetre=2000 tint=0 key=0 "
+                "watchKey=0 tintOn=True facesOn=True tintVisible=True lookDirty=False") % (
             x, z, bool(cell and wm > 0), bool(cell), hollow, wm)
 
     def call(self, tool, **kw):

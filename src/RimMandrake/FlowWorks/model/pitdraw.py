@@ -309,9 +309,13 @@ def _key(cell_plan):
 # drowned far-wall band ran across the side strips). Each layer is a convex polygon of (x, z) in cell units.
 
 def lit_polys(d, hn, hw, he, hnw, hne, lv, wet_view=True, old=False):
-    """The polygons the walls layer lights on one square (dry faces, corner pieces, and when wet_view the drowned parts
-    drawn under a clear liquid). old=True draws the drowned parts as the pre-rebuild code did (the instrument's red case)."""
+    """The polygons the walls layer lights on one square: dry faces and corner pieces. Under a clear liquid (wet_view) the
+    square is drawn as the DRY pit (RIMMANDRAKE_DRILL_FLOWWORKS_WATER_LAYERS_HE_SAW_STACKED_BLUE: one sheet over the dry pit,
+    model/water_surface.py), so its lit faces are the faces at level 0. old=True draws the drowned parts as the code before the
+    pale-frame fix did (plain rectangles across the square: the instrument's red case)."""
     polys = []
+    if wet_view and lv > 0 and not old:
+        lv = 0.0
     en, ew_, ee = exposed(d, hn, lv), exposed(d, hw, lv), exposed(d, he, lv)
     h, ww, ew = north_face(en), side_face(ew_), side_face(ee)
     top = 1.0
@@ -329,36 +333,20 @@ def lit_polys(d, hn, hw, he, hnw, hne, lv, wet_view=True, old=False):
         polys.append(("corner_nw", corner_poly(False, wnw, hnwp)))
     if wne > 0:
         polys.append(("corner_ne", corner_poly(True, wne, hnep)))
-    if not wet_view or lv <= 0:
+    if not wet_view or lv <= 0 or not old:
         return polys
-    # drowned parts (SeeThrough): the far wall's drowned band and the side walls' drowned strips
+    # old: the drowned parts as plain rectangles across the whole square (the pale frame)
     h_full = north_face(exposed(d, hn, 0.0))
     w_full_w, w_full_e = side_face(exposed(d, hw, 0.0)), side_face(exposed(d, he, 0.0))
     floor_top = 1.0 - h_full
     drowned = h_full - h
-    wet_top = 1.0 - h
     if drowned > 0.001:
-        x0, x1 = (0.0, 1.0) if old else drowned_band_x(w_full_w, w_full_e)
-        if x1 > x0:
-            polys.append(("drowned_band", _rect(x0, floor_top, x1, floor_top + drowned)))
+        polys.append(("drowned_band", _rect(0.0, floor_top, 1.0, floor_top + drowned)))
     for east, wf, wd in ((False, w_full_w, ww), (True, w_full_e, ew)):
         if wf - wd > 0.001:
-            ztop = 1.0 if old else side_under_top(wet_top)
             x0, x1 = (1.0 - wf, 1.0 - wd) if east else (wd, wf)
-            polys.append(("side_under_e" if east else "side_under_w", _rect(x0, 0.0, x1, ztop)))
+            polys.append(("side_under_e" if east else "side_under_w", _rect(x0, 0.0, x1, 1.0)))
     return polys
-
-
-def drowned_band_x(w_full_w: float, w_full_e: float):
-    """RM_PitReliefMath.DrownedBandX: the far wall's drowned band spans only between the side walls' full feet (each side
-    strip carries its own corner); it used to span the whole square, over the side strips."""
-    return w_full_w, 1.0 - w_full_e
-
-
-def side_under_top(wet_top: float) -> float:
-    """RM_PitReliefMath.SideUnderTop: a drowned side strip stops at the far wall's waterline (above it the dry north face is
-    drawn); it used to run the square's full height under that face."""
-    return wet_top
 
 
 def corner_poly(east: bool, w: float, h: float):

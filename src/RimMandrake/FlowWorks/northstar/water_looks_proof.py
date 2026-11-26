@@ -1,5 +1,7 @@
 """WATER LOOKS live proof: WATER_ART_CANDIDATES_BUILD_WHAT_HE_APPROVED A1-A3 (L1), the two approved water looks (owner by card
-2026-10-22, "Pick for me: shadow band + navy"): the deep-water navy tint and the wet-wall shadow band (RM_WaterLooks.cs).
+2026-10-22, "Pick for me: shadow band + navy"): the deep-water navy tint (RM_WaterLooks.cs). The wet-wall shadow band and its
+A2 rows went with RIMMANDRAKE_DRILL_FLOWWORKS_WATER_LAYERS_HE_SAW_STACKED_BLUE (owner walk 2026-11-25: one water surface, not
+layers; the dry pit's own faces show the wall above dug water).
 Runbook 2026-10-22 rows P2 (this script) and 1.9 (its run). Written OFFLINE 2026-10-22: every row is OWED to its first live run.
 
   python.exe src/RimMandrake/FlowWorks/northstar/water_looks_proof.py [out.json] [--origin X,Z] [--fresh-map] [--only a,b]
@@ -14,20 +16,18 @@ must carry RimMandrake.FlowWorks.RM_WaterLookProofs (DLL 195c2fe9b or later): wi
 Exit 0 = every row PASS; 1 = a FAIL; 2 = a row could not be measured.
 
 The instrument (RM_WaterLookProofs.ProofWaterLook, one square of the current map):
-  "x,z"        WATERLOOK ... terrain still dug hollow waterM dlPerMetre tint tn tw key watchKey tintOn bandOn facesOn
-               tintVisible bandVisible lookDirty -- tint/tn/tw/key are RM_WaterLookDraw's own reads (what the layers draw);
-               tintVisible/bandVisible are the section's own layers' Visible (what a setting hides); watchKey is the key
+  "x,z"        WATERLOOK ... terrain still dug hollow waterM dlPerMetre tint key watchKey tintOn facesOn
+               tintVisible lookDirty -- tint/key are RM_WaterLookDraw's own reads (what the layer draws);
+               tintVisible is the section's own layer's Visible (what the setting hides); watchKey is the key
                RM_WaterLookWatcher last noted (the one its mesh was dirtied for).
-  "set:tint=0|1;band=0|1"   the two RM_WaterLookSettings (read back); restored at the end of the run, whatever happened.
+  "set:tint=0|1"            the RM_WaterLookSettings switch (read back); restored at the end of the run, whatever happened.
   "take:x;z;w;h;dl"         dL off every dug square through the engine's TryTakeDl (the pump's leg; it sets no terrain).
 Staging: RM_NorthstarProofs.ProofStageBasin "x;z;w;h;levels;fill;RM_Fluid_Water" (the engine's own Deepen + TrySetDriverFill).
 
 Plots (3x3 pits from --origin, default 40,40; z 0..2; 3 dry squares between pits; site rect origin-(2,2) .. +46 x 9):
   T5   x0    12 notches, brim-full (6 m)     T10  x6    22 notches, brim-full (11 m)     CTRL x12   6 notches, brim-full (3 m)
-  B1   x18   10 notches, fill 8 (gap 1 m)    B2   x24   10 notches, fill 6 (gap 2 m)     BRIM x30   10 notches, brim-full
   DD   x36   22 notches, brim-full (11 m), drawn down for A3
-  The tint is read on a pit's centre square, the band on its north-west corner square (north and west neighbours are dry
-  ground, so both band sides have a wall: RM_WaterLookDraw.Side reads dry ground as depth 0).
+  The tint is read on a pit's centre square.
 
 Rows (item WATER_ART_CANDIDATES_BUILD_WHAT_HE_APPROVED):
   A1_FIVE_METRES_NAVY        A1. T5 centre tint == 1 AND the CTRL (3 m) centre tint == 0 (the can-fail control: the
@@ -39,10 +39,6 @@ Rows (item WATER_ART_CANDIDATES_BUILD_WHAT_HE_APPROVED):
   A1_OFF_HIDES_TINT          A1. With the setting ON, T10's tint layer Visible=True (the control: visibility can read True;
                              False here = drawTerrain off or a blind read -> UNMEASURED/HARNESS); set tint=0 -> Visible=False
                              while the tint strength is unchanged (only the picture hides); restored.
-  A2_BAND_WIDENS_WITH_GAP    A2. B1 and B2 corners both show tn>0 and tw>0, and B2's are wider than B1's (gap 2 m > 1 m).
-  A2_BRIM_FULL_NO_BAND       A2. BRIM corner tn == tw == 0, scored only when B1 shows a band (the instrument can read one).
-  A2_OFF_HIDES_BAND          A2. ON: B2's band layer Visible=True (control; the band also hides with wall faces off:
-                             facesOn=False -> UNMEASURED/SITE); band=0 -> Visible=False, tn unchanged; restored.
   A3_DRAWDOWN_NO_TERRAIN_WRITE  A3. DD drawn down through TryTakeDl: 11 m -> 7.5 m -> 4 m (across 10 m, then 5 m). EXPECT
                              terrain identical at every step (WaterDeep: no terrain write happened), the water fell by the
                              take, and the tint STATE follows: 2 -> 1 -> 0.
@@ -79,10 +75,9 @@ NPROOF = "RimMandrake.FlowWorks.RM_NorthstarProofs"
 WATER_FLUID = "RM_Fluid_Water"
 ITEM = "WATER_ART_CANDIDATES_BUILD_WHAT_HE_APPROVED"
 ROW_IDS = ["A1_FIVE_METRES_NAVY", "A1_TEN_METRES_DARKER", "A1_TERRAIN_STILL_WATERDEEP", "A1_OFF_HIDES_TINT",
-           "A2_BAND_WIDENS_WITH_GAP", "A2_BRIM_FULL_NO_BAND", "A2_OFF_HIDES_BAND",
            "A3_DRAWDOWN_NO_TERRAIN_WRITE", "A3_TINT_FRESH_AFTER_DRAWDOWN"]
 # plot -> (x offset, notches, fill notches)
-PITS = {"T5": (0, 12, 12), "T10": (6, 22, 22), "CTRL": (12, 6, 6), "B1": (18, 10, 8), "B2": (24, 10, 6), "BRIM": (30, 10, 10),
+PITS = {"T5": (0, 12, 12), "T10": (6, 22, 22), "CTRL": (12, 6, 6),
         "DD": (36, 22, 22)}
 METRES_PER_NOTCH = 0.5                 # RM_Volume.CentimetresPerNotch 50
 DRAWDOWN_TO = [7.5, 4.0]               # metres of water left after each A3 take (across 10 m, then 5 m)
@@ -145,8 +140,8 @@ def terrain_verdict(reads):
 
 
 def off_verdict(on, off, vis, strength, needs=None):
-    """on/off: reads with the setting on / off; vis: 'tintVisible'|'bandVisible'; strength: the field that must not move.
-    needs: (field, value) that must hold for the layer to be visible at all (the band hides with wall faces off too)."""
+    """on/off: reads with the setting on / off; vis: 'tintVisible'; strength: the field that must not move.
+    needs: (field, value) that must hold for the layer to be visible at all."""
     if not on or not off or on.get(vis) in (None, "unread") or off.get(vis) in (None, "unread"):
         return "UNMEASURED", "HARNESS"
     if needs and on.get(needs[0]) != needs[1]:
@@ -155,28 +150,6 @@ def off_verdict(on, off, vis, strength, needs=None):
         return "UNMEASURED", "HARNESS"          # the control: visibility never read True, so a False proves nothing
     ok = off.get(vis) == "False" and fnum(on, strength) == fnum(off, strength) and (fnum(on, strength) or 0) > 0
     return ("PASS" if ok else "FAIL"), "MOD"
-
-
-def widen_verdict(b1, b2):
-    vals = [fnum(r, k) for r in (b1, b2) for k in ("tn", "tw")]
-    if not b1 or not b2 or None in vals:
-        return "UNMEASURED", "HARNESS"
-    if fnum(b1, "hollow") is not None and fnum(b1, "hollow") < PITS["B1"][1]:
-        return "UNMEASURED", "SITE"
-    if not filled(b1, "B1") or not filled(b2, "B2"):
-        return "UNMEASURED", "SITE"
-    n1, w1, n2, w2 = vals
-    return ("PASS" if n1 > 0 and w1 > 0 and n2 > n1 and w2 > w1 else "FAIL"), "MOD"
-
-
-def brim_verdict(brim, b1):
-    if not brim or fnum(brim, "tn") is None or fnum(brim, "tw") is None or not b1 or fnum(b1, "tn") is None:
-        return "UNMEASURED", "HARNESS"
-    if not filled(brim, "BRIM"):
-        return "UNMEASURED", "SITE"
-    if not (fnum(b1, "tn") > 0):
-        return "UNMEASURED", "HARNESS"          # the instrument never read a band: a 0 here proves nothing
-    return ("PASS" if fnum(brim, "tn") == 0 and fnum(brim, "tw") == 0 else "FAIL"), "MOD"
 
 
 def drawdown_verdict(steps):
@@ -324,7 +297,7 @@ def main(argv=None):
     k0, t0 = look(xz(P(0, 0)))
     if not k0.get("cell"):
         return all_rows("%s.ProofWaterLook is not in the loaded FlowWorks (deploy DLL 195c2fe9b+): %s" % (WLP, t0[:160]), "HARNESS")
-    res["settingsBefore"] = {"tintOn": k0.get("tintOn"), "bandOn": k0.get("bandOn"), "facesOn": k0.get("facesOn")}
+    res["settingsBefore"] = {"tintOn": k0.get("tintOn"), "facesOn": k0.get("facesOn")}
     if not a.mock:
         rect = (max(ox - 2, 1), max(oz - 2, 1), 46, 9)
         res["site_calm"] = V.site_calm(B)
@@ -335,11 +308,11 @@ def main(argv=None):
         bad = [r for r in site_rows if r.get("status") not in (None, "PASS")]
         if bad:
             return all_rows("site not prepared: %s" % json.dumps(bad[:3], default=str)[:300], "SITE")
-    look("set:tint=1;band=1")
+    look("set:tint=1")
     try:
         _run(a, B, row, look, ticks, P, centre, corner, xz, res)
     finally:
-        look("set:tint=%s;band=%s" % ("0" if k0.get("tintOn") == "False" else "1", "0" if k0.get("bandOn") == "False" else "1"))
+        look("set:tint=%s" % ("0" if k0.get("tintOn") == "False" else "1"))
         res["settingsAfter"] = look(xz(P(0, 0)))[1][:400]
     res["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S")
     save()
@@ -367,8 +340,7 @@ def _run(a, B, row, look, ticks, P, centre, corner, xz, res):
         stage_faults = list(V.PRE.pending())
     res["staged"] = staged
     rd = {p: look(xz(centre(p)))[0] for p in ("T5", "T10", "CTRL", "DD")}
-    bd = {p: look(xz(corner(p)))[0] for p in ("B1", "B2", "BRIM")}
-    res["reads"] = {"centre": rd, "corner": bd}
+    res["reads"] = {"centre": rd}
     sd = {"stageFaults": stage_faults} if stage_faults else {}
 
     def site(st, cls):          # a refused stage is SITE whatever the verdict read
@@ -380,23 +352,13 @@ def _run(a, B, row, look, ticks, P, centre, corner, xz, res):
     row("A1_TEN_METRES_DARKER", st, dict(sd, t10=rd["T10"], t5=rd["T5"]), cls=cls)
     st, cls = site(*terrain_verdict({"T5": rd["T5"], "T10": rd["T10"]}))
     row("A1_TERRAIN_STILL_WATERDEEP", st, dict(sd, t5=rd["T5"].get("terrain"), t10=rd["T10"].get("terrain")), cls=cls)
-    # OFF hides: the tint on T10, the band on B2 (both read ON first: the visibility control)
+    # OFF hides: the tint on T10 (read ON first: the visibility control)
     on_t = look(xz(centre("T10")))[0]
     look("set:tint=0")
     off_t = look(xz(centre("T10")))[0]
     look("set:tint=1")
     st, cls = site(*off_verdict(on_t, off_t, "tintVisible", "tint"))
     row("A1_OFF_HIDES_TINT", st, dict(sd, on=on_t, off=off_t), cls=cls)
-    st, cls = site(*widen_verdict(bd["B1"], bd["B2"]))
-    row("A2_BAND_WIDENS_WITH_GAP", st, dict(sd, gap1m=bd["B1"], gap2m=bd["B2"]), cls=cls)
-    st, cls = site(*brim_verdict(bd["BRIM"], bd["B1"]))
-    row("A2_BRIM_FULL_NO_BAND", st, dict(sd, brim=bd["BRIM"], control=bd["B1"].get("tn")), cls=cls)
-    on_b = look(xz(corner("B2")))[0]
-    look("set:band=0")
-    off_b = look(xz(corner("B2")))[0]
-    look("set:band=1")
-    st, cls = site(*off_verdict(on_b, off_b, "bandVisible", "tn", needs=("facesOn", "True")))
-    row("A2_OFF_HIDES_BAND", st, dict(sd, on=on_b, off=off_b), cls=cls)
     # A3: draw DD down across 10 m and 5 m through the engine's own take; terrain and the watcher read at every step
     dd = centre("DD")
     x0, z0 = P(PITS["DD"][0], 0)
@@ -434,21 +396,17 @@ class FakeBridge(object):
       terrain_write  MOD: deep water is written as a new terrain    -> A1_TERRAIN_STILL_WATERDEEP FAIL, A3_DRAWDOWN FAIL
       off_shows      MOD: the tint setting off leaves it visible    -> A1_OFF_HIDES_TINT FAIL
       no_draw        drawTerrain off: no layer ever reads visible   -> both OFF rows UNMEASURED/HARNESS
-      faces_off      wall faces off (the band hides with them)      -> A2_OFF_HIDES_BAND UNMEASURED/SITE
-      band_flat      MOD: the band is one width whatever the gap    -> A2_BAND_WIDENS_WITH_GAP FAIL
-      band_brim      MOD: a brim-full pit shows a band              -> A2_BRIM_FULL_NO_BAND FAIL
-      band_off_shows MOD: the band setting off leaves it visible    -> A2_OFF_HIDES_BAND FAIL
       take_terrain   MOD: the draw-down writes terrain              -> A3_DRAWDOWN_NO_TERRAIN_WRITE FAIL
       stale          MOD: the watcher never re-keys after a take    -> A3_TINT_FRESH_AFTER_DRAWDOWN FAIL (stale=True)
       blind_watch    the watcher's key cannot be read               -> A3_TINT_FRESH_AFTER_DRAWDOWN UNMEASURED/HARNESS"""
-    FAULTS = ("old_deploy", "no_dig", "tint_shallow", "tint_flat", "terrain_write", "off_shows", "no_draw", "faces_off",
-              "band_flat", "band_brim", "band_off_shows", "take_terrain", "stale", "blind_watch")
+    FAULTS = ("old_deploy", "no_dig", "tint_shallow", "tint_flat", "terrain_write", "off_shows", "no_draw",
+              "take_terrain", "stale", "blind_watch")
     DL_PER_M = 2000                        # any positive number: the script only uses the read-back value
 
     def __init__(self, faults=()):
         self.f = set(faults)
         self.cells = {}                    # (x, z) -> [hollow notches, water metres, terrain]
-        self.tint_on, self.band_on = True, True
+        self.tint_on = True
         self.watch = {}                    # (x, z) -> last noted key
 
     def _tint(self, w):
@@ -458,26 +416,9 @@ class FakeBridge(object):
             return 1 if "tint_flat" in self.f else 2
         return 1 if w >= 5 else 0
 
-    def _band(self, c):
-        cell = self.cells.get(c)
-        if not cell or cell[1] <= 0:
-            return 0.0, 0.0
-        out = []
-        for n in ((c[0], c[1] + 1), (c[0] - 1, c[1])):
-            nh = self.cells[n][0] if n in self.cells else 0
-            gap = max(0.0, (cell[0] - nh) * METRES_PER_NOTCH - cell[1])
-            if "band_brim" in self.f and gap == 0 and nh == 0:
-                gap = 0.5
-            if "band_flat" in self.f and gap > 0:
-                gap = 1.0
-            out.append(0.0 if gap <= 0 else max(1 / 16.0, min(0.5, 0.34 * gap / 2)))
-        return out[0], out[1]
-
     def _key(self, c):
         cell = self.cells.get(c)
-        tn, tw = self._band(c)
-        t = self._tint(cell[1]) if cell else 0
-        return t | int(round(tn * 32)) << 2 | int(round(tw * 32)) << 8
+        return self._tint(cell[1]) if cell else 0
 
     def _tick(self, n):
         if n >= 250 and "stale" not in self.f:
@@ -491,9 +432,7 @@ class FakeBridge(object):
                 k, v = part.split("=")
                 if k == "tint":
                     self.tint_on = v == "1"
-                else:
-                    self.band_on = v == "1"
-            return "WATERLOOKSET tintOn=%s bandOn=%s" % (self.tint_on, self.band_on)
+            return "WATERLOOKSET tintOn=%s" % self.tint_on
         if arg.startswith("take:"):
             x, z, w, h, dl = (int(v) for v in arg[5:].split(";"))
             n = 0
@@ -510,16 +449,13 @@ class FakeBridge(object):
         c = (x, z)
         cell = self.cells.get(c)
         hollow, w, terr = cell if cell else (0, 0.0, "Soil")
-        tn, tw = self._band(c)
         tint = self._tint(w) if cell else 0
         draw = "no_draw" not in self.f
-        faces = "faces_off" not in self.f
         wk = "unread" if "blind_watch" in self.f or not self.watch else str(self.watch.get(c, 0))
-        return ("WATERLOOK cell=%d,%d terrain=%s still=%s dug=%s hollow=%d waterM=%.4f dlPerMetre=%d tint=%d tn=%.4f tw=%.4f key=%d "
-                "watchKey=%s tintOn=%s bandOn=%s facesOn=%s tintVisible=%s bandVisible=%s lookDirty=False") % (
-            x, z, terr, bool(cell and w > 0), bool(cell), hollow, w, self.DL_PER_M, tint, tn, tw, self._key(c), wk, self.tint_on,
-            self.band_on, faces, draw and (self.tint_on or "off_shows" in self.f),
-            draw and faces and (self.band_on or "band_off_shows" in self.f))
+        return ("WATERLOOK cell=%d,%d terrain=%s still=%s dug=%s hollow=%d waterM=%.4f dlPerMetre=%d tint=%d key=%d "
+                "watchKey=%s tintOn=%s facesOn=True tintVisible=%s lookDirty=False") % (
+            x, z, terr, bool(cell and w > 0), bool(cell), hollow, w, self.DL_PER_M, tint, self._key(c), wk, self.tint_on,
+            draw and (self.tint_on or "off_shows" in self.f))
 
     def stage(self, arg):
         x, z, w, h, levels, fill, _fl = arg.split(";")

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
 
-  <!-- FlowWorks GPT review 2026-10-22: the water looks' own mesh flag (RM_WaterLooks.cs). Only SectionLayer_RMDeepWaterTint
-       and SectionLayer_RMWetWallBand listen to it; RM_WaterLookWatcher raises it when a square's picture key changes without
-       a terrain write, so redrawing a tint or band never rebuilds the terrain mesh. Same shape as Biotech's Pollution flag. -->
+  <!-- FlowWorks GPT review 2026-10-22: the water looks' own mesh flag (RM_WaterLooks.cs). SectionLayer_RMDeepWaterTint and
+       the pit walls layer listen to it; RM_WaterLookWatcher raises it when a square's deep step changes without a terrain
+       write, and RM_SubmergeDraw.FillPictured when a dug square's level moves, so the redraw never rebuilds the terrain mesh. Same shape as Biotech's Pollution flag. -->
   <MapMeshFlagDef>
     <defName>RM_WaterLooks</defName>
   </MapMeshFlagDef>

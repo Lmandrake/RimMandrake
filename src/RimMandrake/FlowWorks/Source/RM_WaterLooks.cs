@@ -1,14 +1,15 @@
-// WATER_ART_CANDIDATES_BUILD_WHAT_HE_APPROVED (owner by card 2026-10-22, "Pick for me: shadow band + navy"): the two approved water
-// looks, drawn as map section layers over the water, never as terrain (numbers and the mock each copies: RM_WaterLookMath).
-//   - SectionLayer_RMDeepWaterTint: water 5 m and deeper (any lake, pond, canal or pit; rivers excepted) under a navy overlay,
-//     10 m and deeper a darker one. Every such square stays WaterDeep, so swimming, roads and other mods see no change.
-//   - SectionLayer_RMWetWallBand: a wet dug square whose water stands below its lip shows a soft shadow band on its north and
-//     west edges, as thick as the gap between the water and the lip.
-// Both build their mesh whatever the setting and hide through Visible, so a toggle takes effect at once with no redraw. They
-// rebuild on a terrain change AND on their own mesh flag RM_WaterLooks (Defs/ManyWaters/MapMeshFlagDefs), which
-// RM_WaterLookWatcher raises for a square whose picture key changed (FlowWorks GPT review 2026-10-22: a level crossing
-// 5 m / 10 m, or a band's gap changing, inside one terrain rung used to leave the picture stale until the next terrain
-// write). Mod Settings: RM_WaterLookSettings (drawn and Scribed inside the water-body screen, RM_WaterMendSettings).
+// WATER_ART_CANDIDATES_BUILD_WHAT_HE_APPROVED (owner by card 2026-10-22, "Pick for me: shadow band + navy"): the approved deep-water
+// look, drawn as a map section layer over the water, never as terrain (numbers and the mock it copies: RM_WaterLookMath).
+//   - SectionLayer_RMDeepWaterTint: natural still water 5 m and deeper (any lake or pond; rivers excepted) under a navy overlay,
+//     10 m and deeper a darker one. Every such square stays WaterDeep, so swimming, roads and other mods see no change. A DUG square
+//     is not tinted here: the walls layer draws its water as one sheet (RM_ExcavationWalls.WaterSurface).
+// RIMMANDRAKE_DRILL_FLOWWORKS_WATER_LAYERS_HE_SAW_STACKED_BLUE (owner walk 2026-11-25: "I suspect you're applying multiple layers
+// over each other instead of calculating a single one"): the second look, the shadow band on the north and west walls above dug
+// water, is gone. It was a separate layer of plain rectangles over the walls (the census counted it beside the sheet and the
+// tint on one square), and the dry pit's own faces now show the bare wall above the water. The tint layer builds its mesh
+// whatever the setting and hides through Visible. It rebuilds on a terrain change AND on its own mesh flag RM_WaterLooks
+// (Defs/ManyWaters/MapMeshFlagDefs), which RM_WaterLookWatcher raises for a square whose deep step changed (FlowWorks GPT review
+// 2026-10-22). Mod Settings: RM_WaterLookSettings (drawn and Scribed inside the water-body screen, RM_WaterMendSettings).
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -18,12 +19,10 @@ namespace RimMandrake.FlowWorks
 	public static class RM_WaterLookSettings
 	{
 		public static bool deepWaterTintEnabled = true;
-		public static bool wetWallBandEnabled = true;
 
 		public static void ExposeData()
 		{
 			Scribe_Values.Look(ref deepWaterTintEnabled, "waterDeepTintEnabled", true);
-			Scribe_Values.Look(ref wetWallBandEnabled, "waterWallBandEnabled", true);
 		}
 
 		// The shared helper's snapshot. MUST stay below the LAST public setting field (RM_SettingsReset).
@@ -36,24 +35,20 @@ namespace RimMandrake.FlowWorks
 			list.GapLine();
 			list.Label("How water looks");
 			list.CheckboxLabeled("Very deep water is darker", ref deepWaterTintEnabled,
-				"On (shipped): water 5 m deep or more, in a lake, pond or pit, is drawn a darker navy, and 10 m or more darker "
+				"On (shipped): water 5 m deep or more, in a lake or pond, is drawn a darker navy, and 10 m or more darker "
 				+ "still, so you can see where the deep parts are. Only the picture changes. Rivers keep their own look. Off: all "
 				+ "water 2 m deep or more looks the same, as in the base game. Takes effect at once.");
-			list.CheckboxLabeled("Shadow on the walls above dug water", ref wetWallBandEnabled,
-				"On (shipped): when water in a dug pit stands below the edge of the hole, a soft shadow on its north and west "
-				+ "sides shows the bare wall between the water and the edge, wider the further down the water is. Off: the water "
-				+ "is drawn right up to the edge. Takes effect at once.");
 			RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, ResetToShipped);
 		}
 	}
 
-	/// <summary>Shared mesh helpers of the two water-look layers.</summary>
+	/// <summary>Shared mesh helpers of the water-look layer.</summary>
 	internal static class RM_WaterLookDraw
 	{
 		private static MapMeshFlagDef lookFlag;
 		private static bool lookFlagResolved;
 
-		/// <summary>The layers' own mesh flag (only these two layers listen to it); 0 if the def is missing, which degrades to
+		/// <summary>The looks' own mesh flag (the deep tint and the walls layer listen to it); 0 if the def is missing, which degrades to
 		/// the old terrain-only redraw rather than throwing.</summary>
 		public static ulong LookFlag
 		{
@@ -91,45 +86,15 @@ namespace RimMandrake.FlowWorks
 			return t != null && t.IsWater && !t.IsRiver;
 		}
 
-		/// <summary>The wall band's north and west thickness on a wet dug square (both 0 elsewhere).</summary>
-		public static void BandAt(Map map, RM_MapComponent_Excavation eng, IntVec3 c, out float tn, out float tw)
-		{
-			tn = tw = 0f;
-			if (!eng.IsExcavated(c) || eng.WaterDlAt(c) <= 0)
-			{
-				return;
-			}
-			int d = eng.HollowDepthAt(c);
-			double water = eng.WaterMetresAt(c);
-			tn = RM_WaterLookMath.BandThickness(RM_WaterLookMath.GapMetres(d, Side(map, eng, c + IntVec3.North, d), water));
-			tw = RM_WaterLookMath.BandThickness(RM_WaterLookMath.GapMetres(d, Side(map, eng, c + IntVec3.West, d), water));
-		}
-
-		/// <summary>The neighbour's floor in notches, for the gap, by the wall drawer's own rule (SectionLayer_RMExcavationWalls
-		/// .NeighbourLevel): the map edge and natural liquid read as this square's own depth (no wall there), dry ground as 0, a
-		/// dug or dried-bed neighbour as its hollow depth.</summary>
-		private static int Side(Map map, RM_MapComponent_Excavation eng, IntVec3 n, int myDepth)
-		{
-			if (!n.InBounds(map) || eng.IsSourceCell(n))
-			{
-				return myDepth;
-			}
-			return eng.HollowDepthAt(n);
-		}
-
-		/// <summary>The square's picture key (RM_WaterLookMath.LookKey) from the same reads the layers draw with.</summary>
+		/// <summary>The square's picture key (RM_WaterLookMath.LookKey) from the same read the tint draws with.</summary>
 		public static int KeyAt(Map map, RM_MapComponent_Excavation eng, IntVec3 c)
 		{
-			BandAt(map, eng, c, out float tn, out float tw);
-			return RM_WaterLookMath.LookKey((int)TintStrength(map, eng, c), tn, tw);
+			return RM_WaterLookMath.LookKey((int)TintStrength(map, eng, c));
 		}
 
 		/// <summary>Above the water terrain and the drowned wall faces, below the dry wall faces (RM_ExcavationWalls draws at
 		/// TerrainScatter + 0.002 .. + 0.0039).</summary>
 		public static float TintY => AltitudeLayer.TerrainScatter.AltitudeFor() + 0.0025f;
-
-		/// <summary>Above every wall face and outline.</summary>
-		public static float BandY => AltitudeLayer.TerrainScatter.AltitudeFor() + 0.0042f;
 
 		public static Color32 C(RM_WaterLookMath.Rgba c, float alpha)
 		{
@@ -231,9 +196,9 @@ namespace RimMandrake.FlowWorks
 				float y = RM_WaterLookDraw.TintY;
 				foreach (IntVec3 c in rect)
 				{
-					if (!RM_WaterLookDraw.IsStillWater(map, c))
+					if (!RM_WaterLookDraw.IsStillWater(map, c) || eng.IsExcavated(c))
 					{
-						continue;
+						continue;   // a dug square's water is the walls layer's one sheet
 					}
 					int ix = c.x - x0, iz = c.z - z0;   // this square in the grown grid (1..w-2, 1..h-2)
 					float bl = Corner(s, w, ix, iz), tl = Corner(s, w, ix, iz + 1), tr = Corner(s, w, ix + 1, iz + 1), br = Corner(s, w, ix + 1, iz);
@@ -261,61 +226,8 @@ namespace RimMandrake.FlowWorks
 
 	}
 
-	/// <summary>A wet dug square whose water stands below the lip: a soft dark band on its north and west edges, as thick as the
-	/// gap (RM_WaterLookMath.BandThickness), darkest at the lip and fading toward the water. The north side is the far wall the
-	/// camera sees; the west the shaded side wall (RM_WallFaceMath's convention).</summary>
-	public class SectionLayer_RMWetWallBand : SectionLayer
-	{
-		public SectionLayer_RMWetWallBand(Section section) : base(section)
-		{
-			relevantChangeTypes = RM_WaterLookDraw.Flags;
-		}
-
-		// the band shades a wall face, so it hides with the faces (excavationWallFacesEnabled) too
-		public override bool Visible => DebugViewSettings.drawTerrain && RM_WaterLookSettings.wetWallBandEnabled
-			&& RimMandrakeFlowWorksSettings.excavationWallFacesEnabled;
-
-		public override void Regenerate()
-		{
-			ClearSubMeshes(MeshParts.All);
-			Map map = Map;
-			RM_MapComponent_Excavation eng = map.GetComponent<RM_MapComponent_Excavation>();
-			if (eng != null)
-			{
-				LayerSubMesh sm = null;
-				float y = RM_WaterLookDraw.BandY;
-				foreach (IntVec3 c in section.CellRect)
-				{
-					RM_WaterLookDraw.BandAt(map, eng, c, out float tn, out float tw);
-					if (tn <= 0f && tw <= 0f)
-					{
-						continue;
-					}
-					if (sm == null)
-					{
-						sm = GetSubMesh(RM_FaceMaterial.ShadeMat);
-					}
-					Color32 clear = RM_WaterLookDraw.C(RM_WaterLookMath.BandColour, 0f);
-					if (tn > 0f)
-					{
-						Color32 lip = RM_WaterLookDraw.C(RM_WaterLookMath.BandColour, RM_WaterLookMath.BandAlpha(false));
-						// hangs from the north edge: dark at the top, clear at its foot
-						RM_WaterLookDraw.Quad(sm, c.x, c.z + 1f - tn, 1f, tn, y, clear, lip, lip, clear);
-					}
-					if (tw > 0f)
-					{
-						Color32 lip = RM_WaterLookDraw.C(RM_WaterLookMath.BandColour, RM_WaterLookMath.BandAlpha(true));
-						// along the west edge: dark at the wall, clear toward the water
-						RM_WaterLookDraw.Quad(sm, c.x, c.z, tw, 1f, y + 0.0001f, lip, lip, clear, clear);
-					}
-				}
-			}
-			FinalizeMesh(MeshParts.All);
-		}
-	}
-
-	/// <summary>FlowWorks GPT review 2026-10-22: redraws the two water looks when a square's picture key changes (a deep step
-	/// crossed, a band edge moved a rung) without a terrain write. Runs on its own 250-tick timer from the depth engine, the
+	/// <summary>FlowWorks GPT review 2026-10-22: redraws the deep tint when a square's picture key changes (a deep step crossed)
+	/// without a terrain write. Runs on its own 250-tick timer from the depth engine, the
 	/// setting on or off (the meshes are kept current either way, so a toggle shows the right picture at once). Watches only
 	/// squares that can carry a look: every dug square, and natural still water whose floor is 5 m or deeper (rebuilt every
 	/// tenth check; shallower natural water can never reach the 5 m step). A changed key dirties only the looks' own mesh

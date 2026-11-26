@@ -4,16 +4,15 @@ namespace RimMandrake.FlowWorks
 {
 	/// <summary>
 	/// WATER_ART_CANDIDATES_BUILD_WHAT_HE_APPROVED (owner by card 2026-10-22, "Pick for me: shadow band + navy"): the numbers of
-	/// the two approved water looks, Verse-free so Source/SelfTest/ compiles THIS file. Both are drawn, never terrain:
+	/// the approved deep-water look, Verse-free so Source/SelfTest/ compiles THIS file. It is drawn, never terrain. (The shadow
+	/// band went with RIMMANDRAKE_DRILL_FLOWWORKS_WATER_LAYERS_HE_SAW_STACKED_BLUE: the dry pit's own faces show the wall above dug
+	/// water, under one sheet.)
 	/// <list type="bullet">
 	/// <item>DEEP TINT (mock Transient/fw_scenes/water_art/img/deep_T2_navy.png): water 5 m and deeper takes a navy overlay, 10 m and
 	/// deeper a darker one (<see cref="RM_WaterLadder.DeepStep"/>). The mock's per-pixel rule was
 	/// <c>out = under·(1 − 0.25·i)·(1 − f) + navy·f</c> with navy (28, 40, 66), f = 0.42 / 0.70 for i = 1 / 2; as an alpha overlay
 	/// <c>out = under·(1 − α) + C·α</c> that is exactly α = 1 − (1 − 0.25·i)(1 − f) and C = navy·f / α (<see cref="TintFive"/>,
 	/// <see cref="TintTen"/>).</item>
-	/// <item>WALL SHADOW BAND (mock wall_1_shadow_band.png): a wet dug square whose water stands below the lip shows a soft dark band
-	/// on its north and west edges, as thick as the gap between the water and the lip (0.34 of a square per 2 m of gap, at least
-	/// 1/16, at most half), darkest at the lip (0.75, the west side 0.8 of that) and fading to nothing toward the water.</item>
 	/// </list>
 	/// The soft edge between tint steps (corner = mean of the four squares round it) is a first guess, to be judged in game.
 	/// </summary>
@@ -71,69 +70,15 @@ namespace RimMandrake.FlowWorks
 			return under * (1.0 - a) + tintChannel * a;
 		}
 
-		// ── the wall shadow band ──────────────────────────────────────────────────────────────────────────────
+		// ── redraw rungs (FlowWorks GPT review 2026-10-22) ────────────────────────────────────────────────────────────
+		// The tint layer used to redraw on a TERRAIN change only, so water crossing 5 m / 10 m inside one terrain rung left the
+		// picture stale. The watcher (RM_WaterLookWatcher) keys each square's picture by its deep step and dirties the layer's own
+		// mesh flag only when a key changes.
 
-		public static readonly Rgba BandColour = new Rgba(48, 34, 24, 0);
-		public const float BandPerTwoMetres = 0.34f;
-		public const float BandMin = 1f / 16f;
-		public const float BandMax = 0.5f;
-		public const float BandLipAlpha = 0.75f;
-		public const float BandWestFactor = 0.8f;
-
-		/// <summary>Metres between the water and the lip on one side: the side's drop (this square's floor below its neighbour's,
-		/// in notches) less the water standing here. Never negative; 0 when the neighbour is as deep or deeper.</summary>
-		public static double GapMetres(int myHollowNotches, int neighbourHollowNotches, double waterMetres)
+		/// <summary>One square's picture as a number: its deep step (0..2).</summary>
+		public static int LookKey(int deepStep)
 		{
-			int drop = myHollowNotches - neighbourHollowNotches;
-			if (drop <= 0)
-			{
-				return 0.0;
-			}
-			double gap = drop * RM_LevelSolve.Metres(RM_LevelSolve.U) - waterMetres;
-			return gap > 0.0 ? gap : 0.0;
-		}
-
-		/// <summary>The band's thickness in squares for <paramref name="gapMetres"/> of dry wall above the water (0 for no gap).</summary>
-		public static float BandThickness(double gapMetres)
-		{
-			if (gapMetres <= 0.0)
-			{
-				return 0f;
-			}
-			float t = (float)(BandPerTwoMetres * gapMetres / 2.0);
-			return t < BandMin ? BandMin : (t > BandMax ? BandMax : t);
-		}
-
-		/// <summary>The band's alpha at the lip (it fades to 0 at its inner edge): the north band full, the west band 0.8 of it.</summary>
-		public static float BandAlpha(bool west)
-		{
-			return west ? BandLipAlpha * BandWestFactor : BandLipAlpha;
-		}
-
-		// ── redraw rungs (FlowWorks GPT review 2026-10-22, RM_WaterLooks.cs:116/207) ────────────────────────────────────
-		// The two layers used to redraw on a TERRAIN change only, so water crossing 5 m / 10 m, or a band's gap changing, inside
-		// one terrain rung left the picture stale. The watcher (RM_WaterLookWatcher) now keys each square's picture by its rung
-		// and dirties the layers' own mesh flag only when a key changes: a deep step, or a band edge moving by 1/32 of a square.
-
-		/// <summary>Band rungs per square: the band is redrawn when its edge moves by this much (about 19 cm of gap).</summary>
-		public const int BandRungsPerSquare = 32;
-
-		/// <summary>The rung of a band <paramref name="thickness"/> (squares): 0 for no band, else at least 1.</summary>
-		public static int BandRung(float thickness)
-		{
-			if (thickness <= 0f)
-			{
-				return 0;
-			}
-			int r = (int)Math.Round(thickness * BandRungsPerSquare);
-			return r < 1 ? 1 : r;
-		}
-
-		/// <summary>One square's picture as a number: its deep step (0..2) and its north and west band rungs. Equal keys draw the
-		/// same picture to within one band rung, so a changed key is the only reason to redraw.</summary>
-		public static int LookKey(int deepStep, float bandNorth, float bandWest)
-		{
-			return (deepStep & 3) | (BandRung(bandNorth) & 63) << 2 | (BandRung(bandWest) & 63) << 8;
+			return deepStep & 3;
 		}
 
 		/// <summary>The last key seen per square (map-sized, allocated once). <see cref="Note"/> says whether it changed.</summary>

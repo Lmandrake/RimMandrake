@@ -26,14 +26,14 @@ namespace RimMandrake.FlowWorks
 		private static string F(double v) => v.ToString("0.####", CultureInfo.InvariantCulture);
 
 		/// <summary>
-		/// arg "x,z" (READ ONLY): one square's water look on the current map, from the same reads the two layers draw with →
-		/// "WATERLOOK cell=x,z terrain=Def still=b dug=b hollow=n waterM=f dlPerMetre=n tint=f tn=f tw=f key=n watchKey=n|unread
-		/// tintOn=b bandOn=b facesOn=b tintVisible=b|unread bandVisible=b|unread lookDirty=b|unread".
-		/// tint = RM_WaterLookDraw.TintStrength (0/1/2), tn/tw = BandAt, key = KeyAt; watchKey = the key RM_WaterLookWatcher last
+		/// arg "x,z" (READ ONLY): one square's water look on the current map, from the same reads the tint layer draws with →
+		/// "WATERLOOK cell=x,z terrain=Def still=b dug=b hollow=n waterM=f dlPerMetre=n tint=f key=n watchKey=n|unread
+		/// tintOn=b facesOn=b tintVisible=b|unread lookDirty=b|unread".
+		/// tint = RM_WaterLookDraw.TintStrength (0/1/2), key = KeyAt; watchKey = the key RM_WaterLookWatcher last
 		/// noted for the square (the key its mesh was last dirtied for: watchKey != key after a 250-tick check = a stale picture);
-		/// tintVisible / bandVisible = the section's own layers' Visible (what the settings hide); lookDirty = the section still
+		/// tintVisible = the section's own tint layer's Visible (what the setting hides); lookDirty = the section still
 		/// owes a rebuild for the looks' mesh flag.
-		/// arg "set:tint=0|1;band=0|1" (WRITES the two RM_WaterLookSettings, either part optional) → "WATERLOOKSET tintOn=b bandOn=b".
+		/// arg "set:tint=0|1" (WRITES RM_WaterLookSettings.deepWaterTintEnabled) → "WATERLOOKSET tintOn=b".
 		/// arg "take:x;z;w;h;dl" (WRITES) takes up to dl decilitres off every dug square of the rect through the engine's own
 		/// TryTakeDl (what a pump or levelling uses; no terrain is set by this call) → "WATERTAKE cells=n took=n".
 		/// Else "REFUSED: ...".
@@ -51,20 +51,13 @@ namespace RimMandrake.FlowWorks
 				foreach (string part in arg.Substring(4).Split(';'))
 				{
 					string[] kv = part.Split('=');
-					if (kv.Length != 2 || (kv[1] != "0" && kv[1] != "1") || (kv[0] != "tint" && kv[0] != "band"))
+					if (kv.Length != 2 || (kv[1] != "0" && kv[1] != "1") || kv[0] != "tint")
 					{
-						return "REFUSED: set takes tint=0|1;band=0|1";
+						return "REFUSED: set takes tint=0|1";
 					}
-					if (kv[0] == "tint")
-					{
-						RM_WaterLookSettings.deepWaterTintEnabled = kv[1] == "1";
-					}
-					else
-					{
-						RM_WaterLookSettings.wetWallBandEnabled = kv[1] == "1";
-					}
+					RM_WaterLookSettings.deepWaterTintEnabled = kv[1] == "1";
 				}
-				return "WATERLOOKSET tintOn=" + B(RM_WaterLookSettings.deepWaterTintEnabled) + " bandOn=" + B(RM_WaterLookSettings.wetWallBandEnabled);
+				return "WATERLOOKSET tintOn=" + B(RM_WaterLookSettings.deepWaterTintEnabled);
 			}
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
 			if (eng == null)
@@ -95,20 +88,19 @@ namespace RimMandrake.FlowWorks
 			{
 				return "REFUSED: arg must be x,z on the current map, set:..., or take:...";
 			}
-			RM_WaterLookDraw.BandAt(map, eng, q, out float tn, out float tw);
 			bool dug = eng.IsExcavated(q);
 			TerrainDef t = map.terrainGrid.TerrainAt(q);
 			string line = "WATERLOOK cell=" + q.x + "," + q.z + " terrain=" + (t?.defName ?? "none") + " still=" + B(RM_WaterLookDraw.IsStillWater(map, q))
 				+ " dug=" + B(dug) + " hollow=" + (dug ? eng.HollowDepthAt(q) : 0) + " waterM=" + F(RM_WaterLookDraw.WaterMetres(eng, q))
 				+ " dlPerMetre=" + (long)System.Math.Round(RM_LevelSolve.U / RM_LevelSolve.Metres(RM_LevelSolve.U))
-				+ " tint=" + F(RM_WaterLookDraw.TintStrength(map, eng, q)) + " tn=" + F(tn) + " tw=" + F(tw)
+				+ " tint=" + F(RM_WaterLookDraw.TintStrength(map, eng, q))
 				+ " key=" + RM_WaterLookDraw.KeyAt(map, eng, q) + " watchKey=" + WatchKey(map, eng, q)
-				+ " tintOn=" + B(RM_WaterLookSettings.deepWaterTintEnabled) + " bandOn=" + B(RM_WaterLookSettings.wetWallBandEnabled)
+				+ " tintOn=" + B(RM_WaterLookSettings.deepWaterTintEnabled)
 				+ " facesOn=" + B(RimMandrakeFlowWorksSettings.excavationWallFacesEnabled);
 			Section s = map.mapDrawer?.SectionAt(q);
-			SectionLayer tl = s?.GetLayer(typeof(SectionLayer_RMDeepWaterTint)), bl = s?.GetLayer(typeof(SectionLayer_RMWetWallBand));
+			SectionLayer tl = s?.GetLayer(typeof(SectionLayer_RMDeepWaterTint));
 			ulong flag = RM_WaterLookDraw.LookFlag;
-			return line + " tintVisible=" + (tl == null ? "unread" : B(tl.Visible)) + " bandVisible=" + (bl == null ? "unread" : B(bl.Visible))
+			return line + " tintVisible=" + (tl == null ? "unread" : B(tl.Visible))
 				+ " lookDirty=" + (s == null || flag == 0UL ? "unread" : B((s.dirtyFlags & flag) != 0UL));
 		}
 

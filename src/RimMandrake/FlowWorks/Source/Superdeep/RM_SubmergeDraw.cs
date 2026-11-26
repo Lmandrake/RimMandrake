@@ -45,7 +45,10 @@ namespace RimMandrake.FlowWorks
 			if (eng.submergeDrawn.TryGetValue(index, out int drawn) && drawn != NoteAt(eng, c))
 			{
 				eng.submergeDrawn.Remove(index);
-				map.mapDrawer.MapMeshDirty(c, (ulong)MapMeshFlagDefOf.Buildings | (ulong)MapMeshFlagDefOf.Things | RM_WaterLookDraw.LookFlag);
+				// the 4-argument form, adjacent squares too: a sluice square's sheet and a dry neighbour's floor reprint read this
+				// square's level (RIMMANDRAKE_DRILL_FLOWWORKS_WATER_LAYERS_HE_SAW_STACKED_BLUE: a drained side kept its old picture)
+				map.mapDrawer.MapMeshDirty(c, (ulong)MapMeshFlagDefOf.Buildings | (ulong)MapMeshFlagDefOf.Things | RM_WaterLookDraw.LookFlag,
+					true, false);
 			}
 		}
 
@@ -1901,7 +1904,8 @@ namespace RimMandrake.FlowWorks
 				{
 					kind = "gate";
 					heightM = RM_UnderLiquid.GateMetres(d);
-					share = d <= 0 || !RM_UnderLiquid.GateShowsLiquid(t.Rotation.AsInt) ? 0f : RM_UnderLiquid.Share(levelM, 0f, heightM);
+					share = d <= 0 || !RM_UnderLiquid.GateShowsLiquid(t.Rotation.AsInt) || ((Building_RM_FlowDoor)t).FaceDry() ? 0f
+						: RM_UnderLiquid.Share(levelM, 0f, heightM);
 					lineM = levelM - share * heightM; footM = levelM;
 				}
 				else if (t is Pawn || t is Corpse)

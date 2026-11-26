@@ -222,6 +222,19 @@ namespace RimMandrake.FlowWorks
 			return s.NullOrEmpty() ? line : s + "\n" + line;
 		}
 
+		/// <summary>RIMMANDRAKE_DRILL_FLOWWORKS_WATER_LAYERS_HE_SAW_STACKED_BLUE: a shut face-on gate whose south (camera) side is drained
+		/// and whose north side holds the liquid shows its face dry (RM_PitReliefMath.GateFaceDry).</summary>
+		internal bool FaceDry()
+		{
+			RM_MapComponent_Excavation eng = Map != null ? RM_SuperdeepTrap.EngineOf(Map) : null;
+			if (eng == null || !RM_FlowDoorRules.SealsLiquid(this))
+			{
+				return false;
+			}
+			return RM_PitReliefMath.GateFaceDry(Rotation.AsInt, SectionLayer_RMExcavationWalls.DrainedDug(Map, eng, Position + IntVec3.South),
+				SectionLayer_RMExcavationWalls.DrainedDug(Map, eng, Position + IntVec3.North));
+		}
+
 		/// <summary>GRATE_DOOR_REBUILD_LIFTS_LIKE_THE_SLUICE / SLUICE_GATE_REBUILD_LIFTS_UP_NOT_SIDEWAYS: draw the fixed FRAME at
 		/// the cell and the PANEL behind it, raised straight up by RM_PitTrapMath.GateLiftOffset(liftCells, OpenPct), for
 		/// both facings. The art is upright and unrotated in both (FLOWDOOR_EW_PERSPECTIVE, owner 2026-10-18: the side view
@@ -245,7 +258,8 @@ namespace RimMandrake.FlowWorks
 			float h = frameGraphic.drawSize.y * scale.z;
 			// RIMMANDRAKE_HIDE_WATER_OVER_EAST_WEST_SLUICE_GATE_STATION_SEVEN: only a face-on (N/S) gate has the line climb it;
 			// an E/W gate is the side view, its sprite spans the canal bank to bank, and draws dry (RM_UnderLiquid.GateShowsLiquid)
-			bool wet = RM_SubmergeDraw.Wet(this, out int depth, out float levelM, out float clarity, false) && RM_UnderLiquid.GateShowsLiquid(Rotation.AsInt);
+			bool wet = RM_SubmergeDraw.Wet(this, out int depth, out float levelM, out float clarity, false) && RM_UnderLiquid.GateShowsLiquid(Rotation.AsInt)
+				&& !FaceDry();
 			float gateM = RM_UnderLiquid.GateMetres(depth);
 			Vector3 panelPos = drawLoc;
 			panelPos.y = alt;

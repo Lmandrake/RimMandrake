@@ -134,7 +134,9 @@ def floor_shade_follows_depth_past_two_metres():
     a, b = mod.floor_shade(7), mod.floor_shade(11)
     walls = _read(WALLS)
     dry = re.search(r"FloorShade\(c, d, ww, ew, h, wnw, hnw, wne, hne,", walls) is not None
-    wet = "RM_PitReliefMath.FloorShade(d)" in _method(walls, "RM_FaceMaterial.SheetMat, c.x + x0")
+    # a drowned floor is the dry pit's floor under one sheet (RIMMANDRAKE_DRILL_FLOWWORKS_WATER_LAYERS_HE_SAW_STACKED_BLUE): the
+    # same floor shade runs for a square under a clear liquid
+    wet = "ReliefCell(map, eng, c, d, sp, note == 0 || sheet, sc, y);" in walls and "if (note == 0 || sheet)" in walls
     ok = a != b and dry and wet
     return ok, "model floor_shade(7)=%s floor_shade(11)=%s; layer shades dry floors %s, drowned floors %s" % (a, b, dry, wet)
 
@@ -215,7 +217,7 @@ def csharp_matches_model():
            and 'Include="RM_PitReliefMath.cs"' in MOD_CSPROJ.read_text(encoding="utf-8"))
     walls = _read(WALLS)
     uses = {k: k in walls for k in ("RM_PitReliefMath.CornerPiece(", "RM_PitReliefMath.ClosesCorner(", "RM_PitReliefMath.FloorRects(",
-                                     "RM_PitReliefMath.FaceFootShade(", "RM_PitReliefMath.DrownedBandX(", "RM_PitReliefMath.SideUnderTop(",
+                                     "RM_PitReliefMath.FaceFootShade(", "RM_PitReliefMath.ReliefFaces(", "RM_PitReliefMath.AddUnderLine(",
                                      "RM_PitReliefMath.DrawsPitArt(", "RM_PitReliefMath.CornerPoly(")}
     concealed_skip = "if (!DrawsPitArt(map, eng, c, d))" in walls and "BordersOpenCut(map, eng, c)" in walls
     ok = same and reg and all(uses.values()) and concealed_skip

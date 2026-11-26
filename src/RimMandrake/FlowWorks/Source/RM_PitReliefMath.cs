@@ -544,20 +544,206 @@ namespace RimMandrake.FlowWorks
 			return false;
 		}
 
-		/// <summary>RIMMANDRAKE_DIM_FLOWWORKS_DROWNED_WALLS_PALE_FRAME_IN_WATER: the far wall's drowned band spans only between the
-		/// side walls' full feet (each side strip carries its own corner). It spanned the whole square, so the wall light lay twice
-		/// over the side strips: a pale frame.</summary>
-		public static void DrownedBandX(float wFullWest, float wFullEast, out float x0, out float x1)
+		// ── one water surface (RIMMANDRAKE_DRILL_FLOWWORKS_WATER_LAYERS_HE_SAW_STACKED_BLUE; twin model/water_surface.py) ────────────
+		// Owner, walk 2026-11-25: "Station 6 still shows odd pit walls under water ... Look at the corners" and "I suspect you're
+		// applying multiple layers over each other instead of calculating a single one". The census (jawa/cell_draw_census) counted
+		// nine sheet pieces at alpha 0..229 on one square of station 22, beside the deep tint and a wall band, and the drowned walls drawn
+		// as plain rectangles. The rule: a square under a clear liquid is drawn as the DRY pit, and over it lies ONE sheet, one colour
+		// and one alpha, over the dry pit cut by the waterline on each face. The pieces never overlap.
+
+		/// <summary>Which half-plane of a face lies under the waterline: the north face below z = 1 - cut, a west face (or a north-west
+		/// corner piece) beyond x = cut, an east face (or north-east piece) short of x = 1 - cut.</summary>
+		public const int CutNorth = 0, CutWest = 1, CutEast = 2;
+
+		/// <summary>The part of polygon <paramref name="xz"/> (x, z pairs; z north, square-local) that lies under the waterline of a
+		/// face of kind <paramref name="kind"/> (cut <paramref name="cut"/> cells from the face's edge, CutNorth/West/East) and inside
+		/// the wet window [wx0, wx1] x [wz0, wz1]; added to <paramref name="into"/> when it has area. A kind below 0 cuts nothing (the
+		/// floor).</summary>
+		public static void AddUnderLine(float[] xz, int kind, float cut, float wx0, float wx1, float wz0, float wz1, System.Collections.Generic.List<float[]> into)
 		{
-			x0 = wFullWest;
-			x1 = 1f - wFullEast;
+			float[] q = xz;
+			if (kind == CutNorth) q = ClipHalf(q, 1, 1f - cut, false);
+			else if (kind == CutWest) q = ClipHalf(q, 0, cut, true);
+			else if (kind == CutEast) q = ClipHalf(q, 0, 1f - cut, false);
+			q = ClipHalf(q, 0, wx0, true);
+			q = ClipHalf(q, 0, wx1, false);
+			q = ClipHalf(q, 1, wz0, true);
+			q = ClipHalf(q, 1, wz1, false);
+			if (q.Length >= 6 && PolyArea(q) > 1e-6f)
+			{
+				into.Add(q);
+			}
 		}
 
-		/// <summary>The same item: a drowned side strip stops at the far wall's waterline; above it the dry north face is drawn. It
-		/// ran the square's full height under that face, and its light lay twice there.</summary>
-		public static float SideUnderTop(float wetTop)
+		/// <summary>Sutherland-Hodgman against one axis-aligned half-plane: keep axis (0 x, 1 z) &gt;= bound when <paramref name="keepAbove"/>,
+		/// else &lt;= bound.</summary>
+		private static float[] ClipHalf(float[] q, int axis, float bound, bool keepAbove)
 		{
-			return wetTop;
+			int n = q.Length / 2;
+			if (n == 0) return q;
+			var o = new System.Collections.Generic.List<float>(q.Length + 4);
+			for (int i = 0; i < n; i++)
+			{
+				int j = (i + 1) % n;
+				float pa = q[2 * i + axis], qa = q[2 * j + axis];
+				bool pin = keepAbove ? pa >= bound : pa <= bound, qin = keepAbove ? qa >= bound : qa <= bound;
+				if (pin)
+				{
+					o.Add(q[2 * i]);
+					o.Add(q[2 * i + 1]);
+				}
+				if (pin != qin)
+				{
+					float t = (bound - pa) / (qa - pa);
+					o.Add(q[2 * i] + (q[2 * j] - q[2 * i]) * t);
+					o.Add(q[2 * i + 1] + (q[2 * j + 1] - q[2 * i + 1]) * t);
+				}
+			}
+			return o.ToArray();
 		}
+
+		/// <summary>The area of polygon <paramref name="xz"/> (x, z pairs).</summary>
+		public static float PolyArea(float[] xz)
+		{
+			int n = xz.Length / 2;
+			float a = 0f;
+			for (int i = 0; i < n; i++)
+			{
+				int j = (i + 1) % n;
+				a += xz[2 * i] * xz[2 * j + 1] - xz[2 * j] * xz[2 * i + 1];
+			}
+			return Math.Abs(a) * 0.5f;
+		}
+
+		/// <summary>The face polygons of a stepped plan, as the walls layer draws them (x, z pairs, z north), with each one's cut kind:
+		/// the north face, the west and east faces, the north-west and north-east corner pieces.</summary>
+		public static void ReliefFaces(StepPlan p, System.Collections.Generic.List<float[]> polys, System.Collections.Generic.List<int> kinds)
+		{
+			float t = p.T;
+			if (t > 0f)
+			{
+				polys.Add(new[] { p.Lt, 1f, 1f - p.Rt, 1f, 1f - p.Rt, 1f - p.HvR, 1f - p.R, 1f - t, p.L, 1f - t, p.Lt, 1f - p.HvL });
+				kinds.Add(CutNorth);
+			}
+			for (int side = 0; side < 2; side++)
+			{
+				bool east = side == 1;
+				float full = east ? p.R : p.L, top = east ? p.Rt : p.Lt, hv = east ? p.HvR : p.HvL;
+				if (!(full > 0f)) continue;
+				float[] q = t <= 0f
+					? new[] { 0f, 0f, 0f, 1f, full, 1f, full, 0f }
+					: new[] { 0f, 0f, 0f, 1f, top, 1f, top, 1f - hv, full, 1f - t, full, 0f };
+				if (east)
+				{
+					for (int i = 0; i < q.Length; i += 2) q[i] = 1f - q[i];
+				}
+				polys.Add(q);
+				kinds.Add(east ? CutEast : CutWest);
+			}
+			float[] xz = new float[8];
+			if (p.CnwW > 0f)
+			{
+				CornerPoly(false, p.CnwW, p.CnwH, xz);
+				polys.Add((float[])xz.Clone());
+				kinds.Add(CutWest);
+			}
+			if (p.CneW > 0f)
+			{
+				CornerPoly(true, p.CneW, p.CneH, xz);
+				polys.Add((float[])xz.Clone());
+				kinds.Add(CutEast);
+			}
+		}
+
+		/// <summary>The cut of a face kind in the plan at the liquid's level: how far the dry part reaches from the face's edge.</summary>
+		public static float CutOf(StepPlan wet, int kind, int index, int cornerIndexWest, int cornerIndexEast)
+		{
+			if (kind == CutNorth) return wet.T;
+			if (index == cornerIndexWest) return wet.CnwW;
+			if (index == cornerIndexEast) return wet.CneW;
+			return kind == CutWest ? wet.L : wet.R;
+		}
+
+		/// <summary>The ONE sheet over a square at depth <paramref name="d"/> with <paramref name="lv"/> notches of clear liquid under the
+		/// stepped rule: the dry plan's floor whole, and each dry face cut at the waterline of the plan at the liquid's level; inside
+		/// the wet window (a shut sluice's wet half, SluiceHalf; else the whole square). Polygons (x, z pairs, z north) into
+		/// <paramref name="into"/>, never overlapping; none when no liquid stands. Returns how many.</summary>
+		public static int SheetPieces(int d, int n, int s, int w, int e, int nw, int ne, float lv, float wx0, float wx1, float wz0, float wz1,
+			System.Collections.Generic.List<float[]> into)
+		{
+			into.Clear();
+			if (!(lv > 0f) || d <= 0) return 0;
+			StepPlan full = PlanStep(d, n, s, w, e, nw, ne, 0f);
+			StepPlan wet = PlanStep(d, n, s, w, e, nw, ne, lv);
+			float[] r = new float[8];
+			int nr = FloorRects(full.L, full.R, full.T, full.CnwW, full.CnwH, full.CneW, full.CneH, r);
+			for (int i = 0; i < nr; i++)
+			{
+				float x0 = r[4 * i], z0 = r[4 * i + 1], x1 = r[4 * i + 2], z1 = r[4 * i + 3];
+				AddUnderLine(new[] { x0, z0, x0, z1, x1, z1, x1, z0 }, -1, 0f, wx0, wx1, wz0, wz1, into);
+			}
+			var polys = new System.Collections.Generic.List<float[]>(5);
+			var kinds = new System.Collections.Generic.List<int>(5);
+			ReliefFaces(full, polys, kinds);
+			int cw = full.CnwW > 0f ? polys.Count - (full.CneW > 0f ? 2 : 1) : -1;
+			int ce = full.CneW > 0f ? polys.Count - 1 : -1;
+			for (int i = 0; i < polys.Count; i++)
+			{
+				AddUnderLine(polys[i], kinds[i], CutOf(wet, kinds[i], i, cw, ce), wx0, wx1, wz0, wz1, into);
+			}
+			return into.Count;
+		}
+
+		/// <summary>The part of a shut sluice's square that carries the sheet. A gate turned east or west (rot 1, 3: the side view) parts
+		/// its west half (low) from its east half (high); a gate turned north or south (rot 0, 2) parts south (low) from north (high).
+		/// <paramref name="wetLow"/> / <paramref name="wetHigh"/>: the square across that side holds liquid. Only one wet side halves it.</summary>
+		public static void SluiceHalf(int rot, bool wetLow, bool wetHigh, out float wx0, out float wx1, out float wz0, out float wz1)
+		{
+			wx0 = wz0 = 0f;
+			wx1 = wz1 = 1f;
+			if (wetLow == wetHigh) return;
+			float a = wetLow ? 0f : 0.5f, b = wetLow ? 0.5f : 1f;
+			if (rot == 1 || rot == 3)
+			{
+				wx0 = a;
+				wx1 = b;
+			}
+			else
+			{
+				wz0 = a;
+				wz1 = b;
+			}
+		}
+
+		/// <summary>A face-on sluice (rot 0, 2: its leaf spans east-west and the camera sees its south face) whose south side is a
+		/// drained dug square while its north side still holds liquid: the water stands behind it, so its face draws dry (station 10,
+		/// walk 2026-11-25). The side view (rot 1, 3) never shows liquid over it (RM_UnderLiquid.GateShowsLiquid).</summary>
+		public static bool GateFaceDry(int rot, bool southDrained, bool northDrained)
+		{
+			return (rot == 0 || rot == 2) && southDrained && !northDrained;
+		}
+
+		/// <summary>A dry dug square beside a square of liquid terrain prints its own floor, so vanilla's edge fade of that liquid (render
+		/// precedence 39x over a dug floor's 32x) never lies over it: the drained side of a sluice, stations 7 to 10 (walk 2026-11-25).</summary>
+		public static bool ReprintsFloor(bool dug, bool holdsLiquid, bool besideLiquidTerrain)
+		{
+			return dug && !holdsLiquid && besideLiquidTerrain;
+		}
+
+		/// <summary>The sheet's one alpha: the wet-ground darkening (<paramref name="wetAlpha"/>, black) under the liquid's own overlay
+		/// (alpha 1 - <paramref name="seen"/>), composed as one overlay.</summary>
+		public static float SheetAlpha(float seen, float wetAlpha)
+		{
+			float sa = 1f - Clamp01(seen);
+			return 1f - (1f - Clamp01(wetAlpha)) * (1f - sa);
+		}
+
+		/// <summary>The share of the body colour in that one overlay (its colour is body x share): the liquid's alpha over the whole.</summary>
+		public static float SheetBodyShare(float seen, float wetAlpha)
+		{
+			float a = SheetAlpha(seen, wetAlpha);
+			return a > 0f ? (1f - Clamp01(seen)) / a : 0f;
+		}
+
 	}
 }

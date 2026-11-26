@@ -257,9 +257,9 @@ SETTINGS = {
         "ladderOverWalls": True, "wallLadderSlowFactor": 4.0,
     },
     # WATER_ART_CANDIDATES_BUILD_WHAT_HE_APPROVED (RM_WaterLooks.cs, scribed from RM_WaterMendSettings.ExposeData under
-    # waterDeepTintEnabled / waterWallBandEnabled). Missing from this table until SITE_SPEC_WIRE_TOWER_COST_KEY's audit
+    # waterDeepTintEnabled). Missing from this table until SITE_SPEC_WIRE_TOWER_COST_KEY's audit
     "RimMandrake.FlowWorks.RM_WaterLookSettings": {
-        "deepWaterTintEnabled": True, "wetWallBandEnabled": True,
+        "deepWaterTintEnabled": True,
     },
     # RIMMANDRAKE_SINK_GEYSER_INTO_PIT_BUBBLING_HOT_TUB (1eaef24497): own static class, Scribed into the FlowWorks file
     "RimMandrake.FlowWorks.RM_GeyserPitSettings": {

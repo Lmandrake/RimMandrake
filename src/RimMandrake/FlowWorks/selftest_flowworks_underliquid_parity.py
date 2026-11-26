@@ -167,13 +167,14 @@ def cs_checks(model, ul: str, draw: str, walls: str, mod: str, gold: str, progra
     body = method_body(ulm, r"public\s+static\s+Float3\s+Body\s*\(\s*Float3\s+colour\s*\)")
     out.append(("C# Body darkens by Darken and deepens by BodyGamma", "Darken" in body and "Deepen(" in body
                 and "BodyGamma" in ulm))
-    st_ = method_body(wam, r"private\s+void\s+SeeThrough\s*\(")
-    su = method_body(wam, r"private\s+void\s+SideUnder\s*\(")
-    out.append(("the drowned floor and walls are drawn opaque (no vanilla water texture through them: the mist patches)",
-                "SeenTint(" not in st_ + su and st_.count("Opaque, Opaque") >= 2 and "Opaque, Opaque" in su))
-    out.append(("one sheet of the liquid's body colour over the floor, the far wall's bands and each side strip",
-                st_.count("RM_FaceMaterial.SheetMat") >= 2 and "RM_FaceMaterial.SheetMat" in su
-                and "BodyColour(" in st_ and "WashMat" not in wam))
+    # RIMMANDRAKE_DRILL_FLOWWORKS_WATER_LAYERS_HE_SAW_STACKED_BLUE: a wet square is the dry pit (its faces opaque, as dry) and its
+    # floor printed opaque, under ONE sheet (WaterSurface); the drowned-wall rectangles (SeeThrough, SideUnder) are gone
+    ws = method_body(wam, r"private\s+void\s+WaterSurface\s*\(")
+    out.append(("the drowned floor is drawn opaque (no vanilla water texture through it: the mist patches)",
+                "SeenTint(" not in ws and "Opaque, Opaque" in ws and "SideUnder(" not in wam and "SeeThrough(" not in wam))
+    out.append(("one sheet of the liquid's body colour over the whole wet square, in one place",
+                ws.count("RM_FaceMaterial.SheetMat") == 1 and wam.count("RM_FaceMaterial.SheetMat") == 1
+                and "BodyColour(" in ws and "WashMat" not in wam))
     q = {k: int(v) for k, v in re.findall(r"public\s+const\s+int\s+(\w+Queue)\s*=\s*(\d+)\s*;", fam)}
     out.append(("the sheet draws after every pit layer and before cutout things (2450): queues %s"
                 % {k: q.get(k) for k in ("TintQueue", "DebrisQueue", "UnderSheetQueue", "SheetQueue")},
@@ -206,7 +207,7 @@ def cs_checks(model, ul: str, draw: str, walls: str, mod: str, gold: str, progra
     out.append(("labels and stack counts fade with their thing (GenMapUI.DrawThingLabel)",
                 re.search(r"HarmonyPatch\(\s*typeof\(\s*GenMapUI\s*\)\s*,\s*nameof\(\s*GenMapUI\.DrawThingLabel\s*\)", drm) is not None
                 and "LabelAlpha(" in drm))
-    st = method_body(wam, r"private\s+void\s+SeeThrough\s*\(")
+    st = method_body(wam, r"private\s+void\s+WaterSurface\s*\(")
     out.append(("the wet floor is the DRY pit's own dark ground (DryTerrainFor), not the light ground dug from",
                 "DryTerrainFor(" in st and "OriginalTerrainAt" not in st))
     for s in ("underLiquidDeepOpacity", "underLiquidShallowOpacity", "underLiquidFullMetres", "underLiquidDarken", "pitThingShadowAlpha"):
