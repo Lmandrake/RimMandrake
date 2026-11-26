@@ -10,7 +10,7 @@ map_agreement and the walk save (identity `ident_tier.json`, `ident_proof2.json`
 ## Result
 65 of 65 checks read PASS in their last row [measured]. The exit is NOT met: two UNRESOLVED rows of visit 1
 (P_goods_fly_wall, P_goods_fly_rebound) still stand; their cause is not readable from any evidence, so they are owed to the
-Conductor (CLASS OWED note on the item). Build match: 65 of 65 count, 0 to run [measured, run 2, 2026-11-26 01:05 PST].
+Conductor (CLASS OWED note on the item). Build match: 65 of 65 count, 0 to run [measured, run 2, 2026-11-26 01:05 PST], until 813366f4c6 landed (below).
 
 ## Run 2 (continuation, 2026-11-26 00:23 to 01:10 PST, ArchBig)
 - **Build match.** sc_mass_and_power and sc_save_in_air were read as touched: their rows carried the identity file's
@@ -31,6 +31,15 @@ Conductor (CLASS OWED note on the item). Build match: 65 of 65 count, 0 to run [
 - **The PF_SELFTEST_* plants** (proofgate L57, L36; restore L55): they edit offline test files that no in-game check runs, so
   no in-game check could have seen them (L36 changes a comment only).
 - No mod fault found. Bridge released; ArchBig left up on the release build with the walk save loaded.
+- **After this run's record (01:14 PST):** the hunt run landed 813366f4c6 (RIMMANDRAKE_HUNT_KNOCKBACK_GOOD_UNMOVED_LONG_BATCH_THREE_SIGHTINGS):
+  its long batch on SteveDesktop printed the cause of the `comp not spawned` sighting on goods_fly_wall, a stage-save
+  colonist hauling the scene's good (`holder=Pawn_CarryTracker:Krueger66123 job=HaulToCell`), and the proof staging now
+  forbids each scene good; the release DLL was rebuilt. So:
+  - visit 1's P_goods_fly_wall row is classed APPARATUS FAULT (SITE) from that printed line (same symptom, same scene);
+  - visit 1's P_goods_fly_rebound row (`planned 0 cells`) stays CLASS OWED: it fits the same cause (a carried good is not
+    thrown), but no line printed it;
+  - the build match is open again: the walk folder is not the source at 813366f4c6, and the checks that change touches run
+    again on the new build. That run is the next visit's (the hunt run was live on the same files at 01:25 PST).
 
 ## What failed and what was done
 - **sc_barrage_perf** run 1: ENVIRONMENT FAULT, the same session's mod-off arm read p99 54.5 ms over the 50 ms budget (mod-on
