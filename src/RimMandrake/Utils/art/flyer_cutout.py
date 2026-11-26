@@ -341,7 +341,7 @@ def plate_identical(frames: list[np.ndarray], plate: np.ndarray, covers: list[np
 
 def source_master(spec: dict, size: int) -> np.ndarray:
     """A facing's recorded `"source"` master: {"path": repo path, "rev": a git revision or null (the working tree),
-    "pad": px}, centred on a SIZE canvas. It lets `build` re-bake a set whose folder no longer holds its master."""
+    "pad": px, "opaque_from": optional alpha at or over which a pixel is made 255}, centred on a SIZE canvas. It lets `build` re-bake a set whose folder no longer holds its master."""
     if spec.get("rev"):
         # hang guard: a `git show` of one blob ran under 1 s on 2026-11-26; 60 s is far past any real run
         blob = subprocess.run(["git", "show", f"{spec['rev']}:{spec['path']}"], capture_output=True, cwd=REPO,
@@ -351,7 +351,10 @@ def source_master(spec: dict, size: int) -> np.ndarray:
         im = Image.open(REPO / spec["path"]).convert("RGBA")
     canvas = Image.new("RGBA", (size, size), (0, 0, 0, 0))
     canvas.paste(im, ((size - im.width) // 2, (size - im.height) // 2))
-    return np.asarray(canvas)
+    out = np.array(canvas)
+    if spec.get("opaque_from") is not None:      # a resampled static's body interior (alpha 250..254) made solid
+        out[..., 3] = np.where(out[..., 3] >= int(spec["opaque_from"]), 255, out[..., 3])
+    return out
 
 
 def cmd_build(a) -> int:

@@ -111,6 +111,12 @@ def t_build_re_bakes_from_the_recorded_source(t: Path) -> list[str]:
         if (out_dir / f"{PREFIX}1_east.png").exists() else []
     if len(got) != N or not all(np.array_equal(a, b) for a, b in zip(got, want)):
         return [f"build did not bake from the source (rc {r.returncode}): {r.stdout[-200:]}{r.stderr[-300:]}"]
+    soft = np.array(striped())
+    soft[60, 70, 3] = 251                            # a resampled body pixel
+    Image.fromarray(soft, "RGBA").save(src / "soft.png")
+    m = FC.source_master({"path": str(src / "soft.png"), "rev": None, "pad": 0, "opaque_from": 250}, SIZE)
+    if m[60, 70, 3] != 255 or m[0, 0, 3] != 0:
+        return [f"opaque_from 250 did not make alpha 251 solid (got {m[60, 70, 3]}) or touched clear pixels"]
     return []
 
 

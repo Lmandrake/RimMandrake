@@ -365,7 +365,14 @@
      ]
     }
    ],
-   "master": 1
+   "master": 1,
+   "area": true,
+   "source": {
+    "path": "src/RimMandrake/Webwork/Textures/Things/Pawn/Animal/RM_Sivvern/RM_Sivvern_east.png",
+    "rev": null,
+    "pad": 32,
+    "opaque_from": 250
+   }
   }
  }
 }

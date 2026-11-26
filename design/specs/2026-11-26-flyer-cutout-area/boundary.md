@@ -14,7 +14,7 @@ other cut-out sets with such poses 9 to 35; frames he called good read under 4.
 
 - **a-cut-out-config.** A `flyer_cutout_sets/<Set>.json` whose facings carry `master` and `wings` with `poses`
   (`[deg, scale, sy]`) or a `cycle`. A facing may set `"area": true` and a `"source"`
-  (`{"path": repo path, "rev": git revision or null, "pad": px}`).
+  (`{"path": repo path, "rev": git revision or null, "pad": px, "opaque_from": alpha, optional}`).
 
 ## DOES NOT SURVIVE (not promised)
 
@@ -34,7 +34,7 @@ other cut-out sets with such poses 9 to 35; frames he called good read under 4.
 - **the-squash-row-honours-area.** `audit --config` reads SQUASH GREEN for a facing with `area` on, and RED with the
   frame and sy named for one without.
 - **build-re-bakes-from-the-recorded-source.** `build` on a facing with `source` bakes from that master, and the frames
-  equal `compose_facing` of `source_master`.
+  equal `compose_facing` of `source_master`; `opaque_from` makes pixels at or over that alpha solid, and no others.
 - **the-baked-row-reads-the-shipped-frames.** Frames equal to the area bake of the recorded source read BAKED GREEN;
   one changed pixel reads BAKED RED and names the frame.
 - **a-facing-it-cannot-read-is-unmeasured.** A facing whose master frame is not in `--src` reads UNMEASURED and exits 2,
