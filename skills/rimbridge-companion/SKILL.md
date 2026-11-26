@@ -198,6 +198,7 @@ same gate.
     - Still PLANNED: until-on-advance (ADVANCEUNTIL_WIRE_PER_TICK_STOP) and `cond_watch` (CONDWATCH_BUILD_OWNED_RINGS).
     - Batch a read over a rect or a list rather than add a per-cell call. The batch reads of BATCHREADS_BUILD_ROUND_TRIP_CUT
       are built, for example `jawa/list_things_batch`.
+- **A companion C# file may not use #else or #elif:** `selftest_tool_metadata.py` models only '#if JAWA_GM_TOOLS ... #endif' and fails the file. To call a GM-only tool body from an always-built tool, look the method up by reflection (null in a --no-gm build) and say so in the reply.
 
 ---
 

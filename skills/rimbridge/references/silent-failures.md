@@ -541,3 +541,6 @@ pawn is gone before the later calls in the batch even run, so a whole batch can
 silently test nothing. Costly discovery: 4 pawns died finding this (`BACTA_TANK_CORE_1`,
 2026-09-24) — none were saved, so the loss was recoverable by not saving, but the
 next session may not be so lucky.
+
+## Inside an open scene session, `jawa/mod_settings_field` refuses a set that names no driver
+It answers NOT_THE_DRIVER, and s.raw does not read the reply. Pass driver=s.id and check success. A standalone write outside any session leaves a 'standalone' record that refuses every later session's writes until `jawa/mod_settings_field action=revert`.

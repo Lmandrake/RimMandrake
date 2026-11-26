@@ -134,6 +134,7 @@ of your config write.**
 ### Which list to test on (owner rulings)
 
 - **Small mod lists are the way to test until one final verification pass on the whole list** (owner, 2026-11-02): *"small mod lists should always be the way to test until a final verification pass on the whole huge mod list."*
+- **Mod development runs on small lists** (owner, 2026-11-24): full-list testing is retired until the integration phase, at about v0.3.0 of every mod. Each mod's small list is `design/concepts/<Mod>/version/small_list.json`. See `design/RimMandrake/standing_rulings.md` §Mod development runs on small lists.
 - **Huge Things belongs on the testing mod lists** (owner, 2026-10-16): *"We also need to include the huge things mod in our testing mods too. We have so many huge things, we want to make sure we're always compatible with them."*
 
 ### ⚠️ What the minimal list CANNOT do

@@ -15,3 +15,8 @@ Lessons folded in from the lessons inbox, by the section of `../SKILL.md` they b
 - **`tool_schemas.json` is generated:** on a publish/rebase conflict in it take origin's copy (`git show origin/main:<path> > <path>`) and rerun `python3 tool_schemas.py --supplement-only ../../bridgetools/JawaBench.BridgeTools` from `Utils/northstar_driver`; never hand-merge the JSON.
 - **A blind `sed` rename (`s/Defunct/Wrecked/`) also rewrites words inside the owner's verbatim quotes.** Exclude quoted text, or check `git show` of the pre-rename commit.
 - **In zsh a variable holding a string of paths (`$P`) is not word-split;** use an array when passing several paths to `git` (e.g. building a private-index commit).
+- **When `rimflow close --publish` loses a push race, the retry line it prints names items/<ID>.md, which close has moved to items/closed/.** So `./publish` stops on 'pathspec did not match'. Land the local commit with `src/RimMandrake/Utils/land.sh <sha> <the paths the retry line names>`.
+- **If `maturation.py` red-seen is killed mid-run, its planted fault stays in the working tree.** Before you commit, `git apply -R` the patch and cmp the file with the intended fix.
+- **When `./publish` refuses with TimeoutExpired on a git call, read /proc/pressure/io first.** Under I/O pressure, `PUBLISH_GIT_TIMEOUT=1500` lets the publish through.
+- **When `./publish` refuses with a tree check that is 'red on origin/main too ... not proved pre-existing', run `./sync` before you repair it.** Another run may already have landed the fix.
+- **When you edit text that a calibrated gate reads (refusal_contract.py), run `refusal_contract.py calibrate` before the first publish,** and land `infrastructure/state/judge_calibration.json` with the change.

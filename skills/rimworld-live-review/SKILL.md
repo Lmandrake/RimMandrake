@@ -328,6 +328,8 @@ biome.
 - **To face a pawn at the camera, use `jawa/set_pawn_rotation dir:south lockRotation:true`** (§4). Most vanilla animals
   are static when idle. Only a creature that carries `PawnRenderNodeProperties_Spastic` (the Toughspike template) jiggles
   an appendage on its own when idle (2026-09-17).
+- **A capture near full zoom-out shows pawns as one-colour silhouettes** (SilhouetteUtility, ZoomRootSize >= 0.9 x max). Before you judge creature art, check for the texture's own colours. Take art shots at a measured rootSize (`modcheck/play_zoom.py`).
+- **A staged scene with powered things runs some hundreds of ticks before it is saved or shown:** PowerNetTick switches on one part every max(30, 200/n) ticks (10 lamps came on after 450 ticks). Draft the colonists first.
 
 More traps for this section: [references/traps.md](references/traps.md) § 5. The shot — light, weather, fog, UI, frame.
 
@@ -358,6 +360,8 @@ instead of the given name. So if you trust the returned path, you can overwrite 
 `Saves/<name>.rws` and reports its size.
 
 Keepers stay until the owner says delete. Name them per biome (`PYRELANDS_REVIEW`, `SCALD_REVIEW`, …).
+
+A keeper save records its mod list, and the game refuses a load that misses any of them (save.missing_mods). A live proof that needs a review save builds it on the list it runs on (`human_review.py --build --load <site fixture> --save`).
 
 ## 7. Reset cadence for a biome-by-biome campaign
 

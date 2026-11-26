@@ -169,9 +169,10 @@ root, a correct `ParentName` that points into another mod of ours reads as "reso
 
 ⚠️ **`--defs` inherits the LIVE `ModsConfig.xml`**, and another seat may have cut that list to a spike (a small test list).
 
-- Pass the owner's full list, never a dated backup with its date in the name.
-- Never pass a small spike config in its place. Every xpath into an absent mod then matches nothing, and that
-  is correct. The wall of false failures burns a day.
+- Pass the mod's small list (`design/concepts/<Mod>/version/small_list.json` names its tier), never a dated backup with
+  its date in the name (`CLAUDE.md` §Mod development runs on small lists).
+- Never pass another seat's spike config in its place. It may lack a mod that this mod patches. Every xpath into an
+  absent mod then matches nothing, and the wall of false failures burns a day.
 
 ```bash
 --mods-config infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml
@@ -311,9 +312,10 @@ A DLL that a game has loaded **cannot be written while that game runs**. The fil
   SKIPPED the locked assembly with no message. The only sign was the printed file count: it did not match the count of plan
   lines.
 - A TRUNCATING copy (`shutil.copy2`, `open(dst, "wb")`) of a locked file fails with `[Errno 22] Invalid argument`. An
-  in-place
-  `open(dst, "r+b")` write + `os.truncate` lands byte-identical. The deploy tool has no in-place route: it uses
-  `shutil.copy2`.
+  in-place `open(dst, "r+b")` write landed once. On 2026-11-24 a write to a DLL that the running game had loaded failed
+  with Errno 22 after a good r+b open, and the partial deploy left the new .srchash beside the old DLL (lesson
+  `20261124T155533Z-BENCH-deploy-open-probe-misses-locked-dll`). An open is no test that a deploy can land. Deploy DLLs
+  with the game down. The deploy tool has no in-place route: it uses `shutil.copy2`.
 - So the XML half of a deploy can land while the DLL half does not. Then every def whose comp `Class` is in that DLL is
   discarded.
 - The tool now prints `FAILED to write`, then `STILL DIFFERS`, and exits 1. The tool still prints "Deployed N file(s)" when any
@@ -329,6 +331,8 @@ A DLL that a game has loaded **cannot be written while that game runs**. The fil
   mod, and the mod is active.
 - The guard passes, the type is not there, and the def that carries it is discarded with no message.
 - Check that the type is IN the bytes of the deployed DLL. An active owning mod does not prove it.
+
+A game_lock.py claim made in one Bash call is held by that call's process tree, so a detached waitalive job is refused by your own lock when it stops or restarts the game. Wrap the job: `waitalive.py run -- game_lock.py run <Game> --for ... -- CMD`. The exiting game holds BridgeTools DLLs for a few seconds (cp: Invalid argument), so retry the copy.
 
 ## 7b. 🔴 Is this artifact CURRENT? Never answer from a timestamp
 
@@ -383,7 +387,6 @@ arithmetic.** The table shows one way that a `current` verdict of `refresh.py` f
 - **Do not re-derive those facts**, and do not copy the numbers into another doc. Copied numbers rot there.
 
 More traps for this section: [references/traps.md](references/traps.md) § 7b. 🔴 Is this artifact CURRENT? Never answer from a timestamp.
-
 ## 8. After deploying
 
 - **Restart RimWorld.** The game parses defs once, at startup. A reloaded save does not pick up new XML.

@@ -178,6 +178,8 @@ A promise is a line that says what must stay alive. These closes need a promise 
     --live "once: <why this is a real one-off>"              the visible escape; never swept
 
 - `close` and `implemented` take `--live` alike. A refusal changes nothing.
+- The list_effect tick closes an item filed with `--effect` as soon as its check holds, with no live line. Your own close is then refused. For a timer or a hook, put the promise in `src/RimMandrake/rimflow/live_baseline.txt`.
+- On SteveDesktop, a `--live` line on an Archmagi unit needs `host=archmagi`. Without it, close reads not-found.
 - `rm-deadman.timer` (no AI, every 15 min, from the dispatch clone) rechecks every promise on the ledger and in
   `src/RimMandrake/rimflow/live_baseline.txt`.
 - A dead promise reopens the SAME item through the `live` verb. Only the seat RUNNER may use that verb. Recovery puts
@@ -294,6 +296,7 @@ calling seat.
   seat shard.** A commit of only `<SEAT>.jsonl` leaves those events uncommitted (17 raise/note events sat ~8 h once).
   `./publish` prints a WARNING when OWNER.jsonl has uncommitted events and you named other paths. After any such act, land
   OWNER.jsonl too.
+- **After a `--publish` write, check `git status`.** If HEAD stays one behind and the diff equals lines already on origin/main, run `./sync`.
 
 More traps for this section: [references/traps.md](references/traps.md) § Committing ledger writes.
 
@@ -319,6 +322,7 @@ A projection is a view that a program makes from the ledger, for example `rimflo
   that knew only the `needs` verb missed `implemented` and `file --needs owner`. So the old RimPulse board hid 29 owner
   items, and listed one item 9.5 h after it moved (2026-10-11).
 - `model.replay` calls `observe(ev, world, ok)` after every folded event. So `observe` tells you which event moved a
+- **`rimflow show <host>` lists a testq finding as UNTRIAGED even after findings_fold decided it.** The fold's decisions are in `infrastructure/state/findings/decisions.jsonl` and are not ledger retypes. Before you triage a host, read Archmagi's `D:\ClaudeWork\rimmandrake\findings_fold\findings_fold.md`.
   field, and you do not write the verbs again.
 
 More traps for this section: [references/traps.md](references/traps.md) § Reading projections.

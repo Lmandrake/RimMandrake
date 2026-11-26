@@ -120,6 +120,9 @@ jawa/spawn_pawn        -> "No current map. Load a game first."
 null. Poll `rimworld/get_cell_info` → `state.currentMapId` until it is non-null (a few seconds); that
 is the only reading that means the map will accept a write.
 
+## `rimworld/start_debug_game_ready` works only from the main menu
+Called with a map loaded, it waits its whole timeoutMs (280 s) and answers 'Timed out waiting for RimWorld entry scene readiness'. Call `rimworld/go_to_main_menu` first. A helper that then waits for map_ready reads the OLD game as the new one.
+
 ## 🔴 `rimworld/start_debug_game_ready` called with a `forcePause` modal on the stack killed the process
 
 2026-08-31, FOUNDRY. A `Verse.Dialog_NodeTree` (the same forcePause-modal family as above)
@@ -182,7 +185,7 @@ A generated bridge map needs a player settlement (`jawa/colony_found`) or it is 
 A GL custom landform swapped into `Config\CustomLandforms-v1\` while the game runs is NOT picked up by `go_to_main_menu` + `start_debug_game_ready` (confirmed live twice); a full process kill plus Steam relaunch is required. A same-recipe tile re-roll via `go_to_main_menu` needs no restart.
 
 ## A failed `jawa/set_current_map` does not stop later calls
-A failed `jawa/set_current_map` does not stop later calls: they land on whatever map is current. Two failed `set_current_map(12)` calls (the map had auto-culled) sent `jump_camera`/`set_time_speed` to another map of that game and unpaused ~10 game-minutes. Re-check `jawa/map_info` mapId immediately before any `set_time_speed(>0)`; never trust an earlier `set_current_map` return. Separately the World-tab UI can stay on screen while `jump_camera_to_cell` reports the right mapId (`TryHideWorld` does not stick); only a screenshot shows what the owner sees.
+A failed `jawa/set_current_map` does not stop later calls: they land on whatever map is current. Two failed `set_current_map(12)` calls (the map had auto-culled) sent `jump_camera`/`set_time_speed` to another map of that game and unpaused ~10 game-minutes. Re-check `jawa/map_info` mapId immediately before any `set_time_speed(>0)`; never trust an earlier `set_current_map` return. A success is no proof either: right after `rimworld/step_game_ticks`, `jawa/set_current_map` can reply success and not take. Read the map back with `jawa/map_info` before the next call. Separately the World-tab UI can stay on screen while `jump_camera_to_cell` reports the right mapId (`TryHideWorld` does not stick); only a screenshot shows what the owner sees.
 
 ## A "Playing" wait does not prove a map was regenerated or reloaded
 After `Actions\Regenerate Current Map` `programState` stays `Playing`, so a wait-for-Playing loop passes at once and censuses the OLD map; "map regenerated" is proven by `jawa/map_info` `mapId` changing, not by `mapBiome` (`Map.Biome` reads the tile live, so it shows the new biome straight after `world_tile_set`) nor `programState`. And `jawa/list_things` returns at most `limit` rows (default 200): count from `perDef`/`countMatched`, which cover every match.

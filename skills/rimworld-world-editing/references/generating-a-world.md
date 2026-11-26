@@ -233,7 +233,7 @@ every time, both carry `maxConfigurableAtWorldCreation 9999` plus a
 `configurationListOrderPriority`.
 
 ⇒ **Fix: give the def the fields it lacks** — `Jawa_Patches/Patches/BlackstarCompany_Generate.xml`
-adds `startingCountAtWorldCreation 2` and `maxConfigurableAtWorldCreation 9999`.
+adds `startingCountAtWorldCreation 2` and `maxConfigurableAtWorldCreation 9999`. This patch was removed in 8d11183564: every PirateBandBase child inherited it and made a second Junkers.
 🔑 **Generalises: `requiredCountAtGameStart` alone does NOT put a faction on the page.** Any
 vanilla faction you intend to reskin should be checked for these two fields before you rely
 on it appearing at all.

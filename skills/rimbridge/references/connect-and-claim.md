@@ -127,6 +127,8 @@ from inside a `python.exe` process is not reaching WSL. Split responsibilities i
 `python.exe` drives the bridge only; WSL `python3` owns swap/rimflow/anything Unix-only.
 Grade the answer (which interpreter actually ran), never the exit code (2026-09-13).
 
+Hold the lock for a Windows script with `game_lock.py run <game> --for <why> -- <cmd>` from WSL.
+
 🔑 **Never type a namespace prefix you did not just read.** `jawa/` records
 **which assembly registered the tool**, not what it does — `jawa/spawn_batch` and
 `rimworld/spawn_thing` are the same verb in different namespaces, because one was

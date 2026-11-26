@@ -192,6 +192,9 @@ More traps for this section: [references/traps.md](references/traps.md) § 5. St
     default that nobody ruled on. Mark A is an agent proposal.
 
 More traps for this section: [references/traps.md](references/traps.md) § 6. Throttles and timers.
+- A failed-timer incident can keep its unit name while its cause changes. At each revisit, read the newest journal lines of the unit before you repeat the last cause.
+- Never put a network call or a landing (git fetch, land.sh) in an ops_watch collector. The 15 s sense kill blinds the whole family. Give the call its own unit.
+
 
 ## 7. Traps
 

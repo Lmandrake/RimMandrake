@@ -263,6 +263,7 @@ block **reads the site back**:
   - So a giant *outside* the rect blocks again a site that you just cleared.
   - This happened on 2026-10-11, on a map with 5,000+ blocker cells. The rows R1–R6 of the block style_hose FAILed with
     "Space already occupied". R1 picks a hose look and places a reel; R6 packs up the reel and reinstalls it.
+- **Hold `acceleratedRotEnabled` off in a scene that judges a filth of another mod.** The Rot's ThinOutdoorFilth thins outdoor filth by 15% each 250 ticks, so a thickness-1 filth often dies inside a 300-tick settle. To find what removed a filth, put a Filth.DeSpawn prefix that journals the call stack.
 - **`prepare_site` reads back.**
   - A roof, rock, plant or ruin left in the rect is `UNMEASURED/SITE`, never a mod FAIL.
   - A colonist's sight clears the fog (`reveal`). `set_fog` alone does not clear it.
