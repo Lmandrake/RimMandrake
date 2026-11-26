@@ -33,7 +33,9 @@ TELL THE PROCESSES these numbers. Estimate how long they have to complete their 
 - **an-interactive-window.** A window has no stop hook. The notice, the Conductor log and the ledger event are what it
   reads. The switch closes it and relaunches the Fleet.
 - **a-deaf-run-on-a-kept-account.** Steven's account gets no emergency step, so a run that never ends keeps the machine
-  on it. One run spends about 0.3 points an hour (4 points an hour over about 12 runs, 2026-11-24).
+  on it until `rescue.drain_h` after its save order (an_account_end_drain_ends_at_its_bound on this machine,
+  a_machine_at_its_end_stops_a_run_that_does_not_end on a listed one). One run spends about 0.3 points an hour (4 points
+  an hour over about 12 runs, 2026-11-24).
 - **a-jump-over-the-warning.** A burn over about 0.5% a minute can pass 3% and 1% between two meter reads. Then the
   emergency order is the first order that a run gets.
 - **a-crash-between-an-order-and-its-record.** The order is sent once more.

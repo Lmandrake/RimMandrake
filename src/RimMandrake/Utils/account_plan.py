@@ -1381,14 +1381,44 @@ def machine_facts(f, account) -> dict:
 
 
 SWITCH_RETRY_S = 30 * 60    # budget: danger=a switch asked on every pass while it fails; ends no work: asked again
+def stop_grace_s():
+    """From the write-now stop of a run on another machine to its machine's switch: twice the stop's own kill deadline
+    (control.WRITE_NOW_DEADLINE_S, the deadline of `pipe stop --write-now`, whose danger and evidence are written there):
+    the deadline, then as long again for the kill and the run's end to land. A run that is still listed then is closed
+    by the switch."""
+    sys.path.insert(0, str(HERE.parent / "rimflow"))
+    import control as C
+    return 2 * C.WRITE_NOW_DEADLINE_S
 
 
-def machine_switch(plan, f, now, name, m, account, n, prev, runs_of, switch):
+def machine_bound_s(plan, d):
+    """-> (seconds from the save order to the write-now stop, why) for a machine whose account `d` is at its end. The
+    same bound as this machine's own drain at an account with no emergency step (an_account_end_drain_ends_at_its_bound):
+    `rescue.drain_h`, and never under ten times `save_need_min`, the measured time that a run needs to save (17 of 19
+    orders heard 2026-11-24 ended p90 9.5, max 13.8 min after the order). Danger of none: a following machine that
+    refuses every launch for as long as one run waits (2026-11-26: over 3 h, five tickets, 3 to 6 refused launches
+    each). With `rescue.drain_h` null the floor alone holds: no hand stops a run on another machine. At an emergency
+    step (an account with a low line, at `emergency_pct` or under) the bound is 0, as the emergency order is here."""
+    N, cfg = plan["numbers"], plan["numbers"]["account_end"]
+    pct, line = d.get("pct_left"), d.get("line")
+    if AE.has_emergency(line, cfg) and is_num(pct) and pct <= cfg["emergency_pct"]:
+        return 0, "at the emergency step (%s%%)" % g(cfg["emergency_pct"])
+    floor = 10 * cfg["save_need_min"] * 60
+    h = dig(N, "rescue.drain_h")
+    return max(floor, h * 3600 if is_num(h) else 0), ("rescue.drain_h %s h, at least ten saves of %s min" % (
+        g(h) if is_num(h) else "null", g(cfg["save_need_min"])))
+
+
+def machine_switch(plan, f, now, name, m, account, n, prev, runs_of, switch, order=None, stop=None):
     """RIMMANDRAKE_AUTOMATE_STEVEDESKTOP_ACCOUNT_SWITCH_PLAN_SAYS_NEVER: a machine whose notice says its account is at
     its end is switched to the plan's next account when it lists no live helper run (the switch closes every Claude
     window there). Its account is at its end at its line (the notice's `account_end`), or above it when no step uses
-    the account now: the decision then leaves it when its runs end, and the notice says so. -> the record of what was
-    done, or None when its account is not at its end. Pure but for the seams."""
+    the account now: the decision then leaves it when its runs end, and the notice says so.
+    RIMMANDRAKE_SWITCH_STEVEDESKTOP_PAST_A_RUN_THAT_ONLY_WAITS: with runs live there, each gets the save order once (the
+    order at the line, as on this machine); a run still live machine_bound_s after it is stopped (`pipe stop U
+    --write-now` there: no trial spent, carried on by left_open_continue), and the switch goes once the runs end or
+    stop_grace_s() after the stop. -> the record of what was done ({to, at, ok, line, end}), or None when its account is
+    not at its end. Pure but for the seams."""
     d = decide(plan, machine_facts(f, account)) if account else {}
     finished = d.get("under") and (d.get("do") == "switch" or d.get("drain_of") == "switch")
     if not (n.get("account_end") or finished):
@@ -1404,23 +1434,73 @@ def machine_switch(plan, f, now, name, m, account, n, prev, runs_of, switch):
         return dict(last, line="switch to %s asked at %s; not asked again yet" % (nxt, last["at"]))
     runs, why = runs_of(m["ssh"])
     if runs is None:
-        return {"to": nxt, "at": None, "ok": False, "line": "COULD NOT LOOK at its live runs (%s); not switched" % why}
-    if runs:
-        return {"to": nxt, "at": None, "ok": False, "line": "%d live run(s) there; the switch to %s waits" % (runs, nxt)}
+        return {"to": nxt, "at": None, "ok": False, "line": "COULD NOT LOOK at its live runs (%s); not switched" % why,
+                "end": prev.get("end")}
+    units = None if isinstance(runs, int) else list(runs)
+    live = runs if isinstance(runs, int) else len(units)
+    end = prev.get("end") if isinstance(prev.get("end"), dict) and prev["end"].get("account") == account else {}
+    end = dict(end, account=account)
+    stopped = stamp(end.get("stopped_at"))
+    cfg = plan["numbers"]["account_end"]
+    bound, bwhy = machine_bound_s(plan, d)
+    grace = stop_grace_s() if bound else cfg["pause_max_s"]   # at the emergency step: the pause, as on this machine
+    if live and not (stopped is not None and now - stopped >= grace):
+        end.setdefault("since", iso(now))
+        said = []
+        if order is not None and not end.get("ordered_at") and bound > 0:
+            text = "%s If a run is still live %s after this order, it is stopped (write-now) and %s switches " \
+                   "accounts." % (AE.save_text(account, d.get("pct_left"), None, d.get("line"), cfg, False),
+                                  dur(bound), name)
+            ok, words = order(m["ssh"], units, text)
+            end.update(ordered_at=iso(now), order=words) if ok else None
+            said.append(("the save order went to them (%s)" % words) if ok else
+                        "the save order did not reach them (%s); tried again next pass" % words)
+        since = stamp(end.get("ordered_at")) or stamp(end["since"])
+        if stop is not None and stopped is None and now - since >= bound:
+            why_stop = ("account end on %s: %s is at its end (%s%% left, line %s%%) and its switch to %s waited %s for "
+                        "its runs (%s); write where you are and end" % (
+                            name, account, g(d.get("pct_left")), g(d.get("line")), nxt, dur(now - since), bwhy))
+            ok, words = stop(m["ssh"], units, why_stop)
+            if ok:
+                end.update(stopped_at=iso(now), stop=words, stop_units=units)
+            said.append(("stopped (write-now) after %s: %s" % (dur(now - since), words)) if ok else
+                        "the write-now stop did not reach it (%s); tried again next pass" % words)
+        elif stopped is not None:
+            said.append("stopped (write-now) at %s; the switch goes when they end, at the latest %s after the stop" % (
+                end["stopped_at"], dur(grace)))
+        else:
+            said.append("stopped (write-now) at %s if still live" % pacific(since + bound))
+        return {"to": nxt, "at": None, "ok": False, "end": end,
+                "line": "%d live run(s) there; the switch to %s waits; %s" % (live, nxt, "; ".join(said))}
     ok, words = switch(m["ssh"], name, nxt)
-    return {"to": nxt, "at": iso(now), "ok": bool(ok),
-            "line": ("switched to %s" % nxt) if ok else "the switch to %s failed: %s" % (nxt, words)}
+    return {"to": nxt, "at": iso(now), "ok": bool(ok), "end": end if not ok else None,
+            "line": ("switched to %s%s" % (nxt, (" (%d run(s) still listed %s after their stop: the switch closes them)"
+                                                 % (live, dur(now - stopped))) if live else ""))
+            if ok else "the switch to %s failed: %s" % (nxt, words)}
 
 
-def push_machines(plan, f, now, account_of=None, send=None, runs_of=None, switch=None) -> dict:
+def dur(s):
+    """Seconds as a short duration: 2 h, 10 min."""
+    return ("%s h" % g(round(s / 3600, 1))) if s >= 3600 else "%d min" % round(s / 60)
+
+
+def push_machines(plan, f, now, account_of=None, send=None, runs_of=None, switch=None, order=None, stop=None,
+                  kick=None, carry=True) -> dict:
     """Each machine of the plan gets the plan's decision for the account that it is on, from the readings of this pass.
     -> {machine: {ok, account, state, line}}. Never raises: a machine that could not be reached is said, and its own
-    gate refuses new runs once its notice is older than NOTICE_FRESH_S."""
+    gate refuses new runs once its notice is older than NOTICE_FRESH_S. With `carry` (the pass that drives, as this
+    machine's own kick runs only after a live pass), a machine whose notice refuses nothing gets left_open_continue's
+    kick: the continuations that waited there for its switch start."""
     import account_plan_machines as MS      # the ssh transport: this file starts no process
     out = {}
-    if send is not None and runs_of is None:    # test seams for the notice and none for the runs: switch nothing
-        runs_of = lambda alias: (None, "no runs reader given")  # noqa: E731
+    if send is not None:        # test seams for the notice: an act with no seam of its own does nothing
+        none = lambda *a: (False, "no seam given")  # noqa: E731
+        runs_of = runs_of or (lambda alias: (None, "no runs reader given"))
+        order, stop, kick = order or none, stop or none, kick or none
     runs_of, switch = runs_of or MS.machine_runs, switch or MS.switch_machine
+    order, kick = order or MS.order_machine, kick or MS.kick_machine
+    stop = stop or (lambda alias, units, why: MS.stop_machine_runs(
+        alias, units, why, per_ruling="RIMMANDRAKE_SWITCH_STEVEDESKTOP_PAST_A_RUN_THAT_ONLY_WAITS"))
     for name, m in (plan.get("machines") or {}).items():
         try:
             account, why = (account_of or MS.machine_account)(m["ssh"])
@@ -1429,15 +1509,26 @@ def push_machines(plan, f, now, account_of=None, send=None, runs_of=None, switch
             prev = prev if isinstance(prev, dict) else {}
             n = machine_notice(plan, f, account, now, name, prev, why)
             ok, err = (send or MS.send_notice)(m["ssh"], n)
-            sw = machine_switch(plan, f, now, name, m, account, n, prev, runs_of, switch) if ok else None
+            sw = machine_switch(plan, f, now, name, m, account, n, prev, runs_of, switch, order, stop) if ok else None
             if ok:
-                write_atomic(keep, dict(n, switch=sw) if sw and sw.get("at") else
-                             dict(n, switch=prev.get("switch")) if prev.get("switch") else n)
+                rec = dict(n)
+                if sw and sw.get("at"):
+                    rec["switch"] = {k: v for k, v in sw.items() if k != "end"}
+                elif prev.get("switch"):
+                    rec["switch"] = prev["switch"]
+                if sw and sw.get("end"):
+                    rec["end"] = sw["end"]
+                if sw:
+                    rec["step"] = sw["line"]
+                write_atomic(keep, rec)
             out[name] = {"ok": bool(ok), "account": account, "state": n["state"], "drain": n["drain"],
                          "line": ("sent: " + (n["message"] or "nothing is refused")) if ok else
                          "COULD NOT LOOK: the notice did not reach %s (%s)" % (name, err)}
             if sw:
                 out[name]["switch"] = sw["line"]
+            if carry and ok and n["state"] == "none":
+                kok, said = kick(m["ssh"])
+                out[name]["kick"] = said if kok else "COULD NOT LOOK: left_open_continue there: %s" % said
         except Exception as e:  # noqa: BLE001  the pass goes on; the machine's own gate handles a missing notice
             out[name] = {"ok": False, "account": None, "state": None, "drain": None,
                          "line": "COULD NOT LOOK: %s: %s" % (type(e).__name__, e)}
@@ -1453,10 +1544,12 @@ def machine_lines(plan, now) -> list:
             out.append("MACHINE %s: UNMEASURED: no notice has reached it yet" % name)
             continue
         age = (now - stamp(n["at"])) / 60
-        out.append("MACHINE %s: on %s; %s (the last notice reached it %s min ago%s)" % (
+        out.append("MACHINE %s: on %s; %s (the last notice reached it %s min ago%s)%s" % (
             name, n.get("account") or "an account that could not be read",
             n.get("message") or "nothing is refused", g(age),
-            "" if age * 60 <= NOTICE_FRESH_S else ": it now refuses new runs, could not look"))
+            "" if age * 60 <= NOTICE_FRESH_S else ": it now refuses new runs, could not look",
+            "; the pass there: %s" % n["step"] if n.get("step") else "; its last switch: %s at %s" % (
+                n["switch"].get("line"), n["switch"].get("at")) if isinstance(n.get("switch"), dict) else ""))
     return out
 
 
@@ -2067,7 +2160,7 @@ def tick(shadow=False, dry=False, seams=None) -> int:
             rec["agree"] = same_pick(old, new)
             rc = OK if rec["agree"] else NO
         if plan.get("machines"):
-            rec["machines"] = push_machines(plan, f, pass_now(seams), **(seams.get("machines") or {}))
+            rec["machines"] = push_machines(plan, f, pass_now(seams), carry=False, **(seams.get("machines") or {}))
         log(rec)
         publish_state(plan, f, new, True)
         print(json.dumps(rec, sort_keys=True))
@@ -2076,7 +2169,7 @@ def tick(shadow=False, dry=False, seams=None) -> int:
         h = active(plan["holds"], clock())[0]
         rec = {"do": "passive", "why": "hold %s: %s" % (h["id"], h.get("why"))}
         if plan.get("machines"):    # a hold acts on nothing and refuses nothing: the other machines are told so
-            rec["machines"] = push_machines(plan, {"now": clock(), "rows": {}}, pass_now(seams),
+            rec["machines"] = push_machines(plan, {"now": clock(), "rows": {}}, pass_now(seams), carry=False,
                                             **(seams.get("machines") or {}))
         log(rec)
         print("PASSIVE: hold %s until %s" % (h["id"], pacific(stamp(h["ends"]))))

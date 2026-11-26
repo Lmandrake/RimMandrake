@@ -1722,9 +1722,10 @@ def t_each_machine_on_the_account_gets_its_decision():
     nt = AP.machine_notice(held, f, "steven", NOW, "box2")
     check(n + ": under a hold the plan acts on nothing and refuses nothing, on each machine", nt["state"] == "none", nt)
     # the timed pass sends it
-    sent, asked = [], []
+    sent, asked, kicked = [], [], []
     ms = {"account_of": lambda alias: (asked.append(alias) or ("steven", None)),
-          "send": lambda alias, nt: (sent.append((alias, nt)) or (True, ""))}
+          "send": lambda alias, nt: (sent.append((alias, nt)) or (True, "")),
+          "kick": lambda alias: (kicked.append(alias) or (True, "left_open: none waits"))}
     pm = NEW()
     pm["machines"] = {"box2": {"ssh": "box2-wsl"}}
     fresh(pm)
@@ -1746,6 +1747,7 @@ def t_each_machine_on_the_account_gets_its_decision():
         acct("hold", "--for", "1h", "--why", "t")
         m.go({"steven": R(5, 20), "system": R(80, 110), "lukas": R(18, 120)}, machines=ms)
         check(n + ": under a hold the machine is told that nothing is refused", len(sent) == 1 and sent[0][1]["state"] == "none", sent)
+        check(n + ": neither a shadow pass nor a hold starts a waiting continuation there (no kick)", kicked == [], kicked)
     finally:
         m.close()
 
@@ -1806,6 +1808,142 @@ def t_a_machine_at_its_end_is_switched_when_its_runs_end():
     AP.push_machines(pw, F("lukas", unread), NOW, account_of=lambda a: ("steven", None),
                      send=lambda a, nt: (True, ""), runs_of=lambda a: (0, None), switch=sw)
     check(n + ": a machine whose account has a step and a level that is not read is never switched", calls == [], calls)
+
+
+HOLDER = "rm-detached-bench-rimmandrake-kill-live-holder-resume-afte-1795681443"   # the run of 2026-11-26
+
+
+def machine_world(pm):
+    """The seams of push_machines that record each act on the other machine. -> (seams, log, runs: a list the test
+    edits, the units that the machine lists as running)."""
+    log, runs, on = [], [], ["steven"]
+
+    def runs_of(alias):
+        log.append(("runs", alias))
+        return (None, "ssh: systemd could not be read") if runs == [None] else (list(runs), None)
+    seams = {"account_of": lambda a: (on[0], None), "send": lambda a, nt: (True, ""), "runs_of": runs_of,
+             "order": lambda a, units, text: (log.append(("order", list(units or []), text)) or (True, "act-1")),
+             "stop": lambda a, units, why: (log.append(("stop", list(units or []), why)) or (True, "stop written")),
+             "switch": lambda a, name, acct: (log.append(("switch", acct)) or runs.clear() or on.__setitem__(0, acct)
+                                              or (True, "switched")),
+             "kick": lambda a: (log.append(("kick", a)) or (True, "left_open: none waits"))}
+    return seams, log, runs
+
+
+def acts(log, kind):
+    return [x for x in log if x[0] == kind]
+
+
+def push(pm, f, now, **seams):
+    """push_machines with the seams that it takes (on code from before a seam, the test fails for what the code does)."""
+    import inspect
+    ok = inspect.signature(AP.push_machines).parameters
+    if "order" not in ok and "runs_of" in seams:     # that code counts the runs; it never names them
+        names = seams["runs_of"]
+        seams = dict(seams, runs_of=lambda a: (lambda r: (r[0] if r[0] is None else len(r[0]), r[1]))(names(a)))
+    return AP.push_machines(pm, f, now, **{k: v for k, v in seams.items() if k in ok})
+
+
+def t_a_machine_at_its_end_orders_its_runs_to_save():
+    """RIMMANDRAKE_SWITCH_STEVEDESKTOP_PAST_A_RUN_THAT_ONLY_WAITS: on 2026-11-26 the run on SteveDesktop heard only the
+    checkpoint text ("Carry on and finish your work") once, at 3:45 AM PST, and no save order ever reached it."""
+    n = "a_machine_at_its_end_orders_its_runs_to_save"
+    pm = NEW(plan(steven={"leave": 52, "when": None}))
+    pm["machines"] = {"box2": {"ssh": "box2-wsl"}}
+    t0 = AP.stamp("2026-11-26T03:13:25-08:00")
+    rows = lambda t: {"steven": R(51, 60, now=t), "system": R(80, 110, now=t), "lukas": R(93, 120, now=t)}  # noqa: E731
+    fresh(pm)
+    s, log, runs = machine_world(pm)
+    runs[:] = ["rm-detached-bench-a-run-that-saves-1"]
+    out = push(pm, F("lukas", rows(t0), now=t0), t0, **s)
+    o = acts(log, "order")
+    check(n + ": at the end with a run live, the save order goes to that run, once, in the words of the order at the line",
+          len(o) == 1 and o[0][1] == runs and "ACCOUNT END" in o[0][2] and not acts(log, "switch")
+          and not acts(log, "stop") and "waits" in (out["box2"].get("switch") or ""), (log, out))
+    push(pm, F("lukas", rows(t0 + 300), now=t0 + 300), t0 + 300, **s)
+    check(n + ": the next pass does not order it again", len(acts(log, "order")) == 1, log)
+    runs.clear()
+    push(pm, F("lukas", rows(t0 + 1800), now=t0 + 1800), t0 + 1800, **s)
+    check(n + ": a run that ends in time is not stopped: the switch waits for it, then goes",
+          not acts(log, "stop") and len(acts(log, "switch")) == 1, log)
+    fresh(pm)
+    s, log, runs = machine_world(pm)
+    runs[:] = [None]
+    out = push(pm, F("lukas", rows(t0), now=t0), t0, **s)
+    check(n + ": runs that could not be read: no order, no stop, no switch, and the line says could not look",
+          not acts(log, "order") and not acts(log, "stop") and not acts(log, "switch")
+          and "COULD NOT LOOK" in (out["box2"].get("switch") or ""), (log, out))
+    fresh(pm)
+    s, log, runs = machine_world(pm)
+    runs[:] = [HOLDER]
+    far = {"steven": R(90, 60, now=t0), "system": R(80, 110, now=t0), "lukas": R(93, 120, now=t0)}
+    for k in range(30):
+        push(pm, F("lukas", far, now=t0 + 300 * k), t0 + 300 * k, **s)
+    check(n + ": a machine whose account is not at its end: no order, no stop, no switch in 2.5 h of passes",
+          not acts(log, "order") and not acts(log, "stop") and not acts(log, "switch"), log)
+    check(n + ": there each pass carries on the runs that waited for a switch (left_open_continue on that machine)",
+          len(acts(log, "kick")) == 30, len(acts(log, "kick")))
+
+
+def t_a_machine_at_its_end_stops_a_run_that_does_not_end():
+    """The records of 2026-11-26: steven at its 52% line from 3:13 AM PST, Archmagi on lukas, one run on SteveDesktop
+    that from 3:45 AM waited in one foreground command for an event that never came. The pass wrote "1 live run(s)
+    there; the switch waits" each 5 min until the Conductor switched by hand at 7:10 AM."""
+    n = "a_machine_at_its_end_stops_a_run_that_does_not_end"
+    pm = NEW(plan(steven={"leave": 52, "when": None}))
+    pm["machines"] = {"box2": {"ssh": "box2-wsl"}}
+    t0 = AP.stamp("2026-11-26T03:13:25-08:00")
+    hand = AP.stamp("2026-11-26T07:10:00-08:00")
+    rows = lambda t: {"steven": R(51, 60, now=t), "system": R(80, 110, now=t), "lukas": R(93, 120, now=t)}  # noqa: E731
+    fresh(pm)
+    s, log, runs = machine_world(pm)
+    runs[:] = [HOLDER]
+    t, at = t0, {}
+    while t < hand:
+        before = len(log)
+        push(pm, F("lukas", rows(t), now=t), t, **s)
+        for x in log[before:]:
+            at.setdefault(x[0], t)
+        t += 300
+    bound = pm["numbers"]["rescue"]["drain_h"] * 3600
+    st = acts(log, "stop")
+    check(n + ": the run that never ends is stopped once, after the bound (rescue.drain_h) from the save order",
+          len(st) == 1 and st[0][1] == [HOLDER] and at.get("stop") is not None
+          and bound <= at["stop"] - at["order"] < bound + 300, (st, {k: AP.pacific(v) for k, v in at.items()}))
+    check(n + ": the stop names the account end and asks the run to write where it is",
+          bool(st) and "steven" in st[0][2] and "write" in st[0][2], st)
+    sw = acts(log, "switch")
+    check(n + ": then the switch goes without a hand, once, before the hand switch of 7:10 AM",
+          len(sw) == 1 and sw[0][1] not in (None, "steven") and at["switch"] > at["stop"] and at["switch"] < hand,
+          (sw, {k: AP.pacific(v) for k, v in at.items()}))
+    keep = json.loads((TMP / "plan" / "machine.box2.json").read_text())
+    check(n + ": the machine's record keeps the switch", "switched" in str((keep.get("switch") or {}).get("line")), keep)
+    rc, text = acct("status", frame=F("lukas", rows(hand), now=hand))
+    check(n + ": status shows the pass's last step on the machine line", "MACHINE box2:" in text and "switched" in text,
+          text)
+    # a floor account (line 1, an emergency step): at 1% the run is stopped at once, and the switch goes a pause later
+    pe = NEW(plan(steven={"leave": 1, "when": None}))
+    pe["machines"] = {"box2": {"ssh": "box2-wsl"}}
+    fresh(pe)
+    s, log, runs = machine_world(pe)
+    runs[:] = [HOLDER]
+    low = lambda t: {"steven": R(1, 60, now=t), "system": R(80, 110, now=t), "lukas": R(93, 120, now=t)}  # noqa: E731
+    push(pe, F("lukas", low(t0), now=t0), t0, **s)
+    check(n + ": at the emergency percent of an account with an emergency step the stop goes at once",
+          len(acts(log, "stop")) == 1 and not acts(log, "switch"), log)
+    push(pe, F("lukas", low(t0 + 300), now=t0 + 300), t0 + 300, **s)
+    check(n + ": and the switch at the next pass after the pause", len(acts(log, "switch")) == 1, log)
+    # a stop that did not reach the machine: tried again, and no switch until a stop is written
+    fresh(pm)
+    s, log, runs = machine_world(pm)
+    runs[:] = [HOLDER]
+    s["stop"] = lambda a, units, why: (log.append(("stop", list(units or []), why)) or (False, "ssh: no route"))
+    t = t0
+    while t < t0 + bound + 3600:
+        push(pm, F("lukas", rows(t), now=t), t, **s)
+        t += 300
+    check(n + ": a stop that failed is tried again each pass, and nothing is switched while no stop is written",
+          len(acts(log, "stop")) >= 2 and not acts(log, "switch"), log)
 
 
 def t_a_push_that_fails_leaves_the_pass_whole():
@@ -2081,6 +2219,7 @@ def main():
               t_fault_hand_hold_six_seconds_before_a_pass, t_fault_stop_and_undo_crossed,
               t_can_use_is_the_one_answer_for_a_new_run, t_a_carried_run_goes_until_the_line,
               t_each_machine_on_the_account_gets_its_decision, t_a_machine_at_its_end_is_switched_when_its_runs_end,
+              t_a_machine_at_its_end_orders_its_runs_to_save, t_a_machine_at_its_end_stops_a_run_that_does_not_end,
               t_a_push_that_fails_leaves_the_pass_whole,
               t_a_following_machine_that_cannot_look_refuses, t_readers_take_the_rules_through_one_door,
               t_the_allocator_raises_its_pace_to_the_target_burn, t_codex_door_asks_the_plan,

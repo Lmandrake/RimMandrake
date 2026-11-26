@@ -48,10 +48,15 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
 - **the-old-engine-file.** `switching_plan.py` stays: its actuator half (`_check`, the notice, the markers, the fleet
   stop) is what the timed pass drives, and its decision half is the fallback when `./acct driver` reads `old` or the
   plan file is refused. `switching_plan.json` carries a tombstone that says so.
-- **a-run-on-another-machine-that-does-not-end.** At the line a listed machine gets a notice: no new run starts there,
-  and its hooks tell each live run to save and publish. A run there that keeps working burns the account under its
-  line: this tool stops no process on another machine, and switches it only once it lists no live run
-  (a_machine_at_its_end_is_switched_when_its_runs_end). Stopping such a run is a hand act.
+- **a-run-on-another-machine-deaf-past-its-stop-deadline.** A run on a listed machine that is still live
+  `machine_bound_s` after its save order gets `pipe stop --write-now` there. A run that makes no tool call inside the
+  stop's deadline (`control.WRITE_NOW_DEADLINE_S`) is killed by the stop's escalation, or closed by the switch. A
+  killed run is not carried on (`left_open_continue` never continues a killed run); its PROGRESS notes stay on its
+  item. On 2026-11-26 the waiting run made one tool call each 55 min.
+- **a-listed-machine-whose-code-lacks-the-acts.** The save order, the stop and the kick run on that machine with its own
+  code (`~/rm/bench`). A clone there without `control.order_runs`, `control.stop` or `left_open_continue.kick_waiting`
+  answers no `REMOTE_STEP` line: the order and the stop are tried again each pass, and the machine is not switched while
+  no stop is written. The pass's line says so (`probe_machine` reads it).
 - **a-machine-that-the-plan-does-not-list.** It has no notice and no gate from here. It is as it was before.
 - **the-deciding-machine-off.** While this machine is off or its pass is dead, each listed machine refuses new runs
   (could not look) from 20 min after its last notice, until a notice arrives.
@@ -178,11 +183,28 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
   its notice: nothing refused, the warning text, or no new run (at the line: save and publish). An account that could
   not be read is could not look and no new run. `status` has one line for each machine.
 - **a_machine_at_its_end_is_switched_when_its_runs_end.** A machine whose notice says its account is at its end is
-  switched by the pass to the plan's next account (`claude-account use NEXT --confirm NAME` over ssh), only when it lists
-  no live helper run; a run there, or runs that cannot be read, switch nothing and the pass says so. The same switch is
+  switched by the pass to the plan's next account (`claude-account use NEXT --confirm NAME` over ssh), when it lists
+  no live helper run, or after the stop of a run that does not end (a_machine_at_its_end_stops_a_run_that_does_not_end);
+  runs that cannot be read switch nothing and the pass says so. The same switch is
   not asked again for `SWITCH_RETRY_S` (30 min). A machine whose account no step uses now (Steve's account past its
   window) is at its end too, above its line: its notice drains, and it is switched the same way when its runs end. Any
   other machine above its line, and a machine whose level is not read, is never switched.
+- **a_machine_at_its_end_orders_its_runs_to_save.** At the end of its account, with runs live, each live run of a listed
+  machine (its control store's detached and role runs, and the units that it lists) gets the save order of the line once
+  (`control.order_runs` there, mode at_easy_spot, the words of `account_end.save_text` and the bound). A run that ends
+  in time is not stopped: the switch waits for it, then goes. Runs that could not be read get no order, no stop and no
+  switch, and the line says COULD NOT LOOK. A machine whose account is not at its end gets no order, no stop and no
+  switch. Each pass whose notice to a machine refuses nothing runs `left_open_continue.kick_waiting` there, so a
+  continuation that waited for that machine's switch starts (no timer on a listed machine runs it).
+- **a_machine_at_its_end_stops_a_run_that_does_not_end.** A run still live `machine_bound_s` after the save order
+  (`rescue.drain_h`, at least ten times `save_need_min`; 0 at the emergency step of an account with one) gets `pipe stop
+  UNIT --write-now` on its machine: its trial is voided, its hook says the order, the stop kills it at its deadline,
+  and a run that saved a LEFT OPEN note is carried on by `left_open_continue`. The switch goes when the runs end, or
+  `stop_grace_s()` after the stop (the pause `pause_max_s` at the emergency step), once. A stop that did not reach the
+  machine is tried again at each pass, and nothing is switched while no stop is written. The machine's record keeps the
+  order, the stop and the switch, and `status` prints the pass's last step on the machine's line. The case of
+  2026-11-26 (steven at its 52% line from 3:13 AM PST, one run that waited, the hand switch at 7:10 AM) is stopped at
+  5:13 AM and switched at 5:23 AM.
 - **a_push_that_fails_leaves_the_pass_whole.** A machine that cannot be reached is said by name in the pass's log; the
   pass and the other machines go on; a notice that did not arrive is not kept as that machine's last.
 - **a_following_machine_that_cannot_look_refuses.** A machine that got a notice from the deciding machine starts no
@@ -312,5 +334,17 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
   calls of the pass for each listed machine. Danger: a hung ssh holds the pass and the next pass waits on its lock.
   Measured 2026-11-24 on stevedesktop-wsl: three pushes took 0.3 to 0.6 s; four reads of that machine's account took
   4.0 to 16.8 s. A read that is cut is could not look, and that machine then gets a notice that refuses new runs.
+
+- `machine_bound_s` (`account_plan.py`): from the save order to the write-now stop of a run on a listed machine,
+  `rescue.drain_h` (2 h), never under ten times `save_need_min` (10 min: 100 min). Danger: a listed machine that refuses
+  every launch while one run waits (2026-11-26: over 3 h, five tickets with 3 to 6 refused launches each). Measured need:
+  17 of 19 save orders heard on 2026-11-24 ended p50 5.0, p90 9.5, max 13.8 min after the order. The same bound as this
+  machine's own drain at an account with no emergency step.
+- `stop_grace_s()` = twice `control.WRITE_NOW_DEADLINE_S` (300 s, the kill deadline of `pipe stop --write-now`, which
+  the stop on the other machine uses): the wait from the stop to the switch. Danger: a run that the stop did not end
+  keeps the machine on an ended account; the switch then closes it. Evidence: 3 of 15 write-now stops reached their run
+  and were escalated, longest 599 s (control.db, 14 days to 2026-11-24).
+- The remote acts of the pass (`remote_step`: order, stop, kick, probe) use `SSH_DEADLINE_S`, a hang guard. Measured
+  2026-11-26 on stevedesktop-wsl: a probe took 1.9 s.
 
 Later lists beside this page: `polish.md`.
