@@ -384,7 +384,8 @@ def t_blind_roles_get_none():
 
         with patch.object(card_capture, "item_cards", return_value=[]):
             r = LOC.run(unit, now=at + 9, launch_fn=capture, gates=gates, root=d, reader=lambda _: opened,
-                        log_path=os.path.join(d, "conductor.md"), projects=os.path.join(d, "projects"))
+                        log_path=os.path.join(d, "conductor.md"), projects=os.path.join(d, "projects"),
+                        plan_dir=os.path.join(d, "no_account_notice"))     # never the live account's drain
         msg = launched.get("brief", "")
         chk(lambda: r["act"] == "continued" and not launched.get("resume_session")
             and launched["extra"]["continue_how"] == "fresh" and opened["notes"][0]["text"] in msg,

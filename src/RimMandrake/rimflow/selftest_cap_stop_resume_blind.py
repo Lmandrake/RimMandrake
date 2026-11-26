@@ -129,7 +129,8 @@ plan = (DH.read_record(UNIT) or {}).get("continue_plan") or {}
 check("B: finish planned one continuation", plan.get("act") == "continue" and len(KICKED) == 1, str(plan))
 gates = {"paused": lambda mod: None, "held": lambda mod: None, "voided": lambda unit: False, "blocked": lambda s: None}
 LOC.run(UNIT, now=T0 + 430, launch_fn=fake_launch, gates=gates, log_path=LOG,
-        reader=lambda target: {"state": "doing", "wait_until": None})     # the step's recheck: still open
+        reader=lambda target: {"state": "doing", "wait_until": None},     # the step's recheck: still open
+        plan_dir=os.path.join(TMP, "no_account_notice"))                  # never the live account's drain
 brief = LAUNCHES[0] if LAUNCHES else ""
 head = brief.split("---- the previous run's brief ----")[0]
 check("B: the continuation was launched", bool(brief), str(LAUNCHES))
