@@ -61,9 +61,13 @@ def tree_targets():
     return found
 
 
+REV = []       # --rev <commit>: read the modes of that commit's tree, not the index (replays a past instance)
+
+
 def modes(paths):
     out = {}
-    for line in git("ls-files", "-s", "--", *paths).splitlines():
+    cmd = ("ls-tree", REV[0], "--") if REV else ("ls-files", "-s", "--")
+    for line in git(*cmd, *paths).splitlines():
         meta, path = line.split("\t", 1)
         out[path] = meta.split()[0]
     return out
@@ -89,7 +93,13 @@ def t_run_scripts_keep_exec_bit():
     check("run_scripts_keep_exec_bit", not lost, "; ".join(lost))
 
 
-def main():
+def main(argv=None):
+    argv = sys.argv[1:] if argv is None else argv
+    if argv[:1] == ["--rev"] and len(argv) == 2:
+        REV.append(argv[1])
+    elif argv:
+        print("usage: selftest_exec_bits.py [--rev <commit>]")
+        return 2
     t_units_name_their_scripts()
     t_tree_finds_the_judge()
     t_run_scripts_keep_exec_bit()
