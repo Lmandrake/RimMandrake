@@ -684,9 +684,31 @@ namespace RimMandrake.FlowWorks.Pits
 				cable = x.cable;
 				pieces.Add(d == null ? "unbuilt" : RM_DeckArtMath.PieceAt(i - RM_DeckArt.FirstDeck(r), RM_DeckArt.DeckCount(r)));
 			}
-			return "DECKART look=" + RM_DrawbridgeArt.LookOf(r) + " jetty=" + r.jetty + " dir=" + r.dir + " strip=" + strip
+			// RIMMANDRAKE_REDRAW_TIMBER_BRIDGE_FROM_HIS_THREE_PHOTOS: the picture each square of every lane draws, and each end's
+			// abutment (lanes split by '|', squares by ','; an anchor that draws its own picture reads "own")
+			var drawn = new List<string>();
+			var ends = new List<string>();
+			for (int lane = 0; lane < r.width; lane++)
+			{
+				var row = new List<string>();
+				for (int i = RM_DeckArt.FirstDeck(r); i <= r.LastDeck; i++)
+				{
+					Building_SuspensionDeck d = r.Cell(lane, i).GetFirstThing<Building_SuspensionDeck>(map);
+					UnityEngine.Material m = d == null ? null : RM_DeckArt.DeckMat(d, r, out _);
+					row.Add(d == null ? "unbuilt" : m?.mainTexture?.name ?? "old");
+				}
+				drawn.Add(string.Join(",", row));
+				foreach (int i in new[] { 0, r.length - 1 })
+				{
+					Building_SuspensionAnchor an = r.Cell(lane, i).GetFirstThing<Building_SuspensionAnchor>(map);
+					UnityEngine.Material m = an == null ? null : RM_DeckArt.AbutmentMat(an, out _);
+					ends.Add(an == null ? "none" : m == null ? "own" : m.mainTexture?.name + "@" + RM_DeckArtMath.StripAngle((i == 0 ? r.dir : r.dir.Opposite).AsInt));
+				}
+			}
+			return "DECKART look=" + RM_DrawbridgeArt.LookOf(r) + " jetty=" + r.jetty + " dir=" + r.dir + " width=" + r.width + " strip=" + strip
 				+ " pieces=" + string.Join(",", pieces) + " angle=" + RM_DeckArtMath.StripAngle(r.dir.AsInt)
-				+ " complete=" + RM_DeckArt.DeckComplete(map, r) + " post=" + post + " cable=" + cable;
+				+ " complete=" + RM_DeckArt.DeckComplete(map, r) + " post=" + post + " cable=" + cable
+				+ " drawn=" + string.Join("|", drawn) + " ends=" + string.Join(",", ends);
 		}
 
 		// ── SUSPENSION_ART_RESKIN_HE_SEES_FIRST ───────────────────────────────────────────────────────────────────
@@ -700,9 +722,10 @@ namespace RimMandrake.FlowWorks.Pits
 			string[] a = (arg ?? "").Split(';');
 			if (map == null || a.Length < 3 || a.Length > 4 || !Cell(a[1], out IntVec3 c1) || !Cell(a[2], out IntVec3 c2))
 			{
-				return "REFUSED: arg must be Look;x1,z1;x2,z2[;heavy]";
+				return "REFUSED: arg must be Look;x1,z1;x2,z2[;heavy|timber]";
 			}
 			Designator_SuspensionBridge des = a.Length == 4 && a[3] == "heavy" ? (Designator_SuspensionBridge)new Designator_SuspensionBridge_Heavy()
+				: a.Length == 4 && a[3] == "timber" ? new Designator_SuspensionBridge_Timber()
 				: new Designator_SuspensionBridge_Steel();
 			Machinery.PipeLook.Core.Pick(des, a[0]);
 			bool was = DebugSettings.godMode;

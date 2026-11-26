@@ -98,9 +98,10 @@ def check(canfail=False):
     art = open(ART, encoding="utf-8").read()
     dk = open(DECK, encoding="utf-8").read()
     need = {
+        "PrintAbutment prints AbutmentMat's choice": r"PrintAbutment[\s\S]*?Material m = AbutmentMat\(anchor, out float angle\);",
         "PrintEnd draws nothing for a beam bridge": r"PrintEnd[\s\S]*?if \(x == null \|\| x\.abutment != null\)\s*\{\s*return;",
-        "PrintAbutment turns the picture to face the deck": r"PrintAbutment[\s\S]*?Rot4 facing = near \? r\.dir : r\.dir\.Opposite;[\s\S]*?StripAngle\(facing\.AsInt\)",
-        "the abutment picks its lane piece (swapped at the far end)": r"PrintAbutment[\s\S]*?LaneEdge\(lane, r\.width, near\)",
+        "AbutmentMat turns the picture to face the deck": r"AbutmentMat[\s\S]*?Rot4 facing = near \? r\.dir : r\.dir\.Opposite;[\s\S]*?StripAngle\(facing\.AsInt\)",
+        "the abutment picks its lane piece (swapped at the far end)": r"AbutmentMat[\s\S]*?LaneEdge\(lane, r\.width, near\)",
         "a deck square picks its lane piece": r"DeckMat[\s\S]*?LaneEdge\(lane, r\.width, true\)",
         "a railing draws timber posts and rail": r"PrintNetting[\s\S]*?x\.railPitch > 0f[\s\S]*?PrintTimberRail\(",
         "the rail draws shadows": r"PrintTimberRail[\s\S]*?Run\(layer, Shade, run\.p, run\.h, run\.q, run\.g, run\.w, shadowY, true\)",

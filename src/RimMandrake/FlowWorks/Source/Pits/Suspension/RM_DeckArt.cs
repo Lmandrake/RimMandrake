@@ -455,34 +455,44 @@ namespace RimMandrake.FlowWorks.Pits
 		/// (bollards and ropes: "No ropes tied to the ground for the wood bridge"). False when its bridge has no abutment.</summary>
 		public static bool PrintAbutment(SectionLayer layer, Thing anchor)
 		{
+			Material m = AbutmentMat(anchor, out float angle);
+			if (m == null)
+			{
+				return false;
+			}
+			Vector3 c = anchor.Position.ToVector3Shifted();
+			c.y = anchor.def.Altitude;
+			Printer_Plane.PrintPlane(layer, c, Vector2.one, m, angle);
+			return true;
+		}
+
+		/// <summary>The abutment picture an anchor square prints and its turn (facing its deck), or null (not a beam bridge's
+		/// end): the one chooser PrintAbutment and the proof read share.</summary>
+		public static Material AbutmentMat(Thing anchor, out float angle)
+		{
+			angle = 0f;
 			Map map = anchor.Map;
 			SuspensionBridgeRecord r = map?.GetComponent<RM_MapComponent_SuspensionBridges>()?.RecordAt(anchor.Position);
 			if (r == null || r.jetty || !r.TryIndexOf(anchor.Position, out int lane, out int i))
 			{
-				return false;
+				return null;
 			}
 			bool near = i == 0;
 			if (!near && i != r.length - 1)
 			{
-				return false;
+				return null;
 			}
 			Building_SuspensionDeck first = r.Cell(0, 1).InBounds(map) ? r.Cell(0, 1).GetFirstThing<Building_SuspensionDeck>(map) : null;
 			RM_DeckArtExtension x = For(r, first?.StyleDef);
 			if (x?.abutment == null)
 			{
-				return false;
+				return null;
 			}
 			string suffix = x.laneEdges ? RM_DeckArtMath.LaneEdge(lane, r.width, near) : "";
 			Material m = (suffix.Length > 0 ? Mat(x.abutment + suffix) : null) ?? Mat(x.abutment);
-			if (m == null)
-			{
-				return false;
-			}
 			Rot4 facing = near ? r.dir : r.dir.Opposite;
-			Vector3 c = anchor.Position.ToVector3Shifted();
-			c.y = anchor.def.Altitude;
-			Printer_Plane.PrintPlane(layer, c, Vector2.one, m, RM_DeckArtMath.StripAngle(facing.AsInt));
-			return true;
+			angle = RM_DeckArtMath.StripAngle(facing.AsInt);
+			return m;
 		}
 
 		/// <summary>RIMMANDRAKE_REDRAW_TIMBER_BRIDGE_FROM_HIS_THREE_PHOTOS (his photo 14): a railed square of a beam bridge draws
