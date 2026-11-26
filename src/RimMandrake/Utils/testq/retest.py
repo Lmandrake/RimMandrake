@@ -126,7 +126,12 @@ def stale_load(res):
     res = res or {}
     if res.get("outcome") != "INVALID" or res.get("cause") != "HARNESS" or res.get("harness_cause") == NOT_INSTALLED:
         return None
-    if res.get("harness_cause") != "stale_load" and not STALE_LOAD.search(str(res.get("note") or "")):
+    note = str(res.get("note") or "")
+    if res.get("harness_cause") != "stale_load" and not STALE_LOAD.search(note):
+        return None
+    if res.get("stale_load_bounced") and not STALE_LOAD.search(note):
+        # HARNESS_REPAIR_CAUSE_3A38C661_3: the worker keeps harness_cause from its restart; the restart repaired the
+        # load and the second run died of something else, which the note names. That death is the cause.
         return None
     return "unrepaired" if res.get("harness_cause") == "stale_load" or res.get("stale_load_bounced") else "repaired"
 

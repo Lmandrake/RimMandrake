@@ -225,6 +225,19 @@ def main():
     check(R.stale_load({"outcome": "DONE", "harness_cause": "stale_load", "stale_load_bounced": "x"}) is None
           and R.stale_load({"outcome": "INVALID", "cause": "HARNESS", "note": "modcheck exit 5"}) is None,
           "a DONE run after the restart, or another harness death, is no stale load")
+    # HARNESS_REPAIR_CAUSE_3A38C661_3 (J20261125T082455Z-f27001): the restart repaired the stale load, and the second
+    # run died of another cause (a companion CAMPAIGN refusal). The worker keeps harness_cause from the bounce, so the
+    # job filed under stale_load "could not restart away". The final note decides: only a stale-load refusal is one.
+    healed = {"outcome": "INVALID", "cause": "HARNESS", "harness_cause": "stale_load",
+              "stale_load_bounced": "not loaded: oskarpotocki.vanillafactionsexpanded.core",
+              "note": "modcheck exit 1 and no sheet JSON: first: FlowWorks            REFUSED  after the live drivers: "
+                      "companion profile is 'campaign', not 'test'"}
+    downfail = dict(healed, note="stale_load: game down for the restart onto the composed list failed: x")
+    check(R.stale_load(healed) is None and "stale_load" not in (R.job_cause(healed) or "")
+          and R.job_cause(healed) == R.job_cause(dict(healed, harness_cause=None, stale_load_bounced=None)),
+          "a stale load the restart repaired, then another death, files under the other death: %s" % R.job_cause(healed))
+    check(R.stale_load(downfail) == "unrepaired" and R.stale_load(again) == "unrepaired",
+          "foil: a stale load the restart could not reach, or that came back, is still unrepaired")
     gone = {"outcome": "INVALID", "cause": "HARNESS", "harness_cause": "mod_not_installed",
             "note": "mod_not_installed (install it on this host; no restart spent): no folder on this host holds "
                     "ray1203.simplecamerasetting (install it; a restart cannot load it): loaded but not composed: x"}
