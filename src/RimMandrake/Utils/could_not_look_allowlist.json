@@ -301,7 +301,8 @@
   "src/RimMandrake/Utils/publish.py::_take_kept.last_top::except-returns-empty": 1,
   "src/RimMandrake/Utils/account_plan_sweep.py::run_regime::or-empty": 1,
   "src/RimMandrake/Utils/account_plan_sweep.py::check_pass::or-empty": 3,
-  "src/RimMandrake/Utils/account_plan_sweep.py::_edf::or-empty": 1
+  "src/RimMandrake/Utils/account_plan_sweep.py::_edf::or-empty": 1,
+  "src/RimMandrake/rimflow/list_effect.py::_check_tmp::except-returns-empty": 1
  },
  "reasons": {
   "src/RimMandrake/rimflow/ticket_preflight.py::_split_def::or-empty": [
@@ -1266,6 +1267,9 @@
   ],
   "src/RimMandrake/Utils/account_plan_sweep.py::_edf::or-empty": [
    "NOT A COLLAPSE: an account that no step uses and that has no standing step has no line; the bound then erases all of what is left, the larger loss"
+  ],
+  "src/RimMandrake/rimflow/list_effect.py::_check_tmp::except-returns-empty": [
+   "NOT A COLLAPSE: None is no reading of anything: it means the cmd: check runs on the inherited TMPDIR, as before the per-check dir; its verdict is unchanged (design/specs/2026-11-22-list-outcome-checks/boundary.md a-cmd-check-leaves-no-temp-files)"
   ]
  }
 }

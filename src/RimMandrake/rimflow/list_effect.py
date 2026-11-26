@@ -38,7 +38,9 @@ import datetime as dt
 import fcntl
 import json
 import os
+import itertools
 import re
+import shutil
 import subprocess
 import sys
 import time
@@ -107,19 +109,40 @@ def _path_verdict(kind, want, body, exists):
         ("holds", "the file no longer holds the text")
 
 
+_CHECK_N = itertools.count(1)
+
+
+def _check_tmp():
+    """A fresh TMPDIR for one cmd: check, under the per-run tmp root (run_tmp.py), or None when it cannot be made (the
+    check then runs on the inherited TMPDIR). RIMMANDRAKE_BOUND_SCRATCH_REAP_RUN_THAT_GREW_FOUR_MIN_TO_TWO_HOURS: two
+    acceptance scripts run as checks left 13 git repos each in /tmp per beat; 3,800 piled up, and the hourly reaper ran
+    for 2 h archiving them one by one."""
+    try:
+        import run_tmp
+        return run_tmp.prepare(run_tmp.pid_name("list-effect-check-%d" % next(_CHECK_N)))
+    except Exception:  # noqa: BLE001 - a check never fails for want of its scratch dir
+        return None
+
+
 def run(text, root, timeout=None):
-    """-> (verdict, output): verdict holds | fails | unmeasured. Never raises."""
+    """-> (verdict, output): verdict holds | fails | unmeasured. Never raises. A cmd: check gets its own TMPDIR, deleted
+    when the command ends, whatever its verdict."""
     p = parse(text)
     if p["kind"] == "unreadable":
         return "unmeasured", p["why"]
     if p["kind"] == "cmd":
+        tmp = _check_tmp()
+        env = dict(os.environ, TMPDIR=tmp, TMP=tmp, TEMP=tmp) if tmp else None
         try:
             r = subprocess.run(["bash", "-c", p["cmd"]], cwd=root, capture_output=True, text=True, errors="replace",
-                               timeout=CMD_TIMEOUT_S if timeout is None else timeout, stdin=subprocess.DEVNULL)
+                               timeout=CMD_TIMEOUT_S if timeout is None else timeout, stdin=subprocess.DEVNULL, env=env)
         except subprocess.TimeoutExpired:
             return "unmeasured", "the command ran past its %gs deadline" % (CMD_TIMEOUT_S if timeout is None else timeout)
         except OSError as e:
             return "unmeasured", "the command could not start: %s" % e
+        finally:
+            if tmp:     # a child the deadline left running may still write here: run_tmp.sweep takes what remains
+                shutil.rmtree(tmp, ignore_errors=True)
         out = ((r.stdout or "") + (r.stderr or "")).strip()
         if r.returncode == 0:
             return "holds", out

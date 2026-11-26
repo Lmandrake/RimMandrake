@@ -36,6 +36,10 @@ Item: `RIMMANDRAKE_BUILD_LIST_OUTCOME_CHECKS_SEVEN_DONE_NEVER_CLOSED`, step 1 of
   `fails` for `path-has` (the text is not there) and `unmeasured` for `path-lacks`. A command that cannot start, exits
   other than 0 or 1, or outlives its deadline is `unmeasured`. An unreadable check is `unmeasured`. Unmeasured is never
   `holds` and never `fails`.
+- **a-cmd-check-leaves-no-temp-files.** `run` gives each `cmd:` check its own TMPDIR (also TMP and TEMP) under the
+  per-run tmp root (`run_tmp.py`), and deletes that dir when the command ends: on holds, fails, unmeasured and a
+  deadline. A check that makes temp files or git repos through `tempfile` leaves nothing in /tmp. A check that writes
+  a literal /tmp path is not covered: the reaper's /tmp backstop takes it.
 - **decide-closes-only-on-holds-and-leaves-an-item-with-no-check-alone.** `decide` is `close` on holds, `work` on fails,
   `blind` on unmeasured, `no_effect` for an item with no check (whatever the verdict) and `closed` for an item that is
   done, dropped or superseded.

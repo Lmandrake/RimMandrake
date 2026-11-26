@@ -134,6 +134,29 @@ def t_holds_keeps_could_not_look_apart_from_fails():
     chk(lambda: v == "fails" and "hello-out" in out, "run returns the command's output beside its verdict")
 
 
+def t_a_cmd_check_leaves_no_temp_files():
+    # RIMMANDRAKE_BOUND_SCRATCH_REAP_RUN_THAT_GREW_FOUR_MIN_TO_TWO_HOURS: two acceptance scripts run as checks every
+    # beat left 13 git repos each in /tmp; 3,800 piled up and the hourly reaper ran 2 h archiving them one by one.
+    L = LE()
+    r = X["root"]
+    runs = os.environ["RM_RUN_TMP_ROOT"]
+    make = ("cmd:python3 -c \"import tempfile, subprocess; d = tempfile.mkdtemp(); "
+            "subprocess.run(['git', 'init', '-q', d], check=True); open(d + '/a.py', 'w').write('x'); "
+            "print('MADE=' + d)\"")
+    for tail, want in (("", "holds"), ("; exit 1", "fails"), ("; exit 3", "unmeasured")):
+        v, out = L.run(make + tail, r)
+        made = [ln[5:] for ln in out.splitlines() if ln.startswith("MADE=")]
+        chk(lambda: v == want and len(made) == 1, "the check that makes a temp repo reads %s (%s)" % (want, v))
+        chk(lambda: made and made[0].startswith(runs + os.sep), "a %s check's tempfile is under the per-run tmp root, "
+            "not /tmp (%r)" % (want, made))
+        chk(lambda: made and not os.path.exists(made[0]), "a %s check's temp repo is gone when it ends" % want)
+    v, out = L.run("cmd:python3 -c \"import tempfile, time; print('MADE=' + tempfile.mkdtemp(), flush=True); "
+                   "time.sleep(5)\"", r, timeout=1)  # budget: fixture
+    chk(lambda: v == "unmeasured", "a check past its deadline is unmeasured")
+    left = lambda: [n for n in (os.listdir(runs) if os.path.isdir(runs) else []) if not n.startswith(".")]  # noqa: E731
+    chk(lambda: not left(), "no check's tmp dir is left under the per-run root after a timeout (%r)" % left())
+
+
 def t_decide_closes_only_on_holds_and_leaves_an_item_with_no_check_alone():
     L = LE()
     chk(lambda: [L.decide({"state": "ready", "effect": "cmd:x"}, v) for v in ("holds", "fails", "unmeasured")]
@@ -467,13 +490,14 @@ def main():
     os.makedirs(X["root"])
     os.makedirs(X["state"])
     keys = ("RIMFLOW_LEDGER", "RIMFLOW_ITEMS", "RIMFLOW_GITINDEX", "RIMFLOW_GIT_CWD", "RIMFLOW_PROBE", "RM_LIST_EFFECT_DIR",
-            "RM_LIST_EFFECT_ROOT", "RM_CONTROL_DB", "RM_PIPELINE_PAUSE_FILE", "RM_DISPATCHER_STATE", "RM_ROLE_UNIT")
+            "RM_LIST_EFFECT_ROOT", "RM_CONTROL_DB", "RM_PIPELINE_PAUSE_FILE", "RM_DISPATCHER_STATE", "RM_ROLE_UNIT",
+            "RM_RUN_TMP_ROOT")
     saved = {k: os.environ.get(k) for k in keys}
     os.environ.update(RIMFLOW_LEDGER=os.path.join(top, "events.jsonl"), RIMFLOW_ITEMS=os.path.join(top, "items"),
                       RIMFLOW_GITINDEX="off", RIMFLOW_GIT_CWD=X["git"], RIMFLOW_PROBE="no-reading", RM_LIST_EFFECT_DIR=X["state"],
                       RM_LIST_EFFECT_ROOT=X["root"], RM_CONTROL_DB=os.path.join(top, "control.db"),
                       RM_PIPELINE_PAUSE_FILE=os.path.join(top, "pause.json"),
-                      RM_DISPATCHER_STATE=os.path.join(top, "dstate"))
+                      RM_DISPATCHER_STATE=os.path.join(top, "dstate"), RM_RUN_TMP_ROOT=os.path.join(top, "runs"))
     os.environ.pop("RM_ROLE_UNIT", None)
     os.makedirs(os.environ["RIMFLOW_ITEMS"])
     try:
@@ -484,6 +508,7 @@ def main():
             print("     (control store init raised %s: %s)" % (type(e).__name__, e))
         for t in (t_parse_reads_three_forms_and_never_raises,
                   t_holds_keeps_could_not_look_apart_from_fails,
+                  t_a_cmd_check_leaves_no_temp_files,
                   t_decide_closes_only_on_holds_and_leaves_an_item_with_no_check_alone,
                   t_a_check_that_already_holds_is_refused_at_attach_unless_seen_failing_at_filing,
                   t_file_and_effect_record_the_check_and_its_red_reading,
