@@ -478,7 +478,7 @@ namespace RimMandrake.Biomes
             var sw = System.Diagnostics.Stopwatch.StartNew();
             // one tangent frame per biome, at the mean of its tile centres
             var sum = new Dictionary<BiomeDef, Vector3>();
-            var radiusSum = new Dictionary<BiomeDef, float>();   // summed mean circumradius of the biome's tiles
+            var spacingSum = new Dictionary<BiomeDef, float>();   // summed TileSpacingOf of the biome's tiles
             var count = new Dictionary<BiomeDef, int>();
             var tiles = new List<int>();
             var tv = new List<Vector3>();
@@ -492,22 +492,20 @@ namespace RimMandrake.Biomes
                 sum[a] = s + c;
                 if (map[a].widthsPerRepeat > 0f)
                 {
-                    // the tile's own size, as RM_WorldDecals: a partial-coverage planet holds fewer tiles than the sphere would
                     pl.GetTileVertices(i, tv);
-                    float circ = 0f;
-                    foreach (Vector3 v in tv) circ += (v - c).magnitude;
-                    radiusSum.TryGetValue(a, out float rs);
-                    radiusSum[a] = rs + (tv.Count > 0 ? circ / tv.Count : 0f);
+                    spacingSum.TryGetValue(a, out float ss);
+                    spacingSum[a] = ss + TileSpacingOf(tv, c);
                     count.TryGetValue(a, out int cn);
                     count[a] = cn + 1;
                 }
             }
             if (tiles.Count == 0) return label + ": 0 tiles of " + map.Count + " listed biomes";
-            // texture repeats per world unit, per biome: a hex's centre-to-centre width is sqrt(3) x its circumradius
+            // texture repeats per world unit, per biome. A hex's centre-to-centre width is sqrt(3) x its circumradius, and
+            // TileSpacingOf is 1.612 x it, so width = spacing x 1.7320508 / 1.612.
             var uvScale = new Dictionary<BiomeDef, float>();
             foreach (var kv in map)
             {
-                float width = count.TryGetValue(kv.Key, out int cn) && cn > 0 ? 1.7320508f * radiusSum[kv.Key] / cn : 0f;
+                float width = count.TryGetValue(kv.Key, out int cn) && cn > 0 ? (1.7320508f / 1.612f) * spacingSum[kv.Key] / cn : 0f;
                 uvScale[kv.Key] = RM_WorldLookLists.UvScale(kv.Value.widthsPerRepeat, width, swirlUvScale);
             }
             var frame = new Dictionary<BiomeDef, Vector3[]>();
