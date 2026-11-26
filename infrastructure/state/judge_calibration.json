@@ -1098,10 +1098,10 @@
    },
    "hash": "7efd8085380bc3f9",
    "last_run": {
-    "at": "2026-11-25T05:49:14Z",
-    "cases": "came out the other way: c2.9, c3.4, c4.1, c4.14, c4.3",
+    "at": "2026-11-26T03:24:26Z",
+    "cases": "came out the other way: c2.5, c4.1",
     "exit": 0,
-    "out": "pass mark FAIL: agreed real caught 2 of 3 (limit all); agreed polish called problem 2 of 9 (limit 1); unscored: 30 of 35 as labelled",
+    "out": "pass mark PASS: agreed real caught 2 of 2 (limit all); agreed polish called problem 0 of 8 (limit 1); unscored: 33 of 35 as labelled",
     "results": "35 case rows"
    },
    "model_check": [
@@ -1253,7 +1253,7 @@
     }
    ],
    "reset_at": "2026-11-26T03:08:39Z",
-   "status": "UNTESTED",
+   "status": "FAILED",
    "timeout_s": 540,
    "was": "UNTESTED"
   },
