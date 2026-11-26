@@ -35,3 +35,7 @@ unit ends.
 Acceptance test: none, the cause is not yet reproduced. The oracle to write: a `land()` run on a clone where
 `./publish` lands a cherry-picked twin and leaves the local commit. That run must not report `level`, and must level
 the clone or report `stranded` with its fix line.
+
+## refs
+
+file: src/RimMandrake/rimflow/role_clones.py
