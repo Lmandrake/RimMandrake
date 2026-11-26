@@ -1,0 +1,40 @@
+{
+ "_note": "Real cards from the card store (card_capture.py), verbatim, OWNER_CARDS_HARDEN_DECISION_RECEIPTS. prior_answered: the 2026-11-19T00:34:59Z Gate order answer. reask: the 03:14:16Z Judge order question that said 'you have never ruled on it' (he: 'I have ruled on this multiple times'). prior_unanswered / unanswered_followup: Graffiti asked at 01:22Z, not answered, asked again at 01:24Z (right to ask).",
+ "prior_answered": {
+  "answered": "2026-11-19T00:34:59Z",
+  "key": "toolu_01PfT49hdjynsPyWfuf6HrGF",
+  "questions": [
+   {
+    "question": "Before a mod's design is locked it passes two gates: the Designer exam (an agent answers scenario questions from the design alone) and the coverage judge (checks every promise has a test). Today the exam runs first. Measured Nov 4 to 15: 13 of 16 exams passed, only 3 of 14 judge looks signed, and six exams were retaken after a judge refusal changed the design. An agent decided 'judge first' as a delegated call; you have not ruled. Which order do you want?",
+    "header": "Gate order",
+    "answer": "Retake only what changed (Recommended)",
+    "his_words": ""
+   }
+  ]
+ },
+ "reask": {
+  "question": "Wed Nov 18, 7:05 PM PST. Before a mod's design is locked, two gates look at it. The Designer exam: an agent answers test scenarios using only the design, to prove the design is complete enough to build from. The coverage judge: a second agent checks that every promise you made for the mod is covered by the design. Today the exam runs first. Measured Nov 4 to Nov 15: the exam passed 13 of 16 times, the coverage judge signed only 3 of 14 times, and 6 exams had to be retaken because the coverage judge refused afterwards and the design changed. An agent decided on Nov 16 to swap the order; you have never ruled on it, and the build has not started. One unknown: today's code skips the coverage judge when the exam fails, and nobody has read why. Which order do you want?",
+  "header": "Judge order",
+  "answer": "Actually I have ruled on this multiple times. I'm not sure why you keep losing the ruling. And your recommendation has even changed. You first thought option (1) was best, then last time you thought (2) awas, and now you're back at (1). Please look back at those rulings I already gave you, and the evidence they were based on, and come to a consensus recommendation. Then implement it now and don't return to me with this item, ok? Tell me what your ruling is the moment you make it. DO THIS FIRST.",
+  "his_words": "Actually I have ruled on this multiple times. I'm not sure why you keep losing the ruling. And your recommendation has even changed. You first thought option (1) was best, then last time you thought (2) awas, and now you're back at (1). Please look back at those rulings I already gave you, and the evidence they were based on, and come to a consensus recommendation. Then implement it now and don't return to me with this item, ok? Tell me what your ruling is the moment you make it. DO THIS FIRST."
+ },
+ "reask_answered": "2026-11-19T03:14:16Z",
+ "prior_unanswered": {
+  "answered": "2026-11-18T01:22:18Z",
+  "key": "toolu_01X3P3rgLSuoQCujYBoBNf9A",
+  "questions": [
+   {
+    "question": "Tue Nov 17, 5:21 PM PST. Graffiti is stopped at the coverage judge (the agent that checks every promise has a test that would notice a broken mod). Its third look refused one thing: the three-week soak test let a colonist carry a small graffiti mood penalty every day and still pass, which is the 'stories, not a tax' promise broken. A fix landed at 10:34 AM: one scene now checks that each colonist's graffiti mood drops back to zero between stories. You granted one more look at 10:45 AM, but the pipeline will not accept the changed scene ('re-pin' = accepting changed test files as the new frozen version) because that fix cites no decision of yours. Your word here is what unblocks it. The last look cost about 0.6M weighted tokens (Opus). Accounts now: system 4% of the week left, lukas 2%, steven 50%; resets Wednesday. What do you want done with Graffiti?",
+    "header": "Graffiti",
+    "answer": "[User did not answer this question — they sent a message instead. Treat that message as their response; do not re-ask.]",
+    "his_words": "[User did not answer this question — they sent a message instead. Treat that message as their response; do not re-ask.]"
+   }
+  ]
+ },
+ "unanswered_followup": {
+  "question": "Tue Nov 17, 5:23 PM PST. Graffiti is stopped at the coverage judge (the agent that checks every promise has a test that would notice a broken mod). Its third look refused one thing: the three-week soak test let a colonist carry a small graffiti mood penalty every day and still pass, which is the 'stories, not a tax' promise broken. A fix landed at 10:34 AM: one scene now checks that each colonist's graffiti mood drops back to zero between stories. You granted one more look at 10:45 AM, but the pipeline will not accept the changed scene ('re-pin' = accepting changed test files as the new frozen version) because that fix cites no decision of yours. Your word here is what unblocks it. The last look cost about 0.6M weighted tokens (Opus). Accounts now: system 4% of the week left, lukas 2%, steven 50%; resets Wednesday. What do you want done with Graffiti?",
+  "header": "Graffiti",
+  "answer": "Approve fix, look after resets (Recommended)",
+  "his_words": ""
+ }
+}

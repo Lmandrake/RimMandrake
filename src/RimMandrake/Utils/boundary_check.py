@@ -234,6 +234,7 @@ PAGES = {
     "design/specs/2026-11-20-maturation-pass-tag/boundary.md":
         "src/RimMandrake/rimflow/selftest_maturation_pass_tag.py",
     "design/specs/2026-11-19-card-capture-reads/boundary.md": "src/RimMandrake/rimflow/selftest_card_capture_reads.py",
+    "design/specs/2026-11-25-card-reask-gate/boundary.md": ".claude/hooks/selftest_block_reasked_card.py",
     "design/specs/2026-11-19-failed-before-reads/boundary.md": "src/RimMandrake/rimflow/selftest_failed_before_reads.py",
     "design/specs/2026-11-19-mod-model-pin/boundary.md": "src/RimMandrake/rimflow/selftest_mod_model_pin.py",
     "design/specs/2026-11-22-run-spend-and-model-alias/boundary.md":

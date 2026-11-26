@@ -93,6 +93,17 @@
         ]
       },
       {
+        "matcher": "AskUserQuestion",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/block_reasked_card.py\"",
+            "timeout": 30,
+            "statusMessage": "Checking the card does not ask again what he already answered"
+          }
+        ]
+      },
+      {
         "matcher": "Agent",
         "hooks": [
           {
