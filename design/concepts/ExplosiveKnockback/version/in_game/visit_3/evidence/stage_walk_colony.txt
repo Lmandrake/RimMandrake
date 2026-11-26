@@ -1,0 +1,8 @@
+build Wall:96,37;Wall:96,38;Wall:96,39;Wall:96,40;Wall:96,41;Wall:96,42;Wall {'placed': 23, 'survived': 23, 'error': None}
+build LWM_WeaponsLocker:98,40 {'placed': 1, 'survived': 1, 'error': None}
+build ShelfSmall:98,42;Shelf:101,42 {'placed': 2, 'survived': 2, 'error': None}
+build RM_PitCover_WovenScrap:102,36 {'placed': 1, 'survived': 1, 'error': None}
+goods read back: [('Cloth', 101, 42), ('MedicineIndustrial', 101, 42), ('Silver', 102, 42), ('ComponentIndustrial', 102, 42), ('Beer', 98, 42), ('Chocolate', 98, 42), ('Gun_Autopistol', 98, 40), ('Gun_Revolver', 98, 40), ('Steel', 101, 41), ('WoodLog', 99, 41), ('Cloth', 102, 39)]
+pawns: [('Human37619', 101, 40), ('Human37622', 100, 39), ('Human37625', 98, 38), ('Human37628', 103, 43), ('Human37631', 102, 36)]
+STAGED EK_WALK_SMALL_COLONY_V3_202611260542   --storeroom 97,37,7,7 --cover 102,36 --gas 100,41 --save EK_WALK_SMALL_COLONY_V3_202611260542
+[bridge split] 4.9 s wall: load 0.5 / ticks 0.2 / reads 1.0 / other 1.2 / outside calls 2.1 s

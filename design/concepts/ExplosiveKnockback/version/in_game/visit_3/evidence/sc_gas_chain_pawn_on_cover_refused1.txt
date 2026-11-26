@@ -1,0 +1,4 @@
+== sc_gas_chain_pawn_on_cover start 05:31:26
+== sc_gas_chain_pawn_on_cover rc=3 end 05:31:32
+
+(the scene's own output file was overwritten by the later run; the refusal line: REFUSED WRONG_BUILD: FlowWorks: rimmandrakeflowworks.dll: the loaded code (MVID f733a098-1230-406e-b533-f6cebedba657) is not in the deployed or the committed file)

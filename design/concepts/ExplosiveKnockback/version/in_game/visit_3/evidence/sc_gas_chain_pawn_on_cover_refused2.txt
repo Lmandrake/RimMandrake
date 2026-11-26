@@ -1,0 +1,2 @@
+ACCEPT src/RimMandrake/ExplosiveKnockback/proof/scene_gas_chain_pawn_on_cover.py at 9931b028e1a0
+ACCEPT src/RimMandrake/ExplosiveKnockback/proof/scene_gas_chain_pawn_on_cover.py: REFUSED WRONG_BUILD: ExplosiveKnockback: rimmandrakeexplosiveknockback.dll: the loaded code (MVID 2c5e2768-4063-4cb3-82fd-b67b7975d091) is not in the deployed or the committed file. (the proof build was deployed for sc_save_in_air and sc_walk_frames; accept runs a scene on the committed release DLL only)
