@@ -1,16 +1,16 @@
 {
  "T_BLAST_SHOW_OFFLINE": {
-  "at": "2026-11-25T07:25:45Z",
+  "at": "2026-11-26T01:11:11Z",
   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_blast_show.py",
   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_blast_show.py",
-  "last": "FAIL blast show: 2 of 27 line(s) failing",
-  "patch": "--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackShowPlan.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackShowPlan.cs\n@@ -317,7 +317,7 @@\n             {\n                 p.sootThingsReach = 0.8f * er;\n             }\n-            if (s.sootOnPawns)\n+            if (s.sootOnThings || s.sootOnPawns)\n             {\n                 p.sootPawnsReach = 0.8f * er;\n             }\n",
+  "last": "FAIL blast show: 1 of 28 line(s) failing",
+  "patch": "diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackShow.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackShow.cs\nindex 1fb2a3babc..57b7e6b91f 100644\n--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackShow.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackShow.cs\n@@ -426,7 +426,7 @@ namespace RimMandrake.ExplosiveKnockback\n     {\n         public static void Postfix(Type defType, ref string __result)\n         {\n-            if (__result == null || defType != typeof(ThingDef) || !__result.StartsWith(RM_KnockbackShow.ScarPrefix, StringComparison.Ordinal)\n+            if (__result == null || defType != typeof(TerrainDef) || !__result.StartsWith(RM_KnockbackShow.ScarPrefix, StringComparison.Ordinal)\n                 || !char.IsDigit(__result[__result.Length - 1]))\n             {\n                 return;\n",
   "patch_files": [
-   "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackShowPlan.cs"
+   "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackShow.cs"
   ],
-  "patch_sha": "871711e53a8b1ffa",
+  "patch_sha": "09b7253bb68c43d5",
   "rc": 1,
-  "test_blob": "e59d039b1ad405802c329ce99b9ca2cc0b6aad2b"
+  "test_blob": "e38ef5dba1119b79e659ae7919c7c9cf475b0ad1"
  },
  "T_CARRY_STATIC": {
   "at": "2026-11-25T05:49:34Z",
