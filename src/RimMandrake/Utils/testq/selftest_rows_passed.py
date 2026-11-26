@@ -62,8 +62,27 @@ def main():
             f.write("{not json")
         rc, out = run(d, "UtinniPatches", since, "phrikite_desert")
         ok(rc == 0, "a record mid-write is skipped, not fatal", (rc, out))
-    rc, out = run("/nonexistent/testq/done", "UtinniPatches", since, "phrikite_desert")
-    ok(rc == 2 and out.startswith("UNMEASURED"), "no queue on this host: UNMEASURED, exit 2", (rc, out))
+    # a modcheck report pinned in the repo (a run by hand on an Archmagi game): summary.chains[].components[]
+    with tempfile.TemporaryDirectory() as d, tempfile.TemporaryDirectory() as reports:
+        rep = {"mod": "UtinniPatches", "stamp": "20261127T050000Z", "summary": {"chains": [
+            {"name": "phrikite_desert", "components": [{"name": "phrikite_defs_loaded", "verdict": "PASS"},
+                                                       {"name": "phrikite_only_in_desert", "verdict": "PASS"}]}]}}
+        with open(os.path.join(reports, "UtinniPatches_20261127T050000Z.json"), "w") as f:
+            json.dump(rep, f)
+        old = dict(rep, stamp="20261114T131233Z")
+        with open(os.path.join(reports, "UtinniPatches_20261114T131233Z.json"), "w") as f:
+            json.dump(old, f)
+        rc, out = run(d, "UtinniPatches", since, "phrikite_desert", "--reports", reports)
+        ok(rc == 0 and "UtinniPatches_20261127T050000Z" in out, "a pinned modcheck report since SINCE with every row PASS",
+           (rc, out))
+        rep["summary"]["chains"][0]["components"][1]["verdict"] = "UNMEASURED"
+        with open(os.path.join(reports, "UtinniPatches_20261127T050000Z.json"), "w") as f:
+            json.dump(rep, f)
+        rc, out = run(d, "UtinniPatches", since, "phrikite_desert", "--reports", reports)
+        ok(rc == 1, "a pinned report with an UNMEASURED row, and an old passing one: no PASS", (rc, out))
+    rc, out = run("/nonexistent/testq/done", "UtinniPatches", since, "phrikite_desert", "--reports", "/nonexistent/r")
+    ok(rc == 2 and out.startswith("UNMEASURED"), "no queue and no report folder on this host: UNMEASURED, exit 2",
+       (rc, out))
     print("RESULT: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))
     return 1 if FAILS else 0
 
