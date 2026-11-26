@@ -551,11 +551,36 @@ def gameonly_key(ver, stage, ids):
     return "%s|%s|game_only|%s" % (ver, stage, hashlib.sha1(",".join(sorted(ids)).encode("utf-8")).hexdigest()[:12])
 
 
-def _move_and_land(root, mod, what, move, subject, land=None):
+class MovedMeanwhile(RuntimeError):
+    """The record left the stage the tick planned an act on: another run moved it between the plan and the act. No
+    fault of form and no fault of substance: the act is no longer owed, and the next tick plans from the new stage
+    (RIMMANDRAKE_REPAIR_FLOWWORKS_FORM_REFUSAL_AT_THE_RUN_SEVEN: FlowWorks went to offline_build at 8:16 PM PST
+    2026-11-25 and the visit move planned at his_walk was refused `order` at 8:18 PM, filing a form repair)."""
+
+
+def _left_stage(root, mod, stage, what):
+    """-> the MovedMeanwhile to raise when the record no longer stands at `stage` (None: no stage planned, or it does)."""
+    if not stage:
+        return None
+    rec = M.load(root, mod)
+    if rec is None:     # could not look: never read as a move; the move itself names the record it cannot read
+        return None
+    here = rec.get("stage")
+    if here == stage:
+        return None
+    return MovedMeanwhile("%s of %s is no longer owed: the record stands at %s now, not the %s the tick planned it on; "
+                          "nothing moved, and the next tick plans from %s" % (what, mod, here, stage, here))
+
+
+def _move_and_land(root, mod, what, move, subject, land=None, stage=None):
     """Make one stage move (`move()` -> maturation.advance's result) and land every file it wrote under
     design/concepts/<mod>/ in one landing. -> the landing's last line. A refused move raises and writes nothing; an
-    unlanded move is no move: every changed file is put back byte for byte and every new one removed."""
+    unlanded move is no move: every changed file is put back byte for byte and every new one removed. stage: the stage
+    the act was planned on; a record that left it raises MovedMeanwhile and moves nothing."""
     import designer_stage as DS
+    gone = _left_stage(root, mod, stage, what)
+    if gone:
+        raise gone
     d = M.mod_dir(root, mod)
 
     def snap():
@@ -576,6 +601,9 @@ def _move_and_land(root, mod, what, move, subject, land=None):
     was = snap()
     res = move()
     if not res.get("ok"):
+        gone = _left_stage(root, mod, stage, what)      # it moved between the check above and the evaluation
+        if gone:
+            raise gone
         raise RuntimeError("%s of %s was refused: %s" % (what, mod, json.dumps(
             {k: res.get(k) for k in ("malformed", "moved_meanwhile", "submit_error", "why") if res.get(k)} or
             [r.get("clause") for r in ((res.get("verdict") or {}).get("refusals") or [])])))
@@ -608,7 +636,7 @@ def _move_and_land(root, mod, what, move, subject, land=None):
         raise
 
 
-def gameonly_and_land(root, mod, ids, now=None, land=None, advance=None):
+def gameonly_and_land(root, mod, ids, now=None, land=None, advance=None, stage=None):
     """The pipeline's game-only exit: `maturation.py advance <mod> --to in_game --game-only <ids>` by DISPATCH, then
     every file the move wrote under design/concepts/<mod>/ (the stage record, journal.md, the mod ledger and its views)
     landed in one landing. -> the landing's last line. A refused move raises and writes nothing; an unlanded move is no
@@ -619,17 +647,18 @@ def gameonly_and_land(root, mod, ids, now=None, land=None, advance=None):
            "(RIMMANDRAKE_UNPARK_FLOWWORKS_STUCK_AT_OFFLINE_STAGE_EIGHT_HOURS)" % ", ".join(ids))
     subject = "maturation: the pipeline takes %s's game-only exit to Stage 6 (%s)" % (mod, ", ".join(ids))
     return _move_and_land(root, mod, "the game-only exit", lambda: (advance or M.advance)(
-        root, mod, "in_game", "DISPATCH", why, game_only=list(ids)), subject, land)
+        root, mod, "in_game", "DISPATCH", why, game_only=list(ids)), subject, land, stage=stage)
 
 
-def visit_and_land(root, mod, checks, now=None, land=None, advance=None):
+def visit_and_land(root, mod, checks, now=None, land=None, advance=None, stage=None):
     """The pipeline's move from Stage 7 or 8 back to Stage 6 when in-game checks are owed (M.walk_owed), landed as one
     landing (_move_and_land). The visit it opens runs only the checks that are owed."""
     why = ("in-game checks are owed before he walks (%s): the Maturation tick opens the next visit for only these "
            "(RIMMANDRAKE_FIX_CHANGE_RELATION_BLIND_TO_CSHARP_NINE_ROWS_MISSED)" % ", ".join(checks))
     return _move_and_land(root, mod, "the visit move", lambda: (advance or M.advance)(
         root, mod, "in_game", "DISPATCH", why),
-        "maturation: %s goes back to Stage 6, %d in-game check(s) owed before his walk" % (mod, len(checks)), land)
+        "maturation: %s goes back to Stage 6, %d in-game check(s) owed before his walk" % (mod, len(checks)), land,
+        stage=stage)
 
 
 def ticket_runs(item):
@@ -2283,7 +2312,8 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
                            "(%s): %s" % (row["mod"], ", ".join(row["unblock_items"]), text))
                 continue
             if row["aut"] == "autogameonly":     # RIMMANDRAKE_UNPARK_FLOWWORKS_STUCK_AT_OFFLINE_STAGE_EIGHT_HOURS
-                text = fx.get("autogameonly", gameonly_and_land)(root, row["mod"], row["game_only_items"], now=now)
+                text = fx.get("autogameonly", gameonly_and_land)(root, row["mod"], row["game_only_items"], now=now,
+                                                                 stage=row.get("stage"))
                 st["mods"][row["mod"]].setdefault("steward", {})[row["steward_key"]] = {
                     "item": None, "unit": None, "at": now, "failed": None, "items": list(row["game_only_items"]),
                     "tries": int((row.get("retry_of") or {}).get("tries") or 0) + 1, "landed": text}
@@ -2292,7 +2322,8 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
                                row["mod"], ", ".join(row["game_only_items"]), text))
                 continue
             if row["aut"] == "autovisit":    # RIMMANDRAKE_FIX_CHANGE_RELATION_BLIND_TO_CSHARP_NINE_ROWS_MISSED
-                text = fx.get("autovisit", visit_and_land)(root, row["mod"], row["visit_checks"], now=now)
+                text = fx.get("autovisit", visit_and_land)(root, row["mod"], row["visit_checks"], now=now,
+                                                           stage=row.get("stage"))
                 st["mods"][row["mod"]].setdefault("steward", {})[row["steward_key"]] = {
                     "item": None, "unit": None, "at": now, "failed": None, "items": list(row["visit_checks"]),
                     "tries": int((row.get("retry_of") or {}).get("tries") or 0) + 1, "landed": text}
@@ -2324,6 +2355,8 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
                            "%s: %s" % (row["mod"], ", ".join(row["repin_sources"]), text))
                 continue
             _execute_one(root, cfg, st, row, now, do_file, do_launch, known, do_publish)
+        except MovedMeanwhile as e:     # the act is no longer owed: no failure, no booking, no form repair
+            row.update(decision="settling", aut=None, why=str(e))
         except Exception as e:      # noqa: BLE001  one row's failure is that row's PAUSE, never the tick's crash
             book = st["mods"][row["mod"]].setdefault("fixers" if row.get("aut") == "fixer" else "steward", {})
             book[row.get("fix_key") or row.get("fix_item") or row.get("steward_key")] = {

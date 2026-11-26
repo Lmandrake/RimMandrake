@@ -64,5 +64,10 @@ The question: at Stage 7 or 8, must a check run in a game before he walks?
 - **nothing-owed-changes-nothing.** With no check owed, Stage 7 gets its walk brief and Stage 8 is his, as before.
 - **an-unlanded-visit-move-puts-files-back.** When the landing fails, every file the move wrote is put back and the act
   raises.
+- **a-visit-planned-on-a-stage-the-record-left-moves-nothing.** When the record left the stage that the tick planned the
+  act on (another run moved it between the plan and the act), the act moves and lands nothing, and the row reads
+  `settling`: no `launch_failed`, no failed booking and no form repair. The next tick plans from the new stage.
+  (FlowWorks, 2026-11-25 8:18 PM PST: the walk-findings route moved it to `offline_build` 2 minutes before the act, and
+  the `order` refusal filed RIMMANDRAKE_REPAIR_FLOWWORKS_FORM_REFUSAL_AT_THE_RUN_SEVEN.)
 
 Later lists beside this page: `polish.md`.

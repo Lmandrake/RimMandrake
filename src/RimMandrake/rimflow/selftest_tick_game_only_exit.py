@@ -211,7 +211,7 @@ def t_execute_books_the_act_once():
     row, _ = road_back(ALL_LIVE)
     got = []
     A.execute(TMP, {"seat": "BENCH"}, st, [row], [PILOT], 100, fx={
-        "known": lambda: set(), "autogameonly": lambda root, mod, ids, now=None: got.append(list(ids)) or "PUBLISHED s1"})
+        "known": lambda: set(), "autogameonly": lambda root, mod, ids, now=None, **k: got.append(list(ids)) or "PUBLISHED s1"})
     x = (st["mods"][PILOT].get("steward") or {}).get(row.get("steward_key"))
     return (got == [[LIVE_A, LIVE_B]] and row.get("decision") == "launched" and x and x.get("landed") == "PUBLISHED s1"
             and x.get("items") == [LIVE_A, LIVE_B] and not x.get("failed")), (got, row.get("decision"), x)

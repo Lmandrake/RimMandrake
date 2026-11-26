@@ -375,7 +375,7 @@ def t_the_tick_opens_the_visit():
                        and launches == [MOD] and "autovisit" in A.ACTS and "autovisit" in MD.NO_SLOT_AUT)
             landed = []
             A.execute(tr.root, {"seat": "BENCH"}, st, [got], launches, 1000, fx={
-                "known": lambda: set(), "autovisit": lambda root, mod, checks, now=None: A.visit_and_land(
+                "known": lambda: set(), "autovisit": lambda root, mod, checks, now=None, **k: A.visit_and_land(
                     root, mod, checks, now=now, land=lambda s, p: landed.append((s, p)) or "PUBLISHED abc")})
         rec = M.load(tr.root, MOD)
         out.append(rec["stage"] == "in_game" and rec["moves"][-1]["by"] == "DISPATCH"
@@ -454,13 +454,40 @@ def t_an_unlanded_visit_move_puts_files_back():
     return raised and now == was and M.load(tr.root, MOD)["stage"] == "his_walk", (raised, sorted(set(now) ^ set(was)))
 
 
+def t_a_visit_planned_on_a_stage_the_record_left_moves_nothing():
+    tr = Tree(stage="his_walk", cs=True)
+    tr.rows({t: tr.c0 for t in CHECKS})
+    tr.unrun("sc_a", tr.c1)
+    with Exit(bm(rerun=["sc_c"])):
+        st = {"mods": {MOD: {}}}
+        got, launches = tick(tr, "his_walk", st=st)
+        planned = got["decision"] == "autovisit"
+        # another run moves the record between the plan and the act (the walk-findings route, FlowWorks 2026-11-25)
+        rec = M.load(tr.root, MOD)
+        rec["stage"] = "offline_build"
+        rec["moves"].append({"from": "his_walk", "to": "offline_build", "at": "2026-11-25T20:16:31-08:00", "by": "BENCH"})
+        tr.put(tr.c("version/stage_record.json"), M.dump(rec))
+        landed = []
+        A.execute(tr.root, {"seat": "BENCH"}, st, [got], launches, 1000, fx={
+            "known": lambda: set(), "autovisit": lambda root, mod, checks, now=None, **k: A.visit_and_land(
+                root, mod, checks, now=now, land=lambda s, p: landed.append((s, p)) or "PUBLISHED abc", **k)})
+        MD.form_repair_rows(st, [got], 1000)
+    s = st["mods"][MOD]
+    failed = [k for k, v in (s.get("steward") or {}).items() if v.get("failed")]
+    after = M.load(tr.root, MOD)
+    return (planned and got["decision"] == "settling" and not landed and not failed and not s.get("form_repairs")
+            and after["stage"] == "offline_build" and "offline_build" in str(got.get("why"))), (
+        planned, got.get("decision"), got.get("why"), failed, s.get("form_repairs"), after["stage"], landed)
+
+
 def main():
     tests = (t_an_unrun_row_is_owed_until_a_row_on_its_commit_or_later, t_a_check_that_left_the_table_is_not_owed,
              t_the_visit_brief_lists_only_owed_unrun_rows, t_an_owed_unrun_check_runs_in_the_next_visit,
              t_a_check_outside_the_table_holds_no_move, t_untouched_checks_read_no_walk_folder,
              t_stage_six_exit_waits_for_the_unrun_rows, t_no_walk_while_a_check_is_owed, t_could_not_look_is_not_clean,
              t_stage_seven_goes_back_only_for_an_owed_check, t_a_fix_that_landed_at_the_walk_owes_a_reader, t_the_tick_opens_the_visit, t_his_hold_keeps_the_walk,
-             t_nothing_owed_changes_nothing, t_an_unlanded_visit_move_puts_files_back)
+             t_nothing_owed_changes_nothing, t_an_unlanded_visit_move_puts_files_back,
+             t_a_visit_planned_on_a_stage_the_record_left_moves_nothing)
     bad = 0
     for t in tests:
         try:
