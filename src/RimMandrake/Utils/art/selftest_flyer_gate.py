@@ -135,12 +135,20 @@ def sheet_cases(d: Path):
     """A real sheet build (--allow-failing: a probe has no decisions file), then the serve door on it."""
     import serve_gated as SG
     out, snap = d / "flyer_gate_selftest.html", G.REPO / "infrastructure/state/art/sheets/flyer_gate_selftest.snapshot.json"
+    # the build rewrites Transient/biome_ffar/scale_ground_measured.json, a TRACKED file: put its bytes back after, or
+    # every clone that runs this suite is left dirty and cannot rebase (seen 2026-11-26, work bundle WB-game-flight)
+    ground = G.REPO / "Transient/biome_ffar/scale_ground_measured.json"
+    ground_before = ground.read_bytes() if ground.exists() else None
     try:
         rc = subprocess.run([sys.executable, str(HERE / "art_sheet.py"), "--subjects", "RSW_Uvak", "RSW_Sketto", "--name",
                              "flyer_gate_selftest", "--label", "selftest", "--allow-failing", "selftest", "--sheet-only",
                              "--out", str(out)], capture_output=True, cwd=G.REPO, timeout=500).returncode
     finally:
         snap.unlink(missing_ok=True)
+        if ground_before is None:
+            ground.unlink(missing_ok=True)
+        else:
+            ground.write_bytes(ground_before)
     ok("a real sheet builds", rc == 0 and out.exists(), rc)
     t = out.read_text(errors="replace")
     fails_now = G.book_rc("Sketto") != 0
