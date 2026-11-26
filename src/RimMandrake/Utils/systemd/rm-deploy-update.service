@@ -1,6 +1,8 @@
 # Fast-forwards the deploy checkout /home/mandrake/rm/pulse-deploy to origin/main. rm-ops-watch,
 # rm-streams-collect and the deadman run their code from it. Was rm-pulse-update (RimPulse retired by the owner 2026-11-03,
 # RIMPULSE_RETIRE_SUPERSEDED_BY_STATUS_PAGE); no --restart: there is no rm-pulse.service to restart (restart would START it).
+# After a good pull it installs every drifted unit text of src/RimMandrake/Utils/systemd and runs one daemon-reload; it
+# never enables, starts or restarts a unit (deploy_update.install_units, RIMMANDRAKE_INSTALL_UNIT_TEXTS_ON_DEPLOY_NOT_BY_HAND).
 # Install:  cp rm-deploy-update.{service,timer} ~/.config/systemd/user/ && systemctl --user daemon-reload && systemctl --user enable --now rm-deploy-update.timer
 [Unit]
 Description=fast-forward the pulse-deploy checkout to origin/main

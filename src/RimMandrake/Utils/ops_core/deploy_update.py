@@ -29,7 +29,8 @@ SPARSE_DIRS = ("src/RimMandrake/Utils/ops_core", "src/RimMandrake/rimflow", "src
                "src/RimMandrake/Utils/sim",         # sim/csuite_codex_limits.py: ops_watch.py's Codex reading
                "src/RimMandrake/contracts",         # close_evidence.py path-loads contracts/jsonl.py; rimflow imports it
                "src/RimMandrake/Utils/testq",       # ops_watch.py's brake reading; rimflow/dispatcher.py
-               "src/RimMandrake/Utils/artpipe")     # art/enact.py's fill_queue
+               "src/RimMandrake/Utils/artpipe",     # art/enact.py's fill_queue
+               "src/RimMandrake/Utils/systemd")     # the unit texts install_units writes (data, not imports)
 
 # The unit gives a pass TimeoutStartSec=120 s; this budget stays under it.
 UPDATE_BUDGET_S = 80
@@ -193,6 +194,31 @@ def update_code(root: Path = ROOT, timeout: float = UPDATE_BUDGET_S, max_skip_ag
     return {**result, "old": old[:12], "new": new[:12], "changed": old != new}
 
 
+def install_units(folder_dir=None, dest=None, sc=None) -> dict:
+    """Write every folder unit file whose installed copy differs into ~/.config/systemd/user, then one daemon-reload
+    (RIMMANDRAKE_INSTALL_UNIT_TEXTS_ON_DEPLOY_NOT_BY_HAND: before this, a landed unit change reached systemd only by a hand
+    `ops_clocks.py install`). Never enables, starts or restarts a unit: a unit may launch Claude, and a changed text
+    takes effect at that unit's next own start. A masked (retired) name is skipped and reported; the deadman's units arm
+    names it. -> {"wrote": [names], "masked": [names]}; raises on a missing folder or a failed reload."""
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    import ops_clocks as OC
+    folder_dir = Path(folder_dir or ROOT / "src/RimMandrake/Utils/systemd")
+    if not folder_dir.is_dir():
+        raise RuntimeError(f"unit folder {folder_dir} is missing (is it in SPARSE_DIRS?), so no unit text was installed")
+    folder = OC.folder_units(folder_dir)
+    dest = Path(dest or OC.install_dir())
+    inst = OC.installed_units(dest, globs=("*",)) or {}
+    masked = sorted(n for n in folder if inst.get(n) is OC.MASK)
+    todo = sorted(n for n in folder if inst.get(n) != folder[n] and n not in masked)
+    if not todo:
+        return {"wrote": [], "masked": masked}
+    lines = []
+    rc = OC.install(todo, apply=True, enable=False, folder_dir=folder_dir, dest=dest, sc=sc, out=lines.append)
+    if rc:
+        raise RuntimeError("ops_clocks install: exit %d: %s" % (rc, " | ".join(lines)[-400:]))
+    return {"wrote": todo, "masked": masked}
+
+
 def main(argv=None) -> int:
     argv = sys.argv[1:] if argv is None else argv
     if argv != ["update"]:
@@ -203,6 +229,9 @@ def main(argv=None) -> int:
         print(f"deploy update: git timed out, skipping this pass (last good pass {u['age']:.0f} s ago)")
         return 0
     print(f"deploy update: {ROOT} {u['old']} -> {u['new']}" + ("" if u["changed"] else " (already current)"))
+    i = install_units()
+    print("deploy update: units: wrote %d%s%s" % (len(i["wrote"]), " (%s)" % ", ".join(i["wrote"]) if i["wrote"] else "",
+                                                   "; masked, skipped: " + ", ".join(i["masked"]) if i["masked"] else ""))
     return 0
 
 
