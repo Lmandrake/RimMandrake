@@ -626,8 +626,9 @@ def admit(status, host=STEVE):
     (companion_unready) would only die at deploy: a filler job is cancelled (the filler picks again); any other job
     whose companion is origin/main's, which the stager stages by itself, WAITS, named in ADMISSION_WAITS and
     `testq.py list`, and the next one is weighed; it is admitted once that companion is staged. A hand job whose
-    companion left origin/main will never be staged: a chains job runs at origin/main instead (follow_main); any other
-    is admitted and the worker judges it, as before
+    companion left origin/main will never be staged: a chains job runs at origin/main instead (follow_main); a job tied
+    to its sha is cancelled on Steve1 with the reason, since the worker could only refuse it at deploy; on Steve2, whose
+    copies the probe does not read, it is admitted and the worker judges it, as before
     (RIMMANDRAKE_HOLD_PENDING_BATCH_AFTER_DELIVERY_DEATH: 17 helper jobs of 5 mods, at shas that all wanted one companion, died
     `companion STALE` one after another, 2026-11-12 17:13-18:03 UTC, when the gate covered the filler alone)."""
     remote = worker_for(host)       # noqa: F811 - the same verbs, on this game's worker
@@ -670,8 +671,16 @@ def admit(status, host=STEVE):
         import companion_stage as CS
         if not main_wants() or CS.wanted(cand["source_sha"]) != main_wants():
             head = follow_main(cand)
+            own = CS.wanted(cand["source_sha"]) if not head else None
+            if not head and host == STEVE and own and main_wants() and own != main_wants():
+                # tied to its sha, and its companion is neither on Steve1 nor origin/main's, which is all the stager
+                # stages: the worker could only refuse it at deploy (OPS_STEVE_DIAGNOSE_INVALID_SHARE_UKDG)
+                why = "%s; it is tied to its sha and its companion left origin/main, so it is never staged" % why
+                move(cand["id"], "pending", "cancelled", {"job": cand, "reason": why, "at": S.utcnow()})
+                log("%s cancelled at admission: %s" % (cand["id"], why))
+                continue
             if not head:
-                job = cand      # its companion left origin/main: the stager will never stage it; the worker judges
+                job = cand      # Steve2, or a companion it cannot hash: the worker judges
                 break
             why = companion_unready(dict(cand, source_sha=head), read_once)
         else:

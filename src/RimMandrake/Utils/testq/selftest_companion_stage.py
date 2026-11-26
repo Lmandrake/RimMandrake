@@ -68,7 +68,10 @@ def t_a_follower_waits_for_its_companion(e):
     check(got and e.same(got, sha_next), "and runs at origin/main once it is staged: %s %s" % (rec["state"], e.started))
     return sha_next
 
-def t_a_build_tied_job_keeps_its_sha(e):
+def _tied_kinds(e):
+    """-> the build tied kinds [(what, sha, job fields)] at e.sha1 (a companion that left origin/main), made once."""
+    if getattr(e, "kinds", None):
+        return e.kinds
     git(e.repo, "checkout", "-q", "-b", "side", e.sha1)
     with open(os.path.join(e.repo, "side.txt"), "w") as f:
         f.write("x")
@@ -76,15 +79,63 @@ def t_a_build_tied_job_keeps_its_sha(e):
     git(e.repo, "commit", "-q", "-m", "side")
     side = git(e.repo, "rev-parse", "--short", "HEAD")
     git(e.repo, "checkout", "-q", "main")
-    for what, sha, kw in (("a visit's job", e.sha1, {"visit": "v"}), ("a proof build", e.sha1, {"proof_build": ["Mock"]}),
-                          ("a checks job", e.sha1, {"selector": {"checks": ["c"]}}),
-                          ("a proofs job", e.sha1, {"selector": {"proofs": ["A1"]}}), ("a job at an unpublished sha", side, {})):
-        j = e.S.make_job("Mock", {"chains": ["c1"]}, "guard", "BENCH", sha)
-        j.update(kw)
-        e.S.dump(j, e.T.q("pending", j["id"] + ".json"))
+    e.kinds = (("a visit's job", e.sha1, {"visit": "v"}), ("a proof build", e.sha1, {"proof_build": ["Mock"]}),
+               ("a checks job", e.sha1, {"selector": {"checks": ["c"]}}),
+               ("a proofs job", e.sha1, {"selector": {"proofs": ["A1"]}}), ("a job at an unpublished sha", side, {}))
+    return e.kinds
+
+
+def _tied(e, sha, kw):
+    """One pending build tied job, alone in the queue: a job left running would stop the next admit."""
+    e.started.clear()
+    for st in ("pending", "running", "cancelled"):
+        for f in os.listdir(e.T.q(st)):
+            os.remove(e.T.q(st, f))
+    j = e.S.make_job("Mock", {"chains": ["c1"]}, "guard", "BENCH", sha)
+    j.update(kw)
+    e.S.dump(j, e.T.q("pending", j["id"] + ".json"))
+    return j
+
+
+def t_a_build_tied_job_keeps_its_sha(e):
+    with open(e.game_dll, "rb") as f:
+        kept = f.read()
+    e.CI.write_fixture(e.game_dll, e.C.wanted(e.sha1))     # its own companion is on SteveDesktop: it can pass deploy
+    try:
+        for what, sha, kw in _tied_kinds(e):
+            j = _tied(e, sha, kw)
+            e.T.admit({})
+            got = e.started == [j["id"]] and e.ran_at(j["id"])
+            check(got == sha, "%s whose own companion is on SteveDesktop runs at its own sha: %s" % (what, got))
+    finally:
+        with open(e.game_dll, "wb") as f:
+            f.write(kept)
+    # Steve2's copies are not what the probe reads: there the worker still judges
+    real, sent2 = e.T.remote, []
+    e.T.remote = lambda args, stdin=None, timeout=180, host=None: (sent2.append((host, json.loads(stdin)["id"])),
+                                                                    (0, {"attempt": "B1"}))[1]
+    try:
+        j = _tied(e, e.sha1, {"selector": {"proofs": ["A1"]}})
+        e.T.admit({}, host=e.T.STEVE2)
+        check(sent2 == [(e.T.STEVE2, j["id"])], "on Steve2 a build tied job is admitted as before: %s" % sent2)
+    finally:
+        e.T.remote = real
+        _tied(e, e.sha1, {})
+        os.remove(e.T.q("pending", os.listdir(e.T.q("pending"))[0]))
+
+
+def t_a_build_tied_job_whose_companion_left_origin_main_is_cancelled_unspent(e):
+    # OPS_STEVE_DIAGNOSE_INVALID_SHARE_UKDG: 4 such jobs of 2026-11-24/26 were sent and died INVALID DEPLOY `companion
+    # STALE` (the stager stages origin/main's companion only), and two of them stopped Steve1 for 30 min
+    for what, sha, kw in _tied_kinds(e):
+        j = _tied(e, sha, kw)
         e.T.admit({})
-        got = e.ran_at(j["id"])
-        check(got == sha, "%s keeps its own sha: %s" % (what, got))
+        rec = e.T.read_json(e.T.q("cancelled", j["id"] + ".json")) or {}
+        check(not e.started and e.T.where(j["id"]) == "cancelled" and "left origin/main" in str(rec.get("reason"))
+              and rec.get("job", {}).get("source_sha") == sha,
+              "%s whose companion left origin/main is cancelled unspent, at its own sha, with the reason: %s %s"
+              % (what, e.started, rec.get("reason")))
+    os.remove(e.T.q("cancelled", j["id"] + ".json"))
 
 
 def main():
@@ -340,10 +391,11 @@ def main():
         return sha
 
     e = types.SimpleNamespace(T=T, S=S, C=C, repo=repo, tool=tool, sha1=sha1, sha_new=sha_new, started=started, pending=pending,
-                              commit=commit, same=same, ran_at=ran_at)
+                              commit=commit, same=same, ran_at=ran_at, CI=CI, game_dll=game_dll)
     t_a_chains_job_follows_origin_main(e)
     sha_new = t_a_follower_waits_for_its_companion(e)
     t_a_build_tied_job_keeps_its_sha(e)
+    t_a_build_tied_job_whose_companion_left_origin_main_is_cancelled_unspent(e)
     started.clear()
     j = pending(sha_new, T.FILLER)
     T.admit({})

@@ -18,7 +18,11 @@ A pending testq job. Its `source_sha` is a commit that the run must include (`su
 - **A follower waits for its companion.** While origin/main's companion is not staged, the job stays pending with its
   reason. It runs once the stager has staged that companion.
 - **A build tied job keeps its sha.** A visit's job, a proof build, a checks job, a proofs job and a job at an unpublished
-  sha are admitted as before, and the worker judges them.
+  sha never run at another sha. When the job's own companion is on Steve1, the job runs. On Steve2 the job is admitted
+  as before, and the worker judges it, because the probe reads only Steve1's copies.
+- **A build tied job whose companion left origin/main is cancelled unspent.** On Steve1, when the job's companion is not
+  on SteveDesktop and differs from origin/main's companion, the job is cancelled at admission. The cancel record names
+  the reason. The stager stages only origin/main's companion, so the worker could only refuse the job at deploy.
 
 ## LIMITS
 
