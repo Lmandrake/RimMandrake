@@ -667,7 +667,7 @@ def stale_tick(st, why, owed="exit not met", dec="exit_not_met"):
     os.makedirs(os.path.join(root, "design", "concepts"))
     facts = {P: {"version": "0.1.0", "visit": 6, "live_units": [], "owed": owed, "exit": {"state": "not_met", "why": why}}}
     rows = [{"mod": P, "stage": "in_game", "decision": dec, "visit": 6, "why": "; ".join(why[:3]), "need": "n"}]
-    rows, launches = AUT.resolve(root, {"seat": "BENCH", "max_live": 4, "steward_cap_usd": 5.0}, st, facts, rows, [], 1000.0, {
+    rows, launches = AUT.resolve(root, {"seat": "BENCH", "max_live": 4, "steward_cap_tokens": 1_250_000}, st, facts, rows, [], 1000.0, {
         "designer_state": lambda m: {}, "version_locked": lambda m: True, "open_items": lambda ids, **kw: [],
         "version_evidence": lambda m: [], "designer_unit": lambda m: None, "designer_chain": lambda m: None,
         "live_endings": lambda ids: {}, "version_bugs": lambda *a, **k: [], "ticket_runs": lambda i: []})

@@ -221,7 +221,7 @@ LIMIT_TOKENS = {
     "chain_runs_day": ["chain_max_per_day", "CHAIN_MAX_PER_DAY"],
     "refusals": ["ITEM_ALARM_AT"],
     "pilot_streak": ["STREAK"],
-    "spend_offline_build": ["stage_ceiling_usd"],
+    "spend_offline_build": ["stage_ceiling_tokens"],
     "spend_blind_challenge": [],    # one setting, three per-stage accounts: maturation_dispatch.stage_spend reads all
     "spend_in_game": [],
 }
@@ -447,7 +447,7 @@ def t_ingame_runs_read_the_store():
 
 def t_steward_runs_read_the_store():
     import maturation_autonomy as AUT
-    cfg = {"steward_max_per_version": 12, "steward_enabled": True, "steward_cap_usd": 8, "fix_cap_usd": 10,
+    cfg = {"steward_max_per_version": 12, "steward_enabled": True, "steward_cap_tokens": 2_000_000, "fix_cap_tokens": 2_500_000,
            "max_live": 2}
 
     def gate(aut):
@@ -476,7 +476,7 @@ def t_launch_tries_read_the_store():
     import maturation_autonomy as AUT
     fail = {"failed": "fatal: Unable to create index.lock: File exists", "tries": 3, "cycle": 2, "visit_id": "0.1.0#1"}
     cfg = {"launch_tries": 3, "blind_auto_cycles_per_visit": 3, "settle_s": 180, "blind_enabled": True,
-           "steward_max_per_version": 12, "steward_enabled": True, "steward_cap_usd": 8, "max_live": 2}
+           "steward_max_per_version": 12, "steward_enabled": True, "steward_cap_tokens": 2_000_000, "max_live": 2}
     f = {"mod": "Fx", "cycle": 2, "version": "0.1.0", "visit_first": 1, "live_units": [], "owed": "cycle", "exit": {}}
 
     def blind():        # the production path: decide_blind hands the mod to retriable
@@ -583,18 +583,18 @@ def t_refusals_read_the_store():
 
 def t_stage_spend_reads_the_store():
     import maturation_dispatch as MD
-    cfg = {"stage_ceiling_usd": 100}
-    over = lambda: MD.ceiling_gate(cfg, {}, "Fx", "in_game", 95.0, 10.0, "in-game acceptance", ([], 0))[0] is not None
-    honours("ceiling_gate (in_game)", over, "Fx", MD.to_wt(10), MD.to_wt(200), "spend_in_game")
-    blind = lambda: MD.ceiling_gate(cfg, {}, "Fx", "blind_challenge", 95.0, 10.0, "b", ([], 0))[0] is not None
-    honours("ceiling_gate (blind)", blind, "Fx", MD.to_wt(10), MD.to_wt(200), "spend_blind_challenge")
-    build = lambda: MD.ceiling_gate(cfg, {}, "Fx", "offline_build", 95.0, 10.0, "o", ([], 0))[0] is not None
-    honours("ceiling_gate (offline build)", build, "Fx", MD.to_wt(10), MD.to_wt(200), "spend_offline_build")
-    row = {"mod": "Fx", "stage": "in_game", "stage_usd": 50.0}
-    small = lambda: MD.holder_cap(cfg, row, 10.0) <= 50.0 + MD.READ_SLACK
-    honours("holder_cap (a pilot holder's cap)", small, "Fx", MD.to_wt(10), MD.to_wt(200), "spend_in_game")
-    rc, out, _ = run("add", "Fx", "spend_in_game", "-%d" % MD.to_wt(10), "--why", "t")
-    check(not MD.ceiling_gate(cfg, {}, "Fx", "blind_challenge", 95.0, 10.0, "b", ([], 0))[0] is None,
+    cfg = {"stage_ceiling_tokens": 25_000_000}
+    over = lambda: MD.ceiling_gate(cfg, {}, "Fx", "in_game", 23_750_000, 2_500_000, "in-game acceptance", ([], 0))[0] is not None
+    honours("ceiling_gate (in_game)", over, "Fx", 2_500_000, 50_000_000, "spend_in_game")
+    blind = lambda: MD.ceiling_gate(cfg, {}, "Fx", "blind_challenge", 23_750_000, 2_500_000, "b", ([], 0))[0] is not None
+    honours("ceiling_gate (blind)", blind, "Fx", 2_500_000, 50_000_000, "spend_blind_challenge")
+    build = lambda: MD.ceiling_gate(cfg, {}, "Fx", "offline_build", 23_750_000, 2_500_000, "o", ([], 0))[0] is not None
+    honours("ceiling_gate (offline build)", build, "Fx", 2_500_000, 50_000_000, "spend_offline_build")
+    row = {"mod": "Fx", "stage": "in_game", "stage_tokens": 12_500_000}
+    small = lambda: MD.holder_cap(cfg, row, 2_500_000) <= 12_500_000 + MD.READ_SLACK
+    honours("holder_cap (a pilot holder's cap)", small, "Fx", 2_500_000, 50_000_000, "spend_in_game")
+    rc, out, _ = run("add", "Fx", "spend_in_game", "-%d" % 2_500_000, "--why", "t")
+    check(not MD.ceiling_gate(cfg, {}, "Fx", "blind_challenge", 23_750_000, 2_500_000, "b", ([], 0))[0] is None,
           "a stage's account is its own: an in-game give-back leaves the blind challenge's ceiling")
     shown = run("show", "Fx")[1]
     check(any("spend_in_game" in l and "weighted tokens" in l for l in shown),

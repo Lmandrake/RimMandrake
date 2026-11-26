@@ -250,6 +250,7 @@ def row_unit(row):
 def _spend_row(r, stages):
     """One detached run (a maturation_now run view, which carries its record's token_unit) -> its spend entry, under
     the stage words it worked in, in its run's own unit (row_unit)."""
+    import role_launch as RL
     usd = r.get("usd") if isinstance(r.get("usd"), (int, float)) else r.get("said_usd")
     return {"stage": stages[0], "stages": stages, "token_unit": row_unit(r),
             "model": r.get("model") or UNM, "tokens": r.get("tokens") if isinstance(
@@ -257,7 +258,8 @@ def _spend_row(r, stages):
         "usd_from": "run record" if isinstance(r.get("usd"), (int, float)) else
         ("the run's own words" if isinstance(r.get("said_usd"), (int, float)) else UNM),
         "wall_s": round(r["wall_s"]) if isinstance(r.get("wall_s"), (int, float)) else UNM,
-        "cap_usd": r.get("cap") if isinstance(r.get("cap"), (int, float)) else UNM,
+        "cap_tokens": RL.list_usd_to_weighted(r["cap"]) if isinstance(r.get("cap"), (int, float))
+        and not isinstance(r.get("cap"), bool) else UNM,     # the record's budget_usd, as weighted tokens (2026-11-26)
         "unit": r.get("unit"), "source": "detached run %s (item %s)" % (r.get("unit"), r.get("item")),
         "kind": "measured"}
 

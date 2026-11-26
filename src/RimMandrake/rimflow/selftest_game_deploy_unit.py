@@ -109,7 +109,7 @@ class World:
         out = {}
         for mod in c["advancing"]:
             f = M.build_facts(self.root, mod)
-            f.update(live_units=list(self.live.get(mod, [])), last_end=None, stage_runs={}, run_usd={})
+            f.update(live_units=list(self.live.get(mod, [])), last_end=None, stage_runs={}, run_tokens={})
             out[mod] = MD.add_ingame(self.root, mod, MD.add_blind(self.root, mod, f, []), [])
         return out
 

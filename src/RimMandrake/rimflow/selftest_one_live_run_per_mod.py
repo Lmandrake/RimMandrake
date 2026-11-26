@@ -35,9 +35,9 @@ control.init()                      # an empty control store: no hold, no switch
 
 MOD = "ExplosiveKnockback"
 NOW = 1795464297.0
-CFG = {"enabled": True, "advancing": [MOD], "cap_usd": 15, "max_live": 4, "settle_s": 180, "blind_enabled": True,
-       "blind_cap_usd": 20, "blind_auto_cycles_per_visit": 3, "ingame_enabled": True, "ingame_cap_usd": 30,
-       "ingame_auto_runs_per_visit": 1, "steward_cap_usd": 5, "fix_cap_usd": 10, "steward_model": "opus", "launch_tries": 3,
+CFG = {"enabled": True, "advancing": [MOD], "cap_tokens": 3_750_000, "max_live": 4, "settle_s": 180, "blind_enabled": True,
+       "blind_cap_tokens": 5_000_000, "blind_auto_cycles_per_visit": 3, "ingame_enabled": True, "ingame_cap_tokens": 7_500_000,
+       "ingame_auto_runs_per_visit": 1, "steward_cap_tokens": 1_250_000, "fix_cap_tokens": 2_500_000, "steward_model": "opus", "launch_tries": 3,
        "stalled_min": 10, "seat": "BENCH", "model": "opus"}
 STEWARD = "RIMMANDRAKE_ROUTE_EXPLOSIVEKNOCKBACK_VISIT_FOUR_FAILURES_BACK"
 # the two real items: neither id names the mod, and the holder's title says EK

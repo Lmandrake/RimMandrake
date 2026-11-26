@@ -42,8 +42,8 @@ RUN = "judge-1795437145"
 AT = 1795437145.3956928
 SID = "d5d2bcfd-fcd8-45f5-bcbe-52b6319c201e"
 NOW = 1795442400.0
-CFG = {"advancing": [MOD], "cap_usd": 15, "blind_cap_usd": 20, "blind_enabled": True, "max_live": 4,
-       "blind_auto_cycles_per_visit": 1, "settle_s": 180, "launch_tries": 3, "stage_ceiling_usd": 1000, "seat": "BENCH",
+CFG = {"advancing": [MOD], "cap_tokens": 3_750_000, "blind_cap_tokens": 5_000_000, "blind_enabled": True, "max_live": 4,
+       "blind_auto_cycles_per_visit": 1, "settle_s": 180, "launch_tries": 3, "stage_ceiling_tokens": 250_000_000, "seat": "BENCH",
        "model": "opus"}
 res = []
 
@@ -110,7 +110,7 @@ def put_for(row):
 def tick_facts(session=(SID, 378832, "its clone's transcript"), blind_runs=(), run_at=None):
     f = M.blind_facts(fixture_root(), MOD)
     f.update(live_units=[], last_end=NOW - 3000, blind_runs=list(blind_runs), blind_run_at=dict(run_at or {}),
-             killed={}, certificate={"ok": False, "rows": [{"bar": "x", "ok": False}]}, box_runs={}, run_usd={},
+             killed={}, certificate={"ok": False, "rows": [{"bar": "x", "ok": False}]}, box_runs={}, run_tokens={},
              cycle_decision=None, void_session=session)
     return f
 

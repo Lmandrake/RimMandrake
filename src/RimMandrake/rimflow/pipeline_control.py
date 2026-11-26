@@ -389,7 +389,7 @@ class Ctx:
         return (self.dstate().get("mods") or {}).get(mod) or {}
 
     def reading(self):
-        """The tick's last reading (reading.json beside state.json): each mod's stage and stage_usd."""
+        """The tick's last reading (reading.json beside state.json): each mod's stage and stage_tokens."""
         if "reading" not in self._facts:
             d = self.mdir or os.environ.get("RM_MATURATION_DISPATCH_DIR")
             if not d:
@@ -603,21 +603,28 @@ def m_refusals(ctx, subject):
 
 
 def _m_spend(stage):
-    """The stage's spend on the mod's merits (the tick's last reading of it, reading.json's stage_usd) and the
-    ceiling, both in weighted tokens (maturation_dispatch.to_wt): the store keeps whole numbers."""
+    """The stage's spend on the mod's merits (the tick's last reading of it, reading.json's stage_tokens) and the
+    ceiling (stage_ceiling_tokens), both weighted tokens as they stand: the store keeps whole numbers. A reading from
+    before 2026-11-26 holds stage_usd (list dollars): it converts once, through role_launch.list_usd_to_weighted."""
     def m(ctx, mod):
         if ctx.stage(mod) != stage:
             return None, None
         ctx._imp()
         import maturation_dispatch as MD
-        c = ctx.cfg().get("stage_ceiling_usd")
-        lim = MD.to_wt(c) if MD._usd_ok(c, True) else None
+        import role_launch as RL
+        c = ctx.cfg().get("stage_ceiling_tokens")
+        lim = int(c) if MD._amount_ok(c, True) else None
         rd = ctx.reading()
         if rd.get("_error"):
             return UNM + " (%s)" % rd["_error"], lim
         row = (rd.get("mods") or {}).get(mod) or {}
-        usd = row.get("stage_usd") if row.get("stage") == stage else None
-        return (MD.to_wt(usd) if MD._usd_ok(usd) else UNM + " (no stage_usd in the tick's last reading)"), lim
+        if row.get("stage") != stage:
+            return UNM + " (no stage_tokens in the tick's last reading)", lim
+        if MD._amount_ok(row.get("stage_tokens")):
+            return int(round(row["stage_tokens"])), lim
+        if MD._amount_ok(row.get("stage_usd")):     # a reading from before 2026-11-26
+            return RL.list_usd_to_weighted(row["stage_usd"]), lim
+        return UNM + " (no stage_tokens in the tick's last reading)", lim
     return m
 
 
@@ -686,11 +693,11 @@ RESOURCES = {
     "pilot_streak": ("streak", "non-pass runs in a row on one item since its last Test Pilot sitting, voided runs out "
                      "(testpilot_route.STREAK: past it the item goes to a Test Pilot)", m_pilot_streak,
                      [("testpilot_route", "judge")]),
-    "spend_offline_build": ("spend-build", "weighted tokens spent at the offline build (stage_ceiling_usd)",
+    "spend_offline_build": ("spend-build", "weighted tokens spent at the offline build (stage_ceiling_tokens)",
                             _m_spend("offline_build"), [("maturation_dispatch", "stage_spend")]),
-    "spend_blind_challenge": ("spend-blind", "weighted tokens spent at the blind challenge (stage_ceiling_usd)",
+    "spend_blind_challenge": ("spend-blind", "weighted tokens spent at the blind challenge (stage_ceiling_tokens)",
                               _m_spend("blind_challenge"), [("maturation_dispatch", "stage_spend")]),
-    "spend_in_game": ("spend-ingame", "weighted tokens spent at in-game acceptance (stage_ceiling_usd)",
+    "spend_in_game": ("spend-ingame", "weighted tokens spent at in-game acceptance (stage_ceiling_tokens)",
                       _m_spend("in_game"), [("maturation_dispatch", "stage_spend")]),
 }
 

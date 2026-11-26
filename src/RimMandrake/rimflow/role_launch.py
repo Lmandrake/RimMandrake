@@ -245,6 +245,25 @@ MODEL_PRICES = {m: dict(zip(PRICE_FIELDS, (Fraction(x) for x in p))) for m, p in
     "claude-haiku-5-5": ("0.10", "0.125", "0.20", "0.01", "0.50"),
     "claude-haiku-4-5": ("1", "1.25", "2", "0.10", "5"),
 }.items()}
+# The ONE dollar<->token rate (RIMMANDRAKE_KEEP_STAGE_CEILING_IN_TOKENS_NOT_LIST_DOLLARS): one list dollar buys
+# 1e6 / (REF_MODEL's input price) uncached reference input tokens, 250,000 at Opus 5.5's 4 $/MTok. The pipeline counts
+# weighted_v2 tokens everywhere; dollars appear only at two edges, each through this rate: a legacy record with no
+# weighted_v2 tokens but a measured list cost_usd (or a legacy dollar release), and the launch boundary where a cap
+# reaches a `--budget-usd` argument (spend_watchdog keeps dollars).
+WT_PER_LIST_USD = Fraction(1_000_000) / MODEL_PRICES[REF_MODEL]["input_tokens"]
+
+
+def list_usd_to_weighted(usd):
+    """-> the weighted_v2 tokens (int) that `usd` list dollars buy at the reference model's input rate. Only for a
+    legacy figure: a record or release written in dollars before 2026-11-26."""
+    return int(round(Fraction(str(float(usd))) * WT_PER_LIST_USD))
+
+
+def weighted_to_list_usd(tokens):
+    """-> the list dollars (float) of `tokens` weighted_v2 tokens: the launch boundary only (a `--budget-usd` cap)."""
+    return float(Fraction(int(tokens)) / WT_PER_LIST_USD)
+
+
 # Standard-speed, global-inference rates: fast mode's premium and the US-inference 1.1x are price modifiers, not
 # tokens, and are not weighed (every run in the records reads usage.speed "standard").
 # weighted_v1, for converting records stamped with it (tokens_v2) and nothing else.

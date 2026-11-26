@@ -29,7 +29,7 @@ import detached_helper as DH        # noqa: E402
 
 MOD, VER, UNIT = "GimmeSomeSlack", "0.1.1", "rm-detached-bench-rimmandrake-steward-x-prefl-1"
 KEY = "%s|preflight" % VER
-CFG = {"steward_cap_usd": 8, "fix_cap_usd": 5, "max_live": 2, "launch_tries": 3}
+CFG = {"steward_cap_tokens": 2_000_000, "fix_cap_tokens": 1_250_000, "max_live": 2, "launch_tries": 3}
 CARDED, PLAIN = "RIMMANDRAKE_REBUILD_X_PITS_AS_RELATIVE_TERRAIN", "RIMMANDRAKE_PLAIN_X_NO_CARD"
 DESC = ("Why: you said \"That won't do\", and stepped digs are ordinary play. Buys: inner walls and shading at every "
         "height change.")

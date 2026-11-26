@@ -49,6 +49,7 @@ REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 sys.path.insert(0, HERE)
 import maturation as M          # noqa: E402
 import pipeline_control as PC   # noqa: E402  the one control store (`pipe`)
+import role_launch as RL         # noqa: E402  a cap's one dollar edge: --budget-usd
 
 UNM = "UNMEASURED"
 EXCLUDE_MARKER = ".maturation-exclude"      # a concept folder holding it is never discovered (test fixtures)
@@ -1833,12 +1834,12 @@ def _gate(cfg, s, row, live_total, ver, live=None):
             n, row["aut"], row["mod"], "at this version" if row["aut"] == "steward" else "over every version", most))
     import mod_model as MM
     try:        # a pinned mod's steward and fixer caps are scaled to its builders' model (mod_model.for_mod)
-        cap = MM.for_mod(cfg, row["mod"]).get("fix_cap_usd" if row["aut"] == "fixer" else "steward_cap_usd")
+        cap = MM.for_mod(cfg, row["mod"]).get("fix_cap_tokens" if row["aut"] == "fixer" else "steward_cap_tokens")
     except KeyError as e:       # role_launch.UnknownModel: named, nothing launches
         return False, ("model_unknown", str(e))
     if not (isinstance(cap, (int, float)) and not isinstance(cap, bool) and cap > 0):
-        return False, ("no_cap", "no positive %s in the settings" % ("fix_cap_usd" if row["aut"] == "fixer"
-                                                                    else "steward_cap_usd"))
+        return False, ("no_cap", "no positive %s in the settings" % ("fix_cap_tokens" if row["aut"] == "fixer"
+                                                                    else "steward_cap_tokens"))
     if live_total is None:
         return False, ("slots_unknown", "the live runs of an advancing mod cannot be read; the %s run waits on a "
                        "readable occupancy" % row["aut"])
@@ -1863,7 +1864,7 @@ PAUSE_WHY = {
     "designer_unreadable": "its stage.json cannot be read", "disabled": "the step is disabled",
     "steward_off": "steward runs are off", "designer_chain_cap": "the Designer's daily chain cap is reached",
     "coverage_stop": "coverage judging stopped on it (REFUSAL_NOTHING_COULD_EVER_PASS)",
-    "ceiling": "the stage's spend plus the next run's cap passes stage_ceiling_usd", "not_offline": "no automatic step exists for its stage",
+    "ceiling": "the stage's spend plus the next run's cap passes stage_ceiling_tokens", "not_offline": "no automatic step exists for its stage",
     "system_fault": "runs keep dying of a system cause (OPS_MATURATION_SYSTEM_FAULT_LOOP); no trial is spent",
     "fix_chain_ended": "a fresh reader's fix was fixed again by its validator: no third read, the Conductor reads it",
 }
@@ -2267,12 +2268,14 @@ def card_brief(item, text, events_dir=None):
 
 
 def launch_brief(item, text, model, cap, seat="BENCH", runner=subprocess.run, env=None, session=None):
+    """One detached run on `text`. `cap` is weighted_v2 tokens; it meets dollars only here, at detached_helper's
+    --budget-usd (role_launch.weighted_to_list_usd), and never reaches the brief."""
     path = os.path.join(M.brief_dir(), "%s-%d.md" % (item, int(time.time())))
     text = card_brief(item, text)
     with open(path, "w", encoding="utf-8") as fh:
         fh.write(text)
     argv = [sys.executable, M.detached_helper_path(), "launch", "--seat", seat, "--item", item, "--brief-file", path,
-            "--model", model, "--budget-usd", "%g" % cap]
+            "--model", model, "--budget-usd", "%g" % RL.weighted_to_list_usd(cap)]   # cap: weighted tokens
     for k, v in sorted((env or {}).items()):        # a pilot holder's RM_MODLEDGER_WRITER (maturation_dispatch.ledger_open)
         argv += ["--env", "%s=%s" % (k, v)]
     if session:     # a pilot holder's recorded session (modledger.resume_plan), resumed
@@ -2435,7 +2438,7 @@ def _execute_one(root, cfg, st, row, now, do_file, do_launch, known, do_publish=
     wait = not ok and wait_refusal(full)
     if wait:        # a wait spends no try: the entry keeps the tries before it
         tries = int(retry.get("tries") or 0)
-    book[key] = {"item": item, "unit": unit, "at": now, "cap": row.get("cap"), "failed": None if ok else full,
+    book[key] = {"item": item, "unit": unit, "at": now, "cap_tokens": row.get("cap"), "failed": None if ok else full,
                  "tries": tries, "filed": filed, "tried": None if ok else MD.tried_unit(full)}
     if wait:
         book[key]["wait"] = True

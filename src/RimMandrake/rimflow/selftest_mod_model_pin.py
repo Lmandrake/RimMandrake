@@ -48,7 +48,7 @@ PINS_KEY = "_pins"      # mod_model.PINS_KEY, spelled here so the base commit ru
 UNPINNED_CONCEPT = "SelftestUnpinned"     # an invented concept: the Designer fixture reads no real one
 FABLE_ID = "claude-fable-5-2"
 FAILS = []
-BRIEF_SPEND_RX = re.compile(r"\$\s*\d|USD|budget|spend|cap_usd|--cap-usd", re.I)
+BRIEF_SPEND_RX = re.compile(r"\$\s*\d|USD|budget|spend|cap_usd|cap_tokens|--cap-usd", re.I)
 
 
 def check(ok, msg):
@@ -96,7 +96,7 @@ def shipped(**kw):
 
 def offline_facts():
     return {m: {"stage": "offline_build", "owed": "build", "refused_bars": ["B1", "B2"], "live_units": [],
-                "stage_runs": {}, "run_usd": {}} for m in (PIN, OTHER)}
+                "stage_runs": {}, "run_tokens": {}} for m in (PIN, OTHER)}
 
 
 def run_offline(pins):
@@ -138,22 +138,23 @@ def t_pinned_offline_build_launches_on_the_pin():
 def t_unpinned_mod_keeps_the_global_model():
     cfg0 = MD.load_cfg()
     got, rows, cfg = run_offline({PIN: "fable"})
-    check(got.get(OTHER) == (cfg0["model"], cfg0["cap_usd"]),
-          "the unpinned mod launches on the shipped model and cap %r: %r" % ((cfg0["model"], cfg0["cap_usd"]), got.get(OTHER)))
+    usd = RL.weighted_to_list_usd(cfg0["cap_tokens"])     # the launch's one dollar edge (--budget-usd)
+    check(got.get(OTHER) == (cfg0["model"], usd),
+          "the unpinned mod launches on the shipped model and cap %r: %r" % ((cfg0["model"], usd), got.get(OTHER)))
     got0, _, _ = run_offline({})
-    check(got0.get(PIN) == (cfg0["model"], cfg0["cap_usd"]),
+    check(got0.get(PIN) == (cfg0["model"], usd),
           "with no pin, the same mod launches on the shipped model and cap: %r" % (got0.get(PIN),))
-    for aut, cap in (("steward", "steward_cap_usd"), ("fixer", "fix_cap_usd")):
+    for aut, cap in (("steward", "steward_cap_tokens"), ("fixer", "fix_cap_tokens")):
         k = MD.launch_kind(cfg, {"mod": OTHER, "aut": aut, "fix_item": "X"})
-        check(k["model"] == cfg0["steward_model"] and k["cap_usd"] == cfg0[cap],
+        check(k["model"] == cfg0["steward_model"] and k["cap_tokens"] == cfg0[cap],
               "the unpinned mod's %s keeps %s at %s: %r" % (aut, cfg0["steward_model"], cfg0[cap], k))
 
 
 def t_judges_and_live_driver_keep_their_models():
     cfg0 = MD.load_cfg()
     cfg = shipped(**{PINS_KEY: {PIN: "fable"}})
-    for stage, model, cap in (("blind_challenge", cfg0["model"], cfg0["blind_cap_usd"]),
-                              ("in_game", cfg0["ingame_model"], cfg0["ingame_cap_usd"])):
+    for stage, model, cap in (("blind_challenge", cfg0["model"], cfg0["blind_cap_tokens"]),
+                              ("in_game", cfg0["ingame_model"], cfg0["ingame_cap_tokens"])):
         got = {}
 
         def fake(root, mod, cap_, item, model="?", **kw):
@@ -163,7 +164,7 @@ def t_judges_and_live_driver_keep_their_models():
             MD.launch_stage(TMP, cfg, {}, PIN, cap, "ITEM", launch=fake)
         check(got.get("model") == model, "the pinned mod's %s launches on %s, not the pin: %r" % (stage, model, got))
         k = MD.launch_kind(cfg, {"mod": PIN, "stage": stage})
-        check(k["model"] == model and k["cap_usd"] == cap,
+        check(k["model"] == model and k["cap_tokens"] == cap,
               "launch_kind: the pinned mod's %s keeps %s at its own cap %s: %r" % (stage, model, cap, k))
 
 
@@ -180,7 +181,7 @@ def t_every_builder_kind_launches_on_the_pin():
         seen.append((model, cap, brief))
         return 0, "DETACHED u", "u"
     st = {"mods": {PIN: {}}}
-    row = {"mod": PIN, "aut": "fixer", "fix_item": "RIMMANDRAKE_FIX_X", "cap": 20.0, "stage": "offline_build",
+    row = {"mod": PIN, "aut": "fixer", "fix_item": "RIMMANDRAKE_FIX_X", "cap": 20 * 250_000, "stage": "offline_build",
            "fix_for": "refused"}
     with Patch((MD, "pilot_ledger", lambda root, mod: False)):
         AUT._execute_one(TMP, cfg, st, row, time.time(), lambda *a, **k: (True, "filed"), do_launch, set())
@@ -191,7 +192,7 @@ def t_every_builder_kind_launches_on_the_pin():
     def brief(item, text, model, cap, seat, env=None, **kw):
         seen2.append((model, cap))
         return 0, "DETACHED u", "u"
-    row = {"mod": PIN, "cert_reds": ["t_one"], "known_red": {"t_one": "RIMMANDRAKE_RED_ONE"}, "cap": 30.0}
+    row = {"mod": PIN, "cert_reds": ["t_one"], "known_red": {"t_one": "RIMMANDRAKE_RED_ONE"}, "cap": 30 * 250_000}
     MD.cert_launch(TMP, cfg, {"mods": {PIN: {}}}, row, time.time(),
                    {"launch_brief": brief, "pilot": lambda root, mod: False, "ended": lambda ids: set()}, set(),
                    lambda *a, **k: (True, "filed"))
@@ -209,7 +210,7 @@ def t_every_builder_kind_launches_on_the_pin():
                (MD, "ledger_open", lambda *a, **k: {"brief": "B", "env": {}, "run": "r1", "packet": ""}),
                (MD, "ledger_after", lambda *a, **k: "ledger ok")):
         MD.road_back_holder(TMP, cfg, {"mods": {PIN: {}}}, PIN, "offline_build", [{"id": "RIMMANDRAKE_ROAD_A"}],
-                            None, 30.0, time.time(), {"launch_brief": hbrief})
+                            None, 30 * 250_000, time.time(), {"launch_brief": hbrief})
     check(seen3 and seen3[0][0] == "fable", "the pinned mod's holder is launched on fable: %r" % seen3)
 
 
@@ -220,11 +221,12 @@ def t_build_cap_scales_by_the_pin_price():
     x = MM.cap_scale("fable")
     check(x == 2, "Fable 5.2 over Opus 5.5 is exactly 2 on every price field: %r" % x)
     got, rows, cfg = run_offline({PIN: "fable"})
-    check(got.get(PIN, (None, None))[1] == cfg0["cap_usd"] * 2,
-          "the pinned mod's offline build cap is %s x 2: %r" % (cfg0["cap_usd"], got.get(PIN)))
-    for aut, key in (("steward", "steward_cap_usd"), ("fixer", "fix_cap_usd")):
+    usd = RL.weighted_to_list_usd(cfg0["cap_tokens"])     # the launch's one dollar edge (--budget-usd)
+    check(got.get(PIN, (None, None))[1] == usd * 2,
+          "the pinned mod's offline build cap is %s x 2: %r" % (usd, got.get(PIN)))
+    for aut, key in (("steward", "steward_cap_tokens"), ("fixer", "fix_cap_tokens")):
         k = MD.launch_kind(cfg, {"mod": PIN, "aut": aut, "fix_item": "X"})
-        check(k["cap_usd"] == cfg0[key] * 2, "the pinned mod's %s cap is %s x 2: %r" % (aut, cfg0[key], k))
+        check(k["cap_tokens"] == cfg0[key] * 2, "the pinned mod's %s cap is %s x 2: %r" % (aut, cfg0[key], k))
         row = dict({"mod": PIN, "aut": aut, "steward_key": "k", "fix_item": "X"})
         go, _ = AUT._gate(cfg, {}, row, 0, "0.1.0")
         check(go and row.get("cap") == cfg0[key] * 2, "the autonomy gate books the %s at %s x 2: %r" % (
@@ -232,11 +234,11 @@ def t_build_cap_scales_by_the_pin_price():
     rec = {"clone": TMP, "unit": "rm-detached-u", "seat": "BENCH", "item": "I", "model": "fable", "state": TMP,
            "budget_usd": got[PIN][1], "out": os.path.join(TMP, "o"), "err": os.path.join(TMP, "e")}
     a = DH.launch_argv(rec, "MSG", "/usr/bin/claude")
-    check(opt(a, "--cap-usd") == "%g" % (cfg0["cap_usd"] * 2) and "--max-budget-usd" not in a,
-          "the scaled cap goes through spend_watchdog (--cap-usd %g), never --max-budget-usd" % (cfg0["cap_usd"] * 2))
+    check(opt(a, "--cap-usd") == "%g" % (usd * 2) and "--max-budget-usd" not in a,
+          "the scaled cap goes through spend_watchdog (--cap-usd %g), never --max-budget-usd" % (usd * 2))
     seen = []
     st = {"mods": {PIN: {}}}
-    row = {"mod": PIN, "aut": "fixer", "fix_item": "RIMMANDRAKE_FIX_X", "cap": cfg0["fix_cap_usd"] * 2,
+    row = {"mod": PIN, "aut": "fixer", "fix_item": "RIMMANDRAKE_FIX_X", "cap": cfg0["fix_cap_tokens"] * 2,
            "stage": "offline_build", "fix_for": "refused"}
     with Patch((MD, "pilot_ledger", lambda root, mod: False)):
         AUT._execute_one(TMP, cfg, st, row, time.time(), lambda *a, **k: (True, "filed"),

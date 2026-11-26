@@ -893,7 +893,8 @@ def status_lines(st, record=None):
         usd, unm = void_spend(s, record)
         try:
             import maturation_dispatch as MD
-            spent = MD.wt(usd)
+            import role_launch as RL
+            spent = MD.wt(RL.list_usd_to_weighted(usd))     # MD.wt formats weighted tokens (2026-11-26)
         except Exception:  # noqa: BLE001
             spent = "USD %.2f" % usd
         out.append("%s: void spend %s (true spend, shown apart)%s; system faults %d since the last clear (limit %d)" % (

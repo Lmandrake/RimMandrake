@@ -17,7 +17,7 @@ import maturation_dispatch as MD  # noqa: E402
 
 MOD = "KMod"
 NOW = 1795430000.0
-CFG = {"cap_usd": 10.0, "max_live": 3, "launch_tries": 3, "settle_s": 180, "seat": "BENCH", "model": "opus"}
+CFG = {"cap_tokens": 2_500_000, "max_live": 3, "launch_tries": 3, "settle_s": 180, "seat": "BENCH", "model": "opus"}
 
 
 def row(test, clause, bar="b1", would="a run of %s on this build"):
@@ -39,7 +39,7 @@ def t_a_stale_red_decider_gets_the_free_rerun_not_a_builder():
     key = MD.stale_key(STALE_RED)
     # the tick's own route at the blind cycle gate: the red route declines, the zero-token rerun launches
     r, put = {"mod": MOD}, []
-    got_red = MD.cert_red_decide(CFG, {}, f, r, lambda *a: put.append(a), NOW, (True, "ok"), 0, CFG["cap_usd"])
+    got_red = MD.cert_red_decide(CFG, {}, f, r, lambda *a: put.append(a), NOW, (True, "ok"), 0, CFG["cap_tokens"])
     r2, put2 = {"mod": MOD}, []
     got_rerun = MD.cert_rerun_decide(CFG, {}, dict(f, cert_rerun_result=None, cert_rerun_landed=None), r2,
                                      lambda *a: put2.append(a), NOW)

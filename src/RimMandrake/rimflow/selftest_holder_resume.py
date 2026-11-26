@@ -73,7 +73,7 @@ try:
     check("the transcript is found by session id", t and t.startswith(DH.project_dir(clone1, projects)), t)
     check("context is the last main-thread turn, not a subagent's", DH.context_tokens(t) == 150000, DH.context_tokens(t))
 
-    cfg = {"stage_ceiling_usd": 100}
+    cfg = {"stage_ceiling_tokens": 25_000_000}
     landed = []
     ended = {}
     fx = {"session_of": lambda unit: (SID, DH.context_tokens(DH.find_transcript(SID, projects))),
@@ -93,11 +93,11 @@ try:
           S.get("context_tokens") == 150000, (S, out))
     check("the session is in the DISPATCH shard, which is landed", any(p.endswith("DISPATCH.jsonl") for p in landed[-1])
           and not os.path.exists(os.path.join(ML.ledger_dir(root, MOD), "HOLDER.run-1.jsonl")), landed)
-    row = {"mod": MOD, "stage_usd": 22.5}
+    row = {"mod": MOD, "stage_tokens": 5_625_000}     # 22.5 list dollars before 2026-11-26
     s = {}
-    cap, kw = MD.holder_launch(root, cfg, s, row, 15, fx)
+    cap, kw = MD.holder_launch(root, cfg, s, row, 3_750_000, fx)
     check("under the ceiling the launch resumes that session", kw.get("session") == SID and "reconcile" not in kw, kw)
-    check("the holder's cap is what is left of the stage ceiling", cap == 77.5 and row["cap"] == 77.5, cap)
+    check("the holder's cap is what is left of the stage ceiling", cap == 19_375_000 and row["cap"] == 19_375_000, cap)
 
     # the resumed launch: DH carries the transcript into the new clone and passes --resume
     rec = {"clone": clone2, "unit": "u2", "seat": "BENCH", "model": "opus", "item": "X", "budget_usd": cap,
@@ -113,7 +113,7 @@ try:
     # killed mid-stage: the second run's unit was SIGTERMed (its result is finish's "killed: ...")
     transcript(clone2, 190000)
     run("run-2", "rm-detached-bench-run2", "killed: signal TERM")
-    cap2, kw2 = MD.holder_launch(root, cfg, s, dict(row), 15, fx)
+    cap2, kw2 = MD.holder_launch(root, cfg, s, dict(row), 3_750_000, fx)
     check("after the kill the next launch reconciles first", "killed" in (kw2.get("reconcile") or ""), kw2)
     check("and resumes the same session", kw2.get("session") == SID, kw2)
 
@@ -166,8 +166,8 @@ try:
     # a clean end clears the reconcile; past the ceiling the holder rotates
     transcript(clone2, ML.config()["holder_context_ceiling_tokens"] + 5000)
     run("run-3", "rm-detached-bench-run3", "success")
-    cap3, kw3 = MD.holder_launch(root, cfg, s, dict(row), 15, fx)
-    _, kw3b = MD.holder_launch(root, cfg, s, dict(row, retry_of={"unit": "rm-x"}), 15, fx)
+    cap3, kw3 = MD.holder_launch(root, cfg, s, dict(row), 3_750_000, fx)
+    _, kw3b = MD.holder_launch(root, cfg, s, dict(row, retry_of={"unit": "rm-x"}), 3_750_000, fx)
     check("a launch retrying a killed unit reconciles too", "rm-x" in (kw3b.get("reconcile") or ""), kw3b)
     check("past the ceiling: no --resume, a fresh holder from the packet", "session" not in kw3 and "reconcile" not in
           kw3 and ML.resume_plan(root, MOD)["action"] == "rotate", kw3)
@@ -180,8 +180,8 @@ try:
           all(any(p.endswith("views/" + v) for p in got) for v in ML.VIEWS), got)
 
     # outside the pilot list nothing changes
-    cap4, kw4 = MD.holder_launch(root, cfg, s, {"mod": "NotAPilotMod", "stage_usd": 0}, 15, fx)
-    check("a mod outside pilot_mods keeps the per-run cap and no resume", cap4 == 15 and kw4 == {}, (cap4, kw4))
+    cap4, kw4 = MD.holder_launch(root, cfg, s, {"mod": "NotAPilotMod", "stage_tokens": 0}, 3_750_000, fx)
+    check("a mod outside pilot_mods keeps the per-run cap and no resume", cap4 == 3_750_000 and kw4 == {}, (cap4, kw4))
     check("the ledger lints clean of fenced or malformed lines",
           not [f for f in ML.lint(root, MOD, base=None)[0] if f[0] in ("MALFORMED", "FENCED", "NO_NEWLINE")])
 finally:

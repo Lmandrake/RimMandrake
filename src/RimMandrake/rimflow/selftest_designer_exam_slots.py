@@ -166,9 +166,9 @@ def hook_checks():
 
 
 # ---------------------------------------------------------------------------------------------------------- tick
-CFG = {"enabled": True, "advancing": [], "cap_usd": 15, "max_live": 2, "settle_s": 180, "blind_enabled": True,
-       "blind_cap_usd": 20, "blind_auto_cycles_per_visit": 3, "ingame_enabled": True, "ingame_cap_usd": 30,
-       "ingame_auto_runs_per_visit": 1, "steward_cap_usd": 5, "fix_cap_usd": 10, "steward_model": "opus",
+CFG = {"enabled": True, "advancing": [], "cap_tokens": 3_750_000, "max_live": 2, "settle_s": 180, "blind_enabled": True,
+       "blind_cap_tokens": 5_000_000, "blind_auto_cycles_per_visit": 3, "ingame_enabled": True, "ingame_cap_tokens": 7_500_000,
+       "ingame_auto_runs_per_visit": 1, "steward_cap_tokens": 1_250_000, "fix_cap_tokens": 2_500_000, "steward_model": "opus",
        "stalled_min": 10, "seat": "BENCH"}
 BLOCKED = {"status": "blocked", "stage": 4, "item": "CONCEPT_C", "blocked_on": ITEM,
            "history": [{"at": "2026-11-15T21:25:54Z", "stage": 4, "what": "close",

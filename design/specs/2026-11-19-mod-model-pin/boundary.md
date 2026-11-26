@@ -22,7 +22,7 @@ launcher is a fake that records the argv it was given.
   tick. A run already live keeps the model it started on.
 - **a-codex-runner.** A Designer run on the codex runner is not a Claude model; a pin does not change it.
 - **the-test-pilot.** An rm-testpilot sitting runs on its own pilot tier (`run_store.pilot_tier`), pinned or not.
-- **limits-not-priced-here.** `stage_ceiling_usd` (a ceiling, the Conductor's) and the Designer's advisory weighted-token
+- **limits-not-priced-here.** `stage_ceiling_tokens` (a ceiling, the Conductor's) and the Designer's advisory weighted-token
   budget are not scaled; at Fable's price both fill twice as fast. Filed:
   `RIMMANDRAKE_PRICE_CEILING_AND_DESIGNER_TOKENS_FOR_PINNED_MODEL`.
 
@@ -38,11 +38,12 @@ launcher is a fake that records the argv it was given.
   the detached run's claude argv reads `--model claude-fable-5-2`, and `launch_kind` prints `fable`.
 - **unpinned-mod-keeps-the-global-model.** For a mod with no pin every launch reads the shipped model and cap.
 - **judges-and-live-driver-keep-their-models.** For a pinned mod the blind challenge launches on the shipped model with
-  `blind_cap_usd`, and in-game acceptance on `ingame_model` with `ingame_cap_usd`.
+  `blind_cap_tokens`, and in-game acceptance on `ingame_model` with `ingame_cap_tokens`.
 - **every-builder-kind-launches-on-the-pin.** For a pinned mod the steward, the fixer, the holder and the builder on red
   deciders are given model `fable` (their launch and `launch_kind`).
-- **build-cap-scales-by-the-pin-price.** A pinned mod's `cap_usd`, `steward_cap_usd` and `fix_cap_usd` are the shipped
-  caps times the price ratio (2 for Fable 5.2 over Opus 5.5), enforced through `spend_watchdog.wrap` (`--cap-usd`),
+- **build-cap-scales-by-the-pin-price.** A pinned mod's `cap_tokens`, `steward_cap_tokens` and `fix_cap_tokens` are the
+  shipped caps times the price ratio (2 for Fable 5.2 over Opus 5.5), enforced through `spend_watchdog.wrap` (`--cap-usd`, the caps turned to list
+  dollars at the launch alone by `role_launch.weighted_to_list_usd`),
   never `--max-budget-usd`, and no cap or spend is written into the brief.
 - **designer-run-now-chain-and-sweep-launch-on-the-pin.** A Designer run on a pinned mod's concept, asked by
   `run-now`, by the harvest's chain (`chain_ask`) or by the orphan sweep (`chain_sweep`), launches with

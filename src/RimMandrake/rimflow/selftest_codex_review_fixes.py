@@ -79,7 +79,7 @@ def concept(root, mod, files):
     return d
 
 
-CFG = {"max_live": 1, "fix_cap_usd": 5, "steward_cap_usd": 5, "launch_tries": 3}
+CFG = {"max_live": 1, "fix_cap_tokens": 1_250_000, "steward_cap_tokens": 1_250_000, "launch_tries": 3}
 FX = {"designer_state": lambda m: None, "version_locked": lambda m: False, "version_evidence": lambda m: [],
       "open_items": lambda ids: [{"id": "RIMMANDRAKE_FIX_SOMETHING_ROAD_BACK_OPEN"}]}
 
@@ -250,11 +250,11 @@ def drivers():  # RIMMANDRAKE_COUNT_EVERY_MOD_INGAME_DRIVER_NOT_ADVANCING_ONLY
 
 @case
 def killedspend():  # RIMMANDRAKE_CHARGE_KILLED_ATTEMPTS_RETRY_DROPPED_DOLLARS
-    f = {"box_runs": {}, "run_usd": {"u1": 12.0, "u2": 1.0}}
-    got = MD.stage_spent(f, "blind_challenge", [{"unit": "u2", "cap": 1.0, "killed_before": ["u1"]}])
-    check(got == 13.0, "killedspend: a killed attempt's dollars stay charged (%s, want 13.0)" % got)
+    f = {"box_runs": {}, "run_tokens": {"u1": 3_000_000, "u2": 250_000}}
+    got = MD.stage_spent(f, "blind_challenge", [{"unit": "u2", "cap_tokens": 250_000, "killed_before": ["u1"]}])
+    check(got == 3_250_000, "killedspend: a killed attempt's tokens stay charged (%s, want 3250000)" % got)
     s = {}
-    row = {"retry_of": {"unit": None, "item": "I", "filed": True, "tries": 2, "killed_before": ["u1"]}, "cap": 1.0}
+    row = {"retry_of": {"unit": None, "item": "I", "filed": True, "tries": 2, "killed_before": ["u1"]}, "cap": 250_000}
     ok, item, unit, text, entry = MD.launch_counted(
         {}, s, row, 1000.0, "blind_auto", {"cycle": 1}, lambda: "I", lambda i: (True, "filed"),
         lambda i: (True, "published"), lambda i: (1, "fatal: index.lock", None))

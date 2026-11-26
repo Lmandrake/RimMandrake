@@ -87,7 +87,7 @@ def launch_brief(item, text, model, cap, seat, env=None, **kw):
 
 def pilot(open_items, **extra):
     D._write(os.path.join(SDIR, "state.json"), {"mods": {PILOT: {"road_back": {"caused_by": "ROUTE_X"}}}})
-    return D.pilot_launch(root, {"cap_usd": 15, "seat": "BENCH"}, PILOT, "t", now=7000 + len(sent), fx=dict(
+    return D.pilot_launch(root, {"cap_tokens": 3_750_000, "seat": "BENCH"}, PILOT, "t", now=7000 + len(sent), fx=dict(
         ok_ready, open_items=lambda ids: open_items, launch_brief=launch_brief, **extra))
 
 

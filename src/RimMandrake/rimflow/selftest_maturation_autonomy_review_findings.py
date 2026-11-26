@@ -103,14 +103,14 @@ def road_back_retries_transient_fixer(tmp):
     MA._road_back(s2, row, lambda ids: [{"id": "A_ITEM", "needs": "offline"}, {"id": "B_ITEM", "needs": "offline"}])
     check("road back: an untried item goes before one whose failed launches may be spent",
           row.get("decision") == "fixer" and row.get("fix_item") == "B_ITEM", row)
-    go, why = MA._gate({"fix_cap_usd": 5, "max_live": 2, "launch_tries": 3}, s2,
+    go, why = MA._gate({"fix_cap_tokens": 1_250_000, "max_live": 2, "launch_tries": 3}, s2,
                        {"mod": "C", "aut": "fixer", "fix_item": "A_ITEM"}, 0, "0.1.0")
     check("road back: the gate calls a three-times-failed transient launch spent", go is False and why[0] == "fixer_spent",
           (go, why))
     s["fixers"]["FIX_ITEM"].update(failed="fatal: index.lock exists")
     row = {"mod": "C", "stage": "blind_challenge"}
     MA._road_back(s, row, lambda ids: [{"id": "FIX_ITEM", "needs": "offline"}])
-    go, why = MA._gate({"fix_cap_usd": 5, "max_live": 2, "launch_tries": 3}, s, dict(row, aut="fixer"), 0, "0.1.0")
+    go, why = MA._gate({"fix_cap_tokens": 1_250_000, "max_live": 2, "launch_tries": 3}, s, dict(row, aut="fixer"), 0, "0.1.0")
     check("road back: a once-failed transient fixer launch is let through the gate again", go is True, (go, why))
     s["fixers"]["FIX_ITEM"].update(unit="rm-unit-1", failed=None)
     row = {"mod": "C", "stage": "blind_challenge"}
@@ -152,7 +152,7 @@ def launch_exception_books_code(tmp):
     e = st["mods"]["D"].get("fixers", {}).get("FIX_D") or {}
     check("launch exception: the book entry carries the code it failed on", e.get("code") == "code-v1", e)
     row = dict(_fixer_row())
-    go, why = MA._gate({"_code": "code-v2", "fix_cap_usd": 5, "max_live": 2}, st["mods"]["D"], row, 0, "0.1.0")
+    go, why = MA._gate({"_code": "code-v2", "fix_cap_tokens": 1_250_000, "max_live": 2}, st["mods"]["D"], row, 0, "0.1.0")
     check("launch exception: once the code changed, the gate tries it again", go is True, (go, why))
 
 
@@ -170,7 +170,7 @@ def hold_beats_coverage_stop(tmp):
     fx = {"designer_state": lambda m: _blocked_dst(), "stop_tickets": lambda m, dst, s: [{"id": "T_H"}],
           "ticket_runs": lambda i: [], "ledger_items": lambda: [], "open_items": lambda ids: [],
           "version_locked": lambda m: True, "version_evidence": lambda m: {}}
-    rows, launches = MA.resolve(tmp, {"fix_cap_usd": 5, "max_live": 2}, st, {"H": {"live_units": []}}, rows, [], 1.8e9,
+    rows, launches = MA.resolve(tmp, {"fix_cap_tokens": 1_250_000, "max_live": 2}, st, {"H": {"live_units": []}}, rows, [], 1.8e9,
                                 fx=fx)
     check("hold: a Conductor hold is never routed to a fix-ticket fixer by a coverage stop",
           rows[0].get("decision") == "held" and "H" not in launches, (rows[0].get("decision"), launches))
@@ -290,7 +290,7 @@ def acts_take_no_slot(tmp):
              "stage": "blind_challenge"}]
     fx = {"designer_state": lambda m: {}, "open_items": lambda ids: [], "version_locked": lambda m: True,
           "version_evidence": lambda m: {}}
-    rows, launches = MA.resolve(tmp, {"steward_cap_usd": 5, "max_live": 1}, st,
+    rows, launches = MA.resolve(tmp, {"steward_cap_tokens": 1_250_000, "max_live": 1}, st,
                                 {"A": {"live_units": [], "version": "0.1.0"}, "B": {"live_units": [], "version": "0.1.0"}},
                                 rows, [], 1.8e9, fx=fx)
     check("slots: an autolock act takes no slot from a steward run behind it (max_live 1, nothing live)",

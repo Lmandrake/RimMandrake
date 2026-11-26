@@ -228,7 +228,7 @@ def collect(root, cfg, st, facts, now, fx=None):
         if not r.get("auto"):
             out.append(_act(r["id"], ts(r["ts"]) or now, "ceiling_release", r["mod"],
                             "%s released %s past the ceiling at %s (read %s)" % (
-                                r["by"], MD.wt(r["release_usd"]), r["stage"], MD.wt(r["read_usd"])), r["why"]))
+                                r["by"], MD.wt(r["release_tokens"]), r["stage"], MD.wt(r["read_tokens"])), r["why"]))
     mods = st.get("mods") or {}
     names = list(dict.fromkeys(list(cfg.get("advancing") or []) + list(mods) + list(facts or {})))
     for mod in names:

@@ -97,7 +97,7 @@ def main():
             for mod in c["advancing"]:
                 f = M.build_facts(root, mod)
                 f["live_units"] = list(world["live"].get(mod, []))
-                f["last_end"], f["stage_runs"], f["run_usd"] = None, {}, {}
+                f["last_end"], f["stage_runs"], f["run_tokens"] = None, {}, {}
                 runs = world["runs"].get(mod, [])
                 out[mod] = MD.add_ingame(root, mod, MD.add_blind(root, mod, f, runs), runs)
             return out

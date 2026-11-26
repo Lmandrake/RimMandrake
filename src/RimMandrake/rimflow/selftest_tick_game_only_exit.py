@@ -217,7 +217,7 @@ def t_execute_books_the_act_once():
             and x.get("items") == [LIVE_A, LIVE_B] and not x.get("failed")), (got, row.get("decision"), x)
 
 
-CFG2 = {"cap_usd": 15, "max_live": 4, "seat": "BENCH", "game_instances": ["a", "b"]}
+CFG2 = {"cap_tokens": 3_750_000, "max_live": 4, "seat": "BENCH", "game_instances": ["a", "b"]}
 FACTS = {PILOT: {"stage": "offline_build", "live_units": []}}
 
 

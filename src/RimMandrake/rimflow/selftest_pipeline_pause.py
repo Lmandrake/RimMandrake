@@ -41,7 +41,7 @@ SETTLE_AT = CLOCK + 420
 PATHS = {
     "ModBuild": {"stage": "offline_build"},
     "ModBlind": {"stage": "blind_challenge"},
-    "ModGame": {"stage": "in_game", "stage_usd": 0},
+    "ModGame": {"stage": "in_game", "stage_tokens": 0},
     "ModRed": {"stage": "offline_build", "cert_reds": ["T_RED"]},
     "ModRerun": {"stage": "offline_build", "cert_rerun_key": "k1"},
     "ModHolder": {"stage": "blind_challenge", "holder_items": ["ITEM_ONE"]},
@@ -186,12 +186,13 @@ def main():
         pl_was = MD.pilot_ledger
         MD.pilot_ledger = lambda root_, mod: mod == "ModGame"
         try:
-            k = MD.launch_kind(dict(cfg, stage_ceiling_usd=60, ingame_cap_usd=30), {"mod": "ModGame", "stage": "in_game",
-                                                                                  "stage_usd": 0}, root)
+            k = MD.launch_kind(dict(cfg, stage_ceiling_tokens=15_000_000, ingame_cap_tokens=7_500_000), {"mod": "ModGame", "stage": "in_game",
+                                                                                  "stage_tokens": 0}, root)
         finally:
             MD.pilot_ledger = pl_was
-        ok(k["cap_usd"] == 60 == MD.holder_cap(dict(cfg, stage_ceiling_usd=60), {"stage_usd": 0}, 30),
-           "a pilot holder's forecast cap is holder_cap's, as execute sets it (%s)" % k["cap_usd"])
+        ok(k["cap_tokens"] == 15_000_000 == MD.holder_cap(dict(cfg, stage_ceiling_tokens=15_000_000), {"stage_tokens": 0},
+                                                            7_500_000),
+           "a pilot holder's forecast cap is holder_cap's, as execute sets it (%s)" % k["cap_tokens"])
         # the stale-clone gate reads alike in the dry pass
         fresh()
         fst = MD.forecast(root, cfg, within_s=120, step_s=60, fx=dict(fx, clone_seen={

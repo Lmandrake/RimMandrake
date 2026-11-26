@@ -2154,7 +2154,7 @@ that."*
 - **Void spend is off the ceiling** (his card, 2026-11-18 11:06 AM PST, "Does not count (Recommended)":
   `design/specs/2026-11-18-pipeline-control-surface/03-merged.md`, Rulings 1).
   - The stage ceiling counts what the mod cost on its merits. A void run's spend stays measured and is shown apart as void
-    spend (`void_usd`). The system-fault alarm catches a fault loop.
+    spend (`void_tokens`). The system-fault alarm catches a fault loop.
   - The old killed-run refund is retired with it. Nothing is charged, so there is nothing to give back.
   - A ceiling release that a **void_system** run spent is given back (the Conductor's decision of 2026-11-18 1:05 PM PST,
     delegated by evidence-for-ask, in his digest; he may overrule). A hand void leaves the release spent.
@@ -2605,12 +2605,12 @@ quotes don't translate meaningfully. Do not hold live testing when I can't go to
   - the status, pause, release and `releases` lines of `maturation_dispatch.py`;
   - the maturation status page and `maturation_hands.py list`;
   - the Conductor's own words to him.
-- **List dollars stay only inside, where a tool needs them:** `spend_watchdog.py --cap-usd`, the run record's
-  `cost_usd`, the stage ceiling (the spend limit of one stage) and the caps.
-  - A line about a limit that is kept in dollars converts the limit at `maturation_dispatch.WT_PER_USD` and marks the
-    figure `≈`. The rate is exact: one list dollar is 1e6 / the reference input price.
-  - The item `RIMMANDRAKE_KEEP_STAGE_CEILING_IN_TOKENS_NOT_LIST_DOLLARS` holds the move of the ceiling and the caps into
-    tokens.
+- **List dollars stay only inside, where a tool needs them:** `spend_watchdog.py --cap-usd` (the launch boundary, fed by
+  `role_launch.weighted_to_list_usd`) and the run record's `cost_usd`.
+  - The stage ceiling (the spend limit of one stage) and the caps are weighted tokens since 2026-11-26
+    (`RIMMANDRAKE_KEEP_STAGE_CEILING_IN_TOKENS_NOT_LIST_DOLLARS`): a run counts its weighted_v2 `tokens`, never the CLI's
+    `cost_usd`. A legacy figure kept in dollars converts once at `role_launch.WT_PER_LIST_USD`. The rate is exact: one
+    list dollar is 1e6 / the reference input price (250,000).
 - **Weighted by model too** (his words, ~10:03 PM PST: *"I want you to properly weight tokens by the model as well so
   they are more comparable. That's how I always want us to measure"*; item
   `RIMMANDRAKE_WEIGH_TOKENS_BY_MODEL_OPUS_INPUT_UNIT`). The unit is `weighted_v2`.

@@ -50,8 +50,8 @@ def section(fn):
 
 
 NOW = 1794822000.0              # 2026-11-16 ~1:40 AM PST, pinned
-CFG = {"advancing": ["GimmeSomeSlack"], "cap_usd": 15, "blind_cap_usd": 20, "blind_enabled": True, "max_live": 4,
-       "blind_auto_cycles_per_visit": 3, "settle_s": 180, "launch_tries": 3, "stage_ceiling_usd": 100, "seat": "BENCH",
+CFG = {"advancing": ["GimmeSomeSlack"], "cap_tokens": 3_750_000, "blind_cap_tokens": 5_000_000, "blind_enabled": True, "max_live": 4,
+       "blind_auto_cycles_per_visit": 3, "settle_s": 180, "launch_tries": 3, "stage_ceiling_tokens": 25_000_000, "seat": "BENCH",
        "model": "opus"}
 
 
@@ -80,7 +80,7 @@ def blind_case(decision, mine=None):
                         for c in (2, 3, 4)] + (mine or [])}
     f = {"mod": "GimmeSomeSlack", "stage": "blind_challenge", "version": "0.1.0", "visit_first": 2, "cycle": 6,
          "owed": "cycle", "exit": {"state": "absent"}, "live_units": [], "last_end": NOW - 3000, "blind_runs": [],
-         "killed": {}, "certificate": {"ok": True, "rows": []}, "box_runs": {}, "run_usd": {}}
+         "killed": {}, "certificate": {"ok": True, "rows": []}, "box_runs": {}, "run_tokens": {}}
     f["cycle_decision"] = MD.cycle_decision(rec)
     row = {"mod": "GimmeSomeSlack", "stage": "blind_challenge"}
     go = MD.decide_blind(CFG, s, f, row, put_for(row), NOW, (True, "acct ok"), 0, releases=[])
@@ -213,11 +213,11 @@ def t5_verify_list_and_resume():
     old = MD.pilot_ledger
     MD.pilot_ledger = lambda r, m: m == PILOT
     try:
-        row = {"mod": PILOT, "stage": "blind_challenge", "stage_usd": 10}
-        cap, kw = MD.holder_launch(root, CFG, {}, row, 20, FX)
+        row = {"mod": PILOT, "stage": "blind_challenge", "stage_tokens": 2_500_000}
+        cap, kw = MD.holder_launch(root, CFG, {}, row, 5_000_000, FX)
         check("5 a blind judge never resumes the holder's session", "session" not in kw, kw)
-        row = {"mod": PILOT, "stage": "offline_build", "stage_usd": 10}
-        cap, kw = MD.holder_launch(root, CFG, {}, row, 15, FX)
+        row = {"mod": PILOT, "stage": "offline_build", "stage_tokens": 2_500_000}
+        cap, kw = MD.holder_launch(root, CFG, {}, row, 3_750_000, FX)
         check("5 control: a holder at the offline build still resumes it", kw.get("session"), kw)
     finally:
         MD.pilot_ledger = old
@@ -347,7 +347,7 @@ def cert(reds, stale=()):
 def off_facts(c, live=()):
     return {"FlowWorks": {"stage": "offline_build", "owed": "certificate", "live_units": list(live),
                           "certificate": c, "certificate_why": "refused", "certificate_fix": "certificate --run",
-                          "stage_runs": {}, "run_usd": {}, "bar_fp": "fp"}}
+                          "stage_runs": {}, "run_tokens": {}, "bar_fp": "fp"}}
 
 
 def t3_cert_reds():

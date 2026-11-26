@@ -17,7 +17,7 @@ import maturation_dispatch as MD  # noqa: E402
 
 PILOT, OTHER = "FlowWorks", "Pyrelands"
 NOW = 1795170000.0
-CFG = {"advancing": [PILOT, OTHER], "cap_usd": 15, "max_live": 4, "launch_tries": 3, "seat": "BENCH"}
+CFG = {"advancing": [PILOT, OTHER], "cap_tokens": 3_750_000, "max_live": 4, "launch_tries": 3, "seat": "BENCH"}
 DRIVER = "RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_TWO"
 STEWARD = "RIMMANDRAKE_ROUTE_FLOWWORKS_VISIT_TWO_FAILURES_BACK"
 ITEMS = [{"id": "RIMMANDRAKE_FIX_FLOWWORKS_%s" % w, "needs": "offline"} for w in ("GEYSER_ONE", "SOURCE_TWO",

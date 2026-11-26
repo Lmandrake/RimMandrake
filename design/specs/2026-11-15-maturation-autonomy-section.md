@@ -14,7 +14,7 @@ exist when this was written; whoever writes it folds this section in and deletes
 Every mod on every tick is exactly one of:
 
 - **launch**: a builder, blind judge or live driver (the per-stage decision), a **steward run** (the Conductor's old hand
-  step, one opus run per state, `steward_cap_usd`), or a **fixer run** on a road-back item (`fix_cap_usd`).
+  step, one opus run per state, `steward_cap_tokens`), or a **fixer run** on a road-back item (`fix_cap_tokens`).
 - **wait**: on a named live unit, the one game driver (queue position recorded; the longest waiter gets the free game),
   a held bridge, full slots, an account hold, a settling run, or the Designer's own launcher.
 - **paused**: stopped, with why and what un-pauses it; `OPS_MATURATION_MOD_PAUSED` (one fixed id) while any mod is paused.

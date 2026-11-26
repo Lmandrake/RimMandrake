@@ -171,8 +171,10 @@ def release_back(RV, MD, record):
     ok(len(m) == 1 and m[0]["class"] == "void_system" and m[0]["unit"] == U2 and m[0].get("faults") == 0
        and RV.faults(s) == 1,
        "the release sits in voided (void_system, its run's unit) and adds no system fault of its own (%s)" % RV.faults(s))
-    rel = [{"id": "rel-s", "mod": "Fake", "stage": "blind_challenge", "read_usd": 95.0, "release_usd": 20.0}]
-    why, rid = MD.ceiling_gate({"stage_ceiling_usd": 100}, s, "Fake", "blind_challenge", 95.0, 10.0, "x", (rel, 0))
+    rel = [{"id": "rel-s", "mod": "Fake", "stage": "blind_challenge", "read_tokens": 23_750_000,
+            "release_tokens": 5_000_000}]
+    why, rid = MD.ceiling_gate({"stage_ceiling_tokens": 25_000_000}, s, "Fake", "blind_challenge", 23_750_000, 2_500_000,
+                               "x", (rel, 0))
     ok(rid == "rel-s", "the ceiling gate reads the given-back release as fresh again (%s, %s)" % (why, rid))
     once = copy.deepcopy(st)
     RV.sync_system(st, record, now=T0 + 1500)
@@ -358,7 +360,7 @@ def main():
            "blind cycles of the visit: the void cycle-2 judge is out; the visit counts 1 (read %s)"
            % [x["cycle"] for x in s["blind_auto"]])
         ok(s.get("ingame_auto") == [], "in-game runs of the visit: the void driver is out (0 counted)")
-        cfg = {"launch_tries": 3, "steward_max_per_version": 2, "steward_cap_usd": 8, "max_live": 4}
+        cfg = {"launch_tries": 3, "steward_max_per_version": 2, "steward_cap_tokens": 2_000_000, "max_live": 4}
         row = {"aut": "steward", "mod": "Fake", "steward_key": "0.1.0|chain|2026-11-18T17:58:16Z"}
         go, why = AUT._gate(cfg, s, row, 0, "0.1.0")
         ok(go, "steward once-per-key: the void chain run's key is free again (%s)" % (why,))
@@ -366,13 +368,13 @@ def main():
         go2, why2 = AUT._gate(cfg, s, row2, 0, "0.1.0")
         ok(go2, "steward_max_per_version (2): one counted run left on 0.1.0, so the route steward may run (%s)" % (why2,))
         rowf = {"aut": "fixer", "mod": "Fake", "fix_item": "RIMMANDRAKE_SETTLE_FAKE"}
-        gof, whyf = AUT._gate(dict(cfg, fix_cap_usd=10), s, rowf, 0, "0.1.0")
+        gof, whyf = AUT._gate(dict(cfg, fix_cap_tokens=2_500_000), s, rowf, 0, "0.1.0")
         ok(gof, "fixer once-per-item: the void fixer's item is free again (%s)" % (whyf,))
         # the fixer count is the mod's, over every version (only stewards are version-filtered): its refusal says so,
         # never "at this version" (RIMMANDRAKE_UNSTICK_PYRELANDS_FIXER_COUNT_TWELVE_FOUR_REFUSED: Pyrelands' 12/12)
         sx = {"fixers": {"OLD_0_0_9_FIX": {"item": "OLD_0_0_9_FIX", "unit": "u-old"},
                          "NEW_FIX": {"item": "NEW_FIX", "unit": "u-new"}}}
-        gox, whyx = AUT._gate(dict(cfg, fix_cap_usd=10), sx, {"aut": "fixer", "mod": "Fake", "fix_item": "THIRD"},
+        gox, whyx = AUT._gate(dict(cfg, fix_cap_tokens=2_500_000), sx, {"aut": "fixer", "mod": "Fake", "fix_item": "THIRD"},
                               0, "0.1.0")
         ok(not gox and "at this version" not in whyx[1] and "every version" in whyx[1],
            "the fixer cap counts the mod's fixer runs over every version and says so (%s)" % (whyx,))

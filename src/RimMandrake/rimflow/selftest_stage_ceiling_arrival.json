@@ -1,24 +1,24 @@
 {
- "_doc": "GimmeSomeSlack, read 2026-11-19 from the live run records (maturation_dispatch.gather) and design/concepts/GimmeSomeSlack/version/stage_record.json: the 13 runs the status page placed in the Stage 6 (in-game) box, their start and dollars, and the stage record moves. RIMMANDRAKE_TRACE_SLACK_STAGE_SIX_SPEND_BEFORE_FIRST_VISIT.",
+ "_doc": "GimmeSomeSlack, read 2026-11-19 from the live run records (maturation_dispatch.gather) and design/concepts/GimmeSomeSlack/version/stage_record.json: the 13 runs the status page placed in the Stage 6 (in-game) box, their start and dollars, and the stage record moves. RIMMANDRAKE_TRACE_SLACK_STAGE_SIX_SPEND_BEFORE_FIRST_VISIT. Figures moved to weighted tokens 2026-11-26 at 250,000 per list dollar (role_launch.list_usd_to_weighted, each run's dollars converted once).",
  "box_runs": {
   "6": {
-   "rm-detached-bench-rimmandrake-challenge-gss-blind-rests-on-1794731693": 20.0,
-   "rm-detached-bench-rimmandrake-complete-gimmesomeslack-cycl-1794826948": 3.0397347999999984,
-   "rm-detached-bench-rimmandrake-confirm-gimmesomeslack-cycle-1794828223": 1.3049876,
-   "rm-detached-bench-rimmandrake-drive-gimmesomeslack-in-game-1794834319": 30.0,
-   "rm-detached-bench-rimmandrake-fix-miner-judge-failed-slack-1794827680": 11.0630328,
-   "rm-detached-bench-rimmandrake-judge-gimmesomeslack-blind-c-1794774087": 7.950291800000003,
-   "rm-detached-bench-rimmandrake-judge-gimmesomeslack-blind-c-1794782365": 9.755191000000005,
-   "rm-detached-bench-rimmandrake-judge-gimmesomeslack-blind-c-1794814826": 11.872007399999996,
-   "rm-detached-bench-rimmandrake-judge-gimmesomeslack-blind-c-1794822873": 10.964947999999998,
-   "rm-detached-bench-rimmandrake-prepare-slack-watched-sittin-1794878632": 1.0667284,
-   "rm-detached-bench-rimmandrake-route-gimmesomeslack-cycle-o-1794755734": 8.0,
-   "rm-detached-bench-rimmandrake-route-gimmesomeslack-visit-o-1794897953": 3.1602215999999994,
-   "rm-detached-bench-rimmandrake-route-gimmesomeslack-visit-o-1794935989": 1.2444840000000004
+   "rm-detached-bench-rimmandrake-challenge-gss-blind-rests-on-1794731693": 5000000,
+   "rm-detached-bench-rimmandrake-complete-gimmesomeslack-cycl-1794826948": 759934,
+   "rm-detached-bench-rimmandrake-confirm-gimmesomeslack-cycle-1794828223": 326247,
+   "rm-detached-bench-rimmandrake-drive-gimmesomeslack-in-game-1794834319": 7500000,
+   "rm-detached-bench-rimmandrake-fix-miner-judge-failed-slack-1794827680": 2765758,
+   "rm-detached-bench-rimmandrake-judge-gimmesomeslack-blind-c-1794774087": 1987573,
+   "rm-detached-bench-rimmandrake-judge-gimmesomeslack-blind-c-1794782365": 2438798,
+   "rm-detached-bench-rimmandrake-judge-gimmesomeslack-blind-c-1794814826": 2968002,
+   "rm-detached-bench-rimmandrake-judge-gimmesomeslack-blind-c-1794822873": 2741237,
+   "rm-detached-bench-rimmandrake-prepare-slack-watched-sittin-1794878632": 266682,
+   "rm-detached-bench-rimmandrake-route-gimmesomeslack-cycle-o-1794755734": 2000000,
+   "rm-detached-bench-rimmandrake-route-gimmesomeslack-visit-o-1794897953": 790055,
+   "rm-detached-bench-rimmandrake-route-gimmesomeslack-visit-o-1794935989": 311121
   }
  },
- "cap_usd": 15,
- "ceiling_usd": 100,
+ "cap_tokens": 3750000,
+ "ceiling_tokens": 25000000,
  "col": "6",
  "record": {
   "moves": [
@@ -71,20 +71,20 @@
   "since": "2026-11-17T09:22:15-08:00",
   "stage": "in_game"
  },
- "run_usd": {
-  "rm-detached-bench-rimmandrake-challenge-gss-blind-rests-on-1794731693": 20.0,
-  "rm-detached-bench-rimmandrake-complete-gimmesomeslack-cycl-1794826948": 3.0397347999999984,
-  "rm-detached-bench-rimmandrake-confirm-gimmesomeslack-cycle-1794828223": 1.3049876,
-  "rm-detached-bench-rimmandrake-drive-gimmesomeslack-in-game-1794834319": 30.0,
-  "rm-detached-bench-rimmandrake-fix-miner-judge-failed-slack-1794827680": 11.0630328,
-  "rm-detached-bench-rimmandrake-judge-gimmesomeslack-blind-c-1794774087": 7.950291800000003,
-  "rm-detached-bench-rimmandrake-judge-gimmesomeslack-blind-c-1794782365": 9.755191000000005,
-  "rm-detached-bench-rimmandrake-judge-gimmesomeslack-blind-c-1794814826": 11.872007399999996,
-  "rm-detached-bench-rimmandrake-judge-gimmesomeslack-blind-c-1794822873": 10.964947999999998,
-  "rm-detached-bench-rimmandrake-prepare-slack-watched-sittin-1794878632": 1.0667284,
-  "rm-detached-bench-rimmandrake-route-gimmesomeslack-cycle-o-1794755734": 8.0,
-  "rm-detached-bench-rimmandrake-route-gimmesomeslack-visit-o-1794897953": 3.1602215999999994,
-  "rm-detached-bench-rimmandrake-route-gimmesomeslack-visit-o-1794935989": 1.2444840000000004
+ "run_tokens": {
+  "rm-detached-bench-rimmandrake-challenge-gss-blind-rests-on-1794731693": 5000000,
+  "rm-detached-bench-rimmandrake-complete-gimmesomeslack-cycl-1794826948": 759934,
+  "rm-detached-bench-rimmandrake-confirm-gimmesomeslack-cycle-1794828223": 326247,
+  "rm-detached-bench-rimmandrake-drive-gimmesomeslack-in-game-1794834319": 7500000,
+  "rm-detached-bench-rimmandrake-fix-miner-judge-failed-slack-1794827680": 2765758,
+  "rm-detached-bench-rimmandrake-judge-gimmesomeslack-blind-c-1794774087": 1987573,
+  "rm-detached-bench-rimmandrake-judge-gimmesomeslack-blind-c-1794782365": 2438798,
+  "rm-detached-bench-rimmandrake-judge-gimmesomeslack-blind-c-1794814826": 2968002,
+  "rm-detached-bench-rimmandrake-judge-gimmesomeslack-blind-c-1794822873": 2741237,
+  "rm-detached-bench-rimmandrake-prepare-slack-watched-sittin-1794878632": 266682,
+  "rm-detached-bench-rimmandrake-route-gimmesomeslack-cycle-o-1794755734": 2000000,
+  "rm-detached-bench-rimmandrake-route-gimmesomeslack-visit-o-1794897953": 790055,
+  "rm-detached-bench-rimmandrake-route-gimmesomeslack-visit-o-1794935989": 311121
  },
  "runs_seen": [
   {

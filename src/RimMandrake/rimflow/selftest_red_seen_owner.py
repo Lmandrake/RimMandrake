@@ -21,7 +21,7 @@ import probe_result as PR  # noqa: E402
 
 MOD = "WMod"
 NOW = 1795170000.0
-CFG = {"cap_usd": 10.0, "max_live": 2, "launch_tries": 3, "settle_s": 180, "seat": "BENCH", "model": "opus"}
+CFG = {"cap_tokens": 2_500_000, "max_live": 2, "launch_tries": 3, "settle_s": 180, "seat": "BENCH", "model": "opus"}
 
 
 def cert(*rows):
@@ -32,7 +32,7 @@ def decide(f, s=None):
     row, put = {"mod": MOD}, []
     f = dict({"stage": "offline_build", "spend": []}, **f)
     got = MD.cert_red_decide(CFG, s if s is not None else {}, f, row, lambda *a: put.append(a), NOW,
-                             (True, "account ok"), 0, CFG["cap_usd"])
+                             (True, "account ok"), 0, CFG["cap_tokens"])
     return got, row, put
 
 

@@ -95,7 +95,7 @@ def facts_for(c, extra=None):
     for mod in c["advancing"]:
         f = M.build_facts(W["root"], mod)
         f["live_units"] = []
-        f["last_end"], f["stage_runs"], f["run_usd"] = None, {}, {}
+        f["last_end"], f["stage_runs"], f["run_tokens"] = None, {}, {}
         out[mod] = dict(MD.add_ingame(W["root"], mod, MD.add_blind(W["root"], mod, f, []), []), **(extra or {}))
     return out
 

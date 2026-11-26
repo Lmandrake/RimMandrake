@@ -379,13 +379,13 @@ def tick_main(tmp):
     fake_tree(root)
     clog = os.path.join(tmp, "tick_conductor_log.md")
     launched = []
-    cfg = {"enabled": False, "advancing": ["Fake"], "cap_usd": 15, "max_live": 4, "stage_ceiling_usd": 100,
-           "settle_s": 180, "blind_enabled": True, "blind_cap_usd": 20, "blind_auto_cycles_per_visit": 3,
-           "launch_tries": 3, "ingame_enabled": True, "ingame_cap_usd": 30, "ingame_auto_runs_per_visit": 1}
+    cfg = {"enabled": False, "advancing": ["Fake"], "cap_tokens": 3_750_000, "max_live": 4, "stage_ceiling_tokens": 25_000_000,
+           "settle_s": 180, "blind_enabled": True, "blind_cap_tokens": 5_000_000, "blind_auto_cycles_per_visit": 3,
+           "launch_tries": 3, "ingame_enabled": True, "ingame_cap_tokens": 7_500_000, "ingame_auto_runs_per_visit": 1}
 
     def facts():
         f = M.build_facts(root, "Fake")
-        f.update(live_units=[], last_end=None, stage_runs={}, run_usd={})
+        f.update(live_units=[], last_end=None, stage_runs={}, run_tokens={})
         return {"Fake": f}
 
     fx = {"autonomy": False, "convergence": lambda root_, rd: None, "facts": facts, "account": lambda: (True, "test"),

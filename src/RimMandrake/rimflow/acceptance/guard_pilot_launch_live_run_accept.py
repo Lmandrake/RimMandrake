@@ -45,16 +45,16 @@ D.game_hold = lambda g: (os.environ.get("RM_ACCEPT_PLANT_HOLD") or None)
 for stage, owed in (("blind_challenge", "cycle"), ("in_game", "run")):
     M.brief_text = lambda r, m, cap, _s=stage, _o=owed, **k: ("", {"stage": _s, "owed": _o})
     started.clear()
-    rc, text = D.pilot_launch(root, {"cap_usd": 15}, PILOT, "t", item="RIMMANDRAKE_X_Y_Z_Q",
+    rc, text = D.pilot_launch(root, {"cap_tokens": 3_750_000}, PILOT, "t", item="RIMMANDRAKE_X_Y_Z_Q",
                               fx=dict(ready, live_units=lambda r, m: ["rm-detached-judge-1"]))
     check("%s: a run live on the mod refuses a second launch" % stage, rc == 2 and "live" in text and not started,
           (rc, text, started))
     started.clear()
-    rc, text = D.pilot_launch(root, {"cap_usd": 15}, PILOT, "t", item="RIMMANDRAKE_X_Y_Z_Q",
+    rc, text = D.pilot_launch(root, {"cap_tokens": 3_750_000}, PILOT, "t", item="RIMMANDRAKE_X_Y_Z_Q",
                               fx=dict(ready, live_units=lambda r, m: "UNMEASURED"))
     check("%s: unreadable run records refuse (never launch blind)" % stage, rc == 2 and not started, (rc, text, started))
     started.clear()
-    rc, text = D.pilot_launch(root, {"cap_usd": 15}, PILOT, "t", item="RIMMANDRAKE_X_Y_Z_Q",
+    rc, text = D.pilot_launch(root, {"cap_tokens": 3_750_000}, PILOT, "t", item="RIMMANDRAKE_X_Y_Z_Q",
                               fx=dict(ready, live_units=lambda r, m: []))
     check("%s: nothing live still launches" % stage, rc == 0 and started == [(PILOT, "RIMMANDRAKE_X_Y_Z_Q")],
           (rc, text, started))

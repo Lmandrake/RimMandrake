@@ -19,7 +19,7 @@ The fifteen consumables: six before this item (`granted_look`, `coverage_runs`, 
 | chained design runs | `chain_runs_day` | `role_launch.chain_cap` (`chain_cap_view`, `chain_capped`, `chain_ask`), `maturation_autonomy.designer_chain` | `chain_max_per_day`, else `CHAIN_MAX_PER_DAY` |
 | refusal counts | `refusals` (an item: `<Mod>@<version>` or an item id) | `refusal_contract.submit` (the item's alarm) | `ITEM_ALARM_AT` |
 | the Test Pilot streak (added by `RIMMANDRAKE_TYPE_PILOT_STREAK_AS_ITEM_ACCOUNT_ALREADY_ORDERED`) | `pilot_streak` (an item id) | `testpilot_route.judge` (one item), `routed` (every open item, one store read: `control.subjects`) | `STREAK` |
-| the stage spend ceiling | `spend_offline_build`, `spend_blind_challenge`, `spend_in_game`, in weighted tokens | `maturation_dispatch.stage_spend` (`ceiling_gate`, `refund`, `holder_cap`) | `stage_ceiling_usd` |
+| the stage spend ceiling | `spend_offline_build`, `spend_blind_challenge`, `spend_in_game`, in weighted tokens | `maturation_dispatch.stage_spend` (`ceiling_gate`, `refund`, `holder_cap`) | `stage_ceiling_tokens` |
 
 ## ACCEPTS (the only inputs the readers are built for)
 
@@ -27,8 +27,9 @@ The fifteen consumables: six before this item (`granted_look`, `coverage_runs`, 
   item the refusal counters hold, a `<Mod>@<version>` of a pipeline mod, or a mod, read as `<Mod>@<its version>`. A
   `pilot_streak` account is an item id (UPPER_SNAKE); `pipe` refuses a mod name, and takes an id the ledger does not
   hold yet (the account waits for it; `pipe show` measures nothing for it).
-- **whole-numbers.** Every count and limit is a whole number; the spend accounts are weighted tokens
-  (`maturation_dispatch.to_wt`), read back as dollars by the ceiling readers.
+- **whole-numbers.** Every count and limit is a whole number; the spend accounts are weighted tokens,
+  read as weighted tokens by the ceiling readers (a legacy dollar reading converts once, `role_launch.list_usd_to_weighted`;
+  figures moved to weighted tokens 2026-11-26 at 250,000 per list dollar).
 - **a-measure-pipe-can-see.** `pipe set` lands the count on N against the count `pipe show` measures. Where `pipe` has
   no measure now (the mod is not at that stage, its record cannot be read), it says so and pins the adjustment total
   instead (control.set_account).

@@ -1,7 +1,7 @@
 # BOUNDARY: the stage ceiling's spend count, Design Version 0.1.0
 
-Code: `src/RimMandrake/rimflow/maturation_dispatch.py`, `arrivals`, `_off_ceiling`, `stage_spent` and `offline_usd`
-(what the tick compares with `stage_ceiling_usd` before a launch). Item:
+Code: `src/RimMandrake/rimflow/maturation_dispatch.py`, `arrivals`, `_off_ceiling`, `stage_spent` and `offline_tokens`
+(what the tick compares with `stage_ceiling_tokens` before a launch). Item:
 `RIMMANDRAKE_TRACE_SLACK_STAGE_SIX_SPEND_BEFORE_FIRST_VISIT`. Written 2026-11-19. Each promise has a test of its name in
 `src/RimMandrake/rimflow/selftest_stage_ceiling_arrival.py`, whose fixture is GimmeSomeSlack's real Stage 6 box of that
 day (13 runs, nine started before the mod arrived at Stage 6, so the ceiling stopped it falsely). The count keeps no
@@ -10,7 +10,9 @@ state between calls, so the page has no LIFE CYCLES.
 ## ACCEPTS (the only inputs the count is built for)
 
 - **the-status-page-boxes.** The runs `maturation_now.py` placed in the stage's box, each with its unit, start time
-  (`runs_seen`) and measured dollars (else its cap), as `gather` reads them.
+  (`runs_seen`) and its weighted_v2 tokens (else its measured list dollars converted once by
+  `role_launch.list_usd_to_weighted`, else its cap), as `gather` reads them. Figures moved to weighted tokens
+  2026-11-26 at 250,000 per list dollar (`RIMMANDRAKE_KEEP_STAGE_CEILING_IN_TOKENS_NOT_LIST_DOLLARS`).
 - **the-stage-record.** The mod's `version/stage_record.json`: its `moves` (from, to, at) and its `since`.
 
 ## DOES NOT SURVIVE (not promised)
@@ -30,6 +32,10 @@ state between calls, so the page has no LIFE CYCLES.
 - **void-runs-spend-nothing.** A void run (hand void, `void_system`, killed before it wrote a result) is shown apart as
   void spend and never counted (his card, 2026-11-18 11:06 AM PST, "Does not count").
 - **this-steps-launches-count.** A launch this tick made that the status page has not placed yet counts at its
-  measured dollars, else its cap.
+  weighted tokens, else its cap.
+- **counts-weighted-tokens-not-list-dollars.** A run's spend is its run record's weighted_v2 `tokens`, never the CLI's
+  `cost_usd`: a Fable 5.2 run the CLI priced at Opus rates (costBasis "unknown") counts its whole weight. A run with no
+  tokens counts its list dollars at the one rate in `role_launch`, and a legacy `read_usd`/`release_usd` release lifts
+  the ceiling through the same rate. Its test runs `selftest_stage_ceiling_tokens.py`.
 
 Later lists beside this page: `polish.md` and `next_version.md` (none yet).

@@ -179,7 +179,7 @@ All in `src/RimMandrake/rimflow/maturation.py`:
 One stage, by his card of 2026-11-13 ("One stage, tests first").
 
 - **Who**: one blind judge per cycle (Opus; `JUDGE_MODELS` allows opus or fable). Dispatch launches at most three cycles per visit
-  (`blind_auto_cycles_per_visit` 3 since 2026-11-15, cap `blind_cap_usd` 20), each under an item named
+  (`blind_auto_cycles_per_visit` 3 since 2026-11-15, cap `blind_cap_tokens`, now 50,000,000 weighted tokens), each under an item named
   `RIMMANDRAKE_JUDGE_<MOD>_BLIND_CYCLE_<N>_TESTS_FIRST`; any further cycle is the Conductor's.
 - **Input**: the brief `maturation.py brief <Mod>` writes. It lists what is closed to the judge until its lane 1 is
   committed (the journal, `exam.json`, `version/evidence/`, the test table, the mod's selftests and validation scripts,
@@ -204,7 +204,7 @@ One stage, by his card of 2026-11-13 ("One stage, tests first").
 
 ### Stage 6: In-game acceptance
 
-- **Who**: one live-game driver (Opus, cap `ingame_cap_usd`, 30 since 2026-11-15) on Archmagi through the bridge.
+- **Who**: one live-game driver (Opus, cap `ingame_cap_tokens`, now 75,000,000 weighted tokens) on Archmagi through the bridge.
   Only one in-game run per game at a time, and only when `rimflow bridge idle` says that game's bridge can be taken.
   `ingame_enabled` in `maturation_dispatch.json` shipped false (the Conductor ran the first visit by hand with
   `maturation.py launch`, which refuses a held bridge); the Conductor set it true on 2026-11-15 about 13:30 UTC after
@@ -316,13 +316,14 @@ A `hold` blocks every advance until a later `release`.
   60 s, from the dispatch clone. Settings: `src/RimMandrake/rimflow/maturation_dispatch.json`. No model, no tokens.
   The advancing list: `advancing` in that file (Explosive Knockback, FlowWorks, Gimme Some Slack, Pyrelands, Graffiti,
   Contagion). A mod on his hold (`mod_owner_hold.json`) gets nothing.
-  - At the offline build it launches one capped builder (Opus, `cap_usd` 15) when the mod has build work owed and
+  - At the offline build it launches one capped builder (Opus, `cap_tokens`, now 37,500,000 weighted tokens) when the mod has build work owed and
     nothing live on it. After a run ends, the next starts only if the count of refused bars fell. It stops on a mod, with
-    one "Needs Conductor" line, when the count did not fall, when the mod's dollars at the stage pass
-    `stage_ceiling_usd` (100, by his card of 2026-11-15), or when a launch failed; it never retries the same refusals.
+    one "Needs Conductor" line, when the count did not fall, when the mod's weighted tokens at the stage pass
+    `stage_ceiling_tokens` (now 250,000,000; USD 100 by his card of 2026-11-15; figures moved to weighted tokens
+    2026-11-26 at 250,000 per list dollar, `RIMMANDRAKE_KEEP_STAGE_CEILING_IN_TOKENS_NOT_LIST_DOLLARS`), or when a launch failed; it never retries the same refusals.
     `maturation_dispatch.py clear <Mod> --why "..."` is the Conductor's lift. A ceiling pause at any of the three
-    automatic stages names its own lift, `maturation_dispatch.py release <Mod> --stage <stage> --read-usd <spend>
-    --usd <dollars> --why "..."`: one more launch on that mod at that stage, then it pauses at the next ceiling. The
+    automatic stages names its own lift, `maturation_dispatch.py release <Mod> --stage <stage> --read-tokens <spend>
+    --tokens <tokens> --why "..."`: one more launch on that mod at that stage, then it pauses at the next ceiling. The
     Conductor releases without asking, told after (owner, by card 2026-11-15); `releases` lists each with its spend,
     and each reaches the daily digest as a `ceiling release` line (mod, stage, who; the page is token-blind).
   - At the blind challenge: one judge per owed cycle (section 4). At in-game acceptance: one driver per owed visit (section 4), on since

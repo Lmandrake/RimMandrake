@@ -48,6 +48,7 @@ sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 
 import maturation as M              # noqa: E402
+import role_launch as RL            # noqa: E402
 import maturation_dispatch as MD    # noqa: E402
 import detached_helper as DH        # noqa: E402
 import run_void as RV               # noqa: E402
@@ -76,16 +77,18 @@ print("DETACHED rm-detached-bench-fake-%d" % n)
 # (2026-11-14: FlowWorks 7 -> 0 and Explosive Knockback 12 -> 1 refused bars turned both maturation selftests red).
 FIXTURE_SHA = "f5d809fb03a59ccca0f72da4a509cfb15b01fd64"
 
-# The ceiling these checks were written against, pinned so they pass with any shipped stage_ceiling_usd (item
+# The ceiling these checks were written against, pinned so they pass with any shipped stage_ceiling_tokens (item
 # RIMMANDRAKE_RELEASE_STAGE_CEILING_PER_MOD_ONLY_GLOBAL_KNOB: the shipped 60 -> 100 turned a ceiling check red).
-FIXTURE_CEILING = 60
+T = 250_000         # weighted tokens per list dollar (role_launch.list_usd_to_weighted): the figures below were dollars
+FIXTURE_CEILING = 60 * T
 # Likewise the live-run cap: the slots_full check puts two runs live and pins max_live to match, so it holds at any shipped max_live
 # (2 -> 4 on 2026-11-15 by the owner's card).
 FIXTURE_MAX_LIVE = 2
 # And every other number the owner tunes, as shipped 2026-11-15 (RIMMANDRAKE_PIN_TUNABLES_OUT_OF_SELFTESTS: tunable_sweep.py
-# found these checks red on a doubled cap_usd, settle_s, idle_alarm_min, blind_cap_usd, cycles or runs per visit).
-FIXTURE_NUMBERS = {"cap_usd": 15, "settle_s": 180, "idle_alarm_min": 60, "blind_cap_usd": 20, "blind_auto_cycles_per_visit": 3,
-                   "ingame_cap_usd": 30, "ingame_auto_runs_per_visit": 1, "steward_cap_usd": 8, "fix_cap_usd": 10,
+# found these checks red on a doubled cap_usd, settle_s, idle_alarm_min, blind_cap_usd (now *_tokens), cycles or runs per visit).
+FIXTURE_NUMBERS = {"cap_tokens": 15 * T, "settle_s": 180, "idle_alarm_min": 60, "blind_cap_tokens": 20 * T,
+                   "blind_auto_cycles_per_visit": 3, "ingame_cap_tokens": 30 * T, "ingame_auto_runs_per_visit": 1,
+                   "steward_cap_tokens": 8 * T, "fix_cap_tokens": 10 * T,
                    "steward_max_per_version": 12, "stalled_min": 10,
                    # and two the 2026-11-15 pin missed (Codex review 2026-11-18): the batch split and the retry count checks
                    "build_batch_bars": 6, "launch_tries": 3}
@@ -98,7 +101,7 @@ FREE_BRIDGE = lambda p, game="a": (True, "free")      # noqa: E731
 
 def load_cfg():
     """-> the shipped settings with the fixture numbers (the shipped ones are range-checked where they are read)."""
-    return dict(MD.load_cfg(), stage_ceiling_usd=FIXTURE_CEILING, **FIXTURE_NUMBERS)
+    return dict(MD.load_cfg(), stage_ceiling_tokens=FIXTURE_CEILING, **FIXTURE_NUMBERS)
 
 
 def fixture(mod, rel):
@@ -185,14 +188,14 @@ def main():
                 f["live_units"] = list(world["live"].get(mod, []))
                 f["last_end"] = world["last_end"].get(mod)
                 f["stage_runs"] = dict(world["stage_runs"].get(mod, {}))
-                f["run_usd"] = {}
+                f["run_tokens"] = {}
                 out[mod] = f
             return out
 
         fx = {"autonomy": False, "convergence": no_convergence, "repair_launch": REPAIRED_IN_PLACE, "facts": facts, "account": lambda: world["account"], "known": lambda: set(),
               "clone": lambda: world.get("clone", (0, 0)),
               "file": lambda item, title, why: (filed.append((item, title, why)) or True, "filed %s" % item),
-              "launch": lambda mod, cap, item, **kw: M.launch_mod(root, mod, cap, item, model=cfg["model"],
+              "launch": lambda mod, cap, item, **kw: M.launch_mod(root, mod, RL.weighted_to_list_usd(cap), item, model=cfg["model"],
                                                                   seat=cfg["seat"], **kw)}
 
         def tick(apply=True, at=0):
@@ -282,7 +285,8 @@ def main():
         ok(nc.returncode == 0 and "REFUSED" not in nc.stdout, "the minted item name passes rimflow namecheck")
         a = launches()[0] if launches() else []
         ok(a and a[a.index("--budget-usd") + 1] == "15" and a[a.index("--model") + 1] == "opus",
-           "the launch carries the 15 USD cap and opus")
+           "the launch carries the 15 USD cap and opus (%s)" % (a[a.index("--budget-usd"):a.index("--budget-usd") + 2]
+                                                                 if "--budget-usd" in a else a[:6]))
         # RIMMANDRAKE_SIZE_DISPATCH_BUILDS_THIRTY_THREE_BARS_ONE_RUN: one builder took all 33 refused Graffiti bars and
         # stalled; a set above build_batch_bars goes out in even batches of about that many, judged on the whole set
         bars7 = [i for i in M.refused_ids(M.build_facts(root, "FlowWorks")) or [] if i != "table_version"]
@@ -412,13 +416,13 @@ def main():
                 f = M.build_facts(root, mod)
                 f["live_units"] = (MD.UNM if mod in world.get("unreadable", ()) else
                                    list(world["live"].get(mod, [])))
-                f["last_end"], f["stage_runs"], f["run_usd"] = None, dict(world["stage_runs"].get(mod, {})), {}
+                f["last_end"], f["stage_runs"], f["run_tokens"] = None, dict(world["stage_runs"].get(mod, {})), {}
                 out[mod] = f
             return out
 
         one = dict(base, advancing=["FlowWorks"])
-        none_launched(dict(one, cap_usd=None), "no cap in the settings", "no_cap")
-        none_launched(dict(one, cap_usd=0), "a zero cap", "no_cap")
+        none_launched(dict(one, cap_tokens=None), "no cap in the settings", "no_cap")
+        none_launched(dict(one, cap_tokens=0), "a zero cap", "no_cap")
         none_launched(dict(base, advancing=["Pyrelands"]), "FlowWorks not on the advancing list")
         none_launched(dict(base, advancing=["ExplosiveKnockback", "GimmeSomeSlack", "FlowWorks"], max_live=2),
                       "two live runs on other advancing mods (max_live 2)", "slots_full",
@@ -426,33 +430,33 @@ def main():
         rd = none_launched(dict(base, advancing=["ExplosiveKnockback", "FlowWorks"], max_live=1),
                            "the Conductor's live builder on Explosive Knockback fills the one slot", "slots_full",
                            live={"ExplosiveKnockback": ["u-ek"]})
-        rd = none_launched(one, "the stage's dollars past the ceiling", "stopped", stage_runs={"FlowWorks": {"u1": 61.0}})
+        rd = none_launched(one, "the stage's dollars past the ceiling", "stopped", stage_runs={"FlowWorks": {"u1": 61 * T}})
         ok("weighted tokens" in rd["mods"]["FlowWorks"]["why"] and not re.search(r"USD|\$\s*\d",
                                                                                   rd["mods"]["FlowWorks"]["why"]),
            "the ceiling pause says weighted tokens, never a dollar figure (%s)" % rd["mods"]["FlowWorks"]["why"][:160])
         # RIMMANDRAKE_RESERVE_CAP_BEFORE_LAUNCH: the cap is reserved, and an unknown occupancy fails closed
-        rd = none_launched(dict(one, stage_ceiling_usd=60, cap_usd=15), "USD 50 spent plus a USD 15 cap passes the "
-                           "60 ceiling", "stopped", stage_runs={"FlowWorks": {"u1": 50.0}})
+        rd = none_launched(dict(one, stage_ceiling_tokens=60 * T, cap_tokens=15 * T), "USD 50 spent plus a USD 15 cap passes the "
+                           "60 ceiling", "stopped", stage_runs={"FlowWorks": {"u1": 50 * T}})
         ok("cap passes" in rd["mods"]["FlowWorks"]["why"], "the refusal names the reserved cap (%s)"
            % rd["mods"]["FlowWorks"]["why"])
         reset()
-        world.update(stage_runs={"FlowWorks": {"u1": 45.0}})
-        rd = MD.tick(root, dict(one, stage_ceiling_usd=60, cap_usd=15), True,
-                     fx=dict(fx, facts=lambda: facts_for(dict(one, stage_ceiling_usd=60, cap_usd=15))), now=CLOCK,
+        world.update(stage_runs={"FlowWorks": {"u1": 45 * T}})
+        rd = MD.tick(root, dict(one, stage_ceiling_tokens=60 * T, cap_tokens=15 * T), True,
+                     fx=dict(fx, facts=lambda: facts_for(dict(one, stage_ceiling_tokens=60 * T, cap_tokens=15 * T))), now=CLOCK,
                      page=False)
         ok(rd["mods"]["FlowWorks"]["decision"] == "launched", "USD 45 spent plus a USD 15 cap fits the 60 ceiling: it "
            "launches (%s)" % rd["mods"]["FlowWorks"]["decision"])
 
         # ---- a ceiling release, at the offline build (RIMMANDRAKE_RELEASE_STAGE_CEILING_PER_MOD_ONLY_GLOBAL_KNOB) -----------
-        c60 = dict(one, stage_ceiling_usd=60, cap_usd=15)
+        c60 = dict(one, stage_ceiling_tokens=60 * T, cap_tokens=15 * T)
 
         def rel(**k):
             r = {"id": "rel-test-a", "ts": "2026-11-15T19:00:00Z", "mod": "FlowWorks", "stage": "offline_build",
-                 "by": "BENCH", "read_usd": 50.0, "release_usd": 5.0, "why": "selftest"}
+                 "by": "BENCH", "read_tokens": 50 * T, "release_tokens": 5 * T, "why": "selftest"}
             r.update(k)
             return r
 
-        def rtick(recs, bad=0, spent=50.0, used=None):
+        def rtick(recs, bad=0, spent=50 * T, used=None):
             reset()
             world.update(stage_runs={"FlowWorks": {"u1": spent}})
             if used:
@@ -473,7 +477,7 @@ def main():
         # command say weighted tokens; the ceiling is still kept in list dollars inside (RIMMANDRAKE_ENACT_TOKENS_NOT_
         # DOLLARS_NO_LIVE_HOLD)
         cmd = ("maturation_dispatch.py release FlowWorks --stage offline_build --read-tokens %d --tokens %d --why"
-               % (MD.to_wt(50.0), MD.to_wt(5)))
+               % (50 * T, 5 * T))
         rd = rtick([])
         ok(not launches() and fw(rd).startswith("stopped") and cmd in fw(rd), "no release record: USD 50 + a USD 15 cap "
            "past 60 stays paused, and the pause names the release command (%s)" % fw(rd))
@@ -482,14 +486,14 @@ def main():
         ok(len(launches()) == 1 and fw(rd).startswith("launched") and "rel-test-a" in used,
            "a release for this mod, stage and amount (USD 5, read at USD 50) lifts the ceiling stop: one launch, the "
            "release spent (%s; used %s)" % (fw(rd)[:40], sorted(used)))
-        rd = rtick([rel()], spent=65.0, used={"rel-test-a": {"at": CLOCK}})
+        rd = rtick([rel()], spent=65 * T, used={"rel-test-a": {"at": CLOCK}})
         ok(not launches() and fw(rd).startswith("stopped") and "its release is spent" in fw(rd)
-           and "--read-tokens %d --tokens %d " % (MD.to_wt(65.0), MD.to_wt(20)) in fw(rd), "the released run's USD 15 spent (65): the spent release frees "
+           and "--read-tokens %d --tokens %d " % (65 * T, 20 * T) in fw(rd), "the released run's USD 15 spent (65): the spent release frees "
            "nothing and the mod re-pauses at the next ceiling, naming the next release (%s)" % fw(rd))
         for r, what, says in ((rel(mod="ExplosiveKnockback"), "a release for another mod", cmd),
                               (rel(stage="blind_challenge"), "a release for another stage", cmd),
-                              (rel(read_usd=40.0), "a release that read another spend (USD 40)", "the spend is now %s" % MD.wt(50.0)),
-                              (rel(release_usd=2.0), "a release smaller than the cap needs (USD 2)", "does not cover")):
+                              (rel(read_tokens=40 * T), "a release that read another spend (USD 40)", "the spend is now %s" % MD.wt(50 * T)),
+                              (rel(release_tokens=2 * T), "a release smaller than the cap needs (USD 2)", "does not cover")):
             rd = rtick([r])
             ok(not launches() and fw(rd).startswith("stopped") and says in fw(rd), "%s: still paused (%s)" % (what, fw(rd)))
         rd = rtick([], bad=2)
@@ -498,8 +502,8 @@ def main():
         rp = os.path.join(root, "releases_fixture.jsonl")
         with open(rp, "w") as fh:
             fh.write("\n".join([json.dumps(rel()), "{not json", json.dumps(dict(rel(), why="")),
-                                 json.dumps(dict(rel(), release_usd=-5)), json.dumps(dict(rel(), stage="bogus")),
-                                 json.dumps(dict(rel(), read_usd=True)), json.dumps(["a list"]), ""]) + "\n")
+                                 json.dumps(dict(rel(), release_tokens=-5)), json.dumps(dict(rel(), stage="bogus")),
+                                 json.dumps(dict(rel(), read_tokens=True)), json.dumps(["a list"]), ""]) + "\n")
         recs, bad = MD.read_releases(rp)
         ok(len(recs) == 1 and bad == 6 and MD.read_releases(os.path.join(root, "absent.jsonl")) == ([], 0),
            "read_releases: one whole record, six malformed lines counted, no file is no release (%d, %d)" % (len(recs), bad))
@@ -771,26 +775,28 @@ def release_main():
                                capture_output=True, text=True, timeout=120, env=dict(env, **e))
             return r.returncode, (r.stdout + r.stderr).strip()
 
-        rc, out = run("FlowWorks", "--stage", "in_game", "--read-usd", "40", "--usd", "30", "--why", "selftest release",
-                      "--by", "BENCH")
+        rc, out = run("FlowWorks", "--stage", "in_game", "--read-tokens", str(40 * T), "--tokens", str(30 * T), "--why",
+                      "selftest release", "--by", "BENCH")
         recs, bad = MD.read_releases(path)
         ok(rc == 0 and out.startswith("RELEASED FlowWorks") and len(recs) == 1 and not bad
-           and (recs[0]["by"], recs[0]["read_usd"], recs[0]["release_usd"], recs[0]["why"]) == ("BENCH", 40, 30,
-                                                                                               "selftest release"),
+           and (recs[0]["by"], recs[0]["read_tokens"], recs[0]["release_tokens"], recs[0]["why"]) == (
+               "BENCH", 40 * T, 30 * T, "selftest release"),
            "release writes one whole record: who, the spend read, the amount, why (%s)" % out[:90])
         tp = os.path.join(tempfile.mkdtemp(dir=sd), "releases.jsonl")
-        rc, out = run("FlowWorks", "--stage", "in_game", "--read-tokens", str(MD.to_wt(40.0)), "--tokens",
-                      str(MD.to_wt(30)), "--why", "selftest tokens", "--by", "BENCH",
+        rc, out = run("FlowWorks", "--stage", "in_game", "--read-tokens", str(40 * T), "--tokens",
+                      str(30 * T), "--why", "selftest tokens", "--by", "BENCH",
                       RM_MATURATION_DISPATCH_DIR=os.path.dirname(tp))
         tr = MD.read_releases(tp)[0]
-        ok(rc == 0 and len(tr) == 1 and abs(tr[0]["read_usd"] - 40) <= MD.READ_SLACK
-           and abs(tr[0]["release_usd"] - 30) <= MD.READ_SLACK and "weighted tokens" in out
+        ok(rc == 0 and len(tr) == 1 and tr[0]["read_tokens"] == 40 * T
+           and tr[0]["release_tokens"] == 30 * T and "weighted tokens" in out
            and not re.search(r"USD|\$\s*\d", out),
            "release takes the pause line's weighted tokens (--read-tokens/--tokens) and says tokens, never dollars (%s)"
            % out[:160])
-        args = ["--stage", "in_game", "--read-usd", "40", "--usd", "30", "--why", "x", "--by", "BENCH"]
+        args = ["--stage", "in_game", "--read-tokens", str(40 * T), "--tokens", str(30 * T), "--why", "x", "--by", "BENCH"]
         for a, what, e in ((["NotAMod"] + args, "a mod off the advancing list", {}),
-                           (["FlowWorks"] + args[:4] + ["--usd", "0"] + args[6:], "a zero release", {}),
+                           (["FlowWorks"] + args[:4] + ["--tokens", "0"] + args[6:], "a zero release", {}),
+                           (["FlowWorks"] + args[:2] + ["--read-usd", "40", "--usd", "30"] + args[6:],
+                            "the dollar flags (gone 2026-11-26: the record keeps tokens)", {}),
                            (["FlowWorks", "--stage", "nowhere"] + args[2:], "an unknown stage", {}),
                            (["FlowWorks"] + args[:-2], "no seat and no --by", {"AGENT_SEAT": "", "RIMFLOW_SEAT": ""}),
                            (["FlowWorks"] + args[:-1] + ["NOBODY"], "a --by that is no ledger seat", {})):
@@ -817,8 +823,8 @@ def release_main():
            "or its dollars, the page being token-blind (%s)" % [x for x in text.splitlines() if "FlowWorks" in x][:1])
         lst = subprocess.run([sys.executable, os.path.join(HERE, "maturation_dispatch.py"), "releases"],
                              capture_output=True, text=True, timeout=120, env=env)
-        ok(lst.returncode == 0 and "FlowWorks" in lst.stdout and "read %s" % MD.wt(40) in lst.stdout
-           and "released %s" % MD.wt(30) in lst.stdout and not re.search(r"USD|\$\s*\d", lst.stdout) and "selftest release" in lst.stdout and "1 malformed" in lst.stdout,
+        ok(lst.returncode == 0 and "FlowWorks" in lst.stdout and "read %s" % MD.wt(40 * T) in lst.stdout
+           and "released %s" % MD.wt(30 * T) in lst.stdout and not re.search(r"USD|\$\s*\d", lst.stdout) and "selftest release" in lst.stdout and "1 malformed" in lst.stdout,
            "`releases` lists each release with its spend, amount and why for the Conductor (%s)" % lst.stdout[:120])
     finally:
         shutil.rmtree(sd, ignore_errors=True)
@@ -868,7 +874,7 @@ def blind_main():
             for mod in c["advancing"]:
                 f = M.build_facts(root, mod)
                 f["live_units"] = list(world["live"].get(mod, []))
-                f["last_end"], f["stage_runs"], f["run_usd"] = world["last_end"].get(mod), {}, {}
+                f["last_end"], f["stage_runs"], f["run_tokens"] = world["last_end"].get(mod), {}, {}
                 f["box_runs"] = dict(world.get("box_runs", {}).get(mod, {}))
                 f["ended_runs"] = list(world.get("ended", {}).get(mod, []))
                 f["killed"] = dict(world.get("killed", {}).get(mod, {}))
@@ -877,7 +883,7 @@ def blind_main():
 
         fx = {"autonomy": False, "convergence": no_convergence, "repair_launch": REPAIRED_IN_PLACE, "account": lambda: world["account"], "known": lambda: set(),
               "file": lambda item, title, why: (filed.append((item, title, why)) or True, "filed %s" % item),
-              "launch": lambda mod, cap, item, **kw: M.launch_mod(root, mod, cap, item, model="opus", seat="BENCH",
+              "launch": lambda mod, cap, item, **kw: M.launch_mod(root, mod, RL.weighted_to_list_usd(cap), item, model="opus", seat="BENCH",
                                                                   **kw),
               # the zero-token certificate rerun at the cycle gate, never a real systemd-run from a selftest
               "cert_rerun": lambda mod, key: (reruns.append((mod, key)) or 0, "STARTED rm-cert-rerun-t%d" % len(reruns),
@@ -896,13 +902,13 @@ def blind_main():
             return " ".join(x for x in rd["needs_conductor"] if x.startswith(mod + ":"))
 
         real, base = MD.load_cfg(), load_cfg()
-        ok(real.get("blind_enabled") is True and isinstance(real.get("blind_cap_usd"), (int, float))
-           and real["blind_cap_usd"] > 0 and isinstance(real.get("blind_auto_cycles_per_visit"), int)
+        ok(real.get("blind_enabled") is True and isinstance(real.get("blind_cap_tokens"), int)
+           and real["blind_cap_tokens"] > 0 and isinstance(real.get("blind_auto_cycles_per_visit"), int)
            and 1 <= real["blind_auto_cycles_per_visit"] <= M.CYCLE_LIMIT,
            "the settings: blind launches on, a positive cap, automatic cycles per visit within his CYCLE_LIMIT (%s, %s, %s)" % (
-               real.get("blind_enabled"), real.get("blind_cap_usd"), real.get("blind_auto_cycles_per_visit")))
+               real.get("blind_enabled"), real.get("blind_cap_tokens"), real.get("blind_auto_cycles_per_visit")))
         gss = dict(base, advancing=["GimmeSomeSlack"], blind_auto_cycles_per_visit=1)   # the spent-visit mechanism, at 1
-        cap = "%g" % base.get("blind_cap_usd", 0)
+        cap = "%g" % RL.weighted_to_list_usd(base.get("blind_cap_tokens", 0))   # the launch's one dollar edge
 
         # ---- PRE_JUDGEMENT_CERTIFICATE: no judge goes in while a program can see a bar red or run on another build --
         saved, tid, tfile = redden(root, "GimmeSomeSlack")
@@ -946,7 +952,8 @@ def blind_main():
                                                         "launches (%s: %s)" % (d["decision"], d["why"][:80]))
         ok(a and a[0][a[0].index("--budget-usd") + 1] == cap and a[0][a[0].index("--model") + 1] == "opus"
            and "# Blind challenge" in open(a[0][a[0].index("--brief-file") + 1]).read(),
-           "the launch carries the settings' blind cap, opus and the blind-challenge brief")
+           "the launch carries the settings' blind cap, opus and the blind-challenge brief (want %s, read %s)"
+           % (cap, a[0][a[0].index("--budget-usd") + 1] if a and "--budget-usd" in a[0] else a[:1]))
         nc = subprocess.run([sys.executable, os.path.join(HERE, "cli.py"), "namecheck", filed[0][0] if filed else "X"],
                             capture_output=True, text=True, timeout=120)
         ok(len(filed) == 1 and nc.returncode == 0 and "REFUSED" not in nc.stdout and "BLIND" in filed[0][0],
@@ -1043,7 +1050,7 @@ def blind_main():
         jp = os.path.join(root, "design/concepts/GimmeSomeSlack/journal.md")
         jsaved = open(jp).read()
         none(dict(gss, blind_enabled=False), "blind launches off in the settings", "blind_off")
-        none(dict(gss, blind_cap_usd=0), "no blind cap", "no_cap")
+        none(dict(gss, blind_cap_tokens=0), "no blind cap", "no_cap")
         none(gss, "the account pick holds role launches", "account_hold",
              account=(False, "the Dispatcher's account pick reads HOLD"))
         world["account"] = (True, "test account KEEP")
@@ -1056,18 +1063,18 @@ def blind_main():
         with open(jp, "w") as f:
             f.write(jsaved)
         # RIMMANDRAKE_RESERVE_CAP_BEFORE_LAUNCH: the ceiling holds at the blind challenge too, cap reserved
-        rd = none(dict(gss, stage_ceiling_usd=60, blind_cap_usd=20), "USD 45 spent at the blind challenge plus a USD 20 "
-                  "cap passes the 60 ceiling", "ceiling", box_runs={"GimmeSomeSlack": {"4+5": {"u-j1": 45.0}}})
+        rd = none(dict(gss, stage_ceiling_tokens=60 * T, blind_cap_tokens=20 * T), "USD 45 spent at the blind challenge plus a USD 20 "
+                  "cap passes the 60 ceiling", "ceiling", box_runs={"GimmeSomeSlack": {"4+5": {"u-j1": 45 * T}}})
         ok("release GimmeSomeSlack --stage blind_challenge --read-tokens %d --tokens %d --why" % (
-            MD.to_wt(45.0), MD.to_wt(5)) in rd["mods"]["GimmeSomeSlack"]
+            45 * T, 5 * T) in rd["mods"]["GimmeSomeSlack"]
            ["why"], "the blind ceiling pause names its release command (%s)" % rd["mods"]["GimmeSomeSlack"]["why"])
         # RIMMANDRAKE_RELEASE_STAGE_CEILING_PER_MOD_ONLY_GLOBAL_KNOB: a release is per stage
-        c60 = dict(gss, stage_ceiling_usd=60, blind_cap_usd=20)
+        c60 = dict(gss, stage_ceiling_tokens=60 * T, blind_cap_tokens=20 * T)
         for stage, want in (("offline_build", "ceiling"), ("blind_challenge", "launched")):
             reset()
-            world.update(box_runs={"GimmeSomeSlack": {"4+5": {"u-j1": 45.0}}})
+            world.update(box_runs={"GimmeSomeSlack": {"4+5": {"u-j1": 45 * T}}})
             brel = {"id": "rel-b-" + stage, "ts": "2026-11-15T19:00:00Z", "mod": "GimmeSomeSlack", "stage": stage,
-                    "by": "BENCH", "read_usd": 45.0, "release_usd": 5.0, "why": "selftest"}
+                    "by": "BENCH", "read_tokens": 45 * T, "release_tokens": 5 * T, "why": "selftest"}
             rd = MD.tick(root, c60, True, fx=dict(fx, facts=lambda: facts_for(c60), releases=lambda: ([brel], 0)),
                          now=BLIND_CLOCK, page=False)
             dec = rd["mods"]["GimmeSomeSlack"]["decision"]
@@ -1428,7 +1435,7 @@ def ingame_main():
             for mod in c["advancing"]:
                 f = M.build_facts(root, mod)
                 f["live_units"] = list(world["live"].get(mod, []))
-                f["last_end"], f["stage_runs"], f["run_usd"] = world["last_end"].get(mod), {}, {}
+                f["last_end"], f["stage_runs"], f["run_tokens"] = world["last_end"].get(mod), {}, {}
                 runs = world["runs"].get(mod, [])
                 out[mod] = MD.add_ingame(root, mod, MD.add_blind(root, mod, f, runs), runs)
             return out
@@ -1449,7 +1456,7 @@ def ingame_main():
               # own selftest (RIMMANDRAKE_REFUSE_INGAME_VISIT_ON_STALE_COMPANION). The world owns it, so a check may
               # still say FRESH or not. `deployed` stands in for mod_deployed (the game folder's mod copy) the same way;
               # its real gate is tested in selftest_maturation.py.
-              "launch": lambda mod, cap, item, **kw: M.launch_mod(root, mod, cap, item, model="opus", seat="BENCH",
+              "launch": lambda mod, cap, item, **kw: M.launch_mod(root, mod, RL.weighted_to_list_usd(cap), item, model="opus", seat="BENCH",
                                                                   bridge=lambda p, s: world["bridge"],
                                                                   companion=lambda game="a": world["companion"],
                                                                   deployed=lambda r_, m_: (True, "in sync (stand-in)"),
@@ -1477,15 +1484,15 @@ def ingame_main():
         # ingame_enabled shipped false and was set true 2026-11-15 by the Conductor once the first visit (Pyrelands)
         # had run by hand, as the settings' _ingame_doc says; the pin is now "a bool", and the off case is built
         # explicitly below rather than read from the shipped file.
-        chk(lambda: isinstance(real.get("ingame_enabled"), bool) and isinstance(real.get("ingame_cap_usd"), (int, float))
-            and real["ingame_cap_usd"] > 0 and isinstance(real.get("ingame_auto_runs_per_visit"), int)
+        chk(lambda: isinstance(real.get("ingame_enabled"), bool) and isinstance(real.get("ingame_cap_tokens"), int)
+            and real["ingame_cap_tokens"] > 0 and isinstance(real.get("ingame_auto_runs_per_visit"), int)
             and real["ingame_auto_runs_per_visit"] >= 1 and real.get("ingame_model") == "opus",
             "the settings as shipped: in-game launches a bool (the Conductor ran the first by hand), a positive cap, at "
-            "least one automatic run per visit, opus (%s, %s, %s)" % (real.get("ingame_enabled"), real.get("ingame_cap_usd"),
+            "least one automatic run per visit, opus (%s, %s, %s)" % (real.get("ingame_enabled"), real.get("ingame_cap_tokens"),
                                                                      real.get("ingame_auto_runs_per_visit")))
         off = dict(base, advancing=["Pyrelands"], ingame_enabled=False)
         on = dict(off, ingame_enabled=True)
-        cap = "%g" % base.get("ingame_cap_usd", 0)
+        cap = "%g" % RL.weighted_to_list_usd(base.get("ingame_cap_tokens", 0))   # the launch's one dollar edge
 
         # ---- off as shipped ------------------------------------------------------------------------------------------
         rd = [None]
@@ -1696,7 +1703,7 @@ def ingame_main():
 
         def t_misc():
             out = []
-            for c, word in ((dict(on, ingame_cap_usd=0), "no_cap"), (on, "account_hold")):
+            for c, word in ((dict(on, ingame_cap_tokens=0), "no_cap"), (on, "account_hold")):
                 reset()
                 if word == "account_hold":
                     world["account"] = (False, "held by the account pick")
@@ -2005,7 +2012,7 @@ def cert_rerun_main():
 
     def facts(rows, result=None, live=()):
         return {"ExplosiveKnockback": {
-            "stage": "offline_build", "owed": "certificate", "live_units": list(live), "stage_runs": {}, "run_usd": {},
+            "stage": "offline_build", "owed": "certificate", "live_units": list(live), "stage_runs": {}, "run_tokens": {},
             "certificate": {"ok": not any(r["status"] == "REFUSED" for r in rows), "rows": rows},
             "certificate_why": "refused: 11 of 44 bars", "certificate_fix": "certificate --run", "bar_fp": "fp",
             "cert_rerun_result": result}}
@@ -2210,7 +2217,7 @@ def cert_rerun_gates_main():
 
     def facts(stage, rows, result=None, live=()):
         f = {"mod": mod, "stage": stage, "version": "0.1.0", "exit": {"state": "absent"}, "live_units": list(live),
-             "stage_runs": {}, "run_usd": {}, "killed": {}, "ingame_live": [], "ingame_games": {},
+             "stage_runs": {}, "run_tokens": {}, "killed": {}, "ingame_live": [], "ingame_games": {},
              "certificate": {"ok": not any(r["status"] == "REFUSED" for r in rows), "rows": rows,
                              "to": stage, "mod": mod},
              "cert_rerun_result": result}
@@ -2347,7 +2354,7 @@ def cert_red_gates_main():
 
     def facts(stage, rows, live=(), who=mod, owed=None):
         f = {"mod": who, "stage": stage, "version": "0.1.0", "exit": {"state": "absent"}, "live_units": list(live),
-             "stage_runs": {}, "run_usd": {}, "killed": {}, "ingame_live": [], "ingame_games": {},
+             "stage_runs": {}, "run_tokens": {}, "killed": {}, "ingame_live": [], "ingame_games": {},
              "certificate": {"ok": not any(r["status"] == "REFUSED" for r in rows), "rows": rows, "to": stage,
                              "mod": who}, "cert_rerun_result": None, "known_red": {}}
         if stage == "in_game":
@@ -2392,7 +2399,7 @@ def cert_red_gates_main():
                "brief names the --run rerun and the gate (filed %s, briefs %d, other %s, %s)" % (
                    gate, label, filed, len(briefs), other, rows[0].get("decision")))
             book = (st["mods"].get(mod) or {}).get("launches") or [{}]
-            ok(book[-1].get("stage") == "offline_build" and book[-1].get("cap") == cfg["cap_usd"],
+            ok(book[-1].get("stage") == "offline_build" and book[-1].get("cap_tokens") == cfg["cap_tokens"],
                "cert red gates (%s, %s): booked as offline_build spend at the offline cap (%s)" % (gate, label, book[-1]))
             rows, la = MD.decide(cfg, st, facts(stage, rows_in, live=["rm-cert-red-1"]), now + 60, (True, "ok"),
                                  releases=[], bridge=FREE_BRIDGE)
@@ -2702,7 +2709,8 @@ def priority_main():
     now = 1794750000.0
     stop = {"status": "blocked", "stage": 5, "item": "CONCEPT_P", "blocked_on": "x",
             "history": [{"at": "2026-11-15T14:05:35Z", "what": "coverage_stop", "why": "round 6"}]}
-    cfg = {"enabled": True, "cap_usd": 15, "max_live": 1, "fix_cap_usd": 10, "steward_cap_usd": 5, "seat": "BENCH",
+    cfg = {"enabled": True, "cap_tokens": 15 * T, "max_live": 1, "fix_cap_tokens": 10 * T, "steward_cap_tokens": 5 * T,
+           "seat": "BENCH",
            "steward_model": "opus", "stalled_min": 10, "settle_s": 180}
     fx = {"designer_state": lambda m: stop if m == "P" else None, "version_locked": lambda m: False,
           "open_items": lambda ids: [], "version_evidence": lambda m: [], "designer_unit": lambda m: None,

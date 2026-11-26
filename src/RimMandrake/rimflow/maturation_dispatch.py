@@ -15,8 +15,8 @@ no builder on them, because every launch was a Conductor hand step.)
     python3 src/RimMandrake/rimflow/maturation_dispatch.py clear MOD --why "..."
             the Conductor lifts a stop on MOD (the next tick may launch on it once)
     python3 src/RimMandrake/rimflow/maturation_dispatch.py releases      every release: spend, amount, why, spent or not
-    python3 src/RimMandrake/rimflow/maturation_dispatch.py release MOD --stage STAGE --read-usd X --usd R --why "..."
-            the Conductor releases MOD past the ceiling at STAGE by USD R, having read USD X spent there: one more
+    python3 src/RimMandrake/rimflow/maturation_dispatch.py release MOD --stage STAGE --read-tokens X --tokens R --why "..."
+            the Conductor releases MOD past the ceiling at STAGE by R weighted tokens, having read X spent there: one more
             launch, then the mod pauses at the next ceiling (item RIMMANDRAKE_RELEASE_STAGE_CEILING_PER_MOD_ONLY_GLOBAL_KNOB)
     python3 src/RimMandrake/rimflow/maturation_dispatch.py pause [MOD] --why "..." [--until +2h|HH:MM|--until-release]
             [--stop-live]      the pipeline's pause (pipeline_pause.py): nothing in the launch-path census starts on
@@ -34,8 +34,8 @@ Per mod on the advancing list, in order, one decision:
                 the Designer, any later stage): nothing here; the Designer stays his
   live          a detached run is live on the mod (maturation_now maps runs to mods by item id): nothing; the run is
                 watched, and its refused count when first seen is kept
-  stopped       the last run on the mod ended and the count of refused bars did NOT fall, or the mod's dollars at the
-                stage passed stage_ceiling_usd, or a launch failed (one that never started on a transient fault is
+  stopped       the last run on the mod ended and the count of refused bars did NOT fall, or the mod's tokens at the
+                stage passed stage_ceiling_tokens, or a launch failed (one that never started on a transient fault is
                 launch_retry instead, the same item, up to launch_tries): nothing, and one "Needs Conductor" line. It stays
                 stopped while the refused set is the one it stopped on (never a second automatic try at the same
                 refusals); `clear` or a change to the refused set by someone else lifts it
@@ -43,18 +43,18 @@ Per mod on the advancing list, in order, one decision:
   hand_step     only hand steps are left (a steward confirmation): a "Needs Conductor" line
   ready         every exit test passes: "ready to advance" for the Conductor; the program never advances
   blind         the run records or the test table cannot be read: nothing (never launch on a blind reading)
-  no_cap        the settings have no positive cap_usd: nothing launches anywhere
+  no_cap        the settings have no positive cap_tokens: nothing launches anywhere
   slots_unknown an advancing mod's live runs cannot be read: no launch anywhere (an unknown occupancy is never 0)
-  ceiling       blind or in-game: the stage's dollars plus the run's cap pass stage_ceiling_usd (the cap is reserved)
+  ceiling       blind or in-game: the stage's tokens plus the run's cap pass stage_ceiling_tokens (the cap is reserved)
                 and no unspent release fits (below)
 Ceiling releases (item RIMMANDRAKE_RELEASE_STAGE_CEILING_PER_MOD_ONLY_GLOBAL_KNOB; the owner by card 2026-11-15: the
 Conductor may release a stopped mod without asking, each release in his daily digest with the spend). `release` appends
-one record to <state dir>/releases.jsonl: mod, stage, who (--by, else the seat), the spend read, the dollars released,
+one record to <state dir>/releases.jsonl: mod, stage, who (--by, else the seat), the spend read, the tokens released (weighted_v2),
 why. At that mod and stage a record lets ONE launch past the ceiling when the spend it read is still the spend (within
 READ_SLACK) and the spend plus the run's cap fits the ceiling plus the release; the launch spends it (state
 releases_used), so the next tick pauses at the ceiling again. Another mod's or stage's record, a spent one, a stale read
 or a malformed line releases nothing; every ceiling pause names the release command that would lift it.
-delegated_digest.py reads the same file (source "release": mod, stage and who; its page is token-blind, so the dollars
+delegated_digest.py reads the same file (source "release": mod, stage and who; its page is token-blind, so the tokens
 and the why are listed by `releases`, not printed there).
 The Conductor's hand judgements of 2026-11-13 to 11-15, applied by the tick (census:
 design/RimMandrake/pipeline_interventions_census_2026-11-15.md; selftest_maturation_hands.py):
@@ -67,7 +67,7 @@ design/RimMandrake/pipeline_interventions_census_2026-11-15.md; selftest_maturat
                 (pipeline_code: the git tree of src/RimMandrake/rimflow at this clone's HEAD) and is tried again once
                 that code changes, within launch_tries: at Stage 3 the stop lifts, a blind, in-game, steward or fixer
                 entry is retriable (RIMMANDRAKE_RETRY_FAILED_LAUNCH_ONCE_CODE_CHANGES)
-  refund        a blind or in-game run KILLED from outside keeps its dollars charged to the stage; when those dollars
+  refund        a blind or in-game run KILLED from outside keeps its tokens charged to the stage; when those tokens
                 alone hold its own retry at the ceiling, the tick gives back what is missing, once per killed run, never
                 while the stage reads DIVERGING, as a release record marked auto (by RUNNER, a delegated call the daily
                 digest reads). Every other release stays the Conductor's (RIMMANDRAKE_REFUND_KILLED_RUN_DOLLARS_AT_THE_CEILING)
@@ -96,7 +96,7 @@ design/RimMandrake/pipeline_interventions_census_2026-11-15.md; selftest_maturat
   launch        spawn a ledger item under this one (seat RUNNER, as ops_watch files), publish the shard, `maturation.py launch` it (opus, the cap)
 At the blind challenge (item RIMMANDRAKE_BUILD_BLIND_CHALLENGE_LAUNCHER_FOUR_MODS_PARKED), per advancing mod, one of:
   launch        cycle N (the record's cycles.total) is owed (no cycle_N folder), nothing live or just ended, no blind run
-                since it opened, and an automatic cycle of this visit left: one judge (opus, blind_cap_usd), item
+                since it opened, and an automatic cycle of this visit left: one judge (opus, blind_cap_tokens), item
                 RIMMANDRAKE_JUDGE_<MOD>_BLIND_CYCLE_<N>_TESTS_FIRST spawned the same way as a build item
   live | settling   a run is live on it, or one ended under settle_s ago: nothing
   exit_met | exit_not_met | cycle_unfinished   cycle N is recorded (maturation.read_exit): a Needs Conductor line each;
@@ -110,13 +110,13 @@ At the blind challenge (item RIMMANDRAKE_BUILD_BLIND_CHALLENGE_LAUNCHER_FOUR_MOD
                 A run KILLED from outside before it wrote its result (an account switch SIGTERMs every Claude process:
                 detached_helper.killed) is the same: not the cycle. The tick first finishes it (its finish never ran)
                 and starts its return, waits for the clone to come back, then relaunches the same item, within the same
-                launch_tries; its dollars stay charged to the stage (RIMMANDRAKE_RETRY_RUN_KILLED_BY_ACCOUNT_SWITCH_CYCLE_KEPT)
+                launch_tries; its tokens stay charged to the stage (RIMMANDRAKE_RETRY_RUN_KILLED_BY_ACCOUNT_SWITCH_CYCLE_KEPT)
   held | blocked | blind_off | no_cap | account_hold | slots_full   as for the offline build
 At in-game acceptance (item RIMMANDRAKE_BUILD_IN_GAME_STAGE_LAUNCHER_PYRELANDS_ARRIVED_FIRST), per advancing mod, one of:
   launch        visit N (the moves into in_game) is owed (no visit_N folder), nothing live or just ended on it, no
                 in-game run since it opened, no automatic run yet this visit, no in-game run live on ANY mod (one
                 live-game driver per game, across all mods), and a game is free: one live driver
-                (opus, ingame_cap_usd), item RIMMANDRAKE_DRIVE_<MOD>_IN_GAME_ACCEPTANCE_VISIT_<N> (needs game-up)
+                (opus, ingame_cap_tokens), item RIMMANDRAKE_DRIVE_<MOD>_IN_GAME_ACCEPTANCE_VISIT_<N> (needs game-up)
   ingame_off    ingame_enabled is false: a Needs Conductor line. It ships false: the timer starts no live run until
                 the Conductor has run the first one by hand and set it true
   driver_busy | bridge_held   an in-game run is live on some mod, or the bridge is not takeable (another seat, a live
@@ -166,40 +166,29 @@ import mod_owner_hold as OH          # noqa: E402  the owner's hold: a held mod 
 import run_void as RV            # noqa: E402  a VOID run spends no trial (RIMMANDRAKE_VOID_SYSTEM_KILLED_RUNS_NO_TRIAL_SPENT)
 import mod_model as MM           # noqa: E402  one mod's builders on a pinned model, caps scaled (`pipe model`)
 import form_fault as FF          # noqa: E402  a fault of form is repaired where it is found, never counted
+import role_launch as RL         # noqa: E402  the one dollar<->weighted-token rate (list_usd_to_weighted)
 
 UNM = "UNMEASURED"
 RELEASE_STAGES = ("offline_build", "blind_challenge", "in_game")
-READ_SLACK = 0.5        # USD: a release read at this spend, give or take, is still a reading of it
+READ_SLACK = 125_000     # weighted tokens: a release read at this spend, give or take, is still a reading of it
+#                          (was USD 0.5 at 250,000 per list dollar, role_launch.WT_PER_LIST_USD)
 # The owner, 2026-11-16 1:08 PM PST: "Please speak in terms of weighted tokens not money. The money quotes don't
 # translate meaningfully." Every line a person reads states spend in weighted tokens, unit weighted_v2 (role_launch
 # MODEL_PRICES: each field at its model's list price / the Opus 5.5 input price; the owner, 2026-11-16: "I want you to
-# properly weight tokens by the model as well so they are more comparable"). The ceiling and the caps are still KEPT
-# in list dollars inside, and a list dollar is exactly 1e6 / that input price weighted_v2 tokens for every model, so
-# wt() is exact, not a median (until 2026-11-16 it was 350,303 weighted_v1 per dollar, the Opus median of 172 runs,
-# reading Sonnet stages high). A cost_usd the CLI marks costBasis other than "list" is not list-priced
-# (RIMMANDRAKE_WEIGH_TOKENS_BY_MODEL_OPUS_INPUT_UNIT). Moving the ceiling and caps themselves to tokens is
-# RIMMANDRAKE_KEEP_STAGE_CEILING_IN_TOKENS_NOT_LIST_DOLLARS.
-def _wt_per_usd():
-    import role_launch as RL
-    return int(round(1e6 / RL.MODEL_PRICES[RL.REF_MODEL]["input_tokens"]))
+# properly weight tokens by the model as well so they are more comparable"). Since 2026-11-26 the ceiling, the caps,
+# every run's spend and every release are KEPT in weighted_v2 tokens too (ints;
+# RIMMANDRAKE_KEEP_STAGE_CEILING_IN_TOKENS_NOT_LIST_DOLLARS): a run counts its record's weighted_v2 `tokens`, never
+# the CLI's cost_usd, which priced Fable 5.2 runs (costBasis "unknown") at Opus rates, half their weight. Dollars meet
+# the pipeline at two edges only, each through role_launch: a legacy dollar figure (list_usd_to_weighted) and a cap
+# reaching a launch's --budget-usd (weighted_to_list_usd).
 
 
-WT_PER_USD = _wt_per_usd()      # 250,000 at Opus 5.5's $4/MTok input
-
-
-def to_wt(usd):
-    """List dollars -> weighted tokens at WT_PER_USD (an int: a release command's exact argument)."""
-    return int(round(float(usd) * WT_PER_USD))
-
-
-def from_wt(tokens):
-    return float(tokens) / WT_PER_USD
-
-
-def wt(usd):
-    """List dollars -> the words a person reads: '≈17.5M weighted tokens'."""
-    n = to_wt(usd)
+def wt(tokens):
+    """Weighted tokens -> the words a person reads: '≈17.5M weighted tokens'."""
+    n = int(round(tokens))
     return "≈%s weighted tokens" % ("%.1fM" % (n / 1e6) if n >= 1e6 else "%dk" % round(n / 1e3) if n >= 1e3 else n)
+
+
 CFG_PATH = os.path.join(HERE, "maturation_dispatch.json")
 ALARM_NAME = "OPS_MATURATION_IDLE_ADVANCING_MOD"
 CLONE_ALARM_NAME = "OPS_DISPATCH_CLONE_BEHIND_UNSTICK"     # ops_watch_rules.json: maturation.clone_behind_min > 5
@@ -307,14 +296,29 @@ def _ts(iso_s):
         return None
 
 
-def _usd(r):
-    return (r["usd"] if isinstance(r.get("usd"), (int, float)) else
-            r.get("cap") if isinstance(r.get("cap"), (int, float)) else 0.0)
+def _num(v):
+    return isinstance(v, (int, float)) and not isinstance(v, bool)
+
+
+def view_tokens(r):
+    """-> one run's spend in weighted_v2 tokens (an int), from its run view (maturation_now.run_view): its record's
+    `tokens` when they are weighted_v2; else its measured list cost_usd through the one legacy rate
+    (role_launch.list_usd_to_weighted: a record from before tokens were weighed); else its launch cap (budget_usd,
+    list dollars) the same way; else 0. Never a cost_usd beside v2 tokens: the CLI priced Fable 5.2 at Opus rates
+    (costBasis "unknown"), half its weight (RIMMANDRAKE_KEEP_STAGE_CEILING_IN_TOKENS_NOT_LIST_DOLLARS)."""
+    tok = r.get("tokens")
+    if r.get("token_unit") == RL.TOKEN_UNIT and isinstance(tok, int) and not isinstance(tok, bool) and tok >= 0:
+        return tok
+    if _num(r.get("usd")):
+        return RL.list_usd_to_weighted(r["usd"])
+    if _num(r.get("cap")):
+        return RL.list_usd_to_weighted(r["cap"])
+    return 0
 
 
 def gather(root, cfg, live=True):
     """-> {mod: facts}: maturation.build_facts plus, from maturation_now's run placement, the live units, the last run's
-    end and the dollars the stage has spent."""
+    end and the weighted tokens the stage has spent (run_tokens)."""
     g = MN.gather(root, live=live)
     by = {m["name"]: m for m in g["mods"]}
     out = {}
@@ -348,16 +352,12 @@ def gather(root, cfg, live=True):
             ends = [r["end"] for r in runs if isinstance(r.get("end"), (int, float))]
             f["last_end"] = max(ends) if ends else None
             box3 = ((m.get("boxes") or {}).get("3") or {}).get("runs") or []
-            f["stage_runs"] = {r["unit"]: (r["usd"] if isinstance(r.get("usd"), (int, float)) else
-                                           r.get("cap") if isinstance(r.get("cap"), (int, float)) else 0.0)
-                               for r in box3 if r.get("unit")}
-            f["box_runs"] = {c: {r["unit"]: _usd(r) for r in (b.get("runs") or []) if r.get("unit")}
+            f["stage_runs"] = {r["unit"]: view_tokens(r) for r in box3 if r.get("unit")}
+            f["box_runs"] = {c: {r["unit"]: view_tokens(r) for r in (b.get("runs") or []) if r.get("unit")}
                              for c, b in (m.get("boxes") or {}).items()}
             f["ended_runs"] = [r for r in runs if not r.get("live") and isinstance(r.get("end"), (int, float))
                                and r.get("unit")]
-            f["run_usd"] = {r["unit"]: (r["usd"] if isinstance(r.get("usd"), (int, float)) else
-                                        r.get("cap") if isinstance(r.get("cap"), (int, float)) else 0.0)
-                            for r in runs if r.get("unit")}
+            f["run_tokens"] = {r["unit"]: view_tokens(r) for r in runs if r.get("unit")}
             # for maturation_hands (who launched what) and slow_chores (a dead run whose finish never ran)
             f["runs_seen"] = [{"unit": r["unit"], "item": r.get("item"), "at": r.get("at"), "end": r.get("end"),
                                "ran": ran(r)} for r in runs if r.get("unit")]
@@ -860,15 +860,17 @@ def no_slot(cfg, live_total, put):
     return False
 
 
-def over_ceiling(usd, cap, ceiling, where):
-    """-> why the next run may not start, or None. The cap is reserved before launch: spent plus the run's cap must fit
-    the ceiling (RIMMANDRAKE_RESERVE_CAP_BEFORE_LAUNCH: `usd >= ceiling` let USD 59 of 60 launch a USD 15 run)."""
-    if not (isinstance(ceiling, (int, float)) and not isinstance(ceiling, bool)):
+def over_ceiling(spent, cap, ceiling, where):
+    """-> why the next run may not start, or None; every figure weighted tokens. The cap is reserved before launch:
+    spent plus the run's cap must fit the ceiling (RIMMANDRAKE_RESERVE_CAP_BEFORE_LAUNCH: `spent >= ceiling` let USD 59
+    of 60 launch a USD 15 run)."""
+    if not _num(ceiling):
         return None
-    if usd >= ceiling:
-        return "%s spent at %s, at or past the %s ceiling" % (wt(usd), where, wt(ceiling))
-    if usd + cap > ceiling:
-        return "%s spent at %s plus the next run's %s cap passes the %s ceiling" % (wt(usd), where, wt(cap), wt(ceiling))
+    if spent >= ceiling:
+        return "%s spent at %s, at or past the %s ceiling" % (wt(spent), where, wt(ceiling))
+    if spent + cap > ceiling:
+        return "%s spent at %s plus the next run's %s cap passes the %s ceiling" % (wt(spent), where, wt(cap),
+                                                                                   wt(ceiling))
     return None
 
 
@@ -876,14 +878,29 @@ def releases_path():
     return os.path.join(sdir(), "releases.jsonl")
 
 
-def _usd_ok(v, positive=False):
-    return isinstance(v, (int, float)) and not isinstance(v, bool) and (v > 0 if positive else v >= 0)
+def _amount_ok(v, positive=False):
+    return _num(v) and (v > 0 if positive else v >= 0)
+
+
+def release_tokens(r):
+    """-> the release record with read_tokens/release_tokens (ints, weighted_v2), or None. A record written before
+    2026-11-26 holds read_usd/release_usd (list dollars): it converts through role_launch.list_usd_to_weighted, the
+    one legacy rate, and is a whole record, not a malformed one."""
+    if not isinstance(r, dict):
+        return r
+    if "read_tokens" in r or "release_tokens" in r:
+        return r
+    if _amount_ok(r.get("read_usd")) and _amount_ok(r.get("release_usd"), True):
+        return dict(r, read_tokens=RL.list_usd_to_weighted(r["read_usd"]),
+                    release_tokens=RL.list_usd_to_weighted(r["release_usd"]))
+    return r
 
 
 def release_ok(r):
-    """Is one parsed releases.jsonl line a whole release record?"""
+    """Is one parsed releases.jsonl line (after release_tokens) a whole release record?"""
     return (isinstance(r, dict) and all(isinstance(r.get(k), str) and r[k].strip() for k in ("id", "ts", "mod", "by", "why"))
-            and r.get("stage") in RELEASE_STAGES and _usd_ok(r.get("read_usd")) and _usd_ok(r.get("release_usd"), True))
+            and r.get("stage") in RELEASE_STAGES and _amount_ok(r.get("read_tokens"))
+            and _amount_ok(r.get("release_tokens"), True))
 
 
 def read_releases(path=None):
@@ -898,7 +915,7 @@ def read_releases(path=None):
         if not line.strip():
             continue
         try:
-            r = json.loads(line)
+            r = release_tokens(json.loads(line))
         except ValueError:
             r = None
         if release_ok(r):
@@ -908,10 +925,10 @@ def read_releases(path=None):
     return recs, bad
 
 
-def release_cmd(mod, stage, usd, cap, ceiling):
-    need = max(1, int(-(-(usd + cap - ceiling) // 1)))
+def release_cmd(mod, stage, spent, cap, ceiling):
+    need = max(1, int(-(-(spent + cap - ceiling) // 1)))
     return ('python3 src/RimMandrake/rimflow/maturation_dispatch.py release %s --stage %s --read-tokens %d --tokens %d '
-            '--why "..."' % (mod, stage, to_wt(usd), to_wt(need)))
+            '--why "..."' % (mod, stage, int(round(spent)), need))
 
 
 # over_ceiling's words, in dollars before 2026-11-16 and in weighted tokens since: a stop written before the flag
@@ -924,45 +941,45 @@ def ceiling_stop(stop):
     return bool(stop) and bool(stop.get("ceiling") or CEILING_WHY.match(str(stop.get("why") or "")))
 
 
-def stage_spend(cfg, mod, stage, usd):
-    """-> (the stage's spend, its ceiling) in dollars, through the mod's weighted-token account for the stage in the
-    control store (`pipe set|add|reset|limit <Mod> spend_<stage> ...`, PC.SPEND_RES): every ceiling reader (the gate,
-    the killed-run refund, a pilot holder's cap) asks this, never stage_ceiling_usd itself. A stage with no account, no
-    ceiling or no readable spend reads the pipeline's own numbers."""
-    ceiling = cfg.get("stage_ceiling_usd")
-    if stage not in PC.SPEND_RES or not _usd_ok(ceiling, True) or not _usd_ok(usd):
-        return usd, ceiling
-    return (from_wt(PC.used(mod, PC.SPEND_RES[stage], to_wt(usd))),
-            from_wt(PC.limit(mod, PC.SPEND_RES[stage], to_wt(ceiling))))
+def stage_spend(cfg, mod, stage, spent):
+    """-> (the stage's spend, its ceiling) in weighted tokens, through the mod's weighted-token account for the stage
+    in the control store (`pipe set|add|reset|limit <Mod> spend_<stage> ...`, PC.SPEND_RES): every ceiling reader (the
+    gate, the killed-run refund, a pilot holder's cap) asks this, never stage_ceiling_tokens itself. A stage with no
+    account, no ceiling or no readable spend reads the pipeline's own numbers."""
+    ceiling = cfg.get("stage_ceiling_tokens")
+    if stage not in PC.SPEND_RES or not _amount_ok(ceiling, True) or not _amount_ok(spent):
+        return spent, ceiling
+    return (PC.used(mod, PC.SPEND_RES[stage], int(round(spent))),
+            PC.limit(mod, PC.SPEND_RES[stage], int(round(ceiling))))
 
 
-def ceiling_gate(cfg, s, mod, stage, usd, cap, where, releases):
+def ceiling_gate(cfg, s, mod, stage, spent, cap, where, releases):
     """-> (why the next run may not start, or None; the release record id that lets it start past the ceiling, or
     None). releases: read_releases()'s (records, malformed); s: the mod's state (its releases_used)."""
-    usd, ceiling = stage_spend(cfg, mod, stage, usd)
-    over = over_ceiling(usd, cap, ceiling, where)
+    spent, ceiling = stage_spend(cfg, mod, stage, spent)      # weighted tokens
+    over = over_ceiling(spent, cap, ceiling, where)
     if not over:
         return None, None
     recs, bad = releases or ([], 0)
     used = s.get("releases_used") or {}
     mine = [r for r in recs if r["mod"] == mod and r["stage"] == stage]
     fresh = [r for r in mine if r["id"] not in used]
-    stale = [r for r in fresh if abs(r["read_usd"] - usd) > READ_SLACK]
-    fit = [r for r in fresh if r not in stale and usd + cap <= ceiling + r["release_usd"]]
+    stale = [r for r in fresh if abs(r["read_tokens"] - spent) > READ_SLACK]
+    fit = [r for r in fresh if r not in stale and spent + cap <= ceiling + r["release_tokens"]]
     if fit:
         return None, fit[-1]["id"]
     notes = []
     if mine and not fresh:
         notes.append("its release is spent")
     if stale:
-        notes.append("a release read %s, the spend is now %s" % (wt(stale[-1]["read_usd"]), wt(usd)))
+        notes.append("a release read %s, the spend is now %s" % (wt(stale[-1]["read_tokens"]), wt(spent)))
     if len(fresh) > len(stale):
         notes.append("a release of %s does not cover the next run's cap" % wt([r for r in fresh if r not in stale][-1]
-                                                                             ["release_usd"]))
+                                                                             ["release_tokens"]))
     if bad:
         notes.append("%d malformed release line(s) ignored" % bad)
     return "%s%s; release it: %s" % (over, " (%s)" % "; ".join(notes) if notes else "",
-                                     release_cmd(mod, stage, usd, cap, ceiling)), None
+                                     release_cmd(mod, stage, spent, cap, ceiling)), None
 
 
 def void_units(f, s):
@@ -992,26 +1009,35 @@ def arrivals(rec):
 
 def _off_ceiling(f, s, spent, stage=None):
     """Drop the void units, and every run started before the mod's latest arrival at the stage (it was spent on an
-    earlier pass: RIMMANDRAKE_TRACE_SLACK_STAGE_SIX_SPEND_BEFORE_FIRST_VISIT), from {unit: usd}; -> (kept usd, void
-    usd), each rounded. An unread arrival counts every run."""
+    earlier pass: RIMMANDRAKE_TRACE_SLACK_STAGE_SIX_SPEND_BEFORE_FIRST_VISIT), from {unit: weighted tokens}; -> (kept,
+    void), each an int. An unread arrival counts every run."""
     came, at = (f.get("arrived") or {}).get(stage), {r.get("unit"): r.get("at") for r in f.get("runs_seen") or []}
     if came is not None:
         spent = {u: v for u, v in spent.items() if not (isinstance(at.get(u), (int, float)) and at[u] < came)}
     void = void_units(f, s)
-    v = round(sum(u_usd for u, u_usd in spent.items() if u in void), 2)
-    return round(sum(u_usd for u, u_usd in spent.items() if u not in void), 2), v
+    v = int(round(sum(n for u, n in spent.items() if u in void)))
+    return int(round(sum(n for u, n in spent.items() if u not in void))), v
+
+
+def entry_tokens(x):
+    """-> a launches entry's cap in weighted tokens: cap_tokens (since 2026-11-26), else a legacy entry's cap (list
+    dollars, the launch's budget) through role_launch.list_usd_to_weighted, else 0."""
+    if _num(x.get("cap_tokens")):
+        return int(x["cap_tokens"])
+    return RL.list_usd_to_weighted(x["cap"]) if _num(x.get("cap")) else 0
 
 
 def stage_spent(f, stage, ours, s=None, both=False):
-    """-> USD spent at this stage on the mod's merits: every run the status page placed in its box (measured dollars,
-    else its cap), plus this step's own launches there not yet placed (at their cap), less every VOID run (void_units;
-    shown apart as void spend). both=True -> (counted, void)."""
+    """-> weighted tokens spent at this stage on the mod's merits: every run the status page placed in its box
+    (view_tokens: its weighted_v2 tokens, else legacy dollars converted, else its cap), plus this step's own launches
+    there not yet placed (at their cap), less every VOID run (void_units; shown apart as void spend).
+    both=True -> (counted, void)."""
     spent = dict((f.get("box_runs") or {}).get(M.COL[stage]) or {})
     for x in ours or []:
         # with the killed attempts a retry replaced (counted here, then taken off as void below)
         for u in [x.get("unit")] + list(x.get("killed_before") or []):
             if u and u not in spent:
-                spent[u] = (f.get("run_usd") or {}).get(u, x.get("cap") or 0.0)
+                spent[u] = (f.get("run_tokens") or {}).get(u, entry_tokens(x))
     kept, void = _off_ceiling(f, s, spent, stage)
     return (kept, void) if both else kept
 
@@ -1019,29 +1045,30 @@ def stage_spent(f, stage, ours, s=None, both=False):
 REFUND_STAGE = {"blind_challenge": "4+5", "in_game": "6"}       # maturation_convergence's stage keys
 
 
-def refund(cfg, s, f, stage, usd, cap, unit):
+def refund(cfg, s, f, stage, used, cap, unit):
     """-> (refund, why not). The Conductor's judgement of 2026-11-15 12:25 PM PST, as a rule: "cycle 3 was killed
     mid-run by the account switch, not failed ... The mod is converging." A run KILLED from outside before it wrote a
-    result (f["killed"]) bought no judging, yet its dollars stay charged to the stage; when they alone hold its own
+    result (f["killed"]) bought no judging, yet its tokens stay charged to the stage; when they alone hold its own
     retry at the ceiling, the tick gives them back once: the amount still missing, never more than that run spent,
     never twice for one run, and not while the stage reads DIVERGING. Any other release stays the Conductor's hand."""
     if not unit or unit not in (f.get("killed") or {}):
         return None, ""
-    if unit in void_units(f, s):    # its dollars are already off the ceiling (void spend): nothing to give back
+    if unit in void_units(f, s):    # its tokens are already off the ceiling (void spend): nothing to give back
         return None, ""
     if unit in (s.get("refunds") or {}):
         return None, "; the killed run %s was refunded once already" % unit
-    usd, ceiling = stage_spend(cfg, f.get("mod"), stage, usd)
-    spent = (f.get("run_usd") or {}).get(unit)
-    if not (_usd_ok(spent, True) and _usd_ok(ceiling, True)):
+    used, ceiling = stage_spend(cfg, f.get("mod"), stage, used)
+    spent = (f.get("run_tokens") or {}).get(unit)
+    if not (_amount_ok(spent, True) and _amount_ok(ceiling, True)):
         return None, ""
-    need = round(usd + cap - ceiling, 2)
+    need = int(round(used + cap - ceiling))
     if need > spent + READ_SLACK:
         return None, "; the killed run %s spent %s, less than the %s missing" % (unit, wt(spent), wt(need))
     word = (s.get("convergence") or {}).get(REFUND_STAGE.get(stage)) or UNM
     if word == "DIVERGING":
-        return None, "; no refund of the killed run %s's dollars while the stage reads DIVERGING" % unit
-    return {"unit": unit, "stage": stage, "read_usd": usd, "usd": max(need, 0.01), "spent": spent, "word": word}, ""
+        return None, "; no refund of the killed run %s's tokens while the stage reads DIVERGING" % unit
+    return {"unit": unit, "stage": stage, "read_tokens": int(round(used)), "tokens": max(need, 1), "spent": spent,
+            "word": word}, ""
 
 
 def book_refunds(st, rows, now, path=None):
@@ -1053,38 +1080,38 @@ def book_refunds(st, rows, now, path=None):
         if not ref or r.get("decision") != "launched":
             continue
         rec = {"ts": dt.datetime.fromtimestamp(now, dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "mod": r["mod"],
-               "stage": ref["stage"], "by": "RUNNER", "read_usd": round(ref["read_usd"], 2),
-               "release_usd": round(ref["usd"], 2), "auto": True,
+               "stage": ref["stage"], "by": "RUNNER", "read_tokens": int(ref["read_tokens"]),
+               "release_tokens": int(ref["tokens"]), "auto": True,
                "why": "delegated: killed-run refund: run %s was killed from outside before it wrote a result (not a "
                       "failed run); %s of the %s charged for it is given back once so the same %s can "
                       "finish; the stage's convergence reads %s (the Conductor's rule of 2026-11-15, "
                       "RIMMANDRAKE_REFUND_KILLED_RUN_DOLLARS_AT_THE_CEILING)" % (
-                          ref["unit"], wt(ref["usd"]), wt(ref["spent"]),
+                          ref["unit"], wt(ref["tokens"]), wt(ref["spent"]),
                           "cycle" if ref["stage"] == "blind_challenge" else "visit", ref["word"])}
         rec["id"] = "rel-%s" % hashlib.sha1(json.dumps(rec, sort_keys=True).encode()).hexdigest()[:12]
         with open(path or releases_path(), "a", encoding="utf-8") as fh:
             fh.write(json.dumps(rec, sort_keys=True) + "\n")
         s = st["mods"][r["mod"]]
-        s.setdefault("releases_used", {})[rec["id"]] = {"at": now, "stage": ref["stage"], "usd": ref["read_usd"],
+        s.setdefault("releases_used", {})[rec["id"]] = {"at": now, "stage": ref["stage"], "tokens": ref["read_tokens"],
                                                          "unit": r.get("unit")}
-        s.setdefault("refunds", {})[ref["unit"]] = {"at": now, "usd": rec["release_usd"], "release": rec["id"]}
-        r["why"] = "%s; killed-run refund %s (%s)" % (r.get("why"), rec["id"], wt(rec["release_usd"]))
+        s.setdefault("refunds", {})[ref["unit"]] = {"at": now, "tokens": rec["release_tokens"], "release": rec["id"]}
+        r["why"] = "%s; killed-run refund %s (%s)" % (r.get("why"), rec["id"], wt(rec["release_tokens"]))
         out.append(rec["id"])
     return out
 
 
 def reserve_refused(cfg, f, row, put, cap, stage, ours, s=None, releases=None, killed=None):
     """The ceiling at the blind challenge and in-game acceptance, as at the offline build: True (the row put) when the
-    stage's spend plus this run's cap passes stage_ceiling_usd. Read every tick, never stored: raising the ceiling or a
+    stage's spend plus this run's cap passes stage_ceiling_tokens. Read every tick, never stored: raising the ceiling or a
     Conductor's release (`release`) lifts it, the release once. killed: the killed run this launch retries, if any
     (refund)."""
-    usd, vusd = stage_spent(f, stage, ours, s, both=True)
-    row["stage_usd"] = usd
-    if vusd:
-        row["void_usd"] = vusd      # shown apart: off the ceiling by his card of 2026-11-18
-    over, rid = ceiling_gate(cfg, s or {}, row["mod"], stage, usd, cap, M.label(stage), releases)
+    spent, void = stage_spent(f, stage, ours, s, both=True)
+    row["stage_tokens"] = spent
+    if void:
+        row["void_tokens"] = void      # shown apart: off the ceiling by his card of 2026-11-18
+    over, rid = ceiling_gate(cfg, s or {}, row["mod"], stage, spent, cap, M.label(stage), releases)
     if over:
-        ref, why_not = refund(cfg, s or {}, f, stage, usd, cap, killed)
+        ref, why_not = refund(cfg, s or {}, f, stage, spent, cap, killed)
         if ref:
             row["refund"] = ref
             return False
@@ -1132,7 +1159,7 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
             put("model_unknown", str(e), "its builder model pin cannot be priced (%s); `pipe model %s default` lifts it"
                 % (e, mod))
             continue
-        cap = cfg.get("cap_usd")
+        cap = cfg.get("cap_tokens")
         cap_ok = isinstance(cap, (int, float)) and not isinstance(cap, bool) and cap > 0
         if cfg.get("_pin"):
             row["pin"] = cfg["_pin"]
@@ -1245,9 +1272,9 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
             put("blind", "the test table cannot be read" + te, "the test table cannot be read%s; no builder launches on "
                 "it" % te)
             continue
-        usd = offline_usd(f, s)
-        row["stage_usd"] = usd
-        over, rid = ceiling_gate(cfg, s, mod, "offline_build", usd, cap if cap_ok else 0, "the offline build", releases)
+        spent = offline_tokens(f, s)
+        row["stage_tokens"] = spent
+        over, rid = ceiling_gate(cfg, s, mod, "offline_build", spent, cap if cap_ok else 0, "the offline build", releases)
         stop = s.get("stopped")
         if ceiling_stop(stop) and rid:
             s.pop("stopped")
@@ -1298,7 +1325,7 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
         if rid:
             row["release"] = rid
         if not cap_ok:
-            put("no_cap", "the settings have no positive cap_usd; nothing launches without a cap")
+            put("no_cap", "the settings have no positive cap_tokens; nothing launches without a cap")
             continue
         if not account[0]:
             put("account_hold", account[1])
@@ -1316,13 +1343,13 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
     return rows, launches
 
 
-def offline_usd(f, s):
-    """-> the mod's measured dollars at the offline build: the runs the status page places there, plus this step's
-    launches there it does not place yet (at their measured dollars, else their cap)."""
+def offline_tokens(f, s):
+    """-> the mod's weighted tokens at the offline build: the runs the status page places there, plus this step's
+    launches there it does not place yet (at their measured tokens, else their cap)."""
     spent = dict(f.get("stage_runs") or {})
     for x in s.get("launches") or []:
         if x.get("stage") == "offline_build" and x.get("unit") not in spent:
-            spent[x["unit"]] = (f.get("run_usd") or {}).get(x["unit"], x.get("cap") or 0.0)
+            spent[x["unit"]] = (f.get("run_tokens") or {}).get(x["unit"], entry_tokens(x))
     return _off_ceiling(f, s, spent, "offline_build")[0]     # less every VOID run: his card of 2026-11-18 (void_units)
 
 
@@ -1435,16 +1462,16 @@ def cert_red_decide(cfg, s, f, row, put, now, account, live_total, cap, releases
             "`maturation_dispatch.py clear %s --why ...` lifts it)" % (
                 why, ", ".join(sorted(set((prior.get("items") or {}).values()))) or "none filed", mod))
         return "decided"
-    usd = offline_usd(f, s)
-    row["stage_usd"] = usd
-    over, rid = ceiling_gate(cfg, s, mod, "offline_build", usd, cap, "the offline build", releases)
+    spent = offline_tokens(f, s)
+    row["stage_tokens"] = spent
+    over, rid = ceiling_gate(cfg, s, mod, "offline_build", spent, cap, "the offline build", releases)
     if over:
         put("stopped", over, "stopped, %s" % over)
         return "decided"
     if rid:
         row["release"] = rid
     if not cap:
-        put("no_cap", "the settings have no positive cap_usd; nothing launches without a cap")
+        put("no_cap", "the settings have no positive cap_tokens; nothing launches without a cap")
         return "decided"
     if not account[0]:
         put("account_hold", account[1])
@@ -2072,7 +2099,7 @@ def cert_launch(root, cfg, st, row, now, fx, known, do_file):
         known.add(name) if isinstance(known, set) else None
     unit, text = None, failed
     if not failed:
-        cap = row.get("cap") or cfg["cap_usd"]
+        cap = row.get("cap") or cfg["cap_tokens"]
         item = sorted(set(chosen.values()))[0]
         brief = (cert_brief if kind == "red" else red_seen_brief)(mod, chosen, cap, bars, gate)
         do_brief = fx.get("launch_brief") or AUT.launch_brief
@@ -2096,7 +2123,7 @@ def cert_launch(root, cfg, st, row, now, fx, known, do_file):
                                       env=control_env(mod, None))
             unit = unit if rc == 0 else None
         if unit:
-            s.setdefault("launches", []).append({"unit": unit, "item": item, "at": now, "cap": cap,
+            s.setdefault("launches", []).append({"unit": unit, "item": item, "at": now, "cap_tokens": cap,
                                                  "stage": "offline_build", "cert_reds": reds})
     s[CERT_BOOK[kind]] = {"tests": reds, "items": chosen, "unit": unit, "at": now, "failed": None if unit else text,
                           "code": cfg.get("_code"), "stage": gate.get("stage", "offline_build"),
@@ -2216,7 +2243,7 @@ def cert_wait(f, put, mod, to, what, rerun=None, red=None):
         cfg, s, row, now = rerun
         if red:
             account, live_total, releases = red
-            cap = cfg.get("cap_usd")
+            cap = cfg.get("cap_tokens")
             cap = cap if isinstance(cap, (int, float)) and not isinstance(cap, bool) and cap > 0 else 0
             got = cert_red_decide(cfg, s, f, row, put, now, account, live_total, cap, releases, to, what)
             if got:
@@ -2319,9 +2346,9 @@ def decide_blind(cfg, s, f, row, put, now, account, live_total, releases=None):
         put("blind_off", "blind_enabled is off in maturation_dispatch.json",
             "blind cycle %s is owed with nothing live; the Dispatch step's blind launches are off" % n)
         return False
-    cap = cfg.get("blind_cap_usd")
+    cap = cfg.get("blind_cap_tokens")
     if not (isinstance(cap, (int, float)) and not isinstance(cap, bool) and cap > 0):
-        put("no_cap", "the settings have no positive blind_cap_usd; no judge launches without a cap")
+        put("no_cap", "the settings have no positive blind_cap_tokens; no judge launches without a cap")
         return False
     if reserve_refused(cfg, f, row, put, cap, "blind_challenge", s.get("blind_auto"), s, releases,
                        killed=retry["unit"] if resume else None):
@@ -2373,9 +2400,9 @@ def decide_void_resume(cfg, s, f, row, put, n, vid, account, live_total, release
             "blind cycle %s's voided judge is owed its resume with nothing live; the Dispatch step's blind launches "
             "are off" % n)
         return False
-    cap = cfg.get("blind_cap_usd")
+    cap = cfg.get("blind_cap_tokens")
     if not (isinstance(cap, (int, float)) and not isinstance(cap, bool) and cap > 0):
-        put("no_cap", "the settings have no positive blind_cap_usd; no judge launches without a cap")
+        put("no_cap", "the settings have no positive blind_cap_tokens; no judge launches without a cap")
         return False
     if reserve_refused(cfg, f, row, put, cap, "blind_challenge", s.get("blind_auto"), s, releases, killed=unit):
         return False
@@ -2493,9 +2520,9 @@ def decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge
             "in-game visit %s is owed; the Dispatch step's live launches are off until the Conductor has run the first "
             "by hand (maturation.py launch %s --budget-usd <cap> --item <ID>, then ingame_enabled true)" % (n, mod))
         return False
-    cap = cfg.get("ingame_cap_usd")
+    cap = cfg.get("ingame_cap_tokens")
     if not (isinstance(cap, (int, float)) and not isinstance(cap, bool) and cap > 0):
-        put("no_cap", "the settings have no positive ingame_cap_usd; no live driver launches without a cap")
+        put("no_cap", "the settings have no positive ingame_cap_tokens; no live driver launches without a cap")
         return False
     if reserve_refused(cfg, f, row, put, cap, "in_game", s.get("ingame_auto"), s, releases,
                        killed=retry["unit"] if resume else None):
@@ -2698,7 +2725,7 @@ def launch_counted(cfg, s, row, now, book, where, new_item, do_file, do_publish,
     wait = not ok and AUT.wait_refusal(text)
     if wait:        # a wait spends no try: the entry keeps the tries before it
         tries = int(retry.get("tries") or 0)
-    entry = dict(where, unit=unit if ok else None, item=item, at=now, cap=row.get("cap"), failed=None if ok else text,
+    entry = dict(where, unit=unit if ok else None, item=item, at=now, cap_tokens=row.get("cap"), failed=None if ok else text,
                  tries=tries, filed=filed, never_started=not unit, tried=None if ok else tried_unit(text))
     if wait:
         entry["wait"] = True
@@ -3097,7 +3124,7 @@ def launch_stage(root, cfg, st, mod, cap, item, now=None, fx=None, launch=None, 
     if jr and jr.get("session"):
         kw["session"] = jr["session"]
     if not pilot_ledger(root, mod):
-        return launch(root, mod, cap, item, seat=cfg.get("seat", "BENCH"), model=model, **kw)
+        return launch(root, mod, RL.weighted_to_list_usd(cap), item, seat=cfg.get("seat", "BENCH"), model=model, **kw)
     now = now or time.time()
     try:
         if stage == "blind_challenge" and jr and jr.get("run"):     # the same judge writes its own reopened shard
@@ -3111,7 +3138,8 @@ def launch_stage(root, cfg, st, mod, cap, item, now=None, fx=None, launch=None, 
     except Exception as e:      # noqa: BLE001  a refused grant is a launch that never started, said in its words
         return 2, "REFUSED: %s's ledger launch failed: %s: %s" % (mod, type(e).__name__, e), None
     game = kw.pop("game", None)
-    rc, text, unit = launch(root, mod, cap, item, seat=cfg.get("seat", "BENCH"), model=model, preface=led["brief"],
+    rc, text, unit = launch(root, mod, RL.weighted_to_list_usd(cap), item, seat=cfg.get("seat", "BENCH"), model=model,
+                            preface=led["brief"],
                             env=dict(led["env"], **({"RM_GAME_INSTANCE": game} if game else {})), **kw)
     unit = unit if rc == 0 else None
     return rc, "%s; %s" % (text, ledger_after(root, st, mod, led, unit, item, now, fx)), unit
@@ -3128,7 +3156,7 @@ def live_units_on(root, mod):
     return [r["unit"] for r in runs if r.get("live") and r.get("unit")] if isinstance(runs, list) else UNM
 
 
-def pilot_launch(root, cfg, mod, why, item=None, usd=None, fx=None, now=None):
+def pilot_launch(root, cfg, mod, why, item=None, tokens=None, fx=None, now=None):
     """`pilot-launch MOD`: start one pilot holder run from the ledger packet at the stage the mod stands at, through
     the Dispatch step's own launches (the Conductor's act, on a mod the tick has paused or not reached). Refuses a mod
     that is not a pilot, a ledger its backfill acceptance does not pass, and a mod owing nothing launchable. At a
@@ -3142,7 +3170,7 @@ def pilot_launch(root, cfg, mod, why, item=None, usd=None, fx=None, now=None):
     ok, line = (fx.get("ready") or ledger_ready)(root, mod)
     if not ok:
         return 2, "REFUSED: %s's ledger is not ready: %s (%s)" % (mod, line, READY_TEST)
-    cap = usd or cfg["cap_usd"]
+    cap = tokens or cfg["cap_tokens"]
     with state_lock():
         p = os.path.join(sdir(), "state.json")
         st = read_state(p)
@@ -3428,7 +3456,7 @@ def pilot_holders(root, cfg, st, facts, rows, launches, now, fx=None):
                 row["waits_on"] = _GN.name_text("a free game: %s" % "; ".join(whys))
                 continue
             row.pop("need", None)       # the PAUSED hold of fixer_spent is lifted: the run goes to a game
-        row.update(holder_items=items, cap=MM.for_mod(cfg, mod).get("cap_usd"),
+        row.update(holder_items=items, cap=MM.for_mod(cfg, mod).get("cap_tokens"),
                    **({"holder_game": game} if game else {}))
         put("launch", "%s and its ledger is ready: one holder run on all %d open items (%s)%s, nothing live on it (%s)"
             % ("its exit is refused by its road back alone (road_back_items)" if hold else
@@ -3583,10 +3611,10 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
         blind = row.get("stage") == "blind_challenge"
         if row.get("holder_items"):     # pilot_holders: one holder run on the open road-back items
             rc, text, unit, item = road_back_holder(root, cfg, st, mod, row.get("stage"), row["holder_items"], None,
-                                                    row.get("cap") or cfg["cap_usd"], now, fx,
+                                                    row.get("cap") or cfg["cap_tokens"], now, fx,
                                                     game=row.get("holder_game"))
             if unit:
-                s.setdefault("launches", []).append({"unit": unit, "item": item, "at": now, "cap": row.get("cap"),
+                s.setdefault("launches", []).append({"unit": unit, "item": item, "at": now, "cap_tokens": row.get("cap"),
                                                      "stage": row.get("stage"), "holder": True})
                 row.update(decision="launched", unit=unit, item=item, why=text)
                 done.append(row)
@@ -3692,7 +3720,7 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
             ok, text = do_file(item, title, why) if item else (False, "no free item name")
             filed = ok
         if ok:
-            hcap, hkw = holder_launch(root, cfg, s, row, cfg["cap_usd"], fx)
+            hcap, hkw = holder_launch(root, cfg, s, row, cfg["cap_tokens"], fx)
             rc, text2, unit = do_launch(mod, hcap, item, **dict(hkw, **({"bars": row["batch"]} if row.get("batch") else {})))
             text = "%s; %s" % (text, text2.splitlines()[0] if text2 else rc)
             ok = rc == 0 and bool(unit)
@@ -3700,7 +3728,7 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
             unit = None
         if ok:
             s.setdefault("launches", []).append({"unit": unit, "item": item, "at": now, "refused": row["refused"],
-                                                 "ids": row["refused_ids"], "cap": hcap,
+                                                 "ids": row["refused_ids"], "cap_tokens": hcap,
                                                  "stage": "offline_build"})
             s["watch"] = {"unit": unit, "refused": row["refused"], "ids": row["refused_ids"], "at": now, "ours": True,
                           "fp": row.get("bar_fp")}
@@ -3736,7 +3764,7 @@ def holder_launch(root, cfg, s, row, cap, fx=None):
     modledger.resume_plan decides from the last `session.id` (end_ledger_runs records it): resume that session
     (`--resume`), rotate at or past holder_context_ceiling_tokens, or start from the packet; after a killed or lost run
     (its run.end, or this launch retrying a killed unit) the brief opens with the reconcile step. The holder's cap is per
-    mod and stage, not per run: what is left of stage_ceiling_usd at this stage (never less than the run cap).
+    mod and stage, not per run: what is left of stage_ceiling_tokens at this stage (never less than the run cap).
     -> (cap, launch_mod keyword arguments). A mod outside modledger.json's pilot_mods, or with no ledger: (cap, {})."""
     mod = row["mod"]
     if not pilot_ledger(root, mod):
@@ -3756,18 +3784,18 @@ def holder_launch(root, cfg, s, row, cap, fx=None):
         kw["session"] = plan["session_id"]
     if plan["reconcile"]:
         kw["reconcile"] = plan["why"]
-    usd, ceiling = stage_spend(cfg, mod, row.get("stage"), row.get("stage_usd"))
-    if _usd_ok(ceiling, True) and _usd_ok(usd):
+    spent, ceiling = stage_spend(cfg, mod, row.get("stage"), row.get("stage_tokens"))
+    if _amount_ok(ceiling, True) and _amount_ok(spent):
         cap = row["cap"] = holder_cap(cfg, row, cap)
     return cap, kw
 
 
 def holder_cap(cfg, row, cap):
-    """A pilot holder's cap is per mod and stage, not per run: what is left of stage_ceiling_usd at this stage, never
+    """A pilot holder's cap is per mod and stage, not per run: what is left of stage_ceiling_tokens at this stage, never
     less than the run cap (holder_launch; launch_kind reads the same rule for the forecast)."""
-    usd, ceiling = stage_spend(cfg, row.get("mod"), row.get("stage"), row.get("stage_usd"))
-    if _usd_ok(ceiling, True) and _usd_ok(usd):
-        return max(cap, round(ceiling - usd, 2))
+    spent, ceiling = stage_spend(cfg, row.get("mod"), row.get("stage"), row.get("stage_tokens"))
+    if _amount_ok(ceiling, True) and _amount_ok(spent):
+        return max(cap, int(round(ceiling - spent)))
     return cap
 
 
@@ -3916,7 +3944,7 @@ def reading(cfg, rows, now):
                          if r.get("decision") == "launched"],
             "needs_conductor": [r["need"] for r in rows if r.get("need")],
             "mods": {r["mod"]: {k: r.get(k) for k in ("decision", "why", "stage", "owed", "refused", "live",
-                                                       "idle_min", "stage_usd", "cycle", "visit", "exit",
+                                                       "idle_min", "stage_tokens", "cycle", "visit", "exit",
                                                        "stop_lifted", "batch", "launch", "pipeline_paused")}
                      for r in rows}}
 
@@ -4118,7 +4146,7 @@ FAULT_REPAIRS_MOST = 2      # boundary page LIMITS: two repair runs that did not
 
 def repair_launch(root, cfg, mod, records, kind="form", item=None):
     """The tick's repair run: file one item for it (fit_name), publish, and launch form_fault.repair_brief on it through
-    detached_helper (opus, fix_cap_usd). -> (ok, text, unit). A launcher that repaired the input in place returns
+    detached_helper (opus, fix_cap_tokens). -> (ok, text, unit). A launcher that repaired the input in place returns
     (True, how, None): the repair is done at once and the mod goes on in the same tick."""
     what = FF.what_of(records[0].get("text") or records[0].get("cause") or "", 120)
     if item:        # a try that filed its item and then failed: the same item again, published, never a new one
@@ -4133,7 +4161,7 @@ def repair_launch(root, cfg, mod, records, kind="form", item=None):
             mod, "form" if kind == "form" else "fault-loop", what), "the tick's repair run (form_fault): %s" % what)
     if not ok:
         return False, text, None
-    cap = cfg.get("fix_cap_usd") or 10
+    cap = cfg.get("fix_cap_tokens") or 2_500_000
     rc, out, unit = AUT.launch_brief(item, FF.repair_brief(mod, records, kind), "opus", cap)
     return bool(rc == 0 and unit), "%s; %s" % (text, (out or "").splitlines()[0] if out else rc), unit
 
@@ -4511,7 +4539,7 @@ def _tick(root, cfg, apply, fx=None, now=None, page=False):
     for r in rows:      # a release lets one launch: the launch spends it
         if r.get("release") and r.get("decision") == "launched":
             st["mods"][r["mod"]].setdefault("releases_used", {})[r["release"]] = {
-                "at": now, "stage": r.get("stage"), "usd": r.get("stage_usd"), "unit": r.get("unit")}
+                "at": now, "stage": r.get("stage"), "tokens": r.get("stage_tokens"), "unit": r.get("unit")}
     if apply:
         book_refunds(st, rows, now)
     AUT.classify(cfg, st, rows, now)
@@ -4606,40 +4634,40 @@ def launch_kind(cfg, r, root=None):
     try:
         cfg = MM.for_mod(cfg, r.get("mod"))
     except Exception as e:      # noqa: BLE001  unknown is said, never the shipped model shown as the truth
-        return {"kind": r.get("aut") or r.get("stage") or "run", "model": "%s (%s)" % (UNM, e), "cap_usd": None,
+        return {"kind": r.get("aut") or r.get("stage") or "run", "model": "%s (%s)" % (UNM, e), "cap_tokens": None,
                 "rule": "model pin"}
     return _launch_kind(cfg, r, root)
 
 
 def _launch_kind(cfg, r, root=None):
-    """-> {"kind", "model", "cap_usd", "rule"}: what a launch row starts, read from the row the tick hands execute (a
+    """-> {"kind", "model", "cap_tokens", "rule"}: what a launch row starts, read from the row the tick hands execute (a
     stage run on a pilot mod is its holder: its cap is holder_cap's, as execute will set it)."""
     if r.get("aut") in NO_SLOT_AUT:
-        return {"kind": r["aut"], "model": "none (an act: one landing, no run)", "cap_usd": 0,
+        return {"kind": r["aut"], "model": "none (an act: one landing, no run)", "cap_tokens": 0,
                 "rule": "maturation_autonomy %s" % r["aut"]}
     if r.get("aut"):
         return {"kind": r["aut"], "model": cfg.get("steward_model", "opus"),
-                "cap_usd": cfg.get("fix_cap_usd" if r["aut"] == "fixer" else "steward_cap_usd"),
+                "cap_tokens": cfg.get("fix_cap_tokens" if r["aut"] == "fixer" else "steward_cap_tokens"),
                 "rule": "maturation_autonomy %s%s" % (r["aut"], " on %s" % r["fix_item"] if r.get("fix_item") else "")}
     if r.get("holder_items"):
-        return {"kind": "holder", "model": cfg.get("steward_model", "opus"), "cap_usd": r.get("cap") or cfg.get("cap_usd"),
+        return {"kind": "holder", "model": cfg.get("steward_model", "opus"), "cap_tokens": r.get("cap") or cfg.get("cap_tokens"),
                 "rule": "pilot_holders on %s" % ", ".join(
                     str(x.get("id") if isinstance(x, dict) else x) for x in r["holder_items"])}
     if r.get("game_deploy_start"):
-        return {"kind": "game copy deploy", "model": "none (zero tokens)", "cap_usd": 0, "rule": "decide_ingame"}
+        return {"kind": "game copy deploy", "model": "none (zero tokens)", "cap_tokens": 0, "rule": "decide_ingame"}
     if r.get("cert_rerun_key"):
-        return {"kind": "certificate rerun", "model": "none (zero tokens)", "cap_usd": 0, "rule": "cert_rerun_decide"}
+        return {"kind": "certificate rerun", "model": "none (zero tokens)", "cap_tokens": 0, "rule": "cert_rerun_decide"}
     if r.get("cert_reds"):
-        return {"kind": "builder on red deciders", "model": cfg.get("model", "opus"), "cap_usd": r.get("cap") or
-                cfg.get("cap_usd"), "rule": "cert_red_decide"}
+        return {"kind": "builder on red deciders", "model": cfg.get("model", "opus"), "cap_tokens": r.get("cap") or
+                cfg.get("cap_tokens"), "rule": "cert_red_decide"}
     stage = r.get("stage")
-    cap = r.get("cap") or cfg.get({"blind_challenge": "blind_cap_usd", "in_game": "ingame_cap_usd"}.get(stage, "cap_usd"))
+    cap = r.get("cap") or cfg.get({"blind_challenge": "blind_cap_tokens", "in_game": "ingame_cap_tokens"}.get(stage, "cap_tokens"))
     if root is not None and isinstance(cap, (int, float)) and pilot_ledger(root, r["mod"]):
         cap = holder_cap(cfg, r, cap)
     return {"kind": ROLE_OF_STAGE.get(stage, "run"),
             "model": (cfg.get("ingame_model", "opus") if stage == "in_game" else MM.judge_model(cfg)
                       if stage == "blind_challenge" else cfg.get("model", "opus")),
-            "cap_usd": cap, "rule": {"blind_challenge": "decide_blind", "in_game": "decide_ingame"}.get(
+            "cap_tokens": cap, "rule": {"blind_challenge": "decide_blind", "in_game": "decide_ingame"}.get(
                 stage, "decide (offline build)")}
 
 
@@ -4806,7 +4834,7 @@ def forecast_lines(fc):
             k = x.get("launch") or {}
             out.append("  WILL START %s (+%d min): %s %s (model %s, cap %s), by %s; %s" % (
                 x["at_pac"], (x["at"] - fc["at"]) // 60, x["mod"], k.get("kind", "run"), k.get("model", UNM),
-                wt(k["cap_usd"]) if isinstance(k.get("cap_usd"), (int, float)) and k["cap_usd"] > 0 else "none",
+                wt(k["cap_tokens"]) if isinstance(k.get("cap_tokens"), (int, float)) and k["cap_tokens"] > 0 else "none",
                 k.get("rule", UNM), x.get("why") or ""))
     else:
         out.append("  NOTHING WILL START in the tick's layers in the next %d min%s" % (
@@ -4856,8 +4884,6 @@ def main(argv=None):
     r.add_argument("--stage", required=True, choices=RELEASE_STAGES)
     r.add_argument("--read-tokens", type=int, help="the stage's spend you read, in the pause line's weighted tokens")
     r.add_argument("--tokens", type=int, help="weighted tokens released past the ceiling, for one more run")
-    r.add_argument("--read-usd", type=float, help="the same reading in list dollars (the form before 2026-11-16)")
-    r.add_argument("--usd", type=float, help="the same release in list dollars (the form before 2026-11-16)")
     r.add_argument("--why", required=True)
     r.add_argument("--by", default=None, help="who releases (default: this window's seat)")
     pl = sub.add_parser("pilot-launch", help="start one pilot holder run from MOD's ledger packet at its current stage "
@@ -4865,7 +4891,8 @@ def main(argv=None):
     pl.add_argument("mod")
     pl.add_argument("--why", required=True)
     pl.add_argument("--item", help="the filed item the run works under (default on a road back: its first open item)")
-    pl.add_argument("--usd", type=float, help="the run's spend cap (default maturation_dispatch.json cap_usd)")
+    pl.add_argument("--tokens", type=int, help="the run's spend cap in weighted tokens (default maturation_dispatch.json "
+                                               "cap_tokens)")
     sub.add_parser("releases", help="every ceiling release with its spend, amount and why, and whether a launch spent it")
     jv = sub.add_parser("judge-verify", help="a blind judge's verification list: MOD's findings claimed fixed (finding "
                                              "text, reproduction, the claim's test; never the holder's story)")
@@ -4968,7 +4995,7 @@ def main(argv=None):
         print("PATHS %s" % " ".join(paths) if paths else "PATHS none")
         return rc
     if o.cmd == "pilot-launch":
-        rc, text = pilot_launch(os.path.abspath(o.root), cfg, o.mod, o.why, item=o.item, usd=o.usd)
+        rc, text = pilot_launch(os.path.abspath(o.root), cfg, o.mod, o.why, item=o.item, tokens=o.tokens)
         print(text)
         return rc
     if o.cmd == "status":
@@ -4985,37 +5012,31 @@ def main(argv=None):
         import model
         # a ledger seat key ("CONDUCTOR" -> BENCH): the digest's closed seat set drops any other name, losing "who"
         by = model.canonical((o.by or doorbell.seat_name() or "").strip())
-        # the pause line's weighted tokens, or the older dollar form; the record keeps dollars (the ceiling's unit)
-        pair = ("--read-tokens and --tokens" if (o.read_tokens is None) != (o.tokens is None) else
-                "--read-usd and --usd" if (o.read_usd is None) != (o.usd is None) else None)
-        if o.tokens is not None and o.usd is not None:
-            pair = "either --read-tokens/--tokens or --read-usd/--usd, not both"
-        elif o.tokens is None and o.usd is None and not pair:
-            pair = "--read-tokens and --tokens (the pause line's release command)"
-        if pair:
-            print("REFUSED: pass %s" % pair)
+        # the pause line's weighted tokens, kept as they are: the ceiling's own unit (2026-11-26)
+        if o.read_tokens is None or o.tokens is None:
+            print("REFUSED: pass --read-tokens and --tokens (the pause line's release command)")
             return 2
-        if o.tokens is not None:
-            o.read_usd, o.usd = from_wt(o.read_tokens), from_wt(o.tokens)
         bad = ("%s is not on the advancing list" % o.mod if o.mod not in (cfg.get("advancing") or []) else
                "--by %s is not a ledger seat (%s)" % (by, ", ".join(model.SEATS)) if by and by not in model.SEATS else
-               "--usd must be above 0" if not _usd_ok(o.usd, True) else
-               "--read-usd must be 0 or more" if not _usd_ok(o.read_usd) else
+               "--tokens must be above 0" if not _amount_ok(o.tokens, True) else
+               "--read-tokens must be 0 or more" if not _amount_ok(o.read_tokens) else
                "--why is empty" if not o.why.strip() else
                "no seat: pass --by" if not by else None)
         if bad:
             print("REFUSED: %s" % bad)
             return 2
         rec = {"ts": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "mod": o.mod, "stage": o.stage,
-               "by": by, "read_usd": round(o.read_usd, 2), "release_usd": round(o.usd, 2), "why": o.why.strip()}
+               "by": by, "read_tokens": o.read_tokens, "release_tokens": o.tokens, "why": o.why.strip()}
         rec["id"] = "rel-%s" % hashlib.sha1(json.dumps(rec, sort_keys=True).encode()).hexdigest()[:12]
         with open(releases_path(), "a", encoding="utf-8") as f:
             f.write(json.dumps(rec, sort_keys=True) + "\n")
         last = ((_read(os.path.join(sdir(), "reading.json"), None) or {}).get("mods") or {}).get(o.mod) or {}
-        seen = last.get("stage_usd") if last.get("stage") == o.stage else None
+        seen = last.get("stage_tokens") if _num(last.get("stage_tokens")) else (    # a reading from before 2026-11-26
+            RL.list_usd_to_weighted(last["stage_usd"]) if _num(last.get("stage_usd")) else None)
+        seen = seen if last.get("stage") == o.stage else None
         print("RELEASED %s at %s by %s (read %s, by %s; %s): the next tick may launch on it once%s" % (
-            o.mod, o.stage, wt(o.usd), wt(o.read_usd), by, rec["id"],
-            "" if seen is None or abs(seen - o.read_usd) <= READ_SLACK else
+            o.mod, o.stage, wt(o.tokens), wt(o.read_tokens), by, rec["id"],
+            "" if seen is None or abs(seen - o.read_tokens) <= READ_SLACK else
             "; WARNING the last reading shows %s there, so this release reads stale and frees nothing" % wt(seen)))
         print(HAND_NOTE % rec["id"])
         return 0
@@ -5025,7 +5046,7 @@ def main(argv=None):
         for r in recs:
             u = ((st.get("mods") or {}).get(r["mod"]) or {}).get("releases_used", {}).get(r["id"])
             print("%s %s %-18s %-15s read %s, released %s, by %s: %s [%s]" % (
-                r["ts"], r["id"], r["mod"], r["stage"], wt(r["read_usd"]), wt(r["release_usd"]), r["by"], r["why"],
+                r["ts"], r["id"], r["mod"], r["stage"], wt(r["read_tokens"]), wt(r["release_tokens"]), r["by"], r["why"],
                 "spent by %s" % (u.get("unit") or "a launch") if u else "unspent"))
         print("%d release(s), %d malformed line(s) in %s" % (len(recs), bad, releases_path()))
         return 0

@@ -113,18 +113,18 @@ rc = DH.main(["launch", "--seat", "BENCH", "--item", "I", "--brief", "b", "--env
 check("detached_helper refuses a non-RM_ --env", rc == 2, rc)
 
 ok_ready = {"ready": lambda r, m: (True, "PASS 7/7"), "land_ledger": lambda paths: "landed"}
-rc, text = D.pilot_launch(root, {"cap_usd": 15}, "NotAPilot", "t", fx=ok_ready)
+rc, text = D.pilot_launch(root, {"cap_tokens": 3_750_000}, "NotAPilot", "t", fx=ok_ready)
 check("pilot-launch refuses a mod that is not a pilot", rc == 2 and "not a pilot" in text, text)
-rc, text = D.pilot_launch(root, {"cap_usd": 15}, PILOT, "t", fx=dict(ok_ready, ready=lambda r, m: (False, "FAIL 7 of 7")))
+rc, text = D.pilot_launch(root, {"cap_tokens": 3_750_000}, PILOT, "t", fx=dict(ok_ready, ready=lambda r, m: (False, "FAIL 7 of 7")))
 check("pilot-launch refuses a ledger its backfill acceptance fails", rc == 2 and "not ready" in text and
       "FAIL 7 of 7" in text, text)
 M.brief_text = lambda r, m, cap, **k: ("", {"stage": "offline_build", "owed": "ready to advance"})
-rc, text = D.pilot_launch(root, {"cap_usd": 15}, PILOT, "t", fx=dict(ok_ready, open_items=lambda ids: []))
+rc, text = D.pilot_launch(root, {"cap_tokens": 3_750_000}, PILOT, "t", fx=dict(ok_ready, open_items=lambda ids: []))
 check("pilot-launch refuses a mod owing nothing launchable", rc == 2 and "owes nothing" in text, text)
 D._write(os.path.join(SDIR, "state.json"), {"mods": {PILOT: {"road_back": {"caused_by": "ROUTE_X"}}}})
 got = []
 order.clear()
-rc, text = D.pilot_launch(root, {"cap_usd": 15, "seat": "BENCH"}, PILOT, "t", now=7000, fx=dict(
+rc, text = D.pilot_launch(root, {"cap_tokens": 3_750_000, "seat": "BENCH"}, PILOT, "t", now=7000, fx=dict(
     ok_ready, open_items=lambda ids: [{"id": "RIMMANDRAKE_FIX_ONE_A"}, {"id": "RIMMANDRAKE_FIX_TWO_B"}],
     launch_brief=lambda item, text, model, cap, seat, env=None: order.append(("launch", item)) or got.append(
         (item, text, env)) or (0, "DETACHED u7", "u7")))

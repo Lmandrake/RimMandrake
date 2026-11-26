@@ -29,9 +29,9 @@ import run_void as RV    # noqa: E402
 
 CLOCK = 1794750000.0
 FAILS = []
-CFG = {"enabled": True, "advancing": [], "cap_usd": 15, "max_live": 2, "settle_s": 180, "blind_enabled": True,
-       "blind_cap_usd": 20, "blind_auto_cycles_per_visit": 3, "ingame_enabled": True, "ingame_cap_usd": 30,
-       "ingame_auto_runs_per_visit": 1, "steward_cap_usd": 5, "fix_cap_usd": 10, "steward_model": "opus",
+CFG = {"enabled": True, "advancing": [], "cap_tokens": 3_750_000, "max_live": 2, "settle_s": 180, "blind_enabled": True,
+       "blind_cap_tokens": 5_000_000, "blind_auto_cycles_per_visit": 3, "ingame_enabled": True, "ingame_cap_tokens": 7_500_000,
+       "ingame_auto_runs_per_visit": 1, "steward_cap_tokens": 1_250_000, "fix_cap_tokens": 2_500_000, "steward_model": "opus",
        "stalled_min": 10, "seat": "BENCH"}
 
 
@@ -52,7 +52,7 @@ def ingame(mod, owed, visit=1, live=(), why=(), ingame_live=()):
 def offline(mod, owed, refused=(), hand=()):
     return {"mod": mod, "stage": "offline_build", "version": "0.1.0", "owed": owed, "refused_bars": list(refused),
             "build_refusals": ["every_bar_has_a_check_that_runs"] if refused else [], "hand_steps": list(hand),
-            "other_refusals": [], "observed": {}, "live_units": [], "last_end": None, "stage_runs": {}, "run_usd": {},
+            "other_refusals": [], "observed": {}, "live_units": [], "last_end": None, "stage_runs": {}, "run_tokens": {},
             "ingame_live": [], "since": "2026-11-15T01:00:00-08:00"}
 
 

@@ -49,9 +49,9 @@ except ImportError:
 
 NOW = 1794790000.0      # pinned, after the census baseline
 FAILS = []
-CFG = {"enabled": True, "advancing": ["A"], "cap_usd": 15, "max_live": 4, "stage_ceiling_usd": 100, "settle_s": 180,
-       "blind_enabled": True, "blind_cap_usd": 20, "blind_auto_cycles_per_visit": 3, "launch_tries": 3,
-       "ingame_enabled": True, "ingame_cap_usd": 30, "ingame_auto_runs_per_visit": 1}
+CFG = {"enabled": True, "advancing": ["A"], "cap_tokens": 3_750_000, "max_live": 4, "stage_ceiling_tokens": 25_000_000, "settle_s": 180,
+       "blind_enabled": True, "blind_cap_tokens": 5_000_000, "blind_auto_cycles_per_visit": 3, "launch_tries": 3,
+       "ingame_enabled": True, "ingame_cap_tokens": 7_500_000, "ingame_auto_runs_per_visit": 1}
 
 
 def ok(cond, what, read=""):
@@ -70,7 +70,7 @@ def guard(fn, what):
 
 def offline(refused, live=(), last_end=None, owed="build"):
     return {"A": {"mod": "A", "stage": "offline_build", "refused_bars": list(refused), "build_refusals": [],
-                  "live_units": list(live), "last_end": last_end, "owed": owed, "stage_runs": {}, "run_usd": {},
+                  "live_units": list(live), "last_end": last_end, "owed": owed, "stage_runs": {}, "run_tokens": {},
                   "bar_fp": {b: "fp-" + b for b in refused}}}
 
 
@@ -202,15 +202,20 @@ def retry_main():
        row_of(rows)["decision"])
 
 
+T = 250_000     # weighted_v2 tokens per list dollar (role_launch.WT_PER_LIST_USD)
+
+
 # ---- refund -----------------------------------------------------------------------------------------------------------
 
 def blind(usd_other, killed_usd, killed=True, word=None, refunds=None):
+    """usd_other, killed_usd: list dollars, as these checks were first written; the facts carry weighted tokens."""
     col = M.COL["blind_challenge"]
+    usd_other, killed_usd = int(round(usd_other * T)), int(round(killed_usd * T))
     f = {"A": {"mod": "A", "stage": "blind_challenge", "version": "0.1.0", "cycle": 3, "visit_first": 1, "exit": {},
                "live_units": [], "last_end": None, "owed": "cycle", "blind_runs": ["rm-k"],
                "killed": {"rm-k": {"why": "killed with no result JSON", "state": "finished", "returned": True}}
                if killed else {},
-               "box_runs": {col: {"rm-old": usd_other, "rm-k": killed_usd}}, "run_usd": {"rm-k": killed_usd}}}
+               "box_runs": {col: {"rm-old": usd_other, "rm-k": killed_usd}}, "run_tokens": {"rm-k": killed_usd}}}
     s = {"blind_auto": [{"visit_id": "0.1.0#1", "cycle": 3, "unit": "rm-k", "item": "ITEM_K", "tries": 1,
                          "failed": None}]}
     if refunds:
@@ -229,8 +234,8 @@ def refund_main():
     st, f = blind(66.0, 20.0)
     rows, launches = MD.decide(CFG, st, f, NOW, releases=([], 0))
     r = row_of(rows)
-    ok(r["decision"] == "launch" and launches == ["A"] and not r.get("refund") and r.get("stage_usd") == 66.0
-       and r.get("void_usd") == 20.0,
+    ok(r["decision"] == "launch" and launches == ["A"] and not r.get("refund") and r.get("stage_tokens") == 66 * T
+       and r.get("void_tokens") == 20 * T,
        "refund 1: USD 86 with the killed cycle's USD 20 in it: the 20 is void spend, off the ceiling (66 counted), "
        "the cycle relaunches with no refund", r)
     d = tempfile.mkdtemp(prefix="mat_refund_")
@@ -252,7 +257,7 @@ def refund_main():
        "refund 4 (control): a plain overspend with no killed run pauses at the ceiling", row_of(rows)["decision"])
     st, f = blind(95.0, 5.0)
     rows, launches = MD.decide(CFG, st, f, NOW, releases=([], 0))
-    ok(row_of(rows)["decision"] == "ceiling" and not launches and row_of(rows).get("stage_usd") == 95.0,
+    ok(row_of(rows)["decision"] == "ceiling" and not launches and row_of(rows).get("stage_tokens") == 95 * T,
        "refund 5 (control): the counted spend alone (95) still pauses at the ceiling", row_of(rows)["decision"])
     st, f = blind(66.0, 20.0, word="DIVERGING")
     rows, launches = MD.decide(CFG, st, f, NOW, releases=([], 0))
@@ -267,7 +272,7 @@ def refund_main():
                                   "entry": st["mods"]["A"].pop("blind_auto")[0]}]     # as sync_dispatch moves it
     f["A"]["blind_runs"] = []
     rows, launches = MD.decide(CFG, st, f, NOW, releases=([], 0))
-    ok(row_of(rows).get("void_usd") == 20.0 and row_of(rows).get("stage_usd") == 66.0,
+    ok(row_of(rows).get("void_tokens") == 20 * T and row_of(rows).get("stage_tokens") == 66 * T,
        "refund 8: a hand-voided run's dollars are void spend too", row_of(rows))
 
 
@@ -506,7 +511,7 @@ def stalled_main():
         f = offline(["a", "b"], last_end=NOW - 600)
         f["A"]["version"] = "0.1.0"
         rows, launches = MD.decide(CFG, st, f, NOW + 60)
-        return f, AUT.resolve(REPO, dict(CFG, steward_enabled=True, steward_cap_usd=8), st, f, rows, launches,
+        return f, AUT.resolve(REPO, dict(CFG, steward_enabled=True, steward_cap_tokens=2_000_000), st, f, rows, launches,
                               NOW + 60, fx)
 
     st = {}
@@ -526,7 +531,7 @@ def stalled_main():
     f2 = offline(["a", "b"], last_end=NOW - 900)
     f2["A"]["version"] = "0.1.0"
     rows, launches = MD.decide(CFG, st, f2, NOW + 600)
-    rows, launches = AUT.resolve(REPO, dict(CFG, steward_enabled=True, steward_cap_usd=8), st, f2, rows, launches,
+    rows, launches = AUT.resolve(REPO, dict(CFG, steward_enabled=True, steward_cap_tokens=2_000_000), st, f2, rows, launches,
                                  NOW + 600, fx)
     ok(row_of(rows)["decision"] == "steward_spent" and not launches,
        "stalled 4 (control): the same stall never gets a second steward run", row_of(rows)["decision"])
@@ -536,7 +541,7 @@ def stalled_main():
     f3 = offline(["a"])
     f3["A"].update(version="0.1.0", stage_runs={"rm-old": 99.0})
     rows, launches = MD.decide(CFG, st, f3, NOW)
-    rows, launches = AUT.resolve(REPO, dict(CFG, steward_enabled=True, steward_cap_usd=8), st, f3, rows, launches, NOW, fx)
+    rows, launches = AUT.resolve(REPO, dict(CFG, steward_enabled=True, steward_cap_tokens=2_000_000), st, f3, rows, launches, NOW, fx)
     ok(row_of(rows).get("steward_kind") != "builder_stalled" and not launches,
        "stalled 5 (control): a ceiling stop gets no such steward", row_of(rows).get("decision"))
 
@@ -548,12 +553,12 @@ def stalled_main():
     fb = {"A": {"mod": "A", "stage": "blind_challenge", "version": "0.1.0", "cycle": 2, "visit": 1, "visit_first": 1,
                 "exit": {"record": "design/concepts/A/version/blind_challenge/cycle_2"}, "live_units": [],
                 "last_end": NOW - 900, "owed": "no exit block", "blind_runs": [], "killed": {},
-                "box_runs": {col: {}}, "run_usd": {}}}
+                "box_runs": {col: {}}, "run_tokens": {}}}
     stb = {}
     rows, launches = MD.decide(CFG, stb, fb, NOW)
     ok(row_of(rows)["decision"] == "cycle_unfinished", "stalled 9 (setup): decide reads the cycle as unfinished",
        row_of(rows)["decision"])
-    rows, launches = AUT.resolve(REPO, dict(CFG, steward_enabled=True, steward_cap_usd=8), stb, fb, rows, launches,
+    rows, launches = AUT.resolve(REPO, dict(CFG, steward_enabled=True, steward_cap_tokens=2_000_000), stb, fb, rows, launches,
                                  NOW, fx)
     r9 = row_of(rows)
     ok(r9.get("aut") == "steward" and r9.get("steward_kind") == "cycle_unfinished" and launches == ["A"],
@@ -566,7 +571,7 @@ def stalled_main():
     fi = {"A": dict(fb["A"], stage="in_game", owed="no exit block", visit=1, ingame_live=[], ingame_runs=[])}
     sti = {}
     rows, launches = MD.decide(CFG, sti, fi, NOW, bridge=lambda p: (True, "free"))
-    rows, launches = AUT.resolve(REPO, dict(CFG, steward_enabled=True, steward_cap_usd=8), sti, fi, rows, launches,
+    rows, launches = AUT.resolve(REPO, dict(CFG, steward_enabled=True, steward_cap_tokens=2_000_000), sti, fi, rows, launches,
                                  NOW, fx)
     ok(row_of(rows).get("steward_kind") != "cycle_unfinished" and not launches,
        "stalled 11 (control): an unfinished in-game visit stays a hand (the game it left needs a look)",

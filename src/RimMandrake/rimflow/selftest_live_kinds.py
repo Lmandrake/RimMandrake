@@ -508,11 +508,11 @@ def tick_asks():
     S.put(d, "holds.json", {"holds": []})
     keep = {k: os.environ.get(k) for k in ("RM_MATURATION_DISPATCH_DIR", "RM_OWNER_HOLD_FILE")}
     os.environ.update(RM_MATURATION_DISPATCH_DIR=os.path.join(d, "st"), RM_OWNER_HOLD_FILE=hold)
-    cfg = {"enabled": False, "advancing": [MOD], "cap_usd": 15, "max_live": 4, "stage_ceiling_usd": 100, "settle_s": 180,
-           "ingame_enabled": True, "ingame_cap_usd": 30, "ingame_auto_runs_per_visit": 1, "launch_tries": 3}
+    cfg = {"enabled": False, "advancing": [MOD], "cap_tokens": 3_750_000, "max_live": 4, "stage_ceiling_tokens": 25_000_000, "settle_s": 180,
+           "ingame_enabled": True, "ingame_cap_tokens": 7_500_000, "ingame_auto_runs_per_visit": 1, "launch_tries": 3}
 
     def facts():
-        return {MOD: dict(M.ingame_facts(root, MOD), live_units=[], last_end=None, stage_runs={}, run_usd={}, runs_seen=[
+        return {MOD: dict(M.ingame_facts(root, MOD), live_units=[], last_end=None, stage_runs={}, run_tokens={}, runs_seen=[
             {"unit": "u1", "item": "RIMMANDRAKE_DRIVE_WMOD_IN_GAME_ACCEPTANCE_VISIT_ONE", "at": 5.0, "end": 6.0}])}
 
     fx = {"autonomy": False, "convergence": lambda r, rd: None, "facts": facts, "account": lambda: (True, "test"),

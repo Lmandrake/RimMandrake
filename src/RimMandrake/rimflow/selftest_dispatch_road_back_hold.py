@@ -28,7 +28,7 @@ import work_bundle as WB  # noqa: E402
 FAILS = []
 MOD = "RMod"
 NOW = 1795651200.0      # 2026-11-25 ~4:00 PM PST, pinned
-CFG = {"advancing": [MOD], "cap_usd": 15, "max_live": 4, "launch_tries": 3, "settle_s": 180, "stage_ceiling_usd": 100,
+CFG = {"advancing": [MOD], "cap_tokens": 3_750_000, "max_live": 4, "launch_tries": 3, "settle_s": 180, "stage_ceiling_tokens": 25_000_000,
        "seat": "BENCH", "model": "opus"}
 DRIVER = "RIMMANDRAKE_DRIVE_RMOD_IN_GAME_VISIT_ONE"
 RENAME = "RIMMANDRAKE_RENAME_RMOD_DEFS_OPEN_ONE"

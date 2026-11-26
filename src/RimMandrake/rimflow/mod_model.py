@@ -21,15 +21,16 @@ if HERE not in sys.path:
     sys.path.insert(0, HERE)
 import role_launch as RL  # noqa: E402
 
-# Every spend cap in maturation_dispatch.json (cap_usd, steward_cap_usd, fix_cap_usd) and the Designer's run_budget_usd
-# in dispatcher_schedule.json was set from runs on this model: the build cap from 194 detached runs (p50 $4.12), the
+# Every spend cap in maturation_dispatch.json (cap_tokens, steward_cap_tokens, fix_cap_tokens: weighted tokens since
+# 2026-11-26, at 250,000 per list dollar) and the Designer's run_budget_usd in dispatcher_schedule.json was set from
+# runs on this model: the build cap from 194 detached runs (p50 $4.12), the
 # Designer's $8 as about 2x its highest measured run (111 runs, max $5.06), all Opus 5.5 [measured 2026-11-19,
 # D:\ClaudeWork\rimmandrake\helpers\wm_admit_20261119\build_costs2.txt and designer_costs.txt].
 CAPS_PRICED_FOR = RL.REF_MODEL
 # Builder settings of maturation_dispatch.json a pin replaces. The judge (blind_challenge) and the live driver
-# (ingame_model, ingame_cap_usd, blind_cap_usd) are not in these lists, so a pin never reaches them.
+# (ingame_model, ingame_cap_tokens, blind_cap_tokens) are not in these lists, so a pin never reaches them.
 BUILDER_MODELS = ("model", "steward_model")
-BUILDER_CAPS = ("cap_usd", "steward_cap_usd", "fix_cap_usd")
+BUILDER_CAPS = ("cap_tokens", "steward_cap_tokens", "fix_cap_tokens")
 PINS_KEY = "_pins"      # the tick's one read of the store, carried on its settings (never written to the json file)
 
 
@@ -57,7 +58,8 @@ def cap_scale(alias, base=CAPS_PRICED_FOR):
 
 
 def scaled(cap, alias):
-    """-> `cap` (list dollars) times cap_scale(alias), as a float; a non-number is returned as it is."""
+    """-> `cap` (list dollars, or weighted tokens) times cap_scale(alias), as a float; a non-number is returned as it
+    is. for_mod rounds a builder cap's weighted tokens back to an int."""
     if not isinstance(cap, (int, float)) or isinstance(cap, bool):
         return cap
     return float(Fraction(cap).limit_denominator(10 ** 6) * cap_scale(alias))
@@ -92,7 +94,8 @@ def for_mod(cfg, mod):
         out[k] = alias
     for k in BUILDER_CAPS:
         if k in base:
-            out[k] = scaled(base[k], alias)
+            v = scaled(base[k], alias)
+            out[k] = int(round(v)) if isinstance(v, float) else v      # weighted tokens are whole
     return out
 
 
