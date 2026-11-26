@@ -27,7 +27,9 @@ oldest item that another waits on, then oldest filing, one decision:
   waits_on | blocked | waiting | reshape   it waits on an open item | is blocked | has a dated wait ahead | its dated
                   wait passed and the check fails on an old item that nobody named (a date never launches old work). A due
                   item with no check whose wait passed reads shape. A lane item (named, or filed after shape_from) whose
-                  wait passed gets one second look: a Work run, opus, inside max_runs_per_item
+                  wait passed gets one second look: a Work run, opus, inside max_runs_per_item. The age line: a block
+                  idle past block_idle_days whose `needs` window (game UP, a bridge free) opened block_window_min times
+                  since is stale; it does not stop the lane, and an item with no check it makes due for Shape
   mod_work        its home is mod:<folder>, or every repo path it names is inside one mod's folder (mod_work.of): it
                   waits for that mod's Maturation Pipeline run; no check runs, nothing is adopted, closed or launched.
                   A home that cannot be read reads blind ("could not look")
@@ -459,7 +461,7 @@ def decide(cfg, st, facts, now, account=(True, "")):
         if it.get("waits_on"):
             put("waits_on", "it waits on the open item(s) %s" % ", ".join(it["waits_on"]))
             continue
-        if it.get("blocked"):
+        if it.get("blocked") and not it.get("block_stale"):
             put("blocked", "the item is blocked: %s" % (it.get("blocked_reason") or "no reason given"))
             continue
         wu = it.get("wait_until")
@@ -602,9 +604,11 @@ def decide(cfg, st, facts, now, account=(True, "")):
             row.update(model=model, cap=cap, run_n=len(work) + 1)
             if look:
                 row["look"] = it.get("wait_reason") or "no reason given"
-            put("launch", "Work run %d%s: %s (%s); the check fails: %s" % (
-                len(work) + 1, ", a second look (its wait to %s passed)" % pac(wu) if look else "", model, mwhy,
-                _one(it.get("out"), 120)))
+            if it.get("blocked") and it.get("block_stale"):
+                row["stale_block"] = it["block_stale"]
+            put("launch", "Work run %d%s%s: %s (%s); the check fails: %s" % (
+                len(work) + 1, ", a second look (its wait to %s passed)" % pac(wu) if look else "",
+                ", past a stale block" if row.get("stale_block") else "", model, mwhy, _one(it.get("out"), 120)))
         if host:
             row["why"] = "%s; on %s: the lane's own slots are full (%s)" % (row.get("why", ""), host, full)
         if ocnl:
@@ -765,6 +769,56 @@ def block_facts(world, x, now):
     return waits, not waits
 
 
+
+# The age line (P-5 of the retired Producer's weekly backlog review, revived by the Conductor 2026-11-25 as a line of
+# this lane; table design/RimMandrake/retired_v3_role_duties_2026-11-23.md). Measured 2026-11-24: 30 items blocked past
+# 3 days, 18 of them with a `needs` window that had opened since, and no program looked at one. Only these two `needs`
+# have a ledger event that opens their window; offline, deploy, harvest and owner have none, so no proxy is invented.
+WINDOW_EVENTS = {"game-up": ("game", "UP", "the game came UP"), "bridge": ("bridge", "released", "a bridge went free")}
+
+
+class Openings(object):
+    """A replay observer: each item's last own event, and the times each `needs` window opened. One pass, no reread."""
+
+    def __init__(self):
+        self.last, self.opened = {}, {k: [] for k in WINDOW_EVENTS}
+
+    def observe(self, ev, world, ok):
+        if not ok:
+            return
+        import model as LM
+        t = LM.epoch(ev.get("ts")) if ev.get("ts") else None
+        if t is None:
+            return
+        if ev.get("id"):
+            self.last[ev["id"]] = t
+        for k, (verb, state, _w) in WINDOW_EVENTS.items():
+            if ev.get("event") == verb and ev.get("state") == state:
+                self.opened[k].append(t)
+
+
+def block_age(x, op, now, cfg):
+    """-> (due, why). Due for Shape: a block idle past block_idle_days (since the item's last own event) whose `needs`
+    window opened block_window_min times or more since. Pure over (x, op, now, cfg)."""
+    if not getattr(x, "blocked", None):
+        return False, "not blocked"
+    w = WINDOW_EVENTS.get(getattr(x, "needs", None))
+    if w is None:
+        return False, "needs %s: no ledger event opens that window" % getattr(x, "needs", None)
+    since = op.last.get(x.id)
+    if since is None:
+        return False, "its last own event could not be read"
+    idle = (now - since) / 86400.0
+    days, least = float(cfg.get("block_idle_days", 3)), int(cfg.get("block_window_min", 2))
+    n = sum(1 for t in op.opened.get(x.needs, ()) if t > since)
+    if idle < days or n < least:
+        return False, "its block idle %.1f d; %s %d time(s) since" % (idle, w[2], n)
+    return True, ("its block (%s) idle %.1f d; %s %d times since, so the block may be stale: read its reason against "
+                  "now, and lift it (`rimflow unblock %s --reason ...`) when the reason is gone, or block it again with "
+                  "today's reason. When it is one mod's work, give it that mod's home (`rimflow home %s --home "
+                  "mod:<folder> --reason ...`) and stop: the Maturation Pipeline works a mod" % (_one(getattr(x, "blocked_reason", None) or "no reason given", 120), idle, w[2],
+                                      n, x.id, x.id))
+
 def join_candidates(cands, now, want, system, facts, lease, off, held, refused):
     """-> {ticket: system} of the open tickets that have no lane row (no check) and may join their system's bundle this
     tick: no live lease, no block, no wait ahead, not off, not held, not refused by a bundle or in a live one, and a
@@ -807,7 +861,8 @@ def gather(st, now=None, root=None, load_lag_s=None):
     now = time.time() if now is None else now
     root = root or LE.check_root()
     try:
-        w = LE._world()
+        op = Openings()
+        w = LE._world(observe=op.observe)
     except Exception:  # noqa: BLE001 - the ledger could not be read: one blind row
         return {"items": None, "runs": {}, "other_live": 0}
     import model as LM
@@ -831,6 +886,13 @@ def gather(st, now=None, root=None, load_lag_s=None):
         acc = None
         sf = LS.facts(x)
         sdue, swhy = LS.due(sf, cfg, now)
+        stale = None
+        if x.blocked and block_facts(w, x, now) == ([], True):     # a block that holds, with no open predecessor
+            bdue, bwhy = block_age(x, op, now, cfg)
+            if bdue:
+                stale = bwhy
+                if not sdue and LS.needs_shape_run(sf):     # no check, no route, no split: the age line makes it due
+                    sdue, swhy = True, bwhy
         if not x.effect and adopt_ok:
             p = os.path.join(LM.ITEMS, iid + ".md")
             if os.path.isfile(p):
@@ -846,7 +908,7 @@ def gather(st, now=None, root=None, load_lag_s=None):
              "filed": LM.epoch(x.created_at) if x.created_at else None, "blocks_others": iid in waited_on,
              "caused_by": x.caused_by, "mod_work": mw, "shape_due": sdue, "shape_why": swhy, "route": sf["route"],
              "shape_size": sf["size"], "shape_at": sf["shape_at"], "shape_unit": sf["shape_unit"],
-             "raised": LM.raise_key(x) if x.raised is not None else None,
+             "raised": LM.raise_key(x) if x.raised is not None else None, "block_stale": stale,
              "second_look": bool(sf["named"] or (sf["filed"] and cfg.get("shape_from")
                                                  and sf["filed"] >= LS._epoch(cfg["shape_from"])))}
         if x.state == "doing" and LM.lease_status(x, now) == "live":
@@ -964,7 +1026,7 @@ Its outcome check, which fails now:   {check}
 What the check printed: {out}
 
 The check is the judge of "done". The item is done when the check holds on origin/main, and not before.
-{look}
+{look}{stale}
 Steps:
 0. Start the item, before anything else:
    python3 src/RimMandrake/rimflow/cli.py start {item} --seat BENCH --why "Workshop Pipeline Work run (list_dispatch.py)" --publish
@@ -986,7 +1048,8 @@ Steps:
    Do not file a new item for your own next step.
 """.format(item=iid, n=row.get("run_n", 1), title=it.get("title") or "-", check=it.get("effect"),
            out=_one(it.get("out"), 600) or "(nothing)",
-           look=LOOK % _one(row["look"], 400) if row.get("look") else "")
+           look=LOOK % _one(row["look"], 400) if row.get("look") else "",
+           stale=STALE.replace("{item}", iid) % _one(row["stale_block"], 600) if row.get("stale_block") else "")
 
 
 LOOK = """
@@ -994,6 +1057,13 @@ This run is a second look. The item had a dated wait, the date passed, and the c
 First find if that thing happened, and if the work is still worth the touch (CLAUDE.md, Touching code has a cost). Not
 worth it: drop the item with the reason. Already done by other work: close it with that sha. Not happened yet, and only
 someone else can make it happen: put a new dated wait that names who and what. Otherwise do the work now.
+"""
+
+STALE = """
+The item is blocked, and the block looks stale (the lane's age line): %s
+First settle the block. Its reason gone: lift it (python3 src/RimMandrake/rimflow/cli.py unblock {item} --reason
+"<why it is gone>" --seat BENCH --publish), then do the work. Its reason still true: block it again with today's reason,
+and end with a dated wait that names who acts next.
 """
 
 

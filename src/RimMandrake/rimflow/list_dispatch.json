@@ -31,5 +31,9 @@
   "shape_from": "2026-11-23T14:00:00Z",
   "_shape_from_doc": "A flood of Shape runs on old items: 1,457 open items carried no outcome check on 2026-11-23 (measured), and the plan does no hand migration of old items. An item filed before this moment enters Shape only when someone names it (`rimflow shape <ID> --enter`); one filed at or after it enters by itself after shape_grace_h. Empty: no item enters by itself.",
   "_shape_grace_h": "danger=a Shape run is spent on an item that its filer is about to close or claim; ends no work: the item is due for Shape", "shape_grace_h": 24,
+  "block_idle_days": 3,
+  "_block_idle_days_doc": "The age line (P-5 of the retired Producer, revived by the Conductor 2026-11-25; design/RimMandrake/retired_v3_role_duties_2026-11-23.md). Not a limit on work: the idle time after which a block whose needs window has opened since is due for Shape. The danger it guards: a block whose reason is gone sits unseen. Measured 2026-11-24: 30 items blocked past 3 days, 18 of them with a window that had opened since (up to 21.6 days idle), and no program looked at one. 3 days is the retired review's owner-facing default for a block (blocked means something is wrong).",
+  "block_window_min": 2,
+  "_block_window_min_doc": "The times the needs window (the game UP, a bridge free) must have opened since the item's last own event before its block reads stale. The danger: one opening that nobody could use (a short UP, a lock freed for a minute) spends a Shape run on a block that is still right. 2 is the retired review's default for 'many times'.",
   "_shape_grace_h_doc": "A Shape run spent on an item that its filer is about to close or claim. Measured 2026-11-23 over the 385 items filed with no check and closed in the 3 days before: 52% closed inside 1 h, 75% inside 6 h, 88% inside 24 h."
 }

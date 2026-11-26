@@ -81,7 +81,16 @@ waited for the Conductor's hand, because no program launched them. Each promise 
 - **waits-are-not-launched.** An item that waits on an open item reads `waits_on` and names that item. An item with a
   dated wait in the future reads `waiting`. An old item that nobody named, whose dated wait has passed and whose check
   still fails, reads `reshape` and launches nothing (plan: a date never launches old work). An item with no check that is
-  due for Shape goes on to `shape`. A blocked item reads `blocked`.
+  due for Shape goes on to `shape`. A blocked item reads `blocked`, unless its block is stale (the next promise).
+- **blocked-idle-window-open-is-due.** The age line (P-5 of the retired Producer, revived by the Conductor 2026-11-25;
+  `design/RimMandrake/retired_v3_role_duties_2026-11-23.md`). A block idle past `block_idle_days` since the item's last
+  own event, whose `needs` window opened `block_window_min` times or more since (`game-up`: the game came UP;
+  `bridge`: a bridge went free), is stale. A stale block on an item with no check, no route and no split makes it due
+  for Shape, and the Shape brief's why names the block and `rimflow unblock`. A stale block on an item whose check
+  fails does not stop its Work run, and the Work brief asks to settle the block first. Every later gate still holds.
+  `needs` offline, deploy, harvest and owner have no ledger event that opens their window, so the age line never
+  fires on them. Measured 2026-11-24: 30 items blocked past 3 days, 18 with a window that had opened since, and no
+  program looked at one.
 - **a-passed-wait-gets-one-second-look.** A lane item with a check (named for the lane, or filed at or after `shape_from`)
   whose dated wait passed and whose check still fails gets one Work run (opus) after that date, whose brief names what the
   wait was for and asks first if the work is still worth the touch. It counts as a Work run: after `max_runs_per_item` the

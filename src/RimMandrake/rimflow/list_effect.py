@@ -273,14 +273,14 @@ def pac(t):
     return dt.datetime.fromtimestamp(t, PAC).strftime("%Y-%m-%d %I:%M %p %Z").replace(" 0", " ")
 
 
-def _world():
+def _world(observe=None):
     import model as LM
     if os.environ.get("RIMFLOW_LEDGER"):        # a throwaway ledger, as cli._bind_paths reads it
         LM.EVENTS = os.environ["RIMFLOW_LEDGER"]
     if os.environ.get("RIMFLOW_ITEMS"):
         LM.ITEMS = os.environ["RIMFLOW_ITEMS"]
         LM.CLOSED = os.path.join(LM.ITEMS, "closed")
-    return LM.replay()
+    return LM.replay(observe=observe)
 
 
 def _pause(now):

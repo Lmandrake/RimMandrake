@@ -834,6 +834,73 @@ def t_each_limit_names_its_danger():
         "every numeric setting has its _doc (%s)" % ", ".join(k for k in nums if not c.get("_%s_doc" % k)))
 
 
+def t_blocked_idle_window_open_is_due():
+    """The age line (P-5 of the retired Producer, revived by the Conductor 2026-11-25; table
+    design/RimMandrake/retired_v3_role_duties_2026-11-23.md): a block idle past block_idle_days whose `needs` window
+    opened block_window_min times or more since the item's last own event is due for Shape. Measured 2026-11-24: 30
+    items blocked past 3 days, 18 of them with a window that had opened since, and no program looked at one."""
+    import model as LM
+    L = LD()
+    cfg = dict(CFG, block_idle_days=3, block_window_min=2)
+    day = 86400.0
+
+    def ts(t):
+        import datetime as dt
+        return dt.datetime.fromtimestamp(t, dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    def world(needs, block_at, opens, verb="game", state="UP", block=True, extra=()):
+        n = [0]
+
+        def ev(t, **k):
+            n[0] += 1
+            return dict({"seat": "BENCH", "ts": ts(t), "tsn": n[0]}, **k)
+        evs = [ev(block_at - 60, event="file", id="LD_AGE_LINE_ITEM_ONE", title="t", kind="task", needs=needs,
+                  **{"for": "BENCH"})]
+        if block:
+            evs.append(ev(block_at, event="block", id="LD_AGE_LINE_ITEM_ONE", reason="needs a live game", kind="external"))
+        evs += [ev(t, event="bridge", state="released") if verb == "bridge" else
+                dict(ev(t, event="game", state=state), seat="OWNER") for t in opens]     # only OWNER stamps the game
+        evs += [ev(t, **k) for t, k in extra]
+        evs.sort(key=lambda e: e["ts"])
+        op = L.Openings()
+        w = LM.replay(evs, observe=op.observe)
+        return L.block_age(w.items["LD_AGE_LINE_ITEM_ONE"], op, NOW, cfg)
+
+    old = NOW - 5 * day
+    due, why = world("game-up", old, [old + day, old + 2 * day])
+    chk(lambda: due and "2" in why and "5.0 d" in why and "unblock" in why and "--home mod:" in why,
+        "a block idle 5 days whose game came UP twice since: due; the why names both, the repair, and the mod's home "
+        "(an old mod ticket that mod_work.of misses: LONGSHADE_BEDAZZLE_MECHANICS_1, 2026-11-25) (%s)" % why)
+    chk(lambda: world("bridge", old, [old + day, old + 2 * day], verb="bridge")[0],
+        "needs bridge: two bridge releases since open its window")
+    chk(lambda: not world("game-up", NOW - 2 * day, [NOW - day, NOW - 3600])[0],
+        "idle 2 days: not due yet, however often the window opened")
+    chk(lambda: not world("game-up", old, [old + day])[0], "the window opened once: not due")
+    chk(lambda: not world("game-up", old, [old - 3 * day, old - 2 * day])[0],
+        "openings before its last own event do not count")
+    note = (old + 4 * day, {"event": "note", "id": "LD_AGE_LINE_ITEM_ONE", "text": "still blocked: checked"})
+    chk(lambda: not world("game-up", old, [old + day, old + 2 * day], extra=[note])[0],
+        "a later event of its own restarts the idle clock")
+    chk(lambda: not world("game-up", old, [old + day, old + 2 * day], state="DOWN")[0], "a game DOWN opens nothing")
+    for needs in ("offline", "deploy", "harvest", "owner", None):
+        chk(lambda needs=needs: not world(needs, old, [old + day, old + 2 * day])[0],
+            "needs %s: no ledger event opens that window, so the age line never fires" % needs)
+    chk(lambda: not world("game-up", old, [old + day, old + 2 * day], block=False)[0], "an item with no block")
+    stale = "its block (needs a live game) idle 5.0 d; the game came UP 2 times since"
+    r, l, _ = run({"A": it(blocked=True, effect=None, verdict=None, shape_due=True, shape_why=stale, block_stale=stale)})
+    chk(lambda: r["A"]["decision"] == "shape" and l == ["A"] and stale in r["A"]["why"],
+        "a stale block on an item with no check: one Shape run, whose why is the age line (%s)" % r["A"])
+    r, l, _ = run({"A": it(blocked=True, block_stale=stale)})
+    chk(lambda: r["A"]["decision"] == "launch" and l == ["A"] and r["A"].get("stale_block") == stale,
+        "a stale block on an item whose check fails: one Work run, and the row carries the age line (%s)" % r["A"])
+    b = L.brief_text("A", it(blocked=True, block_stale=stale), {"run_n": 1, "stale_block": stale})
+    chk(lambda: stale in b and "unblock" in b, "the Work brief names the stale block and how to lift it")
+    chk(lambda: "stale block" not in L.brief_text("A", it(), {"run_n": 1}).lower(), "a plain Work brief names no block")
+    chk(lambda: dec({"A": it(blocked=True)}) == ("blocked", []), "a block that is not stale still reads blocked")
+    chk(lambda: dec({"A": it(blocked=True, block_stale=stale, held="held by the owner")})[0] == "held",
+        "every later gate still stops a stale block (held)")
+
+
 def t_a_lead_takes_the_ready_tickets_of_its_home():
     """RIMMANDRAKE_BUNDLE_LIST_TICKETS_BY_HOME_TEN_OF_TWELVE_HELD_ONE: an open ticket with no check (no lane row) of the
     lead's home joins the lead's bundle when it is ready; one that waits, is blocked, held, off, leased or refused stays
@@ -893,7 +960,8 @@ def main():
               t_a_dry_tick_writes_nothing,
               t_only_narrows_the_items_never_the_gates,
               t_a_mod_ticket_is_not_the_list_pipelines,
-              t_each_limit_names_its_danger):
+              t_each_limit_names_its_danger,
+              t_blocked_idle_window_open_is_due):
         try:
             t()
         except Exception as e:  # noqa: BLE001 - a promise whose test cannot run is a FAIL, never a crash
