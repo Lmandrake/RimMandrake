@@ -328,8 +328,10 @@ namespace RimMandrake.FlowWorks.SelfTest
 				if (dl1 != dl0 + w.externalInDl - sunkDl) return $"pulse {p}: total volume {dl0}->{dl1} dL, +{w.externalInDl} dL in, -{sunkDl} dL sunk ({dl1 - (dl0 + w.externalInDl - sunkDl)} dL unaccounted)";
 				// Sinks drain before any flow and components are disjoint, so a sink cell drains min(F, perPulse) of
 				// the fluid it held at the start of the pulse.
+				// the KERNEL's switch, not the scene's: the V&V matrix forces edgeSinksEnabled off over a sinks scene, and the
+				// kernel then rightly drains nothing (RIMMANDRAKE_CLASSIFY_VV_REDS_EDGE_SINKS_OFF_LEDGER_GAP, 142/2000 red)
 				var sunk = new Dictionary<Fluid, float>();
-				if (s.sinks)
+				if (w.k.edgeSinksEnabled)
 					for (int i = 0; i < n; i++)
 						if (w.sink[i] && w.k.depth[i] > 0 && prevFill[i] > 0)
 							sunk[prevFluid[i]] = sunk.GetValueOrDefault(prevFluid[i]) + Math.Min(prevFill[i], (float)w.k.flowPerPulse);
