@@ -1,0 +1,3 @@
+RimWorld 1.6 runs headless on SteveDesktop with -batchmode -nographics and its own -savedatafolder, -logfile and GABP port. The bridge answers at about 24 s and a quicktest map plays at about 46 s. Textures do not load, so screenshots fail. start_debug_game_ready (readiness mapData) returns while programState is still MapInitializing, and a tick step sent then runs 0 ticks: wait for Playing. A scratch install of junctions to Data, RimWorldWin64_Data, MonoBleedingEdge and BridgeTools, with its own Mods, keeps the lane's Mods untouched. Probe: design/specs/2026-11-25-offline-real-game-code-probe/headless/headless_probe.py
+item: RIMMANDRAKE_REPLAY_ENUMERATED_SITUATIONS_IN_HEADLESS_REAL_GAME
+home: design/RimMandrake/two_rimworld_instances_2026-11-07.md

@@ -1,0 +1,3 @@
+Do not export a Windows-style RM_DATA_ROOT (D:\...) in a WSL shell to reach Windows python.exe. WSL tools such as waitalive.py then read it as a relative Linux path and make a folder named 'D:\ClaudeWork\rimmandrake' in the cwd. Set it for the child only: env 'RM_DATA_ROOT=D:\ClaudeWork\rimmandrake' WSLENV=RM_DATA_ROOT python.exe ...
+item: RIMMANDRAKE_REPLAY_ENUMERATED_SITUATIONS_IN_HEADLESS_REAL_GAME
+home: infrastructure/state/facts/tool_traps.md
