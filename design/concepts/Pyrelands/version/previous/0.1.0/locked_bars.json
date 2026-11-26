@@ -1,0 +1,90 @@
+{
+ "schema": 1,
+ "mod": "Pyrelands",
+ "version": "0.1.0",
+ "locked_from_commit": "237b79116781821545f7ac58c23ed40bfc0250c4",
+ "ids": [
+  "inv_biome_self_contained",
+  "inv_plant_roster",
+  "inv_embergrass_regrow",
+  "inv_animal_roster",
+  "inv_ash_field",
+  "inv_burn_line_fire_clock",
+  "inv_scorchfruit",
+  "inv_ruins_scorched",
+  "inv_firehawk_ember",
+  "inv_furnacebeast",
+  "inv_burrowers_heat_dome",
+  "inv_ullai_herd_giant",
+  "inv_weather",
+  "inv_firebreak_firefoam",
+  "inv_firefoam_sprayer",
+  "inv_sand_shovel",
+  "inv_lightning_breaker",
+  "inv_fire_rite_hook",
+  "inv_settings_gate",
+  "inv_art_and_text",
+  "burn_line_walks",
+  "ash_ground_and_blowing_ash",
+  "ash_fertile_when_watered",
+  "fresh_burn_compounds_with_black_rain",
+  "grass_carpets_and_regreens",
+  "scorchfruit_born_of_fire",
+  "populations_are_the_biomes_own",
+  "ruins_stand_blackened",
+  "firehawk_lights_ahead",
+  "furnacebeast_warms",
+  "ashwallow_dives_unharmed",
+  "ullai_graze_old_burns",
+  "three_skies",
+  "no_ordinary_rain",
+  "ash_fertility_probe",
+  "walk_season_on_the_pyre",
+  "firefoam_sprayer_reaches_the_fruit",
+  "sand_shovel_yields_glass_sand",
+  "fire_rite_hook_silent_alone",
+  "biome_text_says_engineered",
+  "flamefang_bite_carries_venom",
+  "inv_firehawk_hunt_rewards",
+  "ullai_cross_the_map_as_vanilla_herds",
+  "fire_walks_with_wind"
+ ],
+ "history": [
+  {
+   "at": "2026-11-15T15:59:00Z",
+   "by": "BENCH",
+   "why": "the lock's bars, derived from locked_from_commit (RIMMANDRAKE_DERIVE_CHECKS_FROM_LOCKED_BARS); the count equals VERSION.json bars_total, plus the bar his card of 2026-11-14 added under the lock rule (VERSION.json measured_from)",
+   "how": "required_ids at locked_from_commit 237b79116781821545f7ac58c23ed40bfc0250c4 (41), less bars_moved_to_next_version (0), plus bars_added_after_lock (0)",
+   "source": "OWNER:1794693278631337978",
+   "added": [
+    "inv_firehawk_hunt_rewards"
+   ],
+   "removed": [],
+   "count": 42
+  },
+  {
+   "at": "2026-11-16T15:51:33Z",
+   "by": "BENCH",
+   "why": "leaf ullai_cross_the_map_as_vanilla_herds came in with the locked change 91a7c61989 his card carded (fix the coverage judge's 12 Problem gaps), so it is a 0.1.0 bar; the leaf firehawk_hunt_rewards from the same change states inv_firehawk_hunt_rewards' promise and is mapped as that bar's coverage in make_test_table.py, not counted (Conductor, delegated: evidence-for-ask)",
+   "how": "changed by his card",
+   "source": "OWNER:1794748469904049550",
+   "added": [
+    "ullai_cross_the_map_as_vanilla_herds"
+   ],
+   "removed": [],
+   "count": 43
+  },
+  {
+   "at": "2026-11-17T17:10:51Z",
+   "by": "BENCH",
+   "why": "his card 2026-11-17: Just \"The fire walks with the wind.\"",
+   "how": "changed by his card",
+   "source": "OWNER:1794926130118775229",
+   "added": [
+    "fire_walks_with_wind"
+   ],
+   "removed": [],
+   "count": 44
+  }
+ ]
+}

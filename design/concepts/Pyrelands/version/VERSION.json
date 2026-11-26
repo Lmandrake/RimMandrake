@@ -1,26 +1,61 @@
 {
  "mod": "Pyrelands",
- "version": "0.1.0",
+ "version": "0.2.0",
+ "kind": "MINOR",
  "state": "locked",
- "locked_on": "2026-11-13",
+ "locked_on": "2026-11-26",
  "locked_by": "owner",
- "owner_words": "Yes, lock the other four mods (owner, 2026-11-13 ~3:40 PM PST, typed to the Conductor; said of FlowWorks, Gimme Some Slack, Pyrelands, Pyrelands Mechanics). Scope, by card 2026-11-13 ~9:30 PM PST: Own mod, own version, later",
- "scope": "biome alone. The Deep Desert Tribes are a separate mod (design/concepts/PyrelandsMechanics, mandrake.rut.pyrelandsmechanics) with its own Design Version 0.1.0, started only after this version passes and kept out of test mod lists until then.",
- "bars_total": 43,
+ "by_card": [
+  "OWNER:1795722774284846701 (11:50 AM PST 2026-11-26): Features -> Certainly all of these and likely more too; Conversion -> With the features (Recommended); Black rain -> his words: FlowWorks work",
+  "OWNER:1795725937729027309 (12:44 PM PST 2026-11-26): Polish sweep -> All five groups (Recommended); Small adds -> Both (Recommended); Tribes mod -> We are not ready to do faction work yet. The tribes sleep until we start faction work much later.; Deferred -> Keep all three later (Recommended)"
+ ],
+ "scope_answer": "OWNER:1795725937729027309",
+ "owner_words": "Certainly all of these and likely more too (card, 11:50 AM PST 2026-11-26). We are not ready to do faction work yet. The tribes sleep until we start faction work much later. (card, 12:44 PM PST 2026-11-26). Before the cards, 10:41 AM PST 2026-11-26: If we're opening 0.2.0 for Pyrelands, I want to review what we might put into it, ok? That's not an automatic decision",
+ "why": "Divergent additions from his own words, opened as a MINOR on his two scope cards after his review of version/next_version/scope_proposal_0.2.0.md. The three Problems of the page's part one and its work that adds no bar are in by the Conductor's call (a defect stays with the open version).",
+ "opened_by": "Designer run RIMMANDRAKE_OPEN_PYRELANDS_NEXT_VERSION_HE_ASKED_FASTER_FIRE (the Conductor's brief)",
+ "scope": "biome alone, as 0.1.0. The Deep Desert Tribes (Pyrelands Mechanics) sleep until faction work starts, by his card; nothing in 0.2.0 needs that mod.",
+ "bars_new": [
+  "fire_catches_and_runs",
+  "roofed_grass_declines_visibly",
+  "pyre_smoke_weather_chokes",
+  "mechanics_switch_plain_no_biome",
+  "crestfeather_has_its_own_look",
+  "grass_still_seen_under_ash"
+ ],
+ "work_no_bar": [
+  "the roofed ember grass exception (fixed in the kill path of roofed_grass_declines_visibly)",
+  "the CurKindLifeStage load warning: stack trace first, then a guard where the trace points",
+  "the startup config errors of the Pyrelands small list (weapon-money fix in UtinniPatches' defs)",
+  "the caller scenario tests T_SCENARIO_FIRE_DUTY, T_SCENARIO_FIRE_NO_FLEE, T_SCENARIO_BURROWER_FLEES",
+  "new words for walk_season_on_the_pyre in tree.json (re-runs the Cold Reader exam once)",
+  "the 23 polish lines of five groups, listed by group in vision.md §0.2.0; each stays on polish.md until its builder does it"
+ ],
+ "first_steps": {
+  "grass_still_seen_under_ash": "one live look on a fresh map after an ash fall, on the 0.1.0 build, before any code (his card of 12:44 PM PST 2026-11-26): the first run of sc_grass_seen_under_ash"
+ },
+ "art_items": {
+  "crestfeather_has_its_own_look": "one render from infrastructure/artpipe/art_lists/pyrelands_firehawk_crestfeather_2026-11-13.csv, an art judge that did not make it, art install only (item RIMMANDRAKE_JUDGE_PYRE_POST_SHEET_ART_CRESTFEATHER_A_HORN)",
+  "roofed_grass_declines_visibly": "a wilted look of the shipped grass and a dead-grass look; existing regenerated art searched first; art judge; art install only"
+ },
+ "mod_settings": "Every 0.1.0 switch stays except 'Enable outside the Pyrelands biome' and its three sub-settings, which go; each mechanic has its own plain on/off, default on, with no biome in it (herd thirst, the step away from fire and the meal before fire duty get one now). New: a 'Fire pace' slider (default the shipped faster pace, low end 0.1.0's pace) and the smoke weather's on/off and frequency. The 'Mod enabled' master stays. Defaults equal the shipped behaviour.",
+ "out_of_scope": {
+  "black rain fills the moat and the tanks": "FlowWorks work, by his card of 11:50 AM PST 2026-11-26 (RIMMANDRAKE_BUILD_BLACK_RAIN_FILLS_MOATS_TANKS_STAY_DRY)",
+  "every Deep Desert Tribes capability (design/concepts/PyrelandsMechanics)": "his card of 12:44 PM PST 2026-11-26: the tribes sleep until faction work starts; the Fire clock switch's live check waits with them",
+  "the Struck Glass rite, burning a field on purpose, caravan warmth": "later, by his card of 12:44 PM PST 2026-11-26 (Keep all three later)",
+  "steam over the rivers, wind fire for every biome": "not Pyrelands work (FlowWorks; each biome mod as it advances)",
+  "the scenario tests pyre_wetroots_season and pyre_furnace_heat_cap": "0.2.0 does not touch their callers; they stay in next_version/README.md"
+ },
+ "previous": "version/previous/0.1.0/VERSION.json",
+ "bars_total": 50,
  "bars_met": "UNMEASURED",
- "judge_rounds": 3,
- "tokens_spent": 11949013,
- "locked_from_commit": "237b79116781821545f7ac58c23ed40bfc0250c4",
+ "locked_from_commit": "102fe35dd4c373a383166531e40ab184fbc9476b",
  "measured_from": {
-  "bars_total": "version/locked_bars.json ids: record.json inventory (21) + tree.json leaves (22 of its 23), 41 at the lock, plus inv_firehawk_hunt_rewards (his card 2026-11-14, OWNER:1794693278631337978, commit c2e230f4f5; journal kind bar-added) and leaf ullai_cross_the_map_as_vanilla_herds (the locked change 91a7c61989, his card OWNER:1794748469904049550); the 23rd leaf, firehawk_hunt_rewards, is coverage of inv_firehawk_hunt_rewards, not a bar, so coverage_judge.required_ids() owes 44 rows",
-  "bars_met": "the latest verdict rm-coverage-judge-1794594804 (2026-11-13T18:33:24Z) met 20 of its 41 rows, but it judged an earlier tree (its tree hash is not the lock's); the stage-3 run after it (rm-role-designer-1794596464) changed only the worldgen wording and called the verdict advisory, so no judge has read the locked tree",
-  "judge_rounds": "coverage_judge.rounds(): 2 legacy rounds named by budget charges + 1 recorded in stage.json coverage_rounds",
-  "tokens_spent": "stage.json budget.spent (cap 4000000); every Designer stage run, helper, review and judge charge on this concept",
-  "locked_from_commit": "origin/main when this version was entered, 2026-11-13; per-file blob hashes in bars.md"
+  "bars_total": "the 50 ids of version/locked_bars.json (lock-bars, 2026-11-26): required_ids at locked_from_commit 102fe35dd4 (51), less the leaf firehawk_hunt_rewards, which 0.1.0 counted as the coverage of inv_firehawk_hunt_rewards (test_table.json coverage_leaves; card OWNER:1794748469904049550); the 44 bars of 0.1.0 plus the six new bars",
+  "bars_met": "not measured at the lock: preflight and the stages after it measure it",
+  "locked_from_commit": "the published design commit of the opening run (record.json, scenes.json, test_table.json, vision.md), 2026-11-26"
  },
  "caveats": [
-  "the latest verdict file is uncommitted (untracked) in /home/mandrake/rm/bench; copied to version/evidence/",
-  "exam.json's input hashes do not match the locked tree and sheet: the exam must be rerun (stage 4, where the concept stands)",
-  "1 budget charge is kind 'unmeasured': an estimate of 500000 tokens, included in budget.spent"
+  "grass_still_seen_under_ash has no fix size until the look; if the look shows grass under the ash, the bar holds with no fix and its check is seen red on a planted fault",
+  "sc_fire_catches_and_runs is kind B with x_of_y 2 of 3, the Designer's first value; a shortfall goes to the Conductor"
  ]
 }

@@ -1,8 +1,8 @@
 {
  "schema": 1,
  "mod": "Pyrelands",
- "version": "0.1.0",
- "locked_from_commit": "237b79116781821545f7ac58c23ed40bfc0250c4",
+ "version": "0.2.0",
+ "locked_from_commit": "102fe35dd4c373a383166531e40ab184fbc9476b",
  "ids": [
   "inv_biome_self_contained",
   "inv_plant_roster",
@@ -24,7 +24,15 @@
   "inv_fire_rite_hook",
   "inv_settings_gate",
   "inv_art_and_text",
+  "inv_firehawk_hunt_rewards",
+  "fire_catches_and_runs",
+  "roofed_grass_declines_visibly",
+  "pyre_smoke_weather_chokes",
+  "mechanics_switch_plain_no_biome",
+  "crestfeather_has_its_own_look",
+  "grass_still_seen_under_ash",
   "burn_line_walks",
+  "fire_walks_with_wind",
   "ash_ground_and_blowing_ash",
   "ash_fertile_when_watered",
   "fresh_burn_compounds_with_black_rain",
@@ -45,9 +53,7 @@
   "fire_rite_hook_silent_alone",
   "biome_text_says_engineered",
   "flamefang_bite_carries_venom",
-  "inv_firehawk_hunt_rewards",
-  "ullai_cross_the_map_as_vanilla_herds",
-  "fire_walks_with_wind"
+  "ullai_cross_the_map_as_vanilla_herds"
  ],
  "history": [
   {
@@ -85,6 +91,28 @@
    ],
    "removed": [],
    "count": 44
+  },
+  {
+   "at": "2026-11-26T21:12:54Z",
+   "by": "BENCH",
+   "why": "Pyrelands 0.2.0 opened on his two scope cards (OWNER:1795722774284846701, OWNER:1795725937729027309); item RIMMANDRAKE_OPEN_PYRELANDS_NEXT_VERSION_HE_ASKED_FASTER_FIRE",
+   "how": "required_ids at locked_from_commit 102fe35dd4c373a383166531e40ab184fbc9476b (51), less bars_moved_to_next_version (0), plus bars_added_after_lock (0)",
+   "source": null,
+   "added": [],
+   "removed": [],
+   "count": 51
+  },
+  {
+   "at": "2026-11-26T21:13:28Z",
+   "by": "BENCH",
+   "why": "0.1.0's counting kept: the leaf firehawk_hunt_rewards states inv_firehawk_hunt_rewards' promise and is that bar's coverage (test_table.json coverage_leaves), not a bar, as recorded under this card on 2026-11-16; the fresh derivation at 0.2.0 picked it up again. No bar is lost: inv_firehawk_hunt_rewards stays",
+   "how": "changed by his card",
+   "source": "OWNER:1794748469904049550",
+   "added": [],
+   "removed": [
+    "firehawk_hunt_rewards"
+   ],
+   "count": 50
   }
  ]
 }
