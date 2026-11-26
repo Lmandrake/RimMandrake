@@ -56,6 +56,16 @@ Any non-canonical game will do; the test lane's games are disposable.
   KEEPER     KEEPER_SAVES_HARDEN_WRONG_SLOT_WRITES A1: save_guard.snapshot on this game's real Saves folder hashes every
              keeper and holds a store copy of each; a save_base through the guard writes a new save, verified, with no
              keeper changed (the new save is deleted after: it is the proof's own)
+  TPSC3      BRIDGE_TPS_REVIEW2_FIXES_1 C3 (tps_record.md Acceptance items 1 and 2), its own cold launches (python.exe
+             only): two launches with no bridge client write a session row (bridge-registration, sampler complete),
+             menu heartbeats and gameplay windows; a new game, a menu load, an in-game load and a new game after the
+             menu each carry their own game seq and save label; 2-10 s blocks (with a 2.05-2.45 s edge sweep, at
+             Superfast and paused) and 40/90 s blocks are each ONE strict-JSON incident with the right gapS, a
+             "blocked in" phase, local time with offset, the game id and a containing window (simShare <= 1); saves are
+             longevents; a 120 s hang killed inside leaves silence rows, a stopped mainBeat under an advancing
+             watchdog, one exited-without-shutdown observer row that survives a relaunch and no retention pattern that
+             deletes it; kills after/before a sample, at a full segment and after rotation read back with no replayed,
+             conflicting or glued rows (malformed only from torn tails)
 PROFILE needs a loaded save (with none loaded the companion reads test by design): run it after EPOCH.
 """
 SAVE = "bundle_wb_bridge_epoch"
@@ -67,7 +77,8 @@ import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CLAUSES = ("EVIDENCE", "TPS", "NORTHSTAR", "STATICCALL", "TILECACHE", "PROFILE", "PEN", "EXPLAIN", "HOOKS", "AWARE",
-           "EPOCH", "FRAME", "KEEPER", "ORIGIN", "WILDBLOCK", "PLAYTEST", "CAMPAIGN", "SETTLE", "PEN2")
+           "EPOCH", "FRAME", "KEEPER", "ORIGIN", "WILDBLOCK", "PLAYTEST", "CAMPAIGN", "SETTLE", "PEN2",
+           "TPSC3")
 
 
 def _ok(r):
@@ -395,6 +406,242 @@ def v_PEN2(d):
         "%d released (none left on the pin; givers %s), %d moved by 600 ticks and %d by %d, all inside their pens, all "
         "home with their facing (%s)" % (len(ids), d.get("giversAfter"), len(d.get("moved600") or []), len(moved), late,
                                          d.get("save")))
+
+
+
+# ---- TPSC3: BRIDGE_TPS_REVIEW2_FIXES_1 C3 = design/RimMandrake/tps_record.md §Acceptance items 1 and 2
+C3_RUN_BLOCKS = (2.0, 2.5, 5.0, 7.0, 10.0)   # bar: "2-10 s hitches", both ends and between, at Normal speed
+# range: the watchdog samples the main thread's beat once a second and names the phase only past 1.5 s
+# (JawaBenchTpsWatchdog.cs Loop), so a gap in (2.0, 2.5) s is the region where a hitch can lose its phase:
+# swept densely, three of each
+C3_EDGE_BLOCKS = (2.05, 2.15, 2.25, 2.35, 2.45) * 3
+C3_FAST_BLOCK = 5.0                          # range: the speed multiplier (Superfast), one hitch
+C3_PAUSED_BLOCK = 3.0                        # range: paused (frames run, no ticks), one hitch
+C3_LONG_BLOCKS = (40.0, 90.0)                # bar: "40 s / 90 s main-thread blocks"
+C3_HANG_S = 120.0                            # fact: jawa/tps_test_block's clamp (JawaBenchTpsSampler.cs); killed inside it
+C3_ROUND_S = 0.005                           # fact: gapS, blockedS and mono are written with 3 decimals
+C3_MONO_TOL_S = 0.5                          # = tps_record.MONO_TOLERANCE_S (a frame's own work beside the block)
+C3_GAP_S = 2.0                               # = tps_record.GAP_SECONDS / JawaBenchTpsMath.GapSeconds
+C3_EXPLAINED = 0.8                           # = tps_record.EXPLAINED_SHARE: a longevent is at least this explained
+C3_BEAT_JITTER_S = 0.1                       # fact: mainBeatUtc is derived from the watchdog's clock each write (ms jitter)
+C3_HB_READS = 3                              # item 1: three heartbeat reads, C3_HB_GAP_S apart
+C3_HB_GAP_S = 6.0                            # fact: the heartbeat is rewritten every 5 s (JawaBenchTpsWatchdog.cs)
+C3_HANG_READS = 4                            # bar: "mainBeatUtc stops while watchdogUtc advances", four reads
+C3_SILENCE_MIN = 2                           # bar: "silence rows" (plural)
+C3_KILLS = ("K1-after-sample", "K2-before-sample", "K3-segment-full", "K4-after-rotation")   # bar: "near sample/segment boundaries"
+C3_SEGMENT_BYTES = 2 * 1024 * 1024           # = tps_record.SEGMENT_BYTES / JawaBenchTpsWriter.SegmentBytes
+C3_MARK_CHARS = 30000                        # our own: one fill mark's size; K3 must stand within one mark of the boundary
+C3_GAMES = ("new game (cold A)", "menu load (cold E)", "in-game load (cold E)", "new game after menu (cold E)")
+_C3_OFFSET = re.compile(r" [+-]\d\d:\d\d ")
+
+
+def _c3_block_lines(b, fails, worst):
+    lab = b.get("label")
+    if b.get("refused"):
+        return
+    inc = b.get("incidents") or []
+    if len(inc) != 1:
+        fails.append("%s: %d incidents over the block %s..%s (want ONE)" % (lab, len(inc), b.get("utcStart"), b.get("utcEnd")))
+        return
+    i = inc[0]
+    worst["n"] += 1
+    delta = float(i["gapS"]) - float(b["blockedS"])
+    worst["dLo"], worst["dHi"] = min(worst["dLo"], delta), max(worst["dHi"], delta)
+    if not (-C3_ROUND_S <= delta <= C3_MONO_TOL_S):
+        fails.append("%s: gapS %s against blockedS %s (want within -%s..+%s)" % (lab, i["gapS"], b["blockedS"], C3_ROUND_S,
+                                                                             C3_MONO_TOL_S))
+    if i.get("kind") != "incident":
+        fails.append("%s: kind %r" % (lab, i.get("kind")))
+    if not (isinstance(i.get("quietPhase"), str) and i["quietPhase"]):
+        worst["noPhase"].append("%s(%.3fs)" % (lab, float(b["blockedS"])))
+    elif "blocked in " not in (i.get("rendered") or ""):
+        fails.append("%s: the rendered row has no 'blocked in': %s" % (lab, (i.get("rendered") or "")[:120]))
+    if not _C3_OFFSET.search(i.get("rendered") or ""):
+        fails.append("%s: the rendered row has no local time with offset: %s" % (lab, (i.get("rendered") or "")[:80]))
+    if i.get("game") != b.get("game"):
+        fails.append("%s: incident game %r, current game %r" % (lab, i.get("game"), b.get("game")))
+    c = b.get("contain")
+    if not c:
+        fails.append("%s: no window of game %s contains [mono-gapS, mono] = [%s, %s]" % (
+            lab, b.get("game"), i.get("gapStartMono"), i.get("mono")))
+        return
+    worst["slack"] = min(worst["slack"], c["slack"])
+    worst["share"] = max(worst["share"], c["simShare"] if c.get("simShare") is not None else 0)
+    if c["slack"] < -C3_ROUND_S:
+        fails.append("%s: the window [%s, %s] misses the gap by %.3f s" % (lab, c["monoStart"], c["monoEnd"], -c["slack"]))
+    if c.get("simShare") is None or c["simShare"] > 1:
+        fails.append("%s: containing window simShare %r (want <= 1)" % (lab, c.get("simShare")))
+
+
+def v_TPSC3(d):
+    if d.get("platform") != "nt":
+        return 2, ("needs python.exe on the game's machine (the record files, taskkill and the observer's process probe); "
+                   "os.name %r" % d.get("platform"))
+    fails, gaps = [], []
+    if d.get("aborted"):
+        gaps.append("aborted: %s" % d["aborted"])
+    # item 1: two cold launches with no client, each read from disk before any call
+    i1 = d.get("item1") or []
+    for c in i1:
+        lab = c.get("label")
+        if not c.get("segment"):
+            fails.append("%s: no record segment of the new pid %s in %s" % (lab, c.get("pid"), d.get("recordDir")))
+            continue
+        if c.get("startedBy") != "bridge-registration":
+            fails.append("%s: session row startedBy %r (want bridge-registration)" % (lab, c.get("startedBy")))
+        if c.get("sampler") != "complete":
+            fails.append("%s: session row install.sampler %r (want complete)" % (lab, c.get("sampler")))
+        hb = c.get("hbs") or []
+        seqs = [h.get("hbSeq") for h in hb]
+        if len(hb) < C3_HB_READS:
+            fails.append("%s: %d heartbeat reads (want %d)" % (lab, len(hb), C3_HB_READS))
+        elif any(not isinstance(s, int) for s in seqs) or any(b <= a for a, b in zip(seqs, seqs[1:])):
+            fails.append("%s: heartbeat hbSeq %s does not rise %.0f s apart" % (lab, seqs, C3_HB_GAP_S))
+        if any(h.get("scene") != "menu" for h in hb):
+            fails.append("%s: heartbeat scenes %s (want menu)" % (lab, [h.get("scene") for h in hb]))
+    if len(i1) < 2:
+        gaps.append("item 1 read on %d of 2 cold launches" % len(i1))
+    games = dict((g.get("label"), g) for g in d.get("games") or [])
+    for lab in C3_GAMES:
+        g = games.get(lab)
+        if g is None:
+            gaps.append("%s not reached" % lab)
+            continue
+        if g.get("why"):
+            gaps.append("%s: %s" % (lab, g["why"]))
+            continue
+        if not g.get("row"):
+            fails.append("%s: no game row %s" % (lab, g.get("wantSeq")))
+            continue
+        if g["row"].get("game") != g.get("wantSeq") or g["row"].get("save") != g.get("wantSave"):
+            fails.append("%s: game row game %r save %r (want %r, %r)" % (lab, g["row"].get("game"), g["row"].get("save"),
+                                                                      g.get("wantSeq"), g.get("wantSave")))
+        if (g.get("windows") or 0) < 1:
+            fails.append("%s: no gameplay window of game %s" % (lab, g.get("wantSeq")))
+    # item 2: the blocks
+    blocks = d.get("blocks") or []
+    want = len(C3_RUN_BLOCKS) + len(C3_EDGE_BLOCKS) + 1 + 1 + len(C3_LONG_BLOCKS)
+    refused = [b.get("label") for b in blocks if b.get("refused")]
+    if refused:
+        gaps.append("jawa/tps_test_block refused: %s (%s)" % (refused[:3], blocks[0].get("refused")))
+    if len(blocks) < want:
+        gaps.append("%d of %d blocks run" % (len(blocks), want))
+    worst = {"n": 0, "dLo": 9e9, "dHi": -9e9, "slack": 9e9, "share": 0.0, "noPhase": []}
+    for b in blocks:
+        _c3_block_lines(b, fails, worst)
+    if worst["noPhase"]:
+        fails.append("%d of %d hitches have no 'blocked in' phase (quietPhase empty): %s" % (
+            len(worst["noPhase"]), worst["n"], ", ".join(worst["noPhase"][:8])))
+    st = d.get("strict")
+    if not st:
+        gaps.append("no strict scan")
+    elif st.get("bad"):
+        fails.append("strict parse: %d bad complete lines in %d files (%d lines): %s" % (st["bad"], st["files"], st["lines"],
+                                                                                     st.get("badSample")))
+    # the save
+    saves = d.get("saves") or []
+    big = [s for s in saves if s.get("saveS") is not None and s["saveS"] > C3_GAP_S + C3_ROUND_S]
+    for s in saves:
+        inc = s.get("incidents") or []
+        if s.get("saveS") is None:
+            fails.append("save %s: no save row" % s.get("label"))
+            continue
+        if len(inc) > 1 or (s in big and len(inc) != 1):
+            fails.append("save %s (saveS %s): %d incidents (want %s)" % (s.get("label"), s["saveS"], len(inc),
+                                                                        "ONE" if s in big else "at most one"))
+        for i in inc:
+            if i.get("type") != "longevent" or float(i.get("explainedS") or 0) < C3_EXPLAINED * float(i["gapS"]):
+                fails.append("save %s (saveS %s): incident %s gapS %s explainedS %s (want longevent, >= %.0f%% explained)" % (
+                    s.get("label"), s["saveS"], i.get("type"), i.get("gapS"), i.get("explainedS"), 100 * C3_EXPLAINED))
+    if not big:
+        gaps.append("no save longer than %.1f s (longest %s of %d saves; %s)" % (
+            C3_GAP_S, max([s.get("saveS") or 0 for s in saves] or [None]), len(saves), d.get("rampWhy")))
+    # the hang and kill
+    h = d.get("hang") or {}
+    if not h:
+        gaps.append("no hang")
+    else:
+        hb = h.get("hbs") or []
+        if len(hb) < C3_HANG_READS:
+            gaps.append("hang: %d heartbeat reads (want %d)" % (len(hb), C3_HANG_READS))
+        else:
+            wm = [x["watchdogMono"] for x in hb]
+            wu = [x["watchdogEp"] for x in hb]
+            bm = [x["mainBeatMono"] for x in hb]
+            bu = [x["mainBeatEp"] for x in hb]
+            sil = [x["silentS"] for x in hb]
+            h["beatSpread"] = max(bu) - min(bu)
+            if any(b <= a for a, b in zip(wm, wm[1:])) or any(b <= a for a, b in zip(wu, wu[1:])):
+                fails.append("hang: watchdogMono %s / watchdogUtc do not advance" % wm)
+            if max(bm) - min(bm) > 1e-6 or h["beatSpread"] > C3_BEAT_JITTER_S:
+                fails.append("hang: the main beat moved (mainBeatMono %s, mainBeatUtc spread %.3f s, limit %s)" % (
+                    bm, h["beatSpread"], C3_BEAT_JITTER_S))
+            if any(b <= a for a, b in zip(sil, sil[1:])):
+                fails.append("hang: silentS %s does not rise" % sil)
+        if (h.get("silenceRows") or 0) < C3_SILENCE_MIN:
+            fails.append("hang: %s silence rows (want >= %d)" % (h.get("silenceRows"), C3_SILENCE_MIN))
+        if not h.get("killed"):
+            gaps.append("hang: the game was not killed (%s)" % h.get("killWhy"))
+        elif h.get("observerErr"):
+            gaps.append("hang: observer pass failed: %s" % h["observerErr"])
+        elif h.get("observerRows") != 1:
+            fails.append("hang: %s exited-without-shutdown observer rows for session %s (want ONE; pass findings %s)" % (
+                h.get("observerRows"), h.get("session"), h.get("findings")))
+        if h.get("observerRowsAfter") is None:
+            gaps.append("hang: observer.jsonl not reread after the relaunch")
+        elif h.get("observerRowsAfter") < 1:
+            fails.append("hang: the exited-without-shutdown row is gone after the relaunch")
+        ret = h.get("retention") or {}
+        if not ret.get("patterns") or not ret.get("sane"):
+            gaps.append("retention: deletion patterns not read (%s)" % ret)
+        elif ret.get("hits"):
+            fails.append("retention: observer.jsonl matches deletion pattern(s) %s: it will not be on disk the next day" % ret["hits"])
+    # the kills
+    kills = dict((k.get("label"), k) for k in d.get("kills") or [])
+    for lab in C3_KILLS:
+        k = kills.get(lab)
+        if not k or not k.get("killed"):
+            gaps.append("%s not run (%s)" % (lab, (k or {}).get("why")))
+            continue
+        fs = k.get("files") or []
+        for n, f in enumerate(fs):
+            if f["bad"]:
+                fails.append("%s: %s has %d bad complete lines (glued or torn mid-file)" % (lab, f["name"], f["bad"]))
+            if f["torn"] and n != len(fs) - 1:
+                fails.append("%s: torn line in %s, not the session's last file" % (lab, f["name"]))
+            if f["bytes"] > C3_SEGMENT_BYTES:
+                fails.append("%s: %s is %d bytes (limit %d)" % (lab, f["name"], f["bytes"], C3_SEGMENT_BYTES))
+        if lab == "K4-after-rotation" and len(fs) < 2:
+            gaps.append("%s: the segment never rotated (%d files)" % (lab, len(fs)))
+        if lab == "K3-segment-full" and (not fs or fs[-1]["bytes"] < C3_SEGMENT_BYTES - 2 * C3_MARK_CHARS):
+            gaps.append("%s: the segment stood at %s bytes, not within two marks of %d" % (
+                lab, fs[-1]["bytes"] if fs else None, C3_SEGMENT_BYTES))
+    rb = d.get("readback")
+    if not rb:
+        gaps.append("no read-back of the killed sessions")
+    else:
+        if rb.get("replayed") or rb.get("conflicts"):
+            fails.append("read-back: replayed %s, conflicts %s (want 0)" % (rb.get("replayed"), rb.get("conflicts")))
+        if rb.get("malformed") != rb.get("torn"):
+            fails.append("read-back: malformed %s, torn tails %s (want malformed from the torn tail only)" % (
+                rb.get("malformed"), rb.get("torn")))
+    if fails:
+        return 1, "; ".join(fails[:12]) + ("; ... %d more" % (len(fails) - 12) if len(fails) > 12 else "")
+    if gaps:
+        return 2, "; ".join(gaps[:10])
+    rb = d["readback"]
+    return 0, (
+        "item 1 on %d cold launches (no client: session row bridge-registration/complete, %d menu heartbeats each), "
+        "%d games with their seq and label; %d hitches/blocks ONE incident each: gapS-blockedS worst %.3f..%.3f s "
+        "(limit -%s..+%s), window slack worst %.3f s (limit -%s), simShare worst %.3f (limit 1), all 'blocked in' with "
+        "offset; strict scan %d lines / %d files 0 bad; %d saves, %d over %.1f s each ONE longevent; hang: %d hb reads "
+        "beat spread %.3f s (limit %s), %d silence rows, ONE exited-without-shutdown row, still there after the relaunch, "
+        "no deletion pattern of %d matches it; %d kills: read-back of %d files replayed 0 conflicts 0 malformed %d = "
+        "torn %d, seqMissing %s" % (
+            len(i1), C3_HB_READS, len(games), worst["n"], worst["dLo"], worst["dHi"], C3_ROUND_S, C3_MONO_TOL_S,
+            worst["slack"], C3_ROUND_S, worst["share"], st["lines"], st["files"], len(saves), len(big), C3_GAP_S,
+            len(h["hbs"]), h["beatSpread"], C3_BEAT_JITTER_S, h["silenceRows"], len(h["retention"]["patterns"]),
+            len(kills), rb.get("files"), rb["malformed"], rb["torn"], rb.get("seqMissing")))
 
 
 VERDICTS = dict((c, globals()["v_" + c]) for c in CLAUSES)
@@ -1020,7 +1267,7 @@ def pen_job_class(job):
         return "none"
     if job.get("def") != "Wait":
         return "other"
-    if not job.get("giver") and (job.get("expiryInterval") or 0) >= PEN_PIN_TICKS:
+    if not job.get("giver"):
         return "pin"
     return "rest"
 
@@ -1175,6 +1422,562 @@ def g_ORIGIN_cold(Session):
             out["restoreErr"] = str(e)[:160]
 
 
+# ---- TPSC3 gatherer: runs outside main's one Session (it kills and relaunches the game five times)
+C3_LOAD_SAVE = "bundle_tps_c3_load"          # our own: the proof's base save (deleted at the end)
+C3_RAMP_SAVE = "bundle_tps_c3_ramp"          # our own: the ramp's save (deleted at the end)
+C3_RAMP_TARGET_S = 3.0                       # our own: a save comfortably past the 2 s gap (bar: GapSeconds)
+C3_RAMP_STEPS, C3_RAMP_BUDGET_S = 40, 900    # our own: the ramp's caps
+C3_RAMP_DEFS = ("Steel", "Plant_Grass")      # one item and one plant per cell (an item displaces items, a plant wipes plants)
+C3_FILL_SMALL = 2000                         # our own: the fine fill mark, to stand within C3_FILL_SLACK of the boundary
+C3_FILL_SLACK = 4096
+
+
+class _C3Stop(Exception):
+    pass
+
+
+class _C3S:
+    """A bridge client for the CURRENT game (resolve_endpoint reads each relaunch's port and token)."""
+    def __init__(self, timeout):
+        import rimbridge_client as rb
+        h, p, t = rb.resolve_endpoint()
+        self.c = rb.RimBridge(h, p, t, timeout=timeout, client_name="bridge_bundle_proof.py TPSC3")
+
+    def __enter__(self):
+        self.c.__enter__()
+        return self
+
+    def __exit__(self, *e):
+        return self.c.__exit__(*e)
+
+    def call(self, tool, **p):
+        return self.c.call(tool, p)
+
+
+def _c3_files(T, rdir, session=None, pid=None):
+    """[(startUtc, seg, path, session)] of the record's segments, in write order."""
+    out = []
+    for n in os.listdir(rdir):
+        m = T.SEGMENT_RE.match(n)
+        if not m or (session and m.group(2) != session) or (pid is not None and m.group(3) != str(pid)):
+            continue
+        out.append((m.group(1), int(m.group(4)), os.path.join(rdir, n), m.group(2)))
+    return sorted(out)
+
+
+def _c3_paths(T, rdir, session):
+    return [f[2] for f in _c3_files(T, rdir, session=session)]
+
+
+def _c3_read(T, paths):
+    """-> (valid placed rows, per-file scan {name, bytes, lines, bad, torn, badSample}) with the strict parser."""
+    rows, scan = [], []
+    for p in paths:
+        f = {"name": os.path.basename(p), "bytes": 0, "lines": 0, "bad": 0, "torn": False, "badSample": None}
+        scan.append(f)
+        try:
+            with open(p, "rb") as fh:
+                data = fh.read()
+        except OSError as e:
+            f["err"] = str(e)[:120]
+            continue
+        f["bytes"] = len(data)
+        parts = data.split(b"\n")
+        f["torn"] = bool(parts.pop())               # bytes after the last newline: a line not finished
+        for raw in parts:
+            if not raw.strip():
+                continue
+            f["lines"] += 1
+            try:
+                r = T.loads_strict(raw.decode("utf-8"))
+            except ValueError:                      # UnicodeDecodeError is a ValueError
+                f["bad"] += 1
+                f["badSample"] = f["badSample"] or raw[:120].decode("utf-8", "replace")
+                continue
+            if T._valid(r):
+                T.place(r, T._epoch(r["utc"]))
+                rows.append(r)
+    return rows, scan
+
+
+def _c3_launch(d, label, no_ping):
+    bt = os.path.normpath(os.path.join(HERE, "..", "..", "..", "bridgetools"))
+    if bt not in sys.path:
+        sys.path.insert(0, bt)
+    import launch_ready as LR
+    import load_policy
+    pol_all = load_policy.load()
+    name = load_policy.profile_name(load_policy.active_count_from_modsconfig(), pol_all)
+    pol = dict(pol_all["profiles"][name], name=name)
+    env = LR.RealEnv()
+    if no_ping:     # item 1: no bridge client at all, so the launcher's own ping is not made either
+        env.ping = lambda port, token: (True, "not called (item 1: a cold launch with no bridge client)")
+    r = LR.run(env, pol, kill_existing=True, log=lambda m: None)
+    d.setdefault("launches", []).append({"label": label, "verdict": r.get("verdict"), "pid": r.get("pid"),
+                                         "why": (r.get("why") or "")[:200]})
+    if r.get("verdict") != "READY":
+        raise _C3Stop("%s: launch_ready %s: %s" % (label, r.get("verdict"), (r.get("why") or "")[:200]))
+    return r
+
+
+def _c3_kill(pid):
+    import subprocess
+    import game_instance
+    try:
+        import signal
+        os.kill(pid, signal.SIGTERM)                # Windows: TerminateProcess, at once
+    except OSError:
+        subprocess.run(["taskkill", "/PID", str(pid), "/F"], capture_output=True, timeout=60)
+    t0 = time.time()
+    while time.time() - t0 < 60:
+        try:
+            if not game_instance.alive([pid]):
+                return True
+        except Exception:                           # noqa: BLE001 - Blind: read again
+            pass
+        time.sleep(0.5)
+    return False
+
+
+def _c3_hb(T, rdir, session):
+    p = os.path.join(rdir, "hb_%s.json" % session)
+    for _ in range(5):                              # the writer replaces the file: a read can meet the swap
+        try:
+            with open(p, encoding="utf-8") as fh:
+                return T.loads_strict(fh.read()), os.path.getmtime(p)
+        except (OSError, ValueError):
+            time.sleep(0.2)
+    return None, None
+
+
+def _c3_save_json(d):
+    try:
+        import rmpaths
+        out = rmpaths.rm_win("scratch", "tpsc3")
+    except Exception:                               # noqa: BLE001
+        import tempfile
+        out = os.path.join(tempfile.gettempdir(), "tpsc3")
+    try:
+        os.makedirs(out, exist_ok=True)
+        with open(os.path.join(out, "tpsc3.json"), "w", encoding="utf-8") as fh:
+            json.dump(d, fh, indent=1, default=str)
+        d["evidence"] = os.path.join(out, "tpsc3.json")
+    except OSError:
+        pass
+
+
+def _c3_item1(T, d, rdir, label, r):
+    """Item 1, read from disk only: the new pid's segment, its session row, three menu heartbeats."""
+    import calendar
+    pid, t0 = r["pid"], r["launched_at"]
+    c = {"label": label, "pid": pid}
+    d["item1"].append(c)
+    end = time.time() + 90
+    while time.time() < end:
+        fs = [f for f in _c3_files(T, rdir, pid=pid)
+              if calendar.timegm(time.strptime(f[0], "%Y%m%dT%H%M%SZ")) >= t0 - 60]
+        if fs:
+            c["session"], c["segment"] = fs[0][3], os.path.basename(fs[0][2])
+            rows, _ = _c3_read(T, _c3_paths(T, rdir, c["session"]))
+            s = [x for x in rows if x.get("kind") == "session"]
+            if s:
+                c["startedBy"], c["sampler"] = s[0].get("startedBy"), (s[0].get("install") or {}).get("sampler")
+                c["menuRows"] = sum(1 for x in rows if x.get("kind") == "menu")
+                break
+        time.sleep(1)
+    if not c.get("session"):
+        return None
+    c["hbs"] = []
+    for k in range(C3_HB_READS):
+        if k:
+            time.sleep(C3_HB_GAP_S)
+        hb, _mt = _c3_hb(T, rdir, c["session"])
+        if hb:
+            c["hbs"].append({"hbSeq": hb.get("hbSeq"), "scene": hb.get("scene")})
+    return c["session"]
+
+
+def _c3_game(T, d, rdir, sess, label, seq, save, why=None):
+    g = {"label": label, "wantSeq": seq, "wantSave": save, "row": None, "windows": 0}
+    d["games"].append(g)
+    if why:
+        g["why"] = why
+        return g
+    end = time.time() + 60
+    while time.time() < end:
+        rows, _ = _c3_read(T, _c3_paths(T, rdir, sess))
+        g["allGames"] = [(x.get("game"), x.get("save")) for x in rows if x.get("kind") == "game"]
+        gr = [x for x in rows if x.get("kind") == "game" and x.get("game") == seq]
+        if gr:
+            g["row"] = {"game": gr[0].get("game"), "save": gr[0].get("save"), "ticksGame": gr[0].get("ticksGame")}
+            g["windows"] = sum(1 for x in rows if x.get("kind") == "sample" and x.get("game") == seq)
+            if g["windows"]:
+                break
+        time.sleep(2)
+    return g
+
+
+def _c3_speed(s, speed):
+    from common import call
+    return call(s, "rimworld/set_time_speed", speed=speed)
+
+
+def _c3_block(s, d, label, secs, seq):
+    from common import call
+    b = {"label": label, "requestedS": secs, "game": seq}
+    d["blocks"].append(b)
+    try:
+        r = call(s, "jawa/tps_test_block", seconds=secs)
+    except Exception as e:                          # noqa: BLE001
+        b["refused"] = "%s: %s" % (type(e).__name__, str(e)[:160])
+        return b
+    if not r.get("success"):
+        b["refused"] = str(r.get("message") or r.get("error") or r)[:160]
+        return b
+    b.update(blockedS=r.get("blockedS"), utcStart=r.get("utcStart"), utcEnd=r.get("utcEnd"))
+    time.sleep(2)                                   # bar: ONE incident per block; the next block starts apart from it
+    return b
+
+
+def _c3_attach(T, rdir, sess, blocks, tz):
+    rows, _ = _c3_read(T, _c3_paths(T, rdir, sess))
+    incs = [x for x in rows if x.get("kind") == "incident"]
+    wins = [x for x in rows if x.get("kind") == "sample" and x.get("monoStart") is not None and x.get("monoEnd") is not None]
+    for b in blocks:
+        if b.get("refused") or b.get("utcStart") is None or "incidents" in b:
+            continue
+        a, z = T._epoch(b["utcStart"]) - C3_MONO_TOL_S, T._epoch(b["utcEnd"]) + C3_MONO_TOL_S
+        mine = [i for i in incs if i["_t0"] <= z and i["_t"] >= a]
+        b["incidents"] = [{"gapS": i.get("gapS"), "kind": i.get("kind"), "type": i.get("type"),
+                           "quietPhase": i.get("quietPhase"), "game": i.get("game"), "rendered": T.render_row(i, tz),
+                           "mono": i.get("mono"), "gapStartMono": round(i["mono"] - i["gapS"], 3)} for i in mine]
+        if len(mine) != 1:
+            continue
+        i, best = mine[0], None
+        for w in wins:
+            if w.get("game") != b["game"] or w.get("session") != sess:
+                continue
+            slack = min((i["mono"] - i["gapS"]) - w["monoStart"], w["monoEnd"] - i["mono"])
+            if best is None or slack > best["slack"]:
+                best = {"slack": round(slack, 3), "simShare": w.get("simShare"), "monoStart": w["monoStart"],
+                        "monoEnd": w["monoEnd"], "gaps": w.get("gaps"), "stallS": w.get("stallS")}
+        b["contain"] = best
+
+
+def _c3_save(T, d, rdir, sess, name):
+    from common import call
+    t = time.time()
+    with _C3S(900) as s:                            # budget: a save is seconds; the ramp stops near 3 s
+        call(s, "rimworld/save_game", saveName=name)
+    time.sleep(3)                                   # the writer's flush
+    rows, _ = _c3_read(T, _c3_paths(T, rdir, sess))
+    sv = [x for x in rows if x.get("kind") == "save" and x["_t"] >= t - 1]
+    e = {"label": "%s#%d" % (name, len(d["saves"]) + 1), "saveS": None, "incidents": []}
+    d["saves"].append(e)
+    if not sv:
+        return e
+    r = sv[-1]
+    e["saveS"] = r.get("saveS")
+    a, z = r["_t"] - (r.get("saveS") or 0) - C3_MONO_TOL_S, r["_t"] + C3_MONO_TOL_S
+    e["incidents"] = [{"type": i.get("type"), "gapS": i.get("gapS"), "explainedS": i.get("explainedS")}
+                      for i in rows if i.get("kind") == "incident" and i["_t0"] <= z and i["_t"] >= a]
+    return e
+
+
+def _c3_ramp(T, d, rdir, sess):
+    """Saves of a growing map until one passes C3_RAMP_TARGET_S: one item and one plant per cell, extrapolated."""
+    from common import call
+    with _C3S(120) as s:
+        mi = call(s, "jawa/map_info")
+        _c3_speed(s, "Paused")
+    X, Z = int(mi["sizeX"]), int(mi["sizeZ"])
+    rects = [(x, z) for dn in C3_RAMP_DEFS for z in range(0, Z - 49, 50) for x in range(0, X - 49, 50)]
+    defs = [dn for dn in C3_RAMP_DEFS for z in range(0, Z - 49, 50) for x in range(0, X - 49, 50)]
+    t0, done, filled = time.time(), 0, 0
+    base = _c3_save(T, d, rdir, sess, C3_RAMP_SAVE).get("saveS") or 0.0
+    last = base
+    while done < C3_RAMP_STEPS and time.time() - t0 < C3_RAMP_BUDGET_S and last <= C3_RAMP_TARGET_S:
+        if done >= len(rects):
+            break
+        slope = (last - base) / done if done else 0
+        n = 2 if slope <= 0 else max(1, min(8, int((C3_RAMP_TARGET_S * 1.2 - last) / slope)))
+        with _C3S(300) as s:
+            for k in range(done, min(len(rects), done + n)):
+                x, z = rects[k]
+                r = call(s, "jawa/spawn_fill_area", rect="%d,%d,50,50" % (x, z), thingDef=defs[k])
+                filled += int(r.get("cellsFilled") or 0)
+        done = min(len(rects), done + n)
+        last = _c3_save(T, d, rdir, sess, C3_RAMP_SAVE).get("saveS") or last
+    d["rampWhy"] = "map %dx%d, %d of %d rects (%s), %d cells filled, base save %.3f s, last %.3f s, %.0f s" % (
+        X, Z, done, len(rects), "+".join(C3_RAMP_DEFS), filled, base, last, time.time() - t0)
+
+
+def _c3_hang(T, O, d, rdir, sess):
+    import fnmatch
+    import threading
+    h = {"session": sess, "hbs": [], "silenceRows": 0}
+    d["hang"] = h
+
+    def blocker():
+        try:
+            with _C3S(C3_HANG_S + 60) as s:
+                s.call("jawa/tps_test_block", seconds=C3_HANG_S)
+        except Exception:                           # noqa: BLE001 - the kill ends the call
+            pass
+    threading.Thread(target=blocker, daemon=True).start()
+    t0 = time.time()
+    for at in (15, 25, 35, 45):                     # after the 10 s silence threshold, inside the 120 s block
+        time.sleep(max(0, t0 + at - time.time()))
+        hb, _mt = _c3_hb(T, rdir, sess)
+        if hb:
+            h["hbs"].append({"watchdogMono": hb.get("watchdogMono"), "watchdogEp": T._epoch(hb.get("watchdogUtc")),
+                             "mainBeatMono": hb.get("mainBeatMono"), "mainBeatEp": T._epoch(hb.get("mainBeatUtc")),
+                             "silentS": hb.get("silentS")})
+    while time.time() < t0 + 80:                    # silence rows at 10 s, then every 30 s (SilenceRepeatSeconds)
+        rows, _ = _c3_read(T, _c3_paths(T, rdir, sess))
+        h["silenceRows"] = sum(1 for x in rows if x.get("kind") == "silence" and x["_t"] >= t0)
+        if h["silenceRows"] >= C3_SILENCE_MIN:
+            break
+        time.sleep(2)
+    pid = d["item1"][0]["pid"]
+    h["killed"] = _c3_kill(pid) and time.time() < t0 + C3_HANG_S
+    h["killWhy"] = "pid %s, %.0f s into the %.0f s block" % (pid, time.time() - t0, C3_HANG_S)
+    _hb, mt = _c3_hb(T, rdir, sess)
+    time.sleep(max(0, (mt or time.time()) + T.HB_FRESH_SECONDS + 1 - time.time()))
+    p = O.one_pass()
+    h["observerErr"], h["findings"] = p.get("error"), [f for f in p.get("findings") or [] if f.get("session") == sess]
+    h["observerRows"] = _c3_observer_rows(T, rdir, sess)
+    # retention: every deletion pattern of the record's writers, read from the source
+    src = os.path.normpath(os.path.join(HERE, "..", "..", "..", "bridgetools", "JawaBench.BridgeTools"))
+    pats = set()
+    for n in os.listdir(src):
+        if n.startswith("JawaBenchTps") and n.endswith(".cs"):
+            for ln in open(os.path.join(src, n), encoding="utf-8", errors="replace"):
+                if "Prune(" in ln or "GetFiles(" in ln or "EnumerateFiles(" in ln:
+                    pats.update(p for p in re.findall(r'"([^"]*\*[^"]*)"', ln))
+    ut = os.path.normpath(os.path.join(HERE, "..", ".."))
+    py = [n for n in os.listdir(ut) if n.endswith(".py") and not n.startswith("selftest_")
+          and any(("remove(" in ln or "unlink(" in ln) and "observer" in ln
+                  for ln in open(os.path.join(ut, n), encoding="utf-8", errors="replace"))]
+    h["retention"] = {"patterns": sorted(pats), "sane": any(fnmatch.fnmatch("tps_x_1_2_000.jsonl", p) for p in pats),
+                      "hits": [p for p in sorted(pats) if fnmatch.fnmatch("observer.jsonl", p)] + py}
+
+
+def _c3_observer_rows(T, rdir, sess):
+    n = 0
+    try:
+        with open(os.path.join(rdir, "observer.jsonl"), encoding="utf-8") as fh:
+            for ln in fh:
+                try:
+                    r = json.loads(ln)
+                except ValueError:
+                    continue
+                n += r.get("session") == sess and r.get("finding") == "exited-without-shutdown"
+    except OSError:
+        return None
+    return n
+
+
+def _c3_last_kind(path):
+    try:
+        with open(path, "rb") as fh:
+            fh.seek(max(0, os.path.getsize(path) - 8192))
+            lines = fh.read().split(b"\n")[:-1]
+        return json.loads(lines[-1].decode("utf-8")).get("kind") if lines else None
+    except (OSError, ValueError, IndexError):
+        return None
+
+
+def _c3_kill_row(T, d, rdir, label, sess, pid, why):
+    ok = _c3_kill(pid)
+    d["kills"].append({"label": label, "killed": ok, "why": why, "session": sess,
+                       "files": _c3_read(T, _c3_paths(T, rdir, sess))[1]})
+
+
+def _c3_fill(T, rdir, sess, rotate):
+    """Marks until the session's open segment stands within C3_FILL_SLACK of SegmentBytes (or, rotate, past it)."""
+    from common import call
+    with _C3S(60) as s:
+        for big in (True, False):
+            mark = "x" * (C3_MARK_CHARS if big else C3_FILL_SMALL)
+            for _ in range(400):                    # our own: 2 MiB / 2 KB marks plus margin
+                cur = os.path.getsize(_c3_paths(T, rdir, sess)[-1])
+                room = C3_SEGMENT_BYTES - cur
+                if room < (2 * C3_MARK_CHARS if big else C3_FILL_SLACK):
+                    break
+                call(s, "jawa/telemetry_mark", why=mark)
+                time.sleep(1.5)                     # the writer's flush, then measure again
+        if rotate:
+            call(s, "jawa/telemetry_mark", why="x" * C3_MARK_CHARS)
+
+
+def g_TPSC3_cold():
+    import tps_record as T
+    import tps_observer as O
+    import game_paths
+    from common import call, ensure_map
+    d = {"platform": os.name, "item1": [], "games": [], "blocks": [], "saves": [], "kills": []}
+    if os.name != "nt":
+        return d
+    rdir = T.record_dir()
+    d["recordDir"] = rdir
+    T._tz(None)                                     # fails here when the zone database is missing (tzdata)
+    tz = None                                       # render_row takes a zone NAME; None is DEFAULT_TZ
+    sessions = []
+    try:
+        # A: cold launch, no client; item 1 from disk; then a new game
+        r = _c3_launch(d, "A", no_ping=True)
+        sa = _c3_item1(T, d, rdir, "cold A", r)
+        if not sa:
+            raise _C3Stop("cold A: no record segment of pid %s within 90 s" % r["pid"])
+        sessions.append(sa)
+        with _C3S(960) as s:                        # ensure_map waits up to 900 s
+            why = ensure_map(s)
+            d["profile"] = call(s, "jawa/companion_handshake").get("effectiveProfile")
+            _c3_speed(s, "Normal")
+        _c3_game(T, d, rdir, sa, C3_GAMES[0], 1, "", why)
+        _c3_save_json(d)
+        # B: the blocks (Normal, edge sweep, Superfast, Paused, long)
+        with _C3S(C3_LONG_BLOCKS[-1] + 120) as s:
+            _c3_speed(s, "Normal")
+            for x in C3_RUN_BLOCKS:
+                _c3_block(s, d, "run %.2fs" % x, x, 1)
+            for k, x in enumerate(C3_EDGE_BLOCKS):
+                _c3_block(s, d, "edge %.2fs #%d" % (x, k // len(set(C3_EDGE_BLOCKS)) + 1), x, 1)
+            _c3_speed(s, "Superfast")
+            _c3_block(s, d, "superfast %.1fs" % C3_FAST_BLOCK, C3_FAST_BLOCK, 1)
+            _c3_speed(s, "Paused")
+            _c3_block(s, d, "paused %.1fs" % C3_PAUSED_BLOCK, C3_PAUSED_BLOCK, 1)
+            _c3_speed(s, "Normal")
+            for x in C3_LONG_BLOCKS:
+                _c3_block(s, d, "long %.0fs" % x, x, 1)
+        time.sleep(8)                               # the window holding the last gap closes (5 s cadence)
+        _c3_attach(T, rdir, sa, d["blocks"], tz)
+        _c3_save_json(d)
+        # C: saves
+        _c3_save(T, d, rdir, sa, C3_LOAD_SAVE)
+        _c3_ramp(T, d, rdir, sa)
+        _c3_save_json(d)
+        # D: the hang and kill, the observer by hand
+        _c3_hang(T, O, d, rdir, sa)
+        _c3_save_json(d)
+        # E: cold launch, no client; item 1; the observer again; loads; kill after a sample
+        r = _c3_launch(d, "E", no_ping=True)
+        se = _c3_item1(T, d, rdir, "cold E", r)
+        if not se:
+            raise _C3Stop("cold E: no record segment of pid %s within 90 s" % r["pid"])
+        sessions.append(se)
+        d["hang"]["observerRowsAfter"] = None
+        p = O.one_pass()
+        d["hang"]["observerRowsAfter"] = _c3_observer_rows(T, rdir, d["hang"]["session"])
+        d["hang"]["observerAfterErr"] = p.get("error")
+        with _C3S(960) as s:
+            r1 = call(s, "rimworld/load_game_ready", saveName=C3_LOAD_SAVE, readiness="playable", timeoutMs=600000,
+                      pauseIfNeeded=True)
+            _c3_speed(s, "Normal")
+        _c3_game(T, d, rdir, se, C3_GAMES[1], 1, C3_LOAD_SAVE, None if r1.get("success", True) else str(r1)[:160])
+        with _C3S(960) as s:
+            r2 = call(s, "rimworld/load_game_ready", saveName=C3_LOAD_SAVE, readiness="playable", timeoutMs=600000,
+                      pauseIfNeeded=True)
+            _c3_speed(s, "Normal")
+        _c3_game(T, d, rdir, se, C3_GAMES[2], 2, C3_LOAD_SAVE, None if r2.get("success", True) else str(r2)[:160])
+        with _C3S(960) as s:
+            call(s, "rimworld/go_to_main_menu")
+            from await_lifecycle import await_lifecycle
+            await_lifecycle(lambda tool, **p: call(s, tool, **p), state="menu", deadline_s=300)
+            why = ensure_map(s)
+            _c3_speed(s, "Normal")
+        _c3_game(T, d, rdir, se, C3_GAMES[3], 3, "", why)
+        end, why = time.time() + 60, "no sample landed in 60 s"
+        while time.time() < end:                    # K1: kill as soon as a sample is the last complete line
+            if _c3_last_kind(_c3_paths(T, rdir, se)[-1]) == "sample":
+                why = "killed right after a sample landed"
+                break
+            time.sleep(0.02)
+        _c3_kill_row(T, d, rdir, C3_KILLS[0], se, r["pid"], why)
+        _c3_save_json(d)
+        # F1: kill just before the next sample
+        r = _c3_launch(d, "F1", no_ping=False)
+        f1 = [f for f in _c3_files(T, rdir, pid=r["pid"])][0][3]
+        sessions.append(f1)
+        with _C3S(960) as s:
+            ensure_map(s)
+            _c3_speed(s, "Normal")
+            rep = call(s, "jawa/tps_report")
+        d["reportDir"] = rep.get("recordDir")
+        d["reportDirSame"] = bool(rep.get("recordDir")) and os.path.normcase(os.path.normpath(rep["recordDir"])) == \
+            os.path.normcase(os.path.normpath(rdir))
+        time.sleep(20)                              # four windows at the 5 s cadence
+        rows, _ = _c3_read(T, _c3_paths(T, rdir, f1))
+        ends = sorted(x["monoEnd"] for x in rows if x.get("kind") == "sample" and x.get("monoEnd") is not None)
+        diffs = sorted(b - a for a, b in zip(ends, ends[1:]))
+        cad = diffs[len(diffs) // 2] if diffs else 5.0
+        n0 = sum(1 for x in rows if x.get("kind") == "sample")
+        end, why = time.time() + 30, "no sample landed in 30 s"
+        while time.time() < end:
+            rows, _ = _c3_read(T, _c3_paths(T, rdir, f1))
+            if sum(1 for x in rows if x.get("kind") == "sample") > n0:
+                time.sleep(max(0, cad - 0.15))
+                why = "killed %.2f s after a sample landed (cadence %.2f s)" % (cad - 0.15, cad)
+                break
+            time.sleep(0.05)
+        _c3_kill_row(T, d, rdir, C3_KILLS[1], f1, r["pid"], why)
+        # F2 and F3: a segment filled to its boundary, killed there and just after the rotation
+        for lab, rot in ((C3_KILLS[2], False), (C3_KILLS[3], True)):
+            r = _c3_launch(d, lab, no_ping=False)
+            sf = _c3_files(T, rdir, pid=r["pid"])[0][3]
+            sessions.append(sf)
+            _c3_fill(T, rdir, sf, rot)
+            why = "segment at %d bytes" % os.path.getsize(_c3_paths(T, rdir, sf)[-1])
+            if rot:
+                end = time.time() + 30
+                while time.time() < end and len(_c3_paths(T, rdir, sf)) < 2:
+                    time.sleep(0.02)
+                why = "killed after rotation to %d files" % len(_c3_paths(T, rdir, sf))
+            _c3_kill_row(T, d, rdir, lab, sf, r["pid"], why)
+        _c3_save_json(d)
+    except Exception as e:                          # noqa: BLE001 - a stop is a gap, never a verdict
+        d["aborted"] = "%s: %s" % (type(e).__name__, str(e)[:300])
+    finally:
+        try:
+            killed = [d["hang"]["session"]] if d.get("hang", {}).get("killed") else []
+            killed += [k["session"] for k in d["kills"] if k.get("killed")]
+            if killed:
+                import shutil
+                import tempfile
+                cp = tempfile.mkdtemp(prefix="tpsc3_")
+                torn = 0
+                for sess in killed:
+                    for p in _c3_paths(T, rdir, sess):
+                        shutil.copy2(p, cp)
+                        with open(p, "rb") as fh:
+                            fh.seek(max(0, os.path.getsize(p) - 1))
+                            torn += fh.read(1) not in (b"\n", b"")
+                rb = T.read_record(cp, now=time.time() + 86400)
+                d["readback"] = {k: rb.get(k) for k in ("replayed", "conflicts", "malformed", "files", "seqMissing")}
+                d["readback"]["torn"] = torn
+                d["readback"]["seqMissing"] = str(d["readback"]["seqMissing"])[:120]
+            scans = []
+            for sess in sessions:
+                scans += _c3_read(T, _c3_paths(T, rdir, sess))[1]
+            d["strict"] = {"files": len(scans), "lines": sum(f["lines"] for f in scans),
+                           "bad": sum(f["bad"] for f in scans),
+                           "badSample": next((f["badSample"] for f in scans if f["badSample"]), None)}
+        except Exception as e:                      # noqa: BLE001
+            d["aborted"] = (d.get("aborted") or "") + " readback: %s: %s" % (type(e).__name__, str(e)[:200])
+        try:
+            _c3_launch(d, "restore", no_ping=False)   # leave the lane a READY game
+        except Exception as e:                      # noqa: BLE001
+            d["restoreErr"] = str(e)[:200]
+        for n in (C3_LOAD_SAVE, C3_RAMP_SAVE):
+            try:
+                os.remove(os.path.join(game_paths.SAVES, n + ".rws"))
+            except OSError:
+                pass
+        _c3_save_json(d)
+    return d
+
+
 def main(argv):
     if len(argv) != 2 or argv[1] not in CLAUSES:
         print(__doc__)
@@ -1187,6 +1990,15 @@ def main(argv):
     except Exception as e:                                      # noqa: BLE001
         print("%s UNMEASURED: harness import failed: %s" % (clause, e))
         return 2
+    if clause == "TPSC3":
+        try:
+            d = g_TPSC3_cold()
+        except Exception as e:                                  # noqa: BLE001 - a stop is a gap, not a verdict
+            print("%s UNMEASURED: %s: %s" % (clause, type(e).__name__, str(e)[:300]))
+            return 2
+        rc, msg = verdict(clause, d)
+        print("%s %s: %s" % (clause, ("PASS", "FAIL", "UNMEASURED")[rc], msg))
+        return rc
     if clause == "ORIGIN":
         try:
             d = g_ORIGIN_cold(Session)

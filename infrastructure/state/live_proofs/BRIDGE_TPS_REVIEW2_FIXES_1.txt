@@ -1,0 +1,3 @@
+# live proofs of BRIDGE_TPS_REVIEW2_FIXES_1 (bridge_bundle_proof.py TPSC3: tps_record.md Acceptance items 1 and 2, its own cold launches; work bundle WB-pipeline-bridge-20261125-192133)
+live-tier C3: mods__base
+live-proof C3: RM_DATA_ROOT=$(python3 -c 'import sys; sys.path.insert(0, "src/RimMandrake/Utils"); import rmpaths; print(rmpaths.rm_data_root())') WSLENV=${WSLENV:+$WSLENV:}RM_DATA_ROOT/p python.exe src/RimMandrake/Utils/modcheck/live_queue/bridge_bundle_proof.py TPSC3 < /dev/null

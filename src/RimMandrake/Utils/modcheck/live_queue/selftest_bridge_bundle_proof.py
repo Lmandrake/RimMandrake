@@ -173,5 +173,114 @@ check("ORIGIN only late arrivals: no mapgen wildlife read", "ORIGIN",
       dict(og, wild=["Thing_A3"], chains={"Thing_A3": "wild-spawner"}), 1)
 check("PEN2 a home cell held by another pen animal is the tool's rule, not a FAIL", "PEN2",
       dict(pn, returnedHome=2, homeOccupied=["c"]), 0)
+# ---- TPSC3: a green fixture of the whole matrix, then one planted fault per rule
+import copy as _copy
+
+
+def _c3_inc(b):
+    gap = round(b["blockedS"] + 0.02, 3)
+    return {"gapS": gap, "kind": "incident", "type": "stall", "quietPhase": "Update@%.1fs" % b["blockedS"], "game": 1,
+            "rendered": "2026-11-25 12:00:00 -08:00 PST stall %.3fs blocked in Update@x game 1" % gap,
+            "mono": 1000.0, "gapStartMono": round(1000.0 - gap, 3)}
+
+
+def _c3_green():
+    bl = []
+    for lab, x in ([("run", x) for x in B.C3_RUN_BLOCKS] + [("edge", x) for x in B.C3_EDGE_BLOCKS] +
+                   [("fast", B.C3_FAST_BLOCK), ("paused", B.C3_PAUSED_BLOCK)] + [("long", x) for x in B.C3_LONG_BLOCKS]):
+        b = {"label": "%s %.2f #%d" % (lab, x, len(bl)), "requestedS": x, "blockedS": x, "utcStart": "a", "utcEnd": "b",
+             "game": 1}
+        b["incidents"] = [_c3_inc(b)]
+        b["contain"] = {"slack": 0.4, "simShare": 0.3, "monoStart": 990.0 - x, "monoEnd": 1001.0}
+        bl.append(b)
+    hb3 = [{"hbSeq": k, "scene": "menu"} for k in (1, 2, 3)]
+    f = lambda n, by, torn=False: {"name": n, "bytes": by, "lines": 10, "bad": 0, "torn": torn}
+    return {
+        "platform": "nt", "recordDir": "X",
+        "item1": [{"label": l, "pid": 1, "segment": "tps_s.jsonl", "startedBy": "bridge-registration",
+                   "sampler": "complete", "hbs": list(hb3)} for l in ("cold A", "cold E")],
+        "games": [{"label": l, "wantSeq": q, "wantSave": v, "row": {"game": q, "save": v}, "windows": 3}
+                  for l, q, v in zip(B.C3_GAMES, (1, 1, 2, 3), ("", "L", "L", ""))],
+        "blocks": bl,
+        "strict": {"files": 6, "lines": 900, "bad": 0, "badSample": None},
+        "saves": [{"label": "s1", "saveS": 0.4, "incidents": []},
+                  {"label": "s2", "saveS": 3.2, "incidents": [{"type": "longevent", "gapS": 3.3, "explainedS": 3.2}]}],
+        "hang": {"session": "h", "hbs": [{"watchdogMono": 10.0 * k, "watchdogEp": 100.0 + 10 * k, "mainBeatMono": 5.0,
+                                          "mainBeatEp": 95.0 + 0.01 * k, "silentS": 10.0 * k} for k in (1, 2, 3, 4)],
+                 "silenceRows": 3, "killed": True, "killWhy": "k", "observerErr": None, "observerRows": 1,
+                 "findings": [], "observerRowsAfter": 1,
+                 "retention": {"patterns": ["tps_*.jsonl", "hb_*.json"], "sane": True, "hits": []}},
+        "kills": [{"label": l, "killed": True, "why": "w",
+                   "files": [f("a", 2097000)] + ([f("b", 300, True)] if l == "K4-after-rotation" else [])}
+                  for l in B.C3_KILLS],
+        "readback": {"replayed": 0, "conflicts": 0, "malformed": 1, "torn": 1, "files": 5, "seqMissing": "[]"},
+    }
+
+
+def _c3(mut):
+    d = _c3_green()
+    mut(d)
+    return d
+
+
+check("TPSC3 the whole matrix green", "TPSC3", _c3_green(), 0)
+_red = [
+    ("two incidents over one block", lambda d: d["blocks"][0]["incidents"].append(dict(d["blocks"][0]["incidents"][0]))),
+    ("no incident over a block", lambda d: d["blocks"][3].update(incidents=[])),
+    ("gapS short of blockedS", lambda d: d["blocks"][1]["incidents"][0].update(gapS=1.9)),
+    ("gapS far over blockedS", lambda d: d["blocks"][1]["incidents"][0].update(gapS=3.2)),
+    ("kind not incident", lambda d: d["blocks"][2]["incidents"][0].update(kind="stall")),
+    ("an edge hitch with no phase", lambda d: d["blocks"][6]["incidents"][0].update(quietPhase="")),
+    ("a phase but no 'blocked in'", lambda d: d["blocks"][6]["incidents"][0].update(rendered="2026 12:00:00 -08:00 PST stall")),
+    ("no offset in local time", lambda d: d["blocks"][0]["incidents"][0].update(rendered="12:00:00 stall blocked in X")),
+    ("game id mismatch", lambda d: d["blocks"][0]["incidents"][0].update(game=2)),
+    ("no containing window", lambda d: d["blocks"][0].update(contain=None)),
+    ("window misses the gap", lambda d: d["blocks"][0]["contain"].update(slack=-0.2)),
+    ("simShare over 1", lambda d: d["blocks"][0]["contain"].update(simShare=1.3)),
+    ("a bad strict line", lambda d: d["strict"].update(bad=1, badSample='{"a":1,"a":2}')),
+    ("a long save with no incident", lambda d: d["saves"][1].update(incidents=[])),
+    ("a save that is a stall", lambda d: d["saves"][1]["incidents"][0].update(type="stall")),
+    ("a save under-explained", lambda d: d["saves"][1]["incidents"][0].update(explainedS=1.0)),
+    ("a save with no save row", lambda d: d["saves"][0].update(saveS=None)),
+    ("the main beat moved in the hang", lambda d: d["hang"]["hbs"][3].update(mainBeatMono=40.0)),
+    ("the watchdog stopped in the hang", lambda d: d["hang"]["hbs"][3].update(watchdogMono=20.0)),
+    ("one silence row", lambda d: d["hang"].update(silenceRows=1)),
+    ("two observer rows", lambda d: d["hang"].update(observerRows=2)),
+    ("no observer row", lambda d: d["hang"].update(observerRows=0)),
+    ("the observer row gone next launch", lambda d: d["hang"].update(observerRowsAfter=0)),
+    ("a retention pattern deletes observer.jsonl", lambda d: d["hang"]["retention"].update(hits=["*.jsonl"])),
+    ("a glued line in a killed file", lambda d: d["kills"][0]["files"][0].update(bad=1)),
+    ("a torn line mid-session", lambda d: d["kills"][3]["files"][0].update(torn=True)),
+    ("a segment over 2 MiB", lambda d: d["kills"][2]["files"][0].update(bytes=B.C3_SEGMENT_BYTES + 1)),
+    ("a replayed row", lambda d: d["readback"].update(replayed=1)),
+    ("a conflicting row", lambda d: d["readback"].update(conflicts=1)),
+    ("malformed beyond the torn tails", lambda d: d["readback"].update(malformed=2)),
+    ("item 1 startedBy a client", lambda d: d["item1"][0].update(startedBy="tps_report")),
+    ("item 1 sampler partial", lambda d: d["item1"][1].update(sampler="partial")),
+    ("item 1 heartbeat stuck", lambda d: d["item1"][0].update(hbs=[{"hbSeq": 1, "scene": "menu"}] * 3)),
+    ("item 1 heartbeat not at the menu", lambda d: d["item1"][0]["hbs"][0].update(scene="map")),
+    ("item 1 no segment", lambda d: d["item1"][0].update(segment=None)),
+    ("a load with the wrong save label", lambda d: d["games"][2]["row"].update(save="")),
+    ("a reused game seq", lambda d: d["games"][2]["row"].update(game=1)),
+    ("a game with no window", lambda d: d["games"][0].update(windows=0)),
+]
+for _n, _m in _red:
+    check("TPSC3 planted: %s" % _n, "TPSC3", _c3(_m), 1)
+_gap = [
+    ("posix python", lambda d: d.update(platform="posix")),
+    ("aborted", lambda d: d.update(aborted="_C3Stop: E: launch_ready FAILED")),
+    ("the block tool refused", lambda d: d["blocks"][0].update(refused="FTestOnly off", incidents=None)),
+    ("blocks missing", lambda d: d.update(blocks=d["blocks"][:5])),
+    ("no long save reached", lambda d: d.update(saves=d["saves"][:1], rampWhy="map 250x250, 0.9 s")),
+    ("a kill not run", lambda d: d.update(kills=d["kills"][:3])),
+    ("no rotation", lambda d: d["kills"][3].update(files=d["kills"][3]["files"][:1])),
+    ("K3 short of the boundary", lambda d: d["kills"][2]["files"][0].update(bytes=1000)),
+    ("observer not reread", lambda d: d["hang"].update(observerRowsAfter=None)),
+    ("one cold launch", lambda d: d.update(item1=d["item1"][:1])),
+    ("a game not reached", lambda d: d.update(games=d["games"][:3])),
+    ("no read-back", lambda d: d.update(readback=None)),
+]
+for _n, _m in _gap:
+    check("TPSC3 gap: %s" % _n, "TPSC3", _c3(_m), 2)
 print("RESULT: %s" % ("FAIL (%d failing)" % len(FAILS) if FAILS else "PASS (0 failing)"))
 sys.exit(1 if FAILS else 0)
