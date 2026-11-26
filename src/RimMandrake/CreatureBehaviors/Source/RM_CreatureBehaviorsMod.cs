@@ -776,7 +776,7 @@ namespace RimMandrake.CreatureBehaviors
                 list.Label("Sun-scald rate: " + sunScaldSeverityMultiplier.ToString("0.00") + "x");
                 sunScaldSeverityMultiplier = list.Slider(sunScaldSeverityMultiplier, 0.25f, 3f);
                 list.CheckboxLabeled("Sun-scald reads tree shade", ref sunScaldReadsShade,
-                    "On a sun-heat map, trees, parasols and cast shade protect from sun-scald as well as roofs "
+                    "Under Direct Sun, trees, parasols and cast shade protect from sun-scald as well as roofs "
                   + "(off: only a roof does, as in vanilla's own light-sensitivity).");
                 list.Label("Sun-scald shade threshold: " + sunScaldShadeThreshold.ToString("0.00"));
                 sunScaldShadeThreshold = list.Slider(sunScaldShadeThreshold, 0.1f, 1f);

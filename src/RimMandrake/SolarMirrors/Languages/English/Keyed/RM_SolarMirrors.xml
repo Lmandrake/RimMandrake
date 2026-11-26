@@ -73,7 +73,7 @@
   <RM_SolarMirrors_Setting_DazzleMax>Aim lost in full light: {0}</RM_SolarMirrors_Setting_DazzleMax>
   <RM_SolarMirrors_Dazzle_Explain>Dazzled by mirror light</RM_SolarMirrors_Dazzle_Explain>
   <RM_SolarMirrors_Setting_Concentration>Focused light burns hotter</RM_SolarMirrors_Setting_Concentration>
-  <RM_SolarMirrors_Setting_Concentration_Tip>Where several mirrors overlap, the light is stronger than plain sun, and anyone standing in it feels hotter (the same sun heat as always, never past the biome's limit). Off: overlapping mirrors feel no hotter than one.</RM_SolarMirrors_Setting_Concentration_Tip>
+  <RM_SolarMirrors_Setting_Concentration_Tip>Where several mirrors overlap, the light is stronger than plain sun, and anyone standing in it feels hotter (the same Direct Sun as always, never past its limit). Off: overlapping mirrors feel no hotter than one.</RM_SolarMirrors_Setting_Concentration_Tip>
   <RM_SolarMirrors_Setting_ConcentrationCap>Light counted at most: {0} times the sun</RM_SolarMirrors_Setting_ConcentrationCap>
   <RM_SolarMirrors_Setting_RoomHeat>Mirror light warms rooms</RM_SolarMirrors_Setting_RoomHeat>
   <RM_SolarMirrors_Setting_RoomHeat_Tip>Mirror light that reaches inside an enclosed room (through a glazed aperture, or onto a solar furnace indoors) warms the room, like a heater. Outdoors it never changes the air temperature. Off: mirror light never heats a room.</RM_SolarMirrors_Setting_RoomHeat_Tip>

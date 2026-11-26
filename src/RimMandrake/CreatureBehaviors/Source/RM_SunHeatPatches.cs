@@ -55,7 +55,7 @@ namespace RimMandrake.CreatureBehaviors
         {
             Harmony harmony = new Harmony("mandrake.rm.creaturebehaviors.sunheat");
             TryPatch(harmony, AccessTools.PropertyGetter(typeof(Thing), nameof(Thing.AmbientTemperature)),
-                nameof(Postfix_AmbientTemperature), "sun heat (felt temperature)");
+                nameof(Postfix_AmbientTemperature), "Direct Sun (felt temperature)");
             TryPatch(harmony, AccessTools.Method(typeof(Pawn_PathFollower), "GenerateNewPathRequest"),
                 nameof(Postfix_GenerateNewPathRequest), "sun-cost pathing");
             TryPatch(harmony, AccessTools.Method(typeof(Pawn), nameof(Pawn.GetGizmos)),

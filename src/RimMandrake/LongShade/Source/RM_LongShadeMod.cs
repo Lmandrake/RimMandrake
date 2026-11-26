@@ -199,12 +199,12 @@ namespace RimMandrake.LongShade
                   + "machines, each about one dash from the next, so the wrecks' shadows make a crossing. "
                   + "With the Star Wars layer it ends at a dead sandcrawler. The wrecks can be stripped "
                   + "for salvage or uninstalled and moved, which breaks the crossing; reinstalling one "
-                  + "mends it. Needs Creature Behaviors' sun heat. Off: no road is laid on new maps.");
+                  + "mends it. Needs Creature Behaviors' Direct Sun. Off: no road is laid on new maps.");
                 list.CheckboxLabeled("The Long Carry (sun graves)", ref sunGravesEnabled,
                     "MAP GENERATION. A few travellers and their pack animals lie dead out on the open sand, "
                   + "still carrying their load, too far from shade to walk out and back bare-headed but "
                   + "within reach under a parasol. Salvage and something to read; they point nowhere. "
-                  + "Needs Creature Behaviors' sun heat and shade gear. Off: no graves on new maps.");
+                  + "Needs Creature Behaviors' Direct Sun and shade gear. Off: no graves on new maps.");
                 list.CheckboxLabeled("Old middens at the lee of rocks when the map is made", ref middenMapgenEnabled,
                     "New Long Shade maps start with a few old heaps at the down-sun end of small rock "
                   + "outcrops. Changes the generated map (worldgen-affecting). Off: only vrekka-built heaps.");
