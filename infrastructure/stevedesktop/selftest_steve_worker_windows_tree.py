@@ -14,7 +14,9 @@ lists this machine's python processes from /proc; the kill (TESTQ_CMD_WINKILL) i
     not followed; the game and Steam, and what they started, are never in it;
   worker stop of a running attempt: the fake Windows grandchild is seen dead (red on the base: it lived on);
   a hung command killed at its deadline (kill_child): the fake Windows grandchild is seen dead.
---real-windows runs both scenes on this machine's real Windows instead (exit 3: could not look).
+--real-windows runs both scenes on this machine's real Windows instead, and a third: a systemd unit with spawn()'s
+KillMode stopped by `systemctl stop` alone, as a stop from a runner clone pinned to an older sha does (exit 3: could
+not look).
 """
 import os
 import shutil
@@ -227,7 +229,8 @@ def real_windows_left(token):
 
 def real_windows():
     """--real-windows: the same two scenes on this machine's real Windows (python.exe, the real process table and
-    taskkill). Exit 0 both grandchildren seen dead, 1 one lived on, 3 could not look (no Windows here)."""
+    taskkill), and the unit scene. Exit 0 every grandchild seen dead, 1 one lived on, 3 could not look (no Windows or
+    no systemd here)."""
     if not (shutil.which("python.exe") and real_windows_left("rmwintree_probe") is not None):
         print("COULD NOT LOOK: no python.exe or powershell.exe on this host")
         return 3
@@ -266,11 +269,75 @@ def real_windows():
             import subprocess
             # budget: danger=a hung taskkill (WSL interop) holds the test; longest=1s (one measured run on Archmagi 2026-11-26)
             subprocess.run([tk, "/F"] + [x for pid in left for x in ("/PID", str(pid))], capture_output=True, timeout=120)
+    # 3. a unit stopped by `systemctl stop` alone: what a `worker.py stop` run from a runner clone pinned to an older sha
+    # sends. The unit has spawn()'s KillMode; the base's spawn wrote control-group.
+    import subprocess
+    run = shutil.which("systemd-run")
+    if not run:
+        print("COULD NOT LOOK: no systemd-run here for the unit scene")
+        return 3
+    aid, utoken, unit = "J20261126T000000Z-realwn.a3", token + "u", "rmtest-wintree-%d" % os.getpid()
+    mode = getattr(W, "UNIT_KILL_MODE", "control-group")
+    argv = [run, "--user", "--collect", "--quiet", "--unit", unit, "--property=KillMode=" + mode,
+            "--setenv=PATH=" + os.environ.get("PATH", ""), "--", sys.executable, os.path.abspath(__file__),
+            "--unit-driver", aid, utoken]
+    # budget: danger=a hung systemd-run holds the test; longest=1s (one measured run on Archmagi 2026-11-26)
+    r = subprocess.run(argv, capture_output=True, text=True, timeout=120)
+    if r.returncode != 0:
+        print("COULD NOT LOOK: systemd-run failed: %s" % r.stderr.strip()[-200:])
+        return 3
+    seen, t = [], time.time()
+    while time.time() - t < 30 and len(seen) < 2:
+        seen = real_windows_left(utoken) or []
+        time.sleep(0.5)
+    if len(seen) < 2:
+        print("COULD NOT LOOK: the unit's python.exe and its child never both showed in the table: %s" % seen)
+        # budget: danger=a hung systemctl holds the test; longest=4s (time_budget.py's call record)
+        subprocess.run(["systemctl", "--user", "stop", unit], capture_output=True, timeout=120)
+        return 3
+    # budget: danger=a hung systemctl holds the test; longest=4s (time_budget.py's call record)
+    subprocess.run(["systemctl", "--user", "stop", unit], capture_output=True, timeout=120)
+    time.sleep(3)
+    left = real_windows_left(utoken)
+    if left is None:
+        print("COULD NOT LOOK: the Windows table could not be read after the unit stop")
+        return 3
+    check(not left, "real Windows, a unit (KillMode=%s) stopped by systemctl alone: the python.exe and its child %s "
+          "are seen dead: alive %s" % (mode, seen, left))
+    tk = win_exe("taskkill.exe", "/mnt/c/Windows/System32/taskkill.exe")
+    if left and tk:
+        # budget: danger=a hung taskkill (WSL interop) holds the test; longest=1s (one measured run on Archmagi 2026-11-26)
+        subprocess.run([tk, "/F"] + [x for pid in left for x in ("/PID", str(pid))], capture_output=True, timeout=120)
     print("FAILED %d" % len(FAILS) if FAILS else "selftest_steve_worker_windows_tree --real-windows: all passed")
     return 1 if FAILS else 0
 
 
+def unit_driver(aid, token):
+    """--unit-driver: the attempt inside the unit, as cmd_run: SIGTERM raises Stopped inside sh, which kills the child."""
+    import signal
+    d = os.path.join(HOME, "attempts", aid)
+    os.makedirs(d)
+    a = attempt(aid, d)
+
+    def on_term(signum, frame):
+        raise W.Stopped()
+    signal.signal(signal.SIGTERM, on_term)
+    code = ("import subprocess,sys,time; subprocess.Popen([sys.executable,'-c','import time; time.sleep(100)  # %s']); "
+            "time.sleep(100)" % token)
+    try:
+        # budget: fixture
+        a.sh('python.exe -c "%s"' % code, timeout=90)
+    except W.Stopped:
+        pass
+    return 0
+
+
 def main():
+    if sys.argv[1:2] == ["--unit-driver"]:
+        try:
+            return unit_driver(sys.argv[2], sys.argv[3])
+        finally:
+            shutil.rmtree(HOME, ignore_errors=True)
     if "--real-windows" in sys.argv[1:]:
         try:
             return real_windows()

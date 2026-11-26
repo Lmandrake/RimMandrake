@@ -2,7 +2,7 @@
 
 Code: `infrastructure/stevedesktop/worker.py` (`WIN_TAG`, `WIN_KEEP`, `tag_windows_python`, `windows_processes`,
 `windows_tree`, `kill_windows_tree`, the tag in `Attempt.sh`, the Windows step of `Attempt.kill_child` and of
-`cmd_stop`). Item: `RIMMANDRAKE_KILL_WINDOWS_CHILD_ON_TESTQ_CANCEL_ORPHAN_DROVE_STEVE2`, written 2026-11-26. Each
+`cmd_stop`, `UNIT_KILL_MODE` in `spawn`). Item: `RIMMANDRAKE_KILL_WINDOWS_CHILD_ON_TESTQ_CANCEL_ORPHAN_DROVE_STEVE2`, written 2026-11-26. Each
 promise has a test of its name in `infrastructure/stevedesktop/selftest_steve_worker_windows_tree.py`. This page covers
 only these parts of worker.py; the rest of the file has its own pages.
 
@@ -26,8 +26,8 @@ a dead ParentProcessId).
   prefix such as `timeout 60 python.exe` or a `VAR=$(...)` assignment with spaces in it, carries no tag; its Windows
   children are not found (its own python.exe still dies with its shim). Measured 2026-11-26: 1 of 471 live-proof and
   live-site lines (`BRIDGE_TPS_REVIEW2_FIXES_1.txt` C3, after `RM_DATA_ROOT=$(python3 -c '...')`).
-- **a-windows-child-born-after-the-shim-died.** A unit stop kills every shim at once; `cmd_stop` ends the Windows tree
-  before it, so only a child spawned inside that one window escapes.
+- **a-windows-child-born-after-the-shim-died.** A child spawned between the Windows step and the killpg of the Linux
+  side escapes; the window is one powershell read (about 2 s).
 - **an-unreadable-windows-table.** When the table cannot be read, the stop goes on with the Linux side and says why
   (`windows_unread` in the stop's JSON line, `windows children: <why>` in worker.log); it ends no Windows process.
 
@@ -42,5 +42,9 @@ a dead ParentProcessId).
   they started, are never in it: a phase decides their stop.
 - **stop-ends-the-windows-grandchild.** `worker.py stop --attempt <id>` (what `testq cancel --running` sends) ends the
   attempt's Windows processes, its python.exe's own children included, before it stops the unit or signals the pid.
+  A stop runs the runner clone's worker.py, which may be pinned to a job's older sha with no Windows step: so the
+  attempt's unit has `KillMode=mixed`, and a `systemctl stop` alone sends SIGTERM to the worker only, whose
+  `kill_child` ends the tree (with control-group every shim died at once and the child lived on: the unit scene of
+  `--real-windows`, red with control-group planted, green with mixed, Archmagi 2026-11-26).
 - **a-killed-command-ends-its-windows-grandchild.** When `Attempt.kill_child` kills a command (its deadline passed, or
   the attempt was stopped), it first ends that attempt's Windows processes, its python.exe's own children included.

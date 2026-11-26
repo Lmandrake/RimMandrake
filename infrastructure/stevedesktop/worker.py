@@ -833,6 +833,13 @@ def staged_companion():
     return os.path.join(inbox, CI.DLL_NAME) if inbox else p("companion", CI.DLL_NAME)
 
 
+# mixed: a unit stop sends SIGTERM to the worker alone, which ends its Windows tree and then its process group; systemd
+# SIGKILLs what is left once the worker exits. control-group sent SIGTERM to every shim at once, so the Windows root died
+# before the worker could walk its tree, and a `worker.py stop` run from a clone pinned to an older sha has no Windows
+# step of its own (measured under systemd-run on Archmagi 2026-11-26: control-group left the child, mixed left none).
+UNIT_KILL_MODE = "mixed"
+
+
 def spawn(aid, d):
     """Detach `worker.py _run <attempt>`: a transient systemd user unit, else a new session."""
     # run a COPY of this (main-checkout) worker, not __file__ inside the clone that is about to be pinned: a pin older
@@ -853,7 +860,7 @@ def spawn(aid, d):
     unit = "testq-" + re.sub(r"[^A-Za-z0-9_-]", "_", aid)
     if shutil.which("systemd-run") and os.environ.get("TESTQ_NO_SYSTEMD") != "1":
         r = subprocess.run(["systemd-run", "--user", "--collect", "--quiet", "--unit", unit,
-                            "--property=KillMode=control-group", "--working-directory", RUNNER]
+                            "--property=KillMode=" + UNIT_KILL_MODE, "--working-directory", RUNNER]
                            + ["--setenv=%s=%s" % (k, os.environ[k]) for k in keep]
                            + ["--setenv=TESTQ_UNIT=" + unit, "--"] + argv,
                            # budget: danger=a hung systemd-run holds the spawn of the worker, and so the lane; never reached in
