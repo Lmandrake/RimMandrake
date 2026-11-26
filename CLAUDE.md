@@ -233,8 +233,8 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - Full-list testing is retired until the integration phase (about version 0.3.0 of every mod). No test, stage exit,
   deploy or walk savegame asks for the full mod list.
 - Each mod's small list is in `design/concepts/<Mod>/version/small_list.json`. The list holds every mod that the mod
-  patches or requires, all five expansions, the advanced-zoom mod and Character Editor. Check:
-  `python3 src/RimMandrake/Utils/small_list.py check`.
+  patches or requires, all five expansions, an advanced-zoom mod (`ray1203.simplecamerasetting` or Camera+) and
+  Character Editor (`void.charactereditor`). Check: `python3 src/RimMandrake/Utils/small_list.py check`.
 - The owner walks a mod on the game whose Saves folder holds the walk savegame: ArchBig or ArchSmall.
 - Full text: `design/RimMandrake/standing_rulings.md` §Mod development runs on small lists.
 
