@@ -2481,9 +2481,9 @@
     "src/RimMandrake/rimflow/selftest_maturation.py",
     "--submit"
    ],
-   "hash": "b7e6f1100b87d0cf",
+   "hash": "0c47ad685726f66f",
    "last_run": {
-    "at": "2026-11-26T11:10:08Z",
+    "at": "2026-11-26T11:36:42Z",
     "cases": "3 planted case(s) ran and came out as planted",
     "exit": 0,
     "out": "ALL PASS",
@@ -2519,7 +2519,7 @@
      "id": "locked_version_passes"
     }
    ],
-   "reset_at": "2026-11-26T11:10:08Z",
+   "reset_at": "2026-11-26T11:36:42Z",
    "status": "CALIBRATED",
    "was": "CALIBRATED"
   },

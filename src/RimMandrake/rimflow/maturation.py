@@ -332,6 +332,9 @@ def seed_mod(root, mod, live=True, gathered=None):
         have = load(root, mod)
         if have is not None:
             return have, False
+        if not _absent(os.path.join(mod_dir(root, mod), RECORD)):
+            raise ValueError("%s: %s appeared meanwhile and cannot be read; seeding writes over no record"
+                             % (mod, rel(mod, RECORD)))
         write_text(root, mod, RECORD, dump(rec))
     finally:
         lk.close()
