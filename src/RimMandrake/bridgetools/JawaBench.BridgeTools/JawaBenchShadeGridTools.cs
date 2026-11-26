@@ -47,10 +47,12 @@ namespace JawaBench.BridgeTools
                 "token is listed under badTokens. present=false (not an error) when CreatureBehaviors is not " +
                 "loaded or the map has no such component. A map whose biome has no sun-heat extension " +
                 "legitimately reads exposure 0 and kind overhead; sunElevationDegrees is NaN before the grid " +
-                "has recomputed (reported as null).",
+                "has recomputed (reported as null). TREE_SHADE_BUILD_CROWNS_ON_STILTS: each cell also carries canopy " +
+                "(CanopyShadeAt, a tree crown's shade) and cause (ShadeCauseAt: roof, '<species> canopy', lee, parasol, " +
+                "...), and the map its shadow direction; each is null on a build without that member.",
             ResultDescription = "success, present, mapTile, sunHeatActive, shadeGrid{sunElevationDegrees, " +
-                "directSunOffsetC, isDirectional}, pinnedSun{present, isActive, sunElevationDegrees}, " +
-                "skyGlow, celestialSunGlow, cells[{x,z,inBounds,shade,exposure}], badTokens, ticksGame.")]
+                "directSunOffsetC, isDirectional, shadowDirX, shadowDirZ}, pinnedSun{present, isActive, sunElevationDegrees}, " +
+                "skyGlow, celestialSunGlow, cells[{x,z,inBounds,shade,exposure,canopy,cause}], badTokens, ticksGame.")]
         public static async Task<object> ShadeGridRead(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -83,6 +85,9 @@ namespace JawaBench.BridgeTools
                 {
                     return Fail("ShadeAt/ExposureAt not found by reflection (renamed or removed).");
                 }
+                // Optional (a build before the tree crowns has neither): null, never a guessed 0.
+                MethodInfo canopyAt = gridType.GetMethod("CanopyShadeAt", BindingFlags.Public | BindingFlags.Instance, null, new[] { typeof(IntVec3) }, null);
+                MethodInfo causeAt = gridType.GetMethod("ShadeCauseAt", BindingFlags.Public | BindingFlags.Instance, null, new[] { typeof(IntVec3) }, null);
 
                 var badTokens = new List<string>();
                 var cellList = new List<object>();
@@ -104,12 +109,14 @@ namespace JawaBench.BridgeTools
                         var c = new IntVec3(x, 0, z);
                         if (!c.InBounds(map))
                         {
-                            cellList.Add(new { x, z, inBounds = false, shade = (float?)null, exposure = (float?)null });
+                            cellList.Add(new { x, z, inBounds = false, shade = (float?)null, exposure = (float?)null, canopy = (float?)null, cause = (string)null });
                             continue;
                         }
                         float shade = (float)shadeAt.Invoke(grid, new object[] { c });
                         float exposure = (float)exposureAt.Invoke(grid, new object[] { c });
-                        cellList.Add(new { x, z, inBounds = true, shade = (float?)shade, exposure = (float?)exposure });
+                        float? canopy = canopyAt != null ? (float?)(float)canopyAt.Invoke(grid, new object[] { c }) : null;
+                        string cause = causeAt != null ? (string)causeAt.Invoke(grid, new object[] { c }) : null;
+                        cellList.Add(new { x, z, inBounds = true, shade = (float?)shade, exposure = (float?)exposure, canopy, cause });
                     }
                 }
 
@@ -143,7 +150,9 @@ namespace JawaBench.BridgeTools
                     {
                         sunElevationDegrees = float.IsNaN(elev) ? (float?)null : elev,
                         directSunOffsetC = offsetC,
-                        isDirectional = (bool)ReadMember(grid, "IsDirectional")
+                        isDirectional = (bool)ReadMember(grid, "IsDirectional"),
+                        shadowDirX = (float?)((UnityEngine.Vector2)ReadMember(grid, "SunShadowDirection")).x,
+                        shadowDirZ = (float?)((UnityEngine.Vector2)ReadMember(grid, "SunShadowDirection")).y
                     },
                     pinnedSun = pinned,
                     skyGlow = map.skyManager.CurSkyGlow,

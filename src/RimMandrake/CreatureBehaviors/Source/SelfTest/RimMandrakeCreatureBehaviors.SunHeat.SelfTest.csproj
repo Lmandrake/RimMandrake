@@ -51,6 +51,7 @@
 
   <ItemGroup>
     <Compile Include="..\RM_SunHeatMath.cs" />
+    <Compile Include="..\..\..\_Shared\DrawnExtent\DrawnExtentKernel.cs" Link="Shared\DrawnExtentKernel.cs" />
     <Compile Include="..\RM_AirHeat.cs" />
     <Compile Include="..\RM_WildLeaveMath.cs" />
     <Compile Include="..\RM_MovingShadeMath.cs" />

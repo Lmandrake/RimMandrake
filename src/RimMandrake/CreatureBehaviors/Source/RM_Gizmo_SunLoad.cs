@@ -52,7 +52,17 @@ namespace RimMandrake.CreatureBehaviors
             Widgets.Label(bar, load.ToStringPercent());
 
             Text.Anchor = TextAnchor.UpperLeft;
-            string now = offset > 0.5f ? "In sun: +" + offset.ToString("0") + "°C" : "In shade";
+            // TREE_SHADE_BUILD_CROWNS_ON_STILTS §5: the line names what shades the pawn (roof, a species' canopy, lee,
+            // parasol). A worn parasol is the pawn's own cover, read before the cell's.
+            string cause = null;
+            if (grid != null)
+            {
+                RM_ShadeGear.WornCover(pawn, out Apparel worn);
+                cause = worn != null ? "parasol" : grid.ShadeCauseAt(pawn.Position);
+            }
+            string now = offset > 0.5f
+                ? "In sun: +" + offset.ToString("0") + "°C" + (cause != null ? " (part " + cause + ")" : "")
+                : "In shade" + (cause != null ? ": " + cause : "");
             Widgets.Label(new Rect(inner.x, inner.y + 42f, inner.width, 18f), now);
             Text.Font = GameFont.Small;
 

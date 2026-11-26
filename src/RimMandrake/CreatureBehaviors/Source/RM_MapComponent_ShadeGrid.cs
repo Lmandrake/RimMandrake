@@ -40,7 +40,8 @@ namespace RimMandrake.CreatureBehaviors
 	/// both readable on their own:
 	///   RoofShadeAt  — 1 under any roof (constructed or overhead mountain).
 	///   CastShadeAt  — shade thrown by vertical casters (buildings, rock,
-	///                  big plants).
+	///                  big plants) and by tree crowns (TREE_SHADE_BUILD_CROWNS_
+	///                  ON_STILTS: a crown disc projected down-sun, CanopyShadeAt).
 	///
 	/// SOLAR_HEAT_EXPOSURE_1 §3 (design longshade_shade_ideation_2026-09-29.md
 	/// §1.3): cast shade is DIRECTIONAL whenever the map has a sun direction —
@@ -75,11 +76,9 @@ namespace RimMandrake.CreatureBehaviors
 
 		private const float ShadeCastingFillPercentThreshold = 0.8f;
 
-		private const float ShadeCastingPlantVisualSize = 1.5f;
-
-		/// <summary>A big plant's shadow height, per unit of its maximum
-		/// visual size (a 2.0 tree stands about as tall as a 1.0 rock).</summary>
-		private const float PlantHeightPerVisualSize = 0.5f;
+		// TREE_SHADE_BUILD_CROWNS_ON_STILTS: a plant drawn RM_TreeCrown.CasterDrawnSize cells or more at full growth is a
+		// tree for shade; its trunk strip is crownHeightFactor × its drawn size AT ITS GROWTH (a seedling no longer casts a
+		// giant's shadow), and its crown disc goes into canopyShade (RM_SunHeatMath.CastCrown).
 
 		/// <summary>No single shadow runs further than this, however low the
 		/// sun: at 2° elevation cot is ~29 and one pebble would shade a
@@ -92,6 +91,22 @@ namespace RimMandrake.CreatureBehaviors
 		private float[] roofShade;
 		private float[] castShade;
 		private float[] exposure;
+
+		// TREE_SHADE_BUILD_CROWNS_ON_STILTS: the crown layer (folded into castShade by max, so every consumer reads it),
+		// kept apart so the readout can name the canopy and its species. canopyOwner holds an index into canopyDefs
+		// (the species whose crown raised the cell), -1 for none. Rebuilt with the grid; nothing is saved.
+		private float[] canopyShade;
+		private int[] canopyOwner;
+		private readonly List<ThingDef> canopyDefs = new List<ThingDef>();
+		private readonly Dictionary<ThingDef, int> canopyDefIndex = new Dictionary<ThingDef, int>();
+
+		// A felled, burned, eaten or crushed tree asks for a recompute (RM_TreeCrownPatches). A forest fire kills trees
+		// every few ticks and each recompute is a full-map pass, so such requests run at most once per this many ticks.
+		// Danger guarded: a full-map rebuild every tick through a fire. 30 ticks is half a second, so a felled tree's
+		// shade is gone before the player can look for it.
+		private const int PlantRecomputeMinTicks = 30;
+		private bool plantRecomputeRequested;
+		private int lastRecomputeTick = -999999;
 
 		private bool directional;
 		private Vector2 sunShadowDir;
@@ -316,6 +331,10 @@ namespace RimMandrake.CreatureBehaviors
 			{
 				recomputeRequested = true; // a haze front arrived or cleared
 			}
+			if (plantRecomputeRequested && now - lastRecomputeTick >= PlantRecomputeMinTicks)
+			{
+				recomputeRequested = true;
+			}
 			if (recomputeRequested || now % RecomputeIntervalTicks == 0)
 			{
 				Recompute();
@@ -343,6 +362,134 @@ namespace RimMandrake.CreatureBehaviors
 			{
 				recomputeRequested = true;
 			}
+		}
+
+		/// <summary>TREE_SHADE_BUILD_CROWNS_ON_STILTS: a tree that casts shade left the map (felled, burned, eaten,
+		/// crushed). Its shade is cleared by a recompute within PlantRecomputeMinTicks.</summary>
+		public void RequestPlantRecompute()
+		{
+			plantRecomputeRequested = true;
+		}
+
+		/// <summary>True when this plant casts a trunk strip and a crown: drawn at least RM_TreeCrown.CasterDrawnSize
+		/// cells at full growth (owner card 2026-10-19 Q4).</summary>
+		public static bool IsShadeTree(ThingDef def)
+		{
+			PlantProperties p = def?.plant;
+			if (p == null)
+			{
+				return false;
+			}
+			float drawX = def.graphicData != null ? def.graphicData.drawSize.x : 1f;
+			return RM_SunHeatMath.DrawnSize(drawX, p.visualSizeRange.min, p.visualSizeRange.max, 1f) >= RM_TreeCrown.CasterDrawnSize;
+		}
+
+		/// <summary>This plant's drawn size now, in cells (growth-aware).</summary>
+		public static float DrawnSizeNow(Plant plant)
+		{
+			PlantProperties p = plant.def.plant;
+			float drawX = plant.def.graphicData != null ? plant.def.graphicData.drawSize.x : 1f;
+			return RM_SunHeatMath.DrawnSize(drawX, p.visualSizeRange.min, p.visualSizeRange.max, plant.Growth);
+		}
+
+		/// <summary>The shade overlay's value at a cell index: under Direct Sun 1 − the cached exposure (the array
+		/// ExposureAt reads), else the roof/cast shade the animals read. 0 before the first recompute.</summary>
+		public float OverlayShade(int i)
+		{
+			if (roofShade == null || i < 0 || i >= roofShade.Length)
+			{
+				return 0f;
+			}
+			if (exposure != null && SunHeatActive)
+			{
+				return 1f - exposure[i];
+			}
+			return Mathf.Max(roofShade[i], castShade[i]);
+		}
+
+		/// <summary>Crown shade 0..1 at a cell index (the ground tint reads it).</summary>
+		public float CanopyShadeAtIndex(int i)
+		{
+			return canopyShade != null && i >= 0 && i < canopyShade.Length ? canopyShade[i] : 0f;
+		}
+
+		private RM_ShadeOverlayDrawers drawers;
+
+		/// <summary>Every frame: the shade overlay and the canopy ground tint (RM_ShadeOverlay.cs), current map only.
+		/// Each rebuilds its mesh only when GridVersion moved.</summary>
+		public override void MapComponentUpdate()
+		{
+			base.MapComponentUpdate();
+			if (roofShade == null)
+			{
+				return;
+			}
+			(drawers ??= new RM_ShadeOverlayDrawers(this, map)).Update();
+		}
+
+		/// <summary>Crown shade 0..1 at this cell from the last recompute (0 where no crown falls).</summary>
+		public float CanopyShadeAt(IntVec3 cell)
+		{
+			return Ready(cell) && canopyShade != null ? canopyShade[map.cellIndices.CellToIndex(cell)] : 0f;
+		}
+
+		/// <summary>The species whose crown shades this cell, or null.</summary>
+		public ThingDef CanopySpeciesAt(IntVec3 cell)
+		{
+			if (!Ready(cell) || canopyOwner == null)
+			{
+				return null;
+			}
+			int k = canopyOwner[map.cellIndices.CellToIndex(cell)];
+			return k >= 0 && k < canopyDefs.Count ? canopyDefs[k] : null;
+		}
+
+		/// <summary>What shades this cell most, in a few words for the readout and the sun-load line: "indoors",
+		/// "roof", "veluthar canopy", "lee", "parasol", "shade tent", "moving shade"; null in open sun.</summary>
+		public string ShadeCauseAt(IntVec3 cell)
+		{
+			if (!Ready(cell))
+			{
+				return null;
+			}
+			if (!cell.UsesOutdoorTemperature(map))
+			{
+				return "indoors";
+			}
+			int i = map.cellIndices.CellToIndex(cell);
+			float roof = roofShade[i];
+			float canopy = canopyShade != null ? canopyShade[i] : 0f;
+			float cast = castShade[i];
+			float gear = gearShade != null ? gearShade[i] : 0f;
+			float parasol = parasolShade != null ? parasolShade[i] : 0f;
+			float mov = movingShade != null && RM_CreatureBehaviorsSettings.movingShadeEnabled ? movingShade[i] : 0f;
+			float best = Mathf.Max(Mathf.Max(roof, cast), Mathf.Max(Mathf.Max(gear, parasol), mov));
+			if (best <= 0.001f)
+			{
+				return null;
+			}
+			if (roof >= best)
+			{
+				return "roof";
+			}
+			if (canopy >= best)
+			{
+				ThingDef sp = CanopySpeciesAt(cell);
+				return sp != null ? sp.label + " canopy" : "canopy";
+			}
+			if (cast >= best)
+			{
+				return "lee";
+			}
+			if (gear >= best)
+			{
+				return "shade tent";
+			}
+			if (parasol >= best)
+			{
+				return "parasol";
+			}
+			return "moving shade";
 		}
 
 		/// <summary>LONGSHADE_GPT_ENRICHMENT_1 §2: a living shade caster
@@ -576,12 +723,23 @@ namespace RimMandrake.CreatureBehaviors
 			{
 				roofShade = new float[n];
 				castShade = new float[n];
+				canopyShade = new float[n];
+				canopyOwner = new int[n];
 				gearShade = new float[n];
 				parasolShade = new float[n];
 				parasolTouched.Clear();
 			}
 			recomputeRequested = false;
+			plantRecomputeRequested = false;
+			lastRecomputeTick = Find.TickManager?.TicksGame ?? 0;
 			System.Array.Clear(castShade, 0, n);
+			System.Array.Clear(canopyShade, 0, n);
+			for (int k = 0; k < n; k++)
+			{
+				canopyOwner[k] = -1;
+			}
+			canopyDefs.Clear();
+			canopyDefIndex.Clear();
 			ResolveSun();
 			lastHazeFactor = RM_ShadeHaze.ShadowLengthFactor(map);
 			if (directional)
@@ -595,9 +753,9 @@ namespace RimMandrake.CreatureBehaviors
 				int i = map.cellIndices.CellToIndex(cell);
 				RoofDef roof = map.roofGrid.RoofAt(cell);
 				roofShade[i] = roof != null ? 1f : 0f;
+				float h = CasterHeight(cell, out Plant tree);
 				if (directional)
 				{
-					float h = CasterHeight(cell);
 					if (h > 0f)
 					{
 						float len = RM_SunHeatMath.ShadowLength(h, sunLengthPerHeight, MaxCastCells);
@@ -607,7 +765,19 @@ namespace RimMandrake.CreatureBehaviors
 				}
 				else if (roof == null)
 				{
-					castShade[i] = RingShadeAt(cell);
+					castShade[i] = Mathf.Max(castShade[i], RingShadeAt(cell));
+				}
+				if (tree != null)
+				{
+					CastCrownOf(tree, width, height);
+				}
+			}
+			// The crowns join the cast layer by max: every shade consumer, the exposure and the overlay read them.
+			for (int k = 0; k < n; k++)
+			{
+				if (canopyShade[k] > castShade[k])
+				{
+					castShade[k] = canopyShade[k];
 				}
 			}
 			BuildGearLayer();
@@ -618,6 +788,35 @@ namespace RimMandrake.CreatureBehaviors
 			gridVersion++;
 			// STILLSAND_MIRAGE_CONDITION_1: hold or end the mirage to match the sun.
 			RM_Mirage.Sync(map, this);
+		}
+
+		/// <summary>TREE_SHADE_BUILD_CROWNS_ON_STILTS §2: one tree's crown disc into canopyShade, down-sun by
+		/// min(MaxCastCells, crown height × cot E) along the same vector as every shadow; with no sun vector the disc
+		/// lies under the crown (the ring path's maps, for the shade-seeking animals). Off in settings: none.</summary>
+		private void CastCrownOf(Plant tree, int width, int height)
+		{
+			if (!RM_CreatureBehaviorsSettings.treeCanopyShadeEnabled)
+			{
+				return;
+			}
+			float s = DrawnSizeNow(tree);
+			float r = RM_TreeCrown.Radius(s, RM_TreeCrownExtension.RadiusFactorOf(tree.def));
+			float hc = RM_TreeCrown.Height(s, RM_TreeCrownExtension.HeightFactorOf(tree.def));
+			float o = RM_SunHeatMath.CrownOpacity(RM_TreeCrownExtension.OpacityOf(tree.def), tree.LeaflessNow,
+				RM_TreeCrown.LeaflessFactor, RM_CreatureBehaviorsSettings.canopyShadeStrength);
+			if (o <= 0f)
+			{
+				return;
+			}
+			if (!canopyDefIndex.TryGetValue(tree.def, out int id))
+			{
+				id = canopyDefs.Count;
+				canopyDefs.Add(tree.def);
+				canopyDefIndex[tree.def] = id;
+			}
+			float cot = directional ? sunLengthPerHeight : 0f;
+			RM_SunHeatMath.CastCrown(canopyShade, width, height, tree.Position.x, tree.Position.z, r, hc,
+				sunShadowDir.x, sunShadowDir.y, cot, MaxCastCells, o, canopyOwner, id);
 		}
 
 		/// <summary>SOLAR_MIRRORS_MOD_DESIGN_1 §2.3: zero the buffer and let
@@ -911,10 +1110,13 @@ namespace RimMandrake.CreatureBehaviors
 		}
 
 		/// <summary>Shadow height of whatever stands in this cell, 0 if none
-		/// (staticSunShadowHeight scale — a rock or wall is 1.0).</summary>
-		private float CasterHeight(IntVec3 cell)
+		/// (staticSunShadowHeight scale — a rock or wall is 1.0). `tree`: the shade tree standing here (the tallest), or
+		/// null; its strip is its crown height at its growth.</summary>
+		private float CasterHeight(IntVec3 cell, out Plant tree)
 		{
 			float best = 0f;
+			tree = null;
+			float bestTree = 0f;
 			List<Thing> thingList = cell.GetThingList(map);
 			for (int i = 0; i < thingList.Count; i++)
 			{
@@ -932,10 +1134,15 @@ namespace RimMandrake.CreatureBehaviors
 					}
 					best = Mathf.Max(best, h);
 				}
-				else if (thing is Plant plant && plant.def.plant != null
-					&& plant.def.plant.visualSizeRange.max >= ShadeCastingPlantVisualSize)
+				else if (thing is Plant plant && IsShadeTree(plant.def))
 				{
-					best = Mathf.Max(best, plant.def.plant.visualSizeRange.max * PlantHeightPerVisualSize);
+					float h = RM_TreeCrown.Height(DrawnSizeNow(plant), RM_TreeCrownExtension.HeightFactorOf(plant.def));
+					best = Mathf.Max(best, h);
+					if (h > bestTree)
+					{
+						bestTree = h;
+						tree = plant;
+					}
 				}
 			}
 			return best;
@@ -979,8 +1186,7 @@ namespace RimMandrake.CreatureBehaviors
 				{
 					return true;
 				}
-				if (thing is Plant plant && plant.def.plant != null
-					&& plant.def.plant.visualSizeRange.max >= ShadeCastingPlantVisualSize)
+				if (thing is Plant plant && IsShadeTree(plant.def))
 				{
 					return true;
 				}

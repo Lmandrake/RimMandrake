@@ -1074,10 +1074,253 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                     "a pawn in the gloomcast's shadow still gains Heatstroke");
             });
 
+            // ── TREE_SHADE_SELFTEST_PROVE_FOREST_IS_SHADE (design tree_shade_model_2026-10-19.md §6) ──
+            // The raster below (ForestRaster) is the loop of RM_MapComponent_ShadeGrid.Recompute for trees, through the
+            // same shipped calls: trunk strip = CastInto(ShadowLength(hc, cot E, 16)), crown = CastCrown, merged by max.
+            Case("tree crowns: the same tree at the same E casts the same footprint in every biome", () =>
+            {
+                foreach (Type t in new[] { typeof(RM_TreeCrown) })
+                {
+                    foreach (System.Reflection.MethodInfo m in t.GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static))
+                    {
+                        foreach (System.Reflection.ParameterInfo p in m.GetParameters())
+                        {
+                            Assert(p.ParameterType.IsPrimitive && !p.Name.ToLowerInvariant().Contains("biome"),
+                                t.Name + "." + m.Name + " takes a non-geometry input '" + p.Name + "'");
+                        }
+                    }
+                }
+                float[] first = null;
+                foreach (string biome in new[] { "RM_Greentide", "RM_Miasma", "RM_FeverWood", "RM_Webwork", "RM_Contagion", "RM_Stillsand" })
+                {
+                    float[] g = ForestRaster(41, 41, new List<Tree> { new Tree(20, 30, 1.5f, 3.8f, 1f) }, 39f, 0f, -1f, true, 1f);
+                    if (first == null) first = g;
+                    Assert(SameGrid(first, g), "the footprint differs for " + biome);
+                }
+            });
+
+            Case("tree crowns: at E 90 the disc lies under the crown; at E 14 it moves hc x cot 14, capped at 16", () =>
+            {
+                float hc = RM_TreeCrown.Height(4f, RM_TreeCrown.HeightFactorDefault);
+                RM_SunHeatMath.CrownFootprint(10, 10, hc, 0f, -1f, RM_SunHeatMath.ShadowLengthPerHeight(90f), 16f, out float ox, out float oz);
+                Assert(Math.Abs(ox - 10f) < 1e-4f && Math.Abs(oz - 10f) < 1e-3f, "at E 90 the disc is at " + ox + "," + oz);
+                float cot14 = RM_SunHeatMath.ShadowLengthPerHeight(14f);
+                RM_SunHeatMath.CrownFootprint(10, 40, hc, 0f, -1f, cot14, 16f, out ox, out oz);
+                Assert(Math.Abs((40f - oz) - hc * cot14) < 1e-3f && Math.Abs(ox - 10f) < 1e-4f, "at E 14 the offset is " + (40f - oz) + ", want " + hc * cot14);
+                float hcGiant = RM_TreeCrown.Height(16f, 0.79f);
+                RM_SunHeatMath.CrownFootprint(10, 40, hcGiant, 0f, -1f, cot14, 16f, out ox, out oz);
+                Assert(Math.Abs((40f - oz) - 16f) < 1e-3f, "a giant's crown at E 14 lands " + (40f - oz) + " cells away, not the cap 16");
+                // The disc under the crown at E 90: every cell within r of the root, and none beyond.
+                float r = RM_TreeCrown.Radius(4f, RM_TreeCrown.RadiusFactorDefault);
+                float[] g = ForestRaster(21, 21, new List<Tree> { new Tree(10, 10, 4f, 4f, 1f) }, 90f, 0f, -1f, true, 1f);
+                for (int z = 0; z < 21; z++)
+                    for (int x = 0; x < 21; x++)
+                    {
+                        bool inside = (x - 10) * (x - 10) + (z - 10) * (z - 10) <= r * r;
+                        Assert(inside == (g[z * 21 + x] >= 0.999f), "cell " + x + "," + z + " at E 90: shade " + g[z * 21 + x] + ", inside the disc " + inside);
+                    }
+                // The trunk strip is about 4 x hc at E 14.
+                float strip = RM_SunHeatMath.ShadowLength(hc, cot14, 16f);
+                Assert(Math.Abs(strip - 4.01f * hc) < 0.1f * hc, "the trunk strip at E 14 is " + strip + " for hc " + hc);
+                Console.WriteLine("  E 14: crown offset " + (hc * cot14).ToString("0.0") + " cells for a 4-cell tree, the giant's capped at 16");
+            });
+
+            Case("tree crowns: a seedling casts by its drawn size, leafless thins it, the dial scales it, off casts only the trunk", () =>
+            {
+                float sSeed = RM_SunHeatMath.DrawnSize(1f, 3f, 12f, 0.1f);
+                float sFull = RM_SunHeatMath.DrawnSize(1f, 3f, 12f, 1f);
+                Assert(Math.Abs(sSeed - 3.9f) < 1e-4f && Math.Abs(sFull - 12f) < 1e-4f, "drawn size " + sSeed + " / " + sFull);
+                Assert(Math.Abs(RM_SunHeatMath.DrawnSize(2f, 3f, 12f, 1f) - 24f) < 1e-4f, "drawSize.x does not scale the drawn size");
+                int seed = Covered(ForestRaster(61, 61, new List<Tree> { new Tree(30, 50, 3f, 12f, 0.1f) }, 45f, 0f, -1f, true, 1f));
+                int full = Covered(ForestRaster(61, 61, new List<Tree> { new Tree(30, 50, 3f, 12f, 1f) }, 45f, 0f, -1f, true, 1f));
+                Assert(seed > 0 && full > 4 * seed, "a seedling covers " + seed + " cells and the grown tree " + full);
+                Assert(Math.Abs(RM_SunHeatMath.CrownOpacity(1f, true, RM_TreeCrown.LeaflessFactor, 1f) - 0.3f) < 1e-6f, "leafless is not x 0.3");
+                Assert(Math.Abs(RM_SunHeatMath.CrownOpacity(1f, false, RM_TreeCrown.LeaflessFactor, 0.5f) - 0.5f) < 1e-6f, "the dial does not scale");
+                Assert(RM_SunHeatMath.CrownOpacity(1f, false, RM_TreeCrown.LeaflessFactor, 0f) == 0f, "dial 0 still shades");
+                float[] off = ForestRaster(61, 61, new List<Tree> { new Tree(30, 50, 3f, 12f, 1f) }, 45f, 0f, -1f, false, 1f);
+                int offCells = 0;
+                for (int i = 0; i < off.Length; i++) if (off[i] > 0f) offCells++;
+                float hcFull = RM_TreeCrown.Height(12f, RM_TreeCrown.HeightFactorDefault);
+                Assert(offCells > 0 && offCells <= (int)Math.Ceiling(hcFull) + 1, "canopy off still casts " + offCells + " cells (want the trunk strip)");
+                Console.WriteLine("  seedling " + seed + " cells, grown " + full + " cells, canopy off " + offCells + " (the trunk)");
+            });
+
+            Case("tree crowns: a synthetic Greentide and Miasma forest is at least 60% shade, within 10 points of the estimate", () =>
+            {
+                // Stand-ins for the census densities (design §2.2, def-expected caster cells; the live census is the
+                // measurement): a forest of 3.8-cell trees at 0.70 (the estimate's ordinary-tree forest, 0.99); RM_Miasma 0.45, 5% 12-cell nogtyl,
+                // 30% 6.5-cell mid trees, the rest 3.8-cell trees (estimate 0.97). Growth uniform 0.3-1 as the estimate.
+                var greentide = SyntheticForest(200, 200, 0.70, new[] { new Spec(1f, 1.5f, 3.8f) }, 1);
+                var miasma = SyntheticForest(200, 200, 0.45, new[] { new Spec(0.05f, 7.2f, 12f), new Spec(0.30f, 3f, 6.5f), new Spec(0.65f, 1.5f, 3.8f) }, 2);
+                double g = Covered(ForestRaster(200, 200, greentide, 45f, 0f, -1f, true, 1f)) / 40000.0;
+                double m = Covered(ForestRaster(200, 200, miasma, 39f, 0f, -1f, true, 1f)) / 40000.0;
+                Console.WriteLine("  covered: Greentide stand-in " + g.ToString("0.00") + " (estimate 0.99), Miasma stand-in " + m.ToString("0.00") + " (estimate 0.97)");
+                Assert(g >= 0.60 && m >= 0.60, "a forest is not mostly shade: " + g + ", " + m);
+                Assert(Math.Abs(g - 0.99) <= 0.10 && Math.Abs(m - 0.97) <= 0.10, "more than 10 points from the estimate: " + g + ", " + m);
+            });
+
+            Case("tree crowns: a 7x7 clearing is sunlit at its centre once hc x cot E + r falls short of its edge", () =>
+            {
+                // Full-grown 3.8-cell trees on every cell outside a 7x7 clearing. The edge tree up-sun stands 4 cells from
+                // the centre; its crown disc (r 1.52) lands hc x cot E (hc 1.9) closer. Geometry gives sun at the centre
+                // iff 4 - 1.9 cot E > 1.52, that is E > 37.5 degrees (design §6 T2 guessed 30).
+                const int n = 41, c = 20;
+                var trees = new List<Tree>();
+                for (int z = 0; z < n; z++)
+                    for (int x = 0; x < n; x++)
+                        if (Math.Abs(x - c) > 3 || Math.Abs(z - c) > 3) trees.Add(new Tree(x, z, 3.8f, 3.8f, 1f));
+                foreach (float e in new[] { 38f, 45f, 60f, 75f, 90f })
+                {
+                    float centre = ForestRaster(n, n, trees, e, 0f, -1f, true, 1f)[c * n + c];
+                    Assert(centre == 0f, "the clearing's centre is shaded " + centre + " at E " + e);
+                }
+                float at30 = ForestRaster(n, n, trees, 30f, 0f, -1f, true, 1f)[c * n + c];
+                Assert(at30 > 0.99f, "at E 30 the up-sun edge tree's crown should cover the centre (geometry), shade " + at30);
+                Console.WriteLine("  clearing centre: full sun at E >= 38, shaded at E 30 by the up-sun edge crown");
+            });
+
+            Case("tree crowns: removing a tree and recomputing clears its footprint; growing it widens it", () =>
+            {
+                var trees = new List<Tree> { new Tree(10, 40, 1.5f, 3.8f, 1f), new Tree(40, 40, 3f, 12f, 0.3f) };
+                float[] both = ForestRaster(61, 61, trees, 45f, 0f, -1f, true, 1f);
+                float[] one = ForestRaster(61, 61, trees.GetRange(0, 1), 45f, 0f, -1f, true, 1f);
+                float[] alone = ForestRaster(61, 61, trees.GetRange(1, 1), 45f, 0f, -1f, true, 1f);
+                for (int i = 0; i < both.Length; i++)
+                {
+                    Assert(!(alone[i] > 0f && one[i] == 0f && both[i] == 0f), "the felled tree's cell was never shaded");
+                    Assert(one[i] == 0f || both[i] > 0f, "a cell lost its shade from the tree that stayed");
+                    if (alone[i] > 0f && i % 61 > 25) Assert(one[i] == 0f, "the felled tree's shade remains at cell " + i);
+                }
+                trees[1] = new Tree(40, 40, 3f, 12f, 1f);
+                int grown = Covered(ForestRaster(61, 61, trees.GetRange(1, 1), 45f, 0f, -1f, true, 1f));
+                Assert(grown > Covered(alone), "growth did not widen the shade: " + Covered(alone) + " -> " + grown);
+            });
+
+            Case("tree crowns: a 275x275 raster at Greentide density takes at most 15 ms", () =>
+            {
+                // RM_Greentide stand-in: 0.79 caster cells, 3% greatbole 12-16 (factors 0.97 / 0.79), 10% veluthar and
+                // kaddrath 8-11.5, the rest 1.5-3.8. Best of 3; the raster only (the live Recompute adds its thing scan).
+                var forest = SyntheticForest(275, 275, 0.79, new[] { new Spec(0.03f, 12f, 16f, 0.97f, 0.79f), new Spec(0.10f, 8f, 11.5f), new Spec(0.87f, 1.5f, 3.8f) }, 3);
+                ForestRaster(275, 275, forest, 45f, 0f, -1f, true, 1f);   // JIT warm-up
+                double best = double.MaxValue;
+                for (int k = 0; k < 3; k++)
+                {
+                    var sw = System.Diagnostics.Stopwatch.StartNew();
+                    ForestRaster(275, 275, forest, 45f, 0f, -1f, true, 1f);
+                    sw.Stop();
+                    best = Math.Min(best, sw.Elapsed.TotalMilliseconds);
+                }
+                Console.WriteLine("  T5 MEASURED: " + forest.Count + " trees on 275x275, raster " + best.ToString("0.00") + " ms (bar 15 ms)");
+                Assert(best <= 15.0, "the raster took " + best.ToString("0.00") + " ms");
+            });
+
+            Case("tree crowns: a rebuilt grid from the same trees is bit-identical, in any order", () =>
+            {
+                var forest = SyntheticForest(120, 120, 0.6, new[] { new Spec(0.1f, 7f, 12f), new Spec(0.9f, 1.5f, 3.8f) }, 4);
+                // Every third tree leafless (crown 0.3): overlapping crowns of two depths, so only a max is order-free.
+                for (int i = 0; i < forest.Count; i += 3) { Tree t = forest[i]; t.leafless = true; forest[i] = t; }
+                float[] a = ForestRaster(120, 120, forest, 41f, 0.6f, -0.8f, true, 1f);
+                float[] b = ForestRaster(120, 120, forest, 41f, 0.6f, -0.8f, true, 1f);
+                var shuffled = new List<Tree>(forest);
+                var rng = new Random(9);
+                for (int i = shuffled.Count - 1; i > 0; i--) { int j = rng.Next(i + 1); Tree t = shuffled[i]; shuffled[i] = shuffled[j]; shuffled[j] = t; }
+                float[] c = ForestRaster(120, 120, shuffled, 41f, 0.6f, -0.8f, true, 1f);
+                Assert(SameGrid(a, b), "two rebuilds differ");
+                Assert(SameGrid(a, c), "a rebuild in another order differs (a loaded save iterates its things in its own order)");
+            });
+
             foreach (string p in Pass) Console.WriteLine("PASS " + p);
             foreach (string f in Fail) Console.WriteLine("FAIL " + f);
             Console.WriteLine(Pass.Count + "/" + (Pass.Count + Fail.Count) + " passed");
             return Fail.Count == 0 ? 0 : 1;
+        }
+
+        // ── TREE_SHADE_SELFTEST_PROVE_FOREST_IS_SHADE helpers ──
+
+        private struct Tree
+        {
+            public int x, z;
+            public float vmin, vmax, growth, rf, hf, opacity;
+            public bool leafless;
+
+            public Tree(int x, int z, float vmin, float vmax, float growth, float rf = RM_TreeCrown.RadiusFactorDefault,
+                float hf = RM_TreeCrown.HeightFactorDefault)
+            {
+                this.x = x; this.z = z; this.vmin = vmin; this.vmax = vmax; this.growth = growth;
+                this.rf = rf; this.hf = hf; opacity = RM_TreeCrown.OpacityDefault; leafless = false;
+            }
+        }
+
+        private struct Spec
+        {
+            public float share, vmin, vmax, rf, hf;
+
+            public Spec(float share, float vmin, float vmax, float rf = RM_TreeCrown.RadiusFactorDefault, float hf = RM_TreeCrown.HeightFactorDefault)
+            {
+                this.share = share; this.vmin = vmin; this.vmax = vmax; this.rf = rf; this.hf = hf;
+            }
+        }
+
+        /// <summary>The tree part of RM_MapComponent_ShadeGrid.Recompute on a bare grid at sun elevation E along
+        /// (dirX, dirZ): each tree's trunk strip (CastInto, height hc, cap 16, tip 0.6) into the cast layer and its crown
+        /// (CastCrown) into the canopy layer, merged by max. canopyOn false = the setting off.</summary>
+        private static float[] ForestRaster(int w, int h, List<Tree> trees, float e, float dirX, float dirZ, bool canopyOn, float strength)
+        {
+            float[] cast = new float[w * h];
+            float[] canopy = new float[w * h];
+            int[] owner = new int[w * h];
+            float cot = RM_SunHeatMath.ShadowLengthPerHeight(e);
+            for (int k = 0; k < trees.Count; k++)
+            {
+                Tree t = trees[k];
+                float s = RM_SunHeatMath.DrawnSize(1f, t.vmin, t.vmax, t.growth);
+                float hc = RM_TreeCrown.Height(s, t.hf);
+                RM_SunHeatMath.CastInto(cast, w, h, t.x, t.z, dirX, dirZ, RM_SunHeatMath.ShadowLength(hc, cot, 16f), 0.6f);
+                if (canopyOn)
+                {
+                    float o = RM_SunHeatMath.CrownOpacity(t.opacity, t.leafless, RM_TreeCrown.LeaflessFactor, strength);
+                    RM_SunHeatMath.CastCrown(canopy, w, h, t.x, t.z, RM_TreeCrown.Radius(s, t.rf), hc, dirX, dirZ, cot, 16f, o, owner, k);
+                }
+            }
+            for (int i = 0; i < cast.Length; i++)
+            {
+                if (canopy[i] > cast[i]) cast[i] = canopy[i];
+            }
+            return cast;
+        }
+
+        private static List<Tree> SyntheticForest(int w, int h, double density, Spec[] specs, int seed)
+        {
+            var rng = new Random(seed);
+            var trees = new List<Tree>();
+            float total = 0f;
+            foreach (Spec sp in specs) total += sp.share;
+            for (int z = 0; z < h; z++)
+                for (int x = 0; x < w; x++)
+                {
+                    if (rng.NextDouble() > density) continue;
+                    double r = rng.NextDouble() * total, acc = 0;
+                    Spec pick = specs[specs.Length - 1];
+                    foreach (Spec sp in specs) { acc += sp.share; if (r <= acc) { pick = sp; break; } }
+                    float g = 0.3f + 0.7f * (float)rng.NextDouble();
+                    trees.Add(new Tree(x, z, pick.vmin, pick.vmax, g, pick.rf, pick.hf));
+                }
+            return trees;
+        }
+
+        /// <summary>Cells at full shade (the estimate's "covered").</summary>
+        private static int Covered(float[] g)
+        {
+            int n = 0;
+            for (int i = 0; i < g.Length; i++) if (g[i] >= 0.99f) n++;
+            return n;
+        }
+
+        private static bool SameGrid(float[] a, float[] b)
+        {
+            if (a.Length != b.Length) return false;
+            for (int i = 0; i < a.Length; i++) if (BitConverter.ToInt32(BitConverter.GetBytes(a[i]), 0) != BitConverter.ToInt32(BitConverter.GetBytes(b[i]), 0)) return false;
+            return true;
         }
 
         private sealed class GearSpec

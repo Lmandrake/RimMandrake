@@ -200,6 +200,9 @@
     <Compile Include="RM_ShadeClothExtension.cs" />
     <!-- SOLAR_HEAT_EXPOSURE_1 tranche 1: heat kinds, directional grid, sun heat, sun pathing, sun-load bar -->
     <Compile Include="RM_SunHeatMath.cs" />
+    <Compile Include="RM_TreeCrownExtension.cs" />
+    <Compile Include="RM_TreeCrownPatches.cs" />
+    <Compile Include="RM_ShadeOverlay.cs" />
     <!-- LONGSHADE_GPT_ENRICHMENT_1 §2: moving shade casters (the gloomcast). -->
     <Compile Include="RM_MovingShadeMath.cs" />
     <!-- LONGSHADE_GPT_ENRICHMENT_1 §3: camera-keyed heat soundscape, herd calls, footfalls. -->

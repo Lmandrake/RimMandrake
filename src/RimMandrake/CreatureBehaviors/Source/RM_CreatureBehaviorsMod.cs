@@ -268,6 +268,12 @@ namespace RimMandrake.CreatureBehaviors
     //      directionalShadeEnabled — shadows are cast along the sun vector,
     //      height / tan E long. Off: the grid falls back to the old radius-2
     //      ring round every caster.
+    //      treeCanopyShadeEnabled / canopyShadeStrength — TREE_SHADE_BUILD_
+    //      CROWNS_ON_STILTS: a plant drawn 1.5 cells or more casts its crown
+    //      disc down-sun (growth-aware; RM_TreeCrownExtension on a species).
+    //      Off: trees cast only the trunk strip. canopyGroundTint — the ground
+    //      under crown shade is drawn darker. shadeOverlayButton — the shade
+    //      overlay toggle in the play-settings row, and the readout line.
     //      sunPathingEnabled / sunPathCostMultiplier — undrafted pawns
     //      route shade-to-shade. sunLoadBarEnabled — the inspect bar.
     //  40. Shade gear (SHADE_GEAR_FAMILY_1, RM_ShadeGear.cs) — one toggle
@@ -449,6 +455,11 @@ namespace RimMandrake.CreatureBehaviors
         public static float directSunZenithC = RM_DirectSun.ZenithDefaultC;
         public static bool directSunWeatherDims = true;
         public static bool directionalShadeEnabled = true;
+        // TREE_SHADE_BUILD_CROWNS_ON_STILTS: tree crowns cast shade by the sun's geometry, and the shade is shown.
+        public static bool treeCanopyShadeEnabled = true;
+        public static float canopyShadeStrength = 1f;
+        public static bool shadeOverlayButton = true;
+        public static bool canopyGroundTint = true;
         public static bool sunPathingEnabled = true;
         public static float sunPathCostMultiplier = 1f;
         public static bool sunLoadBarEnabled = true;
@@ -686,6 +697,10 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref directSunZenithC, "directSunZenithC", RM_DirectSun.ZenithDefaultC);
             Scribe_Values.Look(ref directSunWeatherDims, "directSunWeatherDims", true);
             Scribe_Values.Look(ref directionalShadeEnabled, "directionalShadeEnabled", true);
+            Scribe_Values.Look(ref treeCanopyShadeEnabled, "treeCanopyShadeEnabled", true);
+            Scribe_Values.Look(ref canopyShadeStrength, "canopyShadeStrength", 1f);
+            Scribe_Values.Look(ref shadeOverlayButton, "shadeOverlayButton", true);
+            Scribe_Values.Look(ref canopyGroundTint, "canopyGroundTint", true);
             Scribe_Values.Look(ref sunPathingEnabled, "sunPathingEnabled", true);
             Scribe_Values.Look(ref sunPathCostMultiplier, "sunPathCostMultiplier", 1f);
             Scribe_Values.Look(ref sunLoadBarEnabled, "sunLoadBarEnabled", true);
@@ -1111,7 +1126,7 @@ namespace RimMandrake.CreatureBehaviors
                   + "creatures hostile to them, so wild prey is ignored.");
                 list.GapLine();
             }
-            if (Group(list, "Direct Sun", new[] { "sunHeatEnabled", "sunHeatStrength", "directSunZenithC", "directSunWeatherDims", "directionalShadeEnabled", "sunPathingEnabled", "sunPathCostMultiplier", "sunLoadBarEnabled", "shadeHopEnabled", "shadeHopRangeMultiplier", "dashRingEnabled", "heatSoundscapeEnabled", "heatSoundscapeVolume", "creatureHeatSoundsEnabled", "sandGlareEnabled", "sandGlareStrength", "glareBlindEnabled", "glareBlindRateMultiplier", "mirageEnabled", "mirageBreakChanceMultiplier" }, new[] { "SunHeat", "DirectSun", "SunDash", "HeatSoundscape", "GlareProtection", "Footfalls" }, RimMandrake.Shared.SettingScope.NextPulse))
+            if (Group(list, "Direct Sun", new[] { "sunHeatEnabled", "sunHeatStrength", "directSunZenithC", "directSunWeatherDims", "directionalShadeEnabled", "treeCanopyShadeEnabled", "canopyShadeStrength", "shadeOverlayButton", "canopyGroundTint", "sunPathingEnabled", "sunPathCostMultiplier", "sunLoadBarEnabled", "shadeHopEnabled", "shadeHopRangeMultiplier", "dashRingEnabled", "heatSoundscapeEnabled", "heatSoundscapeVolume", "creatureHeatSoundsEnabled", "sandGlareEnabled", "sandGlareStrength", "glareBlindEnabled", "glareBlindRateMultiplier", "mirageEnabled", "mirageBreakChanceMultiplier" }, new[] { "SunHeat", "DirectSun", "SunDash", "HeatSoundscape", "GlareProtection", "Footfalls" }, RimMandrake.Shared.SettingScope.NextPulse))
             {
                 list.Label("Direct Sun — the same on every sunlit map: the higher the sun stands, the hotter it is, "
                          + "and the shorter the shadows. A roof or a parasol always protects.");
@@ -1120,6 +1135,25 @@ namespace RimMandrake.CreatureBehaviors
                   + "then heatstroke, exactly as it would in a heat wave. Clothing, comfort range and "
                   + "heatstroke work as normal. Smaller creatures heat faster. Off: none of the Direct Sun "
                   + "features below run. The air temperature itself never changes.");
+                // Tree crowns also feed the shade-seeking animals on maps with no Direct Sun, so these rows stand
+                // outside the master.
+                list.CheckboxLabeled("Trees cast shade from their crowns", ref treeCanopyShadeEnabled,
+                    "On: every plant drawn 1.5 cells or bigger holds its crown up like a parasol, and the sun throws "
+                  + "the crown's shadow on the ground beside it, further the lower the sun. A forest is mostly shade, "
+                  + "a clearing is sunlit. A small tree casts a small shadow, a leafless one a thin shadow. "
+                  + "Off: a tree throws only a thin trunk shadow, like a post.");
+                if (treeCanopyShadeEnabled)
+                {
+                    list.Label("  Canopy shade strength: " + canopyShadeStrength.ToStringPercent());
+                    canopyShadeStrength = list.Slider(canopyShadeStrength, 0f, 1f);
+                    list.CheckboxLabeled("  Darken the ground under tree shade", ref canopyGroundTint,
+                        "On: the ground in a tree's shadow is drawn a little darker, so you can see a forest's shade "
+                      + "at a glance. Off: the ground looks normal (the shade still counts).");
+                }
+                list.CheckboxLabeled("Shade overlay button", ref shadeOverlayButton,
+                    "On: a button in the bottom-right row shows where the sun is blocked, and how much: roofs, "
+                  + "trees, rock, walls and tents. Pointing at a square also names what shades it and what "
+                  + "Direct Sun adds there. Off: no button and no readout line.");
                 if (sunHeatEnabled)
                 {
                     list.Label("  Direct Sun strength: " + sunHeatStrength.ToStringPercent());

@@ -396,9 +396,138 @@ namespace RimMandrake.CreatureBehaviors
             return inSunlight;
         }
 
+        // ── TREE_SHADE_BUILD_CROWNS_ON_STILTS: a tree is a parasol on a pole ──
+        // design/RimMandrake/tree_shade_model_2026-10-19.md §4. The crown is a disc of radius r held at height hc;
+        // the sun projects it onto the ground hc / tan E cells down-sun (capped like every other shadow). A horizontal
+        // disc projected by parallel rays onto flat ground is the same disc, moved. The trunk keeps its strip.
+
+        /// <summary>The plant's drawn size in cells at this growth: drawSize.x × visualSizeRange lerped by growth
+        /// (0..1), by the one ruler Plant.Print uses (RimMandrake.Shared.DrawnExtent.Side, which Huge Things' hitboxes
+        /// also use). Growth-aware: a seedling is drawn small and casts small.</summary>
+        public static float DrawnSize(float drawSizeX, float visualMin, float visualMax, float growth)
+        {
+            float g = Clamp01(growth);
+            return RimMandrake.Shared.DrawnExtent.Side(drawSizeX, visualMin + (visualMax - visualMin) * g);
+        }
+
+        /// <summary>The ground centre of a crown's shadow: the caster cell moved min(cap, hc × cotE) cells along the
+        /// shadow direction. No direction (or cotE 0, the sun at the zenith): the disc lies under the crown.</summary>
+        public static void CrownFootprint(int cx, int cz, float crownHeight, float dirX, float dirZ, float cotE,
+            float cap, out float ox, out float oz)
+        {
+            ox = cx;
+            oz = cz;
+            float norm = (float)Math.Sqrt(dirX * dirX + dirZ * dirZ);
+            if (norm < 1e-4f || crownHeight <= 0f || cotE <= 0f)
+            {
+                return;
+            }
+            float off = crownHeight * cotE;
+            if (off > cap) { off = cap; }
+            ox = cx + dirX / norm * off;
+            oz = cz + dirZ / norm * off;
+        }
+
+        /// <summary>A crown's opacity: its base (1 = full shade, owner card 2026-10-19 Q2) × the leafless factor while
+        /// leafless × the strength dial, clamped to 0..1.</summary>
+        public static float CrownOpacity(float baseOpacity, bool leafless, float leaflessFactor, float strength)
+        {
+            return Clamp01(baseOpacity * (leafless ? leaflessFactor : 1f) * strength);
+        }
+
+        /// <summary>Writes `value` into every cell whose centre lies within `radius` of (ox, oz), keeping the max of
+        /// what is there; the cell holding the centre is always written, so a crown is never smaller than one cell.
+        /// When `owner` is given, a cell this disc raised records `id` there (who shades it, for the readout).
+        /// Returns the number of cells raised. Row-major grid, index = z * width + x.</summary>
+        public static int RasterDisc(float[] grid, int width, int height, float ox, float oz, float radius,
+            float value, int[] owner, int id)
+        {
+            if (value <= 0f)
+            {
+                return 0;
+            }
+            float v = Clamp01(value);
+            float r = radius < 0f ? 0f : radius;
+            float r2 = r * r;
+            int raised = 0;
+            int ccx = (int)Math.Round(ox);
+            int ccz = (int)Math.Round(oz);
+            int minX = Math.Max(0, (int)Math.Floor(ox - r));
+            int maxX = Math.Min(width - 1, (int)Math.Ceiling(ox + r));
+            int minZ = Math.Max(0, (int)Math.Floor(oz - r));
+            int maxZ = Math.Min(height - 1, (int)Math.Ceiling(oz + r));
+            for (int z = minZ; z <= maxZ; z++)
+            {
+                float dz = z - oz;
+                for (int x = minX; x <= maxX; x++)
+                {
+                    float dx = x - ox;
+                    if (dx * dx + dz * dz > r2 && !(x == ccx && z == ccz))
+                    {
+                        continue;
+                    }
+                    int i = z * width + x;
+                    if (v > grid[i])
+                    {
+                        grid[i] = v;
+                        if (owner != null)
+                        {
+                            owner[i] = id;
+                        }
+                        raised++;
+                    }
+                }
+            }
+            return raised;
+        }
+
+        /// <summary>One tree's crown shadow into `grid`: the disc of radius r (cells) moved by CrownFootprint.
+        /// Returns the cells raised.</summary>
+        public static int CastCrown(float[] grid, int width, int height, int cx, int cz, float radius, float crownHeight,
+            float dirX, float dirZ, float cotE, float cap, float opacity, int[] owner, int id)
+        {
+            CrownFootprint(cx, cz, crownHeight, dirX, dirZ, cotE, cap, out float ox, out float oz);
+            return RasterDisc(grid, width, height, ox, oz, radius, opacity, owner, id);
+        }
+
         public static float Clamp01(float v)
         {
             return v < 0f ? 0f : (v > 1f ? 1f : v);
+        }
+    }
+
+    /// <summary>TREE_SHADE_BUILD_CROWNS_ON_STILTS: the planet constants of tree crowns (design
+    /// tree_shade_model_2026-10-19.md §4.2). The same for every biome; a species whose sprite misleads overrides them on
+    /// its own ThingDef with RM_TreeCrownExtension, never on a BiomeDef.</summary>
+    public static class RM_TreeCrown
+    {
+        /// <summary>A plant drawn at least this many cells at full growth is a tree for shade (owner card 2026-10-19
+        /// Q4: "anything drawn >=1.5 cells").</summary>
+        public const float CasterDrawnSize = 1.5f;
+
+        /// <summary>Crown radius = factor × drawn size / 2. INVENTED default (the crown covers most of the sprite's
+        /// width, less trunk and gaps).</summary>
+        public const float RadiusFactorDefault = 0.8f;
+
+        /// <summary>Crown height = factor × drawn size; also the trunk strip's height (today's 0.5).</summary>
+        public const float HeightFactorDefault = 0.5f;
+
+        /// <summary>Full shade (owner card 2026-10-19 Q2: "Full shade").</summary>
+        public const float OpacityDefault = 1f;
+
+        /// <summary>While Plant.LeaflessNow the crown lets most light through. INVENTED.</summary>
+        public const float LeaflessFactor = 0.3f;
+
+        /// <summary>The crown radius in cells for a tree of this drawn size.</summary>
+        public static float Radius(float drawnSize, float radiusFactor)
+        {
+            return radiusFactor * drawnSize * 0.5f;
+        }
+
+        /// <summary>The crown height (shadow-height scale, a wall is 1) for a tree of this drawn size.</summary>
+        public static float Height(float drawnSize, float heightFactor)
+        {
+            return heightFactor * drawnSize;
         }
     }
 }

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ TREE_SHADE_BUILD_CROWNS_ON_STILTS: the crowns of the six day-side giants, whose sprites mislead the planet defaults
+ (crown radius 0.8 x drawn size / 2, crown height 0.5 x drawn size). Each factor is the mean over the species' art
+ variants, measured from the visible pixels by `python3 src/RimMandrake/HugeThings/measure_huge_plant_masks.py` with its crowns flag
+ into src/RimMandrake/HugeThings/tree_crowns_measured.json (TREE_CROWN_MEASURE_FROM_THE_ART), rounded to 0.01.
+ selftest_tree_crowns.py checks that these numbers equal that file. Opacity stays the default 1, full shade (owner card
+ 2026-10-19 Q2). Each operation is guarded by a Conditional, so a giant whose mod is not loaded is skipped silently.
+ The extension goes on the plant ThingDef only, never on a BiomeDef.
+-->
+<Patch>
+  <!-- greatbole: measured 0.9652 / 0.7919 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_Greatbole"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>Defs/ThingDef[defName="RM_Greatbole"]</xpath>
+      <value>
+        <li Class="RimMandrake.CreatureBehaviors.RM_TreeCrownExtension">
+          <crownRadiusFactor>0.97</crownRadiusFactor>
+          <crownHeightFactor>0.79</crownHeightFactor>
+        </li>
+      </value>
+    </match>
+  </Operation>
+  <!-- brommok timber: measured 0.6419 / 0.6391 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_Nogtyl"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>Defs/ThingDef[defName="RM_Nogtyl"]</xpath>
+      <value>
+        <li Class="RimMandrake.CreatureBehaviors.RM_TreeCrownExtension">
+          <crownRadiusFactor>0.64</crownRadiusFactor>
+          <crownHeightFactor>0.64</crownHeightFactor>
+        </li>
+      </value>
+    </match>
+  </Operation>
+  <!-- wild hydenock tree: measured 0.9463 / 0.5701 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RSW_Plant_HydenockTree_Wild"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>Defs/ThingDef[defName="RSW_Plant_HydenockTree_Wild"]</xpath>
+      <value>
+        <li Class="RimMandrake.CreatureBehaviors.RM_TreeCrownExtension">
+          <crownRadiusFactor>0.95</crownRadiusFactor>
+          <crownHeightFactor>0.57</crownHeightFactor>
+        </li>
+      </value>
+    </match>
+  </Operation>
+  <!-- wild corrisk tree: measured 0.7288 / 0.6361 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_CorriskTree"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>Defs/ThingDef[defName="RM_CorriskTree"]</xpath>
+      <value>
+        <li Class="RimMandrake.CreatureBehaviors.RM_TreeCrownExtension">
+          <crownRadiusFactor>0.73</crownRadiusFactor>
+          <crownHeightFactor>0.64</crownHeightFactor>
+        </li>
+      </value>
+    </match>
+  </Operation>
+  <!-- veluthar: measured 0.9479 / 0.7769 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_Veluthar"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>Defs/ThingDef[defName="RM_Veluthar"]</xpath>
+      <value>
+        <li Class="RimMandrake.CreatureBehaviors.RM_TreeCrownExtension">
+          <crownRadiusFactor>0.95</crownRadiusFactor>
+          <crownHeightFactor>0.78</crownHeightFactor>
+        </li>
+      </value>
+    </match>
+  </Operation>
+  <!-- kaddrath: measured 0.6237 / 0.7638 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_Kaddrath"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>Defs/ThingDef[defName="RM_Kaddrath"]</xpath>
+      <value>
+        <li Class="RimMandrake.CreatureBehaviors.RM_TreeCrownExtension">
+          <crownRadiusFactor>0.62</crownRadiusFactor>
+          <crownHeightFactor>0.76</crownHeightFactor>
+        </li>
+      </value>
+    </match>
+  </Operation>
+</Patch>

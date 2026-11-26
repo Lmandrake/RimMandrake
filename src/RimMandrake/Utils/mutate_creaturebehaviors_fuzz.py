@@ -4,7 +4,7 @@ shade math and layer, shade patch graph + dash math, wild-leave math, metal-eate
 (engine: mutate_explosivegrowth_fuzz.run_mutations). Mutants of RM_SunHeatMath's Direct Sun model (SUN below: the zenith value, E,
 the shadow length, the covers, the weather and dial, the glare floor, and an input that is not geometry) run against
 selftest_sun_heat.py instead, one per case of DIRECT_SUN_SELFTEST_BUILD_EVERY_BIOME_EQUAL (the fuzz reaches that file only through
-the shade families).
+the shade families). CROWN below does the same for the tree crown model (TREE_SHADE_SELFTEST_PROVE_FOREST_IS_SHADE).
 
     python3 src/RimMandrake/Utils/mutate_creaturebehaviors_fuzz.py [name-substring]
 """
@@ -149,6 +149,22 @@ SUN = [
     ("sun: glare floor ignored", "return exposure > f ? exposure : f;", "return exposure;"),
 ]
 
+# TREE_SHADE_SELFTEST_PROVE_FOREST_IS_SHADE: the crown model (RM_SunHeatMath crown section, RM_TreeCrown), each caught by a
+# "tree crowns: ..." case of selftest_sun_heat.py.
+CROWN = [
+    ("crown: offset ignores the sun", "float off = crownHeight * cotE;", "float off = crownHeight;"),
+    ("crown: offset uncapped", "if (off > cap) { off = cap; }", ""),
+    ("crown: growth ignored", "return RimMandrake.Shared.DrawnExtent.Side(drawSizeX, visualMin + (visualMax - visualMin) * g);",
+     "return RimMandrake.Shared.DrawnExtent.Side(drawSizeX, visualMax);"),
+    ("crown: leafless ignored", "return Clamp01(baseOpacity * (leafless ? leaflessFactor : 1f) * strength);",
+     "return Clamp01(baseOpacity * strength);"),
+    ("crown: radius halved", "return radiusFactor * drawnSize * 0.5f;", "return radiusFactor * drawnSize * 0.25f;"),
+    ("crown: later crown overwrites", "if (v > grid[i])\n                    {\n                        grid[i] = v;",
+     "if (v > 0f)\n                    {\n                        grid[i] = v * 0.999f;"),
+    ("crown: a biome input", "public static float Radius(float drawnSize, float radiusFactor)",
+     "public static float BiomeCanopy(string biome) { return 1f; }\n\n        public static float Radius(float drawnSize, float radiusFactor)"),
+]
+
 AIR = [
     ("sun: air heat natives not fitted", "maxOptimal = loadedMaxOptimal + up;", "maxOptimal = loadedMaxOptimal;"),
     ("sun: air heat narrows on a cold offset", "float up = offsetC > 0f ? offsetC : 0f;", "float up = offsetC;"),
@@ -163,4 +179,5 @@ if __name__ == "__main__":
         rc |= run_mutations(B + f, W, muts, only)
     rc |= run_mutations(B + "RM_SunHeatMath.cs", "selftest_sun_heat.py", SUN, only)
     rc |= run_mutations(B + "RM_AirHeat.cs", "selftest_sun_heat.py", AIR, only)
+    rc |= run_mutations(B + "RM_SunHeatMath.cs", "selftest_sun_heat.py", CROWN, only)
     sys.exit(rc)
