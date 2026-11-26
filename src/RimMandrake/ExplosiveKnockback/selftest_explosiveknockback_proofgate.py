@@ -13,6 +13,12 @@ RM_KnockbackProof, RM_PatchApplierProbe and the proof-only hooks compile only un
       as not release: neither another type's "Type not found" nor a proof-type error is release; require_proof_build
       exits EXIT (3) on the release answer and hands a real answer back unchanged (blind cycle 3: an `or` for the `and`
       and a gate that never exits both stayed green).
+  C1  every restore a scene replaces is still run: each `Action x = s.restore;` in the proof sources is invoked (x?.Invoke())
+      later in its method, and RunRestore invokes the restore it takes (blind challenge 0.2.0 cycle 2: a dropped chain in
+      AddExt and a RunRestore that never ran stayed green in every decider of inv_proof_scenes).
+  R2  knockback_runner.py hands the Names answer to require_proof_build before its first Stage call (cycle 2: the runner
+      with the gate call removed stayed green).
+  S1  Stage turns a good it could not place (Scene.placeFault) into an INVALID site, never a staged scene.
 Names are matched exactly (NUL on both sides): the #Strings heap is NUL-separated UTF-8, so a doc comment or a longer
 name never matches.
 
@@ -97,6 +103,40 @@ def dispatch_faults(proof):
     return faults, len(names)
 
 
+FUNC_HEAD = re.compile(r"\n        (?:private|public|internal) static ")
+
+
+def restore_faults(srcs):
+    """C1 over {file name: text}: (faults, captures seen). A capture with no invoke after it in its method drops the
+    restore it replaced; RunRestore must invoke what it takes. Reading nothing is a fault, never a pass."""
+    faults, n = [], 0
+    for name, text in srcs.items():
+        for m in re.finditer(r"Action (\w+) = (?:s|sc)\.restore;", text):
+            n += 1
+            nxt = FUNC_HEAD.search(text, m.end())
+            rest = text[m.end():nxt.start() if nxt else len(text)]
+            if not re.search(r"\b%s\s*\?\.\s*Invoke\(|\b%s\(\)" % (m.group(1), m.group(1)), rest):
+                faults.append("%s:%d captures s.restore as %s and never invokes it" % (name, text.count("\n", 0, m.start()) + 1, m.group(1)))
+    rr = re.search(r"private static void RunRestore\(Scene s\)\s*\{(.*?)\n        \}", srcs.get("RM_KnockbackProof.cs", ""), re.S)
+    if not rr or not re.search(r"Action (\w+) = s\.restore;\s*s\.restore = null;\s*\1\?\.Invoke\(\);", rr.group(1)):
+        faults.append("RunRestore does not take s.restore, clear it and invoke it")
+    if n < 5:
+        faults.append("only %d restore captures read in the proof sources" % n)
+    return faults, n
+
+
+def runner_faults(runner, proof):
+    """R2 and S1: the runner gates on its Names answer before staging; Stage refuses a scene whose goods were not placed."""
+    f = []
+    m = re.search(r'(\w+) = call\(b, "Names", [^)]*\)\s*\n\s*require_proof_build\(\1\)', runner)
+    st = runner.find('call(b, "Stage"')
+    if not m or st < 0 or m.start() > st:
+        f.append("R2 knockback_runner.py does not hand its Names answer to require_proof_build before the first Stage")
+    if not re.search(r'if \(why == null && s\.placeFault != null\)\s*\{\s*why = "site: " \+ s\.placeFault;', proof):
+        f.append("S1 Stage does not turn Scene.placeFault into an INVALID site")
+    return f
+
+
 def main():
     fails, unmeasured = [], []
     heap = strings_heap(RELEASE) if os.path.exists(RELEASE) else None
@@ -123,6 +163,16 @@ def main():
     print("D1 %s proof build stages every named scene (%d names): %s" % ("FAIL" if d_bad else "PASS", d_n, d_bad or "each reaches a Build case"))
     if d_bad:
         fails.append("D1 " + "; ".join(d_bad))
+    src_dir = os.path.join(HERE, "Source")
+    srcs = {n: open(os.path.join(src_dir, n), encoding="utf-8").read() for n in sorted(os.listdir(src_dir))
+            if n.startswith("RM_KnockbackProof") and n.endswith(".cs")}
+    c_bad, c_n = restore_faults(srcs)
+    print("C1 %s every replaced scene restore still runs (%d captures): %s" % ("FAIL" if c_bad else "PASS", c_n, c_bad or "each invoked"))
+    if c_bad:
+        fails.append("C1 " + "; ".join(c_bad))
+    r_bad = runner_faults(open(os.path.join(HERE, "knockback_runner.py"), encoding="utf-8").read(), srcs.get("RM_KnockbackProof.cs", ""))
+    print("R2/S1 %s runner gate and placement refusal: %s" % ("FAIL" if r_bad else "PASS", r_bad or "both hold"))
+    fails += r_bad
     fake_release = {"success": False, "error": "Type not found: RimMandrake.ExplosiveKnockback.RM_KnockbackProof"}
     g = [is_release_answer(fake_release), not is_release_answer({"success": True, "result": "items,caps ..."}),
          not is_release_answer({"success": False, "error": "No public static Stage with 1 params."}),
@@ -146,7 +196,7 @@ def main():
         return 1
     if unmeasured:
         return 2
-    print("PASS proofgate (R1 P1 D1 G1)")
+    print("PASS proofgate (R1 P1 D1 G1 C1 R2 S1)")
     return 0
 
 
