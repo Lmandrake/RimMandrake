@@ -8,13 +8,13 @@ The top part, **the mod as it stands**, is rewritten at every stage change and s
 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Code exists:
   `src/RimMandrake/ExplosiveKnockback/`.
-- **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-25 7:01 PM PST (`version/stage_record.json`).
+- **Stage now:** Stage 6, in-game acceptance, since 2026-11-25 8:41 PM PST (`version/stage_record.json`).
 - **Bars:** 59 (30 inventory rows of `record.json` + 29 leaves of `tree.json`). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`).
 - **Measured 2026-11-14 12:45 PST:** 53 of 59 bars have at least one test that runs today; 47 have every deciding test
   runnable; 41 have all their offline deciding tests green. All 15 offline tests are built (13 PASS, 2 known red,
   unchanged). In-game scenes: 56, entry exists 50, absent 6. Every in-game scene is UNRUN (Stage 6); commands in the table.
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-25 7:01 PM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-25 8:41 PM PST).
 - **Open questions:** see "Questions" at the end of the history.
 
 ### The vision (his root paragraph, approved by card 2026-11-11, OWNER:1794468835221748501)
@@ -543,4 +543,13 @@ answer the locked bar, his recorded words or the shipped code already gives; no 
 - Blind cycle 1 of this visit (2 in all).
 - Was, "Stage now": - **Stage now:** Stage 3, offline build, since 2026-11-25 9:58 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-25 9:58 AM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-25 8:41 PM PST, stage change: Blind challenge, tests first (Stages 4 and 5) to In-game acceptance (Stage 6) (by BENCH)
+
+- Why: blind cycle 2 exit met, steward-confirmed; certificate stale stamp on T_PROOFGATE was a RECORD GAP, rerun at HEAD (certificate --run: OK, 58 bars)
+- Checks passed: order, by, version, hold, steward_confirms, exit_met, judge_certificate.
+- Steward confirms: read blind_challenge/cycle_2/SUMMARY.md, faults.json, fixes.jsonl, tests_edited.json and both test diffs (c31fefefd0, 1a223189b3: additions only, nothing weakened); reran T_JOURNAL_JOLT_OFFLINE and T_PROOFGATE green rc 0 at HEAD and red rc 1 on each of the 5 lane2 plant patches; locked files and RM_KnockbackMath.cs unchanged since 8723f717a4; certificate --to in_game OK after restamping 2 stale deciders. Verdict: exit_met stands (inv_kernel green, inv_proof_scenes green, 0 problems open, 0 mod faults); 35 not_kernel rows owed to Stage 6
+- Was, "Stage now": - **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-25 7:01 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-25 7:01 PM PST).
 - Record: `version/stage_record.json`.

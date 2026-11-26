@@ -1,10 +1,10 @@
 {
  "_view": {
-  "body_sha256": "6aae2fd590f705d7009834cdf95db5f4a4e87429c198eef69fd87fa483b5ccb7",
+  "body_sha256": "7ad8f636c33b4901bba979a775d6766cd81604f96e0f75a6afee616fb4660d54",
   "reducer": 1,
   "shards": {
    "BACKFILL": 348917,
-   "DISPATCH": 51496,
+   "DISPATCH": 51846,
    "HOLDER.run-1794813483": 1382,
    "HOLDER.run-1794824768": 1788,
    "HOLDER.run-1794830532": 2304,
@@ -26,6 +26,7 @@
    "HOLDER.run-1795560492": 1077,
    "HOLDER.run-1795660419": 2599,
    "HOLDER.run-1795661891": 608,
+   "HOLDER.run-1795667763": 1420,
    "JUDGE.judge-1794890427": 18837,
    "JUDGE.judge-1795437145": 6544,
    "JUDGE.judge-1795662842": 7876,
@@ -971,7 +972,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 772,
+  "events": 776,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -2027,14 +2028,14 @@
      "closed_container_holds"
     ],
     "by": "JUDGE.judge-1795662842",
-    "claim": null,
+    "claim": "check repair by judge-1795662842; steward reran: green rc 0 at HEAD, red rc 1 with lane2/plant_wantcells_wild_one.patch",
     "class": "problem",
-    "code_sha": null,
+    "code_sha": "c31fefefd0b661785aaf8bd8f8482272321bf248",
     "proposed_fix": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_journal_jolt.py: follow a local whose last declaration is GoodsThrowWild; plant the local as 1f",
-    "status": "open",
+    "status": "claimed_fixed",
     "tags": [],
     "text": "check wrong: T_JOURNAL_JOLT_OFFLINE red on the real build; its text check wants GoodsThrowWild literally at each GoodCells call, and WantCells now keeps it in a local (bedd128cf7); behaviour unchanged. Repaired by this judge at c31fefef (red on plant, green on build)",
-    "ts": "2026-11-26T04:12:01Z",
+    "ts": "2026-11-26T04:40:52Z",
     "version": "0.2.0"
    },
    "finding:RIMMANDRAKE_REPAIR_WILD_RATIO_BAND_FOR_INTEGER_CELLS": {
@@ -2223,14 +2224,14 @@
      "inv_proof_scenes"
     ],
     "by": "JUDGE.judge-1795662842",
-    "claim": null,
+    "claim": "check repair by judge-1795662842; steward reran: green rc 0 at HEAD, red rc 1 on each of the four lane2/plant_pf_*.patch",
     "class": "problem",
-    "code_sha": null,
+    "code_sha": "1a223189b3024d59421f0cbd9ee42af612fcf121",
     "proposed_fix": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py: C1 captured restores invoked, RunRestore runs; R2 runner gates before Stage; S1 placeFault is INVALID",
-    "status": "open",
+    "status": "claimed_fixed",
     "tags": [],
     "text": "check wrong: every inv_proof_scenes decider stayed green with AddExt's restore chain dropped, RunRestore never invoking, the runner's require_proof_build removed, and Stage ignoring placeFault. Repaired by this judge at 1a223189 (four plants red, build green)",
-    "ts": "2026-11-26T04:12:01Z",
+    "ts": "2026-11-26T04:40:52Z",
     "version": "0.2.0"
    },
    "finding:RIMMANDRAKE_SHOVE_PAWNS_STANDING_ON_COVERS_IN_BURNING_GAS": {
@@ -2610,7 +2611,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-26T04:36:47Z",
+   "last": "2026-11-26T04:40:52Z",
    "lease": "run-1795667763",
    "released": false,
    "token": 31
@@ -2660,6 +2661,7 @@
    "HOLDER.run-1795560492",
    "HOLDER.run-1795660419",
    "HOLDER.run-1795661891",
+   "HOLDER.run-1795667763",
    "JUDGE.judge-1794890427",
    "JUDGE.judge-1795437145",
    "JUDGE.judge-1795662842",
@@ -2667,7 +2669,7 @@
   ],
   "spend_tokens": 171672717,
   "spend_usd": 178.6086,
-  "stage": "blind_challenge",
+  "stage": "in_game",
   "superseded": [],
   "tests": [
    {

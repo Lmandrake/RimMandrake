@@ -255,11 +255,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 5.95,
-    "last": "PASS proofgate (R1 P1 D1 G1)",
-    "at": "2026-11-26T02:31:52Z",
+    "seconds": 2.88,
+    "last": "PASS proofgate (R1 P1 D1 G1 C1 R2 S1)",
+    "at": "2026-11-26T04:39:42Z",
     "result": "PASS",
-    "build": "083f85f71b480fb73fe9",
+    "build": "c3c73bc0bdf3c18b1d19",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py",
     "margins": []
    }
@@ -2425,11 +2425,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.14,
-    "last": "explosive knockback journal and jolt: PASS (0 faults, 21/21 planted breaks caught)",
-    "at": "2026-11-23T10:30:24Z",
+    "seconds": 0.22,
+    "last": "explosive knockback journal and jolt: PASS (0 faults, 23/23 planted breaks caught)",
+    "at": "2026-11-26T04:39:42Z",
     "result": "PASS",
-    "build": "36306ae279a636b27985",
+    "build": "f8ea092773722c5418e8",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_journal_jolt.py",
     "margins": []
    }
