@@ -1,19 +1,4 @@
 {
  "_doc": "Written by src/RimMandrake/Utils/known_reds.py (add, drop); its docstring is the rule.",
- "entries": [
-  {
-   "added": "2026-11-13T07:53:49Z",
-   "expires": "2026-11-27T07:53:49Z",
-   "item": "RIMMANDRAKE_TRIAGE_TWENTY_TWO_REDS_BORN_AFTER_THE_NIGHTLY",
-   "test": "src/RimMandrake/FlowWorks/northstar/selftest_extensions.py",
-   "why": "born after the 03:00 nightly; parked under its item [night rule skipped, owner-ruled: Mandrake card 2026-11-12 23:29 PST \"Ops-watch -> List them, switch on\"]"
-  },
-  {
-   "added": "2026-11-13T07:53:54Z",
-   "expires": "2026-11-27T07:53:54Z",
-   "item": "RIMMANDRAKE_TRIAGE_TWENTY_TWO_REDS_BORN_AFTER_THE_NIGHTLY",
-   "test": "src/RimMandrake/FlowWorks/selftest_review_map.py",
-   "why": "born after the 03:00 nightly; parked under its item [night rule skipped, owner-ruled: Mandrake card 2026-11-12 23:29 PST \"Ops-watch -> List them, switch on\"]"
-  }
- ]
+ "entries": []
 }

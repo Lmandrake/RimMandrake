@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-# selftest-timeout: 2400
+# selftest-timeout: 16000
+# budget: danger=a mutant whose test spins holds a selftest worker with no end; the per-mutant progress guard ends a silent hang;
+# budget: longest=about 1,620 s whole (85 mutants, load ~23, 2026-11-26), so 10x
 """selftest_second_game_mutants.py - a planted fault in each second-game tool must turn its selftest red.
 
 The faults were written down before the first run (mutate-your-checker). Each is one realistic regression: a kill by name
@@ -14,9 +16,12 @@ import fnmatch
 import glob
 import os
 import shutil
-import subprocess
 import sys
 import tempfile
+import time
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import progress_guard  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
@@ -149,8 +154,9 @@ def copy_tree(dst):
 def run_selftest(tree, test, only):
     env = {k: v for k, v in os.environ.items() if k not in ("GI_ONLY", "GM_ONLY")}
     env.update(GI_ONLY=only, PYTHONDONTWRITEBYTECODE="1")
-    p = subprocess.run([sys.executable, os.path.join(tree, test)], env=env, capture_output=True, text=True, timeout=420,
-                       stdin=subprocess.DEVNULL, cwd=tree)
+    # A guard on progress, not a wall clock: a mutant may remove a wait's end, and then its test hangs; one that is slow and
+    # alive is not ended. A fixed 420 s cap ended 6 live mutants at load ~50 (2026-11-24); the slowest took 318 s at load ~23.
+    p = progress_guard.run([sys.executable, os.path.join(tree, test)], env=env, cwd=tree)
     return p.returncode, p.stdout, p.stderr
 
 
@@ -179,18 +185,19 @@ def main():
                 continue
             with open(path, "w", encoding="utf-8", newline="") as f:
                 f.write(clean.replace(old, new))
+            t0 = time.time()
             try:
                 rc, out, err = run_selftest(tree, test, sections)
-            except subprocess.TimeoutExpired:
-                rc, out, err = -1, "", "timed out"
+            except progress_guard.Hung as e:
+                rc, out, err = -1, "", "APPARATUS: %s (not a verdict on the mutant)" % e
             finally:
                 with open(path, "w", encoding="utf-8", newline="") as f:
                     f.write(clean)
             own = [ln for ln in out.splitlines() if ln.startswith("FAIL ") and "selftest_" not in ln[:24]]
             if rc != 0 and own:
-                print("caught       %-34s %s" % (name, own[0][5:115]))
+                print("caught       %-34s %5.0fs %s" % (name, time.time() - t0, own[0][5:115]))
             elif rc != 0:
-                print("CRASHED      %-34s %s" % (name, (err or out)[-200:].replace("\n", " | ")))
+                print("CRASHED      %-34s %5.0fs %s" % (name, time.time() - t0, (err or out)[-200:].replace("\n", " | ")))
                 bad.append(name)
             else:
                 print("SURVIVED     %s" % name)
