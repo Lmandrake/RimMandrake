@@ -35,7 +35,6 @@ The steward run of RIMMANDRAKE_ROUTE_PYRELANDS_VISIT_TWO_FAILURES_BACK removed e
 - `sc_ash_ground` (HARNESS: the ash-fall row reads CurSkyGlow, and the mod dims through the sky colour). `sc_fire_dusts_ash` decides `ash_ground_and_blowing_ash`; `sc_burn_compounds` decides `inv_ash_field`.
 - `sc_roof_withers` (SITE: the gate-off patch went from 25 plants to 0 at once near hour 41). It decided no bar. The gate-on row showed the wither.
 - `sc_herd_thirst` (HARNESS: four wrong checks repaired; the gate-off map has no tool). It decided no bar.
-- `sc_fire_sense` (HARNESS: the hungry colonist eats first in a clean scene, not in the chain). It decided no bar.
 - `sc_furnace_bed` (SITE: the control muffalo was gone). `sc_furnace` decides `furnacebeast_warms` and `inv_furnacebeast`.
 - `sc_furnace_hide_bank` (SITE: no bridge tool can run its control). It decided no bar.
 - `sc_furnace_giant` (HARNESS: its classic-restore control reads a private method). `sc_furnace` decides `furnacebeast_warms`; `sc_ullai` decides `inv_ullai_herd_giant`.
