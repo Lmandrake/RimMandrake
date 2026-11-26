@@ -19,6 +19,7 @@ KillMode stopped by `systemctl stop` alone, as a stop from a runner clone pinned
 not look).
 """
 import os
+import glob
 import shutil
 import stat
 import sys
@@ -231,6 +232,13 @@ def real_windows():
     """--real-windows: the same two scenes on this machine's real Windows (python.exe, the real process table and
     taskkill), and the unit scene. Exit 0 every grandchild seen dead, 1 one lived on, 3 could not look (no Windows or
     no systemd here)."""
+    # a timer or unit PATH carries no Windows directories (list_dispatch read this check as COULD NOT LOOK for hours):
+    # put the Windows python.exe's directory on PATH when it is not there
+    if not shutil.which("python.exe"):
+        for d in glob.glob("/mnt/c/Users/*/AppData/Local/Microsoft/WindowsApps"):
+            if os.path.exists(os.path.join(d, "python.exe")):
+                os.environ["PATH"] = d + os.pathsep + os.environ.get("PATH", "")
+                break
     if not (shutil.which("python.exe") and real_windows_left("rmwintree_probe") is not None):
         print("COULD NOT LOOK: no python.exe or powershell.exe on this host")
         return 3
