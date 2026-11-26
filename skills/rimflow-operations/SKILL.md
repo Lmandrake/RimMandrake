@@ -193,7 +193,7 @@ More traps for this section: [references/traps.md](references/traps.md) § 5. St
 
 More traps for this section: [references/traps.md](references/traps.md) § 6. Throttles and timers.
 - A failed-timer incident can keep its unit name while its cause changes. At each revisit, read the newest journal lines of the unit before you repeat the last cause.
-- Never put a network call or a landing (git fetch, land.sh) in an ops_watch collector. ops_watch kills a collector that runs over 15 s, and that kill blinds every collector of the family (the disk family went blind for 4 h and 5 h). Give the call its own unit.
+- Never put a network call or a landing (git fetch, land.sh) in an ops_watch collector. ops_watch kills a collector that runs over 15 s. That kill blinds every collector of the family (the disk family went blind for 4 h and 5 h). Give the call its own unit.
 
 
 ## 7. Traps
