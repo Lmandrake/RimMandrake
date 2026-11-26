@@ -267,6 +267,11 @@ OFF_DECIDES = {
     "look_menu_icons": ["T_LOOK_ICONS_OFFLINE"],
     "wall_lamp_takes_looks": ["T_WALL_LAMP_LOOKS_OFFLINE"],
     "cords_meet_walls_at_face": ["T_CORD_ENTERS_HOLE_OFFLINE"],
+    # 0.2.0 bars his order of 2026-11-24 added (OWNER:1795546467448705900); their live deciders are defined after NEW_LIVE below.
+    # battery: the offline gate reads each battery look's art path and facings (O6, validation_style.py; red on a planted wrong path);
+    # snap: AerialSelfTest GravshipLaunch inside T_CORE (red on the parent 195 of 196, red-seen under the planted fault 5910 of 5912)
+    "battery_takes_looks": ["T_GATE"],
+    "ship_to_ground_wire_snaps": ["T_CORE"],
 }
 OFF_DECIDES["poles_draw_in_front_when_south"].append("T_MAST_BEHIND_TALL_SOUTH_PICTURE_OFFLINE")
 OFF_SUPPORTS = {
@@ -394,7 +399,7 @@ for k, t in NEW.items():
                built_in_stage="3", command="python3 " + " ".join(argv))
     if not os.path.exists(t["file"]):
         row["runs_today"] = dict(ran=False, why="specified, not built: Stage 3 builds it failing first")
-    elif k in PREV and PREV[k]["runs_today"].get("ran"):
+    elif k in PREV and PREV[k].get("runs_today", {}).get("ran"):
         row["runs_today"] = PREV[k]["runs_today"]
     elif k == "T_SHOCK_RULE_OFFLINE" and "T_CORE" in tests:
         row["runs_today"] = dict(tests["T_CORE"]["runs_today"], via="T_CORE")
@@ -493,6 +498,30 @@ NEW_LIVE = {
         [G + "Source/Aerial/ConduitStyles.cs", G + "Source/Aerial/ConduitStyleProbe.cs", G + "northstar/scene_rows.py"],
         "the drawn picture of a style def exists only in the running renderer"),
 }
+# the two live deciders of the bars added on 2026-11-24 (not scenes of validation.py): each is its own script with its own row
+tests["sc_battery_takes_looks"] = dict(
+    id="sc_battery_takes_looks", kind="live_minimal", stage="6", tier="gimmesomeslack", file=G + "review/close_020_stations.py",
+    entry="st34_battery_follows_run", entry_exists=True, new=True, for_bar="battery_takes_looks",
+    observes="a battery on a run of each look reads that look (ConduitStyles cstyles probe), a battery lying east-west on an Industrial run reads "
+             "Industrial, and 'Restyle, all connected' on the run repaints it",
+    reads=[G + "Source/Aerial/ConduitStyles.cs", G + "Defs/Aerial/RM_ConduitStyles.xml", G + "Patches/RM_ConduitStyleable.xml"],
+    why_game="a battery's look is read from the running map's run and drawn by the running renderer",
+    command="python.exe src\\RimMandrake\\GimmeSomeSlack\\review\\close_020_stations.py <out dir> (game up on the gimmesomeslack tier, bridge held)",
+    runs_today=dict(ran=False, why="live: this run is offline only",
+                    last_live="PASS (row st34_battery_follows_run), ArchBig 2026-11-24, build 8c13ce0390 and the close-out; his walk: 'Battery reskin looks great!'"))
+tests["sc_ship_ground_wire_snaps"] = dict(
+    id="sc_ship_ground_wire_snaps", kind="live_minimal", stage="6", tier="gimmesomeslack", file=G + "northstar/gravship_scene.py",
+    entry="GS4_ground_wire_snaps_at_launch", entry_exists=True, new=True, for_bar="ship_to_ground_wire_snaps",
+    observes="a gravship launch with a wire from its pole to an anchor left on the ground: one fallen half at the ground anchor once the ship's "
+             "things have lifted, the other half at the ship's pole after landing (three flights: keep wires on, off, off with auto-link); "
+             "the take-off message is read in code only",
+    reads=[G + "Source/Aerial/AerialMath.cs", G + "Source/Aerial/CompAerialAnchor.cs"],
+    why_game="a gravship launch and landing run only in the live game",
+    command="python3 " + G + "northstar/gravship_scene.py (game up on the gimmesomeslack tier, bridge held)",
+    runs_today=dict(ran=False, why="live: this run is offline only",
+                    last_live="PASS 3 of 3 flights (row GS4_ground_wire_snaps_at_launch), ArchBig 2026-11-24, build 1e22ca37eb"))
+OFF_DECIDES["battery_takes_looks"].append("sc_battery_takes_looks")
+OFF_DECIDES["ship_to_ground_wire_snaps"].append("sc_ship_ground_wire_snaps")
 for sid, (bid, fn, obs, rd, why) in NEW_LIVE.items():
     f = G + "validation.py"
     exists = re.search(r"^\s*def %s\(" % re.escape(fn), open(f).read(), re.M) is not None

@@ -4,7 +4,7 @@ Generated 2026-11-23T18:16:12-08:00 from `test_table.json` (the record; this is 
 
 ## Counts (measured)
 
-- bars: 57
+- bars: 59
 - with a deciding test runnable today (an offline test that ran, or an in-game scene whose entry exists): 57
 - with every deciding test runnable today: 56
 - with at least one test of any kind runnable today, supports included (proof rows whose code exists count): 57
@@ -75,6 +75,8 @@ Generated 2026-11-23T18:16:12-08:00 from `test_table.json` (the record; this is 
 | `statics_clear_between_games` | tree | 6 | sc_statics_new_game | T_STATICS_CENSUS | 1 | all |
 | `no_hose_in_gss` | tree | 4-5 | T_NO_HOSE | - | 0 | all |
 | `walk_scavenger_base` | tree | 8 | sc_save_reload_wire_down, LOOK_STAGE8 | T_H_PLAYTEST_RUNNER, T_H_SMALL_SCENES, sc_cords_under_items | 6 | some |
+| `battery_takes_looks` | record | 6 | T_GATE, sc_battery_takes_looks | - | 0 | all |
+| `ship_to_ground_wire_snaps` | record | 6 | T_CORE, sc_ship_ground_wire_snaps | - | 0 | all |
 
 ## Tests (offline and scenes; the 170 proof rows are in the JSON)
 
@@ -157,6 +159,8 @@ Generated 2026-11-23T18:16:12-08:00 from `test_table.json` (the record; this is 
 | `sc_restyle_whole_line` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_restyle_whole_line | entry exists | a line of floor cords, a power switch, two poles with an overhead span, a wall bracket and a hooked lamp, all Industrial: All connected on the far pole to Futur |
 | `sc_look_menu_icons` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_look_menu_icons | entry exists | a capture of the build menu's look choice and of the Restyle menu: each look shows its own icon, the same picture in both menus |
 | `sc_wall_lamp_looks` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/validation.py` :: scene_wall_lamp_looks | entry exists | wall lamps on a wall in each look beside a standing lamp, captured at play zoom; a restyle of the line they hook to repaints them as it does the standing lamp;  |
+| `sc_battery_takes_looks` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/review/close_020_stations.py` :: st34_battery_follows_run | entry exists | a battery on a run of each look reads that look (ConduitStyles cstyles probe), a battery lying east-west on an Industrial run reads Industrial, and 'Restyle, all connected' on the run repaints it |
+| `sc_ship_ground_wire_snaps` | 6 | live_minimal | `src/RimMandrake/GimmeSomeSlack/northstar/gravship_scene.py` :: GS4_ground_wire_snaps_at_launch | entry exists | a gravship launch with a wire from its pole to an anchor left on the ground: one fallen half at the ground anchor once the ship's things have lifted, the other half at the ship's pole after landing (three flights: keep wires on, off, off with auto-link); the take-off message is read in code only |
 | `LOOK_STAGE8` | 8 | look | `None` | entry ABSENT | his walk of a scavenger base on his full list, with a mid-way reload |
 | `T_CORDS_UNDER_ITEMS_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_cords_under_items.py` | PASS rc=0 0.23s | Offline half of sc_cords_under_items (GimmeSomeSlack 0.1.0, bar cords_draw_under_things, owner by card 2026-11-14). No game: the scene's entry imports and is wi |
 | `T_DROPPED_CORDS_AERIAL_MASTER_OFFLINE` | 4-5 | offline | `src/RimMandrake/GimmeSomeSlack/selftest_gss_dropped_cords_ignore_aerial_master.py` | PASS rc=0 0.02s | Another mod's dropped live cord is not an overhead line: the overhead-lines master switch must not silence it. |

@@ -36,12 +36,13 @@
   "RIMMANDRAKE_TRACE_SLACK_FLOWWORKS_TIER_MINIFIED_LOOKUP_ERROR": "FlowWorks' file (RM_PitAccess.cs), not this mod"
  },
  "previous": "version/previous/0.1.1/VERSION.json",
- "bars_total": 57,
+ "bars_total": 59,
  "bars_met": "UNMEASURED",
  "locked_from_commit": "403dab5985a7d5e32e5545a6d44fa068b7415c3c",
  "measured_from": {
   "bars_total": "required ids at locked_from_commit 403dab5985a7: record.json inventory (32) + tree.json leaves (26), shock_reach_setting in both = 57; the 54 bars of 0.1.1 (all kept, MINOR) plus restyle_whole_line, look_menu_icons and wall_lamp_takes_looks",
-  "bars_met": "not measured at the lock: preflight and the stages after it measure it"
+  "bars_met": "not measured at the lock: preflight and the stages after it measure it",
+  "bars_total_after_lock": "59 on 2026-11-24: the 57 above plus battery_takes_looks and ship_to_ground_wire_snaps, which his order of 2026-11-24 (OWNER:1795546467448705900) took into 0.2.0 (locked_bars.json history); each has its rows in test_table.json"
  },
  "caveats": [
   "The coverage re-judge under a calibrated brief falls due now (next_version/README.md, entry 1; item RIMMANDRAKE_JUDGE_SLACK_COVERAGE_AGAIN_UNDER_CALIBRATED_BRIEF).",

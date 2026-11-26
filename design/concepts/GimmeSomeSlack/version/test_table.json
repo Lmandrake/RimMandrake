@@ -8793,6 +8793,53 @@
     },
     "by": "testq_blocks.py"
    }
+  },
+  "sc_battery_takes_looks": {
+   "id": "sc_battery_takes_looks",
+   "kind": "live_minimal",
+   "stage": "6",
+   "tier": "gimmesomeslack",
+   "file": "src/RimMandrake/GimmeSomeSlack/review/close_020_stations.py",
+   "entry": "st34_battery_follows_run",
+   "entry_exists": true,
+   "new": true,
+   "for_bar": "battery_takes_looks",
+   "observes": "a battery on a run of each look reads that look (ConduitStyles cstyles probe), a battery lying east-west on an Industrial run reads Industrial, and 'Restyle, all connected' on the run repaints it",
+   "reads": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ConduitStyles.cs",
+    "src/RimMandrake/GimmeSomeSlack/Defs/Aerial/RM_ConduitStyles.xml",
+    "src/RimMandrake/GimmeSomeSlack/Patches/RM_ConduitStyleable.xml"
+   ],
+   "why_game": "a battery's look is read from the running map's run and drawn by the running renderer",
+   "command": "python.exe src\\RimMandrake\\GimmeSomeSlack\\review\\close_020_stations.py <out dir> (game up on the gimmesomeslack tier, bridge held)",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only",
+    "last_live": "PASS (row st34_battery_follows_run), ArchBig 2026-11-24, build 8c13ce0390 and the close-out; his walk: 'Battery reskin looks great!'"
+   }
+  },
+  "sc_ship_ground_wire_snaps": {
+   "id": "sc_ship_ground_wire_snaps",
+   "kind": "live_minimal",
+   "stage": "6",
+   "tier": "gimmesomeslack",
+   "file": "src/RimMandrake/GimmeSomeSlack/northstar/gravship_scene.py",
+   "entry": "GS4_ground_wire_snaps_at_launch",
+   "entry_exists": true,
+   "new": true,
+   "for_bar": "ship_to_ground_wire_snaps",
+   "observes": "a gravship launch with a wire from its pole to an anchor left on the ground: one fallen half at the ground anchor once the ship's things have lifted, the other half at the ship's pole after landing (three flights: keep wires on, off, off with auto-link); the take-off message is read in code only",
+   "reads": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Aerial/CompAerialAnchor.cs"
+   ],
+   "why_game": "a gravship launch and landing run only in the live game",
+   "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/gravship_scene.py (game up on the gimmesomeslack tier, bridge held)",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only",
+    "last_live": "PASS 3 of 3 flights (row GS4_ground_wire_snaps_at_launch), ArchBig 2026-11-24, build 1e22ca37eb"
+   }
   }
  },
  "bars": [
@@ -10571,6 +10618,44 @@
    "offline_decides": [],
    "offline_green_today": false,
    "every_decider_runnable_today": false,
+   "any_test_runnable_today": true,
+   "any_decider_runnable_today": true
+  },
+  {
+   "id": "battery_takes_looks",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_GATE",
+    "sc_battery_takes_looks"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_GATE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "any_decider_runnable_today": true
+  },
+  {
+   "id": "ship_to_ground_wire_snaps",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_CORE",
+    "sc_ship_ground_wire_snaps"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_CORE"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
    "any_decider_runnable_today": true
   }
