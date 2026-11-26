@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "6b974024dd08fdd846d8f51f32d38ab268560bed1fcecfb6e8abfc6b41a5d63b",
+  "body_sha256": "a63d888b4c31c6d6d83582349ba1451b64f8bb8fd02b5fda82ab9384017b64ef",
   "reducer": 1,
   "shards": {
    "BACKFILL": 348917,
@@ -27,7 +27,7 @@
    "HOLDER.run-1795660419": 2599,
    "HOLDER.run-1795661891": 608,
    "HOLDER.run-1795667763": 2112,
-   "HOLDER.run-1795670288": 3297,
+   "HOLDER.run-1795670288": 5015,
    "JUDGE.judge-1794890427": 18837,
    "JUDGE.judge-1795437145": 6544,
    "JUDGE.judge-1795662842": 7876,
@@ -774,10 +774,10 @@
   },
   "checkpoint": {
    "by": "HOLDER.run-1795670288",
-   "done": "Visit 2 on ArchBig: 65 of 65 last rows PASS, 5 check repairs and 3 pipeline fixes, walk save EK_V020_VISIT2_WALK_20261125; exit not met",
-   "next": "Class visit 1 rows P_goods_fly_wall and P_goods_fly_rebound (CLASS OWED note), then rerun the build-match pair",
-   "ruled_out": "No mod fault this visit; barrage over budget was the machine (off arm 54.5 ms); map 105 was a stale case file",
-   "ts": "2026-11-26T08:06:22Z"
+   "done": "visit 2 run 2: sc_mass_and_power and sc_save_in_air rerun PASS at 5e43516ec8; release build on ArchBig, walk save loads on it; build_match 65 of 65; 20 PF_SCENE plants read one by one (planted_scene_rows.jsonl); published f82eeaecab",
+   "next": "Conductor: class the two visit-1 UNRESOLVED rows P_goods_fly_wall and P_goods_fly_rebound (CLASS OWED note), then read visit_2/SUMMARY.md for the move",
+   "ruled_out": "no mod fault: the stale build_match rows were identity-file mod_sha, the WRONG_BUILD refusals were an undeployed FlowWorks on ArchBig",
+   "ts": "2026-11-26T09:17:15Z"
   },
   "decisions": {
    "bar:inv_items_teleport": {
@@ -973,7 +973,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 793,
+  "events": 797,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -2612,7 +2612,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-26T08:06:22Z",
+   "last": "2026-11-26T09:17:15Z",
    "lease": "run-1795670288",
    "released": false,
    "token": 32
