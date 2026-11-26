@@ -30,8 +30,7 @@
   (the channel current's ruled exemption) and kellu butchers to lamp-black.
 
   ART: three-view artpipe renders (twilightsea_<name>_v1) on Graphic_Multi for
-  every body here except RM_Aluun, which keeps its flat silhouette placeholder
-  on Graphic_Single until twilightsea_aluun_v1_south lands (requeued 2026-10-04).
+  every body here, RM_Aluun included (its three views installed 0b3e2dba70).
 -->
 <Defs>
   <!-- ================================================================== RM_Niim -->
