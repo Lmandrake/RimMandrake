@@ -669,6 +669,72 @@ CS_UNITS = ["IncidentRowComposition", "StagesSkipSafe", "StagesWorstTick", "Stag
             "QuietPhaseSampledEveryGap"]
 
 
+def writer_kind_checks():
+    """Every kind the mod's writer puts on the record is a kind the reader places (MUST 13 rejects unknown kinds as
+    invalid, and a rejected row leaves a hole in the writer's seq). Live: J20261126T010137Z-149a46's 90 s block wrote a
+    `stall_dump` row that read back as 1 invalid + 1 seq missing; a vitals-armed test record (Steve, 2026-11-23) read
+    3619 invalid, 3619 seq missing, 377 sample rows with a seq gap, each one a broken sustained streak."""
+    src = os.path.join(REPO, "src", "RimMandrake", "bridgetools", "JawaBench.BridgeTools")
+    found = {}
+    for fn in sorted(os.listdir(src)):
+        if not fn.endswith(".cs"):
+            continue
+        with open(os.path.join(src, fn), encoding="utf-8") as fh:
+            text = fh.read()
+        # the writer's names in this file: its aliases (using W = ...JawaBenchTpsWriter), its class name, and inside
+        # the writer itself a bare Enqueue( / Envelope(
+        names = set(re.findall(r"using\s+(\w+)\s*=\s*JawaBench\.BridgeTools\.JawaBenchTpsWriter\s*;", text)) | {"JawaBenchTpsWriter"}
+        pre = r"(?:\b(?:%s)\.%s)" % ("|".join(sorted(names)), "|(?<![\w.])" if fn == "JawaBenchTpsWriter.cs" else "")
+        for m in re.finditer(pre + r'Enqueue\(\s*"([^"]+)"|' + pre + r'Envelope\([^;]*?,\s*"([^"]+)"\s*,', text):
+            found.setdefault(m.group(1) or m.group(2), fn)
+    # the instrument must see: the sampler's and the writer's own kinds are among the matches
+    check({"sample", "incident", "silence", "dropped"} <= set(found) and len(found) >= 15,
+          "writer kinds: the source scan sees only %d kinds %s" % (len(found), sorted(found)))
+    missing = sorted(k for k in found if k not in T.KINDS)
+    check(not missing, "writer kinds the reader rejects as invalid: %s" % ", ".join("%s (%s)" % (k, found[k]) for k in missing))
+    side = sorted(k for k in found if k not in ("sample", "incident", "silence", "dropped", "session", "marker", "game",
+                                                "menu", "context", "save", "resumed", "shutdown", "shutdown-complete",
+                                                "error", "log"))
+
+    def iso(ep):
+        return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(ep))
+
+    def read(kinds_on):
+        t0 = 1791583200.0
+        rows, seq = [{"kind": "session", "utc": iso(t0), "session": "abab", "seq": 1, "pid": 9}], 1
+        for i in range(24):                                        # 120 s of run windows at ratio 0.4: sustained low
+            seq += 1
+            rows.append({"kind": "sample", "utc": iso(t0 + 5 + 5 * i), "session": "abab", "seq": seq, "state": "run",
+                         "ratio": 0.4, "tps": 24, "tpsWall": 24, "target": 60, "dReal": 5.0, "speed": "Normal",
+                         "simShare": 0.2, "fps": 60, "gapMaxMs": 20})
+            seq += 1
+            rows.append({"kind": side[i % len(side)] if side else "log", "utc": iso(t0 + 6 + 5 * i), "session": "abab",
+                         "seq": seq})
+        saved = set(T.KINDS)
+        T.KINDS.clear()
+        T.KINDS.update(kinds_on)
+        try:
+            with tempfile.TemporaryDirectory() as d:
+                with open(os.path.join(d, T.segment_name(t0, "abab", 9, 0)), "w") as fh:
+                    for r in rows:
+                        fh.write(json.dumps(r) + "\n")
+                rec = T.read_record(d, now=t0 + 600)
+                return rec["invalid"], rec["seqMissing"], T.sustained_from_rows(rec["rows"])
+        finally:
+            T.KINDS.clear()
+            T.KINDS.update(saved)
+    inv, miss, sus = read(set(T.KINDS))
+    check(inv == 0 and miss == 0 and sus == "low",
+          "a record with the writer's side kinds %s between run windows: %d invalid, %d seq missing (limit 0, 0), "
+          "sustained %s (want low)" % (side, inv, miss, sus))
+    # the planted fault: the reader without its side kinds must go red, or this check cannot see the defect
+    p_inv, p_miss, p_sus = read(set(T.KINDS) - set(side))
+    check(p_inv > 0 and p_sus != "low", "planted: a reader without %s still reads %d invalid, sustained %s" % (side, p_inv, p_sus))
+    print("writer kinds: %d kinds in the C# source, %d the reader rejects (limit 0); side kinds %s; 48-row record: "
+          "%d invalid, %d seq missing, sustained %s; planted reader without them: %d invalid, %d seq missing, sustained %s"
+          % (len(found), len(missing), side, inv, miss, sus, p_inv, p_miss, p_sus))
+
+
 def unit_checks(lines):
     """The C# unit group: every `U name ok`, and the production-composed `J name <json>` lines, which must
     parse STRICTLY (no duplicate keys, no NaN/Infinity) - the way the reader parses the record."""
@@ -1071,6 +1137,7 @@ def main(argv):
     res = trace_checks(tr)
     scalar_checks()
     reader_checks()
+    writer_kind_checks()
     print("python checks: %s" % ("PASS" if not FAILS else "FAIL"))
     if "--no-cs" in argv:
         print("C# parity: SKIPPED by --no-cs")

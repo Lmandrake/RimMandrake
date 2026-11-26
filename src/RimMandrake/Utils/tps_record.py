@@ -453,7 +453,13 @@ def place(r, ep=None):
 KINDS = {"sample", "incident", "session", "marker", "game", "menu", "context", "save", "silence", "resumed",
          "shutdown", "shutdown-complete", "error", "log", "observer", "dropped",
          "awareness",   # map awareness rows (incident called / pawn arrival), only while armed: design/RimMandrake/map_awareness.md
-         "flight", "mapcomp"}   # test tier (telemetry P2): flight-dump reference rows; persisted jawa/map_comp_timing replies
+         "flight", "mapcomp",   # test tier (telemetry P2): flight-dump reference rows; persisted jawa/map_comp_timing replies
+         # side rows the mod's writer also puts on the record (each consumes a seq: refused, it read as invalid AND as a
+         # seq hole that broke the sustained streak; selftest_tps_record writer_kind_checks scans the C# for every kind)
+         "stall_dump",  # JawaBenchStallDump: the 60 s silence's stall_<session>_NN.json pointer
+         "vitals",      # JawaBenchVitals: the test-state monitor (armed per test)
+         "health",      # JawaBenchHealth: health.window rows
+         "scene"}       # JawaBenchSceneTick: the scene run stepped in the tick
 STATES = {STATE_RUN, STATE_PAUSED, STATE_MIXED, STATE_STALL, STATE_LONGEVENT}
 SESSION_RE = re.compile(r"^[0-9a-f]{1,64}$")
 NONNEG_SAMPLE = ("dReal", "runS", "pausedS", "explainedS", "stallS", "ambigS", "expected", "simMs", "gapMaxMs", "fps",
