@@ -182,7 +182,8 @@ with tempfile.TemporaryDirectory() as tmp:
               "\t\t\t<thing Class=\"ThingWithComps\">\r\n\t\t\t\t<def>Kibble</def>\r\n\t\t\t\t<id>Kibble5</id>\r\n"
               "\t\t\t</thing>\r\n"
               "\t\t\t<thing Class=\"ThingWithComps\">\r\n\t\t\t\t<def>RSW_Ghost</def>\r\n\t\t\t\t<id>RSW_Ghost21193</id>\r\n"
-              "\t\t\t\t<comps><li><x>1</x></li></comps>\r\n\t\t\t</thing>\r\n"
+              "\t\t\t\t<comps><li><x>1</x></li></comps>\r\n\t\t\t\t<held><thing IsNull=\"True\" /><thing><def>Kibble</def>"
+              "<id>Kibble6</id></thing></held>\r\n\t\t\t</thing>\r\n"
               "\t\t\t<thing>\r\n\t\t\t\t<def>Steel</def>\r\n\t\t\t\t<id>Steel7</id>\r\n\t\t\t</thing>\r\n"
               "\t\t</things></li></maps>\r\n")
     assert "\t\t<maps><li>" in MINI
@@ -192,7 +193,8 @@ with tempfile.TemporaryDirectory() as tmp:
     check(g.cmd_strip(tsrc, tout, GHOSTS, "Leather_Plain", True) == g.NONE and os.path.exists(tout),
           "strip removes a ghost map <thing> (no refusal)")
     tnew = open(tout, "rb").read().decode() if os.path.exists(tout) else ""
-    check("RSW_Ghost21193" not in tnew and "<x>1</x>" not in tnew, "gone: the ghost <thing> block, comps included")
+    check("RSW_Ghost21193" not in tnew and "<x>1</x>" not in tnew and "Kibble6" not in tnew,
+          "gone: the ghost <thing> block, comps and a nested and a self-closing <thing> included")
     check("<id>Kibble5</id>" in tnew and "<id>Steel7</id>" in tnew
           and "\t\t\t</thing>\r\n\t\t\t<thing>\r\n\t\t\t\t<def>Steel</def>" in tnew,
           "kept: the live <thing> blocks on both sides, whole lines")

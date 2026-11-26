@@ -182,7 +182,8 @@ THING_TAG = re.compile(rb"<thing(?:\s[^>]*)?>|</thing>")
 def enclosing_thing(d, i):
     """(start, end) of the <thing> block whose first child is the element at byte i, or None.
     A map's things are <thing Class=...> elements, not <li>: without this, enclosing_li climbs to the whole map <li>
-    (R3, 2026-11-26: RM_CaveDripSource21193 on map 0). The end counts nested <thing> tags."""
+    (R3, 2026-11-26: RM_CaveDripSource21193 on map 0). The end counts nested <thing> tags; a self-closing one opens
+    nothing."""
     lo = max(0, i - 400)
     head = d[lo:i].rstrip()
     j = head.rfind(b"<thing")
@@ -191,6 +192,8 @@ def enclosing_thing(d, i):
         return None
     s, depth = lo + j, 0
     for t in THING_TAG.finditer(d, s):
+        if t.group(0).endswith(b"/>"):
+            continue                      # <thing IsNull="True" /> opens nothing
         depth += -1 if t.group(0) == b"</thing>" else 1
         if depth == 0:
             return s, t.end()
