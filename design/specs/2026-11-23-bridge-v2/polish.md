@@ -15,3 +15,4 @@ A record of minor points that are not significant (`CLAUDE.md` §Code is clean w
 - `prove_tap_certificate.py` `judge_job`: the think-tree route now also accepts a queued `WorkGiverDef:<defName>` row as evidence (real tree rows are plentiful).
 - `JawaBenchCast.cs` `Giver()`: with no node, `workGiverDef` now wins over `j.jobGiver`; no reader depends on the old order.
 - A held incident's `caller` names Harmony's replacement (`...IncidentWorker.TryExecute_Patch4`), not the real caller, when the call came from a tool (live, 2026-11-25).
+- `JawaBenchTerrainTools.cs` `jawa/spawn_pawn`: with `count` > 1 and no Standable cell within 4 of the root, every pawn silently lands on the root and the reply still reads success; risk: a staged cast stands stacked on one boxed-in cell and never wanders (joint flyer run 1, 2026-11-26: 8 `RM_Skinflap` on one cell for 2,500 ticks). Report a `fellBackToRoot` count on the reply.
