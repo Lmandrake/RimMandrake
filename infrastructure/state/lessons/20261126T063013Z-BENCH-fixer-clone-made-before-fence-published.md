@@ -1,0 +1,2 @@
+A fixer clone made before a fence published keeps producing the fenced fault for the rest of its run: the 7-row false-debt burst at 2026-11-25 20:21Z came from a clone made 19:31Z, after the fence a0c59f369f was committed but before it published. Before calling a fence broken on a repeat, compare the repeating run's clone base with the fence's publish time.
+item: OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_OCTB
