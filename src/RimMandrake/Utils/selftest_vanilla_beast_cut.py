@@ -148,6 +148,13 @@ def t_a_strike_is_counted_only_in_the_shape_it_models():
         check("rl: struck_pairs refuses an op shape it does not model", True)
 
 
+def t_a_dump_newer_than_the_strikes_is_read_raw():
+    check("sa: a dump before the strike commit counts the strikes", v.strikes_apply("2026-11-12T08:10:06Z", "2026-11-26T19:40:00-08:00"))
+    check("sa: a dump after the strike commit is read raw", not v.strikes_apply("2026-11-27T08:00:00Z", "2026-11-26T19:40:00-08:00"))
+    check("sa: an unknown time reads raw", not v.strikes_apply(None, "2026-11-26T19:40:00Z")
+          and not v.strikes_apply("2026-11-12T08:10:06Z", None))
+
+
 def t_every_measured_leak_is_closed():
     """The need, on the repo's own files: every measured leak is struck by the strike patch or its route is cut."""
     cut = v.ship_keys(v.SHIP)
@@ -181,8 +188,8 @@ def live():
     import cherrypick_build as cb
     probs = cb.check(WAVE4)
     check("wave 4: every key resolves with its def type (cherrypick_build.check)", not probs, str(probs))
-    lk = v.route_leaks(animals, kinds_of, namers, cut, struck=v.struck_pairs(v.STRIKES), eggs=v.LAST_EGGS,
-                       present=v.LAST_PRESENT)
+    struck = v.struck_pairs(v.STRIKES) if v.strikes_apply(cap, v.strikes_committed_utc(v.STRIKES)) else set()
+    lk = v.route_leaks(animals, kinds_of, namers, cut, struck=struck, eggs=v.LAST_EGGS, present=v.LAST_PRESENT)
     check("leaks: no uncut spawn route names a cut race (dump %s)" % cap, not lk, str(lk))
 
 
@@ -191,6 +198,7 @@ def main(argv):
     t_a_cut_race_stays_watched_in_every_wave()
     t_a_cut_pack_animal_leaks_through_the_caravan_route_until_it_is_cut()
     t_a_strike_is_counted_only_in_the_shape_it_models()
+    t_a_dump_newer_than_the_strikes_is_read_raw()
     t_every_measured_leak_is_closed()
     if "--dump" in argv:
         live()

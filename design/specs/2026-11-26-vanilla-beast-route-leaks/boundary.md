@@ -24,10 +24,10 @@ or its fertilized egg still spawns it. The census lists those defs. The strike p
   field. Their source XML decides.
 - **a-route-chosen-in-csharp.** A route that picks its kind in code is seen only when `CSHARP_ROUTES` names it. The
   module docstring lists each C# worker that was read and its rule.
-- **a-strike-xpath-that-matches-nothing.** The census counts a struck pair as closed from the xpath text. A dump that
-  is taken after the patch ships shows the truth (`--strikes ''`).
-- **a-machine-without-the-dump.** The dump half of the selftest reads UNMEASURED where no dump exists; run with
-  `--offline` there.
+- **a-strike-xpath-that-matches-nothing.** Until a dump is newer than the strike file, the census counts a struck pair
+  as closed from the xpath text. The xpaths were run against the real Odyssey and VLE XML on 2026-11-26.
+- **a-machine-without-the-dump.** The dump half of the selftest runs only with `--dump`, and reads UNMEASURED where
+  no dump exists.
 
 ## PROMISES
 
@@ -41,6 +41,9 @@ or its fertilized egg still spawns it. The census lists those defs. The strike p
   never is.
 - **a-strike-is-counted-only-in-the-shape-it-models.** `struck_pairs` reads each name of a conditional remove, and
   raises on any other op shape, so an unread strike is never counted as closed.
+- **a-dump-newer-than-the-strikes-is-read-raw.** The strikes count as closed only for a dump that was captured before
+  the strike file's last commit. A newer dump, or one with an unknown time, is read raw, so it is the live proof
+  that the patch removed the names.
 - **every-measured-leak-is-closed.** Each leak measured on the 2026-11-12 dump is struck by the strike patch, cut in
   SHIP, or gone from our own def's source; the patch strikes nothing that was not measured.
 

@@ -212,4 +212,6 @@ race in SHIP (it watched only the races not yet cut, so each wave's own leaks va
 
 Proof: `src/RimMandrake/Utils/selftest_vanilla_beast_cut.py` (offline, page
 `design/specs/2026-11-26-vanilla-beast-route-leaks/boundary.md`). On the 2026-11-12 dump with the strikes counted,
-`leaks: 1`, and that one is Fox_Fennec, fixed in a source edit that is later than the dump.
+`leaks: 1`, and that one is Fox_Fennec, fixed in a source edit that is later than the dump. The first dump captured
+after the strike file's commit is read raw (no strikes counted), so `selftest_vanilla_beast_cut.py --dump` on it is the
+live proof; the patch loads only on the full list (integration), with VEE and VLE.

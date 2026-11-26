@@ -184,6 +184,29 @@ def struck_pairs_text(text):
     return out
 
 
+def strikes_apply(captured_utc, strikes_committed_utc):
+    """True when the dump predates the strike file's last commit, so its strikes are not yet in the dump and are
+    counted closed from the file. A dump captured after that commit is read raw: it is then the live proof that the
+    patch really removed the names. An unknown time on either side reads the dump raw (never assumes a strike)."""
+    if not captured_utc or not strikes_committed_utc:
+        return False
+    from datetime import datetime
+    def t(x):
+        return datetime.fromisoformat(x.replace("Z", "+00:00"))
+    return t(captured_utc) < t(strikes_committed_utc)
+
+
+def strikes_committed_utc(path):
+    """The strike file's last commit time (ISO, UTC), or None when git has no commit of it."""
+    import subprocess
+    try:
+        out = subprocess.run(["git", "-C", REPO, "log", "-1", "--format=%cI", "--", os.path.relpath(path, REPO)],
+                             capture_output=True, text=True, timeout=60).stdout.strip()
+    except (OSError, subprocess.SubprocessError, ValueError):
+        return None
+    return out or None
+
+
 def struck_pairs(path):
     return struck_pairs_text(open(path, encoding="utf-8").read()) if path and os.path.exists(path) else set()
 
@@ -353,11 +376,13 @@ def main(argv):
         by.setdefault(r.split(":")[0], []).append(n)
     for k in sorted(by):
         print("  %-8s %3d  %s" % (k, len(by[k]), " ".join(sorted(by[k]))))
-    struck = struck_pairs(a.strikes)
+    when = strikes_committed_utc(a.strikes) if a.strikes else None
+    struck = struck_pairs(a.strikes) if strikes_apply(cap, when) else set()
     gone = cut | {"ThingDef/" + n for n in now}
     lk = route_leaks(animals, kinds_of, namers, gone, struck=struck, eggs=LAST_EGGS, present=LAST_PRESENT)
-    print("leaks: %d cut or cut-now animals still named by an uncut spawn route (%d pairs struck by %s)" % (
-        len(lk), len(struck), os.path.relpath(a.strikes, REPO) if a.strikes else "nothing"))
+    how = ("%d pairs counted struck by %s, committed %s after the dump" % (len(struck), os.path.relpath(a.strikes, REPO), when)
+           if struck else "read raw: no strike file, or the dump is newer than it (%s), so it shows the patch's effect" % when)
+    print("leaks: %d cut or cut-now animals still named by an uncut spawn route (%s)" % (len(lk), how))
     for n in sorted(lk):
         print("  %-14s %s" % (n, ", ".join(lk[n][:6]) + (" +%d" % (len(lk[n]) - 6) if len(lk[n]) > 6 else "")))
     print("UNMEASURED below the dump's depth limit: %d route defs hold a <maxdepth:...> field (a ThingFilter's eggs, "
