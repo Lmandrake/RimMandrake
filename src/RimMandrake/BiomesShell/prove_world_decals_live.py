@@ -20,9 +20,11 @@ Exit 0 PASS, 1 FAIL, 2 UNMEASURED (no bridge / no world / nothing to read).
 Today no biome with an atlas is painted on any planet (a biome of ours on 0 tiles is expected until the end paint), so
 the read-only run can only read UNMEASURED. --stage makes A1 decidable on a disposable world: it paints STAGE_TILES flat
 land tiles RM_BlueDesert, regenerates the planet (jawa/world_commit, which rebuilds the decals), shows the world view at a
-close and a far altitude, judges Info at each (glyphs must now be > 0), then puts every tile back and returns to the map.
+close and a far altitude, judges Info at each (glyphs must now be > 0), then puts every tile back (the record says whether every restoring write answered) and returns to the map. A PASS
+needs one reading at or below decalFullAlt and one at or above decalGoneAlt, as the camera reports them.
 It writes the world, so run it holding the game: `game_lock.py run <game> --for "..." -- python3 <this> --stage`. The
-companion refuses world writes on a canonical save; that reads UNMEASURED. Each staged run writes its verdict to RESULT.
+companion refuses world writes on a canonical save; that reads UNMEASURED. Each staged run that reaches its readings writes its verdict to RESULT; a run stopped before them (no tiles,
+a refused write) writes nothing, so an earlier verdict on the same bytes stands.
 --verdict (offline, for the ticket's outcome check) exits 0 when RESULT holds a staged PASS made on the current bytes of
 RM_WorldDecals.cs, else 1.
 
@@ -195,6 +197,16 @@ def selftest():
                              {("Desert", "Flat"): [2, 9], ("TemperateForest", "Flat"): [4]})):
         bad += got != want
         print(("ok  " if got == want else "FAIL") + " %-62s %s" % (name, got))
+    for name, got, want in (("span: one close, one far", span([160.0, 900.0], 380, 620), True),
+                            ("span: camera stuck close", span([160.0, 160.0], 380, 620), False),
+                            ("span: camera stuck far", span([900.0, 900.0], 380, 620), False),
+                            ("span: an altitude unread", span([160.0, None], 380, 620), False),
+                            ("span: limits unread", span([160.0, 900.0], None, 620), False),
+                            ("restore: every write and the commit answered", restore_ok([{"success": True}] * 3), True),
+                            ("restore: one write refused", restore_ok([{"success": True}, {"success": False}]), False),
+                            ("restore: nothing written", restore_ok([]), False)):
+        bad += got != want
+        print(("ok  " if got == want else "FAIL") + " %-62s %s" % (name, got))
     import tempfile
     d = tempfile.mkdtemp()
     for name, rec, blob, want in (("verdict: PASS on these bytes", {"verdict": "PASS", "src_blob": "abc"}, "abc", 0),
@@ -231,6 +243,19 @@ def restore_groups(rows):
     for r in rows:
         g.setdefault((r["biome"], r["hilliness"]), []).append(r["tile"])
     return g
+
+
+def span(alts, full, gone):
+    """-> True when the readings were taken at one altitude at or below full and one at or above gone: the camera really
+    moved, so a PASS shows the fade both ways (a camera that ignored the asked altitude reads twice at one zoom)."""
+    if full is None or gone is None or not alts or None in alts:
+        return False
+    return min(alts) <= full and max(alts) >= gone
+
+
+def restore_ok(replies):
+    """-> True when every restoring write and the commit after them answered success."""
+    return bool(replies) and all(r.get("success") for r in replies)
 
 
 def _connect():
@@ -296,26 +321,34 @@ def stage():
             return 2
         c = call("jawa/world_commit")
         print("staged %s on tiles %s; commit: %s" % (STAGE_BIOME, ids, [s.get("step") + ":" + s.get("status") for s in c.get("steps", [])][:3]))
-        codes = []
+        codes, alts, limits = [], [], (None, None)
         for alt in STAGE_ALTS:
             call("jawa/world_view", show=True, centerTile=ids[0], altitude=alt, northUp=True)
             time.sleep(2.0)   # the fade runs in the terrain layer's Alpha getter, once per drawn frame
             info = _static(call, "Info", "")
             k, ln = judge(probe, info, staged=True)
-            readings.append({"altitude": alt, "info": info[:600], "verdict": ln})
-            print("altitude %.0f: %s\n  info: %s" % (alt, ln, info[:400]))
+            readings.append({"altitude": alt, "read_altitude": num(info, "altitude"), "info": info[:600], "verdict": ln})
+            print("altitude %.0f (read %s): %s\n  info: %s" % (alt, num(info, "altitude"), ln, info[:400]))
             codes.append(k)
+            alts.append(num(info, "altitude"))
+            limits = (num(info, "fullAlt"), num(info, "goneAlt"))
+        if not span(alts, *limits):
+            readings.append({"verdict": "UNMEASURED: the camera read altitudes %s, not one at or below fullAlt and one at or "
+                                        "above goneAlt %s, so the fade was not seen both ways" % (alts, limits)})
+            codes.append(2)
         code = 1 if 1 in codes else (2 if 2 in codes else 0)
         line = "PASS" if code == 0 else ("FAIL" if code == 1 else "UNMEASURED") + ": " + " | ".join(r["verdict"] for r in readings)
     finally:
-        for (biome, hill), tl in restore_groups(before).items():
-            call("jawa/world_tile_set", tiles=",".join(map(str, tl)), biome=biome, hilliness=hill)
-        call("jawa/world_commit")
+        back = [call("jawa/world_tile_set", tiles=",".join(map(str, tl)), biome=biome, hilliness=hill)
+                for (biome, hill), tl in restore_groups(before).items()]
+        back.append(call("jawa/world_commit"))
         call("jawa/world_view", show=False)
-        print("restored tiles %s" % ids)
+        restored = restore_ok(back)
+        print(("restored tiles %s" % ids) if restored else
+              "WARNING: tiles %s may not be restored: %s" % (ids, [r.get("error") for r in back if not r.get("success")]))
     rec = {"verdict": "PASS" if code == 0 else ("FAIL" if code == 1 else "UNMEASURED"), "line": line,
            "src": "src/RimMandrake/BiomesShell/Source/RM_WorldDecals.cs", "src_blob": src_hash(),
-           "game": game_name(), "probe": probe[:200], "tiles": ids, "readings": readings,
+           "game": game_name(), "probe": probe[:200], "tiles": ids, "restored": restored, "readings": readings,
            "at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")}
     with open(RESULT, "w", encoding="utf-8") as f:
         json.dump(rec, f, indent=1)
