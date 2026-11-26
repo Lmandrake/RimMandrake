@@ -1,0 +1,3 @@
+A mod ledger's DISPATCH shard has more than one writing clone: the tick writes it in /home/mandrake/rm/dispatch, and maturation.py writes stage lines from a steward's or the Conductor's clone. A landing that assumes one writer refuses when origin holds a peer's line, and the tick's lines stay unlanded. A timer clone that pulls with git pull --ff-only then stops moving each time origin appends to that shard, because ff-only refuses a dirty file that an incoming commit changes. Sync a timer clone with seat_sync.py, which carries dirty append-only shards on top of origin's lines.
+item: RIMMANDRAKE_UNSTICK_TICK_CLONE_TWO_LINES_BLOCK_EVERY_PULL
+home: design/specs/2026-11-26-tick-clone-sync/boundary.md
