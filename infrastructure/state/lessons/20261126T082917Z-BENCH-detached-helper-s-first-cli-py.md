@@ -1,0 +1,2 @@
+A detached helper's first 'cli.py claim --publish' (2026-11-26 00:15 PST) wrote its ledger line, then hung for more than 10 min with no output, and the Bash background limit killed it. The later 'close --publish' landed that line fast (c019dbf417). The cause is UNMEASURED. Run a rimflow --publish write in the foreground under waitalive.py, never as a background Bash call.
+item: RIMMANDRAKE_WATCH_NEXT_DESIGNER_STOP_BLOCK_PROVEN_OUTSIDE_FIRST
