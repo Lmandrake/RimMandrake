@@ -1,0 +1,1332 @@
+{
+ "mod": "DivingInteraction",
+ "stamp": "20261126T053130Z",
+ "summary": {
+  "chains": [
+   {
+    "name": "grey_floor_is_a_place",
+    "components": [
+     {
+      "name": "grey_roster_read_offline",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "grey_floor_map_generates",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/world_tile_map_generate",
+        "result": {
+         "success": true,
+         "dryRun": true,
+         "tile": 1000,
+         "layer": "RM_SeabedLayer",
+         "biome": "RM_SeabedFloor_GreySea",
+         "biomeWas": "RM_SeabedFloor",
+         "mapParentDef": "RM_SeabedSite",
+         "parentCreated": false,
+         "wasAlreadyGenerated": false,
+         "mapSize": {
+          "x": 120,
+          "z": 120
+         },
+         "operation": {
+          "OperationId": "op_3a6f73a1519a4e84a029deda95d22531",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 38
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/world_tile_map_generate",
+        "result": {
+         "success": true,
+         "tile": 1000,
+         "layer": "RM_SeabedLayer",
+         "biome": "RM_SeabedFloor_GreySea",
+         "biomeWas": "RM_SeabedFloor",
+         "mapGenerator": "RM_SeabedGenerator_GreySea",
+         "mapParentDef": "RM_SeabedSite",
+         "parentCreated": false,
+         "wasAlreadyGenerated": false,
+         "mapSize": {
+          "x": 120,
+          "z": 120
+         },
+         "mapId": 1,
+         "mapIndex": 1,
+         "pawnCount": 0,
+         "thingCount": 134,
+         "mapFinalize": {
+          "failedSteps": 0,
+          "steps": [
+           {
+            "step": "regionAndRoomUpdater.Enabled = true",
+            "status": "ok"
+           },
+           {
+            "step": "RebuildAllRegionsAndRooms",
+            "status": "ok"
+           },
+           {
+            "step": "pathing.RecalculateAllPerceivedPathCosts",
+            "status": "ok"
+           },
+           {
+            "step": "reachability.ClearCache",
+            "status": "ok"
+           },
+           {
+            "step": "powerNetManager.UpdatePowerNetsAndConnections_First",
+            "status": "ok"
+           },
+           {
+            "step": "mapDrawer.RegenerateEverythingNow",
+            "status": "ok"
+           }
+          ]
+         },
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_fa9883b926fa4516bd04149669d586bb",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 439
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_current_map",
+        "result": {
+         "success": true,
+         "mapId": 1,
+         "tile": 1000,
+         "biome": "RM_SeabedFloor_GreySea",
+         "mapCount": 2,
+         "previousMapId": 0,
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_aa9fbd93a7cc45cf8b1092720e6dfb69",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 45
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [
+       "D:\\ClaudeWork\\rimmandrake\\instances\\b\\Screenshots\\grey_floor_map_generates_1795671088.png"
+      ],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "grey_floor_has_pillars_and_crystals",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [
+          {
+           "id": "RM_SaltPillar48493",
+           "def": "RM_SaltPillar",
+           "label": "Salt pillar",
+           "x": 49,
+           "z": 113,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 1500,
+           "maxHitPoints": 1500
+          },
+          {
+           "id": "RM_SaltPillar48494",
+           "def": "RM_SaltPillar",
+           "label": "Salt pillar",
+           "x": 45,
+           "z": 112,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 1500,
+           "maxHitPoints": 1500
+          },
+          {
+           "id": "RM_SaltPillar48495",
+           "def": "RM_SaltPillar",
+           "label": "Salt pillar",
+           "x": 48,
+           "z": 111,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 1500,
+           "maxHitPoints": 1500
+          },
+          {
+           "id": "RM_SaltPillar48496",
+           "def": "RM_SaltPillar",
+           "label": "Salt pillar",
+           "x": 62,
+           "z": 111,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 1500,
+           "maxHitPoints": 1500
+          },
+          {
+           "id": "RM_SaltPillar48497",
+           "def": "RM_SaltPillar",
+           "label": "Salt pillar",
+           "x": 64,
+           "z": 110,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 1500,
+           "maxHitPoints": 1500
+          },
+          {
+           "id": "RM_SaltPillar48498",
+           "def": "RM_SaltPillar",
+           "label": "Salt pillar",
+           "x": 59,
+           "z": 107,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 1500,
+           "maxHitPoints": 1500
+          },
+          {
+           "id": "RM_SaltPillar48499",
+           "def": "RM_SaltPillar",
+           "label": "Salt pillar",
+           "x": 5,
+           "z": 96,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 1500,
+           "maxHitPoints": 1500
+          },
+          {
+           "id": "RM_SaltPillar48500",
+           "def": "RM_SaltPillar",
+           "label": "Salt pillar",
+           "x": 6,
+           "z": 94,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 1500,
+           "maxHitPoints": 1500
+          },
+          {
+           "id": "RM_SaltPillar48501",
+           "def": "RM_SaltPillar",
+           "label": "Salt pillar",
+           "x": 3,
+           "z": 97,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 1500,
+           "maxHitPoints": 1500
+          },
+          {
+           "id": "RM_SaltPillar48502",
+           "def": "RM_SaltPillar",
+           "label": "Salt pillar",
+           "x": 19,
+           "z": 57,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 1500,
+           "maxHitPoints": 1500
+          },
+          {
+           "id": "RM_SaltPillar48503",
+           "def": "RM_SaltPillar",
+           "label": "Salt pillar",
+           "x": 18,
+           "z": 60,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 1500,
+           "maxHitPoints": 1500
+          },
+          {
+           "id": "RM_SaltPillar48504",
+           "def": "RM_SaltPillar",
+           "label": "Salt pillar",
+           "x": 20,
+           "z": 59,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 1500,
+           "maxHitPoints": 1500
+          },
+          {
+           "id": "RM_SaltPillar48505",
+           "def": "RM_SaltPillar",
+           "label": "Salt pillar",
+           "x": 45,
+           "z": 64,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 1500,
+           "maxHitPoints": 1500
+          },
+          {
+           "id": "RM_SaltPillar48506",
+           "def": "RM_SaltPillar",
+           "label": "Salt pillar",
+           "x": 43,
+           "z": 61,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 1500,
+           "maxHitPoints": 1500
+          },
+          {
+           "id": "RM_SaltPillar48507",
+           "def": "RM_SaltPillar",
+           "label": "Salt pillar",
+           "x": 44,
+           "z": 59,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 1500,
+           "maxHitPoints": 1500
+          },
+          {
+           "id": "RM_SaltPillar48508",
+           "def": "RM_SaltPillar",
+           "label": "Salt pillar",
+           "x": 23,
+           "z": 26,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 1500,
+           "maxHitPoints": 1500
+          },
+          {
+           "id": "RM_SaltPillar48509",
+           "def": "RM_SaltPillar",
+           "label": "Salt pillar",
+           "x": 21,
+           "z": 26,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 1500,
+           "maxHitPoints": 1500
+          },
+          {
+           "id": "RM_SaltPillar48510",
+           "def": "RM_SaltPillar",
+           "label": "Salt pillar",
+           "x": 21,
+           "z": 25,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 1500,
+           "maxHitPoints": 1500
+          },
+          {
+           "id": "RM_SaltPillar48511",
+           "def": "RM_SaltPillar",
+           "label": "Salt pillar",
+           "x": 93,
+           "z": 87,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 1500,
+           "maxHitPoints": 1500
+          },
+          {
+           "id": "RM_SaltPillar48512",
+           "def": "RM_SaltPillar",
+           "label": "Salt pillar",
+           "x": 93,
+           "z": 83,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 1500,
+           "maxHitPoints": 1500
+          },
+          {
+           "id": "RM_SaltDome48513",
+           "def": "RM_SaltDome",
+           "label": "Salt dome",
+           "x": 83,
+           "z": 93,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 350,
+           "maxHitPoints": 350
+          },
+          {
+           "id": "RM_SaltDome48514",
+           "def": "RM_SaltDome",
+           "label": "Salt dome",
+           "x": 82,
+           "z": 91,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 350,
+           "maxHitPoints": 350
+          },
+          {
+           "id": "RM_SaltDome48515",
+           "def": "RM_SaltDome",
+           "label": "Salt dome",
+           "x": 82,
+           "z": 95,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 350,
+           "maxHitPoints": 350
+          },
+          {
+           "id": "RM_SaltDome48516",
+           "def": "RM_SaltDome",
+           "label": "Salt dome",
+           "x": 86,
+           "z": 92,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 350,
+           "maxHitPoints": 350
+          },
+          {
+           "id": "RM_SaltDome48517",
+           "def": "RM_SaltDome",
+           "label": "Salt dome",
+           "x": 82,
+           "z": 89,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 350,
+           "maxHitPoints": 350
+          },
+          {
+           "id": "RM_SaltDome48518",
+           "def": "RM_SaltDome",
+           "label": "Salt dome",
+           "x": 54,
+           "z": 26,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 350,
+           "maxHitPoints": 350
+          },
+          {
+           "id": "RM_SaltDome48519",
+           "def": "RM_SaltDome",
+           "label": "Salt dome",
+           "x": 54,
+           "z": 25,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 350,
+           "maxHitPoints": 350
+          },
+          {
+           "id": "RM_SaltDome48520",
+           "def": "RM_SaltDome",
+           "label": "Salt dome",
+           "x": 56,
+           "z": 26,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 350,
+           "maxHitPoints": 350
+          },
+          {
+           "id": "RM_SaltDome48521",
+           "def": "RM_SaltDome",
+           "label": "Salt dome",
+           "x": 50,
+           "z": 23,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 350,
+           "maxHitPoints": 350
+          },
+          {
+           "id": "RM_SaltDome48522",
+           "def": "RM_SaltDome",
+           "label": "Salt dome",
+           "x": 53,
+           "z": 22,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 350,
+           "maxHitPoints": 350
+          },
+          {
+           "id": "RM_SaltDome48523",
+           "def": "RM_SaltDome",
+           "label": "Salt dome",
+           "x": 44,
+           "z": 77,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 350,
+           "maxHitPoints": 350
+          },
+          {
+           "id": "RM_SaltDome48524",
+           "def": "RM_SaltDome",
+           "label": "Salt dome",
+           "x": 43,
+           "z": 72,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 350,
+           "maxHitPoints": 350
+          },
+          {
+           "id": "RM_SaltDome48525",
+           "def": "RM_SaltDome",
+           "label": "Salt dome",
+           "x": 46,
+           "z": 74,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 350,
+           "maxHitPoints": 350
+          },
+          {
+           "id": "RM_SaltDome48526",
+           "def": "RM_SaltDome",
+           "label": "Salt dome",
+           "x": 42,
+           "z": 75,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 350,
+           "maxHitPoints": 350
+          },
+          {
+           "id": "RM_SaltDome48527",
+           "def": "RM_SaltDome",
+           "label": "Salt dome",
+           "x": 45,
+           "z": 75,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 350,
+           "maxHitPoints": 350
+          },
+          {
+           "id": "RM_SaltDome48528",
+           "def": "RM_SaltDome",
+           "label": "Salt dome",
+           "x": 34,
+           "z": 90,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 350,
+           "maxHitPoints": 350
+          },
+          {
+           "id": "RM_SaltDome48529",
+           "def": "RM_SaltDome",
+           "label": "Salt dome",
+           "x": 35,
+           "z": 92,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 350,
+           "maxHitPoints": 350
+          },
+          {
+           "id": "RM_SaltDome48530",
+           "def": "RM_SaltDome",
+           "label": "Salt dome",
+           "x": 36,
+           "z": 87,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 350,
+           "maxHitPoints": 350
+          },
+          {
+           "id": "RM_SaltDome48531",
+           "def": "RM_SaltDome",
+           "label": "Salt dome",
+           "x": 37,
+           "z": 89,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 350,
+           "maxHitPoints": 350
+          },
+          {
+           "id": "RM_SaltDome48532",
+           "def": "RM_SaltDome",
+           "label": "Salt dome",
+           "x": 36,
+           "z": 88,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 350,
+           "maxHitPoints": 350
+          },
+          {
+           "id": "RM_SaltDome48533",
+           "def": "RM_SaltDome",
+           "label": "Salt dome",
+           "x": 28,
+           "z": 7,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 350,
+           "maxHitPoints": 350
+          },
+          {
+           "id": "RM_SaltDome48534",
+           "def": "RM_SaltDome",
+           "label": "Salt dome",
+           "x": 23,
+           "z": 6,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 350,
+           "maxHitPoints": 350
+          },
+          {
+           "id": "RM_SaltDome48535",
+           "def": "RM_SaltDome",
+           "label": "Salt dome",
+           "x": 25,
+           "z": 8,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 350,
+           "maxHitPoints": 350
+          },
+          {
+           "id": "RM_SaltDome48536",
+           "def": "RM_SaltDome",
+           "label": "Salt dome",
+           "x": 24,
+           "z": 7,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 350,
+           "maxHitPoints": 350
+          },
+          {
+           "id": "RM_SaltDome48537",
+           "def": "RM_SaltDome",
+           "label": "Salt dome",
+           "x": 29,
+           "z": 7,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 350,
+           "maxHitPoints": 350
+          },
+          {
+           "id": "RM_SaltDome48538",
+           "def": "RM_SaltDome",
+           "label": "Salt dome",
+           "x": 22,
+           "z": 105,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 350,
+           "maxHitPoints": 350
+          },
+          {
+           "id": "RM_SaltDome48539",
+           "def": "RM_SaltDome",
+           "label": "Salt dome",
+           "x": 21,
+           "z": 108,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 350,
+           "maxHitPoints": 350
+          },
+          {
+           "id": "RM_SaltChimney48540",
+           "def": "RM_SaltChimney",
+           "label": "Salt chimney",
+           "x": 29,
+           "z": 66,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": -1,
+           "maxHitPoints": -1
+          },
+          {
+           "id": "RM_SaltChimney48541",
+           "def": "RM_SaltChimney",
+           "label": "Salt chimney",
+           "x": 30,
+           "z": 68,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": -1,
+           "maxHitPoints": -1
+          },
+          {
+           "id": "RM_SaltChimney48542",
+           "def": "RM_SaltChimney",
+           "label": "Salt chimney",
+           "x": 113,
+           "z": 114,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": -1,
+           "maxHitPoints": -1
+          },
+          {
+           "id": "RM_GreatSaltCrystal_White48550",
+           "def": "RM_GreatSaltCrystal_White",
+           "label": "Great salt crystal, white",
+           "x": 50,
+           "z": 100,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 300,
+           "maxHitPoints": 300
+          },
+          {
+           "id": "RM_GreatSaltCrystal_White48551",
+           "def": "RM_GreatSaltCrystal_White",
+           "label": "Great salt crystal, white",
+           "x": 49,
+           "z": 25,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 300,
+           "maxHitPoints": 300
+          },
+          {
+           "id": "RM_GreatSaltCrystal_Pink48552",
+           "def": "RM_GreatSaltCrystal_Pink",
+           "label": "Great salt crystal, pink",
+           "x": 23,
+           "z": 58,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 300,
+           "maxHitPoints": 300
+          },
+          {
+           "id": "RM_GreatSaltCrystal_Pink48553",
+           "def": "RM_GreatSaltCrystal_Pink",
+           "label": "Great salt crystal, pink",
+           "x": 58,
+           "z": 60,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 300,
+           "maxHitPoints": 300
+          },
+          {
+           "id": "RM_GreatSaltCrystal_Amber48554",
+           "def": "RM_GreatSaltCrystal_Amber",
+           "label": "Great salt crystal, amber",
+           "x": 64,
+           "z": 81,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 300,
+           "maxHitPoints": 300
+          },
+          {
+           "id": "RM_GreatSaltCrystal_Violet48555",
+           "def": "RM_GreatSaltCrystal_Violet",
+           "label": "Great salt crystal, violet",
+           "x": 31,
+           "z": 109,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 300,
+           "maxHitPoints": 300
+          }
+         ],
+         "scanned": 134,
+         "countReturned": 56,
+         "countMatched": 56,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 0,
+         "perDef": {
+          "RM_SaltPillar": 20,
+          "RM_SaltDome": 27,
+          "RM_SaltChimney": 3,
+          "RM_GreatSaltCrystal_White": 2,
+          "RM_GreatSaltCrystal_Pink": 2,
+          "RM_GreatSaltCrystal_Amber": 1,
+          "RM_GreatSaltCrystal_Violet": 1
+         },
+         "ticksGame": 1,
+         "message": "56 of 56 matching thing(s) returned, 134 examined.",
+         "operation": {
+          "OperationId": "op_b8fe96d134f64f548f9ac9519e4295d5",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 34
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "grey_floor_grows_its_flora",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "FAIL",
+      "execution": "ran",
+      "detail": "ExpectationFailed: only 0 of 17 ruled Grey plants on the floor: {}",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [],
+         "scanned": 134,
+         "countReturned": 0,
+         "countMatched": 0,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 0,
+         "perDef": {},
+         "ticksGame": 1,
+         "message": "NOTHING MATCHED. 134 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+         "operation": {
+          "OperationId": "op_f32030b148f14e6e933613f5d577e636",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 41
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": "valid",
+      "suspected_cause": "MOD",
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "grey_floor_carries_its_cast",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "execution": "ran",
+      "detail": "upstream failed -- this chain's state is meaningless",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "grey_floor_returns_home",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "execution": "ran",
+      "detail": "upstream failed -- this chain's state is meaningless",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null,
+    "site_hold": {
+     "bland": true,
+     "problems": [],
+     "notes": [],
+     "dead": [],
+     "steps": [
+      {
+       "name": "kill_hostiles",
+       "acted": 3,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "targeted": [
+         "Megascarab48347",
+         "Megaspider48346",
+         "Spelopede48345"
+        ]
+       }
+      },
+      {
+       "name": "clear_map_fog",
+       "acted": 2,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "hostilesBefore": [],
+        "foggedBefore": 29649,
+        "foggedNow": 0,
+        "releasedByUnfog": [
+         "Mech_Militor35124",
+         "RM_LivingBolt35123"
+        ],
+        "sweepPasses": 1,
+        "hostilesAfter": [],
+        "verified": true,
+        "error": null
+       }
+      },
+      {
+       "name": "pause",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {}
+      },
+      {
+       "name": "quiet_world",
+       "acted": 3,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "profile": "isolated",
+        "quests": "not touched",
+        "notSuppressed": [
+         "active quests and their parts (never ended by default: ending a quest changes the world)",
+         "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+         "existing game conditions, map/world/game components and mod tickers",
+         "hives and other pawn-spawning structures, births, egg hatching, breeders",
+         "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+         "weather transitions, fires, existing hostile behaviour"
+        ],
+        "storyteller": {
+         "cleared_count": 0,
+         "cleared": []
+        },
+        "logRaidInfo": "on",
+        "wildSpawner": "blocked (read back)",
+        "readBack": {
+         "enableStoryteller": false,
+         "enableRandomMentalStates": false,
+         "enableRandomDiseases": false,
+         "logRaidInfo": true,
+         "threatScale": 0.0,
+         "allowBigThreats": false
+        },
+        "incidentQueueAfterClear": 0,
+        "diseaseTraits": {
+         "colonists": 3,
+         "removed": [],
+         "seen": {
+          "Human659": [
+           "Brawler 0"
+          ],
+          "Human656": [
+           "SpeedOffset 2"
+          ],
+          "Human663": [
+           "DislikesMen 0",
+           "Bloodlust 0",
+           "Delicate 0"
+          ]
+         }
+        }
+       }
+      },
+      {
+       "name": "quiet_site_map",
+       "acted": 1,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "removed": [
+         [
+          "Hive",
+          "Hive48336"
+         ]
+        ],
+        "threatsAfter": 0,
+        "lettersUnsentAfter": 0
+       }
+      },
+      {
+       "name": "kill_hostiles",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "targeted": []
+       }
+      },
+      {
+       "name": "kill_wildlife",
+       "acted": 64,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "route": "destroy_bulk"
+       }
+      },
+      {
+       "name": "clear_strangers",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "targeted": []
+       }
+      },
+      {
+       "name": "extinguish",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {}
+      },
+      {
+       "name": "restore_colonists",
+       "acted": 9,
+       "verified": true,
+       "residue": [],
+       "evidence": {}
+      }
+     ]
+    },
+    "site_reload": null,
+    "setup_records": [
+     {
+      "call": "restore_touched_settings []",
+      "result": true
+     }
+    ],
+    "env_reset": {
+     "log_reset": "ok",
+     "weather": "ok",
+     "map_info": "ok",
+     "unroof": "ok",
+     "gas_ToxGas": "ok",
+     "gas_BlindSmoke": "ok",
+     "gas_RotStink": "ok",
+     "gas_DeadlifeDust": "ok",
+     "gas_things": "ok"
+    },
+    "phase_s": {
+     "hold": 7.18,
+     "body": 1.342,
+     "teardown": 0.0
+    },
+    "gate": {
+     "action": "run",
+     "key": "d1ccc169d6d1c5b565f6d3ca28ef1c569ef4166a903d8078f7e0d8c4b22d051d",
+     "why": "inputs unknown (reads open@validation.py:485; declare inputs=)",
+     "record": null,
+     "purpose": "fix",
+     "inputs_known": false,
+     "code_version": "9ed1e68922fbeece9b877f80d48cb53d3b18d45784988240beac30ddf9a7a547"
+    }
+   }
+  ],
+  "all_green": false,
+  "findings": [
+   {
+    "name": "grey_floor_grows_its_flora",
+    "verdict": "FAIL",
+    "detail": "ExpectationFailed: only 0 of 17 ruled Grey plants on the floor: {}"
+   }
+  ],
+  "refused": "",
+  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\HARNESS_REPAIR_CAUSE_4D2C5B87_3.det\\design\\validation_walks\\RimMandrake\\DivingInteraction.md",
+  "acceptance": {
+   "overall": "RED",
+   "rows": [
+    {
+     "row": "grey_floor_is_a_place/grey_roster_read_offline",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "grey_floor_is_a_place/grey_floor_map_generates",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "grey_floor_is_a_place/grey_floor_has_pillars_and_crystals",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "grey_floor_is_a_place/grey_floor_grows_its_flora",
+     "verdict": "FAIL",
+     "class": "other",
+     "grade": "FAIL",
+     "notes": []
+    },
+    {
+     "row": "grey_floor_is_a_place/grey_floor_carries_its_cast",
+     "verdict": "UNMEASURED",
+     "class": "other",
+     "grade": "UNMEASURED",
+     "notes": []
+    },
+    {
+     "row": "grey_floor_is_a_place/grey_floor_returns_home",
+     "verdict": "UNMEASURED",
+     "class": "other",
+     "grade": "UNMEASURED",
+     "notes": []
+    }
+   ],
+   "spoils": [
+    {
+     "class": "envelope_off",
+     "why": "run without the situational envelope: blocking window and visitors unobserved",
+     "chain": "grey_floor_is_a_place"
+    }
+   ],
+   "counts": {
+    "PASS": 0,
+    "FAIL": 1,
+    "INDETERMINATE": 3,
+    "UNMEASURED": 2,
+    "NOT_RUN": 0
+   },
+   "classes": [
+    "envelope_off"
+   ]
+  },
+  "reuse": {
+   "reused": [],
+   "reusable": []
+  },
+  "host": "Archmagi",
+  "offline_chains": [],
+  "fresh_green": false,
+  "invalid": [],
+  "leads": [],
+  "gate": {
+   "run": [
+    "grey_floor_is_a_place"
+   ],
+   "skipped": [],
+   "would_skip": [],
+   "record_body_s": 0.0,
+   "mode": "shadow",
+   "purpose": "fix"
+  },
+  "canary": {
+   "ok": true,
+   "problems": [],
+   "steps": [
+    "programState Playing",
+    "3 live colonists",
+    "spawn_batch Steel at 124,125: success=True",
+    "destroyed; left at cell: []"
+   ]
+  },
+  "visual": [],
+  "visual_all_green": true,
+  "state_all_green": false,
+  "targeted": {
+   "chains": [
+    "grey_floor_is_a_place"
+   ],
+   "of_chains": 13,
+   "rows": [],
+   "item": null,
+   "by": [
+    "chain grey_floor_is_a_place: named by --chains"
+   ],
+   "rows_run": [
+    "grey_roster_read_offline",
+    "grey_floor_map_generates",
+    "grey_floor_has_pillars_and_crystals",
+    "grey_floor_grows_its_flora",
+    "grey_floor_carries_its_cast",
+    "grey_floor_returns_home"
+   ],
+   "scope": {
+    "grey_floor_is_a_place": {
+     "mode": "full",
+     "requested_rows": [],
+     "reasons": [
+      "named by --chains"
+     ],
+     "executed": [
+      "grey_roster_read_offline",
+      "grey_floor_map_generates",
+      "grey_floor_has_pillars_and_crystals",
+      "grey_floor_grows_its_flora",
+      "grey_floor_carries_its_cast",
+      "grey_floor_returns_home"
+     ],
+     "skipped": []
+    }
+   },
+   "offline_skipped": {},
+   "incomplete": {}
+  }
+ },
+ "benign_stops": []
+}

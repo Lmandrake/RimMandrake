@@ -1,0 +1,15 @@
+PREVIEW 1 of 13 chains, 6 rows to execute
+  chain grey_floor_is_a_place [full]: named by --chains
+    whole chain: executed 6 row(s)
+EXPECTED_ROWS ["grey_roster_read_offline", "grey_floor_map_generates", "grey_floor_has_pillars_and_crystals", "grey_floor_grows_its_flora", "grey_floor_carries_its_cast", "grey_floor_returns_home"]
+EXPECTED_ROW_CHAINS {"grey_roster_read_offline": "grey_floor_is_a_place", "grey_floor_map_generates": "grey_floor_is_a_place", "grey_floor_has_pillars_and_crystals": "grey_floor_is_a_place", "grey_floor_grows_its_flora": "grey_floor_is_a_place", "grey_floor_carries_its_cast": "grey_floor_is_a_place", "grey_floor_returns_home": "grey_floor_is_a_place"}
+EXPECTED_DRIVERS []
+[modcheck] DivingInteraction TARGETED: 1 of 13 chains: grey_floor_is_a_place
+[modcheck] canary GREEN: programState Playing; 3 live colonists; spawn_batch Steel at 124,125: success=True; destroyed; left at cell: []
+[modcheck] chain grey_floor_is_a_place START 05:31:20Z
+[modcheck] chain grey_floor_is_a_place END 9s PASS=3 FAIL=1 UNMEASURED=2 NOT_RUN=0 hold=7.2s body=1.3s teardown=0.0s
+[modcheck] DivingInteraction: seat UNKNOWN (no --seat, RIMFLOW_SEAT or AGENT_SEAT here): ledger verify and findings NOT written; record it by hand: python3 src/RimMandrake/rimflow/cli.py verify MODCHECK_DIVINGINTERACTION_RUN_1 --result fail --config 'min+DivingInteraction TARGETED chains=grey_floor_is_a_place' --evidence /home/mandrake/rm/relentless/clones/HARNESS_REPAIR_CAUSE_4D2C5B87_3.det/Transient/modcheck/DivingInteraction_20261126T053130Z.html --seat <SEAT>
+[modcheck] DivingInteraction: targeted run, status entry untouched; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\HARNESS_REPAIR_CAUSE_4D2C5B87_3.det\Transient\modcheck\DivingInteraction_20261126T053130Z.html
+DivingInteraction    TARGETED 1/13 chains (grey_floor_is_a_place) RED  (state)
+[bridge split] 54.8 s wall: load 0.0 / ticks 0.0 / reads 1.8 / other 4.9 / outside calls 48.1 s
+MODCHECK_RC=1

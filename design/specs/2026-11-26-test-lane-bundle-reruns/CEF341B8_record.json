@@ -1,0 +1,71 @@
+{
+ "job": {
+  "id": "DIRECT-CEF341B8-20261125T213130",
+  "mod": "DivingInteraction",
+  "selector": {
+   "chains": [
+    "grey_floor_is_a_place"
+   ]
+  },
+  "source": "9869d21810",
+  "lane": "direct:ArchSmall"
+ },
+ "result": {
+  "outcome": "DONE",
+  "cause": null,
+  "rows": [
+   {
+    "chain": "grey_floor_is_a_place",
+    "row": "grey_roster_read_offline",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "grey_floor_is_a_place",
+    "row": "grey_floor_map_generates",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "grey_floor_is_a_place",
+    "row": "grey_floor_has_pillars_and_crystals",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "grey_floor_is_a_place",
+    "row": "grey_floor_grows_its_flora",
+    "verdict": "FAIL",
+    "validity": "valid",
+    "freshness": "fresh",
+    "detail": "ExpectationFailed: only 0 of 17 ruled Grey plants on the floor: {}"
+   },
+   {
+    "chain": "grey_floor_is_a_place",
+    "row": "grey_floor_carries_its_cast",
+    "verdict": "UNMEASURED",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "upstream failed -- this chain's state is meaningless"
+   },
+   {
+    "chain": "grey_floor_is_a_place",
+    "row": "grey_floor_returns_home",
+    "verdict": "UNMEASURED",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "upstream failed -- this chain's state is meaningless"
+   }
+  ],
+  "sheet": "/home/mandrake/rm/relentless/clones/HARNESS_REPAIR_CAUSE_4D2C5B87_3.det/Transient/modcheck/DivingInteraction_20261126T053130Z.json",
+  "game": "ArchSmall",
+  "runner_sha": "9869d21810",
+  "note": "direct run on ArchSmall; {'PASS': 3, 'FAIL': 1, 'UNMEASURED': 2}"
+ }
+}
