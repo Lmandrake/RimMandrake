@@ -213,7 +213,18 @@ namespace RimMandrake.Biomes
             var buckets = new Dictionary<long, List<Vector3>>();
             foreach (Vector3 c in coast) Bucket(buckets, Key(c.normalized, cell)).Add(c.normalized);
             float radius = pl.GetTileCenter(water[0]).magnitude;
-            float tileSpacing = Mathf.Sqrt(4f * Mathf.PI * radius * radius / Mathf.Max(1, pl.TilesCount));
+            // the water tiles' own mean size, not 4 pi r^2 / TilesCount: a partial-coverage planet (Ash'karr) holds
+            // fewer tiles than its sphere, so that formula over-states the spacing and draws every film too narrow.
+            float spacingSum = 0f;
+            int spacingN = 0;
+            foreach (int i in water)
+            {
+                pl.GetTileVertices(i, verts);
+                if (verts.Count < 3) continue;
+                spacingSum += TileSpacingOf(verts, pl.GetTileCenter(i));
+                spacingN++;
+            }
+            float tileSpacing = spacingN > 0 ? spacingSum / spacingN : 1f;
             float maxTiles = Mathf.Max(seaShoreTiles, seaDeepTiles, 0.5f);
             float reach = maxTiles * tileSpacing / radius;
             int search = Mathf.CeilToInt(reach / cell) + 1;
@@ -533,6 +544,22 @@ namespace RimMandrake.Biomes
             else { sm.tris.Add(a); sm.tris.Add(b); sm.tris.Add(c); }
         }
 
+        // ---------------------------------------------------------------- tile geometry
+        // The size of one tile from its own corners: sqrt(area) of a regular hex = 1.612 x its mean circumradius. The one
+        // definition of "a tile spacing" for every world overlay of this assembly (sea films here, glyphs in RM_WorldDecals).
+        public static float TileSpacingOf(List<Vector3> verts, Vector3 center)
+        {
+            if (verts == null || verts.Count == 0) return 0f;
+            float circ = 0f;
+            foreach (Vector3 v in verts) circ += (v - center).magnitude;
+            return 1.612f * circ / verts.Count;
+        }
+
+        static void DestroyAll(IEnumerable<Material> mats)
+        {
+            foreach (Material m in mats) if (m != null) UnityEngine.Object.Destroy(m);
+        }
+
         // ---------------------------------------------------------------- bridge helpers (jawa/static_call)
         public static string Set(string key, string value)
         {
@@ -543,6 +570,10 @@ namespace RimMandrake.Biomes
                      : f.FieldType == typeof(bool) ? bool.Parse(value)
                      : (object)value;
             f.SetValue(null, v);
+            // destroy, not only forget: each Set (a bridge tuning) would otherwise leak one Material per cached entry
+            DestroyAll(BlendMats.Values);
+            DestroyAll(FlatMats.Values);
+            DestroyAll(SwirlMats.Values);
             BlendMats.Clear();
             FlatMats.Clear();
             SwirlMats.Clear();

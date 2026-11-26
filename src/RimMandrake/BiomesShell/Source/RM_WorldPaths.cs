@@ -47,7 +47,7 @@ namespace RimMandrake.Biomes
             { "Outline", new Color(0.05f, 0.04f, 0.035f) },   // near-black warm casing, every road
             { "Dirt",    new Color(0.30f, 0.16f, 0.07f) },    // umber: dirt path and dirt road
             { "Stone",   new Color(0.18f, 0.15f, 0.12f) },    // grey-brown: stone road (was slate (0.15,0.25,0.25), read as a blue river on the Scald shore, owner 2026-10-20)
-            { "Gravel",  new Color(0.08f, 0.08f, 0.085f) },   // old asphalt: ancient road / highway fill, dark grey-black (owner 2026-10-20: "it should show as old asphalt broken from long ago", not gold)
+            { "Gravel",  new Color(0.10f, 0.085f, 0.05f) },   // old asphalt: ancient road / highway fill, dark grey-black (owner 2026-10-20: "it should show as old asphalt broken from long ago", not gold); warm like Stone because the planet light lifts blue on dark paths: (0.08,0.08,0.085) rendered navy (WORLD_HIGHWAY_TUNE_NAVY_IN_DISGUISE, selftest_world_highway_asphalt.py)
             { "Asphalt", new Color(0.42f, 0.41f, 0.38f) },    // pale worn stripe down the old asphalt
         };
 
