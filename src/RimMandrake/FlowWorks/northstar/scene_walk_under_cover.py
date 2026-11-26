@@ -56,7 +56,7 @@ with scene.open(GAME, contract=walk, needs={"mods": ["FlowWorks"], "map": SAVE, 
                 raise scene.Fault("ACT_NOT_DONE", detail="a walk order was not taken: %r" % (e,))
 
     # 1. each walker to the middle of its cover, and the cover over her read by state (not judged: the judge reads the last run)
-    order(lambda x0: (x0 + 1, OZ + 4), "walk under")
+    order(lambda x0: (x0, OZ + 4), "walk under")    # the west column: the colonist already under stands in the middle one
     s.run(until=c.all_(*[z_of(w) == OZ + 4 for w in W]), limit=TICKS)
     fades = []
     for w, x0 in zip(W, PITS):
@@ -65,7 +65,7 @@ with scene.open(GAME, contract=walk, needs={"mods": ["FlowWorks"], "map": SAVE, 
         if z == OZ + 4:
             r = s.raw("jawa/static_call", type="RimMandrake.FlowWorks.RM_PromotionProofs", method="ProofBeneath", args="%d,%d" % (x, z)) or {}
             txt = str(r.get("result") or r.get("message") or r)
-            ok = ("band=True" in txt or "beneath=True" in txt) and "faded=True" in txt
+            ok = ("pawn=%s " % WALKERS[W.index(w)] in txt and ("band=True" in txt or "beneath=True" in txt) and "faded=True" in txt)
         else:
             txt, ok = "not under its cover: at %s" % (v.v,), False
         fades.append((ok, "%s: %s" % (w, txt[:200])))
