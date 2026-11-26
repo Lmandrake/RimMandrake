@@ -1,0 +1,3 @@
+A Crystallize criterion instrument kept only in agent storage goes blind with nobody to see it: W47's lesson_dup_rate.py (in crystallize_2026W47/scan/sweeps_scripts/) compared dashed dates with YYYYMMDD file stamps and read 0 lessons in every window, so the W48 judge first read the baseline window as 0 of 0. Put the instrument a criterion names in the repo, with a selftest that goes red on a planted fault and treats an empty input as could-not-look (done for both W47 and W48 instruments in 9f70ec8e7b), and name the repo path in the criterion.
+item: RIMMANDRAKE_RUN_WEEKLY_CRYSTALLIZE_2026W48
+home: ~/.claude/skills/crystallize/references/record.md
