@@ -91,3 +91,28 @@ them out of the live files on 2026-11-26, until he answers.
   callers 0.2.0 does not touch.
 - **Dropped as stale:** the coverage re-judge (it was re-judged covered under a CALIBRATED brief on 2026-11-17).
 - **Not Pyrelands':** the UtinniPatches weapon-money config errors.
+
+## 0.2.0 opened, 2026-11-26: what it took from this list
+
+Appended by the Designer run `RIMMANDRAKE_OPEN_PYRELANDS_NEXT_VERSION_HE_ASKED_FASTER_FIRE`, after his two scope cards
+(11:50 AM PST, OWNER:1795722774284846701, and 12:44 PM PST, OWNER:1795725937729027309). No entry above is removed. The
+section "0.2.0 proposed" above was written before his answers; this section says what was opened.
+
+- **Took, as bars:** "Fire catches and spreads faster" (`fire_catches_and_runs`), "Roofed grass declines where the player
+  can see it" (`roofed_grass_declines_visibly`), "A choking-smoke weather" (`pyre_smoke_weather_chokes`), and the conversion
+  of `design/specs/2026-11-21-guiding-principles/conversion_list.md` (`mechanics_switch_plain_no_biome`), by his first card.
+  From the scope page's part two, by his second card: `crestfeather_has_its_own_look` and `grass_still_seen_under_ash`
+  (its first step is one live look on a fresh map after an ash fall).
+- **Took, as work that adds no bar:** "Roofed ember grass logs an exception" (fixed in the kill path of
+  `roofed_grass_declines_visibly`), the `CurKindLifeStage` line, the startup config errors (the check is the Pyrelands
+  small list's startup; the weapon-money fix lands in UtinniPatches' defs), the three caller scenario tests
+  `pyre_fire_duty_starves`, `pyre_fire_no_flee`, `pyre_burrower_flees`, new words for `walk_season_on_the_pyre`, and the
+  23 polish lines of the five groups (each stays on `../polish.md` until its builder does it). The Problems are in by the
+  Conductor's call: a defect stays with the open version.
+- **Left here:** "Black rain fills the moat and the water tanks" (FlowWorks work, by his first card); the scenario tests
+  `pyre_wetroots_season` and `pyre_furnace_heat_cap` (0.2.0 does not touch their callers).
+- **Dropped:** "Re-judge coverage under a calibrated brief" (done 2026-11-17).
+- **Not in 0.2.0, by his second card:** every capability of the Deep Desert Tribes (his words: "We are not ready to do
+  faction work yet. The tribes sleep until we start faction work much later."), the "Fire clock" switch's live check with
+  them, and the Struck Glass rite, burning a field on purpose and caravan warmth ("Keep all three later").
+- The whole list of 0.2.0: `../vision.md` §0.2.0, and `../VERSION.json`.

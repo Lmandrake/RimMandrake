@@ -1,8 +1,8 @@
 # Pyrelands 0.2.0: what we might put into it (a proposal for the owner)
 
 Written 2026-11-26 by the Designer run of item `RIMMANDRAKE_OPEN_PYRELANDS_NEXT_VERSION_HE_ASKED_FASTER_FIRE`, on the
-Conductor's order. **Nothing here is opened or locked.** Pyrelands stays at 0.1.0 (passed at his walk, 2026-11-24) until the
-Designer opens 0.2.0 with what he keeps. His words of 10:41 AM PST 2026-11-26: *"If we're opening 0.2.0 for Pyrelands, I want to review what we might put
+Conductor's order. **Pyrelands 0.2.0 was opened on 2026-11-26 with what he kept** (his two cards, 11:50 AM and 12:44 PM
+PST; `../VERSION.json`). Each block below now says what was decided. His words of 10:41 AM PST 2026-11-26: *"If we're opening 0.2.0 for Pyrelands, I want to review what we might put
 into it, ok? That's not an automatic decision"*.
 
 ## His answers (question card, 11:50 AM PST 2026-11-26)
@@ -35,6 +35,7 @@ done already) and the startup config errors (they belong to another mod).
 ## Problems (defects the player would notice)
 
 ### Roofed grass writes an error into the log each time a plant dies
+- **Decided:** in 0.2.0, by the Conductor's call of 2026-11-26 (a Problem is a defect, and a defect stays with the open version); fixed with bar `roofed_grass_declines_visibly`.
 - **What the player would see:** nothing in play. A player who opens the log (or a mod-list debugger) sees one red
   error for each roofed grass plant that dies. On his walk save there were 25 on every load.
 - **His words:** none on this point. It was found in the log of his walk of 2026-11-24.
@@ -45,6 +46,7 @@ done already) and the startup config errors (they belong to another mod).
 - **Recommendation:** in 0.2.0, done together with "Roofed grass declines where the player can see it".
 
 ### One warning at load: "Tried to get CurKindLifeStage from humanlike pawn Flea"
+- **Decided:** in 0.2.0 as work that adds no bar, by the Conductor's call of 2026-11-26 (a Problem is a defect, and a defect stays with the open version).
 - **What the player would see:** nothing in play. One yellow line in the log on each load of a save.
 - **His words:** none. Found in the log of his walk of 2026-11-24.
 - **Needs:** first a stack trace on a debug build, to find which code asks. The best guess (about 75%) is FlowWorks'
@@ -55,6 +57,7 @@ done already) and the startup config errors (they belong to another mod).
   names FlowWorks, the guard goes in FlowWorks with its own test.
 
 ### Startup config errors on the Pyrelands mod list
+- **Decided:** in 0.2.0 as work that adds no bar, by the Conductor's call of 2026-11-26 (a Problem is a defect, and a defect stays with the open version): the check is a startup of the Pyrelands small list with no config error, and the fix lands in UtinniPatches' defs.
 - **What the player would see:** red lines at game start. The first one (a missing framework that dropped a whole
   plant) is fixed already. The four left are about Jawa weapon money in another mod (UtinniPatches); three more are not
   proven ours.
@@ -128,6 +131,7 @@ done already) and the startup config errors (they belong to another mod).
 ## Work that adds no bar
 
 ### Three offline tests of the code that the conversion rewrites
+- **Decided:** in 0.2.0, by the Conductor's call of 2026-11-26 (part one's work that adds no bar goes in).
 - **What the player would see:** nothing. These tests run our real code for three behaviours outside the game: a hungry
   colonist eats before fire duty, a colonist steps off burning ground, an ashwallow dives from a front.
 - **His words:** he adopted this kind of test by card on 2026-11-08 ("Policy plus real-types pilot").
@@ -137,10 +141,12 @@ done already) and the startup config errors (they belong to another mod).
   (wet roots in the heat, the furnace-beast's warmth) stay later: 0.2.0 does not touch their code.
 
 ### Re-judge the mod's test coverage under the calibrated judge
+- **Decided:** dropped: it was done on 2026-11-17 (the coverage judge read Pyrelands covered under a calibrated brief).
 - **Recommendation:** drop. It is done already: the coverage judge read Pyrelands as covered under a calibrated brief on
   2026-11-17 (measured 2026-11-26).
 
 ### New words for the whole-season walk bar
+- **Decided:** in 0.2.0, by the Conductor's call of 2026-11-26 (part one's work that adds no bar goes in).
 - **What the player would see:** nothing in play. The bar `walk_season_on_the_pyre` still says that the player plays a
   fresh colony "through about two weeks on the full list". By the ruling that season-long play is play testing, those
   words cannot be passed by any test, and the bar is decided by its short scenes.
@@ -151,6 +157,7 @@ done already) and the startup config errors (they belong to another mod).
 - **Recommendation:** in 0.2.0, because the sentence today promises what no test can show.
 
 ### The Polish list
+- **Decided:** in 0.2.0, by his card of 12:44 PM PST 2026-11-26 ("All five groups (Recommended)").
 He asked on 2026-11-26 to sweep the Polish list into 0.2.0. Every line is sorted in the part "More that could go into
 0.2.0", section one, at the end of this page.
 
@@ -192,13 +199,11 @@ He asked on 2026-11-26 to sweep the Polish list into 0.2.0. Every line is sorted
 ## What is already written down as a draft
 
 An earlier Designer run of this item wrote the four bars below, their test rows and a vision section into the repo
-(commit `faa90e801d`), before his word of 10:41 AM PST reached it. They are a draft, not an open version. The Conductor
-took the draft out of the live files on 2026-11-26: `record.json`, `scenes.json`, `version/test_table.json` and
-`version/vision.md` read as they did when 0.1.0 passed, and `VERSION.json` reads 0.1.0. The draft text is kept in commit
-`faa90e801d`. When he answers, the Designer opens 0.2.0 with what he keeps, and takes the rows and the vision lines of
-those bars from that commit.
+(commit `faa90e801d`), before his word of 10:41 AM PST reached it. The Conductor took that draft out of the live files the
+same day. After his two cards, the opening run of 2026-11-26 put the draft back into `record.json`, `scenes.json`,
+`version/test_table.json` and `version/vision.md`, read against his cards, and added the two bars of his second card.
 
-## The proposed bars (each one PROPOSED, none locked)
+## The bars proposed here (all four are in 0.2.0, by his card of 11:50 AM PST 2026-11-26)
 
 - **PROPOSED `fire_catches_and_runs`:** A spark that lands in standing Pyrelands grass takes hold, grows into a front that
   the player must answer on the same day, and its head walks downwind visibly faster than the fire of 0.1.0, while it
@@ -216,7 +221,8 @@ those bars from that commit.
 
 # More that could go into 0.2.0
 
-Written 2026-11-26 after his question of about 11:55 AM PST. Nothing here is decided; each block waits for his answer.
+Written 2026-11-26 after his question of about 11:55 AM PST. His card of 12:44 PM PST 2026-11-26 decided it; each block's
+"Decided" line says how.
 Every count below was measured in this run, on origin/main of 12:00 PM PST 2026-11-26.
 
 ## Section one: the Polish list
@@ -229,6 +235,7 @@ bullet that only introduces the sub-lines is not counted). Each was read against
 - **Stay, 53 lines.** Of these, 23 name a change, 29 only record a decision already taken, and 1 is another mod's file.
 
 ### The fire and the fire-hawk (3 lines)
+- **Decided:** in 0.2.0, by his card of 12:44 PM PST 2026-11-26 ("All five groups (Recommended)").
 - **What the player would see:** regrown grass a week after a burn reads nearly all green, not about 60% green; a
   fire-hawk next to a burn no longer gives up on a patch of grass because a firefoam shot once landed in its middle; and
   the small fire-edge details of the walking front (how a lone fire fans out, how far the warning cone reaches, how often
@@ -238,6 +245,7 @@ bullet that only introduces the sub-lines is not counted). Each was read against
 - **Size:** small. All three sit in the burn and hawk code that faster fire rewrites anyway.
 
 ### The firefoam sprayer (3 lines)
+- **Decided:** in 0.2.0, by his card of 12:44 PM PST 2026-11-26 ("All five groups (Recommended)").
 - **What the player would see:** a colonist asleep in bed no longer foams a fire beside the bed; an automatic foam shot
   stops when the player switches the foam off; the sprayer's description says that a shield belt blocks it, as it does
   every gun; removing the mod no longer logs a missing class.
@@ -246,16 +254,19 @@ bullet that only introduces the sub-lines is not counted). Each was read against
 - **Size:** small.
 
 ### Mod Settings and the words the player reads (2 lines)
+- **Decided:** in 0.2.0, by his card of 12:44 PM PST 2026-11-26 ("All five groups (Recommended)").
 - **What the player would see:** the watered-ash fertility slider can no longer be set below the dry one; the giant
   furnace-beast tooltip stops promising that existing animals keep their size (they do not: the race def is shared).
 - **Size:** small. The conversion rewrites the settings page in any case.
 
 ### Words only a modder reads (2 lines)
+- **Decided:** in 0.2.0, by his card of 12:44 PM PST 2026-11-26 ("All five groups (Recommended)").
 - **What the player would see:** nothing. A code comment and one boot log line still say that each fire lights one cell
   downwind (a fire can light two now), and one comment block is doubled in `RM_BurnKernel.cs`.
 - **Size:** small (minutes, inside the faster-fire change).
 
 ### Tests that would catch more (13 lines)
+- **Decided:** in 0.2.0, by his card of 12:44 PM PST 2026-11-26 ("All five groups (Recommended)").
 - **What the player would see:** nothing directly. These make the checks catch faults that today pass unseen: the
   three-skies scene gets a clear-sky ash patch as a control; the fire-hawk scene checks that the hawk picks the larger
   fuel; the burrow test joins the test table; the barn-roof check reads its mod guard; the old season-walk chain and its
@@ -270,6 +281,7 @@ bullet that only introduces the sub-lines is not counted). Each was read against
 - **Size:** medium, as a group: each line is small, and there are thirteen.
 
 ### Records of a decision already taken (29 lines)
+- **Decided:** nothing to sweep; his card of 12:44 PM PST 2026-11-26 took the five groups that name a change.
 - **What the player would see:** nothing. Each line records a check that was removed because no bar needs it, or a
   ticket that was dropped as not worth the touch, with the measurement behind it. There is no change to sweep in. One
   line of this group (the donor grasslands biome name in `PyrelandsTuning.cs`) goes away by itself with the conversion.
@@ -277,6 +289,7 @@ bullet that only introduces the sub-lines is not counted). Each was read against
 - **Size:** none.
 
 ### Not Pyrelands' file (1 line)
+- **Decided:** not swept into Pyrelands; his card of 12:44 PM PST 2026-11-26 took the five groups that name a change.
 - The Codex finding `natural_water_never_arms_gentle_burst` is in `src/RimMandrake/ExplosiveGrowth/`. It stays on this
   list until Explosive Growth's own polish list takes it; it is not swept into Pyrelands.
 
@@ -310,6 +323,7 @@ its own, with no other mod's people (vision line 8). So every Tribes capability 
 2026-11-24, so that condition is met; the mod is switched off by `./pipe` today.
 
 #### The rite party: the Tribes come with a burn, light it, harvest behind it and leave
+- **Decided:** not in 0.2.0, by his card of 12:44 PM PST 2026-11-26; his words: *"We are not ready to do faction work yet. The tribes sleep until we start faction work much later."*.
 - **What the player would see:** now and then a scheduled burn arrives with a small file of Tribes walking in off the
   sand, with a letter that names them; the grass catches where they stand; they pick scorch-fruit only on burned ground,
   never in the flames, and walk off the map with what they picked.
@@ -321,6 +335,7 @@ its own, with no other mod's people (vision line 8). So every Tribes capability 
 - **Recommendation:** later, as Pyrelands Mechanics 0.1.0, beside or after Pyrelands 0.2.0, with its own walk.
 
 #### The flame-harvest visit
+- **Decided:** not in 0.2.0, by his card of 12:44 PM PST 2026-11-26; his words: *"We are not ready to do faction work yet. The tribes sleep until we start faction work much later."*.
 - **What the player would see:** with a big fire already standing, a peaceful Tribes group walks in to the burn, picks
   in the black and carries it off.
 - **His words:** 2026-11-05, by card: "Pick and carry off".
@@ -329,6 +344,7 @@ its own, with no other mod's people (vision line 8). So every Tribes capability 
 - **Recommendation:** later, with Pyrelands Mechanics 0.1.0.
 
 #### The fruit defence: warned, then driven off
+- **Decided:** not in 0.2.0, by his card of 12:44 PM PST 2026-11-26; his words: *"We are not ready to do faction work yet. The tribes sleep until we start faction work much later."*.
 - **What the player would see:** a colonist who picks scorch-fruit in the scar the Tribes are harvesting gets a message
   naming them, then is attacked until it leaves; no goodwill is lost and no raid comes. Fruit elsewhere is not defended.
 - **His words:** 2026-11-05: *"If you try to pick the scorchfruit during one of their events, they issue warnings, then
@@ -338,6 +354,7 @@ its own, with no other mod's people (vision line 8). So every Tribes capability 
 - **Recommendation:** later, with Pyrelands Mechanics 0.1.0.
 
 #### Attack them and they raid you back
+- **Decided:** not in 0.2.0, by his card of 12:44 PM PST 2026-11-26; his words: *"We are not ready to do faction work yet. The tribes sleep until we start faction work much later."*.
 - **What the player would see:** an open attack on the Tribes turns them hostile, and their raids come in the days after,
   maybe again later.
 - **His words:** 2026-11-05: *"Attacking them overtly makes them raid you back of course, and they may continue to do so
@@ -347,6 +364,7 @@ its own, with no other mod's people (vision line 8). So every Tribes capability 
 - **Recommendation:** later, with Pyrelands Mechanics 0.1.0.
 
 #### The arson-justice raid, and the rule that nothing an animal does is blamed on you
+- **Decided:** not in 0.2.0, by his card of 12:44 PM PST 2026-11-26; his words: *"We are not ready to do faction work yet. The tribes sleep until we start faction work much later."*.
 - **What the player would see today:** the built code counts the colony's own fires and sends a short Tribes raid when
   the count is high. His words remove it: no count, no blame.
 - **His words:** 2026-11-05: *"Actually just remove the count thing... that's a mechanic we don't even need. They can't see
@@ -356,6 +374,7 @@ its own, with no other mod's people (vision line 8). So every Tribes capability 
 - **Recommendation:** drop the raid; the removal and the no-blame bar go with Pyrelands Mechanics 0.1.0.
 
 #### Trade with the Tribes, and their share
+- **Decided:** not in 0.2.0, by his card of 12:44 PM PST 2026-11-26; his words: *"We are not ready to do faction work yet. The tribes sleep until we start faction work much later."*.
 - **What the player would see:** the Tribes offer trade, and leaving them their share of the burn keeps the peace;
   taking it costs something the player can read.
 - **His words:** 2026-11-13: *"But then the Deep Tribes come: learning to watch rather than confront. Offer trade and leave
@@ -367,6 +386,7 @@ its own, with no other mod's people (vision line 8). So every Tribes capability 
 - **Recommendation:** later, as Pyrelands Mechanics 0.2.0, after its 0.1.0 shows the rite working.
 
 #### The Impid fire-callers, sacred fire carried home, the cairns and the harvest camps
+- **Decided:** not in 0.2.0, by his card of 12:44 PM PST 2026-11-26; his words: *"We are not ready to do faction work yet. The tribes sleep until we start faction work much later."*.
 - **What the player would see:** the Tribes' fire-callers lead the burns; the Tribes carry living fire away to their
   hearths; burn-scheduling cairns and moving harvest camps stand on the map.
 - **His words:** none of his own. These are the biome sheet's canon (§8) and Mechanics' capability `inv_impid_fire_callers`.
@@ -375,6 +395,7 @@ its own, with no other mod's people (vision line 8). So every Tribes capability 
 - **Recommendation:** later, in a later Pyrelands Mechanics version.
 
 #### The furnace-beast may eat thornvine
+- **Decided:** not in 0.2.0, by his card of 12:44 PM PST 2026-11-26; his words: *"We are not ready to do faction work yet. The tribes sleep until we start faction work much later."*.
 - **What the player would see:** nothing today. The patch makes a plant named `Plant_Thornvine` edible for the
   furnace-beast. No file under `src/` defines that plant, and the Pyrelands roster does not hold it.
 - **Needs:** nothing.
@@ -382,6 +403,7 @@ its own, with no other mod's people (vision line 8). So every Tribes capability 
 - **Recommendation:** drop the patch when Pyrelands Mechanics is next built.
 
 #### The plumbing: finding the Tribes, their letters, their Mod Settings, the rite door in Pyrelands
+- **Decided:** not in 0.2.0, by his card of 12:44 PM PST 2026-11-26; his words: *"We are not ready to do faction work yet. The tribes sleep until we start faction work much later."*.
 - **What the player would see:** the letters that name the Tribes, and three switches (rite, visit, fruit defence) in the
   separate mod's Mod Settings. Pyrelands keeps its one door for the rite (`PyrelandsFireRiteHook`), already in 0.1.0.
 - **Needs:** the separate mod; built.
@@ -391,6 +413,7 @@ its own, with no other mod's people (vision line 8). So every Tribes capability 
 ### From the Pyrelands' own record, tickets and sheet
 
 #### The crestfeather gets its own picture
+- **Decided:** in 0.2.0, by his card of 12:44 PM PST 2026-11-26 ("Both (Recommended)"), bar `crestfeather_has_its_own_look`.
 - **What the player would see:** the pristine crestfeather from a hunted fire-hawk shows a picture of its own. Today it
   borrows vanilla's thrumbo horn, tinted (`RM_PristineFirehawkCrestfeather.xml` reads `Things/Item/Special/ThrumboHorn`).
 - **His words:** 2026-11-13: *"That gives a great reason for players to hunt the Firehawk."*
@@ -403,6 +426,7 @@ its own, with no other mod's people (vision line 8). So every Tribes capability 
   of its own, a fire-hawk's feather, never a borrowed horn.
 
 #### The grass is still drawn under the ash
+- **Decided:** in 0.2.0, by his card of 12:44 PM PST 2026-11-26 ("Both (Recommended)"), bar `grass_still_seen_under_ash`; the first step is one live look on a fresh map after an ash fall.
 - **What the player would see:** after ash falls, the grass that still stands shows under the ash. The open ticket
   (`RIMMANDRAKE_SHOW_PYRE_GRASS_UNDER_ASH_COVER_COUNTED_UNSEEN`, filed 2026-11-17) says that the map then read as bare grey
   ash while 81% of open ground held grass.
@@ -416,6 +440,7 @@ its own, with no other mod's people (vision line 8). So every Tribes capability 
   under the ash, so the player sees grass where it grows and bare ash only where it does not.
 
 #### The "Fire clock" switch does what its tooltip says
+- **Decided:** not in 0.2.0: its live check waits with Pyrelands Mechanics, which sleeps by his card of 12:44 PM PST 2026-11-26.
 - **What the player would see:** with the Pyrelands "Fire clock" switch off, no Tribes fire raid, flame harvest or fire rite
   comes, as the tooltip promises. The ticket `FIRE_CLOCK_FIX_RAIDS_IGNORE_THE_SWITCH` (home `mod:Pyrelands`) found that only
   the fire front read the switch. The fix is built: the raid and the harvest now read it
@@ -426,6 +451,7 @@ its own, with no other mod's people (vision line 8). So every Tribes capability 
 - **Recommendation:** later, as a check in Pyrelands Mechanics 0.1.0. Nothing is left to build in Pyrelands.
 
 #### The Struck Glass rite
+- **Decided:** later, not in 0.2.0, by his card of 12:44 PM PST 2026-11-26 ("Keep all three later (Recommended)").
 - **What the player would see:** a ring of glass sand stamped apart in a lightning storm calls down one huge strike at a
   random place on the map.
 - **His words:** in its ticket (`PYRELANDS_STRUCK_GLASS_RITE_BUILD_1`): *"Struck Glass. Make a ~ring of the lightning
@@ -436,6 +462,7 @@ its own, with no other mod's people (vision line 8). So every Tribes capability 
 - **Recommendation:** later, with the other rituals of the Nine.
 
 #### Animated steam over the rivers
+- **Decided:** not in 0.2.0 and not Pyrelands work (FlowWorks); his card of 12:44 PM PST 2026-11-26 took none of the five ideas in.
 - **What the player would see:** steam rises from the rivers of the Pyrelands, as decoration.
 - **His words:** 2026-09-02: *"could we add animated steam rising from the river? That is an amazing idea, file a ticket on
   that alone!"*
@@ -445,6 +472,7 @@ its own, with no other mod's people (vision line 8). So every Tribes capability 
 - **Recommendation:** later, with FlowWorks.
 
 #### The wind-driven fire for every biome
+- **Decided:** not in 0.2.0 and not Pyrelands work; his card of 12:44 PM PST 2026-11-26 took none of the five ideas in.
 - **What the player would see:** a grass fire in any of our biomes walks with the wind, as on the Pyrelands.
 - **Needs:** ticket `RIMMANDRAKE_GENERALIZE_WIND_FIRE_ALL_BAROQUE_BIOMES_NEXT_VERSION`. The conversion in 0.2.0 already
   makes the Pyrelands' carry act wherever its own grasses or ash burn. Other biomes are held, and each takes the rule when
@@ -453,6 +481,7 @@ its own, with no other mod's people (vision line 8). So every Tribes capability 
 - **Recommendation:** later.
 
 #### Warmth on the hoof: furnace-beasts as a caravan's hearth
+- **Decided:** later, not in 0.2.0, by his card of 12:44 PM PST 2026-11-26 ("Keep all three later (Recommended)").
 - **What the player would see:** a caravan that travels with furnace-beasts keeps warm on the way to the cold country.
 - **His words:** none of his own; the biome sheet §7: *"a furnace-beast herd is a walking hearth; caravans route with them
   toward the cold country."*
@@ -461,6 +490,7 @@ its own, with no other mod's people (vision line 8). So every Tribes capability 
 - **Recommendation:** later.
 
 #### Burning a field on purpose ("ash-flush farming")
+- **Decided:** later, not in 0.2.0, by his card of 12:44 PM PST 2026-11-26 ("Keep all three later (Recommended)").
 - **What the player would see:** an order to burn a field, so it regrows fast with the fresh-burn bonus that already exists.
 - **His words:** none of his own; the biome sheet §7.
 - **Needs:** a burn order and a way to hold the fire's edge. The firebreak floor that held the edge was cut (below), so a
@@ -470,6 +500,7 @@ its own, with no other mod's people (vision line 8). So every Tribes capability 
 - **Recommendation:** later, and only with a design of its brake.
 
 #### The firebreak floor and the lightning breakers (cut)
+- **Decided:** they stay cut; no card raised them.
 - These were built and then cut: the firebreak by a delegated call he asked for, the lightning breakers and fulgurite by
   his word, 2026-10-16: "Drop both".
 - **Recommendation:** drop (they stay cut). Listed only so that nothing deferred is left out.

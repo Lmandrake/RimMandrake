@@ -1820,6 +1820,310 @@
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_walk_small.py",
     "margins": []
    }
+  },
+  "T_FIRE_PACE_MODEL_OFFLINE": {
+   "id": "T_FIRE_PACE_MODEL_OFFLINE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_fire_pace.py",
+   "observes": "the whole-map model pyre_burn_sim.py (tied to RM_BurnKernel by the fuzz's CarryPlanChecksum and FlankPlanChecksum) on synthetic maps at several seeds and wind bearings, one cell lit at fire size 0.1 in standing ember grass under clear weather: the lit cell is still burning and has grown into a front at least FlankWidth cells wide within the hours the check names; the head's downwind travel in one day is larger than under 0.1.0's constants by the margin the check names (the constants of 0.1.0 are written in the check); at every day end of four days the burned share of open ground stays at or under half and the burn is still a line (the T_BURN_LANES reads). Red first: run on 0.1.0's constants, the pace row fails. Planted: the carry clock set back to 0.1.0's goes red; a carry that lights every neighbour (a flood) goes red on the share row (bar fire_catches_and_runs)",
+   "reads": [
+    "src/RimMandrake/Pyrelands/pyre_burn_sim.py",
+    "src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs",
+    "src/RimMandrake/Pyrelands/Source/PyrelandsTuning.cs",
+    "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs"
+   ],
+   "new": true,
+   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_fire_pace.py",
+   "runs_today": {
+    "ran": false,
+    "why": "specified at the 0.2.0 opening (2026-11-26); Stage 3 builds it and records it red first"
+   },
+   "built_in_stage": "3",
+   "for_bar": "fire_catches_and_runs"
+  },
+  "sc_fire_catches_and_runs": {
+   "id": "sc_fire_catches_and_runs",
+   "kind": "live_minimal",
+   "stage": "6",
+   "tier": "pyrelands",
+   "file": "src/RimMandrake/Pyrelands/validation.py",
+   "entry": "fire_catches_and_runs",
+   "entry_exists": false,
+   "new": true,
+   "observes": "a quicktest Pyrelands map on the small list, weather held clear, wind on, no pawn near: one spark (a fire of size 0.1, as a lightning strike or a fire-hawk's twig starts) in open standing ember grass far from the colony; the burning cells are read every game hour for a day with a capture at each read; the spark is still burning at hour 1, the burning width reaches a front within the hours the check names, and the head's travel at the day end is larger than the 0.1.0 build's on the same map and spark (that reading is taken once on the 0.1.0 tag and kept beside the row: the red-first reading); a judge shown the captures confirms a grass fire that runs as a line, not a flood",
+   "reads": [
+    "src/RimMandrake/Pyrelands/validation.py",
+    "src/RimMandrake/Pyrelands/Source/MapComponent_BurnLine.cs",
+    "src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs",
+    "src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs"
+   ],
+   "why_game": "the catch is vanilla Fire's growth and damage on a live plant, which only the running game does; the model starts from a fire that has caught",
+   "why_full_list": null,
+   "for_bar": "fire_catches_and_runs",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains fire_catches_and_runs",
+   "command_note": "small list (design/concepts/Pyrelands/version/small_list.json); entry ABSENT until Stage 3 writes it",
+   "built_in_stage": "3",
+   "contract": {
+    "claim": "a spark in standing grass catches and is a front the player must answer the same day, walking downwind faster than 0.1.0's",
+    "entry_point": "validation.py chain fire_catches_and_runs: a fresh quicktest Pyrelands map, weather forced clear for the whole run, the spark lit by FireUtility.TryStartFireIn at size 0.1",
+    "valid_opportunity": "the spark cell and the cells downwind of it to the map edge hold standing ember grass, the weather stayed clear, no pawn or building within the reach of a day's front",
+    "success": "the spark burns at hour 1; a front of the width the check names by the hours it names; the day-end head travel beats the 0.1.0 reading; the judge reads a walking line",
+    "forbidden_effects": "the burning or black share of open ground over half at the day end; fire on a cell that no carry reached (a flood); a new error line in Player.log",
+    "end": "one game day after the spark, or the front at the map edge"
+   },
+   "cheaper_why": "the offline model (T_FIRE_PACE_MODEL_OFFLINE) decides the pace from a caught fire; it cannot decide that a spark catches on a live plant, which is half of his complaint ('The fire barely catches'); one short staged burn is the cheapest test of that half",
+   "runs_today": {
+    "ran": false,
+    "why": "specified at the 0.2.0 opening (2026-11-26); Stage 3 writes the entry, Stage 6 runs it (UNRUN until then)"
+   },
+   "test_kind": "B",
+   "tag_evidence": "spoiled by: vanilla Fire's own random rolls on a live plant (whether a size 0.1 fire grows or gutters, and where it spreads) and the weather. Tried: the weather forced clear for the whole run, the wind set by SetWindForTest, no pawn or building within a day's reach, standing grown ember grass checked at staging. Not enough: whether one spark takes is a random roll by design, which the scene must leave to the game (Minimum Force), so the result is random by design.",
+   "x_of_y": [
+    2,
+    3
+   ],
+   "budget": 3,
+   "x_of_y_why": "the bar says a spark takes hold; a spark that sometimes gutters is allowed, one that mostly gutters is his complaint ('The fire barely catches'). 2 of 3 is the Designer's first value, written before the first run; a shortfall goes to the Conductor (shortfall.py call)"
+  },
+  "T_ROOF_WITHER_OFFLINE": {
+   "id": "T_ROOF_WITHER_OFFLINE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_roof_wither.py",
+   "observes": "the wither rule pulled out of CompWithersUnderRoof into a pure function (a plant's id and cell and how long it has been roofed -> its wilt stage and whether it is dead), over a generated roofed patch of 200 plants: the wilt stage only rises with roof time; the death times of one patch spread over a window the check names, so no single long tick kills more than the share the check names; each death names its remains (dead grass); unroofed plants never wilt; the gate off wilts nothing. Red first: 0.1.0's rule (equal damage on each long tick) fails the spread row. Planted: one clock for the whole patch goes red; a death with no remains goes red (bar roofed_grass_declines_visibly)",
+   "reads": [
+    "src/RimMandrake/Pyrelands/Source/CompWithersUnderRoof.cs",
+    "src/RimMandrake/Pyrelands/Defs/ThingDefs_Plants/EmberGrass.xml"
+   ],
+   "new": true,
+   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_roof_wither.py",
+   "runs_today": {
+    "ran": false,
+    "why": "specified at the 0.2.0 opening (2026-11-26); Stage 3 builds it and records it red first"
+   },
+   "built_in_stage": "3",
+   "for_bar": "roofed_grass_declines_visibly"
+  },
+  "sc_roofed_grass_declines": {
+   "id": "sc_roofed_grass_declines",
+   "kind": "live_minimal",
+   "stage": "6",
+   "tier": "pyrelands",
+   "file": "src/RimMandrake/Pyrelands/validation.py",
+   "entry": "roofed_grass_declines",
+   "entry_exists": false,
+   "new": true,
+   "observes": "a quicktest Pyrelands map on the small list: a patch of standing ember grass is roofed by the bridge; every few game hours over the wither time the probe reads each roofed plant (hit points, its wilt stage, its inspect line) and a capture at play zoom is taken; the plants die at spread times, each dead plant's cell holds dead grass at its next read, and a colonist ordered to cut it cuts it; a plant set to 1 hit point on a roofed cell is gone one long tick later; Player.log gains 0 lines 'Exception ticking RM_FE_Plant_EmberGrass' over the scene (on the 0.1.0 build: one per plant, the red-first reading); a judge shown the captures confirms grass that reads as wilting, then dead grass",
+   "reads": [
+    "src/RimMandrake/Pyrelands/validation.py",
+    "src/RimMandrake/Pyrelands/Source/CompWithersUnderRoof.cs"
+   ],
+   "why_game": "the kill path runs inside vanilla Plant.TickLong, and the wilted and dead looks exist only in the running renderer",
+   "why_full_list": null,
+   "for_bar": "roofed_grass_declines_visibly",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains roofed_grass_declines",
+   "command_note": "small list (design/concepts/Pyrelands/version/small_list.json); entry ABSENT until Stage 3 writes it",
+   "built_in_stage": "3",
+   "contract": {
+    "claim": "roofed grass visibly wilts, dies at spread times, leaves dead grass that can be cut and crumbles, and logs no error",
+    "entry_point": "validation.py chain roofed_grass_declines: a fresh quicktest Pyrelands map; a patch of grown ember grass roofed by the bridge",
+    "valid_opportunity": "the patch holds grown ember grass at the start, stays roofed for the whole run, and no fire reaches it",
+    "success": "every roofed plant reads a rising wilt stage before it dies; death times spread as the check names; dead grass at each dead plant's cell; the cut job completes; 0 new exception lines; the judge reads wilting then dead grass",
+    "forbidden_effects": "a roofed plant that vanishes with nothing left; a new 'Exception ticking' line; an unroofed plant that wilts",
+    "end": "every roofed plant dead and its dead grass crumbled or cut, or the wither time and the crumble time passed"
+   },
+   "cheaper_why": "the offline rule (T_ROOF_WITHER_OFFLINE) decides the spread and the remains; the look, the cut job and the log line exist only in the game; the scene reads all three in one staged patch",
+   "runs_today": {
+    "ran": false,
+    "why": "specified at the 0.2.0 opening (2026-11-26); Stage 3 writes the entry, Stage 6 runs it (UNRUN until then)"
+   },
+   "test_kind": "A"
+  },
+  "T_SMOKE_WEATHER_ACCEPT": {
+   "id": "T_SMOKE_WEATHER_ACCEPT",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/rimflow/acceptance/pyre_smoke_weather_accept.py",
+   "observes": "the six rows of the smoke weather's acceptance test over the shipped defs and source: a smoke WeatherDef exists, RM_Pyrelands' table lists it, it does more than look, it is not rain-rated, the old weathers stay, black rain stays the only rain (bar pyre_smoke_weather_chokes). Red first already seen: PASS 2/6 at a68d89e622, at 448168490b and on 2026-11-26",
+   "reads": [
+    "src/RimMandrake/rimflow/acceptance/pyre_smoke_weather_accept.py",
+    "src/RimMandrake/Pyrelands/Defs",
+    "src/RimMandrake/Pyrelands/Source"
+   ],
+   "new": true,
+   "command": "python3 src/RimMandrake/rimflow/acceptance/pyre_smoke_weather_accept.py",
+   "runs_today": {
+    "ran": false,
+    "why": "built; not run by the opening run (Designer, offline text only)"
+   },
+   "for_bar": "pyre_smoke_weather_chokes"
+  },
+  "sc_smoke_weather_chokes": {
+   "id": "sc_smoke_weather_chokes",
+   "kind": "live_minimal",
+   "stage": "6",
+   "tier": "pyrelands",
+   "file": "src/RimMandrake/Pyrelands/validation.py",
+   "entry": "smoke_weather_chokes",
+   "entry_exists": false,
+   "new": true,
+   "observes": "a quicktest Pyrelands map on the small list: the smoke weather forced; one colonist standing outdoors and one under a roof, both idle; after the hours the check names the outdoor colonist carries the smoke's hediff or thought with its label and reads lower breathing and moving, the roofed one carries none; a grass fire lit before the smoke is still burning; a capture of the sky; a judge shown it confirms smoke, not ash fall or rain; on the 0.1.0 build no smoke weather exists to force (the red-first reading)",
+   "reads": [
+    "src/RimMandrake/Pyrelands/validation.py",
+    "src/RimMandrake/Pyrelands/Defs",
+    "src/RimMandrake/Pyrelands/Source"
+   ],
+   "why_game": "a weather's look and a pawn's capacities exist only in the running game",
+   "why_full_list": null,
+   "for_bar": "pyre_smoke_weather_chokes",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains smoke_weather_chokes",
+   "command_note": "small list (design/concepts/Pyrelands/version/small_list.json); entry ABSENT until Stage 3 writes it",
+   "built_in_stage": "3",
+   "contract": {
+    "claim": "the smoke weather reads as smoke, hampers a colonist out in it with a readable sign, spares one under a roof, and douses no fire",
+    "entry_point": "validation.py chain smoke_weather_chokes: a fresh quicktest Pyrelands map, the weather forced by the bridge",
+    "valid_opportunity": "the smoke stayed the weather for the whole read, both colonists stayed where they were placed, nothing else hurt them",
+    "success": "the outdoor colonist's sign and lowered capacities; none on the roofed one; the fire still burning; the judge reads smoke",
+    "forbidden_effects": "a fire put out by the smoke; harm with no readable sign; harm to the roofed colonist; a new error line in Player.log",
+    "end": "the hours the check names after the smoke was forced"
+   },
+   "cheaper_why": "the offline acceptance test decides the defs; whether a colonist is hampered and the sky reads as smoke is only in the game; one short forced weather is the cheapest test",
+   "runs_today": {
+    "ran": false,
+    "why": "specified at the 0.2.0 opening (2026-11-26); Stage 3 writes the entry, Stage 6 runs it (UNRUN until then)"
+   },
+   "test_kind": "A"
+  },
+  "T_CONDITIONS_NOT_BIOME_OFFLINE": {
+   "id": "T_CONDITIONS_NOT_BIOME_OFFLINE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_conditions_not_biome.py",
+   "observes": "a static read of each mechanic gate of the conversion list (design/specs/2026-11-21-guiding-principles/conversion_list.md, section Pyrelands, rows code 2 to code 12): no mechanic's gate reads a biome defName list (MapComponent_BurnLine.IsPyrelandsMap, PyrelandsTuning.PyrelandsBiomeDefNames, a biome defName compare) or a crossBiome setting; RM_PyrelandsSettings has no crossBiome field and no 'Enable outside' text; each mechanic has its own Scribe'd on/off, default true; the biome data rows (weather table, standing burn odds, foreign arrivals) read the biome's def or extension. Red first on 0.1.0 (the gates are there). Planted: an IsPyrelandsMap gate put back in RM_JobGiver_BurrowOnFire goes red; a mechanic switch defaulting false goes red (bar mechanics_switch_plain_no_biome)",
+   "reads": [
+    "src/RimMandrake/Pyrelands/Source",
+    "design/specs/2026-11-21-guiding-principles/conversion_list.md"
+   ],
+   "new": true,
+   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_conditions_not_biome.py",
+   "runs_today": {
+    "ran": false,
+    "why": "specified at the 0.2.0 opening (2026-11-26); Stage 3 builds it and records it red first"
+   },
+   "built_in_stage": "3",
+   "for_bar": "mechanics_switch_plain_no_biome"
+  },
+  "T_SCENARIO_FIRE_DUTY": {
+   "id": "T_SCENARIO_FIRE_DUTY",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_scenario_fire_duty.py",
+   "observes": "pyre_fire_duty_starves, moved from design/RimMandrake/2026-11-07-pocock-design/pilot_realtypes/ (5 scenarios, 6 of 6 mutants red there): the real ThinkNode_ConditionalPyrelandsColonist on real game types: an undrafted colonist at urgent hunger with fire on the map eats before fire duty; a drafted pawn, a raider and the switch off are not gated. The conversion rewrites this gate (row code 9), so it must not lose a caller case. Support, decides nothing",
+   "reads": [
+    "src/RimMandrake/Pyrelands/Source/ThinkNode_ConditionalPyrelandsColonist.cs",
+    "src/RimMandrake/Pyrelands/Defs/ThinkTreeDefs/RM_PyreEatBeforeFireDuty.xml",
+    "design/RimMandrake/2026-11-07-pocock-design/pilot_realtypes/Scenario.cs"
+   ],
+   "new": true,
+   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_scenario_fire_duty.py",
+   "runs_today": {
+    "ran": false,
+    "why": "specified at the 0.2.0 opening (2026-11-26); Stage 3 builds it and records it red first"
+   },
+   "built_in_stage": "3"
+  },
+  "T_SCENARIO_FIRE_NO_FLEE": {
+   "id": "T_SCENARIO_FIRE_NO_FLEE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_scenario_fire_no_flee.py",
+   "observes": "pyre_fire_no_flee: the decision of PyrelandsFireSense pulled out into a predicate the caller calls, tested on real game types: a person on or next to a burning cell picks a cell that no fire reaches; a downed colonist crawls to a burned-out cell; no fire, no move. The conversion rewrites this gate (row code 8). Support, decides nothing",
+   "reads": [
+    "src/RimMandrake/Pyrelands/Source/PyrelandsFireSense.cs",
+    "src/RimMandrake/Pyrelands/Defs/JobDefs/RM_PyreStepAwayFromFire.xml"
+   ],
+   "new": true,
+   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_scenario_fire_no_flee.py",
+   "runs_today": {
+    "ran": false,
+    "why": "specified at the 0.2.0 opening (2026-11-26); Stage 3 builds it and records it red first"
+   },
+   "built_in_stage": "3"
+  },
+  "T_SCENARIO_BURROWER_FLEES": {
+   "id": "T_SCENARIO_BURROWER_FLEES",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_scenario_burrower_flees.py",
+   "observes": "pyre_burrower_flees: the flee gate of RM_BurrowHeatReaction and RM_JobGiver_BurrowOnFire as a predicate on real game types: a domed ashwallow 3 cells from a front stays domed, a standing one in dive range dives, and the gate reads the fire, never the biome. The conversion rewrites this gate (row code 2). Support, decides nothing",
+   "reads": [
+    "src/RimMandrake/Pyrelands/Source/RM_JobGiver_BurrowOnFire.cs"
+   ],
+   "new": true,
+   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_scenario_burrower_flees.py",
+   "runs_today": {
+    "ran": false,
+    "why": "specified at the 0.2.0 opening (2026-11-26); Stage 3 builds it and records it red first"
+   },
+   "built_in_stage": "3"
+  },
+  "T_CRESTFEATHER_OWN_ART_OFFLINE": {
+   "id": "T_CRESTFEATHER_OWN_ART_OFFLINE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_crestfeather_own_art.py",
+   "observes": "RM_PristineFirehawkCrestfeather's texPath is the def's own path (Things/Item/Special/RM_PristineFirehawkCrestfeather/RM_PristineFirehawkCrestfeather), names no vanilla texture and no ThrumboHorn; the def has no colour tint line; the picture exists at that path under src/RimMandrake/Pyrelands/Textures with real alpha; the art ledger records an art judge's keep verdict for that picture's sha, by a judge that did not make it (bar crestfeather_has_its_own_look). Red first: today's def reads Things/Item/Special/ThrumboHorn (the item's acceptance test printed 'Things/Item/Special/ThrumboHorn False' at 71dcee74a7). Planted: the texPath set back to ThrumboHorn goes red; a picture with no judge verdict goes red",
+   "reads": [
+    "src/RimMandrake/Pyrelands/Defs/ThingDefs_Items/RM_PristineFirehawkCrestfeather.xml",
+    "src/RimMandrake/Pyrelands/Textures/Things/Item/Special/RM_PristineFirehawkCrestfeather",
+    "infrastructure/artpipe"
+   ],
+   "new": true,
+   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_crestfeather_own_art.py",
+   "runs_today": {
+    "ran": false,
+    "why": "specified at the 0.2.0 opening (2026-11-26); Stage 3 builds it and records it red first"
+   },
+   "built_in_stage": "3",
+   "for_bar": "crestfeather_has_its_own_look"
+  },
+  "sc_grass_seen_under_ash": {
+   "id": "sc_grass_seen_under_ash",
+   "kind": "live_minimal",
+   "test_kind": "A",
+   "stage": "6",
+   "tier": "pyrelands",
+   "file": "src/RimMandrake/Pyrelands/validation.py",
+   "entry": "grass_seen_under_ash",
+   "entry_exists": false,
+   "new": true,
+   "first_run": "his card of 2026-11-26 orders one live look on a fresh map after an ash fall as the first step of this work: the scene's first run is on the 0.1.0 build, before any code, and is also its red-first reading",
+   "observes": "a fresh quicktest Pyrelands map on the small list, no fire on it: the ash fall forced for the hours the check names, then the weather forced clear for 600 ticks (so no weather overlay is read); the probe lists each cell of two frames, its grown ember grass (jawa/list_things) and its ash depth (SandGrid): frame G, where most open cells hold grass under ash, and frame B, where the scene cleared the grass before the fall; a capture of each frame at play zoom (modcheck/play_zoom.py's measured rootSize); a judge shown the two captures, not told which is which, says which frame holds grass, and reads grass in G and bare ash in B. Red-first reading: the 0.1.0 build (2026-11-16: 685 grass plants in 777 cells drawn as bare ash); if the 0.1.0 run reads green, the check is seen red on a planted fault (the ash sheet's altitude raised above the plants) before it counts",
+   "reads": [
+    "src/RimMandrake/Pyrelands/validation.py",
+    "src/RimMandrake/Pyrelands/Source/PyrelandsAshCover.cs",
+    "src/RimMandrake/Pyrelands/Source/PyrelandsAshDust.cs"
+   ],
+   "why_game": "the ash sheet and the plants are drawn only by the running renderer; on 2026-11-16 every count said grass stood while every capture showed bare ash, so only a picture decides",
+   "why_full_list": null,
+   "for_bar": "grass_still_seen_under_ash",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains grass_seen_under_ash",
+   "command_note": "small list (design/concepts/Pyrelands/version/small_list.json); entry ABSENT until written",
+   "built_in_stage": "3",
+   "contract": {
+    "claim": "after ash falls, standing grass is drawn under the ash, and bare ash shows only where no grass stands",
+    "entry_point": "validation.py chain grass_seen_under_ash: a fresh quicktest Pyrelands map; the ash fall forced by the bridge, then clear forced",
+    "valid_opportunity": "frame G holds grown ember grass on most open cells and ash on them at the read, frame B holds ash and no grass, no fire reached either frame, the weather read clear at the captures",
+    "success": "the judge picks G as the frame with grass, and reads grass in G and bare ash in B",
+    "forbidden_effects": "grass hidden under the ash in G; grass drawn in B where the list shows none; a new error line in Player.log",
+    "end": "the two captures and the judge's reading, after the ash fall and 600 ticks of clear"
+   },
+   "cheaper_why": "no offline model of the renderer exists, and the defect of 2026-11-16 was a picture that disagreed with every count; a static read of draw altitudes could not show what the player sees",
+   "runs_today": {
+    "ran": false,
+    "why": "specified at the 0.2.0 opening (2026-11-26); its first run is the look on the 0.1.0 build (UNRUN until a game takes it)"
+   }
   }
  },
  "bars": [
@@ -2056,7 +2360,8 @@
     "sc_heat_dome"
    ],
    "supports": [
-    "T_BURN_COST"
+    "T_BURN_COST",
+    "T_SCENARIO_BURROWER_FLEES"
    ],
    "held": [],
    "offline_decides": [],
@@ -2161,7 +2466,9 @@
     "sc_burn_compounds",
     "sc_ash_watered",
     "sc_furnace",
-    "LOOK_STAGE8"
+    "LOOK_STAGE8",
+    "T_SCENARIO_FIRE_DUTY",
+    "T_SCENARIO_FIRE_NO_FLEE"
    ],
    "held": [],
    "offline_decides": [],
@@ -2720,6 +3027,161 @@
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
    "covered_by_leaves": []
+  },
+  {
+   "id": "fire_catches_and_runs",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_FIRE_PACE_MODEL_OFFLINE",
+    "sc_fire_catches_and_runs"
+   ],
+   "supports": [
+    "T_FUZZ",
+    "T_BURN_LANES",
+    "T_BURN_ECOLOGY",
+    "sc_burn_line_walks",
+    "sc_fire_walks_with_wind"
+   ],
+   "held": [
+    "OWNER.jsonl#OWNER:1795722774284846701",
+    "OWNER.jsonl#OWNER:1795575810695997798",
+    "OWNER.jsonl#OWNER:1795575596337863702"
+   ],
+   "offline_decides": [
+    "T_FIRE_PACE_MODEL_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false,
+   "any_decider_runnable_today": false,
+   "new_in": "0.2.0"
+  },
+  {
+   "id": "roofed_grass_declines_visibly",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_ROOF_WITHER_OFFLINE",
+    "sc_roofed_grass_declines"
+   ],
+   "supports": [
+    "T_LINT"
+   ],
+   "held": [
+    "OWNER.jsonl#OWNER:1795722774284846701",
+    "OWNER.jsonl#OWNER:1795575596337863702"
+   ],
+   "offline_decides": [
+    "T_ROOF_WITHER_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false,
+   "any_decider_runnable_today": false,
+   "new_in": "0.2.0"
+  },
+  {
+   "id": "pyre_smoke_weather_chokes",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_SMOKE_WEATHER_ACCEPT",
+    "sc_smoke_weather_chokes"
+   ],
+   "supports": [
+    "T_DEFS_OFFLINE"
+   ],
+   "held": [
+    "OWNER.jsonl#OWNER:1795722774284846701",
+    "OWNER.jsonl#OWNER:1794596217832546098"
+   ],
+   "offline_decides": [
+    "T_SMOKE_WEATHER_ACCEPT"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false,
+   "any_decider_runnable_today": false,
+   "new_in": "0.2.0"
+  },
+  {
+   "id": "mechanics_switch_plain_no_biome",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_CONDITIONS_NOT_BIOME_OFFLINE",
+    "T_SETTINGS_SWEEP_OFFLINE",
+    "T_SETTINGS_SCREENS"
+   ],
+   "supports": [
+    "T_SCENARIO_FIRE_DUTY",
+    "T_SCENARIO_FIRE_NO_FLEE",
+    "T_SCENARIO_BURROWER_FLEES",
+    "sc_fire_sense",
+    "sc_ashwallow",
+    "sc_burn_line_walks"
+   ],
+   "held": [
+    "OWNER.jsonl#OWNER:1795722776944080497",
+    "OWNER.jsonl#OWNER:1795300545913453919"
+   ],
+   "offline_decides": [
+    "T_CONDITIONS_NOT_BIOME_OFFLINE",
+    "T_SETTINGS_SWEEP_OFFLINE",
+    "T_SETTINGS_SCREENS"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false,
+   "any_decider_runnable_today": false,
+   "new_in": "0.2.0"
+  },
+  {
+   "id": "crestfeather_has_its_own_look",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "4-5",
+   "decides": [
+    "T_CRESTFEATHER_OWN_ART_OFFLINE"
+   ],
+   "supports": [],
+   "held": [
+    "OWNER.jsonl#OWNER:1795725941299168938"
+   ],
+   "offline_decides": [
+    "T_CRESTFEATHER_OWN_ART_OFFLINE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false,
+   "any_decider_runnable_today": false,
+   "new_in": "0.2.0"
+  },
+  {
+   "id": "grass_still_seen_under_ash",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_grass_seen_under_ash"
+   ],
+   "supports": [
+    "sc_three_skies"
+   ],
+   "held": [
+    "OWNER.jsonl#OWNER:1795725941299168938"
+   ],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false,
+   "any_decider_runnable_today": false,
+   "new_in": "0.2.0"
   }
  ],
  "unlisted_suites": {
@@ -2727,5 +3189,11 @@
   "selftest_pyrelands_ten_scenes_parts.py": "proof-harness completeness: asserts the ten gap scenes have their parts in validation.py, not a mod behaviour (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
   "selftest_pyrelands_walk_digest.py": "proof-harness: asserts validation.walk_digest compares only state that survives a reload, not a mod behaviour (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
   "selftest_pyrelands_wind_burn_rows.py": "proof-harness: asserts wind_burn_live.verdict_rows refuses planted wrong games (a test of the live scene's verdict), not a mod behaviour (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+ },
+ "opened_0_2_0": {
+  "at": "2026-11-26",
+  "by": "Designer run RIMMANDRAKE_OPEN_PYRELANDS_NEXT_VERSION_HE_ASKED_FASTER_FIRE",
+  "note": "rows marked new: true with built_in_stage 3 are specified, not built; Stage 3 builds each and records it red first (maturation.py red-seen). sc_grass_seen_under_ash runs first on the 0.1.0 build (his card: the look first). The table's version field moves with VERSION.json at the lock.",
+  "scope": "his two cards of 2026-11-26: OWNER:1795722774284846701 (11:50 AM PST: faster fire, roofed grass, smoke weather, the conversion) and OWNER:1795725941299168938 (12:44 PM PST: all five polish groups, the crestfeather picture, the grass under the ash)"
  }
 }
