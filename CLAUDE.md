@@ -612,10 +612,10 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   Version or the next. The Conductor decides at filing and tells the owner after, in his daily digest. Log it with
   `--per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS --why "<the call and its reason>"`. Do not ask him
   at filing (this replaces the "ask at filing" words of the user-level rule, in this repo only). A helper files the
-  change and names what it recommends: current version, next version or Polish list. That call files a change. It
-  opens no version.
-- Before a mod's next Design Version opens, the owner reviews its scope. This applies to every mod. It is his hold by
-  his own word, not a sixth act.
+  change and names what it recommends: current version, next version or Polish list. That call files a change.
+  That call opens no version.
+- Before a mod's next Design Version opens, the owner reviews its scope. The review applies to every mod. The review is
+  his hold by his own word, not a sixth act.
   - The Designer writes `design/concepts/<Mod>/version/next_version/scope_proposal_<version>.md`. The page opens and
     locks nothing. Each block says what the player would see, its size and a recommendation.
   - The Conductor brings the page to him. The version opens, and its bars lock, only on his answer, recorded with

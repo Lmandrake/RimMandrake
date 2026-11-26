@@ -2086,11 +2086,13 @@ His card answers, 2026-11-13, and his later rulings:
   - The version opens, and its bars lock, only on his answer. Record his answer with `--owner-said` or `--by-card`.
     Then write `"scope_answer": "OWNER:<tsn>"` (that event) into the mod's `version/VERSION.json`.
   - `maturation.py next-version` refuses a next version (a MAJOR.MINOR.PATCH above the record's) when `scope_answer`
-    does not name an OWNER event that carries his words (`ownerSaid` or `byCard`), or the Conductor window's act. The
+    does not name an OWNER event that carries his words (`ownerSaid` or `byCard`), or an OWNER event that
+    `conductor_acts.is_conductor_event` accepts (written from the Conductor window, seat BENCH with no `role_unit`, under
+    `--per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`, its why tagged `delegated: conductor act:`). The
     refusal names the page, the missing answer and who brings it (the Conductor). Test:
     `selftest_maturation_record.py` `t_next_version_waits_for_his_scope_answer`.
-  - This is his hold by his own word on the opening of a next Design Version. It is not a sixth act: the five acts stay
-    five (§Only five acts stay his).
+  - The review is his hold by his own word on the opening of a next Design Version. The review is not a sixth act: the
+    five acts stay five (§Only five acts stay his).
   - Two things do not change. The pipeline still locks a new mod at 0.1.0 without asking him (next bullet). The
     Conductor still decides at filing whether a change goes to the current version, the next version or the Polish
     list ("The Conductor decides both", above). That call files a change; it opens no version.

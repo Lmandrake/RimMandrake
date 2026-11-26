@@ -655,7 +655,7 @@ Design work is never done in-window.
   - the opening of a mod's next Design Version, to him, with the Designer's scope page
     (`version/next_version/scope_proposal_<version>.md`). Record his answer with `--owner-said` or `--by-card`, and
     write its `OWNER:<tsn>` into VERSION.json `scope_answer` (owner 2026-11-26, `standing_rulings.md` §Mod Design
-    Versions). This is his hold by his own word, not a sixth act;
+    Versions). The review is his hold by his own word, not a sixth act;
   - repeat errors: `lessons.py add`, a ticket, and launch the fix at once.
   - schedule changes, as proposals to the schedule file.
 - **Never:**

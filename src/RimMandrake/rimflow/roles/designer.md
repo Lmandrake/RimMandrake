@@ -291,9 +291,9 @@ tsn not in OWNER.jsonl, or a path that does not exist.
   `standing_rulings.md` §Mod Design Versions). The Evidence-for-Ask rule never opens or locks a next version.
   - Write the scope proposal page first: `design/concepts/<Mod>/version/next_version/scope_proposal_<version>.md`.
     Each block says what the player would see, its size and your recommendation. The page opens and locks nothing.
-  - Until his answer is recorded, do not change `version/VERSION.json`, the bars, `record.json`, `scenes.json`, the
-    test table or `vision.md` for the next version, and do not run `maturation.py next-version`. End the run with the
-    page; the Conductor brings it to him.
+  - Until his answer is recorded, do not change `version/VERSION.json`, the bars, `record.json`, `scenes.json`,
+    `version/test_table.json` or `version/vision.md` for the next version, and do not run
+    `maturation.py next-version`. End the run with the page; the Conductor brings it to him.
   - On his recorded answer (`--owner-said` or `--by-card`), write `"scope_answer": "OWNER:<tsn>"` into
     `version/VERSION.json` with the new version, then draft and lock the bars of the scope that he answered.
     `maturation.py next-version` refuses a next version without that field.
