@@ -7534,7 +7534,6 @@ AAAAAA==
 							<li>RM_Drazz</li>
 							<li>RM_DosimeterLawn</li>
 							<li>RM_VaultRoot</li>
-							<li>RM_WastelandScorchedStars</li>
 							<li>RM_Pusberry</li>
 							<li>RM_Boilbulb</li>
 							<li>RM_Wartshrub</li>
@@ -7931,8 +7930,6 @@ AAAAAA==
 							<li>RSW_RikknitOvum</li>
 							<li>RSW_EggSiloothUnFertilized</li>
 							<li>RSW_EggSiloothFertilized</li>
-							<li>RSW_EggTaozinUnFertilized</li>
-							<li>RSW_EggTaozinFertilized</li>
 							<li>RSW_EggTetnissCrabUnFertilized</li>
 							<li>RSW_EggTetnissCrabFertilized</li>
 							<li>RSW_EggThrantaUnFertilized</li>
@@ -8344,7 +8341,6 @@ AAAAAA==
 							<li>Meat_RM_Tazzok</li>
 							<li>Meat_RM_Harrok</li>
 							<li>Meat_RM_Mirrak</li>
-							<li>Meat_RM_Barkwarden</li>
 							<li>Meat_RM_Fuzzrunner</li>
 							<li>Meat_RM_Thornhold</li>
 							<li>Meat_RM_Shokka</li>
@@ -8888,7 +8884,6 @@ AAAAAA==
 							<li>Corpse_RM_Gloomcast</li>
 							<li>Corpse_RM_Harrok</li>
 							<li>Corpse_RM_Mirrak</li>
-							<li>Corpse_RM_Barkwarden</li>
 							<li>Corpse_RM_Fuzzrunner</li>
 							<li>Corpse_RM_Thornhold</li>
 							<li>Corpse_RM_Shokka</li>
@@ -9644,7 +9639,6 @@ AAAAAA==
 							<li>RM_Drazz</li>
 							<li>RM_DosimeterLawn</li>
 							<li>RM_VaultRoot</li>
-							<li>RM_WastelandScorchedStars</li>
 							<li>RM_Pusberry</li>
 							<li>RM_Boilbulb</li>
 							<li>RM_Wartshrub</li>
@@ -10040,8 +10034,6 @@ AAAAAA==
 							<li>RSW_RikknitOvum</li>
 							<li>RSW_EggSiloothUnFertilized</li>
 							<li>RSW_EggSiloothFertilized</li>
-							<li>RSW_EggTaozinUnFertilized</li>
-							<li>RSW_EggTaozinFertilized</li>
 							<li>RSW_EggTetnissCrabUnFertilized</li>
 							<li>RSW_EggTetnissCrabFertilized</li>
 							<li>RSW_EggThrantaUnFertilized</li>
@@ -10452,7 +10444,6 @@ AAAAAA==
 							<li>Meat_RM_Tazzok</li>
 							<li>Meat_RM_Harrok</li>
 							<li>Meat_RM_Mirrak</li>
-							<li>Meat_RM_Barkwarden</li>
 							<li>Meat_RM_Fuzzrunner</li>
 							<li>Meat_RM_Thornhold</li>
 							<li>Meat_RM_Shokka</li>
@@ -10996,7 +10987,6 @@ AAAAAA==
 							<li>Corpse_RM_Gloomcast</li>
 							<li>Corpse_RM_Harrok</li>
 							<li>Corpse_RM_Mirrak</li>
-							<li>Corpse_RM_Barkwarden</li>
 							<li>Corpse_RM_Fuzzrunner</li>
 							<li>Corpse_RM_Thornhold</li>
 							<li>Corpse_RM_Shokka</li>
@@ -11745,7 +11735,6 @@ AAAAAA==
 							<li>RM_Drazz</li>
 							<li>RM_DosimeterLawn</li>
 							<li>RM_VaultRoot</li>
-							<li>RM_WastelandScorchedStars</li>
 							<li>RM_Pusberry</li>
 							<li>RM_Boilbulb</li>
 							<li>RM_Wartshrub</li>
@@ -12140,8 +12129,6 @@ AAAAAA==
 							<li>RSW_RikknitOvum</li>
 							<li>RSW_EggSiloothUnFertilized</li>
 							<li>RSW_EggSiloothFertilized</li>
-							<li>RSW_EggTaozinUnFertilized</li>
-							<li>RSW_EggTaozinFertilized</li>
 							<li>RSW_EggTetnissCrabUnFertilized</li>
 							<li>RSW_EggTetnissCrabFertilized</li>
 							<li>RSW_EggThrantaUnFertilized</li>
@@ -12552,7 +12539,6 @@ AAAAAA==
 							<li>Meat_RM_Tazzok</li>
 							<li>Meat_RM_Harrok</li>
 							<li>Meat_RM_Mirrak</li>
-							<li>Meat_RM_Barkwarden</li>
 							<li>Meat_RM_Fuzzrunner</li>
 							<li>Meat_RM_Thornhold</li>
 							<li>Meat_RM_Shokka</li>
@@ -13096,7 +13082,6 @@ AAAAAA==
 							<li>Corpse_RM_Gloomcast</li>
 							<li>Corpse_RM_Harrok</li>
 							<li>Corpse_RM_Mirrak</li>
-							<li>Corpse_RM_Barkwarden</li>
 							<li>Corpse_RM_Fuzzrunner</li>
 							<li>Corpse_RM_Thornhold</li>
 							<li>Corpse_RM_Shokka</li>
@@ -13839,7 +13824,6 @@ AAAAAA==
 							<li>RM_Drazz</li>
 							<li>RM_DosimeterLawn</li>
 							<li>RM_VaultRoot</li>
-							<li>RM_WastelandScorchedStars</li>
 							<li>RM_Pusberry</li>
 							<li>RM_Boilbulb</li>
 							<li>RM_Wartshrub</li>
@@ -14232,8 +14216,6 @@ AAAAAA==
 							<li>RSW_RikknitOvum</li>
 							<li>RSW_EggSiloothUnFertilized</li>
 							<li>RSW_EggSiloothFertilized</li>
-							<li>RSW_EggTaozinUnFertilized</li>
-							<li>RSW_EggTaozinFertilized</li>
 							<li>RSW_EggTetnissCrabUnFertilized</li>
 							<li>RSW_EggTetnissCrabFertilized</li>
 							<li>RSW_EggThrantaUnFertilized</li>
@@ -14644,7 +14626,6 @@ AAAAAA==
 							<li>Meat_RM_Tazzok</li>
 							<li>Meat_RM_Harrok</li>
 							<li>Meat_RM_Mirrak</li>
-							<li>Meat_RM_Barkwarden</li>
 							<li>Meat_RM_Fuzzrunner</li>
 							<li>Meat_RM_Thornhold</li>
 							<li>Meat_RM_Shokka</li>
@@ -15188,7 +15169,6 @@ AAAAAA==
 							<li>Corpse_RM_Gloomcast</li>
 							<li>Corpse_RM_Harrok</li>
 							<li>Corpse_RM_Mirrak</li>
-							<li>Corpse_RM_Barkwarden</li>
 							<li>Corpse_RM_Fuzzrunner</li>
 							<li>Corpse_RM_Thornhold</li>
 							<li>Corpse_RM_Shokka</li>
@@ -15928,7 +15908,6 @@ AAAAAA==
 							<li>RM_Drazz</li>
 							<li>RM_DosimeterLawn</li>
 							<li>RM_VaultRoot</li>
-							<li>RM_WastelandScorchedStars</li>
 							<li>RM_Pusberry</li>
 							<li>RM_Boilbulb</li>
 							<li>RM_Wartshrub</li>
@@ -16321,8 +16300,6 @@ AAAAAA==
 							<li>RSW_RikknitOvum</li>
 							<li>RSW_EggSiloothUnFertilized</li>
 							<li>RSW_EggSiloothFertilized</li>
-							<li>RSW_EggTaozinUnFertilized</li>
-							<li>RSW_EggTaozinFertilized</li>
 							<li>RSW_EggTetnissCrabUnFertilized</li>
 							<li>RSW_EggTetnissCrabFertilized</li>
 							<li>RSW_EggThrantaUnFertilized</li>
@@ -16733,7 +16710,6 @@ AAAAAA==
 							<li>Meat_RM_Tazzok</li>
 							<li>Meat_RM_Harrok</li>
 							<li>Meat_RM_Mirrak</li>
-							<li>Meat_RM_Barkwarden</li>
 							<li>Meat_RM_Fuzzrunner</li>
 							<li>Meat_RM_Thornhold</li>
 							<li>Meat_RM_Shokka</li>
@@ -17277,7 +17253,6 @@ AAAAAA==
 							<li>Corpse_RM_Gloomcast</li>
 							<li>Corpse_RM_Harrok</li>
 							<li>Corpse_RM_Mirrak</li>
-							<li>Corpse_RM_Barkwarden</li>
 							<li>Corpse_RM_Fuzzrunner</li>
 							<li>Corpse_RM_Thornhold</li>
 							<li>Corpse_RM_Shokka</li>
@@ -17949,7 +17924,6 @@ AAAAAA==
 							<li>RM_TavroskLiquor</li>
 							<li>RM_DosimeterLawn</li>
 							<li>RM_VaultRoot</li>
-							<li>RM_WastelandScorchedStars</li>
 							<li>RM_Pusberry</li>
 							<li>RM_Boilbulb</li>
 							<li>RM_Wartshrub</li>
@@ -18289,8 +18263,6 @@ AAAAAA==
 							<li>RSW_RikknitOvum</li>
 							<li>RSW_EggSiloothUnFertilized</li>
 							<li>RSW_EggSiloothFertilized</li>
-							<li>RSW_EggTaozinUnFertilized</li>
-							<li>RSW_EggTaozinFertilized</li>
 							<li>RSW_EggTetnissCrabUnFertilized</li>
 							<li>RSW_EggTetnissCrabFertilized</li>
 							<li>RSW_EggThrantaUnFertilized</li>
@@ -18732,8 +18704,6 @@ AAAAAA==
 							<li>RSW_RikknitOvum</li>
 							<li>RSW_EggSiloothUnFertilized</li>
 							<li>RSW_EggSiloothFertilized</li>
-							<li>RSW_EggTaozinUnFertilized</li>
-							<li>RSW_EggTaozinFertilized</li>
 							<li>RSW_EggTetnissCrabUnFertilized</li>
 							<li>RSW_EggTetnissCrabFertilized</li>
 							<li>RSW_EggThrantaUnFertilized</li>
@@ -19140,7 +19110,6 @@ AAAAAA==
 							<li>Meat_RM_Tazzok</li>
 							<li>Meat_RM_Harrok</li>
 							<li>Meat_RM_Mirrak</li>
-							<li>Meat_RM_Barkwarden</li>
 							<li>Meat_RM_Fuzzrunner</li>
 							<li>Meat_RM_Thornhold</li>
 							<li>Meat_RM_Shokka</li>
@@ -19659,7 +19628,6 @@ AAAAAA==
 							<li>Corpse_RM_Gloomcast</li>
 							<li>Corpse_RM_Harrok</li>
 							<li>Corpse_RM_Mirrak</li>
-							<li>Corpse_RM_Barkwarden</li>
 							<li>Corpse_RM_Fuzzrunner</li>
 							<li>Corpse_RM_Thornhold</li>
 							<li>Corpse_RM_Shokka</li>
@@ -20283,8 +20251,6 @@ AAAAAA==
 							<li>RSW_RikknitOvum</li>
 							<li>RSW_EggSiloothUnFertilized</li>
 							<li>RSW_EggSiloothFertilized</li>
-							<li>RSW_EggTaozinUnFertilized</li>
-							<li>RSW_EggTaozinFertilized</li>
 							<li>RSW_EggTetnissCrabUnFertilized</li>
 							<li>RSW_EggTetnissCrabFertilized</li>
 							<li>RSW_EggThrantaUnFertilized</li>
@@ -179443,9 +179409,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 							<animal>RM_Mirrak</animal>
 						</li>
 						<li>
-							<animal>RM_Barkwarden</animal>
-						</li>
-						<li>
 							<animal>RM_Fuzzrunner</animal>
 						</li>
 						<li>
@@ -180653,9 +180616,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 						</li>
 						<li>
 							<animal>GR_Bearman</animal>
-						</li>
-						<li>
-							<animal>RUT_ScarRoach</animal>
 						</li>
 					</configs>
 				</autoSlaughterManager>
@@ -301181,17 +301141,6 @@ cfMS3tBzLqnptq7DesvUkzrG50fiVLd1t+W8tIzOj6ZztO953pyPNT/LeHz6Z5+41oIyO8O5rvHr7/sx
 							<values />
 						</vehicleTrackers>
 						<MVCF_VerbManager IsNull="True" />
-					</thing>
-					<thing Class="ThingWithComps">
-						<def>RM_CaveDripSource</def>
-						<id>RM_CaveDripSource21193</id>
-						<map>0</map>
-						<pos>(180, 0, 149)</pos>
-						<questTags IsNull="True" />
-						<spawnedTick>0</spawnedTick>
-						<despawnedTick>-1</despawnedTick>
-						<beenRevealed>True</beenRevealed>
-						<customizationData IsNull="True" />
 					</thing>
 					<thing Class="Filth">
 						<def>Filth_RubbleRock</def>

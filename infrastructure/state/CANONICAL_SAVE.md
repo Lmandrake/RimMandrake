@@ -73,10 +73,14 @@ the owner unfreezes it. This section records which file the evidence says is the
 and most reliable world save, so nobody has to rebuild the answer from 40 file names.
 
 **Current world save: `Saves\ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws`**
-(13,496,989 bytes, sha256 `7605e1e8a18eb7bf…`, since 2026-11-26: its food filters' 324 rows that named the implied
-`Corpse_<race>` (282) and `Meat_<race>` (42) defs of the races that `BIOMES_PORT_PRUNE_FORTY_TWO_HITCHHIKERS` deleted
-were stripped offline (`RIMMANDRAKE_STRIP_CORPSE_TWINS_OF_PRUNED_RACES_CHECK_SAID_NONE`, `save_ghost_defs.py`; only
-those 324 `<li>` lines changed; `save_ghost_defs.py check` reads NONE). The file before it, 13,510,539 bytes, sha256
+(13,495,112 bytes, sha256 `0a4f2eee6338ad34…`, since 2026-11-26: two offline strips with `save_ghost_defs.py`
+(`RIMMANDRAKE_STRIP_CORPSE_TWINS_OF_PRUNED_RACES_CHECK_SAID_NONE`). First, its food filters' 324 rows that named the
+implied `Corpse_<race>` (282) and `Meat_<race>` (42) defs of the races that `BIOMES_PORT_PRUNE_FORTY_TWO_HITCHHIKERS`
+deleted (the result, sha256 `7605e1e8a18eb7bf…`, is in git at fcc062121b). Then 37 references to defs of older
+deletions: 34 filter rows and 2 auto-slaughter rows (`RM_Barkwarden` with its `Corpse_`/`Meat_`, `RSW_EggTaozin`
+(Un)`Fertilized`, `RM_WastelandScorchedStars`, `RUT_ScarRoach`) and the map thing `RM_CaveDripSource21193` on map 0.
+Nothing else changed. `save_ghost_defs.py check` reads NONE for both name sets. The 2026-11-26 load log's 7 `AG_`
+gene lines come from a custom-xenotype file at startup, not from this save. The file before it, 13,510,539 bytes, sha256
 `b85c2319d8c32f96…`, is `…R3.rws.bak-pre-strip-implied-twins-2026-11-26` beside it and in
 `D:\ClaudeWork\backups\saves_pre_strip_implied_twins_2026-11-26\`. That one dates from 2026-11-26: every reference to a def that
 `BIOMES_PORT_PRUNE_FORTY_TWO_HITCHHIKERS` deleted was stripped offline (`SLAUGHTER_ROWS_PRUNE_GHOSTS_IN_PEN`, tool
@@ -121,7 +125,7 @@ Evidence, in order:
   `BIG_REPAINT_FINISH_ONCE_AND_FOR_ALL` and `REPAINT_SAVES_RETIRE_THREE_GHOST_STARTS` are still `proposed`
   (filed 2026-10-21, no later events). When the repaint lands, its save replaces R3 as current.
 - **Repo copy:** `world/ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws` is byte-identical to the Saves file (sha256
-  `7605e1e8a18eb7bf…`; `landmark_names_check.py` fails if they part); it replaced the stale PAINT copy `ASHKARR_DEV_START_2026-10-20.rws` (unlocked, map 250) in the same folder on
+  `0a4f2eee6338ad34…`; `landmark_names_check.py` fails if they part); it replaced the stale PAINT copy `ASHKARR_DEV_START_2026-10-20.rws` (unlocked, map 250) in the same folder on
   2026-11-02. When the repaint save lands it replaces this copy too. The one dev-start pointer is `canon.yml`
   `planet.start_savegame`, read through `src/RimMandrake/Utils/canon_save.py`.
 - Saves written after 10-21 (Autosave-*, `RM_fw_hose_proof_*`, `rm_proof_*`) are test sites, not world saves.
