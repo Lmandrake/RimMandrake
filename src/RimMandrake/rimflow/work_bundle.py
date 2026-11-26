@@ -452,12 +452,16 @@ def bundle_id(system, now):
     return "WB-%s-%s" % (slug, time.strftime("%Y%m%d-%H%M%S", time.gmtime(now)))
 
 
-def new_record(system, members, why, pipeline, now, launched_by=None):
+def new_record(system, members, why, pipeline, now, launched_by=None, onboard=False):
+    """onboard: an onboarding run of the home's old tickets (part 8): its brief is roles/list_onboard.md."""
     bid = bundle_id(system, now)
-    return {"schema": 1, "id": bid, "system": system, "pipeline": pipeline, "members": list(members),
-            "lead": members[0], "why": why, "at": now, "launched_by": launched_by or os.environ.get("RM_ROLE_UNIT") or "hand",
-            "state": "launching", "step": "launched", "state_file": "%s/%s.md" % (STATE_FILES, bid), "units": [],
-            "restarts": 0, "outcomes": {}}
+    rec = {"schema": 1, "id": bid, "system": system, "pipeline": pipeline, "members": list(members),
+           "lead": members[0], "why": why, "at": now, "launched_by": launched_by or os.environ.get("RM_ROLE_UNIT") or "hand",
+           "state": "launching", "step": "launched", "state_file": "%s/%s.md" % (STATE_FILES, bid), "units": [],
+           "restarts": 0, "outcomes": {}}
+    if onboard:
+        rec["onboard"] = True
+    return rec
 
 
 def ready_split(ids, items, now, refused, held, leased):
@@ -593,9 +597,11 @@ def _replace_gated(system, bid):
             store_write(dict(old, state="replaced", replaced_by=bid))
 
 
-def launch_bundle(system, members, items, why, pipeline, now=None, launcher=None, tests=None, launched_by=None):
+def launch_bundle(system, members, items, why, pipeline, now=None, launcher=None, tests=None, launched_by=None,
+                  onboard=False):
     """One bundle for `system`: refused (2, why) while another bundle of it is live; else the record is written, then
-    the run starts. -> (0, record) | (1, record with launch_failed) | (2, why)."""
+    the run starts. -> (0, record) | (1, record with launch_failed) | (2, why). onboard: an onboarding run (part 8),
+    launched with the onboarding brief."""
     now = time.time() if now is None else now
     if not members:
         return 2, "%s has no ready member" % system
@@ -604,12 +610,12 @@ def launch_bundle(system, members, items, why, pipeline, now=None, launcher=None
         live = live_bundles()
         if system in live:
             return 2, "%s already has a live bundle, %s; one live bundle per system" % (system, live[system])
-        rec = new_record(system, members, why, pipeline, now, launched_by)
+        rec = new_record(system, members, why, pipeline, now, launched_by, onboard=onboard)
         _replace_gated(system, rec["id"])
         store_write(rec)
     finally:
         lk.close()
-    text = brief(rec, items, tests or {i: _g(items.get(i), "effect") for i in members})
+    text = (onboard_brief if onboard else brief)(rec, items, tests or {i: _g(items.get(i), "effect") for i in members})
     try:
         rc, out, unit = (launcher or (lambda r, b: launch_run(r, b)))(rec, text)
     except BaseException as e:      # a raise leaves no `launching` record: that state is live and blocks the system
@@ -671,15 +677,16 @@ def group(rows, launches, systems, live, join=None):
 REMOTE_LAUNCHED_RX = re.compile(r"^BUNDLE (WB-\S+) of (\S+) launched: (\S+); \d+ member\(s\): (.*)$", re.M)
 
 
-def remote_argv(host, ids, why):
-    """-> the ssh argv that launches the bundle on `host`; raises ValueError for a host with no door."""
+def remote_argv(host, ids, why, onboard=False):
+    """-> the ssh argv that launches the bundle on `host` (`--onboard` for an onboarding run); raises ValueError for a
+    host with no door."""
     import shlex
     import run_host as RH
     target = RH.door(host)
     if not target:
         raise ValueError("no ssh door to host %r (run_host.HOSTS)" % host)
-    return RH._ssh(target, RH.in_bench("./pipe bundle %s --why %s" % (
-        " ".join(shlex.quote(i) for i in ids), shlex.quote(why))))
+    return RH._ssh(target, RH.in_bench("./pipe bundle %s%s --why %s" % (
+        " ".join(shlex.quote(i) for i in ids), " --onboard" if onboard else "", shlex.quote(why))))
 
 
 LEFT_OUT_RX = re.compile(r"^left out: (\S+)\s+(.*)$", re.M)
@@ -695,7 +702,8 @@ def switch_refusal(host, system):
     return ("REFUSED: a mod bundle (%s) on %s: %s" % (system, host, sw)) if sw else None
 
 
-def launch_remote(host, system, members, why, pipeline, now=None, runner=subprocess.run, launched_by=None):
+def launch_remote(host, system, members, why, pipeline, now=None, runner=subprocess.run, launched_by=None,
+                  onboard=False):
     """The bundle of `system` launched on `host`. A placeholder (`launching`, `host` set) holds the system under the
     store lock, and the lock is let go before the ssh: a long remote sort must not hold every local finish waiting
     (a finish is bounded at detached_helper.STOP_S). -> (0, marker) | (1, {"launch_out"}) | (2, why): a bundle of the
@@ -714,7 +722,7 @@ def launch_remote(host, system, members, why, pipeline, now=None, runner=subproc
         live = live_bundles()
         if system in live:
             return 2, "%s already has a live bundle, %s; one live bundle per system" % (system, live[system])
-        held = new_record(system, members, why, pipeline, now, launched_by)
+        held = new_record(system, members, why, pipeline, now, launched_by, onboard=onboard)
         held.update(host=host, asked=list(members))
         store_write(held)
     finally:
@@ -727,7 +735,7 @@ def launch_remote(host, system, members, why, pipeline, now=None, runner=subproc
         finally:
             lk2.close()
     try:
-        r = runner(remote_argv(host, members, why), capture_output=True, text=True, timeout=TB.LAUNCH_S,
+        r = runner(remote_argv(host, members, why, onboard), capture_output=True, text=True, timeout=TB.LAUNCH_S,
                    stdin=subprocess.DEVNULL)
     except BaseException as e:      # noqa: BLE001 - a raise leaves no `launching` placeholder: that state holds the system
         out = "the ssh launch on %s raised %s: %s" % (host, type(e).__name__, _one(e, 400))
@@ -749,7 +757,8 @@ def launch_remote(host, system, members, why, pipeline, now=None, runner=subproc
         let_go("launch_failed", launch_out=txt, left_out=left)
         return 1, {"launch_out": txt, "left_out": left}
     bid, unit, took = m.group(1), m.group(3), m.group(4)
-    rec = new_record(system, [x.strip() for x in took.split(",") if x.strip()], why, pipeline, now, launched_by)
+    rec = new_record(system, [x.strip() for x in took.split(",") if x.strip()], why, pipeline, now, launched_by,
+                     onboard=onboard)
     rec.update(id=bid, host=host, state="live", asked=list(members), left_out=left,
                state_file="%s/%s.md" % (STATE_FILES, bid),
                units=[{"unit": unit, "at": now, "kind": "launch", "ended_before": 0, "host": host}])
@@ -908,22 +917,24 @@ def mod_gate(mod):
 
 
 def bundle_command(system, ids, items, why, now, prose_of, run_effect, run_script_fn, sha, refused, held, leased,
-                   launcher, closer=None, dry=False, pipeline="workshop"):
+                   launcher, closer=None, dry=False, pipeline="workshop", onboard=False):
     """The batch command's steps over its inputs: the sort (green members close as already fixed at `sha`), then ONE
-    bundle of the ready rest. -> {rows, closed, ready, out, rc: 0 | 1 | 2 | 3 (no ready member), rec}."""
+    bundle of the ready rest. -> {rows, closed, ready, out, rc: 0 | 1 | 2 | 3 (no ready member), rec}. onboard: an
+    onboarding run (part 8): the age filter does not leave an old ticket out, because the run's own step A (the reality
+    sort) and step B (its check seen red today) are that filter."""
     rows = sort_apply(sort(ids, items, prose_of, run_effect, run_script_fn), sha, closer=closer or close_member, dry=dry)
     closed = [r["id"] for r in rows if r.get("closed")]
     rest = [i for i in ids if i not in closed]
     ready, out = ready_split(rest, items, now, refused=refused, held=held, leased=leased)
     verdicts = {r["id"]: r["verdict"] for r in rows}
-    aged = {i: age_refusal(items[i], verdicts.get(i), now) for i in ready}
+    aged = {i: None if onboard else age_refusal(items[i], verdicts.get(i), now) for i in ready}
     out.update({i: y for i, y in aged.items() if y})
     ready = [i for i in ready if not aged[i]]
     got = {"rows": rows, "closed": closed, "ready": ready, "out": out, "rc": 3, "rec": None}
     if not ready:
         return got
     rc, rec = launch_bundle(system, ready, items, why, pipeline, now=now, tests=tests_text(ready, items, prose_of),
-                            launcher=launcher, launched_by="hand")
+                            launcher=launcher, launched_by="hand", onboard=onboard)
     got.update(rc=rc, rec=rec)
     return got
 
@@ -957,7 +968,8 @@ def cmd_launch(o):
                          sha=sha or "HEAD", dry=bool(fault), refused=ref.get,
                          held=lambda i: None if mod else member_held(w.items[i], reading, MOH.held),
                          leased=lambda it: _g(it, "state") == "doing" and LM.lease_status(it, now) == "live",
-                         launcher=lambda r, b: launch_run(r, b, mod=mod), pipeline="maturation" if mod else "workshop")
+                         launcher=lambda r, b: launch_run(r, b, mod=mod), pipeline="maturation" if mod else "workshop",
+                         onboard=bool(getattr(o, "onboard", False)))
     for r in got["rows"]:
         if r["verdict"] in ("holds", "holds_unproven", "unmeasured"):
             print("sort: %-62s %s" % (r["id"], r["act"]))
@@ -1081,7 +1093,7 @@ out = {}
 for i in sys.argv[1:]:
     x = items.get(i)
     out[i] = None if x is None else {"state": x.state, "wait_until": x.wait_until, "wait_ts": None, "refusal": None,
-                                     "refusal_ts": None, "close_ts": None}
+                                     "refusal_ts": None, "close_ts": None, "route_ts": None}
 for e in evs:
     f = out.get(e.get("id"))
     if f is None:
@@ -1092,6 +1104,10 @@ for e in evs:
         f["close_ts"] = e.get("ts")
     elif e.get("event") == "note" and is_refusal(e.get("text")):
         f["refusal"], f["refusal_ts"] = str(e.get("text")).strip(), e.get("ts")
+    elif e.get("event") == "shape" and isinstance(e.get("parts"), list):
+        # the newest split decides: one with a routed part (no check) routes the member; one without clears it
+        routed = any(isinstance(p, dict) and p.get("route") and not p.get("effect") for p in e["parts"])
+        f["route_ts"] = e.get("ts") if routed else None
 print(json.dumps(out))
 """
 
@@ -1115,8 +1131,9 @@ def _when(v):
 
 
 def outcomes(rec, facts, now):
-    """-> {member: {"outcome", "why"}}: fixed | already_fixed | dropped | refused | waits | open | unread. A refusal or
-    wait counts only when written since the bundle began."""
+    """-> {member: {"outcome", "why"}}: fixed | already_fixed | dropped | refused | waits | routed | open | unread. A
+    refusal, wait or route counts only when written since the bundle began (routed: its newest split, written since,
+    has a routed part: the party that answers re-shapes it)."""
     out, since = {}, rec.get("at") or 0
     for m in rec["members"]:
         f = (facts or {}).get(m)
@@ -1128,6 +1145,7 @@ def outcomes(rec, facts, now):
             refused = bool(f.get("refusal")) and _when(f.get("refusal_ts")) >= since
             waits = bool(f.get("wait_until")) and _when(f["wait_until"]) > now and _when(f.get("wait_ts")) >= since
             before = bool(f.get("close_ts")) and _when(f["close_ts"]) < since
+            routed = bool(f.get("route_ts")) and _when(f["route_ts"]) >= since
         except (TypeError, ValueError) as e:
             out[m] = {"outcome": "unread", "why": "a time on it could not be read (%s)" % e}
             continue
@@ -1141,6 +1159,8 @@ def outcomes(rec, facts, now):
             out[m] = {"outcome": "refused", "why": f["refusal"]}
         elif waits:
             out[m] = {"outcome": "waits", "why": "a dated wait to %s" % f["wait_until"]}
+        elif routed:
+            out[m] = {"outcome": "routed", "why": "its split routes a part to another party (rimflow shape)"}
         else:
             out[m] = {"outcome": "open", "why": "no close, refusal or wait since the bundle began"}
     return out
@@ -1366,10 +1386,17 @@ def cmd_live(o):
 
 # ---- part 6: the Maturation Pipeline's road back is one bundle ------------------------------------------------------
 
-def mod_members(mod, exclude, now, items=None, reading=None, prose_of=None, refused=None, leased=None):
+def mod_members(mod, exclude, now, items=None, reading=None, prose_of=None, refused=None, leased=None, onboard=None):
     """-> the ready open tickets of `mod` (mod_work's one rule) that carry a test, not in `exclude`, in id order: they
-    join the mod's bundle. A ticket with no test stays out: 66 of 67 FlowWorks tickets had none on 2026-11-24, and the
-    road back would become every old ticket of the mod; `./pipe bundle <Mod>` takes them all by hand."""
+    join the mod's bundle. onboard (None: read `onboard_classes` of list_dispatch.json for `mod`): an old ticket of the
+    mod (is_old: no test, no route) joins too, and the holder's note sends it through roles/list_onboard.md (part 8).
+    Off, a ticket with no test stays out (66 of 67 FlowWorks tickets had none on 2026-11-24)."""
+    grace = None
+    if onboard is None:
+        cfg = _lane_cfg()
+        onboard = (cfg.get("onboard_classes") or {}).get("mod") == "on"
+    if onboard:
+        grace = float(_lane_cfg().get("shape_grace_h", 24)) * 3600
     if items is None:
         import model as LM
         w = world()
@@ -1386,7 +1413,7 @@ def mod_members(mod, exclude, now, items=None, reading=None, prose_of=None, refu
         r = reading(it)
         if not isinstance(r, dict) or r.get("mod") != mod:
             continue
-        if not test_of(it, prose_of(i)):
+        if not test_of(it, prose_of(i)) and not (onboard and is_old(it, now, grace)):
             continue
         ready, _out = ready_split([i], items, now, refused=(refused or {}).get, held=lambda x: None, leased=leased)
         if ready:
@@ -1424,7 +1451,11 @@ def holder_note(rec, items, tests, root=REPO):
              "has an outcome." % (rec["id"], rec["system"], ROLE, rec["state_file"])]
     if joined:
         lines.append("The bundle also holds these ready tickets of the mod, each with its own test and its own close:")
-        lines += ["- `%s` %s\n  test: %s" % (m, _one(_g(items.get(m), "title"), 160), tests.get(m)) for m in joined]
+        lines += ["- `%s` %s\n  test: %s" % (m, _one(_g(items.get(m), "title"), 160),
+                                             tests.get(m) or "none: an old ticket, onboard it first") for m in joined]
+    if [m for m in joined if not tests.get(m)]:
+        lines.append("Each ticket above whose test reads none is an old ticket: take it through steps A and B of %s (the "
+                     "reality sort before any check, then its check seen red today) before you work it." % ONBOARD_ROLE)
     del road
     lines.append(polish_text(rec["system"], root))
     return "\n".join(lines) + "\n"
@@ -1474,6 +1505,105 @@ def cmd_end(o):
     rc = end_bundle(o.bundle, o.why, time.time())
     print(("ENDED %s" % o.bundle) if rc == 0 else ("NO BUNDLE %s in %s" % (o.bundle, store_dir())))
     return rc
+
+
+# ---- part 8: onboarding old tickets by home --------------------------------------------------------------------------
+# Item RIMMANDRAKE_ONBOARD_OLD_TICKETS_BY_HOME_SHAPED_SINGLY_TODAY; boundary §Onboarding old tickets by home. On
+# 2026-11-25 117 of 119 old pipeline and machine tickets were never named for Shape, so the lane launched nothing while
+# SteveDesktop sat idle. The lane (list_dispatch.onboard_step) starts one onboarding run per home with no hand: the run
+# sorts every old ticket against the code of now, writes the checks of the kept ones red, then fixes them.
+
+ONBOARD_ROLE = "src/RimMandrake/rimflow/roles/list_onboard.md"
+
+
+def _lane_cfg():
+    import list_dispatch as LD
+    return LD.load_cfg()
+
+
+def is_old(x, now, grace_s):
+    """-> True for an old ticket: open, no outcome check, no route, no shaped split (list_shape.needs_shape_run), and
+    at least grace_s old (younger, its filer may still close it: list_dispatch.json _shape_grace_h_doc). A filing time
+    that cannot be read is old: the run's sort reads it, as it reads the oldest."""
+    import list_shape as LS
+    if _g(x, "state") in CLOSED or not LS.needs_shape_run(LS.facts(x)):
+        return False
+    try:
+        t = _ts(_g(x, "created_at"))
+    except (TypeError, ValueError):
+        return True
+    return now - t >= float(grace_s or 0)
+
+
+def onboard_class(system, classes):
+    """-> (the lane may start an onboarding run of this home, why not). classes: list_dispatch.json onboard_classes,
+    {kind: "on" | "off"}. A mod home is never the lane's: its old tickets join the mod's own bundle (mod_members)."""
+    kind = str(system or "").partition(":")[0]
+    if not system or kind in ("item", "cause"):
+        return False, "it has no home of its own (list_home.py no-home), so no onboarding run starts"
+    v = (classes or {}).get(kind)
+    if kind == "mod":
+        return False, ("a mod's old tickets join that mod's own bundle (the Maturation Pipeline's road back), never a "
+                       "lane run (onboard_classes mod: %s)" % (v or "no setting"))
+    if v == "on":
+        return True, None
+    if v == "off":
+        return False, "its class %s: is off in list_dispatch.json onboard_classes" % kind
+    return False, "its class %s: has no setting in list_dispatch.json onboard_classes, so it is not started" % kind
+
+
+def onboard_homes(old, system, left_out):
+    """-> {"homes": {system: {"members", "left_out": {id: why}, "open"}}, "no_system": {id: why}} over the old tickets
+    `old` ({id: item}). system(id) -> its system or None (could not look); left_out(id) -> why it may not join now, or
+    None. Pure."""
+    homes, nos = {}, {}
+    for i in sorted(old):
+        s = system(i)
+        if not s:
+            nos[i] = "could not look which home it belongs to"
+            continue
+        h = homes.setdefault(s, {"members": [], "left_out": {}, "open": 0})
+        h["open"] += 1
+        why = left_out(i)
+        if why:
+            h["left_out"][i] = why
+        else:
+            h["members"].append(i)
+    return {"homes": homes, "no_system": nos}
+
+
+def onboard_pick(homes, live, classes):
+    """-> ([systems the lane may start, in order], {system: why not}). Order: the most open old tickets, then the name.
+    (Which home holds a ticket that blocks a switched-on mod is not readable by program: a mod's readiness list is
+    one prose line of `./pipe why`.) Pure."""
+    go, no = [], {}
+    for s in sorted(homes, key=lambda s: (-int(homes[s].get("open") or 0), s)):
+        on, why = onboard_class(s, classes)
+        h = homes[s]
+        if not on:
+            no[s] = why
+        elif s in (live or {}):
+            no[s] = "it has the live bundle %s; one live bundle per home" % live[s]
+        elif not h.get("members"):
+            no[s] = "each of its %d old ticket(s) is left out (see left_out)" % len(h.get("left_out") or {})
+        else:
+            go.append(s)
+    return go, no
+
+
+def onboard_brief(rec, items, tests=None, root=REPO):
+    """The onboarding run's brief: roles/list_onboard.md below its marker, filled. No spend, cap or remainder."""
+    import fixer_rule as FR
+    with open(os.path.join(root, ONBOARD_ROLE), encoding="utf-8") as f:
+        text = f.read().split("<!-- BRIEF -->", 1)[-1]
+    tests = tests or {}
+    rows = "\n".join("- `%s` %s%s" % (i, _one(_g(items.get(i), "title"), 160),
+                                      ("\n  its check: %s" % tests[i]) if tests.get(i) else "") for i in rec["members"])
+    for k, v in (("{role}", ONBOARD_ROLE), ("{bid}", rec["id"]), ("{system}", rec["system"]), ("{sf}", rec["state_file"]), ("{lead}", rec["lead"]),
+                 ("{n}", str(len(rec["members"]))), ("{rows}", rows), ("{why}", rec.get("why") or "-"),
+                 ("{fixer}", FR.text()), ("{polish}", polish_text(rec["system"], root))):
+        text = text.replace(k, v)
+    return text.strip() + "\n"
 
 
 # ---- part 7: the page -----------------------------------------------------------------------------------------------
@@ -1541,11 +1671,13 @@ def page_rows(now, bundles=None, unit_live=None, reader=None):
         except Exception as e:  # noqa: BLE001 - could not look: said, never an empty block
             return {"state": "unmeasured", "cause": "the work-bundle store could not be read (%s: %s)" % (
                 type(e).__name__, _one(e, 160)), "rows": [], "counts": {}}
-    rows, counts = [], {"ended": 0, "launch_failed": 0}
+    rows, counts = [], {"ended": 0, "launch_failed": 0, "onboard_ended": 0}
     for b in sorted(bundles.values(), key=lambda b: b.get("at") or 0):
         if b.get("state") in SHOWN_STATES_NOT:
             k = "launch_failed" if b.get("state") == "launch_failed" else "ended"
             counts[k] += 1
+            if k == "ended" and b.get("onboard") and b.get("state") == "ended":
+                counts["onboard_ended"] += 1
             continue
         st = b.get("state")
         plain = STATE_WORDS.get(st, str(st).replace("_", " "))
@@ -1563,7 +1695,8 @@ def page_rows(now, bundles=None, unit_live=None, reader=None):
         rows.append({"id": b["id"], "system": b.get("system"), "state": st, "plain": plain, "step": b.get("step") or "-",
                      "restarts": int(b.get("restarts") or 0), "since": b.get("at"), "members": members,
                      "done": sum(1 for _m, o in members if o in DONE_OUTCOMES),
-                     "unit": units[-1]["unit"] if units else None, "raised": (b.get("raised") or {}).get("why")})
+                     "unit": units[-1]["unit"] if units else None, "raised": (b.get("raised") or {}).get("why"),
+                     "onboard": bool(b.get("onboard"))})
     return {"state": "ok", "rows": rows, "counts": counts}
 
 
@@ -1571,8 +1704,17 @@ def _line(r):
     """One live bundle by meaning: the system, its state, the tickets done, the start time, the step when it is a plain
     note, the restarts and a call for help. No ticket name, bundle id or unit name."""
     sw = system_words(r["system"])
-    parts = ["**%s**: %s" % (sw[:1].upper() + sw[1:], r.get("plain") or r["state"]),
-             "%d of %d tickets done" % (r.get("done", 0), len(r["members"]))]
+    if r.get("onboard"):    # an onboarding run (part 8): its home, its members and the count of each outcome so far
+        n = {}
+        for _m, o in r["members"]:
+            o = "open" if o == "no outcome yet" else o.replace("_", " ")
+            n[o] = n.get(o, 0) + 1
+        parts = ["**Onboarding the old tickets of %s**: %s" % (sw, r.get("plain") or r["state"]),
+                 "%d old tickets: %s" % (len(r["members"]), ", ".join(
+                     "%d %s" % (n[k], k) for k in sorted(n, key=lambda k: (k == "open", k))))]
+    else:
+        parts = ["**%s**: %s" % (sw[:1].upper() + sw[1:], r.get("plain") or r["state"]),
+                 "%d of %d tickets done" % (r.get("done", 0), len(r["members"]))]
     if isinstance(r.get("since"), (int, float)):
         parts.append("started %s" % when(r["since"]))
     step = str(r.get("step") or "").strip()
@@ -1587,7 +1729,9 @@ def _line(r):
 
 def _count_line(page):
     c = page.get("counts") or {}
-    return "Since the first bundle: %d ended and %d failed to launch." % (c.get("ended", 0), c.get("launch_failed", 0))
+    return "Since the first bundle: %d ended (%d onboarding run%s of old tickets) and %d failed to launch." % (
+        c.get("ended", 0), c.get("onboard_ended", 0), "" if c.get("onboard_ended", 0) == 1 else "s",
+        c.get("launch_failed", 0))
 
 
 def _items(page):
@@ -1681,6 +1825,8 @@ def parse(argv=None):
     s.add_argument("--dry", action="store_true", help="print what it would close; write nothing")
     s = sub.add_parser("launch", help="the hand launch (./pipe bundle): the sort, then one bundle of the ready rest")
     s.add_argument("target", nargs="+", help="a home, a mod or ticket ids of one system")
+    s.add_argument("--onboard", action="store_true", help="an onboarding run of old tickets (roles/list_onboard.md): "
+                                                          "the age filter leaves no old ticket out")
     s.add_argument("--why", required=True)
     s = sub.add_parser("context", help="the worker's guard: its context against half of its window")
     s.add_argument("--session", help="a session id (default: this session, CLAUDE_CODE_SESSION_ID)")

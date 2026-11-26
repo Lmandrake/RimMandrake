@@ -676,7 +676,7 @@ def t_the_maturation_road_back_is_one_bundle():
         h = (it.home or {}).get("home", "")
         return {"mod": h[4:] if h.startswith("mod:") else None}
     got = W.mod_members("FlowWorks", {"MT_ROAD"}, NOW, items=items, reading=reading, prose_of=lambda i: "",
-                        refused={}, leased=lambda it: False)
+                        refused={}, leased=lambda it: False, onboard=False)
     chk(lambda: got == ["MT_RED"], "maturation: a ready ticket of the mod with a test joins; no test, a wait, the road "
                                    "back's own and another mod's do not (%s)" % got)
     gated = W.store_write(dict(W.new_record("mod:FlowWorks", ["MT_OLD"], "why", "maturation", NOW - 900), state="gated"))
@@ -1004,6 +1004,293 @@ def t_a_bundle_on_another_host_launches_there():
         "launch_remote: an ssh that raises leaves no live placeholder (%s)" % got5)
 
 
+# ---- part 8: onboarding old tickets by home ---------------------------------------------------------------------------
+# Item RIMMANDRAKE_ONBOARD_OLD_TICKETS_BY_HOME_SHAPED_SINGLY_TODAY. On 2026-11-25 117 of 119 old pipeline and machine
+# tickets were never named for Shape, so the lane launched nothing while SteveDesktop sat idle.
+
+OLD_AT = "2026-11-01T00:00:00Z"
+ON = {"pipeline": "on", "machine": "on", "mod": "on", "game": "off"}
+
+
+def old(iid, home=None, **kw):
+    return item(iid, home=home, created_at=kw.pop("created_at", OLD_AT), shape=None, shape_named=None, **kw)
+
+
+def onboard_world():
+    """Four old tickets of pipeline:bridge (one blocked), two of game:flight, one of machine:SteveDesktop, a young one,
+    one with a check, one with no home."""
+    items = {"B1": old("B1", "pipeline:bridge"), "B2": old("B2", "pipeline:bridge"), "B3": old("B3", "pipeline:bridge"),
+             "B4": old("B4", "pipeline:bridge"),
+             "BX": old("BX", "pipeline:bridge", blocked=True, blocked_reason="waits for the bridge v3 port"),
+             "BY": old("BY", "pipeline:bridge", created_at=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(NOW - 3600))),
+             "BC": old("BC", "pipeline:bridge", effect="cmd:false"),
+             "G1": old("G1", "game:flight"), "G2": old("G2", "game:flight"),
+             "S1": old("S1", "machine:SteveDesktop"), "LONE": old("LONE")}
+    return items
+
+
+def onboard_facts_of(W, items, left_out=None):
+    reading = lambda it: {"mod": None}  # noqa: E731
+    left_out = left_out or (lambda i: ("it is blocked: %s" % items[i].blocked_reason) if items[i].blocked else None)
+    old_ = {i: x for i, x in items.items() if W.is_old(x, NOW, 24 * 3600)}
+    got = W.onboard_homes(old_, lambda i: W.system_of(items[i], reading, items), left_out)
+    got["items"] = {i: {"title": x.title, "state": x.state} for i, x in old_.items()}
+    return got
+
+
+def lane_decide(ob, rows_items=None, cfg=None, facts_extra=None):
+    import list_dispatch as LD
+    cfg = dict({"enabled": True, "max_live": 2, "onboard_classes": ON}, **(cfg or {}))
+    facts = dict({"items": rows_items or {}, "runs": {}, "recent": None, "systems": {}, "bundles_live": {}, "join": {},
+                  "onboard": ob}, **(facts_extra or {}))
+    rows, launches = LD.decide(cfg, {}, facts, NOW)
+    return rows, launches, {r["item"]: r for r in rows}
+
+
+def t_old_tickets_are_onboarded_by_home():
+    W = WB()
+    items = onboard_world()
+    chk(lambda: W.is_old(items["B1"], NOW, 24 * 3600) and not W.is_old(items["BY"], NOW, 24 * 3600)
+        and not W.is_old(items["BC"], NOW, 24 * 3600), "is_old: no check and older than the grace; a young one and one "
+                                                       "with a check are not old")
+    ob = onboard_facts_of(W, items)
+    rows, launches, by = lane_decide(ob)
+    leads = [r for r in rows if r.get("bundle")]
+    chk(lambda: len(leads) == 2 and [r["bundle"]["system"] for r in leads] == ["pipeline:bridge", "machine:SteveDesktop"],
+        "lane: one onboarding run per home of an on class, the home with the most old tickets first (%s)"
+        % [(r.get("bundle") or {}).get("system") for r in leads])
+    b = leads[0]["bundle"] if leads else {}
+    chk(lambda: sorted(b.get("members") or []) == ["B1", "B2", "B3", "B4"] and b.get("onboard") is True
+        and leads[0]["decision"] == "launch" and leads[0]["item"] in launches and leads[0].get("kind") == "onboard",
+        "lane: the bridge home's onboarding run has the 4 ready old tickets as members, with no hand (%s)" % leads[:1])
+    chk(lambda: leads[0]["model"] == "opus" and leads[0].get("cap"), "lane: an onboarding run is Opus, with the lane's cap")
+    # SteveDesktop first: with a host that has room, the run goes there
+    hosts_cfg = {"hosts": {"SteveDesktop": {"max_live": 6, "min_left_pct": 5}}}
+    hosts = {"SteveDesktop": {"live": 0, "left": 60.0, "left_why": None, "pool_more": 5}}
+    rows2, _l2, by2 = lane_decide(ob, cfg=hosts_cfg, facts_extra={"hosts": hosts})
+    lead2 = [r for r in rows2 if r.get("bundle")][:1]
+    chk(lambda: lead2 and lead2[0].get("host") == "SteveDesktop" and lead2[0]["bundle"].get("host") == "SteveDesktop",
+        "lane: an onboarding run goes to the host that the lane gives it, SteveDesktop first (%s)" % lead2)
+    # room for one run: the larger home takes it, the smaller reads no room
+    rows3, _l3, by3 = lane_decide(ob, cfg={"max_live": 1, "load_line": None})
+    chk(lambda: [r["bundle"]["system"] for r in rows3 if r.get("bundle")] == ["pipeline:bridge"]
+        and "no room" in by3["-onboard"]["onboard"]["not_started"].get("machine:SteveDesktop", ""),
+        "lane: with room for one run, the home with the most old tickets takes it (%s)" % by3.get("-onboard"))
+    # no room: nothing starts and the reading says so
+    rows4, l4, by4 = lane_decide(ob, cfg={"max_live": 0, "load_line": None})
+    chk(lambda: not [r for r in rows4 if r.get("bundle")] and not l4 and "room" in str(by4.get("-onboard", {}).get("why")),
+        "lane: with no room no onboarding run starts, and the reading says why (%s)" % by4.get("-onboard"))
+
+
+def t_an_onboarding_member_is_ready_or_left_out_with_its_reason():
+    W = WB()
+    items = onboard_world()
+    ob = onboard_facts_of(W, items)
+    h = ob["homes"]["pipeline:bridge"]
+    chk(lambda: "BX" not in h["members"] and "blocked" in h["left_out"].get("BX", "") and "v3 port" in h["left_out"]["BX"],
+        "onboard_homes: a blocked ticket is left out with its reason (%s)" % h.get("left_out"))
+    _rows, _l, by = lane_decide(ob)
+    summ = (by.get("-onboard") or {}).get("onboard") or {}
+    chk(lambda: "v3 port" in json.dumps(summ.get("left_out", {}).get("pipeline:bridge", {})),
+        "lane: the tick's reading names each left-out ticket with its reason (%s)" % summ.get("left_out"))
+    allout = {"Z1": old("Z1", "pipeline:docs", blocked=True, blocked_reason="r")}
+    ob2 = onboard_facts_of(W, allout)
+    rows2, l2, by2 = lane_decide(ob2)
+    chk(lambda: not l2 and "pipeline:docs" in json.dumps((by2.get("-onboard") or {}).get("onboard", {}).get("not_started", {})),
+        "lane: a home whose old tickets are all left out starts nothing and says why (%s)" % by2.get("-onboard"))
+
+
+def t_the_onboard_classes_are_data():
+    W = WB()
+    chk(lambda: W.onboard_class("pipeline:bridge", ON)[0] and W.onboard_class("machine:SteveDesktop", ON)[0],
+        "onboard_class: pipeline and machine homes are on")
+    chk(lambda: not W.onboard_class("game:flight", ON)[0] and "off" in W.onboard_class("game:flight", ON)[1],
+        "onboard_class: a game home is off while its class is off, and says which setting holds it")
+    chk(lambda: W.onboard_class("game:flight", dict(ON, game="on"))[0], "onboard_class: the same path starts a game home "
+                                                                         "once the data says on")
+    chk(lambda: not W.onboard_class("mod:FlowWorks", ON)[0] and "own bundle" in W.onboard_class("mod:FlowWorks", ON)[1],
+        "onboard_class: the lane never starts a mod home; the mod's own bundle takes them")
+    chk(lambda: not W.onboard_class("item:LONE", ON)[0] and not W.onboard_class("cause:P", ON)[0]
+        and not W.onboard_class("pipeline:x", {})[0], "onboard_class: no home of its own, or no setting, starts nothing")
+    items = onboard_world()
+    ob = onboard_facts_of(W, items)
+    rows, _l, by = lane_decide(ob)
+    chk(lambda: "game:flight" not in [r["bundle"]["system"] for r in rows if r.get("bundle")]
+        and "off" in by["-onboard"]["onboard"]["not_started"].get("game:flight", "")
+        and "item:LONE" not in [r["bundle"]["system"] for r in rows if r.get("bundle")],
+        "lane: a game-needs home starts nothing while its class is off, and a ticket with no home is not started (%s)"
+        % by["-onboard"]["onboard"].get("not_started"))
+    import list_dispatch as LD
+    cfg = LD.load_cfg()
+    chk(lambda: cfg.get("onboard_classes") == ON and cfg.get("_onboard_classes_doc"),
+        "list_dispatch.json: onboard_classes is data, with its doc (%s)" % cfg.get("onboard_classes"))
+
+
+def t_one_onboarding_beside_no_live_bundle():
+    W = WB()
+    ob = onboard_facts_of(W, onboard_world())
+    rows, l, by = lane_decide(ob, facts_extra={"bundles_live": {"pipeline:bridge": "WB-pipeline-bridge-1"}})
+    chk(lambda: "pipeline:bridge" not in [r["bundle"]["system"] for r in rows if r.get("bundle")]
+        and "WB-pipeline-bridge-1" in by["-onboard"]["onboard"]["not_started"].get("pipeline:bridge", ""),
+        "lane: a home with a live bundle starts no onboarding run, naming that bundle (%s)" % by["-onboard"])
+
+
+def t_an_onboarding_that_could_not_look_starts_nothing():
+    rows, l, by = lane_decide({"could_not_look": "the ledger's homes could not be read (OSError: x)"})
+    chk(lambda: not l and by.get("-onboard", {}).get("decision") == "blind"
+        and "could not look" in by["-onboard"]["why"] and by["-onboard"].get("could_not_look"),
+        "lane: an onboarding list that could not be read starts nothing and says could not look (%s)" % by.get("-onboard"))
+    import list_dispatch as LD
+    got = LD.onboard_facts_safe(lambda: (_ for _ in ()).throw(OSError("disk gone")))
+    chk(lambda: "could_not_look" in got and "disk gone" in got["could_not_look"],
+        "gather: a raise while reading the old tickets is could not look, never an empty list (%s)" % got)
+
+
+def t_a_home_lead_takes_its_old_tickets():
+    W = WB()
+    import list_dispatch as LD
+    ob = onboard_facts_of(W, onboard_world())
+    # a lead of the bridge home from group() (a ticket with a check), and a named Shape row of the same home
+    rows = [{"item": "BC", "decision": "launch", "model": "sonnet", "cap": 50, "run_n": 1,
+             "bundle": {"system": "pipeline:bridge", "members": ["BC"]}},
+            {"item": "B2", "decision": "shape", "kind": "shape", "model": "opus", "cap": 120, "run_n": 1},
+            {"item": "SG", "decision": "shape", "kind": "shape", "model": "opus", "cap": 120, "run_n": 1}]
+    systems = {"BC": "pipeline:bridge", "B2": "pipeline:bridge", "SG": "game:flight"}
+    cfg = {"enabled": True, "max_live": 2, "onboard_classes": ON}
+    rows2, l2 = LD.onboard_step(cfg, rows, ["BC", "B2", "SG"], dict(ob, systems=systems), {}, lambda: (None, "no room"))
+    by = {r["item"]: r for r in rows2}
+    chk(lambda: by["BC"]["bundle"]["members"][:1] == ["BC"] and sorted(by["BC"]["bundle"]["members"][1:]) == ["B1", "B2", "B3", "B4"]
+        and by["BC"]["bundle"].get("onboard") is True, "onboard_step: the home's lead takes its ready old tickets and is "
+                                                       "its onboarding run (%s)" % by["BC"].get("bundle"))
+    chk(lambda: by["B2"]["decision"] == "bundled" and "B2" not in l2,
+        "onboard_step: a named Shape row of that home is a member, not its own Shape run (%s)" % by["B2"])
+    chk(lambda: by["SG"]["decision"] == "shape" and "SG" in l2,
+        "onboard_step: a Shape row of a home whose class is off is still its own Shape run")
+    # no lead: the first Shape row of the home leads the onboarding in the room it had
+    rows3 = [{"item": "B2", "decision": "shape", "kind": "shape", "model": "opus", "cap": 120, "run_n": 1,
+              "host": "SteveDesktop"}]
+    rows4, l4 = LD.onboard_step(cfg, rows3, ["B2"], dict(ob, systems={"B2": "pipeline:bridge"}), {},
+                                lambda: (None, "no room"))
+    r = rows4[0]
+    chk(lambda: r.get("kind") == "onboard" and r["decision"] == "launch" and r["bundle"]["members"][0] == "B2"
+        and sorted(r["bundle"]["members"]) == ["B1", "B2", "B3", "B4"] and r["bundle"].get("host") == "SteveDesktop"
+        and l4 == ["B2"], "onboard_step: with no lead, the home's Shape row leads its onboarding run in its room (%s)" % r)
+
+
+def t_the_onboarding_brief_sorts_before_it_checks():
+    W = WB()
+    items = {"B1": old("B1", "pipeline:bridge", title="bridge reload eats a call"), "B2": old("B2", "pipeline:bridge")}
+    rec = W.new_record("pipeline:bridge", ["B1", "B2"], "why: the lane", "workshop", NOW, onboard=True)
+    text = W.onboard_brief(rec, items, {})
+    import fixer_rule as FR
+    chk(lambda: rec.get("onboard") is True and "roles/list_onboard.md" in text and rec["id"] in text
+        and rec["state_file"] in text and "bridge reload eats a call" in text and "`B2`" in text,
+        "brief: names the role, the bundle, its state file and each member with its title")
+    a, b_, c = text.find("Step A"), text.find("Step B"), text.find("Step C")
+    chk(lambda: 0 <= a < b_ < c and "before" in text[a:b_].lower() and "fooled_by" in text[b_:c]
+        and "roles/builder.md" in text[c:], "brief: step A (the sort) comes before step B (the checks) and step C (the work)")
+    chk(lambda: FR.STATEMENT[:60] in text and "Old work is filtered" in text and W.POLISH_RULE[:50] in text,
+        "brief: carries the fixer rule, the old-work filter and the polish rule")
+    chk(lambda: "$" not in text and "budget" not in text.lower() and "cap" not in text.lower().split(),
+        "brief: states no spend, cap or remainder")
+    chk(lambda: "list_onboard.md" not in W.brief(dict(rec, onboard=False), items, {}),
+        "brief: a bundle that is no onboarding run keeps the Work Bundle brief")
+    calls = []
+    rc, got = W.launch_bundle("pipeline:onboardbrief", ["B1", "B2"], items, "why", "workshop", now=NOW,
+                              launcher=lambda r, t: (calls.append(t), (0, "DETACHED u", "u-onb"))[1], onboard=True)
+    chk(lambda: rc == 0 and got.get("onboard") is True and calls and "roles/list_onboard.md" in calls[0],
+        "launch_bundle: an onboarding launch writes its record with onboard and launches the onboarding brief")
+    role = open(os.path.join(REPO, "src", "RimMandrake", "rimflow", "roles", "list_onboard.md"), encoding="utf-8").read()
+    chk(lambda: all(x in role for x in ("done already", "dead or stale", "duplicate", "not worth the touch",
+                                         "rimflow shape", "Acceptance test: none", "REFUSED BY BUNDLE")),
+        "role: the six classes of step A, the shape write, the no-test line and the refusal")
+
+
+def t_a_routed_member_has_an_outcome():
+    W = WB()
+    rec = bundle_rec(W, ["R1", "R2", "R3"])
+    f = facts_of(R1={"route_ts": NOW + 5}, R2={"route_ts": NOW - 50}, R3={})
+    o = W.outcomes(rec, f, NOW + 100)
+    chk(lambda: o["R1"]["outcome"] == "routed" and o["R2"]["outcome"] == "open" and o["R3"]["outcome"] == "open",
+        "outcomes: a member routed since the bundle began reads routed; one routed before reads open (%s)" % o)
+    p = W.plan_restart(dict(rec, members=["R1"]), facts_of(R1={"route_ts": NOW + 5}), {"result": "success"}, NOW + 100)
+    chk(lambda: p["act"] == "end", "plan_restart: a bundle whose members are all routed ends, never restarts (%s)" % p)
+    chk(lambda: "route_ts" in W.READ_MEMBERS and "route" in W.READ_MEMBERS, "read_members: reads the shape event's route")
+
+
+def t_an_onboarding_on_a_host_keeps_its_old_tickets():
+    W = WB()
+    import list_dispatch as LD
+    seen = []
+
+    def runner(argv, **kw):
+        seen.append(argv)
+        return types.SimpleNamespace(returncode=0, stderr="", stdout=(
+            "BUNDLE WB-pipeline-onbhost-20261126-080000 of pipeline:onbhost launched: rm-onb-1; 2 member(s): B1, B2\n"))
+    rows = [{"item": "B1", "decision": "launch", "kind": "onboard", "model": "opus", "cap": 120, "run_n": 1,
+             "host": "SteveDesktop", "bundle": {"system": "pipeline:onbhost", "members": ["B1", "B2"], "onboard": True,
+                                                "host": "SteveDesktop"}}]
+    st = {"items": {}}
+    ob = {"homes": {}, "items": {"B1": {"title": "b1"}, "B2": {"title": "b2"}}}
+    LD.execute({"enabled": True, "seat": "BENCH"}, st, rows, ["B1"], {"items": {}, "onboard": ob}, NOW,
+               fx={"remote": runner, "launch": lambda *a, **k: (9, "no local launch", None)})
+    cmd = seen[0][-1] if seen else ""
+    chk(lambda: "./pipe bundle B1 B2 --onboard --why" in cmd and rows[0]["decision"] == "launched",
+        "execute: an onboarding run on a host launches `./pipe bundle <ids> --onboard` there (%s %s)" % (cmd, rows[0]))
+    rec = W.store_read("WB-pipeline-onbhost-20261126-080000")
+    chk(lambda: rec and rec.get("onboard") is True, "launch_remote: the marker of a host onboarding run says onboard (%s)" % rec)
+    items = {"O1": old("O1", "pipeline:keep"), "O2": old("O2", "pipeline:keep")}
+    common = dict(prose_of=lambda i: "", run_effect=lambda c, r: ("fails", ""), run_script_fn=lambda p, r: ("fails", ""),
+                  sha="abc", refused=lambda i: None, held=lambda i: None, leased=lambda it: False, closer=lambda *a: (0, ""))
+    got = W.bundle_command("pipeline:keep", ["O1", "O2"], items, "why", NOW,
+                           launcher=lambda r, t: (0, "DETACHED", "u-keep"), **common)
+    chk(lambda: got["rc"] == 3 and "UNVETTED" in got["out"].get("O1", ""),
+        "bundle_command: without --onboard the age filter leaves an old ticket out UNVETTED, as before (%s)" % got["out"])
+    texts = []
+    got2 = W.bundle_command("pipeline:keep2", ["O1", "O2"], items, "why", NOW, onboard=True,
+                            launcher=lambda r, t: (texts.append(t), (0, "DETACHED", "u-keep2"))[1], **common)
+    chk(lambda: got2["rc"] == 0 and got2["ready"] == ["O1", "O2"] and got2["rec"].get("onboard") is True
+        and texts and "list_onboard.md" in texts[0],
+        "bundle_command --onboard: the old tickets stay in, the record says onboard, the brief is the onboarding brief")
+    o = W.parse(["launch", "pipeline:keep", "--onboard", "--why", "x"])
+    chk(lambda: o.onboard is True, "./pipe bundle takes --onboard")
+
+
+def t_the_page_shows_each_onboarding_run():
+    W = WB()
+    live = W.new_record("pipeline:bridge", ["P1", "P2", "P3", "P4"], "why", "workshop", NOW, onboard=True)
+    live.update(state="live", units=[{"unit": "u-onb", "at": NOW, "kind": "launch"}],
+                outcomes={"P1": {"outcome": "already_fixed"}, "P2": {"outcome": "dropped"}, "P3": {"outcome": "routed"}})
+    ended = W.new_record("pipeline:docs", ["Q1"], "why", "workshop", NOW, onboard=True)
+    ended.update(state="ended")
+    page = W.page_rows(NOW + 60, bundles={b["id"]: b for b in (live, ended)}, unit_live=lambda u: True)
+    md = "\n".join(W.page_md(page))
+    chk(lambda: "onboarding" in md.lower() and "bridge part of the pipeline" in md and "4 old tickets" in md
+        and "1 already fixed" in md and "1 dropped" in md and "1 routed" in md and "1 open" in md,
+        "page: an onboarding run's line names its home, its member count and each outcome so far (%s)" % md)
+    chk(lambda: "1 onboarding" in md, "page: the count line counts the onboarding runs that ended (%s)" % md)
+
+
+def t_the_mods_own_bundle_onboards_its_old_tickets():
+    W = WB()
+    items = {"MO_OLD": old("MO_OLD", "mod:FlowWorks"), "MO_RED": old("MO_RED", "mod:FlowWorks", effect="cmd:x"),
+             "MO_YOUNG": old("MO_YOUNG", "mod:FlowWorks", created_at=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(NOW - 60)))}
+
+    def reading(it):
+        h = (it.home or {}).get("home", "")
+        return {"mod": h[4:] if h.startswith("mod:") else None}
+    kw = dict(items=items, reading=reading, prose_of=lambda i: "", refused={}, leased=lambda it: False)
+    on = W.mod_members("FlowWorks", set(), NOW, onboard=True, **kw)
+    off = W.mod_members("FlowWorks", set(), NOW, onboard=False, **kw)
+    chk(lambda: on == ["MO_OLD", "MO_RED"] and off == ["MO_RED"],
+        "mod_members: with mod on, an old ticket of the mod joins its bundle; off, a ticket with no test stays out; a "
+        "young one never (%s / %s)" % (on, off))
+    rec = W.new_record("mod:FlowWorks", ["ROAD", "MO_OLD", "MO_RED"], "why", "maturation", NOW)
+    note = W.holder_note(rec, items, {"MO_OLD": None, "MO_RED": "cmd:x"})
+    chk(lambda: "MO_OLD" in note and "roles/list_onboard.md" in note,
+        "holder_note: an old member is sent through the onboarding role (%s)" % note[-400:])
+
+
 def main():
     for t in [t_sort_runs_each_members_test_and_closes_only_green, t_sort_dry_closes_nothing, t_members_are_one_system,
               t_ready_members_only, t_one_live_bundle_per_system, t_the_record_is_written_at_launch,
@@ -1018,7 +1305,12 @@ def main():
               t_live_pass_takes_a_free_game_or_says_unrun, t_the_page_shows_each_live_bundle,
               t_the_maturation_road_back_is_one_bundle, t_a_test_never_writes_the_real_store,
               t_the_conductor_ends_a_dead_bundle, t_five_tickets_two_fixed_one_run,
-              t_each_limit_names_its_danger]:
+              t_each_limit_names_its_danger, t_old_tickets_are_onboarded_by_home,
+              t_an_onboarding_member_is_ready_or_left_out_with_its_reason, t_the_onboard_classes_are_data,
+              t_one_onboarding_beside_no_live_bundle, t_an_onboarding_that_could_not_look_starts_nothing,
+              t_a_home_lead_takes_its_old_tickets, t_the_onboarding_brief_sorts_before_it_checks,
+              t_a_routed_member_has_an_outcome, t_an_onboarding_on_a_host_keeps_its_old_tickets,
+              t_the_page_shows_each_onboarding_run, t_the_mods_own_bundle_onboards_its_old_tickets]:
         print("-- %s" % t.__name__)
         try:
             t()

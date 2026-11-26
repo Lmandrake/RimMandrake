@@ -538,6 +538,26 @@ def t_each_limit_names_its_danger():
         chk(lambda k=k: k in cfg and str(cfg.get("_%s_doc" % k) or "").strip(), "%s has its danger doc" % k)
 
 
+def t_a_named_item_of_an_onboard_home_joins_its_onboarding_run():
+    """RIMMANDRAKE_ONBOARD_OLD_TICKETS_BY_HOME_SHAPED_SINGLY_TODAY: on 2026-11-25 the Conductor named 50 old items, and
+    each got a Shape run of its own that read the repo again for one ticket."""
+    on = {"pipeline": "on", "machine": "on", "mod": "on", "game": "off"}
+    cfg = dict(CFG, onboard_classes=on, max_live=5)     # room for each row: a live bundle, not full slots, holds D
+    items = {"A": lane_it(), "C": lane_it(), "D": lane_it()}
+    homes = {"pipeline:x": {"members": ["A", "B"], "left_out": {}, "open": 2},
+             "pipeline:busy": {"members": ["D"], "left_out": {}, "open": 1}}
+    ob = {"homes": homes, "items": {"A": {"title": "a"}, "B": {"title": "b"}, "D": {"title": "d"}}}
+    rows, launches, _ = decide(items, cfg=cfg, systems={"A": "pipeline:x", "C": "game:y", "D": "pipeline:busy"},
+                               bundles_live={"pipeline:busy": "WB-pipeline-busy-1"}, join={}, onboard=ob)
+    a = rows["A"]
+    chk(lambda: a.get("kind") == "onboard" and a["decision"] == "launch" and sorted(a["bundle"]["members"]) == ["A", "B"]
+        and "A" in launches, "a named item of an on home leads its home's onboarding run, not a Shape run (%s)" % a)
+    chk(lambda: rows["C"]["decision"] == "shape" and rows["C"].get("kind") == "shape" and "C" in launches,
+        "a named item of a home whose class is off still gets its own Shape run (%s)" % rows["C"])
+    chk(lambda: rows["D"]["decision"] == "bundle_live" and "WB-pipeline-busy-1" in rows["D"]["why"] and "D" not in launches,
+        "a named item of a home with a live bundle waits for it (%s)" % rows["D"])
+
+
 def main():
     top = tempfile.mkdtemp(prefix="selftest_list_shape_")
     X.update(root=os.path.join(top, "root"))
@@ -572,6 +592,7 @@ def main():
                   t_a_reshape_by_another_party_starts_the_run_count_again,
                   t_status_lists_every_item_due_for_shape,
                   t_the_shape_brief_asks_for_the_need,
+                  t_a_named_item_of_an_onboard_home_joins_its_onboarding_run,
                   t_each_limit_names_its_danger):
             try:
                 t()

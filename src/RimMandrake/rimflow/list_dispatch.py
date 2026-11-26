@@ -52,6 +52,12 @@ oldest item that another waits on, then oldest filing, one decision:
                   others (and slots_full rows of that system) read bundled; a member of a live bundle reads in_bundle; a
                   ready row of a system whose bundle is live reads bundle_live; a member its bundle refused reads stopped;
                   a lead whose room is a host runs its whole bundle on that host (work_bundle.launch_remote)
+  onboard         the row `-onboard`: one onboarding run per home of an on class (list_dispatch.json onboard_classes)
+                  that holds old tickets (no check, no route, no shaped split, older than shape_grace_h) and has no live
+                  bundle, with no hand (onboard_step; work_bundle part 8; brief roles/list_onboard.md). A lead of the
+                  home's bundle takes them; else the home's first Shape row leads it; else it takes room as a launch
+                  does, SteveDesktop first. The row names the homes started, those not started and why, and each
+                  left-out ticket with its reason. Could not look: one blind row, nothing starts
 A run's end is read from the item: closed (done), a wait (Waiting), a `LEFT OPEN:` note (its next act: one more run),
 nothing (stopped). The tick files no item.
 Runs on rm-list-dispatch.timer from the dispatch clone. Reading: <RM_DISPATCHER_STATE>/list_dispatch/reading.json
@@ -701,6 +707,117 @@ def decide(cfg, st, facts, now, account=(True, "")):
     if facts.get("systems") is not None:     # work_bundle.py: one bundle per system, the first launch row leads it
         import work_bundle as WB
         rows, launches = WB.group(rows, launches, facts["systems"], facts.get("bundles_live") or {}, facts.get("join"))
+    if facts.get("onboard") is not None:     # the old tickets of each home: one onboarding run per home (onboard_step)
+        room_st = {"live_total": live_total}
+
+        def room():
+            """-> (host, None) | ("", None) for Archmagi | (None, why): the room a launch row takes, through its gates."""
+            if not cfg.get("enabled"):
+                return None, "list_dispatch.json has enabled: false"
+            if paused:
+                return None, paused
+            if not account[0]:
+                return None, account[1] or "the account gate holds launches"
+            host, hwhy = host_first(cfg, facts.get("hosts"), placed, {"needs": "offline"})
+            if host:
+                placed[host] = placed.get(host, 0) + 1
+                return host, None
+            over, owhy, _cnl = machine_load(cfg, facts.get("load"), facts.get("cores"))
+            no_host = ("; no host has room: " + hwhy) if hwhy else ""
+            if over:
+                return None, owhy + no_host
+            free, full = slot_free(cfg, room_st["live_total"], len(launches), facts.get("load"),
+                                   recent=0 if recent is None else recent.value if recent.ok else None)
+            if not free:
+                return None, full + no_host
+            if pool:
+                return None, pool
+            room_st["live_total"] += 1
+            return "", None
+        rows, launches = onboard_step(cfg, rows, launches, dict(facts["onboard"], systems=facts.get("systems") or {}),
+                                      facts.get("bundles_live") or {}, room)
+    return rows, launches
+
+
+def onboard_step(cfg, rows, launches, ob, live, room):
+    """The old tickets of each home become ONE onboarding run per home (boundary old-tickets-are-onboarded-by-home).
+    ob: {"homes": work_bundle.onboard_homes(...)["homes"], "systems": {lane item: system}} or {"could_not_look"};
+    live: {system: live bundle id}; room() -> (host, None) | ("", None) | (None, why). For each home that
+    work_bundle.onboard_pick lets start, in its order: a lead bundle of the home (a ticket with a check) takes the home's
+    ready old tickets; else the home's first Shape row leads the run in the room it already has; else the run takes
+    room(). Other Shape rows of a started home read bundled; a Shape row of a home with a live bundle reads
+    bundle_live; one of a home whose class is off stays its own Shape run. One row `-onboard` says what started, what
+    did not and why, and each left-out ticket with its reason. Edits rows and launches in place. -> (rows, launches)."""
+    import work_bundle as WB
+    if ob.get("could_not_look"):
+        why = "could not look at the old tickets by home (%s); no onboarding run starts" % ob["could_not_look"]
+        rows.append({"item": "-onboard", "decision": "blind", "why": why, "could_not_look": why})
+        return rows, launches
+    classes = cfg.get("onboard_classes")
+    if classes is None:
+        classes = _shipped().get("onboard_classes") or {}
+    homes, systems = ob.get("homes") or {}, ob.get("systems") or {}
+    go, no = WB.onboard_pick(homes, live, classes)
+    cap = cfg.get("opus_cap_usd", _shipped().get("opus_cap_usd"))
+    leads = {r["bundle"]["system"]: r for r in rows if r.get("bundle") and r["item"] in launches}
+    shapes = {}
+    for r in rows:
+        if r.get("kind") == "shape" and r["item"] in launches and systems.get(r["item"]):
+            shapes.setdefault(systems[r["item"]], []).append(r)
+    started = []
+    # a home whose lead or Shape row already holds room starts first: it takes no new room; the rest by go's order
+    for s in sorted(go, key=lambda s: (s not in leads and s not in shapes, go.index(s))):
+        mem = list(homes[s]["members"])
+        if s in leads:
+            lead = leads[s]
+            b = lead["bundle"]
+            b["members"] += [i for i in mem if i not in b["members"]]
+            b["onboard"] = True
+            lead["why"] = "%s; it is also the onboarding run of the %d old ticket(s) of %s" % (lead.get("why", ""), len(mem), s)
+        elif s in shapes:
+            lead = shapes[s][0]
+            ids = [lead["item"]] + [i for i in mem if i != lead["item"]]
+            lead.update(kind="onboard", decision="launch", model="opus", cap=cap, run_n=1,
+                        bundle=dict({"system": s, "members": ids, "onboard": True},
+                                    **({"host": lead["host"]} if lead.get("host") else {})),
+                        why="the onboarding run of %s: %d old ticket(s), led by this named ticket in its own room%s" % (
+                            s, len(ids), "; on %s" % lead["host"] if lead.get("host") else ""))
+        else:
+            host, why = room()
+            if host is None:
+                no[s] = "no room: %s" % why
+                continue
+            lead = {"item": mem[0], "decision": "launch", "kind": "onboard", "model": "opus", "cap": cap, "run_n": 1,
+                    "bundle": dict({"system": s, "members": mem, "onboard": True}, **({"host": host} if host else {})),
+                    "why": "the onboarding run of %s: %d old ticket(s); on %s" % (s, len(mem), host or "Archmagi")}
+            if host:
+                lead["host"] = host
+            rows.append(lead)
+            launches.append(lead["item"])
+        for r in shapes.get(s, []):
+            if r is not lead:
+                r.update(decision="bundled", why="joins the onboarding run of %s that %s leads this tick" % (s, lead["item"]))
+                if r["item"] in launches:
+                    launches.remove(r["item"])
+                if r["item"] not in lead["bundle"]["members"]:
+                    lead["bundle"]["members"].append(r["item"])
+        started.append({"system": s, "lead": lead["item"], "members": list(lead["bundle"]["members"]),
+                        "host": lead["bundle"].get("host")})
+    for s, rs in shapes.items():
+        if s in (live or {}):
+            for r in rs:
+                r.update(decision="bundle_live", why="waits for the live bundle %s of %s; it joins the next one" % (live[s], s))
+                if r["item"] in launches:
+                    launches.remove(r["item"])
+    left = {s: dict(h["left_out"]) for s, h in homes.items() if h.get("left_out")}
+    head = "; ".join("%s (%d member(s), led by %s%s)" % (x["system"], len(x["members"]), x["lead"],
+                                                       ", on %s" % x["host"] if x["host"] else "") for x in started)
+    nots = "; ".join("%s: %s" % kv for kv in list(no.items())[:6])
+    rows.append({"item": "-onboard", "decision": "onboard",
+                 "why": "onboarding runs started: %s | not started: %d home(s)%s" % (
+                     head or "none", len(no), (" (" + nots + ("; ..." if len(no) > 6 else "") + ")") if no else ""),
+                 "onboard": {"started": started, "not_started": no, "left_out": left,
+                             "no_system": ob.get("no_system") or {}}})
     return rows, launches
 
 
@@ -945,6 +1062,67 @@ def join_candidates(cands, now, want, system, facts, lease, off, held, refused):
     return out
 
 
+def onboard_facts_safe(fn):
+    """-> fn(), or {"could_not_look": cause} when it raises: an unread list is never an empty one."""
+    try:
+        return fn()
+    except Exception as e:  # noqa: BLE001 - could not look: no onboarding run starts, and the row says so
+        return {"could_not_look": "%s: %s" % (type(e).__name__, _one(e, 300))}
+
+
+def onboard_facts(open_, now, cfg, systems, ordered, w, mw_mods, mw_cause, bundles, mods):
+    """-> work_bundle.onboard_homes over the open old tickets of the ledger, with `items` ({id: {"title", "state"}}) for
+    the brief. A ticket is left out, with its reason, under a live lease, with a wait ahead, blocked or waiting on an
+    open item, `pipe off`, held by the owner, refused by a bundle since its last other event, or in a live bundle."""
+    import model as LM
+    import mod_work as MW
+    import work_bundle as WB
+    grace = float(cfg.get("shape_grace_h", 24)) * 3600
+    old = {i: x for i, x in open_.items() if WB.is_old(x, now, grace)}
+    ref = WB.refusals(LM.read())
+    busy = {}
+    for b in bundles.values():
+        if b.get("state") in WB.LIVE_STATES:
+            for m in b.get("members") or []:
+                busy[m] = b["id"]
+
+    def system(i):
+        if i in (systems or {}):
+            return systems[i]
+        mw = (ordered.get(i) or {}).get("mod_work") or (
+            {"mod": None, "unreadable": mw_cause} if mw_mods is None else MW.reading(old[i], mw_mods, LM.ITEMS))
+        return WB.system_of(old[i], lambda it, m=mw: m, w.items)
+
+    def left_out(i):
+        x = old[i]
+        if LM.lease_status(x, now) == "live" and x.state == "doing":
+            return "it is under a live lease (%s)" % x.owner
+        if x.wait_until:
+            t = LM.epoch(x.wait_until)
+            if t is None or t > now:
+                return "it waits until %s: %s" % (x.wait_until, x.wait_reason or "no reason given")
+        waits, blocked = block_facts(w, x, now)
+        if waits:
+            return "it waits on the open item(s) %s" % ", ".join(waits)
+        if blocked:
+            return "it is blocked: %s" % (x.blocked_reason or "no reason given")
+        mod = mod_of(i, x.title, mods)
+        o, cnl = _off(i, mod)
+        if o or cnl:
+            return o or cnl
+        h = _held(mod)
+        if h:
+            return h
+        if ref.get(i):
+            return "a bundle refused it since its last other event: %s" % _one(ref[i], 200)
+        if i in busy:
+            return "it is a member of the live bundle %s" % busy[i]
+        return None
+    got = WB.onboard_homes(old, system, left_out)
+    got["items"] = {i: {"title": old[i].title, "state": old[i].state} for h in got["homes"].values() for i in h["members"]}
+    return got
+
+
 def gather(st, now=None, root=None, load_lag_s=None):
     import list_effect as LE
     now = time.time() if now is None else now
@@ -1018,7 +1196,7 @@ def gather(st, now=None, root=None, load_lag_s=None):
     on_hosts, unread_old = {}, []
     runs, recent = _runs(set(ordered), now, cfg["load_lag_s"] if load_lag_s is None else load_lag_s, on_hosts,
                          unread_old)
-    systems, bundles_live, join = None, {}, {}
+    systems, bundles_live, join, bundles = None, {}, {}, {}
     if runs is not None:
         import work_bundle as WB
         try:
@@ -1065,6 +1243,11 @@ def gather(st, now=None, root=None, load_lag_s=None):
             except Exception as e:  # noqa: BLE001 - which systems a remote bundle holds is unknown: nothing launches
                 runs, recent = None, PR_could_not_look("the ledger's bundle citations or the tickets that may join a "
                                                        "bundle could not be read (%s: %s)" % (type(e).__name__, e))
+    if runs is None:
+        onboard = {"could_not_look": "the run records or the work-bundle store could not be read (%s)" % recent}
+    else:
+        onboard = onboard_facts_safe(lambda: onboard_facts(
+            open_, now, cfg, systems, ordered, w, mw_mods, mw_cause, bundles, mods))
     _read_next(st, ordered, runs or {})
     paused = _paused(now)
     for iid, d in ordered.items():
@@ -1090,7 +1273,7 @@ def gather(st, now=None, root=None, load_lag_s=None):
     live = None if runs is None else sum(len(r["live"]) for r in runs.values())
     load = load_now()
     return {"items": ordered, "runs": runs, "other_live": 0, "paused": paused, "systems": systems,
-            "bundles_live": bundles_live, "join": join,
+            "bundles_live": bundles_live, "join": join, "onboard": onboard,
             "pool": _pool(), "live_lane": live, "load": load.value if load.ok else None, "recent": recent,
             "cores": os.cpu_count(),
             "hosts": host_facts(cfg, on_hosts), "unread_old": unread_old}
@@ -1228,12 +1411,12 @@ def execute(cfg, st, rows, launches, facts, now, fx=None):
     fx = fx or {}
     do_launch, do_need = fx.get("launch", launch), fx.get("need", conductor_need)
     do_close, do_attach = fx.get("close", close), fx.get("effect", attach)
-    items = facts.get("items") or {}
+    items = dict(((facts.get("onboard") or {}).get("items") or {}), **(facts.get("items") or {}))   # + old members' titles
     sti = st.setdefault("items", {})
     for row in rows:
         iid = row["item"]
         it = items.get(iid) or {}
-        s = sti.setdefault(iid, {}) if iid != "-" else {}
+        s = sti.setdefault(iid, {}) if not iid.startswith("-") else {}
         if row.get("need"):
             try:
                 do_need(_need_text(row["need"]), now)
@@ -1303,15 +1486,16 @@ def launch_bundle_row(cfg, st, row, items, now, do_launch, remote=None, rows=())
     model = row["model"] if len(b["members"]) == 1 and not b.get("host") else "opus"
     cap = row["cap"] if model == row["model"] else cfg.get("opus_cap_usd", _shipped().get("opus_cap_usd"))
     mod = (items.get(b["members"][0]) or {}).get("mod")
-    why = "the Workshop Pipeline's ready tickets of %s (list_dispatch tick, %s)" % (b["system"], UNIT)
+    why = ("the onboarding run of the old tickets of %s, with its ready tickets (list_dispatch tick, %s)" if b.get("onboard")
+           else "the Workshop Pipeline's ready tickets of %s (list_dispatch tick, %s)") % (b["system"], UNIT)
     if b.get("host"):
         rc, rec = WB.launch_remote(b["host"], b["system"], b["members"], why, "workshop", now=now,
-                                   launched_by=UNIT, **({"runner": remote} if remote else {}))
+                                   launched_by=UNIT, onboard=bool(b.get("onboard")), **({"runner": remote} if remote else {}))
     else:
         def launcher(rec, text):
             return do_launch(rec["lead"], model, cap, text, cfg.get("seat", "BENCH"), mod, env={WB.ENV: rec["id"]})
         rc, rec = WB.launch_bundle(b["system"], b["members"], items, why, "workshop", now=now, launcher=launcher,
-                                   launched_by=UNIT)
+                                   launched_by=UNIT, onboard=bool(b.get("onboard")))
     sti = st.setdefault("items", {})
     if rc == 2:
         row.update(decision="bundle_live", why=str(rec))
@@ -1380,7 +1564,8 @@ def tick(cfg, apply, fx=None, now=None, only=None):
               "machines": machine_reading(cfg, facts),
               "launched": [{"item": r["item"], "unit": r.get("unit"), "model": r.get("model")} for r in rows
                            if r.get("decision") == "launched"],
-              "items": {r["item"]: dict({k: r.get(k) for k in ("decision", "why", "model", "unit", "need")},
+              "items": {r["item"]: dict({k: r.get(k) for k in ("decision", "why", "model", "unit", "need")
+                                         + (("onboard",) if r.get("onboard") else ())},
                                         stage=row_stage((facts.get("items") or {}).get(r["item"]), r, now))
                         for r in rows}}
         if apply:

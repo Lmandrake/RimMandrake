@@ -4,7 +4,8 @@ Item: `RIMMANDRAKE_BATCH_ONE_MODS_OPEN_WORK_INTO_ONE_RUN_PIPELINE_SPLITS_PER_TIC
 (section 7 holds the owner's four decisions). Why: both pipelines launched one run per ticket, and each run loaded the
 same system again (design section 1).
 
-Code: `src/RimMandrake/rimflow/work_bundle.py` (all of it), `src/RimMandrake/rimflow/roles/builder.md` (its Work Bundle setting), the
+Code: `src/RimMandrake/rimflow/work_bundle.py` (all of it), `src/RimMandrake/rimflow/roles/builder.md` (its Work Bundle setting),
+`src/RimMandrake/rimflow/roles/list_onboard.md` (the onboarding run), the
 bundle hooks in `list_dispatch.py` (`gather`: `work_bundle.overlay`; `decide`: the `in_bundle` and `bundle_refused`
 rows and `work_bundle.group`; `execute`: a lead row launches its bundle), the bundle branch of
 `left_open_continue.py` (`plan`, `recheck`, `resume_choice`, `header`, `run`, `at_finish`), the `bundle` verb of
@@ -78,7 +79,9 @@ bundle began). A member with none of these is **open**.
   (before or after the lead), read `bundled` and launch nothing of their own. The lead's bundle also takes each ready open ticket of its system
   that has no lane row (no check: `list_dispatch.join_candidates`; not leased, blocked, waiting, off, held, refused or
   in a live bundle); such a ticket never leads. A home with one ready ticket still gets its run. An `item:<ID>` ticket
-  is a bundle of one. Shape runs are not bundled. Test: `t_the_lane_bundles_a_home_not_a_ticket`.
+  is a bundle of one. `group` bundles no Shape row; the onboarding step after it does (old-tickets-are-onboarded-by-home):
+  a Shape row of a home of an on class is a member of that home's onboarding run, and a Shape row of any other home is
+  its own Shape run. Test: `t_the_lane_bundles_a_home_not_a_ticket`.
 - **a-bundle-on-another-host-launches-there.** A lane lead row whose room is another host (`list_dispatch.host_room`)
   leads a bundle that runs ON that host: `ssh <door> 'cd ~/rm/bench && ./sync && ./pipe bundle <ids> --why ...'`
   (`work_bundle.launch_remote`), so the host's store holds its record and its restarts, and its sort reads a current
@@ -144,11 +147,65 @@ bundle began). A member with none of these is **open**.
 - **the-maturation-road-back-is-one-bundle.** On a pilot mod's road back, the holder run (`maturation_dispatch.
   road_back_holder`, which already took every open road-back item in one run) is that mod's one bundle: its record,
   `RM_WORK_BUNDLE` in its env, the bundle named in its brief, and the mod's ready tickets that carry a test joined to it
-  (`work_bundle.mod_members`; a ticket with no test stays out: 66 of 67 FlowWorks tickets had none on 2026-11-24, and
-  `./pipe bundle <Mod>` takes them by hand). A store that cannot be read leaves the holder as before, its line saying
+  (`work_bundle.mod_members`). An old ticket of the mod (no test, no route) joins too while `onboard_classes` puts `mod`
+  on (the-mods-own-bundle-onboards-its-old-tickets); a newer ticket with no test stays out. A store that cannot be read
+  leaves the holder as before, its line saying
   `work bundle UNMEASURED`. A mod that the owner holds, a mod whose readiness
   list is not READY, and a mod with a live bundle launch no bundle. The mod's version, bars and stage records are not
   written by this step.
+
+### Onboarding old tickets by home (item RIMMANDRAKE_ONBOARD_OLD_TICKETS_BY_HOME_SHAPED_SINGLY_TODAY)
+
+Why: on 2026-11-25 117 of 119 old pipeline and machine tickets had no name for Shape, so the lane launched nothing and
+SteveDesktop sat idle; 21 of 28 bundle records held one member; the first 5 hand-named Shape runs each read the repo
+again for one ticket and changed no code. Words: an **old ticket** is an open ticket with no outcome check, no routed
+part and no shaped split (`list_shape.needs_shape_run`) that is at least `shape_grace_h` old (younger, its filer may
+still close it). An **onboarding run** is a bundle record with `onboard` set; its brief is
+`src/RimMandrake/rimflow/roles/list_onboard.md` (the reality sort, then the checks, then the work). Code: part 8 of
+`work_bundle.py` (`is_old`, `onboard_class`, `onboard_homes`, `onboard_pick`, `onboard_brief`), `onboard_step` and the
+onboarding lines of `gather` in `list_dispatch.py`, `onboard_classes` in `list_dispatch.json`.
+
+- **old-tickets-are-onboarded-by-home.** The item's acceptance. In a lane tick with room on a host or on Archmagi, a
+  home of a class that `onboard_classes` puts `on`, with open old tickets and no live bundle, gets ONE onboarding run
+  whose members are all its ready old tickets, launched by the program; no hand names a ticket. On the base commit
+  the lane decided none. A home whose lead or Shape row already holds room starts first (it takes no new room); then
+  the home with the most open old tickets takes the next room. Which home holds a ticket that blocks a switched-on mod
+  is not readable by program (a readiness list is one prose line of `./pipe why`), so that order is not built. Each home
+  is one run: two homes are never in one run, and one home never gets two. Test: `t_old_tickets_are_onboarded_by_home`.
+- **an-onboarding-member-is-ready-or-left-out-with-its-reason.** A ticket that is blocked, waits on an open item, has a
+  dated wait ahead, is under a live lease, has a live run, is `pipe off`, is held by the owner, is in a live bundle or
+  was refused by a bundle since its last other event is left out, and the tick's reading names it with its reason.
+  A home whose old tickets are all left out starts nothing and says why.
+- **the-onboard-classes-are-data.** `onboard_classes` in `list_dispatch.json` says which classes of home the program may
+  start: `pipeline` and `machine` on; `game` off (the owner held the sort of the old game-needs tickets on 2026-11-23);
+  `mod` on means the mod's own bundle takes them (the-mods-own-bundle-onboards-its-old-tickets): the lane never starts a
+  `mod:` home. A ticket with no home of its own (`item:`, `cause:`) is never started. A home of a class that is off or
+  has no setting starts nothing, and the reading says which setting holds it. The code path is the same for every class.
+- **one-onboarding-beside-no-live-bundle.** A home with a live bundle (here, on a host, or cited on the ledger) starts no
+  onboarding run, and the reading names that bundle.
+- **an-onboarding-that-could-not-look-starts-nothing.** When the old tickets, their homes or the bundle store could not be
+  read, no onboarding run starts and the reading says `could not look` with the cause (one blind row, counted by
+  `blind_hold`).
+- **a-home-lead-takes-its-old-tickets.** When the tick already has a bundle lead for a home of an on class (a ticket with
+  a check), that lead's bundle takes the home's ready old tickets and is the home's onboarding run. A Shape row of such a
+  home (a hand-named ticket) is a member and reads `bundled`; when no lead exists, the first Shape row of the home leads
+  the onboarding run in the room it already has. A Shape run that is live is not stopped.
+- **the-onboarding-brief-sorts-before-it-checks.** The brief of an onboarding run names its role file
+  `roles/list_onboard.md`, the bundle id and state file, each member with its title, step A (the reality sort, before
+  any check is written), step B (group, write each check red with its `fooled_by` line), step C (the work, by the role
+  `roles/builder.md`, setting Work Bundle), the two tests of `fixer_rule.py`, the polish rule, and the rule that old work
+  is filtered before any process takes it. It states no spend, cap or remainder.
+- **a-routed-member-has-an-outcome.** A member that the run routes (`rimflow shape --parts` with a routed part, since the
+  bundle began) reads the outcome `routed`; it is not open, so the bundle does not restart for it.
+- **an-onboarding-on-a-host-keeps-its-old-tickets.** An onboarding run whose room is a host launches there with
+  `./pipe bundle <ids> --onboard`. `--onboard` keeps an old ticket that the age filter (`age_refusal`) would leave out
+  UNVETTED: the run's own step A and step B are that filter, and no member is worked before its check is seen red
+  today. Without `--onboard` the age filter stands as before.
+- **the-page-shows-each-onboarding-run.** The page line of a live onboarding run says it onboards old tickets, its home,
+  the count of its members and the count of each outcome so far; the count line counts the onboarding runs that ended.
+- **the-mods-own-bundle-onboards-its-old-tickets.** `mod_members` with `mod` on takes each ready old ticket of the mod
+  (no test) into the mod's bundle, and the holder's note sends those members through `roles/list_onboard.md`. With
+  `mod` off, a ticket with no test stays out.
 
 ## PLANNED (built part by part; each moves up to PROMISES, with its test, when its part lands)
 

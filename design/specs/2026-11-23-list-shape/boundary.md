@@ -13,7 +13,9 @@ Each promise has a test of its name in `src/RimMandrake/rimflow/selftest_list_sh
 ## How it works, in one paragraph
 
 An open item with no outcome check and no route is due for Shape when it is named (`rimflow shape <ID> --enter`), or
-when it was filed after Shape went live (`shape_from`) and is older than `shape_grace_h`. The lane
+when it was filed after Shape went live (`shape_from`) and is older than `shape_grace_h`. An old item of a home of an
+on class (`onboard_classes`) is shaped in its home's onboarding run instead, with the other old items of that home
+(`design/specs/2026-11-24-work-bundles/boundary.md` §Onboarding old tickets by home). The lane
 (`list_dispatch.py`) launches one Shape run on a due item, through every gate a Work run passes. The run applies the
 worth-the-touch test, splits the item into parts, and writes them with `rimflow shape <ID> --parts ... --size ...`.
 Each part has an outcome check with its "what would pass this check and leave the need unmet" line (`fooled_by`), or a
@@ -52,8 +54,8 @@ skills or models, or the run needs help. Asking for help (a `LEFT OPEN:` note, a
   old item that nobody named reads `reshape`.
 - **the-fresh-reader-of-pipeline-code.** A Shape-and-Work run that changes pipeline code owes one fresh reader (CLAUDE.md
   §Code is clean). The lane does not launch that reader.
-- **old-items-unnamed.** An item filed before `shape_from` never enters Shape by itself (plan: no hand migration of
-  old items). It enters when someone names it.
+- **old-items-with-no-home.** An item filed before `shape_from` with no home of its own (`item:`, `cause:`), or of a
+  home whose class is off, never enters Shape by itself. It enters when someone names it.
 
 ## PROMISES (each one is owed a test of the same name)
 
@@ -82,8 +84,13 @@ skills or models, or the run needs help. Asking for help (a `LEFT OPEN:` note, a
 - **the-ledger-carries-the-shape.** A `shape` event replays into `Item.shape` (parts, size, when, who) and sets
   `Item.effect` to the derived check (None when all parts are routed). `--enter` replays into `Item.shape_named`. No
   stage keeps a store of its own.
-- **old-items-enter-only-when-named.** An open item with no check and no route is due for Shape only when it is named,
-  or it was filed at or after `shape_from` and is at least `shape_grace_h` old. Each reading says why in words.
+- **old-items-enter-only-when-named.** An open item with no check and no route is due for a Shape run of its own only
+  when it is named, or it was filed at or after `shape_from` and is at least `shape_grace_h` old. Each reading says why
+  in words.
+- **a-named-item-of-an-onboard-home-joins-its-onboarding-run.** A due item whose home is of an on class
+  (`onboard_classes`) gets no Shape run of its own: it is a member of its home's onboarding run (it reads `bundled`, or
+  it leads that run in the room its row had), and a home with a live bundle holds it (`bundle_live`). A due item of
+  any other home still gets its own Shape run. Test: `t_a_named_item_of_an_onboard_home_joins_its_onboarding_run`.
 - **a-naming-can-be-taken-off.** `rimflow shape <ID> --leave` takes the naming off an item: the item is due again only by
   its age, or when someone names it again. It keeps the item's split and check. On an item that is not named it writes
   nothing and says so. Why: on 2026-11-23 the old-ticket sort named 80 old items, and the owner stopped the sort.
