@@ -10,6 +10,7 @@ mod was right: its GenSteps carry MayRequire="mandrake.rsw.armoury". The list wa
   1. the instance: every def that a `jawa/get_defs` literal in UtinniPatches' validation.py names is defined by a mod
      whose packageId runner.composed_ids("UtinniPatches") composes (the run's own list)
   2. the guard can see: with the closure taken away (the pre-fix list), it names RSW_Phrik and RSW_Zersium
+  3. Armoury's list carries VFE Factory and the glower crust, which its smelt processes are conditional on
 Offline: reads src/ only; nothing is deployed and no game is touched."""
 import os
 import re
@@ -97,6 +98,13 @@ def main():
     seen = off_list("UtinniPatches", pre_fix, homes)
     ok(any("RSW_Phrik " in s for s in seen) and any("RSW_Zersium " in s for s in seen),
        "the guard can see: on the pre-fix list (hard dependencies only) it names RSW_Phrik and RSW_Zersium", seen)
+    # Armoury's ores_and_smelts reads PipeSystem.ProcessDef/RSW_SmeltDoonium, RSW_SmeltPhrik and RSW_SmeltPlasteelFromSlag.
+    # RSW_Smelter_Alloys.xml adds them only when VFE Factory's VFEFactory_SmeltMetalFromSlag AND RM_GlowerCrust (Scarlands,
+    # composed into the biomes mod) exist; on a list without both, those rows can only read UNMEASURED.
+    arm = {p.lower() for p in runner.composed_ids("Armoury")}
+    smelt_needs = {"vanillaexpanded.vfefactory": "VFEFactory_SmeltMetalFromSlag", pid_of("Scarlands"): "RM_GlowerCrust"}
+    missing = ["%s (%s)" % (p, why) for p, why in smelt_needs.items() if p not in arm]
+    ok(not missing, "Armoury's list carries what its smelt processes are conditional on", missing)
     print("RESULT: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))
     return 1 if FAILS else 0
 
