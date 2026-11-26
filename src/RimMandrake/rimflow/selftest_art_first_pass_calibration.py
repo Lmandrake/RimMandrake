@@ -171,8 +171,16 @@ def t_weak_is_no_verdict():
     short = res()
     short["cases"] = [c for c in short["cases"] if c["id"] != "first_pass_RM_Dewblade_B"]
     check("weak-is-no-verdict: a case that did not run still reads UNTESTED", st(short) == "UNTESTED")
-    check("weak-is-no-verdict: calibrate reads the row's `abstain` (run_check passes the row)",
-          "row" in RC.run_check.__code__.co_varnames)
+    with tempfile.TemporaryDirectory() as tmp:
+        reg_path, res_path = os.path.join(tmp, "reg.json"), os.path.join(tmp, "res.json")
+        json.dump(res(), open(res_path, "w"))
+        cmd = [sys.executable, "-c", "import os,shutil; shutil.copy(%r, os.environ[%r])" % (res_path, RC.RESULTS_ENV)]
+        fam = {"brief": [], "hash": RC.brief_hash([], tmp), "status": "UNTESTED", "planted": pl, "free_check": cmd}
+        json.dump({"families": {"with": dict(fam, abstain=ab), "without": fam}}, open(reg_path, "w"))
+        got = RC.calibrate(path=reg_path, root=tmp, now=0)["families"]
+    check("weak-is-no-verdict: calibrate passes the row's `abstain` through (with CALIBRATED, without FAILED)",
+          (got["with"]["status"], got["without"]["status"]) == ("CALIBRATED", "FAILED"),
+          {k: (v["status"], v["last_run"].get("cases")) for k, v in got.items()})
 
 
 def main():

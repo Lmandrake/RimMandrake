@@ -697,8 +697,9 @@ def judge_cases(planted, results, tolerate=0, abstain=None):
                 return "FAILED", "%d of %d %s case(s) came out %s, under the row's decided_share %s (%r is no verdict)" % (
                     decided.get(k, 0), want[k], k, k, share, skip)
         held = sum(1 for c in cases if c.get("got") == skip)
-        return "CALIBRATED", "%d of %d planted case(s) came out the other way; %s; %d answered %r, no verdict (row's abstain)" % (
-            len(wrong), n, ", ".join("%d of %d %s decided" % (decided[k], want[k], k) for k in EXPECTS), held, skip)
+        return "CALIBRATED", "%d of %d planted case(s) came out the other way%s; %s; %d answered %r, no verdict (row's abstain)" % (
+            len(wrong), n, " (%s)" % ", ".join(wrong) if wrong else "",
+            ", ".join("%d of %d %s decided" % (decided[k], want[k], k) for k in EXPECTS), held, skip)
     if wrong:
         return "CALIBRATED", "%d of %d planted case(s) came out the other way (%s), within the row's tolerate of %d" % (
             len(wrong), n, ", ".join(wrong), tolerate)
