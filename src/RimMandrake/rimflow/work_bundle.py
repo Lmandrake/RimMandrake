@@ -111,6 +111,8 @@ def resolve(target, items, mods, reading, road_back=None):
     the why says could not look."""
     if isinstance(target, (list, tuple)) and len(target) == 1 and not re.match(r"^[A-Z][A-Z0-9_]{7,}$", target[0]):
         target = target[0]
+    if isinstance(target, str) and target in items:     # one ticket id, as `./pipe bundle <ID>` passes it
+        target = [target]
     if isinstance(target, (list, tuple)):
         got, sy = [], {}
         for i in target:

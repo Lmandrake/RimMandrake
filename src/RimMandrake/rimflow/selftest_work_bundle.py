@@ -158,6 +158,11 @@ def t_members_are_one_system():
         "resolve: ids of two systems are refused, naming each system (%s)" % why)
     sysname, ids, why = W.resolve(["N_NOHOME"], items, mods, reading)
     chk(lambda: sysname == "item:N_NOHOME" and ids == ["N_NOHOME"], "resolve: a ticket with no home is item:<ID>")
+    # `./pipe bundle <ID>` (cmd_launch, and the lane's launch on another host) passes ONE target as a bare string:
+    # 2026-11-25 7:02 PM PST, the first lane bundle on SteveDesktop was refused as "not a home" for that reason
+    sysname, ids, why = W.resolve("Q_BRIDGE", items, mods, reading)
+    chk(lambda: sysname == "pipeline:bridge" and ids == ["Q_BRIDGE"],
+        "resolve: one ticket id given as a bare string is that ticket (%s %s %s)" % (sysname, ids, why))
     chk(lambda: W.system_of(items["M_FLOW"], reading) == "mod:FlowWorks",
         "system_of: a mod ticket's system is mod:<Mod>")
 
