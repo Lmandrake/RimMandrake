@@ -345,6 +345,17 @@ def touched(st: os.stat_result) -> tuple:
     return (st.st_mtime, st.st_ctime) if CTIME_COUNTS else (st.st_mtime,)
 
 
+def own_check_tree(cur: str, top: str) -> bool:
+    """`cur` is `<top>/.git/rm-treecheck-<name>`, or one of those inside the `.git` of another: the throwaway checkouts
+    ./publish keeps in the clone's own git dir, a second one made inside a kept one included
+    (design/specs/2026-11-25-treecheck-kept-tree/boundary.md). Its `.git` is no foreign repo; such trees held 25 GB of
+    two clones refused as "a repo nested inside" (incident disk-20261115210535, 2026-11-25 to 2026-11-26)."""
+    parts = os.path.relpath(cur, top).split(os.sep)
+    if len(parts) % 2 or parts[0] != ".git":
+        return False
+    return all(a == ".git" and b.startswith("rm-treecheck-") for a, b in zip(parts[::2], parts[1::2]))
+
+
 class Tree:
     """One walk of a candidate: newest mtime, bytes, unreadable spots, saves. Never follows symlinks."""
 
@@ -397,7 +408,7 @@ class Tree:
                         self.newest = max(self.newest, *touched(st))
                     self.sig += int.from_bytes(hashlib.sha256(os.fsencode(f"{e.path[top:]}\0{st.st_ino}\0{st.st_mode}\0{st.st_size}\0"
                                                f"{st.st_mtime_ns}\0{st.st_ctime_ns}")).digest(), "big")
-                    if e.name == ".git" and cur != str(d):
+                    if e.name == ".git" and cur != str(d) and not own_check_tree(cur, str(d)):
                         self.nested.append(e.path)
                     if isdir:
                         stack.append(e.path)
