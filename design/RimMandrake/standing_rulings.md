@@ -1549,12 +1549,14 @@ Slack and Pyrelands, were launched by hand.) The Conductor asked him about those
 step of the work order, with its tests?" He answered *"yup. Then we'll watch stats to see if we need to tune that."*
 (about 10:10 PM PST).
 
-- The Dispatch tick runs `src/RimMandrake/rimflow/maturation_rescue.py`. That program reads five criteria from records:
+- The Dispatch tick runs `src/RimMandrake/rimflow/maturation_rescue.py`. That program reads four criteria from records:
   - a check that flips pass/fail across builds;
   - a tuning number that changed twice in opposite directions;
   - the same bar refused two cycles running;
-  - the stage spend ceiling reached without a green certificate (`maturation.py certificate`);
-  - a bar with no test that runs the real mechanic.
+  - the stage spend ceiling reached without a green certificate (`maturation.py certificate`).
+- A bar whose every in-game decider ran on a held site is not a rescue. It is a wrong scene, repaired at Stage 6, with a
+  Test Pilot sitting if the repaired scene still fails (`maturation.WRONG_CHECK_RULE`). The Conductor retired this
+  criterion (C5) on 2026-11-25, on `design/specs/2026-11-25-test-pilot-vs-fable-rescue/comparison.md`.
 - The program writes one `RESCUE PROPOSED:` line per new piece of evidence to the Conductor log, marked RAISE FIRST.
   The program never launches a rescue.
 - The program proposes nothing for a mod that the owner holds. The program proposes nothing for a mod under a rescue or

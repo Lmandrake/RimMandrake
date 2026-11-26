@@ -8,6 +8,10 @@ Files read: `.claude/agents/rm-testpilot.md`, `src/RimMandrake/rimflow/roles/fab
 `src/RimMandrake/rimflow/testpilot_route.py`, `src/RimMandrake/rimflow/maturation_rescue.py`,
 `src/RimMandrake/rimflow/maturation_autonomy.py` (`_pilot_step`, `pilot_brief`).
 
+**Ruling (Conductor, 2026-11-25 1:25 AM PST): accepted.** Both roles stay. C5 is retired from `maturation_rescue.py`
+(its old proposals show in `status` as retired), and `maturation.WRONG_CHECK_RULE` now names a decider on a held site a
+wrong scene (SITE), with a Test Pilot sitting when the repaired scene still fails.
+
 ## RECOMMENDATION: keep both roles; retire criterion C5 of the rescue proposer
 
 1. **Keep the Test Pilot and the Fable Rescue as two roles.** They share one stance. They differ in the unit of work,
@@ -66,7 +70,7 @@ What they share, and where it already lives:
   evidence for this, but C1 and C3 proposals did lead to the Explosive Knockback rescue. Retire C5 first, and read the
   record of C1 to C4 again after a week [guess ~60% that C2 and C4 also turn out to be noise].
 
-## What the ruling changes
+## What the ruling changes (accepted; done as written below)
 
 - If the Conductor accepts: remove `"C5"` from `CRITERIA` and its reader from `maturation_rescue.py`, update
   `selftest_maturation_rescue.py`, decline the 19 open C5 proposals with `outcome PID declined --why "C5 retired: a

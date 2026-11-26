@@ -1,0 +1,3 @@
+refusal_contract.py calibrate ignores --help and runs a full calibrate. It writes infrastructure/state/judge_calibration.json, and it resets every family whose brief hash moved, other seats' families included (seven on 2026-11-25: CALIBRATED rows went to UNTESTED). When one edit moves one family's hash, recalibrate only that row: run its free_check with refusal_contract.run_check, then write it with _write. Do not commit the result of a full calibrate unless every reset is yours.
+item: RIMMANDRAKE_COMPARE_TEST_PILOT_WITH_FABLE_RESCUER_ONE_MAY_HOLD_BOTH
+home: infrastructure/state/facts/tool_traps.md

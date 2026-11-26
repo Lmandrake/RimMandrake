@@ -4,7 +4,7 @@ one: a proposal is a line for the Conductor, who launches or declines.
 
 Item RIMMANDRAKE_PROPOSE_RESCUE_WHEN_MOD_CIRCLES_BOTH_HAND_LAUNCHED. The owner, 2026-11-16 about 10:10 PM PST, on the
 Conductor's criteria: "yup. Then we'll watch stats to see if we need to tune that." Both rescues that night (Gimme Some
-Slack, Pyrelands) were hand launches; the five criteria are the Rescue brief's "Why you were called"
+Slack, Pyrelands) were hand launches; the criteria are the Rescue brief's "Why you were called"
 (the Rescue setting of src/RimMandrake/rimflow/roles/builder.md, "When you are stuck"), each read from a record,
 never guessed:
 
@@ -15,8 +15,11 @@ never guessed:
   C3 refused   the same bar refused in two judging rounds running (a blind cycle's Problem faults and red offline bars;
                an in-game visit's last-row FAIL, through the test table's decides)
   C4 ceiling   the tick paused the mod at its stage spend ceiling and the certificate for its next move is not green
-  C5 unrun     a bar whose every in-game decider ran on a site that switched a mechanic off or locked a condition
-               (the row's `held` list; a row without `held` is UNMEASURED for C5, never a pass and never a fire)
+  C5 retired   (was: a bar whose every in-game decider ran on a site that switched a mechanic off). Conductor ruling
+               2026-11-25 on item RIMMANDRAKE_COMPARE_TEST_PILOT_WITH_FABLE_RESCUER_ONE_MAY_HOLD_BOTH: 19 proposals, none
+               launched; such a decider is a wrong scene, repaired at Stage 6 (maturation.WRONG_CHECK_RULE), with a
+               Test Pilot sitting if the repaired scene still fails. Its old proposals stay in `status` as retired.
+               undo: restore _c5, read_unrun and "C5" in CRITERIA from git.
 
     python3 src/RimMandrake/rimflow/maturation_rescue.py scan [MOD ...] [--until ISO] [--json]
             a dry run over the records: what would be proposed now (or from the records as they stood at ISO); writes
@@ -58,13 +61,13 @@ SETTINGS = {
     "nudge_reversals_min": 1,       # C2: direction reversals of ONE number (up then down, or down then up)
     "nudge_window_days": 14,        # C2: changes older than this, or older than the version's seed, are not read
     "refused_rounds_running": 2,    # C3: consecutive judging rounds (blind cycles, or in-game visits) refusing one bar
-    "unrun_bars_min": 1,            # C5: bars with every in-game decider run on a held site
     "rescue_cover_s": 86400,        # a rescue that ended less than this ago: nothing at all is proposed on its mod
 }
-CRITERIA = ("C1", "C2", "C3", "C4", "C5")
-NAMES = {"C1": "check flips pass/fail across builds", "C2": "tuning number nudged back and forth",
-         "C3": "same bar refused two rounds running", "C4": "stage ceiling without a green certificate",
-         "C5": "bar with no test running the real mechanic"}
+CRITERIA = ("C1", "C2", "C3", "C4")
+# a criterion that no longer proposes: its old proposals still tally and can still take an outcome
+RETIRED = {"C5": "bar with no test running the real mechanic"}
+NAMES = dict({"C1": "check flips pass/fail across builds", "C2": "tuning number nudged back and forth",
+              "C3": "same bar refused two rounds running", "C4": "stage ceiling without a green certificate"}, **RETIRED)
 STATS = "rescue_proposals.jsonl"
 RESCUE_RX = re.compile(r"_RESCUE_")       # a rescue item launched by hand before this file existed names RESCUE
 SRC_EXT = (".cs", ".py", ".xml")
@@ -251,31 +254,6 @@ def read_ingame(root, mod, tt, until, errors):
     return runs, rounds, newest
 
 
-def read_unrun(tt, newest):
-    """C5's reading -> {bar: {"deciders": [...], "held": {test: [..]} | None (UNMEASURED), "path"}} for each bar that
-    an in-game check decides, from the newest visit's last rows."""
-    import maturation as M
-    live = {k for k, _ in M.ingame_tests(tt)}
-    out = {}
-    for b in (tt or {}).get("bars") or []:
-        if not isinstance(b, dict) or not b.get("id"):
-            continue
-        ds = [t for t in b.get("decides") or [] if t in live]
-        if not ds:
-            continue
-        held, measured = {}, True
-        for t in ds:
-            r = (newest.get("last") or {}).get(t)
-            h = r.get("held") if isinstance(r, dict) else None
-            if not isinstance(h, list):
-                measured = False
-                break
-            held[t] = [str(x) for x in h]
-        out[b["id"]] = {"deciders": ds, "held": held if measured else None, "path": newest.get("path"),
-                        "at": newest.get("at")}
-    return out
-
-
 def _git(root, args, runner=subprocess.run):
     if runner is subprocess.run:    # log -p of a mod's fourteen days reads 350 to 650 MB of pack
         import own_cgroup
@@ -349,7 +327,7 @@ def read_records(root, mod, until=None, ceiling=None, certificate=None, runner=s
     if tt is None:
         errors.append(err)
     b_runs, b_rounds = read_blind(root, mod, until, errors)
-    i_runs, i_rounds, newest = read_ingame(root, mod, tt, until, errors)
+    i_runs, i_rounds, _ = read_ingame(root, mod, tt, until, errors)
     seed = ts((rec.get("seeded") or {}).get("at"))
     now = until if until is not None else time.time()
     since = max(x for x in (seed, now - SETTINGS["nudge_window_days"] * 86400) if x is not None)
@@ -364,7 +342,7 @@ def read_records(root, mod, until=None, ceiling=None, certificate=None, runner=s
                        "refused": sum(1 for r in c.get("rows") or [] if r.get("status") == "REFUSED")}
     return {"mod": mod, "stage": stage, "stage_since": ts(rec.get("since")), "checks": b_runs + i_runs,
             "rounds": b_rounds + i_rounds, "nudges": nudges, "ceiling": ceiling, "certificate": certificate,
-            "unrun": read_unrun(tt, newest) if newest else {}, "errors": errors}
+            "errors": errors}
 
 
 def last_ceilings(path, until=None):
@@ -470,16 +448,6 @@ def _c4(r, s):
                                     "<dispatch state dir>/reading.json"]}}]
 
 
-def _c5(r, s):
-    held = {b: x for b, x in (r.get("unrun") or {}).items()
-            if isinstance(x.get("held"), dict) and x["held"] and all(v for v in x["held"].values())}
-    if len(held) < s["unrun_bars_min"]:
-        return []
-    return [{"criterion": "C5", "key": "C5:%s:%s" % (b, x.get("path")), "since": x.get("at"),
-             "evidence": {"bar": b, "deciders": x["deciders"], "held": x["held"], "paths": [x.get("path")]}}
-            for b, x in sorted(held.items())]
-
-
 def unmeasured(r):
     """-> {criterion: why} for what this mod's records cannot show today."""
     out = {}
@@ -487,12 +455,6 @@ def unmeasured(r):
         out["C1"] = "no blind rerun or in-game row with a PASS or FAIL"
     if not (r.get("rounds") or []):
         out["C3"] = "no blind cycle or in-game visit folder"
-    un = r.get("unrun") or {}
-    miss = [b for b, x in un.items() if x.get("held") is None]
-    if not un:
-        out["C5"] = "no in-game visit row for any in-game decider"
-    elif miss:
-        out["C5"] = "%d of %d in-game bar(s) have a decider row without `held`" % (len(miss), len(un))
     return out
 
 
@@ -526,7 +488,7 @@ def detect(records, settings=None, now=None, holds=(), rescues=(), seen=()):
             skipped.append({"mod": mod, "why": "held by the owner"})
             continue
         found = []
-        for fn in (_c1, _c2, _c3, _c4, _c5):
+        for fn in (_c1, _c2, _c3, _c4):
             try:
                 found += fn(r, s)
             except (KeyError, TypeError, ValueError, AttributeError) as e:
@@ -690,7 +652,7 @@ def tally(rows):
         if r.get("kind") == "outcome" and r.get("pid") in props:
             last.setdefault(r["pid"], []).append(r)
     out = {c: {"proposals": 0, "launched": 0, "declined": 0, "solved": 0, "unsolved": 0, "false_alarms": 0,
-               "open": 0, "usd": 0.0} for c in CRITERIA}
+               "open": 0, "usd": 0.0} for c in CRITERIA + tuple(RETIRED)}
     for pid, p in props.items():
         outs = last.get(pid, [])
         kinds = {o.get("outcome") for o in outs}
@@ -714,10 +676,10 @@ def status_text(rows):
     lines = ["Rescue proposals by criterion (first-guess thresholds; tune from this):",
              "  %-3s %-44s %5s %5s %5s %5s %5s %5s %8s" % ("", "criterion", "prop", "open", "launc", "solvd", "decl",
                                                           "false", "usd")]
-    for c in CRITERIA:
+    for c in CRITERIA + tuple(RETIRED):
         x = t[c]
         lines.append("  %-3s %-44s %5d %5d %5d %5d %5d %5d %8.2f" % (
-            c, NAMES[c], x["proposals"], x["open"], x["launched"], x["solved"], x["declined"], x["false_alarms"],
+            c, ("retired: " + NAMES[c])[:44] if c in RETIRED else NAMES[c], x["proposals"], x["open"], x["launched"], x["solved"], x["declined"], x["false_alarms"],
             x["usd"]))
     hand = [r for r in rows if r.get("kind") == "rescue"]
     lines.append("  hand rescues (no proposal): %d; settings: %s" % (len(hand), ", ".join(

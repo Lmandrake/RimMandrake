@@ -2237,6 +2237,11 @@ WRONG_CHECK_RULE = "\n".join([
     "- Test 2, if you see it, do it: the agent that classes a check or scene wrong repairs it in the same sitting and runs "
     "it again. \"My verdict must stay independent\" and a long task do not excuse a wrong check or scene: its repair "
     "does not touch the mod.",
+    "- A decider that ran on a held site is a wrong scene (`class` SITE): its row's `held` list switches off or locks the "
+    "mechanic that its bar claims (a \"no ordinary rain\" bar run with the weather locked to Clear). Repair the scene so "
+    "the mechanic runs in ordinary conditions, and run it again. If the repaired scene still fails for no reason you can "
+    "name, the item goes to a Test Pilot sitting (`rimflow pilot`), not to a rescue (Conductor ruling 2026-11-25, item "
+    "RIMMANDRAKE_COMPARE_TEST_PILOT_WITH_FABLE_RESCUER_ONE_MAY_HOLD_BOTH: this replaces the rescue proposer's C5).",
     "- The guard: a repaired check counts only after it is seen to FAIL on a planted fault (or on a state known bad) and "
     "PASS on the real build, in that sitting, with both readings recorded beside the row. A needed check whose repair "
     "cannot be shown both ways stays not counted (UNMEASURED), never PASS, and keeps an owner: this run, or a filed item "

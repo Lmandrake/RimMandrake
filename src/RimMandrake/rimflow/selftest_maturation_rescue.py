@@ -6,11 +6,14 @@ temp Conductor log. Written before the code and watched failing on the base (no 
 
     python3 src/RimMandrake/rimflow/selftest_maturation_rescue.py     exit 0 when every check prints PASS
 
-Per criterion (C1 flip, C2 nudge, C3 refused, C4 ceiling, C5 unrun): it fires when it should; it stays quiet on a
+Per criterion (C1 flip, C2 nudge, C3 refused, C4 ceiling): it fires when it should; it stays quiet on a
 healthy mod; the same evidence is proposed once; empty, missing and malformed records neither fire nor crash; a mod
 HELD BY OWNER is never proposed; a mod under a live rescue, or one ended under 24 h ago, is not proposed, and evidence
 older than a rescue's end never is. Then the readers over a fake mod tree, the stats file (one row per proposal,
 outcomes, status), and the Dispatch tick: one `RESCUE PROPOSED:` line with RAISE FIRST, once, and nothing launched.
+C5 (a bar whose every in-game decider ran on a held site) is retired (Conductor ruling 2026-11-25, item
+RIMMANDRAKE_COMPARE_TEST_PILOT_WITH_FABLE_RESCUER_ONE_MAY_HOLD_BOTH): it proposes nothing, is never UNMEASURED, its old
+proposals still show in `status` as retired, and the Stage 6 wrong-check rule names such a decider a wrong scene.
 """
 import io
 import contextlib
@@ -137,7 +140,7 @@ def detect_main():
     ok(props == [], "C2 at nudge_reversals_min=2 needs two reversals", props)
     ok(all("first guess" in R.__doc__ or True for _ in [0]) and isinstance(R.SETTINGS, dict)
        and set(R.SETTINGS) >= {"flip_regressions_min", "nudge_reversals_min", "refused_rounds_running",
-                               "unrun_bars_min", "rescue_cover_s"}, "the thresholds live in one settings block",
+                               "rescue_cover_s"} and "unrun_bars_min" not in R.SETTINGS, "the thresholds live in one settings block",
        sorted(R.SETTINGS))
     # empty, missing and malformed records
     for what, bad in (("an empty record", {}), ("a record with no mod", {"checks": SICK["C1"]["checks"]}),
@@ -149,13 +152,21 @@ def detect_main():
             ok(props == [], "%s fires nothing and raises nothing" % what, props)
         except Exception as e:      # noqa: BLE001
             ok(False, "%s fires nothing and raises nothing" % what, "%s: %s" % (type(e).__name__, e))
-    # C5 without `held` is UNMEASURED, never a pass and never a fire
+    # C5 is retired: a held-site decider is a Stage 6 scene repair, never a rescue proposal
+    ok("C5" not in R.CRITERIA and "C5" in getattr(R, "RETIRED", {}), "C5 is retired: out of CRITERIA, named in RETIRED",
+       (R.CRITERIA, getattr(R, "RETIRED", None)))
+    props, _ = R.detect([rec(SICK["C5"])], now=NOW)
+    ok(props == [], "C5 retired: a bar whose every in-game decider ran on a held site proposes nothing", props)
     un = rec({"unrun": {"bar_fire": {"deciders": ["L1"], "held": None, "path": "p", "at": NOW}}})
-    props, _ = R.detect([un], now=NOW)
-    ok(props == [] and "C5" in R.unmeasured(un), "C5 reads UNMEASURED when a decider row has no `held`",
+    ok("C5" not in R.unmeasured(un), "C5 retired: a decider row with no `held` is not UNMEASURED for a rescue",
        R.unmeasured(un))
-    ok(set(R.unmeasured(rec({}))) == {"C1", "C3", "C5"}, "a mod with no records names C1, C3, C5 unmeasured",
+    ok(set(R.unmeasured(rec({}))) == {"C1", "C3"}, "a mod with no records names C1, C3 unmeasured",
        R.unmeasured(rec({})))
+    import maturation as M
+    rule = M.WRONG_CHECK_RULE
+    ok("`held`" in rule and "class` SITE" in rule and "rimflow pilot" in rule,
+       "C5's evidence has its home: the Stage 6 wrong-check rule names a decider on a held site a wrong scene (SITE), "
+       "with a Test Pilot sitting when the repaired scene still fails", [x for x in rule.split("\n") if "held" in x])
 
 
 # ---- readers over a fake mod tree ----------------------------------------------------------------------------------
@@ -220,8 +231,8 @@ def readers_main(tmp):
     ok("C3" in p["criteria"] and ev.get("C3", {}).get("bar") == "bar_x",
        "reader C3: bar_x refused by a Problem in cycle 1 and the Exit block in cycle 2 fires (a Polish never counts)",
        ev.get("C3"))
-    ok("C5" in p["criteria"] and ev.get("C5", {}).get("bar") in ("bar_fire", "bar_cold"),
-       "reader C5: every in-game decider of a bar ran with fire held: the bar is unrun", ev.get("C5"))
+    ok(p["criteria"] and "C5" not in p["criteria"] and "unrun" not in r,
+       "reader: rows with fire held read no C5 (retired) and the record carries no `unrun`", (p["criteria"], sorted(r)))
     ok(any("does not parse" in e for e in r["errors"]), "reader: a malformed rerun line is named, not fatal",
        r["errors"])
     root2 = os.path.join(tmp, "repo2")
@@ -229,8 +240,8 @@ def readers_main(tmp):
     r2 = R.read_records(root2, "Fake", runner=lambda *a, **k: Fake(""))
     c1 = [e["evidence"]["check"] for p in R.detect([r2], now=NOW)[0] for e in p["evidence"] if e["criterion"] == "C1"]
     ok(c1 == ["T1"], "reader C1: a tests_edited.json written as a bare list also spares the edited check", c1)
-    ok("C5" in R.unmeasured(r2) and "C5" not in crits(R.detect([r2], now=NOW)[0], "Fake"),
-       "reader C5: rows without `held` are UNMEASURED", R.unmeasured(r2))
+    ok("C5" not in R.unmeasured(r2) and "C5" not in crits(R.detect([r2], now=NOW)[0], "Fake"),
+       "reader: rows without `held` name no C5 (retired)", R.unmeasured(r2))
     r3 = R.read_records(os.path.join(tmp, "nowhere"), "Ghost", runner=lambda *a, **k: Fake(""))
     ok(R.detect([r3], now=NOW)[0] == [] and r3["errors"], "reader: a missing mod tree fires nothing and says why",
        r3["errors"])
@@ -327,6 +338,17 @@ def stats_main(tmp):
     rc, out = cli("status")
     ok(rc == 0 and all(c in out for c in R.CRITERIA) and "false" in out and len(out.split("\n")) <= 24,
        "status: every criterion with proposals, launched, solved and false alarms on one screen", out[:400])
+    # a proposal made before C5 retired stays in the record: status shows it on a retired line, and it can be declined
+    R.append({"kind": "proposal", "id": "rp-old-c5", "at": iso(NOW), "mod": "Old", "criteria": ["C5"],
+              "keys": ["C5:bar:p"], "evidence": []}, stats)
+    t5 = R.tally(R.read_stats(stats))
+    rc, out = cli("status")
+    c5 = [x for x in out.split("\n") if x.strip().startswith("C5")]
+    ok(rc == 0 and t5.get("C5", {}).get("proposals") == 1 and t5["C5"]["open"] == 1 and c5 and "retired" in c5[0],
+       "status: a proposal from before C5 retired shows on a retired C5 line, not dropped", (c5, t5.get("C5")))
+    rc, out = cli("outcome", "rp-old-c5", "declined", "--why", "C5 retired")
+    ok(rc == 0 and R.tally(R.read_stats(stats))["C5"]["declined"] == 1, "an old C5 proposal can still be declined",
+       out)
     rc, out = cli("list")
     ok(rc == 0 and pid in out and "launched" in out, "list: the proposal with its outcomes", out[:300])
     # a false alarm declined
