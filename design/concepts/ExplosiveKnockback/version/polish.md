@@ -44,3 +44,7 @@ His words, 2026-11-24 (OWNER:1795565769863524396): *"Include all polish items to
 ## Scene rows read by the judge (2026-11-26)
 
 - `src/RimMandrake/ExplosiveKnockback/proof/scene_storeroom_mortar_rebound_legs.py` row "V_SHORTER all ... UNLAID (the scene made no rebound to compare)" is `row(False, ...)`, so the judge now reads it MOD FAILURE; its own words say the opportunity was not laid (INVALID, APPARATUS FAULT). risk: a run whose staging made no rebound counts against the mod. The call moves how the rebound bar is decided, so it waits for the rebound bar ruling (RIMMANDRAKE_RULE_REBOUND_NEAR_WALL_OUTFLIES_FIRST_LEG).
+
+## Walk save signs (2026-11-26, walk brief reader)
+
+- `design/concepts/ExplosiveKnockback/version/in_game/visit_3/scripts/walk_save.py` STATIONS: sign 13 says "three colonists are killed"; at the 0.1.0 walk two died and one lived (0.1.0 arrival_2.md). Make the sign say what the scene does (people killed and thrown), not a count, when the next walk save script is copied.
