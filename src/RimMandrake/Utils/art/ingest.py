@@ -45,6 +45,17 @@ def rel_via(p) -> str:
     return str(p)
 
 
+def sheet_purge_authority(note: str | None, via: str) -> dict:
+    """The owner-authority fields of a purge his sheet ✕ asks for: the decisions file that records the ✕, cited by
+    reference (`per_ruling`), and his typed row note as his words when he wrote one. Never a tag of ours in `said`:
+    the old fallback "reject+purge on sheet <stem>" put 699 agent strings where only his words go
+    (SHEETSAID_DECIDE_769_TAGS_HE_NEVER_TYPED)."""
+    out = {"per_ruling": via}
+    if (note or "").strip():
+        out = {"owner_said": note, **out}
+    return out
+
+
 def ts(x):
     """An ISO stamp (Z or +HHMM) as an aware datetime, None when absent/unparseable."""
     import datetime as _dt
@@ -361,7 +372,7 @@ def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None =
                 continue
             w.flush()
             try:
-                L.purge(sha, owner_said=note or f"reject+purge on sheet {snap.get('sheetId')}",
+                L.purge(sha, **sheet_purge_authority(note, via),
                         via=via, release_from_sheet=(via, row))     # only this row's own keeps; any other refuses
                 out["purged"] += 1
             except L.Refused as e:

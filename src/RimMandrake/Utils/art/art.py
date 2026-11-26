@@ -24,6 +24,7 @@
                                             standing ruling cited. --why = the agent's own reason: grants nothing
                                             (alone: mechanical guards apply; e.g. "delegated: art <verdict file>")
     art.py card-said                       owner rulings/purges still holding card text in said (exit 1 if any)
+    art.py sheet-said [--fix]              owner events still holding a sheet-pick tag in said; --fix cites the decisions file
     art.py correct-provenance <ruling-id>... (--by-card "..." | --per-ruling REF | --owner-said "...") --why "..."
                                             append a provenance_fix re-stating which field carries his authority
                                             on an owner keep (never edits the past event) [--dry-run]
@@ -287,6 +288,29 @@ def cmd_card_said(a):
     return 1 if rows else 0
 
 
+def cmd_sheet_said(a):
+    """Audit (and with --fix, correct) owner events whose effective `said` is our sheet-pick tag. --fix moves each one
+    whose decisions file resolves to `per_ruling` (its other authority fields kept). Exit 1 while any remain."""
+    idx = L.Index()
+    rows = L.sheet_said_events(idx)
+    unresolved = []
+    for e in rows:
+        ref = L.sheet_decisions_ref({**e, "said": idx.authority(e).get("said")})
+        if a.fix and ref:
+            keep = {k: v for k, v in idx.authority(e).items() if k != "said"}
+            r = L.correct_provenance(e["id"], why=a.why, by_card=keep.get("by_card"),
+                                     per_ruling=keep.get("per_ruling") or ref, dry_run=a.dry_run)
+            print(f"{r['status']} {e.get('type')} {e.get('id')} per_ruling={ref}")
+        else:
+            if not ref:
+                unresolved.append(e)
+            print(f"{e.get('type')} {e.get('id')} said={(idx.authority(e).get('said') or '')[:80]!r} ref={ref}")
+    left = L.sheet_said_events() if a.fix and not a.dry_run else rows
+    print(f"sheet-said: {len(left)} owner event(s) still carry a sheet-pick tag in said"
+          + (f" ({len(unresolved)} with no decisions file found: correct-provenance them by hand)" if unresolved else ""))
+    return 1 if left else 0
+
+
 def cmd_doctor(a):
     import subprocess
     import art_guard as G
@@ -547,6 +571,9 @@ def main(argv=None):
     p.add_argument("--why", help="the acting agent's own reason; grants no owner authority. An order of the owner to fix "
                    "a thing goes in --why")
     p.add_argument("--dry-run", action="store_true")
+    p = sp.add_parser("sheet-said", aliases=["sheet_said"]); p.add_argument("--fix", action="store_true")
+    p.add_argument("--why", default="SHEETSAID_DECIDE_769_TAGS_HE_NEVER_TYPED: a sheet-pick tag of ours was filed under said; "
+                   "his pick is the sheet's decisions file, cited by per_ruling"); p.add_argument("--dry-run", action="store_true")
     sp.add_parser("card-said", aliases=["card_said"])   # the underscore spelling: relentless_boxrun reads a hyphenated subcommand as prose
     p = sp.add_parser("correct-provenance"); p.add_argument("ruling_ids", nargs="+")
     p.add_argument("--by-card"); p.add_argument("--per-ruling"); p.add_argument("--owner-said")
@@ -600,7 +627,7 @@ def main(argv=None):
     if a.cmd == "variants":
         return cmd_status(a, verbose=True)
     return {"snapshot": cmd_snapshot, "backfill": cmd_backfill, "status": cmd_status,
-            "install": cmd_install, "correct-provenance": cmd_correct_provenance, "correct-keep": cmd_correct_keep, "card-said": cmd_card_said, "card_said": cmd_card_said, "put": cmd_put, "doctor": cmd_doctor, "kept-purged": cmd_kept_purged, "purge": cmd_purge, "unpurge": cmd_unpurge, "archive": cmd_archive, "restore": cmd_restore, "marks-digest": cmd_marks_digest, "unban": cmd_unban, "bans": cmd_bans, "ingest": cmd_ingest, "index": cmd_index,
+            "install": cmd_install, "correct-provenance": cmd_correct_provenance, "correct-keep": cmd_correct_keep, "card-said": cmd_card_said, "sheet-said": cmd_sheet_said, "sheet_said": cmd_sheet_said, "card_said": cmd_card_said, "put": cmd_put, "doctor": cmd_doctor, "kept-purged": cmd_kept_purged, "purge": cmd_purge, "unpurge": cmd_unpurge, "archive": cmd_archive, "restore": cmd_restore, "marks-digest": cmd_marks_digest, "unban": cmd_unban, "bans": cmd_bans, "ingest": cmd_ingest, "index": cmd_index,
             "backfill-rejections": cmd_backfill_rejections, "rotate": cmd_rotate}[a.cmd](a)
 
 

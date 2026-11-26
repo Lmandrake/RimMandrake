@@ -1147,6 +1147,49 @@ def card_said_events(idx=None) -> list:
             and (card_text_in_said(s := idx.authority(e).get("said")) or _norm_said(s) in labels)]
 
 
+# The tags agents filed review-sheet picks under `said` with (measured over the art ledger 2026-11-26, 750 owner
+# events; SHEETSAID_DECIDE_769_TAGS_HE_NEVER_TYPED): ingest's old purge fallback "reject+purge on sheet <stem>", and
+# hand-filed summaries ("… (sheet decisions)", "✕ on the facings needs-eyes sheet …", "Gorg sheet row <date>: …",
+# "<stem> row <Def>: drop"). His sheet pick is recorded in the sheet's .decisions.json (tracked), so the field that
+# carries it is `per_ruling` = that file's repo path, cited by reference; his own typed row note stays in `said`.
+_SHEET_TAG_RE = re.compile(r"^reject\+purge on sheet\b|\bsheet decisions\b|^✕ on the .*\bsheet\b"
+                           r"|^facings needs-eyes sheet\b|^\w+ sheet row \d{4}-\d\d-\d\d\b|^\(row dropped from sheet\b"
+                           r"|^\S+_sheet_\d{4}-\d\d-\d\d row \S+:", re.I)
+_DECISIONS_PATH_RE = re.compile(r"(Transient/\S+?\.decisions\.json)")
+_SHEET_STEM_RE = re.compile(r"\b(\w+_sheet_\d{4}-\d\d-\d\d)\b")
+
+
+def sheet_tag_in_said(said: str | None) -> bool:
+    """`said` holds our tag for a review-sheet pick, not his typed words (card text is card_text_in_said's)."""
+    s = (said or "").strip()
+    return bool(s) and not card_text_in_said(s) and bool(_SHEET_TAG_RE.search(s))
+
+
+def sheet_said_events(idx=None) -> list:
+    """Owner rulings/purges/unpurges/bans whose EFFECTIVE `said` (after provenance fixes) is a sheet-pick tag."""
+    idx = idx or Index()
+    return [e for e in idx.events if e.get("type") in CORRECTABLE_TYPES and e.get("by") == "owner"
+            and sheet_tag_in_said(idx.authority(e).get("said"))]
+
+
+def sheet_decisions_ref(ev: dict, root: Path | None = None) -> str | None:
+    """The repo path (from `Transient/`) of the .decisions.json that records the sheet pick behind `ev`: named in its
+    `via`, else the sheet stem its `said` names, found under Transient/ (a snapshot copy loses to the live file).
+    None when neither names a file that exists: the caller must not guess."""
+    root = root or REPO_ROOT
+    for text in (ev.get("via") or "", ev.get("said") or ""):
+        m = _DECISIONS_PATH_RE.search(text)
+        if m and (root / m.group(1)).is_file():
+            return m.group(1)
+    m = _SHEET_STEM_RE.search(ev.get("said") or "")
+    if m:
+        hits = sorted((root / "Transient").rglob(m.group(1) + ".decisions.json"),
+                      key=lambda p: ("art_sheet_design" in str(p), len(str(p))))
+        if hits:
+            return hits[0].relative_to(root).as_posix()
+    return None
+
+
 def _norm_said(s: str | None) -> str:
     return " ".join((s or "").split()).strip("'\"").casefold()
 

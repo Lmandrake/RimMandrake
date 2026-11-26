@@ -199,6 +199,53 @@ def main():
     check(art.main(["card-said"]) == 0, "his recorded words matching a card label are not flagged")
     check(art.main(["card_said"]) == 0, "the underscore alias card_said runs the same audit")
 
+    # SHEETSAID_DECIDE_769_TAGS_HE_NEVER_TYPED: a sheet-pick tag of ours under said is caught; --fix cites the
+    # sheet's decisions file in per_ruling; his typed words and card text are not this audit's
+    for tag in ("reject+purge on sheet greentide_sheet_2026-10-05",
+                "✕ on the facings needs-eyes sheet 2026-10-17 (his newest ruling, supersedes the older keep)",
+                "Ismerrow pick A; pool add A B C D H G F; E not_needed (sheet decisions)",
+                "Gorg sheet row 2026-10-17: variants B-I ticked as random variants",
+                "picks_plants_and_gaps_sheet_2026-10-19 row AB_TinkleGrass: drop"):
+        check(L.sheet_tag_in_said(tag), f"sheet tag detection catches {tag[:50]!r}")
+    for words in ("GREAT job on the container artsheet. 100% approved", "That sheet is causing me a headache.",
+                  "reject+purge on sheet x_sheet_2026-10-05 (decision taken by question card 2026-10-08)"):
+        check(not L.sheet_tag_in_said(words), f"sheet tag detection passes {words[:50]!r}")
+    root = tmp / "repo"
+    (root / "Transient" / "biome_ffar").mkdir(parents=True)
+    (root / "Transient" / "biome_ffar" / "fx_sheet_2026-10-05.decisions.json").write_text("{}")
+    check(L.sheet_decisions_ref({"via": "../../Transient/biome_ffar/fx_sheet_2026-10-05.decisions.json"}, root)
+          == "Transient/biome_ffar/fx_sheet_2026-10-05.decisions.json", "decisions ref read from via")
+    check(L.sheet_decisions_ref({"via": "art purge", "said": "reject+purge on sheet fx_sheet_2026-10-05"}, root)
+          == "Transient/biome_ffar/fx_sheet_2026-10-05.decisions.json", "decisions ref found from the stem in said")
+    check(L.sheet_decisions_ref({"via": "art purge", "said": "Gorg sheet row 2026-10-17: B"}, root) is None,
+          "no decisions file named: no guess")
+    import ingest as IG
+    check(IG.sheet_purge_authority("", "Transient/biome_ffar/fx_sheet_2026-10-05.decisions.json")
+          == {"per_ruling": "Transient/biome_ffar/fx_sheet_2026-10-05.decisions.json"},
+          "ingest: a sheet ✕ with no row note cites the decisions file, never a tag in said")
+    check(IG.sheet_purge_authority("drop the donor", "Transient/x.decisions.json")
+          == {"owner_said": "drop the donor", "per_ruling": "Transient/x.decisions.json"},
+          "ingest: his row note stays his words, beside the decisions file")
+    sz = noisy(13)
+    ssz = L.store_put_bytes(sz)
+    L.purge(ssz, owner_said="reject+purge on sheet fx_sheet_2026-10-05",
+            via="Transient/biome_ffar/fx_sheet_2026-10-05.decisions.json")
+    sev = L.Index().purged[ssz]
+    check(art.main(["sheet-said"]) == 1 and any(e["id"] == sev["id"] for e in L.sheet_said_events()),
+          "sheet-said flags a purge with our tag in said (exit 1)")
+    old_root = L.REPO_ROOT
+    L.REPO_ROOT = root
+    try:
+        rc = art.main(["sheet-said", "--fix"])
+    finally:
+        L.REPO_ROOT = old_root
+    sidx = L.Index()
+    check(rc == 0 and sidx.authority(sidx.purged[ssz])
+          == {"per_ruling": "Transient/biome_ffar/fx_sheet_2026-10-05.decisions.json"},
+          "sheet-said --fix moves the tag to per_ruling = the decisions file, and then reads 0")
+    check(sidx.is_purged(ssz) and sidx.purged[ssz].get("said", "").startswith("reject+purge"),
+          "the fix changes the field, not the purge; the original event is unchanged")
+
     # CLI end to end
     out = subprocess.run([sys.executable, str(HERE / "art.py"), "install", mod, "Things/Tank/Cli.png", sc,
                           "--by-card", "Q → B", "--dry-run"], capture_output=True, text=True, env=os.environ)
