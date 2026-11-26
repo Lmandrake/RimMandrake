@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":443819,"DISPATCH":20369,"HOLDER.run-1794828190":994,"JUDGE.judge-1794822790":13753,"JUDGE.judge-1794822890":2037} body_sha256=5c05ea542bfa8f337ddcd71a969e0053d4dce1cfec8f72785e6dd926f345e708 -->
-# GimmeSomeSlack — mod ledger history (653 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":443819,"DISPATCH":21022,"HOLDER.run-1794828190":994,"JUDGE.judge-1794822790":13753,"JUDGE.judge-1794822890":2037} body_sha256=2d9c91fed5eff20fa89756e8ba01b685b7812ca6f2c089205df0a9804889236d -->
+# GimmeSomeSlack — mod ledger history (655 events, merged across shards)
 
 - 2026-11-16T07:11:06Z BACKFILL#1 spend spend v0.1.0: 
 - 2026-11-16T07:11:06Z BACKFILL#2 stage.accepted stage v0.1.0: offline_build -> blind_challenge: Stage 3 exit: every bar has a check that runs; the one walk bar proves at Stage 8
@@ -654,3 +654,5 @@
 - 2026-11-26T02:20:11Z BACKFILL#570 bar.locked bar:wall_lamp_takes_looks v0.2.0: locked for 0.2.0 in version/locked_bars.json (record 6 of 2026-11-24T19:53:56Z): inventory bar, from record.json, proves at stage 6
 - 2026-11-26T02:20:11Z BACKFILL#571 bar.locked bar:battery_takes_looks v0.2.0: locked for 0.2.0 in version/locked_bars.json (record 6 of 2026-11-24T19:53:56Z)
 - 2026-11-26T02:20:11Z BACKFILL#572 bar.locked bar:ship_to_ground_wire_snaps v0.2.0: locked for 0.2.0 in version/locked_bars.json (record 6 of 2026-11-24T19:53:56Z)
+- 2026-11-26T22:25:06Z DISPATCH#59 lease.grant lease v0.2.0: 
+- 2026-11-26T22:26:08Z DISPATCH#60 run.start run v0.2.0: 
