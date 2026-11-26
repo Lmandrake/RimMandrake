@@ -22,7 +22,8 @@ question below: if this goes wrong, who catches it?) is measured, not argued.
 > everything else with a checkable outcome. **Sonnet is the lowest rung; no Haiku** (owner,
 > 2026-10-31). Fable is on the ladder from 2026-11-12 (owner: "It only said no fable because Opus 5.5
 > was outperforming Fable 5.1."). Never Fable for fan-out helpers, reruns, fleets, unvetted tickets,
-> game-waiting or fast mode. Pass `model` on every spawn. Read the environment
+> game-waiting or fast mode. A Fable helper is allowed for design work or for an extremely difficult problem (owner
+> 2026-11-26, the Fable row below). Pass `model` on every spawn. Read the environment
 > (`ANTHROPIC_DEFAULT_*_MODEL`) before trusting a rung; name no account. Ladder source of truth:
 > `~/dev/Lodestar/claude/global/45-subagents.md`.
 
@@ -36,7 +37,8 @@ The Conductor window runs on Fable 5.2 and orchestrates. The headless quick chec
 (`model` in `src/RimMandrake/rimflow/dispatcher_schedule.json`).
 
 - The Conductor does not do design in-window, and it does not grind.
-- The Conductor holds the owner's attention. It backgrounds design to an **Opus** subagent and keeps the conclusion.
+- The Conductor holds the owner's attention. It backgrounds design to an **Opus** helper, or to a **Fable** helper
+  (owner 2026-11-26, the Fable row below), and keeps the conclusion.
   Design of a whole mod from a blank page goes to a detached Fable run (`detached_helper.py --model fable`), one run
   that owns the whole design, never an `rm-*` helper.
 - Each item is classified by the rule below. Opus-class items go to an `rm-builder` (Opus) subagent.
@@ -71,7 +73,7 @@ Cheap models are safe exactly where failure is loud, and dangerous exactly where
 
 | | Alias | For |
 |---|---|---|
-| **Fable 5.2** | `fable` | **The Conductor's window.** One agent finishing a whole mod against its checklist. Design from a blank page. One escalation attempt, at high effort, on a clean ticket that Opus failed at xhigh (the stuck-worker ladder below). Every run has a hard dollar budget, enforced from outside by `spend_watchdog.py`. Never use `--max-budget-usd`, and no agent is told its spend (owner 2026-11-16). Never a helper, a rerun, a fleet worker or a game-waiter. **Exception, the Test Pilot (`rm-testpilot`): Fable 5.2,** although a sitting waits on a live game. Owner, 2026-11-16 10:13 PM PST: "Test Pilot should also run as Fable 5.2 when it's called. For obvious reasons." Do not move the Test Pilot back to Opus under the game-waiter rule. Price: 2× Opus fresh, 1× cached. |
+| **Fable 5.2** | `fable` | **The Conductor's window.** One agent finishing a whole mod against its checklist. Design from a blank page. One escalation attempt, at high effort, on a clean ticket that Opus failed at xhigh (the stuck-worker ladder below). Every run has a hard dollar budget, enforced from outside by `spend_watchdog.py`. Never use `--max-budget-usd`, and no agent is told its spend (owner 2026-11-16). A helper only for design work or for an extremely difficult problem (owner, 2026-11-26: "Fable absolutely can be a helper for Design purposes or extremely difficult problems."). Never a rerun, a fleet worker or a game-waiter. **Exception, the Test Pilot (`rm-testpilot`): Fable 5.2,** although a sitting waits on a live game. Owner, 2026-11-16 10:13 PM PST: "Test Pilot should also run as Fable 5.2 when it's called. For obvious reasons." Do not move the Test Pilot back to Opus under the game-waiter rule. Price: 2× Opus fresh, 1× cached. |
 | **Opus 5.5** (+fast mode) | `opus` | **Design** that is not a blank page, always as a backgrounded subagent from the Conductor: design judgment, decision drafting, synthesis across contradictory evidence, rosters, specs, skill curation. **Complex code generation**: Harmony/C#, new systems, multi-file forensics, bridge writes, the frozen world. |
 | **Sonnet 5.5** | `sonnet` | **Well-defined coding with a checkable outcome**: patches, defs, deploys, quicktests, fixes that a selftest or validator proves. Log triage, interpretive sweeps, first drafts. **OS-level searches**: greps, globs, censuses, existence checks, inventories (folded in 2026-10-01 when Haiku was struck from the ladder). The default for helpers that build. |
 
@@ -224,7 +226,7 @@ named types, but the hook blocks them.
 | Well-defined coding a compiler, selftest or validator will check | **sonnet** |
 | Sweep where the agent must interpret or classify | **sonnet** |
 | Fan-out whose returns will contradict; adversarial refutation | **sonnet** |
-| **Design** — a spec, a roster, a taxonomy, anything the owner reads as design | **opus**, backgrounded; a whole mod's design from a blank page: a detached **fable** run |
+| **Design** — a spec, a roster, a taxonomy, anything the owner reads as design | **opus**, backgrounded, or a **fable** helper (owner 2026-11-26); a whole mod's design from a blank page: a detached **fable** run |
 | **Complex code generation** — a new system, Harmony/C#, cross-file changes with no test to catch them | **opus** |
 | Anything acted on **without re-deriving it** | **opus** — and ask why it is a subagent |
 

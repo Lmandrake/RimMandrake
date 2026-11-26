@@ -1145,7 +1145,8 @@ def t_a_bundle_on_another_host_launches_there():
 # tickets were never named for Shape, so the lane launched nothing while SteveDesktop sat idle.
 
 OLD_AT = "2026-11-01T00:00:00Z"
-ON = {"pipeline": "on", "machine": "on", "mod": "on", "game": "off"}
+ON = {"pipeline": "on", "machine": "on", "mod": "on", "game": "off"}     # the cases' world: a game class that is off
+SHIPPED = {"pipeline": "on", "machine": "on", "mod": "on", "game": "on"}   # list_dispatch.json since 2026-11-26
 
 
 def old(iid, home=None, **kw):
@@ -1303,7 +1304,7 @@ def t_the_onboard_classes_are_data():
         % by["-onboard"]["onboard"].get("not_started"))
     import list_dispatch as LD
     cfg = LD.load_cfg()
-    chk(lambda: cfg.get("onboard_classes") == ON and cfg.get("_onboard_classes_doc"),
+    chk(lambda: cfg.get("onboard_classes") == SHIPPED and cfg.get("_onboard_classes_doc"),
         "list_dispatch.json: onboard_classes is data, with its doc (%s)" % cfg.get("onboard_classes"))
 
 
