@@ -1,0 +1,81 @@
+clear 35,35: {"success": true, "message": "Planted 0, cleared 3.", "planted": 0, "cleared": 3, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedByDen
+  35,35 is not open unshaded ground (81 of 81 cells, e.g. indoors); next
+clear 35,65: {"success": true, "message": "Planted 0, cleared 237.", "planted": 0, "cleared": 237, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedB
+  35,65 is not open unshaded ground (8 of 81 cells, e.g. lee); next
+clear 35,95: {"success": true, "message": "Planted 0, cleared 24.", "planted": 0, "cleared": 24, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedByD
+  35,95 is not open unshaded ground (81 of 81 cells, e.g. indoors); next
+clear 35,125: {"success": true, "message": "Planted 0, cleared 12.", "planted": 0, "cleared": 12, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedByD
+  35,125 is not open unshaded ground (81 of 81 cells, e.g. roof); next
+clear 35,155: {"success": true, "message": "Planted 0, cleared 406.", "planted": 0, "cleared": 406, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedB
+  35,155 is not open unshaded ground (81 of 81 cells, e.g. indoors); next
+clear 35,185: {"success": true, "message": "Planted 0, cleared 90.", "planted": 0, "cleared": 90, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedByD
+  35,185 is not open unshaded ground (81 of 81 cells, e.g. roof); next
+clear 35,215: {"success": false, "message": "Planted 0, cleared 0.", "planted": 0, "cleared": 0, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedByDe
+  35,215 is not open unshaded ground (81 of 81 cells, e.g. indoors); next
+clear 65,35: {"success": true, "message": "Planted 0, cleared 1.", "planted": 0, "cleared": 1, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedByDen
+  65,35 is not open unshaded ground (81 of 81 cells, e.g. roof); next
+clear 65,65: {"success": true, "message": "Planted 0, cleared 43.", "planted": 0, "cleared": 43, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedByD
+  65,65 is not open unshaded ground (81 of 81 cells, e.g. indoors); next
+clear 65,95: {"success": true, "message": "Planted 0, cleared 292.", "planted": 0, "cleared": 292, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedB
+  65,95 is not open unshaded ground (15 of 81 cells, e.g. lee); next
+clear 65,125: {"success": true, "message": "Planted 0, cleared 212.", "planted": 0, "cleared": 212, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedB
+  65,125 is not open unshaded ground (78 of 81 cells, e.g. indoors); next
+clear 65,155: {"success": true, "message": "Planted 0, cleared 105.", "planted": 0, "cleared": 105, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedB
+  65,155 is not open unshaded ground (78 of 81 cells, e.g. lee); next
+clear 65,185: {"success": false, "message": "Planted 0, cleared 0.", "planted": 0, "cleared": 0, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedByDe
+  65,185 is not open unshaded ground (81 of 81 cells, e.g. indoors); next
+clear 65,215: {"success": false, "message": "Planted 0, cleared 0.", "planted": 0, "cleared": 0, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedByDe
+  65,215 is not open unshaded ground (81 of 81 cells, e.g. indoors); next
+clear 95,35: {"success": false, "message": "Planted 0, cleared 0.", "planted": 0, "cleared": 0, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedByDe
+  95,35 is not open unshaded ground (81 of 81 cells, e.g. indoors); next
+clear 95,65: {"success": false, "message": "Planted 0, cleared 0.", "planted": 0, "cleared": 0, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedByDe
+  95,65 is not open unshaded ground (81 of 81 cells, e.g. indoors); next
+clear 95,95: {"success": false, "message": "Planted 0, cleared 0.", "planted": 0, "cleared": 0, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedByDe
+  plant: {"success": false, "message": "Planted 0, cleared 0, REJECTED 1.", "planted": 0, "cleared": 0, "rejected": 1, "rejectionReasons": {"terrain or conditions cannot support RM_Veluthar: Need more fertile terrain.": 1}, "rejectedCells": [{"x": 9
+clear 95,125: {"success": true, "message": "Planted 0, cleared 2.", "planted": 0, "cleared": 2, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedByDen
+  plant: {"success": false, "message": "Planted 0, cleared 0, REJECTED 1.", "planted": 0, "cleared": 0, "rejected": 1, "rejectionReasons": {"terrain or conditions cannot support RM_Veluthar: Need more fertile terrain.": 1}, "rejectedCells": [{"x": 9
+clear 95,155: {"success": false, "message": "Planted 0, cleared 0.", "planted": 0, "cleared": 0, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedByDe
+  plant: {"success": false, "message": "Planted 0, cleared 0, REJECTED 1.", "planted": 0, "cleared": 0, "rejected": 1, "rejectionReasons": {"terrain or conditions cannot support RM_Veluthar: Need more fertile terrain.": 1}, "rejectedCells": [{"x": 9
+clear 95,185: {"success": false, "message": "Planted 0, cleared 0.", "planted": 0, "cleared": 0, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedByDe
+  95,185 is not open unshaded ground (81 of 81 cells, e.g. roof); next
+clear 95,215: {"success": false, "message": "Planted 0, cleared 0.", "planted": 0, "cleared": 0, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedByDe
+  95,215 is not open unshaded ground (81 of 81 cells, e.g. indoors); next
+clear 125,35: {"success": false, "message": "Planted 0, cleared 0.", "planted": 0, "cleared": 0, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedByDe
+  125,35 is not open unshaded ground (81 of 81 cells, e.g. indoors); next
+clear 125,65: {"success": true, "message": "Planted 0, cleared 9.", "planted": 0, "cleared": 9, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedByDen
+  125,65 is not open unshaded ground (76 of 81 cells, e.g. indoors); next
+clear 125,95: {"success": true, "message": "Planted 0, cleared 33.", "planted": 0, "cleared": 33, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedByD
+  plant: {"success": false, "message": "Planted 0, cleared 0, REJECTED 1.", "planted": 0, "cleared": 0, "rejected": 1, "rejectionReasons": {"terrain or conditions cannot support RM_Veluthar: Need more fertile terrain.": 1}, "rejectedCells": [{"x": 1
+clear 125,125: {"success": false, "message": "Planted 0, cleared 0.", "planted": 0, "cleared": 0, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedByDe
+  plant: {"success": false, "message": "Planted 0, cleared 0, REJECTED 1.", "planted": 0, "cleared": 0, "rejected": 1, "rejectionReasons": {"terrain or conditions cannot support RM_Veluthar: Need more fertile terrain.": 1}, "rejectedCells": [{"x": 1
+clear 125,155: {"success": true, "message": "Planted 0, cleared 2.", "planted": 0, "cleared": 2, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedByDen
+  plant: {"success": false, "message": "Planted 0, cleared 0, REJECTED 1.", "planted": 0, "cleared": 0, "rejected": 1, "rejectionReasons": {"terrain or conditions cannot support RM_Veluthar: Need more fertile terrain.": 1}, "rejectedCells": [{"x": 1
+clear 125,185: {"success": false, "message": "Planted 0, cleared 0.", "planted": 0, "cleared": 0, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedByDe
+  125,185 is not open unshaded ground (81 of 81 cells, e.g. indoors); next
+clear 125,215: {"success": false, "message": "Planted 0, cleared 0.", "planted": 0, "cleared": 0, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedByDe
+  125,215 is not open unshaded ground (81 of 81 cells, e.g. indoors); next
+clear 155,35: {"success": true, "message": "Planted 0, cleared 1.", "planted": 0, "cleared": 1, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedByDen
+  155,35 is not open unshaded ground (81 of 81 cells, e.g. indoors); next
+clear 155,65: {"success": true, "message": "Planted 0, cleared 7.", "planted": 0, "cleared": 7, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedByDen
+  155,65 is not open unshaded ground (81 of 81 cells, e.g. indoors); next
+clear 155,95: {"success": true, "message": "Planted 0, cleared 9.", "planted": 0, "cleared": 9, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedByDen
+  155,95 is not open unshaded ground (81 of 81 cells, e.g. indoors); next
+clear 155,125: {"success": true, "message": "Planted 0, cleared 127.", "planted": 0, "cleared": 127, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedB
+  155,125 is not open unshaded ground (63 of 81 cells, e.g. lee); next
+clear 155,155: {"success": true, "message": "Planted 0, cleared 7.", "planted": 0, "cleared": 7, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedByDen
+  155,155 is not open unshaded ground (81 of 81 cells, e.g. indoors); next
+clear 155,185: {"success": false, "message": "Planted 0, cleared 0.", "planted": 0, "cleared": 0, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedByDe
+  155,185 is not open unshaded ground (81 of 81 cells, e.g. indoors); next
+clear 155,215: {"success": false, "message": "Planted 0, cleared 0.", "planted": 0, "cleared": 0, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedByDe
+  155,215 is not open unshaded ground (81 of 81 cells, e.g. indoors); next
+clear 185,35: {"success": true, "message": "Planted 0, cleared 4.", "planted": 0, "cleared": 4, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedByDen
+  185,35 is not open unshaded ground (81 of 81 cells, e.g. indoors); next
+clear 185,65: {"success": true, "message": "Planted 0, cleared 3.", "planted": 0, "cleared": 3, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedByDen
+  185,65 is not open unshaded ground (81 of 81 cells, e.g. indoors); next
+clear 185,95: {"success": true, "message": "Planted 0, cleared 202.", "planted": 0, "cleared": 202, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedB
+  plant: {"success": true, "message": "Planted 1, cleared 0.", "planted": 1, "cleared": 0, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedByDensity": 0, "cellsOutOfBounds": 0, "growth": 1.0, "errors": [], "ticksGame": 5062,
+sun: directional=False E=None dir=(0.00,0.00); disc centre (185.0,95.0) r 5.46; 69 cells inside
+before felling: 0 of 69 disc cells wrong
+fell: {"success": true, "message": "Planted 0, cleared 1.", "planted": 0, "cleared": 1, "rejected": 0, "rejectionReasons": {}, "rejectedCells": [], "cellsSkippedByDensity": 0, "cellsOutOfBounds": 0, "growth
+PASS live tree crowns
+[bridge split] 29.2 s wall: load 0.0 / ticks 13.5 / reads 0.0 / other 4.8 / outside calls 11.0 s

@@ -9,7 +9,8 @@ Kind A (deterministic): the scene plants one grown tree on cleared ground, so on
                 that shade is gone.
   entry point   the current map of a game with Creature Behaviors and the JawaBench companion of this build (the
                 `jawa/shadegrid_read` fields canopy, cause, shadowDirX/Z; null fields = COULD NOT LOOK, an old companion).
-  opportunity   the cleared square around --cell is unroofed open ground, and the grid casts with a sun vector
+  opportunity   the cleared square around --cell is open ground (no shade, no cause: not roofed, not indoors, in no
+                other crown's shade; checked after the clear), and the grid casts with a sun vector
                 (isDirectional) or without one (the disc under the crown).
   success       every probed cell inside the predicted disc reads canopy >= 0.99 with cause '<label> canopy', the
                 mirror cell up-sun reads canopy 0, and after felling every disc cell reads canopy 0.
@@ -21,6 +22,13 @@ Run on the machine that hosts the game, with that game's environment:
     python3 src/RimMandrake/CreatureBehaviors/live_tree_crowns.py [--cell 60,60] [--tree Plant_TreePine --drawn 3]
     (a giant: --tree RM_Veluthar --drawn 11.5 --rf 0.95 --hf 0.78, its factors in Patches/RM_TreeCrowns_Giants.xml)
 Exit 0 PASS, 1 FAIL (MOD FAILURE), 2 COULD NOT LOOK (no map, an old companion, a cell that cannot hold the tree).
+
+Measured 2026-11-26 on ArchSmall, tier explosivegrowth_solo, quicktest maps (a day/night world, so no sun vector: the
+disc lies under the crown): PASS with Plant_TreePine (1 of 1 disc cell) and RM_Veluthar with its measured factors (69 of
+69), each cleared 60 ticks after felling; the clear itself removed a madruka's shade within 60 ticks. One run read FAIL
+69/69 with cause "indoors": the site was under mountain roof on a mountainous map, an APPARATUS FAULT (the staging), not
+the mod. The pre-check now needs no shade and no cause on the square, and the default tries a grid of cells. The
+down-sun offset needs a fixed-sun world; it is the C# selftest's (T1) and DIRECT_SUN_LIVE_VERIFY_ANGLE_NOT_BIOME's.
 """
 import argparse
 import json
@@ -44,9 +52,10 @@ def read(s, cells):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--cell", default="125,125;60,60;190,190;60,190;190,60;125,60;125,190",
-                    help="root cells to try, ';'-separated: the first whose cleared square takes the tree and lies in "
-                         "no other crown's shade is used")
+    grid = ";".join("%d,%d" % (x, z) for x in range(35, 220, 30) for z in range(35, 220, 30))
+    ap.add_argument("--cell", default=grid,
+                    help="root cells to try, ';'-separated (default: every 30 cells): the first whose cleared square "
+                         "is open unshaded ground and takes the tree is used (a mountainous map hides most of them)")
     ap.add_argument("--tree", default="Plant_TreePine", help="an evergreen plant drawn at least 1.5 cells grown "
                     "(a deciduous tree may be leafless, crown x 0.3)")
     ap.add_argument("--drawn", type=float, default=3.0, help="its drawn size at growth 1 (pine: 1 x 3.0)")
@@ -68,9 +77,10 @@ def main():
             s.call("jawa/safe_advance", action="start", ticks=FELL_WAIT)
             ring = [(x, z) for x in range(cx - 4, cx + 5) for z in range(cz - 4, cz + 5)]
             _, pre = read(s, ring)
-            shaded = [c for c in ring if (pre.get(c) or {}).get("canopy")]
+            # Open ground only: no shade of any kind and no cause (a roof, a cave, indoors, another crown).
+            shaded = [c for c in ring if (pre.get(c) or {}).get("shade") or (pre.get(c) or {}).get("cause")]
             if shaded:
-                print("  %s lies in another crown's shade (%d of %d cells, e.g. %s); next" % (
+                print("  %s is not open unshaded ground (%d of %d cells, e.g. %s); next" % (
                     tok, len(shaded), len(ring), (pre.get(shaded[0]) or {}).get("cause")), flush=True)
                 continue
             r = s.call("jawa/set_plants", ops="%s:%d,%d,1,1" % (a.tree, cx, cz), growth=1.0) or {}
