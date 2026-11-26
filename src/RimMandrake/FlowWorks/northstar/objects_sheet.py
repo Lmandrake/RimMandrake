@@ -154,7 +154,12 @@ def _style_menu(w, cell, reach="item"):
     if hit or any(str(q.get("label") or "").startswith(t) for t in REACH_ROW.values() for q in opts):
         if not hit:
             return None, "the reach menu has no %r row" % tag
-        B.call("rimworld/execute_context_menu_option", optionIndex=hit[0].get("index"))
+        # the reach's action opens the looks menu; through rimworld/execute_context_menu_option that new FloatMenu is gone
+        # before the next call (ArchSmall 2026-11-26: "No context menu or pop-up option menu is open", every look pick
+        # returned None). jawa/debug_action_menu picks on the open menu in one main-thread call and pins the menu it opens.
+        r = B.call("jawa/debug_action_menu", pick=hit[0].get("label")) or {}
+        if not r.get("success") or not r.get("menuOpenAfter"):
+            return None, "the reach pick %r opened no looks menu (%s)" % (hit[0].get("label"), str(r.get("message") or r)[:120])
         o = B.call("rimworld/get_context_menu_options") or {}
         opts = o.get("options") or []
     return o.get("menuId"), opts

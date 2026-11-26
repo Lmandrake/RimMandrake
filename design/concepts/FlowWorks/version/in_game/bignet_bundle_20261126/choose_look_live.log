@@ -1,0 +1,24 @@
+# choose_look through the reach menu, ArchSmall, 2026-11-26 (FlowWorks loaded build = origin/main before b84d6f6337's DLL; flowworks_list)
+## before the fix (objects_sheet at 2f8579d1b5): choose_look returned None; probe: the looks menu opened by the reach pick is gone
+guardrail \\wsl.localhost\Ubuntu\home\mandrake\rm\runs\clones\BIGNET_PROOF_FIX_SIZE_NOT_RESTORED.det\Transient\bignet_closeups_20261126\guardrail_station2.png
+faucet default \\wsl.localhost\Ubuntu\home\mandrake\rm\runs\clones\BIGNET_PROOF_FIX_SIZE_NOT_RESTORED.det\Transient\bignet_closeups_20261126\faucet_station1_default.png
+choose_look Modern -> None
+faucet modern \\wsl.localhost\Ubuntu\home\mandrake\rm\runs\clones\BIGNET_PROOF_FIX_SIZE_NOT_RESTORED.det\Transient\bignet_closeups_20261126\faucet_station1_modern.png
+faucet things {'success': True, 'things': [{'id': 'RM_PipeFaucet35361', 'def': 'RM_PipeFaucet', 'label': 'Pipe faucet', 'x': 106, 'z': 173, 'spawned': True, 'rot': 0, 'stackCount': 1, 'hitPoints': 60, 'maxHitPoints': 60, 'faction': 'PlayerColony', 'factionName': 'New Arrivals'}], 'scanned': 31509, 'countReturned': 1, 'countMatched': 1, 'isCompleteList': True, 'truncated': 0, 'pawnsSkipped': 34, 'perDef': {'RM_P
+[bridge split] 7.7 s wall: load 0.0 / ticks 0.0 / reads 0.1 / other 0.5 / outside calls 7.1 s
+menu1 {"success": true, "menuId": 7, "provider": "gizmo", "optionCount": 3, "options": [{"index": 1, "label": "This item: this universal pipe only", "disabled": false, "priority": "Default", "orderInPriority": 0, "autoTakeable": false, "hasAction": true}, {"index": 2, "label": "All connected: the whole connected line (7 parts now in other looks)", "disabled": false, "priority": "Default", "orderInPriority": 0, "autoTakeable": false, "hasAction": true}, {"index": 3, "label": "All on map: 7 FlowWorks pa
+exec {"success": true, "executedIndex": 2, "label": "All connected: the whole connected line (7 parts now in other looks)", "operation": {"OperationId": "op_6a643679605640779cfee5c2305e559e", "Status": "Completed", "Success": true, "DurationMs": 11}, "state": {"programState": "Playing", "hasCurrentGame": true, "paused": true, "timeSpeed": "Paused", "tick": 6603}}
+menu2 after 0.5s {"success": false, "message": "No context menu or pop-up option menu is open.", "operation": {"OperationId": "op_6dc74999d70c4d5c867c5723b4673b00", "Status": "Completed", "Success": true, "DurationMs": 16}, "state": {"programState": "Playing", "hasCurrentGame": true, "paused": true, "timeSpeed": "Paused", "tick": 6603}}
+menu2 after 3.0s {"success": false, "message": "No context menu or pop-up option menu is open.", "operation": {"OperationId": "op_120f8e1c4541456884b85cc5c732ffe0", "Status": "Completed", "Success": true, "DurationMs": 2}, "state": {"programState": "Playing", "hasCurrentGame": true, "paused": true, "timeSpeed": "Paused", "tick": 6603}}
+shot D:\ClaudeWork\rimmandrake\instances\b\Screenshots\reach_probe_1795705347.png
+[bridge split] 5.9 s wall: load 0.0 / ticks 0.0 / reads 0.0 / other 0.2 / outside calls 5.6 s
+## after the fix: jawa/debug_action_menu picks the reach
+pick reach True {'index': 0, 'label': 'This item: this universal pipe only'} 1 True
+read looks {"success": true, "menuId": 10, "provider": "window", "optionCount": 4, "options": [{"index": 1, "label": "Scrapper", "disabled": false, "priority": "Default", "orderInPriority": 0, "autoTakeable": false, "hasAction": true}, {"index": 2, "label": "Industrial", "disabled": false, "priority": "Default", "orderInPriority": 0, "autoTakeable": false, "hasAction": true}, {"index": 3, "label": "Modern (current)", "disabled": false, "priority": "Default", "orderInPriority": 0, "autoTakeable": false, "ha
+after close {"success": false, "message": "No context menu or pop-up option menu is open.", "operation": {"OperationId": "op_f4dc65017e0848fcae3d2c9192d44bae", "Status": "Completed", "Success": true, "DurationMs"
+[bridge split] 0.8 s wall: load 0.0 / ticks 0.0 / reads 0.0 / other 0.2 / outside calls 0.6 s
+Industrial {'choose': 'Industrial', 'far_pipe': 'Industrial', 'faucet': 'Industrial'}
+Modern {'choose': 'Modern', 'far_pipe': 'Modern', 'faucet': 'Modern'}
+faucet modern \\wsl.localhost\Ubuntu\home\mandrake\rm\runs\clones\BIGNET_PROOF_FIX_SIZE_NOT_RESTORED.det\Transient\bignet_closeups_20261126\faucet_station1_modern_final.png
+RESULT {"Industrial": {"choose": "Industrial", "far_pipe": "Industrial", "faucet": "Industrial"}, "Modern": {"choose": "Modern", "far_pipe": "Modern", "faucet": "Modern"}}
+[bridge split] 5.9 s wall: load 0.0 / ticks 0.0 / reads 0.1 / other 1.2 / outside calls 4.5 s
