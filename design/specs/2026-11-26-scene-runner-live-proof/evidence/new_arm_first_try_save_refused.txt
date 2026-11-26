@@ -1,0 +1,5 @@
+NO RUN: the scene-begin save failed, nothing was staged: RuntimeError: D:\ClaudeWork\rimmandrake\instances\b\Saves\scene_runner_pre_a0299b4af40d.rws deleted, not a portable fixture: cannot name the compressed hashes: 64117 -> no known compressible def
+time: save None s, run None s, reload None s, total 4.38 s; bridge calls {'rimworld/save_game': 1, 'total': 1}
+OUTCOME NO_RUN (exit 4)
+evidence: D:\ClaudeWork\rimmandrake\scene_runner\live_proof_20261126\new_arm_run1.json
+[bridge split] 4.4 s wall: load 0.8 / ticks 0.0 / reads 0.0 / other 0.0 / outside calls 3.7 s

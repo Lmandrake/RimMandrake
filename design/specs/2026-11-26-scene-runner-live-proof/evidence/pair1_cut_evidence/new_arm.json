@@ -1,0 +1,76 @@
+{
+ "type": "RimMandrake.ExplosiveKnockback.RM_KnockbackScenes",
+ "scenes_asked": "",
+ "rows": [
+  {
+   "scene": "storeroom_bomb_pit",
+   "check": "OUTSIDE haulables -3,-5,7,2",
+   "status": "PASS",
+   "measured": "2",
+   "expected": ">= 1",
+   "source": "outside"
+  },
+  {
+   "scene": "storeroom_bomb_pit",
+   "check": "VERDICT",
+   "status": "PASS",
+   "measured": "east=True [type=launch tick=2 exp=10532 thing=Human10512 from=13,12 to=15,12 planned=3 cells=2 stop=Wall impact=3.853519 otherImpact=0 door=False mass=60.29598 hoseDropped=False carried=none onCover=False gas=False hitOther=False faction=PlayerColony at 15,12 stunned=True] south=True [pS 12,11->12,8 (3 cells)] goods=True [unmoved= tooWeak=g_shelf2,g_shelf3,g_shelf4,g_shelf5 flown=7 flat= spin=True...",
+   "expected": "PASS",
+   "source": "scene"
+  },
+  {
+   "scene": "storeroom_bomb_pit_control",
+   "check": "VERDICT",
+   "status": "PASS",
+   "measured": "descents=0 offPlan=[] cover cell 29,8 solid=True (step 300-900 ticks)",
+   "expected": "PASS",
+   "source": "scene"
+  }
+ ],
+ "split": {
+  "save_s": 3.89,
+  "run_s": 3.68,
+  "reload_s": 6.65,
+  "total_s": 14.21
+ },
+ "snapshot": "scene_runner_pre_53434c30264c",
+ "restore": {
+  "verified": true,
+  "problems": []
+ },
+ "bridge_calls": {
+  "rimworld/save_game": 1,
+  "jawa/run_scenes": 1,
+  "rimworld/get_ui_state": 8,
+  "rimworld/go_to_main_menu": 1,
+  "rimbridge/list_logs": 2,
+  "rimworld/load_game": 1,
+  "jawa/map_info": 1,
+  "total": 15
+ },
+ "scenes": [
+  {
+   "scene": "storeroom_bomb_pit",
+   "origin": "12,12",
+   "ticksWanted": 900,
+   "ticksStepped": 900,
+   "frames": 32,
+   "stageMs": 178,
+   "tickMs": 1719,
+   "judgeMs": 18
+  },
+  {
+   "scene": "storeroom_bomb_pit_control",
+   "origin": "27,12",
+   "ticksWanted": 900,
+   "ticksStepped": 900,
+   "frames": 32,
+   "stageMs": 90,
+   "tickMs": 1471,
+   "judgeMs": 5
+  }
+ ],
+ "suite_begin": "ran: settings at defaults (57 player values kept), journal cleared",
+ "game_overall": "PASS",
+ "outcome": "PASS"
+}

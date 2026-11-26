@@ -231,7 +231,7 @@ namespace JawaBench.BridgeTools
             refusal = null;
             if (staged is Delegate d && d.GetType().GetMethod("Invoke")?.GetParameters().Length == 0) return d;
             string text = staged as string;
-            refusal = Unmeasured_(scene, "STAGE", text != null ? "staging refused: " + Clip(text) :
+            refusal = Unmeasured_(scene, "STAGE", text != null ? "staging refused: " + text :
                 staged == null ? "the scene returned nothing (no judge)" : "the scene returned a " + staged.GetType().Name + ", not a judge");
             return null;
         }
@@ -249,13 +249,13 @@ namespace JawaBench.BridgeTools
                 string detail = head.Length > 2 ? head[2] : (head.Length > 1 ? head[1] : "");
                 bool whole = head.Length == 3 && head[1] == scene && head[2].Trim().Length > 0;
                 if ((word == Pass || word == FailS) && !whole)
-                    o.Add(R(scene, "VERDICT", Unmeasured, Clip(t), Pass, "scene", head.Length > 1 && head[1].Length > 0 && head[1] != scene
+                    o.Add(R(scene, "VERDICT", Unmeasured, t, Pass, "scene", head.Length > 1 && head[1].Length > 0 && head[1] != scene
                         ? "the verdict names scene '" + head[1] + "', not '" + scene + "'"
                         : "a verdict line names its scene and says why: '" + word + " " + scene + " <detail>'"));
-                else if (word == Pass || word == FailS) o.Add(R(scene, "VERDICT", word, Clip(detail), Pass, "scene"));
+                else if (word == Pass || word == FailS) o.Add(R(scene, "VERDICT", word, detail, Pass, "scene"));
                 else if (word == "INVALID" || word == "ERROR")
-                    o.Add(R(scene, "VERDICT", Unmeasured, Clip(detail), Pass, "scene", word.ToLowerInvariant() + ": " + Clip(t)));
-                else o.Add(R(scene, "VERDICT", Unmeasured, Clip(t), Pass, "scene", "unreadable verdict line"));
+                    o.Add(R(scene, "VERDICT", Unmeasured, detail, Pass, "scene", word.ToLowerInvariant() + ": " + t));
+                else o.Add(R(scene, "VERDICT", Unmeasured, t, Pass, "scene", "unreadable verdict line"));
                 return o;
             }
             if (judged is IEnumerable rows && !(judged is string))
@@ -264,14 +264,14 @@ namespace JawaBench.BridgeTools
                 {
                     if (!(x is string[] a) || a.Length < 2)
                     {
-                        o.Add(R(scene, "ROW", Unmeasured, Clip(x?.ToString()), null, "scene", "a row is not string[] {check, status, measured, expected}"));
+                        o.Add(R(scene, "ROW", Unmeasured, x?.ToString(), null, "scene", "a row is not string[] {check, status, measured, expected}"));
                         continue;
                     }
                     string st = a[1] == Pass || a[1] == FailS || a[1] == Unmeasured ? a[1] : null;
                     string cause = st == null ? "status '" + a[1] + "' is not PASS, FAIL or UNMEASURED"
                         : st != Unmeasured && a.Length < 4 ? "a " + st + " row needs {check, status, measured, expected}; this one has " + a.Length + " columns"
                         : st == Unmeasured ? (a.Length > 4 && !string.IsNullOrWhiteSpace(a[4]) ? a[4] : "the scene could not measure it") : null;
-                    o.Add(R(scene, a[0], cause != null ? Unmeasured : st, a.Length > 2 ? Clip(a[2]) : null, a.Length > 3 ? a[3] : null, "scene", cause));
+                    o.Add(R(scene, a[0], cause != null ? Unmeasured : st, a.Length > 2 ? a[2] : null, a.Length > 3 ? a[3] : null, "scene", cause));
                 }
                 if (o.Count == 0) o.Add(R(scene, "ROWS", Unmeasured, null, null, "scene", "the judge returned no rows (empty is not a verdict)"));
                 return o;
@@ -306,6 +306,7 @@ namespace JawaBench.BridgeTools
             return Pass;
         }
 
+        // Clip: the tools' refusal and exception messages only; a row's measured and cause are evidence and stay whole
         public static string Clip(string s, int n = 400) => s == null ? null : (s.Length <= n ? s : s.Substring(0, n) + "...");
     }
 }

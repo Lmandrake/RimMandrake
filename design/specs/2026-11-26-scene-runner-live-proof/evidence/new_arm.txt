@@ -1,0 +1,10 @@
+SCENE                        CHECK                              STATUS     MEASURED       EXPECTED   SOURCE / CAUSE
+storeroom_bomb_pit           OUTSIDE haulables -3,-5,7,2        PASS       2              >= 1       outside
+storeroom_bomb_pit           VERDICT                            PASS       east=True [typ PASS       scene
+storeroom_bomb_pit_control   VERDICT                            PASS       descents=0 off PASS       scene
+  storeroom_bomb_pit         origin 12,12    ticks 900/900 in 49 frames; stage 270 ms, ticks 2660 ms, judge 23 ms
+  storeroom_bomb_pit_control origin 27,12    ticks 900/900 in 41 frames; stage 158 ms, ticks 1966 ms, judge 6 ms
+time: save 4.49 s, run 5.29 s, reload 8.68 s, total 18.47 s; bridge calls {'rimworld/save_game': 1, 'jawa/run_scenes': 1, 'rimworld/get_ui_state': 10, 'rimworld/go_to_main_menu': 1, 'rimbridge/list_logs': 2, 'rimworld/load_game': 1, 'jawa/map_info': 1, 'total': 17}
+OUTCOME PASS (exit 0)
+evidence: D:\ClaudeWork\rimmandrake\scene_runner\live_proof_20261126\pair2\new_arm.json
+[bridge split] 18.5 s wall: load 0.9 / ticks 0.0 / reads 1.2 / other 5.2 / outside calls 11.1 s

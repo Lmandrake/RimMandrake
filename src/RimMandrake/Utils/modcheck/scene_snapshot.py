@@ -83,7 +83,7 @@ class SceneSnapshot(object):
         if d is None:
             import game_paths as G
             d = G.SAVES
-        return T.save_site(self.call, name, d, sleep=self.sleep)
+        return T.save_site(self.call, name, d, sleep=self.sleep, expand=False)   # same session, same list: no fixture
 
     def _do_load(self):
         if self._load is not None:

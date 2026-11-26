@@ -1,0 +1,76 @@
+{
+ "type": "RimMandrake.ExplosiveKnockback.RM_KnockbackScenes",
+ "scenes_asked": "",
+ "rows": [
+  {
+   "scene": "storeroom_bomb_pit",
+   "check": "OUTSIDE haulables -3,-5,7,2",
+   "status": "PASS",
+   "measured": "2",
+   "expected": ">= 1",
+   "source": "outside"
+  },
+  {
+   "scene": "storeroom_bomb_pit",
+   "check": "VERDICT",
+   "status": "PASS",
+   "measured": "east=True [type=launch tick=2 exp=32848 thing=Human32828 from=13,12 to=15,12 planned=3 cells=2 stop=Wall impact=3.860753 otherImpact=0 door=False mass=60.74998 hoseDropped=False carried=none onCover=False gas=False hitOther=False faction=PlayerColony at 15,12 stunned=True] south=True [pS 12,11->12,8 (3 cells)] goods=True [unmoved= tooWeak=g_shelf2,g_shelf3,g_shelf4,g_shelf5 flown=7 flat= spin=True rebounds=4 despawnSpawnPairs=0] container=True [contents=True thrown=True type=container tick=4 exp=32848 thing=LWM_WeaponsLocker32824 action=thrown from=10,12 to=9,12 planned=2 cells=1 mass=10.6 goods=2 held=0 oneByOne=True overLimit=False] heavy=True [type=heavy_hit tick=13 exp=32848 thing=Steel32827 pawn=Human32837 pawnId=32837 at=15,15 mass=37.5 damage=4.592959 stunTicks=30 pawnDead=False] pit=True [pawns=pS:1 goods=g_pit:1] cover=True [cell 14,8 gone=True stack@14,8 descents=1] (step 300-900 ticks)",
+   "expected": "PASS",
+   "source": "scene"
+  },
+  {
+   "scene": "storeroom_bomb_pit_control",
+   "check": "VERDICT",
+   "status": "PASS",
+   "measured": "descents=0 offPlan=[] cover cell 29,8 solid=True (step 300-900 ticks)",
+   "expected": "PASS",
+   "source": "scene"
+  }
+ ],
+ "split": {
+  "save_s": 4.49,
+  "run_s": 5.29,
+  "reload_s": 8.68,
+  "total_s": 18.47
+ },
+ "snapshot": "scene_runner_pre_786c5b162b75",
+ "restore": {
+  "verified": true,
+  "problems": []
+ },
+ "bridge_calls": {
+  "rimworld/save_game": 1,
+  "jawa/run_scenes": 1,
+  "rimworld/get_ui_state": 10,
+  "rimworld/go_to_main_menu": 1,
+  "rimbridge/list_logs": 2,
+  "rimworld/load_game": 1,
+  "jawa/map_info": 1,
+  "total": 17
+ },
+ "scenes": [
+  {
+   "scene": "storeroom_bomb_pit",
+   "origin": "12,12",
+   "ticksWanted": 900,
+   "ticksStepped": 900,
+   "frames": 49,
+   "stageMs": 270,
+   "tickMs": 2660,
+   "judgeMs": 23
+  },
+  {
+   "scene": "storeroom_bomb_pit_control",
+   "origin": "27,12",
+   "ticksWanted": 900,
+   "ticksStepped": 900,
+   "frames": 41,
+   "stageMs": 158,
+   "tickMs": 1966,
+   "judgeMs": 6
+  }
+ ],
+ "suite_begin": "ran: settings at defaults (57 player values kept), journal cleared",
+ "game_overall": "PASS",
+ "outcome": "PASS"
+}

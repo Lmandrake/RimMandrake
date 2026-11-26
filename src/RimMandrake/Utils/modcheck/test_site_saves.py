@@ -357,9 +357,11 @@ def backup_saves(saves_dir, backup_dir):
     return n
 
 
-def save_site(call, name, saves_dir, wait_s=180, sleep=time.sleep):
+def save_site(call, name, saves_dir, wait_s=180, sleep=time.sleep, expand=True):
     """save_game under `name`, then STAT: a new <name>.rws appeared and no existing file changed (save_game has
-    written the CURRENT slot instead of saveName before). Never overwrites: a rebuilt site takes the next _vN."""
+    written the CURRENT slot instead of saveName before). Never overwrites: a rebuilt site takes the next _vN.
+    expand=False keeps the game's compressed grid: for a scene snapshot, reloaded in the same session on the same list
+    (scene_snapshot.py), which is no fixture; the expand refuses and deletes a map that holds a modded compressible def."""
     before = saves_stat(saves_dir)
     if name + ".rws" in before:
         raise RuntimeError("%s.rws already exists -- a site save is never overwritten; build the next version" % name)
@@ -376,6 +378,8 @@ def save_site(call, name, saves_dir, wait_s=180, sleep=time.sleep):
         raise RuntimeError("save touched existing file(s) %s" % touched)
     # Every builder saves here, so no fixture leaves holding the list-bound compressed grid (save_uncompress.py).
     path = os.path.join(saves_dir, name + ".rws")
+    if not expand:
+        return {"path": path, "bytes": os.path.getsize(path), "expanded": None}
     expanded = save_uncompress.expand_fresh(path)
     return {"path": path, "bytes": expanded["bytes"], "expanded": expanded}
 

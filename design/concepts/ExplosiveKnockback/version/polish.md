@@ -36,3 +36,7 @@ His words, 2026-11-24 (OWNER:1795565769863524396): *"Include all polish items to
 - RIMMANDRAKE_CHECK_KNOCKBACK_RULES_MAPPING_OFFLINE_LIKE_KERNEL: the offline settings sweep checks every `Kernel()` field against its own setting but not the `Rules()` fields beyond the three sheet switches; a `Rules()` that fixes `goodsReboundKeepPercent` at 100 stays green offline (planted, blind cycle 1). The live `sc_settings_sweep` and `sc_storeroom_mortar_rebound_legs` decide it.
 - RIMMANDRAKE_CROSSCHECK_KNOCKBACK_REBOUND_LEFT_FLYER_GRADES_ITSELF: `V_SHORTER` of `sc_storeroom_mortar_rebound_legs` compares each rebound with the flyer's own journal `left`; a flyer that counted the whole throw as left would pass it (planted, blind cycle 1). The shipped flyer logs the true cells left.
 - RIMMANDRAKE_SAVE_KNOCKBACK_LANDING_IMPACT_FACTOR_ACROSS_RELOAD: `landingImpactFactor` is not saved, so a factor-0 throw saved in mid-flight bruises a walked-in pawn at factor 1 after a reload.
+
+## Scene runner live proof (2026-11-26)
+
+- `src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackScenes.cs` header says "NOT YET RUN LIVE"; the suite ran live on ArchSmall 2026-11-26 with the same rows as knockback_runner.py. Drop that sentence at the next EK source change (a comment edit alone moves the DLL srchash).

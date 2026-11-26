@@ -291,6 +291,33 @@ def main():
     finally:
         shutil.rmtree(d, ignore_errors=True)
 
+    # 9b a scene snapshot is reloaded in the same session on the same list, so it is never made portable: a map whose
+    # compressed grid holds a modded compressible def (live, ArchSmall 2026-11-26: hash 64117 on the
+    # explosiveknockback_visit tier) still snapshots, and the save stays on disk with its grid as the game wrote it.
+    d = tempfile.mkdtemp(prefix="scene_snap_")
+    try:
+        import save_uncompress as SU
+        text = ("<savegame><nextThingID>5</nextThingID><compressedThingMapDeflate>%s</compressedThingMapDeflate>"
+                "<things></things></savegame>") % SU.write_grid([64117, 0, 0, 0])
+
+        def mcall(tool, **kw):
+            if tool == "rimworld/save_game":
+                with open(os.path.join(d, kw["saveName"] + ".rws"), "w") as fh:
+                    fh.write(text)
+            return {}
+        s = SS.SceneSnapshot(mcall, "scene_t_", saves_dir=d, load=lambda c, n: {"verified": True}, sleep=lambda x: None)
+        try:
+            s.take()
+            err = None
+        except Exception as ex:  # noqa: BLE001
+            err = repr(ex)
+        p = os.path.join(d, (s.name or "") + ".rws")
+        kept = os.path.isfile(p) and open(p).read() == text
+        check("a snapshot of a map with a modded compressible def saves, kept as written (no portability expand)",
+              err is None and kept, (err, kept))
+    finally:
+        shutil.rmtree(d, ignore_errors=True)
+
     # 10 the two users
     w = open(os.path.join(SRC, "Pyrelands", "wind_burn_live.py"), encoding="utf-8").read()
     c = open(os.path.join(SRC, "HugeThings", "northstar", "showcase_common.py"), encoding="utf-8").read()

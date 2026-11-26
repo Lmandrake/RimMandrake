@@ -1,0 +1,9 @@
+{
+ "bridge_calls": {
+  "jawa/static_call": 9,
+  "jawa/mod_settings_field": 285,
+  "jawa/safe_advance": 8,
+  "total": 302
+ },
+ "wall_s": 35.25
+}

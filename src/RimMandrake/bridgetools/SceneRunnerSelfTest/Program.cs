@@ -231,6 +231,14 @@ namespace JawaBench.BridgeTools
             // ---- verdict line mapping: could-not-look never becomes FAIL or PASS
             var f = C.Normalize("s", "FAIL s goods 0 in pit");
             U("verdict_fail_is_fail", f.Count == 1 && f[0].status == C.FailS && f[0].measured == "goods 0 in pit", Show(f));
+            // the verdict's evidence is kept whole (live 2026-11-26: a 400-character cut dropped the storeroom verdict's
+            // container, heavy, pit and cover clauses from the evidence JSON)
+            string longDetail = "east=True [" + new string('x', 700) + "] pit=True [pawns=pS:1] cover=True";
+            var lp = C.Normalize("s", "PASS s " + longDetail);
+            var lr = C.Normalize("s", new[] { new[] { "R1", C.Pass, longDetail, "PASS" } });
+            var li = C.Normalize("s", "INVALID s " + longDetail);
+            U("verdict_and_row_evidence_kept_whole", lp[0].measured == longDetail && lr[0].measured == longDetail
+                && li[0].measured == longDetail && li[0].cause.EndsWith("cover=True"), Show(lp));
             var inv = C.Normalize("s", "INVALID s not at rest after 900 ticks");
             U("verdict_invalid_is_unmeasured_with_cause", inv[0].status == C.Unmeasured && inv[0].cause.StartsWith("invalid:") && inv[0].cause.Contains("not at rest"), Show(inv));
             var er = C.Normalize("s", "ERROR s NullReferenceException: x");
