@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "c557ca5070f8cadd0f103859066f8aff400c753dba7a609de7fbe5f06fb5d053",
+  "body_sha256": "85eb4843b1f1540942347faeb95a1a9f5eeaca76649b8833cb9eb583448f8c9e",
   "reducer": 1,
   "shards": {
    "BACKFILL": 892335,
@@ -43,7 +43,7 @@
    "HOLDER.run-1795461568": 2159,
    "HOLDER.run-1795471235": 562,
    "HOLDER.run-1795503470": 1774,
-   "HOLDER.run-1795670514": 1455,
+   "HOLDER.run-1795670514": 2691,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1294,10 +1294,10 @@
   },
   "checkpoint": {
    "by": "HOLDER.run-1795670514",
-   "done": "WB 6 of 10 closed: labels, style reaches, toss-flame button, tar creeps like grass, lying body inside pit, (state file)",
-   "next": "Store the held flag on a pawn comp a read reaches, then the thirst rows and the three bridge arts",
-   "ruled_out": "a draw offset for the station 33 body: it was centred on the edge square",
-   "ts": "2026-11-26T06:08:55Z"
+   "done": "jetty seam fixed in every look (5f25b21270), in-game PASS on ArchSmall (83c4f2f4f4), Scrapper wrap fix staged (04ca2b278e) but blocked by owner-KEPT art lock",
+   "next": "Work RIMMANDRAKE_STORE_FLOWWORKS_HELD_FLAG_WHERE_A_READ_REACHES_IT per the bundle state file",
+   "ruled_out": "provenance_fix cannot unprotect a run-minted keep; a new texture path would sidestep his kept-art act",
+   "ts": "2026-11-26T06:49:56Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1749,7 +1749,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1718,
+  "events": 1721,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7849,7 +7849,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-26T06:08:59Z",
+   "last": "2026-11-26T06:49:56Z",
    "lease": "run-1795670514",
    "released": false,
    "token": 60
