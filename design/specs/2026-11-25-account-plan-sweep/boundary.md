@@ -96,7 +96,7 @@ The checks that come from the plan's PROMISES: `live_account_stays_until_its_own
 
 The points above a line that each reset erases (the line of the step in force one second before the reset), the
 switches (each counts 3 points), the minutes in which new runs were refused (Archmagi and SteveDesktop apart), the runs
-that a switch ended, the stops, the idle points. Cost = erased + 3 x switches + idle, the plan's own cost
+that a switch ended, the stops, the idle points, and the largest overshoot under a line (`overshoot_max`). Cost = erased + 3 x switches + idle, the plan's own cost
 (`idle_weight` 1).
 
 The foresight bound: the best of five rules that know the whole burn ahead, on the same burn, levels, resets and

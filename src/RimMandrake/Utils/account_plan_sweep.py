@@ -648,7 +648,7 @@ def run_regime(reg, hours=None, stop_at_first=False, trace=None):
         finally:
             AP.machine_notice = real_mn
     out = {"violations": viol, "passes": passes, "seconds": round(time.time() - t_start, 2),
-           "measures": measures_of(w)}
+           "measures": dict(measures_of(w), overshoot_max=round(st["max_over"], 1))}
     out["bound"] = foresight_bound(reg, hours)
     out["costly_by"] = round(out["measures"]["cost"] - out["bound"]["cost"], 1)
     return out
