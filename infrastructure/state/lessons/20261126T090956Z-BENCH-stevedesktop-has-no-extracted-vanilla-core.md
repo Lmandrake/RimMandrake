@@ -1,0 +1,3 @@
+SteveDesktop has no extracted vanilla Core textures, so scale_panel.py cannot draw a scale panel there. Core textures sit in D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64_Data\resources.assets; Windows python.exe with UnityPy (pip --user) pulls Naked_Male_south, ShirtBasic_Male_south, Male_Average_Normal_south, Mop_south and Rat_east by Texture2D name, and a Peeper scale panel drawn from them is pixel-identical to the committed one. SteveDesktop also has no Codex door (Dispatch lacks gpt_door.py) and no Archmagi artstore pictures, so a full art_eval regress needs Archmagi.
+item: RIMMASTER_TEACH_FLYER_JUDGE_PARTS_SHEET_STILLS_MISSED_IT
+home: infrastructure/stevedesktop/RUNBOOK.md
