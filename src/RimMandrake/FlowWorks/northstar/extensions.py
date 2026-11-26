@@ -25,8 +25,8 @@ validation.py still DECLARES every component here (toggle + shows) so the modche
 situational `modcheck` re-run executes them exactly as before the split.
 
 Conventions (unchanged from the suite they came from):
-  dig   `jawa/flowworks_excavation_drive {x,z,deepenLevels:N,setFill:-1}`   (engine Deepen())
-  fill  `jawa/flowworks_excavation_drive {x,z,deepenLevels:0,setFill:F}`    (TrySetDriverFill)
+  dig   `jawa/flowworks_excavation_drive {x,z,deepenLevels:N,setBodyWaterM:-1}`   (engine Deepen())
+  fill  `jawa/flowworks_excavation_drive {x,z,deepenLevels:0,setBodyWaterM:M}`    (the whole body's water, in metres)
   read  `jawa/flowworks_excavation_report {x,z}`; `jawa/canal_dig` is a stub that ALWAYS FAILS and is never called.
   * `PULSE` = 250 ticks; settle = step whole pulses. The judge reads only the LAST screenshot of a component;
     `(change)` bars end on a labelled before|after DIPTYCH (`_diptych`) or FAIL.
