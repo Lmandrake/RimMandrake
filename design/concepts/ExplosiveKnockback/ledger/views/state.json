@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "cc5080a5a57f649254b2ba327dc49d35f7bcd45e0409898dec56e1f86cbde6d7",
+  "body_sha256": "8495e06f5fc6749e517f55cd62f738c9d4e684d4cde32659c881411bba426a43",
   "reducer": 1,
   "shards": {
    "BACKFILL": 348917,
@@ -27,7 +27,7 @@
    "HOLDER.run-1795660419": 2599,
    "HOLDER.run-1795661891": 608,
    "HOLDER.run-1795667763": 2112,
-   "HOLDER.run-1795670288": 2320,
+   "HOLDER.run-1795670288": 3297,
    "JUDGE.judge-1794890427": 18837,
    "JUDGE.judge-1795437145": 6544,
    "JUDGE.judge-1795662842": 7876,
@@ -773,11 +773,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795667763",
-   "done": "Confirmed blind cycle 2 exit_met; advanced 0.2.0 to in_game; restamped stale T_PROOFGATE (certificate OK, 58 bars); both judge check repairs claimed_fixed",
-   "next": "Run the Stage 6 in-game visit for 0.2.0: the 35 not_kernel rows and the two survived game-side plants",
-   "ruled_out": "No mod fault in cycle 2; neither edited test weakens an assertion; locked files unchanged since the lock",
-   "ts": "2026-11-26T04:42:22Z"
+   "by": "HOLDER.run-1795670288",
+   "done": "Visit 2 on ArchBig: 65 of 65 last rows PASS, 5 check repairs and 3 pipeline fixes, walk save EK_V020_VISIT2_WALK_20261125; exit not met",
+   "next": "Class visit 1 rows P_goods_fly_wall and P_goods_fly_rebound (CLASS OWED note), then rerun the build-match pair",
+   "ruled_out": "No mod fault this visit; barrage over budget was the machine (off arm 54.5 ms); map 105 was a stale case file",
+   "ts": "2026-11-26T08:06:22Z"
   },
   "decisions": {
    "bar:inv_items_teleport": {
@@ -973,7 +973,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 789,
+  "events": 791,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -2612,7 +2612,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-26T07:44:09Z",
+   "last": "2026-11-26T08:06:22Z",
    "lease": "run-1795670288",
    "released": false,
    "token": 32
