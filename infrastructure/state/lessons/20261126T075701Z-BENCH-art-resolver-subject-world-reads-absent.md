@@ -1,0 +1,3 @@
+The art resolver (subject.World) reads an absent artpipe queue as an empty one. On SteveDesktop there is no D:\ClaudeWork\rimmandrake\artpipe, so a binding sheet built there overstates its open rows. Mirror the queue's JSON from Archmagi (ssh mandrake@archmagi-wsl, tar done/pending/active/collected.jsonl plus the _artsrc names) and set ARTPIPE_STATE_DIR. binding_sheet build now prints artpipe_state ABSENT. Also: backfill binds a render only by done/<render dir>.json, which a multi-facing job (done/<family>.json) never matches; render_subjects.job_target now covers that case.
+item: RENDER_BINDINGS_DECIDE_ORPHANS_AWAIT_PARENTS
+home: skills/rimworld-review-sheets/references/traps.md
