@@ -217,6 +217,8 @@ PAGES = {
         "src/RimMandrake/rimflow/selftest_one_live_run_per_mod.py",
     "design/specs/2026-11-20-road-back-holder-first/boundary.md":
         "src/RimMandrake/rimflow/selftest_road_back_holder_first.py",
+    "design/specs/2026-11-25-tick-launches-road-back-hold/boundary.md":
+        "src/RimMandrake/rimflow/selftest_dispatch_road_back_hold.py",
     "design/specs/2026-11-20-coverage-judge-reads-only/boundary.md":
         "src/RimMandrake/rimflow/selftest_coverage_judge_reads_only.py",
     "design/specs/2026-11-19-coverage-signoff-and-slots/boundary.md": "src/RimMandrake/rimflow/selftest_coverage_signoff.py",

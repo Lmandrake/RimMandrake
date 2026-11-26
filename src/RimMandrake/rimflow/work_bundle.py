@@ -88,9 +88,27 @@ def system_of(it, reading, items=None):
     return "item:%s" % _g(it, "id")
 
 
-def resolve(target, items, mods, reading):
+def road_back_ids(mod, root=REPO):
+    """-> the ids of the open items of `mod`'s road-back hold that its stage can work (maturation.road_back_hold, the one
+    reader the tick's holder uses too); [] when no road back holds the mod. Raises when the hold cannot be read.
+    design/specs/2026-11-25-tick-launches-road-back-hold/boundary.md"""
+    import maturation as M
+    rec = M.load(root, mod)
+    if rec is None:
+        return []
+    rbh = M.road_back_hold(root, mod, rec, rec.get("stage"))
+    if rbh is None:
+        return []
+    if rbh.get("unread"):
+        raise OSError("; ".join(rbh["unread"]))
+    return [x["id"] for x in rbh.get("open") or []]
+
+
+def resolve(target, items, mods, reading, road_back=None):
     """-> (system, [open member ids], why). target: a home, a mod name (or mod:<Mod>), or a list of ids. Ids of two
-    systems are refused (system None), and why names each id's system."""
+    systems are refused (system None), and why names each id's system. road_back(mod) -> the open road-back item ids of
+    a mod target (road_back_ids): they join its homed tickets whatever their home; a raise keeps the homed tickets and
+    the why says could not look."""
     if isinstance(target, (list, tuple)) and len(target) == 1 and not re.match(r"^[A-Z][A-Z0-9_]{7,}$", target[0]):
         target = target[0]
     if isinstance(target, (list, tuple)):
@@ -116,7 +134,16 @@ def resolve(target, items, mods, reading):
             return None, [], "%r is not a home (pipeline:<part>, game:<need>, machine:<name>), a mod or ticket ids" % t
         t = "mod:%s" % m
     ids = sorted(i for i, x in items.items() if _g(x, "state") not in CLOSED and system_of(x, reading, items) == t)
-    return t, ids, "the open tickets of %s" % t
+    why = "the open tickets of %s" % t
+    if road_back and t.startswith("mod:"):
+        try:
+            rb = [i for i in road_back(t[4:]) if i in items and _g(items[i], "state") not in CLOSED]
+        except Exception as e:  # noqa: BLE001 - could not look: the homed tickets still go, and the why says so
+            return t, ids, "%s; its road back could not look (%s: %s)" % (why, type(e).__name__, e)
+        if [i for i in rb if i not in ids]:
+            why += " and the open items of its road back (%s)" % ", ".join(i for i in rb if i not in ids)
+        ids = sorted(set(ids) | set(rb))
+    return t, ids, why
 
 
 # ---- part 1: the reality sort ---------------------------------------------------------------------------------------
@@ -907,7 +934,8 @@ def cmd_launch(o):
     now = time.time()
     w = world()
     modset, reading = mod_reader()
-    system, ids, why = resolve(o.target if len(o.target) > 1 else o.target[0], w.items, modset, reading)
+    system, ids, why = resolve(o.target if len(o.target) > 1 else o.target[0], w.items, modset, reading,
+                               road_back=road_back_ids)
     if not system:
         print("REFUSED: %s" % why)
         return 2
@@ -1548,7 +1576,8 @@ def cmd_sort(o):
     import list_effect as LE
     w = world()
     modset, reading = mod_reader()
-    system, ids, why = resolve(o.target if len(o.target) > 1 else o.target[0], w.items, modset, reading)
+    system, ids, why = resolve(o.target if len(o.target) > 1 else o.target[0], w.items, modset, reading,
+                               road_back=road_back_ids)
     if not system:
         print("REFUSED: %s" % why)
         return 2

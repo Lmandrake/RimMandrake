@@ -1234,7 +1234,7 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
                "sha": sha or UNM, "given": {"criteria": crit, "inputs": inputs}, "passed": passed,
                "refusals": refusals}
     return {"ok": not refusals, "verdict": verdict, "hand_steps": hand, "from": cur, "to": to, "walk_identity": walk_id,
-            "revision": revision}
+            "revision": revision, "road_back": rbh}
 
 
 # ---- the move --------------------------------------------------------------------------------------------------------
@@ -2399,8 +2399,27 @@ def build_facts(root, mod):
     if cert:    # PRE_JUDGEMENT_CERTIFICATE: its own wait, with its path to pass (a stale build is one command away)
         out["certificate_why"] = cert[0]["observed"]
         out["certificate_fix"] = cert[0]["smallest_fix"]["what"]
+    if "road_back_items" in out["other_refusals"]:
+        out["road_back_hold"] = road_back_facts(root, res.get("road_back"))
     out["owed"] = ("blocked" if out["other_refusals"] else "build" if out["build_refusals"] else
                    "certificate" if cert else "hand step" if out["hand_steps"] else "ready to advance")
+    return out
+
+
+def road_back_facts(root, rbh, now=None):
+    """-> the road-back hold that refused the exit, as the Dispatch tick reads it: open, stage6, unread, the move's time
+    (at, move_at) and waits {id: "until <date>: <reason>"} for its items on a dated wait. None when there is no hold
+    reading (the tick says could not look). design/specs/2026-11-25-tick-launches-road-back-hold/boundary.md"""
+    if not isinstance(rbh, dict):
+        return None
+    mv = rbh.get("move") or {}
+    out = {"open": list(rbh.get("open") or []), "stage6": list(rbh.get("stage6") or []),
+           "unread": list(rbh.get("unread") or []), "at": mv.get("at"), "move_at": _ts(mv.get("at")), "waits": {}}
+    ids = [x["id"] for x in out["open"] + out["stage6"]]
+    try:
+        out["waits"] = ledger_waits(root, ids, now)
+    except (OSError, UnicodeDecodeError) as e:
+        out["unread"].append("the dated waits of the road-back items (%s: %s)" % (type(e).__name__, e))
     return out
 
 
@@ -5596,6 +5615,42 @@ def ledger_needs(root, ids):
                     seen.append((str(e.get("ts") or ""), e.get("tsn") or 0, e["id"], n))
     for _, _, i, n in sorted(seen, key=lambda x: (x[0], x[1])):     # shards interleave: time order, not file order
         out[i] = n
+    return out
+
+
+def ledger_waits(root, ids, now=None):
+    """-> {id: "until <date>: <reason>"} for these ledger items whose newest wait or unwait event is a wait still ahead
+    of now (model.py's dated wait); a wait date that cannot be read is named as such (the item stays out, never worked as
+    free). Shards in time order, as ledger_needs folds them."""
+    d = os.path.join(root, "infrastructure", "state", "ledger", "events")
+    want, seen = set(ids), []
+    for f in sorted(os.listdir(d)) if os.path.isdir(d) and want else []:
+        if not f.endswith(".jsonl"):
+            continue
+        with open(os.path.join(d, f), encoding="utf-8") as fh:
+            for ln in fh:
+                if '"wait"' not in ln and '"unwait"' not in ln:
+                    continue
+                try:
+                    e = json.loads(ln)
+                except ValueError:
+                    continue
+                if e.get("id") in want and e.get("event") in ("wait", "unwait"):
+                    seen.append((str(e.get("ts") or ""), e.get("tsn") or 0, e))
+    last = {}
+    for _, _, e in sorted(seen, key=lambda x: (x[0], x[1])):
+        last[e["id"]] = e
+    now = time.time() if now is None else now
+    out = {}
+    for i, e in last.items():
+        if e.get("event") != "wait":
+            continue
+        u = str(e.get("until") or "")
+        t = _ts(u[:-1] + "+00:00" if u.endswith("Z") else u)
+        if t is None:
+            out[i] = "its wait date %r cannot be read" % u
+        elif t > now:
+            out[i] = "until %s: %s" % (u, e.get("reason") or "no reason given")
     return out
 
 

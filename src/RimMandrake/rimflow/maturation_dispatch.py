@@ -1207,6 +1207,9 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
         row["idle_min"] = round((now - s["owed_since"]) / 60) if s.get("owed_since") else 0
         if owed == "blocked":
             what = ", ".join(f.get("other_refusals") or [])
+            if (f.get("other_refusals") or []) == ["road_back_items"]:
+                road_back_decide(mod, f, row, put)
+                continue
             put("held" if "hold" in (f.get("other_refusals") or []) else "blocked", "refused by %s, not build work" % what)
             continue
         if owed == "certificate":
@@ -2727,6 +2730,20 @@ def pilot_ledger(root, mod):
         return False
 
 
+def pilot_refusal(root, mod):
+    """-> why pilot_ledger refuses `mod`, in words: not a pilot, no mod ledger, or the readiness test's last line."""
+    try:
+        if mod not in (modledger.config().get("pilot_mods") or []):
+            return "%s is not a ledger pilot" % mod
+        if not modledger.read(root, mod):
+            return "%s's mod ledger holds no events" % mod
+        ok, line = ledger_ready(root, mod)
+        return ("%s's mod ledger is ready" % mod) if ok else (
+            "%s's mod ledger is not ready (%s: %s)" % (mod, os.path.relpath(READY_TEST, REPO), line))
+    except Exception as e:  # noqa: BLE001
+        return "%s's mod ledger could not be read (%s: %s)" % (mod, type(e).__name__, e)
+
+
 def ledger_paths(root, mods):
     """-> the DISPATCH shard and every view of each mod's ledger (closed_<version>.md too: landing only the three
     fixed views left a closed view stale on origin/main, RIMMANDRAKE_LAND_EVERY_LEDGER_VIEW_CLOSED_WENT_STALE),
@@ -3164,6 +3181,36 @@ def pilot_launch(root, cfg, mod, why, item=None, usd=None, fx=None, now=None):
     return (0 if unit else 1), "%s %s: %s" % ("LAUNCHED" if unit else "NOT STARTED", mod, text)
 
 
+def road_back_decide(mod, f, row, put):
+    """The offline build's exit is refused by the stage record's road back alone (road_back_items): its open items that
+    the stage can work are the mod's work. Their holder bundle is launched by pilot_holders (the row stays `blocked`
+    through the autonomy layer and carries road_back_items and road_back_at); a hold that could not be read is `blind`
+    (could not look); every open item on a dated wait is `road_back_wait`, a named wait.
+    design/specs/2026-11-25-tick-launches-road-back-hold/boundary.md"""
+    rb = f.get("road_back_hold")
+    if not isinstance(rb, dict) or rb.get("unread"):
+        put("blind", "refused by road_back_items, and the road back could not look: %s; nothing launches on a blind "
+            "reading" % ("; ".join(rb["unread"]) if isinstance(rb, dict) else "no reading of the hold"),
+            "the road back's items could not be read (could not look), so the Dispatch step launches nothing on it")
+        return
+    waits = rb.get("waits") or {}
+    work = [x for x in rb.get("open") or [] if x.get("id") not in waits]
+    s6 = [x["id"] for x in rb.get("stage6") or []]
+    later = "%s" % ("; Stage 6 work, for in-game acceptance: %s" % ", ".join(s6) if s6 else "")
+    if not work:
+        on = "; ".join("%s %s" % (x["id"], waits[x["id"]]) for x in rb.get("open") or [])
+        put("road_back_wait", "refused by road_back_items: every open road-back item is on a dated wait (%s)%s" % (
+            on, later))
+        row["waits_on"] = _GN.name_text("the dated wait of %s%s" % (on, later))
+        return
+    ids = [x["id"] for x in work]
+    row.update(road_back_items=work, road_back_at=rb.get("move_at"))
+    put("blocked", "refused by road_back_items: %d open road-back item(s) the stage can work (%s)%s%s; they are the "
+        "work of the mod's holder bundle" % (len(ids), ", ".join(ids), "; left out on a dated wait: %s" % ", ".join(
+            "%s %s" % kv for kv in sorted(waits.items()) if kv[0] in [x["id"] for x in rb.get("open") or []])
+            if any(x["id"] in waits for x in rb.get("open") or []) else "", later))
+
+
 def road_back_holder(root, cfg, st, mod, stage, opened, item, cap, now, fx, game=None):
     """One pilot holder run on every open road-back item together (`opened`, [{id, needs}]), from the ledger packet:
     pilot-launch's road back, and the tick's once the fixers are spent (pilot_holders). Items only a game can show get
@@ -3266,13 +3313,14 @@ def item_live_run(item):
         return PR.could_not_look("run records of %s.det: %s: %s" % (item, type(e).__name__, e))
 
 
-def holder_spent(s, open_ids):
+def holder_spent(s, open_ids, t0=None):
     """-> why no automatic holder run goes on these open road-back items, or None. The last holder run on the road back
     (the tick's or a hand pilot-launch since it opened) ran on a set of items; it ended with those still open (the
     set did not shrink) or it never started: never a second automatic try at the same items. A hand launch recorded
     before the set was booked counts as having run on today's open set plus its own item."""
     rb = s.get("road_back") or {}
-    t0 = rb.get("at") if isinstance(rb.get("at"), (int, float)) else 0
+    if not isinstance(t0, (int, float)):    # t0: the stage record's road-back move (pilot_holders on a road-back hold)
+        t0 = rb.get("at") if isinstance(rb.get("at"), (int, float)) else 0
     runs = [dict(x, ids=x["ids"]) for x in s.get("holder_road_back") or [] if (x.get("at") or 0) >= t0]
     runs += [dict(x, ids=sorted(set(open_ids) | {x.get("item")}), hand=True) for x in s.get("pilot_launches") or []
              if (x.get("at") or 0) >= t0 and x.get("item") and not any(
@@ -3306,15 +3354,24 @@ def pilot_holders(root, cfg, st, facts, rows, launches, now, fx=None):
         # weighted spent reading the same mod again); a per-item fixer row whose holder already ran on the same set
         # keeps its fixer
         first = row.get("decision") == "fixer" and row.get("aut") == "fixer"
-        if row.get("decision") != "fixer_spent" and not first or not s.get("road_back") or (
+        # the stage record's road-back hold, the exit's only non-build refusal: its open items are the holder's work
+        # (road_back_decide; RIMMANDRAKE_LAUNCH_ROAD_BACK_BUNDLE_BY_TICK_READS_BLOCKED)
+        hold = row.get("decision") == "blocked" and bool(row.get("road_back_items"))
+        if ((row.get("decision") != "fixer_spent" and not first or not s.get("road_back")) and not hold) or (
                 facts.get(mod) or {}).get("live_units"):
             continue
         # only the launches ahead of it on the advancing list count against it: a later mod's launch is evicted by
         # prioritise, never the other way round (RIMMANDRAKE_LAUNCH_PYRELANDS_FIRST_AT_ONE_SLOT)
         planned = None if base is None else base + slots_ahead(rows, launches, mod)
         if not (fx.get("pilot") or pilot_ledger)(root, mod):
+            if hold:
+                no = (fx.get("pilot_why") or pilot_refusal)(root, mod)
+                row["why"] = "%s; %s, so the tick runs no holder: `./pipe bundle %s --why ...` runs them by hand" % (
+                    row.get("why"), no, mod)
+                row["need"] = "%s: the open road-back items wait on a hand bundle (`./pipe bundle %s --why ...`): %s" % (
+                    mod, mod, no)
             continue
-        items = AUT.road_back_open(s, s["road_back"], open_items)
+        items = list(row["road_back_items"]) if hold else AUT.road_back_open(s, s["road_back"], open_items)
         if not items:
             continue
         game_set = not M.game_takeable(row.get("stage")) and all((x or {}).get("needs") in M.LIVE_NEEDS for x in items)
@@ -3331,7 +3388,7 @@ def pilot_holders(root, cfg, st, facts, rows, launches, now, fx=None):
             row.update(decision=decision, why=_GN.name_text(why) if isinstance(why, str) else why, aut=None)
             if need:
                 row["need"] = "%s: %s" % (mod, _GN.name_text(need))
-        spent = holder_spent(s, ids)
+        spent = holder_spent(s, ids, row.get("road_back_at") if hold else None)
         if spent and first:
             continue        # the holder ran on this set: the per-item fixers take it from here, as before
         if spent:
@@ -3361,7 +3418,8 @@ def pilot_holders(root, cfg, st, facts, rows, launches, now, fx=None):
         row.update(holder_items=items, cap=MM.for_mod(cfg, mod).get("cap_usd"),
                    **({"holder_game": game} if game else {}))
         put("launch", "%s and its ledger is ready: one holder run on all %d open items (%s)%s, nothing live on it (%s)"
-            % ("its road back opened (the holder goes first, before any per-item fixer)" if first else
+            % ("its exit is refused by its road back alone (road_back_items)" if hold else
+               "its road back opened (the holder goes first, before any per-item fixer)" if first else
                "its road-back fixers are spent" if not game else
                "every open road-back item needs a game and its offline Problems are spent", len(ids), ", ".join(ids),
                " on %s%s" % (_GN.show(game), " (%s)" % "; ".join(whys) if whys else "") if game else "", account[1]))
