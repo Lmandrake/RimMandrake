@@ -1172,10 +1172,32 @@ def _short_head(tree):
     return r.stdout.strip() or "unknown"
 
 
+@contextlib.contextmanager
+def _head_rerun_tree(top, committed):
+    """The tree of split_pre_existing's re-run of HEAD's commit. committed (the door ran on a check tree of HEAD's
+    commit): that tree itself, made exact again by _reuse_kept, so no second checkout of the commit it holds
+    (RIMMANDRAKE_FIT_PUBLISH_PROOF_TREES_STEVEDESKTOP_POOL_DISK: while both of the machine's kept trees were held, a red
+    re-run made two fresh 4.8 GB trees on SteveDesktop's 79 GB disk). It must be made exact before the base's tree is
+    made, since a reuse removes the check trees inside its .git. Else, or when it names no clone or cannot be made
+    exact, a tree of its own (full_head_tree)."""
+    if committed:
+        src = _kept_top_of(top)
+        why = _reuse_kept(src, top, out(top, "rev-parse", "HEAD")) if src else "it names no clone"
+        if why is None:
+            print("tree checks: a red test re-run of HEAD's commit runs in the checks' own tree, made exact again "
+                  "(no second checkout)", flush=True)
+            yield top
+            return
+        print("tree checks: the checks' own tree cannot be made exact again for a red test re-run (%s): HEAD's commit "
+              "gets a tree of its own" % why, flush=True)
+    with full_head_tree(top, rev="HEAD", what="HEAD's commit") as t:
+        yield t
+
+
 def split_pre_existing(top, base, red, run_one, committed=False, flaky=None):
     """RIMMANDRAKE_REPAIR_TWO_GAMES_DOOR_TEST_BLOCKS_EVERY_PUBLISH (A3, A4): re-run each red test on the base commit, in a
-    throwaway shared clone, beside a run on HEAD's commit in another (the door's own run read the working tree; the
-    comparison is commit to commit). red: [(c, output, rc)]. -> (still_red [(c, o, note)], pre_existing [(c, o, note)]).
+    throwaway shared clone, beside a run on HEAD's commit (_head_rerun_tree: the checks' own tree when the door ran on
+    HEAD's commit, else another; the door's own run may have read the working tree; the comparison is commit to commit). red: [(c, output, rc)]. -> (still_red [(c, o, note)], pre_existing [(c, o, note)]).
     Pre-existing only when red at both, with every FAIL line, crash and exit code of HEAD's run also in the base's
     (red_signature); green there, anything new, absent there, green at HEAD's commit, past its time, nothing to compare
     by, or no base to read stays red, its note saying which (a reading that could not be taken proves nothing). Known
@@ -1192,7 +1214,7 @@ def split_pre_existing(top, base, red, run_one, committed=False, flaky=None):
         return [(c, o, "origin/main's reading UNMEASURED (%s): not proved pre-existing" % why) for c, o, _rc in red], []
     still, pre = [], []
     try:
-        with full_head_tree(top, rev="HEAD", what="HEAD's commit") as htree, \
+        with _head_rerun_tree(top, committed) as htree, \
                 full_head_tree(top, rev=sha, what="the base") as tree:
             here = [x for x in red if os.path.isfile(os.path.join(tree, x[0]["test"]))]
             hsha = _short_head(htree)
@@ -1450,6 +1472,15 @@ def _fresh_tree(top, tree, head, what):
     _mark_kept_top(top, tree)
 
 
+def _kept_top_of(tree):
+    """-> the clone a check tree was last made exact for (its .git/rm-kept-top), or "" when it names none."""
+    try:
+        with open(os.path.join(tree, ".git", KEPT_TOP)) as f:
+            return f.read().strip()
+    except OSError:
+        return ""
+
+
 def _mark_kept_top(top, tree):
     try:
         with open(os.path.join(tree, ".git", KEPT_TOP), "w") as f:
@@ -1501,13 +1532,8 @@ def _take_kept(top, gitdir):
         return None, None, "the machine's kept-tree folder %s cannot be made: %s" % (root, e)
     me = os.path.realpath(top)
 
-    def last_top(n):
-        try:
-            with open(os.path.join(root, n, ".git", KEPT_TOP)) as f:
-                return f.read().strip()
-        except OSError:
-            return ""
-    names = sorted((CHECKTREE_PREFIX + "kept-%d" % i for i in range(kept_n())), key=lambda n: last_top(n) != me)
+    names = sorted((CHECKTREE_PREFIX + "kept-%d" % i for i in range(kept_n())),
+                   key=lambda n: _kept_top_of(os.path.join(root, n)) != me)
     for n in names:
         fd, _why = _take_kept_lock(os.path.join(root, n + ".lock"))
         if fd is not None:

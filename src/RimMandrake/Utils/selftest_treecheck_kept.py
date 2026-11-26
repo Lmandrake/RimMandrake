@@ -336,6 +336,61 @@ def t_a_check_tree_keeps_no_tree_of_its_own():
           "inside its .git (%s)" % seen["inside"])
 
 
+def t_a_red_re_run_of_the_commit_takes_the_checks_own_tree():
+    """RIMMANDRAKE_FIT_PUBLISH_PROOF_TREES_STEVEDESKTOP_POOL_DISK: the re-run of HEAD's commit was a second checkout of
+    the commit the checks' own tree already held, 4.8 GB on SteveDesktop."""
+    top, a, b = repo("rerun")
+    root = os.environ[KROOT_ENV]
+    red = [({"test": "d1/f1.txt"}, "FAIL one\n", 1)]
+
+    def proof(t, committed, hold_other):
+        seen = {"runs": [], "fresh": set()}
+
+        def run_one(c, tree):
+            seen["fresh"].update(n for n in os.listdir(os.path.join(t, ".git")) if n.startswith(P.CHECKTREE_PREFIX)
+                                 and not n.endswith(".lock"))
+            seen["runs"].append((tree, g(tree, "rev-parse", "HEAD"), exact(top, tree, g(tree, "rev-parse", "HEAD"))
+                                 if tree != top else None))
+            return c, 1, "FAIL one\n", 0.0
+        fd = None
+        if hold_other:                                           # a second publish holds the machine's other kept tree
+            other = [k for k in (kept_at(root, 0), kept_at(root, 1)) if k != t][0]
+            fd = os.open(other + ".lock", os.O_CREAT | os.O_RDWR, 0o644)
+            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        try:
+            Path(t, "d2", "stray.txt").write_text("a file the door's run left\n")
+            Path(t, "d1", "f3.txt").write_text("an edit the door's run made\n")
+            (still, pre), _o = quiet(lambda: P.split_pre_existing(t, (a, "the base"), red, run_one, committed=committed))
+        finally:
+            if fd is not None:
+                os.close(fd)
+        seen["left"] = [n for n in os.listdir(os.path.join(t, ".git")) if n.startswith(P.CHECKTREE_PREFIX)]
+        return seen, still, pre
+
+    def door(committed, hold_other):
+        return tree_at(top, keep=lambda t: proof(t, committed, hold_other))
+    t, (seen, still, pre), _o = door(True, True)
+    heads = [r for r in seen["runs"] if r[1] == b]
+    check(len(heads) == 1 and heads[0][0] == t and heads[0][2] is None and len(seen["fresh"]) <= 1 and pre
+          and not seen["left"],
+          "a-red-re-run-of-the-commit-takes-the-checks-own-tree: while the other kept tree is held, HEAD's commit is "
+          "re-run in the checks' own tree, made exact first, and the proof makes one fresh tree at most and leaves none "
+          "(%s; fresh %s; left %s)" % ([(os.path.basename(r[0]), r[2]) for r in heads], sorted(seen["fresh"]),
+                                        seen["left"]))
+    t, (seen, still, pre), _o = door(True, False)
+    trees = sorted(os.path.basename(r[0]) for r in seen["runs"])
+    check(not seen["fresh"] and trees == sorted(os.path.basename(k) for k in (kept_at(root, 0), kept_at(root, 1)))
+          and pre,
+          "a-red-re-run-of-the-commit-takes-the-checks-own-tree: while the other kept tree is free, the proof makes no "
+          "fresh tree: HEAD's commit in the checks' own tree, the base in the other kept tree (%s; fresh %s)"
+          % (trees, sorted(seen["fresh"])))
+    t, (seen, still, pre), _o = door(False, False)
+    heads = [r for r in seen["runs"] if r[1] == b]
+    check(len(heads) == 1 and heads[0][0] != t,
+          "a-red-re-run-of-the-commit-takes-the-checks-own-tree: a door run that read a working tree, not HEAD's "
+          "commit, re-runs HEAD's commit in a tree of its own (%s)" % [os.path.basename(r[0]) for r in heads])
+
+
 TERMED = r'''
 import os, sys, time
 sys.path.insert(0, sys.argv[1]); sys.dont_write_bytecode = True
@@ -504,6 +559,11 @@ MUTANTS = [
     ("a leftover inside the kept tree stays", "        if n.startswith(CHECKTREE_PREFIX):\n            _rmtree_hard(os.path.join(gd, n))",
      "        if False:\n            _rmtree_hard(os.path.join(gd, n))"),
     ("a fresh tree every time", "            if why is None:\n                how", "            if False:\n                how"),
+    ("a red re-run checks out HEAD's commit again", "    if committed:\n        src = _kept_top_of(top)",
+     "    if False:\n        src = _kept_top_of(top)"),
+    ("a red re-run in the checks' tree as the door left it",
+     '        why = _reuse_kept(src, top, out(top, "rev-parse", "HEAD")) if src else "it names no clone"',
+     "        why = None"),
 ]
 
 
@@ -560,7 +620,8 @@ def main():
     tests = [t_a_second_checkout_rewrites_only_the_files_that_differ, t_the_kept_tree_is_exactly_the_commit,
              t_a_tree_that_cannot_be_made_exact_is_made_fresh, t_a_second_user_makes_its_own_tree,
              t_a_rev_other_than_head_is_checked_out, t_a_clone_back_from_the_pool_gets_no_wrong_tree,
-             t_a_check_tree_keeps_no_tree_of_its_own, t_a_killed_publish_leaves_no_random_tree,
+             t_a_check_tree_keeps_no_tree_of_its_own, t_a_red_re_run_of_the_commit_takes_the_checks_own_tree,
+             t_a_killed_publish_leaves_no_random_tree,
              t_one_kept_tree_serves_every_clone_of_the_machine, t_a_clone_keeps_no_kept_tree_of_its_own,
              t_a_repo_outside_rm_root_keeps_its_tree_in_its_own_git_dir]
     for t in tests:

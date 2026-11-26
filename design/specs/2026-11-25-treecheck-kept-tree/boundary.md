@@ -40,8 +40,8 @@ refused a fifth run at its disk floor.
   `ls-files -v` marks no path assume-unchanged or skip-worktree. Any step that fails, or a reading that is not exact,
   removes the kept tree and makes a fresh one in its place, and the output says why.
 - **Two users of one clone at once: the second makes its own tree** (a fresh, random-named tree, removed after, as
-  before this page). It never waits. Why not wait: `split_pre_existing` opens two trees from the pipeline checks'
-  own tree, in one process, so a wait would wait on itself. Two `./publish` processes of one clone are already in line
+  before this page). It never waits. Why not wait: `split_pre_existing` opens the base's tree from the pipeline
+  checks' own tree, in one process, so a wait would wait on itself. Two `./publish` processes of one clone are already in line
   on the clone lock (`clone_lock`), so the second-tree path is the nested case, not a race.
 - Why per machine and not per clone: the disk. A tree per clone is 4.7 GB per clone, 75 GB for a pool of 16, more
   than SteveDesktop's whole `~/rm` disk. The machine's two trees are 9.4 GB whatever the count of clones. The cost: a
@@ -71,10 +71,12 @@ refused a fifth run at its disk floor.
   checks. A SIGTERM is handled (promise 7), and `subprocess.run` kills its direct child then.
 - **an-edit-that-keeps-size-mtime-ctime-and-inode.** git tells an edited file by its stat (size, mtime, ctime, inode).
   A write always moves ctime on Linux, so only a forged filesystem could hide one.
-- **the-red-re-run-trees.** `split_pre_existing` is handed the pipeline checks' kept tree as top. Its first tree (HEAD's
-  commit) is the machine's other kept tree while that is free; its second (the base) is a fresh 4.8 GB tree, removed
-  after, and so is the first while the other kept tree is held. Only a publish with a red check pays them. Before
-  2026-11-26 both were fresh trees inside the kept tree: 15.2 GB in one kept tree on SteveDesktop at 12:33 PM PST.
+- **the-base-tree-of-a-red-re-run-while-both-kept-trees-are-held.** `split_pre_existing` is handed the pipeline
+  checks' kept tree as top. HEAD's commit is re-run in that tree (promise a-red-re-run-of-the-commit-takes-the-checks-own-tree).
+  The base is the machine's other kept tree while that is free, else a fresh 4.8 GB tree, removed after. Only a
+  publish with a red check pays it. Before 2026-11-26 both were fresh trees inside the kept tree: 15.2 GB in one kept
+  tree on SteveDesktop at 12:33 PM PST; and at 2:45 PM PST, with both kept trees held by two publishes, one red re-run
+  held two fresh trees.
 
 ## PROMISES (each one is owed a test of the same name)
 
@@ -99,6 +101,12 @@ refused a fifth run at its disk floor.
   `RM_ROOT` (no machine trees), it makes a fresh tree and removes it after. Nothing is kept inside a check tree's `.git`. A leftover tree
   inside the kept tree's `.git` (a killed red re-run's) is removed at the next reuse. (Seen on this item's first
   publish, 2026-11-25 12:39 AM PST: the red re-run made a second 4.9 GB kept tree inside the first.)
+- **a-red-re-run-of-the-commit-takes-the-checks-own-tree.** When the door ran on a check tree of HEAD's commit
+  (`committed`), `split_pre_existing` re-runs HEAD's commit in that tree, made exact first (`_reuse_kept`: a file the
+  door's run left is gone, an edit is undone), and checks it out nowhere else. While the other kept tree is held the
+  proof makes one fresh tree at most (the base's) and leaves none; while it is free it makes none. A door run that read
+  a working tree re-runs HEAD's commit in a tree of its own. A check tree that names no clone or cannot be made exact
+  also gets a tree of its own, and the output says why.
 - **a-killed-publish-leaves-no-random-tree.** A publish ended by SIGTERM (`timeout N ./publish`, a unit stop) runs its
   clean-up: the random-named tree it made is removed. The random-named trees left by older code are still removed by
   the stale sweep after `CHECKTREE_STALE_S`, and the sweep never removes the kept tree or its lock.
@@ -117,6 +125,12 @@ refused a fifth run at its disk floor.
   danger and evidence are written beside it in `publish.py`).
 
 ## PROOF
+
+- 2026-11-26, a red re-run of the commit takes the checks' own tree
+  (`RIMMANDRAKE_FIT_PUBLISH_PROOF_TREES_STEVEDESKTOP_POOL_DISK`): the promise's two readings were red on the code before
+  (two fresh trees while the other kept tree was held, one while it was free) and are green on the fix; the selftest is
+  green, 12 of 12, and 22 of 22 planted faults are caught (new: HEAD's commit checked out again, a re-run in the tree as
+  the door left it).
 
 - 2026-11-26, a red re-run takes the machine's other kept tree: the promise's new reading was red on the code before
   (the re-run made a fresh tree inside kept-0's `.git`) and is green on the fix; the selftest is green, 11 of 11, and
