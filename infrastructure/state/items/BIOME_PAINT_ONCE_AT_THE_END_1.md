@@ -66,12 +66,6 @@ RimMandrake mod with its own BiomeDef and Mod Settings, before any painting is a
 The planet is painted exactly once, from a settled set of biome mods — and no item in the
 queue is blocked on a tile count before then.
 
-## parked items
-
-Relentless never staffs an item this list parks, nor this one: the ids live in
-`src/RimMandrake/rimflow/relentless_rules.json` `pool_parked_lists` (`relentless.parked_ids`). Add the id there with the
-addition below; delete the key when this item closes.
-
 ## Paint list addition 2026-10-09 (decision taken by question card)
 
 `WARSCAR_PILGRIM_CAMP_SITES_1` (pilgrim camp SitePartDefs at authored tiles along the Ashfall Road) is done at the final world painting, not before.
@@ -136,6 +130,20 @@ Barrens"). Start tile 17007 is one of them. The list is rebuilt from the canonic
 that file and `--write` again before applying. The apply recipe is the plan's `apply` field. Until the painting,
 `FallLineGate` falls back to the tile's feature name. Both names are in its `FeatureNames`, so the gate already holds
 on these 308 tiles (proof: `src/RimMandrake/Utils/selftest_fall_line_mutator_plan.py`).
+
+## Paint list addition 2026-11-26 — the six geological landmarks (`GEOSTONE_BUILD_SIX_LABELS_AWAIT_STAMP`)
+
+The defs and the stone postfix are built (`src/RimMandrake/EnvironmentalHazards/Defs/GeoLandmarks/RM_GeoLandmarks.xml`,
+`src/RimMandrake/EnvironmentalHazards/Source/RM_GeoStones.cs`; proof `src/RimMandrake/Utils/remake/selftest_geostones.py`).
+At the final painting, in its game-up phase, before the save:
+1. Re-run `python3 src/RimMandrake/Utils/remake/geo_landmarks.py check --save <the save being painted> --dump <capture>/defs`:
+   each label tile must hold no landmark and no settlement (`AddLandmark` skips `IsValidTile`).
+2. `jawa/world_mutators_set` adds `RM_Geo_<Name>` to every tile in
+   `design/RimMandrake/world_remake_2026-10-19/geo_landmarks_tiles.csv` (120 tiles).
+3. `jawa/world_landmarks_set` places `LandmarkDef` `RM_Geo_<Name>` on each label tile (6; the name is the def's label).
+4. `jawa/world_commit`, then read back: `jawa/world_mutators_get` shows the 120 tiles, `jawa/world_landmarks_get` the 6 labels.
+5. Generate one map on a tile of each landmark: its walls are the landmark's `stones_now` from `geo_landmarks.csv`.
+Never stamp the Rust Cathedral or a sea tile; the frozen list excludes them.
 
 ## facts from the 2026-08-21 paint rehearsal, for the one paint (its file was deleted 2026-11-23)
 
