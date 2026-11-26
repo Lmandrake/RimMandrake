@@ -8452,17 +8452,10 @@ AAAAAA==
 							<li>Meat_RSW_Excretor</li>
 							<li>Meat_RSW_Jerba</li>
 							<li>Meat_RSW_SandStalker</li>
-							<li>Meat_RSW_Yooka</li>
 							<li>Meat_RSW_BloodletterPetrel</li>
-							<li>Meat_RSW_Thrumbungus</li>
-							<li>Meat_RSW_Maxolotl</li>
-							<li>Meat_RSW_Glowtail</li>
-							<li>Meat_RSW_AcidSlug</li>
 							<li>Meat_RSW_Maligoat</li>
 							<li>Meat_RSW_SandLeaper</li>
-							<li>Meat_RSW_Basilisk</li>
 							<li>Meat_RSW_CaveLemming</li>
-							<li>Meat_RSW_CrystalCrab</li>
 							<li>Meat_RSW_Maguana</li>
 							<li>Meat_RSW_TelluroxRace</li>
 							<li>Meat_RSW_Karrask</li>
@@ -9217,64 +9210,22 @@ AAAAAA==
 							<li>Corpse_RSW_Zakkeg</li>
 							<li>Corpse_RSW_Zeer</li>
 							<li>Corpse_RSW_PodWorm</li>
-							<li>Corpse_RSW_RoyalRhino</li>
-							<li>Corpse_RSW_Yooka</li>
-							<li>Corpse_RSW_PustuleHornetSpawned</li>
 							<li>Corpse_RSW_AaroxisDendoria</li>
 							<li>Corpse_RSW_BloodletterPetrel</li>
-							<li>Corpse_RSW_GastroToad</li>
 							<li>Corpse_RSW_SandPillar</li>
-							<li>Corpse_RSW_FoundryBeetlePupa</li>
-							<li>Corpse_RSW_SmogMothLarvae</li>
-							<li>Corpse_RSW_FacetMoth</li>
-							<li>Corpse_RSW_Thrumbungus</li>
-							<li>Corpse_RSW_MutatingTumorfishSpawn</li>
-							<li>Corpse_RSW_ColonyPustuleHornetQueen</li>
-							<li>Corpse_RSW_Megakrill</li>
-							<li>Corpse_RSW_BovineBeetleLarvae</li>
 							<li>Corpse_RSW_FoundryBeetle</li>
-							<li>Corpse_RSW_Maxolotl</li>
-							<li>Corpse_RSW_FleeceSpider</li>
-							<li>Corpse_RSW_RoyalRhinoLarvae</li>
-							<li>Corpse_RSW_BloodropPupa</li>
-							<li>Corpse_RSW_BovineBeetlePupa</li>
-							<li>Corpse_RSW_JewelBeetlePupa</li>
 							<li>Corpse_RSW_Diggerpede</li>
-							<li>Corpse_RSW_MossBeetlePupa</li>
-							<li>Corpse_RSW_MutatingTumorfishAdult</li>
-							<li>Corpse_RSW_FacetMothPupa</li>
-							<li>Corpse_RSW_AaroxisDendoriaPupa</li>
-							<li>Corpse_RSW_SmogPupa</li>
 							<li>Corpse_RSW_MossBeetle</li>
-							<li>Corpse_RSW_MutatingTumorfishFry</li>
 							<li>Corpse_RSW_Creature_Mantrap</li>
-							<li>Corpse_RSW_Glowtail</li>
-							<li>Corpse_RSW_RoyalRhinoPupa</li>
 							<li>Corpse_RSW_Screecher</li>
-							<li>Corpse_RSW_ColonyPustuleHornet</li>
 							<li>Corpse_RSW_BunkerBug</li>
-							<li>Corpse_RSW_AcidSlug</li>
-							<li>Corpse_RSW_FungalWeevil</li>
 							<li>Corpse_RSW_Maligoat</li>
-							<li>Corpse_RSW_FungalMantis</li>
 							<li>Corpse_RSW_MegaphoridLarva</li>
-							<li>Corpse_RSW_Polluwog</li>
-							<li>Corpse_RSW_BloodropLarvae</li>
 							<li>Corpse_RSW_MutagenicNorphea</li>
 							<li>Corpse_RSW_SandLeaper</li>
-							<li>Corpse_RSW_PustuleHornetQueen</li>
-							<li>Corpse_RSW_SmogMoth</li>
-							<li>Corpse_RSW_AaroxisDendoriaLarvae</li>
 							<li>Corpse_RSW_Sacapillar</li>
-							<li>Corpse_RSW_JewelBeetle</li>
 							<li>Corpse_RSW_CrestedDragon</li>
-							<li>Corpse_RSW_Basilisk</li>
-							<li>Corpse_RSW_FoundryBeetleLarvae</li>
-							<li>Corpse_RSW_JewelBeetleLarvae</li>
-							<li>Corpse_RSW_Megaphorid</li>
 							<li>Corpse_RSW_CaveLemming</li>
-							<li>Corpse_RSW_PustuleHornet</li>
-							<li>Corpse_RSW_CrystalCrab</li>
 							<li>Corpse_RSW_Maguana</li>
 							<li>Corpse_RSW_TelluroxRace</li>
 							<li>Corpse_RSW_Karrask</li>
@@ -10609,17 +10560,10 @@ AAAAAA==
 							<li>Meat_RSW_Excretor</li>
 							<li>Meat_RSW_Jerba</li>
 							<li>Meat_RSW_SandStalker</li>
-							<li>Meat_RSW_Yooka</li>
 							<li>Meat_RSW_BloodletterPetrel</li>
-							<li>Meat_RSW_Thrumbungus</li>
-							<li>Meat_RSW_Maxolotl</li>
-							<li>Meat_RSW_Glowtail</li>
-							<li>Meat_RSW_AcidSlug</li>
 							<li>Meat_RSW_Maligoat</li>
 							<li>Meat_RSW_SandLeaper</li>
-							<li>Meat_RSW_Basilisk</li>
 							<li>Meat_RSW_CaveLemming</li>
-							<li>Meat_RSW_CrystalCrab</li>
 							<li>Meat_RSW_Maguana</li>
 							<li>Meat_RSW_TelluroxRace</li>
 							<li>Meat_RSW_Karrask</li>
@@ -11374,64 +11318,22 @@ AAAAAA==
 							<li>Corpse_RSW_Zakkeg</li>
 							<li>Corpse_RSW_Zeer</li>
 							<li>Corpse_RSW_PodWorm</li>
-							<li>Corpse_RSW_RoyalRhino</li>
-							<li>Corpse_RSW_Yooka</li>
-							<li>Corpse_RSW_PustuleHornetSpawned</li>
 							<li>Corpse_RSW_AaroxisDendoria</li>
 							<li>Corpse_RSW_BloodletterPetrel</li>
-							<li>Corpse_RSW_GastroToad</li>
 							<li>Corpse_RSW_SandPillar</li>
-							<li>Corpse_RSW_FoundryBeetlePupa</li>
-							<li>Corpse_RSW_SmogMothLarvae</li>
-							<li>Corpse_RSW_FacetMoth</li>
-							<li>Corpse_RSW_Thrumbungus</li>
-							<li>Corpse_RSW_MutatingTumorfishSpawn</li>
-							<li>Corpse_RSW_ColonyPustuleHornetQueen</li>
-							<li>Corpse_RSW_Megakrill</li>
-							<li>Corpse_RSW_BovineBeetleLarvae</li>
 							<li>Corpse_RSW_FoundryBeetle</li>
-							<li>Corpse_RSW_Maxolotl</li>
-							<li>Corpse_RSW_FleeceSpider</li>
-							<li>Corpse_RSW_RoyalRhinoLarvae</li>
-							<li>Corpse_RSW_BloodropPupa</li>
-							<li>Corpse_RSW_BovineBeetlePupa</li>
-							<li>Corpse_RSW_JewelBeetlePupa</li>
 							<li>Corpse_RSW_Diggerpede</li>
-							<li>Corpse_RSW_MossBeetlePupa</li>
-							<li>Corpse_RSW_MutatingTumorfishAdult</li>
-							<li>Corpse_RSW_FacetMothPupa</li>
-							<li>Corpse_RSW_AaroxisDendoriaPupa</li>
-							<li>Corpse_RSW_SmogPupa</li>
 							<li>Corpse_RSW_MossBeetle</li>
-							<li>Corpse_RSW_MutatingTumorfishFry</li>
 							<li>Corpse_RSW_Creature_Mantrap</li>
-							<li>Corpse_RSW_Glowtail</li>
-							<li>Corpse_RSW_RoyalRhinoPupa</li>
 							<li>Corpse_RSW_Screecher</li>
-							<li>Corpse_RSW_ColonyPustuleHornet</li>
 							<li>Corpse_RSW_BunkerBug</li>
-							<li>Corpse_RSW_AcidSlug</li>
-							<li>Corpse_RSW_FungalWeevil</li>
 							<li>Corpse_RSW_Maligoat</li>
-							<li>Corpse_RSW_FungalMantis</li>
 							<li>Corpse_RSW_MegaphoridLarva</li>
-							<li>Corpse_RSW_Polluwog</li>
-							<li>Corpse_RSW_BloodropLarvae</li>
 							<li>Corpse_RSW_MutagenicNorphea</li>
 							<li>Corpse_RSW_SandLeaper</li>
-							<li>Corpse_RSW_PustuleHornetQueen</li>
-							<li>Corpse_RSW_SmogMoth</li>
-							<li>Corpse_RSW_AaroxisDendoriaLarvae</li>
 							<li>Corpse_RSW_Sacapillar</li>
-							<li>Corpse_RSW_JewelBeetle</li>
 							<li>Corpse_RSW_CrestedDragon</li>
-							<li>Corpse_RSW_Basilisk</li>
-							<li>Corpse_RSW_FoundryBeetleLarvae</li>
-							<li>Corpse_RSW_JewelBeetleLarvae</li>
-							<li>Corpse_RSW_Megaphorid</li>
 							<li>Corpse_RSW_CaveLemming</li>
-							<li>Corpse_RSW_PustuleHornet</li>
-							<li>Corpse_RSW_CrystalCrab</li>
 							<li>Corpse_RSW_Maguana</li>
 							<li>Corpse_RSW_TelluroxRace</li>
 							<li>Corpse_RSW_Karrask</li>
@@ -12758,17 +12660,10 @@ AAAAAA==
 							<li>Meat_RSW_Excretor</li>
 							<li>Meat_RSW_Jerba</li>
 							<li>Meat_RSW_SandStalker</li>
-							<li>Meat_RSW_Yooka</li>
 							<li>Meat_RSW_BloodletterPetrel</li>
-							<li>Meat_RSW_Thrumbungus</li>
-							<li>Meat_RSW_Maxolotl</li>
-							<li>Meat_RSW_Glowtail</li>
-							<li>Meat_RSW_AcidSlug</li>
 							<li>Meat_RSW_Maligoat</li>
 							<li>Meat_RSW_SandLeaper</li>
-							<li>Meat_RSW_Basilisk</li>
 							<li>Meat_RSW_CaveLemming</li>
-							<li>Meat_RSW_CrystalCrab</li>
 							<li>Meat_RSW_Maguana</li>
 							<li>Meat_RSW_TelluroxRace</li>
 							<li>Meat_RSW_Karrask</li>
@@ -13523,64 +13418,22 @@ AAAAAA==
 							<li>Corpse_RSW_Zakkeg</li>
 							<li>Corpse_RSW_Zeer</li>
 							<li>Corpse_RSW_PodWorm</li>
-							<li>Corpse_RSW_RoyalRhino</li>
-							<li>Corpse_RSW_Yooka</li>
-							<li>Corpse_RSW_PustuleHornetSpawned</li>
 							<li>Corpse_RSW_AaroxisDendoria</li>
 							<li>Corpse_RSW_BloodletterPetrel</li>
-							<li>Corpse_RSW_GastroToad</li>
 							<li>Corpse_RSW_SandPillar</li>
-							<li>Corpse_RSW_FoundryBeetlePupa</li>
-							<li>Corpse_RSW_SmogMothLarvae</li>
-							<li>Corpse_RSW_FacetMoth</li>
-							<li>Corpse_RSW_Thrumbungus</li>
-							<li>Corpse_RSW_MutatingTumorfishSpawn</li>
-							<li>Corpse_RSW_ColonyPustuleHornetQueen</li>
-							<li>Corpse_RSW_Megakrill</li>
-							<li>Corpse_RSW_BovineBeetleLarvae</li>
 							<li>Corpse_RSW_FoundryBeetle</li>
-							<li>Corpse_RSW_Maxolotl</li>
-							<li>Corpse_RSW_FleeceSpider</li>
-							<li>Corpse_RSW_RoyalRhinoLarvae</li>
-							<li>Corpse_RSW_BloodropPupa</li>
-							<li>Corpse_RSW_BovineBeetlePupa</li>
-							<li>Corpse_RSW_JewelBeetlePupa</li>
 							<li>Corpse_RSW_Diggerpede</li>
-							<li>Corpse_RSW_MossBeetlePupa</li>
-							<li>Corpse_RSW_MutatingTumorfishAdult</li>
-							<li>Corpse_RSW_FacetMothPupa</li>
-							<li>Corpse_RSW_AaroxisDendoriaPupa</li>
-							<li>Corpse_RSW_SmogPupa</li>
 							<li>Corpse_RSW_MossBeetle</li>
-							<li>Corpse_RSW_MutatingTumorfishFry</li>
 							<li>Corpse_RSW_Creature_Mantrap</li>
-							<li>Corpse_RSW_Glowtail</li>
-							<li>Corpse_RSW_RoyalRhinoPupa</li>
 							<li>Corpse_RSW_Screecher</li>
-							<li>Corpse_RSW_ColonyPustuleHornet</li>
 							<li>Corpse_RSW_BunkerBug</li>
-							<li>Corpse_RSW_AcidSlug</li>
-							<li>Corpse_RSW_FungalWeevil</li>
 							<li>Corpse_RSW_Maligoat</li>
-							<li>Corpse_RSW_FungalMantis</li>
 							<li>Corpse_RSW_MegaphoridLarva</li>
-							<li>Corpse_RSW_Polluwog</li>
-							<li>Corpse_RSW_BloodropLarvae</li>
 							<li>Corpse_RSW_MutagenicNorphea</li>
 							<li>Corpse_RSW_SandLeaper</li>
-							<li>Corpse_RSW_PustuleHornetQueen</li>
-							<li>Corpse_RSW_SmogMoth</li>
-							<li>Corpse_RSW_AaroxisDendoriaLarvae</li>
 							<li>Corpse_RSW_Sacapillar</li>
-							<li>Corpse_RSW_JewelBeetle</li>
 							<li>Corpse_RSW_CrestedDragon</li>
-							<li>Corpse_RSW_Basilisk</li>
-							<li>Corpse_RSW_FoundryBeetleLarvae</li>
-							<li>Corpse_RSW_JewelBeetleLarvae</li>
-							<li>Corpse_RSW_Megaphorid</li>
 							<li>Corpse_RSW_CaveLemming</li>
-							<li>Corpse_RSW_PustuleHornet</li>
-							<li>Corpse_RSW_CrystalCrab</li>
 							<li>Corpse_RSW_Maguana</li>
 							<li>Corpse_RSW_TelluroxRace</li>
 							<li>Corpse_RSW_Karrask</li>
@@ -14899,17 +14752,10 @@ AAAAAA==
 							<li>Meat_RSW_Excretor</li>
 							<li>Meat_RSW_Jerba</li>
 							<li>Meat_RSW_SandStalker</li>
-							<li>Meat_RSW_Yooka</li>
 							<li>Meat_RSW_BloodletterPetrel</li>
-							<li>Meat_RSW_Thrumbungus</li>
-							<li>Meat_RSW_Maxolotl</li>
-							<li>Meat_RSW_Glowtail</li>
-							<li>Meat_RSW_AcidSlug</li>
 							<li>Meat_RSW_Maligoat</li>
 							<li>Meat_RSW_SandLeaper</li>
-							<li>Meat_RSW_Basilisk</li>
 							<li>Meat_RSW_CaveLemming</li>
-							<li>Meat_RSW_CrystalCrab</li>
 							<li>Meat_RSW_Maguana</li>
 							<li>Meat_RSW_TelluroxRace</li>
 							<li>Meat_RSW_Karrask</li>
@@ -15664,64 +15510,22 @@ AAAAAA==
 							<li>Corpse_RSW_Zakkeg</li>
 							<li>Corpse_RSW_Zeer</li>
 							<li>Corpse_RSW_PodWorm</li>
-							<li>Corpse_RSW_RoyalRhino</li>
-							<li>Corpse_RSW_Yooka</li>
-							<li>Corpse_RSW_PustuleHornetSpawned</li>
 							<li>Corpse_RSW_AaroxisDendoria</li>
 							<li>Corpse_RSW_BloodletterPetrel</li>
-							<li>Corpse_RSW_GastroToad</li>
 							<li>Corpse_RSW_SandPillar</li>
-							<li>Corpse_RSW_FoundryBeetlePupa</li>
-							<li>Corpse_RSW_SmogMothLarvae</li>
-							<li>Corpse_RSW_FacetMoth</li>
-							<li>Corpse_RSW_Thrumbungus</li>
-							<li>Corpse_RSW_MutatingTumorfishSpawn</li>
-							<li>Corpse_RSW_ColonyPustuleHornetQueen</li>
-							<li>Corpse_RSW_Megakrill</li>
-							<li>Corpse_RSW_BovineBeetleLarvae</li>
 							<li>Corpse_RSW_FoundryBeetle</li>
-							<li>Corpse_RSW_Maxolotl</li>
-							<li>Corpse_RSW_FleeceSpider</li>
-							<li>Corpse_RSW_RoyalRhinoLarvae</li>
-							<li>Corpse_RSW_BloodropPupa</li>
-							<li>Corpse_RSW_BovineBeetlePupa</li>
-							<li>Corpse_RSW_JewelBeetlePupa</li>
 							<li>Corpse_RSW_Diggerpede</li>
-							<li>Corpse_RSW_MossBeetlePupa</li>
-							<li>Corpse_RSW_MutatingTumorfishAdult</li>
-							<li>Corpse_RSW_FacetMothPupa</li>
-							<li>Corpse_RSW_AaroxisDendoriaPupa</li>
-							<li>Corpse_RSW_SmogPupa</li>
 							<li>Corpse_RSW_MossBeetle</li>
-							<li>Corpse_RSW_MutatingTumorfishFry</li>
 							<li>Corpse_RSW_Creature_Mantrap</li>
-							<li>Corpse_RSW_Glowtail</li>
-							<li>Corpse_RSW_RoyalRhinoPupa</li>
 							<li>Corpse_RSW_Screecher</li>
-							<li>Corpse_RSW_ColonyPustuleHornet</li>
 							<li>Corpse_RSW_BunkerBug</li>
-							<li>Corpse_RSW_AcidSlug</li>
-							<li>Corpse_RSW_FungalWeevil</li>
 							<li>Corpse_RSW_Maligoat</li>
-							<li>Corpse_RSW_FungalMantis</li>
 							<li>Corpse_RSW_MegaphoridLarva</li>
-							<li>Corpse_RSW_Polluwog</li>
-							<li>Corpse_RSW_BloodropLarvae</li>
 							<li>Corpse_RSW_MutagenicNorphea</li>
 							<li>Corpse_RSW_SandLeaper</li>
-							<li>Corpse_RSW_PustuleHornetQueen</li>
-							<li>Corpse_RSW_SmogMoth</li>
-							<li>Corpse_RSW_AaroxisDendoriaLarvae</li>
 							<li>Corpse_RSW_Sacapillar</li>
-							<li>Corpse_RSW_JewelBeetle</li>
 							<li>Corpse_RSW_CrestedDragon</li>
-							<li>Corpse_RSW_Basilisk</li>
-							<li>Corpse_RSW_FoundryBeetleLarvae</li>
-							<li>Corpse_RSW_JewelBeetleLarvae</li>
-							<li>Corpse_RSW_Megaphorid</li>
 							<li>Corpse_RSW_CaveLemming</li>
-							<li>Corpse_RSW_PustuleHornet</li>
-							<li>Corpse_RSW_CrystalCrab</li>
 							<li>Corpse_RSW_Maguana</li>
 							<li>Corpse_RSW_TelluroxRace</li>
 							<li>Corpse_RSW_Karrask</li>
@@ -17037,17 +16841,10 @@ AAAAAA==
 							<li>Meat_RSW_Excretor</li>
 							<li>Meat_RSW_Jerba</li>
 							<li>Meat_RSW_SandStalker</li>
-							<li>Meat_RSW_Yooka</li>
 							<li>Meat_RSW_BloodletterPetrel</li>
-							<li>Meat_RSW_Thrumbungus</li>
-							<li>Meat_RSW_Maxolotl</li>
-							<li>Meat_RSW_Glowtail</li>
-							<li>Meat_RSW_AcidSlug</li>
 							<li>Meat_RSW_Maligoat</li>
 							<li>Meat_RSW_SandLeaper</li>
-							<li>Meat_RSW_Basilisk</li>
 							<li>Meat_RSW_CaveLemming</li>
-							<li>Meat_RSW_CrystalCrab</li>
 							<li>Meat_RSW_Maguana</li>
 							<li>Meat_RSW_TelluroxRace</li>
 							<li>Meat_RSW_Karrask</li>
@@ -17802,64 +17599,22 @@ AAAAAA==
 							<li>Corpse_RSW_Zakkeg</li>
 							<li>Corpse_RSW_Zeer</li>
 							<li>Corpse_RSW_PodWorm</li>
-							<li>Corpse_RSW_RoyalRhino</li>
-							<li>Corpse_RSW_Yooka</li>
-							<li>Corpse_RSW_PustuleHornetSpawned</li>
 							<li>Corpse_RSW_AaroxisDendoria</li>
 							<li>Corpse_RSW_BloodletterPetrel</li>
-							<li>Corpse_RSW_GastroToad</li>
 							<li>Corpse_RSW_SandPillar</li>
-							<li>Corpse_RSW_FoundryBeetlePupa</li>
-							<li>Corpse_RSW_SmogMothLarvae</li>
-							<li>Corpse_RSW_FacetMoth</li>
-							<li>Corpse_RSW_Thrumbungus</li>
-							<li>Corpse_RSW_MutatingTumorfishSpawn</li>
-							<li>Corpse_RSW_ColonyPustuleHornetQueen</li>
-							<li>Corpse_RSW_Megakrill</li>
-							<li>Corpse_RSW_BovineBeetleLarvae</li>
 							<li>Corpse_RSW_FoundryBeetle</li>
-							<li>Corpse_RSW_Maxolotl</li>
-							<li>Corpse_RSW_FleeceSpider</li>
-							<li>Corpse_RSW_RoyalRhinoLarvae</li>
-							<li>Corpse_RSW_BloodropPupa</li>
-							<li>Corpse_RSW_BovineBeetlePupa</li>
-							<li>Corpse_RSW_JewelBeetlePupa</li>
 							<li>Corpse_RSW_Diggerpede</li>
-							<li>Corpse_RSW_MossBeetlePupa</li>
-							<li>Corpse_RSW_MutatingTumorfishAdult</li>
-							<li>Corpse_RSW_FacetMothPupa</li>
-							<li>Corpse_RSW_AaroxisDendoriaPupa</li>
-							<li>Corpse_RSW_SmogPupa</li>
 							<li>Corpse_RSW_MossBeetle</li>
-							<li>Corpse_RSW_MutatingTumorfishFry</li>
 							<li>Corpse_RSW_Creature_Mantrap</li>
-							<li>Corpse_RSW_Glowtail</li>
-							<li>Corpse_RSW_RoyalRhinoPupa</li>
 							<li>Corpse_RSW_Screecher</li>
-							<li>Corpse_RSW_ColonyPustuleHornet</li>
 							<li>Corpse_RSW_BunkerBug</li>
-							<li>Corpse_RSW_AcidSlug</li>
-							<li>Corpse_RSW_FungalWeevil</li>
 							<li>Corpse_RSW_Maligoat</li>
-							<li>Corpse_RSW_FungalMantis</li>
 							<li>Corpse_RSW_MegaphoridLarva</li>
-							<li>Corpse_RSW_Polluwog</li>
-							<li>Corpse_RSW_BloodropLarvae</li>
 							<li>Corpse_RSW_MutagenicNorphea</li>
 							<li>Corpse_RSW_SandLeaper</li>
-							<li>Corpse_RSW_PustuleHornetQueen</li>
-							<li>Corpse_RSW_SmogMoth</li>
-							<li>Corpse_RSW_AaroxisDendoriaLarvae</li>
 							<li>Corpse_RSW_Sacapillar</li>
-							<li>Corpse_RSW_JewelBeetle</li>
 							<li>Corpse_RSW_CrestedDragon</li>
-							<li>Corpse_RSW_Basilisk</li>
-							<li>Corpse_RSW_FoundryBeetleLarvae</li>
-							<li>Corpse_RSW_JewelBeetleLarvae</li>
-							<li>Corpse_RSW_Megaphorid</li>
 							<li>Corpse_RSW_CaveLemming</li>
-							<li>Corpse_RSW_PustuleHornet</li>
-							<li>Corpse_RSW_CrystalCrab</li>
 							<li>Corpse_RSW_Maguana</li>
 							<li>Corpse_RSW_TelluroxRace</li>
 							<li>Corpse_RSW_Karrask</li>
@@ -19493,17 +19248,10 @@ AAAAAA==
 							<li>Meat_RSW_Excretor</li>
 							<li>Meat_RSW_Jerba</li>
 							<li>Meat_RSW_SandStalker</li>
-							<li>Meat_RSW_Yooka</li>
 							<li>Meat_RSW_BloodletterPetrel</li>
-							<li>Meat_RSW_Thrumbungus</li>
-							<li>Meat_RSW_Maxolotl</li>
-							<li>Meat_RSW_Glowtail</li>
-							<li>Meat_RSW_AcidSlug</li>
 							<li>Meat_RSW_Maligoat</li>
 							<li>Meat_RSW_SandLeaper</li>
-							<li>Meat_RSW_Basilisk</li>
 							<li>Meat_RSW_CaveLemming</li>
-							<li>Meat_RSW_CrystalCrab</li>
 							<li>Meat_RSW_Maguana</li>
 							<li>Meat_RSW_TelluroxRace</li>
 							<li>Meat_RSW_Karrask</li>
@@ -20233,64 +19981,22 @@ AAAAAA==
 							<li>Corpse_RSW_Zakkeg</li>
 							<li>Corpse_RSW_Zeer</li>
 							<li>Corpse_RSW_PodWorm</li>
-							<li>Corpse_RSW_RoyalRhino</li>
-							<li>Corpse_RSW_Yooka</li>
-							<li>Corpse_RSW_PustuleHornetSpawned</li>
 							<li>Corpse_RSW_AaroxisDendoria</li>
 							<li>Corpse_RSW_BloodletterPetrel</li>
-							<li>Corpse_RSW_GastroToad</li>
 							<li>Corpse_RSW_SandPillar</li>
-							<li>Corpse_RSW_FoundryBeetlePupa</li>
-							<li>Corpse_RSW_SmogMothLarvae</li>
-							<li>Corpse_RSW_FacetMoth</li>
-							<li>Corpse_RSW_Thrumbungus</li>
-							<li>Corpse_RSW_MutatingTumorfishSpawn</li>
-							<li>Corpse_RSW_ColonyPustuleHornetQueen</li>
-							<li>Corpse_RSW_Megakrill</li>
-							<li>Corpse_RSW_BovineBeetleLarvae</li>
 							<li>Corpse_RSW_FoundryBeetle</li>
-							<li>Corpse_RSW_Maxolotl</li>
-							<li>Corpse_RSW_FleeceSpider</li>
-							<li>Corpse_RSW_RoyalRhinoLarvae</li>
-							<li>Corpse_RSW_BloodropPupa</li>
-							<li>Corpse_RSW_BovineBeetlePupa</li>
-							<li>Corpse_RSW_JewelBeetlePupa</li>
 							<li>Corpse_RSW_Diggerpede</li>
-							<li>Corpse_RSW_MossBeetlePupa</li>
-							<li>Corpse_RSW_MutatingTumorfishAdult</li>
-							<li>Corpse_RSW_FacetMothPupa</li>
-							<li>Corpse_RSW_AaroxisDendoriaPupa</li>
-							<li>Corpse_RSW_SmogPupa</li>
 							<li>Corpse_RSW_MossBeetle</li>
-							<li>Corpse_RSW_MutatingTumorfishFry</li>
 							<li>Corpse_RSW_Creature_Mantrap</li>
-							<li>Corpse_RSW_Glowtail</li>
-							<li>Corpse_RSW_RoyalRhinoPupa</li>
 							<li>Corpse_RSW_Screecher</li>
-							<li>Corpse_RSW_ColonyPustuleHornet</li>
 							<li>Corpse_RSW_BunkerBug</li>
-							<li>Corpse_RSW_AcidSlug</li>
-							<li>Corpse_RSW_FungalWeevil</li>
 							<li>Corpse_RSW_Maligoat</li>
-							<li>Corpse_RSW_FungalMantis</li>
 							<li>Corpse_RSW_MegaphoridLarva</li>
-							<li>Corpse_RSW_Polluwog</li>
-							<li>Corpse_RSW_BloodropLarvae</li>
 							<li>Corpse_RSW_MutagenicNorphea</li>
 							<li>Corpse_RSW_SandLeaper</li>
-							<li>Corpse_RSW_PustuleHornetQueen</li>
-							<li>Corpse_RSW_SmogMoth</li>
-							<li>Corpse_RSW_AaroxisDendoriaLarvae</li>
 							<li>Corpse_RSW_Sacapillar</li>
-							<li>Corpse_RSW_JewelBeetle</li>
 							<li>Corpse_RSW_CrestedDragon</li>
-							<li>Corpse_RSW_Basilisk</li>
-							<li>Corpse_RSW_FoundryBeetleLarvae</li>
-							<li>Corpse_RSW_JewelBeetleLarvae</li>
-							<li>Corpse_RSW_Megaphorid</li>
 							<li>Corpse_RSW_CaveLemming</li>
-							<li>Corpse_RSW_PustuleHornet</li>
-							<li>Corpse_RSW_CrystalCrab</li>
 							<li>Corpse_RSW_Maguana</li>
 							<li>Corpse_RSW_TelluroxRace</li>
 							<li>Corpse_RSW_Karrask</li>
@@ -20816,44 +20522,14 @@ AAAAAA==
 							<li>Corpse_RSW_TunnelSnake</li>
 							<li>Corpse_RSW_VentStalker</li>
 							<li>Corpse_RSW_PodWorm</li>
-							<li>Corpse_RSW_RoyalRhino</li>
-							<li>Corpse_RSW_PustuleHornetSpawned</li>
 							<li>Corpse_RSW_AaroxisDendoria</li>
 							<li>Corpse_RSW_SandPillar</li>
-							<li>Corpse_RSW_FoundryBeetlePupa</li>
-							<li>Corpse_RSW_SmogMothLarvae</li>
-							<li>Corpse_RSW_FacetMoth</li>
-							<li>Corpse_RSW_ColonyPustuleHornetQueen</li>
-							<li>Corpse_RSW_Megakrill</li>
-							<li>Corpse_RSW_BovineBeetleLarvae</li>
 							<li>Corpse_RSW_FoundryBeetle</li>
-							<li>Corpse_RSW_FleeceSpider</li>
-							<li>Corpse_RSW_RoyalRhinoLarvae</li>
-							<li>Corpse_RSW_BloodropPupa</li>
-							<li>Corpse_RSW_BovineBeetlePupa</li>
-							<li>Corpse_RSW_JewelBeetlePupa</li>
 							<li>Corpse_RSW_Diggerpede</li>
-							<li>Corpse_RSW_MossBeetlePupa</li>
-							<li>Corpse_RSW_FacetMothPupa</li>
-							<li>Corpse_RSW_AaroxisDendoriaPupa</li>
-							<li>Corpse_RSW_SmogPupa</li>
 							<li>Corpse_RSW_MossBeetle</li>
-							<li>Corpse_RSW_RoyalRhinoPupa</li>
-							<li>Corpse_RSW_ColonyPustuleHornet</li>
 							<li>Corpse_RSW_BunkerBug</li>
-							<li>Corpse_RSW_FungalWeevil</li>
-							<li>Corpse_RSW_FungalMantis</li>
-							<li>Corpse_RSW_BloodropLarvae</li>
 							<li>Corpse_RSW_MutagenicNorphea</li>
-							<li>Corpse_RSW_PustuleHornetQueen</li>
-							<li>Corpse_RSW_SmogMoth</li>
-							<li>Corpse_RSW_AaroxisDendoriaLarvae</li>
 							<li>Corpse_RSW_Sacapillar</li>
-							<li>Corpse_RSW_JewelBeetle</li>
-							<li>Corpse_RSW_FoundryBeetleLarvae</li>
-							<li>Corpse_RSW_JewelBeetleLarvae</li>
-							<li>Corpse_RSW_Megaphorid</li>
-							<li>Corpse_RSW_PustuleHornet</li>
 						</allowedDefs>
 						<allowedHitPointsPercents>0~1</allowedHitPointsPercents>
 						<allowedMentalBreakChance>0~1</allowedMentalBreakChance>
