@@ -97,8 +97,17 @@ decision, not a constraint.
 - So a large texture costs **atlas budget and a draw call**, never correctness. For a handful of headliner creatures,
   that is not a real cost. For 300 animals it is a real cost.
 
-**Past ~128 px/cell you are paying VRAM for pixels no zoom will ever show.** To go above the table is a deliberate
-choice for a headliner, not a default.
+**Which zoom shows more than 128 px/cell depends on the camera mod.**
+
+- At a 1826-px render, the closest zoom shows 83 px/cell in vanilla (root 11) and 114 px/cell with SimpleCameraSetting
+  (`ray1203.simplecamerasetting`, root 8). Those two are measured live. At both, the offline simulation puts the
+  difference between 128 and 512 px/cell stored art at or under the noticeable level (2.0/255, the edge, at 114).
+- Camera+ (`brrainz.cameraplus`) at its defaults lets the camera go to root 2, which is 456 px/cell. That figure comes
+  from the Camera+ source (`Settings.cs`, `zoomedInPercent` 1); nobody has measured it live. At 456 px/cell, the
+  offline simulation (`src/RimMandrake/Utils/art_maxzoom_probe.py sim`) shows 128 px/cell stored art visibly blurred
+  (12/255 against 512), and 256 slightly soft (5/255).
+- Do not cut a canvas below the table on the claim that nobody can see the difference: a Camera+ player can. To go above
+  the table is a deliberate choice for a headliner, not a default.
 
 ## ⚠️ The size trap — read this before generating anything
 
