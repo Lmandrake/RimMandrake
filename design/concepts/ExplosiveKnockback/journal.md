@@ -8,13 +8,13 @@ The top part, **the mod as it stands**, is rewritten at every stage change and s
 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Code exists:
   `src/RimMandrake/ExplosiveKnockback/`.
-- **Stage now:** Stage 7, the walk brief, since 2026-11-26 6:31 AM PST (`version/stage_record.json`).
+- **Stage now:** Stage 8, his live walk, since 2026-11-26 6:44 AM PST (`version/stage_record.json`).
 - **Bars:** 59 (30 inventory rows of `record.json` + 29 leaves of `tree.json`). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`).
 - **Measured 2026-11-14 12:45 PST:** 53 of 59 bars have at least one test that runs today; 47 have every deciding test
   runnable; 41 have all their offline deciding tests green. All 15 offline tests are built (13 PASS, 2 known red,
   unchanged). In-game scenes: 56, entry exists 50, absent 6. Every in-game scene is UNRUN (Stage 6); commands in the table.
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-26 6:31 AM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-26 6:44 AM PST).
 - **Open questions:** see "Questions" at the end of the history.
 
 ### The vision (his root paragraph, approved by card 2026-11-11, OWNER:1794468835221748501)
@@ -571,4 +571,12 @@ answer the locked bar, his recorded words or the shipped code already gives; no 
 - Steward confirms: read visit_3/SUMMARY.md, rows.jsonl (19 rows), strange.jsonl (10, all explained) and the repair diff 9931b028e1: 16 touched checks' last rows PASS (SUCCESS, site_checked, no forbidden effect; held lists are scene hygiene or the frames-only design, none switches off a claimed mechanic); sc_pawn_arc_bruise_sizes HARNESS repair seen FAIL on --plant no_bruise and PASS 12/12 on the real build, V_SMALL made stricter, V_HEDIFF corpse branch still needs the journal bruise; two COULD NOT LOOK rows on gas_chain were WRONG_BUILD refusals, then PASS 11/11; no mod fix in the sitting, so no fix reader owed; maturation next names no not-met reason; walk save present on ArchBig (10.7 MB, 05:59). Verdict: exit met
 - Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-26 4:07 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-26 4:07 AM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-26 6:44 AM PST, stage change: Walk brief (Stage 7) to His live walk (Stage 8) (by BENCH)
+
+- Why: walk brief arrival_1 written (fresh reader rm-detached-bench-rimmandrake-steward-explosiveknockback-p-1795703710); item RIMMANDRAKE_STEWARD_EXPLOSIVEKNOCKBACK_PRE_HUMAN_STAGE_RUN_THREE
+- Checks passed: order, by, version, hold, walk_checks_stand, walk_brief, walk_items_closed.
+- Was, "Stage now": - **Stage now:** Stage 7, the walk brief, since 2026-11-26 6:31 AM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-26 6:31 AM PST).
 - Record: `version/stage_record.json`.
