@@ -1,0 +1,13 @@
+PREVIEW 2 of 96 chains, 13 rows to execute
+  chain suspension_bridges_and_covers [full]: named by --chains
+    whole chain: executed 11 row(s)
+  chain machinery_pipes [full]: named by --chains
+    whole chain: executed 2 row(s)
+EXPECTED_ROWS ["suspension_selftest_ran", "Suspension_spans_supports_and_swing_order", "Suspension_deck_built_over_the_hole_floor", "Underpass_band_step_clearance_and_sunken_height", "Underpass_wiring_masks_sites_not_tunnels", "SpanBase_cover_is_the_trap_tier_of_the_base", "SpanBase_cover_read_is_decked_surface_no_underpass", "Suspension_SteelHeavyAnchors_no_rope_table", "under_deck_live", "suspension_look", "cover_vs_bridge_look", "pipe_feeds_far_tank", "pipes_off_far_tank_idle"]
+EXPECTED_ROW_CHAINS {"suspension_selftest_ran": "suspension_bridges_and_covers", "Suspension_spans_supports_and_swing_order": "suspension_bridges_and_covers", "Suspension_deck_built_over_the_hole_floor": "suspension_bridges_and_covers", "Underpass_band_step_clearance_and_sunken_height": "suspension_bridges_and_covers", "Underpass_wiring_masks_sites_not_tunnels": "suspension_bridges_and_covers", "SpanBase_cover_is_the_trap_tier_of_the_base": "suspension_bridges_and_covers", "SpanBase_cover_read_is_decked_surface_no_underpass": "suspension_bridges_and_covers", "Suspension_SteelHeavyAnchors_no_rope_table": "suspension_bridges_and_covers", "under_deck_live": "suspension_bridges_and_covers", "suspension_look": "suspension_bridges_and_covers", "cover_vs_bridge_look": "suspension_bridges_and_covers", "pipe_feeds_far_tank": "machinery_pipes", "pipes_off_far_tank_idle": "machinery_pipes"}
+EXPECTED_DRIVERS [{"name": "suspension_bridge_proof", "timeout_s": 1200}]
+[modcheck] FlowWorks TARGETED: 2 of 96 chains: suspension_bridges_and_covers, machinery_pipes
+[modcheck] FlowWorks HARNESS UNMEASURED: mod_not_installed: no folder on this host holds kutte.stairs (install it; a restart cannot load it): not loaded: kutte.stairs
+FlowWorks            REFUSED  UNMEASURED: mod_not_installed: no folder on this host holds kutte.stairs (install it; a restart cannot load it): not loaded: kutte.stairs
+[bridge split] 12.9 s wall: load 0.0 / ticks 0.0 / reads 0.1 / other 0.0 / outside calls 12.8 s
+MODCHECK_RC=1

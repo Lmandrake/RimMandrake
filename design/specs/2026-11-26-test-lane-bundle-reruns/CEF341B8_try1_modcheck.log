@@ -1,0 +1,11 @@
+PREVIEW 1 of 13 chains, 6 rows to execute
+  chain grey_floor_is_a_place [full]: named by --chains
+    whole chain: executed 6 row(s)
+EXPECTED_ROWS ["grey_roster_read_offline", "grey_floor_map_generates", "grey_floor_has_pillars_and_crystals", "grey_floor_grows_its_flora", "grey_floor_carries_its_cast", "grey_floor_returns_home"]
+EXPECTED_ROW_CHAINS {"grey_roster_read_offline": "grey_floor_is_a_place", "grey_floor_map_generates": "grey_floor_is_a_place", "grey_floor_has_pillars_and_crystals": "grey_floor_is_a_place", "grey_floor_grows_its_flora": "grey_floor_is_a_place", "grey_floor_carries_its_cast": "grey_floor_is_a_place", "grey_floor_returns_home": "grey_floor_is_a_place"}
+EXPECTED_DRIVERS []
+[modcheck] DivingInteraction TARGETED: 1 of 13 chains: grey_floor_is_a_place
+[modcheck] DivingInteraction HARNESS UNMEASURED: mod_not_installed: no folder on this host holds kutte.stairs (install it; a restart cannot load it): not loaded: kutte.stairs
+DivingInteraction    REFUSED  UNMEASURED: mod_not_installed: no folder on this host holds kutte.stairs (install it; a restart cannot load it): not loaded: kutte.stairs
+[bridge split] 42.0 s wall: load 0.0 / ticks 0.0 / reads 0.1 / other 0.0 / outside calls 41.9 s
+MODCHECK_RC=1

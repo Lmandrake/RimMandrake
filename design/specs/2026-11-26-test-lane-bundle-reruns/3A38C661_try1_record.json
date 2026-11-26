@@ -1,0 +1,23 @@
+{
+ "job": {
+  "id": "DIRECT-3A38C661-20261125T211554",
+  "mod": "FlowWorks",
+  "selector": {
+   "chains": [
+    "suspension_bridges_and_covers",
+    "machinery_pipes"
+   ]
+  },
+  "source": "44aef58291",
+  "lane": "direct:ArchSmall"
+ },
+ "result": {
+  "outcome": "INVALID",
+  "cause": "HARNESS",
+  "rows": [],
+  "sheet": null,
+  "game": "ArchSmall",
+  "runner_sha": "44aef58291",
+  "note": "no sheet JSON; first: FlowWorks            REFUSED  UNMEASURED: mod_not_installed: no folder on this host holds kutte.stairs (install it; a restart cannot load it): not loaded: kutte.stairs"
+ }
+}

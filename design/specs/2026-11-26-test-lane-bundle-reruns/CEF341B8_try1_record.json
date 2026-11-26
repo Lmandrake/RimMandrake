@@ -1,0 +1,22 @@
+{
+ "job": {
+  "id": "DIRECT-CEF341B8-20261125T202249",
+  "mod": "DivingInteraction",
+  "selector": {
+   "chains": [
+    "grey_floor_is_a_place"
+   ]
+  },
+  "source": "f218e2ff59",
+  "lane": "direct:ArchSmall"
+ },
+ "result": {
+  "outcome": "INVALID",
+  "cause": "HARNESS",
+  "rows": [],
+  "sheet": null,
+  "game": "ArchSmall",
+  "runner_sha": "f218e2ff59",
+  "note": "no sheet JSON; first: DivingInteraction    REFUSED  UNMEASURED: mod_not_installed: no folder on this host holds kutte.stairs (install it; a restart cannot load it): not loaded: kutte.stairs"
+ }
+}
