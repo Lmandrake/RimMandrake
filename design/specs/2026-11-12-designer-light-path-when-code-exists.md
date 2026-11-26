@@ -71,9 +71,8 @@ Every gate that stays is unchanged. Budget, recovery and refusal never waive one
 
 ## 4. The first-look save and the pre-look judge
 
-The standard is `RIMMANDRAKE_PREPARE_FIRST_LOOK_MATRIX_SAVEGAME`, which rewrites `design/RimMandrake/northstar_human_review.md`
-into one doc. A save has numbered, labelled stations, one per capability. Where a variable matters, the save holds a
-matrix grid: one cell with every fitting and facing, repeated over the variables, with a key sheet that names every
+The standard is `design/RimMandrake/northstar_human_review.md` (item `RIMMANDRAKE_PREPARE_FIRST_LOOK_MATRIX_SAVEGAME`).
+A save has numbered, labelled stations, one per capability. Where a variable matters, the save holds a matrix grid: one cell with every fitting and facing, repeated over the variables, with a key sheet that names every
 station and cell.
 
 On the light path:

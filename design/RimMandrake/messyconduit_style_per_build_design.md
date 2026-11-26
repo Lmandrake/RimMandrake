@@ -215,8 +215,8 @@ It stays, with a narrower job:
   did.
 - **The review map** (`human_review.py`) currently sets the global style and says *"four styles cannot stand side by
   side without a change to the shipped mod"*. After stage 2 they can. Each row gets its four styles side by side as
-  separate stations, and `--style` shrinks to "set the default". The draft rule in `northstar_human_review.md`
-  ("one switch for global settings") then names MessyConduit as an example that no longer applies.
+  separate stations, and `--style` shrinks to "set the default". The rule in `northstar_human_review.md`
+  ("one switch for a global setting") then no longer applies to the cable style.
 - The removal of `AerialMaterials.ApplyPoles` (the shared-def edit) is part of stage 1. Pole geometry (insulator
   height, crossarm fan) becomes a lookup by (style, building) instead of an edit to the shared mod extension. The
   lookup data is the same (`PoleGeometryTable`, `BracketGeometryTable`).

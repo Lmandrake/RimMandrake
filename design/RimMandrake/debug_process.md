@@ -264,8 +264,8 @@ typical checkout process but can be requested."*
 ### 6c. The human review map
 
 The human review map is a third layer, next to the script and the bars. The map shows a staged scene, with labels. The
-owner can look at it and play with it. The map records no verdict. Draft principles from the first map (MessyConduit), pending his
-approval: `design/RimMandrake/northstar_human_review.md`.
+owner can look at it and play with it. The map records no verdict. Its saved form, the first-look savegame, is built to
+the one standard: `design/RimMandrake/northstar_human_review.md`.
 
 ## 7. Briefing a bridge-driving subagent
 

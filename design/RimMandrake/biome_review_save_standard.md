@@ -1,8 +1,15 @@
 # Standard biome review savegame — specification
 
-spec-version: **1.1** (2026-10-15, BENCH)
+spec-version: **1.2** (2026-11-26, BENCH)
+
+This file is the biome profile of the one first-look standard, `design/RimMandrake/northstar_human_review.md`. The
+standard holds the rules for every review save: stations, matrix grids, density, the calm world, signs and the key
+sheet, the pre-look and the filing. This profile adds what only a biome needs. Where the profile is silent, the
+standard applies.
 
 Changelog:
+- **1.2 (2026-11-26):** the general rules moved to the one standard (the calm world, the control rule, the sign
+  format). This profile keeps the biome deltas. No rule changed.
 - **1.1 (2026-10-15):** owner ruled all five open questions (§11). Pen size is four facings, or up to eight specimens
   when the def has variants (§5, PW9). Layout is free per biome, so the fixed row order and shared row letters are gone
   (§3, §4). Pre-walk art defects go to one pick sheet (PW8, unchanged). Action is a DO line on the sign. The save is
@@ -20,8 +27,7 @@ This file is the contract every biome's review save is built to. It is versioned
 every builder stamps the version it was built to into its key sheet and its sign sidecar. A save built to an older version
 is not wrong. It shows which rules it predates.
 
-Related: the method `design/RimMandrake/northstar_human_review.md` (the calm world and the build discipline, which still
-hold); the review ladder `infrastructure/VALIDATION_LADDER.md`; the skills `rimworld-live-review` and
+Related: the one standard `design/RimMandrake/northstar_human_review.md`; the review ladder `infrastructure/VALIDATION_LADDER.md`; the skills `rimworld-live-review` and
 `rimworld-review-sheets`; worked examples `src/RimMandrake/GimmeSomeSlack/human_review.py` and
 `src/RimMandrake/FlowWorks/review_map.py`.
 
@@ -44,14 +50,9 @@ hold); the review ladder `infrastructure/VALIDATION_LADDER.md`; the skills `rimw
 - **It is the biome's own map.** It is built on a saved site fixture of the biome (`NS_<Biome>_site_<n>_<fingerprint>_<r>`,
   made by the biome's `northstar_site.py`). A quicktest map is not the biome. The builder refuses a map whose BiomeDef is
   not the biome's, or whose fixture fingerprint does not match the live def set.
-- **Calm world**, set by the builder and re-checked by every `--goto`:
-  - weather Clear and locked;
-  - the clock pinned to daylight (noon, or the biome's brightest hour when its sun never reaches noon light);
-  - Peaceful storyteller and the incident queue cleared;
-  - every non-colonist swept before the pens are filled, and every hostile killed;
-  - every fire out unless a station stages one;
-  - research finished, god mode on, game paused;
-  - screenshot mode off, and the game never fullscreened or focused.
+- **Calm world** as the standard's §The calm world, set by the builder and re-checked by every `--goto`. The biome
+  deltas: the clock is the biome's brightest hour when its sun never reaches noon light; every non-colonist is swept
+  before the pens are filled; the gallery is floored with the biome's common ground (§4).
 - **Mod Settings at the shipped defaults.** Board S names each setting and the station that shows it.
 - **One restart.** Everything the save needs is deployed before the single launch (gate PW6). If a fix needs another
   restart, the build is redone after it. Nothing is patched into a running game.
@@ -136,40 +137,21 @@ Owner, 2026-10-15: *"You should put many creatures in each pen so they will have
 
 ## 6. Mechanics demos and controls
 
-- **Every comparison has a control station** beside it (adjacent number, same row). The control's title begins with
-  `CONTROL:`, and its sign says what it is a control for and the ONE thing it changes ("CONTROL: NO BEAST — same room,
-  same chill, no furnace-beast").
-- **Both start where the mechanic visibly works.** The control must be a working comparison, not a second copy of the
-  ambient. Pyrelands: both furnace-beast rooms are chilled to 10 C, because the heat pusher only works below 24 C and
-  the outdoors is about 50 C. A per-station `climate` op sets this, and the verify reads it.
-- **Unpausing** (owner, 2026-10-15, by card): the save is paused-only. It is not built to survive running.
-- **A staged state is named for its age** ("burned 8000 ticks ago"). It is staged by the builder through the mechanic's
-  own route (a real fire, a real weather), never by writing the end state, unless a sign says so.
-- **What unpausing breaks** is written on every station ("If you unpause"), including the bad things ("the fire front can
-  light this grass").
+- **Every comparison has a control**, by the standard's §Stations. The control sits beside it (adjacent number, same
+  row), and its sign names the ONE thing it changes ("CONTROL: NO BEAST — same room, same chill, no furnace-beast").
+  Pyrelands: both furnace-beast rooms are chilled to 10 C, because the heat pusher only works below 24 C and the
+  outdoors is about 50 C. A per-station `climate` op sets this, and the verify reads it.
+- **Paused-only** (owner, 2026-10-15, by card Q5), and a staged state is named for its age, by the standard. A biome's
+  staged state uses the mechanic's own route (a real fire, a real weather), never a written end state, unless a sign
+  says so.
 
 ## 7. Sign format
 
 Owner, 2026-10-15: *"I need text signs added to the savegame to tell me what to DO at each station."*
 
-Every station and board carries the same sign in three places:
-
-1. **In the save itself, with no agent needed:** one vanilla book (Novel) on the gap cell just north of the station's
-   west corner. Its **title is the DO line**, so mousing over it shows what to do. Its **info card (press i)** holds the
-   whole sign: number, name, clause, LOOK, DO, DECIDE, and "Key sheet: station n".
-2. **Floating labels** from the JawaBench labeller (title, clause, then LOOK / DO / DECIDE when zoomed in), saved in a sidecar
-   beside the save and re-pinned by `--labels`. They are a convenience. The book is the sign of record.
-3. **The key sheet**, word for word.
-
-Text rules:
-
-- The title has at most 24 characters and the clause at most 56.
-- LOOK names the thing to look at. DO is one imperative with the exact menu path. DECIDE is the question he answers,
-  ending in "?".
-- Plain words only, with no defName unless the DO needs it.
-- The sign fits in 5 lines of the sign width, and the DO line fits the book title.
-- A suspected weak spot goes on the sign as the DECIDE ("does young grass read as young, or just small?"), so he is
-  pointed at it rather than left to find it.
+The sign is the standard's (§Labels, signs and the key sheet): a book in the save as the sign of record, floating labels
+in a sidecar, and the key sheet, with the same text rules. The biome delta: the book is a vanilla Novel, and its info
+card ends "Key sheet: station n". The sign fits in 5 lines of the sign width.
 
 ## 8. Pre-walk gates (machine-checkable)
 
@@ -201,9 +183,9 @@ FAIL does.
 | PL2 | pens | The specimen count and lifestage/sex/graphic of each pen match its plan, and each pawn's rotation reads back as planned. |
 | PL3 | controls | Each control pair reads its declared starting condition (for example both rooms at 10 C ± 2). |
 | PL4 | calm world | Hostiles 0, incident queue empty, weather Clear and locked, hour in daylight, paused, god mode on, screenshot mode off, Peaceful, not fullscreen. |
-| PL5 | signs in save | The number of sign books on the map equals the number of stations plus boards, and each book's title equals its DO line. The label sidecar is written. |
+| PL5 | signs in save | The number of sign books on the map equals the number of stations, grid cells and boards, and each book's title ends in its DO line (`SIGN <key> <name> - DO: <do>`). The label sidecar is written. |
 | PL6 | agent look | An OS screenshot of every station is taken and read by the building agent (the L3 rung). Each one is filed as `looked: ok` or a defect, and a defect returns to PW8. |
-| PL7 | save | The Saves folder is backed up first. The save stat-diff shows exactly one new or updated keeper. The owner's ModsConfig backup path is printed for restore after the walk. |
+| PL7 | save | The Saves folder is backed up first. The save stat-diff shows exactly one new keeper and no changed save (`save_keeper`). |
 
 ## 9. Build tool contract
 
@@ -241,15 +223,10 @@ per biome.
 migrates first, and its save must rebuild with the same 41/41 verify before any other biome uses the builder. GSS and
 FlowWorks are not biomes and keep their own builders.
 
-**Invariants carried over:**
+**Invariants:** the standard's §Build discipline, and two more for the biome builder:
 
-- `--build` is idempotent (it clears the region first).
-- `--plan` needs no game.
-- Every refusal lands in the notes and the key sheet.
 - Exit 0 only when every station verifies.
-- The builder is excluded from `modcheck.status.mod_hash`, and `review/` is in `.hashignore`.
 - An offline selftest `review/selftest_review.py` exists.
-- No MapComponent or GameComponent is written, because it would end up in the save.
 
 ## 10. Naming and files
 

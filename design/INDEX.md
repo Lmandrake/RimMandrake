@@ -1050,7 +1050,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `northstar_densification_lessons.md` | Northstar densification — lessons from GimmeSomeSlack (2026-10-05) | — |
 | `northstar_helpers_gpt_review.md` | 1. What the plan gets wrong or misses | — |
 | `northstar_helpers_plan.md` | Northstar situational helpers — plan (not built) | — |
-| `northstar_human_review.md` | Northstar: the "for the human" review map | — |
+| `northstar_human_review.md` | The first-look savegame: the one standard for a save that the owner looks at | — |
 | `northstar_live_queue_2026-10-01.md` | Northstar live job queue — 2026-10-01 | — |
 | `northstar_pilot_scoping_2026-10-02.md` | Northstar pilot scoping (2026-10-02, read-only) | — |
 | `northstar_process_retro.md` | Northstar process retro: GimmeSomeSlack to its validated bar | 📜 names a retired era |
