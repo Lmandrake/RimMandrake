@@ -9,7 +9,7 @@ the bridge; fixed at 9dc47e435f). They were asked again at 2026-11-25 8:34 AM PS
 For each item below, the check holds when a testq done record for it, finished after SINCE, ran on a SteveDesktop game
 with no lane cause and at least one PASS or FAIL row. UNMEASURED, a lane cause, or no record yet is not measured.
 Reads the queue at $TESTQ_QUEUE (default D:\\ClaudeWork\\rimmandrake\\testq). Exit 0: every item measured; 1: not yet;
-2: the queue could not be read (could not look). Base 2026-11-25 8:40 AM PST: 0/7, exit 1.
+2: the queue could not be read, or holds no record at all (could not look). Base 2026-11-25 8:40 AM PST: 0/7, exit 1.
 """
 import glob
 import json
@@ -41,8 +41,12 @@ def main(argv):
     if not os.path.isdir(done):
         print("COULD NOT LOOK: no testq done folder at %s" % done)
         return 2
+    records = glob.glob(os.path.join(done, "J2026*.json"))
+    if not records:     # the lane's queue lives on Archmagi; another host's empty folder is no reading (2026-11-26)
+        print("COULD NOT LOOK: no done record at all in %s (not the lane's queue host?)" % done)
+        return 2
     best = {i: "no record finished after %s" % SINCE for i in ITEMS}
-    for f in glob.glob(os.path.join(done, "J2026*.json")):
+    for f in records:
         try:
             rec = json.load(open(f, encoding="utf-8"))
         except (OSError, ValueError):
