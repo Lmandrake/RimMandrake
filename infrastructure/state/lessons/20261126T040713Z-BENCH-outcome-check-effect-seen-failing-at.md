@@ -1,0 +1,3 @@
+An outcome check (--effect) is seen failing at filing in YOUR clone, but list_effect and list_dispatch run it in /home/mandrake/rm/dispatch, which holds full media. A check whose verdict turns on media (a selftest that reads real pictures fails in a slim helper clone and passes there) passes on the timer and closes the item while the defect stands. Run such a check in /home/mandrake/rm/dispatch before you attach it. Seen 2026-11-25 on RIMMANDRAKE_STEADY_FIRST_PASS_CALIBRATION_SELFTEST_READS_REAL_PICTURES.
+item: RIMMANDRAKE_DECIDE_RETIRED_ROLE_DUTIES_NOBODY_DOES_NOW
+home: skills/using-rimflow/references/traps.md
