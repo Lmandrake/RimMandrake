@@ -1161,6 +1161,11 @@ def lock_bars_main(root):
             r6 = lb(root, mod, "BENCH", "selftest: his card added it", add=["invented_bar"], source=card, show=show)
             ok(r6["ok"] and M._table_runnable(inv, v, M.locked_bars(root, mod, v)[0])[0] is not None,
                "a bar his card added (OWNER:<tsn>) is recorded, and the table holding it reads again")
+            # RIMMANDRAKE_RECOUNT_BARS_MD_ON_CARD_CHANGE_SAID_FIFTYONE: a card's add or remove after the
+            # lock moves the count bars.md states (Pyrelands 0.2.0's bars.md read 51 against the 50 locked ids)
+            nb = len(M.locked_bars(root, mod, v)[0] or [])
+            ok(("Bars: **%d**, the ids in `locked_bars.json`" % nb) in open(bp).read(),
+               "after a bar his card added, bars.md states the new count of locked_bars.json (%d)" % nb)
             ok(M.locked_bars(root, mod, dict(v, version="9.9.9"))[0] is None
                and "records version" in str(M.locked_bars(root, mod, dict(v, version="9.9.9"))[1]),
                "a record of another version's bars is not this version's (it is re-recorded at the new Lock)")

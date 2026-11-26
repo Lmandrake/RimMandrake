@@ -1650,6 +1650,17 @@ def lock_bars(root, mod, by, why, add=(), remove=(), source=None, show=None, blo
     write_text(root, mod, LOCKED_BARS, json.dumps(out, indent=1) + "\n")
     if not (isinstance(cur, dict) and cur.get("version") == v.get("version") and isinstance(cur.get("ids"), list)):
         pin_bars_md(root, mod, v, ids, blob)
+    else:
+        # RIMMANDRAKE_RECOUNT_BARS_MD_ON_CARD_CHANGE_SAID_FIFTYONE: a card's add or remove keeps the count
+        # that bars.md states level with the record (Pyrelands 0.2.0's read 51 against 50 locked ids); the pins stay
+        bp = os.path.join(mod_dir(root, mod), "version", "bars.md")
+        if os.path.exists(bp):
+            with open(bp, encoding="utf-8", errors="replace") as f:
+                old = f.read()
+            new = re.sub(r"- Bars: \*\*\d+\*\*, the ids in `locked_bars.json`\.",
+                         "- Bars: **%d**, the ids in `locked_bars.json`." % len(ids), old)
+            if new != old:
+                write_text(root, mod, "version/bars.md", new)
     total = None
     n0 = v.get("bars_total")
     if isinstance(n0, int) and not isinstance(n0, bool) and n0 != len(ids):
