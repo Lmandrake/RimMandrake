@@ -18,8 +18,8 @@ Kind A. A fresh quicktest map on ArchSmall; one clean station with seven pads, e
 Radii and types are read from Core's Items_Resource_Shell.xml and Buildings_Security.xml (2026-11-24). No raid, no hostile pawn.
 
 The checks (each prints PASS or FAIL with what it read):
-  V_SCAR_KIND   he_soil, ied_soil, anti_soil -> RM_KnockbackBlastCrater_*; he_rough, he_tile, fire_soil ->
-                RM_KnockbackBlastScorch_*; he_water and emp_soil -> no scar of ours
+  V_SCAR_KIND   he_soil, ied_soil, anti_soil -> RM_KnockbackBlastCrater_<n>Wide; he_rough, he_tile, fire_soil ->
+                RM_KnockbackBlastScorch_<n>Wide; he_water and emp_soil -> no scar of ours
   V_NO_VANILLA  no Filth_BlastMark on any pad
   V_SCAR_SIZE   drawn widths on soil rise: he_soil < ied_soil < anti_soil (RM_KnockbackShowPlan: 7, 10, 20)
   V_SHAKE       RM_KnockbackShow.lastShakeTick moves to the blast's tick for each harmful blast in view, and its kick rises
@@ -41,6 +41,9 @@ read paths PaintColorDef.defName (a Building property) and health.hediffSet.hedi
 jawa/mod_settings_field get stamps the run EXPLORED (if so, V_SHAKE supports and the shots decide the shake), and whether
 the off-screen capture draws flecks (if not, the _fire shots are taken on screen with rimworld/jump_camera_to_cell).
 """
+import json
+import re
+
 import scene
 from scene import cond as c
 
@@ -72,6 +75,14 @@ SETTLE = 300            # ticks after each blast: every fleck of the show is gon
 # reach (0.8 x the effective radius: about 2.3 cells for the 2.9-cell shell, 3.1 for the 3.9-cell IED)
 WALL_AT = (32, 6)
 BEAST_AT = (57, 6)
+JOURNAL = "RimMandrake.ExplosiveKnockback.RM_KnockbackJournal"
+# The Rot's living ground digests every outdoor filth (EnvironmentalHazards RM_MapComponent_AcceleratedRot.ThinOutdoorFilth:
+# a 15% chance of one thinning each 250 ticks), our scars included. A fresh quicktest map can be that biome: there a scar
+# laid at the blast was gone at 300 ticks in 8 of 24 IED blasts, each removal named by the journal's scar_gone record
+# (RIMMANDRAKE_FIND_KNOCKBACK_IED_SCAR_MISSING_ONE_RUN_IN_THREE). The scene holds that other mod's mechanic still for
+# its run, so each row judges this mod alone; the setting is put back on every exit.
+ROT = ("RimMandrake.EnvironmentalHazards.RM_EnvironmentalHazardsSettings", "acceleratedRotEnabled")
+SCAR_NAME = re.compile(r"RM_KnockbackBlast(Crater|Scorch)_(\d+)Wide$")   # RM_KnockbackShow.ScarDefName
 HALF = 4                # a pad's reading rect is its centre +-4 cells; the antigrain's reaches +-12 (its 20-cell scar)
 
 show = scene.contract(
@@ -94,10 +105,32 @@ def scars_on(s, pad):
     names = [str(v.v) for v in s.read_many(rect=rect(pad), path="def.defName") if v.state == "ok"]
     ours = []
     for n in names:
-        for kind in ("Crater", "Scorch"):
-            if n.startswith("RM_KnockbackBlast%s_" % kind):
-                ours.append((kind, int(n.rsplit("_", 1)[1])))
+        m = SCAR_NAME.match(n)
+        if m:
+            ours.append((m.group(1), int(m.group(2))))
     return ours, names.count("Filth_BlastMark")
+
+
+def journal_lines(s):
+    v = s.read("static:" + JOURNAL, "lines")
+    return [str(x) for x in v.v] if v.state == "ok" and isinstance(v.v, (list, tuple)) else None
+
+
+def scar_log(before, after):
+    """-> the journal's scar and scar_gone records written between two reads (LayScar: laid, or why the cell refused;
+    RM_Patch_Filth_ScarGone: who removed it), or a could-not-look line."""
+    if before is None or after is None:
+        return ["journal unread"]
+    new = after[len(before):] if after[:len(before)] == before else [x for x in after if x not in set(before)]
+    out = []
+    for line in new:
+        try:
+            r = json.loads(line)
+        except ValueError:
+            continue
+        if r.get("type") in ("scar", "scar_gone"):
+            out.append({k: r[k] for k in ("type", "at", "def", "laid", "why", "cell", "mode", "by") if k in r})
+    return out
 
 
 def static(s, field):
@@ -117,6 +150,7 @@ def blasts(s, rows):
         cx, cz = PADS[pad][2]
         s.raw("rimworld/jump_camera_to_cell", x=cx, z=cz)
         t0 = static(s, "lastShakeTick")
+        j0 = journal_lines(s)
         hp = s.read(pad + "_x", "hitPointsInt")
         s.act.damage(pad + "_x", (hp.v if hp.state == "ok" else 100) + 60, kind="Crush", name=pad)
         s.shot(rect(pad), name=pad + "_fire")
@@ -129,7 +163,7 @@ def blasts(s, rows):
         s.run(until=SETTLE, limit=SETTLE + 120)
         s.shot(rect(pad), name=pad + "_scar")
         ours, vanilla = scars_on(s, pad)
-        rows[pad] = dict(scars=ours, vanilla=vanilla, shook=shook, kick=kick)
+        rows[pad] = dict(scars=ours, vanilla=vanilla, shook=shook, kick=kick, log=scar_log(j0, journal_lines(s)))
         if pad == "he_tile":
             paint = s.read("soot_wall", "PaintColorDef.defName")
             rows[pad]["paint"] = str(paint.v) if paint.state == "ok" else "unread (%s)" % paint.state
@@ -155,7 +189,15 @@ with scene.open(GAME, contract=show, needs={"mods": ["ExplosiveKnockback"], "map
     planted = scene.plant() == "show_off"
     rows = {}
     prior = {f: (s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="get", field=f) or {}).get("value") for f in SWITCHES} if planted else {}
+    rot = s.raw("jawa/mod_settings_field", typeName=ROT[0], action="get", field=ROT[1]) or {}
+    rot_prior = rot.get("value") if rot.get("success") is True else None
+    print("INFO rot hold: %s" % ("The Rot's filth digestion was %s, held off for the run" % rot_prior if rot_prior is not None
+                                 else "not held, its setting could not be read (%s)" % rot.get("message")))
     try:
+        if rot_prior is not None:
+            r = s.raw("jawa/mod_settings_field", typeName=ROT[0], action="set", field=ROT[1], value="False", driver=s.id) or {}
+            if r.get("success") is not True:
+                raise RuntimeError("SETTING_REFUSED: %s=False was not written (%s)" % (ROT[1], r.get("message")))
         if planted:
             for f in SWITCHES:
                 r = s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=f, value="False", driver=s.id) or {}
@@ -165,6 +207,8 @@ with scene.open(GAME, contract=show, needs={"mods": ["ExplosiveKnockback"], "map
     finally:
         for f, v in prior.items():   # each switch back to what it read before the plant, on every exit path
             s.raw("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=f, value=str(v) if v is not None else "True", driver=s.id)
+        if rot_prior is not None:
+            s.raw("jawa/mod_settings_field", typeName=ROT[0], action="set", field=ROT[1], value=str(rot_prior), driver=s.id)
     folder = s.run_dir
 
 fails = 0
@@ -179,7 +223,7 @@ def row(ok, ident, text):
 for pad in ORDER:
     r, want = rows[pad], WANT[pad]
     kinds = sorted({k for k, _w in r["scars"]})
-    row(kinds == ([want] if want else []), "V_SCAR_KIND " + pad, "scars %s, want %s" % (r["scars"], want or "none"))
+    row(kinds == ([want] if want else []), "V_SCAR_KIND " + pad, "scars %s, want %s; journal %s" % (r["scars"], want or "none", r.get("log")))
     row(r["vanilla"] == 0, "V_NO_VANILLA " + pad, "%d Filth_BlastMark" % r["vanilla"])
     if pad in HARMFUL:
         row(r["shook"], "V_SHAKE " + pad, "the show's kick tick moved: %s (kick %s)" % (r["shook"], r["kick"]))

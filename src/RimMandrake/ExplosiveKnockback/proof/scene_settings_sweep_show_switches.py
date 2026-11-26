@@ -35,7 +35,7 @@ type read from Core's Items_Resource_Shell.xml, which also gives the shell its v
               the colonist, with blast power from damage off, so it throws at full force and harms nobody
 
 Rows (each prints PASS or FAIL with what it read, the count of cases and the limit):
-  S_SCAR <pad>    our RM_KnockbackBlastCrater_* filth present iff showCraterScars is on; Filth_BlastMark present iff off
+  S_SCAR <pad>    our RM_KnockbackBlastCrater_<n>Wide filth present iff showCraterScars is on; Filth_BlastMark present iff off
   S_SHAKE <pad>   RM_KnockbackShow.lastShakeTick moved by the blast iff showScreenShake is on
   S_ALL_OFF       all_off: no scar of ours, at least one Filth_BlastMark, no kick of ours
   T_THROWN <on|off> exactly one journal launch line for the colonist after its blast
@@ -64,6 +64,12 @@ GAME = "ArchSmall"
 # destroyable thing cleared. A fixed station on a fresh quicktest map can lie under mountain roof: on 2026-11-24 the
 # colonist was gone by tick 3 under collapsed rocks and the stack buried (APPARATUS FAULT of the first run).
 STAGE = "RM_Stage_ExplosiveKnockback"
+# The stage save lies on a The Rot tile, whose living ground digests every outdoor filth (EnvironmentalHazards
+# RM_MapComponent_AcceleratedRot.ThinOutdoorFilth: a 15% chance of one thinning each 250 ticks), our scars included: a
+# scar laid at the blast can be gone by the 300-tick read (RIMMANDRAKE_FIND_KNOCKBACK_IED_SCAR_MISSING_ONE_RUN_IN_THREE:
+# 8 of 24 IED scars, each removal named by the journal's scar_gone record). The sweep holds that other mod's mechanic
+# still for its run, so S_SCAR judges this mod alone; the setting is put back on every exit.
+ROT = ("RimMandrake.EnvironmentalHazards.RM_EnvironmentalHazardsSettings", "acceleratedRotEnabled")
 NS = "RimMandrake.ExplosiveKnockback."
 SETTINGS = NS + "RimMandrakeExplosiveKnockbackSettings"
 SHOW = NS + "RM_KnockbackShow"
@@ -128,7 +134,7 @@ def cell(v):
 def scars_on(s, centre):
     """-> (count of our crater filth, count of vanilla blast marks) on a pad."""
     names = [str(v.v) for v in s.read_many(rect=rect(centre), path="def.defName") if v.state == "ok"]
-    return sum(n.startswith("RM_KnockbackBlastCrater_") for n in names), names.count("Filth_BlastMark")
+    return sum(n.startswith("RM_KnockbackBlastCrater_") and n.endswith("Wide") for n in names), names.count("Filth_BlastMark")
 
 
 def read_field(s, field, of=SETTINGS):
@@ -232,7 +238,12 @@ def sweep(s, rows, throws, before):
     """The pads with each switch off in turn and all off, then the colonist thrown show-on and show-off. Every switch is
     put back on every exit path."""
     kick0 = read_field(s, "lastShakeTick", of=SHOW)
+    rot0 = read_field(s, ROT[1], of=ROT[0])
+    print("INFO rot hold: %s" % ("The Rot's filth digestion was %s, held off for the run" % rot0 if rot0 is not None
+                                 else "not held, its setting could not be read"))
     try:
+        if rot0 is not None:
+            put(s, ROT[1], "False", of=ROT[0])
         r = put(s, "lastShakeTick", "-1", of=SHOW, strict=False)
         print("INFO kick tick reset to -1: %s" % ({k: (r or {}).get(k) for k in ("success", "valueBefore", "valueAfter", "error")},))
         for pad in ORDER:
@@ -285,6 +296,8 @@ def sweep(s, rows, throws, before):
             setting(s, f, before.get(f) or "True")       # unread: the default, on
         setting(s, "blastPowerFromDamage", before.get("blastPowerFromDamage") or "True")
         put(s, "lastShakeTick", kick0 if kick0 is not None else "-1", of=SHOW, strict=False)   # not a settings class: the bridge refuses it, as it always did
+        if rot0 is not None:
+            put(s, ROT[1], rot0, of=ROT[0], strict=False)
 
 
 with scene.open(GAME, contract=show, needs={"mods": ["ExplosiveKnockback"], "map": STAGE, "calm": "standard"}) as s:
