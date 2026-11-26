@@ -1,0 +1,4244 @@
+{
+ "mod": "FlowWorks",
+ "stamp": "20261126T180752Z",
+ "summary": {
+  "chains": [
+   {
+    "name": "toggle_bottle_loop",
+    "components": [
+     {
+      "name": "bottle_loop_on",
+      "toggle": "bottleLoopEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofBottleCount(System.String)",
+         "result": "BOTTLES RM_BottleEmpty=1/1/0 RM_BottleDirty=0/0/0 RM_Bottle_FreshWater=0/0/0 holders=-",
+         "thingArgs": [],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_e7480ee08c964d8486b9ab640e32abbe",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofBottleCount(System.String)",
+         "result": "BOTTLES RM_BottleEmpty=1/1/0 RM_BottleDirty=0/0/0 RM_Bottle_FreshWater=0/0/0 holders=-",
+         "thingArgs": [],
+         "ticksGame": 126,
+         "operation": {
+          "OperationId": "op_c468d3f866934f9da09923363f95e6dc",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 126
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofBottleCount(System.String)",
+         "result": "BOTTLES RM_BottleEmpty=1/1/0 RM_BottleDirty=0/0/0 RM_Bottle_FreshWater=0/0/0 holders=-",
+         "thingArgs": [],
+         "ticksGame": 251,
+         "operation": {
+          "OperationId": "op_37b92a142e5848d8bdba9de79b8d1b41",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 251
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofBottleCount(System.String)",
+         "result": "BOTTLES RM_BottleEmpty=1/1/0 RM_BottleDirty=0/0/0 RM_Bottle_FreshWater=0/0/0 holders=-",
+         "thingArgs": [],
+         "ticksGame": 376,
+         "operation": {
+          "OperationId": "op_be4e892950c646ef90621c319dbcefb9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 40
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 376
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofBottleCount(System.String)",
+         "result": "BOTTLES RM_BottleEmpty=1/1/0 RM_BottleDirty=0/0/0 RM_Bottle_FreshWater=0/0/0 holders=-",
+         "thingArgs": [],
+         "ticksGame": 501,
+         "operation": {
+          "OperationId": "op_4e046be0ef4c4daca67c047e2c0cc87c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 501
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofBottleCount(System.String)",
+         "result": "BOTTLES RM_BottleEmpty=1/1/0 RM_BottleDirty=0/0/0 RM_Bottle_FreshWater=0/0/0 holders=-",
+         "thingArgs": [],
+         "ticksGame": 626,
+         "operation": {
+          "OperationId": "op_b55befabf3a84166bd0d387289964dbb",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 40
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 626
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofBottleCount(System.String)",
+         "result": "BOTTLES RM_BottleEmpty=1/1/0 RM_BottleDirty=0/0/0 RM_Bottle_FreshWater=0/0/0 holders=-",
+         "thingArgs": [],
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_dea8b9ff7f38424a898c627916f52b13",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofBottleCount(System.String)",
+         "result": "BOTTLES RM_BottleEmpty=0/0/1 RM_BottleDirty=0/0/0 RM_Bottle_FreshWater=0/0/0 holders=Human670:RM_FillBottleJob:RM_BottleEmpty",
+         "thingArgs": [],
+         "ticksGame": 876,
+         "operation": {
+          "OperationId": "op_72f36d7c3ef1474ea2054060b13c025d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 876
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofBottleCount(System.String)",
+         "result": "BOTTLES RM_BottleEmpty=0/0/1 RM_BottleDirty=0/0/0 RM_Bottle_FreshWater=0/0/0 holders=Human670:RM_FillBottleJob:RM_BottleEmpty",
+         "thingArgs": [],
+         "ticksGame": 1001,
+         "operation": {
+          "OperationId": "op_bca7887fc37c4212b2cb8635e25988ee",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1001
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofBottleCount(System.String)",
+         "result": "BOTTLES RM_BottleEmpty=0/0/1 RM_BottleDirty=0/0/0 RM_Bottle_FreshWater=0/0/0 holders=Human670:RM_FillBottleJob:RM_BottleEmpty",
+         "thingArgs": [],
+         "ticksGame": 1126,
+         "operation": {
+          "OperationId": "op_295351be4fe14e27bf3aae2878545555",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1126
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofBottleCount(System.String)",
+         "result": "BOTTLES RM_BottleEmpty=0/0/0 RM_BottleDirty=0/0/0 RM_Bottle_FreshWater=1/1/0 holders=-",
+         "thingArgs": [],
+         "ticksGame": 1251,
+         "operation": {
+          "OperationId": "op_d5f2afb5470b49cd8edee02873826d0c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 40
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1251
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_pawns",
+        "result": {
+         "success": true,
+         "message": "6 pawn(s).",
+         "pawns": [
+          {
+           "id": "Human656",
+           "name": "Braddock",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "New Arrivals",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 138,
+           "z": 118,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human659",
+           "name": "Wald",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "New Arrivals",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 139,
+           "z": 115,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Husky8731",
+           "name": "Funk",
+           "kind": "Husky",
+           "kindDef": "Husky",
+           "def": "Husky",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "New Arrivals",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 149,
+           "z": 125,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.86
+          },
+          {
+           "id": "Human670",
+           "name": "Anna",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "New Arrivals",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 164,
+           "z": 128,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human22529",
+           "name": "Bellerose",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "New Arrivals",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 170,
+           "z": 122,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human22532",
+           "name": "Tommy",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "New Arrivals",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 150,
+           "z": 123,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          }
+         ],
+         "returned": 6,
+         "truncated": 0,
+         "totalOnMap": 6,
+         "ticksGame": 1251,
+         "operation": {
+          "OperationId": "op_b95818fdb3684cb7a0d573eecd3866a5",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1251
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "bottle_loop_off",
+      "toggle": "bottleLoopEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'bottleLoopEnabled': False})",
+        "result": true
+       },
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofBottleCount(System.String)",
+         "result": "BOTTLES RM_BottleEmpty=1/1/0 RM_BottleDirty=0/0/0 RM_Bottle_FreshWater=0/0/0 holders=-",
+         "thingArgs": [],
+         "ticksGame": 1251,
+         "operation": {
+          "OperationId": "op_644de631590e48c491b886f653a00996",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1251
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "wait_ticks(125) -> 125 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 125
+        }
+       },
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofBottleCount(System.String)",
+         "result": "BOTTLES RM_BottleEmpty=1/1/0 RM_BottleDirty=0/0/0 RM_Bottle_FreshWater=0/0/0 holders=-",
+         "thingArgs": [],
+         "ticksGame": 3251,
+         "operation": {
+          "OperationId": "op_ef9fff0e87dc4a9b8a830de525592ecd",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3251
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null,
+    "site_hold": {
+     "bland": true,
+     "problems": [],
+     "notes": [],
+     "dead": [],
+     "steps": [
+      {
+       "name": "kill_hostiles",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "targeted": []
+       }
+      },
+      {
+       "name": "clear_map_fog",
+       "acted": 2,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "hostilesBefore": [],
+        "foggedBefore": 5391,
+        "foggedNow": 0,
+        "releasedByUnfog": [
+         "Trispike8393",
+         "Toughspike8392"
+        ],
+        "sweepPasses": 1,
+        "hostilesAfter": [],
+        "verified": true,
+        "error": null
+       }
+      },
+      {
+       "name": "pause",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {}
+      },
+      {
+       "name": "quiet_world",
+       "acted": 3,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "profile": "isolated",
+        "quests": "not touched",
+        "notSuppressed": [
+         "active quests and their parts (never ended by default: ending a quest changes the world)",
+         "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+         "existing game conditions, map/world/game components and mod tickers",
+         "hives and other pawn-spawning structures, births, egg hatching, breeders",
+         "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+         "weather transitions, fires, existing hostile behaviour"
+        ],
+        "storyteller": {
+         "cleared_count": 0,
+         "cleared": []
+        },
+        "logRaidInfo": "on",
+        "wildSpawner": "blocked (read back)",
+        "readBack": {
+         "enableStoryteller": false,
+         "enableRandomMentalStates": false,
+         "enableRandomDiseases": false,
+         "logRaidInfo": true,
+         "threatScale": 0.0,
+         "allowBigThreats": false
+        },
+        "incidentQueueAfterClear": 0,
+        "diseaseTraits": {
+         "colonists": 3,
+         "removed": [],
+         "seen": {
+          "Human670": [
+           "Kind 0",
+           "BodyPurist 0"
+          ],
+          "Human656": [
+           "NaturalMood 1",
+           "DrugDesire -1"
+          ],
+          "Human659": [
+           "TorturedArtist 0",
+           "Beauty -1",
+           "DrugDesire 1"
+          ]
+         }
+        }
+       }
+      },
+      {
+       "name": "quiet_site_map",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "removed": [],
+        "threatsAfter": 0,
+        "lettersUnsentAfter": 0
+       }
+      },
+      {
+       "name": "kill_hostiles",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "targeted": []
+       }
+      },
+      {
+       "name": "kill_wildlife",
+       "acted": 8,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "route": "destroy_bulk"
+       }
+      },
+      {
+       "name": "clear_strangers",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "targeted": []
+       }
+      },
+      {
+       "name": "extinguish",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {}
+      },
+      {
+       "name": "restore_colonists",
+       "acted": 10,
+       "verified": true,
+       "residue": [],
+       "evidence": {}
+      }
+     ]
+    },
+    "site_reload": null,
+    "setup_records": [
+     {
+      "call": "bridge_call jawa/map_info",
+      "result": {
+       "success": true,
+       "tile": 52636,
+       "tileValid": true,
+       "mapId": 0,
+       "sizeX": 250,
+       "sizeZ": 250,
+       "cellCount": 62500,
+       "tileInfo": {
+        "biome": "Tundra",
+        "hilliness": "SmallHills",
+        "hillinessInt": 2,
+        "elevation": 401.555237,
+        "rainfall": 782.237854,
+        "swampiness": 0.1839835,
+        "temperature": -11.7512627,
+        "pollution": 0.0,
+        "waterCovered": false,
+        "isSurfaceTile": true
+       },
+       "mapBiome": "Tundra",
+       "mapBiomeLabel": "tundra",
+       "outdoorTempNow": 10.3633919,
+       "latitude": 62.2349548,
+       "longitude": 36.2206573,
+       "season": "Summer",
+       "mapParent": {
+        "defName": "Settlement",
+        "label": "Colony",
+        "faction": "PlayerColony",
+        "factionName": "New Arrivals"
+       },
+       "playerSettlementsOnThisTile": 1,
+       "ticksGame": 1,
+       "operation": {
+        "OperationId": "op_8f8782a422644d96a1ca27ff1cf53b83",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 38
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/static_call",
+      "result": {
+       "success": true,
+       "method": "System.String ProofResetRect(System.String)",
+       "result": "RESET cells=0 levels=0 rolled=0 released=0 bodies=0 swim=0 left=0",
+       "thingArgs": [],
+       "ticksGame": 1,
+       "operation": {
+        "OperationId": "op_ceac679291a94c378ec84727c526e5bc",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 37
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/set_roof_batch",
+      "result": {
+       "success": true,
+       "message": "Roofed 0 cell(s) across 1 op(s).",
+       "opsRequested": 1,
+       "cellsChanged": 0,
+       "cellsFailedVerify": 0,
+       "cellsOutOfBounds": 0,
+       "perDef": {},
+       "errors": [],
+       "ticksGame": 1,
+       "operation": {
+        "OperationId": "op_869ea5590f5d46a4af31ee419360e559",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 33
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/destroy_batch",
+      "result": {
+       "success": true,
+       "message": "Destroyed 336 thing(s) across 1200 cell(s).",
+       "cellsExamined": 1200,
+       "outOfBounds": 0,
+       "destroyed": 336,
+       "pawnsSkipped": 0,
+       "undestroyableSkipped": 0,
+       "perCategory": {
+        "Plant": 112,
+        "Building": 173,
+        "Filth": 39,
+        "Item": 12
+       },
+       "samples": [
+        {
+         "x": 153,
+         "z": 118,
+         "def": "Plant_Bush",
+         "category": "Plant"
+        },
+        {
+         "x": 153,
+         "z": 119,
+         "def": "Plant_Moss",
+         "category": "Plant"
+        },
+        {
+         "x": 153,
+         "z": 127,
+         "def": "Limestone",
+         "category": "Building"
+        },
+        {
+         "x": 153,
+         "z": 128,
+         "def": "Limestone",
+         "category": "Building"
+        },
+        {
+         "x": 153,
+         "z": 129,
+         "def": "Limestone",
+         "category": "Building"
+        },
+        {
+         "x": 153,
+         "z": 130,
+         "def": "Limestone",
+         "category": "Building"
+        },
+        {
+         "x": 153,
+         "z": 131,
+         "def": "Limestone",
+         "category": "Building"
+        },
+        {
+         "x": 153,
+         "z": 132,
+         "def": "Limestone",
+         "category": "Building"
+        }
+       ],
+       "readBack": {
+        "ok": true,
+        "tool": "jawa/destroy_batch",
+        "faults": [],
+        "frameOpen": 3606,
+        "frameReply": 3606,
+        "sameFrame": true,
+        "rows": 336,
+        "rowsWrong": 0,
+        "wrong": [],
+        "made": [
+         {
+          "op": "gone",
+          "id": "Plant_Bush11166",
+          "x": 153,
+          "z": 118,
+          "got": {
+           "def": "Plant_Bush",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Plant_Moss13405",
+          "x": 153,
+          "z": 119,
+          "got": {
+           "def": "Plant_Moss",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4729",
+          "x": 153,
+          "z": 127,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4753",
+          "x": 153,
+          "z": 128,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4780",
+          "x": 153,
+          "z": 129,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4814",
+          "x": 153,
+          "z": 130,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4849",
+          "x": 153,
+          "z": 131,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4882",
+          "x": 153,
+          "z": 132,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4915",
+          "x": 153,
+          "z": 133,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4945",
+          "x": 153,
+          "z": 134,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4973",
+          "x": 153,
+          "z": 135,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4998",
+          "x": 153,
+          "z": 136,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone5022",
+          "x": 153,
+          "z": 137,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone5043",
+          "x": 153,
+          "z": 138,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone5159",
+          "x": 153,
+          "z": 145,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone5182",
+          "x": 153,
+          "z": 146,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4730",
+          "x": 154,
+          "z": 127,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4754",
+          "x": 154,
+          "z": 128,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4781",
+          "x": 154,
+          "z": 129,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4815",
+          "x": 154,
+          "z": 130,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4850",
+          "x": 154,
+          "z": 131,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4883",
+          "x": 154,
+          "z": 132,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4916",
+          "x": 154,
+          "z": 133,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4946",
+          "x": 154,
+          "z": 134,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4974",
+          "x": 154,
+          "z": 135,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4999",
+          "x": 154,
+          "z": 136,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone5023",
+          "x": 154,
+          "z": 137,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone5044",
+          "x": 154,
+          "z": 138,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone5160",
+          "x": 154,
+          "z": 145,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone5183",
+          "x": 154,
+          "z": 146,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4731",
+          "x": 155,
+          "z": 127,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4755",
+          "x": 155,
+          "z": 128,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4782",
+          "x": 155,
+          "z": 129,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4816",
+          "x": 155,
+          "z": 130,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4851",
+          "x": 155,
+          "z": 131,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4884",
+          "x": 155,
+          "z": 132,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4917",
+          "x": 155,
+          "z": 133,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4947",
+          "x": 155,
+          "z": 134,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4975",
+          "x": 155,
+          "z": 135,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone5000",
+          "x": 155,
+          "z": 136,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone5024",
+          "x": 155,
+          "z": 137,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone5045",
+          "x": 155,
+          "z": 138,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone5062",
+          "x": 155,
+          "z": 139,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone5161",
+          "x": 155,
+          "z": 145,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4708",
+          "x": 156,
+          "z": 126,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4732",
+          "x": 156,
+          "z": 127,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4756",
+          "x": 156,
+          "z": 128,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4783",
+          "x": 156,
+          "z": 129,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4817",
+          "x": 156,
+          "z": 130,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Limestone4852",
+          "x": 156,
+          "z": 131,
+          "got": {
+           "def": "Limestone",
+           "destroyed": "True"
+          }
+         }
+        ],
+        "leftBlocking": 0,
+        "leftKept": 0,
+        "left": [],
+        "digest": "0c043c9e23c95c36"
+       },
+       "ticksGame": 1,
+       "operation": {
+        "OperationId": "op_f58a8495222f4d4fa1216b9bfe6c2eb7",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 122
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/set_terrain_batch",
+      "result": {
+       "success": true,
+       "message": "Applied 1/1 op(s): 519 cell(s) changed, 681 already correct.",
+       "layer": "top",
+       "opsRequested": 1,
+       "opsApplied": 1,
+       "cellsRequested": 1200,
+       "cellsChanged": 519,
+       "cellsAlreadyCorrect": 681,
+       "cellsOutOfBounds": 0,
+       "cellsFailedVerify": 0,
+       "refreshed": true,
+       "cellsRefreshed": 519,
+       "errors": [],
+       "samples": [
+        {
+         "x": 153,
+         "z": 117,
+         "before": "Gravel",
+         "after": "Soil",
+         "applied": true
+        },
+        {
+         "x": 153,
+         "z": 118,
+         "before": "Soil",
+         "after": "Soil",
+         "applied": true
+        },
+        {
+         "x": 153,
+         "z": 119,
+         "before": "Soil",
+         "after": "Soil",
+         "applied": true
+        },
+        {
+         "x": 153,
+         "z": 120,
+         "before": "Gravel",
+         "after": "Soil",
+         "applied": true
+        },
+        {
+         "x": 153,
+         "z": 121,
+         "before": "Gravel",
+         "after": "Soil",
+         "applied": true
+        },
+        {
+         "x": 153,
+         "z": 122,
+         "before": "Limestone_Rough",
+         "after": "Soil",
+         "applied": true
+        },
+        {
+         "x": 153,
+         "z": 123,
+         "before": "Limestone_Rough",
+         "after": "Soil",
+         "applied": true
+        },
+        {
+         "x": 153,
+         "z": 124,
+         "before": "Limestone_Rough",
+         "after": "Soil",
+         "applied": true
+        }
+       ],
+       "mapSize": {
+        "x": 250,
+        "z": 250
+       },
+       "readBack": {
+        "ok": true,
+        "tool": "jawa/set_terrain_batch",
+        "faults": [],
+        "frameOpen": 3613,
+        "frameReply": 3613,
+        "sameFrame": true,
+        "rows": 1200,
+        "rowsWrong": 0,
+        "wrong": [],
+        "made": [
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 117,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 118,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 119,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 120,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 121,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 122,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 123,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 124,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 125,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 126,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 127,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 128,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 129,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 130,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 131,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 132,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 133,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 134,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 135,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 136,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 137,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 138,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 139,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 140,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 141,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 142,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 143,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 144,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 145,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 146,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 117,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 118,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 119,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 120,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 121,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 122,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 123,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 124,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 125,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 126,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 127,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 128,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 129,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 130,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 131,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 132,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 133,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 134,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 135,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 136,
+          "got": {
+           "terrain": "Soil"
+          }
+         }
+        ],
+        "leftBlocking": 0,
+        "leftKept": 0,
+        "left": [],
+        "digest": "c89d2025cfe3ced5"
+       },
+       "ticksGame": 1,
+       "operation": {
+        "OperationId": "op_5ec02587315346dca0165be470fe8ec1",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 42
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/weather_set",
+      "result": {
+       "success": true,
+       "before": "Clear",
+       "after": "Clear",
+       "lockInForce": true,
+       "gamePaused": true,
+       "notes": [
+        "registered a PERMANENT GameCondition_ForceWeather - this is the only durable weather control"
+       ],
+       "ticksGame": 1,
+       "operation": {
+        "OperationId": "op_021edae73c7742529c0795d67cee80c9",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 36
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/clear_ui",
+      "result": {
+       "success": true,
+       "closed": [
+        "Dialog_DevPalette"
+       ],
+       "closedCount": 1,
+       "remaining": [
+        "ImmediateWindow"
+       ],
+       "deselected": 0,
+       "hudHidden": true,
+       "hudWasHidden": false,
+       "hudLeaseSeconds": 20,
+       "message": "Closed 1 window(s), deselected 0 thing(s). Still open: ImmediateWindow.",
+       "operation": {
+        "OperationId": "op_e67ac2f8f7b849e28aa5727691dd403a",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 37
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/set_terrain_batch",
+      "result": {
+       "success": true,
+       "message": "Applied 1/1 op(s): 16 cell(s) changed, 0 already correct.",
+       "layer": "top",
+       "opsRequested": 1,
+       "opsApplied": 1,
+       "cellsRequested": 16,
+       "cellsChanged": 16,
+       "cellsAlreadyCorrect": 0,
+       "cellsOutOfBounds": 0,
+       "cellsFailedVerify": 0,
+       "refreshed": true,
+       "cellsRefreshed": 16,
+       "errors": [],
+       "samples": [
+        {
+         "x": 162,
+         "z": 130,
+         "before": "Soil",
+         "after": "WaterShallow",
+         "applied": true
+        },
+        {
+         "x": 162,
+         "z": 131,
+         "before": "Soil",
+         "after": "WaterShallow",
+         "applied": true
+        },
+        {
+         "x": 162,
+         "z": 132,
+         "before": "Soil",
+         "after": "WaterShallow",
+         "applied": true
+        },
+        {
+         "x": 162,
+         "z": 133,
+         "before": "Soil",
+         "after": "WaterShallow",
+         "applied": true
+        },
+        {
+         "x": 163,
+         "z": 130,
+         "before": "Soil",
+         "after": "WaterShallow",
+         "applied": true
+        },
+        {
+         "x": 163,
+         "z": 131,
+         "before": "Soil",
+         "after": "WaterShallow",
+         "applied": true
+        },
+        {
+         "x": 163,
+         "z": 132,
+         "before": "Soil",
+         "after": "WaterShallow",
+         "applied": true
+        },
+        {
+         "x": 163,
+         "z": 133,
+         "before": "Soil",
+         "after": "WaterShallow",
+         "applied": true
+        }
+       ],
+       "mapSize": {
+        "x": 250,
+        "z": 250
+       },
+       "readBack": {
+        "ok": true,
+        "tool": "jawa/set_terrain_batch",
+        "faults": [],
+        "frameOpen": 3635,
+        "frameReply": 3635,
+        "sameFrame": true,
+        "rows": 16,
+        "rowsWrong": 0,
+        "wrong": [],
+        "made": [
+         {
+          "op": "terrain",
+          "x": 162,
+          "z": 130,
+          "got": {
+           "terrain": "WaterShallow"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 162,
+          "z": 131,
+          "got": {
+           "terrain": "WaterShallow"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 162,
+          "z": 132,
+          "got": {
+           "terrain": "WaterShallow"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 162,
+          "z": 133,
+          "got": {
+           "terrain": "WaterShallow"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 163,
+          "z": 130,
+          "got": {
+           "terrain": "WaterShallow"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 163,
+          "z": 131,
+          "got": {
+           "terrain": "WaterShallow"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 163,
+          "z": 132,
+          "got": {
+           "terrain": "WaterShallow"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 163,
+          "z": 133,
+          "got": {
+           "terrain": "WaterShallow"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 164,
+          "z": 130,
+          "got": {
+           "terrain": "WaterShallow"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 164,
+          "z": 131,
+          "got": {
+           "terrain": "WaterShallow"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 164,
+          "z": 132,
+          "got": {
+           "terrain": "WaterShallow"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 164,
+          "z": 133,
+          "got": {
+           "terrain": "WaterShallow"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 165,
+          "z": 130,
+          "got": {
+           "terrain": "WaterShallow"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 165,
+          "z": 131,
+          "got": {
+           "terrain": "WaterShallow"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 165,
+          "z": 132,
+          "got": {
+           "terrain": "WaterShallow"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 165,
+          "z": 133,
+          "got": {
+           "terrain": "WaterShallow"
+          }
+         }
+        ],
+        "leftBlocking": 0,
+        "leftKept": 0,
+        "left": [],
+        "digest": "c6b6e9596f115685"
+       },
+       "ticksGame": 1,
+       "operation": {
+        "OperationId": "op_27b1ee64ce3a4883b9576fecf6fb28de",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 46
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/spawn_batch",
+      "result": {
+       "success": true,
+       "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+       "opsRequested": 1,
+       "spawned": 1,
+       "failed": 0,
+       "thingsRequested": 1,
+       "thingsPlaced": 1,
+       "thingsShort": 0,
+       "stacksOverLimit": 0,
+       "cellsOutOfBounds": 0,
+       "perDef": {
+        "RM_BottleEmpty": 1
+       },
+       "errors": [],
+       "ticksGame": 1,
+       "operation": {
+        "OperationId": "op_d7400a1ed7db421eb4fad24f953171c1",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 37
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/spawn_pawn",
+      "result": {
+       "success": true,
+       "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+       "spawnedCount": 1,
+       "failedCount": 0,
+       "substitutedCount": 0,
+       "pawns": [
+        {
+         "ok": true,
+         "id": "Human22529",
+         "name": "Bellerose",
+         "kindRequested": "Colonist",
+         "kindActual": "Colonist",
+         "kindSubstituted": false,
+         "faction": "PlayerColony",
+         "hostile": false,
+         "x": 173,
+         "z": 133,
+         "spawned": true,
+         "xenotype": "Baseliner",
+         "xenotypeApplied": true
+        }
+       ],
+       "readBack": {
+        "ok": true,
+        "tool": "jawa/spawn_pawn",
+        "faults": [],
+        "frameOpen": 3649,
+        "frameReply": 3649,
+        "sameFrame": true,
+        "rows": 1,
+        "rowsWrong": 0,
+        "wrong": [],
+        "made": [
+         {
+          "op": "pawn",
+          "id": "Human22529",
+          "x": 173,
+          "z": 133,
+          "got": {
+           "cell": "173,133",
+           "faction": "PlayerColony",
+           "kind": "Colonist",
+           "spawned": "True",
+           "xenotype": "Baseliner"
+          }
+         }
+        ],
+        "leftBlocking": 0,
+        "leftKept": 0,
+        "left": [],
+        "digest": "6ae4e173d392009d"
+       },
+       "ticksGame": 1,
+       "operation": {
+        "OperationId": "op_96d076e875f04957bdac554e9c9ae1a4",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 48
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/pawn_need",
+      "result": {
+       "success": true,
+       "action": "need",
+       "notes": [
+        "Food reads 1"
+       ],
+       "needs": [
+        {
+         "need": "Mood",
+         "level": 0.5,
+         "pct": 0.5
+        },
+        {
+         "need": "Food",
+         "level": 1.0,
+         "pct": 1.0
+        },
+        {
+         "need": "Rest",
+         "level": 0.967648864,
+         "pct": 0.967648864
+        },
+        {
+         "need": "Joy",
+         "level": 0.591654,
+         "pct": 0.591654
+        },
+        {
+         "need": "Beauty",
+         "level": 0.5,
+         "pct": 0.5
+        },
+        {
+         "need": "Comfort",
+         "level": 0.5,
+         "pct": 0.5
+        },
+        {
+         "need": "Outdoors",
+         "level": 1.0,
+         "pct": 1.0
+        },
+        {
+         "need": "DrugDesire",
+         "level": 0.5,
+         "pct": 0.5
+        },
+        {
+         "need": "RoomSize",
+         "level": 0.5,
+         "pct": 0.5
+        },
+        {
+         "need": "RM_Thirst",
+         "level": 0.8,
+         "pct": 0.8
+        }
+       ],
+       "memories": [],
+       "readBack": {
+        "ok": true,
+        "tool": "jawa/pawn_need",
+        "faults": [],
+        "frameOpen": 3665,
+        "frameReply": 3665,
+        "sameFrame": true,
+        "rows": 1,
+        "rowsWrong": 0,
+        "wrong": [],
+        "made": [
+         {
+          "op": "need",
+          "id": "Human22529",
+          "x": 173,
+          "z": 133,
+          "got": {
+           "level": "1",
+           "need": "Food",
+           "percentage": "1"
+          }
+         }
+        ],
+        "leftBlocking": 0,
+        "leftKept": 0,
+        "left": [],
+        "digest": "e33ddefe5cd883ea"
+       },
+       "ticksGame": 1,
+       "operation": {
+        "OperationId": "op_1e10c67874614e0c98451dcce16f989d",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 45
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/spawn_pawn",
+      "result": {
+       "success": true,
+       "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+       "spawnedCount": 1,
+       "failedCount": 0,
+       "substitutedCount": 0,
+       "pawns": [
+        {
+         "ok": true,
+         "id": "Human22532",
+         "name": "Tommy",
+         "kindRequested": "Colonist",
+         "kindActual": "Colonist",
+         "kindSubstituted": false,
+         "faction": "PlayerColony",
+         "hostile": false,
+         "x": 174,
+         "z": 133,
+         "spawned": true,
+         "xenotype": "Baseliner",
+         "xenotypeApplied": true
+        }
+       ],
+       "readBack": {
+        "ok": true,
+        "tool": "jawa/spawn_pawn",
+        "faults": [],
+        "frameOpen": 3672,
+        "frameReply": 3672,
+        "sameFrame": true,
+        "rows": 1,
+        "rowsWrong": 0,
+        "wrong": [],
+        "made": [
+         {
+          "op": "pawn",
+          "id": "Human22532",
+          "x": 174,
+          "z": 133,
+          "got": {
+           "cell": "174,133",
+           "faction": "PlayerColony",
+           "kind": "Colonist",
+           "spawned": "True",
+           "xenotype": "Baseliner"
+          }
+         }
+        ],
+        "leftBlocking": 0,
+        "leftKept": 0,
+        "left": [],
+        "digest": "36556e08c24ac5cf"
+       },
+       "ticksGame": 1,
+       "operation": {
+        "OperationId": "op_d3ddb400a5cd43828639b4a995d86c7e",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 49
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/pawn_need",
+      "result": {
+       "success": true,
+       "action": "need",
+       "notes": [
+        "Food reads 1"
+       ],
+       "needs": [
+        {
+         "need": "Mood",
+         "level": 0.5,
+         "pct": 0.5
+        },
+        {
+         "need": "Food",
+         "level": 1.0,
+         "pct": 1.0
+        },
+        {
+         "need": "Rest",
+         "level": 0.904813051,
+         "pct": 0.904813051
+        },
+        {
+         "need": "Joy",
+         "level": 0.514345944,
+         "pct": 0.514345944
+        },
+        {
+         "need": "Beauty",
+         "level": 0.5,
+         "pct": 0.5
+        },
+        {
+         "need": "Comfort",
+         "level": 0.5,
+         "pct": 0.5
+        },
+        {
+         "need": "Outdoors",
+         "level": 1.0,
+         "pct": 1.0
+        },
+        {
+         "need": "DrugDesire",
+         "level": 0.5,
+         "pct": 0.5
+        },
+        {
+         "need": "RoomSize",
+         "level": 0.5,
+         "pct": 0.5
+        },
+        {
+         "need": "RM_Thirst",
+         "level": 0.8,
+         "pct": 0.8
+        }
+       ],
+       "memories": [],
+       "readBack": {
+        "ok": true,
+        "tool": "jawa/pawn_need",
+        "faults": [],
+        "frameOpen": 3682,
+        "frameReply": 3682,
+        "sameFrame": true,
+        "rows": 1,
+        "rowsWrong": 0,
+        "wrong": [],
+        "made": [
+         {
+          "op": "need",
+          "id": "Human22532",
+          "x": 174,
+          "z": 133,
+          "got": {
+           "level": "1",
+           "need": "Food",
+           "percentage": "1"
+          }
+         }
+        ],
+        "leftBlocking": 0,
+        "leftKept": 0,
+        "left": [],
+        "digest": "b7f37c7f618890ef"
+       },
+       "ticksGame": 1,
+       "operation": {
+        "OperationId": "op_6405665864524503abd9853610748ad8",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 49
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/static_call",
+      "result": {
+       "success": true,
+       "method": "System.String ProofResetRect(System.String)",
+       "result": "RESET cells=0 levels=0 rolled=0 released=16 bodies=1 swim=0 left=0",
+       "thingArgs": [],
+       "ticksGame": 1251,
+       "operation": {
+        "OperationId": "op_1521c1cc9cce47b09b85eff4d8cffa13",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 38
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1251
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/set_roof_batch",
+      "result": {
+       "success": true,
+       "message": "Roofed 0 cell(s) across 1 op(s).",
+       "opsRequested": 1,
+       "cellsChanged": 0,
+       "cellsFailedVerify": 0,
+       "cellsOutOfBounds": 0,
+       "perDef": {},
+       "errors": [],
+       "ticksGame": 1251,
+       "operation": {
+        "OperationId": "op_492c04fe65134f61a7b89a72270bd795",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 47
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1251
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/destroy_batch",
+      "result": {
+       "success": true,
+       "message": "Destroyed 1 thing(s) across 1200 cell(s); 2 pawn(s) left alone.",
+       "cellsExamined": 1200,
+       "outOfBounds": 0,
+       "destroyed": 1,
+       "pawnsSkipped": 2,
+       "undestroyableSkipped": 0,
+       "perCategory": {
+        "Item": 1
+       },
+       "samples": [
+        {
+         "x": 163,
+         "z": 129,
+         "def": "RM_Bottle_FreshWater",
+         "category": "Item"
+        }
+       ],
+       "readBack": {
+        "ok": true,
+        "tool": "jawa/destroy_batch",
+        "faults": [],
+        "frameOpen": 4269,
+        "frameReply": 4269,
+        "sameFrame": true,
+        "rows": 1,
+        "rowsWrong": 0,
+        "wrong": [],
+        "made": [
+         {
+          "op": "gone",
+          "id": "RM_Bottle_FreshWater22539",
+          "x": 163,
+          "z": 129,
+          "got": {
+           "def": "RM_Bottle_FreshWater",
+           "destroyed": "True"
+          }
+         }
+        ],
+        "leftBlocking": 0,
+        "leftKept": 2,
+        "left": [
+         {
+          "def": "Human",
+          "id": "Human670",
+          "x": 164,
+          "z": 128,
+          "why": "a pawn: never destroyed by this tool",
+          "blocking": false
+         },
+         {
+          "def": "Human",
+          "id": "Human22529",
+          "x": 170,
+          "z": 122,
+          "why": "a pawn: never destroyed by this tool",
+          "blocking": false
+         }
+        ],
+        "digest": "a3ca605faf5148e9"
+       },
+       "ticksGame": 1251,
+       "operation": {
+        "OperationId": "op_addd5d50827f4b68934b70c4bc891618",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 39
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1251
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/set_terrain_batch",
+      "result": {
+       "success": true,
+       "message": "Applied 1/1 op(s): 16 cell(s) changed, 1184 already correct.",
+       "layer": "top",
+       "opsRequested": 1,
+       "opsApplied": 1,
+       "cellsRequested": 1200,
+       "cellsChanged": 16,
+       "cellsAlreadyCorrect": 1184,
+       "cellsOutOfBounds": 0,
+       "cellsFailedVerify": 0,
+       "refreshed": true,
+       "cellsRefreshed": 16,
+       "errors": [],
+       "samples": [
+        {
+         "x": 153,
+         "z": 117,
+         "before": "Soil",
+         "after": "Soil",
+         "applied": true
+        },
+        {
+         "x": 153,
+         "z": 118,
+         "before": "Soil",
+         "after": "Soil",
+         "applied": true
+        },
+        {
+         "x": 153,
+         "z": 119,
+         "before": "Soil",
+         "after": "Soil",
+         "applied": true
+        },
+        {
+         "x": 153,
+         "z": 120,
+         "before": "Soil",
+         "after": "Soil",
+         "applied": true
+        },
+        {
+         "x": 153,
+         "z": 121,
+         "before": "Soil",
+         "after": "Soil",
+         "applied": true
+        },
+        {
+         "x": 153,
+         "z": 122,
+         "before": "Soil",
+         "after": "Soil",
+         "applied": true
+        },
+        {
+         "x": 153,
+         "z": 123,
+         "before": "Soil",
+         "after": "Soil",
+         "applied": true
+        },
+        {
+         "x": 153,
+         "z": 124,
+         "before": "Soil",
+         "after": "Soil",
+         "applied": true
+        }
+       ],
+       "mapSize": {
+        "x": 250,
+        "z": 250
+       },
+       "readBack": {
+        "ok": true,
+        "tool": "jawa/set_terrain_batch",
+        "faults": [],
+        "frameOpen": 4274,
+        "frameReply": 4274,
+        "sameFrame": true,
+        "rows": 1200,
+        "rowsWrong": 0,
+        "wrong": [],
+        "made": [
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 117,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 118,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 119,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 120,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 121,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 122,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 123,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 124,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 125,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 126,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 127,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 128,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 129,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 130,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 131,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 132,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 133,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 134,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 135,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 136,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 137,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 138,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 139,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 140,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 141,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 142,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 143,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 144,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 145,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 153,
+          "z": 146,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 117,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 118,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 119,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 120,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 121,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 122,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 123,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 124,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 125,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 126,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 127,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 128,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 129,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 130,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 131,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 132,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 133,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 134,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 135,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 154,
+          "z": 136,
+          "got": {
+           "terrain": "Soil"
+          }
+         }
+        ],
+        "leftBlocking": 0,
+        "leftKept": 0,
+        "left": [],
+        "digest": "c89d2025cfe3ced5"
+       },
+       "ticksGame": 1251,
+       "operation": {
+        "OperationId": "op_a80e8c2cbaf34276ac9e83f0b2236c17",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 39
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1251
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/weather_set",
+      "result": {
+       "success": true,
+       "before": "Clear",
+       "after": "Clear",
+       "lockInForce": true,
+       "gamePaused": true,
+       "notes": [
+        "registered a PERMANENT GameCondition_ForceWeather - this is the only durable weather control"
+       ],
+       "ticksGame": 1251,
+       "operation": {
+        "OperationId": "op_c77499cf477a4bb1aab559b629fe03c2",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 40
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1251
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/clear_ui",
+      "result": {
+       "success": true,
+       "closed": [],
+       "closedCount": 0,
+       "remaining": [],
+       "deselected": 0,
+       "hudHidden": true,
+       "hudWasHidden": true,
+       "hudLeaseSeconds": 20,
+       "message": "Nothing to close and nothing was selected. The view was already clear \u2014 this is a no-op, not a failure.",
+       "operation": {
+        "OperationId": "op_ca94fa01aaa042e2b207e70a9c08defd",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 36
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1251
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/set_terrain_batch",
+      "result": {
+       "success": true,
+       "message": "Applied 1/1 op(s): 16 cell(s) changed, 0 already correct.",
+       "layer": "top",
+       "opsRequested": 1,
+       "opsApplied": 1,
+       "cellsRequested": 16,
+       "cellsChanged": 16,
+       "cellsAlreadyCorrect": 0,
+       "cellsOutOfBounds": 0,
+       "cellsFailedVerify": 0,
+       "refreshed": true,
+       "cellsRefreshed": 16,
+       "errors": [],
+       "samples": [
+        {
+         "x": 162,
+         "z": 130,
+         "before": "Soil",
+         "after": "WaterShallow",
+         "applied": true
+        },
+        {
+         "x": 162,
+         "z": 131,
+         "before": "Soil",
+         "after": "WaterShallow",
+         "applied": true
+        },
+        {
+         "x": 162,
+         "z": 132,
+         "before": "Soil",
+         "after": "WaterShallow",
+         "applied": true
+        },
+        {
+         "x": 162,
+         "z": 133,
+         "before": "Soil",
+         "after": "WaterShallow",
+         "applied": true
+        },
+        {
+         "x": 163,
+         "z": 130,
+         "before": "Soil",
+         "after": "WaterShallow",
+         "applied": true
+        },
+        {
+         "x": 163,
+         "z": 131,
+         "before": "Soil",
+         "after": "WaterShallow",
+         "applied": true
+        },
+        {
+         "x": 163,
+         "z": 132,
+         "before": "Soil",
+         "after": "WaterShallow",
+         "applied": true
+        },
+        {
+         "x": 163,
+         "z": 133,
+         "before": "Soil",
+         "after": "WaterShallow",
+         "applied": true
+        }
+       ],
+       "mapSize": {
+        "x": 250,
+        "z": 250
+       },
+       "readBack": {
+        "ok": true,
+        "tool": "jawa/set_terrain_batch",
+        "faults": [],
+        "frameOpen": 4290,
+        "frameReply": 4290,
+        "sameFrame": true,
+        "rows": 16,
+        "rowsWrong": 0,
+        "wrong": [],
+        "made": [
+         {
+          "op": "terrain",
+          "x": 162,
+          "z": 130,
+          "got": {
+           "terrain": "WaterShallow"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 162,
+          "z": 131,
+          "got": {
+           "terrain": "WaterShallow"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 162,
+          "z": 132,
+          "got": {
+           "terrain": "WaterShallow"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 162,
+          "z": 133,
+          "got": {
+           "terrain": "WaterShallow"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 163,
+          "z": 130,
+          "got": {
+           "terrain": "WaterShallow"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 163,
+          "z": 131,
+          "got": {
+           "terrain": "WaterShallow"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 163,
+          "z": 132,
+          "got": {
+           "terrain": "WaterShallow"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 163,
+          "z": 133,
+          "got": {
+           "terrain": "WaterShallow"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 164,
+          "z": 130,
+          "got": {
+           "terrain": "WaterShallow"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 164,
+          "z": 131,
+          "got": {
+           "terrain": "WaterShallow"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 164,
+          "z": 132,
+          "got": {
+           "terrain": "WaterShallow"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 164,
+          "z": 133,
+          "got": {
+           "terrain": "WaterShallow"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 165,
+          "z": 130,
+          "got": {
+           "terrain": "WaterShallow"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 165,
+          "z": 131,
+          "got": {
+           "terrain": "WaterShallow"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 165,
+          "z": 132,
+          "got": {
+           "terrain": "WaterShallow"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 165,
+          "z": 133,
+          "got": {
+           "terrain": "WaterShallow"
+          }
+         }
+        ],
+        "leftBlocking": 0,
+        "leftKept": 0,
+        "left": [],
+        "digest": "c6b6e9596f115685"
+       },
+       "ticksGame": 1251,
+       "operation": {
+        "OperationId": "op_4663605afcc646c882105da6482437ab",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 48
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1251
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/spawn_batch",
+      "result": {
+       "success": true,
+       "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+       "opsRequested": 1,
+       "spawned": 1,
+       "failed": 0,
+       "thingsRequested": 1,
+       "thingsPlaced": 1,
+       "thingsShort": 0,
+       "stacksOverLimit": 0,
+       "cellsOutOfBounds": 0,
+       "perDef": {
+        "RM_BottleEmpty": 1
+       },
+       "errors": [],
+       "ticksGame": 1251,
+       "operation": {
+        "OperationId": "op_51cee630e48e4145be9122072a99dd97",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 35
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1251
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/spawn_pawn",
+      "result": {
+       "success": true,
+       "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+       "spawnedCount": 1,
+       "failedCount": 0,
+       "substitutedCount": 0,
+       "pawns": [
+        {
+         "ok": true,
+         "id": "Human22541",
+         "name": "Newsboy",
+         "kindRequested": "Colonist",
+         "kindActual": "Colonist",
+         "kindSubstituted": false,
+         "faction": "PlayerColony",
+         "hostile": false,
+         "x": 173,
+         "z": 133,
+         "spawned": true,
+         "xenotype": "Baseliner",
+         "xenotypeApplied": true
+        }
+       ],
+       "readBack": {
+        "ok": true,
+        "tool": "jawa/spawn_pawn",
+        "faults": [],
+        "frameOpen": 4300,
+        "frameReply": 4300,
+        "sameFrame": true,
+        "rows": 1,
+        "rowsWrong": 0,
+        "wrong": [],
+        "made": [
+         {
+          "op": "pawn",
+          "id": "Human22541",
+          "x": 173,
+          "z": 133,
+          "got": {
+           "cell": "173,133",
+           "faction": "PlayerColony",
+           "kind": "Colonist",
+           "spawned": "True",
+           "xenotype": "Baseliner"
+          }
+         }
+        ],
+        "leftBlocking": 0,
+        "leftKept": 0,
+        "left": [],
+        "digest": "6ae4e173d392009d"
+       },
+       "ticksGame": 1251,
+       "operation": {
+        "OperationId": "op_8520df3e7bff4f34a155c0f265f31611",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 36
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1251
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/pawn_need",
+      "result": {
+       "success": true,
+       "action": "need",
+       "notes": [
+        "Food reads 1"
+       ],
+       "needs": [
+        {
+         "need": "Mood",
+         "level": 0.5,
+         "pct": 0.5
+        },
+        {
+         "need": "Food",
+         "level": 1.0,
+         "pct": 1.0
+        },
+        {
+         "need": "Rest",
+         "level": 0.904770732,
+         "pct": 0.904770732
+        },
+        {
+         "need": "Joy",
+         "level": 0.5741819,
+         "pct": 0.5741819
+        },
+        {
+         "need": "Beauty",
+         "level": 0.5,
+         "pct": 0.5
+        },
+        {
+         "need": "Comfort",
+         "level": 0.5,
+         "pct": 0.5
+        },
+        {
+         "need": "Outdoors",
+         "level": 1.0,
+         "pct": 1.0
+        },
+        {
+         "need": "DrugDesire",
+         "level": 0.5,
+         "pct": 0.5
+        },
+        {
+         "need": "RoomSize",
+         "level": 0.5,
+         "pct": 0.5
+        },
+        {
+         "need": "RM_Thirst",
+         "level": 0.8,
+         "pct": 0.8
+        }
+       ],
+       "memories": [],
+       "readBack": {
+        "ok": true,
+        "tool": "jawa/pawn_need",
+        "faults": [],
+        "frameOpen": 4309,
+        "frameReply": 4309,
+        "sameFrame": true,
+        "rows": 1,
+        "rowsWrong": 0,
+        "wrong": [],
+        "made": [
+         {
+          "op": "need",
+          "id": "Human22541",
+          "x": 173,
+          "z": 133,
+          "got": {
+           "level": "1",
+           "need": "Food",
+           "percentage": "1"
+          }
+         }
+        ],
+        "leftBlocking": 0,
+        "leftKept": 0,
+        "left": [],
+        "digest": "e33ddefe5cd883ea"
+       },
+       "ticksGame": 1251,
+       "operation": {
+        "OperationId": "op_fff765cae07340d1935b8113d140ad53",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 36
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1251
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/spawn_pawn",
+      "result": {
+       "success": true,
+       "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+       "spawnedCount": 1,
+       "failedCount": 0,
+       "substitutedCount": 0,
+       "pawns": [
+        {
+         "ok": true,
+         "id": "Human22544",
+         "name": "Jumper",
+         "kindRequested": "Colonist",
+         "kindActual": "Colonist",
+         "kindSubstituted": false,
+         "faction": "PlayerColony",
+         "hostile": false,
+         "x": 174,
+         "z": 133,
+         "spawned": true,
+         "xenotype": "Baseliner",
+         "xenotypeApplied": true
+        }
+       ],
+       "readBack": {
+        "ok": true,
+        "tool": "jawa/spawn_pawn",
+        "faults": [],
+        "frameOpen": 4314,
+        "frameReply": 4314,
+        "sameFrame": true,
+        "rows": 1,
+        "rowsWrong": 0,
+        "wrong": [],
+        "made": [
+         {
+          "op": "pawn",
+          "id": "Human22544",
+          "x": 174,
+          "z": 133,
+          "got": {
+           "cell": "174,133",
+           "faction": "PlayerColony",
+           "kind": "Colonist",
+           "spawned": "True",
+           "xenotype": "Baseliner"
+          }
+         }
+        ],
+        "leftBlocking": 0,
+        "leftKept": 0,
+        "left": [],
+        "digest": "36556e08c24ac5cf"
+       },
+       "ticksGame": 1251,
+       "operation": {
+        "OperationId": "op_81fef3115c474fe29a2b9caf87248481",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 34
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1251
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/pawn_need",
+      "result": {
+       "success": true,
+       "action": "need",
+       "notes": [
+        "Food reads 1"
+       ],
+       "needs": [
+        {
+         "need": "Mood",
+         "level": 0.5,
+         "pct": 0.5
+        },
+        {
+         "need": "Food",
+         "level": 1.0,
+         "pct": 1.0
+        },
+        {
+         "need": "Rest",
+         "level": 0.9784942,
+         "pct": 0.9784942
+        },
+        {
+         "need": "Joy",
+         "level": 0.576260448,
+         "pct": 0.576260448
+        },
+        {
+         "need": "Beauty",
+         "level": 0.5,
+         "pct": 0.5
+        },
+        {
+         "need": "Comfort",
+         "level": 0.5,
+         "pct": 0.5
+        },
+        {
+         "need": "Outdoors",
+         "level": 1.0,
+         "pct": 1.0
+        },
+        {
+         "need": "DrugDesire",
+         "level": 0.5,
+         "pct": 0.5
+        },
+        {
+         "need": "RoomSize",
+         "level": 0.5,
+         "pct": 0.5
+        },
+        {
+         "need": "RM_Thirst",
+         "level": 0.8,
+         "pct": 0.8
+        }
+       ],
+       "memories": [],
+       "readBack": {
+        "ok": true,
+        "tool": "jawa/pawn_need",
+        "faults": [],
+        "frameOpen": 4324,
+        "frameReply": 4324,
+        "sameFrame": true,
+        "rows": 1,
+        "rowsWrong": 0,
+        "wrong": [],
+        "made": [
+         {
+          "op": "need",
+          "id": "Human22544",
+          "x": 174,
+          "z": 133,
+          "got": {
+           "level": "1",
+           "need": "Food",
+           "percentage": "1"
+          }
+         }
+        ],
+        "leftBlocking": 0,
+        "leftKept": 0,
+        "left": [],
+        "digest": "b7f37c7f618890ef"
+       },
+       "ticksGame": 1251,
+       "operation": {
+        "OperationId": "op_c74c76bc69be4376bb59ee8d98dab1d5",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 43
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1251
+       }
+      }
+     },
+     {
+      "call": "restore_touched_settings [('bottleLoopEnabled', 'True')]",
+      "result": true
+     }
+    ],
+    "env_reset": {
+     "log_reset": "ok",
+     "weather": "ok",
+     "map_info": "ok",
+     "unroof": "ok",
+     "gas_ToxGas": "ok",
+     "gas_BlindSmoke": "ok",
+     "gas_RotStink": "ok",
+     "gas_DeadlifeDust": "ok",
+     "gas_things": "ok"
+    },
+    "phase_s": {
+     "hold": 8.934,
+     "body": 31.042,
+     "teardown": 0.0
+    }
+   }
+  ],
+  "all_green": true,
+  "findings": [],
+  "refused": "",
+  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\runs\\clones\\RIMMANDRAKE_MAKE_MODCHECK_RESTART_GAME_ONTO_ITS_LIST_THREE_HAND_WORKAROUNDS.det\\design\\validation_walks\\RimMandrake\\FlowWorks.md",
+  "acceptance": {
+   "overall": "INDETERMINATE",
+   "rows": [
+    {
+     "row": "toggle_bottle_loop/bottle_loop_on",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "toggle_bottle_loop/bottle_loop_off",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    }
+   ],
+   "spoils": [
+    {
+     "class": "envelope_off",
+     "why": "run without the situational envelope: blocking window and visitors unobserved",
+     "chain": "toggle_bottle_loop"
+    }
+   ],
+   "counts": {
+    "PASS": 0,
+    "FAIL": 0,
+    "INDETERMINATE": 2,
+    "UNMEASURED": 0,
+    "NOT_RUN": 0
+   },
+   "classes": [
+    "envelope_off"
+   ]
+  },
+  "reuse": {
+   "reused": [],
+   "reusable": []
+  },
+  "host": "Archmagi",
+  "offline_chains": [],
+  "fresh_green": true,
+  "invalid": [],
+  "leads": [],
+  "visual": [],
+  "visual_all_green": true,
+  "state_all_green": true,
+  "targeted": {
+   "chains": [
+    "toggle_bottle_loop"
+   ],
+   "of_chains": 96,
+   "rows": [],
+   "item": null,
+   "by": [
+    "chain toggle_bottle_loop: named by --chains"
+   ],
+   "rows_run": [
+    "bottle_loop_on",
+    "bottle_loop_off"
+   ],
+   "scope": {
+    "toggle_bottle_loop": {
+     "mode": "full",
+     "requested_rows": [],
+     "reasons": [
+      "named by --chains"
+     ],
+     "executed": [
+      "bottle_loop_on",
+      "bottle_loop_off"
+     ],
+     "skipped": []
+    }
+   },
+   "offline_skipped": {},
+   "incomplete": {}
+  },
+  "restarted_onto_list": {
+   "game": "ArchSmall",
+   "why": [
+    "not loaded: 7f.alienworlds, 7f.alienworlds.tidallylocked, sarg.alphabiomes, oblitus.mylittleplanet, mandrake.rm.inhabited, neronix17.toolbox, neronix17.outerrim.core, erdelf.humanoidalienraces, mandrake.rsw.ionweapons, mandrake.rsw.droidworks, mandrake.rut.shipmemory, mandrake.rm.injections, mandrake.rut.injections, rw.mod.simplestairs, mlie.decorativecliffs",
+    "loaded but not composed: dubwise.dubsbadhygiene.lite, mandrake.rm.biomes, mandrake.rm.gimmesomeslack, mandrake.rm.hugethings, mandrake.rm.luminouspigment, mandrake.rm.patches, owlchemist.cherrypicker, toastyman.moreritualseats, vanillaexpanded.vchemfuele, void.charactereditor"
+   ],
+   "steps": [
+    {
+     "step": "mine",
+     "rc": 0,
+     "said": "ArchSmall: MINE: held by this process for 'modcheck restart-onto-list acceptance (FlowWorks toggle_bottle_loop)' (gen 276)"
+    },
+    {
+     "step": "stop",
+     "rc": 0,
+     "said": "SUCCESS: Sent termination signal to the process with PID 50252."
+    },
+    {
+     "step": "pid",
+     "rc": 0,
+     "said": "50252"
+    },
+    {
+     "step": "pid",
+     "rc": 0,
+     "said": ""
+    },
+    {
+     "step": "deploy",
+     "rc": 0,
+     "said": "try 1"
+    },
+    {
+     "step": "launch",
+     "rc": 0,
+     "said": "started ArchSmall, pid 26940, bridge on port 5175 after 81 s"
+    }
+   ],
+   "restarted": true,
+   "refused": null
+  }
+ },
+ "benign_stops": []
+}
