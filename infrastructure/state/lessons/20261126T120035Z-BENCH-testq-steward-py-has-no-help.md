@@ -1,0 +1,1 @@
+testq/steward.py has no --help: any invocation, 'steward.py --help' included, runs a real steward pass on the live queue (2026-11-26 3:53 AM PST it printed 'another pass holds the lock; skipped', so no pass ran). To read the lane state, read D:\ClaudeWork\rimmandrake\testq\steward.json; a direct lane_state call computes every mod's fill plan and takes over 5 minutes.
