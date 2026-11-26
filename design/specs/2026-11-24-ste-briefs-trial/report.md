@@ -28,12 +28,12 @@ run had started (the item's title, written by the Conductor on 2026-11-24).
 
 | n | item | words | faults at the start | correction notes | did the task as meant |
 |---|---|---|---|---|---|
-| 1 | `RIMMANDRAKE_PROPOSE_FULL_LIST_WALK_NOT_PER_MOD_ARCHBIG_IS_THE_LINE` | 855 | 2 in 79 new sentences | 1 | owed |
+| 1 | `RIMMANDRAKE_PROPOSE_FULL_LIST_WALK_NOT_PER_MOD_ARCHBIG_IS_THE_LINE` | 855 | 2 in 79 new sentences | 1 | yes: the ruling carried out and closed at `df9b5961fd`, two parts filed as their own items |
 | 2 | `RIMMANDRAKE_RESTORE_FIVE_BAR_CLAIMS_THE_NIGHT_SHRINK_TOOK_OUT` | 793 | 3 in 72 new sentences | 0 | yes: five claims restored at `383784cb3ede`, about 9 minutes |
-| 3 | `RIMMANDRAKE_READ_STEWARD_FORECAST_FIX_ONCE_FRESH_EYES` | 643 | 0 in 37 new sentences | 1 (the page that the brief names moved when its item closed) | owed |
-| 4 | `RIMMANDRAKE_RETURN_CLONE_UNDER_OLD_POOL_NAME_KEPT_SILENT` | 699 | 3 in 43 new sentences, returned before the start; 0 at the second launch | 0 | owed |
-| 5 | `RIMMANDRAKE_SPARE_RESTART_CUT_BY_ACCOUNT_END_FIRST_SWITCH` | 822 | 3 in 50 new sentences, returned before the start; 0 at the second launch | 1 (a false sentence: the brief said that the Conductor had started a run by hand, and the launch of that run was refused) | owed |
-| 6 | `RIMMANDRAKE_READ_FRESH_HOST_FACTS_NEGATIVE_AGE_CRIED_STALE` | 718 | 0 in 38 new sentences | 0 | owed |
+| 3 | `RIMMANDRAKE_READ_STEWARD_FORECAST_FIX_ONCE_FRESH_EYES` | 643 | 0 in 37 new sentences | 1 (the page that the brief names moved when its item closed) | yes: one whole read, nothing significant, one polish line, closed at `4440fc5591f7`, about 40 minutes |
+| 4 | `RIMMANDRAKE_RETURN_CLONE_UNDER_OLD_POOL_NAME_KEPT_SILENT` | 699 | 3 in 43 new sentences, returned before the start; 0 at the second launch | 0 | yes: fix published, the held clone returned, item closed, about 19 minutes |
+| 5 | `RIMMANDRAKE_SPARE_RESTART_CUT_BY_ACCOUNT_END_FIRST_SWITCH` | 822 | 3 in 50 new sentences, returned before the start; 0 at the second launch | 1 (a false sentence: the brief said that the Conductor had started a run by hand, and the launch of that run was refused) | yes: fix published at `dc51a0c865`, item closed, about 22 minutes |
+| 6 | `RIMMANDRAKE_READ_FRESH_HOST_FACTS_NEGATIVE_AGE_CRIED_STALE` | 718 | 0 in 38 new sentences | 0 | yes: fix published at `2f20b047c0`, item closed, about 21 minutes; the run found a cause that differs from the guess in the brief |
 
 Rows 3 to 6 were launched on 2026-11-26 between 3:48 AM and 4:03 AM PST. The Conductor wrote each of them in one pass,
 with the binding rule and the STE rules in mind. The Conductor did not run the two passes of the clear-findings skill
@@ -62,3 +62,10 @@ Rows 3 to 6 are the next four Conductor briefs written binding then STE, launche
 ## Report
 
 The line below is written when the report of the six briefs goes into his daily digest.
+
+Result of the six, written 2026-11-26 about 4:30 AM PST: all six runs did the task as meant. Faults at the start: 2, 3, 0, 3,
+3, 0. The four briefs launched through the before-start check started with 0 faults. Correction notes after the start:
+1, 0, 1, 0, 1, 0; the two of rows 3 and 5 repair a wrong fact, which the prose check does not read. The baseline was
+1 to 6 faults in each of eleven briefs, and 4 of the eleven needed a correction note. Six briefs are a small sample: the
+count of correction notes (3 of 6) is not lower than the baseline's (4 of 11). The measured gain is at the start: a
+brief with a fault no longer starts.
