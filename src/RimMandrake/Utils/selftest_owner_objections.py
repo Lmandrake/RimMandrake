@@ -19,7 +19,23 @@ PIN = "338b3cae50"     # origin/main when the baseline was adopted (2026-11-19)
 ROOT = os.path.normpath(os.path.join(HERE, "..", "..", "..", "conversations"))
 
 
+# A message from another agent session arrives as a `## Lukas` block that starts `<cross-session-message`. It is not his
+# typing: on 2026-11-25 it was the one `account_list` hit of 2026-11-20..26 (record 2026-11-24-0230-e33fe682.md).
+RELAY = ("2026-11-24-0000-relay.md", "## Lukas\n\n<cross-session-message from=\"uds:/x\" from-name=\"DETACHED BENCH X\">\n"
+         "Codex again: always quote codex\n</cross-session-message>\n\n## Lukas\n\nalways quote codex please\n")
+
+
+def relay_case():
+    n, hits = O.count([RELAY], "2026-11-24", "2026-11-24")
+    ok = n == 1 and len(hits["account_list"]) == 1
+    print(("PASS " if ok else "FAIL ") + "a cross-session agent message is not his typing: %d typed blocks, %d account_list"
+          " hits (expected 1 and 1)" % (n, len(hits["account_list"])))
+    return ok
+
+
 def main():
+    if not relay_case():
+        return 1
     expected = int(sys.argv[1]) if len(sys.argv) > 1 else 8
     try:
         recs = O.records_at_rev(ROOT, PIN, "2026-11-05", "2026-11-19")

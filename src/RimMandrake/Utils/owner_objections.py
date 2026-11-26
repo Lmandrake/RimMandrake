@@ -18,7 +18,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-MACHINE = re.compile(r"^(\[Rim|You are|<task-notification>|# |Brief:|<system-reminder>|<command-|Caveat:|This session is being continued|\[Request interrupted|<local-command|Base directory|Ledger item:|\[SYSTEM|\[Seat|\[Dispatcher|\[Operations|\[Conductor|DESKTOP|<<<|_\(card answer\)_|_\(ran |<agent-message|This instruction carries|Your verdict|These refusal records|The spend watchdog|wake\. Fresh|Build item|Fix ledger item|Night order|Item[: ]|Make src/|Two items marked|The Conductor restarted you|This is a test of)", re.I)
+MACHINE = re.compile(r"^(\[Rim|You are|<task-notification>|<cross-session-message|# |Brief:|<system-reminder>|<command-|Caveat:|This session is being continued|\[Request interrupted|<local-command|Base directory|Ledger item:|\[SYSTEM|\[Seat|\[Dispatcher|\[Operations|\[Conductor|DESKTOP|<<<|_\(card answer\)_|_\(ran |<agent-message|This instruction carries|Your verdict|These refusal records|The spend watchdog|wake\. Fresh|Build item|Fix ledger item|Night order|Item[: ]|Make src/|Two items marked|The Conductor restarted you|This is a test of)", re.I)
 PATTERNS = {
     "arbitrary_limit": r"arbitrary (pause|pacing|rule|cut|limit)s?|time limits?\b|no caps|pacing control|why must we wait|cut off text|why is there even such a|reason to limit|why is \S+ a limit",
     "account_list": r"(codex|account).{0,80}(again|forgot|didn't quote|did not quote)|always quote codex|how much is left|not how much (we've|you've) used",
