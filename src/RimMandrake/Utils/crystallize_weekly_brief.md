@@ -3,8 +3,8 @@ rm-crystallize.timer launched you (`src/RimMandrake/Utils/crystallize_weekly.py`
 wait for the owner and do not ask him anything in this run.
 
 Read first:
-- `design/RimMandrake/standing_rulings.md` §The weekly Crystallize pass improves the agents. It names the two jobs of
-  this pass.
+- `design/RimMandrake/standing_rulings.md` §The weekly Crystallize pass improves the agents. That section names the
+  two jobs of this pass.
 - The `crystallize` skill (`~/.claude/skills/crystallize/SKILL.md` and the reference files that it names). Its table
   "What needs Mandrake and what does not" decides what you land and what goes on his sheet.
 - The report of the last pass ({PREV_WEEK}): {PREV}
