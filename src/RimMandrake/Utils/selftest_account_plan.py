@@ -1856,6 +1856,9 @@ def t_a_machine_at_its_end_orders_its_runs_to_save():
     s, log, runs = machine_world(pm)
     runs[:] = ["rm-detached-bench-a-run-that-saves-1"]
     out = push(pm, F("lukas", rows(t0), now=t0), t0, **s)
+    nt = json.loads((TMP / "plan" / "machine.box2.json").read_text())
+    check(n + ": the notice does not say that systemd could not be read (no run is read in its decision)",
+          "systemd could not be read" not in json.dumps(nt) and "counted by the pass" in nt["why"], nt.get("why"))
     o = acts(log, "order")
     check(n + ": at the end with a run live, the save order goes to that run, once, in the words of the order at the line",
           len(o) == 1 and o[0][1] == runs and "ACCOUNT END" in o[0][2] and not acts(log, "switch")

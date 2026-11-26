@@ -1371,7 +1371,11 @@ def machine_notice(plan, f, account, now, name, prev=None, why_unread=None) -> d
         if d.get("warning"):
             dm["warning_text"] = AE.warn_text(account, d.get("pct_left"), fm["burn_live"], d.get("line"),
                                               plan["numbers"]["account_end"], bool(d.get("last_account")))
-    return {**SP.notice_of(dm, now, prev), **tag}
+    n = SP.notice_of(dm, now, prev)
+    # its runs are not read here (machine_facts): the deciding pass counts them over ssh (machine_switch), and a reader
+    # there must not take this for a systemd read that failed on its own machine
+    blind, said = SP.runs_why(None), "the runs there are counted by the pass of %s, not read in this decision" % tag["follows"]
+    return {**{k: v.replace(blind, said) if isinstance(v, str) else v for k, v in n.items()}, **tag}
 
 
 def machine_facts(f, account) -> dict:
