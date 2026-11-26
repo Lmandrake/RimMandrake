@@ -98,6 +98,18 @@ Then the 2026-10-28 audit read the 09-12 record instead of the painted map. The 
 
 ## Design process and biome/roster rulings
 
+- **Ask GPT for five different ideas when you design or enhance a biome.** Owner ruling 2026-10-01 (ledger,
+  `BEDAZZLE_TOP_SHAPE_PROGRAM_1`), verbatim: *"always ask gpt for skillful enhancement that is different than the other
+  biomes. We’re looking for unique contributions not just pattern replication across everywhere. Maybe ask it for five
+  ideas each time to get diversity and insist they are different than each other and from other biomes. Ask it to do
+  deep research on other games like rimworld and other mod contents too."*
+  - The ruling was given for the bedazzle sittings. The Designer now designs each biome mod, so the step applies to the
+    Designer's work on a biome.
+  - Ask through `src/RimMandrake/Utils/gpt_consult.py`. Give GPT the mechanics of the other biomes, so that it can
+    check that its ideas are different.
+  - The five ideas must differ from each other and from the content of every other biome. GPT researches other games
+    like RimWorld and the content of other mods.
+  - Cite the consult output in the design record.
 - **Before designing anything, read the source and the roster — this project keeps having already built it.**
   - MEASURED 2026-09-23, in one session. The owner proposed a "special oil to seal part of the greatbole so it cannot
     regrow". It ships as `RM_ToxinSealant` (item + terrain). `RM_MapComponent_LivingRegrowth` **already gates
