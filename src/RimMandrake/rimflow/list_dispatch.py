@@ -739,6 +739,9 @@ def decide(cfg, st, facts, now, account=(True, "")):
     return rows, launches
 
 
+ONBOARD_HELD = ("live", "claimed", "in_bundle", "launched")   # a row that already holds its ticket
+
+
 def onboard_step(cfg, rows, launches, ob, live, room):
     """The old tickets of each home become ONE onboarding run per home (boundary old-tickets-are-onboarded-by-home).
     ob: {"homes": work_bundle.onboard_homes(...)["homes"], "systems": {lane item: system}} or {"could_not_look"};
@@ -757,6 +760,16 @@ def onboard_step(cfg, rows, launches, ob, live, room):
     if classes is None:
         classes = _shipped().get("onboard_classes") or {}
     homes, systems = ob.get("homes") or {}, ob.get("systems") or {}
+    # A ticket whose own row already holds it (a run is live on it, a lease, a live bundle) or launches it as work joins
+    # no onboarding run: two rows under one id made execute() take the `live` row as a launch (KeyError 'model' on
+    # every tick, 2026-11-26 01:10 PST). It is left out with its row's reason.
+    held = {r["item"]: "%s: %s" % (r["decision"], _one(r.get("why"), 200)) for r in rows
+            if r.get("decision") in ONBOARD_HELD or (r["item"] in launches and r.get("kind") != "shape")}
+    if held:
+        homes = {s: dict(h, members=[i for i in h.get("members") or [] if i not in held],
+                         left_out=dict(h.get("left_out") or {}, **{i: "its own row holds it (%s)" % held[i]
+                                                                   for i in h.get("members") or [] if i in held}))
+                 for s, h in homes.items()}
     go, no = WB.onboard_pick(homes, live, classes)
     cap = cfg.get("opus_cap_usd", _shipped().get("opus_cap_usd"))
     leads = {r["bundle"]["system"]: r for r in rows if r.get("bundle") and r["item"] in launches}

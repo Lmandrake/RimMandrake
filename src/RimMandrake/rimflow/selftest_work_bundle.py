@@ -1100,6 +1100,35 @@ def t_an_onboarding_member_is_ready_or_left_out_with_its_reason():
         "lane: a home whose old tickets are all left out starts nothing and says why (%s)" % by2.get("-onboard"))
 
 
+def t_an_old_ticket_with_a_live_run_leads_no_onboarding_run():
+    """2026-11-26 01:10 PST: an old ticket with a live detached run read `live` on its own row and also led a new
+    onboarding run under the same id; execute() took the live row as a launch and every tick died on KeyError 'model'."""
+    import list_dispatch as LD
+    W = WB()
+    items = onboard_world()
+    ob = onboard_facts_of(W, items)
+    live = {"item": "S1", "decision": "live", "why": "rm-detached-bench-s1 is live on it"}
+    rows, launches = LD.onboard_step({"onboard_classes": ON}, [dict(live)], [],
+                                     dict(ob, systems={}), {}, lambda: ("", None))
+    by = {}
+    for r in rows:
+        by.setdefault(r["item"], []).append(r)
+    summ = (by.get("-onboard") or [{}])[0].get("onboard") or {}
+    chk(lambda: "S1" not in launches and len(by.get("S1", [])) == 1 and by["S1"][0]["decision"] == "live",
+        "onboard_step: an old ticket with a live run leads no onboarding run and keeps its one live row (%s)" % by.get("S1"))
+    chk(lambda: "live" in json.dumps(summ.get("left_out", {}).get("machine:SteveDesktop", {}))
+        and "machine:SteveDesktop" in summ.get("not_started", {}),
+        "onboard_step: the ticket is left out with its reason, and its home with no other member starts nothing (%s)" % summ)
+    rows2, l2 = LD.onboard_step({"onboard_classes": ON}, [{"item": "B2", "decision": "live", "why": "u2 is live on it"}],
+                                [], dict(onboard_facts_of(W, items), systems={}), {}, lambda: ("", None))
+    lead = [r for r in rows2 if r.get("bundle") and r["bundle"]["system"] == "pipeline:bridge"]
+    chk(lambda: lead and "B2" not in lead[0]["bundle"]["members"] and lead[0]["item"] != "B2"
+        and sorted(lead[0]["bundle"]["members"]) == ["B1", "B3", "B4"],
+        "onboard_step: the rest of the home still onboards without the live ticket (%s)" % lead[:1])
+    seen = [[r["item"] for r in rs if r["item"] in ls] for rs, ls in ((rows, launches), (rows2, l2))]
+    chk(lambda: all(len(x) == len(set(x)) for x in seen), "onboard_step: no launched id has a second row (%s)" % seen)
+
+
 def t_the_onboard_classes_are_data():
     W = WB()
     chk(lambda: W.onboard_class("pipeline:bridge", ON)[0] and W.onboard_class("machine:SteveDesktop", ON)[0],
@@ -1306,7 +1335,8 @@ def main():
               t_the_maturation_road_back_is_one_bundle, t_a_test_never_writes_the_real_store,
               t_the_conductor_ends_a_dead_bundle, t_five_tickets_two_fixed_one_run,
               t_each_limit_names_its_danger, t_old_tickets_are_onboarded_by_home,
-              t_an_onboarding_member_is_ready_or_left_out_with_its_reason, t_the_onboard_classes_are_data,
+              t_an_onboarding_member_is_ready_or_left_out_with_its_reason, t_an_old_ticket_with_a_live_run_leads_no_onboarding_run,
+              t_the_onboard_classes_are_data,
               t_one_onboarding_beside_no_live_bundle, t_an_onboarding_that_could_not_look_starts_nothing,
               t_a_home_lead_takes_its_old_tickets, t_the_onboarding_brief_sorts_before_it_checks,
               t_a_routed_member_has_an_outcome, t_an_onboarding_on_a_host_keeps_its_old_tickets,
