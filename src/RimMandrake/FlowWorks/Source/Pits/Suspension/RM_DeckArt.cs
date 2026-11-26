@@ -200,6 +200,20 @@ namespace RimMandrake.FlowWorks.Pits
 			return m;
 		}
 
+		/// <summary>RIMMANDRAKE_JOIN_JETTY_SQUARES_SEAMLESS_STILL_TWO_BLOCKS: a strip or abutment piece's material, its texture
+		/// clamped. RimWorld sets no wrap mode on a mod texture, so Unity's default (Repeat) made the bilinear sample at a piece's
+		/// edge blend in its opposite edge (a root's transparent ledge end): a dark hairline across the deck at every join
+		/// (in game, ArchSmall, 2026-11-26). Only these pieces' textures are clamped; a cable may tile.</summary>
+		private static Material PieceMat(string path)
+		{
+			Material m = Mat(path);
+			if (m?.mainTexture != null && m.mainTexture.wrapMode != TextureWrapMode.Clamp)
+			{
+				m.mainTexture.wrapMode = TextureWrapMode.Clamp;
+			}
+			return m;
+		}
+
 		public static ThingDef DeckDefOf(SuspensionBridgeRecord r)
 		{
 			if (r == null)
@@ -262,13 +276,13 @@ namespace RimMandrake.FlowWorks.Pits
 			if (x.laneEdges)
 			{
 				string suffix = RM_DeckArtMath.LaneEdge(lane, r.width, true);
-				Material lm = suffix.Length > 0 ? Mat(path + suffix) : null;
+				Material lm = suffix.Length > 0 ? PieceMat(path + suffix) : null;
 				if (lm != null)
 				{
 					return lm;
 				}
 			}
-			return Mat(path);
+			return PieceMat(path);
 		}
 
 		/// <summary>Every deck square of the record is built and down (lane 0): the cables have something to hold.</summary>
@@ -489,7 +503,7 @@ namespace RimMandrake.FlowWorks.Pits
 				return null;
 			}
 			string suffix = x.laneEdges ? RM_DeckArtMath.LaneEdge(lane, r.width, near) : "";
-			Material m = (suffix.Length > 0 ? Mat(x.abutment + suffix) : null) ?? Mat(x.abutment);
+			Material m = (suffix.Length > 0 ? PieceMat(x.abutment + suffix) : null) ?? PieceMat(x.abutment);
 			Rot4 facing = near ? r.dir : r.dir.Opposite;
 			angle = RM_DeckArtMath.StripAngle(facing.AsInt);
 			return m;

@@ -18,9 +18,16 @@ For each jetty tier (steel, heavy) in each of the four looks, the ThingStyleDef 
    T/2 of every piece (seam_strips.py rolls it there), and that column scores within the same seam limit. The fresh reader
    of 2026-11-25 measured a hard cut there in Steel Scrapper (1.53: plank lines out of line across the whole deck), which
    checks 1-4 could not see.
+6. the joins stay seamless as the GPU draws them (in game, 2026-11-26, ArchSmall: a dark hairline across the deck at the join
+   of a 2-square Scrapper jetty, though checks 1-5 passed). RimWorld sets no wrap mode on a mod texture, so Unity's default
+   (Repeat) applies, and the bilinear sample at a piece's edge blends in the piece's OPPOSITE edge (a root's transparent
+   ledge end, a tip's transparent far end). The check samples each piece as the GPU does (bilinear, box mipmaps, the
+   wrap mode RM_DeckArt.cs sets on its piece materials, four sub-pixel phases, alpha cut at 0.5 as the Cutout shader
+   does) at several zooms, and scores every join with the same seam statistic.
 
 Can-fail: --canfail plants a framed piece (the shipped east picture) as one jetty's MID, and Steel Scrapper's pieces made with
-a hard wrap cut (the 2026-11-25 defect), both in memory; it must FAIL on both, each by its own check.
+a hard wrap cut (the 2026-11-25 defect), both in memory, and samples every piece with Unity's default Repeat wrap (the
+2026-11-26 hairline); it must FAIL on all three, each by its own check.
     python3 src/RimMandrake/FlowWorks/selftest_flowworks_jetty_seams.py [--canfail]
 """
 from __future__ import annotations
@@ -64,6 +71,93 @@ def wrap_ratios(strip, cols, win=3):
     return [float(d[max(0, j - win):j + win + 1].max() / ref) for j in cols]
 
 
+DECKART_CS = os.path.join(HERE, "Source", "Pits", "Suspension", "RM_DeckArt.cs")
+# screen px per cell: 140 measured in the 2026-11-26 ArchSmall capture of live_deck_art_picks.py --jetties; the range runs
+# from a far zoom (64) to a close zoom with the advanced-zoom mod (512), where a texel covers two screen px
+GPU_WIDTHS = (64, 96, 140, 200, 320, 512)
+GPU_PHASES = (0.0, 0.25, 0.5, 0.75)
+
+
+def _method(src, name):
+    import re
+    m = re.search(r"static Material %s\(" % name, src)
+    if not m:
+        return ""
+    i = src.index("{", m.end())
+    depth = 0
+    for j in range(i, len(src)):
+        depth += {"{": 1, "}": -1}.get(src[j], 0)
+        if depth == 0:
+            return src[i:j + 1]
+    return ""
+
+
+def shipped_wrap():
+    """The wrap mode RM_DeckArt.cs gives the textures of the strip and abutment pieces it draws: 'clamp' when DeckMat and
+    AbutmentMat take every piece material through PieceMat and PieceMat sets TextureWrapMode.Clamp; else 'repeat'
+    (Unity's default: RimWorld's content loader sets no wrap mode)."""
+    import re
+    src = open(DECKART_CS, encoding="utf-8").read()
+    piece = _method(src, "PieceMat")
+    if "TextureWrapMode.Clamp" not in piece:
+        return "repeat"
+    for name in ("DeckMat", "AbutmentMat"):
+        body = _method(src, name)
+        if not body or "PieceMat(" not in body or re.search(r"(?<![A-Za-z_])Mat\(", body):
+            return "repeat"
+    return "clamp"
+
+
+def _mip(a, level):
+    for _ in range(level):
+        a = (a[0::2, 0::2] + a[1::2, 0::2] + a[0::2, 1::2] + a[1::2, 1::2]) / 4.0
+    return a
+
+
+def _axis(n, w, phase, wrap):
+    x = np.arange(int(np.ceil(w + phase))) + 0.5 - phase
+    x = x[(x >= 0) & (x < w)]
+    t = x / w * n - 0.5
+    i0 = np.floor(t).astype(int)
+    f = t - i0
+    i1 = i0 + 1
+    if wrap == "repeat":
+        i0, i1 = i0 % n, i1 % n
+    else:
+        i0, i1 = i0.clip(0, n - 1), i1.clip(0, n - 1)
+    return i0, i1, f
+
+
+def gpu_draw(piece, wrap, w, phase, level):
+    """One piece drawn on a w-px square as the GPU samples it: mip level, bilinear, the wrap along the strip, alpha cut."""
+    m = _mip(piece, level)
+    n = m.shape[1]
+    i0, i1, f = _axis(n, w, phase, wrap)
+    o = (1 - f)[None, :, None] * m[:, i0] + f[None, :, None] * m[:, i1]
+    r0, r1, g = _axis(n, w, 0.0, "clamp")
+    o = (1 - g)[:, None, None] * o[r0] + g[:, None, None] * o[r1]
+    o[..., 3] = np.where(o[..., 3] < 127.5, 0.0, 255.0)
+    return o
+
+
+def gpu_join_ratio(a, b, wrap, w):
+    """The worst seam ratio of the join a|b over the sub-pixel phases and the two mip levels a w-px cell reads."""
+    import math
+    lv = sorted({max(0, int(math.floor(math.log2(GT.T / float(w))))), max(0, int(math.ceil(math.log2(GT.T / float(w)))))})
+    worst = 0.0
+    for level in lv:
+        for ph in GPU_PHASES:
+            pa = gpu_draw(a, wrap, w, ph, level)
+            strip = np.concatenate([pa, gpu_draw(b, wrap, w, ph, level)], 1)
+            old = GT.T
+            GT.T = pa.shape[1]
+            try:
+                worst = max(worst, GT.seam_ratios(strip, 2)[0])
+            finally:
+                GT.T = old
+    return worst
+
+
 def hard_wrap_pieces(name):
     """The 2026-11-25 defect, for --canfail: the style's pieces made with a hard wrap cut (wrap fade 0)."""
     src = SS.SOURCES[name]
@@ -76,6 +170,7 @@ def hard_wrap_pieces(name):
 
 def check(canfail=False):
     fails, worst = [], 0.0
+    wrap = "repeat" if canfail else shipped_wrap()
     root = ET.parse(STYLES).getroot()
     styles = {sd.findtext("defName"): sd for sd in root.findall("ThingStyleDef")}
     cases = 0
@@ -130,6 +225,14 @@ def check(canfail=False):
                         worst = max(worst, r)
                         if r > GT.SEAM_MAX:
                             fails.append("%s: %d squares %s seam ratio %s > %.2f" % (name, n, way, r, GT.SEAM_MAX))
+            for a, b in (("root", "tip"), ("root", "mid"), ("mid", "mid"), ("mid", "tip")):
+                for w in GPU_WIDTHS:
+                    r = gpu_join_ratio(tl[a], tl[b], wrap, w)
+                    cases += 1
+                    worst = max(worst, r)
+                    if r > GT.SEAM_MAX:
+                        fails.append("%s: the %s|%s join as the GPU draws it at %d px a cell (%s wrap) scores %s > %.2f" % (
+                            name, a, b, w, wrap, round(r, 2), GT.SEAM_MAX))
             if name in SS.SOURCES:
                 # (his generated picks' deckWidth is their generation geometry, pinned by selftest_flowworks_deck_strips.py;
                 # an open grating's holes make its opaque-row count read narrower than its deck)
@@ -158,10 +261,12 @@ def main():
     fails, worst, cases = check(canfail)
     for f in fails:
         print("FAIL", f)
-    print("read %d piece joints and wraps over 8 jetty looks; worst seam ratio %s, limit %.2f" % (cases, round(worst, 2), GT.SEAM_MAX))
+    print("read %d piece joints, wraps and GPU-drawn joins over 8 jetty looks (piece wrap mode: %s); worst seam ratio %s, limit %.2f"
+          % (cases, "repeat (planted)" if canfail else shipped_wrap(), round(worst, 2), GT.SEAM_MAX))
     if canfail:
-        both = any("seam ratio inf" in f or "seam ratio" in f for f in fails) and any("wrap inside a piece" in f for f in fails)
-        print("CANFAIL", "OK (failed as planted, by both checks)" if both else "BROKEN (a planted fault passed)")
+        both = (any("seam ratio inf" in f or "seam ratio" in f for f in fails) and any("wrap inside a piece" in f for f in fails)
+                and any("as the GPU draws it" in f for f in fails))
+        print("CANFAIL", "OK (failed as planted, by all three checks)" if both else "BROKEN (a planted fault passed)")
         return 0 if both else 1
     print("PASS selftest_flowworks_jetty_seams" if not fails else "FAIL selftest_flowworks_jetty_seams (%d)" % len(fails))
     return 1 if fails else 0

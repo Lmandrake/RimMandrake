@@ -688,6 +688,7 @@ namespace RimMandrake.FlowWorks.Pits
 			// abutment (lanes split by '|', squares by ','; an anchor that draws its own picture reads "own")
 			var drawn = new List<string>();
 			var ends = new List<string>();
+			var wraps = new SortedSet<string>();   // RIMMANDRAKE_JOIN_JETTY_SQUARES_SEAMLESS_STILL_TWO_BLOCKS: the pieces' wrap (Clamp, or a hairline at each join)
 			for (int lane = 0; lane < r.width; lane++)
 			{
 				var row = new List<string>();
@@ -696,6 +697,10 @@ namespace RimMandrake.FlowWorks.Pits
 					Building_SuspensionDeck d = r.Cell(lane, i).GetFirstThing<Building_SuspensionDeck>(map);
 					UnityEngine.Material m = d == null ? null : RM_DeckArt.DeckMat(d, r, out _);
 					row.Add(d == null ? "unbuilt" : m?.mainTexture?.name ?? "old");
+					if (m?.mainTexture != null)
+					{
+						wraps.Add(m.mainTexture.wrapMode.ToString());
+					}
 				}
 				drawn.Add(string.Join(",", row));
 				foreach (int i in new[] { 0, r.length - 1 })
@@ -704,12 +709,17 @@ namespace RimMandrake.FlowWorks.Pits
 					float ang = 0f;
 					UnityEngine.Material m = an == null ? null : RM_DeckArt.AbutmentMat(an, out ang);
 					ends.Add(an == null ? "none" : m == null ? "own" : m.mainTexture?.name + "@" + ang);   // the turn the print uses
+					if (m?.mainTexture != null)
+					{
+						wraps.Add(m.mainTexture.wrapMode.ToString());
+					}
 				}
 			}
 			return "DECKART look=" + RM_DrawbridgeArt.LookOf(r) + " jetty=" + r.jetty + " dir=" + r.dir + " width=" + r.width + " strip=" + strip
 				+ " pieces=" + string.Join(",", pieces) + " angle=" + RM_DeckArtMath.StripAngle(r.dir.AsInt)
 				+ " complete=" + RM_DeckArt.DeckComplete(map, r) + " post=" + post + " cable=" + cable
-				+ " drawn=" + string.Join("|", drawn) + " ends=" + string.Join(",", ends);
+				+ " drawn=" + string.Join("|", drawn) + " ends=" + string.Join(",", ends)
+				+ " wrap=" + (wraps.Count == 0 ? "-" : string.Join(",", wraps));
 		}
 
 		// ── SUSPENSION_ART_RESKIN_HE_SEES_FIRST ───────────────────────────────────────────────────────────────────
