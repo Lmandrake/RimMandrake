@@ -181,12 +181,11 @@ Polish is not part of passing. None is proposed for 0.2.0.
 ## What is already written down as a draft
 
 An earlier Designer run of this item wrote the four bars below, their test rows and a vision section into the repo
-(commit `faa90e801d`), before his word of 10:41 AM PST reached it. They are a draft, not an open version:
-`VERSION.json` still reads 0.1.0, and nothing builds them. This run marked the four draft bars in
-`design/concepts/Pyrelands/record.json` as open questions, so that no stage can take them as work. When he answers, the
-Designer opens 0.2.0 with what he keeps, and takes out the draft rows and the vision lines of what he cuts. The heading
-of the draft section in `design/concepts/Pyrelands/version/vision.md` says "opened 2026-11-26"; that word is wrong until
-he answers, and the Designer corrects it when the version opens.
+(commit `faa90e801d`), before his word of 10:41 AM PST reached it. They are a draft, not an open version. The Conductor
+took the draft out of the live files on 2026-11-26: `record.json`, `scenes.json`, `version/test_table.json` and
+`version/vision.md` read as they did when 0.1.0 passed, and `VERSION.json` reads 0.1.0. The draft text is kept in commit
+`faa90e801d`. When he answers, the Designer opens 0.2.0 with what he keeps, and takes the rows and the vision lines of
+those bars from that commit.
 
 ## The proposed bars (each one PROPOSED, none locked)
 

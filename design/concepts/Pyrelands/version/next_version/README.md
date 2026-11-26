@@ -78,7 +78,8 @@ Appended by the Designer run `RIMMANDRAKE_OPEN_PYRELANDS_NEXT_VERSION_HE_ASKED_F
 0.2.0 is NOT open: the owner reviews the scope first (his words, 10:41 AM PST 2026-11-26: "If we're opening 0.2.0 for
 Pyrelands, I want to review what we might put into it, ok? That's not an automatic decision"). Each "IN 0.2.0" in the
 sort lines above is a recommendation. The page for him is `scope_proposal_0.2.0.md` in this folder. `../VERSION.json`
-still reads 0.1.0; the draft bars in `../../record.json` read scope `open_question` until he answers.
+still reads 0.1.0. The draft bars, their test rows and the vision lines are kept in commit `faa90e801d`; the Conductor took
+them out of the live files on 2026-11-26, until he answers.
 
 - **Bars from this list:** `fire_catches_and_runs` (his walk, 2026-11-24), `roofed_grass_declines_visibly` (his walk, with the
   exception of roofed grass folded in), `pyre_smoke_weather_chokes` (his walk of 2026-11-13).
