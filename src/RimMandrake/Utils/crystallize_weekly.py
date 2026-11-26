@@ -16,6 +16,9 @@ design/specs/2026-11-25-weekly-crystallize-run/boundary.md.
                                            report is of this ISO week or the week before; else 1; 2 could not look
                                            (the repair item's outcome check: the pass runs weekly by itself)
 
+Each tick also runs the weekly card line of the Pre-Design Concepts store (pre_design_concepts.py sweep): once per ISO
+week it appends "PRE-DESIGN CONCEPTS: card due" and the due concepts to <conductor>/log.md.
+
 <conductor> is `agent_storage.py rimmandrake`/conductor; RM_CRYSTALLIZE_DIR overrides it (tests).
 """
 import argparse
@@ -39,6 +42,9 @@ sys.path.insert(0, HERE)
 import time_budget  # noqa: E402
 sys.path.insert(0, RIMFLOW)
 import fulltext  # noqa: E402
+import pre_design_concepts as PDC  # noqa: E402  the weekly card line of the Pre-Design Concepts store
+
+CONCEPTS_STORE = PDC.STORE      # the store the weekly card line reads (tests point it elsewhere)
 
 LAUNCH_TIMEOUT_S = time_budget.LAUNCH_S     # hang guard on one `cli.py file` or `detached_helper.py launch`
 # budget: danger=a spend-capped pass relaunched without end; one continuation after a cap stop, then the week waits for
@@ -195,10 +201,20 @@ def tick(apply, now=None):
         out.append(fulltext.fit(o, 600, tail=True))
         m = re.search(r"^DETACHED (\S+)", o, re.M)
         rec.update(ok=rc == 0, rc=rc, out="\n".join(out), brief=bpath, unit=m.group(1) if m else None)
+    rec["concepts"] = concepts_card(conductor, apply, now)
     if apply:
         record(rdir, rec)
     print(json.dumps(rec))
     return 0 if rec["ok"] else 1
+
+
+def concepts_card(conductor, apply, now):
+    """The Pre-Design Concepts card line, once per ISO week (pre_design_concepts.sweep; design/specs/
+    2026-11-26-pre-design-concepts/boundary.md). Its failure is named here and never stops the Crystallize tick."""
+    try:
+        return PDC.sweep(CONCEPTS_STORE, conductor, apply, now)[1].get("act")
+    except Exception as e:      # noqa: BLE001  the tick's own work goes on; the reading names the failure
+        return "failed: %s: %s" % (e.__class__.__name__, e)
 
 
 def timer_on():

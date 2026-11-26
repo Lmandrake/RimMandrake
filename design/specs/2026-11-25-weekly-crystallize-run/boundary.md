@@ -41,6 +41,10 @@ done. Each tick writes the reading `<agent storage>/rimmandrake/crystallize_week
 - **fresh-needs-the-timer-and-a-report-of-this-or-last-week.** `fresh` exits 0 only when the timer is enabled and
   active and the newest FINAL report is of this ISO week or the week before.
 - **an-unreadable-timer-is-could-not-look.** When systemctl gives nothing, `fresh` exits 2, never 0.
+- **the-tick-writes-the-concepts-card-line-once-a-week.** An applied tick appends `PRE-DESIGN CONCEPTS: card due` and
+  the due concepts to `<conductor>/log.md` once per ISO week, and writes the reading
+  `<agent storage>/rimmandrake/pre_design_concepts/last_sweep.json` on every applied tick. A plan writes no line. A
+  store that cannot be read writes no line and does not stop the tick (`design/specs/2026-11-26-pre-design-concepts/boundary.md`).
 - **the-brief-names-the-week-item-and-last-pass.** The brief has every slot filled: the week, the item, the report
   folder, and the last FINAL report (or says there is none).
 

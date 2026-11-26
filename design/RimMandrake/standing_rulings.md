@@ -2583,6 +2583,57 @@ note on item `RIMMANDRAKE_RESUME_PLAN_RUN_WITH_HIS_SECOND_PIPELINE_DIRECTION`.)
 Study, plan and build order: `design/specs/2026-11-22-coordination-every-agent-must-use/` (`plan.md`). The ancestors
 and what they did wrong: `plight.md` §10 in that folder.
 
+### Ideas that nobody has designed are Pre-Design Concepts, kept in their own store — owner, 2026-11-26
+
+*"I do like both of those ideas still utility creatures and shared interaction spot. Is there a designation or safe
+place for good mod ideas we haven't designed out yet?"* (Thu 2026-11-26 about 1:11 PM PST; on the ledger as OWNER notes
+on items `UTILITY_CREATURES_DESIGN_DIG_THIS_PIT_BOY` and `RIMMANDRAKE_ALLOW_SHARED_INTERACTION_SPOTS_TWO_BENCHES_ONE_STOOL`,
+and as the filing of item `RIMMANDRAKE_BUILD_IDEAS_LIST_AT_INTAKE_TWO_IDEAS_SAT_UNPLACED`.)
+
+*"Please scan for other tickets that are entirely ideas for new mods or new capabilities for a mod that does not
+clearly yet exist. Add them to the new pre-design concepts (that is what that new reservoir should be called and used
+for). They can be for mods, new agents, new pipelines, anything really. The more detailed the better. Occasionally the
+conductor should sweep these ideas and offer me an option card to engage you to flesh out a few of these ideas or let
+them sleep further. I have a feeling there are many tickets that are actually in this category that should be formally
+moved to this storage method instead of a ticket. Push back if needed. Question card if needed."* (Thu 2026-11-26
+1:31 PM PST; on the ledger as an OWNER note on item `RIMMANDRAKE_BUILD_IDEAS_LIST_AT_INTAKE_TWO_IDEAS_SAT_UNPLACED`.)
+
+His earlier words in the pipeline spec (`design/specs/2026-11-13-maturation-pipeline.md` §Intake: ideas waiting):
+*"We need to show how many 'new mod ideas' we have waiting to process"*.
+
+Before this, an idea that he liked and nobody had designed sat in a ticket in state `proposed` with the home
+`unplaced`. No program starts such a ticket, and a sweep can age it or drop it. Two ideas that he still wanted sat
+there on 2026-11-26. `design/V2_DREAMS.md` took any idea, but no page showed it.
+
+- **The store is `design/pre_design_concepts/`, one file per concept.** Its rules are in its `README.md`. A concept is
+  not owed work, so it is not a ticket on the rimflow ledger.
+- **A concept can be of any kind:** a new mod, a capability for a mod that does not exist yet, a new agent, a new
+  pipeline, a tool, or another kind.
+- **Any seat may add a concept**, with no ticket and no ask. The head of the file holds: a plain name; the kind; one
+  sentence on what the player or the user would get; the date added; the source ticket; whether code exists
+  (measured); the date of the last offer to him, and his answer. The body holds everything known: his words with their
+  dates (quoted from the ledger, never rewritten), the source ticket's full prose and notes, the card texts, and the
+  paths of design files. More detail is better; never shorten a concept to save space.
+- **Nothing in the store is scheduled.** No run starts from the store.
+- **No sweep, filter or judge ages, shortens or drops a concept.** Only he drops a concept. §Old work is filtered before
+  any process takes it does not apply to the store, because no process takes a concept.
+- **A capability for a mod that exists does not go in the store.** It goes on the mod's next-version list
+  (`design/concepts/<Mod>/version/next_version/README.md`).
+- **A concept leaves the store when he picks it.** It then becomes a mod at the intake of the Maturation Pipeline, an
+  entry of a next-version list, or a ticket. Its file gets a `Went to` line that says where, and stays as the record.
+- **The page shows it.** MATURATION_NOW shows, at its intake, the count of concepts that wait and each plain name. A
+  store that the page cannot read shows `UNMEASURED` with its cause, never 0.
+- **The weekly card.** The daily tick of `rm-crystallize.timer` writes `PRE-DESIGN CONCEPTS: card due` and the due
+  concepts to the Conductor log once per ISO week. The Conductor reads each due concept and offers him one question card:
+  one option per concept to flesh out with the Conductor, and one option that lets them all sleep. After his answer, the
+  Conductor runs `pre_design_concepts.py offered` for each concept on the card (`src/RimMandrake/rimflow/roles/conductor.md`,
+  Quick mode step 3).
+- **A ticket that only holds such an idea ends** when the store takes it (`rimflow close <ID> --no-code`, naming the
+  concept's file). A second run scans the old tickets for such ideas
+  (`RIMMANDRAKE_MOVE_IDEA_TICKETS_TO_PRE_DESIGN_CONCEPTS_HE_SUSPECTS_MANY`).
+- Program: `src/RimMandrake/Utils/pre_design_concepts.py` (`list`, `check`, `due`, `offered`, `sweep`). Promises:
+  `design/specs/2026-11-26-pre-design-concepts/boundary.md`.
+
 ## The nightly checks finished mods only — owner, 2026-11-15 (card)
 
 The card asked what should happen to the nightly run. The evidence was

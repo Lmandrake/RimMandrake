@@ -140,6 +140,44 @@ def t_the_brief_names_the_week_item_and_last_pass():
     check(CW.opus_cap() > 0, "the cap is read from list_dispatch.json")
 
 
+def t_the_tick_writes_the_concepts_card_line_once_a_week():
+    """An applied tick appends `PRE-DESIGN CONCEPTS: card due` and the due concepts to <conductor>/log.md once per ISO
+    week (design/specs/2026-11-26-pre-design-concepts/boundary.md); a plan writes no line; the reading is written on
+    every applied tick; a store that cannot be read writes no line and does not stop the tick."""
+    fresh_dir()
+    store = os.path.join(TMP, "store")
+    shutil.rmtree(store, ignore_errors=True)
+    os.makedirs(store)
+    with open(os.path.join(store, "planted.md"), "w") as f:
+        f.write("# Planted\n\n- **Name:** Planted\n- **Kind:** tool\n- **Gets:** x\n- **Added:** 2026-11-01\n"
+                "- **From ticket:** none\n- **Code:** none\n- **Last offered:** never\n- **His answer:** none yet\n")
+    CW.CONCEPTS_STORE = store
+    CW.item_state = lambda iid: None
+    put("2026W50", "# x\nStatus: FINAL\n")      # the week's pass is done: the tick launches nothing
+    log = os.path.join(CON, "log.md")
+    reading = os.path.join(os.path.dirname(CON), "pre_design_concepts", "last_sweep.json")
+    plan(DT.datetime(2026, 12, 9, 6))
+    check(not os.path.exists(log), "a plan writes no card line")
+    rc, out = quiet(CW.tick, True, DT.datetime(2026, 12, 9, 6))
+    text = open(log).read() if os.path.exists(log) else ""
+    check(text.count("PRE-DESIGN CONCEPTS: card due") == 1 and "Planted" in text, "the first tick of the week writes the line")
+    quiet(CW.tick, True, DT.datetime(2026, 12, 10, 6))
+    text = open(log).read() if os.path.exists(log) else ""
+    check(text.count("PRE-DESIGN CONCEPTS: card due") == 1, "a second tick in the same week writes no second line")
+    check(os.path.exists(reading) and json.load(open(reading)).get("at", "").startswith("2026-12-10"),
+          "the reading is written on every applied tick")
+    put("2026W51", "# x\nStatus: FINAL\n")
+    quiet(CW.tick, True, DT.datetime(2026, 12, 15, 6))
+    text = open(log).read() if os.path.exists(log) else ""
+    check(text.count("PRE-DESIGN CONCEPTS: card due") == 2, "the next week writes the line again")
+    CW.CONCEPTS_STORE = os.path.join(TMP, "no_such_store")
+    put("2026W52", "# x\nStatus: FINAL\n")
+    rc, out = quiet(CW.tick, True, DT.datetime(2026, 12, 22, 6))
+    text = open(log).read() if os.path.exists(log) else ""
+    check(rc == 0 and text.count("PRE-DESIGN CONCEPTS: card due") == 2, "an unreadable store writes no line, the tick goes on")
+    check(json.load(open(reading)).get("act") == "could not look", "an unreadable store's reading says could not look")
+
+
 def main():
     t_weeks_are_iso_weeks()
     t_a_final_report_is_the_stand_alone_status_line()
@@ -150,6 +188,7 @@ def main():
     t_fresh_needs_the_timer_and_a_report_of_this_or_last_week()
     t_an_unreadable_timer_is_could_not_look()
     t_the_brief_names_the_week_item_and_last_pass()
+    t_the_tick_writes_the_concepts_card_line_once_a_week()
     shutil.rmtree(TMP, ignore_errors=True)
     print("FAIL %d" % len(FAILS) if FAILS else "PASS")
     return 1 if FAILS else 0

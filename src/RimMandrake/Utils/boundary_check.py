@@ -29,6 +29,7 @@ PAGES = {
     "design/specs/2026-11-26-footer-prose/boundary.md": "src/RimMandrake/rimflow/selftest_footer_prose.py",
     "design/specs/2026-11-26-one-call-walk-stage/boundary.md": "src/RimMandrake/Utils/selftest_walk_stage.py",
     "design/specs/2026-11-26-exec-bits-kept/boundary.md": "src/RimMandrake/Utils/selftest_exec_bits.py",
+    "design/specs/2026-11-26-pre-design-concepts/boundary.md": "src/RimMandrake/Utils/selftest_pre_design_concepts.py",
     "design/specs/2026-11-26-direct-sun/boundary.md": "src/RimMandrake/Utils/selftest_direct_sun.py",
     "design/specs/2026-11-26-tree-crowns/boundary.md": "src/RimMandrake/Utils/selftest_tree_crowns.py",
     "design/specs/2026-11-26-world-sea-lists/boundary.md": "src/RimMandrake/BiomesShell/selftest_world_sea_lists.py",

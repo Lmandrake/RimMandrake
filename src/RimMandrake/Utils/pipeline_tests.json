@@ -34,7 +34,7 @@
     "src/RimMandrake/rimflow/game_names.py",
     "src/RimMandrake/rimflow/maturation*.py",
     "src/RimMandrake/rimflow/maturation*.json",
-    "src/RimMandrake/Utils/maturation*.py",
+    "src/RimMandrake/Utils/maturation*.py", "src/RimMandrake/Utils/pre_design_concepts.py", "src/RimMandrake/Utils/selftest_pre_design_concepts.py",
     "src/RimMandrake/rimflow/coverage_judge*.py",
     "src/RimMandrake/rimflow/coverage_calibration.py",
     "src/RimMandrake/rimflow/art_calibration*.py",
@@ -243,6 +243,8 @@
       "inputs": ["*.py"],
       "_why": "RIMMANDRAKE_REPAIR_FLOWWORKS_REPIN_REFUSAL_AND_ESCAPE_WARNING: an invalid escape's SyntaxWarning failed a run-end publish note (2026-11-25T09:33Z); every tracked .py compiles with SyntaxWarning as an error"
     },
+  {"test": "src/RimMandrake/Utils/selftest_pre_design_concepts.py", "seconds": 10, "inputs": ["src/RimMandrake/Utils/pre_design_concepts.py", "src/RimMandrake/Utils/maturation_now.py", "design/pre_design_concepts/*.md", "design/specs/2026-11-26-pre-design-concepts/boundary.md"], "any_change": true, "_why": "RIMMANDRAKE_BUILD_IDEAS_LIST_AT_INTAKE_TWO_IDEAS_SAT_UNPLACED: the Pre-Design Concepts store, its program and its count on MATURATION_NOW (2026-11-26)"},
+  {"test": "src/RimMandrake/Utils/selftest_crystallize_weekly.py", "seconds": 2, "inputs": ["src/RimMandrake/Utils/crystallize_weekly.py", "src/RimMandrake/Utils/pre_design_concepts.py", "design/specs/2026-11-25-weekly-crystallize-run/boundary.md"], "_why": "the weekly Pre-Design Concepts card line rides the Crystallize tick (2026-11-26)"},
   {"test": "src/RimMandrake/Utils/selftest_pages_index.py", "seconds": 1, "inputs": ["src/RimMandrake/Utils/pages_index.py", "src/RimMandrake/Utils/maturation_now.py", "src/RimMandrake/Utils/codebase_now.py", "src/RimMandrake/Utils/ops_watch.py", "design/specs/2026-11-24-monitors-consolidated/boundary.md"]},
     {"test": "src/RimMandrake/Utils/selftest_account_plan_sweep.py", "seconds": 60, "inputs": ["src/RimMandrake/Utils/account_plan.py", "src/RimMandrake/Utils/account_plan_sweep.py", "src/RimMandrake/Utils/selftest_account_plan_sweep.py", "src/RimMandrake/Utils/switching_plan.py", "src/RimMandrake/Utils/account_end.py", "src/RimMandrake/Utils/account_usage.py", ".claude/hooks/switch_checkpoint_signal.py"]},
     {"test": "src/RimMandrake/Utils/selftest_account_plan.py", "seconds": 20, "inputs": ["src/RimMandrake/Utils/account_plan*", "src/RimMandrake/Utils/switching_plan.py", "src/RimMandrake/Utils/account_end.py", "src/RimMandrake/Utils/codex_advice.py", "src/RimMandrake/Utils/slot_allocator.py", "src/RimMandrake/rimflow/detached_helper.py", "src/RimMandrake/rimflow/account_pick.py", "acct", "design/specs/2026-11-24-account-plan-one-file/boundary.md"]},

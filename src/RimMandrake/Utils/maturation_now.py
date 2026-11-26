@@ -34,6 +34,9 @@ of Stage 2 (Stage 1's exit is the lock) and a "not started" one holds it at inta
 Live reads (off with --no-live): owner_queue.needs_you() for the intake count (its first-touch rows) and for his open
 questions, a question counting for a mod when its item id or its first word names the mod; detached_helper's run
 records (with systemd's unit state, local) for which mods have a helper on them.
+Pre-design concepts: design/pre_design_concepts/ through pre_design_concepts.read_store (the count of concepts that
+wait and each plain name; UNMEASURED with its cause when the store cannot be read;
+design/specs/2026-11-26-pre-design-concepts/boundary.md).
 Held look statements: the Contents table of design/RimMandrake/validation_holding/README.md; a file there whose name ends
 in a mod's name is that mod's; a file the table does not count leaves the total UNMEASURED.
 
@@ -1085,7 +1088,34 @@ def gather(root, live=True):
             "trend": trend(lf, versioned, now, live),
             "view": lf.get("view"),
             "intake": {"count": lf["intake"], "questions_total": UNM if lf["questions"] is None else len(lf["questions"])},
+            "concepts": read_concepts(root),
             "errors": lf["errors"], "convergence": convergence(root, lf["errors"])}
+
+
+CONCEPTS_REL = os.path.join("design", "pre_design_concepts")
+CONCEPTS_NATIVE = "D:\\Luke\\dev\\RimMandrake\\design\\pre_design_concepts\\"
+
+
+def read_concepts(root):
+    """pre_design_concepts' reading of the Pre-Design Concepts store (design/specs/2026-11-26-pre-design-concepts/
+    boundary.md); a reader that fails reads UNMEASURED, named."""
+    try:
+        sys.path.insert(0, HERE)
+        import pre_design_concepts as PDC  # noqa: E402
+        return PDC.read_store(os.path.join(root, CONCEPTS_REL))
+    except Exception as e:      # noqa: BLE001  the page still builds; the line says what failed
+        return {"count": UNM, "names": [], "concepts": [], "faults": [], "gone": [],
+                "why": "the reader failed: %s: %s" % (e.__class__.__name__, e)}
+
+
+def concepts_line(d):
+    """One line: the count of pre-design concepts that wait, and each plain name; UNMEASURED with its cause."""
+    i = d.get("concepts") or {"count": UNM, "why": "not gathered"}
+    if i["count"] == UNM:
+        return "Pre-design concepts: UNMEASURED \u00b7 %s." % i["why"]
+    if not i["count"]:
+        return "Pre-design concepts: 0. (`%s`)" % CONCEPTS_NATIVE
+    return "Pre-design concepts: %d \u00b7 %s (`%s`)" % (i["count"], ", ".join(i["names"]), CONCEPTS_NATIVE)
 
 
 def trend(lf, mods, now, live):
@@ -1212,8 +1242,8 @@ def picture(d):
     p.append(t_(COL_X0 + COLW / 2, y + 30, ic, 20 if ic != UNM else 10.5, TEXT if ic != UNM else ALERT, 800, "middle"))
     p.append(t_(COL_X0 + COLW + 10, y + 19, "%s mods have a first-touch Designer item open and no Designer pass yet "
                 "(owner_queue.py)." % ic, 11, TEXT))
-    p.append(t_(COL_X0 + COLW + 10, y + 35, "Mod ideas sitting inside other tickets: UNMEASURED (nothing marks a ticket "
-                "as a mod idea).", 10.5, DIM))
+    p.append(t_(COL_X0 + COLW + 10, y + 35, clip(concepts_line(d).split(" (`")[0], 120), 10.5,
+                ALERT if (d.get("concepts") or {}).get("count", UNM) == UNM else DIM))
     # mod rows
     y = top + 56
     for m, rh in zip(mods, rows_h):
@@ -1782,6 +1812,8 @@ def top_chips(d):
         out.append(chip("%d held" % len(held), "#8f8470", TEXT))
     ic = d["intake"]["count"]
     out.append(chip("%s waiting at intake" % ic, "#4a3d2e", TEXT))
+    nc = (d.get("concepts") or {}).get("count", UNM)
+    out.append(chip("%s pre-design concept%s" % (nc, "" if nc == 1 else "s"), "#4a3d2e" if nc != UNM else "#6d6252", TEXT))
     his = [x for m in mods if isinstance(m["his"], list) for x in m["his"]]
     if any(m["his"] == UNM for m in mods):
         out.append(chip("needs you: UNMEASURED", "#6d6252", TEXT))
@@ -1887,7 +1919,8 @@ def unread_lines(d):
            "His minutes per stage: nothing records them.",
            "A brief's \"Steward's decisions\" are not kept with the run record; they reach this page only through a "
            "\"CONDUCTOR INTERVENED\" journal line (spec §5).",
-           "Mod ideas sitting inside other tickets: no marker says a ticket is a mod idea."]
+           "Ideas still inside other tickets: not counted until a run moves each one to `%s`." % CONCEPTS_NATIVE]
+    out += ["Pre-design concepts, a fault of form: %s." % f for f in (d.get("concepts") or {}).get("faults") or []]
     h = d["held"]
     if h["total"] == UNM:
         out.append("Held look statements in total: the holding README counts %d in %d files; %s %s not counted there."
@@ -1964,7 +1997,7 @@ def build(d, now):
         parts_md += ["## " + MNM.PANEL_TITLE, "", MNM.panel(nm), ""]
     parts_md += bundles_md(d)
     parts_md += monitor_md(d)
-    parts_md += ["## The mod pipeline", "", pipeline_line(d), "", "<div>" + picture(d) + "</div>", ""]
+    parts_md += ["## The mod pipeline", "", pipeline_line(d), "", concepts_line(d), "", "<div>" + picture(d) + "</div>", ""]
     parts_md += ["## Every mod, one line", ""] + one_line_md(d)
     parts_md += ["---", ""] + ([note, ""] if note else []) + [tail, ""]
     md = "\n".join(parts_md)
@@ -1975,7 +2008,8 @@ def build(d, now):
         body += ["<h2>%s</h2>" % esc(MNM.PANEL_TITLE), MNM.panel(nm)]
     body.append(bundles_html(d))
     body.append(monitor_html(d))
-    body += ["<h2>The mod pipeline</h2><p class='m'>%s</p>" % esc(pipeline_line(d)), picture(d)]
+    body += ["<h2>The mod pipeline</h2><p class='m'>%s</p>" % esc(pipeline_line(d)),
+             "<p class='m'>%s</p>" % esc(concepts_line(d).replace("`", "")), picture(d)]
     rows = [r for m, r in zip(d["mods"], summary_rows(d)) if not folded(m)]
     off = ["%s (%s, %s)" % (m["label"], where_word(m), "held" if m["held"] or str(m["waits_on"]).startswith("held") else "off")
            for m in d["mods"] if folded(m)]

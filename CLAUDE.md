@@ -306,6 +306,15 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   beside the view.
 - No gate stops an agent until a record is reconciled. Where a program can check the outcome, the check decides that
   the work is done. A note does not.
+- An idea that nobody has designed is a Pre-Design Concept. Write it as one file in `design/pre_design_concepts/`, not as
+  a ticket and not in `design/V2_DREAMS.md`. It can be of any kind: a mod, a capability for a mod that does not exist
+  yet, an agent, a pipeline, a tool. Rules: `design/pre_design_concepts/README.md`.
+  - Any seat may add a concept, with no ticket and no ask. Write all that is known; never shorten a concept.
+  - A concept is not owed work. Nothing starts from the store. No sweep, filter or judge ages, shortens or drops a
+    concept. Only the owner drops a concept.
+  - A capability for a mod that exists goes on that mod's next-version list, not in the store.
+  - A concept leaves the store when the owner picks it. Write in its file where it went.
+  - Once a week the Conductor offers him one card of due concepts (`pre_design_concepts.py due`).
 - Full text: `design/RimMandrake/standing_rulings.md` §Mods keep their own state. Plan:
   `design/specs/2026-11-22-coordination-every-agent-must-use/plan.md`.
 

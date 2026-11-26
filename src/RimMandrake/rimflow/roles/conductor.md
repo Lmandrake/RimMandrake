@@ -326,6 +326,14 @@ is running).
      - First entry owed: `RIMMANDRAKE_PROPOSE_PROSE_CHECK_TO_USER_TOOLS_BELOW_TWELVE`, the move of the write-time
        guiding prose check (`src/RimMandrake/Utils/guiding_prose.py`) to the user-level tools. The entry goes in the report when
        the false-alarm rate of its model reader is lower than the 12% measured on 2026-11-23.
+   - (g) **Pre-Design Concepts** (`design/pre_design_concepts/README.md`): when the log line `PRE-DESIGN CONCEPTS: card
+     due` appears (the daily tick of `rm-crystallize.timer` writes it once per ISO week), read each due concept's file
+     whole (`python3 src/RimMandrake/Utils/pre_design_concepts.py due` lists them). Offer the owner one question card.
+     Each option is one concept to flesh out with the Conductor, with one line on what the player or the user would get.
+     One option lets all of them sleep. After his answer, run `python3 src/RimMandrake/Utils/pre_design_concepts.py
+     offered "<name>" --answer "<his answer>"` for each concept on the card, and record his answer on the ledger with
+     `--by-card`. A concept that he picks to flesh out is design work with the Conductor; it leaves the store only when
+     it becomes a mod at the intake, an entry of a next-version list, or a ticket (write that in its `Went to` line).
 4. Quick mode does not build, test or deploy. Quick mode never takes the bridge.
 
 ## Session mode (he is here)

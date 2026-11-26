@@ -1,6 +1,8 @@
 > HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
 
 <!-- status: aspirational -->
+> **A new concept (a mod, a capability for a mod that does not exist yet, an agent, a pipeline, a tool, anything) goes to `design/pre_design_concepts/`**, one file per concept; the Maturation Pipeline page counts it. This file keeps its older entries.
+
 # V2 — dreams and hopes
 
 > ✅ **EVERY SEAT MAY APPEND HERE DIRECTLY. No permission, no routing through DECIDE, no
