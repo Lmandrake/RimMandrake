@@ -174,7 +174,7 @@ onboarding lines of `gather` in `list_dispatch.py`, `onboard_classes` in `list_d
   is one run: two homes are never in one run, and one home never gets two. Test: `t_old_tickets_are_onboarded_by_home`.
 - **an-onboarding-member-is-ready-or-left-out-with-its-reason.** A ticket that is blocked, waits on an open item, has a
   dated wait ahead, is under a live lease, has a live run, is `pipe off`, is held by the owner, is in a live bundle or
-  was refused by a bundle since its last other event is left out, and the tick's reading names it with its reason.
+  was refused by a bundle since its last other event (a verify, a run's result, is not one) is left out, and the tick's reading names it with its reason.
   A home whose old tickets are all left out starts nothing and says why.
 - **the-onboard-classes-are-data.** `onboard_classes` in `list_dispatch.json` says which classes of home the program may
   start: `pipeline` and `machine` on; `game` off (the owner held the sort of the old game-needs tickets on 2026-11-23);

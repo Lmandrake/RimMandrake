@@ -197,6 +197,16 @@ def t_ready_members_only():
     rf = W.refusals(evs)
     chk(lambda: rf.get("R1") == "REFUSED BY BUNDLE: not this system" and "R2" not in rf and "R3" not in rf,
         "ready: a refusal stands until a later non-note event on the ticket (%s)" % rf)
+    # a run's result is evidence, not a change in what the ticket asks: the lane's RUNNER verify of a job the bundle
+    # itself submitted landed after its refusal, and the next day's onboarding run took 4 refused members again
+    # (WB-pipeline-bridge-20261126-100834)
+    ev = [{"id": "V1", "event": "note", "ts": "2026-11-21T00:00:00Z", "text": "REFUSED BY BUNDLE (C4 only): full list"},
+          {"id": "V1", "event": "verify", "seat": "RUNNER", "ts": "2026-11-21T00:05:00Z", "result": "pass"},
+          {"id": "V2", "event": "note", "ts": "2026-11-21T00:00:00Z", "text": "REFUSED BY BUNDLE: x"},
+          {"id": "V2", "event": "reopen", "ts": "2026-11-22T00:00:00Z"}]
+    rv = W.refusals(ev)
+    chk(lambda: "V1" in rv and "V2" not in rv,
+        "ready: a later verify keeps the refusal, a later reopen ends it (%s)" % sorted(rv))
     # a qualifier before the colon is still a refusal (the bundle of 2026-11-25 wrote "(the L4 level only)" four times
     # and was relaunched for members that each held their reason)
     q = "REFUSED BY BUNDLE (the L4 level only): A1 passes at L2; L4 is the owner level"

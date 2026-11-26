@@ -879,7 +879,8 @@ def overlay(runs, ids, bundles, live):
 
 def refusals(events):
     """-> {id: the newest BUNDLE REFUSED: note's text} for each ticket whose refusal is newer than its last other
-    event that is not a note (a re-home, an effect, a reopen starts it again). Pure over the ledger's events."""
+    event that is not a note or a verify (a re-home, an effect, a reopen starts it again; a run's result does not: the
+    lane's RUNNER verify of a job the bundle itself submitted lands after the refusal). Pure over the ledger's events."""
     last_other, refused = {}, {}
     for e in events:
         i = e.get("id")
@@ -892,7 +893,7 @@ def refusals(events):
         if e.get("event") == "note":
             if is_refusal(e.get("text")):
                 refused[i] = (t, str(e.get("text")).strip())
-        elif t >= last_other.get(i, 0):
+        elif e.get("event") != "verify" and t >= last_other.get(i, 0):
             last_other[i] = t
     return {i: txt for i, (t, txt) in refused.items() if t > last_other.get(i, 0)}
 
