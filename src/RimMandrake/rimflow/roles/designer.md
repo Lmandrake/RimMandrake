@@ -139,7 +139,7 @@ pages" as what you put before him (`sheet.md` and your asks).
 **A Design Version locked before these answers keeps its scope.** A concept keeps its locked bars when its
 `version/VERSION.json` reads `locked` with a `locked_on` before 2026-11-17. The answers bind its next version, never its
 current bars. A Divergent change never moves the current bars. Redefining a locked version is the cleanse pass's work
-(`roles/designer_cleanse.md`). The cleanse proposal changes the mod only on his word.
+(`roles/designer_cleanse.md`). The cleanse proposal changes the mod only on his word, or the Conductor window's recorded act, which the Conductor tells him after (standing_rulings.md §Mod Design Versions).
 
 ## What a first version may contain
 
@@ -206,7 +206,7 @@ true:
 - it duplicates something vanilla or a neighbour already does;
 - it fights a standing ruling or the signature.
 
-Retiring is his. Your recommendation and its one-line reason go on his pages.
+Retiring is his, or the Conductor window's recorded act (owner 2026-11-19, RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS). Your recommendation and its one-line reason go on his pages.
 
 Code that calls an extra proves coupling, not need. Keep an extra only when removing what the player sees of it would
 defeat land, life or the signature. Record that argument in its `needed_by`. When kept code merely depends on an extra's

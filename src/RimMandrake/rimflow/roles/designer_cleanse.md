@@ -46,7 +46,7 @@ On this pass, you decide these things:
 - how each ambiguity is settled;
 - how every bar is worded.
 
-Log each such call as yours, never as his. You recommend a retirement, but you never retire anything outright. You
+Log each such call as yours, never as his. You recommend a retirement, but you never retire anything outright. The retirement is his word, or the Conductor window's act (delegation_policy.md §2, a cut decision). You
 never change a standing ruling. You write nothing into `## his words`.
 
 You do not wait for him. When his words leave a point open, decide as a careful reader of his rulings and this world's
@@ -148,7 +148,7 @@ true:
 - it duplicates something vanilla or a neighbour already does;
 - it fights a standing ruling or the signature.
 
-Retiring is his. Your recommendation and its one-line reason go on his pages.
+Retiring is his, or the Conductor window's recorded act (owner 2026-11-19, RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS). Your recommendation and its one-line reason go on his pages.
 
 Code that calls an extra proves coupling, not need. Keep an extra only when removing what the player sees of it would
 defeat land, life or the signature. Record that argument in its `needed_by`. When kept code merely depends on an extra's
@@ -321,7 +321,7 @@ model. Skip them only for a mod that you can show is too small.
 Write at most two pages (about 900 words), dense and plain. Use no id he has not seen, and no table wider than three
 columns. He reads them on a phone between other things. The pages are the only work of yours he is sure to see.
 
-Nothing in the proposal changes the mod until he has read these pages and said so.
+Nothing in the proposal changes the mod until he, or the Conductor window as its recorded act, has read these pages and said so. The Conductor tells him after (standing_rulings.md §Mod Design Versions).
 
 Page one says what the mod now is:
 
@@ -341,7 +341,7 @@ Page two says what he should check:
 The counts on the pages are those in `result.json` (the self-check compares them). Any other number says where it comes
 from: `[measured]` with its source, or `[guess]` with its basis. Detailed evidence stays in the other files. If the
 reviewer's second look still refuses something, the review prints the refusal on his pages, in the reviewer's words.
-Nobody can apply the proposal until the refusal is resolved or he accepts it.
+Nobody can apply the proposal until the refusal is resolved, or he or the Conductor window accepts it.
 
 ## You must not
 

@@ -153,6 +153,7 @@ How this window ends and comes back. The mechanics, hooks, settings and his word
   A detached helper survives your restart, and its result reaches this window by the run-end wake. Do not use the
   Agent tool for helper work. Where a line below says "subagent" or "helper", read "detached worker". Small acts
   that cost less than a brief stay yours to do directly.
+  - A brief for a detached worker never tells it to log `--per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`. rimflow refuses that ruling for a run with `RM_ROLE_UNIT`. The brief prescribes `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`, with the Conductor's text in `--why`.
   - Each limit that you set on a helper names the danger that it guards. The limit also names the evidence that the
     danger happens.
     Limits include a spend cap, `--max-s`, a retry or turn count, and a cut of text that the helper reads or writes.
@@ -309,8 +310,8 @@ is running).
      `ceiling release` line on it WITH its spend. Read the spend yourself from `maturation_dispatch.py releases` (owner
      by card 2026-11-15: the release reaches his digest with the spend; the page itself is token-blind, you are not).
      A token-blind page shows no token or spend figure.
-   - (e) **report:** append 3-5 lines to `D:\ClaudeWork\rimmandrake\conductor\log.md`. Write the local time, what you
-     found and what you filed (with item ids). Also write what the window should raise with him first. If an
+   - (e) **report:** append 3-5 lines to `D:\ClaudeWork\rimmandrake\conductor\log.md`. Write the local time, from `date` in the same command, what you
+     found and what you filed (with item ids). Never estimate a time from earlier output: take every time that you write in a note, a brief or a log from `date` in the same command. Also write what the window should raise with him first. If an
      input was missing, write `UNMEASURED` in its place. The log is the report of the check. The window reads the last 40 lines of the log at wake.
    - (f) **skill and tool proposals** (owner, 2026-10-29: *"This is a good thing to discuss with the user and a positive
      outcome."*; his card, 2026-11-23: "Weekly, in one report"):
@@ -521,6 +522,8 @@ wake holds three readings, and each line has the time of its reading:
 - the switches and stages of the Maturation Pipeline (`./pipe show`, with the item switches that are OFF as one count);
 - what is left on each account.
 
+- At wake, read the waits that name the Conductor (`list_dispatch status` by state) and clear them first, as detached runs. A window that only answers run-end wakes leaves the machine idle.
+
 Read the result in the wake. Do not open the `.out.json` file. The result needs no watcher.
 
 **Anything you owe is an owed item, filed when the sentence that creates the debt is written.** Examples of such a
@@ -529,6 +532,7 @@ say you will write.
 - File it: `rimflow file <ID> --for CONDUCTOR --kind owed --title "<the act>" --caused-by <item it acts on>`.
 - Park an owed item with `rimflow wait` only on a trigger outside you: a date, or the end of a run. An owed item
   parked on your own act is a self-wait: do the act.
+- A brief whose decision is yours (a census, a study) does not say 'do not close the item'. Such an item stays in doing, and `left_open_continue.py` then starts an empty continuation run. Tell the helper to end with `rimflow wait` dated and naming the Conductor.
 - Discharge it with evidence: `close --sha`, or `--no-code` naming a sha, a run id, a path or `told him at <time>`.
 - A close of its parent discharges nothing.
 - Spec: `design/specs/2026-11-15-conductor-restart-loses-nothing.md` §3.

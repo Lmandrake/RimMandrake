@@ -33,8 +33,8 @@ The jobs, in this order:
 
 Land with `./publish` and explicit paths, one commit for each kind of change, subjects that start `crystallize {WEEK}:`.
 The project rules still bind: CLAUDE.md §Correctness outranks seat ownership, §Touching code has a cost, and
-§Only five acts stay his. A loaded rule file that another live run is editing waits for the next pass: say so in the
-report.
+§Only five acts stay his. A loaded rule file that another live run is editing gets its pass in a `git worktree` from origin/main, rebased
+before it lands. Say in the report which runs edited it during the pass.
 
 The report has these sections: 1 the last pass's change and its verdict; 2 what each job did, before and after, with
 the commit of each change; 3 the change adopted this pass, with one success criterion that the next pass measures and
