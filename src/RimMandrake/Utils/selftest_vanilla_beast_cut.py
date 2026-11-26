@@ -118,6 +118,14 @@ def t_a_cut_race_stays_watched_in_every_wave():
                         struck={("TileMutatorDef/Mega", "MastodonKind")})
     check("rl: a struck pair closes that leak only", lk2.get("Mastodon") == ["IncidentDef/VEE_CaravanAnimalsWanderIn"],
           str(lk2.get("Mastodon")))
+    check("rl: a strike leaves every other pair's leak standing", lk2.get("Duck") == ["ThingSetMakerDef/Rare"],
+          str(lk2.get("Duck")))
+    # A route that names the race by its own defName (the race's kind shares it: Cow/Cow) is a leak.
+    namers4 = dict(namers)
+    namers4[("TileMutatorDef", "Escapees")] = {"Cow"}
+    lk4 = v.route_leaks(animals, dict(kinds, Cow={"Cow"}), namers4, cut, eggs=eggs, present=present)
+    check("rl: a route naming a cut race by its own name is a leak", lk4.get("Cow") == ["TileMutatorDef/Escapees"],
+          str(lk4.get("Cow")))
 
 
 def t_a_cut_pack_animal_leaks_through_the_caravan_route_until_it_is_cut():
