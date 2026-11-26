@@ -1,0 +1,509 @@
+{
+  "schema": 1,
+  "mod": "Pyrelands",
+  "version": "0.1.0",
+  "stage": "passed",
+  "stage_label": "Version passed (Passed)",
+  "since": "2026-11-24T19:13:54-08:00",
+  "since_from": "advance by OWNER",
+  "at_door": false,
+  "seeded": {
+    "at": "2026-11-14T16:02:19-08:00",
+    "by": "maturation.py seed",
+    "stage_read_from": "journal",
+    "stage_line": "Stage 3 (\"reconcile\") done offline 2026-11-14 12:40 PST. Preflight re-run 2026-11-14 14:32:",
+    "run_records": "read"
+  },
+  "cycles": {
+    "visit": 1,
+    "total": 6
+  },
+  "pre_human_arrivals": 2,
+  "moves": [
+    {
+      "from": "offline_build",
+      "to": "blind_challenge",
+      "at": "2026-11-14T21:28:26-08:00",
+      "by": "CONDUCTOR",
+      "why": "every Stage 3 exit test passes (maturation.py next, 2026-11-14 9:27 PM PST)",
+      "confirmed": {},
+      "checks_passed": [
+        "order",
+        "version",
+        "hold",
+        "every_bar_has_a_check_that_runs",
+        "table_version",
+        "fourth_cycle"
+      ]
+    },
+    {
+      "from": "blind_challenge",
+      "to": "in_game",
+      "at": "2026-11-15T01:47:31-08:00",
+      "by": "CONDUCTOR",
+      "why": "Blind challenge cycle 1 exit met by the program's reading after a neutral reconcile (2f13be38482c); night order of 2026-11-15",
+      "confirmed": {
+        "steward_confirms": "Read the judge's report and the neutral fixer's: 6 offline bars green on fresh reruns (9 deciders), both Problems (herd anchor, forced rain) shown red on the pre-fix tree and green at HEAD by the fixer's own runs, no test weakened (six before/after hashes match), 20 of 22 planted faults caught and the two misses are game-side. Owed to Stage 6: the rain swap and the anchorless-herd fallback, never run live."
+      },
+      "checks_passed": [
+        "order",
+        "version",
+        "hold",
+        "steward_confirms"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "offline_build",
+      "at": "2026-11-15T07:26:26-08:00",
+      "by": "BENCH",
+      "why": "steward: visit 1 exit not met; sc_three_skies FAIL is a MOD defect (black rain tuning), so the road back is offline_build, not blind_challenge; 6 items filed caused-by RIMMANDRAKE_ROUTE_PYRELANDS_VISIT_ONE_FAILURES_BACK",
+      "confirmed": {
+        "steward_confirms": "read design/concepts/Pyrelands/version/in_game/visit_1/SUMMARY.md + findings.md: 34 PASS, 1 FAIL (sc_three_skies, MOD), 4 UNMEASURED (sc_ruins, sc_ullai, P_opening_front, sc_walk: checks judged wrong); verdict: back to offline_build"
+      },
+      "checks_passed": [
+        "order",
+        "version",
+        "hold"
+      ]
+    },
+    {
+      "from": "offline_build",
+      "to": "blind_challenge",
+      "at": "2026-11-16T12:40:27-08:00",
+      "by": "BENCH",
+      "why": "steward: every Stage 3 exit test passes (order, version, hold, every_bar_has_a_check_that_runs, table_version, fourth_cycle, judge_certificate); maturation.py next 2026-11-16",
+      "unit": "rm-detached-bench-rimmandrake-advance-pyrelands-past-offli-1794861550",
+      "confirmed": {
+        "steward_confirms": "Read maturation.py next (no not-met reason, so nothing to sort as RECORD GAP/CRITERION FLAW/REAL MISS), certificate OK (16 bars' offline deciders green on this build; red_seen UNPROVEN warn only, ticket RIMMANDRAKE_RECORD_RED_SEEN_PER_TEST_OR_PASSED_GREEN open), all 6 visit-1 road-back items closed (black rain fix 24a2069d18 red at dousing 0, green at 40 in the fuzz model), cycle_1 tests_edited.json: 0 weakened; bar 43 added by his card OWNER:1794748469904049550, not by an agent. Owed live at Stage 6: rain_fire.py UNRUN. Verdict: advance.",
+        "owner_said": "per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: steward: every Stage 3 exit test passes (order, version, hold, every_bar_has_a_check_that_runs, table_version, fourth_cycle, judge_certificate); maturation.py next 2026-11-16"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "every_bar_has_a_check_that_runs",
+        "table_version",
+        "fourth_cycle",
+        "judge_certificate"
+      ]
+    },
+    {
+      "from": "blind_challenge",
+      "to": "blind_challenge",
+      "at": "2026-11-16T14:28:16-08:00",
+      "by": "BENCH",
+      "why": "delegated: steward: blind cycle 2 exit_met false only because three Problems (all test-strength) were FIXED at b7b77c929e; a new blind judge is owed to judge the two edited tests; certificate re-stamped on this build (record gap)",
+      "unit": "rm-detached-bench-rimmandrake-route-pyrelands-cycle-two-fa-1794867953",
+      "confirmed": {
+        "steward_confirms": "read cycle_2/SUMMARY.md, faults.json, tests_edited.json and the diff 85c4d61bee..b7b77c929e of both edited tests: stricter only (one regex replaced by a stricter fact, sweep facts and mutants added), weakened false verified; 0 Problems open, 6 offline bars green; certificate --run on this build: OK 16 bars. Verdict: open cycle 3, file nothing new"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "fourth_cycle",
+        "judge_certificate"
+      ]
+    },
+    {
+      "from": "blind_challenge",
+      "to": "blind_challenge",
+      "at": "2026-11-17T12:31:40-08:00",
+      "by": "BENCH",
+      "why": "delegated: evidence-for-ask: cycle 3 fixed 5 Problems red-first at 4a7c450d6b and found every offline bar green after, so by its brief its own fixes cannot pass its exit: a NEW blind judge is owed (spec rule 3). Nothing new filed (the lane-1 FAIL is one of the 5 fixed; the 30 UNSETTLED prove at stage 6; the one Polish item is already filed). Certificate's stale stamps were a RECORD GAP, redone for real by certificate --run (22 tests, 16 bars green). Cycle 4 is cycle 3 of visit 2's road, inside the 3-per-visit limit. The Designer's stage-5 delta coverage look released 12:22 PM PST reads the same locked tree and edits nothing, so it need not gate the judge",
+      "unit": "rm-detached-bench-rimmandrake-route-pyrelands-cycle-three-1794947152",
+      "confirmed": {
+        "steward_confirms": "read cycle_3/SUMMARY.md, lane2/faults.json, fixes.jsonl, tests_edited.json and the diffs of the 3 edited tests (all additions, nothing weakened); exit_met false only because the cycle fixed its own Problems; verdict: a new blind judge is owed",
+        "owner_said": "per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: delegated: evidence-for-ask: cycle 3 fixed 5 Problems red-first at 4a7c450d6b and found every offline bar green after, so by its brief its own fixes cannot pass its exit: a NEW blind judge is owed (spec rule 3). Nothing new filed (the lane-1 FAIL is one of the 5 fixed; the 30 UNSETTLED prove at stage 6; the one Polish item is already filed). Certificate's stale stamps were a RECORD GAP, redone for real by certificate --run (22 tests, 16 bars green). Cycle 4 is cycle 3 of visit 2's road, inside the 3-per-visit limit. The Designer's stage-5 delta coverage look released 12:22 PM PST reads the same locked tree and edits nothing, so it need not gate the judge"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "fourth_cycle",
+        "judge_certificate"
+      ]
+    },
+    {
+      "from": "blind_challenge",
+      "to": "in_game",
+      "at": "2026-11-20T18:01:00-08:00",
+      "by": "BENCH",
+      "why": "steward: blind cycle 4 exit met, read and confirmed; certificate OK after the sand_shovel fix 01853a05a6",
+      "unit": "rm-detached-bench-rimmandrake-confirm-pyrelands-cycle-four-1795225890",
+      "confirmed": {
+        "steward_confirms": "read design/concepts/Pyrelands/version/blind_challenge/cycle_4/SUMMARY.md, faults.json, fixes.jsonl, tests_edited.json: exit_met true, 6 offline bars green, 0 Problems open (the one Problem, a HARNESS gate decider miss, fixed 3962b91eb4). Re-ran myself: T_SETTINGS_SWEEP_OFFLINE green (27/27 mutants red) and red under 3 of the 5 plants (H_wind_ignores_its_switch, K_douse_ignores_gate, H_stamp_caller_skips_gate); the test edit is 126 lines added, 0 removed, sha256 matches. Certificate refusal (sand_shovel asks_on_empty_game) was a wrong check, fixed 01853a05a6; certificate --to in_game now OK. Verdict: exit met, advance."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "steward_confirms",
+        "exit_met",
+        "judge_certificate"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "offline_build",
+      "at": "2026-11-21T03:04:25-08:00",
+      "by": "BENCH",
+      "why": "visit 2 not met: one MOD line not fixed in the sitting (sc_ashwallow, RIMMANDRAKE_FIX_PYRE_ASHWALLOW_SHADE_DASH_BEATS_FIRE_DIVE, game-up), one MOD fault no row caught (RIMMANDRAKE_FIX_PYRE_HAWK_LETTER_BLANKS_FOUR_NAMED_SLOTS, offline), and 16 bars undecided whose checks each keep an open owner item; a mix, so offline_build for the offline line, the game-only one waits for in_game",
+      "unit": "rm-detached-bench-rimmandrake-route-pyrelands-visit-two-fa-1795258031",
+      "confirmed": {
+        "steward_confirms": "read visit_2 SUMMARY.md, rows.jsonl, strange.jsonl and read_ingame_exit: 2 reader faults of form repaired (two-commit repair record; status-explained strange rows), 8 needless checks removed (polish.md), sc_ashwallow MOD stands, 16 undecided bars owned by 7 open items; verdict: road back to offline_build"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
+      ]
+    },
+    {
+      "from": "offline_build",
+      "to": "in_game",
+      "at": "2026-11-21T04:28:14-08:00",
+      "by": "DISPATCH",
+      "why": "every open road-back item (RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN, RIMMANDRAKE_FIX_PYRE_ASHWALLOW_SHADE_DASH_BEATS_FIRE_DIVE, RIMMANDRAKE_FRAME_PYRE_CHAIN_SHOTS_ON_THEIR_SUBJECT, RIMMANDRAKE_RENEW_SAFE_ADVANCE_AUTO_ARM_HOURLY, RIMMANDRAKE_REORDER_PYRE_BURN_WALK_BEFORE_ITS_FRONT_DIES, RIMMANDRAKE_SHIELD_PYRE_WALK_FROM_FULL_LIST_EVENTS, RIMMANDRAKE_STAGE_PYRE_FLAMEFANG_BITES_LAND_ONCE_NOT_MAUL, RIMMANDRAKE_TRACE_PYRE_ASHFALL_FIRE_IN_FIRST_LIGHTNING_WINDOW, RIMMANDRAKE_TRACE_PYRE_FIREHAWK_TURNS_MANHUNTER_IN_BURN_WALK, RIMMANDRAKE_TRACE_PYRE_SITE_WITH_NO_STANDING_WATER_LEFT) is a fault only the game can show, and the version's offline Problems are closed: the Maturation tick takes the game-only exit back to Stage 6 (RIMMANDRAKE_UNPARK_FLOWWORKS_STUCK_AT_OFFLINE_STAGE_EIGHT_HOURS)",
+      "unit": null,
+      "confirmed": {
+        "game_only": "RIMMANDRAKE_BUILD_PYRE_CONTROLS_NO_BRIDGE_TOOL_CAN_RUN, RIMMANDRAKE_FIX_PYRE_ASHWALLOW_SHADE_DASH_BEATS_FIRE_DIVE, RIMMANDRAKE_FRAME_PYRE_CHAIN_SHOTS_ON_THEIR_SUBJECT, RIMMANDRAKE_RENEW_SAFE_ADVANCE_AUTO_ARM_HOURLY, RIMMANDRAKE_REORDER_PYRE_BURN_WALK_BEFORE_ITS_FRONT_DIES, RIMMANDRAKE_SHIELD_PYRE_WALK_FROM_FULL_LIST_EVENTS, RIMMANDRAKE_STAGE_PYRE_FLAMEFANG_BITES_LAND_ONCE_NOT_MAUL, RIMMANDRAKE_TRACE_PYRE_ASHFALL_FIRE_IN_FIRST_LIGHTNING_WINDOW, RIMMANDRAKE_TRACE_PYRE_FIREHAWK_TURNS_MANHUNTER_IN_BURN_WALK, RIMMANDRAKE_TRACE_PYRE_SITE_WITH_NO_STANDING_WATER_LEFT"
+      },
+      "checks_passed": [
+        "order",
+        "game_only",
+        "by",
+        "version",
+        "hold"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "offline_build",
+      "at": "2026-11-21T14:30:39-08:00",
+      "by": "BENCH",
+      "why": "visit 3 exit not met: two MOD lines not fixed in the sitting (sc_firefoam_sprayer: the sprayer carrier never foams, RIMMANDRAKE_DESIGN_PYRE_SPRAYER_CARRIER_NEVER_FOAMS_ITS_PATH; sc_flamefang_venom: one untended bite kills, RIMMANDRAKE_TUNE_PYRE_FLAMEFANG_BITE_KILLS_BEFORE_IMMUNITY), plus undecided bars whose checks the driver could not repair (RIMMANDRAKE_FIND_PYRE_BURNLINE_OFF_CONTROL_THAT_CAN_FAIL, RIMMANDRAKE_READ_PYRE_REGROW_GROWTH_NONE_ON_ALL_SIX_DAYS, game-up) and sc_walk (game a, his full list, next visit). Road back for the MOD lines.",
+      "unit": "rm-detached-bench-rimmandrake-route-pyrelands-visit-three-1795299598",
+      "confirmed": {
+        "steward_confirms": "read design/concepts/Pyrelands/version/in_game/visit_3/SUMMARY.md, rows and lines: 33 PASS, 2 FAIL (MOD, real miss), 3 UNMEASURED (2 HARNESS unrepaired, owned by filed items; sc_walk needs game a); no test assertion weakened (validation.py diff 6ea9314ad1..HEAD read); fix_readers_owed none; verdict: not met, mod wrong, road back to offline_build"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
+      ]
+    },
+    {
+      "from": "offline_build",
+      "to": "blind_challenge",
+      "at": "2026-11-21T17:53:12-08:00",
+      "by": "BENCH",
+      "why": "Conductor's repair brief RIMMANDRAKE_UNSTICK_PYRELANDS_FIXER_COUNT_TWELVE_FOUR_REFUSED step 3: certificate --run reran the stale deciders (T_SITE green on build 7015ef7c8aee35e715c3), CERTIFICATE OK, every exit test passes; this hand act is folded by that item",
+      "unit": "rm-detached-bench-rimmandrake-unstick-pyrelands-fixer-coun-1795312154",
+      "confirmed": {
+        "owner_said": "per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: Conductor's repair brief RIMMANDRAKE_UNSTICK_PYRELANDS_FIXER_COUNT_TWELVE_FOUR_REFUSED step 3: certificate --run reran the stale deciders (T_SITE green on build 7015ef7c8aee35e715c3), CERTIFICATE OK, every exit test passes; this hand act is folded by that item"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "every_bar_has_a_check_that_runs",
+        "table_version",
+        "fourth_cycle",
+        "judge_certificate"
+      ]
+    },
+    {
+      "from": "blind_challenge",
+      "to": "in_game",
+      "at": "2026-11-21T21:49:35-08:00",
+      "by": "BENCH",
+      "why": "steward run RIMMANDRAKE_CONFIRM_PYRELANDS_CYCLE_FIVE_EXIT_MET: blind cycle 5 exit met, read and confirmed; certificate refusal was a RECORD GAP (stale build stamps after the judge's own decider edits), repaired by certificate --run (OK)",
+      "unit": "rm-detached-bench-rimmandrake-confirm-pyrelands-cycle-five-1795326359",
+      "confirmed": {
+        "steward_confirms": "read cycle_5/SUMMARY.md and its rows (judge unit RIMMANDRAKE_JUDGE_PYRELANDS_BLIND_CYCLE_FIVE_TESTS_FIRST): lane1 49 rows 45 PASS 3 INFO 1 UNSETTLED (game_side_bars, Stage 6) 0 FAIL; 6 offline bars green; planted 33/37 caught (34 after repair; 3 misses are Stage-6 ashwallow caller faults, owed live); 2 Problems both check repairs shown red on plant and green on build, red_seen recorded; no mod fault, no fix reader owed; tests_edited: nothing weakened; certificate --run to in_game OK. Verdict: exit met, advance to in_game."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "steward_confirms",
+        "exit_met",
+        "judge_certificate"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "in_game",
+      "at": "2026-11-22T01:47:37-08:00",
+      "by": "BENCH",
+      "why": "steward, visit 4 not met: every line that goes back is game-only and already filed by the driver (needs game-up); road back is the next visit, never offline_build",
+      "unit": "rm-detached-bench-rimmandrake-route-pyrelands-visit-four-f-1795340473",
+      "confirmed": {
+        "steward_confirms": "read visit_4/SUMMARY.md, rows and maturation.py next (4 not-met reasons). Judge-the-judge sort: sc_grass_regreens FAIL = REAL MISS (MOD presumed: ember grass +0.054/day vs vanilla +0.118 on the same ground, growDays 0.8 vs 2.5; the run laid soil, a SITE fault repaired 4fff1aa5e7 but not rerun; reader and census-log repairs 897516fc92, aa441a608f also unrun), item RIMMANDRAKE_TRACE_PYRE_EMBERGRASS_GROWS_TENTH_OF_ITS_RATE, game-up; sc_firefoam_sprayer FAIL = REAL MISS (MOD, carrier lays 0 foam, undesigned, Designer first), item RIMMANDRAKE_DESIGN_PYRE_SPRAYER_CARRIER_NEVER_FOAMS_ITS_PATH, game-up; bar flamefang_bite_carries_venom undecided = REAL MISS (SITE unrepaired, starving bystander stopped the wait-out; planted run voided by a death), item RIMMANDRAKE_FEED_PYRE_VENOM_FIXTURES_HUNGER_STOPS_WAITOUT, game-up; bar walk_season_on_the_pyre undecided = REAL MISS (rerun not done, sc_walk not run at the bound, his full list on game a), owed to the next visit. No RECORD GAP, no CRITERION FLAW (the vanilla-rate expectation follows the def's growDays; the description says a day or two). No mod file changed in the visit, so no fix reader owed. Test edits read: round6_parts re-pins the off-control wait constant, venom_staging adds the doctor-job fake, growth_lines is new: none weakened. Verdict: road back to in_game (next visit) when the three items close; plant_density_one_control_map stays owned by RIMMANDRAKE_BUILD_PYRE_GRASS_FOIL_SAME_SEED_DENSITY_ONE."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "in_game",
+      "at": "2026-11-22T08:54:05-08:00",
+      "by": "BENCH",
+      "why": "steward visit 5: no mod-wrong line; 5 undecided bars rest on 3 game-only check/scene lines already filed by the driver (sprayer ring scene SITE, grass density-1.0 foil HARNESS, burn-history probe HARNESS for sc_walk); fixers at Stage 6, then visit 6",
+      "unit": "rm-detached-bench-rimmandrake-route-pyrelands-visit-five-f-1795365974",
+      "confirmed": {
+        "steward_confirms": "read visit_5 SUMMARY.md, rows (32 PASS 0 FAIL 3 UNMEASURED), exit.lines and the counted repairs' diffs (2613e2e96a, e8cb081456, 15431f983f: none weakens what its check observes, each shown planted FAIL / real PASS); verdict: not met, road back in_game on RIMMANDRAKE_SEAL_PYRE_SPRAYER_RING_BOTH_COLONISTS_WAIT_IT_OUT, RIMMANDRAKE_BUILD_PYRE_GRASS_FOIL_SAME_SEED_DENSITY_ONE, RIMMANDRAKE_FIX_PYRE_BURN_HISTORY_PROBE_COUNTS_BEFORE_IT_PRUNES"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "in_game",
+      "at": "2026-11-23T04:04:31-08:00",
+      "by": "BENCH",
+      "why": "steward of visit 6: one undecided bar (walk_season_on_the_pyre), its only check sc_walk UNMEASURED because ArchSmall cannot hold his full list beside ArchBig; game-only, a rerun not done (REAL MISS, not a mod fault); no mod-wrong line, no mod fix, no fix reader owed. Next visit re-runs the 32 checks the Ullai art (99cede2bfa) and site-loader change touched; a visit owing only sc_walk now waits for ArchBig (aacba60155)",
+      "unit": "rm-detached-bench-rimmandrake-route-pyrelands-visit-six-fa-1795432884",
+      "confirmed": {
+        "steward_confirms": "read visit_6 SUMMARY.md and rows.jsonl: 34 PASS, 0 FAIL, 1 UNMEASURED (sc_walk, class SITE, unrepaired: game placement); 7 harness/site repairs read, each tightens or re-classes, none weakens an observation; verdict: send back to in_game for sc_walk on ArchBig"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "offline_build",
+      "at": "2026-11-23T09:55:31-08:00",
+      "by": "BENCH",
+      "why": "steward of visit 7: two mod-wrong lines not fixed in the sitting, both shown red offline: RIMMANDRAKE_WIDEN_PYRE_LONE_FIRE_INTO_A_FRONT (sc_burn_line_walks' judge clause; accept_lone_fire_lane.py 0 of 8) and RIMMANDRAKE_SPARE_PYRE_FURNACE_BARN_ROOF_FROM_TITAN_WAKE (P_furnace_room; accept_furnace_beast_spares_roof.py FAIL). sc_walk stays UNMEASURED: it needs ArchBig's full list and is the next visit's",
+      "unit": "rm-detached-bench-rimmandrake-route-pyrelands-visit-seven-1795454755",
+      "confirmed": {
+        "steward_confirms": "read visit_7 SUMMARY.md, rows.jsonl, strange.jsonl, the day-end sheet and the lane mask by eye (one-cell lanes and flat-sided bands, wind-off row ragged), and the harness repair 5e888e1af2 (weakens nothing: an asked kind or a critical trigger still stops; planted wrong tend FAIL, real 5/5 PASS); no mod fix in the visit, no fix reader owed; verdict: not met, REAL MISS on both, road back offline_build"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
+      ]
+    },
+    {
+      "from": "offline_build",
+      "to": "blind_challenge",
+      "at": "2026-11-23T14:16:25-08:00",
+      "by": "BENCH",
+      "why": "steward: every Stage 3 exit test passes; certificate rerun 2b9c29ee0f is on main; both visit 7 road-back items closed (510d96f7b8 lone fire, aca7464fe3 furnace barn roof)",
+      "unit": "rm-detached-bench-rimmandrake-advance-pyrelands-past-offli-1795472076",
+      "confirmed": {
+        "steward_confirms": "read maturation.py next (7 exit tests pass, no refusals, no not-met reason to sort), certificate OK (16 bars, red_seen 6 grandfathered, WARN only), gate open; re-ran accept_lone_fire_lane.py 8 of 8 and accept_furnace_beast_spares_roof.py PASS on this build; read the removed test lines of 510d96f7b8 (T_BURN_LANES, T_BURN_ECOLOGY, fuzz): nothing read was weakened; bars unchanged since d55977d87f. Live checks sc_burn_line_walks, sc_fire_walks_with_wind, P_furnace_room recorded UNRUN for Stage 6. Verdict: advance"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "every_bar_has_a_check_that_runs",
+        "table_version",
+        "fourth_cycle",
+        "judge_certificate"
+      ]
+    },
+    {
+      "from": "blind_challenge",
+      "to": "in_game",
+      "at": "2026-11-23T15:46:03-08:00",
+      "by": "BENCH",
+      "why": "blind cycle 6 exit met: both mod fixes of 454764adbe read sound by the steward as fresh reader (lane2/fix_reviews.jsonl); RIMMANDRAKE_ROUTE_PYRELANDS_CYCLE_SIX_FAILURES_BACK",
+      "unit": "rm-detached-bench-rimmandrake-route-pyrelands-cycle-six-fa-1795477190",
+      "confirmed": {
+        "steward_confirms": "read cycle_6 SUMMARY.md, faults.json, fixes.jsonl, tests_edited.json and both test diffs (checks added, none weakened), red_seen for both edited deciders; reran red on 956fb0c600 and green on 454764adbe, lane 1 34 PASS 0 FAIL; run rm-detached-bench-rimmandrake-judge-pyrelands-blind-cycle-1795472682, verdict exit met"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "steward_confirms",
+        "exit_met",
+        "judge_certificate"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "pre_human",
+      "at": "2026-11-24T04:28:32-08:00",
+      "by": "BENCH",
+      "why": "in-game visit 8 exit met: 40 of 40 stage-6 checks PASS on checked sites on the walk build; the one mod fix of the sitting (4a9d62cae0) read sound by its fresh reader",
+      "unit": "rm-detached-bench-rimmandrake-route-pyrelands-visit-eight-1795522206",
+      "confirmed": {
+        "steward_confirms": "Read visit_8/SUMMARY.md, all 29 rows, strange.jsonl, polish.md, the diffs of the sitting's test edits (177a585e57, 694d79e5b8, f83b30b60a, 05d3da7407, 6e9257a1af: no assertion weakened; each repaired check has a planted FAIL beside its real PASS), and the fix: red at its parent (job_ends_off, rc 1), green at 4a9d62cae0 (35 of 35 mutants red), engine order read in Verse.AI.JobDriver. No line is mod wrong, undecided, spoiled or unresolved. Verdict: met."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "steward_confirms",
+        "exit_met",
+        "build_match"
+      ]
+    },
+    {
+      "from": "pre_human",
+      "to": "his_walk",
+      "at": "2026-11-24T04:50:46-08:00",
+      "by": "BENCH",
+      "why": "walk brief arrival_1 written",
+      "unit": "rm-detached-bench-rimmandrake-steward-pyrelands-pre-human-1795523659",
+      "confirmed": {},
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "walk_brief",
+        "walk_items_closed"
+      ]
+    },
+    {
+      "from": "his_walk",
+      "to": "in_game",
+      "at": "2026-11-24T07:14:54-08:00",
+      "by": "DISPATCH",
+      "why": "in-game checks are owed before he walks (P_ambient_ash_drift, P_blackrain, P_gate, P_grass_cover, P_mapgen_log, sc_ash_watered, sc_ashwallow, sc_burn_compounds, sc_burn_line_walks, sc_fire_dusts_ash, sc_fire_walks_with_wind, sc_full_list_smoke, sc_grass_regreens, sc_heat_dome, sc_no_rain, sc_reload_keeps_the_burn, sc_scorchfruit, sc_ullai): the Maturation tick opens the next visit for only these (RIMMANDRAKE_FIX_CHANGE_RELATION_BLIND_TO_CSHARP_NINE_ROWS_MISSED)",
+      "unit": null,
+      "confirmed": {},
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "pre_human",
+      "at": "2026-11-24T14:44:08-08:00",
+      "by": "BENCH",
+      "why": "visit 9 exit met: 39 of 39 in-game checks PASS on checked sites on the walk build; the one thing owed, the fresh reader of a6f05380df, read it sound (visit_9/fix_reviews.jsonl, 18cf1d0cd8)",
+      "unit": "rm-detached-bench-rimmandrake-route-pyrelands-visit-nine-f-1795558961",
+      "confirmed": {
+        "steward_confirms": "Read visit_9/SUMMARY.md, rows.jsonl and strange.jsonl (8 strange things, all explained), and the diff of validation.py and the selftests the visit edited: the regrow row keeps its three claims on exact per-plant growth and gains a positive control, burn-line waits are staged through the saved quiet counter, each repair seen red on a planted fault and green on the build; no assertion lost but the season wording his no-long-play ruling retired. Fresh reader of a6f05380df: sound, its selftest rc 1 on the parent (six facts) and rc 0 at the fix (48 of 48 mutants red), DLL MATCH. The visit 7 control-pad run of sc_burn_compounds is on an older build and is being classed under RIMMANDRAKE_CLASS_PYRE_CONTROL_PAD_BURN_NOBODY_LIT; its reading so far finds no mod ignition. Verdict: exit met."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "steward_confirms",
+        "exit_met",
+        "build_match",
+        "unrun_run"
+      ]
+    },
+    {
+      "from": "pre_human",
+      "to": "his_walk",
+      "at": "2026-11-24T15:21:17-08:00",
+      "by": "BENCH",
+      "why": "walk brief arrival_2 written",
+      "unit": "rm-detached-bench-rimmandrake-steward-pyrelands-pre-human-1795561517",
+      "confirmed": {},
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "walk_checks_stand",
+        "walk_brief",
+        "walk_items_closed"
+      ]
+    },
+    {
+      "from": "his_walk",
+      "to": "passed",
+      "at": "2026-11-24T19:13:54-08:00",
+      "by": "OWNER",
+      "why": "his walk of Pyrelands 0.1.0 on ArchSmall, 2026-11-24 about 7:10 PM PST; next version: more aggressive fire, and grass that declines visibly and leaves dead grass",
+      "unit": null,
+      "confirmed": {
+        "owner_said": "OWNER:1795575810695997798"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "owner_said",
+        "walk_build",
+        "raid_bars_decided",
+        "pass_record_new"
+      ]
+    }
+  ],
+  "spend": [
+    {
+      "stage": "designer",
+      "stages": [
+        "designer"
+      ],
+      "tokens": 11949013,
+      "usd": "UNMEASURED",
+      "wall_s": "UNMEASURED",
+      "source": "design/concepts/Pyrelands/version/VERSION.json tokens_spent",
+      "kind": "mixed: measured and estimated charges, see VERSION.json measured_from",
+      "token_unit": "weighted_v1"
+    },
+    {
+      "stage": "designer",
+      "stages": [
+        "designer",
+        "preflight"
+      ],
+      "tokens": 1764761,
+      "usd": "UNMEASURED",
+      "usd_from": "UNMEASURED",
+      "wall_s": 1136,
+      "cap_usd": 15.0,
+      "source": "detached run rm-detached-bench-rimmandrake-advance-pyrelands-offline-be-1794684315 (item RIMMANDRAKE_ADVANCE_PYRELANDS_OFFLINE_BESIDE_THE_PILOT)",
+      "kind": "measured",
+      "token_unit": "weighted_v1"
+    },
+    {
+      "stage": "offline_build",
+      "stages": [
+        "offline_build"
+      ],
+      "tokens": 2846344,
+      "usd": "UNMEASURED",
+      "usd_from": "UNMEASURED",
+      "wall_s": 1596,
+      "cap_usd": 15.0,
+      "source": "detached run rm-detached-bench-rimmandrake-advance-pyrelands-offline-be-1794687328 (item RIMMANDRAKE_ADVANCE_PYRELANDS_OFFLINE_BESIDE_THE_PILOT)",
+      "kind": "measured",
+      "token_unit": "weighted_v1"
+    }
+  ]
+}

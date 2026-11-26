@@ -12,7 +12,7 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Scope: the biome alone; the Deep
   Desert Tribes are a separate mod (`design/concepts/PyrelandsMechanics`), started only after this version passes.
   Code exists: `src/RimMandrake/Pyrelands/` (packageId `mandrake.rm.pyrelands`, ships composed in `mandrake.rm.biomes`).
-- **Stage now:** Version passed on his word, since 2026-11-24 7:13 PM PST (`version/stage_record.json`).
+- **Stage now:** Stage 2, preflight, since 2026-11-26 1:25 PM PST (`version/stage_record.json`).
 - **Bars:** 42 (21 inventory rows of `record.json` + 21 leaves of `tree.json`), as `version/bars.md` counts them; 41 at
   the lock, `inv_firehawk_hunt_rewards` added by his card 2026-11-14.
   Two inventory rows (`inv_firebreak_firefoam`, `inv_lightning_breaker`) are scope `out`: cut, kept only as absence checks.
@@ -594,3 +594,11 @@ the tree, record and test-table edits, the re-pin and the lock-bars add are queu
 - A later session that must show Pyrelands to the owner starts from `PYRELANDS_REVIEW.rws` (ArchSmall and ArchBig Saves folders, and `D:\ClaudeWork\rimmandrake\review_saves\Pyrelands\`). It is the 0.1.0 walk save plus 16 creature pens with six of each kind.
 - 26,585,426 bytes, sha256 `de9e52ddc8e8458c1efc3c0c7cda3999118ef645d08d8562be4d11c208cedbb9`; it loads on the Pyrelands small list (`version/small_list.json`).
 - What it holds, and the script that makes it again: `version/walk_brief/review_save.md`.
+
+### 2026-11-26 1:25 PM PST, version change: 0.1.0 to 0.2.0 (by CONDUCTOR)
+
+- Why: 0.2.0 on his two scope cards (OWNER:1795722774284846701, OWNER:1795725937729027309): faster fire, roofed grass dies visibly, smoke weather, mechanics by conditions, crestfeather picture, grass under ash (look first), 23 polish lines, part one's Problems; item RIMMANDRAKE_OPEN_PYRELANDS_NEXT_VERSION_HE_ASKED_FASTER_FIRE
+- The 0.1.0 record (at Version passed (Passed)) is kept as `version/stage_record_0.1.0.json`.
+- Its numbered evidence (17 cycle, visit and arrival paths) is set aside in `version/previous/0.1.0`.
+- Was, "Stage now": - **Stage now:** Version passed on his word, since 2026-11-24 7:13 PM PST (`version/stage_record.json`).
+- Record: `version/stage_record.json`.
