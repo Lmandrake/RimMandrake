@@ -51,8 +51,12 @@ with scene.open(GAME, contract=walk, needs={"mods": ["FlowWorks"], "map": SAVE, 
         with s.act.batch() as b:
             for w, x0 in zip(W, PITS):
                 b.job(w, "Goto", cell=cell_of(x0), name=what)
-        for e in b.effects:      # an order the game did not take is the apparatus's fault, never a result about the mod
-            if not getattr(e, "accepted", False):
+        for e in b.effects:
+            reply = (e.observed or {}).get("reply") or {}
+            # the game refused the order itself (bad arguments: live 2026-11-25, a cell sent as a second target): apparatus.
+            # The game took the order and the colonist could not start it (reply accepted=True, no path under a cover with
+            # walking under switched off): a fact about the mod, judged by where she ends.
+            if not getattr(e, "accepted", False) and reply.get("accepted") is not True:
                 raise scene.Fault("ACT_NOT_DONE", detail="a walk order was not taken: %r %s" % (e, str(e.observed)[:300]))
 
     # 1. each walker to the middle of its cover, and the cover over her read by state (not judged: the judge reads the last run)
