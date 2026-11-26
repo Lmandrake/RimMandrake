@@ -30,10 +30,15 @@ run had started (the item's title, written by the Conductor on 2026-11-24).
 |---|---|---|---|---|---|
 | 1 | `RIMMANDRAKE_PROPOSE_FULL_LIST_WALK_NOT_PER_MOD_ARCHBIG_IS_THE_LINE` | 855 | 2 in 79 new sentences | 1 | owed |
 | 2 | `RIMMANDRAKE_RESTORE_FIVE_BAR_CLAIMS_THE_NIGHT_SHRINK_TOOK_OUT` | 793 | 3 in 72 new sentences | 0 | yes: five claims restored at `383784cb3ede`, about 9 minutes |
-| 3 | owed | owed | owed | owed | owed |
-| 4 | owed | owed | owed | owed | owed |
-| 5 | owed | owed | owed | owed | owed |
-| 6 | owed | owed | owed | owed | owed |
+| 3 | `RIMMANDRAKE_READ_STEWARD_FORECAST_FIX_ONCE_FRESH_EYES` | 643 | 0 in 37 new sentences | 1 (the page that the brief names moved when its item closed) | owed |
+| 4 | `RIMMANDRAKE_RETURN_CLONE_UNDER_OLD_POOL_NAME_KEPT_SILENT` | 699 | 3 in 43 new sentences, returned before the start; 0 at the second launch | 0 | owed |
+| 5 | `RIMMANDRAKE_SPARE_RESTART_CUT_BY_ACCOUNT_END_FIRST_SWITCH` | 822 | 3 in 50 new sentences, returned before the start; 0 at the second launch | 1 (a false sentence: the brief said that the Conductor had started a run by hand, and the launch of that run was refused) | owed |
+| 6 | `RIMMANDRAKE_READ_FRESH_HOST_FACTS_NEGATIVE_AGE_CRIED_STALE` | 718 | 0 in 38 new sentences | 0 | owed |
+
+Rows 3 to 6 were launched on 2026-11-26 between 3:48 AM and 4:03 AM PST. The Conductor wrote each of them in one pass,
+with the binding rule and the STE rules in mind. The Conductor did not run the two passes of the clear-findings skill
+on them. The six faults that the launch gave back were 3 pronouns and 3 undefined terms. Both correction notes repair
+a wrong fact, not unclear wording: the prose check does not read facts.
 
 Briefs 1 and 2 were launched with faults, so the step "correct until 0 faults" was not done for them. The launch check at
 that time ran after the start only.
