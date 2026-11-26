@@ -389,6 +389,31 @@ def t_validity_module():
     ok(validity.colonists_zero(ctx, None)[1] == "UNKNOWN", "colonists_zero fires on an empty roster")
     ctx.session = _Sess()
     ok(validity.colonists_zero(ctx, None) is None, "colonists_zero quiet with a colonist")
+
+    # HARNESS_REPAIR_CAUSE_CEF341B8_2 (J20261125T181457Z-73e9d2): grey_floor_is_a_place makes a seabed map current on
+    # purpose; jawa/list_pawns reads only the current map, so the colony on map 0 read as "colonist count 0" and the
+    # row's FAIL was withheld. The colony is every map's colonists (rimworld/list_colonists currentMapOnly=False).
+    class _AwaySess(_Sess):
+        def __init__(self, roster):
+            _Sess.__init__(self, colonists=0)
+            self.roster = roster
+
+        def call(self, tool, **p):
+            if tool == "rimworld/list_colonists":
+                self.calls.append(tool)
+                return self.roster if p.get("currentMapOnly") is False else {"success": True, "colonists": []}
+            return _Sess.call(self, tool, **p)
+    away = {"success": True, "colonists": [{"pawnId": "Thing_Human1", "dead": False, "humanlike": True,
+                                            "factionIsPlayer": True, "mapId": 0}]}
+    ctx.session = _AwaySess(away)
+    ok(validity.colonists_zero(ctx, None) is None,
+       "colonists_zero quiet when the colony lives on another map than the current one", ctx.session.calls)
+    ctx.session = _AwaySess({"success": True, "colonists": [dict(away["colonists"][0], dead=True)]})
+    ok((validity.colonists_zero(ctx, None) or [None, None])[1] == "UNKNOWN",
+       "foil: colonists_zero fires when every map's colonists are dead")
+    ctx.session = _AwaySess({"success": False, "message": "no such tool"})
+    ok((validity.colonists_zero(ctx, None) or [None, None])[1] == "UNKNOWN",
+       "foil: colonists_zero still fires when the other maps cannot be read (could not look is not a colony)")
     ok(validity.hostile_arrival()(ctx, None)[1] == "SITE", "hostile_arrival fires on an undeclared hostile")
     ok(validity.hostile_arrival(fixtures=["h1"])(ctx, None) is None, "hostile_arrival quiet for a declared fixture")
     ctx.fixture_ids = {"h1"}

@@ -47,8 +47,24 @@ def colonists_zero(ctx, comp):
     except Exception:  # noqa: BLE001
         return None
     if not any(h.is_colonist(r) and not r.get("dead") for r in rows):
+        if _colony_elsewhere(ctx.session):
+            return None
         return ("no live colonist on the map (colonist count 0)", "UNKNOWN", "medium")
     return None
+
+
+def _colony_elsewhere(session):
+    """True when a live player colonist stands on some map: jawa/list_pawns reads only the CURRENT map, and a chain may
+    make an uninhabited map current on purpose (DivingInteraction grey_floor_is_a_place, HARNESS_REPAIR_CAUSE_CEF341B8_2).
+    A read that fails, or holds no roster, is False: could not look is never a colony."""
+    try:
+        r = session.call("rimworld/list_colonists", currentMapOnly=False) or {}
+    except Exception:  # noqa: BLE001
+        return False
+    if r.get("success") is False or not isinstance(r.get("colonists"), list):
+        return False
+    return any(not c.get("dead") and c.get("humanlike") is not False and c.get("factionIsPlayer") is not False
+               for c in r["colonists"])
 
 
 def hostile_arrival(fixtures=()):
