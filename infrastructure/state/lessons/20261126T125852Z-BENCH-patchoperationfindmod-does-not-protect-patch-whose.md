@@ -1,0 +1,3 @@
+A PatchOperationFindMod does not protect a patch whose Operation Class comes from an absent mod: RimWorld builds the whole patch tree, <match> included, when it parses the file, and logs 'Could not find type named ...' before FindMod runs (measured, ArchBig cold load 2026-11-26 04:40 PST). Put such an Operation in a PatchOperationSequence as <li MayRequire="<mod>">. The list loader skips that <li> without parsing it. Armoury's lint armoury_donor_class_guard.py goes red on a FindMod used this way.
+item: RIMMANDRAKE_LOAD_ARMOURY_ABSORBED_DEFS_WITHOUT_LIGHTSABER_TYPES
+home: skills/rimworld-modding/references/project-engine-facts.md
