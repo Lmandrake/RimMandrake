@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "2a6d534eecd71177ba5cd0d38db0ba5c03425e4d7aa8e16d9ee7d560eb0285b4",
+  "body_sha256": "09a107a5610e01812a34a8ca34456579d2e386a0aabb5b7ccb06719f033a5fb4",
   "reducer": 1,
   "shards": {
    "BACKFILL": 443819,
@@ -3545,7 +3545,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-26T21:55:16Z",
+   "last": "2026-11-26T21:55:25Z",
    "lease": "run-1794718800",
    "released": false,
    "token": 8

@@ -1,4 +1,4 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":443819,"DISPATCH":21022,"HOLDER.run-1794828190":994,"JUDGE.judge-1794822790":13753,"JUDGE.judge-1794822890":2037} body_sha256=055b12651eb19bd706042478e0f645462eebc23d80419268a2f088b8679dbb9d -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":443819,"DISPATCH":21022,"HOLDER.run-1794828190":994,"JUDGE.judge-1794822790":13753,"JUDGE.judge-1794822890":2037} body_sha256=fbcfb90ad456ffa581fbcf975ca192994eb8d14ef46a18611c7d1929522ffecf -->
 # GimmeSomeSlack — mod ledger history (655 events, merged across shards)
 
 - 2026-11-16T07:11:06Z BACKFILL#1 spend spend v0.1.0: 
@@ -654,5 +654,5 @@
 - 2026-11-26T02:20:11Z BACKFILL#570 bar.locked bar:wall_lamp_takes_looks v0.2.0: locked for 0.2.0 in version/locked_bars.json (record 6 of 2026-11-24T19:53:56Z): inventory bar, from record.json, proves at stage 6
 - 2026-11-26T02:20:11Z BACKFILL#571 bar.locked bar:battery_takes_looks v0.2.0: locked for 0.2.0 in version/locked_bars.json (record 6 of 2026-11-24T19:53:56Z)
 - 2026-11-26T02:20:11Z BACKFILL#572 bar.locked bar:ship_to_ground_wire_snaps v0.2.0: locked for 0.2.0 in version/locked_bars.json (record 6 of 2026-11-24T19:53:56Z)
-- 2026-11-26T21:55:16Z DISPATCH#59 lease.grant lease v0.2.0: 
-- 2026-11-26T21:55:33Z DISPATCH#60 run.start run v0.2.0: 
+- 2026-11-26T21:55:25Z DISPATCH#59 lease.grant lease v0.2.0: 
+- 2026-11-26T21:55:42Z DISPATCH#60 run.start run v0.2.0: 
