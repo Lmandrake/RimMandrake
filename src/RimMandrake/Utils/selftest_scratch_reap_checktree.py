@@ -10,14 +10,19 @@ Cases:
   B. a repo vendored inside the clone's work tree still is (the refusal that guards real work stays);
   D. a check tree made inside a kept check tree's git dir is not nested either;
   C. a repo hidden inside a check tree's deeper path still is.
+`--at <rev>` replays the cases on scratch_reap.py as it was at that commit (the guard's red, on the parent of the fix
+81d617a484).
 """
+import argparse
+import importlib.util
+import subprocess
 import sys
 import tempfile
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path[:0] = [str(HERE)]
-import scratch_reap as R  # noqa: E402
+R = None
 
 FAILS = []
 
@@ -28,7 +33,32 @@ def check(ok, what):
         FAILS.append(what)
 
 
+def load(at, td):
+    if not at:
+        import scratch_reap
+        return scratch_reap
+    src = subprocess.run(["git", "-C", str(HERE), "show", "%s:./scratch_reap.py" % at], check=True, capture_output=True,
+                         text=True).stdout
+    p = Path(td) / "scratch_reap.py"
+    p.write_text(src)
+    spec = importlib.util.spec_from_file_location("scratch_reap", p)
+    m = importlib.util.module_from_spec(spec)
+    sys.modules["scratch_reap"] = m
+    spec.loader.exec_module(m)
+    return m
+
+
 def main() -> int:
+    global R
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--at", help="replay on scratch_reap.py at this commit")
+    a = ap.parse_args()
+    with tempfile.TemporaryDirectory(prefix="selftest_reap_checktree_at_") as at_dir:
+        R = load(a.at, at_dir)
+        return cases()
+
+
+def cases() -> int:
     with tempfile.TemporaryDirectory() as t:
         d = Path(t) / "clone"
         for rel in (".git/objects", ".git/rm-treecheck-kept/.git/objects", ".git/rm-treecheck-q3dvxzdj/.git/objects",
