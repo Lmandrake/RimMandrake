@@ -89,6 +89,9 @@ namespace RimMandrake.CreatureBehaviors
                         canTargetItems = true,
                         canTargetPawns = true,
                         canTargetCorpses = true,
+                        // Its default (true) admits only isAutoAttackableMapObject items, so a wreck chunk was never
+                        // hookable (live, ArchSmall 2026-11-26: CanTarget refused ChunkSlagSteel). Refusal() decides.
+                        mapObjectTargetsMustBeAutoAttackable = false,
                         validator = ti => ti.HasThing && Refusal(ti.Thing) == null,
                     }, ti => TryHook(ti.Thing));
                 },

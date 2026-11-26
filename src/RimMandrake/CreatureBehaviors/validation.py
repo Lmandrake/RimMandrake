@@ -589,6 +589,95 @@ def settings(t):
                                    value=str(SETTING_FIELDS[name][1]))
 
 
+WINCH_DEF = "RM_SalvageWinch"
+WINCH_CHUNK = "ChunkSlagSteel"          # a wreck chunk: an item, not an auto-attackable map object
+WINCH_DIST = 8                          # cells east of the winch; the shipped range is 15
+WINCH_XML = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "TheSump", "Defs", "ThingDefs_Buildings",
+                         "RM_SalvageWinch.xml")
+
+
+def _winch_state(t):
+    r = t.session.call("jawa/comp_read", thing=WINCH_DEF, comp="SalvageWinch", members="target,hooked,lastOutcome")
+    return (r or {}).get("values") or {}
+
+
+def _chunk_cell(t, chunk_id):
+    things = (t.session.call("jawa/list_things", defName=WINCH_CHUNK, limit=50) or {}).get("things") or []
+    hit = [x for x in things if x.get("id") == chunk_id]
+    return (hit[0].get("x"), hit[0].get("z")) if hit else None
+
+
+@suite.chain("salvage_winch_reel")
+def salvage_winch_reel(t):
+    """SHIP_TOW_LINE_1 (X-13/CB-9): the player hooks a wreck chunk with the winch's own "Hook salvage" button and the
+    winch drags it home one cell per reel interval until it rests beside the winch. The hook goes through the gizmo and
+    its targeter (jawa/targeter_pick: the targeter's own CanTarget and validator, as the player's click), never a field
+    write. Red on 2026-11-26 before the fix: the targeter refused every item (TargetingParameters'
+    mapObjectTargetsMustBeAutoAttackable default). Not proven here: corpses and downed beasts (the hook rules are fuzzed
+    offline, selftest_creaturebehaviors_fuzz.py winch), the KeelHoist pairing (not wired)."""
+    state = {}
+    with _comp(t, "the_player_hooks_a_wreck_chunk", toggle="salvageWinchEnabled"):
+        if t.session is None:
+            return
+        t.clear_area(size=2 * WINCH_DIST + 10)
+        x, z = t.anchor
+        b = t.session.call("jawa/build_batch", ops="%s:%d,%d" % (WINCH_DEF, x, z), faction="PlayerColony")
+        sp = t.session.call("jawa/spawn_batch", ops="%s:%d,%d" % (WINCH_CHUNK, x + WINCH_DIST, z))
+        if not (b or {}).get("placed") or not (sp or {}).get("thingsPlaced"):
+            _unmeasured(t, "the scene did not stage: winch %s, chunk %s" % (str(b)[:150], str(sp)[:150]))
+        winch = ((t.session.call("jawa/list_things", defName=WINCH_DEF, limit=5) or {}).get("things") or [{}])[0].get("id")
+        chunk = [c for c in ((t.session.call("jawa/list_things", defName=WINCH_CHUNK, limit=50) or {}).get("things") or [])
+                 if (c.get("x"), c.get("z")) == (x + WINCH_DIST, z)]
+        if not winch or not chunk:
+            _unmeasured(t, "staged things not found: winch %r, chunk at %d,%d %r" % (winch, x + WINCH_DIST, z, chunk))
+        state["chunk"] = chunk[0]["id"]
+        t.session.call("rimworld/clear_selection")
+        t.session.call("jawa/select_things", ids=winch)
+        gz = (t.session.call("rimworld/list_selected_gizmos") or {}).get("gizmos") or []
+        g = next((q for q in gz if str(q.get("label") or "") == "Hook salvage"), None)
+        if g is None:
+            raise ExpectationFailed("no Hook salvage button on the winch (saw %s)" % [q.get("label") for q in gz][:10])
+        t.session.call("rimworld/execute_gizmo", gizmoId=g.get("gizmoId") or g.get("id"))
+        pick = t.session.call("jawa/targeter_pick", x=x + WINCH_DIST, z=z, thing=state["chunk"])
+        t.session.call("rimworld/clear_selection")
+        got = _winch_state(t).get("target") or ""
+        if state["chunk"] not in got:
+            raise ExpectationFailed("the winch did not take the chunk %s: target %r; targeter %s"
+                                    % (state["chunk"], got, str(pick)[:300]))
+        state["hooked"] = True
+    with _comp(t, "the_winch_drags_it_home_a_cell_per_interval", toggle="salvageWinchEnabled"):
+        if t.session is None:
+            return
+        if not state.get("hooked"):
+            _unmeasured(t, "nothing was hooked, so there is no reel to watch")
+        r = t.session.call("jawa/static_call", type=NS + "RM_CompSalvageWinch", method="get_ReelIntervalTicks", args="")
+        try:
+            interval = int(str((r or {}).get("result")))
+        except ValueError:
+            _unmeasured(t, "reel interval unreadable: %r" % (r,))
+        x, z = t.anchor
+        path = [_chunk_cell(t, state["chunk"])]
+        for _ in range(WINCH_DIST + 2):
+            t.wait_ticks(interval + 1)
+            path.append(_chunk_cell(t, state["chunk"]))
+            if _winch_state(t).get("lastOutcome") not in ("hooked", ""):
+                break
+        steps = [a[0] - b[0] for a, b in zip(path, path[1:]) if a and b]
+        end = _winch_state(t)
+        if None in path:
+            raise ExpectationFailed("the chunk was lost on the way: %r" % path)
+        with open(WINCH_XML, encoding="utf-8") as f:
+            m = re.search(r"<size>\(\s*(\d+)\s*,", f.read())
+        if not m:
+            _unmeasured(t, "the winch's size is unreadable in %s" % WINCH_XML)
+        beside = x + int(m.group(1)) // 2 + 1        # first cell east of the winch's footprint (rot north)
+        if end.get("lastOutcome") != "arrived" or path[-1] != (beside, z):
+            raise ExpectationFailed("the chunk did not come to rest beside the winch (%d,%d): path %r, winch %r"
+                                    % (beside, z, path, end))
+        if any(st not in (0, 1) for st in steps) or max(steps or [0]) != 1:
+            raise ExpectationFailed("not one cell per interval toward the winch: steps %r (path %r)" % (steps, path))
+
+
 # Every def this mod ships is loaded and its label is what its XML says (NORTHSTAR_PARTIAL_GAPS_FILL_1;
 # the shared engine's own defs). The Defs/ parse is the list, so a def added later is covered with no edit here.
 from modcheck import shipped_defs  # noqa: E402
