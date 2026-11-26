@@ -1,0 +1,3 @@
+Claude Code puts the real path of its cwd (getcwd) in the request, never $PWD: a symlinked cwd changes nothing (measured 2026-11-26, a dead-port probe that spends no tokens: ANTHROPIC_BASE_URL=http://127.0.0.1:9 claude -p hi --session-id <uuid>, then read workingDirectory in the transcript). With CLAUDE_CODE_DISABLE_AUTO_MEMORY=1 and the project CLAUDE.md moved to --append-system-prompt-file plus claudeMdExcludes, the cwd first appears in message 1's environment block, so two clones share message 0.
+item: RIMMANDRAKE_SHARE_HELPER_START_ONE_STATUS_LINE_REWRITES_IT
+home: design/specs/2026-11-26-shared-helper-start/boundary.md

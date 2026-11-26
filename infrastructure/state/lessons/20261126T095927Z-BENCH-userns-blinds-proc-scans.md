@@ -1,0 +1,3 @@
+A process inside an unprivileged user namespace (unshare --user, or a systemd user unit's PrivateUsers/BindPaths) cannot read /proc/<pid>/environ, cwd, fd or maps of any process outside that namespace, even one of the same uid: the kernel's ptrace check needs the same user namespace (measured 2026-11-26: 139 of 140 of this uid's processes refused inside, 5 outside). Every /proc scan such a process runs goes blind: clone_in_use reads a busy clone as free, scan_marked_live reads blind, selftest_detached_reap goes red at ./publish. Do not put an agent that runs our tools inside a user namespace.
+item: RIMMANDRAKE_SHARE_HELPER_START_ONE_STATUS_LINE_REWRITES_IT
+home: infrastructure/state/facts/tool_traps.md
