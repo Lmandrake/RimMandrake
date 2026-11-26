@@ -24,7 +24,8 @@ The checks (each prints PASS, FAIL or INVALID with what it read):
   V_SMALL      the squirrel takes the larger hit: otherAmount > amount, and its new Bruise+Crush is larger (or it died)
   V_LARGE      the colonist takes the larger hit: amount > otherAmount, and its new Bruise+Crush is larger than the muffalo's
   V_ALIKE      two colonists: the split follows the masses (amount / otherAmount = otherMass / mass within 0.05) and each
-               hit is at most 4.45 (a like pair's two cells of wall impact, 1.25 / 2.25 x 2 x 4 per cell)
+               hit is at most the larger mass's share of 8.9 (two cells of wall impact, 1.25 / 2.25 x 2 x 4 per cell;
+               4.45 for a like pair)
   V_NOT_DOWNED colonist lane: neither colonist is downed
   V_HEDIFF <lane>  the walker gained a Bruise or Crush hediff; on the animal lanes (small, large: no armour) its gain is the
                    record's otherAmount within 25 percent, so the walker took its own share and not the thrower's
@@ -269,9 +270,12 @@ if "colonist" in land:
     m, om = num(land["colonist"], "mass"), num(land["colonist"], "otherMass")
     ratio = a / o if a and o else None
     follows = ratio is not None and m and om and abs(ratio - om / m) <= 0.05
-    light = a is not None and o is not None and max(a, o) <= 4.45
-    row("PASS" if follows and light else "FAIL", "V_ALIKE", "amount %s / otherAmount %s = %s; masses %s, %s -> %s (limit +-0.05); both at most 4.45: %s" % (
-        a, o, ratio, m, om, (om / m) if m and om else None, light))
+    # the 4.45 is the like pair's half of 8.9 (two cells of wall impact); the fixture's colonists are not always alike (visit 2:
+    # 48.83 and 62.58 kg read 4.494 with the split right), so the cap is the larger mass's share of the same 8.9
+    cap = 8.9 * max(m, om) / (m + om) if m and om else 4.45
+    light = a is not None and o is not None and max(a, o) <= cap
+    row("PASS" if follows and light else "FAIL", "V_ALIKE", "amount %s / otherAmount %s = %s; masses %s, %s -> %s (limit +-0.05); both at most %.3f: %s" % (
+        a, o, ratio, m, om, (om / m) if m and om else None, cap, light))
     d = rows["colonist"]["downed"]
     row("PASS" if not d.get("thrower") and not d.get("walker") else "FAIL", "V_NOT_DOWNED", "thrower downed %s, walker downed %s" % (
         d.get("thrower"), d.get("walker")))
