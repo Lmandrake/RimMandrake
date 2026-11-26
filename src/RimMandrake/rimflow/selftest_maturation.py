@@ -993,6 +993,17 @@ def next_version_main(root):
     v2 = dict(v, version="9.9.9", state="locked 2026-11-15")
     with open(vp, "w") as f:
         json.dump(v2, f)
+    # RIMMANDRAKE_CARRY_HIS_WORD_NEXT_VERSION_SCOPE_IS_HIS_REVIEW: a next version opens only on his recorded scope answer
+    r = M.next_version(root, mod, "BENCH", "selftest: no scope answer yet")
+    ok(not r["ok"] and r.get("owed") == "his scope answer" and M.load(root, mod)["version"] == old["version"],
+       "next-version refuses a next version with no recorded scope answer (%s)" % r["why"][:80])
+    oshard = os.path.join(root, "infrastructure", "state", "ledger", "events", "OWNER.jsonl")
+    os.makedirs(os.path.dirname(oshard), exist_ok=True)
+    with open(oshard, "a") as f:
+        f.write(json.dumps({"seat": "OWNER", "event": "note", "id": "X", "ts": "2026-11-26T18:46:45Z",
+                            "tsn": 9190000099, "ownerSaid": "Open 9.9.9 with that scope", "ranBy": "BENCH"}) + "\n")
+    with open(vp, "w") as f:
+        json.dump(dict(v2, scope_answer="OWNER:9190000099"), f)
     import modledger
     modledger.append(root, mod, "DISPATCH", "stage.accepted", "stage", body={"from": "his_walk", "to": "passed",
                      "by": "BENCH"}, version=str(old["version"]), env_writer=None)   # the mod has a ledger at the old version

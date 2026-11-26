@@ -287,6 +287,17 @@ tsn not in OWNER.jsonl, or a path that does not exist.
     (`delegation_policy.md` §2). Record that act as a Conductor act, as in the owner-only bullet above (`--per-ruling
     RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`, `certified_by conductor`).
 - Record his reply with `rimflow note <ITEM> ... --owner-said "<his words>"` first, then cite its `tsn`.
+- **A mod's next Design Version is his review, never an Evidence-for-Ask call** (owner, 2026-11-26,
+  `standing_rulings.md` §Mod Design Versions). The Evidence-for-Ask rule never opens or locks a next version.
+  - Write the scope proposal page first: `design/concepts/<Mod>/version/next_version/scope_proposal_<version>.md`.
+    Each block says what the player would see, its size and your recommendation. The page opens and locks nothing.
+  - Until his answer is recorded, do not change `version/VERSION.json`, the bars, `record.json`, `scenes.json`, the
+    test table or `vision.md` for the next version, and do not run `maturation.py next-version`. End the run with the
+    page; the Conductor brings it to him.
+  - On his recorded answer (`--owner-said` or `--by-card`), write `"scope_answer": "OWNER:<tsn>"` into
+    `version/VERSION.json` with the new version, then draft and lock the bars of the scope that he answered.
+    `maturation.py next-version` refuses a next version without that field.
+  - A new mod's first version, 0.1.0, is still locked by the pipeline without asking him.
 
 ## His answers
 

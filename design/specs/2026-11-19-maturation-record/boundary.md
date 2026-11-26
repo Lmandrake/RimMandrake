@@ -47,6 +47,12 @@ this one, `design/specs/2026-11-19-maturation-reads/boundary.md`; the record's o
   written, and names every moved path in its result (`archived`, `aside`), its journal entry and its CLI line; an
   archive path already taken refuses the move before anything moves. The new version's cycle 1, visit 1 and arrival 1
   start empty, and the old version's evidence is kept (`modledger.py` still reads its fault ids).
+- **next-version-waits-for-his-scope-answer.** `next_version` opens a next Design Version (a MAJOR.MINOR.PATCH above
+  the record's) only when VERSION.json's `scope_answer` is `OWNER:<tsn>` naming an OWNER event that carries his words
+  (`ownerSaid` or `byCard`) or is the Conductor window's act. Otherwise it moves nothing and refuses with the repair:
+  the scope page `version/next_version/scope_proposal_<version>.md`, the missing answer, and who brings it (the
+  Conductor). A record whose version is not MAJOR.MINOR.PATCH (seeded before the first lock) is not a next version
+  (owner, 2026-11-26).
 - **next-version-refuses-a-move-made-meanwhile.** `next_version` writes its new record only if the record on disk
   still has the stage, version and number of moves that it read (`commit_move`'s `expect`). When a move landed in
   between, it returns `ok` False, keeps that move and moves the set-aside evidence back.

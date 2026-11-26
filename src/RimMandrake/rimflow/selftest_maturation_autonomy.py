@@ -986,7 +986,7 @@ def main():
         w = World({"H": {"mod": "H", "stage": "his_walk", "version": "0.1.0", "live_units": []}})
         rd, g = run(w, ["H"], root)
         ok(g("H").get("klass") == "owner" and not w.launched, "his walk: OWNER, nothing launched")
-        # a passed version rests (Evidence-for-Ask): no card to him; opening the next version is an ordering call
+        # a passed version rests: no card from the tick; its next version opens only on his scope answer
         fresh_state()
         w = World({"P": {"mod": "P", "stage": "passed", "version": "0.1.0", "live_units": []}})
         rd, g = run(w, ["P"], root)

@@ -2071,6 +2071,29 @@ His card answers, 2026-11-13, and his later rulings:
     `design/concepts/PyrelandsMechanics`. The Tribes mod gets its own Design Version 0.1.0.
   - The Tribes mod is started only after the biome passes. Until then, the Tribes mod stays out of test mod lists. The
     design is kept as written.
+- **He reviews the scope of a mod's next Design Version before it opens** (owner, Thu 2026-11-26 10:46 AM PST, OWNER
+  event `1795718805213683043` on `RIMMANDRAKE_OPEN_PYRELANDS_NEXT_VERSION_HE_ASKED_FASTER_FIRE`: *"If we're opening
+  0.2.0 for Pyrelands, I want to review what we might put into it, ok? That's not an automatic decision"*). He said it
+  of Pyrelands 0.2.0. The Conductor reads it as every mod, and told him so (item
+  `RIMMANDRAKE_CARRY_HIS_WORD_NEXT_VERSION_SCOPE_IS_HIS_REVIEW`).
+  - The failure that it answers: on 2026-11-26 a Designer run started to open Pyrelands 0.2.0 and drafted its bars
+    before he saw the scope (commit `faa90e801d`; the live files were restored in `969e27793b`). The rules of that
+    morning allowed the run.
+  - The Designer writes a scope proposal page, `design/concepts/<Mod>/version/next_version/scope_proposal_<version>.md`.
+    The page opens nothing and locks nothing. Each block says what the player would see, the size, and a
+    recommendation.
+  - The Conductor reads the page and brings it to him.
+  - The version opens, and its bars lock, only on his answer. Record his answer with `--owner-said` or `--by-card`.
+    Then write `"scope_answer": "OWNER:<tsn>"` (that event) into the mod's `version/VERSION.json`.
+  - `maturation.py next-version` refuses a next version (a MAJOR.MINOR.PATCH above the record's) when `scope_answer`
+    does not name an OWNER event that carries his words (`ownerSaid` or `byCard`), or the Conductor window's act. The
+    refusal names the page, the missing answer and who brings it (the Conductor). Test:
+    `selftest_maturation_record.py` `t_next_version_waits_for_his_scope_answer`.
+  - This is his hold by his own word on the opening of a next Design Version. It is not a sixth act: the five acts stay
+    five (§Only five acts stay his).
+  - Two things do not change. The pipeline still locks a new mod at 0.1.0 without asking him (next bullet). The
+    Conductor still decides at filing whether a change goes to the current version, the next version or the Polish
+    list ("The Conductor decides both", above). That call files a change; it opens no version.
 - **A new mod's first Design Version is 0.1.0, locked by the pipeline without asking him** (§Evidence-for-Ask, in this
   file).
   - When the mod's concept tree locks, `maturation_autonomy` writes VERSION.json `locked` 0.1.0, `locked_by: pipeline`,

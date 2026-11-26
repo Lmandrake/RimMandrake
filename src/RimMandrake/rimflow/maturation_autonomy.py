@@ -17,7 +17,8 @@ every mod exactly one class:
            (OPS_MATURATION_MOD_PAUSED) while any mod is paused, so a repeat reopens it; a pause whose cause is a
            filed open fix item (coverage stopped, or a Designer blocked on a named item) launches that item's one
            fixer run itself (_stop_tickets), and stays paused meanwhile
-  rested   a passed version: nothing runs and nothing is asked; opening the next version is an ordering call
+  rested   a passed version: nothing runs and nothing is asked; the next version opens only on his answer to its
+           scope proposal page, which the Conductor brings him
   owner    a stop that is genuinely his (his walk, a Designer turn waiting on him, a lock
            with recorded evidence against 0.1.0): a ready-to-ask card text goes in the Conductor log once, and it
            quotes the evidence (his Evidence-for-Ask ruling, 2026-11-15)
@@ -133,10 +134,12 @@ HOLDS = {"held"}
 PLANNED = {"pipeline_paused", "disabled"}     # a stop someone chose: class planned, never an alarm
 STEWARD_ON = {"hand_step", "ready", "exit_met", "exit_not_met"}
 OWNER_STAGES = {"his_walk": "his live walk (Stage 8): the version passes on his words alone"}
-# A passed version rests (spec: "pass record written; the mod rests"); opening the next one is weighed against the other
-# mods, an ordering call (delegation_policy.md §1), so it is no card to him (Evidence-for-Ask, owner 2026-11-15).
-RESTED = ("the version passed and the mod rests; opening its next version is the Conductor's ordering call against "
-          "the other mods (delegation_policy.md §1, Evidence-for-Ask), taken with `maturation.py next-version`")
+# A passed version rests (spec: "pass record written; the mod rests"). Nothing here opens its next version: the version
+# opens only on his answer to the scope proposal page, which the Conductor brings him (owner 2026-11-26,
+# standing_rulings.md §Mod Design Versions); `maturation.py next-version` refuses without that recorded answer.
+RESTED = ("the version passed and the mod rests; its next version opens only on his answer to the Designer's scope "
+          "proposal page (version/next_version/scope_proposal_<version>.md), which the Conductor brings him; then "
+          "`maturation.py next-version`")
 WALK_STAGES = {"pre_human", "his_walk"}     # no in-game check may be owed here (M.walk_owed)
 STEWARD_STAGES = {"preflight", "pre_human"}     # stages whose whole step is the steward's: run it, then advance
 CHAIN_AFTER = ("coverage_release", "coverage_stop", "lock")

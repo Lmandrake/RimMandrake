@@ -62,7 +62,7 @@ Per mod, beside its definition and its code:
 - **The pass record** of each passed version: date, git hash, bars, evidence, deferred bars, total cost, judge rounds. A passed version's tests become regression tests for every later version.
 
 ### 3.8 Opening a new version is a portfolio decision
-After a pass the mod rests. Opening its next version is decided by him and the Conductor together against one question: *is this worth more than getting the next mod to its first working version?* The Conductor brings one table: every mod, its version, state, and the size of its next-version file.
+After a pass the mod rests. Opening its next version is weighed against one question: *is this worth more than getting the next mod to its first working version?* The Conductor brings one table: every mod, its version, state, and the size of its next-version file. The next version opens only on his answer to the Designer's scope proposal page (`version/next_version/scope_proposal_<version>.md`), which the Conductor brings him (owner, 2026-11-26, `design/RimMandrake/standing_rulings.md` §Mod Design Versions).
 
 ### 3.9 What gets measured, at last
 Per passed version: cost, judge rounds, days, bars deferred. Across mods: passes per week and cost per pass. A version with five or more judge rounds, or over its budget, parks and comes to him with the remaining list (the cap that Explosive Knockback's 4M budget failed to enforce).

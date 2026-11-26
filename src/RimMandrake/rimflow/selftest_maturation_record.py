@@ -156,13 +156,32 @@ OLD_EVIDENCE = {"version/blind_challenge/cycle_1/SUMMARY.md": "old cycle 1\n",
                 "version/walk_brief/arrival_1.md": "old arrival 1\n"}
 
 
-def rollover_root(name):
-    """-> a root holding MOD's passed 0.1.0 (two blind cycles, one visit, one arrival) and VERSION.json at 0.2.0."""
+HIS_ANSWER_TSN = "1000000000000000001"   # not on the real shard, which owner_events also reads
+HIS_ANSWER = {"seat": "OWNER", "event": "note", "id": "SELFTEST_ITEM", "tsn": int(HIS_ANSWER_TSN),
+              "ownerSaid": "Yes, open 0.2.0 with the scope on the proposal page", "ranBy": "BENCH",
+              "ts": "2026-11-26T18:46:45Z"}
+
+
+def owner_shard(root, *events):
+    """Write the root's OWNER shard with these events (concept_tree.owner_events reads it)."""
+    import concept_tree as CT
+    p = os.path.join(root, CT.OWNER_SHARD)
+    os.makedirs(os.path.dirname(p), exist_ok=True)
+    with open(p, "w", encoding="utf-8") as f:
+        f.write("".join(json.dumps(e) + "\n" for e in events))
+
+
+def rollover_root(name, answered=True):
+    """-> a root holding MOD's passed 0.1.0 (two blind cycles, one visit, one arrival) and VERSION.json at 0.2.0.
+    answered: VERSION.json names his recorded answer to the 0.2.0 scope (scope_answer OWNER:<tsn>)."""
     root = fresh(name, stage="passed", cycles={"visit": 2, "total": 2}, pre_human_arrivals=1)
     for p, text in dict(OLD_EVIDENCE, **{"version/blind_challenge/notes.md": "not numbered\n"}).items():
         M.write_text(root, MOD, p, text)
-    M.write_text(root, MOD, "version/VERSION.json", json.dumps({"mod": MOD, "version": "0.2.0",
-                                                                "state": "locked 2026-11-19"}))
+    v = {"mod": MOD, "version": "0.2.0", "state": "locked 2026-11-19"}
+    if answered:
+        v["scope_answer"] = "OWNER:%s" % HIS_ANSWER_TSN
+        owner_shard(root, HIS_ANSWER)
+    M.write_text(root, MOD, "version/VERSION.json", json.dumps(v))
     M.write_text(root, MOD, "journal.md", "# journal\n\n- **Stage now:** passed.\n\n## History\n")
     return root
 
@@ -231,6 +250,64 @@ def t_next_version_refuses_a_move_made_meanwhile():
     check(rec.get("version") == "0.1.0" and [x.get("by") for x in rec.get("moves") or []] == ["selftest meanwhile"],
           "the move that landed meanwhile is kept", rec)
     check(M.cycle_numbers(root, MOD) == [1, 2], "the old evidence is moved back", M.cycle_numbers(root, MOD))
+
+
+def t_next_version_waits_for_his_scope_answer():
+    """RIMMANDRAKE_CARRY_HIS_WORD_NEXT_VERSION_SCOPE_IS_HIS_REVIEW: a mod's next Design Version opens only when
+    VERSION.json's scope_answer names his recorded answer (an OWNER event with ownerSaid or byCard) or the Conductor
+    window's act. Without one, next_version refuses, moves nothing, and names what is missing (his answer to
+    version/next_version/scope_proposal_<version>.md) and who brings it (the Conductor)."""
+    root = rollover_root("scope_none", answered=False)
+    r = M.next_version(root, MOD, "BENCH", "selftest: a Designer run opens 0.2.0")
+    why = str(r.get("why"))
+    check(not r.get("ok") and M.load(root, MOD).get("version") == "0.1.0" and M.cycle_numbers(root, MOD) == [1, 2],
+          "no recorded answer: the version does not open and nothing moves", r)
+    check(all(w in why for w in ("scope_proposal_0.2.0.md", "Conductor", "his answer", "scope_answer")),
+          "the refusal names the page, his answer, who brings it and the field", why)
+    check(r.get("owed") == "his scope answer" and r.get("who") == "Conductor", "the refusal is a typed fault of form", r)
+    import contextlib
+    import io
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(buf):
+        rc = M.main(["--root", root, "next-version", MOD, "--by", "BENCH", "--why", "selftest"])
+    check(rc != 0 and "scope_proposal_0.2.0.md" in buf.getvalue(), "the CLI exits non-zero and prints the repair",
+          (rc, buf.getvalue()[-300:]))
+    # an answer that is not his words: refused, with the cause
+    root = rollover_root("scope_wordless", answered=False)
+    owner_shard(root, dict(HIS_ANSWER, ownerSaid=None))
+    v = json.loads(M.read_text(root, MOD, "version/VERSION.json"))
+    M.write_text(root, MOD, "version/VERSION.json", json.dumps(dict(v, scope_answer="OWNER:%s" % HIS_ANSWER_TSN)))
+    r = M.next_version(root, MOD, "BENCH", "selftest")
+    check(not r.get("ok") and "no byCard or ownerSaid" in str(r.get("why")), "an event without his words is refused", r)
+    # a scope_answer that is not OWNER:<tsn>
+    M.write_text(root, MOD, "version/VERSION.json", json.dumps(dict(v, scope_answer="he said yes")))
+    r = M.next_version(root, MOD, "BENCH", "selftest")
+    check(not r.get("ok") and M.load(root, MOD).get("version") == "0.1.0", "a scope_answer of free text is refused", r)
+    # his recorded words open it
+    root = rollover_root("scope_his")
+    r = M.next_version(root, MOD, "BENCH", "selftest")
+    check(r.get("ok") and M.load(root, MOD).get("version") == "0.2.0", "his recorded answer opens the version", r)
+    # his card answer opens it too
+    root = rollover_root("scope_card", answered=False)
+    owner_shard(root, dict(HIS_ANSWER, ownerSaid=None, byCard="Open 0.2.0? -> Yes, this scope"))
+    M.write_text(root, MOD, "version/VERSION.json", json.dumps(dict(v, scope_answer="OWNER:%s" % HIS_ANSWER_TSN)))
+    r = M.next_version(root, MOD, "BENCH", "selftest")
+    check(r.get("ok"), "his card answer opens the version", r)
+    # the Conductor window's act is never refused
+    import conductor_acts as CA
+    act = {"seat": "OWNER", "event": "note", "id": "SELFTEST_ITEM", "tsn": 1000000000000000002, "ranBy": "BENCH",
+           "perRuling": CA.RULING, "why": CA.tagged("open the next design version 0.2.0: the scope page is his "
+                                                     "review and he answered in the sitting")}
+    root = rollover_root("scope_conductor", answered=False)
+    owner_shard(root, act)
+    M.write_text(root, MOD, "version/VERSION.json", json.dumps(dict(v, scope_answer="OWNER:%s" % act["tsn"])))
+    r = M.next_version(root, MOD, "BENCH", "selftest")
+    check(r.get("ok"), "the Conductor window's act opens the version", r)
+    # a record whose version is unreadable (seeded before the lock) is not a next version: no answer is asked
+    root = fresh("scope_seeded_early", stage="designer", version="UNMEASURED")
+    M.write_text(root, MOD, "version/VERSION.json", json.dumps({"mod": MOD, "version": "0.1.0", "state": "locked"}))
+    r = M.next_version(root, MOD, "BENCH", "selftest")
+    check(r.get("ok"), "a first version's record is opened with no scope answer", r)
 
 
 def t_seed_writes_under_the_mod_lock():
@@ -338,7 +415,8 @@ def main(argv=None):
     only = set(argv[argv.index("--only") + 1:]) if "--only" in argv else None
     for t in (t_spend_write_holds_the_mod_lock, t_stage_spend_unmeasured_when_no_row_measured,
               t_build_facts_refuses_what_evaluate_refuses, t_next_version_sets_aside_numbered_evidence,
-              t_next_version_refuses_a_move_made_meanwhile, t_seed_writes_under_the_mod_lock,
+              t_next_version_refuses_a_move_made_meanwhile, t_next_version_waits_for_his_scope_answer,
+              t_seed_writes_under_the_mod_lock,
               t_spend_rows_carry_their_unit, t_stage_spend_sums_one_unit):
         if only is not None and t.__name__ not in only:
             continue

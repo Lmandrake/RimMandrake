@@ -951,10 +951,9 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
            v is not None and vv == rec.get("version"), [rec_ref, rel(mod, "version/VERSION.json")],
            observed="the record says version %s; VERSION.json says %s" % (rec.get("version"), vv if v else verr),
            would_pass="a stage_record.json whose version field equals VERSION.json's version %s" % vv,
-           fix="open the new version with `maturation.py next-version` (the Conductor's ordering call against the other "
-               "mods, delegation_policy.md §1 and Evidence-for-Ask; the Conductor also decides current or next at filing, "
-               "card 2026-11-23), "
-               "which seeds a fresh stage record for it", cost="edit")
+           fix="open the new version with `maturation.py next-version`, which seeds a fresh stage record for it; a next "
+               "Design Version opens only on his recorded answer to its scope proposal page, which the Conductor brings "
+               "him (VERSION.json scope_answer, owner 2026-11-26)", cost="edit")
     # hold: the journal holds the stage
     jref = rel(mod, "journal.md")
     jtext = read_text(root, mod, "journal.md") or ""
@@ -1210,8 +1209,8 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
                        "rewritten)", not os.path.lexists(os.path.join(mod_dir(root, mod), prp)), [rec_ref, rel(mod, prp)],
                        observed="%s %s version %s already has %s" % (
                            mod, rec.get("stage"), rec.get("version"), rel(mod, prp)),
-                       would_pass="no %s" % rel(mod, prp), fix="a passed version opens its next version instead "
-                       "(maturation.py next-version)", cost="owner",
+                       would_pass="no %s" % rel(mod, prp), fix="a passed version opens its next version instead, on "
+                       "his recorded scope answer (maturation.py next-version)", cost="owner",
                        why_sound="Design Versions draft section 3.7: the pass record of each passed version")
     if forward and to == "blind_challenge" or (back and cur == to == "blind_challenge"):
         visit = (rec.get("cycles") or {}).get("visit", 0) if cur == "blind_challenge" else 0
@@ -1679,6 +1678,46 @@ def ledger_bars_sync(root, mod):
                 "bars --mod %s" % (type(e).__name__, e, mod)}
 
 
+def scope_page(version):
+    """The Designer's scope proposal page of a next Design Version (it opens and locks nothing)."""
+    return "version/next_version/scope_proposal_%s.md" % version
+
+
+def scope_answer_problem(root, mod, v, new):
+    """RIMMANDRAKE_CARRY_HIS_WORD_NEXT_VERSION_SCOPE_IS_HIS_REVIEW (owner, 2026-11-26): a mod's next Design Version
+    opens only on his answer to its scope. -> None when VERSION.json's scope_answer is OWNER:<tsn> naming his recorded
+    answer (an OWNER event carrying ownerSaid or byCard) or the Conductor window's act; else the fault and its repair:
+    what is missing (his answer) and who brings it (the Conductor)."""
+    import concept_tree as CT
+    import conductor_acts as CA
+    page = rel(mod, scope_page(new))
+    has_page = not _absent(os.path.join(mod_dir(root, mod), scope_page(new)))
+    repair = ("The Designer writes %s (%s; it opens and locks nothing). The Conductor brings it to him and records "
+              "his answer (`rimflow note <item> --owner-said \"<his words>\"` or `--by-card`), then writes "
+              "\"scope_answer\": \"OWNER:<tsn of that event>\" into %s and runs next-version again."
+              % (page, "it exists" if has_page else "absent: write it first", rel(mod, "version/VERSION.json")))
+    sa = str(v.get("scope_answer") or "").strip()
+    if not sa:
+        return ("%s %s is a next Design Version: it opens only on his answer to its scope, and VERSION.json names no "
+                "scope_answer. Missing: his answer. %s" % (mod, new, repair))
+    m = re.fullmatch(r"OWNER:([0-9]+)", sa)
+    if not m:
+        return "VERSION.json scope_answer %r is not OWNER:<tsn> (his recorded answer). %s" % (sa[:60], repair)
+    events = CT.owner_events(root, REPO)
+    ev = events.get(m.group(1))
+    if not isinstance(ev, dict):
+        if getattr(events, "unread", False):
+            return "COULD NOT LOOK: no OWNER shard could be read, so scope_answer %s is unread. %s" % (sa, repair)
+        return "VERSION.json scope_answer %s is not on the OWNER shard. %s" % (sa, repair)
+    if str(ev.get("ownerSaid") or ev.get("byCard") or "").strip():
+        return None
+    ok, _ = CA.is_conductor_event(ev, act="open a next design version")
+    if ok:
+        return None
+    return ("VERSION.json scope_answer %s carries no byCard or ownerSaid and is not the Conductor window's act. %s"
+            % (sa, repair))
+
+
 def next_version(root, mod, by, why):
     """RIMMANDRAKE_WRITE_STAGE_MOVES_ATOMICALLY: open the record of the version VERSION.json now names. Allowed when the
     record's version has passed, or VERSION.json names a newer version (the Designer opened it; locked or not). The old
@@ -1695,12 +1734,17 @@ def next_version(root, mod, by, why):
     if b is None:
         return {"ok": False, "why": "VERSION.json names no semantic version (%r)" % new}
     if a is not None and b <= a:
-        return {"ok": False, "why": "VERSION.json says %s, not newer than the record's %s: the Designer opens the next "
-                "version in VERSION.json first" % (new, old)}
+        return {"ok": False, "why": "VERSION.json says %s, not newer than the record's %s: the Designer writes the "
+                "scope page %s; the next version opens in VERSION.json only on his recorded answer" % (
+                    new, old, rel(mod, "version/next_version/scope_proposal_<version>.md"))}
     if rec.get("stage") != "passed" and a is not None and b[:3] == a[:3]:
         return {"ok": False, "why": "the record's %s has not passed" % old}
     if not CT_txt(why):
         return {"ok": False, "why": "a version move says why"}
+    if a is not None and b[:3] > a[:3]:
+        gap = scope_answer_problem(root, mod, v, new)
+        if gap:
+            return {"ok": False, "why": gap, "owed": "his scope answer", "who": "Conductor"}
     t = now_ts()
     stage = "preflight" if str(v.get("state", "")).startswith("locked") else "designer"
     keep = "version/stage_record_%s.json" % re.sub(r"[^0-9A-Za-z.-]", "_", str(old))
@@ -2058,8 +2102,9 @@ def gate_step(root, mod, _reread=False):
     cur = rec["stage"]
     if cur == "passed":
         return {"mod": mod, "stage": cur, "refusals": [], "hand_steps": [],
-                "next": "NEXT (OWNER, a card in the Conductor log): decide with him whether to open the next version (spec §3.8, a portfolio "
-                        "decision); nothing here opens one"}
+                "next": "NEXT (OWNER, through the Conductor): he reviews the scope of the next version on the Designer's "
+                        "page version/next_version/scope_proposal_<version>.md before it opens (owner 2026-11-26); "
+                        "nothing here opens one"}
     to = WORDS[WORDS.index(cur) + 1]
     res = evaluate(root, mod, to, by="next", why="what is the next step")
     prog = [r for r in res["verdict"]["refusals"] if r["clause"] not in res["hand_steps"]]

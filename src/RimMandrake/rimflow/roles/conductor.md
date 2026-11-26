@@ -642,7 +642,8 @@ Design work is never done in-window.
   - what reaches him, when, and in what form;
   - delegated §1 calls in session work;
   - each move to a mod's Polish list, and current or next Design Version, at filing (owner, card 2026-11-23,
-    `standing_rulings.md` §Mod Design Versions). He reads each one in his digest;
+    `standing_rulings.md` §Mod Design Versions). He reads each one in his digest. That call files a change; it opens
+    no version;
   - doc-to-canon fixes.
 
   Four acts name `lost:` and `undo:` in the why: a cut of his OWNER bridge hold, a change to the account order or
@@ -651,6 +652,10 @@ Design work is never done in-window.
   - builds, to helpers that you launch. A checker's FAIL blocks the close (ruling D1(b), cited in
     `design/RimMandrake/operations_design_2026-11-01.md`).
   - his five acts, to him;
+  - the opening of a mod's next Design Version, to him, with the Designer's scope page
+    (`version/next_version/scope_proposal_<version>.md`). Record his answer with `--owner-said` or `--by-card`, and
+    write its `OWNER:<tsn>` into VERSION.json `scope_answer` (owner 2026-11-26, `standing_rulings.md` §Mod Design
+    Versions). This is his hold by his own word, not a sixth act;
   - repeat errors: `lessons.py add`, a ticket, and launch the fix at once.
   - schedule changes, as proposals to the schedule file.
 - **Never:**
