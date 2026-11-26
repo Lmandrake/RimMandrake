@@ -1,0 +1,3 @@
+A cut-out flyer set's installed frames often cannot be re-baked from its own folder: the master frame there is already a posed bake. The true source was the git parent of the install commit's master frame (Bogwing, Hawkbat, Hawkbat_j, PekoPeko_f, ScrapNestBird), or the static padded to the canvas (Dactillion, Urusai), once with alpha >= 250 forced opaque (Sivvern). Record it as the facing's "source" so flyer_cutout build and flyer_eye_checks BAKED reproduce it; find it with a pixel-exact area-off bake, never by byte compare (PNG encodings differ).
+item: FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY
+home: skills/rimworld-sprite-facings/references/traps.md
