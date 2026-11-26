@@ -1,8 +1,8 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":348917,"DISPATCH":48773,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":3294,"HOLDER.run-1795478277":3184,"HOLDER.run-1795485747":1414,"HOLDER.run-1795487290":2197,"HOLDER.run-1795510833":4164,"HOLDER.run-1795525975":3126,"HOLDER.run-1795538786":1751,"HOLDER.run-1795548573":1024,"HOLDER.run-1795560492":1077,"HOLDER.run-1795660419":2599,"HOLDER.run-1795661891":608,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"OWNER":1207} body_sha256=88aad298a32c7755ef017ca78e2f853f713d2fb9f2959a7aa3df7dbae043630d -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":348917,"DISPATCH":49474,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":3294,"HOLDER.run-1795478277":3184,"HOLDER.run-1795485747":1414,"HOLDER.run-1795487290":2197,"HOLDER.run-1795510833":4164,"HOLDER.run-1795525975":3126,"HOLDER.run-1795538786":1751,"HOLDER.run-1795548573":1024,"HOLDER.run-1795560492":1077,"HOLDER.run-1795660419":2599,"HOLDER.run-1795661891":608,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"OWNER":1207} body_sha256=e30846ddae50f4a40a66b1914210a9ca143ba0049017b24630d1e3288109f44d -->
 # ExplosiveKnockback — mod ledger packet
-version 0.2.0 · stage blind_challenge · 754 events in 26 shards · reducer 1
+version 0.2.0 · stage blind_challenge · 756 events in 26 shards · reducer 1
 holder lease run-1795661891, token 30, last active 2026-11-26T03:02:04Z
-holder session 672832f2-8ad1-46e7-a92a-842ed8cf72d3, context 187372 of ceiling 400000
+holder session b6b1d88a-8ba8-4250-8578-0f12effce287, context 112092 of ceiling 400000
 
 ## Last checkpoint (HOLDER.run-1795661891, 2026-11-26T03:02:04Z)
 - done: Advanced 0.2.0 from offline_build to blind_challenge: all 8 Stage 3 exit tests pass, certificate --to blind_challenge OK at HEAD (58 bars)
@@ -249,6 +249,6 @@ spend recorded: USD 178.61, 171672717 tokens
 - claimed fixes in brief: 2 on one line (name and sha), their claim, test and fix by `show`
 - open findings in brief: the oldest 40 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
 - his answers and the bars' texts in brief (cut at 160 and 60 chars)
-- the full history: 754 events (views/history.md; never read whole)
+- the full history: 756 events (views/history.md; never read whole)
 
-cursor: t=2026-11-26T03:02:04Z.1795662124322908256 (modledger.py since --mod ExplosiveKnockback t=2026-11-26T03:02:04Z.1795662124322908256 prints what changed after this packet)
+cursor: t=2026-11-26T03:12:22Z.1795662742348758329 (modledger.py since --mod ExplosiveKnockback t=2026-11-26T03:12:22Z.1795662742348758329 prints what changed after this packet)
