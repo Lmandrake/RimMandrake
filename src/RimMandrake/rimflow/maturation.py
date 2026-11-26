@@ -3880,8 +3880,6 @@ def blind_brief_text(root, mod, cap_usd=None):
          "commit.",
          "- Foreground commands only, each with a timeout of 540 s or less.",
          "- Write progress to your skeleton at least every 8 minutes.", "",
-         "**Wall-time bound: 3 hours.** At the bound, record where you are, commit, publish, and report what is owed.",
-         "",
          "## Precondition (check first; stop if it fails)", "",
          "```",
          "python3 -c \"import json;d=json.load(open('design/concepts/%s/%s'));print(d['stage'],d.get('cycles'))\""
@@ -6240,8 +6238,6 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
          "- Foreground commands only, each with a timeout of 540 s or less. Never `pkill -f`.",
          "- Write progress to your skeleton (`%s/SUMMARY.md`) at least every 8 minutes, and a note on your item at "
          "least every 20." % vdir, "",
-         "**Wall-time bound: 3 hours.** At the bound, record where you are, release the bridge, commit, publish, and "
-         "report what is owed.", "",
          "## Precondition (check first; stop if it fails)", "",
          "```",
          "python3 -c \"import json;d=json.load(open('design/concepts/%s/%s'));print(d['stage'],d['version'])\""
