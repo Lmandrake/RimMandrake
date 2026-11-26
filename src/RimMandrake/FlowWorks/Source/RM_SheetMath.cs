@@ -1082,6 +1082,23 @@ namespace RimMandrake.FlowWorks
 		public static bool FrontReaches(int litTick, int now, int ticksPerCell, float speed) =>
 			now >= RM_FireMath.FrontDue(litTick, ticksPerCell, speed);
 
+		/// <summary>RIMMANDRAKE_SLOW_TAR_FIRE_IT_WENT_UP_IN_A_WHOOSH (his walk 2026-11-25: "Tar burns slowly, catches slowly, like dry
+		/// grass."): a creeping-fuse spill (tar, white slime) spreads square to square as a vanilla grass fire does, by chance.
+		/// Vanilla Fire.TrySpread picks a near square 80% of the time, one of 8 (ManualRadialPattern 1..8), every SpreadInterval
+		/// ticks, which is 150 at fire size 1 (Fire.SpreadInterval). So one burning square lights a given neighbour with chance
+		/// 0.8 / 8 per 150 ticks; over a check of <paramref name="checkTicks"/> that is 0.1 * checkTicks / 150, speed-scaled.</summary>
+		public const float VanillaNearSpread = 0.8f / 8f;
+		public const int VanillaSpreadIntervalTicks = 150;
+
+		public static float CreepingCatchChance(int checkTicks, float speed)
+		{
+			float p = VanillaNearSpread * checkTicks / VanillaSpreadIntervalTicks * (speed <= 0.01f ? 0.01f : speed);
+			return p > 1f ? 1f : p;
+		}
+
+		/// <summary>The expected ticks for one burning creeping square to light a given neighbour (1 / chance per check).</summary>
+		public static float CreepingTicksPerNeighbour(int checkTicks, float speed) => checkTicks / CreepingCatchChance(checkTicks, speed);
+
 		/// <summary>dL a burning square loses over <paramref name="ticks"/>: one notch (<paramref name="dlPerNotch"/>) every
 		/// <paramref name="ticksPerNotch"/>, the remainder carried in <paramref name="acc"/> (RM_FireMath.DlDue).</summary>
 		public static int BurnDue(ref int acc, int ticks, int ticksPerNotch, int dlPerNotch) =>

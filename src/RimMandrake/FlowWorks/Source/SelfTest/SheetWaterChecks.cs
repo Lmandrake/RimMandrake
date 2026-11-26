@@ -838,6 +838,16 @@ namespace RimMandrake.FlowWorks.SelfTest
 				Assert(RM_SheetFluidMath.FrontReaches(1000, 1060, 120, 2f), "a faster front (the speed dial) gets there sooner");
 			});
 
+			// RIMMANDRAKE_SLOW_TAR_FIRE_IT_WENT_UP_IN_A_WHOOSH: tar creeps like dry grass, by vanilla's own spread chance
+			Case("SheetFire_tar_creeps_like_grass_not_a_fixed_front", () =>
+			{
+				float p = RM_SheetFluidMath.CreepingCatchChance(60, 1f), t = RM_SheetFluidMath.CreepingTicksPerNeighbour(60, 1f);
+				Assert(Math.Abs(p - 0.04f) < 1e-4f, "vanilla's near spread, 0.8/8 per 150 ticks, over a 60-tick check: " + p);
+				Assert(t >= 1000f && t > 120f * 8f, "one tar square takes about 1,500 ticks to light a neighbour, not tar's old 120: " + t);
+				Assert(RM_SheetFluidMath.CreepingCatchChance(60, 2f) > p && RM_SheetFluidMath.CreepingCatchChance(60, 1000f) == 1f,
+					"the speed dial still scales it, capped at certain");
+			});
+
 			// all liquids: a canal or pond of another liquid never takes a spill back, and a spill next to it stays itself
 			Case("Sheet_a_body_of_another_liquid_refuses_the_return", () =>
 			{

@@ -21,6 +21,33 @@ namespace RimMandrake.FlowWorks.Sheet
 	///   fire beside it (grass and things burn, and that fire lights more spill). A sheet of a liquid that does not burn puts
 	///   fire out (RM_MapComponent_Sheet.Effects); a fuel sheet never does.
 	/// NOT built: rain douses only channel fires (a burning sheet goes out when it burns dry or its switch goes off).</summary>
+	/// <summary>RIMMANDRAKE_SLOW_TAR_FIRE_IT_WENT_UP_IN_A_WHOOSH: a vanilla fire spreads onto an unlit tar spill at dry grass's
+	/// chance (the spill is no thing and no terrain, so vanilla read it as bare ground and never chose it). The fire that starts
+	/// there lights the tar (RM_Patch_FireLightsLiquid).</summary>
+	[HarmonyLib.HarmonyPatch(typeof(FireUtility), nameof(FireUtility.ChanceToStartFireIn))]
+	[RimMandrake.Shared.PatchFeature("Fuel spills burn", typeof(RimMandrake.FlowWorks.Sheet.RM_SheetSettings), "fuelSpillsBurnEnabled")]
+	public static class RM_Patch_CreepingSheetCatchesLikeGrass
+	{
+		public static void Postfix(IntVec3 c, Map map, ref float __result)
+		{
+			if (__result >= RM_MapComponent_Sheet.GrassFlammability || map == null || !FuelBurns)
+			{
+				return;
+			}
+			if (c.GetFirstThing<Fire>(map) != null)
+			{
+				return;
+			}
+			RM_MapComponent_Sheet s = RM_MapComponent_Sheet.Of(map);
+			if (s != null && s.CreepsAt(c))
+			{
+				__result = RM_MapComponent_Sheet.GrassFlammability;
+			}
+		}
+
+		private static bool FuelBurns => RM_SheetSettings.fuelSpillsBurnEnabled && RimMandrakeFlowWorksSettings.canalFireEnabled;
+	}
+
 	public partial class RM_MapComponent_Sheet
 	{
 		private const int FireCheckTicks = 60;
@@ -49,7 +76,45 @@ namespace RimMandrake.FlowWorks.Sheet
 			s.TryLight(at);
 			for (int d = 0; d < 8; d++)
 			{
-				s.TryLight(at + GenAdj.AdjacentCells[d]);
+				// a creeping fuse (tar) does not catch from a fire beside it at once: vanilla's spread puts a fire on it at dry
+				// grass's chance (RM_Patch_CreepingSheetCatchesLikeGrass), and that fire lights it above
+				IntVec3 n = at + GenAdj.AdjacentCells[d];
+				if (n.InBounds(map) && s.CreepsAt(n))
+				{
+					continue;
+				}
+				s.TryLight(n);
+			}
+		}
+
+		/// <summary>True when a spill of this fire kind catches and spreads like grass (by chance), not by a fixed front.</summary>
+		public static bool CreepsLikeGrass(RM_FluidFireKind k) => k == RM_FluidFireKind.CreepingFuse;
+
+		/// <summary>True when the square holds an unlit spill that catches like grass (a creeping fuse: tar, white slime).</summary>
+		public bool CreepsAt(IntVec3 c)
+		{
+			if (state == null || !c.InBounds(map))
+			{
+				return false;
+			}
+			int i = map.cellIndices.CellToIndex(c);
+			FluidDef f = state.Dl[i] > 0 ? FluidOf(state.Fluid[i]) : null;
+			return f != null && Burnable(f) && CreepsLikeGrass(f.fireKind) && !burnLit.ContainsKey(i);
+		}
+
+		/// <summary>Dry grass's flammability (Plant_Grass's Flammability stat), read once from the def.</summary>
+		private static float grassFlammability = -1f;
+
+		public static float GrassFlammability
+		{
+			get
+			{
+				if (grassFlammability < 0f)
+				{
+					ThingDef g = DefDatabase<ThingDef>.GetNamedSilentFail("Plant_Grass");
+					grassFlammability = g != null ? g.GetStatValueAbstract(StatDefOf.Flammability) : 1f;
+				}
+				return grassFlammability;
 			}
 		}
 
@@ -141,7 +206,22 @@ namespace RimMandrake.FlowWorks.Sheet
 				float speed = kind == RM_FuelBurn.Inferno
 					? RM_FuelFireMath.InfernoFrontSpeed(RimMandrakeFlowWorksSettings.fireFrontSpeedMultiplier, RimMandrakeFlowWorksSettings.chemfuelSpreadSpeed)
 					: RimMandrakeFlowWorksSettings.fireFrontSpeedMultiplier;
-				if (RM_SheetFluidMath.FrontReaches(lit, now, f.fireFrontTicksPerCell, speed))
+				bool creeps = CreepsLikeGrass(f.fireKind);
+				if (creeps)
+				{
+					// tar creeps like dry grass: each unlit tar neighbour catches by vanilla's spread chance, never all at once
+					float pc = RM_SheetFluidMath.CreepingCatchChance(FireCheckTicks, speed);
+					for (int d = 0; d < 4; d++)
+					{
+						IntVec3 n = c + GenAdj.CardinalDirections[d];
+						if (n.InBounds(map) && Rand.Chance(pc) && !TryLight(n) && e != null && e.IsExcavated(n) && Burnable(e.FluidAt(n))
+							&& !e.LiquidFire.IsBurning(map, n))
+						{
+							e.LiquidFire.OfferLight(map, e, n);
+						}
+					}
+				}
+				else if (RM_SheetFluidMath.FrontReaches(lit, now, f.fireFrontTicksPerCell, speed))
 				{
 					for (int d = 0; d < 4; d++)
 					{
@@ -206,7 +286,7 @@ namespace RimMandrake.FlowWorks.Sheet
 				if (Rand.Chance(0.15f))
 				{
 					IntVec3 n = c + GenAdj.AdjacentCellsAndInside[Rand.Range(0, 9)];
-					if (n.InBounds(map))
+					if (n.InBounds(map) && !CreepsAt(n))    // tar beside catches by the grass chance above, once
 					{
 						FireUtility.TryStartFireIn(n, map, 0.3f, null);
 					}

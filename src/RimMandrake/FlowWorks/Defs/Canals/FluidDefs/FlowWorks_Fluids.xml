@@ -62,7 +62,9 @@
     </bathCost>
     <label>tar</label>
     <!-- Phase 6: tar is a creeping fuse (his ruling: tar and propane creep, chemfuel/astrofuel detonate).
-         PROVISIONAL 120 ticks/cell — about two seconds a cell, well under a walking pawn, so it can be outrun. -->
+         PROVISIONAL 120 ticks/cell: the CHANNEL front only. A tar SPILL on the ground catches and creeps like dry grass, by
+         vanilla's spread chance (RM_SheetFluidMath.CreepingCatchChance; his walk 2026-11-25, "Tar burns slowly, catches
+         slowly, like dry grass"). -->
     <fireKind>CreepingFuse</fireKind>
     <fireFrontTicksPerCell>120</fireFrontTicksPerCell>
     <floodTerrain>RM_Fill_Tar_Trace</floodTerrain>
