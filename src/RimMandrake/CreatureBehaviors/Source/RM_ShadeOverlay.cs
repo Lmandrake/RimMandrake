@@ -76,7 +76,7 @@ namespace RimMandrake.CreatureBehaviors
 
         private readonly List<Mesh> tintMeshes = new List<Mesh>();
         private int tintVersion = -1;
-        private static Material tintMat;
+        private Material tintMat;   // per drawer, made on the main thread at first draw (a static Material warns at startup)
 
         public RM_ShadeOverlayDrawers(RM_MapComponent_ShadeGrid grid, Map map)
         {
