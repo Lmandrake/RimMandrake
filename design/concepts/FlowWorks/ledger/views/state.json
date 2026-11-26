@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "8583165a19d288e6be324bc512858f7129facbf48921d9e2deab9526782390b0",
+  "body_sha256": "d6f7e3465cf5281825cf603cf0e95eb3766502e79a8612e2e5cb4e4d83d467c8",
   "reducer": 1,
   "shards": {
    "BACKFILL": 892335,
@@ -43,7 +43,7 @@
    "HOLDER.run-1795461568": 2159,
    "HOLDER.run-1795471235": 562,
    "HOLDER.run-1795503470": 1774,
-   "HOLDER.run-1795670514": 5386,
+   "HOLDER.run-1795670514": 7369,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1294,10 +1294,10 @@
   },
   "checkpoint": {
    "by": "HOLDER.run-1795670514",
-   "done": "rope bridge redrawn: side ropes + sparse slats, hand ropes, netting when railed, bollards on the side line (e54359693c, polish 386960f854); ArchSmall sc_hung_bridge PASS (8071314c42); item closed",
-   "next": "Work RIMMANDRAKE_STORE_FLOWWORKS_HELD_FLAG_WHERE_A_READ_REACHES_IT, then the thirst class run and the timber bridge",
-   "ruled_out": "netting edge-on on N-S bridges: fixed by flaring the hand ropes (postOut 0.12) as in his photo",
-   "ts": "2026-11-26T09:03:57Z"
+   "done": "RIMMANDRAKE_REDRAW_TIMBER_BRIDGE_FROM_HIS_THREE_PHOTOS closed at 2cdfa80e72: beam bridge art in 5 looks with lane pieces, abutments instead of bollards/ropes, timber posts and rail when railed; ArchSmall sc_hung_bridge PASS (early row), art judge KEEP",
+   "next": "Work RIMMANDRAKE_STORE_FLOWWORKS_HELD_FLAG_WHERE_A_READ_REACHES_IT (a pawn comp with a held bool read by HELD_PATH)",
+   "ruled_out": "stuff colour on the timber strip (picked deck art draws untinted, as the steel picks do); repainting the shared timber anchor textures (the drawbridge mooring cuts them)",
+   "ts": "2026-11-26T10:15:54Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1749,7 +1749,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1729,
+  "events": 1734,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7849,7 +7849,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-26T09:03:57Z",
+   "last": "2026-11-26T10:15:54Z",
    "lease": "run-1795670514",
    "released": false,
    "token": 60
