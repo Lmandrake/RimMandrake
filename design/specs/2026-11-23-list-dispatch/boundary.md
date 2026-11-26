@@ -115,6 +115,10 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   tick and each recent lane launch, is under `load_line`; a load that cannot be read is no spare room. Mod and nightly-test runs do not count. An item whose chain of causes (its `caused_by` ancestors) already holds `max_chain_depth` lane runs reads
   `chain_stop`. Live runs on items that carry no check do not fill the lane's slots, except Shape runs on items due for
   Shape, which do.
+- **a-ticket-of-an-archmagi-only-home-runs-on-archmagi.** A ticket whose home (`list_home`) `archmagi_only_homes` in
+  `list_dispatch.json` names takes Archmagi's room, though a host has room: its tools are on Archmagi only. Measured
+  2026-11-26: the game:art-canon tickets went to SteveDesktop, where the art queue, art_eval and its observed inventory
+  are absent. Test: `t_a_ticket_of_an_archmagi_only_home_runs_on_archmagi`.
 - **a-ready-ticket-goes-to-a-host-with-room-first.** A ready ticket goes to a host of `hosts` (SteveDesktop) first,
   before Archmagi's own slots, while the host has fewer live Claude runs than its `max_live`, its live account has more
   than `min_left_pct` of the week left, its disk holds another helper clone (`pool_more`, the count that

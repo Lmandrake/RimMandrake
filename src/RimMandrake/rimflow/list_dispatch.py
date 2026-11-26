@@ -645,7 +645,8 @@ def decide(cfg, st, facts, now, account=(True, "")):
         if ocnl:
             row["load_could_not_look"] = ocnl
         # a host with room first (boundary a-ready-ticket-goes-to-a-host-with-room-first); Archmagi takes the rest
-        host, hwhy = host_first(cfg, facts.get("hosts"), placed, it)
+        only = (cfg.get("archmagi_only_homes") or {}).get(it.get("home"))   # its tools are on Archmagi only
+        host, hwhy = host_first(cfg, facts.get("hosts"), placed, dict(it, needs="archmagi (%s)" % only) if only else it)
         if host:
             free, full = True, None
         elif over:
@@ -1188,7 +1189,7 @@ def gather(st, now=None, root=None, load_lag_s=None):
         d = {"state": x.state, "blocked": blocked, "blocked_reason": x.blocked_reason,
              "effect": x.effect, "waits_on": waits, "events": len(x.history), "title": x.title,
              "filed": LM.epoch(x.created_at) if x.created_at else None, "blocks_others": iid in waited_on,
-             "caused_by": x.caused_by, "needs": getattr(x, "needs", None), "mod_work": mw, "shape_due": sdue, "shape_why": swhy, "route": sf["route"],
+             "caused_by": x.caused_by, "needs": getattr(x, "needs", None), "home": (getattr(x, "home", None) or {}).get("home"), "mod_work": mw, "shape_due": sdue, "shape_why": swhy, "route": sf["route"],
              "shape_size": sf["size"], "shape_at": sf["shape_at"], "shape_unit": sf["shape_unit"],
              "raised": LM.raise_key(x) if x.raised is not None else None, "block_stale": stale,
              "second_look": bool(sf["named"] or (sf["filed"] and cfg.get("shape_from")

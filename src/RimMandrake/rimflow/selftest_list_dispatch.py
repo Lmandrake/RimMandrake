@@ -312,6 +312,18 @@ def t_the_lane_has_its_own_slots_and_chain_rule():
         "chain depth counts spent lane runs on the ancestors only")
 
 
+def t_a_ticket_of_an_archmagi_only_home_runs_on_archmagi():
+    """2026-11-26: game:art-canon tickets went to SteveDesktop, where the art queue, art_eval and the observed inventory
+    are absent. A ticket whose home archmagi_only_homes names takes Archmagi's room though the host has room."""
+    hcfg = dict(CFG, hosts={"SteveDesktop": {"max_live": 2, "min_left_pct": 5}},
+                archmagi_only_homes={"game:art-canon": "fixture: the art tools are on Archmagi"})
+    room = {"SteveDesktop": {"live": 0, "left": 50.0}}
+    r, l, _ = run({"A": it(home="game:art-canon"), "B": it(home="game:audio")}, cfg=hcfg, hosts=room)
+    chk(lambda: l == ["A", "B"] and not r["A"].get("host") and r["B"].get("host") == "SteveDesktop",
+        "an art-canon ticket runs on Archmagi, another home's ticket still goes to the host (%s)"
+        % {k: r[k].get("host") for k in "AB"})
+
+
 def t_a_ready_ticket_goes_to_a_host_with_room_first():
     """A ready ticket that is not mod work goes to a host of cfg["hosts"] first, while the host has fewer live runs than
     its max_live, its account has more than min_left_pct of the week left, its disk holds another clone, its work switch
@@ -1034,7 +1046,7 @@ def main():
               t_a_block_whose_predecessor_is_done_is_not_a_block,
               t_the_gates_launch_nothing,
               t_the_lane_has_its_own_slots_and_chain_rule,
-              t_a_ready_ticket_goes_to_a_host_with_room_first,
+              t_a_ready_ticket_goes_to_a_host_with_room_first, t_a_ticket_of_an_archmagi_only_home_runs_on_archmagi,
               t_a_chain_counts_only_links_that_a_lane_run_filed,
               t_the_reading_says_each_machines_room,
               t_the_tick_counts_recent_lane_launches_before_taking_spare_room,
