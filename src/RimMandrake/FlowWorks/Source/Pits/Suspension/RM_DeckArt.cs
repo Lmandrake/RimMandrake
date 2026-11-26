@@ -253,13 +253,13 @@ namespace RimMandrake.FlowWorks.Pits
 				return null;
 			}
 			RM_DeckArtExtension x = For(r, deck.StyleDef);
-			if (x == null || x.strip == null || !r.TryIndexOf(deck.Position, out _, out int i))
+			if (x == null || x.strip == null || !r.TryIndexOf(deck.Position, out int lane, out int i))
 			{
 				return null;
 			}
 			angle = RM_DeckArtMath.StripAngle(r.dir.AsInt);
 			string path = x.strip + "_" + RM_DeckArtMath.PieceAt(i - FirstDeck(r), DeckCount(r));
-			if (x.laneEdges && r.TryIndexOf(deck.Position, out int lane, out _))
+			if (x.laneEdges)
 			{
 				string suffix = RM_DeckArtMath.LaneEdge(lane, r.width, true);
 				Material lm = suffix.Length > 0 ? Mat(path + suffix) : null;

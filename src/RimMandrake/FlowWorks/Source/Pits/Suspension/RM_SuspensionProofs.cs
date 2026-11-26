@@ -701,8 +701,9 @@ namespace RimMandrake.FlowWorks.Pits
 				foreach (int i in new[] { 0, r.length - 1 })
 				{
 					Building_SuspensionAnchor an = r.Cell(lane, i).GetFirstThing<Building_SuspensionAnchor>(map);
-					UnityEngine.Material m = an == null ? null : RM_DeckArt.AbutmentMat(an, out _);
-					ends.Add(an == null ? "none" : m == null ? "own" : m.mainTexture?.name + "@" + RM_DeckArtMath.StripAngle((i == 0 ? r.dir : r.dir.Opposite).AsInt));
+					float ang = 0f;
+					UnityEngine.Material m = an == null ? null : RM_DeckArt.AbutmentMat(an, out ang);
+					ends.Add(an == null ? "none" : m == null ? "own" : m.mainTexture?.name + "@" + ang);   // the turn the print uses
 				}
 			}
 			return "DECKART look=" + RM_DrawbridgeArt.LookOf(r) + " jetty=" + r.jetty + " dir=" + r.dir + " width=" + r.width + " strip=" + strip
