@@ -48,10 +48,10 @@ with scene.open(GAME, contract=walk, needs={"mods": ["FlowWorks"], "map": SAVE, 
     s.stage(cast={"walkers": dict(take=WALKERS)})
 
     def order(cell_of, what):
-        with s.act.batch() as b:
-            for w, x0 in zip(W, PITS):
-                b.job(w, "Goto", cell=cell_of(x0), name=what)
-        for e in b.effects:
+        # one act each, not one batch: a batch stops at the first act that is not done, and with walking under switched off
+        # the first walker cannot start her walk, so the others were never ordered (planted run, 2026-11-25)
+        effects = [s.act.job(w, "Goto", cell=cell_of(x0), name=what) for w, x0 in zip(W, PITS)]
+        for e in effects:
             reply = (e.observed or {}).get("reply") or {}
             # the game refused the order itself (bad arguments: live 2026-11-25, a cell sent as a second target): apparatus.
             # The game took the order and the colonist could not start it (reply accepted=True, no path under a cover with
