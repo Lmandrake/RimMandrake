@@ -334,6 +334,7 @@ class Stage(object):
     def __init__(self, w, dry):
         self.w, self.dry, self.plan, self.notes = w, dry, [], []
         self.stations = []
+        self.swimmers = []      # (cell, label): placed by place_swimmers() after FINISH's last clock step
 
     def station(self, row, rect, text, lane=0, short=None):
         """Register one station: the next number, the rect it occupies, its caption. Returns the caption line, numbered."""
@@ -469,6 +470,17 @@ class Stage(object):
         if m:
             self.w.hp("pawn:%d=draft" % int(m.group(1)))
         return pid
+
+    def swimmer(self, cell, label):
+        """A drafted colonist in swim-deep water, staged LAST: a swimmer who cannot climb out of a sheer hole tires and drowns
+        by the mod's own swim rule, so no clock step may run with one in the water (Steve2 job J20261124T165357Z-e3c928,
+        2026-11-24: FINISH's step toward midday drowned one, RM_PitDrowning, and the governor stopped the run)."""
+        self.say("  colonist at %s (%s), placed after the clock steps" % (cell, label))
+        self.swimmers.append((cell, label))
+
+    def place_swimmers(self):
+        """Spawn the swimmers that the rows recorded. Call after the last tick of the run, before the pictures."""
+        return [self.pawn(cell, label) for cell, label in self.swimmers]
 
     def item(self, d, cell):
         self.say("  item %s at %s (spawn_batch)" % (d, cell))
@@ -850,8 +862,8 @@ def row_bars_joint(s, L):
         s.pit(pit, 3, 8, int(wet_m * 2))
         cap.append(s.station("bars_joint", (pit[0], pit[1], 3, 3), "%s m of water in a 4 m hole" % wet_m, lane=1, short="%sm in 4m" % wet_m))
         if wet_m >= 2:
-            s.pawn((pit[0] + 1, pit[1] + 1), "swims: 2 m of water")
-    s.pawn((bx + 11, bz + 7), "swims in 1 m water in a 4 m hole")
+            s.swimmer((pit[0] + 1, pit[1] + 1), "swims: 2 m of water")
+    s.swimmer((bx + 11, bz + 7), "swims in 1 m water in a 4 m hole")
     return cap
 
 
@@ -1175,6 +1187,7 @@ def main(argv=None):
         s.w.ticks(2000)
     s.notes.append("approx hour %s (ticksAbs mod day, longitude ignored)" % ("UNMEASURED: time_clock gave no ticksAbs"
                                                                              if hour is None else "%.1f" % hour))
+    s.place_swimmers()              # after the last clock step: no tick runs with a staged swimmer in the water
     import fw_walk_common as C
     shots = []
     if "hoses" in caps:

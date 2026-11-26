@@ -440,5 +440,58 @@ class NotchOnly(BodyFake):
 b2, _ = shallows_strip(NotchOnly)
 check("can-fail: a driver that rounds to whole notches leaves station 17 NOT AS SIGNED in the notes",
       any("0.2 m strip NOT AS SIGNED" in n for n in b2.notes), b2.notes)
+# Review-stage swimmers (Steve2 job J20261124T165357Z-e3c928, 2026-11-24): bars_joint spawned its
+# drafted swimmers (2 m and 1 m of water in 4 m holes) before FINISH stepped the clock up to 12 x 2000 ticks toward midday;
+# a swimmer who cannot climb a 4 m wall tires and drowns by the mod's own swim rule, and the governor stopped the run on
+# "died: RM_PitDrowning". The swimmers go in after the last clock step, so no tick runs with a staged swimmer in the water.
+_RealFake = C.FakeGame
+
+
+class Clocked(_RealFake):
+    """Records the order of pawn spawns and clock steps; its clock starts at midnight so FINISH must step."""
+    def __init__(self):
+        _RealFake.__init__(self)
+        self.order = []
+
+    def call(self, tool, **kw):
+        if tool == "jawa/spawn_pawn":
+            self.order.append(("spawn", (kw.get("x"), kw.get("z"))))
+        elif tool == "rimworld/step_game_ticks":
+            self.order.append(("ticks", kw.get("ticks")))
+        elif tool == "jawa/time_clock":
+            return {"success": True, "ticksAbs": self.tick}
+        return _RealFake.call(self, tool, **kw)
+
+    def ticks(self, n):
+        self.order.append(("ticks", n))
+        return _RealFake.ticks(self, n)
+
+
+def swimmer_order():
+    games = []
+    real = C.FakeGame
+
+    def make():
+        g = Clocked()
+        games.append(g)
+        return g
+    C.FakeGame = make
+    try:
+        with contextlib.redirect_stdout(io.StringIO()):
+            ORS.main(["--mock", "--only", "bars_joint", "--no-save", "--no-shots"])
+    finally:
+        C.FakeGame = real
+    return games[-1].order
+
+
+order = swimmer_order()
+ticks_at = [i for i, o in enumerate(order) if o[0] == "ticks"]
+spawn_at = [i for i, o in enumerate(order) if o[0] == "spawn"]
+check("bars_joint staged its two swimmers (mock)", len(spawn_at) >= 2, order)
+check("the clock stepped toward midday (mock, clock at midnight)", bool(ticks_at), order)
+check("no clock step runs after a swimmer is in the water (a 4 m hole drowns a tired swimmer)",
+      bool(spawn_at) and bool(ticks_at) and min(spawn_at) > max(ticks_at), order)
+
+
 print("selftest_owner_review_stage: %d failure(s)" % len(FAILS))
 sys.exit(1 if FAILS else 0)

@@ -872,6 +872,7 @@ def main(argv=None):
         w.clear_site(rects[row])
         stage_row(s, row, o, fn)
     if not a.shots_only:
+        s.place_swimmers()          # R.Stage.swimmer defers them (the joint row's): after every tick of the staging
         renumber(s.stations, d.stations)
         if [st["n"] for st in s.stations] != [st["n"] for st in d.stations]:
             s.notes.append("LIVE stations FAILED to match the plan: %d live, %d planned" % (len(s.stations), len(d.stations)))

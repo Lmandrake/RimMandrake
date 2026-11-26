@@ -94,5 +94,29 @@ check("staged in that order, the stations keep the plan's numbers", [(st["n"], s
 md = W.stations_md(d.stations, "X.rws")
 check("stations.md lists every station", all("| %d | " % st["n"] in md for st in d.stations))
 
+# Review-stage swimmers (Steve2 job J20261124T165357Z-e3c928): owner_review_stage.Stage.swimmer defers the joint row's two swimmers to
+# place_swimmers(); walk_map reuses that row, so a walk map that never calls it would stage no swimmer at all.
+import contextlib  # noqa: E402
+import io  # noqa: E402
+import tempfile  # noqa: E402
+import fw_walk_common as C  # noqa: E402
+_games, _Real = [], C.FakeGame
+
+
+def _mk():
+    g = _Real()
+    _games.append(g)
+    return g
+
+
+C.FakeGame = _mk
+try:
+    with contextlib.redirect_stdout(io.StringIO()):
+        _rc = W.main(["--mock", "--only", "joint", "--no-save", "--no-shots", "--out", tempfile.mkdtemp(prefix="wm_joint_")])
+finally:
+    C.FakeGame = _Real
+_spawned = {tuple(p) for p in _games[-1].pawns.values()} if _games else set()
+check("the walk map's joint row stages both swimmers (placed after the staging's clock steps)",
+      _rc == 0 and {(143, 19), (143, 25)} <= _spawned, (_rc, sorted(_spawned)))
 print("SELFTEST walk_map: %d failed" % len(FAILS))
 sys.exit(1 if FAILS else 0)
