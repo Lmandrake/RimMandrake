@@ -194,28 +194,83 @@ namespace RimMandrake.FlowWorks.Machinery
             return new Command_Action
             {
                 defaultLabel = "Choose style",
-                defaultDesc = "Change how this whole connected line looks (scrapper, industrial, modern, futuristic): every FlowWorks part on it " +
-                              "at once (pipes, tanks, pumps, sprinkler heads, faucets, pipe poles, hose reels). A part with no art in that look keeps " +
-                              "its own. Free and instant; it changes art only, never cost, capacity or function.",
+                defaultDesc = "Give this " + clicked.def.label + " another look (scrapper, industrial, modern, futuristic). First choose how " +
+                              "far: this item only, everything connected to it (pipes, tanks, pumps, sprinkler heads, faucets, pipe poles, hose " +
+                              "reels), or every FlowWorks part you own on the map. A part with no art in that look keeps its own. Free and " +
+                              "instant; it changes art only, never cost, capacity or function.",
                 icon = clicked.StyleDef?.UIIcon ?? (Texture2D)clicked.def.uiIcon,
-                action = () =>
-                {
-                    var starts = new List<Thing> { clicked };
-                    foreach (object o in Find.Selector.SelectedObjectsListForReading)
-                        if (o is Thing t && t != clicked && t.Map == clicked.Map && t.Faction == Faction.OfPlayer) starts.Add(t);
-                    string cur = LineLookOf(clicked);
-                    var opts = new List<FloatMenuOption>();
-                    foreach (string look in PipeStyles.Looks)
-                    {
-                        ThingStyleDef sd = LineStyleFor(clicked.def, look);
-                        if (sd == null) continue;
-                        string l = look;
-                        opts.Add(new FloatMenuOption(look + (look == cur ? " (current)" : "") + ": the whole line", () => PickLineLook(clicked, starts, l),
-                            sd.UIIcon, Color.white));
-                    }
-                    Find.WindowStack.Add(new FloatMenu(opts));
-                }
+                action = () => Find.WindowStack.Add(new FloatMenu(ReachMenu(clicked)))
             };
+        }
+
+        /// <summary>RIMMANDRAKE_OFFER_FLOWWORKS_STYLE_REACHES_AS_SLACK_DOES (his walk, 2026-11-25: "all the options like we did in
+        /// GSS"): the first menu, Gimme Some Slack's three reaches (ConduitStylePicker.ReachMenu), each naming what it repaints.</summary>
+        public static List<FloatMenuOption> ReachMenu(Thing clicked)
+        {
+            var starts = new List<Thing> { clicked };
+            foreach (object o in Find.Selector.SelectedObjectsListForReading)
+                if (o is Thing t && t != clicked && t.Map == clicked.Map && t.Faction == Faction.OfPlayer) starts.Add(t);
+            var opts = new List<FloatMenuOption>
+            {
+                new FloatMenuOption(ReachItem + ": this " + clicked.def.label + " only",
+                    () => Find.WindowStack.Add(new FloatMenu(LookMenu(clicked, starts, LineReach.Item))))
+            };
+            int line = LineChanges(clicked.Map, starts, LineLookOf(clicked), out _).Count;
+            opts.Add(new FloatMenuOption(ReachConnected + ": the whole connected line" + (starts.Count > 1 ? "s" : "") +
+                (line > 0 ? " (" + line + " part" + (line == 1 ? "" : "s") + " now in other looks)" : ""),
+                () => Find.WindowStack.Add(new FloatMenu(LookMenu(clicked, starts, LineReach.Connected)))));
+            int all = MapParts(clicked.Map).Count;
+            opts.Add(new FloatMenuOption(ReachMap + ": " + all + " FlowWorks part" + (all == 1 ? "" : "s") + " you own",
+                () => Find.WindowStack.Add(new FloatMenu(LookMenu(clicked, starts, LineReach.Map)))));
+            return opts;
+        }
+
+        public enum LineReach { Item, Connected, Map }
+        public const string ReachItem = "This item", ReachConnected = "All connected", ReachMap = "All on map";
+
+        /// <summary>Every styled FlowWorks line part the player owns on <paramref name="map"/>.</summary>
+        public static List<Thing> MapParts(Map map)
+        {
+            var list = new List<Thing>();
+            if (map == null) return list;
+            foreach (Building b in map.listerBuildings.allBuildingsColonist)
+                if (LineStyled(b.def)) list.Add(b);
+            return list;
+        }
+
+        /// <summary>The second menu: the looks for that reach. "(current)" marks the clicked part's own look on the item reach.</summary>
+        public static List<FloatMenuOption> LookMenu(Thing clicked, List<Thing> starts, LineReach reach)
+        {
+            string cur = LineLookOf(clicked);
+            var opts = new List<FloatMenuOption>();
+            foreach (string look in PipeStyles.Looks)
+            {
+                ThingStyleDef sd = LineStyleFor(clicked.def, look);
+                if (sd == null && reach == LineReach.Item) continue;
+                string l = look;
+                opts.Add(new FloatMenuOption(look + (look == cur && reach == LineReach.Item ? " (current)" : ""),
+                    () => PickReach(clicked, starts, l, reach), sd?.UIIcon, Color.white));
+            }
+            return opts;
+        }
+
+        /// <summary>Apply <paramref name="look"/> over <paramref name="reach"/>; returns the parts changed (lastLineChanged).</summary>
+        public static int PickReach(Thing clicked, List<Thing> starts, string look, LineReach reach)
+        {
+            if (reach == LineReach.Connected) return PickLineLook(clicked, starts, look);
+            IEnumerable<Thing> targets = reach == LineReach.Item ? (IEnumerable<Thing>)new[] { clicked } : MapParts(clicked.Map);
+            bool pole = false;
+            int n = 0;
+            foreach (Thing t in targets)
+            {
+                if (LineStyleFor(t.def, look) == null || !SetLineLook(t, look)) continue;
+                n++;
+                pole |= t.def.defName == RM_PipePoles.PoleDef;
+            }
+            if (pole) RM_PipePoles.RedrawSpans();
+            lastLineChanged = n;
+            lastLineCapped = false;
+            return n;
         }
     }
 

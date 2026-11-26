@@ -133,8 +133,9 @@ def ladder_group(w, gid, title, row, mode, out_dir):
                 passif="Every picture shows the ladder on the wall the caption names.", fails="A ladder drawn on the wrong side, floating, or turned away from its wall.")
 
 
-def _style_menu(w, cell):
-    """Select the thing at `cell`, press its "Choose style" button, return (menuId, options) or (None, why)."""
+def _style_menu(w, cell, reach="item"):
+    """Select the thing at `cell`, press its "Choose style" button (through the reach menu when there is one: `reach`),
+    return (menuId, options) or (None, why)."""
     B = w.B
     B.call("rimworld/set_god_mode", enabled=True)
     B.call("rimworld/clear_selection")
@@ -145,7 +146,21 @@ def _style_menu(w, cell):
         return None, "no 'Choose style' button (have %s)" % [q.get("label") for q in gz][:6]
     B.call("rimworld/execute_gizmo", gizmoId=g.get("gizmoId") or g.get("id"))
     o = B.call("rimworld/get_context_menu_options") or {}
-    return o.get("menuId"), o.get("options") or []
+    opts = o.get("options") or []
+    # RIMMANDRAKE_OFFER_FLOWWORKS_STYLE_REACHES_AS_SLACK_DOES (2026-11-25): the first menu may be the reach (PipeLook.ReachMenu:
+    # "This item: ...", "All connected: ...", "All on map: ..."); pick the reach, the second menu is the looks
+    tag = REACH_ROW[reach]
+    hit = [q for q in opts if str(q.get("label") or "").startswith(tag)]
+    if hit or any(str(q.get("label") or "").startswith(t) for t in REACH_ROW.values() for q in opts):
+        if not hit:
+            return None, "the reach menu has no %r row" % tag
+        B.call("rimworld/execute_context_menu_option", optionIndex=hit[0].get("index"))
+        o = B.call("rimworld/get_context_menu_options") or {}
+        opts = o.get("options") or []
+    return o.get("menuId"), opts
+
+
+REACH_ROW = {"item": "This item", "connected": "All connected", "map": "All on map"}
 
 
 def look_of(label):
@@ -167,7 +182,7 @@ def current_look(w, cell):
 
 def choose_look(w, cell, look, run=False):
     """Pick `look` for the thing at `cell` (the whole connected run for a pipe) and read the look back."""
-    mid, opts = _style_menu(w, cell)
+    mid, opts = _style_menu(w, cell, "connected" if run else "item")
     if mid is None:
         return None
     # tanks/pipes read "<Look>: this tank" / "<Look>: whole connected run"; the reel's menu reads just "<Look>" (LIVE 2026-10-17)

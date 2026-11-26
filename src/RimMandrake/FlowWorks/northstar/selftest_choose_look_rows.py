@@ -60,5 +60,39 @@ check("a reel's bare menu: the bare row", w.B.chosen == 1, w.B.chosen)
 w = FakeW(LIVE)
 O.choose_look(w, (0, 0), "Neon", run=True)
 check("can-fail: a look the menu lacks picks nothing", w.B.chosen is None, w.B.chosen)
+
+
+class FakeReachB(object):
+    """RIMMANDRAKE_OFFER_FLOWWORKS_STYLE_REACHES_AS_SLACK_DOES (2026-11-25): the first menu is the reach, the second the look."""
+    REACH = ["This item: this pipe only", "All connected: the whole connected line", "All on map: 12 FlowWorks parts you own"]
+    LOOKS = ["Scrapper (current)", "Industrial", "Modern", "Futuristic"]
+
+    def __init__(self):
+        self.menu, self.picks = 0, []
+
+    def call(self, tool, **kw):
+        if tool == "rimworld/list_selected_gizmos":
+            return {"gizmos": [{"label": "Choose style", "gizmoId": "g1"}]}
+        if tool == "rimworld/get_context_menu_options":
+            labels = self.REACH if self.menu == 0 else self.LOOKS
+            return {"menuId": "m%d" % self.menu, "options": [{"index": i, "label": l} for i, l in enumerate(labels)]}
+        if tool == "rimworld/execute_context_menu_option":
+            self.picks.append((self.menu, kw.get("optionIndex")))
+            self.menu += 1
+        if tool == "rimworld/execute_gizmo":
+            self.menu = 0
+        return {"success": True}
+
+
+for run, want in ((True, [(0, 1), (1, 2)]), (False, [(0, 0), (1, 2)])):
+    w = FakeW([])
+    w.B = FakeReachB()
+    O.choose_look(w, (0, 0), "Modern", run=run)
+    check("the reach menu (run=%s): reach %s, then the Modern look; the read-back opens This item" % (run, want[0][1]),
+          w.B.picks == want + [(0, 0)], w.B.picks)
+w = FakeW([])
+w.B = FakeReachB()
+O.choose_look(w, (0, 0), "Neon", run=True)
+check("can-fail: the reach menu with a look it lacks picks no look", all(m == 0 for m, _ in w.B.picks), w.B.picks)
 print("selftest_choose_look_rows: %d failure(s)" % len(FAILS))
 sys.exit(1 if FAILS else 0)
