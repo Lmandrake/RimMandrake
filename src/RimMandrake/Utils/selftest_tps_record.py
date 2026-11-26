@@ -684,7 +684,7 @@ def writer_kind_checks():
         # the writer's names in this file: its aliases (using W = ...JawaBenchTpsWriter), its class name, and inside
         # the writer itself a bare Enqueue( / Envelope(
         names = set(re.findall(r"using\s+(\w+)\s*=\s*JawaBench\.BridgeTools\.JawaBenchTpsWriter\s*;", text)) | {"JawaBenchTpsWriter"}
-        pre = r"(?:\b(?:%s)\.%s)" % ("|".join(sorted(names)), "|(?<![\w.])" if fn == "JawaBenchTpsWriter.cs" else "")
+        pre = r"(?:\b(?:%s)\.%s)" % ("|".join(sorted(names)), r"|(?<![\w.])" if fn == "JawaBenchTpsWriter.cs" else "")
         for m in re.finditer(pre + r'Enqueue\(\s*"([^"]+)"|' + pre + r'Envelope\([^;]*?,\s*"([^"]+)"\s*,', text):
             found.setdefault(m.group(1) or m.group(2), fn)
     # the instrument must see: the sampler's and the writer's own kinds are among the matches
