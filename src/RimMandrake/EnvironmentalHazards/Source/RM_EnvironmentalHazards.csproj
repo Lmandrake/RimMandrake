@@ -49,6 +49,7 @@
     <Compile Include="..\..\_Shared\LightLedger\LightLedger.cs" Link="Shared\LightLedger.cs" />
     <Compile Include="..\..\_Shared\LightLedger\LightLedgerKernel.cs" Link="Shared\LightLedgerKernel.cs" />
     <Compile Include="HazardTargeting.cs" />
+    <Compile Include="RM_GeoStones.cs" />
     <Compile Include="RM_HazardNativeExtension.cs" />
     <Compile Include="RM_Alert_VenomContactClock.cs" />
     <Compile Include="RM_AxisKernel.cs" />

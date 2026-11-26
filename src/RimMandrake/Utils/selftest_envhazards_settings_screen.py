@@ -39,8 +39,10 @@ def check(cs, csproj):
         if "if (Group(" in body[i:j]:
             errs.append(f"group {m.group(1)!r}: swallows the next group (a closing brace is missing)")
         groups.append((m.group(1), names, body[i:j]))
-    if len(groups) != 11:  # 11th: "World-tile features (ports of retired donor mutators)", RETIRED_MUTATORS_PORT 2026-10-19
-        errs.append(f"{len(groups)} groups found, expected 11")
+    # 11th: "World-tile features (ports of retired donor mutators)", RETIRED_MUTATORS_PORT 2026-10-19;
+    # 12th: "Geological landmarks (WORLDGEN-AFFECTING)", GEOSTONE_BUILD_SIX_LABELS_AWAIT_STAMP 2026-11-26
+    if len(groups) != 12:
+        errs.append(f"{len(groups)} groups found, expected 12")
     seen = {}
     for title, names, text in groups:
         for n in names:

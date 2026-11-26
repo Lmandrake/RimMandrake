@@ -417,6 +417,14 @@ namespace RimMandrake.EnvironmentalHazards
         public static bool treasureConscienceEnabled = true;
         public static bool sunlightScaldEnabled = true;
         public static bool mirrorPoolsEnabled = true;
+        // GEOSTONE_BUILD_SIX_LABELS_AWAIT_STAMP: one switch per hand-placed geological landmark (RM_GeoStones.cs); off = the
+        // tile keeps its biome's stones on maps generated afterwards.
+        public static bool geoBlackStairEnabled = true;
+        public static bool geoSaltKnollsEnabled = true;
+        public static bool geoStarfallRimEnabled = true;
+        public static bool geoHullbedEnabled = true;
+        public static bool geoChalkStepEnabled = true;
+        public static bool geoColdstoneShieldEnabled = true;
         public static bool leachmossEnabled = true;
         public static bool contactVenomEnabled = true;
         public static bool hazardClockReadoutsEnabled = true;
@@ -582,6 +590,12 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref treasureConscienceEnabled, "treasureConscienceEnabled", true);
             Scribe_Values.Look(ref sunlightScaldEnabled, "sunlightScaldEnabled", true);
             Scribe_Values.Look(ref mirrorPoolsEnabled, "mirrorPoolsEnabled", true);
+            Scribe_Values.Look(ref geoBlackStairEnabled, "geoBlackStairEnabled", true);
+            Scribe_Values.Look(ref geoSaltKnollsEnabled, "geoSaltKnollsEnabled", true);
+            Scribe_Values.Look(ref geoStarfallRimEnabled, "geoStarfallRimEnabled", true);
+            Scribe_Values.Look(ref geoHullbedEnabled, "geoHullbedEnabled", true);
+            Scribe_Values.Look(ref geoChalkStepEnabled, "geoChalkStepEnabled", true);
+            Scribe_Values.Look(ref geoColdstoneShieldEnabled, "geoColdstoneShieldEnabled", true);
             Scribe_Values.Look(ref leachmossEnabled, "leachmossEnabled", true);
             Scribe_Values.Look(ref contactVenomEnabled, "contactVenomEnabled", true);
             Scribe_Values.Look(ref hazardClockReadoutsEnabled, "hazardClockReadoutsEnabled", true);
@@ -747,6 +761,28 @@ namespace RimMandrake.EnvironmentalHazards
                     "A biome built with a Forgotten Sentinel grave-ward stops placing new ones on any map "
                   + "generated while this is off. Maps already generated keep whatever grave-ward (and "
                   + "whatever Sentinels it already spawned) they already have.");
+                list.GapLine();
+            }
+            if (Group(list, "Geological landmarks (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "geoBlackStairEnabled", "geoSaltKnollsEnabled", "geoStarfallRimEnabled", "geoHullbedEnabled", "geoChalkStepEnabled", "geoColdstoneShieldEnabled" }))
+            {
+                list.CheckboxLabeled("The Black Stair: its own stone (WORLDGEN-AFFECTING)", ref geoBlackStairEnabled,
+                    "A map generated on a tile of The Black Stair while this is on has walls of slate and granite, whatever land it lies in. "
+                  + "Off: the tile keeps its biome's own stones on maps generated afterwards. Maps already generated keep their walls.");
+                list.CheckboxLabeled("The Salt Knolls: its own stone (WORLDGEN-AFFECTING)", ref geoSaltKnollsEnabled,
+                    "A map generated on a tile of The Salt Knolls while this is on has walls of limestone, whatever land it lies in. "
+                  + "Off: the tile keeps its biome's own stones on maps generated afterwards. Maps already generated keep their walls.");
+                list.CheckboxLabeled("Starfall Rim: its own stone (WORLDGEN-AFFECTING)", ref geoStarfallRimEnabled,
+                    "A map generated on a tile of Starfall Rim while this is on has walls of granite and marble, whatever land it lies in. "
+                  + "Off: the tile keeps its biome's own stones on maps generated afterwards. Maps already generated keep their walls.");
+                list.CheckboxLabeled("The Hullbed: its own stone (WORLDGEN-AFFECTING)", ref geoHullbedEnabled,
+                    "A map generated on a tile of The Hullbed while this is on has walls of deck plate and sandstone, whatever land it lies in. "
+                  + "Off: the tile keeps its biome's own stones on maps generated afterwards. Maps already generated keep their walls.");
+                list.CheckboxLabeled("The Chalk Step: its own stone (WORLDGEN-AFFECTING)", ref geoChalkStepEnabled,
+                    "A map generated on a tile of The Chalk Step while this is on has walls of limestone alone, whatever land it lies in. "
+                  + "Off: the tile keeps its biome's own stones on maps generated afterwards. Maps already generated keep their walls.");
+                list.CheckboxLabeled("The Coldstone Shield: its own stone (WORLDGEN-AFFECTING)", ref geoColdstoneShieldEnabled,
+                    "A map generated on a tile of The Coldstone Shield while this is on has walls of granite and solid ice, whatever land it lies in. "
+                  + "Off: the tile keeps its biome's own stones on maps generated afterwards. Maps already generated keep their walls.");
                 list.GapLine();
             }
             if (Group(list, "Living towers, crèches and stranded creatures", RimMandrake.Shared.SettingScope.Now, new[] { "livingRegrowthEnabled", "livingRegrowthRateMultiplier", "crecheDespoilMemoryEnabled", "strandingPoolsEnabled", "waterLockedRecoveryWalk" }))

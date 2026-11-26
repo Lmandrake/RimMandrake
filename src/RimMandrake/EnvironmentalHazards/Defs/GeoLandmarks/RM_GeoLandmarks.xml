@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GEOSTONE_BUILD_SIX_LABELS_AWAIT_STAMP: the six hand-placed geological landmarks of
+     design/RimMandrake/world_remake_2026-10-19/16_geo_landmarks.md (data of record: geo_landmarks.csv; frozen tiles:
+     geo_landmarks_tiles.csv). Each is a TileMutatorDef RM_Geo_<Name> carrying RM_GeoStonesExtension (its stones, its
+     Mod Settings switch) and a LandmarkDef of the same name whose only mutator is its own, required: AddLandmark rolls
+     every chance in that list onto the tile, so any other entry would put random extras on the one planet.
+     Hand-placed only: LandmarkDef commonality 0 and TileMutatorDef chanceOnNonLandmarkTile 0, so no world generation
+     ever places one (CLAUDE.md: there is no worldgen feature). The stamp is part of the one paint
+     (BIOME_PAINT_ONCE_AT_THE_END_1). Each mutator has a category of its own: Tile.AddMutator drops a mutator that shares
+     a category with a later one. The stones are stones_now; stones_planned waits on BIOME_STONES_DESIGN_BASALT_JOINS_THE_BAND.
+     The C#: Source/RM_GeoStones.cs. PLACEHOLDER ART: the landmark icons are vanilla Odyssey icons. -->
+<Defs>
+
+  <!-- The Black Stair: basalt province; centre and label tile 3653, 3 rings. -->
+  <TileMutatorDef>
+    <defName>RM_Geo_BlackStair</defName>
+    <label>basalt province</label>
+    <description>Flood basalt steps down off the Forge here, across four neighbouring lands. The walls of a map here are the province's dark stone, not the land's own.</description>
+    <categories>
+      <li>RM_Geo_BlackStair</li>
+    </categories>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_GeoStonesExtension">
+        <setting>geoBlackStairEnabled</setting>
+        <stones>
+          <li>Slate</li>
+          <li>Granite</li>
+        </stones>
+      </li>
+    </modExtensions>
+  </TileMutatorDef>
+  <LandmarkDef>
+    <defName>RM_Geo_BlackStair</defName>
+    <label>The Black Stair</label>
+    <iconTexturePath>World/Landmarks/Cliffs</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>0</commonality>
+    <mutatorChances>
+      <RM_Geo_BlackStair Required="True" />
+    </mutatorChances>
+  </LandmarkDef>
+
+  <!-- The Salt Knolls: salt dome field; centre and label tile 9802, 2 rings. -->
+  <TileMutatorDef>
+    <defName>RM_Geo_SaltKnolls</defName>
+    <label>salt dome field</label>
+    <description>Low knolls of limestone caprock over buried salt plugs. The walls of a map here are that caprock, not the land's own stone.</description>
+    <categories>
+      <li>RM_Geo_SaltKnolls</li>
+    </categories>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_GeoStonesExtension">
+        <setting>geoSaltKnollsEnabled</setting>
+        <stones>
+          <li>Limestone</li>
+        </stones>
+      </li>
+    </modExtensions>
+  </TileMutatorDef>
+  <LandmarkDef>
+    <defName>RM_Geo_SaltKnolls</defName>
+    <label>The Salt Knolls</label>
+    <iconTexturePath>World/Landmarks/Plateau</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>0</commonality>
+    <mutatorChances>
+      <RM_Geo_SaltKnolls Required="True" />
+    </mutatorChances>
+  </LandmarkDef>
+
+  <!-- Starfall Rim: meteorite strewn field; centre and label tile 770, 2 rings. -->
+  <TileMutatorDef>
+    <defName>RM_Geo_StarfallRim</defName>
+    <label>meteorite strewn field</label>
+    <description>Impact-shocked crystalline rock on the rim of the old crater. The walls of a map here are that shocked rock, not the land's own stone.</description>
+    <categories>
+      <li>RM_Geo_StarfallRim</li>
+    </categories>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_GeoStonesExtension">
+        <setting>geoStarfallRimEnabled</setting>
+        <stones>
+          <li>Granite</li>
+          <li>Marble</li>
+        </stones>
+      </li>
+    </modExtensions>
+  </TileMutatorDef>
+  <LandmarkDef>
+    <defName>RM_Geo_StarfallRim</defName>
+    <label>Starfall Rim</label>
+    <iconTexturePath>World/Landmarks/Cliffs</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>0</commonality>
+    <mutatorChances>
+      <RM_Geo_StarfallRim Required="True" />
+    </mutatorChances>
+  </LandmarkDef>
+
+  <!-- The Hullbed: exposed wreck stratum; centre and label tile 19418, 2 rings. -->
+  <TileMutatorDef>
+    <defName>RM_Geo_Hullbed</defName>
+    <label>exposed wreck stratum</label>
+    <description>The Rust Cathedral's buried deck plate surfaces here, far outside the cathedral, bedded in sandstone. The walls of a map here are deck plate and sandstone.</description>
+    <categories>
+      <li>RM_Geo_Hullbed</li>
+    </categories>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_GeoStonesExtension">
+        <setting>geoHullbedEnabled</setting>
+        <stones>
+          <li>RM_CathedralDeckPlate</li>
+          <li>Sandstone</li>
+        </stones>
+      </li>
+    </modExtensions>
+  </TileMutatorDef>
+  <LandmarkDef>
+    <defName>RM_Geo_Hullbed</defName>
+    <label>The Hullbed</label>
+    <iconTexturePath>World/Landmarks/Plateau</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>0</commonality>
+    <mutatorChances>
+      <RM_Geo_Hullbed Required="True" />
+    </mutatorChances>
+  </LandmarkDef>
+
+  <!-- The Chalk Step: exposed stratum; centre and label tile 20193, 2 rings. -->
+  <TileMutatorDef>
+    <defName>RM_Geo_ChalkStep</defName>
+    <label>exposed stratum</label>
+    <description>One white chalk bed cut across four twilight lands. Every wall of a map here is that one stone.</description>
+    <categories>
+      <li>RM_Geo_ChalkStep</li>
+    </categories>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_GeoStonesExtension">
+        <setting>geoChalkStepEnabled</setting>
+        <stones>
+          <li>Limestone</li>
+        </stones>
+      </li>
+    </modExtensions>
+  </TileMutatorDef>
+  <LandmarkDef>
+    <defName>RM_Geo_ChalkStep</defName>
+    <label>The Chalk Step</label>
+    <iconTexturePath>World/Landmarks/Cliffs</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>0</commonality>
+    <mutatorChances>
+      <RM_Geo_ChalkStep Required="True" />
+    </mutatorChances>
+  </LandmarkDef>
+
+  <!-- The Coldstone Shield: frost-shattered granite shield; centre and label tile 13720, 2 rings. -->
+  <TileMutatorDef>
+    <defName>RM_Geo_ColdstoneShield</defName>
+    <label>frost-shattered granite shield</label>
+    <description>A night-side granite upland with ice in its joints. The walls of a map here are granite and solid ice.</description>
+    <categories>
+      <li>RM_Geo_ColdstoneShield</li>
+    </categories>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_GeoStonesExtension">
+        <setting>geoColdstoneShieldEnabled</setting>
+        <stones>
+          <li>Granite</li>
+          <li>SolidIce</li>
+        </stones>
+      </li>
+    </modExtensions>
+  </TileMutatorDef>
+  <LandmarkDef>
+    <defName>RM_Geo_ColdstoneShield</defName>
+    <label>The Coldstone Shield</label>
+    <iconTexturePath>World/Landmarks/IceDunes</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>0</commonality>
+    <mutatorChances>
+      <RM_Geo_ColdstoneShield Required="True" />
+    </mutatorChances>
+  </LandmarkDef>
+</Defs>
