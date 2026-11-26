@@ -1374,7 +1374,7 @@
      "planted (coverage_calibration.py): good_one_kind_enough, his promise that a lit lantern keeps the beasts away, tested with one animal kind and a control: \"test it against every roster kind\" is advice (rule 1)"
     ]
    },
-   "hash": "a6eff986e9ff8967",
+   "hash": "1263120ad7c2f12f",
    "last_run": {
     "at": "2026-11-25T23:49:10Z",
     "cases": "12 planted case(s) ran and came out as planted",
@@ -1848,12 +1848,12 @@
      "id": "good_one_kind_enough"
     }
    ],
-   "reset_at": "2026-11-25T23:49:10Z",
+   "reset_at": "2026-11-26T09:09:38Z",
    "restored": {
     "at": "2026-11-24T16:59:56Z",
     "why": "no paid run: the brief at 5411bd360c (raw sha256 01cbd5dc7f5f5473, the bytes the last_run calibrated) and now differ only in two docstring lines (6cfd21b97c); both hash 210cb36cc4d6c302 under brief_text.py"
    },
-   "status": "CALIBRATED",
+   "status": "UNTESTED",
    "timeout_s": 1800,
    "was": "CALIBRATED"
   },
@@ -1878,7 +1878,7 @@
    ],
    "hash": "0c5c7ef641403d64",
    "last_run": {
-    "at": "2026-11-26T07:53:32Z",
+    "at": "2026-11-26T09:09:38Z",
     "cases": "822 planted case(s) ran and came out as planted",
     "exit": 0,
     "out": "evidence corpus: 55 false closes, 55 rejected; 767 valid closes, 767 accepted - OK",
@@ -2242,9 +2242,9 @@
     "src/RimMandrake/rimflow/selftest_maturation.py",
     "--submit"
    ],
-   "hash": "c3e1d76026902a01",
+   "hash": "1cd983c7a01c41c0",
    "last_run": {
-    "at": "2026-11-26T08:38:14Z",
+    "at": "2026-11-26T09:09:38Z",
     "cases": "3 planted case(s) ran and came out as planted",
     "exit": 0,
     "out": "ALL PASS",
@@ -2280,7 +2280,7 @@
      "id": "locked_version_passes"
     }
    ],
-   "reset_at": "2026-11-26T08:38:14Z",
+   "reset_at": "2026-11-26T09:09:38Z",
    "status": "CALIBRATED",
    "was": "CALIBRATED"
   },

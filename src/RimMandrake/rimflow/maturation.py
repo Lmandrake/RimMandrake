@@ -82,6 +82,7 @@ import fixer_rule                # noqa: E402  the one fixer statement and test-
 import judge_certificate as JC   # noqa: E402  the pre-judgement certificate (PRE_JUDGEMENT_CERTIFICATE)
 import own_cgroup               # noqa: E402  a history read is file cache outside the tick's memory limit
 import build_match as BM         # noqa: E402  the Stage 6 exit's build match (owner, 2026-11-17)
+import look_notes as LN          # noqa: E402  his pinned passes that a fix moved (rule 2e, his card 2026-11-12)
 
 UNM = "UNMEASURED"
 RECORD = "version/stage_record.json"
@@ -4274,6 +4275,20 @@ def walk_brief_moved_why(root, mod, text):
             "\"Known, not fixed\"" % ", ".join(left)] if left else []
 
 
+def walk_brief_pins_why(root, mod, text):
+    """-> [why] a walk brief does not name a pinned line of his that a fix moved, lost or cannot compare (rule 2e of
+    design/RimMandrake/validation_map_and_rules.md; his card 2026-11-12: "A fix that changes something he passed ->
+    Allow it, list what moved"). A pins file that cannot be read is named, never read as no pins."""
+    n = LN.notes(root, mod)
+    if n["why"]:
+        return ["his pins cannot be read (%s): repair the file, then run look_notes.py %s" % (n["why"], mod)]
+    left = [r["id"] for r in n["listed"]
+            if not re.search(r"(?<![A-Za-z0-9_])%s(?![A-Za-z0-9_])" % re.escape(r["id"]), text or "")]
+    return ["the brief does not name the pinned line %s that moved since his pass: paste `python3 "
+            "src/RimMandrake/Utils/look_notes.py %s` under \"What changed since his last look\"" % (", ".join(left), mod)
+            ] if left else []
+
+
 def visit_numbers(root, mod):
     d = os.path.join(mod_dir(root, mod), INGAME_DIR)
     out = []
@@ -5400,6 +5415,7 @@ def read_walk_brief(root, mod, rec):
     tt, _ = read_json(root, mod, "version/test_table.json")
     out["why"] += walk_brief_raid_why(root, mod, max(1, len(ingame_openings(rec))), tt, text)
     out["why"] += walk_brief_moved_why(root, mod, text)
+    out["why"] += walk_brief_pins_why(root, mod, text)
     return out
 
 

@@ -469,6 +469,9 @@ python3 src/RimMandrake/rimflow/mod_owner_hold.py lift <Mod> --per-ruling RIMMAN
     it with a helper at once (CLAUDE.md "There are several live games").
 - When he sits down to walk ArchBig, run `./pipe off game:ArchBig --why "his walk"`. When he is done, run `./pipe on game:ArchBig
   --why "walk over"`. Do not switch off `stage:in_game` for a walk.
+  - Pin each thing that he passes in a look, where it is a value: `python3 src/RimMandrake/Utils/look_notes.py pin <Mod>
+    --id <PIN_ID> --said "<his words>" --cell <cell> --path <repo path> --regex "<one group: the value>"`. A fix may move a
+    pin. The next walk brief then lists it, old beside new (rule 2e, `design/RimMandrake/validation_map_and_rules.md`).
   - While the hold stands, no pipeline run starts on ArchBig, and no tool deploys to, launches or stops ArchBig without
     `--despite-hold "<why>"`.
   - The hold does not depend on your bridge hold. It stays when your bridge hold lapses.

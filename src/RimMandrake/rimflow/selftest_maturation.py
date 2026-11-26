@@ -650,6 +650,31 @@ def main():
             with open(wb, "w") as f:
                 f.write(text)
             refused(M.advance(root, "Pyrelands", "his_walk", by="CONDUCTOR", why="x"), "walk_brief", what)
+        # rule 2e (his card 2026-11-12, "Allow it, list what moved"): a pinned pass that a fix moved is named in the brief
+        pins = os.path.join(root, "design", "concepts", "Pyrelands", "version", "pins.json")
+        with open(os.path.join(root, "pin_src.txt"), "w") as f:
+            f.write("shallow = 0.25\n")
+        with open(pins, "w") as f:
+            json.dump({"pins": [{"id": "PIN_SELFTEST_SHALLOW", "said": "very transparent at first", "cell": "c1",
+                                 "value": "0.49", "read": {"path": "pin_src.txt", "regex": r"shallow = ([0-9.]+)"}}]}, f)
+        with open(wb, "w") as f:
+            f.write("written_by: fresh-reader-1\n\n%s" % body)
+        refused(M.advance(root, "Pyrelands", "his_walk", by="CONDUCTOR", why="x"), "walk_brief",
+                "a brief silent on a pinned pass that a fix moved (0.49 -> 0.25)")
+        with open(pins, "w") as f:
+            f.write("{not json")
+        refused(M.advance(root, "Pyrelands", "his_walk", by="CONDUCTOR", why="x"), "walk_brief",
+                "a pins file that cannot be read is never read as no pins")
+        with open(pins, "w") as f:
+            json.dump({"pins": [{"id": "PIN_SELFTEST_SHALLOW", "said": "very transparent at first", "cell": "c1",
+                                 "value": "0.49", "read": {"path": "pin_src.txt", "regex": r"shallow = ([0-9.]+)"}}]}, f)
+        with open(wb, "w") as f:
+            f.write("written_by: fresh-reader-1\n\n%s" % body.replace(
+                "selftest text under What changed since his last look",
+                "PIN_SELFTEST_SHALLOW (cell c1): 0.49 -> 0.25"))
+        ok(not M.read_walk_brief(root, "Pyrelands", M.load(root, "Pyrelands"))["why"],
+           "a brief that names the moved pin passes the walk_brief clause")
+        os.remove(pins)
         with open(wb, "w") as f:
             f.write("written_by: fresh-reader-1\n\n%s" % body)
         ok(M.advance(root, "Pyrelands", "his_walk", by="CONDUCTOR", why="walk brief arrival_1 written")["ok"],

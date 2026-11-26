@@ -131,8 +131,9 @@ other stored PASS stands, because its key is unchanged. A whole-suite rerun is r
 good (pass)", "the shallow end is right") becomes a pinned line: a stored PASS plus, where it is a number, an offline
 row that holds it. A fix whose diff moves a pinned line is not refused. The notes of his next look list **every**
 pinned line whose value moved, old value beside new, and that cell is in the save he opens. Tonight this would have put
-the water retune's halved shallow end (0.49 to 0.25) in front of him by name (section 3). Tooling owed:
-`RIMMANDRAKE_LIST_MOVED_PINS_IN_LOOK_NOTES`.
+the water retune's halved shallow end (0.49 to 0.25) in front of him by name (section 3). Tooling:
+`src/RimMandrake/Utils/look_notes.py` (`pin` stores a pass; the walk brief lists each moved pin, and the `walk_brief`
+clause of `maturation.py` refuses a brief that leaves one out; page `design/specs/2026-11-26-look-notes-moved-pins/boundary.md`).
 
 **2f. Small objections stay small.**
 - A SITE or HARNESS line never revalidates a MOD row. It voids only the rows that ran on the bad site, and those rerun

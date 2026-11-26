@@ -72,6 +72,9 @@ What the version changed, in his words where he gave them, each with its commit.
 Then the lines of `python3 src/RimMandrake/Utils/look_changed_labels.py show --mod <Mod> --save <the walk save>`: each
 cell labelled changed or new since his last look, and each cell removed since. Exit 2 (no cells file): say so here and
 file a ticket.
+Then also paste the output of `python3 src/RimMandrake/Utils/look_notes.py <Mod>`: every pinned pass of his whose value a
+fix moved, old beside new, with its cell. Put each listed cell in the save he opens. The brief is not written while a
+listed pin is missing (rule 2e, `design/RimMandrake/validation_map_and_rules.md`).
 
 ## Known, not fixed: you need not report these
 Each known fault still open, with its ticket id, so he does not spend his walk finding it.
