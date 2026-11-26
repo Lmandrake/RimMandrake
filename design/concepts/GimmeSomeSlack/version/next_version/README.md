@@ -59,3 +59,24 @@ Appended by `RIMMANDRAKE_CLOSE_SLACK_VERSION_ALL_REAL_WORK_ONE_RUN_ONE_CONTEXT` 
   the ten stations stay, and the ticket is dropped (the 0.2.0 walk uses a staged save that the generator did not rebuild).
 - **Re-judge coverage under a calibrated brief:** not done; the ticket is dropped (paperwork, nothing a player sees).
 - Taken from his words of 2026-11-24: bar `ship_to_ground_wire_snaps`.
+
+## A ship-to-ground wire that snaps at take-off
+
+- **What:** when a gravship takes off with a wire strung from the ship to the ground, the wire snaps (a visible break, its
+  material left where it broke) in place of today's take-down: the mod takes the wire down, coils it and shows one message
+  (`design/specs/2026-11-23-costly-test-acts/one_page.md` §Your wire that breaks at take-off, measured by code read).
+- **Who, when, why not now:** the costly-test-acts study of 2026-11-24 (item
+  `RIMMANDRAKE_CENSUS_COSTLY_TEST_ACTS_REPEATED_HE_SAW_SHIP_FLY`) put it to the Conductor as a change to the mod. Ruled next
+  version on 2026-11-25 (the Conductor's brief, delegated): 0.2.0 has passed, and a new behaviour is Divergent.
+- **Acceptance test:** live, a ship flown with a strung ground wire leaves a broken wire on the ground and no coil message;
+  offline, the mod's selftest finds no take-down call on the take-off path for a ship-to-ground span.
+
+## One flight for both keep-wires switch values, proven offline
+
+- **What:** the gravship checks fly one ship once, and an offline selftest proves the keep-wires switch guard for the value
+  that flight does not use (the mod reads the switch once for all wires at take-off, so one flight has one switch value).
+  Today two flights serve the two values (one_page.md §The gravship).
+- **Who, when, why not now:** the same study; ruled next version on 2026-11-25 (the Conductor's brief, delegated): the
+  0.2.0 verdicts stand until a change touches them, so the saving comes only at the next visit.
+- **Acceptance test:** the mod's test table holds one flight row, and an offline row for the other switch value that is
+  red on a planted guard fault and green on the build.
