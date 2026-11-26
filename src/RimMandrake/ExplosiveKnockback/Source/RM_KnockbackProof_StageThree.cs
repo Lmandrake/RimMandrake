@@ -598,11 +598,29 @@ namespace RimMandrake.ExplosiveKnockback
         /// north-east. Door lane at (-5,5): colonist Q thrown east into a door. Heavy lane at (5,5): 30 steel (15 kg) thrown
         /// west at colonist H. Container lane at (5,-5): a SealedCrate west, an LWM weapons locker east, each free-backed.
         /// Gas lane at (-5,-5): a radius-1 puff of the Cauldron's vent gas, 10 steel beside it, lit by its own Ignite.</summary>
+        /// <summary>ByMass among the kinds that cannot fly. Visit 2 run 3 (2026-11-26, SITE): the middle kind under 90 kg on
+        /// the visit tier was RM_FireWasp, a flyer; it took off on its own before the fireHalf blast, and the mod rightly spared
+        /// it (skip: flying), so lane A read a drift that no setting made.</summary>
+        internal static PawnKindDef GroundedByMass(string band, float lo, float hi, string prefer)
+        {
+            float mid = (lo + hi) / 2f;
+            var inBand = AnimalKinds().Where(k => KindMass(k) >= lo && KindMass(k) < hi
+                && k.race.GetStatValueAbstract(StatDefOf.MaxFlightTime) <= 0f).ToList();
+            if (inBand.Count == 0)
+            {
+                throw new InvalidOperationException("no loaded animal kind that cannot fly for the " + band + " band, "
+                    + lo.ToString("0.#") + "-" + hi.ToString("0.#") + " kg adult");
+            }
+            return inBand.OrderBy(k => Official(k) ? 1 : 0)
+                .ThenBy(k => prefer == "light" ? KindMass(k) : prefer == "heavy" ? -KindMass(k) : Math.Abs(KindMass(k) - mid))
+                .ThenBy(k => k.defName, StringComparer.Ordinal).First();
+        }
+
         private static void SweepLane(Scene s, MapComponent vg, Type vt, out Func<Dictionary<string, string>> observe)
         {
             Map map = Map;
             Pawn P = Colonist(s, "P", O(s, 1, 0));
-            Pawn A = Adult(ByMass("under 90 kg", 5f, 90f, "middle"));
+            Pawn A = Adult(GroundedByMass("under 90 kg", 5f, 90f, "middle"));
             GenSpawn.Spawn(A, O(s, -1, 0), map);
             Track(s, "A", A);
             PawnKindDef mk = DefDatabase<PawnKindDef>.AllDefsListForReading.Where(k => k.RaceProps != null && k.RaceProps.IsMechanoid

@@ -34,6 +34,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.join(HERE, "Source", "RM_KnockbackProof.cs")
 DUPE_RADIUS = 8.0       # Toils_Haul.CheckForGetOpportunityDuplicate: GenClosest.ClosestThingReachable(..., 8f, ...)
 O = r"O\(s,\s*(-?\d+),\s*(-?\d+)\)"
+HAULABLE = r"(?:,\s*haulable:\s*true)?"   # 813366f4c6: Item forbids a scene good unless the scene passes haulable: true
 
 
 def block(text):
@@ -54,8 +55,8 @@ def layout(b):
     cells = lambda p: {(p[0] + dx, p[1] + dz) for dx in range(p[2]) for dz in range(p[3])}  # noqa: E731
     lay = {
         "main": cells(pits[0]), "control": cells(pits[1]),
-        "st": one(r'Item\(s, "st", "Steel", \d+, ' + O + r"\)", "the stack"),
-        "cst": one(r'Item\(s, "cst", "Steel", \d+, ' + O + r"\)", "the control stack"),
+        "st": one(r'Item\(s, "st", "Steel", \d+, ' + O + HAULABLE + r"\)", "the stack"),
+        "cst": one(r'Item\(s, "cst", "Steel", \d+, ' + O + HAULABLE + r"\)", "the control stack"),
         "dead": one(r'Colonist\(s, "dead", ' + O, "the corpse"),
         "lad": one(r"Thing lad = Ladder\(ld, " + O + r", " + O + r"\)", "the main ladder"),
         "ctl": one(r"Thing ctl = Ladder\(fixedLd, " + O + r", " + O + r"\)", "the control ladder"),
@@ -106,6 +107,9 @@ def check(lay):
     if not lay.get("free_will_reach"):
         faults.append("G7 the ordered hauls are not preceded by a free-will reach read of stack, corpse and control: a reach "
                       "veto that shuts the lowered-ladder pit would pass")
+    if lay.get("late_reach") is False:
+        faults.append("G8 the free-will answers the verdict reads are taken in the tick the control ladder is raised: "
+                      "FlowWorks' climb masks take a raise only on the next path update, so a same-tick read sees the old ladder")
     if lay.get("verdict_reach") is False:
         faults.append("G7 the verdict does not require the free-will reach (autoHaulMain true, autoHaulControl false)")
     return faults
@@ -118,6 +122,16 @@ def main():
         i = text.index('case "pit_goods_fetch":')
         v = text[text.index("s.verdict = sc =>", i):text.index("return null;", text.index("s.verdict = sc =>", i))]
         lay["verdict_reach"] = "autoHaulMain" in v and "autoHaulControl" in v
+        # G8 (visit 2 run 3, 2026-11-26): every write of the verdict's autoHaulControl sits inside a ProofSchedule action
+        # keyed at least one tick after the stage tick
+        b = block(text)
+        writes = [m.start() for m in re.finditer(r's\.numbers\["autoHaulControl"\]\s*=', b)]
+        def late(at):
+            j = b.rfind("ProofSchedule.Add(", 0, at)
+            m = re.match(r"ProofSchedule\.Add\(new KeyValuePair<int, Action>\(s\.stagedTick \+ (\w+)", b[j:]) if j >= 0 else None
+            n = m and (int(m.group(1)) if m.group(1).isdigit() else int((re.search(r"const int %s = (\d+);" % m.group(1), text) or [0, 0])[1]))
+            return bool(n and n >= 1)
+        lay["late_reach"] = bool(writes) and all(late(w) for w in writes)
         faults = check(lay)
     except ValueError as e:
         faults = ["layout unreadable: %s" % e]

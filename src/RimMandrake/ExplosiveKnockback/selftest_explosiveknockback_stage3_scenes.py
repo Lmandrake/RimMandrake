@@ -130,6 +130,15 @@ def main():
     check("F5", not noop and not unknown and len(defaults) >= 40, "every sweep lane writes a non-default value (%d lanes, %d defaults read)"
           % (len(re.findall(r'\["\w+"\] = Lane\(', lanes_m.group(1) if lanes_m else "")), len(defaults))
           + (": no-op %s" % noop if noop else "") + (": field without a default %s" % unknown if unknown else ""))
+    # visit 2 run 3 (2026-11-26, SITE): the sweep's lane A took the middle animal kind under 90 kg, RM_FireWasp on the visit
+    # tier, a flyer; it took off on its own before the fireHalf blast and the mod rightly spared it (skip: flying), so the
+    # lane read a drift the setting did not make. Lane A's pick must refuse every kind that can fly (MaxFlightTime > 0).
+    sweep_m = re.search(r"private static void SweepLane\(.*?\n        \}\n", three, re.S)
+    a_line = re.search(r"Pawn A = Adult\((\w+)\(", sweep_m.group(0)) if sweep_m else None
+    picker = a_line.group(1) if a_line else ""
+    pick_m = re.search(r"static PawnKindDef %s\(.*?\n        \}\n" % re.escape(picker), three + proof, re.S) if picker else None
+    check("F6", bool(pick_m) and "MaxFlightTime" in pick_m.group(0),
+          "sc_settings_sweep's lane A animal is picked among kinds that cannot fly (picker %s)" % (picker or "unread"))
     check("T1", "--real-seconds" in runner and "time.sleep(a.real_seconds)" in runner and "if a.ticks > 0:" in runner,
           "knockback_runner.py waits in real time and can skip tick stepping")
     print("%s stage3 scenes: %d failed" % ("PASS" if not fails else "FAIL", len(fails)))

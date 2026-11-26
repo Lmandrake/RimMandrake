@@ -938,6 +938,7 @@ namespace RimMandrake.ExplosiveKnockback
 
         /// <summary>sc_pit_fetch's window: the two ordered hauls finish well inside it (RIMMANDRAKE_SHRINK_KNOCKBACK_SCENES_ONE_SAVE_IN_AIR).</summary>
         private const int PitFetchTicks = 5000;
+        private const int FreeWillReadTicks = 5;   // sc_pit_fetch's free-will reach read, past FlowWorks' next path update
 
         /// <summary>Bridge read, also after a reload (no scene state): every carrier on the current map as
         /// "id inner=def xN innerId=n at=x,z dest=x,z left=ticks bounces=n", one per line; "NONE" when there is none.</summary>
@@ -2695,9 +2696,13 @@ namespace RimMandrake.ExplosiveKnockback
                         // An ordered haul skips the free-will test a hauler at large meets (reach included), so the free-will
                         // answer is read first and judged: the lowered-ladder pit's goods haulable, the raised-ladder control's
                         // not (fresh reader, 2026-11-25: a reach veto that shut the lowered pit would else pass on the order).
-                        s.numbers["autoHaulMain"] = HaulAIUtility.PawnCanAutomaticallyHaulFast(h, s.things["st"], false)
+                        // visit 2 run 3 (2026-11-26, SITE): read in this tick, right after SetRaised, the control stack read
+                        // haulable (control 1) on two origins of one map: FlowWorks' climb masks take a raise only on the next
+                        // path update (RM_CompLadder.SetRaised: Notify_CellDelta), so a same-tick read sees the ladder as it was.
+                        // The same-tick reads stay for the record; the verdict reads the answers FreeWillReadTicks later.
+                        s.numbers["autoHaulMainT0"] = HaulAIUtility.PawnCanAutomaticallyHaulFast(h, s.things["st"], false)
                             && HaulAIUtility.PawnCanAutomaticallyHaulFast(h, s.things["corpse"], false) ? 1 : 0;
-                        s.numbers["autoHaulControl"] = HaulAIUtility.PawnCanAutomaticallyHaulFast(h, s.things["cst"], false) ? 1 : 0;
+                        s.numbers["autoHaulControlT0"] = HaulAIUtility.PawnCanAutomaticallyHaulFast(h, s.things["cst"], false) ? 1 : 0;
                         Job jSt = HaulAIUtility.HaulToStorageJob(h, s.things["st"], true);
                         Job jCorpse = HaulAIUtility.HaulToStorageJob(h, s.things["corpse"], true);
                         if (jSt == null || jCorpse == null)
@@ -2711,6 +2716,17 @@ namespace RimMandrake.ExplosiveKnockback
                         h.jobs.jobQueue.EnqueueLast(jCorpse, JobTag.Misc);
                         s.numbers["ordered"] = 2;
                         Map m0 = Map;
+                        RM_MapComponent_Knockback.ProofSchedule.Add(new KeyValuePair<int, Action>(s.stagedTick + FreeWillReadTicks, () =>
+                        {
+                            if (m0 != Find.CurrentMap || !h.Spawned)
+                            {
+                                return;
+                            }
+                            // the stack is reserved by the hauler's own ordered job by now: CanReserve passes for its claimant
+                            s.numbers["autoHaulMain"] = HaulAIUtility.PawnCanAutomaticallyHaulFast(h, s.things["st"], false)
+                                && HaulAIUtility.PawnCanAutomaticallyHaulFast(h, s.things["corpse"], false) ? 1 : 0;
+                            s.numbers["autoHaulControl"] = HaulAIUtility.PawnCanAutomaticallyHaulFast(h, s.things["cst"], false) ? 1 : 0;
+                        }));
                         var ladderCells = new HashSet<IntVec3> { lad.Position, O(s, 2, 5), O(s, 3, 5) };
                         for (int d = 10; d <= PitFetchTicks; d += 10)
                         {
@@ -2756,8 +2772,11 @@ namespace RimMandrake.ExplosiveKnockback
                         float am = sc.numbers.TryGetValue("autoHaulMain", out float amv) ? amv : -1f;
                         float ac = sc.numbers.TryGetValue("autoHaulControl", out float acv) ? acv : -1f;
                         bool reach = am == 1f && ac == 0f;
+                        float am0 = sc.numbers.TryGetValue("autoHaulMainT0", out float am0v) ? am0v : -1f;
+                        float ac0 = sc.numbers.TryGetValue("autoHaulControlT0", out float ac0v) ? ac0v : -1f;
                         return Result(sc, stOut && corpseOut && ladder && control && reach, "free-will haul: main " + am + " control " + ac
-                            + " (want 1, 0); stack out=" + stOut + " corpse out=" + corpseOut + " hauler in pit=" + inPit
+                            + " (want 1, 0; read " + FreeWillReadTicks + " ticks after staging; in the staging tick main " + am0
+                            + " control " + ac0 + "); stack out=" + stOut + " corpse out=" + corpseOut + " hauler in pit=" + inPit
                             + " path into pit=" + pathIn + " path via ladder cell=" + sc.numbers.ContainsKey("pathViaLadder")
                             + " raised-ladder control stack still in its pit=" + control + " (2 hauls ordered, needs held, step " + PitFetchTicks + " ticks)");
                     };
