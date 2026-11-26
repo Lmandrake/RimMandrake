@@ -24,3 +24,10 @@ Per mod: wire the setting to the mechanic its label promises, or delete it (fiel
 ## NEXT
 
 Decide TerminalBiomes and Wasteland when their owning features land.
+
+## refs
+file: src/RimMandrake/TerminalBiomes/Source/RM_TerminalBiomesMod.cs
+file: src/RimMandrake/Scarlands/Source/RM_WarscarMod.cs
+
+## verify
+python3 src/RimMandrake/Utils/lint_scarlands_defs.py; python3 src/RimMandrake/Utils/lint_empirepursuit_defs.py (each reads 0 WARN)
