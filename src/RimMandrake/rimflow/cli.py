@@ -3223,19 +3223,33 @@ def cmd_close(args, seat):
         _evidence_shadow(args, sha, no_code, [], line)
     if line:
         ev["live"] = line
+    # The close's own pass can finish a built item that owes nothing above L0 (built -> done). Then the pass IS the
+    # close: a close event after it was a second done, refused, and the command wrote nothing. The pass is written alone.
+    after = as_passed.items.get(args.id) if ran else None
+    pass_closes = bool(ran and it is not None and it.state not in model.TERMINAL
+                       and after is not None and after.state == "done")
+    if pass_closes and ev.get("live"):
+        die("close: %s: its --evidence pass alone finishes it (every owed criterion is L0), so no close event could "
+            "carry its live promise (%s); the promise would be lost. Nothing changed." % (args.id, ev["live"]))
     if ran:
-        try:        # the close is checked over the pass first: one that the ledger refuses (done already) writes neither
-            model.check(ev, as_passed)
-        except model.LedgerError as e:
-            die(str(e))
+        if not pass_closes:
+            try:    # the close is checked over the pass first: one that the ledger refuses (done already) writes neither
+                model.check(ev, as_passed)
+            except model.LedgerError as e:
+                die(str(e))
         _emit(ran, w, quiet=True)
     if rest[1]:
-        try:
-            model.check(ev, as_passed if ran else w)
-        except model.LedgerError as e:
-            die(str(e))
+        if not pass_closes:
+            try:
+                model.check(ev, as_passed if ran else w)
+            except model.LedgerError as e:
+                die(str(e))
         ev["remainder"] = _file_remainder(args, seat, w, rest[1])
-    _emit(ev, w, quiet=True)
+    if pass_closes:
+        print("%s: its pass on %s finished it (built -> done), so no second close event is written%s."
+              % (args.id, str(sha)[:12], ("; remainder " + ev["remainder"]) if ev.get("remainder") else ""))
+    else:
+        _emit(ev, w, quiet=True)
     if holder and holder != seat:
         print("%s closed at %s — ruled by %s (%s's item)%s"
               % (args.id, sha, seat, holder,

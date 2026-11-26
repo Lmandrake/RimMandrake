@@ -22,3 +22,5 @@ Code: `src/RimMandrake/rimflow/cli.py` (`cmd_close`, `_close_evidence`). Item
   that is done already) writes neither. A pass after a fail clears the fail, as a separate `verify` did. Blank evidence
   is no pass. With `--no-code`, the evidence is added to the `--no-code` words and no run is written. Evidence that
   the ledger cannot record as a run (the item is another seat's) is said in one line, and the close goes on unchecked.
+  When that pass alone finishes a built item (every owed criterion is L0, so the pass takes it built -> done), the pass
+  is written alone and the close says so: a close event after it would be a second done.

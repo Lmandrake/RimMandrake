@@ -209,6 +209,13 @@ def t_close_records_its_evidence(a, b):
     check(rc != 0 and len(events()) == n, "a close refused because the item is done already writes neither event (rc %d, %d new: %s)"
           % (rc, len(events()) - n, out[-200:]))
 
+    i = built("EVIDENCE_FINISHES", a, ("C1", "L0"))     # every criterion L0: the --evidence pass alone finishes it
+    rc, out = cli("close", i, "--sha", a, "--evidence", "selftest: PASS", "--no-remainder", "nothing owed")
+    it = item(i)
+    check(rc == 0 and it.state == "done" and it.runs and it.runs[-1].result == "pass",
+          "a close whose own pass finishes a built item goes, it is not refused as a second done (rc %d %s)"
+          % (rc, out[-200:]))
+
     i = new("EVIDENCE_AFTER_FAIL")
     ok("verify", i, "--sha", a, "--level", "L0", "--result", "fail", "--config", "fixture", "--evidence", "broke")
     rc, out = cli("close", i, "--sha", a, "--evidence", "rerun: PASS")
