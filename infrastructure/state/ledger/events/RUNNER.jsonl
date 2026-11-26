@@ -12422,3 +12422,4 @@
 {"seat":"RUNNER","event":"note","id":"OPS_MATURATION_HAND_ACT_UNFOLDED_ZLWA","text":"ops_watch: cleared at 2026-11-26T16:06:57Z (maturation.hand_acts_overdue now 0)","ts":"2026-11-26T16:07:15Z","tsn":1795709235406846776}
 {"seat":"RUNNER","event":"live","id":"OPS_TIMER_REPAIR_PRXC_XKGA","result":"broken","detail":"Ops alarm TIMER_FAILED: timers.failed_units = 1 failed user units (MEASURED), line > 0","ts":"2026-11-26T16:09:39Z","tsn":1795709379477004617}
 {"seat":"RUNNER","event":"raise","id":"OPS_TIMER_REPAIR_PRXC_XKGA","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-26T16:09:53Z","tsn":1795709393409033404}
+{"seat":"RUNNER","event":"live","id":"OPS_TIMER_REPAIR_PRXC_XKGA","result":"kept","detail":"sweep: running again","ts":"2026-11-26T16:18:34Z","tsn":1795709914687630371}
