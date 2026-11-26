@@ -21,8 +21,9 @@ is installed, dregen_ ones included). Hardened after the GPT review of 2026-10-1
     next hour); any foreign unpublished commit -> logged, publish skipped.
   * every child process has a timeout.
 Log: Transient/donor_regen_install.log (untracked).
-Timer: rm-donor-regen-install.timer (transient systemd-run; dies on WSL restart, re-create it - see the item
-DONOR_COATS_REDRAW_SIX_HUNDRED_TO_GO).
+Timer: none. Do not re-create rm-donor-regen-install.timer: the owner's card of 2026-11-07 ("Judge, install, redraw")
+lets an install take only a render with an art-eval ACCEPT, and this script installs unjudged renders. Judged installs
+run in art_eval/auto_judge.py (rm-arteval-autojudge.timer). Item RIMMASTER_RESTORE_HOURLY_INSTALL_TIMER_PILE_GREW_UNSEEN.
 """
 import json
 import os
