@@ -42,7 +42,7 @@ DONORS = r"Keshash|ExtraExplosionEffects|Fleck_EEE|nephlite|advexplosions|Mote_A
 VANILLA_OK = {"RM_KnockbackBlastRipple": ("Things/Mote/Black", "/Things/Mote/PsychicDistortionCurrents", "/Things/Mote/PsycastNoise")}
 
 SCAR_WIDTHS = ("3", "5", "7", "10", "14", "20")     # RM_KnockbackShowPlan.ScarDrawSizes, read from the kernel below
-SCAR_NAMES = ["RM_KnockbackBlast%s_%s" % (k, w) for k in ("Crater", "Scorch") for w in SCAR_WIDTHS]
+SCAR_NAMES = ["RM_KnockbackBlast%s_%sWide" % (k, w) for k in ("Crater", "Scorch") for w in SCAR_WIDTHS]
 # part -> (switch field, the defs it owns (kind, defName), the code it must hold (label, regex over the show's C#))
 PARTS = {
     "fire_and_flash": ("showFireAndFlash",
@@ -193,7 +193,7 @@ def structure():
         if el is None:
             continue
         scars += 1
-        want = float(name.rsplit("_", 1)[1])
+        want = float(name.rsplit("_", 1)[1][:-len("Wide")])
         got = el.findtext("graphicData/drawSize")
         f = el.find("filth")
         rain = f is not None and (f.findtext("rainWashes") or "").strip().lower() == "true"
@@ -206,6 +206,19 @@ def structure():
     line(scars == len(SCAR_NAMES) and not sbad, "B_SCAR_DEFS",
          "a scar def per kernel width and kind; rain washes them, time wears them, a colonist cleans them",
          "; ".join(sbad) or "%d defs" % scars, "%d defs, all true" % len(SCAR_NAMES), len(SCAR_NAMES))
+
+    # the game logs "Config error in <def>: ends with a numerical digit, which is not allowed on ThingDefs" at every load
+    # (ThingDef.ConfigErrors; RIMMANDRAKE_RENAME_KNOCKBACK_SCAR_DEFS_DIGIT_ENDING_CONFIG_ERROR)
+    digit = sorted(n for (t, n) in D if t == "ThingDef" and n[-1:].isdigit())
+    line(not digit, "B_NO_DIGIT_THINGDEF", "no ThingDef of the mod has a name that ends in a digit (a config error at every load)",
+         ", ".join(digit) or "none", "none", sum(1 for (t, _n) in D if t == "ThingDef"))
+    show = read(os.path.join(SRC, "RM_KnockbackShow.cs")) if os.path.isfile(os.path.join(SRC, "RM_KnockbackShow.cs")) else ""
+    named = re.search(r"ScarDefName\(KbScarKind kind, int sizeClass\)\s*\{\s*return OldScarDefName\(kind, sizeClass\) \+ \"Wide\";", show)
+    old = re.search(r"class RM_Patch_ScarOldNames.*?BackCompatibleDefName.*?__result \+ \"Wide\"", show, re.S) or \
+        re.search(r"BackCompatibleDefName\)\)\]\s*\[[^\]]*\]\s*public static class RM_Patch_ScarOldNames.*?__result \+ \"Wide\"", show, re.S)
+    line(bool(named) and bool(old), "B_SCAR_NAMES_LOAD",
+         "the code lays the defs by their Wide names, and a save that holds a 0.2.0 name (no Wide) loads the renamed def",
+         "ScarDefName %s, old-name postfix %s" % (bool(named), bool(old)), "both", 2)
 
     donors = []
     for p in glob.glob(os.path.join(EK, "**", "*"), recursive=True):

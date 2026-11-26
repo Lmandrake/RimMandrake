@@ -299,27 +299,141 @@ namespace RimMandrake.ExplosiveKnockback
             }
         }
 
+        /// <summary>The scar def of a kind and size class: "RM_KnockbackBlastCrater_10Wide" (its drawn width in cells, then
+        /// "Wide"). The name never ends in a digit: the game logs a config error at every load for a ThingDef that does
+        /// (RIMMANDRAKE_RENAME_KNOCKBACK_SCAR_DEFS_DIGIT_ENDING_CONFIG_ERROR). OldScarDefName is the 0.2.0 name.</summary>
         public static string ScarDefName(KbScarKind kind, int sizeClass)
         {
-            float w = RM_KnockbackShowPlan.ScarDrawSizes[Mathf.Clamp(sizeClass, 0, RM_KnockbackShowPlan.ScarDrawSizes.Length - 1)];
-            return "RM_KnockbackBlast" + (kind == KbScarKind.Scorch ? "Scorch" : "Crater") + "_" + w.ToString("0");
+            return OldScarDefName(kind, sizeClass) + "Wide";
         }
 
+        /// <summary>The name of the scar def before the "Wide" ending; a save that holds it loads the renamed def
+        /// (RM_Patch_ScarOldNames).</summary>
+        public static string OldScarDefName(KbScarKind kind, int sizeClass)
+        {
+            float w = RM_KnockbackShowPlan.ScarDrawSizes[Mathf.Clamp(sizeClass, 0, RM_KnockbackShowPlan.ScarDrawSizes.Length - 1)];
+            return ScarPrefix + (kind == KbScarKind.Scorch ? "Scorch" : "Crater") + "_" + w.ToString("0");
+        }
+
+        public const string ScarPrefix = "RM_KnockbackBlast";
+
+        public static bool IsScarDef(ThingDef def)
+        {
+            return def != null && def.IsFilth && def.defName.StartsWith(ScarPrefix, StringComparison.Ordinal);
+        }
+
+        /// <summary>Lays the plan's scar on the blast's cell. Each blast writes one "scar" record in RM_KnockbackJournal:
+        /// laid, or the cause the cell refused it (ScarRefusal), so a missing scar names its cause
+        /// (RIMMANDRAKE_FIND_KNOCKBACK_IED_SCAR_MISSING_ONE_RUN_IN_THREE). RM_Patch_Filth_ScarGone records who removes one.</summary>
         private static void LayScar(IntVec3 c, Map map, KbShowPlan p)
         {
-            ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail(ScarDefName(p.scarKind, p.scarSizeClass));
+            string name = ScarDefName(p.scarKind, p.scarSizeClass);
+            ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail(name);
             if (def == null || !c.InBounds(map))
             {
+                RM_KnockbackJournal.Add("scar", 0, null, "at", c, "def", name, "laid", false, "why", def == null ? "no_def" : "out_of_bounds");
                 return;
             }
             if (!FilthMaker.TryMakeFilth(c, map, def, 1, FilthSourceFlags.None, false))
             {
+                RM_KnockbackJournal.Add("scar", 0, null, "at", c, "def", name, "laid", false, "why", ScarRefusal(c, map, def),
+                    "cell", CellReport(c, map));
                 return;
             }
+            RM_KnockbackJournal.Add("scar", 0, null, "at", c, "def", name, "laid", true);
             int choice = Mathf.Clamp(RimMandrakeExplosiveKnockbackSettings.showMarksLast, 0, MarksLastFactor.Length - 1);
             if (map.thingGrid.ThingAt(c, def) is Filth f && choice != 1)
             {
                 DisappearAfterTicks(f) = (int)(DisappearAfterTicks(f) * MarksLastFactor[choice]);
+            }
+        }
+
+        /// <summary>Why FilthMaker.TryMakeFilth refused a scar on c, in the order the game tests it (FilthMaker 1.6).
+        /// Called only after a refusal: CanMakeFilth draws a Rand value.</summary>
+        private static string ScarRefusal(IntVec3 c, Map map, ThingDef def)
+        {
+            TerrainDef t = c.GetTerrain(map);
+            if (t != null && t.exposesToVacuum)
+            {
+                return "vacuum";
+            }
+            if (!c.WalkableByAny(map))
+            {
+                return "not_walkable";
+            }
+            if (c.GetFirstThing(map, def) is Filth there && !there.CanBeThickened)
+            {
+                return "thickest";
+            }
+            if (!FilthMaker.CanMakeFilth(c, map, def))
+            {
+                return "terrain_refuses";
+            }
+            return "unknown";
+        }
+
+        /// <summary>The cell as a scar sees it: terrain, then each thing's def and passability ("Soil|Wall:Impassable+...").</summary>
+        private static string CellReport(IntVec3 c, Map map)
+        {
+            var sb = new System.Text.StringBuilder(c.GetTerrain(map)?.defName ?? "no_terrain");
+            System.Collections.Generic.List<Thing> things = c.GetThingList(map);
+            for (int i = 0; i < things.Count && i < 8; i++)
+            {
+                sb.Append(i == 0 ? "|" : "+").Append(things[i].def.defName).Append(':').Append(things[i].def.passability);
+            }
+            return sb.ToString();
+        }
+    }
+
+    /// <summary>A scar that leaves the map writes a "scar_gone" record with the calls that removed it, so a scar laid and
+    /// then lost names its remover (RIMMANDRAKE_FIND_KNOCKBACK_IED_SCAR_MISSING_ONE_RUN_IN_THREE). Diagnostic only: it
+    /// changes nothing.</summary>
+    [HarmonyPatch(typeof(Filth), nameof(Filth.DeSpawn))]
+    [RimMandrake.Shared.PatchFeature("Blast show")]
+    public static class RM_Patch_Filth_ScarGone
+    {
+        public static void Prefix(Filth __instance, DestroyMode mode)
+        {
+            if (!RM_KnockbackShow.IsScarDef(__instance.def) || !__instance.Spawned)
+            {
+                return;
+            }
+            var sb = new System.Text.StringBuilder();
+            System.Diagnostics.StackFrame[] frames = new System.Diagnostics.StackTrace(1, false).GetFrames();
+            for (int i = 0, n = 0; frames != null && i < frames.Length && n < 6; i++)
+            {
+                System.Reflection.MethodBase m = frames[i].GetMethod();
+                if (m == null)
+                {
+                    continue;
+                }
+                sb.Append(n++ == 0 ? "" : "<").Append(m.DeclaringType?.Name ?? "?").Append('.').Append(m.Name);
+            }
+            RM_KnockbackJournal.Add("scar_gone", 0, __instance, "at", __instance.Position, "mode", mode.ToString(),
+                "age", __instance.TicksSinceThickened, "by", sb.ToString());
+        }
+    }
+
+    /// <summary>The scar defs were renamed from "RM_KnockbackBlastCrater_10" to "RM_KnockbackBlastCrater_10Wide"
+    /// (RIMMANDRAKE_RENAME_KNOCKBACK_SCAR_DEFS_DIGIT_ENDING_CONFIG_ERROR). A save that holds an old name loads the new def.
+    /// A postfix on BackCompatibility.BackCompatibleDefName, not a converter: the game asks no converter when the mod list
+    /// is unchanged (RM_DefAliases.cs, EnvironmentalHazards). It maps only a ThingDef name of the old form that resolves to
+    /// nothing, so it never shadows a live def.</summary>
+    [HarmonyPatch(typeof(BackCompatibility), nameof(BackCompatibility.BackCompatibleDefName))]
+    [RimMandrake.Shared.PatchFeature("Blast show: old scar names in saves")]
+    public static class RM_Patch_ScarOldNames
+    {
+        public static void Postfix(Type defType, ref string __result)
+        {
+            if (__result == null || defType != typeof(ThingDef) || !__result.StartsWith(RM_KnockbackShow.ScarPrefix, StringComparison.Ordinal)
+                || __result.Length == 0 || !char.IsDigit(__result[__result.Length - 1]))
+            {
+                return;
+            }
+            string renamed = __result + "Wide";
+            if (DefDatabase<ThingDef>.GetNamedSilentFail(__result) == null && DefDatabase<ThingDef>.GetNamedSilentFail(renamed) != null)
+            {
+                __result = renamed;
             }
         }
     }

@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Explosive Knockback 0.2.0: the crater scars (design/specs/2026-11-24-knockback-blast-show/design.md §3.11). One def
-     per drawn width (RM_KnockbackShowPlan.ScarDrawSizes; B_SCAR_DEFS refuses a mismatch) and kind: a Crater (torn
+     per drawn width (RM_KnockbackShowPlan.ScarDrawSizes; B_SCAR_DEFS refuses a mismatch) and kind, named <Kind>_<width>Wide
+     (a ThingDef name that ends in a digit is a config error at every load; old saves map through RM_Patch_ScarOldNames): a Crater (torn
      ground) on soil, a Scorch (no pit) on stone, built floors and under a fire blast. Shaped as vanilla Filth_BlastMark
      (MapMeshOnly filth, drawn wider than its cells); unlike it, rain washes ours and time wears it away. Art is our own
      (design §6: three craters and three scorches), installed by `art install` under Textures/Things/Filth/RM_KnockbackBlast/. -->
 <Defs>
 
   <ThingDef ParentName="BaseFilth">
-    <defName>RM_KnockbackBlastCrater_3</defName>
+    <defName>RM_KnockbackBlastCrater_3Wide</defName>
     <label>blast crater</label>
     <description>Torn, burnt ground with a ragged dark rim, left by a blast. Rain and time wear it away; a colonist can clean it.</description>
     <thingClass>Filth</thingClass>
@@ -35,7 +36,7 @@
   </ThingDef>
 
   <ThingDef ParentName="BaseFilth">
-    <defName>RM_KnockbackBlastCrater_5</defName>
+    <defName>RM_KnockbackBlastCrater_5Wide</defName>
     <label>blast crater</label>
     <description>Torn, burnt ground with a ragged dark rim, left by a blast. Rain and time wear it away; a colonist can clean it.</description>
     <thingClass>Filth</thingClass>
@@ -63,7 +64,7 @@
   </ThingDef>
 
   <ThingDef ParentName="BaseFilth">
-    <defName>RM_KnockbackBlastCrater_7</defName>
+    <defName>RM_KnockbackBlastCrater_7Wide</defName>
     <label>blast crater</label>
     <description>Torn, burnt ground with a ragged dark rim, left by a blast. Rain and time wear it away; a colonist can clean it.</description>
     <thingClass>Filth</thingClass>
@@ -91,7 +92,7 @@
   </ThingDef>
 
   <ThingDef ParentName="BaseFilth">
-    <defName>RM_KnockbackBlastCrater_10</defName>
+    <defName>RM_KnockbackBlastCrater_10Wide</defName>
     <label>blast crater</label>
     <description>Torn, burnt ground with a ragged dark rim, left by a blast. Rain and time wear it away; a colonist can clean it.</description>
     <thingClass>Filth</thingClass>
@@ -119,7 +120,7 @@
   </ThingDef>
 
   <ThingDef ParentName="BaseFilth">
-    <defName>RM_KnockbackBlastCrater_14</defName>
+    <defName>RM_KnockbackBlastCrater_14Wide</defName>
     <label>blast crater</label>
     <description>Torn, burnt ground with a ragged dark rim, left by a blast. Rain and time wear it away; a colonist can clean it.</description>
     <thingClass>Filth</thingClass>
@@ -147,7 +148,7 @@
   </ThingDef>
 
   <ThingDef ParentName="BaseFilth">
-    <defName>RM_KnockbackBlastCrater_20</defName>
+    <defName>RM_KnockbackBlastCrater_20Wide</defName>
     <label>blast crater</label>
     <description>Torn, burnt ground with a ragged dark rim, left by a blast. Rain and time wear it away; a colonist can clean it.</description>
     <thingClass>Filth</thingClass>
@@ -175,7 +176,7 @@
   </ThingDef>
 
   <ThingDef ParentName="BaseFilth">
-    <defName>RM_KnockbackBlastScorch_3</defName>
+    <defName>RM_KnockbackBlastScorch_3Wide</defName>
     <label>blast scorch</label>
     <description>A black scorch left by a blast on hard ground. Rain and time wear it away; a colonist can clean it.</description>
     <thingClass>Filth</thingClass>
@@ -203,7 +204,7 @@
   </ThingDef>
 
   <ThingDef ParentName="BaseFilth">
-    <defName>RM_KnockbackBlastScorch_5</defName>
+    <defName>RM_KnockbackBlastScorch_5Wide</defName>
     <label>blast scorch</label>
     <description>A black scorch left by a blast on hard ground. Rain and time wear it away; a colonist can clean it.</description>
     <thingClass>Filth</thingClass>
@@ -231,7 +232,7 @@
   </ThingDef>
 
   <ThingDef ParentName="BaseFilth">
-    <defName>RM_KnockbackBlastScorch_7</defName>
+    <defName>RM_KnockbackBlastScorch_7Wide</defName>
     <label>blast scorch</label>
     <description>A black scorch left by a blast on hard ground. Rain and time wear it away; a colonist can clean it.</description>
     <thingClass>Filth</thingClass>
@@ -259,7 +260,7 @@
   </ThingDef>
 
   <ThingDef ParentName="BaseFilth">
-    <defName>RM_KnockbackBlastScorch_10</defName>
+    <defName>RM_KnockbackBlastScorch_10Wide</defName>
     <label>blast scorch</label>
     <description>A black scorch left by a blast on hard ground. Rain and time wear it away; a colonist can clean it.</description>
     <thingClass>Filth</thingClass>
@@ -287,7 +288,7 @@
   </ThingDef>
 
   <ThingDef ParentName="BaseFilth">
-    <defName>RM_KnockbackBlastScorch_14</defName>
+    <defName>RM_KnockbackBlastScorch_14Wide</defName>
     <label>blast scorch</label>
     <description>A black scorch left by a blast on hard ground. Rain and time wear it away; a colonist can clean it.</description>
     <thingClass>Filth</thingClass>
@@ -315,7 +316,7 @@
   </ThingDef>
 
   <ThingDef ParentName="BaseFilth">
-    <defName>RM_KnockbackBlastScorch_20</defName>
+    <defName>RM_KnockbackBlastScorch_20Wide</defName>
     <label>blast scorch</label>
     <description>A black scorch left by a blast on hard ground. Rain and time wear it away; a colonist can clean it.</description>
     <thingClass>Filth</thingClass>
