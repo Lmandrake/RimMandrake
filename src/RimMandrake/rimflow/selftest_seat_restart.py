@@ -1589,9 +1589,18 @@ def test_g3_bench_verifies_by_the_first_turn_not_the_doorbell():
           "G3 the fresh Conductor ended its first turn -> verified with no doorbell (%s)" % dos(a))
     st = kst()
     run(sch, st, obs(sessions=new), T0 + 230)
-    a = run(sch, st, obs(sessions=new, tx={"last_kind": "assistant_tool", "last_at": T0 + 240}),
-            T0 + 230 + SR.DEFAULTS["arm_s"] + 1)
-    check(bstate(st) == "failed" and any(x["do"] == "alarm" for x in a), "G3 never ended a turn in arm_s -> failed + alarm")
+    late = T0 + 230 + SR.DEFAULTS["arm_s"] + 1
+    a = run(sch, st, obs(sessions=new, tx={"last_kind": "assistant_tool", "last_at": T0 + 205}), late)
+    check(bstate(st) == "failed" and any(x["do"] == "alarm" for x in a),
+          "G3 never ended a turn and silent for arm_s -> failed + alarm")
+    # 2026-11-26 17:51Z: a live Conductor window worked its first turn for 40 min; arm_s alone alarmed it as dead
+    st = kst()
+    run(sch, st, obs(sessions=new), T0 + 230)
+    a = run(sch, st, obs(sessions=new, tx={"last_kind": "assistant_tool", "last_at": late - 60}), late)
+    check(bstate(st) == "relaunched" and not [x for x in a if x["do"] == "alarm"],
+          "G3 still writing its first turn at arm_s -> not failed (%s)" % dos(a))
+    a = run(sch, st, obs(sessions=new, tx={"last_kind": "assistant_end", "last_at": late + 30}), late + 60)
+    check(bstate(st) == "verified", "G3 and verified when that first turn ends")
     st = killed_state(fresh())
     run(sched(), st, obs(sessions=[sess(sid="sid-new", pid=5555)]), T0 + 230)
     run(sched(), st, obs(sessions=[sess(sid="sid-new", pid=5555)], tx={"last_kind": "assistant_end", "last_at": T0 + 290}),

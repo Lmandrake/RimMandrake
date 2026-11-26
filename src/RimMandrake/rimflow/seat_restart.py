@@ -1718,7 +1718,10 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
             act(do="restart_verified", seat=seat, ticket=rs.get("ticket"), note=takes_note(rs.get("ticket")),
                 evidence="fresh %s window %s (pid %s) ended its first turn at %s" % (
                     seat, rs["new_session"], rs.get("new_pid"), _iso(tx["last_at"])))
-        elif now - rs["relaunched_at"] >= cfg["arm_s"]:
+        elif now - rs["relaunched_at"] >= cfg["arm_s"] and not (
+                tx and (tx.get("last_at") or 0) >= rs.get("killed_at", 0) and now - tx["last_at"] < cfg["arm_s"]):
+            # danger guarded: a window that died or hung in its first turn. A window whose transcript moved within
+            # arm_s is working it (2026-11-26: a live Conductor window ended its first turn 40 min after the kill).
             _fail(rs, seat, "firstturn", "the new window %s never ended its first turn in %d s" % (
                 rs.get("new_session"), cfg["arm_s"]), now, act)
         return
