@@ -214,6 +214,26 @@ def main():
         ok(fca["launches"] and fcb["launches"] == [] and any(b["decision"] == "stale_clone" for b in fcb["blocked"]),
            "the forecast's clone gate ages: 3.3 min behind launches now; a pause ending at +3 min meets a clone 6.3 min "
            "behind, so nothing launches, as the applying tick would refuse")
+        # the forecast reads each mod's walk_owed once, as it reads the facts once: the read does not move with its
+        # clock (2026-11-25: 31 simulated ticks of about 50 s each kept `next --within 30m` past 30 minutes)
+        import maturation as M_
+        wcalls, wo_was, tick_was = [], M_.walk_owed, MD._tick
+
+        def counting_wo(root_, mod, rec=None):
+            wcalls.append(mod)
+            return {"owed": {}, "why": []}
+
+        def tick_reads_walk(root_, cfg_, apply, fx=None, now=None, page=False):
+            (fx.get("walk_owed") or M_.walk_owed)(root_, "ModWalk")
+            return {"mods": {}}
+        M_.walk_owed, MD._tick = counting_wo, tick_reads_walk
+        try:
+            fresh()
+            MD.forecast(root, cfg, within_s=600, step_s=60, fx=dict(fx), now=CLOCK)
+        finally:
+            M_.walk_owed, MD._tick = wo_was, tick_was
+        ok(wcalls == ["ModWalk"], "the forecast reads a mod's walk_owed once over its 11 simulated ticks (%d reads)"
+           % len(wcalls))
 
         # ---- pause all ------------------------------------------------------------------------------------------
         fresh()

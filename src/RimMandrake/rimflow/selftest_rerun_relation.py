@@ -964,6 +964,40 @@ def t_python_imports_read_once_per_commit():
         tr.close()
 
 
+def t_commit_reads_shared_across_relations():
+    """A second relation in the same process, with the same runner, reads a file at a full commit id and the C# units
+    of that file from the first relation's reads: no second git call. A read at a name that can move (HEAD) still asks
+    git each time it resolves the name."""
+    tr = Tree()
+    try:
+        calls = []
+
+        def counting(argv, *a, **k):
+            calls.append(list(argv))
+            return subprocess.run(argv, *a, **k)
+        full = tr.git("rev-parse", tr.base)
+        path = "src/RimMandrake/Planted/Source/A.cs"
+        r1 = RR.Relation(tr.root, MOD, table(), runner=counting)
+        a1 = r1.git.show(full, path)
+        u1 = r1._cs(full, path)
+        before = len(calls)
+        r2 = RR.Relation(tr.root, MOD, table(), runner=counting)
+        after_new = len(calls)
+        a2 = r2.git.show(full, path)
+        u2 = r2._cs(full, path)
+        shows = [c for c in calls[after_new:] if "show" in c]
+        ok("commit-reads-shared-across-relations: a second relation reads a file and its C# units at a full commit id "
+           "with no second git show", a1 == a2 and a1 is not None and u1 is not None and set(u1) == set(u2)
+           and not shows, {"shows": shows, "calls_before": before})
+        tr.edit(path, "int v = 0;", "int v = 9;")
+        moved = tr.commit("move HEAD")
+        r3 = RR.Relation(tr.root, MOD, table(), runner=counting)
+        ok("commit-reads-shared-across-relations: HEAD is resolved again by each relation, so a moved HEAD is seen",
+           r3.new == moved and r1.new == full, {"r3.new": r3.new, "moved": moved})
+    finally:
+        tr.close()
+
+
 HUB_CS = """namespace P {
 class Fire {
     static int Roll() { return Spot() + Settings.alpha; }
@@ -1199,6 +1233,7 @@ def main():
     t_full_list_is_the_mods_the_game_can_load()
     t_a_path_outside_the_repo_is_not_in_the_change()
     t_python_imports_read_once_per_commit()
+    t_commit_reads_shared_across_relations()
     t_csharp_part_relates_by_its_members()
     t_unknown_part_relates_whole()
     t_reached_part_follows_the_declared_csharp()

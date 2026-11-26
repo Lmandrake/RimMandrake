@@ -4686,6 +4686,15 @@ def forecast(root, cfg, within_s=1800, step_s=None, fx=None, now=None):
     if "code" not in fx:
         c0 = pipeline_code(REPO)
         fx["code"] = lambda: c0
+    if "walk_owed" not in fx:       # the in-game checks owed before his walk: git and walk-folder reads that do not move
+        seen = {}                   # with the forecast's clock, read once per mod like the facts (about 50 s a tick on
+                                    # 2026-11-25 kept `next --within 30m` past 30 minutes)
+
+        def walk_owed_once(root_, mod, rec=None):
+            if (root_, mod) not in seen:
+                seen[(root_, mod)] = M.walk_owed(root_, mod, rec)
+            return seen[(root_, mod)]
+        fx["walk_owed"] = walk_owed_once
     if "clone_seen" not in fx:      # the stale-clone gate reads what the last applying tick measured
         fx["clone_seen"] = (_read(os.path.join(sdir(), "reading.json"), None) or {}).get("clone")
     first, last, t = {}, {}, now

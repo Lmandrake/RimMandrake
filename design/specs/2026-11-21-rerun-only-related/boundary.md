@@ -154,6 +154,11 @@ stage (the in-game build match, the Stage 6 exit, the visit brief, `./pipe why`,
   however many checks declare or import that file: a git blob at a resolved commit never changes. (Measured
   2026-11-23: the tick's three relations parsed 1166 files for 107 checks, 86 s of a 204 s profiled tick; item
   RIMMANDRAKE_SLIM_TICK_MEMORY_PAGE_BUILD_HITS_ONE_GIG_TICK_TOOK_FIVE_MIN.)
+- **commit-reads-shared-across-relations.** In one process, a file read at a full commit id, and the C# units parsed
+  from it, are read once for every relation built with the same runner: a blob at a full commit id never changes. A
+  name that can move (`HEAD`, a branch) is resolved by each relation. (Measured 2026-11-25: `maturation_dispatch.py
+  next --within 30m` builds the relations again on each of its 31 simulated ticks, 62 s of git reads each, and did
+  not finish in 30 minutes; item RIMMANDRAKE_FIND_SLOW_PIPELINE_COMMANDS_HE_ASKED_FOR_INSTANT_ONES.)
 - **tick-uses-deploy-build-without-walking.** A compose apply replaces the build stamp with the hash of the actual
   deployed folder, including held or extra files. Dispatch reuses a valid stamp for that installation and folder
   without enumerating its tree. Missing or invalid stamps, including older installs before their first stamped apply,

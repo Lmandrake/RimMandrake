@@ -67,6 +67,26 @@ REACHED = "~"       # F.cs::~ : the members of F.cs that the check's other decla
 
 # ---- git, cached ----------------------------------------------------------------------------------------------------
 
+FULL_SHA = re.compile(r"^[0-9a-f]{40}$")
+# A blob at a full commit id never changes, so reads at one are shared by every Git and Relation of one process that
+# uses the same root and runner (item RIMMANDRAKE_FIND_SLOW_PIPELINE_COMMANDS_HE_ASKED_FOR_INSTANT_ONES: the forecast
+# rebuilt the relations on each of 31 simulated ticks, 62 s of git reads each). Keyed by runner, so a test's fake runner
+# never sees another's reads; the runner object is kept in the key, so its id cannot be reused.
+# budget: danger=memory of a long-lived importer that reads many commits; evidence=one forecast tick reads about 1,700
+# budget: blobs (profile 2026-11-25); the shared store is emptied when it passes 10x a 10-tick forecast's reads
+SHARED_MAX = 20000
+_SHARED = {}
+
+
+def _shared(kind, root, runner, sha, key):
+    """-> (store, k) when this read may be shared (a full commit id), else (None, None)."""
+    if not (isinstance(sha, str) and FULL_SHA.match(sha)):
+        return None, None
+    if len(_SHARED) > SHARED_MAX:
+        _SHARED.clear()
+    return _SHARED, (kind, root, runner, sha, key)
+
+
 class Git:
     """Reads one repository at given commits. Every read is cached; a read that fails is None (never empty text)."""
 
@@ -93,8 +113,14 @@ class Git:
         """The file's text at the commit, or None when the commit lacks it."""
         k = (sha, path)
         if k not in self._show:
+            store, sk = _shared("show", self.root, self.run, sha, path)
+            if store is not None and sk in store:
+                self._show[k] = store[sk]
+                return self._show[k]
             out = self._git("show", "%s:%s" % (sha, path))
             self._show[k] = out.decode("utf-8", "replace") if out is not None else None
+            if store is not None and out is not None:       # a failed read is not shared: it may be a passing fault
+                store[sk] = self._show[k]
         return self._show[k]
 
     def changed(self, old, new, paths):
@@ -997,8 +1023,14 @@ class Relation:
         """The C# units of a file at a commit, read once per relation; None when absent or unreadable."""
         k = ("cs", sha, path)
         if k not in self._py:
+            store, sk = _shared("cs", self.root, self.git.run, sha, path)
+            if store is not None and sk in store:
+                self._py[k] = store[sk]
+                return self._py[k]
             txt = self.git.show(sha, path)
             self._py[k] = cs_units(txt) if txt is not None else None
+            if store is not None and txt is not None:
+                store[sk] = self._py[k]
         return self._py[k]
 
     def _owned(self):
