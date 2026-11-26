@@ -77,7 +77,10 @@ and most reliable world save, so nobody has to rebuild the answer from 40 file n
 `BIOMES_PORT_PRUNE_FORTY_TWO_HITCHHIKERS` deleted was stripped offline (`SLAUGHTER_ROWS_PRUNE_GHOSTS_IN_PEN`, tool
 `src/RimMandrake/Utils/save_ghost_defs.py`): 232 filter and list rows, 31 auto-slaughter rows, 4 drug-policy rows, 2
 inventory things, the `RSW_PustuleHornets` faction (loadID 17) with its 24 relation rows; 2 worn-apparel `<stuff>`
-repointed to `Leather_Plain`. Nothing else changed; `save_ghost_defs.py check` reads NONE. The file before it,
+repointed to `Leather_Plain`. Nothing else changed. One load of it on its 325-mod list (ArchBig, 2026-11-26,
+`RIMMANDRAKE_LOAD_EDITED_CANONICAL_SAVE_ONCE_618_LINES_CUT_UNLOADED`) reached the map clean of the edit. Its food
+filters still name 282 implied `Corpse_<race>` defs of the deleted races (`save_ghost_defs.py check` reads FOUND 282;
+open item `RIMMANDRAKE_STRIP_CORPSE_TWINS_OF_PRUNED_RACES_CHECK_SAID_NONE`). The file before it,
 13,531,124 bytes, sha256 `1d569ea8e7a871e9…`, is `…R3.rws.bak-pre-strip-prune42-ghosts-2026-11-26` beside it and in
 `D:\ClaudeWork\backups\saves_pre_strip_prune42_ghosts_2026-11-26\`. That one dates from 2026-11-07: the cut furnace-herd world leg was stripped offline
 (`RIMMASTER_STRIP_CANONICAL_SAVE_OF_CUT_FURNACE_HERDS`): the `RimMandrake.Pyrelands.WorldComponent_RM_FurnaceHerdSeeder`

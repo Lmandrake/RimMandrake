@@ -165,6 +165,13 @@ with tempfile.TemporaryDirectory() as tmp:
     # the real name set: the prune list resolves and is not empty
     names, _alive = g.resolve_names(None)
     check(len(names) > 40 and "RSW_RoyalRhino" in names, f"the prune name set resolves ({len(names)} names)")
+    # implied defs: the game makes Corpse_<race> from each race, and R3's food filters named 282 of them after the
+    # first strip (the 2026-11-26 load of R3 logged one Could not load reference per row; the check read NONE)
+    check("Corpse_RSW_PustuleHornet" in names, "the name set holds the implied Corpse_ def of a deleted race")
+    corpse = run(tmp, MINI.replace("<li>Kibble</li>", "<li>Kibble</li>\r\n\t\t\t<li>Corpse_RSW_Ghost</li>"),
+                 "corpse.rws")
+    check(g.cmd_check(corpse, g.with_implied(GHOSTS)) == g.FOUND and "Corpse_RSW_Ghost" in g.with_implied(GHOSTS)
+          and "Corpse_Muffalo" not in g.with_implied(GHOSTS), "with_implied adds Corpse_ of each ghost name only")
 
 print("PASS" if not fails else f"FAIL: {len(fails)}")
 sys.exit(1 if fails else 0)
