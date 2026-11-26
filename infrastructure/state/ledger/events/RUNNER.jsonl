@@ -12401,3 +12401,4 @@
 {"seat":"RUNNER","event":"raise","id":"STEVE_LANE_UNSTICK_IDLE_UNOWNED_IDLEEMPTY_JPMKTL_R3","reason":"steward: lane unowned 64 min (IDLE_EMPTY)","ts":"2026-11-26T12:32:20Z","tsn":1795696340738754530}
 {"seat":"RUNNER","event":"live","id":"OPS_TIMER_REPAIR_PRXC_XKGA","result":"broken","detail":"Ops alarm TIMER_FAILED: timers.failed_units = 1 failed user units (MEASURED), line > 0","ts":"2026-11-26T12:32:23Z","tsn":1795696343489387332}
 {"seat":"RUNNER","event":"raise","id":"OPS_TIMER_REPAIR_PRXC_XKGA","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-26T12:32:30Z","tsn":1795696350302231270}
+{"seat":"RUNNER","event":"live","id":"OPS_TIMER_REPAIR_PRXC_XKGA","result":"kept","detail":"sweep: running again","ts":"2026-11-26T12:33:11Z","tsn":1795696391118479422}
