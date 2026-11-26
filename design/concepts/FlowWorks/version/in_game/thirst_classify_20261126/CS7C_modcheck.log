@@ -1,0 +1,17 @@
+PREVIEW 1 of 96 chains, 13 rows to execute
+  chain canal_overflow [full]: named by --chains
+    whole chain: executed 13 row(s)
+EXPECTED_ROWS ["PUMP_FULL_CANAL_SPILLS_SHEET", "RAIN_FULL_CANAL_SPILLS_SHEET", "FILLIN_HOMELESS_SPILLS", "SHEET_RETURNS_TO_PIT", "SPILL_EXTENT_FINITE", "BACKPRESSURE_REFUSES_DESTROYS_NOTHING", "DOOR_LEAKS_SLOWLY", "SETTING_OFF_STOPS_NEW_KEEPS_DRAINING", "CROPS_IRRIGATE_THEN_DROWN", "SHEET_FREEZES_AND_THAWS", "LOWERED_CAP_KEEPS_DEEPER_WATER", "LEDGER_CONSERVES_TO_THE_DL", "SAVE_LOAD_CONTINUES_IDENTICAL"]
+EXPECTED_ROW_CHAINS {"PUMP_FULL_CANAL_SPILLS_SHEET": "canal_overflow", "RAIN_FULL_CANAL_SPILLS_SHEET": "canal_overflow", "FILLIN_HOMELESS_SPILLS": "canal_overflow", "SHEET_RETURNS_TO_PIT": "canal_overflow", "SPILL_EXTENT_FINITE": "canal_overflow", "BACKPRESSURE_REFUSES_DESTROYS_NOTHING": "canal_overflow", "DOOR_LEAKS_SLOWLY": "canal_overflow", "SETTING_OFF_STOPS_NEW_KEEPS_DRAINING": "canal_overflow", "CROPS_IRRIGATE_THEN_DROWN": "canal_overflow", "SHEET_FREEZES_AND_THAWS": "canal_overflow", "LOWERED_CAP_KEEPS_DEEPER_WATER": "canal_overflow", "LEDGER_CONSERVES_TO_THE_DL": "canal_overflow", "SAVE_LOAD_CONTINUES_IDENTICAL": "canal_overflow"}
+EXPECTED_DRIVERS [{"name": "sheet_overflow_proof", "timeout_s": 1800}]
+[modcheck] FlowWorks TARGETED: 1 of 96 chains: canal_overflow
+[modcheck] driver sheet_overflow_proof START (timeout 1800 s): \\wsl.localhost\Ubuntu\home\mandrake\rm\runs\clones\RIMMANDRAKE_CLASS_SEVEN_THIRST_FAILS_SITE_FULL_OF_PATIENTS.det\src\RimMandrake\FlowWorks\northstar/sheet_overflow_proof.py --origin 30,30 --fresh-map
+[modcheck] driver sheet_overflow_proof RC0 rc=0 in 150 s
+[modcheck] canary GREEN: programState Playing; 3 live colonists; spawn_batch Steel at 125,125: success=True; destroyed; left at cell: []
+[modcheck] chain canal_overflow START 21:55:40Z
+[modcheck] chain canal_overflow END 67s PASS=13 FAIL=0 UNMEASURED=0 NOT_RUN=0 hold=13.4s body=53.8s teardown=0.0s
+[modcheck] FlowWorks: no ledger item MODCHECK_FLOWWORKS_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\runs\clones\RIMMANDRAKE_CLASS_SEVEN_THIRST_FAILS_SITE_FULL_OF_PATIENTS.det\Transient\modcheck\FlowWorks_20261126T215650Z.html only
+[modcheck] FlowWorks: targeted run, status entry untouched; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\runs\clones\RIMMANDRAKE_CLASS_SEVEN_THIRST_FAILS_SITE_FULL_OF_PATIENTS.det\Transient\modcheck\FlowWorks_20261126T215650Z.html
+FlowWorks            TARGETED 1/96 chains (canal_overflow) GREEN
+[bridge split] 498.5 s wall: load 0.0 / ticks 0.0 / reads 1.7 / other 5.2 / outside calls 491.6 s
+MODCHECK_RC=0
