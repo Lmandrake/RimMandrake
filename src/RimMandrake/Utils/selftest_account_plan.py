@@ -557,6 +557,18 @@ def t_an_account_end_drain_ends_at_its_bound():
     d = AP.decide(BASE, F("steven", rows, runs=RUN, state={"account_end": {"account": "system", "save_at": AP.iso(
         NOW - 9 * 3600)}}))
     check(n + ": a save order on another account is no start of this drain", d["do"] == "soft" and d.get("drain"), d)
+    # the same run with steven's 48 h window over before its line: the drain is 'past its window', with no save order
+    past = {**rows, "steven": R(47, 100)}
+    def nt(h, acc="steven"):
+        return {"state": "soft", "drain": True, "account": acc, "since": AP.iso(NOW - h * 3600), "at": AP.iso(NOW - 60)}
+    d = AP.decide(BASE, F("steven", past, runs=RUN, notice=nt(0.5)))
+    check(n + ": past its window, half an hour into the drain: the switch waits for the live run", d["do"] == "soft"
+          and d.get("drain") and not d.get("account_end"), d)
+    d = AP.decide(BASE, F("steven", past, runs=RUN, notice=nt(2.5)))
+    check(n + ": past its window, rescue.drain_h into the drain (by the notice's since): the switch goes",
+          d["do"] == "switch" and "drain_h" in d["why"], d)
+    d = AP.decide(BASE, F("steven", past, runs=RUN, notice=nt(9, "system")))
+    check(n + ": a drain notice of another account is no start of this drain", d["do"] == "soft", d)
 
 
 # ------------------------------------------------------------------ the plan file and the commands

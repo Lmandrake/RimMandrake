@@ -83,9 +83,10 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
   `rescue.drain_h` hours, and the reason line says so. A smaller rescue reads `normal`, refuses no start, and names the
   points and the command that goes at once. With `rescue.drain_h` null, a rescue goes only with no run live.
 - **an_account_end_drain_ends_at_its_bound.** On an account with no emergency step (a line over
-  `account_end.emergency_max_line`), a drain at the line that still has live runs (or runs that cannot be read)
-  `rescue.drain_h` hours after its save order ends: the switch, or the stop when no account can take over, goes then
-  and stops those runs. With `rescue.drain_h` null the drain waits for its runs. An account with an emergency step keeps
+  `account_end.emergency_max_line`), a drain off the live account that still has live runs (or runs that cannot be
+  read) `rescue.drain_h` hours after it began ends: the switch, or the stop when no account can take over, goes then
+  and stops those runs. The drain began at its save order (at the line), or, for a drain with no save order (an account
+  past its window), at the `since` of its drain notice. With `rescue.drain_h` null the drain waits for its runs. An account with an emergency step keeps
   its own end (the emergency order at `emergency_pct`). Found by the sweep (`design/specs/2026-11-25-account-plan-sweep/`).
 - **a_rescue_drain_in_flight_goes_on.** A drain that the old actuator has started for a rescue goes on while the rescue
   still betters the week ahead by `switch_cost_pts`. It ends when the rescue is worth less than a switch.

@@ -934,11 +934,13 @@ def decide(plan, f, polled=True) -> dict:
         dd = SP.drained(d, {"account_end": cfg}, runs)
         # an_account_end_drain_ends_at_its_bound: on an account with no emergency step (a high line), a run that did not
         # end in rescue.drain_h hours after its save order no longer holds the fleet: the act goes, and it stops it
-        ep, bound = state.get("account_end") or {}, dig(N, "rescue.drain_h")
+        ep, bound, nt = state.get("account_end") or {}, dig(N, "rescue.drain_h"), f.get("notice") or {}
         since = stamp(ep.get("save_at")) if ep.get("account") == live else None
-        if dd.get("drain") and dd.get("account_end") and bound is not None and since is not None \
+        if since is None and nt.get("state") == "soft" and nt.get("drain") and nt.get("account") == live:
+            since = stamp(nt.get("since"))      # a drain with no save order (past its window): the notice's start
+        if dd.get("drain") and dd.get("drain_of") and bound is not None and since is not None \
                 and now - since >= bound * 3600 and not AE.has_emergency(dd.get("line"), cfg):
-            return {**d, "why": "%s; the save order went out at %s and %s after rescue.drain_h (%s h): the %s goes now and "
+            return {**d, "why": "%s; the drain began at %s and %s after rescue.drain_h (%s h): the %s goes now and "
                                 "stops them" % (d.get("why"), pacific(since), runs_say(runs), g(bound), d["do"])}
         return dd
 
@@ -2160,7 +2162,7 @@ def frame_for_pass(SP, meter, live, now, state, markers, manual, live_runs, burn
     series, sws = series_rows(), SP.switches()
     entry = {s["use"]: entry_level(series, sws, s["use"]) for s in plan["steps"] if isinstance(s.get("leave"), str)}
     return {"now": now, "live": live, "runs": None if live_runs is None else list(live_runs), "rows": meter,
-            "burn_live": burn, "burn_h": fleet_burn(series, now, plan["numbers"]["forecast"]["burn_window_h"],
+            "notice": SP.read_json(SP.OUT / "notice.json", {}), "burn_live": burn, "burn_h": fleet_burn(series, now, plan["numbers"]["forecast"]["burn_window_h"],
                                                     accounts=set(meter)),
             "switches": sws, "hand": bool(manual), "markers": markers, "state": state, "entry": entry,
             "draining": draining(SP)}

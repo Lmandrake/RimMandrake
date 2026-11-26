@@ -296,7 +296,10 @@
   "src/RimMandrake/rimflow/detached_helper.py::drop_clone_lock::except-returns-empty": 1,
   "src/RimMandrake/rimflow/work_bundle_monitor.py::ep::except-returns-empty": 1,
   "src/RimMandrake/rimflow/work_bundle_monitor.py::read_moves::or-empty": 1,
-  "src/RimMandrake/Utils/publish.py::_take_kept.last_top::except-returns-empty": 1
+  "src/RimMandrake/Utils/publish.py::_take_kept.last_top::except-returns-empty": 1,
+  "src/RimMandrake/Utils/account_plan_sweep.py::run_regime::or-empty": 1,
+  "src/RimMandrake/Utils/account_plan_sweep.py::check_pass::or-empty": 3,
+  "src/RimMandrake/Utils/account_plan_sweep.py::_edf::or-empty": 1
  },
  "reasons": {
   "src/RimMandrake/rimflow/maturation.py::move_item::or-empty": [
@@ -1244,6 +1247,17 @@
   ],
   "src/RimMandrake/Utils/publish.py::_take_kept.last_top::except-returns-empty": [
    "NOT A COLLAPSE: last_top is only the order the machine's kept trees are tried in; an unreadable mark sorts the tree after this clone's own, and _reuse_kept makes whichever tree is taken exact before use (design/specs/2026-11-25-treecheck-kept-tree/boundary.md)"
+  ],
+  "src/RimMandrake/Utils/account_plan_sweep.py::run_regime::or-empty": [
+   "NOT A COLLAPSE: the trace line of a pass that wrote no decision (a hold) prints None; the trace is for a person to read"
+  ],
+  "src/RimMandrake/Utils/account_plan_sweep.py::check_pass::or-empty": [
+   "NOT A COLLAPSE: a pass under a hold writes no decision; no decision is no act to check, and the gate is asked apart",
+   "NOT A COLLAPSE: before the first notice there is none; the hook reads an empty notice as no switch pending, which is what a run there is told",
+   "NOT A COLLAPSE: a machine whose notice had no decision (an account that could not be read) has no reason line to match; the switch is then flagged, never passed"
+  ],
+  "src/RimMandrake/Utils/account_plan_sweep.py::_edf::or-empty": [
+   "NOT A COLLAPSE: an account that no step uses and that has no standing step has no line; the bound then erases all of what is left, the larger loss"
   ]
  }
 }

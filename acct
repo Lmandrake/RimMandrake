@@ -3,4 +3,9 @@
 # build or publish); every write binds at the next read and prints at most 3 lines, the last its undo.
 #     ./acct status   ./acct next   ./acct line steven 5 --until-reset --why "..."   ./acct whatif -- order lukas system steven
 # See src/RimMandrake/Utils/account_plan.py (page design/specs/2026-11-24-account-plan-one-file/boundary.md).
+# ./acct sweep: the plan's real pass over a grid of burn regimes, offline (page design/specs/2026-11-25-account-plan-sweep/)
+if [ "${1:-}" = sweep ]; then
+    shift
+    exec python3 "$(dirname "$(readlink -f "$0")")/src/RimMandrake/Utils/account_plan_sweep.py" "$@"
+fi
 exec python3 "$(dirname "$(readlink -f "$0")")/src/RimMandrake/Utils/account_plan.py" "$@"

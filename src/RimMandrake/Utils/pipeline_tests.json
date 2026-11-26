@@ -27,7 +27,7 @@
     "src/RimMandrake/Utils/walk_twins.py", "src/RimMandrake/rimflow/selftest_walk_twins.py",
     "src/RimMandrake/rimflow/selftest_walk_small_list.py",
     "src/RimMandrake/Utils/account_end*.py",
-    "src/RimMandrake/Utils/account_plan*", "src/RimMandrake/Utils/selftest_account_plan.py", "acct",
+    "src/RimMandrake/Utils/account_plan*", "src/RimMandrake/Utils/selftest_account_plan.py", "src/RimMandrake/Utils/selftest_account_plan_sweep.py", "acct",
     "src/RimMandrake/Utils/selftest_account_end.py",
     "src/RimMandrake/rimflow/raid_pause*", "src/RimMandrake/rimflow/selftest_raid_pause.py",
     "src/RimMandrake/rimflow/game_lock.py",
@@ -214,6 +214,7 @@
       "_why": "RIMMANDRAKE_REPAIR_FLOWWORKS_REPIN_REFUSAL_AND_ESCAPE_WARNING: an invalid escape's SyntaxWarning failed a run-end publish note (2026-11-25T09:33Z); every tracked .py compiles with SyntaxWarning as an error"
     },
   {"test": "src/RimMandrake/Utils/selftest_pages_index.py", "seconds": 1, "inputs": ["src/RimMandrake/Utils/pages_index.py", "src/RimMandrake/Utils/maturation_now.py", "src/RimMandrake/Utils/codebase_now.py", "src/RimMandrake/Utils/ops_watch.py", "design/specs/2026-11-24-monitors-consolidated/boundary.md"]},
+    {"test": "src/RimMandrake/Utils/selftest_account_plan_sweep.py", "seconds": 60, "inputs": ["src/RimMandrake/Utils/account_plan.py", "src/RimMandrake/Utils/account_plan_sweep.py", "src/RimMandrake/Utils/selftest_account_plan_sweep.py", "src/RimMandrake/Utils/switching_plan.py", "src/RimMandrake/Utils/account_end.py", "src/RimMandrake/Utils/account_usage.py", ".claude/hooks/switch_checkpoint_signal.py"]},
     {"test": "src/RimMandrake/Utils/selftest_account_plan.py", "seconds": 20, "inputs": ["src/RimMandrake/Utils/account_plan*", "src/RimMandrake/Utils/switching_plan.py", "src/RimMandrake/Utils/account_end.py", "src/RimMandrake/Utils/codex_advice.py", "src/RimMandrake/Utils/slot_allocator.py", "src/RimMandrake/rimflow/detached_helper.py", "src/RimMandrake/rimflow/account_pick.py", "acct", "design/specs/2026-11-24-account-plan-one-file/boundary.md"]},
     {"test": "src/RimMandrake/Utils/selftest_account_end.py", "seconds": 2, "inputs": ["src/RimMandrake/Utils/account_end*.py", "src/RimMandrake/rimflow/left_open_continue.py", "design/specs/2026-11-24-account-end/boundary.md"]},
     {"test": "src/RimMandrake/Utils/selftest_switching_plan_drain.py", "seconds": 2, "inputs": ["src/RimMandrake/Utils/switching_plan.*", "design/specs/2026-11-20-account-drain/boundary.md"]},
