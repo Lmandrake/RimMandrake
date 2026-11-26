@@ -68,7 +68,8 @@
   Singularity Cannon) belong here per the turret register.
 - **The Assailant flesh dungeon** (`ASSAILANT_FLESH_DUNGEON_1`, with the owner)
   — the disgusting biological dungeon and the dark-history reveal it carries;
-  the Rakata tyranny surfaces HERE, nowhere earlier. The assailant stays
+  the Rakata tyranny surfaces here in its visceral form; the urn corpus
+  turns at CULTURE and may foreshadow it early (`03_deep_history.md`). The assailant stays
   unnamed and unsympathetic. It IS the antipode war lab (`ANCIENT_WAR_LAB_1`)
   beneath the Chill: the Assailant's one impact site, the lab the Rakata built
   over it and the crater they excavated around it [owner 2026-10-10, story
@@ -108,12 +109,31 @@
 - **"The Claim"** — the v1 quest: something fell; Jawa law says it belongs to
   whoever plants a claim-marker first; someone else is already walking. Wreck,
   timer, race; lose only the opportunity. It teaches the loop: *you get rich by
-  arriving first at something broken.*
+  arriving first at something broken.* The rules of its build:
+  - Offer on the ordinary opportunity cadence, no faction needed; the site is a
+    wreck on the ground layer within easy caravan range; the opposition is thin
+    (scavengers already picking it over). The rival clan is a story fact with
+    **no FactionDef** in v1; expiry costs no goodwill.
+  - **The reward rule:** the haul holds exactly one item of a category the
+    player cannot yet make — bulk steel is the texture, the one item is the
+    memory. Amounts sit at the low end.
+    - The player text (offer, accepted, expired, completed) lives in its def,
+    `src/RimUtinni/UtinniPatches/Defs/QuestScriptDefs/Jawa_TheClaim.xml`, and
+    the rumour in `.../ThingDefs_Items/Jawa_ClaimRumour.xml`. Its voice: flat,
+    short, unsentimental about property; no exclamation, no adventure-speak.
+  - **Every quest we author can be offered to a clan aboard the ship**
+    (`everAcceptableInSpace` true where taking it from orbit is the point).
+    Vanilla quests are left alone: the player reads "cannot accept in space".
+  - **The salvage rumour**: a scrap of plate with coordinates scratched on it;
+    reading it consumes it and offers the quest (one rumour, one job). Two
+    lanes, never purchase-only: bought from the Hutt Cartel, found in wreck
+    loot, raider inventories and ancient sites.
 - **Strangers are situations** — vanilla joiner events stay ON; the clan
   enslaves the outsider or love-gates the Jawa [owner 2026-08-22].
 - The Tusken water raid (steal-and-leave behavior), the Blackstar truce token
-  (free a Named Hunter), Hutt tribute demands, and the shop CUSTOMER layer are
-  the named v2 quest-shaped mechanics.
+  (free a Named Hunter) and Hutt tribute demands are the named v2 quest-shaped
+  mechanics. The shop CUSTOMER layer is v1: regular repair-for-profit events
+  (`08_droids.md`).
 - `Inhabited` (the mod: settlements with named residents the world remembers)
   is **v1 code, being built** [owner 2026-08-20]; its casts are authored
   (`bridge/INHABITED_CAST_*.md`) — the test for every choice: *"wasn't that guy

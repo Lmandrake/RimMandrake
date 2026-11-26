@@ -2,10 +2,9 @@
 
 **RimWorld 1.6 + Odyssey, all DLC enabled** (Anomaly's *storyline content at
 zero* — its creatures and abilities remain a reskin library [owner 2026-08-13]).
-A **single-player build for the owner's own play** — never design for
-release-robustness or other players' mod lists. There is **no worldgen in any
-version**: players-of-this-save receive one hand-made frozen world as a savegame
-[owner 2026-08-15/18].
+Players receive **one fixed mod list and one hand-made frozen world as a
+savegame**; never design for other mod lists or for a game without every DLC.
+There is **no worldgen in any version** [owner 2026-08-15/18].
 
 ## Premise
 

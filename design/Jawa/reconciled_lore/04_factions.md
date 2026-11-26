@@ -12,21 +12,21 @@ Named casts: `bridge/INHABITED_CAST_*.md` (12 rosters, Deepwater authored last).
 The organising idea of the faiths [2026-08-14]: **on a world with a face that
 never turns from the sun, every religion is a position on the light.**
 
-| # | faction | faith | position on the light |
-|---|---|---|---|
-| 1 | **Galactic Empire** (vessel `Empire`) | The Rising Order | they face it; proof of a fixed centre |
-| 2 | **Hutt Cartel** | the Reckoning of Debts | irrelevant — both faces are markets |
-| 3 | **Homestead Defense League** (`OutlanderCivil`) | the Covenant of Free Wells | the margin was given, then withheld — deservedly |
-| 4 | **Deep Desert Tribes** (`TribeCivil`) | the Sun-Debt | the sun is a thief; raiding is reclamation |
-| 5 | **Free Droid Enclaves** | the Continuity Protocol | they do not need it — the planet's rightful inheritors |
-| 6 | **Wildsteam Clan** | the Green Oath | dappled — the only people with shade |
-| 7 | **Deepwater Compact** | the Balance | exactly between, doctrinally |
-| 8 | **Geonosian Foundry Hive** | Meckgin | underground; it does not reach them |
-| 9 | **Ascendant Helix** | the Ascendant Genome | the planet is a rough draft too |
-| 10 | **Blackstar Company** (`Pirate`) | the Contract | whichever side pays |
-| 11 | **Jawa Trade Moot** (`Jawa_IndigenousTribes`) | The Salvation (shared with the player) | `05_the_clan.md` |
-| 12 | **the Junkers** | the Weight — no doctrine, only the ladder | they have never looked up |
-| 13 | **the Forgotten Arsenal** (`Mechanoid`) | none | `03_deep_history.md` |
+| # | faction | faith | position on the light | the line |
+|---|---|---|---|---|
+| 1 | **Galactic Empire** (vessel `Empire`) | The Rising Order | they face it; proof of a fixed centre | *"The sun does not move. Neither will we."* |
+| 2 | **Hutt Cartel** | the Reckoning of Debts | irrelevant — both faces are markets | *"The desert forgets. The book does not."* |
+| 3 | **Homestead Defense League** (`OutlanderCivil`) | the Covenant of Free Wells | the margin was given, then withheld — deservedly | *"It was given. We were not careful."* |
+| 4 | **Deep Desert Tribes** (`TribeCivil`) | the Sun-Debt | the sun is a thief; raiding is reclamation | *"It takes and takes. We only take back."* |
+| 5 | **Free Droid Enclaves** | the Continuity Protocol | they do not need it — the planet's rightful inheritors | *"We were left running. We did not stop."* |
+| 6 | **Wildsteam Clan** | the Green Oath | dappled — the only people with shade | *"We are guests. So is the water."* |
+| 7 | **Deepwater Compact** | the Balance | exactly between, doctrinally | *"We stand where nothing burns and nothing freezes. Do not ask us to move."* |
+| 8 | **Geonosian Foundry Hive** | Meckgin | underground; it does not reach them | *"The unworking drone is not oppressed. It is incomplete."* |
+| 9 | **Ascendant Helix** | the Ascendant Genome | the planet is a rough draft too | *"They almost finished it. We have better notes."* |
+| 10 | **Blackstar Company** (`Pirate`) | the Contract | whichever side pays | *"We are not your enemy. We are just booked."* |
+| 11 | **Jawa Trade Moot** (`Jawa_IndigenousTribes`) | The Salvation (shared with the player) | `05_the_clan.md` | — |
+| 12 | **the Junkers** | the Weight — no doctrine, only the ladder | they have never looked up | none: they do not have one |
+| 13 | **the Forgotten Arsenal** (`Mechanoid`) | none | `03_deep_history.md` | — |
 
 ## Canonical blocks (identity · water · capture economy · hostility)
 
@@ -81,7 +81,7 @@ dependency that feels like having a master again. Battle droids who woke up and 
 to themselves. Settle where organics cannot: Cathedral ground, volcanic seats,
 the quiet dark — and on water they crack for fuel, so attackers arrive thirsty
 at a source they cannot drink. **Restraining bolts are slavery; memory erasure
-is worse than killing** — the goodwill mechanic. They do not raid; they judge.
+is worse than killing** — the goodwill mechanic. They judge rather than raid: they raid you only when you are in their territory and already their enemy [owner 2026-09-06].
 Started at goodwill 0: a HISTORY, not a dial (Jawa enslaving vs the shared
 enemy made of the Hutts) [owner 2026-08-19]. Free droids' own capture verbs:
 `08_droids.md`.

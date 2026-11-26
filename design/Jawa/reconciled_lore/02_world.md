@@ -92,6 +92,14 @@ is DBH-Lite Thirst-only (real need, no plumbing, no free-water generator; the
 ship carries storage, never generation). Do not let fiction confidence leak
 into build talk.
 
+**The waterline ribbon** [2026-09-08 review, measured]: of the 181 land-biome
+tiles at elevation ≤ 0, 54 are the Rot's ruled Twilight shore and 127 are the
+waterline ribbon — shallow shore hexes of seven land biomes (AridShrubland 37,
+AB_RockyCrags 36, ZBiome_Badlands 23, Wasteland 12, PoisonForest 11, Desert 6,
+AB_TarPits 2), engine water wearing the land biome beside it so the shore reads
+as that country's edge. The ribbon is design, not spill; its count moves only
+with a ruled shoreline change.
+
 ## Terrain design — the four axes
 
 Every terrain answers, by construction: ① **Abundant** (why you come),
