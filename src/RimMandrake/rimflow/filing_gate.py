@@ -209,7 +209,7 @@ def decide(kind, unit, owner, program, not_now, live_units, mod_exists, own_mod=
         named = [w for w in _WORD.findall(evidence) if mod_exists(w)]
         if not named:
             return Decision(False, refusal("other-mod names no mod folder that exists "
-                                           "(design/concepts/<Mod> or src/RimMandrake/<Mod>).", cls), None)
+                                           "(design/concepts/<Mod>, src/RimMandrake/<Mod>, src/RimStarWars/<Mod> or src/RimUtinni/<Mod>).", cls), None)
         own = (own_mod or "").strip().lower()
         others = [w for w in named if w.lower() != own] if own else named
         if not others:
@@ -259,7 +259,8 @@ def facts(repo, unit=None):
         live = None
 
     def mod_exists(name):
-        return any(os.path.isdir(os.path.join(repo, d, name)) for d in ("design/concepts", "src/RimMandrake"))
+        return any(os.path.isdir(os.path.join(repo, d, name))       # each shipping tier holds mods (NAMING_SCHEME_PLAN)
+                   for d in ("design/concepts", "src/RimMandrake", "src/RimStarWars", "src/RimUtinni"))
     return live, mod_exists, (own_mod_of(unit) if unit else None)     # facts_fn's third: an answer, or a mod (tests)
 
 

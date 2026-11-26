@@ -93,6 +93,11 @@ def t_files_held_names_a_live_run():
 
 def t_other_mod_names_a_mod_folder():
     check("a mod folder passes", gate(not_now="other-mod: FlowWorks, the pit cover scene").ok)
+    # 2026-11-25, ExplosiveKnockback visit 2: Armoury (src/RimStarWars/Armoury) was refused as "no mod folder"; every tier counts
+    mod_exists = FG.facts(REPO)[1]
+    check("a RimStarWars mod folder exists for the door", mod_exists("Armoury"))
+    check("a RimMandrake mod folder still exists for the door", mod_exists("FlowWorks"))
+    check("a word that is no folder does not", not mod_exists("NoSuchModAnywhere"))
     d = gate(not_now="other-mod: NoSuchMod, its walk scene needs work")
     check("an unknown mod is refused", not d.ok and "mod" in d.text, d)
 

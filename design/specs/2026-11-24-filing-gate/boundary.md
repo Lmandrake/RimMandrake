@@ -70,7 +70,8 @@ there is of a promise here. The hook has its own selftest, `.claude/hooks/selfte
 - **an-unknown-class-is-refused.** A class outside the list is refused, "it is large" and "my work would not finish"
   included. The refusal does not list the classes.
 - **files-held-names-a-live-run.** Class `files-held` passes only when its evidence names a unit that is live.
-- **other-mod-names-a-mod-folder.** Class `other-mod` passes only when its evidence names a mod folder that exists.
+- **other-mod-names-a-mod-folder.** Class `other-mod` passes only when its evidence names a mod folder that exists. A mod folder is one
+  of `design/concepts/<Mod>`, `src/RimMandrake/<Mod>`, `src/RimStarWars/<Mod>` or `src/RimUtinni/<Mod>` (all three shipping tiers).
 - **other-mod-refuses-the-mod-of-the-run.** Class `other-mod` whose evidence names only the mod of the filing run (any
   letter case) is refused (item `RIMMANDRAKE_REFUSE_OWN_MOD_HANDOFF_DRIVER_RENAMED_NOTHING`: on 2026-11-25 a visit
   driver filed the rename of 12 of its own mod's defNames as other-mod). The refusal says: fix the fault in this
