@@ -242,7 +242,8 @@ SEATS = {
 }
 
 # Profiles of retired seats (the four-seat fleet, then FOUNDRY), removed on --apply.
-RETIRED = ("DECIDE", "BUILD", "CHECK", "REP", "FOUNDRY")   # FOUNDRY: retired seat (owner by card 2026-11-02)
+import model as _rm_model  # noqa: E402  model.RETIRED_SEATS is the one copy of the retired seat names (FOUNDRY)
+RETIRED = ("DECIDE", "BUILD", "CHECK", "REP") + tuple(_rm_model.RETIRED_SEATS)   # retired seat: owner by card 2026-11-02
 
 # Hand-made drafts replaced by installer-owned profiles. Matched by their literal
 # guids — they predate seat_guid() so the derived form cannot find them — and
