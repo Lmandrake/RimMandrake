@@ -8,13 +8,13 @@ The top part, **the mod as it stands**, is rewritten at every stage change and s
 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Code exists:
   `src/RimMandrake/ExplosiveKnockback/`.
-- **Stage now:** Stage 6, in-game acceptance, since 2026-11-26 4:07 AM PST (`version/stage_record.json`).
+- **Stage now:** Stage 7, the walk brief, since 2026-11-26 6:31 AM PST (`version/stage_record.json`).
 - **Bars:** 59 (30 inventory rows of `record.json` + 29 leaves of `tree.json`). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`).
 - **Measured 2026-11-14 12:45 PST:** 53 of 59 bars have at least one test that runs today; 47 have every deciding test
   runnable; 41 have all their offline deciding tests green. All 15 offline tests are built (13 PASS, 2 known red,
   unchanged). In-game scenes: 56, entry exists 50, absent 6. Every in-game scene is UNRUN (Stage 6); commands in the table.
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-26 4:07 AM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-26 6:31 AM PST).
 - **Open questions:** see "Questions" at the end of the history.
 
 ### The vision (his root paragraph, approved by card 2026-11-11, OWNER:1794468835221748501)
@@ -562,4 +562,13 @@ answer the locked bar, his recorded words or the shipped code already gives; no 
 - Owner said: per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: delegated: steward road back: visit 2 has no mod-wrong line and no undecided bar; 65 of 65 last rows PASS; both visit-1 UNRESOLVED rows are classed (P_goods_fly_wall APPARATUS FAULT SITE by the driver from the hunt's printed hauler line; P_goods_fly_rebound APPARATUS FAULT SITE by the Conductor 02:31). The one open line is the build match: 16 checks to rerun on the current build (SITE repairs 6d9a503cf4/2fe8f88034, scene.judge rows 0b0a0511e0, release rebuild), all game-only. The relation's 64-to-run was a pipeline defect (code after Build's switch and the Build overload), fixed d36a6d272c; now 49 count, 16 to run.
 - Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-25 8:41 PM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-25 8:41 PM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-26 6:31 AM PST, stage change: In-game acceptance (Stage 6) to Walk brief (Stage 7) (by BENCH)
+
+- Why: steward run RIMMANDRAKE_CONFIRM_EXPLOSIVEKNOCKBACK_VISIT_THREE_EXIT_MET: visit 3 exit read and confirmed
+- Checks passed: order, by, version, hold, steward_confirms, exit_met, build_match, unrun_run.
+- Steward confirms: read visit_3/SUMMARY.md, rows.jsonl (19 rows), strange.jsonl (10, all explained) and the repair diff 9931b028e1: 16 touched checks' last rows PASS (SUCCESS, site_checked, no forbidden effect; held lists are scene hygiene or the frames-only design, none switches off a claimed mechanic); sc_pawn_arc_bruise_sizes HARNESS repair seen FAIL on --plant no_bruise and PASS 12/12 on the real build, V_SMALL made stricter, V_HEDIFF corpse branch still needs the journal bruise; two COULD NOT LOOK rows on gas_chain were WRONG_BUILD refusals, then PASS 11/11; no mod fix in the sitting, so no fix reader owed; maturation next names no not-met reason; walk save present on ArchBig (10.7 MB, 05:59). Verdict: exit met
+- Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-26 4:07 AM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-26 4:07 AM PST).
 - Record: `version/stage_record.json`.

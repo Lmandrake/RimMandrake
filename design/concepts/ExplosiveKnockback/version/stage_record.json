@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "ExplosiveKnockback",
   "version": "0.2.0",
-  "stage": "in_game",
-  "stage_label": "In-game acceptance (Stage 6)",
-  "since": "2026-11-26T04:07:58-08:00",
+  "stage": "pre_human",
+  "stage_label": "Walk brief (Stage 7)",
+  "since": "2026-11-26T06:31:04-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -17,7 +17,7 @@
     "visit": 1,
     "total": 2
   },
-  "pre_human_arrivals": 0,
+  "pre_human_arrivals": 1,
   "spend": [],
   "moves": [
     {
@@ -166,6 +166,28 @@
         "by",
         "version",
         "hold"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "pre_human",
+      "at": "2026-11-26T06:31:04-08:00",
+      "by": "BENCH",
+      "why": "steward run RIMMANDRAKE_CONFIRM_EXPLOSIVEKNOCKBACK_VISIT_THREE_EXIT_MET: visit 3 exit read and confirmed",
+      "unit": "rm-detached-bench-rimmandrake-confirm-explosiveknockback-v-1795703288",
+      "item": "RIMMANDRAKE_CONFIRM_EXPLOSIVEKNOCKBACK_VISIT_THREE_EXIT_MET",
+      "confirmed": {
+        "steward_confirms": "read visit_3/SUMMARY.md, rows.jsonl (19 rows), strange.jsonl (10, all explained) and the repair diff 9931b028e1: 16 touched checks' last rows PASS (SUCCESS, site_checked, no forbidden effect; held lists are scene hygiene or the frames-only design, none switches off a claimed mechanic); sc_pawn_arc_bruise_sizes HARNESS repair seen FAIL on --plant no_bruise and PASS 12/12 on the real build, V_SMALL made stricter, V_HEDIFF corpse branch still needs the journal bruise; two COULD NOT LOOK rows on gas_chain were WRONG_BUILD refusals, then PASS 11/11; no mod fix in the sitting, so no fix reader owed; maturation next names no not-met reason; walk save present on ArchBig (10.7 MB, 05:59). Verdict: exit met"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "steward_confirms",
+        "exit_met",
+        "build_match",
+        "unrun_run"
       ]
     }
   ]
