@@ -1,0 +1,352 @@
+[
+{
+"id": "L1_NOT_KERNEL_INV_HOOK",
+"bars": [
+"inv_hook"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "the DamageWorker hook that turns an explosion into throw requests: game-side (RM_Patch_DamageWorker_ExplosionKnockback.cs); settled by an in-game blast and its journal request lines"
+},
+{
+"id": "L1_NOT_KERNEL_INV_PAWN_FLYER",
+"bars": [
+"inv_pawn_flyer"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "the PawnFlyer carrier: game-side (RM_PawnFlyerPatches.cs, RM_PawnFlyer_Knockback def); settled by sc pawn_arc's per-tick trace"
+},
+{
+"id": "L1_NOT_KERNEL_INV_ITEMS_TELEPORT",
+"bars": [
+"inv_items_teleport"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "goods never despawn-and-respawn: game-side carrier; settled by the spawn/despawn trace over thrown goods"
+},
+{
+"id": "L1_NOT_KERNEL_INV_SHELF_SKIP",
+"bars": [
+"inv_shelf_skip"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "open shelves scatter, closed hide: storage classification is game-side (RM_KnockbackCompat); settled by sc shelf/open_storage"
+},
+{
+"id": "L1_NOT_KERNEL_INV_PIT_FLOOR_HAUL",
+"bars": [
+"inv_pit_floor_haul"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "hauling from a pit floor: FlowWorks pathing; settled in game by sc_pit_fetch"
+},
+{
+"id": "L1_NOT_KERNEL_INV_HOSE_DROP",
+"bars": [
+"inv_hose_drop"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "hose end dropped at takeoff: game-side job handling; settled by sc hose_carry_drop"
+},
+{
+"id": "L1_NOT_KERNEL_INV_GAS_CHAIN",
+"bars": [
+"inv_gas_chain"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "clump-by-clump burst order from the lit edge: game-side gas grid walk (RM_MapComponent_Knockback); settled by sc gas_chain"
+},
+{
+"id": "L1_NOT_KERNEL_INV_CLOSED_GUARD",
+"bars": [
+"inv_closed_guard"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "which storage hides its contents: game-side; settled by sc closed_containers"
+},
+{
+"id": "L1_NOT_KERNEL_INV_GAS_TAGS",
+"bars": [
+"inv_gas_tags"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "gas census tags: a def/C# census (gas_census.json); settled by the census selftest and sc gas_census"
+},
+{
+"id": "L1_NOT_KERNEL_INV_KILLED_CORPSE",
+"bars": [
+"inv_killed_corpse"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "a pawn the blast kills is thrown as a corpse: game-side damage ordering; settled by sc killed_by_blast"
+},
+{
+"id": "L1_NOT_KERNEL_INV_PIT_FLOOR_GOODS_STAY",
+"bars": [
+"inv_pit_floor_goods_stay"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "goods on a pit floor are not thrown: game-side pit lookup; settled by sc in_pit_skip"
+},
+{
+"id": "L1_NOT_KERNEL_CARRIED_THING_OWN_ARC",
+"bars": [
+"carried_thing_own_arc"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "the carried thing leaves the hands and flies its own path: game-side carrier code (RM_ThingFlyer_Knockback, RM_KnockbackPlan); settled by sc pawn_arc_carried_thing"
+},
+{
+"id": "L1_NOT_KERNEL_BLAST_SHOW_FIRE_AND_FLASH",
+"bars": [
+"blast_show_fire_and_flash"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "fleck spawning and art: game-side (RM_KnockbackShow.cs, FleckDefs); settled by an in-game look"
+},
+{
+"id": "L1_NOT_KERNEL_BLAST_SHOW_SCREEN_SHAKE",
+"bars": [
+"blast_show_screen_shake"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "camera shake by size and distance: game-side (RM_KnockbackShow.cs, RM_KnockbackShowPlan.cs); settled in game"
+},
+{
+"id": "L1_NOT_KERNEL_BLAST_SHOW_AIR_RIPPLE",
+"bars": [
+"blast_show_air_ripple"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "distortion ring: game-side shader/fleck; settled by an in-game look"
+},
+{
+"id": "L1_NOT_KERNEL_BLAST_SHOW_SMOKE",
+"bars": [
+"blast_show_smoke"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "smoke flecks and wind lean: game-side; settled by an in-game look"
+},
+{
+"id": "L1_NOT_KERNEL_BLAST_SHOW_CRATER_SCAR",
+"bars": [
+"blast_show_crater_scar"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "scar filth/def and its wear: game-side (RM_KnockbackBlast_Scars.xml); settled in game over days"
+},
+{
+"id": "L1_NOT_KERNEL_BLAST_SHOW_SOOT_ON_THINGS",
+"bars": [
+"blast_show_soot_on_things"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "soot paint and restore: game-side (RM_KnockbackSoot.cs); settled in game"
+},
+{
+"id": "L1_NOT_KERNEL_BLAST_SHOW_SOOT_ON_PAWNS",
+"bars": [
+"blast_show_soot_on_pawns"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "soot hediff and its wear: game-side (RM_KnockbackSoot.xml); settled in game"
+},
+{
+"id": "L1_NOT_KERNEL_BLAST_SHOW_SCALES_WITH_DAMAGE",
+"bars": [
+"blast_show_scales_with_damage"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "show plan by damage: RM_KnockbackShowPlan.cs is not a *Math/*Kernel file; settled by sc_blast_show side by side"
+},
+{
+"id": "L1_NOT_KERNEL_BLAST_SHOW_SWITCHES_OFF_CLEAN",
+"bars": [
+"blast_show_switches_off_clean"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "each show switch off = vanilla look, throws unchanged: game-side; settled by sc_settings_sweep_show_switches"
+},
+{
+"id": "L1_NOT_KERNEL_GAS_SHOVES_PAWN_ON_PIT_COVER",
+"bars": [
+"gas_shoves_pawn_on_pit_cover"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "the gas shove onto a cover: kernel ShoveCellFree/PitCell are tested (L1_PIT_COVER_RULES) but which cell kind the game hands them is game-side; settled by sc_gas_chain_pawn_on_cover"
+},
+{
+"id": "L1_NOT_KERNEL_PAWN_FLIGHT_ARC",
+"bars": [
+"pawn_flight_arc"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "the drawn arc and the stun end: game-side carrier; settled by the per-tick trace in sc pawn_arc"
+},
+{
+"id": "L1_NOT_KERNEL_HOSE_DROPS_AT_TAKEOFF",
+"bars": [
+"hose_drops_at_takeoff"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "game-side job interruption; settled by sc hose_carry_drop and its off lane"
+},
+{
+"id": "L1_NOT_KERNEL_OPEN_SHELF_SCATTERS",
+"bars": [
+"open_shelf_scatters"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "storage that draws its contents: game-side classification; settled by sc open_storage"
+},
+{
+"id": "L1_NOT_KERNEL_ONLY_EXPLOSIONS_THROW",
+"bars": [
+"only_explosions_throw"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "only the explosion hook throws: game-side Harmony scope; settled by sc only_explosions"
+},
+{
+"id": "L1_NOT_KERNEL_GAS_GOES_CLUMP_BY_CLUMP",
+"bars": [
+"gas_goes_clump_by_clump"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "burst order and timing: game-side gas walk; settled by sc gas_chain"
+},
+{
+"id": "L1_NOT_KERNEL_OUR_GASES_BURN",
+"bars": [
+"our_gases_burn"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "census of our gas sources: settled by the gas census selftest and in game"
+},
+{
+"id": "L1_NOT_KERNEL_BLAST_BREAKS_PIT_COVER",
+"bars": [
+"blast_breaks_pit_cover"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "which blasts break a cover and the descent: kernel LandingBreaksCover tested; the radius reach and the FlowWorks descent are game-side; settled by sc cover_breaks"
+},
+{
+"id": "L1_NOT_KERNEL_PIT_GOODS_FETCHED",
+"bars": [
+"pit_goods_fetched"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "hauling up the ladder: FlowWorks pathing; settled in game"
+},
+{
+"id": "L1_NOT_KERNEL_NO_TELEPORT",
+"bars": [
+"no_teleport"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "spawn/despawn trace: game-side; settled by the event trace in game"
+},
+{
+"id": "L1_NOT_KERNEL_NO_CARELESS_FALL",
+"bars": [
+"no_careless_fall"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "ordinary pathing avoids pits: FlowWorks pathing; settled in game"
+},
+{
+"id": "L1_NOT_KERNEL_WALK_STOREROOM_RAID",
+"bars": [
+"walk_storeroom_raid"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "the owner's walk: stage 8, his act"
+},
+{
+"id": "L1_NOT_KERNEL_EVERY_GOOD_MOVES",
+"bars": [
+"every_good_moves"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "the kernel has no cap (L1_NO_CAP_KEEPS_ALL) and one request per pair (L1_ONE_REQUEST_PER_EXPLOSION_THING); 'stacks moved equals stacks reached' over 60 stacks is game-side; settled by sc all_fly_no_cap"
+},
+{
+"id": "L1_NOT_KERNEL_CLOSED_CONTAINER_HOLDS",
+"bars": [
+"closed_container_holds"
+],
+"kind": "not_kernel",
+"verdict": "UNSETTLED",
+"cases": 0,
+"detail": "kernel ContainerThrowCells/Jolt tested (L1_CONTAINER_THROW); which container is closed and the contents count are game-side; settled by sc closed_containers"
+}
+]

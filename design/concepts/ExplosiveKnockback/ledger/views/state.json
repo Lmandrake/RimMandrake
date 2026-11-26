@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "f5bafff9f7765ad85b4c10023bd6d461c5afb957ee36acea5d850a84713c420e",
+  "body_sha256": "08c82a01e8ca529fb804c9c9415547749caad5c8b19313d970b7e9aa5d8ab3cd",
   "reducer": 1,
   "shards": {
    "BACKFILL": 348917,
@@ -28,6 +28,7 @@
    "HOLDER.run-1795661891": 608,
    "JUDGE.judge-1794890427": 18837,
    "JUDGE.judge-1795437145": 6544,
+   "JUDGE.judge-1795662842": 1200,
    "OWNER": 1207
   }
  },
@@ -970,7 +971,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 757,
+  "events": 759,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -2628,6 +2629,7 @@
    "HOLDER.run-1795661891",
    "JUDGE.judge-1794890427",
    "JUDGE.judge-1795437145",
+   "JUDGE.judge-1795662842",
    "OWNER"
   ],
   "spend_tokens": 171672717,
@@ -3588,6 +3590,24 @@
     "subject": "bar:inv_proof_scenes",
     "text": "T_RESTORE PASS on the cycle 6 rerun at 44bf0e6b6f",
     "ts": "2026-11-23T13:08:59Z"
+   },
+   {
+    "by": "JUDGE.judge-1795662842",
+    "kind": "test.run",
+    "result": "PASS",
+    "sha": "6285b6641e401272a2ce3204e294adc14929be2d",
+    "subject": "bar:inv_kernel",
+    "text": "blind lane 1 rows on inv_kernel all PASS (68 rows overall: 31 PASS, 0 FAIL, 2 INFO, 35 UNSETTLED not_kernel)",
+    "ts": "2026-11-26T03:28:03Z"
+   },
+   {
+    "by": "JUDGE.judge-1795662842",
+    "kind": "test.run",
+    "result": "PASS",
+    "sha": "6285b6641e401272a2ce3204e294adc14929be2d",
+    "subject": "bar:inv_proof_scenes",
+    "text": "blind lane 1 rows on inv_proof_scenes all PASS (68 rows overall: 31 PASS, 0 FAIL, 2 INFO, 35 UNSETTLED not_kernel)",
+    "ts": "2026-11-26T03:28:04Z"
    }
   ],
   "traps": {
