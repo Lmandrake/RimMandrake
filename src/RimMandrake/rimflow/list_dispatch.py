@@ -710,15 +710,17 @@ def decide(cfg, st, facts, now, account=(True, "")):
     if facts.get("onboard") is not None:     # the old tickets of each home: one onboarding run per home (onboard_step)
         room_st = {"live_total": live_total}
 
-        def room():
-            """-> (host, None) | ("", None) for Archmagi | (None, why): the room a launch row takes, through its gates."""
+        def room(home=None):
+            """-> (host, None) | ("", None) for Archmagi | (None, why): the room a launch row takes, through its gates.
+            A home of cfg archmagi_only_homes needs Archmagi's own tools, so it never takes a host."""
             if not cfg.get("enabled"):
                 return None, "list_dispatch.json has enabled: false"
             if paused:
                 return None, paused
             if not account[0]:
                 return None, account[1] or "the account gate holds launches"
-            host, hwhy = host_first(cfg, facts.get("hosts"), placed, {"needs": "offline"})
+            only = (cfg.get("archmagi_only_homes") or {}).get(home)
+            host, hwhy = host_first(cfg, facts.get("hosts"), placed, {"needs": "archmagi (%s)" % only if only else "offline"})
             if host:
                 placed[host] = placed.get(host, 0) + 1
                 return host, None
@@ -744,7 +746,7 @@ def decide(cfg, st, facts, now, account=(True, "")):
 def onboard_step(cfg, rows, launches, ob, live, room):
     """The old tickets of each home become ONE onboarding run per home (boundary old-tickets-are-onboarded-by-home).
     ob: {"homes": work_bundle.onboard_homes(...)["homes"], "systems": {lane item: system}} or {"could_not_look"};
-    live: {system: live bundle id}; room() -> (host, None) | ("", None) | (None, why). For each home that
+    live: {system: live bundle id}; room(home) -> (host, None) | ("", None) | (None, why). For each home that
     work_bundle.onboard_pick lets start, in its order: a lead bundle of the home (a ticket with a check) takes the home's
     ready old tickets; else the home's first Shape row leads the run in the room it already has; else the run takes
     room(). Other Shape rows of a started home read bundled; a Shape row of a home with a live bundle reads
@@ -795,7 +797,7 @@ def onboard_step(cfg, rows, launches, ob, live, room):
                         why="the onboarding run of %s: %d old ticket(s), led by this named ticket in its own room%s" % (
                             s, len(ids), "; on %s" % lead["host"] if lead.get("host") else ""))
         else:
-            host, why = room()
+            host, why = room(s)
             if host is None:
                 no[s] = "no room: %s" % why
                 continue

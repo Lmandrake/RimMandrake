@@ -183,6 +183,11 @@ onboarding lines of `gather` in `list_dispatch.py`, `onboard_classes` in `list_d
   the home with the most open old tickets takes the next room. Which home holds a ticket that blocks a switched-on mod
   is not readable by program (a readiness list is one prose line of `./pipe why`), so that order is not built. Each home
   is one run: two homes are never in one run, and one home never gets two. Test: `t_old_tickets_are_onboarded_by_home`.
+- **an-archmagi-only-home-runs-on-archmagi.** A home that `archmagi_only_homes` in `list_dispatch.json` names (home ->
+  the tools only Archmagi has) takes Archmagi's room for its onboarding run, never a host's, though a host has room;
+  every other home still goes to a host first. Measured 2026-11-26: the onboarding run of `game:art-canon` went to
+  SteveDesktop, where the art queue, art_eval and its observed inventory are absent. Test:
+  `t_an_archmagi_only_home_runs_on_archmagi`.
 - **an-onboarding-member-is-ready-or-left-out-with-its-reason.** A ticket that is blocked, waits on an open item, has a
   dated wait ahead, is under a live lease, has a live run, is `pipe off`, is held by the owner, is in a live bundle or
   was refused by a bundle since its last other event (a verify, a run's result, is not one) is left out, and the tick's reading names it with its reason.

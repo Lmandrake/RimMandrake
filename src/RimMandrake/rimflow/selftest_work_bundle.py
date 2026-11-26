@@ -1219,6 +1219,21 @@ def t_old_tickets_are_onboarded_by_home():
         "lane: with no room no onboarding run starts, and the reading says why (%s)" % by4.get("-onboard"))
 
 
+def t_an_archmagi_only_home_runs_on_archmagi():
+    """2026-11-26: game:art-canon's onboarding run went to SteveDesktop, where the art queue, art_eval and the observed
+    inventory are absent, so its art-production tickets could not be worked."""
+    W = WB()
+    ob = onboard_facts_of(W, onboard_world())
+    hosts_cfg = {"hosts": {"SteveDesktop": {"max_live": 6, "min_left_pct": 5}}}
+    hosts = {"SteveDesktop": {"live": 0, "left": 60.0, "left_why": None, "pool_more": 5}}
+    only = dict(hosts_cfg, archmagi_only_homes={"pipeline:bridge": "fixture: its tools are on Archmagi"})
+    rows5, _l5, _by5 = lane_decide(ob, cfg=only, facts_extra={"hosts": hosts})
+    got = {r["bundle"]["system"]: r.get("host") for r in rows5 if r.get("bundle")}
+    chk(lambda: "pipeline:bridge" in got and got["pipeline:bridge"] is None and got.get("machine:SteveDesktop") == "SteveDesktop",
+        "lane: a home of archmagi_only_homes runs on Archmagi though a host has room; another home still goes to the "
+        "host (%s)" % got)
+
+
 def t_an_onboarding_member_is_ready_or_left_out_with_its_reason():
     W = WB()
     items = onboard_world()
@@ -1246,7 +1261,7 @@ def t_an_old_ticket_with_a_live_run_leads_no_onboarding_run():
     ob = onboard_facts_of(W, items)
     live = {"item": "S1", "decision": "live", "why": "rm-detached-bench-s1 is live on it"}
     rows, launches = LD.onboard_step({"onboard_classes": ON}, [dict(live)], [],
-                                     dict(ob, systems={}), {}, lambda: ("", None))
+                                     dict(ob, systems={}), {}, lambda home=None: ("", None))
     by = {}
     for r in rows:
         by.setdefault(r["item"], []).append(r)
@@ -1257,7 +1272,7 @@ def t_an_old_ticket_with_a_live_run_leads_no_onboarding_run():
         and "machine:SteveDesktop" in summ.get("not_started", {}),
         "onboard_step: the ticket is left out with its reason, and its home with no other member starts nothing (%s)" % summ)
     rows2, l2 = LD.onboard_step({"onboard_classes": ON}, [{"item": "B2", "decision": "live", "why": "u2 is live on it"}],
-                                [], dict(onboard_facts_of(W, items), systems={}), {}, lambda: ("", None))
+                                [], dict(onboard_facts_of(W, items), systems={}), {}, lambda home=None: ("", None))
     lead = [r for r in rows2 if r.get("bundle") and r["bundle"]["system"] == "pipeline:bridge"]
     chk(lambda: lead and "B2" not in lead[0]["bundle"]["members"] and lead[0]["item"] != "B2"
         and sorted(lead[0]["bundle"]["members"]) == ["B1", "B3", "B4"],
@@ -1276,7 +1291,7 @@ def t_an_old_ticket_with_any_hold_row_leads_no_onboarding_run():
     for dec in ("system_wait", "chain_stop", "blind", "waiting", "close_refused", "stopped"):
         ob = onboard_facts_of(W, items)
         rows, launches = LD.onboard_step({"onboard_classes": ON}, [{"item": "S1", "decision": dec, "why": "held"}], [],
-                                         dict(ob, systems={}), {}, lambda: ("", None))
+                                         dict(ob, systems={}), {}, lambda home=None: ("", None))
         dup = [i for i in launches if sum(1 for r in rows if r["item"] == i) > 1]
         chk(lambda: not dup and "S1" not in launches,
             "onboard_step: a ticket whose own row reads %s leads no onboarding run and has no second row (%s)" % (dec, dup))
@@ -1339,7 +1354,7 @@ def t_a_home_lead_takes_its_old_tickets():
             {"item": "SG", "decision": "shape", "kind": "shape", "model": "opus", "cap": 120, "run_n": 1}]
     systems = {"BC": "pipeline:bridge", "B2": "pipeline:bridge", "SG": "game:flight"}
     cfg = {"enabled": True, "max_live": 2, "onboard_classes": ON}
-    rows2, l2 = LD.onboard_step(cfg, rows, ["BC", "B2", "SG"], dict(ob, systems=systems), {}, lambda: (None, "no room"))
+    rows2, l2 = LD.onboard_step(cfg, rows, ["BC", "B2", "SG"], dict(ob, systems=systems), {}, lambda home=None: (None, "no room"))
     by = {r["item"]: r for r in rows2}
     chk(lambda: by["BC"]["bundle"]["members"][:1] == ["BC"] and sorted(by["BC"]["bundle"]["members"][1:]) == ["B1", "B2", "B3", "B4"]
         and by["BC"]["bundle"].get("onboard") is True, "onboard_step: the home's lead takes its ready old tickets and is "
@@ -1352,7 +1367,7 @@ def t_a_home_lead_takes_its_old_tickets():
     rows3 = [{"item": "B2", "decision": "shape", "kind": "shape", "model": "opus", "cap": 120, "run_n": 1,
               "host": "SteveDesktop"}]
     rows4, l4 = LD.onboard_step(cfg, rows3, ["B2"], dict(ob, systems={"B2": "pipeline:bridge"}), {},
-                                lambda: (None, "no room"))
+                                lambda home=None: (None, "no room"))
     r = rows4[0]
     chk(lambda: r.get("kind") == "onboard" and r["decision"] == "launch" and r["bundle"]["members"][0] == "B2"
         and sorted(r["bundle"]["members"]) == ["B1", "B2", "B3", "B4"] and r["bundle"].get("host") == "SteveDesktop"
@@ -1489,7 +1504,7 @@ def main():
               t_live_pass_takes_a_free_game_or_says_unrun, t_the_page_shows_each_live_bundle,
               t_the_maturation_road_back_is_one_bundle, t_a_test_never_writes_the_real_store,
               t_the_conductor_ends_a_dead_bundle, t_five_tickets_two_fixed_one_run,
-              t_each_limit_names_its_danger, t_old_tickets_are_onboarded_by_home,
+              t_each_limit_names_its_danger, t_old_tickets_are_onboarded_by_home, t_an_archmagi_only_home_runs_on_archmagi,
               t_an_onboarding_member_is_ready_or_left_out_with_its_reason, t_an_old_ticket_with_a_live_run_leads_no_onboarding_run, t_an_old_ticket_with_any_hold_row_leads_no_onboarding_run,
               t_the_onboard_classes_are_data,
               t_one_onboarding_beside_no_live_bundle, t_an_onboarding_that_could_not_look_starts_nothing,
