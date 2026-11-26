@@ -637,6 +637,11 @@ namespace RimMandrake.FlowWorks
 		}
 		private Dictionary<Pawn, IntVec3> lastCell = new Dictionary<Pawn, IntVec3>();
 		private Dictionary<Pawn, IntVec3> nextCell = new Dictionary<Pawn, IntVec3>();
+		/// <summary>ABSOLUTE_DESCENT_FIX_MISSES_DECK_SHOVE: pawns that stood in a span's floor band (down under the deck) on their
+		/// lastCell. The bridges' own band set is swept only every 60 ticks, so a forced move can outlive or race it; this one is
+		/// written with lastCell. Not saved: the bridges' saved band set answers for the first pass after a load.</summary>
+		private HashSet<Pawn> underLast = new HashSet<Pawn>();
+		private HashSet<Pawn> underNext = new HashSet<Pawn>();
 		/// <summary>Superdeep cells a pawn's own path follower stepped it into since the last
 		/// detector pass (RM_Patch_PathFollower_WalkedStep). Absent = the arrival was forced.</summary>
 		private Dictionary<Pawn, IntVec3> walkedInto = new Dictionary<Pawn, IntVec3>();
@@ -699,6 +704,7 @@ namespace RimMandrake.FlowWorks
 		public void Tick(Map map, RM_MapComponent_Excavation eng)
 		{
 			nextCell.Clear();
+			underNext.Clear();
 			descents.Clear();
 			forced.Clear();
 			dropOf.Clear();
@@ -707,9 +713,13 @@ namespace RimMandrake.FlowWorks
 			{
 				Pawn p = pawns[i];
 				IntVec3 pos = p.Position;
+				if (Pits.RM_MapComponent_SuspensionBridges.BandTotal > 0 && Pits.RM_SuspensionUnderpass.InFloorBand(p))
+				{
+					underNext.Add(p);
+				}
 				if (lastCell.TryGetValue(p, out IntVec3 prev) && prev != pos
 					&& RimMandrakeFlowWorksSettings.superdeepCaptureEnabled
-					&& IsFallingArrival(map, eng, p, prev, pos)
+					&& IsFallingArrival(map, eng, p, prev, pos, WasUnderDeck(map, p, prev))
 					&& !Pits.RM_PitCoverUtility.IsCovered(map, pos)
 					&& !InBeneathSet(p)   // PIT_COVER_FIX_OCCUPANT_STAYS_BELOW: out from under a lid along the floor, no fall
 					&& !p.Flying && !(RimMandrakeFlowWorksSettings.pitFreeTravelEnabled && RM_PocketGrid.FreePitTraveller(p)))
@@ -729,7 +739,7 @@ namespace RimMandrake.FlowWorks
 							continue;
 						}
 						descents.Add(p);
-						dropOf[p] = eng.ClimbDepthAt(pos) - RM_SuperdeepTrap.StepDepthAt(map, eng, prev);
+						dropOf[p] = eng.ClimbDepthAt(pos) - OriginStepDepth(map, eng, prev, WasUnderDeck(map, p, prev));
 						if (!walked)
 						{
 							forced.Add(p);
@@ -752,6 +762,9 @@ namespace RimMandrake.FlowWorks
 			Dictionary<Pawn, IntVec3> swap = lastCell;
 			lastCell = nextCell;
 			nextCell = swap;
+			HashSet<Pawn> swapUnder = underLast;
+			underLast = underNext;
+			underNext = swapUnder;
 			for (int i = 0; i < descents.Count; i++)
 			{
 				Pawn p = descents[i];
@@ -796,7 +809,8 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			IntVec3 pos = p.Position;
-			if (prev != pos && RimMandrakeFlowWorksSettings.superdeepCaptureEnabled && IsFallingArrival(map, eng, p, prev, pos)
+			bool wasUnder = WasUnderDeck(map, p, prev);
+			if (prev != pos && RimMandrakeFlowWorksSettings.superdeepCaptureEnabled && IsFallingArrival(map, eng, p, prev, pos, wasUnder)
 				&& !Pits.RM_PitCoverUtility.IsCovered(map, pos) && !InBeneathSet(p) && !p.Flying
 				&& !(RimMandrakeFlowWorksSettings.pitFreeTravelEnabled && RM_PocketGrid.FreePitTraveller(p))
 				&& RM_PitTrapMath.DescentFalls(false, RM_LadderRules.LadderLetsOut(map, pos, p), p.Faction == Faction.OfPlayer,
@@ -808,21 +822,44 @@ namespace RimMandrake.FlowWorks
 					NoteHandledArrival(p, prev);
 					return;
 				}
-				RM_SuperdeepTrap.OnForcedDescent(p, pos, this, eng.ClimbDepthAt(pos) - RM_SuperdeepTrap.StepDepthAt(map, eng, prev));
+				RM_SuperdeepTrap.OnForcedDescent(p, pos, this, eng.ClimbDepthAt(pos) - OriginStepDepth(map, eng, prev, wasUnder));
 			}
+		}
+
+		/// <summary>ABSOLUTE_DESCENT_FIX_MISSES_DECK_SHOVE: was this pawn down in the floor band under the deck on prev (its
+		/// lastCell)? This detector's own record of the last pass, else (first pass after a load) the bridges' saved band set.</summary>
+		private bool WasUnderDeck(Map map, Pawn p, IntVec3 prev)
+		{
+			if (Pits.RM_MapComponent_SuspensionBridges.BandTotal == 0 && underLast.Count == 0)
+			{
+				return false;
+			}
+			if (underLast.Contains(p))
+			{
+				return true;
+			}
+			Pits.RM_MapComponent_SuspensionBridges b = map.GetComponent<Pits.RM_MapComponent_SuspensionBridges>();
+			return b != null && b.InBandSet(p) && Pits.RM_SuspensionUnderpass.PassingDeckAt(map, prev) != null;
+		}
+
+		/// <summary>The step depth the drop is measured from: the floor for a pawn that was under the deck, else StepDepthAt.</summary>
+		private static int OriginStepDepth(Map map, RM_MapComponent_Excavation eng, IntVec3 prev, bool wasUnder)
+		{
+			return wasUnder ? Pits.RM_SuspensionUnderpass.FloorViewDepthAt(map, eng, prev) : RM_SuperdeepTrap.StepDepthAt(map, eng, prev);
 		}
 
 		/// <summary>Absolute rule: a descent into D = 4 from shallower, the origin read at its walking height. Relative (design §8.5 step 8): the arrival drops more than
 		/// this pawn climbs (RM_PitTrapMath.ArrivalDropsTooFar); who takes the fall is still DescentFalls.</summary>
-		private static bool IsFallingArrival(Map map, RM_MapComponent_Excavation eng, Pawn p, IntVec3 prev, IntVec3 pos)
+		private static bool IsFallingArrival(Map map, RM_MapComponent_Excavation eng, Pawn p, IntVec3 prev, IntVec3 pos,
+			bool wasUnder)
 		{
 			if (!RM_PocketGrid.Relative)
 			{
-				// ABSOLUTE_DESCENT_FIX_MISSES_DECK_SHOVE: off a deck over the same pit is 0 -> 4, not 4 -> 4
+				// ABSOLUTE_DESCENT_FIX_MISSES_DECK_SHOVE: off a deck over the same pit is 0 -> 4, not 4 -> 4; from under it, 4 -> 4
 				int fromDug = eng.ExcavatedDepthAt(prev);
 				bool decked = fromDug > 0 && Pits.RM_PitCoverUtility.IsCovered(map, prev);
 				return RM_PitTrapMath.AbsoluteArrivalDescends(fromDug, decked,
-					decked ? Pits.RM_SpanUtility.WalkingDepth(map, prev, fromDug) : fromDug, eng.ExcavatedDepthAt(pos));
+					decked ? Pits.RM_SpanUtility.WalkingDepth(map, prev, fromDug) : fromDug, wasUnder, eng.ExcavatedDepthAt(pos));
 			}
 			int to = eng.ClimbDepthAt(pos);
 			// TITAN_TRENCHES_WIRE_MIND_THE_GAP: a trench this creature steps over is ground to it: no fall, walked or shoved
@@ -830,7 +867,8 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;
 			}
-			int from = RM_TrenchStride.StepDepthFor(p, map, eng, prev);
+			// ABSOLUTE_DESCENT_FIX_MISSES_DECK_SHOVE: a pawn forced out from under a deck left the floor, not the deck
+			int from = wasUnder ? Pits.RM_SuspensionUnderpass.FloorViewDepthAt(map, eng, prev) : RM_TrenchStride.StepDepthFor(p, map, eng, prev);
 			// PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: judged by the climb limit WITHOUT climbing gear: gear is no parachute for a
 			// forced arrival; a walked step down on the gear is a climb (Tick passes it to DescentFalls as climbing down).
 			return to > from && RM_PitTrapMath.ArrivalDropsTooFar(from, to, RM_PocketGrid.NaturalClimbLimitOf(p));

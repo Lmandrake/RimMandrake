@@ -108,10 +108,12 @@ namespace RimMandrake.FlowWorks
 		/// <summary>ABSOLUTE_DESCENT_FIX_MISSES_DECK_SHOVE: the absolute rule's arrival test. The cell the pawn came FROM is
 		/// judged at its walking height: an intact deck there (a pit cover or a surface span: 0; a sunken span: its ledge) is
 		/// ground at that height, never the dug floor beneath it. So a pawn shoved or skipped off a deck onto an open square of
-		/// the same D = 4 excavation descends, as one shoved in from the bank does.</summary>
-		public static bool AbsoluteArrivalDescends(int fromDugDepth, bool fromDecked, int fromDeckWalkingDepth, int toDugDepth)
+		/// the same D = 4 excavation descends, as one shoved in from the bank does. A pawn that was down on the floor UNDER that
+		/// deck (the floor band of a span it walks beneath) stood on the dug floor, not the deck: no descent along the floor.</summary>
+		public static bool AbsoluteArrivalDescends(int fromDugDepth, bool fromDecked, int fromDeckWalkingDepth, bool fromUnderDeck,
+			int toDugDepth)
 		{
-			return IsPitDescent(fromDecked ? fromDeckWalkingDepth : fromDugDepth, toDugDepth);
+			return IsPitDescent(fromDecked && !fromUnderDeck ? fromDeckWalkingDepth : fromDugDepth, toDugDepth);
 		}
 
 		/// <summary>A held pawn may step only to another D = 4 cell.</summary>

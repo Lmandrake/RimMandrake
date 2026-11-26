@@ -7,7 +7,9 @@ walking height (0 for a cover or a surface deck) never counted.
 The fix judges the origin at its walking height through RM_PitTrapMath.AbsoluteArrivalDescends (its arithmetic is the
 C# SelfTest case PitTrap_absolute_descent_reads_deck_height). This file pins the wiring: the absolute branch of
 IsFallingArrival decides through that function, with the origin's deck read, and no longer through a raw
-ExcavatedDepthAt(prev) comparison. Each check carries a planted regression (the pre-fix line) that must fail.
+ExcavatedDepthAt(prev) comparison. A pawn that stood down on the floor UNDER the deck (a span's floor band, recorded per
+pass in Tick) is read at the floor in both rules, so a forced step along the floor out from under a deck is no fall (the
+fresh reader's case of 2026-11-26). Each check carries a planted regression (the pre-fix line) that must fail.
 
     python3 src/RimMandrake/FlowWorks/selftest_flowworks_absolute_deck_descent.py
 """
@@ -73,12 +75,26 @@ def problems(trap, math):
         probs.append("absolute branch does not read whether the origin is decked (RM_PitCoverUtility.IsCovered(map, prev))")
     if "WalkingDepth(map, prev," not in br:
         probs.append("absolute branch does not read the origin deck's walking depth (RM_SpanUtility.WalkingDepth(map, prev, ...))")
+    if not re.search(r"AbsoluteArrivalDescends\([^;]*wasUnder", br):
+        probs.append("absolute branch does not pass whether the pawn was under the deck (wasUnder)")
+    try:
+        whole = code_only(body_of(trap, "private static bool IsFallingArrival("))
+    except ValueError:
+        whole = ""
+    rel = whole.split("if (!RM_PocketGrid.Relative)", 1)[-1]
+    if "wasUnder ? Pits.RM_SuspensionUnderpass.FloorViewDepthAt(map, eng, prev)" not in rel:
+        probs.append("relative branch does not read a from-under-the-deck origin at its floor (FloorViewDepthAt)")
+    tick = code_only(body_of(trap, "public void Tick(Map map, RM_MapComponent_Excavation eng)"))
+    if "IsFallingArrival(map, eng, p, prev, pos, WasUnderDeck(map, p, prev))" not in tick or "underNext.Add(p)" not in tick:
+        probs.append("Tick does not record the floor band per pass and pass it to IsFallingArrival")
     try:
         fn = code_only(body_of(math, "public static bool AbsoluteArrivalDescends("))
     except ValueError:
         return probs + ["RM_PitTrapMath.AbsoluteArrivalDescends not found"]
     if "IsPitDescent(" not in fn:
         probs.append("AbsoluteArrivalDescends does not use the D = 4 descent rule (IsPitDescent)")
+    if "!fromUnderDeck" not in fn:
+        probs.append("AbsoluteArrivalDescends does not read a from-under-the-deck origin at the dug floor")
     return probs
 
 
@@ -101,6 +117,12 @@ def main():
         planted_math = math   # no helper to plant in: the real check is red already
     check("planted_inert_helper_is_caught", planted_math != math and bool(problems(trap, planted_math)),
           "an inert helper passed the pin")
+
+    # can-fail: the relative branch goes back to the deck read for a pawn that was under the deck (the fresh reader's case).
+    planted_rel = trap.replace("wasUnder ? Pits.RM_SuspensionUnderpass.FloorViewDepthAt(map, eng, prev) : RM_TrenchStride",
+                               "RM_TrenchStride", 1)
+    check("planted_relative_under_deck_regression_is_caught", planted_rel != trap and bool(problems(planted_rel, math)),
+          "the relative deck read for an under-deck origin passed the pin")
 
     print("selftest_flowworks_absolute_deck_descent: %s (%d checks failed)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0
