@@ -159,6 +159,7 @@ PAGES = {
     "design/specs/2026-11-19-consumable-readers/boundary.md": "src/RimMandrake/rimflow/selftest_pipeline_control.py",
     "design/specs/2026-11-19-tick-pauses/boundary.md": "src/RimMandrake/rimflow/selftest_tick_pauses.py",
     "design/specs/2026-11-19-conductor-acts/boundary.md": "src/RimMandrake/rimflow/selftest_conductor_acts.py",
+    "design/specs/2026-11-26-six-part-definition-gate/boundary.md": "src/RimMandrake/rimflow/selftest_definition_gate.py",
     "design/specs/2026-11-21-never-refuse-the-conductor/boundary.md":
         "src/RimMandrake/rimflow/selftest_never_refuse_conductor.py",
     "design/specs/2026-11-26-preflight-stops-at-pickup/boundary.md":

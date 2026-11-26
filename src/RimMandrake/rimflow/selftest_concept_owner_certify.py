@@ -53,7 +53,7 @@ def put_json(d, name, obj):
 def fixture(tmp):
     repo, d = SCT.stage(tmp)
     SCT.validate_walk(repo)
-    errs = CT.write(d, SCT.draft(), repo)
+    errs = CT.write(d, SCT.draft(), repo, legacy=True)
     assert not errs, errs
     with open(os.path.join(repo, CT.OWNER_SHARD), "a", encoding="utf-8") as f:
         for e in EVENTS.values():

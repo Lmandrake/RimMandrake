@@ -68,6 +68,26 @@ LEAF_REQ = ("id", "by", "root", "leaf_kind", "clause_kind", "experience", "scena
 LEAF_OPT = ("bundle", "scenario_informed_by", "needs_instrument", "oracle_proposed", "tier_reason", "cannot_show",
             "wall_expect_h")
 LEAF_KINDS = ("experience", "constraint", "instrument", "walk")
+# The six-part bar (design/specs/2026-11-16-designer-cleanse-and-bar-definition.md §3; RIMMANDRAKE_TOUGHEN_DESIGNER_
+# ENTRY_GATE_VAGUE_BUILDS_CHOKED): a leaf that carries `says` is a six-part bar, and a tree holds one kind of leaf. Its
+# parts are judged by designer_cleanse's own part checks, so the door into the build and the cleanse pass read one
+# definition. `experience` is the copy of `says` that the exam reads; `design_version`..`cleanse` are what the cleanse
+# apply writes beside the bars.
+SIX_TOP = {"design_version", "signature", "whole", "capabilities", "checks", "rules", "meetings", "cleanse"}
+SIX_DRAFT = {"whole", "checks", "rules", "meetings", "capabilities"}
+BAR_ID = re.compile(r"[A-Za-z][A-Za-z0-9_]*")    # always fullmatch
+DEF = "definition: "     # every refusal of a six-part tree's bars starts so: a fault of the definition, not the schema
+# the whole bar: "the mod complete, every mechanic on, ... with a mid-way reload and a second order of the main
+# actions" (spec §3, One whole bar per mod)
+SIX_WHOLE_NEEDS = {"reload": r"(?<!\bno )(?<!\bwithout )(?<!\bnever )\breload(s|ed|ing)?\b|"
+                             # "resumes ... after loading", "load actual save", "a saved continuation"
+                             r"\bafter\s+loading\b|\bload(s|ed|ing)?\s+(?:\w+\s+){0,2}?sav(e|ed|es)\b|"
+                             r"\bsaved\s+continuation\b",
+                   # "a changed work order", "reversing the work order", "another order of the main actions";
+                   # never "in order to"
+                   "second order": r"\b(second|another|different|other|opposite|reverse|reversed|reversing|changed|"
+                                   r"changing|change|swapped)\W+(?:\w+\W+){0,3}?order\b(?!\s+to\b)|"
+                                   r"\border\s+reversed\b|\breorder(s|ed|ing)?\b"}
 SLUG = re.compile(r"[a-z][a-z0-9_]*")     # always fullmatch: `$` would let a trailing newline through
 OBSERVER = re.compile(r"\b(player|colonist|colonists|viewer|observer|pawn|pawns|he|you|screen|log|reader|tester|the save)\b",
                       re.I)
@@ -331,10 +351,24 @@ def leaf_errors(x, kind, tiers, root_ids):
     return errs
 
 
-def shape_errors(tree, root_ids, floor, floor_hash):
+def shape_errors(tree, root_ids, floor, floor_hash, d=None):
+    """The tree's shape. A six-part tree (six_part) is judged by the six-part bar; `d`, its concept folder, gives
+    the models an unknown meeting names."""
+    if six_part(tree):
+        errs, fatal = top_errors(tree, floor, floor_hash, TOP_KEYS | SIX_TOP)
+        return errs if fatal else errs + six_part_errors(tree, root_ids, d)
+    errs, fatal = top_errors(tree, floor, floor_hash, TOP_KEYS)
+    if fatal:
+        return errs
+    return errs + old_leaf_shape_errors(tree, root_ids, floor)
+
+
+def top_errors(tree, floor, floor_hash, keys):
+    """-> (errors, fatal). The stamps and the owner-side fields every tree carries, of either bar kind; fatal when a
+    container is so malformed that the leaves cannot be read beside it."""
     errs = []
     for k in tree:
-        if k not in TOP_KEYS:
+        if k not in keys:
             errs.append("field %s is not in the schema" % k)
     if tree.get("schema_version") != SCHEMA:
         errs.append("schema_version %r" % tree.get("schema_version"))
@@ -350,12 +384,12 @@ def shape_errors(tree, root_ids, floor, floor_hash):
         errs.append("root_state %r" % tree.get("root_state"))
     fl = tree.get("floor") if tree.get("floor") is not None else {}
     if not isinstance(fl, dict):
-        return errs + ["floor is not an object"]
+        return errs + ["floor is not an object"], True
     if fl.get("off") is not None and not (isinstance(fl["off"], list) and all(isinstance(o, dict) for o in fl["off"])):
-        return errs + ["floor.off is a list of objects"]
+        return errs + ["floor.off is a list of objects"], True
     if tree.get("waived") is not None and not (isinstance(tree["waived"], list)
                                                and all(isinstance(w, dict) for w in tree["waived"])):
-        return errs + ["waived is a list of objects"]
+        return errs + ["waived is a list of objects"], True
     adv = tree.get("advisory")
     if adv is not None and not (isinstance(adv, list) and all(txt(a) for a in adv)):
         errs.append("advisory is a list of non-blank lines")
@@ -379,7 +413,7 @@ def shape_errors(tree, root_ids, floor, floor_hash):
     if ex is not None and not (isinstance(ex, dict) and txt(ex.get("words")) and txt(ex.get("ref"))):
         errs.append("exam_waived needs his words and a ref (a Conductor per-ruling event is a valid ref)")
     if not all(isinstance(w.get("id"), str) for w in lst(tree.get("waived"))):
-        return errs + ["a waiver id is text"]
+        return errs + ["a waiver id is text"], True
     seen_w = set()
     for w in lst(tree.get("waived")):
         if not all(txt(w.get(k)) for k in ("id", "scope", "date", "ref")):
@@ -397,6 +431,17 @@ def shape_errors(tree, root_ids, floor, floor_hash):
             errs.append("waiver %s: a stand_in line in a real tree" % w.get("id"))
     if "dry_walk" in tree and not dry:
         errs.append("dry_walk is true or absent")
+    return errs, False
+
+
+def waiver_ids(tree):
+    return {w.get("id") for w in lst(tree.get("waived")) if isinstance(w, dict)}
+
+
+def old_leaf_shape_errors(tree, root_ids, floor):
+    errs = []
+    kind = tree.get("kind")
+    seen_w = waiver_ids(tree)
     leaves = tree.get("leaves")
     if not isinstance(leaves, list) or not leaves:
         return errs + ["no leaves"]
@@ -431,6 +476,124 @@ def shape_errors(tree, root_ids, floor, floor_hash):
     for x in leaves:
         if x.get("leaf_kind") == "instrument" and not any(y.get("needs_instrument") == x.get("id") for y in leaves):
             errs.append("orphan instrument leaf: nothing depends on %s" % x.get("id"))
+    return errs
+
+
+def six_part(tree):
+    """True when the tree's leaves are six-part bars: any leaf carries `says` (a mixed tree is then refused whole)."""
+    return isinstance(tree, dict) and any(isinstance(x, dict) and "says" in x for x in lst(tree.get("leaves")))
+
+
+def model_headings(d):
+    """The `## ` headings of the concept's models.md (or the cleanse proposal's, which an applied tree keeps beside
+    it): the models an `unknown` meeting may name. None when neither file is there."""
+    for rel in ("models.md", os.path.join("cleanse", "models.md")):
+        p = os.path.join(d, rel) if d else None
+        if p and os.path.isfile(p):
+            import designer_cleanse as DC      # lazy: the cleanse module is heavy, and only a six-part tree needs it
+            with open(p, encoding="utf-8", errors="replace") as f:
+                return DC._headings(f.read())
+    return None
+
+
+def six_part_errors(tree, root_ids, d=None):
+    """The six-part bar as the door into the build reads it. Every refusal starts with DEF and names the bar and the
+    part. The part checks are designer_cleanse's (_bar_parts, bar_number, _bars_shape, _meetings), so a bar that the
+    cleanse check refuses is refused here, and the Write stage and the cleanse pass are judged by one definition."""
+    import designer_cleanse as DC
+    errs = []
+
+    def refuse(_rule, where, what, would_pass):
+        errs.append("%s%s: %s (passes when: %s)" % (DEF, where, what, would_pass))
+
+    leaves = tree.get("leaves")
+    if not isinstance(leaves, list) or not leaves or not all(isinstance(x, dict) for x in leaves):
+        return [DEF + "leaves is a non-empty list of six-part bars"]
+    for x in leaves:
+        if "says" not in x:
+            errs.append("%sleaf %s is not a six-part bar (no `says`): a tree holds six-part bars only; write it with "
+                        "says, meant, accept, reject, lazy, range, sees, touches and live_only"
+                        % (DEF, x.get("id", "?")))
+    bars = [x for x in leaves if "says" in x]
+    ids = [x.get("id") if isinstance(x.get("id"), str) else None for x in bars]     # a non-text id is refused below
+    for x in bars:
+        lid = x.get("id")
+        if not (isinstance(lid, str) and BAR_ID.fullmatch(lid)):      # what a sheet tag `[leaf:<id>]` can name
+            errs.append("%sbar id %r is not a letter then letters, digits or _" % (DEF, lid))
+    for i in sorted({i for i in ids if isinstance(i, str) and ids.count(i) > 1}):
+        errs.append("%sbar id twice: %s" % (DEF, i))
+    seen_w = waiver_ids(tree)
+    doc = {"bars": bars, "checks": tree.get("checks"), "rules": tree.get("rules"), "meetings": tree.get("meetings"),
+           "old_bars": {}}
+    DC._bars_shape(doc, refuse)
+    for b in bars:
+        where = "bar %s" % (b.get("id") or "no id")
+        DC._bar_parts(b, where, refuse)
+        texts = [("says", b.get("says"))] + [("accept", t) for t in DC._strs(b.get("accept"))] + \
+                [("reject", t) for t in DC._strs(b.get("reject"))] + \
+                [("figurative accept", f.get("accept")) for f in DC._dicts(DC._dict(b.get("meant")).get("figurative"))]
+        for part, text in texts:
+            hit = DC.bar_number(text if isinstance(text, str) else "")
+            if hit:
+                refuse("bar_number", "%s %s" % (where, part), "%r pins a number, a count or every field (%r)"
+                       % (str(text)[:80], hit), "the comparison a player sees instead; numbers go in range or sees, "
+                                               "or a check")
+        if not isinstance(b.get("whole", False), bool):
+            errs.append("%s%s: whole is %r, not true or false (the tree's `whole` names the whole bar)"
+                        % (DEF, where, b.get("whole")))
+        if isinstance(b.get("id"), str) and b["id"] in seen_w:
+            errs.append("%s%s shares an id with a waiver: a waived line gets no bar" % (DEF, where))
+        # what the player is promised, never what range leaves out ("no worldgen") or what sees forbids: a bar's
+        # flight reading is its `sees`, read by the whole-mod check (a flyer word in sees is how the rule is obeyed)
+        if re.search(r"\b(worldgen|world generation|world gen)\b",
+                     " ".join([txt(b.get("says"))] + DC._strs(b.get("accept"))), re.I):
+            errs.append("%s%s needs worldgen: refused by standing ruling" % (DEF, where))
+    wholes = {w for w in [tree.get("whole")] if txt(w)} | {i for i, b in zip(ids, bars) if b.get("whole") is True and i}
+    if len(wholes) != 1 or not wholes <= set(ids):
+        refuse("whole", "whole", "%d whole bars (%s)%s" % (len(wholes), sorted(map(str, wholes)),
+               "" if wholes <= set(ids) else ", not all of them bars"),
+               "exactly one whole bar: the tree's `whole` names one bar id")
+    else:
+        wb = next(b for i, b in zip(ids, bars) if i in wholes)
+        # what the whole bar promises and runs: says, its pictures, what varies and how it starts; never the reset
+        # step (housekeeping) or what range leaves out
+        rng, sees = DC._dict(wb.get("range")), DC._dict(wb.get("sees"))
+        text = " ".join([txt(wb.get("says")), txt(rng.get("varies")), txt(sees.get("start")), txt(sees.get("on"))]
+                        + DC._strs(wb.get("accept")))
+        for name, rx in SIX_WHOLE_NEEDS.items():
+            if not re.search(rx, text, re.I):
+                refuse("whole", "whole bar %s" % wb.get("id"), "it lacks the %s" % name,
+                       "the whole bar runs the mod complete, every mechanic on, with a mid-way reload and a second "
+                       "order of the main actions")
+    models = model_headings(d)
+    DC._meetings(doc, bars, models or [], refuse, {})
+    return errs
+
+
+def six_sheet_errors(sheet, tree):
+    """The sheet of a six-part tree: every bar on one `## does` line (`- [leaf:<id>] ...`), every such line a bar,
+    and no `[core]` line open anywhere (fails shut: the definition text below is his reading, not checked prose)."""
+    errs = []
+    bars = {x.get("id") for x in lst(tree.get("leaves")) if isinstance(x, dict) and isinstance(x.get("id"), str)}
+    named = set()
+    for line in sheet.get("does", []):
+        m = TAG.match(line)
+        if not m or m.group(1) != "leaf":
+            if re.match(BULLET, line):
+                errs.append("%ssheet: `does` line maps to no bar: %s" % (DEF, line.strip()[:80]))
+            continue
+        if m.group(2) not in bars:
+            errs.append("%ssheet: `does` line names no such bar: %s" % (DEF, m.group(2)))
+        elif not txt(m.group(3)):
+            errs.append("%ssheet: `does` line says nothing after its tag: %s" % (DEF, m.group(2)))
+        else:
+            named.add(m.group(2))
+    for b in sorted(bars - named):
+        errs.append("%ssheet: bar %s is on no `## does` line" % (DEF, b))
+    for lines in sheet.values():
+        for line in lines:
+            if CORE.search(visible(line)):
+                errs.append("%ssheet: a [core] line is still open: %s" % (DEF, line.strip()[:80]))
     return errs
 
 
@@ -504,10 +667,10 @@ def lint(d, repo=REPO, floor_file=None):
                     first = f.readline()
             except (OSError, ValueError) as e:
                 return errs + ["sheet.md cannot be read: %s" % e], flags(floor)
-            errs += sheet_errors(sheet, tree, floor)
+            errs += six_sheet_errors(sheet, tree) if six_part(tree) else sheet_errors(sheet, tree, floor)
             if tree.get("dry_walk") is True and "DRY WALK" not in first:
                 errs.append("a dry walk's sheet starts with a DRY WALK line")
-    errs += shape_errors(tree, root_ids_for(repo, tree, sheet), floor, fh)
+    errs += shape_errors(tree, root_ids_for(repo, tree, sheet), floor, fh, d)
     if tree.get("kind") == "mod" and tree.get("dry_walk") is not True:
         # RIMMANDRAKE_LINT_STALE_ROOT_HASH_BEFORE_THE_JUDGE_SIGNS: a walk re-validated after `write` leaves the tree
         # citing the old hash; only the gate used to see it, after the exam and the coverage judge had passed it
@@ -1134,7 +1297,8 @@ def build(draft, repo=REPO, dry=False):
     if not isinstance(draft, dict):
         raise ValueError("draft: not a JSON object")
     canon(draft).encode("utf-8")     # a lone surrogate raises here, before any file is touched
-    bad = sorted(set(draft) - DRAFT_KEYS)
+    six = six_part(draft)
+    bad = sorted(set(draft) - (DRAFT_KEYS | SIX_DRAFT if six else DRAFT_KEYS))
     if bad:
         raise ValueError("draft: unknown keys %s" % ", ".join(bad))
     floor, fh = load_floor()
@@ -1150,6 +1314,14 @@ def build(draft, repo=REPO, dry=False):
     raw = draft.get("leaves")
     if not isinstance(raw, list):     # shape_errors says "no leaves"
         return tree
+    if six:
+        # a six-part tree: the bars as written, each with the copy of `says` that the exam reads, and the parts that
+        # sit beside the bars (shape_errors judges them all by the six-part bar)
+        for k in sorted(SIX_DRAFT):
+            if k in draft:
+                tree[k] = draft[k]
+        tree["leaves"] = [dict(x, experience=x.get("says")) if isinstance(x, dict) else x for x in raw]
+        return tree
     for x in raw:
         if not isinstance(x, dict):   # carried as is: shape_errors says "a leaf is not an object"
             tree["leaves"].append(x)
@@ -1164,13 +1336,22 @@ def build(draft, repo=REPO, dry=False):
     return tree
 
 
-def write(d, draft, repo=REPO, dry=False):
-    """-> errors. Nothing is written while the shape is wrong; a rewrite always voids the signature."""
+def write(d, draft, repo=REPO, dry=False, legacy=False):
+    """-> errors. Nothing is written while the shape is wrong; a rewrite always voids the signature. A mod's draft is
+    written in six-part bars; `legacy` writes a tree of the old kind, for a fixture of a locked tree only (the CLI has
+    no such flag: a new design is never of the old kind)."""
     sp = os.path.join(d, "sheet.md")
     sheet = parse_sheet(sp) if os.path.isfile(sp) else None
     tree = build(draft, repo, dry)
     floor, fh = load_floor()
-    errs = shape_errors(tree, root_ids_for(repo, tree, sheet), floor, fh)
+    errs = shape_errors(tree, root_ids_for(repo, tree, sheet), floor, fh, d)
+    if not (dry or legacy) and tree.get("kind") == "mod" and not six_part(tree):
+        # his words of 2026-11-17 (RIMMANDRAKE_TOUGHEN_DESIGNER_ENTRY_GATE_VAGUE_BUILDS_CHOKED): "much tougher about
+        # how well defined an item needs to be before it's allowed into the build step"
+        return [DEF + "a mod's design is written with six-part bars: each leaf carries says, meant {intent, source, "
+                "figurative}, accept, reject, lazy, range {varies, left_out}, sees {instrument, start, on, control, "
+                "reset}, touches and live_only, beside one whole bar, checks, rules and meetings "
+                "(roles/designer_write.md §The tree: six-part bars); this draft's leaves are of the old kind"] + errs
     if errs:
         return errs
     os.makedirs(d, exist_ok=True)

@@ -46,7 +46,8 @@ of this in `tree.json`.
   Nobody judges that line.
 - If the mod's script lacks a part (a start assertion, a control), the stage 0 audit lists the part. Stage 3 files the
   build item. You write no code.
-- Each experience or walk leaf off the offline tier has at least one acceptance scene. A showcase never stands in for
+- Each live-only bar (`live_only: true`), and each experience or walk leaf of an old tree off the offline tier,
+  has at least one acceptance scene. A showcase never stands in for
   that scene.
 
 The intent behind a scene is the approved requirement that the scene cites (`requirement`), or the `question` of an

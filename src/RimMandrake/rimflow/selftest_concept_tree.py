@@ -247,7 +247,7 @@ def main():
     try:
         repo, d = stage(tmp)
         validate_walk(repo)
-        errs = CT.write(d, draft(), repo)
+        errs = CT.write(d, draft(), repo, legacy=True)
         check("positive: write", not errs, errs)
         errs, fl = CT.lint(d, repo)
         check("positive: lint passes", not errs, errs)
@@ -353,7 +353,7 @@ def main():
         check("gate restored", CT.gate(d, repo)[0] == [])
 
         # a rewrite voids the signature
-        CT.write(d, draft(), repo)
+        CT.write(d, draft(), repo, legacy=True)
         check("write voids the signature", CT.load(d).get("coverage") is None)
 
         # the negative table: each one a broken good tree, refused for its own reason
@@ -622,6 +622,11 @@ def main():
         bad["leaves"][0]["red"] = ""
         check("write refuses a bad shape", CT.write(d, bad, repo) != [])
         check("and writes nothing", open(os.path.join(d, "tree.json"), encoding="utf-8").read() == before)
+        # a new mod design is written in six-part bars: a good draft of the old kind is refused without `legacy`
+        errs = CT.write(d, draft(), repo)
+        check("write refuses an old-kind mod draft, naming the six-part bar",
+              any(e.startswith(CT.DEF) and "six-part" in e for e in errs), errs)
+        check("and writes nothing (old kind)", open(os.path.join(d, "tree.json"), encoding="utf-8").read() == before)
 
         bad = draft()
         bad["leaves"].append("not a leaf")

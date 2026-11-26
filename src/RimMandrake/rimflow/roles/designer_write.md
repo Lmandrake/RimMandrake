@@ -9,66 +9,81 @@ check` accepts the scenes, the showcase set and the floor.
 
 ## The sheet
 
-`sheet.md` is what he reads: a short owner-facing view with compact source ids (`OWNER:<tsn>`, a leaf id). The complete
-evidence lives in `record.json` and the tree. Use these sections, in this order and with these names:
+`sheet.md` is what he reads: a short owner-facing view with compact source ids (`OWNER:<tsn>`, a bar id). The complete
+evidence lives in `record.json` and the tree. Write it as plain bullets under the `# ` title:
 
 ```
 ## his words     verbatim, with the date
-## does          - [leaf:<id>] ... | - [floor:<line>] ... | - [waived:<wN>] ... | - [advisory] ...
-## does not      - [leaf:<id>] ... (the leaf has cannot_show) | - [floor:<line>] ... | - [waived:<wN>] ...
-## waived        his words, one line each
-## open          - [core] ... blocks the gate; plain lines do not
-## delegated     what you chose for him
-## pruning       - <leaf id>: the citation that answers the pruning question
-## later         optional: what he put off to v2
+## does          - [leaf:<bar id>] the bar's says, one line per bar
+## later         optional: what he put off to the next version
 ```
 
-The sheet is plain bullets under the `# ` title and these sections. `lint` refuses anything else, such as a fence, a
-`---`/`===` line, HTML, an `&entity;` or a link. The refusal names the line. A dry walk's sheet adds `## root`. `lint`
-accepts `## root` only in a dry walk's sheet.
+Every bar is on one `## does` line, and every `## does` line names a bar. A `[core]` line anywhere blocks the gate.
+Other sections (the definition, the costs, the edges) are his reading. `lint` does not check their prose.
 
-## The tree
+## The tree: six-part bars
+
+His words (2026-11-17): *"I think we need to be much tougher about how well defined an item needs to be before it's
+allowed into the build step. Designer isn't being harsh enough in terms of imprecision and completeness."* The door into
+the build reads one definition of a bar: the six-part bar (`design/specs/2026-11-16-designer-cleanse-and-bar-definition.md`
+§3, and `designer_cleanse.md`). `concept_tree.py write` refuses a mod draft with leaves of the old kind
+(`experience`, `false_pass`, `red`). `lint` judges each bar part by part, with the same checks as the cleanse pass.
 
 Write draft JSON, then run `python3 src/RimMandrake/rimflow/concept_tree.py write design/concepts/<Mod> --draft <file>`.
-The draft holds `subject, kind, root_ref, floor_off, exam_waived, waived, advisory, leaves`. The writer stamps the rest,
-voids any signature, and refuses the fields `oracle`, `tier`, `guard` and `budget`. (The launcher owns `budget`. You
-propose only the oracle and the tier.) Then run `lint <dir>`.
+The draft holds `subject, kind, root_ref, floor_off, exam_waived, waived, advisory, leaves, whole, checks, rules,
+meetings` (and `capabilities` when you keep an inventory). The writer stamps the rest and voids any signature. Then run
+`lint <dir>`. Each refusal starts `definition:` and names the bar, the part and what passes.
 
-- `experience`: what an observer sees, in plain words, with the observer named. A constraint is
-  `<limit> <unit> on <test machine>`.
-  - The leaf says who is looking, at what zoom, in which state and across which variants (a finite, grouped set).
-  - The leaf also says what it reads as and what it must not read as. Write at most one "must not read as" line per
-    promise.
-  - Some "must not read as" lines are neither his words nor the plain opposite of the promise. Such a line is a tip
-    for the judge. Such a tip never needs its own test.
-- Write a mechanic in a leaf as the conditions it reads: "the mat dies in Direct Sun", not "on Rot maps only"
-  (`GUIDING_PRINCIPLES.md` entry 1). A mechanic left unloaded outside its parent biome for load says so, with its
-  reason. In-game leaves run on the home biome. No leaf is owed off the home biome.
-- `false_pass`: a named wrong world, the worker's cheapest way to fake this leaf.
-- `red`: the broken version of the mod this leaf catches, in plain words (hose: "water stops after the first cell").
-  If you cannot name one, the leaf is decoration: cut it.
-- 🔴 **A leaf is an experience a player would notice, never a tuning number** (owner, 2026-11-16).
-  - No leaf, oracle, scene expect or `would_pass` pins a tuning number. Tuning numbers are yield rates, stat values,
-    MarketValues, speeds, sizes and any number a renormalization changes.
-  - No leaf, oracle, scene expect or `would_pass` pins an asset-variant count, or "every field of every row" of a def.
-  - A bar that must re-pass after a renormalization or a new art variant is not a bar. Say the experience instead ("nothing
-  in this biome feeds a forager", "the Doublemaw outruns a colonist"). The mod's selftest owns a def's declared numbers.
-  A judge's gap on one is advisory only (`bar_rule.py`). His words: `design/RimMandrake/standing_rulings.md` §A passing
-  bar is an experience.
-- `oracle_proposed` and `tier_proposed`: your offer. Every tier but `offline` needs `tier_reason`:
-  `concept_tree.py lint` asks for a `tier_reason` on every tier except `offline`. Skills
-  `rimworld-debug-testing` and `live-debugging-proof-harness` say what a quicktest, a bridge read or a live proof can show.
-- One `walk` leaf per mod: reload a mid-way save, repeat the core action, and reorder the main actions.
-  A walk leaf lists what the observer does, not only what they see. A walk leaf asks for no weeks and no season of play
-  (`design/RimMandrake/standing_rulings.md` §Season-long play is play testing).
-- When the mod needs a measurement that no instrument can make yet, write an `instrument` leaf. Other leaves depend on
-  the instrument leaf through `needs_instrument`.
-- The tree has no field for a leaf's origin, and `lint` refuses unknown leaf fields. The sheet line carries the origin.
-- The floor is inherited by hash, never copied. State only where this mod differs (`floor_off`, with his words).
+Three kinds of statement, never mixed:
 
-To turn what he says on looking into a line, use `designer_examples.md` (the quotation table). "Looks ridiculous" alone
-is not a leaf. Write your candidate line and a reject picture, and let him correct them. Keep the scope that he gave his
-remark.
+- a **bar** (a leaf): an experience a player would notice, without which he would reject this version. Only bars decide
+  a pass, and no bar holds a number;
+- a **check** (`checks`: `{id, what}`): a regression reading that we keep. It may hold a number;
+- a **rule** (`rules`: `{id, rule, touches}`): a choice we made about how to build it. A builder may attack it.
+
+Each bar has these parts. `lint` refuses a bar that lacks one:
+
+- `id`: a letter, then letters, digits or `_`. The sheet names it as `[leaf:<id>]`.
+- `says`: one sentence: who notices what, where. Write a mechanic as the conditions it reads ("the mat dies in Direct
+  Sun", not "on Rot maps only"; `GUIDING_PRINCIPLES.md` entry 1).
+- `meant`: `{intent, source, figurative}`. `source` is his words by event, a standing ruling, or `delegated: from
+  what`. `figurative` lists each word not to be held literally: `{word, stands_for, accept}` (`[]` when no word is
+  figurative). "A line of fire" held literally is the fault that this part prevents.
+- `accept` and `reject`: two or more pictures each. One accept picture departs from the literal wording. One reject
+  picture satisfies the literal wording.
+- `lazy`: the laziest build that satisfies the words, word for word one of the reject pictures; or `none: <why the
+  words are tight>`.
+- `range`: `{varies, left_out}`: the situations it holds across, and what is left out.
+- `sees`: `{instrument, start, on, control, reset}`: the cheapest instrument that truly tells pass from fail, what must
+  be switched on for its reading to count, and a control against the cheapest other explanation. A live-only bar
+  (`live_only: true`) adds `live_only_why`: why nothing cheaper can see it.
+- `touches`: every state, geometry or moment it shares with other bars and rules.
+- `live_only`: `true` or `false`.
+
+Beside the bars:
+
+- `whole` names the one whole bar: the mod complete, every mechanic on, nothing locked, across its cycle, with a
+  mid-way reload and a second order of the main actions. `lint` refuses a whole bar that does not say both.
+- `meetings`: one per thing that two or more bars or rules touch, `{thing, members, holds_together, why}`.
+  `holds_together` is `argued` (say it), `measured` (cite it) or `unknown` (name the `## ` heading of `models.md`
+  that would settle it).
+
+🔴 **A bar is an experience a player would notice, never a tuning number** (owner, 2026-11-16).
+- No `says`, `accept`, `reject` or figurative `accept` pins a number, a percentage, a count of asset variants or
+  "every field". Numbers go in `range` or `sees`, or in a check. `lint` refuses the number and names it.
+- A bar that must re-pass after a renormalization or a new art variant is not a bar. Say the experience instead
+  ("nothing in this biome feeds a forager", "the Doublemaw outruns a colonist"). His words: `design/RimMandrake/
+  standing_rulings.md` §A passing bar is an experience.
+- In-game bars run on the home biome. No bar is owed off the home biome. A bar that needs worldgen is refused.
+- A flyer's flight is read from `Pawn_FlightTracker` state, never live-tested without him (`sees` says so).
+
+To turn what he says on looking into a bar, use `designer_examples.md` (the quotation table). "Looks ridiculous" alone
+is not a bar. Write your candidate `says` and a reject picture, and let him correct them. Keep the scope that he gave
+his remark. The floor is inherited by hash, never copied. State only where this mod differs (`floor_off`, with his
+words).
+
+A locked tree of the old kind (`experience`, `false_pass`, `red` leaves) still lints as before. Its next version is
+written in six-part bars.
 
 ## floor.json: per-line applicability
 
@@ -98,7 +113,7 @@ remark.
 
 ## plan.md
 
-`plan.md` holds structure, reuse, order (instrument leaves first), risks, and three designs if there is a real choice.
+`plan.md` holds structure, reuse, order (the instruments that `sees` and `models.md` name first), risks, and three designs if there is a real choice.
 The proof obligations of `plan.md` are not disposable. Every scene lives in `scenes.json` (checked). Every missing script entry point
 or control step is a filed build item, named in that scene's `entry_point_item`. A missing restoration step is never a
 build item, because a reset is the harness's job (`designer_scene_contract.md`, "Reset is housekeeping"). You write no code.
@@ -113,7 +128,7 @@ set"). Showcase 1 is his flagship. Each next showcase is the greedy pick: the sc
 capabilities, with only very different functionality. Stop when every built or in-scope inventory capability is covered.
 Covered means a showcase exercises the capability, or `coverage_rest` names its cheaper scene or leaf check. Run
 `designer_stage.py showcases <dir>` before `done`.
-Interaction checks and the `walk` leaf stay. Orthogonality (the rule of very different functionality) chooses showcases
+Interaction checks and the whole bar stay. Orthogonality (the rule of very different functionality) chooses showcases
 and deletes nothing.
 
 Authority: a Conductor instruction carries his authority (`--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`), never his quotation; the rules are in `designer.md`.

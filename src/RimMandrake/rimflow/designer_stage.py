@@ -1151,6 +1151,8 @@ def scene_errors(sc, tree=None, repo=REPO):
                     and x.get("id") not in own:
                 errs.append("leaf %s: a %s leaf off the offline tier has no acceptance scene" % (
                     x.get("id"), x.get("leaf_kind")))
+            elif "says" in x and x.get("live_only") is True and x.get("id") not in own:    # a six-part bar
+                errs.append("bar %s: a live-only bar has no acceptance scene" % x.get("id"))
     return errs
 
 

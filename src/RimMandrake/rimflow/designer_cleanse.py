@@ -2316,6 +2316,18 @@ def apply_plan(repo, mod):
     whole = bdoc.get("whole") if not _blank(bdoc.get("whole")) else next(b["id"] for b in bars if b.get("whole") is True)
     tree = {k: old_tree[k] for k in ("schema_version", "authored_by", "root_ref", "root_state", "root_hash", "floor",
                                      "exam_waived", "waived", "advisory") if old_tree and k in old_tree}
+    # the stamps the door into the build reads (concept_tree.lint), as `concept_tree.py write` makes them: an applied
+    # tree is a new tree, so it pins the current floor and keeps only the old tree's turned-off lines
+    # (RIMMANDRAKE_TOUGHEN_DESIGNER_ENTRY_GATE_VAGUE_BUILDS_CHOKED)
+    import concept_tree as CT
+    _floor, fh = CT.load_floor()
+    off = (tree.get("floor") or {}).get("off") if isinstance(tree.get("floor"), dict) else None
+    # one key order whatever the old tree held, so a re-plan of the applied tree plans the same bytes
+    tree = {"schema_version": CT.SCHEMA, "authored_by": tree.get("authored_by") or "concept",
+            "root_ref": tree.get("root_ref"), "root_state": tree.get("root_state") or "none",
+            "root_hash": tree.get("root_hash"), "floor": {"ref": CT.FLOOR_FILE, "hash": fh, "off": off or []},
+            "exam_waived": tree.get("exam_waived"), "waived": tree.get("waived") or [],
+            "advisory": tree.get("advisory") or []}
     tree.update(subject=mod, kind="mod", coverage=None, design_version="0.1.0", signature=result.get("signature"),
                 whole=whole, capabilities=kept, leaves=[dict(b, experience=b.get("says")) for b in bars],
                 checks=_dicts(bdoc.get("checks")), rules=_dicts(bdoc.get("rules")),
