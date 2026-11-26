@@ -70,7 +70,7 @@ named = [t for fx in (TP.E12_FIX, c4) for m in re.findall(r"tier: (<[^>]*>|[a-z_
          if " " not in m for t in m.strip("<>").split("|")]        # a `<a tier from ...>` placeholder names none
 check(all(t == "full" or real.get(t) is not None for t in named), "a repair proposes only real tiers (%s)" % ", ".join(named))
 
-# the doors in shadow (ticket 3): never raise, record every attempt, refuse nothing
+# the doors (ticket 3 shadow): never raise, record every attempt
 import io  # noqa: E402
 import json  # noqa: E402
 import contextlib  # noqa: E402
@@ -83,7 +83,10 @@ txt = sh.finish()
 ln = json.loads(open(SRUNS).read().splitlines()[-1])
 check(ln["door"] == "claim" and ln["run_id"] == f["preflight_run"] and {"E1", "E12"} <= {c["id"] for c in ln["checks"]},
       "shadow: one line per run, door and run id as on the event, gates and new checks both")
-check("E1" in txt and "refuses nothing" in txt and f["preflight"].startswith("fail"), "shadow: the FAILs print, verdict on the event")
+check("E1" in txt and "pickup stops a wrong declared fact" in txt and f["preflight"].startswith("fail"),
+      "shadow: the FAILs print, the door's mode is said, verdict on the event")
+
+# ticket 4 (the stop at claim and start) is tested in selftest_preflight_enforce.py
 os.environ["RIMFLOW_PREFLIGHT_BREAK"] = "1"
 sb = TP.Shadow("start", "X", runs_path=SRUNS).run()
 del os.environ["RIMFLOW_PREFLIGHT_BREAK"]

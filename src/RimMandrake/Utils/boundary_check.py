@@ -159,6 +159,8 @@ PAGES = {
     "design/specs/2026-11-19-conductor-acts/boundary.md": "src/RimMandrake/rimflow/selftest_conductor_acts.py",
     "design/specs/2026-11-21-never-refuse-the-conductor/boundary.md":
         "src/RimMandrake/rimflow/selftest_never_refuse_conductor.py",
+    "design/specs/2026-11-26-preflight-stops-at-pickup/boundary.md":
+        "src/RimMandrake/rimflow/selftest_preflight_enforce.py",
     "design/specs/2026-11-19-pushover-critical-alerts/boundary.md": "src/RimMandrake/Utils/selftest_pager.py",
     "design/specs/2026-11-19-pushover-critical-alerts/triggers_boundary.md":
         "src/RimMandrake/Utils/selftest_pager_triggers.py",

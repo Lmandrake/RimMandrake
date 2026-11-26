@@ -1,10 +1,11 @@
 > HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
 
-# Ticket preflight: check everything Python can, before any token is spent (spec, nothing built)
+# Ticket preflight: check everything Python can, before any token is spent
 
 Date 2026-11-12. Item `RIMMANDRAKE_PREFLIGHT_TICKETS_BEFORE_ANY_TOKEN_IS_SPENT`.
-Nothing here is built. The owner answered the six design questions by card on 2026-11-13 (section 9); this text states
-the decided design. The first three build tickets of section 7 are filed; the rest are proposed.
+The owner answered the six design questions by card on 2026-11-13 (section 9); this text states the decided design.
+Built: tickets 1 to 4 of section 7 and the timing report of ticket 10. The stop at claim and start has its own page,
+`design/specs/2026-11-26-preflight-stops-at-pickup/boundary.md`. Section 7 gives the state of each ticket.
 Evidence (scripts, raw counts, the three GPT rounds): `D:\ClaudeWork\rimmandrake\conductor\ticket_preflight_20261112\`.
 Every number is tagged `[measured]` (a script in that folder produced it on 2026-11-12) or `[guess ~N%]` (my confidence).
 
@@ -543,6 +544,11 @@ them. That decides the design. The prototype is not the catalogue: ticket 1 meas
 
 ### 5.2 The budget
 
+Changed 2026-11-26: the hard stops of this table are now hang guards, not speed bars (root `CLAUDE.md` §No limit
+without the danger it guards). The child's deadline is 10 s at every door, and the sweep's stop is 40 s. Each is at
+least 10 times its longest measured run (0.9 s at a claim; 3.7 s for a sweep). The p95 targets stay, as what
+`rimflow preflight --timing` compares the added time against.
+
 | Trigger | Added time, p95 target | Hard stop | What is allowed |
 |---|---|---|---|
 | CREATE (`file`, an edit of the ticket) | **1.0 s** | 3 s | classes a, b, c. No game probe, no subprocess except one batched git call |
@@ -657,7 +663,17 @@ adapter on purpose and requires the other doors to keep working.
 - **Left alone:** the three pre-cold-load preflights, `validate_patch.py`, the hooks. They answer other questions.
 - **Not brought back:** hand-written manifests against fixtures.
 
-## 7. Build tickets (1 to 3 filed 2026-11-13; 4 to 12 proposed)
+## 7. Build tickets
+
+State on 2026-11-26: tickets 1 to 3 are built (f790c5fc1f, f246550fca, 2bd83d48ac). Ticket 4 is built: `claim` and
+`start` stop a launched run on a FAIL of a declared check; the Conductor and the owner pass with a NOTE; filing and the
+helper launch stop nothing (the launch has no agent present to repair the ticket, so the run's own claim or start is
+the stop). Not built from ticket 4: the `queue`/`next` fix line, the verdict cache and the first-refusal ledger note.
+The stop itself carries the fix to the agent about 0.1 s later, and the timing file records every refusal. Ticket 10:
+`rimflow preflight --timing` is built; the drift alarm and the Agent-spawn hook are not. Ticket 11 is dead, because
+Relentless is retired. Tickets 5 to 9 and 12 are the NEXT and CANDIDATE shelves of section 2.3. Each is built only when
+the timing lines at the doors show that its class costs tokens. In the 156 door runs of 2026-11-24 to 26, no new
+check failed except E12.
 
 Ordered to **measure before enforcing**, then by tokens saved soonest. Each is small. **Every ticket's proof has the same
 core: for each check it adds, one planted bad ticket the check must catch and one good ticket it must pass, in

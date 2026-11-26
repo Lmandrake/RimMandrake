@@ -1499,8 +1499,15 @@ def _describe(ev):
 
 
 def cmd_preflight(args, seat):
-    """Read-only, report-only: the ticket preflight spine over one item's declared facts. Always exits 0."""
+    """Read-only, report-only: the ticket preflight over one item's declared facts, or `--timing`, the recorded run time
+    per door. Always exits 0 (the stop is at claim and start, never here)."""
     import ticket_preflight
+    if args.timing:
+        t = ticket_preflight.timing(last=args.last)
+        print(json.dumps(t, indent=1) if args.json else ticket_preflight.render_timing(t))
+        return
+    if not args.id and not (args.build_index or args.sweep):
+        die("rimflow preflight: name an item id, or pass --timing, --sweep or --build-index")
     if args.build_index:
         print("installed-mod scan cached: %d mods" % ticket_preflight.build_installed())
         return
@@ -1943,14 +1950,18 @@ class _NoShadow(object):
     def fields(self):
         return {}
 
+    def enforce(self, seat=None, env=None):
+        return None
+
     def finish(self):
         return "preflight did not run (%s); the door carries on" % self.why
 
 
 def _preflight(door, iid, seat):
-    """The door's ticket preflight IN SHADOW (RIMMANDRAKE_BACKTEST_PREFLIGHT_OVER_REAL_PAST_TICKETS, spec
-    design/specs/2026-11-12-ticket-preflight-before-any-token.md section 7 ticket 3): it prints and records, and refuses
-    nothing; existing gates are observed through `.gate`, their authority unchanged. Enforcement is ticket 4."""
+    """The door's ticket preflight (spec design/specs/2026-11-12-ticket-preflight-before-any-token.md section 7 tickets 3
+    and 4): it prints and records at every door; at claim and start `.enforce` stops a launched run on a failed declared
+    fact (the Conductor and the owner pass with a NOTE); existing gates are observed through `.gate`, their authority
+    unchanged. A preflight that cannot load or run never shuts a door."""
     try:
         import ticket_preflight
         return ticket_preflight.Shadow(door, iid, seat)
@@ -2381,12 +2392,14 @@ def cmd_claim(args, seat):
 
 def _pickup_gates(pf, w, it, seat, now):
     """The existing gates a pickup door already applies, observed in place (spec 6.3): E1 thin item (a warning, owner
-    2026-08-21), G1 a live block (claimed anyway, said)."""
+    2026-08-21), G1 a live block (claimed anyway, said). Then the preflight's own stop (owner, by card 2026-11-13: pickup
+    stops a wrong declared fact), before the door writes anything."""
     pf.run(kind=(it.kind if it else None) or "task", needs=(it.needs if it else None) or "offline", items=_pf_items(w))
     pf.gate("E1", lambda: model._missing(it) if it is not None else ["the item is not in the ledger"],
             judge=_judge_list("missing ##"))
     pf.gate("G1", lambda: it is not None and it.blocked,
             judge=lambda b: ("FAIL", "blocked: " + priority.block_line(it)) if b else ("PASS", ""))
+    pf.enforce(seat)
 
 
 def _claim(args, seat, pf):
@@ -5064,11 +5077,13 @@ def build_parser():
     s.add_argument("id", nargs="?")
     s.add_argument("--host", choices=("auto",) + testpilot_route.HOSTS, default="auto")
 
-    s = add("preflight", "report-only ticket preflight: are the declared files, defs and tiers real? (never refuses)",
-            cmd_preflight)
+    s = add("preflight", "report-only ticket preflight: are the declared files, defs and tiers real? (never refuses here; "
+            "claim and start stop a launched run on a failed one)", cmd_preflight)
     s.add_argument("id", nargs="?")
     s.add_argument("--build-index", action="store_true", help="prepare the installed-mod scan (outside any door)")
-    s.add_argument("--sweep", action="store_true", help="every open ticket once, inside a 30 s hard stop, one timing line each")
+    s.add_argument("--sweep", action="store_true", help="every open ticket once, inside a 40 s hang guard, one timing line each")
+    s.add_argument("--timing", action="store_true", help="the recorded run time per door: count, p50, p95, max, refusals")
+    s.add_argument("--last", type=int, default=200, help="with --timing: the last N runs (0 = all)")
     s.add_argument("--json", action="store_true")
     s.add_argument("--trigger", choices=("create", "pickup"), default="pickup")
 

@@ -1,6 +1,8 @@
 {
  "_doc": "Places could_not_look_lint.py found when it was born (2026-11-19, RIMMANDRAKE_SHARE_PROBE_RESULT_TYPE_NINE_FILES_ROLL_OWN), keyed file::function::shape with a count. A count is a list of places to read, not a count of bugs. Fixed places leave slack: could_not_look_lint.py --prune. `reasons` holds, per key, one line per place in source order, classed by reading it (RIMMANDRAKE_LAUNCH_LINT_READS_AFTER_HE_RULES_PAGE_STRICTNESS): RARE (only a rare failure reaches it; the component's boundary page lists it as not handled, owner by card 2026-11-19) or NOT A COLLAPSE (why). A third class, UNREAD (\"unread by owner's card 2026-11-19: only files that failed before are read\", RIMMANDRAKE_READ_ONLY_FILES_THAT_FAILED_PILOT_FOUND_ZERO), marks a place allowed without a reading: only the files where a could-not-look collapse was seen were read.",
  "places": {
+  "src/RimMandrake/rimflow/ticket_preflight.py::_split_def::or-empty": 1,
+  "src/RimMandrake/rimflow/ticket_preflight.py::_read::except-returns-empty": 1,
   "src/RimMandrake/Utils/scene_world.py::RealWorld.stage_state::except-returns-empty": 1,
   "src/RimMandrake/Utils/waitalive.py::stat_of::except-returns-empty": 1,
   "src/RimMandrake/Utils/publish.py::PushLock._holder::except-returns-empty": 1,
@@ -302,6 +304,12 @@
   "src/RimMandrake/Utils/account_plan_sweep.py::_edf::or-empty": 1
  },
  "reasons": {
+  "src/RimMandrake/rimflow/ticket_preflight.py::_split_def::or-empty": [
+   "NOT A COLLAPSE: a `def:` line with no `Type/` part names a def of any type; None is the parse, not a failed read"
+  ],
+  "src/RimMandrake/rimflow/ticket_preflight.py::_read::except-returns-empty": [
+   "NOT A COLLAPSE: only FileNotFoundError returns \"\": a ticket with no prose or proof file declares nothing; any other read failure raises, and a door then says the preflight did not run and stops nothing (design/specs/2026-11-26-preflight-stops-at-pickup/boundary.md)"
+  ],
   "src/RimMandrake/rimflow/maturation.py::move_item::or-empty": [
    "NOT A COLLAPSE: None is 'no item known'; the move still carries `unit`, and road_back_hold reads the run record again and says could not look when it cannot (design/specs/2026-11-25-road-back-holds-stage-exit/boundary.md)"
   ],

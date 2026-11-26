@@ -1642,9 +1642,10 @@ def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.
     continuation's chain: left_open_continue.py). Refuses an unknown item, one not filed on origin/main, a bad model or seat, an empty brief, and
     (a by-card brief missing its card's words is completed by card_repair, never refused)
     a clone another run still holds (after waiting for one that is being given back).
-    The ticket preflight runs here IN SHADOW (RIMMANDRAKE_BACKTEST_PREFLIGHT_OVER_REAL_PAST_TICKETS): its new checks in
-    the run's clone once there is one, and this door's own checks observed in place; it refuses nothing, and its lines
-    end the text. Enforcement is ticket 4 (RIMMANDRAKE_ENFORCE_PREFLIGHT_AT_CLAIM_DECLARED_FACTS_ONLY)."""
+    The ticket preflight runs here and refuses nothing (RIMMANDRAKE_BACKTEST_PREFLIGHT_OVER_REAL_PAST_TICKETS): its new
+    checks in the run's clone once there is one, and this door's own checks observed in place; its lines end the text.
+    The stop is the run's own claim or start (design/specs/2026-11-26-preflight-stops-at-pickup/boundary.md): no agent
+    is here yet to repair the ticket."""
     try:
         import ticket_preflight
         pf = ticket_preflight.Shadow("helper_launch", item, seat,      # a test's fake runner records nothing real

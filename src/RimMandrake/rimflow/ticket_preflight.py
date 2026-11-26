@@ -7,7 +7,7 @@ since ticket 3 the doors (rimflow file / claim / start, detached_helper.launch) 
 UNMEASURED and `cut_off: true`. A door never builds an index: no cached def index reads UNMEASURED with the build command.
 
     run_text(text, proof_text="", *, item_id="ACCEPT", trigger="pickup", paths=None, defs=None, src=None,
-             tiers=None, deadline_s=5.0, runs_path=None, kind="task", needs="offline", items=None, repo=None) -> {"item", "trigger", "run_id", "total_ms", "cut_off",
+             tiers=None, deadline_s=DEADLINE_S, runs_path=None, kind="task", needs="offline", items=None, repo=None) -> {"item", "trigger", "run_id", "total_ms", "cut_off",
                                                               "checks": [{"id", "ref", "status", "ms", "evidence", "fix"}]}
 Every run appends one timing line to runs_path (else $RIMFLOW_PREFLIGHT_RUNS, else
 ~/.local/state/rimmandrake/preflight/runs.jsonl); the write is best effort.
@@ -49,6 +49,9 @@ E12_FIX = ("add to the ticket a `## refs` section with at least one confirmed li
            "tier: <a tier from python3 src/RimMandrake/Utils/modset_builder.py --list>\n"
            "or, when it names nothing checkable, one line `none: <why>`")
 BUILD_CMD = "python3 src/RimMandrake/Utils/defindex.py   # builds and caches the def index from the newest capture"
+# a hang guard, never a speed bar: the child is killed at it and every unfinished check reads UNMEASURED; the door opens
+DEADLINE_S = 10.0  # budget: danger=a dead mount or stuck git call holds a door open (spec 5.2); evidence=Windows mounts stall (instrument_traps.md); longest=0.9s (runs.jsonl claim max 862.7 ms, 2026-11-26)
+SWEEP_STOP_S = 40.0  # budget: danger=one stuck ticket holds the hand-run sweep of every open ticket; evidence=as DEADLINE_S; longest=3.7s (one measured run, 2026-11-26)
 DEFAULT_RUNS = os.path.join(os.path.expanduser("~"), ".local", "state", "rimmandrake", "preflight", "runs.jsonl")
 
 
@@ -131,8 +134,15 @@ def plan(decls, bad, live_tiers, live_mods, asks_full=False, owes_declared=False
     return out
 
 
+def _call_s():
+    """The one hang guard of a local command (Utils/time_budget.py). At a door the child's DEADLINE_S ends it first."""
+    sys.path.insert(0, UTILS)
+    import time_budget
+    return time_budget.CALL_S
+
+
 def _git_paths(repo=None):
-    r = subprocess.run(["git", "ls-files"], cwd=repo or REPO, capture_output=True, text=True, timeout=60)
+    r = subprocess.run(["git", "ls-files"], cwd=repo or REPO, capture_output=True, text=True, timeout=_call_s())
     if r.returncode != 0:
         raise OSError("git ls-files exited %d: %s" % (r.returncode, r.stderr.strip()))
     return r.stdout.splitlines()
@@ -247,7 +257,7 @@ def _ledger_items():
 
 
 def _git(repo, *args):
-    return subprocess.run(["git", "-C", repo] + list(args), capture_output=True, text=True, timeout=5)
+    return subprocess.run(["git", "-C", repo] + list(args), capture_output=True, text=True, timeout=_call_s())
 
 
 def _child(decls, bad, live_tiers, live_mods, paths, defs, src, tiers, ctx, emit):
@@ -607,7 +617,8 @@ def _append_run(runs_path, line):
 
 
 def run_text(text, proof_text="", *, item_id="ACCEPT", trigger="pickup", paths=None, defs=None, src=None,
-             tiers=None, deadline_s=5.0, runs_path=None, kind="task", needs="offline", items=None, repo=None, inline=False,
+             tiers=None, deadline_s=DEADLINE_S, runs_path=None,
+             kind="task", needs="offline", items=None, repo=None, inline=False,
              head=None, run_id=None, record=True):
     if os.environ.get("RIMFLOW_PREFLIGHT_BREAK") == "1":      # the test hook: the runner raises at entry
         raise RuntimeError("RIMFLOW_PREFLIGHT_BREAK=1 (test hook)")
@@ -647,9 +658,13 @@ def run_text(text, proof_text="", *, item_id="ACCEPT", trigger="pickup", paths=N
 
 
 def _read(path):
+    """-> the file's text; "" when it does not exist (no prose, no proof file: nothing declared). Any other failure to
+    read raises: a ticket that could not be read is not a ticket with no refs, and at claim or start the raise becomes
+    "preflight did not run", which stops nothing (Q6)."""
     try:
-        return open(path, encoding="utf-8").read()
-    except OSError:
+        with open(path, encoding="utf-8") as fh:
+            return fh.read()
+    except FileNotFoundError:
         return ""
 
 
@@ -689,7 +704,7 @@ def _raiser(e):
     return f
 
 
-def sweep(hard_stop_s=30.0, per_ticket_s=2.0):
+def sweep(hard_stop_s=SWEEP_STOP_S, per_ticket_s=2.0):
     """Every open ticket once, indexes loaded once, one timing line each (trigger "sweep"), inside the hard stop.
     -> {"tickets", "cut_off", "skipped", "task_with_verify", "e12", "c4", "worst"}; changes no ticket."""
     model = _model()
@@ -753,11 +768,20 @@ def render(rep):
     return "\n".join(lines)
 
 
-# --- the doors, in shadow (ticket 3, RIMMANDRAKE_BACKTEST_PREFLIGHT_OVER_REAL_PAST_TICKETS) ------------------------------
-# rimflow file / claim / start and detached_helper.launch run the preflight here: they print its lines and record them,
-# and refuse nothing. Not in Relentless (owner, by card 2026-11-13; Relentless itself was retired 2026-11-13).
+# --- the doors (ticket 3 shadow, RIMMANDRAKE_BACKTEST_PREFLIGHT_OVER_REAL_PAST_TICKETS; ticket 4 enforcement) -----------
+# rimflow file / claim / start and detached_helper.launch run the preflight here: they print its lines and record them.
+# Filing and the helper launch refuse nothing. claim and start STOP a launched run on a FAIL of a new declared-fact check
+# (`enforce`): owner, by card 2026-11-13, Q1 "filing warns, pickup stops", Q3 (E12), Q4 (C4), Q5 "only the Conductor
+# may bypass", Q6 "can't check -> go ahead". The refusal goes back to the same agent with its repair, which it makes and
+# claims again (root CLAUDE.md §A fault of form is repaired where it is found); the Conductor and the owner pass with a
+# NOTE (principal.form). The launch door does not stop: no agent is there yet to repair, and the run's first act, its
+# claim or start, is the stop. An existing gate's authority stays in its own code. Not in Relentless (retired).
 DOOR_TRIGGER = {"file": "create", "claim": "pickup", "start": "pickup", "helper_launch": "pickup"}
+ENFORCING_DOORS = ("claim", "start")
 SHOW_MAX = 8
+STOP_HEAD = ("REFUSED at %s by the ticket preflight: a declared fact of %s is wrong (owner, by card 2026-11-13: "
+             "filing warns, pickup stops). Repair infrastructure/state/items/%s.md (its `## refs` section) or its proof "
+             "file as each FIX says, then %s again; `rimflow preflight %s` re-checks in about 0.1 s.")
 
 
 class Shadow(object):
@@ -774,11 +798,12 @@ class Shadow(object):
         self.run_id = uuid.uuid4().hex[:12]
         self.checks, self.gates, self.crash, self.cut, self.done = [], [], None, False, None
         self.ms = 0.0
+        self.refused, self.override = [], None
 
     def run(self, **kw):
         t = time.perf_counter()
         try:
-            kw.setdefault("deadline_s", 5.0 if kw.get("needs") in LIVE_NEEDS else 3.0)
+            kw.setdefault("deadline_s", DEADLINE_S)
             rep = run_item(self.item, trigger=self.trigger, run_id=self.run_id, record=False, **kw)
             self.checks, self.cut = rep["checks"], rep["cut_off"]
         except Exception as e:                          # noqa: BLE001  the door carries on
@@ -812,9 +837,45 @@ class Shadow(object):
         self.gates.append({"id": gid, "ref": None, "status": status, "evidence": evidence, "fix": "", "ms": ms,
                            "origin": "gate"})
 
+    def stops(self):
+        """-> the observations that stop a pickup: a FAIL of a new check on a line the ticket declared. A tool's own
+        `(auto)` guess, an UNMEASURED check, a cut-off run and a runner that did not run stop nothing (Q6)."""
+        if self.crash:
+            return []
+        return [c for c in self.checks if c["status"] == "FAIL" and c.get("origin", "declared") == "declared"]
+
+    def enforce(self, seat=None, env=None):
+        """At claim and start: refuse a launched run whose ticket fails a declared-fact check, with each repair; the
+        Conductor window and the owner pass with a NOTE (principal.form). Any other door: nothing. Returns the note."""
+        if self.door not in ENFORCING_DOORS:
+            return None
+        bad = self.stops()
+        if not bad:
+            return None
+        ids = " ".join(sorted({c["id"] for c in bad}))
+        lines = [STOP_HEAD % (self.door, self.item, self.item, self.door, self.item)]
+        for c in bad:
+            lines.append("  FAIL %s %s: %s" % (c["id"], c.get("ref") or "", c.get("evidence", "")))
+            if c.get("fix"):
+                lines.append("    FIX: " + c["fix"].replace("\n", "\n         "))
+        import principal
+        who = principal.who(env, seat)
+        self.refused = sorted({c["id"] for c in bad})
+        if who:
+            self.override = who
+        try:
+            return principal.form("the ticket preflight would stop this %s (%s); passed for the %s"
+                                  % (self.door, ids, "Conductor" if who == "conductor" else "owner"),
+                                  refusal="\n".join(lines), env=env, seat=seat, code=2)
+        except SystemExit:
+            self.finish()
+            raise
+
     def verdict(self):
         if self.crash:
             return "did not run"
+        if self.refused:
+            return ("passed by %s: " % self.override if self.override else "refused ") + " ".join(self.refused)
         fails = sorted({c["id"] for c in self.checks + self.gates if c["status"] == "FAIL"})
         return ("fail " + " ".join(fails)) if fails else "pass"
 
@@ -827,7 +888,7 @@ class Shadow(object):
         allc = self.checks + self.gates
         line = {"run_id": self.run_id, "at": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "item": self.item,
                 "trigger": self.trigger, "door": self.door, "seat": self.seat, "total_ms": round(self.ms, 1),
-                "cut_off": self.cut, "verdict": self.verdict(), "crash": self.crash,
+                "cut_off": self.cut, "verdict": self.verdict(), "crash": self.crash, "override": self.override,
                 "checks": [{"id": c["id"], "ms": c.get("ms", 0.0), "status": c["status"],
                             "origin": c.get("origin", "declared")} for c in allc]}
         _append_run(self.runs_path, line)
@@ -835,8 +896,10 @@ class Shadow(object):
             self.done = "preflight did not run (%s); the door carries on" % self.crash
             return self.done
         bad = [c for c in allc if c["status"] != "PASS"]
-        out = ["PREFLIGHT, shadow, refuses nothing (%s %s, %.0f ms%s): %d checks, %d not PASS" % (
-            self.door, self.item, self.ms, ", CUT OFF" if self.cut else "", len(allc), len(bad))]
+        mode = ("REFUSED" if self.refused and not self.override else "pickup stops a wrong declared fact"
+                if self.door in ENFORCING_DOORS else "warns only")
+        out = ["PREFLIGHT, %s (%s %s, %.0f ms%s): %d checks, %d not PASS" % (
+            mode, self.door, self.item, self.ms, ", CUT OFF" if self.cut else "", len(allc), len(bad))]
         for c in bad[:SHOW_MAX]:
             where = "rimflow preflight %s" % self.item
             out.append("  %-10s %s %s: %s%s" % (c["status"], c["id"], c.get("ref") or "",
@@ -847,6 +910,74 @@ class Shadow(object):
             out.append("  ... %d more: rimflow preflight %s" % (len(bad) - SHOW_MAX, self.item))
         self.done = "\n".join(out)
         return self.done
+
+
+TARGET_MS = {"create": 1000.0, "pickup": 1000.0}     # spec 5.2: the p95 a door's whole preflight should keep under
+
+
+def _pct(v, q):
+    v = sorted(v)
+    return v[min(len(v) - 1, int(round(q * (len(v) - 1))))] if v else None
+
+
+def timing(runs_path=None, last=200):
+    """-> the recorded run time per door over the last `last` lines of the timing file (spec 5.4): count, p50, p95,
+    max, refusals, Conductor or owner passes, cut-offs, runs that did not run, and the five slowest checks."""
+    path = runs_file(runs_path)
+    rows = []
+    try:
+        with open(path, encoding="utf-8") as fh:
+            for l in fh:
+                try:
+                    rows.append(json.loads(l))
+                except ValueError:
+                    continue
+    except OSError as e:
+        return {"path": path, "error": str(e), "doors": {}}
+    rows = rows[-last:] if last else rows
+    doors = {}
+    for r in rows:
+        d = r.get("door") or "hand:" + str(r.get("trigger"))
+        g = doors.setdefault(d, {"n": 0, "ms": [], "added": [], "refused": 0, "passed": 0, "cut": 0, "crash": 0, "checks": {},
+                                 "trigger": r.get("trigger")})
+        g["n"] += 1
+        g["ms"].append(float(r.get("total_ms") or 0.0))
+        gates = sum(float(c.get("ms") or 0.0) for c in r.get("checks") or [] if c.get("origin") == "gate")
+        g["added"].append(max(0.0, g["ms"][-1] - gates))       # the preflight's own cost, beside the gates it times
+        v = str(r.get("verdict") or "")
+        g["refused"] += v.startswith("refused")
+        g["passed"] += v.startswith("passed by")
+        g["cut"] += bool(r.get("cut_off"))
+        g["crash"] += bool(r.get("crash")) or v == "did not run"
+        for c in r.get("checks") or []:
+            g["checks"].setdefault(c.get("id"), []).append(float(c.get("ms") or 0.0))
+    out = {}
+    for d, g in doors.items():
+        slow = sorted(((cid, _pct(v, 0.95), max(v)) for cid, v in g["checks"].items()), key=lambda t: -t[1])[:5]
+        out[d] = {"n": g["n"], "p50_ms": _pct(g["ms"], 0.5), "p95_ms": _pct(g["ms"], 0.95), "max_ms": max(g["ms"]),
+                  "added_p95_ms": _pct(g["added"], 0.95),
+                  "refused": g["refused"], "passed_by_principal": g["passed"], "cut_off": g["cut"],
+                  "did_not_run": g["crash"], "target_p95_ms": TARGET_MS.get(g["trigger"]),
+                  "slowest_checks": [{"id": c, "p95_ms": p, "max_ms": m} for c, p, m in slow]}
+    return {"path": path, "runs": len(rows), "doors": out}
+
+
+def render_timing(t):
+    if t.get("error"):
+        return "no timing lines read at %s (%s)" % (t["path"], t["error"])
+    out = ["preflight run time, last %d runs (%s)" % (t["runs"], t["path"]),
+           "%-16s %5s %9s %9s %9s %9s %7s %6s %4s %4s  slowest checks (p95 ms)" % (
+               "door", "runs", "p50 ms", "p95 ms", "max ms", "added p95", "refused", "passed", "cut", "dnr")]
+    for d, g in sorted(t["doors"].items()):
+        over = ("  OVER the %.0f ms added-time target" % g["target_p95_ms"]
+                if g["target_p95_ms"] and g["added_p95_ms"] > g["target_p95_ms"] else "")
+        out.append("%-16s %5d %9.1f %9.1f %9.1f %9.1f %7d %6d %4d %4d  %s%s" % (
+            d, g["n"], g["p50_ms"], g["p95_ms"], g["max_ms"], g["added_p95_ms"], g["refused"], g["passed_by_principal"], g["cut_off"],
+            g["did_not_run"], ", ".join("%s %.0f" % (c["id"], c["p95_ms"]) for c in g["slowest_checks"]), over))
+    out.append("(p50/p95/max: the whole door, the existing gates it times included, e.g. I6 at helper_launch; added p95: "
+               "the preflight's own time, the spec 5.2 target; passed = the Conductor or the owner passed a stop; dnr = "
+               "the preflight did not run)")
+    return "\n".join(out)
 
 
 def items_of(world):
