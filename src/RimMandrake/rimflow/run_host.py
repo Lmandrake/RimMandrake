@@ -22,6 +22,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."
 LOCAL_NAMES = ("archmagi", "local", "")
 # lower-case name -> ssh target. The bare alias `stevedesktop` lands in Windows PowerShell; WSL is this door.
 HOSTS = {"stevedesktop": "mandrake@stevedesktop-wsl"}
+NAMES = {"stevedesktop": "SteveDesktop"}               # the machine's name, as a line names it
 LOGIN = "export PATH=$HOME/.local/bin:$PATH; "     # claude and claude-account are on PATH only in a login shell
 BENCH = "~/rm/bench"                               # the host's own seat clone: its launcher makes the run's clone
 BRIEFS = "~/rm/list_briefs"
@@ -223,6 +224,7 @@ def relay_ends(host, now=None, runner=subprocess.run, log_path=None):
     now = time.time() if now is None else now
     if not door(host):
         return 2, "relay ends: unknown host %r" % host
+    host = NAMES.get(_norm(host), host)     # its name in every line, whatever case the caller used
     path = log_path or D.conductor_log_path()
     try:
         with open(path, encoding="utf-8", errors="replace") as f:

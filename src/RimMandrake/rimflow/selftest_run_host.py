@@ -314,7 +314,7 @@ def t_host_ends_reach_the_conductor_log():
         with open(log, "w") as f:
             f.write("\n2026 - DETACHED RUN ENDED: rm-seen on IT_SEEN (BENCH seat): already here\n")
         host = Fake([(r"all_records", json.dumps(ends))])
-        rc, text = R.relay_ends("SteveDesktop", now=now, runner=host, log_path=log)
+        rc, text = R.relay_ends("stevedesktop", now=now, runner=host, log_path=log)
         lines = [ln for ln in open(log).read().splitlines() if "DETACHED RUN ENDED" in ln]
         assert rc == 0, (rc, text)
         assert sum("rm-old" in ln for ln in lines) == 1 and sum("rm-new" in ln for ln in lines) == 1, lines
