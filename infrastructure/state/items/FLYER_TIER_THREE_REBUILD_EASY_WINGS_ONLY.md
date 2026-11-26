@@ -18,4 +18,5 @@ file: infrastructure/state/live_proofs/FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY.
 ## verify
 A1: `python.exe src/RimMandrake/Utils/art/flyer_tier_three_state_read.py` on a free game with the live-mods of
 `infrastructure/state/live_proofs/FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY.txt`, paused, exits 0. It is a state read;
-no flight is exercised.
+no flight is exercised. A measured run writes
+`infrastructure/state/live_proofs/FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY.reading`; commit it with the run.

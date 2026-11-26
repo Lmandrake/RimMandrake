@@ -17,6 +17,7 @@ Exit 0 = all pass, 1 = a check failed.
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 import xml.etree.ElementTree as ET
@@ -129,6 +130,20 @@ def state_read_cases() -> None:
     want(R.verdict(dict(all_ok, RSW_Porg=[dict(yes, maxFlightTimeStat=0)]))[0] == 1, "state read: a zero stat is exit 1")
     want(R.verdict(dict(all_ok, RM_Dwommo=[dict(yes, canEverFly=False)]))[0] == 1, "state read: canEverFly false is exit 1")
     want(R.verdict(dict(all_ok, RM_Dwommo=[]))[0] == 2, "state read: no pawn is exit 2, UNMEASURED")
+    import tempfile
+    import selftest_flyer_tier_two as T2
+    two = R.KINDS_BY_ITEM["FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS"]
+    want(sorted(k.split("_", 1)[1] for k in two) == sorted(T2.SETS), "state read: the tier-two kinds are the nine tier-two sets")
+    want(R.verdict({k: [yes] for k in two}, two)[0] == 0 and R.verdict({}, two)[0] == 2, "state read: tier two verdicts")
+    with tempfile.TemporaryDirectory() as d:
+        keep = R.REPO
+        R.REPO = d
+        os.makedirs(os.path.join(d, "infrastructure", "state", "live_proofs"))
+        none = R.write_reading("ITEM", 2, "UNMEASURED: x", {}, "h")
+        path = R.write_reading("ITEM", 0, "PASS all 6 report", {"RM_Dwommo": [yes]}, "h")
+        R.REPO = keep
+        want(none is None and path and open(path).readline().strip() == "PASS all 6 report",
+             "state read: UNMEASURED writes no reading; a measured one starts with its verdict line")
 
 
 def main() -> int:
