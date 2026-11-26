@@ -174,6 +174,72 @@ check("py: a setter wrapper called in a finally with a POSITIONAL literal restor
 check("py: the same finally with a positional captured prior is clean; a keyword literal is still a hit",
       [py(POSITIONAL % "was"), kinds(py(POSITIONAL.replace("setting(f, %s)", "setting(f, value=True)")))]
       == [[], ["restores-fixed-value"]])
+# A wrapper is a setter by its shape, not its name: the nine ExplosiveKnockback scenes of 2026-11-25 write through
+# `def put(s, field, value, strict=True)` (the session's driver, read back) and every call sits in a guarded try; the name
+# rule (set|poke|flip|toggle) missed `put` and judged the write inside it (RIMMANDRAKE_GREEN_EXPLOSIVEKNOCKBACK_T_RESTORE_RED_DECIDER).
+PUT = '''
+         def put(s, field, value, strict=True):
+             r = s.raw("jawa/mod_settings_field", typeName=T, action="set", field=field, value=value, driver=s.id) or {}
+             if strict and r.get("success") is not True:
+                 raise RuntimeError("SETTING_REFUSED")
+             return r
+         def run(s):
+             prior = s.raw("jawa/mod_settings_field", typeName=T, action="get", field="on").get("value")
+             %s
+         '''
+check("py: a setter wrapper of any name (put) is judged at its call sites: guarded calls restoring the prior are clean",
+      py(PUT % 'try:\n                 put(s, "on", "False")\n                 scenes(s)\n             finally:\n'
+                '                 put(s, "on", str(prior), strict=False)') == [])
+check("py: the same put with no finally is a hit at each call site, not inside put",
+      [(h["line"], h["kind"]) for h in py(PUT % 'put(s, "on", "False")\n             scenes(s)\n'
+                                                '             put(s, "on", str(prior), strict=False)')]
+      == [(9, "unrestored-on-throw"), (11, "unrestored-on-throw")])
+check("py: put called in the finally with a literal restores a fixed value",
+      [(h["line"], h["kind"]) for h in py(PUT % 'try:\n                 put(s, "on", "False")\n             finally:\n'
+                                                '                 put(s, "on", "True", strict=False)')]
+      == [(12, "restores-fixed-value")])
+check("py: a function of any name that guards its own write in its own try is not a wrapper: its calls are clean",
+      py('''
+         def lane(s, value, prior):
+             try:
+                 s.raw("jawa/mod_settings_field", typeName=T, action="set", field="on", value=value)
+                 scenes(s)
+             finally:
+                 s.raw("jawa/mod_settings_field", typeName=T, action="set", field="on", value=prior)
+         def run(s, prior):
+             lane(s, "False", prior)
+         ''') == [])
+check("py: a wrapper of any name never called by name is judged where it writes",
+      [(h["line"], h["kind"]) for h in py('''
+         def put(s, field, value):
+             s.raw("jawa/mod_settings_field", typeName=T, action="set", field=field, value=value)
+         HOOKS = {"put": put}
+         ''')] == [(3, "unrestored-on-throw")])
+OVER = PUT.replace("         def run(s):", "         def setting(s, field, value):\n             put(s, field, value)\n"
+                                         "             return value\n         def run(s):")
+check("py: a wrapper over a wrapper (setting -> put, the settings sweep scene) is judged at its own call sites",
+      [py(OVER % 'try:\n                 setting(s, "on", "False")\n             finally:\n'
+                 '                 setting(s, "on", prior)'),
+       [(h["line"], h["kind"]) for h in py(OVER % 'setting(s, "on", "False")')],
+       [(h["line"], h["kind"]) for h in py(OVER % 'try:\n                 setting(s, "on", "False")\n             finally:\n'
+                                                  '                 setting(s, "on", "True")')]]
+      == [[], [(12, "unrestored-on-throw")], [(15, "restores-fixed-value")]])
+check("py: a wrapper of any name whose write carries a reviewed waiver keeps it: its callers are not judged",
+      py('''
+         def sfield(b, field, value):
+             # restore-check: ok every call site sits in main's try
+             b.call("jawa/mod_settings_field", typeName=T, action="set", field=field, value=value)
+         def main(b):
+             sfield(b, "on", "False")
+         ''') == [])
+check("py: a method that shares a setter's name is judged on its own (concept_scenes.py shape)",
+      py('''
+         def setting(s, field, value):
+             s.raw("jawa/mod_settings_field", typeName=T, action="set", field=field, value=value)
+         class R:
+             def setting(self, name, value):
+                 self.B.call("jawa/mod_settings_field", typeName=T, field=name, action="set", value=str(value))
+         ''') == [])
 CLOSURE = '''
          def main(b):
              def setf(f, v):

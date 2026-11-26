@@ -546,26 +546,61 @@ def check_py(rel: str, text: str, harness_restores: bool, harness_tracks: bool =
     for p in ast.walk(tree):
         for c in ast.iter_child_nodes(p):
             parents[c] = p
-    # one level of wrappers: a function whose body pokes and takes the value as a parameter is a setter; its call
-    # sites are the pokes (the write inside it is judged where it is called from)
-    setters, setter_params = {}, {}
-    for fn in ast.walk(tree):
-        if isinstance(fn, (ast.FunctionDef, ast.AsyncFunctionDef)):
-            pk = [c for c in ast.walk(fn) if isinstance(c, ast.Call) and (py_poke_kind(c) or "").startswith("raw")]
+    # wrappers: a function whose body pokes and takes the value as a parameter is a setter; its call sites are the pokes
+    # (the write inside it is judged where it is called from). Found to a fixed point, so a wrapper over a wrapper
+    # (`setting` -> `put` in scene_settings_sweep_show_switches.py) is one too.
+    setters, setter_params, setter_pokes = {}, {}, set()
+    called = {c.func.id for c in ast.walk(tree) if isinstance(c, ast.Call) and isinstance(c.func, ast.Name)}
+    fns = [f for f in ast.walk(tree) if isinstance(f, (ast.FunctionDef, ast.AsyncFunctionDef))]
+
+    def value_args(c):
+        """The expressions a poke or a setter call writes as the value."""
+        if isinstance(c.func, ast.Name) and c.func.id in setter_params and py_poke_kind(c) is None:
+            names, vparams = setter_params[c.func.id]
+            return [k.value for k in c.keywords if k.arg in vparams] + \
+                [a for i, a in enumerate(c.args) if i < len(names) and names[i] in vparams and not isinstance(a, ast.Starred)]
+        v = _kw(c, "value")
+        return [] if v is None else [v]
+
+    def self_guarded(fn, pk):
+        """A write of fn sits in a try of fn's own whose finally writes settings back: fn restores itself."""
+        for t in ast.walk(fn):
+            if isinstance(t, ast.Try) and t.finalbody and _has_settings_write(t.finalbody, setters):
+                inner = {id(n) for st in t.body for n in ast.walk(st)}
+                if any(id(c) in inner for c in pk):
+                    return True
+        return False
+    done, top = set(), {id(f) for f in tree.body}
+    grew = True
+    while grew:
+        grew = False
+        for fn in fns:
+            if id(fn) in done:
+                continue
+            pk = [c for c in ast.walk(fn) if isinstance(c, ast.Call) and ((py_poke_kind(c) or "").startswith("raw") or
+                  (py_poke_kind(c) is None and isinstance(c.func, ast.Name) and c.func.id in setters and c.func.id != fn.name))]
             params = {a.arg for a in fn.args.args}
 
             def uses_param(c):
-                v = _kw(c, "value")
-                return v is not None and any(isinstance(n, ast.Name) and n.id in params for n in ast.walk(v))
-            if pk and (fn.name == "set_setting" or re.search(r"set|poke|flip|toggle", fn.name, re.I)
+                return any(isinstance(n, ast.Name) and n.id in params for v in value_args(c) for n in ast.walk(v))
+            # a setter by name (set|poke|flip|toggle), or by shape: any other module-level function (a nested one is the
+            # closure rule's, below) whose write takes its value from a parameter, that is called by name in this file, does not guard the write itself and carries no reviewed
+            # waiver on it (`def put(s, field, value)` of nine ExplosiveKnockback scenes,
+            # RIMMANDRAKE_GREEN_EXPLOSIVEKNOCKBACK_T_RESTORE_RED_DECIDER)
+            by_name = re.search(r"set|poke|flip|toggle", fn.name, re.I)
+            by_shape = id(fn) in top and fn.name in called and not self_guarded(fn, pk) and not any(waived(text, c.lineno) for c in pk)
+            if pk and (fn.name == "set_setting" or (by_name or by_shape)
                        and not re.search(r"restore|teardown|cleanup", fn.name, re.I)) and \
                     (fn.name == "set_setting" or any(uses_param(c) for c in pk)):
-                setters[fn.name] = "raw" if all(py_poke_kind(c) == "raw" for c in pk) else "raw-other"
+                kinds_ = [py_poke_kind(c) or setters.get(c.func.id) for c in pk]
+                setters[fn.name] = "raw" if all(k == "raw" for k in kinds_) else "raw-other"
+                done.add(id(fn))
+                setter_pokes.update(id(c) for c in pk)
                 names = [a.arg for a in fn.args.args]
-                vp = {n.id for c in pk for v in [_kw(c, "value")] if v is not None
-                      for n in ast.walk(v) if isinstance(n, ast.Name) and n.id in params}
+                vp = {n.id for c in pk for v in value_args(c) for n in ast.walk(v) if isinstance(n, ast.Name) and n.id in params}
                 if vp:
                     setter_params[fn.name] = (names, vp)
+                grew = True
     for c in ast.walk(tree):
         if not isinstance(c, ast.Call):
             continue
@@ -579,7 +614,7 @@ def check_py(rel: str, text: str, harness_restores: bool, harness_tracks: bool =
             chain.append((parents[n], n))
             n = parents[n]
         fn = next((p for p, _ in chain if isinstance(p, (ast.FunctionDef, ast.AsyncFunctionDef))), None)
-        if fn is not None and fn.name in setters and kind.startswith("raw") and py_poke_kind(c) is not None:
+        if id(c) in setter_pokes:
             continue                       # the write inside a setter wrapper: judged at its call sites
         in_finally = any(isinstance(p, ast.Try) and ch in p.finalbody for p, ch in chain)
         in_handler = any(isinstance(p, ast.ExceptHandler) for p, _ in chain)
