@@ -24,8 +24,8 @@ that says in plain words what the station shows (LOOK) and what to do there (DO)
 | Water and other liquids in holes | (92-188, 18-43), south | 9-25 |
 | Gates and the moat | (14-68, 52-78), west | 26-31 |
 | Pits: traps and the ways in and out | (14-71, 92-109), west | 32-47 |
-| Bridges | (14-93, 140-162), north-west | 48-78 |
-| Pipes, hoses and sprinklers | (100-131, 138-158), north | 79-83 |
+| Bridges | (14-93, 139-186), north-west | 48-78 |
+| Pipes, hoses and sprinklers | (100-131, 138-161), north | 79-83 |
 | Fire | (205-219, 205-219), north-east, 15 squares clear of anything that burns | 84 |
 
 ## The principles
@@ -64,7 +64,7 @@ that says in plain words what the station shows (LOOK) and what to do there (DO)
 |---|---|---|---|---|
 | `ladders` A wall ladder hangs on its wall, lowered or raised | Look at the four pits. In each, one wall ladder is lowered and the one on the opposite wall is raised. | Each ladder hangs on the wall it faces, in all four directions, and lowered reads apart from raised. | 32, 33, 34, 35 | `ways_in_and_out`, `inv_pit_access` |
 | `portable_ladder` A portable ladder leans on a low wall and is too short for a deep one | Look at the two portable ladders: in a 2 m pit and in a 4 m pit. | In the 2 m pit it leans on the wall; in the 4 m pit it is too short and lies flat. | 38, 39 | `ways_in_and_out`, `inv_pit_access` |
-| `climbing_gear` Climbing gear gets a colonist out of a sheer pit | Order each colonist out to the ground beside the pit. Unpause. | The colonist who wears climbing gear climbs the sheer 4 m wall; the one without gear cannot get out. | 40, 41 | `ways_in_and_out`, `inv_pit_access` |
+| `climbing_gear` Climbing gear gets a colonist out of a sheer pit | Order each colonist out to the ground beside the pit. Unpause. | The colonist who wears climbing gear climbs the sheer 4 m wall; the one without gear cannot climb the wall and waits for the ladder the colony brings. | 40, 41 | `ways_in_and_out`, `inv_pit_access` |
 | `spikes` Spikes read as spikes, on a dry floor and under water | Look at the two spiked pits. | Sharp stakes on the pit floor, dry in one and standing in 1 m of water in the other. | 36, 37 | `covered_pit_springs`, `inv_pits` |
 | `cover_hides` A covered pit passes for ground | Find the covered pit on this station before you read where it is. | The cover reads as the ground around it, not as a hole. | 42 | `covered_pit_springs`, `inv_pits` |
 | `walk_under_cover` A colonist walks along a pit floor under a cover, and the cover fades over her | Order the colonist in the open south end to the open north end of the pit. Unpause. | She walks under the cover and out again. The cover fades see-through over her, as over the colonist already under it. | 43, 44, 45 | `inv_pits`, `hung_bridge_spans` |

@@ -85,7 +85,7 @@ PRINCIPLES = (
          bars=("ways_in_and_out", "inv_pit_access")),
     dict(id="climbing_gear", group="pits", title="Climbing gear gets a colonist out of a sheer pit",
          do="Order each colonist out to the ground beside the pit. Unpause.",
-         see="The colonist who wears climbing gear climbs the sheer 4 m wall; the one without gear cannot get out.",
+         see="The colonist who wears climbing gear climbs the sheer 4 m wall; the one without gear cannot climb the wall and waits for the ladder the colony brings.",
          bars=("ways_in_and_out", "inv_pit_access")),
     dict(id="spikes", group="pits", title="Spikes read as spikes, on a dry floor and under water",
          do="Look at the two spiked pits.",

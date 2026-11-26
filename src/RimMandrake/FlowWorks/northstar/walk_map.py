@@ -21,7 +21,8 @@ water running from a pond, a slime crossing, a hose, a geyser hot tub, a hole to
 Every station is captured alone at one cell >= MIN_PX screen pixels (--out), uncompressed, as station_NN_<name>.png, and
 stations.md beside the pictures lists each station with its sign. Then: kill hostiles, Clear weather locked, paused, ONE
 save. Exit 0 staged and saved with no NOTE that says FAILED / NOT / REFUSED; 1 staged with such notes (read them); 4 refused
-before staging (the map is too small, or a station would stand off the map or in its no-build edge).
+before staging (the map is too small, or a station would stand off the map or in its no-build edge); 3 the map's
+biome is not one where water draws right; 5 no fresh map came up (--fresh-map).
 """
 import argparse
 import os
@@ -39,12 +40,13 @@ import walk_principles as WP  # noqa: E402
 
 MAP = (250, 250)
 MIN_PX = 40                       # one cell at least this many screen pixels in every station capture (brief)
-SHOT_H = 1826                     # the game's screenshot height on Archmagi (water_scenes_walk: 3467x1826)
+SHOT_H = 1351                     # ArchBig's screenshot height, measured 2026-11-25 (2285 x 1351; the 3467 x 1826 of
+                                  # water_scenes_walk is an older screen): a capture of h cells shows 1351 / (h + 4) px a cell
 TAR, WATER, SLIME = "RM_Fluid_Tar", "RM_Fluid_Water", "RM_Fluid_SlimeGreen"
 FLUIDS = (("water", WATER), ("tar", TAR), ("oil", "RM_Fluid_Oil"), ("chemfuel", "RM_Fluid_Chemfuel"),
           ("green slime", SLIME), ("blood", "RM_Fluid_Blood"))
-COVERS = (("woven scrap", "RM_PitCover_WovenScrap"), ("planks", "RM_PitCover_PlankLattice"),
-          ("reinforced", "RM_PitCover_ReinforcedFrame"))
+COVERS = (("woven scrap", "RM_PitCover_WovenScrap", "under scrap lid"), ("planks", "RM_PitCover_PlankLattice", "under plank lid"),
+          ("reinforced", "RM_PitCover_ReinforcedFrame", "under frame lid"))
 NPROOF = "RimMandrake.FlowWorks.RM_NorthstarProofs"
 DP = "RimMandrake.FlowWorks.Pits.RM_DrawbridgeProofs"
 FIRE_CLEAR = 15                   # brief: every other flammable thing at least 15 squares from the tar
@@ -103,6 +105,9 @@ def sign_problems(stations):
             out.append("station %d %r shows no listed principle (%r)" % (st["n"], st["short"], st.get("shows")))
         if not st.get("text") or not st.get("do"):
             out.append("station %d %r has no LOOK or no DO line" % (st["n"], st["short"]))
+        room = max(8, 3 * (st["rect"][2] + R.DENSE_GAP))
+        if len(st["short"]) > room:
+            out.append("station %d %r: its name is longer than its label's room (%d characters)" % (st["n"], st["short"], room))
         for part in (st["short"], st.get("text") or "", st.get("do") or ""):
             m = CODE_WORD.search(part)
             if m:
@@ -112,26 +117,26 @@ def sign_problems(stations):
 
 
 # ------------------------------------------------------------------ kept rows of owner_review_stage, with plain signs
-T_LADDERS = [("ladder pit, lowered on the %s wall" % d, "ladders",
+T_LADDERS = [("lowered %s" % d, "ladders",
               "A 1.5 m pit. The ladder on the %s wall is lowered; the one on the opposite wall is raised." % d,
               "Look at how each ladder hangs on its wall.") for d in ("north", "east", "south", "west")]
 T_SPIKES = [("spikes, dry", "spikes", "Spikes on the floor of a dry 2 m pit.", "Look at the stakes."),
-            ("spikes under water", "spikes", "Spikes on the floor of a 2 m pit holding 1 m of water.",
+            ("spikes in water", "spikes", "Spikes on the floor of a 2 m pit holding 1 m of water.",
              "Look at the stakes under the water, and at the pit walls under the water.")]
 T_SHALLOWS = [("0.2 m of water", "water_depth", "A strip of 0.2 m of water in a 0.5 m channel.", "Mouse over a square: it reads 0.2 m.")] + \
     [("%s m of water" % m, "water_depth", "A pit full to the brim: %s m of water." % m, "Mouse over a square: it reads %s m." % m)
      for m in ("0.5", "1", "1.5", "2", "5")] + \
     [("dry 1 m hole", "water_depth", "A 1 m hole with no water, beside the water row.", "Compare it with the 1 m of water.")]
-T_SPRINKLERS = [("sprinkler, %s look" % k, "sprinkler_looks",
+T_SPRINKLERS = [("sprinkler, %s" % k, "sprinkler_looks",
                  "A tank, pipe, powered pump and sprinkler head, all in the %s look." % k,
                  "Unpause for a moment: the head sprays.") for k in R.LOOKS]
-T_JOINT = [("1 m of water in a 1 m hole", "how_full", "A 1 m hole full of water: no wall shows above the water.", "Compare it with its neighbours."),
-           ("1 m of water in a 2 m hole", "how_full", "A 2 m hole with 1 m of water: a dry wall band shows above the water.", "Compare it with its neighbours."),
-           ("colonist wades in 1 m of water", "pawn_in_water", "A colonist wading in 1 m of water in a 4 m hole.",
+T_JOINT = [("1 m in 1 m hole", "how_full", "A 1 m hole full of water: no wall shows above the water.", "Compare it with its neighbours."),
+           ("1 m in 2 m hole", "how_full", "A 2 m hole with 1 m of water: a dry wall band shows above the water.", "Compare it with its neighbours."),
+           ("wades in 1 m", "pawn_in_water", "A colonist wading in 1 m of water in a 4 m hole.",
             "Look at her, cut at the water's surface; mouse over her."),
-           ("0.5 m of water in a 4 m hole", "how_full", "A 4 m hole with 0.5 m of water: a tall dry wall above it.", "Compare it with its neighbours."),
-           ("1 m of water in a 4 m hole", "how_full", "A 4 m hole with 1 m of water.", "Compare it with its neighbours."),
-           ("colonist swims in 2 m of water", "pawn_in_water", "A colonist swimming in 2 m of water in a 4 m hole.",
+           ("0.5 m in 4 m", "how_full", "A 4 m hole with 0.5 m of water: a tall dry wall above it.", "Compare it with its neighbours."),
+           ("1 m in 4 m hole", "how_full", "A 4 m hole with 1 m of water.", "Compare it with its neighbours."),
+           ("swims in 2 m", "pawn_in_water", "A colonist swimming in 2 m of water in a 4 m hole.",
             "Look at her swimming; mouse over her.")]
 T_DRY = [("dry %s m hole" % m, "depth_reads", "A dry %s m hole, a colonist standing in it." % m,
           "Compare its wall and how low she stands with the other holes.") for m in ("0.5", "1", "1.5", "2", "4", "8")]
@@ -141,7 +146,7 @@ T_KINDS = [("steel grated bridge", "bridge_kinds", "A steel bridge with a grated
            ("heavy grated bridge", "bridge_kinds", "A heavy bridge with a grated deck, over a 4 m pit.", "Look at the deck and its anchors."),
            ("steel jetty east", "jetties", "A steel jetty rooted west of a 4 m pit, reaching east over it.", "Look: one deck, not two blocks."),
            ("heavy jetty east", "jetties", "A heavy jetty rooted west of a 4 m pit, reaching east over it.", "Look: one deck, not two blocks.")] + \
-    [("steel bridge, %s look" % k, "bridge_looks", "A steel bridge with railings over a 4 m pit, in the %s look." % k,
+    [("steel, %s" % k, "bridge_looks", "A steel bridge with railings over a 4 m pit, in the %s look." % k,
       "Compare the four looks.") for k in ("Scrapper", "Industrial", "Modern", "Futuristic")]
 
 
@@ -176,7 +181,7 @@ def row_gates(s, o):
         far = "east" if axis == "EW" else "south"
         way = "east-west" if axis == "EW" else "north-south"
         if kind == "shut":
-            s.station("gates", (x0, oz, 5, 5), "", short="sluice shut, %s" % way, shows="sluice_holds",
+            s.station("gates", (x0, oz, 5, 5), "", short="sluice shut %s" % ("E-W" if axis == "EW" else "N-S"), shows="sluice_holds",
                       do="Select it and open it, then unpause: the water runs %s." % far)
             s.stations[-1]["text"] = "A shut sluice gate in a %s canal: 1 m of water on its %s side, the %s side dry." % (way, side, far)
         elif kind == "open":
@@ -184,7 +189,7 @@ def row_gates(s, o):
                       short="sluice open", shows="sluice_holds", do="Compare it with the shut ones.")
         else:
             s.station("gates", (x0, oz, 5, 5), "A grate gate in a %s canal: the water stands at one level on both sides." % way,
-                      short="grate gate, %s" % way, shows="grate_passes", do="Look at the water on both sides.")
+                      short="grate gate %s" % ("E-W" if axis == "EW" else "N-S"), shows="grate_passes", do="Look at the water on both sides.")
 
 
 def row_access(s, o):
@@ -194,20 +199,21 @@ def row_access(s, o):
     p2, p4, pg, pn, pc = (bx, bz), (bx + 5, bz), (bx + 10, bz), (bx + 15, bz), (bx + 20, bz)
     s.pit(p2, 3, 4)
     s.place("RM_LadderPortable", (p2[0] + 1, p2[1] + 2), rot=0)
-    s.station("access", (p2[0], p2[1], 3, 3), "A portable ladder in a 2 m pit, leaning on the north wall.", short="portable ladder, 2 m",
+    s.station("access", (p2[0], p2[1], 3, 3), "A portable ladder in a 2 m pit, leaning on the north wall.", short="ladder, 2 m pit",
               shows="portable_ladder", do="Look at how it leans.")
     s.pit(p4, 3, 8)
     s.place("RM_LadderPortable", (p4[0] + 1, p4[1] + 2), rot=0)
-    s.station("access", (p4[0], p4[1], 3, 3), "A portable ladder in a 4 m pit: too short, it lies flat.", short="portable ladder, 4 m",
+    s.station("access", (p4[0], p4[1], 3, 3), "A portable ladder in a 4 m pit: too short, it lies flat.", short="ladder, 4 m pit",
               shows="portable_ladder", do="Compare it with the 2 m pit.")
     s.pit(pg, 3, 8)
     s.pawn((pg[0] + 1, pg[1] + 1), "wears climbing gear, 4 m sheer pit", wear="RM_ClimbingGear")
-    s.station("access", (pg[0], pg[1], 3, 3), "A colonist wearing climbing gear in a sheer 4 m pit.", short="climbing gear worn",
+    s.station("access", (pg[0], pg[1], 3, 3), "A colonist wearing climbing gear in a sheer 4 m pit.", short="climbing gear",
               shows="climbing_gear", do="Order her to the ground beside the pit and unpause: she climbs out.")
     s.pit(pn, 3, 8)
     s.pawn((pn[0] + 1, pn[1] + 1), "no gear, 4 m sheer pit")
-    s.station("access", (pn[0], pn[1], 3, 3), "A colonist with no climbing gear in a sheer 4 m pit.", short="no climbing gear",
-              shows="climbing_gear", do="Order him to the ground beside the pit and unpause: he cannot get out.")
+    s.station("access", (pn[0], pn[1], 3, 3), "A colonist with no climbing gear in a sheer 4 m pit: he cannot climb the wall.",
+              short="no gear", shows="climbing_gear",
+              do="Order him to the ground beside the pit and unpause: he cannot climb out; the colony brings him a ladder in time.")
     s.pit(pc, 3, 4)
     for i in range(3):
         for j in range(3):
@@ -228,7 +234,7 @@ def row_bridges(s, o):
             s.proof(R.SUSP, "ProofBuild", "%d,%d;%d,%d;%s;god" % (x0, z, x0 + 5, z, tier))
             s.proof(R.SUSP, "ProofRails", "%d,%d;%s" % (x0 + 2, z, rails))
             s.station("bridges", (x0, z - 1, 6, 3), "A %s bridge over a 4 m pit, railings %s." % (tier, rails),
-                      lane=lane, short="%s bridge, railings %s" % (tier, rails), shows="bridge_kinds",
+                      lane=lane, short="%s, railings %s" % (tier, rails), shows="bridge_kinds",
                       do="Look at the deck, the anchors and the railings.")
 
 
@@ -238,22 +244,19 @@ def row_bridges_ns(s, o):
     s.say("ROW bridges north-south")
     slots = iter([(bx + 1 + k * R.NS_PITCH, bz + lane * 8, lane) for lane in range(3) for k in range(6)])
 
-    def st(x, z0, lane, look, short, shows, do):
-        s.station("bridges_ns", (x - 1, z0, 3, 6), look, lane=lane, short=short, shows=shows, do=do)
+    regs = []
 
-    for look in ("Scrapper", "Industrial", "Modern", "Futuristic"):
-        x, z0, lane = next(slots)
-        R.span_pit_ns(s, x, z0)
-        s.proof(R.SUSP, "ProofLook", "%s;%d,%d;%d,%d" % (look, x, z0, x, z0 + 5))
-        st(x, z0, lane, "A steel bridge laid north-south over a 4 m pit, in the %s look." % look,
-           "north-south steel, %s look" % look, "bridge_looks", "Compare the four looks.")
+    def st(x, z0, lane, look, short, shows, do):
+        regs.append(((x - 1, z0, 3, 6), look, lane, short, shows, do))
+
+    look_slots = [next(slots) for _ in range(4)]
     for tier in ("rope", "timber", "steel", "heavy", "steel grated", "heavy grated"):
         x, z0, lane = next(slots)
         R.span_pit_ns(s, x, z0)
         s.proof(R.SUSP, "ProofBuild", "%d,%d;%d,%d;%s;god" % (x, z0, x, z0 + 5, tier.replace(" ", "")))
         if " " not in tier:
             s.proof(R.SUSP, "ProofRails", "%d,%d;on" % (x, z0 + 2))
-        st(x, z0, lane, "A %s bridge laid north-south over a 4 m pit." % tier, "north-south %s bridge" % tier, "bridge_kinds",
+        st(x, z0, lane, "A %s bridge laid north-south over a 4 m pit." % tier, "N-S %s" % tier.replace("grated", "grate"), "bridge_kinds",
            "Look at the deck and its anchors.")
     for tier in ("steel", "heavy"):
         for way in ("north", "south"):
@@ -264,8 +267,16 @@ def row_bridges_ns(s, o):
             if ok and "ok=True" not in txt and not s.dry:
                 s.notes.append("jetty %s %s at %s NOT built: %s" % (tier, way, root, txt[:160]))
             st(x, z0, lane, "A %s jetty rooted on the %s edge, reaching %s over a 4 m pit." % (
-               tier, "south" if way == "north" else "north", way), "%s jetty %s" % (tier, way), "jetties",
+               tier, "south" if way == "north" else "north", way), "%s jetty %s" % (tier, way[0].upper()), "jetties",
                "Look: one deck, not two blocks.")
+    for look, (x, z0, lane) in zip(("Scrapper", "Industrial", "Modern", "Futuristic"), look_slots):
+        R.span_pit_ns(s, x, z0)
+        s.proof(R.SUSP, "ProofLook", "%s;%d,%d;%d,%d" % (look, x, z0, x, z0 + 5))
+        regs.insert(("Scrapper", "Industrial", "Modern", "Futuristic").index(look),
+                    ((x - 1, z0, 3, 6), "A steel bridge laid north-south over a 4 m pit, in the %s look." % look, lane,
+                     "N-S %s" % look, "bridge_looks", "Compare the four looks."))
+    for rect, look, lane, short, shows, do in regs:
+        s.station("bridges_ns", rect, look, lane=lane, short=short, shows=shows, do=do)
 
 
 # ------------------------------------------------------------------ new stations
@@ -446,7 +457,7 @@ def row_moat(s, o):
 def row_cover_walks(s, o):
     ox, oz = o
     s.say("ROW cover walks: a pit 3 x 9, a cover over its middle 3 x 3, one colonist under it, one in the open south end")
-    for k, (name, d) in enumerate(COVERS):
+    for k, (name, d, short) in enumerate(COVERS):
         x0 = ox + k * 5
         s.basin(x0, oz, 3, 9, 6)
         s.pawn((x0 + 1, oz + 4), "already under the %s cover" % name)
@@ -455,7 +466,7 @@ def row_cover_walks(s, o):
                 s.place(d, (x0 + i, oz + j))
         s.pawn((x0 + 1, oz + 1), "in the open south end")
         s.station("covers", (x0, oz, 3, 9), "A 3 m pit with a %s cover over its middle, one colonist already under the cover, "
-                  "one in the open south end." % name, short="walk under the %s cover" % name, shows="walk_under_cover",
+                  "one in the open south end." % name, short=short, shows="walk_under_cover",
                   do="Order the colonist in the south end to the north end of the pit floor and unpause: she walks under "
                      "the cover and it fades over her.")
 
@@ -496,7 +507,7 @@ def row_hose(s, o):
     s.ticks(2)
     R.hose_lay_all(s, [n])
     s.ticks(700)
-    s.station("hose", (ox, oz, 21, 8), "A powered pump: a pipe brings water from a full tank on the west; a hose runs from "
+    s.station("hose", (ox, oz, 21, 11),           # 11 tall: the laid hose arcs about 3 squares north of its line (live 2026-11-25) "A powered pump: a pipe brings water from a full tank on the west; a hose runs from "
               "its reel to a tank on the east.", short="a hose beside a pipe", shows="hose",
               do="Compare the hose with the pipe: thicker, with fittings at the reel, plump while water flows.")
 
@@ -552,7 +563,7 @@ ROWS = [
     # bridges
     ("bridges", (14, 140), row_bridges),
     ("kinds", (14, 152), reuse(R.row_bars_bridge_kinds, T_KINDS, "bars", (0, 48))),
-    ("bridges_ns", (52, 140), row_bridges_ns),
+    ("bridges_ns", (52, 164), row_bridges_ns),     # z 164: the calm site's own steam geyser stands at (59, 141)
     ("bridge_walk", (86, 140), row_bridge_walk),
     # pipes
     ("sprinklers", (100, 136), reuse(R.row_sprinklers, T_SPRINKLERS, "sprinklers")),
@@ -560,6 +571,24 @@ ROWS = [
     # fire, alone
     ("fire", (205, 205), row_fire),
 ]
+
+
+TICK_ROWS = ("shallows", "sprinklers", "hose")     # the rows that advance the clock (a flow pulse, a sprinkler pulse, a hose settle)
+
+
+def staging_order(rows):
+    """The rows that advance the clock first: a colonist staged in deep water treads it on every tick until the owner looks
+    (2026-11-25: after the staging ticks and 240 more, a swimmer was downed by drowning; and the colony's pit rescue had built
+    ladders for the stranded colonists of stations 6 and 41 and carried one into a cover pit) (pure)."""
+    return [r for r in rows if r[0] in TICK_ROWS] + [r for r in rows if r[0] not in TICK_ROWS]
+
+
+def renumber(live, planned):
+    """Give the live stations the numbers of the plan (area order), whatever order they were staged in; sorts `live`."""
+    order = {(st["row"], st["short"]): st["n"] for st in planned}
+    for st in live:
+        st["n"] = order.get((st["row"], st["short"]), 10 ** 6)
+    live.sort(key=lambda st: st["n"])
 
 
 def group_of(row):
@@ -642,9 +671,10 @@ def problems(d, size=MAP):
     out += R.offmap_problems(d.stations, size) + R.edgeband_problems(d.stations, size)
     out += sign_problems(d.stations) + fire_problems(d.stations)
     for st in d.stations:
-        px = px_per_cell(st["rect"])
-        if px < MIN_PX:
-            out.append("station %d %r: its capture would show a cell at %.0f px (want >= %d)" % (st["n"], st["short"], px, MIN_PX))
+        for k, tile in enumerate(shot_tiles(st["rect"])):
+            px = px_per_cell(tile)
+            if px < MIN_PX:
+                out.append("station %d %r: its capture %d would show a cell at %.0f px (want >= %d)" % (st["n"], st["short"], k, px, MIN_PX))
     out += clear_problems(d.stations)
     return out
 
@@ -653,6 +683,23 @@ def px_per_cell(rect):
     """Screen pixels per cell of the capture of `rect` (the camera zoom fit_root_size gives it; SHOT_H tall) (pure)."""
     import water_scenes_walk as WSW
     return SHOT_H / (2.0 * WSW.fit_root_size(rect))
+
+
+def shot_tiles(rect):
+    """[(x, z, w, h)] the capture rects of a station: the station and its label row whole when one capture shows a cell at
+    >= MIN_PX; else the fewest equal tiles that each do, north row first (pure). Each tile is its own picture."""
+    x, z, w, h = rect
+    h += 1                                  # the label row north of the station
+    if px_per_cell((x, z, w, h)) >= MIN_PX:
+        return [(x, z, w, h)]
+    for n in range(2, 13):
+        for nx in [a for a in range(1, n + 1) if n % a == 0]:
+            nz = n // nx
+            tw, th = -(-w // nx), -(-h // nz)
+            if px_per_cell((x, z, tw, th)) >= MIN_PX:
+                return [(x + i * tw, z + j * th, min(tw, w - i * tw), min(th, h - j * th))
+                        for j in range(nz - 1, -1, -1) for i in range(nx)]
+    raise ValueError("station rect %s cannot be captured at %d px a cell in 12 tiles" % (rect, MIN_PX))
 
 
 def slug(t):
@@ -676,7 +723,67 @@ def stations_md(stations, save=None):
     return "\n".join(lines)
 
 
+PARK = (118, 118)                 # the site's own colonists wait here, drafted, away from every station
+
+
+def geyser_problems(stations, geysers):
+    """[str] every station (other than the geyser station) whose rect or label row meets a geyser's 2x2 (pure). The site clear
+    does not remove a geyser (live 2026-11-25: the calm site's geyser at 59,141 stood in a north-south bridge pit)."""
+    out = []
+    for st in stations:
+        if st["shows"] == "geyser_tub":
+            continue
+        x, z, w, h = st["rect"]
+        for gx, gz in geysers:
+            if gx is not None and R._overlap((x, z, w, h + 1), (gx, gz, 2, 2)):
+                out.append("geyser at %s in station %d %r" % ((gx, gz), st["n"], st["short"]))
+    return out
+
+
+def park_colonists(s, w):
+    """The site's own colonists, drafted in a row at PARK: undrafted, they wandered into stations during the staging ticks
+    (live 2026-11-25: two stood in the moat and bridge frames)."""
+    pawns = (w.hp("colonists") or {}).get("pawns") or []
+    for k, p in enumerate(pawns):
+        w.hp("pawn:%d=tp:%d,%d" % (p["id"], PARK[0] + k, PARK[1]))
+        w.hp("pawn:%d=draft" % p["id"])
+    s.say("  parked %d site colonists at %s, drafted" % (len(pawns), PARK))
+    if not pawns:
+        s.notes.append("no site colonist read to park (hose probe colonists): stray colonists may stand in stations")
+
+
 # ------------------------------------------------------------------ live
+def place_signs(s, w):
+    s.chk("review_label clear", w.call("jawa/review_label", action="clear", tag=R.LABEL_TAG))
+    s.chk("review_label add", w.call("jawa/review_label", action="add", ops="\n".join(R.station_label_ops(s.stations)), tag=R.LABEL_TAG))
+    w.call("jawa/review_sign", action="clear", prefix="SIGN ")
+    r = w.call("jawa/review_sign", action="place", ops="\n".join(sign_ops(s.stations))) or {}
+    if r.get("refused") or r.get("success") is False:
+        s.notes.append("station signs REFUSED: %s" % str(r.get("refused") or r)[:200])
+    s.chk("kill_hostiles (final)", w.call("jawa/kill_hostiles"))
+    s.chk("weather_set Clear (final)", w.call("jawa/weather_set", weather="Clear", lockWeather=True))
+
+
+def capture(s, w, a, C, out):
+    """Every station alone, each tile at >= MIN_PX a cell, copied uncompressed to out/station_NN_<name>[_part_K].png."""
+    shots = []
+    if a.no_shots:
+        return shots
+    os.makedirs(out, exist_ok=True)
+    for st in s.stations:
+        tiles = shot_tiles(st["rect"])
+        for k, rect in enumerate(tiles):
+            tag = "" if len(tiles) == 1 else "_part_%d" % (k + 1)
+            png = C.snap(w, "station_%02d%s" % (st["n"], tag), rect)
+            if not png:
+                s.notes.append("station %d capture%s FAILED" % (st["n"], tag))
+                continue
+            dst = os.path.join(out, "station_%02d_%s%s.png" % (st["n"], slug(st["short"]), tag))
+            shutil.copyfile(png, dst)
+            shots.append(dst)
+    return shots
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--dry-run", action="store_true")
@@ -686,6 +793,8 @@ def main(argv=None):
     ap.add_argument("--save-name", default=None)
     ap.add_argument("--no-save", action="store_true")
     ap.add_argument("--no-shots", action="store_true")
+    ap.add_argument("--fresh-map", action="store_true", help="go to the main menu and start a debug quicktest map first")
+    ap.add_argument("--shots-only", default="", help="N,M,... or all: capture those stations of the map staged now; no staging, no save")
     a = ap.parse_args(argv)
     only = [x for x in a.only.split(",") if x] or None
     names = [r[0] for r in ROWS]
@@ -708,6 +817,15 @@ def main(argv=None):
     out = a.out or os.path.join(C.REPO, "Transient", "walk_map_mock" if a.mock else "walk_map")
     w = C.make_walk(a, os.path.join(out, "_work"))
     s = WalkStage(w, False)
+    if a.fresh_map and not a.mock:
+        w.call("rimworld/go_to_main_menu")
+        w.call("rimworld/start_debug_game_ready", readiness="mapData", pauseIfNeeded=True, timeoutMs=280000)
+        from await_lifecycle import await_lifecycle  # noqa: E402  (Utils is on sys.path through validation_core)
+        lc = await_lifecycle(w.call, "map_ready", 240, poll_s=0.5)
+        if not lc.ok:
+            print("COULD NOT LOOK: no fresh map: %s" % lc.reason)
+            return 5
+        w.call("jawa/clear_ui", all=True)
     msize = C.map_size(w)
     if tuple(msize) != MAP and not a.mock:
         print("REFUSED: the walk map is laid out for a %dx%d map; this map is %dx%d" % (MAP + tuple(msize)))
@@ -721,42 +839,35 @@ def main(argv=None):
     name = a.save_name or "FLOWWORKS_WALK_%s" % time.strftime("%Y%m%d_%H%M")
     s.chk("kill_hostiles", w.call("jawa/kill_hostiles"))
     s.chk("weather_set Clear", w.call("jawa/weather_set", weather="Clear", lockWeather=True))
-    for _ in range(12):           # morning first, so the staging ticks end near midday
+    for _ in range(0 if a.shots_only else 12):           # morning first, so the staging ticks end near midday
         t = w.call("jawa/time_clock") or {}
         if t.get("ticksAbs") is None or 8 <= (t["ticksAbs"] % 60000) / 2500.0 <= 10:
             break
         w.ticks(2000)
+    if a.shots_only:
+        want = None if a.shots_only == "all" else {int(n) for n in a.shots_only.split(",")}
+        s.stations = [st for st in d.stations if want is None or st["n"] in want]
+        a.no_save = True
+    if not a.shots_only and not a.mock:
+        gx = [(t.get("x"), t.get("z")) for t in ((w.call("jawa/list_things", defName="SteamGeyser", limit=50) or {}).get("things") or [])]
+        hit = geyser_problems(d.stations, gx)
+        if hit:
+            print("REFUSED: the map's own geysers stand in stations (move the row): " + "; ".join(hit))
+            return 4
+        park_colonists(s, w)
     rects = row_rects(d.stations)
-    for row, o, fn in ROWS:
+    for row, o, fn in ([] if a.shots_only else staging_order(ROWS)):
         if only and row not in only:
             continue
         s.say("CLEAR %s %s" % (row, rects[row]))
         w.clear_site(rects[row])
         stage_row(s, row, o, fn)
-    if [st["n"] for st in s.stations] != [st["n"] for st in d.stations]:
-        s.notes.append("LIVE stations FAILED to match the plan: %d live, %d planned" % (len(s.stations), len(d.stations)))
-    s.chk("review_label clear", w.call("jawa/review_label", action="clear", tag=R.LABEL_TAG))
-    s.chk("review_label add", w.call("jawa/review_label", action="add", ops="\n".join(R.station_label_ops(s.stations)), tag=R.LABEL_TAG))
-    w.call("jawa/review_sign", action="clear", prefix="SIGN ")
-    r = w.call("jawa/review_sign", action="place", ops="\n".join(sign_ops(s.stations))) or {}
-    if r.get("refused") or r.get("success") is False:
-        s.notes.append("station signs REFUSED: %s" % str(r.get("refused") or r)[:200])
-    s.chk("kill_hostiles (final)", w.call("jawa/kill_hostiles"))
-    s.chk("weather_set Clear (final)", w.call("jawa/weather_set", weather="Clear", lockWeather=True))
-    shots = []
-    if not a.no_shots:
-        os.makedirs(out, exist_ok=True)
-        for st in s.stations:
-            x, z, ww, hh = st["rect"]
-            png = C.snap(w, "station_%02d" % st["n"], (x, z, ww, hh + 1))
-            if not png:
-                s.notes.append("station %d capture FAILED" % st["n"])
-                continue
-            dst = os.path.join(out, "station_%02d_%s.png" % (st["n"], slug(st["short"])))
-            shutil.copyfile(png, dst)
-            cam = getattr(w, "last_cam", None) or {}
-            st["root"] = cam.get("rootSize") or cam.get("zoom")
-            shots.append(dst)
+    if not a.shots_only:
+        renumber(s.stations, d.stations)
+        if [st["n"] for st in s.stations] != [st["n"] for st in d.stations]:
+            s.notes.append("LIVE stations FAILED to match the plan: %d live, %d planned" % (len(s.stations), len(d.stations)))
+        place_signs(s, w)
+    shots = capture(s, w, a, C, out)
     w.frame((14, 14, 222, 222))
     if not a.no_save:
         r = w.call("rimworld/save_game", saveName=name) or {}
@@ -764,7 +875,7 @@ def main(argv=None):
         if not r.get("path") or r.get("success") is False:
             s.notes.append("save_game gave no path or FAILED: %s" % str(r)[:140])
         s.say("SAVE %s -> %s" % (name, r.get("path")))
-    if a.out:
+    if a.out and not a.shots_only:
         with open(os.path.join(out, "stations.md"), "w", encoding="utf-8") as f:
             f.write(stations_md(s.stations, None if a.no_save else name + ".rws"))
     for n in s.notes:

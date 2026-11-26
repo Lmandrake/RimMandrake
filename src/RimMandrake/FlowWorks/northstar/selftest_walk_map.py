@@ -62,14 +62,35 @@ br = [st for st in bad if st["row"] == "kinds"]
 for st in br:
     st["rect"] = (st["rect"][0], st["rect"][1] - 2, st["rect"][2], st["rect"][3])
 check("can-fail: a row whose clear would wipe its neighbour is caught (the old z 150 kinds row)", W.clear_problems(bad))
-check("can-fail: a station too large to capture at 40 px a cell is caught",
-      W.px_per_cell((0, 0, 120, 60)) < W.MIN_PX and W.px_per_cell((14, 15, 35, 36)) >= W.MIN_PX)
+big = [st for st in d.stations if st["shows"] == "complex_pit"][0]
+tiles = W.shot_tiles(big["rect"])
+check("can-fail: one capture of the big pit shows a cell under 40 px (the screen is 1351 px tall)",
+      W.px_per_cell((big["rect"][0], big["rect"][1], big["rect"][2], big["rect"][3] + 1)) < W.MIN_PX)
+check("so the big pit is captured in tiles, each at >= 40 px a cell, covering it whole",
+      len(tiles) > 1 and all(W.px_per_cell(r) >= W.MIN_PX for r in tiles)
+      and sum(r[2] * r[3] for r in tiles) == big["rect"][2] * (big["rect"][3] + 1), tiles)
 _l, p2 = COV.walk_coverage(stations=[st for st in d.stations if st["shows"] != "hose"])
 check("can-fail: a principle with no station is caught", any("hose" in p and "no station" in p for p in p2), p2[:3])
 _l, p3 = COV.walk_coverage(not_on_walk={k: v for k, v in WP.NOT_ON_THE_WALK.items() if k != "ice_cuts_and_melts"})
 check("can-fail: a locked bar neither served nor listed is caught", any("ice_cuts_and_melts" in p for p in p3), p3[:3])
 _l, p4 = COV.walk_coverage(md_text="")
 check("can-fail: a principle missing from the page is caught", any("not on the page" in p for p in p4))
+check("the plan stands clear of the calm site's own geysers", not W.geyser_problems(d.stations, [(192, 184), (162, 97), (222, 69), (59, 141), (129, 211)]))
+check("can-fail: a geyser inside a station is caught (the calm site's 59,141 in the old north-south row)",
+      W.geyser_problems([dict(n=1, short="x", shows="bridge_kinds", rect=(57, 140, 3, 6))], [(59, 141)]))
+bad = copy.deepcopy(d.stations)
+bad[15]["short"] = "1 m of water in a 1 m hole"
+check("can-fail: a name longer than its label's room is caught", any("label's room" in p for p in W.sign_problems(bad)))
+order = [r[0] for r in W.staging_order(W.ROWS)]
+check("the rows that advance the clock are staged before any colonist goes in",
+      order[:len(W.TICK_ROWS)] == [r for r in order if r in W.TICK_ROWS], order)
+s2 = W.WalkStage(None, True)
+import contextlib, io  # noqa: E401,E402
+with contextlib.redirect_stdout(io.StringIO()):
+    for name, o, fn in W.staging_order(W.ROWS):
+        W.stage_row(s2, name, o, fn)
+W.renumber(s2.stations, d.stations)
+check("staged in that order, the stations keep the plan's numbers", [(st["n"], st["short"]) for st in s2.stations] == [(st["n"], st["short"]) for st in d.stations])
 md = W.stations_md(d.stations, "X.rws")
 check("stations.md lists every station", all("| %d | " % st["n"] in md for st in d.stations))
 
