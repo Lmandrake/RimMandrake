@@ -30,3 +30,8 @@ Test atlas only; real atlases are WORLD_GLYPHS_SKETCH_EVERY_BIOME_FIRST_STAB.
 1. Offline render review at full resolution, 1:1, no upscaling, three zooms (close / mid / far), every image prereviewed by the seat (fix or drop broken ones) before a sheet is served.
 2. Art goes through the art ledger and the art-eval pipeline (canvas rules, `rimworld-art-evaluation`), then the review sheet (`art_sheet.py` + `serve_gated.py`).
 3. Owner look in game, planned as an owner-attended or bridge-holding session (FOUNDRY is offline): 18 grid points at altitude 900 plus close-ups at 320 (the worldmap studio method), soft and hard edges both.
+
+## refs
+file: src/RimMandrake/BiomesShell/Source/RM_WorldDecals.cs
+file: src/RimMandrake/BiomesShell/prove_world_decals_live.py
+def: BiomeDef/RM_BlueDesert
