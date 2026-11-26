@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "7ad8f636c33b4901bba979a775d6766cd81604f96e0f75a6afee616fb4660d54",
+  "body_sha256": "4bd9f5b59aad5cf05ea9c778e73da574721a341a58eaa163aab98cd52d24ed73",
   "reducer": 1,
   "shards": {
    "BACKFILL": 348917,
@@ -26,7 +26,7 @@
    "HOLDER.run-1795560492": 1077,
    "HOLDER.run-1795660419": 2599,
    "HOLDER.run-1795661891": 608,
-   "HOLDER.run-1795667763": 1420,
+   "HOLDER.run-1795667763": 2112,
    "JUDGE.judge-1794890427": 18837,
    "JUDGE.judge-1795437145": 6544,
    "JUDGE.judge-1795662842": 7876,
@@ -772,11 +772,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795661891",
-   "done": "Advanced 0.2.0 from offline_build to blind_challenge: all 8 Stage 3 exit tests pass, certificate --to blind_challenge OK at HEAD (58 bars)",
-   "next": "Run the blind challenge (Stages 4 and 5) for 0.2.0",
-   "ruled_out": "No fix reader owed at Stage 3; no undecided bar or unclassed line in maturation.py next",
-   "ts": "2026-11-26T03:02:04Z"
+   "by": "HOLDER.run-1795667763",
+   "done": "Confirmed blind cycle 2 exit_met; advanced 0.2.0 to in_game; restamped stale T_PROOFGATE (certificate OK, 58 bars); both judge check repairs claimed_fixed",
+   "next": "Run the Stage 6 in-game visit for 0.2.0: the 35 not_kernel rows and the two survived game-side plants",
+   "ruled_out": "No mod fault in cycle 2; neither edited test weakens an assertion; locked files unchanged since the lock",
+   "ts": "2026-11-26T04:42:22Z"
   },
   "decisions": {
    "bar:inv_items_teleport": {
@@ -972,7 +972,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 776,
+  "events": 777,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -2611,7 +2611,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-26T04:40:52Z",
+   "last": "2026-11-26T04:42:22Z",
    "lease": "run-1795667763",
    "released": false,
    "token": 31

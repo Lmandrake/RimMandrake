@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":348917,"DISPATCH":51846,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":3294,"HOLDER.run-1795478277":3184,"HOLDER.run-1795485747":1414,"HOLDER.run-1795487290":2197,"HOLDER.run-1795510833":4164,"HOLDER.run-1795525975":3126,"HOLDER.run-1795538786":1751,"HOLDER.run-1795548573":1024,"HOLDER.run-1795560492":1077,"HOLDER.run-1795660419":2599,"HOLDER.run-1795661891":608,"HOLDER.run-1795667763":1420,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"JUDGE.judge-1795662842":7876,"OWNER":1207} body_sha256=f8d82f0ac7345cbe9318cfdb98c483d1aa109c42476b1cb6ac46b081aeaa5231 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":348917,"DISPATCH":51846,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":3294,"HOLDER.run-1795478277":3184,"HOLDER.run-1795485747":1414,"HOLDER.run-1795487290":2197,"HOLDER.run-1795510833":4164,"HOLDER.run-1795525975":3126,"HOLDER.run-1795538786":1751,"HOLDER.run-1795548573":1024,"HOLDER.run-1795560492":1077,"HOLDER.run-1795660419":2599,"HOLDER.run-1795661891":608,"HOLDER.run-1795667763":2112,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"JUDGE.judge-1795662842":7876,"OWNER":1207} body_sha256=0d0f9b3f2dfdfd319f37fffd0876201431e61387c14e96cd3c535e19691156a0 -->
 # ExplosiveKnockback — mod ledger packet
-version 0.2.0 · stage in_game · 776 events in 28 shards · reducer 1
-holder lease run-1795667763, token 31, last active 2026-11-26T04:40:52Z
+version 0.2.0 · stage in_game · 777 events in 28 shards · reducer 1
+holder lease run-1795667763, token 31, last active 2026-11-26T04:42:22Z
 holder session b6b1d88a-8ba8-4250-8578-0f12effce287, context 112092 of ceiling 400000
 
-## Last checkpoint (HOLDER.run-1795661891, 2026-11-26T03:02:04Z)
-- done: Advanced 0.2.0 from offline_build to blind_challenge: all 8 Stage 3 exit tests pass, certificate --to blind_challenge OK at HEAD (58 bars)
-- next: Run the blind challenge (Stages 4 and 5) for 0.2.0
-- ruled out: No fix reader owed at Stage 3; no undecided bar or unclassed line in maturation.py next
+## Last checkpoint (HOLDER.run-1795667763, 2026-11-26T04:42:22Z)
+- done: Confirmed blind cycle 2 exit_met; advanced 0.2.0 to in_game; restamped stale T_PROOFGATE (certificate OK, 58 bars); both judge check repairs claimed_fixed
+- next: Run the Stage 6 in-game visit for 0.2.0: the 35 not_kernel rows and the two survived game-side plants
+- ruled out: No mod fault in cycle 2; neither edited test weakens an assertion; locked files unchanged since the lock
 
 ## Open findings (43)
 (claimed fixes, awaiting a judge, on one line each with the oldest 41 open findings, named without their 'finding:': `modledger.py show --mod ExplosiveKnockback finding:<NAME>`)
@@ -247,6 +247,6 @@ spend recorded: USD 178.61, 171672717 tokens
 - claimed fixes in brief: 2 on one line (name and sha), their claim, test and fix by `show`
 - open findings in brief: the oldest 41 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
 - his answers and the bars' texts in brief (cut at 160 and 60 chars)
-- the full history: 776 events (views/history.md; never read whole)
+- the full history: 777 events (views/history.md; never read whole)
 
-cursor: t=2026-11-26T04:41:03Z.1795668063031659123 (modledger.py since --mod ExplosiveKnockback t=2026-11-26T04:41:03Z.1795668063031659123 prints what changed after this packet)
+cursor: t=2026-11-26T04:42:22Z.1795668142104547197 (modledger.py since --mod ExplosiveKnockback t=2026-11-26T04:42:22Z.1795668142104547197 prints what changed after this packet)
