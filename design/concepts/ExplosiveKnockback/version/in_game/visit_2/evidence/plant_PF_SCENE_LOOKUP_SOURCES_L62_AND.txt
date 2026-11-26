@@ -1,0 +1,16 @@
+
+--- stderr ---
+Traceback (most recent call last):
+  File "<string>", line 10, in <module>
+    runpy.run_path(script, run_name="__main__")
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen runpy>", line 294, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_GAME_VISIT_TWO_RUN_TWO.det\src/RimMandrake/ExplosiveKnockback/proof/scene_lookup_sources.py", line 142, in <module>
+    put(s, "blastPowerFromDamage", "False")
+    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_GAME_VISIT_TWO_RUN_TWO.det\src/RimMandrake/ExplosiveKnockback/proof/scene_lookup_sources.py", line 63, in put
+    raise RuntimeError("SETTING_REFUSED: %s=%s was not written (%s)" % (field, value, {k: r.get(k) for k in ("success", "valueAfter", "error", "message")}))
+RuntimeError: SETTING_REFUSED: blastPowerFromDamage=False was not written ({'success': True, 'valueAfter': 'False', 'error': None, 'message': None})
+[bridge split] 19.6 s wall: load 0.6 / ticks 0.0 / reads 2.0 / other 2.2 / outside calls 14.8 s

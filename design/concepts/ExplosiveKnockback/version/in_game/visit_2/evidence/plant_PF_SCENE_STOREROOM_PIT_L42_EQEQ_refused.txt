@@ -1,0 +1,29 @@
+
+--- stderr ---
+Traceback (most recent call last):
+  File "<string>", line 10, in <module>
+    runpy.run_path(script, run_name="__main__")
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen runpy>", line 294, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_GAME_VISIT_TWO_RUN_TWO.det\src/RimMandrake/ExplosiveKnockback/proof/scene_storeroom_pit.py", line 67, in <module>
+    with scene.open(GAME, contract=pit, needs={"mods": ["ExplosiveKnockback", "FlowWorks"], "map": SAVE, "calm": "standard"}) as s:
+         ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_GAME_VISIT_TWO_RUN_TWO.det\src\RimMandrake\Utils\scene.py", line 162, in open
+    step(report[at])
+    ~~~~^^^^^^^^^^^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_GAME_VISIT_TWO_RUN_TWO.det\src\RimMandrake\Utils\scene.py", line 160, in <lambda>
+    for at, step in enumerate((s._lock, lambda p: s._identify(p, wanted, where, rec), lambda p: s._load(p, where, rec),
+                                                  ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_GAME_VISIT_TWO_RUN_TWO.det\src\RimMandrake\Utils\scene.py", line 376, in _identify
+    raise Refused("WRONG_BUILD", "%s: %s. Deploy it and restart the game: python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod %s "
+                  "--instance %s --apply" % (n, "; ".join(str(w) for w in j["why"]), n, self.game))
+scene_core.Refused: WRONG_BUILD: FlowWorks: rimmandrakeflowworks.dll: the loaded code (MVID 4fc9a2c4-c12c-478d-925d-0b814b89be25) is not in the deployed or the committed file. Deploy it and restart the game: python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod FlowWorks --instance ArchBig --apply
+lock      done        drives under a take that was there: drives under the take of ArchBig: HELD by BENCH since 00:25 Pacific Standard Time (31 min), for: ExplosiveKnockback visit 2 run 2: rerun sc_mass_and_power, sc_save_in_air at HEAD; walk build [holder process pid 3665138 alive]
+identify  refused     nothing changed
+load      not reached nothing changed
+settle    not reached nothing changed
+calm      not reached nothing changed
+arm       not reached nothing changed
+[bridge split] 5.0 s wall: load 0.0 / ticks 0.0 / reads 0.1 / other 0.0 / outside calls 4.9 s

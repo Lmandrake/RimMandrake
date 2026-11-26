@@ -10,7 +10,27 @@ map_agreement and the walk save (identity `ident_tier.json`, `ident_proof2.json`
 ## Result
 65 of 65 checks read PASS in their last row [measured]. The exit is NOT met: two UNRESOLVED rows of visit 1
 (P_goods_fly_wall, P_goods_fly_rebound) still stand; their cause is not readable from any evidence, so they are owed to the
-Conductor (CLASS OWED note on the item).
+Conductor (CLASS OWED note on the item). Build match: 65 of 65 count, 0 to run [measured, run 2, 2026-11-26 01:05 PST].
+
+## Run 2 (continuation, 2026-11-26 00:23 to 01:10 PST, ArchBig)
+- **Build match.** sc_mass_and_power and sc_save_in_air were read as touched: their rows carried the identity file's
+  mod_sha (1fc945708e, 1a223189b3), older than the repairs they ran with. Both rerun at source 5e43516ec8 on the proof build
+  (identity `ident_proof3.json`), fresh AridShrubland quicktest: sc_mass_and_power PASS 4 of 4 lanes, sc_save_in_air PASS 5
+  of 5 claims (evidence `*_head.txt`).
+- **Walk build.** The committed release DLL deployed on ArchBig (the walk folder now equals the source's .srchash), and
+  FlowWorks redeployed from the committed source (see strange.jsonl). The walk save loads on that build with no error line
+  after its load line, twice; `walk_twins.py check`: 32 signs, 16 aftermath, each with its START twin.
+  `build_match.py check`: 65 of 65 count, 0 to run.
+- **The 20 PF_SCENE_* plants**, one by one on the release build (`scripts/plant_scenes.py`, rows `planted_scene_rows.jsonl`,
+  each with its `would_have`, evidence `evidence/plant_*.txt`): 7 seen by the deciding line (5 FAIL, the lookup setter
+  crash, the storeroom_pit judge; storeroom_pit.py is not run by sc_pit_fall or sc_pit_enemy, so those named checks would not
+  have seen it), 5 seen only by the library judge (each inverts a contract `exposure`; accept decides from the scene's own
+  rows, which read the opportunity themselves; lesson filed), 6 not seen and equivalent in practice (five `>=` to `>` on a
+  tick filter that no record meets, and the empty journal mark on a fresh stage save), 2 comment-only (not run).
+  Three runs were first refused WRONG_BUILD (FlowWorks) and rerun; the refused evidence is kept as `*_refused.txt`.
+- **The PF_SELFTEST_* plants** (proofgate L57, L36; restore L55): they edit offline test files that no in-game check runs, so
+  no in-game check could have seen them (L36 changes a comment only).
+- No mod fault found. Bridge released; ArchBig left up on the release build with the walk save loaded.
 
 ## What failed and what was done
 - **sc_barrage_perf** run 1: ENVIRONMENT FAULT, the same session's mod-off arm read p99 54.5 ms over the 50 ms budget (mod-on
