@@ -83,7 +83,8 @@ def run(seat="BENCH", stdin=None, cwd=None, session=False, reserve="0"):
     if not session:
         env["RM_ROLE_UNIT"] = "rm-role-fixture"   # a Dispatcher role launch; session=True is the owner's own window
     body = stdin if stdin is not None else json.dumps({"tool_name": "Agent", "cwd": cwd or "/x",
-                                                       "tool_input": {"prompt": "p", "model": "sonnet"}})
+                                                       "tool_input": {"prompt": "p", "model": "sonnet",
+                                                                      "subagent_type": "rm-fixer"}})
     p = subprocess.run([sys.executable, str(HOOK)], input=body, env=env, capture_output=True, text=True, timeout=60)
     try:
         out = json.loads(p.stdout) if p.stdout.strip() else {}
@@ -112,7 +113,7 @@ def transcript(name, minutes_ago, origin="human", extra=()):
 
 def sess_run(tp):
     body = json.dumps({"tool_name": "Agent", "cwd": "/x", "transcript_path": tp,
-                       "tool_input": {"prompt": "p", "model": "sonnet"}})
+                       "tool_input": {"prompt": "p", "model": "sonnet", "subagent_type": "rm-fixer"}})
     return run(session=True, stdin=body)
 
 
@@ -235,7 +236,7 @@ keep_state = state_f.read_text() if state_f.exists() else None
 (streams / "slot_override.json").write_text(json.dumps({"ownerSaid": "run nine", "until": iso(time.time() + H),
                                                         "seats": {"BENCH": 9}}))
 body = lambda sid: json.dumps({"tool_name": "Agent", "cwd": "/x", "session_id": sid,
-                               "tool_input": {"prompt": "p", "model": "sonnet"}})
+                               "tool_input": {"prompt": "p", "model": "sonnet", "subagent_type": "rm-fixer"}})
 state_f.write_text(json.dumps({"seat_restart": {"BENCH": {"state": "pending", "session_id": "sid-drain", "hard": True,
                                                           "reason": "hard context limit: 400000 tokens"}}}))
 rc, dec, why = run(stdin=body("sid-drain"), session=True)
@@ -283,10 +284,20 @@ check("... once the reserved helper's transcript shows (it ended), the reservati
       dec is None, (dec, why[:300]))
 nt.unlink()
 resf.unlink(missing_ok=True)
+# (c) a spawn that block_unbounded_agent.py refuses holds no slot (lesson 20261112T084018Z-BENCH-refused-spawn-holds-slot,
+# three sightings): both PreToolUse Agent hooks run, so a reservation written here for a refused type held the last slot
+untyped = json.dumps({"tool_name": "Agent", "cwd": "/x", "tool_input": {"prompt": "p", "model": "sonnet"}})
+rc, dec, why = run(reserve="90", stdin=untyped)
+check("one slot left: an untyped spawn (the unbounded hook refuses it) writes no reservation",
+      not resf.exists() or not any(json.loads(resf.read_text()).values()), (dec, resf.read_text() if resf.exists() else ""))
+rc, dec, why = run(reserve="90")
+check("... so the corrected, typed spawn right after it is allowed", dec is None, (dec, why[:300]))
+resf.unlink(missing_ok=True)
 env = dict(os.environ, RM_SPAWN_RESERVE_S="90", RM_SLOT_PROJECTS=str(projects), RM_STREAMS_DIR=str(streams),
            RM_ACCOUNT_USAGE_DIR=str(au), RM_SLOT_MACHINE="testhost", RM_SLOT_OWNER_LEDGER=str(tmp / "none.jsonl"),
            AGENT_SEAT="BENCH", RM_DISPATCHER_STATE=str(disp), CLAUDE_PROJECT_DIR=str(ROOT), RM_ROLE_UNIT="rm-role-fixture")
-body = json.dumps({"tool_name": "Agent", "cwd": "/x", "tool_input": {"prompt": "p", "model": "sonnet"}})
+body = json.dumps({"tool_name": "Agent", "cwd": "/x", "tool_input": {"prompt": "p", "model": "sonnet",
+                                                                    "subagent_type": "rm-fixer"}})
 
 
 def race(hook, n=6):

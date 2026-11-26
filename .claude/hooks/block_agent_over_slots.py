@@ -163,9 +163,25 @@ def allowed_n(SA, rules, seat, now):
         raise
 
 
+def unbounded_refuses(payload):
+    """True when block_unbounded_agent.py (the other PreToolUse Agent hook) refuses this spawn. Both hooks run, so a
+    reservation written for such a spawn held a slot for reserve_s with no helper behind it: three sightings, lesson
+    20261112T084018Z-BENCH-refused-spawn-holds-slot. Unreadable: False (the slot gate stays as it was)."""
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import block_unbounded_agent as U
+        if os.environ.get("RM_ALLOW_UNBOUNDED_AGENT") == "1":
+            return False
+        return U.refused_type(payload.get("tool_input") or {}) is not None   # "" (an omitted type) is refused too
+    except Exception:  # noqa: BLE001
+        return False
+
+
 def decide(payload, now=None):
     """None to allow, or the refusal text."""
     now = now or time.time()
+    if unbounded_refuses(payload):
+        return None     # the other hook refuses it; reserve nothing
     seat = seat_of(payload)
     if str(UTILS) not in sys.path:
         sys.path.insert(0, str(UTILS))
