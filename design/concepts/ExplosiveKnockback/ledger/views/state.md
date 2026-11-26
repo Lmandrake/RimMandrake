@@ -1,8 +1,8 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":348917,"DISPATCH":53215,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":3294,"HOLDER.run-1795478277":3184,"HOLDER.run-1795485747":1414,"HOLDER.run-1795487290":2197,"HOLDER.run-1795510833":4164,"HOLDER.run-1795525975":3126,"HOLDER.run-1795538786":1751,"HOLDER.run-1795548573":1024,"HOLDER.run-1795560492":1077,"HOLDER.run-1795660419":2599,"HOLDER.run-1795661891":608,"HOLDER.run-1795667763":2112,"HOLDER.run-1795670288":3297,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"JUDGE.judge-1795662842":7876,"OWNER":1207} body_sha256=edfe06710f01248953b95808cbafbebea23ab249232a8c19c4385c14dbbab2a9 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":348917,"DISPATCH":53916,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":3294,"HOLDER.run-1795478277":3184,"HOLDER.run-1795485747":1414,"HOLDER.run-1795487290":2197,"HOLDER.run-1795510833":4164,"HOLDER.run-1795525975":3126,"HOLDER.run-1795538786":1751,"HOLDER.run-1795548573":1024,"HOLDER.run-1795560492":1077,"HOLDER.run-1795660419":2599,"HOLDER.run-1795661891":608,"HOLDER.run-1795667763":2112,"HOLDER.run-1795670288":3297,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"JUDGE.judge-1795662842":7876,"OWNER":1207} body_sha256=da8ebd89f04e0d2ba3b8b5809d6fa3dfdef2fa9f37529f55b113defd2e5e1549 -->
 # ExplosiveKnockback — mod ledger packet
-version 0.2.0 · stage in_game · 791 events in 29 shards · reducer 1
+version 0.2.0 · stage in_game · 793 events in 29 shards · reducer 1
 holder lease run-1795670288, token 32, last active 2026-11-26T08:06:22Z
-holder session 2fc2bf7c-a8aa-47a9-a244-6d52d4ac8145, context 146794 of ceiling 400000
+holder session 2fc2bf7c-a8aa-47a9-a244-6d52d4ac8145, context 509706 of ceiling 400000 — ROTATE DUE
 
 ## Last checkpoint (HOLDER.run-1795670288, 2026-11-26T08:06:22Z)
 - done: Visit 2 on ArchBig: 65 of 65 last rows PASS, 5 check repairs and 3 pipeline fixes, walk save EK_V020_VISIT2_WALK_20261125; exit not met
@@ -247,6 +247,6 @@ spend recorded: USD 178.61, 171672717 tokens
 - claimed fixes in brief: 2 on one line (name and sha), their claim, test and fix by `show`
 - open findings in brief: the oldest 41 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
 - his answers and the bars' texts in brief (cut at 160 and 60 chars)
-- the full history: 791 events (views/history.md; never read whole)
+- the full history: 793 events (views/history.md; never read whole)
 
-cursor: t=2026-11-26T08:06:22Z.1795680382579092070 (modledger.py since --mod ExplosiveKnockback t=2026-11-26T08:06:22Z.1795680382579092070 prints what changed after this packet)
+cursor: t=2026-11-26T08:20:12Z.1795681212903126521 (modledger.py since --mod ExplosiveKnockback t=2026-11-26T08:20:12Z.1795681212903126521 prints what changed after this packet)
