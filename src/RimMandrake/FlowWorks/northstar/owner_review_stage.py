@@ -578,12 +578,23 @@ def row_gates(s, L, door, key, stuff):
             if not s.dry:
                 try:
                     import water_scenes_walk as m
-                    label += " [" + str(m.gate_open(s.w, mid))[:60] + "]"
+                    sfx, ok = held_open_suffix(m.gate_open(s.w, mid))
+                    label += sfx
+                    if not ok:
+                        s.notes.append("hold-open of %s at %s did not read open: %s" % (door, mid, sfx))
                 except Exception as ex:  # noqa: BLE001
                     s.notes.append("hold-open of %s at %s skipped: %s" % (door, mid, ex))
                     label += " [hold-open FAILED: closed]"
         cap.append(s.station(key, (x0, oz, 5, 5), label, short="%s %s%s" % (axis, ROT[rot][0], " OPEN" if held else "")))
     return cap
+
+
+def held_open_suffix(report):
+    """-> (label suffix, opened): the gate state read from the WHOLE hold-open report (gate_open's ProofLiquid "open=True");
+    the label keeps a 60-character cut of the report. A report with no open=True is a failed hold-open, never HELD OPEN."""
+    r = str(report)
+    ok = "open=True" in r
+    return (" [%s]" % r[:60]) if ok else (" [hold-open FAILED: %s]" % r[:60]), ok
 
 
 def row_shallows(s, L):

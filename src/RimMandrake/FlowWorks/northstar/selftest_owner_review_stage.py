@@ -493,5 +493,15 @@ check("no clock step runs after a swimmer is in the water (a 4 m hole drowns a t
       bool(spawn_at) and bool(ticks_at) and min(spawn_at) > max(ticks_at), order)
 
 
+# polish (REVIEW_STAGE_FIX_SMALL_MAPS_HELD_GATES): the hold-open report was cut to 60 characters, so an "open=False" at its end
+# never reached the label and a shut gate was captioned HELD OPEN. held_open_suffix reads the state from the whole report.
+_long = "ProofLiquid current|120,130 fluid=None level=0 fill=0 dl=0 open=False seals=True (opening took 400 ticks: ...)"
+_sfx, _ok = ORS.held_open_suffix(_long)
+check("can-fail: a shut gate far down the report is not called held open", (not _ok) and "FAILED" in _sfx, (_sfx, _ok))
+_sfx, _ok = ORS.held_open_suffix(_long.replace("open=False", "open=True"))
+check("an open gate's report reads held open", _ok and "FAILED" not in _sfx, (_sfx, _ok))
+_sfx, _ok = ORS.held_open_suffix("REFUSED: no door at 1,2")
+check("a report with no open= state is not called held open", not _ok, (_sfx, _ok))
+
 print("selftest_owner_review_stage: %d failure(s)" % len(FAILS))
 sys.exit(1 if FAILS else 0)

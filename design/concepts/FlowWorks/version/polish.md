@@ -64,7 +64,6 @@ Each ticket below was dropped as `not worth the touch` (test 1 of standing_rulin
 - `PLACER_SELFCHECK_FIX_LEAVES_MERGED_ORE`: placer selfcheck cleanup tracks only new Thing ids, so ore merged into a nearby stack stays (RM_PlacerWorks.cs:719).
 - `POCKET_TRAP_FIX_LADDER_TO_SEALED_POCKET`: RM_PocketGrid.TrappedIn treats a ladder into a second sealed pocket as an escape (one-hop check); walk the ladder graph if nested pockets ever matter.
 - `PROOF_TIERS_WIDEN_FOUR_FULL_LIST_HOLDOUTS`: preflight_flowworks P-O4 and three other harness defaults still assume the full mod list (small-lists-first).
-- `REVIEW_STAGE_FIX_SMALL_MAPS_HELD_GATES`: owner_review_stage.py:484 cuts gate_open's report to 60 chars and does not re-read the gate state, so a held-open gate can log as shut.
 - `RIMMANDRAKE_ADD_OVERLAY_PROOF_HOOK_LAW_CANNOT_SEE_ICONS`: FlowWorks proof: ProofOverlays reads the law's decisions, not the alpha drawn last; the battery bar and GenDraw lines stay unseen (676c5cd131 partial).
 - `RIMMANDRAKE_BATCH_PIT_REPORT_READS_IN_PIT_EXPOSURE`: pit_exposure_live spends ~25 s of a 64 s run on 450-500 single pit_report calls; batch one report per sample hour.
 - `RIMMANDRAKE_COVER_REALTIME_MINIFIED_UNDER_LIQUID`: A realtime-drawn minified thing (MinifiedThingRealtimeDraw) in a liquid pit may still draw whole; unconfirmed, not in the pit draw census.
