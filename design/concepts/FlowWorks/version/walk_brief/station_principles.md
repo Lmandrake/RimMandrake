@@ -187,3 +187,25 @@ below and is drawn faded. No live check orders a colonist to walk under any cove
 written: `src/RimMandrake/FlowWorks/northstar/scene_walk_under_cover.py`. It loads the walk save, orders the colonist in
 the open south end of each of the three cover stations to the open north end, and reads by state, never by picture, that
 she stood on a square under the cover with the cover faded over her, and that she reached the north end.
+
+Runs on ArchBig, FlowWorks build `d72a515be5`, save `FLOWWORKS_WALK_MAP_20261125`, 2026-11-25 about 9:05 PM PST (the rows
+are in `design/concepts/FlowWorks/version/scene_runs.jsonl`):
+- real build: SUCCESS. Each of the three walkers read by its own id under its own cover with `band=True faded=True`, then walked
+  out the open north end.
+- planted fault (`--plant walk_under_off`, the walk-under setting off): MOD FAILURE. No walker could start the walk; all three
+  stayed at the south end, 0 of 3 under a cover.
+- Both runs count for no bar: the fade read is a `jawa/static_call` (EXPLORED). The scene is a check of this map's stations,
+  not a row of the test table.
+
+Writing it found two faults of the scene library's `s.act.job`, both fixed in this run, test first: it never sent `waitTicks`
+0, so the game refused every job in an act (NOT_ONE_HOP); and it sent a lone cell as the job's second target, so the game
+refused every Goto order.
+
+## How the map is rebuilt and recaptured
+
+    python.exe -u design/concepts/FlowWorks/version/in_game/visit_13/load_site.py calm
+    python3 src/RimMandrake/Utils/save_guard.py run --current-slot none -- python.exe -u src/RimMandrake/FlowWorks/northstar/walk_map.py --out <folder> --save-name <new name>
+    python.exe -u src/RimMandrake/FlowWorks/northstar/walk_map.py --load <save> --shots-only all --out <folder>
+
+Every capture shows one cell at 61 px or more (the big pit in two halves). The calm site save holds no hostile faction: a load
+of the walk save opens nine "New faction" windows; answer Do nothing.

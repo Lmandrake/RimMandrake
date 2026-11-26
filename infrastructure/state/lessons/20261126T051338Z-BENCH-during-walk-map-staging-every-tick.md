@@ -1,0 +1,3 @@
+During a walk-map staging, every tick after a colonist is placed in a pit lets FlowWorks' pit rescue act: on 2026-11-25 the colony built a wall ladder for the no-gear colonist of the climbing-gear station, set a ladder blueprint in a dry 4 m hole and carried a portable ladder into a cover pit, and a swimmer was downed by drowning after 240 more ticks. Stage every row that advances the clock (flow pulse, sprinkler pulse, hose settle) before any colonist goes into a pit or deep water, and advance no tick after (walk_map.staging_order).
+item: RIMMANDRAKE_REBUILD_FLOWWORKS_WALK_MAP_OLD_CODED_AND_STRANGE
+home: src/RimMandrake/FlowWorks/northstar/walk_map.py
