@@ -148,7 +148,7 @@ def blasts(s, rows):
         # contract reads "each harmful blast in view", so the view is put on the pad first (visit 1 of 0.2.0: with the
         # view elsewhere only the antigrain's kick was above the one-pixel floor)
         cx, cz = PADS[pad][2]
-        s.raw("rimworld/jump_camera_to_cell", x=cx, z=cz)
+        s.raw("rimworld/jump_camera_to_cell", x=STATION[0] + cx, z=STATION[1] + cz)    # a pad's centre is station-relative
         t0 = static(s, "lastShakeTick")
         j0 = journal_lines(s)
         hp = s.read(pad + "_x", "hitPointsInt")
