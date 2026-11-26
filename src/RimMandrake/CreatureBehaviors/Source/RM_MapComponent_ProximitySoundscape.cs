@@ -152,20 +152,8 @@ namespace RimMandrake.CreatureBehaviors
             base.MapRemoved();
         }
 
-        // 🔴 UNVERIFIED — THE ONE CALL IN THIS FILE THAT NEEDS THE DESKTOP.
-        //
-        // `Find.CameraDriver` itself IS proven live in this repo: our own
-        // bridge calls Find.CameraDriver.JumpToCurrentMapLoc(IntVec3) and
-        // Find.CameraDriver.shaker.DoShake(...) (JawaBenchMapInfoTools.cs:322,
-        // JawaBenchStorytellerTools2.cs:374). So the driver exists and speaks
-        // in map cells. What is NOT verified from our own source is the member
-        // that READS its current position — and the Mac has no game, no def
-        // dump and no decompiler, so ⛔ the member name below must be
-        // confirmed against the engine before this ships.
-        //
-        // It is isolated here on purpose: if the name is wrong, exactly one
-        // method needs fixing, and until then a false return makes the whole
-        // mechanism silent rather than throwing every interval.
+        // The listener is the camera's cell on the map the player is looking at;
+        // false (silence) when this map is not current or no camera exists yet.
         private bool TryGetListenerCell(out IntVec3 cell)
         {
             cell = IntVec3.Invalid;
