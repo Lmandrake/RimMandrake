@@ -278,9 +278,9 @@ Work per sea, in this order — cheapest and most decisive first.
 
 Each of the four seas: a stated shore verdict; a floor the gravship flies down to
 and that is populated; and for every species in its catch table, either a floor animal or a
-recorded reason it is catch-only. `validate_patch.py` clean on every touched file. ⛔ **No
-live-verified claim** while `QUICKTEST_RIVER_WATER_MISSING_1` stands — say "authored, not
-live-proven" and mean it.
+recorded reason it is catch-only. `validate_patch.py` clean on every touched file. The live half is the two level-tagged
+criteria of 2026-11-26 (A1 floor census, A2 shore catch per sea); until each passes live, say
+"authored, not live-proven". (`QUICKTEST_RIVER_WATER_MISSING_1`, the old blocker, closed 2026-09-24.)
 
 ## criteria
 
