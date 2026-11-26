@@ -2871,7 +2871,7 @@ def origin_views(root, mods):
                     with open(theirs, "rb") as fh:
                         if not data.startswith(fh.read()):
                             return ("views not landed: origin/main's %s/DISPATCH.jsonl is not a prefix of this root's "
-                                    "(another Dispatch wrote it): pull before landing" % rel)
+                                    "(%s): pull before landing" % (rel, NOT_PREFIX))
                 with open(theirs, "wb") as fh:
                     fh.write(data)
             if not modledger.shard_names(tmp, mod):
@@ -2891,6 +2891,72 @@ def origin_views(root, mods):
 
 
 LAND_VIEW_TRIES = 3
+# The DISPATCH shard has more than one writing clone: the tick, and maturation.py's stage records in a steward's or
+# the Conductor's clone. So origin's copy can hold a line this root lacks (2026-11-26 4:08 AM PST: a steward's line
+# made the tick's 4:11 landing refuse, and its two lines stayed unlanded for six hours).
+NOT_PREFIX = "a peer clone appended to it"
+SEAT_SYNC = os.path.join(os.path.dirname(HERE), "Utils", "seat_sync.py")
+LEDGER_SHARD_GLOB = "design/concepts/*/ledger/DISPATCH.jsonl"
+# budget: danger=a hung git fetch or reset holds the tick's state lock; evidence=seat_sync --dry-run in the dispatch
+# budget: clone took 2.5 s, fetch included (2026-11-26 10:30 AM PST); ends no work: the next tick tries again
+SEAT_SYNC_S = 600
+
+
+def seat_sync(root):
+    """Bring the root level with origin/main by seat_sync.py (a fetch, then `git reset --keep` that carries a dirty
+    append-only shard on top of upstream's lines). `git pull --ff-only` refuses any dirty file that an incoming commit
+    also changes, so it never moved the tick's clone past an unlanded DISPATCH line. -> seat_sync's last line."""
+    try:
+        p = subprocess.run([sys.executable, SEAT_SYNC, "--repo", root], capture_output=True, text=True,
+                           timeout=SEAT_SYNC_S)
+    except (OSError, subprocess.SubprocessError) as e:
+        return "seat_sync failed: %s: %s" % (type(e).__name__, e)
+    lines = (p.stdout.strip() or p.stderr.strip()).splitlines()
+    return lines[-1] if lines else "seat_sync exited %d and said nothing" % p.returncode
+
+
+def unlanded_ledger_mods(root):
+    """-> the mods whose DISPATCH shard in the root differs from HEAD (tracked and changed, or new): lines that a
+    refused or failed landing left behind. None when git cannot say."""
+    try:
+        r = subprocess.run(["git", "-C", root, "status", "--porcelain", "--untracked-files=all", "--",
+                            LEDGER_SHARD_GLOB], capture_output=True, text=True, timeout=120)
+    except (OSError, subprocess.SubprocessError):
+        return None
+    if r.returncode:
+        return None
+    mods = set()
+    for ln in r.stdout.splitlines():
+        parts = ln[3:].strip().split("/")
+        if len(parts) == 5 and parts[:2] == ["design", "concepts"] and parts[3:] == ["ledger", "DISPATCH.jsonl"]:
+            mods.add(parts[2])
+    return sorted(mods)
+
+
+def sync_clone(root, fx=None):
+    """Each applying tick, first: move the tick's clone level with origin/main (seat_sync), then land any DISPATCH
+    lines a refused or failed landing left (land_ledger; its land.sh syncs the clone again after the push). Every
+    timer runs from this clone, so a clone stuck behind runs old code on an old tree. -> one line for the reading.
+    A root that is not a clone's top (a selftest) or RM_STAGE_LAND=0 is left as is."""
+    if (fx or {}).get("sync_clone"):
+        return fx["sync_clone"]()
+    if os.environ.get("RM_STAGE_LAND") == "0":
+        return "skipped: RM_STAGE_LAND=0"
+    try:
+        r = subprocess.run(["git", "-C", root, "rev-parse", "--show-toplevel"], capture_output=True, text=True,
+                           timeout=120)
+    except (OSError, subprocess.SubprocessError) as e:
+        return "skipped: git rev-parse: %s" % e
+    if r.returncode != 0 or os.path.realpath(r.stdout.strip()) != os.path.realpath(root):
+        return "skipped: %s is not a clone's top" % root
+    out = ["sync: %s" % seat_sync(root)]
+    mods = unlanded_ledger_mods(root)
+    if mods is None:
+        out.append("unlanded lines: could not look (git status failed)")
+    elif mods:
+        out.append("unlanded %s: %s" % (", ".join(mods), land_ledger(
+            root, mods, "lines a refused or failed landing left unlanded")))
+    return "; ".join(out)
 
 
 def land_ledger(root, mods, what, fx=None):
@@ -2909,6 +2975,11 @@ def land_ledger(root, mods, what, fx=None):
     out = None
     for n in range(LAND_VIEW_TRIES + 1):
         refused = origin_views(root, mods)
+        if refused and NOT_PREFIX in refused:   # a peer appended to the shard on origin: pull it in, ours on top
+            synced = seat_sync(root)
+            refused = origin_views(root, mods)
+            if refused:
+                refused = "%s (after seat_sync: %s)" % (refused, synced)
         if refused:
             return refused if out is None else "%s; then %s" % (out, refused)
         paths = ledger_paths(root, mods)
@@ -4447,6 +4518,9 @@ def _tick(root, cfg, apply, fx=None, now=None, page=False):
     RV.sync_system(st, record, keep_failed=lambda b, x: still_retried(cfg, b, x, mod_of.get(id(x))),
                    kills_left=lambda b, x, why: kill_resumed(cfg, b, x, why, mod_of.get(id(x))), now=now)
     repair_sync(st, now, fx)
+    # the clone every timer runs from, moved level first, its unlanded DISPATCH lines landed (sync_clone); a caller
+    # with fixtures (a selftest) syncs nothing unless it stands one in
+    clone_sync = sync_clone(root, fx) if apply and (not fx or "sync_clone" in fx) else None
     aut = fx.get("autonomy", True)      # False: the per-stage decision alone (selftest_maturation_dispatch's layer)
     shipped = cfg                       # the file's own values, before widen adds discovered mods (maturation_hands)
     cfg = AUT.widen(root, cfg, st, apply, fx) if aut else cfg   # Designer concepts seen and seeded; the game queue
@@ -4591,6 +4665,7 @@ def _tick(root, cfg, apply, fx=None, now=None, page=False):
             st["mods"][mod]["convergence"] = {k: (v or {}).get("verdict") for k, v in c.items()}
     if apply:
         rd["clone"] = clone
+        rd["clone_sync"] = clone_sync
         if stale:
             rd.setdefault("needs_conductor", []).append(
                 "stale_clone: nothing launched; %s (OPS_DISPATCH_CLONE_BEHIND_UNSTICK)" % clone_line(clone))
@@ -4999,6 +5074,11 @@ def main(argv=None):
         rd = tick(os.path.abspath(o.root), cfg, o.apply, page=o.page and not o.no_page)
         for mod, r in rd["mods"].items():
             print("%-20s %-7s %-13s %s" % (mod, r.get("klass"), r["decision"], r.get("status") or r["why"]))
+        if isinstance(rd.get("clone"), dict):   # the journal shows the clone's state and its sync, stale_clone included
+            print("%s%s" % (clone_line(rd["clone"]), "; %s" % rd["clone_sync"] if rd.get("clone_sync") else ""))
+        for x in rd.get("needs_conductor") or []:
+            if x.startswith("stale_clone"):
+                print(x)
         print("idle owed max %s min%s; launched %d; page %s" % (
             rd["idle_owed_max_min"], (" (over %s: %s)" % (rd["idle_alarm_min"], ", ".join(rd["idle_owed_mods"])))
             if rd["idle_owed_mods"] else "", len(rd["launched"]), rd.get("page", "built by rm-maturation-page.timer")))
