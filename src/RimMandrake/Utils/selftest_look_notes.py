@@ -72,6 +72,8 @@ def t_the_walk_brief_names_each_listed_pin():
                                  "read": {"path": "v.txt", "regex": r"shallow = ([0-9.]+)"}},
                                 {"id": "PIN_B", "said": "fine", "cell": "c2", "value": "0.25",
                                  "read": {"path": "v.txt", "regex": r"shallow = ([0-9.]+)"}}]}, f)
+        LN.LC.record("M", "walk_save_1", [{"key": "c1", "name": "shallow end", "inputs": ["v.txt"]}], root=root,
+                     now="2026-11-26T00:00:00-08:00")
         silent = M.walk_brief_pins_why(root, "M", "## What changed since his last look\nthe water retune\n")
         named = M.walk_brief_pins_why(root, "M", "## What changed since his last look\nPIN_A (cell c1): 0.49 -> 0.25\n")
         prefix = M.walk_brief_pins_why(root, "M", "PIN_AB moved\n")
@@ -82,6 +84,37 @@ def t_the_walk_brief_names_each_listed_pin():
             f.write("{not json")
         bad = M.walk_brief_pins_why(root, "M", "anything")
         ok(len(bad) == 1 and "cannot be read" in bad[0], "the gate names an unreadable pins file, never reads it as none")
+    finally:
+        shutil.rmtree(root, ignore_errors=True)
+
+
+def t_each_listed_cell_is_in_the_save():
+    import maturation as M  # noqa: E402
+    root = tempfile.mkdtemp(prefix="look_notes_st_")
+    try:
+        with open(os.path.join(root, "v.txt"), "w") as f:
+            f.write("shallow = 0.25\n")
+        p = LN.pins_path(root, "M")
+        os.makedirs(os.path.dirname(p))
+        with open(p, "w") as f:
+            json.dump({"pins": [{"id": "PIN_A", "said": "good", "cell": "c1", "value": "0.49",
+                                 "read": {"path": "v.txt", "regex": r"shallow = ([0-9.]+)"}}]}, f)
+        brief = "## What changed since his last look\nPIN_A (cell c1): 0.49 -> 0.25\n"
+        no_file = M.walk_brief_pins_why(root, "M", brief)
+        LN.LC.record("M", "walk_save_1", [{"key": "c9", "name": "other", "inputs": ["v.txt"]}], root=root,
+                     now="2026-11-26T00:00:00-08:00")
+        absent = M.walk_brief_pins_why(root, "M", brief)
+        LN.LC.record("M", "walk_save_2", [{"key": "c1", "name": "shallow end", "inputs": ["v.txt"]}], root=root,
+                     now="2026-11-26T01:00:00-08:00")
+        present = M.walk_brief_pins_why(root, "M", brief)
+        named_old = LN.save_why(root, "M", LN.notes(root, "M")["listed"], save="walk_save_1")
+        ok(len(no_file) == 1 and "cannot be read" in no_file[0] and len(absent) == 1 and "c1" in absent[0] and
+           "walk_save_1" in absent[0] and present == [] and len(named_old) == 1,
+           "a listed pin's cell must be in the save he opens (the newest cells file, or the one named); no cells file "
+           "is named, never read as every cell present")
+        with open(p, "w") as f:
+            json.dump({"pins": []}, f)
+        ok(LN.save_why(root, "M", LN.notes(root, "M")["listed"]) == [], "nothing listed asks nothing of the save")
     finally:
         shutil.rmtree(root, ignore_errors=True)
 
@@ -109,6 +142,7 @@ def main():
     t_a_pin_with_no_value_is_unmeasured()
     t_an_unreadable_pins_file_is_could_not_look()
     t_the_walk_brief_names_each_listed_pin()
+    t_each_listed_cell_is_in_the_save()
     t_pin_records_the_value_now_and_refuses_a_reader_that_finds_nothing()
     print("selftest_look_notes: %s" % ("ALL PASS" if not FAILS else "%d FAIL" % len(FAILS)))
     return 1 if FAILS else 0

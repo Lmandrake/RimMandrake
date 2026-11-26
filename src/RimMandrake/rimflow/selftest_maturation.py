@@ -672,8 +672,13 @@ def main():
             f.write("written_by: fresh-reader-1\n\n%s" % body.replace(
                 "selftest text under What changed since his last look",
                 "PIN_SELFTEST_SHALLOW (cell c1): 0.49 -> 0.25"))
+        refused(M.advance(root, "Pyrelands", "his_walk", by="CONDUCTOR", why="x"), "walk_brief",
+                "a brief that names the moved pin while no save of his holds its cell")
+        cells = M.LN.LC.record("Pyrelands", "selftest_walk_save", [{"key": "c1", "name": "shallow", "inputs":
+                                                                     ["pin_src.txt"]}], root=root)
         ok(not M.read_walk_brief(root, "Pyrelands", M.load(root, "Pyrelands"))["why"],
-           "a brief that names the moved pin passes the walk_brief clause")
+           "a brief that names the moved pin, whose cell is in the save, passes the walk_brief clause")
+        os.remove(cells)
         os.remove(pins)
         with open(wb, "w") as f:
             f.write("written_by: fresh-reader-1\n\n%s" % body)

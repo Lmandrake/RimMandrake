@@ -4278,15 +4278,16 @@ def walk_brief_moved_why(root, mod, text):
 def walk_brief_pins_why(root, mod, text):
     """-> [why] a walk brief does not name a pinned line of his that a fix moved, lost or cannot compare (rule 2e of
     design/RimMandrake/validation_map_and_rules.md; his card 2026-11-12: "A fix that changes something he passed ->
-    Allow it, list what moved"). A pins file that cannot be read is named, never read as no pins."""
+    Allow it, list what moved"), or whose cell is not in the save he opens (look_notes.save_why). A pins file that
+    cannot be read is named, never read as no pins."""
     n = LN.notes(root, mod)
     if n["why"]:
         return ["his pins cannot be read (%s): repair the file, then run look_notes.py %s" % (n["why"], mod)]
     left = [r["id"] for r in n["listed"]
             if not re.search(r"(?<![A-Za-z0-9_])%s(?![A-Za-z0-9_])" % re.escape(r["id"]), text or "")]
-    return ["the brief does not name the pinned line %s that moved since his pass: paste `python3 "
-            "src/RimMandrake/Utils/look_notes.py %s` under \"What changed since his last look\"" % (", ".join(left), mod)
-            ] if left else []
+    return (["the brief does not name the pinned line %s that moved since his pass: paste `python3 "
+             "src/RimMandrake/Utils/look_notes.py %s` under \"What changed since his last look\"" % (", ".join(left), mod)
+             ] if left else []) + LN.save_why(root, mod, n["listed"])
 
 
 def visit_numbers(root, mod):

@@ -1,6 +1,6 @@
 # BOUNDARY: the notes of his next look list every pinned pass that a fix moved, Design Version 0.1.0
 
-Code: `src/RimMandrake/Utils/look_notes.py` (`notes`, `render`, `pin`, `read_pins`), called by
+Code: `src/RimMandrake/Utils/look_notes.py` (`notes`, `render`, `pin`, `read_pins`, `save_why`), called by
 `src/RimMandrake/rimflow/maturation.py` (`walk_brief_pins_why`, inside `read_walk_brief`, the `walk_brief` clause of
 the move to `his_walk`) and by the walk brief writer (`src/RimMandrake/rimflow/roles/walk_brief.md`). Item:
 `RIMMANDRAKE_LIST_MOVED_PINS_IN_LOOK_NOTES`. Rule: 2e of `design/RimMandrake/validation_map_and_rules.md` (his card,
@@ -20,8 +20,8 @@ in `src/RimMandrake/Utils/selftest_look_notes.py`.
   pinned with no reader, and so reads UNMEASURED on every look until a reader is written.
 - **a-moved-line-the-regex-still-matches-elsewhere.** If the pinned line is deleted and another line matches the same
   regex, the other line's value is read.
-- **the-save-holding-the-cell.** The notes name each listed pin's cell. Nothing here reads the save to prove that the
-  cell is in it; the walk brief writer stages it.
+- **the-save-file-itself.** "In the save" is read from the save's cells file (`look_cells/<save>.json`, written by
+  `look_changed_labels.record`), not from the `.rws` savegame. A builder that records a cell it did not stage is not seen.
 - **unpinned-passes.** A pass that nobody pinned is not seen. `pin` is run when his pass is recorded.
 
 ## PROMISES (each one is owed a test of the same name)
@@ -36,5 +36,8 @@ in `src/RimMandrake/Utils/selftest_look_notes.py`.
   exits 2; it is never read as an empty set.
 - **the-walk-brief-names-each-listed-pin.** `walk_brief_pins_why` refuses a walk brief that does not name each listed
   pin by its whole id, names only the missing ones, and names an unreadable pins file.
+- **each-listed-cell-is-in-the-save.** `save_why` (and so the walk_brief gate) refuses a listed pin whose cell is not a
+  key of the save's cells file (the one named, else the newest), names a missing cells file, and asks nothing when
+  nothing is listed.
 - **pin-records-the-value-now-and-refuses-a-reader-that-finds-nothing.** `pin` stores the value its reader finds now (or
   the value given), replaces an entry of the same id, and refuses a reader that finds nothing.

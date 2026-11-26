@@ -14,7 +14,10 @@ Callers: the walk brief writer pastes `look_notes.py <Mod>` under "What changed 
 (src/RimMandrake/rimflow/roles/walk_brief.md), and maturation.py's walk_brief clause refuses a brief that does not name
 each listed pin (walk_brief_pins_why). Item RIMMANDRAKE_LIST_MOVED_PINS_IN_LOOK_NOTES.
 
-  look_notes.py <Mod> [--root R] [--json]     the notes; exit 0 (listed or nothing to list), 2 the pins file cannot be read
+  look_notes.py <Mod> [--save S] [--root R] [--json]
+                                              the notes, and each listed cell missing from the save he opens (its
+                                              look_cells file); exit 0 (listed or nothing to list), 2 the pins file
+                                              cannot be read
   look_notes.py pin <Mod> --id ID --said "his words" --cell CELL --path P --regex R [--value V]
                                               pin (or re-pin) a pass at the value its reader finds now (or V)
   look_notes.py --selftest                    prints PASS n/n
@@ -26,6 +29,9 @@ import re
 import shutil
 import sys
 import tempfile
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import look_changed_labels as LC  # noqa: E402  the cells of the save he opens (look_cells/<save>.json)
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
 PINS_REL = "version/pins.json"
@@ -105,6 +111,31 @@ def notes(root, mod):
                 row.update(state=st, why=v)
         out.append(row)
     return {"pins": len(pins), "listed": out, "why": None}
+
+
+def cells_of_save(root, mod, save=None):
+    """-> (save name, {cell keys}) of the named save's cells file, else the newest one the save builder recorded
+    (look_changed_labels.record). Raises LC.CouldNotLook when none can be read, never read as an empty save."""
+    pick = [x for x in LC.looks(root, mod) if save is None or x[2].get("save") == save]
+    if not pick:
+        raise LC.CouldNotLook("no cells file for %s%s under design/concepts/%s/%s/ (the save builder writes it with "
+                              "look_changed_labels.record)" % (mod, " save %s" % save if save else "", mod, LC.LOOK_DIR))
+    d = pick[-1][2]
+    return d.get("save"), set(str(k) for k in (d.get("cells") or {}))
+
+
+def save_why(root, mod, listed, save=None):
+    """-> [why] a listed pin's cell is not in the save he opens (rule 2e: "that cell is in the save he opens"). [] when
+    nothing is listed; a cells file that cannot be read is named, never read as every cell present."""
+    if not listed:
+        return []
+    try:
+        name, keys = cells_of_save(root, mod, save)
+    except LC.CouldNotLook as e:
+        return ["the save's cells cannot be read, so no listed pin is shown to be in it: %s" % e]
+    return ["pinned line %s names %s, which is not in save %s: stage that cell in the save he opens" % (
+        r["id"], "cell %s" % r["cell"] if r["cell"] else "no cell", name) for r in listed if str(r["cell"]) not in keys
+        or not r["cell"]]
 
 
 def render(mod, n):
@@ -254,9 +285,12 @@ def main(argv=None):
     ap.add_argument("mod")
     ap.add_argument("--root", default=REPO)
     ap.add_argument("--json", action="store_true")
+    ap.add_argument("--save", help="the save he opens (its look_cells file); default the newest one recorded")
     a = ap.parse_args(argv)
     n = notes(a.root, a.mod)
-    print(json.dumps(n, indent=2) if a.json else render(a.mod, n))
+    n["save_why"] = [] if n["why"] else save_why(a.root, a.mod, n["listed"], a.save)
+    print(json.dumps(n, indent=2) if a.json else "\n".join([render(a.mod, n)] + ["  NOT IN THE SAVE: %s" % w
+                                                                               for w in n["save_why"]]))
     return 2 if n["why"] else 0
 
 
