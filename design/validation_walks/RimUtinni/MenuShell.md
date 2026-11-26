@@ -1,13 +1,13 @@
 # MenuShell — validation walk
 subject: src/RimUtinni/MenuShell  (packageId mandrake.rut.menushell)
 feature: menu-shell-core
-deps: vanillaexpanded.backgrounds (loadAfter; all eleven BackgroundImageDefs carry MayRequire="vanillaexpanded.backgrounds" so it is a soft dep, not a hard one)
-list: minimal   # loads clean with VBE absent (MayRequire skips before type resolution); minimal+vanillaexpanded.backgrounds needed to exercise the eleven BackgroundImageDefs themselves
-status-hint: the campaign's menu/loading-screen shell — eleven VBE.BackgroundImageDef main-menu backgrounds (pantheon slide + one per god icon + the animated RUT_BG_ShellIshkoGate), a Core-planet-background fallback texture with no VBE dependency, and a 30-line Jawa-voiced TipSetDef read by GameplayTipWindow. Pure XML + textures, no C#, no Harmony.
+deps: vanillaexpanded.backgrounds (loadAfter; all twelve BackgroundImageDefs carry MayRequire="vanillaexpanded.backgrounds" so it is a soft dep, not a hard one)
+list: minimal   # loads clean with VBE absent (MayRequire skips before type resolution); minimal+vanillaexpanded.backgrounds needed to exercise the twelve BackgroundImageDefs themselves
+status-hint: the campaign's menu/loading-screen shell — twelve VBE.BackgroundImageDef main-menu backgrounds (pantheon slide + one per god icon + the animated RUT_BG_ShellIshkoGate + RUT_BG_AshkarrOrbit, the planet from orbit), a Core-planet-background fallback texture with no VBE dependency, and a 30-line Jawa-voiced TipSetDef read by GameplayTipWindow. Pure XML + textures, no C#, no Harmony.
 
 ## must be true
-- With vanillaexpanded.backgrounds ABSENT, all eleven VBE.BackgroundImageDef nodes are skipped cleanly (MayRequire short-circuits before DirectXmlLoader resolves the "VBE.BackgroundImageDef" type) — no red config error, and Textures/UI/HeroArt/BGPlanet.png is what actually shows behind the main menu (overrides Core's own planet background by load order).
-- With vanillaexpanded.backgrounds PRESENT, all eleven RUT_BG_* defs resolve and each def's path and iconPath point at the same texture file (RimUtinni/MenuShell/BG_PantheonSlide, BG_God_Ishko, BG_God_Ohm, BG_God_Oomo, BG_God_Mobunloo, BG_God_Rekko, BG_God_Shkaar, BG_God_Tabaa, BG_God_Zizzik, BG_God_Ozzik — nine gods + the pantheon slide — and UI/Backgrounds/utinni_menu_1, animated from Videos/UI/Backgrounds/utinni_menu_1.webm).
+- With vanillaexpanded.backgrounds ABSENT, all twelve VBE.BackgroundImageDef nodes are skipped cleanly (MayRequire short-circuits before DirectXmlLoader resolves the "VBE.BackgroundImageDef" type) — no red config error, and Textures/UI/HeroArt/BGPlanet.png is what actually shows behind the main menu (overrides Core's own planet background by load order).
+- With vanillaexpanded.backgrounds PRESENT, all twelve RUT_BG_* defs resolve and each def's path and iconPath point at the same texture file (RimUtinni/MenuShell/BG_PantheonSlide, BG_God_Ishko, BG_God_Ohm, BG_God_Oomo, BG_God_Mobunloo, BG_God_Rekko, BG_God_Shkaar, BG_God_Tabaa, BG_God_Zizzik, BG_God_Ozzik — nine gods + the pantheon slide — BG_AshkarrOrbit (the planet from orbit), and UI/Backgrounds/utinni_menu_1, animated from Videos/UI/Backgrounds/utinni_menu_1.webm).
 - RUT_TipSet_Jawa loads with its full 30-line <tips> list intact and no def has zero tips.
 - No .cs, no Assemblies/ folder in this mod — any load-time error naming MenuShell.dll or a C# type would mean the About.xml's "XML/texture only" claim is false.
 

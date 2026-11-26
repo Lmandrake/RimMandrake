@@ -13,7 +13,8 @@ Ships two things, both XML/texture only (no C#, no Harmony):
 (1) VBE.BackgroundImageDef backgrounds for Vanilla Backgrounds Expanded's main-menu
 picker (which the loading screen inherits for free) - the pantheon slide, letterboxed
 onto a 2560x1440 indigo-black field with no upscaling, plus one background per god
-icon (nine), each the god's icon large on the same indigo field. All ten are
+icon (nine), each the god's icon large on the same indigo field, and Ash'karr itself from orbit
+(a 2048x1280 render of the ringed planet on its day/night line). All of them are
 MayRequire="vanillaexpanded.backgrounds" so they are skipped cleanly if VBE is ever
 dropped - RimWorld checks MayRequire before it even tries to resolve the def's C#
 type, so no red error either way. A Tier-1 fallback ships alongside: the same

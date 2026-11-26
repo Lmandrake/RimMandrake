@@ -15,7 +15,7 @@ WHAT THIS SUITE CAN ACTUALLY TEST, per the mod's own walk doc header
 `infrastructure/state/modlists/ModsConfig.MINIMAL.xml` does NOT carry
 `vanillaexpanded.backgrounds` (grepped directly, not assumed) -- so on the
 environment `modcheck run MenuShell` actually composes (MINIMAL + this mod
-only), every one of the eleven `VBE.BackgroundImageDef` nodes across
+only), every one of the twelve `VBE.BackgroundImageDef` nodes across
 `BackgroundImageDefs.xml` and `UtinniShell/VBE_Backgrounds_Utinni.xml` is
 skipped by its own `MayRequire="vanillaexpanded.backgrounds"` before
 DirectXmlLoader ever tries to resolve the type -- there is no C# type
@@ -37,8 +37,8 @@ not the walk doc's stale 29. The walk doc itself needs its own correction
 pass (done 2026-10-03, with ten -> eleven backgrounds and the missing Shkaar).
 
 Still not proven / out of this validator's floor:
-  1. Both VBE-dependent walk-doc claims -- "absent VBE, all eleven skip
-     cleanly" and "present VBE, all eleven resolve with path==iconPath" --
+  1. Both VBE-dependent walk-doc claims -- "absent VBE, all twelve skip
+     cleanly" and "present VBE, all twelve resolve with path==iconPath" --
      have no live component here (see above). A full-list pass with
      `vanillaexpanded.backgrounds` actually active is the only way to
      prove either; out of this minimal-list smoke suite's floor.
@@ -59,6 +59,7 @@ suite.toggles = []   # no Source/, no ModSettings -- every component beyond_togg
 
 EXPECTED_TIP_COUNT = 30   # grep -c '<li>' Defs/TipSetDefs.xml, 2026-09-17 --
                           # the walk doc's own "29" is stale, see docstring
+ORBIT_DEF = "RUT_BG_AshkarrOrbit"   # the planet render (PLANETARY_LOADSCREEN_WIRE_THREE_RINGS_WAIT)
 FIRST_TIP = ("Ash'karr turns but never spins - one face burns, one face "
              "freezes, and the clan lives on the line between.")
 
@@ -134,9 +135,38 @@ def shell_files_static(t):
                             not _o.path.isfile(_o.path.join(here, "Videos", path + ".webm")):
                         bad.append("%s: animated but no Videos/%s.webm" % (dn, path))
         if n < 10:
-            bad.append("blind parse: only %d VBE.BackgroundImageDef found (expected 11)" % n)
+            bad.append("blind parse: only %d VBE.BackgroundImageDef found (expected 12)" % n)
         if bad:
             raise ExpectationFailed("; ".join(bad))
+
+
+@suite.chain("shell_orbit_static")
+def shell_orbit_static(t):
+    """Offline, its own chain so a failure of another background cannot mask it (PLANETARY_LOADSCREEN_WIRE_THREE_RINGS_WAIT):
+    the ASH'KARR planet from orbit is a menu and loading-screen background, at vanilla's BGPlanet size (2048x1280) or
+    more, so it is not drawn blurred."""
+    import os as _o
+    import xml.etree.ElementTree as _ET
+    here = _o.path.dirname(_o.path.abspath(__file__))
+    with t.component("ashkarr_orbit_background_full_size", beyond_toggle=True):
+        from PIL import Image
+        el = None
+        for root, _d, files in _o.walk(_o.path.join(here, "Defs")):
+            for fn in sorted(files):
+                if fn.endswith(".xml"):
+                    el = el if el is not None else next((e for e in _ET.parse(_o.path.join(root, fn)).getroot()
+                                                         if e.tag == "VBE.BackgroundImageDef"
+                                                         and e.findtext("defName") == ORBIT_DEF), None)
+        if el is None:
+            raise ExpectationFailed("no VBE.BackgroundImageDef %s: the planet is not a background" % ORBIT_DEF)
+        png = _o.path.join(here, "Textures", (el.findtext("path") or "").strip() + ".png")
+        if not _o.path.isfile(png):
+            raise ExpectationFailed("%s: no texture %s" % (ORBIT_DEF, png))
+        im = Image.open(png)
+        lo, hi = im.convert("L").getextrema()
+        if im.size[0] < 2048 or im.size[1] < 1280 or hi - lo < 10:
+            raise ExpectationFailed("%s: texture is %dx%d with luminance range %d (need >= 2048x1280, not flat)"
+                                    % (ORBIT_DEF, im.size[0], im.size[1], hi - lo))
 
 
 @suite.chain("shell_theme_static")

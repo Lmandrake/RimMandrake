@@ -1,0 +1,17 @@
+{
+  "subject": "PLANETARY_LOADSCREEN_WIRE_THREE_RINGS_WAIT: which of the three ASH'KARR loadscreen candidates of PLANETARY_LOADSCREEN_RENDERS_2 becomes the menu and loading-screen background",
+  "class": "delegated: art (the pick is not the owner's: owner-queue note of 2026-11-02, per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM, 'a judge picks one of the three and it is listed in his digest')",
+  "judge_model": "gpt-6.1-sol through gpt_consult.py, 3 images each pass; not the maker (the candidates are Codex imagegen edits of seeds placed from the tile record)",
+  "judge_jobs": ["consult-20261101-113007-1561842 (first pass)", "the corrected second pass recorded in Transient/planetary_loadscreen_2026-11-01/judge.json"],
+  "constraints": "PLANETARY_LOADSCREEN_RENDERS_2 spec section 3: the planetary ring, tidal-lock terminator, one sun, desert world; NOT Mars, NOT a binary star; no text",
+  "verdicts": {
+    "candidate_twilight_terminator.png": {"ring": true, "not_mars": true, "one_sun": true, "no_text": true, "defect": "Some terrain has an exaggerated, carved texture that weakens the photographic orbital look."},
+    "candidate_crater_ring.png": {"ring": true, "not_mars": true, "one_sun": true, "no_text": true, "defect": "Oversized terrain relief and sharply patterned regions make the surface look illustrated rather than photographic."},
+    "candidate_grey_sea_limb.png": {"ring": true, "not_mars": true, "one_sun": true, "no_text": true, "defect": "Abrupt, nearly black surface patches near the upper-right limb look like texture artifacts."}
+  },
+  "pick": "candidate_twilight_terminator.png (best in both judge passes)",
+  "picture_source_sha256": "22ced59004ff11545a18f087684dbd0a3b5291c4e78fbbbeb0df8e069fcfcb6a",
+  "installed_as": "src/RimUtinni/MenuShell/Textures/RimUtinni/MenuShell/BG_AshkarrOrbit.png",
+  "transform": "mechanical only: Lanczos upscale 1586x992 -> 2048x1281, bottom row cropped to 2048x1280 (vanilla BGPlanet size and aspect)",
+  "wired_by": "VBE.BackgroundImageDef RUT_BG_AshkarrOrbit in src/RimUtinni/MenuShell/Defs/BackgroundImageDefs.xml; the no-VBE fallback BGPlanet.png is unchanged (no kept picture is displaced)"
+}

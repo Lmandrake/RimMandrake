@@ -11,11 +11,21 @@
   MayRequire is verified sufficient on its own (Verse/LoadedModManager.cs: the
   top-level MayRequire check runs and `continue`s past the whole node BEFORE
   DirectXmlLoader/DirectXmlToObjectNew ever tries to resolve "VBE.BackgroundImageDef"
-  as a type) - so with VBE inactive these ten defs are skipped cleanly, no red error,
+  as a type) - so with VBE inactive these defs are skipped cleanly, no red error,
   and the BGPlanet.png fallback (Textures/UI/HeroArt/BGPlanet.png in this same mod)
   carries the no-VBE case per the spec's section 7.
 -->
 <Defs>
+
+  <!-- PLANETARY_LOADSCREEN_WIRE_THREE_RINGS_WAIT: the planet itself, from orbit, at vanilla's BGPlanet size (2048x1280).
+       Picked by a judge, not the maker: infrastructure/state/delegated/2026-11-26/PLANETARY_LOADSCREEN_WIRE_THREE_RINGS_WAIT.json -->
+  <VBE.BackgroundImageDef MayRequire="vanillaexpanded.backgrounds">
+    <defName>RUT_BG_AshkarrOrbit</defName>
+    <label>Ash'karr from orbit</label>
+    <description>The ringed world on the line between its burning day and its frozen night, the Scald and the Twilight Sea below.</description>
+    <path>RimUtinni/MenuShell/BG_AshkarrOrbit</path>
+    <iconPath>RimUtinni/MenuShell/BG_AshkarrOrbit</iconPath>
+  </VBE.BackgroundImageDef>
 
   <VBE.BackgroundImageDef MayRequire="vanillaexpanded.backgrounds">
     <defName>RUT_BG_PantheonSlide</defName>
