@@ -33,6 +33,7 @@ import datetime
 import hashlib
 import json
 import os
+import re
 import subprocess
 import time
 
@@ -393,6 +394,14 @@ def red_seen(root, mod, test_id, patch=None, runner=subprocess.run, now=None):
                 "from a build and a deploy, never from this tree; plant the fault in code the check runs from the tree, or "
                 "build and deploy the faulted mod first and prove the red by hand; nothing recorded"
                 % (test_id, ", ".join(unloaded[:4]))}
+    # a scene library check (`scene.py accept`) refuses a tree that differs from its commit (REFUSED TREE_NOT_CLEAN, exit 3),
+    # so any fault planted here reads non-zero without the scene running, and accept exits 0 on a scene that prints FAIL:
+    # neither exit says anything about the fault (ExplosiveKnockback visit 3, 2026-11-26)
+    if re.search(r"scene\.py['\"]?\s+accept\b", str(t.get("command") or "")):
+        return {"ok": False, "why": "did not run: %s runs `scene.py accept`, which refuses a tree a planted fault has changed "
+                "(TREE_NOT_CLEAN, exit 3) and exits 0 on a scene that prints FAIL; prove the scene red with its own "
+                "`accept --plant <name>` and write the planted reading on the visit row's repair field; nothing recorded"
+                % test_id}
     reds = _read_evidence(root, mod, RED_SEEN)
     if reds is None:
         return {"ok": False, "why": "did not run: %s is there but cannot be read; nothing is overwritten" % RED_SEEN}

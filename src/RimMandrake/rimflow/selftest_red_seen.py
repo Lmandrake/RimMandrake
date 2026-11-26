@@ -123,6 +123,24 @@ def main():
         r = JC.red_seen(root, MOD, "sc_live", patch=P["fault"], runner=flip)
         ok(r["ok"] is True and red_record(root).get("sc_live", {}).get("rc") == 1,
            "control: an in-game check planted in harness Python it runs from the tree is still recorded (%s)" % r["why"][:80])
+        # RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_GAME_VISIT_THREE (2026-11-26): `scene.py accept` refuses a tree that differs
+        # from its commit (REFUSED TREE_NOT_CLEAN, exit 3) and exits 0 on a scene that prints FAIL, so a planted fault in the
+        # tree yields exit 3 whatever the scene would read: a red here proves nothing. A scene proves its red with --plant.
+        tt = json.load(open(JC.tpath(root, MOD)))
+        tt["tests"]["sc_scene"] = dict(tt["tests"]["sc_live"], command="python.exe src\\RimMandrake\\Utils\\scene.py accept "
+                                       "src\\RimMandrake\\X\\proof\\scene_x.py   (release build, minimal list)")
+        with open(JC.tpath(root, MOD), "w") as f:
+            json.dump(tt, f)
+        calls.clear()
+        def refused(*a, **k):      # accept as it behaves: a tree the patch changed is refused (exit 3); a clean one runs the scene
+            calls.append(1)
+            if open(os.path.join(root, "src/kernel.py")).read() != kernel:
+                return R(3, "REFUSED TREE_NOT_CLEAN: 1 path(s) differ from the commit")
+            return R(0, "PASS sc_x: 0 failing row(s)")
+        r = JC.red_seen(root, MOD, "sc_scene", patch=P["fault"], runner=refused)
+        ok(r["ok"] is False and r["why"].startswith("did not run") and "--plant" in r["why"] and not calls
+           and "sc_scene" not in red_record(root) and open(os.path.join(root, "src/kernel.py")).read() == kernel,
+           "a scene.py accept check is refused before it runs: a planted tree reads TREE_NOT_CLEAN, not red (%s)" % r["why"][:110])
         r = JC.red_seen(root, MOD, "T_GOOD", patch=P["fault"])
         ok(r["ok"] is True and red_record(root).get("T_GOOD", {}).get("rc") == 1, "control: a real red is recorded")
         JC.run_offline(root, MOD)
