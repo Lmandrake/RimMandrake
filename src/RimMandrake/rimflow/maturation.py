@@ -327,7 +327,14 @@ def seed_mod(root, mod, live=True, gathered=None):
         rec["seeded"]["run_records"] = "read" if isinstance(m.get("runs"), list) else UNM
     else:
         rec["seeded"]["run_records"] = "not read (--no-live)"
-    write_text(root, mod, RECORD, dump(rec))
+    lk = _mod_lock(root, mod)
+    try:        # a record another process wrote while this one gathered its facts is returned, never written over
+        have = load(root, mod)
+        if have is not None:
+            return have, False
+        write_text(root, mod, RECORD, dump(rec))
+    finally:
+        lk.close()
     return rec, True
 
 
@@ -1725,7 +1732,8 @@ def next_version(root, mod, by, why):
             os.makedirs(os.path.dirname(os.path.join(mod_dir(root, mod), b)), exist_ok=True)
             os.rename(os.path.join(mod_dir(root, mod), a), os.path.join(mod_dir(root, mod), b))
             done.append((a, b))
-        commit_move(root, mod, nrec, jtext, extra={keep: dump(rec)})
+        commit_move(root, mod, nrec, jtext, extra={keep: dump(rec)},
+                    expect=(rec.get("stage"), rec.get("version"), len(rec.get("moves") or [])))
     except Exception as e:
         left = []
         for a, b in reversed(done):
@@ -1736,6 +1744,8 @@ def next_version(root, mod, by, why):
         if left:
             raise OSError("next-version failed (%s) and %d set-aside path(s) could not be moved back: %s"
                           % (e, len(left), "; ".join(left))) from e
+        if isinstance(e, MovedMeanwhile):
+            return {"ok": False, "why": "the record moved meanwhile, so nothing changed: %s" % e}
         raise
     ledger_version_open(root, mod, new, by, why)   # after the record is committed: never rolls the move back
     return {"ok": True, "why": why, "from": old, "to": new, "stage": stage, "kept": rel(mod, keep),

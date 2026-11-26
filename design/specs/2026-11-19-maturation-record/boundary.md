@@ -26,7 +26,7 @@ this one, `design/specs/2026-11-19-maturation-reads/boundary.md`; the record's o
   `record_run_spend` then rewrites it with only its new rows. Listed, not fixed, on the reads page by the owner's card
   of 2026-11-19 (`a-mod-file-unreadable-but-present`): a file of ours turning unreadable on its own disk is rare.
 - **a-writer-that-skips-the-lock.** A process that writes the record without `_mod_lock` (a hand edit, an old copy
-  of this module) can still erase a move in between. `seed_mod` writes without it, but only when no record exists yet.
+  of this module) can still erase a move in between.
 - **an-archive-move-that-fails-half-way.** `next_version` sets each numbered folder aside with one `os.rename`; if a
   later rename or the record write fails, the ones already moved are moved back. A move back that fails too raises
   naming the paths left in the archive.
@@ -47,6 +47,11 @@ this one, `design/specs/2026-11-19-maturation-reads/boundary.md`; the record's o
   written, and names every moved path in its result (`archived`, `aside`), its journal entry and its CLI line; an
   archive path already taken refuses the move before anything moves. The new version's cycle 1, visit 1 and arrival 1
   start empty, and the old version's evidence is kept (`modledger.py` still reads its fault ids).
+- **next-version-refuses-a-move-made-meanwhile.** `next_version` writes its new record only if the record on disk
+  still has the stage, version and number of moves that it read (`commit_move`'s `expect`). When a move landed in
+  between, it returns `ok` False, keeps that move and moves the set-aside evidence back.
+- **seed-writes-under-the-mod-lock.** `seed_mod` reads again under `_mod_lock` before it writes. A record that another
+  process wrote while this one gathered its facts is returned untouched (`made` False), never written over.
 
 - **spend-rows-carry-their-unit.** Every spend row a writer adds names its `token_unit`. A run row (`_spend_row`, so
   the seed and `record_run_spend`) takes its run record's unit, which the maturation_now run view carries

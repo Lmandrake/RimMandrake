@@ -210,6 +210,56 @@ def t_next_version_sets_aside_numbered_evidence():
           "an archive path already taken refuses the move, and nothing moves", r)
 
 
+def t_next_version_refuses_a_move_made_meanwhile():
+    """A stage move that lands between next_version's read of the record and its write is not overwritten: the
+    version move refuses, the landed move stays, and the old evidence is moved back."""
+    root = rollover_root("roll_meanwhile")
+    real = M.numbered_evidence
+
+    def landed(r, m):       # another process's move lands after next_version read the record
+        rec = M.load(r, m)
+        rec["moves"].append({"from": "passed", "to": "passed", "by": "selftest meanwhile"})
+        M.write_text(r, m, M.RECORD, M.dump(rec))
+        return real(r, m)
+    M.numbered_evidence = landed
+    try:
+        r = M.next_version(root, MOD, "BENCH", "selftest")
+    finally:
+        M.numbered_evidence = real
+    rec = M.load(root, MOD)
+    check(not r.get("ok") and "meanwhile" in str(r.get("why")), "next_version refuses when the record moved", r)
+    check(rec.get("version") == "0.1.0" and [x.get("by") for x in rec.get("moves") or []] == ["selftest meanwhile"],
+          "the move that landed meanwhile is kept", rec)
+    check(M.cycle_numbers(root, MOD) == [1, 2], "the old evidence is moved back", M.cycle_numbers(root, MOD))
+
+
+def t_seed_writes_under_the_mod_lock():
+    """A record written by another process while seed_mod gathers its facts is returned untouched, never written over."""
+    root = os.path.join(TMP, "seed_meanwhile")
+    os.makedirs(M.mod_dir(root, MOD), exist_ok=True)
+    other = {"schema": 1, "mod": MOD, "version": "0.1.0", "stage": "offline_build", "moves": [{"by": "other seed"}],
+             "spend": []}
+    real = M.read_text
+
+    def meanwhile(r, m, p):
+        if p == "journal.md" and M.load(r, m) is None:
+            M.write_text(r, m, M.RECORD, M.dump(other))
+        return real(r, m, p)
+    M.read_text = meanwhile
+    MN, rm = M.MN, M.MN.read_mod
+    MN.read_mod = lambda *a, **k: {"name": MOD, "column": next(iter(M.WORD_OF_COL)), "version": "0.1.0"}
+    try:
+        rec, made = M.seed_mod(root, MOD, live=False)
+    except Exception as e:      # noqa: BLE001
+        rec, made = {"raised": str(e)}, None
+    finally:
+        M.read_text, MN.read_mod = real, rm
+    check(made is False and rec.get("moves") == [{"by": "other seed"}], "seed_mod returns the record made meanwhile",
+          (made, rec))
+    check((M.load(root, MOD) or {}).get("moves") == [{"by": "other seed"}], "and does not write over it",
+          M.load(root, MOD))
+
+
 SWITCH_LAST_V1, SWITCH_FIRST_V2 = "2026-11-16T23:00:13-08:00", "2026-11-16T23:10:17-08:00"   # measured, the records
 
 
@@ -288,6 +338,7 @@ def main(argv=None):
     only = set(argv[argv.index("--only") + 1:]) if "--only" in argv else None
     for t in (t_spend_write_holds_the_mod_lock, t_stage_spend_unmeasured_when_no_row_measured,
               t_build_facts_refuses_what_evaluate_refuses, t_next_version_sets_aside_numbered_evidence,
+              t_next_version_refuses_a_move_made_meanwhile, t_seed_writes_under_the_mod_lock,
               t_spend_rows_carry_their_unit, t_stage_spend_sums_one_unit):
         if only is not None and t.__name__ not in only:
             continue
