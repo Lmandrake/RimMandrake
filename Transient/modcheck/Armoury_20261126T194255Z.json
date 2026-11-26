@@ -1,0 +1,990 @@
+{
+ "mod": "Armoury",
+ "stamp": "20261126T194255Z",
+ "summary": {
+  "chains": [
+   {
+    "name": "ores_and_smelts",
+    "components": [
+     {
+      "name": "ores_and_smelts_shape",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "defs_present_dooniumAsteroidEnabled",
+      "toggle": "dooniumAsteroidEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [],
+         "defs": [
+          {
+           "requested": "ThingDef/RSW_MineableDoonium",
+           "found": true,
+           "defName": "RSW_MineableDoonium",
+           "defType": "ThingDef",
+           "label": "doonium ore",
+           "modName": "Jawa Armoury Rebalance",
+           "packageId": "mandrake.rsw.armoury",
+           "fields": {
+            "thingClass": "Mineable",
+            "category": "Building",
+            "tickerType": "Never",
+            "stackLimit": 1,
+            "destroyable": true,
+            "rotatable": false,
+            "smallVolume": false,
+            "useHitPoints": true,
+            "receivesSignals": false,
+            "comps": [],
+            "virtualDefs": [],
+            "killedLeavingsChance": 1.0,
+            "forceLeavingsAllowed": false,
+            "smeltable": false,
+            "burnableByRecipe": false,
+            "randomizeRotationOnSpawn": false,
+            "damageMultipliers": [
+             "DamageMultiplier"
+            ],
+            "isTechHediff": false,
+            "isUnfinishedThing": false,
+            "leaveResourcesWhenKilled": false,
+            "isFrameInt": false,
+            "hasInteractionCell": false,
+            "interactionCellIconReverse": false,
+            "filthLeaving": "Filth_RubbleRock",
+            "forceDebugSpawnable": false,
+            "intricate": false,
+            "scatterableOnMapGen": false,
+            "deepCommonality": 0.0,
+            "deepCountPerCell": 300,
+            "deepCountPerPortion": -1,
+            "generateCommonality": 1.0,
+            "generateAllowChance": 1.0,
+            "alwaysFlee": false,
+            "messageOnDeteriorateInStorage": true,
+            "deteriorateFromEnvironmentalEffects": true,
+            "canDeteriorateUnspawned": false,
+            "canLoadIntoCaravan": true,
+            "isMechClusterThreat": false,
+            "minRewardCount": 1,
+            "preventSkyfallersLandingOn": false,
+            "relicChance": 0.0,
+            "allowedArchonexusCount": 0,
+            "possessionCount": 0,
+            "notifyMapRemoved": false,
+            "canScatterOver": true,
+            "genericMarketSellable": true,
+            "drawHighlight": false,
+            "drawHighlightOnlyForHostile": false,
+            "autoTargetNearbyIdenticalThings": false,
+            "preventDroppingThingsOn": false,
+            "hiddenWhileUndiscovered": false,
+            "disableImpassableShotOverConfigError": false,
+            "showInSearch": true,
+            "bringAlongOnGravship": true,
+            "preventSpawningInResourcePod": false,
+            "pathfinderDangerous": false,
+            "noRightClickDraftAttack": false,
+            "gravshipSpawnPriority": 1,
+            "preventGravshipLandingOn": false,
+            "canInteractThroughCorners": false,
+            "drawerType": "MapMeshOnly",
+            "drawOffscreen": false,
+            "hideAtSnowOrSandDepth": 99999.0,
+            "drawDamagedOverlay": true,
+            "castEdgeShadows": true,
+            "staticSunShadowHeight": 1.0,
+            "useSameGraphicForGhost": false,
+            "useBlueprintGraphicAsGhost": false,
+            "randomStyleChance": 0.0,
+            "canEditAnyStyle": false,
+            "dontPrint": false,
+            "killedLeavingsExpandRect": 0,
+            "minifiedManualDraw": false,
+            "minifiedDrawScale": 1.0,
+            "deselectedSelectionBracketFactor": 1.0,
+            "selectable": true,
+            "containedPawnsSelectable": false,
+            "containedItemsSelectable": false,
+            "neverMultiSelect": true,
+            "isAutoAttackableMapObject": false,
+            "hasTooltip": false,
+            "seeThroughFog": false,
+            "drawGUIOverlay": false,
+            "drawGUIOverlayQuality": true,
+            "resourceReadoutPriority": "Uncounted",
+            "resourceReadoutAlwaysShow": false,
+            "drawPlaceWorkersWhileSelected": false,
+            "drawPlaceWorkersWhileInstallBlueprintSelected": false,
+            "uiIconScale": 1.0,
+            "hasCustomRectForSelector": false,
+            "hideStats": false,
+            "hideInspect": false,
+            "onlyShowInspectString": false,
+            "hideMainDesc": false,
+            "alwaysHaulable": false,
+            "designateHaulable": false,
+            "mineable": true,
+            "socialPropernessMatters": false,
+            "stealable": true,
+            "soundDrop": "Standard_Drop",
+            "soundPickup": "Standard_Pickup",
+            "soundInteract": "Standard_Pickup",
+            "soundImpactDefault": "BulletImpact_Ground",
+            "saveCompressible": true,
+            "isSaveable": true,
+            "holdsRoof": true,
+            "fillPercent": 1.0,
+            "coversFloor": true,
+            "neverOverlapFloors": false,
+            "surfaceType": "None",
+            "wipesPlants": false,
+            "blockPlants": false,
+            "blockLight": true,
+            "blockWind": true,
+            "blockWeather": false,
+            "tradeability": "All",
+            "tradeNeverStack": false,
+            "tradeNeverGenerateStacked": false,
+            "healthAffectsPrice": true,
+            "equippedAngleOffset": 0.0,
+            "equippedDistanceOffset": 0.0,
+            "equipmentType": "None",
+            "techLevel": "Undefined",
+            "violentTechHediff": false,
+            "destroyOnDrop": false,
+            "recoilPower": 1.0,
+            "recoilRelaxation": 10.0,
+            "rotateInShelves": true,
+            "mergeVerbGizmos": true,
+            "canBeUsedUnderRoof": true,
+            "statBases": [
+             "StatModifier",
+             "StatModifier"
+            ],
+            "passability": "Impassable",
+            "pathCost": 0,
+            "pathCostIgnoreRepeat": true,
+            "fertility": 0.0,
+            "costStuffCount": 0,
+            "clearBuildingArea": true,
+            "resourcesFractionWhenDeconstructed": 0.5,
+            "forcePassableByFlyingPawns": false,
+            "forceMoveItemsBeforeConstruction": false,
+            "isAltar": false,
+            "useStuffTerrainAffordance": false,
+            "minMonolithLevel": 0,
+            "constructionSkillPrerequisite": 0,
+            "artisticSkillPrerequisite": 0,
+            "minTechLevelToBuild": "Undefined",
+            "maxTechLevelToBuild": "Undefined",
+            "requireInspectedGravEngine": false,
+            "altitudeLayer": "Building",
+            "canGenerateDefaultDesignator": true,
+            "ideoBuilding": false,
+            "specialDisplayRadius": 0.0,
+            "uiOrder": 2999.0,
+            "uiIconForStackCount": -1,
+            "uiIconAngle": 0.0,
+            "defName": "RSW_MineableDoonium",
+            "label": "doonium ore",
+            "description": "Asteroid rock seamed with doonium, heavy and almost black. It occurs only in asteroid fields, never on a planet.",
+            "ignoreConfigErrors": false,
+            "ignoreIllegalLabelCharacterConfigError": false,
+            "shortHash": 25925,
+            "index": 2697,
+            "fileName": "RSW_Doonium.xml",
+            "defNameHash": -511746449,
+            "generated": false,
+            "debugRandomId": 14614
+           }
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_84a15d7ac3054c8499a098b490095b0c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "defs_present_dooniumSmeltEnabled",
+      "toggle": "dooniumSmeltEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [],
+         "defs": [
+          {
+           "requested": "PipeSystem.ProcessDef/RSW_SmeltDoonium",
+           "found": true,
+           "defName": "RSW_SmeltDoonium",
+           "defType": "ProcessDef",
+           "label": "Smelt doonium from ore and glower crust",
+           "fields": {
+            "ingredients": [
+             "Ingredient",
+             "Ingredient"
+            ],
+            "destroyIngredientsOnStart": false,
+            "destroyIngredientsDirectly": false,
+            "ticks": 2400,
+            "wastePackToProduce": 0,
+            "hideProcessIfNotNaturalRock": false,
+            "worksInSpace": true,
+            "hideProcessIfNotNaturalFish": false,
+            "stopProcessUnderGillRot": false,
+            "results": [
+             "Result"
+            ],
+            "isFactoryProcess": true,
+            "autoGrabFromHoppers": true,
+            "autoInputSlots": [
+             "IntVec3",
+             "IntVec3",
+             "IntVec3"
+            ],
+            "onlyGrabAndOutputToFactoryHoppers": true,
+            "autoExtract": true,
+            "manualExtractAllowNet": true,
+            "extractTicks": 800,
+            "spawnOnInteractionCell": true,
+            "considerBuildingCompResource": false,
+            "maxOutputCount": 75.0,
+            "temperatureRuinable": false,
+            "minSafeTemperature": 0.0,
+            "maxSafeTemperature": 100.0,
+            "progressPerDegreePerTick": 1e-05,
+            "noProperTempDestroyed": "IP_SpoiledDueToWrongTemp",
+            "rareTicksToDestroy": 0,
+            "noPowerDestroysProgress": false,
+            "noPowerDestroysMessage": "IP_NoPowerDestroysMessage",
+            "noPowerDestroysInitialWarning": "IP_NoPowerDestroysInitialWarning",
+            "isLightDependingProcess": false,
+            "maxLight": 1.0,
+            "minLight": 0.0,
+            "messageIfOutsideLightRangesWarning": "IP_OutsideLightRange",
+            "messageIfOutsideLightRanges": "IP_SpoiledDueToLight",
+            "isRainDependingProcess": false,
+            "messageIfRainingWarning": "IP_ItRains",
+            "messageIfRaining": "IP_SpoiledDueToRain",
+            "isTemperatureAcceleratingProcess": false,
+            "maxAccelerationTemp": 1.0,
+            "minAccelerationTemp": 0.0,
+            "accelerationFactor": 1.0,
+            "useIngredients": false,
+            "transfersIngredientList": false,
+            "useFirstIngredientAsOutputStuff": false,
+            "stopAtQuality": false,
+            "quality": "Normal",
+            "allowExtractAtCurrentQuality": false,
+            "labelOverride": "Smelt doonium from ore and glower crust",
+            "priorityInBillList": 0,
+            "hideProgressInInfobox": false,
+            "sustainerWhenWorking": true,
+            "sustainerDef": "VFEFactory_AutomatedSmeltingSustainer",
+            "effecterWhenWorking": true,
+            "effecterDef": "VFEFactory_Smelt",
+            "disallowMixing": false,
+            "defName": "RSW_SmeltDoonium",
+            "label": "Smelt doonium from ore and glower crust",
+            "description": "Smelt doonium ore with glower crust as flux into doonium, the heavy metal of reactor shielding and ship keels.",
+            "ignoreConfigErrors": false,
+            "ignoreIllegalLabelCharacterConfigError": false,
+            "shortHash": 64189,
+            "index": 67,
+            "defNameHash": 740405273,
+            "generated": false,
+            "debugRandomId": 57486
+           }
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_08be32ced68847c284e3be362e7a00c0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "defs_present_phrikSmeltEnabled",
+      "toggle": "phrikSmeltEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [],
+         "defs": [
+          {
+           "requested": "PipeSystem.ProcessDef/RSW_SmeltPhrik",
+           "found": true,
+           "defName": "RSW_SmeltPhrik",
+           "defType": "ProcessDef",
+           "label": "Smelt phrik from phrikite",
+           "fields": {
+            "ingredients": [
+             "Ingredient"
+            ],
+            "destroyIngredientsOnStart": false,
+            "destroyIngredientsDirectly": false,
+            "ticks": 2400,
+            "wastePackToProduce": 0,
+            "hideProcessIfNotNaturalRock": false,
+            "worksInSpace": true,
+            "hideProcessIfNotNaturalFish": false,
+            "stopProcessUnderGillRot": false,
+            "results": [
+             "Result"
+            ],
+            "isFactoryProcess": true,
+            "autoGrabFromHoppers": true,
+            "autoInputSlots": [
+             "IntVec3",
+             "IntVec3",
+             "IntVec3"
+            ],
+            "onlyGrabAndOutputToFactoryHoppers": true,
+            "autoExtract": true,
+            "manualExtractAllowNet": true,
+            "extractTicks": 800,
+            "spawnOnInteractionCell": true,
+            "considerBuildingCompResource": false,
+            "maxOutputCount": 75.0,
+            "temperatureRuinable": false,
+            "minSafeTemperature": 0.0,
+            "maxSafeTemperature": 100.0,
+            "progressPerDegreePerTick": 1e-05,
+            "noProperTempDestroyed": "IP_SpoiledDueToWrongTemp",
+            "rareTicksToDestroy": 0,
+            "noPowerDestroysProgress": false,
+            "noPowerDestroysMessage": "IP_NoPowerDestroysMessage",
+            "noPowerDestroysInitialWarning": "IP_NoPowerDestroysInitialWarning",
+            "isLightDependingProcess": false,
+            "maxLight": 1.0,
+            "minLight": 0.0,
+            "messageIfOutsideLightRangesWarning": "IP_OutsideLightRange",
+            "messageIfOutsideLightRanges": "IP_SpoiledDueToLight",
+            "isRainDependingProcess": false,
+            "messageIfRainingWarning": "IP_ItRains",
+            "messageIfRaining": "IP_SpoiledDueToRain",
+            "isTemperatureAcceleratingProcess": false,
+            "maxAccelerationTemp": 1.0,
+            "minAccelerationTemp": 0.0,
+            "accelerationFactor": 1.0,
+            "useIngredients": false,
+            "transfersIngredientList": false,
+            "useFirstIngredientAsOutputStuff": false,
+            "stopAtQuality": false,
+            "quality": "Normal",
+            "allowExtractAtCurrentQuality": false,
+            "labelOverride": "Smelt phrik from phrikite",
+            "priorityInBillList": 0,
+            "hideProgressInInfobox": false,
+            "sustainerWhenWorking": true,
+            "sustainerDef": "VFEFactory_AutomatedSmeltingSustainer",
+            "effecterWhenWorking": true,
+            "effecterDef": "VFEFactory_Smelt",
+            "disallowMixing": false,
+            "defName": "RSW_SmeltPhrik",
+            "label": "Smelt phrik from phrikite",
+            "description": "Smelt phrikite ore into phrik, the lightsaber-resistant alloy.",
+            "ignoreConfigErrors": false,
+            "ignoreIllegalLabelCharacterConfigError": false,
+            "shortHash": 62551,
+            "index": 68,
+            "defNameHash": -1582102200,
+            "generated": false,
+            "debugRandomId": 13664
+           }
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_c51a48acb0044175aa8b2d7ee48677be",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 45
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "defs_present_slagRemeltAboardEnabled",
+      "toggle": "slagRemeltAboardEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [],
+         "defs": [
+          {
+           "requested": "PipeSystem.ProcessDef/RSW_SmeltPlasteelFromSlag",
+           "found": true,
+           "defName": "RSW_SmeltPlasteelFromSlag",
+           "defType": "ProcessDef",
+           "label": "Smelt plasteel from slag",
+           "fields": {
+            "ingredients": [
+             "Ingredient"
+            ],
+            "destroyIngredientsOnStart": false,
+            "destroyIngredientsDirectly": false,
+            "ticks": 1600,
+            "wastePackToProduce": 0,
+            "hideProcessIfNotNaturalRock": false,
+            "worksInSpace": true,
+            "hideProcessIfNotNaturalFish": false,
+            "stopProcessUnderGillRot": false,
+            "results": [
+             "Result"
+            ],
+            "isFactoryProcess": true,
+            "autoGrabFromHoppers": true,
+            "autoInputSlots": [
+             "IntVec3",
+             "IntVec3",
+             "IntVec3"
+            ],
+            "onlyGrabAndOutputToFactoryHoppers": true,
+            "autoExtract": true,
+            "manualExtractAllowNet": true,
+            "extractTicks": 800,
+            "spawnOnInteractionCell": true,
+            "considerBuildingCompResource": false,
+            "maxOutputCount": 75.0,
+            "temperatureRuinable": false,
+            "minSafeTemperature": 0.0,
+            "maxSafeTemperature": 100.0,
+            "progressPerDegreePerTick": 1e-05,
+            "noProperTempDestroyed": "IP_SpoiledDueToWrongTemp",
+            "rareTicksToDestroy": 0,
+            "noPowerDestroysProgress": false,
+            "noPowerDestroysMessage": "IP_NoPowerDestroysMessage",
+            "noPowerDestroysInitialWarning": "IP_NoPowerDestroysInitialWarning",
+            "isLightDependingProcess": false,
+            "maxLight": 1.0,
+            "minLight": 0.0,
+            "messageIfOutsideLightRangesWarning": "IP_OutsideLightRange",
+            "messageIfOutsideLightRanges": "IP_SpoiledDueToLight",
+            "isRainDependingProcess": false,
+            "messageIfRainingWarning": "IP_ItRains",
+            "messageIfRaining": "IP_SpoiledDueToRain",
+            "isTemperatureAcceleratingProcess": false,
+            "maxAccelerationTemp": 1.0,
+            "minAccelerationTemp": 0.0,
+            "accelerationFactor": 1.0,
+            "useIngredients": false,
+            "transfersIngredientList": false,
+            "useFirstIngredientAsOutputStuff": false,
+            "stopAtQuality": false,
+            "quality": "Normal",
+            "allowExtractAtCurrentQuality": false,
+            "labelOverride": "Smelt plasteel from slag",
+            "priorityInBillList": 0,
+            "hideProgressInInfobox": false,
+            "sustainerWhenWorking": true,
+            "sustainerDef": "VFEFactory_AutomatedSmeltingSustainer",
+            "effecterWhenWorking": true,
+            "effecterDef": "VFEFactory_Smelt",
+            "disallowMixing": false,
+            "defName": "RSW_SmeltPlasteelFromSlag",
+            "label": "Smelt plasteel from slag",
+            "description": "Melt plasteel slag back into plasteel plate.",
+            "ignoreConfigErrors": false,
+            "ignoreIllegalLabelCharacterConfigError": false,
+            "shortHash": 16450,
+            "index": 69,
+            "defNameHash": 1951015487,
+            "generated": false,
+            "debugRandomId": 26957
+           }
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_faf4d45095b3492fab9d675a4afff548",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 40
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null,
+    "site_hold": {
+     "bland": true,
+     "problems": [],
+     "notes": [],
+     "dead": [],
+     "steps": [
+      {
+       "name": "kill_hostiles",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "targeted": []
+       }
+      },
+      {
+       "name": "clear_map_fog",
+       "acted": 2,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "hostilesBefore": [],
+        "foggedBefore": 1757,
+        "foggedNow": 0,
+        "releasedByUnfog": [
+         "Mech_Militor3296",
+         "RM_HullBolt3295"
+        ],
+        "sweepPasses": 1,
+        "hostilesAfter": [],
+        "verified": true,
+        "error": null
+       }
+      },
+      {
+       "name": "pause",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {}
+      },
+      {
+       "name": "quiet_world",
+       "acted": 4,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "profile": "isolated",
+        "quests": "not touched",
+        "notSuppressed": [
+         "active quests and their parts (never ended by default: ending a quest changes the world)",
+         "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+         "existing game conditions, map/world/game components and mod tickers",
+         "hives and other pawn-spawning structures, births, egg hatching, breeders",
+         "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+         "weather transitions, fires, existing hostile behaviour"
+        ],
+        "storyteller": {
+         "cleared_count": 0,
+         "cleared": []
+        },
+        "logRaidInfo": "on",
+        "wildSpawner": "blocked (read back)",
+        "readBack": {
+         "enableStoryteller": false,
+         "enableRandomMentalStates": false,
+         "enableRandomDiseases": false,
+         "logRaidInfo": true,
+         "threatScale": 0.0,
+         "allowBigThreats": false
+        },
+        "incidentQueueAfterClear": 0,
+        "diseaseTraits": {
+         "colonists": 3,
+         "removed": [
+          [
+           "Human355",
+           "Immunity -1"
+          ]
+         ],
+         "seen": {
+          "Human358": [
+           "Immunity 1"
+          ],
+          "Human355": [
+           "Immunity -1",
+           "DislikesMen 0"
+          ],
+          "Human351": [
+           "Psychopath 0",
+           "TooSmart 0"
+          ]
+         }
+        }
+       }
+      },
+      {
+       "name": "quiet_site_map",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "removed": [],
+        "threatsAfter": 0,
+        "lettersUnsentAfter": 0
+       }
+      },
+      {
+       "name": "kill_hostiles",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "targeted": []
+       }
+      },
+      {
+       "name": "kill_wildlife",
+       "acted": 17,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "route": "destroy_bulk"
+       }
+      },
+      {
+       "name": "clear_strangers",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "targeted": []
+       }
+      },
+      {
+       "name": "extinguish",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {}
+      },
+      {
+       "name": "restore_colonists",
+       "acted": 10,
+       "verified": true,
+       "residue": [],
+       "evidence": {}
+      }
+     ]
+    },
+    "site_reload": null,
+    "setup_records": [
+     {
+      "call": "restore_touched_settings []",
+      "result": true
+     }
+    ],
+    "env_reset": {
+     "log_reset": "ok",
+     "weather": "ok",
+     "map_info": "ok",
+     "unroof": "ok",
+     "gas_ToxGas": "ok",
+     "gas_BlindSmoke": "ok",
+     "gas_RotStink": "ok",
+     "gas_DeadlifeDust": "ok",
+     "gas_things": "ok"
+    },
+    "phase_s": {
+     "hold": 14.621,
+     "body": 0.439,
+     "teardown": 0.0
+    }
+   }
+  ],
+  "all_green": true,
+  "findings": [],
+  "refused": "",
+  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\runs\\clones\\ASTEROID_DESERT_ORES_1.det\\design\\validation_walks\\RimStarWars\\Armoury.md",
+  "acceptance": {
+   "overall": "INDETERMINATE",
+   "rows": [
+    {
+     "row": "ores_and_smelts/ores_and_smelts_shape",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "ores_and_smelts/defs_present_dooniumAsteroidEnabled",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "ores_and_smelts/defs_present_dooniumSmeltEnabled",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "ores_and_smelts/defs_present_phrikSmeltEnabled",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "ores_and_smelts/defs_present_slagRemeltAboardEnabled",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    }
+   ],
+   "spoils": [
+    {
+     "class": "envelope_off",
+     "why": "run without the situational envelope: blocking window and visitors unobserved",
+     "chain": "ores_and_smelts"
+    }
+   ],
+   "counts": {
+    "PASS": 0,
+    "FAIL": 0,
+    "INDETERMINATE": 5,
+    "UNMEASURED": 0,
+    "NOT_RUN": 0
+   },
+   "classes": [
+    "envelope_off"
+   ]
+  },
+  "reuse": {
+   "reused": [],
+   "reusable": []
+  },
+  "host": "Archmagi",
+  "offline_chains": [],
+  "fresh_green": true,
+  "invalid": [],
+  "leads": [],
+  "visual": [],
+  "visual_all_green": true,
+  "state_all_green": true,
+  "targeted": {
+   "chains": [
+    "ores_and_smelts"
+   ],
+   "of_chains": 9,
+   "rows": [],
+   "item": null,
+   "by": [
+    "chain ores_and_smelts: named by --chains"
+   ],
+   "rows_run": [
+    "ores_and_smelts_shape",
+    "defs_present_dooniumAsteroidEnabled",
+    "defs_present_dooniumSmeltEnabled",
+    "defs_present_phrikSmeltEnabled",
+    "defs_present_slagRemeltAboardEnabled"
+   ],
+   "scope": {
+    "ores_and_smelts": {
+     "mode": "full",
+     "requested_rows": [],
+     "reasons": [
+      "named by --chains"
+     ],
+     "executed": [
+      "ores_and_smelts_shape",
+      "defs_present_dooniumAsteroidEnabled",
+      "defs_present_dooniumSmeltEnabled",
+      "defs_present_phrikSmeltEnabled",
+      "defs_present_slagRemeltAboardEnabled"
+     ],
+     "skipped": []
+    }
+   },
+   "offline_skipped": {},
+   "incomplete": {}
+  },
+  "restarted_onto_list": {
+   "game": "ArchSmall",
+   "why": [
+    "not loaded: mandrake.rm.gimmesomeslack, vanillaexpanded.vfefactory",
+    "loaded but not composed: mandrake.rm.weathersuite, mandrake.rut.patches"
+   ],
+   "steps": [
+    {
+     "step": "mine",
+     "rc": 0,
+     "said": "ArchSmall: MINE: held by this process for 'work bundle WB-game-ship-20261126-164518: ASTEROID_DESERT_ORES_1 live rows Armoury ores_and_smelts' (gen 281)"
+    },
+    {
+     "step": "stop",
+     "rc": 0,
+     "said": "SUCCESS: Sent termination signal to the process with PID 46284."
+    },
+    {
+     "step": "pid",
+     "rc": 0,
+     "said": "46284"
+    },
+    {
+     "step": "pid",
+     "rc": 0,
+     "said": ""
+    },
+    {
+     "step": "deploy",
+     "rc": 0,
+     "said": "try 1"
+    },
+    {
+     "step": "launch",
+     "rc": 0,
+     "said": "started ArchSmall, pid 28264, bridge on port 5175 after 104 s"
+    }
+   ],
+   "restarted": true,
+   "refused": null
+  }
+ },
+ "benign_stops": []
+}
