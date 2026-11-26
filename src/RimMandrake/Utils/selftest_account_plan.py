@@ -1916,8 +1916,16 @@ def t_readers_take_the_rules_through_one_door():
               or "9" in json.dumps(pi.get("pool")), pi)
         sys.path.insert(0, str(HERE.parent / "rimflow"))
         import account_pick as PK
-        check(n + ": the Dispatcher's priority is the plan's order", PK.load_priority({}) == ["lukas", "system", "steven"],
-              PK.load_priority({}))
+        # load_priority reads old_shape() at the real clock; the fixture's steps live at NOW. Pinned to NOW, the check
+        # no longer turns red when the real date passes a step's end (it did on 2026-11-25:
+        # RIMMANDRAKE_MEND_ACCOUNT_PLAN_SELFTEST_RED_ON_MAIN_AT_PUBLISH)
+        real_shape = AP.old_shape
+        AP.old_shape = lambda rows=None, now=None: real_shape(rows, NOW if now is None else now)
+        try:
+            prio = PK.load_priority({})
+        finally:
+            AP.old_shape = real_shape
+        check(n + ": the Dispatcher's priority is the plan's order", prio == ["lukas", "system", "steven"], prio)
         (TMP / "plan" / "plan.json").write_text("{broken")
         v, src = AP.old_shape(now=NOW)
         check(n + ": a plan file that is refused: the old engine runs, and the readers get its file, said by name",
