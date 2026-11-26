@@ -53,7 +53,7 @@ with scene.open(GAME, contract=walk, needs={"mods": ["FlowWorks"], "map": SAVE, 
                 b.job(w, "Goto", cell=cell_of(x0), name=what)
         for e in b.effects:      # an order the game did not take is the apparatus's fault, never a result about the mod
             if not getattr(e, "accepted", False):
-                raise scene.Fault("ACT_NOT_DONE", detail="a walk order was not taken: %r" % (e,))
+                raise scene.Fault("ACT_NOT_DONE", detail="a walk order was not taken: %r %s" % (e, str(e.observed)[:300]))
 
     # 1. each walker to the middle of its cover, and the cover over her read by state (not judged: the judge reads the last run)
     order(lambda x0: (x0, OZ + 4), "walk under")    # the west column: the colonist already under stands in the middle one
