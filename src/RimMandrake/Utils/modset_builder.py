@@ -951,6 +951,16 @@ TIERS["unfinishedline"] = {
     "modcheck_closure": True,    # modcheck/runner.py closure_ids: `modcheck run UnfinishedLine` composes this list
 }
 
+TIERS["utinnipatches"] = {
+    "why": "ASTEROID_DESERT_ORES_1: UtinniPatches' phrikite and zersium chains read RSW_Phrik, RSW_Zersium and their "
+           "ores, which mandrake.rsw.armoury defines; the GenSteps that place them carry MayRequire armoury. modcheck "
+           "composed only the hard dependencies, so SteveDesktop read 'def did not load' three times (2026-11-13/14, "
+           "J20261114T130255Z-e4cfd1) on a list without Armoury. Guard: modcheck/selftest_live_defs_on_the_list.py.",
+    "want": [BRIDGE, "mandrake.rut.patches", "mandrake.rsw.armoury"],
+    "dlc": True,
+    "modcheck_closure": True,    # modcheck/runner.py closure_ids: `modcheck run UtinniPatches` composes this list
+}
+
 
 def mod_env(rel):
     """(EXTRA_IDS, FORBID) of a mod's `modcheck_env.py`, the per-mod test environment kept beside its validation.py.
