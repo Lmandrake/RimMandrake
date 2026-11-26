@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":348917,"DISPATCH":54580,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":3294,"HOLDER.run-1795478277":3184,"HOLDER.run-1795485747":1414,"HOLDER.run-1795487290":2197,"HOLDER.run-1795510833":4164,"HOLDER.run-1795525975":3126,"HOLDER.run-1795538786":1751,"HOLDER.run-1795548573":1024,"HOLDER.run-1795560492":1077,"HOLDER.run-1795660419":2599,"HOLDER.run-1795661891":608,"HOLDER.run-1795667763":2112,"HOLDER.run-1795670288":5015,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"JUDGE.judge-1795662842":7876,"OWNER":1207} body_sha256=72047666c7add28078a3028c078aa3036b115e095e4609bfc56c96a036ef4e74 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":348917,"DISPATCH":54922,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":3294,"HOLDER.run-1795478277":3184,"HOLDER.run-1795485747":1414,"HOLDER.run-1795487290":2197,"HOLDER.run-1795510833":4164,"HOLDER.run-1795525975":3126,"HOLDER.run-1795538786":1751,"HOLDER.run-1795548573":1024,"HOLDER.run-1795560492":1077,"HOLDER.run-1795660419":2599,"HOLDER.run-1795661891":608,"HOLDER.run-1795667763":2112,"HOLDER.run-1795670288":5015,"HOLDER.run-1795692904":1320,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"JUDGE.judge-1795662842":7876,"OWNER":1207} body_sha256=85e00f149e3d7588bc4110e8d744230b8482bb6ce3311710a94bfa8f77b95cb5 -->
 # ExplosiveKnockback — mod ledger packet
-version 0.2.0 · stage in_game · 799 events in 29 shards · reducer 1
-holder lease run-1795692904, token 33, last active 2026-11-26T11:36:25Z
+version 0.2.0 · stage in_game · 803 events in 30 shards · reducer 1
+holder lease run-1795692904, token 33, last active 2026-11-26T12:08:16Z
 holder session 2fc2bf7c-a8aa-47a9-a244-6d52d4ac8145, context 509706 of ceiling 400000 — ROTATE DUE
 
-## Last checkpoint (HOLDER.run-1795670288, 2026-11-26T09:17:15Z)
-- done: visit 2 run 2: sc_mass_and_power and sc_save_in_air rerun PASS at 5e43516ec8; release build on ArchBig, walk save loads on it; build_match 65 of 65; 20 PF_SCENE plants read one by one (planted_scene_rows.jsonl); published f82eeaecab
-- next: Conductor: class the two visit-1 UNRESOLVED rows P_goods_fly_wall and P_goods_fly_rebound (CLASS OWED note), then read visit_2/SUMMARY.md for the move
-- ruled out: no mod fault: the stale build_match rows were identity-file mod_sha, the WRONG_BUILD refusals were an undeployed FlowWorks on ArchBig
+## Last checkpoint (HOLDER.run-1795692904, 2026-11-26T12:08:16Z)
+- done: steward visit 2: no mod-wrong line, no undecided bar; relation over-read fixed d36a6d272c; build match 49 count, 16 to run; advanced --to in_game
+- next: Next visit: rerun the 16 checks that build_match.py check names on the current build, then remake the walk save on it
+- ruled out: 48 of 64 reruns: only sc_settings_sweep reaches SweepLane; the rest came from the relation reading code after Build switch and the Build overload
 
 ## Open findings (43)
 (claimed fixes, awaiting a judge, on one line each with the oldest 41 open findings, named without their 'finding:': `modledger.py show --mod ExplosiveKnockback finding:<NAME>`)
@@ -247,6 +247,6 @@ spend recorded: USD 178.61, 171672717 tokens
 - claimed fixes in brief: 2 on one line (name and sha), their claim, test and fix by `show`
 - open findings in brief: the oldest 41 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
 - his answers and the bars' texts in brief (cut at 160 and 60 chars)
-- the full history: 799 events (views/history.md; never read whole)
+- the full history: 803 events (views/history.md; never read whole)
 
-cursor: t=2026-11-26T11:36:26Z.1795692986573165051 (modledger.py since --mod ExplosiveKnockback t=2026-11-26T11:36:26Z.1795692986573165051 prints what changed after this packet)
+cursor: t=2026-11-26T12:08:16Z.1795694896747622139 (modledger.py since --mod ExplosiveKnockback t=2026-11-26T12:08:16Z.1795694896747622139 prints what changed after this packet)

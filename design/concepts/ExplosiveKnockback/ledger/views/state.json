@@ -1,10 +1,10 @@
 {
  "_view": {
-  "body_sha256": "dd50dd73d03e0697e569bb2d21df4bef26991880ecb1b613311a6553a7305229",
+  "body_sha256": "4013b9c17d352a83baa55bc8d8e6c71caf244901d0551bc7eb7f644bc7fc65a3",
   "reducer": 1,
   "shards": {
    "BACKFILL": 348917,
-   "DISPATCH": 54580,
+   "DISPATCH": 54922,
    "HOLDER.run-1794813483": 1382,
    "HOLDER.run-1794824768": 1788,
    "HOLDER.run-1794830532": 2304,
@@ -28,6 +28,7 @@
    "HOLDER.run-1795661891": 608,
    "HOLDER.run-1795667763": 2112,
    "HOLDER.run-1795670288": 5015,
+   "HOLDER.run-1795692904": 1320,
    "JUDGE.judge-1794890427": 18837,
    "JUDGE.judge-1795437145": 6544,
    "JUDGE.judge-1795662842": 7876,
@@ -773,11 +774,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795670288",
-   "done": "visit 2 run 2: sc_mass_and_power and sc_save_in_air rerun PASS at 5e43516ec8; release build on ArchBig, walk save loads on it; build_match 65 of 65; 20 PF_SCENE plants read one by one (planted_scene_rows.jsonl); published f82eeaecab",
-   "next": "Conductor: class the two visit-1 UNRESOLVED rows P_goods_fly_wall and P_goods_fly_rebound (CLASS OWED note), then read visit_2/SUMMARY.md for the move",
-   "ruled_out": "no mod fault: the stale build_match rows were identity-file mod_sha, the WRONG_BUILD refusals were an undeployed FlowWorks on ArchBig",
-   "ts": "2026-11-26T09:17:15Z"
+   "by": "HOLDER.run-1795692904",
+   "done": "steward visit 2: no mod-wrong line, no undecided bar; relation over-read fixed d36a6d272c; build match 49 count, 16 to run; advanced --to in_game",
+   "next": "Next visit: rerun the 16 checks that build_match.py check names on the current build, then remake the walk save on it",
+   "ruled_out": "48 of 64 reruns: only sc_settings_sweep reaches SweepLane; the rest came from the relation reading code after Build switch and the Build overload",
+   "ts": "2026-11-26T12:08:16Z"
   },
   "decisions": {
    "bar:inv_items_teleport": {
@@ -973,7 +974,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 799,
+  "events": 803,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -2612,7 +2613,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-26T11:36:25Z",
+   "last": "2026-11-26T12:08:16Z",
    "lease": "run-1795692904",
    "released": false,
    "token": 33
@@ -2664,6 +2665,7 @@
    "HOLDER.run-1795661891",
    "HOLDER.run-1795667763",
    "HOLDER.run-1795670288",
+   "HOLDER.run-1795692904",
    "JUDGE.judge-1794890427",
    "JUDGE.judge-1795437145",
    "JUDGE.judge-1795662842",

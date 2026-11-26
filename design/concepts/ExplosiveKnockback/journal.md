@@ -8,13 +8,13 @@ The top part, **the mod as it stands**, is rewritten at every stage change and s
 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Code exists:
   `src/RimMandrake/ExplosiveKnockback/`.
-- **Stage now:** Stage 6, in-game acceptance, since 2026-11-25 8:41 PM PST (`version/stage_record.json`).
+- **Stage now:** Stage 6, in-game acceptance, since 2026-11-26 4:07 AM PST (`version/stage_record.json`).
 - **Bars:** 59 (30 inventory rows of `record.json` + 29 leaves of `tree.json`). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`).
 - **Measured 2026-11-14 12:45 PST:** 53 of 59 bars have at least one test that runs today; 47 have every deciding test
   runnable; 41 have all their offline deciding tests green. All 15 offline tests are built (13 PASS, 2 known red,
   unchanged). In-game scenes: 56, entry exists 50, absent 6. Every in-game scene is UNRUN (Stage 6); commands in the table.
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-25 8:41 PM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-26 4:07 AM PST).
 - **Open questions:** see "Questions" at the end of the history.
 
 ### The vision (his root paragraph, approved by card 2026-11-11, OWNER:1794468835221748501)
@@ -552,4 +552,14 @@ answer the locked bar, his recorded words or the shipped code already gives; no 
 - Steward confirms: read blind_challenge/cycle_2/SUMMARY.md, faults.json, fixes.jsonl, tests_edited.json and both test diffs (c31fefefd0, 1a223189b3: additions only, nothing weakened); reran T_JOURNAL_JOLT_OFFLINE and T_PROOFGATE green rc 0 at HEAD and red rc 1 on each of the 5 lane2 plant patches; locked files and RM_KnockbackMath.cs unchanged since 8723f717a4; certificate --to in_game OK after restamping 2 stale deciders. Verdict: exit_met stands (inv_kernel green, inv_proof_scenes green, 0 problems open, 0 mod faults); 35 not_kernel rows owed to Stage 6
 - Was, "Stage now": - **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-25 7:01 PM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-25 7:01 PM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-26 4:07 AM PST, stage change: In-game acceptance (Stage 6) to In-game acceptance (Stage 6) (by BENCH)
+
+- Why: delegated: steward road back: visit 2 has no mod-wrong line and no undecided bar; 65 of 65 last rows PASS; both visit-1 UNRESOLVED rows are classed (P_goods_fly_wall APPARATUS FAULT SITE by the driver from the hunt's printed hauler line; P_goods_fly_rebound APPARATUS FAULT SITE by the Conductor 02:31). The one open line is the build match: 16 checks to rerun on the current build (SITE repairs 6d9a503cf4/2fe8f88034, scene.judge rows 0b0a0511e0, release rebuild), all game-only. The relation's 64-to-run was a pipeline defect (code after Build's switch and the Build overload), fixed d36a6d272c; now 49 count, 16 to run.
+- Checks passed: order, by, version, hold.
+- Steward confirms: read visit_2/SUMMARY.md, rows.jsonl last rows (65 PASS), visit_1 rows 46-47 classed; build_match check at d36a6d272c: 49 count, 16 to run, all live; verdict: rerun only, --to in_game
+- Owner said: per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: delegated: steward road back: visit 2 has no mod-wrong line and no undecided bar; 65 of 65 last rows PASS; both visit-1 UNRESOLVED rows are classed (P_goods_fly_wall APPARATUS FAULT SITE by the driver from the hunt's printed hauler line; P_goods_fly_rebound APPARATUS FAULT SITE by the Conductor 02:31). The one open line is the build match: 16 checks to rerun on the current build (SITE repairs 6d9a503cf4/2fe8f88034, scene.judge rows 0b0a0511e0, release rebuild), all game-only. The relation's 64-to-run was a pipeline defect (code after Build's switch and the Build overload), fixed d36a6d272c; now 49 count, 16 to run.
+- Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-25 8:41 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-25 8:41 PM PST).
 - Record: `version/stage_record.json`.
