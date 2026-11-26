@@ -73,7 +73,13 @@ the owner unfreezes it. This section records which file the evidence says is the
 and most reliable world save, so nobody has to rebuild the answer from 40 file names.
 
 **Current world save: `Saves\ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws`**
-(13,531,124 bytes, sha256 `1d569ea8e7a871e9…`, since 2026-11-07: the cut furnace-herd world leg was stripped offline
+(13,510,539 bytes, sha256 `b85c2319d8c32f96…`, since 2026-11-26: every reference to a def that
+`BIOMES_PORT_PRUNE_FORTY_TWO_HITCHHIKERS` deleted was stripped offline (`SLAUGHTER_ROWS_PRUNE_GHOSTS_IN_PEN`, tool
+`src/RimMandrake/Utils/save_ghost_defs.py`): 232 filter and list rows, 31 auto-slaughter rows, 4 drug-policy rows, 2
+inventory things, the `RSW_PustuleHornets` faction (loadID 17) with its 24 relation rows; 2 worn-apparel `<stuff>`
+repointed to `Leather_Plain`. Nothing else changed; `save_ghost_defs.py check` reads NONE. The file before it,
+13,531,124 bytes, sha256 `1d569ea8e7a871e9…`, is `…R3.rws.bak-pre-strip-prune42-ghosts-2026-11-26` beside it and in
+`D:\ClaudeWork\backups\saves_pre_strip_prune42_ghosts_2026-11-26\`. That one dates from 2026-11-07: the cut furnace-herd world leg was stripped offline
 (`RIMMASTER_STRIP_CANONICAL_SAVE_OF_CUT_FURNACE_HERDS`): the `RimMandrake.Pyrelands.WorldComponent_RM_FurnaceHerdSeeder`
 world component, the 2 `RM_FurnaceHerd` world objects (IDs 57, 58, with their 3 `RM_FurnaceBeast` member pawns) and those
 pawns' 3 `BigAndSmall` `BS_scribedCache` entries; pure deletions (1,013 lines, 873 elements), no outside reference to any
@@ -109,7 +115,7 @@ Evidence, in order:
   `BIG_REPAINT_FINISH_ONCE_AND_FOR_ALL` and `REPAINT_SAVES_RETIRE_THREE_GHOST_STARTS` are still `proposed`
   (filed 2026-10-21, no later events). When the repaint lands, its save replaces R3 as current.
 - **Repo copy:** `world/ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws` is byte-identical to the Saves file (sha256
-  `1d569ea8e7a871e9…`; `landmark_names_check.py` fails if they part); it replaced the stale PAINT copy `ASHKARR_DEV_START_2026-10-20.rws` (unlocked, map 250) in the same folder on
+  `b85c2319d8c32f96…`; `landmark_names_check.py` fails if they part); it replaced the stale PAINT copy `ASHKARR_DEV_START_2026-10-20.rws` (unlocked, map 250) in the same folder on
   2026-11-02. When the repaint save lands it replaces this copy too. The one dev-start pointer is `canon.yml`
   `planet.start_savegame`, read through `src/RimMandrake/Utils/canon_save.py`.
 - Saves written after 10-21 (Autosave-*, `RM_fw_hose_proof_*`, `rm_proof_*`) are test sites, not world saves.

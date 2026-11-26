@@ -6248,10 +6248,6 @@ AAAAAA==
 							<allowedForAddiction>True</allowedForAddiction>
 						</li>
 						<li>
-							<drug>RSW_BufoBile</drug>
-							<allowedForAddiction>True</allowedForAddiction>
-						</li>
-						<li>
 							<drug>GR_ElectroEgg</drug>
 							<allowedForAddiction>True</allowedForAddiction>
 						</li>
@@ -6516,10 +6512,6 @@ AAAAAA==
 						</li>
 						<li>
 							<drug>RSW_Glitterstim</drug>
-							<allowedForAddiction>True</allowedForAddiction>
-						</li>
-						<li>
-							<drug>RSW_BufoBile</drug>
 							<allowedForAddiction>True</allowedForAddiction>
 						</li>
 						<li>
@@ -6804,11 +6796,6 @@ AAAAAA==
 							<allowedForJoy>True</allowedForJoy>
 						</li>
 						<li>
-							<drug>RSW_BufoBile</drug>
-							<allowedForAddiction>True</allowedForAddiction>
-							<allowedForJoy>True</allowedForJoy>
-						</li>
-						<li>
 							<drug>GR_ElectroEgg</drug>
 							<allowedForAddiction>True</allowedForAddiction>
 						</li>
@@ -7077,10 +7064,6 @@ AAAAAA==
 						</li>
 						<li>
 							<drug>RSW_Glitterstim</drug>
-							<allowedForAddiction>True</allowedForAddiction>
-						</li>
-						<li>
-							<drug>RSW_BufoBile</drug>
 							<allowedForAddiction>True</allowedForAddiction>
 						</li>
 						<li>
@@ -8099,52 +8082,23 @@ AAAAAA==
 							<li>RSW_EggWraidAlphaUnFertilized</li>
 							<li>RSW_Rocktooth</li>
 							<li>RSW_Boneblade</li>
-							<li>RSW_EggBasiliskFertilized</li>
 							<li>RSW_EggAaroxisDendoriaUnfertilized</li>
 							<li>RSW_EggNorpheaFertilized</li>
 							<li>RSW_EggScreecherUnfertilized</li>
 							<li>RSW_EggSandpillarUnfertilized</li>
 							<li>RSW_EggScreecherFertilized</li>
-							<li>RSW_FishMeatCore</li>
-							<li>RSW_EggBasiliskUnfertilized</li>
 							<li>RSW_EggFoundryBeetleUnfertilized</li>
-							<li>RSW_EggRoyalRhinoUnfertilized</li>
 							<li>RSW_EggSacapillarUnfertilized</li>
-							<li>RSW_EggFungalMantisFertilized</li>
-							<li>RSW_SmogMothEggUnfertilized</li>
-							<li>RSW_EggMegakrillFertilized</li>
-							<li>RSW_EggMutatingTumorfishUnfertilized</li>
 							<li>RSW_EggBloodletterPetrelUnfertilized</li>
-							<li>RSW_EggAcidSlugUnfertilized</li>
 							<li>RSW_RegalMilk</li>
 							<li>RSW_EggAaroxisDendoriaFertilized</li>
-							<li>RSW_EggGastroToadUnfertilized</li>
-							<li>RSW_EggMutatingTumorfishFertilized</li>
-							<li>RSW_EggAcidSlugFertilized</li>
-							<li>RSW_EggFleeceSpiderUnfertilized</li>
-							<li>RSW_EggMegakrillUnfertilized</li>
-							<li>RSW_EggFungalWeevilFertilized</li>
 							<li>RSW_EggBloodletterPetrelFertilized</li>
-							<li>RSW_EggRoyalRhinoFertilized</li>
-							<li>RSW_EggMaxolotlFertilized</li>
 							<li>RSW_EggSacapillarFertilized</li>
-							<li>RSW_EggGlowtailUnfertilized</li>
-							<li>RSW_EggJewelBeetleUnfertilized</li>
 							<li>RSW_EggSandpillarFertilized</li>
-							<li>RSW_EggGastroToadFertilized</li>
-							<li>RSW_SmogMothEggFertilized</li>
-							<li>RSW_EggGlowtailFertilized</li>
 							<li>RSW_EggCrestedDragonUnfertilized</li>
-							<li>RSW_EggJewelBeetleFertilized</li>
-							<li>RSW_EggFungalWeevilUnfertilized</li>
-							<li>RSW_EggFleeceSpiderFertilized</li>
-							<li>RSW_EggMaxolotlUnfertilized</li>
 							<li>RSW_EggNorpheaUnfertilized</li>
 							<li>RSW_EggFoundryBeetleFertilized</li>
 							<li>RSW_EggCrestedDragonFertilized</li>
-							<li>RSW_EggFungalMantisUnfertilized</li>
-							<li>RSW_EggFacetMothFertilized</li>
-							<li>RSW_EggFacetMothUnfertilized</li>
 							<li>RSW_EggMossBeetleFertilized</li>
 							<li>RSW_EggMossBeetleUnfertilized</li>
 							<li>RSW_EggMaguanaFertilized</li>
@@ -10286,52 +10240,23 @@ AAAAAA==
 							<li>RSW_EggWraidAlphaUnFertilized</li>
 							<li>RSW_Rocktooth</li>
 							<li>RSW_Boneblade</li>
-							<li>RSW_EggBasiliskFertilized</li>
 							<li>RSW_EggAaroxisDendoriaUnfertilized</li>
 							<li>RSW_EggNorpheaFertilized</li>
 							<li>RSW_EggScreecherUnfertilized</li>
 							<li>RSW_EggSandpillarUnfertilized</li>
 							<li>RSW_EggScreecherFertilized</li>
-							<li>RSW_FishMeatCore</li>
-							<li>RSW_EggBasiliskUnfertilized</li>
 							<li>RSW_EggFoundryBeetleUnfertilized</li>
-							<li>RSW_EggRoyalRhinoUnfertilized</li>
 							<li>RSW_EggSacapillarUnfertilized</li>
-							<li>RSW_EggFungalMantisFertilized</li>
-							<li>RSW_SmogMothEggUnfertilized</li>
-							<li>RSW_EggMegakrillFertilized</li>
-							<li>RSW_EggMutatingTumorfishUnfertilized</li>
 							<li>RSW_EggBloodletterPetrelUnfertilized</li>
-							<li>RSW_EggAcidSlugUnfertilized</li>
 							<li>RSW_RegalMilk</li>
 							<li>RSW_EggAaroxisDendoriaFertilized</li>
-							<li>RSW_EggGastroToadUnfertilized</li>
-							<li>RSW_EggMutatingTumorfishFertilized</li>
-							<li>RSW_EggAcidSlugFertilized</li>
-							<li>RSW_EggFleeceSpiderUnfertilized</li>
-							<li>RSW_EggMegakrillUnfertilized</li>
-							<li>RSW_EggFungalWeevilFertilized</li>
 							<li>RSW_EggBloodletterPetrelFertilized</li>
-							<li>RSW_EggRoyalRhinoFertilized</li>
-							<li>RSW_EggMaxolotlFertilized</li>
 							<li>RSW_EggSacapillarFertilized</li>
-							<li>RSW_EggGlowtailUnfertilized</li>
-							<li>RSW_EggJewelBeetleUnfertilized</li>
 							<li>RSW_EggSandpillarFertilized</li>
-							<li>RSW_EggGastroToadFertilized</li>
-							<li>RSW_SmogMothEggFertilized</li>
-							<li>RSW_EggGlowtailFertilized</li>
 							<li>RSW_EggCrestedDragonUnfertilized</li>
-							<li>RSW_EggJewelBeetleFertilized</li>
-							<li>RSW_EggFungalWeevilUnfertilized</li>
-							<li>RSW_EggFleeceSpiderFertilized</li>
-							<li>RSW_EggMaxolotlUnfertilized</li>
 							<li>RSW_EggNorpheaUnfertilized</li>
 							<li>RSW_EggFoundryBeetleFertilized</li>
 							<li>RSW_EggCrestedDragonFertilized</li>
-							<li>RSW_EggFungalMantisUnfertilized</li>
-							<li>RSW_EggFacetMothFertilized</li>
-							<li>RSW_EggFacetMothUnfertilized</li>
 							<li>RSW_EggMossBeetleFertilized</li>
 							<li>RSW_EggMossBeetleUnfertilized</li>
 							<li>RSW_EggMaguanaFertilized</li>
@@ -12464,52 +12389,23 @@ AAAAAA==
 							<li>RSW_EggWraidAlphaUnFertilized</li>
 							<li>RSW_Rocktooth</li>
 							<li>RSW_Boneblade</li>
-							<li>RSW_EggBasiliskFertilized</li>
 							<li>RSW_EggAaroxisDendoriaUnfertilized</li>
 							<li>RSW_EggNorpheaFertilized</li>
 							<li>RSW_EggScreecherUnfertilized</li>
 							<li>RSW_EggSandpillarUnfertilized</li>
 							<li>RSW_EggScreecherFertilized</li>
-							<li>RSW_FishMeatCore</li>
-							<li>RSW_EggBasiliskUnfertilized</li>
 							<li>RSW_EggFoundryBeetleUnfertilized</li>
-							<li>RSW_EggRoyalRhinoUnfertilized</li>
 							<li>RSW_EggSacapillarUnfertilized</li>
-							<li>RSW_EggFungalMantisFertilized</li>
-							<li>RSW_SmogMothEggUnfertilized</li>
-							<li>RSW_EggMegakrillFertilized</li>
-							<li>RSW_EggMutatingTumorfishUnfertilized</li>
 							<li>RSW_EggBloodletterPetrelUnfertilized</li>
-							<li>RSW_EggAcidSlugUnfertilized</li>
 							<li>RSW_RegalMilk</li>
 							<li>RSW_EggAaroxisDendoriaFertilized</li>
-							<li>RSW_EggGastroToadUnfertilized</li>
-							<li>RSW_EggMutatingTumorfishFertilized</li>
-							<li>RSW_EggAcidSlugFertilized</li>
-							<li>RSW_EggFleeceSpiderUnfertilized</li>
-							<li>RSW_EggMegakrillUnfertilized</li>
-							<li>RSW_EggFungalWeevilFertilized</li>
 							<li>RSW_EggBloodletterPetrelFertilized</li>
-							<li>RSW_EggRoyalRhinoFertilized</li>
-							<li>RSW_EggMaxolotlFertilized</li>
 							<li>RSW_EggSacapillarFertilized</li>
-							<li>RSW_EggGlowtailUnfertilized</li>
-							<li>RSW_EggJewelBeetleUnfertilized</li>
 							<li>RSW_EggSandpillarFertilized</li>
-							<li>RSW_EggGastroToadFertilized</li>
-							<li>RSW_SmogMothEggFertilized</li>
-							<li>RSW_EggGlowtailFertilized</li>
 							<li>RSW_EggCrestedDragonUnfertilized</li>
-							<li>RSW_EggJewelBeetleFertilized</li>
-							<li>RSW_EggFungalWeevilUnfertilized</li>
-							<li>RSW_EggFleeceSpiderFertilized</li>
-							<li>RSW_EggMaxolotlUnfertilized</li>
 							<li>RSW_EggNorpheaUnfertilized</li>
 							<li>RSW_EggFoundryBeetleFertilized</li>
 							<li>RSW_EggCrestedDragonFertilized</li>
-							<li>RSW_EggFungalMantisUnfertilized</li>
-							<li>RSW_EggFacetMothFertilized</li>
-							<li>RSW_EggFacetMothUnfertilized</li>
 							<li>RSW_EggMossBeetleFertilized</li>
 							<li>RSW_EggMossBeetleUnfertilized</li>
 							<li>RSW_EggMaguanaFertilized</li>
@@ -14634,52 +14530,23 @@ AAAAAA==
 							<li>RSW_EggWraidAlphaUnFertilized</li>
 							<li>RSW_Rocktooth</li>
 							<li>RSW_Boneblade</li>
-							<li>RSW_EggBasiliskFertilized</li>
 							<li>RSW_EggAaroxisDendoriaUnfertilized</li>
 							<li>RSW_EggNorpheaFertilized</li>
 							<li>RSW_EggScreecherUnfertilized</li>
 							<li>RSW_EggSandpillarUnfertilized</li>
 							<li>RSW_EggScreecherFertilized</li>
-							<li>RSW_FishMeatCore</li>
-							<li>RSW_EggBasiliskUnfertilized</li>
 							<li>RSW_EggFoundryBeetleUnfertilized</li>
-							<li>RSW_EggRoyalRhinoUnfertilized</li>
 							<li>RSW_EggSacapillarUnfertilized</li>
-							<li>RSW_EggFungalMantisFertilized</li>
-							<li>RSW_SmogMothEggUnfertilized</li>
-							<li>RSW_EggMegakrillFertilized</li>
-							<li>RSW_EggMutatingTumorfishUnfertilized</li>
 							<li>RSW_EggBloodletterPetrelUnfertilized</li>
-							<li>RSW_EggAcidSlugUnfertilized</li>
 							<li>RSW_RegalMilk</li>
 							<li>RSW_EggAaroxisDendoriaFertilized</li>
-							<li>RSW_EggGastroToadUnfertilized</li>
-							<li>RSW_EggMutatingTumorfishFertilized</li>
-							<li>RSW_EggAcidSlugFertilized</li>
-							<li>RSW_EggFleeceSpiderUnfertilized</li>
-							<li>RSW_EggMegakrillUnfertilized</li>
-							<li>RSW_EggFungalWeevilFertilized</li>
 							<li>RSW_EggBloodletterPetrelFertilized</li>
-							<li>RSW_EggRoyalRhinoFertilized</li>
-							<li>RSW_EggMaxolotlFertilized</li>
 							<li>RSW_EggSacapillarFertilized</li>
-							<li>RSW_EggGlowtailUnfertilized</li>
-							<li>RSW_EggJewelBeetleUnfertilized</li>
 							<li>RSW_EggSandpillarFertilized</li>
-							<li>RSW_EggGastroToadFertilized</li>
-							<li>RSW_SmogMothEggFertilized</li>
-							<li>RSW_EggGlowtailFertilized</li>
 							<li>RSW_EggCrestedDragonUnfertilized</li>
-							<li>RSW_EggJewelBeetleFertilized</li>
-							<li>RSW_EggFungalWeevilUnfertilized</li>
-							<li>RSW_EggFleeceSpiderFertilized</li>
-							<li>RSW_EggMaxolotlUnfertilized</li>
 							<li>RSW_EggNorpheaUnfertilized</li>
 							<li>RSW_EggFoundryBeetleFertilized</li>
 							<li>RSW_EggCrestedDragonFertilized</li>
-							<li>RSW_EggFungalMantisUnfertilized</li>
-							<li>RSW_EggFacetMothFertilized</li>
-							<li>RSW_EggFacetMothUnfertilized</li>
 							<li>RSW_EggMossBeetleFertilized</li>
 							<li>RSW_EggMossBeetleUnfertilized</li>
 							<li>RSW_EggMaguanaFertilized</li>
@@ -16801,52 +16668,23 @@ AAAAAA==
 							<li>RSW_EggWraidAlphaUnFertilized</li>
 							<li>RSW_Rocktooth</li>
 							<li>RSW_Boneblade</li>
-							<li>RSW_EggBasiliskFertilized</li>
 							<li>RSW_EggAaroxisDendoriaUnfertilized</li>
 							<li>RSW_EggNorpheaFertilized</li>
 							<li>RSW_EggScreecherUnfertilized</li>
 							<li>RSW_EggSandpillarUnfertilized</li>
 							<li>RSW_EggScreecherFertilized</li>
-							<li>RSW_FishMeatCore</li>
-							<li>RSW_EggBasiliskUnfertilized</li>
 							<li>RSW_EggFoundryBeetleUnfertilized</li>
-							<li>RSW_EggRoyalRhinoUnfertilized</li>
 							<li>RSW_EggSacapillarUnfertilized</li>
-							<li>RSW_EggFungalMantisFertilized</li>
-							<li>RSW_SmogMothEggUnfertilized</li>
-							<li>RSW_EggMegakrillFertilized</li>
-							<li>RSW_EggMutatingTumorfishUnfertilized</li>
 							<li>RSW_EggBloodletterPetrelUnfertilized</li>
-							<li>RSW_EggAcidSlugUnfertilized</li>
 							<li>RSW_RegalMilk</li>
 							<li>RSW_EggAaroxisDendoriaFertilized</li>
-							<li>RSW_EggGastroToadUnfertilized</li>
-							<li>RSW_EggMutatingTumorfishFertilized</li>
-							<li>RSW_EggAcidSlugFertilized</li>
-							<li>RSW_EggFleeceSpiderUnfertilized</li>
-							<li>RSW_EggMegakrillUnfertilized</li>
-							<li>RSW_EggFungalWeevilFertilized</li>
 							<li>RSW_EggBloodletterPetrelFertilized</li>
-							<li>RSW_EggRoyalRhinoFertilized</li>
-							<li>RSW_EggMaxolotlFertilized</li>
 							<li>RSW_EggSacapillarFertilized</li>
-							<li>RSW_EggGlowtailUnfertilized</li>
-							<li>RSW_EggJewelBeetleUnfertilized</li>
 							<li>RSW_EggSandpillarFertilized</li>
-							<li>RSW_EggGastroToadFertilized</li>
-							<li>RSW_SmogMothEggFertilized</li>
-							<li>RSW_EggGlowtailFertilized</li>
 							<li>RSW_EggCrestedDragonUnfertilized</li>
-							<li>RSW_EggJewelBeetleFertilized</li>
-							<li>RSW_EggFungalWeevilUnfertilized</li>
-							<li>RSW_EggFleeceSpiderFertilized</li>
-							<li>RSW_EggMaxolotlUnfertilized</li>
 							<li>RSW_EggNorpheaUnfertilized</li>
 							<li>RSW_EggFoundryBeetleFertilized</li>
 							<li>RSW_EggCrestedDragonFertilized</li>
-							<li>RSW_EggFungalMantisUnfertilized</li>
-							<li>RSW_EggFacetMothFertilized</li>
-							<li>RSW_EggFacetMothUnfertilized</li>
 							<li>RSW_EggMossBeetleFertilized</li>
 							<li>RSW_EggMossBeetleUnfertilized</li>
 							<li>RSW_EggMaguanaFertilized</li>
@@ -18822,51 +18660,23 @@ AAAAAA==
 							<li>RSW_EggScrapNestBirdUnFertilized</li>
 							<li>RSW_EggWraidAlphaFertilized</li>
 							<li>RSW_EggWraidAlphaUnFertilized</li>
-							<li>RSW_EggBasiliskFertilized</li>
 							<li>RSW_EggAaroxisDendoriaUnfertilized</li>
 							<li>RSW_EggNorpheaFertilized</li>
 							<li>RSW_EggScreecherUnfertilized</li>
 							<li>RSW_EggSandpillarUnfertilized</li>
 							<li>RSW_EggScreecherFertilized</li>
-							<li>RSW_EggBasiliskUnfertilized</li>
 							<li>RSW_EggFoundryBeetleUnfertilized</li>
-							<li>RSW_EggRoyalRhinoUnfertilized</li>
 							<li>RSW_EggSacapillarUnfertilized</li>
-							<li>RSW_EggFungalMantisFertilized</li>
-							<li>RSW_SmogMothEggUnfertilized</li>
-							<li>RSW_EggMegakrillFertilized</li>
-							<li>RSW_EggMutatingTumorfishUnfertilized</li>
 							<li>RSW_EggBloodletterPetrelUnfertilized</li>
-							<li>RSW_EggAcidSlugUnfertilized</li>
 							<li>RSW_RegalMilk</li>
 							<li>RSW_EggAaroxisDendoriaFertilized</li>
-							<li>RSW_EggGastroToadUnfertilized</li>
-							<li>RSW_EggMutatingTumorfishFertilized</li>
-							<li>RSW_EggAcidSlugFertilized</li>
-							<li>RSW_EggFleeceSpiderUnfertilized</li>
-							<li>RSW_EggMegakrillUnfertilized</li>
-							<li>RSW_EggFungalWeevilFertilized</li>
 							<li>RSW_EggBloodletterPetrelFertilized</li>
-							<li>RSW_EggRoyalRhinoFertilized</li>
-							<li>RSW_EggMaxolotlFertilized</li>
 							<li>RSW_EggSacapillarFertilized</li>
-							<li>RSW_EggGlowtailUnfertilized</li>
-							<li>RSW_EggJewelBeetleUnfertilized</li>
 							<li>RSW_EggSandpillarFertilized</li>
-							<li>RSW_EggGastroToadFertilized</li>
-							<li>RSW_SmogMothEggFertilized</li>
-							<li>RSW_EggGlowtailFertilized</li>
 							<li>RSW_EggCrestedDragonUnfertilized</li>
-							<li>RSW_EggJewelBeetleFertilized</li>
-							<li>RSW_EggFungalWeevilUnfertilized</li>
-							<li>RSW_EggFleeceSpiderFertilized</li>
-							<li>RSW_EggMaxolotlUnfertilized</li>
 							<li>RSW_EggNorpheaUnfertilized</li>
 							<li>RSW_EggFoundryBeetleFertilized</li>
 							<li>RSW_EggCrestedDragonFertilized</li>
-							<li>RSW_EggFungalMantisUnfertilized</li>
-							<li>RSW_EggFacetMothFertilized</li>
-							<li>RSW_EggFacetMothUnfertilized</li>
 							<li>RSW_EggMossBeetleFertilized</li>
 							<li>RSW_EggMossBeetleUnfertilized</li>
 							<li>RSW_EggMaguanaFertilized</li>
@@ -19316,52 +19126,23 @@ AAAAAA==
 							<li>RSW_EggWraidAlphaUnFertilized</li>
 							<li>RSW_Rocktooth</li>
 							<li>RSW_Boneblade</li>
-							<li>RSW_EggBasiliskFertilized</li>
 							<li>RSW_EggAaroxisDendoriaUnfertilized</li>
 							<li>RSW_EggNorpheaFertilized</li>
 							<li>RSW_EggScreecherUnfertilized</li>
 							<li>RSW_EggSandpillarUnfertilized</li>
 							<li>RSW_EggScreecherFertilized</li>
-							<li>RSW_FishMeatCore</li>
-							<li>RSW_EggBasiliskUnfertilized</li>
 							<li>RSW_EggFoundryBeetleUnfertilized</li>
-							<li>RSW_EggRoyalRhinoUnfertilized</li>
 							<li>RSW_EggSacapillarUnfertilized</li>
-							<li>RSW_EggFungalMantisFertilized</li>
-							<li>RSW_SmogMothEggUnfertilized</li>
-							<li>RSW_EggMegakrillFertilized</li>
-							<li>RSW_EggMutatingTumorfishUnfertilized</li>
 							<li>RSW_EggBloodletterPetrelUnfertilized</li>
-							<li>RSW_EggAcidSlugUnfertilized</li>
 							<li>RSW_RegalMilk</li>
 							<li>RSW_EggAaroxisDendoriaFertilized</li>
-							<li>RSW_EggGastroToadUnfertilized</li>
-							<li>RSW_EggMutatingTumorfishFertilized</li>
-							<li>RSW_EggAcidSlugFertilized</li>
-							<li>RSW_EggFleeceSpiderUnfertilized</li>
-							<li>RSW_EggMegakrillUnfertilized</li>
-							<li>RSW_EggFungalWeevilFertilized</li>
 							<li>RSW_EggBloodletterPetrelFertilized</li>
-							<li>RSW_EggRoyalRhinoFertilized</li>
-							<li>RSW_EggMaxolotlFertilized</li>
 							<li>RSW_EggSacapillarFertilized</li>
-							<li>RSW_EggGlowtailUnfertilized</li>
-							<li>RSW_EggJewelBeetleUnfertilized</li>
 							<li>RSW_EggSandpillarFertilized</li>
-							<li>RSW_EggGastroToadFertilized</li>
-							<li>RSW_SmogMothEggFertilized</li>
-							<li>RSW_EggGlowtailFertilized</li>
 							<li>RSW_EggCrestedDragonUnfertilized</li>
-							<li>RSW_EggJewelBeetleFertilized</li>
-							<li>RSW_EggFungalWeevilUnfertilized</li>
-							<li>RSW_EggFleeceSpiderFertilized</li>
-							<li>RSW_EggMaxolotlUnfertilized</li>
 							<li>RSW_EggNorpheaUnfertilized</li>
 							<li>RSW_EggFoundryBeetleFertilized</li>
 							<li>RSW_EggCrestedDragonFertilized</li>
-							<li>RSW_EggFungalMantisUnfertilized</li>
-							<li>RSW_EggFacetMothFertilized</li>
-							<li>RSW_EggFacetMothUnfertilized</li>
 							<li>RSW_EggMossBeetleFertilized</li>
 							<li>RSW_EggMossBeetleUnfertilized</li>
 							<li>RSW_EggMaguanaFertilized</li>
@@ -20920,51 +20701,23 @@ AAAAAA==
 							<li>RSW_EggScrapNestBirdUnFertilized</li>
 							<li>RSW_EggWraidAlphaFertilized</li>
 							<li>RSW_EggWraidAlphaUnFertilized</li>
-							<li>RSW_EggBasiliskFertilized</li>
 							<li>RSW_EggAaroxisDendoriaUnfertilized</li>
 							<li>RSW_EggNorpheaFertilized</li>
 							<li>RSW_EggScreecherUnfertilized</li>
 							<li>RSW_EggSandpillarUnfertilized</li>
 							<li>RSW_EggScreecherFertilized</li>
-							<li>RSW_EggBasiliskUnfertilized</li>
 							<li>RSW_EggFoundryBeetleUnfertilized</li>
-							<li>RSW_EggRoyalRhinoUnfertilized</li>
 							<li>RSW_EggSacapillarUnfertilized</li>
-							<li>RSW_EggFungalMantisFertilized</li>
-							<li>RSW_SmogMothEggUnfertilized</li>
-							<li>RSW_EggMegakrillFertilized</li>
-							<li>RSW_EggMutatingTumorfishUnfertilized</li>
 							<li>RSW_EggBloodletterPetrelUnfertilized</li>
-							<li>RSW_EggAcidSlugUnfertilized</li>
 							<li>RSW_RegalMilk</li>
 							<li>RSW_EggAaroxisDendoriaFertilized</li>
-							<li>RSW_EggGastroToadUnfertilized</li>
-							<li>RSW_EggMutatingTumorfishFertilized</li>
-							<li>RSW_EggAcidSlugFertilized</li>
-							<li>RSW_EggFleeceSpiderUnfertilized</li>
-							<li>RSW_EggMegakrillUnfertilized</li>
-							<li>RSW_EggFungalWeevilFertilized</li>
 							<li>RSW_EggBloodletterPetrelFertilized</li>
-							<li>RSW_EggRoyalRhinoFertilized</li>
-							<li>RSW_EggMaxolotlFertilized</li>
 							<li>RSW_EggSacapillarFertilized</li>
-							<li>RSW_EggGlowtailUnfertilized</li>
-							<li>RSW_EggJewelBeetleUnfertilized</li>
 							<li>RSW_EggSandpillarFertilized</li>
-							<li>RSW_EggGastroToadFertilized</li>
-							<li>RSW_SmogMothEggFertilized</li>
-							<li>RSW_EggGlowtailFertilized</li>
 							<li>RSW_EggCrestedDragonUnfertilized</li>
-							<li>RSW_EggJewelBeetleFertilized</li>
-							<li>RSW_EggFungalWeevilUnfertilized</li>
-							<li>RSW_EggFleeceSpiderFertilized</li>
-							<li>RSW_EggMaxolotlUnfertilized</li>
 							<li>RSW_EggNorpheaUnfertilized</li>
 							<li>RSW_EggFoundryBeetleFertilized</li>
 							<li>RSW_EggCrestedDragonFertilized</li>
-							<li>RSW_EggFungalMantisUnfertilized</li>
-							<li>RSW_EggFacetMothFertilized</li>
-							<li>RSW_EggFacetMothUnfertilized</li>
 							<li>RSW_EggMossBeetleFertilized</li>
 							<li>RSW_EggMossBeetleUnfertilized</li>
 							<li>RSW_EggMaguanaFertilized</li>
@@ -51395,7 +51148,6 @@ AAAAAA==
 					<li>Insect</li>
 					<li>Entities</li>
 					<li>RM_Thozziks</li>
-					<li>RSW_PustuleHornets</li>
 					<li>Ancients</li>
 					<li>AncientsHostile</li>
 					<li>HoraxCult</li>
@@ -54426,11 +54178,6 @@ dgbT9YTRtuG+1hr1QTy5lDWN4Z4lTQme18R8BrZpx5v/Dw==
 								<goodwill>-100</goodwill>
 							</li>
 							<li>
-								<other>Faction_17</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
 								<other>Faction_18</other>
 							</li>
 							<li>
@@ -54533,11 +54280,6 @@ dgbT9YTRtuG+1hr1QTy5lDWN4Z4lTQme18R8BrZpx5v/Dw==
 							</li>
 							<li>
 								<other>Faction_16</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_17</other>
 								<kind>Hostile</kind>
 								<goodwill>-100</goodwill>
 							</li>
@@ -54648,11 +54390,6 @@ dgbT9YTRtuG+1hr1QTy5lDWN4Z4lTQme18R8BrZpx5v/Dw==
 								<goodwill>-100</goodwill>
 							</li>
 							<li>
-								<other>Faction_17</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
 								<other>Faction_18</other>
 							</li>
 							<li>
@@ -54755,11 +54492,6 @@ dgbT9YTRtuG+1hr1QTy5lDWN4Z4lTQme18R8BrZpx5v/Dw==
 							</li>
 							<li>
 								<other>Faction_16</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_17</other>
 								<kind>Hostile</kind>
 								<goodwill>-100</goodwill>
 							</li>
@@ -54872,11 +54604,6 @@ dgbT9YTRtuG+1hr1QTy5lDWN4Z4lTQme18R8BrZpx5v/Dw==
 								<goodwill>-100</goodwill>
 							</li>
 							<li>
-								<other>Faction_17</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
 								<other>Faction_18</other>
 							</li>
 							<li>
@@ -54981,11 +54708,6 @@ dgbT9YTRtuG+1hr1QTy5lDWN4Z4lTQme18R8BrZpx5v/Dw==
 							</li>
 							<li>
 								<other>Faction_16</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_17</other>
 								<kind>Hostile</kind>
 								<goodwill>-100</goodwill>
 							</li>
@@ -55098,11 +54820,6 @@ dgbT9YTRtuG+1hr1QTy5lDWN4Z4lTQme18R8BrZpx5v/Dw==
 								<goodwill>-100</goodwill>
 							</li>
 							<li>
-								<other>Faction_17</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
 								<other>Faction_18</other>
 							</li>
 							<li>
@@ -55211,11 +54928,6 @@ dgbT9YTRtuG+1hr1QTy5lDWN4Z4lTQme18R8BrZpx5v/Dw==
 								<goodwill>-100</goodwill>
 							</li>
 							<li>
-								<other>Faction_17</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
 								<other>Faction_18</other>
 							</li>
 							<li>
@@ -55318,11 +55030,6 @@ dgbT9YTRtuG+1hr1QTy5lDWN4Z4lTQme18R8BrZpx5v/Dw==
 							</li>
 							<li>
 								<other>Faction_16</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_17</other>
 								<kind>Hostile</kind>
 								<goodwill>-100</goodwill>
 							</li>
@@ -55435,11 +55142,6 @@ dgbT9YTRtuG+1hr1QTy5lDWN4Z4lTQme18R8BrZpx5v/Dw==
 								<goodwill>-100</goodwill>
 							</li>
 							<li>
-								<other>Faction_17</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
 								<other>Faction_18</other>
 							</li>
 							<li>
@@ -55544,11 +55246,6 @@ dgbT9YTRtuG+1hr1QTy5lDWN4Z4lTQme18R8BrZpx5v/Dw==
 							</li>
 							<li>
 								<other>Faction_16</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_17</other>
 								<kind>Hostile</kind>
 								<goodwill>-100</goodwill>
 							</li>
@@ -55681,11 +55378,6 @@ dgbT9YTRtuG+1hr1QTy5lDWN4Z4lTQme18R8BrZpx5v/Dw==
 								<goodwill>-100</goodwill>
 							</li>
 							<li>
-								<other>Faction_17</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
 								<other>Faction_18</other>
 								<kind>Hostile</kind>
 								<goodwill>-100</goodwill>
@@ -55805,11 +55497,6 @@ dgbT9YTRtuG+1hr1QTy5lDWN4Z4lTQme18R8BrZpx5v/Dw==
 							</li>
 							<li>
 								<other>Faction_16</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_17</other>
 								<kind>Hostile</kind>
 								<goodwill>-100</goodwill>
 							</li>
@@ -55938,11 +55625,6 @@ dgbT9YTRtuG+1hr1QTy5lDWN4Z4lTQme18R8BrZpx5v/Dw==
 							</li>
 							<li>
 								<other>Faction_16</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_17</other>
 								<kind>Hostile</kind>
 								<goodwill>-100</goodwill>
 							</li>
@@ -56076,11 +55758,6 @@ dgbT9YTRtuG+1hr1QTy5lDWN4Z4lTQme18R8BrZpx5v/Dw==
 								<goodwill>-100</goodwill>
 							</li>
 							<li>
-								<other>Faction_17</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
 								<other>Faction_18</other>
 								<kind>Hostile</kind>
 								<goodwill>-100</goodwill>
@@ -56206,11 +55883,6 @@ dgbT9YTRtuG+1hr1QTy5lDWN4Z4lTQme18R8BrZpx5v/Dw==
 							</li>
 							<li>
 								<other>Faction_16</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_17</other>
 								<kind>Hostile</kind>
 								<goodwill>-100</goodwill>
 							</li>
@@ -56346,147 +56018,6 @@ dgbT9YTRtuG+1hr1QTy5lDWN4Z4lTQme18R8BrZpx5v/Dw==
 								<goodwill>-100</goodwill>
 							</li>
 							<li>
-								<other>Faction_17</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_18</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_19</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_20</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_21</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_22</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_23</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_24</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-						</relations>
-						<kidnapped>
-							<kidnappedPawns />
-						</kidnapped>
-						<ideos IsNull="True" />
-						<predatorThreats />
-						<questTags IsNull="True" />
-					</li>
-					<li>
-						<leader>null</leader>
-						<def>RSW_PustuleHornets</def>
-						<name>Pustule Hornets</name>
-						<loadID>17</loadID>
-						<randomKey>1318592194</randomKey>
-						<colorFromSpectrum>0.9776088</colorFromSpectrum>
-						<relations>
-							<li>
-								<other>Faction_0</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_1</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_2</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_3</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_4</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_5</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_6</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_7</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_8</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_9</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_10</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_11</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_12</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_13</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_14</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_15</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_16</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
 								<other>Faction_18</other>
 								<kind>Hostile</kind>
 								<goodwill>-100</goodwill>
@@ -56595,11 +56126,6 @@ dgbT9YTRtuG+1hr1QTy5lDWN4Z4lTQme18R8BrZpx5v/Dw==
 							</li>
 							<li>
 								<other>Faction_16</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_17</other>
 								<kind>Hostile</kind>
 								<goodwill>-100</goodwill>
 							</li>
@@ -56730,11 +56256,6 @@ dgbT9YTRtuG+1hr1QTy5lDWN4Z4lTQme18R8BrZpx5v/Dw==
 							</li>
 							<li>
 								<other>Faction_16</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_17</other>
 								<kind>Hostile</kind>
 								<goodwill>-100</goodwill>
 							</li>
@@ -56873,11 +56394,6 @@ dgbT9YTRtuG+1hr1QTy5lDWN4Z4lTQme18R8BrZpx5v/Dw==
 								<goodwill>-100</goodwill>
 							</li>
 							<li>
-								<other>Faction_17</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
 								<other>Faction_18</other>
 								<kind>Hostile</kind>
 								<goodwill>-100</goodwill>
@@ -56983,11 +56499,6 @@ dgbT9YTRtuG+1hr1QTy5lDWN4Z4lTQme18R8BrZpx5v/Dw==
 							</li>
 							<li>
 								<other>Faction_16</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_17</other>
 								<kind>Hostile</kind>
 								<goodwill>-100</goodwill>
 							</li>
@@ -57123,11 +56634,6 @@ dgbT9YTRtuG+1hr1QTy5lDWN4Z4lTQme18R8BrZpx5v/Dw==
 								<goodwill>-100</goodwill>
 							</li>
 							<li>
-								<other>Faction_17</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
 								<other>Faction_18</other>
 								<kind>Hostile</kind>
 								<goodwill>-100</goodwill>
@@ -57231,11 +56737,6 @@ dgbT9YTRtuG+1hr1QTy5lDWN4Z4lTQme18R8BrZpx5v/Dw==
 							</li>
 							<li>
 								<other>Faction_16</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_17</other>
 								<kind>Hostile</kind>
 								<goodwill>-100</goodwill>
 							</li>
@@ -57368,11 +56869,6 @@ dgbT9YTRtuG+1hr1QTy5lDWN4Z4lTQme18R8BrZpx5v/Dw==
 							</li>
 							<li>
 								<other>Faction_16</other>
-								<kind>Hostile</kind>
-								<goodwill>-100</goodwill>
-							</li>
-							<li>
-								<other>Faction_17</other>
 								<kind>Hostile</kind>
 								<goodwill>-100</goodwill>
 							</li>
@@ -100269,7 +99765,7 @@ We are saved by what we salvage.</descriptionTemplate>
 										<id>Apparel_Cape808</id>
 										<health>180</health>
 										<stackCount>1</stackCount>
-										<stuff>RSW_Leather_Amphibian</stuff>
+										<stuff>Leather_Plain</stuff>
 										<questTags IsNull="True" />
 										<despawnedTick>-1</despawnedTick>
 										<customizationData IsNull="True" />
@@ -103613,7 +103109,7 @@ We are saved by what we salvage.</descriptionTemplate>
 										<id>Apparel_Pants829</id>
 										<health>80</health>
 										<stackCount>1</stackCount>
-										<stuff>RSW_Leather_Gastropoda</stuff>
+										<stuff>Leather_Plain</stuff>
 										<questTags IsNull="True" />
 										<despawnedTick>-1</despawnedTick>
 										<customizationData IsNull="True" />
@@ -133304,16 +132800,6 @@ We are saved by what we salvage.</descriptionTemplate>
 										<customizationData IsNull="True" />
 										<CommonSenseWasInInventory>True</CommonSenseWasInInventory>
 									</li>
-									<li Class="ThingWithComps">
-										<def>RSW_BufoBile</def>
-										<id>RSW_BufoBile693059</id>
-										<health>50</health>
-										<stackCount>1</stackCount>
-										<questTags IsNull="True" />
-										<despawnedTick>-1</despawnedTick>
-										<customizationData IsNull="True" />
-										<CommonSenseWasInInventory>True</CommonSenseWasInInventory>
-									</li>
 								</innerList>
 							</innerContainer>
 						</inventory>
@@ -144814,16 +144300,6 @@ We are saved by what we salvage.</descriptionTemplate>
 									<li Class="ThingWithComps">
 										<def>guy762_medpac_life</def>
 										<id>guy762_medpac_life699399</id>
-										<health>50</health>
-										<stackCount>1</stackCount>
-										<questTags IsNull="True" />
-										<despawnedTick>-1</despawnedTick>
-										<customizationData IsNull="True" />
-										<CommonSenseWasInInventory>True</CommonSenseWasInInventory>
-									</li>
-									<li Class="ThingWithComps">
-										<def>RSW_BufoBile</def>
-										<id>RSW_BufoBile699400</id>
 										<health>50</health>
 										<stackCount>1</stackCount>
 										<questTags IsNull="True" />
@@ -178149,7 +177625,6 @@ We are saved by what we salvage.</descriptionTemplate>
 						<li>RM_Faction_CombHolds</li>
 						<li>RM_FactionDef_KurrethSwarm</li>
 						<li>RM_FactionDef_SkrethBrood</li>
-						<li>RSW_PustuleHornets</li>
 						<li>VFEP_Junkers</li>
 						<li>VFEP_Mercenaries</li>
 						<li>GR_RoamingMonstrosities</li>
@@ -181156,103 +180631,34 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 							<animal>RSW_PodWorm</animal>
 						</li>
 						<li>
-							<animal>RSW_RoyalRhino</animal>
-						</li>
-						<li>
-							<animal>RSW_Yooka</animal>
-						</li>
-						<li>
-							<animal>RSW_PustuleHornetSpawned</animal>
-						</li>
-						<li>
 							<animal>RSW_AaroxisDendoria</animal>
 						</li>
 						<li>
 							<animal>RSW_BloodletterPetrel</animal>
 						</li>
 						<li>
-							<animal>RSW_GastroToad</animal>
-						</li>
-						<li>
 							<animal>RSW_SandPillar</animal>
-						</li>
-						<li>
-							<animal>RSW_SmogMothLarvae</animal>
-						</li>
-						<li>
-							<animal>RSW_FacetMoth</animal>
-						</li>
-						<li>
-							<animal>RSW_Thrumbungus</animal>
-						</li>
-						<li>
-							<animal>RSW_MutatingTumorfishSpawn</animal>
-						</li>
-						<li>
-							<animal>RSW_ColonyPustuleHornetQueen</animal>
-						</li>
-						<li>
-							<animal>RSW_Megakrill</animal>
-						</li>
-						<li>
-							<animal>RSW_BovineBeetleLarvae</animal>
 						</li>
 						<li>
 							<animal>RSW_FoundryBeetle</animal>
 						</li>
 						<li>
-							<animal>RSW_Maxolotl</animal>
-						</li>
-						<li>
-							<animal>RSW_FleeceSpider</animal>
-						</li>
-						<li>
-							<animal>RSW_RoyalRhinoLarvae</animal>
-						</li>
-						<li>
 							<animal>RSW_Diggerpede</animal>
-						</li>
-						<li>
-							<animal>RSW_MutatingTumorfishAdult</animal>
 						</li>
 						<li>
 							<animal>RSW_MossBeetle</animal>
 						</li>
 						<li>
-							<animal>RSW_MutatingTumorfishFry</animal>
-						</li>
-						<li>
 							<animal>RSW_Creature_Mantrap</animal>
-						</li>
-						<li>
-							<animal>RSW_Glowtail</animal>
 						</li>
 						<li>
 							<animal>RSW_Screecher</animal>
 						</li>
 						<li>
-							<animal>RSW_ColonyPustuleHornet</animal>
-						</li>
-						<li>
 							<animal>RSW_BunkerBug</animal>
 						</li>
 						<li>
-							<animal>RSW_AcidSlug</animal>
-						</li>
-						<li>
-							<animal>RSW_FungalWeevil</animal>
-						</li>
-						<li>
 							<animal>RSW_Maligoat</animal>
-						</li>
-						<li>
-							<animal>RSW_FungalMantis</animal>
-						</li>
-						<li>
-							<animal>RSW_Polluwog</animal>
-						</li>
-						<li>
-							<animal>RSW_BloodropLarvae</animal>
 						</li>
 						<li>
 							<animal>RSW_MutagenicNorphea</animal>
@@ -181261,37 +180667,13 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 							<animal>RSW_SandLeaper</animal>
 						</li>
 						<li>
-							<animal>RSW_SmogMoth</animal>
-						</li>
-						<li>
-							<animal>RSW_AaroxisDendoriaLarvae</animal>
-						</li>
-						<li>
 							<animal>RSW_Sacapillar</animal>
-						</li>
-						<li>
-							<animal>RSW_JewelBeetle</animal>
 						</li>
 						<li>
 							<animal>RSW_CrestedDragon</animal>
 						</li>
 						<li>
-							<animal>RSW_Basilisk</animal>
-						</li>
-						<li>
-							<animal>RSW_FoundryBeetleLarvae</animal>
-						</li>
-						<li>
-							<animal>RSW_JewelBeetleLarvae</animal>
-						</li>
-						<li>
 							<animal>RSW_CaveLemming</animal>
-						</li>
-						<li>
-							<animal>RSW_PustuleHornet</animal>
-						</li>
-						<li>
-							<animal>RSW_CrystalCrab</animal>
 						</li>
 						<li>
 							<animal>RSW_Maguana</animal>
