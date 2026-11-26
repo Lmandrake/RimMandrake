@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "85eb4843b1f1540942347faeb95a1a9f5eeaca76649b8833cb9eb583448f8c9e",
+  "body_sha256": "8583165a19d288e6be324bc512858f7129facbf48921d9e2deab9526782390b0",
   "reducer": 1,
   "shards": {
    "BACKFILL": 892335,
@@ -43,7 +43,7 @@
    "HOLDER.run-1795461568": 2159,
    "HOLDER.run-1795471235": 562,
    "HOLDER.run-1795503470": 1774,
-   "HOLDER.run-1795670514": 2691,
+   "HOLDER.run-1795670514": 5386,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1294,10 +1294,10 @@
   },
   "checkpoint": {
    "by": "HOLDER.run-1795670514",
-   "done": "jetty seam fixed in every look (5f25b21270), in-game PASS on ArchSmall (83c4f2f4f4), Scrapper wrap fix staged (04ca2b278e) but blocked by owner-KEPT art lock",
-   "next": "Work RIMMANDRAKE_STORE_FLOWWORKS_HELD_FLAG_WHERE_A_READ_REACHES_IT per the bundle state file",
-   "ruled_out": "provenance_fix cannot unprotect a run-minted keep; a new texture path would sidestep his kept-art act",
-   "ts": "2026-11-26T06:49:56Z"
+   "done": "rope bridge redrawn: side ropes + sparse slats, hand ropes, netting when railed, bollards on the side line (e54359693c, polish 386960f854); ArchSmall sc_hung_bridge PASS (8071314c42); item closed",
+   "next": "Work RIMMANDRAKE_STORE_FLOWWORKS_HELD_FLAG_WHERE_A_READ_REACHES_IT, then the thirst class run and the timber bridge",
+   "ruled_out": "netting edge-on on N-S bridges: fixed by flaring the hand ropes (postOut 0.12) as in his photo",
+   "ts": "2026-11-26T09:03:57Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1749,7 +1749,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1721,
+  "events": 1729,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7849,7 +7849,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-26T06:49:56Z",
+   "last": "2026-11-26T09:03:57Z",
    "lease": "run-1795670514",
    "released": false,
    "token": 60
