@@ -1,0 +1,127 @@
+{
+ "job": {
+  "id": "DIRECT-CS7B-20261126T131830",
+  "mod": "FlowWorks",
+  "selector": {
+   "chains": [
+    "canal_overflow"
+   ]
+  },
+  "source": "e79b39dfe2",
+  "lane": "direct:ArchBig"
+ },
+ "result": {
+  "outcome": "DONE",
+  "cause": null,
+  "rows": [
+   {
+    "chain": "canal_overflow",
+    "row": "PUMP_FULL_CANAL_SPILLS_SHEET",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "sheet_overflow_result_20261126T131204.json: {'pulsesWaited': 1, 'tank': [30000, 10000], 'canal': [60000, 60000], 'inPump': 20000, 'lips': 'SHEETRECT dl=20000 wet=2 maxDl=10000 edgeMaxDl=10000 ice=0 film=0 sheet=0 pool=2', 'destroyed': 0, 'closes': True, 'pump': 'PUMP running=False moved=0 pour=True tank=RM_Liquid_FreshWater:30000'}"
+   },
+   {
+    "chain": "canal_overflow",
+    "row": "RAIN_FULL_CANAL_SPILLS_SHEET",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "sheet_overflow_result_20261126T131204.json: {'weather': True, 'pulsesWaited': 7, 'inRain': 120000, 'canal': [60000, 60000], 'lips': 'SHEETRECT dl=50000 wet=5 maxDl=10000 edgeMaxDl=10000 ice=0 film=0 sheet=0 pool=5', 'destroyed': 0, 'closes': True}"
+   },
+   {
+    "chain": "canal_overflow",
+    "row": "FILLIN_HOMELESS_SPILLS",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "sheet_overflow_result_20261126T131204.json: {'fillin': 'FILLIN homeless=10000 spilled=10000 destroyed=0', 'inFillIn': 10000, 'destroyed': 0, 'closes': True}"
+   },
+   {
+    "chain": "canal_overflow",
+    "row": "SHEET_RETURNS_TO_PIT",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "sheet_overflow_result_20261126T131204.json: {'pulsesWaited': 16, 'settled': False, 'pitEdge': 'SHEETRECT dl=594 wet=3 maxDl=198 edgeMaxDl=0 ice=0 film=3 sheet=0 pool=0', 'pit': [0, 1848], 'returned': 1848, 'left': 'SHEETRECT dl=25510 wet=45 maxDl=794 edgeMaxDl=757 ice=0 film=15 sheet=30 pool=0', 'retention': 200, 'closes': True}"
+   },
+   {
+    "chain": "canal_overflow",
+    "row": "SPILL_EXTENT_FINITE",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "sheet_overflow_result_20261126T131204.json: {'wetSeries': [29, 45, 61, 68, 70, 71, 71, 71, 71], 'bound': 200, 'minReceive': 100, 'retention': 200, 'final': 'SHEETRECT dl=19624 wet=71 maxDl=472 edgeMaxDl=431 ice=0 film=63 sheet=8 pool=0', 'stableFor': 3}"
+   },
+   {
+    "chain": "canal_overflow",
+    "row": "BACKPRESSURE_REFUSES_DESTROYS_NOTHING",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "sheet_overflow_result_20261126T131204.json: {'room': 110000, 'offer1': 'SPILL offered=330000 accepted=40000', 'offer2': 'SPILL offered=110000 accepted=0', 'yard': 'SHEETRECT dl=40000 wet=4 maxDl=10000 edgeMaxDl=10000 ice=0 film=0 sheet=0 pool=4', 'outsideOnly': 0, 'destroyed': 0, 'closes': True}"
+   },
+   {
+    "chain": "canal_overflow",
+    "row": "DOOR_LEAKS_SLOWLY",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "sheet_overflow_result_20261126T131204.json: {'door': 'SHEETCELL dl=0 tier=None kind=Door stand=0 fluid=- burning=False', 'doorRingLost': 722, 'gapRingLost': 25412, 'outsideDoor': 'SHEETRECT dl=15 wet=1 maxDl=15 edgeMaxDl=15 ice=0 film=1 sheet=0 pool=0', 'inside': ['SHEETRECT dl=29278 wet=9 maxDl=3365 edgeMaxDl=0 ice=0 film=0 sheet=0 pool=9', 'SHEETRECT dl=4588 wet=9 maxDl=593 edgeMaxDl=0 ice=0 film=2 sheet=7 pool=0'], 'c"
+   },
+   {
+    "chain": "canal_overflow",
+    "row": "SETTING_OFF_STOPS_NEW_KEEPS_DRAINING",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "sheet_overflow_result_20261126T131204.json: {'offerWhileOff': 'SPILL offered=10000 accepted=0', 'standing': [304988, 295383], 'exits': 9605, 'purged': 0, 'in': 0, 'closes': True}"
+   },
+   {
+    "chain": "canal_overflow",
+    "row": "CROPS_IRRIGATE_THEN_DROWN",
+    "verdict": "FAIL",
+    "validity": "valid",
+    "freshness": "fresh",
+    "detail": "ExpectationFailed: [MOD] sheet_overflow_result_20261126T131204.json: {'field': 'cropDrownPulses', 'shipped': '1680', 'aliveEarly': 12, 'soakedEarly': 1493, 'drownedAfterPulses': 11, 'allDrowned': False, 'pollBound': 11, 'filmAlive': 0, 'control': 3, 'tiers': {'sheet': 9, 'film': 3, 'filmRose': 3, 'deepAlive': [[[31, 133], 'Film'], [[31, 134], 'Film'], [[31, 135], 'Film'], [[32, 133], 'Film'], [[32, 134], 'Film'], [[32, 135], 'Film'], [[33, 133], 'Film'], [[33, 134], 'Film'], [[33, 135], 'Film']], 'controlDead': [[31, 138]]}}"
+   },
+   {
+    "chain": "canal_overflow",
+    "row": "SHEET_FREEZES_AND_THAWS",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "sheet_overflow_result_20261126T131204.json: {'conditions': [True, True], 'frozeAfterTicks': 3500, 'temps': [7.24157333, 5.957507, 4.663571, 3.3590374, 2.04319477, 0.715376854, -0.962223053, -2.31930733], 'frozen': {'dl': 20582, 'wet': 81, 'maxDl': 457, 'edgeMaxDl': 452, 'ice': 81, 'film': 0, 'sheet': 0, 'pool': 0}, 'frozenLater': {'dl': 20582, 'wet': 81, 'maxDl': 457, 'edgeMaxDl': 452, 'ice': 81, 'film': 0, 'sheet': 0, '"
+   },
+   {
+    "chain": "canal_overflow",
+    "row": "LOWERED_CAP_KEEPS_DEEPER_WATER",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "sheet_overflow_result_20261126T131204.json: {'field': 'sheetCapCm', 'shipped': '50', 'offerAfterLower': 'SPILL offered=10000 accepted=0', 'yardFell': 96, 'losses': 8575, 'yard': 'SHEETRECT dl=95892 wet=12 maxDl=8133 edgeMaxDl=0 ice=0 film=0 sheet=0 pool=12', 'closes': True}"
+   },
+   {
+    "chain": "canal_overflow",
+    "row": "LEDGER_CONSERVES_TO_THE_DL",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "sheet_overflow_result_20261126T131204.json: {'in': 506000, 'standing': 400149, 'exits': 105851, 'destroyed': 0, 'closes': True, 'balances': 4, 'badBalances': [], 'ledgerEnd': 'SHEETLEDGER enabled=True in=506000 inPump=30000 inRain=120000 inFlood=346000 inFillIn=10000 inGravity=0 standing=400149 wet=1125 returned=11854 joined=0 soaked=88207 evaporated=5790 burned=0 purged=0 closes=True releaseLost=0 burning=0 destroyedDl="
+   },
+   {
+    "chain": "canal_overflow",
+    "row": "SAVE_LOAD_CONTINUES_IDENTICAL",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "sheet_overflow_result_20261126T131204.json: {'h0': '48c017654d4ab83b', 'h0AfterLoad': '48c017654d4ab83b', 'hContinued': 'd48a8ba3f625a667', 'hLoadedContinued': 'd48a8ba3f625a667', 'closes': True, 'save': 'RM_SHEET_OVERFLOW_20261126T131543', 'parts': {'pulse': ['99', '99'], 'dl': ['908d03b51180087e', '908d03b51180087e'], 'rem': ['d8ce2a1cd99d56cd', 'd8ce2a1cd99d56cd'], 'calm': ['f89d9f6b41c6950d', 'f89d9f6b41c6950d'], 'in"
+   }
+  ],
+  "sheet": "/home/mandrake/rm/runs/clones/RIMMANDRAKE_CLASS_SEVEN_THIRST_FAILS_SITE_FULL_OF_PATIENTS.det/Transient/modcheck/FlowWorks_20261126T211825Z.json",
+  "game": "ArchBig",
+  "runner_sha": "e79b39dfe2",
+  "note": "direct run on ArchBig; {'PASS': 12, 'FAIL': 1}"
+ }
+}

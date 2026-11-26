@@ -1,0 +1,30 @@
+PREVIEW 1 of 96 chains, 13 rows to execute
+  chain canal_overflow [full]: named by --chains
+    whole chain: executed 13 row(s)
+EXPECTED_ROWS ["PUMP_FULL_CANAL_SPILLS_SHEET", "RAIN_FULL_CANAL_SPILLS_SHEET", "FILLIN_HOMELESS_SPILLS", "SHEET_RETURNS_TO_PIT", "SPILL_EXTENT_FINITE", "BACKPRESSURE_REFUSES_DESTROYS_NOTHING", "DOOR_LEAKS_SLOWLY", "SETTING_OFF_STOPS_NEW_KEEPS_DRAINING", "CROPS_IRRIGATE_THEN_DROWN", "SHEET_FREEZES_AND_THAWS", "LOWERED_CAP_KEEPS_DEEPER_WATER", "LEDGER_CONSERVES_TO_THE_DL", "SAVE_LOAD_CONTINUES_IDENTICAL"]
+EXPECTED_ROW_CHAINS {"PUMP_FULL_CANAL_SPILLS_SHEET": "canal_overflow", "RAIN_FULL_CANAL_SPILLS_SHEET": "canal_overflow", "FILLIN_HOMELESS_SPILLS": "canal_overflow", "SHEET_RETURNS_TO_PIT": "canal_overflow", "SPILL_EXTENT_FINITE": "canal_overflow", "BACKPRESSURE_REFUSES_DESTROYS_NOTHING": "canal_overflow", "DOOR_LEAKS_SLOWLY": "canal_overflow", "SETTING_OFF_STOPS_NEW_KEEPS_DRAINING": "canal_overflow", "CROPS_IRRIGATE_THEN_DROWN": "canal_overflow", "SHEET_FREEZES_AND_THAWS": "canal_overflow", "LOWERED_CAP_KEEPS_DEEPER_WATER": "canal_overflow", "LEDGER_CONSERVES_TO_THE_DL": "canal_overflow", "SAVE_LOAD_CONTINUES_IDENTICAL": "canal_overflow"}
+EXPECTED_DRIVERS [{"name": "sheet_overflow_proof", "timeout_s": 1800}]
+[modcheck] FlowWorks TARGETED: 1 of 96 chains: canal_overflow
+[modcheck] driver sheet_overflow_proof START (timeout 1800 s): \\wsl.localhost\Ubuntu\home\mandrake\rm\runs\clones\RIMMANDRAKE_CLASS_SEVEN_THIRST_FAILS_SITE_FULL_OF_PATIENTS.det\src\RimMandrake\FlowWorks\northstar/sheet_overflow_proof.py --origin 30,30 --fresh-map
+[modcheck] driver sheet_overflow_proof FAILED rc=1 in 232 s
+[modcheck] driver sheet_overflow_proof tail:
+tMax=1917", "excavationMsPerTick": null, "map": [null, null], "mods": 21, "ticks": 1250, "provisional": true, "barMs":
+PERF_325                                 UNMEASURED SITE      {"why": "this run is not on a 325x325 map", "map": [null, null], "mods": 21, "provisional": true, "barMs": 1.0}
+PERF_FULL_MODPACK                        UNMEASURED SITE      {"why": "this run is not on the owner's full mod list", "map": [null, null], "mods": 21, "provisional": true, "barMs": 1.0}
+== row SAVE_LOAD_CONTINUES_IDENTICAL
+SAVE_LOAD_CONTINUES_IDENTICAL            PASS       MOD       {"h0": "48c017654d4ab83b", "h0AfterLoad": "48c017654d4ab83b", "hContinued": "d48a8ba3f625a667", "hLoadedContinued": "d48a8ba3f625a667", "closes": true, "save": "RM_SHEET_OVERFLOW_20261126T131543", "parts": {"pulse": ["99", "99"], "dl": ["908d03b51180087e", "90
+sheet overflow proof: 13 rows, 1 FAIL, 1 not PASS (perf recorded separately: 4) -> \\wsl.localhost\Ubuntu\home\mandrake\rm\runs\clones\RIMMANDRAKE_CLASS_SEVEN_THIRST_FAILS_SITE_FULL_OF_PATIENTS.det\src\RimMandrake\FlowWorks\northstar\sheet_overflow_result_20261126T131204.json
+[bridge split] 231.3 s wall: load 8.4 / ticks 42.0 / reads 8.7 / other 36.0 / outside calls 136.2 s
+[bridge split] WARN 248 calls of jawa/destroy_batch (18.1 s): batch them
+[bridge split] WARN 196 calls of jawa/static_call (8.3 s): batch them
+[bridge split] WARN 135 calls of jawa/list_things (6.1 s): batch them
+[bridge split] WARN 72 calls of jawa/safe_advance (38.8 s): batch them
+
+[modcheck] canary GREEN: programState Playing; 3 live colonists; spawn_batch Steel at 125,125: success=True; destroyed; left at cell: []
+[modcheck] chain canal_overflow START 21:17:48Z
+[modcheck] chain canal_overflow END 35s PASS=12 FAIL=1 UNMEASURED=0 NOT_RUN=0 hold=9.0s body=25.7s teardown=0.0s
+[modcheck] FlowWorks: no ledger item MODCHECK_FLOWWORKS_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\runs\clones\RIMMANDRAKE_CLASS_SEVEN_THIRST_FAILS_SITE_FULL_OF_PATIENTS.det\Transient\modcheck\FlowWorks_20261126T211825Z.html only
+FlowWorks            TARGETED 1/96 chains (canal_overflow) RED  (state)
+[modcheck] FlowWorks: targeted run, status entry untouched; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\runs\clones\RIMMANDRAKE_CLASS_SEVEN_THIRST_FAILS_SITE_FULL_OF_PATIENTS.det\Transient\modcheck\FlowWorks_20261126T211825Z.html
+[bridge split] 425.8 s wall: load 0.0 / ticks 0.0 / reads 1.8 / other 3.6 / outside calls 420.3 s
+MODCHECK_RC=1

@@ -43,7 +43,8 @@ Scenes (plot coords from --origin, default 30,30; dug by jawa/flowworks_excavati
   G  z=72   wall ring x=0..4, z=70..74, a door at (4,72); 30,000 dL inside; a twin ring at z=82 with a GAP at (4,82)
                                                                                    -> DOOR_LEAKS_SLOWLY
   I  z=94   20,000 dL on soil beside an empty dug square (6,94); the switch turned OFF -> SETTING_OFF_STOPS_NEW_KEEPS_DRAINING
-  J  z=104  rice x=1..4, z=103..105; 60,000 dL spilled at (0,104) (sheet tier); crop delay COMPRESSED (debug_process
+  J  z=104  rice x=1..4, z=103..105, aged one TickLong; dry control rice x=20..23, z=104 (out of the spill's reach);
+            60,000 dL spilled at (0,104) (sheet tier); crop delay COMPRESSED (debug_process
             "compress first": the kernel counts the D3 timer in PULSES, so a time_set_ticks clock jump runs no pulse and can
             never age a crop)                                                       -> CROPS_IRRIGATE_THEN_DROWN
   K  z=116  20,000 dL on soil; ColdSnap + DeepFreeze until the cell reads < 0 C, then ended -> SHEET_FREEZES_AND_THAWS
@@ -753,71 +754,125 @@ def setting_off(ctx):
 
 
 def crops(ctx):
-    """PROVE (D3) rice x=1..4, z=103..105 (growth 0.3); the crop-drowning delay setting (FEATURES cropDelayField) COMPRESSED to
-    its smallest value and read back; 60,000 dL spilled at (0,104) and the squares just above and below it (<= 50,000 an origin) so the rice squares stand at sheet tier; poll pulse by pulse.
-    EXPECT before the compressed delay: every rice plant alive and the soak (irrigation) total risen; after it: every rice plant
-    on a square read at sheet tier (or deeper) after the first pulse dead, every one on a film square alive (a film irrigates); then the shipped delay restored and read back as 1 week (60,000 x 7 ticks). LIES: a clock jump ages
-    nothing (the kernel counts PULSES); a film that never reached sheet tier never drowns (tier read back first); rice that died
-    of something else (cold, blight) dies with no sheet too (a dry control row x=1..4, z=108 must stay alive)."""
+    """PROVE (D3) rice x=1..4, z=103..105 (the sheet block), rice x=17..19, z=150 (the film patch) and a dry control row
+    x=17..20, z=104 (growth 0.3 each), all aged one Plant TickLong (2,000 ticks) before any water, so each crop is older than
+    the compressed delay (the per-crop rule counts min(standing pulses, its age)); the crop-drowning delay setting
+    (FEATURES cropDelayField) COMPRESSED to its smallest value and read back; 60,000 dL spilled at (0,104) and the squares
+    just above and below it (<= 50,000 an origin) so the block's squares stand at sheet tier; the film patch's middle square
+    (18,150) topped up to 400 dL (2 cm, under the 3 cm sheet threshold) every pulse; poll pulse by pulse.
+    EXPECT before the compressed delay: every rice plant alive and the soak (irrigation) total risen; after it: every block
+    rice on a square read at sheet tier (or deeper) after the first pulse dead; every film-patch rice on a square read wet at
+    film tier alive a whole delay after that (a film irrigates); then the shipped delay restored and read back. LIES: a clock
+    jump ages nothing (the kernel counts PULSES); a film that never reached sheet tier never drowns (each film square's tier
+    read every pulse: one that rose is not counted); rice that died of something else (cold, blight, grazing) dies with no
+    sheet too (the control row must stay alive; its tier is read every pulse, and a control that got wet is a SITE fault).
+    A film square of the open spill is not the film case: the spreading sheet lifted every one of them (live, 2026-11-26)."""
     B, row, ledger, ld, P, feats, sset, sget = _c(ctx, "B", "row", "ledger", "ld", "P", "feats", "sset", "sget")
     field = feats.get("cropDelayField")
     V.require(field and field != "-", "the build names its crop-delay setting", feats, cls="HARNESS")
     shipped = sget(S_SHEET, field)
+
     def alive(rect):
         lt = B.call("jawa/list_things", defName=CROP, rect="%d,%d,%d,%d" % rect, limit=50) or {}
         return len(lt.get("things") or [])
+
+    def tier(c):
+        return ctx["scell"](c)[0].get("tier")
+    # RIMMANDRAKE_CLASS_SEVEN_THIRST_FAILS_SITE_FULL_OF_PATIENTS (live 2026-11-26, ArchBig e79b39dfe2): the control at
+    # x=1..4, z=108 stood 3 squares from the spill, inside 60,000 dL's reach (one died in both direct re-runs). x=17..20 is
+    # inside the prepared site (x <= 21) and beyond the spill; z=150 is beyond row H's 20,000 dL at (4,140).
+    CTRL = [P(x, 104) for x in range(17, 21)]
+    FILM = [P(x, 150) for x in range(17, 20)]
+    FILM_AT, FILM_DL = P(18, 150), 400        # 400 dL = 2 cm: below the kernel's 3 cm sheet threshold (Params.SheetUpDl)
+    rice = [P(x, z) for x in range(1, 5) for z in range(103, 106)]
     B.call("jawa/set_plants", ops="%s:%d,%d,4,3" % ((CROP,) + P(1, 103)), growth=0.3)
-    B.call("jawa/set_plants", ops="%s:%d,%d,4,1" % ((CROP,) + P(1, 108)), growth=0.3)
-    # a planting shortfall would score as a MOD FAIL below (early == 12, control == 4): read the planted count first
-    planted, ctrl0 = alive(P(1, 103) + (4, 3)), alive(P(1, 108) + (4, 1))
-    V.require(planted == 12 and ctrl0 == 4, "all 12 rice and the 4 control rice stand before the spill", [planted, ctrl0],
-              cls="SITE")
+    B.call("jawa/set_plants", ops="%s:%d,%d,4,1" % ((CROP,) + CTRL[0]), growth=0.3)
+    B.call("jawa/set_plants", ops="%s:%d,%d,3,1" % ((CROP,) + FILM[0]), growth=0.3)
+
+    def counts():
+        return [alive(P(1, 103) + (4, 3)), alive(CTRL[0] + (4, 1)), alive(FILM[0] + (3, 1))]
+    # a planting shortfall would score as a MOD FAIL below: read the planted count first
+    n0 = counts()
+    V.require(n0 == [12, 4, 3], "all 12 block rice, 4 control and 3 film-patch rice stand before the spill", n0, cls="SITE")
+    # same item, same run: rice set at age 0 ages only on its TickLong, and by then the open spill had soaked to film on
+    # every square (all 9 sheet squares alive and at Film after 11 pulses), so no crop was ever old enough under a standing
+    # sheet. One TickLong before the water gives every crop an age past the compressed delay; the sheet then decides.
+    ctx["ticks"](2000)
+    n1 = counts()
+    V.require(n1 == [12, 4, 3], "every rice outlives one dry TickLong", n1, cls="SITE")
+
+    def topup():
+        have = int(ctx["scell"](FILM_AT)[0].get("dl") or 0)
+        if have < FILM_DL:
+            ctx["spill"](FILM_AT, FILM_DL - have)
     sset(S_SHEET, field, 2)
     try:
         l0 = ledger()
         # one undug origin lands 50,000 at most (spill_spread): the rest goes in beside it, still west of the rice
         acc, ts = ctx["spill_spread"]([P(0, 104), P(0, 103), P(0, 105)], 60000)
         V.require(acc == 60000, "the staged spill was accepted whole", ts)
+        topup()
         ctx["pulses"](1)
-        rice = [P(x, z) for x in range(1, 5) for z in range(103, 106)]
-        tiers = {c: ctx["scell"](c)[0].get("tier") for c in rice}
+        topup()
+        tiers = {c: tier(c) for c in rice + FILM}
         deep = [c for c in rice if tiers[c] in ("Sheet", "Pool")]
-        film = [c for c in rice if tiers[c] in ("Film", "None")]
+        # a film square is a WET one below sheet tier: a dry square irrigates nothing and proves nothing about film
+        film = [c for c in FILM if tiers[c] == "Film"]
         tt = {"sheet": len(deep), "film": len(film)}
         V.require(deep, "some rice stands at sheet tier", tiers)
+        V.require(film, "the film patch reads wet at film tier", tiers, cls="SITE")
 
-        early = alive(P(1, 103) + (4, 3))
+        early = sum(counts()[::2])
         soak_early = ld(l0, ledger(), "soaked")
-        # RIMMANDRAKE_CLASS_SEVEN_THIRST_FAILS_SITE_FULL_OF_PATIENTS (direct re-runs 2026-11-25, 6 pulses, none drowned): since
-        # 87b2dddb89 a crop drowns once min(standing pulses, ITS age in pulses) reaches the delay, and Plant.Age grows only on
-        # the plant's TickLong (2,000 ticks). Rice set at age 0 cannot drown before its first TickLong, so the bound is one
-        # TickLong plus the delay plus one pulse (11 at the 250-tick pulse), not 6.
-        pt = int(ctx["CTX"].get("pulseTicks") or 250)   # the live pulse, read from the ledger at start
-        bound = -(-2000 // pt) + int(sget(S_SHEET, field) or 2) + 1
-        # the longer window lets the spreading sheet deepen a film square: a film square counts only while every pulse's read
-        # keeps it at film (one that rose stood under the sheet, and may drown by the rule)
-        rose = set()
+        # since 87b2dddb89 a crop drowns once min(standing pulses, ITS age in pulses) reaches the delay; the rice is aged
+        # already, so the sheet's standing pulses decide: the delay plus two pulses (one read above, one of margin)
+        delay = int(sget(S_SHEET, field) or 2)
+        bound = delay + 2
+        rose, ctrl_wet, film_dried = set(), set(), set()
+
+        def watch():
+            for c in film:
+                t = tier(c)
+                if t in ("Sheet", "Pool"):
+                    rose.add(c)
+                elif t != "Film":
+                    film_dried.add(c)
+            for c in CTRL:
+                if tier(c) not in (None, "None"):
+                    ctrl_wet.add(c)
+            topup()
 
         def all_drowned():
-            for c in film:
-                if c not in rose and ctx["scell"](c)[0].get("tier") in ("Sheet", "Pool"):
-                    rose.add(c)
+            watch()
             return sum(alive(c + (1, 1)) for c in deep) == 0
         dead, waited = _poll(ctx, all_drowned, bound)
-        film_kept = [c for c in film if c not in rose]
-        tt["filmRose"] = len(rose)
+        # the film patch gets a whole delay again after the sheet drowned (a film that drowns by the sheet's rule would drown
+        # in it): the poll stops at the first pulse every sheet crop is dead, which can be before a film's own count
+        for _ in range(delay + 1):
+            if not ctx["pulses"](1):
+                break
+            watch()
+        film_kept = [c for c in film if c not in rose and c not in film_dried]
+        tt.update(filmRose=len(rose), filmDried=len(film_dried))
         film_alive = sum(alive(c + (1, 1)) for c in film_kept)
-        control = alive(P(1, 108) + (4, 1))
+        control = alive(CTRL[0] + (4, 1))
         # which squares kept a plant, so a FAIL names them (and their tier now) rather than a count
-        tt["deepAlive"] = [[c, ctx["scell"](c)[0].get("tier")] for c in deep if alive(c + (1, 1))]
-        tt["controlDead"] = [c for c in (P(x, 108) for x in range(1, 5)) if not alive(c + (1, 1))]
+        tt["deepAlive"] = [[c, tier(c)] for c in deep if alive(c + (1, 1))]
+        tt["controlDead"] = [c for c in CTRL if not alive(c + (1, 1))]
+        tt["controlWet"] = sorted(ctrl_wet)
     finally:
         if shipped is not None:
             sset(S_SHEET, field, shipped)
-    good = early == 12 and (soak_early or 0) > 0 and dead and bool(film_kept) and film_alive == len(film_kept) and control == 4
-    row("CROPS_IRRIGATE_THEN_DROWN", "PASS" if good else "FAIL",
-        {"field": field, "shipped": shipped, "aliveEarly": early, "soakedEarly": soak_early, "drownedAfterPulses": waited,
-         "allDrowned": bool(dead), "pollBound": bound, "filmAlive": film_alive, "control": control, "tiers": tt})
+    det = {"field": field, "shipped": shipped, "aliveEarly": early, "soakedEarly": soak_early, "drownedAfterPulses": waited,
+           "allDrowned": bool(dead), "pollBound": bound, "filmAlive": film_alive, "control": control, "tiers": tt}
+    if ctrl_wet or not film_kept:
+        # the dry control got water, or no film square stayed film the whole watch: the scene no longer separates "drowned"
+        # from "died of something else", or has no film case (a staged scene fault, not the mod's)
+        det["why"] = "the dry control row got wet" if ctrl_wet else "no film square stayed wet at film tier the whole watch"
+        row("CROPS_IRRIGATE_THEN_DROWN", "UNMEASURED", det, cls="SITE")
+        return
+    good = early == 15 and (soak_early or 0) > 0 and dead and film_alive == len(film_kept) and control == 4
+    row("CROPS_IRRIGATE_THEN_DROWN", "PASS" if good else "FAIL", det)
 
 
 def below_zero(t):
