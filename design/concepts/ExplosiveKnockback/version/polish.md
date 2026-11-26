@@ -40,3 +40,7 @@ His words, 2026-11-24 (OWNER:1795565769863524396): *"Include all polish items to
 ## Scene runner live proof (2026-11-26)
 
 - `src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackScenes.cs` header says "NOT YET RUN LIVE"; the suite ran live on ArchSmall 2026-11-26 with the same rows as knockback_runner.py. Drop that sentence at the next EK source change (a comment edit alone moves the DLL srchash).
+
+## Scene rows read by the judge (2026-11-26)
+
+- `src/RimMandrake/ExplosiveKnockback/proof/scene_storeroom_mortar_rebound_legs.py` row "V_SHORTER all ... UNLAID (the scene made no rebound to compare)" is `row(False, ...)`, so the judge now reads it MOD FAILURE; its own words say the opportunity was not laid (INVALID, APPARATUS FAULT). risk: a run whose staging made no rebound counts against the mod. The call moves how the rebound bar is decided, so it waits for the rebound bar ruling (RIMMANDRAKE_RULE_REBOUND_NEAR_WALL_OUTFLIES_FIRST_LEG).
