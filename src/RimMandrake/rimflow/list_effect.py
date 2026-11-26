@@ -62,6 +62,25 @@ PAC = dt.timezone(dt.timedelta(hours=-8), "PST")
 # budget: danger=a check command that never ends holds this beat's lock and stops every later check; never reached in the 14
 # budget: days to 2026-11-24; no record of its run
 CMD_TIMEOUT_S = 600
+
+# A list_dispatch tick has a bare PATH, so a `cmd:python.exe ...` check exited 127 and held its item as unmeasured
+# (OPS_LIST_GATE_HOLDS_READY_WORK_ON_COULD_NOT_LOOK_WTHJ, 2026-11-26, 3 episodes). On WSL a cmd: check gets the Windows dirs.
+WSL_FLAG = "/proc/sys/fs/binfmt_misc/WSLInterop"
+WIN_DIRS = ("/mnt/c/Windows/System32", "/mnt/c/Windows", "/mnt/c/Windows/System32/WindowsPowerShell/v1.0")
+WIN_APPS_GLOB = "/mnt/c/Users/*/AppData/Local/Microsoft/WindowsApps"
+
+
+def cmd_path(base, wsl=None, isdir=os.path.isdir, globber=None):
+    """-> PATH for a cmd: check: base, plus on WSL the Windows dirs it lacks, each once."""
+    import glob
+    parts = (base or "/usr/bin:/bin").split(":")
+    if os.path.exists(WSL_FLAG) if wsl is None else wsl:
+        parts += [d for d in WIN_DIRS if isdir(d)] + sorted(d for d in (globber or glob.glob)(WIN_APPS_GLOB) if isdir(d))
+    out = []
+    for d in parts:
+        if d and d not in out:
+            out.append(d)
+    return ":".join(out)
 # Text cut: the close event is one ledger line that every replay of every seat reads; the whole output is kept in the
 # evidence file, so the line carries only its head.
 OUT_IN_EVENT = 400
@@ -132,7 +151,9 @@ def run(text, root, timeout=None):
         return "unmeasured", p["why"]
     if p["kind"] == "cmd":
         tmp = _check_tmp()
-        env = dict(os.environ, TMPDIR=tmp, TMP=tmp, TEMP=tmp) if tmp else None
+        env = dict(os.environ, PATH=cmd_path(os.environ.get("PATH")))
+        if tmp:
+            env.update(TMPDIR=tmp, TMP=tmp, TEMP=tmp)
         try:
             r = subprocess.run(["bash", "-c", p["cmd"]], cwd=root, capture_output=True, text=True, errors="replace",
                                timeout=CMD_TIMEOUT_S if timeout is None else timeout, stdin=subprocess.DEVNULL, env=env)

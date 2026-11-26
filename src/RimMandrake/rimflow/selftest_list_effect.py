@@ -129,6 +129,18 @@ def t_holds_keeps_could_not_look_apart_from_fails():
     chk(lambda: L.holds("cmd:/no/such/program-xyz", r) == "unmeasured", "cmd: a program that cannot start is unmeasured")
     chk(lambda: L.run("cmd:sleep 5", r, timeout=0.5)[0] == "unmeasured", "cmd: past its deadline is unmeasured")
     chk(lambda: L.holds("cmd:test -f p.md", r) == "holds", "cmd: runs from the root it is given")
+    # OPS_LIST_GATE_HOLDS_READY_WORK_ON_COULD_NOT_LOOK_WTHJ, third episode (2026-11-26): the list_dispatch tick has a bare
+    # PATH, so a `cmd:python.exe ...` check exited 127 (unmeasured) and held the item. The runner adds the Windows dirs.
+    import glob as _glob
+    if os.path.exists("/proc/sys/fs/binfmt_misc/WSLInterop") and _glob.glob(
+            "/mnt/c/Users/*/AppData/Local/Microsoft/WindowsApps/python.exe"):
+        with patch.dict(os.environ, {"PATH": "/usr/bin:/bin"}):
+            chk(lambda: L.holds("cmd:command -v python.exe", r) == "holds",
+                "cmd: python.exe is found on a bare tick PATH (the Windows dirs are added)")
+    chk(lambda: "/mnt/c/Windows/System32" in L.cmd_path("/usr/bin:/bin", wsl=True, isdir=lambda d: True,
+                                                        globber=lambda g: ["/mnt/c/Users/x/WindowsApps"])
+        .split(":") and L.cmd_path("/usr/bin:/bin", wsl=False) == "/usr/bin:/bin",
+        "cmd_path adds the Windows dirs on WSL only, each once")
     chk(lambda: L.holds("nonsense", r) == "unmeasured", "an unreadable check is unmeasured")
     v, out = L.run("cmd:echo hello-out; exit 1", r)
     chk(lambda: v == "fails" and "hello-out" in out, "run returns the command's output beside its verdict")
