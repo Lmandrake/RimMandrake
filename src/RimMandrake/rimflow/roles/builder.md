@@ -251,12 +251,12 @@ gradient. That's too easy. This is a creative project."*
 2. **Build the instrument:** the offline model (above), each check printing its worst value, its limit and what it
    sampled. Every result names its source commit, settings and instrument version. A long measurement uses its own build
    stage: `winbuild.stage_build(csproj, stage_name="<name>")`.
-   - Read the mod's real saves (his review map, the walk saves) as a family of their own, with the same checks, under
-     every look and setting that the saves hold. On Pyrelands the walk saves showed a burn flood that no scene site
+   - Read the mod's real saves (his review map, the walk saves) with the same checks, as a family of their own. Read
+     them under every look and setting that they hold. On Pyrelands the walk saves showed a burn flood that no scene site
      showed. On Slack, his map read offline showed that the instrument was blind to its eleven switches.
    - Name the code between the game and the decision that the instrument does not run: the adapter that feeds the
-     decision, its callers and its switches. Each one gets a check, or a line in the range's exclusions on the rescue
-     sheet. On Pyrelands, planted faults in the game-side callers (of the wind carry, the foam, the fire sense) passed
+     decision, its callers and its switches. Give each one a check, or write it on the rescue sheet as code that the
+     instrument does not run. On Pyrelands, planted faults in the game-side callers (of the wind carry, the foam, the fire sense) passed
      every offline suite in three blind cycles: 11 of 40 in cycle 6. On Slack, no check read a switch that was turned
      off, and the switch's cords drew as cut until his walk.
 3. **Prove any copy agrees with the game,** over the same range, and state the agreement (Slack: 1,274 of 1,275). Read
