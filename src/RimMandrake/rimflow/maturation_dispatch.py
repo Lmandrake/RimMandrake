@@ -941,12 +941,30 @@ def ceiling_stop(stop):
     return bool(stop) and bool(stop.get("ceiling") or CEILING_WHY.match(str(stop.get("why") or "")))
 
 
+# The stages whose ceiling a builder model pin scales (item RIMMANDRAKE_PRICE_CEILING_AND_DESIGNER_TOKENS_FOR_PINNED_MODEL;
+# design/specs/2026-11-19-mod-model-pin/boundary.md): every run of the offline build is a builder on the pin, and a
+# weighted token weighs the pin's price, so the ceiling is scaled as the build caps are and stops at the same amount of
+# work. The blind challenge and in-game acceptance keep the shipped ceiling: their judge and live driver are never
+# pinned, and those runs spend most of those stages.
+PIN_PRICED_STAGES = ("offline_build",)
+
+
 def stage_spend(cfg, mod, stage, spent):
     """-> (the stage's spend, its ceiling) in weighted tokens, through the mod's weighted-token account for the stage
     in the control store (`pipe set|add|reset|limit <Mod> spend_<stage> ...`, PC.SPEND_RES): every ceiling reader (the
     gate, the killed-run refund, a pilot holder's cap) asks this, never stage_ceiling_tokens itself. A stage with no
-    account, no ceiling or no readable spend reads the pipeline's own numbers."""
+    account, no ceiling or no readable spend reads the pipeline's own numbers. A pinned mod's ceiling at a
+    PIN_PRICED_STAGES stage is stage_ceiling_tokens times the pin's price ratio (mod_model.for_mod, from the tick's read
+    of the pins or the store's now); a Conductor's `pipe limit` on the mod stands as typed."""
     ceiling = cfg.get("stage_ceiling_tokens")
+    if stage in PIN_PRICED_STAGES and _amount_ok(ceiling, True):
+        import control as C
+        try:
+            pin = MM.for_mod(cfg, mod).get("_pin")
+        except C.Unreadable as e:   # the pins, as the account below: could not look is said, never "unpinned"
+            raise PC.Unreadable("the control store: %s" % e)
+        if pin:
+            ceiling = int(round(MM.scaled(ceiling, pin["model"])))
     if stage not in PC.SPEND_RES or not _amount_ok(ceiling, True) or not _amount_ok(spent):
         return spent, ceiling
     return (PC.used(mod, PC.SPEND_RES[stage], int(round(spent))),

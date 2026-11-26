@@ -1,9 +1,10 @@
-# BOUNDARY: one mod's builders on a pinned model, Design Version 0.1.0
+# BOUNDARY: one mod's builders on a pinned model, Design Version 0.2.0
 
 Code: `src/RimMandrake/rimflow/mod_model.py`, the store's `mod_models` table and `pipe model` in `control.py`, and the
 launch sites that read them: `maturation_dispatch.py` (`decide`, `execute`, `launch_stage`, `road_back_holder`,
-`cert_launch`, `launch_kind`, `_tick`), `maturation_autonomy.py` (`_gate`, `_execute_one`) and `role_launch.py`
-(`launch_role`, `launch`). Item: `RIMMANDRAKE_PIN_MOD_MODEL_FABLE_EVERY_STAGE_ROLES_OPUS`. Written 2026-11-19. Each
+`cert_launch`, `launch_kind`, `_tick`, `stage_spend`), `maturation_autonomy.py` (`_gate`, `_execute_one`),
+`role_launch.py` (`launch_role`, `launch`) and `designer_stage.py` (`pin_scale`, `task_cap`, `run_budget`,
+`loop_ceiling`). Item: `RIMMANDRAKE_PIN_MOD_MODEL_FABLE_EVERY_STAGE_ROLES_OPUS`. Written 2026-11-19. Each
 promise has a test of its name in `src/RimMandrake/rimflow/selftest_mod_model_pin.py`. No test launches a model run: every
 launcher is a fake that records the argv it was given.
 
@@ -22,9 +23,8 @@ launcher is a fake that records the argv it was given.
   tick. A run already live keeps the model it started on.
 - **a-codex-runner.** A Designer run on the codex runner is not a Claude model; a pin does not change it.
 - **the-test-pilot.** An rm-testpilot sitting runs on its own pilot tier (`run_store.pilot_tier`), pinned or not.
-- **limits-not-priced-here.** `stage_ceiling_tokens` (a ceiling, the Conductor's) and the Designer's advisory weighted-token
-  budget are not scaled; at Fable's price both fill twice as fast. Filed:
-  `RIMMANDRAKE_PRICE_CEILING_AND_DESIGNER_TOKENS_FOR_PINNED_MODEL`.
+- **a-mixed-stage-ceiling.** The blind challenge's and in-game acceptance's ceilings are not scaled: their judge and
+  live driver are never pinned, so a pinned fixer or steward there fills that ceiling at its own price.
 
 ## PROMISES (each one is owed a test of the same name)
 
@@ -54,10 +54,21 @@ launcher is a fake that records the argv it was given.
   UNREADABLE) and a Designer launch is refused by control, naming the cause.
 - **a-pin-it-cannot-price-launches-nothing.** A pin whose model is not pinnable or has no price, met at the tick, is a
   decision `model_unknown` naming it, and nothing launches on that mod.
+- **offline-build-ceiling-scales-by-the-pin-price.** For a pinned mod the offline build's ceiling
+  (`stage_spend`, which the gate, the refund and a holder's cap read) is `stage_ceiling_tokens` times the price ratio
+  (a weighted token weighs its model's price, so the ceiling stops at the same amount of work); the blind challenge
+  and in-game acceptance keep the shipped ceiling; an unpinned mod keeps it everywhere; a Conductor's `pipe limit` on
+  the mod's account stands as typed. Version 0.2.0 (item `RIMMANDRAKE_PRICE_CEILING_AND_DESIGNER_TOKENS_FOR_PINNED_MODEL`,
+  2026-11-26).
+- **designer-task-budget-scales-by-the-pin-price.** For a pinned mod's concept the Designer's task budget, each run's
+  budget (its run cap included) and the judge-and-rework loop's park ceiling (twice the task budget) are the shipped
+  ones times the price ratio, read from the store at each use, so a pin set or lifted later moves them at once. An
+  unpinned concept, or a store that cannot be read, keeps the shipped ones (the stricter). Version 0.2.0.
 
 ## LIMITS
 
-- **The scale (2 for Fable 5.2).** Guards: a runaway unattended burn (owner 2026-11-12: "Don't let any burn go to 90M
+- **The scale (2 for Fable 5.2).** It scales the build caps, the offline build's ceiling and the Designer's task and run
+  budgets. Guards: a runaway unattended burn (owner 2026-11-12: "Don't let any burn go to 90M
   this time ok?"). Evidence that the unscaled cap misfires: 48 of 194 Opus build runs cost over $7.50 and 12 reached
   $15, so at Fable's 2x price about a quarter would stop mid-run; 3 of 111 Designer runs cost over $4 against its $8
   stop. The ratio is computed from `MODEL_PRICES`, never typed in.

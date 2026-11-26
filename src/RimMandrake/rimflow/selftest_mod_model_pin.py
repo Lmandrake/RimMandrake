@@ -450,12 +450,86 @@ def t_a_pin_it_cannot_price_launches_nothing():
     check(out.get("model") == row["model"], "an unpinned store leaves the Designer on its shipped model: %r" % out.get("model"))
 
 
+def t_offline_build_ceiling_scales_by_the_pin_price():
+    """The offline build's ceiling is the shipped stage_ceiling_tokens times the price ratio for a pinned mod, as its
+    build caps are (every builder run of that stage runs on the pin, and a weighted token weighs its price). The blind
+    challenge and in-game acceptance keep the shipped ceiling: their judge and live driver are never pinned. A
+    Conductor's `pipe limit` on the mod stands as typed."""
+    import mod_model as MM
+    p = fresh_store()
+    m = 1000000
+    cfg = {"stage_ceiling_tokens": 100 * m, "cap_tokens": 15 * m, PINS_KEY: {PIN: "fable"}}
+    for stage, want in (("offline_build", 200 * m), ("blind_challenge", 100 * m), ("in_game", 100 * m)):
+        got = MD.stage_spend(cfg, PIN, stage, 0)[1]
+        check(got == want, "a pinned mod's %s ceiling: %r (want %r)" % (stage, got, want))
+        got = MD.stage_spend(MM.for_mod(cfg, PIN), PIN, stage, 0)[1]
+        check(got == want, "the same through the mod's own settings (never scaled twice), %s: %r" % (stage, got))
+    got = MD.stage_spend(cfg, OTHER, "offline_build", 0)[1]
+    check(got == 100 * m, "an unpinned mod keeps the shipped offline-build ceiling: %r" % got)
+    over, _rid = MD.ceiling_gate(MM.for_mod(cfg, PIN), {}, PIN, "offline_build", 150 * m, 30 * m, "the offline build",
+                                 ([], 0))
+    check(over is None, "the gate admits a pinned build run under the scaled ceiling (150M spent + 30M cap): %r" % over)
+    over, _rid = MD.ceiling_gate(cfg, {}, OTHER, "offline_build", 150 * m, 15 * m, "the offline build", ([], 0))
+    check(bool(over), "the gate still stops an unpinned mod past the shipped ceiling: %r" % over)
+    C.set_limit(PIN, "spend_offline_build", 120 * m, "selftest", p=p)
+    got = MD.stage_spend(cfg, PIN, "offline_build", 0)[1]
+    check(got == 120 * m, "a Conductor's limit on the pinned mod stands as typed: %r" % got)
+
+def t_designer_task_budget_scales_by_the_pin_price():
+    """A pinned mod's Designer task budget, the budget of each of its runs and the judge-and-rework loop's park
+    ceiling are the shipped ones times the price ratio, read from the store at each use (a pin set or lifted later
+    moves them); an unpinned concept, or a store that cannot be read, keeps the shipped ones."""
+    import designer_stage as DS
+    p = fresh_store()
+    cap = DS.DEFAULT_CAP
+
+    def state(mod):
+        return {"mod": mod, "item": "X", "stage": 4, "results": [], "history": [],
+                "coverage_rounds": [{"judge": "rm-coverage-judge-1", "at": "2026-11-20T00:00:00Z"}],
+                "budget": {"cap": cap, "reserve": DS.DEFAULT_RESERVE, "spent": 5 * cap // 4,
+                           "charges": [{"kind": "review", "ref": "rm-coverage-judge-1", "at": "2026-11-20T00:00:01Z",
+                                        "tokens": 9 * cap // 4}]}}
+    C.set_model(PIN, "fable", "selftest", p=p)
+    st = state(PIN)
+    check(DS.task_cap(st) == 2 * cap, "a pinned concept's task budget: %r (want %r)" % (DS.task_cap(st), 2 * cap))
+    check(DS.remaining(st) == 2 * cap - 5 * cap // 4, "a pinned concept's budget left: %r" % DS.remaining(st))
+    fresh = dict(st, budget=dict(st["budget"], spent=0))
+    b, over = DS.run_budget(fresh, 4000000)
+    check((b, over) == (2 * cap - DS.DEFAULT_RESERVE, False),
+          "a pinned concept's run budget passes the shipped run cap (4M), up to its scaled task budget: %r" % ((b, over),))
+    b, over = DS.run_budget(st, 4000000)
+    check((b, over) == (2 * cap - 5 * cap // 4 - DS.DEFAULT_RESERVE, False),
+          "a pinned concept's run budget is at most what its scaled task budget has left: %r" % ((b, over),))
+    check(DS.loop_ceiling(st) is None and DS.ceiling_crossed_at(st) is None,
+          "a pinned loop at 2.25x the shipped cap is under its scaled park ceiling: %r" % DS.loop_ceiling(st))
+    un = state(UNPINNED_CONCEPT)
+    check(DS.task_cap(un) == cap and DS.remaining(un) == cap - 5 * cap // 4, "an unpinned concept keeps the shipped budget")
+    b, over = DS.run_budget(un, 4000000)
+    check(over is True and b == min(cap - DS.DEFAULT_RESERVE, 4000000),
+          "an unpinned concept over its budget goes on, advisory, with the shipped run cap: %r" % ((b, over),))
+    check(bool(DS.loop_ceiling(un)), "an unpinned loop at 2.25x its cap is past its park ceiling: %r" % DS.loop_ceiling(un))
+    C.set_model(PIN, "default", "selftest", p=p)
+    check(DS.task_cap(st) == cap and bool(DS.loop_ceiling(st)), "a lifted pin gives the shipped budget back at once")
+    C.set_model(PIN, "fable", "selftest", p=p)
+    good = os.environ["RM_CONTROL_DB"]
+    bad = os.path.join(TMP, "garbage-ds.db")
+    with open(bad, "w") as f:
+        f.write("not a database")
+    os.environ["RM_CONTROL_DB"] = bad
+    try:
+        check(DS.task_cap(st) == cap, "a store that cannot be read keeps the shipped budget, the stricter one: %r"
+              % DS.task_cap(st))
+    finally:
+        os.environ["RM_CONTROL_DB"] = good
+
+
 def main():
     tests = (t_a_pin_is_set_and_lifted_in_the_store, t_an_unknown_pin_is_refused_by_name, t_no_pin_reads_empty_not_unreadable,
              t_pinned_offline_build_launches_on_the_pin, t_unpinned_mod_keeps_the_global_model,
              t_judges_and_live_driver_keep_their_models, t_every_builder_kind_launches_on_the_pin,
              t_build_cap_scales_by_the_pin_price, t_designer_run_now_chain_and_sweep_launch_on_the_pin,
-             t_designer_launch_names_its_mod, t_an_unreadable_pin_launches_nothing, t_a_pin_it_cannot_price_launches_nothing)
+             t_designer_launch_names_its_mod, t_an_unreadable_pin_launches_nothing, t_a_pin_it_cannot_price_launches_nothing,
+             t_offline_build_ceiling_scales_by_the_pin_price, t_designer_task_budget_scales_by_the_pin_price)
     try:
         for t in tests:
             try:

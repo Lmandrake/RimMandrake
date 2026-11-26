@@ -2031,9 +2031,44 @@ def init(d, mod, item=None, cap=DEFAULT_CAP, reserve=DEFAULT_RESERVE, aliases=()
     return st
 
 
+def pin_scale(st):
+    """-> the price ratio of the builder model pin of st's mod (mod_model.cap_scale, a Fraction; 1 when unpinned), read
+    from the control store at each use, so a pin set or lifted later moves the budget at once (item
+    RIMMANDRAKE_PRICE_CEILING_AND_DESIGNER_TOKENS_FOR_PINNED_MODEL). DEFAULT_CAP was measured on Opus runs and a token
+    is weighed at its model's price (role_launch.MODEL_PRICES), so a pinned mod's task gets the same work. A store that
+    cannot be read, or a pin with no price, gives 1: the shipped budget, the stricter (control refuses that mod's
+    launch anyway, design/specs/2026-11-19-mod-model-pin/boundary.md)."""
+    import control as C
+    import mod_model as MM
+    try:
+        alias = MM.read_pins().get(C.key(st.get("mod")))
+        return MM.cap_scale(alias) if alias else 1
+    except (C.Unreadable, KeyError):
+        return 1
+
+
+def task_cap(st, x=None):
+    """-> the task's weighted-token budget now: its recorded cap times pin_scale (x, when the caller read it already)."""
+    x = pin_scale(st) if x is None else x
+    return int(int((st.get("budget") or {}).get("cap") or DEFAULT_CAP) * x)
+
+
 def remaining(st):
-    b = st["budget"]
-    return b["cap"] - b["spent"]
+    return task_cap(st) - st["budget"]["spent"]
+
+
+def run_budget(st, run_cap=None):
+    """-> (the next run's budget, over): what the task has left past its reserve, at most the run's cap; both scaled by
+    pin_scale (the Designer's run_token_cap is an Opus figure too). Over the task budget the run goes on with a whole
+    task's room, advisory (owner 2026-11-04: "These budgets make no sense. All they do is stop work")."""
+    x = pin_scale(st)
+    cap, reserve = task_cap(st, x), st["budget"]["reserve"]
+    left = cap - st["budget"]["spent"] - reserve
+    over = left <= 0
+    if over:
+        left = cap - reserve
+    run_cap = int(run_cap * x) if run_cap else run_cap
+    return (min(left, run_cap) if run_cap else left), over
 
 
 def open_run(d, run, run_cap=None, repo=REPO, manifest=MANIFEST, commit=True, parent=None):
@@ -2073,18 +2108,16 @@ def open_run(d, run, run_cap=None, repo=REPO, manifest=MANIFEST, commit=True, pa
         if opn:
             raise Refused("RECOVERY_PENDING: scene(s) %s changed persistent state and never restored; restore them "
                           "(scene-end) before any further work" % ", ".join(r["scene"] for r in opn))
-        left = remaining(st) - st["budget"]["reserve"]
     except Refused as e:
         if commit:
             if st.get("status") not in ("locked",):
                 hist(st, "refused", str(e))
             write_json(state_path(d), st)
         raise
-    if left <= 0:   # advisory, never a stop (owner 2026-11-04: "These budgets make no sense. All they do is stop work")
-        left = st["budget"]["cap"] - st["budget"]["reserve"]
+    budget, over = run_budget(st, run_cap)
+    if over:        # advisory, never a stop (run_budget)
         hist(st, "over_budget", "%d of %d spent; run %s goes on with %d (advisory)" % (
-            st["budget"]["spent"], st["budget"]["cap"], run, min(left, run_cap) if run_cap else left))
-    budget = min(left, run_cap) if run_cap else left
+            st["budget"]["spent"], task_cap(st), run, budget))
     hashes = manifest_hashes(st["stage"], manifest)
     retries = stage_retries(st)
     st["running"] = {"run": run, "stage": st["stage"], "manifest": hashes, "reserved": budget, "at": now_iso(),
@@ -2354,7 +2387,7 @@ def loop_void_spend(st):
 def loop_ceiling(st):
     """-> why the loop has reached LOOP_CEILING_FACTOR x the item's cap, or None."""
     spent = loop_spend(st)
-    ceil = LOOP_CEILING_FACTOR * int((st.get("budget") or {}).get("cap") or DEFAULT_CAP)
+    ceil = LOOP_CEILING_FACTOR * task_cap(st)
     if spent is None or spent < ceil:
         return None
     void = loop_void_spend(st)
@@ -2430,7 +2463,7 @@ def ceiling_crossed_at(st):
     start = loop_start(st)
     if start is None:
         return None
-    ceil, tot = LOOP_CEILING_FACTOR * int((st.get("budget") or {}).get("cap") or DEFAULT_CAP), 0
+    ceil, tot = LOOP_CEILING_FACTOR * task_cap(st), 0
     for at, tokens in sorted((epoch(c.get("at")) or 0, int(c.get("tokens") or 0)) for c in _loop_charges(st)):
         if at >= start:
             tot += tokens
@@ -3692,7 +3725,7 @@ def status(d, repo=REPO):
     st = load_state(d)
     s, changed = stale_stage(d, st, repo)
     return {"mod": st.get("mod"), "stage": st["stage"], "status": st["status"], "spent": st["budget"]["spent"],
-            "cap": st["budget"]["cap"], "reserve": st["budget"]["reserve"], "running": st.get("running"),
+            "cap": task_cap(st), "reserve": st["budget"]["reserve"], "running": st.get("running"),
             "stale_from": s, "stale_inputs": changed, "coverage": CT.coverage_summary(d, repo),
             "recovery_open": [r["scene"] for r in st.get("recovery") or [] if r["state"] == "open"],
             "recovery_held": [r["scene"] for r in st.get("recovery") or [] if r["state"] == "held"]}
