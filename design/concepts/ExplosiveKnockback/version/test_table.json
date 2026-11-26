@@ -276,12 +276,12 @@
    "command": "python3 src/RimMandrake/Utils/selftest_proof_restore_check.py",
    "runs_today": {
     "ran": true,
-    "rc": 1,
-    "seconds": 10.98,
-    "last": "selftest_proof_restore_check: FAIL (1 failure(s))",
-    "at": "2026-11-26T02:32:03Z",
-    "result": "FAIL",
-    "build": "ed468f63493800ea3927",
+    "rc": 0,
+    "seconds": 15.47,
+    "last": "selftest_proof_restore_check: PASS (0 failure(s))",
+    "at": "2026-11-26T02:49:01Z",
+    "result": "PASS",
+    "build": "9b1b4eea717d92c70d65",
     "command": "python3 src/RimMandrake/Utils/selftest_proof_restore_check.py",
     "margins": []
    }

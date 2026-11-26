@@ -1,0 +1,13 @@
+diff --git a/src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_sandbag_no_contact.py b/src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_sandbag_no_contact.py
+index 06b89f9126..5272f04659 100644
+--- a/src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_sandbag_no_contact.py
++++ b/src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_sandbag_no_contact.py
+@@ -194,7 +194,7 @@ with scene.open(GAME, contract=no_contact, needs={"mods": ["ExplosiveKnockback"]
+     finally:
+         for f, v in prior.items():   # back to what it read before, on every exit path
+             if v is not None:
+-                put(s, f, str(v), strict=False)
++                pass   # planted fault: the restore write deleted
+     folder = s.run_dir
+ 
+ fails = 0

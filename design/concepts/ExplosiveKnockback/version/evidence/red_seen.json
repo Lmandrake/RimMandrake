@@ -143,17 +143,17 @@
   "test_blob": "f77fa2f2ce6bc5036310c6727d28080f66491f68"
  },
  "T_RESTORE": {
-  "at": "2026-11-25T06:42:08Z",
+  "at": "2026-11-26T02:48:40Z",
   "command": "python3 src/RimMandrake/Utils/selftest_proof_restore_check.py",
   "file": "src/RimMandrake/Utils/selftest_proof_restore_check.py",
   "last": "selftest_proof_restore_check: FAIL (1 failure(s))",
-  "patch": "--- a/src/RimMandrake/ExplosiveKnockback/proof/scene_storeroom_pit.py\n+++ b/src/RimMandrake/ExplosiveKnockback/proof/scene_storeroom_pit.py\n@@ -64,9 +64,9 @@\n                   \"goods\": dict(take=[g[6:] for g in goods])})\n     off = scene.plant() == \"knockback_off\"          # arm C of the old proof: the master switch off, so nothing is thrown\n     prior = (s.raw(\"jawa/mod_settings_field\", typeName=SETTINGS, action=\"get\", field=\"enabled\") or {}).get(\"value\") if off else None\n+    if off:\n+        s.raw(\"jawa/mod_settings_field\", typeName=SETTINGS, action=\"set\", field=\"enabled\", value=\"False\")\n     try:\n-        if off:\n-            s.raw(\"jawa/mod_settings_field\", typeName=SETTINGS, action=\"set\", field=\"enabled\", value=\"False\")\n         hp = s.read(\"bomb\", \"hitPointsInt\")\n         s.act.damage(\"bomb\", (hp.v if hp.state == \"ok\" else 60) + 40, kind=\"Crush\", name=\"bomb\")\n         run = s.run(until=pit.end, limit=pit.limit)\n",
+  "patch": "diff --git a/src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_sandbag_no_contact.py b/src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_sandbag_no_contact.py\nindex 06b89f9126..5272f04659 100644\n--- a/src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_sandbag_no_contact.py\n+++ b/src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_sandbag_no_contact.py\n@@ -194,7 +194,7 @@ with scene.open(GAME, contract=no_contact, needs={\"mods\": [\"ExplosiveKnockback\"]\n     finally:\n         for f, v in prior.items():   # back to what it read before, on every exit path\n             if v is not None:\n-                put(s, f, str(v), strict=False)\n+                pass   # planted fault: the restore write deleted\n     folder = s.run_dir\n \n fails = 0\n",
   "patch_files": [
-   "src/RimMandrake/ExplosiveKnockback/proof/scene_storeroom_pit.py"
+   "src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_sandbag_no_contact.py"
   ],
-  "patch_sha": "615563d2f1b0b451",
+  "patch_sha": "b4b3831dbfd5f91e",
   "rc": 1,
-  "test_blob": "7b70b9b078ac802631c2c7218b7640271581f7c2"
+  "test_blob": "a950f704798e02228634f48730669f07faf4f8f6"
  },
  "T_SETTINGS_SCREEN": {
   "at": "2026-11-25T04:57:10Z",
