@@ -25,7 +25,7 @@ import re
 import statistics
 import sys
 
-DEFAULT_ROOT = "/home/mandrake/rm/relentless"
+DEFAULT_ROOT = "/home/mandrake/rm/runs"
 PROJECTS = os.path.expanduser("~/.claude/projects")
 TICK_GAP_CAP = 1800      # a sample gap longer than this is the supervisor being down, not anyone waiting
 LIVE_RE = re.compile(r"^(?P<item>.+?)-(?P<clause>[A-Z]+\d+)-(?P<ts>\d{8}T\d{6}Z)(?:-(?P<sub>[A-Za-z]+))?\.log$")
@@ -523,7 +523,7 @@ def main(argv=None):
     ap.add_argument("what", choices=("game", "publish", "all"))
     ap.add_argument("--since", required=True, help="ISO UTC, e.g. 2026-11-03T00:00:00Z")
     ap.add_argument("--until", required=True)
-    ap.add_argument("--root", default=os.environ.get("RELENTLESS_ROOT") or DEFAULT_ROOT)
+    ap.add_argument("--root", default=os.environ.get("RM_RUNS_ROOT") or DEFAULT_ROOT)
     ap.add_argument("--projects", default=PROJECTS)
     ap.add_argument("--out", help="write the full JSON here (stdout gets the summary without per-item rows)")
     a = ap.parse_args(argv)

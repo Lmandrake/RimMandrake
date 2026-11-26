@@ -11,7 +11,7 @@ redesign_final.md WP-09).
 5. the report: one close per (item, sha), the last attempt stands, disagreement classes, the 30-close sample;
 6. cli.py end to end on a throwaway ledger + temp store: a close the record rejects still closes (shadow logs the
    disagreement), a refused close is logged as refuse, an unwritable shadow log never stops a close, and a throwaway
-   ledger without RELENTLESS_ROOT writes nothing;
+   ledger without RM_RUNS_ROOT writes nothing;
 7. the wiring that made it reject every close (EVIDENCE_SHADOW_FIX_REJECTS_EVERY_CLOSE): an offbox `skipped` run is not red, a
    pre-evidence candidate is the pre_record cohort, a pre-seal writer's unsealed index tail no longer refuses every append after it;
 8. the reading WP-09c cites (EVIDENCE_SHADOW_FIX_REPORT_NEVER_READS_ZERO): a declared window that says what it left out, a
@@ -489,10 +489,10 @@ def cli_end_to_end():
 
     def cli(*args, relentless=True):
         env = {k: v for k, v in os.environ.items()
-               if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID", "RIMFLOW_GITINDEX", "RELENTLESS_ROOT")}
+               if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID", "RIMFLOW_GITINDEX", "RM_RUNS_ROOT")}
         env.update(RIMFLOW_LEDGER=ledger, RIMFLOW_ITEMS=items, RIMFLOW_SEAT="BENCH", AGENT_SEAT="BENCH")
         if relentless:
-            env["RELENTLESS_ROOT"] = root
+            env["RM_RUNS_ROOT"] = root
         r = subprocess.run([sys.executable, CLI, *args], cwd=REPO, env=env, capture_output=True, text=True, timeout=120)
         return r.returncode, r.stdout + r.stderr
 
@@ -558,7 +558,7 @@ def cli_end_to_end():
     passed("NOROOT_3_PROBE_FIXTURE", b)
     rc, out = cli("close", "NOROOT_3_PROBE_FIXTURE", "--sha", b, relentless=False)
     check(rc == 0 and not os.path.exists(os.path.join(sd, G.SHADOW)) and "evidence shadow" not in out,
-          "cli: a throwaway ledger without RELENTLESS_ROOT writes no shadow row")
+          "cli: a throwaway ledger without RM_RUNS_ROOT writes no shadow row")
     # the instance: selftest_relentless_nocode_close.py under a worker, whose env holds the REAL root, closed a fixture named
     # after the real DEPLOY_GUARD_FIX_EXCLUDE_DIR_MISMATCH and logged 18 closes that never happened. DEFAULT_ROOT moved onto
     # the temp root, so this run can write nothing real.
@@ -568,10 +568,10 @@ def cli_end_to_end():
              "cli._evidence_shadow(types.SimpleNamespace(id=%r, seat_is_owner=False), %r, '', [], None)"
              % (HERE, root, held, b))
     env = {k: v for k, v in os.environ.items() if k not in ("RIMFLOW_SEAT", "AGENT_SEAT")}
-    env.update(RIMFLOW_LEDGER=ledger, RIMFLOW_ITEMS=items, RIMFLOW_SEAT="BENCH", AGENT_SEAT="BENCH", RELENTLESS_ROOT=root)
+    env.update(RIMFLOW_LEDGER=ledger, RIMFLOW_ITEMS=items, RIMFLOW_SEAT="BENCH", AGENT_SEAT="BENCH", RM_RUNS_ROOT=root)
     r = subprocess.run([sys.executable, "-c", probe], cwd=REPO, env=env, capture_output=True, text=True, timeout=120)
     check(r.returncode == 0 and not os.path.exists(os.path.join(sd, G.SHADOW)),
-          "cli: a throwaway ledger under the real RELENTLESS_ROOT writes no shadow row (rc %d %s)" % (r.returncode, r.stderr[-200:]))
+          "cli: a throwaway ledger under the real RM_RUNS_ROOT writes no shadow row (rc %d %s)" % (r.returncode, r.stderr[-200:]))
     check(G.own_root(root + "2") and not G.own_root("") and not G.own_root(None) and not G.own_root(G.DEFAULT_ROOT),
           "own_root: only a root that is set and not the real one")
 

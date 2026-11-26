@@ -1,4 +1,4 @@
-"""run_store.py -- the run store (Store: items, journal, locks under /home/mandrake/rm/relentless/store), the clone effects detached helpers use (Effects: bundle_clone, remove_clone, restore_bundle), rules() and pilot_tier.
+"""run_store.py -- the run store (Store: items, journal, locks under /home/mandrake/rm/runs/store), the clone effects detached helpers use (Effects: bundle_clone, remove_clone, restore_bundle), rules() and pilot_tier.
 
 Moved verbatim from rimflow/relentless.py (RIMMANDRAKE_SPLIT_LIVE_CODE_OUT_OF_RELENTLESS_NAMED_MODULES):
 only the functions live code reaches (design/RimMandrake/retired_eras_index_2026-11-18.md).
@@ -26,7 +26,7 @@ import clone_integrity  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 RULES = os.path.join(HERE, "run_rules.json")
-DEFAULT_ROOT = "/home/mandrake/rm/relentless"
+DEFAULT_ROOT = "/home/mandrake/rm/runs"
 RESTORE_EMAIL = "relentless@localhost"     # the committer of every commit restore_commits carries back into a clone
 GAME = "game"           # relentless_game.GAME: the store status of an item in its game phase
 NOT_READ = object()
@@ -157,11 +157,11 @@ def pilot_tier(clone, agent, default):
 
 
 def root():
-    return os.environ.get("RELENTLESS_ROOT") or DEFAULT_ROOT
+    return os.environ.get("RM_RUNS_ROOT") or DEFAULT_ROOT
 
 
 def rules(path=None):
-    with open(path or os.environ.get("RELENTLESS_RULES") or RULES, encoding="utf-8") as f:
+    with open(path or os.environ.get("RM_RUNS_RULES") or RULES, encoding="utf-8") as f:
         r = json.load(f)
     if r.get("runner", "claude") not in ("claude", "codex"):
         raise ValueError("runner must be claude or codex")
@@ -184,7 +184,7 @@ def flyer_hold(why):
 
 # Copied from relentless_wake.py (which keeps its own until it is deleted with the wake poke): modledger_backfill.py reads it.
 def store_dir(root=None):
-    return os.path.join(root or os.environ.get("RELENTLESS_ROOT") or DEFAULT_ROOT, "store")
+    return os.path.join(root or os.environ.get("RM_RUNS_ROOT") or DEFAULT_ROOT, "store")
 
 
 class Store:

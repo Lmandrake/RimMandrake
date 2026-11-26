@@ -3020,11 +3020,11 @@ def _evidence_shadow(args, sha, no_code, found, live):
     `live`, the CHECKED line (RELENTLESS_EVIDENCE_HARDEN_GATE_SHADOW: logging before the live gate counted a close it
     then refused as agreement). evidence_gate.shadow never raises; the guard here covers its import too: a shadow never
     refuses a close. A throwaway ledger (a selftest's) never writes the real store's shadow log: it speaks only with a
-    RELENTLESS_ROOT of its own, and the real one a worker's selftest inherits is not that (evidence_gate.own_root)."""
+    RM_RUNS_ROOT of its own, and the real one a worker's selftest inherits is not that (evidence_gate.own_root)."""
     try:
         import evidence_gate
         test_ledger = os.environ.get("RIMFLOW_LEDGER") or model.EVENTS != os.path.join(model.LEDGER, "events.jsonl")
-        if test_ledger and not evidence_gate.own_root(os.environ.get("RELENTLESS_ROOT")):
+        if test_ledger and not evidence_gate.own_root(os.environ.get("RM_RUNS_ROOT")):
             return
         said = bool(model.OWNER_SAID or model.BY_CARD or model.PER_RULING or args.seat_is_owner)
         evidence_gate.shadow(args.id, sha, no_code, found, live, cwd=os.environ.get("RIMFLOW_GIT_CWD") or _HERE,

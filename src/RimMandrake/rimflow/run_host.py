@@ -44,7 +44,7 @@ def door(host):
 
 def clone_of(item):
     """The clone the host's launcher makes for a run of `item` (detached_helper's pool clone)."""
-    return "~/rm/relentless/clones/%s.det" % item
+    return "~/rm/runs/clones/%s.det" % item
 
 
 def _lane_clone(path):

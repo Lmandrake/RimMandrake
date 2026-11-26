@@ -93,7 +93,7 @@ def kick(store, item, cfg=None, runner=subprocess.run):
     argv = ["--user", "--quiet", "--collect",
             "-p", "StandardOutput=file:" + os.path.join(d, "unit.out"), "-p", "StandardError=file:" + os.path.join(d, "unit.err"),
             "-p", "RuntimeMaxSec=%d" % max_s, "--working-directory", os.path.dirname(tool),
-            "--setenv", "RELENTLESS_ROOT=" + store.root, "--setenv", "PATH=" + os.environ.get("PATH", "/usr/bin:/bin"),
+            "--setenv", "RM_RUNS_ROOT=" + store.root, "--setenv", "PATH=" + os.environ.get("PATH", "/usr/bin:/bin"),
             "--", sys.executable, tool, "run", item]
     import control as C     # Relentless is retired: its family is OFF in the control store
     try:

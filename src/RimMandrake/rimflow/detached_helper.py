@@ -249,7 +249,7 @@ def reserve_record(rec, root=None, tries=100):
 
 
 def pool_root():
-    return os.environ.get("RM_DETACHED_POOL") or os.path.expanduser("~/rm/relentless")
+    return os.environ.get("RM_DETACHED_POOL") or os.path.expanduser("~/rm/runs")
 
 
 def filed_ids(lines):
@@ -435,7 +435,7 @@ def clone_holders(dest, runner=subprocess.run, now=None, root=None, kept_ok=Fals
     me = "python3 src/RimMandrake/rimflow/detached_helper.py"
     out = []
     for rec in all_records(root):
-        if os.path.abspath(rec.get("clone") or "") != os.path.abspath(dest) or rec.get("returned"):
+        if os.path.realpath(rec.get("clone") or "") != os.path.realpath(dest) or rec.get("returned"):
             continue
         if kept_ok and not owns_clone(rec):
             continue
@@ -806,7 +806,7 @@ def return_argv(rec):
     me = os.path.abspath(__file__)
     env = ["--setenv", "RM_DISPATCHER_STATE=" + rec["state"], "--setenv", "RIMFLOW_SEAT=" + rec["seat"],
            "--setenv", "AGENT_SEAT=" + rec["seat"]]
-    for k in ("RM_DETACHED_POOL", "RM_CONDUCTOR_LOG", "RELENTLESS_ROOT"):
+    for k in ("RM_DETACHED_POOL", "RM_CONDUCTOR_LOG", "RM_RUNS_ROOT"):
         if os.environ.get(k):
             env += ["--setenv", "%s=%s" % (k, os.environ[k])]
     return ["/usr/bin/systemd-run", "--user", "--quiet", "--collect", "--no-block", "--unit", rec["unit"] + "-return",
@@ -823,13 +823,13 @@ def owns_clone(rec):
     base = os.path.basename(os.path.abspath(rec.get("clone") or ""))
     mine = base == item + ".det" or bool(re.fullmatch(re.escape(item) + r"\.r[0-9]+\.det", base))    # a resume's own
     return how.startswith(("made ", "reused ")) and mine and \
-        os.path.dirname(os.path.abspath(rec.get("clone") or "")) == os.path.abspath(os.path.join(pool_root(), "clones"))
+        os.path.dirname(os.path.realpath(rec.get("clone") or "")) == os.path.realpath(os.path.join(pool_root(), "clones"))
 
 
 def other_users(rec, root=None, runner=subprocess.run):
     """Units of other runs that are still going and hold this run's clone. A dead one (unit gone, record "running") holds
     nothing: it used to keep later runs' clones forever."""
-    return [o["unit"] for o in all_records(root) if o["unit"] != rec.get("unit") and o.get("clone") == rec.get("clone")
+    return [o["unit"] for o in all_records(root) if o["unit"] != rec.get("unit") and same_path(o.get("clone"), rec.get("clone"))
             and live_status(o, runner) in ("launching", "running")]
 
 
@@ -1109,8 +1109,18 @@ SESSION_RE = re.compile(r"^[A-Za-z0-9-]{8,64}$")
 
 
 def project_dir(cwd, projects=None):
-    """claude's transcript folder for a working directory: every character but a letter or digit becomes '-'."""
-    return os.path.join(projects or PROJECTS, re.sub(r"[^A-Za-z0-9]", "-", os.path.abspath(cwd)))
+    """claude's transcript folder for a working directory: every character but a letter or digit becomes '-'. The
+    folder of the path as given, when it exists, else that of its real path (a run that started through a symlinked
+    pool path keys its folder by the real one), else the folder of the path as given."""
+    keys = [os.path.join(projects or PROJECTS, re.sub(r"[^A-Za-z0-9]", "-", p))
+            for p in (os.path.abspath(cwd), os.path.realpath(cwd))]
+    return next((k for k in keys if os.path.isdir(k)), keys[0])
+
+
+def same_path(a, b):
+    """True when two recorded clone paths name one directory: a record written before the pool's rename names it
+    through the old path's symlink (RIMMANDRAKE_RENAME_RUN_STORE_AND_POOL_OFF_TICK_PATH)."""
+    return bool(a) and bool(b) and (a == b or os.path.realpath(a) == os.path.realpath(b))
 
 
 def find_transcript(session_id, projects=None):

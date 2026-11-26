@@ -24,7 +24,7 @@ import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
-STORE = os.environ.get("RM_ORPHAN_BUNDLES", "/home/mandrake/rm/relentless/store/orphans/bundles")
+STORE = os.environ.get("RM_ORPHAN_BUNDLES", "/home/mandrake/rm/runs/store/orphans/bundles")
 DERIVED = ("ignored.tar", "HEAD", "diff.patch")    # diff.patch: real.patch plus pool noise (a hard link when equal)
 
 

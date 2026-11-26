@@ -114,7 +114,7 @@ def test_tail_and_transcript():
         recs, off2 = PW.read_from(p, off)
         check(recs == [{"b": 2}], "and is read once whole")
         home = os.path.join(d, "home")
-        clone = "/home/x/rm/relentless/clones/IT"
+        clone = "/home/x/rm/runs/clones/IT"
         pd = os.path.join(home, ".claude", "projects", re.sub(r"[^A-Za-z0-9]", "-", clone))
         os.makedirs(pd)
         old, new = os.path.join(pd, "old.jsonl"), os.path.join(pd, "new.jsonl")

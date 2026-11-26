@@ -51,7 +51,7 @@ def state_file():
 def reading_file():
     """Touched at the end of a completed pass: `unit=timer-guard.timer` alone proves the timer fired, not that the pass
     survived (OPS_TIMER_REPAIR_PRXC: the guard crashed at each alarm while its timer stayed active)."""
-    return Path(os.environ.get("RM_TIMER_GUARD_READING", "/home/mandrake/rm/relentless/store/timer_guard_reading"))
+    return Path(os.environ.get("RM_TIMER_GUARD_READING", "/home/mandrake/rm/runs/store/timer_guard_reading"))
 
 
 def pauses_file():

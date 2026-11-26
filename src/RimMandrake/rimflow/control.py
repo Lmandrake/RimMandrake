@@ -2473,7 +2473,7 @@ def reap_detached(run, act, why):
     env = ["--setenv", "RM_DISPATCHER_STATE=" + str(rec.get("state") or DH.state_dir())]
     for k in ("RIMFLOW_SEAT", "AGENT_SEAT"):
         env += ["--setenv", "%s=%s" % (k, rec.get("seat") or "BENCH")]
-    for k in ("RM_DETACHED_POOL", "RM_CONDUCTOR_LOG", "RELENTLESS_ROOT", "RM_CONTROL_DB", "PATH"):
+    for k in ("RM_DETACHED_POOL", "RM_CONDUCTOR_LOG", "RM_RUNS_ROOT", "RM_CONTROL_DB", "PATH"):
         if os.environ.get(k):
             env += ["--setenv", "%s=%s" % (k, os.environ[k])]
     try:

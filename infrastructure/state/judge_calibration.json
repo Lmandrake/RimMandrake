@@ -1876,9 +1876,9 @@
     "corpus",
     "check"
    ],
-   "hash": "0c5c7ef641403d64",
+   "hash": "31beefad27fdce77",
    "last_run": {
-    "at": "2026-11-26T09:28:52Z",
+    "at": "2026-11-26T09:30:29Z",
     "cases": "822 planted case(s) ran and came out as planted",
     "exit": 0,
     "out": "evidence corpus: 55 false closes, 55 rejected; 767 valid closes, 767 accepted - OK",
@@ -1890,7 +1890,7 @@
      "refuse": 55
     }
    },
-   "reset_at": "2026-11-24T19:18:28Z",
+   "reset_at": "2026-11-26T09:30:23Z",
    "status": "CALIBRATED",
    "was": "CALIBRATED"
   },

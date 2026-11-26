@@ -146,7 +146,7 @@ def main():
         print("UNMEASURED: no python.exe on this machine; the Windows-client cases cannot run")
         return 2
     holder = sleeper()
-    other = "/home/mandrake/rm/relentless/clones/SOME_OTHER_RUN.det"
+    other = "/home/mandrake/rm/runs/clones/SOME_OTHER_RUN.det"
 
     # 1. the measured case: another clone's live run holds the game, its heartbeat fresh
     r = probe(plant("other_fresh", holder.pid, other))

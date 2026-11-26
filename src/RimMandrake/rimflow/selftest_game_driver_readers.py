@@ -493,7 +493,7 @@ def t_recorded():
     try:
         now_a = game_lock.query("a")
         files = sorted(glob.glob("/home/mandrake/rm/*/infrastructure/state/BRIDGE") +
-                       glob.glob("/home/mandrake/rm/relentless/clones/*/infrastructure/state/BRIDGE"))
+                       glob.glob("/home/mandrake/rm/runs/clones/*/infrastructure/state/BRIDGE"))
         agree = 0
         for p in files:
             with open(p, encoding="utf-8", errors="replace") as f:

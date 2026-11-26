@@ -38,7 +38,7 @@ REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 SCHEDULE = os.path.join(REPO, "src", "RimMandrake", "rimflow", "dispatcher_schedule.json")
 DEFAULT_OUT = "/mnt/d/ClaudeWork/rimmandrake/ops_lives"
 DEFAULT_DISPATCHER = "/mnt/d/ClaudeWork/rimmandrake/dispatcher"
-DEFAULT_RELENTLESS = "/home/mandrake/rm/relentless"
+DEFAULT_RELENTLESS = "/home/mandrake/rm/runs"
 DAY = 86400.0
 
 # How it ended: the fixed list (§4). A death's ending is always one of these.
@@ -702,7 +702,7 @@ def main(argv=None):
     b.add_argument("--dispatcher", default=os.environ.get("RM_DISPATCHER_STATE", DEFAULT_DISPATCHER))
     b.add_argument("--memwatch", default=os.path.join(
         os.environ.get("XDG_STATE_HOME") or os.path.expanduser("~/.local/state"), "rm-memwatch", "events.jsonl"))
-    b.add_argument("--relentless", default=os.environ.get("RM_RELENTLESS_ROOT", DEFAULT_RELENTLESS))
+    b.add_argument("--relentless", default=os.environ.get("RM_RUNS_ROOT", DEFAULT_RELENTLESS))
     b.add_argument("--schedule", default=SCHEDULE)
     c = sub.add_parser("check")
     c.add_argument("--out", default=DEFAULT_OUT)

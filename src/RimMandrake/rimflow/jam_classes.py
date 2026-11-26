@@ -283,12 +283,12 @@ def census(reg, journal, now):
 
 
 def default_journal():
-    root = os.environ.get("RELENTLESS_ROOT")
+    root = os.environ.get("RM_RUNS_ROOT")
     if not root:
         with open(OPS_RULES, encoding="utf-8") as f:
             root = (json.load(f).get("relentless") or {}).get("root")
     if not root:
-        raise SystemExit("jam_classes: no RELENTLESS_ROOT and ops_watch_rules.json relentless.root is unset")
+        raise SystemExit("jam_classes: no RM_RUNS_ROOT and ops_watch_rules.json relentless.root is unset")
     return Path(root) / "store" / "journal.jsonl"
 
 

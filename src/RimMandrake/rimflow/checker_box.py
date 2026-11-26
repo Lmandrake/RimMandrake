@@ -322,7 +322,7 @@ ITEMS = "infrastructure/state/items"
 ITEM_NOTE = "items.json"
 GRANTS = (GIT_GRANT, ITEM_GRANT)
 GIT_COPY_MAX = 2 << 30      # a borrower's own objects COPIED past this: no grant, the plain box
-# CHECKER_REACH_FIX_GH_DARK_SECOND: ~/rm/relentless/books borrows store.git yet holds 2.2 GB of its own LOOSE objects
+# CHECKER_REACH_FIX_GH_DARK_SECOND: ~/rm/runs/books borrows store.git yet holds 2.2 GB of its own LOOSE objects
 # (22915 of them, 28 MB packed), so every copy was refused and every git/gh/proc reach probe failed. The box root and the
 # clones share one filesystem: the own objects are HARDLINKED in (no bytes, no cap); only a file that cannot link (another
 # filesystem) is copied, and the cap counts those bytes. git never writes an existing object (packs and loose are 0444),

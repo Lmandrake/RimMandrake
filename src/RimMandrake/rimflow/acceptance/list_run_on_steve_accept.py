@@ -17,7 +17,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 RF = os.path.dirname(HERE)
 sys.path.insert(0, RF)
 GOOD = {"reachable": True, "claude": "2.1.331", "account": "a", "picked_account": "a", "push": True,
-        "launcher": True, "clone": "~/rm/relentless/clones/ITEM_ONE.det", "free_gb": 800}
+        "launcher": True, "clone": "~/rm/runs/clones/ITEM_ONE.det", "free_gb": 800}
 BAD = []
 
 

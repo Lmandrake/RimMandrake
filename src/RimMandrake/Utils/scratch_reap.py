@@ -2640,7 +2640,7 @@ def unique_gb(p: Path) -> float | None:
 
 
 def pool_measures() -> dict:
-    """The worker pool, as its cap sees it. It counts relentless/clones alone; rm/scratch has its own lines."""
+    """The worker pool, as its cap sees it. It counts runs/clones alone; rm/scratch has its own lines."""
     try:
         import scratch_clone
         d = scratch_clone.pool_reading(risk=False)     # count and bytes: no git reading of every clone

@@ -38,7 +38,7 @@ import model  # noqa: E402
 import ticket_preflight as TP  # noqa: E402
 
 REPO = TP.REPO
-STORE = "/home/mandrake/rm/relentless/store"
+STORE = "/home/mandrake/rm/runs/store"
 LABELS = "/mnt/d/ClaudeWork/rimmandrake/conductor/ticket_preflight_20261112/mine_ledger.json"
 RULED = "2026-11-13"                      # E12, C4 and the refs grammar: the owner's card, 2026-11-13
 RULED_CHECKS = ("E12", "C4", "E11", "P0")

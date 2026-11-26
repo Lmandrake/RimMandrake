@@ -16,7 +16,7 @@ sys.path.insert(0, HERE)
 import run_host as R
 
 GOOD = {"reachable": True, "claude": "2", "account": "a", "picked_account": "a", "push": True, "launcher": True,
-        "clone": "~/rm/relentless/clones/X.det", "free_gb": 9}
+        "clone": "~/rm/runs/clones/X.det", "free_gb": 9}
 
 
 def P(facts=GOOD, **kw):
@@ -86,7 +86,7 @@ def t_every_fact_reads():
     unread = [k for k in R.FACTS if facts.get(k) is None]
     assert not unread, unread
     assert facts["account"] == "acct1" and facts["picked_account"] == "acct1", facts
-    assert facts["clone"] == "~/rm/relentless/clones/X.det" and facts["launcher"] is True and facts["free_gb"] == 120
+    assert facts["clone"] == "~/rm/runs/clones/X.det" and facts["launcher"] is True and facts["free_gb"] == 120
     assert R.plan("SteveDesktop", "X", "/b", facts, budget=5)["verdict"] == "REMOTE"
 
 

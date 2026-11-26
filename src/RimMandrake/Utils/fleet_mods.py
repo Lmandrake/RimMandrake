@@ -17,7 +17,7 @@ that mod (one line)." Everything here is computed in Python. No page draws the r
   detached_done(hours)  finished detached dispatcher helpers (dispatcher/detached/*.json), the receipts' second source.
 
 Inputs (read-only): `git log origin/main --since=7.days --name-only` (one call), the rimflow ledger (model.read),
-the Relentless store (~/rm/relentless/store), infrastructure/state/modcheck_status.json, src/*/*/About/About.xml.
+the Relentless store (~/rm/runs/store), infrastructure/state/modcheck_status.json, src/*/*/About/About.xml.
 
     python3 src/RimMandrake/Utils/fleet_mods.py [--days 7]      # prints {"factory":…, "receipts":[…], "mods":[…]}
 """
@@ -174,7 +174,7 @@ def _item_state(item):
     first = out.splitlines()[0] if out else ""
     m = re.match(r"\S+\s+(\S+)", first)
     return m.group(1) if m else "unknown"
-STORE = os.path.expanduser("~/rm/relentless/store")
+STORE = os.path.expanduser("~/rm/runs/store")
 MODCHECK = os.path.join(REPO, "infrastructure", "state", "modcheck_status.json")
 DAYS = 7
 INFRA = "_infra"

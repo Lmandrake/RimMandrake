@@ -55,7 +55,7 @@
    "owner": "Operations",
    "ack_within_min": 30,
    "max_age_min": 150,
-   "why": "OP2: 279 clones once sat outside the pool cap, which counts relentless/clones alone. The reading is rm_scratch_clones in the newest phase of scratch_reap's sanity record. Distressed one past that record's start line of 12 (near twice a quiet machine); the selftest holds the two equal. max_age_min: two hourly reaper starts plus the timer's 5 min jitter and a margin, so one missed run is not an alarm and two are.",
+   "why": "OP2: 279 clones once sat outside the pool cap, which counts runs/clones alone. The reading is rm_scratch_clones in the newest phase of scratch_reap's sanity record. Distressed one past that record's start line of 12 (near twice a quiet machine); the selftest holds the two equal. max_age_min: two hourly reaper starts plus the timer's 5 min jitter and a margin, so one missed run is not an alarm and two are.",
    "classes": {
     "sane": {"at_least": 0},
     "distressed": {"at_least": 13}

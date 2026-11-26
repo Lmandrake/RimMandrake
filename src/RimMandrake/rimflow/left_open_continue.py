@@ -870,7 +870,7 @@ def kick_argv(rec):
     me = os.path.basename(os.path.abspath(__file__))
     env = ["--setenv", "RM_DISPATCHER_STATE=" + rec["state"], "--setenv", "RIMFLOW_SEAT=" + rec["seat"],
            "--setenv", "AGENT_SEAT=" + rec["seat"]]
-    for k in ("RM_DETACHED_POOL", "RM_CONDUCTOR_LOG", "RELENTLESS_ROOT", "PATH", "WSL_INTEROP"):
+    for k in ("RM_DETACHED_POOL", "RM_CONDUCTOR_LOG", "RM_RUNS_ROOT", "PATH", "WSL_INTEROP"):
         if os.environ.get(k):
             env += ["--setenv", "%s=%s" % (k, os.environ[k])]
     return ["--user", "--quiet", "--collect", "--no-block",     # control.launch_unit names the unit

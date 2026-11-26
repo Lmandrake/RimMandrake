@@ -71,7 +71,7 @@ if HERE not in sys.path:
     sys.path.insert(0, HERE)
 import evidence                                                 # noqa: E402
 
-DEFAULT_ROOT = "/home/mandrake/rm/relentless"       # relentless.DEFAULT_ROOT, not imported: cli.py must stay light
+DEFAULT_ROOT = "/home/mandrake/rm/runs"       # relentless.DEFAULT_ROOT, not imported: cli.py must stay light
 SHADOW = "evidence_shadow.jsonl"
 SAMPLE = 30                 # redesign_final.md: the shadow ends on a sample count, not on days
 GIT_TIMEOUT_S = 60  # budget: danger=a hung git read (a stuck drvfs read) holds its caller; longest=3.8s (210 local git calls sampled at load 20 to 52, 2026-11-24)
@@ -93,11 +93,11 @@ WRITER_FIXES = {"marker_writer": "8e3e8ef4a5"}  # report --since: the Marker's r
 
 
 def store_dir():
-    return os.path.join(os.environ.get("RELENTLESS_ROOT") or DEFAULT_ROOT, "store")
+    return os.path.join(os.environ.get("RM_RUNS_ROOT") or DEFAULT_ROOT, "store")
 
 
 def own_root(root):
-    """Pure but for realpath. May a close on a throwaway ledger log to this RELENTLESS_ROOT? Only a root of its own: a
+    """Pure but for realpath. May a close on a throwaway ledger log to this RM_RUNS_ROOT? Only a root of its own: a
     worker's env holds the real one, and a selftest under it that closed a fixture named after a real item wrote that
     fixture's close into the real log (DEPLOY_GUARD_FIX_EXCLUDE_DIR_MISMATCH's rows, EVIDENCE_GATE_FIX_WORK_COMMIT_HIDES_PASS)."""
     return bool(root) and os.path.realpath(root) != os.path.realpath(DEFAULT_ROOT)
@@ -852,7 +852,7 @@ def _closes_for(rs):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--store-dir", help="the Relentless store dir (default: $RELENTLESS_ROOT/store)")
+    ap.add_argument("--store-dir", help="the Relentless store dir (default: $RM_RUNS_ROOT/store)")
     sub = ap.add_subparsers(dest="cmd", required=True)
     r = sub.add_parser("report", help="the shadow's disagreement count toward the sample")
     r.add_argument("--json", action="store_true")

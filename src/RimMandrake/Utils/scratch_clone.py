@@ -456,7 +456,7 @@ POOL_WARM = "warm-"     # relentless_disk.WARM
 
 
 def pool_root() -> Path:
-    return Path(os.environ.get("RM_POOL_ROOT", RM / "relentless" / "clones"))
+    return Path(os.environ.get("RM_POOL_ROOT", RM / "runs" / "clones"))
 
 
 class FloorUnreadable(Exception):
@@ -683,7 +683,10 @@ def clone_unpushed(c: Path, strict: bool = False) -> list[str]:
 
 
 def clone_in_use(c: Path) -> bool:
+    """A process other than this one has its cwd in `c`. /proc's cwd is the real path, so `c` is compared by its own
+    real path: a pool reached through a symlink still sees its live runs."""
     me = os.getpid()
+    c = os.path.realpath(c)
     pre = str(c) + os.sep
     for d in glob.glob("/proc/[0-9]*"):
         if d == f"/proc/{me}":
@@ -699,7 +702,7 @@ def clone_in_use(c: Path) -> bool:
 
 def pool_state_files() -> list[str]:
     """Every relentless item's state file: relentless.py Store writes store/items/<item>/state.json."""
-    return glob.glob(os.environ.get("RM_POOL_STATE_GLOB", str(RM / "relentless" / "store" / "items" / "*" / "state.json")))
+    return glob.glob(os.environ.get("RM_POOL_STATE_GLOB", str(RM / "runs" / "store" / "items" / "*" / "state.json")))
 
 
 def owned_by_item(c: Path) -> bool:

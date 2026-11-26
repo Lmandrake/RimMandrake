@@ -34,7 +34,7 @@ import textwrap
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-DEFAULT_ROOT = "/home/mandrake/rm/relentless"      # relentless.DEFAULT_ROOT; not imported, so a broken relentless.py
+DEFAULT_ROOT = "/home/mandrake/rm/runs"      # relentless.DEFAULT_ROOT; not imported, so a broken relentless.py
                                                    # never blinds the window
 
 # kind -> (station prefix, count, label). Counts mirror run_rules.json max_workers / check_backlog_max / one
@@ -49,7 +49,7 @@ OVERVIEW_S = 5.0
 
 
 def root():
-    return os.environ.get("RELENTLESS_ROOT") or DEFAULT_ROOT
+    return os.environ.get("RM_RUNS_ROOT") or DEFAULT_ROOT
 
 
 # A WT tab's `wsl.exe -- <script>` may start without XDG_RUNTIME_DIR, and `systemctl --user` cannot find the user

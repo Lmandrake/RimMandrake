@@ -829,7 +829,7 @@ def _git(c, *a, timeout=300):
 
 
 def pool_root():
-    return os.environ.get("RM_DETACHED_POOL") or os.path.expanduser("~/rm/relentless")
+    return os.environ.get("RM_DETACHED_POOL") or os.path.expanduser("~/rm/runs")
 
 
 def claude_tool_args(tools):

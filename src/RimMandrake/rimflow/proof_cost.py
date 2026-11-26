@@ -5,7 +5,7 @@ fast-testing #8: the instrument that proves the rest; design/RimMandrake/fast_te
     python3 src/RimMandrake/rimflow/proof_cost.py throughput [--hours 24 | --since ISO --until ISO] [--json]
     python3 src/RimMandrake/rimflow/proof_cost.py throughput --source runs --since ... --until ...   # legacy cross-check
 
-THE LEDGER: <RELENTLESS_ROOT>/live/proof_cost.jsonl, append-only, one row per live proof run, written by the code that
+THE LEDGER: <RM_RUNS_ROOT>/live/proof_cost.jsonl, append-only, one row per live proof run, written by the code that
 ran it at the moment it ended, never reconstructed later:
   - relentless_live.run (every Relentless game_prove round and every broker clause: the broker runs the same round);
   - relentless_game.steve_sync (each clause a testq job on SteveDesktop answered or failed to answer).
@@ -299,7 +299,7 @@ def main(argv=None):
     t.add_argument("--until", help="ISO UTC end (default now)")
     t.add_argument("--source", choices=("ledger", "runs"), default="ledger",
                    help="runs: live/runs.jsonl, outcome only (the legacy cross-check)")
-    t.add_argument("--root", default=os.environ.get("RELENTLESS_ROOT") or "/home/mandrake/rm/relentless")
+    t.add_argument("--root", default=os.environ.get("RM_RUNS_ROOT") or "/home/mandrake/rm/runs")
     t.add_argument("--no-bridge", action="store_true", help="skip the bridge_utilization read (UNMEASURED)")
     t.add_argument("--json", action="store_true")
     a = ap.parse_args(argv)
