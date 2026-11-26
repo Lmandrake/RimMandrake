@@ -188,3 +188,28 @@ Roles kept: 28 owned farm wander-in animals and 433 owned trader-stock animals r
 `src/RimMandrake/Utils/selftest_vanilla_beast_cut.py` (offline) and `vanilla_beast_cut.py --check-log` (live, Player.log
 removal block; SHIP written to the live config 2026-11-02, inert until the next full-list load). Leaks a ThingDef cut
 leaves open (route defs that spawn a race by name) are `VANILLA_BEAST_LEAKS_EXCISE_ESCAPEES_AT_LARGE`.
+
+## Leaks (2026-11-26): the route defs that spawn a cut race by name
+
+`VANILLA_BEAST_LEAKS_EXCISE_ESCAPEES_AT_LARGE`. The `leaks:` line of `vanilla_beast_cut.py` now watches every official
+race in SHIP (it watched only the races not yet cut, so each wave's own leaks vanished from it). Measured on the
+2026-11-12 dump, plus the eggs read from Odyssey's source XML (the dump cuts a ThingFilter off at its depth limit):
+
+- **Struck by `src/RimUtinni/UtinniPatches/Patches/VanillaBeastExcision_RouteStrikes.xml`:**
+  - `RareFishingCatches_Hot` MonitorLizard and `_Cold` Seal (reached from uncut biomes);
+  - `_Temperate` and `_Tropical`, their eight corpse kinds and their two egg options (reached only from biomes that
+    SHIP cuts);
+  - `VEE_Megafauna` Mastodon, Cat_Scimitar and Wolf_Great (VEF spawns a forced kind on each wild-animal spawn on
+    that tile; Megasloth, Megavole and ColossusToad stay);
+  - `VEE_DomesticatedEscapees` Chicken and Cow (the frozen world whitelist already strips this mutator; Pig stays).
+- **Cut in SHIP:** `IncidentDef/VEE_CaravanAnimalsWanderIn`. Its worker takes every PawnKindDef whose race is a pack
+  animal, a flag no cut clears, so it brought the cut Yak and Mastodon.
+- **Fixed at the source:** `RM_CathedralStrays` (RustCathedral) no longer lists Fox_Fennec as a fallback kind.
+- **Closed by the race cut itself (decompiled 1.6):** Cherry Picker sets `canArriveManhunter = false` on every kind of
+  a cut race. So `VEE_AnimalPodCrash` and the vanilla manhunter fallbacks cannot pick one. `VEE_BattleAnimalsWanderIn`
+  needs tradeTag `AnimalFighter`, which the cut clears. `VEE_ManhunterSingleArrival` and Odyssey's `AnimalHabitat`
+  choose from the map biome's wild animals, and the cut takes the race out of those lists.
+
+Proof: `src/RimMandrake/Utils/selftest_vanilla_beast_cut.py` (offline, page
+`design/specs/2026-11-26-vanilla-beast-route-leaks/boundary.md`). On the 2026-11-12 dump with the strikes counted,
+`leaks: 1`, and that one is Fox_Fennec, fixed in a source edit that is later than the dump.

@@ -6,7 +6,8 @@
   RM_CathedralStrays: sheet §4 "the desiccated dead are map dressing, not spawns". Kinds come from the neighbouring
   biomes' rosters: the Scarlands (RM_Warscar, and the deleted Scarlands twin). The sheet's "the Scorch" has no
   BiomeDef of that name in src/ (measured 2026-10-07), so it is not listed; add its defName here when one exists.
-  The fallback kinds (vanilla desert animals) apply only when no source biome resolves. edgeBand 8 is the item's
+  The fallback kinds (vanilla desert animals) apply only when no source biome resolves. A race cut by Cherry Picker
+  is never a fallback kind (Fox_Fennec was struck, VANILLA_BEAST_LEAKS_EXCISE_ESCAPEES_AT_LARGE). edgeBand 8 is the item's
   "within 8 cells of the map edge".
 -->
 <Defs>
@@ -26,7 +27,6 @@
       </sourceBiomes>
       <fallbackKinds>
         <li>Iguana</li>
-        <li>Fox_Fennec</li>
         <li>Dromedary</li>
         <li>Rat</li>
       </fallbackKinds>

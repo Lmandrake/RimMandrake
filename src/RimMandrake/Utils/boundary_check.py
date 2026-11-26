@@ -37,6 +37,7 @@ PAGES = {
     "design/specs/2026-11-24-filing-gate/boundary.md": "src/RimMandrake/rimflow/selftest_filing_gate.py",
     "design/specs/2026-11-24-dispatcher-soon-timers/boundary.md": "src/RimMandrake/rimflow/selftest_seat_restart.py",
     "design/specs/2026-11-24-game-watch-tick/boundary.md": "src/RimMandrake/Utils/selftest_game_watch_tick.py",
+    "design/specs/2026-11-26-vanilla-beast-route-leaks/boundary.md": "src/RimMandrake/Utils/selftest_vanilla_beast_cut.py",
     "design/specs/2026-11-24-fleet-now-stevedesktop/boundary.md": "src/RimMandrake/Utils/selftest_steve_reading.py",
     "design/specs/2026-11-24-monitors-consolidated/boundary.md": "src/RimMandrake/Utils/selftest_pages_index.py",
     "design/specs/2026-11-26-whea-quiet-check/boundary.md": "src/RimMandrake/Utils/selftest_ops_whea_quiet.py",

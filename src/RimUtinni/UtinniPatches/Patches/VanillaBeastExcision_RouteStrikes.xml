@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- VANILLA_BEAST_LEAKS_EXCISE_ESCAPEES_AT_LARGE: strike the cut official races from the route defs that spawn them BY
+     NAME. A Cherry Picker ThingDef cut neuters the race (trade, rosters, manhunter arrival), but a def that names the
+     race, its kind or its fertilized egg still makes one. Only races already in CherryPicker.SHIP.xml are struck; an
+     uncut race stays until its own wave cuts it.
+
+     - RareFishingCatches_* (Odyssey, BiomeDef.fishTypes.rareCatchesSetMaker): the corpse options of cut races, and
+       the egg options whose every egg hatches a cut race. Hot and Cold are reached from uncut biomes; Temperate and
+       Tropical only from biomes that SHIP cuts, so they are struck for safety, not for a live route.
+     - VEE_Megafauna, VEE_DomesticatedEscapees (Vanilla Landmarks Expanded): VEF's postfix on
+       WildAnimalSpawner.SpawnRandomWildAnimalAt spawns a random forcedPawnKindDefs entry on the mutator's tile.
+       Each keeps at least one entry (Megafauna: Megasloth, Megavole, ColossusToad; Escapees: Pig), because VEF takes
+       RandomElement of the list and an empty list throws.
+
+     Every op is PatchOperationConditional on its own xpath, so a mod that is absent or reordered is a silent no-op.
+     Keep to this one op shape: vanilla_beast_cut.struck_pairs reads it to count these pairs closed, and refuses any
+     other shape. Proof: python3 src/RimMandrake/Utils/selftest_vanilla_beast_cut.py (offline: every measured leak is
+     closed); on a dump taken after this file shipped, vanilla_beast_cut.py reads leaks: 0 with no strikes subtracted
+     (`strikes ''`). -->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingSetMakerDef[defName="RareFishingCatches_Hot"]/root/options/li[thingSetMaker/pawnKind="MonitorLizard"]</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingSetMakerDef[defName="RareFishingCatches_Hot"]/root/options/li[thingSetMaker/pawnKind="MonitorLizard"]</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingSetMakerDef[defName="RareFishingCatches_Cold"]/root/options/li[thingSetMaker/pawnKind="Seal"]</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingSetMakerDef[defName="RareFishingCatches_Cold"]/root/options/li[thingSetMaker/pawnKind="Seal"]</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingSetMakerDef[defName="RareFishingCatches_Temperate"]/root/options/li[thingSetMaker/pawnKind="Sparrow" or thingSetMaker/pawnKind="Crow" or thingSetMaker/pawnKind="Porcupine" or thingSetMaker/pawnKind="Squirrel"]</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingSetMakerDef[defName="RareFishingCatches_Temperate"]/root/options/li[thingSetMaker/pawnKind="Sparrow" or thingSetMaker/pawnKind="Crow" or thingSetMaker/pawnKind="Porcupine" or thingSetMaker/pawnKind="Squirrel"]</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingSetMakerDef[defName="RareFishingCatches_Temperate"]/root/options/li[thingSetMaker/fixedParams/filter/thingDefs/li="EggDuckFertilized" or thingSetMaker/fixedParams/filter/thingDefs/li="EggHeronFertilized"]</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingSetMakerDef[defName="RareFishingCatches_Temperate"]/root/options/li[thingSetMaker/fixedParams/filter/thingDefs/li="EggDuckFertilized" or thingSetMaker/fixedParams/filter/thingDefs/li="EggHeronFertilized"]</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingSetMakerDef[defName="RareFishingCatches_Tropical"]/root/options/li[thingSetMaker/pawnKind="Flamingo" or thingSetMaker/pawnKind="Capybara" or thingSetMaker/pawnKind="Cobra" or thingSetMaker/pawnKind="Monkey"]</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingSetMakerDef[defName="RareFishingCatches_Tropical"]/root/options/li[thingSetMaker/pawnKind="Flamingo" or thingSetMaker/pawnKind="Capybara" or thingSetMaker/pawnKind="Cobra" or thingSetMaker/pawnKind="Monkey"]</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingSetMakerDef[defName="RareFishingCatches_Tropical"]/root/options/li[thingSetMaker/fixedParams/filter/thingDefs/li="EggPeacockFertilized" or thingSetMaker/fixedParams/filter/thingDefs/li="EggFlamingoFertilized" or thingSetMaker/fixedParams/filter/thingDefs/li="EggCobraFertilized"]</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingSetMakerDef[defName="RareFishingCatches_Tropical"]/root/options/li[thingSetMaker/fixedParams/filter/thingDefs/li="EggPeacockFertilized" or thingSetMaker/fixedParams/filter/thingDefs/li="EggFlamingoFertilized" or thingSetMaker/fixedParams/filter/thingDefs/li="EggCobraFertilized"]</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TileMutatorDef[defName="VEE_Megafauna"]/modExtensions/li/forcedPawnKindDefs/li[forcedPawnKindDef="Mastodon" or forcedPawnKindDef="Cat_Scimitar" or forcedPawnKindDef="Wolf_Great"]</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/TileMutatorDef[defName="VEE_Megafauna"]/modExtensions/li/forcedPawnKindDefs/li[forcedPawnKindDef="Mastodon" or forcedPawnKindDef="Cat_Scimitar" or forcedPawnKindDef="Wolf_Great"]</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TileMutatorDef[defName="VEE_DomesticatedEscapees"]/modExtensions/li/forcedPawnKindDefs/li[forcedPawnKindDef="Chicken" or forcedPawnKindDef="Cow"]</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/TileMutatorDef[defName="VEE_DomesticatedEscapees"]/modExtensions/li/forcedPawnKindDefs/li[forcedPawnKindDef="Chicken" or forcedPawnKindDef="Cow"]</xpath>
+    </match>
+  </Operation>
+</Patch>
