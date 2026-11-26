@@ -57,6 +57,11 @@ FOUR = ("ExplosiveKnockback", "FlowWorks", "GimmeSomeSlack", "Pyrelands")
 COPY = ("journal.md", "stage.json", "version/VERSION.json", "version/test_table.json", "version/preflight.json",
         "version/stage_record.json")
 CLOCK = 1794718800.0            # 2026-11-14 9:00 PM PST, pinned
+# No case writes a real mod ledger: a pilot mod's launch (pilot_ledger True) grants a lease in design/concepts/<Mod>/ledger,
+# and modledger lands it. Run in a clone on 2026-11-26, the cert red gates cases landed a lease at CLOCK on Gimme Some
+# Slack's real ledger (ca6bc31538, 879155ea73), and every later run read "already granted". A case that tests the pilot
+# route passes fx["pilot"].
+MD.pilot_ledger = lambda root, mod: False
 FAILS = []
 # the tick's repair launcher in these fixtures: it repairs a form refusal in place (form_fault route 1), so the next
 # tick launches the same work again; selftest_repair_at_refusal.py proves the repair run itself
