@@ -69,9 +69,16 @@ KNOWN = {"SOME_ITEM_TO_BUILD"}
 CLONE = os.path.join(TMP, "clone")
 # a --clone that exists is one a unit can start in (RIMMANDRAKE_GUARD_HELPER_LAUNCH_ON_MISSING_CLONE_TWO_RUNS_DIED_UNSTARTED)
 
+def brief_path(argv):
+    """The file a launch's systemd-run argv hands claude its brief in: the one RM_BRIEF names (a shared start: stdin is
+    then the fixed prompt that sends the run there, detached_helper.shared_start_plan), else the StandardInput file."""
+    f = next((a[len("RM_BRIEF="):] for a in argv if a.startswith("RM_BRIEF=")), "")
+    return f or next((a[len("StandardInput=file:"):] for a in argv if a.startswith("StandardInput=file:")), "")
+
+
 def brief_of(argv):
-    """The brief a launch's systemd-run argv hands claude: the StandardInput file (every brief goes in on stdin)."""
-    f = next((a[len("StandardInput=file:"):] for a in argv if a.startswith("StandardInput=file:")), "")
+    """The brief a launch's systemd-run argv hands claude, by file (brief_path; never an argument)."""
+    f = brief_path(argv)
     return open(f, encoding="utf-8").read() if f and os.path.isfile(f) else ""
 
 def _bounded(path):
@@ -1508,8 +1515,7 @@ def test_long_brief():
     argv = next((c[0] for c in calls if c[0][0].endswith("systemd-run")), [])
     big = max((len(a.encode()) for a in argv), default=0)
     stdin = [a for a in argv if a.startswith("StandardInput=file:")]
-    path = stdin[0][len("StandardInput=file:"):] if stdin else ""
-    body = open(path, encoding="utf-8").read() if path and os.path.isfile(path) else ""
+    body = brief_of(argv)
     check(rc == 0 and big < DH.ARG_BRIEF_MAX and stdin and brief in body,
           "longbrief: a 150 KB brief goes in by file on stdin, no argument over the cap (rc %s, biggest %d bytes, %s)"
           % (rc, big, stdin[:1]))
@@ -1540,8 +1546,7 @@ def t_a_brief_never_rides_in_a_wrappers_argv():
                          runner=run, known=KNOWN, clone=CLONE)
     argv = next((c[0] for c in calls if c[0][0].endswith("systemd-run")), [])
     stdin = [a for a in argv if a.startswith("StandardInput=file:")]
-    path = stdin[0][len("StandardInput=file:"):] if stdin else ""
-    body = open(path, encoding="utf-8").read() if path and os.path.isfile(path) else ""
+    body = brief_of(argv)
     leaked = [a[:60] for a in argv if "plant_faults" in a or "Short brief." in a]
     check(rc == 0 and stdin and phrase in body and not leaked,
           "argv: a short brief goes in by file on stdin and no argument carries it (rc %s, stdin %s, leaked %s)"

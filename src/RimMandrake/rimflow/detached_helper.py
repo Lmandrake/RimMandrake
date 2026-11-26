@@ -1175,7 +1175,7 @@ def session_of(unit, root=None, projects=None):
     """-> (session id, context tokens) of a finished run, from claude's result JSON and its transcript; (None, None)
     when unreadable."""
     rec = read_record(unit, root) or {}
-    sid = rec.get("session_id")
+    sid = rec.get("session_id") or rec.get("session")      # session: named at launch for a shared start
     if not sid and rec.get("out"):
         try:
             with open(rec["out"], encoding="utf-8", errors="replace") as fh:
@@ -1271,6 +1271,7 @@ def game_env(env):
     return dict(env, **game_instance.env(name))
 
 
+MCP_ALL_ENV = "RM_HELPER_MCP_ALL"   # =1: a shared start keeps every MCP server, not only the project's .mcp.json
 AGENT_ENV = "RM_CLAUDE_AGENT"     # the run starts as `claude --agent <name>`: .claude/agents/<name>.md is its system prompt
 
 
@@ -1307,16 +1308,32 @@ def launch_argv(rec, msg, claude):
     wrapup = "-+" + shlex.join(stop_resolver(stop_candidates(rec, "wrapup.py"),
                                              ["unit", "--unit", unit, "--seat", seat, "--clone", clone]))
     back = "-" + shlex.join(return_argv(rec))
-    via_file = rec.get("brief_file")    # the brief: claude -p reads it from stdin (StandardInput=file:), never argv
+    shared = rec.get("shared_start")    # a fresh run's start is the same bytes as the last one's (shared_start_plan)
+    # the prompt: claude -p reads it from stdin (StandardInput=file:), never argv; a shared start reads the fixed
+    # SHARED_PROMPT (prompt_file), which sends the run to its brief by $RM_BRIEF
+    via_file = rec.get("prompt_file") if shared else rec.get("brief_file")
+    settings = _control_settings(rec)
+    if shared:      # the project CLAUDE.md, headed by its clone's path, leaves message 0 for the system prompt below
+        settings = json.dumps(dict(json.loads(settings), claudeMdExcludes=[os.path.join(clone, "CLAUDE.md")]))
     cmd = [bounded, "-p"] + ([] if via_file else [msg]) + [
            "--model", _RL().launch_model(rec["model"]), *EF.effort_args(rec["model"], effort_of(rec)),
            "--name", "DETACHED %s %s" % (seat, rec["item"]),
            "--output-format", "json", "--dangerously-skip-permissions",
-           "--settings", _control_settings(rec)]     # its PostToolUse hook: the stop channel (`pipe stop --write-now`)
+           "--settings", settings]     # its PostToolUse hook: the stop channel (`pipe stop --write-now`)
     if rec.get("resume_session"):       # a mod's holder session (modledger.resume_plan), carried into this clone
         cmd += ["--resume", rec["resume_session"]]
     if (rec.get("env") or {}).get(AGENT_ENV):   # its role file is the system prompt: no Read of it, ~15k fewer a request
         cmd += ["--agent", rec["env"][AGENT_ENV]]
+    if shared:      # named at launch: its first prompt names no item, so readers find its transcript by this id
+        cmd += ["--session-id", rec["session"]]
+        md = os.path.join(clone, "CLAUDE.md")
+        if os.path.isfile(md):      # the same text, with no path in it: shared by every clone at the same commit
+            cmd += ["--append-system-prompt-file", md]
+        mcp = os.path.join(clone, ".mcp.json")
+        if os.path.isfile(mcp) and (rec.get("env") or {}).get(MCP_ALL_ENV) != "1":
+            # one fixed MCP set, the project's: a user server's connection race ("still connecting" in one run,
+            # "failed" in the next, measured 2026-11-26) rewrote ~21,600 tokens of the shared start
+            cmd += ["--strict-mcp-config", "--mcp-config", mcp]
     # the spend cap is enforced from outside: the agent is never told its spend (owner 2026-11-16, spend_watchdog.py);
     # --budget-usd 0 launches with no cap at all
     if rec["budget_usd"] > 0:
@@ -1346,6 +1363,11 @@ def launch_argv(rec, msg, claude):
             # return start; 30 s killed ten finishes in a week, measured 2026-11-15 (RIMMANDRAKE_COVER_FINISH_IN_TIMEOUTSTOPSEC_TEN_KILLED)
             "-p", "TimeoutStopSec=%d" % STOP_S,
             *(["--setenv", "WSL_INTEROP=" + soc] if soc else []),
+            # a shared start: no git status block (origin/main moves every few minutes, and the block sat inside the
+            # start: 04-shared-start.md; helpers land with ./publish) and no auto-memory (its folder path, the clone's,
+            # sat in the system prompt; each clone's folder held none); RM_BRIEF names the brief the prompt sends it to
+            *(["--setenv", "CLAUDE_CODE_DISABLE_GIT_INSTRUCTIONS=1", "--setenv", "CLAUDE_CODE_DISABLE_AUTO_MEMORY=1",
+               "--setenv", "RM_BRIEF=" + rec["brief_file"]] if shared else []),
             "--setenv", "PATH=" + path, "--"] + cmd
 
 
@@ -1353,6 +1375,32 @@ def launch_argv(rec, msg, claude):
 # registered, so a helper reads only the skills its brief names by path (owner, 2026-11-19). skills/BY_WORK.md alone is the map,
 # not a skill. Boundary page: design/specs/2026-11-19-brief-skill-paths/boundary.md.
 SKILL_PATH = re.compile(r"skills[/\\][A-Za-z0-9][A-Za-z0-9_.-]*[/\\]")
+
+
+# The first prompt of every shared start: the same bytes every time, so it is part of what the next start reads from
+# the cache. It names no path: the brief's path is in $RM_BRIEF.
+SHARED_PROMPT = ("You are a detached RimMandrake helper. Your whole task (your brief, the item packet and your command "
+                 "lines) is in the file whose path is in the environment variable RM_BRIEF, written for you by the "
+                 "launcher on the Conductor's order. Get the path with `echo \"$RM_BRIEF\"`, read that file whole with "
+                 "the Read tool (in parts if it is long), then do what it says, as if its text were typed here. The "
+                 "project's CLAUDE.md is in your system prompt.\n")
+
+
+def shared_start_plan(rec, root=None):
+    """A fresh run's first request is made the same bytes as the last fresh run's, so the cache serves it
+    (RIMMANDRAKE_SHARE_HELPER_START_ONE_STATUS_LINE_REWRITES_IT; design/specs/2026-11-26-shared-helper-start/boundary.md):
+    the fixed SHARED_PROMPT, the project CLAUDE.md in the system prompt instead of under its clone's path, no git
+    block, no auto-memory, the project's MCP set. A resume keeps its own start (its transcript already holds one).
+    Sets shared_start, session (named at launch) and prompt_file, or shared_start_off and its why. -> None or why not."""
+    if rec.get("resume_session"):
+        rec["shared_start_off"] = "a resume continues its own transcript"
+        return rec["shared_start_off"]
+    import uuid
+    rec["shared_start"], rec["session"] = True, str(uuid.uuid4())
+    rec["prompt_file"] = os.path.join(runs_dir(root), rec["unit"] + ".prompt.md")
+    with open(rec["prompt_file"], "w", encoding="utf-8") as fh:
+        fh.write(SHARED_PROMPT)
+    return None
 
 
 def skill_path_warning(brief):
@@ -1819,6 +1867,7 @@ def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, 
     rec["brief_file"] = os.path.join(runs_dir(root), unit + ".brief.md")
     with open(rec["brief_file"], "w", encoding="utf-8") as fh:
         fh.write(msg)
+    shared_start_plan(rec, root)
     write_record(rec, root)
     import control as C     # the one admission point (control.py): a switch, his hold or a duplicate refuses here
     cenv = rec.get("env") or {}

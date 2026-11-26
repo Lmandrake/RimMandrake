@@ -324,6 +324,7 @@
     {"test": "src/RimMandrake/Utils/selftest_maturation_nonmod.py", "seconds": 1, "inputs": ["src/RimMandrake/Utils/maturation_nonmod.py", "src/RimMandrake/Utils/maturation_trend.py", "src/RimMandrake/Utils/maturation_now.py", "src/RimMandrake/rimflow/item_identity.py", "src/RimMandrake/rimflow/list_pipeline.py", "design/specs/2026-11-22-non-mod-pipeline-section/boundary.md"]},
     {"test": ".claude/hooks/selftest_role_result_before_stop.py", "seconds": 0.2},
     {"test": "src/RimMandrake/rimflow/selftest_detached_helper.py", "seconds": 2.6},
+    {"test": "src/RimMandrake/rimflow/selftest_shared_start.py", "seconds": 3.0},
     {"test": "src/RimMandrake/rimflow/selftest_take_clone_half_made.py", "seconds": 4, "inputs": ["src/RimMandrake/rimflow/detached_helper.py", "design/specs/2026-11-23-half-made-pool-clone/boundary.md"]},
     {"test": "src/RimMandrake/rimflow/selftest_run_peek.py", "seconds": 1, "inputs": ["src/RimMandrake/rimflow/run_peek.py", "src/RimMandrake/rimflow/run_alive.py", "src/RimMandrake/rimflow/detached_helper.py", "src/RimMandrake/rimflow/maturation_dispatch.py", "design/specs/2026-11-25-run-peek/boundary.md"]},
     {"test": "src/RimMandrake/rimflow/selftest_run_alive.py", "seconds": 3, "inputs": ["src/RimMandrake/rimflow/run_alive.py", "src/RimMandrake/rimflow/detached_helper.py", "src/RimMandrake/rimflow/modledger.py", "src/RimMandrake/rimflow/maturation_dispatch.py", "src/RimMandrake/rimflow/spend_talk.py", "src/RimMandrake/Utils/systemd/rm-run-alive.*", "design/specs/2026-11-23-run-alive/boundary.md"]},

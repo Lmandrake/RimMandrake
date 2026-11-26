@@ -237,6 +237,9 @@ def session_of(rec, projects=None):
     sid = rec.get("resume_session")
     if sid and DH.find_transcript(sid, projects):
         return sid
+    if rec.get("shared_start"):     # named at launch (detached_helper.shared_start_plan); its prompt names no item
+        sid = rec.get("session")
+        return sid if sid and DH.find_transcript(sid, projects) else None
     at, item, head = rec.get("at") or 0, rec.get("item") or "", brief_head(rec)
     best = None
     for p in glob.glob(os.path.join(DH.project_dir(rec.get("clone") or "/nonexistent", projects), "*.jsonl")):
