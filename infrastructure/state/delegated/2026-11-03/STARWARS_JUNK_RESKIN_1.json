@@ -1682,7 +1682,7 @@
    "facing": "north",
    "verdict": "REDO",
    "violated": "C3",
-   "quote": "A building's south facing is drawn from the measured building camera (orthographic, ~35\u00b0",
+   "quote": "A building's south facing is drawn from the measured building camera (orthographic, ~35°",
    "seen": "pure side elevation of a Juggernaut hull standing on its wheels, no top surface",
    "redo_brief": "redraw per the art-list prompt: pure side elevation of a Juggernaut hull standing on its wheels, no top surface"
   },
@@ -1692,7 +1692,7 @@
    "facing": "north",
    "verdict": "REDO",
    "violated": "C3",
-   "quote": "A building's south facing is drawn from the measured building camera (orthographic, ~35\u00b0",
+   "quote": "A building's south facing is drawn from the measured building camera (orthographic, ~35°",
    "seen": "pure side elevation, same as take A",
    "redo_brief": "redraw per the art-list prompt: pure side elevation, same as take A"
   },
@@ -2397,6 +2397,34 @@
    "facing": "north",
    "verdict": "KEEP",
    "notes": "transparent, no ground or baked shadow, canon silhouette legible, fills footprint, painterly with keyline"
+  },
+  {
+   "picture": "f0468a1453988971a238075fa06fbf8e94e7e71349aab5576608c369117800dc",
+   "job": "RSW_Junk_AncientTank_07_redo",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "redraw of 2026-11-24 (Codex gpt_door image), KEEP by a fresh GPT judge on design/RimMandrake/art_judge_brief.md with full true-scale panels (D:\\ClaudeWork\\rimmandrake\\art\\junk_redo_20261124\\judge3.md, judge4.md); installed by work bundle WB-game-art-canon-20261126-155225"
+  },
+  {
+   "picture": "99be121083d1ff1621a9ee435ecd8c925c353af47030d6b43673ccd441a9460f",
+   "job": "RSW_Junk_AncientWarwalkerShell_05_redo",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "redraw of 2026-11-24 (Codex gpt_door image), KEEP by a fresh GPT judge on design/RimMandrake/art_judge_brief.md with full true-scale panels (D:\\ClaudeWork\\rimmandrake\\art\\junk_redo_20261124\\judge3.md, judge4.md); installed by work bundle WB-game-art-canon-20261126-155225"
+  },
+  {
+   "picture": "9009779c24d75827fe68c657ee47935faf7903c6462ce2441a4e5481ac651494",
+   "job": "RSW_Junk_AncientJetEngine_08_redo",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "redraw of 2026-11-24 (Codex gpt_door image), KEEP by a fresh GPT judge on design/RimMandrake/art_judge_brief.md with full true-scale panels (D:\\ClaudeWork\\rimmandrake\\art\\junk_redo_20261124\\judge3.md, judge4.md); installed by work bundle WB-game-art-canon-20261126-155225"
+  },
+  {
+   "picture": "fa9debb5b8a1e388d459b00a34b1cf1b143dbffc9f043089fc87a47201e002a4",
+   "job": "RSW_Junk_AncientPodCar_08_redo",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "redraw of 2026-11-24 (Codex gpt_door image), KEEP by a fresh GPT judge on design/RimMandrake/art_judge_brief.md with full true-scale panels (D:\\ClaudeWork\\rimmandrake\\art\\junk_redo_20261124\\judge3.md, judge4.md); installed by work bundle WB-game-art-canon-20261126-155225"
   }
  ],
  "installed": {
@@ -3111,6 +3139,22 @@
   "RSW_Junk_AncientWheel_08": {
    "sha": "1c6ba0d19a1abcdb32f0c32e7dc72aefa5179874e0baf3c967415b42b2e1362e",
    "rel": "Things/Building/Ruins/RSW_Junk/AncientWheel/RSW_Junk_AncientWheel_08.png"
+  },
+  "RSW_Junk_AncientTank_07": {
+   "sha": "f0468a1453988971a238075fa06fbf8e94e7e71349aab5576608c369117800dc",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientTank/RSW_Junk_AncientTank_07.png"
+  },
+  "RSW_Junk_AncientWarwalkerShell_05": {
+   "sha": "99be121083d1ff1621a9ee435ecd8c925c353af47030d6b43673ccd441a9460f",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientWarwalkerShell/RSW_Junk_AncientWarwalkerShell_05.png"
+  },
+  "RSW_Junk_AncientJetEngine_08": {
+   "sha": "9009779c24d75827fe68c657ee47935faf7903c6462ce2441a4e5481ac651494",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientJetEngine/RSW_Junk_AncientJetEngine_08.png"
+  },
+  "RSW_Junk_AncientPodCar_08": {
+   "sha": "fa9debb5b8a1e388d459b00a34b1cf1b143dbffc9f043089fc87a47201e002a4",
+   "rel": "Things/Building/Ruins/RSW_Junk/AncientPodCar/RSW_Junk_AncientPodCar_08.png"
   }
  },
  "proposals": [
