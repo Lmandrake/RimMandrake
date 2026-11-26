@@ -1,0 +1,3 @@
+Renewing a vault account (claude-account enroll) from his Chrome: the claude.ai OAuth page logs out his browser's claude.ai web login and signs in as the target account via the Google chooser (no password needed when that Google account is in his Chrome); its Authorize button refuses a click within a few seconds of load ('Too soon. Wait, then press again'): wait ~5 s, click again. Take the code with the page's Copy code button and pipe Get-Clipboard into claude-account code, never OCR it from a screenshot; clear the clipboard after.
+item: RIMMANDRAKE_RENEW_STEVEN_LOGIN_ARCHMAGI_DIES_THURSDAY_AFTERNOON
+home: skills/rimflow-operations
