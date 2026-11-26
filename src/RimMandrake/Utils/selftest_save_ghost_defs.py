@@ -172,6 +172,10 @@ with tempfile.TemporaryDirectory() as tmp:
                  "corpse.rws")
     check(g.cmd_check(corpse, g.with_implied(GHOSTS)) == g.FOUND and "Corpse_RSW_Ghost" in g.with_implied(GHOSTS)
           and "Corpse_Muffalo" not in g.with_implied(GHOSTS), "with_implied adds Corpse_ of each ghost name only")
+    # implied Meat_<race>: the same R3 load logged 42 Meat_ rows of deleted races (Meat_RSW_AcidSlug x6 among them)
+    check("Meat_RSW_AcidSlug" in names, "the name set holds the implied Meat_ def of a deleted race")
+    check("Meat_RSW_Ghost" in g.with_implied(GHOSTS) and "Meat_Muffalo" not in g.with_implied(GHOSTS),
+          "with_implied adds Meat_ of each ghost name only")
 
 print("PASS" if not fails else f"FAIL: {len(fails)}")
 sys.exit(1 if fails else 0)

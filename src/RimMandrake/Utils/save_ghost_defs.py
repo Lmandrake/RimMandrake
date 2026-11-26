@@ -14,7 +14,7 @@ canonical start carries the error storm, which hides the first real exception.
 
 Names: the prune's ROOTS + CLOSURE (src/RimStarWars/SWBestiary/selftest_biomes_port_prune_42.py) unless --def is
 given; a name that src/ still defines is left out and printed (it is not a ghost). Each ghost name also brings its
-implied Corpse_<name> def (with_implied): the game generates it from the race, so no XML names it.
+implied Corpse_<name> and Meat_<name> defs (with_implied): the game generates them from the race, so no XML names them.
 
 What strip does, by the element whose text is a ghost name (any other element shape is refused by name):
   <li>NAME</li>                    the line is removed (ThingFilter allowedDefs, world info factions, VEF ignoredFactions)
@@ -65,13 +65,14 @@ def still_defined(names):
     return alive
 
 
-IMPLIED_PREFIXES = ("Corpse_",)   # defs the game generates from a race def; no XML of ours defines them
+IMPLIED_PREFIXES = ("Corpse_", "Meat_")   # defs the game generates from a race def; no XML of ours defines them
 
 
 def with_implied(names):
-    """names plus the implied defs the game makes from each one (Corpse_<race>). A non-race name gets a Corpse_ name
-    that no save holds, which costs nothing. Why: after the first strip of R3, its food filters still named 282
-    Corpse_<race> defs of the deleted races, and the check read NONE (2026-11-26 load of R3 on ArchBig)."""
+    """names plus the implied defs the game makes from each one (Corpse_<race>, Meat_<race>). A non-race name gets
+    names that no save holds, which costs nothing. Why: after the first strip of R3, its food filters still named 282
+    Corpse_<race> and 42 Meat_<race> defs of the deleted races, and the check read NONE (2026-11-26 load of R3 on
+    ArchBig)."""
     return set(names) | {p + n for n in names for p in IMPLIED_PREFIXES}
 
 
