@@ -1,0 +1,3 @@
+The Explosive Knockback walk_save.py refuses a map when any of its 40 sites is under a roof, and most AridShrubland quicktest maps have one: 1 of 9 and then 1 of 16 rolls were open on ArchBig, 2026-11-26. Loop live_site.py --menu-dwell 1, live_site.py --biome AridShrubland and walk_save.py until it stages; a refused roll stages nothing. Set RM_ALLOW_CONCURRENT_BRIDGE=1 (and WSLENV) for back-to-back bridge tools under one held lock, or the next tool refuses for the last tool's activity mark. Also: rimworld/screenshot_cell_rect framing drifts from the asked rect between calls; look at every frame and retake.
+item: RIMMANDRAKE_STAGE_KNOCKBACK_WALK_STATIONS_NEW_PARTS_SAME_SIXTEEN
+home: NONE

@@ -11,20 +11,23 @@ summary, rows, strange things, scripts and screenshots of visit 3
 
 ## What to open
 
-- **Savegame:** `EK_V020_VISIT3_WALK_20261126.rws`, on **ArchBig only**:
-  `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves\EK_V020_VISIT3_WALK_20261126.rws`
-  (10.7 MB, saved 5:59 AM PST 2026-11-26) [measured]. ArchSmall does not have it [measured].
+- **Savegame:** `EK_V020_WALK_NEW_THROWS_20261126.rws`, on **ArchBig only**:
+  `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves\EK_V020_WALK_NEW_THROWS_20261126.rws`
+  (10.0 MB, saved 7:37 AM PST 2026-11-26) [measured]. ArchSmall does not have it [measured]. It holds the 16 stations
+  below and 4 new stations (17 to 20) that show the throws new in 0.2.0. The earlier save of this version,
+  `EK_V020_VISIT3_WALK_20261126.rws` (the 16 stations only), is still in the same folder.
 - **Mod list:** the mod's small list, 26 mods (tier `explosiveknockback_visit`), with all five expansions, Simple Camera
   Setting (zoom) and Character Editor. ArchBig's `ModsConfig.xml` holds exactly these 26 now [measured 6:40 AM]. Extra
   Explosion Effects, Better Explosions and Dynamic Effects Forge are not on it, so every blast look you see is ours.
 - **Build:** the mod at `9931b028e1`. ArchBig's deployed Explosive Knockback DLL is byte-identical to the committed one
   [measured, same md5]. The save was staged on the proof build and then loaded on this release build with no error line
-  (visit 3, 6:08 AM).
+  in `Player.log` [measured, 7:38 AM].
 - **Build match:** 65 of 65 in-game checks count on this build, 0 to run [measured 6:38 AM].
-- **Where to look:** it is noon and the game is paused. The layout is the one you walked for 0.1.0. Each station is one
-  column of two sites. **START** (z 42, above) is the scene before the blast, its explosion removed before any tick.
-  **AFTER** (z 12, below) is the same scene after the blast. Signs stand 3 cells below each site. Columns run left to
-  right, 15 cells apart. `walk_twins.py check`: ok, 16 AFTER sites, each with its START twin (visit 3).
+- **Where to look:** it is noon and the game is paused. Stations 1 to 16 have the layout you walked for 0.1.0. Each
+  station is one column of two sites. **START** (z 42, above) is the scene before the blast, its explosion removed before
+  any tick. **AFTER** (z 12, below) is the same scene after the blast. Signs stand 3 cells below each site. Columns run
+  left to right, 15 cells apart. Stations 17 to 20 are a second band, north of the first: AFTER at z 72, START at z 102,
+  at x 12, 27, 42 and 57. `walk_twins.py check`: ok, 40 signs, 20 AFTER sites, each with its START twin [measured].
 - Nothing is armed. **To see the blast show itself** (the flash, fireball, screen shake, air ripple and smoke), set off a
   blast yourself: development mode's explosion tool, or a grenade. The save shows only what a blast leaves behind
   (crater scars, and soot where a blast stood near walls or people).
@@ -48,6 +51,14 @@ summary, rows, strange things, scripts and screenshots of visit 3
 | 14 storeroom, bomb, pit | 207 | **the flagship** |
 | 15 shield | 222 | a shielded colonist who stayed put |
 | 16 goods at obstacles | 237 | goods thrown at a door, sandbags and deep water |
+| 17 carried thing (new) | 12 | START: a colonist holds 20 steel that she was ordered to haul east. AFTER: she landed 3 cells out, empty-handed, and the stack flew on its own arc to 3 cells beyond her |
+| 18 bruise by size (new) | 27 | a colonist thrown into a standing squirrel (lower lane) and into a standing elephant (upper lane): the colonist took 1.3 and the squirrel 6.7; the colonist took 6.4 and the elephant 1.6. Both animals lived in this save |
+| 19 sandbag, no contact (new) | 42 | lower lane: the sandbag stopped the throw, and nobody was bruised. Upper lane, no sandbag: the thrown colonist hit the standing one, 4 each |
+| 20 gas shoves a pawn on a pit cover (new) | 57 | the Cauldron's vent gas burned beside a colonist who stood on an intact reinforced pit cover; it shoved her one cell east, impact 0, and the cover still stands (the brown square to her west; its art is close to bare soil) |
+
+The new stations' blasts are small (damage 1, "Bigger blasts throw harder" off, as in their 0.2.0 scenes), so that the
+throw is not hidden by a downed colonist. Captures of each START and AFTER:
+`D:\Luke\dev\RimMandrake\design\concepts\ExplosiveKnockback\version\in_game\visit_3\walk_stations\`.
 
 ## What changed since his last look
 
@@ -78,41 +89,43 @@ In-game acceptance, visit 3 (2026-11-26): 16 of 16 checks that the change since 
 other 49 keep their visit-2 PASS. The walk frame time at the 99th percentile is 21.9 ms with the mod on and 22.5 ms with
 it off (21 samples each, small list).
 
-`look_changed_labels.py show --mod ExplosiveKnockback --save EK_V020_VISIT3_WALK_20261126` (exit 0):
+`look_changed_labels.py show --mod ExplosiveKnockback --save EK_V020_WALK_NEW_THROWS_20261126` (exit 0):
 
 ```
-save EK_V020_VISIT3_WALK_20261126 against no earlier look (every cell new)
-calibration calibration: new since your last look
-closed_containers closed_containers: new since your last look
-cover_breaks cover_breaks: new since your last look
-door_stop door_stop: new since your last look
-gas_chain gas_chain: new since your last look
-goods_fly_wild goods_fly_wild: new since your last look
-goods_obstacles goods_obstacles: new since your last look
-heavy_knock heavy_knock: new since your last look
-killed_by_blast killed_by_blast: new since your last look
-open_storage open_storage: new since your last look
-over_sandbags over_sandbags: new since your last look
-pawn_hits_pawn pawn_hits_pawn: new since your last look
-pit_colonist pit_colonist: new since your last look
-shield_counter shield_counter: new since your last look
-storeroom_bomb_pit storeroom_bomb_pit: new since your last look
-wall_stop wall_stop: new since your last look
+save EK_V020_WALK_NEW_THROWS_20261126 against his last look, save EK_VISIT6_WALK_20261124_C
+calibration calibration: changed since your last look
+closed_containers closed_containers: changed since your last look
+cover_breaks cover_breaks: changed since your last look
+door_stop door_stop: changed since your last look
+gas_chain gas_chain: changed since your last look
+goods_fly_wild goods_fly_wild: changed since your last look
+goods_obstacles goods_obstacles: changed since your last look
+heavy_knock heavy_knock: changed since your last look
+killed_by_blast killed_by_blast: changed since your last look
+open_storage open_storage: changed since your last look
+over_sandbags over_sandbags: changed since your last look
+pawn_hits_pawn pawn_hits_pawn: changed since your last look
+pit_colonist pit_colonist: changed since your last look
+sc_gas_chain_pawn_on_cover sc_gas_chain_pawn_on_cover: new since your last look
+sc_pawn_arc_bruise_sizes sc_pawn_arc_bruise_sizes: new since your last look
+sc_pawn_arc_carried_thing sc_pawn_arc_carried_thing: new since your last look
+sc_pawn_arc_sandbag_no_contact sc_pawn_arc_sandbag_no_contact: new since your last look
+shield_counter shield_counter: changed since your last look
+storeroom_bomb_pit storeroom_bomb_pit: changed since your last look
+wall_stop wall_stop: changed since your last look
 ```
 
-Every sign therefore reads "[NEW SINCE YOUR LAST LOOK]". That overstates: you saw these 16 stations on 2026-11-24, but
-your 0.1.0 save has no look-cells record. "Changed since your last look" is the true word for each: every station reads
-the mod's whole Source and Defs, and both changed.
+So signs 1 to 16 read "[CHANGED SINCE YOUR LAST LOOK]" (every station reads the mod's whole Source and Defs, and both
+changed since your 0.1.0 walk), and signs 17 to 20 read "[NEW SINCE YOUR LAST LOOK]". The record of your 0.1.0 look was
+missing: the 0.1.0 save's builder wrote no look-cells file, and the label tool did not read where a passed version's stage
+record is kept. Both are repaired (`look_cells\EK_VISIT6_WALK_20261124_C.json`, rebuilt from the 0.1.0 walk build
+`e089dc2573`).
 
 `look_notes.py ExplosiveKnockback`: *"no pass of his is pinned (version/pins.json holds none): nothing to list."*
 
 ## Known, not fixed: you need not report these
 
 Current version (0.2.0), open:
-- **The walk save shows none of the new throws as a station**: no carried thing on its own arc, no bruise between a big
-  and a small creature, no sandbag that stops a throw short of a pawn, no person on a pit cover shoved by gas.
-  `RIMMANDRAKE_STAGE_KNOCKBACK_WALK_STATIONS_NEW_PARTS_SAME_SIXTEEN`. Until it is restaged, try them yourself: a colonist
-  carrying a stack, thrown by a grenade; a colonist thrown onto a squirrel and onto a muffalo.
 - **In long test batches a good once stayed unthrown or vanished** (3 sightings in visit 1; two of them were later classed
   as staging faults: a hauler picked the good up). `RIMMANDRAKE_HUNT_KNOCKBACK_GOOD_UNMOVED_LONG_BATCH_THREE_SIGHTINGS`,
   an open hunt.
@@ -141,9 +154,9 @@ reload.
 
 ## What I noticed first
 
-- **The new throws are not in the save** (ticket above). The 16 stations are the ones you walked two days ago. What is
-  new in them is the blast show's aftermath. The captures of stations 1 to 4 and 13 to 16 show a crater scar at each
-  blast, inside the storeroom of station 14 too
+- **Stations 1 to 16 are the ones you walked two days ago.** What is new in them is the blast show's aftermath. The new
+  throws are stations 17 to 20. The captures of stations 1 to 4 and 13 to 16 (from the earlier save of this version, the
+  same staging) show a crater scar at each blast, inside the storeroom of station 14 too
   (`D:\Luke\dev\RimMandrake\design\concepts\ExplosiveKnockback\version\in_game\visit_3\screenshots\walk_g1_after.jpg`,
   `walk_g4_after.jpg` beside it). I could not tell soot on the walls from those captures; look for it at station 14.
 - **Station 13's crater is several times as wide as the others**: the deliberately lethal blast, scaled to its damage.

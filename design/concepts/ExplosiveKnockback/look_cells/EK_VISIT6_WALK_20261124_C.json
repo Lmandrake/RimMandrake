@@ -1,0 +1,71 @@
+{
+ "cells": {
+  "calibration": {
+   "hash": "8dff8a939581cd7aeb21f614842729bac70a32453d52fdfe37331a5311b1d2dd",
+   "name": "calibration"
+  },
+  "closed_containers": {
+   "hash": "f5a0ad7e4412e7fbd2f54800a73b329e624f80a914a927227848e294008335b9",
+   "name": "closed_containers"
+  },
+  "cover_breaks": {
+   "hash": "87b234630a7b26ed32c37e0933d2ef6b3b302f149bd11e7c8981b2ce894b9d19",
+   "name": "cover_breaks"
+  },
+  "door_stop": {
+   "hash": "32955966f8fdd23d3c96c7d4f19b4681c46c0a431839114536fc2c505921119d",
+   "name": "door_stop"
+  },
+  "gas_chain": {
+   "hash": "60b2b73e4129b5539a70a318ace95e9b6fbb2429da2f66b0d0741cdf0cf17799",
+   "name": "gas_chain"
+  },
+  "goods_fly_wild": {
+   "hash": "71276db17bd786462677be30032c95e7b2b2909025af0addb92bd73c4cda0866",
+   "name": "goods_fly_wild"
+  },
+  "goods_obstacles": {
+   "hash": "63090aac07e7acbbb488c739cc50513ff31e659577805a288edd1a00c99551fb",
+   "name": "goods_obstacles"
+  },
+  "heavy_knock": {
+   "hash": "f35f68d51b73313e4b0240331d1478837e18c9f9993dd87b8a9af5cfaefe89f0",
+   "name": "heavy_knock"
+  },
+  "killed_by_blast": {
+   "hash": "26f0e746946b65ff06ee0b6b5878118adda9219e27bc0402cdac94b0b8446528",
+   "name": "killed_by_blast"
+  },
+  "open_storage": {
+   "hash": "c2d8927847f60da38c0671faaa872411977e2e93725d8996abe37884764dab4c",
+   "name": "open_storage"
+  },
+  "over_sandbags": {
+   "hash": "514c900e77281d7731063361e9aa49d6a1f69e6991a0c81b84b235cf6658a471",
+   "name": "over_sandbags"
+  },
+  "pawn_hits_pawn": {
+   "hash": "8106d7b16fdc72732372e996136e8a018ea54412bd561663f2d0e2f0d9e4403a",
+   "name": "pawn_hits_pawn"
+  },
+  "pit_colonist": {
+   "hash": "56cc15cd5179338366dc43319f109254f51b3e0b7cd77b7580015a0e3b53462d",
+   "name": "pit_colonist"
+  },
+  "shield_counter": {
+   "hash": "c30461ae3fbfc77749c3b128fa6968bd9c93599e7babcdcc53e6612b3a2f9264",
+   "name": "shield_counter"
+  },
+  "storeroom_bomb_pit": {
+   "hash": "ae62507a9dffd97f86fdd71f596a486efabe88b746c9feef4d72ffa2f0b19d9c",
+   "name": "storeroom_bomb_pit"
+  },
+  "wall_stop": {
+   "hash": "6f1345d9b9b0abb7e416432531f5ba0abca45b5d30afd8290739422cb8eb073c",
+   "name": "wall_stop"
+  }
+ },
+ "reconstructed": "written 2026-11-26 by RIMMANDRAKE_STAGE_KNOCKBACK_WALK_STATIONS_NEW_PARTS_SAME_SIXTEEN: the 0.1.0 walk save's builder (previous/0.1.0/in_game/visit_6/scripts/walk_save.py) wrote no cells file. Cells = its 16 STATIONS, inputs hashed by look_changed_labels.inputs_hash over Source and Defs at e089dc2573 (the walk build of arrival_2.md; no Source or Defs change from it to mod/ExplosiveKnockback/v0.1.0); staged_at = the .rws file's write time on ArchBig",
+ "save": "EK_VISIT6_WALK_20261124_C",
+ "staged_at": "2026-11-24T04:59:24-08:00"
+}

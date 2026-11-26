@@ -1,0 +1,86 @@
+{
+ "cells": {
+  "calibration": {
+   "hash": "e95655746422fb79b4b85ac0a03e7a145132fb6a9916ff0ac503a2692d27d014",
+   "name": "calibration"
+  },
+  "closed_containers": {
+   "hash": "798df1591b1cd52fbf0dea6c42b9158288d15d928a3d7004bea0572c0447688b",
+   "name": "closed_containers"
+  },
+  "cover_breaks": {
+   "hash": "99e75bd726965141446a79bae38406ecffe54fc1098eb7a0255bd4f1930069a1",
+   "name": "cover_breaks"
+  },
+  "door_stop": {
+   "hash": "84be221c099aea1d22cdcca4a211782398b3a4114f16856051fd092115bb55a5",
+   "name": "door_stop"
+  },
+  "gas_chain": {
+   "hash": "a74056e55739b2bacfc12f2c5526644307ca12934dcb5552311d8cc842d3f33c",
+   "name": "gas_chain"
+  },
+  "goods_fly_wild": {
+   "hash": "5629544023c6f1ac734f7892339fed6d3493acd0f22b4e957917f482fa5a5bf6",
+   "name": "goods_fly_wild"
+  },
+  "goods_obstacles": {
+   "hash": "a9e5a385fed2dcc36589efe086e995187b5a35e7cf5f464b927e565372ab7cb1",
+   "name": "goods_obstacles"
+  },
+  "heavy_knock": {
+   "hash": "8321df9957e721ad46f2f07ae9b3bf6ebef83c88525c9eb4e80cfb2d02116f7e",
+   "name": "heavy_knock"
+  },
+  "killed_by_blast": {
+   "hash": "d0e2830979a0615986d7f4889c39e5281c69c09c6e42ed365940d9c1a1ba5ed3",
+   "name": "killed_by_blast"
+  },
+  "open_storage": {
+   "hash": "477553c48c1e64e3491ec2e271983c5d70a7263546c44ef33ba7e835a6090f00",
+   "name": "open_storage"
+  },
+  "over_sandbags": {
+   "hash": "891526f65f873168d952e9253d48bad617b3e8bc0961a3e830a01735cae12ac1",
+   "name": "over_sandbags"
+  },
+  "pawn_hits_pawn": {
+   "hash": "2cfca7f141df0c44599851fc63c86a68e8741b39aa8adfa6fbf3f6add2653b22",
+   "name": "pawn_hits_pawn"
+  },
+  "pit_colonist": {
+   "hash": "1defc4e8962aa3c6f0982e1ca231055beeeae8270d0d6fb7622e0b17e17b4782",
+   "name": "pit_colonist"
+  },
+  "sc_gas_chain_pawn_on_cover": {
+   "hash": "25119c89e6b775ca98da4960e8f166e77ef18f3d73503bc795efbdbf108fc233",
+   "name": "sc_gas_chain_pawn_on_cover"
+  },
+  "sc_pawn_arc_bruise_sizes": {
+   "hash": "9a3dfae2841ca99b587382ee5f0a3ad05bfa931c4aab06c33f9ebd709dd55d4f",
+   "name": "sc_pawn_arc_bruise_sizes"
+  },
+  "sc_pawn_arc_carried_thing": {
+   "hash": "4ebac838ce84d1ba12d9a74578557c15f4f04276ae8c12892d6897dda2a92295",
+   "name": "sc_pawn_arc_carried_thing"
+  },
+  "sc_pawn_arc_sandbag_no_contact": {
+   "hash": "77ad5a41d9e03bbd348bd86e8774df157b2817edc6350a1add505e3d10fcd746",
+   "name": "sc_pawn_arc_sandbag_no_contact"
+  },
+  "shield_counter": {
+   "hash": "a21ac5ebb3ee55b5a458ad952fd53dfbec3749ca41b85eafaf266fa78d4f4e6c",
+   "name": "shield_counter"
+  },
+  "storeroom_bomb_pit": {
+   "hash": "5ecc778881ae99c264e388482841bcfd6a2779e3c536dc9d30b9727fcafcd0c6",
+   "name": "storeroom_bomb_pit"
+  },
+  "wall_stop": {
+   "hash": "461c84a166e328eed5ee9ac4ab1f5e21c7e49ac441427536023a02ec48624e50",
+   "name": "wall_stop"
+  }
+ },
+ "save": "EK_V020_WALK_NEW_THROWS_20261126",
+ "staged_at": "2026-11-26T07:37:11-08:00"
+}
