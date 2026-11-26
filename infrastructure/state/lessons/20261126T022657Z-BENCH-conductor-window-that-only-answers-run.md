@@ -1,0 +1,1 @@
+A Conductor window that only answers run-end wakes leaves the machine idle: on 2026-11-25 Archmagi ran one job while 26 lane waits and 33 owed items named the Conductor. At wake, read the lane's tick counts (list_dispatch status by state) and clear the waits that name the Conductor before anything else; launch that sweep as detached runs.

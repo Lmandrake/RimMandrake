@@ -1,0 +1,1 @@
+pager.py ack <receipt> prints the time the phone acknowledged a Pushover alert (ACKNOWLEDGED receipt ... at <UTC>): that line is measured proof that the alert arrived, so do not ask the owner whether the phone rang before reading it. Say 'phone alert' to him, never 'page': he looked for a page to open (2026-11-25).
