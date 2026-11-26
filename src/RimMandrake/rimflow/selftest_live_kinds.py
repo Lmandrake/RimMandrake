@@ -306,7 +306,7 @@ def t_a_spoiled_fail_is_no_refused_bar():
         N[0] += 1
         root = S.visit("k%d" % N[0], rows + OTHERS, tt=table(**c1))
         errs = []
-        runs, rr, _ = RES.read_ingame(root, MOD, table(**c1), None, errs)
+        runs, rr = RES.read_ingame(root, MOD, table(**c1), None, errs)
         return rr[0]["refused"], sorted(r["result"] for r in runs if r["test"] == "c1")
     return (rounds([row("c1", "FAIL")]) == ({"b_one": ["c1 FAIL"]}, ["FAIL"]) and rounds([env("FAIL")]) == ({}, [])
             and rounds([miss()], **XY) == ({}, []) and rounds([env(forbidden=["a pawn lost"])])[0] != {}), (

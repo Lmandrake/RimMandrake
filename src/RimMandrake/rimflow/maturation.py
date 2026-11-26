@@ -4174,8 +4174,8 @@ def blind_brief_text(root, mod, cap_usd=None):
 #                  "unrepaired" and "owner" class a failed line (line_class; owner, 2026-11-20); fix_reviews.jsonl holds
 #                  the fresh reader's review of each mod fix made in the sitting.
 #                  "held" names what the site switched off or locked for the run ("fire", "weather", ...; [] when the whole
-#                  mod ran): maturation_rescue.py's C5 reads a bar whose every decider ran held as untested by the real
-#                  mechanic, and a row without "held" as UNMEASURED (RIMMANDRAKE_PROPOSE_RESCUE_WHEN_MOD_CIRCLES_BOTH_HAND_LAUNCHED)
+#                  mod ran): a decider that ran with its bar's mechanic held is a wrong scene, class SITE
+#                  (WRONG_CHECK_RULE; the rescue proposer's C5 that read it was retired 2026-11-25)
 #   strange.jsonl  one row per strange thing seen that no bar covers: {"what", "explained": "..."} or {"what", "filed": ID}
 #   SUMMARY.md     its "## Exit" section holds the block: ingame_rows: {test: pass|fail|unmeasured, ...} / strange_open: N
 #                  / savegame: <path> / exit_met: true|false

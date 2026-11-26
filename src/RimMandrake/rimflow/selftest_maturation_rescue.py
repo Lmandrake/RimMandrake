@@ -93,7 +93,7 @@ HEALTHY = {
 
 def rec(extra, mod="M"):
     r = {"mod": mod, "stage": "blind_challenge", "stage_since": NOW - 2 * DAY, "checks": [], "rounds": [], "nudges": [],
-         "ceiling": None, "certificate": None, "unrun": {}, "errors": []}
+         "ceiling": None, "certificate": None, "errors": []}
     r.update(extra)
     return r
 

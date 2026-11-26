@@ -1555,9 +1555,10 @@ step of the work order, with its tests?" He answered *"yup. Then we'll watch sta
   - the same bar refused two cycles running;
   - the stage spend ceiling reached without a green certificate (`maturation.py certificate`).
 - A bar whose every in-game decider ran on a site that switched off or locked the bar's mechanic (the `held` list of its
-  row in `design/concepts/<Mod>/version/in_game/visit_<n>/rows.jsonl`, for example the weather locked to Clear for a "no ordinary rain" bar) is not a rescue. Such a decider is a wrong scene,
-  repaired at Stage 6, with a Test Pilot sitting if the repaired scene still fails (`maturation.WRONG_CHECK_RULE`). The Conductor retired this
-  criterion (C5) on 2026-11-25, on `design/specs/2026-11-25-test-pilot-vs-fable-rescue/comparison.md`.
+  row in `design/concepts/<Mod>/version/in_game/visit_<n>/rows.jsonl`, for example the weather locked to Clear for a
+  "no ordinary rain" bar) is not a rescue. Such a decider is a wrong scene, repaired at Stage 6, with a Test Pilot
+  sitting if the repaired scene still fails (`maturation.WRONG_CHECK_RULE`). The Conductor retired this criterion (C5)
+  on 2026-11-25, on `design/specs/2026-11-25-test-pilot-vs-fable-rescue/comparison.md`.
 - The program writes one `RESCUE PROPOSED:` line per new piece of evidence to the Conductor log, marked RAISE FIRST.
   The program never launches a rescue.
 - The program proposes nothing for a mod that the owner holds. The program proposes nothing for a mod under a rescue or

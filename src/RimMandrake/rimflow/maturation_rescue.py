@@ -65,7 +65,7 @@ SETTINGS = {
 }
 CRITERIA = ("C1", "C2", "C3", "C4")
 # a criterion that no longer proposes: its old proposals still tally and can still take an outcome
-RETIRED = {"C5": "bar with no test running the real mechanic"}
+RETIRED = {"C5": "no test ran the real mechanic"}
 NAMES = dict({"C1": "check flips pass/fail across builds", "C2": "tuning number nudged back and forth",
               "C3": "same bar refused two rounds running", "C4": "stage ceiling without a green certificate"}, **RETIRED)
 STATS = "rescue_proposals.jsonl"
@@ -209,7 +209,7 @@ def read_blind(root, mod, until, errors):
 
 
 def read_ingame(root, mod, tt, until, errors):
-    """-> (check runs, rounds, last rows of the newest visit {test: row})."""
+    """-> (check runs, rounds)."""
     import maturation as M
     rec = M.load(root, mod) or {}
     opened = {k: ts(v) for k, v in M.ingame_openings(rec).items()}
@@ -219,7 +219,7 @@ def read_ingame(root, mod, tt, until, errors):
             for t in b.get("decides") or []:
                 decides.setdefault(t, []).append(b["id"])
     base = os.path.join(root, "design", "concepts", mod, "version", "in_game")
-    runs, rounds, newest = [], [], {}
+    runs, rounds = [], []
     for v in _numbers(root, base, r"visit_(\d+)$"):
         at0 = opened.get(v)
         if until is not None and at0 is not None and at0 > until:
@@ -250,8 +250,7 @@ def read_ingame(root, mod, tt, until, errors):
                 for b in decides.get(t, []):
                     refused.setdefault(b, []).append("%s FAIL" % t)
         rounds.append({"kind": "visit", "n": v, "refused": refused, "at": at0, "path": _rel(root, os.path.dirname(p))})
-        newest = {"visit": v, "path": _rel(root, p), "last": last, "at": at0}
-    return runs, rounds, newest
+    return runs, rounds
 
 
 def _git(root, args, runner=subprocess.run):
@@ -327,7 +326,7 @@ def read_records(root, mod, until=None, ceiling=None, certificate=None, runner=s
     if tt is None:
         errors.append(err)
     b_runs, b_rounds = read_blind(root, mod, until, errors)
-    i_runs, i_rounds, _ = read_ingame(root, mod, tt, until, errors)
+    i_runs, i_rounds = read_ingame(root, mod, tt, until, errors)
     seed = ts((rec.get("seeded") or {}).get("at"))
     now = until if until is not None else time.time()
     since = max(x for x in (seed, now - SETTINGS["nudge_window_days"] * 86400) if x is not None)
@@ -679,7 +678,7 @@ def status_text(rows):
     for c in CRITERIA + tuple(RETIRED):
         x = t[c]
         lines.append("  %-3s %-44s %5d %5d %5d %5d %5d %5d %8.2f" % (
-            c, ("retired: " + NAMES[c])[:44] if c in RETIRED else NAMES[c], x["proposals"], x["open"], x["launched"], x["solved"], x["declined"], x["false_alarms"],
+            c, "retired: " + NAMES[c] if c in RETIRED else NAMES[c], x["proposals"], x["open"], x["launched"], x["solved"], x["declined"], x["false_alarms"],
             x["usd"]))
     hand = [r for r in rows if r.get("kind") == "rescue"]
     lines.append("  hand rescues (no proposal): %d; settings: %s" % (len(hand), ", ".join(
