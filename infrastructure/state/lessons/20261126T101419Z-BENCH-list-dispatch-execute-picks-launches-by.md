@@ -1,0 +1,1 @@
+list_dispatch.execute() picks the launches by item id, so a second row under one id turns a held row into a launch. A new step that appends a lead row (onboard_step) must leave out every ticket whose own row already holds it (live, claimed, in_bundle). Missing that killed every Workshop Pipeline tick on KeyError 'model', 2026-11-26 01:10-02:12 PST.
