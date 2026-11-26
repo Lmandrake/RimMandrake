@@ -13,7 +13,8 @@ One row per FULL-LIST game session (session row `mods` >= full_list_min_mods), r
   end    clean shutdown, or ended without one (a newer session started, or no row for ended_after_min)
   mem    managed (Mono GC heap, `heapMB`), private bytes (`privateMB`), native (Unity allocators, `unityReservedMB`),
          GPU driver (`gfxMB`): each a curve per bucket_min of time since the first game load, its peak, and its growth
-         per hour (Theil-Sen) over the in-game span
+         per hour (Theil-Sen): the highest rate inside any ONE game of growth_min_span_min or more (a game ends at
+         the next game or menu row); growth across save loads is the reload ratchet, heap_ratchet.py's measure
   tps    run-window ratio per bucket, median, decay first-vs-last window at the dominant speed, stalls, longest stall
   log    errors and warnings the companion counted (`logErr`/`logWarn`, always-on), and whether Verse.Log's cap hit
 
@@ -208,6 +209,10 @@ def summarize(sess, rows, bad, rules, now=None, superseded=False):
     min_span = rules["growth_min_span_min"] * 60
     bucket = rules["bucket_min"] * 60.0
     curves = {}
+    # one span per game: from its game row to the next game or menu row (or the end). Growth across loads is the
+    # reload ratchet, which heap_ratchet.py measures (RIMMANDRAKE_SCOPE_HEAP_GROWTH_TO_ONE_GAME_SIX_LOADS)
+    cuts = sorted(r["_t"] for r in game_rows + (kinds.get("menu") or []))
+    game_spans = [(g["_t"], next((c for c in cuts if c > g["_t"]), float("inf"))) for g in game_rows]
     for name, f in MEM_FIELDS:
         src = [(r["_t"], num(r.get(f))) for r in ctx + samples if num(r.get(f)) is not None]
         src = [(t, v) for t, v in src if v > 0]        # 0 means "not read" (Mono WorkingSet64, release gfx driver)
@@ -219,10 +224,15 @@ def summarize(sess, rows, bad, rules, now=None, superseded=False):
             continue
         m["mem.%s_peak_mb" % name] = round(max(v for _, v in src), 1)
         after = sorted((t, v) for t, v in src if t0 is not None and t >= t0)
-        if len(after) >= 3 and after[-1][0] - after[0][0] >= min_span:     # the FIELD's own span, not the session's
-            m["mem.%s_growth_mb_per_h" % name] = round(theil_sen(after) * 3600.0, 1)
+        rates = []
+        for a, b in game_spans:                    # a leak rate is growth inside ONE game, never across save loads
+            pts = [(t, v) for t, v in after if a <= t < b]
+            if len(pts) >= 3 and pts[-1][0] - pts[0][0] >= min_span:     # the FIELD's own span, not the session's
+                rates.append(theil_sen(pts) * 3600.0)
+        if rates:
+            m["mem.%s_growth_mb_per_h" % name] = round(max(rates), 1)
         else:
-            m["mem.%s_growth_mb_per_h" % name] = U("under %d min of in-game time" % rules["growth_min_span_min"])
+            m["mem.%s_growth_mb_per_h" % name] = U("no single game has %d min of this field" % rules["growth_min_span_min"])
         if t0 is not None:
             cb = {}
             for t, v in after:

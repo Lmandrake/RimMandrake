@@ -7,7 +7,7 @@
   "_ended_after_min_doc": "a session with no shutdown row is recorded as ended-without-shutdown (a crash or kill) once a newer session exists on disk, or its newest row is older than this (12 h: a hang or a machine sleep can recover)",
   "bucket_min": 10,
   "growth_min_span_min": 30,
-  "_growth_min_span_min_doc": "a memory growth rate needs at least this much in-game time after the first game load, else it is UNMEASURED",
+  "_growth_min_span_min_doc": "a memory growth rate is measured inside one game (game row to the next game or menu row) and needs at least this much of that game, else it is UNMEASURED; the rate is the highest over such games",
   "ratio_window_min": 15,
   "_ratio_window_min_doc": "TPS decay compares the median run-window ratio of the first and the last this-many minutes after the first game load, at the session's dominant speed multiplier",
   "limits": [
