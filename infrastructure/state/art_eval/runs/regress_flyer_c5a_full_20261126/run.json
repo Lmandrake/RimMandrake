@@ -1,0 +1,21 @@
+{
+ "run_id": "regress_flyer_c5a_full_20261126",
+ "test": true,
+ "started": "2026-11-26T02:48:36-08:00",
+ "subjects": [
+  "RM_Shadefern",
+  "RM_Huldu",
+  "RM_Ssurr",
+  "RM_Vellak",
+  "RM_Murrin",
+  "RM_Dewblade",
+  "RM_DecayDrake",
+  "RM_Durrok",
+  "RM_Gawpsack",
+  "RM_Peeper",
+  "RM_Danglemaw",
+  "RM_FireHawk",
+  "RSW_Porg"
+ ],
+ "versions_key": "regress#89965c3451e362eecd2c0e109e004d9d83105c662c57d51b07da57af1e152dce"
+}
