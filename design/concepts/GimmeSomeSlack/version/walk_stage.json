@@ -1,0 +1,375 @@
+{
+ "mod": "GimmeSomeSlack",
+ "why": "walk_stage.py reads this: the walk save he walked and passed (0.2.0, 2026-11-24 about 12:19 PM PST), how to rebuild it, and the stations to capture. Stations 1-31: human_review.station_list() with rect_of(pad 1); 32-38: walk_brief/arrival_2.md's table.",
+ "save": "GSS_020_CLOSE_WALK_20261124",
+ "rebuild": {
+  "why": "the steps that made the 0.2.0 walk map: the review map (stations 1-31), visit 2's stand (32, 33), lamp ticks (vanilla's PowerNetTick lights a lamp only after ticks: lesson 20261124T173325Z-BENCH-stage-lamps-need-ticks), the close-out stations (34-38)",
+  "steps": [
+   {
+    "run": "src/RimMandrake/GimmeSomeSlack/human_review.py",
+    "args": [
+     "--build",
+     "--fresh-map"
+    ]
+   },
+   {
+    "run": "design/concepts/GimmeSomeSlack/version/in_game/visit_2/stand_020.py",
+    "args": []
+   },
+   {
+    "ticks": 1800
+   },
+   {
+    "run": "src/RimMandrake/GimmeSomeSlack/review/close_020_stations.py",
+    "args": [
+     "{out}"
+    ]
+   }
+  ],
+  "save_as": "GSS_WALK_REBUILT"
+ },
+ "stations": [
+  {
+   "name": "01_ground_cords_scrapper",
+   "rect": [
+    141,
+    41,
+    18,
+    9
+   ]
+  },
+  {
+   "name": "02_ground_cords_industrial",
+   "rect": [
+    165,
+    41,
+    18,
+    9
+   ]
+  },
+  {
+   "name": "03_ground_cords_modern",
+   "rect": [
+    189,
+    41,
+    18,
+    9
+   ]
+  },
+  {
+   "name": "04_ground_cords_futuristic",
+   "rect": [
+    213,
+    41,
+    18,
+    9
+   ]
+  },
+  {
+   "name": "05_modern_every_colour_entry",
+   "rect": [
+    141,
+    7,
+    18,
+    25
+   ]
+  },
+  {
+   "name": "06_overhead_four_looks",
+   "rect": [
+    165,
+    7,
+    33,
+    27
+   ]
+  },
+  {
+   "name": "07_merge_bigger_run_wins",
+   "rect": [
+    163,
+    79,
+    18,
+    7
+   ]
+  },
+  {
+   "name": "08_merge_a_tie",
+   "rect": [
+    187,
+    79,
+    16,
+    7
+   ]
+  },
+  {
+   "name": "09_split_keeps_the_look",
+   "rect": [
+    209,
+    79,
+    16,
+    7
+   ]
+  },
+  {
+   "name": "10_restyle_this_run_yours",
+   "rect": [
+    163,
+    92,
+    28,
+    8
+   ]
+  },
+  {
+   "name": "11_older_save_no_stored_look",
+   "rect": [
+    207,
+    92,
+    28,
+    10
+   ]
+  },
+  {
+   "name": "12_wall_rock_entries",
+   "rect": [
+    99,
+    91,
+    16,
+    11
+   ]
+  },
+  {
+   "name": "13_cut_fallen_span",
+   "rect": [
+    99,
+    72,
+    32,
+    13
+   ]
+  },
+  {
+   "name": "14_power_tap",
+   "rect": [
+    99,
+    53,
+    16,
+    13
+   ]
+  },
+  {
+   "name": "15_pole_cluster",
+   "rect": [
+    11,
+    143,
+    42,
+    28
+   ]
+  },
+  {
+   "name": "16_electric_room",
+   "rect": [
+    61,
+    143,
+    37,
+    24
+   ]
+  },
+  {
+   "name": "17_over_the_unknown",
+   "rect": [
+    107,
+    143,
+    38,
+    24
+   ]
+  },
+  {
+   "name": "18_map_edge",
+   "rect": [
+    221,
+    225,
+    30,
+    26
+   ]
+  },
+  {
+   "name": "19_river_crossing",
+   "rect": [
+    11,
+    191,
+    32,
+    24
+   ]
+  },
+  {
+   "name": "20_roof_boundary",
+   "rect": [
+    53,
+    191,
+    36,
+    22
+   ]
+  },
+  {
+   "name": "21_long_span_diagonals",
+   "rect": [
+    95,
+    191,
+    46,
+    36
+   ]
+  },
+  {
+   "name": "22_converging_hub",
+   "rect": [
+    155,
+    191,
+    34,
+    34
+   ]
+  },
+  {
+   "name": "23_nets_side_by_side_half_built",
+   "rect": [
+    195,
+    191,
+    28,
+    26
+   ]
+  },
+  {
+   "name": "24_waterproof_conduit_four_looks",
+   "rect": [
+    141,
+    57,
+    20,
+    14
+   ]
+  },
+  {
+   "name": "25_conduit_kinds",
+   "rect": [
+    169,
+    57,
+    18,
+    13
+   ]
+  },
+  {
+   "name": "26_wall_brackets_every_face",
+   "rect": [
+    193,
+    57,
+    18,
+    16
+   ]
+  },
+  {
+   "name": "27_tap_clamp_poses",
+   "rect": [
+    217,
+    57,
+    20,
+    16
+   ]
+  },
+  {
+   "name": "28_auto_link_selected",
+   "rect": [
+    175,
+    119,
+    16,
+    16
+   ]
+  },
+  {
+   "name": "29_fallen_wire_hazards",
+   "rect": [
+    205,
+    119,
+    22,
+    12
+   ]
+  },
+  {
+   "name": "30_claim_their_pole",
+   "rect": [
+    233,
+    119,
+    16,
+    16
+   ]
+  },
+  {
+   "name": "31_styled_blueprints",
+   "rect": [
+    59,
+    177,
+    26,
+    6
+   ]
+  },
+  {
+   "name": "32_one_line_every_piece",
+   "rect": [
+    20,
+    60,
+    33,
+    11
+   ]
+  },
+  {
+   "name": "33_wall_lamps_four_looks",
+   "rect": [
+    20,
+    74,
+    33,
+    13
+   ]
+  },
+  {
+   "name": "34_battery_four_looks",
+   "rect": [
+    16,
+    24,
+    31,
+    11
+   ]
+  },
+  {
+   "name": "35_three_poles_two_spans",
+   "rect": [
+    50,
+    26,
+    19,
+    9
+   ]
+  },
+  {
+   "name": "36_pole_lamp_takes_cord_end",
+   "rect": [
+    72,
+    24,
+    7,
+    9
+   ]
+  },
+  {
+   "name": "37_switch_glow_out",
+   "rect": [
+    84,
+    26,
+    9,
+    9
+   ]
+  },
+  {
+   "name": "38_fallen_wire",
+   "rect": [
+    96,
+    26,
+    13,
+    7
+   ]
+  }
+ ]
+}
