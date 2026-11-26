@@ -87,3 +87,11 @@ Divergent work: anything that shifts or extends the 0.1.0 vision (`../vision.md`
 - **Why not 0.1.0:** no 0.1.0 bar names building in standing water. The other three areas of that design ticket were built and closed (SUSPENSION_ISLANDS_BUILD_TOWERS_COST_PLENTY, DIG_SPOIL_BUILD_GRAVEL_PAYS_ITS_WAY, PIT_DIG_FIX_SAND_SLIDES_BACK_IN, the one-drag drawbridge); this part was carried by nothing (searched 2026-11-26). It extends the vision (Divergent). The Conductor decides at filing whether it stays here (recommended: next version).
 - **Proposed bar (the Designer adopts or rewrites it):** a player can order a structure built on a square of standing water; a colonist reaches it, builds it and comes back without drowning or abandoning the job.
 - **Acceptance test:** none yet, design not argued (the Designer writes it with the bar).
+
+## Ledger tickets held for 0.2.0 (Work Bundle WB-mod-FlowWorks-20261126-113858, 2026-11-26)
+
+- **What:** each ticket below stays open in the rimflow ledger, with its own spec and history (`rimflow show <ID>`); this list is where a 0.2.0 Designer pass finds them. None moves a 0.1.0 bar.
+- **Why not 0.1.0:** the FlowWorks ticket sweep of 2026-11-22 (`design/concepts/FlowWorks/ticket_sweep_2026-11-22.md`) classed each KEEP_NEXT, or the owner's own words put it in v2 (target v2 on the ledger).
+  - `DIG_RIG_BUILD_BUCKET_OVER_THE_PIT` (v2, his words 2026-10-22), `FOUNTAIN_SCULPTURES_DESIGN_WATER_MEETS_ART` (v2 brainstorm), `SIEGE_RAID_BUILD_SHELLS_OVER_THE_PIT` (v2, "Eventually siege raids ..."; it stages a raid: paused)
+  - `DROWNING_ESCAPE_FIX_READS_DECK_ABOVE`, `INDUSTRIAL_RUINS_FIX_HIDDEN_EH_DEPENDENCY`, `REFUSED_HANDOVER_DRAIN_FIX_PUDDLE_OVERSTAYS`, `RIMMANDRAKE_REFUSE_PITS_IN_LOOSE_GROUND_EVEN_BY_BRIDGE`, `RIMMANDRAKE_SHORT_DROWNED_ELECTRONICS_LIKE_RAIN_DOES`, `WALL_SCALING_BUILD_ROPE_OVER_RAMPARTS`, `RIMMANDRAKE_DESIGN_SPILLED_WATER_WET_GROUND_ONE_STATE` (sweep KEEP_NEXT)
+- **Acceptance test:** each ticket's own.
