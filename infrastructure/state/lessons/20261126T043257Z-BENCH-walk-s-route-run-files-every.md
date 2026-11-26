@@ -1,0 +1,3 @@
+A walk's route run files every ticket of the walk with --caused-by the route item, next-version and other-mod tickets too; the tick's walk road back read caused_by, so those tickets would have taken FlowWorks fixer runs (fixed 3d2fe15a2654: a walk road back is its cited fix and scene ids only). Also: in a launched helper, --per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS is refused as the Conductor window's alone; relay the Conductor's class with --per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM and its text in --why.
+item: RIMMANDRAKE_ROUTE_FLOWWORKS_WALK_FINDINGS_OF_NOV_TWENTY_FIVE
+home: design/specs/2026-11-22-walk-result/boundary.md
