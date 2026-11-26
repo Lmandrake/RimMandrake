@@ -401,7 +401,7 @@ def _deadline_step(cfg, st, lo, now, act):
             _deadline_alarms(cfg, st, r, now, act, "SteveDesktop", remote=True)
 
 
-def _deadline_kind(st, host, account, deadline):
+def _deadline_anchor(st, host, account, deadline):
     prefix = "login:deadline:%s:%s:" % (host, account)
     warned = st["login"].setdefault("warned_deadlines", {})
     epoch = int(deadline)
@@ -415,7 +415,7 @@ def _deadline_kind(st, host, account, deadline):
     elif abs(epoch - anchor) > DEADLINE_JITTER_S:
         anchor = epoch
     warned[prefix] = anchor
-    return prefix + str(anchor)
+    return anchor
 
 
 def _deadline_alarms(cfg, st, r, now, act, host, remote=False):
@@ -443,7 +443,7 @@ def _deadline_alarms(cfg, st, r, now, act, host, remote=False):
                else "`claude auth login` from a plain terminal, not /login in a window" if is_live
                else "`claude-account enroll %s` from a plain terminal (the account's owner signs in)" % a)
         when = ("EXPIRED %s" % _local(dl)) if left <= 0 else ("dies %s, in %.1f h" % (_local(dl), left / 3600.0))
-        act(do="alarm", kind=_deadline_kind(st, host, a, dl), note=True, conductor_log=True,
+        act(do="alarm", kind="login:deadline:%s:%s:%d" % (host, a, _deadline_anchor(st, host, a, dl)), note=True, conductor_log=True,
             why="%s login %s on %s %s. A refresh cannot move this deadline (the CLI keeps the earlier one); only a new"
                 " sign-in does.%s" % ("the live" if is_live else "vault", a, host, when,
                               " Every window and run on it stops then." if is_live and left > 0 else

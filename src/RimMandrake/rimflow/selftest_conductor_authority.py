@@ -33,7 +33,11 @@ def check(ok, what):
 FILES = ["CLAUDE.md", "design/RimMandrake/standing_rulings.md", "design/RimMandrake/delegation_policy.md",
          "infrastructure/agents/CHARTER.md", "infrastructure/agents/CONDUCTOR.md"]  # FOUNDRY.md: seat retired; BENCH.md folded into CONDUCTOR.md
 
-FILES += sorted(str(p.relative_to(ROOT)) for p in (ROOT / "src/RimMandrake/rimflow/roles").glob("*.md"))
+# A judge brief whose reader only returns a verdict and is calibrated at the brief's hash: no instruction reaches its reader,
+# and an edit here would stale its calibration (set_down_judge.py, refusal_contract.status).
+VERDICT_ONLY_BRIEFS = {"src/RimMandrake/rimflow/roles/set_down_judge.md"}
+FILES += sorted(str(p.relative_to(ROOT)) for p in (ROOT / "src/RimMandrake/rimflow/roles").glob("*.md")
+                if str(p.relative_to(ROOT)) not in VERDICT_ONLY_BRIEFS)
 FILES += sorted(str(p.relative_to(ROOT)) for p in (ROOT / ".claude/agents").glob("rm-*.md"))
 check(len(FILES) >= 19, "the census sees the role and agent files (%d)" % len(FILES))
 for f in FILES:
@@ -78,6 +82,8 @@ with tempfile.TemporaryDirectory() as tmp:
 # takes his words (--owner-said, --said, a HIS_WORDS metavar) must offer --per-ruling beside it, and a refusal that
 # demands his words must name the route. EXEMPT is the only way out, each with the reason it is not a gate.
 EXEMPT = {
+    "src/RimMandrake/Utils/look_notes.py": "`pin --said` records his pass at his walk, one of his five acts "
+                                           "(CLAUDE.md §Only five acts stay his); the Conductor cannot give that pass",
     "src/RimMandrake/rimflow/red_dispatch.py": "builder_start only excludes OWNER start events from a builder count; it grants nothing",
     "src/RimMandrake/Utils/art/facing_scale_lint.py": "--owner-said is optional; without it the install runs under a "
                                                       "script reason, nothing is refused",
@@ -274,6 +280,7 @@ OWNER_ONLY = {
     "src/RimMandrake/rimflow/incident.py": "routes a needs=owner alarm to the OWNER seat, authorizes nothing",
     "src/RimMandrake/Utils/broadcast.py": "OWNER ONLY broadcast skill: announce to every window is his",
     "src/RimMandrake/Utils/mod_completion.py": "reads ledger history for evidence, authorizes nothing",
+    "src/RimMandrake/Utils/look_changed_labels.py": "reads stage records to date his last look (his moves out of his_walk), authorizes nothing",
     "src/RimMandrake/Utils/owner_queue.py": "reads his notes, authorizes nothing",
     "src/RimMandrake/Utils/ops_core/ops_ledger.py": "display of whose event it was, authorizes nothing",
     "src/RimMandrake/Utils/artpipe/fill_queue.py": "verifies a recorded card ruling of his (evidence), authorizes nothing new",
