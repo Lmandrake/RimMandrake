@@ -722,19 +722,25 @@ def faults(s):
 
 
 def void_spend(s, record):
-    """-> (list dollars of the mod's void runs, units whose spend is UNMEASURED). True spend: shown apart."""
-    usd, unm, seen = 0.0, [], set()
+    """-> (weighted_v2 tokens of the mod's void runs, units whose spend is UNMEASURED). True spend: shown apart. A
+    record counts its weighted_v2 `tokens`; one from before tokens were weighed counts its list cost_usd through
+    role_launch.list_usd_to_weighted; never the CLI's dollars beside v2 tokens (it priced Fable 5.2 at Opus rates)."""
+    import role_launch as RL
+    tok, unm, seen = 0, [], set()
     for m in s.get("voided") or []:
         u = m.get("unit")
         if not u or m["book"] in FOLLOW_LAUNCH + ("road_back",) or u in seen:
             continue
         seen.add(u)
-        c = (record(u) or {}).get("cost_usd")
-        if isinstance(c, (int, float)) and not isinstance(c, bool):
-            usd += c
+        r = record(u) or {}
+        t, c = r.get("tokens"), r.get("cost_usd")
+        if r.get("token_unit") == RL.TOKEN_UNIT and isinstance(t, int) and not isinstance(t, bool) and t >= 0:
+            tok += t
+        elif isinstance(c, (int, float)) and not isinstance(c, bool):
+            tok += RL.list_usd_to_weighted(c)
         else:
             unm.append(u)
-    return usd, unm
+    return tok, unm
 
 
 # ---- a Designer stage.json ------------------------------------------------------------------------------------------
@@ -890,13 +896,12 @@ def status_lines(st, record=None):
         if s.get("void_unmeasured"):
             out.append("%s: UNMEASURED run record(s), counted as the books had them: %s" % (
                 mod, ", ".join(s["void_unmeasured"])))
-        usd, unm = void_spend(s, record)
+        tok, unm = void_spend(s, record)
         try:
             import maturation_dispatch as MD
-            import role_launch as RL
-            spent = MD.wt(RL.list_usd_to_weighted(usd))     # MD.wt formats weighted tokens (2026-11-26)
+            spent = MD.wt(tok)     # MD.wt formats weighted tokens (2026-11-26)
         except Exception:  # noqa: BLE001
-            spent = "USD %.2f" % usd
+            spent = "%d weighted tokens" % tok
         out.append("%s: void spend %s (true spend, shown apart)%s; system faults %d since the last clear (limit %d)" % (
             mod, spent, "; UNMEASURED for %s" % ", ".join(unm) if unm else "", faults(s), SYSTEM_FAULT_LIMIT))
     return out

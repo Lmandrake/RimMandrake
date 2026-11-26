@@ -73,10 +73,16 @@ def t_unreadable_prior_verdict_is_no_baseline():
 
 
 def t_unreadable_run_record_spend_is_unmeasured():
-    """void_spend: a record that reads None counts no dollars and lists the unit UNMEASURED; a readable one counts."""
-    s = {"voided": [{"unit": "u-blind", "book": "steward"}, {"unit": "u-read", "book": "steward"}]}
-    got = RV.void_spend(s, lambda u: None if u == "u-blind" else {"cost_usd": 1.5})
-    check(got == (1.5, ["u-blind"]), "the unreadable unit is UNMEASURED, the readable one counts", got)
+    """void_spend: a record that reads None counts no tokens and lists the unit UNMEASURED; a readable one counts its
+    weighted_v2 tokens (a Fable 5.2 record whose CLI cost_usd is the Opus-rate half counts its tokens), a legacy
+    record with only cost_usd counts it at 250,000 weighted tokens per list dollar."""
+    s = {"voided": [{"unit": "u-blind", "book": "steward"}, {"unit": "u-read", "book": "steward"},
+                    {"unit": "u-fable", "book": "steward"}]}
+    recs = {"u-read": {"cost_usd": 1.5},
+            "u-fable": {"cost_usd": 1.0, "tokens": 500000, "token_unit": "weighted_v2", "model": "fable"}}
+    got = RV.void_spend(s, recs.get)
+    check(got == (875000, ["u-blind"]), "the unreadable unit is UNMEASURED; v2 tokens count, never the CLI dollars",
+          got)
 
 
 def t_hand_run_the_books_now_own_is_folded():

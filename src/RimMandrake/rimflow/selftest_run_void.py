@@ -578,7 +578,8 @@ def main():
            and any("UNMEASURED run record" in x for x in RV.status_lines(st4, record)),
            "a run whose record cannot be read keeps its count and is NAMED UNMEASURED in status")
         ok(RV.void_spend({"voided": [{"book": "steward", "unit": U1}, {"book": "releases_used", "unit": U1}]},
-                         record)[0] == 3.53, "void spend counts a run once, however many books held it")
+                         record)[0] == 882500, "void spend counts a run once, however many books held it (weighted "
+                                               "tokens: a legacy cost_usd 3.53 at 250,000 per list dollar)")
         ok(RV.system_cause(dict(RECS[U1], result="timeout (- -)")).startswith("it timed out")
            and RV.system_cause(dict(RECS[U1], result="exit-code (1 -)")).startswith("the CLI exited")
            and RV.system_cause(dict(RECS[U1], result="exit-code/claude-error (1 -)")) == ""
