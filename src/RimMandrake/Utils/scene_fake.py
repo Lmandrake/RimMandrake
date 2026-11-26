@@ -11,6 +11,9 @@ from types import SimpleNamespace
 from scene_core import CallFailed, Fault, ReplyLost
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+# the fake games are Archmagi's (ArchBig, ArchSmall): a test names that machine, or on SteveDesktop game_names reads the
+# host and refuses each fake game as another machine's (GAME_HELD, 2026-11-25)
+os.environ["RM_HOST"] = "archmagi"
 with open(os.path.join(HERE, "scene_recorded.json"), encoding="utf-8") as _f:
     REC = json.load(_f)
 DEAD = {"pid": 1, "platform": "dead"}
