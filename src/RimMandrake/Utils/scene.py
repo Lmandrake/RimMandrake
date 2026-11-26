@@ -3,7 +3,8 @@
 
     python3   scene.py help [<name>]             the contract page of a name (no game)
     python3   scene.py judge <run_dir> [--rejudge] judge a kept call (no game)
-    python.exe scene.py accept <script.py>       run a committed script: clean tree, commit hash on each receipt, no keyboard
+    python.exe scene.py accept <script.py> [--plant P] [--game G]   run a committed script: clean tree, commit hash on each
+                                                  receipt, no keyboard; --game names the game to run on over the script's own
     python.exe scene.py explore <game> [--map M] an interactive prompt on an open session; each run is EXPLORED
     python.exe scene.py end-session <game>       end the session of a driver that died, and look at nothing (else: scene.attach)
     python3   scene.py tools <words>             find a bridge tool (no game)
@@ -62,7 +63,7 @@ OLD_LAYERS = {"validation_core", "helpers", "quiet_site", "scenelib", "scenes", 
 PHASES = ("lock", "identify", "load", "settle", "calm", "arm")
 
 WORLD = None                            # scene_world.RealWorld(), made on first use; a test puts its fake here
-LAUNCH = {"mode": "script", "commit": None, "script": None, "plant": None}   # scene.py accept / explore set this
+LAUNCH = {"mode": "script", "commit": None, "script": None, "plant": None, "game": None}   # scene.py accept / explore set this
 # scene.py both-ways (scene_mutants.py) also sets: "overlay" (the red run's session overlay), "rands" (the green run's random
 # states, written back by each s.run of the red run in order) and "run_dirs" (each session's run folder, appended)
 
@@ -113,6 +114,7 @@ def _game_key(game):
 def open(game, contract=None, needs=None):  # noqa: A001 - the name of the contract page
     """Take one game, check its build, load the map, arm the recorders (scene_contracts/open.md)."""
     W = _world()
+    game = LAUNCH.get("game") or game        # `accept --game <name>`: the free game, named at the command line (never the environment)
     name, key, letter = _game_key(game)
     needs = dict(needs or {})
     odd = sorted(set(needs) - {"mods", "map", "calm", "overlay"})
@@ -1232,7 +1234,7 @@ def plant():
     return LAUNCH.get("plant")
 
 
-def accept(script, plant_=None, extra=None):
+def accept(script, plant_=None, extra=None, game=None):
     """Run a committed script as an acceptance run. extra: what scene.py both-ways gives a red run (its overlay, the green run's
     random states). -> exit code."""
     import runpy
@@ -1241,7 +1243,9 @@ def accept(script, plant_=None, extra=None):
     repo = getattr(W, "repo", None) or scene_world.REPO
     commit = check_accept(script, repo, W.git)
     extra = extra or {}
-    LAUNCH.update(mode="accept", plant=plant_, commit=commit, script=os.path.relpath(os.path.abspath(script), repo).replace("\\", "/"),
+    if game is not None:
+        _game_key(game)                       # an unknown name is refused before the script runs
+    LAUNCH.update(mode="accept", plant=plant_, game=game, commit=commit, script=os.path.relpath(os.path.abspath(script), repo).replace("\\", "/"),
                   overlay=extra.get("overlay"), rands=list(extra.get("rands") or []))
     old_in, sys.stdin = sys.stdin, _file(os.devnull)
     print("ACCEPT %s at %s" % (LAUNCH["script"], commit[:12]), flush=True)
@@ -1258,6 +1262,7 @@ def accept(script, plant_=None, extra=None):
     finally:
         sys.stdin.close()
         sys.stdin = old_in
+        LAUNCH["game"] = None                 # the named game is this accept's only
     _rc, after = W.git("rev-parse", "HEAD")
     _rc2, dirty = W.git("status", "--porcelain", "--untracked-files=all")
     if after.strip() != commit or not_ledger(dirty).strip():
@@ -1382,10 +1387,10 @@ def main(argv):
             got = tools(" ".join(rest))
             print("\n".join(map(repr, got)) if got else "looked: no tool matches %r" % " ".join(rest))
             return 0
-        if verb == "accept" and len(rest) == 1:
-            return accept(rest[0])
-        if verb == "accept" and len(rest) == 3 and rest[1] == "--plant":
-            return accept(rest[0], rest[2])
+        if verb == "accept" and rest and len(rest) % 2 == 1 and set(rest[1::2]) <= {"--plant", "--game"} \
+                and len(set(rest[1::2])) == len(rest[1::2]):
+            opt = dict(zip(rest[1::2], rest[2::2]))
+            return accept(rest[0], opt.get("--plant"), game=opt.get("--game"))
         if verb == "judge":
             return _judge_module().main(rest)
         if verb == "explore" and rest:

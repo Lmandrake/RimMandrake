@@ -432,6 +432,27 @@ def test_accept_refuses_a_dirty_tree_and_an_older_layer():
         must(scene.main(["accept", p("good.py")]) == 3 and len(W.game.log) == n, "a refused script ran")
 
 
+GAME_SAYER = "import scene\nwith scene.open('ArchSmall') as s:\n    print('GAME', s.game)\n"
+
+
+def test_accept_game_names_the_free_game_over_the_script_default():
+    """ExplosiveKnockback 0.2.0 visit 2: nine committed scenes name ArchSmall in their source; ArchSmall was held by another
+    run while ArchBig sat free under the visit's driver, so no check could run. `accept <script> --game <name>` names the game
+    at the command line (a name, never the shell's environment); without it the script's own game stands."""
+    d, git = _tree({"s/say.py": GAME_SAYER})
+    W = world()
+    W.repo, W.git = d, git
+    for argv, want in ((["accept", os.path.join(d, "s", "say.py"), "--game", "ArchBig"], "driver lock of ArchBig"),     # the fake answers as ArchSmall only
+                       (["accept", os.path.join(d, "s", "say.py")], "GAME ArchSmall")):
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            rc = scene.main(argv)
+        must(want in out.getvalue() and (rc == 0) == (want == "GAME ArchSmall"), "%s: rc %s, %s" % (argv[2:], rc, out.getvalue()[-300:]))
+        must(scene.LAUNCH.get("game") is None, "accept left its --game in LAUNCH")
+    with contextlib.redirect_stdout(io.StringIO()):
+        must(scene.main(["accept", os.path.join(d, "s", "say.py"), "--game", "Nowhere"]) == 3, "an unknown --game is refused by name")
+
+
 LEDGER_WRITER = ("import os, scene\nwith scene.open('ArchSmall') as s:\n    print('RAN', s.run(until=20, limit=200).receipt.commit)\n"
                  "v = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'design', 'concepts', 'WMod', 'version')\n"
                  "os.makedirs(v, exist_ok=True)\nopen(os.path.join(v, 'scene_runs.jsonl'), 'a').write('{}\\n')\n")
@@ -904,6 +925,7 @@ t_explore_is_stamped = test_explore_run_is_explored
 t_close_puts_back = test_close_puts_back_also_after_an_error
 t_a_name_not_built_says_so = test_names_not_built_say_so
 t_help_equals_the_code = test_help_prints_ten_names_and_each_built_page_matches_its_signature
+t_accept_game_names_the_free_game = test_accept_game_names_the_free_game_over_the_script_default
 
 
 def run(tests):
@@ -964,7 +986,7 @@ def main():
               test_run_lost_reply_is_recovered_by_request_id, test_raw_undeclared_tool_marks_the_process_and_a_new_session_carries_it,
               test_accept_refuses_a_dirty_tree_and_an_older_layer, test_explore_run_is_explored,
               test_help_prints_ten_names_and_each_built_page_matches_its_signature]
-    more = [t_a_refusal_changes_nothing, test_open_refuses_owner_hold_under_an_inherited_take,
+    more = [t_a_refusal_changes_nothing, t_accept_game_names_the_free_game, test_open_refuses_owner_hold_under_an_inherited_take,
             test_run_unreadable_thing_target_stops_as_unknown, test_run_lost_reply_passes_the_pending_guard,
             test_run_true_at_start_plays_no_tick, test_run_limit_is_not_a_hit, test_run_dead_member_stays_in_group_as_gone,
             test_run_stalled_clock_is_cancelled, test_run_bind_refusal_is_by_name, test_raw_refuses_unknown_tool, test_raw_refuses_bad_args,

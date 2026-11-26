@@ -77,6 +77,9 @@ has a test of its name in `src/RimMandrake/Utils/selftest_scene_library.py`, aga
 - **an-undeclared-tool-is-changing.** Only a description that begins with READ ONLY is read-only; `jawa/static_call` never.
 - **accept-needs-one-identity.** It refuses a tree that is not clean, a script outside the repo and a script that imports an
   older layer, in the script or in a module of the repo that it imports. A tree that could not be read is its own answer.
+- **accept-game-names-the-free-game.** `scene.py accept <script> --game <name>` runs the script on the named game, over the
+  game its source names; an unknown name is refused before the script runs; without `--game` the script's own game stands, and
+  the name never comes from the shell's environment (`test_accept_game_names_the_free_game_over_the_script_default`).
 - **explore-is-stamped.** Each receipt of a run from `explore` carries EXPLORED.
 - **close-puts-back.** Close puts back the session record, the calm and the lock after a normal end and after an error.
   It holds the take while it waits for the companion session to report `closed` or `aborted`. If the wait fails, close
