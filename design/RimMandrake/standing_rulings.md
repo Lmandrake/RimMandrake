@@ -1955,15 +1955,19 @@ The Conductor weighed it. He answered, 2026-11-24 (ledger, 8:40 AM PST): *"go"*.
 - **What runs on the small list.** Mod development, every test, every walk savegame and his walks. No test, stage exit, deploy or
   savegame step asks for the full list. `./publish` refuses a test table that does (`src/RimMandrake/rimflow/scene_size.py`).
 - **Each mod's small list has one place:** `design/concepts/<Mod>/version/small_list.json`. The file names a `modset_builder` tier. The list
-  holds every mod that the mod patches or requires, all five expansions, and the advanced-zoom mod. A test may run on a
-  smaller tier of its own.
+  holds every mod that the mod patches or requires, all five expansions, the advanced-zoom mod and Character Editor
+  (`void.charactereditor`). A test may run on a smaller tier of its own.
+- **Character Editor sits beside the zoom mod (owner, 2026-11-25, his FlowWorks walk, about 6:35 PM PST):** *"NOTE: Test
+  modlists should include character editor so I can teleport characters easily and investigate them. Please add Character
+  Editor to all smallmod lists, beside the Zoom requirement."* Each walk tier that a `small_list.json` names wants it
+  (`CHARACTER_EDITOR` in `src/RimMandrake/Utils/modset_builder.py`), and `small_list.py check` fails without it.
 - **The check.** A patch that matches nothing logs nothing. So `python3 src/RimMandrake/Utils/small_list.py check` fails when a mod's
   patch targets a mod that is absent from its list. The Stage 6 exit reads that check and the walk savegame's list.
 - **The game he walks on** is the game whose Saves folder holds the walk savegame: ArchBig or ArchSmall. The walk build, its deploy and his
   hold are read on that game.
 - **A locked bar that names the full list** is not edited. This ruling voids the phrase. The bars are named in the proposal.
 - **What waits for the integration phase:** `design/RimMandrake/integration_phase_list.md`. No ticket for a line of it.
-- **What this does not change.** The walk is one of his five acts. A list for a sitting keeps the advanced-zoom mod. Every list holds all
+- **What this does not change.** The walk is one of his five acts. A list for a sitting keeps the advanced-zoom mod and Character Editor. Every list holds all
   five expansions. A visit that was live when he ruled keeps its list.
 - **What this replaces.** Three rules: ArchBig only for a check that needs the full list; his walk as the check of a small-list verdict on the full
   list; the full-list smoke scene of §The cheapest test that decides the bar.

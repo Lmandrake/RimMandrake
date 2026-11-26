@@ -5,5 +5,6 @@
  "also": {
   "mandrake.rsw.swbestiary": "the Utinni fauna patch adds its animals to the Pyrelands roster",
   "mandrake.rut.patches": "WildAnimals_Pyrelands.xml holds the roster"
- }
+ },
+ "character_editor": "void.charactereditor"
 }

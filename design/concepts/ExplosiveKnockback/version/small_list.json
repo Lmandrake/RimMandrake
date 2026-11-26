@@ -1,11 +1,12 @@
 {
  "mod": "ExplosiveKnockback",
  "tier": "explosiveknockback_visit",
- "why": "The mod's one small list: his walk, its walk save and every sitting run on this tier. Tests may run on a smaller tier of their own. Rule: design/RimMandrake/standing_rulings.md \u00a7Mod development runs on small lists.",
+ "why": "The mod's one small list: his walk, its walk save and every sitting run on this tier. Tests may run on a smaller tier of their own. Rule: design/RimMandrake/standing_rulings.md §Mod development runs on small lists.",
  "also": {
   "mandrake.rm.flowworks": "pit covers and hoses (C#)",
   "mandrake.rm.biomes": "the Cauldron's vent gas (C#)",
   "lwm.deepstorage": "closed lockers (the draw of their contents)",
   "mandrake.rm.patches": "the storeroom-pit fixture save records it; the game refuses to load that save without it"
- }
+ },
+ "character_editor": "void.charactereditor"
 }

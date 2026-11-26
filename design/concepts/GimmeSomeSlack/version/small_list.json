@@ -22,5 +22,6 @@
     "mandrake.rm.flowworks": "optional (reflection only: CordUnderLiquid, pipe-pole spans); the 0.2.0 walk stations hold no FlowWorks item",
     "mandrake.rm.patches": "in the test tier gimmesomeslack; Gimme Some Slack neither requires nor patches through it",
     "owlchemist.cherrypicker": "added to every test tier to keep the full list's cut creatures cut; Gimme Some Slack does not need it"
-  }
+  },
+  "character_editor": "void.charactereditor"
 }

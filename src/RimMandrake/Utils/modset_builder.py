@@ -100,6 +100,9 @@ BRIDGE = "brrainz.rimbridgeserver"
 # and study what is happening. Added in resolve_tier, so no tier can forget it. Incompatible
 # with Camera+ (brrainz.cameraplus); a tier that wants Camera+ must say so via `no_zoom`.
 ZOOM = "ray1203.simplecamerasetting"
+# Owner 2026-11-25 (his FlowWorks walk): "Please add Character Editor to all smallmod lists, beside the Zoom requirement."
+# Every walk tier that a design/concepts/<Mod>/version/small_list.json names wants it; small_list.py check fails without it.
+CHARACTER_EDITOR = "void.charactereditor"
 
 # Ours always loads last; this is the invariant the armoury patches depend on.
 OURS_PREFIX = "mandrake."
@@ -235,7 +238,7 @@ TIERS = {
                "gas_into_pit could not run on it. RimMandrake Patches: the storeroom-pit fixture save "
                "(EK_SITTING_STATION1_STOREROOM_PIT_20261112) records it, and the game refuses to load a save whose mod is "
                "not active (ArchSmall, 2026-11-25).",
-        "want": [BRIDGE, "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack", "mandrake.rm.explosiveknockback",
+        "want": [BRIDGE, CHARACTER_EDITOR, "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack", "mandrake.rm.explosiveknockback",
                  "mandrake.rsw.swbestiary", "lwm.deepstorage", "mandrake.rm.biomes", "mandrake.rsw.armoury",
                  "mandrake.rm.patches"],
         "forbid": ["mandrake.rm.pits", "sarg.alphabiomes", "glitchgoblin.invisibleconduitcont"],
@@ -266,7 +269,7 @@ TIERS = {
                "really needs, all five DLC and the advanced-zoom mod; never the full list). The list is written in "
                "design/concepts/GimmeSomeSlack/version/small_list.json; the bridge is the staging harness. No "
                "MandrakePatches, no Cherry Picker (no_cherry). selftest_modset_walk_small_list.py.",
-        "want": [BRIDGE, "mandrake.rm.gimmesomeslack"],
+        "want": [BRIDGE, CHARACTER_EDITOR, "mandrake.rm.gimmesomeslack"],
         "forbid": ["glitchgoblin.invisibleconduitcont"],
         "no_cherry": True,
         "dlc": True,
@@ -300,7 +303,7 @@ TIERS = {
                "RM_SacredMark_* defs inherit RM_BaseGraffiti and join the mark pool and "
                "gallery, so a GREEN would no longer be Graffiti's. All five DLCs and "
                "Harmony resolve automatically (BreachBiasHook is a Harmony postfix).",
-        "want": [BRIDGE, "mandrake.rm.graffiti"],
+        "want": [BRIDGE, CHARACTER_EDITOR, "mandrake.rm.graffiti"],
         "dlc": True,
     },
     "bench": {
@@ -661,7 +664,7 @@ TIERS["pyrelands"] = {
            "fauna patch closure for the Pyrelands north-star trial, with "
            "biome transitions, Map Designer, flora injectors and the Tribes mod kept off the list. mandrake.rm.patches "
            "rides along so metal, stone and gem walls do not burn (owner 2026-11-08, ca4586309b).",
-    "want": [BRIDGE, "mandrake.rm.biomes", "mandrake.rut.patches",
+    "want": [BRIDGE, CHARACTER_EDITOR, "mandrake.rm.biomes", "mandrake.rut.patches",
              "mandrake.rsw.swbestiary", "mandrake.rm.patches"],
     "forbid": ["m00nl1ght.geologicallandforms",
                "m00nl1ght.geologicallandforms.biometransitions",
@@ -785,7 +788,7 @@ TIERS["flowworks_list"] = {
     "why": "FlowWorks' small list (owner, 2026-11-24: 'Development of the mods is 100% small mod list'): the flowworks tier, "
            "Baroque Biomes (its liquids and soils), Vanilla Chemfuel Expanded, Dubs Bad Hygiene Lite (the one he plays) and More Ritual Seats, which "
            "FlowWorks' patches and MayRequire lines name.",
-    "want": [BRIDGE, "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack", "mandrake.rm.patches", "mandrake.rm.biomes",
+    "want": [BRIDGE, CHARACTER_EDITOR, "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack", "mandrake.rm.patches", "mandrake.rm.biomes",
              "oskarpotocki.vanillafactionsexpanded.core", "vanillaexpanded.vchemfuele", "dubwise.dubsbadhygiene.lite",
              "toastyman.moreritualseats"],
     "forbid": ["mandrake.rm.pits", "sarg.alphabiomes"],

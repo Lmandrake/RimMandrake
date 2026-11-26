@@ -44,7 +44,7 @@ def rec(pid, deps=()):
 
 
 def installed():
-    ids = [MB.CORE, MB.HARMONY, MB.BRIDGE, MB.ZOOM, MB.CHERRY, GSS] + list(MB.DLC_IDS) + list(EXTRA)
+    ids = [MB.CORE, MB.HARMONY, MB.BRIDGE, MB.ZOOM, MB.CHARACTER_EDITOR, MB.CHERRY, GSS] + list(MB.DLC_IDS) + list(EXTRA)
     return {p: rec(p) for p in ids}
 
 
@@ -66,8 +66,8 @@ def findmod_targets():
 t = MB.TIERS.get(TIER)
 ok(t is not None, "tier %s exists" % TIER)
 pids, missing, refusals = (MB.resolve_tier(TIER, installed()) if t else ([], ["no tier"], []))
-want = {MB.CORE, MB.HARMONY, MB.BRIDGE, MB.ZOOM, GSS} | set(MB.DLC_IDS)
-ok(set(pids) == want, "tier resolves to exactly the mod, its needs, 5 DLC, zoom and bridge (extra %s, short %s)"
+want = {MB.CORE, MB.HARMONY, MB.BRIDGE, MB.ZOOM, MB.CHARACTER_EDITOR, GSS} | set(MB.DLC_IDS)
+ok(set(pids) == want, "tier resolves to exactly the mod, its needs, 5 DLC, zoom, Character Editor and bridge (extra %s, short %s)"
    % (sorted(set(pids) - want), sorted(want - set(pids))))
 ok(MB.CHERRY not in pids, "no Cherry Picker on the walk list")
 ok(not missing and not refusals, "nothing missing or refused (%s, %s)" % (missing, refusals))
@@ -82,6 +82,7 @@ for m in findmod_targets():
     ok(m.lower() in listed, "small_list.json names patch target %s" % m)
     ok(m.lower() in pids, "tier holds patch target %s" % m)
 ok(small.get("zoom") == MB.ZOOM, "small_list.json names the zoom mod %s" % MB.ZOOM)
+ok(small.get("character_editor") == MB.CHARACTER_EDITOR, "small_list.json names Character Editor %s" % MB.CHARACTER_EDITOR)
 for d in MB.DLC_IDS:
     ok(d in listed, "small_list.json names expansion %s" % d)
 

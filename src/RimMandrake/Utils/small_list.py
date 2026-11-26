@@ -13,7 +13,7 @@ A mod's test may run on a smaller tier of its own; his walk, its walk save and e
 The check. A patch that matches nothing logs nothing, so a list that lacks the patched mod passes every test and proves nothing.
 A mod NEEDS: the modDependencies of its About.xml, each PatchOperationFindMod <mods> name, each MayRequire / MayRequireAnyOf
 packageId (one of an AnyOf is enough), each `also`. A needed mod that Baroque Biomes folds in is held by mandrake.rm.biomes.
-  FAIL  a needed mod is absent from the list; a DLC or the zoom mod is absent; the tier is refused
+  FAIL  a needed mod is absent from the list; a DLC, the zoom mod or Character Editor is absent; the tier is refused
   ok    ... unless the needed mod is NOT on the whole list he plays (ModsConfig.FULL.LATEST.xml): no game of ours loads it,
         so the line reads OFF LIST with its name and is no fault
   FAIL  a FindMod name that no mod, installed or ours, has: the patch can never match
@@ -40,6 +40,9 @@ BIOMES = "mandrake.rm.biomes"
 DLC = ("ludeon.rimworld.royalty", "ludeon.rimworld.ideology", "ludeon.rimworld.biotech", "ludeon.rimworld.anomaly",
        "ludeon.rimworld.odyssey")
 ZOOMS = ("ray1203.simplecamerasetting", "brrainz.cameraplus")
+# owner 2026-11-25, his FlowWorks walk: "Please add Character Editor to all smallmod lists, beside the Zoom requirement."
+# (packageId read from its About.xml, workshop 1874644848)
+CHARACTER_EDITOR = "void.charactereditor"
 REPAIR = ("add it to the `want` of the tier in src/RimMandrake/Utils/modset_builder.py that small_list.json names "
           "(design/RimMandrake/standing_rulings.md §Mod development runs on small lists)")
 
@@ -201,6 +204,8 @@ def judge(need, also, tier_list, installed, full, fold):
             faults.append("%s (an expansion) is absent: every list holds all five" % d)
     if not any(z in have for z in ZOOMS):
         faults.append("no advanced-zoom mod (%s): a sitting keeps it" % " or ".join(ZOOMS))
+    if CHARACTER_EDITOR not in have:
+        faults.append("no Character Editor (%s): a sitting keeps it beside the zoom mod; %s" % (CHARACTER_EDITOR, REPAIR))
     return faults, off
 
 

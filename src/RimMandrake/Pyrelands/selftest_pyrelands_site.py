@@ -536,7 +536,8 @@ def test_tier():
     if not t:
         return
     check("tier dlc True (owner 2026-09-19)", t["dlc"] is True)
-    check("tier want = plan 3.1 + mandrake.rm.patches (285a403024), no Tribes mod", set(t["want"]) == {mb.BRIDGE, "mandrake.rm.biomes", "mandrake.rut.patches", "mandrake.rm.patches",
+    check("tier want = plan 3.1 + mandrake.rm.patches (285a403024) + Character Editor (owner 2026-11-25), no Tribes mod",
+          set(t["want"]) == {mb.BRIDGE, mb.CHARACTER_EDITOR, "mandrake.rm.biomes", "mandrake.rut.patches", "mandrake.rm.patches",
                                                     "mandrake.rsw.swbestiary"})
     ex = set(t["forbid"])
     # RIMMANDRAKE_TRACE_PYRE_FIREHAWK_TURNS_MANHUNTER_IN_BURN_WALK: Pyrelands 0.1.0 is the biome alone and the Tribes mod stays
@@ -560,7 +561,8 @@ def test_tier():
 
     def rec(pid, deps=()):
         return {"packageId": pid, "name": pid, "deps": list(deps), "after": [], "before": []}
-    inst = {p: rec(p) for p in ["ludeon.rimworld", "brrainz.harmony", mb.BRIDGE, "mandrake.rut.patches", "mandrake.rm.patches",
+    inst = {p: rec(p) for p in ["ludeon.rimworld", "brrainz.harmony", mb.BRIDGE, mb.CHARACTER_EDITOR, "mandrake.rut.patches",
+                                "mandrake.rm.patches",
                                 "mandrake.rsw.swbestiary", "mandrake.rut.pyrelandsmechanics"]
             + list(P.DLCS)}
     inst["mandrake.rm.biomes"] = rec("mandrake.rm.biomes")

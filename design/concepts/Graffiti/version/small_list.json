@@ -2,5 +2,6 @@
  "mod": "Graffiti",
  "tier": "graffiti_solo",
  "why": "The mod's one small list: his walk, its walk save and every sitting run on this tier. Rule: design/RimMandrake/standing_rulings.md §Mod development runs on small lists.",
- "also": {}
+ "also": {},
+ "character_editor": "void.charactereditor"
 }

@@ -45,7 +45,7 @@ class Patch:
 
 
 
-BASE = ["ludeon.rimworld", *SL.DLC, "ray1203.simplecamerasetting", "our.mod"]
+BASE = ["ludeon.rimworld", *SL.DLC, "ray1203.simplecamerasetting", SL.CHARACTER_EDITOR, "our.mod"]
 INST = {"other.mod": {"name": "Other Mod"}, "lite.mod": {"name": "Lite"}, "rare.mod": {"name": "Rare"}, "fold.mod": {"name": "Folded"}}
 FULL = {"other.mod", "lite.mod", SL.BIOMES}
 
@@ -113,6 +113,12 @@ def t_every_list_holds_all_five_expansions():
     for d in SL.DLC:
         f, o = j({}, [x for x in BASE if x != d])
         check(len(f) == 1 and d in f[0], "every-list-holds-all-five-expansions: %s" % d)
+
+
+def t_every_list_holds_character_editor():
+    # owner 2026-11-25: "Please add Character Editor to all smallmod lists, beside the Zoom requirement."
+    f, o = j({}, [x for x in BASE if x != SL.CHARACTER_EDITOR])
+    check(len(f) == 1 and "Character Editor" in f[0], "every-list-holds-character-editor")
 
 
 def t_every_list_holds_the_zoom_mod():
@@ -244,7 +250,7 @@ def main():
               t_a_findmod_name_that_no_mod_has_fails,
               t_a_folded_mod_is_held_by_baroque_biomes,
               t_every_list_holds_all_five_expansions,
-              t_every_list_holds_the_zoom_mod,
+              t_every_list_holds_the_zoom_mod, t_every_list_holds_character_editor,
               t_a_mod_the_code_reaches_is_needed_when_declared,
               t_an_unreadable_patch_is_could_not_look,
               t_an_about_that_fails_once_is_read_again,
