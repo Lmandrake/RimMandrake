@@ -755,6 +755,71 @@ def t_the_handoff_and_flowworks_p_b1_read_the_lock_and_nothing_prints_a_glance_f
           "the handoff and P-B1 read the lock; no glance file is printed or read", p.stdout[-900:] + p.stderr[-300:])
 
 
+def t_mine_says_whether_this_process_drives_the_game():
+    """`mine <g>`: 0 when this process holds g (its tree, or a take it inherited through RM_HOST_GUARD_GEN, as a
+    python.exe -> wsl.exe hop does), 1 when it does not (free, or another live driver's), 2 could not look. modcheck
+    restarts a game onto its list only on 0 (RIMMANDRAKE_MAKE_MODCHECK_RESTART_GAME_ONTO_ITS_LIST_THREE_HAND_WORKAROUNDS)."""
+    bx = Box()
+    r = bx.gl("mine", "a")
+    check(r.returncode == 1 and "FREE" in r.stdout, "mine on a free game: exit 1, FREE", (r.returncode, r.stdout, r.stderr))
+    s = sleeper()
+    write_lock(bx.a, "BENCH", s.pid, "another run")
+    r = bx.gl("mine", "a")
+    check(r.returncode == 1 and "another run" in r.stdout, "mine on another live driver's game: exit 1, naming it",
+          (r.returncode, r.stdout, r.stderr))
+    r = bx.gl("mine", "a", RM_HOST_GUARD_GEN="7")
+    check(r.returncode == 0, "mine with the live lock's generation inherited (a broken process tree): exit 0",
+          (r.returncode, r.stdout, r.stderr))
+    r = bx.gl("mine", "a", RM_HOST_GUARD_GEN="8")
+    check(r.returncode == 1, "mine with another generation: exit 1", (r.returncode, r.stdout, r.stderr))
+    r = bx.gl("mine", "a", RM_HOST_GUARD_GEN="7", RM_HOST_GUARD_GAME="b")
+    check(r.returncode == 1, "mine with the generation of ANOTHER game's take (generations count per game): exit 1",
+          (r.returncode, r.stdout, r.stderr))
+    r = bx.gl("mine", "a", RM_HOST_GUARD_GEN="7", RM_HOST_GUARD_GAME="a")
+    check(r.returncode == 0, "mine with this game's generation and name: exit 0", (r.returncode, r.stdout, r.stderr))
+    kill(s)
+    r = bx.gl("mine", "a", RM_HOST_GUARD_GEN="7")
+    check(r.returncode == 1, "mine with the generation of a dead holder: exit 1", (r.returncode, r.stdout, r.stderr))
+    os.remove(bx.a)
+    r = bx.gl("run", "b", "--for", "mine probe", "--", sys.executable, GL, "mine", "b")
+    check(r.returncode == 0, "mine under `run b`: exit 0", (r.returncode, r.stdout, r.stderr))
+    with open(bx.b, "w", encoding="utf-8") as f:
+        f.write("{garbled")
+    r = bx.gl("mine", "b")
+    check(r.returncode == 2 and "COULD NOT LOOK" in r.stdout, "mine on a garbled lock: exit 2, COULD NOT LOOK",
+          (r.returncode, r.stdout, r.stderr))
+
+
+def t_run_aims_cmd_at_the_game_it_holds():
+    """`run <g> -- CMD` from a shell that names no game, or another game: CMD is aimed at g (RM_GAME_INSTANCE, its
+    driver lock, its bridge port and token), so a command that reads the environment drives the game it holds.
+    work_bundle.live_pass and the modcheck acceptance run `game_lock.py run ArchSmall -- CMD` with no game env."""
+    bx = Box()
+    probe = ("import os,json; print(json.dumps({k: os.environ.get(k) for k in ('RM_GAME_INSTANCE','RIMFLOW_DRIVER_LOCK',"
+             "'GABP_SERVER_PORT','GABP_TOKEN','RIMFLOW_SEAT','RM_HOST_GUARD_GAME','WSLENV')}))")
+    r = bx.gl("run", "ArchSmall", "--for", "aim probe", "--", sys.executable, "-c", probe)
+    try:
+        d = json.loads(r.stdout.strip().splitlines()[-1])
+    except (ValueError, IndexError):
+        d = {}
+    check(r.returncode == 0 and d.get("RM_GAME_INSTANCE") == "b" and d.get("RIMFLOW_DRIVER_LOCK") == bx.b
+          and d.get("GABP_SERVER_PORT") and d.get("GABP_TOKEN"),
+          "run ArchSmall from a shell that names no game: CMD is aimed at b (instance, lock, port, token)",
+          (r.returncode, r.stdout, r.stderr[-300:]))
+    wsl = (d.get("WSLENV") or "").split(":")
+    check(d.get("RIMFLOW_SEAT") == "BENCH" and "RIMFLOW_SEAT" in wsl and d.get("RM_HOST_GUARD_GAME") == "b"
+          and "RM_HOST_GUARD_GAME" in wsl,
+          "run passes its seat and its game to CMD through WSLENV (a python.exe CMD's wsl.exe children need the seat "
+          "for `rimflow bridge idle`)", d)
+    r = bx.gl("run", "a", "--for", "aim probe a", "--", sys.executable, "-c", probe)
+    try:
+        d = json.loads(r.stdout.strip().splitlines()[-1])
+    except (ValueError, IndexError):
+        d = {}
+    check(r.returncode == 0 and d.get("RM_GAME_INSTANCE") is None and d.get("RIMFLOW_DRIVER_LOCK") == bx.a,
+          "run a from a shell that names a: CMD's environment is left as it is", (r.returncode, r.stdout, r.stderr[-300:]))
+
+
 def main():
     t_a_query_answers_under_100_ms()        # first: the cases below spawn and kill dozens of processes
     t_one_record_per_game()
@@ -762,6 +827,8 @@ def main():
     t_a_dead_holder_reads_free_at_once()
     t_an_unreadable_lock_is_could_not_look()
     t_run_releases_on_exit_crash_and_sigterm()
+    t_mine_says_whether_this_process_drives_the_game()
+    t_run_aims_cmd_at_the_game_it_holds()
     t_his_hold_refuses_with_exit_3()
     t_an_old_style_hold_is_seen_and_an_old_style_release_frees_it()
     t_release_frees_only_this_process_trees_hold()

@@ -23,6 +23,7 @@ def main():
     runner.compose_test_list = lambda ids, *a, **k: calls.append(("compose", list(ids)))
     runner.restore_full = lambda *a, **k: calls.append(("restore",))
     runner.test_list_ids = lambda mods: calls.append(("ids", [m for m, _ in mods])) or ["a.dep", "a.mod"]
+    runner.prune_uninstalled = lambda ids, *a, **k: calls.append(("prune", list(ids))) or []
     os.environ.pop("MODCHECK_STALE_KEEP_COMPOSED", None)
     try:
         runner.compose_only(["Mock"])
@@ -32,8 +33,10 @@ def main():
     check(refused and not calls, "without MODCHECK_STALE_KEEP_COMPOSED=1 nothing is written %s" % calls)
     os.environ["MODCHECK_STALE_KEEP_COMPOSED"] = "1"
     ids = runner.compose_only(["Mock"])
-    check(calls == [("swap",), ("ids", ["Mock"]), ("compose", ["a.dep", "a.mod"])] and ids == ["a.dep", "a.mod"],
-          "the owner of its game gets MINIMAL + the run's own composition, and FULL is not restored %s" % calls)
+    check(calls == [("swap",), ("ids", ["Mock"]), ("compose", ["a.dep", "a.mod"]), ("prune", ["a.dep", "a.mod"])]
+          and ids == ["a.dep", "a.mod"],
+          "the owner of its game gets MINIMAL + the run's own composition, less what this host cannot load, and FULL "
+          "is not restored %s" % calls)
     print("FAIL %d" % len(FAILS) if FAILS else "PASS")
     return 1 if FAILS else 0
 

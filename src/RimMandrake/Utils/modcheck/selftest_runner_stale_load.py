@@ -92,7 +92,7 @@ def attempt(running, config_ids, keep=False, keep_composed=False, restores=None,
     def reached():
         raise ReachedSuite()
 
-    stubs = dict(swap_to_test_list=lambda *a, **k: None,
+    stubs = dict(owns_game=lambda *a, **k: False, prune_uninstalled=lambda *a, **k: [], swap_to_test_list=lambda *a, **k: None,
                  restore_full=lambda *a, **k: (restores if restores is not None else []).append(1),
                  compose_test_list=lambda *a, **k: [], find_mod_dir=lambda m: "/nonexistent/" + m,
                  composed_into=lambda m: None, mod_dependency_ids=lambda d: ["toy.dep"],
@@ -275,7 +275,7 @@ def at_menu(running, config_ids, log, keep_composed=True, installed=None):
     def reached():
         raise ReachedSuite()
 
-    stubs = dict(swap_to_test_list=lambda *a, **k: None, restore_full=lambda *a, **k: restores.append(1),
+    stubs = dict(owns_game=lambda *a, **k: False, prune_uninstalled=lambda *a, **k: [], swap_to_test_list=lambda *a, **k: None, restore_full=lambda *a, **k: restores.append(1),
                  compose_test_list=lambda *a, **k: [], find_mod_dir=lambda m: "/nonexistent/" + m,
                  composed_into=lambda m: None, mod_dependency_ids=lambda d: ["toy.dep"],
                  mod_package_id=lambda d: TOY, closure_ids=lambda m, f: [],

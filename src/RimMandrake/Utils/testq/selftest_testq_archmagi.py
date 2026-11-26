@@ -469,6 +469,8 @@ def t_keep_modlist(r):
             "runner.swap_to_test_list = lambda *a: calls.append('swap')\n"
             "runner.restore_full = lambda: calls.append('restore')\n"
             "runner.compose_test_list = lambda *a: calls.append('compose')\n"
+            "runner.prune_uninstalled = lambda *a, **k: []\n"
+            "runner.owns_game = lambda *a, **k: False\n"
             "runner.run([])\n"
             "os.environ['MODCHECK_KEEP_MODLIST'] = '1'\n"
             "runner.run([])\n"

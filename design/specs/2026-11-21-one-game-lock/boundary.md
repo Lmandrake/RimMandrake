@@ -74,6 +74,15 @@ Before: `rimflow bridge who` 5.0 s for ArchBig, 1.8 s for ArchSmall.
   or is stopped by a SIGTERM forwarded to it; a child of `run` reads the hold as its own tree's, and its driver-lock owner
   (`RM_DRIVER_PID`) is the run, so `game_instance.stop`'s gate passes CMD's own hold; a `run` killed outright leaves the
   game FREE at once.
+- **mine-says-whether-this-process-drives-the-game.** `mine <g>` exits 0 when this process holds g: the holder is in
+  its process tree, or it inherited the live lock's generation (`RM_HOST_GUARD_GEN`, which crosses a python.exe to
+  wsl.exe hop where the tree is cut) for the game that `RM_HOST_GUARD_GAME` names, when it names one. It exits 1 on a
+  free game, a dead holder, another live driver, another generation, or the same generation of another game's take
+  (generations count per game), and 2 on a lock that cannot be read. modcheck restarts a game onto its list only on 0.
+- **run-aims-cmd-at-the-game-it-holds.** `run <g> -- CMD` from a shell that names another game (or none, for a named
+  game) gives CMD g's environment (`game_instance.env`: instance, driver lock, bridge port, token). A shell already on
+  g is left as it is. CMD also gets `RM_HOST_GUARD_GAME` and its seat (`RIMFLOW_SEAT`), both named in WSLENV, so a
+  python.exe CMD's wsl.exe children carry the take's game and a seat for `rimflow bridge idle`.
 - **his-hold-refuses-with-exit-3.** `pipe off game:<g>`, his OWNER lock (live, or with its process gone, which a query
   cannot measure), and a flyer's flight each make `query` or `claim` exit 3 by name. His own claim for a flight passes.
   `claim --despite-hold WHY` with a nonempty reason passes the pipe hold, reports the hold and the reason on stderr,

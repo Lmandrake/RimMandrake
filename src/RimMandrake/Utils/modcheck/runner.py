@@ -42,6 +42,8 @@ RIMFLOW_CLI = os.path.join(ROOT, "src", "RimMandrake", "rimflow", "cli.py")
 MODLIST_SWAP = os.path.join(_UTILS, "modlist_swap.py")
 SHEET_DIR = os.path.join(ROOT, "Transient", "modcheck")
 QUICKTEST_STARTER = os.path.join(os.path.dirname(_UTILS), "bridgetools", "prove_quicktest_world.py")
+GAME_LOCK = os.path.join(ROOT, "src", "RimMandrake", "rimflow", "game_lock.py")
+GAME_INSTANCE = os.path.join(_UTILS, "game_instance.py")
 
 
 def chain_paused(mod, chain):
@@ -277,6 +279,50 @@ def not_installed(missing, installed, alias=None):
         return []
     alias = alias or {}
     return [p for p in missing if not p.startswith("ludeon.") and p not in installed and alias.get(p) not in installed]
+
+
+def prune_uninstalled(package_ids, config_path=None, installed=None, alias=None, _scan=None):
+    """Drop from ModsConfig's <activeMods> each id that this host cannot load: no install root holds it (itself, or
+    through its composed mod), it is not a DLC (`ludeon.*`, every DLC is assumed), and it is not an id of the mods
+    under test (`package_ids`: those are deployed after the list is written, and a missing one must stay visible as
+    mod_not_installed). RimWorld drops such an id at every load anyway, so the load does not change; the list stops
+    naming a mod the running load can never hold. MINIMAL named kutte.stairs, which no folder on Archmagi holds, and
+    every composed run there read mod_not_installed (2026-11-25, ArchSmall). -> the ids dropped, each printed.
+    installed=None reads the install roots (_scan, default installed_ids); a blind scan (None) drops nothing."""
+    import re
+    if config_path is None:
+        from game_paths import MODS_CONFIG
+        config_path = MODS_CONFIG
+    if installed is None:
+        installed = (_scan or installed_ids)()
+    if installed is None:
+        print("modcheck: install roots could not be read; the list is left as composed", flush=True)
+        return []
+    if alias is None:
+        try:
+            import live_def_check  # noqa: E402
+            alias = live_def_check.aliases()
+        except Exception:  # noqa: BLE001 - no alias map: an id folded into a composed mod reads as its own folder
+            alias = {}
+    keep = {p.lower() for p in package_ids}
+    gone = [p for p in not_installed(active_mods(config_path), installed, alias) if p not in keep]
+    if not gone:
+        return []
+    with open(config_path, encoding="utf-8") as f:
+        xml = f.read()
+    m = re.search(r"<activeMods>.*?</activeMods>", xml, re.S)
+    block = m.group(0)
+    for p in gone:
+        block = re.sub(r"\s*<li>\s*%s\s*</li>" % re.escape(p), "", block, flags=re.I)
+    xml = xml[:m.start()] + block + xml[m.end():]
+    tmp = config_path + ".modcheck.tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        f.write(xml)
+    os.replace(tmp, config_path)
+    print("PRUNED: %s: no folder on this host holds %s; RimWorld drops %s at load, so the list no longer names %s"
+          % (os.path.basename(config_path), ", ".join(gone), "it" if len(gone) == 1 else "them",
+             "it" if len(gone) == 1 else "them"), flush=True)
+    return gone
 
 
 def _rb_call(client, tool, args):
@@ -1513,30 +1559,36 @@ def file_findings(item_id, mod, findings, dry_run=False, seat=None):
     return filed
 
 
-def test_list_ids(mods):
-    """The packageIds of the list a run composes for MODS ((mod_folder, item) pairs): each mod's dependencies, the mod
-    (a composed folder as its composed mod), its tier closure, then their own dependencies. Each mod is deployed first
-    unless MODCHECK_SKIP_DEPLOY is set. The one composition: run() and compose_only() both read it."""
-    package_ids = []
+def deploy_mods(mods):
+    """Deploy each mod of MODS ((mod_folder, item) pairs) AND every mod of ours its composed list names
+    (deploy_closure; RimWorld drops the rest), unless MODCHECK_SKIP_DEPLOY is set. Raises RuntimeError naming the mod."""
     for mod_folder, _item in mods:
-        mod_dir = find_mod_dir(mod_folder)
-        folded = composed_into(mod_folder)
-        # the mod AND every mod of ours its composed list names (deploy_closure): RimWorld drops the rest
         deploy_args = tuple(deploy_args_for(mod_folder))
         if os.environ.get("MODCHECK_SKIP_DEPLOY"):
             # The caller already deployed with the game DOWN and launched on that list; a re-deploy now
             # fails on any DLL the running game holds (LIVE 2026-10-07: a peer rebuilt Hum.dll mid-run).
-            r = subprocess.CompletedProcess(deploy_args, 0, "", "")
-        else:
-            import time_budget  # noqa: E402 - a hung deploy holds the run and the game copy with no end
-            r = subprocess.run(
-                py_cmd(os.path.join(_UTILS, "deploy_custom_mods.py"),
-                       *deploy_args, "--apply"),
-                cwd=ROOT, capture_output=True, text=True, timeout=time_budget.DEPLOY_S)
+            continue
+        import time_budget  # noqa: E402 - a hung deploy holds the run and the game copy with no end
+        r = subprocess.run(
+            py_cmd(os.path.join(_UTILS, "deploy_custom_mods.py"),
+                   *deploy_args, "--apply"),
+            cwd=ROOT, capture_output=True, text=True, timeout=time_budget.DEPLOY_S)
         if r.returncode != 0:
             raise RuntimeError(
                 "deploy of %s FAILED: %s"
-                % (mod_folder, (r.stdout + r.stderr).strip()[-500:]))
+                % (mod_folder, (r.stdout + r.stderr).strip()[-500:]))  # cut-ok: the tail of a deploy log, in an error
+
+
+def test_list_ids(mods, deploy=True):
+    """The packageIds of the list a run composes for MODS ((mod_folder, item) pairs): each mod's dependencies, the mod
+    (a composed folder as its composed mod), its tier closure, then their own dependencies. With deploy, the mods are
+    deployed first (deploy_mods). The one composition: run() and compose_only() both read it."""
+    if deploy:
+        deploy_mods(mods)
+    package_ids = []
+    for mod_folder, _item in mods:
+        mod_dir = find_mod_dir(mod_folder)
+        folded = composed_into(mod_folder)
         # dependencies first, then the mod: a composed folder loads as its composed mod
         package_ids.extend(d for d in mod_dependency_ids(mod_dir) if d not in package_ids)
         own = folded[1] if folded else mod_package_id(mod_dir)
@@ -1559,8 +1611,178 @@ def compose_only(mods):
     swap_to_test_list()
     ids = test_list_ids([(m, None) for m in mods])
     compose_test_list(ids)
+    prune_uninstalled(ids)
     print("COMPOSED: %d mods: %s" % (len(ids), ",".join(ids)), flush=True)
     return ids
+
+
+# Danger: a game that ignores the soft stop (seen once, 2026-11-25, lesson 20261125T121710Z-BENCH-restart-driven-from-
+# inside-game-lock) would hold the restart with no end. Measured need: the game exits in a few seconds after taskkill.
+STOP_PATIENCE_S = 120
+# Danger: the exiting game holds its BridgeTools DLLs for a few seconds, so the first copy fails (cp: Invalid argument,
+# lesson 20261125T062158Z-BENCH-game-lock-py-claim-made-one). 4 tries 10 s apart outlast that many times over.
+DEPLOY_TRIES = 4
+DEPLOY_RETRY_S = 10
+# Hang guards of one call each (time_budget classes): a lock read or pid read is a small local call; a stop is one
+# taskkill behind a bridge gate (`rimflow bridge idle`, a ledger read); launch --wait bounds itself (WAIT_S 3600 s).
+_CALL_S = {"mine": 1800, "pid": 1800, "stop": 1800, "launch": 3600 + 1800}
+
+
+def this_game(environ=None):
+    """The game this process drives: RM_GAME_INSTANCE (game_instance.env, or game_lock.py run's aim), else ArchBig."""
+    return ((os.environ if environ is None else environ).get("RM_GAME_INSTANCE") or "a").strip().lower() or "a"
+
+
+def _call(argv, timeout=None, env=None):
+    return subprocess.run(argv, cwd=ROOT, capture_output=True, text=True, encoding="utf-8", errors="replace",
+                          timeout=timeout or 1800, env=env)
+
+
+def seat_env(environ=None):
+    """-> a copy of the environment whose wsl.exe children get a seat: RIMFLOW_SEAT (else AGENT_SEAT, else BENCH, the
+    seat of every detached run) named in WSLENV. Under python.exe a seat set in WSL does not arrive unless WSLENV names
+    it, and game_instance.stop's gate (`rimflow bridge idle`) refuses a seatless call."""
+    env = dict(os.environ if environ is None else environ)
+    env["RIMFLOW_SEAT"] = env.get("RIMFLOW_SEAT") or env.get("AGENT_SEAT") or "BENCH"
+    names = [n for n in (env.get("WSLENV") or "").split(":") if n]
+    if "RIMFLOW_SEAT" not in [n.split("/", 1)[0] for n in names]:
+        names.append("RIMFLOW_SEAT")
+    env["WSLENV"] = ":".join(names)
+    return env
+
+
+def _said(r):
+    return ((r.stdout or "") + (r.stderr or "")).strip()
+
+
+def owns_game(game=None, _call=None):
+    """True when THIS process holds the game's driver lock (`game_lock.py mine`: its tree, or a take inherited through
+    RM_HOST_GUARD_GEN across the python.exe -> wsl.exe hop). Could not look, free, or another driver's: False."""
+    call = _call or globals()["_call"]
+    try:
+        return call(py_cmd(GAME_LOCK, "mine", game or this_game()), timeout=_CALL_S["mine"]).returncode == 0
+    except (OSError, subprocess.SubprocessError):
+        return False
+
+
+def restart_onto_list(mods, why, game=None, _call=None, _deploy=None, _sleep=time.sleep, _clock=time.time):
+    """Put the game this process holds onto the list run() just wrote to ModsConfig: stop it, deploy MODS with it down
+    (a running game holds its DLLs), start it, wait for its bridge port. What three runs did by hand on 2026-11-25
+    (design/specs/2026-11-25-bottle-loop-map-wide/live_sitting.sh). Only on a game `game_lock.py mine` calls this
+    process's. `why`: the reasons the running load is not the list. -> the record {game, why, steps, restarted,
+    refused}: refused names the step and its words when the restart did not happen; nothing raises."""
+    call = _call or globals()["_call"]
+    deploy = _deploy or deploy_mods
+    game = (game or this_game()).strip().lower()
+    try:
+        rf = os.path.join(ROOT, "src", "RimMandrake", "rimflow")
+        if rf not in sys.path:
+            sys.path.append(rf)
+        import game_names
+        show = game_names.show(game)
+    except Exception:  # noqa: BLE001 - the name is for the reader; the letter still drives
+        show = game
+    rec = {"game": show, "why": list(why), "steps": [], "restarted": False, "refused": None}
+
+    env = seat_env()
+
+    def step(name, argv, timeout):
+        try:
+            r = call(argv, timeout=timeout, env=env)
+        except (OSError, subprocess.SubprocessError) as e:
+            r = subprocess.CompletedProcess(argv, None, "", "%s: %s" % (type(e).__name__, e))
+        rec["steps"].append({"step": name, "rc": r.returncode, "said": _said(r)[-400:]})  # cut-ok: a step's tail
+        return r
+
+    def refuse(text, stopped=True):
+        if stopped:
+            text += "; the game is left stopped"
+        rec["refused"] = text
+        print("RESTART REFUSED: %s: %s" % (show, text), file=sys.stderr, flush=True)
+        return rec
+
+    r = step("mine", py_cmd(GAME_LOCK, "mine", game), _CALL_S["mine"])
+    if r.returncode != 0:
+        return refuse("this process does not hold the game's lock, so it is never stopped: %s" % _said(r), False)
+    print("RESTART: %s is not on the composed list (%s); stopping it, deploying, starting it on the list"
+          % (show, "; ".join(why)[:300]), file=sys.stderr, flush=True)
+    purpose = "modcheck: restart %s onto its composed list" % show
+    r = step("stop", py_cmd(GAME_INSTANCE, "stop", "--instance", game, "--for", purpose), _CALL_S["stop"])
+    if r.returncode != 0:
+        return refuse("stop: %s" % _said(r), False)
+
+    def gone(patience):
+        t0 = _clock()
+        while True:
+            p = step("pid", py_cmd(GAME_INSTANCE, "pid", game), _CALL_S["pid"])
+            if p.returncode == 0 and not (p.stdout or "").strip():
+                return True
+            if _clock() - t0 >= patience:
+                return False
+            _sleep(5)
+    if not gone(STOP_PATIENCE_S):
+        step("stop --force", py_cmd(GAME_INSTANCE, "stop", "--instance", game, "--force", "--for", purpose),
+             _CALL_S["stop"])
+        if not gone(STOP_PATIENCE_S):
+            return refuse("the game is still running %d s after a forced stop" % (2 * STOP_PATIENCE_S), False)
+    err = None
+    for i in range(DEPLOY_TRIES):
+        try:
+            deploy(mods)
+            err = None
+            rec["steps"].append({"step": "deploy", "rc": 0, "said": "try %d" % (i + 1)})
+            break
+        except (RuntimeError, OSError, subprocess.SubprocessError) as e:     # a hung deploy too: never an escape
+            err = "%s: %s" % (type(e).__name__, e)
+            rec["steps"].append({"step": "deploy", "rc": 1, "said": err[-400:]})  # cut-ok: a deploy error's tail
+            if i + 1 < DEPLOY_TRIES:
+                _sleep(DEPLOY_RETRY_S)
+    if err is not None:
+        return refuse("deploy with the game down failed %d times: %s" % (DEPLOY_TRIES, err))
+    r = step("launch", py_cmd(GAME_INSTANCE, "launch", game, "--wait"), _CALL_S["launch"])
+    if r.returncode != 0:
+        return refuse("launch: %s" % _said(r))
+    rec["restarted"] = True
+    print("RESTARTED_ONTO_LIST: %s: %s" % (show, _said(r)[-200:]), file=sys.stderr, flush=True)  # cut-ok: a line
+    return rec
+
+
+def prepare_live_list(mods, keep, _hooks=None):
+    """The list run() tests on, made live: swap to MINIMAL, compose MODS, drop what this host cannot load, deploy. When
+    this process holds the game (owns_game) and the running load is not the list (verify_loaded_list), the game is
+    restarted onto it (restart_onto_list, which deploys with the game down), and so is a held game whose running load
+    refused the deploy (a DLL in use). keep (MODCHECK_KEEP_MODLIST): the caller's list, never swapped or restarted;
+    MODCHECK_STALE_KEEP_COMPOSED: the caller restarts its own game (the SteveDesktop worker), so nothing restarts here.
+    -> (package_ids, the restart record or None)."""
+    h = {"swap": swap_to_test_list, "ids": lambda m: test_list_ids(m, deploy=False), "compose": compose_test_list,
+         "prune": prune_uninstalled, "owns": owns_game, "gap": lambda ids: verify_loaded_list(ids, False),
+         "restart": restart_onto_list, "deploy": deploy_mods}
+    h.update(_hooks or {})
+    if not keep:
+        h["swap"]()
+    package_ids = h["ids"](mods)
+    if keep:
+        h["deploy"](mods)
+        return package_ids, None
+    h["compose"](package_ids)
+    h["prune"](package_ids)
+    owns = not stale_keep_composed() and h["owns"]()     # the SteveDesktop worker restarts its own game
+    restart = None
+    if owns:
+        gap = h["gap"](package_ids)
+        if gap:
+            restart = h["restart"](mods, gap)
+            if restart.get("restarted"):
+                return package_ids, restart
+    try:
+        h["deploy"](mods)
+    except RuntimeError as e:
+        if not owns or restart is not None:
+            raise
+        restart = h["restart"](mods, ["the deploy was refused while the game ran: %s" % e])
+        if not restart.get("restarted"):
+            raise
+    return package_ids, restart
 
 
 def run(mods, debug=False, dry_run=False, situational=False, policy="abort", targets=None, seat=None,
@@ -1584,21 +1806,14 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort", tar
     try:
         # Inside the try: swap_to_test_list can fail AFTER modlist_swap has applied MINIMAL (e.g. its compose
         # read-back), and that must still restore FULL (MODCHECK_SWAP_FIX_OUTSIDE_TRY).
-        if not dry_run and not keep:
-            swap_to_test_list()
+        restart = None
         if not dry_run:
-            # Deploy each mod, THEN compose its packageId into the live
-            # list: ModsConfig names the next load only, and RimWorld
-            # silently drops an activeMods id whose folder is absent from
-            # the game's Mods directory (the repo is never what the game
-            # loads). Inside the try so any failure still restores FULL.
-            # ⚠️ Composition changes the NEXT load -- the caller owns the
-            # game restart between run()'s swap and the first Session, and
-            # a locked companion DLL (game still up) fails the deploy here
-            # loudly rather than the suite failing silently later.
-            package_ids = test_list_ids(mods)
-            if not keep:
-                compose_test_list(package_ids)
+            # Swap, compose, prune and deploy (prepare_live_list). ModsConfig names the next load only, and RimWorld
+            # silently drops an activeMods id whose folder is absent from the game's Mods directory (the repo is never
+            # what the game loads). Inside the try so any failure still restores FULL. A caller that holds the game's
+            # lock gets the game restarted onto the list here; any other caller owns the restart, and a running load
+            # that is not the list reads UNMEASURED stale_load below.
+            package_ids, restart = prepare_live_list(mods, keep)
         for mod_folder, item_id in mods:
             if dry_run:
                 # Deliberately does not resolve the mod folder or import its
@@ -1663,6 +1878,8 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort", tar
                 print("[modcheck] %s HARNESS %s" % (mod_folder, why), file=sys.stderr, flush=True)
                 results[mod_folder] = {"chains": [], "all_green": False, "findings": [], "refused": why,
                                        "unmeasured": cause, "walk": walk}
+                if restart:
+                    results[mod_folder]["restarted_onto_list"] = restart
                 if sel:
                     results[mod_folder]["targeted"] = dict(sel, of_chains=len(suite.chains))
                 try:
@@ -1718,6 +1935,8 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort", tar
                     summary["jev_shadow"] = jev_triage.triage_summary(summary)
                 except Exception:   # noqa: BLE001 - Jev must never be able to break a run
                     summary["jev_shadow"] = []
+            if restart:
+                summary["restarted_onto_list"] = restart
             results[mod_folder] = summary
             sheet_path = write_sheet(mod_folder, summary)
             verify_err = None

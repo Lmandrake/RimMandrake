@@ -16,6 +16,10 @@ an old-style release frees it.
     game_lock.py claim   ArchBig|ArchSmall --for "<what>" [--seat S] [--force WHY] [--flyer] [--despite-hold WHY]
     game_lock.py release ArchBig|ArchSmall [--force WHY]      release what this process tree holds
     game_lock.py run     ArchBig|ArchSmall --for "<what>" [--seat S] -- CMD [ARGS...]     hold for CMD's life
+    game_lock.py mine    ArchBig|ArchSmall              0 this process drives it, 1 it does not, 2 could not look
+
+`run` aims CMD at the game it holds: a shell that names another game (or none, for ArchSmall) gets that game's
+environment (game_instance.env: RM_GAME_INSTANCE, its lock, bridge port and token) for CMD.
 
 Exit codes keep four answers apart (every verb):
     0   free (query) / done (claim, release; run: CMD's own exit code)
@@ -64,6 +68,8 @@ class Blind(Exception):
     """A lock that could not be looked at (exit 2's cause), raised by a reader that has no "could not look" return."""
 GAME_A = "a"                            # today's game: Steam's install, his
 GEN_ENV = "RM_HOST_GUARD_GEN"           # a holder's children drive under its take (host_guard.export_take)
+GAME_ENV = "RM_HOST_GUARD_GAME"         # ... of THIS game: generations are counted per game's lock, so two games can
+                                        # share a number; `mine` requires the game too when it is given
 REMOTE_GAMES = ("stevedesktop", "stevedesktop.b")   # bridge keys of Steve1, Steve2: through their test lane, never read here
 # budget: danger=a lock read in mid write is empty for milliseconds; ends no work: the reading says: could not look
 WRITING_WAIT_S = 1.0                    # danger: a lock read mid-write is empty for milliseconds (driver_lock
@@ -391,6 +397,67 @@ def _res(ok, code, g, text, **kw):
     return d
 
 
+def mine(g, path=None):
+    """-> (code, line): EX_FREE (0) when THIS process drives game g (the holder is in its process tree, or it inherited
+    the live lock's generation through RM_HOST_GUARD_GEN, as a python.exe -> wsl.exe hop does, where the tree is cut),
+    1 when it does not (the game is free, or another live driver's), EX_BLIND (2) when the lock cannot be looked at.
+    An inherited generation counts only for the game RM_HOST_GUARD_GAME names, when it names one (`run` sets both).
+    modcheck restarts a game onto its composed list only on 0."""
+    try:
+        g = check_game(g)
+        path = path or lock_path(g)
+    except Exception as e:  # noqa: BLE001
+        return EX_BLIND, "COULD NOT LOOK: no lock path: %s: %s" % (type(e).__name__, e)
+    name = game_names.show(g)
+    if not path:
+        return EX_BLIND, "%s: COULD NOT LOOK: no lock path on this machine" % name
+    cur, problem = _read_lock(path)
+    if problem:
+        return EX_BLIND, "%s: COULD NOT LOOK: the lock %s is %s" % (name, path, problem)
+    if cur is None:
+        return 1, "%s: FREE: not this process's" % name
+    alive, how = driver_lock._alive(cur)
+    if not alive:
+        return 1, "%s: FREE: its last holder (%s) is gone" % (name, how)
+    gen = os.environ.get(GEN_ENV)
+    game = (os.environ.get(GAME_ENV) or "").strip().lower()
+    inherited = bool(gen) and str(cur.get("generation")) == gen and (not game or game == g)
+    if inherited or in_my_tree(cur.get("identity")):
+        return EX_FREE, "%s: MINE: held by this process for %r (gen %s)" % (name, cur.get("purpose"), cur.get("generation"))
+    return 1, "%s: HELD by %s for %r: not this process's" % (name, cur.get("seat"), cur.get("purpose"))
+
+
+_AIM_KEYS = ("RM_GAME_INSTANCE", "RM_GAME_USERDATA", "RM_GAME_LOGDIR", "GABP_SERVER_PORT", "GABP_TOKEN",
+             "RIMFLOW_DRIVER_LOCK")
+
+
+def aim_env(g, env):
+    """`env` aimed at game g, in place: when the shell names another game (RM_GAME_INSTANCE; none is ArchBig), CMD gets
+    g's environment, so a command that reads it drives the game it holds (work_bundle.live_pass ran
+    `run ArchSmall -- CMD` from a shell with no game env, and CMD drove ArchBig). A shell already on g is left alone."""
+    g = check_game(g)
+    have = (env.get("RM_GAME_INSTANCE") or "a").strip().lower() or "a"
+    if have == g:
+        return env
+    import game_instance
+    if g == "a":
+        for k in _AIM_KEYS:
+            env.pop(k, None)
+        if (env.get("RM_GAME_A_LOGDIR") or "").strip():
+            env["RM_GAME_LOGDIR"] = env["RM_GAME_A_LOGDIR"]     # game a's own log folder (SteveDesktop sets one)
+        return env
+    saved = os.environ.get("WSLENV")
+    try:
+        os.environ["WSLENV"] = env.get("WSLENV", "")
+        env.update(game_instance.env(g))
+    finally:
+        if saved is None:
+            os.environ.pop("WSLENV", None)
+        else:
+            os.environ["WSLENV"] = saved
+    return env
+
+
 def run(g, purpose, cmd, seat=None, force=None, flyer=False):
     """Hold game g for CMD's life: the holder is THIS process, so the lock frees when CMD ends however it ends (exit,
     crash, SIGTERM or SIGINT forwarded and then released; SIGKILL of this process: its process is gone, so the game
@@ -429,9 +496,13 @@ def run(g, purpose, cmd, seat=None, force=None, flyer=False):
                 inherited = gen
         else:
             gen = inherited
-        env = dict(os.environ)
+        env = aim_env(g, dict(os.environ))
         env[GEN_ENV] = str(gen)
-        passed = [GEN_ENV]
+        env[GAME_ENV] = check_game(g)
+        # the seat crosses too: a python.exe CMD's wsl.exe children (game_instance.stop's `rimflow bridge idle`) refuse
+        # a seatless call, and RIMFLOW_SEAT does not reach them unless WSLENV names it
+        env["RIMFLOW_SEAT"] = env.get("RIMFLOW_SEAT") or (seat or default_seat())
+        passed = [GEN_ENV, GAME_ENV, "RIMFLOW_SEAT"]
         if inherited is None and me and me.get("pid"):
             # CMD's driver-lock owner is this run (driver_lock.owner_pid reads RM_DRIVER_PID first): without it,
             # game_instance.stop's gate (`rimflow bridge idle`) compared the holder with the nearest claude ancestor and
@@ -517,6 +588,8 @@ def main(argv=None):
     q = sub.add_parser("query")
     q.add_argument("game", nargs="?", default="all")
     q.add_argument("--json", action="store_true")
+    m = sub.add_parser("mine")
+    m.add_argument("game")
     for name in ("claim", "release", "run"):
         s = sub.add_parser(name)
         s.add_argument("game")
@@ -540,6 +613,10 @@ def main(argv=None):
     except ValueError as e:     # an unknown name is refused by name, never read as a default game
         sys.stderr.write("REFUSED: %s\n" % e)
         return EX_BLIND
+    if a.cmd == "mine":
+        code, text = mine(a.game)
+        print(text)
+        return code
     if a.cmd == "claim":
         r = claim(a.game, a.purpose, seat=a.seat, force=a.force, flyer=a.flyer, despite=a.despite)
         _emit(r, a.json)

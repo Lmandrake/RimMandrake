@@ -23,7 +23,7 @@ def ok(cond, what, got=None):
 def attempt(swap, find_mod_dir, env=None, dry_run=False):
     """Run runner.run with stubs; returns (calls, exception or None)."""
     calls = []
-    names = ("swap_to_test_list", "restore_full", "find_mod_dir")
+    names = ("swap_to_test_list", "restore_full", "find_mod_dir", "owns_game", "prune_uninstalled")
     real = {n: getattr(runner, n) for n in names}
     saved = os.environ.pop("MODCHECK_KEEP_MODLIST", None)
     if env:
@@ -36,6 +36,8 @@ def attempt(swap, find_mod_dir, env=None, dry_run=False):
     runner.swap_to_test_list = fake_swap
     runner.restore_full = lambda *a, **k: calls.append("restore")
     runner.find_mod_dir = find_mod_dir
+    runner.owns_game = lambda *a, **k: False          # never a real lock read, never a real game restart
+    runner.prune_uninstalled = lambda *a, **k: []     # never the live ModsConfig
     err = None
     try:
         runner.run([("ToyMod", "X_ITEM")], dry_run=dry_run)

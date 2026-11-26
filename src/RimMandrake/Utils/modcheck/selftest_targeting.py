@@ -183,7 +183,7 @@ def t_emit_verify_seat():
 def stubbed_run():
     """runner.run() with every side effect stubbed: returns the record_run/emit_verify calls it made."""
     seen = {"record": [], "verify": [], "suite": []}
-    names = ("swap_to_test_list", "restore_full", "compose_test_list", "find_mod_dir", "load_validation",
+    names = ("swap_to_test_list", "restore_full", "compose_test_list", "prune_uninstalled", "owns_game", "find_mod_dir", "load_validation",
              "northstar_for", "visual_floor", "ensure_playing_map", "ensure_test_profile", "run_suite",
              "write_sheet", "mod_dependency_ids", "composed_into", "mod_package_id", "verify_loaded_list")
     real = {n: getattr(runner, n) for n in names}
@@ -226,6 +226,8 @@ def stubbed_run():
         seen["suite"].append(([n for n, _ in s.chains], k.get("hold_site"), k.get("floor_suite")))
         return {"chains": [], "all_green": True, "findings": [], "refused": ""}
     runner.swap_to_test_list = runner.restore_full = runner.compose_test_list = lambda *a, **k: None
+    runner.prune_uninstalled = lambda *a, **k: []      # never the live ModsConfig
+    runner.owns_game = lambda *a, **k: False           # never a real lock read, never a real game restart
     runner.find_mod_dir = lambda m: "/nonexistent/" + m
     runner.load_validation = lambda d: make_suite()
     runner.northstar_for = lambda m: (None, None)
