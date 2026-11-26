@@ -100,10 +100,10 @@ namespace JawaBench.BridgeTools
         // FlightState is a PRIVATE NESTED enum, so it cannot be named here.
         // Its members and values, read from source: Grounded=0, Flying=1,
         // TakingOff=2, Landing=3.
-        private const int FlightStateGrounded = 0;
-        private const int FlightStateFlying = 1;
-        private const int FlightStateTakingOff = 2;
-        private const int FlightStateLanding = 3;
+        private const int FlightStateGrounded = JawaBenchFlightCore.Grounded;
+        private const int FlightStateFlying = JawaBenchFlightCore.Flying;
+        private const int FlightStateTakingOff = JawaBenchFlightCore.TakingOff;
+        private const int FlightStateLanding = JawaBenchFlightCore.Landing;
 
         private static string FlightStateName(int v)
         {
@@ -341,8 +341,9 @@ namespace JawaBench.BridgeTools
 
             var targets = new List<Pawn>();
             // RIMMANDRAKE_VALIDATE_BEFORE_BRIDGE_DESTROYS (GPT c10.F1): the maintain window holds aloft ONLY the pawns
-            // this call left flying without a refusal; it used to re-assert flight on every grounded target, a pawn
-            // whose start was refused (CanEverFly false) and a landed one included.
+            // this call left airborne without a refusal; it used to re-assert flight on every grounded target, a pawn
+            // whose start was refused (CanEverFly false) and a landed one included. JawaBenchFlightCore.HoldInWindow
+            // decides it. StartFlying() leaves TakingOff, not Flying, so a rule that read Flying alone held no started pawn.
             var maintained = new List<Pawn>();
             var rowsBefore = new List<object>();
             var actionRows = new List<object>();
@@ -449,7 +450,7 @@ namespace JawaBench.BridgeTools
                         stateBefore = FlightStateName(beforeRaw),
                         stateAfter = FlightStateName(FlightStateRaw(t)),
                     });
-                    if (refused == null && t != null && FlightStateRaw(t) == FlightStateFlying) maintained.Add(p);
+                    if (JawaBenchFlightCore.HoldInWindow(t != null, refused != null, FlightStateRaw(t))) maintained.Add(p);
                 }
 
                 if (maintainTicks > 0)

@@ -7,6 +7,7 @@ Code: `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchWaitCore.cs`,
 `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchZoneTools.cs` (`PrioritizedWork`),
 `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchAbilityTools.cs` (`PawnUseAbility`, `PawnUseVerb`),
 `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchFlightTools.cs` (`PawnFlight`),
+`src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchFlightCore.cs`,
 `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchMapCompTiming.cs` (`MapCompTiming`).
 Selftest: `src/RimMandrake/bridgetools/selftest_order_wait.py`. It discovers Windows `dotnet.exe` through `winbuild`
 and stages the .NET 8 harness in a temporary directory in the clone. It runs with `PATH=/usr/bin:/bin`.
@@ -26,6 +27,10 @@ still interrupts the wait. Pre-wait refusals, including an empty pawn selection,
   including when the result is already true at the first poll. Arrival wins if a limit is reached in the same poll.
   The reply still reads back each pawn and requires every pawn to stand on the destination after ticks elapsed for
   `success`. With the option off, arrival has no effect on the wait.
+- **flight-maintain-holds-started.** The maintain window of `jawa/pawn_flight` holds aloft only the pawns that the
+  call left airborne without a refusal: a pawn that `start` launched (state `TakingOff`) and a pawn that `hold` wrote
+  (state `Flying`). It never holds a refused pawn, a grounded pawn, a pawn in `Landing`, a pawn with no flight tracker
+  or a pawn whose state cannot be read. `maintainedCount` is the number of pawns held.
 - **missing-dotnet-is-unmeasured.** If Windows `dotnet.exe` is missing, the selftest fails as `UNMEASURED` with the
   discovery error.
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compile the bridge wait policy with a .NET 8 SDK and check its tool wiring. No game or bridge.
+"""Compile the bridge wait and flight policies with a .NET 8 SDK and check their tool wiring. No game or bridge.
 Without dotnet.exe it FAILS as UNMEASURED.
 """
 import json
@@ -17,6 +17,7 @@ sys.path.insert(0, str(HERE.parent / "Utils"))
 CS = HERE / "JawaBench.BridgeTools"
 CORE = CS / "JawaBenchWaitCore.cs"
 WAITER = CS / "JawaBenchWait.cs"
+FLIGHT_CORE = CS / "JawaBenchFlightCore.cs"
 WAIT_TOOLS = {
     "JawaBenchJobTools.cs": ("OrderedJob", "DoBillNow"),
     "JawaBenchTerrainTools.cs": ("OrderPawn",),
@@ -74,6 +75,21 @@ switch (args[0])
             (100, false, 1), (130, false, 0));
         await JawaBenchTerrainTools.TestWait("ticks", 2, 60, false, false,
             (100, false, 1), (130, false, 0), (160, false, 0));
+        break;
+    case "flight":
+        // HoldInWindow(hasTracker, refused, stateAfter): the maintain window holds only the pawns this call left aloft.
+        static void Hold(string name, bool want, bool got)
+        {
+            if (want != got) throw new Exception($"{name}: expected held={want}, got held={got}");
+        }
+        Hold("start leaves TakingOff", true, JawaBenchFlightCore.HoldInWindow(true, false, JawaBenchFlightCore.TakingOff));
+        Hold("hold leaves Flying", true, JawaBenchFlightCore.HoldInWindow(true, false, JawaBenchFlightCore.Flying));
+        Hold("start refused, already flying", false, JawaBenchFlightCore.HoldInWindow(true, true, JawaBenchFlightCore.Flying));
+        Hold("start refused, CanEverFly false", false, JawaBenchFlightCore.HoldInWindow(true, true, JawaBenchFlightCore.Grounded));
+        Hold("landing pawn", false, JawaBenchFlightCore.HoldInWindow(true, false, JawaBenchFlightCore.Landing));
+        Hold("grounded pawn", false, JawaBenchFlightCore.HoldInWindow(true, false, JawaBenchFlightCore.Grounded));
+        Hold("no tracker", false, JawaBenchFlightCore.HoldInWindow(false, false, -1));
+        Hold("unreadable state", false, JawaBenchFlightCore.HoldInWindow(true, false, -1));
         break;
 }
 """
@@ -133,8 +149,8 @@ def tool(filename, name):
     return re.split(r"^        \[Tool\(", code.split(f"Task<object> {name}(", 1)[1], maxsplit=1, flags=re.M)[0]
 
 
-def core_case(case):
-    for source in (CORE, WAITER):
+def core_case(case, sources=(CORE, WAITER, FLIGHT_CORE)):
+    for source in sources:
         if not source.is_file():
             return f"{source.name} is missing"
     try:
@@ -150,7 +166,7 @@ def core_case(case):
             csproj.write_text(PROJECT, encoding="utf-8")
             (project / "Program.cs").write_text(PROGRAM, encoding="utf-8")
             (project / "Stubs.cs").write_text(STUBS, encoding="utf-8")
-            for source in (CORE, WAITER):
+            for source in sources:
                 shutil.copyfile(source, project / source.name)
             with patch.multiple(winbuild, BUILD_ROOT=str(path / "build"), LOCK_DIR=str(path / "locks")):
                 rc, record = winbuild.stage_build(str(csproj))
@@ -188,6 +204,14 @@ def t_arrival_requires_opt_in():
     return core_case("arrival")
 
 
+def t_flight_maintain_holds_started():
+    body = tool("JawaBenchFlightTools.cs", "PawnFlight")
+    adds = re.findall(r"^\s*(.*)\bmaintained\.Add\(", body, re.M)
+    if len(adds) != 1 or "JawaBenchFlightCore.HoldInWindow(t != null, refused != null, FlightStateRaw(t))" not in adds[0]:
+        return f"PawnFlight does not add to the maintain list only through JawaBenchFlightCore.HoldInWindow: {adds}"
+    return core_case("flight")
+
+
 def t_missing_dotnet_is_unmeasured():
     with tempfile.TemporaryDirectory(prefix="order-wait-", dir=ROOT) as tmp:
         with patch.dict("os.environ", {"WINBUILD_DOTNET": str(Path(tmp) / "dotnet.exe")}):
@@ -197,7 +221,8 @@ def t_missing_dotnet_is_unmeasured():
 
 
 def main():
-    tests = [t_paused_wait_stops, t_arrival_requires_opt_in, t_missing_dotnet_is_unmeasured]
+    tests = [t_paused_wait_stops, t_arrival_requires_opt_in, t_flight_maintain_holds_started,
+             t_missing_dotnet_is_unmeasured]
     failed = 0
     for test in tests:
         problem = test()
