@@ -48,6 +48,45 @@
     "Urn",
     "Wall"
    ]
+  },
+  {
+   "job": "J20261126T210118Z-43bce0",
+   "host": "SteveDesktop",
+   "tier": "mods__mandrake_rsw_patches__mandrake_rsw_starwarsraces__mandrake_rut_falllinearrivals",
+   "source_sha": "039ac93be300b83ee078b044f9e3a818447e394e",
+   "map": "quicktest",
+   "defs": [
+    "AncientBarrel",
+    "AncientCrate",
+    "AncientCryptosleepCasket",
+    "AncientExostriderCannon",
+    "AncientExostriderHead",
+    "AncientExostriderLeg",
+    "AncientExostriderRemains",
+    "AncientFence",
+    "AncientGiantWheel",
+    "AncientHermeticCrate",
+    "AncientMechDropBeacon",
+    "AncientPipelineSection",
+    "AncientRazorWire",
+    "AncientRustedCarFrame",
+    "AncientShipBeacon",
+    "AncientStorageCylinder",
+    "AncientWarwalkerFoot",
+    "AncientWheel",
+    "ChunkMechanoidSlag",
+    "Column",
+    "Door",
+    "RM_RotWreckFrame",
+    "RM_RotWreckHull",
+    "Sarcophagus",
+    "ShipChunk",
+    "SteleGrand",
+    "SteleLarge",
+    "Table2x2c",
+    "Urn",
+    "Wall"
+   ]
   }
  ]
 }

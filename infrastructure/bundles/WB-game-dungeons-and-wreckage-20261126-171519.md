@@ -1,6 +1,6 @@
 # WB-game-dungeons-and-wreckage-20261126-171519: onboarding run of game:dungeons-and-wreckage
 
-State: step A done, step C in progress (2026-11-26 PST). Lead: FASCINATING_WORLD_JUNK_1 (claimed, ledger 9e9d49f839).
+State: complete (2026-11-26 PST). Every member has its outcome. Lead: FASCINATING_WORLD_JUNK_1 (claimed, ledger 9e9d49f839).
 
 ## Step A, the reality sort (read against the code of 2026-11-26)
 
@@ -27,7 +27,7 @@ check was written, every row PASS).
 |---|---|---|---|
 | TILE_STRUCTURE_DESIGNS_1 | done (verify A1 L2) | d6072e1d70 | J20261126T181641Z-910c5c: A1 PASS, 130 terrain, 192 roof, 60 walls as planned, again after 2500 ticks |
 | HUTT_SLAVE_PIT_TEST_SITE_1 | done (verify A1-A3 L2) | d57de9a370 (fix), d6072e1d70 (site proof) | J20261126T181716Z-098f55: A2 FAIL, a slave NOTSOLD (red); J20261126T185217Z-d22efe: A1, A2, A3 PASS |
-| FASCINATING_WORLD_JUNK_1 | open | fbda2bccae, 026c7de0eb | A2 PASS (J20261126T181800Z-e28f66); A1 rerun J20261126T193905Z-e58a2a; then the judge's look |
+| FASCINATING_WORLD_JUNK_1 | live parts hold; judge part routed; dated wait to 2026-12-03 | 039ac93be3 (roster fix), 28ba1a00f3 (list) | J20261126T203158Z-7dacbd: A1 FAIL, 5 defs in no kind (red); J20261126T210118Z-43bce0: A1, A2 PASS |
 | LIQUID_INDUSTRY_SETPIECES_1 | re-homed to mod:FlowWorks, REFUSED BY BUNDLE note | none | none |
 
 - Mod fault found and fixed: an awake colony slave at a buyer pit was a rider, never cargo (vanilla IsColonist is true for
@@ -35,4 +35,10 @@ check was written, every row PASS).
   for sale; KeelHoistFuzz red on the planted old rule, green on the fix.
 - Lane defect: SteveDesktop proofs jobs staged no map (31 of 162 proof rows on record UNMEASURED with no map). Fixed
   in parallel by PLAYER_START_SITE_1 (e3f4e9f0f0); this run's duplicate fix was dropped before it landed.
-- Next: read the junk A1 rerun; then the judge's look at a screenshot of a fresh map and the contact sheet.
+- Roster hole found and fixed: Biotech's exostrider remains (a Base_Player step the census never read) and the hermetic
+  crate stood in no kind. Kind `fallen_assault_walker` added (delegated design call), the census reads the step, and
+  `junk_live_seen.json` pins each live reading for the offline selftest.
+- Hidden dependency: a list with StarWarsPatches and no StarWarsRaces generates no colony map (lesson filed). Five
+  Workshop mods that StarWarsRaces needs were copied to both Steve games (sync_test_mods.py --only).
+- What resumes: a judge's verdict on the junk taste part (a play-zoom screenshot of a fresh map at 039ac93be3 or later,
+  and a new roster contact sheet). Nothing else is owed by this bundle.

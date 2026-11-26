@@ -189,8 +189,22 @@ yields and risks, the kept defs, the cut defs and the cut prefabs). The owner ca
 - Mod Settings: `junkRosterCut` (StarWarsPatches) and `noOldJunk` (FallLineArrivals), both default on; off is vanilla.
 - Offline proof: `selftest_junk_roster.py`.
 
-**Open: the live step.** No game has yet generated a map on this build and read it. A map made before this change
-keeps its old junk (existing maps are not migrated).
+**Live step — done 2026-11-26 on SteveDesktop (work bundle WB-game-dungeons-and-wreckage-20261126-171519).**
+`prove_junk_roster_live.py` (proof file `infrastructure/state/live_proofs/FASCINATING_WORLD_JUNK_1.txt`):
+- A1, a fresh quicktest map read whole by `jawa/list_things`: the first real reading FAILED, because five defs stood in no
+  roster kind (Biotech's exostrider remains, which the census never read, and the hermetic crate of ruins and
+  complexes). The roster now has the kind `fallen_assault_walker`, and the crate sits in `old_tech` (039ac93be3). Then
+  A1 PASS: 622 junk things, 30 defs, none cut, none in no kind, no car/truck/tank label (J20261126T210118Z-43bce0).
+- A2, the loaded RUT_FallLine mutator: junk factor 0, the no-old-junk step listed, the setting on (PASS).
+- `design/Jawa/worldbuilding/junk/junk_live_seen.json` pins each live reading; `selftest_junk_roster.py` holds every
+  def in it to a kept kind or the cut list.
+- The proof's list carries StarWarsRaces: without it StarWarsPatches' AlienSpawnEnablers PawnKindDefs load with no race
+  and no quicktest map generates.
+
+**Open: the judge's look** (a delegated taste call, routed on the shape): a screenshot of a fresh map on this build at
+play zoom, and a contact sheet of the roster's sprites, judged by `design/RimMandrake/art_judge_brief.md`. The contact
+sheet of 2026-11-11 (git `8130ec9f07:whittle/fascinating_world_junk_1/evidence/roster_contact_sheet.png`) predates the
+`fallen_assault_walker` kind.
 
 ## traps
 - Donor art is **loose PNG vs AssetBundle** — a texture that "does not exist" on disk
