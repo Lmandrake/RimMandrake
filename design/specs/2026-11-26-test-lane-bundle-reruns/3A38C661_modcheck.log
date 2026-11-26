@@ -1,0 +1,23 @@
+PREVIEW 2 of 96 chains, 13 rows to execute
+  chain suspension_bridges_and_covers [full]: named by --chains
+    whole chain: executed 11 row(s)
+  chain machinery_pipes [full]: named by --chains
+    whole chain: executed 2 row(s)
+EXPECTED_ROWS ["suspension_selftest_ran", "Suspension_spans_supports_and_swing_order", "Suspension_deck_built_over_the_hole_floor", "Underpass_band_step_clearance_and_sunken_height", "Underpass_wiring_masks_sites_not_tunnels", "SpanBase_cover_is_the_trap_tier_of_the_base", "SpanBase_cover_read_is_decked_surface_no_underpass", "Suspension_SteelHeavyAnchors_no_rope_table", "under_deck_live", "suspension_look", "cover_vs_bridge_look", "pipe_feeds_far_tank", "pipes_off_far_tank_idle"]
+EXPECTED_ROW_CHAINS {"suspension_selftest_ran": "suspension_bridges_and_covers", "Suspension_spans_supports_and_swing_order": "suspension_bridges_and_covers", "Suspension_deck_built_over_the_hole_floor": "suspension_bridges_and_covers", "Underpass_band_step_clearance_and_sunken_height": "suspension_bridges_and_covers", "Underpass_wiring_masks_sites_not_tunnels": "suspension_bridges_and_covers", "SpanBase_cover_is_the_trap_tier_of_the_base": "suspension_bridges_and_covers", "SpanBase_cover_read_is_decked_surface_no_underpass": "suspension_bridges_and_covers", "Suspension_SteelHeavyAnchors_no_rope_table": "suspension_bridges_and_covers", "under_deck_live": "suspension_bridges_and_covers", "suspension_look": "suspension_bridges_and_covers", "cover_vs_bridge_look": "suspension_bridges_and_covers", "pipe_feeds_far_tank": "machinery_pipes", "pipes_off_far_tank_idle": "machinery_pipes"}
+EXPECTED_DRIVERS [{"name": "suspension_bridge_proof", "timeout_s": 1200}]
+[modcheck] FlowWorks TARGETED: 2 of 96 chains: suspension_bridges_and_covers, machinery_pipes
+[modcheck] driver suspension_bridge_proof START (timeout 1200 s): \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\HARNESS_REPAIR_CAUSE_4D2C5B87_3.det\src\RimMandrake\FlowWorks\northstar/suspension_bridge_proof.py --origin 140,140 --fresh-map
+[modcheck] driver suspension_bridge_proof RC0 rc=0 in 250 s
+[modcheck] driver suspension_bridge_proof LEFT 3 COLONIST CORPSE(S): starting a fresh debug map before the canary
+[modcheck] canary GREEN: programState Playing; 3 live colonists; spawn_batch Steel at 125,125: success=True; destroyed; left at cell: []
+[modcheck] chain suspension_bridges_and_covers START 05:42:45Z
+[validation] running the FlowWorks C# SelfTest (offline, 7 case(s); the game idles meanwhile)
+[modcheck] chain suspension_bridges_and_covers END 282s PASS=8 FAIL=0 UNMEASURED=3 NOT_RUN=0 hold=7.3s body=275.1s teardown=0.0s
+[modcheck] chain machinery_pipes START 05:47:37Z
+[modcheck] chain machinery_pipes END 18s PASS=2 FAIL=0 UNMEASURED=0 NOT_RUN=0 hold=7.3s body=10.3s teardown=0.0s
+[modcheck] FlowWorks: seat UNKNOWN (no --seat, RIMFLOW_SEAT or AGENT_SEAT here): ledger verify and findings NOT written; record it by hand: python3 src/RimMandrake/rimflow/cli.py verify MODCHECK_FLOWWORKS_RUN_1 --result fail --config 'min+FlowWorks TARGETED chains=suspension_bridges_and_covers,machinery_pipes' --evidence /home/mandrake/rm/relentless/clones/HARNESS_REPAIR_CAUSE_4D2C5B87_3.det/Transient/modcheck/FlowWorks_20261126T054756Z.html --seat <SEAT>
+[modcheck] FlowWorks: targeted run, status entry untouched; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\HARNESS_REPAIR_CAUSE_4D2C5B87_3.det\Transient\modcheck\FlowWorks_20261126T054756Z.html
+FlowWorks            TARGETED 2/96 chains (suspension_bridges_and_covers,machinery_pipes) RED  (state; judge: pawn_walks_under_deck=UNJUDGEABLE, suspension_bridge_reads_hung=UNJUDGEABLE, pit_cover_unlike_bridge=UNJUDGEABLE)
+[bridge split] 716.9 s wall: load 6.6 / ticks 6.8 / reads 4.2 / other 8.6 / outside calls 690.6 s
+MODCHECK_RC=1

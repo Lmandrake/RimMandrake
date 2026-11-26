@@ -10,6 +10,8 @@
 # testq-shaped record, so `retest.py passed <record> <item>` judges it with the lane's own code.
 # Why direct: SteveDesktop takes pipeline work only (host_work_switch.py) and the Archmagi testq lane admits no targeted
 # job. The permanent fix is RIMMANDRAKE_MAKE_MODCHECK_RESTART_GAME_ONTO_ITS_LIST_THREE_HAND_WORKAROUNDS.
+# Env: RERUN_PRE, a command run on the loaded game before modcheck (e.g. a site the chain's own driver cannot build);
+# RERUN_DRIVERS, modcheck's --drivers (default on; off when RERUN_PRE built the site the driver would rebuild).
 g=$1; n=$2; mod=$3; ch=$4; tier=$5
 cd "$(dirname "$0")/../../.." || exit 2
 ROOT=$(pwd)
@@ -54,11 +56,12 @@ step python3 $U/game_instance.py launch "$g" --wait || exit 14
 # python.exe over WSL interop can die at start (UtilAcceptVsock accept4 failed 110, 9:19 PM PST): one more try
 step python.exe -u design/concepts/FlowWorks/version/in_game/bundle_shrink_20261125/wait_bridge.py || \
   step python.exe -u design/concepts/FlowWorks/version/in_game/bundle_shrink_20261125/wait_bridge.py || exit 15
+if [ -n "$RERUN_PRE" ]; then step bash -c "$RERUN_PRE" || exit 16; fi
 log=$S/${n}_modcheck.log
 echo "STEP modcheck $mod $ch at $(date +%H:%M:%S)" >> "$L"
 ( export MODCHECK_SKIP_DEPLOY=1 MODCHECK_KEEP_MODLIST=1
   export WSLENV=${WSLENV:+$WSLENV:}MODCHECK_SKIP_DEPLOY:MODCHECK_KEEP_MODLIST
-  python.exe -X faulthandler $U/modcheck/cli.py run --drivers on "$mod" --chains "$ch" --canary --validity \
+  python.exe -X faulthandler $U/modcheck/cli.py run --drivers "${RERUN_DRIVERS:-on}" "$mod" --chains "$ch" --canary --validity \
     --reuse off --purpose fix --gate shadow > "$log" 2>&1; echo "MODCHECK_RC=$?" >> "$log" )
 tail -2 "$log" >> "$L"
 cp "$log" "$HERE/${n}_modcheck.log"

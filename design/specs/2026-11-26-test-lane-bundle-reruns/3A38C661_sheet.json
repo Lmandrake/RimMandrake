@@ -1,0 +1,2889 @@
+{
+ "mod": "FlowWorks",
+ "stamp": "20261126T054756Z",
+ "summary": {
+  "chains": [
+   {
+    "name": "suspension_bridges_and_covers",
+    "components": [
+     {
+      "name": "suspension_selftest_ran",
+      "toggle": null,
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "Suspension_spans_supports_and_swing_order",
+      "toggle": null,
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "Suspension_deck_built_over_the_hole_floor",
+      "toggle": null,
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "Underpass_band_step_clearance_and_sunken_height",
+      "toggle": null,
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "Underpass_wiring_masks_sites_not_tunnels",
+      "toggle": null,
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "SpanBase_cover_is_the_trap_tier_of_the_base",
+      "toggle": null,
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "SpanBase_cover_read_is_decked_surface_no_underpass",
+      "toggle": null,
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "Suspension_SteelHeavyAnchors_no_rope_table",
+      "toggle": null,
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "under_deck_live",
+      "toggle": null,
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "execution": "ran",
+      "detail": "ExpectationFailed: UNMEASURED: live check owed -- no suspension_bridge_proof.py result at the current mod hash and deployed DLL carries UND_floor_path_walks_under, UND_both_arrive: run `python.exe src/RimMandrake/FlowWorks/northstar/suspension_bridge_proof.py` (a colonist on a trench floor walks to the far side of an RM_SuspensionBridge deck (production under-path found, position read from jawa/order_pawn))",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [
+       "pawn_walks_under_deck"
+      ],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null,
+      "visual": [
+       {
+        "id": "pawn_walks_under_deck",
+        "polarity": "must",
+        "verdict": "UNJUDGEABLE",
+        "pass": false,
+        "why": "component claims this but captured no screenshot",
+        "image": ""
+       }
+      ]
+     },
+     {
+      "name": "suspension_look",
+      "toggle": null,
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "execution": "ran",
+      "detail": "ExpectationFailed: UNMEASURED: look owed -- an RM_SuspensionBridge over a dug hole reads as a deck hung between anchors at its two ends, not a floor tile or the game's own bridge, judged by eye (SUSPENSION_ART_RESKIN_HE_SEES_FIRST)",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [
+       "suspension_bridge_reads_hung"
+      ],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null,
+      "visual": [
+       {
+        "id": "suspension_bridge_reads_hung",
+        "polarity": "must",
+        "verdict": "UNJUDGEABLE",
+        "pass": false,
+        "why": "component claims this but captured no screenshot",
+        "image": ""
+       }
+      ]
+     },
+     {
+      "name": "cover_vs_bridge_look",
+      "toggle": null,
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "execution": "ran",
+      "detail": "an UNMEASURED component ended this chain earlier: ExpectationFailed: UNMEASURED: look owed -- an RM_SuspensionBridge over a dug hole reads as a deck hung between anchors at its two ends, not a floor tile or the game's own bridge, judged by eye (SUSPE",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [
+       "pit_cover_unlike_bridge"
+      ],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null,
+      "visual": [
+       {
+        "id": "pit_cover_unlike_bridge",
+        "polarity": "must",
+        "verdict": "UNJUDGEABLE",
+        "pass": false,
+        "why": "component claims this but captured no screenshot",
+        "image": ""
+       }
+      ]
+     }
+    ],
+    "situational": null,
+    "modal_check": null,
+    "site_hold": {
+     "bland": true,
+     "problems": [],
+     "notes": [],
+     "dead": [],
+     "steps": [
+      {
+       "name": "kill_hostiles",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "targeted": []
+       }
+      },
+      {
+       "name": "clear_map_fog",
+       "acted": 2,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "hostilesBefore": [],
+        "foggedBefore": 1233,
+        "foggedNow": 0,
+        "releasedByUnfog": [
+         "Fingerspike2741",
+         "Trispike2740"
+        ],
+        "sweepPasses": 1,
+        "hostilesAfter": [],
+        "verified": true,
+        "error": null
+       }
+      },
+      {
+       "name": "pause",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {}
+      },
+      {
+       "name": "quiet_world",
+       "acted": 3,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "profile": "isolated",
+        "quests": "not touched",
+        "notSuppressed": [
+         "active quests and their parts (never ended by default: ending a quest changes the world)",
+         "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+         "existing game conditions, map/world/game components and mod tickers",
+         "hives and other pawn-spawning structures, births, egg hatching, breeders",
+         "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+         "weather transitions, fires, existing hostile behaviour"
+        ],
+        "storyteller": {
+         "cleared_count": 0,
+         "cleared": []
+        },
+        "logRaidInfo": "on",
+        "wildSpawner": "blocked (read back)",
+        "readBack": {
+         "enableStoryteller": false,
+         "enableRandomMentalStates": false,
+         "enableRandomDiseases": false,
+         "logRaidInfo": true,
+         "threatScale": 0.0,
+         "allowBigThreats": false
+        },
+        "incidentQueueAfterClear": 0,
+        "diseaseTraits": {
+         "colonists": 3,
+         "removed": [],
+         "seen": {
+          "Human271": [
+           "Neurotic 1"
+          ],
+          "Human277": [
+           "Neurotic 2",
+           "Gourmand 0"
+          ],
+          "Human274": [
+           "Undergrounder 0",
+           "Kind 0",
+           "CreepyBreathing 0"
+          ]
+         }
+        }
+       }
+      },
+      {
+       "name": "quiet_site_map",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "removed": [],
+        "threatsAfter": 0,
+        "lettersUnsentAfter": 0
+       }
+      },
+      {
+       "name": "kill_hostiles",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "targeted": []
+       }
+      },
+      {
+       "name": "kill_wildlife",
+       "acted": 16,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "route": "destroy_bulk"
+       }
+      },
+      {
+       "name": "clear_strangers",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "targeted": []
+       }
+      },
+      {
+       "name": "extinguish",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {}
+      },
+      {
+       "name": "restore_colonists",
+       "acted": 10,
+       "verified": true,
+       "residue": [],
+       "evidence": {}
+      }
+     ]
+    },
+    "site_reload": null,
+    "setup_records": [
+     {
+      "call": "restore_touched_settings []",
+      "result": true
+     }
+    ],
+    "env_reset": {
+     "log_reset": "ok",
+     "weather": "ok",
+     "map_info": "ok",
+     "unroof": "ok",
+     "gas_ToxGas": "ok",
+     "gas_BlindSmoke": "ok",
+     "gas_RotStink": "ok",
+     "gas_DeadlifeDust": "ok",
+     "gas_things": "ok"
+    },
+    "phase_s": {
+     "hold": 7.297,
+     "body": 275.082,
+     "teardown": 0.0
+    },
+    "gate": {
+     "action": "run",
+     "key": "693db8969e8f6149b6f29d4692c459b76dfeccfcde35e721c4b3a3fcfeedd0bb",
+     "why": "no record at this key",
+     "record": null,
+     "purpose": "fix",
+     "inputs_known": true,
+     "code_version": "e0b21dabc62dbf7cd146a7cef74efc24bbcd916bde0cc69c82ff3798e029efe8"
+    }
+   },
+   {
+    "name": "machinery_pipes",
+    "components": [
+     {
+      "name": "pipe_feeds_far_tank",
+      "toggle": "universalPipesEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/inspect_string",
+        "result": {
+         "success": true,
+         "message": "1 thing(s) inspected, 34605 examined.",
+         "matched": 1,
+         "examined": 34605,
+         "threw": 0,
+         "things": [
+          {
+           "id": "RM_LiquidTank41214",
+           "defName": "RM_LiquidTank",
+           "label": "liquid tank",
+           "x": 134,
+           "z": 96,
+           "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+           "inspect": [
+            "Holds big creatures up to breadth 2 (2 thick here)",
+            "Empty",
+            "Job: Store"
+           ]
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_3ba7cdcf99144dc09d168a06ae3939c3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 71
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(800) -> 800 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 800
+        }
+       },
+       {
+        "call": "bridge_call jawa/inspect_string",
+        "result": {
+         "success": true,
+         "message": "1 thing(s) inspected, 39512 examined.",
+         "matched": 1,
+         "examined": 39512,
+         "threw": 0,
+         "things": [
+          {
+           "id": "RM_LiquidTank41214",
+           "defName": "RM_LiquidTank",
+           "label": "liquid tank",
+           "x": 134,
+           "z": 96,
+           "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+           "inspect": [
+            "Holds big creatures up to breadth 2 (2 thick here)",
+            "Holding: Fresh water (2 kL / 16 kL)",
+            "Job: Store"
+           ]
+          }
+         ],
+         "ticksGame": 801,
+         "operation": {
+          "OperationId": "op_7a5f2d9ef7414d0b89327c2e3c87c928",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 45
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 801
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "pipes_off_far_tank_idle",
+      "toggle": "universalPipesEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "set_setting(RimMandrake.FlowWorks.Machinery.RM_MachinerySettings, {'universalPipesEnabled': False})",
+        "result": true
+       },
+       {
+        "call": "bridge_call jawa/inspect_string",
+        "result": {
+         "success": true,
+         "message": "1 thing(s) inspected, 39512 examined.",
+         "matched": 1,
+         "examined": 39512,
+         "threw": 0,
+         "things": [
+          {
+           "id": "RM_LiquidTank41214",
+           "defName": "RM_LiquidTank",
+           "label": "liquid tank",
+           "x": 134,
+           "z": 96,
+           "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+           "inspect": [
+            "Holds big creatures up to breadth 2 (2 thick here)",
+            "Holding: Fresh water (2 kL / 16 kL)",
+            "Job: Store"
+           ]
+          }
+         ],
+         "ticksGame": 801,
+         "operation": {
+          "OperationId": "op_0757bd0ec2a84471a8b7295572e9beb7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 46
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 801
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(600) -> 600 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 600
+        }
+       },
+       {
+        "call": "bridge_call jawa/inspect_string",
+        "result": {
+         "success": true,
+         "message": "1 thing(s) inspected, 41232 examined.",
+         "matched": 1,
+         "examined": 41232,
+         "threw": 0,
+         "things": [
+          {
+           "id": "RM_LiquidTank41214",
+           "defName": "RM_LiquidTank",
+           "label": "liquid tank",
+           "x": 134,
+           "z": 96,
+           "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+           "inspect": [
+            "Holds big creatures up to breadth 2 (2 thick here)",
+            "Holding: Fresh water (2 kL / 16 kL)",
+            "Job: Store"
+           ]
+          }
+         ],
+         "ticksGame": 1401,
+         "operation": {
+          "OperationId": "op_6281f81ebb37487dade39fc10db45ddf",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1401
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null,
+    "site_hold": {
+     "bland": true,
+     "problems": [],
+     "notes": [],
+     "dead": [],
+     "steps": [
+      {
+       "name": "kill_hostiles",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "targeted": []
+       }
+      },
+      {
+       "name": "clear_map_fog",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "hostilesBefore": [],
+        "foggedBefore": 0,
+        "foggedNow": 0,
+        "releasedByUnfog": [],
+        "sweepPasses": 0,
+        "hostilesAfter": [],
+        "verified": true,
+        "error": null
+       }
+      },
+      {
+       "name": "pause",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {}
+      },
+      {
+       "name": "quiet_world",
+       "acted": 3,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "profile": "isolated",
+        "quests": "not touched",
+        "notSuppressed": [
+         "active quests and their parts (never ended by default: ending a quest changes the world)",
+         "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+         "existing game conditions, map/world/game components and mod tickers",
+         "hives and other pawn-spawning structures, births, egg hatching, breeders",
+         "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+         "weather transitions, fires, existing hostile behaviour"
+        ],
+        "storyteller": {
+         "cleared_count": 0,
+         "cleared": []
+        },
+        "logRaidInfo": "on",
+        "wildSpawner": "blocked (read back)",
+        "readBack": {
+         "enableStoryteller": false,
+         "enableRandomMentalStates": false,
+         "enableRandomDiseases": false,
+         "logRaidInfo": true,
+         "threatScale": 0.0,
+         "allowBigThreats": false
+        },
+        "incidentQueueAfterClear": 0,
+        "diseaseTraits": {
+         "colonists": 3,
+         "removed": [],
+         "seen": {
+          "Human271": [
+           "Neurotic 1"
+          ],
+          "Human277": [
+           "Neurotic 2",
+           "Gourmand 0"
+          ],
+          "Human274": [
+           "Undergrounder 0",
+           "Kind 0",
+           "CreepyBreathing 0"
+          ]
+         }
+        }
+       }
+      },
+      {
+       "name": "quiet_site_map",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "removed": [],
+        "threatsAfter": 0,
+        "lettersUnsentAfter": 0
+       }
+      },
+      {
+       "name": "kill_hostiles",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "targeted": []
+       }
+      },
+      {
+       "name": "kill_wildlife",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "route": "none-needed"
+       }
+      },
+      {
+       "name": "clear_strangers",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "targeted": []
+       }
+      },
+      {
+       "name": "extinguish",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {}
+      },
+      {
+       "name": "restore_colonists",
+       "acted": 9,
+       "verified": true,
+       "residue": [],
+       "evidence": {}
+      }
+     ]
+    },
+    "site_reload": null,
+    "setup_records": [
+     {
+      "call": "bridge_call jawa/map_info",
+      "result": {
+       "success": true,
+       "tile": 8158,
+       "tileValid": true,
+       "mapId": 0,
+       "sizeX": 250,
+       "sizeZ": 250,
+       "cellCount": 62500,
+       "tileInfo": {
+        "biome": "RM_TheRot",
+        "hilliness": "Flat",
+        "hillinessInt": 1,
+        "elevation": 391.005249,
+        "rainfall": 343.3228,
+        "swampiness": 0.0,
+        "temperature": 12.1173344,
+        "pollution": 0.0,
+        "waterCovered": false,
+        "isSurfaceTile": true
+       },
+       "mapBiome": "RM_TheRot",
+       "mapBiomeLabel": "the Rot",
+       "outdoorTempNow": 4.524993,
+       "latitude": 33.28164,
+       "longitude": -16.57208,
+       "season": "Spring",
+       "mapParent": {
+        "defName": "Settlement",
+        "label": "Colony",
+        "faction": "PlayerColony",
+        "factionName": "New Arrivals"
+       },
+       "playerSettlementsOnThisTile": 1,
+       "ticksGame": 1,
+       "operation": {
+        "OperationId": "op_61ec0a3bf779472aae06f908efb0cd20",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 34
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/static_call",
+      "result": {
+       "success": true,
+       "method": "System.String ProofResetRect(System.String)",
+       "result": "RESET cells=0 levels=0 rolled=0 released=0 bodies=0 swim=0 left=0",
+       "thingArgs": [],
+       "ticksGame": 1,
+       "operation": {
+        "OperationId": "op_cc7ba5c10e5642129275d7bbd77f73ff",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 46
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/set_roof_batch",
+      "result": {
+       "success": true,
+       "message": "Roofed 0 cell(s) across 1 op(s).",
+       "opsRequested": 1,
+       "cellsChanged": 0,
+       "cellsFailedVerify": 0,
+       "cellsOutOfBounds": 0,
+       "perDef": {},
+       "errors": [],
+       "ticksGame": 1,
+       "operation": {
+        "OperationId": "op_5a6f2c8b47b94a8dbd7aac2d2e54ca89",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 44
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/destroy_batch",
+      "result": {
+       "success": true,
+       "message": "Destroyed 655 thing(s) across 1200 cell(s).",
+       "cellsExamined": 1200,
+       "outOfBounds": 0,
+       "destroyed": 655,
+       "pawnsSkipped": 0,
+       "undestroyableSkipped": 0,
+       "perCategory": {
+        "Plant": 526,
+        "Building": 95,
+        "Filth": 26,
+        "Item": 8
+       },
+       "samples": [
+        {
+         "x": 117,
+         "z": 83,
+         "def": "RM_GiantAgarilux",
+         "category": "Plant"
+        },
+        {
+         "x": 117,
+         "z": 85,
+         "def": "RM_TollukCap",
+         "category": "Plant"
+        },
+        {
+         "x": 117,
+         "z": 90,
+         "def": "RM_GiantAgarilux",
+         "category": "Plant"
+        },
+        {
+         "x": 117,
+         "z": 92,
+         "def": "RM_Bryolux",
+         "category": "Plant"
+        },
+        {
+         "x": 117,
+         "z": 94,
+         "def": "RM_CrimsonCap",
+         "category": "Plant"
+        },
+        {
+         "x": 117,
+         "z": 95,
+         "def": "RM_HugeTrunkBlocker",
+         "category": "Building"
+        },
+        {
+         "x": 117,
+         "z": 96,
+         "def": "RM_HugeTrunkBlocker",
+         "category": "Building"
+        },
+        {
+         "x": 117,
+         "z": 98,
+         "def": "RM_GiantAgarilux",
+         "category": "Plant"
+        }
+       ],
+       "readBack": {
+        "ok": true,
+        "tool": "jawa/destroy_batch",
+        "faults": [],
+        "frameOpen": 40430,
+        "frameReply": 40430,
+        "sameFrame": true,
+        "rows": 655,
+        "rowsWrong": 0,
+        "wrong": [],
+        "made": [
+         {
+          "op": "gone",
+          "id": "RM_GiantAgarilux10758",
+          "x": 117,
+          "z": 83,
+          "got": {
+           "def": "RM_GiantAgarilux",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_TollukCap15795",
+          "x": 117,
+          "z": 85,
+          "got": {
+           "def": "RM_TollukCap",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_GiantAgarilux10015",
+          "x": 117,
+          "z": 90,
+          "got": {
+           "def": "RM_GiantAgarilux",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_Bryolux5886",
+          "x": 117,
+          "z": 92,
+          "got": {
+           "def": "RM_Bryolux",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_CrimsonCap21631",
+          "x": 117,
+          "z": 94,
+          "got": {
+           "def": "RM_CrimsonCap",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_HugeTrunkBlocker38532",
+          "x": 117,
+          "z": 95,
+          "got": {
+           "def": "RM_HugeTrunkBlocker",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_HugeTrunkBlocker38536",
+          "x": 117,
+          "z": 96,
+          "got": {
+           "def": "RM_HugeTrunkBlocker",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_GiantAgarilux18363",
+          "x": 117,
+          "z": 98,
+          "got": {
+           "def": "RM_GiantAgarilux",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Filth_RubbleRock30913",
+          "x": 117,
+          "z": 101,
+          "got": {
+           "def": "Filth_RubbleRock",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "ChunkGranite30912",
+          "x": 117,
+          "z": 102,
+          "got": {
+           "def": "ChunkGranite",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Filth_RubbleRock30919",
+          "x": 117,
+          "z": 102,
+          "got": {
+           "def": "Filth_RubbleRock",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Filth_RubbleRock30923",
+          "x": 117,
+          "z": 103,
+          "got": {
+           "def": "Filth_RubbleRock",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Filth_RubbleRock30925",
+          "x": 117,
+          "z": 104,
+          "got": {
+           "def": "Filth_RubbleRock",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Filth_RubbleRock30929",
+          "x": 117,
+          "z": 105,
+          "got": {
+           "def": "Filth_RubbleRock",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_GiantAgarilux16411",
+          "x": 117,
+          "z": 110,
+          "got": {
+           "def": "RM_GiantAgarilux",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_Glowstool10782",
+          "x": 118,
+          "z": 81,
+          "got": {
+           "def": "RM_Glowstool",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_Bryolux27694",
+          "x": 118,
+          "z": 82,
+          "got": {
+           "def": "RM_Bryolux",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_TollukCap20267",
+          "x": 118,
+          "z": 84,
+          "got": {
+           "def": "RM_TollukCap",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_Bryolux24092",
+          "x": 118,
+          "z": 86,
+          "got": {
+           "def": "RM_Bryolux",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_Bryolux27686",
+          "x": 118,
+          "z": 87,
+          "got": {
+           "def": "RM_Bryolux",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_Glowstool10488",
+          "x": 118,
+          "z": 88,
+          "got": {
+           "def": "RM_Glowstool",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_DribblingCap19264",
+          "x": 118,
+          "z": 89,
+          "got": {
+           "def": "RM_DribblingCap",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_HugeTrunkBlocker36155",
+          "x": 118,
+          "z": 90,
+          "got": {
+           "def": "RM_HugeTrunkBlocker",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_Bryolux7152",
+          "x": 118,
+          "z": 92,
+          "got": {
+           "def": "RM_Bryolux",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_Shinecap23869",
+          "x": 118,
+          "z": 93,
+          "got": {
+           "def": "RM_Shinecap",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_TollukCap25363",
+          "x": 118,
+          "z": 96,
+          "got": {
+           "def": "RM_TollukCap",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_HugeTrunkBlocker38516",
+          "x": 118,
+          "z": 100,
+          "got": {
+           "def": "RM_HugeTrunkBlocker",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_Bryolux8404",
+          "x": 118,
+          "z": 101,
+          "got": {
+           "def": "RM_Bryolux",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Filth_RubbleRock30915",
+          "x": 118,
+          "z": 101,
+          "got": {
+           "def": "Filth_RubbleRock",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_Glowstool22199",
+          "x": 118,
+          "z": 102,
+          "got": {
+           "def": "RM_Glowstool",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "Filth_RubbleRock30916",
+          "x": 118,
+          "z": 103,
+          "got": {
+           "def": "Filth_RubbleRock",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_Bryolux11445",
+          "x": 118,
+          "z": 107,
+          "got": {
+           "def": "RM_Bryolux",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_Pusmelon21663",
+          "x": 118,
+          "z": 108,
+          "got": {
+           "def": "RM_Pusmelon",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_FruitingBodies7720",
+          "x": 118,
+          "z": 109,
+          "got": {
+           "def": "RM_FruitingBodies",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_LilacBeacon23140",
+          "x": 119,
+          "z": 82,
+          "got": {
+           "def": "RM_LilacBeacon",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_Glowstool8887",
+          "x": 119,
+          "z": 84,
+          "got": {
+           "def": "RM_Glowstool",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_Glowstool9322",
+          "x": 119,
+          "z": 86,
+          "got": {
+           "def": "RM_Glowstool",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_AgaricusDomeCap27717",
+          "x": 119,
+          "z": 87,
+          "got": {
+           "def": "RM_AgaricusDomeCap",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_Bryolux26169",
+          "x": 119,
+          "z": 88,
+          "got": {
+           "def": "RM_Bryolux",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_Ullumbra8616",
+          "x": 119,
+          "z": 90,
+          "got": {
+           "def": "RM_Ullumbra",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_HugeTrunkBlocker36156",
+          "x": 119,
+          "z": 91,
+          "got": {
+           "def": "RM_HugeTrunkBlocker",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_GlowingAgarilux7136",
+          "x": 119,
+          "z": 95,
+          "got": {
+           "def": "RM_GlowingAgarilux",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_Bryolux9318",
+          "x": 119,
+          "z": 96,
+          "got": {
+           "def": "RM_Bryolux",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_GiantAgarilux17559",
+          "x": 119,
+          "z": 100,
+          "got": {
+           "def": "RM_GiantAgarilux",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_HugeTrunkBlocker38518",
+          "x": 119,
+          "z": 101,
+          "got": {
+           "def": "RM_HugeTrunkBlocker",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_Bryolux15409",
+          "x": 119,
+          "z": 102,
+          "got": {
+           "def": "RM_Bryolux",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_Dewshrooms4528",
+          "x": 119,
+          "z": 110,
+          "got": {
+           "def": "RM_Dewshrooms",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_Dewshrooms19493",
+          "x": 120,
+          "z": 83,
+          "got": {
+           "def": "RM_Dewshrooms",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_Glowstool23496",
+          "x": 120,
+          "z": 84,
+          "got": {
+           "def": "RM_Glowstool",
+           "destroyed": "True"
+          }
+         },
+         {
+          "op": "gone",
+          "id": "RM_Bryolux8063",
+          "x": 120,
+          "z": 87,
+          "got": {
+           "def": "RM_Bryolux",
+           "destroyed": "True"
+          }
+         }
+        ],
+        "leftBlocking": 0,
+        "leftKept": 0,
+        "left": [],
+        "digest": "3a4acd8c58750a3a"
+       },
+       "ticksGame": 1,
+       "operation": {
+        "OperationId": "op_207ba4b8aedf4a658e2ffd395cddd7a6",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 552
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/set_terrain_batch",
+      "result": {
+       "success": true,
+       "message": "Applied 1/1 op(s): 1200 cell(s) changed, 0 already correct.",
+       "layer": "top",
+       "opsRequested": 1,
+       "opsApplied": 1,
+       "cellsRequested": 1200,
+       "cellsChanged": 1200,
+       "cellsAlreadyCorrect": 0,
+       "cellsOutOfBounds": 0,
+       "cellsFailedVerify": 0,
+       "refreshed": true,
+       "cellsRefreshed": 1200,
+       "errors": [],
+       "samples": [
+        {
+         "x": 117,
+         "z": 81,
+         "before": "RM_TheRotGrass",
+         "after": "Soil",
+         "applied": true
+        },
+        {
+         "x": 117,
+         "z": 82,
+         "before": "RM_TheRotGrass",
+         "after": "Soil",
+         "applied": true
+        },
+        {
+         "x": 117,
+         "z": 83,
+         "before": "RM_TheRotGrass",
+         "after": "Soil",
+         "applied": true
+        },
+        {
+         "x": 117,
+         "z": 84,
+         "before": "RM_TheRotGrass",
+         "after": "Soil",
+         "applied": true
+        },
+        {
+         "x": 117,
+         "z": 85,
+         "before": "RM_TheRotGrass",
+         "after": "Soil",
+         "applied": true
+        },
+        {
+         "x": 117,
+         "z": 86,
+         "before": "RM_TheRotGrass",
+         "after": "Soil",
+         "applied": true
+        },
+        {
+         "x": 117,
+         "z": 87,
+         "before": "RM_TheRotGrass",
+         "after": "Soil",
+         "applied": true
+        },
+        {
+         "x": 117,
+         "z": 88,
+         "before": "RM_TheRotGrass",
+         "after": "Soil",
+         "applied": true
+        }
+       ],
+       "mapSize": {
+        "x": 250,
+        "z": 250
+       },
+       "readBack": {
+        "ok": true,
+        "tool": "jawa/set_terrain_batch",
+        "faults": [],
+        "frameOpen": 40435,
+        "frameReply": 40435,
+        "sameFrame": true,
+        "rows": 1200,
+        "rowsWrong": 0,
+        "wrong": [],
+        "made": [
+         {
+          "op": "terrain",
+          "x": 117,
+          "z": 81,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 117,
+          "z": 82,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 117,
+          "z": 83,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 117,
+          "z": 84,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 117,
+          "z": 85,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 117,
+          "z": 86,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 117,
+          "z": 87,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 117,
+          "z": 88,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 117,
+          "z": 89,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 117,
+          "z": 90,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 117,
+          "z": 91,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 117,
+          "z": 92,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 117,
+          "z": 93,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 117,
+          "z": 94,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 117,
+          "z": 95,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 117,
+          "z": 96,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 117,
+          "z": 97,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 117,
+          "z": 98,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 117,
+          "z": 99,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 117,
+          "z": 100,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 117,
+          "z": 101,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 117,
+          "z": 102,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 117,
+          "z": 103,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 117,
+          "z": 104,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 117,
+          "z": 105,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 117,
+          "z": 106,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 117,
+          "z": 107,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 117,
+          "z": 108,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 117,
+          "z": 109,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 117,
+          "z": 110,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 118,
+          "z": 81,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 118,
+          "z": 82,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 118,
+          "z": 83,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 118,
+          "z": 84,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 118,
+          "z": 85,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 118,
+          "z": 86,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 118,
+          "z": 87,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 118,
+          "z": 88,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 118,
+          "z": 89,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 118,
+          "z": 90,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 118,
+          "z": 91,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 118,
+          "z": 92,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 118,
+          "z": 93,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 118,
+          "z": 94,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 118,
+          "z": 95,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 118,
+          "z": 96,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 118,
+          "z": 97,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 118,
+          "z": 98,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 118,
+          "z": 99,
+          "got": {
+           "terrain": "Soil"
+          }
+         },
+         {
+          "op": "terrain",
+          "x": 118,
+          "z": 100,
+          "got": {
+           "terrain": "Soil"
+          }
+         }
+        ],
+        "leftBlocking": 0,
+        "leftKept": 0,
+        "left": [],
+        "digest": "fd5f3a60b430f78d"
+       },
+       "ticksGame": 1,
+       "operation": {
+        "OperationId": "op_a076fb76363045d5a9e0fc97ea3b7e8e",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 42
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/weather_set",
+      "result": {
+       "success": true,
+       "before": "Clear",
+       "after": "Clear",
+       "lockInForce": true,
+       "gamePaused": true,
+       "notes": [
+        "registered a PERMANENT GameCondition_ForceWeather - this is the only durable weather control"
+       ],
+       "ticksGame": 1,
+       "operation": {
+        "OperationId": "op_4bba8bffe2d542f6984d099f00796e11",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 40
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/clear_ui",
+      "result": {
+       "success": true,
+       "closed": [
+        "Dialog_DevPalette"
+       ],
+       "closedCount": 1,
+       "remaining": [
+        "ImmediateWindow"
+       ],
+       "deselected": 0,
+       "hudHidden": true,
+       "hudWasHidden": false,
+       "hudLeaseSeconds": 20,
+       "message": "Closed 1 window(s), deselected 0 thing(s). Still open: ImmediateWindow.",
+       "operation": {
+        "OperationId": "op_7f01efffeb6b470e8cc703377ea9e9a4",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 44
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/flowworks_excavation_drive",
+      "result": {
+       "success": true,
+       "cell": {
+        "x": 127,
+        "z": 95
+       },
+       "depth": 2,
+       "waterSet": false,
+       "waterM": 0.0,
+       "waterDl": 0,
+       "bodyCells": 0,
+       "bodyDl": 0,
+       "ticksGame": 1,
+       "operation": {
+        "OperationId": "op_d302b5eb031343abbdee2a38a10f6dd4",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 43
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/flowworks_excavation_drive",
+      "result": {
+       "success": true,
+       "cell": {
+        "x": 128,
+        "z": 95
+       },
+       "depth": 2,
+       "waterSet": false,
+       "waterM": 0.0,
+       "waterDl": 0,
+       "bodyCells": 0,
+       "bodyDl": 0,
+       "ticksGame": 1,
+       "operation": {
+        "OperationId": "op_a4484a1ef20b46958e974d3497340ae9",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 36
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/flowworks_excavation_drive",
+      "result": {
+       "success": true,
+       "cell": {
+        "x": 129,
+        "z": 95
+       },
+       "depth": 2,
+       "waterSet": false,
+       "waterM": 0.0,
+       "waterDl": 0,
+       "bodyCells": 0,
+       "bodyDl": 0,
+       "ticksGame": 1,
+       "operation": {
+        "OperationId": "op_a88b001d352d41a69a100a0095a77c2c",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 37
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/flowworks_excavation_drive",
+      "result": {
+       "success": true,
+       "cell": {
+        "x": 127,
+        "z": 95
+       },
+       "depth": 2,
+       "waterSet": true,
+       "waterM": 1.0,
+       "waterDl": 20000,
+       "bodyCells": 3,
+       "bodyDl": 60000,
+       "ticksGame": 1,
+       "operation": {
+        "OperationId": "op_a5954b4eeb714b1fa7e23e460a91ee3c",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 45
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/flowworks_excavation_drive",
+      "result": {
+       "success": true,
+       "cell": {
+        "x": 128,
+        "z": 95
+       },
+       "depth": 2,
+       "waterSet": true,
+       "waterM": 1.0,
+       "waterDl": 20000,
+       "bodyCells": 3,
+       "bodyDl": 60000,
+       "ticksGame": 1,
+       "operation": {
+        "OperationId": "op_fe3a7aa0845d424a969eedf1b705f349",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 47
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/flowworks_excavation_drive",
+      "result": {
+       "success": true,
+       "cell": {
+        "x": 129,
+        "z": 95
+       },
+       "depth": 2,
+       "waterSet": true,
+       "waterM": 1.0,
+       "waterDl": 20000,
+       "bodyCells": 3,
+       "bodyDl": 60000,
+       "ticksGame": 1,
+       "operation": {
+        "OperationId": "op_cc1181d6f0f34f118cec0682e94a3907",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 38
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/build_batch",
+      "result": {
+       "success": true,
+       "partial": false,
+       "placed": 8,
+       "survived": 8,
+       "lostToLaterOps": 0,
+       "failedCount": 0,
+       "failed": [],
+       "displacedCount": 0,
+       "displaced": [],
+       "placeWorkerWarningsCount": 0,
+       "placeWorkerWarnings": [],
+       "qualityIgnoredForDefs": [],
+       "message": "8 placed.",
+       "note": "Walls create NO roof - roof separately. Run jawa/map_commit after the batch.",
+       "things": [
+        {
+         "def": "RM_LiquidPump",
+         "x": 128,
+         "z": 96,
+         "rot": 0,
+         "faction": "PlayerColony",
+         "hitPoints": 120,
+         "maxHitPoints": 120,
+         "destroyed": false
+        },
+        {
+         "def": "RM_LiquidTank",
+         "x": 134,
+         "z": 96,
+         "rot": 0,
+         "faction": "PlayerColony",
+         "hitPoints": 220,
+         "maxHitPoints": 220,
+         "destroyed": false
+        },
+        {
+         "def": "Battery",
+         "x": 126,
+         "z": 97,
+         "rot": 0,
+         "faction": "PlayerColony",
+         "hitPoints": 100,
+         "maxHitPoints": 100,
+         "destroyed": false
+        },
+        {
+         "def": "RM_UniversalPipe",
+         "x": 129,
+         "z": 96,
+         "rot": 0,
+         "faction": "PlayerColony",
+         "hitPoints": 100,
+         "maxHitPoints": 100,
+         "destroyed": false
+        },
+        {
+         "def": "RM_UniversalPipe",
+         "x": 130,
+         "z": 96,
+         "rot": 0,
+         "faction": "PlayerColony",
+         "hitPoints": 100,
+         "maxHitPoints": 100,
+         "destroyed": false
+        },
+        {
+         "def": "RM_UniversalPipe",
+         "x": 131,
+         "z": 96,
+         "rot": 0,
+         "faction": "PlayerColony",
+         "hitPoints": 100,
+         "maxHitPoints": 100,
+         "destroyed": false
+        },
+        {
+         "def": "RM_UniversalPipe",
+         "x": 132,
+         "z": 96,
+         "rot": 0,
+         "faction": "PlayerColony",
+         "hitPoints": 100,
+         "maxHitPoints": 100,
+         "destroyed": false
+        },
+        {
+         "def": "RM_UniversalPipe",
+         "x": 133,
+         "z": 96,
+         "rot": 0,
+         "faction": "PlayerColony",
+         "hitPoints": 100,
+         "maxHitPoints": 100,
+         "destroyed": false
+        }
+       ],
+       "readBack": {
+        "ok": true,
+        "tool": "jawa/build_batch",
+        "faults": [],
+        "frameOpen": 40480,
+        "frameReply": 40480,
+        "sameFrame": true,
+        "rows": 8,
+        "rowsWrong": 0,
+        "wrong": [],
+        "made": [
+         {
+          "op": "thing",
+          "id": "RM_LiquidPump41213",
+          "x": 128,
+          "z": 96,
+          "got": {
+           "cell": "128,96",
+           "def": "RM_LiquidPump",
+           "faction": "PlayerColony",
+           "hp": "120",
+           "rot": "0",
+           "standing": "True"
+          }
+         },
+         {
+          "op": "thing",
+          "id": "RM_LiquidTank41214",
+          "x": 134,
+          "z": 96,
+          "got": {
+           "cell": "134,96",
+           "def": "RM_LiquidTank",
+           "faction": "PlayerColony",
+           "hp": "220",
+           "rot": "0",
+           "standing": "True"
+          }
+         },
+         {
+          "op": "thing",
+          "id": "Battery41215",
+          "x": 126,
+          "z": 97,
+          "got": {
+           "cell": "126,97",
+           "def": "Battery",
+           "faction": "PlayerColony",
+           "hp": "100",
+           "rot": "0",
+           "standing": "True"
+          }
+         },
+         {
+          "op": "thing",
+          "id": "RM_UniversalPipe41216",
+          "x": 129,
+          "z": 96,
+          "got": {
+           "cell": "129,96",
+           "def": "RM_UniversalPipe",
+           "faction": "PlayerColony",
+           "hp": "100",
+           "rot": "0",
+           "standing": "True"
+          }
+         },
+         {
+          "op": "thing",
+          "id": "RM_UniversalPipe41217",
+          "x": 130,
+          "z": 96,
+          "got": {
+           "cell": "130,96",
+           "def": "RM_UniversalPipe",
+           "faction": "PlayerColony",
+           "hp": "100",
+           "rot": "0",
+           "standing": "True"
+          }
+         },
+         {
+          "op": "thing",
+          "id": "RM_UniversalPipe41218",
+          "x": 131,
+          "z": 96,
+          "got": {
+           "cell": "131,96",
+           "def": "RM_UniversalPipe",
+           "faction": "PlayerColony",
+           "hp": "100",
+           "rot": "0",
+           "standing": "True"
+          }
+         },
+         {
+          "op": "thing",
+          "id": "RM_UniversalPipe41219",
+          "x": 132,
+          "z": 96,
+          "got": {
+           "cell": "132,96",
+           "def": "RM_UniversalPipe",
+           "faction": "PlayerColony",
+           "hp": "100",
+           "rot": "0",
+           "standing": "True"
+          }
+         },
+         {
+          "op": "thing",
+          "id": "RM_UniversalPipe41220",
+          "x": 133,
+          "z": 96,
+          "got": {
+           "cell": "133,96",
+           "def": "RM_UniversalPipe",
+           "faction": "PlayerColony",
+           "hp": "100",
+           "rot": "0",
+           "standing": "True"
+          }
+         }
+        ],
+        "leftBlocking": 0,
+        "leftKept": 0,
+        "left": [],
+        "digest": "08506665ad8dd768"
+       },
+       "ticksGame": 1,
+       "operation": {
+        "OperationId": "op_ed86c35de0b64ded843b068ad72438b8",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 70
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/list_things",
+      "result": {
+       "success": true,
+       "things": [
+        {
+         "id": "Battery41215",
+         "def": "Battery",
+         "label": "Battery",
+         "x": 126,
+         "z": 97,
+         "spawned": true,
+         "rot": 0,
+         "stackCount": 1,
+         "hitPoints": 100,
+         "maxHitPoints": 100,
+         "faction": "PlayerColony",
+         "factionName": "New Arrivals"
+        }
+       ],
+       "scanned": 34605,
+       "countReturned": 1,
+       "countMatched": 1,
+       "isCompleteList": true,
+       "truncated": 0,
+       "pawnsSkipped": 4,
+       "perDef": {
+        "Battery": 1
+       },
+       "ticksGame": 1,
+       "message": "1 of 1 matching thing(s) returned, 34605 examined.",
+       "operation": {
+        "OperationId": "op_94fb32f446e7470ba8466db696b07162",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 40
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1
+       }
+      }
+     },
+     {
+      "call": "bridge_call jawa/battery_set",
+      "result": {
+       "success": true,
+       "thing": "Battery",
+       "mode": "setPct",
+       "storedEnergyBefore": 0.0,
+       "storedEnergyAfter": 600.0,
+       "storedEnergyMax": 600.0,
+       "storedEnergyPctAfter": 1.0,
+       "ticksGame": 1,
+       "operation": {
+        "OperationId": "op_395c303912f542c6bcc6cac33af72deb",
+        "Status": "Completed",
+        "Success": true,
+        "DurationMs": 43
+       },
+       "state": {
+        "programState": "Playing",
+        "hasCurrentGame": true,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "tick": 1
+       }
+      }
+     },
+     {
+      "call": "restore_touched_settings [('universalPipesEnabled', 'True')]",
+      "result": true
+     }
+    ],
+    "env_reset": {
+     "log_reset": "ok",
+     "weather": "ok",
+     "map_info": "ok",
+     "unroof": "ok",
+     "gas_ToxGas": "ok",
+     "gas_BlindSmoke": "ok",
+     "gas_RotStink": "ok",
+     "gas_DeadlifeDust": "ok",
+     "gas_things": "ok"
+    },
+    "phase_s": {
+     "hold": 7.313,
+     "body": 10.317,
+     "teardown": 0.0
+    },
+    "gate": {
+     "action": "run",
+     "key": "647b214c78f9832ebb3aee6d8159739f9b017825ce559dc8fb2a3ece3b9a0a94",
+     "why": "no record at this key",
+     "record": null,
+     "purpose": "fix",
+     "inputs_known": true,
+     "code_version": "0c63e8af2cc9c9e1930f9f7511951ccdf4ee37d1a51ececb4a54155938dfbe2a"
+    }
+   }
+  ],
+  "all_green": false,
+  "findings": [],
+  "refused": "",
+  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\HARNESS_REPAIR_CAUSE_4D2C5B87_3.det\\design\\validation_walks\\RimMandrake\\FlowWorks.md",
+  "acceptance": {
+   "overall": "UNMEASURED",
+   "rows": [
+    {
+     "row": "suspension_bridges_and_covers/suspension_selftest_ran",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "suspension_bridges_and_covers/Suspension_spans_supports_and_swing_order",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "suspension_bridges_and_covers/Suspension_deck_built_over_the_hole_floor",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "suspension_bridges_and_covers/Underpass_band_step_clearance_and_sunken_height",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "suspension_bridges_and_covers/Underpass_wiring_masks_sites_not_tunnels",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "suspension_bridges_and_covers/SpanBase_cover_is_the_trap_tier_of_the_base",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "suspension_bridges_and_covers/SpanBase_cover_read_is_decked_surface_no_underpass",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "suspension_bridges_and_covers/Suspension_SteelHeavyAnchors_no_rope_table",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "suspension_bridges_and_covers/under_deck_live",
+     "verdict": "UNMEASURED",
+     "class": "other",
+     "grade": "UNMEASURED",
+     "notes": []
+    },
+    {
+     "row": "suspension_bridges_and_covers/suspension_look",
+     "verdict": "UNMEASURED",
+     "class": "other",
+     "grade": "UNMEASURED",
+     "notes": []
+    },
+    {
+     "row": "suspension_bridges_and_covers/cover_vs_bridge_look",
+     "verdict": "UNMEASURED",
+     "class": "other",
+     "grade": "UNMEASURED",
+     "notes": []
+    },
+    {
+     "row": "machinery_pipes/pipe_feeds_far_tank",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "machinery_pipes/pipes_off_far_tank_idle",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    }
+   ],
+   "spoils": [
+    {
+     "class": "envelope_off",
+     "why": "run without the situational envelope: blocking window and visitors unobserved",
+     "chain": "suspension_bridges_and_covers"
+    },
+    {
+     "class": "envelope_off",
+     "why": "run without the situational envelope: blocking window and visitors unobserved",
+     "chain": "machinery_pipes"
+    }
+   ],
+   "counts": {
+    "PASS": 0,
+    "FAIL": 0,
+    "INDETERMINATE": 10,
+    "UNMEASURED": 3,
+    "NOT_RUN": 0
+   },
+   "classes": [
+    "envelope_off"
+   ]
+  },
+  "reuse": {
+   "reused": [],
+   "reusable": []
+  },
+  "host": "Archmagi",
+  "offline_chains": [],
+  "fresh_green": false,
+  "invalid": [],
+  "leads": [],
+  "gate": {
+   "run": [
+    "suspension_bridges_and_covers",
+    "machinery_pipes"
+   ],
+   "skipped": [],
+   "would_skip": [],
+   "record_body_s": 0.0,
+   "mode": "shadow",
+   "purpose": "fix"
+  },
+  "canary": {
+   "ok": true,
+   "problems": [],
+   "steps": [
+    "programState Playing",
+    "3 live colonists",
+    "spawn_batch Steel at 125,125: success=True",
+    "destroyed; left at cell: []"
+   ]
+  },
+  "visual": [
+   {
+    "id": "pawn_walks_under_deck",
+    "polarity": "must",
+    "verdict": "UNJUDGEABLE",
+    "pass": false,
+    "why": "component claims this but captured no screenshot",
+    "image": ""
+   },
+   {
+    "id": "suspension_bridge_reads_hung",
+    "polarity": "must",
+    "verdict": "UNJUDGEABLE",
+    "pass": false,
+    "why": "component claims this but captured no screenshot",
+    "image": ""
+   },
+   {
+    "id": "pit_cover_unlike_bridge",
+    "polarity": "must",
+    "verdict": "UNJUDGEABLE",
+    "pass": false,
+    "why": "component claims this but captured no screenshot",
+    "image": ""
+   }
+  ],
+  "visual_all_green": false,
+  "state_all_green": false,
+  "drivers": [
+   {
+    "driver": "suspension_bridge_proof",
+    "argv": [
+     "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\HARNESS_REPAIR_CAUSE_4D2C5B87_3.det\\src\\RimMandrake\\FlowWorks\\northstar/suspension_bridge_proof.py",
+     "--origin",
+     "140,140",
+     "--fresh-map"
+    ],
+    "chains": [
+     "suspension_bridges_and_covers"
+    ],
+    "status": "RC0",
+    "rc": 0,
+    "wall_s": 250.2,
+    "tail": "2000 steelBuilt=Steel:300 (no ComponentIndustrial)\"}\nSB_tower_row_per_lane              PASS       {\"one_tower\": \"BUILD ok=False anchors=0 decks=0 blueprints=0 records=0 reason=A tower holds one row of the bridge: this one is 2 squares wide, so it needs 2 towers side by side at square 9 of the drag (there is 1). Drag the tower across the hole to plan the rest.\", \"two_towers\": \"BUILD ok=True ancho\nSB_islands_restore_ground_ordered  PASS       {\"read\": \"RESTORE accepted=4 refused=0 tracked=4 fillOrders=4 first=-\"}\n== section reach\nSB_islands_restore_reach           PASS       {\"outcome\": \"reached_and_grounded\", \"why\": \"lone mid refused; causeway edge 8 -> 0 in 8 jobs, mid 8 -> 0 in 8 jobs, both let go\", \"depth0\": 8, \"loneMidCanReach\": false, \"loneMidHasJobOnCell\": true, \"edge\": {\"depths\": [7, 6, 5, 4, 3, 2, 1, 0], \"jobs\": [true, true, true, true, true, true, true, true],\nsuspension bridge proof: 40 rows, 0 FAIL -> \\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\HARNESS_REPAIR_CAUSE_4D2C5B87_3.det\\src\\RimMandrake\\FlowWorks\\northstar\\suspension_bridge_result_20261125T213634.json\n[bridge split] 249.6 s wall: load 6.7 / ticks 89.6 / reads 4.1 / other 69.1 / outside calls 80.1 s\n[bridge split] WARN 333 calls of jawa/flowworks_excavation_drive (15.7 s): batch them\n[bridge split] WARN 234 calls of jawa/destroy_batch (15.9 s): batch them\n[bridge split] WARN 88 calls of jawa/safe_advance (88.6 s): batch them\n[bridge split] WARN 79 calls of jawa/static_call (3.4 s): batch them\n",
+    "colony": {
+     "live": 23,
+     "left_dead": 3,
+     "restored_live": 3,
+     "restored_dead": 0
+    }
+   }
+  ],
+  "targeted": {
+   "chains": [
+    "suspension_bridges_and_covers",
+    "machinery_pipes"
+   ],
+   "of_chains": 96,
+   "rows": [],
+   "item": null,
+   "by": [
+    "chain suspension_bridges_and_covers: named by --chains",
+    "chain machinery_pipes: named by --chains"
+   ],
+   "rows_run": [
+    "suspension_selftest_ran",
+    "Suspension_spans_supports_and_swing_order",
+    "Suspension_deck_built_over_the_hole_floor",
+    "Underpass_band_step_clearance_and_sunken_height",
+    "Underpass_wiring_masks_sites_not_tunnels",
+    "SpanBase_cover_is_the_trap_tier_of_the_base",
+    "SpanBase_cover_read_is_decked_surface_no_underpass",
+    "Suspension_SteelHeavyAnchors_no_rope_table",
+    "under_deck_live",
+    "suspension_look",
+    "cover_vs_bridge_look",
+    "pipe_feeds_far_tank",
+    "pipes_off_far_tank_idle"
+   ],
+   "scope": {
+    "suspension_bridges_and_covers": {
+     "mode": "full",
+     "requested_rows": [],
+     "reasons": [
+      "named by --chains"
+     ],
+     "executed": [
+      "suspension_selftest_ran",
+      "Suspension_spans_supports_and_swing_order",
+      "Suspension_deck_built_over_the_hole_floor",
+      "Underpass_band_step_clearance_and_sunken_height",
+      "Underpass_wiring_masks_sites_not_tunnels",
+      "SpanBase_cover_is_the_trap_tier_of_the_base",
+      "SpanBase_cover_read_is_decked_surface_no_underpass",
+      "Suspension_SteelHeavyAnchors_no_rope_table",
+      "under_deck_live",
+      "suspension_look",
+      "cover_vs_bridge_look"
+     ],
+     "skipped": []
+    },
+    "machinery_pipes": {
+     "mode": "full",
+     "requested_rows": [],
+     "reasons": [
+      "named by --chains"
+     ],
+     "executed": [
+      "pipe_feeds_far_tank",
+      "pipes_off_far_tank_idle"
+     ],
+     "skipped": []
+    }
+   },
+   "offline_skipped": {},
+   "incomplete": {}
+  }
+ },
+ "benign_stops": []
+}

@@ -1,0 +1,75 @@
+PREVIEW 4 of 96 chains, 52 rows to execute
+  chain thirst [full]: named by --chains
+    whole chain: executed 45 row(s)
+  chain fuel_moat_astrofuel [full]: named by --chains
+    whole chain: executed 3 row(s)
+  chain liquid_heat [full]: named by --chains
+    whole chain: executed 3 row(s)
+  chain swept [full]: named by --chains
+    whole chain: executed 1 row(s)
+EXPECTED_ROWS ["thirst_selftest_ran", "T0_dubs_cut", "T3o_fall_rate", "T3h_heat_cap", "T4o_bottle_and_quality", "T6o_dehydration", "T8_coloured_bottles_without_dbh", "Td_defs_shipped", "Th_harmony_target", "Tu_use_class_gate", "Ta_autofill_potable_only", "Ts_slime_last_resort", "Tb_salt_break", "Tk_awkward_access", "Tr_reserve_orders_sprinklers", "Tq_q12_defaults", "Tt_bottle_stock_batches", "T1_provider_line", "T2_one_thirst_need", "T3_need_falls", "T4_bottle_satisfies", "T5_salt_water_quality", "T6_dehydration_readable", "T7_no_dbh_clean_log", "T9_animals_drink", "T10_terrain_drink", "T11_autofill_skips_salt", "T12_no_routine_salt", "T13_desperate_toxic_last", "T15_slime_effects", "T16_living_slime", "T17_salt_break", "T19_awkward_access", "T20_bucket_drunk_dry", "T21_drinking_reserve", "T22_no_brine_spray", "T23_fill_tank_is_the_order", "T24_bucket_douses_fire", "T25_snow_to_water", "T26_ice_block_bill", "T27_water_items", "T28_sanguophage_blood", "T29_bottle_stock_and_batches", "T30_pipe_faucet", "T14_native_animal_terrible_water", "astrofuel_channel_detonates", "utinni_blast_summons_raid", "astrofuel_detonation_off_burns", "liquid_heat_kinds", "liquid_heat_warms_and_chills", "liquid_heat_off_is_inert", "returns_home"]
+EXPECTED_ROW_CHAINS {"thirst_selftest_ran": "thirst", "T0_dubs_cut": "thirst", "T3o_fall_rate": "thirst", "T3h_heat_cap": "thirst", "T4o_bottle_and_quality": "thirst", "T6o_dehydration": "thirst", "T8_coloured_bottles_without_dbh": "thirst", "Td_defs_shipped": "thirst", "Th_harmony_target": "thirst", "Tu_use_class_gate": "thirst", "Ta_autofill_potable_only": "thirst", "Ts_slime_last_resort": "thirst", "Tb_salt_break": "thirst", "Tk_awkward_access": "thirst", "Tr_reserve_orders_sprinklers": "thirst", "Tq_q12_defaults": "thirst", "Tt_bottle_stock_batches": "thirst", "T1_provider_line": "thirst", "T2_one_thirst_need": "thirst", "T3_need_falls": "thirst", "T4_bottle_satisfies": "thirst", "T5_salt_water_quality": "thirst", "T6_dehydration_readable": "thirst", "T7_no_dbh_clean_log": "thirst", "T9_animals_drink": "thirst", "T10_terrain_drink": "thirst", "T11_autofill_skips_salt": "thirst", "T12_no_routine_salt": "thirst", "T13_desperate_toxic_last": "thirst", "T15_slime_effects": "thirst", "T16_living_slime": "thirst", "T17_salt_break": "thirst", "T19_awkward_access": "thirst", "T20_bucket_drunk_dry": "thirst", "T21_drinking_reserve": "thirst", "T22_no_brine_spray": "thirst", "T23_fill_tank_is_the_order": "thirst", "T24_bucket_douses_fire": "thirst", "T25_snow_to_water": "thirst", "T26_ice_block_bill": "thirst", "T27_water_items": "thirst", "T28_sanguophage_blood": "thirst", "T29_bottle_stock_and_batches": "thirst", "T30_pipe_faucet": "thirst", "T14_native_animal_terrible_water": "thirst", "astrofuel_channel_detonates": "fuel_moat_astrofuel", "utinni_blast_summons_raid": "fuel_moat_astrofuel", "astrofuel_detonation_off_burns": "fuel_moat_astrofuel", "liquid_heat_kinds": "liquid_heat", "liquid_heat_warms_and_chills": "liquid_heat", "liquid_heat_off_is_inert": "liquid_heat", "returns_home": "swept"}
+EXPECTED_DRIVERS [{"name": "thirst_live", "timeout_s": 1800}, {"name": "sprinkler_live", "timeout_s": 600}]
+[modcheck] FlowWorks TARGETED: 4 of 96 chains: thirst, fuel_moat_astrofuel, liquid_heat, swept
+[modcheck] driver thirst_live START (timeout 1800 s): \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\HARNESS_REPAIR_CAUSE_4D2C5B87_3.det\src\RimMandrake\FlowWorks\northstar/thirst_live.py --site 150,130 --log D:\ClaudeWork\rimmandrake\instances\b\Player.log
+[modcheck] driver thirst_live FAILED rc=1 in 778 s
+[modcheck] driver thirst_live tail:
+": "starving", "severity": "damage", "tick": 102961, "map": 0, "subjectId": 41756, "subject": "Vay", "critical": false, "declared": false, "detail": "food category Starving"}, "refused": null, "abortWhy": null, "triggers": [{"seq": 37, "kind": "starving", "severity": "damage", "tick": 102961, "map": 0, "subjectId": 41756, "subject": "Vay", "critical": false, "declared": false, "detail": "food category Starving"}], "argv": ["\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\HARNESS_REPAIR_CAUSE_4D2C5B87_3.det\\src\\RimMandrake\\FlowWorks\\northstar/thirst_live.py", "--site", "150,130", "--log", "D:\\ClaudeWork\\rimmandrake\\instances\\b\\Player.log"]}
+[bridge split] 777.8 s wall: load 0.0 / ticks 185.5 / reads 34.5 / other 262.0 / outside calls 295.9 s
+[bridge split] WARN 4995 calls of jawa/pawn_need (203.4 s): batch them
+[bridge split] WARN 943 calls of rimworld/get_game_info (6.4 s): batch them
+[bridge split] WARN 667 calls of jawa/set_draft (27.8 s): batch them
+[bridge split] WARN 658 calls of rimworld/list_colonists (5.9 s): batch them
+[bridge split] WARN 516 calls of jawa/safe_advance (185.5 s): batch them
+[bridge split] WARN 437 calls of jawa/list_things (18.0 s): batch them
+[bridge split] WARN 106 calls of jawa/pawn_mental (4.6 s): batch them
+[bridge split] WARN 80 calls of jawa/pawn_health (3.4 s): batch them
+[bridge split] WARN 54 calls of jawa/mod_settings_field (2.3 s): batch them
+[bridge split] WARN 53 calls of jawa/static_call (2.2 s): batch them
+
+[modcheck] driver sprinkler_live START (timeout 600 s): \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\HARNESS_REPAIR_CAUSE_4D2C5B87_3.det\src\RimMandrake\FlowWorks\northstar/sprinkler_live.py --origin 120,140
+[modcheck] driver sprinkler_live RC0 rc=0 in 195 s
+[modcheck] canary GREEN: programState Playing; 35 live colonists; spawn_batch Steel at 125,125: success=True; destroyed; left at cell: []
+[modcheck] chain thirst START 06:10:21Z
+[validation] running the FlowWorks C# SelfTest (offline, 16 case(s); the game idles meanwhile)
+[modcheck] chain thirst END 310s PASS=42 FAIL=2 UNMEASURED=1 NOT_RUN=0 hold=32.0s body=278.2s teardown=0.0s
+[modcheck] chain fuel_moat_astrofuel START 06:15:40Z
+[modcheck] chain fuel_moat_astrofuel END 38s PASS=0 FAIL=0 UNMEASURED=3 NOT_RUN=0 hold=29.1s body=9.2s teardown=0.0s
+[modcheck] chain liquid_heat START 06:16:26Z
+[modcheck] chain liquid_heat END 45s PASS=3 FAIL=0 UNMEASURED=0 NOT_RUN=0 hold=27.8s body=16.8s teardown=0.0s
+[modcheck] chain swept START 06:17:19Z
+[modcheck] driver river_site START (timeout 900 s): \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\HARNESS_REPAIR_CAUSE_4D2C5B87_3.det\src\RimMandrake\FlowWorks\northstar/river_site.py
+[modcheck] driver river_site FAILED rc=2 in 446 s
+[modcheck] driver river_site tail:
+987 size=1.00 flood=False
+tile 111225 moving water on edges {'south': 7, 'north': 8}
+tile 111225 rejected: no current with a fast lane (grid current=1987 fast=0)
+tile 111230 mapId 37 TemperateForest riverCount 2 grid: GRID current=2007 fast=0 edge=2007 size=1.00 flood=False
+tile 111230 moving water on edges {'south': 6, 'north': 8}
+tile 111230 rejected: no current with a fast lane (grid current=2007 fast=0)
+tile 111231 mapId 38 TemperateForest riverCount 2 grid: GRID current=1446 fast=0 edge=1446 size=1.00 flood=False
+tile 111231 moving water on edges {'south': 6, 'north': 7}
+tile 111231 rejected: no current with a fast lane (grid current=1446 fast=0)
+tile 115433 mapId 39 TemperateForest riverCount 2 grid: GRID current=1597 fast=0 edge=1597 size=1.00 flood=False
+tile 115433 moving water on edges {'west': 7}
+tile 115433 rejected: no current with a fast lane (grid current=1597 fast=0)
+tile 115438 mapId 40 TemperateForest riverCount 2 grid: GRID current=2019 fast=0 edge=2019 size=1.00 flood=False
+tile 115438 moving water on edges {'west': 7, 'east': 9}
+tile 115438 rejected: no current with a fast lane (grid current=2019 fast=0)
+no river tile with a current among 40 tried
+[bridge split] 445.5 s wall: load 0.0 / ticks 0.0 / reads 3.3 / other 428.2 / outside calls 14.1 s
+[bridge split] WARN 80 calls of jawa/name_colony (15.0 s): batch them
+[bridge split] WARN 80 calls of jawa/window_list_close (3.5 s): batch them
+[bridge split] WARN 51 calls of jawa/static_call (2.2 s): batch them
+
+[FlowWorks] river_site FAILED rc=2: the river chains run on the current map: ] 445.5 s wall: load 0.0 / ticks 0.0 / reads 3.3 / other 428.2 / outside calls 14.1 s | [bridge split] WARN 80 calls of jawa/name_colony (15.0 s): batch them | [bridge split] WARN 80 calls of jawa/window_list_close (3.5 s): batch them | [bridge split] WARN 51 calls of jawa/static_call (2.2 s): batch them | 
+[modcheck] chain swept END 472s PASS=0 FAIL=0 UNMEASURED=1 NOT_RUN=0 hold=25.6s body=446.3s teardown=0.0s
+[modcheck] FlowWorks: seat UNKNOWN (no --seat, RIMFLOW_SEAT or AGENT_SEAT here): ledger verify and findings NOT written; record it by hand: python3 src/RimMandrake/rimflow/cli.py verify MODCHECK_FLOWWORKS_RUN_1 --result fail --config 'min+FlowWorks TARGETED chains=thirst,fuel_moat_astrofuel,liquid_heat,swept' --evidence /home/mandrake/rm/relentless/clones/HARNESS_REPAIR_CAUSE_4D2C5B87_3.det/Transient/modcheck/FlowWorks_20261126T062513Z.html --seat <SEAT>
+[modcheck] FlowWorks: targeted run, status entry untouched; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\HARNESS_REPAIR_CAUSE_4D2C5B87_3.det\Transient\modcheck\FlowWorks_20261126T062513Z.html
+FlowWorks            TARGETED 4/96 chains (thirst,fuel_moat_astrofuel,liquid_heat,swept) RED  (state)
+[bridge split] 1966.1 s wall: load 0.0 / ticks 9.6 / reads 5.3 / other 71.1 / outside calls 1880.0 s
+[bridge split] WARN 806 calls of jawa/pawn_need (35.2 s): batch them
+[bridge split] WARN 280 calls of jawa/pawn_traits (12.2 s): batch them
+[bridge split] WARN 280 calls of jawa/pawn_mental (12.2 s): batch them
+[bridge split] WARN 93 calls of jawa/list_pawns (3.9 s): batch them
+MODCHECK_RC=1

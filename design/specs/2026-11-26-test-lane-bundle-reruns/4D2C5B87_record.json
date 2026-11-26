@@ -1,0 +1,442 @@
+{
+ "job": {
+  "id": "DIRECT-4D2C5B87-20261125T222513",
+  "mod": "FlowWorks",
+  "selector": {
+   "chains": [
+    "swept",
+    "thirst",
+    "fuel_moat_astrofuel",
+    "liquid_heat"
+   ]
+  },
+  "source": "822206cc1b",
+  "lane": "direct:ArchSmall"
+ },
+ "result": {
+  "outcome": "DONE",
+  "cause": null,
+  "rows": [
+   {
+    "chain": "thirst",
+    "row": "thirst_selftest_ran",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "thirst",
+    "row": "T0_dubs_cut",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "thirst",
+    "row": "T3o_fall_rate",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "thirst",
+    "row": "T3h_heat_cap",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "thirst",
+    "row": "T4o_bottle_and_quality",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "thirst",
+    "row": "T6o_dehydration",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "thirst",
+    "row": "T8_coloured_bottles_without_dbh",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "thirst",
+    "row": "Td_defs_shipped",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "thirst",
+    "row": "Th_harmony_target",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "thirst",
+    "row": "Tu_use_class_gate",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "thirst",
+    "row": "Ta_autofill_potable_only",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "thirst",
+    "row": "Ts_slime_last_resort",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "thirst",
+    "row": "Tb_salt_break",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "thirst",
+    "row": "Tk_awkward_access",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "thirst",
+    "row": "Tr_reserve_orders_sprinklers",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "thirst",
+    "row": "Tq_q12_defaults",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "thirst",
+    "row": "Tt_bottle_stock_batches",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "thirst",
+    "row": "T1_provider_line",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "thirst_live_result_20261125T215241.json: {'providerLine': \"Own (FlowWorks' own thirst; Dubs Bad Hygiene thirst is not supported)\"}"
+   },
+   {
+    "chain": "thirst",
+    "row": "T2_one_thirst_need",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "thirst_live_result_20261125T215241.json: {'perColonist': {'Human1039': [1, 0], 'Human1045': [1, 0], 'Human1042': [1, 0]}, 'bad': {}}"
+   },
+   {
+    "chain": "thirst",
+    "row": "T3_need_falls",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "thirst_live_result_20261125T215241.json: {'before': 0.9, 'after': 0.700002551, 'drop': 0.2, 'expect': 0.2, 'heatScaling': False, 'ticks': 15000}"
+   },
+   {
+    "chain": "thirst",
+    "row": "T4_bottle_satisfies",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "thirst_live_result_20261125T215241.json: {'levels': [0.2, 0.69], 'gain': 0.49, 'dirtyBottles': [0, 1], 'ingest': {'ended': True, 'ticks': 660, 'jobs': ['Ingest', 'GotoWander']}}"
+   },
+   {
+    "chain": "thirst",
+    "row": "T5_salt_water_quality",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "thirst_live_result_20261125T215241.json: {'order': {'accepted': True, 'beforeJobDef': None, 'afterJobDef': 'Ingest', 'message': None, 'note': None}, 'saltBottleLeft': 0, 'levels': [0.2, 0.542], 'ratioToFresh': 0.698, 'hediffs': {'RM_SaltPoisoning': 0.25}, 'memories': ['Chitchat', 'RM_Thought_SaltRelief'], 'bad': [], 'ingest': {'ended': True, 'ticks': 560, 'jobs': ['Ingest', 'Wait_MaintainPosture']}, 'note': 'one pawn,"
+   },
+   {
+    "chain": "thirst",
+    "row": "T6_dehydration_readable",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "thirst_live_result_20261125T215241.json: {'RM_Dehydration': 0.300001085, 'hediffs': {'RM_Dehydration': 0.300001085}, 'heldAtZeroTicks': 60000, 'drafted': True}"
+   },
+   {
+    "chain": "thirst",
+    "row": "T7_no_dbh_clean_log",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "thirst_live_result_20261125T215241.json: {'exceptionLines': 0, 'naming': [], 'firstException': None}"
+   },
+   {
+    "chain": "thirst",
+    "row": "T9_animals_drink",
+    "verdict": "FAIL",
+    "validity": "valid",
+    "freshness": "fresh",
+    "detail": "ExpectationFailed: [MOD] thirst_live_result_20261125T215241.json: {'animals': [['PlayerColony', 'Muffalo41604'], ['none', 'Muffalo41605']], 'levels': {'Muffalo41604': [0.25, 0.7160004], 'Muffalo41605': [0.25, None]}, 'rose': {'Muffalo41604': True, 'Muffalo41605': False}, 'bottlesOnMap': 0, 'inferred': 'map dried and every bottle/bucket purged before the pond was repainted: a rise is a pond drink (the job is not on the bridge)'}"
+   },
+   {
+    "chain": "thirst",
+    "row": "T10_terrain_drink",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "thirst_live_result_20261125T215241.json: {'jobAtTick': 60, 'jobsSeen': ['RM_DrinkFromTerrain'], 'levels': [0.2, 0.694], 'trace': [['RM_DrinkFromTerrain', 0.198], ['RM_DrinkFromTerrain', 0.196], ['RM_DrinkFromTerrain', 0.196], ['RM_WashBottleJob', 0.694]], 'offJobsSeen': ['GotoWander', 'Ingest'], 'offLevels': [0.2, 0.187999979], 'offNewHediffs': [], 'bad': []}"
+   },
+   {
+    "chain": "thirst",
+    "row": "T11_autofill_skips_salt",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "thirst_live_result_20261125T215241.json: {'fresh': [0, 3], 'salt': [0, 0], 'jobsSeen': ['washAtCell', 'RM_FillBottleJob', 'GotoWander', 'Wait_Wander', 'GotoWander']}"
+   },
+   {
+    "chain": "thirst",
+    "row": "T12_no_routine_salt",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "thirst_live_result_20261125T215241.json: {'jobsSalt': ['GotoWander', 'Wait_Wander', 'GotoWander'], 'jobsAfterBottle': ['Ingest'], 'bottleId': 'RM_Bottle_FreshWater41673', 'bottleGone': True, 'needAroundFetch': [0.17116183, 0.6536585], 'saltBottles': 0, 'level0': 0.2, 'bad': []}"
+   },
+   {
+    "chain": "thirst",
+    "row": "T13_desperate_toxic_last",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "thirst_live_result_20261125T215241.json: {'jobsAt005': ['GotoWander', 'Wait_Wander', 'GotoWander', 'Wait_Wander'], 'levelAt005': 0.0340693481, 'jobsAt0': ['GotoWander', 'Wait_Wander', 'RM_DrinkFromTerrain'], 'levelAfter': 0.25, 'hediffs': {'Carcinoma': 0.970083952, 'RM_Dehydration': 0.00600000052, 'ToxicBuildup': 0.12}, 'jobsWithBottle': ['Ingest'], 'bad': []}"
+   },
+   {
+    "chain": "thirst",
+    "row": "T15_slime_effects",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "thirst_live_result_20261125T215241.json: {'RM_SlimeRedShallow': {'pawn': 'Human41747', 'jobs': ['RM_DrinkFromTerrain', 'GotoWander', 'Wait_Wander', 'Wait_MaintainPosture', 'Clean', 'GotoWander', 'Vomit'], 'hediffs': {'Asthma': 0.0085, 'RM_Dehydration': 0.0015, 'RM_SlimePurge': 1.0, 'RM_ContagionTouched': 1.0}, 'memories': ['RM_Thought_DrankSlime']}, 'RM_SlimeGreenShallow': {'pawn': 'Human41750', 'jobs': ['RM_DrinkFrom"
+   },
+   {
+    "chain": "thirst",
+    "row": "T16_living_slime",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "thirst_live_result_20261125T215241.json: {'jobsOn': ['RM_DrinkFromTerrain'], 'hediffs': {'HandTalon': 0.5, 'RM_Dehydration': 0.0015, 'RM_SlimePurge': 1.0, 'RM_Slimification': 0.309533328}, 'memories': ['RM_Thought_DrankSlime'], 'jobsOff': ['GotoWander'], 'offLevels': [0.0, 0.0], 'offNewHediffs': [], 'bad': [], 'notRun': \"a Gelatinous Slime biome map: RM_Slime_Liquid painted on the calm site (the drink rule is the terr"
+   },
+   {
+    "chain": "thirst",
+    "row": "T17_salt_break",
+    "verdict": "FAIL",
+    "validity": "valid",
+    "freshness": "fresh",
+    "detail": "ExpectationFailed: [MOD] thirst_live_result_20261125T215241.json: {'force': {'started': True, 'breakDef': 'RM_Break_DrinkBrine'}, 'trace': [['Wait_Downed', 0.61250037, '{\"programState\": \"Playing\", \"hasCurrentGame\": true, \"paused\": true, \"timeSpeed\": \"Paused\", \"tick\": 84465}'], ['Wait_Downed', 0.604133666, '{\"programState\": \"Playing\", \"hasCurrentGame\": true, \"paused\": true, \"timeSpeed\": \"Paused\", \"tick\": 84565}'], ['Wait_Downed', 0.604133666, '{\"programState\": \"Playing\", \"hasCurrentGame\": true, \"paused\": true, \"timeSpeed\": \"Paused\", \"tick\": 84665}'], ['Wait_Downed', 0.5957593, '{\"programState\": \"Playing\", \"hasCurrentGame\": true, \"paused\": true, \"timeSpeed\": \""
+   },
+   {
+    "chain": "thirst",
+    "row": "T19_awkward_access",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "thirst_live_result_20261125T215241.json: {'bottleOrder': {'accepted': True, 'afterJobDef': 'Ingest', 'message': None}, 'bottleIngest': {'ended': True, 'ticks': 560, 'jobs': ['Ingest', 'Wait_MaintainPosture']}, 'bottleId': 'RM_Bottle_FreshWater41717', 'bottleDrunk': True, 'bottleLevels': [0.2, 0.6896492], 'bucketId': 'RM_Bucket_FreshWater41703', 'bucketLevels': [0.2, 0.6948656], 'bucketLeft': True, 'jobs': ['RM_DrinkFr"
+   },
+   {
+    "chain": "thirst",
+    "row": "T20_bucket_drunk_dry",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "thirst_live_result_20261125T215241.json: {'pourTankUnreadable': False, 'drinks': 10, 'trace': [[True, 'RM_DrinkFromContainer', 0.597, True, True], [True, 'RM_DrinkFromContainer', 0.594, True, True], [True, 'RM_DrinkFromContainer', 0.597, True, True]], 'dirtyOrEmpty': 1, 'tank': 'TANK mode=Store effective=Store liquid=RM_Liquid_FreshWater units=100', 'units': [100, 205], 'pour': {'accepted': True, 'afterJobDef': 'RM_Em"
+   },
+   {
+    "chain": "thirst",
+    "row": "T21_drinking_reserve",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "sprinkler_live_result_20261125T220539.json: {'reserveL': 200.0, 'startUnits': 2200, 'trace': [[2075, 'Spraying fresh water \u00b7 12.5 L/h \u00b7 25 cells'], [2075, 'Dry: net has 7.5 L of fresh water, needs 12.5 L'], [2075, 'Dry: net has 7.5 L of fresh water, needs 12.5 L']], 'drinkJobs': ['RM_DrinkFromTank'], 'bad': [], 'notRun': 'the salt tank on a still draining to 0'}"
+   },
+   {
+    "chain": "thirst",
+    "row": "T22_no_brine_spray",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "sprinkler_live_result_20261125T220539.json: {'brineOnly': 'Dry: nothing in the tanks on this network', 'withFresh': 'Spraying fresh water \u00b7 9 L/h \u00b7 18 cells', 'brineUnits': [50000, 50000], 'freshUnits': 19910, 'bad': []}"
+   },
+   {
+    "chain": "thirst",
+    "row": "T23_fill_tank_is_the_order",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "thirst_live_result_20261125T215241.json: {'tank': 'TANK mode=Fill effective=Fill liquid=RM_Liquid_Brine units=100', 'units': [100, 250], 'brineBucketsMade': 2, 'jobsFill': ['washAtCell', 'RM_FillBottleJob', 'RM_EmptyIntoTankJob', 'RM_FillBottleJob'], 'jobAtSwitch': 'RM_FillBottleJob', 'inFlightAllowance': 1, 'landedInSettle': [], 'settleJobs': ['Clean', 'Wait_MaintainPosture', 'Clean'], 'othersInSettle': {'Human41770'"
+   },
+   {
+    "chain": "thirst",
+    "row": "T24_bucket_douses_fire",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "thirst_live_result_20261125T215241.json: {'jobs': ['RM_DouseFireWithBucket'], 'fires': [9, 3], 'emptyBuckets': [0, 1], 'bad': [], 'notRun': 'the no-bucket BeatFire arm'}"
+   },
+   {
+    "chain": "thirst",
+    "row": "T25_snow_to_water",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "thirst_live_result_20261125T215241.json: {'snowSet': {'success': True, 'cellsChanged': 64}, 'jobs': ['RM_GatherSnow', 'Clean'], 'bucketsSnow': 1, 'snowAfter': None, 'meltTicks': 5000, 'followed': ['RM_BucketSnow41932'], 'meltTrace': [{'t': 500, 'snow': [[205, 147]], 'fresh': 0, 'cellC': 33.15699, 'warmTicks': '500', 'inspect': ['Melting: 10%'], 'replaced': {}}, {'t': 1000, 'snow': [[205, 147]], 'fresh': 0, 'cellC': 32"
+   },
+   {
+    "chain": "thirst",
+    "row": "T26_ice_block_bill",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "thirst_live_result_20261125T215241.json: {'jobs': ['DoBill', 'Clean'], 'made': [{'id': 'RM_Bucket_FreshWater41963', 'stuff': 'WoodLog', 'label': 'Wooden bucketed fresh water'}], 'blueIceBefore': 5, 'blueIceLeft': 0, 'logErrors': [], 'bad': []}"
+   },
+   {
+    "chain": "thirst",
+    "row": "T27_water_items",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "thirst_live_result_20261125T215241.json: {'jobs': ['RM_DrinkWaterItem'], 'levels': [0.2, 0.8642567], 'memories': ['RM_Thought_DrankDistilled'], 'bad': []}"
+   },
+   {
+    "chain": "thirst",
+    "row": "T28_sanguophage_blood",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "thirst_live_result_20261125T215241.json: {'xenotype': 'Sanguophage', 'applied': True, 'sang': {'levels': [0.2, 0.685287833], 'atIngestEnd': 0.6902292, 'laterRise': [], 'accepted': True, 'after': 'Ingest', 'msg': None, 'packLeft': 0, 'jobEnded': True, 'trace': [['Ingest', 0.2], ['Ingest', 0.1975735], ['Ingest', 0.195138827], ['Ingest', 0.195138827], ['Ingest', 0.192687988], ['Wait_Combat', 0.6902292], ['Wait_Combat', 0"
+   },
+   {
+    "chain": "thirst",
+    "row": "T29_bottle_stock_and_batches",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "thirst_live_result_20261125T215241.json: {'colonists': 33, 'perColonist': 1, 'target': 33, 'stockBefore': 0, 'empties': 43, 'series': [0, 10, 20, 30, 33], 'final': 33, 'onGround': 33, 'jobs': ['RM_FillBottleJob', 'Clean'], 'bad': [], 'notRun': '15 dirty bottles washed in two trips'}"
+   },
+   {
+    "chain": "thirst",
+    "row": "T30_pipe_faucet",
+    "verdict": "UNMEASURED",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "ExpectationFailed: UNMEASURED: live check owed (THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY) -- no driver drives this row (thirst_live.py's PLAN does not emit it): a look or a new driver step is owed; bar: PIPE_FAUCET_BUILD_TAP_NAME_NOW_FREE: an RM_PipeFaucet on a universal pipe joined to a Store tank of fresh water, a thirsty colonist and nothing else drinkable: RM_DrinkFromFaucet, the tank drops 1.5 L, no RM_Thought_DrankRough at home; an empty bottle nearby: RM_FillAtFaucet makes a filled bottle and the tank drops by its litres; a Dump tank only: the faucet reads Dry; setting off: no faucet job"
+   },
+   {
+    "chain": "thirst",
+    "row": "T14_native_animal_terrible_water",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "thirst_live_result_20261125T215241.json: {'native': 'Dromedary41778', 'nonNative': 'Muffalo41787', 'tried': {'Dromedary': 'True', 'Gazelle': 'True', 'Iguana': 'True', 'Hare': 'True', 'Rat': 'True', 'Elephant': 'True', 'Rhinoceros': 'True', 'Ostrich': 'True', 'Emu': 'True', 'Muffalo': 'False'}, 'levels': {'Dromedary41778': [0.2, 0.5160004], 'Muffalo41787': [0.2, 0.165999934]}, 'nativeHediffs': {'Asthma': 0.00486318627}"
+   },
+   {
+    "chain": "fuel_moat_astrofuel",
+    "row": "astrofuel_channel_detonates",
+    "verdict": "UNMEASURED",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "ExpectationFailed: UNMEASURED: the muffalo died in the blast, so the throw cannot be read (FIRE burning 0 | front pending 0 | burned levels 24 | detonations 1 cells 12 queued 0)"
+   },
+   {
+    "chain": "fuel_moat_astrofuel",
+    "row": "utinni_blast_summons_raid",
+    "verdict": "UNMEASURED",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "an UNMEASURED component ended this chain earlier: ExpectationFailed: UNMEASURED: the muffalo died in the blast, so the throw cannot be read (FIRE burning 0 | front pending 0 | burned levels 24 | detonations 1 cells 12 queued 0)"
+   },
+   {
+    "chain": "fuel_moat_astrofuel",
+    "row": "astrofuel_detonation_off_burns",
+    "verdict": "UNMEASURED",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "an UNMEASURED component ended this chain earlier: ExpectationFailed: UNMEASURED: the muffalo died in the blast, so the throw cannot be read (FIRE burning 0 | front pending 0 | burned levels 24 | detonations 1 cells 12 queued 0)"
+   },
+   {
+    "chain": "liquid_heat",
+    "row": "liquid_heat_kinds",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "liquid_heat",
+    "row": "liquid_heat_warms_and_chills",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "liquid_heat",
+    "row": "liquid_heat_off_is_inert",
+    "verdict": "PASS",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": ""
+   },
+   {
+    "chain": "swept",
+    "row": "returns_home",
+    "verdict": "UNMEASURED",
+    "validity": null,
+    "freshness": "fresh",
+    "detail": "ExpectationFailed: UNMEASURED: no moving river water on any map edge, so no edge to be swept off"
+   }
+  ],
+  "sheet": "/home/mandrake/rm/relentless/clones/HARNESS_REPAIR_CAUSE_4D2C5B87_3.det/Transient/modcheck/FlowWorks_20261126T062513Z.json",
+  "game": "ArchSmall",
+  "runner_sha": "822206cc1b",
+  "note": "direct run on ArchSmall; {'PASS': 45, 'FAIL': 2, 'UNMEASURED': 5}"
+ }
+}
