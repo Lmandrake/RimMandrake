@@ -125,6 +125,8 @@ def check(canfail=False):
         "For() falls back to the deck def's extension": r"\?\? def\?\.GetModExtension<RM_DeckArtExtension>\(\)",
         "netting draws shadows": r"PrintNetting[\s\S]*?Run\(layer, Shade, run\.p, run\.h, run\.q, run\.g, w, shadowY, true\)",
         "netting draws the rope": r"PrintNetting[\s\S]*?Run\(layer, cable, run\.p, run\.h, run\.q, run\.g, w, cableY, false\)",
+        "netting waits for the hand rope (whole deck down)": r"PrintNetting[\s\S]*?if \(!DeckComplete\(map, r\)\)[\s\S]*?return true;",
+        "a railed square's netting re-prints when the deck completes": r"DirtyEnds[\s\S]*?if \(r\.railings\)",
         "NetBays tiles the square": r"double e = System\.Math\.Min\(k \+ 1, s \+ pitch\);",
         "backstays land on the side": r"off \* x\.backstayOut \* sg",
     }

@@ -227,14 +227,26 @@ namespace RimMandrake.FlowWorks.Pits
 			return true;
 		}
 
-		/// <summary>A deck square came or went: its bridge's two ends re-print their cables.</summary>
+		/// <summary>A deck square came or went: its bridge's two ends re-print their cables, and its railed squares their
+		/// netting (both wait for the whole deck: DeckComplete).</summary>
 		public static void DirtyEnds(Map map, SuspensionBridgeRecord r)
 		{
 			if (map == null || r == null)
 			{
 				return;
 			}
-			foreach (IntVec3 c in new[] { r.Cell(0, 0), r.Cell(0, r.length - 1) })
+			var cells = new List<IntVec3> { r.Cell(0, 0), r.Cell(0, r.length - 1) };
+			if (r.railings)
+			{
+				for (int lane = 0; lane < r.width; lane++)
+				{
+					for (int i = FirstDeck(r); i <= r.LastDeck; i++)
+					{
+						cells.Add(r.Cell(lane, i));
+					}
+				}
+			}
+			foreach (IntVec3 c in cells)
 			{
 				if (c.InBounds(map))
 				{
@@ -400,7 +412,11 @@ namespace RimMandrake.FlowWorks.Pits
 			Material cable = Mat(x.cable);
 			if (cable == null)
 			{
-				return true;
+				return false;   // no rope picture: the railing draws as before
+			}
+			if (!DeckComplete(map, r))
+			{
+				return true;    // the netting hangs from the hand rope, strung (PrintEnd) only once the whole deck is down
 			}
 			Vector3 a = r.dir.FacingCell.ToVector3();
 			Vector3 side = r.Side.ToVector3();
