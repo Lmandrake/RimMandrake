@@ -666,7 +666,7 @@ CS_UNITS = ["IncidentRowComposition", "StagesSkipSafe", "StagesWorstTick", "Stag
             "GuardOriginalSkippedAndThrewCounted", "RecorderForeignThreadRejectedBeforeState", "RecorderReentrantCallsStandAlone", "RecorderSkippedOriginalRecordsNothing", "RecorderSkippedPrefixIsOrphanNotZero", "RecorderGameExceptionCountedNotSwallowed", "RecorderOwnFaultCountedRecorderStaysOn", "WriterFaultNeverBlocksEnqueue", "StallDumpDecision", "StallDumpAt60s", "StallDumpRetriesFailedWrite", "StallDumpWarmLeavesNothing", "StallDumpWatchdogLoop",
             "CompTimingOneOffSpikeIsNamedNotDrowned", "CompTimingStallAfterLoadCarriesSinceLoad", "CompTimingArmedAtMenuFirstGameIsALoad",
             "CompTimingSpikeCapKeepsLargest", "CompTimingRollsUpByOwner", "CompTimingStageMaxNamesItsOwnComponent",
-            "QuietPhaseSampledEveryGap"]
+            "QuietPhaseSampledEveryGap", "QuietPhaseTwoGapsOneFrame"]
 
 
 def writer_kind_checks():

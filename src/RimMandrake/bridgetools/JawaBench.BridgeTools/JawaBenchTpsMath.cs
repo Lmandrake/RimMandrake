@@ -124,6 +124,8 @@ namespace JawaBench.BridgeTools
         {
             public double Beat, Quiet;
             public string Phase;
+            /// <summary>When the watchdog woke and saw it (Beat + Quiet, Stopwatch s).</summary>
+            public double Seen => Beat + Quiet;
         }
 
         /// <summary>Watchdog wakeup: the tag for this quiet, or null when the main thread is not quiet enough to name.</summary>
@@ -132,12 +134,13 @@ namespace JawaBench.BridgeTools
             return quiet > threshold ? new QuietTag { Beat = beat, Quiet = quiet, Phase = phase + "@" + F(quiet, 1) + "s" } : null;
         }
 
-        /// <summary>The incident's quietPhase: the tag's phase only when its beat belongs to THIS gap - the frame that
-        /// opened it (its start precedes g.Start by less than GapSeconds, or that frame would itself have ended a gap)
-        /// through the frame that closed it. A tag from any earlier quiet frame never names this gap.</summary>
+        /// <summary>The incident's quietPhase: the tag's phase only when the watchdog saw it AFTER this gap opened (Seen, so a
+        /// tag left by an earlier quiet frame never names this gap) from a beat no later than the gap's end (the frame that
+        /// closed it). The beat may be any age: one frame can hold two gaps (a >2 s pre-tick block, then a slow second tick),
+        /// and the second's quiet is still measured from the frame's one beat.</summary>
         public static string QuietPhaseFor(Gap g, QuietTag t)
         {
-            return t != null && t.Beat > g.Start - GapSeconds && t.Beat <= g.Start + g.Seconds ? t.Phase : null;
+            return t != null && t.Seen > g.Start && t.Beat <= g.Start + g.Seconds ? t.Phase : null;
         }
 
         public sealed class Window

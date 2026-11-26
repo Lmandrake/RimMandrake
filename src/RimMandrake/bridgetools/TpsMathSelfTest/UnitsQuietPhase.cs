@@ -7,6 +7,7 @@
 // phase, sampling periods from the 1 s sleep up to 1.45 s (timer slack + a slow heartbeat write), the block before or
 // after the frame's tick update, and stale tags left by earlier quiet frames.
 using System;
+using System.Threading;
 using M = JawaBench.BridgeTools.JawaBenchTpsMath;
 
 namespace JawaBench.BridgeTools
@@ -89,6 +90,33 @@ namespace JawaBench.BridgeTools
             Note = "worst sampled quiet " + M.F(worst + M.QuietTagSeconds, 3) + " s vs tag threshold " + M.F(M.QuietTagSeconds, 3) +
                    " s (limit: above; analytic worst " + M.F(bound, 3) + " s at a 1.45 s period), " + cases + " cases, " + misses + " misses; old rule (1.5 s): " + oldMisses +
                    " misses, longest missed gap " + M.F(oldWorstGap, 2) + " s";
+        }
+
+        // Two gaps in ONE frame (one heartbeat): a pre-tick block over 2 s ends gap 1 at the frame's first tick post, and the
+        // next block (a slow second tick, or a stall after the tick) opens gap 2 from that post. Both gaps' tags carry the
+        // frame's one beat, which precedes gap 2's start by more than GapSeconds - gap 2 must still name its own phase.
+        private static void T_QuietPhaseTwoGapsOneFrame()
+        {
+            long cases = 0, misses = 0; string first = null;
+            for (int i = 201; i <= 1000; i += 7)
+                for (int k = 201; k <= 1000; k += 11)
+                {
+                    double G1 = i / 100.0, G2 = k / 100.0;
+                    const double beat = 98.0, post1 = 97.9;               // the prior post just before the frame's beat
+                    var g1 = new M.Gap { Start = post1, Seconds = beat + G1 - post1 };   // the frame's pre-tick block ends at beat + G1
+                    double end1 = beat + G1;
+                    var g2 = new M.Gap { Start = end1, Seconds = G2 };
+                    M.QuietTag tag = null;
+                    for (double s = beat + 0.9; s < end1; s += 1.0) tag = M.TagQuiet(beat, s - beat, "pre") ?? tag;
+                    string p1 = M.QuietPhaseFor(g1, Interlocked.Exchange(ref tag, null));
+                    for (double s = end1 + 0.5; s < end1 + G2; s += 1.0) tag = M.TagQuiet(beat, s - beat, "post") ?? tag;
+                    string p2 = M.QuietPhaseFor(g2, tag);
+                    cases += 2;
+                    if (p1 == null || !p1.StartsWith("pre@", StringComparison.Ordinal)) { misses++; first = first ?? "G1=" + G1 + " got " + (p1 ?? "null"); }
+                    if (p2 == null || !p2.StartsWith("post@", StringComparison.Ordinal)) { misses++; first = first ?? "G1=" + G1 + " G2=" + G2 + " got " + (p2 ?? "null"); }
+                }
+            Check(misses == 0, misses + " of " + cases + " gaps without their own phase when two gaps share one frame's beat; first " + first);
+            Note = cases + " cases, " + misses + " misses (limit 0)";
         }
     }
 }
