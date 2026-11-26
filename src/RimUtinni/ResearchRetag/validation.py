@@ -472,6 +472,132 @@ def retag_rows_vs_dump(t):
             raise ExpectationFailed("%d owners of patched projects are not in forceLoadAfter, so their patches may land after ours: %s" % (len(missing), missing))
 
 
+# ---- techprint gating (TECHPRINT_FACTION_GATING_1 A5) -------------------------------------------------------------
+# RUT_TechprintGating.xml writes techprintCount and heldByFactionCategoryTags onto every manifest row. Configurable
+# Techprints rewrites every project with no NativeTechprint mark to all-faction prints at GenerateImpliedDefs, so the
+# patch file alone proves nothing: only the dump of a load shows who really holds each print.
+TECHPRINT_FILE = "RUT_TechprintGating.xml"
+_TP_TARGET = _re.compile(r'^Defs/ResearchProjectDef\[defName="([^"]+)"\]/(techprintCount|heldByFactionCategoryTags)$')
+
+
+def techprint_expectations(patch_dir=None):
+    """{def: {"count": int, "held": frozenset}} from the Replace leaves of RUT_TechprintGating.xml (each row's Add twin
+    carries the same value)."""
+    import os as _os
+    import xml.etree.ElementTree as _ET
+    pd = patch_dir or _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "Patches")
+    exp = {}
+    for e in _ET.parse(_os.path.join(pd, TECHPRINT_FILE)).getroot().iter():
+        if e.get("Class") != "PatchOperationReplace":
+            continue
+        m = _TP_TARGET.match((e.findtext("xpath") or "").strip())
+        if not m:
+            continue
+        d, fld = m.groups()
+        val = e.find("value/" + fld)
+        if val is None:
+            continue
+        row = exp.setdefault(d, {"count": 0, "held": frozenset()})
+        if fld == "techprintCount":
+            row["count"] = int((val.text or "0").strip())
+        else:
+            row["held"] = frozenset((li.text or "").strip() for li in val.findall("li") if (li.text or "").strip())
+    return exp
+
+
+def _tags(got):
+    if not got:
+        return frozenset()
+    return frozenset(str(x) for x in (got if isinstance(got, list) else [got]) if x)
+
+
+def techprint_findings(exp, rows):
+    """(checked held rows, checked common rows, mismatches): each expected row that the dump holds. A held row must have
+    techprints and exactly its patched holders; a common row must have no techprint."""
+    held, common, bad = 0, 0, []
+    for d, want in sorted(exp.items()):
+        r = rows.get(d)
+        if r is None:
+            continue
+        f = r.get("fields") or {}
+        try:
+            n = int(float(f.get("techprintCount") or 0))
+        except (TypeError, ValueError):
+            n = None
+        tags = _tags(f.get("heldByFactionCategoryTags"))
+        if want["count"] > 0:
+            held += 1
+            if not n or tags != want["held"]:
+                bad.append("%s: patch says %d print(s) held by %s, dump has %r held by %s"
+                           % (d, want["count"], sorted(want["held"]), n, sorted(tags)))
+        else:
+            common += 1
+            if n:
+                bad.append("%s: patch says common (no techprint), dump has %r held by %s" % (d, n, sorted(tags)))
+    return held, common, bad
+
+
+def techprint_dump_currency(manifest, patch_utc, self_id="mandrake.rut.researchretag"):
+    """-> why the dump cannot judge the techprint patch, or None. manifest: the dump's manifest.json; patch_utc: the
+    ISO time of the last commit of RUT_TechprintGating.xml. A dump with no capture time, older than the patch, or of a
+    load without this mod saw some other gating."""
+    mods = [str(m.get("packageId", "")).lower() for m in (manifest or {}).get("mods") or []]
+    cap = str((manifest or {}).get("capturedUtc") or "")
+    if self_id not in mods:
+        return "the dump's load did not run %s" % self_id
+    if not cap or not patch_utc:
+        return "no capture time (%r) or patch time (%r) to compare" % (cap, patch_utc)
+    if cap[:19] < patch_utc[:19]:
+        return "the dump was captured %s, before the techprint patch's last change %s" % (cap, patch_utc)
+    return None
+
+
+def _dump_manifest():
+    import json as _json
+    import os as _os
+    try:
+        import game_paths as _GP
+        return _json.load(open(_os.path.join(_GP.DEF_DUMP, "manifest.json"), encoding="utf-8-sig"))
+    except Exception as e:
+        raise Precondition("no readable def dump manifest: %s" % e)
+
+
+def _patch_utc():
+    import os as _os
+    import subprocess as _sp
+    here = _os.path.dirname(_os.path.abspath(__file__))
+    try:
+        out = _sp.run(["git", "-C", here, "log", "-1", "--format=%cd", "--date=format-local:%Y-%m-%dT%H:%M:%S",
+                       "--", _os.path.join("Patches", TECHPRINT_FILE)], capture_output=True, text=True, timeout=60,
+                      env=dict(_os.environ, TZ="UTC"))
+        return out.stdout.strip() or None
+    except Exception:  # noqa: BLE001 - no git: the currency component reads UNMEASURED
+        return None
+
+
+@suite.chain("techprint_gating_vs_dump")
+def techprint_gating_vs_dump(t):
+    """Each faction-held row of the manifest is held in the dump by exactly its patched factions, and each common row
+    has no techprint. Pure static + dump; same verdict offline. A dump from before the patch reads UNMEASURED."""
+    exp = techprint_expectations()
+    rows = _load_rows()
+    held, common, bad = techprint_findings(exp, rows)
+    with t.component("techprint_patch_and_dump_are_readable", beyond_toggle=True):
+        if len(exp) < 300 or not any(w["count"] for w in exp.values()) or "Electricity" not in rows:
+            raise ExpectationFailed("blind parse: %d techprint rows, %d dump rows" % (len(exp), len(rows)))
+        if held < 1 or common < 1:
+            raise ExpectationFailed("the dump meets %d held and %d common rows: blind" % (held, common))
+    with t.component("dump_was_captured_with_this_techprint_patch", beyond_toggle=True):
+        stale = techprint_dump_currency(_dump_manifest(), _patch_utc())
+        if stale:       # UNMEASURED, never FAIL: the dump saw some other gating (__exit__ reads the latch)
+            t.upstream_reason = "UNMEASURED: " + stale
+            t.upstream_failed = True
+    with t.component("faction_held_rows_hold_their_factions_and_common_rows_have_no_print", beyond_toggle=True):
+        if bad:
+            raise ExpectationFailed("%d of %d rows do not hold their techprint gating live: %s"
+                                    % (len(bad), held + common, "; ".join(bad[:5])))
+
+
 
 # Every def this mod ships is loaded and its label is what its XML says (NORTHSTAR_PARTIAL_GAPS_FILL_1;
 # ResearchProjectDef baseCost/tab are retagged by this mod's own Patches, so only labels are compared). The Defs/ parse is the list, so a def added later is covered with no edit here.

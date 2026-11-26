@@ -188,11 +188,70 @@ def main():
     k = next(d for d, (n, _) in got.items() if n)
     drift[k] = (0, [])
     check("break: a held row shipped at 0 is a difference", want != drift)
+    techprint_chain(v)
     if FAILS:
         print("\n%d ResearchRetag selftest(s) FAILED" % len(FAILS))
         return 1
     print("\nall ResearchRetag selftests passed")
     return 0
+
+
+def techprint_chain(v):
+    """techprint_gating_vs_dump (TECHPRINT_FACTION_GATING_1 A5) on a synthetic dump built from the shipped patch: green
+    when every row holds, red on Configurable Techprints' all-faction overwrite and on a common row with a print,
+    UNMEASURED on a dump older than the patch or of a load without this mod. The real dump runs on Archmagi."""
+    import copy
+    exp = v.techprint_expectations()
+    held_rows = sorted(d for d, w in exp.items() if w["count"])
+    common_rows = sorted(d for d, w in exp.items() if not w["count"])
+    check("techprint parse: >= 300 rows, some held and some common, VFEP_Warcaskets held by Pirate and the Hutts",
+          len(exp) >= 300 and held_rows and common_rows
+          and exp.get("VFEP_Warcaskets", {}).get("held") == frozenset({"Pirate", "HuttCartel"}), len(exp))
+    rows = {d: {"fields": {"techprintCount": float(w["count"]), "heldByFactionCategoryTags": sorted(w["held"]) or None}}
+            for d, w in exp.items()}
+    rows["Electricity"] = {"fields": {"techprintCount": 0.0}}
+    h, c, bad = v.techprint_findings(exp, rows)
+    check("techprint: a dump that holds every row has no finding (%d held, %d common)" % (h, c), not bad and h and c, bad[:3])
+    ct = copy.deepcopy(rows)
+    ct[held_rows[0]]["fields"]["heldByFactionCategoryTags"] = ["Outlander", "Empire", "TradersGuild", "Pirate"]
+    got = v.techprint_findings(exp, ct)[2]
+    check("break: an all-faction overwrite of a held row is named (%s)" % held_rows[0], len(got) == 1 and held_rows[0] in got[0], got)
+    cm = copy.deepcopy(rows)
+    cm[common_rows[0]]["fields"].update(techprintCount=1.0, heldByFactionCategoryTags=["Outlander"])
+    got = v.techprint_findings(exp, cm)[2]
+    check("break: a common row with a print is named (%s)" % common_rows[0], len(got) == 1 and common_rows[0] in got[0], got)
+    man = {"capturedUtc": "2026-11-20T10:00:00Z", "mods": [{"packageId": "mandrake.rut.researchretag"}]}
+    check("currency: a dump captured after the patch, of a load with this mod, can judge",
+          v.techprint_dump_currency(man, "2026-11-03T15:22:57") is None)
+    check("currency: a dump older than the patch cannot judge",
+          "before" in (v.techprint_dump_currency(dict(man, capturedUtc="2026-10-01T00:00:00Z"), "2026-11-03T15:22:57") or ""))
+    check("currency: a dump of a load without this mod cannot judge",
+          bool(v.techprint_dump_currency(dict(man, mods=[]), "2026-11-03T15:22:57")))
+    import runner
+    from northstar_driver.session import FastSession
+    from northstar_driver.transport import MockGame, MockTransport
+
+    def chain(mut_rows, manifest=man):
+        saved = v._load_rows, v._dump_manifest, v._patch_utc
+        v._load_rows, v._dump_manifest, v._patch_utc = (lambda: mut_rows), (lambda: manifest), (lambda: "2026-11-03T15:22:57")
+        try:
+            own = v.Suite("ResearchRetag")
+            own.toggles = []
+            own.chains = [(n, f) for n, f in v.suite.chains if n == "techprint_gating_vs_dump"]
+            with FastSession(transport=MockTransport(MockGame()), strict=False) as sess:
+                res = runner.run_suite(own, sess, anchor=None, mod=None)
+        finally:
+            v._load_rows, v._dump_manifest, v._patch_utc = saved
+        return dict((c["name"], c["verdict"]) for ch in res["chains"] for c in ch["components"])
+    got = chain(rows)
+    check("techprint chain: clean dump, all three bars PASS", sorted(got.values()) == ["PASS"] * 3, got)
+    got = chain(ct)
+    check("techprint chain: the overwrite reddens only the holding bar",
+          [n for n, vd in got.items() if vd == "FAIL"] == ["faction_held_rows_hold_their_factions_and_common_rows_have_no_print"], got)
+    got = chain(rows, dict(man, capturedUtc="2026-10-01T00:00:00Z"))
+    check("techprint chain: a dump older than the patch is UNMEASURED, never PASS",
+          got.get("dump_was_captured_with_this_techprint_patch") == "UNMEASURED"
+          and got.get("faction_held_rows_hold_their_factions_and_common_rows_have_no_print") == "UNMEASURED", got)
 
 
 if __name__ == "__main__":
