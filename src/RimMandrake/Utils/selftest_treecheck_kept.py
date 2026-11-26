@@ -5,6 +5,8 @@ Page: design/specs/2026-11-25-treecheck-kept-tree/boundary.md. One test per prom
     python3 selftest_treecheck_kept.py              the promises (exit 0 all green, 1 a red)
     python3 selftest_treecheck_kept.py --mutants    plant each fault in a copy of publish.py and require a red
                                                     (exit 0 every plant caught, 1 a plant got past, 2 the harness broke)
+    python3 selftest_treecheck_kept.py --rev <sha>  the promises against publish.py and scratch_clone.py at that commit
+                                                    (the guard's instance: --rev f608eefe2c^ is red, two fresh trees)
 PUBLISH_UNDER_TEST=<file> runs the promises against that copy of publish.py (the --mutants harness sets it; the base
 commit's publish.py read red this way, see the item's notes).
 """
@@ -529,9 +531,32 @@ def mutants():
     return 1 if bad else 0
 
 
+def at_rev(rev):
+    """Run the promises against publish.py and scratch_clone.py as commit `rev` holds them. -> the run's exit code."""
+    d = tempfile.mkdtemp(prefix="tckept-rev-", dir=os.path.expanduser("~/.cache"))
+    try:
+        for f in os.listdir(HERE):
+            if f.endswith(".py") or f.endswith(".json"):
+                shutil.copy(os.path.join(HERE, f), d)
+        for f in ("publish.py", "scratch_clone.py"):
+            r = subprocess.run(["git", "-C", HERE, "show", "%s:src/RimMandrake/Utils/%s" % (rev, f)],
+                               capture_output=True, text=True)
+            if r.returncode:
+                print("HARNESS BROKEN: git show %s:%s: %s" % (rev, f, r.stderr.strip()))
+                return 2
+            open(os.path.join(d, f), "w").write(r.stdout)
+        r = subprocess.run([sys.executable, os.path.abspath(__file__)],
+                           env=dict(os.environ, PUBLISH_UNDER_TEST=os.path.join(d, "publish.py")))
+        return r.returncode
+    finally:
+        shutil.rmtree(d, True)
+
+
 def main():
     if "--mutants" in sys.argv:
         return mutants()
+    if "--rev" in sys.argv:
+        return at_rev(sys.argv[sys.argv.index("--rev") + 1])
     tests = [t_a_second_checkout_rewrites_only_the_files_that_differ, t_the_kept_tree_is_exactly_the_commit,
              t_a_tree_that_cannot_be_made_exact_is_made_fresh, t_a_second_user_makes_its_own_tree,
              t_a_rev_other_than_head_is_checked_out, t_a_clone_back_from_the_pool_gets_no_wrong_tree,
