@@ -15,15 +15,17 @@ Worker: detached BENCH run in clone HARNESS_REPAIR_CAUSE_4D2C5B87_3.det. Started
   chain makes the empty seabed map current. Fixed 9be89583ef; fresh reader's significant case fixed c829ee057e;
   validity.py FLAGGED (6e231c3487).
 
-## Done
+## Done (2026-11-25 11:05 PM PST): every member closed
 
-- Code fixes for all three are published; both negative controls exit 1. Fresh reader done (one significant finding,
-  fixed test first; retest none significant).
-- Live re-runs: design/specs/2026-11-26-test-lane-bundle-reruns/take.sh (f218e2ff59), waitalive job wb_tl_all, log
-  D:\ClaudeWork\scratch\test_lane_bundle_reruns_20261126\sitting.log. Both Archmagi games held by other BENCH runs
-  from 7:16 PM PST to at least 8:51 PM PST.
+| ticket | class | fix | live reading | outcome |
+|---|---|---|---|---|
+| HARNESS_REPAIR_CAUSE_4D2C5B87_3 | SITE | 9f434a10d1 | 4D2C5B87_record.json (47 judged rows) + 4D2C5B87_swept_record.json (stay wait ran, PASS) | closed d24b4492b6 |
+| HARNESS_REPAIR_CAUSE_3A38C661_3 | HARNESS | 00725c7501, polish bc78e4eee8 | 3A38C661_record.json (10 PASS) | closed by the list_effect tick |
+| HARNESS_REPAIR_CAUSE_CEF341B8_2 | HARNESS | 9be89583ef, c829ee057e (fresh reader) | CEF341B8_record.json (FAIL now valid) | closed by the list_effect tick |
 
-## Next
-
-1. `waitalive.py attach wb_tl_all` (or re-run take.sh for each record still missing); 2. per item: reshape its check onto
-   `<name>_record.json` via retest.py passed, verify, close.
+Records: design/specs/2026-11-26-test-lane-bundle-reruns/. Re-runs were direct on ArchSmall (SteveDesktop refuses mod
+jobs; the Archmagi testq lane takes no targeted job). Found on the way and filed: kutte.stairs (in ModsConfig.MINIMAL.xml,
+on no Archmagi folder) on RIMMANDRAKE_MAKE_MODCHECK_RESTART_GAME_ONTO_ITS_LIST_THREE_HAND_WORKAROUNDS; Grey floor 0 of 17
+plants on GREYSEA_FLOOR_FLORA_ZERO_1; thirst T9/T17 FAIL and astrofuel muffalo death on
+RIMMANDRAKE_CLASS_SEVEN_THIRST_FAILS_SITE_FULL_OF_PATIENTS; publish-under-live-run lesson merged (fb3062b6da).
+Context after the code groups: 252k of 1M (GO ON); no restart.
