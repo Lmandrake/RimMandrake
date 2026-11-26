@@ -210,7 +210,13 @@
      452.0,
      198.0
     ]
-   ]
+   ],
+   "area": true,
+   "source": {
+    "path": "src/RimStarWars/SWBestiary/Textures/swanimals/PekoPeko/PekoPeko_f_Flying_1_east.png",
+    "rev": "af2991860e293cf9ae5af6a6301636c1af5a15f9^",
+    "pad": 0
+   }
   },
   "south": {
    "master": 2,

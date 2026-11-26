@@ -421,7 +421,13 @@
      ],
      "order": "under"
     }
-   ]
+   ],
+   "area": true,
+   "source": {
+    "path": "src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/RSW_ScrapNestBird/RSW_ScrapNestBird_east.png",
+    "rev": "eafa6956420fe2d594eeb5ca2139c5d7e53f4d89",
+    "pad": 0
+   }
   }
  }
 }

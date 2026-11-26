@@ -293,7 +293,13 @@
       ]
      ]
     }
-   ]
+   ],
+   "area": true,
+   "source": {
+    "path": "src/RimStarWars/SWBestiary/Textures/swanimals/Bogwing/Bogwing_Flying_4_east.png",
+    "rev": "d7db0421cb396066b7b9a01ad83c2031db66e27e^",
+    "pad": 0
+   }
   },
   "south": {
    "master": 4,

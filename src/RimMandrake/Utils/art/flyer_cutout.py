@@ -37,8 +37,10 @@ Exit 0 = pass, 1 = a gate failed, 2 = bad input. Never touches src/ Textures: in
 from __future__ import annotations
 
 import argparse
+import io
 import json
 import math
+import subprocess
 import sys
 from pathlib import Path
 
@@ -54,6 +56,7 @@ REPO = HERE.parents[3]
 MARGIN = 6
 FALLOFF = 0.10        # wing motion fades in over this fraction of the canvas width from the body
 SEAM = 2              # px of master kept in the plate across every wing cut
+SQUASH_MIN = 0.5      # under this |sy| point sampling skips source rows (flyer_eye_checks.py SQUASH and alias)
 DRIFT_PX = 1.0          # target: body drift <= 1 px per facing
 
 
@@ -92,7 +95,8 @@ def turn(layer: np.ndarray, hinge, deg: float, scale: float, sy: float = 1.0) ->
     vertically by SY about the hinge's row (side views: a wing beating about the body's long axis projects as a
     vertical squash; SY < 0 swings it below the shoulder). Resampled premultiplied, so edges keep no dark fringe.
     Samples without averaging: under |SY| 0.5 it skips source rows and the wing breaks into specks (the owner's "static-like
-    noise", 2026-11-07), so a pose that low wants a drawn frame; flyer_eye_checks.py audit --config names such poses."""
+    noise", 2026-11-07), so a facing with such poses sets `"area": true` (bend() then area-samples them); flyer_eye_checks.py
+    alias measures it."""
     if abs(deg) < 1e-6 and abs(scale - 1) < 1e-6 and abs(sy - 1) < 1e-6:
         return layer.copy()
     if abs(sy) < 0.08:
@@ -146,20 +150,36 @@ def _bilinear(img: np.ndarray, x: np.ndarray, y: np.ndarray) -> np.ndarray:
     return out
 
 
-def bend(layer: np.ndarray, body: np.ndarray, hinge, deg: float, scale: float, sy: float, falloff: int) -> np.ndarray:
+def area_rows(sy: float, area: bool) -> int:
+    """Sub-rows averaged per output row: 1 (point sampling) unless AREA is on and |SY| is under SQUASH_MIN, then
+    enough that no source row is skipped (2 per source row the squash folds into one output row)."""
+    if not area or abs(sy) >= SQUASH_MIN:
+        return 1
+    return int(math.ceil(2.0 / max(abs(sy), 0.08)))
+
+
+def bend(layer: np.ndarray, body: np.ndarray, hinge, deg: float, scale: float, sy: float, falloff: int,
+         area: bool = False) -> np.ndarray:
     """Like turn(), but the motion fades in with distance from the BODY: pixels touching the body stay put and the
     pose is reached FALLOFF px out, so membrane joined along a flank flexes instead of tearing away from it (rigid
-    cut-outs leave a see-through gap there). Inverse-mapped per output pixel; bilinear, premultiplied."""
-    if falloff <= 0:
+    cut-outs leave a see-through gap there). Inverse-mapped per output pixel; bilinear, premultiplied.
+    AREA (a facing's `"area": true`): a pose under |SY| SQUASH_MIN averages area_rows() sub-rows per output row, so
+    the squash reads every source row instead of skipping them into specks (the owner's "static-like noise",
+    2026-11-07). Off, the bake is byte-identical to the bake before AREA existed."""
+    k = area_rows(sy, area)
+    if falloff <= 0 and k == 1:
         return turn(layer, hinge, deg, scale, sy)
     h, w = layer.shape[:2]
     hx, hy = hinge
-    dmap = distance_from(body, falloff) / float(falloff)
-    alpha_map = dmap * dmap * (3 - 2 * dmap)                       # smoothstep 0..1
+    if falloff > 0:
+        dmap = distance_from(body, falloff) / float(falloff)
+        alpha_map = dmap * dmap * (3 - 2 * dmap)                   # smoothstep 0..1
+    else:
+        alpha_map = np.ones((h, w), np.float32)                    # a rigid wing: the whole pose everywhere
     yy, xx = np.mgrid[0:h, 0:w].astype(np.float32)
-    px, py = xx - hx, yy - hy
+    px = xx - hx
 
-    def inv_at(al):
+    def inv_at(al, px, py):
         th = math.radians(deg) * al
         sc = 1 + (scale - 1) * al
         sv = 1 + (sy - 1) * al
@@ -171,9 +191,13 @@ def bend(layer: np.ndarray, body: np.ndarray, hinge, deg: float, scale: float, s
 
     # the blend weight is read at the OUTPUT pixel: the body is static, so distance from it is the same in both
     # spaces, and every output pixel gets one well-defined source (no iteration, no fold-over fragments)
-    qx, qy = inv_at(alpha_map)
     pm = _premul(layer)
-    f = np.clip(_bilinear(pm, qx + hx, qy + hy), 0, 255)
+    acc = 0
+    for j in range(k):                                             # k == 1: the one sample at the pixel centre
+        py = yy + ((j + 0.5) / k - 0.5) - hy
+        qx, qy = inv_at(alpha_map, px, py)
+        acc = acc + _bilinear(pm, qx + hx, qy + hy)
+    f = np.clip(acc / k, 0, 255)
     f[..., :3] = np.minimum(f[..., :3], f[..., 3:4])
     return _unpremul(f)
 
@@ -252,7 +276,8 @@ def compose_facing(master: np.ndarray, fc: dict, n: int) -> tuple[list[np.ndarra
             pose = list(poses_of(wg, n)[k]) + [1.0, 1.0][len(poses_of(wg, n)[k]) - 1:]
             deg, sc, sy = pose[0], pose[1], pose[2] if len(pose) > 2 else 1.0
             layers.append(bend(layer, body, wg["hinge"], deg * wg.get("sign", 1), sc, sy,
-                               int(wg.get("falloff", fc.get("falloff", round(FALLOFF * master.shape[1]))))))
+                               int(wg.get("falloff", fc.get("falloff", round(FALLOFF * master.shape[1])))),
+                               bool(fc.get("area"))))
         default = fc.get("order", "under")
         for wg, L in zip(fc["wings"], layers):          # wings drawn under the plate first (far side)
             if wg.get("order", default) == "under":
@@ -314,6 +339,21 @@ def plate_identical(frames: list[np.ndarray], plate: np.ndarray, covers: list[np
     return float(same.sum()) / max(int(free.sum()), 1)
 
 
+def source_master(spec: dict, size: int) -> np.ndarray:
+    """A facing's recorded `"source"` master: {"path": repo path, "rev": a git revision or null (the working tree),
+    "pad": px}, centred on a SIZE canvas. It lets `build` re-bake a set whose folder no longer holds its master."""
+    if spec.get("rev"):
+        # hang guard: a `git show` of one blob ran under 1 s on 2026-11-26; 60 s is far past any real run
+        blob = subprocess.run(["git", "show", f"{spec['rev']}:{spec['path']}"], capture_output=True, cwd=REPO,
+                              check=True, timeout=60).stdout
+        im = Image.open(io.BytesIO(blob)).convert("RGBA")
+    else:
+        im = Image.open(REPO / spec["path"]).convert("RGBA")
+    canvas = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    canvas.paste(im, ((size - im.width) // 2, (size - im.height) // 2))
+    return np.asarray(canvas)
+
+
 def cmd_build(a) -> int:
     cfg = json.loads(Path(a.config).read_text())
     folder = REPO / cfg["folder"] if not Path(cfg["folder"]).is_absolute() else Path(cfg["folder"])
@@ -337,9 +377,12 @@ def cmd_build(a) -> int:
             info = {"mode": "translate", "shifts": shifts}
             plate, covers = None, None
         else:
-            master = np.asarray(Image.open(paths[fc["master"] - 1]).convert("RGBA"))
+            if fc.get("source"):
+                master = source_master(fc["source"], orig[0].shape[0])
+            else:
+                master = np.asarray(Image.open(paths[fc["master"] - 1]).convert("RGBA"))
             frames, plate, covers = compose_facing(master, fc, len(paths))
-            info = {"mode": "cutout", "master": fc["master"]}
+            info = {"mode": "cutout", "master": fc.get("source", {}).get("path") or fc["master"]}
         for i, fr in enumerate(frames, 1):
             Image.fromarray(fr, "RGBA").save(out / f"{cfg['prefix']}{i}_{facing}.png")
         if plate is not None:

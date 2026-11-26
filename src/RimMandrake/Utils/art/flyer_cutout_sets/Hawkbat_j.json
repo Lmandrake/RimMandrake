@@ -234,7 +234,13 @@
      235.3,
      153.7
     ]
-   ]
+   ],
+   "area": true,
+   "source": {
+    "path": "src/RimStarWars/SWBestiary/Textures/swanimals/Hawkbat/Hawkbat_j_Flying_4_east.png",
+    "rev": "af2991860e293cf9ae5af6a6301636c1af5a15f9^",
+    "pad": 0
+   }
   },
   "south": {
    "master": 2,

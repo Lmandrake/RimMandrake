@@ -360,7 +360,13 @@
       ]
      ]
     }
-   ]
+   ],
+   "area": true,
+   "source": {
+    "path": "src/RimStarWars/SWBestiary/Textures/swanimals/Dactillion/Dactillion_east.png",
+    "rev": null,
+    "pad": 0
+   }
   }
  }
 }

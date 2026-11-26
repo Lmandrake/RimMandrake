@@ -344,7 +344,13 @@
      ]
     }
    ],
-   "master": 1
+   "master": 1,
+   "area": true,
+   "source": {
+    "path": "src/RimStarWars/SWBestiary/Textures/swanimals/Urusai/Urusai_east.png",
+    "rev": null,
+    "pad": 32
+   }
   }
  }
 }
