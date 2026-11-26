@@ -1709,6 +1709,11 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             rs["waiting"] = [job["key"], wait]
             return
         rs.pop("waiting", None)
+        cv = covered_slot(rs, today, now, cfg.get("cover_window_s", COVER_WINDOW_S)) if (
+            job.get("manual") or {}).get("covers_slot") else None
+        if cv is not None and job["manual"].get("revisit"):
+            # a run that covers a slot IS that slot's run: its model, never a revisit's (job_model), read and launched alike
+            job = dict(job, manual={k: v for k, v in job["manual"].items() if k != "revisit"})
         r = codex_reading() if cfg.get("runner") == "codex" else reading(job_model(cfg, job)
                                                                           if cfg.get("model") else None)
         if r["state"] != "MEASURED" and cfg.get("degraded_reading_ok") is True:
@@ -1732,8 +1737,6 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             rs["codex_stop"] = [job["key"], stop]
             return
         rs.pop("codex_stop", None)
-        cv = covered_slot(rs, today, now, cfg.get("cover_window_s", COVER_WINDOW_S)) if (
-            job.get("manual") or {}).get("covers_slot") else None
         if cv is not None:
             # it covers the next scheduled slot, so it IS that run: that slot's own mode and cap (07:30 is the economy
             # pass), the incidents first, then the slot's full check; never the memory page alone (review g2r2).
@@ -3124,9 +3127,14 @@ def mode_model(role, mode):
 
 def job_model(role, job):
     """The model a due job launches on: its run-now request's own `model` when the Dispatcher pinned one (the incident
-    clerk's daily deep read: opus, design/specs/2026-11-19-incident-clerk/boundary.md), else mode_model."""
-    pinned = (job.get("manual") or job.get("run_now") or {}).get("model")
-    return pinned if pinned in MODELS_OK else mode_model(role, job.get("mode"))
+    clerk's daily deep read: opus, design/specs/2026-11-19-incident-clerk/boundary.md); a run of revisits only,
+    `model_by_mode["revisit"]` (owner's card 2026-11-19, "Sonnet for follow-ups only"; a run that covers a slot is
+    that slot's run and is no revisit run: decide_roles drops the flag); else mode_model."""
+    req = job.get("manual") or job.get("run_now") or {}
+    pinned = req.get("model")
+    if pinned in MODELS_OK:
+        return pinned
+    return mode_model(role, "revisit" if req.get("revisit") else job.get("mode"))
 
 
 def launch_role(role, a):
@@ -3144,6 +3152,8 @@ def launch_role(role, a):
     if not a.get("run_now"):
         return role
     out = dict(role, enabled=True)
+    if a["run_now"].get("escalation_of"):    # an Opus continuation: launch_argv marks it, so it escalates no further
+        out["escalation_of"] = a["run_now"]["escalation_of"]
     if a.get("concept"):          # a stage-machine run: its concept folder arms the Stop hook role_result_before_stop
         out["designer_dir"] = a["concept"]
         # its mod, so control admits it under that mod (a `pipe off <Mod>` refuses it at its start check), and that
@@ -3411,7 +3421,10 @@ def launch_argv(role, unit, msg, out, err, claude, session=None, tmpdir=None):
             # the scope's name, chosen here and persisted with the run, and the marker every process of the run
             # inherits: the two things supervise checks before a run counts as ended (review dispatcher-full #1)
             "--setenv", "CLAUDE_SCOPE_UNIT=" + role_scope(role["seat"], unit)[:-len(".scope")],
-            "--setenv", "RM_ROLE_UNIT=" + unit] + (
+            "--setenv", "RM_ROLE_UNIT=" + unit,
+            # the run's model and, for an Opus continuation, whose: `rimflow ops-escalate` stamps both (ops_escalate.py)
+            "--setenv", "RM_ROLE_MODEL=" + str(role.get("model") or "")] + (
+            ["--setenv", "RM_ROLE_CONTINUATION=" + role["escalation_of"]] if role.get("escalation_of") else []) + (
             # a Designer (Claude) stage run: .claude/hooks/role_result_before_stop.py checks result.json before it ends
             ["--setenv", "RM_DESIGNER_DIR=" + role["designer_dir"]] if role.get("designer_dir") and selected == "claude"
             else []) + (

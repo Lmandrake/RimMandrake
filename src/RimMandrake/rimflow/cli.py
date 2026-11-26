@@ -1851,6 +1851,19 @@ def _answered(incident, inc):
     return incident.answered_since(inc, cards, evs), None
 
 
+def cmd_ops_escalate(args, seat):
+    import ops_escalate
+    try:
+        row = ops_escalate.record(args.what, seat, incident=args.incident)
+    except ValueError as e:
+        die("%s\n" % e)
+    if row["continuation"] or row["model"] != "sonnet":
+        print("recorded; this run is %s, so no run is asked (ops_escalate.due): settle it here, or note it on your item"
+              % ("the continuation of %s" % row["continuation"] if row["continuation"] else "on " + str(row["model"])))
+    else:
+        print("recorded: the Dispatcher asks one Opus run that continues from this run's notes. Finish your notes and end.")
+
+
 def cmd_incident_line(args, seat):
     import incident
     inc = incident.fold(incident.read_rows() or [])[0].get(args.id)
@@ -5107,6 +5120,10 @@ def build_parser():
     s.add_argument("id")
     s.add_argument("line")
     s.add_argument("--not-the-same-ask", metavar="WHY", help="the plan's answered ask is not what this line is about")
+
+    s = add("ops-escalate", "a Sonnet Operations run hands what is fishy to one Opus run (ops_escalate.py)", cmd_ops_escalate)
+    s.add_argument("--what", required=True, help="what is fishy, in one line the Opus run starts from")
+    s.add_argument("--incident", help="the incident it is about, if any")
 
     s = add("incidents", "the told ledger's open incidents", cmd_incidents)
     s.add_argument("--all", action="store_true")

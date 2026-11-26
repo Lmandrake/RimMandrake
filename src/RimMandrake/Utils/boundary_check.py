@@ -170,6 +170,7 @@ PAGES = {
         "src/RimMandrake/Utils/selftest_pager_triggers.py",
     "design/specs/2026-11-19-incident-news-and-program-routes/boundary.md": "src/RimMandrake/rimflow/selftest_incident_news.py",
     "design/specs/2026-11-19-incident-clerk/boundary.md": "src/RimMandrake/rimflow/selftest_incident_clerk.py",
+    "design/specs/2026-11-26-ops-sonnet-revisits-escalate/boundary.md": "src/RimMandrake/rimflow/selftest_ops_escalate.py",
     "design/specs/2026-11-19-positive-steps-one-source/boundary.md": "src/RimMandrake/Utils/selftest_positive_steps_one_source.py",
     "design/specs/2026-11-19-rule-homes-in-briefs/boundary.md": "src/RimMandrake/rimflow/selftest_rule_homes_in_briefs.py",
     "design/specs/2026-11-19-brief-skill-paths/boundary.md": "src/RimMandrake/rimflow/selftest_detached_helper.py",

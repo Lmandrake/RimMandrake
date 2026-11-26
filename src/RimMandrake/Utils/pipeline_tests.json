@@ -384,6 +384,7 @@
     {"test": "src/RimMandrake/rimflow/selftest_resume_voided_blind_judge.py", "seconds": 8.0},
     {"test": "src/RimMandrake/rimflow/selftest_incident_news.py", "inputs": ["design/specs/2026-11-19-incident-news-and-program-routes/boundary.md", "src/RimMandrake/rimflow/alarm_routes.json"], "seconds": 0.2},
     {"test": "src/RimMandrake/rimflow/selftest_incident_clerk.py", "inputs": ["design/specs/2026-11-19-incident-clerk/boundary.md", "src/RimMandrake/rimflow/alarm_routes.json"], "seconds": 1.0},
+    {"test": "src/RimMandrake/rimflow/selftest_ops_escalate.py", "inputs": ["design/specs/2026-11-26-ops-sonnet-revisits-escalate/boundary.md", "src/RimMandrake/rimflow/ops_escalate.py", "src/RimMandrake/rimflow/dispatcher_schedule.json", "src/RimMandrake/rimflow/roles/operations.md"], "seconds": 9.0},
     {"test": "src/RimMandrake/rimflow/selftest_dispatch_two_games.py", "seconds": 3.8},
     {"test": "src/RimMandrake/rimflow/selftest_tick_names_steve_games.py", "inputs": ["design/specs/2026-11-23-tick-names-steve-games/boundary.md"], "seconds": 4.0},
     {"test": "src/RimMandrake/rimflow/selftest_game_hold_split_install.py", "seconds": 2.5},

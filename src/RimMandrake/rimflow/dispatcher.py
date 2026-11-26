@@ -599,11 +599,14 @@ def signal_alarm(sch, st, kind, why, now):
         st["incident_failed"] = "signal of %s lost: %s: %s" % (kind, type(e).__name__, str(e))
 
 
-def incident_run(sch, st, role, mode, why, now, ids=None, model=None):
+def incident_run(sch, st, role, mode, why, now, ids=None, model=None, revisit=False, escalation_of=None):
     """One run the chain asks for, inside the shared per-hour budget. -> what happened. `ids`: the incidents this run
     answers; an Operations run for them covers the next scheduled slot when it is due soon (role_launch.covered_slot,
     cover_window_s), so the daily cap is asked for one run, not two, and a refusal on it is read back by denied_runs.
-    `model`: the model this run must launch on whatever the role's model_by_mode says (the daily deep read: opus)."""
+    `model`: the model this run must launch on whatever the role's model_by_mode says (the daily deep read: opus).
+    `revisit`: every incident it answers is a revisit, so it launches on model_by_mode["revisit"] (role_launch.job_model;
+    owner's card 2026-11-19, "Sonnet for follow-ups only"). `escalation_of`: the Sonnet run this run continues
+    (escalation_pass); the launched unit carries it as RM_ROLE_CONTINUATION, so its own escalation asks nothing."""
     if model is not None and model not in RL.MODELS_OK:
         raise ValueError("incident_run model %r: one of %s" % (model, ", ".join(RL.MODELS_OK)))
     ist = st.setdefault("incident", {})
@@ -620,6 +623,10 @@ def incident_run(sch, st, role, mode, why, now, ids=None, model=None):
         rs["run_now"]["ids"] = list(ids or [])
     if model:
         rs["run_now"]["model"] = model
+    if revisit:
+        rs["run_now"]["revisit"] = True
+    if escalation_of:
+        rs["run_now"]["escalation_of"] = escalation_of
     ist["runs"] = runs + [now]
     return "%s run asked for" % role
 
@@ -837,13 +844,53 @@ def incident_execute(a, sch, st, root, now, do_ring, do_conductor, do_file=None)
         deep = any(r.get("deep") for r in fresh)
         if deep:        # the daily deep read (incident.step): it stays on Opus (owner's card 2026-11-19)
             text = "DAILY DEEP READ (on Opus) of every open incident at his rung. " + text
-        res = incident_run(sch, st, "Operations", "run", text, now, ids, model="opus" if deep else None)
+        # revisits only: a follow-up, on model_by_mode["revisit"] (Sonnet); one first look in the batch keeps it on Opus
+        revisit = not deep and all(r.get("revisit") for r in fresh)
+        if revisit:
+            text += (" If something here is fishy beyond what you can settle, hand it on: rimflow ops-escalate --what "
+                     "\"<what is fishy>\" --incident <id> (one Opus run continues from your notes).")
+        res = incident_run(sch, st, "Operations", "run", text, now, ids, model="opus" if deep else None, revisit=revisit)
         said.append(res)
         if res.startswith("held") or "already asked" in res:
             ist["held"].extend(fresh)           # asked again next tick, as one run
+    esc = escalation_pass(sch, st, root, now)
+    said.append(esc) if esc else None
     IN.write_snapshot(a["snapshot"])
     a["snapshot"] = None
     return "; ".join(said) or "stamped"
+
+
+def escalation_pass(sch, st, root, now, rows=None):
+    """The new rows of escalations.jsonl (ops_escalate.record) since the last pass. -> what happened, or None.
+    A row from a Sonnet run that is not a continuation asks ONE Opus run continuing from that run's notes
+    (ops_escalate.due); every other row asks nothing and is said. A row the per-hour budget or a run already asked
+    holds stays unread, so the next pass asks it again. A torn file moves nothing and is said."""
+    import ops_escalate as OE
+    rows = OE.read_rows() if rows is None else rows
+    if rows is None:
+        return "escalations.jsonl does not read: no escalation moved"
+    ist = st.setdefault("incident", {})
+    cur = ist.get("esc_cursor", 0)
+    cur = cur if cur <= len(rows) else 0
+    done = set(ist.get("esc_done") or [])
+    said = []
+    for row in rows[cur:]:
+        go, why = OE.due(row, done)
+        if go:
+            notes = os.path.join(root, "roles", row["unit"] + ".json.last.txt")
+            res = incident_run(sch, st, "Operations", "run", OE.continuation_text(row, notes), now,
+                               [row["incident"]] if row.get("incident") else [], model="opus",
+                               escalation_of=row["unit"])
+            if res.startswith("held") or "already asked" in res:
+                said.append("escalation of %s waits: %s" % (row["unit"], res))
+                break                           # read again next pass, in order
+            done.add(row["unit"])
+            said.append("escalation of %s: %s" % (row["unit"], res))
+        else:
+            said.append("escalation of %s asks no run: %s" % (row.get("unit"), why))
+        cur += 1
+    ist["esc_cursor"], ist["esc_done"] = cur, sorted(done)
+    return "; ".join(said) or None
 
 
 def decide(sch, st, obs, now, apply, out=None):

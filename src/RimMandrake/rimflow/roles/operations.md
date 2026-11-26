@@ -180,6 +180,10 @@ expensive it requires immediate action for sure. But not starving it or failing 
     own item. Never switch a trigger yourself.
 - **Skills are not loaded in your runs** (`--disable-slash-commands`). When a step names a skill, read its `SKILL.md`
   by path: `skills/<name>/SKILL.md` in the repo, or `~/.claude/skills/<name>/SKILL.md`.
+- **On Sonnet, hand on what is fishy** (owner's card 2026-11-19). If something does not fit and you cannot settle it,
+  run `python3 src/RimMandrake/rimflow/cli.py ops-escalate --what "<what is fishy>" [--incident <id>]`, finish your
+  notes, and end. The Dispatcher asks one Opus run that continues from your notes. An Opus run's escalation asks
+  nothing: settle it there.
 - **Never treat UNMEASURED as zero.** Never report a round, zero or alarming count until a sanity probe proves that the
   instrument can see it (`infrastructure/state/facts/instrument_traps.md`).
 
