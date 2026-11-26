@@ -232,7 +232,27 @@ internal static class KnockbackMap
 
     private static int Ticks(double dist, double speed, int min) => Math.Max(min, (int)Math.Ceiling(dist / speed * 60.0));
 
+    // The real-game witness of A5 (LosReal/, selftest_explosiveknockback_los_real.py): when set, every sight line the map asks is
+    // also asked of the game's own Verse.GenSight.LineOfSight on a Map shell that mirrors the model's walls and closed doors.
+    // The model keeps its copy's answer; a disagreement is counted, and the first ones kept as examples.
+    internal static Func<MWorld, int, int, int, int, bool> LosWitness;
+    public static long LosAsked, LosDiffer;
+    public static readonly List<string> LosDiffExamples = new List<string>();
+
     private static bool Los(MWorld w, int cx, int cz, int x, int z)
+    {
+        bool copied = LosCopied(w, cx, cz, x, z);
+        if (LosWitness != null)
+        {
+            LosAsked++;
+            bool real = LosWitness(w, cx, cz, x, z);
+            if (real != copied && LosDiffer++ < 5)
+                LosDiffExamples.Add("(" + cx + "," + cz + ") -> (" + x + "," + z + "): model " + copied + ", game " + real);
+        }
+        return copied;
+    }
+
+    internal static bool LosCopied(MWorld w, int cx, int cz, int x, int z)
     {
         // Verse.GenSight.LineOfSight(start, end, map, skipFirstCell: true), copied: from cell to side neighbour, never diagonally
         bool flag = cx != x ? cx < x : cz < z;
@@ -1380,6 +1400,12 @@ internal static class KnockbackMap
         }
         Console.WriteLine("CASES " + (CasesRun - CasesFailed) + " of " + CasesRun + " fixed cases and settings flips as expected");
         bad += CasesFailed;
+        if (LosWitness != null)
+        {
+            Console.WriteLine("LOS WITNESS: " + LosDiffer + " of " + LosAsked + " sight lines differ from Verse.GenSight.LineOfSight");
+            foreach (string e in LosDiffExamples) Console.WriteLine("    e.g. " + e);
+            bad += LosDiffer;
+        }
         Console.WriteLine("knockback map: " + (bad == 0 ? "every bar holds over the declared range (" + Version + ")" : bad + " readings break a bar (" + Version + ")"));
         return bad == 0 ? 0 : 1;
     }
