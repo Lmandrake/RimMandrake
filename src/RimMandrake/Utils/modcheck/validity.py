@@ -47,7 +47,8 @@ def colonists_zero(ctx, comp):
     except Exception:  # noqa: BLE001
         return None
     if not any(h.is_colonist(r) and not r.get("dead") for r in rows):
-        if _colony_elsewhere(ctx.session):
+        # only a map that never held a colonist row (alive or dead) may be excused: dead colonists here void the row
+        if not any(h.is_colonist(r) for r in rows) and _colony_elsewhere(ctx.session):
             return None
         return ("no live colonist on the map (colonist count 0)", "UNKNOWN", "medium")
     return None

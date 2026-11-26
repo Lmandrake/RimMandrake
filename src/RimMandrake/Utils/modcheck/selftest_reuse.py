@@ -411,6 +411,16 @@ def t_validity_module():
     ctx.session = _AwaySess({"success": True, "colonists": [dict(away["colonists"][0], dead=True)]})
     ok((validity.colonists_zero(ctx, None) or [None, None])[1] == "UNKNOWN",
        "foil: colonists_zero fires when every map's colonists are dead")
+    # foil (fresh reader of 9be89583ef): a site map whose own colonists all died is still void, even while map 0 lives
+    class _DeadHereSess(_AwaySess):
+        def call(self, tool, **p):
+            if tool == "jawa/list_pawns":
+                self.calls.append(tool)
+                return {"success": True, "pawns": [{"id": "c0", "isPlayer": True, "intelligence": "Humanlike", "dead": True}]}
+            return _AwaySess.call(self, tool, **p)
+    ctx.session = _DeadHereSess(away)
+    ok((validity.colonists_zero(ctx, None) or [None, None])[1] == "UNKNOWN",
+       "foil: colonists_zero fires when the current map's own colonists are dead, whatever lives elsewhere")
     ctx.session = _AwaySess({"success": False, "message": "no such tool"})
     ok((validity.colonists_zero(ctx, None) or [None, None])[1] == "UNKNOWN",
        "foil: colonists_zero still fires when the other maps cannot be read (could not look is not a colony)")
