@@ -1,8 +1,9 @@
 # Workshop Pipeline: the onboarding run of one home's old tickets
 
 `list_dispatch.py` launches this brief on one home (one part of the pipeline, one machine) that holds old tickets: open
-tickets with no outcome check, no routed part and no shaped split. A mod's road-back bundle sends its old tickets
-through the same steps. `work_bundle.onboard_brief` fills the text below the marker. Page:
+tickets with no outcome check, no routed part and no shaped split. For a mod, the one bundle of that mod's road back in
+the Maturation Pipeline (the holder run of `maturation_dispatch.road_back_holder`) sends its old tickets through the
+same steps. `work_bundle.onboard_brief` fills the text below the marker. Page:
 `design/specs/2026-11-24-work-bundles/boundary.md` §Onboarding old tickets by home. The owner, 2026-11-25: "MANY of the
 tickets from before a certain date will not include a custom check already prepared. Propose the right way to onboard
 those tickets and process them into appropriate work bundles, if we have to write tests then so be it, and start work
@@ -61,7 +62,8 @@ its commit, write a PROGRESS note, then run `python3 src/RimMandrake/rimflow/wor
 finish the group in hand, write the state file (what is done, what the next context needs, what is next), publish it,
 and end. The pipeline restarts a fresh run of you from that file.
 
-Every member ends with one outcome: closed (fixed or done already), dropped, superseded, routed, a dated wait, or a note
+Every member ends with one outcome: closed (fixed or done already), dropped, superseded, routed, a dated wait (`cli.py
+wait <ID> --until <YYYY-MM-DD> --reason "<who acts next and on what>"`), or a note
 that starts `REFUSED BY BUNDLE:` with its reason (the role's section "A refusal has a reason"). A full context, a long
 run or a spend stop is never a reason.
 
