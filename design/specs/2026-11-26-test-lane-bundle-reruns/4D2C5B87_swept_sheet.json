@@ -1,0 +1,4572 @@
+{
+ "mod": "FlowWorks",
+ "stamp": "20261126T064540Z",
+ "summary": {
+  "chains": [
+   {
+    "name": "swept",
+    "components": [
+     {
+      "name": "returns_home",
+      "toggle": "washOffMapEdge",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofSwept(System.String)",
+         "result": "SWEPT pending=0",
+         "thingArgs": [],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_1140438ab77549f88a5b14ccc4ffff14",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/map_info",
+        "result": {
+         "success": true,
+         "tile": 2211,
+         "tileValid": true,
+         "mapId": 1,
+         "sizeX": 250,
+         "sizeZ": 250,
+         "cellCount": 62500,
+         "tileInfo": {
+          "biome": "TemperateForest",
+          "hilliness": "Flat",
+          "hillinessInt": 1,
+          "elevation": 56.74788,
+          "rainfall": 4400.93359,
+          "swampiness": 0.0945189,
+          "temperature": 16.0557384,
+          "pollution": 0.0,
+          "waterCovered": false,
+          "isSurfaceTile": true
+         },
+         "mapBiome": "TemperateForest",
+         "mapBiomeLabel": "temperate forest",
+         "outdoorTempNow": 24.77143,
+         "latitude": 30.0982361,
+         "longitude": -20.2741756,
+         "season": "Summer",
+         "mapParent": {
+          "defName": "Settlement",
+          "label": "NorthstarBland",
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland"
+         },
+         "playerSettlementsOnThisTile": 1,
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_3bf81554c5a843eb94782d4bb69d8208",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 40
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/get_terrain_batch",
+        "result": {
+         "success": true,
+         "message": "Read 996 cell(s) as 8 distinct terrain(s) in 522 run(s).",
+         "layer": "top",
+         "ops": "Soil:0,0,103,1;Gravel:103,0,4,1;Soil:107,0,31,1;Riverbank:138,0,6,1;WaterMovingShallow:144,0,6,1;Riverbank:150,0,8,1;Soil:158,0,85,1;SoilRich:243,0,1,1;Mud:244,0,3,1;SoilRich:247,0,2,1;Soil:249,0,1,1;Soil:0,1,1,1;Soil:249,1,1,1;Soil:0,2,1,1;Soil:249,2,1,1;Soil:0,3,1,1;Soil:249,3,1,1;Soil:0,4,1,1;Soil:249,4,1,1;Soil:0,5,1,1;Soil:249,5,1,1;Soil:0,6,1,1;Soil:249,6,1,1;Soil:0,7,1,1;Soil:249,7,1,1;Soil:0,8,1,1;Soil:249,8,1,1;Soil:0,9,1,1;Soil:249,9,1,1;Soil:0,10,1,1;Soil:249,10,1,1;Soil:0,11,1,1;Soil:249,11,1,1;Soil:0,12,1,1;Soil:249,12,1,1;Soil:0,13,1,1;Soil:249,13,1,1;Soil:0,14,1,1;Soil:249,14,1,1;Soil:0,15,1,1;Soil:249,15,1,1;Soil:0,16,1,1;Soil:249,16,1,1;Soil:0,17,1,1;Soil:249,17,1,1;Soil:0,18,1,1;Soil:249,18,1,1;Soil:0,19,1,1;Soil:249,19,1,1;Soil:0,20,1,1;Soil:249,20,1,1;Soil:0,21,1,1;Soil:249,21,1,1;Soil:0,22,1,1;Soil:249,22,1,1;Soil:0,23,1,1;Soil:249,23,1,1;Soil:0,24,1,1;Soil:249,24,1,1;Soil:0,25,1,1;Soil:249,25,1,1;Soil:0,26,1,1;Soil:249,26,1,1;Soil:0,27,1,1;Soil:249,27,1,1;Soil:0,28,1,1;Soil:249,28,1,1;Soil:0,29,1,1;Soil:249,29,1,1;Soil:0,30,1,1;Soil:249,30,1,1;Soil:0,31,1,1;Soil:249,31,1,1;Soil:0,32,1,1;Soil:249,32,1,1;Soil:0,33,1,1;Soil:249,33,1,1;Soil:0,34,1,1;Soil:249,34,1,1;Soil:0,35,1,1;Soil:249,35,1,1;Soil:0,36,1,1;Soil:249,36,1,1;Soil:0,37,1,1;Soil:249,37,1,1;Soil:0,38,1,1;Soil:249,38,1,1;Soil:0,39,1,1;Soil:249,39,1,1;Soil:0,40,1,1;Soil:249,40,1,1;Soil:0,41,1,1;Soil:249,41,1,1;Soil:0,42,1,1;Soil:249,42,1,1;Soil:0,43,1,1;Soil:249,43,1,1;Soil:0,44,1,1;Soil:249,44,1,1;Soil:0,45,1,1;Soil:249,45,1,1;Soil:0,46,1,1;Soil:249,46,1,1;Soil:0,47,1,1;Soil:249,47,1,1;Soil:0,48,1,1;Soil:249,48,1,1;Soil:0,49,1,1;Soil:249,49,1,1;Soil:0,50,1,1;Soil:249,50,1,1;Soil:0,51,1,1;Soil:249,51,1,1;Soil:0,52,1,1;Soil:249,52,1,1;SoilRich:0,53,1,1;Soil:249,53,1,1;SoilRich:0,54,1,1;Soil:249,54,1,1;SoilRich:0,55,1,1;Soil:249,55,1,1;SoilRich:0,56,1,1;Soil:249,56,1,1;Soil:0,57,1,1;Soil:249,57,1,1;Soil:0,58,1,1;Soil:249,58,1,1;Soil:0,59,1,1;Soil:249,59,1,1;Soil:0,60,1,1;Soil:249,60,1,1;Soil:0,61,1,1;Soil:249,61,1,1;Soil:0,62,1,1;Soil:249,62,1,1;Soil:0,63,1,1;Soil:249,63,1,1;Soil:0,64,1,1;Soil:249,64,1,1;Soil:0,65,1,1;Soil:249,65,1,1;Soil:0,66,1,1;Soil:249,66,1,1;Soil:0,67,1,1;Soil:249,67,1,1;Soil:0,68,1,1;Soil:249,68,1,1;Soil:0,69,1,1;Soil:249,69,1,1;Soil:0,70,1,1;Soil:249,70,1,1;Soil:0,71,1,1;Soil:249,71,1,1;Soil:0,72,1,1;Soil:249,72,1,1;Soil:0,73,1,1;Soil:249,73,1,1;Soil:0,74,1,1;Soil:249,74,1,1;Soil:0,75,1,1;Soil:249,75,1,1;Soil:0,76,1,1;Soil:249,76,1,1;Soil:0,77,1,1;Soil:249,77,1,1;Soil:0,78,1,1;Soil:249,78,1,1;Soil:0,79,1,1;Soil:249,79,1,1;Soil:0,80,1,1;Soil:249,80,1,1;Soil:0,81,1,1;Soil:249,81,1,1;Soil:0,82,1,1;Soil:249,82,1,1;Soil:0,83,1,1;Soil:249,83,1,1;Soil:0,84,1,1;Soil:249,84,1,1;Soil:0,85,1,1;Soil:249,85,1,1;Soil:0,86,1,1;Soil:249,86,1,1;Soil:0,87,1,1;Soil:249,87,1,1;Soil:0,88,1,1;Soil:249,88,1,1;Soil:0,89,1,1;Soil:249,89,1,1;Soil:0,90,1,1;Soil:249,90,1,1;Soil:0,91,1,1;Soil:249,91,1,1;Soil:0,92,1,1;Soil:249,92,1,1;Soil:0,93,1,1;Soil:249,93,1,1;Soil:0,94,1,1;Soil:249,94,1,1;Soil:0,95,1,1;Soil:249,95,1,1;Soil:0,96,1,1;Soil:249,96,1,1;Soil:0,97,1,1;Soil:249,97,1,1;Soil:0,98,1,1;Soil:249,98,1,1;Soil:0,99,1,1;Soil:249,99,1,1;Soil:0,100,1,1;Soil:249,100,1,1;Soil:0,101,1,1;Soil:249,101,1,1;Soil:0,102,1,1;Soil:249,102,1,1;Soil:0,103,1,1;Soil:249,103,1,1;Soil:0,104,1,1;Soil:249,104,1,1;Soil:0,105,1,1;Soil:249,105,1,1;Soil:0,106,1,1;Soil:249,106,1,1;SoilRich:0,107,1,1;Soil:249,107,1,1;SoilRich:0,108,1,1;Soil:249,108,1,1;SoilRich:0,109,1,1;Soil:249,109,1,1;SoilRich:0,110,1,1;Soil:249,110,1,1;SoilRich:0,111,1,1;Soil:249,111,1,1;SoilRich:0,112,1,1;Soil:249,112,1,1;SoilRich:0,113,1,1;Soil:249,113,1,1;SoilRich:0,114,1,1;Soil:249,114,1,1;SoilRich:0,115,1,1;Soil:249,115,1,1;SoilRich:0,116,1,1;Soil:249,116,1,1;SoilRich:0,117,1,1;Soil:249,117,1,1;SoilRich:0,118,1,1;Soil:249,118,1,1;SoilRich:0,119,1,1;Soil:249,119,1,1;SoilRich:0,120,1,1;Gravel:249,120,1,1;SoilRich:0,121,1,1;Gravel:249,121,1,1;Soil:0,122,1,1;Gravel:249,122,1,1;Soil:0,123,1,1;Gravel:249,123,1,1;Soil:0,124,1,1;Gravel:249,124,1,1;Soil:0,125,1,1;Soil:249,125,1,1;Soil:0,126,1,1;Soil:249,126,1,1;Soil:0,127,1,1;Soil:249,127,1,1;Soil:0,128,1,1;Soil:249,128,1,1;Soil:0,129,1,1;Soil:249,129,1,1;Soil:0,130,1,1;Soil:249,130,1,1;Soil:0,131,1,1;Soil:249,131,1,1;Soil:0,132,1,1;Soil:249,132,1,1;Soil:0,133,1,1;Soil:249,133,1,1;Gravel:0,134,1,1;Gravel:249,134,1,1;Gravel:0,135,1,1;Gravel:249,135,1,1;Gravel:0,136,1,1;Sandstone_Rough:249,136,1,1;Gravel:0,137,1,1;Sandstone_Rough:249,137,1,1;Sandstone_Rough:0,138,1,1;Sandstone_Rough:249,138,1,1;Sandstone_Rough:0,139,1,1;Gravel:249,139,1,1;Sandstone_Rough:0,140,1,1;Gravel:249,140,1,1;Sandstone_Rough:0,141,1,1;Sandstone_Rough:249,141,1,1;Sandstone_Rough:0,142,1,1;Sandstone_Rough:249,142,1,1;Sandstone_Rough:0,143,1,1;Sandstone_Rough:249,143,1,1;Sandstone_Rough:0,144,1,1;Sandstone_Rough:249,144,1,1;Sandstone_Rough:0,145,1,1;Sandstone_Rough:249,145,1,1;Sandstone_Rough:0,146,1,1;Sandstone_Rough:249,146,1,1;Sandstone_Rough:0,147,1,1;Sandstone_Rough:249,147,1,1;Sandstone_Rough:0,148,1,1;Sandstone_Rough:249,148,1,1;Sandstone_Rough:0,149,1,1;Gravel:249,149,1,1;Sandstone_Rough:0,150,1,1;Soil:249,150,1,1;Sandstone_Rough:0,151,1,1;Soil:249,151,1,1;Gravel:0,152,1,1;Soil:249,152,1,1;Soil:0,153,1,1;Soil:249,153,1,1;Soil:0,154,1,1;Soil:249,154,1,1;Soil:0,155,1,1;Soil:249,155,1,1;Soil:0,156,1,1;Soil:249,156,1,1;Soil:0,157,1,1;Soil:249,157,1,1;Soil:0,158,1,1;Soil:249,158,1,1;Soil:0,159,1,1;Soil:249,159,1,1;Soil:0,160,1,1;Soil:249,160,1,1;Soil:0,161,1,1;Soil:249,161,1,1;Soil:0,162,1,1;Soil:249,162,1,1;Soil:0,163,1,1;Soil:249,163,1,1;Soil:0,164,1,1;Soil:249,164,1,1;Soil:0,165,1,1;Soil:249,165,1,1;Soil:0,166,1,1;Soil:249,166,1,1;Soil:0,167,1,1;Soil:249,167,1,1;Soil:0,168,1,1;Soil:249,168,1,1;Soil:0,169,1,1;Soil:249,169,1,1;Soil:0,170,1,1;Soil:249,170,1,1;Soil:0,171,1,1;Soil:249,171,1,1;Soil:0,172,1,1;Soil:249,172,1,1;Soil:0,173,1,1;Soil:249,173,1,1;Soil:0,174,1,1;Soil:249,174,1,1;Soil:0,175,1,1;Soil:249,175,1,1;Soil:0,176,1,1;Soil:249,176,1,1;Soil:0,177,1,1;Soil:249,177,1,1;Soil:0,178,1,1;Soil:249,178,1,1;Soil:0,179,1,1;Soil:249,179,1,1;Soil:0,180,1,1;Soil:249,180,1,1;Soil:0,181,1,1;Soil:249,181,1,1;Soil:0,182,1,1;Soil:249,182,1,1;Soil:0,183,1,1;Soil:249,183,1,1;Soil:0,184,1,1;Soil:249,184,1,1;Soil:0,185,1,1;Soil:249,185,1,1;Soil:0,186,1,1;Soil:249,186,1,1;Soil:0,187,1,1;Soil:249,187,1,1;Soil:0,188,1,1;Soil:249,188,1,1;Soil:0,189,1,1;Soil:249,189,1,1;Soil:0,190,1,1;Soil:249,190,1,1;Soil:0,191,1,1;Soil:249,191,1,1;Soil:0,192,1,1;Soil:249,192,1,1;Soil:0,193,1,1;Soil:249,193,1,1;Soil:0,194,1,1;Soil:249,194,1,1;Soil:0,195,1,1;Soil:249,195,1,1;Soil:0,196,1,1;Soil:249,196,1,1;Soil:0,197,1,1;Soil:249,197,1,1;Soil:0,198,1,1;Soil:249,198,1,1;Soil:0,199,1,1;Soil:249,199,1,1;Soil:0,200,1,1;Soil:249,200,1,1;Soil:0,201,1,1;Soil:249,201,1,1;Soil:0,202,1,1;Soil:249,202,1,1;Soil:0,203,1,1;Soil:249,203,1,1;Soil:0,204,1,1;Soil:249,204,1,1;Soil:0,205,1,1;Soil:249,205,1,1;Soil:0,206,1,1;Soil:249,206,1,1;Soil:0,207,1,1;Soil:249,207,1,1;Soil:0,208,1,1;Soil:249,208,1,1;Soil:0,209,1,1;Soil:249,209,1,1;SoilRich:0,210,1,1;Soil:249,210,1,1;SoilRich:0,211,1,1;Soil:249,211,1,1;Soil:0,212,1,1;Soil:249,212,1,1;Soil:0,213,1,1;Soil:249,213,1,1;Soil:0,214,1,1;Soil:249,214,1,1;Soil:0,215,1,1;Soil:249,215,1,1;Soil:0,216,1,1;Soil:249,216,1,1;Soil:0,217,1,1;Soil:249,217,1,1;Soil:0,218,1,1;Soil:249,218,1,1;Soil:0,219,1,1;Soil:249,219,1,1;Soil:0,220,1,1;Soil:249,220,1,1;Soil:0,221,1,1;Soil:249,221,1,1;Soil:0,222,1,1;Soil:249,222,1,1;Soil:0,223,1,1;Soil:249,223,1,1;Soil:0,224,1,1;Soil:249,224,1,1;Soil:0,225,1,1;Soil:249,225,1,1;Soil:0,226,1,1;Soil:249,226,1,1;Soil:0,227,1,1;Soil:249,227,1,1;Soil:0,228,1,1;Soil:249,228,1,1;Soil:0,229,1,1;Soil:249,229,1,1;Soil:0,230,1,1;Soil:249,230,1,1;Soil:0,231,1,1;Soil:249,231,1,1;Soil:0,232,1,1;Soil:249,232,1,1;Soil:0,233,1,1;Soil:249,233,1,1;Soil:0,234,1,1;Soil:249,234,1,1;Soil:0,235,1,1;Soil:249,235,1,1;Soil:0,236,1,1;Soil:249,236,1,1;Soil:0,237,1,1;Soil:249,237,1,1;Soil:0,238,1,1;Soil:249,238,1,1;Soil:0,239,1,1;Soil:249,239,1,1;Soil:0,240,1,1;Gravel:249,240,1,1;Soil:0,241,1,1;Gravel:249,241,1,1;Soil:0,242,1,1;Gravel:249,242,1,1;Soil:0,243,1,1;Gravel:249,243,1,1;Soil:0,244,1,1;Marble_Rough:249,244,1,1;Soil:0,245,1,1;Marble_Rough:249,245,1,1;Soil:0,246,1,1;Marble_Rough:249,246,1,1;Soil:0,247,1,1;Marble_Rough:249,247,1,1;Soil:0,248,1,1;Marble_Rough:249,248,1,1;Soil:0,249,6,1;Gravel:6,249,2,1;Soil:8,249,5,1;Riverbank:13,249,10,1;WaterMovingShallow:23,249,6,1;Riverbank:29,249,6,1;Soil:35,249,35,1;SoilRich:70,249,12,1;Soil:82,249,22,1;Gravel:104,249,9,1;Soil:113,249,128,1;Gravel:241,249,1,1;Soil:242,249,2,1;Gravel:244,249,1,1;Marble_Rough:245,249,5,1",
+         "cellsRequested": 1000,
+         "cellsRead": 996,
+         "cellsOutOfBounds": 0,
+         "cellsNullTerrain": 0,
+         "distinctTerrains": [
+          "Gravel",
+          "Marble_Rough",
+          "Mud",
+          "Riverbank",
+          "Sandstone_Rough",
+          "Soil",
+          "SoilRich",
+          "WaterMovingShallow"
+         ],
+         "mapSize": {
+          "x": 250,
+          "z": 250
+         },
+         "mapId": 1,
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_a86ce54169cb4b72bbf30c94e1ff5c2f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 40
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_pawn",
+        "result": {
+         "success": true,
+         "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+         "spawnedCount": 1,
+         "failedCount": 0,
+         "substitutedCount": 0,
+         "pawns": [
+          {
+           "ok": true,
+           "id": "Human80457",
+           "name": "Jona",
+           "kindRequested": "Colonist",
+           "kindActual": "Colonist",
+           "kindSubstituted": false,
+           "faction": "PlayerColony",
+           "hostile": false,
+           "x": 147,
+           "z": 0,
+           "spawned": true,
+           "xenotype": "Baseliner",
+           "xenotypeApplied": true
+          }
+         ],
+         "readBack": {
+          "ok": true,
+          "tool": "jawa/spawn_pawn",
+          "faults": [],
+          "frameOpen": 6447,
+          "frameReply": 6447,
+          "sameFrame": true,
+          "rows": 1,
+          "rowsWrong": 0,
+          "wrong": [],
+          "made": [
+           {
+            "op": "pawn",
+            "id": "Human80457",
+            "x": 147,
+            "z": 0,
+            "got": {
+             "cell": "147,0",
+             "faction": "PlayerColony",
+             "kind": "Colonist",
+             "spawned": "True",
+             "xenotype": "Baseliner"
+            }
+           }
+          ],
+          "leftBlocking": 0,
+          "leftKept": 0,
+          "left": [],
+          "digest": "a625ea4701e1f525"
+         },
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_5300f57f47764cb69ed43c447437c546",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_draft",
+        "result": {
+         "success": true,
+         "drafted": true,
+         "fireAtWill": true,
+         "wasDrafted": false,
+         "changed": true,
+         "operation": {
+          "OperationId": "op_7dd5a17dc3654a6bbd9f3162d8a4c1bb",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_pawn",
+        "result": {
+         "success": true,
+         "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+         "spawnedCount": 1,
+         "failedCount": 0,
+         "substitutedCount": 0,
+         "pawns": [
+          {
+           "ok": true,
+           "id": "Human80460",
+           "name": "Mai",
+           "kindRequested": "Colonist",
+           "kindActual": "Colonist",
+           "kindSubstituted": false,
+           "faction": "PlayerColony",
+           "hostile": false,
+           "x": 26,
+           "z": 249,
+           "spawned": true,
+           "xenotype": "Baseliner",
+           "xenotypeApplied": true
+          }
+         ],
+         "readBack": {
+          "ok": true,
+          "tool": "jawa/spawn_pawn",
+          "faults": [],
+          "frameOpen": 6461,
+          "frameReply": 6461,
+          "sameFrame": true,
+          "rows": 1,
+          "rowsWrong": 0,
+          "wrong": [],
+          "made": [
+           {
+            "op": "pawn",
+            "id": "Human80460",
+            "x": 26,
+            "z": 249,
+            "got": {
+             "cell": "26,249",
+             "faction": "PlayerColony",
+             "kind": "Colonist",
+             "spawned": "True",
+             "xenotype": "Baseliner"
+            }
+           }
+          ],
+          "leftBlocking": 0,
+          "leftKept": 0,
+          "left": [],
+          "digest": "721c313f40161a6b"
+         },
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_9eb4f8cea6884ac2b9cfac6572347e66",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_draft",
+        "result": {
+         "success": true,
+         "drafted": true,
+         "fireAtWill": true,
+         "wasDrafted": false,
+         "changed": true,
+         "operation": {
+          "OperationId": "op_c34ceafef2124487b479ee5cbe436a69",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 40
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_pawn",
+        "result": {
+         "success": true,
+         "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+         "spawnedCount": 1,
+         "failedCount": 0,
+         "substitutedCount": 0,
+         "pawns": [
+          {
+           "ok": true,
+           "id": "Human80463",
+           "name": "Matticus",
+           "kindRequested": "Colonist",
+           "kindActual": "Colonist",
+           "kindSubstituted": false,
+           "faction": "PlayerColony",
+           "hostile": false,
+           "x": 144,
+           "z": 0,
+           "spawned": true,
+           "xenotype": "Baseliner",
+           "xenotypeApplied": true
+          }
+         ],
+         "readBack": {
+          "ok": true,
+          "tool": "jawa/spawn_pawn",
+          "faults": [],
+          "frameOpen": 6472,
+          "frameReply": 6472,
+          "sameFrame": true,
+          "rows": 1,
+          "rowsWrong": 0,
+          "wrong": [],
+          "made": [
+           {
+            "op": "pawn",
+            "id": "Human80463",
+            "x": 144,
+            "z": 0,
+            "got": {
+             "cell": "144,0",
+             "faction": "PlayerColony",
+             "kind": "Colonist",
+             "spawned": "True",
+             "xenotype": "Baseliner"
+            }
+           }
+          ],
+          "leftBlocking": 0,
+          "leftKept": 0,
+          "left": [],
+          "digest": "a9d6a7f7d551fb03"
+         },
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_64f644804fcb44d1bb32d1830eafd562",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 40
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_draft",
+        "result": {
+         "success": true,
+         "drafted": true,
+         "fireAtWill": true,
+         "wasDrafted": false,
+         "changed": true,
+         "operation": {
+          "OperationId": "op_4f7d8870269844709fcb4923b91163cf",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_pawn",
+        "result": {
+         "success": true,
+         "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+         "spawnedCount": 1,
+         "failedCount": 0,
+         "substitutedCount": 0,
+         "pawns": [
+          {
+           "ok": true,
+           "id": "Human80466",
+           "name": "Ginger",
+           "kindRequested": "Colonist",
+           "kindActual": "Colonist",
+           "kindSubstituted": false,
+           "faction": "PlayerColony",
+           "hostile": false,
+           "x": 23,
+           "z": 249,
+           "spawned": true,
+           "xenotype": "Baseliner",
+           "xenotypeApplied": true
+          }
+         ],
+         "readBack": {
+          "ok": true,
+          "tool": "jawa/spawn_pawn",
+          "faults": [],
+          "frameOpen": 6483,
+          "frameReply": 6483,
+          "sameFrame": true,
+          "rows": 1,
+          "rowsWrong": 0,
+          "wrong": [],
+          "made": [
+           {
+            "op": "pawn",
+            "id": "Human80466",
+            "x": 23,
+            "z": 249,
+            "got": {
+             "cell": "23,249",
+             "faction": "PlayerColony",
+             "kind": "Colonist",
+             "spawned": "True",
+             "xenotype": "Baseliner"
+            }
+           }
+          ],
+          "leftBlocking": 0,
+          "leftKept": 0,
+          "left": [],
+          "digest": "d998c506ee3bf153"
+         },
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_01b409a1f8b942878b95b4232dbae94e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_draft",
+        "result": {
+         "success": true,
+         "drafted": true,
+         "fireAtWill": true,
+         "wasDrafted": false,
+         "changed": true,
+         "operation": {
+          "OperationId": "op_3104caf3d67d4190a3ac7de601d9c62e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 40
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_pawn",
+        "result": {
+         "success": true,
+         "message": "Spawned 1/1 Villager in faction TribeRoughNeanderthal.",
+         "spawnedCount": 1,
+         "failedCount": 0,
+         "substitutedCount": 0,
+         "pawns": [
+          {
+           "ok": true,
+           "id": "Human80469",
+           "name": "Goga",
+           "kindRequested": "Villager",
+           "kindActual": "Villager",
+           "kindSubstituted": false,
+           "faction": "TribeRoughNeanderthal",
+           "hostile": true,
+           "x": 148,
+           "z": 0,
+           "spawned": true,
+           "xenotype": "Neanderthal",
+           "xenotypeApplied": true
+          }
+         ],
+         "readBack": {
+          "ok": true,
+          "tool": "jawa/spawn_pawn",
+          "faults": [],
+          "frameOpen": 6494,
+          "frameReply": 6494,
+          "sameFrame": true,
+          "rows": 1,
+          "rowsWrong": 0,
+          "wrong": [],
+          "made": [
+           {
+            "op": "pawn",
+            "id": "Human80469",
+            "x": 148,
+            "z": 0,
+            "got": {
+             "cell": "148,0",
+             "faction": "TribeRoughNeanderthal",
+             "kind": "Villager",
+             "spawned": "True",
+             "xenotype": "Neanderthal"
+            }
+           }
+          ],
+          "leftBlocking": 0,
+          "leftKept": 0,
+          "left": [],
+          "digest": "452246134dc8a045"
+         },
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_7347682ffe6d405da9aede2e384c452c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 38
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/pawn_set_guest_status",
+        "result": {
+         "success": true,
+         "pawn": "Goga",
+         "hostFactionAfter": "NorthstarBland",
+         "guestStatusBefore": "Guest",
+         "guestStatusAfter": "Prisoner",
+         "resistanceAfter": 11.0,
+         "willAfter": 0.2058001,
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_e39adb1ccea04bd7bf7287062ced1444",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_pawn",
+        "result": {
+         "success": true,
+         "message": "Spawned 1/1 Villager in faction TribeRoughNeanderthal.",
+         "spawnedCount": 1,
+         "failedCount": 0,
+         "substitutedCount": 0,
+         "pawns": [
+          {
+           "ok": true,
+           "id": "Human80475",
+           "name": "Skunk",
+           "kindRequested": "Villager",
+           "kindActual": "Villager",
+           "kindSubstituted": false,
+           "faction": "TribeRoughNeanderthal",
+           "hostile": true,
+           "x": 27,
+           "z": 249,
+           "spawned": true,
+           "xenotype": "Neanderthal",
+           "xenotypeApplied": true
+          }
+         ],
+         "readBack": {
+          "ok": true,
+          "tool": "jawa/spawn_pawn",
+          "faults": [],
+          "frameOpen": 6505,
+          "frameReply": 6505,
+          "sameFrame": true,
+          "rows": 1,
+          "rowsWrong": 0,
+          "wrong": [],
+          "made": [
+           {
+            "op": "pawn",
+            "id": "Human80475",
+            "x": 27,
+            "z": 249,
+            "got": {
+             "cell": "27,249",
+             "faction": "TribeRoughNeanderthal",
+             "kind": "Villager",
+             "spawned": "True",
+             "xenotype": "Neanderthal"
+            }
+           }
+          ],
+          "leftBlocking": 0,
+          "leftKept": 0,
+          "left": [],
+          "digest": "614a266328756e4d"
+         },
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_1061c08f51de4a7a96c79e53d76aeb9f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 38
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/pawn_set_guest_status",
+        "result": {
+         "success": true,
+         "pawn": "Skunk",
+         "guestStatusBefore": "Guest",
+         "guestStatusAfter": "Slave",
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_eb10d2874ec0457881abd3b07104e37b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 40
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/pawn_get",
+        "result": {
+         "success": true,
+         "count": 1,
+         "pawns": [
+          {
+           "thingId": "Human80457",
+           "thingIdNumber": 80457,
+           "name": "Jonathan 'Jona' Gerdes",
+           "nameShort": "Jona",
+           "title": "colonist",
+           "kindDef": "Colonist",
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "gender": "Male",
+           "ageBiologicalYears": 15,
+           "ageChronologicalYears": 53,
+           "developmentalStage": "Adult",
+           "xenotype": "Baseliner",
+           "ideo": "Garden of Faith",
+           "childhood": "MusicalKid86",
+           "adulthood": "Colonist97",
+           "headType": "Male_AverageNormal",
+           "bodyType": "Male",
+           "hair": "Troubadour",
+           "beard": "Bushy",
+           "position": {
+            "x": 147,
+            "z": 0
+           },
+           "traits": [
+            {
+             "def": "Bloodlust",
+             "degree": 0,
+             "label": "Bloodlust",
+             "forced": false
+            },
+            {
+             "def": "Kind",
+             "degree": 0,
+             "label": "Kind",
+             "forced": false
+            }
+           ],
+           "skills": [
+            {
+             "skill": "Shooting",
+             "levelRaw": 3,
+             "levelEffective": 3,
+             "passion": "Major",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Melee",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Construction",
+             "levelRaw": 1,
+             "levelEffective": 1,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Mining",
+             "levelRaw": 1,
+             "levelEffective": 1,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Cooking",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Plants",
+             "levelRaw": 2,
+             "levelEffective": 2,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Animals",
+             "levelRaw": 2,
+             "levelEffective": 2,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Crafting",
+             "levelRaw": 3,
+             "levelEffective": 3,
+             "passion": "Minor",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Artistic",
+             "levelRaw": 8,
+             "levelEffective": 8,
+             "passion": "Major",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Medicine",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Social",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Intellectual",
+             "levelRaw": 1,
+             "levelEffective": 1,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            }
+           ],
+           "apparel": [
+            {
+             "def": "Apparel_Pants",
+             "defName": "Apparel_Pants",
+             "stuff": "Synthread",
+             "hp": 130
+            },
+            {
+             "def": "Apparel_CollarShirt",
+             "defName": "Apparel_CollarShirt",
+             "stuff": "Synthread",
+             "hp": 130
+            }
+           ],
+           "equipment": [],
+           "hediffs": [],
+           "needs": [
+            {
+             "need": "Mood",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "Food",
+             "level": 0.8,
+             "pct": 0.8
+            },
+            {
+             "need": "Rest",
+             "level": 0.952077031,
+             "pct": 0.952077031
+            },
+            {
+             "need": "Hygiene",
+             "level": 0.584480941,
+             "pct": 0.584480941
+            },
+            {
+             "need": "Joy",
+             "level": 0.5181865,
+             "pct": 0.5181865
+            },
+            {
+             "need": "Beauty",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "Comfort",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "Outdoors",
+             "level": 1.0,
+             "pct": 1.0
+            },
+            {
+             "need": "DrugDesire",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "RoomSize",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "Bladder",
+             "level": 1.0,
+             "pct": 1.0
+            },
+            {
+             "need": "RM_Thirst",
+             "level": 0.8,
+             "pct": 0.8
+            }
+           ]
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_3ef09050c6804971b3e859d46809f03c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 38
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/pawn_get",
+        "result": {
+         "success": true,
+         "count": 1,
+         "pawns": [
+          {
+           "thingId": "Human80460",
+           "thingIdNumber": 80460,
+           "name": "Michael 'Mai' Conard",
+           "nameShort": "Mai",
+           "title": "counselor",
+           "kindDef": "Colonist",
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "gender": "Female",
+           "ageBiologicalYears": 34,
+           "ageChronologicalYears": 88,
+           "developmentalStage": "Adult",
+           "xenotype": "Baseliner",
+           "ideo": "Garden of Faith",
+           "childhood": "ShelterChild50",
+           "adulthood": "Counselor26",
+           "headType": "Female_NarrowPointy",
+           "bodyType": "Thin",
+           "hair": "Frozen",
+           "beard": "NoBeard",
+           "position": {
+            "x": 26,
+            "z": 249
+           },
+           "traits": [
+            {
+             "def": "DrugDesire",
+             "degree": 2,
+             "label": "Chemical fascination",
+             "forced": false
+            }
+           ],
+           "skills": [
+            {
+             "skill": "Shooting",
+             "levelRaw": 2,
+             "levelEffective": 2,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Melee",
+             "levelRaw": 1,
+             "levelEffective": 1,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Construction",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Mining",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Cooking",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": true
+            },
+            {
+             "skill": "Plants",
+             "levelRaw": 4,
+             "levelEffective": 4,
+             "passion": "Minor",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Animals",
+             "levelRaw": 3,
+             "levelEffective": 3,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Crafting",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Artistic",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Medicine",
+             "levelRaw": 4,
+             "levelEffective": 4,
+             "passion": "Minor",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Social",
+             "levelRaw": 12,
+             "levelEffective": 12,
+             "passion": "Major",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Intellectual",
+             "levelRaw": 4,
+             "levelEffective": 4,
+             "passion": "Minor",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            }
+           ],
+           "apparel": [
+            {
+             "def": "Apparel_Pants",
+             "defName": "Apparel_Pants",
+             "stuff": "Synthread",
+             "hp": 130
+            },
+            {
+             "def": "Apparel_BasicShirt",
+             "defName": "Apparel_BasicShirt",
+             "stuff": "Synthread",
+             "hp": 130
+            }
+           ],
+           "equipment": [],
+           "hediffs": [
+            {
+             "def": "Scratch",
+             "part": "Torso",
+             "severity": 6.0
+            }
+           ],
+           "needs": [
+            {
+             "need": "Mood",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "Food",
+             "level": 0.8,
+             "pct": 0.8
+            },
+            {
+             "need": "Rest",
+             "level": 0.949781,
+             "pct": 0.949781
+            },
+            {
+             "need": "Hygiene",
+             "level": 0.638080239,
+             "pct": 0.638080239
+            },
+            {
+             "need": "Joy",
+             "level": 0.58162725,
+             "pct": 0.58162725
+            },
+            {
+             "need": "Beauty",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "Comfort",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "Outdoors",
+             "level": 1.0,
+             "pct": 1.0
+            },
+            {
+             "need": "DrugDesire",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "RoomSize",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "Bladder",
+             "level": 1.0,
+             "pct": 1.0
+            },
+            {
+             "need": "RM_Thirst",
+             "level": 0.8,
+             "pct": 0.8
+            }
+           ]
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_eedc29902a4746eaae0d57dc4835d54d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 33
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/pawn_get",
+        "result": {
+         "success": true,
+         "count": 1,
+         "pawns": [
+          {
+           "thingId": "Human80463",
+           "thingIdNumber": 80463,
+           "name": "Matt 'Matticus' Mussett",
+           "nameShort": "Matticus",
+           "title": "cave explorer",
+           "kindDef": "Colonist",
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "gender": "Male",
+           "ageBiologicalYears": 39,
+           "ageChronologicalYears": 98,
+           "developmentalStage": "Adult",
+           "xenotype": "Baseliner",
+           "ideo": "Garden of Faith",
+           "childhood": "SicklyChild55",
+           "adulthood": "CaveExplorer45",
+           "headType": "Male_AverageWide",
+           "bodyType": "Male",
+           "hair": "Lackland",
+           "beard": "BushyStyled",
+           "position": {
+            "x": 144,
+            "z": 0
+           },
+           "traits": [
+            {
+             "def": "PsychicSensitivity",
+             "degree": -1,
+             "label": "Psychically dull",
+             "forced": false
+            },
+            {
+             "def": "Jealous",
+             "degree": 0,
+             "label": "Jealous",
+             "forced": false
+            }
+           ],
+           "skills": [
+            {
+             "skill": "Shooting",
+             "levelRaw": 1,
+             "levelEffective": 1,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Melee",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Construction",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Mining",
+             "levelRaw": 11,
+             "levelEffective": 11,
+             "passion": "Major",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Cooking",
+             "levelRaw": 2,
+             "levelEffective": 2,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Plants",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Animals",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Crafting",
+             "levelRaw": 3,
+             "levelEffective": 3,
+             "passion": "Minor",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Artistic",
+             "levelRaw": 1,
+             "levelEffective": 1,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Medicine",
+             "levelRaw": 10,
+             "levelEffective": 10,
+             "passion": "Major",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Social",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Intellectual",
+             "levelRaw": 6,
+             "levelEffective": 6,
+             "passion": "Minor",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            }
+           ],
+           "apparel": [
+            {
+             "def": "Apparel_Pants",
+             "defName": "Apparel_Pants",
+             "stuff": "Synthread",
+             "hp": 130
+            },
+            {
+             "def": "Apparel_CollarShirt",
+             "defName": "Apparel_CollarShirt",
+             "stuff": "Synthread",
+             "hp": 130
+            }
+           ],
+           "equipment": [],
+           "hediffs": [
+            {
+             "def": "Bite",
+             "part": "Leg",
+             "severity": 6.0
+            }
+           ],
+           "needs": [
+            {
+             "need": "Mood",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "Food",
+             "level": 0.8,
+             "pct": 0.8
+            },
+            {
+             "need": "Rest",
+             "level": 0.91568625,
+             "pct": 0.91568625
+            },
+            {
+             "need": "Hygiene",
+             "level": 0.6225688,
+             "pct": 0.6225688
+            },
+            {
+             "need": "Joy",
+             "level": 0.5900801,
+             "pct": 0.5900801
+            },
+            {
+             "need": "Beauty",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "Comfort",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "Outdoors",
+             "level": 1.0,
+             "pct": 1.0
+            },
+            {
+             "need": "DrugDesire",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "RoomSize",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "Bladder",
+             "level": 1.0,
+             "pct": 1.0
+            },
+            {
+             "need": "RM_Thirst",
+             "level": 0.8,
+             "pct": 0.8
+            }
+           ]
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_7d0579e0dac542bd85500bcc73dbe828",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 21
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/pawn_get",
+        "result": {
+         "success": true,
+         "count": 1,
+         "pawns": [
+          {
+           "thingId": "Human80466",
+           "thingIdNumber": 80466,
+           "name": "Hayden 'Ginger' Matthews",
+           "nameShort": "Ginger",
+           "title": "biosphere manager",
+           "kindDef": "Colonist",
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "gender": "Male",
+           "ageBiologicalYears": 42,
+           "ageChronologicalYears": 165,
+           "developmentalStage": "Adult",
+           "xenotype": "Baseliner",
+           "ideo": "Garden of Faith",
+           "childhood": "OrganFarm67",
+           "adulthood": "BiosphereManager95",
+           "headType": "Male_NarrowPointy",
+           "bodyType": "Male",
+           "hair": "Revolt",
+           "beard": "Stubble",
+           "position": {
+            "x": 23,
+            "z": 249
+           },
+           "traits": [
+            {
+             "def": "Greedy",
+             "degree": 0,
+             "label": "Greedy",
+             "forced": false
+            }
+           ],
+           "skills": [
+            {
+             "skill": "Shooting",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": true
+            },
+            {
+             "skill": "Melee",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": true
+            },
+            {
+             "skill": "Construction",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Mining",
+             "levelRaw": 4,
+             "levelEffective": 4,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Cooking",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": true
+            },
+            {
+             "skill": "Plants",
+             "levelRaw": 11,
+             "levelEffective": 11,
+             "passion": "Major",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Animals",
+             "levelRaw": 9,
+             "levelEffective": 9,
+             "passion": "Minor",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Crafting",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": true
+            },
+            {
+             "skill": "Artistic",
+             "levelRaw": 1,
+             "levelEffective": 1,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Medicine",
+             "levelRaw": 7,
+             "levelEffective": 7,
+             "passion": "Minor",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Social",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Intellectual",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            }
+           ],
+           "apparel": [
+            {
+             "def": "Apparel_CollarShirt",
+             "defName": "Apparel_CollarShirt",
+             "stuff": "Synthread",
+             "hp": 130
+            },
+            {
+             "def": "Apparel_Pants",
+             "defName": "Apparel_Pants",
+             "stuff": "Synthread",
+             "hp": 130
+            }
+           ],
+           "equipment": [],
+           "hediffs": [],
+           "needs": [
+            {
+             "need": "Mood",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "Food",
+             "level": 0.8,
+             "pct": 0.8
+            },
+            {
+             "need": "Rest",
+             "level": 0.938125,
+             "pct": 0.938125
+            },
+            {
+             "need": "Hygiene",
+             "level": 0.5630566,
+             "pct": 0.5630566
+            },
+            {
+             "need": "Joy",
+             "level": 0.5898836,
+             "pct": 0.5898836
+            },
+            {
+             "need": "Beauty",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "Comfort",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "Outdoors",
+             "level": 1.0,
+             "pct": 1.0
+            },
+            {
+             "need": "DrugDesire",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "RoomSize",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "Bladder",
+             "level": 1.0,
+             "pct": 1.0
+            },
+            {
+             "need": "RM_Thirst",
+             "level": 0.8,
+             "pct": 0.8
+            }
+           ]
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_2a6e6cb01c424a1298b30926fe734cc7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 38
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/pawn_get",
+        "result": {
+         "success": true,
+         "count": 1,
+         "pawns": [
+          {
+           "thingId": "Human80469",
+           "thingIdNumber": 80469,
+           "name": "Laxe Goga",
+           "nameShort": "Goga",
+           "title": "logger",
+           "kindDef": "Villager",
+           "faction": "TribeRoughNeanderthal",
+           "factionName": "Lesoo",
+           "gender": "Male",
+           "ageBiologicalYears": 42,
+           "ageChronologicalYears": 42,
+           "developmentalStage": "Adult",
+           "xenotype": "Neanderthal",
+           "ideo": "Wavian Shaft",
+           "childhood": "ReclusiveChild81",
+           "adulthood": "Logger16",
+           "headType": "Male_HeavyJawNormal",
+           "bodyType": "Hulk",
+           "hair": "Sticky",
+           "beard": "Seer",
+           "position": {
+            "x": 148,
+            "z": 0
+           },
+           "traits": [
+            {
+             "def": "PsychicSensitivity",
+             "degree": -2,
+             "label": "Psychically deaf",
+             "forced": false
+            },
+            {
+             "def": "Jealous",
+             "degree": 0,
+             "label": "Jealous",
+             "forced": false
+            }
+           ],
+           "skills": [
+            {
+             "skill": "Shooting",
+             "levelRaw": 5,
+             "levelEffective": 1,
+             "passion": "Minor",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Melee",
+             "levelRaw": 9,
+             "levelEffective": 9,
+             "passion": "Major",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Construction",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Mining",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Cooking",
+             "levelRaw": 1,
+             "levelEffective": 1,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Plants",
+             "levelRaw": 7,
+             "levelEffective": 7,
+             "passion": "Major",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Animals",
+             "levelRaw": 1,
+             "levelEffective": 1,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Crafting",
+             "levelRaw": 6,
+             "levelEffective": 6,
+             "passion": "Minor",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Artistic",
+             "levelRaw": 4,
+             "levelEffective": 4,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Medicine",
+             "levelRaw": 3,
+             "levelEffective": 3,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Social",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": true
+            },
+            {
+             "skill": "Intellectual",
+             "levelRaw": 4,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            }
+           ],
+           "apparel": [
+            {
+             "def": "Apparel_Pants",
+             "defName": "Apparel_Pants",
+             "stuff": "Cloth",
+             "hp": 100
+            },
+            {
+             "def": "Apparel_CollarShirt",
+             "defName": "Apparel_CollarShirt",
+             "stuff": "RM_RuqqalFibre",
+             "hp": 70
+            },
+            {
+             "def": "Apparel_CowboyHat",
+             "defName": "Apparel_CowboyHat",
+             "stuff": "RM_GreentideAntCarapace",
+             "hp": 80
+            }
+           ],
+           "equipment": [],
+           "hediffs": [
+            {
+             "def": "SimpleProstheticLeg",
+             "part": "Leg",
+             "severity": 0.5
+            },
+            {
+             "def": "MissingBodyPart",
+             "part": "Femur",
+             "severity": 0.5
+            },
+            {
+             "def": "MissingBodyPart",
+             "part": "Tibia",
+             "severity": 0.5
+            },
+            {
+             "def": "MissingBodyPart",
+             "part": "Foot",
+             "severity": 0.5
+            },
+            {
+             "def": "MissingBodyPart",
+             "part": "Toe",
+             "severity": 0.5
+            },
+            {
+             "def": "MissingBodyPart",
+             "part": "Toe",
+             "severity": 0.5
+            },
+            {
+             "def": "MissingBodyPart",
+             "part": "Toe",
+             "severity": 0.5
+            },
+            {
+             "def": "MissingBodyPart",
+             "part": "Toe",
+             "severity": 0.5
+            },
+            {
+             "def": "MissingBodyPart",
+             "part": "Toe",
+             "severity": 0.5
+            }
+           ],
+           "needs": [
+            {
+             "need": "Mood",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "Food",
+             "level": 0.8,
+             "pct": 0.8
+            },
+            {
+             "need": "Rest",
+             "level": 0.971373,
+             "pct": 0.971373
+            },
+            {
+             "need": "RM_Thirst",
+             "level": 0.8,
+             "pct": 0.8
+            },
+            {
+             "need": "Beauty",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "Comfort",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "Indoors",
+             "level": 1.0,
+             "pct": 1.0
+            },
+            {
+             "need": "DrugDesire",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "RoomSize",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "Bladder",
+             "level": 1.0,
+             "pct": 1.0
+            },
+            {
+             "need": "Hygiene",
+             "level": 0.5605868,
+             "pct": 0.5605868
+            }
+           ]
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_0d1fb0b53b5e48209fee540afd89106a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/pawn_get",
+        "result": {
+         "success": true,
+         "count": 1,
+         "pawns": [
+          {
+           "thingId": "Human80475",
+           "thingIdNumber": 80475,
+           "name": "Skunk Billa",
+           "nameShort": "Skunk",
+           "title": "digger",
+           "kindDef": "Colonist",
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "gender": "Female",
+           "ageBiologicalYears": 36,
+           "ageChronologicalYears": 36,
+           "developmentalStage": "Adult",
+           "xenotype": "Neanderthal",
+           "ideo": "Wavian Shaft",
+           "childhood": "FireKeeper44",
+           "adulthood": "Digger66",
+           "headType": "Female_HeavyJawNormal",
+           "bodyType": "Hulk",
+           "hair": "Shaved",
+           "beard": "NoBeard",
+           "position": {
+            "x": 27,
+            "z": 249
+           },
+           "traits": [
+            {
+             "def": "Undergrounder",
+             "degree": 0,
+             "label": "Undergrounder",
+             "forced": false
+            },
+            {
+             "def": "Brawler",
+             "degree": 0,
+             "label": "Brawler",
+             "forced": false
+            },
+            {
+             "def": "PsychicSensitivity",
+             "degree": -2,
+             "label": "Psychically deaf",
+             "forced": false
+            }
+           ],
+           "skills": [
+            {
+             "skill": "Shooting",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Melee",
+             "levelRaw": 8,
+             "levelEffective": 8,
+             "passion": "Major",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Construction",
+             "levelRaw": 3,
+             "levelEffective": 3,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Mining",
+             "levelRaw": 9,
+             "levelEffective": 9,
+             "passion": "Major",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Cooking",
+             "levelRaw": 5,
+             "levelEffective": 5,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Plants",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Animals",
+             "levelRaw": 4,
+             "levelEffective": 4,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Crafting",
+             "levelRaw": 7,
+             "levelEffective": 7,
+             "passion": "Minor",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Artistic",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": true
+            },
+            {
+             "skill": "Medicine",
+             "levelRaw": 4,
+             "levelEffective": 4,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Social",
+             "levelRaw": 1,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Intellectual",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": true
+            }
+           ],
+           "apparel": [
+            {
+             "def": "Apparel_BasicShirt",
+             "defName": "Apparel_BasicShirt",
+             "stuff": "RM_MoonlessSilk",
+             "hp": 25
+            },
+            {
+             "def": "Apparel_Pants",
+             "defName": "Apparel_Pants",
+             "stuff": "WoolSheep",
+             "hp": 100
+            }
+           ],
+           "equipment": [
+            {
+             "def": "MeleeWeapon_Knife",
+             "defName": "MeleeWeapon_Knife",
+             "stuff": "RM_CharLace",
+             "isPrimary": true
+            }
+           ],
+           "hediffs": [],
+           "needs": [
+            {
+             "need": "Mood",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "Food",
+             "level": 0.8,
+             "pct": 0.8
+            },
+            {
+             "need": "Rest",
+             "level": 0.934562,
+             "pct": 0.934562
+            },
+            {
+             "need": "RM_Thirst",
+             "level": 0.8,
+             "pct": 0.8
+            },
+            {
+             "need": "Beauty",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "Comfort",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "Indoors",
+             "level": 1.0,
+             "pct": 1.0
+            },
+            {
+             "need": "DrugDesire",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "RoomSize",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "Bladder",
+             "level": 1.0,
+             "pct": 1.0
+            },
+            {
+             "need": "Hygiene",
+             "level": 0.7007565,
+             "pct": 0.7007565
+            },
+            {
+             "need": "Suppression",
+             "level": 0.5,
+             "pct": 0.5
+            }
+           ]
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_745f7954899b4e44a785a18cdb112a03",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       },
+       {
+        "call": "note: staged colonists on edge river cells",
+        "result": "6 on [(147, 0), (26, 249), (144, 0), (23, 249), (148, 0), (27, 249)]"
+       },
+       {
+        "call": "wait_ticks(250) -> 250 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 250
+        }
+       },
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofSwept(System.String)",
+         "result": "SWEPT pending=3",
+         "thingArgs": [],
+         "ticksGame": 251,
+         "operation": {
+          "OperationId": "op_b5aa0acd7575463bb518a8d59c814896",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 34
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 251
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_pawns",
+        "result": {
+         "success": true,
+         "message": "6 pawn(s).",
+         "pawns": [
+          {
+           "id": "Human80447",
+           "name": "Marjot",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 125,
+           "z": 30,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human80450",
+           "name": "Shen",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 127,
+           "z": 30,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human80453",
+           "name": "Akdo",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 129,
+           "z": 30,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human80460",
+           "name": "Mai",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 26,
+           "z": 247,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human80466",
+           "name": "Ginger",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 23,
+           "z": 247,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human80475",
+           "name": "Skunk",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Neanderthal",
+           "xenotypeLabel": "neanderthal",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 27,
+           "z": 247,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          }
+         ],
+         "returned": 6,
+         "truncated": 0,
+         "totalOnMap": 6,
+         "ticksGame": 251,
+         "operation": {
+          "OperationId": "op_50d3bedd38c143cd9208856c5358de72",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 251
+         }
+        }
+       },
+       {
+        "call": "note: washed away",
+        "result": "pending 0 -> 3 after 250 ticks; off the map: ['Human80457', 'Human80463', 'Human80469']"
+       },
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofSwept(System.String)",
+         "result": "SWEPT pending=0",
+         "thingArgs": [],
+         "ticksGame": 251,
+         "operation": {
+          "OperationId": "op_7d29682649ea454eb5211f64420fc176",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 251
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_pawns",
+        "result": {
+         "success": true,
+         "message": "9 pawn(s).",
+         "pawns": [
+          {
+           "id": "Human80447",
+           "name": "Marjot",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 125,
+           "z": 30,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human80450",
+           "name": "Shen",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 127,
+           "z": 30,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human80453",
+           "name": "Akdo",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 129,
+           "z": 30,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human80460",
+           "name": "Mai",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 26,
+           "z": 247,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human80466",
+           "name": "Ginger",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 23,
+           "z": 247,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human80475",
+           "name": "Skunk",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Neanderthal",
+           "xenotypeLabel": "neanderthal",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 27,
+           "z": 247,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human80469",
+           "name": "Goga",
+           "kind": "Villager",
+           "kindDef": "Villager",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Neanderthal",
+           "xenotypeLabel": "neanderthal",
+           "uniqueXenotype": false,
+           "faction": "TribeRoughNeanderthal",
+           "factionName": "Lesoo",
+           "isPlayer": false,
+           "hostile": false,
+           "factionHostile": true,
+           "x": 120,
+           "z": 131,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human80463",
+           "name": "Matticus",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 0,
+           "z": 237,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human80457",
+           "name": "Jona",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 0,
+           "z": 59,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          }
+         ],
+         "returned": 9,
+         "truncated": 0,
+         "totalOnMap": 9,
+         "ticksGame": 251,
+         "operation": {
+          "OperationId": "op_d5e095edf8e6436582df7f61c44d013c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 251
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/pawn_get",
+        "result": {
+         "success": true,
+         "count": 1,
+         "pawns": [
+          {
+           "thingId": "Human80457",
+           "thingIdNumber": 80457,
+           "name": "Jonathan 'Jona' Gerdes",
+           "nameShort": "Jona",
+           "title": "colonist",
+           "kindDef": "Colonist",
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "gender": "Male",
+           "ageBiologicalYears": 15,
+           "ageChronologicalYears": 53,
+           "developmentalStage": "Adult",
+           "xenotype": "Baseliner",
+           "ideo": "Garden of Faith",
+           "childhood": "MusicalKid86",
+           "adulthood": "Colonist97",
+           "headType": "Male_AverageNormal",
+           "bodyType": "Male",
+           "hair": "Troubadour",
+           "beard": "Bushy",
+           "position": {
+            "x": 0,
+            "z": 59
+           },
+           "traits": [
+            {
+             "def": "Bloodlust",
+             "degree": 0,
+             "label": "Bloodlust",
+             "forced": false
+            },
+            {
+             "def": "Kind",
+             "degree": 0,
+             "label": "Kind",
+             "forced": false
+            }
+           ],
+           "skills": [
+            {
+             "skill": "Shooting",
+             "levelRaw": 3,
+             "levelEffective": 3,
+             "passion": "Major",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Melee",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Construction",
+             "levelRaw": 1,
+             "levelEffective": 1,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Mining",
+             "levelRaw": 1,
+             "levelEffective": 1,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Cooking",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Plants",
+             "levelRaw": 2,
+             "levelEffective": 2,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Animals",
+             "levelRaw": 2,
+             "levelEffective": 2,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Crafting",
+             "levelRaw": 3,
+             "levelEffective": 3,
+             "passion": "Minor",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Artistic",
+             "levelRaw": 8,
+             "levelEffective": 8,
+             "passion": "Major",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Medicine",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Social",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Intellectual",
+             "levelRaw": 1,
+             "levelEffective": 1,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            }
+           ],
+           "apparel": [
+            {
+             "def": "Apparel_Pants",
+             "defName": "Apparel_Pants",
+             "stuff": "Synthread",
+             "hp": 130
+            },
+            {
+             "def": "Apparel_CollarShirt",
+             "defName": "Apparel_CollarShirt",
+             "stuff": "Synthread",
+             "hp": 130
+            }
+           ],
+           "equipment": [],
+           "hediffs": [],
+           "needs": [
+            {
+             "need": "Mood",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "Food",
+             "level": 0.8,
+             "pct": 0.8
+            },
+            {
+             "need": "Rest",
+             "level": 0.952077031,
+             "pct": 0.952077031
+            },
+            {
+             "need": "Hygiene",
+             "level": 0.584480941,
+             "pct": 0.584480941
+            },
+            {
+             "need": "Joy",
+             "level": 0.5181865,
+             "pct": 0.5181865
+            },
+            {
+             "need": "Beauty",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "Comfort",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "Outdoors",
+             "level": 1.0,
+             "pct": 1.0
+            },
+            {
+             "need": "DrugDesire",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "RoomSize",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "Bladder",
+             "level": 1.0,
+             "pct": 1.0
+            },
+            {
+             "need": "RM_Thirst",
+             "level": 0.8,
+             "pct": 0.8
+            }
+           ]
+          }
+         ],
+         "ticksGame": 251,
+         "operation": {
+          "OperationId": "op_7286e3405dcb4910b9bfded695182f59",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 251
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/pawn_get",
+        "result": {
+         "success": true,
+         "count": 1,
+         "pawns": [
+          {
+           "thingId": "Human80463",
+           "thingIdNumber": 80463,
+           "name": "Matt 'Matticus' Mussett",
+           "nameShort": "Matticus",
+           "title": "cave explorer",
+           "kindDef": "Colonist",
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "gender": "Male",
+           "ageBiologicalYears": 39,
+           "ageChronologicalYears": 98,
+           "developmentalStage": "Adult",
+           "xenotype": "Baseliner",
+           "ideo": "Garden of Faith",
+           "childhood": "SicklyChild55",
+           "adulthood": "CaveExplorer45",
+           "headType": "Male_AverageWide",
+           "bodyType": "Male",
+           "hair": "Lackland",
+           "beard": "BushyStyled",
+           "position": {
+            "x": 0,
+            "z": 237
+           },
+           "traits": [
+            {
+             "def": "PsychicSensitivity",
+             "degree": -1,
+             "label": "Psychically dull",
+             "forced": false
+            },
+            {
+             "def": "Jealous",
+             "degree": 0,
+             "label": "Jealous",
+             "forced": false
+            }
+           ],
+           "skills": [
+            {
+             "skill": "Shooting",
+             "levelRaw": 1,
+             "levelEffective": 1,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Melee",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Construction",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Mining",
+             "levelRaw": 11,
+             "levelEffective": 11,
+             "passion": "Major",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Cooking",
+             "levelRaw": 2,
+             "levelEffective": 2,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Plants",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Animals",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Crafting",
+             "levelRaw": 3,
+             "levelEffective": 3,
+             "passion": "Minor",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Artistic",
+             "levelRaw": 1,
+             "levelEffective": 1,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Medicine",
+             "levelRaw": 10,
+             "levelEffective": 10,
+             "passion": "Major",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Social",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Intellectual",
+             "levelRaw": 6,
+             "levelEffective": 6,
+             "passion": "Minor",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            }
+           ],
+           "apparel": [
+            {
+             "def": "Apparel_Pants",
+             "defName": "Apparel_Pants",
+             "stuff": "Synthread",
+             "hp": 130
+            },
+            {
+             "def": "Apparel_CollarShirt",
+             "defName": "Apparel_CollarShirt",
+             "stuff": "Synthread",
+             "hp": 130
+            }
+           ],
+           "equipment": [],
+           "hediffs": [
+            {
+             "def": "Bite",
+             "part": "Leg",
+             "severity": 6.0
+            }
+           ],
+           "needs": [
+            {
+             "need": "Mood",
+             "level": 0.4952,
+             "pct": 0.4952
+            },
+            {
+             "need": "Food",
+             "level": 0.796,
+             "pct": 0.796
+            },
+            {
+             "need": "Rest",
+             "level": 0.913311243,
+             "pct": 0.913311243
+            },
+            {
+             "need": "Hygiene",
+             "level": 0.6210688,
+             "pct": 0.6210688
+            },
+            {
+             "need": "Joy",
+             "level": 0.5885801,
+             "pct": 0.5885801
+            },
+            {
+             "need": "Beauty",
+             "level": 0.4952,
+             "pct": 0.4952
+            },
+            {
+             "need": "Comfort",
+             "level": 0.4976,
+             "pct": 0.4976
+            },
+            {
+             "need": "Outdoors",
+             "level": 1.0,
+             "pct": 1.0
+            },
+            {
+             "need": "DrugDesire",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "RoomSize",
+             "level": 0.554,
+             "pct": 0.554
+            },
+            {
+             "need": "Bladder",
+             "level": 0.9985,
+             "pct": 0.9985
+            },
+            {
+             "need": "RM_Thirst",
+             "level": 0.798000038,
+             "pct": 0.798000038
+            }
+           ]
+          }
+         ],
+         "ticksGame": 251,
+         "operation": {
+          "OperationId": "op_c47b4d71c72d4f50a294589658e1b6e5",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 251
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/pawn_get",
+        "result": {
+         "success": true,
+         "count": 1,
+         "pawns": [
+          {
+           "thingId": "Human80469",
+           "thingIdNumber": 80469,
+           "name": "Laxe Goga",
+           "nameShort": "Goga",
+           "title": "logger",
+           "kindDef": "Villager",
+           "faction": "TribeRoughNeanderthal",
+           "factionName": "Lesoo",
+           "gender": "Male",
+           "ageBiologicalYears": 42,
+           "ageChronologicalYears": 42,
+           "developmentalStage": "Adult",
+           "xenotype": "Neanderthal",
+           "ideo": "Wavian Shaft",
+           "childhood": "ReclusiveChild81",
+           "adulthood": "Logger16",
+           "headType": "Male_HeavyJawNormal",
+           "bodyType": "Hulk",
+           "hair": "Sticky",
+           "beard": "Seer",
+           "position": {
+            "x": 120,
+            "z": 131
+           },
+           "traits": [
+            {
+             "def": "PsychicSensitivity",
+             "degree": -2,
+             "label": "Psychically deaf",
+             "forced": false
+            },
+            {
+             "def": "Jealous",
+             "degree": 0,
+             "label": "Jealous",
+             "forced": false
+            }
+           ],
+           "skills": [
+            {
+             "skill": "Shooting",
+             "levelRaw": 5,
+             "levelEffective": 1,
+             "passion": "Minor",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Melee",
+             "levelRaw": 9,
+             "levelEffective": 9,
+             "passion": "Major",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Construction",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Mining",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Cooking",
+             "levelRaw": 1,
+             "levelEffective": 1,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Plants",
+             "levelRaw": 7,
+             "levelEffective": 7,
+             "passion": "Major",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Animals",
+             "levelRaw": 1,
+             "levelEffective": 1,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Crafting",
+             "levelRaw": 6,
+             "levelEffective": 6,
+             "passion": "Minor",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Artistic",
+             "levelRaw": 4,
+             "levelEffective": 4,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Medicine",
+             "levelRaw": 3,
+             "levelEffective": 3,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            },
+            {
+             "skill": "Social",
+             "levelRaw": 0,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": true
+            },
+            {
+             "skill": "Intellectual",
+             "levelRaw": 4,
+             "levelEffective": 0,
+             "passion": "None",
+             "xpSinceLastLevel": 0.0,
+             "disabled": false
+            }
+           ],
+           "apparel": [
+            {
+             "def": "Apparel_Pants",
+             "defName": "Apparel_Pants",
+             "stuff": "Cloth",
+             "hp": 100
+            },
+            {
+             "def": "Apparel_CollarShirt",
+             "defName": "Apparel_CollarShirt",
+             "stuff": "RM_RuqqalFibre",
+             "hp": 70
+            },
+            {
+             "def": "Apparel_CowboyHat",
+             "defName": "Apparel_CowboyHat",
+             "stuff": "RM_GreentideAntCarapace",
+             "hp": 80
+            }
+           ],
+           "equipment": [],
+           "hediffs": [
+            {
+             "def": "SimpleProstheticLeg",
+             "part": "Leg",
+             "severity": 0.5
+            },
+            {
+             "def": "MissingBodyPart",
+             "part": "Femur",
+             "severity": 0.5
+            },
+            {
+             "def": "MissingBodyPart",
+             "part": "Tibia",
+             "severity": 0.5
+            },
+            {
+             "def": "MissingBodyPart",
+             "part": "Foot",
+             "severity": 0.5
+            },
+            {
+             "def": "MissingBodyPart",
+             "part": "Toe",
+             "severity": 0.5
+            },
+            {
+             "def": "MissingBodyPart",
+             "part": "Toe",
+             "severity": 0.5
+            },
+            {
+             "def": "MissingBodyPart",
+             "part": "Toe",
+             "severity": 0.5
+            },
+            {
+             "def": "MissingBodyPart",
+             "part": "Toe",
+             "severity": 0.5
+            },
+            {
+             "def": "MissingBodyPart",
+             "part": "Toe",
+             "severity": 0.5
+            }
+           ],
+           "needs": [
+            {
+             "need": "Mood",
+             "level": 0.5072,
+             "pct": 0.5072
+            },
+            {
+             "need": "Food",
+             "level": 0.7968,
+             "pct": 0.7968
+            },
+            {
+             "need": "Rest",
+             "level": 0.968998,
+             "pct": 0.968998
+            },
+            {
+             "need": "RM_Thirst",
+             "level": 0.798000038,
+             "pct": 0.798000038
+            },
+            {
+             "need": "Beauty",
+             "level": 0.4952,
+             "pct": 0.4952
+            },
+            {
+             "need": "Comfort",
+             "level": 0.4976,
+             "pct": 0.4976
+            },
+            {
+             "need": "Indoors",
+             "level": 0.999375,
+             "pct": 0.999375
+            },
+            {
+             "need": "DrugDesire",
+             "level": 0.5,
+             "pct": 0.5
+            },
+            {
+             "need": "RoomSize",
+             "level": 0.554,
+             "pct": 0.554
+            },
+            {
+             "need": "Bladder",
+             "level": 0.9985,
+             "pct": 0.9985
+            },
+            {
+             "need": "Hygiene",
+             "level": 0.642585754,
+             "pct": 0.642585754
+            }
+           ]
+          }
+         ],
+         "ticksGame": 251,
+         "operation": {
+          "OperationId": "op_96df5037e96f44d2923a6cdc706a08ac",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 38
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 251
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_pawns",
+        "result": {
+         "success": true,
+         "message": "9 pawn(s).",
+         "pawns": [
+          {
+           "id": "Human80447",
+           "name": "Marjot",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 125,
+           "z": 30,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human80450",
+           "name": "Shen",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 127,
+           "z": 30,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human80453",
+           "name": "Akdo",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 129,
+           "z": 30,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human80460",
+           "name": "Mai",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 26,
+           "z": 247,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human80466",
+           "name": "Ginger",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 23,
+           "z": 247,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human80475",
+           "name": "Skunk",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Neanderthal",
+           "xenotypeLabel": "neanderthal",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 27,
+           "z": 247,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human80469",
+           "name": "Goga",
+           "kind": "Villager",
+           "kindDef": "Villager",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Neanderthal",
+           "xenotypeLabel": "neanderthal",
+           "uniqueXenotype": false,
+           "faction": "TribeRoughNeanderthal",
+           "factionName": "Lesoo",
+           "isPlayer": false,
+           "hostile": false,
+           "factionHostile": true,
+           "x": 120,
+           "z": 131,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human80463",
+           "name": "Matticus",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 0,
+           "z": 237,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human80457",
+           "name": "Jona",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 0,
+           "z": 59,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          }
+         ],
+         "returned": 9,
+         "truncated": 0,
+         "totalOnMap": 9,
+         "ticksGame": 251,
+         "operation": {
+          "OperationId": "op_31926af998c1476e9f7932ed38ce69c4",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 38
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 251
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/pawn_set_guest_status",
+        "result": {
+         "success": true,
+         "pawn": "Goga",
+         "hostFactionBefore": "NorthstarBland",
+         "hostFactionAfter": "NorthstarBland",
+         "guestStatusBefore": "Prisoner",
+         "guestStatusAfter": "Prisoner",
+         "resistanceAfter": 11.0,
+         "willAfter": 0.2058001,
+         "ticksGame": 251,
+         "operation": {
+          "OperationId": "op_caa0b2601a8a4b43a033c5b723bcc630",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 34
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 251
+         }
+        }
+       },
+       {
+        "call": "note: slave not swept in the wait",
+        "result": "Human80475"
+       },
+       {
+        "call": "wait_ticks(600) -> 600 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "executed": 600
+        }
+       },
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofSwept(System.String)",
+         "result": "SWEPT pending=0",
+         "thingArgs": [],
+         "ticksGame": 851,
+         "operation": {
+          "OperationId": "op_84f06350f7314a72a198fd6336e5bb25",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 34
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 851
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_pawns",
+        "result": {
+         "success": true,
+         "message": "9 pawn(s).",
+         "pawns": [
+          {
+           "id": "Human80447",
+           "name": "Marjot",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 125,
+           "z": 30,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human80450",
+           "name": "Shen",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 127,
+           "z": 30,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human80453",
+           "name": "Akdo",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 129,
+           "z": 30,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human80460",
+           "name": "Mai",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 26,
+           "z": 240,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human80466",
+           "name": "Ginger",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 23,
+           "z": 247,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human80475",
+           "name": "Skunk",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Neanderthal",
+           "xenotypeLabel": "neanderthal",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 27,
+           "z": 240,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human80469",
+           "name": "Goga",
+           "kind": "Villager",
+           "kindDef": "Villager",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Neanderthal",
+           "xenotypeLabel": "neanderthal",
+           "uniqueXenotype": false,
+           "faction": "TribeRoughNeanderthal",
+           "factionName": "Lesoo",
+           "isPlayer": false,
+           "hostile": false,
+           "factionHostile": true,
+           "x": 120,
+           "z": 133,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human80463",
+           "name": "Matticus",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 0,
+           "z": 231,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human80457",
+           "name": "Jona",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "NorthstarBland",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 31,
+           "z": 74,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          }
+         ],
+         "returned": 9,
+         "truncated": 0,
+         "totalOnMap": 9,
+         "ticksGame": 851,
+         "operation": {
+          "OperationId": "op_cfec245f0c924046a0f3f8d90dd86626",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 851
+         }
+        }
+       },
+       {
+        "call": "note: prisoner/slave still on the map 600 ticks after the return",
+        "result": {
+         "Human80469": true
+        }
+       },
+       {
+        "call": "note: came back the same pawns, still the player's",
+        "result": {
+         "Human80457": [
+          "Human80457",
+          "PlayerColony"
+         ],
+         "Human80463": [
+          "Human80463",
+          "PlayerColony"
+         ],
+         "Human80469": [
+          "Human80469",
+          "TribeRoughNeanderthal"
+         ]
+        }
+       },
+       {
+        "call": "bridge_call jawa/pawn_force_incapacitate",
+        "result": {
+         "success": true,
+         "action": "vanish",
+         "downedBefore": false,
+         "deadBefore": false,
+         "destroyedAfter": true,
+         "ticksGame": 851,
+         "operation": {
+          "OperationId": "op_3027d99de3b44af0abc4231369dc2e86",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 851
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/pawn_force_incapacitate",
+        "result": {
+         "success": true,
+         "action": "vanish",
+         "downedBefore": false,
+         "deadBefore": false,
+         "destroyedAfter": true,
+         "ticksGame": 851,
+         "operation": {
+          "OperationId": "op_89132ef5f6774c1699b7b3baca5db8e9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 851
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/pawn_force_incapacitate",
+        "result": {
+         "success": true,
+         "action": "vanish",
+         "downedBefore": false,
+         "deadBefore": false,
+         "destroyedAfter": true,
+         "ticksGame": 851,
+         "operation": {
+          "OperationId": "op_9a0dd48e6332411b984e80d55102f20e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 45
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 851
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/pawn_force_incapacitate",
+        "result": {
+         "success": true,
+         "action": "vanish",
+         "downedBefore": false,
+         "deadBefore": false,
+         "destroyedAfter": true,
+         "ticksGame": 851,
+         "operation": {
+          "OperationId": "op_39ba4ad2f3434050b370bfd8c6cae603",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 851
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/pawn_force_incapacitate",
+        "result": {
+         "success": true,
+         "action": "vanish",
+         "downedBefore": false,
+         "deadBefore": false,
+         "destroyedAfter": true,
+         "ticksGame": 851,
+         "operation": {
+          "OperationId": "op_432ad1716e08419aa8aac35c8222c46b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 851
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/pawn_force_incapacitate",
+        "result": {
+         "success": true,
+         "action": "vanish",
+         "downedBefore": false,
+         "deadBefore": false,
+         "destroyedAfter": true,
+         "ticksGame": 851,
+         "operation": {
+          "OperationId": "op_7ea04261fcce4e0294ce37849a568081",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 851
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null,
+    "site_hold": {
+     "bland": true,
+     "problems": [],
+     "notes": [],
+     "dead": [],
+     "steps": [
+      {
+       "name": "kill_hostiles",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "targeted": []
+       }
+      },
+      {
+       "name": "clear_map_fog",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "hostilesBefore": [],
+        "foggedBefore": 1810,
+        "foggedNow": 0,
+        "releasedByUnfog": [],
+        "sweepPasses": 0,
+        "hostilesAfter": [],
+        "verified": true,
+        "error": null
+       }
+      },
+      {
+       "name": "pause",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {}
+      },
+      {
+       "name": "quiet_world",
+       "acted": 3,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "profile": "isolated",
+        "quests": "not touched",
+        "notSuppressed": [
+         "active quests and their parts (never ended by default: ending a quest changes the world)",
+         "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+         "existing game conditions, map/world/game components and mod tickers",
+         "hives and other pawn-spawning structures, births, egg hatching, breeders",
+         "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+         "weather transitions, fires, existing hostile behaviour"
+        ],
+        "storyteller": {
+         "cleared_count": 0,
+         "cleared": []
+        },
+        "logRaidInfo": "on",
+        "wildSpawner": "blocked (read back)",
+        "readBack": {
+         "enableStoryteller": false,
+         "enableRandomMentalStates": false,
+         "enableRandomDiseases": false,
+         "logRaidInfo": true,
+         "threatScale": 0.0,
+         "allowBigThreats": false
+        },
+        "incidentQueueAfterClear": 0,
+        "diseaseTraits": {
+         "colonists": 3,
+         "removed": [],
+         "seen": {
+          "Human80453": [
+           "Wimp 0",
+           "Transhumanist 0",
+           "Industriousness 1"
+          ],
+          "Human80447": [
+           "PsychicSensitivity 1",
+           "Beauty 1",
+           "Jealous 0"
+          ],
+          "Human80450": [
+           "Undergrounder 0"
+          ]
+         }
+        }
+       }
+      },
+      {
+       "name": "quiet_site_map",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "removed": [],
+        "threatsAfter": 0,
+        "lettersUnsentAfter": 0
+       }
+      },
+      {
+       "name": "kill_hostiles",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "targeted": []
+       }
+      },
+      {
+       "name": "kill_wildlife",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "route": "none-needed"
+       }
+      },
+      {
+       "name": "clear_strangers",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "targeted": []
+       }
+      },
+      {
+       "name": "extinguish",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {}
+      },
+      {
+       "name": "restore_colonists",
+       "acted": 9,
+       "verified": true,
+       "residue": [],
+       "evidence": {}
+      }
+     ]
+    },
+    "site_reload": null,
+    "setup_records": [
+     {
+      "call": "restore_touched_settings []",
+      "result": true
+     }
+    ],
+    "env_reset": {
+     "log_reset": "ok",
+     "weather": "ok",
+     "map_info": "ok",
+     "unroof": "ok",
+     "gas_ToxGas": "ok",
+     "gas_BlindSmoke": "ok",
+     "gas_RotStink": "ok",
+     "gas_DeadlifeDust": "ok",
+     "gas_things": "ok"
+    },
+    "phase_s": {
+     "hold": 5.638,
+     "body": 7.612,
+     "teardown": 0.0
+    },
+    "gate": {
+     "action": "run",
+     "key": "be985d6f491498620b4ce5c4528765f9091e7c8c4bb039fcdc62852d306a8942",
+     "why": "no record at this key",
+     "record": null,
+     "purpose": "fix",
+     "inputs_known": true,
+     "code_version": "9c8513bb4343105bfe2df6e734170629152cfde1d2ddee8b0460852f82a1ca5a"
+    }
+   }
+  ],
+  "all_green": true,
+  "findings": [],
+  "refused": "",
+  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\HARNESS_REPAIR_CAUSE_4D2C5B87_3.det\\design\\validation_walks\\RimMandrake\\FlowWorks.md",
+  "acceptance": {
+   "overall": "INDETERMINATE",
+   "rows": [
+    {
+     "row": "swept/returns_home",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    }
+   ],
+   "spoils": [
+    {
+     "class": "envelope_off",
+     "why": "run without the situational envelope: blocking window and visitors unobserved",
+     "chain": "swept"
+    }
+   ],
+   "counts": {
+    "PASS": 0,
+    "FAIL": 0,
+    "INDETERMINATE": 1,
+    "UNMEASURED": 0,
+    "NOT_RUN": 0
+   },
+   "classes": [
+    "envelope_off"
+   ]
+  },
+  "reuse": {
+   "reused": [],
+   "reusable": []
+  },
+  "host": "Archmagi",
+  "offline_chains": [],
+  "fresh_green": true,
+  "invalid": [],
+  "leads": [],
+  "gate": {
+   "run": [
+    "swept"
+   ],
+   "skipped": [],
+   "would_skip": [],
+   "record_body_s": 0.0,
+   "mode": "shadow",
+   "purpose": "fix"
+  },
+  "canary": {
+   "ok": true,
+   "problems": [],
+   "steps": [
+    "programState Playing",
+    "3 live colonists",
+    "spawn_batch Steel at 124,126: success=True",
+    "destroyed; left at cell: []"
+   ]
+  },
+  "visual": [],
+  "visual_all_green": true,
+  "state_all_green": true,
+  "targeted": {
+   "chains": [
+    "swept"
+   ],
+   "of_chains": 96,
+   "rows": [],
+   "item": null,
+   "by": [
+    "chain swept: named by --chains"
+   ],
+   "rows_run": [
+    "returns_home"
+   ],
+   "scope": {
+    "swept": {
+     "mode": "full",
+     "requested_rows": [],
+     "reasons": [
+      "named by --chains"
+     ],
+     "executed": [
+      "returns_home"
+     ],
+     "skipped": []
+    }
+   },
+   "offline_skipped": {},
+   "incomplete": {}
+  }
+ },
+ "benign_stops": []
+}

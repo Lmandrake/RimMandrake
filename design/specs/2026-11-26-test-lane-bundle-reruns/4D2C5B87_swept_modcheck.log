@@ -1,0 +1,15 @@
+PREVIEW 1 of 96 chains, 1 rows to execute
+  chain swept [full]: named by --chains
+    whole chain: executed 1 row(s)
+EXPECTED_ROWS ["returns_home"]
+EXPECTED_ROW_CHAINS {"returns_home": "swept"}
+EXPECTED_DRIVERS []
+[modcheck] FlowWorks TARGETED: 1 of 96 chains: swept
+[modcheck] canary GREEN: programState Playing; 3 live colonists; spawn_batch Steel at 124,126: success=True; destroyed; left at cell: []
+[modcheck] chain swept START 06:45:25Z
+[modcheck] chain swept END 13s PASS=1 FAIL=0 UNMEASURED=0 NOT_RUN=0 hold=5.6s body=7.6s teardown=0.0s
+[modcheck] FlowWorks: seat UNKNOWN (no --seat, RIMFLOW_SEAT or AGENT_SEAT here): ledger verify and findings NOT written; record it by hand: python3 src/RimMandrake/rimflow/cli.py verify MODCHECK_FLOWWORKS_RUN_1 --result pass --config 'min+FlowWorks TARGETED chains=swept' --evidence /home/mandrake/rm/relentless/clones/HARNESS_REPAIR_CAUSE_4D2C5B87_3.det/Transient/modcheck/FlowWorks_20261126T064540Z.html --seat <SEAT>
+[modcheck] FlowWorks: targeted run, status entry untouched; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\HARNESS_REPAIR_CAUSE_4D2C5B87_3.det\Transient\modcheck\FlowWorks_20261126T064540Z.html
+FlowWorks            TARGETED 1/96 chains (swept) GREEN
+[bridge split] 56.5 s wall: load 0.0 / ticks 3.3 / reads 2.2 / other 4.9 / outside calls 46.1 s
+MODCHECK_RC=0
