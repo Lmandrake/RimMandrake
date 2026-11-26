@@ -794,6 +794,7 @@ def main(argv=None):
     ap.add_argument("--no-save", action="store_true")
     ap.add_argument("--no-shots", action="store_true")
     ap.add_argument("--fresh-map", action="store_true", help="go to the main menu and start a debug quicktest map first")
+    ap.add_argument("--load", default="", help="load this save from the main menu first (with --shots-only: recapture a saved walk map)")
     ap.add_argument("--shots-only", default="", help="N,M,... or all: capture those stations of the map staged now; no staging, no save")
     a = ap.parse_args(argv)
     only = [x for x in a.only.split(",") if x] or None
@@ -817,6 +818,14 @@ def main(argv=None):
     out = a.out or os.path.join(C.REPO, "Transient", "walk_map_mock" if a.mock else "walk_map")
     w = C.make_walk(a, os.path.join(out, "_work"))
     s = WalkStage(w, False)
+    if a.load and not a.mock:
+        w.call("rimworld/load_game", saveName=a.load, ignoreModCompatibility=True)
+        from await_lifecycle import await_lifecycle  # noqa: E402
+        lc = await_lifecycle(w.call, "map_ready", 420, poll_s=1.0)
+        if not lc.ok:
+            print("COULD NOT LOOK: the save %s did not load: %s" % (a.load, lc.reason))
+            return 5
+        w.call("jawa/clear_ui", all=True)
     if a.fresh_map and not a.mock:
         w.call("rimworld/go_to_main_menu")
         w.call("rimworld/start_debug_game_ready", readiness="mapData", pauseIfNeeded=True, timeoutMs=280000)
