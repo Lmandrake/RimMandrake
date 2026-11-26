@@ -1,19 +1,18 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":892335,"DISPATCH":89564,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":4566,"HOLDER.run-1795304573":2662,"HOLDER.run-1795312089":1009,"HOLDER.run-1795312923":2298,"HOLDER.run-1795315124":1540,"HOLDER.run-1795321038":846,"HOLDER.run-1795325268":1929,"HOLDER.run-1795329869":754,"HOLDER.run-1795330730":1090,"HOLDER.run-1795335550":748,"HOLDER.run-1795338340":3967,"HOLDER.run-1795341097":2076,"HOLDER.run-1795346318":1646,"HOLDER.run-1795396410":1686,"HOLDER.run-1795412632":930,"HOLDER.run-1795427578":1657,"HOLDER.run-1795429371":2915,"HOLDER.run-1795441687":754,"HOLDER.run-1795461568":2159,"HOLDER.run-1795471235":562,"HOLDER.run-1795503470":1774,"HOLDER.run-1795670514":9857,"HOLDER.run-1795693138":1584,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=ea5c0bc6fc95d7457a9103b3baefe960072163de2716bf391aef20577fb508b2 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":892335,"DISPATCH":89564,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":4566,"HOLDER.run-1795304573":2662,"HOLDER.run-1795312089":1009,"HOLDER.run-1795312923":2298,"HOLDER.run-1795315124":1540,"HOLDER.run-1795321038":846,"HOLDER.run-1795325268":1929,"HOLDER.run-1795329869":754,"HOLDER.run-1795330730":1090,"HOLDER.run-1795335550":748,"HOLDER.run-1795338340":3967,"HOLDER.run-1795341097":2076,"HOLDER.run-1795346318":1646,"HOLDER.run-1795396410":1686,"HOLDER.run-1795412632":930,"HOLDER.run-1795427578":1657,"HOLDER.run-1795429371":2915,"HOLDER.run-1795441687":754,"HOLDER.run-1795461568":2159,"HOLDER.run-1795471235":562,"HOLDER.run-1795503470":1774,"HOLDER.run-1795670514":9857,"HOLDER.run-1795693138":4334,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=52fa646be007f82912e89b6346555b0465d2899ac93d07f3555509145ec4c870 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage offline_build · 1748 events in 46 shards · reducer 1
-holder lease run-1795693138, token 61, last active 2026-11-26T12:37:08Z
+version 0.1.0 · stage offline_build · 1753 events in 46 shards · reducer 1
+holder lease run-1795693138, token 61, last active 2026-11-26T13:15:05Z
 holder session d663ac98-3664-4cdc-9376-afa355ba506f, context 290501 of ceiling 400000
 
-## Last checkpoint (HOLDER.run-1795693138, 2026-11-26T12:37:08Z)
-- done: jetty seam closed at 73416d51c1: RM_DeckArt.PieceMat clamps strip/abutment textures (in-game hairline from Repeat wrap); selftest check 6 GPU model red->green; ArchSmall 16 jetties wrap=Clamp, judge KEEP 16/16; rows 3ef7da7230
-- next: Filter the bundle WB-mod-FlowWorks-20261126-113858 ready tickets in order, per its state file
-- ruled out: texture edge pixels as the hairline cause (edges match); game_instance launch rewriting ModsConfig
+## Last checkpoint (HOLDER.run-1795693138, 2026-11-26T13:15:05Z)
+- done: ABSOLUTE_DESCENT_FIX_MISSES_DECK_SHOVE closed at d319937af5 (deck shove falls in absolute mode; floor-band origin reads its floor in both rules)
+- next: Filter and work B6_FLOOD_FIX_RAIN_FILL_LEFT_OFF, then the bundle members in brief order
+- ruled out: a source-only pin as the whole proof: the C# PitTrap_absolute_descent_reads_deck_height case carries the behaviour
 
 ## Open findings (178)
-(claimed fixes, awaiting a judge, on one line each with the oldest 127 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
+(claimed fixes, awaiting a judge, on one line each with the oldest 126 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
 - RIMMANDRAKE_ANCHOR_CROP_DROWN_DELAY_IN_DAYS_NOT_PULSES [open, polish · bars inv_overflow_sheet]
 - RIMMANDRAKE_PIN_MACHINE_RATES_A_TENFOLD_STILL_PASSES [open, polish · bars inv_converters]
-- ABSOLUTE_DESCENT_FIX_MISSES_DECK_SHOVE [open, problem]
 - ALL_OFF_FIX_DEPTH_ENGINE_STAYS_ON [open, problem]
 - AUTO_SPLICE_FIX_SKIPS_OBSTACLE_CHECK [open, problem]
 - BIGNET_PROOF_FIX_SIZE_NOT_RESTORED [open, problem]
@@ -189,8 +188,9 @@ holder session d663ac98-3664-4cdc-9376-afa355ba506f, context 290501 of ceiling 4
 - RIMMANDRAKE_PIN_FLOWWORKS_CONVERTER_CALLER_RATE_AND_SUN [open, problem · bars inv_converters]
 - RIMMANDRAKE_PIN_FLOWWORKS_DRILL_CALLER_READS_SETTING [open, problem · bars inv_drilling]
 - FLOWWORKS_TOGGLES_BUILD_SIX_PREDICATES_OWED [open, problem]
+- ABSOLUTE_DESCENT_FIX_MISSES_DECK_SHOVE on d319937af57cc7ccf60aaa2eac783a934dc6accd
 
-## Traps (274) — what a reader would otherwise get wrong (each cut to 60 chars; `modledger.py show --mod FlowWorks <subject>` for the whole)
+## Traps (275) — what a reader would otherwise get wrong (each cut to 60 chars; `modledger.py show --mod FlowWorks <subject>` for the whole)
 - trap:the-inventory-s-proof-field-reads-stale-20
 - trap:three-inventory-rows-are-impl-absent
 - trap:every-live-scene-s-tier-says-quicktest
@@ -322,6 +322,7 @@ holder session d663ac98-3664-4cdc-9376-afa355ba506f, context 290501 of ceiling 4
 - trap:packet-bar-verdicts-are-visit-1-backfill-only
 - trap:a-raider-on-the-deck-costs-175-to-the-one-behind
 - trap:red-marks-over-tar-in-a-paused-shot-are-hit-flecks
+- trap:the-floor-band-set-is-swept-every-60-ticks
 - 143 traps on closed or claimed findings (verified, withdrawn, claimed_fixed), not listed: `modledger.py find --mod FlowWorks --class trap <words>`
 
 ## Causes refuted (48) — do not chase these again
@@ -498,11 +499,11 @@ spend recorded: USD 78.94, 45401435 tokens
 - closed findings: 181, oldest first (`modledger.py show --mod FlowWorks <subject>`)
 - closed traps: 2, oldest first (`modledger.py show --mod FlowWorks <subject>`)
 - tests: 48, oldest first (`modledger.py show --mod FlowWorks <subject>`)
-- claimed fixes in brief: 51 on one line (name and sha), their claim, test and fix by `show`
-- open findings in brief: the oldest 127 on one line, their fix and accept by `modledger.py show --mod FlowWorks <subject>`
+- claimed fixes in brief: 52 on one line (name and sha), their claim, test and fix by `show`
+- open findings in brief: the oldest 126 on one line, their fix and accept by `modledger.py show --mod FlowWorks <subject>`
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1748 events (views/history.md; never read whole)
+- the full history: 1753 events (views/history.md; never read whole)
 
-cursor: t=2026-11-26T12:39:06Z.1795696746198307112 (modledger.py since --mod FlowWorks t=2026-11-26T12:39:06Z.1795696746198307112 prints what changed after this packet)
+cursor: t=2026-11-26T13:15:05Z.1795698905118935278 (modledger.py since --mod FlowWorks t=2026-11-26T13:15:05Z.1795698905118935278 prints what changed after this packet)
