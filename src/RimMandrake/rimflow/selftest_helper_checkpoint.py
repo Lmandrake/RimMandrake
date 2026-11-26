@@ -10,6 +10,8 @@ All on SIMULATED transcripts in a temp dir; no window, no rimflow write (the not
              exemption: the kill no longer waits on it), the wake lists it
   no record  without a checkpoint nothing changes: a live helper stays alive (helpers_of untouched)
   cap        one --wait call returns WAITING at its cap, before the deadline
+  ledger     known_items reads the whole ledger the way model.ledger_files() spreads it: the frozen legacy
+             `events.jsonl` and every shard (RIMMANDRAKE_LAUNCH_OLD_LEDGER_ITEMS_PAINT_LIST_REFUSED_TWICE)
 """
 import json
 import os
@@ -142,12 +144,52 @@ def test_lost(tx):
     check(len(w) == 2 and "SOME_ITEM_TO_BUILD" in "".join(w), "wake: the fresh window is told what was lost")
 
 
+def _ledger(name, legacy=None, shards=None):
+    """A made ledger folder: -> repo root holding infrastructure/state/ledger/[events.jsonl, events/<seat>.jsonl]."""
+    repo = os.path.join(TMP, "ledger_" + name)
+    led = os.path.join(repo, "infrastructure", "state", "ledger")
+    os.makedirs(os.path.join(led, "events"), exist_ok=True)
+    if legacy is not None:
+        with open(os.path.join(led, "events.jsonl"), "w") as f:
+            f.write("".join(json.dumps(e) + "\n" for e in legacy))
+    for seat, evs in (shards or {}).items():
+        with open(os.path.join(led, "events", seat + ".jsonl"), "w") as f:
+            f.write("".join(json.dumps(e) + "\n" for e in evs))
+    return repo
+
+
+def test_known_items_whole_ledger():
+    old = {"event": "file", "id": "OLD_ITEM_FILED_IN_LEGACY_FILE", "ts": "2026-09-20T00:00:00Z"}
+    new = {"event": "file", "id": "NEW_ITEM_FILED_IN_A_SHARD", "ts": "2026-11-20T00:00:00Z"}
+    sp = {"event": "spawn", "name": "SPAWNED_ITEM_IN_LEGACY_FILE", "from": "X", "ts": "2026-09-21T00:00:00Z"}
+    note = {"event": "note", "id": "ONLY_A_NOTE_NAMES_THIS_ITEM", "ts": "2026-09-22T00:00:00Z"}
+    repo = _ledger("both", legacy=[old, sp, note], shards={"BENCH": [new]})
+    k = HC.known_items(repo)
+    check("OLD_ITEM_FILED_IN_LEGACY_FILE" in k, "ledger: an item filed only in the legacy events.jsonl is known")
+    check("SPAWNED_ITEM_IN_LEGACY_FILE" in k, "ledger: a spawn in the legacy file is known by its name")
+    check("NEW_ITEM_FILED_IN_A_SHARD" in k, "ledger: an item filed only in a shard is known")
+    check("ONLY_A_NOTE_NAMES_THIS_ITEM" not in k and "NO_SUCH_ITEM_EVER" not in k,
+          "ledger: an id that no file event names is not known (%s)" % sorted(k))
+    only_shards = _ledger("shards", shards={"BENCH": [new]})
+    check(HC.known_items(only_shards) == {"NEW_ITEM_FILED_IN_A_SHARD"}, "ledger: no legacy file -> the shards alone")
+    only_legacy = _ledger("legacy", legacy=[old])
+    check(HC.known_items(only_legacy) == {"OLD_ITEM_FILED_IN_LEGACY_FILE"}, "ledger: no shard -> the legacy file alone")
+    blind = os.path.join(TMP, "ledger_blind")
+    os.makedirs(blind, exist_ok=True)
+    check(HC.known_items(blind) == set(), "ledger: a ledger with no file reads 0 items (the blind reading stays)")
+    # the same files model.read() would merge: no second list of them
+    import model
+    led = os.path.join(repo, "infrastructure", "state", "ledger", "events.jsonl")
+    check(HC.ledger_paths(repo) == model.ledger_files(led), "ledger: the file list is model.ledger_files()'s")
+
+
 def main():
     tx = test_order_items_once()
     test_no_record_changes_nothing()
     test_done()
     test_cap()
     test_lost(tx)
+    test_known_items_whole_ledger()
     print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0
 

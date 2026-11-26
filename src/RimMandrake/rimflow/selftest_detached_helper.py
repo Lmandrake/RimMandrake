@@ -704,8 +704,10 @@ def _test_origin():
                   "origin: refused before any clone or unit, no record written (clone=%s)" % bool(clone))
         check([c[0][:2] for c in GIT_CALLS] == [["git", "fetch"]] + [["git", "grep"]] and GIT_CALLS[0][1].get("cwd") == repo,
               "origin: one fetch, then one search, in the repo")
-        check(GIT_CALLS[1][0][-3:] == [DH.ORIGIN_REF, "--", DH.EVENTS_REL] and item in GIT_CALLS[1][0],
-              "origin: the search is of every shard under the events dir at origin/main, for the id (%s)" % GIT_CALLS[1][0][-3:])
+        check(GIT_CALLS[1][0][-4:] == [DH.ORIGIN_REF, "--", DH.EVENTS_REL, DH.LEGACY_EVENTS_REL]
+              and item in GIT_CALLS[1][0],
+              "origin: the search is of every shard under the events dir and the legacy events.jsonl at origin/main, for the id (%s)"
+              % GIT_CALLS[1][0][-4:])
         # a lookalike on origin does not file it: a note that mentions it, a spawn whose `from` is it, a longer id
         reset(events=[shard_line("note", id=item, text="x"), shard_line("spawn", **{"from": item, "name": "CHILD_OF_IT", "for": "BENCH"}),
                       shard_line("file", id=item + "_TWO", title="t")])
@@ -1891,6 +1893,43 @@ def DH_SC():
     return scratch_clone
 
 
+def t_origin_check_reads_the_legacy_ledger_file_too():
+    """RIMMANDRAKE_LAUNCH_OLD_LEDGER_ITEMS_PAINT_LIST_REFUSED_TWICE: an old item is filed in the frozen legacy
+    `ledger/events.jsonl`, not a shard. On a REAL git origin (the fake runner ignores pathspecs): the item filed only in the
+    legacy file, one filed only in a shard, and an id no file names."""
+    base = os.path.join(TMP, "legacy_origin")
+    origin, work = os.path.join(base, "origin.git"), os.path.join(base, "work")
+    led = os.path.join(work, "infrastructure", "state", "ledger")
+
+    def git(*a, cwd=work):
+        r = subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@t", "-c", "commit.gpgsign=false", *a],
+                           cwd=cwd, capture_output=True, text=True)
+        if r.returncode:
+            raise RuntimeError("git %s: %s" % (a, r.stderr))
+        return r
+    os.makedirs(base, exist_ok=True)
+    git("init", "-q", "--bare", "-b", "main", origin, cwd=base)
+    git("init", "-q", "-b", "main", work, cwd=base)
+    os.makedirs(os.path.join(led, "events"), exist_ok=True)
+    with open(os.path.join(led, "events.jsonl"), "w") as f:
+        f.write(shard_line("file", id="OLD_ITEM_FILED_IN_LEGACY_FILE", title="t") + "\n")
+    with open(os.path.join(led, "events", "BENCH.jsonl"), "w") as f:
+        f.write(shard_line("file", id="NEW_ITEM_FILED_IN_A_SHARD", title="t") + "\n")
+        f.write(shard_line("note", id="ONLY_A_NOTE_NAMES_THIS_ITEM", text="t") + "\n")
+    git("add", "-A")
+    git("commit", "-q", "-m", "ledger")
+    git("remote", "add", "origin", origin)
+    git("push", "-q", "origin", "main")
+    got = {i: DH.origin_check(i, runner=subprocess.run, repo=work, seat="BENCH")
+           for i in ("OLD_ITEM_FILED_IN_LEGACY_FILE", "NEW_ITEM_FILED_IN_A_SHARD", "ONLY_A_NOTE_NAMES_THIS_ITEM",
+                     "NO_SUCH_ITEM_EVER")}
+    check(got["OLD_ITEM_FILED_IN_LEGACY_FILE"] is None, "legacy: an item filed only in the legacy events.jsonl is on origin/main (%r)"
+          % got["OLD_ITEM_FILED_IN_LEGACY_FILE"])
+    check(got["NEW_ITEM_FILED_IN_A_SHARD"] is None, "legacy: an item filed in a shard is still on origin/main")
+    check(all(got[i] and "is not on origin/main" in got[i] for i in ("ONLY_A_NOTE_NAMES_THIS_ITEM", "NO_SUCH_ITEM_EVER")),
+          "legacy: a note's mention and an unknown id are still refused")
+
+
 def main():
     test_clone_shape()
     test_refuse()
@@ -1902,6 +1941,7 @@ def main():
     test_return()
     test_return_real_git()
     test_origin()
+    t_origin_check_reads_the_legacy_ledger_file_too()
     test_midreturn()
     test_result_kept_whole()
     test_scope_quiet_when_gone()

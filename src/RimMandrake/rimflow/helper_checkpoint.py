@@ -76,19 +76,21 @@ def lost_ids(tx_path, now, root=None):
     return {h["id"]: h.get("items") or [] for h in rec.get("helpers") or [] if h.get("id")}
 
 
+def ledger_paths(repo=REPO):
+    """The files the whole ledger of the clone at `repo` is spread across: the ledger's own list, model.ledger_files()
+    (the frozen legacy `events.jsonl` first, then every shard). The one list; no second one is made here."""
+    import model
+    return model.ledger_files(os.path.join(repo, "infrastructure", "state", "ledger", "events.jsonl"))
+
+
 def known_items(repo=REPO):
-    """Every id the ledger has a `file` or `spawn` event for, read from the shards (the instrument; a set of 0 means blind)."""
+    """Every id the ledger has a `file` or `spawn` event for, read from every file of the ledger (ledger_paths: the legacy
+    `events.jsonl` an old item is filed in, and the shards). A cheap line filter stands in for model.read(), which would
+    parse and order all of it at each launch. The instrument: a set of 0 means blind."""
     ids = set()
-    d = os.path.join(repo, "infrastructure", "state", "ledger", "events")
-    try:
-        names = os.listdir(d)
-    except OSError:
-        return ids
-    for n in names:
-        if not n.endswith(".jsonl"):
-            continue
+    for path in ledger_paths(repo):
         try:
-            with open(os.path.join(d, n), encoding="utf-8", errors="replace") as f:
+            with open(path, encoding="utf-8", errors="replace") as f:
                 for line in f:
                     squeezed = line.replace(" ", "")
                     if '"event":"file"' not in squeezed and '"event":"spawn"' not in squeezed:

@@ -15,7 +15,7 @@ one runs. A detached run lives in its own transient systemd unit and survives th
 launch: the item must be on the ledger, and FILED ON origin/main: the helper's clone is made from origin/main, so an item whose
 file event sits in an unpublished shard (OWNER.jsonl from --owner-said, say) is one the helper's `rimflow note` refuses for
 the whole run (lesson 20261107T214121Z-BENCH-detached-helper-item-not-origin). One fetch, then a search of every shard under
-infrastructure/state/ledger/events/ at origin/main; no hit refuses (exit 2) with the exact `./publish` command that passes
+infrastructure/state/ledger/events/ and of the legacy infrastructure/state/ledger/events.jsonl at origin/main; no hit refuses (exit 2) with the exact `./publish` command that passes
 (it publishes nothing itself; boundary design/specs/2026-11-19-launch-unpublished-item/boundary.md).
 It takes a pool clone <pool>/clones/<ITEM>.det through scratch_clone.py
 (reused, synced, when it exists), then starts role_launch's path: systemd-run --user + claude_bounded.sh -p, the
@@ -122,6 +122,7 @@ RETURN_POLL_S = 10
 # 0 = not set. A Claude Code that does not know the variable ignores it.
 BASH_MAX_MS = 3420000
 EVENTS_REL = "infrastructure/state/ledger/events"
+LEGACY_EVENTS_REL = "infrastructure/state/ledger/events.jsonl"   # the frozen file an old item is filed in (model.ledger_files)
 # RIMMANDRAKE_MOVE_BIOME_FEATURE_JUDGE_RULES_OUT_POINTERS_STAY: CLAUDE.md keeps only a pointer for these rule groups, so
 # every detached brief names their homes. Boundary: design/specs/2026-11-19-rule-homes-in-briefs/boundary.md.
 RULE_HOMES = """- Some rules live outside CLAUDE.md. Read the home file before the work it names. A biome, roster, sea,
@@ -299,7 +300,8 @@ def publish_command(item, shards):
 def origin_check(item, runner=subprocess.run, repo=None, seat=None):
     """-> None when `item` is filed on origin/main, else the one-line refusal text, holding the exact command that passes.
 
-    One fetch (the ref could be stale), then `git grep` of every shard under EVENTS_REL at origin/main for lines holding the
+    One fetch (the ref could be stale), then `git grep` of every shard under EVENTS_REL and of the legacy file LEGACY_EVENTS_REL
+    (an old item is filed there) at origin/main for lines holding the
     id, kept only if filed_ids() reads the item from one: a `file` event's id or a `spawn` event's name. An item found is
     allowed even when the fetch failed; one not found says so when it did, since origin/main may then be stale. A git that
     cannot be read at all (not 0 or 1) refuses too: a blind instrument is not a pass."""
@@ -314,7 +316,7 @@ def origin_check(item, runner=subprocess.run, repo=None, seat=None):
     except (OSError, subprocess.SubprocessError) as e:
         stale = "fetch failed: %s" % str(e)[-80:]
     try:
-        r = runner(["git", "grep", "-h", "-F", "-I", "-e", item, ORIGIN_REF, "--", EVENTS_REL], cwd=repo,
+        r = runner(["git", "grep", "-h", "-F", "-I", "-e", item, ORIGIN_REF, "--", EVENTS_REL, LEGACY_EVENTS_REL], cwd=repo,
                    capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
     except (OSError, subprocess.SubprocessError) as e:
         return "refused: cannot read %s to check %s on it (%s)" % (ORIGIN_REF, item, str(e)[-80:])
