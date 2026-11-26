@@ -44,6 +44,7 @@
     <Compile Include="RM_Canopy.cs" />
     <Compile Include="RM_WorldTerrainShader.cs" />
     <Compile Include="RM_WorldLook.cs" />
+    <Compile Include="RM_WorldLookLists.cs" />
     <Compile Include="RM_WorldPaths.cs" />
     <Compile Include="RM_WorldPathsDrawn.cs" />
     <Compile Include="RM_RiverGraph.cs" />

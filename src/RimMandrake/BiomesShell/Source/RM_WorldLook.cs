@@ -51,6 +51,10 @@ namespace RimMandrake.Biomes
         public static string seaDeepColor = "0.05,0.09,0.20";   // dark film far from it
         public static float seaDeepAlpha = 0.62f;
         public static float seaDeepTiles = 6f;
+        // Per-sea film overrides (SEA_FILMS_TUNE_PER_SEA_CHILL_UNLIT; grammar in RM_WorldLookLists.FilmScale). The owner wants
+        // The Chill "ominously dark compared to other bodies" (2026-10-24); the films lift its abyss face (value 22 reads 39)
+        // and ring its islands, so it ships unlit (his round-3 pick, approved 2026-10-25). Applied while worldChillUnlit.
+        public static string seaFilmOverrides = "RM_TheChill=off";
         public static string seaShader = "WorldOverlayTransparentLit";
         public static int seaQueue = 3502;          // above the ocean (3500), under the border blend (3505)
 
@@ -61,6 +65,11 @@ namespace RimMandrake.Biomes
         //    no pole stretch. Vertex alpha = swirlStrength x share of that biome among the tiles meeting at the corner, so
         //    the layer fades out across the biome border instead of stopping on a hex line.
         public static string swirlBiomes = "RM_Abyss=Abyss,RM_TheRot=TheRot";
+        // 4. SEA GLASS (TWILIGHT_GLASS_WIRE_INTO_SWIRL_LAYER): the same layer over a sea. The owner, 2026-10-24: the Twilight
+        //    Sea has "a stained glass window-like layer of life growing just below it's surface everywhere"; his pick is the
+        //    round-3 "panes v3" texture (world_water_variants PANES3), one repeat = 40 tile widths (@40, centre to centre).
+        //    It sits over the face ripple at low alpha (the ripple shows through). Drawn while worldTwilightGlass.
+        public static string glassBiomes = "RM_TwilightSea=TwilightGlass@40";
         public static float swirlStrength = 1f;
         public static float swirlUvScale = 0.035f;  // texture repeats per world unit (radius 100 planet): ~25 units per repeat
         public static float swirlLift = 0.004f;     // over the border blend (+0.003), under hills (+0.005) and rivers (+0.01)
@@ -144,7 +153,8 @@ namespace RimMandrake.Biomes
                 lastMine = mine;
                 if (RM_BiomesSettings.worldSeaDepth) sb.Append(BuildSea(layer, mine));
                 if (RM_BiomesSettings.worldBorderBlend) sb.Append(" ").Append(BuildBlend(layer, mine));
-                if (RM_BiomesSettings.worldBiomeSwirls) sb.Append(" ").Append(BuildSwirls(layer, mine));
+                if (RM_BiomesSettings.worldBiomeSwirls) sb.Append(" ").Append(BuildSwirls(layer, mine, swirlBiomes, false, "swirls"));
+                if (RM_BiomesSettings.worldTwilightGlass) sb.Append(" ").Append(BuildSwirls(layer, mine, glassBiomes, true, "glass"));
                 if (RM_BiomesSettings.worldBiomeDecals) sb.Append(" ").Append(RM_WorldDecals.Build(layer, mine));
                 var subs = SubMeshes(layer);
                 foreach (LayerSubMesh sm in mine)
@@ -246,9 +256,14 @@ namespace RimMandrake.Biomes
             Material deepMat = FlatMat(seaDeepColor, seaQueue + 1);
             LayerSubMesh shore = null, deep = null;
             float windSign = 0f;
-            int n = 0;
+            int n = 0, unlit = 0;
+            var filmScales = new Dictionary<BiomeDef, float>();
             foreach (int i in water)
             {
+                BiomeDef wb = pl[i].PrimaryBiome;
+                if (!filmScales.TryGetValue(wb, out float filmScale))
+                    filmScales[wb] = filmScale = RM_BiomesSettings.worldChillUnlit ? RM_WorldLookLists.FilmScale(seaFilmOverrides, wb.defName) : 1f;
+                if (filmScale <= 0f) { unlit++; continue; }
                 pl.GetTileVertices(i, verts);
                 if (verts.Count < 3) continue;
                 Vector3 center = pl.GetTileCenter(i);
@@ -262,11 +277,11 @@ namespace RimMandrake.Biomes
                 foreach (Vector3 v in verts) pts.Add(v);
                 var dist = new float[pts.Count];
                 for (int q = 0; q < pts.Count; q++) dist[q] = coast.Contains(pts[q]) ? 0f : distTiles(pts[q]);
-                EmitSeaTile(shore, pts, verts.Count, center, windSign, d => seaShoreAlpha * Mathf.Pow(1f - Mathf.Clamp01(d / Mathf.Max(0.01f, seaShoreTiles)), 2f), dist);
-                EmitSeaTile(deep, pts, verts.Count, center, windSign, d => seaDeepAlpha * Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(d / Mathf.Max(0.01f, seaDeepTiles))), dist);
+                EmitSeaTile(shore, pts, verts.Count, center, windSign, d => filmScale * seaShoreAlpha * Mathf.Pow(1f - Mathf.Clamp01(d / Mathf.Max(0.01f, seaShoreTiles)), 2f), dist);
+                EmitSeaTile(deep, pts, verts.Count, center, windSign, d => filmScale * seaDeepAlpha * Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(d / Mathf.Max(0.01f, seaDeepTiles))), dist);
                 n++;
             }
-            return "sea: " + n + " water tiles shaded from " + coast.Count + " coast vertices";
+            return "sea: " + n + " water tiles shaded from " + coast.Count + " coast vertices" + (unlit > 0 ? ", " + unlit + " unlit" : "");
         }
 
         static void EmitSeaTile(LayerSubMesh sm, List<Vector3> pts, int ring, Vector3 center, float windSign, System.Func<float, float> alphaOf, float[] dist)
@@ -429,15 +444,13 @@ namespace RimMandrake.Biomes
         // ---------------------------------------------------------------- biome swirls
         static readonly Dictionary<string, Material> SwirlMats = new Dictionary<string, Material>();
 
-        static Dictionary<BiomeDef, string> SwirlMap()
+        static Dictionary<BiomeDef, RM_WorldLookLists.Entry> SwirlMap(string list, bool allowWater)
         {
-            var map = new Dictionary<BiomeDef, string>();
-            foreach (string pair in (swirlBiomes ?? "").Split(','))
+            var map = new Dictionary<BiomeDef, RM_WorldLookLists.Entry>();
+            foreach (RM_WorldLookLists.Entry e in RM_WorldLookLists.Entries(list))
             {
-                string[] kv = pair.Split('=');
-                if (kv.Length != 2) continue;
-                BiomeDef b = DefDatabase<BiomeDef>.GetNamedSilentFail(kv[0].Trim());
-                if (b != null && !b.isWaterBiome) map[b] = kv[1].Trim();
+                BiomeDef b = DefDatabase<BiomeDef>.GetNamedSilentFail(e.biome);
+                if (b != null && (allowWater || !b.isWaterBiome)) map[b] = e;
             }
             return map;
         }
@@ -457,24 +470,46 @@ namespace RimMandrake.Biomes
             return m;
         }
 
-        static string BuildSwirls(WorldDrawLayer_Terrain layer, List<LayerSubMesh> mine)
+        static string BuildSwirls(WorldDrawLayer_Terrain layer, List<LayerSubMesh> mine, string list, bool allowWater, string label)
         {
             PlanetLayer pl = layer.planetLayer;
-            Dictionary<BiomeDef, string> map = SwirlMap();
-            if (map.Count == 0) return "swirls: no listed biome loaded";
+            Dictionary<BiomeDef, RM_WorldLookLists.Entry> map = SwirlMap(list, allowWater);
+            if (map.Count == 0) return label + ": no listed biome loaded";
             var sw = System.Diagnostics.Stopwatch.StartNew();
             // one tangent frame per biome, at the mean of its tile centres
             var sum = new Dictionary<BiomeDef, Vector3>();
+            var radiusSum = new Dictionary<BiomeDef, float>();   // summed mean circumradius of the biome's tiles
+            var count = new Dictionary<BiomeDef, int>();
             var tiles = new List<int>();
+            var tv = new List<Vector3>();
             for (int i = 0; i < pl.TilesCount; i++)
             {
                 BiomeDef a = pl[i].PrimaryBiome;
                 if (a == null || !map.ContainsKey(a)) continue;
                 tiles.Add(i);
+                Vector3 c = pl.GetTileCenter(i);
                 sum.TryGetValue(a, out Vector3 s);
-                sum[a] = s + pl.GetTileCenter(i);
+                sum[a] = s + c;
+                if (map[a].widthsPerRepeat > 0f)
+                {
+                    // the tile's own size, as RM_WorldDecals: a partial-coverage planet holds fewer tiles than the sphere would
+                    pl.GetTileVertices(i, tv);
+                    float circ = 0f;
+                    foreach (Vector3 v in tv) circ += (v - c).magnitude;
+                    radiusSum.TryGetValue(a, out float rs);
+                    radiusSum[a] = rs + (tv.Count > 0 ? circ / tv.Count : 0f);
+                    count.TryGetValue(a, out int cn);
+                    count[a] = cn + 1;
+                }
             }
-            if (tiles.Count == 0) return "swirls: 0 tiles of " + map.Count + " listed biomes";
+            if (tiles.Count == 0) return label + ": 0 tiles of " + map.Count + " listed biomes";
+            // texture repeats per world unit, per biome: a hex's centre-to-centre width is sqrt(3) x its circumradius
+            var uvScale = new Dictionary<BiomeDef, float>();
+            foreach (var kv in map)
+            {
+                float width = count.TryGetValue(kv.Key, out int cn) && cn > 0 ? 1.7320508f * radiusSum[kv.Key] / cn : 0f;
+                uvScale[kv.Key] = RM_WorldLookLists.UvScale(kv.Value.widthsPerRepeat, width, swirlUvScale);
+            }
             var frame = new Dictionary<BiomeDef, Vector3[]>();
             foreach (var kv in sum)
             {
@@ -491,7 +526,8 @@ namespace RimMandrake.Biomes
             foreach (int i in tiles)
             {
                 BiomeDef a = pl[i].PrimaryBiome;
-                Material mat = SwirlMat(map[a]);
+                Material mat = SwirlMat(map[a].texture);
+                float uvs = uvScale[a];
                 if (mat == null) { missing++; continue; }
                 pl.GetTileVertices(i, verts);
                 if (verts.Count < 3) continue;
@@ -511,7 +547,7 @@ namespace RimMandrake.Biomes
                 int b0 = sm.verts.Count;
                 Vector3 pc = center + center.normalized * swirlLift;
                 sm.verts.Add(pc);
-                sm.uvs.Add(new Vector3(Vector3.Dot(center, f[0]) * swirlUvScale, Vector3.Dot(center, f[1]) * swirlUvScale, 0f));
+                sm.uvs.Add(new Vector3(Vector3.Dot(center, f[0]) * uvs, Vector3.Dot(center, f[1]) * uvs, 0f));
                 sm.colors.Add(new Color32(255, 255, 255, (byte)Mathf.RoundToInt(Mathf.Clamp01(swirlStrength) * 255f)));
                 for (int j = 0; j < verts.Count; j++)
                 {
@@ -524,14 +560,14 @@ namespace RimMandrake.Biomes
                     }
                     Vector3 p = verts[j] + verts[j].normalized * swirlLift;
                     sm.verts.Add(p);
-                    sm.uvs.Add(new Vector3(Vector3.Dot(verts[j], f[0]) * swirlUvScale, Vector3.Dot(verts[j], f[1]) * swirlUvScale, 0f));
+                    sm.uvs.Add(new Vector3(Vector3.Dot(verts[j], f[0]) * uvs, Vector3.Dot(verts[j], f[1]) * uvs, 0f));
                     sm.colors.Add(new Color32(255, 255, 255, (byte)Mathf.RoundToInt(Mathf.Clamp01(swirlStrength * same / total) * 255f)));
                 }
                 for (int j = 0; j < verts.Count; j++)
                     Tri(sm, b0, b0 + 1 + j, b0 + 1 + (j + 1) % verts.Count, center, windSign);
                 drawn++;
             }
-            return "swirls: " + drawn + " tiles in " + sum.Count + " biomes" + (missing > 0 ? ", " + missing + " without texture" : "")
+            return label + ": " + drawn + " tiles in " + sum.Count + " biomes" + (missing > 0 ? ", " + missing + " without texture" : "")
                    + ", " + sw.ElapsedMilliseconds + " ms";
         }
 
@@ -586,7 +622,8 @@ namespace RimMandrake.Biomes
             foreach (FieldInfo f in typeof(RM_WorldLook).GetFields(BindingFlags.Static | BindingFlags.Public))
                 if (f.Name != "lastInfo") sb.Append(" | ").Append(f.Name).Append('=').Append(f.GetValue(null));
             sb.Append(" | blend=").Append(RM_BiomesSettings.worldBorderBlend).Append(" seaDepth=").Append(RM_BiomesSettings.worldSeaDepth)
-              .Append(" swirls=").Append(RM_BiomesSettings.worldBiomeSwirls).Append(" decals=").Append(RM_BiomesSettings.worldBiomeDecals);
+              .Append(" swirls=").Append(RM_BiomesSettings.worldBiomeSwirls).Append(" decals=").Append(RM_BiomesSettings.worldBiomeDecals)
+              .Append(" chillUnlit=").Append(RM_BiomesSettings.worldChillUnlit).Append(" glass=").Append(RM_BiomesSettings.worldTwilightGlass);
             return sb.ToString();
         }
 

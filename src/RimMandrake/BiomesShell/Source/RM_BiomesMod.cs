@@ -65,6 +65,14 @@ namespace RimMandrake.Biomes
         // whole of the Abyss and The Rot on the planet (RM_WorldLook.BuildSwirls). Looks only. Applies at once.
         public static bool worldBiomeSwirls = true;
 
+        // PER-SEA FILMS (SEA_FILMS_TUNE_PER_SEA_CHILL_UNLIT): The Chill draws no sea films, so it reads darker than every
+        // other sea (RM_WorldLook.seaFilmOverrides). Off: it takes the shared films again. Looks only. Applies at once.
+        public static bool worldChillUnlit = true;
+
+        // SEA GLASS (TWILIGHT_GLASS_WIRE_INTO_SWIRL_LAYER): stained-glass panes of life over the whole Twilight Sea
+        // (RM_WorldLook.glassBiomes). Its own switch, apart from the land swirls. Looks only. Applies at once.
+        public static bool worldTwilightGlass = true;
+
         // BIOME DECALS (WORLD_DECALS_BUILD_ATLAS_PIPELINE_ONCE): 2-3 small glyphs per flat land tile from the biome's own atlas
         // (World/Decals/<defName>), fading out as the camera rises past mid zoom (RM_WorldDecals.cs). Looks only. Applies at once.
         public static bool worldBiomeDecals = true;
@@ -102,6 +110,8 @@ namespace RimMandrake.Biomes
             worldBorderBlend = true;
             worldSeaDepth = true;
             worldBiomeSwirls = true;
+            worldChillUnlit = true;
+            worldTwilightGlass = true;
             worldBiomeDecals = true;
             worldSoftHills = true;
             worldSunPeaks = true;
@@ -137,6 +147,8 @@ namespace RimMandrake.Biomes
             Scribe_Values.Look(ref worldBorderBlend, "worldBorderBlend", true);
             Scribe_Values.Look(ref worldSeaDepth, "worldSeaDepth", true);
             Scribe_Values.Look(ref worldBiomeSwirls, "worldBiomeSwirls", true);
+            Scribe_Values.Look(ref worldChillUnlit, "worldChillUnlit", true);
+            Scribe_Values.Look(ref worldTwilightGlass, "worldTwilightGlass", true);
             Scribe_Values.Look(ref worldBiomeDecals, "worldBiomeDecals", true);
             Scribe_Values.Look(ref worldSoftHills, "worldSoftHills", true);
             Scribe_Values.Look(ref worldSunPeaks, "worldSunPeaks", true);
@@ -236,7 +248,8 @@ namespace RimMandrake.Biomes
 
         string worldLookShown;
         static string WorldLookKey() => RM_BiomesSettings.worldBorderBlend + "/" + RM_BiomesSettings.worldSeaDepth + "/"
-            + RM_BiomesSettings.worldBiomeSwirls + "/" + RM_BiomesSettings.worldBiomeDecals;
+            + RM_BiomesSettings.worldBiomeSwirls + "/" + RM_BiomesSettings.worldBiomeDecals + "/"
+            + RM_BiomesSettings.worldChillUnlit + "/" + RM_BiomesSettings.worldTwilightGlass;
         bool peaksShown = true;
 
         // MOD_OPTIONS_RETROFIT_1: per-entry toggles live in the Scribed RM_BiomesSettings.enabled dictionary (absent key = on).
@@ -332,7 +345,7 @@ namespace RimMandrake.Biomes
             }
 
             if (string.IsNullOrWhiteSpace(searchQuery)
-                || RimMandrake.Shared.SettingsKitCore.Matches("world map planet borders blend sea depth water coast roads rivers highway hills mountains swirls abyss rot decals glyphs marks", searchQuery))
+                || RimMandrake.Shared.SettingsKitCore.Matches("world map planet borders blend sea depth water coast roads rivers highway hills mountains swirls abyss rot decals glyphs marks chill films unlit twilight glass", searchQuery))
             {
                 list.CheckboxLabeled("Planet: soft borders between biomes [now]", ref RM_BiomesSettings.worldBorderBlend,
                     "On the world map, the edge between two land biomes fades over half a tile on each side instead of "
@@ -344,6 +357,14 @@ namespace RimMandrake.Biomes
                     "On the world map, a continuous layer of swirls is drawn across the whole of each of these biomes: pale, "
                     + "eerie currents over the near-black Abyss and wild-coloured swirls over The Rot. It fades out across the "
                     + "biome's border.\n\nLooks only. Default: on. Takes effect at once (the planet redraws).");
+                list.CheckboxLabeled("Planet: The Chill stays unlit (no sea films) [now]", ref RM_BiomesSettings.worldChillUnlit,
+                    "On the world map, The Chill gets none of the pale shore film or the dark deep film that the other seas "
+                    + "get, so its black face reads darker than every other body of water and its islands have no ring.\n\n"
+                    + "Looks only. Default: on. Takes effect at once (the planet redraws).");
+                list.CheckboxLabeled("Planet: Twilight Sea glass [now]", ref RM_BiomesSettings.worldTwilightGlass,
+                    "On the world map, the whole Twilight Sea carries soft panes of coloured light, the stained-glass layer of "
+                    + "life just under its surface. The water's ripple shows through it.\n\nLooks only. Default: on. Takes "
+                    + "effect at once (the planet redraws).");
                 list.CheckboxLabeled("Planet: biome decals [now]", ref RM_BiomesSettings.worldBiomeDecals,
                     "On the world map, flat land carries two or three small drawn marks per tile (dunes, shrubs, stones... "
                     + "taken from each biome's own look), so a region reads at a glance when you zoom in. They fade out as "
