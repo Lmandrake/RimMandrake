@@ -1,0 +1,47 @@
+{
+ "ew4_rails_off": {
+  "build": "BUILD ok=True anchors=2 decks=4 blueprints=0 records=1 reason=-",
+  "deckart": "DECKART look=Scrapper jetty=False dir=1 strip=Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Rope_Strip pieces=root,mid,mid,tip angle=0 complete=True post=Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Rope_Post cable=RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Rope",
+  "shot": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_REDRAW_ROPE_BRIDGE_AS_ROPES_AND_SPARSE_SLATS.det\\Transient\\rope_bridge_look\\ew4_rails_off.png"
+ },
+ "ew4_rails_on": {
+  "build": "BUILD ok=True anchors=2 decks=4 blueprints=0 records=1 reason=-",
+  "rails": "RAILS on=True railed=4",
+  "deckart": "DECKART look=Scrapper jetty=False dir=1 strip=Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Rope_Strip pieces=root,mid,mid,tip angle=0 complete=True post=Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Rope_Post cable=RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Rope",
+  "shot": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_REDRAW_ROPE_BRIDGE_AS_ROPES_AND_SPARSE_SLATS.det\\Transient\\rope_bridge_look\\ew4_rails_on.png"
+ },
+ "ns4_rails_off": {
+  "build": "BUILD ok=True anchors=2 decks=4 blueprints=0 records=1 reason=-",
+  "deckart": "DECKART look=Scrapper jetty=False dir=0 strip=Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Rope_Strip pieces=root,mid,mid,tip angle=270 complete=True post=Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Rope_Post cable=RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Rope",
+  "shot": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_REDRAW_ROPE_BRIDGE_AS_ROPES_AND_SPARSE_SLATS.det\\Transient\\rope_bridge_look\\ns4_rails_off.png"
+ },
+ "ns4_rails_on": {
+  "build": "BUILD ok=True anchors=2 decks=4 blueprints=0 records=1 reason=-",
+  "rails": "RAILS on=True railed=4",
+  "deckart": "DECKART look=Scrapper jetty=False dir=0 strip=Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Rope_Strip pieces=root,mid,mid,tip angle=270 complete=True post=Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Rope_Post cable=RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Rope",
+  "shot": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_REDRAW_ROPE_BRIDGE_AS_ROPES_AND_SPARSE_SLATS.det\\Transient\\rope_bridge_look\\ns4_rails_on.png"
+ },
+ "ew1_rails_off": {
+  "build": "BUILD ok=True anchors=2 decks=1 blueprints=0 records=1 reason=-",
+  "deckart": "DECKART look=Scrapper jetty=False dir=1 strip=Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Rope_Strip pieces=solo angle=0 complete=True post=Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Rope_Post cable=RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Rope",
+  "shot": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_REDRAW_ROPE_BRIDGE_AS_ROPES_AND_SPARSE_SLATS.det\\Transient\\rope_bridge_look\\ew1_rails_off.png"
+ },
+ "_yard_default": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\Screenshots\\ropebridge_yard_1795680368.png",
+ "_walk": {
+  "on_deck": [
+   [
+    "ew4_rails_on",
+    "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_REDRAW_ROPE_BRIDGE_AS_ROPES_AND_SPARSE_SLATS.det\\Transient\\rope_bridge_look\\pawn_on_ew4_rails_on.png"
+   ],
+   [
+    "ns4_rails_off",
+    "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_REDRAW_ROPE_BRIDGE_AS_ROPES_AND_SPARSE_SLATS.det\\Transient\\rope_bridge_look\\pawn_on_ns4_rails_off.png"
+   ]
+  ]
+ },
+ "_verdict": {
+  "verdict": "PASS",
+  "faults": {},
+  "stations": 5
+ }
+}

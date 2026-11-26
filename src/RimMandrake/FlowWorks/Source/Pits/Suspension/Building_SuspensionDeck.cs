@@ -490,6 +490,10 @@ namespace RimMandrake.FlowWorks.Pits
 			{
 				return;   // a raised leaf's railing does not hang in the open gap
 			}
+			if (RM_DeckArt.PrintNetting(layer, this))
+			{
+				return;   // RIMMANDRAKE_REDRAW_ROPE_BRIDGE_AS_ROPES_AND_SPARSE_SLATS: a rope bridge's railing is rope netting
+			}
 			Vector3 center = Position.ToVector3Shifted();
 			center.y = def.Altitude;
 			for (int i = 0; i < 4; i++)

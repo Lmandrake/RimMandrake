@@ -59,6 +59,30 @@
       <li Class="RimMandrake.FlowWorks.Pits.RM_SuspensionExtension">
         <tier>Rope</tier>
       </li>
+      <!-- RIMMANDRAKE_REDRAW_ROPE_BRIDGE_AS_ROPES_AND_SPARSE_SLATS (his walk 2026-11-25, stations 48/49/70): side ropes with sparse
+           slats laid on them, hand-guide ropes on posts always, rope netting when railed; parts from art_source/RopeBridge/
+           rope_bridge_art.py. deckWidth = the anchors' rope lateral x 2 (75 px of 256 each side), so the ground ropes meet the
+           side ropes; the hand ropes flare out (postOut) into the V of his photo 12, so the netting shows from above on a
+           north-south bridge too; backstayOut lands the backstays on the side-rope line (0.71 x 0.413 = 0.293), tied to the bollard heads (backstayBack, backstayFootH); selftest_flowworks_rope_bridge.py keeps these numbers and the pictures in step. -->
+      <li Class="RimMandrake.FlowWorks.Pits.RM_DeckArtExtension">
+        <strip>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Rope_Strip</strip>
+        <post>Things/Building/FlowWorks/SuspensionBridge/RM_SuspensionDeck_Rope_Post</post>
+        <cable>RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Rope</cable>
+        <deckWidth>0.5859</deckWidth>
+        <postHeight>0.6</postHeight>
+        <postWidth>0.06</postWidth>
+        <postOut>0.12</postOut>
+        <postInset>0.12</postInset>
+        <cableThick>0.055</cableThick>
+        <sagLow>0.42</sagLow>
+        <hangerPitch>0.5</hangerPitch>
+        <hangerFactor>0.5</hangerFactor>
+        <backstayOut>0.71</backstayOut>
+        <backstayBack>0.2</backstayBack>
+        <backstayFootH>0.1</backstayFootH>
+        <netPitch>0.25</netPitch>
+        <netFactor>0.55</netFactor>
+      </li>
     </modExtensions>
   </ThingDef>
 

@@ -38,6 +38,16 @@ namespace RimMandrake.FlowWorks.Pits
 		public float sagLow = 0.22f;
 		public float hangerPitch = 0.5f;
 		public float hangerFactor = 0.45f;
+		/// <summary>Where a backstay lands behind its post, as a share of the post's distance out from the centre line.</summary>
+		public float backstayOut = 0.9f;
+		/// <summary>Where a backstay lands behind the anchor square's centre (cells), and how high (a bollard's head).</summary>
+		public float backstayBack = 0.42f;
+		public float backstayFootH = 0.04f;
+		/// <summary>RIMMANDRAKE_REDRAW_ROPE_BRIDGE_AS_ROPES_AND_SPARSE_SLATS: a railed square draws rope netting (diagonals this
+		/// far apart, cells along the run) between the side rope and the hand rope, in place of the railing picture. 0: none.</summary>
+		public float netPitch = 0f;
+		/// <summary>A netting rope's thickness, as a share of cableThick.</summary>
+		public float netFactor = 0.4f;
 	}
 
 	/// <summary>The pure geometry of the picked art (no game state): which piece a deck square draws, how it is turned, and where
@@ -86,6 +96,25 @@ namespace RimMandrake.FlowWorks.Pits
 				ts.Add(System.Math.Min(0.97, System.Math.Max(0.03, t)));
 			}
 			return ts;
+		}
+
+		/// <summary>The netting bays of deck square k (0-based from the root): pieces [s0, s1] of the run, in cells from the near
+		/// anchor's deck-facing edge, <paramref name="pitch"/> long, covering the square exactly (the last one shorter).</summary>
+		public static List<(double, double)> NetBays(int k, double pitch)
+		{
+			var bays = new List<(double, double)>();
+			if (pitch <= 0)
+			{
+				return bays;
+			}
+			double s = k;
+			while (s < k + 1 - 1e-6)
+			{
+				double e = System.Math.Min(k + 1, s + pitch);
+				bays.Add((s, e));
+				s = e;
+			}
+			return bays;
 		}
 
 		/// <summary>A jetty's cable landing points, in cells out from the root anchor's edge, for a jetty n squares long.</summary>
@@ -143,8 +172,10 @@ namespace RimMandrake.FlowWorks.Pits
 			{
 				return null;
 			}
-			ThingStyleDef s = own ?? RM_SuspensionLooks.StyleFor(DeckDefOf(r), RM_DrawbridgeArt.LookOf(r));
-			return s?.GetModExtension<RM_DeckArtExtension>();
+			ThingDef def = DeckDefOf(r);
+			ThingStyleDef s = own ?? RM_SuspensionLooks.StyleFor(def, RM_DrawbridgeArt.LookOf(r));
+			// a deck def with no looks (the rope bridge) carries its art on the def itself
+			return s?.GetModExtension<RM_DeckArtExtension>() ?? def?.GetModExtension<RM_DeckArtExtension>();
 		}
 
 		/// <summary>The deck indices of a record (a jetty: 1..length-1; a bridge: 1..length-2).</summary>
@@ -254,11 +285,11 @@ namespace RimMandrake.FlowWorks.Pits
 				Run(layer, Shade, p, 0f, p, H, x.postWidth, shadowY, true);
 			}
 			var runs = new List<(Vector3 p, float h, Vector3 q, float g, float w)>();
-			Vector3 back = c - f * 0.42f;
+			Vector3 back = c - f * x.backstayBack;
 			for (int s = 0; s < 2; s++)
 			{
 				float sg = s == 0 ? -1f : 1f;
-				runs.Add((feet[s], H, back + side * (off * 0.9f * sg), 0.04f, x.cableThick * 0.8f));   // backstay
+				runs.Add((feet[s], H, back + side * (off * x.backstayOut * sg), x.backstayFootH, x.cableThick * 0.8f));   // backstay
 			}
 			if (cables)
 			{
@@ -347,6 +378,72 @@ namespace RimMandrake.FlowWorks.Pits
 					Run(layer, cable, run.p, run.h, run.q, run.g, run.w, cableY, false);
 				}
 			}
+		}
+
+		/// <summary>RIMMANDRAKE_REDRAW_ROPE_BRIDGE_AS_ROPES_AND_SPARSE_SLATS: a railed square of a bridge whose art has netting
+		/// draws rope netting on its two sides, diagonals between the side rope (on the deck) and the hand rope above it, with
+		/// their shadows; the railing picture is not drawn. False when the bridge's art has no netting (draw the railing).</summary>
+		public static bool PrintNetting(SectionLayer layer, Thing railing)
+		{
+			Map map = railing.Map;
+			SuspensionBridgeRecord r = map?.GetComponent<RM_MapComponent_SuspensionBridges>()?.RecordAt(railing.Position);
+			if (r == null || r.jetty || !r.TryIndexOf(railing.Position, out int lane, out int i))
+			{
+				return false;
+			}
+			Building_SuspensionDeck deck = railing.Position.GetFirstThing<Building_SuspensionDeck>(map);
+			RM_DeckArtExtension x = For(r, deck?.StyleDef);
+			if (x == null || x.netPitch <= 0f)
+			{
+				return false;
+			}
+			Material cable = Mat(x.cable);
+			if (cable == null)
+			{
+				return true;
+			}
+			Vector3 a = r.dir.FacingCell.ToVector3();
+			Vector3 side = r.Side.ToVector3();
+			float across = (r.width - 1) * 0.5f;
+			float sw = across + x.deckWidth * 0.5f;
+			float off = sw + x.postOut;
+			int n = DeckCount(r);
+			float span = n + 2 * x.postInset;
+			// the near anchor's deck-facing edge on the bridge's centre line; square i spans s in [i-1, i] from it
+			Vector3 edge = r.Cell(0, 0).ToVector3Shifted() + side * across + a * 0.5f;
+			edge.y = 0f;
+			float w = x.cableThick * x.netFactor;
+			float shadowY = AltitudeLayer.Building.AltitudeFor() - Altitudes.AltInc;
+			float cableY = AltitudeLayer.PawnUnused.AltitudeFor();
+			var runs = new List<(Vector3 p, float h, Vector3 q, float g)>();
+			for (int sd = 0; sd < 2; sd++)
+			{
+				float sg = sd == 0 ? -1f : 1f;
+				if ((sd == 0 && lane != 0) || (sd == 1 && lane != r.width - 1))
+				{
+					continue;   // an inner lane edge has no side rope
+				}
+				foreach ((double s0, double s1) in RM_DeckArtMath.NetBays(i - FirstDeck(r), x.netPitch))
+				{
+					float h0 = (float)RM_DeckArtMath.CableHeight((s0 + x.postInset) / span, x.postHeight, x.sagLow);
+					float h1 = (float)RM_DeckArtMath.CableHeight((s1 + x.postInset) / span, x.postHeight, x.sagLow);
+					Vector3 p0 = edge + a * (float)s0 + side * (sw * sg);
+					Vector3 p1 = edge + a * (float)s1 + side * (sw * sg);
+					Vector3 t0 = edge + a * (float)s0 + side * (off * sg);
+					Vector3 t1 = edge + a * (float)s1 + side * (off * sg);
+					runs.Add((p0, HangerFootH, t1, h1));   // rising diagonal
+					runs.Add((t0, h0, p1, HangerFootH));   // falling diagonal
+				}
+			}
+			foreach (var run in runs)
+			{
+				Run(layer, Shade, run.p, run.h, run.q, run.g, w, shadowY, true);
+			}
+			foreach (var run in runs)
+			{
+				Run(layer, cable, run.p, run.h, run.q, run.g, w, cableY, false);
+			}
+			return true;
 		}
 
 		/// <summary>The post sprite's drawn width: its own aspect at the drawn height, held between 1.1 and 1.9 post widths.</summary>
