@@ -8,7 +8,7 @@ the bridge; fixed at 9dc47e435f). They were asked again at 2026-11-25 8:34 AM PS
 
 For each item below, the check holds when a testq done record for it, finished after SINCE, ran on a SteveDesktop game
 with no lane cause and at least one PASS or FAIL row. UNMEASURED, a lane cause, or no record yet is not measured.
-Reads the queue at $TESTQ_QUEUE (default D:\\ClaudeWork\\rimmandrake\\testq). Exit 0: every item measured; 1: not yet;
+Reads the queue at $TESTQ_QUEUE (default /mnt/d/ClaudeWork/rimmandrake/testq, which only Archmagi fills). Exit 0: every item measured; 1: not yet;
 2: the queue could not be read, or holds no record at all (could not look). Base 2026-11-25 8:40 AM PST: 0/7, exit 1.
 """
 import glob
