@@ -948,6 +948,15 @@ def _release_cli(args):
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
     cmd = argv[:1]
+    if "-h" in argv or "--help" in argv:    # a help ask writes nothing: `calibrate --help` once reset six rows
+        print(__doc__)
+        return 0
+    if cmd == ["calibrate"]:
+        flags = [a for i, a in enumerate(argv[1:], 1) if not (a in ("--no-run", "--model") or argv[i - 1] == "--model")]
+        if flags or (argv[-1:] == ["--model"]):
+            print("calibrate: unknown or incomplete argument %s; it takes --no-run and --model A,B. Nothing ran."
+                  % " ".join(flags or ["--model"]))
+            return 2
     if cmd in (["check"], ["submit"]) and len(argv) >= 2:
         verdict = unwrap(_load(argv[1]))
         given = _load(argv[argv.index("--given") + 1]) if "--given" in argv else None

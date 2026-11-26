@@ -221,6 +221,21 @@ def cli(root):
         json.dump(v, f)
     check("cli: check exits 0 on a good verdict and 1 on a malformed one",
           RC.main(["check", p]) == 0 and RC.main(["check", q]) == 1)
+    # `calibrate --help` once ran a full calibrate and reset six rows (2026-11-25): a help ask or an unknown flag
+    # must write nothing
+    ran, real = [], RC.calibrate
+    RC.calibrate = lambda **k: ran.append(k) or {"families": {}}
+    try:
+        rc_help = [RC.main(["calibrate", "--help"]), RC.main(["calibrate", "-h"]), RC.main(["--help"])]
+        rc_bogus = RC.main(["calibrate", "--bogus"])
+        check("cli: calibrate --help and -h print the usage, exit 0 and run no calibrate",
+              rc_help == [0, 0, 0] and not ran, (rc_help, ran))
+        check("cli: calibrate with an unknown flag exits 2 and runs no calibrate", rc_bogus == 2 and not ran,
+              (rc_bogus, ran))
+        RC.main(["calibrate", "--no-run"])
+        check("cli: calibrate --no-run still runs the calibrate", ran == [{"run_free": False, "model": ()}], ran)
+    finally:
+        RC.calibrate = real
 
 
 def release_cli(root):
