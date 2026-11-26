@@ -2129,9 +2129,13 @@ def toggle_superdeep_shooting(t):
     """SUPERDEEP_TARGET_VALIDATOR_1, ported from live_probes/fw_superdeep_target.py: a ranged hostile (x0+13) with one
     enemy on the D=4 pit floor (6 cells, nearer) and one on open ground (x0+22, 9 cells). jawa/attack_target_probe asks
     the game's own AttackTargetFinder.BestAttackTarget with JobGiver_AIFightEnemy's flags, so FlowWorks' validator runs.
-    shooting_rule_on: picks the open-ground enemy. shooting_rule_off: picks the nearer pit enemy (also the scene's
-    control: it can tell the two apart). shooting_rule_on_pit_only: the open enemy gone, rule ON picks nobody (the rule
-    forbids, not merely re-ranks). No ticks pass between the probes; the hostile and both enemies vanish at the end."""
+    shooting_rule_on: picks the open-ground enemy. Then the open enemy goes, so each later probe has ONE possible target:
+    shooting_rule_on_pit_only: rule ON picks nobody (the rule forbids, not merely re-ranks); shooting_rule_off: rule OFF
+    picks the pit enemy (the switch gives vanilla back; also the control that tells the two apart). With both enemies
+    alive rule OFF is no test: vanilla picks at weighted random among targets within 30 score points of the best
+    (AttackTargetFinder.GetAvailableShootingTargetsByScore), and 6 and 9 squares are near a coin flip (live FAIL testq
+    J20261113T071830Z-7b0808, RIMMANDRAKE_CHECK_SHOOTING_RULE_OFF_PICKS_FARTHER_PIT_FOE). No ticks pass between the
+    probes; the hostile and both enemies vanish at the end."""
     x0, z0 = _prep_plot(t, "G")
     pit = _pit_cells(x0, z0)
     _dig_run(t, pit, 4)
@@ -2158,17 +2162,18 @@ def toggle_superdeep_shooting(t):
             if t._guard():
                 _expect(_pick(r) == _num(b), "ON: picked %s, want the open-ground enemy %s (pit enemy %s)"
                         % (_pick(r), b, a))
-        with t.component("shooting_rule_off", toggle="superdeepShootingRuleEnabled"):
-            with _setting_in(t, S_FW, "superdeepShootingRuleEnabled", False):
-                r = probe("rule OFF")
-                if t._guard():
-                    _expect(_pick(r) == _num(a), "OFF: picked %s, want the nearer pit enemy %s" % (_pick(r), a))
+        _vanish_fixture(t, b)
+        b = None
         with t.component("shooting_rule_on_pit_only", toggle="superdeepShootingRuleEnabled"):
-            _vanish_fixture(t, b)
-            b = None
             r = probe("rule ON, pit enemy only")
             if t._guard():
                 _expect(_pick(r) is None, "ON with only the pit enemy left: picked %s, want nobody" % _pick(r))
+        with t.component("shooting_rule_off", toggle="superdeepShootingRuleEnabled"):
+            with _setting_in(t, S_FW, "superdeepShootingRuleEnabled", False):
+                r = probe("rule OFF, pit enemy only")
+                if t._guard():
+                    _expect(_pick(r) == _num(a), "OFF with only the pit enemy left: picked %s, want the pit enemy %s"
+                            % (_pick(r), a))
     finally:
         for p in (a, b, h):
             _vanish_fixture(t, p)

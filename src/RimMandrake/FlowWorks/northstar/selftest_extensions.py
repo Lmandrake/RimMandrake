@@ -523,7 +523,10 @@ def _proofs_1112_probes(EXT):
                 if rule and defect != "shoot_no_skip":
                     cands = [i for i in alive if i != pit_enemy] or ([pit_enemy] if defect == "shoot_rerank_only" and alive else [])
                 else:
-                    cands = alive
+                    # vanilla (AttackTargetFinder.GetAvailableShootingTargetsByScore): a weighted-random pick among every target
+                    # within 30 score points of the best, so 6 and 9 squares away are near a coin flip; the fake takes the
+                    # FARTHER one, the draw that failed live (testq J20261113T071830Z-7b0808, RIMMANDRAKE_CHECK_SHOOTING_RULE_OFF_PICKS_FARTHER_PIT_FOE)
+                    cands = sorted(alive, key=lambda i: i != open_enemy)
                 pick = cands[0] if cands else None
                 return {"success": True, "primaryVerbRanged": True, "picked": {"id": "Thing_" + pick} if pick else None}
             if tl == "jawa/map_fire" and p.get("action") == "start":
@@ -568,11 +571,13 @@ def _proofs_1112_probes(EXT):
         ("toggle_ladder_required", {"blind": "trap"}, {"ladder_required_on": "PASS", "ladder_required_off": "UNMEASURED"}),
         ("toggle_superdeep_shooting", {}, dict.fromkeys(("shooting_rule_on", "shooting_rule_off", "shooting_rule_on_pit_only"), "PASS")),
         ("toggle_superdeep_shooting", {"defect": "shoot_ignores_setting"},
-         {"shooting_rule_on": "PASS", "shooting_rule_off": "FAIL", "shooting_rule_on_pit_only": "UNMEASURED"}),
+         {"shooting_rule_on": "PASS", "shooting_rule_on_pit_only": "PASS", "shooting_rule_off": "FAIL"}),
         ("toggle_superdeep_shooting", {"defect": "shoot_rerank_only"},
-         {"shooting_rule_on": "PASS", "shooting_rule_off": "PASS", "shooting_rule_on_pit_only": "FAIL"}),
+         {"shooting_rule_on": "PASS", "shooting_rule_on_pit_only": "FAIL", "shooting_rule_off": "UNMEASURED"}),
+        # a rule that never skips can still pass the two-enemy ON row (vanilla may draw the open enemy); the one-target
+        # pit-only row is what decides it
         ("toggle_superdeep_shooting", {"defect": "shoot_no_skip"},
-         {"shooting_rule_on": "FAIL", "shooting_rule_off": "UNMEASURED", "shooting_rule_on_pit_only": "UNMEASURED"}),
+         {"shooting_rule_on": "PASS", "shooting_rule_on_pit_only": "FAIL", "shooting_rule_off": "UNMEASURED"}),
         ("toggle_superdeep_shooting", {"blind": "probe"},
          dict.fromkeys(("shooting_rule_on", "shooting_rule_off", "shooting_rule_on_pit_only"), "UNMEASURED")),
         ("toggle_liquid_ignition", {}, {"liquid_ignition_on": "PASS", "liquid_ignition_off": "PASS"}),
