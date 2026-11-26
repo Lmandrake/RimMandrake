@@ -1,0 +1,10 @@
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs
+@@ -812,7 +812,6 @@
+             s.restore = () =>
+             {
+                 d.modExtensions.Remove(ext);
+-                prev?.Invoke();
+             };
+         }
+ 

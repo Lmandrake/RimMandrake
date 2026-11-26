@@ -1,0 +1,745 @@
+[
+ {
+  "id": "PF_KERNEL_FALLOFF_HALVED",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+  "old": "return 1f - Clamp01(dist / radius);",
+  "new": "return 1f - Clamp01(dist / (radius * 2f));",
+  "bars": [
+   "inv_kernel",
+   "heavier_flies_less"
+  ],
+  "tests": [
+   "T_KERNEL",
+   "T_FUZZ"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_KERNEL_SANDBAG_REST_KEPT",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+  "old": "if (travelled > 0 && grid.At(px, pz) == KbCell.Partial)",
+  "new": "if (false && travelled > 0 && grid.At(px, pz) == KbCell.Partial)",
+  "bars": [
+   "inv_kernel",
+   "people_thrown_three_cells",
+   "no_impact_without_contact"
+  ],
+  "tests": [
+   "T_KERNEL",
+   "T_FUZZ"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_KERNEL_REBOUND_ROUNDS_UP",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+  "old": "(int)Math.Floor(cellsLeft * k / 100f + 1e-4f)",
+  "new": "(int)Math.Ceiling(cellsLeft * k / 100f - 1e-4f)",
+  "bars": [
+   "inv_kernel",
+   "rebound_goes_shorter"
+  ],
+  "tests": [
+   "T_KERNEL",
+   "T_FUZZ"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_KERNEL_BRUISE_BY_OWN_MASS",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+  "old": "s.impactFactor * otherMass / (ownMass + otherMass)",
+  "new": "s.impactFactor * ownMass / (ownMass + otherMass)",
+  "bars": [
+   "inv_kernel",
+   "collision_bruise_by_size"
+  ],
+  "tests": [
+   "T_KERNEL",
+   "T_FUZZ"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_KERNEL_CORPSE_BY_CREATURE_LIMIT",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs",
+  "old": "if (kind == KbKind.Pawn && mass > s.creatureMassLimit)",
+  "new": "if (kind != KbKind.Item && mass > s.creatureMassLimit)",
+  "bars": [
+   "inv_kernel",
+   "the_spared"
+  ],
+  "tests": [
+   "T_KERNEL",
+   "T_FUZZ"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_GATE_NEVER_SEES_RELEASE",
+  "file": "src/RimMandrake/ExplosiveKnockback/proof_build_gate.py",
+  "old": "return \"Type not found\" in text and \"RM_KnockbackProof\" in text",
+  "new": "return \"Type not found\" in text and \"RM_KnockbackProofX\" in text",
+  "bars": [
+   "inv_proof_scenes"
+  ],
+  "tests": [
+   "T_SCRIPT",
+   "T_PROOFGATE",
+   "T_RESTORE",
+   "T_STAGE3_SCENES",
+   "T_JOURNAL_JOLT_OFFLINE"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_GATE_EXITS_ZERO",
+  "file": "src/RimMandrake/ExplosiveKnockback/proof_build_gate.py",
+  "old": "EXIT = 3",
+  "new": "EXIT = 0",
+  "bars": [
+   "inv_proof_scenes"
+  ],
+  "tests": [
+   "T_SCRIPT",
+   "T_PROOFGATE",
+   "T_RESTORE",
+   "T_STAGE3_SCENES",
+   "T_JOURNAL_JOLT_OFFLINE"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_PROOF_ADDEXT_DROPS_CHAIN",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+  "old": "                d.modExtensions.Remove(ext);\n                prev?.Invoke();",
+  "new": "                d.modExtensions.Remove(ext);",
+  "bars": [
+   "inv_proof_scenes"
+  ],
+  "tests": [
+   "T_SCRIPT",
+   "T_PROOFGATE",
+   "T_RESTORE",
+   "T_STAGE3_SCENES",
+   "T_JOURNAL_JOLT_OFFLINE"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_PROOF_RUNRESTORE_NOOP",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+  "old": "            s.restore = null;\n            r?.Invoke();",
+  "new": "            s.restore = null;",
+  "bars": [
+   "inv_proof_scenes"
+  ],
+  "tests": [
+   "T_SCRIPT",
+   "T_PROOFGATE",
+   "T_RESTORE",
+   "T_STAGE3_SCENES",
+   "T_JOURNAL_JOLT_OFFLINE"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_PROOF_SCENE_NAME_DROPPED",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+  "old": "\"calibration\", \"wall_stop\", ",
+  "new": "\"wall_stop\", ",
+  "bars": [
+   "inv_proof_scenes",
+   "people_thrown_three_cells"
+  ],
+  "tests": [
+   "T_SCRIPT",
+   "T_PROOFGATE",
+   "T_RESTORE",
+   "T_STAGE3_SCENES",
+   "T_JOURNAL_JOLT_OFFLINE"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_PROOF_WANTCELLS_WILD_ONE",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+  "old": "float wild = RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild;",
+  "new": "float wild = 1f;",
+  "bars": [
+   "inv_proof_scenes",
+   "goods_arc_spin_rebound"
+  ],
+  "tests": [
+   "T_SCRIPT",
+   "T_PROOFGATE",
+   "T_RESTORE",
+   "T_STAGE3_SCENES",
+   "T_JOURNAL_JOLT_OFFLINE"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_PROOF_PLACEFAULT_IGNORED",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
+  "old": "if (why == null && s.placeFault != null)",
+  "new": "if (false && why == null && s.placeFault != null)",
+  "bars": [
+   "inv_proof_scenes",
+   "every_good_moves"
+  ],
+  "tests": [
+   "T_SCRIPT",
+   "T_PROOFGATE",
+   "T_RESTORE",
+   "T_STAGE3_SCENES",
+   "T_JOURNAL_JOLT_OFFLINE"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_MOD_PITS_ALWAYS_ON",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMod.cs",
+  "old": "intoPits = throwIntoPits,",
+  "new": "intoPits = true,",
+  "bars": [
+   "inv_proof_scenes",
+   "settings_scale_and_switch",
+   "inv_settings"
+  ],
+  "tests": [
+   "T_SETTINGS_SWEEP_OFFLINE",
+   "T_SETTINGS_SCREEN",
+   "T_SCRIPT",
+   "T_STAGE3_SCENES"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_RUNNER_GATE_REMOVED",
+  "file": "src/RimMandrake/ExplosiveKnockback/knockback_runner.py",
+  "old": "        require_proof_build(names)",
+  "new": "        pass",
+  "bars": [
+   "inv_proof_scenes"
+  ],
+  "tests": [
+   "T_SCRIPT",
+   "T_PROOFGATE",
+   "T_RESTORE",
+   "T_STAGE3_SCENES",
+   "T_JOURNAL_JOLT_OFFLINE"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_RUNNER_NO_SETTINGS_RESTORE",
+  "file": "src/RimMandrake/ExplosiveKnockback/knockback_runner.py",
+  "old": "            restore_settings(b, snap)",
+  "new": "            pass",
+  "bars": [
+   "inv_proof_scenes"
+  ],
+  "tests": [
+   "T_SCRIPT",
+   "T_PROOFGATE",
+   "T_RESTORE",
+   "T_STAGE3_SCENES",
+   "T_JOURNAL_JOLT_OFFLINE"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_PLAN_GOODS_PLAIN_KERNEL",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs",
+  "old": "RM_KnockbackMath.WildCells(p.dist, b.radius, b.force, f.mass, s, q.wild);",
+  "new": "RM_KnockbackMath.WildCells(p.dist, b.radius, b.force, f.mass, s, 1f);",
+  "bars": [
+   "goods_arc_spin_rebound",
+   "inv_goods_fly"
+  ],
+  "tests": [
+   "T_KERNEL",
+   "T_JOURNAL_JOLT_OFFLINE",
+   "T_SETTINGS_SWEEP_OFFLINE"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_PLAN_COLLIDE_SWAPPED",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs",
+  "old": "res.impact = RM_KnockbackMath.CollisionBruise(ownMass, otherMass, s);",
+  "new": "res.impact = RM_KnockbackMath.CollisionBruise(otherMass, ownMass, s);",
+  "bars": [
+   "collision_bruise_by_size",
+   "pawn_hits_pawn_stops"
+  ],
+  "tests": [
+   "T_KERNEL",
+   "T_SETTINGS_SWEEP_OFFLINE"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_LANDING_BRUISE_SWAPPED",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_PawnFlyerPatches.cs",
+  "old": "o.TakeDamage(new DamageInfo(DamageDefOf.Blunt, otherAmount));",
+  "new": "o.TakeDamage(new DamageInfo(DamageDefOf.Blunt, amount));",
+  "bars": [
+   "collision_bruise_by_size"
+  ],
+  "tests": [
+   "T_LANDING_JOB_SEARCH_OFFLINE",
+   "T_KERNEL",
+   "T_CARRY_STATIC"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_PATCH_FLAME_FULL_FORCE",
+  "file": "src/RimMandrake/ExplosiveKnockback/Patches/RM_Knockback_DamageDefs.xml",
+  "old": "<force>0.5</force>",
+  "new": "<force>1.0</force>",
+  "bars": [
+   "every_harmful_blast_throws",
+   "inv_which_blasts"
+  ],
+  "tests": [
+   "T_LINT",
+   "T_LINT_PLANTED"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_HOOK_BLAST_POWER_DROPPED",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_Patch_DamageWorker_ExplosionKnockback.cs",
+  "old": "                c.force *= c.damageRatio;",
+  "new": "                // c.force *= c.damageRatio;",
+  "bars": [
+   "heavier_flies_less",
+   "inv_blast_power_damage"
+  ],
+  "tests": [
+   "T_ONLY_EXPLOSIONS_STATIC",
+   "T_KERNEL",
+   "T_SETTINGS_SWEEP_OFFLINE"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_SHOW_SCAR_OLD_NAME",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackShow.cs",
+  "old": "return OldScarDefName(kind, sizeClass) + \"Wide\";",
+  "new": "return OldScarDefName(kind, sizeClass);",
+  "bars": [
+   "blast_show_crater_scar"
+  ],
+  "tests": [
+   "T_BLAST_SHOW_OFFLINE",
+   "T_SETTINGS_SWEEP_SHOW"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_SHOW_OLDNAME_MAPS_WRONG",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackShow.cs",
+  "old": "string renamed = __result + \"Wide\";",
+  "new": "string renamed = __result + \"_Wide\";",
+  "bars": [
+   "blast_show_crater_scar"
+  ],
+  "tests": [
+   "T_BLAST_SHOW_OFFLINE",
+   "T_SETTINGS_SWEEP_SHOW"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_SCARS_DEF_ENDS_IN_DIGIT",
+  "file": "src/RimMandrake/ExplosiveKnockback/Defs/ThingDefs/RM_KnockbackBlast_Scars.xml",
+  "old": "<defName>RM_KnockbackBlastCrater_10Wide</defName>",
+  "new": "<defName>RM_KnockbackBlastCrater_10</defName>",
+  "bars": [
+   "blast_show_crater_scar"
+  ],
+  "tests": [
+   "T_BLAST_SHOW_OFFLINE",
+   "T_LINT"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_SCARS_RAIN_NEVER_WASHES",
+  "file": "src/RimMandrake/ExplosiveKnockback/Defs/ThingDefs/RM_KnockbackBlast_Scars.xml",
+  "old": "<rainWashes>true</rainWashes>",
+  "new": "<rainWashes>false</rainWashes>",
+  "bars": [
+   "blast_show_crater_scar"
+  ],
+  "tests": [
+   "T_BLAST_SHOW_OFFLINE",
+   "T_LINT"
+  ],
+  "occurrences": 12
+ },
+ {
+  "id": "PF_SCENE_BLAST_SHOW_L91_EQEQ",
+  "file": "src/RimMandrake/ExplosiveKnockback/proof/scene_blast_show.py",
+  "old": "    exposure=c.state(\"he_soil_x\", \"positionInt\") == \"gone\",",
+  "new": "    exposure=c.state(\"he_soil_x\", \"positionInt\") != \"gone\",",
+  "bars": [
+   "blast_show_fire_and_flash",
+   "blast_show_crater_scar"
+  ],
+  "tests": [
+   "T_STAGE3_SCENES",
+   "T_SCRIPT"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_SCENE_BLAST_SHOW_L161_GTEQ",
+  "file": "src/RimMandrake/ExplosiveKnockback/proof/scene_blast_show.py",
+  "old": "        shook = t0 is not None and t1 is not None and t1 >= 0 and t1 != t0",
+  "new": "        shook = t0 is not None and t1 is not None and t1 > 0 and t1 != t0",
+  "bars": [
+   "blast_show_fire_and_flash",
+   "blast_show_crater_scar"
+  ],
+  "tests": [
+   "T_STAGE3_SCENES",
+   "T_SCRIPT"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_SCENE_GAS_CHAIN_PAWN_ON_COVER_L96_EQEQ",
+  "file": "src/RimMandrake/ExplosiveKnockback/proof/scene_gas_chain_pawn_on_cover.py",
+  "old": "    exposure=c.state(\"cover\", \"positionInt\") == \"ok\",          # the cover really stood under the colonist",
+  "new": "    exposure=c.state(\"cover\", \"positionInt\") != \"ok\",          # the cover really stood under the colonist",
+  "bars": [
+   "gas_shoves_pawn_on_pit_cover"
+  ],
+  "tests": [
+   "T_STAGE3_SCENES",
+   "T_SCRIPT"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_SCENE_GAS_CHAIN_PAWN_ON_COVER_L149_GTEQ",
+  "file": "src/RimMandrake/ExplosiveKnockback/proof/scene_gas_chain_pawn_on_cover.py",
+  "old": "            if isinstance(r.get(\"tick\"), (int, float)) and r[\"tick\"] >= since:",
+  "new": "            if isinstance(r.get(\"tick\"), (int, float)) and r[\"tick\"] > since:",
+  "bars": [
+   "gas_shoves_pawn_on_pit_cover"
+  ],
+  "tests": [
+   "T_STAGE3_SCENES",
+   "T_SCRIPT"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_SCENE_LOOKUP_SOURCES_L97_EQEQ",
+  "file": "src/RimMandrake/ExplosiveKnockback/proof/scene_lookup_sources.py",
+  "old": "    lines = list(v.v) if v.state == \"ok\" and isinstance(v.v, (list, tuple)) else []",
+  "new": "    lines = list(v.v) if v.state != \"ok\" and isinstance(v.v, (list, tuple)) else []",
+  "bars": [
+   "per_weapon_tuning"
+  ],
+  "tests": [
+   "T_STAGE3_SCENES",
+   "T_SCRIPT"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_SCENE_LOOKUP_SOURCES_L62_AND",
+  "file": "src/RimMandrake/ExplosiveKnockback/proof/scene_lookup_sources.py",
+  "old": "    if strict and (r.get(\"success\") is not True or str(r.get(\"valueAfter\")) != str(value)):",
+  "new": "    if strict or (r.get(\"success\") is not True or str(r.get(\"valueAfter\")) != str(value)):",
+  "bars": [
+   "per_weapon_tuning"
+  ],
+  "tests": [
+   "T_STAGE3_SCENES",
+   "T_SCRIPT"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_SCENE_PAWN_ARC_BRUISE_SIZES_L98_EQEQ",
+  "file": "src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_bruise_sizes.py",
+  "old": "    lines = list(v.v) if v.state == \"ok\" and isinstance(v.v, (list, tuple)) else []",
+  "new": "    lines = list(v.v) if v.state != \"ok\" and isinstance(v.v, (list, tuple)) else []",
+  "bars": [
+   "collision_bruise_by_size"
+  ],
+  "tests": [
+   "T_STAGE3_SCENES",
+   "T_SCRIPT"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_SCENE_PAWN_ARC_BRUISE_SIZES_L173_GTEQ",
+  "file": "src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_bruise_sizes.py",
+  "old": "    mine = [x for x in (recs or []) if isinstance(x.get(\"tick\"), (int, float)) and x[\"tick\"] >= (r[\"t0\"] or 0)",
+  "new": "    mine = [x for x in (recs or []) if isinstance(x.get(\"tick\"), (int, float)) and x[\"tick\"] > (r[\"t0\"] or 0)",
+  "bars": [
+   "collision_bruise_by_size"
+  ],
+  "tests": [
+   "T_STAGE3_SCENES",
+   "T_SCRIPT"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_SCENE_PAWN_ARC_CARRIED_THING_L109_EQEQ",
+  "file": "src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_carried_thing.py",
+  "old": "    lines = list(v.v) if v.state == \"ok\" and isinstance(v.v, (list, tuple)) else []",
+  "new": "    lines = list(v.v) if v.state != \"ok\" and isinstance(v.v, (list, tuple)) else []",
+  "bars": [
+   "carried_thing_own_arc"
+  ],
+  "tests": [
+   "T_STAGE3_SCENES",
+   "T_SCRIPT"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_SCENE_PAWN_ARC_CARRIED_THING_L142_GTEQ",
+  "file": "src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_carried_thing.py",
+  "old": "            if isinstance(r.get(\"tick\"), (int, float)) and r[\"tick\"] >= since:",
+  "new": "            if isinstance(r.get(\"tick\"), (int, float)) and r[\"tick\"] > since:",
+  "bars": [
+   "carried_thing_own_arc"
+  ],
+  "tests": [
+   "T_STAGE3_SCENES",
+   "T_SCRIPT"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_SCENE_PAWN_ARC_SANDBAG_NO_CONT_L74_EQEQ",
+  "file": "src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_sandbag_no_contact.py",
+  "old": "    exposure=c.state(\"bag_near\", \"positionInt\") == \"ok\",       # the cover really stood in the line",
+  "new": "    exposure=c.state(\"bag_near\", \"positionInt\") != \"ok\",       # the cover really stood in the line",
+  "bars": [
+   "no_impact_without_contact"
+  ],
+  "tests": [
+   "T_STAGE3_SCENES",
+   "T_SCRIPT"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_SCENE_PAWN_ARC_SANDBAG_NO_CONT_L165_GTEQ",
+  "file": "src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_sandbag_no_contact.py",
+  "old": "    mine = [x for x in (recs or []) if isinstance(x.get(\"tick\"), (int, float)) and x[\"tick\"] >= (r[\"t0\"] or 0)",
+  "new": "    mine = [x for x in (recs or []) if isinstance(x.get(\"tick\"), (int, float)) and x[\"tick\"] > (r[\"t0\"] or 0)",
+  "bars": [
+   "no_impact_without_contact"
+  ],
+  "tests": [
+   "T_STAGE3_SCENES",
+   "T_SCRIPT"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_SCENE_PAWN_LAND_ON_PAWN_SIZES_L84_EQEQ",
+  "file": "src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_land_on_pawn_sizes.py",
+  "old": "    lines = list(v.v) if v.state == \"ok\" and isinstance(v.v, (list, tuple)) else []",
+  "new": "    lines = list(v.v) if v.state != \"ok\" and isinstance(v.v, (list, tuple)) else []",
+  "bars": [
+   "collision_bruise_by_size"
+  ],
+  "tests": [
+   "T_STAGE3_SCENES",
+   "T_SCRIPT"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_SCENE_PAWN_LAND_ON_PAWN_SIZES_L53_AND",
+  "file": "src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_land_on_pawn_sizes.py",
+  "old": "LEAD = 2                         # ticks between the walkers' order and the blasts",
+  "new": "LEAD = 2                         # ticks between the walkers' order or the blasts",
+  "bars": [
+   "collision_bruise_by_size"
+  ],
+  "tests": [
+   "T_STAGE3_SCENES",
+   "T_SCRIPT"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_SCENE_SETTINGS_SWEEP_SHOW_SWIT_L108_EQEQ",
+  "file": "src/RimMandrake/ExplosiveKnockback/proof/scene_settings_sweep_show_switches.py",
+  "old": "    exposure=c.state(\"all_off_x\", \"positionInt\") == \"gone\",",
+  "new": "    exposure=c.state(\"all_off_x\", \"positionInt\") != \"gone\",",
+  "bars": [
+   "blast_show_switches_off_clean"
+  ],
+  "tests": [
+   "T_STAGE3_SCENES",
+   "T_SCRIPT"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_SCENE_SETTINGS_SWEEP_SHOW_SWIT_L228_GTEQ",
+  "file": "src/RimMandrake/ExplosiveKnockback/proof/scene_settings_sweep_show_switches.py",
+  "old": "    mine = [r for r in recs if str(r.get(\"thing\", \"\")).endswith(pid) and int(r.get(\"tick\", -1)) >= after_tick]",
+  "new": "    mine = [r for r in recs if str(r.get(\"thing\", \"\")).endswith(pid) and int(r.get(\"tick\", -1)) > after_tick]",
+  "bars": [
+   "blast_show_switches_off_clean"
+  ],
+  "tests": [
+   "T_STAGE3_SCENES",
+   "T_SCRIPT"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_SCENE_STOREROOM_MORTAR_REBOUND_L108_EQEQ",
+  "file": "src/RimMandrake/ExplosiveKnockback/proof/scene_storeroom_mortar_rebound_legs.py",
+  "old": "    exposure=c.state(\"wall_narrow[0]\", \"positionInt\") == \"ok\",   # the storeroom really stood",
+  "new": "    exposure=c.state(\"wall_narrow[0]\", \"positionInt\") != \"ok\",   # the storeroom really stood",
+  "bars": [
+   "rebound_goes_shorter"
+  ],
+  "tests": [
+   "T_STAGE3_SCENES",
+   "T_SCRIPT"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_SCENE_STOREROOM_MORTAR_REBOUND_L198_GTEQ",
+  "file": "src/RimMandrake/ExplosiveKnockback/proof/scene_storeroom_mortar_rebound_legs.py",
+  "old": "    mine = [r for r in (recs or []) if isinstance(r.get(\"tick\"), (int, float)) and r[\"tick\"] >= (hp.tick or 0)",
+  "new": "    mine = [r for r in (recs or []) if isinstance(r.get(\"tick\"), (int, float)) and r[\"tick\"] > (hp.tick or 0)",
+  "bars": [
+   "rebound_goes_shorter"
+  ],
+  "tests": [
+   "T_STAGE3_SCENES",
+   "T_SCRIPT"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_SCENE_STOREROOM_PIT_L42_EQEQ",
+  "file": "src/RimMandrake/ExplosiveKnockback/proof/scene_storeroom_pit.py",
+  "old": "    exposure=c.state(\"bomb\", \"positionInt\") == \"gone\",",
+  "new": "    exposure=c.state(\"bomb\", \"positionInt\") != \"gone\",",
+  "bars": [
+   "thrown_into_pit_falls"
+  ],
+  "tests": [
+   "T_STAGE3_SCENES",
+   "T_SCRIPT"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_SCENE_STOREROOM_PIT_L26_AND",
+  "file": "src/RimMandrake/ExplosiveKnockback/proof/scene_storeroom_pit.py",
+  "old": "GAME, SAVE = \"ArchSmall\", \"EK_SITTING_STATION1_STOREROOM_PIT_20261112\"   # the fixture is on ArchBig and ArchSmall",
+  "new": "GAME, SAVE = \"ArchSmall\", \"EK_SITTING_STATION1_STOREROOM_PIT_20261112\"   # the fixture is on ArchBig or ArchSmall",
+  "bars": [
+   "thrown_into_pit_falls"
+  ],
+  "tests": [
+   "T_STAGE3_SCENES",
+   "T_SCRIPT"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_SELFTEST_BLAST_SHOW_L190_EQEQ",
+  "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_blast_show.py",
+  "old": "    scars, sbad = 0, ([] if kw == SCAR_WIDTHS else [\"kernel widths %s, defs named for %s\" % (kw, SCAR_WIDTHS)])",
+  "new": "    scars, sbad = 0, ([] if kw != SCAR_WIDTHS else [\"kernel widths %s, defs named for %s\" % (kw, SCAR_WIDTHS)])",
+  "bars": [
+   "blast_show_crater_scar"
+  ],
+  "tests": [
+   "T_BLAST_SHOW_OFFLINE"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_SELFTEST_BLAST_SHOW_L101_AND",
+  "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_blast_show.py",
+  "old": "        used = paths + [x.text or \"\" for x in el.iter() if x.tag.startswith(\"_\") and x.tag.endswith(\"Tex\")]",
+  "new": "        used = paths + [x.text or \"\" for x in el.iter() if x.tag.startswith(\"_\") or x.tag.endswith(\"Tex\")]",
+  "bars": [
+   "blast_show_crater_scar"
+  ],
+  "tests": [
+   "T_BLAST_SHOW_OFFLINE"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_SELFTEST_PROOFGATE_L57_EQEQ",
+  "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py",
+  "old": "        if name == \"#Strings\":",
+  "new": "        if name != \"#Strings\":",
+  "bars": [
+   "inv_proof_scenes"
+  ],
+  "tests": [
+   "T_PROOFGATE"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_SELFTEST_PROOFGATE_L36_AND",
+  "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py",
+  "old": "               \"RM_KnockbackScenes\", \"RMTestAttribute\"]   # the jawa/run_scenes suite and its attribute (RIMMANDRAKE_BUILD_SHARED_SCENE_RUNNER_FIRST_SLICE)",
+  "new": "               \"RM_KnockbackScenes\", \"RMTestAttribute\"]   # the jawa/run_scenes suite or its attribute (RIMMANDRAKE_BUILD_SHARED_SCENE_RUNNER_FIRST_SLICE)",
+  "bars": [
+   "inv_proof_scenes"
+  ],
+  "tests": [
+   "T_PROOFGATE"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_SELFTEST_RESTORE_L57_EQEQ",
+  "file": "src/RimMandrake/Utils/selftest_proof_restore_check.py",
+  "old": "      any(h[\"kind\"] == \"unrestored-on-throw\" and \"kineticStrength\" in h[\"target\"] for h in ka_pre), ka_pre)",
+  "new": "      any(h[\"kind\"] != \"unrestored-on-throw\" and \"kineticStrength\" in h[\"target\"] for h in ka_pre), ka_pre)",
+  "bars": [
+   "inv_proof_scenes"
+  ],
+  "tests": [
+   "T_RESTORE"
+  ],
+  "occurrences": 1
+ },
+ {
+  "id": "PF_SELFTEST_RESTORE_L55_GTEQ",
+  "file": "src/RimMandrake/Utils/selftest_proof_restore_check.py",
+  "old": "check(\"KineticArms pre-fix: pokes flagged (>= 5)\", len(ka_pre) >= 5, [h[\"line\"] for h in ka_pre])",
+  "new": "check(\"KineticArms pre-fix: pokes flagged (>= 5)\", len(ka_pre) > 5, [h[\"line\"] for h in ka_pre])",
+  "bars": [
+   "inv_proof_scenes"
+  ],
+  "tests": [
+   "T_RESTORE"
+  ],
+  "occurrences": 1
+ }
+]

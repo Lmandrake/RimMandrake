@@ -51,6 +51,19 @@
   "rc": 1,
   "test_blob": "16cdc6f284334f9128068c3639c5402bea7c131a"
  },
+ "T_JOURNAL_JOLT_OFFLINE": {
+  "at": "2026-11-26T04:04:11Z",
+  "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_journal_jolt.py",
+  "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_journal_jolt.py",
+  "last": "explosive knockback journal and jolt: FAIL (1 faults, 21/23 planted breaks caught)",
+  "patch": "--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs\n@@ -976,7 +976,7 @@\n             Thing t = s.things[key];\n             float mass = t.GetStatValue(StatDefOf.Mass) * t.stackCount;\n             float dist = (s.starts[key] - s.o).LengthHorizontal;\n-            float wild = RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild;\n+            float wild = 1f;\n             int cells = RM_KnockbackVerdicts.GoodCells(dist, r, mass, k, wild);\n             // RIMMANDRAKE_HUNT_KNOCKBACK_GOOD_UNMOVED_LONG_BATCH_THREE_SIGHTINGS: a long batch once planned 0 cells here; an INVALID\n             // line prints these inputs (WantWhy) so the next sighting names the input that went to 0\n",
+  "patch_files": [
+   "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs"
+  ],
+  "patch_sha": "e9f82a1a5f6f40c6",
+  "rc": 1,
+  "test_blob": "b23dca440a01e1764a18510a948baa4f08d12c34"
+ },
  "T_KERNEL": {
   "at": "2026-11-25T05:49:33Z",
   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
@@ -130,17 +143,17 @@
   "test_blob": "7fba2721ca1cdbd40279fb828bf359dcfbe810a0"
  },
  "T_PROOFGATE": {
-  "at": "2026-11-25T14:11:12Z",
+  "at": "2026-11-26T04:04:09Z",
   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py",
   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py",
-  "last": "FAIL D1 no Build case for wall_stop",
-  "patch": "diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs\nindex 3dfbba7a32..bb86af6398 100644\n--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs\n@@ -969,7 +969,7 @@ namespace RimMandrake.ExplosiveKnockback\n                     };\n                     return null;\n \n-                case \"wall_stop\":\n+                case \"wall_stopx\":\n                     Colonist(s, \"p\", O(s, 1, 0));\n                     Build(\"Wall\", O(s, 3, 0), \"BlocksGranite\");\n                     Blast(s.o, 2.9f);\n",
+  "last": "FAIL C1 RM_KnockbackProof.cs:811 captures s.restore as prev and never invokes it",
+  "patch": "--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs\n@@ -812,7 +812,6 @@\n             s.restore = () =>\n             {\n                 d.modExtensions.Remove(ext);\n-                prev?.Invoke();\n             };\n         }\n \n",
   "patch_files": [
    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs"
   ],
-  "patch_sha": "598e7eaa0a9f11d7",
+  "patch_sha": "6fe4fc77a597eb61",
   "rc": 1,
-  "test_blob": "f77fa2f2ce6bc5036310c6727d28080f66491f68"
+  "test_blob": "26b92d409de99483c2ba1ea7c5dd23de45b9addb"
  },
  "T_RESTORE": {
   "at": "2026-11-26T02:48:40Z",

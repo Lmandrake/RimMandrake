@@ -1,0 +1,38 @@
+{
+ "faults": [
+  {
+   "id": "RIMMANDRAKE_REPAIR_KNOCKBACK_JOLT_CHECK_LOCAL_WILD",
+   "class": "Problem",
+   "bar": "goods_arc_spin_rebound",
+   "criterion": "the goods-flight scenes' oracle (WantCells) uses the real wild factor; T_JOURNAL_JOLT_OFFLINE guards it",
+   "evidence": [
+    "lane2/reruns.jsonl T_JOURNAL_JOLT_OFFLINE FAIL (1 faults): a proof goods plan passes 'wild', not GoodsThrowWild",
+    "RM_KnockbackProof.cs:979 float wild = RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild; (bedd128cf7): behaviour unchanged",
+    "lane2/fixes.jsonl"
+   ],
+   "would_pass": "the check reads the value the call receives, not the text at the call",
+   "smallest_fix": "selftest_explosiveknockback_journal_jolt.py: follow a local whose last declaration is GoodsThrowWild; plants for the local as 1f and reassigned",
+   "verdict_on_criterion": "the mod meets it; the check was wrong (class HARNESS)",
+   "status": "FIXED c31fefefd0b661785aaf8bd8f8482272321bf248",
+   "against": "check",
+   "miss_of": 0
+  },
+  {
+   "id": "RIMMANDRAKE_SEE_KNOCKBACK_SCENE_RESTORE_DROP_RUNNER_GATE",
+   "class": "Problem",
+   "bar": "inv_proof_scenes",
+   "criterion": "the live scenes and the runner that drives them: a scene leaves no def or setting changed, the runner refuses a release DLL",
+   "evidence": [
+    "lane2/planted_results.jsonl: PF_PROOF_ADDEXT_DROPS_CHAIN, PF_PROOF_RUNRESTORE_NOOP, PF_RUNNER_GATE_REMOVED, PF_PROOF_PLACEFAULT_IGNORED survived T_SCRIPT, T_PROOFGATE, T_RESTORE, T_STAGE3_SCENES",
+    "lane2/planted_results_after_fix.jsonl: all 7 proof plants caught",
+    "lane2/fixes.jsonl"
+   ],
+   "would_pass": "a decider of inv_proof_scenes goes red on each of the four plants",
+   "smallest_fix": "selftest_explosiveknockback_proofgate.py: C1 every captured s.restore invoked again and RunRestore runs what it takes; R2 the runner gates on Names before the first Stage; S1 Stage turns placeFault into INVALID",
+   "verdict_on_criterion": "the mod meets it (no leak found by lane 1 or by the new C1); the deciders could not see a break (class HARNESS)",
+   "status": "FIXED 1a223189b3024d59421f0cbd9ee42af612fcf121",
+   "against": "check",
+   "miss_of": 1
+  }
+ ]
+}

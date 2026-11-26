@@ -1,0 +1,20 @@
+{
+ "tests_edited": [
+  {
+   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_journal_jolt.py",
+   "test": "T_JOURNAL_JOLT_OFFLINE",
+   "change": "the proof-goods-plan check follows a local that holds GoodsThrowWild (WantCells, bedd128cf7) instead of wanting the constant at the call; two plants added (the local set to 1f, the local reassigned)",
+   "weakens": false,
+   "fault": "RIMMANDRAKE_REPAIR_KNOCKBACK_JOLT_CHECK_LOCAL_WILD",
+   "path": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_journal_jolt.py"
+  },
+  {
+   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py",
+   "test": "T_PROOFGATE",
+   "change": "adds C1 (every captured scene restore is invoked again; RunRestore runs what it takes), R2 (the runner gates on its Names answer before the first Stage) and S1 (Stage refuses an unplaced good as an INVALID site)",
+   "weakens": false,
+   "fault": "RIMMANDRAKE_SEE_KNOCKBACK_SCENE_RESTORE_DROP_RUNNER_GATE",
+   "path": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py"
+  }
+ ]
+}

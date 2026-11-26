@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs
+@@ -525,7 +525,7 @@
+                     }
+                 }
+                 string why = Build(s);
+-                if (why == null && s.placeFault != null)
++                if (false && why == null && s.placeFault != null)
+                 {
+                     why = "site: " + s.placeFault;
+                 }

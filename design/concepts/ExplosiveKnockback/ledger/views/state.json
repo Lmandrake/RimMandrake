@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "08c82a01e8ca529fb804c9c9415547749caad5c8b19313d970b7e9aa5d8ab3cd",
+  "body_sha256": "6cac51bb279ae44098459d533195c47b450c79c78d07f04c49a706405f4a6613",
   "reducer": 1,
   "shards": {
    "BACKFILL": 348917,
@@ -28,7 +28,7 @@
    "HOLDER.run-1795661891": 608,
    "JUDGE.judge-1794890427": 18837,
    "JUDGE.judge-1795437145": 6544,
-   "JUDGE.judge-1795662842": 1200,
+   "JUDGE.judge-1795662842": 7876,
    "OWNER": 1207
   }
  },
@@ -971,7 +971,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 759,
+  "events": 768,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -1698,13 +1698,13 @@
     "by": "JUDGE.judge-1795437145",
     "claim": "Tumble(): the good walks the 8 directions, most in line first (judge fix fa2de6ee4b); fresh reader run-1795441975 read it sound (cycle_6/lane2/fix_reviews.jsonl); a JUDGE turns it green",
     "class": "problem",
-    "code_sha": "fa2de6ee4b",
+    "code_sha": "1a223189b3024d59421f0cbd9ee42af612fcf121",
     "proposed_fix": "RM_KnockbackPlan.cs GoodsWithNoFirstCell: a Tumble() last resort along the 8 directions, most in line first; KnockbackMap.cs Pinned(): only deep water or no free line",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "every_good_moves: a reached good (throw >= 1 cell) sits still when its line is blocked and no bounce or hop frees it: 593/12474 goods in walled rooms, 764/10699 in shelf storerooms (one-cell throw into a wall, blocked bounce, deep shelf row). The map's M04 exempted them as pinned.",
-    "ts": "2026-11-23T14:20:36Z",
-    "version": "0.1.0"
+    "ts": "2026-11-26T04:13:24Z",
+    "version": "0.2.0"
    },
    "finding:RIMMANDRAKE_MOVE_PIT_FETCH_CORPSE_OFF_RIM_TOUCHED_ABOVE": {
     "accept": "Offline selftest parsing the pit_goods_fetch block asserts all 8 touch neighbours of the corpse and stack cells lie inside the main Pit rect (red on base 1e4264f663); live knockback_runner.py --scenes pit_goods_fetch.",
@@ -2020,6 +2020,23 @@
     "ts": "2026-11-16T11:37:20Z",
     "version": "0.1.0"
    },
+   "finding:RIMMANDRAKE_REPAIR_KNOCKBACK_JOLT_CHECK_LOCAL_WILD": {
+    "accept": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_journal_jolt.py -> rc 0; with design/concepts/ExplosiveKnockback/version/blind_challenge/cycle_2/lane2/plant_wantcells_wild_one.patch applied -> rc 1",
+    "bars": [
+     "goods_arc_spin_rebound",
+     "closed_container_holds"
+    ],
+    "by": "JUDGE.judge-1795662842",
+    "claim": null,
+    "class": "problem",
+    "code_sha": null,
+    "proposed_fix": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_journal_jolt.py: follow a local whose last declaration is GoodsThrowWild; plant the local as 1f",
+    "status": "open",
+    "tags": [],
+    "text": "check wrong: T_JOURNAL_JOLT_OFFLINE red on the real build; its text check wants GoodsThrowWild literally at each GoodCells call, and WantCells now keeps it in a local (bedd128cf7); behaviour unchanged. Repaired by this judge at c31fefef (red on plant, green on build)",
+    "ts": "2026-11-26T04:12:01Z",
+    "version": "0.2.0"
+   },
    "finding:RIMMANDRAKE_REPAIR_WILD_RATIO_BAND_FOR_INTEGER_CELLS": {
     "accept": "none filed; would_pass: the band applied to goods with kernel throw 3+ cells below the maximum, the batch mean, or wild = round(raw x 1.6) within half a cell (as lane 1 L1_goods_fly_wild checks).",
     "bars": [
@@ -2192,12 +2209,28 @@
     "by": "JUDGE.judge-1795437145",
     "claim": "The red of 2026-11-25 was nine put() setter wrappers the checker could not see as setters, not a mod leak; the checker now finds wrappers by shape.",
     "class": "problem",
-    "code_sha": "9f285a25b6942e960604b0f34b0b80ffa4b50a5d",
+    "code_sha": "1a223189b3024d59421f0cbd9ee42af612fcf121",
     "proposed_fix": "proof_restore_check.py: BASELINE keys under filed item RIMMANDRAKE_RESTORE_FLOWWORKS_PIT_PROOF_SETTINGS_FOUR_NEW_LEAKS",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "Check wrong, not mod: decider T_RESTORE (inv_proof_scenes) reran FAIL; proof_restore_check reads the whole repo and 4 FlowWorks proof-restore leaks of 2026-11-22 are outside its filed BASELINE.",
-    "ts": "2026-11-26T02:51:39Z",
+    "ts": "2026-11-26T04:13:24Z",
+    "version": "0.2.0"
+   },
+   "finding:RIMMANDRAKE_SEE_KNOCKBACK_SCENE_RESTORE_DROP_RUNNER_GATE": {
+    "accept": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py -> rc 0; with each design/concepts/ExplosiveKnockback/version/blind_challenge/cycle_2/lane2/plant_pf_*.patch applied -> rc 1",
+    "bars": [
+     "inv_proof_scenes"
+    ],
+    "by": "JUDGE.judge-1795662842",
+    "claim": null,
+    "class": "problem",
+    "code_sha": null,
+    "proposed_fix": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py: C1 captured restores invoked, RunRestore runs; R2 runner gates before Stage; S1 placeFault is INVALID",
+    "status": "open",
+    "tags": [],
+    "text": "check wrong: every inv_proof_scenes decider stayed green with AddExt's restore chain dropped, RunRestore never invoking, the runner's require_proof_build removed, and Stage ignoring placeFault. Repaired by this judge at 1a223189 (four plants red, build green)",
+    "ts": "2026-11-26T04:12:01Z",
     "version": "0.2.0"
    },
    "finding:RIMMANDRAKE_SHOVE_PAWNS_STANDING_ON_COVERS_IN_BURNING_GAS": {
@@ -3608,6 +3641,51 @@
     "subject": "bar:inv_proof_scenes",
     "text": "blind lane 1 rows on inv_proof_scenes all PASS (68 rows overall: 31 PASS, 0 FAIL, 2 INFO, 35 UNSETTLED not_kernel)",
     "ts": "2026-11-26T03:28:04Z"
+   },
+   {
+    "by": "JUDGE.judge-1795662842",
+    "kind": "test.run",
+    "result": "PASS",
+    "sha": "1a223189b3024d59421f0cbd9ee42af612fcf121",
+    "subject": "bar:inv_kernel",
+    "text": "lane 2 rerun of decider T_KERNEL: PASS (design/concepts/ExplosiveKnockback/version/blind_challenge/cycle_2/lane2/reruns*.jsonl)",
+    "ts": "2026-11-26T04:13:24Z"
+   },
+   {
+    "by": "JUDGE.judge-1795662842",
+    "kind": "test.run",
+    "result": "PASS",
+    "sha": "1a223189b3024d59421f0cbd9ee42af612fcf121",
+    "subject": "bar:inv_kernel",
+    "text": "lane 2 rerun of decider T_FUZZ: PASS (design/concepts/ExplosiveKnockback/version/blind_challenge/cycle_2/lane2/reruns*.jsonl)",
+    "ts": "2026-11-26T04:13:25Z"
+   },
+   {
+    "by": "JUDGE.judge-1795662842",
+    "kind": "test.run",
+    "result": "PASS",
+    "sha": "1a223189b3024d59421f0cbd9ee42af612fcf121",
+    "subject": "bar:inv_proof_scenes",
+    "text": "lane 2 rerun of decider T_SCRIPT: PASS (design/concepts/ExplosiveKnockback/version/blind_challenge/cycle_2/lane2/reruns*.jsonl)",
+    "ts": "2026-11-26T04:13:25Z"
+   },
+   {
+    "by": "JUDGE.judge-1795662842",
+    "kind": "test.run",
+    "result": "PASS",
+    "sha": "1a223189b3024d59421f0cbd9ee42af612fcf121",
+    "subject": "bar:inv_proof_scenes",
+    "text": "lane 2 rerun of decider T_PROOFGATE: PASS (design/concepts/ExplosiveKnockback/version/blind_challenge/cycle_2/lane2/reruns*.jsonl)",
+    "ts": "2026-11-26T04:13:25Z"
+   },
+   {
+    "by": "JUDGE.judge-1795662842",
+    "kind": "test.run",
+    "result": "PASS",
+    "sha": "1a223189b3024d59421f0cbd9ee42af612fcf121",
+    "subject": "bar:inv_proof_scenes",
+    "text": "lane 2 rerun of decider T_RESTORE: PASS (design/concepts/ExplosiveKnockback/version/blind_challenge/cycle_2/lane2/reruns*.jsonl)",
+    "ts": "2026-11-26T04:13:25Z"
    }
   ],
   "traps": {

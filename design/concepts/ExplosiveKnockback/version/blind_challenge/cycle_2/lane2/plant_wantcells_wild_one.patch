@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs
+@@ -976,7 +976,7 @@
+             Thing t = s.things[key];
+             float mass = t.GetStatValue(StatDefOf.Mass) * t.stackCount;
+             float dist = (s.starts[key] - s.o).LengthHorizontal;
+-            float wild = RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild;
++            float wild = 1f;
+             int cells = RM_KnockbackVerdicts.GoodCells(dist, r, mass, k, wild);
+             // RIMMANDRAKE_HUNT_KNOCKBACK_GOOD_UNMOVED_LONG_BATCH_THREE_SIGHTINGS: a long batch once planned 0 cells here; an INVALID
+             // line prints these inputs (WantWhy) so the next sighting names the input that went to 0

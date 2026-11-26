@@ -60,30 +60,82 @@ Every one of the 73 bars is named by at least one row.
   before lane 1 was recorded; the edges are the two INFO rows.
 
 ## Lane 2 reruns
-(not started)
+`lane2/rerun_offline.py`, every `kind: offline` test of `version/test_table.json` with its recorded command, on 751eb30f
+(lane 1's commit, the mod as judged) [measured]: 36 rerun, 35 match their recorded verdict and last line (T_FUZZ differs only
+in its own timing figure; the matcher ignores a `N.NNs` timing). All five offline deciders PASS: T_KERNEL, T_FUZZ
+(inv_kernel), T_SCRIPT, T_PROOFGATE, T_RESTORE (inv_proof_scenes). T_SITUATION_MAP_OFFLINE (slow, 315 s recorded) PASS,
+39 of 39 planted faults seen. One mismatch: T_JOURNAL_JOLT_OFFLINE, recorded PASS, reran FAIL (1 fault): see Faults.
+After the fixes, `rerun_relation.py --old 751eb30f` names two touched checks, T_PROOFGATE and T_JOURNAL_JOLT_OFFLINE;
+both PASS at 1a223189 (`lane2/reruns_after_fix.jsonl`; their last lines changed with the test edits, the verdicts match).
+Every other decider keeps its `reruns.jsonl` row. Lane 1 rerun at 1a223189: `lane2/lane1_rows_after_fix.jsonl`, 31 PASS,
+0 FAIL, 2 INFO, 35 UNSETTLED.
 
 ## Planted
-(not started)
+`lane2/planted_faults.json`, 50 faults; `lane2/plant_faults.py` with WINBUILD_ROOT on the private `_mut` folder; a catch
+needs a new failing line, never an rc alone. `lane2/planted_results.jsonl` [measured], baseline all green, tree clean after:
+21 of 50 caught on 751eb30f.
+- Kernel (inv_kernel), 5 of 5 caught: falloff halved, sandbag rest kept, rebound rounded up, bruise by own mass, corpse by
+  the creature limit.
+- Proof (inv_proof_scenes), 6 of 10 caught at first: the gate's two plants, a scene name dropped, WantCells' wild 1, pits
+  always on, the runner's settings restore dropped. SURVIVED: AddExt's restore chain dropped, RunRestore never runs, the
+  runner's gate call removed, Stage ignoring placeFault. After the repair (1a223189) all 7 proof plants re-run are caught
+  (`lane2/planted_results_after_fix.jsonl`).
+- Game-side callers and patches, 3 of 5: the plan's goods by the plain kernel, the walk's collide swapped, Flame at full
+  force caught. SURVIVED: the landing-on-pawn bruise swapped (RM_PawnFlyerPatches.cs) and blast power dropped in the hook.
+  Both are game-side logic of stage-6 bars (collision_bruise_by_size, heavier_flies_less) whose deciders are live scenes;
+  no offline test claims them. Not a Problem against an offline decider; the stage-6 scenes must catch them.
+- Changed files, two each: RM_KnockbackShow.cs 2 of 2, RM_KnockbackBlast_Scars.xml 2 of 2,
+  selftest_explosiveknockback_blast_show.py 2 of 2, selftest_proof_restore_check.py 1 of 2,
+  selftest_explosiveknockback_proofgate.py 0 of 2. The proof scene scripts under `proof/` (10 files), 0 of 20: no offline
+  test reads them; they are stage-6 apparatus. The test-file survivors are a boundary (`>= 5` to `> 5` on a self-check)
+  and an edit inside a comment string (an equivalent mutant), plus one crash (visible red, not counted as caught).
+  The DLL, the art JSON, mutants.json and small_list.json were not planted (no logic to mutate).
 
 ## Faults
-(not started)
+`lane2/faults.json` [measured]: 2 Problems, 0 Polish, both `against` check (class HARNESS), both FIXED, 1 is `miss_of: 1`.
+- RIMMANDRAKE_REPAIR_KNOCKBACK_JOLT_CHECK_LOCAL_WILD: T_JOURNAL_JOLT_OFFLINE red on the real build. Its text check wanted
+  GoodsThrowWild literally at each GoodCells call; WantCells keeps it in a local now (bedd128cf7). Behaviour unchanged.
+  Worth the touch: it guards the oracle of the goods-flight scenes. miss_of 0 (the change came after cycle 1 opened).
+- RIMMANDRAKE_SEE_KNOCKBACK_SCENE_RESTORE_DROP_RUNNER_GATE: four planted behaviour faults in the inv_proof_scenes kernel
+  files survived every decider of that bar. miss_of 1 (AddExt and RunRestore are unchanged since cycle 1).
+No mod fault was found: lane 1 has no FAIL, and the reading of the changed show code (scar rename, back-compat name patch,
+the scar journal) and the kernel callers (blast power, landing bruise, rebound, container, mass limits) found nothing
+significant. Engine facts read through RimSage [measured]: `GenExplosion` turns damAmount -1 into the type's default
+before the hook reads it; `Filth` declares `DeSpawn`.
+Both findings went into the mod ledger as `finding.open` with the fix and its sha (a JUDGE may not write claimed_fixed).
 
 ## Fixes
-(not started)
+`lane2/fixes.jsonl`, both check repairs, red on a plant and green on the real build at the fix sha:
+- c31fefefd0b661785aaf8bd8f8482272321bf248 (`selftest_explosiveknockback_journal_jolt.py`): red rc 1 with `float wild = 1f;`
+  planted, green rc 0.
+- 1a223189b3024d59421f0cbd9ee42af612fcf121 (`selftest_explosiveknockback_proofgate.py`, C1, R2, S1): four plants red rc 1,
+  green rc 0.
+Check repairs owe no fresh reader. No mod code changed. `maturation.py red-seen` recorded for T_PROOFGATE and
+T_JOURNAL_JOLT_OFFLINE (`version/evidence/red_seen.json`).
+Verified (judge-verify): RIMMANDRAKE_MOVE_KNOCKBACK_GOODS_PINNED_AGAINST_WALLS_SHELVES (map M04 0 of 243452) and
+RIMMANDRAKE_SCOPE_KNOCKBACK_RESTORE_DECIDER_RED_ON_FLOWWORKS (rc 0; rc 1 on a planted poke), both `finding.verified` at 1a223189.
 
 ## Steward's decisions enacted
-(not started)
+None were written for this cycle; the standing default held. No bar, criterion, version or stage was touched.
 
 ## Tests edited
-(not started)
+`tests_edited.json`: selftest_explosiveknockback_journal_jolt.py (T_JOURNAL_JOLT_OFFLINE) and
+selftest_explosiveknockback_proofgate.py (T_PROOFGATE). Neither weakens an assertion; each adds what it sees.
 
 ## Unsettled
-(not started)
+35 `not_kernel` rows, each naming one stage-6 bar (the blast show, flight, gas, hose, pits, storage, the walk): owed to
+Stage 6. Two survived plants mark where stage 6 must look: the landing-on-pawn bruise direction
+(`RM_PawnFlyerPatches.cs`) and blast power in the hook (`RM_Patch_DamageWorker_ExplosionKnockback.cs`).
 
 ## Exit
-offline_bars: {inv_kernel: red, inv_proof_scenes: red}
+offline_bars: {inv_kernel: green, inv_proof_scenes: green}
 problems_open: 0
-exit_met: false
+exit_met: true
 
 ## Owed
-(in progress)
+Nothing from this cycle's exit. `maturation.py next ExplosiveKnockback` [measured, 2026-11-25 8:12 PM PST]: "blind cycle 2
+(visit 1, total 2): exit met: the block says exit_met true and every file check agrees (2 offline bars, 5 deciders rerun
+PASS)"; the 35 not_kernel rows are deferred to Stage 6. For the steward: its `judge_certificate` line refuses
+inv_proof_scenes because T_PROOFGATE's `runs_today` row was recorded on build 083f85f71b before this cycle edited the test
+(this cycle reran it PASS at 1a223189, `lane2/reruns_after_fix.jsonl`); the same line names in-game tests with no
+empty-game adapter, which is not this stage's. The steward reads this SUMMARY.md and decides the move.

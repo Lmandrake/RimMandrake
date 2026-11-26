@@ -1,0 +1,10 @@
+--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs
++++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs
+@@ -602,7 +602,6 @@
+         {
+             Action r = s.restore;
+             s.restore = null;
+-            r?.Invoke();
+         }
+ 
+         // ── scene construction ───────────────────────────────────────────
