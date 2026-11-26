@@ -337,6 +337,10 @@ own stones". Card 2: new stones are wanted, basalt first, for the volcanic biome
 - No basalt rock exists now (it left with Minerals). The Forge has a basalt terrain, `RM_BasaltShingle`, which is not a
   rock. The first volcanic biome that takes its stones builds the basalt rock, its chunk and its blocks, with art
   installed through `art install` (CLAUDE.md §Art).
+- A new stone's blocks build differently from vanilla blocks (his card, row 15). Its stuffProps numbers are in
+  `design/RimMandrake/world_remake_2026-10-19/stone_buildstats_table.json` (basalt, pumice or tuff, salt rock,
+  obsidian). Set the stone's `defName` there when you build the block, and run
+  `python3 src/RimMandrake/Utils/stone_buildstats.py check`.
 - A biome takes its stones at its next Design Version. The bars of its current version do not move.
 
 ## Five biome answers by card — owner, 2026-11-19, 11:20 to 11:24 PM PST

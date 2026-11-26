@@ -126,7 +126,7 @@ def check(table: dict, base: dict, vanilla: dict, src_defs: dict) -> list[str]:
     for name, entry in table["stones"].items():
         dn = entry.get("defName")
         if not dn:
-            print(f"PENDING {name}: no block ThingDef yet (BIOME_STONES_DESIGN_BASALT_JOINS_THE_BAND builds it)")
+            print(f"PENDING {name}: no block ThingDef yet (the biome that takes this stone builds it: biome_rulings.md §Each biome names its stones)")
             continue
         registered[dn] = name
         if dn not in src_defs:
