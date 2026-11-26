@@ -1,0 +1,3 @@
+An Explosive Knockback Stage 6 visit needs both DLLs, and scene.py accept refuses the proof DLL (WRONG_BUILD: the loaded code is not the committed file), while knockback_runner, sc_save_in_air, sc_walk_frames and the walk save need the proof DLL. Plan one swap: run every accept scene on the release DLL first, then deploy the proof build for the rest, then put the release back before the walk save's load check. Visit 3 spent an extra restart by deploying the proof build with one accept scene still to run.
+item: RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_GAME_VISIT_THREE
+home: skills/live-debugging-proof-harness
