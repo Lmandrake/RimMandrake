@@ -49,6 +49,8 @@ PAGES = {
         "src/RimMandrake/rimflow/selftest_designer_mend.py",
     "design/specs/2026-11-24-first-pass-calibration/boundary.md":
         "src/RimMandrake/rimflow/selftest_art_first_pass_calibration.py",
+    "design/specs/2026-11-26-code-review-calibration/boundary.md":
+        "src/RimMandrake/rimflow/selftest_code_review_calibration.py",
     "design/specs/2026-11-24-time-budgets/boundary.md": "src/RimMandrake/Utils/selftest_time_budget_lint.py",
     "design/specs/2026-11-24-progress-guard/boundary.md": "src/RimMandrake/Utils/selftest_progress_guard.py",
     "design/specs/2026-11-24-treecheck-slots/boundary.md": "src/RimMandrake/Utils/selftest_treecheck_slots.py",

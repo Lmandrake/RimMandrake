@@ -653,7 +653,7 @@ EXPECTS = ("pass", "refuse")
 RESULTS_ENV = "RM_CALIBRATION_RESULTS"   # where a check writes {"cases": [{"id", "expect", "got"}, ...]}
 
 
-def judge_cases(planted, results, tolerate=0, abstain=None):
+def judge_cases(planted, results, tolerate=0, abstain=None, pass_mark=None):
     """-> (status, why) for one check's case results against the row's planted cases (RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS).
     `planted` is a list of {id, expect} or {"count": {"pass": n, "refuse": m}} (a corpus too big to list). CALIBRATED
     only when every planted case ran and came out as planted and the cases go both ways; a case that came out the other
@@ -664,7 +664,12 @@ def judge_cases(planted, results, tolerate=0, abstain=None):
     `abstain` (a row's field, set only by a ruling that names it; RIMMANDRAKE_RULE_ART_FIRST_PASS_WEAK_IS_NO_VERDICT for
     art_eval_first_pass): {"answer": <a got word>, "decided_share": {<expect>: <0..1>}}. A case whose got is that answer
     gave no verdict: it is never wrong. Each named expect must then have at least that share of its planted cases come
-    out as planted, else FAILED; an abstain with no case decided at all is FAILED."""
+    out as planted, else FAILED; an abstain with no case decided at all is FAILED.
+    `pass_mark` (a row's field, set only by a ruling that names it; RIMMANDRAKE_WRITE_REVIEW_BRIEF_CALIBRATE_ON_THIRTY_FIVE_CLAIMS
+    for code_review): {"polish_called_problem_max": n}. The cases that carry `agreed: true` decide; the rest are a reading.
+    CALIBRATED when every agreed refuse case came out refuse and at most n agreed pass cases came out other than pass;
+    else FAILED. Every planted case must still have run (else UNTESTED), and the agreed cases must go both ways. The why
+    counts the exact labels."""
     cases = [c for c in (results or {}).get("cases") or [] if isinstance(c, dict)]
     skip = abstain.get("answer") if isinstance(abstain, dict) and abstain.get("answer") else None
     wrong = sorted(str(c.get("id")) for c in cases if c.get("expect") in EXPECTS and c.get("got") != c.get("expect")
@@ -681,6 +686,8 @@ def judge_cases(planted, results, tolerate=0, abstain=None):
                                      and str(c.get("id")) in got and got[str(c["id"])].get("got") != c.get("expect")
                                      and not (skip and got[str(c["id"])].get("got") == skip)})
     tolerate = int(tolerate or 0)
+    if isinstance(pass_mark, dict):
+        tolerate = len(wrong)   # exact labels are a reading; the pass mark below decides
     if wrong and len(wrong) > tolerate:
         return "FAILED", "came out the other way: %s" % ", ".join(wrong)
     if not all(want.values()):
@@ -688,6 +695,21 @@ def judge_cases(planted, results, tolerate=0, abstain=None):
     if missing:
         return "UNTESTED", "did not run: %s" % ", ".join(missing)
     n = len(cases) if isinstance(planted, dict) else len({str(c.get("id")) for c in planted or [] if isinstance(c, dict)})
+    if isinstance(pass_mark, dict):
+        agreed = [c for c in cases if c.get("agreed")]
+        real = [c for c in agreed if c.get("expect") == "refuse"]
+        polish = [c for c in agreed if c.get("expect") == "pass"]
+        if not real or not polish:
+            return "UNTESTED", "the agreed cases do not go both ways (%d real, %d polish)" % (len(real), len(polish))
+        missed = sorted(str(c.get("id")) for c in real if c.get("got") != "refuse")
+        alarms = sorted(str(c.get("id")) for c in polish if c.get("got") != "pass")
+        limit = int(pass_mark.get("polish_called_problem_max") or 0)
+        reading = "%d of %d exact labels" % (n - len(wrong), n)
+        if missed or len(alarms) > limit:
+            return "FAILED", "pass mark missed: agreed real not called a Problem: %s; agreed polish called a Problem: %s (limit %d); %s" % (
+                ", ".join(missed) or "none", ", ".join(alarms) or "none", limit, reading)
+        return "CALIBRATED", "pass mark met: agreed real called a Problem %d of %d; agreed polish called a Problem %d of %d (limit %d); %s (a reading)" % (
+            len(real), len(real), len(alarms), len(polish), limit, reading)
     if skip:
         decided = {k: sum(1 for c in cases if c.get("expect") == k and c.get("got") == k) for k in EXPECTS}
         if not any(decided.values()):
@@ -707,9 +729,9 @@ def judge_cases(planted, results, tolerate=0, abstain=None):
 
 
 def judge_row(row, results):
-    """-> (status, why): judge_cases with the row's own planted cases, tolerate and abstain."""
+    """-> (status, why): judge_cases with the row's own planted cases, tolerate, abstain and pass_mark."""
     row = row or {}
-    return judge_cases(row.get("planted"), results, row.get("tolerate") or 0, row.get("abstain"))
+    return judge_cases(row.get("planted"), results, row.get("tolerate") or 0, row.get("abstain"), row.get("pass_mark"))
 
 
 # budget: danger=a calibration check that never ends holds the calibration; never reached in the 14 days to 2026-11-24; no

@@ -1099,9 +1099,10 @@
    "hash": "7efd8085380bc3f9",
    "last_run": {
     "at": "2026-11-26T03:24:26Z",
-    "cases": "came out the other way: c2.5, c4.1",
+    "cases": "pass mark met: agreed real called a Problem 2 of 2; agreed polish called a Problem 0 of 8 (limit 0); 33 of 35 exact labels (a reading)",
     "exit": 0,
-    "out": "pass mark PASS: agreed real caught 2 of 2 (limit all); agreed polish called problem 0 of 8 (limit 1); unscored: 33 of 35 as labelled",
+    "judged_again_by": "pass_mark rule, recorded answer, no new Codex call",
+    "out": "pass mark PASS: agreed real caught 2 of 2 (limit all); agreed polish called problem 0 of 8 (limit 0); exact labels (a reading): 33 of 35",
     "results": "35 case rows"
    },
    "model_check": [
@@ -1109,7 +1110,12 @@
     "src/RimMandrake/rimflow/code_review_calibration.py",
     "run"
    ],
-   "note": "Codex and GPT reviews of pipeline code are on (owner, card 2026-11-23), whatever this row reads; only a CALIBRATED row's refusal sends work back. Labels: `page_rule` in src/RimMandrake/rimflow/code_review_calibration_set.json (owner card 2026-11-19 13:27:48Z); this row needs all 35 as labelled, and the run's last line is the owner's pass mark on the 10 agreed claims.",
+   "note": "Codex and GPT reviews of pipeline code are on (owner, card 2026-11-23), whatever this row reads; only a CALIBRATED row's refusal sends work back. Labels: `page_rule` in src/RimMandrake/rimflow/code_review_calibration_set.json (owner card 2026-11-19 13:27:48Z); this row reads CALIBRATED when its `pass_mark` passes on the 10 agreed claims (every agreed real claim a Problem, no agreed polish claim a Problem); the count of the 35 exact labels is a reading.",
+   "pass_mark": {
+    "polish_called_problem_max": 0,
+    "ruling": "RIMMANDRAKE_WRITE_REVIEW_BRIEF_CALIBRATE_ON_THIRTY_FIVE_CLAIMS",
+    "why": "the two dangers the calibration guards are a missed real fault and polish sent back as a Problem; an exact match of 35 labels names no further danger (owner, 2026-11-25 8:43 PM PST: \"I agree on your code-review judge call. Please ratify it and implement.\")"
+   },
    "planted": [
     {
      "expect": "pass",
@@ -1253,7 +1259,7 @@
     }
    ],
    "reset_at": "2026-11-26T03:08:39Z",
-   "status": "FAILED",
+   "status": "CALIBRATED",
    "timeout_s": 540,
    "was": "UNTESTED"
   },

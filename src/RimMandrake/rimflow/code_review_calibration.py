@@ -8,8 +8,9 @@ here) as problem, polish or next_version. It reads no code: the call runs `gpt_c
 A problem is a refusal (`got: refuse`), anything else a pass; one row per claim goes to $RM_CALIBRATION_RESULTS, and
 refusal_contract.judge_cases compares them with the labels. The labels are `page_rule` (owner card 2026-11-19
 13:27:48Z: a rare failure is "not handled", not a Problem), not the analyst's `expect`. The run also prints the pass
-mark on the 10 `agreed` claims (every agreed real one caught, at most one agreed polish called a problem; "always
-polish" scores 8 of 10) and the agreement on all 35, unscored.
+mark on the 10 `agreed` claims (every agreed real one called a Problem, no agreed polish one called a Problem) and the
+agreement on all 35. The row reads CALIBRATED when the pass mark passes (the row's `pass_mark`, refusal_contract.
+judge_cases; owner, 2026-11-25 8:43 PM PST); the count of exact labels is a reading.
 
 It spends one Codex call, so it runs only from `refusal_contract.py calibrate --model code_review`, never on a
 schedule. Owner card 2026-11-19 about 12:40 AM PST: "Codex sorts the 35 old complaints one time. It reviews no new
@@ -72,7 +73,8 @@ def label(c):
 
 def results(cal, parsed):
     """-> the case rows: a claim Codex did not sort gets no row (judge_cases reads it as did not run)."""
-    return [{"id": c["id"], "expect": label(c), "got": "refuse" if parsed[c["id"]]["class"] == "problem" else "pass",
+    return [{"id": c["id"], "expect": label(c), "agreed": bool(c.get("agreed")),
+             "got": "refuse" if parsed[c["id"]]["class"] == "problem" else "pass",
              "class": parsed[c["id"]]["class"], "page_entry": parsed[c["id"]].get("page_entry"),
              "why": parsed[c["id"]].get("why")} for c in cal["claims"] if c["id"] in parsed]
 
@@ -87,7 +89,7 @@ def pass_mark(cal, rows):
     caught = sum(got.get(i) == "refuse" for i in real)
     false_alarms = sum(got.get(i) != "pass" for i in polish)
     agree = sum(r["got"] == r["expect"] for r in rows)
-    return caught == len(real) and false_alarms <= 1, caught, len(real), false_alarms, len(polish), agree, len(rows)
+    return caught == len(real) and false_alarms == 0, caught, len(real), false_alarms, len(polish), agree, len(rows)
 
 
 def run():
@@ -115,8 +117,8 @@ def run():
         print("%-6s expect %-6s got %-6s %-12s %s" % (r["id"], r["expect"], r["got"], r["class"], r["page_entry"]))
     ok, caught, real, fa, polish, agree, n = pass_mark(cal, rows)
     print("sorted %d of %d; %d as labelled; answer: %s" % (len(rows), len(cal["claims"]), agree, out))
-    print("pass mark %s: agreed real caught %d of %d (limit all); agreed polish called problem %d of %d (limit 1); "
-          "unscored: %d of %d as labelled" % ("PASS" if ok else "FAIL", caught, real, fa, polish, agree, n))
+    print("pass mark %s: agreed real caught %d of %d (limit all); agreed polish called problem %d of %d (limit 0); "
+          "exact labels (a reading): %d of %d" % ("PASS" if ok else "FAIL", caught, real, fa, polish, agree, n))
     return 0 if rows else 1
 
 
