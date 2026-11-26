@@ -27,26 +27,19 @@
    },
    "hash": "4b72fce1955c0c6f",
    "last_run": {
-    "at": "2026-11-24T18:27:53Z",
-    "cases": "came out the other way: first_pass_RM_Danglemaw_r1, first_pass_RM_DecayDrake_r2, first_pass_RM_Dewblade_B, first_pass_RM_Peeper_r2, first_pass_RM_Shadefern_B, first_pass_RM_Ssurr_B",
+    "at": "2026-11-26T03:08:39Z",
+    "cases": "0 of 9 planted case(s) came out the other way; 1 of 3 pass decided, 3 of 6 refuse decided; 5 answered 'second look', no verdict (row's abstain)",
     "exit": 0,
-    "out": "first_pass_RM_Danglemaw_r1         expect refuse got second look band WEAK, model said really_bad, blocking [['F_NORTH_FACE', 0.6], ['F_INCONSISTENT', 0.65]]",
+    "out": "first_pass_RM_Danglemaw_r1         expect refuse got second look band WEAK, model said good, blocking [['F_INCONSISTENT', 0.25]]",
     "results": [
      {
-      "band": "WEAK",
-      "blocking": [
-       [
-        "DESC_MISS",
-        0.2
-       ]
-      ],
+      "band": "GOOD",
+      "blocking": [],
       "expect": "pass",
-      "got": "second look",
+      "got": "pass",
       "id": "first_pass_RM_Shadefern_B",
       "overall": "good",
-      "unreadable": [
-       "VARIANTS"
-      ]
+      "unreadable": []
      },
      {
       "band": "REALLY_BAD",
@@ -56,24 +49,36 @@
         0.92
        ],
        [
-        "F_INCONSISTENT",
+        "DEPARTURE_MISSING",
         0.85
        ],
        [
-        "DEPARTURE_MISSING",
-        0.75
-       ],
-       [
-        "DESC_MISS",
-        0.7
-       ],
-       [
         "STYLE_CARTOON",
-        0.6
+        0.85
        ],
        [
         "STYLE_OFF",
-        0.4
+        0.6
+       ],
+       [
+        "F_TOPDOWN",
+        0.75
+       ],
+       [
+        "F_INCONSISTENT",
+        0.7
+       ],
+       [
+        "DESC_MISS",
+        0.6
+       ],
+       [
+        "F_SIZE_JUMP",
+        0.25
+       ],
+       [
+        "F_NORTH_FACE",
+        0.7
        ]
       ],
       "expect": "refuse",
@@ -83,67 +88,65 @@
       "unreadable": []
      },
      {
-      "band": "WEAK",
+      "band": "REALLY_BAD",
       "blocking": [
        [
         "F_INCONSISTENT",
-        0.7
+        0.85
        ],
        [
         "F_INCONSISTENT",
+        0.8
+       ],
+       [
+        "STYLE_OFF",
         0.75
        ],
        [
-        "F_INCONSISTENT",
-        0.4
+        "STYLE_CARTOON",
+        0.6
        ],
        [
         "STYLE_EARTHLY",
-        0.5
+        0.45
+       ],
+       [
+        "DEPARTURE_MISSING",
+        0.35
+       ],
+       [
+        "F_SIZE_JUMP",
+        0.25
+       ]
+      ],
+      "expect": "refuse",
+      "got": "refuse",
+      "id": "first_pass_RM_Ssurr_B",
+      "overall": "really_bad",
+      "unreadable": []
+     },
+     {
+      "band": "WEAK",
+      "blocking": [
+       [
+        "STYLE_EARTHLY",
+        0.75
+       ],
+       [
+        "STYLE_OFF",
+        0.6
        ],
        [
         "STYLE_CARTOON",
         0.4
        ],
        [
-        "STYLE_OFF",
-        0.45
-       ],
-       [
-        "F_TOPDOWN",
-        0.3
+        "F_INCONSISTENT",
+        0.4
        ]
       ],
       "expect": "refuse",
       "got": "second look",
-      "id": "first_pass_RM_Ssurr_B",
-      "overall": "really_bad",
-      "unreadable": [
-       "DEPARTURES"
-      ]
-     },
-     {
-      "band": "REALLY_BAD",
-      "blocking": [
-       [
-        "STYLE_EARTHLY",
-        0.82
-       ],
-       [
-        "STYLE_OFF",
-        0.45
-       ],
-       [
-        "F_INCONSISTENT",
-        0.35
-       ],
-       [
-        "DESC_MISS",
-        0.15
-       ]
-      ],
-      "expect": "refuse",
-      "got": "refuse",
       "id": "first_pass_RM_Vellak_B",
       "overall": "really_bad",
       "unreadable": []
@@ -152,28 +155,24 @@
       "band": "REALLY_BAD",
       "blocking": [
        [
-        "ALPHA_HALO",
-        0.82
-       ],
-       [
-        "F_TOPDOWN",
-        0.68
-       ],
-       [
-        "F_INCONSISTENT",
-        0.5
-       ],
-       [
-        "F_SIZE_JUMP",
-        0.4
-       ],
-       [
         "STYLE_OFF",
-        0.45
+        0.8
        ],
        [
         "STYLE_CARTOON",
-        0.25
+        0.7
+       ],
+       [
+        "F_TOPDOWN",
+        0.6
+       ],
+       [
+        "F_INCONSISTENT",
+        0.45
+       ],
+       [
+        "ALPHA_HALO",
+        0.6
        ]
       ],
       "expect": "refuse",
@@ -184,16 +183,7 @@
      },
      {
       "band": "WEAK",
-      "blocking": [
-       [
-        "DESC_MISS",
-        0.3
-       ],
-       [
-        "FOOTPRINT",
-        0.12
-       ]
-      ],
+      "blocking": [],
       "expect": "pass",
       "got": "second look",
       "id": "first_pass_RM_Dewblade_B",
@@ -205,7 +195,7 @@
       "blocking": [
        [
         "F_SIZE_JUMP",
-        0.35
+        0.6
        ]
       ],
       "expect": "pass",
@@ -218,13 +208,31 @@
       "band": "WEAK",
       "blocking": [
        [
-        "STYLE_EARTHLY",
-        0.6
+        "F_SIZE_JUMP",
+        0.7
        ],
        [
-        "F_SIZE_JUMP",
-        0.6
+        "STYLE_EARTHLY",
+        0.45
        ],
+       [
+        "F_INCONSISTENT",
+        0.25
+       ],
+       [
+        "ALPHA_HALO",
+        0.15
+       ]
+      ],
+      "expect": "refuse",
+      "got": "second look",
+      "id": "first_pass_RM_Peeper_r2",
+      "overall": "weak",
+      "unreadable": []
+     },
+     {
+      "band": "WEAK",
+      "blocking": [
        [
         "F_INCONSISTENT",
         0.25
@@ -232,26 +240,8 @@
       ],
       "expect": "refuse",
       "got": "second look",
-      "id": "first_pass_RM_Peeper_r2",
-      "overall": "really_bad",
-      "unreadable": []
-     },
-     {
-      "band": "WEAK",
-      "blocking": [
-       [
-        "F_NORTH_FACE",
-        0.6
-       ],
-       [
-        "F_INCONSISTENT",
-        0.65
-       ]
-      ],
-      "expect": "refuse",
-      "got": "second look",
       "id": "first_pass_RM_Danglemaw_r1",
-      "overall": "really_bad",
+      "overall": "good",
       "unreadable": []
      }
     ]
@@ -301,7 +291,7 @@
     }
    ],
    "reset_at": "2026-11-24T18:27:53Z",
-   "status": "FAILED",
+   "status": "CALIBRATED",
    "timeout_s": 8400,
    "was": "UNTESTED"
   },
@@ -1106,7 +1096,7 @@
      "planted (code_review_calibration.py): the 21 claims that are a rare failure the page lists as not handled, or polish, by the same rule; must not be admitted as Problems"
     ]
    },
-   "hash": "6f0ea10d866f50dc",
+   "hash": "7efd8085380bc3f9",
    "last_run": {
     "at": "2026-11-25T05:49:14Z",
     "cases": "came out the other way: c2.9, c3.4, c4.1, c4.14, c4.3",
@@ -1262,7 +1252,7 @@
      "id": "c4.15"
     }
    ],
-   "reset_at": "2026-11-25T20:51:08Z",
+   "reset_at": "2026-11-26T03:08:39Z",
    "status": "UNTESTED",
    "timeout_s": 540,
    "was": "UNTESTED"
@@ -1826,7 +1816,7 @@
      "fj_old_decision_after_enough: In this run, do you go on reading the fold and re-decide that older signature?"
     ]
    },
-   "hash": "3b23ad9888b379e3",
+   "hash": "2e4a3a9d405562cd",
    "last_run": {
     "at": "2026-11-25T08:33:02Z",
     "cases": "5 planted case(s) ran and came out as planted",
@@ -1899,8 +1889,8 @@
      "id": "fj_old_decision_after_enough"
     }
    ],
-   "reset_at": "2026-11-25T08:33:02Z",
-   "status": "CALIBRATED",
+   "reset_at": "2026-11-26T03:08:39Z",
+   "status": "UNTESTED",
    "timeout_s": 1800,
    "was": "CALIBRATED"
   },
@@ -2216,7 +2206,7 @@
      "ops_one_cause_three_alarms: Do you also file a separate item for each of the three alarms?"
     ]
    },
-   "hash": "626da8bb0539e198",
+   "hash": "7fab35d22fd0495e",
    "last_run": {
     "at": "2026-11-25T20:09:31Z",
     "cases": "5 planted case(s) ran and came out as planted",
@@ -2289,8 +2279,8 @@
      "id": "ops_one_cause_three_alarms"
     }
    ],
-   "reset_at": "2026-11-25T20:09:14Z",
-   "status": "CALIBRATED",
+   "reset_at": "2026-11-26T03:08:39Z",
+   "status": "UNTESTED",
    "timeout_s": 1800,
    "was": "CALIBRATED"
   },
@@ -2310,7 +2300,7 @@
      "rj_asked_how_it_could_be_better: Do you make a third look and refuse the work on what you find?"
     ]
    },
-   "hash": "200cf054df050764",
+   "hash": "1da93e2af6c02b21",
    "last_run": {
     "at": "2026-11-25T20:09:25Z",
     "cases": "5 planted case(s) ran and came out as planted",
@@ -2383,8 +2373,8 @@
      "id": "rj_asked_how_it_could_be_better"
     }
    ],
-   "reset_at": "2026-11-25T20:09:14Z",
-   "status": "CALIBRATED",
+   "reset_at": "2026-11-26T03:08:39Z",
+   "status": "UNTESTED",
    "timeout_s": 1800,
    "was": "CALIBRATED"
   },
@@ -2405,7 +2395,7 @@
      "incendiary Station 6, owner 'Full pass'"
     ]
    },
-   "hash": "b2515b60521492ef",
+   "hash": "1c101827f7892383",
    "last_run": {
     "at": "2026-11-24T18:18:10Z",
     "cases": "3 planted case(s) ran and came out as planted",
@@ -2471,8 +2461,8 @@
      "id": "one_m_pit_ladder_bar"
     }
    ],
-   "reset_at": "2026-11-24T06:50:09Z",
-   "status": "CALIBRATED",
+   "reset_at": "2026-11-26T03:08:39Z",
+   "status": "UNTESTED",
    "timeout_s": 1200,
    "was": "CALIBRATED"
   },
@@ -2489,7 +2479,7 @@
      "7 of the 25 that the Conductor classed legitimate (a named missing access, five things tried, only his ear can judge, another mod's code)"
     ]
    },
-   "hash": "db943f113fe99ff9",
+   "hash": "cbdcb45bd63ccb4d",
    "last_run": {
     "at": "2026-11-25T20:51:08Z",
     "cases": "came out the other way: n01, n10, n11, n16",
@@ -2603,8 +2593,8 @@
      "id": "n25"
     }
    ],
-   "reset_at": "2026-11-25T20:51:08Z",
-   "status": "FAILED",
+   "reset_at": "2026-11-26T03:08:39Z",
+   "status": "UNTESTED",
    "timeout_s": 3600,
    "tolerate": 3,
    "tolerate_why": "the Conductor's ruling in the brief of RIMMANDRAKE_TIGHTEN_SET_DOWN_CLASSES_ANY_TWELVE_LETTERS_PASS, 2026-11-25: the judge binds with at most 3 disagreements of 25",
