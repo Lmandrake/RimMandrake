@@ -1064,13 +1064,6 @@
    "why": "the art shipped by 2026-10-16 rests on his approval of the art sheet (OWNER:1792122659817386516); every texture added under the mod's Textures since (git, --diff-filter=A), every texPath borrowed from outside it, the text written since and each open follow-up of that approval is listed in post_approval_art with its art-eval judge verdict or the item that owes one (no verdict was read for any of them here, 2026-11-15; T_ROUND6_GAPS fails on an unlisted one); sc_three_skies' captures carry the floor's art and reads_as lines for the skies only; sc_populations takes no capture and checks only that the shipped cast is the biome's own; the biome text is read offline",
    "post_approval_art": [
     {
-     "tex": "Things/Building/Misc/RM_StruckGlassRing",
-     "added": "2026-10-21",
-     "judge": null,
-     "item": "RIMMANDRAKE_JUDGE_PYRELANDS_ART_ADDED_SINCE_HIS_SHEET",
-     "note": "a building sprite"
-    },
-    {
      "tex": "Things/Building/Power/RM_MagmaThermalGenerator",
      "added": "2026-10-19",
      "judge": null,
@@ -1239,6 +1232,9 @@
   },
   {
    "capability": "crestfeather_has_its_own_look",
+   "by": [
+    "sc_firehawk_rewards"
+   ],
    "checks": [
     "T_CRESTFEATHER_OWN_ART_OFFLINE"
    ],

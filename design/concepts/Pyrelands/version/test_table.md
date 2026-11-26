@@ -130,7 +130,7 @@ Generated 2026-11-16T21:27:29-08:00 from `test_table.json` (the record; this is 
 | `RECORD_ART_SHEET` | record | 2 | `infrastructure/state/ledger/events/` | PASS |
 | `LOOK_STAGE8` | look | 8 | `(his walk)` | Stage 8 |
 | `T_SELF_CONTAINED_OFFLINE` | offline | 4-5 | `src/RimMandrake/Pyrelands/selftest_pyrelands_self_contained.py` | PASS 0.7s |
-| `T_ROUND6_GAPS` | offline | 3 | `src/RimMandrake/Pyrelands/selftest_pyrelands_round6_gaps.py` | PASS 2.6s |
+| `T_ROUND6_GAPS` | offline | 2 | `src/RimMandrake/Pyrelands/selftest_pyrelands_round6_gaps.py` | PASS 2.6s |
 
 ## Corrections applied (judge gaps sorted CORRECTION)
 

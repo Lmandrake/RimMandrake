@@ -241,9 +241,9 @@ def g11(c):
     return e
 
 
-def added_art():
-    """Texture paths (no .png, no facing suffix) added under Pyrelands/Textures since his approval day, and every texPath our
-    Defs borrow from outside our Textures folder."""
+def added_art(defs_dir=None):
+    """Texture paths (no .png, no facing suffix) added under Pyrelands/Textures since his approval day, every texPath our
+    Defs borrow from outside our Textures folder, and how many texPath tags the Defs read saw (the instrument's sight)."""
     out = subprocess.run(["git", "-C", REPO, "log", "--diff-filter=A", "--since=%sT12:00" % APPROVAL_DAY, "--name-only",
                           "--format=", "--", "src/RimMandrake/Pyrelands/Textures"], capture_output=True, text=True, check=True).stdout
     tex = os.path.join(HERE, "Textures")
@@ -256,13 +256,14 @@ def added_art():
     for root, _, files in os.walk(tex):
         for f in files:
             ours.add(os.path.relpath(os.path.join(root, f), tex).replace(os.sep, "/"))
-    borrowed = set()
-    for root, _, files in os.walk(os.path.join(HERE, "Defs")):
+    borrowed, seen = set(), 0
+    for root, _, files in os.walk(defs_dir or os.path.join(HERE, "Defs")):
         for f in [f for f in files if f.endswith(".xml")]:
             for t in re.findall(r"<texPath>([^<]+)</texPath>", open(os.path.join(root, f), encoding="utf-8").read()):
+                seen += 1
                 if not any(o.startswith(t) for o in ours):
                     borrowed.add(t)
-    return added, borrowed
+    return added, borrowed, seen
 
 
 def g12(c):
@@ -271,9 +272,16 @@ def g12(c):
     lst = row.get("post_approval_art")
     need(isinstance(lst, list) and lst, "coverage_rest inv_art_and_text has no post_approval_art list", e)
     if isinstance(lst, list):
-        added, borrowed = added_art()
+        added, borrowed, seen = added_art(os.environ.get("RM_ROUND6_DEFS_DIR"))
         need(len(added) >= 5, "the git read of art added after %s sees only %d paths (instrument blind?)" % (APPROVAL_DAY, len(added)), e)
-        need(bool(borrowed), "the texPath read sees no borrowed art, but the crestfeather borrows ThrumboHorn (instrument blind?)", e)
+        # the sight of the texPath read: it sees our Defs' texPaths, and a borrow wherever a Def still names one. Pyrelands
+        # 0.2.0 gives the crestfeather its own picture (crestfeather_has_its_own_look), so "some art is borrowed" is no
+        # longer true of a correct build (steward run RIMMANDRAKE_STEWARD_PYRELANDS_PREFLIGHT_STAGE, 2026-11-26)
+        need(seen >= 10, "the texPath read sees %d texPath tags in the Defs (instrument blind?)" % seen, e)
+        cf = os.path.join(HERE, "Defs", "ThingDefs_Items", "RM_PristineFirehawkCrestfeather.xml")
+        thr = os.path.exists(cf) and "Things/Item/Special/ThrumboHorn" in open(cf, encoding="utf-8").read()
+        need(not thr or "Things/Item/Special/ThrumboHorn" in borrowed,
+             "the crestfeather def borrows ThrumboHorn, but the texPath read does not see it borrowed (instrument blind?)", e)
         listed = [x.get("tex") for x in lst if isinstance(x, dict) and x.get("tex")]
         for t in sorted(added | borrowed):
             need(any(t.startswith(l) for l in listed), "post_approval_art does not list %s" % t, e)

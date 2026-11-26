@@ -1,8 +1,8 @@
 {
  "mod": "Pyrelands",
- "version": "0.1.0",
- "program": "preflight_pyre.py (throwaway, advance row 3, adapted from preflight_ek.py)",
- "at": "2026-11-14T14:35:08-08:00",
+ "version": "0.2.0",
+ "program": "design/concepts/Pyrelands/version/pilot_throwaway/preflight_pyre_0_2_0.py (throwaway, no model)",
+ "at": "2026-11-26T13:44:38-08:00",
  "dump": {
   "path": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/defs.sqlite",
   "provenance": {
@@ -16,16 +16,16 @@
    "defs_total": "59262"
   }
  },
- "seconds": 5.11,
- "verdict": "pass",
- "refusals": 0,
+ "seconds": 8.53,
+ "verdict": "refuse",
+ "refusals": 1,
  "checks": [
   {
    "id": "C1_bars_complete",
-   "what": "the table holds exactly the locked bars (tree leaves + record inventory)",
+   "what": "the table holds exactly the locked bars (version/locked_bars.json)",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "42 locked, 42 in table",
+   "evidence": "50 locked, 50 in table",
    "smallest_fix": null,
    "route": null,
    "seconds": 0.0
@@ -35,7 +35,7 @@
    "what": "every bar names at least one deciding test, and every named test is defined",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "42 bars",
+   "evidence": "50 bars",
    "smallest_fix": null,
    "route": null,
    "seconds": 0.0
@@ -45,7 +45,7 @@
    "what": "every test names a stage of 2, 4-5, 6 or 8",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "59 tests",
+   "evidence": "80 tests",
    "smallest_fix": null,
    "route": null,
    "seconds": 0.0
@@ -63,11 +63,13 @@
   {
    "id": "C5_read_files_real",
    "what": "every file a test reads exists",
-   "verdict": "pass",
-   "refusals": [],
+   "verdict": "refuse",
+   "refusals": [
+    "T_CRESTFEATHER_OWN_ART_OFFLINE reads src/RimMandrake/Pyrelands/Textures/Things/Item/Special/RM_PristineFirehawkCrestfeather"
+   ],
    "evidence": "",
-   "smallest_fix": null,
-   "route": null,
+   "smallest_fix": "fix the path or build the file",
+   "route": "Stage 1",
    "seconds": 0.0
   },
   {
@@ -75,10 +77,10 @@
    "what": "built mod: every deciding test runs today (his card 2026-11-13, 'Built: runs. New: specified.')",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "0 deciding tests not runnable",
+   "evidence": "0 deciding tests not runnable; 9 specified for Stage 3 (new: T_FIRE_PACE_MODEL_OFFLINE, sc_fire_catches_and_runs, T_ROOF_WITHER_OFFLINE, sc_roofed_grass_declines, T_SMOKE_WEATHER_ACCEPT, sc_smoke_weather_chokes, T_CONDITIONS_NOT_BIOME_OFFLINE, T_CRESTFEATHER_OWN_ART_OFFLINE, sc_grass_seen_under_ash)",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.0
+   "seconds": 0.019
   },
   {
    "id": "C7_game_reason_written",
@@ -98,17 +100,17 @@
    "evidence": "0 held rows name this mod's words",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.002
+   "seconds": 0.003
   },
   {
    "id": "C9_defs_real",
    "what": "every def named exists: ours (RM_/RUT_/RSW_) in the repo's current Defs/Patches or as a C# type; others in the def dump or the repo",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "20 names checked; dump defs.sqlite (captured 2026-11-12T08:10:06Z, 51081 defs, 316 mods); 582 of our repo defs are newer than the dump",
+   "evidence": "51 names checked; dump defs.sqlite (captured 2026-11-12T08:10:06Z, 51081 defs, 316 mods); 618 of our repo defs are newer than the dump",
    "smallest_fix": null,
    "route": null,
-   "seconds": 4.436
+   "seconds": 6.832
   },
   {
    "id": "C10_mods_real",
@@ -118,14 +120,14 @@
    "evidence": "1 named: mandrake.rm.biomes",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.004
+   "seconds": 0.003
   },
   {
    "id": "C11_settings_fields_real",
    "what": "every settings field named by the scenes, the leaves and the table exists in RM_PyrelandsMod.cs",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "5 named, 41 static fields in the settings class",
+   "evidence": "33 named, 45 static fields in the settings class",
    "smallest_fix": null,
    "route": null,
    "seconds": 0.003
@@ -135,10 +137,10 @@
    "what": "the locked bar files match the blobs pinned in version/bars.md",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "8 pins",
+   "evidence": "9 pins",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.014
+   "seconds": 0.011
   },
   {
    "id": "C13_corrections_hold",
@@ -148,37 +150,37 @@
    "evidence": "text checks of scenes.json, tree.json, sheet.md, record.json",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.0
+   "seconds": 0.001
   },
   {
    "id": "C14_csharp_symbols_real",
    "what": "every Type.Member of ours that the scenes, leaves or table name exists in the mod's C#",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "3 of our types named",
+   "evidence": "7 of our types named",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.042
+   "seconds": 0.131
   },
   {
    "id": "C16_scenes_wired",
    "what": "every scene's requirement is a locked leaf, every scene is in the table, every coverage_rest name resolves",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "23 scenes",
+   "evidence": "31 scenes; 7 left the table by a recorded removal (polish.md): sc_ash_ground, sc_full_list_smoke, sc_furnace_bed, sc_furnace_giant, sc_furnace_hide_bank, sc_herd_thirst, sc_roof_withers",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.0
+   "seconds": 0.001
   },
   {
    "id": "C15_items_real",
    "what": "every ticket a test is owed under exists in the ledger",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "8 items",
+   "evidence": "14 items",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.561
+   "seconds": 1.453
   }
  ]
 }

@@ -602,3 +602,10 @@ the tree, record and test-table edits, the re-pin and the lock-bars add are queu
 - Its numbered evidence (17 cycle, visit and arrival paths) is set aside in `version/previous/0.1.0`.
 - Was, "Stage now": - **Stage now:** Version passed on his word, since 2026-11-24 7:13 PM PST (`version/stage_record.json`).
 - Record: `version/stage_record.json`.
+
+### 2026-11-26 1:46 PM PST, re-pin at Stage 2: scenes.json and record.json (by BENCH)
+
+- Steward run RIMMANDRAKE_STEWARD_PYRELANDS_PREFLIGHT_STAGE, re-pin rule (2026-11-14). Bookkeeping only; no bar's words, numbers, decider or version moved.
+- `record.json`: four 0.2.0 bars (`fire_catches_and_runs`, `roofed_grass_declines_visibly`, `pyre_smoke_weather_chokes`, `mechanics_switch_plain_no_biome`) read `scope: opened_by_owner`; each row's own `scope_source`, his card OWNER:1795722774284846701, opened them. They read `open_question`, and the Designer's showcase gate refused them.
+- `scenes.json`: the `post_approval_art` row of the deleted `RM_StruckGlassRing` texture is gone (removed from the game 2026-10-23, f100b170dc); `coverage_rest[crestfeather_has_its_own_look]` names `sc_firehawk_rewards` in `by` (the gate needs a scene; the decider stays T_CRESTFEATHER_OWN_ART_OFFLINE).
+- Why the meaning is the same: the fields record what already happened (his card; a deletion) or which scene stages the item; T_ROUND6_GAPS read 5 gate refusals before and 0 after. Pins and the corrected count (50, not 51) are in `version/bars.md`.

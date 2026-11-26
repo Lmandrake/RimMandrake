@@ -1681,7 +1681,7 @@
   "T_ROUND6_GAPS": {
    "id": "T_ROUND6_GAPS",
    "kind": "offline",
-   "stage": "3",
+   "stage": "2",
    "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_round6_gaps.py",
    "observes": "the 17 round-6 coverage gaps (g1, g2, g4-g18) stay closed in scenes.json, tree.json, sheet.md, record.json and floor.json, and the Designer's gates (concept_tree lint, scene_errors, showcase_check) stay clean",
    "reads": [
