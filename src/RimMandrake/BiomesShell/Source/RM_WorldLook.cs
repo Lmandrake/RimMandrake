@@ -56,6 +56,16 @@ namespace RimMandrake.Biomes
         // and ring its islands, so it ships unlit (his round-3 pick, approved 2026-10-25). Applied while worldChillUnlit.
         public static string seaFilmOverrides = "RM_TheChill=off";
         public static string seaShader = "WorldOverlayTransparentLit";
+        // the sea-floor view (SEABED_LAYER_DESIGN_ITS_OWN_SEA_FLOOR): basins darken away from the coast ABOVE (the land layer's
+        // twin tile, "tile N under tile N"); the floor under dry land is dimmed as the continent above. Coast distance, not
+        // elevation, keys the depth: the 2026-09-12 record's 1,448 water tiles have elev_m median -350 = its minimum, so an
+        // elevation tint would be one flat colour.
+        public static string seabedDepthColor = "0.02,0.03,0.08";
+        public static float seabedDepthAlpha = 0.55f;
+        public static float seabedDepthTiles = 8f;
+        public static string seabedLandColor = "0,0,0";
+        public static float seabedLandAlpha = 0.55f;
+        public static string lastSeabedInfo = "never built";
         public static int seaQueue = 3502;          // above the ocean (3500), under the border blend (3505)
 
         // 3. BIOME SWIRLS (owner by card 2026-10-20, WORLD_FACES_REDRAW_ABYSS_ROT_RUST: "Biome-wide swirl layer"). Every tile
@@ -144,18 +154,28 @@ namespace RimMandrake.Biomes
         {
             RemoveOurs(layer);
             foreach (object o in inner) yield return o;
-            if (layer.planetLayer == null || !layer.planetLayer.IsRootSurface) yield break;
+            if (layer.planetLayer == null) yield break;
+            bool floor = IsSeabedLayer(layer.planetLayer);
+            if (!layer.planetLayer.IsRootSurface && !(floor && RM_BiomesSettings.worldSeabedShading)) yield break;
             List<LayerSubMesh> lastMine = new List<LayerSubMesh>();
             try
             {
                 var sb = new StringBuilder();
                 var mine = new List<LayerSubMesh>();
                 lastMine = mine;
-                if (RM_BiomesSettings.worldSeaDepth) sb.Append(BuildSea(layer, mine));
-                if (RM_BiomesSettings.worldBorderBlend) sb.Append(" ").Append(BuildBlend(layer, mine));
-                if (RM_BiomesSettings.worldBiomeSwirls) sb.Append(" ").Append(BuildSwirls(layer, mine, swirlBiomes, false, "swirls"));
-                if (RM_BiomesSettings.worldTwilightGlass) sb.Append(" ").Append(BuildSwirls(layer, mine, glassBiomes, true, "glass"));
-                if (RM_BiomesSettings.worldBiomeDecals) sb.Append(" ").Append(RM_WorldDecals.Build(layer, mine));
+                if (floor)
+                {
+                    sb.Append(BuildSeabed(layer, mine));
+                    if (RM_BiomesSettings.worldBorderBlend) sb.Append(" ").Append(BuildBlend(layer, mine));
+                }
+                else
+                {
+                    if (RM_BiomesSettings.worldSeaDepth) sb.Append(BuildSea(layer, mine));
+                    if (RM_BiomesSettings.worldBorderBlend) sb.Append(" ").Append(BuildBlend(layer, mine));
+                    if (RM_BiomesSettings.worldBiomeSwirls) sb.Append(" ").Append(BuildSwirls(layer, mine, swirlBiomes, false, "swirls"));
+                    if (RM_BiomesSettings.worldTwilightGlass) sb.Append(" ").Append(BuildSwirls(layer, mine, glassBiomes, true, "glass"));
+                    if (RM_BiomesSettings.worldBiomeDecals) sb.Append(" ").Append(RM_WorldDecals.Build(layer, mine));
+                }
                 var subs = SubMeshes(layer);
                 foreach (LayerSubMesh sm in mine)
                 {
@@ -165,12 +185,14 @@ namespace RimMandrake.Biomes
                 }
                 Ours.Remove(layer);
                 Ours.Add(layer, mine);
-                lastInfo = sb.ToString().Trim();
+                if (floor) lastSeabedInfo = sb.ToString().Trim();
+                else lastInfo = sb.ToString().Trim();
             }
             catch (Exception e)
             {
                 foreach (LayerSubMesh sm in lastMine) { SubMeshes(layer).Remove(sm); if (sm.mesh != null) UnityEngine.Object.Destroy(sm.mesh); }
-                lastInfo = "failed: " + e;
+                if (floor) lastSeabedInfo = "failed: " + e;
+                else lastInfo = "failed: " + e;
                 Log.ErrorOnce("[RimMandrake.Biomes] world look failed, planet keeps vanilla borders: " + e, 0x52574c31);
             }
         }
@@ -194,9 +216,19 @@ namespace RimMandrake.Biomes
         // re-fed depths from 0 to -100000 m drew byte-identical pixels), so depth cannot be given to it. Instead each water
         // tile is drawn again twice on a lit transparent overlay over a white texture: a pale shore film whose alpha falls
         // off over seaShoreTiles from the coast, and a dark deep film whose alpha rises over seaDeepTiles.
-        static string BuildSea(WorldDrawLayer_Terrain layer, List<LayerSubMesh> mine)
+        /// <summary>The water tiles of a layer (by isWater), the corners they share with dry tiles (the coast), one tile
+        /// spacing measured from the water tiles themselves, and the distance of a point to the coast in tile spacings
+        /// (capped at maxTiles). Null when the layer has no water tile. Shared by the sea films and the sea-floor view.</summary>
+        sealed class CoastField
         {
-            PlanetLayer pl = layer.planetLayer;
+            public List<int> water;
+            public HashSet<Vector3> coast;
+            public float tileSpacing;
+            public System.Func<Vector3, float> distTiles;
+        }
+
+        static CoastField BuildCoastField(PlanetLayer pl, System.Func<int, bool> isWater, float maxTiles)
+        {
             var verts = new List<Vector3>();
             var nbs = new List<PlanetTile>();
             var nbVerts = new List<List<Vector3>>();
@@ -204,21 +236,19 @@ namespace RimMandrake.Biomes
             var water = new List<int>();
             for (int i = 0; i < pl.TilesCount; i++)
             {
-                BiomeDef a = pl[i].PrimaryBiome;
-                if (a == null || !a.isWaterBiome) continue;
+                if (!isWater(i)) continue;
                 water.Add(i);
                 pl.GetTileNeighbors(i, nbs);
                 pl.GetTileVertices(i, verts);
                 while (nbVerts.Count < nbs.Count) nbVerts.Add(new List<Vector3>());
                 for (int k = 0; k < nbs.Count; k++)
                 {
-                    BiomeDef nb = pl[nbs[k].tileId].PrimaryBiome;
-                    if (nb != null && nb.isWaterBiome) continue;
+                    if (isWater(nbs[k].tileId)) continue;
                     pl.GetTileVertices(nbs[k].tileId, nbVerts[k]);
                     foreach (Vector3 v in verts) if (nbVerts[k].Contains(v)) coast.Add(v);
                 }
             }
-            if (water.Count == 0) return "sea: no water tiles";
+            if (water.Count == 0) return null;
             float cell = 0.05f;
             var buckets = new Dictionary<long, List<Vector3>>();
             foreach (Vector3 c in coast) Bucket(buckets, Key(c.normalized, cell)).Add(c.normalized);
@@ -235,7 +265,6 @@ namespace RimMandrake.Biomes
                 spacingN++;
             }
             float tileSpacing = spacingN > 0 ? spacingSum / spacingN : 1f;
-            float maxTiles = Mathf.Max(seaShoreTiles, seaDeepTiles, 0.5f);
             float reach = maxTiles * tileSpacing / radius;
             int search = Mathf.CeilToInt(reach / cell) + 1;
             System.Func<Vector3, float> distTiles = p =>
@@ -252,6 +281,19 @@ namespace RimMandrake.Biomes
                         }
                 return best * radius / tileSpacing;
             };
+            return new CoastField { water = water, coast = coast, tileSpacing = tileSpacing, distTiles = distTiles };
+        }
+
+        static string BuildSea(WorldDrawLayer_Terrain layer, List<LayerSubMesh> mine)
+        {
+            PlanetLayer pl = layer.planetLayer;
+            CoastField cf = BuildCoastField(pl, i => { BiomeDef a = pl[i].PrimaryBiome; return a != null && a.isWaterBiome; },
+                Mathf.Max(seaShoreTiles, seaDeepTiles, 0.5f));
+            if (cf == null) return "sea: no water tiles";
+            var verts = new List<Vector3>();
+            List<int> water = cf.water;
+            HashSet<Vector3> coast = cf.coast;
+            System.Func<Vector3, float> distTiles = cf.distTiles;
             Material shoreMat = FlatMat(seaShoreColor, seaQueue);
             Material deepMat = FlatMat(seaDeepColor, seaQueue + 1);
             LayerSubMesh shore = null, deep = null;
@@ -282,6 +324,57 @@ namespace RimMandrake.Biomes
                 n++;
             }
             return "sea: " + n + " water tiles shaded from " + coast.Count + " coast vertices" + (unlit > 0 ? ", " + unlit + " unlit" : "");
+        }
+
+        /// <summary>The sea-floor layer of DivingInteraction, by def name: this assembly takes no reference to that mod.</summary>
+        public static bool IsSeabedLayer(PlanetLayer pl) => pl?.Def != null && pl.Def.defName == "RM_SeabedLayer";
+
+        // ---------------------------------------------------------------- the sea-floor view
+        // Each floor tile i lies under land-layer tile i. Under water: a dark film whose alpha rises with the distance from
+        // the coast above (the deep basins), over seabedDepthTiles. Under dry land: a flat dim film, so the continents
+        // above read as shapes on the floor instead of as bedrock noise.
+        static string BuildSeabed(WorldDrawLayer_Terrain layer, List<LayerSubMesh> mine)
+        {
+            PlanetLayer pl = layer.planetLayer;
+            PlanetLayer surf = Find.WorldGrid?.Surface;
+            if (surf == null || surf.TilesCount != pl.TilesCount) return "seabed: no land layer of the same tiles above";
+            System.Func<int, bool> wet = i => { BiomeDef a = surf[i].PrimaryBiome; return a != null && a.isWaterBiome; };
+            CoastField cf = BuildCoastField(pl, wet, Mathf.Max(seabedDepthTiles, 0.5f));
+            Material deepMat = FlatMat(seabedDepthColor, seaQueue + 1);
+            Material landMat = FlatMat(seabedLandColor, seaQueue + 2);
+            var verts = new List<Vector3>();
+            LayerSubMesh deep = null, land = null;
+            float windSign = 0f;
+            int basin = 0, above = 0;
+            for (int i = 0; i < pl.TilesCount; i++)
+            {
+                bool w = wet(i);
+                if (w && cf == null) continue;
+                pl.GetTileVertices(i, verts);
+                if (verts.Count < 3) continue;
+                Vector3 center = pl.GetTileCenter(i);
+                if (windSign == 0f)
+                    windSign = Mathf.Sign(Vector3.Dot(Vector3.Cross(verts[1] - verts[2], verts[0] - verts[2]), center));
+                var pts = new List<Vector3> { center };
+                foreach (Vector3 v in verts) pts.Add(center + (v - center) * 0.5f);
+                foreach (Vector3 v in verts) pts.Add(v);
+                var dist = new float[pts.Count];
+                if (w)
+                {
+                    if (deep == null || deep.verts.Count > 38000) { deep = new LayerSubMesh(new Mesh(), deepMat); mine.Add(deep); }
+                    for (int q = 0; q < pts.Count; q++) dist[q] = cf.coast.Contains(pts[q]) ? 0f : cf.distTiles(pts[q]);
+                    EmitSeaTile(deep, pts, verts.Count, center, windSign,
+                        d => seabedDepthAlpha * Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(d / Mathf.Max(0.01f, seabedDepthTiles))), dist);
+                    basin++;
+                }
+                else
+                {
+                    if (land == null || land.verts.Count > 38000) { land = new LayerSubMesh(new Mesh(), landMat); mine.Add(land); }
+                    EmitSeaTile(land, pts, verts.Count, center, windSign, d => seabedLandAlpha, dist);
+                    above++;
+                }
+            }
+            return "seabed: " + basin + " basin tiles, " + above + " under land";
         }
 
         static void EmitSeaTile(LayerSubMesh sm, List<Vector3> pts, int ring, Vector3 center, float windSign, System.Func<float, float> alphaOf, float[] dist)

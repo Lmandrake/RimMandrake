@@ -60,6 +60,10 @@ namespace RimMandrake.Biomes
         // deepen away from the coast (RM_WorldLook.cs). Looks only; the world is untouched. Applies at once.
         public static bool worldBorderBlend = true;
         public static bool worldSeaDepth = true;
+        // SEABED_LAYER_DESIGN_ITS_OWN_SEA_FLOOR (2026-11-26): the sea-floor layer drawn on its own: basins darken away from
+        // the coast above, the floor under dry land is dimmed as "the continent above", soft borders between floor faces
+        // (RM_WorldLook.BuildSeabed). Looks only. Applies at once.
+        public static bool worldSeabedShading = true;
 
         // BIOME SWIRLS (owner by card 2026-10-20, WORLD_FACES_REDRAW_ABYSS_ROT_RUST): a continuous swirl layer drawn over the
         // whole of the Abyss and The Rot on the planet (RM_WorldLook.BuildSwirls). Looks only. Applies at once.
@@ -109,6 +113,7 @@ namespace RimMandrake.Biomes
         {
             worldBorderBlend = true;
             worldSeaDepth = true;
+            worldSeabedShading = true;
             worldBiomeSwirls = true;
             worldChillUnlit = true;
             worldTwilightGlass = true;
@@ -146,6 +151,7 @@ namespace RimMandrake.Biomes
             Scribe_Values.Look(ref canopyFadePx, "canopyFadePx", CanopyMath.DefaultFadePx);
             Scribe_Values.Look(ref worldBorderBlend, "worldBorderBlend", true);
             Scribe_Values.Look(ref worldSeaDepth, "worldSeaDepth", true);
+            Scribe_Values.Look(ref worldSeabedShading, "worldSeabedShading", true);
             Scribe_Values.Look(ref worldBiomeSwirls, "worldBiomeSwirls", true);
             Scribe_Values.Look(ref worldChillUnlit, "worldChillUnlit", true);
             Scribe_Values.Look(ref worldTwilightGlass, "worldTwilightGlass", true);
@@ -246,6 +252,7 @@ namespace RimMandrake.Biomes
 
         string worldLookShown;
         static string WorldLookKey() => RM_BiomesSettings.worldBorderBlend + "/" + RM_BiomesSettings.worldSeaDepth + "/"
+            + RM_BiomesSettings.worldSeabedShading + "/"
             + RM_BiomesSettings.worldBiomeSwirls + "/" + RM_BiomesSettings.worldBiomeDecals + "/"
             + RM_BiomesSettings.worldChillUnlit + "/" + RM_BiomesSettings.worldTwilightGlass;
         bool peaksShown = true;
@@ -351,6 +358,10 @@ namespace RimMandrake.Biomes
                 list.CheckboxLabeled("Planet: seas deepen away from the coast [now]", ref RM_BiomesSettings.worldSeaDepth,
                     "On the world map, water is lighter near the shore and darker far from it.\n\nLooks only; tile "
                     + "elevations are not changed. Default: on. Takes effect at once (the planet redraws).");
+                list.CheckboxLabeled("Planet: sea-floor shading [now]", ref RM_BiomesSettings.worldSeabedShading,
+                    "On the sea-floor view, the floor darkens toward the deep basins, far from any coast above, and the floor "
+                    + "under dry land is dimmed so the continents above read as shapes. Borders between floor faces are soft "
+                    + "when soft borders are on.\n\nLooks only. Default: on. Takes effect at once (the floor redraws).");
                 list.CheckboxLabeled("Planet: swirls over the Abyss and The Rot [now]", ref RM_BiomesSettings.worldBiomeSwirls,
                     "On the world map, a continuous layer of swirls is drawn across the whole of each of these biomes: pale, "
                     + "eerie currents over the near-black Abyss and wild-coloured swirls over The Rot. It fades out across the "

@@ -9,8 +9,8 @@ by measuring the tile's own corners. And RM_WorldLook.Set (the bridge tuning doo
 without destroying them: one leaked Material per cache entry per call.
 
 What this reads (the shipped source; constants are parsed, so it cannot drift):
-  1. BuildSea's tileSpacing is computed from RM_WorldLook.TileSpacingOf over the water tiles, and no spacing
-     expression in BuildSea uses TilesCount.
+  1. BuildSea's tileSpacing (in BuildSea, or in the BuildCoastField it calls) is computed from
+     RM_WorldLook.TileSpacingOf over the water tiles, and no spacing expression there uses TilesCount.
   2. TileSpacingOf is 1.612 x the mean circumradius of the tile's own corners (sqrt(area) of a regular hex), and
      RM_WorldDecals takes its glyph spacing from the same function (one definition of a tile spacing).
   3. A tile spacing measured so, on a hand-made regular hex of circumradius R, equals sqrt(hex area) within 0.1 %
@@ -53,6 +53,12 @@ def check(look, decals, srchash, look_b, decals_b):
     sea = body(look, r"static string BuildSea\(")
     if sea is None:
         return ["BuildSea not found in RM_WorldLook.cs"]
+    if "BuildCoastField(" in sea:
+        # since SEABED_LAYER_DESIGN_ITS_OWN_SEA_FLOOR the coast field (spacing and distance) is shared with the floor view
+        field = body(look, r"static CoastField BuildCoastField\(")
+        if field is None:
+            return ["BuildSea calls BuildCoastField, which is not found"]
+        sea = sea + field
     for line in sea.splitlines():
         if re.search(r"\btileSpacing\s*=", line) and "TilesCount" in line:
             errs.append("BuildSea sizes a tile by TilesCount (the whole-sphere assumption): " + line.strip())

@@ -7,9 +7,9 @@
   covering every tile with no reachable sea floor under it. Real per-sea seabed biomes are
   Phase 4. Both are whitelisted to this layer only, so neither can ever appear on the planet.
 
-  Placeholder art: viewGizmoTexPath uses vanilla's own PlaceholderImage (ConfigErrors refuses
-  an empty one and names that texture as the stand-in), and both biomes borrow existing vanilla
-  world textures. Real art is owed before ship.
+  The view gizmo is our own icon, UI/Commands/RM_ViewSeaFloor (SEABED_LAYER_DESIGN_ITS_OWN_SEA_FLOOR,
+  installed through the art ledger). The floor view is shaded by RimMandrake.Biomes' RM_WorldLook
+  (Mod Settings "Planet: sea-floor shading").
 -->
 <Defs>
 
@@ -30,7 +30,7 @@
     <defName>RM_SeabedLayer</defName>
     <label>sea floor</label>
     <viewGizmoTooltip>View the sea floor.</viewGizmoTooltip>
-    <viewGizmoTexPath>PlaceholderImage</viewGizmoTexPath>
+    <viewGizmoTexPath>UI/Commands/RM_ViewSeaFloor</viewGizmoTexPath>
     <viewGizmoOnlyVisibleWithDirectConnection>false</viewGizmoOnlyVisibleWithDirectConnection>
     <layerType>SurfaceLayer</layerType>
     <tileType>SurfaceTile</tileType>
