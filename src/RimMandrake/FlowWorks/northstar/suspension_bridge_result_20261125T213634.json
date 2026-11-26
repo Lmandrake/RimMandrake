@@ -1,0 +1,743 @@
+{
+ "script": "suspension_bridge_proof.py",
+ "started": "2026-11-25T21:36:34",
+ "rows": [
+  {
+   "id": "SB_drag_6_timber_builds",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "read": "BUILD ok=True anchors=2 decks=6 blueprints=0 records=1 reason=-"
+   }
+  },
+  {
+   "id": "SB_path_crosses_on_deck",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "read": "PATH found=True cells=10 decked=6",
+    "walls": true
+   }
+  },
+  {
+   "id": "SB_load_over_rating_whole_span_falls",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "empty": "SPAN tier=timber load=0.0 rating=600 state=Ok decks=6 railings=False deckNotches=0 span=1/1 line=Load 0 / 600 kg",
+    "before": "SPAN tier=timber load=623.4 rating=600 state=Over decks=6 railings=False deckNotches=0 span=1/1 line=Load 623 / 600 kg",
+    "inspect_line": "Load",
+    "after": "SPAN tier=timber load=0.0 rating=600 state=Ok decks=0 railings=False deckNotches=0 span=1/1 line=Load 0 / 600 kg",
+    "riders": 1,
+    "fell": 1,
+    "hurt": 1,
+    "healthSeen": true,
+    "cells": [
+     [
+      141,
+      140,
+      141,
+      140
+     ]
+    ],
+    "originZ": 140,
+    "ballast": true,
+    "afterSpans": [
+     "SPAN tier=timber load=0.0 rating=600 state=Ok decks=0 railings=False deckNotches=0 span=1/1 line=Load 0 / 600 kg",
+     "SPAN tier=timber load=0.0 rating=600 state=Ok decks=0 railings=False deckNotches=0 span=1/1 line=Load 0 / 600 kg"
+    ]
+   }
+  },
+  {
+   "id": "SB_drag_9_timber_refused",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "read": "BUILD ok=False anchors=0 decks=0 blueprints=0 records=0 reason=A timber suspension bridge spans at most 8 squares between supports (this span: 9). Fill a ground island back in (cheap) or build a tower on the hole floor (very expensive) to go further."
+   }
+  },
+  {
+   "id": "SB_rails_off_some_fall",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "read": "KNOCK trials=20 fell=8 railed=False edge=True",
+    "build": "BUILD ok=True anchors=2 decks=4 blueprints=0 records=1 reason=-"
+   }
+  },
+  {
+   "id": "SB_rails_on_nobody_falls",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "rails": "RAILS on=True railed=4",
+    "read": "KNOCK trials=20 fell=0 railed=True edge=True",
+    "build": "BUILD ok=True anchors=2 decks=4 blueprints=0 records=1 reason=-"
+   }
+  },
+  {
+   "id": "SB_anchor_lost_swings_from_that_end",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "read": "SWING 141,152@188 142,152@208 143,152@228 144,152@248",
+    "lane": [
+     [
+      141,
+      188
+     ],
+     [
+      142,
+      208
+     ],
+     [
+      143,
+      228
+     ],
+     [
+      144,
+      248
+     ]
+    ],
+    "build": "BUILD ok=True anchors=2 decks=4 blueprints=0 records=1 reason=-",
+    "destroy": {
+     "success": true,
+     "message": "Destroyed 1 thing(s) across 1 cell(s).",
+     "destroyed": 1
+    }
+   }
+  },
+  {
+   "id": "SB_vanilla_bridge_refused_over_dug",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "read": "VANILLA accepted=False reason=Use a suspension bridge over dug ground"
+   }
+  },
+  {
+   "id": "SB_settings_off_no_button_never_breaks",
+   "status": "UNMEASURED",
+   "class": "MOD",
+   "detail": {
+    "owed": true,
+    "why": "OWED: toggle suspensionBridgesBuildable / suspensionWeightCollapse via jawa/mod_settings_field on RimMandrake.FlowWorks.Pits.RM_SuspensionSettings and re-run LOAD; not scripted yet"
+   }
+  },
+  {
+   "id": "GRATE_fire_burns_people_above",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "grateBurns": 10,
+    "solidBurns": 1,
+    "reads": {
+     "steelgrated": [
+      10,
+      "LIT (141, 0, 160) | FIRE burning 1 | front pending 1 | burned levels 0 | detonations 0 cells 0 queued 0",
+      "GRATE grated=True deck=True fire=True attach=0.75 splash=0.50 scorches=2 drainedDl=0"
+     ],
+     "steel": [
+      1,
+      "LIT (141, 0, 164) | FIRE burning 1 | front pending 1 | burned levels 8 | detonations 0 cells 0 queued 0",
+      "GRATE grated=False deck=True fire=False attach=0.35 splash=0.00 scorches=2 drainedDl=0"
+     ]
+    },
+    "builds": {
+     "steelgrated": "BUILD ok=True anchors=2 decks=4 blueprints=0 records=1 reason=-",
+     "steel": "BUILD ok=True anchors=2 decks=4 blueprints=0 records=1 reason=-"
+    },
+    "fills": {
+     "steelgrated": [
+      "FILLED (141, 0, 160) W=20000dL fluid=RM_Fluid_Chemfuel",
+      "FILLED (142, 0, 160) W=20000dL fluid=RM_Fluid_Chemfuel",
+      "FILLED (143, 0, 160) W=20000dL fluid=RM_Fluid_Chemfuel",
+      "FILLED (144, 0, 160) W=20000dL fluid=RM_Fluid_Chemfuel"
+     ],
+     "steel": [
+      "FILLED (141, 0, 164) W=20000dL fluid=RM_Fluid_Chemfuel",
+      "FILLED (142, 0, 164) W=20000dL fluid=RM_Fluid_Chemfuel",
+      "FILLED (143, 0, 164) W=20000dL fluid=RM_Fluid_Chemfuel",
+      "FILLED (144, 0, 164) W=20000dL fluid=RM_Fluid_Chemfuel"
+     ]
+    },
+    "fires_cleared": {
+     "steelgrated": {
+      "success": true,
+      "firesExtinguished": 0
+     },
+     "steel": {
+      "success": true,
+      "firesExtinguished": 0
+     }
+    }
+   }
+  },
+  {
+   "id": "GRATE_pour_drains_to_body",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "build": "BUILD ok=True anchors=2 decks=4 blueprints=0 records=1 reason=-",
+    "read": "POUR dl=500 bodyBefore=80000 bodyAfter=80500 rise=500 filthBefore=0 filthAfter=0"
+   }
+  },
+  {
+   "id": "GRATE_item_stays_on_deck",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "things": [
+     "RM_SuspensionDeck_SteelGrated",
+     "Steel"
+    ],
+    "build": "BUILD ok=True anchors=2 decks=4 blueprints=0 records=1 reason=-",
+    "dropped": true
+   }
+  },
+  {
+   "id": "UND_floor_path_walks_under",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "read": "UNDERPATH found=True cells=8 decked=2 view=floor",
+    "reachAfter": {
+     "paused_polls": 0,
+     "ticks": 0
+    }
+   }
+  },
+  {
+   "id": "UND_both_arrive",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "a": [
+     148,
+     180
+    ],
+    "b": [
+     144,
+     182
+    ]
+   }
+  },
+  {
+   "id": "UND_shallow_trench_is_a_wall",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "read": "UNDERPATH found=False cells=0 decked=0 view=floor"
+   }
+  },
+  {
+   "id": "UND_item_slides_to_open_floor",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "read": "DROPUNDER under=True at=143,180 underDeck=False slid=1"
+   }
+  },
+  {
+   "id": "UND_shot_solid_deck",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "want": "False",
+    "read": "SHOT can=False shooterUnder=True targetUnder=False ranged=True",
+    "target": "BAND under=False onDeck=True passes=True view=deck deckNotches=0"
+   }
+  },
+  {
+   "id": "UND_shot_grate_deck",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "want": "True",
+    "read": "SHOT can=True shooterUnder=True targetUnder=False ranged=True",
+    "target": "BAND under=False onDeck=True passes=True view=deck deckNotches=0"
+   }
+  },
+  {
+   "id": "UND_crush_below_and_wreck",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "before": {
+     "crushed": "0",
+     "wrecks": "9",
+     "slid": "1"
+    },
+    "after": "FELL crushed=3 wrecks=9 slid=1",
+    "hediffs": [
+     0,
+     1
+    ],
+    "newHarm": [
+     [
+      "Cut",
+      "Head"
+     ]
+    ],
+    "owed": "wreck blocks the floor until a clear job runs: read RM_SuspensionWreck on (4,40) and its deconstruct"
+   }
+  },
+  {
+   "id": "UND_sunken_bridge_crossed",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "build": "BUILD ok=True anchors=2 decks=2 blueprints=0 records=1 reason=-",
+    "span": "SPAN tier=steel load=0.0 rating=2000 state=Ok decks=2 railings=False deckNotches=8 span=1/1 line=Load 0 / 2,000 kg",
+    "path": "PATH found=True cells=8 decked=2"
+   }
+  },
+  {
+   "id": "UND_raiders_walk_under_moat",
+   "status": "UNMEASURED",
+   "class": "MOD",
+   "detail": {
+    "owed": true,
+    "why": "OWED: a raid into a 4 m moat with a bridge over it, recorded with modcheck (behaviour is the ruling, not a bug)"
+   }
+  },
+  {
+   "id": "UND_L4_picture_pawn_under_deck",
+   "status": "UNMEASURED",
+   "class": "MOD",
+   "detail": {
+    "owed": true,
+    "why": "OWED: one joint screenshot of a pawn passing under a deck"
+   }
+  },
+  {
+   "id": "WAT_river_cross_no_drift",
+   "status": "UNMEASURED",
+   "class": "MOD",
+   "detail": {
+    "why": "no --river x1,z1,x2,z2 given (this map's river crossing)"
+   }
+  },
+  {
+   "id": "WAT_lake_tower_two_spans",
+   "status": "UNMEASURED",
+   "class": "MOD",
+   "detail": {
+    "why": "no --lake x1,z1,x2,z2 given (a crossing longer than 10 squares)"
+   }
+  },
+  {
+   "id": "WAT_flood_damages_timber_not_steel",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "detail": {
+    "timber": [
+     {
+      "hp": "312",
+      "max": "312",
+      "decks": "4",
+      "awash": "0",
+      "floodHits": "0"
+     },
+     {
+      "hp": "312",
+      "max": "312",
+      "decks": "4",
+      "awash": "0",
+      "floodHits": "0"
+     }
+    ],
+    "steel": [
+     {
+      "hp": "1000",
+      "max": "1000",
+      "decks": "4",
+      "awash": "0",
+      "floodHits": "0"
+     },
+     {
+      "hp": "1000",
+      "max": "1000",
+      "decks": "4",
+      "awash": "0",
+      "floodHits": "0"
+     }
+    ],
+    "verdictWithheld": "FAIL",
+    "unmeasuredBecause": [
+     {
+      "scope": "WAT_flood",
+      "what": "both decks awash",
+      "why": "{'timber': [{'hp': '312', 'max': '312', 'decks': '4', 'awash': '0', 'floodHits': '0'}, {'hp': '312', 'max': '312', 'decks': '4', 'awash': '0', 'floodHits': '0'}], 'steel': [{'hp': '1000', 'max': '1000', 'decks': '4', 'awash': '0', 'floodHit",
+      "class": "SITE"
+     }
+    ]
+   }
+  },
+  {
+   "id": "WAT_sea_or_backtrack",
+   "status": "UNMEASURED",
+   "class": "MOD",
+   "detail": {
+    "why": "no --sea x1,z1,x2,z2 given (a coast crossing)"
+   }
+  },
+  {
+   "id": "JET_two_square_steel_accepted",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "read": "JETTY ok=True anchors=1 decks=2 blueprints=0 railed=2 reason=-"
+   }
+  },
+  {
+   "id": "JET_three_square_refused",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "read": "JETTY ok=False anchors=0 decks=0 blueprints=0 railed=0 reason=A jetty reaches at most 2 squares out (this one: 3)."
+   }
+  },
+  {
+   "id": "JET_overload_drops_whole_at_root",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "one": "SPAN tier=steel load=60.8 rating=120 state=Ok decks=2 railings=True deckNotches=0 span=1/1 line=Load 61 / 120 kg",
+    "two": "SPAN tier=steel load=121.6 rating=120 state=Over decks=2 railings=True deckNotches=0 span=1/1 line=Load 122 / 120 kg",
+    "after": "SPAN tier=steel load=0.0 rating=120 state=Ok decks=0 railings=True deckNotches=0 span=1/1 line=Load 0 / 120 kg",
+    "onFloor": [
+     true,
+     true
+    ]
+   }
+  },
+  {
+   "id": "JET_open_edge_drop_on_order",
+   "status": "UNMEASURED",
+   "class": "MOD",
+   "detail": {
+    "owed": true,
+    "why": "OWED: railings off, order the 'Jump into pit' float-menu job on a pawn on the jetty (no bridge call drives that menu yet); the rail-off knock row (SB_rails_off_some_fall) proves the edge"
+   }
+  },
+  {
+   "id": "LOOK_Scrapper_resolves",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "read": "LOOK look=Scrapper parts=8 styled=8 pink=0 paths=RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor_Steel|null|RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionRailing_Edge"
+   }
+  },
+  {
+   "id": "LOOK_Industrial_resolves",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "read": "LOOK look=Industrial parts=8 styled=8 pink=0 paths=RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionAnchor_Steel|null|RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionRailing_Edge"
+   }
+  },
+  {
+   "id": "LOOK_Modern_resolves",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "read": "LOOK look=Modern parts=8 styled=8 pink=0 paths=RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionAnchor_Steel|null|RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionRailing_Edge"
+   }
+  },
+  {
+   "id": "LOOK_Futuristic_resolves",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "read": "LOOK look=Futuristic parts=8 styled=8 pink=0 paths=RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionAnchor_Steel|null|RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionRailing_Edge"
+   }
+  },
+  {
+   "id": "SB_islands_mid_channel_two_bridges",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "read": "BUILD ok=True anchors=4 decks=16 blueprints=0 records=2 reason=-",
+    "claim": "an 18-hole timber crossing (cap 8 per span) stands over a 2-square island as two bridges"
+   }
+  },
+  {
+   "id": "SB_islands_control_no_island_refused",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "read": "BUILD ok=False anchors=0 decks=0 blueprints=0 records=0 reason=A timber suspension bridge spans at most 8 squares between supports (this span: 18). Fill a ground island back in (cheap) or build a tower on the hole floor (very expensive) to go further."
+   }
+  },
+  {
+   "id": "SB_islands_tower_cost_charged",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "read": "TOWERCOST stuff=200 Steel=100 work=12000 mult=1.00 steelBuilt=Steel:300",
+    "want_at_x1": "stuff=200 Steel=100 work=12000 steelBuilt=Steel:300 (no ComponentIndustrial)"
+   }
+  },
+  {
+   "id": "SB_tower_row_per_lane",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "one_tower": "BUILD ok=False anchors=0 decks=0 blueprints=0 records=0 reason=A tower holds one row of the bridge: this one is 2 squares wide, so it needs 2 towers side by side at square 9 of the drag (there is 1). Drag the tower across the hole to plan the rest.",
+    "two_towers": "BUILD ok=True anchors=4 decks=34 blueprints=0 records=1 reason=-",
+    "claim": "a 2-wide bridge needs a tower under each row; one is refused with the count"
+   }
+  },
+  {
+   "id": "SB_islands_restore_ground_ordered",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "read": "RESTORE accepted=4 refused=0 tracked=4 fillOrders=4 first=-"
+   }
+  },
+  {
+   "id": "SB_islands_restore_reach",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "outcome": "reached_and_grounded",
+    "why": "lone mid refused; causeway edge 8 -> 0 in 8 jobs, mid 8 -> 0 in 8 jobs, both let go",
+    "depth0": 8,
+    "loneMidCanReach": false,
+    "loneMidHasJobOnCell": true,
+    "edge": {
+     "depths": [
+      7,
+      6,
+      5,
+      4,
+      3,
+      2,
+      1,
+      0
+     ],
+     "jobs": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+     ],
+     "can": true,
+     "tracked": false,
+     "restoreAfter": "RESTORE accepted=0 refused=1 tracked=5 fillOrders=0 first=Nothing has been dug here."
+    },
+    "mid": {
+     "depths": [
+      7,
+      6,
+      5,
+      4,
+      3,
+      2,
+      1,
+      0
+     ],
+     "jobs": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+     ],
+     "can": true,
+     "tracked": false,
+     "restoreAfter": "RESTORE accepted=0 refused=1 tracked=4 fillOrders=0 first=Nothing has been dug here."
+    },
+    "labour": 0.25,
+    "claim": "the lone mid square is refused (climb rule) and a bank colonist grounds the causeway edge then the mid square by Restore"
+   }
+  }
+ ],
+ "args": {
+  "out": null,
+  "origin": "140,140",
+  "fresh_map": true,
+  "river": "",
+  "lake": "",
+  "sea": "",
+  "only": "",
+  "mock": false
+ },
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "2c3c157096ffa317c73666c4bbde43dd45aeed1f147c14d8c88e51cc99e262ba",
+ "manifest": {
+  "schema": 1,
+  "script": "northstar/suspension_bridge_proof.py",
+  "runtime": "cb004c67e9d912b8148207f3d09a4e70f0484c56954ad1914948f0e16d87d942",
+  "test": "1fa509a307e1c6c8dec3c3e5b5c1924c1ab1f27341e25a6f2821d862768f4704",
+  "test_files": [
+   "FlowWorks/northstar/driver_stamp.py",
+   "FlowWorks/northstar/proof_hose.py",
+   "FlowWorks/northstar/suspension_bridge_proof.py",
+   "FlowWorks/validation_hose.py",
+   "FlowWorks/validation_style_hose.py",
+   "Utils/await_lifecycle.py",
+   "Utils/biomes_compose.py",
+   "Utils/close_evidence.py",
+   "Utils/conds.py",
+   "Utils/conds_dsl.py",
+   "Utils/deploy_custom_mods.py",
+   "Utils/deploy_def_guard.py",
+   "Utils/evidence_covers.py",
+   "Utils/focus_heal.py",
+   "Utils/game_focus.py",
+   "Utils/game_instance.py",
+   "Utils/game_paths.py",
+   "Utils/game_watcher.py",
+   "Utils/harness_run.py",
+   "Utils/health_observer.py",
+   "Utils/known_results.py",
+   "Utils/live_def_check.py",
+   "Utils/load_policy.json",
+   "Utils/load_policy.py",
+   "Utils/modcheck/__init__.py",
+   "Utils/modcheck/biome_site.py",
+   "Utils/modcheck/bland_world.py",
+   "Utils/modcheck/clockgate.py",
+   "Utils/modcheck/contract.py",
+   "Utils/modcheck/detectors.py",
+   "Utils/modcheck/drivers.py",
+   "Utils/modcheck/floor.py",
+   "Utils/modcheck/gate.py",
+   "Utils/modcheck/helpers.py",
+   "Utils/modcheck/jev_questions.py",
+   "Utils/modcheck/jev_triage.py",
+   "Utils/modcheck/judge.py",
+   "Utils/modcheck/launch_gate.py",
+   "Utils/modcheck/northstar.py",
+   "Utils/modcheck/play_zoom.py",
+   "Utils/modcheck/preconditions.py",
+   "Utils/modcheck/quiet_site.py",
+   "Utils/modcheck/report.py",
+   "Utils/modcheck/reuse.py",
+   "Utils/modcheck/run_identity.py",
+   "Utils/modcheck/runner.py",
+   "Utils/modcheck/save_uncompress.py",
+   "Utils/modcheck/scene_report.py",
+   "Utils/modcheck/settings_keep.py",
+   "Utils/modcheck/snapshot.py",
+   "Utils/modcheck/spoil_gate.py",
+   "Utils/modcheck/status.py",
+   "Utils/modcheck/suite.py",
+   "Utils/modcheck/surprise.py",
+   "Utils/modcheck/targeting.py",
+   "Utils/modcheck/test_site_saves.json",
+   "Utils/modcheck/test_site_saves.py",
+   "Utils/modcheck/testenv_guards.py",
+   "Utils/modcheck/validity.py",
+   "Utils/modcheck/walklint.py",
+   "Utils/modcheck/watch.py",
+   "Utils/modset_builder.py",
+   "Utils/nightly_scope.py",
+   "Utils/northstar_driver/__init__.py",
+   "Utils/northstar_driver/session.py",
+   "Utils/northstar_driver/tool_schemas.json",
+   "Utils/northstar_driver/transport.py",
+   "Utils/pipeline_tests.json",
+   "Utils/progress_guard.py",
+   "Utils/retired_mods.py",
+   "Utils/rimbridge_client.py",
+   "Utils/rimdrive/__init__.py",
+   "Utils/rimdrive/session.py",
+   "Utils/rimdrive/verify.py",
+   "Utils/rmpaths.py",
+   "Utils/run_selftests.py",
+   "Utils/selftest_cache.py",
+   "Utils/suite_evidence.py",
+   "Utils/tickburst_step.py",
+   "Utils/time_budget.py",
+   "Utils/tps_record.py",
+   "Utils/validation_core.py",
+   "Utils/waitalive.py",
+   "Utils/winbuild.py",
+   "Utils/wrapup_debt.py",
+   "Utils/zoom_guard.py"
+  ],
+  "unresolved": []
+ },
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "dubwise.dubsbadhygiene.lite",
+   "owlchemist.cherrypicker",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "toastyman.moreritualseats",
+   "vanillaexpanded.vchemfuele",
+   "void.charactereditor",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.hugethings",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes",
+   "mandrake.rm.patches"
+  ],
+  "assembly_sha256": "62d2253c91db46c217926769e74550df991a0b0514f035cc75388da7907f38be"
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "RM_Agaripod36116",
+    "RM_Agaripod36117",
+    "RM_Agaripod36118",
+    "RM_Agaripod36119",
+    "RM_Brullith36107",
+    "RM_Brullith36113",
+    "RM_Brullith36114",
+    "RM_Durrok36115",
+    "RM_Dustveil36105",
+    "RM_Dustveil36106",
+    "RM_Dustveil36109",
+    "RM_Dustveil36110",
+    "RM_MycoidColossus36108",
+    "RM_MycoidColossus36112",
+    "RM_Shambles36111",
+    "RM_ThozzikQueen36120"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  },
+  "fed": [
+   "Human797",
+   "Human800",
+   "Human803"
+  ]
+ },
+ "finished": "2026-11-25T21:40:44"
+}

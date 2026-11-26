@@ -1,3 +1,5 @@
 Never publish (./publish or any rimflow --publish write) from the clone a live modcheck runs from: the publish rebases the clone, the mod's source hash moves while the drivers run, and modcheck then reads every driver row as 'no <driver> result at the current mod hash carries this row' (FlowWorks 2026-11-25: sprinkler_live wrote 9 PASS rows at hash 0609691f, the judge read d2d19d8d after two FlowWorks commits arrived). Write notes after the run, or from another clone.
+
+Seen again 2026-11-25 9:47 PM PST (WB-pipeline-test-lane-20261126-024244): a rimflow note --publish from the clone during a live FlowWorks modcheck pulled two FlowWorks commits in, and under_deck_live read 'no suspension_bridge_proof.py result at the current mod hash' although the driver had written UND_floor_path_walks_under and UND_both_arrive PASS 7 min earlier. The lesson did not reach this run: its home skill was not read. A rerun script that holds the game should also hold the clone (no publish until it ends).
 item: RIMMANDRAKE_RERUN_TWO_HARNESS_REPAIRS_ON_FREE_ARCHMAGI_GAME
 home: skills/live-debugging-proof-harness
