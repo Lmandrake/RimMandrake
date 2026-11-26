@@ -20,7 +20,7 @@ never under high. Nothing in this table states a spend.
 | launcher | `work_bundle.py` (env `RM_WORK_BUNDLE`) | the Conductor, with `detached_helper.py launch`; `maturation_rescue.py` only proposes | `testpilot_route.py`, the tick's pilot step (`maturation_autonomy.py`); as `claude --agent rm-testpilot` |
 | your state | the bundle's state file | the showings folder: `inventions.md`, `questions.md`, `answers.md` | `/mnt/d/ClaudeWork/rimmandrake/testpilot_<item>/PROGRESS.md` |
 | you start at | "The work", step 1 | "When you are stuck" | "When you are stuck", at the live game |
-| you end with | each member's outcome | the rescue sheet, a green certificate | the `TESTPILOT_SAT` note |
+| you end with | each member's outcome | the rescue sheet, a green certificate, the port's live pass | the `TESTPILOT_SAT` note |
 
 A Rescue and a Sitting start stuck: the ordinary path already failed. A Work Bundle goes stuck when its fix does not
 come after a real attempt. Then the Work Bundle takes "When you are stuck" too.
@@ -251,7 +251,18 @@ gradient. That's too easy. This is a creative project."*
 2. **Build the instrument:** the offline model (above), each check printing its worst value, its limit and what it
    sampled. Every result names its source commit, settings and instrument version. A long measurement uses its own build
    stage: `winbuild.stage_build(csproj, stage_name="<name>")`.
-3. **Prove any copy agrees with the game,** over the same range, and state the agreement (Slack: 1,274 of 1,275). Explain
+   - Read the mod's real saves (his review map, the walk saves) as a family of their own, with the same checks, under
+     every look and setting that the saves hold. On Pyrelands the walk saves showed a burn flood that no scene site
+     showed. On Slack, his map read offline showed that the instrument was blind to its eleven switches.
+   - Name the code between the game and the decision that the instrument does not run: the adapter that feeds the
+     decision, its callers and its switches. Each one gets a check, or a line in the range's exclusions on the rescue
+     sheet. On Pyrelands, planted faults in the game-side callers (of the wind carry, the foam, the fire sense) passed
+     every offline suite in three blind cycles: 11 of 40 in cycle 6. On Slack, no check read a switch that was turned
+     off, and the switch's cords drew as cut until his walk.
+3. **Prove any copy agrees with the game,** over the same range, and state the agreement (Slack: 1,274 of 1,275). Read
+   the agreement on what the bar is about (a shape, a look, whether a thing lives on), not only on a total. The Pyrelands
+   burn model agreed with the game on front speed (x1.04) and burned share, but it took every lit fire to live long
+   enough to carry, and in the game the fronts ran as one-cell lanes. Explain
    every disagreement. Then run the one experiment that separates the suspects (Slack: the whip on a straight cord).
 4. **Map it, and only then model.** For each region: do the requirements hold comfortably, on a knife edge, or not at
    all, and why. Tag each constraint in an impossibility claim "bar" (the owner's) or "our own rule" (code, habit, a site
@@ -282,6 +293,9 @@ gradient. That's too easy. This is a creative project."*
     derivation from a bar or a measured fact. Art goes in through `art install`.
 11. **Prove it the way it will be used:** the full offline tests, `maturation.py certificate <Mod> --run`, renders of the
     worst cases, and the live pass. Your result is not the mod's acceptance: a judge who did not build it checks it.
+    The port's first live look is part of the rescue, not of the next stage. Both rescues of 2026-11-16 ended with it
+    UNRUN. Slack's next visit began 4 minutes later and found 19 joins off slope, with the probe that the rescue had
+    named UNRUN. Record it UNRUN only under "The live pass": when no game can take it, with the holder of each game.
 
 **The effort and model ladder** (owner, by card 2026-11-25, "Effort up, then model up"; page
 `design/specs/2026-11-25-effort-ladder/boundary.md`). You never start under high effort.
