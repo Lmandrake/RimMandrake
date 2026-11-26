@@ -1,0 +1,3 @@
+Through the bridge, a FloatMenu that a FloatMenu option's action opens (a two-step menu: Choose style -> reach -> look) is gone before the next call when the first option is run with rimworld/execute_context_menu_option ('No context menu or pop-up option menu is open'). Pick the first step with jawa/debug_action_menu pick=<label> (no path): it runs the action in one main-thread call and pins the menu it opens, so get_context_menu_options reads it. Measured ArchSmall 2026-11-26; objects_sheet.choose_look fixed at ec726992dc.
+item: BIGNET_PROOF_FIX_SIZE_NOT_RESTORED
+home: skills/rimbridge/references/traps/reading-results.md
