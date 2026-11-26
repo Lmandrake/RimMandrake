@@ -72,11 +72,13 @@ Divergent work: anything that shifts or extends the 0.1.0 vision (`../vision.md`
 - **Acceptance test:** each scenario runs offline from the mod's tests, and `maturation.py red-seen Pyrelands <test id>` records it red on a planted fault that reverts its fix's caller line, and green on the build. A scenario that needs a map, and that has no predicate that can be pulled out, becomes one bridge quicktest scene, not an offline row.
 - **0.2.0 sort (2026-11-26, Designer run RIMMANDRAKE_OPEN_PYRELANDS_NEXT_VERSION_HE_ASKED_FASTER_FIRE):** work that adds no bar. IN 0.2.0 for the three callers that the conversion rewrites: `pyre_fire_duty_starves` (row code 9), `pyre_fire_no_flee` (code 8) and `pyre_burrower_flees` (code 2), as the support rows `T_SCENARIO_FIRE_DUTY`, `T_SCENARIO_FIRE_NO_FLEE` and `T_SCENARIO_BURROWER_FLEES`. `pyre_wetroots_season` and `pyre_furnace_heat_cap` stay here: 0.2.0 does not touch their callers.
 
-## 0.2.0 opened, 2026-11-26: what it took from this list
+## 0.2.0 proposed, 2026-11-26: what the proposal takes from this list (not opened)
 
-Appended by the Designer run `RIMMANDRAKE_OPEN_PYRELANDS_NEXT_VERSION_HE_ASKED_FASTER_FIRE` (the Conductor's brief;
-Evidence-for-Ask, the obvious reading; no entry above is removed). The 0.2.0 scope is `../VERSION.json`; its bars are
-`../locked_bars.json`; the vision delta is `../vision.md`.
+Appended by the Designer run `RIMMANDRAKE_OPEN_PYRELANDS_NEXT_VERSION_HE_ASKED_FASTER_FIRE` (no entry above is removed).
+0.2.0 is NOT open: the owner reviews the scope first (his words, 10:41 AM PST 2026-11-26: "If we're opening 0.2.0 for
+Pyrelands, I want to review what we might put into it, ok? That's not an automatic decision"). Each "IN 0.2.0" in the
+sort lines above is a recommendation. The page for him is `scope_proposal_0.2.0.md` in this folder. `../VERSION.json`
+still reads 0.1.0; the draft bars in `../../record.json` read scope `open_question` until he answers.
 
 - **Bars from this list:** `fire_catches_and_runs` (his walk, 2026-11-24), `roofed_grass_declines_visibly` (his walk, with the
   exception of roofed grass folded in), `pyre_smoke_weather_chokes` (his walk of 2026-11-13).

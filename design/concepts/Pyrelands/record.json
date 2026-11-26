@@ -1068,7 +1068,7 @@
    "impl": "absent",
    "search_scope": "src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs: the carry pace is 0.1.0's (RM_BurnKernel.WindCarryTicks, RM_BurnKernel.WindCarryExtraTicks, RM_BurnKernel.CarryAge, RM_BurnKernel.FlankPlan); src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs: no Mod Setting of RM_PyrelandsSettings sets the fire's pace",
    "proof": "missing",
-   "scope": "opened_by_owner",
+   "scope": "open_question",
    "scope_source": "OWNER:1795575810695997798",
    "source": [
     "OWNER:1795575810695997798",
@@ -1086,7 +1086,7 @@
    "impl": "absent",
    "search_scope": "src/RimMandrake/Pyrelands/Source/CompWithersUnderRoof.cs: CompWithersUnderRoof.CompTickLong deals the same damage to every roofed plant on each long tick (one clock for the whole patch), draws no wilted look, and leaves nothing when the plant dies; the kill lands inside vanilla Plant.TickLong, which then logs a NullReferenceException (25 lines on the walk load of 2026-11-24, D:\\ClaudeWork\\rimmandrake\\instances\\b\\Player.log lines 271-336)",
    "proof": "missing",
-   "scope": "opened_by_owner",
+   "scope": "open_question",
    "scope_source": "OWNER:1795575596337863702",
    "source": [
     "OWNER:1795575596337863702",
@@ -1103,7 +1103,7 @@
    "impl": "absent",
    "search_scope": "src/RimMandrake/Pyrelands/Defs for a WeatherDef whose label holds smoke, and the RM_Pyrelands baseWeatherCommonalities: none (python3 src/RimMandrake/rimflow/acceptance/pyre_smoke_weather_accept.py reads PASS 2/6 on 2026-11-26); the one smoke weather of ours, RM_SmokeHazeCondition, is the Long Shade's",
    "proof": "missing",
-   "scope": "opened_by_owner",
+   "scope": "open_question",
    "scope_source": "OWNER:1794596217832546098",
    "source": [
     "OWNER:1794596217832546098",
@@ -1121,7 +1121,7 @@
    "impl": "absent",
    "search_scope": "src/RimMandrake/Pyrelands/Source: MapComponent_BurnLine.IsPyrelandsMap and PyrelandsTuning.PyrelandsBiomeDefNames still gate the mechanics (RM_JobGiver_BurrowOnFire.cs, MapComponent_BurnLine.cs, PyrelandsForeignArrivals.cs), PyrelandsMechanicsGate reads the per-biome Enabled(key), and RM_PyrelandsSettings.crossBiomeEnabled with its three sub-settings is still a setting (design/specs/2026-11-21-guiding-principles/conversion_list.md, section Pyrelands, rows code 2 to code 12)",
    "proof": "missing",
-   "scope": "opened_by_owner",
+   "scope": "open_question",
    "scope_source": "OWNER:1795300545913453919",
    "source": [
     "OWNER:1795300545913453919",
