@@ -231,11 +231,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.18,
+    "seconds": 0.16,
     "last": "MOCK: PASS (41/41 scenes staged, all_green=False)",
-    "at": "2026-11-25T12:36:54Z",
+    "at": "2026-11-26T02:31:46Z",
     "result": "PASS",
-    "build": "c359405b9c55ff17976d",
+    "build": "7f39d06ba0fa9e7c0d07",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_script.py",
     "margins": []
    }
@@ -255,11 +255,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.68,
+    "seconds": 5.95,
     "last": "PASS proofgate (R1 P1 D1 G1)",
-    "at": "2026-11-25T14:21:20Z",
+    "at": "2026-11-26T02:31:52Z",
     "result": "PASS",
-    "build": "8575fd1efc73977e2e2a",
+    "build": "083f85f71b480fb73fe9",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py",
     "margins": []
    }
@@ -276,12 +276,12 @@
    "command": "python3 src/RimMandrake/Utils/selftest_proof_restore_check.py",
    "runs_today": {
     "ran": true,
-    "rc": 0,
-    "seconds": 13.33,
-    "last": "selftest_proof_restore_check: PASS (0 failure(s))",
-    "at": "2026-11-25T12:37:11Z",
-    "result": "PASS",
-    "build": "57ad7dcde2f6e8218ff1",
+    "rc": 1,
+    "seconds": 10.98,
+    "last": "selftest_proof_restore_check: FAIL (1 failure(s))",
+    "at": "2026-11-26T02:32:03Z",
+    "result": "FAIL",
+    "build": "ed468f63493800ea3927",
     "command": "python3 src/RimMandrake/Utils/selftest_proof_restore_check.py",
     "margins": []
    }
@@ -454,9 +454,9 @@
     "rc": 0,
     "seconds": 0.02,
     "last": "PASS stage3 scenes: 0 failed",
-    "at": "2026-11-25T12:37:14Z",
+    "at": "2026-11-26T02:32:03Z",
     "result": "PASS",
-    "build": "accc6699014bd8fed4b5",
+    "build": "84bd13822caed33f768a",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_stage3_scenes.py",
     "margins": []
    }
@@ -2733,11 +2733,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.88,
-    "last": "PASS blast show: 0 of 26 line(s) failing",
-    "at": "2026-11-25T12:37:25Z",
+    "seconds": 3.12,
+    "last": "PASS blast show: 0 of 28 line(s) failing",
+    "at": "2026-11-26T02:32:06Z",
     "result": "PASS",
-    "build": "cca034cd343a6325ca67",
+    "build": "2b1701b1a8675295b57b",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_blast_show.py",
     "margins": []
    }
