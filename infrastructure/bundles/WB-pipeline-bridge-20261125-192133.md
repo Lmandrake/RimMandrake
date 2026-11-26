@@ -52,13 +52,13 @@ from 1:20 PM PST: context 150k at start, 330k at the first save, about 420k at t
 | PEN_ANIMALS_UNSTICK_STATUES_LEARN_TO_WALK | done (run 3) | heat theory refuted (lane J20261125T224621Z-837802: all inside comfortable range); cause RM_JobGiver_ShadeHop rests penned animals 600-1500 ticks by design. b931622136: pen_release counts only a giverless Wait as pinned, census job rows carry startTick/expiry/giver, PEN2 proves its pin reading on the pinned state and reads moves at 600 and 9000 ticks. Lane J20261125T225920Z-f8bd9f PASS (65 released, givers ShadeHop 57, wander 8; 47 moved by 9000) |
 
 ## Next, in order
-1. Fresh reader (role step 4) of run 3's fixes: a99e90a41d (cli.py --host take exit), b931622136 (JawaBenchPenTools.cs, JawaBenchSituationalTools.cs census, bridge_bundle_proof.py PEN2).
-2. BRIDGE_TPS_REVIEW2_FIXES_1 C3: the controlled interruption matrix, items 1 and 2 of design/RimMandrake/tps_record.md
-   §Acceptance (the doc rewrite puts item 3 in C4), read from the record files (tps_record.py, tps_observer.py), with
-   jawa/tps_test_block (0.5-120 s main-thread blocks): 2-10 s hitches and 40/90 s blocks as ONE incident each, a save
-   as a longevent, a hang plus kill leaving silence rows and an exited-without-shutdown observer row, forced kills near
-   segment boundaries. The observer is a Windows scheduled task ("RimMandrake\TPS Observer", Archmagi, every 2 min);
-   on SteveDesktop run it by hand (`python.exe src/RimMandrake/Utils/tps_observer.py --print`; under WSL it declares
-   no exit). C4 (full list): REFUSE.
-3. Polish lines from run 1's fresh reader (one line each, no ticket): the rerun tail mixes the first run's text; mixed
-   python.exe/python3 lines rerun their python.exe parts; TPS/FRAME/HOOKS leave the game Paused.
+1. BRIDGE_TPS_REVIEW2_FIXES_1 C3: a builder subagent (run 3) builds clause TPSC3 in bridge_bundle_proof.py (design and
+   progress: /mnt/d/ClaudeWork/rimmandrake/bundles/WB-pipeline-bridge-20261125-192133/tps_c3/PROGRESS.md): autostart
+   with no bridge client, hitches 2-10 s, 40/90 s blocks, a save as longevent, hang+kill, kills at boundaries, a
+   2.05-2.45 s edge sweep for its finding that the watchdog sets QuietPhase only when a 1 s sample sees quiet > 1.5 s
+   (JawaBenchTpsWatchdog.cs:229), so a gap of 2.0-2.5 s can miss its 'blocked in' phase. On SteveDesktop python.exe
+   needed tzdata (pip install --user tzdata, done 2026-11-25). C4: REFUSE (full list).
+2. Polish of bridge_bundle_proof.py once TPSC3 lands (this bundle changes it): the two lines in
+   design/specs/2026-11-23-steve-two-games-lane/polish.md that name it (TPS/FRAME/HOOKS leave the game Paused; an
+   unrelated failed call reads as refused or fresh).
+Run 3's fresh reader (a99e90a41d, b931622136): nothing significant; its pen_job_class nit goes in with TPSC3.
