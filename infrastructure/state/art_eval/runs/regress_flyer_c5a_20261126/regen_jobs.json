@@ -1,0 +1,82 @@
+[
+ {
+  "id": "arteval_RM_Huldu__C_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Huldu",
+  "prompt": "RimWorld creature sprite of a huldu, a forearm-length alien swimmer, painterly vanilla RimWorld style, realistic, transparent background. The body is long, low and smooth-skinned, with short, matte, velvety hide that has a soft sheen in smooth continuous painted tone, in dusky slate-olive on the back fading to a paler warm grey belly. The head is a blunt wedge with a bare muzzle and a smooth, earless skull. The eyes are small, dull and dark, set wide and high on the head. The mouth is a flat, neutral, closed line. The expression is realistic and unsettling. Four short limbs, held close and tucked under the body, end in long, slender, splayed clasping fingers made for gripping a forearm. The tail is a flat paddle that tapers to a blunt tip. A dorsal comb of thin, flattened, fin-like rays, slightly paler and more translucent than the hide, lies flat along the spine from nape to tail base, like wet fur combed back. The body rests low and level in a calm, poised pose. Soft painted edges; value and colour contrast against the ground carry the silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, DEPARTURE_MISSING, F_INCONSISTENT, F_TOPDOWN, STYLE_CARTOON, STYLE_OFF, DESC_MISS; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "regress_flyer_c5a_20261126",
+  "drawsize": 0.8,
+  "module": "swimmer",
+  "target_texpath": "Things/Pawn/Animal/RM_Huldu/RM_Huldu"
+ },
+ {
+  "id": "arteval_RM_Ssurr__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Ssurr",
+  "prompt": "RimWorld creature sprite sheet of Ssurr, a hound-sized alien reptile, transparent background, painterly vanilla RimWorld style, realistic, soft painted edges, value and colour contrast carry the silhouette. Subject: a single enormous half-circle crest-fan stands upright across the neck behind the skull, rooted in the skull and first neck vertebrae as part of the body plan. Open, it is a wheel; folded, it is a blade. Body plan: a long wedge-shaped head with a bony crest root flowing into the fan ribs, a flat lipless jawline, a scaled brow ridge, and small recessed slit-pupilled dull amber eyes with a neutral watchful expression. Four digitigrade legs with a double-jointed backward-bending hock and broad splayed three-toed feet with blunt claws. A tapering tail, a teal back and flanks with darker teal mottling, and cream underparts. The fan membrane is glossy, mottled pale cream and teal, with fine ribs. Three open-fan views at one shared scale, with the same overall height and fan diameter in each: the front view (south), eyes toward the viewer, fan face-on as a broad half-disc behind the head; the rear view (north), seen from behind, showing the back, tail and haunches with the eyes hidden, the teal mottled back and the same mottled pale-and-teal fan face-on; the side view (east), head to the right, fan edge-on as a narrow upright blade behind the head, as tall as the fan is wide in the front view. A second state, the closed fan, in the side view: the fan folded flat along the neck and spine as a single narrow blade, same body, same colours, same scale.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT, STYLE_OFF, STYLE_CARTOON, DEPARTURE_MISSING, STYLE_EARTHLY, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "regress_flyer_c5a_20261126",
+  "drawsize": 1.1,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Ssurr/RM_Ssurr"
+ },
+ {
+  "id": "arteval_RM_Vellak__B_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Vellak",
+  "prompt": "reference: none. A single painterly RimWorld creature sprite, the Vellak, a camel-tall alien strider of the dry country, on a transparent background. Painterly vanilla RimWorld style, realistic, with soft brush-blended shading, subtle hide texture, soft painted edges, and smooth tonal gradation across the flank. Value and colour contrast against the ground carry the silhouette. Anatomy: a slim, low-slung torso with a ridged spine built as a row of tall bony struts. The neck is long, straight and stilt-like, held forward and slightly down. The head is a narrow wedge skull with a ridged brow, a hooked horn-plate beak, and two large amber eyes set high at the sides. The legs are very long and slender, digitigrade, with a backward-bending lower joint and thin cannon bones. The feet are three long splayed toes on broad horn plates, like a wading bird's. The tail is a thin whip ending in a small bone-pale tuft. Sail-comb: the bony spine struts carry a fanned dorsal sail of thin ribbed membrane, faded terracotta on cream ribs, rising where a camel would carry a hump. Colours: dust-tan hide with ochre and rust shading, bone-cream underbelly, dark horn on beak and foot plates. Facings: the east view (side view, the animal walking toward the right) shows the full broad lengthwise sail along the whole spine, long neck forward, all four legs in stride. The south view (front view, eyes toward the viewer) shows the wedge face, the two amber eyes, and the neck, with the sail seen edge-on as one tall narrow comb of thin ribs rising straight up, centred over the midline of the back, symmetrical left and right. The north view (rear view, seen from behind) shows the back of the head and neck, the haunches and the whip tail, eyes hidden, with the same tall narrow edge-on comb rising straight up, centred over the spine. The west view mirrors the east view. Every facing is the same animal, with matching skull, neck, feet, tail and sail colours.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, STYLE_OFF, F_INCONSISTENT, STYLE_CARTOON",
+  "reference": "",
+  "priority": 40,
+  "source_run": "regress_flyer_c5a_20261126",
+  "drawsize": 2,
+  "module": "pack",
+  "target_texpath": "Things/Pawn/Animal/RM_Vellak/RM_Vellak"
+ },
+ {
+  "id": "arteval_RSW_Porg__birdG_5ee3fc2dc2_r1_flight",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Porg",
+  "prompt": "A small, plump, round seabird, the porg of Ahch-To, in painterly vanilla RimWorld style, realistic, on a transparent background. Soft painted edges; value and colour contrast against the ground carry the silhouette. Body plan: a compact round body with a flat, beakless face and large dark eyes, white belly and flanks, brown back, and short brown stub wings. The round belly sits low and nearly touches the ground, with only short orange legs and small webbed orange feet showing beneath it, mostly tucked under the belly. The body plate is the whole round porg body in every view: full white belly and flanks with their natural curved outline, complete and intact. The south view shows the front, eyes toward the viewer. The north view shows the rear: back, tail and haunches, eyes hidden. The east view shows a complete painted side of the body, with a feathered brown back and white flank under the wing position. South, east and north show the porg at one shared scale, with the same body height and the same body width in all three views. Each wing layer holds only the short brown stub wing, with a clean, continuous feathered outline and all feather pixels attached to the wing. The wing lifts away from an intact body, and the body stays complete and round beneath it. The area around the body and wing is clear transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: FLYER_BODY_RIP, FLYER_BODY_RIP, F_SIZE_JUMP, FLYER_WING_SPECKS, CANON_MISS; flight reroll held for the layered recipe: no wing design for RSW_Porg in design/RimMandrake/flyer_wing_designs.json; no accepted body master (derive_from); acceptance: flyer_gate.py flipbook Porg (exit 0), never a judge's look at a whole-creature frame",
+  "reference": "",
+  "priority": 40,
+  "source_run": "regress_flyer_c5a_20261126",
+  "drawsize": 1.0,
+  "module": "flyer",
+  "target_texpath": "swanimals/Porg/Porg"
+ }
+]

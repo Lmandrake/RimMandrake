@@ -25,7 +25,7 @@ A new code, or a code moved between columns, is a **criteria change**: add a row
 
 ```json policy
 {
-  "version": "severity@v5",
+  "version": "severity@v6",
   "high_confidence": 0.8,
   "codes": {
     "F_NORTH_FACE":        {"brief": "C1", "default": "blocking", "means": "north shows a face or eyes; north is the rear"},
@@ -58,6 +58,11 @@ A new code, or a code moved between columns, is a **criteria change**: add a row
     "LUMP":                {"brief": "A2", "default": "blocking", "means": "reads as a blob or hill rather than the thing"},
     "CONSTRUCTED":         {"brief": "A2", "default": "blocking", "means": "a natural thing that looks man-made"},
     "FLYER_BODY_MOVES":    {"brief": "C4", "default": "blocking", "means": "flight frames: body bobs or changes; only wings may move"},
+    "FLYER_HEAD_MOVES":    {"brief": "C5a", "default": "blocking", "means": "flight frames: the head shifts or the eyes do not stay level"},
+    "FLYER_WING_BAKED":    {"brief": "C5a", "default": "blocking", "means": "a wing is baked into the body (the plate), so two wings show while one flaps"},
+    "FLYER_WING_SPECKS":   {"brief": "C5a", "default": "blocking", "means": "a wing breaks into specks or static-like noise where it turns edge-on"},
+    "FLYER_BODY_RIP":      {"brief": "C5a", "default": "blocking", "means": "body pixels leave with a lifted wing, or the body is left a straight sliced side"},
+    "FLYER_PART_MISSING":  {"brief": "C5a", "default": "blocking", "means": "a facing lacks art for one of its parts: an empty quadrant, a wing that never moves"},
     "FLYER_WINGS_GROUNDED":{"brief": "C5", "default": "polish",   "means": "grounded sprite shows raised/spread wings",
                             "why_polish": "owner kept Dactillion with raised grounded wings, 2026-10-10"},
     "SWIM_WATERLINE":      {"brief": "C2", "default": "polish",   "means": "swimming lane does not read as the body at the surface"},

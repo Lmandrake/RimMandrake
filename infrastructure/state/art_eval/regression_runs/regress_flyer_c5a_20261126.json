@@ -1,0 +1,126 @@
+{
+ "versions_key": "regress#89965c3451e362eecd2c0e109e004d9d83105c662c57d51b07da57af1e152dce",
+ "run": "regress_flyer_c5a_20261126",
+ "at": "2026-11-26T00:37:38-08:00",
+ "passed": 5,
+ "total": 13,
+ "unmeasured": 8,
+ "rows": [
+  {
+   "subject": "RM_Shadefern",
+   "expect": "ACCEPT",
+   "got": "ACCEPT",
+   "pass": true,
+   "unmeasured": false,
+   "why": "owner kept Shadefern B on 2026-10-10."
+  },
+  {
+   "subject": "RM_Huldu",
+   "expect": "NOT_ACCEPT",
+   "got": "REGEN",
+   "pass": true,
+   "unmeasured": false,
+   "why": "owner REDO, weepingstones sheet sitting 2026-10-10"
+  },
+  {
+   "subject": "RM_Ssurr",
+   "expect": "NOT_ACCEPT",
+   "got": "REGEN",
+   "pass": true,
+   "unmeasured": false,
+   "why": "owner REDO, weepingstones sheet sitting 2026-10-10"
+  },
+  {
+   "subject": "RM_Vellak",
+   "expect": "NOT_ACCEPT",
+   "got": "REGEN",
+   "pass": true,
+   "unmeasured": false,
+   "why": "owner REDO, weepingstones sheet sitting 2026-10-10"
+  },
+  {
+   "subject": "RM_Murrin",
+   "expect": "NOT_ACCEPT",
+   "got": "HOLD_ERROR",
+   "pass": false,
+   "unmeasured": true,
+   "why": "guard: the relaxation must still reject an owner REDO swimmer"
+  },
+  {
+   "subject": "RM_Dewblade",
+   "expect": "ACCEPT",
+   "got": "HOLD_ERROR",
+   "pass": false,
+   "unmeasured": true,
+   "why": "owner kept Dewblade B 2026-10-10; incumbent REGEN, V1cal ACCEPT."
+  },
+  {
+   "subject": "RM_DecayDrake",
+   "expect": "ACCEPT",
+   "got": "HOLD_ERROR",
+   "pass": false,
+   "unmeasured": true,
+   "why": "owner PICKED DecayDrake column C (r2) on owner_escalations_cauldron_sheet_2026-10-24; pipeline REGEN on F_SIZE_JUMP (CL-035)"
+  },
+  {
+   "subject": "RM_Durrok",
+   "expect": "ACCEPT",
+   "got": "HOLD_INPUT",
+   "pass": false,
+   "unmeasured": true,
+   "why": "owner POOLED Durrok column B (r2) on owner_escalations_leaningscrub_1_sheet_2026-10-24; pipeline REGEN on F_SIZE_JUMP. His pick was a style call (owner 2026-11-17, asked about Durrok r2 and Gawpsack shown beside Peeper r2: \"I was undoubtedly expressing style decisions.\"), and C2 lets the judge refuse its facing size jump (owner 2026-11-19: \"Allow the Judge to bounce incorrectly sized creatures\"), so it is no planted case",
+   "missing_images": [
+    "south",
+    "east",
+    "north",
+    "scale"
+   ]
+  },
+  {
+   "subject": "RM_Gawpsack",
+   "expect": "ACCEPT",
+   "got": "HOLD_INPUT",
+   "pass": false,
+   "unmeasured": true,
+   "why": "owner PICKED live Gawpsack (column A) on owner_escalations_contagion_sheet_2026-10-24; pipeline REALLY_BAD on DEPARTURE_MISSING. His pick was a style call (owner 2026-11-17: \"I was undoubtedly expressing style decisions.\"), and C2 lets the judge refuse its facing size jump (owner 2026-11-19: \"Allow the Judge to bounce incorrectly sized creatures\"), so it is no planted case; his keep is planted as kept_RM_Gawpsack_live (E3)",
+   "missing_images": [
+    "south",
+    "east",
+    "north",
+    "scale"
+   ]
+  },
+  {
+   "subject": "RM_Peeper",
+   "expect": "NOT_ACCEPT",
+   "got": "HOLD_ERROR",
+   "pass": false,
+   "unmeasured": true,
+   "why": "owner PURGED Peeper r2 on owner_escalations_contagion_sheet_2026-10-24 because he no longer wanted that animal (owner 2026-11-17, asked whether he refused it for its facing size: \"Correct, not size.\"; 2026-11-19: \"it was because I didn't want those animals anymore\"); C2 refuses it blind on its facing size jump (height 1.45x), and guard: an F_SIZE_JUMP relaxation passes it (replay 2026-10-24)"
+  },
+  {
+   "subject": "RM_Danglemaw",
+   "expect": "NOT_ACCEPT",
+   "got": "HOLD_ERROR",
+   "pass": false,
+   "unmeasured": true,
+   "why": "owner PURGED Danglemaw r1 on owner_escalations_contagion_sheet_2026-10-24; guard: a DEPARTURE_MISSING confidence floor passes it (replay 2026-10-24)"
+  },
+  {
+   "subject": "RM_FireHawk",
+   "expect": "NOT_ACCEPT",
+   "got": "HOLD_ERROR",
+   "pass": false,
+   "unmeasured": true,
+   "why": "owner 2026-11-07, truth-set bird A (FireHawk frames at af2991860e): east shows two wings (a folded wing baked into the plate) and static-like noise where the wing turns edge-on; the judge passed it from contact sheets (PASS 0.99, east ok)"
+  },
+  {
+   "subject": "RSW_Porg",
+   "expect": "NOT_ACCEPT",
+   "got": "REGEN",
+   "pass": true,
+   "unmeasured": false,
+   "why": "owner 2026-11-07, truth-set bird G (Porg frames at 5ee3fc2dc2): 'some of the white flesh appears to rip away from the body'; he had accepted these frames from stills on 2026-11-06 and the judge passed them (PASS 0.90)"
+  }
+ ]
+}

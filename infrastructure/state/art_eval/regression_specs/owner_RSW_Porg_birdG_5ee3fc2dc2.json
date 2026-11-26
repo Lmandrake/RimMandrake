@@ -1,0 +1,81 @@
+{
+ "subject": "RSW_Porg",
+ "label": "porg",
+ "template": "creature",
+ "module": "flyer",
+ "candidate": "birdG_5ee3fc2dc2",
+ "provenance": "live flip-book frames at commit 5ee3fc2dc2, built as a cut-out; parts sheet from its cut-out config",
+ "description": "A small, round seabird native to Ahch-To, with a flat, beakless face and short wings. Porgs dive for fish and crustaceans, and investigate shiny belongings with little regard for ownership.",
+ "tier": "RSW_",
+ "invented": true,
+ "size": {
+  "drawSize": [
+   1.0,
+   1.0
+  ]
+ },
+ "source": "RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Porg.xml",
+ "owner_kept": false,
+ "flight_labels": [
+  "east f1",
+  "east f2",
+  "east f3",
+  "east f4",
+  "east f5",
+  "east f6",
+  "east f7",
+  "east f8",
+  "north f1",
+  "north f2",
+  "north f3",
+  "north f4",
+  "north f5",
+  "north f6",
+  "north f7",
+  "north f8",
+  "south f1",
+  "south f2",
+  "south f3",
+  "south f4",
+  "south f5",
+  "south f6",
+  "south f7",
+  "south f8"
+ ],
+ "images": {
+  "south": "infrastructure/state/art_eval/regression_images/RSW_Porg_birdG_5ee3fc2dc2/south.png",
+  "east": "infrastructure/state/art_eval/regression_images/RSW_Porg_birdG_5ee3fc2dc2/east.png",
+  "north": "infrastructure/state/art_eval/regression_images/RSW_Porg_birdG_5ee3fc2dc2/north.png",
+  "scale": "infrastructure/state/art_eval/regression_images/RSW_Porg_birdG_5ee3fc2dc2/scale.png",
+  "flight": [
+   "infrastructure/state/art_eval/regression_images/RSW_Porg_birdG_5ee3fc2dc2/flight_east_1.png",
+   "infrastructure/state/art_eval/regression_images/RSW_Porg_birdG_5ee3fc2dc2/flight_east_2.png",
+   "infrastructure/state/art_eval/regression_images/RSW_Porg_birdG_5ee3fc2dc2/flight_east_3.png",
+   "infrastructure/state/art_eval/regression_images/RSW_Porg_birdG_5ee3fc2dc2/flight_east_4.png",
+   "infrastructure/state/art_eval/regression_images/RSW_Porg_birdG_5ee3fc2dc2/flight_east_5.png",
+   "infrastructure/state/art_eval/regression_images/RSW_Porg_birdG_5ee3fc2dc2/flight_east_6.png",
+   "infrastructure/state/art_eval/regression_images/RSW_Porg_birdG_5ee3fc2dc2/flight_east_7.png",
+   "infrastructure/state/art_eval/regression_images/RSW_Porg_birdG_5ee3fc2dc2/flight_east_8.png",
+   "infrastructure/state/art_eval/regression_images/RSW_Porg_birdG_5ee3fc2dc2/flight_north_1.png",
+   "infrastructure/state/art_eval/regression_images/RSW_Porg_birdG_5ee3fc2dc2/flight_north_2.png",
+   "infrastructure/state/art_eval/regression_images/RSW_Porg_birdG_5ee3fc2dc2/flight_north_3.png",
+   "infrastructure/state/art_eval/regression_images/RSW_Porg_birdG_5ee3fc2dc2/flight_north_4.png",
+   "infrastructure/state/art_eval/regression_images/RSW_Porg_birdG_5ee3fc2dc2/flight_north_5.png",
+   "infrastructure/state/art_eval/regression_images/RSW_Porg_birdG_5ee3fc2dc2/flight_north_6.png",
+   "infrastructure/state/art_eval/regression_images/RSW_Porg_birdG_5ee3fc2dc2/flight_north_7.png",
+   "infrastructure/state/art_eval/regression_images/RSW_Porg_birdG_5ee3fc2dc2/flight_north_8.png",
+   "infrastructure/state/art_eval/regression_images/RSW_Porg_birdG_5ee3fc2dc2/flight_south_1.png",
+   "infrastructure/state/art_eval/regression_images/RSW_Porg_birdG_5ee3fc2dc2/flight_south_2.png",
+   "infrastructure/state/art_eval/regression_images/RSW_Porg_birdG_5ee3fc2dc2/flight_south_3.png",
+   "infrastructure/state/art_eval/regression_images/RSW_Porg_birdG_5ee3fc2dc2/flight_south_4.png",
+   "infrastructure/state/art_eval/regression_images/RSW_Porg_birdG_5ee3fc2dc2/flight_south_5.png",
+   "infrastructure/state/art_eval/regression_images/RSW_Porg_birdG_5ee3fc2dc2/flight_south_6.png",
+   "infrastructure/state/art_eval/regression_images/RSW_Porg_birdG_5ee3fc2dc2/flight_south_7.png",
+   "infrastructure/state/art_eval/regression_images/RSW_Porg_birdG_5ee3fc2dc2/flight_south_8.png"
+  ],
+  "parts": [
+   "infrastructure/state/art_eval/regression_images/RSW_Porg_birdG_5ee3fc2dc2/parts.png"
+  ]
+ },
+ "graphic_class": "Graphic_Multi"
+}

@@ -10,7 +10,10 @@ panels a card must carry, and the checklist every reviewer answers item by item.
   full resolution (`south.png`, `east.png`, `north.png`).
 - **scale.png** — the candidate beside a vanilla human and a rat at true in-game size: max zoom, normal play
   (32 px per cell), zoomed out.
-- **flight.png** (flyers with a flip-book) — every flight frame per direction.
+- **flight_N.png** (flyers with a flip-book) — each flight frame alone, at full size; card.md names each one's facing
+  and frame number.
+- **parts_N.png** (flyers built as a cut-out flip-book) — the parts sheet: one row per facing; the first column is the
+  plate (the body that stays on screen in every frame), each further column one wing layer alone.
 - **living_reference.png** (catch items) — the LIVING animal's facings. It is a reference, not a candidate.
 - **siblings.png** (when given) — the owner-kept other sex, lifestages or variants: the style and size target.
 
@@ -49,6 +52,19 @@ Grounded: wings folded and symmetric (raised wings are polish — the owner kept
 body hold still across frames; only wings move — owner 2026-10-20: *"Their bodies should be kept static while the
 wings flap."* Judge from stills only; never ask for a live capture.
 
+Look at the flight frames one at a time, at full size, never only as a strip (brief C5a, owner 2026-11-07). Frames with
+the faults below passed a still-image check, and he saw each one in motion:
+- the head holds still and the eyes stay level from frame to frame;
+- no wing lies baked along the body while another wing flaps: the parts sheet's plate column must be a wingless body
+  with its own natural outline, never a folded wing along the flank (FireHawk east: *"you see two wings: the moving
+  one, and the "down" one at the same time"*);
+- no wing breaks into specks or static-like noise where it turns edge-on (FireHawk: *"strange static-like noise"*);
+- no body pixels leave with a lifted wing: each wing layer on the parts sheet holds wing and nothing else, and the
+  plate has no straight sliced side (Porg: *"some of the white flesh appears to rip away from the body"*);
+- every part of every facing has its art: no empty quadrant, no wing that never moves.
+A flip-book with no parts sheet is not a cut-out, or its sheet could not be made: then judge the plate and layers from
+the frames, and answer `unreadable` with what you could not see rather than `ok`.
+
 ### Module: catch (an item: one picture)
 A catch is the caught creature as an **object**: a dead specimen of THE SAME body as `living_reference.png`,
 lying on the ground — limp, eyes shut or dull. Mid-swim, mid-leap, propped up or hanging in water is
@@ -59,7 +75,7 @@ the catch waits for it whatever you say here.
 ```json template
 {
   "template": "creature",
-  "version": "creature@v4",
+  "version": "creature@v5",
   "modules": ["walker", "pack", "swimmer", "amphibious", "flyer", "catch"],
   "required_panels": {
     "*":     ["south", "east", "north", "facings", "scale"],
@@ -85,6 +101,11 @@ the catch waits for it whatever you say here.
     {"id": "LEGIBLE",       "q": "At 32 px per cell does it read as a few bold shapes apart from the ground?", "code": "LEGIB_32"},
     {"id": "WINGS_FOLDED",  "q": "Grounded: wings folded and symmetric?", "code": "FLYER_WINGS_GROUNDED", "modules": ["flyer"]},
     {"id": "BODY_STATIC",   "q": "Flight frames: body still, only wings move?", "code": "FLYER_BODY_MOVES", "modules": ["flyer"], "when": "flight"},
+    {"id": "HEAD_STILL",    "q": "Flight frames one at a time: does the head hold still with the eyes level in every frame?", "code": "FLYER_HEAD_MOVES", "modules": ["flyer"], "when": "flight"},
+    {"id": "WING_BAKED",    "q": "Is any wing baked into the body (a folded wing along the flank, or the parts sheet's plate holding wing) so that two wings show while one flaps?", "code": "FLYER_WING_BAKED", "modules": ["flyer"], "when": "flight"},
+    {"id": "WING_SPECKS",   "q": "Where a wing turns edge-on, does it break into specks, broken outlines or static-like noise?", "code": "FLYER_WING_SPECKS", "modules": ["flyer"], "when": "flight"},
+    {"id": "BODY_RIP",      "q": "Does a lifted wing carry body pixels (belly, flank) away, or leave the body a straight sliced side (parts sheet: body colour in a wing layer)?", "code": "FLYER_BODY_RIP", "modules": ["flyer"], "when": "flight"},
+    {"id": "PART_MISSING",  "q": "Does every part of every facing have its art in every frame: no empty quadrant, no wing that never moves?", "code": "FLYER_PART_MISSING", "modules": ["flyer"], "when": "flight"},
     {"id": "WATERLINE",     "q": "Swimming lane reads as the body at the surface?", "code": "SWIM_WATERLINE", "modules": ["swimmer", "amphibious"], "when": "swim_lane"},
     {"id": "CATCH_SPECIES", "q": "Is the catch the same body as the living reference?", "code": "CATCH_WRONG", "modules": ["catch"]},
     {"id": "CATCH_DEAD",    "q": "Is it a dead specimen lying on the ground (limp, eyes shut/dull), not posed alive?", "code": "CATCH_POSE", "modules": ["catch"]}

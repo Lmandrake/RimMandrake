@@ -161,6 +161,7 @@ def codes_table(policy: dict, items: list) -> str:
 def image_list(card: dict) -> list:
     order = ["facings", "south", "east", "north", "west", "single", "scale", "wall_context", "living_reference", "head_reference", "siblings"]
     out = [card["panels"][k] for k in order if isinstance(card["panels"].get(k), str)]
+    out += [card["panels"][k] for k in card["panels"].get("parts", [])]   # a sheet each, never tiled smaller
     for many in ("flight", "variants", "assembled"):
         out += [card["panels"][k] for k in card["panels"].get(many, [])]
     return out
@@ -1145,6 +1146,15 @@ def regress_row(row: dict, subject: str, d: str) -> dict:
     return out
 
 
+def regress_set() -> tuple[list, list, str]:
+    """(rows, specs, versions key) of the regression set on the current prompts and templates: the key a regress run
+    records, so regress_holds.py can tell a run made on these versions from an older one."""
+    rows = [json.loads(l) for l in (STATE / "regression.jsonl").read_text().splitlines() if l.strip()]
+    specs = [C.pilot_spec(r["pilot"]) if r.get("pilot") else C.load_spec(ROOT / r["spec"]) for r in rows]
+    versions = {t: prompt_versions(t) for t in sorted({s["template"] for s in specs})}
+    return rows, specs, "regress#" + hashlib.sha256(json.dumps(versions, sort_keys=True).encode()).hexdigest()
+
+
 def regress(rev: Reviewers | None = None, run_id: str | None = None, max_new: int | None = None) -> dict:
     """Re-run every regression row on the current prompt versions; a row passes when the decision lands in its
     expected class (ACCEPT vs not). Writes infrastructure/state/art_eval/regression_runs/<run>.json.
@@ -1152,12 +1162,9 @@ def regress(rev: Reviewers | None = None, run_id: str | None = None, max_new: in
     call and returns {"incomplete": n} while judgeable rows remain. Missing pictures hold a row unmeasured and
     can be retried on resume. A resume requires a matching fingerprint of the prompts and every template used
     by the set (regression_resume_mixes_plant_versions)."""
-    rows = [json.loads(l) for l in (STATE / "regression.jsonl").read_text().splitlines() if l.strip()]
-    specs = [C.pilot_spec(r["pilot"]) if r.get("pilot") else C.load_spec(ROOT / r["spec"]) for r in rows]
+    rows, specs, vk = regress_set()
     rid = run_id or "regress_" + dt.datetime.now().strftime("%Y%m%dT%H%M%S")
     rdir = STATE / "runs" / rid
-    versions = {t: prompt_versions(t) for t in sorted({s["template"] for s in specs})}
-    vk = "regress#" + hashlib.sha256(json.dumps(versions, sort_keys=True).encode()).hexdigest()
     manifest, decisions = rdir / "run.json", rdir / "decisions.jsonl"
     done = set()
     if manifest.is_file() or decisions.is_file():

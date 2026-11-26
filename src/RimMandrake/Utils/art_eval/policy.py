@@ -105,6 +105,11 @@ def card_facts(card: dict, policy: dict | None = None) -> set:
     for key in ("departures", "canon", "siblings", "owner_notes", "flight", "swim_lane", "ports"):
         if card.get(key):
             f.add(key)
+    # a picture set is on the card's panels, never a top-level key (build_card drops `images`): without this the
+    # flight items were never asked (selftest_flyer_c5a, CL-047)
+    for key in ("flight", "parts"):
+        if (card.get("panels") or {}).get(key):
+            f.add(key)
     if card.get("earth_body_named"):
         f.add("earth_body_named")
     if card.get("body_plan"):

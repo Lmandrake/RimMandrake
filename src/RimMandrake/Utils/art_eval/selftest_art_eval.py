@@ -1317,7 +1317,8 @@ def run_checks():
             sp = FS.build_spec("RM_Bird", tb, kb, tex3, td / "o", kept_lookup=lambda f: [])
             check("flight frames come from the kind's flyingAnimationFramePathPrefix",
                   sp["module"] == "flyer" and sp.get("images_flight_note") == {"south": 2, "east": 1}
-                  and len(sp["images"].get("flight", [])) == 2, (sp.get("images_flight_note"), sp["images"].get("flight")))
+                  and len(sp["images"].get("flight", [])) == 3 and sp.get("flight_labels") == ["east f1", "south f1", "south f2"],
+                  (sp.get("images_flight_note"), sp["images"].get("flight"), sp.get("flight_labels")))
             kb["RM_Bird"][0][1].find("flyingAnimationFramePathPrefix").text = "Z/Nothing_Flying_"
             sp = FS.build_spec("RM_Bird", tb, kb, tex3, td / "o", kept_lookup=lambda f: [])
             check("a prefix with no frame art under src/ is said, not an empty strip list",

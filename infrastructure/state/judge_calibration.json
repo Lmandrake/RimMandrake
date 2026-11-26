@@ -288,6 +288,14 @@
     {
      "expect": "refuse",
      "id": "first_pass_RM_Danglemaw_r1"
+    },
+    {
+     "expect": "refuse",
+     "id": "first_pass_RM_FireHawk_birdA_af2991860e"
+    },
+    {
+     "expect": "refuse",
+     "id": "first_pass_RSW_Porg_birdG_5ee3fc2dc2"
     }
    ],
    "reset_at": "2026-11-24T18:27:53Z",
@@ -1057,6 +1065,14 @@
     {
      "expect": "refuse",
      "id": "regress_RM_Danglemaw_r1"
+    },
+    {
+     "expect": "refuse",
+     "id": "regress_RM_FireHawk_birdA_af2991860e"
+    },
+    {
+     "expect": "refuse",
+     "id": "regress_RSW_Porg_birdG_5ee3fc2dc2"
     },
     {
      "expect": "pass",

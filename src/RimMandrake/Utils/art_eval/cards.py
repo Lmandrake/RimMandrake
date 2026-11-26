@@ -8,7 +8,9 @@ A card is a directory:
     facings.png      south/east/north(/west) side by side on a checkerboard at ONE shared scale, labelled
     south.png …      each facing alone at full resolution;  single.png for plants/items
     scale.png        the true-scale panel (beside a vanilla human) — from scale_panel.py upstream
-    living_reference.png  (catch) the living animal's facings;  siblings.png, variants.png, flight.png,
+    living_reference.png  (catch) the living animal's facings;  siblings.png, variants_N.png
+    flight_N.png     (flyers) each flight frame alone, at full size; card.md names its facing and frame
+    parts_N.png      (cut-out flyers) the parts sheet: per facing, the plate and each wing layer alone
     assembled_N.png  (machines) the in-game capture(s)
 
 Input is a SPEC (JSON) naming files; `pilot_spec()` makes one from the 2026-10-23 pilot bundle
@@ -36,6 +38,8 @@ FACINGS = ("south", "east", "north", "west")
 VISIBLE_ALPHA = 16          # rimworld-sprite-facings: never measure at alpha > 0 (sub-visible export halo)
 # composite reference panels: (catch items) the living animal, the owner-kept siblings, (head attachments) the head
 COMPOSITES = ("living_reference", "siblings", "head_reference")
+# numbered picture sets (<set>_<n>.png); `parts` is a cut-out flyer's parts sheet (flyer_eye_checks.py parts), one per set
+PICTURE_SETS = ("assembled", "flight", "variants", "parts")
 SPREAD_FLAG = 0.15          # cross-facing height spread that flags F_SIZE_JUMP for a look (sprite-facings audit)
 MAXPX = 2000                # both reviewers downscale past ~2000 px on the long side
 
@@ -152,7 +156,7 @@ def source_files(spec: dict) -> dict:
     for one in ("single", "scale"):
         if imgs.get(one):
             out[one] = imgs[one]
-    for many in ("assembled", "flight", "variants"):
+    for many in PICTURE_SETS:
         for n, p in enumerate(imgs.get(many) or [], 1):
             out[f"{many}_{n}"] = p
     if imgs.get("wall_context"):
@@ -200,7 +204,7 @@ def build_card(spec: dict, out: Path) -> dict:
         put("single", imgs["single"])
     if imgs.get("scale"):
         put("scale", imgs["scale"])
-    for many in ("assembled", "flight", "variants"):
+    for many in PICTURE_SETS:
         for n, p in enumerate(imgs.get(many) or [], 1):
             put(f"{many}_{n}", p)
         if imgs.get(many):
@@ -265,6 +269,17 @@ def card_md(card: dict) -> str:
         L += [f"- {p}" for p in card["ports"]]
     if card.get("depends_on"):
         L += ["", f"This is a catch item of `{card['depends_on']}`; `living_reference.png` shows that living animal."]
+    if card.get("panels", {}).get("flight"):
+        labels = card.get("flight_labels") or []
+        L += ["", "## Flight frames (look at each one alone, at full size)", ""]
+        L += [f"- {card['panels'].get(name, name)} = {labels[i] if i < len(labels) else 'unlabelled'}"
+              for i, name in enumerate(card["panels"]["flight"])]
+    if card.get("panels", {}).get("parts"):
+        L += ["", "## Parts sheet (cut-out flip-book)", "",
+              "`parts_N.png`: one row per facing. The first column is the plate: the body that stays on screen in every "
+              "frame. Each further column is one wing layer alone, as the cut-out moves it. The plate must be a wingless "
+              "body with its own natural outline, never a folded wing and never a straight sliced side. Each wing layer "
+              "holds wing and nothing else, never belly or flank."]
     g = card.get("gates", {})
     L += ["", "## Measured by code (do not re-estimate)", "",
           f"- visible-alpha height per facing (px): {g.get('visible_height_px')}"]

@@ -1,0 +1,68 @@
+{
+ "subject": "RM_FireHawk",
+ "label": "fire-hawk",
+ "template": "creature",
+ "module": "flyer",
+ "candidate": "birdA_af2991860e",
+ "provenance": "live flip-book frames at commit af2991860e, built as a cut-out; parts sheet from its cut-out config",
+ "description": "A lean raptor of the standing burn, ash-grey and ember-orange, that flushes prey ahead of the flame-line and is said to carry a burning twig from one fire to the next when the burn stalls. The Pyrelands' first igniter with wings.",
+ "tier": "RM_",
+ "invented": true,
+ "size": {
+  "drawSize": [
+   1.1,
+   1.1
+  ]
+ },
+ "source": "RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml",
+ "owner_kept": false,
+ "flight_labels": [
+  "east f1",
+  "east f2",
+  "east f3",
+  "east f4",
+  "east f5",
+  "north f1",
+  "north f2",
+  "north f3",
+  "north f4",
+  "north f5",
+  "south f1",
+  "south f2",
+  "south f3",
+  "south f4",
+  "south f5"
+ ],
+ "images": {
+  "south": "infrastructure/state/art_eval/regression_images/RM_FireHawk_birdA_af2991860e/south.png",
+  "east": "infrastructure/state/art_eval/regression_images/RM_FireHawk_birdA_af2991860e/east.png",
+  "north": "infrastructure/state/art_eval/regression_images/RM_FireHawk_birdA_af2991860e/north.png",
+  "scale": "infrastructure/state/art_eval/regression_images/RM_FireHawk_birdA_af2991860e/scale.png",
+  "flight": [
+   "infrastructure/state/art_eval/regression_images/RM_FireHawk_birdA_af2991860e/flight_east_1.png",
+   "infrastructure/state/art_eval/regression_images/RM_FireHawk_birdA_af2991860e/flight_east_2.png",
+   "infrastructure/state/art_eval/regression_images/RM_FireHawk_birdA_af2991860e/flight_east_3.png",
+   "infrastructure/state/art_eval/regression_images/RM_FireHawk_birdA_af2991860e/flight_east_4.png",
+   "infrastructure/state/art_eval/regression_images/RM_FireHawk_birdA_af2991860e/flight_east_5.png",
+   "infrastructure/state/art_eval/regression_images/RM_FireHawk_birdA_af2991860e/flight_north_1.png",
+   "infrastructure/state/art_eval/regression_images/RM_FireHawk_birdA_af2991860e/flight_north_2.png",
+   "infrastructure/state/art_eval/regression_images/RM_FireHawk_birdA_af2991860e/flight_north_3.png",
+   "infrastructure/state/art_eval/regression_images/RM_FireHawk_birdA_af2991860e/flight_north_4.png",
+   "infrastructure/state/art_eval/regression_images/RM_FireHawk_birdA_af2991860e/flight_north_5.png",
+   "infrastructure/state/art_eval/regression_images/RM_FireHawk_birdA_af2991860e/flight_south_1.png",
+   "infrastructure/state/art_eval/regression_images/RM_FireHawk_birdA_af2991860e/flight_south_2.png",
+   "infrastructure/state/art_eval/regression_images/RM_FireHawk_birdA_af2991860e/flight_south_3.png",
+   "infrastructure/state/art_eval/regression_images/RM_FireHawk_birdA_af2991860e/flight_south_4.png",
+   "infrastructure/state/art_eval/regression_images/RM_FireHawk_birdA_af2991860e/flight_south_5.png"
+  ],
+  "parts": [
+   "infrastructure/state/art_eval/regression_images/RM_FireHawk_birdA_af2991860e/parts.png"
+  ]
+ },
+ "graphic_class": "Graphic_Multi",
+ "earth_body_named": true,
+ "body_plan": "flyer",
+ "departures": [
+  "ash-grey and ember-orange colouring"
+ ]
+}

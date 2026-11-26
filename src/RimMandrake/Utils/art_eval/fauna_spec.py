@@ -31,6 +31,45 @@ import policy as P  # noqa: E402
 SRC = C.ROOT / "src"
 
 
+def flight_panels(defname: str, frames: dict, outdir: Path, def_sets: dict | None = None,
+                  sets_dir: Path | None = None) -> dict:
+    """{flight, flight_labels, parts} for a flyer. frames = {facing: [(n, file)]}. Each frame is its own panel at full
+    size, labelled `<facing> f<n>`: brief C5a looks at flyer frames one at a time, and contact strips hid the FireHawk
+    and Porg faults (CL-047, CL-048). A def with a cut-out set (flyer_gate.DEF_SETS) whose prefix names these frames also
+    gets that set's parts sheet (flyer_eye_checks.py parts): the plate and each wing layer alone, where a baked wing and
+    a belly carried off by a wing show."""
+    import subprocess
+    art = HERE.parent / "art"
+    if def_sets is None or sets_dir is None:
+        import flyer_gate as G
+        def_sets = G.DEF_SETS if def_sets is None else def_sets
+        sets_dir = G.SETS if sets_dir is None else sets_dir
+    flight, labels = [], []
+    for face, lst in sorted(frames.items()):
+        for n, f in sorted(lst):
+            flight.append(str(f))
+            labels.append(f"{face} f{n}")
+    parts = []
+    for set_name in def_sets.get(defname, []):
+        cfg = Path(sets_dir) / f"{set_name}.json"
+        if not cfg.is_file():
+            continue
+        prefix = json.loads(cfg.read_text()).get("prefix", "")
+        mine = sorted(f for lst in frames.values() for _, f in lst if Path(f).name.startswith(prefix))
+        if not prefix or not mine:
+            continue
+        Path(outdir).mkdir(parents=True, exist_ok=True)
+        out = Path(outdir) / f"{defname}_parts_{set_name}.png"
+        r = subprocess.run([sys.executable, str(art / "flyer_eye_checks.py"), "parts", str(cfg),
+                            "--src", str(Path(mine[0]).parent), "--out", str(out)], capture_output=True, text=True,
+                           timeout=300)   # hang guard: one set's sheet takes about 1 s (FireHawk, Porg, 2026-11-26)
+        if r.returncode == 0 and out.is_file():
+            parts.append(str(out))
+        else:
+            print(f"fauna_spec: {defname} parts sheet of {set_name} not made: {(r.stderr or r.stdout).strip()[-300:]}",
+                  file=sys.stderr)
+    return {"flight": flight, "flight_labels": labels, "parts": parts}
+
 def index_defs():
     things, kinds = {}, {}
     for f in glob.glob(str(SRC / "**/Defs/**/*.xml"), recursive=True):
@@ -197,12 +236,11 @@ def build_spec(defname: str, things, kinds, tex, outdir: Path, kept_lookup=ledge
             m = re.match(pat, k)
             if m:
                 frames.setdefault(m.group(2), []).append((int(m.group(1) or 0), v[0]))
-        flight = []
-        for face, lst in sorted(frames.items()):
-            lst.sort()
-            p = outdir / f"{defname}_flight_{face}.png"
-            C.strip([x[1] for x in lst], [f"{face} f{x[0]}" for x in lst], tile=256, title=f"{defname} flight frames, {face}").save(p)
-            flight.append(str(p))
+        fl = flight_panels(defname, frames, outdir)
+        flight = fl["flight"]
+        spec["flight_labels"] = fl["flight_labels"]
+        if fl["parts"]:
+            imgs["parts"] = fl["parts"]
         spec["images_flight_note"] = {k: len(v) for k, v in frames.items()}
         if not frames:
             spec["flight_frames_unmeasured"] = (f"no flight frame PNG under src/ for prefix {prefix!r}" if prefix else

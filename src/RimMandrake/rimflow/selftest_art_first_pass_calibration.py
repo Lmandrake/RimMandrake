@@ -144,6 +144,13 @@ def t_weak_is_no_verdict():
           "RIMMANDRAKE_RULE_ART_FIRST_PASS_WEAK_IS_NO_VERDICT" and 0 < float(ab["decided_share"]["refuse"]) <= 1, ab)
     if not isinstance(ab, dict):
         return
+    # the fixture is the run at 6ccd275b5b16 over the nine cases planted then; a row added later (RM_FireHawk, RSW_Porg,
+    # criteria ledger CL-047/CL-048) has no reading in that run, so it is not in this fixture
+    then = ("first_pass_RM_Shadefern_B", "first_pass_RM_Huldu_C", "first_pass_RM_Ssurr_B", "first_pass_RM_Vellak_B",
+            "first_pass_RM_Murrin_C", "first_pass_RM_Dewblade_B", "first_pass_RM_DecayDrake_r2", "first_pass_RM_Peeper_r2",
+            "first_pass_RM_Danglemaw_r1")
+    pl = [c for c in pl if c["id"] in then]
+    row = dict(row, planted=pl)
     exp = {c["id"]: c["expect"] for c in pl}
     measured = {"first_pass_RM_Huldu_C", "first_pass_RM_Vellak_B", "first_pass_RM_Murrin_C"}  # refuse at 6ccd275b5b16
 
