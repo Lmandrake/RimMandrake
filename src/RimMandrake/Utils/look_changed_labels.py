@@ -12,7 +12,8 @@ the mod file it exercises or its staged numbers moves it.
 
 A LOOK is a cells file `design/concepts/<Mod>/look_cells/<save>.json` that the save builder wrote (`record`). His last look
 is the newest cells file staged before the newest move out of `his_walk` that is his (by OWNER, or with his words or his
-card), read from `version/stage_record.json` and every `version/previous/*/stage_record.json`.
+card), read from `version/stage_record.json`, every kept `version/stage_record_<version>.json` and every
+`version/previous/*/stage_record.json`.
 
 The save builder (python.exe or WSL, the visit's walk-save script):
 
@@ -78,7 +79,9 @@ def inputs_hash(root, cell):
 def his_look_times(root, mod):
     """-> sorted epochs of every move out of his_walk that is his. Raises CouldNotLook on a record that cannot be read."""
     vdir = os.path.join(mod_dir(root, mod), "version")
-    paths = [os.path.join(vdir, "stage_record.json")] + sorted(glob.glob(os.path.join(vdir, "previous", "*", "stage_record.json")))
+    # a passed version's record is kept as version/stage_record_<version>.json (maturation.py, the version opener)
+    paths = ([os.path.join(vdir, "stage_record.json")] + sorted(glob.glob(os.path.join(vdir, "stage_record_*.json")))
+             + sorted(glob.glob(os.path.join(vdir, "previous", "*", "stage_record.json"))))
     out = []
     for p in paths:
         if not os.path.exists(p):

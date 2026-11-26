@@ -11,7 +11,8 @@ of the changed cells only.
 ## ACCEPTS
 
 - **a-cell.** `{key, name, inputs: [repo paths, files or folders], params: any JSON}`. The key is unique in the save.
-- **a-stage-record.** `version/stage_record.json` and `version/previous/*/stage_record.json`. His look is a move out of
+- **a-stage-record.** `version/stage_record.json`, each kept `version/stage_record_<version>.json` (where `maturation.py`
+  keeps a passed version's record) and `version/previous/*/stage_record.json`. His look is a move out of
   `his_walk` by OWNER, or with `owner_said` or `by_card` in `confirmed`.
 - **a-cells-file.** `design/concepts/<Mod>/look_cells/<save>.json`, written by `record()` with its `staged_at`.
 
@@ -31,6 +32,8 @@ of the changed cells only.
 - **no-prior-look-labels-every-cell-new.** No cells file, or no move out of `his_walk` that is his. A record that cannot
   be read, or a cell input that is not there, is could not look (`why`, exit 2), never every cell new.
 - **a-cell-removed-since-the-last-look-is-named-in-the-notes.** `notes`, and the lines of `show`.
+- **a-kept-stage-record-is-read.** His look in a passed version's kept record `version/stage_record_<version>.json` is
+  his last look for the next version's save.
 
 ## LIMITS
 

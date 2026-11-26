@@ -83,8 +83,25 @@ def t_a_cell_removed_since_the_last_look_is_named_in_the_notes():
     return res["notes"] == ["removed since your last look: 4 roofed grass"] and res["notes"][0] in LC.show("M", "TWO", root), res
 
 
+def t_a_kept_stage_record_is_read():
+    """His look recorded in a passed version's record, kept by maturation.py as version/stage_record_<version>.json (the
+    0.2.0 walk of Explosive Knockback, 2026-11-26: his 0.1.0 pass was in stage_record_0.1.0.json and every sign read new)."""
+    root = tree()
+    LC.record("M", "ONE", CELLS, root, now="2026-11-20T09:00:00-08:00")
+    walked(root)
+    vdir = os.path.join(LC.mod_dir(root, "M"), "version")
+    os.rename(os.path.join(vdir, "stage_record.json"), os.path.join(vdir, "stage_record_0.1.0.json"))
+    with open(os.path.join(vdir, "stage_record.json"), "w") as f:     # the new version: no move out of his_walk yet
+        json.dump({"moves": [{"from": "pre_human", "to": "his_walk", "at": "2026-11-22T10:00:00-08:00", "by": "BENCH"}]}, f)
+    with open(os.path.join(root, "src/a.py"), "w") as fh:
+        fh.write("a2")
+    res = LC.label_cells("M", CELLS, root)
+    return (res["last_look"] == "design/concepts/M/look_cells/ONE.json" and res["labels"].get("1") == LC.LABEL_CHANGED
+            and res["labels"].get("2") is None and not res["why"]), res
+
+
 def main():
-    tests = [t_a_cell_whose_inputs_changed_gets_the_label, t_an_unchanged_cell_gets_no_label,
+    tests = [t_a_kept_stage_record_is_read, t_a_cell_whose_inputs_changed_gets_the_label, t_an_unchanged_cell_gets_no_label,
              t_a_cell_absent_from_the_last_look_is_new, t_no_prior_look_labels_every_cell_new,
              t_a_cell_removed_since_the_last_look_is_named_in_the_notes]
     bad = 0
