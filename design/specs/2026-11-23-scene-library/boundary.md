@@ -77,6 +77,9 @@ has a test of its name in `src/RimMandrake/Utils/selftest_scene_library.py`, aga
 - **an-undeclared-tool-is-changing.** Only a description that begins with READ ONLY is read-only; `jawa/static_call` never.
 - **accept-needs-one-identity.** It refuses a tree that is not clean, a script outside the repo and a script that imports an
   older layer, in the script or in a module of the repo that it imports. A tree that could not be read is its own answer.
+- **accept-ignores-the-mod-ledger.** The clean-tree test of `accept` leaves out each mod's `design/concepts/<Mod>/ledger/`
+  folder, which a holder's lease program rewrites while the run lasts; code, scenes and the test table stay counted
+  (`test_accept_ignores_the_mod_ledger_a_lease_renews`).
 - **accept-game-names-the-free-game.** `scene.py accept <script> --game <name>` runs the script on the named game, over the
   game its source names; an unknown name is refused before the script runs; without `--game` the script's own game stands, and
   the name never comes from the shell's environment (`test_accept_game_names_the_free_game_over_the_script_default`).

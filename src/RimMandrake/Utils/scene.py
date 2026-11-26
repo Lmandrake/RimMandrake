@@ -1174,13 +1174,16 @@ def old_imports(path, repo):
 
 
 LEDGER_LINE = re.compile(r"^.. \"?design/concepts/[^/]+/version/scene_runs\.jsonl\"?$")
+# the mod ledger (modledger.py): a holder's lease program appends lease.renew to ledger/HOLDER.<run>.jsonl and rewrites
+# ledger/views/ every 20 minutes while the live driver runs; no scene reads it (ExplosiveKnockback 0.2.0 visit 2: nine refusals)
+MOD_LEDGER_LINE = re.compile(r"^.. \"?design/concepts/[^/]+/ledger/[^\"]*\"?$")
 
 
 def not_ledger(porcelain):
-    """git status --porcelain less the scene ledger of any mod: the judge appends that file at the end of an accept run
+    """git status --porcelain less the scene ledger and the mod ledger (ledger/) of any mod: the judge appends that file at the end of an accept run
     (scene_judge.ledger_append), so it is no change to what the scene ran on, and a line left by the last run is no
     reason to refuse the next one."""
-    return "\n".join(r for r in (porcelain or "").split("\n") if r.strip() and not LEDGER_LINE.match(r))
+    return "\n".join(r for r in (porcelain or "").split("\n") if r.strip() and not LEDGER_LINE.match(r) and not MOD_LEDGER_LINE.match(r))
 
 
 def check_accept(script, repo, git):

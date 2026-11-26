@@ -453,6 +453,26 @@ def test_accept_game_names_the_free_game_over_the_script_default():
         must(scene.main(["accept", os.path.join(d, "s", "say.py"), "--game", "Nowhere"]) == 3, "an unknown --game is refused by name")
 
 
+def test_accept_ignores_the_mod_ledger_a_lease_renews():
+    """ExplosiveKnockback 0.2.0 visit 2: the live driver holds the mod ledger, and its lease program appends lease.renew to
+    design/concepts/<Mod>/ledger/HOLDER.<run>.jsonl and rewrites ledger/views/ every 20 minutes, so all nine accepts were
+    refused TREE_NOT_CLEAN. The mod ledger is no input of a scene; code, scenes and the test table stay counted."""
+    st = "\n".join([" M design/concepts/ExplosiveKnockback/ledger/HOLDER.run-1795670288.jsonl",
+                     " M design/concepts/ExplosiveKnockback/ledger/views/state.json",
+                     "?? design/concepts/ExplosiveKnockback/ledger/views/closed_0.2.0.md",
+                     " M design/concepts/ExplosiveKnockback/version/scene_runs.jsonl",
+                     " M design/concepts/ExplosiveKnockback/version/test_table.json",
+                     " M src/RimMandrake/ExplosiveKnockback/proof/scene_blast_show.py",
+                     " M design/concepts/ExplosiveKnockback/ledger_notes.md"])
+    left = scene.not_ledger(st).split("\n")
+    must(left == [" M design/concepts/ExplosiveKnockback/version/test_table.json",
+                  " M src/RimMandrake/ExplosiveKnockback/proof/scene_blast_show.py",
+                  " M design/concepts/ExplosiveKnockback/ledger_notes.md"], "left: %s" % left)
+
+
+t_accept_ignores_the_mod_ledger = test_accept_ignores_the_mod_ledger_a_lease_renews
+
+
 LEDGER_WRITER = ("import os, scene\nwith scene.open('ArchSmall') as s:\n    print('RAN', s.run(until=20, limit=200).receipt.commit)\n"
                  "v = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'design', 'concepts', 'WMod', 'version')\n"
                  "os.makedirs(v, exist_ok=True)\nopen(os.path.join(v, 'scene_runs.jsonl'), 'a').write('{}\\n')\n")
@@ -986,7 +1006,7 @@ def main():
               test_run_lost_reply_is_recovered_by_request_id, test_raw_undeclared_tool_marks_the_process_and_a_new_session_carries_it,
               test_accept_refuses_a_dirty_tree_and_an_older_layer, test_explore_run_is_explored,
               test_help_prints_ten_names_and_each_built_page_matches_its_signature]
-    more = [t_a_refusal_changes_nothing, t_accept_game_names_the_free_game, test_open_refuses_owner_hold_under_an_inherited_take,
+    more = [t_a_refusal_changes_nothing, t_accept_game_names_the_free_game, t_accept_ignores_the_mod_ledger, test_open_refuses_owner_hold_under_an_inherited_take,
             test_run_unreadable_thing_target_stops_as_unknown, test_run_lost_reply_passes_the_pending_guard,
             test_run_true_at_start_plays_no_tick, test_run_limit_is_not_a_hit, test_run_dead_member_stays_in_group_as_gone,
             test_run_stalled_clock_is_cancelled, test_run_bind_refusal_is_by_name, test_raw_refuses_unknown_tool, test_raw_refuses_bad_args,
