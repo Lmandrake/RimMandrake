@@ -5049,6 +5049,28 @@
     "command": "python3 src/RimMandrake/Utils/selftest_flowworks_trench_cover.py",
     "margins": []
    }
+  },
+  "WATER_ONE_SURFACE_LIVE": {
+   "id": "WATER_ONE_SURFACE_LIVE",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/water_one_surface_live.py",
+   "observes": "the walk save's stations 6, 22 and the sluices 7 to 10, one side of each drained by the dev act: every wet dug square draws ONE sheet colour, no second water layer on a dug square, a drained square draws dry, a shut sluice's sheet on its wet half (jawa/cell_draw_census)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/water_one_surface_live.py",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_ExcavationWalls.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_PitReliefMath.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_WaterLooks.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\water_one_surface_live.py <out.json> --drain  (bridge held, flowworks_list, the walk save)",
+   "why_game": "how many layers tint a square is a live render-state read (section-layer meshes); the geometry itself is decided offline by T_UNDERLIQUID (WaterLook_*)",
+   "cheaper_why": "T_UNDERLIQUID decides the sheet's geometry offline; only the game shows which layers draw (the parent's three extra water layers and vanilla's terrain fade were invisible offline)",
+   "regression_of": "RIMMANDRAKE_DRILL_FLOWWORKS_WATER_LAYERS_HE_SAW_STACKED_BLUE (owner walk 2026-11-25)",
+   "runs_today": {
+    "ran": true,
+    "entry_exists": true,
+    "why": "red on the parent 73ecd94b31, green on 049e36e37c, ArchSmall 2026-11-25"
+   }
   }
  },
  "bars": [
@@ -5851,7 +5873,8 @@
    ],
    "supports": [
     "OL_OWNER_LOOK_READS",
-    "LOOK_STAGE8"
+    "LOOK_STAGE8",
+    "WATER_ONE_SURFACE_LIVE"
    ],
    "held": [
     "2026-11-12#1",
@@ -6033,7 +6056,8 @@
     "LOOK_BLIND_READER"
    ],
    "supports": [
-    "OL_OWNER_LOOK_READS"
+    "OL_OWNER_LOOK_READS",
+    "WATER_ONE_SURFACE_LIVE"
    ],
    "held": [
     "2026-11-12#10a",
