@@ -51,7 +51,8 @@ on the owner's own line, so the reader is Opus.
 - **a-landing-that-is-not-publish.** A `git push`, a merge on the server and a ledger landing run no check. The daily
   recheck counts landings of guiding prose that have no run record, and names them.
 - **instruction-text-inside-code.** A brief that a program builds from strings in code, and a hook's refusal text, are
-  read only as a launched brief.
+  read only as a launched brief. The footer that `brief_message` adds after this check is read by
+  `src/RimMandrake/rimflow/selftest_footer_prose.py` (page `design/specs/2026-11-26-footer-prose/boundary.md`).
 - **a-definition-that-is-wrong.** The check asks if a term is defined at the line. The check does not ask if the
   definition is true.
 - **every-vague-word.** The reader is told to flag only a term that two readers could take for two things and then act

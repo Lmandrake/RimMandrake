@@ -5165,8 +5165,8 @@ def build_parser():
                         "so the parent closes and names its successor")
     s.add_argument("--effect", metavar="CHECK",
                    help="an outcome check a program runs: path-has:<repo path>::<text>, path-lacks:<repo path>::<text> "
-                        "or cmd:<command> (exit 0 holds, 1 fails). It must fail now; the list_effect tick closes the "
-                        "item when it holds (list_effect.py)")
+                        "or cmd:<command> (exit 0 holds, 1 fails). The check must fail now; the list_effect tick closes the "
+                        "item when the check holds (list_effect.py)")
     s.add_argument("--holds-why", dest="holds_why", metavar="WHY",
                    help="the check holds already: why it cannot be seen failing (recorded beside it)")
 
@@ -5234,7 +5234,7 @@ def build_parser():
     s.add_argument("--no-code", dest="no_code", metavar="\"<what>\"",
                    help="instead of --sha: what was finished that no commit shows")
     s.add_argument("--evidence", help="what ran and its result, or a path: records a pass at --level on this sha with the close")
-    s.add_argument("--level", choices=model.LEVELS, help="the level of that pass (default L0)")
+    s.add_argument("--level", choices=model.LEVELS, help="the level of that pass (default L0). " + model.LEVELS_MEANING)
     s.add_argument("--config", help="what that pass ran on, e.g. full-578 (default: close)")
     s.add_argument("--live", help=LIVE_HELP)
     s.add_argument("--remainder", metavar="<ID>", help="the item that holds the spec parts this close leaves unbuilt")
@@ -5279,7 +5279,7 @@ def build_parser():
     s.add_argument("--sha", help="defaults to the built sha with --criterion, else "
                                  "git HEAD")
     s.add_argument("--level", choices=model.LEVELS,
-                   help="the validation level this run exercised")
+                   help="the validation level this run exercised. " + model.LEVELS_MEANING)
     s.add_argument("--outcome", help="what the run ended in, a word of failure_class.py (COULD NOT LOOK, KILLED, "
                    "MOD FAILURE, ...); one that is not the work's own is in no pilot streak")
     s.add_argument("--criterion", help="the outstanding criterion this run tests; a "

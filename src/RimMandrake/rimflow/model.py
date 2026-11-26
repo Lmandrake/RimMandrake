@@ -349,6 +349,11 @@ BLOCK_KINDS = ("item", "owner", "judge", "live", "time", "external", "other")
 # L4 human. The ORDER is load-bearing: "cheapest outstanding level" is the first of
 # these an item still owes, and that decides its `needs` and its acceptance group.
 LEVELS = ("L0", "L1", "L2", "GREEN-MIN", "GREEN-FULL", "L3", "L4")
+# the levels in plain words, for a help text that a run reads (selftest_footer_prose.py)
+# (at most 260 characters: brief_commands.HELP_CHARS cuts a flag's help at 300)
+LEVELS_MEANING = ("Levels, cheapest first: L0 = offline; L1 = the defs load in the live game; L2 = a behaviour test in "
+                  "the live game; GREEN-MIN, GREEN-FULL = the north-star bars on the small, the full mod list; "
+                  "L3 = an Opus evaluation; L4 = the owner")
 # What each level needs to be worked. GREEN-FULL is `bridge` too — the full list is
 # not a `needs` value; the acceptance view groups by LEVEL, which carries it.
 LEVEL_NEEDS = {"L0": "offline", "L1": "bridge", "L2": "bridge", "GREEN-MIN": "bridge",

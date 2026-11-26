@@ -68,7 +68,7 @@ SPEC = (
      [("--result", None), ("--config", "<what it ran on>"), ("--evidence", "<path of the log>"), ("--seat", SEAT),
       ("--why", "<your reason>"), ("--publish", None)]),
     ("rimflow", "file", "file a new item found on this run",
-     {"id": "<NEW ITEM: RIMMANDRAKE_VERB_INTENTION_TWIST>"},
+     {"id": "<NEW ITEM: RIMMANDRAKE_<VERB>_<INTENTION>_<TWIST>>"},
      [("--for", SEAT), ("--title", "<title>"), ("--caused-by", IT),
       ("--effect", "<outcome check that fails now; none exists: drop --effect>"), ("--seat", SEAT), ("--why", "<your reason>"), ("--publish", None)]),
     ("maturation", "red-seen", "record that a deciding test was seen red on a planted fault",

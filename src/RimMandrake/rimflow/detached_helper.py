@@ -146,24 +146,24 @@ Ledger item: {item}. Seat: {seat}. {bound_text}.
   anything is left, write a note whose text starts `LEFT OPEN:` and says exactly what. A run that ends success with its item open and no such note is
   flagged to the Conductor.
 - {fixer}
-- An acceptance check can pass on less than the spec. Before you close, read each spec line again: build what is not
-  built. A remainder is filed only with the test-2 evidence (`--not-now`), and the close names it with
+- An acceptance check can pass on less than the spec. Before you close, read each spec line again, and build each part
+  that your work still lacks. A remainder is filed only with the test-2 evidence (`--not-now`), and the close names it with
   `--remainder <its id>`. `close` asks when your words name an unbuilt part.
 - A `LEFT OPEN:` note relaunches this brief in a fresh session (left_open_continue.py). When what is left is one of his
   five acts, a looser bar, a hold to lift, or a date, put a dated wait that names that act, so it is not relaunched for
   nothing (the wait line). A choice between known fixes is yours: take the one you recommend and log it delegated.
 - Before you stop: write your state and evidence paths as a note (the note line). Write a NEXT only for work that
   test-2 evidence stops. A program reads your process for your sign of life: no note is asked by the clock.
-- After each experiment or step that changes what you know, write your progress record as a note whose text starts
+- After each experiment or step that changes what you know, write your progress record as a note. The note starts
   `PROGRESS:` and names the theory, the experiment, the reading and the next action (`"PROGRESS: theory: ... |
   experiment: ... | reading: ... | next: ..."`). A stopped run with a large context is carried on by a fresh session that has only this brief and those notes.
 - This run ends when your turn ends: a helper or command still running in the background then is killed and its work
   is lost. Run helpers and long commands in the foreground and take their results before your last message; never end
   "waiting" for anything.
 - A command that can take over 10 minutes: one Bash call with `timeout` BASH_MAX_MS of
-  `python3 src/RimMandrake/Utils/waitalive.py run --name <name> -- <command>`. It waits up to 55 minutes and its last line
-  is the verdict: exit 0 FINISHED rc=0, 1 FINISHED rc=N, 3 HUNG, 4 STILL RUNNING, 5 COULD NOT LOOK, 6 DIED. It kills
-  nothing: after 3, 4 or a cut call, `python3 src/RimMandrake/Utils/waitalive.py attach <name>` waits again. For a job
+  `python3 src/RimMandrake/Utils/waitalive.py run --name <name> -- <command>`. `waitalive.py run` waits up to 55 minutes,
+  and its last line is the verdict: exit 0 FINISHED rc=0, 1 FINISHED rc=N, 3 HUNG, 4 STILL RUNNING, 5 COULD NOT LOOK,
+  6 DIED. `waitalive.py` kills nothing: after 3, 4 or a cut call, `python3 src/RimMandrake/Utils/waitalive.py attach <name>` waits again. For a job
   whose work is on Windows or another machine, add `--progress <the log that it writes>`. Do not poll with `sleep`.
 - Nobody reads your stdout until you end; the note is what the Conductor sees. End with a 5-line summary.
 """

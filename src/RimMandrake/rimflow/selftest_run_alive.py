@@ -497,7 +497,7 @@ def t_the_brief_asks_only_while_no_timer_lives():
     check("a holder started by hand keeps the renewal lines, timer or not", "--kind lease.renew" in ML.launch(
         c, MOD, "run-hand", "builder", stage="offline_build")["brief"])
     check("the footer keeps PROGRESS: and the closing note, and asks for nothing by the clock", "After each experiment or step" in DH.FOOTER and
-          "whose text starts\n  `PROGRESS:`" in DH.FOOTER and
+          "The note starts\n  `PROGRESS:`" in DH.FOOTER and
           "Before you stop: write your state" in DH.FOOTER and "LEFT OPEN:" in DH.FOOTER and "20 minutes" not in DH.FOOTER)
 
 
