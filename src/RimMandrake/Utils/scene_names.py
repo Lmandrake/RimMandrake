@@ -738,7 +738,9 @@ class Act(object):
     def job(self, pawn, job, target=None, cell=None, name=None):
         if not isinstance(job, str) or not job:
             raise Refused("BAD_ARGS", "job is a JobDef defName, not %r" % (job,))
-        args = {"pawnId": self._thing(pawn)[6:], "jobDef": job}
+        # waitTicks 0: jawa/ordered_job waits inside its body otherwise, and the game refuses it in an act (NOT_ONE_HOP); an act
+        # gives the order, and s.run waits for its result (live ArchBig 2026-11-25, scene_walk_under_cover)
+        args = {"pawnId": self._thing(pawn)[6:], "jobDef": job, "waitTicks": 0}
         if target is not None:
             args["targetAId"] = self._thing(target)[6:]
         if cell is not None:

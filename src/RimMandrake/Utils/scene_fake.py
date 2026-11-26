@@ -23,6 +23,10 @@ def rec(name):
     return copy.deepcopy(REC[name])
 
 
+# JawaBench.BridgeTools/JawaBenchHands.cs OneHopTools.WaitArg: the tools that wait inside their body unless this argument is 0
+WAIT_ARG = {"jawa/ordered_job": "waitTicks", "jawa/order_pawn": "waitTicks", "jawa/prioritized_work": "waitTicks",
+            "jawa/do_bill_now": "waitTicks", "jawa/pawn_flight": "maintainTicks"}
+
 class FakeGame(object):
     """One game process."""
 
@@ -192,7 +196,13 @@ class FakeGame(object):
         if not self.status.get("paused", True):
             return {"success": False, "refused": "GAME_RUNNING", "message": "the game is running"}
         rows = []
-        for act in json.loads(a["acts"]):
+        acts = json.loads(a["acts"])
+        for act in acts:     # the game's rule (JawaBenchHands.cs OneHopTools.WaitArg): a tool that waits inside its body is refused
+            arg = WAIT_ARG.get(act["tool"])                     # in a batch unless its wait argument is 0; the whole batch is refused
+            if arg and act["args"].get(arg) != 0:
+                return {"success": False, "refused": "NOT_ONE_HOP",
+                        "message": "NOT_ONE_HOP: %s waits inside its body unless %s is 0" % (act["tool"], arg)}
+        for act in acts:
             key = json.dumps([act["tool"], act["args"]], sort_keys=True)
             if act["id"] in self.acts_done:
                 old = self.acts_done[act["id"]]
