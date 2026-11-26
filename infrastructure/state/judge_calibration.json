@@ -1818,45 +1818,45 @@
    },
    "hash": "2e4a3a9d405562cd",
    "last_run": {
-    "at": "2026-11-25T08:33:02Z",
+    "at": "2026-11-26T03:18:34Z",
     "cases": "5 planted case(s) ran and came out as planted",
     "exit": 0,
-    "out": "ok           fj_old_decision_after_enough: expect pass, got pass (Step 2 says \"Enough: each signature under CONTRADICTIONS, NEW and DECIDED-and-failed-again has one decision. Then stop reading the fold; do not look for more findings,\" so an older retired signature that has not failed again is out of scope for this run.)",
+    "out": "ok           fj_old_decision_after_enough: expect pass, got pass (Step 2 says \"Enough: each signature under CONTRADICTIONS, NEW and DECIDED-and-failed-again has one decision. Then stop reading the fold; do not look for more findings.\", so I stop here and do not re-decide an older retired signature that has not failed again.)",
     "results": [
      {
       "expect": "refuse",
       "got": "refuse",
       "id": "fj_live_row_failed_three_times",
       "model": "opus",
-      "why": "The line 'spawn work only for a finding that someone would care about (a failure that happened, a significant finding that ordinary operation reaches, a failing test...)' decides it: T14 water_flow_live really failed three times on the current build with the same WaterGrid.Tick exception, so it is a real failure reached in ordinary operation and worth the touch."
+      "why": "Step 2's \"spawn work only for a finding that someone would care about (a failure that happened, a significant finding that ordinary operation reaches, a failing test...)\" decides it: T14 water_flow_live failed on three real runs of the current build with the same exception in WaterGrid.Tick, which is a failure that happened and that ordinary operation reaches, so it is worth the touch and gets spawned (or fixed in-run with its test if finishable)."
      },
      {
       "expect": "refuse",
       "got": "refuse",
       "id": "fj_runs_voided_by_an_empty_result",
       "model": "opus",
-      "why": "Step 2's worth-the-touch rule says to spawn work for a failure that happened, and 'a real chance to void a run always is': this one voided 2 of 9 scene runs this week and no item holds it."
+      "why": "Step 2 says to spawn work only for a finding someone would care about, including 'a failure that happened' and 'a real chance to void a run always is'; SIG-07d2 actually voided 2 of 9 scene runs, so it is worth the touch."
      },
      {
       "expect": "pass",
       "got": "pass",
       "id": "fj_mis_parse_no_input_reaches",
       "model": "opus",
-      "why": "Step 2's \"Worth the touch\" rule allows work only for a finding someone would care about (a failure that happened, a significant finding that ordinary operation reaches, a failing test, or a real chance to void a run). No def file has a space in its name and no run has failed on it, so SIG-9b30 is decided `retire` with `--why \"not worth the touch: no def file in the repo or loaded mods has a space in its name and no run has failed\"`."
+      "why": "Step 2 says to spawn work only for a finding someone would care about (a failure that happened, a significant finding that ordinary operation reaches, a failing test), and to decide any other finding `retire` with `--why \"not worth the touch: <why>\"`; no def file has a space in its name and no run has failed, so SIG-9b30 is retired as not worth the touch."
      },
      {
       "expect": "pass",
       "got": "pass",
       "id": "fj_lower_case_word_in_output",
       "model": "opus",
-      "why": "Step 2 says to \"spawn work only for a finding that someone would care about (a failure that happened, a significant finding that ordinary operation reaches, a failing test; a real chance to void a run always is)\" and to \"Decide any other finding `retire` with `--why \"not worth the touch: <why>\"`\"; a lower-case 'passed' that no program reads and no run failed on is none of those, so SIG-c1e8 is retired, not worked."
+      "why": "Step 2 says to spawn work only for a finding someone would care about (a failure that happened, a significant finding ordinary operation reaches, a failing test, a real chance to void a run) and to decide any other finding `retire` with `--why \"not worth the touch: <why>\"`; a lower-case 'passed' that no program reads and no run failed on is none of those, so it is retired, not worked."
      },
      {
       "expect": "pass",
       "got": "pass",
       "id": "fj_old_decision_after_enough",
       "model": "opus",
-      "why": "Step 2 says \"Enough: each signature under CONTRADICTIONS, NEW and DECIDED-and-failed-again has one decision. Then stop reading the fold; do not look for more findings,\" so an older retired signature that has not failed again is out of scope for this run."
+      "why": "Step 2 says \"Enough: each signature under CONTRADICTIONS, NEW and DECIDED-and-failed-again has one decision. Then stop reading the fold; do not look for more findings.\", so I stop here and do not re-decide an older retired signature that has not failed again."
      }
     ]
    },
@@ -1890,7 +1890,7 @@
     }
    ],
    "reset_at": "2026-11-26T03:08:39Z",
-   "status": "UNTESTED",
+   "status": "CALIBRATED",
    "timeout_s": 1800,
    "was": "CALIBRATED"
   },
@@ -2208,45 +2208,45 @@
    },
    "hash": "7fab35d22fd0495e",
    "last_run": {
-    "at": "2026-11-25T20:09:31Z",
+    "at": "2026-11-26T03:18:34Z",
     "cases": "5 planted case(s) ran and came out as planted",
     "exit": 0,
-    "out": "ok           ops_one_cause_three_alarms: expect pass, got pass (The Alarm runs line 'One cause seen by several alarms is one item (`RIMMANDRAKE_KEY_AUTO_FILERS_ONE_FAULT_ONE_TICKET` builds the dedupe key in the filers)' means the shared cause gets a single item, with each alarm noted rather than ticketed separately.)",
+    "out": "ok           ops_one_cause_three_alarms: expect pass, got pass (The line 'One cause seen by several alarms is one item (`RIMMANDRAKE_KEY_AUTO_FILERS_ONE_FAULT_ONE_TICKET` builds the dedupe key in the filers)' under Alarm runs means the single cause gets one item, not one per alarm.)",
     "results": [
      {
       "expect": "refuse",
       "got": "refuse",
       "id": "ops_runs_voided_by_a_timeout",
       "model": "sonnet",
-      "why": "Alarm runs question 4 says a real alarm whose fix passes test 1 (a failure that happened, voided runs) is fixed in this run, test first, and the one-line wall-time change in role_launch.py is not in the Never list (which covers dispatcher.py, ops_watch_rules.json targets and slot_rules.json), so I fix it, or file an item with evidence if the fix is a loosening that must be handed up."
+      "why": "Alarm runs question 4 and test 1 of 'Touching code has a cost' apply: three voided runs killed at 540 s (while the longest live run took 1,900 s) is a failure that happened, so the fix passes test 1 and test 2 says make it in this run, test first, or file an item with evidence if it's something I can't touch."
      },
      {
       "expect": "refuse",
       "got": "refuse",
       "id": "ops_publish_refused_by_a_stale_fixture",
       "model": "sonnet",
-      "why": "Alarm runs question 4 applies test 1 (a failing test that four landings hit passes) and test 2 says 'you make the fix in this run, test first', with an item filed only on listed evidence, so the fix to the fixture's renamed file is made or filed rather than skipped."
+      "why": "Alarm runs question 4 applies test 1 (four refused landings is a failure that happened, so someone would care) and test 2 says that if yes, you make the fix in this run, test first (the new fixture name is in the morning commit), filing an item only with the listed evidence, which is absent here."
      },
      {
       "expect": "pass",
       "got": "pass",
       "id": "ops_retired_word_on_a_page_label",
       "model": "sonnet",
-      "why": "Under Alarm runs, question 4, test 1 asks whether someone would care about the fix (a failure that happened, a significant finding, a failing test, or a real chance to void a run), and a stale header that no program reads and that has caused no failure or void fails it, so the rule 'A real alarm whose fix fails test 1 files no item: note `not worth the touch: <why>` on the alarm item' applies."
+      "why": "A real alarm whose fix fails test 1 files no item ('A real alarm whose fix fails test 1 files no item: note `not worth the touch: <why>` on the alarm item'), and a stale header that no program reads and that failed or voided no run is no failure, finding, or failing test, so I only note it."
      },
      {
       "expect": "pass",
       "got": "pass",
       "id": "ops_unrelated_warning_after_answers",
       "model": "sonnet",
-      "why": "The 'When an alarm run is enough' rule says that once each named alarm has its four answers you stop and do not hunt for other faults, and a warning that caused no failure fails test 1 of 'Touching code has a cost', so it files no item."
+      "why": "The 'When an alarm run is enough' rule says that once each named alarm has its four answers you stop and do not hunt for other faults, and a deprecation warning that caused no failure fails test 1 of §Touching code has a cost, so it files no item."
      },
      {
       "expect": "pass",
       "got": "pass",
       "id": "ops_one_cause_three_alarms",
       "model": "sonnet",
-      "why": "The Alarm runs line 'One cause seen by several alarms is one item (`RIMMANDRAKE_KEY_AUTO_FILERS_ONE_FAULT_ONE_TICKET` builds the dedupe key in the filers)' means the shared cause gets a single item, with each alarm noted rather than ticketed separately."
+      "why": "The line 'One cause seen by several alarms is one item (`RIMMANDRAKE_KEY_AUTO_FILERS_ONE_FAULT_ONE_TICKET` builds the dedupe key in the filers)' under Alarm runs means the single cause gets one item, not one per alarm."
      }
     ]
    },
@@ -2280,7 +2280,7 @@
     }
    ],
    "reset_at": "2026-11-26T03:08:39Z",
-   "status": "UNTESTED",
+   "status": "CALIBRATED",
    "timeout_s": 1800,
    "was": "CALIBRATED"
   },
@@ -2302,45 +2302,45 @@
    },
    "hash": "1da93e2af6c02b21",
    "last_run": {
-    "at": "2026-11-25T20:09:25Z",
+    "at": "2026-11-26T03:18:34Z",
     "cases": "5 planted case(s) ran and came out as planted",
     "exit": 0,
-    "out": "ok           rj_asked_how_it_could_be_better: expect pass, got pass (My instructions say 'One full inspection, then one check of the repairs... Never a third look' (standing_rulings.md §The judge refuses flaws, not polish), and since every named bar already has its verdict with evidence I stop ('Enough... Then stop. Do not look for more'); any 'how could it be better' item is polish that blocks nothing, not grounds to refuse.)",
+    "out": "ok           rj_asked_how_it_could_be_better: expect pass, got pass (The instructions say 'One full inspection, then one check of the repairs... Never a third look' and 'Enough: each thing that your brief names has a verdict with its evidence. Then stop. Do not look for more,' and a 'how could it be better' question asks for polish, which is recorded as one line and blocks nothing, not a refusal.)",
     "results": [
      {
       "expect": "refuse",
       "got": "refuse",
       "id": "rj_side_view_missing_legs",
       "model": "opus",
-      "why": "The line 'Refuse only a flaw: a promise that is not kept... Quote the promise' decides it, because the brief's promise 'the creature reads as a four-legged animal from the side' is broken when the east facing draws only two legs and reads as a biped."
+      "why": "The line 'Refuse only a flaw: a promise that is not kept' decides it, because the bar 'the creature reads as a four-legged animal from the side' is broken when the east facing reads as a biped; I would also fix the sprite in my run if I can, test first, and record it as refused and fixed so a new blind judge validates it."
      },
      {
       "expect": "refuse",
       "got": "refuse",
       "id": "rj_north_facing_shows_face",
       "model": "opus",
-      "why": "The line 'Refuse only a flaw: a promise that is not kept... Quote the promise' decides it: the brief's bar 'the north facing shows the creature's back' is not kept, because the north facing shows the face and eyes like the south facing, so this is a flaw and not polish."
+      "why": "The line \"Refuse only a flaw: a promise that is not kept\" decides it: the brief's bar 'the north facing shows the creature's back' is broken, since the north facing shows the face and eyes like the south facing, so I refuse it quoting that promise (and, under \"A flaw that you see and can fix, you fix in your run\", fix it test-first if I can, for a new blind judge to validate)."
      },
      {
       "expect": "pass",
       "got": "pass",
       "id": "rj_palette_could_be_muted",
       "model": "opus",
-      "why": "\"Refuse only a flaw: a promise that is not kept... Quote the promise. Everything else is polish: one line in your verdict record, marked polish\" — the bar 'the plant reads as a desert shrub at game zoom' is kept, and no bar or rule names the palette, so the muted-greens idea is a polish line, not a refusal."
+      "why": "The line 'Refuse only a flaw: a promise that is not kept... Everything else is polish: one line in your verdict record, marked polish' decides it, because the bar 'the plant reads as a desert shrub at game zoom' is met and no bar or rule names the palette, so the muted-greens idea is polish and not a refusal."
      },
      {
       "expect": "pass",
       "got": "pass",
       "id": "rj_new_nit_on_the_repair_look",
       "model": "opus",
-      "why": "The instructions say 'The second look checks only the listed problems' and 'Refuse only a flaw... Everything else is polish: one line in your verdict record, marked polish', so the soft shadow, which breaks no named promise, gets a polish line and does not block the work."
+      "why": "The second look checks only the listed problems, and the soft shadow breaks no quoted promise, so under \"Refuse only a flaw... Everything else is polish: one line in your verdict record, marked polish. Polish files no ticket and blocks nothing\" it gets one polish line, not a refusal."
      },
      {
       "expect": "pass",
       "got": "pass",
       "id": "rj_asked_how_it_could_be_better",
       "model": "opus",
-      "why": "My instructions say 'One full inspection, then one check of the repairs... Never a third look' (standing_rulings.md §The judge refuses flaws, not polish), and since every named bar already has its verdict with evidence I stop ('Enough... Then stop. Do not look for more'); any 'how could it be better' item is polish that blocks nothing, not grounds to refuse."
+      "why": "The instructions say 'One full inspection, then one check of the repairs... Never a third look' and 'Enough: each thing that your brief names has a verdict with its evidence. Then stop. Do not look for more,' and a 'how could it be better' question asks for polish, which is recorded as one line and blocks nothing, not a refusal."
      }
     ]
    },
@@ -2374,7 +2374,7 @@
     }
    ],
    "reset_at": "2026-11-26T03:08:39Z",
-   "status": "UNTESTED",
+   "status": "CALIBRATED",
    "timeout_s": 1800,
    "was": "CALIBRATED"
   },
@@ -2397,20 +2397,20 @@
    },
    "hash": "1c101827f7892383",
    "last_run": {
-    "at": "2026-11-24T18:18:10Z",
+    "at": "2026-11-26T03:18:34Z",
     "cases": "3 planted case(s) ran and came out as planted",
     "exit": 0,
     "out": "one_m_pit_open_look    expect recorded got refuse    ODD",
     "results": [
      {
       "expect": "refuse",
-      "first_noticed": "the thick solid black outline boxing in the pool",
+      "first_noticed": "a huge flat blue-grey slab with a heavy black outline and no visible structure or depth, like a placeholder texture",
       "got": "refuse",
       "id": "brim_pit_open_look",
       "image": "crop_pit6.png",
       "look": "ODD",
       "pass": 1,
-      "where": "the large square pool filling the view: its thick, untextured black border on all four sides (heaviest at the bottom), and the two small curled handrails at the middle of the top edge that are cut off at that border with no ladder below"
+      "where": "the large blue-grey square with a thick black border filling the centre of the view, on bare soil, with two small hooks above its top edge"
      },
      {
       "expect": "refuse",
@@ -2419,7 +2419,7 @@
       "image": "crop_pit6.png",
       "pass": 2,
       "verdict": "NO",
-      "why": "Only the tops of the north ladder's two hooks show above the pit's black rim, and the tan north wall face below them is bare down to the water, with no ladder rails or rungs drawn in front of it."
+      "why": "Only the two ladder top hooks show, above the black north rim; no ladder rails or rungs are drawn over the tan pit-wall strip, and nothing reaches down to the water, so the ladder is not drawn in front of the wall down to the water."
      },
      {
       "expect": "pass",
@@ -2428,17 +2428,17 @@
       "image": "crop_pit3.png",
       "pass": 2,
       "verdict": "YES",
-      "why": "At the pit's north edge the ladder's rails and rungs are fully visible over the tan wall face and black rim, with its hooks above the rim, and it runs unbroken down to the top edge of the water."
+      "why": "In the zoomed crop, the north ladder's rails and rungs sit over the black pit rim and the tan north wall band, and the rails run unbroken down to where the water begins."
      },
      {
       "expect": "recorded",
-      "first_noticed": "the big bright log stack sitting on top of the blue-grey surface as if it were solid floor, with its left end covering the pit wall",
+      "first_noticed": "the log pile drawn over the pit's black left edge, half inside and half outside the pit",
       "got": "refuse",
       "id": "one_m_pit_open_look",
       "image": "crop_pit3.png",
       "look": "ODD",
       "pass": 1,
-      "where": "the stack of 39 forbidden wood logs at the left side of the pit, lying on the flat blue-grey fill and overlapping the pit's left wall"
+      "where": "the stack of 39 wood logs (forbidden) on the left side of the square pit, straddling the pit's left wall and rim"
      }
     ]
    },
@@ -2462,7 +2462,7 @@
     }
    ],
    "reset_at": "2026-11-26T03:08:39Z",
-   "status": "UNTESTED",
+   "status": "CALIBRATED",
    "timeout_s": 1200,
    "was": "CALIBRATED"
   },
