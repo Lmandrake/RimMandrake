@@ -145,6 +145,44 @@ def main():
     e4 = {v["job"]: v for v in RS.build(world())["entries"].values()}
     check(e4["plonk_v1"]["resolution"] == "bound" and e4["plonk_v1"]["subjects"] == ["RM_Plonk"],
           "an owner pick is bound and outranks the agent's name-matched pick")
+    # a job record backfill never read: a multi-facing job keeps ONE record under its family id (done/portq_v1.json for
+    # _artsrc/portq_v1_east), and a record written after the render was ingested. Its target_def / install_to still
+    # names the subject, so the render is bound and never reaches the agent-pick sheet (RENDER_BINDINGS_DECIDE_ORPHANS_AWAIT_PARENTS)
+    (d / "t.xml").write_text("<Defs><ThingDef><defName>RM_Kessa</defName></ThingDef><ThingDef><defName>RM_Tallo</defName>"
+                             "<graphicData><texPath>Things/Tallo/Tallo</texPath></graphicData></ThingDef></Defs>")
+    for name, rgb in {"portq_v1_east": (9, 90, 9, 255), "portq_v1_south": (9, 91, 9, 255), "latejob_v1": (90, 9, 90, 255),
+                      "ghost_v1": (91, 9, 90, 255)}.items():
+        dd = tmp / "ap" / "_artsrc" / name
+        dd.mkdir(parents=True)
+        (dd / "x.png").write_bytes(png(rgb))
+    B.step_artpipe(budget=60)
+    (tmp / "ap" / "done").mkdir(exist_ok=True)
+    for jid, rec_ in {"portq_v1": {"target_def": "RM_Kessa", "facings": ["east", "south"]},
+                      "latejob_v1": {"install_to": "src/Tier/ModX/Textures/Things/Tallo/Tallo_south.png"},
+                      "ghost_v1": {"target_def": "RM_NotADef"}}.items():
+        (tmp / "ap" / "done" / f"{jid}.json").write_text(json.dumps({"id": jid, **rec_}))
+    e5 = {v["job"]: v for v in RS.build(world())["entries"].values()}
+    check(all(e5[j]["resolution"] == "bound" and e5[j]["subjects"] == ["RM_Kessa"] for j in ("portq_v1_east", "portq_v1_south")),
+          f"a family-id job record's target_def binds every facing ({[(e5[j]['resolution'], e5[j]['subjects']) for j in ('portq_v1_east', 'portq_v1_south')]})")
+    check(e5["latejob_v1"]["resolution"] == "bound" and e5["latejob_v1"]["subjects"] == ["RM_Tallo"],
+          f"a late job record's install_to binds to the def that draws that texPath ({e5["latejob_v1"]['resolution']}, {e5["latejob_v1"]['subjects']})")
+    check(e5["ghost_v1"]["resolution"] == "unresolved", f"a target_def that names no def binds nothing ({e5['ghost_v1']['resolution']})")
+    RS.write_bindings(RS.build(world()))
+    e6 = {v["job"]: v for v in RS.build(S.World(src_root=tmp / "src", canon_root=tmp / "nocanon", artpipe_root=tmp / "gone",
+                                                facts_root=tmp / "nofacts"))["entries"].values()}
+    check(e6["portq_v1_east"]["resolution"] == "bound" and e6["latejob_v1"]["resolution"] == "bound",
+          f"--write-bindings persists a job-record binding, so a machine without the artpipe queue still sees it "
+          f"({e6['portq_v1_east']['resolution']}, {e6["latejob_v1"]['resolution']})")
+    # check(): the item's outcome check. Every family still open must carry a recorded await (a skip naming the def it
+    # waits for); a bind or no-subject decision that was never enacted leaves its family open and undecided.
+    ent = RS.build(world())["entries"]
+    open_now = sorted(BS.open_families(ent))
+    und = BS.undecided(ent, {"decisions": {"mystery_thing_v1": {"decision": "skip", "awaits": "a def for mystery_thing"},
+                                           "ghost_v1": {"decision": "bind", "subject": "RM_Kessa"}}})
+    check("mystery_thing_v1" in open_now and "mystery_thing_v1" not in und and "ghost_v1" in und,
+          f"check: an awaited family passes, an unenacted bind stays undecided ({und})")
+    check(BS.undecided(ent, {"decisions": {"mystery_thing_v1": {"decision": "skip"}}}) == [f for f in open_now],
+          "check: a bare skip (no awaits) is not a decision")
     print("RESULT", "FAIL" if FAILS else "PASS")
     return 1 if FAILS else 0
 

@@ -9,6 +9,7 @@ spec's order, never mutating a job file in the artpipe state dir:
                  a binding whose own confidence is name-matched (a derived token guess, an agent's sheet pick) stays
                  name-matched
   no-subject     a binding_sheet.py `no_subject` event (§5.3 step 4: mock, concept, texture part, not-yet creature)
+  1 bound        the job's own record (done/<job or family>.json): its target_def, or the def drawing its install_to
   1 bound        byte join: the render's sha is, or its dHash (<= NEAR bits) equals, a non-artpipe ledger variant
                  of a texPath (installed by hand; the bytes prove it)
   3 name-matched whole-token match of the job family to exactly ONE candidate subject
@@ -78,6 +79,22 @@ def candidates(w: "S.World") -> dict:
     return {"exact": {k: groups(v) for k, v in exact.items()}, "stripped": {k: groups(v) for k, v in stripped.items()}}
 
 
+def job_target(w: "S.World", job: str, fam: str):
+    """(subjects, texpath, evidence) from the job's own record, or None. backfill binds only a record named exactly like
+    the render dir and present at ingest; a multi-facing job keeps one record under its family id
+    (done/donorport_aiwha_v1.json for _artsrc/donorport_aiwha_v1_east), and a record can land after the render."""
+    for jid in dict.fromkeys((job, fam)):
+        t = w.job_targets.get(jid)
+        if not t:
+            continue
+        if t["target_def"] in w.defs:
+            return [t["target_def"]], t["res"], f"job record {jid} target_def {t['target_def']}"
+        drawn = sorted(w.def_by_tex.get(t["res"], ())) if t["res"] else []
+        if drawn:
+            return drawn, t["res"], f"job record {jid} install_to texPath {t['res']}, drawn by {', '.join(drawn)}"
+    return None
+
+
 def build(w: "S.World | None" = None, idx: "L.Index | None" = None) -> dict:
     w = w or S.World()
     idx = idx or L.Index()
@@ -116,6 +133,9 @@ def build(w: "S.World | None" = None, idx: "L.Index | None" = None) -> dict:
                            evidence=bd[0]["evidence"])
             elif (sha, job) in nosubj:
                 rec.update(resolution="no-subject", via="binding-sheet", subjects=[], evidence=nosubj[(sha, job)])
+            elif job_target(w, job, fam):
+                subj, tp, why = job_target(w, job, fam)
+                rec.update(resolution="bound", via="job-record", subjects=subj, texpath=tp, evidence=why)
             elif w.collected.get(job) and dbt.get(w.collected[job]):
                 rec.update(resolution="bound", via="collected", subjects=sorted(dbt[w.collected[job]]), texpath=w.collected[job],
                            evidence=f"collected.jsonl installed it at {w.collected[job]}")

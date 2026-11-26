@@ -18,6 +18,10 @@ scene, a texture part no def draws, a creature that does not exist yet). Its Exp
   * {"decision": "no-subject", "reason": "..."}   -> a `no_subject` event per render: it leaves the open list, and no
     sheet or census ever shows it as some def's picture.
   * {"decision": "skip"} or no entry               -> nothing; the row stays open for the next sheet.
+  * {"decision": "skip", "awaits": "<the def>"}    -> nothing written; the render is an orphan whose subject def does not
+    exist yet. It stays open, and the token match binds it when that def lands.
+
+    python3 binding_sheet.py check DECISIONS.json     exit 0 when every family still open has a recorded await, else 1
 Event ids are deterministic, so a re-run writes nothing new.
 """
 from __future__ import annotations
@@ -163,7 +167,9 @@ def build(index: Path | None, out_dir: Path) -> dict:
         dec.write_text(json.dumps({"sheetId": SHEET_ID, "reviewStatus": {"state": "prefill"}, "decisions": {}}, indent=1))
     return {"families": len(rows), "renders": sum(len(r["renders"]) for r in rows),
             "ambiguous": sum(r["resolution"] == "ambiguous" for r in rows), "thumbs_missing_from_store": missing,
-            "sheet": str(out_dir / f"{SHEET_ID}.html")}
+            "sheet": str(out_dir / f"{SHEET_ID}.html"),
+            # an absent queue reads as no job records: renders whose own record names the subject then show as open
+            "artpipe_state": str(w.artpipe) + ("" if w.artpipe.is_dir() else " ABSENT: job records unread, open rows overstated")}
 
 
 def enact(decisions: dict, rows: list, by: str, why: str | None, known_defs, dry_run: bool = False) -> dict:
@@ -211,12 +217,26 @@ def enact(decisions: dict, rows: list, by: str, why: str | None, known_defs, dry
     return {"written": len(wr.known) - n0, "planned": planned, "refused": []}
 
 
+def undecided(entries: dict, decisions: dict) -> list:
+    """Open families with no recorded await. An enacted bind or no-subject closes its family; one never enacted leaves it
+    open, so it counts here. A bare skip is no decision."""
+    dec = decisions.get("decisions") or {}
+    return [f for f in sorted(open_families(entries))
+            if not ((dec.get(f) or {}).get("decision") == "skip" and (dec.get(f) or {}).get("awaits", "").strip())]
+
+
+SANITY_MIN_RENDERS = 1000   # the art ledger holds ~3,000 artpipe renders; fewer means the ledger did not load
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
     b = sub.add_parser("build")
     b.add_argument("--index", help="a render_subjects.json to read (default: rebuild it)")
     b.add_argument("--out", default=str(L.REPO_ROOT / "Transient" / "binding_sheet"))
+    c = sub.add_parser("check")
+    c.add_argument("decisions", nargs="?", default=str(L.REPO_ROOT / "infrastructure" / "state" / "art" / "sheets"
+                                                       / f"{SHEET_ID}.decisions.json"))
     e = sub.add_parser("enact")
     e.add_argument("decisions")
     e.add_argument("--by", required=True, choices=("owner", "agent"))
@@ -227,6 +247,17 @@ def main(argv=None) -> int:
     if a.cmd == "build":
         print(json.dumps(build(Path(a.index) if a.index else None, Path(a.out)), indent=1))
         return 0
+    if a.cmd == "check":
+        import render_subjects as RS
+        res = RS.build(S.World())
+        if res["renders"] < SANITY_MIN_RENDERS:
+            print(f"NOT MET: only {res['renders']} artpipe renders read from the art ledger (sanity floor {SANITY_MIN_RENDERS})")
+            return 1
+        und = undecided(res["entries"], json.loads(Path(a.decisions).read_text()))
+        n_open = len(open_families(res["entries"]))
+        print(f"{'MET' if not und else 'NOT MET'}: {n_open} open families, {n_open - len(und)} await a def, "
+              f"{len(und)} undecided" + (": " + " ".join(und[:20]) if und else ""))
+        return 1 if und else 0
     dp = Path(a.decisions)
     rows = json.loads(Path(a.worklist or dp.parent / f"{SHEET_ID}.worklist.json").read_text())
     w = S.World(read_jobs=False)
