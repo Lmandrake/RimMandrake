@@ -174,7 +174,15 @@ def lane_read(s, name, rows):
             and x.get("def") == "Human" and x.get("type") in ("bruise", "launch", "blocked")]
     after = {"thrower": hurt(s, thrower), "other": hurt(s, other) if other else None}
     downed = {k: s.read(a, "Downed") for k, a in (("thrower", thrower), ("other", other)) if a}
-    r.update(after=after, recs=mine, err=err,
+    # a standing pawn the bruise killed is a corpse, and its hediffs no longer read through its alias (visit 3 of 0.2.0,
+    # ArchBig: the squirrel took 6.68 and died, and V_HEDIFF small read None): find its corpse in the lane by def
+    corpse = None
+    if other and after["other"] is None:
+        _kind, z = LANES[name]
+        lane = (STATION[0], STATION[1] + z - 4, STATION[2], 9)
+        things = (s.raw("jawa/list_things", rect="%d,%d,%d,%d" % lane, limit=400) or {}).get("things") or []
+        corpse = next((t for t in things if t.get("def") == "Corpse_" + _kind), None)
+    r.update(after=after, recs=mine, err=err, corpse=corpse,
              downed={k: (v.state == "ok" and str(v.v) == "True") for k, v in downed.items()})
 
 cast = {}
@@ -250,13 +258,15 @@ for name in ("small", "large", "colonist"):
             None if b is None else {k: b.get(k) for k in ("other", "mass", "otherMass", "amount", "otherAmount")},
             r["ids"]["thrower"], r["ids"]["other"], r["start"], len(r["recs"]), ", " + r["err"] if r["err"] else ""))
     g = gain(name, "other")
-    row(g is not None and g > 0, "V_HEDIFF " + name, "standing pawn's new Bruise+Crush severity %s (before %s, after %s)" % (
-        g, r["before"]["other"], r["after"]["other"]))
+    killed = bool(r.get("corpse")) and b is not None and (num(b, "otherAmount") or 0) > 0   # the bruise killed it: its corpse lies in the lane
+    row((g is not None and g > 0) or killed, "V_HEDIFF " + name, "standing pawn's new Bruise+Crush severity %s (before %s, after %s%s)" % (
+        g, r["before"]["other"], r["after"]["other"], "; killed by the bruise, corpse %s at %s,%s" % (
+            r["corpse"].get("id"), r["corpse"].get("x"), r["corpse"].get("z")) if killed else ""))
 
 bs, bl, bc = bruise_of("small"), bruise_of("large"), bruise_of("colonist")
 amt = {n: (num(b, "amount"), num(b, "otherAmount")) if b else (None, None) for n, b in (("small", bs), ("large", bl), ("colonist", bc))}
 gs, gso = gain("small", "thrower"), gain("small", "other")
-squirrel_dead = rows["small"]["after"]["other"] is None or rows["small"]["after"]["other"][2]   # unreadable: dead and gone
+squirrel_dead = bool(rows["small"].get("corpse")) or bool(rows["small"]["after"]["other"] and rows["small"]["after"]["other"][2])   # its corpse found, or it reads Dead
 a, o = amt["small"]
 row(a is not None and o is not None and o > a and (squirrel_dead or (gs is not None and gso is not None and gso > gs)), "V_SMALL",
     "journal colonist %s vs squirrel %s; hediffs colonist +%s vs squirrel +%s (squirrel dead %s)" % (a, o, gs, gso, squirrel_dead))
