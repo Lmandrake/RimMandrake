@@ -498,6 +498,7 @@ def _build_suite():
                                     % [w.get("type") for w in rows][:8])
         text = boxes[-1].get("text")
         _close_boxes(t)
+        t._record("launch confirmation text (%s)" % engine, {"text": text})
         if not text:
             raise ExpectationFailed("UNMEASURED: the dialog text is unreadable (a companion without the text field?): %r"
                                     % (boxes[-1],))
@@ -521,13 +522,15 @@ def _build_suite():
                            doLeavings=False)
             b = t.session.call("jawa/build_batch", ops="GravEngine:%d,%d" % (ex, ez), faction="PlayerColony")
             t.session.call("jawa/map_commit", full=True)
-            st = t.session.call("jawa/gravship_status") or {}
-            engines = [e for e in (st.get("engines") or [])
+            # the engine's id from the map's own things: on a reused map jawa/gravship_status (vanilla's
+            # GetPlayerGravEngine) named the engine an earlier run built and clear_area destroyed (live 2026-11-26)
+            st = t.session.call("jawa/list_things", defName="GravEngine", limit=20) or {}
+            engines = [e for e in (st.get("things") or [])
                        if abs((e.get("x") or -99) - ex) <= 2 and abs((e.get("z") or -99) - ez) <= 2]
             if not engines:
-                raise ExpectationFailed("UNMEASURED: no grav engine stood at %d,%d (build %s, status %s)"
+                raise ExpectationFailed("UNMEASURED: no grav engine stood at %d,%d (build %s, things %s)"
                                         % (ex, ez, str(b)[:200], str(st)[:200]))
-            state["engine"] = engines[0]["thingId"]
+            state["engine"] = engines[0]["id"]
             text = _launch_text(t, state["engine"])
             state["vanilla"] = text
             if HELD_LINE in text:
@@ -543,6 +546,7 @@ def _build_suite():
                      if p.get("id") == pid]
             enc = t.session.call("jawa/static_call", type="RimMandrake.DivingInteraction.BrineEncasementUtility",
                                  method="TryEncase", args="%s|current" % pid)
+            t._record("brine jacket takes %s" % pid, {"encase": enc, "pawn": names})
             if str((enc or {}).get("result")) != "True":
                 raise ExpectationFailed("UNMEASURED: the brine jacket did not take the colonist: %s" % str(enc)[:300])
             label = _jacket_label()

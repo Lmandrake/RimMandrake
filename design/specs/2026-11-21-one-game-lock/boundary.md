@@ -83,6 +83,10 @@ Before: `rimflow bridge who` 5.0 s for ArchBig, 1.8 s for ArchSmall.
   game) gives CMD g's environment (`game_instance.env`: instance, driver lock, bridge port, token). A shell already on
   g is left as it is. CMD also gets `RM_HOST_GUARD_GAME` and its seat (`RIMFLOW_SEAT`), both named in WSLENV, so a
   python.exe CMD's wsl.exe children carry the take's game and a seat for `rimflow bridge idle`.
+- **run-names-in-wslenv-only-what-it-hands-on.** `run` drops from CMD's WSLENV each name that CMD's environment does not
+  hold. A wsl.exe child of a python.exe CMD gets a named-but-unset variable as `""`, and an empty `RIMFLOW_DRIVER_LOCK`
+  reads as "no lock path": modcheck's `owns_game` then read 1 and never restarted the game onto its list (measured
+  2026-11-26). A name CMD does get stays, a deliberately empty one included.
 - **his-hold-refuses-with-exit-3.** `pipe off game:<g>`, his OWNER lock (live, or with its process gone, which a query
   cannot measure), and a flyer's flight each make `query` or `claim` exit 3 by name. His own claim for a flight passes.
   `claim --despite-hold WHY` with a nonempty reason passes the pipe hold, reports the hold and the reason on stderr,

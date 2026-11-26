@@ -279,6 +279,27 @@ sys.exit(G.run('a', 'startup SIGTERM', ['fixture CMD']))
                     p.kill()
 
 
+def t_run_names_in_wslenv_only_what_it_hands_on():
+    # LAUNCH_HELD_COLONIST_WARNING_1 (measured 2026-11-26): `game_lock run ArchBig -- python.exe modcheck ...` from a
+    # shell whose WSLENV named RIMFLOW_DRIVER_LOCK/p but did not set it. A wsl.exe child of python.exe gets each such name
+    # as "", lock_path reads an empty pin as "no lock path", so modcheck's owns_game() read False and its restart onto
+    # the composed list never ran: on a down game it waited 240 s and died. A name CMD does not get is not in WSLENV.
+    bx = Box()
+    probe = "import os; print(os.environ.get('WSLENV', ''))"
+    env = dict(bx.env, WSLENV="RIMFLOW_DRIVER_LOCK/p:RM_NOT_SET_ZZ:RM_SET_EMPTY_ZZ:RM_GAME_INSTANCE",
+               RM_SET_EMPTY_ZZ="")
+    env.pop("RM_NOT_SET_ZZ", None)
+    env.pop("RM_GAME_INSTANCE", None)
+    r = subprocess.run([sys.executable, GL, "run", "a", "--for", "wslenv probe", "--", sys.executable, "-c", probe],
+                       env=env, capture_output=True, text=True, timeout=60)
+    names = [w.split("/")[0] for w in r.stdout.strip().split(":") if w]
+    check(r.returncode == 0 and "RM_NOT_SET_ZZ" not in names and "RM_GAME_INSTANCE" not in names,
+          "run: WSLENV names no variable that CMD does not get (it would cross python.exe -> wsl.exe as '')",
+          (r.returncode, r.stdout.strip(), r.stderr.strip()[-200:]))
+    check("RIMFLOW_DRIVER_LOCK/p" in r.stdout and "RM_SET_EMPTY_ZZ" in names and "RM_HOST_GUARD_GEN" in names,
+          "run: WSLENV keeps each name CMD does get, a deliberate empty one and the take's generation", r.stdout.strip())
+
+
 def t_his_hold_refuses_with_exit_3():
     bx = Box()
     import control as C
@@ -829,6 +850,7 @@ def main():
     t_run_releases_on_exit_crash_and_sigterm()
     t_mine_says_whether_this_process_drives_the_game()
     t_run_aims_cmd_at_the_game_it_holds()
+    t_run_names_in_wslenv_only_what_it_hands_on()
     t_his_hold_refuses_with_exit_3()
     t_an_old_style_hold_is_seen_and_an_old_style_release_frees_it()
     t_release_frees_only_this_process_trees_hold()

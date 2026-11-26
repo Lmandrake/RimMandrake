@@ -509,9 +509,12 @@ def run(g, purpose, cmd, seat=None, force=None, flyer=False):
             # refused CMD's own hold NOT TAKEABLE (RIMMANDRAKE_CLASS_DROID_AND_JAWA_GONE_IN_SHALLOW_TAR, 2026-11-25)
             env["RM_DRIVER_PID"] = str(me["pid"])
             passed.append("RM_DRIVER_PID")
-        wslenv = env.get("WSLENV", "")
+        # a name CMD does not get leaves WSLENV: a python.exe CMD's wsl.exe children get each named-but-unset variable as
+        # "", and an empty RIMFLOW_DRIVER_LOCK reads as "no lock path", so modcheck's owns_game() read False and never
+        # restarted the game onto its list (LAUNCH_HELD_COLONIST_WARNING_1, measured 2026-11-26)
+        wslenv = ":".join(w for w in env.get("WSLENV", "").split(":") if w and w.split("/")[0] in env)
         for k in passed:
-            if k not in wslenv.split(":"):
+            if k not in [w.split("/")[0] for w in wslenv.split(":")]:
                 wslenv = (wslenv + ":" if wslenv else "") + k
         env["WSLENV"] = wslenv
         sys.stderr.write("%s: held for `%s` (gen %s%s)\n" % (game_names.show(g), " ".join(cmd), gen,
