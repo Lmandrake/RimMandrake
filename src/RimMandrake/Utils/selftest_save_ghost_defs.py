@@ -176,6 +176,36 @@ with tempfile.TemporaryDirectory() as tmp:
     check("Meat_RSW_AcidSlug" in names, "the name set holds the implied Meat_ def of a deleted race")
     check("Meat_RSW_Ghost" in g.with_implied(GHOSTS) and "Meat_Muffalo" not in g.with_implied(GHOSTS),
           "with_implied adds Meat_ of each ghost name only")
+    # a map <thing> of a deleted def: R3 held one RM_CaveDripSource on map 0, and strip climbed past the <thing> to the
+    # whole map <li> and refused (2026-11-26). The rule removes the <thing> block whole and keeps its neighbours.
+    things = ("\t\t<maps><li><things>\r\n"
+              "\t\t\t<thing Class=\"ThingWithComps\">\r\n\t\t\t\t<def>Kibble</def>\r\n\t\t\t\t<id>Kibble5</id>\r\n"
+              "\t\t\t</thing>\r\n"
+              "\t\t\t<thing Class=\"ThingWithComps\">\r\n\t\t\t\t<def>RSW_Ghost</def>\r\n\t\t\t\t<id>RSW_Ghost21193</id>\r\n"
+              "\t\t\t\t<comps><li><x>1</x></li></comps>\r\n\t\t\t</thing>\r\n"
+              "\t\t\t<thing>\r\n\t\t\t\t<def>Steel</def>\r\n\t\t\t\t<id>Steel7</id>\r\n\t\t\t</thing>\r\n"
+              "\t\t</things></li></maps>\r\n")
+    assert "\t\t<maps><li>" in MINI
+    tmini = MINI.replace("\t\t<maps><li>", things + "\t\t<maps><li>", 1)
+    tsrc = run(tmp, tmini, "thing.rws")
+    tout = os.path.join(tmp, "thing_out.rws")
+    check(g.cmd_strip(tsrc, tout, GHOSTS, "Leather_Plain", True) == g.NONE and os.path.exists(tout),
+          "strip removes a ghost map <thing> (no refusal)")
+    tnew = open(tout, "rb").read().decode() if os.path.exists(tout) else ""
+    check("RSW_Ghost21193" not in tnew and "<x>1</x>" not in tnew, "gone: the ghost <thing> block, comps included")
+    check("<id>Kibble5</id>" in tnew and "<id>Steel7</id>" in tnew
+          and "\t\t\t</thing>\r\n\t\t\t<thing>\r\n\t\t\t\t<def>Steel</def>" in tnew,
+          "kept: the live <thing> blocks on both sides, whole lines")
+    bad = run(tmp, tmini.replace("<other>Faction_1</other>",
+                                 "<other>Faction_1</other><t>Thing_RSW_Ghost21193</t>"), "thingref.rws")
+    check(g.cmd_strip(bad, os.path.join(tmp, "o5.rws"), GHOSTS, "Leather_Plain", True) == g.FOUND
+          and not os.path.exists(os.path.join(tmp, "o5.rws")), "refuses a ghost map <thing> whose id is referenced")
+
+    # planted fault: a ghost <def> with an <id> that is not its <li>'s first child (the <li> would hold more than it)
+    wide = run(tmp, tmini.replace("<maps><li><things>", "<maps><li><index>0</index><def>RSW_Ghost</def><id>9</id><things>",
+                                  1), "wide.rws")
+    check(g.cmd_strip(wide, os.path.join(tmp, "o6.rws"), GHOSTS, "Leather_Plain", True) == g.FOUND
+          and not os.path.exists(os.path.join(tmp, "o6.rws")), "refuses a ghost <def> that is not its <li>'s first child")
 
 print("PASS" if not fails else f"FAIL: {len(fails)}")
 sys.exit(1 if fails else 0)

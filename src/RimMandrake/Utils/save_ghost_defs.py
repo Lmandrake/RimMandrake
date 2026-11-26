@@ -19,7 +19,10 @@ implied Corpse_<name> and Meat_<name> defs (with_implied): the game generates th
 What strip does, by the element whose text is a ghost name (any other element shape is refused by name):
   <li>NAME</li>                    the line is removed (ThingFilter allowedDefs, world info factions, VEF ignoredFactions)
   <animal>/<drug>/<thingDef>NAME   the enclosing <li> block is removed (auto-slaughter config, drug-policy entry)
-  <def>NAME in a block with <id>   the thing's <li> block is removed; refused if its id is named anywhere else
+  <def>NAME first in a <thing>     the map thing's <thing> block is removed; refused if its id is named anywhere else
+  <def>NAME first in an <li> with
+       <id>                        the thing's <li> block is removed; refused if its id is named anywhere else, or if
+                                   <def> is not the <li>'s first child (the block would hold more than one thing)
   <def>NAME in a block with
        <loadID>                    the Faction's <li> block is removed, with every relation <li> whose <other> is it;
                                    refused if Faction_<loadID> is named anywhere else after that
@@ -172,6 +175,28 @@ def line_span(d, s, e):
     return ls, le
 
 
+THING_OPEN = re.compile(rb"<thing(?:\s[^>]*)?>")
+THING_TAG = re.compile(rb"<thing(?:\s[^>]*)?>|</thing>")
+
+
+def enclosing_thing(d, i):
+    """(start, end) of the <thing> block whose first child is the element at byte i, or None.
+    A map's things are <thing Class=...> elements, not <li>: without this, enclosing_li climbs to the whole map <li>
+    (R3, 2026-11-26: RM_CaveDripSource21193 on map 0). The end counts nested <thing> tags."""
+    lo = max(0, i - 400)
+    head = d[lo:i].rstrip()
+    j = head.rfind(b"<thing")
+    mo = THING_OPEN.match(head, j) if j >= 0 else None
+    if not mo or mo.end() != len(head):
+        return None
+    s, depth = lo + j, 0
+    for t in THING_TAG.finditer(d, s):
+        depth += -1 if t.group(0) == b"</thing>" else 1
+        if depth == 0:
+            return s, t.end()
+    return None
+
+
 class Refused(Exception):
     pass
 
@@ -189,6 +214,18 @@ def plan(d, names, stuff_to):
             s, e = enclosing_li(d, m.start())
             removals.append((s, e, f"{tag} block: <{tag}>{name}"))
         elif tag == "def":
+            th = enclosing_thing(d, m.start())
+            if th:
+                s, e = th
+                tid = re.search(rb"<id>([^<]+)</id>", d[m.end():e])
+                if not tid:
+                    raise Refused(f"<thing> of {name} at byte {s} has no <id>")
+                ref = tid.group(1)
+                others = len(re.findall(rb">(?:Thing_)?" + re.escape(ref) + rb"<", d))
+                if others > 1:
+                    raise Refused(f"map thing {ref.decode()} ({name}) is named {others - 1} more time(s) in the save")
+                removals.append((s, e, f"map thing: {ref.decode()} ({name})"))
+                continue
             s, e = enclosing_li(d, m.start())
             body = d[s:e]
             lid = re.search(rb"<loadID>(\d+)</loadID>", body)
@@ -197,6 +234,9 @@ def plan(d, names, stuff_to):
                 faction_ids.append(lid.group(1).decode())
                 removals.append((s, e, f"faction: Faction_{lid.group(1).decode()} ({name})"))
             elif tid:
+                if d[LI_OPEN.match(d, s).end():m.start()].strip():
+                    raise Refused(f"<def>{name}</def> at byte {m.start()} is not the first child of its <li> "
+                                  f"(the block would be wider than one thing)")
                 ref = tid.group(1)
                 others = len(re.findall(rb">(?:Thing_)?" + re.escape(ref) + rb"<", d))
                 if others > 1:
