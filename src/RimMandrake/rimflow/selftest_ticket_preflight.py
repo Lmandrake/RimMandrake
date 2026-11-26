@@ -35,6 +35,11 @@ check(st("def: RM_On\ntier: small", "C2", "RM_On")[0] == ["PASS"], "C2 good: def
 check(st("def: RM_Off\ntier: small", "C2", "RM_Off")[0] == ["FAIL"], "C2 bad: def off the list")
 check(st("def: RM_Gone\ntier: small", "B4", "RM_Gone")[0] == ["FAIL"], "B4 bad: def known nowhere")
 check(st("def: RM_Gone\ntier: wide", "B4", "RM_Gone")[0] == ["UNMEASURED"], "C10 bad: undumped mod makes 'missing' UNMEASURED")
+_s10, _r10 = st("tier: wide", "C10", None)
+_sh10 = TP.Shadow("claim", "X")
+_sh10.checks = _r10["checks"]
+check(_s10 == ["FAIL"] and not [c for c in _sh10.stops() if c["id"] == "C10"],
+      "C10 is reported but never stops a pickup: a stale dump is the instrument's fault, not a wrong declared tier")
 check(st("def: RM_Ours\ntier: small", "B5", "RM_Ours", src={"RM_Ours": [["ThingDef", "pkg.a"]]})[0] == ["PASS"], "B5 src-only def is ours")
 check(st("def: RM_Off", "C2", "RM_Off", proof="live-mods: pkg.a\n")[0] == ["FAIL"], "proof file live-mods is read")
 check(st("this is prose", "P0", "line 2")[0] == ["FAIL"], "a malformed refs line is reported")

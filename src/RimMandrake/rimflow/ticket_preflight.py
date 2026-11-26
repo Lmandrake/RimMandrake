@@ -358,7 +358,8 @@ def _def_checks(obs, defdecls, kinddecls, known_lists, pkgs, tier_map, defs, src
         undumped = sorted(pkgs - {m.lower() for m in raw.get("mods", [])})
         if undumped:
             obs("C10", None, "FAIL", "the dump of capture %s never held: %s" % (raw.get("capture"), ", ".join(undumped)),
-                "re-dump with these mods on, or drop them from the list; defs they own read UNMEASURED", t0=t)
+                "re-dump with these mods on, or drop them from the list; defs they own read UNMEASURED", t0=t,
+                origin="instrument")   # a stale dump is the instrument's fault, not a wrong declared tier: it never stops a pickup
         else:
             obs("C10", None, "PASS", "every mod on the list is in capture %s" % raw.get("capture"), t0=t)
     elif known_lists:
