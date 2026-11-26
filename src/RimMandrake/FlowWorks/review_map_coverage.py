@@ -600,3 +600,71 @@ def write(S, path=OUT, items=None):
         f.write("\n".join(md))
     return dict(path=path, items=len(items), features=len(got), uncovered=len(unc) + len(bad) + len(blind),
                 matrix=len(matrix))
+
+
+# ------------------------------------------------------------------------------------------------ the walk map
+# RIMMANDRAKE_REBUILD_FLOWWORKS_WALK_MAP_OLD_CODED_AND_STRANGE: the walk map (northstar/walk_map.py) against the list of what
+# it must show (northstar/walk_principles.py, page design/concepts/FlowWorks/version/walk_brief/station_principles.md).
+PRINCIPLES_MD = os.path.join(HERE, "..", "..", "..", "design", "concepts", "FlowWorks", "version", "walk_brief", "station_principles.md")
+LOCKED = os.path.join(HERE, "..", "..", "..", "design", "concepts", "FlowWorks", "version", "locked_bars.json")
+
+
+def walk_coverage(stations=None, principles=None, not_on_walk=None, locked=None, md_text=None):
+    """-> (lines, problems). Each principle names a station; each station shows one listed principle; each locked bar is
+    served by a principle or listed as not on the walk with why; no sign carries a code name; the page lists every
+    principle id. Pure when every argument is given; else it reads the files."""
+    import json
+    import sys as _sys
+    ns = os.path.join(HERE, "northstar")
+    if ns not in _sys.path:
+        _sys.path.insert(0, ns)
+    import walk_principles as WP
+    import walk_map as WM
+    stations = WM.plan().stations if stations is None else stations
+    principles = WP.PRINCIPLES if principles is None else principles
+    not_on_walk = WP.NOT_ON_THE_WALK if not_on_walk is None else not_on_walk
+    if locked is None:
+        with open(LOCKED, encoding="utf-8") as f:
+            locked = json.load(f)["ids"]
+    if md_text is None:
+        md_text = open(PRINCIPLES_MD, encoding="utf-8").read() if os.path.exists(PRINCIPLES_MD) else ""
+    ids = [p["id"] for p in principles]
+    by = {}
+    probs = []
+    for st in stations:
+        if st.get("shows") not in ids:
+            probs.append("station %s %r shows no listed principle (%r)" % (st["n"], st.get("short"), st.get("shows")))
+        else:
+            by.setdefault(st["shows"], []).append(st["n"])
+    lines = []
+    for p in principles:
+        got = by.get(p["id"], [])
+        lines.append("%-18s %-60s stations %s" % (p["id"], p["title"][:60], ", ".join(map(str, got)) or "NONE"))
+        if not got:
+            probs.append("principle %s (%s) has no station" % (p["id"], p["title"]))
+        if "`%s`" % p["id"] not in md_text:
+            probs.append("principle %s is not on the page %s" % (p["id"], os.path.basename(PRINCIPLES_MD)))
+    served = {b for p in principles for b in p["bars"]}
+    for b in locked:
+        if b not in served and b not in not_on_walk:
+            probs.append("locked bar %s: no principle serves it and it is not listed as not on the walk" % b)
+        if b in served and b in not_on_walk:
+            probs.append("locked bar %s is both served and listed as not on the walk" % b)
+    for b in list(served) + list(not_on_walk):
+        if b not in locked:
+            probs.append("bar %s is not a locked bar of this version" % b)
+    probs += WM.sign_problems(stations)
+    return lines, probs
+
+
+if __name__ == "__main__":
+    import sys as _sys
+    if _sys.argv[1:2] == ["walk"]:
+        _lines, _probs = walk_coverage()
+        print("\n".join(_lines))
+        for _p in _probs:
+            print("PROBLEM:", _p)
+        print("WALK COVERAGE: %d principles, %d problems" % (len(_lines), len(_probs)))
+        _sys.exit(1 if _probs else 0)
+    print("usage: review_map_coverage.py walk   (the inventory coverage runs from review_map.py --plan)")
+    _sys.exit(2)
