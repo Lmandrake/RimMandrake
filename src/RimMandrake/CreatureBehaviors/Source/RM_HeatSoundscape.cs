@@ -87,6 +87,18 @@ namespace RimMandrake.CreatureBehaviors
         {
         }
 
+        // MapComponentUpdate runs every frame for every map, paused or not (Map.MapUpdate). The map gate in Wanted() runs
+        // only from MapComponentTick, which never runs while paused, and a PerTick sustainer ends only when TicksGame moves,
+        // so without this a map switch made while paused keeps this map's heat bed playing over the other map until
+        // unpause (SOUNDSCAPE_PAUSED_SWITCH_FIX_HUM_LEAKS; the RustCathedral hum's fix).
+        public override void MapComponentUpdate()
+        {
+            if (sustainer != null && Find.CurrentMap != map)
+            {
+                End();
+            }
+        }
+
         public override void MapComponentTick()
         {
             if (sustainer != null && !sustainer.Ended)

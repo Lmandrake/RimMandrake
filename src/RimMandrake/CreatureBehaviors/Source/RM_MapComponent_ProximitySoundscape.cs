@@ -146,6 +146,18 @@ namespace RimMandrake.CreatureBehaviors
             }
         }
 
+        // MapComponentUpdate runs every frame for every map, paused or not (Map.MapUpdate). The current-map gate in
+        // TryGetListenerCell runs only from MapComponentTick, which never runs while paused, and a PerTick layer ends only
+        // when TicksGame moves, so without this a map switch made while paused keeps this map's hum playing over the
+        // other map until unpause (SOUNDSCAPE_PAUSED_SWITCH_FIX_HUM_LEAKS; the RustCathedral hum's fix).
+        public override void MapComponentUpdate()
+        {
+            if (groups.Count > 0 && Find.CurrentMap != map)
+            {
+                EndAll();
+            }
+        }
+
         public override void MapRemoved()
         {
             EndAll();
