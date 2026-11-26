@@ -7,6 +7,11 @@ shoal). That doc's `## 6. Questions for the owner` is now fully ruled (see
 its own `### Rulings (owner, 2026-09-18)` block) — read it before starting,
 it settles every open call this build would otherwise have to guess at.
 
+## refs
+file: src/RimMandrake/bridgetools/prove_fish_bestiary_live.py
+file: src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_WastesBrineDeposits.xml
+file: src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_WastesBrineScatter.xml
+
 ## verify
 - Every fished water has its proposed table (buckets, weights, rare
   catches) built and validated.
