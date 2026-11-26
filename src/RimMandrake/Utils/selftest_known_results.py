@@ -97,8 +97,6 @@ def decide(K, root: Path, loud=False) -> list:
 
     # what must not be cached
     for label, lines, word in [
-        ("clock shim line", [SH, "C clock"], "clock"),
-        ("date binary", [SH, "X /usr/bin/date", "@ /usr/bin/date"], "clock"),
         ("network", [SH, "N 1.2.3.4:80"], "network"),
         ("unix socket", [SH, "U /run/x"], "network"),
         ("meminfo", [SH, "R /proc/meminfo"], "machine state"),
@@ -114,6 +112,23 @@ def decide(K, root: Path, loud=False) -> list:
         check(has(refused(lines), word), f"refuses {label}")
     check(has(refused([SH], {"taint": ["socket.connect"]}), "taint"), "refuses a python taint")
     check(has(refused([SH], "{broken"), "unreadable"), "refuses an unreadable tracer file")
+
+    # the wall clock is an input keyed by the day, never a refusal (RIMMANDRAKE_KEY_TESTQ_SKIP_CACHE_ON_INPUTS)
+    m = K.analyse(trace(tr, [SH, "C clock"]), repo, own, later)
+    check(not m["refused"] and m["clock"], "a wall-clock read is an input, not a refusal")
+    m = K.analyse(trace(tr, [SH, "X /usr/bin/date", "@ /usr/bin/date"]), repo, own, later)
+    check(not m["refused"] and m["clock"], "running date is a wall-clock read")
+    check(not K.analyse(trace(tr, [SH]), repo, own, later)["clock"], "no clock read, no clock in the key")
+
+    # the apparatus is no input: the tracer's folder (its two sources are in runner_version) changes when the first
+    # traced python writes its __pycache__ (63 of 433 refusals on SteveDesktop, 2026-11-26)
+    td = str(K.TRACE_DIR)
+    m = K.analyse(trace(tr, [SH, f"R {td}/sitecustomize.py", f"L {td}"]), repo, own, later)
+    check(not m["refused"] and f"{td}/sitecustomize.py" not in m["files"] and td not in m["lists"],
+          "the tracer's own folder is no input")
+    tst = os.stat(td)
+    check(not has(refused([SH, f"L {td}"], started=max(tst.st_mtime, tst.st_ctime)), "changed during"),
+          "the tracer's folder moving does not refuse")
 
     # no observation, no record
     check(has(refused(None), "wrote nothing"), "refuses when the shim wrote nothing")
@@ -155,6 +170,27 @@ def decide(K, root: Path, loud=False) -> list:
     check(has(refused([SH, f"R {repo}/a.txt"], started=now), "changed during"), "refuses an input touched mid-run")
     check(has(refused([SH, f"L {repo}/sub"], started=now), "changed during"), "refuses a listing touched mid-run")
     check(K.moved([str(repo / "gone")], now) == "", "a vanished path is left to the hash")
+    plain = repo / "plain"
+    plain.mkdir()
+    (plain / "x").write_text("x")
+    check(has(refused([SH, f"R {plain}/gone"], started=now), "changed during"), "refuses an absent input whose folder moved")
+    # ...unless only a name the system rewrites on its own moved it (WSL's /etc/resolv.conf, about every 200 s)
+    churn = repo / "churn"
+    churn.mkdir()
+    (churn / "noise").write_text("n")
+    K.CHURN[str(churn)] = {"noise"}
+    try:
+        now = time.time()
+        (churn / "noise").unlink()
+        (churn / "noise").write_text("n2")
+        check(not has(refused([SH, f"R {churn}/gone"], started=now), "changed during"),
+              "a system rewrite of a churn name does not refuse an absent input")
+        (churn / "other").write_text("o")
+        check(has(refused([SH, f"R {churn}/gone"], started=now), "changed during"),
+              "any other name touched in a churn folder still refuses")
+        (churn / "other").unlink()
+    finally:
+        K.CHURN.pop(str(churn), None)
 
     # the ledger: record, hit, every way to miss
     state = root / "state"
@@ -192,6 +228,18 @@ def decide(K, root: Path, loud=False) -> list:
         check(led.lookup("t")[0] is None, "another runner, tracer or package set misses")
         led.version = keep
 
+        # a clock read keys the record to its UTC day
+        check(put("clk", "PASS", lines + ["C clock"])[0], "a clock-reading PASS records")
+        check(led.lookup("clk")[0] is not None, "a clock-reading test answers on its day")
+        real_window = K.clock_window
+        K.clock_window = lambda: "1999-12-31"
+        try:
+            r, w = led.lookup("clk")
+            check(r is None and "clock" in w, "a clock-reading test misses on another day")
+            check(led.lookup("t")[0] is not None, "a test that read no clock answers on any day")
+        finally:
+            K.clock_window = real_window
+
         # import dirs: only a name the test tried to import counts
         rel = "imp"
         check(led.record(rel, "PASS", 1, trace(tr, [SH], {"imports": ["shadow"], "import_dirs": [str(repo / "sub")]}), own,
@@ -209,7 +257,7 @@ def decide(K, root: Path, loud=False) -> list:
         check(rec is not None and rec["state"] == "FAIL", "a red stays a red")
         for st in ("CRASH", "UNMEASURED"):
             check(put("nov", st)[0] is False and led.lookup("nov")[0] is None, f"{st} leaves no record")
-        check(put("t", "PASS", [SH, "C clock"])[0] is False and led.lookup("t")[0] is None,
+        check(put("t", "PASS", [SH, "N 1.2.3.4:80"])[0] is False and led.lookup("t")[0] is None,
               "a tainted rerun deletes the old answer")
 
         # a record cap, and the newest first
@@ -416,8 +464,13 @@ def shim_writes(K, root: Path):
 MUTANTS = [
     ("network ignored", 'refused.append(f"network: {val}")', 'pass'),
     ("unix socket ignored", 'refused.append(f"network: unix socket {val}")', 'pass'),
-    ("clock ignored", 'refused.append("clock: a python process read the wall clock")', 'pass'),
-    ("date ignored", 'refused.append(f"clock: ran {os.path.basename(val)}")', 'pass'),
+    ("clock read unseen", 'clocked = True          # a python process read the wall clock', 'pass'),
+    ("date unseen", 'clocked = True          # date: the clock by another door', 'pass'),
+    ("clock day not compared", 'if rec.get("clock") and rec["clock"] != clock_window():', 'if False:'),
+    ("clock day not kept", '"clock": clock_window() if m.get("clock") else None,', '"clock": None,'),
+    ("tracer dir an input", 'if _under(p, (str(TRACE_DIR),)):', 'if False:'),
+    ("churn hides any change", 'and e.name not in names:', 'and False:'),
+    ("churn everywhere", 'names = CHURN.get(d)', 'names = CHURN.get(d) or {"x"}'),
     ("landing count off", 'if lands < execs + 1:', 'if lands < execs:'),
     ("failed exec not subtracted", 'execs -= 1', 'execs -= 0'),
     ("python without tracer ok", 'missing = pythons - tr["starts"]', 'missing = set()'),
@@ -489,7 +542,7 @@ MUTANTS = [
     ("record names collide", 'name = quote(rel, safe="")', 'name = rel.replace("/", "__")'),
     ("long names unhashed", 'if len(name) > 200:', 'if False:'),
     ("a stranger's record answers", 'recs = [r for r in self._load(rel) if r.get("test") == rel]', 'recs = self._load(rel)'),
-    ("an absent input's folder unchecked", 'if moved([os.path.dirname(p)], started):', 'if False:'),
+    ("an absent input's folder unchecked", 'if moved([os.path.dirname(p)], started)', 'if False'),
     ("stat then write passes", 'if p in wrote:      # what the stat', 'if False:      # what the stat'),
     ("dir probe drops link text", 'return link + f"d{mode}"', 'return f"d{mode}"'),
     ("shell env not whole", '& ENV_IMPORTERS:', '& set():'),
@@ -540,8 +593,9 @@ FIXTURES = {
     # it lives in a fixture mod with a passed Design Version: --nightly runs only finished mods' tests (nightly_scope;
     # owner by card 2026-11-15), and the audit samples inside that set (RIMMANDRAKE_FIX_KNOWN_RESULTS_AUDIT_NIGHTLY_SCOPED_TO_NOTHING)
     "src/Fix/Hidden/selftest_hidden.py": "import os, sys\nsys.exit(0 if os.stat('src/hidden.txt').st_mtime == 1000000000 else 1)\n",
-    # never cached
+    # cached on its day only
     "src/selftest_clock.py": "import time\nprint(time.time())\n",
+    # never cached
     "src/selftest_network.py": ("import socket\ntry:\n    socket.create_connection(('127.0.0.1', 9), 1)\n"
                                 "except OSError:\n    pass\n"),
     "src/selftest_game.py": "import os\nprint(os.path.exists('/mnt/c/Program Files (x86)/Steam'))\n",
@@ -567,8 +621,8 @@ def tq(name):
     return tp(name).replace("/", "%2F") + ".json"
 
 
-CACHEABLE = ["import", "data", "listing", "env", "tool", "absent", "shadow", "threads", "unrelated", "hidden"]
-NEVER = {"clock": "clock", "network": "network", "game": "external", "git": "git state", "machine": "machine state",
+CACHEABLE = ["import", "data", "listing", "env", "tool", "absent", "shadow", "threads", "unrelated", "hidden", "clock"]
+NEVER = {"network": "network", "game": "external", "git": "git state", "machine": "machine state",
          "python_i": "unobserved", "env_cleared": "unobserved", "rewrites": "reads and writes", "touches": "changed during",
          "makedirs": "stats and writes"}
 
@@ -719,6 +773,8 @@ def fixture(root: Path):
        sorted(f"src/t{i}.txt" for i in range(16)), "measured: sixteen threads, sixteen reads, none dropped by the tracer")
     eq(any(k.startswith("/usr/lib/python") or k.startswith("/usr/bin/python") for k in rec("data").get("files", {})), True,
        "measured: the interpreter and its stdlib are inputs")
+    eq(bool(rec("clock").get("clock")), True, "measured: a clock read puts its day in the key")
+    eq(rec("data").get("clock"), None, "measured: no clock read, no day in the key")
     for n, word in NEVER.items():
         eq(tq(n) in recs, False, f"never cached: {n}")
     refusals = [json.loads(ln) for ln in (state / "known_results/refusals.jsonl").read_text().splitlines()]

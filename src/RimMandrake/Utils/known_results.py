@@ -16,8 +16,12 @@ A false "unchanged" is far worse than a rerun, so nothing here is declared by ha
   start file (python -I) means part of the run was unseen, and `analyse` refuses. A test that fails to record simply
   runs every time; the failure mode is a rerun.
 
-  Never cached (`analyse` taints these, whatever the result): the network; the wall clock read by a python process or a
-  `date`; the live game and the Windows drives; /proc and /sys machine state; the repository's own git state; the
+  The wall clock is an input, keyed by the day. A test whose python process read the wall clock, or that ran `date`, is
+  recorded with the UTC date, and its record answers only on that date (`clock_window`). Until 2026-11-26 a clock read
+  refused the record outright, and that alone refused 34 of 39 pipeline selftests on a back-to-back rerun: most read the
+  clock only because the code under test stamps what it writes.
+
+  Never cached (`analyse` taints these, whatever the result): the network; the live game and the Windows drives; /proc and /sys machine state; the repository's own git state; the
   sweep-wide derived-file cache; a shared temp file the test did not write; a pre-existing file the test both reads and
   writes; a file that changed during the run.
 
@@ -73,6 +77,36 @@ PROC_OK = ("/proc/self/", "/proc/thread-self/", "/proc/filesystems", "/proc/sys/
 EXTERNAL = ("/mnt/", "/media/", "/net/")   # the Windows drives: the live game, its logs, other machines
 LOCAL_TREES = ("/mnt/d/Luke/dev",)         # ...but this is source on a local disk (Lodestar, Waypoint on sys.path): it hashes
 CLOCK_TOOLS = {"date"}
+# Folders the system rewrites on its own, and the names it rewrites there. WSL replaces /etc/resolv.conf (a link to
+# /mnt/wsl/resolv.conf) about every 200 s (measured 2026-11-26), so /etc "changed during the run" under 46 of 433
+# refusals on SteveDesktop and 11 of 34 in one back-to-back rerun: every test that looked for an absent /etc file.
+CHURN = {"/etc": {"resolv.conf"}}
+
+
+def clock_window() -> str:
+    """The span a clock-reading test's record holds for: its UTC day. Danger guarded: a verdict that moves as time passes
+    while every file stays the same, such as a fixture dated "2026-11-20" that a check against now ages out of (70
+    selftests mix a fixed date with a read of now, counted 2026-11-26). The nightly runs each such test at least once a
+    day, so a day is the longest such a verdict can hide."""
+    return time.strftime("%Y-%m-%d", time.gmtime())
+
+
+def churn_only(d: str, started: float) -> bool:
+    """True if folder d moved since `started` only because the system rewrote one of its CHURN names: every entry
+    touched since then is one. A deletion leaves no entry to see; in /etc only the package manager deletes, and the
+    package set is in runner_version."""
+    names = CHURN.get(d)
+    if not names:
+        return False
+    try:
+        with os.scandir(d) as it:
+            for e in it:
+                st = e.stat(follow_symlinks=False)
+                if max(st.st_mtime, st.st_ctime) >= started - TIME_SLOP_S and e.name not in names:
+                    return False
+    except OSError:
+        return False
+    return True
 # These copy the whole environment into their own tables and never call getenv: every name is a dependency, absent ones too.
 ENV_IMPORTERS = {"sh", "dash", "bash", "zsh", "ksh", "busybox", "perl", "awk", "gawk", "mawk"}
 ENV_WHOLE = "*"                         # the pseudo-name in a record's env for "all of it"
@@ -165,6 +199,7 @@ def analyse(trace_dir: Path, repo: Path, own_tmp: str, started: float) -> dict:
     refused: list = []
     read, wrote, listed, probed, envs = set(), set(), set(), set(), set()
     import_dirs, imports, exes, clock_by = set(), set(), set(), set()
+    clocked = False
     if not tr["native"]:
         refused.append("unobserved: the shim wrote nothing")
     if tr.get("broken"):
@@ -208,7 +243,7 @@ def analyse(trace_dir: Path, repo: Path, own_tmp: str, started: float) -> dict:
             elif op == "X":
                 execs += 1
                 if os.path.basename(val) in CLOCK_TOOLS:
-                    refused.append(f"clock: ran {os.path.basename(val)}")
+                    clocked = True          # date: the clock by another door
                 if "/" in val:          # @ only hashes where it landed: the name is what a retargeted link changes
                     if not _under(os.path.normpath(val), EXTERNAL):
                         probed.add(os.path.normpath(val))
@@ -221,7 +256,7 @@ def analyse(trace_dir: Path, repo: Path, own_tmp: str, started: float) -> dict:
             elif op == "U":
                 refused.append(f"network: unix socket {val}")
             elif op == "C":
-                refused.append("clock: a python process read the wall clock")
+                clocked = True          # a python process read the wall clock
     if lands < execs + 1:
         refused.append(f"unobserved: {execs + 1 - lands} of {execs} exec(s) landed where the shim cannot see")
     missing = pythons - tr["starts"]
@@ -255,6 +290,8 @@ def analyse(trace_dir: Path, repo: Path, own_tmp: str, started: float) -> dict:
             return False
         if _under(p, mine) or "/__pycache__/" in p + "/" or p.endswith(".pyc") or p.startswith("/rm-selftest/"):
             return False
+        if _under(p, (str(TRACE_DIR),)):
+            return False                # the apparatus: its two sources are in runner_version
         if p.startswith("/dev/"):
             if not any(p == d or p.startswith(d) for d in DEV_OK if d):
                 refused.append(f"machine state: {p}")
@@ -305,7 +342,7 @@ def analyse(trace_dir: Path, repo: Path, own_tmp: str, started: float) -> dict:
         # The shim notes an open before it happens, so "read" and "not there now" is either a miss the test saw or a file
         # it saw that has gone since. A deletion by the test is a write (the shim notes unlink), and is refused above;
         # one by anyone else changes the folder, and a folder touched since the run began cannot say which it was.
-        if moved([os.path.dirname(p)], started):
+        if moved([os.path.dirname(p)], started) and not churn_only(os.path.dirname(p), started):
             refused.append(f"changed during the run: {os.path.dirname(p)} (an absent input's folder)")
             continue
         absent.append(p)
@@ -337,7 +374,7 @@ def analyse(trace_dir: Path, repo: Path, own_tmp: str, started: float) -> dict:
         env.add(ENV_WHOLE)
     env = sorted(env)
     return {"refused": sorted(set(refused)), "files": files, "absent": absent, "lists": lists, "import_dirs": idirs,
-            "imports": sorted(imports), "probes": probes, "env": env, "clock_by": sorted(clock_by)}
+            "imports": sorted(imports), "probes": probes, "env": env, "clock_by": sorted(clock_by), "clock": clocked}
 
 
 def _source_of(p: str) -> str:
@@ -533,13 +570,17 @@ class Ledger:
                 "import_dirs": {self._key(p): h.listing(p, imports) for p in m["import_dirs"]},
                 "imports": m["imports"],
                 "probes": {self._key(p): h.probe(p) for p in m["probes"]},
-                "env": {n: _env_value(n) for n in m["env"]}}
+                "env": {n: _env_value(n) for n in m["env"]},
+                "clock": clock_window() if m.get("clock") else None,
+                }
 
     def first_difference(self, rec: dict):
         """None if the world still matches the record, else the first input that does not."""
         h = self.hash
         if rec.get("runner") != self.version:
             return "runner, tracer or package set"
+        if rec.get("clock") and rec["clock"] != clock_window():
+            return f"clock (it read the clock on {rec['clock']})"
         for n, v in rec["env"].items():
             if _env_value(n) != v:
                 return f"env {n}"
@@ -616,7 +657,7 @@ class Ledger:
 
     @staticmethod
     def _inputs(r: dict):
-        return json.dumps({k: r.get(k) for k in ("runner", "files", "absent", "lists", "import_dirs", "probes", "env")},
+        return json.dumps({k: r.get(k) for k in ("runner", "files", "absent", "lists", "import_dirs", "probes", "env", "clock")},
                           sort_keys=True)
 
     def forget(self, rel: str) -> None:
