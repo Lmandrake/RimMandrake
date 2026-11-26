@@ -47,6 +47,12 @@ def main():
     import knockback_runner as K
     import reviewmap as RM
     import stage_review as S
+    import look_changed_labels as LC
+    # his look, as a labelled cell (owner card 2026-11-12, rule 2f): each station's inputs are the mod's source and defs
+    cells = [{"key": sc, "name": sc, "inputs": ["src/RimMandrake/ExplosiveKnockback/Source", "src/RimMandrake/ExplosiveKnockback/Defs"],
+              "params": {"scene": sc}} for sc, _w, _d in STATIONS]
+    lab = LC.label_cells("ExplosiveKnockback", cells)
+    print("look labels:", json.dumps(lab.get("labels")), "notes:", lab.get("notes"), flush=True)
     from rimbridge_client import RimBridge, resolve_endpoint
     host, port, token = resolve_endpoint()
     lb = RM.LiveBridge()
@@ -78,7 +84,7 @@ def main():
                 v = K.parse_verdict(K.call(b, "Verdict", scene))[0] if st == "STAGED" else st
                 rows.append((i + 1, scene, v))
                 print("STATION %02d %-20s %s" % (i + 1, scene, v), flush=True)
-                signs.append(RM.sign_book(cols[i], LOW - 3, "%02d" % (i + 1), "%s AFTER" % scene, look=what + ". Compare with the START site straight above (z %d)" % HIGH,
+                signs.append(RM.sign_book(cols[i], LOW - 3, "%02d" % (i + 1), LC.sign_name("%s AFTER" % scene, lab["labels"].get(scene)), look=what + ". Compare with the START site straight above (z %d)" % HIGH,
                                           decide=decide, more="proof verdict %s" % v))
             for i, (scene, what, decide) in enumerate(STATIONS):
                 x = cols[i]
@@ -102,7 +108,7 @@ def main():
                     print("START  %02d %-20s %s explosions removed %d left %d" % (i + 1, scene, str(r)[:60], len(ex), len(left)), flush=True)
                     if left:
                         sys.exit("NOT STAGED: an explosion is still on the map")
-                signs.append(RM.sign_book(x, HIGH - 3, "%02d" % (i + 1), "%s START" % scene, look="as it stood before the blast; nothing is armed. The AFTER site is straight below (z %d)" % LOW))
+                signs.append(RM.sign_book(x, HIGH - 3, "%02d" % (i + 1), LC.sign_name("%s START" % scene, lab["labels"].get(scene)), look="as it stood before the blast; nothing is armed. The AFTER site is straight below (z %d)" % LOW))
             # 0.2.0's blast show lays its scar on a rendered frame after the shell goes off, even paused, so a START twin whose
             # explosion was removed before any tick still gets the scar of a blast that never happened (visit 1 of 0.2.0: a
             # crater on every START site). Let frames pass, then take our scars off the START row and read it back.
@@ -128,7 +134,10 @@ def main():
         b.call("jawa/set_fog", {"action": "unfog", "rect": "0,0,250,60"})
     pr = RM.place_signs(lb, signs)
     print("signs placed: %s" % len(pr.get("placed") or []))
+    if lab.get("notes"):
+        signs.append(RM.sign_book(5, 5, "00", "notes", look="; ".join(lab["notes"])))
     out = RM.save_keeper(RM.LiveBridge(), name, saves=RM.SAVES, signs=signs)
+    LC.record("ExplosiveKnockback", name, cells)
     print(json.dumps({"save": out, "stations": rows}))
 
 
