@@ -2384,6 +2384,9 @@ def cert_red_gates_main():
                   "launch_brief": lambda item, text, model, cap, seat="BENCH", env=None, **k: briefs.append(
                       {"item": item, "text": text, "cap": cap}) or (0, "DETACHED rm-cert-red-1", "rm-cert-red-1"),
                   "known": lambda: {base_item}, "ended": lambda ids: set(),
+                  # the live mod ledger never decides here: GimmeSomeSlack's real ledger turned ready on 2026-11-26 and
+                  # sent these launches down the pilot path (OPS_STEVE_DIAGNOSE_INVALID_SHARE_UKDG's publish)
+                  "pilot": lambda root, m: False,
                   "launch": lambda *a, **k: other.append(("launch", a)) or (0, "DETACHED y", "y")}
             st = {"mods": {}}
             rows, la = MD.decide(cfg, st, facts(stage, rows_in), now, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
