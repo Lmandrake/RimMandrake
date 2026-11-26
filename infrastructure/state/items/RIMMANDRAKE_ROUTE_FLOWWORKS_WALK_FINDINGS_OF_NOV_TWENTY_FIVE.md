@@ -14,3 +14,9 @@ Later in the same walk, about 6:40 PM PST, word for word:
 Continuing walk...
 
 Please decide what 56 station planks is for or remove it.
+
+---
+
+The end of the same walk, 6:50 PM PST, word for word (typos fixed):
+
+Stations 34-39: Pits look pretty good. We need you to add a new area with many complex surface deformations within a very large pit, to see if we can read complex shapes and relationships properly. Please set up proper testing for walking under covered pits and plank-covered pits. Grate doors work as expected. Ladders and climbing gear work as expected. I can't review any more. Please work to significantly enhance this test map to expose as many explicit testing principles as FlowWorks really needs... many of them are old, coded, and strange. That is end of my walkthrough for now. I must go AFK. Release the walkthrough game.
