@@ -198,7 +198,7 @@
   {
    "id": "rm_kbblast_crater_1",
    "rimflow_item_id": "RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS",
-   "target_def": "RM_KnockbackBlastCrater_7",
+   "target_def": "RM_KnockbackBlastCrater_7Wide",
    "prompt": "An ugly blast crater scar on the ground, round: torn churned dark earth at the centre, a ragged burnt black rim, radial scorch streaks fading outward, its outer edge feathering to fully transparent so it reads on soil, sand and stone.",
    "canvas_w": 512,
    "canvas_h": 512,
@@ -209,7 +209,7 @@
   {
    "id": "rm_kbblast_crater_2",
    "rimflow_item_id": "RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS",
-   "target_def": "RM_KnockbackBlastCrater_7",
+   "target_def": "RM_KnockbackBlastCrater_7Wide",
    "prompt": "An ugly blast crater scar on the ground, lopsided, torn to one side: torn churned dark earth at the centre, a ragged burnt black rim, radial scorch streaks fading outward, its outer edge feathering to fully transparent so it reads on soil, sand and stone.",
    "canvas_w": 512,
    "canvas_h": 512,
@@ -220,7 +220,7 @@
   {
    "id": "rm_kbblast_crater_3",
    "rimflow_item_id": "RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS",
-   "target_def": "RM_KnockbackBlastCrater_7",
+   "target_def": "RM_KnockbackBlastCrater_7Wide",
    "prompt": "An ugly blast crater scar on the ground, wide and shallow: torn churned dark earth at the centre, a ragged burnt black rim, radial scorch streaks fading outward, its outer edge feathering to fully transparent so it reads on soil, sand and stone.",
    "canvas_w": 512,
    "canvas_h": 512,
@@ -231,7 +231,7 @@
   {
    "id": "rm_kbblast_scorch_1",
    "rimflow_item_id": "RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS",
-   "target_def": "RM_KnockbackBlastScorch_7",
+   "target_def": "RM_KnockbackBlastScorch_7Wide",
    "prompt": "A black blast scorch on hard ground, round: a flat soot-black centre with radial streaks and spatter, the ground under it whole, its outer edge feathering to fully transparent so it reads on stone and on floor tiles.",
    "canvas_w": 512,
    "canvas_h": 512,
@@ -242,7 +242,7 @@
   {
    "id": "rm_kbblast_scorch_2",
    "rimflow_item_id": "RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS",
-   "target_def": "RM_KnockbackBlastScorch_7",
+   "target_def": "RM_KnockbackBlastScorch_7Wide",
    "prompt": "A black blast scorch on hard ground, splashed to one side: a flat soot-black centre with radial streaks and spatter, the ground under it whole, its outer edge feathering to fully transparent so it reads on stone and on floor tiles.",
    "canvas_w": 512,
    "canvas_h": 512,
@@ -253,7 +253,7 @@
   {
    "id": "rm_kbblast_scorch_3",
    "rimflow_item_id": "RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS",
-   "target_def": "RM_KnockbackBlastScorch_7",
+   "target_def": "RM_KnockbackBlastScorch_7Wide",
    "prompt": "A black blast scorch on hard ground, broken into patches: a flat soot-black centre with radial streaks and spatter, the ground under it whole, its outer edge feathering to fully transparent so it reads on stone and on floor tiles.",
    "canvas_w": 512,
    "canvas_h": 512,
