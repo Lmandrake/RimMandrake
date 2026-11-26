@@ -32,7 +32,8 @@ A hand act (observe, called by maturation_dispatch.tick on every applied tick):
 
 Each act is one line in <state dir>/hand_acts.jsonl, once (its id). A fold is one line in hand_folds.jsonl. An act
 older than the census (BASELINE_TS) is folded by the census; one whose reason names an item on the ledger is folded by
-that item. Any other act is open until `fold`. The reading's `hand_acts` block counts the open ones and the overdue
+that item. A move off his_walk by OWNER is his walk verdict (one of his five acts) and folds by itself. Any other act
+is open until `fold`. The reading's `hand_acts` block counts the open ones and the overdue
 ones (open for DAY_S); each overdue act is a Needs Conductor line, and ops_watch reads maturation.hand_acts_overdue:
 over 0 raises OPS_MATURATION_HAND_ACT_UNFOLDED (ops_watch_rules.json), one fixed item id.
 """
@@ -367,6 +368,23 @@ def _fold_named(fx, h, fresh, now):
                             "why": "its reason names the item"})
 
 
+WALK_VERDICT = "moved his_walk -> "
+
+
+def _fold_his_walk(now):
+    """Fold every open hand_move off his_walk by OWNER: his walk verdict (a pass, or the road back he gave) is his act,
+    one of his five acts (the pass at his walk). No run makes it, so there is no hand judgement to build into the
+    pipeline; read as a hand act it sat overdue at his rung (Pyrelands 0.1.0, 43 h, 2026-11-26;
+    RIMMANDRAKE_FOLD_HIS_WALK_VERDICT_NOT_A_HAND_ACT). Reads only the acts file, so it cannot be blind."""
+    folds = read_folds()
+    for a in read_acts():
+        w = str(a.get("what") or "")
+        if a["id"] in folds or a.get("kind") != "hand_move" or not w.startswith(WALK_VERDICT) or " by OWNER," not in w:
+            continue
+        _append(FOLDS, {"id": a["id"], "at": now, "by": "maturation_hands",
+                        "why": "his walk verdict: his act, one of his five acts (the pass at his walk), not a hand's"})
+
+
 def _fold_tick_own(st, now, fx=None):
     """Fold every open hand_run act whose unit the tick's current books hold: it was recorded as a hand run before a
     tick_units fix taught the books to see it (voided 11-18, cleared 11-20), and collect never looks at a recorded act
@@ -410,6 +428,7 @@ def observe(root, cfg, st, facts, now, rd, fx=None):
             _append(FOLDS, {"id": a["id"], "at": now, "census": BASELINE_FOLD, "by": "maturation_hands"})
     _fold_named(fx, h, seen, now)
     _fold_tick_own(st, now, fx)
+    _fold_his_walk(now)
     acts, folds = read_acts(), read_folds()
     open_ = [a for a in acts if a["id"] not in folds]
     over = [a for a in open_ if now - a["at"] >= DAY_S]

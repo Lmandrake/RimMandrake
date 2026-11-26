@@ -25,6 +25,8 @@ What it proves, one section per child item:
            stall, never on a ceiling stop; every detached run is told it ends with its turn
   chores   the tick reads back run dollars every 30 minutes and finishes a run dead for 10 minutes or more whose
            finish never ran; a killed blind or in-game run is left to its retry path; a failing chore is reported
+  his_walk a move off his_walk by OWNER (his walk verdict, one of his five acts) folds by itself; a move off his_walk by
+           a program, and a move by OWNER from another stage, stay open
 """
 import inspect
 import json
@@ -890,10 +892,60 @@ def continued_main():
         shutil.rmtree(root, ignore_errors=True)
 
 
+def his_walk_main():
+    """RIMMANDRAKE_FOLD_HIS_WALK_VERDICT_NOT_A_HAND_ACT, measured 2026-11-26: his own walk pass of Pyrelands 0.1.0
+    (his_walk -> passed by OWNER, 2026-11-24) was recorded as a hand move and read overdue for 43 h at his rung on
+    maturation-20261121225203. The walk verdict is his act (one of his five: the pass at his walk); no run makes it, so
+    there is no hand judgement to build into the pipeline. Written before the fix and watched failing on the base."""
+    if MH is None:
+        ok(False, "his walk: maturation_hands.py exists")
+        return
+    root = tempfile.mkdtemp(prefix="mat_hands_walk_")
+    was = os.environ.get("RM_MATURATION_DISPATCH_DIR")
+    os.environ["RM_MATURATION_DISPATCH_DIR"] = os.path.join(root, "state")
+    try:
+        MD.sdir()
+        os.makedirs(os.path.join(root, "design", "concepts", "W", "version"))
+        t0 = NOW - 3 * 3600
+        # one recorded before the fix, still open
+        MH._append(MH.ACTS, MH._act("move-W-1", NOW - 2 * 86400, "hand_move", "W",
+                                    "moved his_walk -> passed by OWNER, naming no run", "his walk of W") | {"recorded": NOW})
+        with open(os.path.join(root, "design", "concepts", "W", "version", "stage_record.json"), "w") as f:
+            json.dump({"moves": [
+                {"from": "his_walk", "to": "passed", "at": MH.iso(t0 + 100), "by": "OWNER", "why": "his walk of W"},
+                {"from": "his_walk", "to": "offline_build", "at": MH.iso(t0 + 200), "by": "OWNER", "why": "walk 2"},
+                {"from": "his_walk", "to": "in_game", "at": MH.iso(t0 + 300), "by": "DISPATCH", "why": "checks owed"},
+                {"from": "in_game", "to": "passed", "at": MH.iso(t0 + 400), "by": "OWNER", "why": "skip"}]}, f)
+        st = {"hands": {"since": t0 - 10, "last_tick": NOW + 2 * 86400 - 60}, "mods": {"W": {}}}
+        fx = {"events": lambda: [], "known": lambda: set()}
+        rd = {"needs_conductor": []}
+        MH.observe(root, dict(CFG, advancing=["W"]), st, {"W": {"stage": "passed", "runs_seen": []}},
+                   NOW + 2 * 86400, rd, fx)
+        folds = MH.read_folds()
+        acts = [(a["what"], a["id"]) for a in MH.read_acts() if a["mod"] == "W"]
+        walk = [i for w, i in acts if w.startswith("moved his_walk -> ") and " by OWNER," in w]
+        ok(len(walk) == 3 and all(i in folds for i in walk),
+           "his walk 1: each move off his_walk by OWNER (pass or road back, recorded before or after the fix) folds by "
+           "itself", (walk, sorted(folds)))
+        ok(all("five acts" in (folds.get(i) or {}).get("why", "") for i in walk),
+           "his walk 2: the fold names why (his act, one of his five)", [folds.get(i) for i in walk])
+        others = [i for w, i in acts if i not in walk]
+        ok(len(others) == 2 and not any(i in folds for i in others),
+           "his walk 3 (control): a move off his_walk by DISPATCH, and a move by OWNER from another stage, stay open",
+           (others, sorted(folds)))
+        ok(rd["hand_acts"]["overdue"] == 2, "his walk 4: only the two real hand moves read overdue", rd["hand_acts"])
+    finally:
+        if was is None:
+            os.environ.pop("RM_MATURATION_DISPATCH_DIR", None)
+        else:
+            os.environ["RM_MATURATION_DISPATCH_DIR"] = was
+        shutil.rmtree(root, ignore_errors=True)
+
+
 SECTIONS = (("stalled", stalled_main), ("stop", stop_main), ("retry", retry_main), ("refund", refund_main), ("briefs", briefs_main),
             ("acts", acts_main), ("chores", chores_main), ("false_hands", false_hands_main),
             ("road_back", road_back_main), ("fold_later", fold_later_main), ("reclass", reclass_main),
-            ("continued", continued_main))
+            ("continued", continued_main), ("his_walk", his_walk_main))
 
 if __name__ == "__main__":
     only = sys.argv[sys.argv.index("--only") + 1] if "--only" in sys.argv else None
