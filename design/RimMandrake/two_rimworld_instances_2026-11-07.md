@@ -178,7 +178,7 @@ Already the proven pattern: SteveDesktop is exactly this. One licence on several
 
 ### A sideways option once rung one passes
 
-`-batchmode -nographics` as the Multiplayer arbiter does it: no window, no focus problem, no VRAM, so a headless B suits proofs with no picture. UNMEASURED with our tools. Bridge screenshots will not work, and anything that depends on a rendered frame will not run. Worth a single test after rung one, not before.
+`-batchmode -nographics` as the Multiplayer arbiter does it: no window, no focus problem, no VRAM, so a headless B suits proofs with no picture. Measured on SteveDesktop 2026-11-26: it loads, answers the bridge and plays a quicktest map, and Explosive Knockback's map agreement ran 125 of 125 there (`design/specs/2026-11-25-offline-real-game-code-probe/README.md` §A headless real game, measured). Textures do not load, so screenshots and anything that reads a rendered frame do not work.
 
 ## Tooling changes to drive N games
 

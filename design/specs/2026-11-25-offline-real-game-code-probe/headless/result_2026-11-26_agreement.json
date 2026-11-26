@@ -1,0 +1,69 @@
+{
+ "argv": [
+  "-batchmode",
+  "-nographics",
+  "-savedatafolder=D:\\ClaudeWork\\rimmandrake\\scratch\\headless_probe\\userdata",
+  "-logfile",
+  "D:\\ClaudeWork\\rimmandrake\\scratch\\headless_probe\\Player.log"
+ ],
+ "mods": [
+  "brrainz.harmony",
+  "ludeon.rimworld",
+  "ludeon.rimworld.royalty",
+  "ludeon.rimworld.ideology",
+  "ludeon.rimworld.biotech",
+  "ludeon.rimworld.anomaly",
+  "ludeon.rimworld.odyssey",
+  "brrainz.rimbridgeserver",
+  "mandrake.rm.flowworks",
+  "mandrake.rm.explosiveknockback"
+ ],
+ "steps": [
+  {
+   "step": "process alive",
+   "ok": true,
+   "s": 52.2,
+   "detail": "exit None"
+  },
+  {
+   "step": "bridge port line",
+   "ok": true,
+   "s": 52.2,
+   "detail": "log 4562 lines; first exception: Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object"
+  },
+  {
+   "step": "get_game_info",
+   "ok": true,
+   "s": 52.7,
+   "detail": "{\"status\": \"no_game\", \"message\": \"No game is currently loaded\", \"operation\": {\"OperationId\": \"op_92654e082aae4002b9ed704bf6ba454b\", \"Status\": \"Completed\", \"Success\": true, \"DurationMs\": 19}, \"state\": {\"programState\": \"Entry\", \"hasCurrentGame\": false}}"
+  },
+  {
+   "step": "start_debug_game_ready",
+   "ok": true,
+   "s": 64.6,
+   "detail": "{\"success\": true, \"message\": \"RimWorld map data is available and is paused for automation.\", \"state\": {\"programState\": \"MapInitializing\", \"inEntryScene\": false, \"hasCurrentGame\": true, \"longEventPending\": true, \"paused\": true, \"timeSpeed\": \"Normal\", \"playable\": false, \"visualReady\": false, \"automati"
+  },
+  {
+   "step": "programState Playing",
+   "ok": true,
+   "s": 100.8,
+   "detail": "last state Playing"
+  },
+  {
+   "step": "step_game_ticks 600",
+   "ok": true,
+   "s": 102.9,
+   "detail": "ticksGame 0 -> 610"
+  },
+  {
+   "step": "then",
+   "ok": true,
+   "s": 291.0,
+   "detail": "exit 0; tail: [bridge split] 187.5 s wall: load 0.0 / ticks 95.2 / reads 0.0 / other 26.8 / outside calls 65.5 s | [bridge split] WARN 500 calls of jawa/safe_advance (95.2 s): batch them | [bridge split] WARN 378 calls of jawa/static_call (20.2 s): batch them | [bridge split] WARN 114 calls of jawa/mod_settings_field (6.5 s): batch them"
+  }
+ ],
+ "pid": 12888,
+ "log_lines": 4824,
+ "first_exception": "Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object",
+ "killed": true
+}

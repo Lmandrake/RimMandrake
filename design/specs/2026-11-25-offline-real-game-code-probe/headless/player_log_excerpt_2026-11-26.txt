@@ -1,0 +1,8 @@
+# excerpt of Player.log, headless run 2026-11-26 (whole log: 4824 lines, 2217 lines naming an exception)
+205:Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+206-[Ref 6DF9E34F]
+207-  at Verse.GlobalTextureAtlasManager.TryInsertStatic (Verse.TextureAtlasGroup group, UnityEngine.Texture2D texture, UnityEngine.Texture2D mask) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+208-  at Verse.Graphic_Single.TryInsertIntoAtlas (Verse.TextureAtlasGroup groupKey) [0x00036] in <61e4173561894da49d210260257b5097>:0 
+209-  at Verse.Graphic_Collection.TryInsertIntoAtlas (Verse.TextureAtlasGroup groupKey) [0x0000b] in <61e4173561894da49d210260257b5097>:0 
+4561:[RimBridge] GABP server connected to GABS on port 5179
+4573:Initializing new game with mods:
