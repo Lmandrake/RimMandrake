@@ -58,7 +58,9 @@ def main():
     for i in (A, B):
         open(os.path.join(items, i + ".md"), "w").write(
             "## spec\nA planted ticket.\n\n## refs\nfile: src/A/missing_on_purpose.py\n\n## verify\ntrue\n")
-    base = {k: v for k, v in os.environ.items() if not k.startswith("RIMFLOW_")}
+    # a launched run's mark (RM_ROLE_UNIT) is dropped too: inside a helper the sandbox filings were refused, and the
+    # refusals reached that helper's real stop hook (2026-11-26, RIMMANDRAKE_PREFLIGHT_TICKETS_BEFORE_ANY_TOKEN_IS_SPENT)
+    base = {k: v for k, v in os.environ.items() if not k.startswith("RIMFLOW_") and k not in ("RM_ROLE_UNIT", "RM_DETACHED_UNIT")}
     base.update(RIMFLOW_LEDGER=os.path.join(tmp, "events.jsonl"), RIMFLOW_ITEMS=items, RIMFLOW_SEAT="BENCH",
                 RIMFLOW_PROBE="no-reading", RIMFLOW_PREFLIGHT_RUNS=runs, PYTHONDONTWRITEBYTECODE="1")
 
