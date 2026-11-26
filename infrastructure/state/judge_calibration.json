@@ -25,12 +25,12 @@
      "infrastructure/state/art_eval/regression.jsonl rows expect ACCEPT, less `taste` rows"
     ]
    },
-   "hash": "4b72fce1955c0c6f",
+   "hash": "d3f859bdc46ba2ea",
    "last_run": {
-    "at": "2026-11-26T03:08:39Z",
-    "cases": "0 of 9 planted case(s) came out the other way; 1 of 3 pass decided, 3 of 6 refuse decided; 5 answered 'second look', no verdict (row's abstain)",
+    "at": "2026-11-26T09:02:56Z",
+    "cases": "0 of 11 planted case(s) came out the other way; 1 of 3 pass decided, 5 of 8 refuse decided; 5 answered 'second look', no verdict (row's abstain)",
     "exit": 0,
-    "out": "first_pass_RM_Danglemaw_r1         expect refuse got second look band WEAK, model said good, blocking [['F_INCONSISTENT', 0.25]]",
+    "out": "first_pass_RSW_Porg_birdG_5ee3fc2dc2 expect refuse got refuse      band REALLY_BAD, model said really_bad, blocking [['FLYER_BODY_RIP', 0.9], ['FLYER_BODY_RIP', 0.8], ['FLYER_WING_SPECKS', 0.4], ['F_SIZE_JUMP', 0.6], ['FLYER_PART_MISSING', 0.35]]",
     "results": [
      {
       "band": "GOOD",
@@ -46,7 +46,7 @@
       "blocking": [
        [
         "STYLE_EARTHLY",
-        0.92
+        0.9
        ],
        [
         "DEPARTURE_MISSING",
@@ -57,27 +57,19 @@
         0.85
        ],
        [
-        "STYLE_OFF",
-        0.6
-       ],
-       [
-        "F_TOPDOWN",
+        "DESC_MISS",
         0.75
        ],
        [
         "F_INCONSISTENT",
-        0.7
+        0.75
        ],
        [
-        "DESC_MISS",
-        0.6
+        "F_TOPDOWN",
+        0.55
        ],
        [
-        "F_SIZE_JUMP",
-        0.25
-       ],
-       [
-        "F_NORTH_FACE",
+        "STYLE_OFF",
         0.7
        ]
       ],
@@ -100,15 +92,15 @@
        ],
        [
         "STYLE_OFF",
-        0.75
-       ],
-       [
-        "STYLE_CARTOON",
         0.6
        ],
        [
-        "STYLE_EARTHLY",
+        "STYLE_CARTOON",
         0.45
+       ],
+       [
+        "DEPARTURE_MISSING",
+        0.3
        ],
        [
         "DEPARTURE_MISSING",
@@ -116,7 +108,7 @@
        ],
        [
         "F_SIZE_JUMP",
-        0.25
+        0.35
        ]
       ],
       "expect": "refuse",
@@ -126,64 +118,65 @@
       "unreadable": []
      },
      {
-      "band": "WEAK",
-      "blocking": [
-       [
-        "STYLE_EARTHLY",
-        0.75
-       ],
-       [
-        "STYLE_OFF",
-        0.6
-       ],
-       [
-        "STYLE_CARTOON",
-        0.4
-       ],
-       [
-        "F_INCONSISTENT",
-        0.4
-       ]
-      ],
-      "expect": "refuse",
-      "got": "second look",
-      "id": "first_pass_RM_Vellak_B",
-      "overall": "really_bad",
-      "unreadable": []
-     },
-     {
       "band": "REALLY_BAD",
       "blocking": [
        [
-        "STYLE_OFF",
-        0.8
-       ],
-       [
-        "STYLE_CARTOON",
-        0.7
-       ],
-       [
-        "F_TOPDOWN",
-        0.6
+        "STYLE_EARTHLY",
+        0.85
        ],
        [
         "F_INCONSISTENT",
-        0.45
+        0.5
        ],
        [
-        "ALPHA_HALO",
+        "STYLE_OFF",
         0.6
        ]
       ],
       "expect": "refuse",
       "got": "refuse",
+      "id": "first_pass_RM_Vellak_B",
+      "overall": "really_bad",
+      "unreadable": []
+     },
+     {
+      "band": "WEAK",
+      "blocking": [
+       [
+        "STYLE_OFF",
+        0.7
+       ],
+       [
+        "STYLE_CARTOON",
+        0.6
+       ],
+       [
+        "ALPHA_HALO",
+        0.5
+       ],
+       [
+        "F_TOPDOWN",
+        0.4
+       ],
+       [
+        "F_INCONSISTENT",
+        0.35
+       ]
+      ],
+      "expect": "refuse",
+      "got": "second look",
       "id": "first_pass_RM_Murrin_C",
       "overall": "really_bad",
       "unreadable": []
      },
      {
       "band": "WEAK",
-      "blocking": [],
+      "blocking": [
+       [
+        "DESC_MISS",
+        0.35
+       ]
+      ],
       "expect": "pass",
       "got": "second look",
       "id": "first_pass_RM_Dewblade_B",
@@ -195,7 +188,11 @@
       "blocking": [
        [
         "F_SIZE_JUMP",
-        0.6
+        0.5
+       ],
+       [
+        "STYLE_CARTOON",
+        0.2
        ]
       ],
       "expect": "pass",
@@ -208,12 +205,12 @@
       "band": "WEAK",
       "blocking": [
        [
-        "F_SIZE_JUMP",
-        0.7
+        "STYLE_EARTHLY",
+        0.5
        ],
        [
-        "STYLE_EARTHLY",
-        0.45
+        "F_SIZE_JUMP",
+        0.6
        ],
        [
         "F_INCONSISTENT",
@@ -235,13 +232,89 @@
       "blocking": [
        [
         "F_INCONSISTENT",
-        0.25
+        0.2
        ]
       ],
       "expect": "refuse",
       "got": "second look",
       "id": "first_pass_RM_Danglemaw_r1",
       "overall": "good",
+      "unreadable": []
+     },
+     {
+      "band": "REALLY_BAD",
+      "blocking": [
+       [
+        "FLYER_WING_BAKED",
+        0.8
+       ],
+       [
+        "F_NORTH_FACE",
+        0.65
+       ],
+       [
+        "F_INCONSISTENT",
+        0.65
+       ],
+       [
+        "F_SIZE_JUMP",
+        0.55
+       ],
+       [
+        "STYLE_OFF",
+        0.55
+       ],
+       [
+        "STYLE_CARTOON",
+        0.4
+       ],
+       [
+        "FLYER_BODY_RIP",
+        0.5
+       ],
+       [
+        "FLYER_WING_SPECKS",
+        0.5
+       ],
+       [
+        "FLYER_PART_MISSING",
+        0.35
+       ]
+      ],
+      "expect": "refuse",
+      "got": "refuse",
+      "id": "first_pass_RM_FireHawk_birdA_af2991860e",
+      "overall": "really_bad",
+      "unreadable": []
+     },
+     {
+      "band": "REALLY_BAD",
+      "blocking": [
+       [
+        "FLYER_BODY_RIP",
+        0.9
+       ],
+       [
+        "FLYER_BODY_RIP",
+        0.8
+       ],
+       [
+        "FLYER_WING_SPECKS",
+        0.4
+       ],
+       [
+        "F_SIZE_JUMP",
+        0.6
+       ],
+       [
+        "FLYER_PART_MISSING",
+        0.35
+       ]
+      ],
+      "expect": "refuse",
+      "got": "refuse",
+      "id": "first_pass_RSW_Porg_birdG_5ee3fc2dc2",
+      "overall": "really_bad",
       "unreadable": []
      }
     ]
@@ -298,10 +371,10 @@
      "id": "first_pass_RSW_Porg_birdG_5ee3fc2dc2"
     }
    ],
-   "reset_at": "2026-11-24T18:27:53Z",
+   "reset_at": "2026-11-26T09:02:56Z",
    "status": "CALIBRATED",
    "timeout_s": 8400,
-   "was": "UNTESTED"
+   "was": "CALIBRATED"
   },
   "art_judge_brief": {
    "brief": [
@@ -1095,8 +1168,8 @@
      "id": "variant_RM_DecayDrake_p3"
     }
    ],
-   "reset_at": "2026-11-25T08:30:03Z",
-   "status": "CALIBRATED",
+   "reset_at": "2026-11-26T09:02:56Z",
+   "status": "UNTESTED",
    "timeout_s": 2400,
    "was": "CALIBRATED"
   },
