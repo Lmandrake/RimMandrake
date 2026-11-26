@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "c7b7004f310adc239617a6e99584c33e0f2bbddc5c6e0eaac42e717c2d2e518f",
+  "body_sha256": "6703cca12ff852379b9df11b217e390e47ffd4c940f43726b2599820aaa62df2",
   "reducer": 1,
   "shards": {
    "BACKFILL": 892335,
@@ -44,7 +44,7 @@
    "HOLDER.run-1795471235": 562,
    "HOLDER.run-1795503470": 1774,
    "HOLDER.run-1795670514": 9857,
-   "HOLDER.run-1795693138": 4334,
+   "HOLDER.run-1795693138": 5499,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1295,10 +1295,10 @@
   },
   "checkpoint": {
    "by": "HOLDER.run-1795693138",
-   "done": "ABSOLUTE_DESCENT_FIX_MISSES_DECK_SHOVE closed at d319937af5 (deck shove falls in absolute mode; floor-band origin reads its floor in both rules)",
-   "next": "Filter and work B6_FLOOD_FIX_RAIN_FILL_LEFT_OFF, then the bundle members in brief order",
-   "ruled_out": "a source-only pin as the whole proof: the C# PitTrap_absolute_descent_reads_deck_height case carries the behaviour",
-   "ts": "2026-11-26T13:15:05Z"
+   "done": "ABSOLUTE_DESCENT_FIX_MISSES_DECK_SHOVE closed at d319937af5; B6_FLOOD_FIX_RAIN_FILL_LEFT_OFF closed at 985ca99b65",
+   "next": "Filter and work BIGNET_PROOF_FIX_SIZE_NOT_RESTORED, then the bundle members in brief order",
+   "ruled_out": "a live run for either fix: no stage-6 row reads a forced descent or b6_flood",
+   "ts": "2026-11-26T14:01:58Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1750,7 +1750,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1753,
+  "events": 1756,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7850,7 +7850,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-26T13:15:05Z",
+   "last": "2026-11-26T14:01:58Z",
    "lease": "run-1795693138",
    "released": false,
    "token": 61
