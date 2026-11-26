@@ -393,6 +393,31 @@ def _need(iid, it, why, smallest):
             "why_not_recovered": why, "smallest_act": smallest}
 
 
+def own_live(facts):
+    """-> the live lane runs on this machine's own slots: runs on lane items (with a check, or due for Shape), less the
+    ones on a host. --only narrows `items`; the slots are the whole lane's (lane_items)."""
+    runs = (facts or {}).get("runs") or {}
+    lane = (facts or {}).get("lane_items") or (facts or {}).get("items") or {}
+    return sum(len((runs.get(i) or {}).get("live") or []) - len((runs.get(i) or {}).get("host_live") or [])
+               for i in lane if (lane[i] or {}).get("effect") or (lane[i] or {}).get("shape_due"))
+
+
+def machine_reading(cfg, facts):
+    """-> {machine: its room as this tick measured it}, for the page (maturation_nonmod.machines). Archmagi: its own
+    live lane runs, max_live, load, load_line and machine line; each host of cfg["hosts"]: its facts (None where they
+    could not be read) with its max_live and min_left_pct. Pure."""
+    per, cores = cfg.get("machine_load_per_core"), (facts or {}).get("cores")
+    out = {"Archmagi": {"live": own_live(facts) if (facts or {}).get("items") is not None else None,
+                        "max_live": int(cfg.get("max_live", 2)), "load": (facts or {}).get("load"),
+                        "load_line": cfg.get("load_line"), "cores": cores,
+                        "machine_line": float(per) * int(cores) if per and cores else None}}
+    for name, hc in sorted((cfg.get("hosts") or {}).items()):
+        f = ((facts or {}).get("hosts") or {}).get(name)
+        out[name] = dict({"live": None, "left": None, "left_why": "the host's facts were not read", "pool_more": None},
+                         **(f or {}), max_live=int(hc.get("max_live", 0)), min_left_pct=float(hc.get("min_left_pct", 5)))
+    return out
+
+
 def decide(cfg, st, facts, now, account=(True, "")):
     """-> (rows, launches). Pure over (cfg, st, facts, now, account); writes only st. One row per item, in order."""
     items = (facts or {}).get("items")
@@ -402,9 +427,7 @@ def decide(cfg, st, facts, now, account=(True, "")):
     sti = st.setdefault("items", {})
     runs_blind = "runs" in facts and facts["runs"] is None     # the run-record folder could not be listed
     runs = facts.get("runs") or {}
-    lane = facts.get("lane_items") or items         # --only narrows `items`; the slots are the whole lane's
-    live_total = sum(len((runs.get(i) or {}).get("live") or []) - len((runs.get(i) or {}).get("host_live") or [])
-                     for i in lane if (lane[i] or {}).get("effect") or (lane[i] or {}).get("shape_due"))
+    live_total = own_live(facts)
     placed = {}     # this tick's launches per host
     paused, pool = facts.get("paused"), facts.get("pool")
     recent = facts.get("recent")
@@ -1354,6 +1377,7 @@ def tick(cfg, apply, fx=None, now=None, only=None):
         if apply and not only:
             st["blind_hold"] = bh
         rd = {"schema": 1, "blind_hold": bh, "at": now, "at_pac": pac(now), "apply": apply, "account": list(account), "counts": counts,
+              "machines": machine_reading(cfg, facts),
               "launched": [{"item": r["item"], "unit": r.get("unit"), "model": r.get("model")} for r in rows
                            if r.get("decision") == "launched"],
               "items": {r["item"]: dict({k: r.get(k) for k in ("decision", "why", "model", "unit", "need")},

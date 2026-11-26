@@ -6177,6 +6177,21 @@ def unclassed_lines(root, mod, n, tt):
     return out
 
 
+def steve_mod_off():
+    """-> why SteveDesktop's test lane takes no mod check now, or None: the host work switch (pipeline work only; testq
+    pipeline_admit.switch_refusal refuses a mod's checks job; an unreadable switch file reads switched), or testq's
+    fill.stop (testq/visit_feed.step stops on it). The queue home is TESTQ_QUEUE, as testq.py reads it. Item
+    RIMMANDRAKE_SEND_PIPELINE_TICKETS_TO_STEVEDESKTOP_FIRST_IT_SAT_IDLE."""
+    import host_work_switch as HWS
+    if HWS.switched("SteveDesktop"):
+        return ("the host work switch puts SteveDesktop on pipeline work only, so testq refuses a mod's checks job "
+                "(python3 src/RimMandrake/rimflow/host_work_switch.py show)")
+    stop = os.path.join(os.environ.get("TESTQ_QUEUE", "/mnt/d/ClaudeWork/rimmandrake/testq"), "fill.stop")
+    if os.path.exists(stop):
+        return "the visit feed is stopped by %s" % stop
+    return None
+
+
 def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
     """-> (the mechanical half of an in-game acceptance brief, ingame_facts). Never refuses; launch_mod does."""
     f = ingame_facts(root, mod)
@@ -6193,6 +6208,7 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
     counted = list(f.get("counted_earlier") or [])
     full = [k for k in checks if (tt.get("tests") or {}).get(k, {}).get("kind") == "live_full"]
     debts = ingame_debts(root, mod, tt)
+    off = steve_mod_off() if f.get("testq") else None     # the feed sends none now (2026-11-25: the brief said it did)
     L = ["# In-game acceptance (Stage 6): %s %s, visit %d" % (mod, ver, n), "",
          "Written by `maturation.py brief %s` at %s: the mechanical half, from the mod's own files (item "
          "RIMMANDRAKE_BUILD_IN_GAME_STAGE_LAUNCHER_PYRELANDS_ARRIVED_FIRST; spec §4 Stage 6)." % (mod, when), "",
@@ -6215,10 +6231,13 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
          "advance it yourself." % (ver, mod, n), "",
          "## Where it runs", "",
          "The spec (§4 Stage 6, \"Which game runs what\"; his card of 2026-11-14, 18a): either game may give a bar's "
-         "scripted verdict; exploring and screenshots run on Archmagi. SteveDesktop's queue takes any mod's token-free "
-         "checks whatever its stage (the owner dropped the 2026-11-14 pipeline-only limit on 2026-11-17); it refuses only "
-         "a mod on his hold (`src/RimMandrake/Utils/testq/pipeline_admit.py`). It runs what a stage-6 entry's `testq` block "
-         "names (modcheck chains, or the check's own script: `testq.py submit --checks`): %s." % (
+         "scripted verdict; exploring and screenshots run on Archmagi. SteveDesktop's queue runs what a stage-6 entry's "
+         "`testq` block names (modcheck chains, or the check's own script: `testq.py submit --checks`), unless the host "
+         "work switch puts SteveDesktop on pipeline work only or testq's fill.stop stops the feed "
+         "(`src/RimMandrake/Utils/testq/pipeline_admit.py` also refuses a mod on his hold): %s." % (
+             "%d of %d of this mod's checks carry one (%s), but SteveDesktop takes none of them now: %s; run them all "
+             "here" % (len(f.get("testq") or []), len(checks), ", ".join(f["testq"]), off)
+             if f.get("testq") and off else
              "%d of %d of this mod's checks carry one (%s); queue those with `testq.py submit` if SteveDesktop is "
              "free, and run the rest here" % (len(f.get("testq") or []), len(checks), ", ".join(f["testq"]))
              if f.get("testq") else "none of this mod's %d checks carries one, so this visit runs them on Archmagi "

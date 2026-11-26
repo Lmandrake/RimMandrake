@@ -236,8 +236,14 @@ def p6_two_runs():
                 shutil.copyfile(os.path.join(MD.sdir(), name), os.path.join(snapshot, name))
             except FileNotFoundError:
                 pass
+        import maturation_nonmod as MNM     # SteveDesktop's reading is rewritten each minute: pin it too
+        try:
+            shutil.copyfile(MNM.STEVE_READING, os.path.join(snapshot, "running_steve.json"))
+        except OSError:
+            pass
         env = dict(os.environ, MATURATION_NOW_CLOCK=str(__import__("time").time()),
-                   RM_MATURATION_DISPATCH_DIR=snapshot)   # "so far" minutes cannot tick
+                   RM_MATURATION_DISPATCH_DIR=snapshot,   # "so far" minutes cannot tick
+                   MATURATION_STEVE_READING=os.path.join(snapshot, "running_steve.json"))
         for attempt in (1, 2):
             s0 = stamp()
             a, b = page_of(REPO, live=True, env=env), page_of(REPO, live=True, env=env)

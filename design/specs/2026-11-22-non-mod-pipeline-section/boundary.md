@@ -133,6 +133,18 @@ MATURATION_DETAIL.
   print as they are. Tested by `t_plain_waits`.
 - **same-inputs-same-section.** Two builds from the same stores and the same clock are the same text: the section is a
   function of the stores. Tested by `t_same_inputs_same_section`.
+- **each-machine-shows-its-runs-room-games-and-lane.** Under the Workshop Pipeline picture, and in the detail list,
+  one short block for each machine. Archmagi: its live Workshop runs (a lane launch or a work bundle's run, from the run
+  records) with the ticket and bundle of each, its room as the lane tick measured it (own slots used of `max_live`,
+  load and its spare-room line), and its games. SteveDesktop: its live Claude runs with their tickets (from
+  `running_steve.json`, rm-steve-reading.timer), its room (runs of `max_live`, the week left on its account and its
+  leave line, the helper clones its disk holds), Steve1 and Steve2 (up, driver), and its test lane (running, queued, and
+  why it takes no mod check now: the host work switch or `fill.stop`). No token or spend figure. The owner, 2026-11-25
+  10:52 PM PST: "I also don't see SteveDesktop on MATURATION_NOW.md. It used to be shown there I believe". The block
+  RELENTLESS_NOW drew was removed with that page on 2026-11-24 (`ec2637b7b6`).
+- **an-unreadable-machine-reads-could-not-look.** A machine reading that cannot be made (`running_steve.json` missing,
+  unreadable or older than `STEVE_OLD_S`, the lane tick's reading with no machine figures, the run records) makes each
+  line it feeds read "could not look" with its cause, never 0, "none" or idle.
 
 ## LIFE CYCLES
 

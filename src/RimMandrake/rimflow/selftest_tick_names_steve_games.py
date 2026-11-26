@@ -39,7 +39,18 @@ MUTANTS = {     # name -> (the real steve_takes -> the planted one)
     "always_none": lambda real: (lambda f, mod: "%s: takes none of its checks" % STEVE),
     # could-not-look read as an empty set
     "unreadable_as_none": lambda real: (lambda f, mod: real(dict(f, to_run=[]), mod)),
+    # the line of 2026-11-25: the feed's stop and the host switch are not read, so it says the feed sends what it never will
+    "ignores_feed_off": lambda real: (lambda f, mod: _without_off(real, f, mod)),
 }
+
+
+def _without_off(real, f, mod):
+    was = MD.steve_feed_off
+    MD.steve_feed_off = lambda: None
+    try:
+        return real(f, mod)
+    finally:
+        MD.steve_feed_off = was
 
 
 def chk(fn, what):
@@ -129,6 +140,54 @@ def t_the_wait_names_what_the_feed_sends():
             and "the other %d need a Claude driver" % (len(owed) - 2) in why and "takes none" not in why)
 
 
+def t_the_wait_says_why_the_feed_sends_nothing():
+    """RIMMANDRAKE_SEND_PIPELINE_TICKETS_TO_STEVEDESKTOP_FIRST_IT_SAT_IDLE: 2026-11-25 10:58 PM PST `./pipe why
+    ExplosiveKnockback` said the visit feed sends the lane 53 of 65 checks, while testq/fill.stop stopped the feed and the
+    host work switch put SteveDesktop on pipeline work only; all 53 ran on ArchBig."""
+    both_held()
+    owed = W["owed"]
+    if not isinstance(owed, list) or len(owed) < 3:
+        return False
+    set_blocks(W["root"], "Pyrelands", owed[:2])
+    stop = os.path.join(W["tq"], "fill.stop")
+    with open(stop, "w") as f:
+        f.write("a test stop")
+    try:
+        d, why = why_of(tick())
+    finally:
+        os.remove(stop)
+    ok_stop = (d == "bridge_held" and STEVE in why and "the visit feed sends the lane" not in why and "takes none" in why
+               and stop in why and "all %d need a Claude driver" % len(owed) in why)
+    sw = os.path.join(W["root"], "host_work_switch.json")
+    with open(sw, "w") as f:
+        json.dump({"switches": [{"host": "SteveDesktop", "mode": "pipeline", "date": "2026-11-24", "said": "x"}],
+                   "lifted": []}, f)
+    os.environ["RM_HOST_SWITCH_FILE"] = sw
+    try:
+        d2, why2 = why_of(tick())
+    finally:
+        os.environ.pop("RM_HOST_SWITCH_FILE", None)
+    ok_switch = (STEVE in why2 and "the visit feed sends the lane" not in why2 and "pipeline work only" in why2
+                 and "takes none" in why2)
+    return ok_stop and ok_switch
+
+
+def t_the_brief_says_why_the_feed_sends_nothing():
+    """The Stage 6 driver's brief (maturation.ingame_brief_text) said "SteveDesktop's queue takes any mod's token-free
+    checks ... queue those with testq.py submit" on 2026-11-25 while the switch refused every mod job."""
+    set_blocks(W["root"], "Pyrelands", W["owed"][:2])
+    free = M.ingame_brief_text(W["root"], "Pyrelands")[0]
+    stop = os.path.join(W["tq"], "fill.stop")
+    with open(stop, "w") as f:
+        f.write("a test stop")
+    try:
+        off = M.ingame_brief_text(W["root"], "Pyrelands")[0]
+    finally:
+        os.remove(stop)
+    return ("queue those with `testq.py submit`" in free and "queue those with `testq.py submit`" not in off
+            and stop in off and "takes any mod's token-free checks" not in off)
+
+
 def t_could_not_read_the_checks_is_unmeasured():
     got = [MD.steve_takes(f, "Pyrelands") for f in ({"stage": "in_game"}, {"to_run": None, "checks": None, "testq": []},
                                                     {"to_run": ["sc_a"], "checks": ["sc_a"]})]
@@ -147,13 +206,15 @@ def setup():
     for p in (log, ilog):
         open(p, "w").close()
     sd = os.path.join(root, "state")
+    tq = os.path.join(root, "testq")
+    os.makedirs(tq)
     os.environ.update(MATURATION_DETACHED_HELPER=fake, FAKE_DH_LOG=log, MATURATION_CLOCK=str(SM.INGAME_CLOCK),
                       MATURATION_BRIEF_DIR=os.path.join(root, "briefs"), RM_MATURATION_DISPATCH_DIR=sd,
-                      MATURATION_BRIDGE_IDLE=idle, FAKE_IDLE="NOT", FAKE_IDLE_LOG=ilog,
+                      MATURATION_BRIDGE_IDLE=idle, FAKE_IDLE="NOT", FAKE_IDLE_LOG=ilog, TESTQ_QUEUE=tq,
                       **{M.COMPANION_ENV: os.path.join(root, "no_companion_here.dll")})
     os.environ.pop("FAKE_DH_FAIL", None)
     MD.DH.read_record = lambda unit, root=None: None
-    W.update(root=root, log=log, sd=sd, held={},
+    W.update(root=root, log=log, sd=sd, held={}, tq=tq,
              two=dict(SD.load_cfg(), advancing=["Pyrelands"], ingame_enabled=True, max_live=5, game_instances=["a", "b"]),
              fx={"autonomy": False, "convergence": SD.no_convergence, "account": lambda: (True, "test account KEEP"),
                  "known": lambda: set(), "bridge": bridge, "file": lambda item, title, why, **kw: (True, "filed"),
@@ -164,6 +225,7 @@ def setup():
 def main(mutant=None):
     keys = ("MATURATION_DETACHED_HELPER", "FAKE_DH_LOG", "MATURATION_BRIEF_DIR", "MATURATION_CLOCK",
             "RM_MATURATION_DISPATCH_DIR", "FAKE_DH_FAIL", "MATURATION_BRIDGE_IDLE", "FAKE_IDLE", "FAKE_IDLE_LOG",
+            "TESTQ_QUEUE", "RM_HOST_SWITCH_FILE",
             M.COMPANION_ENV)
     env_was = {k: os.environ.get(k) for k in keys}
     rec_was = MD.DH.read_record
@@ -182,6 +244,14 @@ def main(mutant=None):
         chk(t_the_wait_names_what_the_feed_sends,
             "the-wait-names-what-the-feed-sends: two owed checks carry a testq block: the line says the visit feed "
             "sends those 2 to SteveDesktop and the rest need a Claude driver on ArchBig or ArchSmall")
+        chk(t_the_wait_says_why_the_feed_sends_nothing,
+            "the-wait-says-why-the-feed-sends-nothing: two owed checks carry a testq block, but testq's fill.stop "
+            "stops the visit feed, or the host work switch puts SteveDesktop on pipeline work only: the line says "
+            "SteveDesktop takes none, names the stop or the switch, and never says the feed sends them")
+        chk(t_the_brief_says_why_the_feed_sends_nothing,
+            "the-brief-says-why-the-feed-sends-nothing: the Stage 6 driver's brief tells it to queue the testq checks "
+            "on SteveDesktop only while the feed may send them; under fill.stop or the host switch it names the cause "
+            "and runs them all on Archmagi")
         chk(t_could_not_read_the_checks_is_unmeasured,
             "could-not-read-the-checks-is-unmeasured: a visit whose owed checks or testq blocks could not be read "
             "says UNMEASURED about SteveDesktop, never 'takes none'")

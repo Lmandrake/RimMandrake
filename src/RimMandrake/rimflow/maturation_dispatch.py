@@ -426,6 +426,11 @@ def full_list_only(f):
 STEVE_GAMES = "SteveDesktop (Steve1, Steve2)"
 
 
+def steve_feed_off():
+    """-> why the visit feed sends SteveDesktop no mod check now, or None (maturation.steve_mod_off, the one reading)."""
+    return M.steve_mod_off()
+
+
 def steve_takes(f, mod):
     """-> the clause a visit's wait for ArchBig or ArchSmall adds about SteveDesktop's two games: what of the owed checks
     the visit feed sends to the lane (a check goes there only with a testq block, testq/visit_feed.py), or that it takes
@@ -437,6 +442,10 @@ def steve_takes(f, mod):
         return "%s: UNMEASURED, the visit's owed checks or their testq blocks could not be read" % STEVE_GAMES
     tq = set(f["testq"])
     lane = [k for k in owed if k in tq]
+    off = steve_feed_off() if lane else None
+    if off:     # the feed sends none of them now: never "sends" (2026-11-25: it said 53 of 65; all 53 ran on ArchBig)
+        return ("%s: takes none of its %d checks now: %s; all %d need a Claude driver on ArchBig or ArchSmall (%d carry a "
+                "testq block and go to the lane once that is lifted)" % (STEVE_GAMES, len(owed), off, len(owed), len(lane)))
     if lane:
         return ("%s: the visit feed sends the lane %d of its %d checks (those with a testq block); the other %d need a "
                 "Claude driver on ArchBig or ArchSmall" % (STEVE_GAMES, len(lane), len(owed), len(owed) - len(lane)))

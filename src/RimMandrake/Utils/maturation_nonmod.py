@@ -234,6 +234,16 @@ def read_stores(lf, mods):
     except Exception as e:      # noqa: BLE001  no reading: every item with a check reads unmeasured, named
         s["lane"] = None
         s["causes"]["the Workshop Pipeline tick's reading.json"] = "%s: %s" % (e.__class__.__name__, e)
+    try:
+        with open(STEVE_READING, encoding="utf-8") as f:
+            s["steve"] = json.load(f)["view"]
+    except Exception as e:      # noqa: BLE001  SteveDesktop's block reads could not look, never idle
+        s["steve"] = None
+        s["causes"]["SteveDesktop's reading (%s)" % STEVE_READING] = "%s: %s" % (e.__class__.__name__, e)
+    try:
+        s["feed_off"] = feed_off()
+    except Exception as e:      # noqa: BLE001
+        s["feed_off"] = "could not look whether the feed is stopped (%s: %s)" % (e.__class__.__name__, e)
     q = lf.get("questions")
     s["his"] = None if q is None else {x.get("item") for x in q if isinstance(x, dict)}
     if q is None:
@@ -247,9 +257,132 @@ def read_stores(lf, mods):
     return s
 
 
+# ---- the machines: one block each (RIMMANDRAKE_SEND_PIPELINE_TICKETS_TO_STEVEDESKTOP_FIRST_IT_SAT_IDLE) ---------------
+# The owner, 2026-11-25 10:52 PM PST: "I also don't see SteveDesktop on MATURATION_NOW.md. It used to be shown there I
+# believe... the Workshop Pipeline". RELENTLESS_NOW, which drew it, was removed 2026-11-24 (ec2637b7b6).
+STEVE_READING = os.environ.get("MATURATION_STEVE_READING",      # steve_reading.py, rm-steve-reading.timer; a test pins it
+                               "/mnt/d/ClaudeWork/rimmandrake/conductor/running_steve.json")
+# budget: danger=an old SteveDesktop reading drawn as now; evidence=steve_reading.STEVE_STALE, the same line (ten missed 180 s probes); ends no work: the block reads could not look
+STEVE_OLD_S = 1800
+TESTQ_STOP = "/mnt/d/ClaudeWork/rimmandrake/testq/fill.stop"
+
+
+def feed_off():
+    """-> why SteveDesktop's test lane takes no mod check now (its host work switch, or testq's fill.stop), or None."""
+    import host_work_switch as HWS
+    if HWS.switched("SteveDesktop"):
+        return "it is switched to pipeline work only, so its test lane refuses mod checks"
+    if os.path.exists(os.environ.get("TESTQ_QUEUE") and os.path.join(os.environ["TESTQ_QUEUE"], "fill.stop") or TESTQ_STOP):
+        return "the visit feed is stopped by fill.stop"
+    return None
+
+
+def _lane_run(r):
+    """A live Workshop Pipeline run on this machine: launched by the lane tick, or a work bundle's run."""
+    wb = str((r.get("env") or {}).get("RM_WORK_BUNDLE") or "")
+    return is_live(r) and not r.get("host") and (r.get("next_act_owner") == "list_dispatch"
+                                                 or bool(wb) and not wb.startswith("WB-mod-"))   # a mod's bundle is mod work
+
+
+def machines(s, now):
+    """-> [{"name", "lines"}] for Archmagi and SteveDesktop: the live Workshop runs on each with their tickets, its free
+    room as the lane tick measured it, and for SteveDesktop its two games and its test lane. A reading that cannot be
+    made reads "could not look" with its cause, never 0 or idle. No token or spend figure. Pure."""
+    lane = s.get("lane") if isinstance(s.get("lane"), dict) else None
+    room = (lane or {}).get("machines") if isinstance((lane or {}).get("machines"), dict) else None
+    at = " (the tick of %s)" % pac(float(lane["at"])) if lane and isinstance(lane.get("at"), (int, float)) else ""
+    no_room = "room: could not look (the Workshop Pipeline tick's reading has no machine figures%s)" % (
+        "" if lane else ": its reading could not be read")
+    recs = s.get("records")
+    # Archmagi
+    a = []
+    if recs is None:
+        a.append("Workshop runs: could not look (the run records could not be read)")
+    else:
+        runs = [r for r in recs if _lane_run(r)]
+        a.append("Workshop runs: %d live%s" % (len(runs), (": " + ", ".join(
+            "%s%s" % (r.get("item") or "-", " (bundle %s)" % r["env"]["RM_WORK_BUNDLE"]
+                      if (r.get("env") or {}).get("RM_WORK_BUNDLE") else "") for r in runs[:ROWS])) if runs else
+            " (looked: the run records)"))
+    ar = (room or {}).get("Archmagi")
+    if not isinstance(ar, dict) or ar.get("live") is None:
+        a.append(no_room)
+    else:
+        load = ar.get("load")
+        a.append("room: %d of %d own slots used; load %s, spare room under %s%s" % (
+            ar["live"], ar.get("max_live") or 0, "could not look" if load is None else "%.1f" % load,
+            ar.get("load_line"), at))
+    games = s.get("games")
+    a.append("games: %s" % ("could not look (the game locks could not be read)" if games is None else
+                             "; ".join(str(x) for x in games) or "none listed"))
+    # SteveDesktop
+    v, sd = s.get("steve"), []
+    vat = v.get("written_at") if isinstance(v, dict) else None
+    if not isinstance(v, dict) or not isinstance(vat, (int, float)):
+        cnl = next((c for k, c in (s.get("causes") or {}).items() if k.startswith("SteveDesktop")), "no reading")
+        fresh, why = False, "its reading could not be read (%s)" % cnl
+    elif now - vat > STEVE_OLD_S:
+        fresh, why = False, "its reading is %d min old" % ((now - vat) // 60)
+    else:
+        fresh, why = True, None
+    if not fresh:
+        sd.append("Workshop runs: could not look (%s)" % why)
+    else:
+        rows = [r for r in ((v.get("claude_runs") or {}).get("rows") or [])
+                if r.get("item") and not str(r.get("unit") or "").endswith("-return.service")]
+        cr = (v.get("claude_runs") or {}).get("rows")
+        sd.append("Workshop runs: could not look (%s)" % ((v.get("claude_runs") or {}).get("why") or "no run list")
+                  if cr is None else "Workshop runs: %d live%s" % (len(rows), (": " + ", ".join(
+                      r["item"] for r in rows[:ROWS])) if rows else " (looked: its Claude units)"))
+    hr = (room or {}).get("SteveDesktop")
+    if not isinstance(hr, dict) or hr.get("live") is None:
+        sd.append(no_room if not isinstance(hr, dict) else "room: could not look (its live runs could not be read)")
+    else:
+        left = hr.get("left")
+        pool = hr.get("pool_more")
+        sd.append("room: %d of %d runs; account %s; disk: %s%s" % (
+            hr["live"], hr.get("max_live") or 0,
+            "could not look (%s)" % (hr.get("left_why") or "no reading") if left is None else
+            "%g%% of the week left (it takes runs down to %g%%)" % (left, hr.get("min_left_pct") or 0),
+            "%d more helper clones" % pool if isinstance(pool, int) else
+            "no clone count (%s); its own launcher checks the disk" % (hr.get("pool_why") or "no reading"), at))
+    if not fresh:
+        sd.append("games Steve1 and Steve2: could not look (%s)" % why)
+        sd.append("test lane: could not look (%s)" % why)
+    else:
+        gr = (v.get("games") or {}).get("rows")
+        sd.append("games: could not look (%s)" % ((v.get("games") or {}).get("why") or "no game rows") if gr is None
+                  else "games: " + "; ".join("%s %s%s" % (
+                      g_.get("name"), ("up" if g_.get("up") else "down" if g_.get("up") is False else "up: could not look"),
+                      ", driver %s%s%s" % (g_.get("driver_state") or "could not look",
+                                           " by %s" % g_["driver"] if g_.get("driver") else "",
+                                           " for %s" % clip(g_["for"], 60) if g_.get("for") else "")) for g_ in gr))
+        j = v.get("jobs") or {}
+        run_, q_ = j.get("running"), j.get("queued")
+        sd.append("test lane: %s; %s%s" % (
+            "running: could not look (%s)" % (j.get("running_why") or "no list") if run_ is None else
+            "%d running%s" % (len(run_), (" (%s)" % ", ".join(str(x.get("id") or x.get("name") or "-") for x in run_[:ROWS]))
+                               if run_ else ""),
+            "queued: could not look (%s)" % (j.get("queued_why") or "no list") if q_ is None else "%d queued" % len(q_),
+            "; it takes no mod check now: %s" % s["feed_off"] if s.get("feed_off") else ""))
+    return [{"name": "Archmagi", "lines": a}, {"name": "SteveDesktop", "lines": sd}]
+
+
+def machines_html(ms):
+    """The machine blocks of the page, one line of HTML."""
+    cards = "".join(
+        '<div style="flex:1;min-width:300px;background:%s;border:1px solid %s;border-radius:8px;padding:8px 12px">'
+        '<div style="font-weight:700;color:%s">%s</div>%s</div>' % (
+            CARD, EDGE, GOLD, html.escape(m["name"]),
+            "".join('<div style="font-size:12.5px;color:%s;padding:1px 0">%s</div>' % (TEXT, html.escape(x))
+                    for x in m["lines"])) for m in ms)
+    return '<div style="display:flex;gap:10px;flex-wrap:wrap;padding:6px 0">%s</div>' % cards
+
+
 def off_stores(why):
     return {"mods": [], "evs": None, "items": None, "records": None, "red_reading": None, "red_state": None,
-            "alarms": None, "games": None, "showings": None, "lane": None, "his": None, "causes": {"every store": why}}
+            "alarms": None, "games": None, "showings": None, "lane": None, "his": None, "steve": None, "feed_off": None,
+            "causes": {"every store": why}}
 
 
 # ---- the section --------------------------------------------------------------------------------------------------
@@ -521,6 +654,7 @@ def section(s, now, spend=None, stage=None):
     rd.sort(key=lambda x: (-x["at"], x["what"]))
     out["ready"] = rd
     out["his_read"] = his is not None
+    out["machines"] = machines(s, now)
     return out
 
 
@@ -631,6 +765,8 @@ def blocks(sec):
                         else "%s: %s" % (x["what"], x["why"]))
                 or ["none (looked: owner_queue.is_his%s, and the notes for READY TO SHOW, keeper save, pick image)"
                     % ("" if sec.get("his_read") else " could not be read")]))
+    out.append(("Machines (the Workshop runs on each, its room, and SteveDesktop's games and test lane)",
+                ["**%s**: %s" % (m["name"], "; ".join(m["lines"])) for m in sec.get("machines") or []]))
     out.append(("What this section cannot see", sec["cannot"]))
     return out
 
@@ -950,4 +1086,5 @@ def panel(sec):
     foot = "Could not class as mod or non-mod: %d." % sec["unclassed"]
     if looked:
         foot = "Could not look: %s. %s" % (looked, foot)
-    return '<div>%s<div style="font-size:11px;color:%s;padding:2px 14px">%s</div></div>' % (out, DIM, html.escape(foot))
+    return '<div>%s%s<div style="font-size:11px;color:%s;padding:2px 14px">%s</div></div>' % (
+        out, machines_html(sec.get("machines") or []), DIM, html.escape(foot))

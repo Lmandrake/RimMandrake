@@ -1789,7 +1789,7 @@
    ],
    "hash": "0c5c7ef641403d64",
    "last_run": {
-    "at": "2026-11-25T20:09:14Z",
+    "at": "2026-11-26T07:53:32Z",
     "cases": "822 planted case(s) ran and came out as planted",
     "exit": 0,
     "out": "evidence corpus: 55 false closes, 55 rejected; 767 valid closes, 767 accepted - OK",
@@ -2153,9 +2153,9 @@
     "src/RimMandrake/rimflow/selftest_maturation.py",
     "--submit"
    ],
-   "hash": "3874a62f9b2c7c73",
+   "hash": "a5ae41c878b5bf59",
    "last_run": {
-    "at": "2026-11-26T03:08:23Z",
+    "at": "2026-11-26T07:53:32Z",
     "cases": "3 planted case(s) ran and came out as planted",
     "exit": 0,
     "out": "ALL PASS",
@@ -2191,7 +2191,7 @@
      "id": "locked_version_passes"
     }
    ],
-   "reset_at": "2026-11-26T03:08:23Z",
+   "reset_at": "2026-11-26T07:53:32Z",
    "status": "CALIBRATED",
    "was": "CALIBRATED"
   },
@@ -2485,7 +2485,7 @@
      "7 of the 25 that the Conductor classed legitimate (a named missing access, five things tried, only his ear can judge, another mod's code)"
     ]
    },
-   "hash": "cbdcb45bd63ccb4d",
+   "hash": "125d51c94e056c35",
    "last_run": {
     "at": "2026-11-25T20:51:08Z",
     "cases": "came out the other way: n01, n10, n11, n16",
@@ -2599,12 +2599,12 @@
      "id": "n25"
     }
    ],
-   "reset_at": "2026-11-26T03:08:39Z",
+   "reset_at": "2026-11-26T07:53:32Z",
    "status": "UNTESTED",
    "timeout_s": 3600,
    "tolerate": 3,
    "tolerate_why": "the Conductor's ruling in the brief of RIMMANDRAKE_TIGHTEN_SET_DOWN_CLASSES_ANY_TWELVE_LETTERS_PASS, 2026-11-25: the judge binds with at most 3 disagreements of 25",
-   "was": "FAILED"
+   "was": "UNTESTED"
   }
  }
 }

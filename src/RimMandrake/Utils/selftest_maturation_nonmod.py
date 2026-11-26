@@ -502,12 +502,79 @@ def t_same_inputs_same_section():
     assert N.html_block(N.section(stores(), NOW, spend=spend)) == N.html_block(N.section(stores(), NOW, spend=spend))
 
 
+def steve_view(at=None):
+    return {"schema": "augur.remote_host/1", "host": "SteveDesktop", "written_at": NOW - 60 if at is None else at,
+            "machine": {"load1": 4.2, "ncpu": 18},
+            "games": {"rows": [{"name": "Steve1", "up": True, "driver_state": "FREE"},
+                               {"name": "Steve2", "up": True, "driver_state": "HELD", "driver": "BENCH",
+                                "for": "a proof job"}]},
+            "claude_runs": {"rows": [{"unit": "rm-detached-bench-steve-thing-1.service", "item": "RIMMANDRAKE_STEVE_THING"},
+                                     {"unit": "rm-detached-bench-x-1-return.service", "item": None}]},
+            "jobs": {"running": [{"id": "J1", "mod": "pipeline"}], "running_why": None, "queued": [], "queued_why": None}}
+
+
+def machine_stores(**kw):
+    s = stores()
+    s["records"] = s["records"] + [rec("u-lane-here", "RIMMANDRAKE_LANE_READY", NOW - 600, status="running",
+                                       next_act_owner="list_dispatch"),
+                                   rec("u-mod-bundle", "RIMMANDRAKE_FIX_FLOWWORKS_PUMP", NOW - 600, status="running",
+                                       env={"RM_WORK_BUNDLE": "WB-mod-FlowWorks-1"})]
+    s["lane"] = dict(s["lane"], machines={
+        "Archmagi": {"live": 1, "max_live": 2, "load": 6.6, "load_line": 28, "machine_line": 28},
+        "SteveDesktop": {"live": 1, "max_live": 6, "left": 70.0, "min_left_pct": 5, "pool_more": None,
+                         "pool_why": "the pool holds no clone"}})
+    s["steve"] = steve_view()
+    s["feed_off"] = "the visit feed is stopped by fill.stop"
+    s.update(kw)
+    return s
+
+
+def t_each_machine_shows_its_runs_room_games_and_lane():
+    """RIMMANDRAKE_SEND_PIPELINE_TICKETS_TO_STEVEDESKTOP_FIRST_IT_SAT_IDLE: the owner, 2026-11-25 10:52 PM PST, "I also
+    don't see SteveDesktop on MATURATION_NOW.md. It used to be shown there I believe... the Workshop Pipeline"."""
+    x = sec(machine_stores())
+    ms = {m["name"]: m for m in x.get("machines") or []}
+    assert set(ms) == {"Archmagi", "SteveDesktop"}, "no block per machine: %s" % list(ms)
+    page = N.panel(x)
+    detail = "\n".join(N.markdown(x))
+    for t in (page, detail):
+        for w in ("Archmagi", "SteveDesktop", "Steve1", "Steve2", "test lane", "RIMMANDRAKE_STEVE_THING",
+                  "RIMMANDRAKE_LANE_READY", "fill.stop"):
+            assert w in t, "%s is not in the machine block" % w
+        assert "$" not in t.split("Workshop Pipeline: all work")[-1] and "token" not in " ".join(
+            ms["SteveDesktop"]["lines"] + ms["Archmagi"]["lines"]).lower(), "a spend or token figure in the block"
+    a, sd = " ".join(ms["Archmagi"]["lines"]), " ".join(ms["SteveDesktop"]["lines"])
+    assert "1 of 2" in a and "1 of 6" in sd and "70" in sd, (a, sd)
+    assert "-return" not in sd, "a bookkeeping unit is not a run"
+    assert "FLOWWORKS_PUMP" not in a and "WB-mod-" not in a, "a mod's bundle run is not a Workshop run: %s" % a
+    (md, pg), _ = built(page_dict(machine_stores()))
+    for t in (md, pg):
+        assert "SteveDesktop" in t and "Steve2" in t, "the machine block is not on MATURATION_NOW"
+        hit = [w for w in LOG_WORDS if w in t]
+        assert not hit, "log lines on the summary page: %s" % hit
+
+
+def t_an_unreadable_machine_reads_could_not_look():
+    for what, s in (("no SteveDesktop reading", machine_stores(steve=None, causes={"SteveDesktop's reading": "gone"})),
+                    ("an old SteveDesktop reading", machine_stores(steve=steve_view(at=NOW - 4000))),
+                    ("no room reading", machine_stores(lane={"at": NOW - 120, "items": {}}))):
+        m = {b["name"]: b for b in sec(s)["machines"]}["SteveDesktop"]
+        blind = [x.lower() for x in m["lines"] if "could not look" in x]
+        want = 1 if what == "no room reading" else 3      # the room line, or the three lines its reading feeds
+        assert len(blind) >= want, "%s: %s" % (what, m["lines"])
+        assert not any(w in x for x in blind for w in (" 0 ", "idle", "none live", "0 live", "0 of", "0 running")), \
+            "%s reads as idle: %s" % (what, blind)
+    m = {b["name"]: b for b in sec(machine_stores(records=None))["machines"]}["Archmagi"]
+    assert "could not look" in " ".join(m["lines"]).lower(), m
+
+
 def main():
     tests = [t_mod_or_not_by_one_rule, t_stages_from_one_rule, t_launcher_from_records, t_doing_now_rows,
              t_next_names_its_wait, t_closed_last_day, t_open_by_reason_oldest_first, t_escalated_from_run_ends,
              t_ready_for_review, t_cannot_see_is_unmeasured, t_four_answers_differ, t_lists_go_to_detail,
              t_page_is_a_picture_not_a_log, t_a_question_for_the_conductor_is_its_own_block, t_waits_in_plain_words, t_plain_titles, t_page_four_answers_differ,
-             t_needs_short_and_his_first, t_trend_on_the_page, t_plain_waits, t_same_inputs_same_section]
+             t_needs_short_and_his_first, t_trend_on_the_page, t_plain_waits, t_same_inputs_same_section,
+             t_each_machine_shows_its_runs_room_games_and_lane, t_an_unreadable_machine_reads_could_not_look]
     failed = 0
     for t in tests:
         try:

@@ -362,6 +362,24 @@ def t_a_ready_ticket_goes_to_a_host_with_room_first():
     chk(lambda: LD().load_cfg().get("hosts", {}).get("SteveDesktop"), "the shipped lane names SteveDesktop")
 
 
+def t_the_reading_says_each_machines_room():
+    """reading.json carries `machines`: Archmagi's own live lane runs, slots and load, and each host's facts with its
+    max_live and leave line, so the page draws each machine's room as the tick measured it; a host that could not be
+    read keeps its None (could not look), never 0."""
+    hcfg = dict(CFG, hosts={"SteveDesktop": {"max_live": 6, "min_left_pct": 5}}, load_line=28)
+    facts = {"items": {"A": it(), "B": it()}, "runs": {"A": {"live": ["u1"], "ended": []}}, "load": 6.6, "cores": 14,
+             "hosts": {"SteveDesktop": {"live": None, "left": None, "left_why": "no ssh", "pool_more": None}}}
+    m = LD().machine_reading(hcfg, facts)
+    chk(lambda: m["Archmagi"]["live"] == 1 and m["Archmagi"]["max_live"] == 2 and m["Archmagi"]["load"] == 6.6
+        and m["Archmagi"]["load_line"] == 28, "Archmagi's own runs, slots and load (%s)" % m.get("Archmagi"))
+    chk(lambda: m["SteveDesktop"]["live"] is None and m["SteveDesktop"]["max_live"] == 6
+        and m["SteveDesktop"]["min_left_pct"] == 5, "a host that could not be read stays None (%s)" % m.get("SteveDesktop"))
+    fx = {"facts": lambda st: facts, "account": lambda: (True, ""), "launch": lambda *a, **k: (0, "DETACHED u9", "u9"),
+          "need": lambda *a: None, "close": lambda *a: (0, ""), "effect": lambda *a: (0, "")}
+    rd = LD().tick(hcfg, apply=False, fx=fx, now=NOW)
+    chk(lambda: set(rd.get("machines") or {}) == {"Archmagi", "SteveDesktop"}, "the reading carries both machines")
+
+
 def t_a_chain_counts_only_links_that_a_lane_run_filed():
     """chain_stop guards a lane run that files an item that the lane then works. A link of the chain counts only when
     the child was filed by a lane run on its parent (the filing's role unit is one of the parent's lane attempts); a
@@ -1018,6 +1036,7 @@ def main():
               t_the_lane_has_its_own_slots_and_chain_rule,
               t_a_ready_ticket_goes_to_a_host_with_room_first,
               t_a_chain_counts_only_links_that_a_lane_run_filed,
+              t_the_reading_says_each_machines_room,
               t_the_tick_counts_recent_lane_launches_before_taking_spare_room,
               t_an_unreadable_record_blinds_only_what_it_can_change,
               t_a_gate_held_on_could_not_look_is_told,

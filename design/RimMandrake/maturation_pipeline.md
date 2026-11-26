@@ -211,9 +211,11 @@ One stage, by his card of 2026-11-13 ("One stage, tests first").
   Pyrelands visit 1 (cap 20 -> 30 to match the hand launches; that visit spent about USD 18). From then on Dispatch
   launches at most `ingame_auto_runs_per_visit` (1) run per owed visit. A flyer's flight is never tested live
   without him.
-- **SteveDesktop**: its test queue takes any mod's token-free checks whatever its stage (the owner dropped the
-  2026-11-14 pipeline-only limit on 2026-11-17); `src/RimMandrake/Utils/testq/pipeline_admit.py` refuses only a mod on
-  his hold. It runs modcheck chains: the `testq` block of a stage-6 `test_table.json` entry names a check's chain.
+- **SteveDesktop**: its test queue runs modcheck chains: the `testq` block of a stage-6 `test_table.json` entry names a
+  check's chain. `src/RimMandrake/Utils/testq/pipeline_admit.py` refuses a mod on his hold, and every mod job while the
+  host work switch (`src/RimMandrake/rimflow/host_work_switch.py`, his order of 2026-11-24) puts SteveDesktop on
+  pipeline work only; testq's `fill.stop` stops the visit feed. The tick line and the driver's brief name whichever
+  stands (`maturation.steve_mod_off`).
 - **Artifact**: `version/in_game/visit_<N>/`: `rows.jsonl`, `strange.jsonl`, a savegame, `SUMMARY.md` with an Exit
   block (`ingame_rows`, `strange_open`, `savegame`, `exit_met`).
 - **What `next` reads** (`maturation.read_ingame_exit`): each stage-6 check of the table has a PASS row with

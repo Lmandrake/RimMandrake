@@ -123,6 +123,10 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   Archmagi takes the run otherwise, and the row says why the host did not (`on Archmagi: ...`). A host that cannot be
   read takes no run. Archmagi's clone pool does not stop a run placed on a host. Measured 2026-11-25 10:53 PM PST:
   SteveDesktop at load 0.04 with no run while every lane run started on Archmagi.
+- **the-reading-says-each-machines-room.** Each tick's reading carries `machines`: Archmagi's own live lane runs,
+  `max_live`, load, `load_line` and machine line, and each host's facts (live runs, week left, clones its disk holds)
+  with its `max_live` and `min_left_pct`. A fact that could not be read stays None, never 0. The Maturation Pipeline
+  page draws each machine's room from it (`maturation_nonmod.machines`).
 - **a-chain-counts-only-links-that-a-lane-run-filed.** `chain_stop` guards the lane feeding itself: a lane run that
   files an item that the lane then works. A link of the item's `caused_by` chain counts the parent's lane runs only when
   a lane run on that parent filed the child (the filing's role unit is one of the parent's attempts); a child filed by a
