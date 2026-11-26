@@ -13,7 +13,7 @@
      by src/RimMandrake/Utils/absorbed_gate_lint.py. -->
 <Defs>
 
-  <GenStepDef>
+  <GenStepDef MayRequire="lee.theforce.lightsaber">
     <defName>Force_CrystalFormation</defName>
     <order>1100</order>
     <genStep Class="Lightsaber.GenStep_ScatterLightsaberCrystals">

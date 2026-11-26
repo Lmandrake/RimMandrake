@@ -7,24 +7,32 @@
      absorbing: see WEAPONS_DONOR_RETIREMENT_1.md's gate table. -->
 <Patch>
 
-  <Operation Class="XmlExtensions.OptionalPatch">
-    <modId>guy762.MM.KotORCore</modId>
-    <key>KotORCoreSettings_YsalamiriForceDampening</key>
-    <defaultValue>true</defaultValue>
-    <caseTrue>
-      <Operation Class="PatchOperationAdd">
-        <xpath>Defs/ThingDef[defName="SWPotF_RaceDef_ysalamir"]/comps</xpath>
-        <value>
-          <li Class="VEF.AnimalBehaviours.CompProperties_HediffEffecter">
-            <radius>40</radius>
-            <severity>1</severity>
-            <hediff>SWPotF_hediff_YsalamirForceDampen</hediff>
-            <tickInterval>900</tickInterval>
-            <notOnlyAffectColonists>true</notOnlyAffectColonists>
-          </li>
-        </value>
-      </Operation>
-    </caseTrue>
+  <!-- XML Extensions is no hard dependency of Armoury: without it this Operation class is unknown and the patch
+       fails at every load (RIMMANDRAKE_LOAD_ARMOURY_ABSORBED_DEFS_WITHOUT_LIGHTSABER_TYPES). A top-level Operation
+       ignores MayRequire, and a PatchOperationFindMod does not help (the patch is parsed before FindMod runs), so
+       the Operation is a sequence <li>: the list loader skips a <li> whose MayRequire mod is not active. -->
+  <Operation Class="PatchOperationSequence">
+    <operations>
+    <li MayRequire="imranfish.xmlextensions" Class="XmlExtensions.OptionalPatch">
+      <modId>guy762.MM.KotORCore</modId>
+      <key>KotORCoreSettings_YsalamiriForceDampening</key>
+      <defaultValue>true</defaultValue>
+      <caseTrue>
+        <Operation Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="SWPotF_RaceDef_ysalamir"]/comps</xpath>
+          <value>
+            <li Class="VEF.AnimalBehaviours.CompProperties_HediffEffecter">
+              <radius>40</radius>
+              <severity>1</severity>
+              <hediff>SWPotF_hediff_YsalamirForceDampen</hediff>
+              <tickInterval>900</tickInterval>
+              <notOnlyAffectColonists>true</notOnlyAffectColonists>
+            </li>
+          </value>
+        </Operation>
+      </caseTrue>
+    </li>
+    </operations>
   </Operation>
 
 </Patch>

@@ -7,20 +7,20 @@
      absorbing: see WEAPONS_DONOR_RETIREMENT_1.md's gate table. -->
 <Defs>
 
-  <Lightsaber.HiltPartCategoryDef>
+  <Lightsaber.HiltPartCategoryDef MayRequire="lee.theforce.lightsaber">
     <defName>guy762_SWForceLightsabersPartCategory_focuscrystal</defName>
     <label>Focus Crystal</label>
     <canChangeColor>False</canChangeColor>
   </Lightsaber.HiltPartCategoryDef>
 
-  <Lightsaber.HiltPartDef Abstract="True" Name="guy762_SWForceLightsabers_FocusCrystalPartBASE">
+  <Lightsaber.HiltPartDef MayRequire="lee.theforce.lightsaber" Abstract="True" Name="guy762_SWForceLightsabers_FocusCrystalPartBASE">
     <category>guy762_SWForceLightsabersPartCategory_focuscrystal</category>
     <equippedStatOffsets>
       <Mass>0.2</Mass>
     </equippedStatOffsets>
   </Lightsaber.HiltPartDef>
 
-  <Lightsaber.HiltPartDef ParentName="guy762_SWForceLightsabers_FocusCrystalPartBASE">
+  <Lightsaber.HiltPartDef MayRequire="lee.theforce.lightsaber" ParentName="guy762_SWForceLightsabers_FocusCrystalPartBASE">
     <defName>guy762_SWForceLightsabers_CrystalPart_adegan</defName>
     <label>Crystal, Adegan</label>
     <description>Adegan crystals, also called Ilum crystals, are one of the most common lightsaber focusing crystals.</description>
@@ -30,7 +30,7 @@
     </equippedStatOffsets>
   </Lightsaber.HiltPartDef>
 
-  <Lightsaber.HiltPartDef ParentName="guy762_SWForceLightsabers_FocusCrystalPartBASE">
+  <Lightsaber.HiltPartDef MayRequire="lee.theforce.lightsaber" ParentName="guy762_SWForceLightsabers_FocusCrystalPartBASE">
     <defName>guy762_SWForceLightsabers_CrystalPart_rubat</defName>
     <label>Crystal, Rubat</label>
     <description>Used in lightsaber construction, rubat crystal is mined on Phemis. It produces a clearly defined blade that a Jedi can easily focus on.</description>
@@ -41,7 +41,7 @@
     </equippedStatOffsets>
   </Lightsaber.HiltPartDef>
 
-  <Lightsaber.HiltPartDef ParentName="guy762_SWForceLightsabers_FocusCrystalPartBASE">
+  <Lightsaber.HiltPartDef MayRequire="lee.theforce.lightsaber" ParentName="guy762_SWForceLightsabers_FocusCrystalPartBASE">
     <defName>guy762_SWForceLightsabers_CrystalPart_ruusan</defName>
     <label>Crystal, Ruusan</label>
     <description>Ruusan crystals come from the Mid Rim planet of the same name. While not directly affecting a lightsaber's effectiveness, they aid a Jedi in focusing the Force.</description>
@@ -51,7 +51,7 @@
     </equippedStatOffsets>
   </Lightsaber.HiltPartDef>
 
-  <Lightsaber.HiltPartDef ParentName="guy762_SWForceLightsabers_FocusCrystalPartBASE">
+  <Lightsaber.HiltPartDef MayRequire="lee.theforce.lightsaber" ParentName="guy762_SWForceLightsabers_FocusCrystalPartBASE">
     <defName>guy762_SWForceLightsabers_CrystalPart_velmorite</defName>
     <label>Crystal, Velmorite</label>
     <description>Found only on the planet Velmor, these crystals produce a very fine beam that is easy to wield skillfully.</description>
@@ -61,7 +61,7 @@
     </equippedStatOffsets>
   </Lightsaber.HiltPartDef>
 
-  <Lightsaber.HiltPartDef ParentName="guy762_SWForceLightsabers_FocusCrystalPartBASE">
+  <Lightsaber.HiltPartDef MayRequire="lee.theforce.lightsaber" ParentName="guy762_SWForceLightsabers_FocusCrystalPartBASE">
     <defName>guy762_SWForceLightsabers_CrystalPart_sigil</defName>
     <label>Crystal, Sigil</label>
     <description>Mined in the Sigil System, this crystal is a costly but valued addition to a lightsaber. It produces a fiercely bright beam that sears on contact, inflicting great damage.</description>
@@ -73,7 +73,7 @@
     <commonality>0.75</commonality>
   </Lightsaber.HiltPartDef>
 
-  <Lightsaber.HiltPartDef ParentName="guy762_SWForceLightsabers_FocusCrystalPartBASE">
+  <Lightsaber.HiltPartDef MayRequire="lee.theforce.lightsaber" ParentName="guy762_SWForceLightsabers_FocusCrystalPartBASE">
     <defName>guy762_SWForceLightsabers_CrystalPart_nextor</defName>
     <label>Crystal, Nextor</label>
     <description>This crystal is mined in the mountains of planet M'haeli, and when used in lightsaber construction it produces a volatile blade that can cause surprising amounts of damage.</description>
@@ -85,7 +85,7 @@
     <commonality>0.75</commonality>
   </Lightsaber.HiltPartDef>
 
-  <Lightsaber.HiltPartDef ParentName="guy762_SWForceLightsabers_FocusCrystalPartBASE">
+  <Lightsaber.HiltPartDef MayRequire="lee.theforce.lightsaber" ParentName="guy762_SWForceLightsabers_FocusCrystalPartBASE">
     <defName>guy762_SWForceLightsabers_CrystalPart_kasha</defName>
     <label>Crystal, Kasha</label>
     <description>This crystal is traditionally used by the Cereans as a meditation tool. When used as a lightsaber crystal, it helps clear the wielder's mind of distractions, even during tense combat.</description>
@@ -97,7 +97,7 @@
     <commonality>0.75</commonality>
   </Lightsaber.HiltPartDef>
 
-  <Lightsaber.HiltPartDef ParentName="guy762_SWForceLightsabers_FocusCrystalPartBASE">
+  <Lightsaber.HiltPartDef MayRequire="lee.theforce.lightsaber" ParentName="guy762_SWForceLightsabers_FocusCrystalPartBASE">
     <defName>guy762_SWForceLightsabers_CrystalPart_eralam</defName>
     <label>Crystal, Eralam</label>
     <description>Once mined on the third moon of Erai, ancient Sith bombardment shattered much that remained. If they can be found, these crystals produce a clear, superior lightsaber beam.</description>
@@ -109,7 +109,7 @@
     <commonality>0.75</commonality>
   </Lightsaber.HiltPartDef>
 
-  <Lightsaber.HiltPartDef ParentName="guy762_SWForceLightsabers_FocusCrystalPartBASE">
+  <Lightsaber.HiltPartDef MayRequire="lee.theforce.lightsaber" ParentName="guy762_SWForceLightsabers_FocusCrystalPartBASE">
     <defName>guy762_SWForceLightsabers_CrystalPart_damind</defName>
     <label>Crystal, Damind</label>
     <description>Found on the desert world of Daminia, this crystal can be used in lightsaber construction to produce a clearly defined beam of subtly wider width and length.</description>
@@ -120,7 +120,7 @@
     <commonality>0.75</commonality>
   </Lightsaber.HiltPartDef>
 
-  <Lightsaber.HiltPartDef ParentName="guy762_SWForceLightsabers_FocusCrystalPartBASE">
+  <Lightsaber.HiltPartDef MayRequire="lee.theforce.lightsaber" ParentName="guy762_SWForceLightsabers_FocusCrystalPartBASE">
     <defName>guy762_SWForceLightsabers_CrystalPart_sapith</defName>
     <label>Crystal, Sapith</label>
     <description>This crystallized material was excreted once every 11 years by the ancient Volice worm of Lwhekk, now extinct. It produces a more intense lightsaber beam, granting better control.</description>
@@ -132,7 +132,7 @@
     <commonality>0.5</commonality>
   </Lightsaber.HiltPartDef>
 
-  <Lightsaber.HiltPartDef ParentName="guy762_SWForceLightsabers_FocusCrystalPartBASE">
+  <Lightsaber.HiltPartDef MayRequire="lee.theforce.lightsaber" ParentName="guy762_SWForceLightsabers_FocusCrystalPartBASE">
     <defName>guy762_SWForceLightsabers_CrystalPart_opila</defName>
     <label>Crystal, Opila</label>
     <description>Found in the asteroid fields of the Fyrth system, this crystal can be used in lightsaber construction to produce an intense beam that seems extraordinarily quick to the cut.</description>
@@ -144,7 +144,7 @@
     <commonality>0.5</commonality>
   </Lightsaber.HiltPartDef>
 
-  <Lightsaber.HiltPartDef ParentName="guy762_SWForceLightsabers_FocusCrystalPartBASE">
+  <Lightsaber.HiltPartDef MayRequire="lee.theforce.lightsaber" ParentName="guy762_SWForceLightsabers_FocusCrystalPartBASE">
     <defName>guy762_SWForceLightsabers_CrystalPart_upari</defName>
     <label>Crystal, Upari</label>
     <description>Strangely, this crystal is usually encountered scattered in the orbit of primarily forest worlds. It is brittle but versatile, and a Master Jedi can get it to produce many effects.</description>
@@ -156,7 +156,7 @@
     <commonality>0.5</commonality>
   </Lightsaber.HiltPartDef>
 
-  <Lightsaber.HiltPartDef ParentName="guy762_SWForceLightsabers_FocusCrystalPartBASE">
+  <Lightsaber.HiltPartDef MayRequire="lee.theforce.lightsaber" ParentName="guy762_SWForceLightsabers_FocusCrystalPartBASE">
     <defName>guy762_SWForceLightsabers_CrystalPart_lorrdian</defName>
     <label>Crystal, Lorrdian Gemstone</label>
     <description>During their subjugation, the Lorrdians were banned from speaking to each other and thus learned to use subtle gestures and ticks to communicate. The few Force-Adepts found after the Jedi freed the population of slaves has imprinted these gemstones with the Force to enhance the ability to read an opponent.</description>
@@ -168,7 +168,7 @@
     <commonality>0.5</commonality>
   </Lightsaber.HiltPartDef>
 
-  <Lightsaber.HiltPartDef ParentName="guy762_SWForceLightsabers_FocusCrystalPartBASE">
+  <Lightsaber.HiltPartDef MayRequire="lee.theforce.lightsaber" ParentName="guy762_SWForceLightsabers_FocusCrystalPartBASE">
     <defName>guy762_SWForceLightsabers_CrystalPart_ankarres</defName>
     <label>Crystal, Ankarres Sapphire</label>
     <description>This crystal possesses legendary healing powers and numerous other effects. It is one of the most potent crystals that can be used in lightsaber creation.</description>
@@ -181,7 +181,7 @@
     <commonality>0.25</commonality>
   </Lightsaber.HiltPartDef>
 
-  <Lightsaber.HiltPartDef ParentName="guy762_SWForceLightsabers_FocusCrystalPartBASE">
+  <Lightsaber.HiltPartDef MayRequire="lee.theforce.lightsaber" ParentName="guy762_SWForceLightsabers_FocusCrystalPartBASE">
     <defName>guy762_SWForceLightsabers_CrystalPart_kaiburr</defName>
     <label>Crystal, Kaiburr</label>
     <description>Perhaps the most powerful crystal that can be used in a lightsaber, the Kaiburr gem bestows insight and fortitude upon its owner.</description>

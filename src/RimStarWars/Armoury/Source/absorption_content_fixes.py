@@ -247,6 +247,10 @@ def apply_content_fixes(el, note=print, warn=None):
     gen_kotorcore_absorption.py) will surface these in its warnings count."""
     if warn is None:
         warn = note
+    # A donor class with no MayRequire for its donor fails its def at load on a list without the donor
+    # (RIMMANDRAKE_LOAD_ARMOURY_ABSORBED_DEFS_WITHOUT_LIGHTSABER_TYPES); the rule and table: donor_class_guard.py.
+    from donor_class_guard import guard_element
+    guard_element(el, note=note)
     dn_el = el.find("defName")
     dn = dn_el.text.strip() if dn_el is not None and dn_el.text else None
     # Abstract defs carry no <defName>; FIXES may key them by Name=.

@@ -67,6 +67,7 @@ import xml.etree.ElementTree as ET
 import atexit as _atexit, pathlib as _pathlib, sys as _sys  # noqa: E401
 _sys.path.insert(0, next(str(_p / 'RimMandrake' / 'Utils' / 'art') for _p in _pathlib.Path(__file__).resolve().parents if _p.name == 'src'))
 from artwrite import TextureWriter as _TextureWriter  # noqa: E402
+from donor_class_guard import guard_element  # noqa: E402
 _tw = _TextureWriter(__file__)
 _atexit.register(_tw.report)
 
@@ -324,6 +325,8 @@ def main():
                     continue
                 all_new_defnames[dn] = rel
 
+            # Lightsaber.* classes need the donor's DLL: guard each with MayRequire (donor_class_guard.py)
+            guard_element(el, note=R.note)
             collect_paths(el, "texPath", tex_paths)
             collect_paths(el, "iconPath", tex_paths)
             collect_paths(el, "uiIconPath", tex_paths)

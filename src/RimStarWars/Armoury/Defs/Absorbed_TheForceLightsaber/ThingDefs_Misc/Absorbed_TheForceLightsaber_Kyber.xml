@@ -47,7 +47,7 @@
       <li>
         <compClass>CompColorable</compClass>
       </li>
-      <li Class="Lightsaber.CompProperties_GlowerOptions">
+      <li MayRequire="lee.theforce.lightsaber" Class="Lightsaber.CompProperties_GlowerOptions">
         <glowRadius>1</glowRadius>
       </li>
     </comps>
@@ -57,7 +57,7 @@
     <pathCost>15</pathCost>
     <thingCategories>
       <li>ResourcesRaw</li>
-      <li>Force_KyberCrystals</li>
+      <li MayRequire="lee.theforce.lightsaber">Force_KyberCrystals</li>
     </thingCategories>
     <colorGenerator Class="ColorGenerator_Options">
       <options>

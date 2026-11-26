@@ -7,17 +7,17 @@
      absorbing: see WEAPONS_DONOR_RETIREMENT_1.md's gate table. -->
 <Defs>
 
-  <Lightsaber.HiltPartCategoryDef>
+  <Lightsaber.HiltPartCategoryDef MayRequire="lee.theforce.lightsaber">
     <defName>guy762_SWForceLightsabersPartCategory_colorcrystal</defName>
     <label>Color Crystal</label>
     <canChangeColor>True</canChangeColor>
   </Lightsaber.HiltPartCategoryDef>
 
-  <Lightsaber.HiltPartDef Abstract="True" Name="guy762_SWForceLightsabers_ColorCrystalPartBASE">
+  <Lightsaber.HiltPartDef MayRequire="lee.theforce.lightsaber" Abstract="True" Name="guy762_SWForceLightsabers_ColorCrystalPartBASE">
     <category>guy762_SWForceLightsabersPartCategory_colorcrystal</category>
   </Lightsaber.HiltPartDef>
 
-  <Lightsaber.HiltPartDef ParentName="guy762_SWForceLightsabers_ColorCrystalPartBASE">
+  <Lightsaber.HiltPartDef MayRequire="lee.theforce.lightsaber" ParentName="guy762_SWForceLightsabers_ColorCrystalPartBASE">
     <defName>guy762_SWForceLightsabers_CrystalPart_red</defName>
     <label>Crystal, Red</label>
     <description>A faceted crystal used in the constructing of a lightsaber. It glows faintly with an inner red light.</description>
@@ -32,7 +32,7 @@
     </colorGenerator>
   </Lightsaber.HiltPartDef>
 
-  <Lightsaber.HiltPartDef ParentName="guy762_SWForceLightsabers_ColorCrystalPartBASE">
+  <Lightsaber.HiltPartDef MayRequire="lee.theforce.lightsaber" ParentName="guy762_SWForceLightsabers_ColorCrystalPartBASE">
     <defName>guy762_SWForceLightsabers_CrystalPart_orange</defName>
     <label>Crystal, Orange</label>
     <description>A faceted crystal used in the constructing of a lightsaber. It glows faintly with an inner orange light.</description>
@@ -47,7 +47,7 @@
     </colorGenerator>
   </Lightsaber.HiltPartDef>
 
-  <Lightsaber.HiltPartDef ParentName="guy762_SWForceLightsabers_ColorCrystalPartBASE">
+  <Lightsaber.HiltPartDef MayRequire="lee.theforce.lightsaber" ParentName="guy762_SWForceLightsabers_ColorCrystalPartBASE">
     <defName>guy762_SWForceLightsabers_CrystalPart_yellow</defName>
     <label>Crystal, Yellow</label>
     <description>A faceted crystal used in the constructing of a lightsaber. It glows faintly with an inner yellow light.</description>
@@ -62,7 +62,7 @@
     </colorGenerator>
   </Lightsaber.HiltPartDef>
 
-  <Lightsaber.HiltPartDef ParentName="guy762_SWForceLightsabers_ColorCrystalPartBASE">
+  <Lightsaber.HiltPartDef MayRequire="lee.theforce.lightsaber" ParentName="guy762_SWForceLightsabers_ColorCrystalPartBASE">
     <defName>guy762_SWForceLightsabers_CrystalPart_green</defName>
     <label>Crystal, Green</label>
     <description>A faceted crystal used in the constructing of a lightsaber. It glows faintly with an inner green light.</description>
@@ -77,7 +77,7 @@
     </colorGenerator>
   </Lightsaber.HiltPartDef>
 
-  <Lightsaber.HiltPartDef ParentName="guy762_SWForceLightsabers_ColorCrystalPartBASE">
+  <Lightsaber.HiltPartDef MayRequire="lee.theforce.lightsaber" ParentName="guy762_SWForceLightsabers_ColorCrystalPartBASE">
     <defName>guy762_SWForceLightsabers_CrystalPart_blue</defName>
     <label>Crystal, Blue</label>
     <description>A faceted crystal used in the constructing of a lightsaber. It glows faintly with an inner blue light.</description>
@@ -92,7 +92,7 @@
     </colorGenerator>
   </Lightsaber.HiltPartDef>
 
-  <Lightsaber.HiltPartDef ParentName="guy762_SWForceLightsabers_ColorCrystalPartBASE">
+  <Lightsaber.HiltPartDef MayRequire="lee.theforce.lightsaber" ParentName="guy762_SWForceLightsabers_ColorCrystalPartBASE">
     <defName>guy762_SWForceLightsabers_CrystalPart_purple</defName>
     <label>Crystal, Violet</label>
     <description>A faceted crystal used in the constructing of a lightsaber. It glows faintly with an inner violet light.</description>
@@ -107,7 +107,7 @@
     </colorGenerator>
   </Lightsaber.HiltPartDef>
 
-  <Lightsaber.HiltPartDef ParentName="guy762_SWForceLightsabers_ColorCrystalPartBASE">
+  <Lightsaber.HiltPartDef MayRequire="lee.theforce.lightsaber" ParentName="guy762_SWForceLightsabers_ColorCrystalPartBASE">
     <defName>guy762_SWForceLightsabers_CrystalPart_white</defName>
     <label>Crystal, Silver</label>
     <description>A faceted crystal used in the constructing of a lightsaber. It glows faintly with an inner silver light.</description>
@@ -123,7 +123,7 @@
     <commonality>0.75</commonality>
   </Lightsaber.HiltPartDef>
 
-  <Lightsaber.HiltPartDef ParentName="guy762_SWForceLightsabers_ColorCrystalPartBASE">
+  <Lightsaber.HiltPartDef MayRequire="lee.theforce.lightsaber" ParentName="guy762_SWForceLightsabers_ColorCrystalPartBASE">
     <defName>guy762_SWForceLightsabers_CrystalPart_viridian</defName>
     <label>Crystal, Viridian</label>
     <description>A faceted crystal used in the constructing of a lightsaber. It glows faintly with a silvery green light.</description>
@@ -139,7 +139,7 @@
     <commonality>0.5</commonality>
   </Lightsaber.HiltPartDef>
 
-  <Lightsaber.HiltPartDef ParentName="guy762_SWForceLightsabers_ColorCrystalPartBASE">
+  <Lightsaber.HiltPartDef MayRequire="lee.theforce.lightsaber" ParentName="guy762_SWForceLightsabers_ColorCrystalPartBASE">
     <defName>guy762_SWForceLightsabers_CrystalPart_cyan</defName>
     <label>Crystal, Cyan</label>
     <description>A faceted crystal used in the constructing of a lightsaber. It glows faintly with an inner cyan light.</description>
@@ -155,7 +155,7 @@
     <commonality>0.5</commonality>
   </Lightsaber.HiltPartDef>
 
-  <Lightsaber.HiltPartDef ParentName="guy762_SWForceLightsabers_ColorCrystalPartBASE">
+  <Lightsaber.HiltPartDef MayRequire="lee.theforce.lightsaber" ParentName="guy762_SWForceLightsabers_ColorCrystalPartBASE">
     <defName>guy762_SWForceLightsabers_CrystalPart_bronze</defName>
     <label>Crystal, Bronze</label>
     <description>A faceted crystal used in the constructing of a lightsaber. Yellowish-brown in color, the same sort of crystal is sometimes used in high resolution displays.</description>
@@ -171,7 +171,7 @@
     <commonality>0.5</commonality>
   </Lightsaber.HiltPartDef>
 
-  <Lightsaber.HiltPartDef ParentName="guy762_SWForceLightsabers_ColorCrystalPartBASE">
+  <Lightsaber.HiltPartDef MayRequire="lee.theforce.lightsaber" ParentName="guy762_SWForceLightsabers_ColorCrystalPartBASE">
     <defName>guy762_SWForceLightsabers_CrystalPart_fuchsia</defName>
     <label>Crystal, Fuchsia</label>
     <description>A faceted crystal used in the constructing of a lightsaber. It glows faintly with an inner fuchsia light.</description>
@@ -187,7 +187,7 @@
     <commonality>0.25</commonality>
   </Lightsaber.HiltPartDef>
 
-  <Lightsaber.HiltPartDef ParentName="guy762_SWForceLightsabers_ColorCrystalPartBASE">
+  <Lightsaber.HiltPartDef MayRequire="lee.theforce.lightsaber" ParentName="guy762_SWForceLightsabers_ColorCrystalPartBASE">
     <defName>guy762_SWForceLightsabers_CrystalPart_turquoise</defName>
     <label>Crystal, Turquoise</label>
     <description>A faceted crystal used in the constructing of a lightsaber. These rare turquoise gems are only found underneath the Hrakert Rift on Manaan, and are believed to be a kind of crystallized Kolto formed from immense aquatic pressure.</description>
@@ -203,7 +203,7 @@
     <commonality>0.25</commonality>
   </Lightsaber.HiltPartDef>
 
-  <Lightsaber.HiltPartDef ParentName="guy762_SWForceLightsabers_ColorCrystalPartBASE">
+  <Lightsaber.HiltPartDef MayRequire="lee.theforce.lightsaber" ParentName="guy762_SWForceLightsabers_ColorCrystalPartBASE">
     <defName>guy762_SWForceLightsabers_CrystalPart_mantle</defName>
     <label>Mantle of the Force</label>
     <description>The Mantle of the Force is an item assembled by Suvam Tan from pieces found in the ruins of Exar Kun's temples on the fourth moon orbiting Yavin. It appears to be the remains of an even older artifact of unknown origin. It is not known if it was used by Exar Kun, or just uncovered when his temples were destroyed. Nor is it known what the original properties of the item were, but given the current abilities, in its original state it must have been fearsome indeed.\n\nThe Mantle is a crystalline lattice, resembling a lightsaber crystal in many ways, but having the additional property of being able to radically alter the flow of energy that passes through it. Additionally, the Mantle seems to almost act as a focusing tool for Force-sensitive individuals, leading to the idea that the original artifact may once have been a powerful tool of the Sith, or perhaps something they took with them when the dark Jedi originally split from the Order.</description>
@@ -219,7 +219,7 @@
     <commonality>0.01</commonality>
   </Lightsaber.HiltPartDef>
 
-  <Lightsaber.HiltPartDef ParentName="guy762_SWForceLightsabers_ColorCrystalPartBASE">
+  <Lightsaber.HiltPartDef MayRequire="lee.theforce.lightsaber" ParentName="guy762_SWForceLightsabers_ColorCrystalPartBASE">
     <defName>guy762_SWForceLightsabers_CrystalPart_heart</defName>
     <label>Heart of the Guardian</label>
     <description>The Heart of the Guardian shares the Mantle of the Force's crystalline lattice, recovered from the same ruined temples on Yavin's fourth moon, but where the Mantle unmakes and redirects the energy that passes through it, the Heart holds steady -- it seems built to anchor a wielder rather than to focus one, and radiates a faint warmth even when cut from its housing.</description>

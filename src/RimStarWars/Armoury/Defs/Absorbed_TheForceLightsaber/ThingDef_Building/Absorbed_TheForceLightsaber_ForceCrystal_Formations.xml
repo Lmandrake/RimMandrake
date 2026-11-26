@@ -82,7 +82,7 @@
       <li>
         <compClass>CompColorable</compClass>
       </li>
-      <li Class="Lightsaber.CompProperties_ColorCrystal" />
+      <li MayRequire="lee.theforce.lightsaber" Class="Lightsaber.CompProperties_ColorCrystal" />
     </comps>
     <colorGenerator Class="ColorGenerator_Options">
       <options>
@@ -268,7 +268,7 @@
       <mineableScatterLumpSizeRange>5~10</mineableScatterLumpSizeRange>
     </building>
     <comps>
-      <li Class="Lightsaber.CompProperties_GlowerOptions">
+      <li MayRequire="lee.theforce.lightsaber" Class="Lightsaber.CompProperties_GlowerOptions">
         <glowRadius>1</glowRadius>
       </li>
     </comps>
@@ -296,7 +296,7 @@
       <mineableScatterLumpSizeRange>1~10</mineableScatterLumpSizeRange>
     </building>
     <comps>
-      <li Class="Lightsaber.CompProperties_GlowerOptions">
+      <li MayRequire="lee.theforce.lightsaber" Class="Lightsaber.CompProperties_GlowerOptions">
         <glowRadius>2.5</glowRadius>
       </li>
     </comps>
@@ -324,7 +324,7 @@
       <mineableScatterLumpSizeRange>1~3</mineableScatterLumpSizeRange>
     </building>
     <comps>
-      <li Class="Lightsaber.CompProperties_GlowerOptions">
+      <li MayRequire="lee.theforce.lightsaber" Class="Lightsaber.CompProperties_GlowerOptions">
         <glowRadius>5</glowRadius>
       </li>
     </comps>

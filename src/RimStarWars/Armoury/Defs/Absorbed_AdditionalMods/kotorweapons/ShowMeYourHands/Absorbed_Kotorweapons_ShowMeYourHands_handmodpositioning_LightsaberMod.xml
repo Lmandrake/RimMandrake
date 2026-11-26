@@ -7,7 +7,7 @@
      absorbing: see WEAPONS_DONOR_RETIREMENT_1.md's gate table. -->
 <Defs>
 
-  <WHands.ClutterHandsTDef MayRequire="lee.theforce.lightsaber">
+  <WHands.ClutterHandsTDef MayRequire="lee.theforce.lightsaber,mlie.showmeyourhands">
     <defName>ClutterHandsSettings_StarWarsTheForceLightsaber</defName>
     <label>Weapon hand settings</label>
     <thingClass>Thing</thingClass>
