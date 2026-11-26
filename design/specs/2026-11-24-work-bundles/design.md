@@ -44,7 +44,7 @@ The bundle takes what the gate lets through: the work that the finder truly coul
 
 | step | who | what | why |
 |---|---|---|---|
-| 0. Reality sort | a program, no tokens | Run each member's acceptance test on the current build. A green test closes the member as already fixed, with the commit named. | most tickets need no code |
+| 0. Reality sort | a program, no tokens | Run each member's acceptance test on the current build. A green test closes the member as already fixed, with the commit named. A test script that existed before its ticket was filed proves nothing when it is green: that member stays for the worker. | most tickets need no code |
 | 1. Read once, class all | the worker | Read the system once. Class each member: real, already fixed, or not worth the touch. Group members with one cause. Put investigations first. | one investigation informs the next |
 | 2. Tests first, together | the worker | Each real member has its acceptance test. One red run for the whole set, recorded. | a skipped proof comes back as cost |
 | 3. Fix in order | the worker | After each member or one-cause group: green run, a progress note, a publish. | a death loses one group at most |

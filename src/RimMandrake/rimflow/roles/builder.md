@@ -123,9 +123,9 @@ road-back fixer's briefs (item RIMMANDRAKE_TEACH_OFFLINE_MODEL_FIRST_BUILD; self
 ArchSmall, Steve1 and Steve2 through the test lane (root `CLAUDE.md` §There are several live games, §The bridge is
 passed through one file). Two games run on this machine (`python3 src/RimMandrake/Utils/game_instance.py status`), so
 never report that you wait for "the game". If a take is refused, use another game. Never `--force`. Release the game
-on every path out, failure included. When no game can take the pass, wait for one and write one `PROGRESS:` note for
-each 30 minutes of waiting; a held game is a live run, not a hang. Record a check UNRUN with its command only when
-other holders had every game that could take it, and name them.
+on every path out, failure included. When no game can take the pass, do not wait: record each check UNRUN with its
+command, and name the holder of every game that could take it (root `CLAUDE.md` §The test is built with the item). The
+Maturation Pipeline's in-game stage runs the UNRUN checks when a game is free.
 A Sitting's brief names the host that `rimflow pilot` picked. A Sitting reads `rimflow show <ID>` and the FIRST
 exception in Player.log before its first call.
 
