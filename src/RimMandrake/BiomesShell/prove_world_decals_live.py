@@ -17,12 +17,31 @@ READ_ONLY_STATIC_CALLS). PASS when:
      With no biome with an atlas on the planet there is no decal material to read: UNMEASURED, never PASS.
 Exit 0 PASS, 1 FAIL, 2 UNMEASURED (no bridge / no world / nothing to read).
 
-    python3 src/RimMandrake/BiomesShell/prove_world_decals_live.py            # live
+Today no biome with an atlas is painted on any planet (a biome of ours on 0 tiles is expected until the end paint), so
+the read-only run can only read UNMEASURED. --stage makes A1 decidable on a disposable world: it paints STAGE_TILES flat
+land tiles RM_BlueDesert, regenerates the planet (jawa/world_commit, which rebuilds the decals), shows the world view at a
+close and a far altitude, judges Info at each (glyphs must now be > 0), then puts every tile back and returns to the map.
+It writes the world, so run it holding the game: `game_lock.py run <game> --for "..." -- python3 <this> --stage`. The
+companion refuses world writes on a canonical save; that reads UNMEASURED. Each staged run writes its verdict to RESULT.
+--verdict (offline, for the ticket's outcome check) exits 0 when RESULT holds a staged PASS made on the current bytes of
+RM_WorldDecals.cs, else 1.
+
+    python3 src/RimMandrake/BiomesShell/prove_world_decals_live.py            # live, read-only
+    python3 src/RimMandrake/BiomesShell/prove_world_decals_live.py --stage    # live, staged (writes and restores tiles)
+    python3 src/RimMandrake/BiomesShell/prove_world_decals_live.py --verdict  # offline: is there a staged PASS on these bytes
     python3 src/RimMandrake/BiomesShell/prove_world_decals_live.py --selftest # the judge on recorded Info strings, offline
 """
-import json, os, re, sys
+import datetime, json, os, re, subprocess, sys, time
 
 T = "RimMandrake.Biomes.RM_WorldDecals"
+HERE = os.path.dirname(os.path.abspath(__file__))
+REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
+SRC = os.path.join(HERE, "Source", "RM_WorldDecals.cs")
+RESULT = os.path.join(REPO, "infrastructure", "state", "live_proofs", "WORLD_DECALS_BUILD_ATLAS_PIPELINE_ONCE.result.json")
+STAGE_BIOME = "RM_BlueDesert"
+STAGE_TILES = 6
+STAGE_ALTS = (300.0, 900.0)   # close (full, <= decalFullAlt 380) and far (gone, >= decalGoneAlt 620)
+SCAN = 2000                   # tiles read to find flat dry land; the low ids of any planet hold some
 PROBE_OK = "atlas RM_BlueDesert 512x512 grid=2"
 BUILT = re.compile(r"decals: (\d+) glyphs on (\d+) flat tiles of (\d+) biomes with an atlas \((\d+) land biomes without one\)")
 
@@ -40,14 +59,18 @@ def num(info, key):
     return None if m is None else float(m.group(1))
 
 
-def judge(probe, info):
-    """-> (exit code, verdict line) for one Probe result and one Info result (both the raw bridge JSON or string)."""
+def judge(probe, info, staged=False):
+    """-> (exit code, verdict line) for one Probe result and one Info result (both the raw bridge JSON or string).
+    staged: the run painted atlas tiles, so a build with 0 glyphs or no atlas biome is a FAIL, not UNMEASURED."""
     errs, unmeasured = [], []
     if PROBE_OK not in probe:
         errs.append("test atlas not found or not read as a 2x2 atlas (probe: %s)" % probe[:120])
     m = BUILT.search(info)
     if not m:
         errs.append("planet not built with decals (lastInfo: %s)" % info[:120])
+    elif staged and (int(m.group(1)) == 0 or int(m.group(3)) == 0):
+        errs.append("tiles were painted %s but the build drew %s glyphs from %s biomes with an atlas"
+                    % (STAGE_BIOME, m.group(1), m.group(3)))
     if "enabled=True" not in info:
         errs.append("setting Planet: biome decals is off")
     alt, alpha, full, gone = (num(info, k) for k in ("altitude", "alpha", "fullAlt", "goneAlt"))
@@ -151,9 +174,156 @@ def selftest():
     bad += not emits
     print(("ok  " if emits else "FAIL") + " RM_WorldDecals.Info() emits matAlpha= read from a decal material's color.a"
           + ("" if emits else ": it does not, so the live A1 judge FAILs on today's build"))
-    print("RESULT %s: %d judge cases + Info source, %d wrong" % ("PASS" if not bad else "FAIL", len(CASES), bad))
+    # staged runs painted an atlas biome: nothing drawn is a FAIL there, never UNMEASURED
+    for name, info, want in (("staged, drawn, close", _info(B1, 1, 300, 1), 0),
+                             ("staged, drawn, far", _info(B1, 0, 900, 0), 0),
+                             ("staged, painted but 0 glyphs", _info(B0, 1, 300, -1), 1),
+                             ("staged, fade dead", _info(B1, -1, 300, 1), 1)):
+        got, line = judge(json.dumps({"result": P}), json.dumps({"result": info}), staged=True)
+        bad += got != want
+        print(("ok  " if got == want else "FAIL") + " %-62s exit %d (want %d)  %s" % (name, got, want, line[:110]))
+    rows = [{"tile": 0, "biome": "Ocean", "hilliness": "Flat", "waterCovered": True},
+            {"tile": 1, "biome": "Desert", "hilliness": "SmallHills", "waterCovered": False},
+            {"tile": 2, "biome": "Desert", "hilliness": "Flat", "waterCovered": False},
+            {"tile": 3, "biome": None, "hilliness": "Flat", "waterCovered": False},
+            {"tile": 4, "biome": "TemperateForest", "hilliness": "Flat", "waterCovered": False}]
+    for name, got, want in (("pick: flat dry land only", pick_tiles(rows, 6), [2, 4]),
+                            ("pick: capped at n", pick_tiles(rows, 1), [2]),
+                            ("pick: none on an all-water strip", pick_tiles(rows[:1], 6), []),
+                            ("restore: one write per original value",
+                             restore_groups([rows[2], rows[4], dict(rows[2], tile=9)]),
+                             {("Desert", "Flat"): [2, 9], ("TemperateForest", "Flat"): [4]})):
+        bad += got != want
+        print(("ok  " if got == want else "FAIL") + " %-62s %s" % (name, got))
+    import tempfile
+    d = tempfile.mkdtemp()
+    for name, rec, blob, want in (("verdict: PASS on these bytes", {"verdict": "PASS", "src_blob": "abc"}, "abc", 0),
+                                  ("verdict: PASS on older bytes", {"verdict": "PASS", "src_blob": "old"}, "abc", 1),
+                                  ("verdict: last run FAIL", {"verdict": "FAIL", "src_blob": "abc"}, "abc", 1),
+                                  ("verdict: last run UNMEASURED", {"verdict": "UNMEASURED", "src_blob": "abc"}, "abc", 1),
+                                  ("verdict: no record", None, "abc", 1),
+                                  ("verdict: hash unreadable", {"verdict": "PASS", "src_blob": None}, "", 1)):
+        f = os.path.join(d, name.replace(" ", "_").replace(":", "") + ".json")
+        if rec is not None:
+            json.dump(rec, open(f, "w"))
+        got = verdict(f, blob)
+        bad += got != want
+        print(("ok  " if got == want else "FAIL") + " %-62s exit %d (want %d)" % (name, got, want))
+    print("RESULT %s: %d judge cases + Info source + staging and verdict cases, %d wrong" % ("PASS" if not bad else "FAIL", len(CASES), bad))
     return 1 if bad else 0
 
 
+# ---------------------------------------------------------------- staged: paint, look at two zooms, put back
+def src_hash():
+    r = subprocess.run(["git", "-C", REPO, "hash-object", SRC], capture_output=True, text=True)
+    return r.stdout.strip() if r.returncode == 0 else None
+
+
+def pick_tiles(rows, n):
+    """-> up to n tile ids that the decal build draws on once painted: dry land (not water covered), flat."""
+    ok = [r for r in rows if not r.get("waterCovered") and r.get("hilliness") == "Flat" and r.get("biome")]
+    return [r["tile"] for r in ok[:n]]
+
+
+def restore_groups(rows):
+    """-> {(biome, hilliness): [tile ids]} so each original value is written back in one call."""
+    g = {}
+    for r in rows:
+        g.setdefault((r["biome"], r["hilliness"]), []).append(r["tile"])
+    return g
+
+
+def _connect():
+    sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
+    import rimbridge_client as rb
+    host, port, token = rb.resolve_endpoint()
+    # budget: danger=a world_commit regenerates every planet layer; the longest seen is ~20 s on a full planet; 300 s is a hang guard
+    S = rb.RimBridge(host=host, port=port, token=token, timeout=300.0)
+    S.connect()
+
+    def call(tool, **p):
+        try:
+            r = S.call(tool, p) or {}
+        except Exception as e:  # noqa: BLE001 - a refused or failed call is a reply that did not succeed, by name
+            return {"success": False, "error": "%s: %s" % (type(e).__name__, e)}
+        if isinstance(r, dict) and r.get("content"):
+            try:
+                r = json.loads(r["content"][0]["text"])
+            except (ValueError, KeyError, IndexError, TypeError):
+                pass
+        return r
+    return call
+
+
+def _static(call, method, args):
+    return json.dumps(call("jawa/static_call", type=T, method=method, args=args))
+
+
+def stage():
+    try:
+        call = _connect()
+    except Exception as e:  # noqa: BLE001 - no bridge is its own answer
+        print("UNMEASURED: no bridge: %s: %s" % (type(e).__name__, e)); return 2
+    probe = _static(call, "Probe", STAGE_BIOME)
+    got = call("jawa/world_tile_get", range="0-%d" % (SCAN - 1), limit=SCAN)
+    rows = got.get("tiles") or []
+    if not rows:
+        print("UNMEASURED: no world tiles read: %s" % json.dumps(got)[:300]); return 2
+    ids = pick_tiles(rows, STAGE_TILES)
+    if not ids:
+        print("UNMEASURED: no flat dry land tile in tiles 0-%d" % (SCAN - 1)); return 2
+    before = [r for r in rows if r["tile"] in ids]
+    readings, code, line = [], 2, "UNMEASURED: not run"
+    try:
+        w = call("jawa/world_tile_set", tiles=",".join(map(str, ids)), biome=STAGE_BIOME, hilliness="Flat")
+        if not w.get("success"):
+            print("UNMEASURED: the world refused the staging write (a canonical save refuses it): %s" % json.dumps(w)[:300])
+            return 2
+        c = call("jawa/world_commit")
+        print("staged %s on tiles %s; commit: %s" % (STAGE_BIOME, ids, [s.get("step") + ":" + s.get("status") for s in c.get("steps", [])][:3]))
+        codes = []
+        for alt in STAGE_ALTS:
+            call("jawa/world_view", show=True, centerTile=ids[0], altitude=alt, northUp=True)
+            time.sleep(2.0)   # the fade runs in the terrain layer's Alpha getter, once per drawn frame
+            info = _static(call, "Info", "")
+            k, ln = judge(probe, info, staged=True)
+            readings.append({"altitude": alt, "info": info[:600], "verdict": ln})
+            print("altitude %.0f: %s\n  info: %s" % (alt, ln, info[:400]))
+            codes.append(k)
+        code = 1 if 1 in codes else (2 if 2 in codes else 0)
+        line = "PASS" if code == 0 else ("FAIL" if code == 1 else "UNMEASURED") + ": " + " | ".join(r["verdict"] for r in readings)
+    finally:
+        for (biome, hill), tl in restore_groups(before).items():
+            call("jawa/world_tile_set", tiles=",".join(map(str, tl)), biome=biome, hilliness=hill)
+        call("jawa/world_commit")
+        call("jawa/world_view", show=False)
+        print("restored tiles %s" % ids)
+    rec = {"verdict": "PASS" if code == 0 else ("FAIL" if code == 1 else "UNMEASURED"), "line": line,
+           "src": "src/RimMandrake/BiomesShell/Source/RM_WorldDecals.cs", "src_blob": src_hash(),
+           "game": os.environ.get("RM_GAME_INSTANCE") or "ArchBig", "probe": probe[:200], "tiles": ids, "readings": readings,
+           "at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")}
+    with open(RESULT, "w", encoding="utf-8") as f:
+        json.dump(rec, f, indent=1)
+        f.write("\n")
+    print(line)
+    print("recorded: %s" % RESULT)
+    return code
+
+
+def verdict(path=RESULT, blob=None):
+    """-> exit 0 when the recorded staged run PASSED on the current bytes of RM_WorldDecals.cs, else 1."""
+    blob = src_hash() if blob is None else blob
+    try:
+        rec = json.load(open(path, encoding="utf-8"))
+    except (OSError, ValueError) as e:
+        print("FAIL: no staged live run recorded (%s)" % e); return 1
+    if rec.get("verdict") != "PASS":
+        print("FAIL: the last staged run read %s: %s" % (rec.get("verdict"), rec.get("line", "")[:300])); return 1
+    if not blob or rec.get("src_blob") != blob:
+        print("FAIL: the staged PASS was made on RM_WorldDecals.cs %s, the file is now %s" % (rec.get("src_blob"), blob)); return 1
+    print("PASS: staged live A1 PASS at %s on %s, on the current RM_WorldDecals.cs" % (rec.get("at"), rec.get("game"))); return 0
+
+
 if __name__ == "__main__":
-    sys.exit(selftest() if "--selftest" in sys.argv[1:] else live())
+    a = sys.argv[1:]
+    sys.exit(selftest() if "--selftest" in a else stage() if "--stage" in a else verdict() if "--verdict" in a else live())

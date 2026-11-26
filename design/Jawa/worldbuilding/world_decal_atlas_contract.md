@@ -23,7 +23,7 @@ count, the cells and where on the tile), each `decalSize` = 0.30 tile spacings w
 hills (3510, +0.005) and rivers (3520, +0.01). They fade by camera altitude: full at or below `decalFullAlt` 380, gone
 at or above `decalGoneAlt` 620 (the camera runs 125 to 1100), by material alpha set per frame. Toggle: Mod Settings
 "Planet: biome decals" (`worldBiomeDecals`, default on). Live tuning: `jawa/static_call RimMandrake.Biomes.RM_WorldDecals
-Set "decalGoneAlt|700"` then `jawa/world_commit`; `RM_WorldDecals.Info` reports what was built and the current alpha; `RM_WorldDecals.Probe "<defName>"` says whether that biome has an atlas and its grid (both reviewed read-only static calls; live proof `src/RimMandrake/BiomesShell/live_world_decals.py`).
+Set "decalGoneAlt|700"` then `jawa/world_commit`; `RM_WorldDecals.Info` reports what was built and the current alpha; `RM_WorldDecals.Probe "<defName>"` says whether that biome has an atlas and its grid (both reviewed read-only static calls; live proof `src/RimMandrake/BiomesShell/prove_world_decals_live.py`, `--stage` on a disposable world).
 `decalFlipX` mirrors every glyph if a live look shows the light on the wrong side.
 
 ## The generator (`src/RimMandrake/Utils/art/world_decal_atlas.py`)
