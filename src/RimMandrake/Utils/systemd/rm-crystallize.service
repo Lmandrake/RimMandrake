@@ -1,0 +1,18 @@
+# The weekly Crystallize pass runs by itself (RIMMANDRAKE_REVIVE_WEEKLY_CRYSTALLIZE_RAN_31_DAYS_APART; Conductor decision
+# 2026-11-23: a weekly scheduled run, not a reminder). A daily tick: it files and launches the ISO week's pass as a
+# detached opus helper once that week has no FINAL report and no good launch (crystallize_weekly.py tick), so a refused
+# launch is tried again the next day. Reading: /mnt/d/ClaudeWork/rimmandrake/crystallize_weekly/last.json.
+# Install:  python3 src/RimMandrake/Utils/ops_clocks.py install rm-crystallize --apply --enable
+[Unit]
+Description=RimMandrake weekly Crystallize pass: daily tick that launches the week's pass
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/dispatch
+Environment=PATH=/home/mandrake/.local/bin:/usr/local/bin:/usr/bin:/bin
+Nice=15
+# A hung tick stops this timer for good (systemd starts no second run). The tick is one filing and one launch; the
+# pass itself runs in its own detached unit.
+# budget: class=launch
+TimeoutStartSec=11400
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/crystallize_weekly.py tick --apply

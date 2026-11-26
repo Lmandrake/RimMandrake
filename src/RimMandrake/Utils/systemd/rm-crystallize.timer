@@ -1,0 +1,9 @@
+[Unit]
+Description=Daily tick at 05:40 local of the weekly Crystallize pass (launches once per ISO week)
+
+[Timer]
+OnCalendar=*-*-* 05:40:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

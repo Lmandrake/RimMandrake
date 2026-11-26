@@ -123,6 +123,7 @@ PAGES = {
     "design/specs/2026-11-23-telemetry-any-game/boundary.md":
         "src/RimMandrake/Utils/telemetry/selftest_telemetry_games.py",
     "design/specs/2026-11-22-units-one-folder/boundary.md": "src/RimMandrake/Utils/selftest_units_one_folder.py",
+    "design/specs/2026-11-25-weekly-crystallize-run/boundary.md": "src/RimMandrake/Utils/selftest_crystallize_weekly.py",
     "design/specs/2026-11-22-live-account/boundary.md": "src/RimMandrake/Utils/selftest_account_live.py",
     "design/specs/2026-11-22-login-deadline-forewarning/boundary.md": "src/RimMandrake/rimflow/selftest_login_deadline.py",
     "design/specs/2026-11-22-item-identity/boundary.md": "src/RimMandrake/rimflow/selftest_item_identity.py",

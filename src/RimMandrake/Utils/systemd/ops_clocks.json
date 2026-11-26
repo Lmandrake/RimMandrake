@@ -55,6 +55,7 @@
     "rm-telemetry-export": "telemetry export (strategy §2 'Stay outside')",
     "rm-telemetry-health": "telemetry",
     "rm-findings-judge": "a role's job, not an Operations clock",
+    "rm-crystallize": "a role's job, not an Operations clock",
     "rm-work-bundle-monitor": "the Temporary Work Bundle Monitor, a temporary report to the Conductor, not an Operations clock",
     "rm-store-ledger-diff": "Relentless's nightly store/ledger reading: retired with Relentless 2026-11-13, unit masked",
     "rm-artisan-now": "Artisan loops page: retired with the Artisan loops 2026-11-13, unit masked",
