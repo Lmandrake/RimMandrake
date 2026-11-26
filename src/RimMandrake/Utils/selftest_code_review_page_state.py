@@ -530,6 +530,59 @@ def t_each_mod_store_is_read_once():
     eq(len(reads), 1, "test table opened for three files of one mod")
 
 
+def t_an_ingame_pass_that_stands_counts_green():
+    """The reader is planted (CRS.ingame_standing): a fixture root has no visit rows and no git history. The real reader,
+    maturation.ingame_to_run, is the Stage 6 reader and has its own tests."""
+    def live(r, tt):
+        tt["tests"]["T_TWO"].update(kind="live_minimal", stage=6)
+        tt["tests"]["T_TWO"].pop("runs_today")
+    real = CRS.ingame_standing
+    calls = []
+    try:
+        CRS.ingame_standing = lambda mod, tt: (calls.append(mod), {"T_TWO"})[1]
+        mod_root("modingamepass", live)
+        rc, rows = check(*MOD_FILES)
+        eq((rc, state(rows, MOD_A)), (0, "CLEAN"), "an in-game PASS that stands: the bar is green")
+        eq("bars green 2 of 2" in line(rows, MOD_A), True, "in-game PASS: the detail counts it (%s)" % line(rows, MOD_A))
+        eq(calls, ["Mod"], "the in-game runs are read once for three files of one mod")
+        CRS.ingame_standing = lambda mod, tt: set()
+        mod_root("modingamenone", live)
+        rc, rows = check(MOD_A)
+        eq((rc, state(rows, MOD_A)), (3, "UNREADABLE"), "no in-game PASS stands: the bar is not green")
+        eq("UNRUN" in line(rows, MOD_A) and "bar_two" in line(rows, MOD_A), True,
+           "no in-game PASS: the detail says UNRUN and names the bar (%s)" % line(rows, MOD_A))
+
+        def blind(mod, tt):
+            raise ValueError("visit_2/rows.jsonl line 3 is not JSON")
+        CRS.ingame_standing = blind
+        mod_root("modingameblind", live)
+        rc, rows = check(MOD_A)
+        eq((rc, state(rows, MOD_A)), (3, "UNREADABLE"), "in-game runs that cannot be read: never green")
+        eq("rows.jsonl line 3" in line(rows, MOD_A), True, "unreadable in-game runs: the cause (%s)" % line(rows, MOD_A))
+        CRS.ingame_standing = lambda mod, tt: (calls.append(mod), {"T_TWO"})[1]
+        del calls[:]
+        mod_root("modingamelook", lambda r, tt: (tt["tests"]["T_TWO"].update(kind="look"),
+                                                  tt["tests"]["T_TWO"].pop("runs_today")))
+        rc, rows = check(MOD_A)
+        eq((rc, state(rows, MOD_A)), (3, "UNREADABLE"), "his walk (kind look) is no in-game visit: it stays UNRUN")
+        mod_root("modingameabsent")
+        check(MOD_A)
+        eq(calls, [], "a mod with no in-game decider reads no in-game run")
+    finally:
+        CRS.ingame_standing = real
+    import maturation as M
+    seen = {}
+    old = M.visit_numbers, M.ingame_to_run
+    try:
+        M.visit_numbers = lambda root_, mod: [1, 2]
+        M.ingame_to_run = lambda root_, mod, n, tt: (seen.update(root=root_, mod=mod, n=n), (["T_ONE"], ["T_TWO"]))[1]
+        got = CRS.ingame_standing("Mod", {"tests": {}})
+    finally:
+        M.visit_numbers, M.ingame_to_run = old
+    eq(got, {"T_TWO"}, "the real reader returns the checks the Stage 6 reader counts")
+    eq(seen, {"root": CRS.ROOT, "mod": "Mod", "n": 3}, "the real reader asks the Stage 6 reader as visit 3 would")
+
+
 def main():
     t_clean_needs_a_page_and_passing_tests()
     t_a_promise_without_a_test_is_dirty()
@@ -552,6 +605,7 @@ def main():
     t_an_unreadable_mod_store_is_unreadable()
     t_a_mod_file_on_a_page_takes_the_worse()
     t_each_mod_store_is_read_once()
+    t_an_ingame_pass_that_stands_counts_green()
     os.chdir(HERE)
     shutil.rmtree(TMP, ignore_errors=True)
     for f in FAILS:

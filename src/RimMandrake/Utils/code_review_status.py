@@ -732,6 +732,16 @@ def _mod_json(mod, name):
         return None, "version/%s cannot be read: %s" % (name, str(e))
 
 
+def ingame_standing(mod, tt):
+    """-> the ids of `tt`'s in-game checks whose last in-game run stands: a PASS that no change since has touched, read
+    by the Stage 6 reader (maturation.ingame_to_run: the rows of every visit and every `live-row`, and
+    rerun_relation) as the next visit would read them. Raises when the rows or the relation cannot be read."""
+    import maturation as M  # noqa: E402  (rimflow/) the one reader of in-game runs; loaded only for a mod with one
+    ns = M.visit_numbers(ROOT, mod)
+    _to_run, counted = M.ingame_to_run(ROOT, mod, (max(ns) if ns else 0) + 1, tt)
+    return set(counted)
+
+
 def mod_page_state(mod, builds=None):
     """-> (state, detail) of the files inside `mod` against its locked bars (the
     mod promises on the page above). `builds` caches each test's build id."""
@@ -771,6 +781,7 @@ def mod_page_state(mod, builds=None):
     if tt.get("version") != ver:
         return "UNREADABLE", "%s: version/test_table.json is version %s's table" % (head, tt.get("version"))
     rows = {b.get("id"): b for b in bars if isinstance(b, dict)}
+    standing = []           # [] = not read yet; then [the set of standing in-game checks] or [the exception]
     count = {"green": 0, "DIRTY": 0, "UNRUN": 0, "STALE": 0, "UNREADABLE": 0}
     causes = []
     for bid in ids:
@@ -788,9 +799,22 @@ def mod_page_state(mod, builds=None):
             if t.get("known_red"):
                 bad.append(("DIRTY", "bar %s's test %s carries known_red %s" % (bid, d, t["known_red"])))
                 continue
+            if t.get("kind") == "look":
+                bad.append(("UNRUN", "bar %s's test %s is his walk (look), and check reads no walk" % (bid, d)))
+                continue
             if t.get("kind") in INGAME_KINDS:
-                bad.append(("UNRUN", "bar %s's test %s runs in the game (%s), and check reads no game run"
-                            % (bid, d, t.get("kind"))))
+                if not standing:
+                    try:
+                        standing.append(ingame_standing(mod, tt))
+                    except Exception as e:  # noqa: BLE001  could not look is said, never green
+                        standing.append(e)
+                if isinstance(standing[0], Exception):
+                    bad.append(("UNREADABLE", "bar %s's test %s runs in the game, and its in-game runs cannot be "
+                                "read: %s: %s" % (bid, d, type(standing[0]).__name__, standing[0])))
+                elif d not in standing[0]:
+                    bad.append(("UNRUN", "bar %s's test %s runs in the game (%s), and no in-game PASS of it stands "
+                                "(none recorded, or a change since touched it: maturation.ingame_to_run)"
+                                % (bid, d, t.get("kind"))))
                 continue
             if not t.get("command"):
                 bad.append(("DIRTY", "bar %s's test %s runs offline and has no command" % (bid, d)))

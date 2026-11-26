@@ -1,7 +1,7 @@
-# BOUNDARY: `code_review_status.py check`, what CLEAN means, FLAGGED, and a mod's locked bars, Design Version 0.3.0
+# BOUNDARY: `code_review_status.py check`, what CLEAN means, FLAGGED, and a mod's locked bars, Design Version 0.4.0
 
 Code: `src/RimMandrake/Utils/code_review_status.py` (`page_states`, `code_files`, `cmd_check`, `flags`, `cmd_flag`,
-`cmd_unflag`, `cmd_list`, `cmd_mark_clean`, `mod_of`, `mod_page_state`). Item:
+`cmd_unflag`, `cmd_list`, `cmd_mark_clean`, `mod_of`, `mod_page_state`, `ingame_standing`). Item:
 `RIMMANDRAKE_ENACT_CLEAN_MEANS_PROMISES_TESTED_ONE_FIX_ROUND`, written 2026-11-19. The owner's ruling of 2026-11-19
 (`design/RimMandrake/standing_rulings.md` §Code is clean when its promises are tested): for all code, CLEAN is judged
 against a stated page of promises with named covering tests; the reviewer fixes a significant finding, and one blind
@@ -20,6 +20,11 @@ Version 0.3.0 (item `RIMMANDRAKE_COUNT_LOCKED_BARS_AS_MOD_PAGE_CHECK_GREY`, 2026
 the page of each file inside the mod, from the owner's card of 2026-11-19 evening ("Locked bars are the page"): the
 bars say what the mod promises, and the mod's test table rows that decide each bar are its promise tests. The card's
 stated cost stands: a file that no bar touches reads by its mod's bars without anyone having read it.
+
+Version 0.4.0 (item `RIMMANDRAKE_SHOW_MOD_BAR_STATE_ON_CLEAN_MAP`, 2026-11-26) reads the in-game runs: a bar whose
+in-game decider has a PASS that no change since touched counts green. The reader is the Stage 6 reader
+(`maturation.ingame_to_run`), never a second one. Its cost is that reader's: about 29 s for a mod with 13 visits
+(FlowWorks, measured 2026-11-26), nothing for a mod with no in-game rows.
 
 ## ACCEPTS (the only inputs this is built for)
 
@@ -48,9 +53,9 @@ stated cost stands: a file that no bar touches reads by its mod's bars without a
 
 - **a-file-no-bar-touches.** Every file inside a mod reads by its mod's bars, whether or not a bar's test reads it
   (the card's stated cost).
-- **an-in-game-verdict.** A test of kind `live_minimal`, `live_full` or `look` reads UNRUN even after a visit or his
-  walk passed it: `check` does not read `version/in_game/visit_<N>/rows.jsonl` or the walk. A bar it decides reads
-  UNREADABLE until that reader is built.
+- **his-walk.** A test of kind `look` reads UNRUN even after his walk passed it: `check` reads no walk.
+- **an-in-game-run-the-stage-6-reader-misreads.** `check` takes `maturation.ingame_to_run`'s answer as it is: a check
+  that reader counts is green, and one it would run again is UNRUN.
 - **a-recorded-run-that-lies.** `check` reads `runs_today` as recorded on the current build and never reruns a mod
   test (`maturation.py certificate <Mod> --run` reruns and stamps them).
 
@@ -93,11 +98,16 @@ stated cost stands: a file that no bar touches reads by its mod's bars without a
   test table; or when a decider ran on the current build and its run is red (rc not 0 or result not PASS), or it
   carries `known_red`. The detail names each bar and test.
 - **an-unrun-or-stale-mod-test-is-unreadable.** A decider with no recorded run, a run on another build or with another
-  command, or a test that runs in the game, makes the file read `UNREADABLE` (exit 3), never CLEAN, with the count of
-  bars UNRUN and STALE. It reads DIRTY instead when another bar of the mod reads DIRTY.
+  command, an in-game test with no PASS that stands, or his walk (`look`), makes the file read `UNREADABLE` (exit 3),
+  never CLEAN, with the count of bars UNRUN and STALE. It reads DIRTY instead when another bar of the mod reads DIRTY.
 - **an-unreadable-mod-store-is-unreadable.** When VERSION.json, `locked_bars.json` or `test_table.json` cannot be read
   or parsed, `locked_bars.json` records another version than VERSION.json, holds no list of unique ids, or the test
   table is another version's, the file reads `UNREADABLE` (exit 3) with the cause, never CLEAN or NO PAGE.
+- **an-ingame-pass-that-stands-counts-green.** An in-game decider (kind `live_minimal` or `live_full`) is green when
+  `maturation.ingame_to_run`, asked as the next visit would ask it, counts it: its last in-game row (a visit's or a
+  `live-row`) is a PASS that no change since touched. One it does not count reads UNRUN; in-game runs that cannot be
+  read make the bar UNREADABLE with the cause. The runs are read at most once per mod in one `check`, and not at all
+  for a mod with no in-game decider.
 - **a-mod-file-on-a-page-takes-the-worse.** A mod file that a boundary page also names reads the worse of the two
   answers (DIRTY, then UNREADABLE, then CLEAN), and the detail names both.
 - **each-mod-store-is-read-once.** One `check` call reads each mod's store, and computes each test's build, at most

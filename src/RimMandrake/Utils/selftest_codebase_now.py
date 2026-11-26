@@ -342,12 +342,41 @@ document.body.insertAdjacentHTML('beforeend', '<pre id="probe">' + JSON.stringif
     print("  click read %d states: %s" % (len(got), got))
 
 
+def t_a_mod_file_takes_its_mod_bar_state():
+    """A file inside a mod (code_review_status.mod_of) is asked whether or not a boundary page names it, and its ring is
+    its mod's bar state. The mod's answer is planted (CRS.mod_page_state has its own tests)."""
+    root = repo(fetch_age=None)
+    _write(root, "src/RimMandrake/Mod/Source/m.py", "m = 1\n")
+    _write(root, "design/concepts/Mod/version/VERSION.json", "{}\n")
+    _write(root, "src/RimMandrake/NoConcept/n.py", "n = 1\n")
+    _sh(root, "add", "-A")
+    _sh(root, "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "-m", "mod")
+    fh = os.path.join(root, ".git", "FETCH_HEAD")
+    open(fh, "w").close()
+    os.utime(fh, (NOW - 60, NOW - 60))
+    asked = []
+    real = CN.CRS.mod_page_state
+    CN.CRS.mod_page_state = lambda mod, builds=None: (asked.append(mod), (
+        "UNREADABLE", "mod %s 0.1.0 locked bars: bars green 1 of 2, UNRUN 1" % mod))[1]
+    try:
+        rc, facts, out = build(root, pages=_with_page(root))
+    finally:
+        CN.CRS.mod_page_state = real
+    files = by_path(facts)
+    m = files["src/RimMandrake/Mod/Source/m.py"]
+    assert m["page_state"] == "UNREADABLE" and "bars green 1 of 2" in (m["page_detail"] or ""), m
+    assert asked == ["Mod"], asked
+    assert files["src/RimMandrake/NoConcept/n.py"]["page_state"] is None, files["src/RimMandrake/NoConcept/n.py"]
+    assert files["src/a.py"]["page_state"] == "CLEAN", files["src/a.py"]
+    assert 'class="ring-unreadable"' in page(out).split("<svg", 1)[1].split("</svg>", 1)[0], "no ring on the mod file"
+
+
 def main():
     tests = [t_every_file_has_one_state, t_read_clean_is_hash_equal, t_unreadable_file_is_unmeasured,
              t_evidence_trees_excluded_and_said, t_flagged_unmeasured_without_source,
              t_page_state_where_a_page_names_it, t_tests_cache_reused_only_when_unchanged,
              t_could_not_look_says_unmeasured, t_stale_clone_says_unmeasured, t_stale_page_says_so,
-             t_whole_page_or_none, t_no_network_no_model, t_click_a_cell_drills_in]
+             t_whole_page_or_none, t_no_network_no_model, t_click_a_cell_drills_in, t_a_mod_file_takes_its_mod_bar_state]
     failed = 0
     for t in tests:
         try:

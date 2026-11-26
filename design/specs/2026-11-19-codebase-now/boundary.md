@@ -1,4 +1,4 @@
-# BOUNDARY: CODEBASE_NOW, the standing clean/dirty treemap page, Design Version 0.1.0
+# BOUNDARY: CODEBASE_NOW, the standing clean/dirty treemap page, Design Version 0.2.0
 
 Code: `src/RimMandrake/Utils/codebase_now.py`, run by `rm-codebase-now.timer` (units in `src/RimMandrake/Utils/systemd/`).
 Item: `RIMMANDRAKE_REVIVE_CLEAN_DIRTY_TREEMAP_ON_STANDING_TABS`. Why it exists: his card of 2026-11-19 5:54 PM PST,
@@ -17,8 +17,8 @@ answers one question only: which code files a cold read found clean, and which c
   fetches every few minutes). The file set is `git ls-files` at that root, one git call.
 - **the-review-record.** `infrastructure/state/code_review/*.jsonl`, read only through `code_review_status.load()` and
   `code_review_status.clean_state()`. The page never parses the record by hand.
-- **the-boundary-pages.** `design/specs/*/boundary.md` and their tests files, read only through
-  `code_review_status.page_states()`.
+- **the-boundary-pages.** `design/specs/*/boundary.md` and their tests files, and each mod's locked bars, read only
+  through `code_review_status.page_states()`.
 - **a-cache-file.** The tests verdict cache, `codebase_now_tests_cache.json` in the output folder. Any unreadable or
   foreign cache is treated as empty.
 
@@ -50,8 +50,13 @@ answers one question only: which code files a cold read found clean, and which c
   legend reads UNMEASURED with its cause, and no file is painted flagged. Tested by
   `t_flagged_unmeasured_without_source`.
 - **page-state-where-a-page-names-it.** A file that a boundary page names shows that page state (CLEAN, DIRTY or
-  UNREADABLE, from `page_states()`) with a ring of that state's colour. A file that no page names shows no ring.
+  UNREADABLE, from `page_states()`) with a ring of that state's colour. A file that no page names and no mod holds
+  shows no ring.
   Tested by `t_page_state_where_a_page_names_it`.
+- **a-mod-file-takes-its-mod-bar-state.** A file inside a mod (`code_review_status.mod_of`: under
+  `src/RimMandrake/<Mod>/` with `design/concepts/<Mod>/`) is asked whether or not a page names it, and shows its
+  mod's bar state (`mod_page_state`, read once per mod) with its ring. Since version 0.2.0 (item
+  `RIMMANDRAKE_SHOW_MOD_BAR_STATE_ON_CLEAN_MAP`, 2026-11-26). Tested by `t_a_mod_file_takes_its_mod_bar_state`.
 - **tests-cache-reused-only-when-unchanged.** A tests file runs again when the page, the tests file or a file the
   page names changed, or when its cached verdict is older than 24 hours. Otherwise the cached verdict is used, and
   the page says how old it is. Tested by `t_tests_cache_reused_only_when_unchanged`.

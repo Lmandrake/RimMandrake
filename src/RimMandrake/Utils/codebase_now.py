@@ -16,7 +16,7 @@ One leaf per code file (the extensions of codebase_health.CODE_EXT), sized by li
   dirty        a mark exists, and the file changed since, or it was reopened
   never-read   no review record names the file
   unmeasured   the file is listed and could not be read
-A ring marks a file that a boundary page names, in that page's state (CLEAN / DIRTY / UNREADABLE, page_states()).
+A ring marks a file that a boundary page names or a mod holds (its locked bars), in that page's state (CLEAN / DIRTY / UNREADABLE, page_states()).
 FLAGGED (his card: a file whose one blind reread also found and fixed a significant finding) has no source yet in
 code_review_status; the legend says UNMEASURED and names the item that builds it.
 
@@ -156,7 +156,7 @@ def tests_key(tests, pages):
 
 
 def page_states(rels, pages, runner, cache_path, now, run_tests=True):
-    """-> ({rel: (state, detail)} for the rels a boundary page names, [unreadable page causes], tests ages).
+    """-> ({rel: (state, detail)} for the rels a boundary page names or a mod holds, [unreadable page causes], tests ages).
     page_states() runs through a cached tests runner (§tests-cache-reused-only-when-unchanged)."""
     named, blind = set(), []
     import glob
@@ -165,7 +165,8 @@ def page_states(rels, pages, runner, cache_path, now, run_tests=True):
             named |= CRS.code_files(page)
         except BC.Unreadable as e:
             blind.append(str(e))
-    ask = sorted(named & set(rels))
+    # a file inside a mod reads by its mod's locked bars whether or not a page names it (CRS.mod_of, page 0.3.0)
+    ask = sorted((named | {r for r in rels if CRS.mod_of(r)}) & set(rels))
     try:
         with open(cache_path, encoding="utf-8") as f:
             cache = json.load(f)
@@ -375,7 +376,7 @@ def svg_of(files):
             f = node["file"]
             tip = "%s\n%s lines · %s: %s" % (f["path"], f"{f['loc']:,}", f["state"], f["why"])
             if f["page_state"]:
-                tip += "\nboundary page: %s (%s)" % (f["page_state"], f["page_detail"] or "")
+                tip += "\npage: %s (%s)" % (f["page_state"], f["page_detail"] or "")
             out.append('<rect x="%.1f" y="%.1f" width="%.1f" height="%.1f" class="s-%s" data-p="%s"><title>%s</title></rect>'
                        % (x, y, w, h, f["state"], html.escape(f["path"], quote=True), html.escape(tip)))
             if f["page_state"]:
@@ -466,7 +467,7 @@ CLICK_JS = r"""
       if (isLeaf(node)) {
         var p = path ? path + '/' + node[0] : node[0];
         var tip = p + '\n' + node[1].toLocaleString('en-US') + ' lines \u00b7 ' + node[2] + ': ' + node[4];
-        if (node[3]) { tip += '\nboundary page: ' + node[3] + ' (' + (node[5] || '') + ')'; }
+        if (node[3]) { tip += '\npage: ' + node[3] + ' (' + (node[5] || '') + ')'; }
         out.push('<rect x="' + f1(x) + '" y="' + f1(y) + '" width="' + f1(w) + '" height="' + f1(h) + '" class="s-' +
           node[2] + '" data-p="' + esc(p) + '"><title>' + esc(tip) + '</title></rect>');
         if (node[3]) {
@@ -640,9 +641,9 @@ def render(facts, native_out):
         b.append('<span class="it" title="%s"><span class="sw %s"></span><b>%s</b></span>' % (e(what), cls, word))
     b.append('<span class="it" title="%s"><span class="sw s-flagged"></span><b>FLAGGED</b> UNMEASURED: %s</span>'
              % (e(facts["flagged"]["cause"]), e(facts["flagged"]["cause"])))
-    b.append('<br><span class="it"><span class="sw ring-clean"></span>ring: boundary page CLEAN</span>'
-             '<span class="it"><span class="sw ring-dirty"></span>ring: boundary page DIRTY</span>'
-             '<span class="it"><span class="sw ring-unreadable"></span>ring: boundary page UNREADABLE</span>'
+    b.append('<br><span class="it"><span class="sw ring-clean"></span>ring: page CLEAN</span>'
+             '<span class="it"><span class="sw ring-dirty"></span>ring: page DIRTY</span>'
+             '<span class="it"><span class="sw ring-unreadable"></span>ring: page UNREADABLE</span>'
              '<span class="it" style="color:var(--dim)">size = lines; hover a cell for its path and reason; click a cell to open its folder, the breadcrumb to come back</span>')
     b.append('</div>')
     if tot:
@@ -657,7 +658,7 @@ def render(facts, native_out):
             tot["all"]["files"], tot["all"]["lines"]))
         pst = facts["pages"]
         ages = facts["tests_ages_s"]
-        b.append('<div class="panel"><table><tr><th>named by a boundary page</th><th>files</th><th>lines</th></tr>')
+        b.append('<div class="panel"><table><tr><th>named by a boundary page, or inside a mod (its locked bars)</th><th>files</th><th>lines</th></tr>')
         for s in PAGE_STATES:
             b.append('<tr><td><span class="sw ring-%s"></span>page %s</td>%s</tr>' % (
                 s.lower(), s, tot_cell(pst[s]["files"], pst[s]["lines"])))
