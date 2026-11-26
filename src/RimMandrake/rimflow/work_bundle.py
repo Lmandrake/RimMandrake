@@ -1167,8 +1167,11 @@ def outcomes(rec, facts, now):
     return out
 
 
-def plan_restart(rec, facts, run, now):
-    """-> {act: end | restart | raise | none, why, target?, open, outcomes, ended_now}. Pure over its inputs."""
+def plan_restart(rec, facts, run, now, stop=None, stop_unread=None):
+    """-> {act: end | restart | raise | none, why, target?, open, outcomes, ended_now}. Pure over its inputs. `stop`:
+    the stop order the run obeyed (control.run_stop), or None; `stop_unread`: why the stop orders could not be read.
+    The progress guard counts only a restart that ended by itself: one whose end was not the work's own (failure_class:
+    an account end, a stop that carries the work on, a kill, a timeout, a launch that never started) is restarted."""
     o = outcomes(rec, facts, now)
     opened = [m for m in rec["members"] if o[m]["outcome"] == "open"]
     unread = [m for m in rec["members"] if o[m]["outcome"] == "unread"]
@@ -1185,8 +1188,16 @@ def plan_restart(rec, facts, run, now):
         return dict(base, act="none", why="stopped by hand (%s): a stop is not restarted" % _one(res, 160))
     unit = next((u for u in rec.get("units") or [] if u.get("unit") == run.get("unit")), None)
     if unit and unit.get("kind") == "restart" and ended <= int(unit.get("ended_before") or 0):
+        import failure_class as FC
+        fc = FC.of_run(run, stop=stop)
+        if fc.classed and fc.word in FC.SYSTEM and not (stop and stop.get("then") == "end"):
+            return dict(base, act="restart", target=opened[0], why="restart %s ended no member, but its end was not the "
+                        "work's own (%s: %s), so it spends no restart; %d member(s) still open (%s)" % (
+                            run.get("unit"), fc.word, _one(fc.why, 200), len(opened), ", ".join(opened)))
         return dict(base, act="raise", why="restart %s of bundle %s ended no member (still open: %s); a restart that "
-                                           "ends none is not restarted again" % (run.get("unit"), rec["id"], ", ".join(opened)))
+                                           "ends none is not restarted again%s" % (
+                                               run.get("unit"), rec["id"], ", ".join(opened),
+                                               " (its stop orders could not be read: %s)" % stop_unread if stop_unread else ""))
     return dict(base, act="restart", target=opened[0], why="%d member(s) still open (%s)" % (len(opened), ", ".join(opened)))
 
 
@@ -1288,7 +1299,13 @@ def loc_plan(rec, facts, now, gates, base, gate_no):
         return dict(base, act="alarm", bundle=bid, why="work bundle %s: its record could not be read (%s)" % (bid, e))
     if not b:
         return dict(base, act="alarm", bundle=bid, why="work bundle %s has no record in %s" % (bid, store_dir()))
-    q = plan_restart(b, facts, rec, now)
+    stop, unread = None, None
+    try:
+        import control as C
+        stop = C.run_stop(rec.get("unit") or "")
+    except Exception as e:  # noqa: BLE001 - a store that cannot be read sees no stop; the guard then holds, and says so
+        unread = "%s: %s" % (type(e).__name__, _one(str(e), 200))
+    q = plan_restart(b, facts, rec, now, stop=stop, stop_unread=unread)
     out = dict(base, bundle=bid, bundle_plan=q, state_file=b["state_file"], open_lane=q["open"], kind="bundle")
     if q["act"] == "end":
         return dict(out, act="none", why=q["why"])

@@ -1996,6 +1996,20 @@ STOP_THEN_TEXT = {      # (the order's last sentence, the head of the note it as
 }
 
 
+def run_stop(unit, p=None):
+    """-> the last stop order that reached `unit` and that the run obeyed, {id, act, kind, mode, then, seen_at, why},
+    or None. Obeyed: its hook delivered it (seen_n > 0) and it was not taken back (state done, or still seen when the
+    store never heard the run end). A warning (mode warn) asks no end; a withdrawn order is not the run's end; an
+    escalated one killed the run, which its record says. Read after the run's end. Raises Unreadable."""
+    s = _q("SELECT s.id, s.act, s.mode, s.why, s.seen_at, a.kind, a.after FROM stops s LEFT JOIN acts a ON a.id=s.act "
+           "WHERE s.unit=? AND s.mode!='warn' AND s.seen_n>0 AND s.state IN ('done','seen') ORDER BY s.id DESC LIMIT 1",
+           (unit,), p=p, one=True)
+    if not s:
+        return None
+    return {"id": s["id"], "act": s["act"], "kind": s["kind"], "mode": s["mode"], "then": stop_then(s),
+            "seen_at": s["seen_at"], "why": s["why"]}
+
+
 def stop_then(act):
     """-> "continue" | "end": what a stop act (an `acts` row as a dict) leaves behind. An act written before --end
     existed reads "continue", the writing modes' default."""

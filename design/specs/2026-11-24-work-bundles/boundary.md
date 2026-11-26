@@ -120,6 +120,17 @@ bundle began). A member with none of these is **open**.
 - **a-restart-that-ended-no-member-raises.** A restart (not the first run) that ended no member since it began is not
   restarted again: the bundle reads `raised`, and one ALARM line in the Conductor log names the bundle, the open
   members and the units. The 3-a-day count of single runs does not apply to a bundle; this guard on progress does.
+- **a-restart-cut-short-from-outside-is-restarted.** A restart that ended no member, but whose end was not the work's
+  own, is restarted and does not count for the guard on progress. `failure_class.of_run` reads the end, with the stop
+  order the run obeyed (`control.run_stop`: delivered by its hook, not a warning, not withdrawn): an account end's
+  save order, a `pipe stop` that carries the work on, a kill by a signal, a timeout, a launch that never started. A
+  stop by hand (`killed: <its reason>`) keeps act `none`; a stop with `--end` keeps the guard. Seen 2026-11-26 3:35 AM
+  PST: an account end's order stopped a restart of bundle `WB-mod-FlowWorks-20261126-052154` at an easy spot, and the
+  guard raised.
+- **a-restart-that-ended-by-itself-with-no-member-ended-raises.** A restart that ended by itself and ended no member
+  raises, with the alarm text above. An order the run never read, a warning and a withdrawn order are not its end, and
+  a control store that cannot be read sees no stop (the alarm says so). After a restart cut short from outside is
+  restarted, the first restart that ends by itself with no member ended raises.
 - **the-real-restart-path-keeps-the-progress-guard.** The count of members ended when a restart begins travels from the
   plan that `finish` writes to the restart's unit on the record, so the guard on progress reads it on the real path, not
   only in a pure call (found by the fresh reader, 2026-11-25: it was always 0, and a restart that ended none restarted

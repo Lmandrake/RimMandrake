@@ -53,6 +53,19 @@ def t_a_run_record_reads_as_run_void_reads_it(F):
     assert F.of_run({"status": "refused", "result": refusal}).why == refusal, "the run reading keeps the whole refusal"
 
 
+def t_a_run_that_obeyed_a_stop_order_reads_the_stop(F):
+    """A run that read a stop order and then ended reads the order (its record still says success), never counts."""
+    done = {"status": "finished", "result": "success (exited 0)"}
+    acct = {"act": "ct_000209", "kind": "account_end", "mode": "at_easy_spot", "then": "continue"}
+    for stop, w in ((acct, "ACCOUNT LIMIT"), (dict(acct, kind="stop"), "STOPPED"), (dict(acct, kind="odd"), "UNCLASSED"),
+                    (None, "ENDED")):
+        r = F.of_run(done, stop=stop)
+        assert r.word == w and not (stop and r.counts), (stop, r)
+    assert F.of_run({"status": "finished", "result": "killed: signal (exited 143)"}, stop=acct).word == "KILLED", \
+        "a kill outranks the order"
+    assert F.of_stop(None).classed is False and "ct_000209" in F.of_stop(acct).why
+
+
 def tq(outcome, cause=None, rows=(), **kw):
     res = {"outcome": outcome, "cause": cause, "rows": [dict(chain=c, row="r", verdict=v) for c, v in rows],
            "note": kw.pop("note", "")}
@@ -111,7 +124,7 @@ def run(F, tests):
 
 def main():
     tests = (t_only_the_works_own_outcome_counts, t_an_outcome_nobody_can_class_does_not_count_and_is_named,
-             t_a_run_record_reads_as_run_void_reads_it, t_a_testq_job_reads_its_cause, t_the_count_names_what_it_left_out,
+             t_a_run_record_reads_as_run_void_reads_it, t_a_run_that_obeyed_a_stop_order_reads_the_stop, t_a_testq_job_reads_its_cause, t_the_count_names_what_it_left_out,
              t_an_error_text_is_the_tools_or_the_records)
     bad = run(FC, tests)
     for b in bad:

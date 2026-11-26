@@ -22,6 +22,7 @@ Words: a **counter** counts bad outcomes of a piece of work and then stops, give
 - **an-outcome-word.** One of the seven outcomes of `live_kinds.py`, or one of the run words below, in any letter case.
 - **a-row.** A `rows.jsonl` row with `outcome`, or with `verdict` and `class` (read by `live_kinds.outcome` first).
 - **a-run-record.** A detached run record (`detached_helper`), read by `run_void.system_cause`.
+- **a-stop-order.** The stop order a run obeyed, as `control.run_stop` returns it ({act, kind, mode, then}).
 - **a-testq-record.** A finished testq record: its job, its result and its `cancelled` mark, for one chain or the job.
 - **a-launch-refusal.** The text of a launch that did not start.
 
@@ -46,6 +47,9 @@ request gives the same refusal).
   count, reads `classed` False, and its text names the word.
 - **a-run-record-reads-as-run-void-reads-it.** For a detached run record, the answer is a system cause of
   `run_void.system_cause`, else ENDED. A record that is missing or has no result is UNCLASSED. A refusal's result text is kept whole.
+- **a-run-that-obeyed-a-stop-order-reads-the-stop.** Given the stop order that a finished run obeyed (`control.run_stop`),
+  the run reads ACCOUNT LIMIT for an account end's order and STOPPED for a `pipe stop`; neither counts. A system cause
+  of the record outranks the order. An order of another kind is UNCLASSED. With no order, the record reads as above.
 - **a-testq-job-reads-its-cause.** DONE with a FAIL row of the chain reads MOD FAILURE, with a PASS row SUCCESS, with
   neither COULD NOT LOOK. The causes PREFLIGHT, BLOCKED_SELECTION and SCHEMA read BAD REQUEST. Any other
   REFUSED reads REFUSED. INTERRUPTED reads KILLED. INVALID reads by `invalid_class`: TEST or DELIVERY is APPARATUS FAULT,

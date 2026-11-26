@@ -535,6 +535,132 @@ def t_a_restart_that_ended_no_member_raises():
     chk(lambda: "bundle" in inspect.getsource(LOC.recheck), "progress guard: recheck reads the bundle rule")
 
 
+def _stop_store(name):
+    """A control store of this test's own (RM_CONTROL_DB), fresh, for stop orders shaped as the live ones are."""
+    import control as C
+    p = os.path.join(TMP, "control-%s.db" % name)
+    for x in os.listdir(TMP):
+        if x.startswith("control-%s.db" % name):
+            os.unlink(os.path.join(TMP, x))
+    os.environ["RM_CONTROL_DB"] = p
+    C.init(p)
+    return C
+
+
+def _ordered_run(C, unit, how):
+    """The run `unit` admitted and started; `how` reaches it as the live stops did, and the run ends. how: account
+    (control.order_runs, the account end's save order ct_000209), stop / stop_end (`pipe stop --at-easy-spot`, with
+    --end for stop_end), unread (an account order the run never read), warn (the account's warning), withdrawn."""
+    a = C.admit({"family": "detached", "unit": unit, "mod": "FlowWorks"})
+    C.condition(a["run"])
+    if how in ("account", "unread", "warn", "withdrawn"):
+        o = C.order_runs([unit], "warn" if how == "warn" else "at_easy_spot", "ACCOUNT END, the save order at the line")
+        if how == "withdrawn":
+            C.withdraw_orders([o["id"]], "taken back")
+    elif how in ("stop", "stop_end"):
+        C.stop(unit, "at_easy_spot", "the Conductor stops it", escalator=lambda *x: "-",
+               then="end" if how == "stop_end" else "continue")
+    if how != "unread":
+        C.hook(unit=unit)       # the run's PostToolUse hook delivers the order
+    C.ended(a["run"], "success")
+
+
+def _stopped_restart(W, tag, how=None, result="success (exited 0)", status="finished", units_extra=()):
+    """A bundle of two members, one done before its restart `rm-wb-<tag>-r1`; that restart ends no member."""
+    unit = "rm-wb-%s-r1" % tag
+    units = [{"unit": "rm-wb-%s-first" % tag, "at": NOW, "kind": "launch", "ended_before": 0},
+             {"unit": unit, "at": NOW + 50, "kind": "restart", "ended_before": 1}] + list(units_extra)
+    rec = bundle_rec(W, ["S%s1" % tag, "S%s2" % tag], units=units)
+    f = facts_of(**{"S%s1" % tag: {"state": "done"}, "S%s2" % tag: {}})
+    C = _stop_store(tag)
+    if how:
+        _ordered_run(C, unit, how)
+    r = dict(run_rec(W, rec, unit=unit, result=result, kind="restart"), status=status)
+    return rec, f, r
+
+
+def _plan(LOC, r, f):
+    return LOC.plan(r, {"state": "proposed", "notes": []}, f, now=NOW + 100, gates={k: (lambda a: None) for k in LOC.GATES})
+
+
+GUARD_TEXT = "ended no member (still open: %s); a restart that ends none is not restarted again"
+
+
+def t_a_restart_cut_short_from_outside_is_restarted():
+    """promise a-restart-cut-short-from-outside-is-restarted: a restart run whose end was not the work's own (an account
+    end, a stop by the owner or the Conductor that carries the work on, a kill, a timeout, a run that never started)
+    is restarted and does not count for the progress guard (failure_class reads its end). A hand kill keeps act none;
+    a stop with --end keeps the guard. Seen live 2026-11-26 3:35 AM PST: bundle WB-mod-FlowWorks-20261126-052154, its
+    restart stopped at an easy spot by the account end's order ct_000209, raised DETACHED_CONTINUE_LIMIT_REACHED."""
+    W = WB()
+    import left_open_continue as LOC
+    keep = os.environ.get("RM_CONTROL_DB")
+    try:
+        for tag, how, result, status in (("acct", "account", "success (exited 0)", "finished"),
+                                          ("stop", "stop", "success (exited 0)", "finished"),
+                                          ("kill", None, "killed: signal (SIGKILL)", "finished"),
+                                          ("tout", None, "timeout (1800 s)", "finished"),
+                                          ("never", None, "launch refused: the clone pool is full", "launch_failed")):
+            rec, f, r = _stopped_restart(W, tag, how, result, status)
+            p = _plan(LOC, r, f)
+            q = p.get("bundle_plan") or {}
+            chk(lambda: q.get("act") == "restart" and q.get("target") == "S%s2" % tag and p["act"] == "continue",
+                "outside end (%s): a restart that ended no member but was cut short from outside is restarted (%s / %s)"
+                % (tag, p.get("act"), q.get("why")))
+            chk(lambda: "not the work's own" in str(q.get("why")),
+                "outside end (%s): the plan says the end was not the work's own (%s)" % (tag, q.get("why")))
+        rec, f, r = _stopped_restart(W, "hand", None, "killed: by the Conductor (pipe stop --kill)", "finished")
+        p = _plan(LOC, r, f)
+        chk(lambda: p["act"] == "none" and p["bundle_plan"]["act"] == "none" and "by hand" in p["why"],
+            "outside end: a stop by hand (HAND_KILL_RX) keeps act none (%s)" % p.get("why"))
+        rec, f, r = _stopped_restart(W, "end", "stop_end")
+        p = _plan(LOC, r, f)
+        chk(lambda: p["act"] == "alarm" and GUARD_TEXT % "Send2" in p["why"],
+            "outside end: a stop with --end ends the work, so the progress guard still raises (%s)" % p.get("why"))
+    finally:
+        if keep is None:
+            os.environ.pop("RM_CONTROL_DB", None)
+        else:
+            os.environ["RM_CONTROL_DB"] = keep
+
+
+def t_a_restart_that_ended_by_itself_with_no_member_ended_raises():
+    """promise a-restart-that-ended-by-itself-with-no-member-ended-raises: a restart run that ended by itself and ended
+    no member raises, with the same alarm text; an order it never read, a warning or a withdrawn order is not its end.
+    The guard against a bundle that restarts without end stays: after a restart cut short from outside is restarted,
+    the first restart that ends by itself with no member ended raises. A store that cannot be read keeps the guard."""
+    W = WB()
+    import left_open_continue as LOC
+    keep = os.environ.get("RM_CONTROL_DB")
+    try:
+        for tag, how in (("self", None), ("unread", "unread"), ("warn", "warn"), ("wdrawn", "withdrawn")):
+            rec, f, r = _stopped_restart(W, tag, how)
+            p = _plan(LOC, r, f)
+            chk(lambda: p["act"] == "alarm" and ("restart rm-wb-%s-r1 of bundle %s " % (tag, rec["id"])) in p["why"]
+                and GUARD_TEXT % ("S%s2" % tag) in p["why"],
+                "ended by itself (%s): a restart that ended no member raises, with the alarm's text (%s)"
+                % (tag, p.get("why")))
+        # endless: the restart cut short is restarted once; its successor ends by itself, ending none, and raises
+        rec, f, r = _stopped_restart(W, "loop", "account")
+        p = _plan(LOC, r, f)
+        chk(lambda: p["bundle_plan"]["act"] == "restart", "endless: the cut-short restart is restarted (%s)" % p.get("why"))
+        W.note_restart(rec["id"], "rm-wb-loop-r2", NOW + 200, ended_before=p["bundle_plan"]["ended_now"])
+        r2 = dict(run_rec(W, rec, unit="rm-wb-loop-r2", kind="restart"), status="finished")
+        p2 = _plan(LOC, r2, f)
+        chk(lambda: p2["act"] == "alarm" and GUARD_TEXT % "Sloop2" in p2["why"],
+            "endless: the next restart that ends by itself with no member ended raises at once (%s)" % p2.get("why"))
+        rec, f, r = _stopped_restart(W, "blind", "account")
+        os.environ["RM_CONTROL_DB"] = TMP       # a folder: the store cannot be read
+        p = _plan(LOC, r, f)
+        chk(lambda: p["act"] == "alarm" and "could not be read" in p["why"],
+            "blind: a store that cannot be read sees no stop, raises, and says so (%s)" % p.get("why"))
+    finally:
+        if keep is None:
+            os.environ.pop("RM_CONTROL_DB", None)
+        else:
+            os.environ["RM_CONTROL_DB"] = keep
+
+
 def _step(LOC, unit, now, launch_fn, reader=lambda t: {"state": "proposed"}):
     """LOC.run as the continuation unit runs it, offline: no gate, no account end, the fake launch."""
     keep = LOC.account_end_wait
@@ -1339,6 +1465,8 @@ def main():
               t_context_reads_the_own_session, t_outcomes_are_read_from_the_ledger,
               t_restart_until_each_member_has_an_outcome, t_finish_writes_the_bundles_end,
               t_a_restart_that_ended_no_member_raises, t_the_real_restart_path_keeps_the_progress_guard,
+              t_a_restart_cut_short_from_outside_is_restarted,
+              t_a_restart_that_ended_by_itself_with_no_member_ended_raises,
               t_a_restart_that_never_starts_leaves_the_bundle_gated,
               t_a_bundle_with_every_outcome_ends, t_a_refused_member_is_stopped_with_its_reason,
               t_live_pass_takes_a_free_game_or_says_unrun, t_the_page_shows_each_live_bundle,

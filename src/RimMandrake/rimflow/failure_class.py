@@ -9,7 +9,8 @@ stops, gives up, escalates or files something asks here; Utils/failure_counter_l
 
     read(word, why="")            -> Reading, from one of the words below
     of_row(row, spec=None)        -> Reading, from a rows.jsonl row
-    of_run(rec, runner=None)      -> Reading, from a detached run record
+    of_run(rec, runner=None, stop=None) -> Reading, from a detached run record (and the stop order that reached it)
+    of_stop(order)                -> Reading, from a stop order a run obeyed (control.run_stop)
     of_launch(text)               -> Reading, from the text of a launch that did not start
     of_testq(rec, chain=None)     -> Reading, from a finished testq record (one chain of it, or the whole job)
     of_error(text)                -> Reading, from the error text of our own tool
@@ -70,7 +71,9 @@ def of_row(row, spec=None):
     return read(v or None, "the row's verdict")
 
 
-def of_run(rec, runner=None):
+def of_run(rec, runner=None, stop=None):
+    """`stop`: the stop order that reached the run (control.run_stop), or None. A run that read an order and then
+    ended ended on that order, not on its own: its record still reads "success" (an account end voids nothing)."""
     if not isinstance(rec, dict):
         return read(None, "no run record")
     import run_void as RV
@@ -79,11 +82,24 @@ def of_run(rec, runner=None):
         res = str(rec.get("result") or "")
         never = rec.get("status") == "launch_failed" or rec.get("state") == "launch_failed"
         return read(NEVER_STARTED if never else TIMED_OUT if res.startswith("timeout") else KILLED, cause)
+    if stop and rec.get("status") == "finished":
+        return of_stop(stop)
     if rec.get("status") == "refused":
         return read(REFUSED, str(rec.get("result") or ""))
     if rec.get("status") == "finished" and rec.get("result"):
         return read(ENDED, str(rec.get("result")))
     return read(None, "run %s: status %r, result %r" % (rec.get("unit"), rec.get("status"), rec.get("result")))
+
+
+def of_stop(order):
+    """A stop order that reached a run and that the run obeyed (control.run_stop: delivered by its hook, not a
+    warning, not withdrawn). The account's end (kind account_end) and a `pipe stop` by the owner or the Conductor
+    (kind stop) are never the work's own end. Any other kind is not classed."""
+    if not isinstance(order, dict):
+        return read(None, "no stop order")
+    kind = order.get("kind")
+    why = "stop order %s (%s, %s)" % (order.get("act"), kind, order.get("mode"))
+    return read(ACCOUNT if kind == "account_end" else STOPPED if kind == "stop" else None, why)
 
 
 def of_launch(text):
