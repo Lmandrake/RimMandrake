@@ -152,10 +152,10 @@ def judge(ev):
         tr.get("target"), len(ids.get("A", [])), len(ids.get("B", [])), len(ids.get("C", [])), dups, lost[:5], new[:5],
         tr.get("verdict"), tr.get("why") or "")
     missing = [i for i in staged if i not in ids.get("A", [])]
-    want_total = ev.get("staged_total") or {}
+    want_total = ev.get("want_total") or ev.get("staged_total") or {}     # staged plus the rect's old things of those defs
     tot = {k: a.get("total") for k, a in arms.items()}
     off = {k: v for k, v in tot.items() if k in ("B", "C") and v != want_total}
-    det += "; totals by def %s (staged %s)" % (tot, want_total)
+    det += "; totals by def %s (wanted %s: staged %s, old %s)" % (tot, want_total, ev.get("staged_total"), ev.get("old_total"))
     if dups:
         r("SA_EACH_ONCE", False, "MOD: a thing counted twice; " + det)
     elif missing or tot.get("A") != want_total:
@@ -243,6 +243,15 @@ def main():
         ev["staged_total"] = {}
         for t in mine:
             ev["staged_total"][t["def"]] = ev["staged_total"].get(t["def"], 0) + int(t.get("stackCount") or 0)
+        # visit 2 of 0.2.0 (ArchBig): a ComponentIndustrial left in the census rect by an earlier scene read as a load-made
+        # copy (totals 2 against 1 staged), as visit 1's 61 components did. The old things of the staged defs still in the
+        # rect after the stage lie outside its cleared site, beyond the blast: they join the wanted total, so a copy or a loss
+        # of any thing still moves it.
+        ev["old_total"] = {}
+        for t in now:
+            if t.get("def") in defs and num(t.get("id")) not in set(num(x.get("id")) for x in mine):
+                ev["old_total"][t["def"]] = ev["old_total"].get(t["def"], 0) + int(t.get("stackCount") or 0)
+        ev["want_total"] = {d: ev["staged_total"].get(d, 0) + ev["old_total"].get(d, 0) for d in defs}
         ev["steel_id"] = next((i for k, _d, i, _n, _p in ev["staged"] if k == "steel"), None)
         heavy = next((p for k, _d, _i, _n, p in ev["staged"] if k == "heavy"), None)
         keep = set(ev["staged_ids"])
