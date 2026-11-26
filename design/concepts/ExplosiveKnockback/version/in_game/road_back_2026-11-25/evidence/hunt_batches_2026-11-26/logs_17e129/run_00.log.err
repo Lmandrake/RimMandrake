@@ -1,0 +1,5 @@
+[bridge split] 55.4 s wall: load 11.7 / ticks 0.0 / reads 3.2 / other 0.0 / outside calls 40.6 s
+[bridge split] 32.0 s wall: load 0.0 / ticks 0.0 / reads 0.1 / other 25.8 / outside calls 6.1 s
+[bridge split] 0.7 s wall: load 0.0 / ticks 0.0 / reads 0.1 / other 0.2 / outside calls 0.5 s
+[bridge split] 102.8 s wall: load 0.0 / ticks 15.2 / reads 0.0 / other 34.9 / outside calls 52.7 s
+[bridge split] WARN 741 calls of jawa/mod_settings_field (33.3 s): batch them

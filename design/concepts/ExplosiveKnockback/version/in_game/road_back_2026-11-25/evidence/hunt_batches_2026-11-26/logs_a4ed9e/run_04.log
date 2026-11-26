@@ -1,0 +1,15 @@
+$ python.exe src/RimMandrake/Utils/live_site.py --game --max-ticks 100000000
+READY: a game with a map is up (left as it is)
+$ python.exe src/RimMandrake/Utils/live_site.py --biome AridShrubland --max-ticks 100000000
+READY: the current map is already AridShrubland
+$ python.exe -u src/RimMandrake/Utils/testq/stage6_site.py --sweep --biome AridShrubland
+SITE_JSON {"swept": 0, "biome": "AridShrubland", "ticksGame": 4383, "hostile": [], "colonists": 18}
+$ python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes gas_into_pit,gas_into_pit_off --ticks 300
+scenes available: calibration,wall_stop,door_stop,over_sandbags,pit_colonist,pit_enemy,no_cross,cover_breaks,items,corpse_into_pit,killed_by_blast,shelf,in_pit_skip,heavy_skip,all_fly_no_cap,settings_off,emp_no_throw,lookup_projectile,lookup_zero_wins,impact_factor,body_override,immunity_window,shield_counter,goods_fly_midair,goods_fly_lands,goods_fly_wall,goods_fly_rebound,goods_fly_off,fire_half,harmful_unpatched,container_thrown,heavy_knock,land_no_bump,land_no_bump_pit,gas_clumps,mass_and_power,mass_and_power_x2,mass_and_power_off,mass_and_power_off_x2,mass_and_power_250,mass_and_power_250_x2,pawn_hits_pawn,only_explosions,open_storage,no_cross_ordered,spared_states,blast_kinds,goods_fly_wild,gas_chain,gas_census,pawn_arc,pit_goods_fetch,hose_carry_drop,hose_carry_drop_off,closed_containers,closed_containers_control,settings_sweep,settings_sweep_after,frame_probe_selfcheck,frame_probe_selfcheck_paused,barrage_perf,barrage_perf_off,gas_into_pit,gas_into_pit_off,goods_obstacles,goods_obstacles_control,storeroom_bomb_pit,storeroom_bomb_pit_control,pit_colonist_control flowworks=True hoses=True
+gas_into_pit     advanced 300/300 ticks in 1 s via jawa/safe_advance
+gas_into_pit     PASS p 12,12->13,12 (1 cells) bursts=24 launches=1 descents=1 inPit=True gasAtColonist=250 gasReg=True [type=launch tick=4384 exp=-32 thing=Human66451 from=12,12 to=13,12 planned=1 cells=1 stop=Pit impact=0 otherImpact=0 door=False mass=60.32598 hoseDropped=False carried=none onCover=False gas=True hitOther=False faction=PlayerColony] shove=True landedOnFirstPitCell=True injuries 0->1
+gas_into_pit     SETTINGS after verdict: all at the run's defaults
+gas_into_pit_off advanced 300/300 ticks in 1 s via jawa/safe_advance
+gas_into_pit_off PASS p 27,12->21,12 (6 cells) bursts=0 launches=0 descents=0 inPit=False gasAtColonist=250 gasReg=False burned=True
+gas_into_pit_off SETTINGS after verdict: all at the run's defaults
+VERDICT PASS  (2 scenes) -> \\wsl.localhost\Ubuntu\home\mandrake\rm\runner\Transient\explosive_knockback\run_20261126T005653.jsonl

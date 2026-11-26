@@ -1,0 +1,1630 @@
+{
+ "attempts": [
+  "J20261126T095118Z-ef2396.a1"
+ ],
+ "cancelled": false,
+ "finished": "2026-11-26T10:20:01Z",
+ "host": "stevedesktop.b",
+ "job": {
+  "canary": true,
+  "deploy": [
+   "GimmeSomeSlack",
+   "FlowWorks",
+   "HugeThings",
+   "LuminousPigment",
+   "RimMandrake.Biomes",
+   "MandrakePatches",
+   "Armoury",
+   "SWBestiary"
+  ],
+  "gate": null,
+  "id": "J20261126T095118Z-ef2396",
+  "item": "RIMMANDRAKE_HUNT_KNOCKBACK_GOOD_UNMOVED_LONG_BATCH_THREE_SIGHTINGS",
+  "lane": "stevedesktop",
+  "mod": "ExplosiveKnockback",
+  "not_before": null,
+  "owner_gate": null,
+  "priority": 40,
+  "profile": "tier:explosiveknockback_visit",
+  "proof_build": [
+   "ExplosiveKnockback"
+  ],
+  "purpose": "flake",
+  "requested_by": "BENCH",
+  "row_items": {},
+  "schema": "testq.job/1",
+  "selector": {
+   "checks": [
+    "sc_mortar_throw",
+    "sc_over_sandbags",
+    "sc_pawn_arc",
+    "sc_spared",
+    "sc_mass_and_power",
+    "sc_recovery",
+    "sc_hose_drop",
+    "sc_settings_off",
+    "sc_settings_sweep",
+    "sc_wall_stop",
+    "sc_pawn_hits_pawn",
+    "sc_door_water",
+    "sc_shield",
+    "sc_storeroom_mortar",
+    "sc_all_fly_no_cap",
+    "sc_open_storage",
+    "sc_closed_containers",
+    "sc_heavy_knock",
+    "sc_blast_kinds",
+    "sc_only_explosions",
+    "sc_lookup",
+    "sc_gas_chain",
+    "sc_cauldron_gas",
+    "sc_cover_breaks",
+    "sc_pit_fall",
+    "sc_pit_enemy",
+    "sc_no_careless_fall",
+    "sc_pit_fetch",
+    "sc_frame_probe_check",
+    "sc_gas_shove_into_pit",
+    "sc_killed_thrown",
+    "sc_goods_obstacles",
+    "P_heavy_skip",
+    "P_emp_no_throw",
+    "P_fire_half",
+    "P_harmful_unpatched",
+    "P_items",
+    "P_shelf",
+    "P_in_pit_skip",
+    "P_no_cross",
+    "P_corpse_into_pit",
+    "P_body_override",
+    "P_impact_factor",
+    "P_lookup_zero_wins",
+    "P_goods_fly_midair",
+    "P_goods_fly_lands",
+    "P_goods_fly_wall",
+    "P_goods_fly_rebound",
+    "P_goods_fly_off",
+    "P_container_thrown",
+    "P_land_no_bump",
+    "P_land_no_bump_pit",
+    "P_gas_clumps"
+   ]
+  },
+  "situational": false,
+  "source_sha": "813366f4c6438b8e227c565d586140a0fa706f1c",
+  "submitted": "2026-11-26T09:51:18Z",
+  "supersedes": null,
+  "timeout_s": 21600,
+  "validity": true,
+  "visit": null
+ },
+ "result": {
+  "artifacts": [
+   {
+    "bytes": 72630,
+    "name": "checks.json",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261126T095118Z-ef2396.a1/checks/checks.json",
+    "sha256": "3eddf08f4004eb5498de6f1ba8ead2624557d602d0816de83b7aa0954fb7e5c5"
+   },
+   {
+    "bytes": 5726,
+    "name": "run_00.log",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261126T095118Z-ef2396.a1/checks/run_00.log",
+    "sha256": "677a5a956d32491b342840fcaa576985765fe92d7f9237348892049faf39ebcc"
+   },
+   {
+    "bytes": 467,
+    "name": "run_00.log.err",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261126T095118Z-ef2396.a1/checks/run_00.log.err",
+    "sha256": "69963f1835e98ba1027be5b9be35569a0eed254e0913306badb8ee20ea6c8bc3"
+   },
+   {
+    "bytes": 2776,
+    "name": "run_01.log",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261126T095118Z-ef2396.a1/checks/run_01.log",
+    "sha256": "3617567bd95637ebe59a2929364fd392d74a967630d20fa99ec164e2024ee67f"
+   },
+   {
+    "bytes": 462,
+    "name": "run_01.log.err",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261126T095118Z-ef2396.a1/checks/run_01.log.err",
+    "sha256": "077973883e1d6b310425d2aa24de64622fce6e421a58f4d024ff07c6d0d23ec9"
+   },
+   {
+    "bytes": 2444,
+    "name": "run_02.log",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261126T095118Z-ef2396.a1/checks/run_02.log",
+    "sha256": "9d6c1545279dd058c0669f5387688b663d6578fec54f0887b99a36430d233060"
+   },
+   {
+    "bytes": 462,
+    "name": "run_02.log.err",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261126T095118Z-ef2396.a1/checks/run_02.log.err",
+    "sha256": "5741bf3f825bc03c4373974fa709604fb81a271a5741fe19ab0b2d3734dcae84"
+   },
+   {
+    "bytes": 2166,
+    "name": "run_03.log",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261126T095118Z-ef2396.a1/checks/run_03.log",
+    "sha256": "71c86229a7574271aaea4b071606912aefa7ffc7e9d635401b666ee127c8926b"
+   },
+   {
+    "bytes": 461,
+    "name": "run_03.log.err",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261126T095118Z-ef2396.a1/checks/run_03.log.err",
+    "sha256": "3e66b1c212911d5e87fd5ca8a699930fdd0e1ffd1b30735812cb1caa682884a5"
+   },
+   {
+    "bytes": 2641,
+    "name": "run_04.log",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261126T095118Z-ef2396.a1/checks/run_04.log",
+    "sha256": "89fc59254148523dc9bb819abdcd9a68173ab6486cf993e53c8e0bcfa6eef939"
+   },
+   {
+    "bytes": 462,
+    "name": "run_04.log.err",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261126T095118Z-ef2396.a1/checks/run_04.log.err",
+    "sha256": "9649846f1c9fde9a690235298ad62059b5b694517f91608e7ecbcd283d8b9626"
+   },
+   {
+    "bytes": 5175,
+    "name": "run_05.log",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261126T095118Z-ef2396.a1/checks/run_05.log",
+    "sha256": "7955899f62e29cc4971d45ae71c9b594d6f2ee3102e6e2a1cb72976693bd2a90"
+   },
+   {
+    "bytes": 462,
+    "name": "run_05.log.err",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261126T095118Z-ef2396.a1/checks/run_05.log.err",
+    "sha256": "4806f88bb4e97f1087f4b888a5c8f5846e4b54db3bbcdb214e8529af8575078e"
+   },
+   {
+    "bytes": 2958,
+    "name": "run_06.log",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261126T095118Z-ef2396.a1/checks/run_06.log",
+    "sha256": "af76f59513da81ecb4c3684cfff0d128d42ec1da7cb86362020cc03afc6c87a2"
+   },
+   {
+    "bytes": 462,
+    "name": "run_06.log.err",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261126T095118Z-ef2396.a1/checks/run_06.log.err",
+    "sha256": "d20e222cbf4252cc705d38ec9864f6805b0b9098b1dd64182e1a85416612d139"
+   },
+   {
+    "bytes": 4402,
+    "name": "run_07.log",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261126T095118Z-ef2396.a1/checks/run_07.log",
+    "sha256": "240f9789b78139aab8259556d7b934418fa7513688a6d1b5be66d0e7b807952a"
+   },
+   {
+    "bytes": 462,
+    "name": "run_07.log.err",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261126T095118Z-ef2396.a1/checks/run_07.log.err",
+    "sha256": "61ab7dc572f06fea4c2366ee5206891de44bb24ad1f6d409c043587413d23077"
+   },
+   {
+    "bytes": 2601,
+    "name": "run_08.log",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261126T095118Z-ef2396.a1/checks/run_08.log",
+    "sha256": "7cff00972c0de2d9453494d0de34dfbb19f9d9b447b279609fe7c5aa46bc206a"
+   },
+   {
+    "bytes": 462,
+    "name": "run_08.log.err",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261126T095118Z-ef2396.a1/checks/run_08.log.err",
+    "sha256": "6841540e73023e2fcd24381c367c6e0e21a66d752fce791613fc995d13dc73d5"
+   },
+   {
+    "bytes": 5503,
+    "name": "run_09.log",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261126T095118Z-ef2396.a1/checks/run_09.log",
+    "sha256": "fca519ad93365d0e23f40f20075b56b0abb3388ee89878f65ba2c441fdba62db"
+   },
+   {
+    "bytes": 462,
+    "name": "run_09.log.err",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261126T095118Z-ef2396.a1/checks/run_09.log.err",
+    "sha256": "e9580762d2b8be646e5adf2259df09c48c969e1168c1fa9e74221ba6084fc8b8"
+   },
+   {
+    "bytes": 3253,
+    "name": "run_10.log",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261126T095118Z-ef2396.a1/checks/run_10.log",
+    "sha256": "2797977aa973cf5700def2fc2f589a19d7a421990a0849df6750513c398f57a8"
+   },
+   {
+    "bytes": 462,
+    "name": "run_10.log.err",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261126T095118Z-ef2396.a1/checks/run_10.log.err",
+    "sha256": "9a75193a629840a61a32dfd241ebb85951b9d3a426e7f4740db3b2960e3aa3e7"
+   },
+   {
+    "bytes": 2034,
+    "name": "run_11.log",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261126T095118Z-ef2396.a1/checks/run_11.log",
+    "sha256": "65060c2682e3b11508680f5877bd1de4d28cf9ac0896dcddcb935c3f6d283394"
+   },
+   {
+    "bytes": 462,
+    "name": "run_11.log.err",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261126T095118Z-ef2396.a1/checks/run_11.log.err",
+    "sha256": "90a705c86494416e00da16c855f5a8755e18d5c2a28ce8a47070af681eee1dee"
+   },
+   {
+    "bytes": 2087,
+    "name": "run_12.log",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261126T095118Z-ef2396.a1/checks/run_12.log",
+    "sha256": "e50ecd0817528c7026843c0a70adf8a43a83174f689166b7ac9a07fe78135f07"
+   },
+   {
+    "bytes": 462,
+    "name": "run_12.log.err",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261126T095118Z-ef2396.a1/checks/run_12.log.err",
+    "sha256": "d31e2586cee2049e0e49edc1da215fffa019d7133e1ef16270a593da62a353e7"
+   },
+   {
+    "bytes": 2861,
+    "name": "run_13.log",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261126T095118Z-ef2396.a1/checks/run_13.log",
+    "sha256": "0c7979edce198d4187c5c3bbc50f976f64dfdab697813145f951c276c05d728b"
+   },
+   {
+    "bytes": 462,
+    "name": "run_13.log.err",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261126T095118Z-ef2396.a1/checks/run_13.log.err",
+    "sha256": "1f096f4c8d705b3a7938198731caf97ae544e8070e6a9337df5a1d7f9347f6f2"
+   },
+   {
+    "bytes": 2213,
+    "name": "run_14.log",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261126T095118Z-ef2396.a1/checks/run_14.log",
+    "sha256": "f1adc30b8fcd721f2b1d2f9f79b94160735ba3f5b0e3c60aa85a4f41feda3195"
+   },
+   {
+    "bytes": 461,
+    "name": "run_14.log.err",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261126T095118Z-ef2396.a1/checks/run_14.log.err",
+    "sha256": "86e51e3eb96d116dbb4199ab0256a47bd532c11f82dd46a6d93bf89465b14184"
+   },
+   {
+    "bytes": 9827,
+    "name": "run_15.log",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261126T095118Z-ef2396.a1/checks/run_15.log",
+    "sha256": "9b5d3cc1d9497c323b9ff9c29a5a788eb5702f0e1609b73afa62b58acc472984"
+   },
+   {
+    "bytes": 537,
+    "name": "run_15.log.err",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261126T095118Z-ef2396.a1/checks/run_15.log.err",
+    "sha256": "bac3e9c0d4ca6839eb55ec6ae094f36d0b10f8f0153da180f1368ba8b23d8852"
+   }
+  ],
+  "attempt": "J20261126T095118Z-ef2396.a1",
+  "cause": null,
+  "checks": {
+   "identity": {
+    "active_mods": [
+     "brrainz.harmony",
+     "ludeon.rimworld",
+     "ludeon.rimworld.royalty",
+     "ludeon.rimworld.ideology",
+     "ludeon.rimworld.biotech",
+     "ludeon.rimworld.anomaly",
+     "ludeon.rimworld.odyssey",
+     "adaptive.storage.framework",
+     "brrainz.rimbridgeserver",
+     "lwm.deepstorage",
+     "neronix17.toolbox",
+     "owlchemist.cherrypicker",
+     "oskarpotocki.vanillafactionsexpanded.core",
+     "ebsg.framework",
+     "neronix17.outerrim.core",
+     "ray1203.simplecamerasetting",
+     "void.charactereditor",
+     "mandrake.rm.gimmesomeslack",
+     "mandrake.rm.flowworks",
+     "mandrake.rm.explosiveknockback",
+     "mandrake.rm.hugethings",
+     "mandrake.rm.luminouspigment",
+     "mandrake.rm.biomes",
+     "mandrake.rm.patches",
+     "mandrake.rsw.armoury",
+     "mandrake.rsw.swbestiary"
+    ],
+    "deployed_folder": "/mnt/d/ClaudeWork/rimmandrake/instances/b/game/Mods/ExplosiveKnockback",
+    "game": "stevedesktop",
+    "game_build": "1.6.4871 rev590",
+    "mod_hash": "sha256:42bbe390cf4486000f96b75edc4f724ad364524ae6fdc11e9bd188dfd60b7100",
+    "mod_sha": "813366f4c6",
+    "tier": "explosiveknockback_visit"
+   },
+   "rows": {
+    "P_body_override": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes heavy_skip,emp_no_throw,fire_half,harmful_unpatched,items,shelf,in_pit_skip,no_cross,corpse_into_pit,body_override",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_07.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 17,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 9182
+     }
+    },
+    "P_container_thrown": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes impact_factor,lookup_zero_wins,goods_fly_midair,goods_fly_lands,goods_fly_wall,goods_fly_rebound,goods_fly_off,container_thrown,land_no_bump,land_no_bump_pit",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_09.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 8,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 12782
+     }
+    },
+    "P_corpse_into_pit": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes heavy_skip,emp_no_throw,fire_half,harmful_unpatched,items,shelf,in_pit_skip,no_cross,corpse_into_pit,body_override",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_07.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 17,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 9182
+     }
+    },
+    "P_emp_no_throw": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes heavy_skip,emp_no_throw,fire_half,harmful_unpatched,items,shelf,in_pit_skip,no_cross,corpse_into_pit,body_override",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_07.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 17,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 9182
+     }
+    },
+    "P_fire_half": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes heavy_skip,emp_no_throw,fire_half,harmful_unpatched,items,shelf,in_pit_skip,no_cross,corpse_into_pit,body_override",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_07.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 17,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 9182
+     }
+    },
+    "P_gas_clumps": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes gas_clumps",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_03.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 15,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 4082
+     }
+    },
+    "P_goods_fly_lands": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes impact_factor,lookup_zero_wins,goods_fly_midair,goods_fly_lands,goods_fly_wall,goods_fly_rebound,goods_fly_off,container_thrown,land_no_bump,land_no_bump_pit",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_09.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 8,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 12782
+     }
+    },
+    "P_goods_fly_midair": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes impact_factor,lookup_zero_wins,goods_fly_midair,goods_fly_lands,goods_fly_wall,goods_fly_rebound,goods_fly_off,container_thrown,land_no_bump,land_no_bump_pit",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_09.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 8,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 12782
+     }
+    },
+    "P_goods_fly_off": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes impact_factor,lookup_zero_wins,goods_fly_midair,goods_fly_lands,goods_fly_wall,goods_fly_rebound,goods_fly_off,container_thrown,land_no_bump,land_no_bump_pit",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_09.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 8,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 12782
+     }
+    },
+    "P_goods_fly_rebound": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes impact_factor,lookup_zero_wins,goods_fly_midair,goods_fly_lands,goods_fly_wall,goods_fly_rebound,goods_fly_off,container_thrown,land_no_bump,land_no_bump_pit",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_09.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 8,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 12782
+     }
+    },
+    "P_goods_fly_wall": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes impact_factor,lookup_zero_wins,goods_fly_midair,goods_fly_lands,goods_fly_wall,goods_fly_rebound,goods_fly_off,container_thrown,land_no_bump,land_no_bump_pit",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_09.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 8,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 12782
+     }
+    },
+    "P_harmful_unpatched": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes heavy_skip,emp_no_throw,fire_half,harmful_unpatched,items,shelf,in_pit_skip,no_cross,corpse_into_pit,body_override",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_07.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 17,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 9182
+     }
+    },
+    "P_heavy_skip": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes heavy_skip,emp_no_throw,fire_half,harmful_unpatched,items,shelf,in_pit_skip,no_cross,corpse_into_pit,body_override",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_07.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 17,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 9182
+     }
+    },
+    "P_impact_factor": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes impact_factor,lookup_zero_wins,goods_fly_midair,goods_fly_lands,goods_fly_wall,goods_fly_rebound,goods_fly_off,container_thrown,land_no_bump,land_no_bump_pit",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_09.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 8,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 12782
+     }
+    },
+    "P_in_pit_skip": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes heavy_skip,emp_no_throw,fire_half,harmful_unpatched,items,shelf,in_pit_skip,no_cross,corpse_into_pit,body_override",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_07.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 17,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 9182
+     }
+    },
+    "P_items": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes heavy_skip,emp_no_throw,fire_half,harmful_unpatched,items,shelf,in_pit_skip,no_cross,corpse_into_pit,body_override",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_07.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 17,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 9182
+     }
+    },
+    "P_land_no_bump": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes impact_factor,lookup_zero_wins,goods_fly_midair,goods_fly_lands,goods_fly_wall,goods_fly_rebound,goods_fly_off,container_thrown,land_no_bump,land_no_bump_pit",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_09.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 8,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 12782
+     }
+    },
+    "P_land_no_bump_pit": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes impact_factor,lookup_zero_wins,goods_fly_midair,goods_fly_lands,goods_fly_wall,goods_fly_rebound,goods_fly_off,container_thrown,land_no_bump,land_no_bump_pit",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_09.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 8,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 12782
+     }
+    },
+    "P_lookup_zero_wins": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes impact_factor,lookup_zero_wins,goods_fly_midair,goods_fly_lands,goods_fly_wall,goods_fly_rebound,goods_fly_off,container_thrown,land_no_bump,land_no_bump_pit",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_09.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 8,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 12782
+     }
+    },
+    "P_no_cross": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes heavy_skip,emp_no_throw,fire_half,harmful_unpatched,items,shelf,in_pit_skip,no_cross,corpse_into_pit,body_override",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_07.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 17,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 9182
+     }
+    },
+    "P_shelf": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes heavy_skip,emp_no_throw,fire_half,harmful_unpatched,items,shelf,in_pit_skip,no_cross,corpse_into_pit,body_override",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_07.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 17,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 9182
+     }
+    },
+    "sc_all_fly_no_cap": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes goods_fly_wild,all_fly_no_cap,open_storage,heavy_knock,blast_kinds,only_explosions,lookup_projectile,gas_chain,gas_census,cover_breaks --ticks 300",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_05.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 17,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 4982
+     }
+    },
+    "sc_blast_kinds": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes goods_fly_wild,all_fly_no_cap,open_storage,heavy_knock,blast_kinds,only_explosions,lookup_projectile,gas_chain,gas_census,cover_breaks --ticks 300",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_05.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 17,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 4982
+     }
+    },
+    "sc_cauldron_gas": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes goods_fly_wild,all_fly_no_cap,open_storage,heavy_knock,blast_kinds,only_explosions,lookup_projectile,gas_chain,gas_census,cover_breaks --ticks 300",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_05.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 17,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 4982
+     }
+    },
+    "sc_closed_containers": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes closed_containers,closed_containers_control --ticks 300",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_01.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 19,
+      "hostile": [],
+      "swept": 3,
+      "ticksGame": 3001
+     }
+    },
+    "sc_cover_breaks": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes goods_fly_wild,all_fly_no_cap,open_storage,heavy_knock,blast_kinds,only_explosions,lookup_projectile,gas_chain,gas_census,cover_breaks --ticks 300",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_05.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 17,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 4982
+     }
+    },
+    "sc_door_water": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes calibration,over_sandbags,spared_states,mass_and_power,immunity_window,settings_off,wall_stop,pawn_hits_pawn,door_stop,shield_counter --ticks 300",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_00.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 3,
+      "hostile": [],
+      "swept": 13,
+      "ticksGame": 1
+     }
+    },
+    "sc_frame_probe_check": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes frame_probe_selfcheck,frame_probe_selfcheck_paused --ticks 0 --real-seconds 8",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_02.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 17,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 3601
+     }
+    },
+    "sc_gas_chain": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes goods_fly_wild,all_fly_no_cap,open_storage,heavy_knock,blast_kinds,only_explosions,lookup_projectile,gas_chain,gas_census,cover_breaks --ticks 300",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_05.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 17,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 4982
+     }
+    },
+    "sc_gas_shove_into_pit": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes gas_into_pit,gas_into_pit_off --ticks 300",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_04.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 16,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 4382
+     }
+    },
+    "sc_goods_obstacles": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes goods_obstacles,goods_obstacles_control --ticks 600",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_06.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 27,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 7982
+     }
+    },
+    "sc_heavy_knock": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes goods_fly_wild,all_fly_no_cap,open_storage,heavy_knock,blast_kinds,only_explosions,lookup_projectile,gas_chain,gas_census,cover_breaks --ticks 300",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_05.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 17,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 4982
+     }
+    },
+    "sc_hose_drop": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes hose_carry_drop,hose_carry_drop_off --ticks 300",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_08.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 7,
+      "hostile": [],
+      "swept": 2,
+      "ticksGame": 12182
+     }
+    },
+    "sc_killed_thrown": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes pit_colonist,pit_enemy,killed_by_blast --ticks 300",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_13.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 7,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 19882
+     }
+    },
+    "sc_lookup": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes goods_fly_wild,all_fly_no_cap,open_storage,heavy_knock,blast_kinds,only_explosions,lookup_projectile,gas_chain,gas_census,cover_breaks --ticks 300",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_05.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 17,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 4982
+     }
+    },
+    "sc_mass_and_power": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes mass_and_power,mass_and_power_x2,mass_and_power_250,mass_and_power_250_x2 --ticks 300",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_10.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 3,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 15782
+     }
+    },
+    "sc_mortar_throw": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes calibration,over_sandbags,spared_states,mass_and_power,immunity_window,settings_off,wall_stop,pawn_hits_pawn,door_stop,shield_counter --ticks 300",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_00.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 3,
+      "hostile": [],
+      "swept": 13,
+      "ticksGame": 1
+     }
+    },
+    "sc_no_careless_fall": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes no_cross_ordered --ticks 2000",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_11.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 5,
+      "hostile": [],
+      "swept": 12,
+      "ticksGame": 16982
+     }
+    },
+    "sc_only_explosions": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes goods_fly_wild,all_fly_no_cap,open_storage,heavy_knock,blast_kinds,only_explosions,lookup_projectile,gas_chain,gas_census,cover_breaks --ticks 300",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_05.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 17,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 4982
+     }
+    },
+    "sc_open_storage": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes goods_fly_wild,all_fly_no_cap,open_storage,heavy_knock,blast_kinds,only_explosions,lookup_projectile,gas_chain,gas_census,cover_breaks --ticks 300",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_05.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 17,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 4982
+     }
+    },
+    "sc_over_sandbags": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes calibration,over_sandbags,spared_states,mass_and_power,immunity_window,settings_off,wall_stop,pawn_hits_pawn,door_stop,shield_counter --ticks 300",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_00.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 3,
+      "hostile": [],
+      "swept": 13,
+      "ticksGame": 1
+     }
+    },
+    "sc_pawn_arc": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes pawn_arc --ticks 900",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_12.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 6,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 18982
+     }
+    },
+    "sc_pawn_hits_pawn": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes calibration,over_sandbags,spared_states,mass_and_power,immunity_window,settings_off,wall_stop,pawn_hits_pawn,door_stop,shield_counter --ticks 300",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_00.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 3,
+      "hostile": [],
+      "swept": 13,
+      "ticksGame": 1
+     }
+    },
+    "sc_pit_enemy": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes pit_colonist,pit_enemy,killed_by_blast --ticks 300",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_13.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 7,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 19882
+     }
+    },
+    "sc_pit_fall": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes pit_colonist,pit_enemy,killed_by_blast --ticks 300",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_13.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 7,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 19882
+     }
+    },
+    "sc_pit_fetch": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes pit_goods_fetch --ticks 5000",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_14.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 5,
+      "hostile": [],
+      "swept": 1,
+      "ticksGame": 20782
+     }
+    },
+    "sc_recovery": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes calibration,over_sandbags,spared_states,mass_and_power,immunity_window,settings_off,wall_stop,pawn_hits_pawn,door_stop,shield_counter --ticks 300",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_00.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 3,
+      "hostile": [],
+      "swept": 13,
+      "ticksGame": 1
+     }
+    },
+    "sc_settings_off": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes calibration,over_sandbags,spared_states,mass_and_power,immunity_window,settings_off,wall_stop,pawn_hits_pawn,door_stop,shield_counter --ticks 300",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_00.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 3,
+      "hostile": [],
+      "swept": 13,
+      "ticksGame": 1
+     }
+    },
+    "sc_settings_sweep": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes settings_sweep,settings_sweep_throwAnimals,settings_sweep_throwMechanoids,settings_sweep_throwDowned,settings_sweep_throwItems,settings_sweep_throwCorpses,settings_sweep_landingStun,settings_sweep_doorsTakeDamage,settings_sweep_debugDrawVectors,settings_sweep_vanillaCratesClosed,settings_sweep_heavyGoodsMinMass,settings_sweep_heavyGoodsKnock,settings_sweep_flyingGoods,settings_sweep_shoveClosedContainers,settings_sweep_gasChain,settings_sweep_lightMassLimit20,settings_sweep_closedGuard,settings_sweep_fireHalf,settings_sweep_after --ticks 300",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_15.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 3,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 25782
+     }
+    },
+    "sc_shield": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes calibration,over_sandbags,spared_states,mass_and_power,immunity_window,settings_off,wall_stop,pawn_hits_pawn,door_stop,shield_counter --ticks 300",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_00.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 3,
+      "hostile": [],
+      "swept": 13,
+      "ticksGame": 1
+     }
+    },
+    "sc_spared": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes calibration,over_sandbags,spared_states,mass_and_power,immunity_window,settings_off,wall_stop,pawn_hits_pawn,door_stop,shield_counter --ticks 300",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_00.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 3,
+      "hostile": [],
+      "swept": 13,
+      "ticksGame": 1
+     }
+    },
+    "sc_storeroom_mortar": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes goods_fly_wild,all_fly_no_cap,open_storage,heavy_knock,blast_kinds,only_explosions,lookup_projectile,gas_chain,gas_census,cover_breaks --ticks 300",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_05.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 17,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 4982
+     }
+    },
+    "sc_wall_stop": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes calibration,over_sandbags,spared_states,mass_and_power,immunity_window,settings_off,wall_stop,pawn_hits_pawn,door_stop,shield_counter --ticks 300",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_00.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 3,
+      "hostile": [],
+      "swept": 13,
+      "ticksGame": 1
+     }
+    }
+   }
+  },
+  "counts": {
+   "FAIL": 4,
+   "PASS": 49
+  },
+  "deployed": {
+   "companion": {
+    "build_commit": "4f3f00c18b30630a83dff634ffbca79b8ed40c96",
+    "dll": "/mnt/d/ClaudeWork/rimmandrake/instances/b/game/BridgeTools/JawaBench/JawaBench.BridgeTools.dll",
+    "dll_sha256": "fff9baf6372ae114ae0ef223feb6f4b09dbca55ba771d26149a47b5316be45b5",
+    "embedded": "4c4a4a6fd567088047c27ee88cc566737dc0db454107706916a0acc13dca1b83",
+    "state": "FRESH",
+    "want": "4c4a4a6fd567088047c27ee88cc566737dc0db454107706916a0acc13dca1b83"
+   },
+   "mods": {
+    "Armoury": {
+     "defs_sha256": "8ad68e0255042abf80f1bcdac58196ec332cd9e175eb31006b03da6bdda03d7a",
+     "dll_sha256": "0d4cdb0f3c1934531e2ad393f8a7473768a9748eda7be8aad7616fa8f564fb9a",
+     "files": 3426
+    },
+    "ExplosiveKnockback": {
+     "defs_sha256": "a80a930d5c7fcdae9317163cd7b99c457c86333155806f3161df42b3ca5124a1",
+     "dll_sha256": "f9f4a2048555e209e6425209ba800ffe743ca779e5316c0e3d53020cc0249a6f",
+     "files": 44
+    },
+    "FlowWorks": {
+     "defs_sha256": "081c446ef24b9a4ca94d9189d2dd855b99d7aceed02f5dd418d78ba232d9afbd",
+     "dll_sha256": "4dd16f0fa9316fe708e2f26001d3b6c4c258244444267356ef0b519c0956fe07",
+     "files": 1351
+    },
+    "GimmeSomeSlack": {
+     "defs_sha256": "ffdd85c2d3d7fb6b26b285fb800f241cef0c86fab70ff8d96ac55990c84e7c86",
+     "dll_sha256": "17987d3f74be64477a59d55336724360dc40f312471b9ffd4df70b9e4c17e8a3",
+     "files": 400
+    },
+    "HugeThings": {
+     "defs_sha256": "152818cd333e69823ba94545c087ff8e6881c98710153b4c20135d728c499241",
+     "dll_sha256": "4f5c7c17b8b5919ab4c71dfec6c6b15a83ca03639a95bad897d267e40dd44f51",
+     "files": 15
+    },
+    "LuminousPigment": {
+     "defs_sha256": "d03d6f9d1cc463dd04963214bb02090f1df3d56465b5441ebcf2bd5801497fb1",
+     "dll_sha256": "3fcb0c3c16bb7e44fc45215b524cf9a13525317c6b0397a3ba1ac835fe631533",
+     "files": 36
+    },
+    "MandrakePatches": {
+     "defs_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "dll_sha256": "19fcecfd2120553ef5f1e90e253cba97d7061509dab2b2d14fbd4ee46b595858",
+     "files": 23
+    },
+    "RimMandrake.Biomes": {
+     "defs_sha256": "f6ea0a7b0b60998d84c500eddaf12827bf7168a59921acdb07e8cb21f79732a7",
+     "dll_sha256": "8efc1c2633e50567d7852a92a6bc9a52f1c425478839122b9a97d574d54af823",
+     "files": 4755
+    },
+    "SWBestiary": {
+     "defs_sha256": "933816d961aad37c2361524846b0e8e8aa88eaae36a9dac7fa409aa9e0bef212",
+     "dll_sha256": "ad0b84e25a2788a7bd3a0ff95bd8c7d8d4f366f877427b1cffa0daf30b59d202",
+     "files": 3218
+    }
+   },
+   "modsconfig_sha256_prerun": "3ca135314f420e153d24395ed90470759bdb8060fecdbf94408cbfbe69fb6893"
+  },
+  "finished": "2026-11-26T10:20:00Z",
+  "host": "stevedesktop.b",
+  "job": "J20261126T095118Z-ef2396",
+  "modcheck_exit": null,
+  "note": "tier explosiveknockback_visit, 26 running mods; {'PASS': 49, 'FAIL': 4}",
+  "outcome": "DONE",
+  "phase_s": {
+   "attest": 142,
+   "deploy": 446,
+   "load": 159,
+   "run": 904
+  },
+  "retries": 0,
+  "rows": [
+   {
+    "chain": "checks",
+    "detail": "calibration PASS p 13,12->16,12 (3 cells) away=True alive=True launches=1 [type=launch tick=2 exp=49970 thing=Human49967 from=13,12 to=16,12 planned=3 cells=3 stop=Distance impact=0 otherImpact=0 door=False mass=60.79998 hoseDropped=False carried=none onCover=False gas=False hitOther=False faction=PlayerColony]; over_sandbags PASS p 28,12->31,12 (3 cells) (sandbags at x+2); spared_states PASS big too_heavy_creature; pit in_pit; pitstack in_pit; carrier carrying_pawn; sleeper in_bed; corpse too_heavy; blast at +60 ticks (step 300); mass_and_power PASS lane=default damage=50 ratio=1.00 small(gripper 1.2 kg)=5/want 5 colonist(colonist 64.0 kg)=3/want 3 under(gorekite 144.0 kg)=2/want 2 heavy(gromma 240.0 kg)=spared/want 0 order=True; immunity_window PASS launches=1 immuneSkip=True guardHolds=True; settings_off PASS p 88,12->88,12 (0 cells); steel 86,12->86,12 (0 cells) waveHitThem=True; wal",
+    "row": "sc_mortar_throw",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "calibration PASS p 13,12->16,12 (3 cells) away=True alive=True launches=1 [type=launch tick=2 exp=49970 thing=Human49967 from=13,12 to=16,12 planned=3 cells=3 stop=Distance impact=0 otherImpact=0 door=False mass=60.79998 hoseDropped=False carried=none onCover=False gas=False hitOther=False faction=PlayerColony]; over_sandbags PASS p 28,12->31,12 (3 cells) (sandbags at x+2); spared_states PASS big too_heavy_creature; pit in_pit; pitstack in_pit; carrier carrying_pawn; sleeper in_bed; corpse too_heavy; blast at +60 ticks (step 300); mass_and_power PASS lane=default damage=50 ratio=1.00 small(gripper 1.2 kg)=5/want 5 colonist(colonist 64.0 kg)=3/want 3 under(gorekite 144.0 kg)=2/want 2 heavy(gromma 240.0 kg)=spared/want 0 order=True; immunity_window PASS launches=1 immuneSkip=True guardHolds=True; settings_off PASS p 88,12->88,12 (0 cells); steel 86,12->86,12 (0 cells) waveHitThem=True; wal",
+    "row": "sc_over_sandbags",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "pawn_arc FAIL arcTicks=17 planned=31,12 onPlanned=True hitWalker=True stun=True rehaul=False teleportControlClean=True (step 900 ticks)",
+    "row": "sc_pawn_arc",
+    "verdict": "FAIL"
+   },
+   {
+    "chain": "checks",
+    "detail": "calibration PASS p 13,12->16,12 (3 cells) away=True alive=True launches=1 [type=launch tick=2 exp=49970 thing=Human49967 from=13,12 to=16,12 planned=3 cells=3 stop=Distance impact=0 otherImpact=0 door=False mass=60.79998 hoseDropped=False carried=none onCover=False gas=False hitOther=False faction=PlayerColony]; over_sandbags PASS p 28,12->31,12 (3 cells) (sandbags at x+2); spared_states PASS big too_heavy_creature; pit in_pit; pitstack in_pit; carrier carrying_pawn; sleeper in_bed; corpse too_heavy; blast at +60 ticks (step 300); mass_and_power PASS lane=default damage=50 ratio=1.00 small(gripper 1.2 kg)=5/want 5 colonist(colonist 64.0 kg)=3/want 3 under(gorekite 144.0 kg)=2/want 2 heavy(gromma 240.0 kg)=spared/want 0 order=True; immunity_window PASS launches=1 immuneSkip=True guardHolds=True; settings_off PASS p 88,12->88,12 (0 cells); steel 86,12->86,12 (0 cells) waveHitThem=True; wal",
+    "row": "sc_spared",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "mass_and_power PASS lane=default damage=50 ratio=1.00 small(gripper 1.2 kg)=5/want 5 colonist(colonist 64.0 kg)=3/want 3 under(gorekite 144.0 kg)=2/want 2 heavy(gromma 240.0 kg)=spared/want 0 order=True; mass_and_power_x2 PASS lane=default damage=100 ratio=2.00 small(gripper 1.2 kg)=6/want 6 colonist(colonist 64.0 kg)=5/want 5 under(gorekite 144.0 kg)=4/want 4 heavy(gromma 240.0 kg)=spared/want 0 order=True; mass_and_power_250 PASS lane=250 damage=50 ratio=1.00 small(gripper 1.2 kg)=5/want 5 colonist(colonist 64.0 kg)=3/want 3 under(gorekite 144.0 kg)=2/want 2 heavy(gromma 240.0 kg)=1/want 1 order=True; mass_and_power_250_x2 PASS lane=250 damage=100 ratio=2.00 small(gripper 1.2 kg)=6/want 6 colonist(colonist 64.0 kg)=5/want 5 under(gorekite 144.0 kg)=4/want 4 heavy(gromma 240.0 kg)=3/want 3 order=True",
+    "row": "sc_mass_and_power",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "calibration PASS p 13,12->16,12 (3 cells) away=True alive=True launches=1 [type=launch tick=2 exp=49970 thing=Human49967 from=13,12 to=16,12 planned=3 cells=3 stop=Distance impact=0 otherImpact=0 door=False mass=60.79998 hoseDropped=False carried=none onCover=False gas=False hitOther=False faction=PlayerColony]; over_sandbags PASS p 28,12->31,12 (3 cells) (sandbags at x+2); spared_states PASS big too_heavy_creature; pit in_pit; pitstack in_pit; carrier carrying_pawn; sleeper in_bed; corpse too_heavy; blast at +60 ticks (step 300); mass_and_power PASS lane=default damage=50 ratio=1.00 small(gripper 1.2 kg)=5/want 5 colonist(colonist 64.0 kg)=3/want 3 under(gorekite 144.0 kg)=2/want 2 heavy(gromma 240.0 kg)=spared/want 0 order=True; immunity_window PASS launches=1 immuneSkip=True guardHolds=True; settings_off PASS p 88,12->88,12 (0 cells); steel 86,12->86,12 (0 cells) waveHitThem=True; wal",
+    "row": "sc_recovery",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "hose_carry_drop PASS launched=True dropped=True three=True takeoff=25,12 carry=Dropped carrier=none end=25,12 pCell=away hurt=True [type=launch tick=12260 exp=50852 thing=Human50849 from=25,12 to=25,15 planned=3 cells=3 stop=Distance impact=0 otherImpact=0 door=False mass=60.74998 hoseDropped=True carried=none onCover=False gas=False hitOther=False faction=PlayerColony]; hose_carry_drop_off FAIL takeoff=40,12 carry=Carrying carrier=p end=40,12 pCell=40,12 hurt=False no launch line",
+    "row": "sc_hose_drop",
+    "verdict": "FAIL"
+   },
+   {
+    "chain": "checks",
+    "detail": "calibration PASS p 13,12->16,12 (3 cells) away=True alive=True launches=1 [type=launch tick=2 exp=49970 thing=Human49967 from=13,12 to=16,12 planned=3 cells=3 stop=Distance impact=0 otherImpact=0 door=False mass=60.79998 hoseDropped=False carried=none onCover=False gas=False hitOther=False faction=PlayerColony]; over_sandbags PASS p 28,12->31,12 (3 cells) (sandbags at x+2); spared_states PASS big too_heavy_creature; pit in_pit; pitstack in_pit; carrier carrying_pawn; sleeper in_bed; corpse too_heavy; blast at +60 ticks (step 300); mass_and_power PASS lane=default damage=50 ratio=1.00 small(gripper 1.2 kg)=5/want 5 colonist(colonist 64.0 kg)=3/want 3 under(gorekite 144.0 kg)=2/want 2 heavy(gromma 240.0 kg)=spared/want 0 order=True; immunity_window PASS launches=1 immuneSkip=True guardHolds=True; settings_off PASS p 88,12->88,12 (0 cells); steel 86,12->86,12 (0 cells) waveHitThem=True; wal",
+    "row": "sc_settings_off",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "settings_sweep PASS fields=equal kernel=9/9 P=thrown A=thrown M=thrown D=thrown G=thrown C=thrown Gcell=moved stunTicks=118 door=hurt draws=no crate=thrown locker=thrown lockerGoods=kept H=knocked gas=burst gasGoods=moved; settings_sweep_throwAnimals PASS own=True drift[] P=thrown A=skip:animals_off M=thrown D=thrown G=thrown C=thrown Gcell=moved stunTicks=109 door=hurt draws=no crate=thrown locker=thrown lockerGoods=kept H=knocked gas=burst gasGoods=moved; settings_sweep_throwMechanoids PASS own=True drift[] P=thrown A=thrown M=skip:mechanoids_off D=thrown G=thrown C=thrown Gcell=moved stunTicks=71 door=hurt draws=no crate=thrown locker=thrown lockerGoods=kept H=knocked gas=burst gasGoods=moved; settings_sweep_throwDowned PASS own=True drift[] P=thrown A=thrown M=thrown D=skip:downed_off G=thrown C=thrown Gcell=moved stunTicks=63 door=hurt draws=no crate=thrown locker=thrown lockerGoods",
+    "row": "sc_settings_sweep",
+    "verdict": "FAIL"
+   },
+   {
+    "chain": "checks",
+    "detail": "calibration PASS p 13,12->16,12 (3 cells) away=True alive=True launches=1 [type=launch tick=2 exp=49970 thing=Human49967 from=13,12 to=16,12 planned=3 cells=3 stop=Distance impact=0 otherImpact=0 door=False mass=60.79998 hoseDropped=False carried=none onCover=False gas=False hitOther=False faction=PlayerColony]; over_sandbags PASS p 28,12->31,12 (3 cells) (sandbags at x+2); spared_states PASS big too_heavy_creature; pit in_pit; pitstack in_pit; carrier carrying_pawn; sleeper in_bed; corpse too_heavy; blast at +60 ticks (step 300); mass_and_power PASS lane=default damage=50 ratio=1.00 small(gripper 1.2 kg)=5/want 5 colonist(colonist 64.0 kg)=3/want 3 under(gorekite 144.0 kg)=2/want 2 heavy(gromma 240.0 kg)=spared/want 0 order=True; immunity_window PASS launches=1 immuneSkip=True guardHolds=True; settings_off PASS p 88,12->88,12 (0 cells); steel 86,12->86,12 (0 cells) waveHitThem=True; wal",
+    "row": "sc_wall_stop",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "calibration PASS p 13,12->16,12 (3 cells) away=True alive=True launches=1 [type=launch tick=2 exp=49970 thing=Human49967 from=13,12 to=16,12 planned=3 cells=3 stop=Distance impact=0 otherImpact=0 door=False mass=60.79998 hoseDropped=False carried=none onCover=False gas=False hitOther=False faction=PlayerColony]; over_sandbags PASS p 28,12->31,12 (3 cells) (sandbags at x+2); spared_states PASS big too_heavy_creature; pit in_pit; pitstack in_pit; carrier carrying_pawn; sleeper in_bed; corpse too_heavy; blast at +60 ticks (step 300); mass_and_power PASS lane=default damage=50 ratio=1.00 small(gripper 1.2 kg)=5/want 5 colonist(colonist 64.0 kg)=3/want 3 under(gorekite 144.0 kg)=2/want 2 heavy(gromma 240.0 kg)=spared/want 0 order=True; immunity_window PASS launches=1 immuneSkip=True guardHolds=True; settings_off PASS p 88,12->88,12 (0 cells); steel 86,12->86,12 (0 cells) waveHitThem=True; wal",
+    "row": "sc_pawn_hits_pawn",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "calibration PASS p 13,12->16,12 (3 cells) away=True alive=True launches=1 [type=launch tick=2 exp=49970 thing=Human49967 from=13,12 to=16,12 planned=3 cells=3 stop=Distance impact=0 otherImpact=0 door=False mass=60.79998 hoseDropped=False carried=none onCover=False gas=False hitOther=False faction=PlayerColony]; over_sandbags PASS p 28,12->31,12 (3 cells) (sandbags at x+2); spared_states PASS big too_heavy_creature; pit in_pit; pitstack in_pit; carrier carrying_pawn; sleeper in_bed; corpse too_heavy; blast at +60 ticks (step 300); mass_and_power PASS lane=default damage=50 ratio=1.00 small(gripper 1.2 kg)=5/want 5 colonist(colonist 64.0 kg)=3/want 3 under(gorekite 144.0 kg)=2/want 2 heavy(gromma 240.0 kg)=spared/want 0 order=True; immunity_window PASS launches=1 immuneSkip=True guardHolds=True; settings_off PASS p 88,12->88,12 (0 cells); steel 86,12->86,12 (0 cells) waveHitThem=True; wal",
+    "row": "sc_door_water",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "calibration PASS p 13,12->16,12 (3 cells) away=True alive=True launches=1 [type=launch tick=2 exp=49970 thing=Human49967 from=13,12 to=16,12 planned=3 cells=3 stop=Distance impact=0 otherImpact=0 door=False mass=60.79998 hoseDropped=False carried=none onCover=False gas=False hitOther=False faction=PlayerColony]; over_sandbags PASS p 28,12->31,12 (3 cells) (sandbags at x+2); spared_states PASS big too_heavy_creature; pit in_pit; pitstack in_pit; carrier carrying_pawn; sleeper in_bed; corpse too_heavy; blast at +60 ticks (step 300); mass_and_power PASS lane=default damage=50 ratio=1.00 small(gripper 1.2 kg)=5/want 5 colonist(colonist 64.0 kg)=3/want 3 under(gorekite 144.0 kg)=2/want 2 heavy(gromma 240.0 kg)=spared/want 0 order=True; immunity_window PASS launches=1 immuneSkip=True guardHolds=True; settings_off PASS p 88,12->88,12 (0 cells); steel 86,12->86,12 (0 cells) waveHitThem=True; wal",
+    "row": "sc_shield",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "goods_fly_wild PASS comp 13,12->11,12 (2 cells) want=6 back=3 rebounds=1 impactAtRebound=True [type=item_rebound tick=4989 exp=50310 thing=ComponentIndustrial50308 at=14,12 hit=Wall left=5 cells=3 to=11,12 bounce=1]; all_fly_no_cap PASS no_cap=True all_fly=True every_request_answered=True kernelSaysMove=80 requests=90 launches=10 itemMoves=80 maxMovesInOneTick=24 cappedSkips=0 pawns=10 items=80; open_storage PASS g0 43,12->49,12 (6 cells) | floor control 6 cells; g1 41,12->35,12 (6 cells) | floor control 6 cells; g2 42,13->42,19 (6 cells) | floor control 6 cells; g3 42,10->42,6 (4 cells) | floor control 4 cells;; heavy_knock PASS hit=True pass=True heavyMass=15 heavyAt=61,12 ph=61,12 phHp=0.973 lightAt=50,12 [type=heavy_hit tick=5894 exp=50561 thing=Steel50552 pawn=Human50554 pawnId=50554 at=61,12 mass=15 damage=2.060477 stunTicks=30 pawnDead=False] passes=1; blast_kinds PASS flame%=50 s",
+    "row": "sc_storeroom_mortar",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "goods_fly_wild PASS comp 13,12->11,12 (2 cells) want=6 back=3 rebounds=1 impactAtRebound=True [type=item_rebound tick=4989 exp=50310 thing=ComponentIndustrial50308 at=14,12 hit=Wall left=5 cells=3 to=11,12 bounce=1]; all_fly_no_cap PASS no_cap=True all_fly=True every_request_answered=True kernelSaysMove=80 requests=90 launches=10 itemMoves=80 maxMovesInOneTick=24 cappedSkips=0 pawns=10 items=80; open_storage PASS g0 43,12->49,12 (6 cells) | floor control 6 cells; g1 41,12->35,12 (6 cells) | floor control 6 cells; g2 42,13->42,19 (6 cells) | floor control 6 cells; g3 42,10->42,6 (4 cells) | floor control 4 cells;; heavy_knock PASS hit=True pass=True heavyMass=15 heavyAt=61,12 ph=61,12 phHp=0.973 lightAt=50,12 [type=heavy_hit tick=5894 exp=50561 thing=Steel50552 pawn=Human50554 pawnId=50554 at=61,12 mass=15 damage=2.060477 stunTicks=30 pawnDead=False] passes=1; blast_kinds PASS flame%=50 s",
+    "row": "sc_all_fly_no_cap",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "goods_fly_wild PASS comp 13,12->11,12 (2 cells) want=6 back=3 rebounds=1 impactAtRebound=True [type=item_rebound tick=4989 exp=50310 thing=ComponentIndustrial50308 at=14,12 hit=Wall left=5 cells=3 to=11,12 bounce=1]; all_fly_no_cap PASS no_cap=True all_fly=True every_request_answered=True kernelSaysMove=80 requests=90 launches=10 itemMoves=80 maxMovesInOneTick=24 cappedSkips=0 pawns=10 items=80; open_storage PASS g0 43,12->49,12 (6 cells) | floor control 6 cells; g1 41,12->35,12 (6 cells) | floor control 6 cells; g2 42,13->42,19 (6 cells) | floor control 6 cells; g3 42,10->42,6 (4 cells) | floor control 4 cells;; heavy_knock PASS hit=True pass=True heavyMass=15 heavyAt=61,12 ph=61,12 phHp=0.973 lightAt=50,12 [type=heavy_hit tick=5894 exp=50561 thing=Steel50552 pawn=Human50554 pawnId=50554 at=61,12 mass=15 damage=2.060477 stunTicks=30 pawnDead=False] passes=1; blast_kinds PASS flame%=50 s",
+    "row": "sc_open_storage",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "closed_containers PASS free=thrown cells=5 away=True held=True action=thrownx1; crate=thrown cells=4 away=True held=True action=thrownx1; wall=jolted stayed=True held=True lines=1 action=jolt drawnOffset=0.123; pawn=jolted stayed=True held=True lines=1 action=jolt drawnOffset=0.123; pit=jolted stayed=True held=True lines=1 action=jolt drawnOffset=0.123; safe=jolted stayed=True held=True lines=1 action=jolt drawnOffset=0.123; sec=jolted stayed=True held=True lines=1 action=jolt drawnOffset=0.123; panel=kept goods on its cell=1 limit=250 crateMass=1.5; closed_containers_control PASS looseFlew=5/5 untaggedPanel pg 25,9->25,3 (6 cells)",
+    "row": "sc_closed_containers",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "goods_fly_wild PASS comp 13,12->11,12 (2 cells) want=6 back=3 rebounds=1 impactAtRebound=True [type=item_rebound tick=4989 exp=50310 thing=ComponentIndustrial50308 at=14,12 hit=Wall left=5 cells=3 to=11,12 bounce=1]; all_fly_no_cap PASS no_cap=True all_fly=True every_request_answered=True kernelSaysMove=80 requests=90 launches=10 itemMoves=80 maxMovesInOneTick=24 cappedSkips=0 pawns=10 items=80; open_storage PASS g0 43,12->49,12 (6 cells) | floor control 6 cells; g1 41,12->35,12 (6 cells) | floor control 6 cells; g2 42,13->42,19 (6 cells) | floor control 6 cells; g3 42,10->42,6 (4 cells) | floor control 4 cells;; heavy_knock PASS hit=True pass=True heavyMass=15 heavyAt=61,12 ph=61,12 phHp=0.973 lightAt=50,12 [type=heavy_hit tick=5894 exp=50561 thing=Steel50552 pawn=Human50554 pawnId=50554 at=61,12 mass=15 damage=2.060477 stunTicks=30 pawnDead=False] passes=1; blast_kinds PASS flame%=50 s",
+    "row": "sc_heavy_knock",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "goods_fly_wild PASS comp 13,12->11,12 (2 cells) want=6 back=3 rebounds=1 impactAtRebound=True [type=item_rebound tick=4989 exp=50310 thing=ComponentIndustrial50308 at=14,12 hit=Wall left=5 cells=3 to=11,12 bounce=1]; all_fly_no_cap PASS no_cap=True all_fly=True every_request_answered=True kernelSaysMove=80 requests=90 launches=10 itemMoves=80 maxMovesInOneTick=24 cappedSkips=0 pawns=10 items=80; open_storage PASS g0 43,12->49,12 (6 cells) | floor control 6 cells; g1 41,12->35,12 (6 cells) | floor control 6 cells; g2 42,13->42,19 (6 cells) | floor control 6 cells; g3 42,10->42,6 (4 cells) | floor control 4 cells;; heavy_knock PASS hit=True pass=True heavyMass=15 heavyAt=61,12 ph=61,12 phHp=0.973 lightAt=50,12 [type=heavy_hit tick=5894 exp=50561 thing=Steel50552 pawn=Human50554 pawnId=50554 at=61,12 mass=15 damage=2.060477 stunTicks=30 pawnDead=False] passes=1; blast_kinds PASS flame%=50 s",
+    "row": "sc_blast_kinds",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "goods_fly_wild PASS comp 13,12->11,12 (2 cells) want=6 back=3 rebounds=1 impactAtRebound=True [type=item_rebound tick=4989 exp=50310 thing=ComponentIndustrial50308 at=14,12 hit=Wall left=5 cells=3 to=11,12 bounce=1]; all_fly_no_cap PASS no_cap=True all_fly=True every_request_answered=True kernelSaysMove=80 requests=90 launches=10 itemMoves=80 maxMovesInOneTick=24 cappedSkips=0 pawns=10 items=80; open_storage PASS g0 43,12->49,12 (6 cells) | floor control 6 cells; g1 41,12->35,12 (6 cells) | floor control 6 cells; g2 42,13->42,19 (6 cells) | floor control 6 cells; g3 42,10->42,6 (4 cells) | floor control 4 cells;; heavy_knock PASS hit=True pass=True heavyMass=15 heavyAt=61,12 ph=61,12 phHp=0.973 lightAt=50,12 [type=heavy_hit tick=5894 exp=50561 thing=Steel50552 pawn=Human50554 pawnId=50554 at=61,12 mass=15 damage=2.060477 stunTicks=30 pawnDead=False] passes=1; blast_kinds PASS flame%=50 s",
+    "row": "sc_only_explosions",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "goods_fly_wild PASS comp 13,12->11,12 (2 cells) want=6 back=3 rebounds=1 impactAtRebound=True [type=item_rebound tick=4989 exp=50310 thing=ComponentIndustrial50308 at=14,12 hit=Wall left=5 cells=3 to=11,12 bounce=1]; all_fly_no_cap PASS no_cap=True all_fly=True every_request_answered=True kernelSaysMove=80 requests=90 launches=10 itemMoves=80 maxMovesInOneTick=24 cappedSkips=0 pawns=10 items=80; open_storage PASS g0 43,12->49,12 (6 cells) | floor control 6 cells; g1 41,12->35,12 (6 cells) | floor control 6 cells; g2 42,13->42,19 (6 cells) | floor control 6 cells; g3 42,10->42,6 (4 cells) | floor control 4 cells;; heavy_knock PASS hit=True pass=True heavyMass=15 heavyAt=61,12 ph=61,12 phHp=0.973 lightAt=50,12 [type=heavy_hit tick=5894 exp=50561 thing=Steel50552 pawn=Human50554 pawnId=50554 at=61,12 mass=15 damage=2.060477 stunTicks=30 pawnDead=False] passes=1; blast_kinds PASS flame%=50 s",
+    "row": "sc_lookup",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "goods_fly_wild PASS comp 13,12->11,12 (2 cells) want=6 back=3 rebounds=1 impactAtRebound=True [type=item_rebound tick=4989 exp=50310 thing=ComponentIndustrial50308 at=14,12 hit=Wall left=5 cells=3 to=11,12 bounce=1]; all_fly_no_cap PASS no_cap=True all_fly=True every_request_answered=True kernelSaysMove=80 requests=90 launches=10 itemMoves=80 maxMovesInOneTick=24 cappedSkips=0 pawns=10 items=80; open_storage PASS g0 43,12->49,12 (6 cells) | floor control 6 cells; g1 41,12->35,12 (6 cells) | floor control 6 cells; g2 42,13->42,19 (6 cells) | floor control 6 cells; g3 42,10->42,6 (4 cells) | floor control 4 cells;; heavy_knock PASS hit=True pass=True heavyMass=15 heavyAt=61,12 ph=61,12 phHp=0.973 lightAt=50,12 [type=heavy_hit tick=5894 exp=50561 thing=Steel50552 pawn=Human50554 pawnId=50554 at=61,12 mass=15 damage=2.060477 stunTicks=30 pawnDead=False] passes=1; blast_kinds PASS flame%=50 s",
+    "row": "sc_gas_chain",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "goods_fly_wild PASS comp 13,12->11,12 (2 cells) want=6 back=3 rebounds=1 impactAtRebound=True [type=item_rebound tick=4989 exp=50310 thing=ComponentIndustrial50308 at=14,12 hit=Wall left=5 cells=3 to=11,12 bounce=1]; all_fly_no_cap PASS no_cap=True all_fly=True every_request_answered=True kernelSaysMove=80 requests=90 launches=10 itemMoves=80 maxMovesInOneTick=24 cappedSkips=0 pawns=10 items=80; open_storage PASS g0 43,12->49,12 (6 cells) | floor control 6 cells; g1 41,12->35,12 (6 cells) | floor control 6 cells; g2 42,13->42,19 (6 cells) | floor control 6 cells; g3 42,10->42,6 (4 cells) | floor control 4 cells;; heavy_knock PASS hit=True pass=True heavyMass=15 heavyAt=61,12 ph=61,12 phHp=0.973 lightAt=50,12 [type=heavy_hit tick=5894 exp=50561 thing=Steel50552 pawn=Human50554 pawnId=50554 at=61,12 mass=15 damage=2.060477 stunTicks=30 pawnDead=False] passes=1; blast_kinds PASS flame%=50 s",
+    "row": "sc_cauldron_gas",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "goods_fly_wild PASS comp 13,12->11,12 (2 cells) want=6 back=3 rebounds=1 impactAtRebound=True [type=item_rebound tick=4989 exp=50310 thing=ComponentIndustrial50308 at=14,12 hit=Wall left=5 cells=3 to=11,12 bounce=1]; all_fly_no_cap PASS no_cap=True all_fly=True every_request_answered=True kernelSaysMove=80 requests=90 launches=10 itemMoves=80 maxMovesInOneTick=24 cappedSkips=0 pawns=10 items=80; open_storage PASS g0 43,12->49,12 (6 cells) | floor control 6 cells; g1 41,12->35,12 (6 cells) | floor control 6 cells; g2 42,13->42,19 (6 cells) | floor control 6 cells; g3 42,10->42,6 (4 cells) | floor control 4 cells;; heavy_knock PASS hit=True pass=True heavyMass=15 heavyAt=61,12 ph=61,12 phHp=0.973 lightAt=50,12 [type=heavy_hit tick=5894 exp=50561 thing=Steel50552 pawn=Human50554 pawnId=50554 at=61,12 mass=15 damage=2.060477 stunTicks=30 pawnDead=False] passes=1; blast_kinds PASS flame%=50 s",
+    "row": "sc_cover_breaks",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "pit_colonist PASS open: p planned=3 landed=30,12 descents=1 inPit=True; s planned=6 landed=30,12 lands=1 inPit=True | covered: pc planned=3 landed=24,12 descents=1 inPit=True; sc planned=6 landed=24,12 lands=1 inPit=True coverGone=True breaksByLanding=1 | solo pn: landed=27,15 descents=1 inPit=True coverGone=True breaksByOwnLanding=1 | solo ss: landed=27,9 descents=0 inPit=True coverGone=True breaksByOwnLanding=1; pit_enemy PASS p 43,12->46,11 (3 cells) landedOnFirstPitCell=True stillInPit=True descents=1; killed_by_blast PASS dead=2 corpsesThrown=2 corpsesSpun=2 [p1:432deg/25t p2:360deg/21t]",
+    "row": "sc_pit_fall",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "pit_colonist PASS open: p planned=3 landed=30,12 descents=1 inPit=True; s planned=6 landed=30,12 lands=1 inPit=True | covered: pc planned=3 landed=24,12 descents=1 inPit=True; sc planned=6 landed=24,12 lands=1 inPit=True coverGone=True breaksByLanding=1 | solo pn: landed=27,15 descents=1 inPit=True coverGone=True breaksByOwnLanding=1 | solo ss: landed=27,9 descents=0 inPit=True coverGone=True breaksByOwnLanding=1; pit_enemy PASS p 43,12->46,11 (3 cells) landedOnFirstPitCell=True stillInPit=True descents=1; killed_by_blast PASS dead=2 corpsesThrown=2 corpsesSpun=2 [p1:432deg/25t p2:360deg/21t]",
+    "row": "sc_pit_enemy",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "no_cross_ordered PASS a@(30, 0, 10) b@(30, 0, 15) descents=0 (step 2000 ticks)",
+    "row": "sc_no_careless_fall",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "pit_goods_fetch FAIL free-will haul: main 1 control 1 (want 1, 0); stack out=True corpse out=True hauler in pit=True path into pit=True path via ladder cell=True raised-ladder control stack still in its pit=True (2 hauls ordered, needs held, step 5000 ticks)",
+    "row": "sc_pit_fetch",
+    "verdict": "FAIL"
+   },
+   {
+    "chain": "checks",
+    "detail": "frame_probe_selfcheck PASS frames=476 probeRows=476 paused=0 wall=8.05s worstMs=107.6 meanMs=16.9 maxInAir=5 selfCheck=pass rows=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261126T020830.csv; frame_probe_selfcheck_paused PASS frames=478 probeRows=478 paused=478 wall=8.05s worstMs=0.0 meanMs=16.9 maxInAir=0 selfCheck=paused: 478 of 478 rows rows=D:\\ClaudeWork\\rimmandrake\\instances\\b\\RM_FrameProbe_20261126T020843.csv",
+    "row": "sc_frame_probe_check",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "gas_into_pit PASS p 12,12->13,12 (1 cells) bursts=25 launches=1 descents=1 inPit=True gasAtColonist=250 gasReg=True [type=launch tick=4383 exp=-23 thing=Human50245 from=12,12 to=13,12 planned=1 cells=1 stop=Pit impact=0 otherImpact=0 door=False mass=60.79998 hoseDropped=False carried=none onCover=False gas=True hitOther=False faction=PlayerColony] shove=True landedOnFirstPitCell=True injuries 2->3; gas_into_pit_off PASS p 27,12->32,20 (8 cells) bursts=0 launches=0 descents=0 inPit=False gasAtColonist=250 gasReg=False burned=True",
+    "row": "sc_gas_shove_into_pit",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "pit_colonist PASS open: p planned=3 landed=30,12 descents=1 inPit=True; s planned=6 landed=30,12 lands=1 inPit=True | covered: pc planned=3 landed=24,12 descents=1 inPit=True; sc planned=6 landed=24,12 lands=1 inPit=True coverGone=True breaksByLanding=1 | solo pn: landed=27,15 descents=1 inPit=True coverGone=True breaksByOwnLanding=1 | solo ss: landed=27,9 descents=0 inPit=True coverGone=True breaksByOwnLanding=1; pit_enemy PASS p 43,12->46,11 (3 cells) landedOnFirstPitCell=True stillInPit=True descents=1; killed_by_blast PASS dead=2 corpsesThrown=2 corpsesSpun=2 [p1:432deg/25t p2:360deg/21t]",
+    "row": "sc_killed_thrown",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "goods_obstacles PASS D ok D 13,12->11,12 (2 cells) want=6 flying=True atRest=True hops=0 hidden=0 back=3 keep%=70 doorClosed=True [type=item_rebound tick=7989 exp=50748 thing=ComponentIndustrial50739 at=14,12 hit=Door left=5 cells=3 to=11,12 bounce=1]; S ok S 13,17->19,17 (6 cells) want=6 flying=True atRest=True hops=0 hidden=0 (sandbags at x+3); W ok W 13,7->14,7 (1 cells) want=6 flying=True atRest=True hops=0 hidden=0 (water from x+3) visible=True inWater=0 traceRows=601 (step up to 600 ticks); goods_obstacles_control PASS D ok D 28,12->34,12 (6 cells) want=6 flying=True atRest=True hops=0 hidden=0 plan=34,12; S ok S 28,17->34,17 (6 cells) want=6 flying=True atRest=True hops=0 hidden=0 plan=34,17; W ok W 28,7->34,7 (6 cells) want=6 flying=True atRest=True hops=0 hidden=0 plan=34,7 traceRows=601 (step up to 600 ticks)",
+    "row": "sc_goods_obstacles",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "heavy_skip PASS gromma 240.0 kg: big 28,12->29,12 (1 cells) skips(too_heavy_creature)=1 [type=skip tick=9183 exp=50772 thing=RM_Agaripod50771 reason=too_heavy_creature mass=240 limit=150]; emp_no_throw PASS p 43,12->43,12 (0 cells) (EMP force 0: no request); fire_half PASS flameForce=0.5 bombForce=1 flameCells=1 bombCells=3; harmful_unpatched PASS thumpForce=1 source=unpatched bombForce=1 thumpCells=3 bombCells=3 unpatchedHarmfulPercent=100; items PASS steel 88,12->94,12 (6 cells) mass=37.5 want=6; comp 87,13->87,19 (6 cells) mass=0.6 want=6; heavy 86,12->86,12 (0 cells) mass=3000 want=0; steelCount=75; shelf PASS steel 103,12->109,12 (6 cells) (on an open shelf: must move); in_pit_skip PASS p 118,12->118,12 (0 cells) skips(in_pit)=1; no_cross PASS p 132,12->134,12 (2 cells) (1-wide pit at x+2; must stop IN it); corpse_into_pit PASS corpse 148,12->150,12 (2 cells) onPitFloor=True forbidd",
+    "row": "P_heavy_skip",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "heavy_skip PASS gromma 240.0 kg: big 28,12->29,12 (1 cells) skips(too_heavy_creature)=1 [type=skip tick=9183 exp=50772 thing=RM_Agaripod50771 reason=too_heavy_creature mass=240 limit=150]; emp_no_throw PASS p 43,12->43,12 (0 cells) (EMP force 0: no request); fire_half PASS flameForce=0.5 bombForce=1 flameCells=1 bombCells=3; harmful_unpatched PASS thumpForce=1 source=unpatched bombForce=1 thumpCells=3 bombCells=3 unpatchedHarmfulPercent=100; items PASS steel 88,12->94,12 (6 cells) mass=37.5 want=6; comp 87,13->87,19 (6 cells) mass=0.6 want=6; heavy 86,12->86,12 (0 cells) mass=3000 want=0; steelCount=75; shelf PASS steel 103,12->109,12 (6 cells) (on an open shelf: must move); in_pit_skip PASS p 118,12->118,12 (0 cells) skips(in_pit)=1; no_cross PASS p 132,12->134,12 (2 cells) (1-wide pit at x+2; must stop IN it); corpse_into_pit PASS corpse 148,12->150,12 (2 cells) onPitFloor=True forbidd",
+    "row": "P_emp_no_throw",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "heavy_skip PASS gromma 240.0 kg: big 28,12->29,12 (1 cells) skips(too_heavy_creature)=1 [type=skip tick=9183 exp=50772 thing=RM_Agaripod50771 reason=too_heavy_creature mass=240 limit=150]; emp_no_throw PASS p 43,12->43,12 (0 cells) (EMP force 0: no request); fire_half PASS flameForce=0.5 bombForce=1 flameCells=1 bombCells=3; harmful_unpatched PASS thumpForce=1 source=unpatched bombForce=1 thumpCells=3 bombCells=3 unpatchedHarmfulPercent=100; items PASS steel 88,12->94,12 (6 cells) mass=37.5 want=6; comp 87,13->87,19 (6 cells) mass=0.6 want=6; heavy 86,12->86,12 (0 cells) mass=3000 want=0; steelCount=75; shelf PASS steel 103,12->109,12 (6 cells) (on an open shelf: must move); in_pit_skip PASS p 118,12->118,12 (0 cells) skips(in_pit)=1; no_cross PASS p 132,12->134,12 (2 cells) (1-wide pit at x+2; must stop IN it); corpse_into_pit PASS corpse 148,12->150,12 (2 cells) onPitFloor=True forbidd",
+    "row": "P_fire_half",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "heavy_skip PASS gromma 240.0 kg: big 28,12->29,12 (1 cells) skips(too_heavy_creature)=1 [type=skip tick=9183 exp=50772 thing=RM_Agaripod50771 reason=too_heavy_creature mass=240 limit=150]; emp_no_throw PASS p 43,12->43,12 (0 cells) (EMP force 0: no request); fire_half PASS flameForce=0.5 bombForce=1 flameCells=1 bombCells=3; harmful_unpatched PASS thumpForce=1 source=unpatched bombForce=1 thumpCells=3 bombCells=3 unpatchedHarmfulPercent=100; items PASS steel 88,12->94,12 (6 cells) mass=37.5 want=6; comp 87,13->87,19 (6 cells) mass=0.6 want=6; heavy 86,12->86,12 (0 cells) mass=3000 want=0; steelCount=75; shelf PASS steel 103,12->109,12 (6 cells) (on an open shelf: must move); in_pit_skip PASS p 118,12->118,12 (0 cells) skips(in_pit)=1; no_cross PASS p 132,12->134,12 (2 cells) (1-wide pit at x+2; must stop IN it); corpse_into_pit PASS corpse 148,12->150,12 (2 cells) onPitFloor=True forbidd",
+    "row": "P_harmful_unpatched",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "heavy_skip PASS gromma 240.0 kg: big 28,12->29,12 (1 cells) skips(too_heavy_creature)=1 [type=skip tick=9183 exp=50772 thing=RM_Agaripod50771 reason=too_heavy_creature mass=240 limit=150]; emp_no_throw PASS p 43,12->43,12 (0 cells) (EMP force 0: no request); fire_half PASS flameForce=0.5 bombForce=1 flameCells=1 bombCells=3; harmful_unpatched PASS thumpForce=1 source=unpatched bombForce=1 thumpCells=3 bombCells=3 unpatchedHarmfulPercent=100; items PASS steel 88,12->94,12 (6 cells) mass=37.5 want=6; comp 87,13->87,19 (6 cells) mass=0.6 want=6; heavy 86,12->86,12 (0 cells) mass=3000 want=0; steelCount=75; shelf PASS steel 103,12->109,12 (6 cells) (on an open shelf: must move); in_pit_skip PASS p 118,12->118,12 (0 cells) skips(in_pit)=1; no_cross PASS p 132,12->134,12 (2 cells) (1-wide pit at x+2; must stop IN it); corpse_into_pit PASS corpse 148,12->150,12 (2 cells) onPitFloor=True forbidd",
+    "row": "P_items",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "heavy_skip PASS gromma 240.0 kg: big 28,12->29,12 (1 cells) skips(too_heavy_creature)=1 [type=skip tick=9183 exp=50772 thing=RM_Agaripod50771 reason=too_heavy_creature mass=240 limit=150]; emp_no_throw PASS p 43,12->43,12 (0 cells) (EMP force 0: no request); fire_half PASS flameForce=0.5 bombForce=1 flameCells=1 bombCells=3; harmful_unpatched PASS thumpForce=1 source=unpatched bombForce=1 thumpCells=3 bombCells=3 unpatchedHarmfulPercent=100; items PASS steel 88,12->94,12 (6 cells) mass=37.5 want=6; comp 87,13->87,19 (6 cells) mass=0.6 want=6; heavy 86,12->86,12 (0 cells) mass=3000 want=0; steelCount=75; shelf PASS steel 103,12->109,12 (6 cells) (on an open shelf: must move); in_pit_skip PASS p 118,12->118,12 (0 cells) skips(in_pit)=1; no_cross PASS p 132,12->134,12 (2 cells) (1-wide pit at x+2; must stop IN it); corpse_into_pit PASS corpse 148,12->150,12 (2 cells) onPitFloor=True forbidd",
+    "row": "P_shelf",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "heavy_skip PASS gromma 240.0 kg: big 28,12->29,12 (1 cells) skips(too_heavy_creature)=1 [type=skip tick=9183 exp=50772 thing=RM_Agaripod50771 reason=too_heavy_creature mass=240 limit=150]; emp_no_throw PASS p 43,12->43,12 (0 cells) (EMP force 0: no request); fire_half PASS flameForce=0.5 bombForce=1 flameCells=1 bombCells=3; harmful_unpatched PASS thumpForce=1 source=unpatched bombForce=1 thumpCells=3 bombCells=3 unpatchedHarmfulPercent=100; items PASS steel 88,12->94,12 (6 cells) mass=37.5 want=6; comp 87,13->87,19 (6 cells) mass=0.6 want=6; heavy 86,12->86,12 (0 cells) mass=3000 want=0; steelCount=75; shelf PASS steel 103,12->109,12 (6 cells) (on an open shelf: must move); in_pit_skip PASS p 118,12->118,12 (0 cells) skips(in_pit)=1; no_cross PASS p 132,12->134,12 (2 cells) (1-wide pit at x+2; must stop IN it); corpse_into_pit PASS corpse 148,12->150,12 (2 cells) onPitFloor=True forbidd",
+    "row": "P_in_pit_skip",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "heavy_skip PASS gromma 240.0 kg: big 28,12->29,12 (1 cells) skips(too_heavy_creature)=1 [type=skip tick=9183 exp=50772 thing=RM_Agaripod50771 reason=too_heavy_creature mass=240 limit=150]; emp_no_throw PASS p 43,12->43,12 (0 cells) (EMP force 0: no request); fire_half PASS flameForce=0.5 bombForce=1 flameCells=1 bombCells=3; harmful_unpatched PASS thumpForce=1 source=unpatched bombForce=1 thumpCells=3 bombCells=3 unpatchedHarmfulPercent=100; items PASS steel 88,12->94,12 (6 cells) mass=37.5 want=6; comp 87,13->87,19 (6 cells) mass=0.6 want=6; heavy 86,12->86,12 (0 cells) mass=3000 want=0; steelCount=75; shelf PASS steel 103,12->109,12 (6 cells) (on an open shelf: must move); in_pit_skip PASS p 118,12->118,12 (0 cells) skips(in_pit)=1; no_cross PASS p 132,12->134,12 (2 cells) (1-wide pit at x+2; must stop IN it); corpse_into_pit PASS corpse 148,12->150,12 (2 cells) onPitFloor=True forbidd",
+    "row": "P_no_cross",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "heavy_skip PASS gromma 240.0 kg: big 28,12->29,12 (1 cells) skips(too_heavy_creature)=1 [type=skip tick=9183 exp=50772 thing=RM_Agaripod50771 reason=too_heavy_creature mass=240 limit=150]; emp_no_throw PASS p 43,12->43,12 (0 cells) (EMP force 0: no request); fire_half PASS flameForce=0.5 bombForce=1 flameCells=1 bombCells=3; harmful_unpatched PASS thumpForce=1 source=unpatched bombForce=1 thumpCells=3 bombCells=3 unpatchedHarmfulPercent=100; items PASS steel 88,12->94,12 (6 cells) mass=37.5 want=6; comp 87,13->87,19 (6 cells) mass=0.6 want=6; heavy 86,12->86,12 (0 cells) mass=3000 want=0; steelCount=75; shelf PASS steel 103,12->109,12 (6 cells) (on an open shelf: must move); in_pit_skip PASS p 118,12->118,12 (0 cells) skips(in_pit)=1; no_cross PASS p 132,12->134,12 (2 cells) (1-wide pit at x+2; must stop IN it); corpse_into_pit PASS corpse 148,12->150,12 (2 cells) onPitFloor=True forbidd",
+    "row": "P_corpse_into_pit",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "heavy_skip PASS gromma 240.0 kg: big 28,12->29,12 (1 cells) skips(too_heavy_creature)=1 [type=skip tick=9183 exp=50772 thing=RM_Agaripod50771 reason=too_heavy_creature mass=240 limit=150]; emp_no_throw PASS p 43,12->43,12 (0 cells) (EMP force 0: no request); fire_half PASS flameForce=0.5 bombForce=1 flameCells=1 bombCells=3; harmful_unpatched PASS thumpForce=1 source=unpatched bombForce=1 thumpCells=3 bombCells=3 unpatchedHarmfulPercent=100; items PASS steel 88,12->94,12 (6 cells) mass=37.5 want=6; comp 87,13->87,19 (6 cells) mass=0.6 want=6; heavy 86,12->86,12 (0 cells) mass=3000 want=0; steelCount=75; shelf PASS steel 103,12->109,12 (6 cells) (on an open shelf: must move); in_pit_skip PASS p 118,12->118,12 (0 cells) skips(in_pit)=1; no_cross PASS p 132,12->134,12 (2 cells) (1-wide pit at x+2; must stop IN it); corpse_into_pit PASS corpse 148,12->150,12 (2 cells) onPitFloor=True forbidd",
+    "row": "P_body_override",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "impact_factor PASS p 28,12->29,12 (1 cells) [type=launch tick=12783 exp=50867 thing=Human50863 from=28,12 to=29,12 planned=3 cells=1 stop=Wall impact=0 otherImpact=0 door=False mass=60.79998 hoseDropped=False carried=none onCover=False gas=False hitOther=False faction=PlayerColony]; lookup_zero_wins PASS p 43,12->43,12 (0 cells) requests=0; goods_fly_midair PASS in carrier at +2 ticks, count=75 dest=64,12 ticksLeft=59; goods_fly_lands PASS steel 73,12->79,12 (6 cells) want=6 count=75 flying=True item_land=1 carrierLeft=False [type=item_land tick=13743 exp=50884 thing=Steel50883 from=73,12 to=79,12 dest=79,12 bounces=0 stop=Distance count=75 spawnFallback=False residentsMoved=0 ticks=60 place=Direct]; goods_fly_wall PASS comp 88,12->89,12 (1 cells) want=6 flying=True [type=goods_impact tick=13989 exp=50889 thing=ComponentIndustrial50887 stop=Wall left=5 damage=50 destroyed=False at=landed",
+    "row": "P_impact_factor",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "impact_factor PASS p 28,12->29,12 (1 cells) [type=launch tick=12783 exp=50867 thing=Human50863 from=28,12 to=29,12 planned=3 cells=1 stop=Wall impact=0 otherImpact=0 door=False mass=60.79998 hoseDropped=False carried=none onCover=False gas=False hitOther=False faction=PlayerColony]; lookup_zero_wins PASS p 43,12->43,12 (0 cells) requests=0; goods_fly_midair PASS in carrier at +2 ticks, count=75 dest=64,12 ticksLeft=59; goods_fly_lands PASS steel 73,12->79,12 (6 cells) want=6 count=75 flying=True item_land=1 carrierLeft=False [type=item_land tick=13743 exp=50884 thing=Steel50883 from=73,12 to=79,12 dest=79,12 bounces=0 stop=Distance count=75 spawnFallback=False residentsMoved=0 ticks=60 place=Direct]; goods_fly_wall PASS comp 88,12->89,12 (1 cells) want=6 flying=True [type=goods_impact tick=13989 exp=50889 thing=ComponentIndustrial50887 stop=Wall left=5 damage=50 destroyed=False at=landed",
+    "row": "P_lookup_zero_wins",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "impact_factor PASS p 28,12->29,12 (1 cells) [type=launch tick=12783 exp=50867 thing=Human50863 from=28,12 to=29,12 planned=3 cells=1 stop=Wall impact=0 otherImpact=0 door=False mass=60.79998 hoseDropped=False carried=none onCover=False gas=False hitOther=False faction=PlayerColony]; lookup_zero_wins PASS p 43,12->43,12 (0 cells) requests=0; goods_fly_midair PASS in carrier at +2 ticks, count=75 dest=64,12 ticksLeft=59; goods_fly_lands PASS steel 73,12->79,12 (6 cells) want=6 count=75 flying=True item_land=1 carrierLeft=False [type=item_land tick=13743 exp=50884 thing=Steel50883 from=73,12 to=79,12 dest=79,12 bounces=0 stop=Distance count=75 spawnFallback=False residentsMoved=0 ticks=60 place=Direct]; goods_fly_wall PASS comp 88,12->89,12 (1 cells) want=6 flying=True [type=goods_impact tick=13989 exp=50889 thing=ComponentIndustrial50887 stop=Wall left=5 damage=50 destroyed=False at=landed",
+    "row": "P_goods_fly_midair",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "impact_factor PASS p 28,12->29,12 (1 cells) [type=launch tick=12783 exp=50867 thing=Human50863 from=28,12 to=29,12 planned=3 cells=1 stop=Wall impact=0 otherImpact=0 door=False mass=60.79998 hoseDropped=False carried=none onCover=False gas=False hitOther=False faction=PlayerColony]; lookup_zero_wins PASS p 43,12->43,12 (0 cells) requests=0; goods_fly_midair PASS in carrier at +2 ticks, count=75 dest=64,12 ticksLeft=59; goods_fly_lands PASS steel 73,12->79,12 (6 cells) want=6 count=75 flying=True item_land=1 carrierLeft=False [type=item_land tick=13743 exp=50884 thing=Steel50883 from=73,12 to=79,12 dest=79,12 bounces=0 stop=Distance count=75 spawnFallback=False residentsMoved=0 ticks=60 place=Direct]; goods_fly_wall PASS comp 88,12->89,12 (1 cells) want=6 flying=True [type=goods_impact tick=13989 exp=50889 thing=ComponentIndustrial50887 stop=Wall left=5 damage=50 destroyed=False at=landed",
+    "row": "P_goods_fly_lands",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "impact_factor PASS p 28,12->29,12 (1 cells) [type=launch tick=12783 exp=50867 thing=Human50863 from=28,12 to=29,12 planned=3 cells=1 stop=Wall impact=0 otherImpact=0 door=False mass=60.79998 hoseDropped=False carried=none onCover=False gas=False hitOther=False faction=PlayerColony]; lookup_zero_wins PASS p 43,12->43,12 (0 cells) requests=0; goods_fly_midair PASS in carrier at +2 ticks, count=75 dest=64,12 ticksLeft=59; goods_fly_lands PASS steel 73,12->79,12 (6 cells) want=6 count=75 flying=True item_land=1 carrierLeft=False [type=item_land tick=13743 exp=50884 thing=Steel50883 from=73,12 to=79,12 dest=79,12 bounces=0 stop=Distance count=75 spawnFallback=False residentsMoved=0 ticks=60 place=Direct]; goods_fly_wall PASS comp 88,12->89,12 (1 cells) want=6 flying=True [type=goods_impact tick=13989 exp=50889 thing=ComponentIndustrial50887 stop=Wall left=5 damage=50 destroyed=False at=landed",
+    "row": "P_goods_fly_wall",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "impact_factor PASS p 28,12->29,12 (1 cells) [type=launch tick=12783 exp=50867 thing=Human50863 from=28,12 to=29,12 planned=3 cells=1 stop=Wall impact=0 otherImpact=0 door=False mass=60.79998 hoseDropped=False carried=none onCover=False gas=False hitOther=False faction=PlayerColony]; lookup_zero_wins PASS p 43,12->43,12 (0 cells) requests=0; goods_fly_midair PASS in carrier at +2 ticks, count=75 dest=64,12 ticksLeft=59; goods_fly_lands PASS steel 73,12->79,12 (6 cells) want=6 count=75 flying=True item_land=1 carrierLeft=False [type=item_land tick=13743 exp=50884 thing=Steel50883 from=73,12 to=79,12 dest=79,12 bounces=0 stop=Distance count=75 spawnFallback=False residentsMoved=0 ticks=60 place=Direct]; goods_fly_wall PASS comp 88,12->89,12 (1 cells) want=6 flying=True [type=goods_impact tick=13989 exp=50889 thing=ComponentIndustrial50887 stop=Wall left=5 damage=50 destroyed=False at=landed",
+    "row": "P_goods_fly_rebound",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "impact_factor PASS p 28,12->29,12 (1 cells) [type=launch tick=12783 exp=50867 thing=Human50863 from=28,12 to=29,12 planned=3 cells=1 stop=Wall impact=0 otherImpact=0 door=False mass=60.79998 hoseDropped=False carried=none onCover=False gas=False hitOther=False faction=PlayerColony]; lookup_zero_wins PASS p 43,12->43,12 (0 cells) requests=0; goods_fly_midair PASS in carrier at +2 ticks, count=75 dest=64,12 ticksLeft=59; goods_fly_lands PASS steel 73,12->79,12 (6 cells) want=6 count=75 flying=True item_land=1 carrierLeft=False [type=item_land tick=13743 exp=50884 thing=Steel50883 from=73,12 to=79,12 dest=79,12 bounces=0 stop=Distance count=75 spawnFallback=False residentsMoved=0 ticks=60 place=Direct]; goods_fly_wall PASS comp 88,12->89,12 (1 cells) want=6 flying=True [type=goods_impact tick=13989 exp=50889 thing=ComponentIndustrial50887 stop=Wall left=5 damage=50 destroyed=False at=landed",
+    "row": "P_goods_fly_off",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "impact_factor PASS p 28,12->29,12 (1 cells) [type=launch tick=12783 exp=50867 thing=Human50863 from=28,12 to=29,12 planned=3 cells=1 stop=Wall impact=0 otherImpact=0 door=False mass=60.79998 hoseDropped=False carried=none onCover=False gas=False hitOther=False faction=PlayerColony]; lookup_zero_wins PASS p 43,12->43,12 (0 cells) requests=0; goods_fly_midair PASS in carrier at +2 ticks, count=75 dest=64,12 ticksLeft=59; goods_fly_lands PASS steel 73,12->79,12 (6 cells) want=6 count=75 flying=True item_land=1 carrierLeft=False [type=item_land tick=13743 exp=50884 thing=Steel50883 from=73,12 to=79,12 dest=79,12 bounces=0 stop=Distance count=75 spawnFallback=False residentsMoved=0 ticks=60 place=Direct]; goods_fly_wall PASS comp 88,12->89,12 (1 cells) want=6 flying=True [type=goods_impact tick=13989 exp=50889 thing=ComponentIndustrial50887 stop=Wall left=5 damage=50 destroyed=False at=landed",
+    "row": "P_container_thrown",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "impact_factor PASS p 28,12->29,12 (1 cells) [type=launch tick=12783 exp=50867 thing=Human50863 from=28,12 to=29,12 planned=3 cells=1 stop=Wall impact=0 otherImpact=0 door=False mass=60.79998 hoseDropped=False carried=none onCover=False gas=False hitOther=False faction=PlayerColony]; lookup_zero_wins PASS p 43,12->43,12 (0 cells) requests=0; goods_fly_midair PASS in carrier at +2 ticks, count=75 dest=64,12 ticksLeft=59; goods_fly_lands PASS steel 73,12->79,12 (6 cells) want=6 count=75 flying=True item_land=1 carrierLeft=False [type=item_land tick=13743 exp=50884 thing=Steel50883 from=73,12 to=79,12 dest=79,12 bounces=0 stop=Distance count=75 spawnFallback=False residentsMoved=0 ticks=60 place=Direct]; goods_fly_wall PASS comp 88,12->89,12 (1 cells) want=6 flying=True [type=goods_impact tick=13989 exp=50889 thing=ComponentIndustrial50887 stop=Wall left=5 damage=50 destroyed=False at=landed",
+    "row": "P_land_no_bump",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "impact_factor PASS p 28,12->29,12 (1 cells) [type=launch tick=12783 exp=50867 thing=Human50863 from=28,12 to=29,12 planned=3 cells=1 stop=Wall impact=0 otherImpact=0 door=False mass=60.79998 hoseDropped=False carried=none onCover=False gas=False hitOther=False faction=PlayerColony]; lookup_zero_wins PASS p 43,12->43,12 (0 cells) requests=0; goods_fly_midair PASS in carrier at +2 ticks, count=75 dest=64,12 ticksLeft=59; goods_fly_lands PASS steel 73,12->79,12 (6 cells) want=6 count=75 flying=True item_land=1 carrierLeft=False [type=item_land tick=13743 exp=50884 thing=Steel50883 from=73,12 to=79,12 dest=79,12 bounces=0 stop=Distance count=75 spawnFallback=False residentsMoved=0 ticks=60 place=Direct]; goods_fly_wall PASS comp 88,12->89,12 (1 cells) want=6 flying=True [type=goods_impact tick=13989 exp=50889 thing=ComponentIndustrial50887 stop=Wall left=5 damage=50 destroyed=False at=landed",
+    "row": "P_land_no_bump_pit",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "gas_clumps PASS chain=True goods=True shove=True cover=True noHeavyHit=True maxGoodsTravel=2 maxGoodsDisplacement=2 bursts=22 burstTicks=4 goodsMoves=3 maxGoodsPlanned=2 pawnShoves=1 cooldownOk=True gasReg=True coverHp=159/160",
+    "row": "P_gas_clumps",
+    "verdict": "PASS"
+   }
+  ],
+  "runner_sha": "813366f4c6438b8e227c565d586140a0fa706f1c",
+  "running": [
+   "adaptive.storage.framework",
+   "brrainz.harmony",
+   "brrainz.rimbridgeserver",
+   "ebsg.framework",
+   "ludeon.rimworld",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.odyssey",
+   "ludeon.rimworld.royalty",
+   "lwm.deepstorage",
+   "mandrake.rm.biomes",
+   "mandrake.rm.explosiveknockback",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.hugethings",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.patches",
+   "mandrake.rsw.armoury",
+   "mandrake.rsw.swbestiary",
+   "neronix17.outerrim.core",
+   "neronix17.toolbox",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "owlchemist.cherrypicker",
+   "ray1203.simplecamerasetting",
+   "void.charactereditor"
+  ],
+  "schema": "testq.result/1",
+  "started": "2026-11-26T09:52:26Z",
+  "tier": {
+   "exact": true,
+   "extra": [],
+   "missing": [],
+   "running": [
+    "adaptive.storage.framework",
+    "brrainz.harmony",
+    "brrainz.rimbridgeserver",
+    "ebsg.framework",
+    "ludeon.rimworld",
+    "ludeon.rimworld.anomaly",
+    "ludeon.rimworld.biotech",
+    "ludeon.rimworld.ideology",
+    "ludeon.rimworld.odyssey",
+    "ludeon.rimworld.royalty",
+    "lwm.deepstorage",
+    "mandrake.rm.biomes",
+    "mandrake.rm.explosiveknockback",
+    "mandrake.rm.flowworks",
+    "mandrake.rm.gimmesomeslack",
+    "mandrake.rm.hugethings",
+    "mandrake.rm.luminouspigment",
+    "mandrake.rm.patches",
+    "mandrake.rsw.armoury",
+    "mandrake.rsw.swbestiary",
+    "neronix17.outerrim.core",
+    "neronix17.toolbox",
+    "oskarpotocki.vanillafactionsexpanded.core",
+    "owlchemist.cherrypicker",
+    "ray1203.simplecamerasetting",
+    "void.charactereditor"
+   ],
+   "tier": "explosiveknockback_visit",
+   "want": [
+    "brrainz.harmony",
+    "ludeon.rimworld",
+    "ludeon.rimworld.royalty",
+    "ludeon.rimworld.ideology",
+    "ludeon.rimworld.biotech",
+    "ludeon.rimworld.anomaly",
+    "ludeon.rimworld.odyssey",
+    "adaptive.storage.framework",
+    "brrainz.rimbridgeserver",
+    "lwm.deepstorage",
+    "neronix17.toolbox",
+    "owlchemist.cherrypicker",
+    "oskarpotocki.vanillafactionsexpanded.core",
+    "ebsg.framework",
+    "neronix17.outerrim.core",
+    "ray1203.simplecamerasetting",
+    "void.charactereditor",
+    "mandrake.rm.gimmesomeslack",
+    "mandrake.rm.flowworks",
+    "mandrake.rm.explosiveknockback",
+    "mandrake.rm.hugethings",
+    "mandrake.rm.luminouspigment",
+    "mandrake.rm.biomes",
+    "mandrake.rm.patches",
+    "mandrake.rsw.armoury",
+    "mandrake.rsw.swbestiary"
+   ],
+   "why": null
+  }
+ },
+ "sent": "2026-11-26T09:52:25Z"
+}

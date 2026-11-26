@@ -1,0 +1,15 @@
+$ python.exe src/RimMandrake/Utils/live_site.py --game --max-ticks 100000000
+READY: a game with a map is up (left as it is)
+$ python.exe src/RimMandrake/Utils/live_site.py --biome AridShrubland --max-ticks 100000000
+READY: the current map is already AridShrubland
+$ python.exe -u src/RimMandrake/Utils/testq/stage6_site.py --sweep --biome AridShrubland
+SITE_JSON {"swept": 3, "biome": "AridShrubland", "ticksGame": 3001, "hostile": [], "colonists": 19}
+$ python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes closed_containers,closed_containers_control --ticks 300
+scenes available: calibration,wall_stop,door_stop,over_sandbags,pit_colonist,pit_enemy,no_cross,cover_breaks,items,corpse_into_pit,killed_by_blast,shelf,in_pit_skip,heavy_skip,all_fly_no_cap,settings_off,emp_no_throw,lookup_projectile,lookup_zero_wins,impact_factor,body_override,immunity_window,shield_counter,goods_fly_midair,goods_fly_lands,goods_fly_wall,goods_fly_rebound,goods_fly_off,fire_half,harmful_unpatched,container_thrown,heavy_knock,land_no_bump,land_no_bump_pit,gas_clumps,mass_and_power,mass_and_power_x2,mass_and_power_off,mass_and_power_off_x2,mass_and_power_250,mass_and_power_250_x2,pawn_hits_pawn,only_explosions,open_storage,no_cross_ordered,spared_states,blast_kinds,goods_fly_wild,gas_chain,gas_census,pawn_arc,pit_goods_fetch,hose_carry_drop,hose_carry_drop_off,closed_containers,closed_containers_control,settings_sweep,settings_sweep_after,frame_probe_selfcheck,frame_probe_selfcheck_paused,barrage_perf,barrage_perf_off,gas_into_pit,gas_into_pit_off,goods_obstacles,goods_obstacles_control,storeroom_bomb_pit,storeroom_bomb_pit_control,pit_colonist_control flowworks=True hoses=True
+closed_containers advanced 300/300 ticks in 1 s via jawa/safe_advance
+closed_containers PASS free=thrown cells=5 away=True held=True action=thrownx1; crate=thrown cells=4 away=True held=True action=thrownx1; wall=jolted stayed=True held=True lines=1 action=jolt drawnOffset=0.123; pawn=jolted stayed=True held=True lines=1 action=jolt drawnOffset=0.123; pit=jolted stayed=True held=True lines=1 action=jolt drawnOffset=0.123; safe=jolted stayed=True held=True lines=1 action=jolt drawnOffset=0.123; sec=jolted stayed=True held=True lines=1 action=jolt drawnOffset=0.123; panel=kept goods on its cell=1 limit=250 crateMass=1.5
+closed_containers SETTINGS after verdict: all at the run's defaults
+closed_containers_control advanced 300/300 ticks in 1 s via jawa/safe_advance
+closed_containers_control PASS looseFlew=5/5 untaggedPanel pg 25,9->25,3 (6 cells)
+closed_containers_control SETTINGS after verdict: all at the run's defaults
+VERDICT PASS  (2 scenes) -> \\wsl.localhost\Ubuntu\home\mandrake\rm\runner_b\Transient\explosive_knockback\run_20261126T012435.jsonl

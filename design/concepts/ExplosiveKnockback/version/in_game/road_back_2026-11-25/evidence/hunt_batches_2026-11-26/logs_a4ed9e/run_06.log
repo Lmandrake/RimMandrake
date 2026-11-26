@@ -1,0 +1,15 @@
+$ python.exe src/RimMandrake/Utils/live_site.py --game --max-ticks 100000000
+READY: a game with a map is up (left as it is)
+$ python.exe src/RimMandrake/Utils/live_site.py --biome AridShrubland --max-ticks 100000000
+READY: the current map is already AridShrubland
+$ python.exe -u src/RimMandrake/Utils/testq/stage6_site.py --sweep --biome AridShrubland
+SITE_JSON {"swept": 0, "biome": "AridShrubland", "ticksGame": 7983, "hostile": [], "colonists": 30}
+$ python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes goods_obstacles,goods_obstacles_control --ticks 600
+scenes available: calibration,wall_stop,door_stop,over_sandbags,pit_colonist,pit_enemy,no_cross,cover_breaks,items,corpse_into_pit,killed_by_blast,shelf,in_pit_skip,heavy_skip,all_fly_no_cap,settings_off,emp_no_throw,lookup_projectile,lookup_zero_wins,impact_factor,body_override,immunity_window,shield_counter,goods_fly_midair,goods_fly_lands,goods_fly_wall,goods_fly_rebound,goods_fly_off,fire_half,harmful_unpatched,container_thrown,heavy_knock,land_no_bump,land_no_bump_pit,gas_clumps,mass_and_power,mass_and_power_x2,mass_and_power_off,mass_and_power_off_x2,mass_and_power_250,mass_and_power_250_x2,pawn_hits_pawn,only_explosions,open_storage,no_cross_ordered,spared_states,blast_kinds,goods_fly_wild,gas_chain,gas_census,pawn_arc,pit_goods_fetch,hose_carry_drop,hose_carry_drop_off,closed_containers,closed_containers_control,settings_sweep,settings_sweep_after,frame_probe_selfcheck,frame_probe_selfcheck_paused,barrage_perf,barrage_perf_off,gas_into_pit,gas_into_pit_off,goods_obstacles,goods_obstacles_control,storeroom_bomb_pit,storeroom_bomb_pit_control,pit_colonist_control flowworks=True hoses=True
+goods_obstacles  advanced 600/600 ticks in 3 s via jawa/safe_advance
+goods_obstacles  PASS D ok D 13,12->11,12 (2 cells) want=6 flying=True atRest=True hops=0 hidden=0 back=3 keep%=70 doorClosed=True [type=item_rebound tick=7990 exp=66978 thing=ComponentIndustrial66969 at=14,12 hit=Door left=5 cells=3 to=11,12 bounce=1]; S ok S 13,17->19,17 (6 cells) want=6 flying=True atRest=True hops=0 hidden=0 (sandbags at x+3); W ok W 13,7->14,7 (1 cells) want=6 flying=True atRest=True hops=0 hidden=0 (water from x+3) visible=True inWater=0 traceRows=601 (step up to 600 ticks)
+goods_obstacles  SETTINGS after verdict: all at the run's defaults
+goods_obstacles_control advanced 600/600 ticks in 3 s via jawa/safe_advance
+goods_obstacles_control FAIL D BAD D not spawned gone(destroyed=False stack=2 holder=Pawn_CarryTracker:Krueger66123 job=HaulToCell) want=6 flying=True atRest=False hops=0 hidden=168 plan=34,12; S BAD S not spawned gone(destroyed=True stack=0 holder=none) want=6 flying=True atRest=False hops=0 hidden=0 plan=34,17; W ok W 28,7->34,7 (6 cells) want=6 flying=True atRest=True hops=0 hidden=0 plan=34,7 traceRows=601 (step up to 600 ticks)
+goods_obstacles_control SETTINGS after verdict: all at the run's defaults
+VERDICT FAIL  (2 scenes) -> \\wsl.localhost\Ubuntu\home\mandrake\rm\runner\Transient\explosive_knockback\run_20261126T005905.jsonl

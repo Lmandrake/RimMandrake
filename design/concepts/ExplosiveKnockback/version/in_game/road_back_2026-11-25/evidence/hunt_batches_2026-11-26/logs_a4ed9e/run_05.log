@@ -1,0 +1,39 @@
+$ python.exe src/RimMandrake/Utils/live_site.py --game --max-ticks 100000000
+READY: a game with a map is up (left as it is)
+$ python.exe src/RimMandrake/Utils/live_site.py --biome AridShrubland --max-ticks 100000000
+READY: the current map is already AridShrubland
+$ python.exe -u src/RimMandrake/Utils/testq/stage6_site.py --sweep --biome AridShrubland
+SITE_JSON {"swept": 0, "biome": "AridShrubland", "ticksGame": 4983, "hostile": [], "colonists": 19}
+$ python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes goods_fly_wild,all_fly_no_cap,open_storage,heavy_knock,blast_kinds,only_explosions,lookup_projectile,gas_chain,gas_census,cover_breaks --ticks 300
+scenes available: calibration,wall_stop,door_stop,over_sandbags,pit_colonist,pit_enemy,no_cross,cover_breaks,items,corpse_into_pit,killed_by_blast,shelf,in_pit_skip,heavy_skip,all_fly_no_cap,settings_off,emp_no_throw,lookup_projectile,lookup_zero_wins,impact_factor,body_override,immunity_window,shield_counter,goods_fly_midair,goods_fly_lands,goods_fly_wall,goods_fly_rebound,goods_fly_off,fire_half,harmful_unpatched,container_thrown,heavy_knock,land_no_bump,land_no_bump_pit,gas_clumps,mass_and_power,mass_and_power_x2,mass_and_power_off,mass_and_power_off_x2,mass_and_power_250,mass_and_power_250_x2,pawn_hits_pawn,only_explosions,open_storage,no_cross_ordered,spared_states,blast_kinds,goods_fly_wild,gas_chain,gas_census,pawn_arc,pit_goods_fetch,hose_carry_drop,hose_carry_drop_off,closed_containers,closed_containers_control,settings_sweep,settings_sweep_after,frame_probe_selfcheck,frame_probe_selfcheck_paused,barrage_perf,barrage_perf_off,gas_into_pit,gas_into_pit_off,goods_obstacles,goods_obstacles_control,storeroom_bomb_pit,storeroom_bomb_pit_control,pit_colonist_control flowworks=True hoses=True
+goods_fly_wild   advanced 300/300 ticks in 1 s via jawa/safe_advance
+goods_fly_wild   PASS comp 13,12->11,12 (2 cells) want=6 back=3 rebounds=1 impactAtRebound=True [type=item_rebound tick=4990 exp=66516 thing=ComponentIndustrial66514 at=14,12 hit=Wall left=5 cells=3 to=11,12 bounce=1]
+goods_fly_wild   SETTINGS after verdict: all at the run's defaults
+all_fly_no_cap   advanced 300/300 ticks in 2 s via jawa/safe_advance
+all_fly_no_cap   PASS no_cap=True all_fly=True every_request_answered=True kernelSaysMove=80 requests=90 launches=10 itemMoves=80 maxMovesInOneTick=24 cappedSkips=0 pawns=10 items=80
+all_fly_no_cap   SETTINGS after verdict: all at the run's defaults
+open_storage     advanced 300/300 ticks in 1 s via jawa/safe_advance
+open_storage     PASS g0 43,12->49,12 (6 cells) | floor control 6 cells; g1 41,12->35,12 (6 cells) | floor control 6 cells; g2 42,13->42,19 (6 cells) | floor control 6 cells; g3 42,10->42,6 (4 cells) | floor control 4 cells;
+open_storage     SETTINGS after verdict: all at the run's defaults
+heavy_knock      advanced 300/300 ticks in 1 s via jawa/safe_advance
+heavy_knock      PASS hit=True pass=True heavyMass=15 heavyAt=61,12 ph=61,12 phHp=0.981 lightAt=50,12 [type=heavy_hit tick=5895 exp=66777 thing=Steel66767 pawn=Human66769 pawnId=66769 at=61,12 mass=15 damage=3.082623 stunTicks=30 pawnDead=False] passes=1
+heavy_knock      SETTINGS after verdict: all at the run's defaults
+blast_kinds      advanced 300/300 ticks in 2 s via jawa/safe_advance
+blast_kinds      PASS flame%=50 swapped%=100 cells 1/2 frag%=100 bombsuper%=100 harmless quiet=True
+blast_kinds      SETTINGS after verdict: all at the run's defaults
+only_explosions  advanced 300/300 ticks in 2 s via jawa/safe_advance
+only_explosions  PASS melee+bullet requests=0 moved=0; grenade p 89,12->90,12 (1 cells)
+only_explosions  SETTINGS after verdict: all at the run's defaults
+lookup_projectile advanced 300/300 ticks in 2 s via jawa/safe_advance
+lookup_projectile PASS p 103,12->110,12 (7 cells) want~7 [type=request tick=6784 exp=66862 thing=Human66858 from=103,12 centre=102,12 radius=2.9 force=2.5 damType=Bomb source=projectile shieldAbsorbed=False typeForce=2.5 damage=50 damageRatio=1]
+lookup_projectile SETTINGS after verdict: all at the run's defaults
+gas_chain        advanced 300/300 ticks in 2 s via jawa/safe_advance
+gas_chain        PASS chain=True goods=True shove=True cover=True noHeavyHit=True maxGoodsTravel=2 maxGoodsDisplacement=2 bursts=20 burstTicks=5 goodsMoves=4 maxGoodsPlanned=2 pawnShoves=1 cooldownOk=True gasReg=True coverHp=160/160
+gas_chain        SETTINGS after verdict: all at the run's defaults
+gas_census       advanced 300/300 ticks in 2 s via jawa/safe_advance
+gas_census       PASS chain=True goods=True shove=True cover=True noHeavyHit=True maxGoodsTravel=2 maxGoodsDisplacement=2 bursts=18 burstTicks=4 goodsMoves=3 maxGoodsPlanned=2 pawnShoves=1 cooldownOk=True gasReg=True coverHp=160/160
+gas_census       SETTINGS after verdict: all at the run's defaults
+cover_breaks     advanced 300/300 ticks in 2 s via jawa/safe_advance
+cover_breaks     PASS coversLeft=0 pawnInPit=True descents=1 at 149,12
+cover_breaks     SETTINGS after verdict: all at the run's defaults
+VERDICT PASS  (10 scenes) -> \\wsl.localhost\Ubuntu\home\mandrake\rm\runner\Transient\explosive_knockback\run_20261126T005726.jsonl
