@@ -262,6 +262,11 @@ def static_lint(d):
 
 PULSE_ANCHOR = "public void Pulse(IEnumerable<int> seeds) { pulse++; k.Pulse(seeds, pulse); Sync(); }"
 PULSE_HOOK = "public void Pulse(IEnumerable<int> seeds) { pulse++; VV.MatrixFlags.Apply(k); k.Pulse(seeds, pulse); Sync(); }"
+# the sliced pulse drives the kernel itself (BeginPulse/StepPulse), not ArrayWorld.Pulse: without its own hook the forced
+# flags reached only the atomic twin, and "sliced equals atomic" compared two configurations
+# (RIMMANDRAKE_CLASSIFY_VV_REDS_EDGE_SINKS_OFF_LEDGER_GAP: ExcavationTick_sliced_pulse_equals_atomic, Rain_pocket_sliced_equals_atomic_and_inert_dry)
+SLICE_ANCHOR = "            aw.pulse++;\n            aw.k.BeginPulse(seeds, aw.pulse);\n"
+SLICE_HOOK = "            aw.pulse++;\n            VV.MatrixFlags.Apply(aw.k);\n            aw.k.BeginPulse(seeds, aw.pulse);\n"
 CASE_ANCHOR = "        private static void Case(string name, Action fn)\n        {\n"
 CASE_HOOK = CASE_ANCHOR + "            VV.MatrixFlags.CurrentCase = name;\n"
 
@@ -463,6 +468,7 @@ def stage_flowworks(control=False, source_plants=(), tag=""):
         path = os.path.join(vv, "VVControl.csproj")
     else:
         _patch(os.path.join(st, "Program.cs"), CASE_ANCHOR, CASE_HOOK)
+        _patch(os.path.join(st, "ExcavationTickChecks.cs"), SLICE_ANCHOR, SLICE_HOOK)
         proj = _probe_csproj(os.path.join(st, "RimMandrakeFlowWorks.SelfTest.csproj"), ["VV\\ShippedMatrixProbe.cs"],
                              "RimMandrake.FlowWorks.SelfTest.VV.ShippedMatrixProbe", "VV_HOSE", "VVProbe", beside=True)
         path = os.path.join(st, "VVProbe.csproj")
