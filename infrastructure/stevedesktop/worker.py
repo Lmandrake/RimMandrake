@@ -715,6 +715,27 @@ def run_proof_line(sh, cmd, log, timeout):
     return rc, "rerun under python.exe (WSL has no route to the bridge): %s" % (tail or "")
 
 
+def proof_site(text, cid):
+    """-> the command that makes the scene a clause's proof reads, run before it: the clause's own `live-site` line, else
+    the default site (rimflow/proof_lines.DEFAULT_SITE: a map, a quicktest only when there is none; TESTQ_CMD_SITE in a
+    test), else None (a file whose proofs want the main menu, a load pair or only a deploy). A pinned tree with no
+    proof_lines module runs no site. PLAYER_START_SITE_1 A1 (J20261126T185703Z-949b32): the tier load left Steve1 on the
+    main menu, and a proof that reads a map recorded FAIL, a verdict about the mod from a game with no map."""
+    try:
+        import proof_lines as PL
+    except ImportError:
+        return None
+    site = PL.site_for(text, cid)
+    if site == PL.DEFAULT_SITE:
+        return os.environ.get("TESTQ_CMD_SITE") or "%s --max-ticks %d" % (site, SITE_ANY_AGE)
+    return site
+
+
+# Not a limit: live_site refuses a game past two in-game days as someone's colony, and on the lane every game is a test
+# game (the same lift as testq/stage6_checks.FRESH), so the default site leaves a long-kept test map in place.
+SITE_ANY_AGE = 100000000
+
+
 # RIMMANDRAKE_KILL_WINDOWS_CHILD_ON_TESTQ_CANCEL_ORPHAN_DROVE_STEVE2: `testq cancel --running` of J20261125T083122Z-dedc8e
 # ended the worker, but thirst_live.py (Windows pid 11336) drove Steve2 for 20 minutes more. A killpg of the attempt's
 # bash kills the WSL interop shim, and the shim takes its own Windows python.exe with it, but Windows kills no child of a
@@ -1729,7 +1750,8 @@ class Attempt:
         # TESTQ_PROOFS_DIR: a selftest's proofs folder; the real one is the pinned clone's, at source_sha
         path = os.path.join(os.environ["TESTQ_PROOFS_DIR"], self.job["item"] + ".txt") if os.environ.get(
             "TESTQ_PROOFS_DIR") else os.path.join(CLONE, rel)
-        lines = S.proof_lines(read_text(path) or "")
+        text = read_text(path) or ""
+        lines = S.proof_lines(text)
         budget = int(os.environ.get("TESTQ_RUN_TIMEOUT_S") or self.job.get("timeout_s", 21600))
         per = max(60, budget // max(1, len(clauses)))
         rows = []
@@ -1739,6 +1761,14 @@ class Attempt:
                 rows.append({"chain": "proofs", "row": c, "verdict": "UNMEASURED",
                              "detail": "no `live-proof %s:` line in %s at %s" % (c, rel, self.job["source_sha"])})
                 continue
+            site = proof_site(text, c)
+            if site:
+                src, stail = run_proof_line(self.sh, site, "site_%s.log" % c, per)
+                if src != 0:
+                    rows.append({"chain": "proofs", "row": c, "verdict": "UNMEASURED", "detail": (
+                        "the site did not stand (%s, exit %s), so no proof ran: %s" % (site, src, stail or ""))[
+                        -S.DETAIL_CAP:]})
+                    continue
             log = "proof_%s.log" % c
             rc, tail = run_proof_line(self.sh, cmd, log, per)
             verdict, crashed = proof_verdict(rc, tail)

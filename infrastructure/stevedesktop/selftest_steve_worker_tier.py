@@ -40,6 +40,9 @@ if os.environ.get("SWAP_FAIL"):
 open(os.environ["TIER_STATE"], "w").write(os.environ.get("AFTER_SWAP", "exact"))
 '''
 PROOFS = ("live-tier: ratchet_pilot\n"
+          "live-site A1: echo site-A1 >> \"$TIER_LOG\"\n"
+          "live-site A5: echo site-A5 >> \"$TIER_LOG\"; exit 4\n"
+          "live-proof A5: echo ran-A5 >> \"$TIER_LOG\"; echo PASS: A5\n"
           "live-proof A1: echo ran-A1 >> \"$TIER_LOG\"; echo PASS: A1\n"
           "live-proof A2: echo ran-A2 >> \"$TIER_LOG\"; echo 'A2 FAIL MOD: 39 mods'; exit 1\n"
           "live-proof A3: echo ran-A3 >> \"$TIER_LOG\"; exit 3\n")
@@ -82,7 +85,7 @@ def main():
                    TESTQ_CMD_DOWN="echo down >> %s" % downs, TESTQ_CMD_PROBE="true", TESTQ_PROBE_GAP_S="0",
                    TESTQ_CMD_RUN="echo modcheck-must-not-run >> %s; false" % log,
                    TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",
-                   TESTQ_CMD_BRIDGE="true",
+                   TESTQ_CMD_BRIDGE="true", TESTQ_CMD_SITE="echo site-default >> %s" % log,
                    TESTQ_CMD_TIERCHECK="%s %s" % (sys.executable, check_py),
                    TESTQ_CMD_TIERSWAP="%s %s" % (sys.executable, swap_py), TESTQ_PROOFS_DIR=proofs,
                    TIER_STATE=state, TIER_LOG=log, RIMFLOW_DRIVER_LOCK=os.path.join(tmp, "DRIVER_LOCK.json"),
@@ -99,7 +102,7 @@ def main():
                 if os.path.exists(p):
                     os.remove(p)
             open(state, "w").write(start_state)
-            job = S.make_job("VITALS_X", {"proofs": ["A1", "A2", "A3", "A4"]}, "fix", "RELENTLESS", head,
+            job = S.make_job("VITALS_X", {"proofs": ["A1", "A2", "A3", "A4", "A5"]}, "fix", "RELENTLESS", head,
                              item="VITALS_X", profile="tier:ratchet_pilot", lane="stevedesktop", deploy=["Mock"])
             r = B.subprocess.run([sys.executable, B.WORKER, "start"], input=json.dumps(job), env=dict(env, **extra),
                                  capture_output=True, text=True, timeout=60)
@@ -124,8 +127,18 @@ def main():
         # 1. the game already runs the tier: kept, proofs judged
         res, lg, dp, dn = run("exact")
         v = {r["row"]: r["verdict"] for r in res.get("rows", [])}
-        check(res.get("outcome") == "DONE" and v == {"A1": "PASS", "A2": "FAIL", "A3": "UNMEASURED", "A4": "UNMEASURED"},
-              "exit 0 PASS, 1 FAIL, 3 UNMEASURED, no line UNMEASURED: %s %s" % (v, res.get("note")))
+        check(res.get("outcome") == "DONE" and v == {"A1": "PASS", "A2": "FAIL", "A3": "UNMEASURED", "A4": "UNMEASURED",
+                                                     "A5": "UNMEASURED"},
+              "exit 0 PASS, 1 FAIL, 3 UNMEASURED, no line UNMEASURED, a site that did not stand UNMEASURED: %s %s"
+              % (v, res.get("note")))
+        # PLAYER_START_SITE_1 A1 (J20261126T185703Z-949b32): the tier load left the game on the main menu and a proof
+        # that reads a map recorded FAIL. Each clause's site runs first: its own `live-site` line, else the default
+        # site (live_site.py --game: a map, a quicktest only when there is none), as the retired live stage did.
+        steps = [x for x in lg.split() if x.startswith(("site-", "ran-"))]
+        check(steps[:4] == ["site-A1", "ran-A1", "site-default", "ran-A2"],
+              "each clause's site runs before its proof, its own line first, else the default: %r" % steps)
+        check("site-A5" in steps and "ran-A5" not in steps and "site did not stand" in json.dumps(res.get("rows")),
+              "a site that did not stand runs no proof, and the row says why: %r" % steps)
         check("swap" not in lg and not dn and "modcheck-must-not-run" not in lg,
               "a game already on the tier is kept: no down, no swap, no modcheck: %r %r" % (lg, dn))
         check(res.get("tier", {}).get("exact") is True and res.get("running") == ["a", "b"],
@@ -145,7 +158,7 @@ def main():
         res, lg, dp, dn = run("wrong", AFTER_SWAP="wrong")
         v = {r["row"]: r["verdict"] for r in res.get("rows", [])}
         check(res.get("outcome") == "INVALID" and res.get("cause") == "LOAD" and set(v.values()) == {"UNMEASURED"}
-              and len(v) == 4, "a load that is not the tier is UNMEASURED, never a verdict: %s %s" % (v, res.get("note")))
+              and len(v) == 5, "a load that is not the tier is UNMEASURED, never a verdict: %s %s" % (v, res.get("note")))
         check("ran-" not in lg and "WRONG_TIER" in json.dumps(res.get("rows")),
               "no proof ran, and each row says why: %r" % lg)
         # 4. the swap refused

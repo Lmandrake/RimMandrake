@@ -29,6 +29,7 @@ PAGES = {
     "design/specs/2026-11-26-world-sea-lists/boundary.md": "src/RimMandrake/BiomesShell/selftest_world_sea_lists.py",
     "design/specs/2026-11-26-flyer-cutout-area/boundary.md": "src/RimMandrake/Utils/art/selftest_flyer_cutout_area.py",
     "design/specs/2026-11-26-testq-stop-ends-windows-tree/boundary.md": "infrastructure/stevedesktop/selftest_steve_worker_windows_tree.py",
+    "design/specs/2026-11-26-lane-proofs-site/boundary.md": "infrastructure/stevedesktop/selftest_steve_worker_proof_site.py",
     "design/specs/2026-11-26-shared-helper-start/boundary.md": "src/RimMandrake/rimflow/selftest_shared_start.py",
     "design/specs/2026-11-24-flight-frames/boundary.md": "src/RimMandrake/Utils/selftest_flight_frames.py",
     "design/specs/scanguard/boundary.md": ".claude/hooks/selftest_block_blind_scan.py",
