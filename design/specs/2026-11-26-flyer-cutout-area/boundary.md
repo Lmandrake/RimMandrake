@@ -46,7 +46,7 @@ south wings. `keep_pale` keeps body-pale pixels in the plate.
   frame and sy named for one without.
 - **build-re-bakes-from-the-recorded-source.** `build` on a facing with `source` bakes from that master, and the frames
   equal `compose_facing` of `source_master`; `opaque_from` makes pixels at or over that alpha solid, and no others.
-- **the-baked-row-reads-the-shipped-frames.** Frames equal to the area bake of the recorded source read BAKED GREEN;
+- **the-baked-row-reads-the-shipped-frames.** Frames equal to the bake of a facing's recorded source read BAKED GREEN;
   one changed pixel reads BAKED RED and names the frame.
 - **a-facing-it-cannot-read-is-unmeasured.** A facing whose master frame is not in `--src` reads UNMEASURED and exits 2,
   never GREEN.

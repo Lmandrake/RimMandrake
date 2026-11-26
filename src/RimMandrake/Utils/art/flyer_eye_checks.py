@@ -21,8 +21,8 @@ Verbs:
   alias CONFIG [--src DIR] [--facing F]   each wing pose under |sy| 0.5 as the bake draws it against a reference that reads every
         source row (REF_ROWS sub-rows per output row, its own sampler): the mean premultiplied RGB error on the wing's
         ink. RED over ALIAS_MAX. The owner's FireHawk east ("static-like noise", 2026-11-07) read 34 here; frames he
-        called good read under 4. BAKED: a facing with `"area": true` and a recorded `"source"` ({"path", "rev", "pad"})
-        must hold exactly the area bake of that source, or it is RED. A facing whose master frame is not in DIR is UNMEASURED (exit 2 unless a row is RED)
+        called good read under 4. BAKED: a facing with a recorded `"source"` ({"path", "rev", "pad"}) must hold exactly the
+        bake of that source, or it is RED. A facing whose master frame is not in DIR is UNMEASURED (exit 2 unless a row is RED)
   belly CONFIG [--src DIR]   body pixels a wing would carry away: pale pixels (value >= BELLY_VALUE, saturation <=
         BELLY_SAT) joined to the protected body, counted inside each wing layer as split() cuts it. RED over BELLY_MAX
         in a layer (the owner's Porg, 2026-11-07: "white flesh appears to rip away from the body"; it read 461 and 348).
@@ -234,10 +234,10 @@ def alias_rows(config: dict, src: Path, only: str | None = None) -> tuple[list[t
 
 
 def installed_rows(config: dict, src: Path, only: str | None = None) -> list[tuple[str, bool, str]]:
-    """(facing, the frames in SRC equal the bake of the recorded source, detail) for each area facing with a source."""
+    """(facing, the frames in SRC equal the bake of the recorded source, detail) for each facing with a source."""
     out = []
     for facing, fc in config["facings"].items():
-        if (only and facing != only) or not fc.get("area") or not fc.get("source"):
+        if (only and facing != only) or not fc.get("source"):
             continue
         paths = FC.FL.frame_paths(src, config["prefix"], facing)
         if not paths:
@@ -246,8 +246,8 @@ def installed_rows(config: dict, src: Path, only: str | None = None) -> list[tup
         frames = [np.asarray(Image.open(p).convert("RGBA")) for p in paths]
         baked, _, _ = FC.compose_facing(FC.source_master(fc["source"], frames[0].shape[0]), fc, len(frames))
         bad = [i + 1 for i, (x, y) in enumerate(zip(frames, baked)) if not np.array_equal(x, y)]
-        out.append((facing, not bad, f"frames {bad} differ from the area bake of {fc['source']['path']}" if bad
-                    else f"{len(frames)} frames are the area bake of {fc['source']['path']}"))
+        out.append((facing, not bad, f"frames {bad} differ from the bake of {fc['source']['path']}" if bad
+                    else f"{len(frames)} frames are the bake of {fc['source']['path']}"))
     return out
 
 
