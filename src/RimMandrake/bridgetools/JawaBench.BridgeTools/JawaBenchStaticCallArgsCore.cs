@@ -56,6 +56,36 @@ namespace JawaBench.BridgeTools
             throw new ArgumentException("not a scalar this core coerces: " + pt.Name);
         }
 
+        /// <summary>True when <paramref name="pt"/> is a delegate that returns nothing (Action, Action&lt;T&gt;, a
+        /// void callback type). jawa/static_call takes one as 'noop'. Kept out of <see cref="Handles"/> so
+        /// jawa/comp_set never writes a delegate field.</summary>
+        public static bool IsVoidDelegate(Type pt)
+        {
+            if (pt == null || !typeof(Delegate).IsAssignableFrom(pt) || pt == typeof(Delegate) || pt == typeof(MulticastDelegate))
+                return false;
+            MethodInfo invoke = pt.GetMethod("Invoke");
+            return invoke != null && invoke.ReturnType == typeof(void);
+        }
+
+        /// <summary>'noop' -> a delegate of <paramref name="pt"/> that does nothing; 'null' or empty -> null.
+        /// Any other text, or a delegate that returns a value, throws ArgumentException.
+        /// LAUNCH_HELD_COLONIST_WARNING_1: vanilla GravshipUtility.PreLaunchConfirmation(engine, Action) builds the
+        /// launch dialog; a live test reads that dialog, so its launch callback must do nothing.</summary>
+        public static Delegate Noop(Type pt, string a)
+        {
+            if (!IsVoidDelegate(pt)) throw new ArgumentException(pt?.Name + " is not a delegate that returns nothing");
+            string s = (a ?? "").Trim();
+            if (s.Length == 0 || s == "null") return null;
+            if (s != "noop") throw new ArgumentException("a delegate argument takes 'noop' (does nothing) or 'null', not '" + a + "'");
+            if (pt == typeof(Action)) return (Action)NoopBody;
+            ParameterInfo[] ps = pt.GetMethod("Invoke").GetParameters();
+            var args = new System.Linq.Expressions.ParameterExpression[ps.Length];
+            for (int i = 0; i < ps.Length; i++) args[i] = System.Linq.Expressions.Expression.Parameter(ps[i].ParameterType);
+            return System.Linq.Expressions.Expression.Lambda(pt, System.Linq.Expressions.Expression.Empty(), args).Compile();
+        }
+
+        static void NoopBody() { }
+
         /// <summary>jawa/comp_set: write one scalar instance field (private and inherited ones too) and read it back.
         /// Returns null when written, else the refusal; a refusal writes nothing.</summary>
         public static string SetField(object target, string member, string text, out object before, out object after)

@@ -17,6 +17,8 @@ CHAINS
   map_mechanics_wiring each of the 12 mechanics: toggle gates its Source file (offline), toggle live-readable, kit-shipped defs resolve.
   map_mechanics       gas, area attacks, weather conditions, water truce, boles, tar, glasswalk...: UNMEASURED, each with the
                       reason (needs a generated biome map / an incident / game days; this run may not drive them).
+  launch_held_colonist_warning  the gravship launch confirmation (vanilla's own dialog) names a colonist sealed in a brine
+                      jacket with what holds them; it is vanilla with nobody held and with the setting off.
 
 STATIC: `python3 validation.py` -> `STATIC: PASS (0 findings)`; needs no game.
 """
@@ -461,6 +463,117 @@ def _build_suite():
             with t.component(name, toggle=toggle):
                 if _live(t):
                     _unmeasured(t, why)
+
+    # ---------------------------------------------------------------- LAUNCH_HELD_COLONIST_WARNING_1
+    # The gravship launch confirmation names a colonist held inside something that is not ours (A3), and is vanilla
+    # with nobody held (A3) and with the setting off (A4). The dialog is vanilla's own: jawa/static_call runs
+    # GravshipUtility.PreLaunchConfirmation(engine, noop), the call the takeoff ritual makes, so the launch callback
+    # does nothing; jawa/window_list_close reads the Dialog_MessageBox text back and closes it. The colonist is held by
+    # the real brine jacket (DivingInteraction's BrineEncasementUtility.TryEncase, the path every jacket takes).
+    # The setting-off arm is the planted state of the held arm: the same instrument on the same scene must read no line.
+    HELD_LINE = "Held inside something"
+    JACKET_XML = os.path.join(HERE, "..", "DivingInteraction", "Defs", "ThingDefs_Buildings", "RM_BrineEncasement.xml")
+
+    def _jacket_label():
+        try:
+            for d in ET.parse(JACKET_XML).getroot():
+                if d.findtext("defName") == "RM_BrineEncasement":
+                    return (d.findtext("label") or "").strip()
+        except (OSError, ET.ParseError):
+            return ""
+        return ""
+    TAG = re.compile(r"</?color[^>]*>")
+
+    def _launch_text(t, engine):
+        """Open vanilla's launch confirmation for `engine`, return its text, close it. UNMEASURED when no dialog came."""
+        _close_boxes(t)
+        r = t.session.call("jawa/static_call", type="RimWorld.GravshipUtility", method="PreLaunchConfirmation",
+                           args="%s|noop" % engine)
+        if not (r or {}).get("success"):
+            raise ExpectationFailed("UNMEASURED: PreLaunchConfirmation could not be called: %s" % str(r)[:300])
+        rows = (t.session.call("jawa/window_list_close", action="list") or {}).get("windows") or []
+        boxes = [w for w in rows if str(w.get("type", "")).endswith("Dialog_MessageBox")]
+        if not boxes:
+            raise ExpectationFailed("UNMEASURED: no launch confirmation appeared (Odyssey off? windows %s)"
+                                    % [w.get("type") for w in rows][:8])
+        text = boxes[-1].get("text")
+        _close_boxes(t)
+        if not text:
+            raise ExpectationFailed("UNMEASURED: the dialog text is unreadable (a companion without the text field?): %r"
+                                    % (boxes[-1],))
+        return TAG.sub("", text)
+
+    def _close_boxes(t):
+        t.session.call("jawa/window_list_close", action="close", typeName="Dialog_MessageBox", closeAll=True,
+                       doCloseSound=False)
+
+    @suite.chain("launch_held_colonist_warning")
+    def launch_held_colonist_warning(t):
+        state = {}
+        with t.component("nobody_held_launch_dialog_is_vanilla", toggle="launchHeldColonistWarningEnabled"):
+            if not _live(t):
+                raise RowDone()
+            t.clear_area(size=30)
+            x, z = t.anchor
+            ex, ez = x - 8, z
+            t.session.call("jawa/set_terrain_batch", ops="Soil:%d,%d,7,7" % (ex - 3, ez - 3))
+            t.session.call("jawa/set_substructure_batch", action="set", rect="%d,%d,7,7" % (ex - 3, ez - 3),
+                           doLeavings=False)
+            b = t.session.call("jawa/build_batch", ops="GravEngine:%d,%d" % (ex, ez), faction="PlayerColony")
+            t.session.call("jawa/map_commit", full=True)
+            st = t.session.call("jawa/gravship_status") or {}
+            engines = [e for e in (st.get("engines") or [])
+                       if abs((e.get("x") or -99) - ex) <= 2 and abs((e.get("z") or -99) - ez) <= 2]
+            if not engines:
+                raise ExpectationFailed("UNMEASURED: no grav engine stood at %d,%d (build %s, status %s)"
+                                        % (ex, ez, str(b)[:200], str(st)[:200]))
+            state["engine"] = engines[0]["thingId"]
+            text = _launch_text(t, state["engine"])
+            state["vanilla"] = text
+            if HELD_LINE in text:
+                raise ExpectationFailed("the dialog names a held colonist with nobody held: %r" % text[-400:])
+        with t.component("held_colonist_named_with_what_holds_them", toggle="launchHeldColonistWarningEnabled"):
+            if not _live(t):
+                raise RowDone()
+            x, z = t.anchor
+            pid = t.spawn_pawn("Colonist", beyond=[(x + 4, z)])
+            if not pid:
+                raise ExpectationFailed("UNMEASURED: no colonist was spawned")
+            names = [p for p in ((t.session.call("jawa/list_pawns", limit=500) or {}).get("pawns") or [])
+                     if p.get("id") == pid]
+            enc = t.session.call("jawa/static_call", type="RimMandrake.DivingInteraction.BrineEncasementUtility",
+                                 method="TryEncase", args="%s|current" % pid)
+            if str((enc or {}).get("result")) != "True":
+                raise ExpectationFailed("UNMEASURED: the brine jacket did not take the colonist: %s" % str(enc)[:300])
+            label = _jacket_label()
+            if not label:
+                raise ExpectationFailed("UNMEASURED: the jacket's label is unreadable in %s" % JACKET_XML)
+            state["pid"], state["label"] = pid, label
+            text = _launch_text(t, state["engine"])
+            state["held_text"] = text
+            if HELD_LINE not in text:
+                raise ExpectationFailed("the dialog does not name the held colonist: %r" % text[-500:])
+            want = "(inside %s)" % label
+            lines = [ln for ln in text.splitlines() if want.lower() in ln.lower()]
+            name = str((names[0] if names else {}).get("name") or "")
+            if not name:
+                raise ExpectationFailed("UNMEASURED: the colonist's name is unreadable: %r" % (names,))
+            # the dialog shows NameFullColored ('First 'Nick' Last'); list_pawns shows the short label: one of its words
+            words = [w.strip("'").lower() for w in name.split() if len(w.strip("'")) > 1]
+            if not any(any(w in ln.lower() for w in words) for ln in lines):
+                raise ExpectationFailed("no line names %r %s: %r" % (name, want, text[-500:]))
+        with t.component("setting_off_launch_dialog_is_vanilla", toggle="launchHeldColonistWarningEnabled"):
+            if not _live(t):
+                raise RowDone()
+            r = _raw(t, "set", "launchHeldColonistWarningEnabled", "false")
+            try:
+                if not r.get("success"):
+                    raise ExpectationFailed("UNMEASURED: the setting could not be turned off: %r" % (r,))
+                text = _launch_text(t, state["engine"])
+            finally:
+                _raw(t, "set", "launchHeldColonistWarningEnabled", "true")
+            if HELD_LINE in text:
+                raise ExpectationFailed("with the setting off the dialog still names a held colonist: %r" % text[-400:])
 
     return suite
 

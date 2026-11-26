@@ -336,7 +336,8 @@ namespace JawaBench.BridgeTools
                 "coerced by the parameter type: int/long and every integer width, float/double/decimal, bool, string, an enum by name or number, IntVec3 as 'x,y,z' (or 'x,z'), " +
                 "Map as 'current' or a map index, ThingDef/any Def by defName, Thing/Pawn (or any Thing " +
                 "subclass) by exact ThingID ('Human123') or bare thingIDNumber, current map first then every " +
-                "map - refused with candidates when absent or not of the parameter's type. Instance methods and " +
+                "map - refused with candidates when absent or not of the parameter's type; a void delegate (Action, " +
+                "Action<T>) as 'noop', a callback that does nothing, or 'null'. Instance methods and " +
                 "overload ambiguity are REFUSED with the candidate signatures. The return value is " +
                 "rendered as text. Runs on the main thread. GM-gated: it can call anything public.",
             ResultDescription = "success, method (signature), result, ticksGame.")]
@@ -406,6 +407,7 @@ namespace JawaBench.BridgeTools
                                 resolved.Add(new { arg = i, thing = found.ThingID, type = found.GetType().Name, foundAt });
                             }
                         }
+                        else if (JawaBenchStaticCallArgsCore.IsVoidDelegate(pt)) vals[i] = JawaBenchStaticCallArgsCore.Noop(pt, a);
                         else return Fail("Unsupported parameter type " + pt.Name + " (arg " + i + ").");
                     }
                     catch (Exception e) { return Fail("Cannot coerce arg " + i + " '" + a + "' to " + pt.Name + ": " + e.Message); }

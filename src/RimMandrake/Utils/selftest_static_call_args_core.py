@@ -12,11 +12,17 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 sys.path.insert(0, HERE)
 
-MIN_UNITS = 38
+MIN_UNITS = 48
+
+
+DELEGATE_UNITS = {"delegate.action_is_void", "delegate.action_of_int_is_void", "delegate.func_not_void",
+                  "delegate.not_a_delegate", "delegate.not_a_scalar", "delegate.noop_runs",
+                  "delegate.noop_with_arg_runs", "delegate.null_is_null", "delegate.other_text_refused",
+                  "delegate.func_refused"}
 
 
 def t_thing_ids_resolve(lines):
-    missing = {"thing_id.digit_ending_def_name", "thing_id.bare_number"} - {ln.split()[1] for ln in lines}
+    missing = ({"thing_id.digit_ending_def_name", "thing_id.bare_number"} | DELEGATE_UNITS) - {ln.split()[1] for ln in lines}
     for name in sorted(missing):
         print("FAIL missing unit " + name)
     return not missing

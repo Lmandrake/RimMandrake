@@ -48,7 +48,7 @@ namespace JawaBench.BridgeTools
                 "silently blocking every later call - a failure this project has hit before.",
             ResultDescription =
                 "list: success, count, windows[] (index, type, optionalTitle, layer, ID, " +
-                "isDebug, forcePause). close: success (false if ANY target survived), " +
+                "isDebug, forcePause, text: a Dialog_MessageBox's body, else null). close: success (false if ANY target survived), " +
                 "closedCount, closed[] (type, optionalTitle), refusedCount, refused[] - a " +
                 "window whose own OnCloseRequest() vetoed the close, verified against the " +
                 "stack AFTER the call rather than assumed from Close() returning - plus " +
@@ -90,7 +90,10 @@ namespace JawaBench.BridgeTools
                             layer = w.layer.ToString(),
                             id = w.ID,
                             isDebug = w.IsDebug,
-                            forcePause = w.forcePause
+                            forcePause = w.forcePause,
+                            // a message box's body, as the player reads it (LAUNCH_HELD_COLONIST_WARNING_1 reads the
+                            // gravship launch confirmation); null for every other window
+                            text = (w as Dialog_MessageBox)?.text.ToString()
                         });
                     }
                     return new { success = true, action = "list", count = rows.Count, windows = rows, ticksGame = TicksGameSafe() };

@@ -67,6 +67,38 @@ namespace JawaBench.BridgeTools
                 "expected #53196, got " + (got?.ThingID ?? "no match"));
         }
 
+        // jawa/static_call takes a void delegate as 'noop' (LAUNCH_HELD_COLONIST_WARNING_1: vanilla
+        // GravshipUtility.PreLaunchConfirmation(engine, Action launchAction) builds the launch dialog; a live test
+        // reads that dialog without launching, so the callback must exist and must do nothing)
+        static void Delegates()
+        {
+            U("delegate.action_is_void", C.IsVoidDelegate(typeof(Action)));
+            U("delegate.action_of_int_is_void", C.IsVoidDelegate(typeof(Action<int>)));
+            U("delegate.func_not_void", !C.IsVoidDelegate(typeof(Func<int>)));
+            U("delegate.not_a_delegate", !C.IsVoidDelegate(typeof(string)));
+            U("delegate.not_a_scalar", !C.Handles(typeof(Action)));
+            try
+            {
+                var a = C.Noop(typeof(Action), "noop") as Action;
+                a();
+                U("delegate.noop_runs", a != null);
+            }
+            catch (Exception e) { U("delegate.noop_runs", false, e.GetType().Name + ": " + e.Message); }
+            try
+            {
+                var a = C.Noop(typeof(Action<int>), "noop") as Action<int>;
+                a(3);
+                U("delegate.noop_with_arg_runs", a != null);
+            }
+            catch (Exception e) { U("delegate.noop_with_arg_runs", false, e.GetType().Name + ": " + e.Message); }
+            try { U("delegate.null_is_null", C.Noop(typeof(Action), "null") == null); }
+            catch (Exception e) { U("delegate.null_is_null", false, e.Message); }
+            try { object got = C.Noop(typeof(Action), "launch"); U("delegate.other_text_refused", false, "accepted as " + got); }
+            catch (ArgumentException) { U("delegate.other_text_refused", true); }
+            try { object got = C.Noop(typeof(Func<int>), "noop"); U("delegate.func_refused", false, "accepted as " + got); }
+            catch (ArgumentException) { U("delegate.func_refused", true); }
+        }
+
         static int Main()
         {
             // ---------------- the pour-label case: RM_GodLiquidMath.StepLabel(long)
@@ -126,6 +158,7 @@ namespace JawaBench.BridgeTools
             e1 = C.SetField(t, "Never", "7", out was, out now);
             U("set.const_refused", e1 != null, e1);
             ThingArgs();
+            Delegates();
 
             Console.WriteLine("U-count " + n);
             return 0;
