@@ -1,0 +1,2 @@
+An edit that rewrites a tracked script can drop its 100755 mode (66512f784d did, on findings_judge.sh and claude_session.sh). A systemd unit that runs the script by path then fails 203/EXEC 'Permission denied', and the only sign is a downstream alarm. ./publish now refuses this (selftest_exec_bits); when a unit dies 203/EXEC, run git ls-files -s on its ExecStart path first.
+item: OPS_FINDINGS_DIAGNOSE_XZLM
