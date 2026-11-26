@@ -579,7 +579,7 @@ def row_gates(s, L, door, key, stuff):
                 try:
                     import water_scenes_walk as m
                     sfx, ok = held_open_suffix(m.gate_open(s.w, mid))
-                    label += sfx
+                    label = (label if ok else label.replace(", HELD OPEN", ", hold-open tried")) + sfx
                     if not ok:
                         s.notes.append("hold-open of %s at %s did not read open: %s" % (door, mid, sfx))
                 except Exception as ex:  # noqa: BLE001

@@ -503,5 +503,24 @@ check("an open gate's report reads held open", _ok and "FAILED" not in _sfx, (_s
 _sfx, _ok = ORS.held_open_suffix("REFUSED: no door at 1,2")
 check("a report with no open= state is not called held open", not _ok, (_sfx, _ok))
 
+def gates_labels(shut):
+    import water_scenes_walk as m
+    real = m.gate_open
+    m.gate_open = (lambda w, c: "DOOR RM_Sluice open=False seals=True") if shut else (lambda w, c: "DOOR RM_Sluice open=True")
+    try:
+        st = stage(_RealFake)
+        with contextlib.redirect_stdout(io.StringIO()):
+            ORS.row_gates(st, ORS.layout(100, 100), "RM_Sluice", "gates_sluice", "WoodLog")
+    finally:
+        m.gate_open = real
+    return [x["text"] for x in st.stations]
+
+
+_shut = [t for t in gates_labels(True) if "hold-open" in t]
+check("can-fail: a gate that did not open is never captioned HELD OPEN", _shut and not any("HELD OPEN" in t for t in _shut), _shut)
+_open = gates_labels(False)
+check("a gate that opened is captioned HELD OPEN", any("HELD OPEN" in t for t in _open), _open)
+
+
 print("selftest_owner_review_stage: %d failure(s)" % len(FAILS))
 sys.exit(1 if FAILS else 0)
