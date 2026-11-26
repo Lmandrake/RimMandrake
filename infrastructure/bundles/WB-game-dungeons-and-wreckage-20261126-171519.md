@@ -23,8 +23,16 @@ check was written, every row PASS).
 
 ## Step C
 
-- FASCINATING_WORLD_JUNK_1: `src/RimStarWars/StarWarsPatches/prove_junk_roster_live.py` (A1 map vs roster, A2 Fall
-  Line report); offline `--selftest` passes. Next: lane job, read it, then the judge's look.
-- TILE_STRUCTURE_DESIGNS_1: `src/RimMandrake/StructureInjections/prove_plan_ordering_live.py`; offline `--selftest`
-  passes. Next: lane job, read it.
-- HUTT_SLAVE_PIT_TEST_SITE_1: needs a site-map staging (C# proof or `jawa/world_tile_map_generate`). Next: build it.
+| member | outcome | commit | live reading |
+|---|---|---|---|
+| TILE_STRUCTURE_DESIGNS_1 | done (verify A1 L2) | d6072e1d70 | J20261126T181641Z-910c5c: A1 PASS, 130 terrain, 192 roof, 60 walls as planned, again after 2500 ticks |
+| HUTT_SLAVE_PIT_TEST_SITE_1 | done (verify A1-A3 L2) | d57de9a370 (fix), d6072e1d70 (site proof) | J20261126T181716Z-098f55: A2 FAIL, a slave NOTSOLD (red); J20261126T185217Z-d22efe: A1, A2, A3 PASS |
+| FASCINATING_WORLD_JUNK_1 | open | fbda2bccae, 026c7de0eb | A2 PASS (J20261126T181800Z-e28f66); A1 rerun J20261126T193905Z-e58a2a; then the judge's look |
+| LIQUID_INDUSTRY_SETPIECES_1 | re-homed to mod:FlowWorks, REFUSED BY BUNDLE note | none | none |
+
+- Mod fault found and fixed: an awake colony slave at a buyer pit was a rider, never cargo (vanilla IsColonist is true for
+  a secure slave). GoesIntoHolder, HoldsRiderInTransit and DialogHidesPawn now treat a slave at a buyer pit as cargo
+  for sale; KeelHoistFuzz red on the planted old rule, green on the fix.
+- Lane defect: SteveDesktop proofs jobs staged no map (31 of 162 proof rows on record UNMEASURED with no map). Fixed
+  in parallel by PLAYER_START_SITE_1 (e3f4e9f0f0); this run's duplicate fix was dropped before it landed.
+- Next: read the junk A1 rerun; then the judge's look at a screenshot of a fresh map and the contact sheet.

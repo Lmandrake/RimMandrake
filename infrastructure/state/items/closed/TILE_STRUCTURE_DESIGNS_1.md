@@ -40,14 +40,13 @@ compiler.
 
 ## criteria
 
-- `GenStep_RimplacePlan` deployed and proven on at least one existing
-  template (`dwelling.lua` or `nursery.lua`) via a live quicktest.
-- At least one new roster row shipped as a rimplace template, wired to a
-  promise (LandmarkDef + TileMutatorDef + GenStepDef) or whisper
-  (territory table row), following the roster's coverage lint (no
-  promise without a registered responder).
-- The remaining ~40 rows are explicitly left open for further batches,
-  not silently declared done.
+- A1 L2: `GenStep_RimplacePlan` is proven on an existing template by a live quicktest: the plan's terrain, walls and
+  roof stand where the plan puts them, and still stand after the game runs.
+- A2 L0: At least one new roster row shipped as a rimplace template, wired to a promise (LandmarkDef + TileMutatorDef +
+  GenStepDef) or whisper (territory table row), following the roster's coverage lint (no promise without a registered
+  responder).
+- A3 L0: The rows not built are explicitly left open, not silently declared done: `structure_roster_lint.py` gives
+  each row a covered or a reasoned not-covered status.
 
 ## refs
 file: src/RimMandrake/StructureInjections/Source/GenStep_RimplacePlan.cs

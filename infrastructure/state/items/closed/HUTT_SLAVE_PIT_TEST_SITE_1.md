@@ -10,8 +10,9 @@ and a fixed `RM_HoistFrame` over the pit.
 - **Arena offstage:** hinted at only in pit prices and letters. A visitable arena is a later, separate build.
 
 ## criteria
-- A peaceful landing, a sale of each of the three cargo kinds, and silver received.
-- The oubliette is unreachable while the Hutts hold the site, and liftable by the ship's hoist after conquest.
+- A1 L2: A peaceful landing at the Hutt slave pit site: the site's loaded parts say visit, not attack, and on the site the keepers stand and are not hostile.
+- A2 L2: A slave, an unenslaved prisoner and a downed beast are each sold for silver to the pit buyer.
+- A3 L2: The oubliette is unreachable while the Hutts hold the site, and liftable by the ship's hoist after conquest.
 
 ## refs
 file: src/RimMandrake/KeelHoist/Source/RM_PitBuyer.cs
