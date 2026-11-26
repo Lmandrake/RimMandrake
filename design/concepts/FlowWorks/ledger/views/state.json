@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "d6f7e3465cf5281825cf603cf0e95eb3766502e79a8612e2e5cb4e4d83d467c8",
+  "body_sha256": "ecf25268d7a1811e638461afc1a3093dbcdd2e769f561dc375c48b7a0d90ee7d",
   "reducer": 1,
   "shards": {
    "BACKFILL": 892335,
@@ -43,7 +43,7 @@
    "HOLDER.run-1795461568": 2159,
    "HOLDER.run-1795471235": 562,
    "HOLDER.run-1795503470": 1774,
-   "HOLDER.run-1795670514": 7369,
+   "HOLDER.run-1795670514": 8064,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1294,10 +1294,10 @@
   },
   "checkpoint": {
    "by": "HOLDER.run-1795670514",
-   "done": "RIMMANDRAKE_REDRAW_TIMBER_BRIDGE_FROM_HIS_THREE_PHOTOS closed at 2cdfa80e72: beam bridge art in 5 looks with lane pieces, abutments instead of bollards/ropes, timber posts and rail when railed; ArchSmall sc_hung_bridge PASS (early row), art judge KEEP",
-   "next": "Work RIMMANDRAKE_STORE_FLOWWORKS_HELD_FLAG_WHERE_A_READ_REACHES_IT (a pawn comp with a held bool read by HELD_PATH)",
-   "ruled_out": "stuff colour on the timber strip (picked deck art draws untinted, as the steel picks do); repainting the shared timber anchor textures (the drawbridge mooring cuts them)",
-   "ts": "2026-11-26T10:15:54Z"
+   "done": "timber bridge closed (2cdfa80e72, live PASS, judge KEEP); RIMMANDRAKE_STORE_FLOWWORKS_HELD_FLAG_WHERE_A_READ_REACHES_IT dropped by test 1 (its reader sc_moat_raid is next-version and raid-paused)",
+   "next": "Class the thirst_live non-passes of RIMMANDRAKE_CLASS_SEVEN_THIRST_FAILS_SITE_FULL_OF_PATIENTS in a live sitting on ArchSmall",
+   "ruled_out": "a stored held flag for 0.1.0: no 0.1.0 bar reads it",
+   "ts": "2026-11-26T10:20:05Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1749,7 +1749,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1734,
+  "events": 1735,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7849,7 +7849,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-26T10:15:54Z",
+   "last": "2026-11-26T10:20:05Z",
    "lease": "run-1795670514",
    "released": false,
    "token": 60
