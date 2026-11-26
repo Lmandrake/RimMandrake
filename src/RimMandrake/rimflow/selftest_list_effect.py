@@ -169,6 +169,35 @@ def t_a_cmd_check_leaves_no_temp_files():
     chk(lambda: not left(), "no check's tmp dir is left under the per-run root after a timeout (%r)" % left())
 
 
+def t_a_cmd_check_finds_a_windows_program_off_a_bare_path():
+    # OPS_LIST_GATE_HOLDS_READY_WORK_ON_COULD_NOT_LOOK_WTHJ: a timer's shell has no Windows dir on PATH, so `python.exe
+    # live_x.py` exited 127 ("command not found") and held two ready tickets for 6 passes. Here a fake Windows dir.
+    L = LE()
+    r = X["root"]
+    win = os.path.join(X["root"], "winapps")
+    os.makedirs(win, exist_ok=True)
+    exe = os.path.join(win, "fakewin.exe")
+    with open(exe, "w", encoding="utf-8") as f:
+        f.write("#!/bin/sh\necho fakewin-ran\nexit ${FAKEWIN_RC:-0}\n")
+    os.chmod(exe, 0o755)
+    with patch.dict(os.environ, {"PATH": "/usr/bin:/bin"}), patch.object(L, "WSL_FLAG", exe), \
+            patch.object(L, "WIN_DIRS", (win,)), patch.object(L, "WIN_APPS_GLOB", os.path.join(win, "none-*")):
+        v, out = L.run("cmd:fakewin.exe", r)
+        chk(lambda: v == "holds" and "fakewin-ran" in out,
+            "a cmd: check finds a program that lives in a Windows dir off a bare PATH (%s: %s)" % (v, out[:80]))
+        chk(lambda: L.run("cmd:FAKEWIN_RC=1 fakewin.exe", r)[0] == "fails",
+            "a Windows program's own exit 1 still reads fails")
+        chk(lambda: L.run("cmd:FAKEWIN_RC=2 fakewin.exe", r)[0] == "unmeasured",
+            "a Windows program's own exit 2 still reads unmeasured")
+        v, out = L.run("cmd:no-such-program-xyz", r)
+        chk(lambda: v == "unmeasured" and "exit 127" in out, "a program found nowhere still reads unmeasured (exit 127)")
+        chk(lambda: os.environ["PATH"] == "/usr/bin:/bin", "the beat's own PATH is not changed by the check")
+    with patch.dict(os.environ, {"PATH": "/usr/bin:/bin:" + win}), patch.object(L, "WSL_FLAG", exe), \
+            patch.object(L, "WIN_DIRS", (win,)), patch.object(L, "WIN_APPS_GLOB", os.path.join(win, "none-*")):
+        seen = L.run("cmd:echo $PATH", r)[1]
+        chk(lambda: seen.split(":").count(win) == 1, "a Windows dir already on PATH is not added twice")
+
+
 def t_decide_closes_only_on_holds_and_leaves_an_item_with_no_check_alone():
     L = LE()
     chk(lambda: [L.decide({"state": "ready", "effect": "cmd:x"}, v) for v in ("holds", "fails", "unmeasured")]
@@ -521,6 +550,7 @@ def main():
         for t in (t_parse_reads_three_forms_and_never_raises,
                   t_holds_keeps_could_not_look_apart_from_fails,
                   t_a_cmd_check_leaves_no_temp_files,
+                  t_a_cmd_check_finds_a_windows_program_off_a_bare_path,
                   t_decide_closes_only_on_holds_and_leaves_an_item_with_no_check_alone,
                   t_a_check_that_already_holds_is_refused_at_attach_unless_seen_failing_at_filing,
                   t_file_and_effect_record_the_check_and_its_red_reading,

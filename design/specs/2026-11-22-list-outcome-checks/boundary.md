@@ -36,6 +36,11 @@ Item: `RIMMANDRAKE_BUILD_LIST_OUTCOME_CHECKS_SEVEN_DONE_NEVER_CLOSED`, step 1 of
   `fails` for `path-has` (the text is not there) and `unmeasured` for `path-lacks`. A command that cannot start, exits
   other than 0 or 1, or outlives its deadline is `unmeasured`. An unreadable check is `unmeasured`. Unmeasured is never
   `holds` and never `fails`.
+- **a-cmd-check-finds-a-windows-program-off-a-bare-path.** `run` adds the Windows dirs of this WSL (`cmd_path`:
+  `/mnt/c/Windows/System32`, `/mnt/c/Windows`, the PowerShell dir, each user's `WindowsApps`) to the PATH of each `cmd:`
+  check, so a timer's shell finds `python.exe`. The beat's own PATH is not changed, a dir already on PATH is not added
+  twice, and a program found nowhere still reads `unmeasured` (exit 127). `list_dispatch.py` runs its checks through
+  `run`, so it holds no ready ticket for a `python.exe` that its shell cannot find.
 - **a-cmd-check-leaves-no-temp-files.** `run` gives each `cmd:` check its own TMPDIR (also TMP and TEMP) under the
   per-run tmp root (`run_tmp.py`), and deletes that dir when the command ends: on holds, fails, unmeasured and a
   deadline. A check that makes temp files or git repos through `tempfile` leaves nothing in /tmp. A check that writes
