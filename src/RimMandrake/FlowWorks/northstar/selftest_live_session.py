@@ -489,6 +489,30 @@ check(r["status"] == "PASS" and s._settings.get("rainFillsExcavationsEnabled") i
       "can-fail B6: rain fill stays off through the fading rain after Clear and is restored after (%s, %s)"
       % (r["status"], r["detail"].get("rainRateAtRestore")))
 
+# 8c''. B6_FLOOD_FIX_RAIN_FILL_LEFT_OFF: a crash in the flood wait (the first try) skipped the second try/finally, so rain fill
+#       stayed off for every later block of the session (run_block records the crash and goes on). The setting comes back
+#       on, after the fading rain, whichever phase raised.
+class CrashInFloodWaitSession(FakeEventSession):
+    def advance(self, n):
+        FakeEventSession.advance(self, n)
+        if self.g.weather == "TorrentialRain" and self.g.t > 2000:
+            raise RuntimeError("bridge call timed out (planted, in the flood wait)")
+
+
+g = RainTailGame()
+s = CrashInFloodWaitSession(g)
+s.w = RainTailWalk(g)
+g.session = s
+s._settings = {"rainFillsExcavationsEnabled": True}
+raised = False
+try:
+    L.b6_flood(s)
+except RuntimeError:
+    raised = True
+check(raised and s._settings.get("rainFillsExcavationsEnabled") is True and g.rain() <= 0.01,
+      "can-fail B6: a crash in the flood wait still restores rain fill, after the rain has faded (raised %s, setting %s, rain %s)"
+      % (raised, s._settings.get("rainFillsExcavationsEnabled"), g.rain()))
+
 # 8d. LS_FULLREAD (2026-10-19 full read): each harness fix below can go red
 check(L.advance_remainder(dict(success=True, executed=500), 500) == 0, "advance: a finished safe_advance owes nothing")
 check(L.advance_remainder(dict(success=False, state="stopped", executed=200), 500) == 300,

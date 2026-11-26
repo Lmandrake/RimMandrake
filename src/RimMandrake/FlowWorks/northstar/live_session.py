@@ -1824,48 +1824,67 @@ def b6_flood(s):
     else:
         rain_off = (s.sset("rainFillsExcavationsEnabled", False) or {}).get("success") is not False and (
             s.mock or str(s.sget("rainFillsExcavationsEnabled")).lower() == "false")    # read back, not the set's word
-    ws = s.call("jawa/weather_set", weather=FLOOD_WEATHER, lockWeather=True)
-    started = bool(ws.get("success")) and ws.get("after") == FLOOD_WEATHER
+    restored = []
 
-    def flood_ops():
-        return terrain_ops(s.call("jawa/get_terrain_batch", rects="%d,%d,16,3" % (x + 1, z + 3)), s.mock)
-    reached, reached_at = False, None
-    try:
-        if started:
-            for k in range(0, 14000, 500):
-                s.advance(500)
-                if "Flood" in (flood_ops() or ""):
-                    reached, reached_at = True, k + 500
+    def restore_rain_fill(rate):
+        """B6_FLOOD_FIX_RAIN_FILL_LEFT_OFF: rain fill back on ONCE, after the fading rain (RainRate lerps out after Clear), and
+        whichever phase raised: a crash in the flood wait used to skip the second phase's finally, so rain fill stayed off
+        for every later block (run_block records the crash and the session goes on). -> the rain rate at the restore."""
+        if restored:
+            return rate
+        restored.append(True)
+        try:
+            if rate is None and not s.mock:
+                rate = rain_rate(s)
+            for _ in range(12):
+                if s.mock or not fnum(rate):
                     break
-            if reached:
-                s.advance(1000)                     # let it lie a while over the banks
-    finally:
-        # back to B0's locked Clear (also after a crash: a locked torrent would flood every later block): the old lock
-        # ends, TransitionTo(Clear) runs TorrentialRain.OnWeatherEnd = the flood is destroyed
-        s.call("jawa/weather_set", weather="Clear", lockWeather=True)
-    # HARNESS (20261022T235239: 8 canal squares (2,1,10000) -> (2,2,20000), +1 level each = one rain-fill pulse): rain fill
-    # was switched back on the moment Clear was SET, but WeatherManager.RainRate lerps out over the transition, and
-    # ApplyRain reads RainRate, so the fading torrent filled the canal during the recession wait. Rain fill stays off until
-    # the canal's 'after' read, and comes back only once the map reads rainRate 0.
+                s.advance(500)
+                rate = rain_rate(s)
+        finally:
+            if rain_fill_was is not None:
+                s.sset("rainFillsExcavationsEnabled", rain_fill_was)
+        return rate
+
     rain_end = None
     try:
-        receded, gone_at = False, None
-        if reached:
-            for k in range(0, 12000, 500):
-                s.advance(500)
-                if flood_gone(flood_ops()):
-                    receded, gone_at = True, k + 500
-                    break
-        after = s.w.cells(canal)[0] if not s.mock else {}
-        rain_end = rain_rate(s)
-    finally:
-        for _ in range(12):
-            if s.mock or not fnum(rain_end):
-                break
-            s.advance(500)
+        ws = s.call("jawa/weather_set", weather=FLOOD_WEATHER, lockWeather=True)
+        started = bool(ws.get("success")) and ws.get("after") == FLOOD_WEATHER
+
+        def flood_ops():
+            return terrain_ops(s.call("jawa/get_terrain_batch", rects="%d,%d,16,3" % (x + 1, z + 3)), s.mock)
+        reached, reached_at = False, None
+        try:
+            if started:
+                for k in range(0, 14000, 500):
+                    s.advance(500)
+                    if "Flood" in (flood_ops() or ""):
+                        reached, reached_at = True, k + 500
+                        break
+                if reached:
+                    s.advance(1000)                     # let it lie a while over the banks
+        finally:
+            # back to B0's locked Clear (also after a crash: a locked torrent would flood every later block): the old lock
+            # ends, TransitionTo(Clear) runs TorrentialRain.OnWeatherEnd = the flood is destroyed
+            s.call("jawa/weather_set", weather="Clear", lockWeather=True)
+        # HARNESS (20261022T235239: 8 canal squares (2,1,10000) -> (2,2,20000), +1 level each = one rain-fill pulse): rain fill
+        # was switched back on the moment Clear was SET, but WeatherManager.RainRate lerps out over the transition, and
+        # ApplyRain reads RainRate, so the fading torrent filled the canal during the recession wait. Rain fill stays off until
+        # the canal's 'after' read, and comes back only once the map reads rainRate 0.
+        try:
+            receded, gone_at = False, None
+            if reached:
+                for k in range(0, 12000, 500):
+                    s.advance(500)
+                    if flood_gone(flood_ops()):
+                        receded, gone_at = True, k + 500
+                        break
+            after = s.w.cells(canal)[0] if not s.mock else {}
             rain_end = rain_rate(s)
-        if rain_fill_was is not None:
-            s.sset("rainFillsExcavationsEnabled", rain_fill_was)
+        finally:
+            rain_end = restore_rain_fill(rain_end)
+    finally:
+        restore_rain_fill(None)
     st, cls, why = flood_verdict(started, reached, receded, before == after)
     if not s.mock and (not before or not after):       # {} == {} was "every canal square reads as before"
         st, cls, why = "UNMEASURED", "HARNESS", "the canal cells were unread (before %d, after %d)" % (len(before or {}), len(after or {}))
