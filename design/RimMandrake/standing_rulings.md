@@ -2032,9 +2032,11 @@ Every mod's Design Version is numbered `MAJOR.MINOR.PATCH` (semver.org). In this
 - **MINOR**: Divergent additions. Such work extends or shifts the vision. Divergent work is filed for the next version.
 - **PATCH**: Convergent polish and corrections after a version has passed.
 - A version before release is `0.x`. `1.0.0` is the version shipped to players. A judge round is a release candidate,
-  `-rc.N`.
+  `-rc.N`. A review round before a pass is a judge round, `-rc.N`, not a PATCH.
 
 The rule is user-level since the same day (*"Semantic Versioning should be a Lodestar-level, User-level addition to all current and future projects, along with the Convergent changes and Divergent changes that are part of the same design."*). The user-level rule is in `~/.claude/CLAUDE.md`. Its terms are in `~/dev/Lodestar/LEXICON.md`. Here the unit is the mod.
+
+The judge layer is this repo's own, not the user-level rule's (owner, by card Thu 2026-11-26 10:23 AM PST: *"Core global, judge out"*). The judge layer is: Problem or Polish and the Polish list, Judge deferral and its grounds, and `-rc.N` review rounds before a pass. The user-level rule points other projects with a judge loop to this section.
 
 His card answers, 2026-11-13, and his later rulings:
 - **Problem or Polish:** a Problem is a defect, or an experience that a player would reject as strange or disappointing.
@@ -2042,9 +2044,12 @@ His card answers, 2026-11-13, and his later rulings:
   - Polish goes to the mod's Polish list. Polish is not part of passing.
   - The Judge makes the call as best it can. The threshold is tuned with him. (In this repo the Conductor decides each
     move to a Polish list; see "The Conductor decides both".)
+  - Outside this repo, each move to a Polish list is confirmed with him.
 - **Asked at filing:** the question "current version or next version" is decided when the ticket is filed as active. The
   question is not decided when someone picks the ticket up. A ticket once filed as current moves to the next version only
-  by Judge deferral.
+  by Judge deferral. A judge may defer it only when it cannot be satisfied by its currently written acceptance tests, or
+  when it keeps failing its goal on weak evidence and no other bar depends on it (owner, by card Thu 2026-11-26 10:17 AM
+  PST: *"Write your two grounds"*).
 - **The Conductor decides both in this repo, and tells him after** (owner, by card Mon 2026-11-23 8:57 AM PST, item
   `RIMMANDRAKE_ENACT_FOUR_CARD_ANSWERS_ON_HIS_TWO_WAY_RULINGS`). "Both" is the two questions of that card: who decides
   Polish moves, and who decides current-or-next version, in RimMandrake. He picked *"Conductor decides, tells you

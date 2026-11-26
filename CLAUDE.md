@@ -606,6 +606,8 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 
 - The Design Version rule (Semantic Versioning, Convergent and Divergent changes) is a user-level rule. Here the unit
   is the mod. Each mod has its own current version and status.
+- The judge layer is this repo's own: Problem or Polish, the Polish list, Judge deferral and its grounds, and `-rc.N`
+  review rounds before a pass. Its full text is in the Detail below.
 - In this repo, the Conductor decides each move to a mod's Polish list (`version/polish.md` in its design folder), and whether a change goes in the current Design
   Version or the next. The Conductor decides at filing and tells the owner after, in his daily digest. Log it with
   `--per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS --why "<the call and its reason>"`. Do not ask him
