@@ -81,3 +81,21 @@ DRY pit (plan at level 0), then ONE sheet, one alpha per square, over the dry pi
 sluice with one dry side carries the sheet on its wet half; a dry dug square beside liquid terrain reprints its own floor.
 Planted faults all go red (no waterline cut 1198 failures, the old rectangles 567, floor only 1267, a sluice that never
 halves 8); the rule is green (0).
+
+### The fix, offline, 8:30 PM PST (published d72a515be5)
+
+- `RM_ExcavationWalls`: a square under a clear liquid passes level 0 to every face (`float lv = sheet ? 0f : lvTrue`), so it
+  draws the dry pit (faces, floor shade, lip bands, cast shadow); `WaterSurface` prints the dry floor opaque and lays ONE sheet
+  (one colour, one alpha: the liquid's Seen with the wet-ground darkening composed in) over the dry pit cut by the waterline on
+  each face, then the damp band inside each dry face. `SeeThrough`, `SideUnder` and the drowned rectangles are deleted.
+- A shut sluice: the sheet covers only the half toward the wet side (`RM_PitReliefMath.SluiceHalf`); a face-on gate whose
+  south side is drained draws its face dry (`GateFaceDry`).
+- A dry dug square beside liquid terrain reprints its own floor (`ReprintsFloor`): vanilla's edge fade of the gate square's
+  water no longer lies on the drained side.
+- `SectionLayer_RMWetWallBand` and its setting are deleted (a second layer of unmitred rectangles); the deep tint skips dug
+  squares (their water is the one sheet).
+- `FillPictured` dirties the neighbours too (a sluice square's sheet reads its neighbours' levels).
+- Red-then-green: `WaterLook_one_sheet_over_the_dry_pit_cut_by_the_line` and `WaterLook_sluice_parts_the_sheet_and_a_drained_floor_reprints`
+  red on planted faults (`red_planted_no_waterline_cut.patch`, recorded on T_UNDERLIQUID), green on the fix.
+
+LIVE: owed. ArchSmall was taken by a test-lane run at 8:10 PM PST while I re-took it (lesson filed).

@@ -351,15 +351,15 @@
   "test_blob": "b2225384005543e872cf9c0caee3be6c1b6dfa81"
  },
  "T_UNDERLIQUID": {
-  "at": "2026-11-23T02:33:21Z",
+  "at": "2026-11-26T04:21:41Z",
   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only DeepBed*,Submerge*,UnderLiquid*,WaterLook*",
   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
-  "last": "can-fail: no pale line is drawn over the water at a wet square's edge (1 found)",
-  "patch": "--- a/src/RimMandrake/FlowWorks/Source/Superdeep/RM_ExcavationWalls.cs\n+++ b/src/RimMandrake/FlowWorks/Source/Superdeep/RM_ExcavationWalls.cs\n@@ -696,6 +696,8 @@\n \t\t\tColor32 wet = new Color32(0, 0, 0, Alpha(RM_UnderLiquid.WetBandDarken)), none = new Color32(0, 0, 0, 0);\n \t\t\tMaterial bandMat = RM_FaceMaterial.WetBandMat;\n \t\t\tfloat yb = y + 0.0003f;\n+\t\t\tColor32 pale = new Color32(204, 224, 235, 115);\n+\t\t\tQuadVMat(RM_FaceMaterial.SheetMat, c.x, c.z + 1f - 0.03125f, 1f, 0.03125f, y + 0.0006f, pale, pale);\n \t\t\tfloat zTop = 1f;\n \t\t\tif (RM_UnderLiquid.Exposed(d, north, 0f) > 0f)\n \t\t\t{\n",
+  "last": "can-fail: at (0.03125,0.023125) depth 0.5208334 vs line 0.75: sheet True, truth False: 3x3 d1 (0,0) lv=0.25",
+  "patch": "diff --git a/src/RimMandrake/FlowWorks/Source/RM_PitReliefMath.cs b/src/RimMandrake/FlowWorks/Source/RM_PitReliefMath.cs\nindex e031cb1687..5411db1add 100644\n--- a/src/RimMandrake/FlowWorks/Source/RM_PitReliefMath.cs\n+++ b/src/RimMandrake/FlowWorks/Source/RM_PitReliefMath.cs\n@@ -689,7 +689,7 @@ namespace RimMandrake.FlowWorks\n \t\t\tint ce = full.CneW > 0f ? polys.Count - 1 : -1;\n \t\t\tfor (int i = 0; i < polys.Count; i++)\n \t\t\t{\n-\t\t\t\tAddUnderLine(polys[i], kinds[i], CutOf(wet, kinds[i], i, cw, ce), wx0, wx1, wz0, wz1, into);\n+\t\t\t\tAddUnderLine(polys[i], -1, 0f, wx0, wx1, wz0, wz1, into);\n \t\t\t}\n \t\t\treturn into.Count;\n \t\t}\n",
   "patch_files": [
-   "src/RimMandrake/FlowWorks/Source/Superdeep/RM_ExcavationWalls.cs"
+   "src/RimMandrake/FlowWorks/Source/RM_PitReliefMath.cs"
   ],
-  "patch_sha": "0cc92d63a95ffbac",
+  "patch_sha": "871b194c3142257c",
   "rc": 1,
   "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
  }
