@@ -41,7 +41,7 @@
   "steward_model": "opus",
   "steward_cap_usd": 80,
   "fix_cap_usd": 100,
-  "steward_max_per_version": 120,
+  "_steward_max_per_version": "danger=a steward chain on one mod version that moves state each run but never converges spends an account with no end; evidence=12 real steward runs per version were reached by ExplosiveKnockback and Pyrelands on 2026-11-24 with their Stage 6 exits met (ct_000187, ct_000188), so 120 is 10 times the measured need; ends no work by itself: the mod pauses and pipe limit <Mod> steward_runs raises it", "steward_max_per_version": 120,
   "_stalled_min": "danger=a stalled mod goes unseen; ends no work: the stall is alarmed", "stalled_min": 10,
   "_steward_doc": "maturation_autonomy.py (item RIMMANDRAKE_AUTOMATE_MATURATION_HAND_STEPS_MODS_SAT_WAITING; the owner 2026-11-15: \"Get the automation going so things can keep moving even if that means we have to pause them to fix something.\"). Each Conductor hand step becomes ONE steward run (opus: judging another agent's work, Agent_Policy.md) per state key, capped at steward_cap_usd; each road-back item a steward files gets ONE fixer run (fix_cap_usd). A run that ends with the state unmoved PAUSES the mod (OPS_MATURATION_MOD_PAUSED), never a retry. steward_max_per_version bounds the steward runs on one mod's version; stalled_min is the wait-on-nothing line for OPS_MATURATION_MOD_STALLED."
 }
