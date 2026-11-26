@@ -1427,7 +1427,10 @@ C3_LOAD_SAVE = "bundle_tps_c3_load"          # our own: the proof's base save (d
 C3_RAMP_SAVE = "bundle_tps_c3_ramp"          # our own: the ramp's save (deleted at the end)
 C3_RAMP_TARGET_S = 3.0                       # our own: a save comfortably past the 2 s gap (bar: GapSeconds)
 C3_RAMP_STEPS, C3_RAMP_BUDGET_S = 40, 900    # our own: the ramp's caps
-C3_RAMP_DEFS = ("Steel", "Plant_Grass")      # one item and one plant per cell (an item displaces items, a plant wipes plants)
+# one item, one plant and two filths per cell (an item displaces items, a plant wipes plants). Two layers saved in
+# 1.80 s at the whole 250x250 map in J20261126T003734Z-db96b8 (3.10 s in J20261126T000829Z-98bb6f, saves taken inside
+# spawn stalls): never past the 2 s gap, so the ramp has four layers (Core defNames, ThingDefs_Misc/Filth_Various.xml)
+C3_RAMP_DEFS = ("Steel", "Plant_Grass", "Filth_Dirt", "Filth_RubbleRock")
 C3_FILL_SMALL = 2000                         # our own: the fine fill mark, to stand within C3_FILL_SLACK of the boundary
 C3_FILL_SLACK = 4096
 C3_SETTLE_S = 3.0                            # our own: frames resume between a stalling call and the save after it
@@ -1699,7 +1702,7 @@ def _c3_save(T, d, rdir, sess, name):
 
 
 def _c3_ramp(T, d, rdir, sess):
-    """Saves of a growing map until one passes C3_RAMP_TARGET_S: one item and one plant per cell, extrapolated."""
+    """Saves of a growing map until one passes C3_RAMP_TARGET_S: layers of C3_RAMP_DEFS per cell, extrapolated; C3_RAMP_STEPS counts steps (spawn batches), not rects."""
     from common import call
     with _C3S(120) as s:
         mi = call(s, "jawa/map_info")
@@ -1707,10 +1710,10 @@ def _c3_ramp(T, d, rdir, sess):
     X, Z = int(mi["sizeX"]), int(mi["sizeZ"])
     rects = [(x, z) for dn in C3_RAMP_DEFS for z in range(0, Z - 49, 50) for x in range(0, X - 49, 50)]
     defs = [dn for dn in C3_RAMP_DEFS for z in range(0, Z - 49, 50) for x in range(0, X - 49, 50)]
-    t0, done, filled = time.time(), 0, 0
+    t0, done, filled, steps = time.time(), 0, {}, 0
     base = _c3_save(T, d, rdir, sess, C3_RAMP_SAVE).get("saveS") or 0.0
     last = base
-    while done < C3_RAMP_STEPS and time.time() - t0 < C3_RAMP_BUDGET_S and last <= C3_RAMP_TARGET_S:
+    while steps < C3_RAMP_STEPS and time.time() - t0 < C3_RAMP_BUDGET_S and last <= C3_RAMP_TARGET_S:
         if done >= len(rects):
             break
         slope = (last - base) / done if done else 0
@@ -1719,12 +1722,13 @@ def _c3_ramp(T, d, rdir, sess):
             for k in range(done, min(len(rects), done + n)):
                 x, z = rects[k]
                 r = call(s, "jawa/spawn_fill_area", rect="%d,%d,50,50" % (x, z), thingDef=defs[k])
-                filled += int(r.get("cellsFilled") or 0)
-        done = min(len(rects), done + n)
+                filled[defs[k]] = filled.get(defs[k], 0) + int(r.get("cellsFilled") or 0)
+        done, steps = min(len(rects), done + n), steps + 1
         time.sleep(C3_SETTLE_S)                     # the spawns' own stall ends before the save starts
         last = _c3_save(T, d, rdir, sess, C3_RAMP_SAVE).get("saveS") or last
-    d["rampWhy"] = "map %dx%d, %d of %d rects (%s), %d cells filled, base save %.3f s, last %.3f s, %.0f s" % (
-        X, Z, done, len(rects), "+".join(C3_RAMP_DEFS), filled, base, last, time.time() - t0)
+    d["rampWhy"] = "map %dx%d, %d of %d rects in %d steps (%s), cells filled %s, base save %.3f s, last %.3f s, %.0f s" % (
+        X, Z, done, len(rects), steps, "+".join(C3_RAMP_DEFS), ",".join("%s %d" % kv for kv in sorted(filled.items())),
+        base, last, time.time() - t0)
 
 
 def _c3_hang(T, O, d, rdir, sess):
