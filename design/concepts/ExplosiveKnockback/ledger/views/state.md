@@ -1,6 +1,6 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":341359,"DISPATCH":46376,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":3294,"HOLDER.run-1795478277":3184,"HOLDER.run-1795485747":1414,"HOLDER.run-1795487290":2197,"HOLDER.run-1795510833":4164,"HOLDER.run-1795525975":3126,"HOLDER.run-1795538786":1751,"HOLDER.run-1795548573":1024,"HOLDER.run-1795560492":1077,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"OWNER":1207} body_sha256=b92ac9f7e91fe59552910dacffe316407423a8a7f94cec5d581aebca33ad2f36 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":348917,"DISPATCH":46376,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"HOLDER.run-1795435910":630,"HOLDER.run-1795441975":2951,"HOLDER.run-1795448832":5159,"HOLDER.run-1795461416":958,"HOLDER.run-1795464425":3294,"HOLDER.run-1795478277":3184,"HOLDER.run-1795485747":1414,"HOLDER.run-1795487290":2197,"HOLDER.run-1795510833":4164,"HOLDER.run-1795525975":3126,"HOLDER.run-1795538786":1751,"HOLDER.run-1795548573":1024,"HOLDER.run-1795560492":1077,"JUDGE.judge-1794890427":18837,"JUDGE.judge-1795437145":6544,"OWNER":1207} body_sha256=bec2f7d57fab1affaf002859719454fdc284f04ca8ee59b9ee65bd172d333aa9 -->
 # ExplosiveKnockback — mod ledger packet
-version 0.2.0 · stage offline_build · 728 events in 24 shards · reducer 1
+version 0.2.0 · stage offline_build · 742 events in 24 shards · reducer 1
 holder lease run-1795560492, token 28, last active 2026-11-24T22:59:07Z
 holder session 64d86561-8d37-4975-a838-3b61b865666a, context 228835 of ceiling 400000
 
@@ -10,7 +10,7 @@ holder session 64d86561-8d37-4975-a838-3b61b865666a, context 228835 of ceiling 4
 - ruled out: ArchBig is not on an older Explosive Knockback: both games hold DLL md5 c41f0c11 and equal Defs and Patches; covers unseen at START 11 and 12 are FlowWorks concealment, not missing
 
 ## Open findings (43)
-(claimed fixes, awaiting a judge, on one line each with the oldest 39 open findings, named without their 'finding:': `modledger.py show --mod ExplosiveKnockback finding:<NAME>`)
+(claimed fixes, awaiting a judge, on one line each with the oldest 41 open findings, named without their 'finding:': `modledger.py show --mod ExplosiveKnockback finding:<NAME>`)
 - RIMMANDRAKE_RETIRE_UNUSED_CONTAINER_SHOVE_KERNEL [open, polish · bars closed_container_holds]: RM_KnockbackMath.ContainerShove (slide-or-jolt, parameter lightMassLimit) is called by no game code; ThrowContainer thr…
 - RIMMANDRAKE_STAGE_KERNEL_SELFTEST_COPY_INSIDE_LOCK [open, polish · bars inv_kernel]: selftest_explosiveknockback_kernel.py copies RM_KnockbackMath.cs into the machine-wide ExplosiveKnockbackSelfTest build…
 - RIMMANDRAKE_ASK_GOODS_WILD_FACTOR_BECOME_A_SLIDER [open, polish · bars settings_scale_and_switch, goods_arc_spin_rebound]: The goods wild factor ships as a constant 1.6 because adding a saved setting (goodsThrowWild) turns T_STAGE3_SCENES red…
@@ -50,12 +50,8 @@ holder session 64d86561-8d37-4975-a838-3b61b865666a, context 228835 of ceiling 4
 - RIMMANDRAKE_PROVE_SCENE_RUNNER_LIVE_SAME_ROWS_FEWER_CALLS [open, problem]: The shared scene runner's first slice (fd8e514b76) is proven offline only; it is unproven live that scene_runner.py giv…
 - RIMMANDRAKE_REPOINT_EK_JOURNAL_JOLT_CHECKS_AFTER_PLAN_MOVE [open, problem]: selftest_explosiveknockback_journal_jolt.py greps RM_MapComponent_Knockback.cs for throw rules that ffc3937ee7 moved in…
 - RIMMANDRAKE_RESCUE_KNOCKBACK_PAST_CEILING_CYCLE_SIX [open, problem]: Explosive Knockback 0.1.0 was stuck at Stages 4+5 with blind cycle 6 unrun and paused at its stage spend ceiling. Live…
-- finding:RIMMANDRAKE_FIX_KNOCKBACK_RAID_NULL_PAWN_STORM_780_TICKS [open, problem] by BACKFILL, 2026-11-19T23:33:01Z: The raid walk logs 780x 'Exception ticking Levin' (vanilla Pawn.Tick+0x60 at (246,0,36)) and 447x root Update NRE in PawnTweener.TweenedPosRoot via Pawn_DrawTracker.DrawPos; both read as a pawn left with a null map/position by a knockback.
-  proposed fix: Fix the knockback so no pawn is left with a null map/position (see midair saves EK_WALK_RAID_MIDAIR_*), and cut the walk's reloads (57 reloads in 2 h, heap 2.9 to 11.4 GB).
-  accept: none, live-only: a rerun of the raid walk logs 0 'Exception ticking' and 0 'TweenedPosRoot' lines.
-- finding:RIMMANDRAKE_STOP_GAS_SHOVE_PAST_WALL_CORNER_UNSEEN [open, problem] by BACKFILL, 2026-11-19T23:33:03Z · bars gas_goes_clump_by_clump: RM_MapComponent_Knockback.GasBurst queues every pawn, corpse and good within gasBurstRadius by GenRadial alone, with no line of sight. A burning clump can shove a thing diagonally past a wall corner into another room, which a real explosion never reaches.
-  proposed fix: Skip cells GenSight.LineOfSight(c, cell, map) refuses, and give the map's model the same rule for gas (KnockbackMap.cs A5).
-  accept: Live only, not yet watched fail: map_agreement.py case 'c:wall:1:0;c:wall:0:1;t:a:steel2:1:1;b:gas:1.9' expects a stays on 1,1 (DISAGREE today); after the fix AGREE and selftest_explosiveknockback_map.py green.
+- RIMMANDRAKE_FIX_KNOCKBACK_RAID_NULL_PAWN_STORM_780_TICKS [open, problem]: The raid walk logs 780x 'Exception ticking Levin' (vanilla Pawn.Tick+0x60 at (246,0,36)) and 447x root Update NRE in Pa…
+- RIMMANDRAKE_STOP_GAS_SHOVE_PAST_WALL_CORNER_UNSEEN [open, problem · bars gas_goes_clump_by_clump]: RM_MapComponent_Knockback.GasBurst queues every pawn, corpse and good within gasBurstRadius by GenRadial alone, with no…
 - finding:RIMMANDRAKE_SCOPE_KNOCKBACK_RESTORE_DECIDER_RED_ON_FLOWWORKS [open, problem] by JUDGE.judge-1795437145, 2026-11-23T12:59:14Z · bars inv_proof_scenes: Check wrong, not mod: decider T_RESTORE (inv_proof_scenes) reran FAIL; proof_restore_check reads the whole repo and 4 FlowWorks proof-restore leaks of 2026-11-22 are outside its filed BASELINE.
   proposed fix: proof_restore_check.py: BASELINE keys under filed item RIMMANDRAKE_RESTORE_FLOWWORKS_PIT_PROOF_SETTINGS_FOUR_NEW_LEAKS
   accept: selftest_proof_restore_check.py exit 0; exit 1 with an unguarded settings poke planted in RM_KnockbackProof.Frame
@@ -142,41 +138,53 @@ holder session 64d86561-8d37-4975-a838-3b61b865666a, context 228835 of ceiling 4
 - cause:mod-frame-cost-was-not-request-flush-1: Mod frame cost was not request flush (1-3 ms warm, 8-18 ms first throw only), journal (in memory), flyer drawing (0.1-3.6 ms), map mesh (0.1 ms), or job searches at the blast (same in both arms, equal totals). (on 773b9baea39f, depends on src/RimMandrake/ExplosiveKnockback)
 - cause:run-5-fail-91-3-vs-37-1: Run 5 FAIL 91.3 vs 37.1 ms was a harness artifact, not mod cost: the off arm ran uncapped (863 vs 498 window rows), diluting p99 by frame rate. (on 773b9baea39f, depends on design/concepts/ExplosiveKnockback/version/in_game/visit_3/SUMMARY.md)
 
-## His answers (22)
-- decision:version: Yes, fix it like that, and then please record this as an actual Pass.
-- decision:q:you-can-t-fall-in-by: You can't fall in by careless colonist pathing. Only if they get blown/forced in do they fall.
-- decision:q:1-1-totally-even-better-if: 1:1 totally. Even better if they can bounce inelastically off walls and rotate while they fly.
-- decision:q:1-but-the-closed-containers-may: (1) but the closed containers may themselves get shoved a bit · 2 and remember the gas in the Cauldron
-- decision:q:just-put-a-bomb-into-a: Just put a bomb into a storeroom with people in it beside a pit. Shows some items falling into the pit and some people as well.
-- decision:q:1-anything-that-draws-its-contents: 1: Anything that draws its contents is open. … 4: I am confused. Items should be blown off a shelf, and a shelf should be ruled as open, period. So the scene is staged misleadingly. No blockers.
-- decision:q:we-really-shouldn-t-blow-back: We really shouldn't blow back creatures beyond a certain mass, and the heavier something is, the less it should fly. That should also be a function of the explosive damage itself as well. · with a single scene we can check ALL these things together · Melee shove is a great idea, but it belongs in FlowWorks, not here.
-- decision:q:can-t-we-actually-simulate-that: can't we actually simulate that settings check offline? That seems a gratuitous use of the game, unless that's actually a very fast check?
-- decision:finding:RIMMANDRAKE_SPARE_THROWN_GOODS_SO_THEY_SCATTER: I agree with the 2nd option though, pending tuning, and worse damage if they then hit a solid object.
-- decision:finding:RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD: Tuning looks good.
-- decision:finding:RIMMANDRAKE_THROW_ALL_HARMFUL_BLASTS: Test 1: looks great! Full pass.
-- decision:finding:RIMMANDRAKE_THROW_CLOSED_CRATES_WHOLE_CONTENTS_RIDE_SAFE: Shelf did survive, but I was expecting the container to be moved while surviving. I had envisioned that if they put things in a steel crate or chest, the whole crate/chest would go flying a bit, but their contents would remain inside and protected due to its enclosed nature.
-- decision:finding:RIMMANDRAKE_LIFT_KNOCKBACK_THROW_CAPS_PLAN_SAYS_GONE: No caps please.
-- decision:finding:RIMMANDRAKE_DECIDE_EXPLOSION_MODS_KEEP_ABSORB: Better Explosions and Dynamic Effects Forge -> Keep both for good; Custom Gas Types -> Keep it as a separate mod
-- decision:finding:RIMMANDRAKE_BUILD_KNOCKBACK_CREATURE_MASS_AND_BLAST_POWER: It's fine. This doesn't need a human review. Just accept it as a pass and go on.
-- decision:finding:RIMMANDRAKE_FLING_KNOCKBACK_CARRY_ON_OWN_ARC: For today have them hold it. Next version it should go flying independently of the person holding it. Different trajectories.
-- decision:finding:RIMMANDRAKE_BRUISE_KNOCKBACK_LANDING_ON_PAWN: Thrown pawn lands on another pawn → Bruise in the next version
-- decision:finding:RIMMANDRAKE_BUILD_KNOCKBACK_STAGE_THREE_ELEVEN_BARS_UNRUN: Closed container near a blast: slide one cell as the locked bar says, or thrown as built? → Throw it, as built; the locked bar's wording changes by his word from 'slides one cell' to 'thrown a short way', and the test follows
-- q:walk-frame-clause-list-floor-already-eighty (Q: Walk frame clause: on the walk colony the mod-off arm alone is p99 80.2 ms (mod on 83.1, visit 3 run 4), over the 50 ms barrage bar the harness uses, so FRAME_BUDGET is UNMEASURED and the walk never exits 0. Judge it against its own mod-off arm with a margin, or lighten the walk colony?): Compare to mod-off (Recommended): Why: the question is what the mod costs, not what 316 mods cost. Pass if mod-on is within 10% of the same colony's mod-off run (today: +3.6%). Buys an honest, passable row today with no rebuild. Costs: the bar becomes relative, so a slow colony no longer fails by itself. Recommended: it measures the thing the bar was written to protect.
-- decision:finding:RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES: The game pause has been a consistent issue well beyond this mod. While it's laudable to try and figure it out, it really is different than getting this mod to pass. And the smallest list to observe it is the best idea.
-- decision:finding:RIMMANDRAKE_PROVE_PIT_GOODS_RETRIEVABLE: Hauling an item from within pit to storage zone out of pit worked!
-- decision:finding:RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH: EK 5 gaps → fix the 5 gaps then one more judge; gas shove onto an open pit drops the pawn in → yes, it stands
+## His answers (22) (each cut to 160 chars, a decision named without its 'decision:': `modledger.py show`)
+- version: Yes, fix it like that, and then please record this as an actual Pass.
+- q:you-can-t-fall-in-by: You can't fall in by careless colonist pathing. Only if they get blown/forced in do they fall.
+- q:1-1-totally-even-better-if: 1:1 totally. Even better if they can bounce inelastically off walls and rotate while they fly.
+- q:1-but-the-closed-containers-may: (1) but the closed containers may themselves get shoved a bit · 2 and remember the gas in the Cauldron
+- q:just-put-a-bomb-into-a: Just put a bomb into a storeroom with people in it beside a pit. Shows some items falling into the pit and some people as well.
+- q:1-anything-that-draws-its-contents: 1: Anything that draws its contents is open. … 4: I am confused. Items should be blown off a shelf, and a shelf should be ruled as open, period. So the scene i…
+- q:we-really-shouldn-t-blow-back: We really shouldn't blow back creatures beyond a certain mass, and the heavier something is, the less it should fly. That should also be a function of the expl…
+- q:can-t-we-actually-simulate-that: can't we actually simulate that settings check offline? That seems a gratuitous use of the game, unless that's actually a very fast check?
+- finding:RIMMANDRAKE_SPARE_THROWN_GOODS_SO_THEY_SCATTER: I agree with the 2nd option though, pending tuning, and worse damage if they then hit a solid object.
+- finding:RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD: Tuning looks good.
+- finding:RIMMANDRAKE_THROW_ALL_HARMFUL_BLASTS: Test 1: looks great! Full pass.
+- finding:RIMMANDRAKE_THROW_CLOSED_CRATES_WHOLE_CONTENTS_RIDE_SAFE: Shelf did survive, but I was expecting the container to be moved while surviving. I had envisioned that if they put things in a steel crate or chest, the whole…
+- finding:RIMMANDRAKE_LIFT_KNOCKBACK_THROW_CAPS_PLAN_SAYS_GONE: No caps please.
+- finding:RIMMANDRAKE_DECIDE_EXPLOSION_MODS_KEEP_ABSORB: Better Explosions and Dynamic Effects Forge -> Keep both for good; Custom Gas Types -> Keep it as a separate mod
+- finding:RIMMANDRAKE_BUILD_KNOCKBACK_CREATURE_MASS_AND_BLAST_POWER: It's fine. This doesn't need a human review. Just accept it as a pass and go on.
+- finding:RIMMANDRAKE_FLING_KNOCKBACK_CARRY_ON_OWN_ARC: For today have them hold it. Next version it should go flying independently of the person holding it. Different trajectories.
+- finding:RIMMANDRAKE_BRUISE_KNOCKBACK_LANDING_ON_PAWN: Thrown pawn lands on another pawn → Bruise in the next version
+- finding:RIMMANDRAKE_BUILD_KNOCKBACK_STAGE_THREE_ELEVEN_BARS_UNRUN: Closed container near a blast: slide one cell as the locked bar says, or thrown as built? → Throw it, as built; the locked bar's wording changes by his word fr…
+- q:walk-frame-clause-list-floor-already-eighty (Q: Walk frame clause: on the walk colony the mod-off arm alone is p99 80.2 ms (mod on 83.1, visit 3 run 4), over the 50 ms barrage bar the harness uses, so FRAME_BUDGET is UNMEASURED and the walk never exits 0. Judge it against its own mod-off arm with a margin, or lighten the walk colony?): Compare to mod-off (Recommended): Why: the question is what the mod costs, not what 316 mods cost. Pass if mod-on is within 10% of the same colony's mod-off ru…
+- finding:RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES: The game pause has been a consistent issue well beyond this mod. While it's laudable to try and figure it out, it really is different than getting this mod to…
+- finding:RIMMANDRAKE_PROVE_PIT_GOODS_RETRIEVABLE: Hauling an item from within pit to storage zone out of pit worked!
+- finding:RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH: EK 5 gaps → fix the 5 gaps then one more judge; gas shove onto an open pit drops the pawn in → yes, it stands
 
 ## Open questions (0)
 
-## Bars (59)
+## Bars (73)
 - bar:barrage_frame_budget [locked] verdict none: constraint bar from tree.json, proves at stage 6
 - bar:blast_breaks_pit_cover [locked] verdict none: experience bar from tree.json, proves at stage 6
+- bar:blast_show_air_ripple [locked] verdict none: locked for 0.2.0 in version/locked_bars.json (record 2 of 2…
+- bar:blast_show_crater_scar [locked] verdict none: locked for 0.2.0 in version/locked_bars.json (record 2 of 2…
+- bar:blast_show_fire_and_flash [locked] verdict none: locked for 0.2.0 in version/locked_bars.json (record 2 of 2…
+- bar:blast_show_scales_with_damage [locked] verdict none: locked for 0.2.0 in version/locked_bars.json (record 2 of 2…
+- bar:blast_show_screen_shake [locked] verdict none: locked for 0.2.0 in version/locked_bars.json (record 2 of 2…
+- bar:blast_show_smoke [locked] verdict none: locked for 0.2.0 in version/locked_bars.json (record 2 of 2…
+- bar:blast_show_soot_on_pawns [locked] verdict none: locked for 0.2.0 in version/locked_bars.json (record 2 of 2…
+- bar:blast_show_soot_on_things [locked] verdict none: locked for 0.2.0 in version/locked_bars.json (record 2 of 2…
+- bar:blast_show_switches_off_clean [locked] verdict none: locked for 0.2.0 in version/locked_bars.json (record 2 of 2…
+- bar:carried_thing_own_arc [locked] verdict none: locked for 0.2.0 in version/locked_bars.json (record 2 of 2…
 - bar:closed_container_holds [locked] verdict none: experience bar from tree.json, proves at stage 6
+- bar:collision_bruise_by_size [locked] verdict none: locked for 0.2.0 in version/locked_bars.json (record 2 of 2…
 - bar:doors_and_deep_water_stop [locked] verdict PASS: experience bar from tree.json, proves at stage 6
 - bar:every_good_moves [locked] verdict none: experience bar from tree.json, proves at stage 6
 - bar:every_harmful_blast_throws [locked] verdict none: experience bar from tree.json, proves at stage 6
 - bar:frame_time_probe [locked] verdict PASS: instrument bar from tree.json, proves at stage 6
 - bar:gas_goes_clump_by_clump [locked] verdict none: experience bar from tree.json, proves at stage 6
+- bar:gas_shoves_pawn_on_pit_cover [locked] verdict none: locked for 0.2.0 in version/locked_bars.json (record 2 of 2…
 - bar:goods_arc_spin_rebound [locked] verdict none: experience bar from tree.json, proves at stage 6
 - bar:heavier_flies_less [locked] verdict none: experience bar from tree.json, proves at stage 6
 - bar:heavy_stack_knocks [locked] verdict none: experience bar from tree.json, proves at stage 6
@@ -212,6 +220,7 @@ holder session 64d86561-8d37-4975-a838-3b61b865666a, context 228835 of ceiling 4
 - bar:inv_which_blasts [locked] verdict PASS: inventory bar from record.json, proves at stage 6
 - bar:inv_who_is_spared [locked] verdict PASS: inventory bar from record.json, proves at stage 6
 - bar:no_careless_fall [locked] verdict PASS: experience bar from tree.json, proves at stage 6
+- bar:no_impact_without_contact [locked] verdict none: locked for 0.2.0 in version/locked_bars.json (record 2 of 2…
 - bar:no_teleport [locked] verdict none: experience bar from tree.json, proves at stage 6
 - bar:only_explosions_throw [locked] verdict PASS: experience bar from tree.json, proves at stage 6
 - bar:open_shelf_scatters [locked] verdict none: experience bar from tree.json, proves at stage 6
@@ -221,6 +230,7 @@ holder session 64d86561-8d37-4975-a838-3b61b865666a, context 228835 of ceiling 4
 - bar:people_thrown_three_cells [locked] verdict PASS: experience bar from tree.json, proves at stage 6
 - bar:per_weapon_tuning [locked] verdict none: experience bar from tree.json, proves at stage 6
 - bar:pit_goods_fetched [locked] verdict none: experience bar from tree.json, proves at stage 6
+- bar:rebound_goes_shorter [locked] verdict none: locked for 0.2.0 in version/locked_bars.json (record 2 of 2…
 - bar:recovery_immunity [locked] verdict none: experience bar from tree.json, proves at stage 6
 - bar:settings_scale_and_switch [locked] verdict none: experience bar from tree.json, proves at stage 6
 - bar:shield_belt_holds [locked] verdict none: experience bar from tree.json, proves at stage 6
@@ -236,7 +246,8 @@ spend recorded: USD 178.61, 171672717 tokens
 - closed findings: 53, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - tests: 106, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - claimed fixes in brief: 1 on one line (name and sha), their claim, test and fix by `show`
-- open findings in brief: the oldest 39 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
-- the full history: 728 events (views/history.md; never read whole)
+- open findings in brief: the oldest 41 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
+- his answers and the bars' texts in brief (cut at 160 and 60 chars)
+- the full history: 742 events (views/history.md; never read whole)
 
-cursor: t=2026-11-25T17:58:04Z.1795629484895915210 (modledger.py since --mod ExplosiveKnockback t=2026-11-25T17:58:04Z.1795629484895915210 prints what changed after this packet)
+cursor: t=2026-11-26T01:26:10Z.1795656370234227728 (modledger.py since --mod ExplosiveKnockback t=2026-11-26T01:26:10Z.1795656370234227728 prints what changed after this packet)

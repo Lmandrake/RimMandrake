@@ -1,9 +1,9 @@
 {
  "_view": {
-  "body_sha256": "0e19d75d16d8a08c4d130094162566831e7a4341edc8d7095f3ea308d1005e15",
+  "body_sha256": "ac4768832febe690bd3f50ba6012ac62fd0b5a944efcf578e2a33cdee75209fb",
   "reducer": 1,
   "shards": {
-   "BACKFILL": 341359,
+   "BACKFILL": 348917,
    "DISPATCH": 46376,
    "HOLDER.run-1794813483": 1382,
    "HOLDER.run-1794824768": 1788,
@@ -221,10 +221,76 @@
     "ts": "2026-11-16T06:51:51Z",
     "verdict": null
    },
+   "bar:blast_show_air_ripple": {
+    "status": "locked",
+    "text": "locked for 0.2.0 in version/locked_bars.json (record 2 of 2026-11-25T00:32:13Z): inventory bar, from record.json, proves at stage 6",
+    "ts": "2026-11-26T01:26:10Z",
+    "verdict": null
+   },
+   "bar:blast_show_crater_scar": {
+    "status": "locked",
+    "text": "locked for 0.2.0 in version/locked_bars.json (record 2 of 2026-11-25T00:32:13Z): inventory bar, from record.json, proves at stage 6",
+    "ts": "2026-11-26T01:26:10Z",
+    "verdict": null
+   },
+   "bar:blast_show_fire_and_flash": {
+    "status": "locked",
+    "text": "locked for 0.2.0 in version/locked_bars.json (record 2 of 2026-11-25T00:32:13Z): inventory bar, from record.json, proves at stage 6",
+    "ts": "2026-11-26T01:26:10Z",
+    "verdict": null
+   },
+   "bar:blast_show_scales_with_damage": {
+    "status": "locked",
+    "text": "locked for 0.2.0 in version/locked_bars.json (record 2 of 2026-11-25T00:32:13Z): inventory bar, from record.json, proves at stage 6",
+    "ts": "2026-11-26T01:26:10Z",
+    "verdict": null
+   },
+   "bar:blast_show_screen_shake": {
+    "status": "locked",
+    "text": "locked for 0.2.0 in version/locked_bars.json (record 2 of 2026-11-25T00:32:13Z): inventory bar, from record.json, proves at stage 6",
+    "ts": "2026-11-26T01:26:10Z",
+    "verdict": null
+   },
+   "bar:blast_show_smoke": {
+    "status": "locked",
+    "text": "locked for 0.2.0 in version/locked_bars.json (record 2 of 2026-11-25T00:32:13Z): inventory bar, from record.json, proves at stage 6",
+    "ts": "2026-11-26T01:26:10Z",
+    "verdict": null
+   },
+   "bar:blast_show_soot_on_pawns": {
+    "status": "locked",
+    "text": "locked for 0.2.0 in version/locked_bars.json (record 2 of 2026-11-25T00:32:13Z): inventory bar, from record.json, proves at stage 6",
+    "ts": "2026-11-26T01:26:10Z",
+    "verdict": null
+   },
+   "bar:blast_show_soot_on_things": {
+    "status": "locked",
+    "text": "locked for 0.2.0 in version/locked_bars.json (record 2 of 2026-11-25T00:32:13Z): inventory bar, from record.json, proves at stage 6",
+    "ts": "2026-11-26T01:26:10Z",
+    "verdict": null
+   },
+   "bar:blast_show_switches_off_clean": {
+    "status": "locked",
+    "text": "locked for 0.2.0 in version/locked_bars.json (record 2 of 2026-11-25T00:32:13Z): inventory bar, from record.json, proves at stage 6",
+    "ts": "2026-11-26T01:26:10Z",
+    "verdict": null
+   },
+   "bar:carried_thing_own_arc": {
+    "status": "locked",
+    "text": "locked for 0.2.0 in version/locked_bars.json (record 2 of 2026-11-25T00:32:13Z): inventory bar, from record.json, proves at stage 6",
+    "ts": "2026-11-26T01:26:10Z",
+    "verdict": null
+   },
    "bar:closed_container_holds": {
     "status": "locked",
     "text": "experience bar from tree.json, proves at stage 6",
     "ts": "2026-11-16T06:51:51Z",
+    "verdict": null
+   },
+   "bar:collision_bruise_by_size": {
+    "status": "locked",
+    "text": "locked for 0.2.0 in version/locked_bars.json (record 2 of 2026-11-25T00:32:13Z): inventory bar, from record.json, proves at stage 6",
+    "ts": "2026-11-26T01:26:10Z",
     "verdict": null
    },
    "bar:doors_and_deep_water_stop": {
@@ -255,6 +321,12 @@
     "status": "locked",
     "text": "experience bar from tree.json, proves at stage 6",
     "ts": "2026-11-16T06:51:51Z",
+    "verdict": null
+   },
+   "bar:gas_shoves_pawn_on_pit_cover": {
+    "status": "locked",
+    "text": "locked for 0.2.0 in version/locked_bars.json (record 2 of 2026-11-25T00:32:13Z): inventory bar, from record.json, proves at stage 6",
+    "ts": "2026-11-26T01:26:10Z",
     "verdict": null
    },
    "bar:goods_arc_spin_rebound": {
@@ -467,6 +539,12 @@
     "ts": "2026-11-16T06:51:51Z",
     "verdict": "PASS"
    },
+   "bar:no_impact_without_contact": {
+    "status": "locked",
+    "text": "locked for 0.2.0 in version/locked_bars.json (record 2 of 2026-11-25T00:32:13Z): inventory bar, from record.json, proves at stage 6",
+    "ts": "2026-11-26T01:26:10Z",
+    "verdict": null
+   },
    "bar:no_teleport": {
     "status": "locked",
     "text": "experience bar from tree.json, proves at stage 6",
@@ -519,6 +597,12 @@
     "status": "locked",
     "text": "experience bar from tree.json, proves at stage 6",
     "ts": "2026-11-16T06:51:51Z",
+    "verdict": null
+   },
+   "bar:rebound_goes_shorter": {
+    "status": "locked",
+    "text": "locked for 0.2.0 in version/locked_bars.json (record 2 of 2026-11-25T00:32:13Z): inventory bar, from record.json, proves at stage 6",
+    "ts": "2026-11-26T01:26:10Z",
     "verdict": null
    },
    "bar:recovery_immunity": {
@@ -884,7 +968,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 728,
+  "events": 742,
   "exit_claims": [],
   "fenced": [],
   "findings": {
