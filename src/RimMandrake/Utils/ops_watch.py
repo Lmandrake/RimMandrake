@@ -1870,9 +1870,12 @@ def whea_lines():
         return Path(canned).read_text(encoding="utf-8").splitlines()
     if not os.path.exists(POWERSHELL):
         raise OSError("no %s on this host (no Windows to ask)" % POWERSHELL)
+    # A lost WSL launch (rc 1, "UtilAcceptVsock: accept4 failed 110", powershell never ran) goes again, as winbuild's
+    # does: under host load it read blind on 4 single passes of 2026-11-25..26 and rejoined disk-20261115210535 each time.
+    import winbuild  # lazy: only this collector needs it
     try:
-        r = subprocess.run([POWERSHELL, "-NoProfile", "-NonInteractive", "-Command", WHEA_PS % WHEA_DAYS],
-                           capture_output=True, text=True, timeout=60)
+        r = winbuild.run_interop_captured([POWERSHELL, "-NoProfile", "-NonInteractive", "-Command", WHEA_PS % WHEA_DAYS],
+                                          capture_output=True, text=True, timeout=60)
     except (subprocess.TimeoutExpired, OSError) as e:
         raise OSError("powershell: %s" % e)
     out = (r.stdout or "").replace("\r", "").splitlines()

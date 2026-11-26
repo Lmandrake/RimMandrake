@@ -181,6 +181,25 @@ for name, body, says in (("missing", None, "No such file"), ("empty", "", "no EN
     check("%s: the blind alarm stands under its own item" % name, k[BLIND]["v"] == 1 and TG[BLIND]["name"] in json.dumps(alarm(al, BLIND)), al)
     check("%s: no false corrected or severe alarm" % name, not alarm(al, COR) and not alarm(al, SEV), al)
 
+# A lost WSL launch (rc 1, only "UtilAcceptVsock: accept4 failed 110" on stderr; powershell never ran) goes again, as
+# winbuild.run_interop does: under host load it read whea_blind 1 on 4 single passes of 2026-11-25..26 and rejoined
+# disk-20261115210535 each time. A real powershell failure still reads blind.
+import winbuild as WB  # noqa: E402
+saved, saved_wait = OW.POWERSHELL, WB.INTEROP_WAIT_S
+WB.INTEROP_WAIT_S = 0
+for name, fails, want_blind in (("vsock_once", 1, 0), ("real_fail", -1, 1)):
+    fake, count = TMP / ("%s.sh" % name), TMP / ("%s.count" % name)
+    count.write_text("0")
+    fake.write_text("#!/bin/sh\nn=$(cat %s); echo $((n+1)) > %s\n" % (count, count)
+                    + ("if [ \"$n\" -lt %d ]; then echo '<3>WSL (1 - ) ERROR: UtilAcceptVsock:273: accept4 failed 110' >&2; "
+                       "exit 1; fi\necho END\\|0\n" % fails if fails > 0 else "echo 'boom' >&2; exit 1\n"))
+    fake.chmod(0o755)
+    OW.POWERSHELL = str(fake)
+    r = OW.whea_reading(NOW)
+    check("%s: whea_blind %d (%s tries)" % (name, want_blind, count.read_text().strip()), r[BLIND]["v"] == want_blind
+          and (want_blind or r[COR]["m"] == "MEASURED") and (fails > 0 or count.read_text().strip() == "1"), r)
+OW.POWERSHELL, WB.INTEROP_WAIT_S = saved, saved_wait
+
 # A host with no Windows (no powershell.exe) reads blind, never zero.
 saved = OW.POWERSHELL
 OW.POWERSHELL = str(TMP / "no_such_powershell.exe")
