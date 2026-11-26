@@ -2916,21 +2916,23 @@ def seat_sync(root):
 
 
 def unlanded_ledger_mods(root):
-    """-> the mods whose DISPATCH shard in the root differs from HEAD (tracked and changed, or new): lines that a
-    refused or failed landing left behind. None when git cannot say."""
+    """-> probe_result: value(the mods whose DISPATCH shard in the root differs from HEAD, tracked and changed or new:
+    lines that a refused or failed landing left behind), or could_not_look(why) when git cannot say."""
+    import probe_result as PR
+    import time_budget as TB
     try:
         r = subprocess.run(["git", "-C", root, "status", "--porcelain", "--untracked-files=all", "--",
-                            LEDGER_SHARD_GLOB], capture_output=True, text=True, timeout=120)
-    except (OSError, subprocess.SubprocessError):
-        return None
+                            LEDGER_SHARD_GLOB], capture_output=True, text=True, timeout=TB.CALL_S)
+    except (OSError, subprocess.SubprocessError) as e:
+        return PR.could_not_look("git status: %s: %s" % (type(e).__name__, e))
     if r.returncode:
-        return None
+        return PR.could_not_look("git status exited %d: %s" % (r.returncode, r.stderr.strip()))
     mods = set()
     for ln in r.stdout.splitlines():
         parts = ln[3:].strip().split("/")
         if len(parts) == 5 and parts[:2] == ["design", "concepts"] and parts[3:] == ["ledger", "DISPATCH.jsonl"]:
             mods.add(parts[2])
-    return sorted(mods)
+    return PR.value(sorted(mods))
 
 
 def sync_clone(root, fx=None):
@@ -2942,20 +2944,21 @@ def sync_clone(root, fx=None):
         return fx["sync_clone"]()
     if os.environ.get("RM_STAGE_LAND") == "0":
         return "skipped: RM_STAGE_LAND=0"
+    import time_budget as TB
     try:
         r = subprocess.run(["git", "-C", root, "rev-parse", "--show-toplevel"], capture_output=True, text=True,
-                           timeout=120)
+                           timeout=TB.CALL_S)
     except (OSError, subprocess.SubprocessError) as e:
-        return "skipped: git rev-parse: %s" % e
+        return "could not look: git rev-parse: %s" % e
     if r.returncode != 0 or os.path.realpath(r.stdout.strip()) != os.path.realpath(root):
         return "skipped: %s is not a clone's top" % root
     out = ["sync: %s" % seat_sync(root)]
     mods = unlanded_ledger_mods(root)
-    if mods is None:
-        out.append("unlanded lines: could not look (git status failed)")
-    elif mods:
-        out.append("unlanded %s: %s" % (", ".join(mods), land_ledger(
-            root, mods, "lines a refused or failed landing left unlanded")))
+    if not mods.ok:
+        out.append("unlanded lines: %s" % mods)
+    elif mods.value:
+        out.append("unlanded %s: %s" % (", ".join(mods.value), land_ledger(
+            root, mods.value, "lines a refused or failed landing left unlanded")))
     return "; ".join(out)
 
 
