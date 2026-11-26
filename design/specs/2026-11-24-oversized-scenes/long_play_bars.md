@@ -44,3 +44,13 @@ The 20: Abyss `B8`, BlueDesert `B8`, Cauldron `whole`, Contagion `season`, Crack
 `whole`, LanternDeeps `B8`, LongShade `B8`, Miasma `B9`, RustCathedral `B7`, SleepingIce `B8`, Stillsand `B_WHOLE`, TerminalBiomes
 `B8`, TheForge `B8`, TheRot `B7`, Warscar `W9`, Wastes `B8`, Webwork `B8`, WeepingStones `B9`. Each is in
 `design/concepts/<Mod>/cleanse/bars.json`.
+
+## The Conductor's rulings
+
+The Conductor rules each bar above by name: cut the long-play words from the sentence (in `tree.json` or `cleanse/bars.json`),
+delete the bar, or keep it with its reason in a row `| <mod> | <bar> | kept: <why> |` here. The check of item
+`RIMMANDRAKE_RULE_LONG_PLAY_BARS_TWENTY_ARE_CLEANSED` is `python3 design/specs/2026-11-24-oversized-scenes/check_long_play_bars.py`:
+exit 0 when no bar here still asks for long play, 1 when one does (each is named), 2 when it could not look.
+
+| mod | bar | ruling |
+|---|---|---|
