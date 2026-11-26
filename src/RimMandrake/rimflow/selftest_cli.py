@@ -158,8 +158,8 @@ def prose(iid, spec="do the thing", verify="run it", criteria="it works"):
     d = os.path.join(_tmp(), "items")
     os.makedirs(d, exist_ok=True)
     with open(os.path.join(d, "%s.md" % iid), "w", encoding="utf-8") as fh:
-        fh.write("## spec\n%s\n\n## verify\n%s\n\n## criteria\n%s\n"
-                 % (spec, verify, criteria))
+        fh.write("## spec\n%s\n\n## verify\n%s\n\n## criteria\n%s\n\n## refs\nnone: a probe fixture\n"
+                 % (spec, verify, criteria))     # refs: claim's preflight E12 refuses a bridge or deploy item without
 
 
 def make_ready(iid, seat="BUILD"):
@@ -241,7 +241,7 @@ def t_a_free_bridge_offer_says_how_to_take_it():
     ok("file", "BRIDGE_OFFER_HINT_PROBE_FIXTURE", "--for", "CHECK", "--title", "drive the bridge",
        "--needs", "bridge")
     open(os.path.join(_tmp(), "items", "BRIDGE_OFFER_HINT_PROBE_FIXTURE.md"), "w").write(
-        "## spec\nx\n## verify\ny\n## criteria\nz\n")
+        "## spec\nx\n## verify\ny\n## criteria\nz\n## refs\nnone: a probe fixture\n")
     make_ready("BRIDGE_OFFER_HINT_PROBE_FIXTURE", seat="CHECK")
     out = ok("next", "--seat", "CHECK", seat="CHECK")
     assert "BRIDGE_OFFER_HINT_PROBE_FIXTURE" in out, (
