@@ -152,6 +152,9 @@ def sweep(apply=False, repo=REPO, seat_of=None):
         if iid in live:
             rows.append((iid, mod, [], ["skipped: a detached run of it is live"]))
             continue
+        if it.owner != "BENCH":      # only the owning seat reclaims (cli refuses): a half park would leave a wait and no reclaim
+            rows.append((iid, mod, [], ["skipped: owned by seat %s, which alone may reclaim it" % it.owner]))
+            continue
         notes = [e for e in evs if e.get("id") == iid and e.get("event") == "note"]
         steps, why = plan(iid, it.state, it.home, it.wait_until, notes, None, time.time())
         # a hand-parked item (wait + note present) still needs the reclaim: plan says so, it keeps `doing` out
