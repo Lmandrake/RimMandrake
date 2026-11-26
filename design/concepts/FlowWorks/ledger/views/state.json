@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "8d3a663534d309f88e7e7f0edf45b40061b9e6cf32a1293e40457fa8b38d1e7a",
+  "body_sha256": "d9d18d3f508c30b5e40a4f35791fd6c8f3fa322c9022badc0c523fec8761125a",
   "reducer": 1,
   "shards": {
    "BACKFILL": 892335,
@@ -44,7 +44,7 @@
    "HOLDER.run-1795471235": 562,
    "HOLDER.run-1795503470": 1774,
    "HOLDER.run-1795670514": 9857,
-   "HOLDER.run-1795693138": 8494,
+   "HOLDER.run-1795693138": 9641,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1295,10 +1295,10 @@
   },
   "checkpoint": {
    "by": "HOLDER.run-1795693138",
-   "done": "restart 2: 31 members given an outcome (closed, dropped or refused with reason; bundle state file b37e5d14e5..ec2b1af4e0); review-staging swimmers fixed (9a55008e2d); objects_sheet.choose_look fixed for the reach menu (ec726992dc, live on ArchSmall); guardrail, faucet and two water looks passed by fresh rm-judges",
-   "next": "Take the RIMMANDRAKE_* members in the brief order from the state file Restart point of 7:25 AM PST, filtering each first",
-   "ruled_out": "the Steve2 RM_PitDrowning in live_session B9 as a mod fault (SITE: staged swimmers plus clock steps); the choose_look None as a mod fault (the mod menu works; the bridge driver lost the second menu)",
-   "ts": "2026-11-26T15:17:54Z"
+   "done": "LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP closed: Lake* 8/8, preview judged KEEP, A2 verified on 0b30f2a023f8 (4f70a3189a)",
+   "next": "Filter and work RIMMANDRAKE_ALIGN_FILL_GRID_LAGS_TRUE_BRIM",
+   "ruled_out": "shallow-only lakes at 1 m as a generator fault (wadeable terrain is shallow by design)",
+   "ts": "2026-11-26T15:42:53Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1750,7 +1750,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1762,
+  "events": 1765,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7850,7 +7850,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-26T15:17:54Z",
+   "last": "2026-11-26T15:44:17Z",
    "lease": "run-1795693138",
    "released": false,
    "token": 61
