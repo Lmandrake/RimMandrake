@@ -20,6 +20,7 @@ IGNORED = [
     "deployed/config/ModsConfig.before-tier-mods__mandrake_rm_flowworks__mandrake_rm_patches.xml",
     "deployed/config/ModsConfig.swap-active.json",
     "deployed/config/ModsConfig.swap-active.ratchet_pilot.stale-20261019.json",
+    "deployed/config/ModsConfig.swap-active.json.stale-20261126T171600Z",
 ]
 KEPT = [
     "infrastructure/state/queue/CHECK_CLOSED.md",

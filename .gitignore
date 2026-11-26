@@ -251,6 +251,8 @@ infrastructure/state/queue/*.md
 # on every tier swap, so a tracked one is dirt in whichever clone swapped (untracked 2026-11-16).
 deployed/config/ModsConfig.before-tier-*.xml
 deployed/config/ModsConfig.swap-active*.json
+# a marker set aside by modset_builder (dead holder) is renamed <marker>.stale-<UTC>, which the line above does not match
+deployed/config/ModsConfig.swap-active*.stale-*
 # the same books for a second game (modset_builder.BACKUPS keyed by RM_GAME_INSTANCE, 2026-11-24)
 deployed/config/game_*/
 
