@@ -90,7 +90,6 @@ class Box:
 def sleeper():
     p = subprocess.Popen(["sleep", "300"])
     SLEEPERS.append(p)
-    time.sleep(0.05)
     return p
 
 
