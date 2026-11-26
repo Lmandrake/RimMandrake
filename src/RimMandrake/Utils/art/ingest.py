@@ -344,6 +344,23 @@ def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None =
                     pev.pop("raw_verdict", None)
                     if put(pev):
                         out["rulings"] += 1
+        elif srow and decided:
+            # a row whose decision is only the unclicked prefill can still carry his per-slot picks (picks1_redo
+            # 2026-10-25, RSW_Grazer: Grazer_f pick C was never ingested, so enact promised an install it then refused)
+            for g, pl in sorted(DV.slot_picks(v).items()):
+                if pl not in cols or placeholder_set(cols[pl].values()):
+                    out.setdefault("placeholder_refused", []).append(f"{row}:{g}:{pl} (pick)") if pl in cols else None
+                    continue
+                shas = sorted({s for s in cols[pl].values() if s} - xed)
+                if not shas:
+                    continue
+                pev = {"type": "ruling", "id": L.det_id("ruling-sheet", via, row, pl, v.get("at")),
+                       "target": {"shas": shas, "column": pl, "row": row, "graphic": g}, "verdict": "keep",
+                       "by": "owner", "said": note, "note": note, "at": v.get("at"), "trust": "ruled", "via": via,
+                       "subject_key": srow.get("subject_key", ""), "source_file": via,
+                       "evidence": "sidecar savedBy/writeCount" if plumbed else "reviewStatus ruled"}
+                if put(pev):
+                    out["rulings"] += 1
         # kept variants: extra columns the owner marked as valid in-game variants of the pick
         if srow and decided:
             # HIS ticks only: a machine-default list (`variantsDefault`, the retired 2026-10-06 pre-tick) is never a keep,
