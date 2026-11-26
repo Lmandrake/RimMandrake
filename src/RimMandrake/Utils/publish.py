@@ -959,7 +959,7 @@ def tree_checks(top, changed, gate=None):
         print("tree checks SKIPPED by RM_PUBLISH_SKIP_TREE_CHECKS: %s" % skip)
         return None
     cfg = json.load(open(cfg_path, encoding="utf-8"))
-    if changed and all(any(fnmatch.fnmatch(p, g) for g in cfg.get("skip_when_only", ())) for p in changed):
+    if changed and runs_no_tree_check(top, changed, cfg.get("skip_when_only", ())):
         return None
     if gate is not None:
         gate.take("tree checks")                         # the full checkout and the checks wait for a machine slot
@@ -969,6 +969,23 @@ def tree_checks(top, changed, gate=None):
             cfg = _committed(full, TREE_CHECKS)         # the landing tree's own list: its tests are the ones checked out
             return _run_tree_checks(full, cfg) if cfg else None
     return _run_tree_checks(top, cfg)
+
+
+def runs_no_tree_check(top, changed, skip_globs):
+    """True when every changed path is a skip_when_only path or the old half of a close's prose move: items/<ID>.md that
+    HEAD no longer holds, with items/closed/<ID>.md in the same change (skip_when_only names items/closed/*.md). So the
+    publish of `rimflow close`, a ledger line and that move, takes no tree-check slot
+    (RIMMANDRAKE_UNJAM_PUBLISH_DOOR_LEDGER_WAITED_THIRTY_MINUTES: the tick's own close waited 30 min behind two pipeline
+    runs, 2026-11-26). New live item prose is not skipped: selftest_retired_era_gone judges item file names."""
+    ch = set(changed)
+    for p in changed:
+        if any(fnmatch.fnmatch(p, g) for g in skip_globs):
+            continue
+        rest = p[len(ITEMS_DIR):] if p.startswith(ITEMS_DIR) else ""
+        if not (rest.endswith(".md") and "/" not in rest and ITEMS_DIR + "closed/" + rest in ch
+                and run(top, "cat-file", "-e", "HEAD:" + p, check=False).returncode != 0):
+            return False
+    return True
 
 
 def landing_rev(top):

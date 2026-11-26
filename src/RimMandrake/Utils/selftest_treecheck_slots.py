@@ -283,10 +283,91 @@ def t_a_publish_with_no_door_checks_takes_no_slot(tmp):
           "a-publish-with-no-door-checks-takes-no-slot: a ledger-only change asked for %s" % takes)
 
 
+def landing_clone(tmp):
+    """-> a work clone of a bare origin whose door runs one probe check under the repo's real skip_when_only list, and
+    whose origin holds one live item's prose (items/X.md), as a seat clone does."""
+    bare, seed, work = (os.path.join(tmp, n) for n in ("origin.git", "seed", "work"))
+    g("init", "-q", "--bare", "-b", "main", bare, cwd=tmp)
+    g("clone", "-q", bare, seed, cwd=tmp)
+    real = json.load(open(os.path.join(HERE, "publish_tree_checks.json"), encoding="utf-8"))
+    os.makedirs(os.path.join(seed, os.path.dirname(P.TREE_CHECKS)))
+    json.dump({"timeout_s": 120, "skip_when_only": real["skip_when_only"], "checks": [{"test": "probe.py", "fix": "f"}]},
+              open(os.path.join(seed, P.TREE_CHECKS), "w"))
+    open(os.path.join(seed, "probe.py"), "w").write("print('probe green')\n")
+    for d in (P.LEDGER_SHARDS, P.ITEMS_DIR + "closed/"):
+        os.makedirs(os.path.join(seed, d))
+    open(os.path.join(seed, P.LEDGER_SHARDS, "BENCH.jsonl"), "w").write('{"n": 1}\n')
+    open(os.path.join(seed, P.ITEMS_DIR, "X.md"), "w").write("# X\n")
+    open(os.path.join(seed, P.ITEMS_DIR, "closed", ".keep"), "w").close()
+    for k, v in (("user.name", "t"), ("user.email", "t@example.invalid"), ("core.hooksPath", "/dev/null")):
+        g("config", k, v, cwd=seed)
+    g("add", "-A", cwd=seed)
+    g("commit", "-q", "-m", "base", cwd=seed)
+    g("push", "-q", "origin", "HEAD:main", cwd=seed)
+    g("clone", "-q", bare, work, cwd=tmp)
+    for k, v in (("user.name", "t"), ("user.email", "t@example.invalid"), ("core.hooksPath", "/dev/null")):
+        g("config", k, v, cwd=work)
+    return work
+
+
+def t_a_close_publish_passes_held_slots(tmp):
+    """Both slots held by planted holders: the publish of a `rimflow close` (a ledger line and the prose move to
+    items/closed/, the shape that waited 30 min on 2026-11-26) and a ledger-only publish land while they still hold;
+    a publish of new live item prose still waits for a slot (the gate keeps guarding the disk)."""
+    work = landing_clone(tmp)
+    root, log = os.path.join(BASE, P.TREECHECK_GATE), os.path.join(tmp, "held.log")
+    holders = [drive(root, 2, "H%d" % i, 600, log) for i in (1, 2)]
+    env = dict(os.environ, PUBLISH_RM_ROOT=BASE, RM_TREECHECK_SLOTS="2")
+    env.pop(TS.HELD_ENV, None)
+
+    def pub(args, wait_s):
+        """-> (output, seconds) of one real ./publish; a publish still running after wait_s is ended (the reading
+        is 'still waiting')."""
+        t0 = time.time()
+        p = subprocess.Popen([sys.executable, os.path.join(HERE, "publish.py")] + args, cwd=work, env=env,
+                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+        try:
+            # budget: danger=a publish that waits for the planted holders (the code before this promise) holds the test
+            # budget: as long as they hold (600 s); evidence=that code; longest=0.3s (a close publish here, 2026-11-26), 200x
+            return p.communicate(timeout=wait_s)[0], time.time() - t0
+        except subprocess.TimeoutExpired:
+            p.kill()
+            return p.communicate()[0] + "\n(STILL WAITING after %d s)" % wait_s, time.time() - t0
+    try:
+        deadline = time.time() + 20
+        while sum(1 for _t, k, _n in events(log) if k == "in") < 2 and time.time() < deadline:
+            time.sleep(0.05)
+        check(sum(1 for _t, k, _n in events(log) if k == "in") == 2, "a-close-publish-passes-held-slots: sanity: both "
+              "planted holders hold a slot")
+        shard = os.path.join(work, P.LEDGER_SHARDS, "BENCH.jsonl")
+        open(shard, "a").write('{"n": 2, "verb": "close"}\n')
+        os.rename(os.path.join(work, P.ITEMS_DIR, "X.md"), os.path.join(work, P.ITEMS_DIR, "closed", "X.md"))
+        out, s = pub(["--ledger", "-m", "ledger: X close", shard], 60)
+        check("PUBLISHED" in out and "waiting" not in out and "running them" not in out,
+              "a-close-publish-passes-held-slots: a close's ledger line and prose move landed in %.1f s past two held "
+              "slots, no check run (%r)" % (s, out.strip()[-300:]))
+        open(shard, "a").write('{"n": 3, "verb": "note"}\n')
+        out, s = pub(["-m", "ledger: X note", shard], 60)
+        check("PUBLISHED" in out and "waiting" not in out,
+              "a-close-publish-passes-held-slots: a ledger-only publish landed in %.1f s past two held slots (%r)"
+              % (s, out.strip()[-300:]))
+        open(os.path.join(work, P.ITEMS_DIR, "Y.md"), "w").write("# Y\n")
+        out, s = pub(["-m", "item Y prose", os.path.join(work, P.ITEMS_DIR, "Y.md")], 3)
+        check("waiting 0 s for a tree-check slot" in out and "PUBLISHED" not in out,
+              "a-close-publish-passes-held-slots: new live item prose still waits for a slot (%r)" % out.strip()[-300:])
+        check(sum(1 for _t, k, _n in events(log) if k == "out") == 0,
+              "a-close-publish-passes-held-slots: the planted holders still held throughout")
+    finally:
+        for h in holders:
+            h.kill()
+            h.communicate()
+
+
 def main():
     for t in (t_at_most_the_limit_run_at_once, t_waiters_go_first_come_first_served, t_a_dead_holder_frees_its_slot,
               t_a_waiter_shows_progress, t_one_publish_holds_one_slot_across_both_checks,
-              t_a_check_under_a_held_slot_never_waits_again, t_a_publish_with_no_door_checks_takes_no_slot):
+              t_a_check_under_a_held_slot_never_waits_again, t_a_publish_with_no_door_checks_takes_no_slot,
+              t_a_close_publish_passes_held_slots):
         tmp = tempfile.mkdtemp(prefix=t.__name__[2:20] + "-", dir=BASE)
         try:
             t(tmp)

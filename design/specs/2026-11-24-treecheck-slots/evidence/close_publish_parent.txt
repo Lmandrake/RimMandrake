@@ -1,0 +1,7 @@
+ok   at-most-the-limit-run-at-once: all four publishes went green ([['DOOR GREEN'], ['DOOR GREEN'], ['DOOR GREEN'], ['DOOR GREEN']])
+ok   a-close-publish-passes-held-slots: sanity: both planted holders hold a slot
+FAIL a-close-publish-passes-held-slots: a close's ledger line and prose move landed in 60.0 s past two held slots, no check run ('ems/closed/X.md\npublish: waiting 0 s for a tree-check slot, 0 ahead, 2 running (pid 3715532, pid 3715533); the tree checks start when one frees\npublish: waiting 30 s for a tree-check slot, 0 ahead, 2 running (pid 3715532, pid 3715533); the tree checks start when one f
+FAIL a-close-publish-passes-held-slots: a ledger-only publish landed in 60.0 s past two held slots ('publish: waiting 0 s for a tree-check slot, 0 ahead, 2 running (pid 3715532, pid 3715533); the tree checks start when one frees\npublish: waiting 30 s for a tree-check slot, 0 ahead, 2 running (pid 3715532, pid 3715533); the tree checks start when one frees\n\n(STILL WAITING after 60 s)')
+ok   a-close-publish-passes-held-slots: new live item prose still waits for a slot ('publish: waiting 0 s for a tree-check slot, 0 ahead, 2 running (pid 3715532, pid 3715533); the tree checks start when one frees\n\n(STILL WAITING after 3 s)')
+ok   a-close-publish-passes-held-slots: the planted holders still held throughout
+RED: 2 red

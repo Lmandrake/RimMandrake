@@ -44,6 +44,16 @@ Up to six door checks ran at once on one disk: the disk read 100% busy, load rea
   a fixture publish) passes the gate at once. So no set of holders can wait on each other.
 - **a-publish-with-no-door-checks-takes-no-slot.** A publish whose change runs no door checks (only `skip_when_only`
   paths, no pipeline test touched) neither waits nor takes a slot.
+- **a-close-publish-passes-held-slots.** While both slots are held, a publish of only ledger lines, or of a
+  `rimflow close` (its ledger line and the move of `items/<ID>.md` to `items/closed/<ID>.md`), lands at once and runs
+  no check. A publish that adds live item prose (`items/<ID>.md`) still waits for a slot: `selftest_retired_era_gone`
+  judges item file names. Design (2026-11-26, `RIMMANDRAKE_UNJAM_PUBLISH_DOOR_LEDGER_WAITED_THIRTY_MINUTES`): the
+  smallest one that keeps the disk guarded. Such a publish makes no checkout and runs no check, so it adds no disk
+  load, and it never needed a slot. `skip_when_only` names `items/closed/*.md`, and `publish.py runs_no_tree_check`
+  counts the deleted `items/<ID>.md` of the same move. Measured: on 2026-11-26 the tick's own close (the dispatch
+  clone, a ledger line and one prose move) waited in the line behind two pipeline runs of 31 min each. With two
+  planted holders, the close publish landed in 0.3 s; on the code before, it still waited after 60 s
+  (`evidence/close_publish_parent.txt`).
 
 ## LIMITS
 
