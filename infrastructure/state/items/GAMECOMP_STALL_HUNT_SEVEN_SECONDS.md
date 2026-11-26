@@ -8,3 +8,7 @@ Name the GameComponent behind one-off stalls on the 550 list (Rot save): gameCom
 
 ## state
 2026-11-05: the build pin a16039c753 went stale when other items edited the two tool files (0a3afbe712 BRIDGE_HOOKS_HARDEN_REENTRANT_AND_FAULTY, 52203cfa0a BRIDGE_FLOATMENU_FIX_DEBUG_PICKER_UNREADABLE). The proof was rerun green at a62834e844 (both selftests PASS, 59 C# units with 0 failed, BridgeTools builds with 0 errors) and the item was re-pinned there so the A2 live round can run.
+
+## refs
+file: src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchGameCompTiming.cs
+file: src/RimMandrake/Utils/perf/game_comp_stall_hunt.py
