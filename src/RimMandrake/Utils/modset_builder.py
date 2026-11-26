@@ -1380,6 +1380,8 @@ def full_mod_count():
     2026-09-06: a dated snapshot read 568 while the live list was already 598),
     so a literal number here goes stale the same way and just lies quietly.
     """
+    if _GAME not in ("", "a"):
+        return None     # his full list is game a's; another game's own list is not "down from" it
     try:
         return len(ET.parse(FULL_BACKUP).getroot().find("activeMods").findall("li"))
     except Exception:
@@ -2140,8 +2142,9 @@ def main():
         emit_change("modlist", "tier:%s" % a.tier, detail={"tier": a.tier, "active": len(ordered)})
     except Exception:  # noqa: BLE001
         pass
-    print("  restore with: python src/RimMandrake/Utils/modset_builder.py %s"
-          % ("--restore-own %s" % a.by if a.by else "--restore"))
+    print("  restore with: %spython src/RimMandrake/Utils/modset_builder.py %s"
+          % ("RM_GAME_INSTANCE=%s " % _GAME if _GAME not in ("", "a") else "",
+             "--restore-own %s" % a.by if a.by else "--restore"))
     return 0
 
 
