@@ -234,16 +234,19 @@ to start, so a metric that should be recorded every run is the precise time this
 ### Rule 9. A gate that is always red is not a gate
 
 His card, 2026-11-12 about 2:2x PM PST (ledger 22:47:51Z): *Always-red nightly sweep → "One clean-up, then red wakes
-me"* (the option label is our text; he picked it). Section 4 measures the sweep and names the one clean-up. The waker is
-`rm-ops-watch.timer`, switched back on after that clean-up: his card (ledger OWNER note 2026-11-13T04:34:04Z on this item, card of 2026-11-12 ~8:25 PM PST), *Nightly red waker → "Switch
-ops-watch back on (after the clean-up)"*.
+me"* (the option label is our text; he picked it). Section 4 measures the sweep and names the one clean-up. The waker was to
+be `rm-ops-watch.timer`, switched back on after that clean-up: his card (ledger OWNER note 2026-11-13T04:34:04Z on this item, card of 2026-11-12 ~8:25 PM PST), *Nightly red waker → "Switch
+ops-watch back on (after the clean-up)"*. Its replacement, `rm-ops-reds.timer` (`ops_watch.py rerun-reds`, about every
+10 min), is the waker now: it files each new nightly red with a 72 h due date. The nightly checks finished mods only
+(`nightly_scope.py`, his card 2026-11-15), so no whole-tree guard is in it; such a guard runs at the door (rule 10).
 
 ### Rule 10. Publish runs the fast whole-tree checks and refuses on a red
 
 His card (ledger OWNER note 2026-11-13T04:34:04Z on this item, card of 2026-11-12 ~8:25 PM PST): *Whole-tree checks → "Publish runs the fast ones and refuses on red"*. `./publish` runs the
 whole-tree checks listed in `src/RimMandrake/Utils/publish_tree_checks.json` (each timed; the list's total stays under
-about 30 s) and refuses on a red, naming the check and its fix. A check too slow for that list stays in the nightly
-sweep, and the list file says which.
+about 30 s) and refuses on a red, naming the check and its fix. A check too slow for that list runs at the door only
+when a file that it reads changes (`src/RimMandrake/Utils/pipeline_tests.json`, `any_change`). It does not stay in the
+nightly sweep: since 2026-11-15 the nightly checks finished mods only, so a check left there runs nowhere.
 
 ### Rule 11. A flyer's flight state may be read with the game paused, without him
 

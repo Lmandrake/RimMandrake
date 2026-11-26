@@ -210,6 +210,27 @@
   ],
   "tests": [
     {
+      "test": "src/RimMandrake/rimflow/selftest_conductor_authority.py",
+      "seconds": 102,
+      "any_change": true,
+      "inputs": ["src/RimMandrake/rimflow/*.py", "src/RimMandrake/Utils/*.py", "src/RimMandrake/rimflow/roles/*.md", ".claude/agents/rm-*.md", "CLAUDE.md", "design/RimMandrake/standing_rulings.md", "design/RimMandrake/delegation_policy.md", "infrastructure/agents/CHARTER.md", "infrastructure/agents/CONDUCTOR.md"],
+      "_why": "RIMMANDRAKE_CLEAN_NIGHTLY_SWEEP_ONCE_THEN_RED_RINGS: a whole-tree guard too slow for publish_tree_checks.json was named nightly_only, but the nightly checks finished mods only since 2026-11-15, so it ran nowhere and went red on main unseen (2026-11-26). any_change: it runs at the door when a file it reads changes. Red at 886f19ec7d's parent: look_changed_labels.py, look_notes.py and set_down_judge.md."
+    },
+    {
+      "test": "src/RimMandrake/bridgetools/selftest_bridge_hooks.py",
+      "seconds": 124,
+      "any_change": true,
+      "inputs": ["src/RimMandrake/bridgetools/JawaBench.BridgeTools/*.cs", "src/RimMandrake/bridgetools/HOOKS.md"],
+      "_why": "RIMMANDRAKE_CLEAN_NIGHTLY_SWEEP_ONCE_THEN_RED_RINGS: a whole-tree guard too slow for publish_tree_checks.json was named nightly_only, but the nightly checks finished mods only since 2026-11-15, so it ran nowhere and went red on main unseen (2026-11-26). any_change: it runs at the door when a file it reads changes. Red at 886f19ec7d's parent: JawaBenchHealth.cs lost two hooks that HOOKS.md still listed."
+    },
+    {
+      "test": ".claude/hooks/selftest_block_orphan_item_prose.py",
+      "seconds": 6.3,
+      "any_change": true,
+      "inputs": [".claude/hooks/block_orphan_item_prose.py"],
+      "_why": "RIMMANDRAKE_CLEAN_NIGHTLY_SWEEP_ONCE_THEN_RED_RINGS: a whole-tree guard too slow for publish_tree_checks.json was named nightly_only, but the nightly checks finished mods only since 2026-11-15, so it ran nowhere and went red on main unseen (2026-11-26). any_change: it runs at the door when a file it reads changes. The guard itself runs in pre-push; its selftest runs when the guard changes."
+    },
+    {
       "test": "src/RimMandrake/rimflow/selftest_no_bare_cuts.py",
       "seconds": 2,
       "any_change": true,
