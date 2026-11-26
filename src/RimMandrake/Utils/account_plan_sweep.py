@@ -81,6 +81,12 @@ def today_plan():
 
 def plan_of(reg, t0):
     p = today_plan()
+    for path, v in (reg.get("numbers") or {}).items():     # a what-if on the sweep's copy of the plan, never the live one
+        d = p["numbers"]
+        keys = path.split(".")
+        for k in keys[:-1]:
+            d = d[k]
+        d[keys[-1]] = v
     pv = reg.get("plan") or {}
     h = pv.get("at_h", 0)
     at = AP.iso(t0 + h * 3600)

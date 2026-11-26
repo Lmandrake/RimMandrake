@@ -36,7 +36,8 @@ the demand times the share of its `n` runs that are live. A stopped fleet burns 
 
 - **a-region.** A name and a spec of ranges (`realize` draws one regime inside the ranges from a seed).
 - **a-regime.** A JSON object: start levels, resets, the live account, burn, runs, SteveDesktop, laptop, meter, plan
-  variant, switcher (`./acct sweep one '<json>'`).
+  variant, switcher (`./acct sweep one '<json>'`). `numbers` (a dotted path to a value) changes a number of the
+  sweep's copy of the plan, for a what-if; the live plan file is never read or written.
 - **the-plan-code-of-this-checkout.** The sweep imports `account_plan.py` and `switching_plan.py` from beside it. A copy
   of the code with a planted fault is swept the same way (the selftest does this).
 
