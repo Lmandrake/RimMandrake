@@ -40,8 +40,8 @@ Status and judge record: see `## Judgment` at the end of this note.
 | the event hook | the `Ignited` event | owed by `WARLAB_GARRISON_BUILD_TWELVE_MEN_ON_GLASS` (garrison note §8, step 2); this event subscribes to it and does not add a second hook |
 | the world-tile swap | `Ignite()` sets `PrimaryBiome`, then its private `Commit()` | built; `Commit()` must become internal so this event can share it |
 | the young | `RM_WorldComponent_DeepYoung`, `Notify_DisplayTankFreed`, `DisplayTankFreed` | built |
-| the tentacles | six `RM_Sekkulaath_*` limbs, `RM_MapComponent_TentacleWatch`, `RUT_MapComponent_TheTenant` | built, as stationary buildings |
-| the ground-spawner seam | `RUT_TenantEmergenceSpawner`, an empty subclass | built, no ThingDef uses it |
+| the tentacles | six `RM_Sekkulaath_*` limbs, `RM_MapComponent_TentacleWatch`, `RM_MapComponent_TheTenant` | built, as stationary buildings |
+| the ground-spawner seam | `RM_TenantEmergenceSpawner`, an empty subclass | built, no ThingDef uses it |
 | the emerged body | `RUT_TenantEmergedMass` | not built, art owed |
 | a cut-scene player | none | **does not exist anywhere** |
 
@@ -212,10 +212,10 @@ pools has not gone back to sleep."*
 ## 6. The rising, seen live
 
 Most players meet this as a frame in the cut-scene. A player map on a Fever Wood tile gets it in
-person. The test is `tile.feature` named `Fever Wood`, or a biome of `RM_FeverWood` or
-`RUT_FeverWood`. Each qualifying map gets:
+person. The test is `tile.feature` named `Fever Wood`, or a biome of `RM_FeverWood`. Each qualifying
+map gets:
 
-- one `RUT_TenantEmergenceSpawner` at the map's largest `RUT_FeverWoodMirrorPool` body, which comes up
+- one `RM_TenantEmergenceSpawner` at the map's largest `RM_FeverWoodMirrorPool` body, which comes up
   as `RUT_TenantEmergedMass`, a building that cannot be damaged;
 - the five limb roles `RM_Sekkulaath_Feeler`, `RM_Sekkulaath_Snare`, `RM_Sekkulaath_Lash`,
   `RM_Sekkulaath_Porter` and `RM_Sekkulaath_Sentinel` around that pool, through the same placement

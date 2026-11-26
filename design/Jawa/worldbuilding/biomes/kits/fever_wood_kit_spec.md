@@ -55,7 +55,7 @@ animal never shows in ambient play; its rising is plot-reserved (F4). Owner,
 2026-10-10 (story sitting card 19, typed): *"It is not an unknown mystery, but a
 mystery still for most of the game."* The horror is scale, not mystery.
 
-**Engine route.** `RUT_MapComponent_TheTenant : MapComponent` — the aquifer is
+**Engine route.** `RM_MapComponent_TheTenant : MapComponent` — the aquifer is
 **data, not a Thing**: the whole body never spawns in ambient play. On map init it registers every cell
 of pool terrain (terrains carrying `RM_LurkingWaterExtension`, a
 DefModExtension) as one shared body — map-spanning: every pool is one aquifer,
@@ -152,7 +152,7 @@ carries its state.
   as stationary buildings, not pawns). Emergence via the `GroundSpawner` family:
   `BuildingGroundSpawner` exists *(verified, `Source/RimWorld/BuildingGroundSpawner.cs`,
   it even re-terrains for affordance on spawn, line 35)*. Defs: `RUT_TenantEmergedMass`,
-  `RUT_TenantEmergenceSpawner` (GroundSpawner). Player-facing labels name it: the sekkulaath.
+  `RM_TenantEmergenceSpawner` (GroundSpawner). Player-facing labels name it: the sekkulaath.
 - **Art**: commissioned under the standing art pipeline against
   `sarlacc_spec.md`'s family register (aquatic palette per §9: black water,
   oil-sheen). Rides the art queue, listed here so the item's "built in full"
@@ -334,7 +334,7 @@ quest exists — do not promise before it ships).
 
 | Class | For | Effort |
 |---|---|---|
-| `RUT_MapComponent_TheTenant` (+ `RM_LurkingWaterExtension`, `RM_TenantTruceExtension`) | F1 | M |
+| `RM_MapComponent_TheTenant` (+ `RM_LurkingWaterExtension`, `RM_TenantTruceExtension`) | F1 | M |
 | evidence/mirror-break IncidentWorkers (thin) | F2 | S |
 | `RM_CompUseEffect_RevealHazards` + overlay draw | F3 | S/M |
 | `RUT_TenantEmergedMass` + limb placement (dormant) | F4 | L |

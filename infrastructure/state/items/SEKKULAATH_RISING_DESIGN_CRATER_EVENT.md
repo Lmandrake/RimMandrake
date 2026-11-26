@@ -12,7 +12,7 @@ mystery, but a mystery still for most of the game."*
 shows the planet reacting). Owed design: which Wildsteam sites it harms and how, which
 world sites close, and how the rising reads in the crater cut-scene. The whole-body
 capability is the dormant F4 build (`kits/fever_wood_kit_spec.md` F4,
-`RUT_TenantEmergenceSpawner`, mass/tentacle defs and art still owed). Story text calls it
+`RM_TenantEmergenceSpawner`, mass/tentacle defs and art still owed). Story text calls it
 the sekkulaath, never "the Tenant" (collides with the ship's nine tenants).
 
 ## Ruled 2026-10-12 (owner, by question card)
