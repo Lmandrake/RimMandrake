@@ -144,7 +144,7 @@ tile floods the bowl and not a slot. Neither layer may write the other's cells a
   the source of truth, just as the biome paint list is. **No healer:** the world is remade at the end,
   so no existing save needs repair.
 - **Landform vocabulary.** The 8 proven types are Canyon, Crater, Sinkhole, LoneMountain,
-  DesertPlateau, Badlands, Rift and Gorge, with Cirque and SecludedValley as candidates. v1 is §3 Q1.
+  DesertPlateau, Badlands, Rift and Gorge, with Cirque and SecludedValley as candidates. v1 is §4.3 Q1.
 
 ### 2.4 Mod Settings (every mod ships superb settings)
 - **Per biome**, inside the existing `RM_BiomesSettings` (the `enabled[key]` dict, absent means on):
@@ -253,30 +253,21 @@ their existing seabed generators and their shores come from `RM_SeaCoast` on nei
 - **Elevation hooks.** Odyssey mutators with `preventNaturalElevation` on the same tile can fight
   ours. Use categories and `overrideCategories`, and verify on a quicktest.
 
-### 4.3 Questions for the owner (card-ready)
-**Q1 — v1 landform vocabulary.**
-- (a) Only what the sheets ask for: Canyon, Crater, DesertPlateau, LoneMountain. Smallest, and every
-  landform has a home.
-- (b) All 8 proven types. Broader painting palette, about twice the work, and some go unused.
-- (c) Canyon only until the pilot is accepted. Fastest proof, but the painting palette stays empty longer.
+### 4.3 How the five questions resolve (2026-11-26)
 
-**Q2 — Geological Landforms on our world. Answered 2026-11-02: retired from the shipped list** under the owner's
-C06 ruling (*"If we can replicate them then yes they can go"*), by the experiment in `design/RimMandrake/geological_landforms_judgment_2026-11-02.md`.
-A "keep GL and strip it per tile" option is not possible: GL computes its landforms at map generation and never
-stores them on a tile, so no paint pass can remove one.
+These were card-ready questions for the owner. Under today's rules none of them is one of his five acts, so each takes
+the obvious answer (Evidence-for-Ask, logged on `BIOME_MAP_GENERATORS_DESIGN_1` by work bundle
+WB-game-map-generation-20261126-170518). The rulings that bind are in `design/RimMandrake/biome_rulings.md` §Each biome
+makes its own map.
 
-**Q3 — Pilot biome.**
-- (a) FloodedCanyon. Canyon is its whole identity, and it already has two elevation-touching GenSteps.
-- (b) Warscar. Craters, and the richest existing step set (15), but much existing content to keep working.
-- (c) RustCathedral. Flat plateau with a wall maze, which tests "map-maker without landform" first.
-
-**Q4 — How deep each map-maker goes.**
-- (a) Replace vanilla elevation and terrain per biome (`preventGenSteps`). Full control and the
-  most work per biome.
-- (b) Modify vanilla's output in place. Cheaper, but maps keep a vanilla feel underneath.
-- (c) Decide per biome at its sitting. Flexible, but there is no uniform contract to test against.
-
-**Q5 — Where landforms ship.**
-- (a) Inside Baroque Biomes as a composed kit, like SeaShores. One mod and one settings page.
-- (b) A standalone `RimMandrake: Landforms` mod. Usable without our biomes, but one more mod to keep
-  in step.
+- **Q1, the landform vocabulary.** A landform is built when a biome's design asks for it. No landform is built ahead
+  of a design that uses it.
+- **Q2, Geological Landforms.** Answered 2026-11-02: retired from the shipped list under the owner's C06 ruling
+  (*"If we can replicate them then yes they can go"*), by the experiment in
+  `design/RimMandrake/geological_landforms_judgment_2026-11-02.md`. GL computes its landforms at map generation and
+  never stores them on a tile, so no paint pass can remove one.
+- **Q3, the pilot biome.** There is no cross-biome pilot. Each biome mod designs its map in its own concept tree
+  (`design/concepts/<Mod>/`) when it advances in the Maturation Pipeline. The first biome whose design asks for a
+  map-maker or a landform is the pilot, and §4.1 is its build order.
+- **Q4, how deep each map-maker goes.** Each biome's own design decides, and names its own bars.
+- **Q5, where landforms ship.** Inside the composed biomes mod, as a kit like SeaShores, behind its own Mod Settings.
