@@ -2,15 +2,15 @@
  "item": "ASSAILANT_WARLAB_BUILD_MERGE",
  "class": "design",
  "subject": "design/Jawa/worldbuilding/dungeons_arc_spec.md §2.3: the gate order, and who stands where and when",
- "judge": null,
- "verdict": "NOT_JUDGED",
- "why_not": "delegation_policy §4 needs a fresh opus judge. A relentless worker runs under 'no subagents' and relentless help returns hypotheses only, so no worker of this item can run one",
+ "judge": "claude-opus-5-5, which wrote none of §2.3: the Conductor's sweep run RIMMANDRAKE_SWEEP_SEAT_DOING_ITEMS_SIXTY_NINE_SIT_IN_DOING (2026-11-25), decision delegated by the Conductor's brief of 2026-11-25",
+ "verdict": "KEEP",
+ "why_not": null,
  "hard_reads": [
   "Route 6 replaces gate 3 only: the socket survives, and the last watch did the overrunning. His words say the lab is exposed 'for player entrance without action'.",
   "Hard ban #8 is applied, not narrowed: 'lab guardians' are the lab's own guards (the last watch), and the §2.5 flesh is the study subject, live on this site map only after the wake. Open question: is that application (delegable) or reinterpretation (delegation_policy §2.4, his)?",
   "Seating the core, not opening the door, starts the 15-day stasis clock."
  ],
- "owed": "one opus judge round on §2.3 from that brief; record judge, verdict KEEP, and hard_read_rulings, then drop PROVISIONAL from §2.3 and settle WARLAB_GATES_DECIDE_BAN_EIGHT_ONE_READ",
+ "owed": "nothing for the ruling; the build's red defects go on through the item",
  "gpt_prereview": {
   "model": "gpt-6.1-sol via gpt_consult.py",
   "note": "pre-review, not a §4 judgment; not the opus judge of Agent_Policy",
@@ -20,5 +20,10 @@
   "q4_table": "no defect",
   "owner_referral": "none, unless the mechanoid/ancient guard requirement changes"
  },
- "brief": "infrastructure/state/delegated/2026-11-01/warlab_merge_gate_order_judge_brief.md"
+ "brief": "infrastructure/state/delegated/2026-11-01/warlab_merge_gate_order_judge_brief.md",
+ "hard_read_rulings": {
+  "1_route6_replaces_gate3_only": "KEEP. His Route 6 words open the entrance ('exposing the War Lab for player entrance without action'; 'Nothing the player does bypasses the door, but the Empire fallback does'); they name the door, not the wake. Reading them as also waking the lab would break the 2026-08-30 ruling that players wake it by bringing a core. His card of 2026-11-02 ('Up to what point can the player still call the Cradle strike? -> At the wake, gate 4', with the spec's 'even when Route 6 opened it') already treats the wake as a step after a Route 6 entrance. Application, not reinterpretation.",
+  "2_ban_eight": "Already ruled by him: card 2026-11-02 'Does ban #8 bind the lab site too? -> Biome map only' (WARLAB_GATES_DECIDE_BAN_EIGHT_ONE_READ closed at 2f3b549b13). Nothing left to judge.",
+  "3_clock_starts_at_core": "KEEP. The 2026-08-30 ruling makes the core the deliberate wake; §2.10 (judge-kept round 6, shape kept by him 2026-11-02) already says seating the core starts the 15-day clock and that a crew that never wakes the lab never starts it. His strike-cutoff card puts the point of no return at the same gate. Starting the clock at the door would let a crew that only scouts lose the lab, which no ruling asks for."
+ }
 }

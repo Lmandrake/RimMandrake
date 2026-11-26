@@ -154,7 +154,7 @@ location."*
   trust (§2.6), not an early-game find.
 
 **The gate order — the one place it is written.** Delegated design (`delegation_policy.md` §1;
-item `ASSAILANT_WARLAB_BUILD_MERGE`; record and judge status `infrastructure/state/delegated/2026-11-01/warlab_merge_gate_order.json`), PROVISIONAL: not yet judged.
+item `ASSAILANT_WARLAB_BUILD_MERGE`; record and judge status `infrastructure/state/delegated/2026-11-01/warlab_merge_gate_order.json`), JUDGE-KEPT 2026-11-25 on every hard read (ban #8 by his card of 2026-11-02).
 The core socket and the two-key gate do not compete: **the two keys let you in; the core wakes
 what you came in to.** The socket is inside the door, so the order is forced.
 

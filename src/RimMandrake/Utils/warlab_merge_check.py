@@ -14,6 +14,7 @@ OWNER, GONE = "ANCIENT_WAR_LAB_1", "ASSAILANT_DUNGEON_BUILD_1"
 HISTORY = ("design/RimMandrake/mod_audit/", "design/RimMandrake/gpt_reviews/", "design/RimMandrake/world_remake_2026-10-19/",
            "infrastructure/state/items/VAULT_DUNGEON_BUILD_1.md", "infrastructure/state/items/ASSAILANT_WARLAB_BUILD_MERGE.md",
            "src/RimMandrake/Utils/warlab_merge_check.py",
+           "design/RimMandrake/designer_codex_2026-11-09/", "design/RimMandrake/pipeline_sleepers_census_2026-11-15.tsv",
            "conversations/", "infrastructure/state/handoffs/", "infrastructure/state/reconcile_manifest_2026-10-07.md",
            f"infrastructure/state/items/{OWNER}.md")  # the last only names where its folded build came from
 RECORD = ROOT / "infrastructure/state/delegated/2026-11-01/warlab_merge_gate_order.json"
