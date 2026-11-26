@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "c8dc762a06c6ce78328ed0532ea04f526acf098e8b37c9bdbcd93c22163d8ed5",
+  "body_sha256": "8d3a663534d309f88e7e7f0edf45b40061b9e6cf32a1293e40457fa8b38d1e7a",
   "reducer": 1,
   "shards": {
    "BACKFILL": 892335,
@@ -44,7 +44,7 @@
    "HOLDER.run-1795471235": 562,
    "HOLDER.run-1795503470": 1774,
    "HOLDER.run-1795670514": 9857,
-   "HOLDER.run-1795693138": 7202,
+   "HOLDER.run-1795693138": 8494,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1295,10 +1295,10 @@
   },
   "checkpoint": {
    "by": "HOLDER.run-1795693138",
-   "done": "ABSOLUTE_DESCENT_FIX_MISSES_DECK_SHOVE closed at d319937af5; B6_FLOOD_FIX_RAIN_FILL_LEFT_OFF closed at 985ca99b65",
-   "next": "Filter and work BIGNET_PROOF_FIX_SIZE_NOT_RESTORED, then the bundle members in brief order",
-   "ruled_out": "a live run for either fix: no stage-6 row reads a forced descent or b6_flood",
-   "ts": "2026-11-26T14:01:58Z"
+   "done": "restart 2: 31 members given an outcome (closed, dropped or refused with reason; bundle state file b37e5d14e5..ec2b1af4e0); review-staging swimmers fixed (9a55008e2d); objects_sheet.choose_look fixed for the reach menu (ec726992dc, live on ArchSmall); guardrail, faucet and two water looks passed by fresh rm-judges",
+   "next": "Take the RIMMANDRAKE_* members in the brief order from the state file Restart point of 7:25 AM PST, filtering each first",
+   "ruled_out": "the Steve2 RM_PitDrowning in live_session B9 as a mod fault (SITE: staged swimmers plus clock steps); the choose_look None as a mod fault (the mod menu works; the bridge driver lost the second menu)",
+   "ts": "2026-11-26T15:17:54Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1750,7 +1750,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1760,
+  "events": 1762,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7850,7 +7850,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-26T14:52:26Z",
+   "last": "2026-11-26T15:17:54Z",
    "lease": "run-1795693138",
    "released": false,
    "token": 61
