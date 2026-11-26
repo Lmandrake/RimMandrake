@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using HarmonyLib;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.AI;
 
@@ -123,6 +125,60 @@ namespace RimMandrake.FlowWorks
 			return false;
 		}
 
+		/// <summary>Give <paramref name="pawn"/> the toss order at <paramref name="c"/> (the float menu's and the button's act).</summary>
+		public static bool Order(Pawn pawn, IntVec3 c)
+		{
+			return pawn.jobs.TryTakeOrderedJob(JobMaker.MakeJob(RimMandrakeFlowWorks_DefOf.RM_TossFlame, c), JobTag.Misc);
+		}
+
+		/// <summary>Why <paramref name="pawn"/> cannot toss a flame at all now, or null. The button shows greyed with it.</summary>
+		public static string Unable(Pawn pawn)
+		{
+			if (pawn.Downed) return "downed";
+			if (pawn.health?.capacities != null && !pawn.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation)) return "cannot use hands";
+			return null;
+		}
+
+		/// <summary>The "Toss a flame" button of a player colonist, or null (setting off, liquid fire off, not the player's).</summary>
+		public static Gizmo Gizmo(Pawn pawn)
+		{
+			if (!RimMandrakeFlowWorksSettings.tossFlameOrderEnabled || !RimMandrakeFlowWorksSettings.canalFireEnabled || pawn == null
+				|| !pawn.Spawned || !pawn.IsColonistPlayerControlled)
+			{
+				return null;
+			}
+			var cmd = new Command_Action
+			{
+				defaultLabel = "Toss a flame",
+				defaultDesc = "Light a burnable liquid: tar, chemfuel or oil in a canal, pit, pond or spill. Choose the square; the colonist " +
+							  "walks to dry ground within " + TossRange.ToString("0.#") + " squares of it and tosses a flame. Only a square where " +
+							  "something will catch can be chosen. (Also on the right-click menu: \"Toss a flame here\".)",
+				icon = ContentFinder<Texture2D>.Get("Things/Special/Fire/FireA", false) ?? TexCommand.Attack,
+				action = () =>
+				{
+					Map map = pawn.Map;
+					var tp = new TargetingParameters
+					{
+						canTargetLocations = true, canTargetPawns = false, canTargetBuildings = false, canTargetItems = false,
+						validator = t => t.Cell.IsValid && CanLight(map, t.Cell)
+					};
+					Find.Targeter.BeginTargeting(tp, t =>
+					{
+						if (!FindRim(pawn, t.Cell, out _))
+						{
+							Messages.Message("No dry ground within " + TossRange.ToString("0.#") + " squares of that square that " + pawn.LabelShort +
+											 " can reach and see it from.", MessageTypeDefOf.RejectInput, false);
+							return;
+						}
+						Order(pawn, t.Cell);
+					}, caster: pawn);
+				}
+			};
+			string why = Unable(pawn);
+			if (why != null) cmd.Disable(why);
+			return cmd;
+		}
+
 		/// <summary>The flame lands on <paramref name="c"/>. False when nothing there caught.</summary>
 		public static bool Toss(Pawn pawn, IntVec3 c)
 		{
@@ -162,8 +218,31 @@ namespace RimMandrake.FlowWorks
 				yield return new FloatMenuOption("Toss a flame here (no dry ground within reach)", null);
 				yield break;
 			}
-			yield return new FloatMenuOption("Toss a flame here", () =>
-				p.jobs.TryTakeOrderedJob(JobMaker.MakeJob(RimMandrakeFlowWorks_DefOf.RM_TossFlame, c), JobTag.Misc));
+			yield return new FloatMenuOption("Toss a flame here", () => RM_TossFlame.Order(p, c));
+		}
+	}
+
+	/// <summary>RIMMANDRAKE_SHOW_TAR_LIGHT_ORDER_HE_FOUND_NONE (his walk, 2026-11-25: "How do you light Tar? I actually don't know
+	/// how to do this in the game."): the order as a button on a selected colonist, so a player finds it without knowing the
+	/// right-click. The button aims at a square; only a square where something will catch (RM_TossFlame.CanLight) is taken.</summary>
+	[HarmonyPatch(typeof(Pawn), nameof(Pawn.GetGizmos))]
+	[RimMandrake.Shared.PatchFeature("Toss a flame order", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "tossFlameOrderEnabled")]
+	public static class RM_Patch_Pawn_TossFlameGizmo
+	{
+		public const string Label = "Toss a flame";
+
+		[HarmonyPostfix]
+		public static IEnumerable<Gizmo> Postfix(IEnumerable<Gizmo> __result, Pawn __instance)
+		{
+			foreach (Gizmo g in __result)
+			{
+				yield return g;
+			}
+			Gizmo b = RM_TossFlame.Gizmo(__instance);
+			if (b != null)
+			{
+				yield return b;
+			}
 		}
 	}
 }
