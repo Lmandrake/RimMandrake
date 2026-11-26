@@ -1710,8 +1710,11 @@ def test_g6_wake_lists_his_messages_after_the_goodbye():
         SR._schedule = saved
         os.environ.pop("CLAUDE_CONFIG_DIR", None)
     check(rc == 0 and "conductor note ABC" in o, "G6 wake prints the Conductor log tail (%r)" % o[:120])
-    check("park the hose test" in o and "goodbye\n" not in o.split("after the close-out")[-1] and "a program" not in o,
-          "G6 wake lists his messages to the old window after the request, and only his (%r)" % o[-400:])
+    # only the section of his messages: the rest of the wake prints the live queue, whose titles may say "a program"
+    # (RIMMANDRAKE_STUDY_STUCK_ITEMS_HE_ASKS_WHO_UNSTICKS_THEM's wait made this red on 2026-11-26)
+    his = o.split("== his messages to the old window")[-1].split("\n== ")[0] if "== his messages to the old window" in o else ""
+    check("park the hose test" in his and "goodbye\n" not in his and "a program" not in his,
+          "G6 wake lists his messages to the old window after the request, and only his (%r)" % (his or o[-400:]))
     check("doorbell" not in o, "G6 the Conductor wake does not tell it to wait for a doorbell")
 
 

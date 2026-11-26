@@ -30,7 +30,8 @@ MUT = [
   "    except DS.Refused:\n        return None\n    import run_void",
   "    except DS.Refused:\n        return {\"verdict\": \"covered\"}\n    import run_void"),
  ("run_void", "t_unreadable_run_record_spend_is_unmeasured",
-  "            usd += c\n        else:\n            unm.append(u)", "            usd += c\n        else:\n            pass"),
+  "            tok += RL.list_usd_to_weighted(c)\n        else:\n            unm.append(u)",
+  "            tok += RL.list_usd_to_weighted(c)\n        else:\n            pass"),
 ]
 
 

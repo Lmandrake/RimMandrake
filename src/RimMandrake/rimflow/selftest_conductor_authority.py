@@ -297,6 +297,9 @@ OWNER_ONLY = {
                                                    "via CA.words) already gated",
     "src/RimMandrake/bridgetools/build.py": "reads the game's driver lock holder (his OWNER hold) to refuse a deploy; "
                                             "authorizes nothing",
+    "design/specs/2026-11-26-stuck-items-study/measure_stops.py": "a one-page study's measure: classes who ended "
+                                                                  "each pipeline stop from ledger events (an "
+                                                                  "OWNER-seat event reads 'owner?'); authorizes nothing",
     "src/RimMandrake/rimflow/item_packet.py": "picks which notes a launch packet keeps whole (his words are never "
                                               "dropped); authorizes nothing",
     "src/RimMandrake/rimflow/wake_words.py": "reads OWNER-shard events that carry his words from the ledger; "

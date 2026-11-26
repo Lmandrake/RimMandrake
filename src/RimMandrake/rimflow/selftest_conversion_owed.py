@@ -161,9 +161,15 @@ def t_real_list_is_readable():
     check(sorted(h for h in secs if " " in h) == ["Dated design records that state the old reading",
                                                   "Rule texts (corrected by this item)"],
           "the only non-mod sections are the two notes sections", sorted(h for h in secs if " " in h))
+    # the real Pyrelands moves on (0.2.0 opened 2026-11-26 and owes the conversion): the reading must agree with its
+    # VERSION.json, never with a version pinned here
     pd = os.path.join(ROOT, "design", "concepts", "Pyrelands")
     state, why, _ = DS.conversion_owed(ROOT, pd, {"mod": "Pyrelands"})
-    check(state == "not_yet", "Pyrelands 0.1.0 is not reworked: not owed in its current version", (state, why))
+    with open(os.path.join(pd, "version", "VERSION.json"), encoding="utf-8") as f:
+        cur = tuple(int(x) for x in json.load(f)["version"].split("-")[0].split("."))
+    want = "owed" if cur > (0, 1, 0) else "not_yet"
+    check(state == want, "the real Pyrelands %s reads %s (its version on 2026-11-21 was 0.1.0)"
+          % (".".join(map(str, cur)), want), (state, why))
 
 
 def t_rule_texts_corrected():
