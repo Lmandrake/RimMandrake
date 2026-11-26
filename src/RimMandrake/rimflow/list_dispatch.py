@@ -532,7 +532,12 @@ def decide(cfg, st, facts, now, account=(True, "")):
                 put("close", "the check holds: the work is done (%s)" % _one(it.get("out"), 160))
             continue
         if not shape and verdict != "fails":
-            put("blind", "the check is unmeasured: %s" % _one(it.get("out") or verdict, 200))
+            if run.get("bundle") or run.get("live"):    # a live run on it holds nothing back: say so, not blind
+                put("in_bundle" if run.get("bundle") else "live", "its check is unmeasured (%s), but %s works it"
+                    % (_one(it.get("out") or verdict, 120), "the live work bundle %s" % run["bundle"]
+                       if run.get("bundle") else ", ".join(run["live"])))
+                continue
+            put("blind","the check is unmeasured: %s" % _one(it.get("out") or verdict, 200))
             continue
         if it.get("route"):     # an open routed part holds the item: its answer re-shapes it (list_shape.py)
             r = it["route"]

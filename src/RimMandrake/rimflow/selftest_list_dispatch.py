@@ -87,6 +87,13 @@ def t_the_check_runs_before_every_attempt():
                     runs={"A": {"live": [], "ended": ["u1", "u2"]}}) == ("close", []),
         "a check that holds after two runs: close, not stopped")
     chk(lambda: dec({"A": it(verdict="unmeasured")}) == ("blind", []), "unmeasured: blind")
+    # OPS_LIST_GATE_HOLDS_READY_WORK_ON_COULD_NOT_LOOK_WTHJ, 2026-11-26 21:54Z: a live run shaped its item's check onto
+    # the selftest it was still writing; the dispatch clone had no such file (exit 2) and the alarm rang on work that
+    # was running. A live run or bundle on the item outranks an unmeasured check: nothing is held, nothing launches.
+    chk(lambda: dec({"A": it(verdict="unmeasured")}, runs={"A": {"live": ["u1"]}})[0] == "live",
+        "unmeasured with a live run: live, not blind")
+    chk(lambda: dec({"A": it(verdict="unmeasured")}, runs={"A": {"live": [], "bundle": "WB-x"}})[0] == "in_bundle",
+        "unmeasured in a live bundle: in_bundle, not blind")
     chk(lambda: dec({"A": it(effect=None, verdict=None)}) == ("no_effect", []), "no check: no_effect")
     calls = []
     fx = {"facts": lambda st: {"items": {"A": it(verdict="holds")}, "runs": {}, "other_live": 0},
