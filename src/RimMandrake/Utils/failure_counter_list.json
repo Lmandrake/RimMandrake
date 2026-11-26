@@ -125,6 +125,10 @@
    "n": 1,
    "why": "the system-fault meter itself: it counts machine faults by design and charges nothing"
   },
+  "src/RimMandrake/rimflow/control_acts_export.py::_fetch::for n in range(1, FETCH_TRIES + 1)": {
+   "n": 1,
+   "why": "git fetch ref-update races with a peer's fetch in the same clone; a timer run, no item or trial is charged, and the next tick tries again"
+  },
   "src/RimMandrake/rimflow/control_acts_export.py::run::for attempt in range(1, TRIES + 1)": {
    "n": 1,
    "why": "git push races of the control export; FAILED is said, the next tick tries again"
