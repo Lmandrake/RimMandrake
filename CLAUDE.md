@@ -513,11 +513,11 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 
 ## No limit without the danger it guards
 
-- This rule covers every cap, pause, timeout, wall time, retry bound, rate and text cut. It applies in our code,
-  configs, role files and briefs.
+- The user-level rule, loaded in every session, is `~/dev/Lodestar/claude/global/37-limits-guard-a-named-danger.md`;
+  its scope applies here. This section holds what is particular to RimMandrake.
 - Each limit names the danger that it guards and the evidence that the danger happens. Put this beside the number, on
   the boundary page under LIMITS, or in the brief. A class names it once: a call or test deadline is a hang guard
-  (`call_deadline_lint.py`, `run_selftests.py`), set far above a real run, never a speed bar.
+  (`call_deadline_lint.py`, `run_selftests.py`), at least 10 times the longest real run, never a speed bar.
 - If a limit cannot name both, remove it. Do not tune it.
 - If you find such a limit in pipeline machinery, fix it in the same run.
 - When the danger is real, guard against it cheaply.
