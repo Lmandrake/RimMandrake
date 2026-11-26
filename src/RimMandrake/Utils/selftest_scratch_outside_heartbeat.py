@@ -9,9 +9,14 @@ The guard is on progress: the reaper stamps `beat` in the record while it runs (
 ops_watch takes freshness from the newer of the phase stamp and that beat.
 
 Part one runs scratch_reap.sanity_beat on a planted record. Part two runs ops_watch.scratch_outside in-process on
-planted records, with the shipped rules."""
+planted records, with the shipped rules.
+
+`--against <rev>` replays the instance: it loads ops_watch.py and scratch_reap.py as they stood at that git revision
+(the rest of Utils from this tree), so `rimflow guard ... --instance "--against 533ada697a52^"` shows the guard red on
+the code that raised the false alarm. With no argument it tests this tree."""
 import json
 import os
+import subprocess
 import sys
 import tempfile
 import time
@@ -21,6 +26,19 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 TMP = Path(tempfile.mkdtemp(prefix="selftest_scratch_outside_heartbeat_"))
 os.environ.setdefault("RM_SCRATCH_REAP_RUNS", str(TMP / "runs.jsonl"))
+if "--against" in sys.argv:
+    REV = sys.argv[sys.argv.index("--against") + 1]
+    OLD = TMP / "against"
+    OLD.mkdir()
+    for name in ("ops_watch.py", "scratch_reap.py"):
+        r = subprocess.run(["git", "show", "%s:src/RimMandrake/Utils/%s" % (REV, name)], cwd=HERE, capture_output=True,
+                           text=True)
+        if r.returncode:    # a typo'd revision shows nothing about the instance: exit 125, which a guard reads as died
+            print("COULD NOT LOOK: no %s at %s: %s" % (name, REV, r.stderr.strip()))
+            sys.exit(125)
+        (OLD / name).write_text(r.stdout)
+    sys.path.insert(0, str(OLD))
+    print("against %s: ops_watch.py and scratch_reap.py from that revision" % REV)
 import ops_watch as OW  # noqa: E402
 import scratch_reap as SR  # noqa: E402
 
@@ -71,7 +89,6 @@ check("a beat that is not a number is ignored: blind, frozen", v == 1 and "froze
 
 
 def part_one():
-    global FAILS
     # Part one: the reaper stamps the beat, keeps the phase rows, and throttles.
     sd = TMP / "state"
     sd.mkdir()
@@ -105,7 +122,6 @@ def part_one():
     except Exception as e:  # noqa: BLE001
         none_ok = "raised %r" % e
     check("sanity_beat with no sanity dir is a no-op", none_ok is True, none_ok)
-
 
 
 try:
