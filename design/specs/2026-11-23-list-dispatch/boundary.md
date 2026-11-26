@@ -115,6 +115,19 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   tick and each recent lane launch, is under `load_line`; a load that cannot be read is no spare room. Mod and nightly-test runs do not count. An item whose chain of causes (its `caused_by` ancestors) already holds `max_chain_depth` lane runs reads
   `chain_stop`. Live runs on items that carry no check do not fill the lane's slots, except Shape runs on items due for
   Shape, which do.
+- **a-ready-ticket-goes-to-a-host-with-room-first.** A ready ticket goes to a host of `hosts` (SteveDesktop) first,
+  before Archmagi's own slots, while the host has fewer live Claude runs than its `max_live`, its live account has more
+  than `min_left_pct` of the week left, its disk holds another helper clone (`pool_more`, the count that
+  rm-pool-room.timer writes; no count leaves it to the host's own pool admission at launch), its work switch allows the
+  ticket (`switch_refuses`), and the ticket's `needs` is `offline` (any other `needs` names a thing only Archmagi has).
+  Archmagi takes the run otherwise, and the row says why the host did not (`on Archmagi: ...`). A host that cannot be
+  read takes no run. Archmagi's clone pool does not stop a run placed on a host. Measured 2026-11-25 10:53 PM PST:
+  SteveDesktop at load 0.04 with no run while every lane run started on Archmagi.
+- **a-chain-counts-only-links-that-a-lane-run-filed.** `chain_stop` guards the lane feeding itself: a lane run that
+  files an item that the lane then works. A link of the item's `caused_by` chain counts the parent's lane runs only when
+  a lane run on that parent filed the child (the filing's role unit is one of the parent's attempts); a child filed by a
+  hand, the Conductor or another run ends the chain there. A tick that cannot read the filings counts every ancestor.
+  Measured 2026-11-25 10:52 PM PST: 2 of 5 `chain_stop` items had been filed by no lane run.
 - **the-tick-counts-recent-lane-launches-before-taking-spare-room.** For the load gate, the tick counts live detached
   records marked `next_act_owner=list_dispatch` whose launch time is within `load_lag_s` before the tick, including
   records outside the tick's item selection. An unreadable launch time, or an unreadable record that could hold a

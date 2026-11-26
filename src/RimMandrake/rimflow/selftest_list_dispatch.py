@@ -312,22 +312,74 @@ def t_the_lane_has_its_own_slots_and_chain_rule():
         "chain depth counts spent lane runs on the ancestors only")
 
 
-def t_a_full_lane_places_on_a_host_with_room():
-    """Past its own slots (and spare load) the lane places a run on a host of cfg["hosts"] under its max_live, while
-    the host's account has more than min_left_pct left; a host run takes no own slot (run_host.py)."""
+def t_a_ready_ticket_goes_to_a_host_with_room_first():
+    """A ready ticket that is not mod work goes to a host of cfg["hosts"] first, while the host has fewer live runs than
+    its max_live, its account has more than min_left_pct of the week left, its disk holds another clone, its work switch
+    allows the ticket, and the ticket needs nothing but offline work. Archmagi takes the run otherwise (its own slots,
+    then spare load). Item RIMMANDRAKE_SEND_PIPELINE_TICKETS_TO_STEVEDESKTOP_FIRST_IT_SAT_IDLE: 2026-11-25 SteveDesktop
+    sat idle all evening while every lane run started on Archmagi."""
     hcfg = dict(CFG, hosts={"SteveDesktop": {"max_live": 2, "min_left_pct": 5}})
     room = {"SteveDesktop": {"live": 0, "left": 50.0}}
     rows, l, _ = run({k: it() for k in "ABCDE"}, cfg=hcfg, hosts=room)
-    chk(lambda: l == ["A", "B", "C", "D"] and rows["C"].get("host") == "SteveDesktop" and not rows["A"].get("host")
+    chk(lambda: l == ["A", "B", "C", "D"] and rows["A"].get("host") == "SteveDesktop"
+        and rows["B"].get("host") == "SteveDesktop" and not rows["C"].get("host") and not rows["D"].get("host")
         and rows["E"]["decision"] == "slots_full" and "SteveDesktop" in rows["E"]["why"],
-        "two own slots, then two on the host, then full, and the row names the host (%s)" % l)
-    chk(lambda: dec({k: it() for k in "ABC"}, iid="C", cfg=hcfg, hosts={"SteveDesktop": {"live": 0, "left": 4.0}})
-        == ("slots_full", ["A", "B"]), "an account at or under its line takes no run")
-    chk(lambda: dec({k: it() for k in "ABC"}, iid="C", cfg=hcfg) == ("slots_full", ["A", "B"]),
-        "a host that could not be read takes no run")
+        "two on the host first, then two own slots, then full, and the row names the host (%s, %s)"
+        % (l, [rows[k].get("host") for k in "ABCD"]))
+    chk(lambda: "SteveDesktop" in rows["A"]["why"], "the host row says where it runs")
+    r, l, _ = run({"A": it()}, cfg=hcfg, hosts=room)
+    chk(lambda: r["A"].get("host") == "SteveDesktop" and l == ["A"],
+        "one ready ticket with Archmagi's own slots free still goes to the host (%s)" % r["A"].get("host"))
+    r, l, _ = run({"A": it()}, cfg=hcfg, hosts={"SteveDesktop": {"live": 0, "left": 4.0}})
+    chk(lambda: not r["A"].get("host") and l == ["A"], "an account at or under its line: Archmagi takes it")
+    r, l, _ = run({"A": it()}, cfg=hcfg)
+    chk(lambda: not r["A"].get("host") and l == ["A"], "a host that could not be read: Archmagi takes it")
+    r, l, _ = run({"A": it()}, cfg=hcfg, hosts={"SteveDesktop": {"live": 2, "left": 50.0}})
+    chk(lambda: not r["A"].get("host") and l == ["A"], "a host at its max_live: Archmagi takes it")
+    r, l, _ = run({"A": it()}, cfg=hcfg, hosts={"SteveDesktop": {"live": 0, "left": 50.0, "pool_more": 0}})
+    chk(lambda: not r["A"].get("host") and l == ["A"] and "clone" in r["A"]["why"],
+        "a host whose disk holds no more clone (rm-pool-room): Archmagi takes it, and says why (%s)" % r["A"]["why"])
+    r, l, _ = run({k: it() for k in "AB"}, cfg=hcfg, hosts={"SteveDesktop": {"live": 0, "left": 50.0, "pool_more": 1}})
+    chk(lambda: r["A"].get("host") == "SteveDesktop" and not r["B"].get("host"),
+        "a disk that holds one more clone takes one run this tick")
+    r, l, _ = run({"A": it(needs="bridge")}, cfg=hcfg, hosts=room)
+    chk(lambda: not r["A"].get("host") and l == ["A"] and "needs bridge" in r["A"]["why"],
+        "a ticket whose needs is not offline stays on Archmagi and says so (%s)" % r["A"]["why"])
+    r, l, _ = run({"A": it(needs="offline")}, cfg=hcfg, hosts=room)
+    chk(lambda: r["A"].get("host") == "SteveDesktop", "needs offline goes to the host")
+    with patch.object(LD(), "switch_refuses", lambda host, i: "SteveDesktop takes no mod work (Pyre)"):
+        r, l, _ = run({"A": it()}, cfg=hcfg, hosts=room)
+    chk(lambda: not r["A"].get("host") and l == ["A"] and "no mod work" in r["A"]["why"],
+        "a host whose work switch refuses the ticket: Archmagi takes it and says why (%s)" % r["A"]["why"])
+    with patch.object(LD(), "switch_refuses", lambda host, i: "SteveDesktop takes no mod work (Pyre)"):
+        r, l, _ = run({k: it() for k in "ABC"}, cfg=hcfg, hosts=room)
+    chk(lambda: r["C"]["decision"] == "slots_full", "refused by the host and Archmagi's slots full: slots_full")
+    chk(lambda: dec({"A": it()}, cfg=hcfg, hosts=room, pool="pool full: 16 clones") == ("launch", ["A"]),
+        "Archmagi's full clone pool does not stop a run placed on the host")
     runs = {"A": {"live": ["u1"], "ended": [], "host_live": ["u1"]}}
     chk(lambda: dec({"A": it(), "B": it(), "C": it()}, iid="C", runs=runs, cfg=hcfg) == ("launch", ["B", "C"]),
         "a live host run holds its item but no own slot")
+    chk(lambda: LD().load_cfg().get("hosts", {}).get("SteveDesktop"), "the shipped lane names SteveDesktop")
+
+
+def t_a_chain_counts_only_links_that_a_lane_run_filed():
+    """chain_stop guards a lane run that files an item that the lane then works. A link of the chain counts only when
+    the child was filed by a lane run on its parent (the filing's role unit is one of the parent's lane attempts); a
+    child that a hand, the Conductor or another run filed ends the chain there. Measured 2026-11-25 10:52 PM PST: 2 of 5
+    chain_stop items had been filed by no lane run."""
+    w = {"A": {"caused_by": None}, "B": {"caused_by": "A"}, "C": {"caused_by": "B"}}
+    st = {"items": {"A": {"attempts": [{"unit": "u1", "failed": None}]},
+                    "B": {"attempts": [{"unit": "u2", "failed": None}]}}}
+    par = lambda i: w.get(i, {}).get("caused_by")  # noqa: E731
+    chk(lambda: LD().chain_depth("C", par, st, filed_by={"C": "u2", "B": "u1"}.get) == 2,
+        "each link filed by a lane run on its parent: both count")
+    chk(lambda: LD().chain_depth("C", par, st, filed_by={"C": None, "B": "u1"}.get) == 0,
+        "the item filed by a hand: no lane chain feeds it")
+    chk(lambda: LD().chain_depth("C", par, st, filed_by={"C": "rm-detached-other-1", "B": "u1"}.get) == 0,
+        "the item filed by a run that is no lane run on its parent: the chain ends there")
+    chk(lambda: LD().chain_depth("C", par, st, filed_by={"C": "u2", "B": None}.get) == 1,
+        "the parent filed by a hand: only the parent's runs count")
+    chk(lambda: LD().chain_depth("C", par, st) == 2, "no filing reading: every ancestor counts, as before")
 
 
 def t_the_tick_counts_recent_lane_launches_before_taking_spare_room():
@@ -964,7 +1016,8 @@ def main():
               t_a_block_whose_predecessor_is_done_is_not_a_block,
               t_the_gates_launch_nothing,
               t_the_lane_has_its_own_slots_and_chain_rule,
-              t_a_full_lane_places_on_a_host_with_room,
+              t_a_ready_ticket_goes_to_a_host_with_room_first,
+              t_a_chain_counts_only_links_that_a_lane_run_filed,
               t_the_tick_counts_recent_lane_launches_before_taking_spare_room,
               t_an_unreadable_record_blinds_only_what_it_can_change,
               t_a_gate_held_on_could_not_look_is_told,

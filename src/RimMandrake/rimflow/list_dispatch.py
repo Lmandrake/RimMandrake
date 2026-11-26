@@ -44,7 +44,9 @@ oldest item that another waits on, then oldest filing, one decision:
                   load or core count that cannot be read is said on the row (load_could_not_look) and the launch goes on
                   slots_full: the own slots are full and load plus recent and same-tick launches leaves no spare room
   launch          one detached helper (detached_helper.py launch --next-act-owner list_dispatch), sonnet when the check
-                  runs a selftest or acceptance script, else opus
+                  runs a selftest or acceptance script, else opus. A host of cfg["hosts"] (SteveDesktop) with room takes
+                  it first (host_first: its runs, its account's leave line, its disk's clones, its work switch, and the
+                  ticket's needs offline); Archmagi's own slots and spare load take the rest
   in_bundle | bundled | bundle_live   work bundles (work_bundle.py, design/specs/2026-11-24-work-bundles): the launch rows
                   of one system (its home, else item:<ID>) are ONE bundle run; the first leads and takes the slot, the
                   others (and slots_full rows of that system) read bundled; a member of a live bundle reads in_bundle; a
@@ -190,14 +192,20 @@ def spent(attempts):
     return [a for a in attempts or [] if not a.get("failed") and not a.get("void")]
 
 
-def chain_depth(iid, parent_of, st):
-    """-> the lane runs (spent attempts) on the item's caused_by ancestors, the item itself excluded."""
+def chain_depth(iid, parent_of, st, filed_by=None):
+    """-> the lane runs (spent attempts) on the item's caused_by ancestors, the item itself excluded. filed_by(id) -> the
+    role unit that filed the item (None: a hand): a link counts only when a lane run on the parent filed the child, so a
+    child that a hand, the Conductor or another run filed ends the chain (the danger is the lane feeding itself;
+    boundary a-chain-counts-only-links-that-a-lane-run-filed). filed_by None: every ancestor counts."""
     items, seen, n = (st or {}).get("items") or {}, {iid}, 0
-    cur = parent_of(iid)
+    child, cur = iid, parent_of(iid)
     while cur and cur not in seen:
         seen.add(cur)
-        n += len(spent((items.get(cur) or {}).get("attempts")))
-        cur = parent_of(cur)
+        runs = spent((items.get(cur) or {}).get("attempts"))
+        if filed_by is not None and filed_by(child) not in set(a.get("unit") for a in runs if a.get("unit")):
+            break
+        n += len(runs)
+        child, cur = cur, parent_of(cur)
     return n
 
 
@@ -270,9 +278,10 @@ def switch_refuses(host, it):
 
 
 def host_room(cfg, hosts, new=0):
-    """-> (host, why not). A lane run whose own slots are full goes to a host of cfg["hosts"] that has fewer live lane
-    runs (its own, plus `new` placed there this tick) than its max_live, and whose live account has more than its
-    min_left_pct of the week left. A reading that is missing (None) is no room. Pure."""
+    """-> (host, why not). A host of cfg["hosts"] that has fewer live lane runs (its own, plus `new` placed there this
+    tick) than its max_live, whose live account has more than its min_left_pct of the week left, and whose disk holds
+    another helper clone (pool_more, rm-pool-room.timer's count, when it is a number; else the host's own pool_admit
+    decides at launch). A reading that is missing (None) is no room. Pure."""
     whys = []
     for name, hc in sorted((cfg.get("hosts") or {}).items()):
         f = (hosts or {}).get(name) or {}
@@ -286,23 +295,74 @@ def host_room(cfg, hosts, new=0):
             whys.append("%s: what is left on its account could not be read (%s)" % (name, f.get("left_why") or "no reading"))
         elif float(f["left"]) <= floor:
             whys.append("%s: its account has %g%% of the week left, the line is %g%%" % (name, f["left"], floor))
+        elif isinstance(f.get("pool_more"), int) and placed >= f["pool_more"]:
+            whys.append("%s: its disk holds %d more helper clone(s) and %d were placed this tick (rm-pool-room.timer)"
+                        % (name, f["pool_more"], placed))
         else:
             return name, None
     return None, "; ".join(whys) or "no host is configured"
 
 
+# A ticket that needs a thing only Archmagi has stays on Archmagi: its `needs` (model.NEEDS) is anything but offline
+# (deploy, game-up, bridge and harvest name Archmagi's games and dumps; owner, the owner at Archmagi).
+HOST_NEEDS = ("offline",)
+
+
+def host_first(cfg, hosts, placed, it):
+    """-> (host, why not). A ready ticket goes to a host with room first (host_room), unless its `needs` is not offline
+    or the host's work switch refuses it (switch_refuses). Pure but for the switch file. Item
+    RIMMANDRAKE_SEND_PIPELINE_TICKETS_TO_STEVEDESKTOP_FIRST_IT_SAT_IDLE."""
+    if not cfg.get("hosts"):
+        return None, None
+    needs = it.get("needs") or "offline"
+    if needs not in HOST_NEEDS:
+        return None, "the ticket needs %s, which only Archmagi has" % needs
+    host, why = host_room(cfg, hosts, placed)
+    no = host and switch_refuses(host, it)
+    if no:
+        return None, no
+    return host, why
+
+
+def pool_room(host, runner=subprocess.run):
+    """-> probe_result: the helper clones the host's disk still holds (rm-pool-room.timer's more_clones), or
+    could_not_look(cause) (no door, the file could not be read, or its verdict is COULD_NOT_LOOK). No count is no
+    verdict here: the host's own pool_admit still refuses a clone its disk cannot hold, at launch."""
+    import probe_result as PR
+    import run_host
+    import time_budget
+    target = run_host.door(host)
+    if not target:
+        return PR.could_not_look("no ssh door to %s" % host)
+    try:
+        r = runner(run_host._ssh(target, "cat ~/.local/state/rm-ssd/pool_room.json"), capture_output=True, text=True,
+                   timeout=time_budget.CALL_S, stdin=subprocess.DEVNULL)
+        if r.returncode:
+            return PR.could_not_look("reading pool_room.json on %s exited %s" % (host, r.returncode))
+        rec = json.loads(r.stdout)
+    except Exception as e:  # noqa: BLE001
+        return PR.could_not_look("pool_room.json on %s: %s: %s" % (host, type(e).__name__, e))
+    more = rec.get("more_clones")
+    if rec.get("verdict") in ("ROOM", "SHORT") and isinstance(more, int):
+        return PR.value(more)
+    return PR.could_not_look("pool_room.json on %s reads %s: %s" % (host, rec.get("verdict"), rec.get("why") or "-"))
+
+
 def host_facts(cfg, live, runner=None):
-    """{host: {"live", "left", "left_why"}}: live lane runs per host (from _runs), and the week left on the host's live
-    account, read from account_usage's latest readings by the name the host itself reports."""
+    """{host: {"live", "left", "left_why", "pool_more", "pool_why"}}: live lane runs per host (from _runs), the week left on the host's
+    live account, read from account_usage's latest readings by the name the host itself reports, and the helper clones its
+    disk still holds (pool_room)."""
     out = {}
     for name in (cfg.get("hosts") or {}):
-        d = {"live": live.get(name, 0), "left": None, "left_why": None}
+        d = {"live": live.get(name, 0), "left": None, "left_why": None, "pool_more": None}
         try:
             import run_host
             # every Claude run on the host counts, not only the lane runs this machine recorded (2026-11-24: 9 there
             # against max_live 6); an unread count is no room
             there = run_host.live_units(name, **({"runner": runner} if runner else {}))
             d["live"] = None if there is None else max(there, d["live"])
+            pr = pool_room(name, **({"runner": runner} if runner else {}))
+            d["pool_more"], d["pool_why"] = (pr.value, None) if pr.ok else (None, pr.cause)
             import account_usage as AU
             acct = run_host.read_facts(name, "-", **({"runner": runner} if runner else {})).get("account")
             row = (AU.read_now().get("accounts") or {}).get(acct) if acct else None
@@ -555,19 +615,18 @@ def decide(cfg, st, facts, now, account=(True, "")):
         over, owhy, ocnl = machine_load(cfg, facts.get("load"), facts.get("cores"))
         if ocnl:
             row["load_could_not_look"] = ocnl
-        if over:
+        # a host with room first (boundary a-ready-ticket-goes-to-a-host-with-room-first); Archmagi takes the rest
+        host, hwhy = host_first(cfg, facts.get("hosts"), placed, it)
+        if host:
+            free, full = True, None
+        elif over:
             free, full = False, owhy
         else:
             free, full = slot_free(cfg, live_total, len(launches), facts.get("load"),
                                    recent=0 if recent is None else recent.value if recent.ok else None)
             if not free and recent is not None and not recent.ok:
                 full += " (%s)" % recent
-        host = None
         if not free:
-            host, hwhy = host_room(cfg, facts.get("hosts"), placed)
-            no = host and switch_refuses(host, it)
-            if no:
-                host, hwhy = None, no
             if not host and over:
                 put("machine_load", owhy + "; nothing launches on this machine" + (
                     "; no host has room: " + hwhy if cfg.get("hosts") else ""))
@@ -579,7 +638,7 @@ def decide(cfg, st, facts, now, account=(True, "")):
                     row["could_not_look"] = ("the load average could not be read" if facts.get("load") is None
                                              else recent.cause)
                 continue
-        if pool and not it.get("clone_exists"):
+        if pool and not it.get("clone_exists") and not host:     # Archmagi's pool: a host run makes its clone there
             put("pool_full", pool)
             continue
         if shape:
@@ -610,7 +669,9 @@ def decide(cfg, st, facts, now, account=(True, "")):
                 len(work) + 1, ", a second look (its wait to %s passed)" % pac(wu) if look else "",
                 ", past a stale block" if row.get("stale_block") else "", model, mwhy, _one(it.get("out"), 120)))
         if host:
-            row["why"] = "%s; on %s: the lane's own slots are full (%s)" % (row.get("why", ""), host, full)
+            row["why"] = "%s; on %s: the host goes first and has room" % (row.get("why", ""), host)
+        elif hwhy:
+            row["why"] = "%s; on Archmagi: %s" % (row.get("why", ""), hwhy)
         if ocnl:
             row["why"] = "%s; machine load: could not look (%s)" % (row.get("why", ""), ocnl)
         launches.append(iid)
@@ -781,6 +842,7 @@ class Openings(object):
 
     def __init__(self):
         self.last, self.opened = {}, {k: [] for k in WINDOW_EVENTS}
+        self.filed = {}     # {item: the role unit that filed it, None for a hand} (chain_depth)
 
     def observe(self, ev, world, ok):
         if not ok:
@@ -791,6 +853,9 @@ class Openings(object):
             return
         if ev.get("id"):
             self.last[ev["id"]] = t
+        born = ev.get("id") or ev.get("name")     # an item's first event is its filing (a spawn names it in `name`)
+        if born and born not in self.filed:
+            self.filed[born] = ev.get("role_unit")
         for k, (verb, state, _w) in WINDOW_EVENTS.items():
             if ev.get("event") == verb and ev.get("state") == state:
                 self.opened[k].append(t)
@@ -908,7 +973,7 @@ def gather(st, now=None, root=None, load_lag_s=None):
         d = {"state": x.state, "blocked": blocked, "blocked_reason": x.blocked_reason,
              "effect": x.effect, "waits_on": waits, "events": len(x.history), "title": x.title,
              "filed": LM.epoch(x.created_at) if x.created_at else None, "blocks_others": iid in waited_on,
-             "caused_by": x.caused_by, "mod_work": mw, "shape_due": sdue, "shape_why": swhy, "route": sf["route"],
+             "caused_by": x.caused_by, "needs": getattr(x, "needs", None), "mod_work": mw, "shape_due": sdue, "shape_why": swhy, "route": sf["route"],
              "shape_size": sf["size"], "shape_at": sf["shape_at"], "shape_unit": sf["shape_unit"],
              "raised": LM.raise_key(x) if x.raised is not None else None, "block_stale": stale,
              "second_look": bool(sf["named"] or (sf["filed"] and cfg.get("shape_from")
@@ -996,7 +1061,8 @@ def gather(st, now=None, root=None, load_lag_s=None):
             d["held"] = _held(d["mod"])
         except Exception as e:  # noqa: BLE001
             d["off_unreadable"] = "the owner's mod holds could not be read (%s: %s)" % (type(e).__name__, e)
-        d["depth"] = chain_depth(iid, lambda i: (w.items.get(i).caused_by if w.items.get(i) else None), st)
+        d["depth"] = chain_depth(iid, lambda i: (w.items.get(i).caused_by if w.items.get(i) else None), st,
+                                 filed_by=op.filed.get)
         d["clone_exists"] = _clone_exists(iid)
     live = None if runs is None else sum(len(r["live"]) for r in runs.values())
     load = load_now()
