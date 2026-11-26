@@ -121,7 +121,8 @@ def scar_log(before, after):
     RM_Patch_Filth_ScarGone: who removed it), or a could-not-look line."""
     if before is None or after is None:
         return ["journal unread"]
-    new = after[len(before):] if after[:len(before)] == before else [x for x in after if x not in set(before)]
+    seen = set(before)
+    new = after[len(before):] if after[:len(before)] == before else [x for x in after if x not in seen]
     out = []
     for line in new:
         try:
