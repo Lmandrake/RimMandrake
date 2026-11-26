@@ -487,3 +487,12 @@ These entries were under `NEEDS HIM`, and each keeps its number.
 2. **[hull] The two wears on the ship that were cut: "the dunes take the ship" and gale abrasion.** *His card of
    2026-11-19 (declined ship ideas):* they stay cut. Heat, blown sand and drift carry the hull. He can bring either
    back by name.
+
+## Owed cast label collision (measured 2026-11-26)
+
+- `label_collision_check.py` on the 2026-11-24T15-48-33Z capture: `RM_Ikee` (this biome and ExtremeDesert,
+  `src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Ikee.xml`) and `RM_ContagionIkee` (the Contagion) both carry the
+  label "ikee". The owner ruled by card on 2026-09-29 (item `CONTAGION_IKEE_NAME_COLLISION_1`): the Contagion keeps
+  "ikee", and this biome's creature gets a distinct label. Commit 623403370b did it ("drageye"). The later moves
+  4be549845d (2026-10-04) and d4146e0cfe (2026-10-24) brought the "ikee" label back. Give `RM_Ikee` a distinct label
+  when this mod next builds. The mod is held, so this text is the record (work bundle WB-game-naming-20261126-181519).

@@ -472,3 +472,11 @@ enact item is `RIMMANDRAKE_ENACT_SIX_BIOME_ANSWERS_SLIME_GETS_BOTH_DRAWS`). Each
    under the caps, not the ship's own lights. Buys: one consistent rule. Costs: the Rot becomes one of the best
    hideouts on land, about 2.7 times the open-ground wait (my arithmetic, ~80% sure)."* **This changes the design's
    default.** Was: two steps.
+
+## Owed cast label collision (measured 2026-11-26)
+
+- `label_collision_check.py` on the 2026-11-24T15-48-33Z capture: `RM_Thozzik` and the hive-bound `RM_ThozzikColony`
+  both carry the label "thozzik", and `RM_ThozzikQueen` and `RM_ThozzikColonyQueen` both carry "thozzik queen". All
+  four are cast here (`src/RimMandrake/TheRot/Defs/Fauna/RM_TheRot_Fauna_ThingDefs_Races.xml`). In the animals tab,
+  a player cannot tell the wild animal from the one that obeys a queen. When this mod next builds, decide whether the
+  hive-bound pair gets its own label. That is a naming call for a judge (work bundle WB-game-naming-20261126-181519).
