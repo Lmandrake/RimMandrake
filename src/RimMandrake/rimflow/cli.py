@@ -3044,9 +3044,12 @@ def _close_gate(args, it, sha, no_code):
         die("close: %s has not earned its close at %s:\n%s\n\nA criterion passes with `rimflow verify %s --criterion <C> "
             "--result pass --config <cfg> --evidence <path>`; a fail needs a pass after it (`rimflow close %s --sha %s "
             "--evidence \"<what ran and its result>\"` records one with the close). His word on this close (--owner-said, --by-card), or the Conductor window's act "
-            "(--per-ruling %s --why \"<the act and reason>\"), closes it as it is, recorded. "
-            "Nothing changed: the item is as it was."
-            % (args.id, sha, "\n".join("  %-9s %s" % f for f in found), args.id, args.id, sha, conductor_acts.RULING))
+            "(--per-ruling %s --why \"<the act and reason>\"), lifts a fail, a guard and a missing pass, recorded. "
+            "An owed criterion is a fact that no word lifts: verify it at its level, or change its level with "
+            "`rimflow implemented %s --sha %s --criteria-file <file>` (one line per criterion, `A1 L2: <what is "
+            "observed>`) and verify it at that level. Nothing changed: the item is as it was."
+            % (args.id, sha, "\n".join("  %-9s %s" % f for f in found), args.id, args.id, sha, conductor_acts.RULING,
+               args.id, sha))
     marker = None if model.MARKER_FAIL_LOCKS else model.marker_lock(it, sha, no_code)
     if marker:      # MARKER_FAIL_WIRE_INTO_CLOSE_LOCK: seen, not yet locking (operations_design_2026-11-01 §9 step 2)
         print("close: %s: marker  %s. The lock is off until a trust rerun meets the owner's bar (operations_design_2026-11-01 "
