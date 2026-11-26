@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES: the fields the one geometry model removed (the heat kind, the per-biome heat
+  offset, scaling, floor and threshold, the elevation clamps, the body-size terms, the path cost, the sand glare floor,
+  and the shade gear's per-kind factors) are stripped at load from any def that still names them. Without this, a
+  BiomeDef or ThingDef that names one logs an XML error and the field loads as nothing anyway.
+
+  Who still names them: the mods held by the owner (src/RimMandrake/rimflow/mod_owner_hold.json), whose files no
+  run edits while held (Stillsand, Fever Wood, Contagion), and any other mod's copy. A held mod's own next build strips
+  them from its XML (RIMMANDRAKE_STRIP_HELD_BIOMES_LEGACY_SUN_FIELDS_AT_LIFT); then this file can go.
+  Only the fields some def under src/ still names have an operation (a removal that matches nothing is noise for
+  validate_patch.py); a held mod that lifts and strips its own file lets its operation go.
+  success Always: a held mod that is not loaded leaves its operation matching nothing, which is never an error.
+  Lint: src/RimMandrake/Utils/selftest_direct_sun.py (every removed field has its operation here).
+-->
+<Patch>
+  <Operation Class="PatchOperationRemove">
+    <xpath>Defs/BiomeDef/modExtensions/li[@Class='RimMandrake.CreatureBehaviors.RM_SunHeatExtension']/heatKind</xpath>
+    <success>Always</success>
+  </Operation>
+  <Operation Class="PatchOperationRemove">
+    <xpath>Defs/BiomeDef/modExtensions/li[@Class='RimMandrake.CreatureBehaviors.RM_SunHeatExtension']/heatOffsetC</xpath>
+    <success>Always</success>
+  </Operation>
+  <Operation Class="PatchOperationRemove">
+    <xpath>Defs/BiomeDef/modExtensions/li[@Class='RimMandrake.CreatureBehaviors.RM_SunHeatExtension']/heatScalesWithElevation</xpath>
+    <success>Always</success>
+  </Operation>
+  <Operation Class="PatchOperationRemove">
+    <xpath>Defs/BiomeDef/modExtensions/li[@Class='RimMandrake.CreatureBehaviors.RM_SunHeatExtension']/minScaledHeatOffsetC</xpath>
+    <success>Always</success>
+  </Operation>
+  <Operation Class="PatchOperationRemove">
+    <xpath>Defs/BiomeDef/modExtensions/li[@Class='RimMandrake.CreatureBehaviors.RM_SunHeatExtension']/overheadAboveElevationDegrees</xpath>
+    <success>Always</success>
+  </Operation>
+  <Operation Class="PatchOperationRemove">
+    <xpath>Defs/BiomeDef/modExtensions/li[@Class='RimMandrake.CreatureBehaviors.RM_SunHeatExtension']/maxElevationDegrees</xpath>
+    <success>Always</success>
+  </Operation>
+  <Operation Class="PatchOperationRemove">
+    <xpath>Defs/BiomeDef/modExtensions/li[@Class='RimMandrake.CreatureBehaviors.RM_SunHeatExtension']/sandGlareExposureFloor</xpath>
+    <success>Always</success>
+  </Operation>
+  <Operation Class="PatchOperationRemove">
+    <xpath>Defs/ThingDef/comps/li[@Class='RimMandrake.CreatureBehaviors.RM_CompProperties_ShadeGear']/overheadFactor</xpath>
+    <success>Always</success>
+  </Operation>
+  <Operation Class="PatchOperationRemove">
+    <xpath>Defs/ThingDef/comps/li[@Class='RimMandrake.CreatureBehaviors.RM_CompProperties_ShadeGear']/lowSunFactor</xpath>
+    <success>Always</success>
+  </Operation>
+</Patch>

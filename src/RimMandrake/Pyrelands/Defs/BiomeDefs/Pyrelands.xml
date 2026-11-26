@@ -96,24 +96,14 @@
         <degreeWeight>2.6</degreeWeight>
         <rainfallDivisor>120</rainfallDivisor>
       </li>
-      <!-- PYRELANDS_HEAT_KIND_BUILD_1 (SOLAR_HEAT_EXPOSURE_1): sun heat kind "overhead" - one kind of heat planet-wide.
-           The sun's elevation comes from the map tile's latitude (the extension reads it; never a region name);
-           below 55 deg the cover that counts is lowSun's (lee/rock), above it roofs and parasols count.
-           heatOffsetC is the offset at the substellar point, scaled by sin(elevation). Modest on purpose: the
-           biome is already ~54 C median. Invented first value, tuned in live play. -->
-      <li Class="RimMandrake.CreatureBehaviors.RM_SunHeatExtension" MayRequire="mandrake.rm.biomes">
-        <heatKind>overhead</heatKind>
-        <heatOffsetC>10</heatOffsetC>
-        <heatScalesWithElevation>true</heatScalesWithElevation>
-        <minScaledHeatOffsetC>4</minScaledHeatOffsetC>
-        <overheadAboveElevationDegrees>55</overheadAboveElevationDegrees>
-      </li>
+      <!-- Direct Sun runs here as on every sunlit map, by the sun's height alone (DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES):
+           this biome carries no sun number. -->
       <!-- BIOME_ARRIVAL_LETTERS_ALL_1 (DESIGN_PASS X-6/FV-5): PLACEHOLDER text drafted by an agent from this biome's
            own description, always-true list and shipped mechanics, flagged for the owner's review
-           (infrastructure/state/items/BIOME_ARRIVAL_LETTERS_ALL_1.md). RM tier: plain reads, no narrator. Heat line follows heatKind. -->
+           (infrastructure/state/items/BIOME_ARRIVAL_LETTERS_ALL_1.md). RM tier: plain reads, no narrator. -->
       <li Class="RimMandrake.EnvironmentalHazards.RM_BiomeArrivalLetterExtension" MayRequire="mandrake.rm.biomes">
         <letterLabel>The Pyrelands</letterLabel>
-        <letterText>This grass burns on its own schedule, and somewhere on this ground it is always burning. It greens over within days of a burn and dries out soon after, and the first dry storm sets it off. The ash falls for days after a big burn and the rain comes down black with it. Scorch-fruit opens only in the burn and spoils within a day: the harvest belongs to whoever walks the flame line. The heat comes straight down: a roof, a parasol or a shade tent answers it.</letterText>
+        <letterText>This grass burns on its own schedule, and somewhere on this ground it is always burning. It greens over within days of a burn and dries out soon after, and the first dry storm sets it off. The ash falls for days after a big burn and the rain comes down black with it. Scorch-fruit opens only in the burn and spoils within a day: the harvest belongs to whoever walks the flame line. The sun here never moves, and where it stands high it is fierce and the shadows are short: a roof, a parasol or a shade tent answers it.</letterText>
       </li>
       <!-- The ash field (PyrelandsAshField.cs) already makes water matter to a crop here: dry deep ash 70%, watered 140%, rich
            soil by the ponds its own 140%. Explosive Growth's vanilla-crop rule (x0.1 beyond 2 cells of water) would multiply on

@@ -43,8 +43,6 @@
       <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_ShadeGear">
         <mode>footprint</mode>
         <shadeDepth>0.7</shadeDepth>
-        <overheadFactor>1</overheadFactor>
-        <lowSunFactor>0.3</lowSunFactor>
       </li>
       <li Class="RimMandrake.LongShade.CompProperties_RM_LureAwning" />
     </comps>

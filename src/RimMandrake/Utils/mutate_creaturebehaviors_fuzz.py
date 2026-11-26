@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Mutation proof for the CreatureBehaviors fuzz: plants each defect in the pure production files the fuzz compiles (sand swim kernel, moving
 shade math and layer, shade patch graph + dash math, wild-leave math, metal-eater kernel), runs the fuzz wrapper, demands a FAIL, restores the file byte-identical
-(engine: mutate_explosivegrowth_fuzz.run_mutations). Mutants of RM_SunHeatMath are left to selftest_sun_heat.py (the fuzz reaches it only
-through the shade families).
+(engine: mutate_explosivegrowth_fuzz.run_mutations). Mutants of RM_SunHeatMath's Direct Sun model (SUN below: the zenith value, E,
+the shadow length, the covers, the weather and dial, the glare floor, and an input that is not geometry) run against
+selftest_sun_heat.py instead, one per case of DIRECT_SUN_SELFTEST_BUILD_EVERY_BIOME_EQUAL (the fuzz reaches that file only through
+the shade families).
 
     python3 src/RimMandrake/Utils/mutate_creaturebehaviors_fuzz.py [name-substring]
 """
@@ -132,6 +134,26 @@ EAT = [
     ("eat: food block ignores the setting", "return enabled && hasEaterComp && blockFlag;", "return hasEaterComp && blockFlag;"),
 ]
 
+SUN = [
+    ("sun: zenith value moved", "public const float ZenithDefaultC = 55f;", "public const float ZenithDefaultC = 50f;"),
+    ("sun: cos for sin", "return zenithC * (float)Math.Sin(e);", "return zenithC * (float)Math.Cos(e);"),
+    ("sun: heats below the horizon", "if (float.IsNaN(elevationDeg) || elevationDeg <= 0f || zenithC <= 0f)", "if (float.IsNaN(elevationDeg) || zenithC <= 0f)"),
+    ("sun: shadow tan for cot", "return (float)(Math.Cos(e) / Math.Sin(e));", "return (float)(Math.Sin(e) / Math.Cos(e));"),
+    ("sun: roof ignored", "return Clamp01(1f - Clamp01(Math.Max(roofShade, castShade)));", "return Clamp01(1f - Clamp01(castShade));"),
+    ("sun: gear ignored", "return WithCover(Exposure(outdoors, roofShade, castShade), gearShade);", "return Exposure(outdoors, roofShade, castShade);"),
+    ("sun: weather ignored", "return RM_SunHeatMath.HeatOffset(exposure, offsetAtFullC, strength, BodyFactor(bodySize), MaxOffsetC);",
+     "return RM_SunHeatMath.HeatOffset(exposure > 0f ? 1f : 0f, offsetAtFullC, strength, BodyFactor(bodySize), MaxOffsetC);"),
+    ("sun: a biome input", "public static float ClampElevation(float elevationDeg)",
+     "public static float BiomeOffsetC(float biomeHeatC) { return biomeHeatC; }\n\n        public static float ClampElevation(float elevationDeg)"),
+    ("sun: a per-world value", "public const float MaxOffsetC = 70f;", "public static float MaxOffsetC = 70f;"),
+    ("sun: glare floor ignored", "return exposure > f ? exposure : f;", "return exposure;"),
+]
+
+AIR = [
+    ("sun: air heat natives not fitted", "maxOptimal = loadedMaxOptimal + up;", "maxOptimal = loadedMaxOptimal;"),
+    ("sun: air heat narrows on a cold offset", "float up = offsetC > 0f ? offsetC : 0f;", "float up = offsetC;"),
+]
+
 if __name__ == "__main__":
     only = sys.argv[1] if len(sys.argv) > 1 else None
     rc = 0
@@ -139,4 +161,6 @@ if __name__ == "__main__":
                     ("RM_MovingShadeLayer.cs", [m for m in SHADE if m[0].startswith("layer")]), ("RM_ShadePatchGraph.cs", PATCH), ("RM_WildLeaveMath.cs", LEAVE),
                     ("RM_MetalEaterKernel.cs", EAT)):
         rc |= run_mutations(B + f, W, muts, only)
+    rc |= run_mutations(B + "RM_SunHeatMath.cs", "selftest_sun_heat.py", SUN, only)
+    rc |= run_mutations(B + "RM_AirHeat.cs", "selftest_sun_heat.py", AIR, only)
     sys.exit(rc)

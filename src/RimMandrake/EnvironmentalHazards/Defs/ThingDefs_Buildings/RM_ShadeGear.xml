@@ -7,17 +7,15 @@
   MUST be applied on other biomes where heat is extreme too... and there shade
   won't help you (in steam) or sideways shade (deep desert)."
 
-  Three cross-biome pieces. The mechanics are NOT here: each carries
+  Two cross-biome pieces. The mechanics are NOT here: each carries
   RimMandrake.CreatureBehaviors.RM_CompProperties_ShadeGear, and its shade goes
-  into RM_MapComponent_ShadeGrid and from there into sun heat through the same
+  into RM_MapComponent_ShadeGrid and from there into Direct Sun through the same
   exposure rule roofs and cast shadows use (RM_ShadeGear.cs,
-  RM_SunHeatMath.GearDepth). How much of each piece's shade counts is set by
-  the biome's heat kind (RM_SunHeatExtension):
-
-                  overhead   lowSun   ambient (steam / volcanic)
-    parasol       1.0        0.35     0
-    shade tent    1.0        0.3      0
-    sun shield    0.5        1.0      0
+  RM_SunHeatMath.GearDepth). Each covers the same at every sun elevation and on
+  every map (DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES; owner, 2026-10-19: "Keep
+  only Parasols and Tents, and Tents are just a quick structure (any roof
+  structure will do the same)"). The sun shield was removed: a wall casts the
+  same lee. Hot air (steam, volcanic) is air temperature, which no shade cools.
 
   Depth = shadeDepth + the stuff's RM_ShadeClothExtension.shadeBonus, clamped
   to 1. Mirrak hide (LongShade, RM_Leather_Mirrak) carries +0.3, the deepest.
@@ -26,18 +24,18 @@
 
   Placement follows the sibling scald wrap (TerminalBiomes RM_ScaldGear.xml):
   Neolithic, tailoring benches or a crafting spot for the parasol; the tent
-  and shield are built from the Temperature tab. The parasol and the tent
+  is built from the Temperature tab. The parasol and the tent
   each need one plain research project (RM_Research_Parasol,
   RM_Research_ShadeTent; SHADE_LESSONS_BUILD_WATCH_THE_HERD_CROSS, file
   ResearchProjectDefs/RM_ShadeLessons_Research.xml), which shade lessons
-  discount; the shield needs none.
+  discount.
 
-  ART: all four pieces wired from the artpipe (LONGSHADE_BEDAZZLE_SITTING_1 jobs):
+  ART: the pieces wired from the artpipe (LONGSHADE_BEDAZZLE_SITTING_1 jobs):
   RM_Parasol (item), RM_ParasolWorn_{south,east,north} (worn; Belt is a utility
   layer with no wornGraphicData, so it renders as a pack with no body-type
   suffix; RimSage PawnRenderUtility.RenderAsPack), RM_ShadeTent, and
-  RM_SunShield_{south,east,north} (Graphic_Multi; landed 2026-10-03 after the
-  facing-coherence rewording). No donor art.
+  RM_SunShield_{south,east,north} (Graphic_Multi; landed 2026-10-03; no def
+  uses it since the shield was removed 2026-11-26). No donor art.
 
   Mod Settings: Creature Behaviors entry 40, one toggle per piece.
 -->
@@ -50,7 +48,7 @@
   <ThingDef ParentName="ApparelMakeableBase">
     <defName>RM_Parasol</defName>
     <label>parasol</label>
-    <description>A broad, shallow canopy of stretched cloth or hide on thin ribs and a long pole, carried open overhead. Under a high sun it is a patch of shade that walks with you, and a little of it falls on whoever keeps close. Under a low sun the light comes in underneath it and it does little. Against steam or volcanic heat it does nothing at all.\n\nIt is only as good as its canopy: mirrak hide casts the deepest shade.</description>
+    <description>A broad, shallow canopy of stretched cloth or hide on thin ribs and a long pole, carried open overhead. It is a patch of shade that walks with you, under a high sun or a low one, and a little of it falls on whoever keeps close. It cannot cool hot air: against steam or volcanic heat it does nothing.\n\nIt is only as good as its canopy: mirrak hide casts the deepest shade.</description>
     <graphicData>
       <texPath>Things/Item/Equipment/RM_ShadeGear/RM_Parasol</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -108,8 +106,6 @@
       <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_ShadeGear">
         <mode>wearer</mode>
         <shadeDepth>0.75</shadeDepth>
-        <overheadFactor>1</overheadFactor>
-        <lowSunFactor>0.35</lowSunFactor>
         <adjacentFactor>0.4</adjacentFactor>
       </li>
     </comps>
@@ -122,7 +118,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_ShadeTent</defName>
     <label>shade tent</label>
-    <description>A low, open-sided awning of stretched cloth or hide on four slim poles, pegged down with guy-ropes. It shades the ground under it and nothing else, and it can be packed up and carried out to wherever the work is: the dead lying in the open, the salvage in the sun. Strong under a high sun, weak under a low one, and useless in steam or volcanic heat.\n\nMirrak hide makes the deepest shade.</description>
+    <description>A low, open-sided awning of stretched cloth or hide on four slim poles, pegged down with guy-ropes. It shades the ground under it and nothing else, and it can be packed up and carried out to wherever the work is: the dead lying in the open, the salvage in the sun. It is a quick roof: its shade holds under a high sun or a low one. It cannot cool hot air, so it is no help in steam or volcanic heat.\n\nMirrak hide makes the deepest shade.</description>
     <graphicData>
       <texPath>Things/Building/RM_ShadeGear/RM_ShadeTent</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -170,66 +166,6 @@
       <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_ShadeGear">
         <mode>footprint</mode>
         <shadeDepth>0.85</shadeDepth>
-        <overheadFactor>1</overheadFactor>
-        <lowSunFactor>0.3</lowSunFactor>
-      </li>
-    </comps>
-  </ThingDef>
-
-  <!-- ============================================================
-       RM_SunShield — a standing 2x1 panel. Throws a lee shadow along the
-       sun: the one piece that works under a low sun.
-       ============================================================ -->
-  <ThingDef ParentName="BuildingBase">
-    <defName>RM_SunShield</defName>
-    <label>sun shield</label>
-    <description>A tall panel of stretched hide on a lashed frame, braced upright by two splayed legs. Stand behind it and you stand in its shadow, which lies on the far side from the sun and runs longer the lower the sun is. It is the one piece of shade gear that works when the sun sits low on the horizon; under a high sun its shadow is short and it helps only a little. In steam or volcanic heat it does nothing.\n\nMirrak hide makes the deepest shade.</description>
-    <graphicData>
-      <texPath>Things/Building/RM_ShadeGear/RM_SunShield</texPath>
-      <graphicClass>Graphic_Multi</graphicClass>
-      <drawSize>(2,2)</drawSize>
-    </graphicData>
-    <size>(2,1)</size>
-    <rotatable>true</rotatable>
-    <altitudeLayer>Building</altitudeLayer>
-    <passability>PassThroughOnly</passability>
-    <pathCost>30</pathCost>
-    <fillPercent>0.5</fillPercent>
-    <canOverlapZones>true</canOverlapZones>
-    <staticSunShadowHeight>0.5</staticSunShadowHeight>
-    <statBases>
-      <MaxHitPoints>90</MaxHitPoints>
-      <WorkToBuild>450</WorkToBuild>
-      <Mass>4</Mass>
-      <Flammability>1</Flammability>
-      <Beauty>0</Beauty>
-    </statBases>
-    <stuffCategories>
-      <li>Fabric</li>
-      <li>Leathery</li>
-    </stuffCategories>
-    <costStuffCount>25</costStuffCount>
-    <costList>
-      <WoodLog>10</WoodLog>
-    </costList>
-    <minifiedDef>MinifiedThing</minifiedDef>
-    <thingCategories>
-      <li>BuildingsTemperature</li>
-    </thingCategories>
-    <designationCategory>Temperature</designationCategory>
-    <techLevel>Neolithic</techLevel>
-    <!-- constructEffect NOT declared: see RM_ShadeTent above. -->
-    <building>
-      <destroySound>BuildingDestroyed_Soft_Small</destroySound>
-    </building>
-    <comps>
-      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_ShadeGear">
-        <mode>lee</mode>
-        <shadeDepth>0.85</shadeDepth>
-        <overheadFactor>0.5</overheadFactor>
-        <lowSunFactor>1</lowSunFactor>
-        <leeHeight>1.5</leeHeight>
-        <fallbackLeeCells>2</fallbackLeeCells>
       </li>
     </comps>
   </ThingDef>

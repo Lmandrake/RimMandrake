@@ -12,11 +12,11 @@
 // the vanilla Heatstroke path sun heat feeds, so "sun vs shade vs roofed"
 // is asserted as the Heatstroke gain each actually produces.
 //
-// SHADE_GEAR_FAMILY_1: the parasol, shade tent and sun shield, with their
-// numbers READ from the shipped EnvironmentalHazards RM_ShadeGear.xml and
-// mirrak hide's bonus from LongShade's RM_LongShade_Mirrak.xml — each piece
-// cuts sun heat on the kinds it is for, the shield wins under a low sun,
-// nothing helps under ambient heat, and mirrak hide casts deepest.
+// SHADE_GEAR_FAMILY_1: the parasol and shade tent, with their numbers READ
+// from the shipped EnvironmentalHazards RM_ShadeGear.xml and mirrak hide's
+// bonus from LongShade's RM_LongShade_Mirrak.xml — each piece cuts Direct Sun
+// at every sun elevation, and mirrak hide casts deepest. The sun shield is
+// gone (DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES spec 5).
 //
 // SOLAR_HEAT_EXPOSURE_1 tranche 2 (§5/§6), REAL from RM_ShadePatchGraph.cs:
 // patch labelling (flecks dropped), rims, the distance-to-shade field, edges
@@ -24,9 +24,15 @@
 // by vanilla's Heatstroke curve (bigger = further, already hot = nowhere,
 // the strictness dial), and the §6 go-and-return ring.
 //
-// STILLSAND_SUN_FROM_LATITUDE_1: the heat kind resolved from sun elevation,
-// irradiance by sin(elevation) with its far-ring floor, and the sand glare
-// floor (shade on sand stays warm, a paved shade yard does not).
+// DIRECT_SUN_SELFTEST_BUILD_EVERY_BIOME_EQUAL: Direct Sun is a pure function
+// of geometry. The model takes no biome input; at E in {0, 5, 14, 21, 31, 45,
+// 56, 79, 90} the offset and the exposure of an open, a roofed, a parasol and
+// a lee cell come out of the shipped functions alone; intensity is
+// 55 x sin E (0 at E <= 0); a caster of height h throws h / tan E cells
+// (capped), none beside a wall at E = 85, about 4 h at E = 14; roofs,
+// tents and parasols cover at every E; weather and the strength dial
+// multiply Direct Sun only. The defs half (no BiomeDef carries a sun field,
+// air heat is a vanilla condition) is selftest_direct_sun.py.
 //
 // NOT covered, and why: anything that needs a live Map — the room test
 // (UsesOutdoorTemperature), roof/thing scans, the Harmony postfixes and the
@@ -84,9 +90,9 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
             return Math.Max(x * 6.45E-05f, 0.000375f);
         }
 
-        private static float Felt(RM_HeatKind kind, bool outdoors, float roof, bool thick, float cast, float bodySize = 1f)
+        private static float Felt(bool outdoors, float roof, float cast, float bodySize = 1f)
         {
-            float ex = RM_SunHeatMath.Exposure(kind, outdoors, roof, thick, cast);
+            float ex = RM_SunHeatMath.Exposure(outdoors, roof, cast);
             float f = RM_SunHeatMath.BodySizeFactor(bodySize, 0.5f, 0.25f, 2.5f);
             return OutdoorC + RM_SunHeatMath.HeatOffset(ex, 30f, 1f, f, 70f);
         }
@@ -185,33 +191,14 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                     "a throttle stamped in a later save silenced the notice after loading an earlier one");
             });
 
-            Case("overhead: sun heats, cast shade and a roof both protect", () =>
+            Case("direct sun: sun heats, a cast shadow and a roof both protect", () =>
             {
-                float sun = HeatstrokeStep(Felt(RM_HeatKind.overhead, true, 0f, false, 0f), HumanSafeMax);
-                float shade = HeatstrokeStep(Felt(RM_HeatKind.overhead, true, 0f, false, 1f), HumanSafeMax);
-                float roofed = HeatstrokeStep(Felt(RM_HeatKind.overhead, true, 1f, false, 0f), HumanSafeMax);
+                float sun = HeatstrokeStep(Felt(true, 0f, 0f), HumanSafeMax);
+                float shade = HeatstrokeStep(Felt(true, 0f, 1f), HumanSafeMax);
+                float roofed = HeatstrokeStep(Felt(true, 1f, 0f), HumanSafeMax);
                 Assert(sun > 0f, "a pawn in full sun gained no Heatstroke (" + sun + ")");
                 Assert(shade == 0f, "a pawn in cast shade still gained Heatstroke (" + shade + ")");
                 Assert(roofed == 0f, "a pawn under a roof still gained Heatstroke (" + roofed + ")");
-            });
-
-            Case("lowSun: only the lee shadow (or inside rock) protects, a built roof does not", () =>
-            {
-                float thinRoof = HeatstrokeStep(Felt(RM_HeatKind.lowSun, true, 1f, false, 0f), HumanSafeMax);
-                float lee = HeatstrokeStep(Felt(RM_HeatKind.lowSun, true, 0f, false, 1f), HumanSafeMax);
-                float rock = HeatstrokeStep(Felt(RM_HeatKind.lowSun, true, 1f, true, 0f), HumanSafeMax);
-                Assert(thinRoof > 0f, "a built roof protected on a low-sun map");
-                Assert(lee == 0f, "the lee shadow did not protect on a low-sun map");
-                Assert(rock == 0f, "inside overhead rock did not protect on a low-sun map");
-            });
-
-            Case("ambient: shade and roof give no relief, an enclosed room does", () =>
-            {
-                float open = HeatstrokeStep(Felt(RM_HeatKind.ambient, true, 0f, false, 0f), HumanSafeMax);
-                float shaded = HeatstrokeStep(Felt(RM_HeatKind.ambient, true, 1f, false, 1f), HumanSafeMax);
-                float indoors = HeatstrokeStep(Felt(RM_HeatKind.ambient, false, 0f, false, 0f), HumanSafeMax);
-                Assert(open > 0f && shaded == open, "shade changed ambient heat (open " + open + ", shaded " + shaded + ")");
-                Assert(indoors == 0f, "an enclosed room still gained Heatstroke on an ambient map");
             });
 
             Case("sun-scald exposure: shade grid decides when usable, InSunlight when not (WEBWORK_HEAT_SHADE_BUILD_1)", () =>
@@ -224,12 +211,10 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                 Assert(!RM_SunHeatMath.ScaldExposed(true, true, 0.0f, 0.5f, false), "a roofed cell (InSunlight false) was exposed");
             });
 
-            Case("an enclosed room is never exposed, whatever the kind", () =>
+            Case("an enclosed room is never exposed", () =>
             {
-                foreach (RM_HeatKind k in Enum.GetValues(typeof(RM_HeatKind)))
-                {
-                    Assert(RM_SunHeatMath.Exposure(k, false, 0f, false, 0f) == 0f, k + " exposed indoors");
-                }
+                Assert(RM_SunHeatMath.Exposure(false, 0f, 0f) == 0f, "exposed indoors");
+                Assert(RM_SunHeatMath.Exposure(false, 0f, 0f, 0f) == 0f, "exposed indoors with gear");
             });
 
             Case("body size: small heats faster, large slower, clamped", () =>
@@ -241,8 +226,8 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                 Assert(small > one && one > big, "factor not monotone in size: " + small + " " + one + " " + big);
                 Assert(Math.Abs(one - 1f) < 1e-5f, "size 1 is not 1x");
                 Assert(tiny <= 2.5f && big >= 0.25f, "factor escaped its clamp");
-                float stepSmall = HeatstrokeStep(Felt(RM_HeatKind.overhead, true, 0f, false, 0f, 0.3f), HumanSafeMax);
-                float stepBig = HeatstrokeStep(Felt(RM_HeatKind.overhead, true, 0f, false, 0f, 4f), HumanSafeMax);
+                float stepSmall = HeatstrokeStep(Felt(true, 0f, 0f, 0.3f), HumanSafeMax);
+                float stepBig = HeatstrokeStep(Felt(true, 0f, 0f, 4f), HumanSafeMax);
                 Assert(stepSmall > stepBig, "a small pawn does not reach heatstroke sooner than a big one");
             });
 
@@ -272,7 +257,7 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                 ushort[] cost = new ushort[w * h];
                 for (int i = 0; i < cost.Length; i++)
                 {
-                    float ex = RM_SunHeatMath.Exposure(RM_HeatKind.overhead, true, 0f, false, shade[i]);
+                    float ex = RM_SunHeatMath.Exposure(true, 0f, shade[i]);
                     cost[i] = RM_SunHeatMath.PathCost(ex, 20f, 1f);
                 }
                 List<int> path = Dijkstra(w, h, cost, 0 + 2 * w, 20 + 2 * w);
@@ -335,60 +320,59 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
             Case("shade gear: shipped defs found and read", () =>
             {
                 gear = ReadGear(out mirrakBonus);
-                Assert(gear.ContainsKey("RM_Parasol") && gear.ContainsKey("RM_ShadeTent") && gear.ContainsKey("RM_SunShield"),
+                Assert(gear.ContainsKey("RM_Parasol") && gear.ContainsKey("RM_ShadeTent"),
                     "missing a piece; found " + string.Join(",", gear.Keys));
-                Assert(gear["RM_Parasol"].mode == "wearer" && gear["RM_ShadeTent"].mode == "footprint"
-                    && gear["RM_SunShield"].mode == "lee", "a piece has the wrong mode");
+                Assert(!gear.ContainsKey("RM_SunShield"), "the sun shield is still shade gear (DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES spec 5)");
+                Assert(gear["RM_Parasol"].mode == "wearer" && gear["RM_ShadeTent"].mode == "footprint", "a piece has the wrong mode");
                 Assert(mirrakBonus > 0f, "mirrak hide carries no shade-cloth bonus (" + mirrakBonus + ")");
             });
 
             if (gear != null)
             {
-                foreach (string piece in new[] { "RM_Parasol", "RM_ShadeTent", "RM_SunShield" })
+                foreach (string piece in new[] { "RM_Parasol", "RM_ShadeTent" })
                 {
                     GearSpec g = gear[piece];
-                    Case(piece + ": cuts sun heat on the right kinds, nothing on ambient", () =>
+                    Case(piece + ": cuts Direct Sun the same at every sun elevation", () =>
                     {
-                        float openO = FeltWithGear(RM_HeatKind.overhead, g, 0f);
-                        float cutO = openO - FeltWithGear(RM_HeatKind.overhead, g, 0f, true);
-                        float cutL = FeltWithGear(RM_HeatKind.lowSun, g, 0f) - FeltWithGear(RM_HeatKind.lowSun, g, 0f, true);
-                        float cutA = FeltWithGear(RM_HeatKind.ambient, g, 0f) - FeltWithGear(RM_HeatKind.ambient, g, 0f, true);
-                        Assert(cutO > 0f, "no relief under overhead sun");
-                        Assert(cutL > 0f, "no relief under low sun");
-                        Assert(cutA == 0f, "relief under ambient heat (" + cutA + " C)");
-                        if (g.mode == "lee")
+                        float first = float.NaN;
+                        foreach (float e in Elevations)
                         {
-                            Assert(cutL > cutO, "the shield is not better under a low sun (low " + cutL + ", overhead " + cutO + ")");
+                            float cut = FeltWithGear(g, 0f, e) - FeltWithGear(g, 0f, e, true);
+                            float rel = RM_SunHeatMath.WithCover(1f, RM_SunHeatMath.GearDepth(g.depth, 0f));
+                            if (e > 0f)
+                            {
+                                Assert(cut > 0f, "no relief at E = " + e);
+                            }
+                            Assert(Math.Abs(ExposureUnderGear(g, 0f) - rel) < 1e-6f, "the cover changed with E = " + e);
+                            if (float.IsNaN(first) && e > 0f)
+                            {
+                                first = ExposureUnderGear(g, 0f);
+                            }
                         }
-                        else
-                        {
-                            Assert(cutO > cutL, piece + " is not better under an overhead sun (overhead " + cutO + ", low " + cutL + ")");
-                        }
-                        Console.WriteLine("  " + piece + ": felt -" + cutO.ToString("0.0") + "C overhead, -"
-                            + cutL.ToString("0.0") + "C low sun, -" + cutA.ToString("0.0") + "C ambient");
+                        Console.WriteLine("  " + piece + ": exposure under it " + first.ToString("0.00") + " at every E; felt -"
+                            + (FeltWithGear(g, 0f, 90f) - FeltWithGear(g, 0f, 90f, true)).ToString("0.0") + "C at E 90, -"
+                            + (FeltWithGear(g, 0f, 14f) - FeltWithGear(g, 0f, 14f, true)).ToString("0.0") + "C at E 14");
                     });
 
                     Case(piece + ": mirrak hide casts deeper shade than plain cloth", () =>
                     {
-                        foreach (RM_HeatKind k in new[] { RM_HeatKind.overhead, RM_HeatKind.lowSun })
-                        {
-                            float plain = RM_SunHeatMath.GearDepth(k, g.depth, 0f, g.overhead, g.lowSun);
-                            float hide = RM_SunHeatMath.GearDepth(k, g.depth, mirrakBonus, g.overhead, g.lowSun);
-                            Assert(hide > plain, k + ": mirrak " + hide + " not deeper than plain " + plain);
-                            Assert(FeltWithGear(k, g, mirrakBonus, true) < FeltWithGear(k, g, 0f, true),
-                                k + ": mirrak did not cool more than plain cloth");
-                        }
-                        Assert(RM_SunHeatMath.GearDepth(RM_HeatKind.ambient, g.depth, mirrakBonus, g.overhead, g.lowSun) == 0f,
-                            "mirrak hide gave shade under ambient heat");
+                        float plain = RM_SunHeatMath.GearDepth(g.depth, 0f);
+                        float hide = RM_SunHeatMath.GearDepth(g.depth, mirrakBonus);
+                        Assert(hide > plain, "mirrak " + hide + " not deeper than plain " + plain);
+                        Assert(FeltWithGear(g, mirrakBonus, 45f, true) < FeltWithGear(g, 0f, 45f, true),
+                            "mirrak did not cool more than plain cloth");
                     });
                 }
 
-                Case("parasol under overhead sun: the wearer stops gaining Heatstroke faster", () =>
+                Case("parasol: the wearer stops gaining Heatstroke faster, under a high and a low sun", () =>
                 {
                     GearSpec g = gear["RM_Parasol"];
-                    float open = HeatstrokeStep(FeltWithGear(RM_HeatKind.overhead, g, 0f), HumanSafeMax);
-                    float under = HeatstrokeStep(FeltWithGear(RM_HeatKind.overhead, g, 0f, true), HumanSafeMax);
-                    Assert(under < open, "parasol did not slow Heatstroke (" + under + " vs " + open + ")");
+                    foreach (float e in new[] { 14f, 79f })
+                    {
+                        float open = HeatstrokeStep(FeltWithGear(g, 0f, e), HumanSafeMax);
+                        float under = HeatstrokeStep(FeltWithGear(g, 0f, e, true), HumanSafeMax);
+                        Assert(under < open, "parasol did not slow Heatstroke at E " + e + " (" + under + " vs " + open + ")");
+                    }
                 });
 
                 Case("shade tent footprint: its cells and only its cells", () =>
@@ -400,13 +384,13 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                     Assert(grid[2 * w + 4] == 0f && grid[4 * w + 6] == 0f, "tent shaded outside its footprint");
                 });
 
-                Case("sun shield lee: away from the sun, depth-scaled; parasol neighbour along the shadow", () =>
+                Case("standing lee: away from the sun, depth-scaled; parasol neighbour along the shadow", () =>
                 {
                     const int w = 20, h = 20;
                     float[] grid = new float[w * h];
                     RM_SunHeatMath.CastInto(grid, w, h, 10, 10, 0f, 1f, 3f, 0.6f, 0.5f);
-                    Assert(grid[11 * w + 10] == 0.5f, "lee cell not at the panel's depth (" + grid[11 * w + 10] + ")");
-                    Assert(grid[9 * w + 10] == 0f, "shade on the sun side of the panel");
+                    Assert(grid[11 * w + 10] == 0.5f, "lee cell not at the caster's depth (" + grid[11 * w + 10] + ")");
+                    Assert(grid[9 * w + 10] == 0f, "shade on the sun side of the caster");
                     Assert(RM_SunHeatMath.AdjacentShadowCell(5, 5, 0.9f, 0.1f, out int ax, out int az) && ax == 6 && az == 5,
                         "parasol neighbour not one step along the shadow");
                     Assert(!RM_SunHeatMath.AdjacentShadowCell(5, 5, 0f, 0f, out _, out _), "neighbour chosen with no direction");
@@ -601,60 +585,134 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                 Assert(cells.Count == 0, "no budget still drew a ring");
             });
 
-            // ── STILLSAND_SUN_FROM_LATITUDE_1 ───────────────────────────
-            Case("stillsand: cover follows the sun angle (overhead at/above threshold, lowSun below)", () =>
+            // ── DIRECT_SUN_SELFTEST_BUILD_EVERY_BIOME_EQUAL ─────────────
+            Case("direct sun: the model takes no biome input (same E, same offset and shade in every biome)", () =>
             {
-                Assert(RM_SunHeatMath.KindFromElevation(RM_HeatKind.lowSun, 70f, 55f) == RM_HeatKind.overhead, "70 deg not overhead");
-                Assert(RM_SunHeatMath.KindFromElevation(RM_HeatKind.lowSun, 55f, 55f) == RM_HeatKind.overhead, "55 deg not overhead");
-                Assert(RM_SunHeatMath.KindFromElevation(RM_HeatKind.lowSun, 40f, 55f) == RM_HeatKind.lowSun, "40 deg not lowSun");
-                Assert(RM_SunHeatMath.KindFromElevation(RM_HeatKind.overhead, 40f, 55f) == RM_HeatKind.lowSun, "base overhead at 40 not lowSun");
-                Assert(RM_SunHeatMath.KindFromElevation(RM_HeatKind.ambient, 80f, 55f) == RM_HeatKind.ambient, "ambient changed by angle");
-                Assert(RM_SunHeatMath.KindFromElevation(RM_HeatKind.lowSun, 80f, -1f) == RM_HeatKind.lowSun, "threshold off still switched");
-                Assert(RM_SunHeatMath.KindFromElevation(RM_HeatKind.lowSun, float.NaN, 55f) == RM_HeatKind.lowSun, "unknown elevation switched");
+                // The equality is structural: every public decision of the model is a static of RM_SunHeatMath or
+                // RM_DirectSun whose parameters are geometry (E, cover, size) and planet numbers. Nothing a BiomeDef
+                // carries can reach it; selftest_direct_sun.py every_biome shows no BiomeDef carries a sun field.
+                foreach (Type t in new[] { typeof(RM_SunHeatMath), typeof(RM_DirectSun) })
+                {
+                    foreach (System.Reflection.MethodInfo m in t.GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static))
+                    {
+                        foreach (System.Reflection.ParameterInfo p in m.GetParameters())
+                        {
+                            string n = p.Name.ToLowerInvariant();
+                            Assert(!n.Contains("biome") && !n.Contains("kind") && !n.Contains("floor") || n == "glarefloor",
+                                t.Name + "." + m.Name + " takes a non-geometry input '" + p.Name + "'");
+                            Assert(p.ParameterType.IsPrimitive || p.ParameterType.IsArray || p.ParameterType.IsByRef,
+                                t.Name + "." + m.Name + " takes a " + p.ParameterType.Name + " (only numbers and grids are geometry)");
+                        }
+                    }
+                    foreach (System.Reflection.FieldInfo fi in t.GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static))
+                    {
+                        Assert(fi.IsLiteral, t.Name + "." + fi.Name + " is not a constant (a per-world value could hide there)");
+                    }
+                }
+                // The table every biome gets at each E: open, roofed, parasol (shipped parasol depth 0.9 as a stand-in
+                // cover), and the lee cell one step behind a height-1 wall.
+                foreach (float e in Elevations)
+                {
+                    float full = RM_SunHeatMath.DirectSunOffsetC(RM_DirectSun.ZenithDefaultC, e);
+                    float open = RM_SunHeatMath.Exposure(true, 0f, 0f);
+                    float roofed = RM_SunHeatMath.Exposure(true, 1f, 0f);
+                    float parasol = RM_SunHeatMath.WithCover(open, 0.9f);
+                    float lee = RM_SunHeatMath.Exposure(true, 0f, LeeShadeBehindWall(e, 1));
+                    Assert(open == 1f && roofed == 0f && Math.Abs(parasol - 0.1f) < 1e-6f, "cover differs at E " + e);
+                    Console.WriteLine("  E " + e.ToString("0") + ": +" + full.ToString("0.0") + "C open, +"
+                        + (full * roofed).ToString("0.0") + " roofed, +" + (full * parasol).ToString("0.0") + " parasol, +"
+                        + (full * lee).ToString("0.0") + " one cell behind a wall");
+                }
             });
 
-            Case("stillsand: above the threshold a roof protects, below it only a lee does", () =>
+            Case("direct sun: intensity is 55 x sin E at defaults, 0 at or below the horizon", () =>
             {
-                RM_HeatKind high = RM_SunHeatMath.KindFromElevation(RM_HeatKind.lowSun, 75f, 55f);
-                RM_HeatKind low = RM_SunHeatMath.KindFromElevation(RM_HeatKind.lowSun, 35f, 55f);
-                Assert(RM_SunHeatMath.Exposure(high, true, 1f, false, 0f) == 0f, "roof gave no cover under a high sun");
-                Assert(RM_SunHeatMath.Exposure(low, true, 1f, false, 0f) == 1f, "roof still covered under a low sun");
-                Assert(RM_SunHeatMath.Exposure(low, true, 0f, false, 1f) == 0f, "lee gave no cover under a low sun");
+                Assert(RM_DirectSun.ZenithDefaultC == 55f, "the zenith default is " + RM_DirectSun.ZenithDefaultC);
+                foreach (float e in Elevations)
+                {
+                    float want = e <= 0f ? 0f : 55f * (float)Math.Sin(e * Math.PI / 180.0);
+                    float got = RM_SunHeatMath.DirectSunOffsetC(55f, e);
+                    Assert(Math.Abs(got - want) < 0.01f, "E " + e + " gave " + got + ", want " + want);
+                }
+                Assert(RM_SunHeatMath.DirectSunOffsetC(55f, -10f) == 0f, "a sun below the horizon heats");
+                Assert(RM_SunHeatMath.DirectSunOffsetC(55f, float.NaN) == 0f, "an unknown sun heats");
+                Assert(Math.Abs(RM_SunHeatMath.DirectSunOffsetC(40f, 30f) - 20f) < 0.01f, "the zenith setting is not the scale");
+                Assert(RM_SunHeatMath.DirectSunOffsetC(55f, 14f) < RM_SunHeatMath.DirectSunOffsetC(55f, 79f), "a low sun is not weaker");
+                Assert(RM_SunHeatMath.ClampElevation(120f) == 90f && RM_SunHeatMath.ClampElevation(-5f) == 0f, "the one clamp is not [0, 90]");
             });
 
-            Case("stillsand: irradiance scales with sin(elevation), floored at the far ring", () =>
+            Case("direct sun: a shadow is h / tan E long; none beside a wall at E 85, about 4 h at E 14", () =>
             {
-                Assert(Math.Abs(RM_SunHeatMath.ElevationHeatOffset(55f, 90f, 35f) - 55f) < 0.01f, "zenith not 55");
-                float at40 = RM_SunHeatMath.ElevationHeatOffset(55f, 40f, 0f);
-                Assert(Math.Abs(at40 - 35.35f) < 0.1f, "40 deg gave " + at40 + ", expected ~35.4");
-                Assert(RM_SunHeatMath.ElevationHeatOffset(55f, 10f, 35f) == 35f, "floor not applied low");
-                Assert(RM_SunHeatMath.ElevationHeatOffset(55f, 60f, 35f) > RM_SunHeatMath.ElevationHeatOffset(55f, 45f, 35f), "not monotone");
-                Assert(RM_SunHeatMath.ElevationHeatOffset(55f, float.NaN, 35f) == 55f, "NaN elevation not passthrough");
+                foreach (float e in new[] { 14f, 21f, 31f, 45f, 56f, 79f })
+                {
+                    float want = (float)(1.0 / Math.Tan(e * Math.PI / 180.0));
+                    Assert(Math.Abs(RM_SunHeatMath.ShadowLengthPerHeight(e) - want) < 1e-3f, "cot E wrong at " + e);
+                    Assert(Math.Abs(RM_SunHeatMath.ShadowLength(2f, RM_SunHeatMath.ShadowLengthPerHeight(e), 16f) - Math.Min(16f, 2f * want)) < 1e-3f,
+                        "length of a height-2 caster wrong at E " + e);
+                }
+                Assert(RM_SunHeatMath.ShadowLength(1f, RM_SunHeatMath.ShadowLengthPerHeight(2f), 16f) == 16f, "the cap does not hold at a grazing sun");
+                Assert(LeeShadeBehindWall(85f, 1) == 0f, "an open cell beside a wall is shaded at E 85 (" + LeeShadeBehindWall(85f, 1) + ")");
+                int cells = 0;
+                for (int k = 1; k <= 8; k++)
+                {
+                    if (LeeShadeBehindWall(14f, k) >= 0.6f) cells = k;
+                }
+                Assert(cells >= 3 && cells <= 5, "the lee at E 14 is " + cells + " cells for a height-1 wall, want about 4");
+                Assert(LeeShadeBehindWall(45f, 2) == 0f || LeeShadeBehindWall(14f, 2) > LeeShadeBehindWall(45f, 2), "shade does not grow as the sun drops");
+                Console.WriteLine("  lee of a height-1 wall: " + cells + " cells at E 14, " + (LeeShadeBehindWall(85f, 1) > 0f ? "some" : "none") + " at E 85");
             });
 
-            Case("stillsand: sand glare floors exposure in shade; paved shade is fully cool", () =>
+            Case("direct sun: a roof, a tent and a parasol cover at every E", () =>
             {
-                float shadeOnSand = RM_SunHeatMath.WithGlareFloor(RM_SunHeatMath.Exposure(RM_HeatKind.lowSun, true, 0f, false, 1f), 0.35f);
-                float shadeOnPaving = RM_SunHeatMath.WithGlareFloor(RM_SunHeatMath.Exposure(RM_HeatKind.lowSun, true, 0f, false, 1f), 0f);
-                float sunOnSand = RM_SunHeatMath.WithGlareFloor(1f, 0.35f);
-                Assert(Math.Abs(shadeOnSand - 0.35f) < 1e-5f, "sand shade exposure " + shadeOnSand);
+                foreach (float e in Elevations)
+                {
+                    float full = RM_SunHeatMath.DirectSunOffsetC(55f, e);
+                    Assert(full * RM_SunHeatMath.Exposure(true, 1f, 0f) == 0f, "a roof let sun through at E " + e);
+                    float[] t = new float[9];
+                    RM_SunHeatMath.FillRect(t, 3, 3, 0, 0, 2, 2, RM_SunHeatMath.GearDepth(0.85f, 0f));
+                    Assert(RM_SunHeatMath.Exposure(true, 0f, 0f, t[4]) <= 0.15f + 1e-6f, "a tent did not cover at E " + e);
+                    Assert(RM_SunHeatMath.WithCover(RM_SunHeatMath.Exposure(true, 0f, 0f), RM_SunHeatMath.GearDepth(0.9f, 0f)) <= 0.1f + 1e-6f,
+                        "a parasol did not cover at E " + e);
+                }
+            });
+
+            Case("direct sun: weather and the strength dial scale Direct Sun only", () =>
+            {
+                // E 21: 55 x sin 21 = 19.7 C, so twice it stays under the 70 C cap.
+                float full = RM_SunHeatMath.DirectSunOffsetC(55f, 21f);
+                float bare = RM_DirectSun.FeltOffsetC(1f, full, 1f, 1f);
+                Assert(Math.Abs(RM_DirectSun.FeltOffsetC(0.5f, full, 1f, 1f) - bare * 0.5f) < 0.01f, "a weather factor of 0.5 did not halve it");
+                Assert(Math.Abs(RM_DirectSun.FeltOffsetC(1f, full, 2f, 1f) - bare * 2f) < 0.01f, "strength 2 did not double it");
+                Assert(RM_DirectSun.FeltOffsetC(0f, full, 1f, 1f) == 0f && RM_DirectSun.FeltOffsetC(1f, full, 0f, 1f) == 0f, "zero still heats");
+                Assert(RM_DirectSun.FeltOffsetC(1f, full, 3f, 0.05f) == RM_DirectSun.MaxOffsetC, "the cap does not hold");
+                // Only Direct Sun: the air temperature is an input the model adds to, never scales.
+                float air = 40f;
+                Assert(Math.Abs((air + RM_DirectSun.FeltOffsetC(0f, full, 1f, 1f)) - air) < 1e-6f, "the dial reached the air temperature");
+            });
+
+            Case("air heat: a native plant's upper growth bounds rise by the offset, never below its loaded band", () =>
+            {
+                RM_AirHeatNatives.Fit(42f, 58f, 12f, out float mo, out float mx);
+                Assert(mo == 54f && mx == 70f, "a 12 C offset fitted 42/58 to " + mo + "/" + mx);
+                RM_AirHeatNatives.Fit(42f, 58f, 0f, out mo, out mx);
+                Assert(mo == 42f && mx == 58f, "no offset moved the band to " + mo + "/" + mx);
+                RM_AirHeatNatives.Fit(42f, 58f, -5f, out mo, out mx);
+                Assert(mo == 42f && mx == 58f, "a negative offset narrowed the band to " + mo + "/" + mx);
+            });
+
+            Case("direct sun: sand glare floors exposure in shade; paved shade is fully cool", () =>
+            {
+                float floor = RM_DirectSun.SandGlareExposureFloor;
+                float shadeOnSand = RM_SunHeatMath.WithGlareFloor(RM_SunHeatMath.Exposure(true, 0f, 1f), floor);
+                float shadeOnPaving = RM_SunHeatMath.WithGlareFloor(RM_SunHeatMath.Exposure(true, 0f, 1f), 0f);
+                Assert(Math.Abs(shadeOnSand - floor) < 1e-5f, "sand shade exposure " + shadeOnSand);
                 Assert(shadeOnPaving == 0f, "paved shade exposure " + shadeOnPaving);
-                Assert(sunOnSand == 1f, "glare lowered full sun");
-                // A parasol cannot beat glare either (cover, then the floor).
-                float parasol = RM_SunHeatMath.WithGlareFloor(RM_SunHeatMath.WithCover(1f, 0.9f), 0.35f);
-                Assert(Math.Abs(parasol - 0.35f) < 1e-5f, "parasol beat the glare floor: " + parasol);
+                Assert(RM_SunHeatMath.WithGlareFloor(1f, floor) == 1f, "glare lowered full sun");
+                float parasol = RM_SunHeatMath.WithGlareFloor(RM_SunHeatMath.WithCover(1f, 0.9f), floor);
+                Assert(Math.Abs(parasol - floor) < 1e-5f, "parasol beat the glare floor: " + parasol);
                 float felt = OutdoorC + RM_SunHeatMath.HeatOffset(shadeOnSand, 35f, 1f, 1f, 70f);
                 float paved = OutdoorC + RM_SunHeatMath.HeatOffset(shadeOnPaving, 35f, 1f, 1f, 70f);
                 Assert(HeatstrokeStep(felt, HumanSafeMax) > HeatstrokeStep(paved, HumanSafeMax), "sand shade no hotter than a shade yard");
-            });
-
-            Case("stillsand: shadow length differs by latitude (cot of elevation)", () =>
-            {
-                float lph70 = (float)(1.0 / Math.Tan(70 * Math.PI / 180));
-                float lph40 = (float)(1.0 / Math.Tan(40 * Math.PI / 180));
-                float l70 = RM_SunHeatMath.ShadowLength(1f, lph70, 16f);
-                float l40 = RM_SunHeatMath.ShadowLength(1f, lph40, 16f);
-                Assert(l40 > l70 * 2f, "40 deg shadow " + l40 + " not much longer than 70 deg " + l70);
             });
 
             // ── OLLOPOM_OUTDOOR_BEAUTY ──────────────────────────────────
@@ -1011,7 +1069,7 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                 float hgt = F(td, "comps/li[@Class='RimMandrake.CreatureBehaviors.RM_CompProperties_ShadowCaster']/castShadeHeight", 0f);
                 float depth = F(td, "comps/li[@Class='RimMandrake.CreatureBehaviors.RM_CompProperties_ShadowCaster']/castShadeDepth", 1f);
                 Assert(hgt > 0f, "RM_Gloomcast casts no moving shade");
-                float ex = RM_SunHeatMath.WithCover(RM_SunHeatMath.Exposure(RM_HeatKind.overhead, true, 0f, false, 0f), depth);
+                float ex = RM_SunHeatMath.WithCover(RM_SunHeatMath.Exposure(true, 0f, 0f), depth);
                 Assert(HeatstrokeStep(OutdoorC + RM_SunHeatMath.HeatOffset(ex, 30f, 1f, 1f, 70f), HumanSafeMax) == 0f,
                     "a pawn in the gloomcast's shadow still gains Heatstroke");
             });
@@ -1025,37 +1083,43 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
         private sealed class GearSpec
         {
             public string mode;
-            public float depth, overhead, lowSun;
+            public float depth;
         }
 
-        /// <summary>Felt temperature on an open, unroofed cell, optionally
-        /// with the piece in use: worn (parasol), stood under (tent), or stood
-        /// in the lee cell one step behind the panel (shield) — each through
-        /// the same RM_SunHeatMath calls RM_MapComponent_ShadeGrid makes.</summary>
-        private static float FeltWithGear(RM_HeatKind kind, GearSpec g, float stuffBonus, bool withGear = false)
+        /// <summary>The sun elevations the item names (DIRECT_SUN_SELFTEST_BUILD_EVERY_BIOME_EQUAL).</summary>
+        private static readonly float[] Elevations = { 0f, 5f, 14f, 21f, 31f, 45f, 56f, 79f, 90f };
+
+        /// <summary>Cast shade at the k-th cell down-sun of a height-1 wall at elevation E, through the shipped
+        /// ShadowLengthPerHeight, ShadowLength (cap 16, RM_MapComponent_ShadeGrid.MaxCastCells) and CastInto (tip 0.6).</summary>
+        private static float LeeShadeBehindWall(float e, int k)
         {
-            float ex = RM_SunHeatMath.Exposure(kind, true, 0f, false, 0f);
-            if (withGear)
+            const int w = 40, h = 3;
+            float[] grid = new float[w * h];
+            float len = RM_SunHeatMath.ShadowLength(1f, RM_SunHeatMath.ShadowLengthPerHeight(e), 16f);
+            RM_SunHeatMath.CastInto(grid, w, h, 2, 1, 1f, 0f, len, 0.6f);
+            return grid[1 * w + 2 + k];
+        }
+
+        /// <summary>Exposure in the cell the piece shades: worn (parasol) or stood under (tent).</summary>
+        private static float ExposureUnderGear(GearSpec g, float stuffBonus)
+        {
+            float d = RM_SunHeatMath.GearDepth(g.depth, stuffBonus);
+            if (g.mode == "wearer")
             {
-                float d = RM_SunHeatMath.GearDepth(kind, g.depth, stuffBonus, g.overhead, g.lowSun);
-                if (g.mode == "wearer")
-                {
-                    ex = RM_SunHeatMath.WithCover(ex, d);
-                }
-                else if (g.mode == "footprint")
-                {
-                    float[] t = new float[9];
-                    RM_SunHeatMath.FillRect(t, 3, 3, 0, 0, 2, 2, d);
-                    ex = RM_SunHeatMath.Exposure(kind, true, 0f, false, 0f, t[4]);
-                }
-                else
-                {
-                    float[] t = new float[5 * 5];
-                    RM_SunHeatMath.CastInto(t, 5, 5, 2, 1, 0f, 1f, 3f, 0.6f, d);
-                    ex = RM_SunHeatMath.Exposure(kind, true, 0f, false, 0f, t[2 * 5 + 2]);
-                }
+                return RM_SunHeatMath.WithCover(RM_SunHeatMath.Exposure(true, 0f, 0f), d);
             }
-            return OutdoorC + RM_SunHeatMath.HeatOffset(ex, 30f, 1f, 1f, 70f);
+            float[] t = new float[9];
+            RM_SunHeatMath.FillRect(t, 3, 3, 0, 0, 2, 2, d);
+            return RM_SunHeatMath.Exposure(true, 0f, 0f, t[4]);
+        }
+
+        /// <summary>Felt temperature on an open, unroofed cell under a sun at E (55 x sin E), optionally with the
+        /// piece in use: worn (parasol) or stood under (tent), through the same RM_SunHeatMath calls
+        /// RM_MapComponent_ShadeGrid makes.</summary>
+        private static float FeltWithGear(GearSpec g, float stuffBonus, float e, bool withGear = false)
+        {
+            float ex = withGear ? ExposureUnderGear(g, stuffBonus) : RM_SunHeatMath.Exposure(true, 0f, 0f);
+            return OutdoorC + RM_DirectSun.FeltOffsetC(ex, RM_SunHeatMath.DirectSunOffsetC(55f, e), 1f, 1f);
         }
 
         private static string FindModsRoot()
@@ -1079,7 +1143,7 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
             return c == null ? dflt : float.Parse(c.InnerText, System.Globalization.CultureInfo.InvariantCulture);
         }
 
-        /// <summary>The three pieces' RM_CompProperties_ShadeGear, and mirrak
+        /// <summary>The pieces' RM_CompProperties_ShadeGear, and mirrak
         /// hide's shadeBonus, read from the shipped def files.</summary>
         private static Dictionary<string, GearSpec> ReadGear(out float mirrakBonus)
         {
@@ -1099,8 +1163,6 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                 {
                     mode = comp.SelectSingleNode("mode")?.InnerText ?? "footprint",
                     depth = F(comp, "shadeDepth", 0.8f),
-                    overhead = F(comp, "overheadFactor", 1f),
-                    lowSun = F(comp, "lowSunFactor", 0.3f),
                 };
             }
             var hide = new System.Xml.XmlDocument();

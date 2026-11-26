@@ -773,7 +773,8 @@ class FGame(MockGame):
         elif typ == "BiomeDef":
             f = {"biomeMapConditions": [] if "no_map_condition" in self.brk else [V.COND],
                  "modExtensions": [{"Class": "RM_TheForgeBiomeRanges"}] + ([] if "no_heat_ext" in self.brk else
-                                                                          [{"Class": "RM_SunHeatExtension", "heatKind": "ambient"}]),
+                                                                          [{"Class": "RM_AirHeatExtension", "condition": "RM_ForgeAirHeat"}])
+                                  + ([{"Class": "RM_SunHeatExtension", "heatKind": "ambient"}] if "sun_number" in self.brk else []),
                  "terrainPatchMakers": [{"thresholds": [{"terrain": "CooledLava"}] + ([] if "no_lava_patch" in self.brk
                                                                                     else [{"terrain": "LavaDeep"}])}]}
         return dict((k, v) for k, v in f.items() if not want or k in want)
@@ -857,7 +858,7 @@ def main():
         check("floor met: %s (%d >= %d)" % (group, len(names), floor), len(names) >= floor)
     check("seven phases derived from the enum", V.PHASES == ["StillHeat", "GasWash", "Rain", "Freeze", "Growth",
                                                              "Cracks", "Melt"], V.PHASES)
-    check("51 settings fields derived from the C# (ummisk +2, 2026-10-20; keelwork -2, 2026-10-23; sky pasture wander +2, 2026-11-03; column haze -1, 2026-11-21)", len(V.SETTINGS_DEFAULTS) == 51, sorted(V.SETTINGS_DEFAULTS))
+    check("53 settings fields derived from the C# (ummisk +2, 2026-10-20; keelwork -2, 2026-10-23; sky pasture wander +2, 2026-11-03; column haze -1, 2026-11-21; air heat +2, 2026-11-26)", len(V.SETTINGS_DEFAULTS) == 53, sorted(V.SETTINGS_DEFAULTS))
     check("every wired toggle is a real settings field", set(V.WIRED) <= set(V.SETTINGS_DEFAULTS),
           sorted(set(V.WIRED) - set(V.SETTINGS_DEFAULTS)))
     check("the five scaffolding fields are exactly the unwired remainder", len(V.SCAFFOLDING) == 5, V.SCAFFOLDING)
@@ -907,6 +908,7 @@ def main():
         ("plant_row_missing", {"biome_wiring.wild_plants_wired"}),
         ("no_map_condition", {"biome_wiring.biome_map_condition_is_forge_pulse"}),
         ("no_heat_ext", {"biome_wiring.biome_declares_ambient_heat"}),
+        ("sun_number", {"biome_wiring.biome_declares_ambient_heat"}),
         ("no_lava_patch", {"biome_wiring.biome_lava_patchmakers"}),
         ("settings_drift", {"settings.settings_at_shipped_defaults"}),
         ("no_gas", {W + "gas_wash_ignites"}),

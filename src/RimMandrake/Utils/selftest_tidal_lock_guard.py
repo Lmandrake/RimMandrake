@@ -119,7 +119,8 @@ def kernel_verdicts():
             ("unmeasured", "", True, "the inner cap fired")):
         check(kernel_verdict(out, timed) == want, "kernel verdict %s: %s" % (want, what))
     sun = read(HERE, "selftest_sun_heat.py")
-    check("run_interop(cmd" in sun, "selftest_sun_heat.py launches dotnet run through winbuild.run_interop (retries WSL's launch)")
+    check("run_interop(cmd" in sun or "run_interop_captured(cmd" in sun,
+          "selftest_sun_heat.py launches dotnet run through winbuild.run_interop or run_interop_captured (retries WSL's launch)")
 
 
 def kernel():

@@ -1,5 +1,13 @@
 # One Direct Sun, planet-wide: design pass, 2026-10-19
 
+> **Built 2026-11-26** in Creature Behaviors, in place (the Conductor's order of 9:04 AM PST that day): §3 to §5 are in
+> code, with the promises and their tests on `design/specs/2026-11-26-direct-sun/boundary.md`. Below that line this
+> page is the 2026-10-19 record. Two things the build added that this pass did not foresee: the hot-air biomes' natives
+> are fitted to their hot air (the §3 plant check measured 12 °C dropping the Greentide's trees from 0.78 to 0.03
+> growth, and 15 °C stopping 7 of the Scald's 8 plants; `src/RimMandrake/Utils/direct_sun_air_heat_plant_check.py`),
+> and the held mods (Stillsand, Fever Wood, Contagion) keep their old fields in their own files, stripped at load until
+> their next build.
+
 FOUNDRY design pass. Nothing in mod code or defs was changed. The owner ruled on it the same day (§8).
 §1–§2 describe the code as built today; §3 onward is the ruled model. Build items:
 `DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES`, `DIRECT_SUN_SETTINGS_WIRE_FEWER_KNOBS`,

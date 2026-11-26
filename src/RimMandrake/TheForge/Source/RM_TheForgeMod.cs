@@ -102,6 +102,11 @@ namespace RimMandrake.TheForge
         // FORGE_SNAILHOLE_FILL_EMPTY_SHELL_LEFT_BEHIND — the ummisk (RM_ForgeUmmisk.cs). Read live.
         public static bool ummiskLavaEdgeEnabled = true;
         public static bool ummiskSteamEnabled = true;
+        // DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES spec 6 / DIRECT_SUN_SETTINGS_WIRE_FEWER_KNOBS: the Forge's volcanic air is
+        // hotter AIR, the vanilla condition RM_ForgeAirHeat (15 C, PROVISIONAL). Applied at startup and when the window
+        // closes (RM_TheForgeAirHeatApplier); maps follow within an in-game hour. Off with the master.
+        public static bool airHeatEnabled = true;
+        public static float airHeatC = 15f;
         // A cell gains at most one pass per half day, so only a path walked
         // on separate rains wears in.
         public const int DhokkurWearCooldownTicks = 30000;
@@ -127,6 +132,8 @@ namespace RimMandrake.TheForge
             base.ExposeData();
             Scribe_Values.Look(ref modEnabled, "modEnabled", true, true);
             Scribe_Values.Look(ref weatherPulseEnabled, "weatherPulseEnabled", true);
+            Scribe_Values.Look(ref airHeatEnabled, "airHeatEnabled", true);
+            Scribe_Values.Look(ref airHeatC, "airHeatC", 15f);
             Scribe_Values.Look(ref tibannaTapRate, "tibannaTapRate", 1f);
             Scribe_Values.Look(ref vaporColumnImmunity, "vaporColumnImmunity", true);
             Scribe_Values.Look(ref towerScatterCount, "towerScatterCount", 1);
@@ -247,6 +254,18 @@ namespace RimMandrake.TheForge
     list.CheckboxLabeled("The Forge enabled", ref modEnabled,
                     "Master switch. Off: the biome and its defs still load unchanged, but every "
                   + "per-feature toggle below is ignored as off.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Volcanic air (air heat)", RimMandrake.Shared.SettingScope.Now, new[] { "airHeatEnabled", "airHeatC" }))
+            {
+                list.CheckboxLabeled("Hot air: the volcanic air changes the map's temperature (plants feel it too)", ref airHeatEnabled,
+                    RimMandrake.Shared.AirHeatSetting.Tip);
+                if (airHeatEnabled)
+                {
+                    list.Label("  Hotter by: " + airHeatC.ToString("0") + " °C");
+                    airHeatC = Mathf.Round(list.Slider(airHeatC, 0f, 30f));
+                }
                 list.GapLine();
             }
 
@@ -473,6 +492,28 @@ namespace RimMandrake.TheForge
         public override void DoSettingsWindowContents(Rect inRect)
         {
             settings.DoWindowContents(inRect);
+        }
+
+        public override void WriteSettings()
+        {
+            base.WriteSettings();
+            RM_TheForgeAirHeatApplier.Apply();
+        }
+    }
+
+    /// <summary>DIRECT_SUN_SETTINGS_WIRE_FEWER_KNOBS: writes the Forge's hot-air row onto RM_ForgeAirHeat at startup (after
+    /// defs load) and when the settings window closes.</summary>
+    [StaticConstructorOnStartup]
+    public static class RM_TheForgeAirHeatApplier
+    {
+        static RM_TheForgeAirHeatApplier()
+        {
+            Apply();
+        }
+
+        public static void Apply()
+        {
+            RimMandrake.Shared.AirHeatSetting.Apply("RM_ForgeAirHeat", RM_TheForgeSettings.Active(RM_TheForgeSettings.airHeatEnabled), RM_TheForgeSettings.airHeatC);
         }
     }
 }

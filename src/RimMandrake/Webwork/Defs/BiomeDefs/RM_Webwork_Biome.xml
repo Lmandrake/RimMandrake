@@ -27,27 +27,14 @@
     <description>The place where the plants grew so dense and thick that they drank their entire river -- soaked it up into a thicket of terrible, nightmare plants ever churning against itself. The map shows a jungle with no water because the water is inside. It is eerily silent -- most of the animals have been eaten, and few will enter. Those who do frequently discover a shadow, seconds before it lands upon them, and know nothing more.</description>
     <workerClass>RimMandrake.Webwork.RM_BiomeWorker_Webwork</workerClass>
     <modExtensions>
-      <!-- WEBWORK_HEAT_SHADE_BUILD_1 (SOLAR_HEAT_EXPOSURE_1): sun heat kind "overhead" - one kind of heat planet-wide.
-           The sun's elevation comes from the map tile's latitude (never a region name); below 55 deg the cover that
-           counts is lowSun's (lee/rock), above it roofs, parasols and canopy shade count. The sunlit clearing that
-           keeps the owners out is where colonists overheat; the canopy is cool but never safe. heatOffsetC is the
-           offset at the substellar point, scaled by sin(elevation); modest because the biome is already hot
-           (38.6 / 49.2 / 58.2 C p10/median/p90). Invented first value, tuned in live play. Vanilla heatstroke
-           does the work: no heat hediff. Kollavane, Dulloth, Vessark, Tavrosk and Brimlock (visualSizeRange max
-           >= 1.5) are vertical shade casters for the grid. -->
-      <li Class="RimMandrake.CreatureBehaviors.RM_SunHeatExtension">
-        <heatKind>overhead</heatKind>
-        <heatOffsetC>10</heatOffsetC>
-        <heatScalesWithElevation>true</heatScalesWithElevation>
-        <minScaledHeatOffsetC>4</minScaledHeatOffsetC>
-        <overheadAboveElevationDegrees>55</overheadAboveElevationDegrees>
-      </li>
+      <!-- Direct Sun runs here as on every sunlit map, by the sun's height alone (DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES):
+           this biome carries no sun number. -->
       <!-- BIOME_ARRIVAL_LETTERS_ALL_1 (DESIGN_PASS X-6/FV-5): PLACEHOLDER text drafted by an agent from this biome's
            own description, always-true list and shipped mechanics, flagged for the owner's review
-           (infrastructure/state/items/BIOME_ARRIVAL_LETTERS_ALL_1.md). RM tier: plain reads, no narrator. Heat line follows heatKind. -->
+           (infrastructure/state/items/BIOME_ARRIVAL_LETTERS_ALL_1.md). RM tier: plain reads, no narrator. -->
       <li Class="RimMandrake.EnvironmentalHazards.RM_BiomeArrivalLetterExtension" MayRequire="mandrake.rm.biomes">
         <letterLabel>The Webwork</letterLabel>
-        <letterText>The silence is not peace; it means something owns this jungle. The web is a nervous system: touch it anywhere and you are felt everywhere near it. The things that hunt here cannot stand direct sun, so clearings are the only safe ground, and fire is the only thing that drives them back. There is no surface water: the river is inside the plants. The heat comes straight down: a roof, a parasol or a shade tent answers it.</letterText>
+        <letterText>The silence is not peace; it means something owns this jungle. The web is a nervous system: touch it anywhere and you are felt everywhere near it. The things that hunt here cannot stand direct sun, so clearings are the only safe ground, and fire is the only thing that drives them back. There is no surface water: the river is inside the plants. The sun never moves: a roof, a parasol, a shade tent or the shadow of the great trees answers it, and a low sun throws those shadows long.</letterText>
       </li>
     </modExtensions>
     <texture>World/Biomes/RM_Webwork</texture>

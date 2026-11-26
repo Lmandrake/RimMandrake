@@ -256,25 +256,29 @@ namespace RimMandrake.CreatureBehaviors
     //      the mirrak). Off: a false-shade ambusher never strikes and no
     //      longer reads as shade to shade-seekers — it is a slow, flat
     //      carrion-eater from then on.
-    //  39. Sun heat (SOLAR_HEAT_EXPOSURE_1) — only a biome carrying
-    //      RM_SunHeatExtension is affected; every other map is untouched.
-    //      sunHeatEnabled (master) / sunHeatStrength — standing in the sun
-    //      adds degrees to what a pawn feels, feeding vanilla comfort and
-    //      Heatstroke. Off: no sun heat, no sun pathing, no bar anywhere.
-    //      directionalShadeEnabled — shadows are cast along the sun vector
-    //      (pinned sun, else the heat biome's own geometry). Off: the grid
-    //      falls back to the old radius-2 ring round every caster.
+    //  39. Direct Sun (SOLAR_HEAT_EXPOSURE_1, DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES)
+    //      — every sunlit map of a fixed-sun world, no biome opt-in.
+    //      sunHeatEnabled (master, labelled "Direct Sun") / sunHeatStrength —
+    //      standing in the sun adds directSunZenithC × sin(sun elevation)
+    //      degrees to what a pawn feels, feeding vanilla comfort and
+    //      Heatstroke. Off: no Direct Sun, no sun pathing, no bar anywhere.
+    //      directSunZenithC — the planet's one number (default 55).
+    //      directSunWeatherDims — a weather's sun factor dims Direct Sun.
+    //      On a world with a day/night cycle Direct Sun is off (unsupported).
+    //      directionalShadeEnabled — shadows are cast along the sun vector,
+    //      height / tan E long. Off: the grid falls back to the old radius-2
+    //      ring round every caster.
     //      sunPathingEnabled / sunPathCostMultiplier — undrafted pawns
     //      route shade-to-shade. sunLoadBarEnabled — the inspect bar.
     //  40. Shade gear (SHADE_GEAR_FAMILY_1, RM_ShadeGear.cs) — one toggle
     //      per piece: parasolShadeEnabled / shadeTentEnabled /
-    //      sunShieldEnabled. Off: that piece casts no shade into the grid
+    //      sunShieldEnabled (the standing lee casters: the Long Shade mast, a
+    //      giant's skeleton). Off: that piece casts no shade into the grid
     //      and is ordinary gear (still craftable, still wearable/buildable).
     //      decoyShadeEnabled — RM_DecoyShadeTarp (DECOY_SHADE_TARP_1,
     //      RM_CompDecoyShade): reads as shade to seekers, cools no one.
     //  41. Shade hopping (SOLAR_HEAT_EXPOSURE_1 §5/§6, RM_ShadeHop.cs) —
-    //      sun-heat maps only, and never where shade does not help (steam,
-    //      volcanic). shadeHopEnabled — wild animals rest in shade, pause at
+    //      maps under Direct Sun only. shadeHopEnabled — wild animals rest in shade, pause at
     //      its edge and sprint to the next patch instead of ambling in the
     //      sun. Off: they wander as vanilla does (sun pathing still applies).
     //      shadeHopRangeMultiplier — how far they will dash (the strictness
@@ -284,14 +288,12 @@ namespace RimMandrake.CreatureBehaviors
     //      the surface like any animal (no submerge, no wake, no rumble).  sandSwim-
     //      DroidImmunity — off: a submerged swimmer will press an attack on a
     //      mechanoid or droid too. sandSwimRumbleVolume — the rumble slider.
-    //  43. Sun from latitude (STILLSAND_SUN_FROM_LATITUDE_1) — only a biome
-    //      whose RM_SunHeatExtension opts in. kindFromElevationEnabled — the
-    //      cover that counts follows the sun angle (overhead above the
-    //      biome's threshold, low sun below). Off: the biome's fixed heat
-    //      kind. sandGlareEnabled / sandGlareStrength — open natural sand
-    //      keeps a floor of exposure even in shade; paved floors do not glare.
-    //      Off: shade on sand works as anywhere else. The heat-by-angle
-    //      offset rides the existing sunHeatStrength dial.
+    //  43. Sand glare (STILLSAND_SUN_FROM_LATITUDE_1 §5; owner card 2026-10-19
+    //      D5: any natural sand under the sun). sandGlareEnabled /
+    //      sandGlareStrength — open natural sand keeps a floor of exposure even
+    //      in shade; paved floors do not glare. Off: shade on sand works as
+    //      anywhere else. (The cover-follows-the-sun toggle was deleted with
+    //      the heat kinds: there is no regime switch.)
     //  44. Glare-blind (STILLSAND_GLARE_BLIND_GOGGLES_1, RM_GlareBlind.cs) — only
     //      a biome whose RM_SunHeatExtension names a glareBlindHediff.
     //      glareBlindEnabled — off: nobody gains it; one already carried still
@@ -443,6 +445,9 @@ namespace RimMandrake.CreatureBehaviors
         public static bool ambushWildPreyEnabled = true;
         public static bool sunHeatEnabled = true;
         public static float sunHeatStrength = 1f;
+        // DIRECT_SUN_SETTINGS_WIRE_FEWER_KNOBS: the planet's one Direct Sun number, and the weather dimmer.
+        public static float directSunZenithC = RM_DirectSun.ZenithDefaultC;
+        public static bool directSunWeatherDims = true;
         public static bool directionalShadeEnabled = true;
         public static bool sunPathingEnabled = true;
         public static float sunPathCostMultiplier = 1f;
@@ -465,7 +470,6 @@ namespace RimMandrake.CreatureBehaviors
         public static bool sandSwimEnabled = true;
         public static bool sandSwimDroidImmunity = true;
         public static float sandSwimRumbleVolume = 1f;
-        public static bool kindFromElevationEnabled = true;
         public static bool sandGlareEnabled = true;
         public static float sandGlareStrength = 1f;
         public static bool glareBlindEnabled = true;
@@ -679,6 +683,8 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref ambushWildPreyEnabled, "ambushWildPreyEnabled", true);
             Scribe_Values.Look(ref sunHeatEnabled, "sunHeatEnabled", true);
             Scribe_Values.Look(ref sunHeatStrength, "sunHeatStrength", 1f);
+            Scribe_Values.Look(ref directSunZenithC, "directSunZenithC", RM_DirectSun.ZenithDefaultC);
+            Scribe_Values.Look(ref directSunWeatherDims, "directSunWeatherDims", true);
             Scribe_Values.Look(ref directionalShadeEnabled, "directionalShadeEnabled", true);
             Scribe_Values.Look(ref sunPathingEnabled, "sunPathingEnabled", true);
             Scribe_Values.Look(ref sunPathCostMultiplier, "sunPathCostMultiplier", 1f);
@@ -699,7 +705,6 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref sandSwimEnabled, "sandSwimEnabled", true);
             Scribe_Values.Look(ref sandSwimDroidImmunity, "sandSwimDroidImmunity", true);
             Scribe_Values.Look(ref sandSwimRumbleVolume, "sandSwimRumbleVolume", 1f);
-            Scribe_Values.Look(ref kindFromElevationEnabled, "kindFromElevationEnabled", true);
             Scribe_Values.Look(ref sandGlareEnabled, "sandGlareEnabled", true);
             Scribe_Values.Look(ref sandGlareStrength, "sandGlareStrength", 1f);
             Scribe_Values.Look(ref glareBlindEnabled, "glareBlindEnabled", true);
@@ -1106,30 +1111,37 @@ namespace RimMandrake.CreatureBehaviors
                   + "creatures hostile to them, so wild prey is ignored.");
                 list.GapLine();
             }
-            if (Group(list, "Sun heat", new[] { "sunHeatEnabled", "sunHeatStrength", "directionalShadeEnabled", "sunPathingEnabled", "sunPathCostMultiplier", "sunLoadBarEnabled", "shadeHopEnabled", "shadeHopRangeMultiplier", "dashRingEnabled", "heatSoundscapeEnabled", "heatSoundscapeVolume", "creatureHeatSoundsEnabled", "kindFromElevationEnabled", "sandGlareEnabled", "sandGlareStrength", "glareBlindEnabled", "glareBlindRateMultiplier", "mirageEnabled", "mirageBreakChanceMultiplier" }, new[] { "SunHeat", "SunDash", "HeatSoundscape", "GlareProtection", "Footfalls" }, RimMandrake.Shared.SettingScope.NextPulse))
+            if (Group(list, "Direct Sun", new[] { "sunHeatEnabled", "sunHeatStrength", "directSunZenithC", "directSunWeatherDims", "directionalShadeEnabled", "sunPathingEnabled", "sunPathCostMultiplier", "sunLoadBarEnabled", "shadeHopEnabled", "shadeHopRangeMultiplier", "dashRingEnabled", "heatSoundscapeEnabled", "heatSoundscapeVolume", "creatureHeatSoundsEnabled", "sandGlareEnabled", "sandGlareStrength", "glareBlindEnabled", "glareBlindRateMultiplier", "mirageEnabled", "mirageBreakChanceMultiplier" }, new[] { "SunHeat", "DirectSun", "SunDash", "HeatSoundscape", "GlareProtection", "Footfalls" }, RimMandrake.Shared.SettingScope.NextPulse))
             {
-                list.Label("Sun heat — only on biomes built with it (the Long Shade, the deep desert, "
-                         + "and the steam and volcanic lands). Everywhere else nothing changes.");
-                list.CheckboxLabeled("Sun heat", ref sunHeatEnabled,
+                list.Label("Direct Sun — the same on every sunlit map: the higher the sun stands, the hotter it is, "
+                         + "and the shorter the shadows. A roof or a parasol always protects.");
+                list.CheckboxLabeled("Direct Sun", ref sunHeatEnabled,
                     "On: standing in the open sun adds to the temperature a creature feels, so it gets hot, "
                   + "then heatstroke, exactly as it would in a heat wave. Clothing, comfort range and "
-                  + "heatstroke work as normal. Smaller creatures heat faster. Off: none of the sun-heat "
-                  + "features below run.");
+                  + "heatstroke work as normal. Smaller creatures heat faster. Off: none of the Direct Sun "
+                  + "features below run. The air temperature itself never changes.");
                 if (sunHeatEnabled)
                 {
-                    list.Label("  Sun heat strength: " + sunHeatStrength.ToStringPercent());
+                    list.Label("  Direct Sun strength: " + sunHeatStrength.ToStringPercent());
                     sunHeatStrength = list.Slider(sunHeatStrength, 0f, 3f);
+                    list.Label("  Direct Sun with the sun straight overhead: +" + directSunZenithC.ToString("0") + " °C"
+                             + " (lower suns give less: this times the sine of the sun's height)");
+                    directSunZenithC = Mathf.Round(list.Slider(directSunZenithC, 0f, 90f));
+                    list.CheckboxLabeled("  Weather dims Direct Sun", ref directSunWeatherDims,
+                        "On: overcast, rain, fog, snow and storms take some of the sun off (a dust gale most of it). "
+                      + "Off: the sun is as strong under any sky.");
+                    list.Label("  Direct Sun on worlds with a day and night: off. Unsupported: the shipped world "
+                             + "has a fixed sun, so time of day is where you are.");
                     list.CheckboxLabeled("  Shadows fall one way", ref directionalShadeEnabled,
                         "On: every rock, wall and big tree throws its shadow along the sun, longer the lower "
                       + "the sun is — the shade you see is the shade that counts. Off: shade is a small ring "
                       + "around each object instead.");
                     list.CheckboxLabeled("  Walk shade to shade", ref sunPathingEnabled,
-                        "On: creatures and colonists (unless drafted) prefer routes through shade, even if longer. "
-                      + "Does nothing where shade does not help (steam and volcanic lands).");
+                        "On: creatures and colonists (unless drafted) prefer routes through shade, even if longer.");
                     list.Label("  How much they avoid the sun: " + sunPathCostMultiplier.ToStringPercent());
                     sunPathCostMultiplier = list.Slider(sunPathCostMultiplier, 0f, 3f);
                     list.CheckboxLabeled("  Sun load bar", ref sunLoadBarEnabled,
-                        "Shows a bar when you select one creature on a sun-heat map: how close it is to "
+                        "Shows a bar when you select one creature under Direct Sun: how close it is to "
                       + "heatstroke, and how much the sun is adding where it stands.");
                     list.CheckboxLabeled("  Animals hop shade to shade", ref shadeHopEnabled,
                         "On: wild animals do not stroll in the open sun. They rest in shade, stop at its edge, "
@@ -1156,10 +1168,6 @@ namespace RimMandrake.CreatureBehaviors
                         "On a land built with it: a herd animal may call out at the edge of shade before it "
                       + "sprints, and a giant's footfalls (the gloomcast's) carry further than you can see. "
                       + "Off: both are silent.");
-                    list.CheckboxLabeled("  Cover follows the sun's height", ref kindFromElevationEnabled,
-                        "On a land whose sun height comes from where it sits on the planet (the Stillsand): "
-                      + "On: where the sun stands high, roofs and parasols protect; where it stands low, only "
-                      + "the shade behind a wall or rock does. Off: the land's one fixed rule applies everywhere.");
                     list.CheckboxLabeled("  Sand glare", ref sandGlareEnabled,
                         "On: open sand throws the sun back up, so standing on it in shade still heats you a "
                       + "little. Paved floors do not glare, so a paved patch of shade is fully cool. "
@@ -1195,14 +1203,14 @@ namespace RimMandrake.CreatureBehaviors
             }
             if (Group(list, "Shade gear, vermin food and salvage winch", new[] { "parasolShadeEnabled", "shadeTentEnabled", "decoyShadeEnabled", "verminBreedingEatsFood", "verminLitterFoodUnits", "salvageWinchEnabled", "salvageWinchRange", "salvageWinchMaxMass", "salvageWinchReelSpeed", "sunShieldEnabled" }, new[] { "ShadeGear", "ShadeCloth", "SalvageWinch" }))
             {
-                list.Label("Shade gear — how well each piece works depends on the land's kind of heat: "
-                         + "overhead sun, low sun, or steam and volcanic heat (where no shade helps).");
+                list.Label("Shade gear — each piece shades the same under any sun. Hot air (steam, volcanic heat) is "
+                         + "the air temperature itself: no shade cools it.");
                 list.CheckboxLabeled("Parasols cast shade", ref parasolShadeEnabled,
-                    "On: a parasol shades the colonist carrying it, and a little of the cell beside them. "
-                    + "Strong under an overhead sun, weak under a low one. Off: it is just something to carry.");
+                    "On: a parasol shades the colonist carrying it, and a little of the cell beside them, at any "
+                    + "height of the sun. Off: it is just something to carry.");
                 list.CheckboxLabeled("Shade tents cast shade", ref shadeTentEnabled,
-                    "On: a pitched shade tent shades the ground under it. Strong under an overhead sun, "
-                    + "weak under a low one. Off: it casts no shade.");
+                    "On: a pitched shade tent is a quick roof: the ground under it is shaded at any height of the "
+                    + "sun. Off: it casts no shade.");
                 list.CheckboxLabeled("Decoy shade tarps fool shade-seekers", ref decoyShadeEnabled,
                     "On: a decoy shade tarp reads as shade to animals looking for shade (mirrak hide is the most "
                     + "convincing) though it cools no one. Off: it is an ordinary awning and fools nothing.");
@@ -1227,9 +1235,9 @@ namespace RimMandrake.CreatureBehaviors
                     list.Label("Reel speed: " + salvageWinchReelSpeed.ToString("0.0") + "x");
                     salvageWinchReelSpeed = list.Slider(salvageWinchReelSpeed, 0.3f, 3f);
                 }
-                list.CheckboxLabeled("Sun shields cast shade", ref sunShieldEnabled,
-                    "On: a standing sun shield throws shade on its far side from the sun. The one piece "
-                    + "that works under a low sun; only modest under an overhead one. Off: it casts no shade.");
+                list.CheckboxLabeled("Standing masts and skeletons cast shade", ref sunShieldEnabled,
+                    "On: a tall standing thing (a Long Shade shade mast, a giant's skeleton) throws shade on its far "
+                    + "side from the sun, longer the lower the sun is. Off: it casts no shade.");
                 list.GapLine();
             }
             if (Group(list, "Sand swimmers", new[] { "sandSwimEnabled", "sandSwimDroidImmunity", "sandSwimRumbleVolume" }, new[] { "SandSwim" }))

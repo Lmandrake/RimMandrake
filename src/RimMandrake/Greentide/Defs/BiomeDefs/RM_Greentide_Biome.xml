@@ -26,13 +26,11 @@
         <degreeWeight>1.4</degreeWeight>
         <rainfallDivisor>220</rainfallDivisor>
       </li>
-      <!-- SOLAR_HEAT_EXPOSURE_1: sun heat kind "ambient" - the Greentide: the_greentide.md "roiling, ground-hugging, HOT fog".
-           Ambient: shade and roofs do nothing outdoors; heat insulation or an enclosed room answers it.
-           WETBULB_FOLD_INTO_HEAT_1: the saturated air's wet-bulb load is part of this felt offset (was 8, the
-           wet-bulb share raised it to 12). PROVISIONAL; the owner-watched sitting tunes it. -->
-      <li Class="RimMandrake.CreatureBehaviors.RM_SunHeatExtension" MayRequire="mandrake.rm.biomes">
-        <heatKind>ambient</heatKind>
-        <heatOffsetC>12</heatOffsetC>
+      <!-- DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES spec 6: the Greentide's hot wet fog (WETBULB_FOLD_INTO_HEAT_1's 12 C) is hotter AIR, shown on the thermometer (owner card
+           2026-10-19: "Hotter air on the thermometer"): a permanent vanilla temperature-offset condition, never Direct Sun.
+           Shade does not cool it. Direct Sun runs here as on every sunlit map. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_AirHeatExtension" MayRequire="mandrake.rm.biomes">
+        <condition>RM_GreentideAirHeat</condition>
       </li>
       <!-- GREENTIDE_BASE_PORT_BUILD_1: the living greatbole (spec M12) and the root causeways (M9), values
            copied from the campaign twin. Bole counts/radius/spacing and the causeway ranges are kit-spec
@@ -60,10 +58,10 @@
       </li>
       <!-- BIOME_ARRIVAL_LETTERS_ALL_1 (DESIGN_PASS X-6/FV-5): PLACEHOLDER text drafted by an agent from this biome's
            own description, always-true list and shipped mechanics, flagged for the owner's review
-           (infrastructure/state/items/BIOME_ARRIVAL_LETTERS_ALL_1.md). RM tier: plain reads, no narrator. Heat line follows heatKind. -->
+           (infrastructure/state/items/BIOME_ARRIVAL_LETTERS_ALL_1.md). RM tier: plain reads, no narrator. -->
       <li Class="RimMandrake.EnvironmentalHazards.RM_BiomeArrivalLetterExtension" MayRequire="mandrake.rm.biomes">
         <letterLabel>The Greentide</letterLabel>
-        <letterText>The steam never lifts and everything grows fast enough to watch: the green will grow into your doors, and the mud is deep enough to swallow a boot, a crate or a careless step. Dark brings roots, light brings leaves, and only dry heat pushes them back. Something patient waits in the mud. The heat is in the wet air itself: shade does nothing, so dress against it, run a dry-air blower, or stay in a closed room.</letterText>
+        <letterText>The steam never lifts and everything grows fast enough to watch: the green will grow into your doors, and the mud is deep enough to swallow a boot, a crate or a careless step. Dark brings roots, light brings leaves, and only dry heat pushes them back. Something patient waits in the mud. The heat is in the wet air itself, hotter on the thermometer by day and by night: shade does not cool it, so dress against it, run a dry-air blower, or stay in a closed, cooled room.</letterText>
       </li>
     </modExtensions>
     <!-- GREENTIDE_BASE_PORT_BUILD_1: the permanent lock, applied to every newly generated map.

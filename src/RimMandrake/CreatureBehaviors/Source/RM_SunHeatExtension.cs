@@ -4,80 +4,37 @@ using Verse;
 namespace RimMandrake.CreatureBehaviors
 {
     // ════════════════════════════════════════════════════════════════════
-    // SOLAR_HEAT_EXPOSURE_1 §2 — the per-biome heat kind.
+    // Optional per-biome data beside Direct Sun. It decides NOTHING about Direct
+    // Sun's heat, shade, sun elevation or path cost.
     //
-    // Owner ruling (longshade_shade_ideation_2026-09-29.md, "Rulings —
-    // volley turn 4"): heat is ONE kind, planet-wide. Sun exposure feeds the
-    // game's EXISTING heat — it raises what a pawn feels (AmbientTemperature),
-    // so the vanilla comfortable range, apparel insulation and Heatstroke
-    // keep their vanilla meaning. There is no sun hediff. What differs per
-    // biome is only what PROTECTS you:
-    //   overhead — the Long Shade: roofs and cast shade.
-    //   lowSun   — the Deep Desert: only a vertical caster's lee shadow.
-    //   ambient  — steam / volcanic: shade does nothing; insulation or an
-    //              enclosed room.
+    // DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES (owner, 2026-10-19: "no
+    // biome-specific heat, no biome-specific sun. It's a matter of
+    // geometry"): Direct Sun runs on every sunlit map of a fixed-sun world,
+    // with no biome opt-in, by the planet constants in RM_DirectSun. The
+    // heat kind, heat offset, scaling, floor, threshold, elevation clamps,
+    // body-size terms, path cost and glare floor were removed from this
+    // class. A biome without this extension reads RM_SunHeatExtension.Planet
+    // (all defaults).
     //
-    // A BiomeDef that carries this extension IS a sun-heat biome. Every
-    // map-wide effect (heat, sun-cost pathing, the sun-load readout) is gated
-    // on it, and on the Creature Behaviors settings. Wire it with
-    // MayRequire="mandrake.rm.creaturebehaviors" on the <li>, as the Long
-    // Shade does for RM_PinnedSunExtension.
-    //
-    // All numbers are INVENTED first values; the owner-watched sitting in
-    // the item's criteria rules on the strictness.
+    // What stays here is behaviour data a biome still carries (the glare-blind
+    // hediff, the mirage, the shade-hop and dash tuning): each is its mod's
+    // conversion row for its next version
+    // (design/specs/2026-11-21-guiding-principles/conversion_list.md).
+    // The removed fields are stripped at load from any BiomeDef that still
+    // names them (CreatureBehaviors/Patches/RM_DirectSun_LegacyFields.xml),
+    // so a held mod's XML loads clean until its own next build strips them.
     // ════════════════════════════════════════════════════════════════════
     public class RM_SunHeatExtension : DefModExtension
     {
-        public RM_HeatKind heatKind = RM_HeatKind.overhead;
+        /// <summary>The defaults every map without its own extension reads.</summary>
+        public static readonly RM_SunHeatExtension Planet = new RM_SunHeatExtension();
 
-        /// <summary>°C added to a size-1 pawn's felt temperature at full
-        /// exposure, before the Mod Settings strength dial.</summary>
-        public float heatOffsetC = 30f;
-
-        /// <summary>Hard cap on the offset after the body-size term.</summary>
-        public float maxHeatOffsetC = 70f;
-
-        /// <summary>Offset × (1 / bodySize)^this. 0 = size does not matter.</summary>
-        public float bodySizeExponent = 0.5f;
-        public float minBodySizeFactor = 0.25f;
-        public float maxBodySizeFactor = 2.5f;
-
-        /// <summary>Extra path cost per fully exposed cell (a cardinal step
-        /// costs 13), before the Mod Settings path dial. Ignored for
-        /// ambient heat, where shade is not worth a detour.</summary>
-        public float sunPathCostPerCell = 20f;
-
-        // ── the sun, when the biome has no pinned sun ───────────────────
-        /// <summary>Used ONLY when the map has no active RM_PinnedSunExtension
-        /// (which is preferred, because then the rendered shadows and the
-        /// mechanical shade are the same cells). Same geometry as the pinned
-        /// sun: bearing and arc from the map's tile to the substellar point.</summary>
+        /// <summary>LEGACY, decides nothing in Direct Sun: Stillsand's compiled RM_PreciousCaves reads these two
+        /// for a cave bearing when no pinned sun is active, and Stillsand is held by the owner, so its DLL is not
+        /// rebuilt. Direct Sun takes its sun from RM_PlanetSunGeometry. Delete both when Stillsand next builds
+        /// (RIMMANDRAKE_STRIP_HELD_BIOMES_LEGACY_SUN_FIELDS_AT_LIFT).</summary>
         public float substellarLatitude = 0f;
         public float substellarLongitude = 0f;
-        public float minElevationDegrees = 5f;
-        public float maxElevationDegrees = 60f;
-
-        // ── STILLSAND_SUN_FROM_LATITUDE_1: the sun's height decides ─────
-        // All three are off by default, so every existing sun-heat biome is
-        // unchanged. Elevation is the map's sun elevation: the pinned sun's
-        // when the biome has one, else the geometry above — always from the
-        // tile's planet position, never from a region name.
-
-        /// <summary>When ≥ 0: at or above this elevation the heat kind is
-        /// overhead (roofs and parasols count), below it lowSun (only a lee
-        /// or rock counts). Ignored for ambient heat. Negative = off.</summary>
-        public float overheadAboveElevationDegrees = -1f;
-
-        /// <summary>When true, heatOffsetC is the offset at the substellar
-        /// point (sun at 90°) and the map's offset is heatOffsetC ×
-        /// sin(elevation), never below minScaledHeatOffsetC.</summary>
-        public bool heatScalesWithElevation = false;
-        public float minScaledHeatOffsetC = 0f;
-
-        /// <summary>Sand glare: exposure on natural sand (TerrainDef
-        /// categoryType Sand, not a constructed floor) never drops below this,
-        /// even in shade, before the Mod Settings strength dial. 0 = off.</summary>
-        public float sandGlareExposureFloor = 0f;
 
         // ── STILLSAND_GLARE_BLIND_GOGGLES_1: glare-blind (RM_GlareBlind.cs) ─
         /// <summary>The hediff unprotected humanlike eyes take in full glare

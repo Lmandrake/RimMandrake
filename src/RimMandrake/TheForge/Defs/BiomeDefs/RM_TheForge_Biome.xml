@@ -110,18 +110,18 @@
     <diseaseMtbDays>65</diseaseMtbDays>
     <modExtensions>
       <li Class="RimMandrake.TheForge.RM_TheForgeBiomeRanges" />
-      <!-- SOLAR_HEAT_EXPOSURE_1: sun heat kind "ambient" - the Forge: the_forge.md "one volcanic massif", "lava ... in scalding bursts".
-           heatOffsetC is an invented first value; the owner-watched sitting tunes it. -->
-      <li Class="RimMandrake.CreatureBehaviors.RM_SunHeatExtension" MayRequire="mandrake.rm.biomes">
-        <heatKind>ambient</heatKind>
-        <heatOffsetC>15</heatOffsetC>
+      <!-- DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES spec 6: the Forge's volcanic air is hotter AIR, shown on the thermometer (owner card
+           2026-10-19: "Hotter air on the thermometer"): a permanent vanilla temperature-offset condition, never Direct Sun.
+           Shade does not cool it. Direct Sun runs here as on every sunlit map. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_AirHeatExtension" MayRequire="mandrake.rm.biomes">
+        <condition>RM_ForgeAirHeat</condition>
       </li>
       <!-- BIOME_ARRIVAL_LETTERS_ALL_1 (DESIGN_PASS X-6/FV-5): PLACEHOLDER text drafted by an agent from this biome's
            own description, always-true list and shipped mechanics, flagged for the owner's review
-           (infrastructure/state/items/BIOME_ARRIVAL_LETTERS_ALL_1.md). RM tier: plain reads, no narrator. Heat line follows heatKind. -->
+           (infrastructure/state/items/BIOME_ARRIVAL_LETTERS_ALL_1.md). RM tier: plain reads, no narrator. -->
       <li Class="RimMandrake.EnvironmentalHazards.RM_BiomeArrivalLetterExtension" MayRequire="mandrake.rm.biomes">
         <letterLabel>The Forge</letterLabel>
-        <letterText>The mountain runs on a cycle of fire and water, and the warning comes before each turn. Rain here falls boiling. Gas washes down and catches. Lava cools into a crust you can walk, until the melt comes back and takes whatever stands on it. The heat is in the air and the steam: shade does nothing here, so dress against it or stay in a closed room.</letterText>
+        <letterText>The mountain runs on a cycle of fire and water, and the warning comes before each turn. Rain here falls boiling. Gas washes down and catches. Lava cools into a crust you can walk, until the melt comes back and takes whatever stands on it. The air itself is hot, on the thermometer by day and by night: shade does not cool it, so dress against it or stay in a closed, cooled room. The sun above it is the same sun as anywhere: a roof or a parasol answers that.</letterText>
       </li>
     </modExtensions>
     <diseases>

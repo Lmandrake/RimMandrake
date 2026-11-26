@@ -145,6 +145,7 @@ MODS = {
         "The Roil (WORLDGEN-AFFECTING)": "NewMapsOnly",
         "Greatbole fruitfall and harvest ladder": "Now",
         "Greatbole seeds and servants": "NextGameStart",
+        "Hot fog (air heat)": "Now",   # RM_GreentideAirHeatApplier on window close; maps follow hourly, 2026-11-26
         "Giant ant raids": "Now",   # RM_GreentideAntRaidApplier on window close, 2026-10-22
     }, ()),
     "Miasma": ("RM_MiasmaMod.cs", "RM_Miasma.csproj", {
@@ -245,6 +246,7 @@ MODS = {
     }, ()),
     "TheForge": ("RM_TheForgeMod.cs", "RM_TheForge.csproj", {
         "The Forge enabled": "Now",
+        "Volcanic air (air heat)": "Now",   # RM_TheForgeAirHeatApplier on window close; maps follow hourly, 2026-11-26
         "Weather pulse and grand cycle": "Now",
         "Spunstone study": "Now",
         "Spunstone door and hull (restart)": "NextGameStart",

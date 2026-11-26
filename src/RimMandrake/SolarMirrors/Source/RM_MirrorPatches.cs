@@ -59,7 +59,7 @@ namespace RimMandrake.SolarMirrors
     }
 
     /// <summary>Design §2.6 / §3.3 (SOLAR_MIRRORS_BUILD_1): concentrated light (several beams, light above 1) adds to the
-    /// SAME vanilla felt-temperature offset CreatureBehaviors gives plain sun, capped by the biome's maxHeatOffsetC.
+    /// SAME vanilla felt-temperature offset CreatureBehaviors gives plain sun, capped by Direct Sun's own cap (RM_DirectSun.MaxOffsetC).
     /// Never a new kind of heat or a new hediff. Runs after CreatureBehaviors' postfix on the same getter.</summary>
     [HarmonyPatch(typeof(Thing), nameof(Thing.AmbientTemperature), MethodType.Getter)]
     [RimMandrake.Shared.PatchFeature("Mirror concentration heat", typeof(RM_SolarMirrorsSettings), "concentrationHeat")]
@@ -85,15 +85,14 @@ namespace RimMandrake.SolarMirrors
             try
             {
                 RM_MapComponent_ShadeGrid grid = RM_SunHeatPatches.ActiveGridFor(pawn);
-                RM_SunHeatExtension ext = grid?.HeatExtension;
-                if (ext == null || grid.EffectiveHeatKind == RM_HeatKind.ambient)
+                if (grid == null)
                 {
                     return;
                 }
-                float size = RM_SunHeatMath.BodySizeFactor(pawn.BodySize, ext.bodySizeExponent, ext.minBodySizeFactor, ext.maxBodySizeFactor);
+                float size = RM_DirectSun.BodyFactor(pawn.BodySize);
                 float perUnit = grid.EffectiveHeatOffsetC * RM_CreatureBehaviorsSettings.sunHeatStrength * size;
                 float applied = RM_SunHeatPatches.SunOffsetFor(pawn, grid);
-                __result += RM_MirrorKernel.ConcentrationExtraC(l, perUnit, ext.maxHeatOffsetC, applied, RM_SolarMirrorsSettings.concentrationCap);
+                __result += RM_MirrorKernel.ConcentrationExtraC(l, perUnit, RM_DirectSun.MaxOffsetC, applied, RM_SolarMirrorsSettings.concentrationCap);
             }
             catch (System.Exception e)
             {

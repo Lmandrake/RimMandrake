@@ -50,11 +50,11 @@ namespace RimMandrake.LongShade
 
         /// <summary>Recomputes the shade grid on the map as it stands now and
         /// builds a patch graph with the given cap (cells). Null when the map
-        /// has no sun heat (the biome or the settings) or the heat is ambient.</summary>
+        /// has no Direct Sun (the world, the sun's height or the settings).</summary>
         public static Survey Build(Map map, float capCells)
         {
             RM_MapComponent_ShadeGrid grid = RM_MapComponent_ShadeGrid.For(map);
-            if (grid == null || !grid.SunHeatActive || grid.HeatExtension.heatKind == RM_HeatKind.ambient)
+            if (grid == null || !grid.SunHeatActive)
             {
                 return null;
             }
@@ -72,9 +72,7 @@ namespace RimMandrake.LongShade
                 {
                     continue;
                 }
-                RoofDef roof = map.roofGrid.RoofAt(c);
-                float ex = RM_SunHeatMath.Exposure(ext.heatKind, true, grid.RoofShadeAt(c), roof != null && roof.isThickRoof,
-                    grid.CastShadeAt(c), grid.GearShadeAt(c));
+                float ex = RM_SunHeatMath.Exposure(true, grid.RoofShadeAt(c), grid.CastShadeAt(c), grid.GearShadeAt(c));
                 shade[i] = ex <= ext.shadeExposureMax;
             }
             int cap = Mathf.CeilToInt(Mathf.Max(1f, capCells)) * RM_ShadePatchGraph.CardinalCost;
@@ -93,11 +91,10 @@ namespace RimMandrake.LongShade
         public static int HumanRingCost(Map map, RM_SunHeatExtension ext, float cover)
         {
             ThingDef human = ThingDefOf.Human;
-            float size = RM_SunHeatMath.BodySizeFactor(human.race.baseBodySize, ext.bodySizeExponent,
-                ext.minBodySizeFactor, ext.maxBodySizeFactor);
             float exposure = RM_SunHeatMath.WithCover(1f, cover);
-            float offset = RM_SunHeatMath.HeatOffset(exposure, ext.heatOffsetC, RM_CreatureBehaviorsSettings.sunHeatStrength,
-                size, ext.maxHeatOffsetC);
+            float atFull = RM_MapComponent_ShadeGrid.For(map)?.EffectiveHeatOffsetC ?? 0f;
+            float offset = RM_DirectSun.FeltOffsetC(exposure, atFull, RM_CreatureBehaviorsSettings.sunHeatStrength,
+                human.race.baseBodySize);
             float felt = map.mapTemperature.OutdoorTemp + offset;
             float safeMax = GenTemperature.SafeTemperatureRange(human).max;
             float curved = HediffGiver_Heat.TemperatureOverageAdjustmentCurve.Evaluate(Mathf.Max(0f, felt - safeMax));
@@ -107,13 +104,13 @@ namespace RimMandrake.LongShade
             return RM_DashMath.DashRangeCost(ticks, ticksPerCell, 1f, 0f, ext.ringMaxCells);
         }
 
-        /// <summary>The kind-resolved shade depth of a worn shade-gear def
-        /// (the parasol) made of nothing special.</summary>
-        public static float GearCover(string gearDefName, RM_HeatKind kind)
+        /// <summary>The shade depth of a worn shade-gear def (the parasol)
+        /// made of nothing special.</summary>
+        public static float GearCover(string gearDefName)
         {
             ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail(gearDefName);
             RM_CompProperties_ShadeGear p = def?.GetCompProperties<RM_CompProperties_ShadeGear>();
-            return p != null ? RM_ShadeGear.DepthOf(null, p, kind) : 0f;
+            return p != null ? RM_ShadeGear.DepthOf(null, p) : 0f;
         }
 
         /// <summary>A cell near `at` where a def of this size fits on open,
@@ -411,12 +408,12 @@ namespace RimMandrake.LongShade
         public static void Lay(RM_GenStep_SunGraves step, Map map)
         {
             RM_MapComponent_ShadeGrid probe = RM_MapComponent_ShadeGrid.For(map);
-            if (probe == null || !probe.SunHeatActive || probe.HeatExtension.heatKind == RM_HeatKind.ambient)
+            if (probe == null || !probe.SunHeatActive)
             {
                 return;
             }
             RM_SunHeatExtension ext = probe.HeatExtension;
-            float cover = RM_LongShadeMapgen.GearCover(step.gearDef, ext.heatKind);
+            float cover = RM_LongShadeMapgen.GearCover(step.gearDef);
             int bare = RM_LongShadeMapgen.HumanRingCost(map, ext, 0f);
             int geared = RM_LongShadeMapgen.HumanRingCost(map, ext, cover);
             int capCost = Mathf.RoundToInt(ext.ringMaxCells * RM_ShadePatchGraph.CardinalCost);

@@ -50,11 +50,11 @@
         <deepTerrain>RM_ScaldWaterOceanDeep</deepTerrain>
         <shallowTerrain>RM_ScaldWaterOceanShallow</shallowTerrain>
       </li>
-      <!-- SOLAR_HEAT_EXPOSURE_1: sun heat kind "ambient" - the Scald: the_scald.md "A crater sea that boils. Volcanic heat rises under it".
-           heatOffsetC is an invented first value; the owner-watched sitting tunes it. -->
-      <li Class="RimMandrake.CreatureBehaviors.RM_SunHeatExtension" MayRequire="mandrake.rm.biomes">
-        <heatKind>ambient</heatKind>
-        <heatOffsetC>15</heatOffsetC>
+      <!-- DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES spec 6: the Scald's steam is hotter AIR, shown on the thermometer (owner card
+           2026-10-19: "Hotter air on the thermometer"): a permanent vanilla temperature-offset condition, never Direct Sun.
+           Shade does not cool it. Direct Sun runs here as on every sunlit map. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_AirHeatExtension" MayRequire="mandrake.rm.biomes">
+        <condition>RM_ScaldAirHeat</condition>
       </li>
     </modExtensions>
 

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES DS6: every weather has a sun factor. A dim sky takes Direct Sun off
+  (RM_MapComponent_ShadeGrid.ExposureFor; Mod Setting "Weather dims Direct Sun"). The factor is a property of the
+  weather, never of the biome. Our own weathers carry theirs in their defs (the Contagion Bloom 0.2, the Stillsand
+  Dune Gale 0.2); this gives the vanilla and DLC weathers theirs. Clear has none (1). All numbers INVENTED first values,
+  tuned by the owner in the DIRECT_SUN_LIVE_VERIFY_ANGLE_NOT_BIOME sitting.
+  A weather that already carries the extension is left alone. success Always: a DLC weather may be absent.
+-->
+<Patch>
+  <Operation Class="PatchOperationAddModExtension">
+    <xpath>Defs/WeatherDef[defName="DryThunderstorm"][not(modExtensions/li[@Class="RimMandrake.CreatureBehaviors.RM_WeatherSenseExtension"])]</xpath>
+    <value>
+      <li Class="RimMandrake.CreatureBehaviors.RM_WeatherSenseExtension">
+        <sunExposureFactor>0.7</sunExposureFactor>
+      </li>
+    </value>
+    <success>Always</success>
+  </Operation>
+  <Operation Class="PatchOperationAddModExtension">
+    <xpath>Defs/WeatherDef[defName="Overcast"][not(modExtensions/li[@Class="RimMandrake.CreatureBehaviors.RM_WeatherSenseExtension"])]</xpath>
+    <value>
+      <li Class="RimMandrake.CreatureBehaviors.RM_WeatherSenseExtension">
+        <sunExposureFactor>0.6</sunExposureFactor>
+      </li>
+    </value>
+    <success>Always</success>
+  </Operation>
+  <Operation Class="PatchOperationAddModExtension">
+    <xpath>Defs/WeatherDef[defName="Fog" or defName="Rain" or defName="ToxRain" or defName="BloodRain" or defName="SnowGentle"][not(modExtensions/li[@Class="RimMandrake.CreatureBehaviors.RM_WeatherSenseExtension"])]</xpath>
+    <value>
+      <li Class="RimMandrake.CreatureBehaviors.RM_WeatherSenseExtension">
+        <sunExposureFactor>0.5</sunExposureFactor>
+      </li>
+    </value>
+    <success>Always</success>
+  </Operation>
+  <Operation Class="PatchOperationAddModExtension">
+    <xpath>Defs/WeatherDef[defName="FoggyRain" or defName="RainyThunderstorm"][not(modExtensions/li[@Class="RimMandrake.CreatureBehaviors.RM_WeatherSenseExtension"])]</xpath>
+    <value>
+      <li Class="RimMandrake.CreatureBehaviors.RM_WeatherSenseExtension">
+        <sunExposureFactor>0.35</sunExposureFactor>
+      </li>
+    </value>
+    <success>Always</success>
+  </Operation>
+  <Operation Class="PatchOperationAddModExtension">
+    <xpath>Defs/WeatherDef[defName="SnowHard" or defName="Sandstorm" or defName="GrayPall" or defName="UnnaturalFog"][not(modExtensions/li[@Class="RimMandrake.CreatureBehaviors.RM_WeatherSenseExtension"])]</xpath>
+    <value>
+      <li Class="RimMandrake.CreatureBehaviors.RM_WeatherSenseExtension">
+        <sunExposureFactor>0.3</sunExposureFactor>
+      </li>
+    </value>
+    <success>Always</success>
+  </Operation>
+  <Operation Class="PatchOperationAddModExtension">
+    <xpath>Defs/WeatherDef[defName="TorrentialRain"][not(modExtensions/li[@Class="RimMandrake.CreatureBehaviors.RM_WeatherSenseExtension"])]</xpath>
+    <value>
+      <li Class="RimMandrake.CreatureBehaviors.RM_WeatherSenseExtension">
+        <sunExposureFactor>0.25</sunExposureFactor>
+      </li>
+    </value>
+    <success>Always</success>
+  </Operation>
+  <Operation Class="PatchOperationAddModExtension">
+    <xpath>Defs/WeatherDef[defName="Blizzard"][not(modExtensions/li[@Class="RimMandrake.CreatureBehaviors.RM_WeatherSenseExtension"])]</xpath>
+    <value>
+      <li Class="RimMandrake.CreatureBehaviors.RM_WeatherSenseExtension">
+        <sunExposureFactor>0.15</sunExposureFactor>
+      </li>
+    </value>
+    <success>Always</success>
+  </Operation>
+  <Operation Class="PatchOperationAddModExtension">
+    <xpath>Defs/WeatherDef[defName="UnnaturalDarkness_Stage1" or defName="UnnaturalDarkness_Stage2"][not(modExtensions/li[@Class="RimMandrake.CreatureBehaviors.RM_WeatherSenseExtension"])]</xpath>
+    <value>
+      <li Class="RimMandrake.CreatureBehaviors.RM_WeatherSenseExtension">
+        <sunExposureFactor>0</sunExposureFactor>
+      </li>
+    </value>
+    <success>Always</success>
+  </Operation>
+</Patch>

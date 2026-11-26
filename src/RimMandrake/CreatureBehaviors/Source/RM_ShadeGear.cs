@@ -18,14 +18,15 @@ namespace RimMandrake.CreatureBehaviors
     //               falls on (the grid's parasol layer, refreshed often).
     //   footprint — the shade tent (a minifiable building). Shades every
     //               cell it occupies.
-    //   lee       — the sun shield (a standing panel). Throws a shadow
-    //               along the sun vector from each cell it occupies, of
-    //               length leeHeight × the sun's cells-per-height.
+    //   lee       — a standing caster (the Long Shade mast, a giant's
+    //               skeleton). Throws a shadow along the sun vector from
+    //               each cell it occupies, of length leeHeight / tan E.
+    //               The sun shield was removed as a shade item (owner,
+    //               2026-10-19: "Keep only Parasols and Tents"; a wall
+    //               casts the same lee).
     //
-    // How much of a piece's shade counts is set by the biome's heat kind
-    // (RM_SunHeatExtension; a biome without one is treated as overhead):
-    // overheadFactor / lowSunFactor, and ALWAYS zero under ambient heat —
-    // steam and volcanic lands, where the answer is insulation or leaving.
+    // A piece's shade counts the same at every sun elevation and on every
+    // map (DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES). There is no heat kind.
     //
     // Depth = shadeDepth + the stuff's RM_ShadeClothExtension.shadeBonus
     // (mirrak hide carries the biggest), clamped to 1.
@@ -44,11 +45,8 @@ namespace RimMandrake.CreatureBehaviors
     {
         public RM_ShadeGearMode mode = RM_ShadeGearMode.footprint;
 
-        /// <summary>Shade 0..1 before the stuff bonus and the kind factor.</summary>
+        /// <summary>Shade 0..1 before the stuff bonus.</summary>
         public float shadeDepth = 0.8f;
-
-        public float overheadFactor = 1f;
-        public float lowSunFactor = 0.3f;
 
         /// <summary>wearer only: the adjacent cell gets this fraction of the
         /// wearer's shade.</summary>
@@ -83,7 +81,7 @@ namespace RimMandrake.CreatureBehaviors
         }
     }
 
-    /// <summary>A pitched piece (tent, shield) asks the grid for a prompt
+    /// <summary>A pitched piece (tent, standing lee caster) asks the grid for a prompt
     /// recompute when it appears or goes, so its shade does not wait for the
     /// grid's coarse interval.</summary>
     public class RM_CompShadeGear : ThingComp
@@ -126,20 +124,20 @@ namespace RimMandrake.CreatureBehaviors
             return t?.Stuff?.GetModExtension<RM_ShadeClothExtension>()?.shadeBonus ?? 0f;
         }
 
-        /// <summary>This piece's kind-resolved shade depth, or 0 when its
+        /// <summary>This piece's shade depth, or 0 when its
         /// toggle is off.</summary>
-        public static float DepthOf(Thing t, RM_CompProperties_ShadeGear p, RM_HeatKind kind)
+        public static float DepthOf(Thing t, RM_CompProperties_ShadeGear p)
         {
             if (p == null || !ModeEnabled(p.mode))
             {
                 return 0f;
             }
-            return RM_SunHeatMath.GearDepth(kind, p.shadeDepth, StuffBonus(t), p.overheadFactor, p.lowSunFactor);
+            return RM_SunHeatMath.GearDepth(p.shadeDepth, StuffBonus(t));
         }
 
-        /// <summary>The deepest shade the pawn's worn parasol(s) give it
-        /// under this heat kind, and the parasol that gives it.</summary>
-        public static float WornCover(Pawn pawn, RM_HeatKind kind, out Apparel best)
+        /// <summary>The deepest shade the pawn's worn parasol(s) give it,
+        /// and the parasol that gives it.</summary>
+        public static float WornCover(Pawn pawn, out Apparel best)
         {
             best = null;
             List<Apparel> worn = pawn?.apparel?.WornApparel;
@@ -155,7 +153,7 @@ namespace RimMandrake.CreatureBehaviors
                 {
                     continue;
                 }
-                float d = DepthOf(worn[i], p, kind);
+                float d = DepthOf(worn[i], p);
                 if (d > cover)
                 {
                     cover = d;

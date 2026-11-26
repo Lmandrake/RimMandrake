@@ -110,12 +110,10 @@ namespace RimMandrake.CreatureBehaviors
         public static int RangeCost(Pawn pawn, RM_SunHeatExtension ext, float exposure, float budget, float urgencyFactor,
             float multiplier, float minCells, float maxCells)
         {
-            float size = RM_SunHeatMath.BodySizeFactor(pawn.BodySize, ext.bodySizeExponent,
-                ext.minBodySizeFactor, ext.maxBodySizeFactor);
-            // STILLSAND_SUN_FROM_LATITUDE_1: the map's offset (by sun angle where the biome scales it).
-            float baseOffset = RM_MapComponent_ShadeGrid.For(pawn.Map)?.EffectiveHeatOffsetC ?? ext.heatOffsetC;
-            float offset = RM_SunHeatMath.HeatOffset(exposure, baseOffset, RM_CreatureBehaviorsSettings.sunHeatStrength,
-                size, ext.maxHeatOffsetC);
+            // Direct Sun: zenith × sin(E) on every map (DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES).
+            float baseOffset = RM_MapComponent_ShadeGrid.For(pawn.Map)?.EffectiveHeatOffsetC ?? 0f;
+            float offset = RM_DirectSun.FeltOffsetC(exposure, baseOffset, RM_CreatureBehaviorsSettings.sunHeatStrength,
+                pawn.BodySize);
             float felt = pawn.Map.mapTemperature.OutdoorTemp + offset;
             float safeMax = pawn.SafeTemperatureRange().max;
             float curved = HediffGiver_Heat.TemperatureOverageAdjustmentCurve.Evaluate(Mathf.Max(0f, felt - safeMax));
@@ -138,7 +136,7 @@ namespace RimMandrake.CreatureBehaviors
         public static int ColonistRingCost(Pawn pawn, RM_MapComponent_ShadeGrid grid)
         {
             RM_SunHeatExtension ext = grid.HeatExtension;
-            float exposure = RM_SunHeatMath.WithCover(1f, RM_ShadeGear.WornCover(pawn, grid.GearKind, out _));
+            float exposure = RM_SunHeatMath.WithCover(1f, RM_ShadeGear.WornCover(pawn, out _));
             return RangeCost(pawn, ext, exposure, ext.ringHeatstrokeBudget, JogFactor, 1f, 0f, ext.ringMaxCells);
         }
 

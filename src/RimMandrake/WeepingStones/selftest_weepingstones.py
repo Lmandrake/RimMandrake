@@ -120,7 +120,7 @@ class WSGame(MockGame):
                                   "freshwater_Uncommon": dict((n, 1.0) for n in V.FISH_NAMES[3:])},
                     "maxFishPopulation": V.BIOME_SCALARS.get("maxFishPopulation"),
                     "modExtensions": ([] if "no_truce" in self.brk else [{"Class": "RM_WaterTruceExtension", "radius": 10}])
-                                      + [{"Class": "RM_SunHeatExtension", "heatKind": "lowSun"}]}
+                                      + ([{"Class": "RM_SunHeatExtension", "heatKind": "lowSun"}] if "sun_number" in self.brk else [])}
             if "no_fish" in self.brk:
                 allf["fishTypes"] = {}
         elif typ == "TileMutatorDef":
@@ -413,6 +413,7 @@ def main():
         ("vhorrin_wild", {"biome_roster.vhorrin_never_ambient_and_probe_is_honest"}),
         ("no_fish", {"biome_roster.fish_types_wired"}),
         ("no_truce", {"biome_roster.water_truce_extension_present"}),
+        ("sun_number", {"biome_roster.no_biome_sun_number"}),
         ("no_recipe_patch", {"cuisine_wiring.recipes_on_both_stoves"}),
         ("ticker_never", {"cuisine_wiring.rottable_items_tick"}),
         ("no_designator", {"settings_and_designator.designator_listed_when_on"}),   # pen chains go UNMEASURED

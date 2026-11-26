@@ -119,7 +119,9 @@ def check(files):
             continue
         if "RM_PlanetSunGeometry.TrySunAt(" not in body:
             fails.append(f"5 {key}: {meth} does not take E and the bearing from RM_PlanetSunGeometry.TrySunAt")
-        call = re.search(r"RM_PlanetSunGeometry\.TrySunAt\(\s*map\.Tile\s*,\s*ext\.substellarLatitude\s*,\s*ext\.substellarLongitude\s*,"
+        # The fallback point is the caller's own (a pinned sky's substellar point, or Ash'karr's 0,0 in the shade grid since
+        # DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES); what this pins is the order (tile, lat, lon, out E, out bearing).
+        call = re.search(r"RM_PlanetSunGeometry\.TrySunAt\(\s*map\.Tile\s*,\s*[\w.]*[Ll]at\w*\s*,\s*[\w.]*[Ll]on\w*\s*,"
                          r"\s*out\s+float\s+(\w+)\s*,\s*out\s+float\s+(\w+)\s*\)", body)
         if not call or not re.search("elev", call.group(1), re.I) or not re.search("bearing", call.group(2), re.I):
             fails.append(f"5 {key}: {meth}'s TrySunAt call is not (map.Tile, lat, lon, out <elevation>, out <bearing>) in that order")

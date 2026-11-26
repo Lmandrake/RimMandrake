@@ -106,7 +106,7 @@ namespace RimMandrake.CreatureBehaviors
                     }
                 }
             }
-            if (map != null && grid != null && grid.HeatExtension != null)
+            if (map != null && grid != null)
             {
                 heatMaps[map] = grid;
             }
@@ -137,18 +137,15 @@ namespace RimMandrake.CreatureBehaviors
         /// <summary>Degrees C of sun this pawn feels where it stands now.</summary>
         public static float SunOffsetFor(Pawn pawn, RM_MapComponent_ShadeGrid grid)
         {
-            RM_SunHeatExtension ext = grid.HeatExtension;
             // ExposureFor = the cell's exposure (roof, cast, pitched shade gear,
-            // a neighbour's parasol) plus the pawn's own worn parasol.
+            // a neighbour's parasol) plus the pawn's own worn parasol, times the weather's sun factor.
             float exposure = grid.ExposureFor(pawn);
-            if (ext == null || exposure <= 0f)
+            if (exposure <= 0f)
             {
                 return 0f;
             }
-            float sizeFactor = RM_SunHeatMath.BodySizeFactor(pawn.BodySize, ext.bodySizeExponent,
-                ext.minBodySizeFactor, ext.maxBodySizeFactor);
-            return RM_SunHeatMath.HeatOffset(exposure, grid.EffectiveHeatOffsetC, RM_CreatureBehaviorsSettings.sunHeatStrength,
-                sizeFactor, ext.maxHeatOffsetC);
+            return RM_DirectSun.FeltOffsetC(exposure, grid.EffectiveHeatOffsetC, RM_CreatureBehaviorsSettings.sunHeatStrength,
+                pawn.BodySize);
         }
 
         public static void Postfix_AmbientTemperature(Thing __instance, ref float __result)
@@ -188,7 +185,7 @@ namespace RimMandrake.CreatureBehaviors
                 // SHADE_GEAR_FAMILY_1: a pawn carrying its own deep shade (a
                 // parasol under an overhead sun) has no reason to detour.
                 if (customizer != null
-                    && RM_ShadeGear.WornCover(___pawn, grid.GearKind, out _) >= CarriedShadeSkipsDetour)
+                    && RM_ShadeGear.WornCover(___pawn, out _) >= CarriedShadeSkipsDetour)
                 {
                     return;
                 }

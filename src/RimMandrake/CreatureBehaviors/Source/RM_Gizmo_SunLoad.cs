@@ -59,15 +59,15 @@ namespace RimMandrake.CreatureBehaviors
             if (Mouse.IsOver(rect))
             {
                 Widgets.DrawHighlight(rect);
-                RM_SunHeatExtension ext = grid?.HeatExtension;
-                RM_HeatKind heatKind = grid?.EffectiveHeatKind ?? RM_HeatKind.overhead;
-                string kind = ext == null ? "" : heatKind == RM_HeatKind.ambient
-                    ? "Here the heat is in the air: shade does nothing, only insulation or an enclosed room helps."
-                    : heatKind == RM_HeatKind.lowSun
-                        ? "Here the sun is low: only the lee shadow of a wall, rock or shield protects; a roof overhead does not."
-                        : "Here roofs and shadows both protect.";
-                TooltipHandler.TipRegion(rect, "Sun load is this creature's heatstroke. Standing in the sun adds "
-                    + "to the temperature it feels, and the smaller it is, the faster it heats. " + kind);
+                float elev = grid?.SunElevationDegrees ?? float.NaN;
+                string sun = float.IsNaN(elev) || elev <= 0f ? ""
+                    : elev >= 60f
+                        ? "Here the sun stands high: it is strong, and shadows are short. A roof or a parasol protects."
+                        : elev >= 30f
+                            ? "Here roofs, parasols and the shadows of walls and rock protect."
+                            : "Here the sun is low: it is weaker, and walls, rock and trees throw long shadows. A roof or a parasol also protects.";
+                TooltipHandler.TipRegion(rect, "Sun load is this creature's heatstroke. Standing in Direct Sun adds "
+                    + "to the temperature it feels, and the smaller it is, the faster it heats. " + sun);
             }
             return new GizmoResult(GizmoState.Clear);
         }

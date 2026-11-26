@@ -98,6 +98,12 @@ namespace RimMandrake.TerminalBiomes
         // Scald are both on. Everything that gates reads these, never the
         // raw fields.
         public static bool ScaldActive => masterEnabled && scaldEnabled;
+        // DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES spec 6 / DIRECT_SUN_SETTINGS_WIRE_FEWER_KNOBS: the Scald's steam is hotter
+        // AIR, the vanilla condition RM_ScaldAirHeat (15 C, PROVISIONAL). Applied at startup and when the window closes
+        // (RM_TerminalBiomesAirHeatApplier); maps follow within an in-game hour.
+        public static bool airHeatEnabled = true;
+        public static float airHeatC = 15f;
+        public static bool ScaldAirHeatActive => ScaldActive && airHeatEnabled;
         public static bool ScaldS1SteamSkyActive => ScaldActive && scaldS1SteamSkyEnabled;
         public static bool ScaldS2SteamCatchActive => ScaldActive && scaldS2SteamCatchEnabled;
         public static bool ScaldS4VentFieldsActive => ScaldActive && scaldS4VentFieldsEnabled;
@@ -245,6 +251,8 @@ namespace RimMandrake.TerminalBiomes
             RimMandrake.Shared.PatchApplier.BeforeExpose();
             base.ExposeData();
             Scribe_Values.Look(ref masterEnabled, "masterEnabled", true);
+            Scribe_Values.Look(ref airHeatEnabled, "airHeatEnabled", true);
+            Scribe_Values.Look(ref airHeatC, "airHeatC", 15f);
             Scribe_Values.Look(ref scaldEnabled, "scaldEnabled", true);
             Scribe_Values.Look(ref chillEnabled, "chillEnabled", true);
             Scribe_Values.Look(ref chillCryoponicsEnabled, "chillCryoponicsEnabled", true);
@@ -401,7 +409,7 @@ namespace RimMandrake.TerminalBiomes
                 list.GapLine();
             }
 
-            if (Group(list, "The Scald's kit", RimMandrake.Shared.SettingScope.Now, new[] { "scaldS1SteamSkyEnabled", "scaldS1bVentFlashEnabled", "scaldS2SteamCatchEnabled", "scaldS4VentFieldsEnabled", "scaldS7SteamExposureEnabled" }))
+            if (Group(list, "The Scald's kit", RimMandrake.Shared.SettingScope.Now, new[] { "scaldS1SteamSkyEnabled", "scaldS1bVentFlashEnabled", "scaldS2SteamCatchEnabled", "scaldS4VentFieldsEnabled", "scaldS7SteamExposureEnabled", "airHeatEnabled", "airHeatC" }))
             {
                 list.Label("Off leaves the biome, its terrain and every def in place; only the "
                            + "named mechanic stops acting.");
@@ -420,6 +428,13 @@ namespace RimMandrake.TerminalBiomes
                   + "nobody accumulates scald exposure and any exposure already carried heals off. "
                   + "The water still burns to wade in either way — that is S8's own switch, in the "
                   + "Environmental Hazards Kit's settings.");
+                list.CheckboxLabeled("Hot air: the steam changes the map's temperature (plants feel it too)", ref airHeatEnabled,
+                    RimMandrake.Shared.AirHeatSetting.Tip);
+                if (airHeatEnabled)
+                {
+                    list.Label("  Hotter by: " + airHeatC.ToString("0") + " °C");
+                    airHeatC = Mathf.Round(list.Slider(airHeatC, 0f, 30f));
+                }
                 list.GapLine();
             }
 
@@ -769,6 +784,28 @@ namespace RimMandrake.TerminalBiomes
         {
             settings.DoWindowContents(inRect);
             RM_TwilightPassabilityApplier.Apply();
+        }
+
+        public override void WriteSettings()
+        {
+            base.WriteSettings();
+            RM_TerminalBiomesAirHeatApplier.Apply();
+        }
+    }
+
+    /// <summary>DIRECT_SUN_SETTINGS_WIRE_FEWER_KNOBS: writes the Scald's hot-air row onto RM_ScaldAirHeat at startup (after
+    /// defs load) and when the settings window closes. Off with the mod's or the Scald's own switch.</summary>
+    [StaticConstructorOnStartup]
+    public static class RM_TerminalBiomesAirHeatApplier
+    {
+        static RM_TerminalBiomesAirHeatApplier()
+        {
+            Apply();
+        }
+
+        public static void Apply()
+        {
+            RimMandrake.Shared.AirHeatSetting.Apply("RM_ScaldAirHeat", RM_TerminalBiomesSettings.ScaldAirHeatActive, RM_TerminalBiomesSettings.airHeatC);
         }
     }
 

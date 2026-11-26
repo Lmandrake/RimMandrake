@@ -247,7 +247,10 @@ UNCOVERED = ["dhokkurWakeEffectsEnabled", "dhokkurPathMemoryEnabled", "dhokkurPa
              "dhokkurTrailFadeDays", "dhokkurWallShoveEnabled", "dhokkurShoveMode", "dhokkurShoveDamagePct",
              # FORGE_SNAILHOLE_FILL_EMPTY_SHELL_LEFT_BEHIND (RM_ForgeUmmisk.cs): the ummisk's lava-edge wander and
              # steam puffs; no component drives them yet (owed live criteria on that item).
-             "ummiskLavaEdgeEnabled", "ummiskSteamEnabled"]
+             "ummiskLavaEdgeEnabled", "ummiskSteamEnabled",
+             # DIRECT_SUN_SETTINGS_WIRE_FEWER_KNOBS (RM_TheForgeAirHeatApplier -> RM_ForgeAirHeat's temperatureOffset): the
+             # offline half is selftest_direct_sun.py settings; the thermometer read is DIRECT_SUN_LIVE_VERIFY_ANGLE_NOT_BIOME L1.
+             "airHeatEnabled", "airHeatC"]
 # FORGE_SPUNSTONE_SOURCES_1: the floatstone-only builds spunstone bonding unlocks.
 SPUNSTONE_PARTS = ("RM_FloatstoneDoor", "RM_SpunstoneHull")
 SCAFFOLDING = sorted(k for k in SETTINGS_DEFAULTS if k not in WIRED and k not in UNCOVERED)
@@ -1085,18 +1088,20 @@ def biome_wiring(t):
                 _fail("biomeMapConditions is %r: the grand cycle never starts on a Forge map" % bmc)
 
     with _comp(t, "biome_declares_ambient_heat", independent=True):
-        # SOLAR_HEAT_EXPOSURE_1: the Forge's heat is ambient (steam/volcanic), where shade does nothing.
+        # DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES spec 6: the Forge's ambient heat is hotter AIR (the vanilla condition
+        # RM_ForgeAirHeat on every Forge map, RM_AirHeatExtension), never a sun number; shade does not cool it.
         f = _one_def(t, "BiomeDef/%s" % BIOME, "modExtensions", deep=True)
         if _live(t):
             ext = f.get("modExtensions")
             if ext in (None, "(no such field)") or not isinstance(ext, (dict, list)):
                 _unmeasured(t, "get_defs cannot read modExtensions (got %r)" % (ext,))
-            kinds = [str(x).lower() for x in _find_key(ext, "heatKind")]
-            if not kinds:
-                _fail("no RM_SunHeatExtension on the biome (MayRequire mandrake.rm.biomes matched nothing?): %s"
-                      % list(_flat(ext))[:8])
-            if kinds[0] != "ambient":
-                _fail("heatKind is %r; the Forge's heat is ambient" % kinds)
+            conds = [str(x) for x in _find_key(ext, "condition")]
+            if not any("RM_ForgeAirHeat" in c for c in conds):
+                _fail("no RM_AirHeatExtension naming RM_ForgeAirHeat on the biome (MayRequire mandrake.rm.biomes matched "
+                      "nothing?): %s" % list(_flat(ext))[:8])
+            kinds = [str(x) for x in _find_key(ext, "heatKind")] + [str(x) for x in _find_key(ext, "heatOffsetC")]
+            if kinds:
+                _fail("the biome still carries a sun number %r; Direct Sun is the planet's" % kinds)
 
     with _comp(t, "biome_lava_patchmakers", independent=True):
         # FORGE_LAVA_TERRAIN_1: the open lava the freeze crusts is laid by the biome's terrainPatchMakers.

@@ -753,10 +753,11 @@ def biome_roster(t):
             _note(t, "modExtensions", blob[:12])
 
 
-    with _comp(t, "sun_heat_extension_present", independent=True):
-        # WEEPINGSTONES_HEAT_WINDHOUR_TEXT_1: the biome declares its heat kind (one planet-wide kind of
-        # heat). get_defs flattens a modExtension to its FIELDS (class name absent, see above), so
-        # recognise RM_SunHeatExtension by its name OR by its distinctive field `heatKind`.
+    with _comp(t, "no_biome_sun_number", independent=True):
+        # WEEPINGSTONES_HEAT_WINDHOUR_TEXT_1, as DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES ruled it: the noon heat is the
+        # planet's one Direct Sun (owner, 2026-10-19: "no biome-specific heat, no biome-specific sun"), so the biome
+        # carries no heat kind or sun number. get_defs flattens a modExtension to its FIELDS (class name absent, see
+        # above), so a sun field is recognised by its own name.
         rows, missing = _get_defs(t, ["BiomeDef/%s" % BIOME], fields="modExtensions", deep=True)
         if _live(t):
             if missing or not rows:
@@ -765,8 +766,10 @@ def biome_roster(t):
             if ext in (None, "(no such field)"):
                 _unmeasured(t, "get_defs cannot read modExtensions (got %r)" % (ext,))
             blob = list(_flat(ext))
-            if not any("SunHeat" in s or s == "heatKind" for s in blob):
-                _fail("RM_SunHeatExtension is not among the biome's modExtensions: %s" % blob[:10])
+            sun = [s for s in blob if s in ("heatKind", "heatOffsetC", "heatScalesWithElevation", "minScaledHeatOffsetC",
+                                            "overheadAboveElevationDegrees")]
+            if sun:
+                _fail("the biome still carries a sun number %s: Direct Sun is the planet's" % sun)
 
     with _comp(t, "no_dead_windhour_text", independent=True):
         # Wind-hour was ruled DEAD (owner, 2026-09-24, "nah"); twelve def sentences and one C# comment

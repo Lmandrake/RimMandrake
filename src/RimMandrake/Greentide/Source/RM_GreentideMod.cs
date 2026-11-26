@@ -162,6 +162,12 @@ namespace RimMandrake.Greentide
         public static bool antRaidsEnabled = true;
         public static float antRaidStrength = 1f;
 
+        // DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES spec 6 / DIRECT_SUN_SETTINGS_WIRE_FEWER_KNOBS: the hot fog is hotter AIR,
+        // the vanilla condition RM_GreentideAirHeat (12 C: WETBULB_FOLD_INTO_HEAT_1, card 2026-10-08). Applied at startup
+        // and when the window closes (RM_GreentideAirHeatApplier); maps follow within an in-game hour.
+        public static bool airHeatEnabled = true;
+        public static float airHeatC = 12f;
+
         private static string biomeListBuffer;
         private static Vector2 scrollPosition;
         private static float lastContentHeight = 1200f;
@@ -206,6 +212,8 @@ namespace RimMandrake.Greentide
             Scribe_Values.Look(ref greatboleServantsEnabled, "greatboleServantsEnabled", false);
             Scribe_Values.Look(ref antRaidsEnabled, "antRaidsEnabled", true);
             Scribe_Values.Look(ref antRaidStrength, "antRaidStrength", 1f);
+            Scribe_Values.Look(ref airHeatEnabled, "airHeatEnabled", true);
+            Scribe_Values.Look(ref airHeatC, "airHeatC", 12f);
         }
 
         /// <summary>True if the cross-biome opt-in currently applies to this biome (never to Greentide's own - that is native, not "cross").</summary>
@@ -503,6 +511,18 @@ namespace RimMandrake.Greentide
                 list.GapLine();
             }
 
+            if (Group(list, "Hot fog (air heat)", RimMandrake.Shared.SettingScope.Now, new[] { "airHeatEnabled", "airHeatC" }))
+            {
+                list.CheckboxLabeled("Hot air: the fog changes the map's temperature (plants feel it too)", ref airHeatEnabled,
+                    RimMandrake.Shared.AirHeatSetting.Tip);
+                if (airHeatEnabled)
+                {
+                    list.Label("  Hotter by: " + airHeatC.ToString("0") + " °C");
+                    airHeatC = Mathf.Round(list.Slider(airHeatC, 0f, 30f));
+                }
+                list.GapLine();
+            }
+
             if (Group(list, "Giant ant raids", RimMandrake.Shared.SettingScope.Now, new[] { "antRaidsEnabled", "antRaidStrength" }))
             {
                 list.CheckboxLabeled("Giant ant raids", ref antRaidsEnabled,
@@ -550,6 +570,22 @@ namespace RimMandrake.Greentide
         }
     }
 
+    /// <summary>DIRECT_SUN_SETTINGS_WIRE_FEWER_KNOBS: writes the hot-fog row onto RM_GreentideAirHeat at startup (after
+    /// defs load) and when the settings window closes.</summary>
+    [StaticConstructorOnStartup]
+    public static class RM_GreentideAirHeatApplier
+    {
+        static RM_GreentideAirHeatApplier()
+        {
+            Apply();
+        }
+
+        public static void Apply()
+        {
+            RimMandrake.Shared.AirHeatSetting.Apply("RM_GreentideAirHeat", RM_GreentideSettings.airHeatEnabled, RM_GreentideSettings.airHeatC);
+        }
+    }
+
     public class RM_GreentideMod : Mod
     {
         public static RM_GreentideSettings settings;
@@ -581,6 +617,7 @@ namespace RimMandrake.Greentide
             RM_GreentideDensityApplier.Apply();
             RM_ThurrockAuraApplier.Apply();
             RM_GreentideAntRaidApplier.Apply();
+            RM_GreentideAirHeatApplier.Apply();
         }
     }
 }

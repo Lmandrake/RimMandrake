@@ -344,10 +344,11 @@ def _siege_findings():
 
 def static_checks():
     bad = []
-    # WEBWORK_HEAT_SHADE_BUILD_1: the biome declares an overhead sun-heat kind (state read lives in the live chain)
+    # WEBWORK_HEAT_SHADE_BUILD_1, as DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES ruled it: the clearing's sun is the planet's one
+    # Direct Sun, so the biome carries no sun number of its own (state read lives in the live chain)
     biome_txt = _read(os.path.join(HERE, "Defs", "BiomeDefs", "RM_Webwork_Biome.xml"))
-    if 'Class="RimMandrake.CreatureBehaviors.RM_SunHeatExtension"' not in biome_txt or "<heatKind>overhead</heatKind>" not in biome_txt:
-        bad.append("RM_Webwork lacks an overhead RM_SunHeatExtension")
+    if 'Class="RimMandrake.CreatureBehaviors.RM_SunHeatExtension"' in biome_txt:
+        bad.append("RM_Webwork carries an RM_SunHeatExtension: Direct Sun is the planet's, never the biome's")
     if len(SHIPPED) < 30:
         return ["only %d defs parsed from Defs/ (sanity probe failed)" % len(SHIPPED)]
     fields = settings_fields()

@@ -3,31 +3,59 @@ using System;
 namespace RimMandrake.CreatureBehaviors
 {
     // ════════════════════════════════════════════════════════════════════
-    // SOLAR_HEAT_EXPOSURE_1 — the pure arithmetic of sun heat.
+    // SOLAR_HEAT_EXPOSURE_1 — the pure arithmetic of Direct Sun.
+    //
+    // DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES (owner, 2026-10-19: "a pure
+    // function of geometry, NOT biome"): one model on every map. No heat
+    // kind, no per-biome number. Felt offset = zenith C × sin(E) × exposure
+    // × weather sun factor × body-size factor × strength dial. A roof, a
+    // parasol and a cast shadow cover at every sun elevation E; a shadow is
+    // height / tan E cells long, so a low sun is weak and throws long shade,
+    // a high sun is strong and throws almost none. Ambient heat (steam,
+    // volcanic) is vanilla air temperature, never this pipeline.
     //
     // No Verse/Unity dependency on purpose (System.Math only): the offline
     // selftest (Source/SelfTest, run by Utils/selftest_sun_heat.py) compiles
-    // this exact file and checks sun vs shade vs roofed, the three heat
-    // kinds, the body-size term, the path cost and the directional cast.
-    // Every live caller (RM_MapComponent_ShadeGrid, RM_SunHeatPatches)
-    // routes through these functions, so what the selftest checks is what
-    // the game runs.
+    // this exact file. Every live caller (RM_MapComponent_ShadeGrid,
+    // RM_SunHeatPatches) routes through these functions, so what the
+    // selftest checks is what the game runs.
     // ════════════════════════════════════════════════════════════════════
-    public enum RM_HeatKind
+
+    /// <summary>The planet constants of Direct Sun: the same on every map.
+    /// No BiomeDef field changes them (DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES).
+    /// The zenith value is a Mod Setting whose default is ZenithDefaultC.</summary>
+    public static class RM_DirectSun
     {
-        /// <summary>The Long Shade: roofs AND cast (lee) shade both protect.</summary>
-        overhead,
+        /// <summary>°C of Direct Sun on a size-1 pawn in full sun at E = 90 (owner card 2026-10-19: "55 C everywhere").</summary>
+        public const float ZenithDefaultC = 55f;
 
-        /// <summary>The Deep Desert: only a vertical caster's lee shadow
-        /// protects. A constructed roof overhead gives nothing; being inside
-        /// rock (a thick natural roof) still counts, because that is walls,
-        /// not overhead shade.</summary>
-        lowSun,
+        /// <summary>Body-size term: (1 / bodySize)^exponent, clamped. INVENTED first values (SOLAR_HEAT_EXPOSURE_1).</summary>
+        public const float BodySizeExponent = 0.5f;
+        public const float MinBodySizeFactor = 0.25f;
+        public const float MaxBodySizeFactor = 2.5f;
 
-        /// <summary>Steam and volcanic heat: shade does nothing. Only
-        /// insulation (vanilla comfortable range) or leaving the open air —
-        /// an enclosed room — helps.</summary>
-        ambient,
+        /// <summary>Cap on the felt offset (°C), so a tiny creature at the zenith does not read absurd numbers.</summary>
+        public const float MaxOffsetC = 70f;
+
+        /// <summary>Path cost of one fully sunlit cell for an undrafted pawn (before the pathing dial).</summary>
+        public const float SunPathCostPerCell = 20f;
+
+        /// <summary>Open natural sand never reads below this exposure (the light comes up from the ground). Owner card
+        /// 2026-09-30, once the Stillsand's figure; by his card of 2026-10-19 (D5) any natural sand under the sun.</summary>
+        public const float SandGlareExposureFloor = 0.35f;
+
+        /// <summary>The body-size factor by the planet constants.</summary>
+        public static float BodyFactor(float bodySize)
+        {
+            return RM_SunHeatMath.BodySizeFactor(bodySize, BodySizeExponent, MinBodySizeFactor, MaxBodySizeFactor);
+        }
+
+        /// <summary>°C of Direct Sun a creature of this size feels at this exposure (weather already in it), with
+        /// offsetAtFullC = zenith × sin E (RM_SunHeatMath.DirectSunOffsetC) and the strength dial.</summary>
+        public static float FeltOffsetC(float exposure, float offsetAtFullC, float strength, float bodySize)
+        {
+            return RM_SunHeatMath.HeatOffset(exposure, offsetAtFullC, strength, BodyFactor(bodySize), MaxOffsetC);
+        }
     }
 
     public static class RM_SunHeatMath
@@ -39,32 +67,17 @@ namespace RimMandrake.CreatureBehaviors
 
         public const int MaxSunPathCost = 2000;
 
-        /// <summary>0 (fully sheltered) .. 1 (full sun) for one cell.
-        /// outdoors: the cell's room uses outdoor temperature — an enclosed
-        /// room is never exposed, whatever the kind (that is vanilla's own
-        /// "leaving" the open air). roofShade: 1 under any roof, else 0.
-        /// thickRoof: the roof is natural overhead rock. castShade: 0..1 from
-        /// the directional grid.</summary>
-        public static float Exposure(RM_HeatKind kind, bool outdoors, float roofShade, bool thickRoof, float castShade)
+        /// <summary>0 (fully sheltered) .. 1 (full sun) for one cell, the same at every sun elevation.
+        /// outdoors: the cell's room uses outdoor temperature — an enclosed room is never exposed (vanilla's own
+        /// "leaving" the open air). roofShade: 1 under any roof (a tent, a building, overhead rock), else 0.
+        /// castShade: 0..1 from the directional grid. Covers combine by the deepest.</summary>
+        public static float Exposure(bool outdoors, float roofShade, float castShade)
         {
             if (!outdoors)
             {
                 return 0f;
             }
-            float cover;
-            switch (kind)
-            {
-                case RM_HeatKind.ambient:
-                    cover = 0f;
-                    break;
-                case RM_HeatKind.lowSun:
-                    cover = Math.Max(thickRoof ? 1f : 0f, castShade);
-                    break;
-                default:
-                    cover = Math.Max(roofShade, castShade);
-                    break;
-            }
-            return Clamp01(1f - Clamp01(cover));
+            return Clamp01(1f - Clamp01(Math.Max(roofShade, castShade)));
         }
 
         /// <summary>Body-size factor on sun heat: (1 / bodySize)^exponent,
@@ -140,45 +153,20 @@ namespace RimMandrake.CreatureBehaviors
         }
 
         // ── SHADE_GEAR_FAMILY_1: carried and pitched shade ──────────────
-        // Parasol, shade tent and sun shield all feed the SAME exposure rule
-        // above: their shade is one more cover term. What differs per biome
-        // is only how much of each piece's shade counts, by heat kind.
+        // Parasol, tent and standing lee casters all feed the SAME exposure rule above: their shade is one more cover
+        // term, at every sun elevation (DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES spec 4-5).
 
-        /// <summary>How much of a gear piece's shade counts under this heat
-        /// kind: overheadFactor under overhead sun, lowSunFactor under a low
-        /// sun, and always 0 under ambient heat (steam, volcanic), where no
-        /// shade of any kind helps.</summary>
-        public static float GearKindFactor(RM_HeatKind kind, float overheadFactor, float lowSunFactor)
+        /// <summary>The shade (0..1) a gear piece casts: its own depth + its stuff's shade-cloth bonus, clamped to 1.
+        /// Mirrak hide carries the biggest bonus, so it casts the deepest shade.</summary>
+        public static float GearDepth(float baseDepth, float stuffBonus)
         {
-            switch (kind)
-            {
-                case RM_HeatKind.ambient:
-                    return 0f;
-                case RM_HeatKind.lowSun:
-                    return Clamp01(lowSunFactor);
-                default:
-                    return Clamp01(overheadFactor);
-            }
+            return Clamp01(baseDepth + stuffBonus);
         }
 
-        /// <summary>The shade (0..1) a gear piece casts under this heat kind:
-        /// (its own depth + its stuff's shade-cloth bonus, clamped to 1) ×
-        /// the kind factor. Mirrak hide carries the biggest bonus, so it casts
-        /// the deepest shade.</summary>
-        public static float GearDepth(RM_HeatKind kind, float baseDepth, float stuffBonus,
-            float overheadFactor, float lowSunFactor)
+        /// <summary>Exposure with a gear cover term.</summary>
+        public static float Exposure(bool outdoors, float roofShade, float castShade, float gearShade)
         {
-            return Clamp01(baseDepth + stuffBonus) * GearKindFactor(kind, overheadFactor, lowSunFactor);
-        }
-
-        /// <summary>Exposure with a gear cover term (already kind-resolved by
-        /// GearDepth). Under ambient heat the gear term is ignored, exactly as
-        /// roofs and cast shade are.</summary>
-        public static float Exposure(RM_HeatKind kind, bool outdoors, float roofShade, bool thickRoof,
-            float castShade, float gearShade)
-        {
-            float ex = Exposure(kind, outdoors, roofShade, thickRoof, castShade);
-            return kind == RM_HeatKind.ambient ? ex : WithCover(ex, gearShade);
+            return WithCover(Exposure(outdoors, roofShade, castShade), gearShade);
         }
 
         /// <summary>Exposure after one more cover (0..1): covers combine by
@@ -275,38 +263,42 @@ namespace RimMandrake.CreatureBehaviors
             return x != cx || z != cz;
         }
 
-        // ── STILLSAND_SUN_FROM_LATITUDE_1: the sun's height decides ──────
-        // Owner rulings: "The biome takes its sun angle from its latitude"
-        // (the tile's planet latitude, never a region's prose), and "the cover
-        // that counts follows the sun angle". Still ONE kind of heat: these
-        // pick which cover counts and how strong the sun is, nothing else.
+        // ── Direct Sun by the sun's height (DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES spec 1-3) ──
+        // The sun elevation E comes from the map tile's arc to the substellar point, one clamp [0, 90] on every map.
 
-        /// <summary>The heat kind a biome's sun resolves to at this elevation:
-        /// overhead at or above overheadAboveDeg, lowSun below it. Ambient is
-        /// never changed (shade does not help there at any angle). A negative
-        /// threshold, or an unknown (NaN) elevation, keeps the biome's own
-        /// kind.</summary>
-        public static RM_HeatKind KindFromElevation(RM_HeatKind baseKind, float elevationDeg, float overheadAboveDeg)
-        {
-            if (baseKind == RM_HeatKind.ambient || overheadAboveDeg < 0f || float.IsNaN(elevationDeg))
-            {
-                return baseKind;
-            }
-            return elevationDeg >= overheadAboveDeg ? RM_HeatKind.overhead : RM_HeatKind.lowSun;
-        }
-
-        /// <summary>Irradiance by angle: zenithOffsetC × sin(elevation), never
-        /// below floorC (the far ring's own figure). An unknown (NaN)
-        /// elevation returns zenithOffsetC unchanged.</summary>
-        public static float ElevationHeatOffset(float zenithOffsetC, float elevationDeg, float floorC)
+        /// <summary>The one clamp on a sun elevation: [0, 90] degrees. NaN (no sun known) stays NaN.</summary>
+        public static float ClampElevation(float elevationDeg)
         {
             if (float.IsNaN(elevationDeg))
             {
-                return zenithOffsetC;
+                return elevationDeg;
             }
-            double e = Math.Max(0.0, Math.Min(90.0, elevationDeg)) * Math.PI / 180.0;
-            float off = zenithOffsetC * (float)Math.Sin(e);
-            return off < floorC ? floorC : off;
+            return elevationDeg < 0f ? 0f : (elevationDeg > 90f ? 90f : elevationDeg);
+        }
+
+        /// <summary>Direct Sun at full exposure on a size-1 pawn before weather and the strength dial:
+        /// zenithC × sin(E). 0 at E ≤ 0 (the sun is at or below the horizon) and for an unknown (NaN) sun.
+        /// No floor, no per-biome number.</summary>
+        public static float DirectSunOffsetC(float zenithC, float elevationDeg)
+        {
+            if (float.IsNaN(elevationDeg) || elevationDeg <= 0f || zenithC <= 0f)
+            {
+                return 0f;
+            }
+            double e = Math.Min(90.0, elevationDeg) * Math.PI / 180.0;
+            return zenithC * (float)Math.Sin(e);
+        }
+
+        /// <summary>Cells of ground shadow per unit of caster height at this sun elevation: 1 / tan E (cot E).
+        /// E is floored at 0.5 degrees so the value stays finite; the caller caps the length. 0 for an unknown sun.</summary>
+        public static float ShadowLengthPerHeight(float elevationDeg)
+        {
+            if (float.IsNaN(elevationDeg))
+            {
+                return 0f;
+            }
+            double e = Math.Max(0.5, Math.Min(90.0, elevationDeg)) * Math.PI / 180.0;
+            return (float)(Math.Cos(e) / Math.Sin(e));
         }
 
         /// <summary>Sand glare: exposure on open natural sand never drops

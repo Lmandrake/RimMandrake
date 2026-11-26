@@ -4,11 +4,11 @@
   item), set by a fresh design judge (evidence/design_judge_r2.json: the lure awning only shades its footprint, which
   a roof beats, so the biome needed a gift of its own). The Long Shade is the band of long shadows under a low sun;
   this mast carries that onto the deck: a tall black-chitin vane whose LEE runs the length of an open deck when the
-  sun is low, where a roof would close the deck and a 1.5-high sun shield shades two or three cells.
+  sun is low, where a roof would close the deck.
   Mechanics are the shade-gear engine's lee mode (RimMandrake.CreatureBehaviors.RM_CompProperties_ShadeGear,
-  RM_MapComponent_ShadeGrid: lee length = leeHeight x the sun's cells-per-height, capped at 16 cells; at least one
-  cell under a high sun). leeHeight 4.5 (a wall is 1.0, the sun shield 1.5), shadeDepth 0.9, lowSunFactor 1,
-  overheadFactor 0.6: weak at noon overhead, strongest exactly where the Direct Sun is long and low. PROVISIONAL.
+  RM_MapComponent_ShadeGrid: lee length = leeHeight / tan E, capped at 16 cells; at least one cell under a high
+  sun). leeHeight 4.5 (a wall is 1.0), shadeDepth 0.9: the lee is short at noon overhead and long exactly where the
+  Direct Sun is low, by geometry alone (DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES). PROVISIONAL.
   Black chitin (RM_BlackChitin) is the Long Shade insectoids' leather. Ship-buildable: Light affordance, no
   placeWorker, minifiable. Checked by src/RimMandrake/Utils/ship_contributions.py.
   ART: own textures Things/Building/Temperature/RM_LongShadeMast_south/_north/_east (384 px each; west mirrors
@@ -62,8 +62,6 @@
       <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_ShadeGear">
         <mode>lee</mode>
         <shadeDepth>0.9</shadeDepth>
-        <overheadFactor>0.6</overheadFactor>
-        <lowSunFactor>1</lowSunFactor>
         <leeHeight>4.5</leeHeight>
         <fallbackLeeCells>4</fallbackLeeCells>
       </li>

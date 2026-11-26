@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES spec 6 (owner card 2026-10-19 on volcanic, steam and hot-fog heat: "Hotter air
+  on the thermometer"). The Greentide's hot wet fog (WETBULB_FOLD_INTO_HEAT_1, card 2026-10-08: 12) is hotter AIR: every map of the Greentide (RM_Greentide) carries this condition permanently
+  (Creature Behaviors RM_AirHeatExtension on the BiomeDef, RM_MapComponent_AirHeat). It is a vanilla
+  GameCondition_TemperatureOffset: the thermometer shows it, rooms leak toward it, coolers fight it, insulation
+  answers it, and plants feel it too. No shade cools it, and it is not Direct Sun. temperatureOffset 12 C is
+  PROVISIONAL (it was the old felt offset); the mod's own settings switch it off or retune it.
+-->
+<Defs>
+  <GameConditionDef>
+    <defName>RM_GreentideAirHeat</defName>
+    <label>hot fog</label>
+    <description>A hot, wet fog hugs the ground. The air itself is hotter here, and it does not let a body cool: shade does not help, a sealed and cooled room does.</description>
+    <conditionClass>GameCondition_TemperatureOffset</conditionClass>
+    <canBePermanent>true</canBePermanent>
+    <natural>true</natural>
+    <temperatureOffset>12</temperatureOffset>
+  </GameConditionDef>
+</Defs>

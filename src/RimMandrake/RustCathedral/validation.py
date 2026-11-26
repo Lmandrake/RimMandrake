@@ -406,9 +406,13 @@ def basefinish_problems(mod_root=None, utinni_patches=None):
         wild = biome.find("wildAnimals")
         if wild is not None and wild.find("RM_CoolantEel") is not None:
             bad.append("basefinish: RM_CoolantEel is in wildAnimals (the vanilla spawner would strand it on the plate)")
-        sun = [li for li in biome.findall("modExtensions/li") if (li.get("Class") or "").endswith("RM_SunHeatExtension")]
-        if not sun or sun[0].findtext("heatKind") != "overhead":
-            bad.append("basefinish: %s does not declare RM_SunHeatExtension heatKind overhead" % BIOME)
+        # DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES: the deck plate's sun is the planet's one Direct Sun (its high steady sun
+        # is strong and its wall shadows short, by geometry alone); the biome carries no sun number of its own.
+        sun = [c.tag for li in biome.findall("modExtensions/li") if (li.get("Class") or "").endswith("RM_SunHeatExtension")
+               for c in li if c.tag in ("heatKind", "heatOffsetC", "heatScalesWithElevation", "minScaledHeatOffsetC",
+                                        "overheadAboveElevationDegrees", "minElevationDegrees", "maxElevationDegrees")]
+        if sun:
+            bad.append("basefinish: %s carries a per-biome Direct Sun field %s (the sun is the planet's)" % (BIOME, sun))
     bolt = defs.get(("ThingDef", "RM_LivingBolt"))
     if bolt is not None and not any((li.get("Class") or "").endswith("CompProperties_HumReadout") for li in bolt.findall("comps/li")):
         bad.append("basefinish: the living bolt lost the hum readout comp (a hum reader sees nothing)")

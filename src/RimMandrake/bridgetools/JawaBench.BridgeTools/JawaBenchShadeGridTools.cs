@@ -40,7 +40,7 @@ namespace JawaBench.BridgeTools
             "jawa/shadegrid_read",
             Description = "READ-ONLY. Reports the current map's sun and shade state by reflection into " +
                 "RM_MapComponent_ShadeGrid and RM_MapComponent_PinnedSun (CreatureBehaviors): shade-grid " +
-                "sunElevationDegrees and effectiveHeatKind, pinned-sun isActive and its own elevation, the " +
+                "sunElevationDegrees and directSunOffsetC (zenith x sin E), pinned-sun isActive and its own elevation, the " +
                 "map's current sky glow (skyManager.CurSkyGlow) and the celestial sun glow, and for each " +
                 "requested cell ShadeAt and ExposureAt. Cells are given as 'x,z;x,z;...' (max 200); an " +
                 "out-of-bounds cell is reported with inBounds=false, never silently dropped; an unparseable " +
@@ -49,7 +49,7 @@ namespace JawaBench.BridgeTools
                 "legitimately reads exposure 0 and kind overhead; sunElevationDegrees is NaN before the grid " +
                 "has recomputed (reported as null).",
             ResultDescription = "success, present, mapTile, sunHeatActive, shadeGrid{sunElevationDegrees, " +
-                "effectiveHeatKind, isDirectional}, pinnedSun{present, isActive, sunElevationDegrees}, " +
+                "directSunOffsetC, isDirectional}, pinnedSun{present, isActive, sunElevationDegrees}, " +
                 "skyGlow, celestialSunGlow, cells[{x,z,inBounds,shade,exposure}], badTokens, ticksGame.")]
         public static async Task<object> ShadeGridRead(
             IRimBridgeContext ctx,
@@ -114,7 +114,8 @@ namespace JawaBench.BridgeTools
                 }
 
                 float elev = (float)ReadMember(grid, "SunElevationDegrees");
-                object kind = ReadMember(grid, "EffectiveHeatKind");
+                // DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES: there is no heat kind; report the one Direct Sun number.
+                float offsetC = (float)ReadMember(grid, "EffectiveHeatOffsetC");
 
                 object pinned = new { present = false, isActive = (bool?)null, sunElevationDegrees = (float?)null };
                 if (sunType != null)
@@ -141,7 +142,7 @@ namespace JawaBench.BridgeTools
                     shadeGrid = new
                     {
                         sunElevationDegrees = float.IsNaN(elev) ? (float?)null : elev,
-                        effectiveHeatKind = kind?.ToString(),
+                        directSunOffsetC = offsetC,
                         isDirectional = (bool)ReadMember(grid, "IsDirectional")
                     },
                     pinnedSun = pinned,

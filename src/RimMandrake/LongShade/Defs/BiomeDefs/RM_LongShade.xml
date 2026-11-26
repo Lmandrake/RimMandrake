@@ -290,12 +290,8 @@
         <lightsourceShineIntensity>0.8</lightsourceShineIntensity>
         <shadowStrength>1</shadowStrength>
       </li>
-      <!-- SOLAR_HEAT_EXPOSURE_1: sun heat kind "overhead" - the Long Shade: owner ruling, longshade_shade_ideation_2026-09-29.md "overhead sun here, so parasols and tents work".
-           heatOffsetC is an invented first value; the owner-watched sitting tunes it. -->
-      <li Class="RimMandrake.CreatureBehaviors.RM_SunHeatExtension" MayRequire="mandrake.rm.biomes">
-        <heatKind>overhead</heatKind>
-        <heatOffsetC>30</heatOffsetC>
-      </li>
+      <!-- Direct Sun runs here as on every sunlit map, by the sun's height alone (DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES):
+           this biome carries no sun number. -->
       <!-- LONGSHADE_GPT_ENRICHMENT_1 §3, heat you can hear: lit vs shade bed at the
            camera's cell (owner: "It's ok for the heat sound to be where the camera is
            rather than your people."). Sounds: ../SoundDefs/RM_LongShade_HeatSounds.xml
@@ -348,10 +344,10 @@
       </li>
       <!-- BIOME_ARRIVAL_LETTERS_ALL_1 (DESIGN_PASS X-6/FV-5): PLACEHOLDER text drafted by an agent from this biome's
            own description, always-true list and shipped mechanics, flagged for the owner's review
-           (infrastructure/state/items/BIOME_ARRIVAL_LETTERS_ALL_1.md). RM tier: plain reads, no narrator. Heat line follows heatKind. -->
+           (infrastructure/state/items/BIOME_ARRIVAL_LETTERS_ALL_1.md). RM tier: plain reads, no narrator. -->
       <li Class="RimMandrake.EnvironmentalHazards.RM_BiomeArrivalLetterExtension" MayRequire="mandrake.rm.biomes">
         <letterLabel>The Long Shade</letterLabel>
-        <letterText>Nothing lives in the light here and nothing survives long out of shelter. Every stone throws a long shadow; cross between them as a sprint, rest, then dash. The gaps between the shadows are the only map that matters. When you must go out into the sun, for graves or salvage, take shade with you. The heat comes from above: a roof, a rock's shadow, a parasol or a shade tent all answer it.</letterText>
+        <letterText>Nothing lives in the light here and nothing survives long out of shelter. Every stone throws a long shadow; cross between them as a sprint, rest, then dash. The gaps between the shadows are the only map that matters. When you must go out into the sun, for graves or salvage, take shade with you. The sun sits low and never moves: a roof, a rock's long shadow, a parasol or a shade tent all answer it.</letterText>
       </li>
     </modExtensions>
   </BiomeDef>

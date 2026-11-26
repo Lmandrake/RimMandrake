@@ -70,8 +70,9 @@ def main():
     planted("eel in wildAnimals", j("Defs", "BiomeDefs", "RM_RustCathedral_Biome.xml"),
             "<RM_LivingBolt>0.06</RM_LivingBolt>", "<RM_LivingBolt>0.06</RM_LivingBolt><RM_CoolantEel>0.1</RM_CoolantEel>",
             "is in wildAnimals")
-    planted("sun kind wrong", j("Defs", "BiomeDefs", "RM_RustCathedral_Biome.xml"),
-            "<heatKind>overhead</heatKind>", "<heatKind>ambient</heatKind>", "heatKind overhead")
+    planted("biome sun number", j("Defs", "BiomeDefs", "RM_RustCathedral_Biome.xml"),
+            "<modExtensions>", '<modExtensions><li Class="RimMandrake.CreatureBehaviors.RM_SunHeatExtension"><heatKind>overhead</heatKind></li>',
+            "per-biome Direct Sun field")
     planted("bolt loses readout", j("Defs", "ThingDefs_Races", "RM_LivingBolt.xml"),
             "CompProperties_HumReadout", "CompProperties_Nothing", "hum readout comp")
     planted("strays never run", j("Patches", "RM_CathedralFinish_MapGenPatch.xml"),

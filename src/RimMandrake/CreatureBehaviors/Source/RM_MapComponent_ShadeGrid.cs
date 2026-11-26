@@ -90,7 +90,6 @@ namespace RimMandrake.CreatureBehaviors
 		private const float ShadowTipShade = 0.6f;
 
 		private float[] roofShade;
-		private bool[] thickRoof;
 		private float[] castShade;
 		private float[] exposure;
 
@@ -104,6 +103,10 @@ namespace RimMandrake.CreatureBehaviors
 		// unknown — no pin, no heat extension, no planet tile), and the sand
 		// glare floor per cell (null when no glare applies).
 		private float sunElevationDeg = float.NaN;
+		// DS7: true when the last recompute found a fixed sun for this map (time of day = location).
+		private bool sunFixed;
+		// ResolveSun has run at least once (map generation reads the sun before the first Recompute).
+		private bool sunResolved;
 		private float[] glareFloor;
 
 		private RM_SunPathCustomizer pathCustomizer;
@@ -167,15 +170,34 @@ namespace RimMandrake.CreatureBehaviors
 			return map?.GetComponent<RM_MapComponent_ShadeGrid>();
 		}
 
-		/// <summary>This map's sun-heat extension, or null. Every map-wide
-		/// sun-heat effect is gated on it.</summary>
-		public RM_SunHeatExtension HeatExtension => map?.Biome?.GetModExtension<RM_SunHeatExtension>();
+		/// <summary>This biome's optional sun data (glare-blind, mirage, shade-hop tuning), else the planet defaults.
+		/// Never null, and it decides nothing about Direct Sun's heat, shade or sun
+		/// (DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES).</summary>
+		public RM_SunHeatExtension HeatExtension => map?.Biome?.GetModExtension<RM_SunHeatExtension>() ?? RM_SunHeatExtension.Planet;
 
-		/// <summary>True when sun heat runs on this map: the biome carries
-		/// RM_SunHeatExtension, the grid and sun heat are both on in settings.</summary>
-		public bool SunHeatActive => RM_CreatureBehaviorsSettings.shadeGridEnabled
-		                             && RM_CreatureBehaviorsSettings.sunHeatEnabled
-		                             && HeatExtension != null;
+		/// <summary>True when Direct Sun runs on this map: the grid and Direct Sun are on in settings, the world's
+		/// sun is fixed (time of day = location, DS7), and the sun stands above this tile's horizon (E > 0). No
+		/// biome opt-in: every sunlit map of a fixed-sun world (owner card 2026-10-19, D5/D6).</summary>
+		public bool SunHeatActive
+		{
+			get
+			{
+				if (!RM_CreatureBehaviorsSettings.shadeGridEnabled || !RM_CreatureBehaviorsSettings.sunHeatEnabled)
+				{
+					return false;
+				}
+				EnsureSun();
+				return sunFixed && sunElevationDeg > 0f;
+			}
+		}
+
+		private void EnsureSun()
+		{
+			if (!sunResolved)
+			{
+				ResolveSun();
+			}
+		}
 
 		/// <summary>True when the last recompute cast shadows along a sun
 		/// vector rather than the legacy ring.</summary>
@@ -187,56 +209,23 @@ namespace RimMandrake.CreatureBehaviors
 		/// what it derived from the grid is stale.</summary>
 		public int GridVersion => gridVersion;
 
-		/// <summary>True when shade hopping and the dash ring can run here: a
-		/// sun-heat map whose heat kind shade can help against.</summary>
-		public bool ShadeHopsApply => SunHeatActive && exposure != null
-		                              && EffectiveHeatKind != RM_HeatKind.ambient;
+		/// <summary>True when shade hopping and the dash ring can run here: a map under Direct Sun.</summary>
+		public bool ShadeHopsApply => SunHeatActive && exposure != null;
 
 		/// <summary>The map's sun elevation in degrees from the last
 		/// recompute, or NaN when there is none.</summary>
-		public float SunElevationDegrees => sunElevationDeg;
-
-		/// <summary>STILLSAND_SUN_FROM_LATITUDE_1 §3: the heat kind in force —
-		/// the biome's own, or (when it sets overheadAboveElevationDegrees and
-		/// the setting is on) overhead/lowSun by this map's sun elevation.
-		/// Which cover counts, never a new kind of heat. Overhead on a biome
-		/// with no sun heat (ordinary shade).</summary>
-		public RM_HeatKind EffectiveHeatKind
+		public float SunElevationDegrees
 		{
 			get
 			{
-				RM_SunHeatExtension ext = HeatExtension;
-				if (ext == null)
-				{
-					return RM_HeatKind.overhead;
-				}
-				if (!RM_CreatureBehaviorsSettings.kindFromElevationEnabled)
-				{
-					return ext.heatKind;
-				}
-				return RM_SunHeatMath.KindFromElevation(ext.heatKind, sunElevationDeg, ext.overheadAboveElevationDegrees);
+				EnsureSun();
+				return sunElevationDeg;
 			}
 		}
 
-		/// <summary>STILLSAND_SUN_FROM_LATITUDE_1 §4: °C of sun at full
-		/// exposure for a size-1 pawn before the strength dial — heatOffsetC,
-		/// or heatOffsetC × sin(elevation) on a biome that scales by angle.</summary>
-		public float EffectiveHeatOffsetC
-		{
-			get
-			{
-				RM_SunHeatExtension ext = HeatExtension;
-				if (ext == null)
-				{
-					return 0f;
-				}
-				if (!ext.heatScalesWithElevation)
-				{
-					return ext.heatOffsetC;
-				}
-				return RM_SunHeatMath.ElevationHeatOffset(ext.heatOffsetC, sunElevationDeg, ext.minScaledHeatOffsetC);
-			}
-		}
+		/// <summary>°C of Direct Sun at full exposure for a size-1 pawn before weather and the strength dial:
+		/// zenith × sin(E), the same on every map (DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES spec 3). 0 with no sun.</summary>
+		public float EffectiveHeatOffsetC => RM_SunHeatMath.DirectSunOffsetC(RM_CreatureBehaviorsSettings.directSunZenithC, SunElevationDegrees);
 
 		/// <summary>STILLSAND_SUN_FROM_LATITUDE_1 §5: the sand glare floor at
 		/// this cell (0 where none).</summary>
@@ -345,11 +334,6 @@ namespace RimMandrake.CreatureBehaviors
 				RM_GlareBlind.Tick(map, this);
 			}
 		}
-
-		/// <summary>The heat kind gear effectiveness is read under: the
-		/// biome's, or overhead on a biome with no sun heat (ordinary shade —
-		/// what the creature shade consumers read there).</summary>
-		public RM_HeatKind GearKind => EffectiveHeatKind;
 
 		/// <summary>RM_CompShadeGear: a tent or shield appeared. Recomputed
 		/// on the next tick rather than waiting for the coarse interval.</summary>
@@ -478,11 +462,11 @@ namespace RimMandrake.CreatureBehaviors
 			{
 				return 0f;
 			}
-			ex = RM_SunHeatMath.WithCover(ex, RM_ShadeGear.WornCover(pawn, GearKind, out _));
+			ex = RM_SunHeatMath.WithCover(ex, RM_ShadeGear.WornCover(pawn, out _));
 			ex = RM_SunHeatMath.WithGlareFloor(ex, GlareFloorAt(pawn.Position));
 			// STILLSAND_DUNE_GALE_1 §3: a dim sky (the dune gale) takes the sun off,
 			// glare floor included — the sand does not shine under a brown sky.
-			return ex * RM_WeatherSenseExtension.SunFactor(map);
+			return RM_CreatureBehaviorsSettings.directSunWeatherDims ? ex * RM_WeatherSenseExtension.SunFactor(map) : ex;
 		}
 
 		/// <summary>
@@ -533,8 +517,8 @@ namespace RimMandrake.CreatureBehaviors
 		}
 
 		/// <summary>SOLAR_HEAT_EXPOSURE_1: 0 (sheltered) .. 1 (full sun) for a
-		/// pawn standing here, by this biome's heat kind. 0 on any map that is
-		/// not a sun-heat biome. The enclosed-room test is live (vanilla room
+		/// pawn standing here, the same rule on every map. 0 on any map without
+		/// Direct Sun. The enclosed-room test is live (vanilla room
 		/// temperature); the shade part is from the last recompute.</summary>
 		public float ExposureAt(IntVec3 cell)
 		{
@@ -548,14 +532,13 @@ namespace RimMandrake.CreatureBehaviors
 			}
 			int i = map.cellIndices.CellToIndex(cell);
 			float ex = exposure[i];
-			if (parasolShade != null && EffectiveHeatKind != RM_HeatKind.ambient)
+			if (parasolShade != null)
 			{
 				ex = RM_SunHeatMath.WithCover(ex, parasolShade[i]);
 			}
 			// LONGSHADE_GPT_ENRICHMENT_1 §2: a living caster's shadow is cast
-			// shade, so it covers under overhead and low sun alike, never
-			// under ambient heat.
-			if (movingShade != null && RM_CreatureBehaviorsSettings.movingShadeEnabled && EffectiveHeatKind != RM_HeatKind.ambient)
+			// shade, so it covers at every sun elevation.
+			if (movingShade != null && RM_CreatureBehaviorsSettings.movingShadeEnabled)
 			{
 				ex = RM_SunHeatMath.WithCover(ex, movingShade[i]);
 			}
@@ -567,8 +550,8 @@ namespace RimMandrake.CreatureBehaviors
 		}
 
 		/// <summary>The shared per-map path-cost customizer, or null when sun
-		/// pathing does not apply (not a sun-heat biome, ambient heat, the
-		/// setting off, or the grid not built yet).</summary>
+		/// pathing does not apply (no Direct Sun on this map, the setting off,
+		/// or the grid not built yet).</summary>
 		public RM_SunPathCustomizer PathCustomizer
 		{
 			get
@@ -592,7 +575,6 @@ namespace RimMandrake.CreatureBehaviors
 			if (roofShade == null || roofShade.Length != n)
 			{
 				roofShade = new float[n];
-				thickRoof = new bool[n];
 				castShade = new float[n];
 				gearShade = new float[n];
 				parasolShade = new float[n];
@@ -613,7 +595,6 @@ namespace RimMandrake.CreatureBehaviors
 				int i = map.cellIndices.CellToIndex(cell);
 				RoofDef roof = map.roofGrid.RoofAt(cell);
 				roofShade[i] = roof != null ? 1f : 0f;
-				thickRoof[i] = roof != null && roof.isThickRoof;
 				if (directional)
 				{
 					float h = CasterHeight(cell);
@@ -667,9 +648,8 @@ namespace RimMandrake.CreatureBehaviors
 			anyLight = lit;
 		}
 
-		/// <summary>SHADE_GEAR_FAMILY_1: tent footprints and shield lees, at
-		/// their kind-resolved depth (0 under ambient heat, so nothing is
-		/// written there at all).</summary>
+		/// <summary>SHADE_GEAR_FAMILY_1: tent footprints and standing lees, at
+		/// their depth (the same at every sun elevation).</summary>
 		private void BuildGearLayer()
 		{
 			System.Array.Clear(gearShade, 0, gearShade.Length);
@@ -677,7 +657,6 @@ namespace RimMandrake.CreatureBehaviors
 			{
 				return;
 			}
-			RM_HeatKind kind = GearKind;
 			int width = map.Size.x;
 			int height = map.Size.z;
 			List<Thing> gone = null;
@@ -689,7 +668,7 @@ namespace RimMandrake.CreatureBehaviors
 					continue;
 				}
 				RM_CompProperties_ShadeGear p = t.def.GetCompProperties<RM_CompProperties_ShadeGear>();
-				float depth = RM_ShadeGear.DepthOf(t, p, kind);
+				float depth = RM_ShadeGear.DepthOf(t, p);
 				if (depth <= 0f)
 				{
 					continue;
@@ -751,11 +730,6 @@ namespace RimMandrake.CreatureBehaviors
 			{
 				return;
 			}
-			RM_HeatKind kind = GearKind;
-			if (kind == RM_HeatKind.ambient)
-			{
-				return;
-			}
 			IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
 			for (int k = 0; k < pawns.Count; k++)
 			{
@@ -764,7 +738,7 @@ namespace RimMandrake.CreatureBehaviors
 				{
 					continue;
 				}
-				float cover = RM_ShadeGear.WornCover(pawn, kind, out Apparel best);
+				float cover = RM_ShadeGear.WornCover(pawn, out Apparel best);
 				if (cover <= 0f || best == null)
 				{
 					continue;
@@ -803,52 +777,46 @@ namespace RimMandrake.CreatureBehaviors
 			}
 		}
 
-		/// <summary>Picks the sun vector for this recompute: pinned sun, else
-		/// the heat extension's own geometry, else none (legacy ring).</summary>
+		/// <summary>Picks this map's sun for this recompute (DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES spec 1-2, DS7).
+		/// The sun is fixed when the planet's PlanetGeometryDef says time of day = location
+		/// (RM_PlanetSunGeometry.FixedSun), or when this map pins its sky. A world with a day/night cycle has no
+		/// fixed sun, so no Direct Sun. E is the tile's arc to the substellar point under one clamp [0, 90] on every
+		/// map; shadows fall away from the sun, height / tan E cells long. With no sun above the horizon, the legacy
+		/// ring shade serves the creature shade consumers.</summary>
 		private void ResolveSun()
 		{
+			sunResolved = true;
 			directional = false;
+			sunFixed = false;
 			sunElevationDeg = float.NaN;
 			RM_MapComponent_PinnedSun pin = RM_MapComponent_PinnedSun.For(map);
-			if (pin != null && pin.IsActive)
-			{
-				// The pinned sun's elevation is the map's sun elevation whether
-				// or not shadows are cast directionally (it drives the heat kind
-				// and the heat-by-angle offset too).
-				sunElevationDeg = pin.SunElevationDegrees;
-				if (RM_CreatureBehaviorsSettings.directionalShadeEnabled)
-				{
-					sunShadowDir = pin.ShadowDirection;
-					sunLengthPerHeight = pin.ShadowLengthPerHeight;
-					directional = true;
-				}
-				return;
-			}
-			RM_SunHeatExtension ext = HeatExtension;
-			// E and the bearing come from the planet's PlanetGeometryDef (RM_PlanetSunGeometry); the
-			// extension's own substellar point is only the fallback when no geometry def is loaded.
-			if (ext == null || !RM_PlanetSunGeometry.TrySunAt(map.Tile, ext.substellarLatitude, ext.substellarLongitude,
-				out float rawElev, out float bearingDeg))
+			bool pinned = pin != null && pin.IsActive;
+			if (!RM_PlanetSunGeometry.FixedSun && !pinned)
 			{
 				return;
 			}
-			float elev = Mathf.Clamp(rawElev, ext.minElevationDegrees, ext.maxElevationDegrees);
-			sunElevationDeg = elev;
-			if (!RM_CreatureBehaviorsSettings.directionalShadeEnabled)
+			// The pinned sky's own substellar point is only the fallback when no PlanetGeometryDef is loaded.
+			float fbLat = pinned ? pin.Extension.substellarLatitude : 0f;
+			float fbLon = pinned ? pin.Extension.substellarLongitude : 0f;
+			if (!RM_PlanetSunGeometry.TrySunAt(map.Tile, fbLat, fbLon, out float rawElev, out float bearingDeg))
+			{
+				return;
+			}
+			sunFixed = true;
+			sunElevationDeg = RM_SunHeatMath.ClampElevation(rawElev);
+			if (!RM_CreatureBehaviorsSettings.directionalShadeEnabled || !(sunElevationDeg > 0f))
 			{
 				return;
 			}
 			float b = bearingDeg * Mathf.Deg2Rad;
 			sunShadowDir = new Vector2(-Mathf.Sin(b), -Mathf.Cos(b));
-			float e = Mathf.Max(0.5f, elev) * Mathf.Deg2Rad;
-			sunLengthPerHeight = Mathf.Cos(e) / Mathf.Sin(e);
+			sunLengthPerHeight = RM_SunHeatMath.ShadowLengthPerHeight(sunElevationDeg);
 			directional = true;
 		}
 
 		private void RebuildHeatLayers()
 		{
-			RM_SunHeatExtension ext = HeatExtension;
-			if (ext == null || !RM_CreatureBehaviorsSettings.sunHeatEnabled)
+			if (!SunHeatActive)
 			{
 				exposure = null;
 				glareFloor = null;
@@ -860,32 +828,25 @@ namespace RimMandrake.CreatureBehaviors
 			{
 				exposure = new float[n];
 			}
-			RM_HeatKind kind = EffectiveHeatKind;
-			BuildGlareLayer(ext, kind);
-			bool wantPath = kind != RM_HeatKind.ambient && ext.sunPathCostPerCell > 0f
-			                && RM_CreatureBehaviorsSettings.sunPathingEnabled;
+			BuildGlareLayer();
+			bool wantPath = RM_CreatureBehaviorsSettings.sunPathingEnabled;
 			NativeArray<ushort> cost = default;
 			if (wantPath)
 			{
 				cost = new NativeArray<ushort>(n, Allocator.Persistent);
 			}
 			float pathStrength = RM_CreatureBehaviorsSettings.sunPathCostMultiplier;
-			// Under ambient heat (steam, volcanic) shade does nothing, so light does nothing either.
-			bool applyLight = anyLight && kind != RM_HeatKind.ambient;
 			for (int i = 0; i < n; i++)
 			{
 				// outdoors=true here: the enclosed-room test is live in ExposureAt.
 				// Light cuts roof/cast shade only, then gear covers (as in ShadeAt):
 				// a tent in a beam still shades. No light: identical to before.
-				float ex = RM_SunHeatMath.Exposure(kind, true, roofShade[i], thickRoof[i], castShade[i]);
-				if (applyLight)
+				float ex = RM_SunHeatMath.Exposure(true, roofShade[i], castShade[i]);
+				if (anyLight)
 				{
 					ex = RM_SunHeatMath.WithLight(ex, lightLayer[i]);
 				}
-				if (kind != RM_HeatKind.ambient)
-				{
-					ex = RM_SunHeatMath.WithCover(ex, gearShade[i]);
-				}
+				ex = RM_SunHeatMath.WithCover(ex, gearShade[i]);
 				if (glareFloor != null)
 				{
 					ex = RM_SunHeatMath.WithGlareFloor(ex, glareFloor[i]);
@@ -893,7 +854,7 @@ namespace RimMandrake.CreatureBehaviors
 				exposure[i] = ex;
 				if (wantPath)
 				{
-					cost[i] = RM_SunHeatMath.PathCost(ex, ext.sunPathCostPerCell, pathStrength);
+					cost[i] = RM_SunHeatMath.PathCost(ex, RM_DirectSun.SunPathCostPerCell, pathStrength);
 				}
 			}
 			RetireCustomizer();
@@ -908,14 +869,13 @@ namespace RimMandrake.CreatureBehaviors
 			}
 		}
 
-		/// <summary>STILLSAND_SUN_FROM_LATITUDE_1 §5: the sand glare floor on
-		/// every cell of natural sand (TerrainDef categoryType Sand, not a
-		/// constructed floor). Null when the biome sets no floor, the setting
-		/// is off, or the heat is ambient (exposure is already full there).</summary>
-		private void BuildGlareLayer(RM_SunHeatExtension ext, RM_HeatKind kind)
+		/// <summary>The sand glare floor on every cell of natural sand (TerrainDef categoryType Sand, not a
+		/// constructed floor), on any map under Direct Sun (owner card 2026-10-19, D5: "Any natural sand under the
+		/// sun"). Null when the setting is off.</summary>
+		private void BuildGlareLayer()
 		{
-			float floor = ext.sandGlareExposureFloor * RM_CreatureBehaviorsSettings.sandGlareStrength;
-			if (!RM_CreatureBehaviorsSettings.sandGlareEnabled || floor <= 0f || kind == RM_HeatKind.ambient)
+			float floor = RM_DirectSun.SandGlareExposureFloor * RM_CreatureBehaviorsSettings.sandGlareStrength;
+			if (!RM_CreatureBehaviorsSettings.sandGlareEnabled || floor <= 0f)
 			{
 				glareFloor = null;
 				return;
