@@ -99,7 +99,7 @@ def shipped_wrap():
     import re
     src = open(DECKART_CS, encoding="utf-8").read()
     piece = _method(src, "PieceMat")
-    if "TextureWrapMode.Clamp" not in piece:
+    if not re.search(r"\.wrapMode\s*=\s*TextureWrapMode\.Clamp\s*;", piece):   # the assignment, not a mention
         return "repeat"
     for name in ("DeckMat", "AbutmentMat"):
         body = _method(src, name)
