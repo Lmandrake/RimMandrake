@@ -1589,6 +1589,7 @@ class Ctx:
 
     def refresh(self):
         global _CORPUS, _VOCAB
+        sanity_beat()       # the loops that take a run's hours all pass here
         self.now = time.time()
         self.live = Live(self.now)
         if self.now - self.borrows.taken > self.borrow_refresh_s():
@@ -2760,6 +2761,35 @@ def sanity_write(sd: Path, phase: str, m: dict, problems: list[str], residual: l
     durable(sd, False)
 
 
+# The run's heartbeat in the sanity record (OPS_SCRATCH_OUTSIDE_READING_RESTORE_WLTC). The phase rows are stamped only
+# at a run's start and end, and a run at the idle IO class took 137 min (2026-11-25), so ops_watch read a working run as
+# a frozen record past its 150 min line. `beat` says the run still moves; a hung run stops beating and still alarms.
+# BEAT_EVERY_S bounds the rewrites (one small fsynced file a minute), far inside the 150 min line it feeds.
+BEAT_EVERY_S = 60
+_BEAT_DIR: Path | None = None     # set by run() on --apply: a dry run and a bare test Ctx never write the record
+_BEAT_AT = 0.0
+
+
+def sanity_beat(sd: Path | None = None):
+    """Stamp `beat` in the sanity record, at most once a BEAT_EVERY_S. Never raises: a missing or torn record is left as
+    it is (the run's start owns the record; ops_watch already alarms on a torn one)."""
+    global _BEAT_AT
+    sd = sd if sd is not None else _BEAT_DIR
+    now = time.time()
+    if sd is None or now - _BEAT_AT < BEAT_EVERY_S:
+        return
+    _BEAT_AT = now
+    p = sd / "sanity.json"
+    try:
+        rec = json.loads(p.read_text())
+        if not isinstance(rec, dict):
+            return
+        rec["beat"] = now
+        write_json(p, rec)
+    except (OSError, ValueError):
+        return
+
+
 def sanity_start(sd: Path, now: float) -> dict:
     """Never raises: a bad reading or limits file is said aloud in the record, and the run still runs."""
     try:
@@ -2933,6 +2963,7 @@ def prune_orphan_bundles() -> dict:
 
 
 def run(a, sd: Path) -> int:
+    global _BEAT_DIR
     start = time.time()
     stamp = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(start))
     before = free_gb()
@@ -2945,6 +2976,8 @@ def run(a, sd: Path) -> int:
         now = time.time()
         phase_s[name] = round(now - mark[0], 1)
         mark[0] = now
+        sanity_beat()
+    _BEAT_DIR = sd if a.apply else None
     if a.apply:
         sanity_start(sd, start)
     lap("sanity")

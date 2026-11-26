@@ -1753,7 +1753,7 @@ def scratch_outside(san, now, rules):
     """disk.scratch_outside_cap (OP2): clones the pool cap cannot see, from the newest phase of the cleaner's sanity
     record. Read only. A record that is missing, torn, stale, dated ahead or without the count reads UNMEASURED and
     counts in disk.scratch_outside_blind, whose target alarms: unlike disk.scratch_dirty_*, no record is never a pass.
-    Freshness is the stamp inside the file, never its mtime."""
+    Freshness is the stamp inside the file (the phase row or the running reaper's `beat`), never its mtime."""
     ms, why, phase = ranges_of(rules), need_ranges(rules, SO_RANGES), None
     limit = None if why else ms["disk.scratch_outside_cap"]["max_age_min"]
     if why is None:
@@ -1766,10 +1766,16 @@ def scratch_outside(san, now, rules):
             at, phase = max(rows)
             got = d[phase].get("measures")
             v = got.get("rm_scratch_clones") if isinstance(got, dict) else None
+            # A run in progress stamps `beat` (scratch_reap.sanity_beat): a slow run that still moves is fresh, a hung
+            # one stops beating (OPS_SCRATCH_OUTSIDE_READING_RESTORE_WLTC). A beat older than the phase or ahead of the
+            # clock says nothing.
+            beat = d.get("beat")
+            seen = beat if is_num(beat) and finite(beat) and at <= beat <= now + 300 else at
             if at > now + 300:
                 why = "sanity record is dated %d s ahead of the clock" % (at - now)
-            elif now - at > limit * 60:
-                why = "sanity record frozen: last stamped %s, %.0f min ago, limit %g" % (iso(at), (now - at) / 60.0, limit)
+            elif now - seen > limit * 60:
+                why = "sanity record frozen: last stamped %s%s, %.0f min ago, limit %g" % (
+                    iso(at), "" if seen == at else ", last beat %s" % iso(seen), (now - seen) / 60.0, limit)
             elif not is_num(v) or not finite(v) or v < 0:
                 why = "sanity record holds no rm_scratch_clones at its %s: %s" % (phase, str(d[phase].get("problems")))
     if why:
