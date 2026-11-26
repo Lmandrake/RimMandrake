@@ -1,0 +1,95 @@
+{
+ "jetty_steel_E2_Scrapper": {
+  "build": "JETTY ok=True anchors=1 decks=2 blueprints=0 railed=2 reason=-",
+  "deckart": "DECKART look=Scrapper jetty=True dir=1 strip=RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionJetty_Steel_Strip pieces=root,tip angle=0 complete=True post=RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck_Steel_Post cable=RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Chain",
+  "shot": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_JOIN_JETTY_SQUARES_SEAMLESS_STILL_TWO_BLOCKS.det\\Transient\\jetty_seams\\jetty_steel_E2_Scrapper.png"
+ },
+ "jetty_steel_E2_Industrial": {
+  "build": "JETTY ok=True anchors=1 decks=2 blueprints=0 railed=2 reason=-",
+  "deckart": "DECKART look=Industrial jetty=True dir=1 strip=RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionJetty_Steel_Strip pieces=root,tip angle=0 complete=True post=RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionJetty_Steel_Post cable=RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Galv",
+  "shot": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_JOIN_JETTY_SQUARES_SEAMLESS_STILL_TWO_BLOCKS.det\\Transient\\jetty_seams\\jetty_steel_E2_Industrial.png"
+ },
+ "jetty_steel_E2_Modern": {
+  "build": "JETTY ok=True anchors=1 decks=2 blueprints=0 railed=2 reason=-",
+  "deckart": "DECKART look=Modern jetty=True dir=1 strip=RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionJetty_Steel_Strip pieces=root,tip angle=0 complete=True post=RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck_Steel_Post cable=RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Galv",
+  "shot": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_JOIN_JETTY_SQUARES_SEAMLESS_STILL_TWO_BLOCKS.det\\Transient\\jetty_seams\\jetty_steel_E2_Modern.png"
+ },
+ "jetty_steel_E2_Futuristic": {
+  "build": "JETTY ok=True anchors=1 decks=2 blueprints=0 railed=2 reason=-",
+  "deckart": "DECKART look=Futuristic jetty=True dir=1 strip=RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionJetty_Steel_Strip pieces=root,tip angle=0 complete=True post=RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeck_Steel_Post cable=RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Cyan",
+  "shot": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_JOIN_JETTY_SQUARES_SEAMLESS_STILL_TWO_BLOCKS.det\\Transient\\jetty_seams\\jetty_steel_E2_Futuristic.png"
+ },
+ "jetty_heavy_E2_Scrapper": {
+  "build": "JETTY ok=True anchors=1 decks=2 blueprints=0 railed=2 reason=-",
+  "deckart": "DECKART look=Scrapper jetty=True dir=1 strip=RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionJetty_Heavy_Strip pieces=root,tip angle=0 complete=True post=RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck_Steel_Post cable=RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Chain",
+  "shot": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_JOIN_JETTY_SQUARES_SEAMLESS_STILL_TWO_BLOCKS.det\\Transient\\jetty_seams\\jetty_heavy_E2_Scrapper.png"
+ },
+ "jetty_heavy_E2_Industrial": {
+  "build": "JETTY ok=True anchors=1 decks=2 blueprints=0 railed=2 reason=-",
+  "deckart": "DECKART look=Industrial jetty=True dir=1 strip=RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionJetty_Heavy_Strip pieces=root,tip angle=0 complete=True post=RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionJetty_Heavy_Post cable=RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Black",
+  "shot": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_JOIN_JETTY_SQUARES_SEAMLESS_STILL_TWO_BLOCKS.det\\Transient\\jetty_seams\\jetty_heavy_E2_Industrial.png"
+ },
+ "jetty_heavy_E2_Modern": {
+  "build": "JETTY ok=True anchors=1 decks=2 blueprints=0 railed=2 reason=-",
+  "deckart": "DECKART look=Modern jetty=True dir=1 strip=RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionJetty_Heavy_Strip pieces=root,tip angle=0 complete=True post=RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck_Steel_Post cable=RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Galv",
+  "shot": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_JOIN_JETTY_SQUARES_SEAMLESS_STILL_TWO_BLOCKS.det\\Transient\\jetty_seams\\jetty_heavy_E2_Modern.png"
+ },
+ "jetty_heavy_E2_Futuristic": {
+  "build": "JETTY ok=True anchors=1 decks=2 blueprints=0 railed=2 reason=-",
+  "deckart": "DECKART look=Futuristic jetty=True dir=1 strip=RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionJetty_Heavy_Strip pieces=root,tip angle=0 complete=True post=RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeck_Steel_Post cable=RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Cyan",
+  "shot": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_JOIN_JETTY_SQUARES_SEAMLESS_STILL_TWO_BLOCKS.det\\Transient\\jetty_seams\\jetty_heavy_E2_Futuristic.png"
+ },
+ "jetty_steel_N2_Scrapper": {
+  "build": "JETTY ok=True anchors=1 decks=2 blueprints=0 railed=2 reason=-",
+  "deckart": "DECKART look=Scrapper jetty=True dir=0 strip=RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionJetty_Steel_Strip pieces=root,tip angle=270 complete=True post=RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck_Steel_Post cable=RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Chain",
+  "shot": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_JOIN_JETTY_SQUARES_SEAMLESS_STILL_TWO_BLOCKS.det\\Transient\\jetty_seams\\jetty_steel_N2_Scrapper.png"
+ },
+ "jetty_steel_N2_Industrial": {
+  "build": "JETTY ok=True anchors=1 decks=2 blueprints=0 railed=2 reason=-",
+  "deckart": "DECKART look=Industrial jetty=True dir=0 strip=RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionJetty_Steel_Strip pieces=root,tip angle=270 complete=True post=RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionJetty_Steel_Post cable=RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Galv",
+  "shot": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_JOIN_JETTY_SQUARES_SEAMLESS_STILL_TWO_BLOCKS.det\\Transient\\jetty_seams\\jetty_steel_N2_Industrial.png"
+ },
+ "jetty_steel_N2_Modern": {
+  "build": "JETTY ok=True anchors=1 decks=2 blueprints=0 railed=2 reason=-",
+  "deckart": "DECKART look=Modern jetty=True dir=0 strip=RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionJetty_Steel_Strip pieces=root,tip angle=270 complete=True post=RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck_Steel_Post cable=RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Galv",
+  "shot": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_JOIN_JETTY_SQUARES_SEAMLESS_STILL_TWO_BLOCKS.det\\Transient\\jetty_seams\\jetty_steel_N2_Modern.png"
+ },
+ "jetty_steel_N2_Futuristic": {
+  "build": "JETTY ok=True anchors=1 decks=2 blueprints=0 railed=2 reason=-",
+  "deckart": "DECKART look=Futuristic jetty=True dir=0 strip=RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionJetty_Steel_Strip pieces=root,tip angle=270 complete=True post=RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeck_Steel_Post cable=RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Cyan",
+  "shot": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_JOIN_JETTY_SQUARES_SEAMLESS_STILL_TWO_BLOCKS.det\\Transient\\jetty_seams\\jetty_steel_N2_Futuristic.png"
+ },
+ "jetty_heavy_N2_Scrapper": {
+  "build": "JETTY ok=True anchors=1 decks=2 blueprints=0 railed=2 reason=-",
+  "deckart": "DECKART look=Scrapper jetty=True dir=0 strip=RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionJetty_Heavy_Strip pieces=root,tip angle=270 complete=True post=RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck_Steel_Post cable=RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Chain",
+  "shot": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_JOIN_JETTY_SQUARES_SEAMLESS_STILL_TWO_BLOCKS.det\\Transient\\jetty_seams\\jetty_heavy_N2_Scrapper.png"
+ },
+ "jetty_heavy_N2_Industrial": {
+  "build": "JETTY ok=True anchors=1 decks=2 blueprints=0 railed=2 reason=-",
+  "deckart": "DECKART look=Industrial jetty=True dir=0 strip=RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionJetty_Heavy_Strip pieces=root,tip angle=270 complete=True post=RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionJetty_Heavy_Post cable=RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Black",
+  "shot": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_JOIN_JETTY_SQUARES_SEAMLESS_STILL_TWO_BLOCKS.det\\Transient\\jetty_seams\\jetty_heavy_N2_Industrial.png"
+ },
+ "jetty_heavy_N2_Modern": {
+  "build": "JETTY ok=True anchors=1 decks=2 blueprints=0 railed=2 reason=-",
+  "deckart": "DECKART look=Modern jetty=True dir=0 strip=RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionJetty_Heavy_Strip pieces=root,tip angle=270 complete=True post=RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck_Steel_Post cable=RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Galv",
+  "shot": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_JOIN_JETTY_SQUARES_SEAMLESS_STILL_TWO_BLOCKS.det\\Transient\\jetty_seams\\jetty_heavy_N2_Modern.png"
+ },
+ "jetty_heavy_N2_Futuristic": {
+  "build": "JETTY ok=True anchors=1 decks=2 blueprints=0 railed=2 reason=-",
+  "deckart": "DECKART look=Futuristic jetty=True dir=0 strip=RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionJetty_Heavy_Strip pieces=root,tip angle=270 complete=True post=RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeck_Steel_Post cable=RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Cyan",
+  "shot": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_JOIN_JETTY_SQUARES_SEAMLESS_STILL_TWO_BLOCKS.det\\Transient\\jetty_seams\\jetty_heavy_N2_Futuristic.png"
+ },
+ "_yard_default": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\Screenshots\\deckart_yard_1795674937.png",
+ "_walk": {
+  "on_deck": [
+   [
+    "jetty_heavy_E2_Scrapper",
+    "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_JOIN_JETTY_SQUARES_SEAMLESS_STILL_TWO_BLOCKS.det\\Transient\\jetty_seams\\pawn_on_jetty_heavy_E2_Scrapper.png"
+   ],
+   [
+    "jetty_heavy_N2_Scrapper",
+    "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_JOIN_JETTY_SQUARES_SEAMLESS_STILL_TWO_BLOCKS.det\\Transient\\jetty_seams\\pawn_on_jetty_heavy_N2_Scrapper.png"
+   ]
+  ]
+ }
+}
