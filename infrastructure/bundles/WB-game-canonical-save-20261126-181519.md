@@ -20,4 +20,9 @@ Home: game:canonical-save. Canonical start save: `ASHKARR_DEV_START_2026-10-20_P
   `Leather_Plain`). Backups: `D:\ClaudeWork\backups\saves_pre_strip_prune42_ghosts_2026-11-26\` and
   `…R3.rws.bak-pre-strip-prune42-ghosts-2026-11-26` beside the Saves file.
 
-Next: see the last PROGRESS note on `SAVE_RELIC_PRECEPTS_REPAIR_VWE_NULLS`.
+- Ended: `SAVE_RELIC_PRECEPTS_REPAIR_VWE_NULLS` dropped (808623d876); `UNWANTED_FACTIONS_SILENCE_NOT_DELETED` closed
+  done already; `SLAUGHTER_ROWS_PRUNE_GHOSTS_IN_PEN` closed at the fix 9ea14fd6c458 (R3 now sha256 `b85c2319d8c32f96…`,
+  check NONE; fresh reader GPT NOTHING SIGNIFICANT, receipt consult-20261126-115411-1864803-249545). Live load not
+  run: R3 needs its 325-mod list, the full list, which is retired until integration.
+
+Next: nothing. The bundle is done.

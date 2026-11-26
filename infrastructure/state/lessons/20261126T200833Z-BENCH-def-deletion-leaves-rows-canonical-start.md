@@ -1,0 +1,3 @@
+A def deletion leaves rows in the canonical start save that save_def_census.py cannot see: it reads only <def> elements, and 230 of the 272 references that the 42-creature prune left in R3 were bare <li>NAME</li> rows in food-restriction filters (plus auto-slaughter <animal>, drug-policy <drug>, apparel <stuff> and a whole Faction). Each one is a 'Could not load reference' Log.Error on every load. After any def deletion, run python3 src/RimMandrake/Utils/save_ghost_defs.py check <save> --def <name>... on the canonical save, and strip with its strip verb.
+item: SLAUGHTER_ROWS_PRUNE_GHOSTS_IN_PEN
+home: src/RimMandrake/Utils/save_def_census.py docstring
