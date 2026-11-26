@@ -198,6 +198,52 @@ def t_a_cmd_check_finds_a_windows_program_off_a_bare_path():
         chk(lambda: seen.split(":").count(win) == 1, "a Windows dir already on PATH is not added twice")
 
 
+def t_a_check_read_from_an_unpublished_file_is_refused_at_attach():
+    # RIMMANDRAKE_BOUND_SCRATCH_REAP_RUN_THAT_GREW_FOUR_MIN_TO_TWO_HOURS: the check named an existing selftest that the
+    # shaper had edited in its clone. It failed there, held on origin's copy, and list_dispatch closed the item 19 min
+    # before the fix existed.
+    L = LE()
+    d = os.path.join(os.path.dirname(X["root"]), "pubrepo")
+    os.makedirs(d)
+    e = dict(os.environ, GIT_AUTHOR_NAME="t", GIT_AUTHOR_EMAIL="t@t", GIT_COMMITTER_NAME="t", GIT_COMMITTER_EMAIL="t@t")
+    import time_budget
+
+    def g(*a):
+        subprocess.run(["git", "-C", d] + list(a), check=True, capture_output=True, env=e, timeout=time_budget.CALL_S)
+    w = lambda n, rc: open(os.path.join(d, n), "w").write("import sys\nsys.exit(%d)\n" % rc)  # noqa: E731
+    g("init", "-q", "-b", "main")
+    w("chk.py", 0)
+    g("add", "chk.py")
+    g("commit", "-qm", "c")
+    g("update-ref", "refs/remotes/origin/main", "HEAD")
+    w("chk.py", 1)
+    seen, why = L.attach_gate("cmd:python3 chk.py", d)
+    chk(lambda: seen is None and "chk.py" in (why or "") and "origin/main" in why,
+        "a check that fails only on its edited, unpublished file is refused, naming it (%r)" % (why,))
+    chk(lambda: "Path to pass" in (why or ""), "the refusal carries its path to pass")
+    g("commit", "-qam", "local")
+    chk(lambda: L.attach_gate("cmd:python3 chk.py", d)[0] is None, "committed but not on origin/main is refused too")
+    w("new_chk.py", 1)
+    seen, why = L.attach_gate("cmd:python3 new_chk.py > /dev/null 2>&1", d)
+    chk(lambda: seen and seen["verdict"] == "fails", "a check in a new file (absent on origin: unmeasured there) is "
+        "accepted (%r)" % (why,))
+    seen, why = L.attach_gate("cmd:python3 chk.py;", d)
+    chk(lambda: seen is None and "chk.py" in (why or ""), "a name next to shell punctuation (chk.py;) is still read")
+    g("add", "new_chk.py")
+    seen, why = L.attach_gate("cmd:python3 new_chk.py", d)
+    chk(lambda: seen and seen["verdict"] == "fails", "a new check file, staged, is accepted (%r)" % (why,))
+    g("commit", "-qm", "new check")
+    seen, why = L.attach_gate("cmd:python3 new_chk.py", d)
+    chk(lambda: seen and seen["verdict"] == "fails", "a new check file, committed here only, is accepted (%r)" % (why,))
+    g("update-ref", "refs/remotes/origin/main", "HEAD")
+    seen, why = L.attach_gate("cmd:python3 chk.py", d)
+    chk(lambda: seen and seen["verdict"] == "fails", "the same check, once published, is accepted (%r)" % (why,))
+    os.remove(os.path.join(d, "chk.py"))
+    seen, why = L.attach_gate("cmd:test -f chk.py", d)
+    chk(lambda: seen is None and "chk.py" in (why or ""), "a named file deleted here but on origin is refused (%r)"
+        % (why,))
+
+
 def t_decide_closes_only_on_holds_and_leaves_an_item_with_no_check_alone():
     L = LE()
     chk(lambda: [L.decide({"state": "ready", "effect": "cmd:x"}, v) for v in ("holds", "fails", "unmeasured")]
@@ -550,6 +596,7 @@ def main():
         for t in (t_parse_reads_three_forms_and_never_raises,
                   t_holds_keeps_could_not_look_apart_from_fails,
                   t_a_cmd_check_leaves_no_temp_files,
+                  t_a_check_read_from_an_unpublished_file_is_refused_at_attach,
                   t_a_cmd_check_finds_a_windows_program_off_a_bare_path,
                   t_decide_closes_only_on_holds_and_leaves_an_item_with_no_check_alone,
                   t_a_check_that_already_holds_is_refused_at_attach_unless_seen_failing_at_filing,

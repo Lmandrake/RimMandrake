@@ -53,6 +53,12 @@ Item: `RIMMANDRAKE_BUILD_LIST_OUTCOME_CHECKS_SEVEN_DONE_NEVER_CLOSED`, step 1 of
   stated reason why it cannot be seen failing. It refuses a check that holds with no reason, and a vacuous command
   (`true`, `:`, `exit 0`, `echo …`) even with one. Each refusal names its path to pass. An unreadable or unmeasured
   check is refused with its cause.
+- **a-check-read-from-an-unpublished-file-is-refused-at-attach.** `attach_gate` refuses a `cmd:` check that fails
+  here when a repo file that the command names differs here from origin/main (edited, or deleted here). Names are
+  read as the shell reads them (`chk.py;` names chk.py). The beats run origin's copy, so
+  there the check may hold and close the item before the work lands. The refusal names the files and its path to
+  pass: a new file (origin lacks it, so the beats read unmeasured until it lands), or shape before the edit. A file
+  that origin lacks is not refused, staged or committed here or not. When git cannot say (no repo, no origin/main), the gate accepts as before.
 - **file-and-effect-record-the-check-and-its-red-reading.** `rimflow file --effect` and `rimflow effect <ID> --check`
   write the check and the attach reading on the ledger; `Item.effect` and `Item.effect_seen` replay them;
   `rimflow effect <ID> --clear` removes the check. A refused attach writes nothing.

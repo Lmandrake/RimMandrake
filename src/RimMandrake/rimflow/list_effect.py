@@ -40,6 +40,7 @@ import json
 import os
 import itertools
 import re
+import shlex
 import shutil
 import subprocess
 import sys
@@ -248,6 +249,28 @@ def at_commit(text, root, filed_ts):
     return _path_verdict(p["kind"], p["text"], body, exists)[0], rev
 
 
+def unpublished_named(p, root):
+    """-> the repo paths that a cmd: check names and whose bytes here differ from origin/main: edited, or deleted here.
+    A file origin lacks is not listed, staged or committed here or not: a check that runs it reads unmeasured on the
+    beats until it lands. Empty when git cannot say (no repo, no origin/main): the gate then accepts as it did before
+    this guard."""
+    if p.get("kind") != "cmd":
+        return []
+    try:
+        lex = shlex.shlex(p["cmd"], posix=True, punctuation_chars=True)
+        lex.whitespace_split = True
+        toks = list(lex)
+    except ValueError:
+        toks = p["cmd"].split()
+    named = sorted({t for t in toks if t and not os.path.isabs(t) and ".." not in t.split("/")
+                    and not t.startswith("-") and not set(t) <= set("();<>|&")})
+    if not named:
+        return []
+    got = _git(root, "-c", "core.quotepath=off", "--literal-pathspecs", "diff", "--name-only", "--diff-filter=a",
+               "origin/main", "--", *named)
+    return sorted(x for x in got.value.splitlines() if x.strip()) if got.ok else []
+
+
 def attach_gate(text, root, filed_ts=None, holds_why=None, now=None):
     """-> (seen, None) to accept the check, or (None, refusal with its path to pass).
     seen = {"verdict": "fails"|"holds", "at", "rev"?, "why"?, "out"}: the reading that shows the check can fail."""
@@ -264,6 +287,13 @@ def attach_gate(text, root, filed_ts=None, holds_why=None, now=None):
         return None, ("outcome check refused: it is unmeasured here (%s). Path to pass: repair the check so it reads "
                       "holds or fails from the clone root." % head)
     if verdict == "fails":
+        ahead = unpublished_named(p, root)
+        if ahead:
+            return None, ("outcome check refused: it names %s, which differs here from origin/main, and the beats run "
+                          "origin's copy: there it may hold, and close the item before the work lands. Path to pass: "
+                          "put the new check in a new file (absent on origin it reads unmeasured until it lands), or "
+                          "shape before you edit %s; pull first if this clone is behind origin." % (
+                              ", ".join(ahead), "it" if len(ahead) == 1 else "them"))
         return {"verdict": "fails", "at": int(now), "out": head}, None
     if filed_ts is not None:
         then, rev = at_commit(text, root, filed_ts)
