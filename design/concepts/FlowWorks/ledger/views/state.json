@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "4a5f6bea575ca1706f26f0b238284723d14baef5e3b07fafbbe60b1d83056674",
+  "body_sha256": "85461a8a193c44e87b5fac916d26e10d2b4727e2e74cc628fb55db4fbfecf45d",
   "reducer": 1,
   "shards": {
    "BACKFILL": 892335,
@@ -44,7 +44,7 @@
    "HOLDER.run-1795471235": 562,
    "HOLDER.run-1795503470": 1774,
    "HOLDER.run-1795670514": 9857,
-   "HOLDER.run-1795693138": 12237,
+   "HOLDER.run-1795693138": 13262,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1295,10 +1295,10 @@
   },
   "checkpoint": {
    "by": "HOLDER.run-1795693138",
-   "done": "6 more members: 2 stale/done drops, crop delay done, pour held for 0.2.0, shooting row repaired and live PASS (751c85566c), vv reds classed (7cee07efb5)",
-   "next": "Filter and work RIMMANDRAKE_COVER_BOOKS_UNDER_LIQUID_NOVEL_READS_THROUGH_TAR",
-   "ruled_out": "a kernel fault behind the seven vv reds; a mod fault behind shooting_rule_off",
-   "ts": "2026-11-26T18:06:01Z"
+   "done": "restart 3: 22 members given outcomes (closes: LAKE_FLOORS, shooting row, vv reds, books under liquid, solver hardening, four look questions; drops of stale/done; 0.2.0 refusals); BRIM_POUR left open for a game",
+   "next": "Work RIMMANDRAKE_REFRESH_LABEL_FADE_AFTER_SET_LEVEL_SEVEN_BRIGHT on a free game, then SLOW_RAIN_FILL from the bundle notes",
+   "ruled_out": "mod faults behind shooting_rule_off and the vv matrix reds; book draw bypass (fixed live)",
+   "ts": "2026-11-26T18:48:02Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1750,7 +1750,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1773,
+  "events": 1775,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7850,7 +7850,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-26T18:06:01Z",
+   "last": "2026-11-26T18:48:02Z",
    "lease": "run-1795693138",
    "released": false,
    "token": 61
