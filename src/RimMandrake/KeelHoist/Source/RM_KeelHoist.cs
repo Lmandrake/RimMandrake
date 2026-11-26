@@ -146,11 +146,17 @@ namespace RimMandrake.KeelHoist
             // The base would read def.portal letters and exit.Map; this portal has no exit of its own.
             Notify_ThingAdded(pawn);
             beenEntered = true;
-            if (!RM_HoistKernel.HoldsRiderInTransit(KeelHoistSettings.colonistsMayRide, pawn.IsColonist, pawn.Downed))
+            if (!RM_HoistKernel.HoldsRiderInTransit(KeelHoistSettings.colonistsMayRide, pawn.IsColonist, pawn.Downed, SlaveForSale(pawn)))
             {
                 return;   // the rider already stands below; with riding off it is not held in transit
             }
             pendingRiders.Add(pawn);
+        }
+
+        /// <summary>A slave of the colony lowered on a cable that ends in a buyer pit: cargo for sale, not a rider.</summary>
+        private bool SlaveForSale(Pawn p)
+        {
+            return p.IsSlave && targetHolder?.Buyer != null;
         }
 
         public static int CycleTicksFor(Thing t)
@@ -234,7 +240,7 @@ namespace RimMandrake.KeelHoist
                 }
             }
 
-            bool holderPath = RM_HoistKernel.GoesIntoHolder(up, targetHolder != null && targetHolder.Spawned, t is Pawn, t is Pawn colonistCheck && colonistCheck.IsColonist, t is Pawn downedCheck && downedCheck.Downed);
+            bool holderPath = RM_HoistKernel.GoesIntoHolder(up, targetHolder != null && targetHolder.Spawned, t is Pawn, t is Pawn colonistCheck && colonistCheck.IsColonist, t is Pawn downedCheck && downedCheck.Downed, t is Pawn saleCheck && SlaveForSale(saleCheck));
             ArrivalPlan plan = RM_HoistKernel.PlanArrival(up, HandlesBelow, holderPath);
             if (plan == ArrivalPlan.HandledBelow)
             {

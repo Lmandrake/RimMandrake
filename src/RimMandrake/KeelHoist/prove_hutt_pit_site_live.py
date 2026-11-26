@@ -4,8 +4,9 @@ Each clause first stages (or reuses) a real Hutt slave pit site: RM_PitBuyerProo
 quest node's own SiteMaker call, generates its map and makes it current. A player colony map cannot decide these bars:
 there the pit gate is open by rule (Map.ParentFaction is the player) and keepers never buy.
 
-  A1  the visit is peaceful: selftest_peaceful_landing.py --live holds on the running game (the site's parts say
-      visit, not attack), and on the generated site the Hutt keepers stand and their faction is not hostile.
+  A1  the visit is peaceful: the running game's loaded RUT_HuttSlavePit says visit, not attack (the fields that
+      selftest_peaceful_landing.py's port of the vanilla arrival predicates reads), and on the generated site the Hutt
+      keepers stand, their faction is not hostile and the pit gate is shut.
   A2  each cargo kind sells for silver: a prisoner, a slave and a downed wild beast, each lowered through the frame;
       each reads SOLD with silver come up (silverUp >= 1).
   A3  the oubliette is sealed while the keepers stand (gate shut, the cradle lifts nobody), and after they fall the
@@ -18,7 +19,6 @@ Exit 0 holds, 1 fails, 2 UNMEASURED (no bridge, no game, the mod not loaded, the
 """
 import os
 import re
-import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -52,6 +52,21 @@ def judge_site(text):
     if field(text, "gate") != "False":
         bad.append("the pit gate is not shut while the keepers stand: %s" % text)
     return bad
+
+
+# The fields that make an arrival a visit, not an attack (selftest_peaceful_landing.py ports the four vanilla predicates
+# that read them; here the running game's loaded values are read, as its --live half does).
+VISIT_FIELDS = {"considerEnteringAsAttack": "false", "disallowsAutomaticDetectionTimerStart": "true", "gravShipsCanLandOn": "true"}
+
+
+def judge_visit(reply):
+    """jawa/get_defs's reply for the site part -> faults. UNMEASURED raises."""
+    recs = [d for d in ((reply or {}).get("defs") or []) if isinstance(d, dict)] if isinstance(reply, dict) else []
+    if len(recs) != 1 or recs[0].get("found") is not True or not isinstance(recs[0].get("fields"), dict):
+        raise Unmeasured("not one loaded get_defs record for %s: %r" % (SITE_PART, str(reply)[:300]))
+    got = {k: str(recs[0]["fields"].get(k)).strip().lower() for k in VISIT_FIELDS}
+    bad = {k: got[k] for k, v in VISIT_FIELDS.items() if got[k] != v}
+    return ["the site part's loaded fields make the arrival an attack: %r" % bad] if bad else []
 
 
 def judge_sale(text):
@@ -92,13 +107,9 @@ def clause(b, cl):
     lines.append(site)
     if cl == "A1":
         bad = judge_site(site)
-        r = subprocess.run([sys.executable, os.path.join(HERE, "selftest_peaceful_landing.py"), "--live"],
-                           capture_output=True, text=True, timeout=600)   # hang guard: one read-only get_defs, seconds
-        lines.append("selftest_peaceful_landing --live exit %d: %s" % (r.returncode, (r.stdout or r.stderr).strip()[-300:]))
-        if r.returncode == 2:
-            raise Unmeasured(lines[-1])
-        if r.returncode != 0:
-            bad.append(lines[-1])
+        r = b.call("jawa/get_defs", defs="SitePartDef/" + SITE_PART, fields=",".join(VISIT_FIELDS)) or {}
+        lines.append("get_defs %s: %s" % (SITE_PART, str(r.get("defs") if isinstance(r, dict) else r)[:300]))
+        bad += judge_visit(r)
         return bad, lines
     if not site.startswith("SITE "):
         raise Unmeasured("site not staged: %s" % site[:300])
@@ -135,6 +146,19 @@ def selftest():
         got = bool(fn())
         print("%s  %s" % ("ok  " if got == want_fault else "FAIL", name))
         bad += got != want_fault
+    rec = lambda **f: {"defs": [{"found": True, "fields": dict({"considerEnteringAsAttack": "False",
+                                    "disallowsAutomaticDetectionTimerStart": "True", "gravShipsCanLandOn": "True"}, **f)}]}
+    for name, reply, want_fault in (("a visit site holds", rec(), False),
+                                    ("an attack site fails", rec(considerEnteringAsAttack="True"), True)):
+        got = bool(judge_visit(reply))
+        print("%s  %s" % ("ok  " if got == want_fault else "FAIL", name))
+        bad += got != want_fault
+    try:
+        judge_visit({"defs": [{"found": False}]})
+        print("FAIL  an unloaded def raises")
+        bad += 1
+    except Unmeasured:
+        print("ok    an unloaded def raises")
     try:
         judge_sale("UNMEASURED no buyer pit")
         print("FAIL  an UNMEASURED sale raises")

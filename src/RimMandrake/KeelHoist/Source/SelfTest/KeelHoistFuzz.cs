@@ -77,7 +77,7 @@ namespace RimMandrake.KeelHoist.SelfTest
             {
                 Thing t = owner[i];
                 bool up = sched.Up(i); string from = sched.From(i);
-                bool holderPath = RM_HoistKernel.GoesIntoHolder(up, holderSpawned, t.pawn, t.colonist, t.downed);
+                bool holderPath = RM_HoistKernel.GoesIntoHolder(up, holderSpawned, t.pawn, t.colonist, t.downed, false);
                 ArrivalPlan plan = RM_HoistKernel.PlanArrival(up, handlesBelow, holderPath);
                 if (plan == ArrivalPlan.HandledBelow)
                 {
@@ -450,18 +450,24 @@ namespace RimMandrake.KeelHoist.SelfTest
                     Cases++; Steps++;
                 }
                 // HoldsRiderInTransit / PlanArrival / GoesIntoHolder
-                for (int m = 0; m < 8; m++)
+                // A slave lowered at a buyer pit is cargo for sale, not a rider (owner, design §1: "You can sell any slave to the
+                // pit and the characters walk them over and lower them down the pit"). Vanilla's IsColonist is true for a
+                // secure slave, so an awake slave was dropped below as a rider and never sold (live 2026-11-26,
+                // HUTT_SLAVE_PIT_TEST_SITE_1 A2, J20261126T181716Z-098f55).
+                for (int m = 0; m < 16; m++)
                 {
-                    bool may = Bit(m, 0), col = Bit(m, 1), down = Bit(m, 2);
-                    Check(RM_HoistKernel.HoldsRiderInTransit(may, col, down) == (may || !col || down), "HoldsRiderInTransit");
+                    bool may = Bit(m, 0), col = Bit(m, 1), down = Bit(m, 2), sale = Bit(m, 3);
+                    Check(RM_HoistKernel.HoldsRiderInTransit(may, col, down, sale) == (may || !col || down || sale), "HoldsRiderInTransit");
+                    if (col && sale) Check(RM_HoistKernel.HoldsRiderInTransit(false, col, false, sale), "a slave for sale was not held on the cable");
                     Cases++; Steps++;
                 }
-                for (int m = 0; m < 32; m++)
+                for (int m = 0; m < 64; m++)
                 {
-                    bool up = Bit(m, 0), spawned = Bit(m, 1), pawn = Bit(m, 2), col = Bit(m, 3), down = Bit(m, 4);
-                    bool g = RM_HoistKernel.GoesIntoHolder(up, spawned, pawn, col, down);
-                    Check(g == (!up && spawned && pawn && (!col || down)), "GoesIntoHolder");
-                    if (g) Check(!(col && !down), "an awake colonist was lowered into a holder");
+                    bool up = Bit(m, 0), spawned = Bit(m, 1), pawn = Bit(m, 2), col = Bit(m, 3), down = Bit(m, 4), sale = Bit(m, 5);
+                    bool g = RM_HoistKernel.GoesIntoHolder(up, spawned, pawn, col, down, sale);
+                    Check(g == (!up && spawned && pawn && (!col || down || sale)), "GoesIntoHolder");
+                    if (g) Check(!(col && !down && !sale), "an awake colonist was lowered into a holder");
+                    if (!up && spawned && pawn && col && sale) Check(g, "a slave for sale missed the buyer pit");
                     foreach (bool below in new[] { false, true })
                     {
                         ArrivalPlan p = RM_HoistKernel.PlanArrival(up, below, g);
@@ -508,9 +514,10 @@ namespace RimMandrake.KeelHoist.SelfTest
                 {
                     bool may = Bit(m, 0), holder = Bit(m, 1), buyer = Bit(m, 2), col = Bit(m, 3), down = Bit(m, 4), slave = Bit(m, 5);
                     bool hide = RM_HoistKernel.DialogHidesPawn(may, holder, buyer, col, down, slave);
-                    Check(hide == (((!may || holder) && col && !down) || (buyer && col && !slave)), "DialogHidesPawn");
+                    Check(hide == (((!may || holder) && col && !down && !(holder && buyer && slave)) || (buyer && col && !slave)), "DialogHidesPawn");
                     if (buyer && col && !slave) Check(hide, "a free colonist is listed for a buyer pit or chute");
-                    if (!may && col && !down) Check(hide, "an awake colonist is listed with riding off");
+                    if (holder && buyer && col && slave) Check(!hide, "a slave is hidden from the buyer pit's dialog");
+                    if (!may && col && !down && !(holder && buyer && slave)) Check(hide, "an awake colonist is listed with riding off");
                     if (!col) Check(!hide, "a non-colonist was hidden");
                     Cases++; Steps++;
                 }

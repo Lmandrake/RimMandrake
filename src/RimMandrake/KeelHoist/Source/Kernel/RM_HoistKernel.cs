@@ -133,9 +133,11 @@ namespace RimMandrake.KeelHoist
         }
 
         /// <summary>holderAcceptsThis: the cable ends in a spawned holder, the thing is a pawn, and it is not an awake colonist.</summary>
-        public static bool GoesIntoHolder(bool up, bool holderSpawned, bool isPawn, bool isColonist, bool downed)
+        /// <summary>`slaveForSale`: a slave lowered at a buyer pit. Vanilla's IsColonist is true for a secure slave, and a slave
+        /// is cargo for sale there, never a rider (design §1, the owner: "You can sell any slave to the pit").</summary>
+        public static bool GoesIntoHolder(bool up, bool holderSpawned, bool isPawn, bool isColonist, bool downed, bool slaveForSale)
         {
-            return !up && holderSpawned && isPawn && !(isColonist && !downed);
+            return !up && holderSpawned && isPawn && !(isColonist && !downed && !slaveForSale);
         }
 
         /// <summary>The manifest is a ring: oldest entries fall off past the cap.</summary>
@@ -156,9 +158,9 @@ namespace RimMandrake.KeelHoist
         }
 
         /// <summary>A rider who walks in is held in transit unless riding is off and they are an awake colonist.</summary>
-        public static bool HoldsRiderInTransit(bool colonistsMayRide, bool isColonist, bool downed)
+        public static bool HoldsRiderInTransit(bool colonistsMayRide, bool isColonist, bool downed, bool slaveForSale)
         {
-            return !(!colonistsMayRide && isColonist && !downed);
+            return !(!colonistsMayRide && isColonist && !downed && !slaveForSale);
         }
 
         public static bool TetherBlocksLaunch(bool accepted, bool tetherLock, bool hasMap, bool defKnown, bool cableDownOnSubstructure)
@@ -201,11 +203,11 @@ namespace RimMandrake.KeelHoist
             return animal && factionless;
         }
 
-        /// <summary>Which awake colonists the dialog hides: all of them when riding is off or the cable ends in a holder; at a buyer pit or the
-        /// chance chute every colonist who is not a slave.</summary>
+        /// <summary>Which awake colonists the dialog hides: all of them when riding is off or the cable ends in a holder, except a slave
+        /// at a buyer pit (it is lowered for sale); at a buyer pit or the chance chute every colonist who is not a slave.</summary>
         public static bool DialogHidesPawn(bool colonistsMayRide, bool holderCable, bool buyerOrChute, bool isColonist, bool downed, bool isSlave)
         {
-            if ((!colonistsMayRide || holderCable) && isColonist && !downed) return true;
+            if ((!colonistsMayRide || holderCable) && isColonist && !downed && !(holderCable && buyerOrChute && isSlave)) return true;
             if (buyerOrChute && isColonist && !isSlave) return true;
             return false;
         }
