@@ -73,8 +73,9 @@ lead.
 - **Rows never seen red.** For each, plant the defect (or run the old shape) once and
   watch it fail. A planted-defect fuzz needs the restored file `touch`ed before the
   rebuild (see `run-checklists.md`).
-- **The full list.** Run on the owner's list, not only the mod's tier. The first full-list
-  run of FlowWorks v2 found four faults that no tier run could have shown.
+- **The full list.** The first full-list run of FlowWorks v2 found four faults that no tier
+  run could have shown. Full-list runs are retired until the integration phase (`design/RimMandrake/standing_rulings.md` §Mod development runs on small lists);
+  such a run waits for `design/RimMandrake/integration_phase_list.md`.
 - **Perf on the real hot path** (`perf.md`).
 - **Before a walk card asks the owner about a behaviour, find the code path that produces it (or a proof row that saw it).** A walk stop expected three Store tanks joined by pipe to move to one level, but `RM_LiquidNetKernel.SettlePlan` says Store tanks only buffer and `RM_Levelling` links only open hose ends.
 - **A probe of the variable the code consumes grades the code against itself.** A row reading the coordinate the draw code uses passed while embers visibly hung 1 to 2 cells from the tip. Read at the point of draw, enumerate what should move, and report no-draws as UNMEASURED (a probe read a fixed floor tip with 0 draws). Watch filters that skip real cases (wall and overhead ends) and fade-ins (the vanilla MicroSparks fleck fades in over 0.75 s).

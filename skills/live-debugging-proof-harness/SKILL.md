@@ -404,7 +404,8 @@ More traps for this section: [references/traps.md](references/traps.md) § Pre-p
    - **conservation and accounting**: units in == units out;
    - **perf on the real hot path**;
    - **upgrade paths**: old saves, imported settings flags;
-   - **the mod on the full list**: a mod that has only ever run on its 15-mod tier carries tier assumptions.
+   - **the mod on the full list**: a mod that has only ever run on its 15-mod tier carries tier assumptions. This run
+     waits for the integration phase (`design/RimMandrake/standing_rulings.md` §Mod development runs on small lists).
 
    Each answer becomes a row that **can go red**.
 4. **Record what the run learned in the mod's functional script** (`debug_process.md` §0.4, §2.4):

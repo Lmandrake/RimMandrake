@@ -5,22 +5,22 @@ description: How to spend a RimWorld cold load — and how to stop needing one. 
 
 # The load round
 
-A cold load of the owner's full list costs about 15 to 25 minutes as measured (§0). Plan for **15 to 30 minutes**. ArchBig holds the full list,
-so ArchBig is the expensive load.
+A cold load of the owner's full list costs about 15 to 25 minutes as measured (§0). Plan for **15 to 30 minutes**. Full-list testing is retired
+until the integration phase (`design/RimMandrake/standing_rulings.md` §Mod development runs on small lists).
 So never spend a load on one question. Never spend a load to learn a thing that you can read off disk.
 
 ## 0. 🟢 FIRST: does this load have to be expensive at all?
 
 **There are several games; pick the one whose load is cheapest for the work.**
 
-- ArchBig is Steam's install on Archmagi. ArchBig holds the full list, and the owner looks at staged work there.
+- ArchBig is Steam's install on Archmagi. The owner looks at staged work on ArchBig or ArchSmall.
 - ArchSmall is its own install on Archmagi. ArchSmall has its own `ModsConfig.xml`, `Mods` and Saves.
 - `RM_GAME_INSTANCE=b` points `game_paths`, `modlist_swap.py` and the deploy at ArchSmall.
 - `python3 src/RimMandrake/Utils/game_instance.py launch ArchSmall --wait` starts ArchSmall.
 - A tier list on ArchSmall loads beside a running ArchBig. A tier is a named small mod list of `modset_builder.py`.
 - His full list on ArchSmall beside ArchBig does not fit in Archmagi's memory.
-- So work that a tier list can prove never waits for ArchBig's load. That work goes to ArchSmall.
-- Only a check that needs his full list waits for ArchBig. The line that reports the wait says so.
+- No check needs ArchBig rather than another game: full-list testing is retired until the integration phase
+  (`design/RimMandrake/standing_rulings.md` §Mod development runs on small lists). Work that finds ArchBig busy goes to ArchSmall.
 
 **The load times, each with its date:**
 
@@ -142,7 +142,7 @@ of your config write.**
   TidallyLocked preset. A quicktest comes out 119,904 tiles. So a check of real tile IDs needs the full list.
 * **The minimal list does not have most content mods.** A patch against an absent content mod (RimStarWars/Utinni/Mandrake)
   matches nothing and logs nothing. So a PASS on minimal is UNMEASURED for that patch. Such an item needs a
-  dependency-complete tier (`modset_builder.py --tier`) or the full list.
+  dependency-complete tier (`modset_builder.py --tier`).
   - Measured: a 21,872-row import validated at 81.6% on the minimal list. **Every** mismatch was one of 8 biome defs that
     the 13-mod list lacks. The tool had no defect.
 * 🔴 **While the minimal list is installed, the live `ModsConfig.xml` is NOT evidence about the owner's full list.** Read

@@ -285,7 +285,8 @@ A DLL that a game has loaded **cannot be written while that game runs**. The fil
 - A reboot is yours to call: `infrastructure/GAME_STATE_WORKFLOW.md` § A REBOOT IS YOURS TO CALL. Before you close a game,
   its
   bridge must be free or yours. Take the bridge for the reboot, so that the other runs can read the reason.
-- Do not close ArchBig while his OWNER hold or `./pipe off game:ArchBig` stands (a look at staged work). Stop a broken
+- Do not close a game while his OWNER hold or `./pipe off game:<name>` stands on it (a look at staged work, on
+  ArchBig or ArchSmall). Stop a broken
   game at once, and report it.
 - Deploy in the gap. Then run `preflight_bridge.py` before the launch, as that section says. Announce the restart in your
   reply

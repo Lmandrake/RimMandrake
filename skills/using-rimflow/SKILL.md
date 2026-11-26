@@ -38,6 +38,7 @@ rimflow is one master queue. rimflow makes the queue from an append-only ledger.
 rimflow file <ID> --for FOR --title TITLE [--kind K] [--row N]
              [--target-field v1|v2] [--needs offline|deploy|game-up|bridge|harvest|owner]
              [--spec PATH] [--caused-by ID] [--replaces ID]
+             [--not-now "<class>: <evidence>"] [--did-it SHA] [--not-worth-it "<why>"]
              [--effect CHECK] [--holds-why WHY]
              create work for ANY seat, including another's. FOR is a reader in
              src/RimMandrake/rimflow/alarm_routes.json.
@@ -47,7 +48,8 @@ rimflow claim <ID> [--token TOKEN]
              take ownership; lands in `doing` under a live lease (was `ready` before the 2026-10 lease redesign)
 rimflow start <ID>          begin work, with no lease; never refused for missing prose
 
-rimflow close <ID> --sha SHA | --no-code "<what>" [--live LINE] [--reason REASON]
+rimflow close <ID> --sha SHA | --no-code "<what>" [--evidence PATH] [--level LEVEL]
+             [--config CONFIG] [--live LINE] [--remainder ID | --no-remainder "<why>"] [--reason REASON]
              close against a commit, any seat; --reason required in practice
              when the item is another seat's (see `close` is earned, below)
 
@@ -59,19 +61,19 @@ rimflow supersede <ID> --by ID [--reason REASON]   a better item replaces it
 rimflow note <ID> --text TEXT            a line of context; prose belongs in items/<ID>.md
 
 rimflow show <ID>           everything the ledger says about one item
-rimflow next [--peek] [--bench] [--acceptance]
+rimflow next [--peek] [--bench] [--ringed] [--acceptance]
              the one item to work now; --peek is read-only;
              --bench is the board-triage view (BENCH and OWNER only)
 
 rimflow verify <ID> --result pass|fail|partial --config CONFIG
-             [--evidence PATH] [--sha SHA] [--level LEVEL] [--criterion ID]
+             [--evidence PATH] [--sha SHA] [--level LEVEL] [--outcome OUTCOME] [--criterion ID]
              record a RUN. Immutable — a fail stands forever.
 
 rimflow seat {ready,busy,idle} [--reason R] [--item ID] [--note NOTE]
              announce what this seat is doing; --note is what a handoff reads
 
 rimflow bridge {take,release,who,give,idle} [to] [--for PURPOSE] [--force]
-             [--idle-ok] [--flyer] [--host HOST] [--mine]
+             [--idle-ok] [--flyer] [--host HOST] [--mine] [--despite-hold WHY]
              `who` only reads; `idle` reports whether a take with --idle-ok would succeed, and takes
              nothing; `take`/`release`/`give` write the ledger. --force takes it from an awake other
              window (recorded). `give` is the owner's switch, for ArchBig only.

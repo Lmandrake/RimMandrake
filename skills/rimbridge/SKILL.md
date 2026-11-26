@@ -65,7 +65,7 @@ python3 src/RimMandrake/rimflow/game_lock.py release ArchBig
 
 🔴 **There are several games, and each has its own bridge, lock and holder.**
 
-- **ArchBig** is Steam's install on Archmagi. ArchBig holds the full list, and he looks at staged work there. Its bridge port is 5174. Its
+- **ArchBig** is Steam's install on Archmagi. He looks at staged work on ArchBig or ArchSmall. Its bridge port is 5174. Its
   lock is `archmagi`, the default.
 - **ArchSmall** is its own install on Archmagi (`D:\ClaudeWork\rimmandrake\instances\b\game`). Its bridge port is 5175.
   Its lock is `archmagi.b`.
@@ -75,7 +75,8 @@ python3 src/RimMandrake/rimflow/game_lock.py release ArchBig
   (`game_lock.py claim ArchSmall`, or `--host ArchSmall` for `rimflow bridge`).
 - `python3 src/RimMandrake/Utils/game_instance.py status` lists the games and their drivers. `launch ArchSmall --wait`
   starts ArchSmall.
-- If ArchBig is busy or held, drive ArchSmall. Only a check that needs his full list waits for ArchBig.
+- If ArchBig is busy or held, drive ArchSmall. No check needs ArchBig rather than another game: full-list testing is
+  retired (`design/RimMandrake/standing_rulings.md` §Mod development runs on small lists).
 - Never write "waiting for the live game". Name the game. Say why no other game can take the work.
 
 Four rules for a driver:

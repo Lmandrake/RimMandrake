@@ -307,7 +307,7 @@ Author in the project repo. Deploy a copy to the game. Never edit in place under
 - `-` lines and `--pull`;
 - `DEPLOY_HOLD.txt`;
 - the minimum viable mod folder;
-- which game the deploy writes to (ArchBig is Steam's install, with the full mod list; ArchSmall is a second install with its own `Mods` folder).
+- which game the deploy writes to (ArchBig is Steam's install; ArchSmall is a second install with its own `Mods` folder).
 
 Enable a compatibility patch LAST in load order, after the mods that it patches. Then restart the game.
 
