@@ -34,7 +34,7 @@ PIT_OLD = """## A pit is a SUPERDEEP cell
 PIT_NEW = """## A pit is a SUPERDEEP cell
 
 - The ruling is made and fully specified. Its item holds the state of the build; read the state there, with
-  `rimflow show PIT_SUPERDEEP_COLLAPSE_1`: `infrastructure/state/items/PIT_SUPERDEEP_COLLAPSE_1.md`.
+  `rimflow show PIT_SUPERDEEP_COLLAPSE_1`: `infrastructure/state/items/closed/PIT_SUPERDEEP_COLLAPSE_1.md`.
 - A pit is depth 4 on the D/F primitive that rulings 18/19 already established. D/F is depth and fill: each cell
   has a dug depth (D) and a fill of liquid (F). Rulings 18 and 19 are in `design/RimMandrake/flowworks_mod_definition.md`
   (§20 and §21).
