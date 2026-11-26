@@ -664,6 +664,18 @@ def generate_baseline(runner=subprocess.run):
     return lines
 
 
+def report_lines(report):
+    """Pure. The sweep's journal lines: its line, the broken promises, then every cause that makes the exit non-zero
+    (a filing error per item) and each raise or publish that did not land, so the journal names why the unit failed."""
+    lines = ["sweep: %s" % report["line"]]
+    lines += ["  %s: %s" % (b["item"], b["why"]) for b in report.get("broken") or []]
+    lines += ["  not filed %s: %s" % kv for kv in sorted((report.get("errors") or {}).items())]
+    lines += ["  not raised %s: %s" % kv for kv in sorted((report.get("raise_failed") or {}).items())]
+    if report.get("unpublished"):
+        lines.append("  not published: %s" % report["unpublished"])
+    return lines
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -690,9 +702,8 @@ def main(argv=None):
     report = sweep(time.time(), live_filer if a.file_alarms else None, read_items(), load_baseline(),
                    arms, sees=live_line.can_see(),
                    pusher=real_pusher() if a.file_alarms else None, retired=load_retired())
-    print("sweep: %s" % report["line"])
-    for b_ in report["broken"]:
-        print("  %s: %s" % (b_["item"], b_["why"]))
+    for ln in report_lines(report):
+        print(ln)
     return 1 if report.get("blind") or report.get("errors") else 0
 
 

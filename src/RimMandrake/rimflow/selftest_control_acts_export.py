@@ -215,10 +215,47 @@ def t_push_race_rebuilds():
           "origin moving on every try: %d tries, then exit 4 naming the push" % X.TRIES, (code, len(count), lines))
 
 
+def t_fetch_race_retries():
+    """A peer's fetch in the same clone can win the ref update: git then says "incorrect old value provided" (seen
+    in rm-control-acts-export three times on 2026-11-26). That fetch is tried again; any other fetch error is not."""
+    store, origin, work, _peer, reading = world()
+    real = X._git
+    lost = []
+
+    def racing(repo, *args, **kw):
+        if args and args[0] == "fetch" and len(lost) < 2:
+            lost.append(1)
+            raise X.GitFailed("git fetch exited 1: error: fetching ref refs/remotes/origin/main failed: incorrect old "
+                              "value provided")
+        return real(repo, *args, **kw)
+    X._git = racing
+    try:
+        code, lines = run(store, work, reading)
+    finally:
+        X._git = real
+    check(code == 0 and len(lost) == 2 and published(origin),
+          "a fetch that loses the ref update to a peer's fetch is tried again and the run lands", (code, lines))
+    other = []
+
+    def broken(repo, *args, **kw):
+        if args and args[0] == "fetch":
+            other.append(1)
+            raise X.GitFailed("git fetch exited 128: fatal: 'origin' does not appear to be a git repository")
+        return real(repo, *args, **kw)
+    C.switch("mod:Cauldron", True, "another act", p=store)
+    X._git = broken
+    try:
+        code, lines = run(store, work, reading)
+    finally:
+        X._git = real
+    check(code == 4 and len(other) == 1 and "fetch" in lines[-1],
+          "any other fetch error is not tried again: exit 4 at once, naming the fetch", (code, len(other), lines))
+
+
 def main():
     for t in (t_export_holds_every_act, t_unchanged_store_makes_no_commit, t_touches_no_working_tree,
               t_never_loses_a_published_act, t_could_not_look_publishes_nothing, t_reading_only_on_success,
-              t_push_race_rebuilds):
+              t_push_race_rebuilds, t_fetch_race_retries):
         print("== %s" % t.__name__)
         try:
             t()

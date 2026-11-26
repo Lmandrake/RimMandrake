@@ -33,6 +33,9 @@ PATH = "infrastructure/state/control/acts.jsonl"
 TRIES = 5
 OK, REFUSED, BLIND, FAILED = 0, 2, 3, 4
 REJECT_WORDS = ("rejected", "non-fast-forward", "fetch first")
+# a peer's fetch in the same clone won the ref update (rm-control-acts-export exit 4, three times on 2026-11-26)
+FETCH_RACE_WORDS = ("incorrect old value provided", "cannot lock ref")
+FETCH_TRIES = 3     # as land.sh: three losses in a row are a real fetch fault
 
 
 class GitFailed(Exception):
@@ -51,6 +54,18 @@ def _git(repo, *args, env=None, inp=None):
     if r.returncode:
         raise GitFailed("git %s exited %d: %s" % (args[0], r.returncode, (r.stderr or r.stdout).strip()[-300:]))  # cut-ok: exception message
     return r.stdout
+
+
+def _fetch(repo, remote, branch, pause=1.0):
+    """git fetch, tried again when a peer's fetch in the same clone won the ref update (fetch-race-retries). Any other
+    fetch error raises at once."""
+    for n in range(1, FETCH_TRIES + 1):
+        try:
+            return _git(repo, "fetch", "-q", remote, branch)
+        except GitFailed as e:
+            if n == FETCH_TRIES or not any(w in str(e) for w in FETCH_RACE_WORDS):
+                raise
+            time.sleep(pause * n)
 
 
 def _published(repo, up):
@@ -117,7 +132,7 @@ def run(repo=REPO, store=None, reading=None, remote="origin", branch="main", dry
     last = ""
     for attempt in range(1, TRIES + 1):
         try:
-            _git(repo, "fetch", "-q", remote, branch)
+            _fetch(repo, remote, branch)
             up = _git(repo, "rev-parse", "--verify", "-q", "%s/%s^{commit}" % (remote, branch)).strip()
             old = _published(repo, up)
         except GitFailed as e:

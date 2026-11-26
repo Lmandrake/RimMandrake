@@ -53,6 +53,8 @@ BREAKS = {
         ("        if lost:\n", '        if lost:\n            _write_reading(reading, "refused", n, top, None, now)\n')]),
     "push-race-rebuilds": ("a refused push is a failure at once", [
         ("        if not any(w in said for w in REJECT_WORDS):", "        if True:")]),
+    "fetch-race-retries": ("a fetch lost to a peer's fetch is a failure at once", [
+        ("            if n == FETCH_TRIES or not any(w in str(e) for w in FETCH_RACE_WORDS):", "            if True:")]),
 }
 
 

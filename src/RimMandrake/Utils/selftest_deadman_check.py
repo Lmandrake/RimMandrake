@@ -391,6 +391,24 @@ def receivers():
     check(nobody is None, "the real alarm conf (ops_watch_rules.json) files for a receiver, the Conductor seat: %s" % nobody)
 
 
+def exit_names_its_cause():
+    """rm-deadman exited 1 on 2026-11-25 12:18 and 2026-11-26 10:48 PST with only the sweep line and the broken list in
+    its journal: the filing errors that made the exit were never printed. Every cause of a non-zero exit is a line."""
+    rep = {"line": "3 promises, 1 kept, 2 broken", "broken": [{"item": "LIVE_RESTORE_X", "why": "it died"}],
+           "errors": {"LIVE_RESTORE_X": "ingest.lock busy for 60 s"}, "raise_failed": {"LIVE_RESTORE_X": "raise refused"},
+           "unpublished": "git push exited 1"}
+    lines = DM.report_lines(rep)
+    text = "\n".join(lines)
+    check(lines[0] == "sweep: 3 promises, 1 kept, 2 broken" and "LIVE_RESTORE_X: it died" in text,
+          "the report still leads with the sweep line and the broken list: %r" % lines)
+    check("not filed LIVE_RESTORE_X: ingest.lock busy for 60 s" in text,
+          "a filing error that makes the exit 1 is printed with its item and cause: %r" % lines)
+    check("not raised LIVE_RESTORE_X: raise refused" in text and "not published: git push exited 1" in text,
+          "a failed raise and an unpublished reading are printed too: %r" % lines)
+    check(DM.report_lines({"line": "1 promises, 1 kept, 0 broken", "broken": [], "errors": {}}) ==
+          ["sweep: 1 promises, 1 kept, 0 broken"], "a clean sweep prints its one line")
+
+
 def main():
     j = DM.judge({"ops_watch": NOW - 600, "dispatcher": NOW - 60}, NOW)
     check(j == {"ops_watch": None, "dispatcher": None}, "fresh stamps: both alive")
@@ -460,6 +478,10 @@ def main():
     phones()
     no_todoist()
     receivers()
+    try:
+        exit_names_its_cause()
+    except Exception as e:  # noqa: BLE001  red on the base code, not a crash of the rest
+        check(False, "exit_names_its_cause raised %s: %s" % (type(e).__name__, e))
     # the pass reads the shard it files into, from a clone no other reader lists
     import ops_ledger as pc
     seen, keep_rl, keep_cl, keep_here = [], pc.read_ledger, pc.CLONES, DM.HERE

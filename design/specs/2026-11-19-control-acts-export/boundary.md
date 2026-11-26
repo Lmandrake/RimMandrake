@@ -48,9 +48,12 @@ turns that test red.
   `rm-deadman` sees a dead belt by its age. Tested by `t_reading_only_on_success`.
 - **push-race-rebuilds.** A push refused because origin moved is rebuilt on the new tip and pushed again, up to 5
   tries. Then the run exits 4, naming the push error. Tested by `t_push_race_rebuilds`.
+- **fetch-race-retries.** A fetch that loses the ref update to a peer's fetch in the same clone ("incorrect old value
+  provided", "cannot lock ref") is tried again, up to 3 tries. Any other fetch error exits 4 at once, naming the
+  fetch. Tested by `t_fetch_race_retries`.
 
 ## LIFE CYCLES (a move not listed here is a defect)
 
-- **a run:** read the store → (could not look: exit 3) → fetch origin → compare with origin's file → (a published
+- **a run:** read the store → (could not look: exit 3) → fetch origin (lost to a peer's fetch: again, at most 3 tries, then exit 4) → compare with origin's file → (a published
   line is missing: exit 2) → (equal: `unchanged`, reading written, exit 0) → commit on origin's tip → push → (refused
   as non-fast-forward: back to fetch, at most 5 tries, then exit 4) → `PUBLISHED <sha>`, reading written, exit 0.
