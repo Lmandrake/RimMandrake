@@ -1,0 +1,2 @@
+When a new producer writes into a gated artifact (the cleanse apply wrote tree.json), run the downstream gate on its real output before calling the producer done: the apply was tested only by its own check, and the Lock gate refused every applied design (284 refusals on Cauldron) for 8 days, unseen because every cleansed mod was held.
+item: RIMMANDRAKE_TOUGHEN_DESIGNER_ENTRY_GATE_VAGUE_BUILDS_CHOKED
