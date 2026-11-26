@@ -1,0 +1,87 @@
+{
+ "item": "RIMMANDRAKE_DRILL_FLOWWORKS_WATER_LAYERS_HE_SAW_STACKED_BLUE",
+ "when": "2026-11-25T21:11:58",
+ "rows": [
+  {
+   "id": "ONE_SHEET_PER_WET_SQUARE",
+   "status": "PASS",
+   "detail": {
+    "squares": 24,
+    "bad": []
+   }
+  },
+  {
+   "id": "NO_SECOND_WATER_LAYER",
+   "status": "PASS",
+   "detail": {
+    "found": []
+   }
+  },
+  {
+   "id": "DRAINED_SQUARE_DRAWS_DRY",
+   "status": "PASS",
+   "detail": {
+    "squares": 8,
+    "bad": []
+   }
+  },
+  {
+   "id": "SLUICE_SHEET_ON_WET_HALF",
+   "status": "PASS",
+   "detail": {
+    "gates": [
+     [
+      7,
+      0.5
+     ],
+     [
+      8,
+      0.5
+     ],
+     [
+      9,
+      0.5
+     ],
+     [
+      10,
+      0.5
+     ]
+    ]
+   }
+  }
+ ],
+ "wet": {
+  "33,110": true,
+  "34,110": true,
+  "35,110": true,
+  "33,109": true,
+  "34,109": true,
+  "35,108": true,
+  "55,136": true,
+  "56,136": true,
+  "57,136": true,
+  "55,135": true,
+  "56,135": true,
+  "57,134": true,
+  "28,119": true,
+  "29,119": true,
+  "30,119": true,
+  "31,119": false,
+  "32,119": false,
+  "35,119": false,
+  "36,119": false,
+  "37,119": true,
+  "38,119": true,
+  "39,119": true,
+  "43,116": true,
+  "43,117": true,
+  "43,118": true,
+  "43,119": false,
+  "43,120": false,
+  "50,116": false,
+  "50,117": false,
+  "50,118": true,
+  "50,119": true,
+  "50,120": true
+ }
+}

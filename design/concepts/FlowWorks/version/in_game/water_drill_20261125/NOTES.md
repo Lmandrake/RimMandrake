@@ -98,4 +98,48 @@ halves 8); the rule is green (0).
 - Red-then-green: `WaterLook_one_sheet_over_the_dry_pit_cut_by_the_line` and `WaterLook_sluice_parts_the_sheet_and_a_drained_floor_reprints`
   red on planted faults (`red_planted_no_waterline_cut.patch`, recorded on T_UNDERLIQUID), green on the fix.
 
-LIVE: owed. ArchSmall was taken by a test-lane run at 8:10 PM PST while I re-took it (lesson filed).
+
+### Experiment 2, about 8:35 PM PST: the fix build on ArchSmall
+
+- Census: station 6's corner square now draws ONE sheet colour (alpha 172) over the dry pit's own faces (wall light 0..48,
+  the same 88 shade triangles as station 5's dry corner); station 22's corner ONE sheet colour (alpha 237); no deep tint and
+  no wall band on any dug square.
+- Look (`after1_st22_east_walls_culled.png`): stations 20 to 22 drew their EAST wall dry. **False theory of my own:** I had
+  taken the sheet pieces to be orientation-free. They are not: an east face mirrored without reversing its vertex order winds
+  the other way and the GPU culls it (the drawer's own `SideFaceStep` reverses its east arrays for this). Red first: a SelfTest
+  winding assertion (every piece winds as the floor's quads) failed on `3x3 d1 (2,0)`; fix: `ReliefFaces` reverses the
+  mirrored east polygon; green.
+
+### Experiment 3, about 8:50 PM PST
+
+- Look: one even surface everywhere, but the brim-full pit (22) lost its black rim outline under the sheet, while the dry pit
+  (23) keeps it. The outline marks the rim, which stands above the water: it is now drawn after the sheet, in the sheet's own
+  sub-mesh (SelfTest: `outlineMat = sheetMatDrawn` before `DrawOutline()` after `WaterSurface`).
+
+### Experiment 4, about 9:00 PM PST: every station, both sluice axes drained, the count check red then green
+
+- Captures (fix build, 3 builds after the parent): `after_st05_06`, `after_st17_19`, `after_st20_22`, `after_st22`,
+  `after_st07_08_full` / `_drained` (7 east and 8 west drained), `after_st09_10_full` / `_drained` (9 north and 10 south
+  drained), `after_st28_33` (water in holes), `after_st24_27` (sprinklers, untouched). Every one read at about 82 screen pixels
+  a square. I see none of the three faults: station 6 matches station 5's corners under one surface; the depth row is one
+  even surface per pit (a 2 m pit shows its walls through the water as one mitred frame, as the dry pit draws them); each
+  drained side is dry ground up to the gate, in both axes; at station 10 the gate's face is dry (the water stands behind it).
+- `northstar/water_one_surface_live.py --drain` (kind A, the census read; offline selftest of its verdicts with planted
+  readings, 10 of 10): on the PARENT build (73ecd94b31's DLL) all four rules FAIL for the reported reasons
+  (`live_parent_73ecd94b31.json`: station 6's corner 5 sheet alphas, the wall band and the deep tint on dug squares, drained
+  squares under vanilla's water fade with no cover, gate sheets over 0.92..1.0 of the square); on the fix build all four PASS
+  (`live_fix.json`: 24 wet squares one sheet each, 8 drained squares dry, every gate's sheet 0.5 of its square).
+
+### Not this cause
+
+- Station 33 (his 6.png): the colonist stands drawn over the pit's east wall. Pawns are drawn in real time, not by the section
+  layers this drill changed (the census cannot see them, by design); a different cause [guess ~80%], not worked here.
+- The gate square still HOLDS water by the engine when one side is drained (the known "a shut sluice seals its whole square",
+  `RIMMANDRAKE_MEND_FLOWWORKS_LIQUID_RULES_FIVE_OLD_DEFECTS`); the look now shows it on the wet half only.
+
+### Lessons
+
+- A count read (`jawa/cell_draw_census`) settled in one run what three earlier fixes argued by eye; it also found a cause
+  nobody had named (vanilla's terrain edge fade of a NEIGHBOUR's liquid).
+- A polygon mirrored for the other side must have its vertex order reversed, or the GPU culls it.
+- Never release a game's lock to re-take it under `game_lock.py run`: another run takes the game in the gap.

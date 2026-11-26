@@ -635,7 +635,16 @@ namespace RimMandrake.FlowWorks
 					: new[] { 0f, 0f, 0f, 1f, top, 1f, top, 1f - hv, full, 1f - t, full, 0f };
 				if (east)
 				{
-					for (int i = 0; i < q.Length; i += 2) q[i] = 1f - q[i];
+					// mirrored, then its vertex order reversed so it winds as the drawn faces do (SideFaceStep): a mirrored polygon
+					// winds the other way and the GPU culls it (live 2026-11-25: the east walls of stations 20 to 22 drew dry)
+					float[] m = new float[q.Length];
+					int nv = q.Length / 2;
+					for (int i = 0; i < nv; i++)
+					{
+						m[2 * i] = 1f - q[2 * (nv - 1 - i)];
+						m[2 * i + 1] = q[2 * (nv - 1 - i) + 1];
+					}
+					q = m;
 				}
 				polys.Add(q);
 				kinds.Add(east ? CutEast : CutWest);

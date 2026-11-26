@@ -35,7 +35,8 @@ namespace JawaBench.BridgeTools
                 "in realtime[] by def and drawerType, so a caller sees where the census is blind.",
             ResultDescription =
                 "success, ticksGame, cell{x,z}, sectionsRead, draws[] {layer, visible, disabled, drawn, material, shader, " +
-                "renderQueue, matColour[r,g,b,a], tris, area, ext[x0,z0,x1,z1], aMin, aMax, rgbMean[r,g,b], aMean}, realtime[] " +
+                "renderQueue, matColour[r,g,b,a], tris, area, ext[x0,z0,x1,z1], aMin, aMax, rgbMean[r,g,b], aMean, colours[] {rgba[r,g,b,a] of a " +
+                "triangle whose three vertices share it, area}, mixedArea (triangles whose vertices differ)}, realtime[] " +
                 "{def, thingClass, drawerType}, layersWithNoMeshData[].")]
         public static async Task<object> CellDrawCensus(
             IRimBridgeContext ctx,
@@ -105,6 +106,8 @@ namespace JawaBench.BridgeTools
                                 aMax = st.aMax,
                                 aMean = st.n > 0 ? R(st.aSum / st.n) : 0f,
                                 rgbMean = st.n > 0 ? new[] { R(st.rSum / st.n), R(st.gSum / st.n), R(st.bSum / st.n) } : new float[0],
+                                colours = ColourGroups(st),
+                                mixedArea = R(st.mixedArea),
                             });
                         }
                     }
@@ -133,7 +136,22 @@ namespace JawaBench.BridgeTools
         private struct Stat
         {
             public int tris, n, aMin, aMax;
-            public float area, x0, z0, x1, z1, aSum, rSum, gSum, bSum;
+            public float area, x0, z0, x1, z1, aSum, rSum, gSum, bSum, mixedArea;
+            public Dictionary<int, float> byColour;
+        }
+
+        /// <summary>The distinct flat colours of a sub-mesh's triangles inside the square, with the area each covers: one water sheet
+        /// is one colour; several pieces at several alphas are several.</summary>
+        private static List<object> ColourGroups(Stat st)
+        {
+            var o = new List<object>();
+            if (st.byColour == null) return o;
+            foreach (var kv in st.byColour)
+            {
+                int c = kv.Key;
+                o.Add(new { rgba = new[] { (c >> 24) & 255, (c >> 16) & 255, (c >> 8) & 255, c & 255 }, area = R(kv.Value) });
+            }
+            return o;
         }
 
         /// <summary>The part of a sub-mesh inside square (x, z): each triangle clipped to the square (Sutherland-Hodgman), its area
@@ -183,6 +201,18 @@ namespace JawaBench.BridgeTools
                 }
                 if (colours)
                 {
+                    Color32 ca = sm.colors[a], cb = sm.colors[b], cd = sm.colors[d];
+                    if (ca.r == cb.r && ca.r == cd.r && ca.g == cb.g && ca.g == cd.g && ca.b == cb.b && ca.b == cd.b && ca.a == cb.a && ca.a == cd.a)
+                    {
+                        if (st.byColour == null) st.byColour = new Dictionary<int, float>();
+                        int key = (ca.r << 24) | (ca.g << 16) | (ca.b << 8) | ca.a;
+                        st.byColour.TryGetValue(key, out float have);
+                        st.byColour[key] = have + ar;
+                    }
+                    else
+                    {
+                        st.mixedArea += ar;
+                    }
                     foreach (int vi in new[] { a, b, d })
                     {
                         Color32 col = sm.colors[vi];

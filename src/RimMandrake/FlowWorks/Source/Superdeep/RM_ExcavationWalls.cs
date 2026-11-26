@@ -114,7 +114,9 @@ namespace RimMandrake.FlowWorks
 				// shows only the part between the two floors, so a riser's top meets the side walls part way down
 				bool relief = RM_UnderLiquid.Relief && material;
 				RM_PitReliefMath.StepPlan sp = RM_PitReliefMath.PlanStep(d, north, south, west, east, nw, ne, lv);
-				if (RimMandrakeFlowWorksSettings.pitOutlineEnabled)
+				// the outline marks the rim, which stands above any liquid: under a sheet it is drawn after the sheet, in the sheet's
+				// own sub-mesh, so the sheet never tints it (a brim-full pit lost its outline under the one surface, live 2026-11-25)
+				void DrawOutline()
 				{
 					if (relief)
 					{
@@ -125,6 +127,10 @@ namespace RimMandrake.FlowWorks
 						Outline(c, d, north, south, west, east, y + 0.0009f);
 					}
 					CornerLines(c, d, north, south, west, east, nw, ne, sw, se, y + 0.0009f);
+				}
+				if (RimMandrakeFlowWorksSettings.pitOutlineEnabled && !sheet)
+				{
+					DrawOutline();
 				}
 				float nd = RM_UnderLiquid.Exposed(d, north, lv);
 				float wd = RM_UnderLiquid.Exposed(d, west, lv);
@@ -141,6 +147,12 @@ namespace RimMandrake.FlowWorks
 				if (sheet)
 				{
 					WaterSurface(map, eng, c, d, lvTrue, look, north, south, west, east, nw, ne, relief, y - 0.0008f);
+					if (RimMandrakeFlowWorksSettings.pitOutlineEnabled)
+					{
+						outlineMat = sheetMatDrawn;
+						DrawOutline();
+						outlineMat = null;
+					}
 				}
 				if (!material)
 				{
@@ -413,7 +425,7 @@ namespace RimMandrake.FlowWorks
 		/// (from Lt to 1 - Rt, where the riser's top meets them); a side lip line from its hv down.</summary>
 		private void OutlineStep(IntVec3 c, RM_PitReliefMath.StepPlan sp, float y)
 		{
-			Material m = RM_FaceMaterial.OutlineMat;
+			Material m = outlineMat ?? RM_FaceMaterial.OutlineMat;
 			Color32 k = new Color32(0, 0, 0, 255);
 			if (sp.Sl > 0f)
 			{
@@ -560,7 +572,7 @@ namespace RimMandrake.FlowWorks
 		/// of this square's reaches that corner, so the block's outline would break there (RM_PitReliefMath.ClosesCorner).</summary>
 		private void CornerLines(IntVec3 c, int d, int north, int south, int west, int east, int nw, int ne, int sw, int se, float y)
 		{
-			Material m = RM_FaceMaterial.OutlineMat;
+			Material m = outlineMat ?? RM_FaceMaterial.OutlineMat;
 			Color32 k = new Color32(0, 0, 0, 255);
 			float sl = RM_WallFaceMath.SideLine, r = RM_WallFaceMath.RimLine;
 			if (RM_PitReliefMath.ClosesCorner(d, north, west, nw))
@@ -668,7 +680,7 @@ namespace RimMandrake.FlowWorks
 		/// the drop: the owner's "black-lining on the southern edge".</summary>
 		private void Outline(IntVec3 c, int d, int north, int south, int west, int east, float y)
 		{
-			Material m = RM_FaceMaterial.OutlineMat;
+			Material m = outlineMat ?? RM_FaceMaterial.OutlineMat;
 			Color32 k = new Color32(0, 0, 0, 255);
 			int sd = d - south;
 			if (sd > 0)
@@ -1010,12 +1022,17 @@ namespace RimMandrake.FlowWorks
 			Color body = RM_SubmergeDraw.BodyColour(look);
 			Color32 sheet = new Color32((byte)(255f * body.r * share + 0.5f), (byte)(255f * body.g * share + 0.5f),
 				(byte)(255f * body.b * share + 0.5f), Alpha(RM_PitReliefMath.SheetAlpha(seen, wa)));
+			sheetMatDrawn = RM_FaceMaterial.SheetMat;
 			for (int i = 0; i < sheetPieces.Count; i++)
 			{
-				Fan(RM_FaceMaterial.SheetMat, Verts(c, sheetPieces[i], y + 0.0005f), Uniform(sheetPieces[i].Length / 2, sheet), false, c.z);
+				Fan(sheetMatDrawn, Verts(c, sheetPieces[i], y + 0.0005f), Uniform(sheetPieces[i].Length / 2, sheet), false, c.z);
 			}
 			WetEdges(map, eng, c, d, lv, north, south, west, east, wx0, wx1, wz0, wz1, y);
 		}
+
+		/// <summary>The outline's material while it is drawn over a sheet (the sheet's own, so it lands after it); null: its own.</summary>
+		private Material outlineMat;
+		private Material sheetMatDrawn;
 
 		private void AddFace(float[] xz, int kind, float cut)
 		{

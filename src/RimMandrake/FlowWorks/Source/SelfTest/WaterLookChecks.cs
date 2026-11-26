@@ -197,6 +197,23 @@ namespace RimMandrake.FlowWorks.SelfTest
                     }
                 }
                 Assert(squares > 1000, "the sweep reached the wet squares (" + squares + ")");
+                // live 2026-11-25 9:00 PM PST, the first fix build: the east walls of stations 20 to 22 showed dry. An east face mirrored
+                // without its vertex order reversed winds the other way, and the GPU culls it as a back face (SideFaceStep reverses its
+                // east arrays for this). Every piece must wind as the floor's quads do (clockwise seen from above: signed area < 0).
+                foreach (var g in WaterGrids())
+                {
+                    foreach (var kv in g.Value)
+                    {
+                        int x = kv.Key.Item1, z = kv.Key.Item2, d = kv.Value;
+                        int D(int a2, int b2) => g.Value.TryGetValue((a2, b2), out int v) ? v : 0;
+                        RM_PitReliefMath.SheetPieces(d, D(x, z + 1), D(x, z - 1), D(x - 1, z), D(x + 1, z), D(x - 1, z + 1), D(x + 1, z + 1),
+                            d * 0.5f, 0f, 1f, 0f, 1f, pieces);
+                        foreach (float[] p in pieces)
+                        {
+                            Assert(Signed(p) < 0f, "can-fail: a sheet piece winds the other way (culled: drawn dry): " + g.Key + " (" + x + "," + z + ")");
+                        }
+                    }
+                }
                 // one alpha: the wet-ground darkening composed with the liquid's own overlay is one overlay
                 float seen = 0.6f, wa = 0.15f;
                 float A = RM_PitReliefMath.SheetAlpha(seen, wa), share = RM_PitReliefMath.SheetBodyShare(seen, wa);
@@ -253,6 +270,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(walls, @"ReliefCell\(map, eng, c, d, sp, note == 0 \|\| sheet, sc, y\);", "and its floor shade, lip bands and shadow");
                 RiverSwitchFlipChecks.Has(looks, @"!RM_WaterLookDraw\.IsStillWater\(map, c\) \|\| eng\.IsExcavated\(c\)", "can-fail: the deep tint leaves dug squares to the one sheet");
                 RiverSwitchFlipChecks.Has(walls, @"RM_PitReliefMath\.ReprintsFloor\(true, false, BesideLiquidTerrain\(map, c\)\)", "a drained square reprints its floor");
+                // live 2026-11-25: a brim-full pit lost its rim outline under the sheet; the rim stands above the water
+                int wsCall = walls.IndexOf("WaterSurface(map, eng, c, d, lvTrue", StringComparison.Ordinal);
+                int over = walls.IndexOf("outlineMat = sheetMatDrawn;", StringComparison.Ordinal);
+                Assert(wsCall > 0 && over > wsCall && walls.IndexOf("DrawOutline();", over, StringComparison.Ordinal) > over,
+                    "can-fail: under a sheet the rim outline is drawn after it, in its sub-mesh");
+                Assert(Regex.Matches(walls, @"Material m = outlineMat \?\? RM_FaceMaterial\.OutlineMat;").Count == 3, "every outline line takes the override");
             });
         }
 
@@ -274,6 +297,18 @@ namespace RimMandrake.FlowWorks.SelfTest
             o["stepped 4 beside 8"] = Rect(2, 0, 2, 3, 8, Rect(0, 0, 2, 3, 4));
             o["inner block (corner pieces)"] = Rect(2, 2, 1, 1, 2, Rect(0, 0, 5, 5, 6));
             return o;
+        }
+
+        private static float Signed(float[] p)
+        {
+            float a = 0f;
+            int n = p.Length / 2;
+            for (int i = 0; i < n; i++)
+            {
+                int j = (i + 1) % n;
+                a += p[2 * i] * p[2 * j + 1] - p[2 * j] * p[2 * i + 1];
+            }
+            return 0.5f * a;
         }
 
         private static bool Inside(float[] p, float x, float z)
