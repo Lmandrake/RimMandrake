@@ -82,7 +82,7 @@ while one is missing.
 What you, reading cold, noticed first. A thing worth fixing also carries its ticket id.
 ```
 
-Before the advance, check that every pick item of his last walk result is closed. The `maturation.py` clause `walk_items_closed` refuses the advance while one is open. A pick item stays open when his pick was recorded on a new build item instead of on it. Close such a pick item with his OWNER event and the build item as `--remainder`.
+Before the advance, check that every pick item of his last walk result is closed. A pick item is a ledger item that the pick list of his last walk result names. The `maturation.py` clause `walk_items_closed` refuses the advance while one is open. A pick item stays open when his pick was recorded on a new build item instead of on the pick item. Close such a pick item with `rimflow close <pick item> --remainder <build item>`, citing his pick event on the OWNER shard.
 
 Then run `python3 src/RimMandrake/rimflow/maturation.py advance <Mod> --to his_walk --by <SEAT> --why "walk brief
 arrival_<N> written"`. No `--steward-confirms`: do not pass that flag, because the brief is the stage's only exit check. Write each path in
