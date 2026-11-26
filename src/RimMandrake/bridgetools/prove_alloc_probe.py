@@ -29,7 +29,9 @@ import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
-EVID = "/mnt/d/ClaudeWork/rimmandrake/evidence/MONO_ALLOC_MEASURE_PER_TICK_ON_GAME"
+# The live proof runs under Windows Python (python.exe reaches the bridge); a /mnt/d literal there is no path.
+EVID = (r"D:\ClaudeWork\rimmandrake\evidence\MONO_ALLOC_MEASURE_PER_TICK_ON_GAME" if os.name == "nt"
+        else "/mnt/d/ClaudeWork/rimmandrake/evidence/MONO_ALLOC_MEASURE_PER_TICK_ON_GAME")
 WINDOW_JSON = os.path.join(EVID, "window.json")
 TABLE_MD = os.path.join(EVID, "bytes_per_tick.md")
 INSTRUMENTS = ("threadAlloc", "gcTotalMemory", "monoUsedSize")
