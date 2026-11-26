@@ -1,0 +1,3 @@
+Before you claim that a setting never reaches a kernel, trace every call path: grep for the sync call's callers, and read each caller's whole body. In FlowWorks, RM_MapComponent_Sheet.Ensure() ends with SyncParams() outside its branches, and EnginePulse calls Ensure() each pulse. A source-text law that looked for SyncParams() directly in EnginePulse was red on a correct build, and a false MOD fix (e79b39dfe2) landed until a fresh reader caught it. A red on a source-text law shows only the spelling, not the behaviour.
+item: RIMMANDRAKE_CLASS_SEVEN_THIRST_FAILS_SITE_FULL_OF_PATIENTS
+home: skills/rimworld-modding/references/project-engine-facts.md
