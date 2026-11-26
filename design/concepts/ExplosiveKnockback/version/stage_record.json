@@ -2,10 +2,10 @@
   "schema": 1,
   "mod": "ExplosiveKnockback",
   "version": "0.2.0",
-  "stage": "his_walk",
-  "stage_label": "His live walk (Stage 8)",
-  "since": "2026-11-26T06:44:59-08:00",
-  "since_from": "advance by BENCH",
+  "stage": "passed",
+  "stage_label": "Version passed (Passed)",
+  "since": "2026-11-26T09:35:38-08:00",
+  "since_from": "advance by CONDUCTOR",
   "at_door": false,
   "seeded": {
     "at": "2026-11-24T16:34:30-08:00",
@@ -207,6 +207,28 @@
         "walk_checks_stand",
         "walk_brief",
         "walk_items_closed"
+      ]
+    },
+    {
+      "from": "his_walk",
+      "to": "passed",
+      "at": "2026-11-26T09:35:38-08:00",
+      "by": "CONDUCTOR",
+      "why": "his live walk of Explosive Knockback 0.2.0 on ArchBig, save EK_V020_WALK_NEW_THROWS_20261126, 2026-11-26 about 9:20 to 9:33 AM PST; his words pass the version: ALL WALK ITEMS PASS. This is extremely satisfying. Well done!",
+      "unit": null,
+      "item": null,
+      "confirmed": {
+        "owner_said": "OWNER:1795714498917797906"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "owner_said",
+        "walk_build",
+        "raid_bars_decided",
+        "pass_record_new"
       ]
     }
   ]

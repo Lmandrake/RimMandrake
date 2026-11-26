@@ -8,13 +8,13 @@ The top part, **the mod as it stands**, is rewritten at every stage change and s
 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Code exists:
   `src/RimMandrake/ExplosiveKnockback/`.
-- **Stage now:** Stage 8, his live walk, since 2026-11-26 6:44 AM PST (`version/stage_record.json`).
+- **Stage now:** Version passed on his word, since 2026-11-26 9:35 AM PST (`version/stage_record.json`).
 - **Bars:** 59 (30 inventory rows of `record.json` + 29 leaves of `tree.json`). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`).
 - **Measured 2026-11-14 12:45 PST:** 53 of 59 bars have at least one test that runs today; 47 have every deciding test
   runnable; 41 have all their offline deciding tests green. All 15 offline tests are built (13 PASS, 2 known red,
   unchanged). In-game scenes: 56, entry exists 50, absent 6. Every in-game scene is UNRUN (Stage 6); commands in the table.
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-26 6:44 AM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-26 9:35 AM PST).
 - **Open questions:** see "Questions" at the end of the history.
 
 ### The vision (his root paragraph, approved by card 2026-11-11, OWNER:1794468835221748501)
@@ -579,4 +579,13 @@ answer the locked bar, his recorded words or the shipped code already gives; no 
 - Checks passed: order, by, version, hold, walk_checks_stand, walk_brief, walk_items_closed.
 - Was, "Stage now": - **Stage now:** Stage 7, the walk brief, since 2026-11-26 6:31 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-26 6:31 AM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-26 9:35 AM PST, stage change: His live walk (Stage 8) to Version passed (Passed) (by CONDUCTOR)
+
+- Why: his live walk of Explosive Knockback 0.2.0 on ArchBig, save EK_V020_WALK_NEW_THROWS_20261126, 2026-11-26 about 9:20 to 9:33 AM PST; his words pass the version: ALL WALK ITEMS PASS. This is extremely satisfying. Well done!
+- Checks passed: order, by, version, hold, owner_said, walk_build, raid_bars_decided, pass_record_new.
+- Owner said: OWNER:1795714498917797906
+- Was, "Stage now": - **Stage now:** Stage 8, his live walk, since 2026-11-26 6:44 AM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-26 6:44 AM PST).
 - Record: `version/stage_record.json`.
