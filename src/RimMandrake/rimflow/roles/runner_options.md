@@ -36,8 +36,8 @@ Windows `python.exe`. No Claude runner or Claude tool call drove the game. The r
 `.claude/settings.json` is Claude configuration. Codex does not execute its PreToolUse, Stop or SubagentStop hooks.
 Use the repository's tools and inspect their results explicitly. The operator must supply:
 
-- **The authority and the quota gate.** Supply the current owner authority, the own-clone boundary, the quota gate and
-  source-first decisions. Run the task's `ops_watch.c_codex` reading before every unit. Stop at the owner's cutoff. A
+- **The authority and the quota gate.** Supply the current owner authority, the own-clone boundary and the quota gate.
+  Run the task's `ops_watch.c_codex` reading before every unit. Stop at the owner's cutoff. A
   native CLI process does not get the quota gate of the MandrakeWorkflows runner only because it is named Codex.
 - **The duties of six hooks:** `block_blind_scan`, `block_blanket_git_stage`, `block_shared_tree_merge`, `queue_lint`,
   `block_dll_source_mismatch` and `block_ledger_lint`. The duties are:

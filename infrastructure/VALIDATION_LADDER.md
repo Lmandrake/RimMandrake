@@ -42,7 +42,8 @@ one tier of the ladder. The cheapest tier is first.
 
 - Use one quicktest map for each batch. Spawn everything new. Step ticks once. Harvest the log once. Take one
   screenshot.
-- This tier catches an NRE (a null reference exception), missing or magenta art, and eaten defs.
+- This tier catches an NRE (a null reference exception), missing or magenta art, and eaten defs (a def that a load error, a patch or a duplicate defName removes from the game, so a spawn of it finds
+  nothing: `expectations_l2.py` reads it as NOT-SPAWNED).
 - **Art presence is proven HERE, by machine.** Use pixel checks against the screenshot or the atlas, per
   `prove-art-missing-before-generating`.
 - A human never hunts magenta squares.

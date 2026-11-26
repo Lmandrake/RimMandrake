@@ -122,16 +122,16 @@ Counts of table 1: RESOLVED 76 · STALE 18 · NOT FOUND 7 · RESOLVED (here only
 
 ## Table 2: NOT FOUND
 
-The lines stay as they were.
+Every row is settled (2026-11-25, item `RIMMANDRAKE_ANSWER_SEVEN_TERMS_NO_SOURCE_DEFINES_GREY_MUD`):
 
-| term | file | who would know | the question |
-|---|---|---|---|
-| "source-first decisions" | `src/RimMandrake/rimflow/roles/runner_options.md` | the author of the 2026-11-10 Codex live run (commit 6f356d9cae) | What decision must the operator make source first? Is it "read the source before you act"? If nobody knows, delete the words. |
-| "fixed, proved done and closed, or brought" | `src/RimMandrake/rimflow/roles/fable_rescue.md` line 59 | the Conductor | Can a rescue end a ticket in two ways (fixed and closed; brought to you) or in three (fixed; proved already done and closed; brought to you)? |
-| "eaten defs" | `infrastructure/VALIDATION_LADDER.md` L2 | the author of `expectations_l2.py` | Is an eaten def a def that a load error, a patch or a duplicate removes from the game? |
-| "augmentors, tile augmentor" | `infrastructure/VALIDATION_LADDER.md` L4 (his words) | Mandrake | What is a tile augmentor: a tile mutator (the game's word for a map feature of a tile), or another thing? |
-| "P2" | `infrastructure/state/facts/almost_out_codex_log.md` | the Codex review prompt of 2026-10-25 (not in the repo) | What severity is P2? Nobody needs the answer to act: the log is a record of its date. |
-| "13 of 13 boots before" | `infrastructure/state/facts/steve_fault_diagnosis.md` | the author of `steve_audio_default_test.md` | Are the 13 boots the 7 of 2026-11-20 and the 6 of 2026-11-21? |
+| term | file | settled as |
+|---|---|---|
+| "source-first decisions" | `src/RimMandrake/rimflow/roles/runner_options.md` | Nobody could say what it means: the words are deleted. |
+| "fixed, proved done and closed, or brought" | `fable_rescue.md` | The file is gone: it merged into `roles/builder.md` at 250d09b30b, which does not use the phrase. Nothing to answer. |
+| "eaten defs" | `infrastructure/VALIDATION_LADDER.md` L2 | Defined there: a def that a load error, a patch or a duplicate defName removes; `expectations_l2.py` reads it as NOT-SPAWNED. |
+| "augmentors, tile augmentor" | `infrastructure/VALIDATION_LADDER.md` L4 | Already defined in that file (his word for a tile mutator) and in `skills/rimworld-content-moderation/SKILL.md`. |
+| "P2" | `infrastructure/state/facts/almost_out_codex_log.md` | Left as written: a dated record of a Codex review's severity label; nobody acts on it. |
+| "13 of 13 boots before" | `infrastructure/state/facts/steve_fault_diagnosis.md` | Reworded: the fault came on each of the 13 boots before that one. |
 
 ## Table 3: every listed conflict (102)
 

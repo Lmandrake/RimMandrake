@@ -4,8 +4,8 @@ The owner, 2026-11-23: *"Those are old v3 roles we retired! V3 and relentless wa
 
 The Producer and the Auditor are deleted. The Arbiter, the Setter and the Innovator were retired before them. The table
 takes each duty of `design/RimMandrake/role_responsibilities_2026-10-26.md` Part 4. Item:
-`RIMMANDRAKE_REMOVE_RETIRED_V3_ROLES_FROM_ACTIVE_RULES_STILL_LISTED`. REVIVE-OR-DROP means that nothing does the duty now
-and that the Conductor decides if it matters. Nobody is assigned here.
+`RIMMANDRAKE_REMOVE_RETIRED_V3_ROLES_FROM_ACTIVE_RULES_STILL_LISTED`. A row that reads DROPPED or REVIVED names a duty that
+nothing did on 2026-11-23, and the ruling of 2026-11-25 on it. Nobody is assigned here.
 
 ## Producer
 
@@ -14,12 +14,12 @@ and that the Conductor decides if it matters. Nobody is assigned here.
 | P-1 goals into a daily list, a weekly plan and tickets; focus WIP cap | The Conductor orders its lane from `CONDUCTOR_GOALS.md`. The mod pipeline takes each mod's next act, and the List Pipeline works the list. Nobody writes a daily list or a weekly plan. The WIP cap holds no window. | `roles/conductor.md` §Goals down; `maturation_dispatch.py`; `rm-list-dispatch.timer` enabled; `focus_cap.seats` is `[]` |
 | P-2 critical path for each focus mod | The mod's own folder: version, bars, gaps, stage. | `CLAUDE.md` §Mods keep their own state |
 | P-3 named scenarios before a build | The Designer's tree and scenes, for a mod. The filer's acceptance test, for a ticket. | `roles/designer_write.md`; `~/.claude/CLAUDE.md` (a ticket is filed with its acceptance test) |
-| P-4 replan on a failed plan step or a forecast miss | Operations files one item for the Conductor, and the Conductor decides the cut. (Three `REPLAN REQUEST` notes of 2026-11-18 to 11-20 were read by nobody: `RIMMANDRAKE_ROUTE_REPLAN_REQUESTS_TO_CONDUCTOR_PRODUCER_OFF`.) The automatic run on a failed plan step: REVIVE-OR-DROP. | `roles/operations.md` §The economy pass; `role_launch.py` event runs deleted |
-| P-5 weekly backlog hygiene (blocked and stale items) | The Conductor sweeps after a major system event. The List Pipeline closes and escalates list items. The weekly run of `queue_staleness_review.py`: REVIVE-OR-DROP (no unit and no role names it). | `roles/conductor.md` §After a major system event; `git grep queue_staleness_review` |
+| P-4 replan on a failed plan step or a forecast miss | Operations files one item for the Conductor, and the Conductor decides the cut. (Three `REPLAN REQUEST` notes of 2026-11-18 to 11-20 were read by nobody: `RIMMANDRAKE_ROUTE_REPLAN_REQUESTS_TO_CONDUCTOR_PRODUCER_OFF`.) The automatic run on a failed plan step: DROPPED (ruling of 2026-11-25). | `roles/operations.md` §The economy pass; `role_launch.py` event runs deleted |
+| P-5 weekly backlog hygiene (blocked and stale items) | The Conductor sweeps after a major system event. The List Pipeline closes and escalates list items. The weekly run of `queue_staleness_review.py`: REVIVED as an age line in the List Pipeline (ruling of 2026-11-25; the tool is already gone) (no unit and no role names it). | `roles/conductor.md` §After a major system event; `git grep queue_staleness_review` |
 | P-6 what the test lane runs | A program: `wired_mods.json`, rotated. The variable `TESTQ_FILL_MODS` still overrides. | `Utils/testq/coverage.py` |
 | P-7 bar coverage; test budget for each mod | The coverage judge. The budget for each mod: nobody, and a stage ceiling takes its place. | `rimflow/coverage_judge.py`; `maturation_dispatch.py releases` |
 | P-8 order finish, strengthen, explore; a stopping point for each item | The pipeline's stages and the two tests of §Touching code has a cost. | `standing_rulings.md` |
-| P-9 read the idea bank `design/V2_DREAMS.md` | Any seat may write to it. Nobody reads it: REVIVE-OR-DROP. | `CHARTER.md` (the only live rule line that names it) |
+| P-9 read the idea bank `design/V2_DREAMS.md` | Any seat may write to it. Nobody reads it: DROPPED; the file stays (ruling of 2026-11-25). | `CHARTER.md` (the only live rule line that names it) |
 
 ## Arbiter
 
@@ -36,16 +36,16 @@ and that the Conductor decides if it matters. Nobody is assigned here.
 
 | duty | who or what does it now | evidence |
 |---|---|---|
-| AU-1 sample closed items and passes | The mechanical check of every close: `close_check.py`, daily, no AI (a close whose commit is not on main reopens its item). The sample by a reader: the daily findings judge (step 3, `regrade.py`, at most 3 closed items a day) sampled closes from 2026-11-06 until its own stop rule ended the sample ("18 days since the first regrade and nothing held up: stopped, as the owner asked"). The weekly follow-through audit reads needs. To start the regrade again is REVIVE-OR-DROP. | `regrade.py report` (exit 3, 2026-11-24); `findings_judge_prompt.md` step 3; `rm-close-check.timer`; `design/specs/2026-11-23-close-check/boundary.md` |
+| AU-1 sample closed items and passes | The mechanical check of every close: `close_check.py`, daily, no AI (a close whose commit is not on main reopens its item). The sample by a reader: the daily findings judge (step 3, `regrade.py`, at most 3 closed items a day) sampled closes from 2026-11-06 until its own stop rule ended the sample ("18 days since the first regrade and nothing held up: stopped, as the owner asked"). The weekly follow-through audit reads needs. To start the regrade again is DROPPED (ruling of 2026-11-25). | `regrade.py report` (exit 3, 2026-11-24); `findings_judge_prompt.md` step 3; `rm-close-check.timer`; `design/specs/2026-11-23-close-check/boundary.md` |
 | AU-2 re-check each verdict that sets blocking evidence aside | A rule, not a re-check: a repaired check counts only when it is seen to fail and pass, and one fresh reader reads a fix. | `CLAUDE.md` §Touching code has a cost |
-| AU-3 a repeat error becomes an enforced rule | The findings judge files `Rule candidate:` items for the Conductor, on Fridays. The run that sees a defect fixes it. A program that counts repeats over lessons: REVIVE-OR-DROP. | `Utils/findings_judge_friday.md`; `rm-findings-judge.timer` enabled |
+| AU-3 a repeat error becomes an enforced rule | The findings judge files `Rule candidate:` items for the Conductor, on Fridays. The run that sees a defect fixes it. A program that counts repeats over lessons: DROPPED (ruling of 2026-11-25). | `Utils/findings_judge_friday.md`; `rm-findings-judge.timer` enabled |
 | AU-4 scheduled adversarial reviews that he released | Nobody. GPT and Codex reviews of pipeline code stay stopped. | `CLAUDE.md` §Code is clean |
-| AU-5 spot check of the daily digest | The owner only: REVIVE-OR-DROP. | `delegated_digest.py` builds it, and no reader checks it |
+| AU-5 spot check of the daily digest | The owner only: DROPPED (ruling of 2026-11-25). | `delegated_digest.py` builds it, and no reader checks it |
 | AU-6 instrument trust | A rule for whoever counts. | `facts/instrument_traps.md` |
 | AU-7 read codebase health | Dead: the page's timer and publisher are retired, and `rm-codebase-now.timer` makes the page that replaced it. No scheduled read is owed on either page. | `live_retired.txt`; `selftest_retired_era_gone.py` RETIRED_UNITS |
 | AU-8 re-check the v3-against-v2 verdict | Dead: `v3_vs_v2.py` no longer exists. `Utils/v3_vs_v2_rules.json` is the default `--rules` file of `sim/process_sim.py backtest`. | `git grep v3_vs_v2_rules` |
-| weekly sample of the findings fold's merges and retire decisions | Nobody: REVIVE-OR-DROP. | `dispatcher_schedule.json` `findings_fold` named the Auditor |
-| token talk in the reports of token-blind roles (the check that Operations owns) | The check measures nothing: the two roles that it listed are gone. Point it at the Designer, or delete it: REVIVE-OR-DROP. | `ops_watch_rules.json` `token_talk.roles` is `[]` |
+| weekly sample of the findings fold's merges and retire decisions | Nobody: DROPPED (ruling of 2026-11-25). | `dispatcher_schedule.json` `findings_fold` named the Auditor |
+| token talk in the reports of token-blind roles (the check that Operations owns) | The check measures nothing: the two roles that it listed are gone. Point it at the Designer, or delete it: DROPPED; the dead measure is removed when a run next changes `ops_watch.py`, and `terms` stays (ruling of 2026-11-25). | `ops_watch_rules.json` `token_talk.roles` is `[]` |
 
 ## Retired names that are still in use (for the Conductor)
 
@@ -60,11 +60,13 @@ and that the Conductor decides if it matters. Nobody is assigned here.
 - The priority list and its tool were deleted 2026-11-23 (retire census): the order of work comes from the Maturation
   Pipeline, the List Pipeline and `CONDUCTOR_GOALS.md`.
 
-## Evidence and a recommendation for each open decision (2026-11-24, for the Conductor)
+## Evidence and the ruling for each open decision (2026-11-24 evidence; ruled 2026-11-25)
 
-Item: `RIMMANDRAKE_DECIDE_RETIRED_ROLE_DUTIES_NOBODY_DOES_NOW`. These are recommendations by the run that shaped the
-item. They are not rulings. The Conductor rules, replaces the words REVIVE-OR-DROP in the rows above with the ruling, and
-does (or has a helper do) the act.
+Item: `RIMMANDRAKE_DECIDE_RETIRED_ROLE_DUTIES_NOBODY_DOES_NOW`. Each recommendation below is taken as the ruling, by
+delegation of the Conductor's brief of 2026-11-25 (no evidence against any of them was found). Two facts moved since the
+evidence was read: `stage_dispute.py` and `stage_dispute.json` are already gone (`git grep stage_dispute` finds no tracked
+code), and `queue_staleness_review.py` and its selftest are already gone. The token-talk measure is dead code that harms
+nothing, so it is removed only when a run next changes `ops_watch.py` (§Touching code has a cost).
 
 | open decision | evidence, measured 2026-11-24 unless tagged | recommendation and its act |
 |---|---|---|

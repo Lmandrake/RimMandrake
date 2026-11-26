@@ -328,7 +328,7 @@ the same as in the split: the same 315-mod native game launch, the register prob
     with an Interactive principal).
 - **Reading: CLEAN.** The probe ran 10 cycles with the game up, 2.9 to 47.9 min after the start, all clean, 18/18 CPUs,
   0 RPFAULT lines. With the defaults on Sonic Studio and the same driver set, the same method faulted at 2.9 and 4.0 min
-  (and 13 of 13 boots before).
+  (and the fault came on each of the 13 boots before this one).
 - **What this means:** the fault needs the game's audio to pass through the Sonic Studio virtual mixer; the driver loaded
   with no game stream through the mixer is not enough [guess ~80%: one boot, evidence, not confirmed]. Playback and
   recording defaults moved together, so this boot does not split them.
