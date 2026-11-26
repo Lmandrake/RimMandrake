@@ -208,6 +208,11 @@ def t_a_passed_wait_gets_one_second_look():
     b = LD().brief_text("A", it(**past), {"run_n": 2, "look": "three more launches"})
     chk(lambda: "second look" in b and "three more launches" in b, "the brief says what the wait was for")
     chk(lambda: "second look" not in LD().brief_text("A", it(), {"run_n": 1}), "a plain Work brief has no second look")
+    import shlex
+    q = "cmd:python3 -c 'import sys; sys.exit(1)'"                    # a check that holds single quotes (polish line)
+    line = next((x.strip() for x in LD().brief_text("A", it(effect=q), {"run_n": 1}).splitlines()
+                 if "list_effect.py check" in x), "")
+    chk(lambda: shlex.split(line)[-1] == q, "the brief's check command runs as written for a check with quotes (%s)" % line)
 
 
 

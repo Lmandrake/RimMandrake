@@ -69,6 +69,7 @@ import fcntl
 import json
 import os
 import re
+import shlex
 import subprocess
 import sys
 import time
@@ -1325,7 +1326,7 @@ Steps:
 2. Do the work the item asks for. The need is what the item says, not only the check's text: a check that you can pass
    while the need stays unmet is wrong, and you say so in a note instead of passing it.
 3. Run the check in your clone until it reads holds:
-   python3 src/RimMandrake/rimflow/list_effect.py check '{check}'
+   python3 src/RimMandrake/rimflow/list_effect.py check {check_q}
 4. Land with ./publish -m "{item}: <what>" <explicit paths>, then close:
    python3 src/RimMandrake/rimflow/cli.py close {item} --sha <published sha> --seat BENCH --why "Workshop Pipeline: the check holds at <sha>" --publish
    (an operational item also takes its --live promise).
@@ -1336,6 +1337,7 @@ Steps:
      someone else's (the owner's, the Conductor's, a date).
    Do not file a new item for your own next step.
 """.format(item=iid, n=row.get("run_n", 1), title=it.get("title") or "-", check=it.get("effect"),
+               check_q=shlex.quote(it.get("effect") or ""),
            out=_one(it.get("out"), 600) or "(nothing)",
            look=LOOK % _one(row["look"], 400) if row.get("look") else "",
            stale=STALE.replace("{item}", iid) % _one(row["stale_block"], 600) if row.get("stale_block") else "")
