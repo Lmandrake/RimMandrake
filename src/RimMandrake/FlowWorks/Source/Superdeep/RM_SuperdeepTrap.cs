@@ -812,13 +812,17 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
-		/// <summary>Absolute rule: a descent into D = 4 from shallower. Relative (design §8.5 step 8): the arrival drops more than
+		/// <summary>Absolute rule: a descent into D = 4 from shallower, the origin read at its walking height. Relative (design §8.5 step 8): the arrival drops more than
 		/// this pawn climbs (RM_PitTrapMath.ArrivalDropsTooFar); who takes the fall is still DescentFalls.</summary>
 		private static bool IsFallingArrival(Map map, RM_MapComponent_Excavation eng, Pawn p, IntVec3 prev, IntVec3 pos)
 		{
 			if (!RM_PocketGrid.Relative)
 			{
-				return RM_PitTrapMath.IsPitDescent(eng.ExcavatedDepthAt(prev), eng.ExcavatedDepthAt(pos));
+				// ABSOLUTE_DESCENT_FIX_MISSES_DECK_SHOVE: off a deck over the same pit is 0 -> 4, not 4 -> 4
+				int fromDug = eng.ExcavatedDepthAt(prev);
+				bool decked = fromDug > 0 && Pits.RM_PitCoverUtility.IsCovered(map, prev);
+				return RM_PitTrapMath.AbsoluteArrivalDescends(fromDug, decked,
+					decked ? Pits.RM_SpanUtility.WalkingDepth(map, prev, fromDug) : fromDug, eng.ExcavatedDepthAt(pos));
 			}
 			int to = eng.ClimbDepthAt(pos);
 			// TITAN_TRENCHES_WIRE_MIND_THE_GAP: a trench this creature steps over is ground to it: no fall, walked or shoved

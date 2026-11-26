@@ -1099,6 +1099,19 @@ namespace RimMandrake.FlowWorks.SelfTest
                 AssertClose(RM_PitTrapMath.FallDamage(60f, 0f), 1f, "multiplier 0 still floors at 1");
             });
 
+            // ── ABSOLUTE_DESCENT_FIX_MISSES_DECK_SHOVE: the absolute rule reads a decked origin at its walking height ──
+            Case("PitTrap_absolute_descent_reads_deck_height", () =>
+            {
+                // (fromDugDepth, fromDecked, fromDeckWalkingDepth, toDugDepth)
+                Assert(RM_PitTrapMath.AbsoluteArrivalDescends(4, true, 0, 4), "off a cover / surface deck over the same D4 pit -> descent");
+                Assert(RM_PitTrapMath.AbsoluteArrivalDescends(4, true, 2, 4), "off a sunken deck at 2 over D4 -> descent");
+                Assert(!RM_PitTrapMath.AbsoluteArrivalDescends(4, true, 4, 4), "off a sunken deck already at 4 -> no descent");
+                Assert(!RM_PitTrapMath.AbsoluteArrivalDescends(4, false, 4, 4), "along the open D4 floor -> no descent");
+                Assert(RM_PitTrapMath.AbsoluteArrivalDescends(0, false, 0, 4), "from the bank -> descent");
+                Assert(!RM_PitTrapMath.AbsoluteArrivalDescends(0, true, 0, 3), "into D3 -> no pit descent");
+                Assert(!RM_PitTrapMath.AbsoluteArrivalDescends(4, true, 0, 0), "off a deck onto the bank -> no descent");
+            });
+
             // ── FLOWWORKS_PIT_FALL_ONLY_FORCED_1 + the pit_escape ladder bug (live FAIL 2026-10-06) ──
             Case("PitFall_only_forced_or_concealed", () =>
             {
