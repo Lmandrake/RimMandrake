@@ -234,25 +234,41 @@ def restore_groups(rows):
 
 
 def _connect():
+    """-> call(tool, **params) -> reply dict. The bridge binds Windows loopback, so each call runs the client under
+    Windows Python (live_def_check._bridge); a call that did not answer is a reply with success False and its cause."""
     sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
-    import rimbridge_client as rb
-    host, port, token = rb.resolve_endpoint()
-    # budget: danger=a world_commit regenerates every planet layer; the longest seen is ~20 s on a full planet; 300 s is a hang guard
-    S = rb.RimBridge(host=host, port=port, token=token, timeout=300.0)
-    S.connect()
+    import live_def_check as L
+    client = subprocess.run(["wslpath", "-w", L.CLIENT], capture_output=True, text=True).stdout.strip()
 
     def call(tool, **p):
+        # the staging writes are this proof's purpose, so they pass the client's live-write flag; reads stay reads
+        flag = ["--read-only-static"] if tool == "jawa/static_call" else ["--yes-i-know-this-is-live"]
         try:
-            r = S.call(tool, p) or {}
-        except Exception as e:  # noqa: BLE001 - a refused or failed call is a reply that did not succeed, by name
-            return {"success": False, "error": "%s: %s" % (type(e).__name__, e)}
+            # budget: danger=a world_commit regenerates every planet layer and a hung call holds the game; 300 s is a hang guard
+            r = subprocess.run(["python.exe", client, "--timeout", "300", "--call", tool, "--json", json.dumps(p)] + flag,
+                               capture_output=True, text=True, timeout=330, stdin=subprocess.DEVNULL)
+        except (OSError, ValueError, subprocess.TimeoutExpired) as e:
+            return {"success": False, "error": "the bridge call did not finish: %s" % e}
+        if r.returncode:
+            return {"success": False, "error": "bridge call exit %d: %s" % (r.returncode, (r.stderr or r.stdout)[:400])}
+        try:
+            r = json.loads(r.stdout)
+        except ValueError:
+            return {"success": False, "error": "not JSON: %s" % r.stdout[:300]}
         if isinstance(r, dict) and r.get("content"):
             try:
                 r = json.loads(r["content"][0]["text"])
             except (ValueError, KeyError, IndexError, TypeError):
                 pass
-        return r
+        return r if isinstance(r, dict) else {"result": r}
     return call
+
+
+def game_name():
+    """-> the name of the game this run drove (RM_GAME_INSTANCE through the one name map; unset is ArchBig)."""
+    sys.path.insert(0, os.path.join(os.path.dirname(HERE), "rimflow"))
+    import game_names
+    return game_names.show(os.environ.get("RM_GAME_INSTANCE") or "a")
 
 
 def _static(call, method, args):
@@ -260,11 +276,10 @@ def _static(call, method, args):
 
 
 def stage():
-    try:
-        call = _connect()
-    except Exception as e:  # noqa: BLE001 - no bridge is its own answer
-        print("UNMEASURED: no bridge: %s: %s" % (type(e).__name__, e)); return 2
+    call = _connect()
     probe = _static(call, "Probe", STAGE_BIOME)
+    if '"success": false' in probe and "atlas" not in probe:
+        print("UNMEASURED: no bridge: %s" % probe[:300]); return 2
     got = call("jawa/world_tile_get", range="0-%d" % (SCAN - 1), limit=SCAN)
     rows = got.get("tiles") or []
     if not rows:
@@ -300,7 +315,7 @@ def stage():
         print("restored tiles %s" % ids)
     rec = {"verdict": "PASS" if code == 0 else ("FAIL" if code == 1 else "UNMEASURED"), "line": line,
            "src": "src/RimMandrake/BiomesShell/Source/RM_WorldDecals.cs", "src_blob": src_hash(),
-           "game": os.environ.get("RM_GAME_INSTANCE") or "ArchBig", "probe": probe[:200], "tiles": ids, "readings": readings,
+           "game": game_name(), "probe": probe[:200], "tiles": ids, "readings": readings,
            "at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")}
     with open(RESULT, "w", encoding="utf-8") as f:
         json.dump(rec, f, indent=1)

@@ -1,0 +1,29 @@
+{
+ "verdict": "PASS",
+ "line": "PASS",
+ "src": "src/RimMandrake/BiomesShell/Source/RM_WorldDecals.cs",
+ "src_blob": "a8fba372c065640dc2e53970c54da9375b35313a",
+ "game": "ArchSmall",
+ "probe": "{\"success\": true, \"method\": \"System.String Probe(System.String)\", \"result\": \"atlas RM_BlueDesert 512x512 grid=2\", \"thingArgs\": [], \"ticksGame\": 1, \"operation\": {\"OperationId\": \"op_526c9b0c25574b3f9574",
+ "tiles": [
+  0,
+  1,
+  2,
+  9,
+  12,
+  20
+ ],
+ "readings": [
+  {
+   "altitude": 300.0,
+   "info": "{\"success\": true, \"method\": \"System.String Info()\", \"result\": \"decals: 16 glyphs on 6 flat tiles of 1 biomes with an atlas (19 land biomes without one), 5 ms | enabled=True alpha=1 matAlpha=1 altitude=300 atlases=1 | size=0.3 spread=0.22 lift=0.0045 queue=3507 fullAlt=380 goneAlt=620 flipX=False\", \"thingArgs\": [], \"ticksGame\": 1, \"operation\": {\"OperationId\": \"op_5e8d54a828144c43b91e52e689c68abe\", \"Status\": \"Completed\", \"Success\": true, \"DurationMs\": 36}, \"state\": {\"programState\": \"Playing\", \"hasCurrentGame\": true, \"paused\": true, \"timeSpeed\": \"Paused\", \"tick\": 1}}",
+   "verdict": "PASS"
+  },
+  {
+   "altitude": 900.0,
+   "info": "{\"success\": true, \"method\": \"System.String Info()\", \"result\": \"decals: 16 glyphs on 6 flat tiles of 1 biomes with an atlas (19 land biomes without one), 5 ms | enabled=True alpha=0 matAlpha=0 altitude=900 atlases=1 | size=0.3 spread=0.22 lift=0.0045 queue=3507 fullAlt=380 goneAlt=620 flipX=False\", \"thingArgs\": [], \"ticksGame\": 1, \"operation\": {\"OperationId\": \"op_24d6ebf8ee4a4009a814fc1fd8020bc6\", \"Status\": \"Completed\", \"Success\": true, \"DurationMs\": 39}, \"state\": {\"programState\": \"Playing\", \"hasCurrentGame\": true, \"paused\": true, \"timeSpeed\": \"Paused\", \"tick\": 1}}",
+   "verdict": "PASS"
+  }
+ ],
+ "at": "2026-11-26T21:28:51Z"
+}
