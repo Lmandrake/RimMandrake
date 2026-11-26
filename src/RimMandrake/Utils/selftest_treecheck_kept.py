@@ -287,23 +287,51 @@ def t_a_clone_back_from_the_pool_gets_no_wrong_tree():
 
 def t_a_check_tree_keeps_no_tree_of_its_own():
     top, a, b = repo("nested")
+    root = os.environ[KROOT_ENV]
     seen = {}
+
+    def inside(t):
+        return sorted(n for n in os.listdir(os.path.join(t, ".git")) if n.startswith(P.CHECKTREE_PREFIX))
 
     def outer(t):
         inner_t, inner, _o = tree_at(t, rev=a, keep=lambda u: g(u, "rev-parse", "HEAD"))
-        seen["inner"], seen["head"], seen["gone"] = inner_t, inner, not os.path.exists(inner_t)
-        seen["inside"] = sorted(n for n in os.listdir(os.path.join(t, ".git")) if n.startswith(P.CHECKTREE_PREFIX))
+        seen["inner"], seen["head"], seen["inside"] = inner_t, inner, inside(t)
+        seen["outer_exact"] = exact(top, t, b)
         os.makedirs(os.path.join(t, ".git", "rm-treecheck-zz9left", "src"))          # a killed red re-run's leftover
-        return None
+        return t
     t, _r, _o = tree_at(top, keep=outer)
-    check(seen["head"] == a and seen["gone"] and not seen["inside"],
-          "a-check-tree-keeps-no-tree-of-its-own: a call on the kept tree as top makes a tree at its rev, removes it, "
-          "and keeps nothing inside the kept tree's .git (%s)" % seen["inside"])
+    check(seen["head"] == a and seen["inner"] != t and {t, seen["inner"]} == {kept_at(root, 0), kept_at(root, 1)}
+          and not seen["inside"] and seen["outer_exact"] is None,
+          "a-check-tree-keeps-no-tree-of-its-own: a call on a kept tree as top (a red re-run) takes the machine's other "
+          "kept tree while it is free, at its rev, and keeps nothing inside the kept tree's .git (%s; %s)"
+          % (seen["inner"], seen["inside"]))
     _t, _r, o = tree_at(top)
-    left = sorted(n for n in os.listdir(os.path.join(t, ".git")) if n.startswith(P.CHECKTREE_PREFIX))
+    left = inside(t)
     check(not left and "reused" in o,
           "a-check-tree-keeps-no-tree-of-its-own: the next reuse removes a leftover inside the kept tree's .git (%s)"
           % left)
+    root = machine("nested-one", n=1)
+
+    def outer1(t):
+        inner_t, inner, _o = tree_at(t, rev=a, keep=lambda u: g(u, "rev-parse", "HEAD"))
+        seen["inner"], seen["head"], seen["gone"] = inner_t, inner, not os.path.exists(inner_t)
+        seen["inside"] = inside(t)
+        return t
+    t, _r, _o = tree_at(top, keep=outer1)
+    check(seen["head"] == a and seen["gone"] and seen["inner"] != t and not seen["inside"],
+          "a-check-tree-keeps-no-tree-of-its-own: while every kept tree is held, the call makes a tree at its rev, "
+          "removes it after, and keeps nothing inside the kept tree's .git (%s)" % seen["inside"])
+    del os.environ[KROOT_ENV]
+    fake_rm = os.path.join(BASE, "fake-rm-nested")
+    os.makedirs(fake_rm)
+    was, P.RM_ROOT = P.RM_ROOT, fake_rm
+    try:
+        t, _r, _o = tree_at(top, keep=outer1)
+    finally:
+        P.RM_ROOT = was
+    check(seen["head"] == a and seen["gone"] and not seen["inside"] and t == os.path.join(top, ".git", KEPT),
+          "a-check-tree-keeps-no-tree-of-its-own: a check tree outside RM_ROOT (no machine trees) keeps nothing "
+          "inside its .git (%s)" % seen["inside"])
 
 
 TERMED = r'''
@@ -468,8 +496,9 @@ MUTANTS = [
      '        return os.path.join(RM_ROOT, "treecheck-kept")\n    return os.path.join(RM_ROOT, "treecheck-kept")'),
     ("one kept tree whatever the slots", "names = sorted((CHECKTREE_PREFIX + \"kept-%d\" % i for i in range(kept_n()))",
      "names = sorted((CHECKTREE_PREFIX + \"kept-%d\" % i for i in range(1))"),
-    ("a check tree keeps a tree of its own", '        if os.path.basename(os.path.realpath(top)).startswith(CHECKTREE_PREFIX) else',
-     '        if False else'),
+    ("a check tree keeps a tree of its own", ".startswith(CHECKTREE_PREFIX) and kept_root(top) is None:", ".startswith(CHECKTREE_PREFIX) and False:"),
+    ("a red re-run makes fresh trees though a kept tree is free", ".startswith(CHECKTREE_PREFIX) and kept_root(top) is None:",
+     ".startswith(CHECKTREE_PREFIX):"),
     ("a leftover inside the kept tree stays", "        if n.startswith(CHECKTREE_PREFIX):\n            _rmtree_hard(os.path.join(gd, n))",
      "        if False:\n            _rmtree_hard(os.path.join(gd, n))"),
     ("a fresh tree every time", "            if why is None:\n                how", "            if False:\n                how"),

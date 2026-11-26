@@ -1555,9 +1555,13 @@ def full_head_tree(top, rev="HEAD", what="HEAD", lands=None):
         print("tree checks: " + dropped, flush=True)
     head = out(top, "rev-parse", rev)
     t0, w0 = time.monotonic(), _io_written()
-    # a check tree's own red re-runs (split_pre_existing is handed the kept tree as top) keep nothing inside it
-    kept, fd, busy = (None, None, "a check tree keeps no tree of its own") \
-        if os.path.basename(os.path.realpath(top)).startswith(CHECKTREE_PREFIX) else _take_kept(top, gitdir)
+    # a check tree's own red re-runs (split_pre_existing is handed the kept tree as top) keep nothing inside it: they take
+    # the machine's other kept tree while it is free, else a fresh tree removed after. Two fresh trees for every red
+    # re-run held 15.2 GB in one kept tree on SteveDesktop's 80 GB disk (2026-11-26 12:33 PM PST)
+    if os.path.basename(os.path.realpath(top)).startswith(CHECKTREE_PREFIX) and kept_root(top) is None:
+        kept, fd, busy = None, None, "a check tree keeps no tree of its own"
+    else:
+        kept, fd, busy = _take_kept(top, gitdir)
     tree = None
     try:
         if fd is not None:

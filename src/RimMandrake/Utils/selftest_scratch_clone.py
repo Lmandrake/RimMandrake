@@ -25,6 +25,8 @@ os.environ.update({
     "RM_SCRATCH_ROOT": str(BASE / "scratch"),
     "RM_OBJSTORE_STATE": str(BASE / "state"),
     "RM_OBJSTORE_SCAN": str(BASE / "scratch" / "*" / "*"),
+    # a floor every test disk clears: the shipped 210 GB line refused every pool clone on SteveDesktop's 80 GB disk
+    "RM_POOL_FLOOR_GB": "1",
     "GIT_CONFIG_GLOBAL": "/dev/null",
     "GIT_AUTHOR_NAME": "t", "GIT_AUTHOR_EMAIL": "t@t", "GIT_COMMITTER_NAME": "t", "GIT_COMMITTER_EMAIL": "t@t",
 })
@@ -551,7 +553,7 @@ def main() -> int:
         r5, _ = quiet(sc.clone, "pool test", "p5", True, [], False, False)
         check(r5 == 1 and not (pool / "p5").exists(), "the disk floor refuses too")
         check("disk floor" in (sc.read_jsonl("uses.jsonl")[-1].get("error") or ""), "and the refusal names the disk floor")
-        del os.environ["RM_POOL_FLOOR_GB"]
+        os.environ["RM_POOL_FLOOR_GB"] = "1"
 
         # The shipped count line stays 16 (owner's card 2026-11-02); the GB line is the disk floor (selftest_pool_floor.py).
         _saved = {k: os.environ.pop(k, None) for k in ("RM_POOL_MAX_CLONES",)}

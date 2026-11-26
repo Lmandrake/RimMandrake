@@ -12,6 +12,7 @@ if it was a good idea later."
     scratch_clone.py sample      periodic record (rm-objstore.timer): store size, borrowers, fsck, df
     scratch_clone.py baseline    time one real full copy of the store, for the time-saved column
     scratch_clone.py report      the verdict table — what the owner reads
+    scratch_clone.py dedupe      drop from every borrower the copies of objects the store holds (rm-pool-room.service)
 
 The store is /home/mandrake/rm/store.git: a bare repo owned by NO working tree, fed only by
 `git fetch` from /home/mandrake/rm/mirror.git. A scratch clone is `git clone --shared` of it, so
@@ -1212,6 +1213,88 @@ def find_borrowers() -> list[dict]:
     return out
 
 
+# ---------------------------------------------------------------- dedupe
+
+# budget: danger=a repack that never returns holds rm-pool-room.service active, so no later room reading fires and its live
+# budget: promise goes stale; longest=16 s (runner_b, 1.26 GB of its own packs, SteveDesktop 2026-11-26); 900 s is over 10x
+DEDUPE_TIMEOUT_S = 900
+ALT_DEPTH = 5       # git's own limit on chained alternates
+
+
+def objects_dir(repo: Path) -> Path | None:
+    for o in (Path(repo) / ".git" / "objects", Path(repo) / "objects"):
+        if o.is_dir():
+            return o
+    return None
+
+
+def _alternates(o: Path) -> list[Path]:
+    try:
+        lines = (o / "info" / "alternates").read_text().splitlines()
+    except OSError:
+        return []
+    return [Path(t) if os.path.isabs(t) else o / t for t in (ln.strip() for ln in lines) if t and not t.startswith("#")]
+
+
+def reaches_store(repo: Path) -> bool:
+    """True when the repo's alternates name the store, directly or through other repos' alternates (as bench borrows
+    the mirror, which borrows the store)."""
+    st = os.path.realpath(store_path() / "objects")
+    o = objects_dir(repo)
+    level = _alternates(o) if o else []
+    for _ in range(ALT_DEPTH):
+        if any(os.path.realpath(t) == st for t in level):
+            return True
+        level = [a for t in level for a in _alternates(t)]
+    return False
+
+
+def dedupe_targets() -> list[Path]:
+    """Every borrower the sample scan finds (the seat clones and the mirror under RM) and every pool clone. The store
+    itself borrows nothing, so it is never one."""
+    seen, out = set(), []
+    cands = [Path(b["repo"]) for b in find_borrowers()]
+    if pool_root().is_dir():
+        cands += sorted(p for p in pool_root().iterdir() if (p / ".git").is_dir())
+    for p in cands:
+        if os.path.realpath(p) not in seen:
+            seen.add(os.path.realpath(p))
+            out.append(p)
+    return out
+
+
+def dedupe(repos: list | None = None) -> dict:
+    """Drop from each borrower the copies of objects its alternates hold (`git repack -a -d -l`: -l packs only the
+    objects no alternate holds). A clone that fetched while the store was a day behind origin kept its own copy of
+    that day's objects: 1.27, 1.25 and 0.83 GB in SteveDesktop's runner, runner_b and bench (2026-11-26). The store
+    never prunes (STORE_CONFIG), so a dropped copy stays readable there. A repo whose alternates do not reach the store
+    is skipped. -> the record, also appended to dedupe.jsonl."""
+    t0 = time.time()
+    done, skipped, failed = [], [], []
+    for repo in (dedupe_targets() if repos is None else [Path(r) for r in repos]):
+        if not reaches_store(repo):
+            skipped.append({"repo": str(repo), "why": "its alternates do not reach the store"})
+            continue
+        o = objects_dir(repo)
+        before = sum(own_bytes(o))
+        try:
+            r = subprocess.run(["git", "-C", str(repo), "repack", "-a", "-d", "-l", "-q"], capture_output=True,
+                               text=True, timeout=DEDUPE_TIMEOUT_S)
+        except subprocess.TimeoutExpired:
+            failed.append({"repo": str(repo), "why": f"repack ran past {DEDUPE_TIMEOUT_S} s"})
+            continue
+        if r.returncode:
+            failed.append({"repo": str(repo), "why": f"repack exit {r.returncode}: {r.stderr.strip()[-200:]}"})  # cut-ok: a record line
+            continue
+        after = sum(own_bytes(o))
+        done.append({"repo": str(repo), "before_mb": round(before / 1e6, 1), "after_mb": round(after / 1e6, 1)})
+    rec = {"ts": now_iso(), "dedupe_s": round(time.time() - t0, 1),
+           "freed_gb": round(sum(d["before_mb"] - d["after_mb"] for d in done) / 1e3, 2),
+           "done": done, "skipped": skipped, "failed": failed}
+    append("dedupe.jsonl", rec)
+    return rec
+
+
 def classify(targets: list[str]) -> str:
     st = os.path.realpath(store_path() / "objects")
     real = [os.path.realpath(t) for t in targets]
@@ -1361,7 +1444,12 @@ def main(argv=None) -> int:
     k.add_argument("--full", action="store_true")
     for n in ("init", "refresh", "sample", "baseline", "report", "pool"):
         sub.add_parser(n)
+    sub.add_parser("dedupe", help="drop from every borrower the objects the store holds (rm-pool-room.service, hourly)")
     a = ap.parse_args(argv)
+    if a.cmd == "dedupe":
+        rec = dedupe()
+        print(json.dumps({k: v for k, v in rec.items() if k != "skipped"}))
+        return 1 if rec["failed"] else 0
     if a.cmd == "clone":
         return clone(a.purpose, a.name, a.checkout, a.sparse, a.fetch, a.dissociate, a.no_checkout, a.slim)
     if a.cmd == "shape":
