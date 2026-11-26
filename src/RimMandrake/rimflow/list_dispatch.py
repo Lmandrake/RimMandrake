@@ -769,7 +769,6 @@ def block_facts(world, x, now):
     return waits, not waits
 
 
-
 # The age line (P-5 of the retired Producer's weekly backlog review, revived by the Conductor 2026-11-25 as a line of
 # this lane; table design/RimMandrake/retired_v3_role_duties_2026-11-23.md). Measured 2026-11-24: 30 items blocked past
 # 3 days, 18 of them with a `needs` window that had opened since, and no program looked at one. Only these two `needs`
@@ -813,11 +812,13 @@ def block_age(x, op, now, cfg):
     n = sum(1 for t in op.opened.get(x.needs, ()) if t > since)
     if idle < days or n < least:
         return False, "its block idle %.1f d; %s %d time(s) since" % (idle, w[2], n)
+    reason = _one(getattr(x, "blocked_reason", None) or "no reason given", 120)
     return True, ("its block (%s) idle %.1f d; %s %d times since, so the block may be stale: read its reason against "
                   "now, and lift it (`rimflow unblock %s --reason ...`) when the reason is gone, or block it again with "
                   "today's reason. When it is one mod's work, give it that mod's home (`rimflow home %s --home "
-                  "mod:<folder> --reason ...`) and stop: the Maturation Pipeline works a mod" % (_one(getattr(x, "blocked_reason", None) or "no reason given", 120), idle, w[2],
-                                      n, x.id, x.id))
+                  "mod:<folder> --reason ...`) and stop: the Maturation Pipeline works a mod"
+                  % (reason, idle, w[2], n, x.id, x.id))
+
 
 def join_candidates(cands, now, want, system, facts, lease, off, held, refused):
     """-> {ticket: system} of the open tickets that have no lane row (no check) and may join their system's bundle this
