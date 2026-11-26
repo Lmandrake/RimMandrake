@@ -19,6 +19,9 @@ UTILS = os.path.join(HERE, "..", "Utils")
 TMP = tempfile.mkdtemp(prefix="selftest_effort_ladder_")
 os.environ["RM_DISPATCHER_STATE"] = os.path.join(TMP, "state")
 os.environ["RM_CONDUCTOR_LOG"] = os.path.join(TMP, "conductor.md")
+# the account gate reads this machine's live notice otherwise: on a following machine (SteveDesktop) an old notice refused
+# every launch of the test (2026-11-25); a test names its own notice folder, which holds none
+os.environ["RM_SWITCH_PLAN_DIR"] = os.path.join(TMP, "switching_plan")
 os.environ.setdefault("RM_UNDER_SELFTEST", "1")
 sys.path.insert(0, HERE)
 sys.path.insert(1, UTILS)
