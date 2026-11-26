@@ -16,3 +16,13 @@ Counts: done already 4, not worth the touch 1, kept 0.
 
 ## Next
 Nothing. The run ends after the closes and the drop.
+
+## Pipeline fixes made in this run
+- f96e4e6094: `rimflow close --evidence` on a built item whose criteria are all L0 refused as a second done and wrote
+  nothing (seen on TICKER_NEVER_FIRES_FIX_1 and LOVIN_LOGSPAM_DIAGNOSE_IN_PLAY_EVICTIONS). Now the pass is written alone.
+  Test: `selftest_close_gate.py` case EVIDENCE_FINISHES, red on the parent, green on the fix. Owed: one fresh reader of
+  that cli.py hunk (this run may start no helper).
+- c601231448: `selftest_cli.py` 59/62 on origin/main (claim preflight E12 refused three probe fixtures with no refs
+  line); fixtures now carry `none: a probe fixture`; 62/62.
+
+State: finished. Nothing is next for this bundle.
