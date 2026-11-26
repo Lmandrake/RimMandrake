@@ -274,7 +274,7 @@ def calibration_cases():
             check("calibration: planted case %s expects %s" % (cid, exp), planted.get(cid) == exp, planted)
         import coverage_judge as CJ
         prior = CJ.prior_verdict(late_d) or {}
-        red = '"expect": "the first lantern holds 0 oil and its cells still read at least 50% within 2 cells"'
+        red = '"expect": "at 1 PM the first lantern holds 0 oil and its cells still read at least 50% within 2 cells"'
         check("calibration: the late case's prior holds the renderings from before the repair, and its red is a "
               "changed passage", CJ.changed_passage({"since": "scene:sc_oil_out\n" + red}, prior.get("entry_text"),
                                                     CJ.entry_texts(late_d)) is not None, sorted(prior)[:12])

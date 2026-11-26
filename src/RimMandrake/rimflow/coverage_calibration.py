@@ -10,7 +10,9 @@ in a temp tree (the real role files copied in), puts each to the coverage judge 
                           must pass. It also plants the noise kinds an independent read found in Pyrelands round 6
                           (g17, g18: a gap that asks for documentation or another showcase and names no wrong behaviour
                           a check would accept): the sheet does not restate each scene's thresholds and there is one
-                          showcase only. A judge that refuses on those is not calibrated.
+                          showcase only. A judge that refuses on those is not calibrated. Its oil control is read at
+                          1 PM, by day, so the oil leaf's own false pass (dark at dawn whatever its oil, relit at dusk)
+                          fails it: read at 1 AM, a judge refused that hole in 2 of 6 runs (2026-11-26).
   good_lanterns_tuning    good_lanterns plus the pedantry the Contagion judge refused on (owner 2026-11-16, bar_rule.py):
                           an inventory row that pins a burn rate, a MarketValue and three graphic variants no scene
                           reads -> must pass: a judge that blocks on a tuning number or a variant count is not calibrated
@@ -126,13 +128,15 @@ BASE = {
          "restore": "destroy the quicktest map; nothing persistent changed", "hold": "immediate"},
         {"id": "sc_oil_out", "kind": "acceptance", "requirement": ["oil_out"], "staged_by": "script",
          "entry_point": "src/RimMandrake/Lanterns/validation.py::scene_oil_out",
-         "start": ["the sc_light room, the lantern lit with exactly 1 oil (asserted)",
-                   "a second room alike with a lantern lit with 2 oil (asserted)"],
-         "action": "advance one day and one hour",
-         "expect": "the first lantern holds 0 oil and its cells read glow 0",
-         "control": {"case": "the second lantern, advanced the same day and hour",
-                     "expect": "it holds 1 oil and its cells still read at least 50% within 2 cells",
-                     "rules_out": "the lantern going dark from elapsed time or the day cycle rather than an empty tank"},
+         "start": ["the sc_light room at midnight, the lantern lit with exactly 1 oil (asserted)",
+                   "a second room alike with a lantern lit with 3 oil (asserted)"],
+         "action": "advance to 1 PM of the second day (one day and thirteen hours), by day",
+         "expect": "at 1 PM the first lantern holds 0 oil and its cells read glow 0",
+         "control": {"case": "the second lantern, read at the same 1 PM, by day",
+                     "expect": "it still holds oil and its cells read at least 50% within 2 cells",
+                     "rules_out": "the lantern going dark from elapsed time, the day cycle or daylight (dark at dawn and "
+                                  "relit at dusk) rather than an empty tank; the first room's glow 0 at 1 PM shows that "
+                                  "no daylight reaches the rooms"},
          "restore": "destroy the quicktest map; nothing persistent changed", "hold": "immediate"}],
         "showcases": [{"id": "lantern_night", "scenes": ["sc_light", "sc_oil_out"], "exercises": ["inv_light", "inv_oil"],
                        "source": ["OWNER:2"], "decision": "d_flagship"}],
@@ -245,8 +249,7 @@ def _late_red(c):
     added sc_light's control and, in the same edit, rewrote sc_oil_out's expect into the leaf's own red (a lantern lit
     at zero oil): a passage a repair changed, and a Problem a player would reject."""
     sc = c["scenes.json"]["scenes"][1]
-    sc["expect"] = "the first lantern holds 0 oil and its cells still read at least 50% within 2 cells"
-    sc["control"]["expect"] = "it holds 1 oil and its cells still read at least 50% within 2 cells"
+    sc["expect"] = "at 1 PM the first lantern holds 0 oil and its cells still read at least 50% within 2 cells"
     c["coverage_verdict.json"] = _prior(LIGHT_GAP, {"oil_out": "sc_oil_out", "inv_oil": "sc_oil_out"})
     c["_before"] = _no_control   # the prior verdict's entry renderings are of BASE without sc_light's control
 
@@ -303,6 +306,9 @@ def _one_kind(c):
                     "expect": "the wolf reaches a cell within 2 cells of the lantern",
                     "rules_out": "the wolf turning away for its own reasons rather than the light"},
         "restore": "destroy the quicktest map; nothing persistent changed", "hold": "immediate"})
+    c["scenes.json"]["coverage_rest"].append({
+        "capability": "inv_beasts", "by": ["sc_beasts_kept_off"],
+        "why": "one wolf, a lit lantern and its unlit control decide it; the flagship is his lighting-and-going-out face"})
 
 
 def _repaired(c):

@@ -1376,14 +1376,14 @@
    },
    "hash": "310c03a1c2368d6e",
    "last_run": {
-    "at": "2026-11-26T09:42:13Z",
-    "cases": "came out the other way: good_one_kind_enough",
+    "at": "2026-11-26T10:03:45Z",
+    "cases": "12 planted case(s) ran and came out as planted",
     "exit": 0,
-    "out": "good_one_kind_enough   expect pass   got refuse No scene reads a lit, fuelled lantern by day, so a lantern that goes dark at dawn and relights at dusk passes every scene",
+    "out": "good_one_kind_enough   expect pass   got pass   covered",
     "results": [
      {
       "advisory": [],
-      "cost_usd": 0.6303799999999999,
+      "cost_usd": 0.5675452000000001,
       "expect": "pass",
       "gaps": [],
       "got": "pass",
@@ -1392,8 +1392,11 @@
       "verdict": "covered"
      },
      {
-      "advisory": [],
-      "cost_usd": 0.6649046,
+      "advisory": [
+       "inv_lantern_def is a tuning-only inventory row (burn rate, MarketValue, Mass, a graphic-variant count) with no experience a player would notice; it should be replaced by an experience bar or folded into inv_light/inv_oil",
+       "The light leaf, inv_light and sc_light's expect pin the light radius and level ('within two', 'at least 50%', 'at most 10% at 3 cells'); a renormalized radius would fail a correct mod"
+      ],
+      "cost_usd": 0.6255582,
       "expect": "pass",
       "gaps": [],
       "got": "pass",
@@ -1406,7 +1409,7 @@
       "answered": [
        "g1"
       ],
-      "cost_usd": 0.6357428,
+      "cost_usd": 0.5219191999999999,
       "expect": "pass",
       "gaps": [],
       "got": "pass",
@@ -1416,7 +1419,7 @@
      },
      {
       "advisory": [],
-      "cost_usd": 0.739303,
+      "cost_usd": 0.5676896,
       "expect": "pass",
       "gaps": [],
       "got": "pass",
@@ -1426,11 +1429,11 @@
      },
      {
       "advisory": [],
-      "cost_usd": 0.8374855999999999,
+      "cost_usd": 0.815384,
       "expect": "refuse",
       "gaps": [
-       "The leaf oil_out and the capability inv_oil have no acceptance scene: nothing tests that a lantern goes dark when its oil runs out, or that a lantern with oil does not go dark at dawn.",
-       "The flagship showcase lantern_night does not show the half of the owner's face that says the lantern goes out: it stages only sc_light, exercises only inv_light, and leaves inv_oil covered by no showcase and no coverage_rest entry."
+       "The live experience leaf oil_out and the inventory capability inv_oil have no acceptance scene. Nothing tests that a lantern goes dark when its oil runs out, and nothing rules out going dark at dawn",
+       "The flagship showcase lantern_night shows only the lighting half of the owner's named face (\"and then going out\" is missing), and inv_oil is in no showcase and not in coverage_rest"
       ],
       "got": "refuse",
       "id": "bad_leaf_no_scene",
@@ -1441,18 +1444,24 @@
         "scenes.json"
        ],
        "what": [
-        "scenes.json: added scene sc_oil_out (kind acceptance, requirement [oil_out], entry_point src/RimMandrake/Lanterns/validation.py::scene_oil_out, entry_point_item RIMMANDRAKE_BUILD_LANTERNS_SCENE_OIL_OUT_ENTRY_POINT). Its asserted start is a midnight, unreachable, lit lantern with one oil in a 7x7 roofed room with glow 0 elsewhere. Its expect: still lit after dawn while oil remains, then glow 0 on every room cell once oil reads 0, and still dark a further day. Its control: the same lantern with more oil over the same span stays lit, ruling out going dark at dawn or after a fixed time whatever the oil."
+        "Added scene sc_oil_out to scenes.json (now at scenes.json:26; kind acceptance, requirement [\"oil_out\"], entry_point src/RimMandrake/Lanterns/validation.py::scene_oil_out). Its start is asserted: a dark roofed 7x7 room with no other source, the lantern lit with its oil counter at exactly 1, and no pawn able to refuel. Its action runs one in-game day plus a margin, crossing a dawn, sampling oil, lit state and glow. Its expect: dark at the first sample where oil reads 0, not before, lit across dawn while oil is above 0. Its control: a fresh run with the same lantern holding 3 oil, still lit past dawn and at the sample where the 1-oil lantern went dark (rules_out: going dark at dawn or after a fixed time whatever the oil). Unverified: whether that entry point exists in the mod's proof script. If it does not, stage 3 must file a build item and set entry_point_item.",
+        "In scenes.json, appended \"sc_oil_out\" to showcases[lantern_night].scenes and \"inv_oil\" to showcases[lantern_night].exercises (scenes.json:51)."
        ]
       },
       "reasked": [
-       "coverage: given inputs in no passed or refused evidence: floor.json"
+       "refusal 0 (inv_oil): evidence 'scenes.json:2-25 (original)' is not one of the inputs the judge was given",
+       "refusal 0 (inv_oil): evidence 'scenes.json (original: only sc_light; coverage_rest [])' is not one of the inputs the judge was given",
+       "refusal 1 (oil_out): evidence 'scenes.json:2-25 (original)' is not one of the inputs the judge was given",
+       "refusal 1 (oil_out): evidence 'scenes.json (original: no scene has requirement oil_out)' is not one of the inputs the judge was given",
+       "refusal 2 (rest): evidence 'scenes.json:26-41 (original)' is not one of the inputs the judge was given",
+       "passed inv_light: evidence 'scenes.json (sc_light, original lines 4-24)' is not one of the inputs the judge was given"
       ],
       "routes": [
        {
         "criterion_verdict": "sound",
         "ids": [
-         "oil_out",
-         "inv_oil"
+         "inv_oil",
+         "oil_out"
         ],
         "judge_criterion_verdict": "sound",
         "late_confirmed": null,
@@ -1460,7 +1469,7 @@
         "return_to": 3,
         "route": "designer",
         "severity": "problem",
-        "what": "The leaf oil_out and the capability inv_oil have no acceptance scene: nothing tests that a lantern goes dark when its oil runs out, or that a lantern with oil does not go dark at dawn."
+        "what": "The live experience leaf oil_out and the inventory capability inv_oil have no acceptance scene. Nothing tests that a lantern goes dark when its oil runs out, and nothing rules out going dark at dawn"
        },
        {
         "criterion_verdict": "sound",
@@ -1471,17 +1480,18 @@
         "return_to": 3,
         "route": "designer",
         "severity": "problem",
-        "what": "The flagship showcase lantern_night does not show the half of the owner's face that says the lantern goes out: it stages only sc_light, exercises only inv_light, and leaves inv_oil covered by no showcase and no coverage_rest entry."
+        "what": "The flagship showcase lantern_night shows only the lighting half of the owner's named face (\"and then going out\" is missing), and inv_oil is in no showcase and not in coverage_rest"
        }
       ],
       "verdict": "not_covered"
      },
      {
       "advisory": [],
-      "cost_usd": 0.7989061999999999,
+      "cost_usd": 0.8033042,
       "expect": "refuse",
       "gaps": [
-       "The acceptance scene sc_light, the only scene for leaf light and capability inv_light, has no control and no asserted dark start. It cannot tell a lantern that lights its cells from cells lit by daylight, ambient light or another lamp, and the showcase lantern_night's claim of \"lighting a dark room\" rests on it."
+       "sc_light has no control and no asserted dark start, so nothing shows the lit lantern is what lights the cells",
+       "The night regime of the light leaf is never exercised: no scene reads a lit lantern's light at night"
       ],
       "got": "refuse",
       "id": "bad_scene_no_control",
@@ -1492,13 +1502,13 @@
         "scenes.json"
        ],
        "what": [
-        "scenes.json sc_light: start replaced with four asserted lines (a roofed, walled room at midnight; no other light source within 6 cells; one fuelled lantern hung, unlit; before lighting, glow at most 10% within 2 cells). expect now also requires 'the lantern reads lit'. Added control: {case: a second room alike, at least 6 cells away, at the same hour, with the same fuelled lantern hung but never lit, waited 60 ticks; expect: every cell within 2 reads glow at most 10%; rules_out: daylight, ambient light or another lamp rather than the lit lantern}. sc_oil_out inherits the fixed start through 'the sc_light room' and was not edited. No other scene or file was touched."
+        "sc_light: start now asserts a fully roofed room with no other light source within 6 cells, an unlit fuelled lantern whose cells within 3 read glow below 10%, and a second identical room; added a control: the second room's unlit lantern, read at the same tick, expects glow below 10% within 2 cells, ruling out daylight, another lamp or the map's own lighting.",
+        "sc_light: start now asserts \"the time is midnight (asserted)\"; action and expect now read the glow at night, and the control is read at the same tick at night; rules_out names the day-only lantern."
        ]
       },
       "reasked": [
-       "refusal 0 (inv_light): evidence 'designer_scene_contract.md (Each acceptance or interaction scene: Start, Control)' is not one of the inputs the judge was given",
-       "refusal 1 (light): evidence 'designer_scene_contract.md (Each acceptance or interaction scene: Start, Control)' is not one of the inputs the judge was given",
-       "coverage: given inputs in no passed or refused evidence: floor.json"
+       "refusal 0 (inv_light): evidence 'scenes.json:4-19 (as frozen before the judge fix)' is not one of the inputs the judge was given",
+       "refusal 1 (light): evidence 'scenes.json:4-19 (as frozen)' is not one of the inputs the judge was given"
       ],
       "routes": [
        {
@@ -1513,23 +1523,49 @@
         "return_to": 3,
         "route": "designer",
         "severity": "problem",
-        "what": "The acceptance scene sc_light, the only scene for leaf light and capability inv_light, has no control and no asserted dark start. It cannot tell a lantern that lights its cells from cells lit by daylight, ambient light or another lamp, and the showcase lantern_night's claim of \"lighting a dark room\" rests on it."
+        "what": "sc_light has no control and no asserted dark start, so nothing shows the lit lantern is what lights the cells"
+       },
+       {
+        "criterion_verdict": "sound",
+        "ids": [
+         "light"
+        ],
+        "judge_criterion_verdict": "sound",
+        "late_confirmed": null,
+        "new_since": "first",
+        "return_to": 3,
+        "route": "designer",
+        "severity": "problem",
+        "what": "The night regime of the light leaf is never exercised: no scene reads a lit lantern's light at night"
        }
       ],
       "verdict": "not_covered"
      },
      {
       "advisory": [
-       "inv_never_dark is an approved, built inventory unit that the showcase set leaves uncovered: lantern_night exercises only inv_light and inv_oil, and coverage_rest is empty. The contract requires every unit to be exercised by a showcase or listed in coverage_rest."
+       "inv_never_dark, an approved and built unit, was in no showcase and coverage_rest was empty, so it was silently uncovered."
       ],
-      "cost_usd": 0.9314718000000001,
+      "cost_usd": 0.87797,
       "expect": "refuse",
       "gaps": [
-       "Two of the owner's promises contradict each other, and the scenes encode both. sc_oil_out, and sc_light's control, require a lit lantern at 0 oil to read dark; sc_never_dark requires the same lantern at 0 oil to read lit. No mod can pass all three scenes, so whichever promise a correct mod keeps, the scenes fail it.",
-       "never_dark promises the cells stay lit 'at every hour for as long as it hangs', but sc_never_dark reads glow only once, after advancing a day. A broken mod whose 0-oil lantern goes dark at night, or for hours at a time, and is lit again at the moment of the reading passes the scene."
+       "Two of the owner's promises contradict each other. OWNER:1 says a lantern goes out when it runs dry; OWNER:3 says a hung lantern never goes dark, oil or none. The tree, inventory, sheet, scenes and flagship all carry both, so no mod can pass every scene.",
+       "sc_never_dark read the lantern only once, after a full day from midnight to midnight. A lantern dark by day and relit at dusk passed, against 'at every hour'.",
+       "sc_never_dark did not assert that the lantern still held 0 oil when read. A lantern kept lit by a colonist refuelling it passed, which is the leaf's own false_pass."
       ],
       "got": "refuse",
       "id": "bad_conflict_routing",
+      "judge_fix_refused": null,
+      "judge_fixed": {
+       "by": "calibration",
+       "files": [
+        "scenes.json"
+       ],
+       "what": [
+        "scenes.json sc_never_dark: the action now reads the oil and glow every in-game hour across one day from midnight; the expect requires every hourly read, daylight hours included, to show the cells lit at least 50% within 2 cells; the control's rules_out names the dark-by-day, relit-at-dusk lantern",
+        "scenes.json sc_never_dark: the expect now requires the lantern to hold 0 oil at every hourly read; the control's rules_out names 'a lantern kept lit because it was refuelled during the day'",
+        "scenes.json coverage_rest: added {capability: inv_never_dark, by: [sc_never_dark], why: one held 0-oil lantern read hourly decides it}"
+       ]
+      },
       "reasked": [
        "coverage: given inputs in no passed or refused evidence: floor.json"
       ],
@@ -1550,13 +1586,13 @@
         "return_to": 2,
         "route": "criteria",
         "severity": "problem",
-        "what": "Two of the owner's promises contradict each other, and the scenes encode both. sc_oil_out, and sc_light's control, require a lit lantern at 0 oil to read dark; sc_never_dark requires the same lantern at 0 oil to read lit. No mod can pass all three scenes, so whichever promise a correct mod keeps, the scenes fail it."
+        "what": "Two of the owner's promises contradict each other. OWNER:1 says a lantern goes out when it runs dry; OWNER:3 says a hung lantern never goes dark, oil or none. The tree, inventory, sheet, scenes and flagship all carry both, so no mod can pass every scene."
        },
        {
         "criterion_verdict": "sound",
         "ids": [
-         "inv_never_dark",
-         "never_dark"
+         "never_dark",
+         "inv_never_dark"
         ],
         "judge_criterion_verdict": "sound",
         "late_confirmed": null,
@@ -1564,22 +1600,37 @@
         "return_to": 3,
         "route": "designer",
         "severity": "problem",
-        "what": "never_dark promises the cells stay lit 'at every hour for as long as it hangs', but sc_never_dark reads glow only once, after advancing a day. A broken mod whose 0-oil lantern goes dark at night, or for hours at a time, and is lit again at the moment of the reading passes the scene."
+        "what": "sc_never_dark read the lantern only once, after a full day from midnight to midnight. A lantern dark by day and relit at dusk passed, against 'at every hour'."
+       },
+       {
+        "criterion_verdict": "sound",
+        "ids": [
+         "never_dark",
+         "inv_never_dark"
+        ],
+        "judge_criterion_verdict": "sound",
+        "late_confirmed": null,
+        "new_since": "first",
+        "return_to": 3,
+        "route": "designer",
+        "severity": "problem",
+        "what": "sc_never_dark did not assert that the lantern still held 0 oil when read. A lantern kept lit by a colonist refuelling it passed, which is the leaf's own false_pass."
        }
       ],
       "verdict": "not_covered"
      },
      {
-      "advisory": [
-       "Two scene expects pin tuning numbers beyond the owner's words. A renormalization would turn them red on a correct mod. sc_light requires 'at most 10% at 3 cells', and the sc_oil_out control requires the lantern to hold exactly 1 oil after a day."
-      ],
-      "cost_usd": 0.7387554,
+      "advisory": [],
+      "cost_usd": 0.7202419999999999,
       "expect": "refuse",
       "gaps": [
-       "inv_refuel is built and in scope, but nothing tests its two player-facing experiences: a pawn refuels a hung lantern from stockpiled oil, and the lantern lights again. No acceptance scene, showcase or coverage_rest entry exercises it. The tree has no leaf for it, and the sheet a player reads never mentions it."
+       "The shipped, approved refuel capability (a pawn refuels a lantern from stockpiled oil, and the lantern lights again) has no tree leaf, no scene, no showcase entry, no coverage_rest entry and no sheet line."
       ],
       "got": "refuse",
       "id": "bad_mixed_row",
+      "reasked": [
+       "coverage: given inputs in no passed or refused evidence: floor.json"
+      ],
       "routes": [
        {
         "criterion_verdict": "sound",
@@ -1592,7 +1643,7 @@
         "return_to": 3,
         "route": "designer",
         "severity": "problem",
-        "what": "inv_refuel is built and in scope, but nothing tests its two player-facing experiences: a pawn refuels a hung lantern from stockpiled oil, and the lantern lights again. No acceptance scene, showcase or coverage_rest entry exercises it. The tree has no leaf for it, and the sheet a player reads never mentions it."
+        "what": "The shipped, approved refuel capability (a pawn refuels a lantern from stockpiled oil, and the lantern lights again) has no tree leaf, no scene, no showcase entry, no coverage_rest entry and no sheet line."
        }
       ],
       "verdict": "not_covered"
@@ -1600,10 +1651,10 @@
      {
       "advisory": [],
       "answered": [],
-      "cost_usd": 0.7374424,
+      "cost_usd": 0.5969632,
       "expect": "refuse",
       "gaps": [
-       "sc_oil_out's expected result now says the emptied lantern stays lit, the opposite of the promise. The scene passes a lantern that burns forever on an empty tank and fails a correct one.",
+       "The edited sc_oil_out expect requires the emptied lantern to still light its cells, so the scene passes a lantern that burns forever on an empty tank and fails a correct mod",
        "sc_light has no control and its start asserts no dark"
       ],
       "got": "refuse",
@@ -1615,17 +1666,9 @@
         "scenes.json"
        ],
        "what": [
-        "scenes.json sc_oil_out.expect changed from \"the first lantern holds 0 oil and its cells still read at least 50% within 2 cells\" to \"the first lantern holds 0 oil and has gone dark: glow 0 on every cell of its room\". Start, action and control were left as they were."
+        "sc_oil_out: changed expect from \"at 1 PM the first lantern holds 0 oil and its cells still read at least 50% within 2 cells\" to \"at 1 PM the first lantern holds 0 oil and glow is 0 on every cell of its room\". Start, action, control and rules_out are unchanged; the rules_out clause 'the first room's glow 0 at 1 PM' now agrees with the expect."
        ]
       },
-      "reasked": [
-       "evidence 'exam.json e2' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-       "evidence 'record.json inv_oil' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-       "evidence 'scenes.json sc_oil_out' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-       "evidence 'scenes.json sc_oil_out (expect, control)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-       "evidence 'scenes.json showcases lantern_night exercises inv_oil' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-       "evidence 'tree.json oil_out leaf (experience, red)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)"
-      ],
       "routes": [
        {
         "criterion_verdict": "sound",
@@ -1639,7 +1682,7 @@
         "return_to": 3,
         "route": "designer",
         "severity": "problem",
-        "what": "sc_oil_out's expected result now says the emptied lantern stays lit, the opposite of the promise. The scene passes a lantern that burns forever on an empty tank and fails a correct one."
+        "what": "The edited sc_oil_out expect requires the emptied lantern to still light its cells, so the scene passes a lantern that burns forever on an empty tank and fails a correct mod"
        },
        {
         "criterion_verdict": "sound",
@@ -1660,15 +1703,14 @@
      },
      {
       "advisory": [
-       "After the repair, sc_burn_line_walks puts the smoulder-relight wait after the wind-off control run. Read literally, the relight would then be proven with the wind setting off and on a map the control expects to be flooded, not in the shipped configuration. 'grows over the four days' could also be read as growth every day, which a correct fire with a half-day lull (exam e1) might miss.",
-       "The giant read pins a ratio of declared body sizes: 'at least twice every other RM_Pyrelands roster kind's'. A renormalization of body sizes could move the ratio while the beast still reads as far larger."
+       "The wind-off control in sc_burn_line_walks bets that vanilla's even spread floods more than half the map by the fourth day end. If it does not, the flood read stays unmeasured for good and a correct burn line can never pass this scene."
       ],
       "answered": [
        "g1",
        "g2",
        "g3"
       ],
-      "cost_usd": 1.2151114,
+      "cost_usd": 0.9418515999999999,
       "expect": "pass",
       "gaps": [],
       "got": "pass",
@@ -1678,12 +1720,12 @@
      },
      {
       "advisory": [
-       "inv_straw, a built and approved capability, is in no showcase and coverage_rest is empty, so the unit is silently uncovered"
+       "inv_straw is a built, approved inventory unit that no showcase exercises and that coverage_rest does not list, so the scenes file leaves it silently uncovered"
       ],
-      "cost_usd": 0.8696797999999999,
+      "cost_usd": 0.713911,
       "expect": "refuse",
       "gaps": [
-       "The straw scene never puts straw on the map and never knocks the lantern down, so the owner's straw promise is untested. Its control expects the same 'no fire' as the positive case and cannot fail"
+       "The only scene for the straw promise never puts a lantern on straw: the lantern stays hung, is never knocked down, and the map holds no straw, so the scene cannot fail for a mod whose fallen lantern sets straw alight"
       ],
       "got": "refuse",
       "id": "bad_fire_never_touched",
@@ -1694,19 +1736,16 @@
         "scenes.json"
        ],
        "what": [
-        "scenes.json sc_straw_safe: the start now asserts a straw floor on every cell, no fire, and a lit hung lantern. The action knocks the lantern onto straw and asserts it lies lit. The expect is the lantern still lit on straw, with no fire and no burnt straw. The control is replaced with a twin straw room where a vanilla fire on the centre cell must catch and spread; it rules out unburnable straw, a blind fire check, and a lantern that was never knocked down or went out.",
-        "scenes.json coverage_rest: added {capability: inv_straw, by: [sc_straw_safe], why: one knocked-lantern scene decides it; as a showcase it would newly exercise one capability, under min_new_after_first}."
+        "scenes.json sc_straw_safe: start is now a dry, flammable straw-floored roofed room at midnight with no fire and a lit, hung lantern over a straw cell (asserted); the action knocks the lantern off its hook onto the straw and asserts it lies there lit, then waits one day; the expect is that the lantern is still lit on the straw and no cell has burned; the control starts a fire on the same straw cell with the game's own fire starter and expects the straw to catch, ruling out straw that cannot burn and a lantern that goes out or never lands when knocked.",
+        "scenes.json coverage_rest: added {capability: inv_straw, by: [sc_straw_safe], why: a single staged event that no showcase newly exercises enough capabilities to carry}."
        ]
       },
-      "reasked": [
-       "coverage: given inputs in no passed or refused evidence: exam.json, floor.json"
-      ],
       "routes": [
        {
         "criterion_verdict": "sound",
         "ids": [
-         "inv_straw",
-         "straw_safe"
+         "straw_safe",
+         "inv_straw"
         ],
         "judge_criterion_verdict": "sound",
         "late_confirmed": null,
@@ -1714,54 +1753,23 @@
         "return_to": 3,
         "route": "designer",
         "severity": "problem",
-        "what": "The straw scene never puts straw on the map and never knocks the lantern down, so the owner's straw promise is untested. Its control expects the same 'no fire' as the positive case and cannot fail"
+        "what": "The only scene for the straw promise never puts a lantern on straw: the lantern stays hung, is never knocked down, and the map holds no straw, so the scene cannot fail for a mod whose fallen lantern sets straw alight"
        }
       ],
       "verdict": "not_covered"
      },
      {
       "advisory": [
-       "inv_beasts is in no showcase and coverage_rest is empty, so the showcase set leaves an approved, built capability silently uncovered"
+       "sc_light's expect pins the light's tuning numbers. It requires glow of at least 50% within 2 cells and at most 10% at 3 cells. After a radius or brightness renormalization this check reads red on a correct lantern.",
+       "sc_oil_out's fixed window pins the burn rate. Its 1-oil and 3-oil lanterns are read after 37 hours, which only works for a burn rate of roughly 1 to 2 oil per day. After a burn-rate renormalization a correct mod reads red: either the first lantern still holds oil, or the control lantern is empty."
       ],
-      "cost_usd": 1.2946886000000002,
+      "cost_usd": 0.7401526,
       "expect": "pass",
-      "gaps": [
-       "No scene reads a lit, fuelled lantern by day, so a lantern that goes dark at dawn and relights at dusk passes every scene"
-      ],
-      "got": "refuse",
+      "gaps": [],
+      "got": "pass",
       "id": "good_one_kind_enough",
-      "judge_fix_refused": null,
-      "judge_fixed": {
-       "by": "calibration",
-       "files": [
-        "scenes.json"
-       ],
-       "what": [
-        "sc_oil_out: start gains 'a third room alike, roofed, no window, door shut, with no lantern: glow 0 on every room cell (asserted)'; control.case/expect now read the second lantern and the third room at noon (second lantern ≥50% within 2 cells, third room glow 0) as well as at the end; rules_out names 'dark by day, or out at dawn and relit at dusk' and daylight standing in for the lantern.",
-        "scenes.json coverage_rest: added inv_beasts by sc_beasts_kept_off, why: one wolf and one ordered lantern decide it, and no second showcase can newly exercise 3 capabilities."
-       ]
-      },
-      "reasked": [
-       "coverage: given inputs in no passed or refused evidence: floor.json"
-      ],
-      "routes": [
-       {
-        "criterion_verdict": "sound",
-        "ids": [
-         "inv_light",
-         "inv_oil",
-         "oil_out"
-        ],
-        "judge_criterion_verdict": "sound",
-        "late_confirmed": null,
-        "new_since": "first",
-        "return_to": 3,
-        "route": "designer",
-        "severity": "problem",
-        "what": "No scene reads a lit, fuelled lantern by day, so a lantern that goes dark at dawn and relights at dusk passes every scene"
-       }
-      ],
-      "verdict": "not_covered"
+      "routes": [],
+      "verdict": "covered"
      }
     ]
    },
@@ -1825,7 +1833,7 @@
     "at": "2026-11-24T16:59:56Z",
     "why": "no paid run: the brief at 5411bd360c (raw sha256 01cbd5dc7f5f5473, the bytes the last_run calibrated) and now differ only in two docstring lines (6cfd21b97c); both hash 210cb36cc4d6c302 under brief_text.py"
    },
-   "status": "FAILED",
+   "status": "CALIBRATED",
    "timeout_s": 1800,
    "was": "UNTESTED"
   },
