@@ -377,7 +377,29 @@ def t_readings_have_a_measured_row_for_each_scene_old_and_new():
     must("## Did the ten names help" in text and "## What could not be measured" in text, "the verdict or its limits are missing")
 
 
-CHECKS = [t_moat_imports_only_scene, t_storeroom_imports_only_scene, t_wall_lamps_imports_only_scene,
+def t_a_job_to_a_cell_alone_reaches_the_game_as_its_first_target():
+    """s.act.job(pawn, "Goto", cell=...) with no target: the game refuses a second target with no first one (live ArchBig
+    2026-11-25: every walker of scene_walk_under_cover stood still, the order refused). The cell alone is target A."""
+    import scene_names as N
+    got = {}
+
+    class S(object):
+        pass
+    act = N.Act(S())
+    act._thing = lambda p: "Thing_" + p
+    act._do = lambda verb, name, tool, args, subject, **kw: got.update(args)
+    act.job("Human1", "Goto", cell=(15, 107))
+    must(got.get("targetAX") == 15 and got.get("targetAZ") == 107 and "targetBX" not in got, "a lone cell was sent as %s" % got)
+    got.clear()
+    act.job("Human1", "RM_CaptureDown", target="Human2", cell=(3, 4))
+    must(got.get("targetAId") == "Human2" and (got.get("targetBX"), got.get("targetBZ")) == (3, 4), "target and cell were sent as %s" % got)
+    fake = __import__("scene_fake").FakeGame() if hasattr(__import__("scene_fake"), "FakeGame") else None
+    if fake is not None and hasattr(fake, "_do"):
+        r = fake._do("jawa/ordered_job", {"pawnId": "1", "jobDef": "Goto", "targetBX": 1, "targetBZ": 2, "waitTicks": 0})
+        must(r.get("success") is False, "the fake game took a second target with no first: %s" % r)
+
+
+CHECKS = [t_a_job_to_a_cell_alone_reaches_the_game_as_its_first_target, t_moat_imports_only_scene, t_storeroom_imports_only_scene, t_wall_lamps_imports_only_scene,
           t_moat_plays_to_its_end, t_storeroom_plays_to_its_end, t_wall_lamps_plays_to_its_end,
           t_contract_refuses_success_with_no_exposure, t_contract_refuses_kind_b_with_no_budget,
           t_contract_refuses_a_tap_that_is_not_built, t_contract_makes_no_bridge_call_and_is_checked_before_the_load,
@@ -493,7 +515,7 @@ def main(argv):
     finally:
         shutil.rmtree(TMP, ignore_errors=True)
     print("scene conversion: %d of %d checks passed" % (good, len(CHECKS)))
-    return 0 if good == len(CHECKS) == 17 else 1
+    return 0 if good == len(CHECKS) == 18 else 1
 
 
 if __name__ == "__main__":

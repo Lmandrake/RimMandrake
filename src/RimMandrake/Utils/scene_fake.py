@@ -171,6 +171,9 @@ class FakeGame(object):
             for k in self.pawns_on:
                 self.pawns_on[k] = [p for p in self.pawns_on[k] if p.get("id") != a.get("pawn")]
             return {"success": True}
+        if tool == "jawa/ordered_job" and ("targetBX" in a or "targetBId" in a) and not ("targetAId" in a or "targetAX" in a):
+            # the game's own refusal (live ArchBig 2026-11-25): JobMaker has no B-without-A overload
+            return {"success": False, "message": "targetB was given without targetA. Give targetAId, or targetAX and targetAZ."}
         if tool in ("jawa/damage", "jawa/ordered_job"):
             return {"success": True, "accepted": True}
         return {"success": True, "tool": tool}

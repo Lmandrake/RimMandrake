@@ -703,7 +703,7 @@ class Effect(object):
 
 VERBS = {
     "damage": "damage(target, amount, kind='Blunt', name=None): hurt a thing; observed: its hitPointsInt before and after (jawa/damage)",
-    "job": "job(pawn, job, target=None, cell=None, name=None): force a job on a pawn through the player-order path (jawa/ordered_job)",
+    "job": "job(pawn, job, target=None, cell=None, name=None): force a job on a pawn through the player-order path (jawa/ordered_job); a cell with no target is the job's target (a Goto)",
     "place": "place(thing, at, stuff=None, rot=None, bind=None, name=None): make one thing after staging (jawa/build_batch)",
     "order": "not built: the order through the game's own giver is %s" % OWED_ORDER,
     "explode": "not built: no converted scene needed it; jawa/explosion_at through s.raw meanwhile",
@@ -746,7 +746,12 @@ class Act(object):
         if cell is not None:
             if not (isinstance(cell, tuple) and len(cell) == 2):
                 raise Refused("BAD_ARGS", "cell is (x, z), not %r" % (cell,))
-            args["targetBX"], args["targetBZ"] = cell
+            # a cell with no target is the job's FIRST target (a Goto): the game refuses a second target with no first one
+            # (live ArchBig 2026-11-25, scene_walk_under_cover: every walk order was refused and no walker moved)
+            if target is None:
+                args["targetAX"], args["targetAZ"] = cell
+            else:
+                args["targetBX"], args["targetBZ"] = cell
         return self._do("job", name, "jawa/ordered_job", args, pawn)
 
     def place(self, thing, at, stuff=None, rot=None, bind=None, name=None):

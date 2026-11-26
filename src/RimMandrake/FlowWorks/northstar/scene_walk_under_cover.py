@@ -49,6 +49,9 @@ with scene.open(GAME, contract=walk, needs={"mods": ["FlowWorks"], "map": SAVE, 
     with s.act.batch() as b:
         for w, x0 in zip(W, PITS):
             b.job(w, "Goto", cell=(x0 + 1, OZ + 7), name="walk north")
+    for e in b.effects:      # an order the game did not take is the apparatus's fault, never a result about the mod
+        if not getattr(e, "accepted", False):
+            raise scene.Fault("ACT_NOT_DONE", detail="a walk order was not taken: %r" % (e,))
     under = s.run(until=c.any_(*[z_of(w).in_(OZ + 3, OZ + 5) for w in W]), limit=TICKS)
     fades = []
     for w, x0 in zip(W, PITS):
