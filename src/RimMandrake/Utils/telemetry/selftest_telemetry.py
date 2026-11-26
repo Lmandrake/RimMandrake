@@ -1208,7 +1208,10 @@ def main(argv) -> int:
             return _R()
         with patch.object(health, "cfg", lambda: c), patch.object(health.subprocess, "run", fake_run), \
                 patch("shutil.which", lambda n, *a, **k: None):
-            rc = health.main(["--kick"])
+            try:
+                rc = health.main(["--kick"])
+            except FileNotFoundError as e:
+                rc = f"crashed: {e}"
         check("[kick] stale heartbeat + schtasks.exe off PATH still kicks (rc 0)", rc == 0 and calls, (rc, calls))
 
         # dashboards are generated, not hand-edited
