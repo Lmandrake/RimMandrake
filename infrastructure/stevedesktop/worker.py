@@ -715,6 +715,110 @@ def run_proof_line(sh, cmd, log, timeout):
     return rc, "rerun under python.exe (WSL has no route to the bridge): %s" % (tail or "")
 
 
+# RIMMANDRAKE_KILL_WINDOWS_CHILD_ON_TESTQ_CANCEL_ORPHAN_DROVE_STEVE2: `testq cancel --running` of J20261125T083122Z-dedc8e
+# ended the worker, but thirst_live.py (Windows pid 11336) drove Steve2 for 20 minutes more. A killpg of the attempt's
+# bash kills the WSL interop shim, and the shim takes its own Windows python.exe with it, but Windows kills no child of a
+# dead parent: live_session.py's own python.exe children live on (measured on Archmagi 2026-11-26: the direct child is
+# gone after TERM or KILL, its child alive with a dead ParentProcessId). So every python.exe this worker starts carries
+# `-X testq_attempt=<aid>` (CPython keeps an unknown -X option and ignores it), and a stop or a kill first ends each
+# tagged Windows process and its descendants, while the parent links still stand, then the Linux side.
+WIN_TAG = "testq_attempt"
+_PYEXE_START_RX = re.compile(r"(^|&&|\|\||[;|(])(\s*(?:[A-Za-z_]\w*=\S*\s+)*)python\.exe(?=\s|$)")
+# the kept game and Steam are the lane's, never the driver's: a phase decides their stop (stop_game_for_next_job)
+WIN_KEEP = ("rimworldwin64.exe", "steam.exe")
+_PS_TABLE = ("Get-CimInstance Win32_Process | ForEach-Object { $c = 0; if ($_.CreationDate) { "
+             "$c = ([DateTimeOffset]$_.CreationDate).ToUnixTimeSeconds() }; '{0}|{1}|{2}|{3}|{4}' -f "
+             "$_.ProcessId, $_.ParentProcessId, $c, $_.Name, ($_.CommandLine -replace '[\\r\\n]+', ' ') }")
+
+
+def tag_windows_python(cmd, aid):
+    """cmd with each command-starting python.exe given `-X testq_attempt=<aid>`, so the Windows process table names
+    this attempt's processes; a python.exe inside an argument is left alone."""
+    return _PYEXE_START_RX.sub(lambda m: m.group(1) + m.group(2) + "python.exe -X %s=%s" % (WIN_TAG, aid), cmd)
+
+
+def _win_exe(name, fallback):
+    """name on PATH, else its fixed path under C:\\Windows (a systemd unit's PATH may lack /mnt/c), else None."""
+    return shutil.which(name) or (fallback if os.path.exists(fallback) else None)
+
+
+def _powershell():
+    return _win_exe("powershell.exe", "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe")
+
+
+def windows_processes():
+    """-> ([(pid, ppid, created_epoch_s, name, cmdline)], None), or (None, why) when the table could not be read.
+    TESTQ_CMD_WINPS: a selftest's table, the same five fields split by |."""
+    seam = os.environ.get("TESTQ_CMD_WINPS")
+    ps = None if seam else _powershell()
+    if not seam and not ps:
+        return None, "no powershell.exe on this host"
+    argv = ["bash", "-c", seam] if seam else [ps, "-NoProfile", "-NonInteractive", "-Command", _PS_TABLE]
+    try:
+        # budget: danger=a hung powershell (WSL interop) holds the stop, and so the cancel of a lane's job; evidence=none
+        # budget: of a hang; longest=2s (one measured run on Archmagi 2026-11-26)
+        r = subprocess.run(argv, capture_output=True, text=True, timeout=120)
+    except (OSError, subprocess.TimeoutExpired) as e:
+        return None, "the Windows process table could not be read: %s" % e
+    if r.returncode != 0:
+        return None, "the Windows process table could not be read (exit %d): %s" % (r.returncode, r.stderr.strip()[-200:])
+    rows = []
+    for line in r.stdout.splitlines():
+        f = line.strip().split("|", 4)
+        if len(f) == 5 and f[0].isdigit() and f[1].isdigit() and f[2].lstrip("-").isdigit():
+            rows.append((int(f[0]), int(f[1]), int(f[2]), f[3], f[4]))
+    if not rows:
+        return None, "the Windows process table read empty"
+    return rows, None
+
+
+def windows_tree(rows, aid):
+    """The pids of every process whose command line carries this attempt's tag, and of their descendants. A child
+    created before its parent names a reused pid and is not followed; the game and Steam (WIN_KEEP) and what they
+    started are never in it. The tag must end where the attempt id ends: .a1 is not .a10."""
+    rx = re.compile(r"-X\s+%s=%s(?![\w.-])" % (WIN_TAG, re.escape(aid)))
+    kids = {}
+    for r in rows:
+        kids.setdefault(r[1], []).append(r)
+    todo = [r for r in rows if rx.search(r[4] or "")]
+    out = {}
+    while todo:
+        r = todo.pop()
+        if r[0] in out or (r[3] or "").lower() in WIN_KEEP:
+            continue
+        out[r[0]] = r
+        todo.extend(c for c in kids.get(r[0], []) if c[0] != r[0] and c[2] >= r[2])
+    return sorted(out)
+
+
+def kill_windows_tree(aid):
+    """End this attempt's Windows processes -> (pids it ended, None) or (None, why it could not look). TESTQ_CMD_WINKILL:
+    a selftest's kill, given the pids as arguments."""
+    rows, why = windows_processes()
+    if rows is None:
+        return None, why
+    pids = windows_tree(rows, aid)
+    if not pids:
+        return [], None
+    seam = os.environ.get("TESTQ_CMD_WINKILL")
+    if seam:
+        argv = ["bash", "-c", seam + " " + " ".join(str(p) for p in pids)]
+    else:
+        tk = _win_exe("taskkill.exe", "/mnt/c/Windows/System32/taskkill.exe")
+        if not tk:
+            return None, "no taskkill.exe on this host"
+        argv = [tk, "/F"]
+        for p in pids:
+            argv += ["/PID", str(p)]
+    try:
+        # budget: danger=a hung taskkill (WSL interop) holds the stop, and so the cancel of a lane's job; evidence=none
+        # budget: of a hang; longest=1s (one measured run on Archmagi 2026-11-26)
+        subprocess.run(argv, capture_output=True, text=True, timeout=120)
+    except (OSError, subprocess.TimeoutExpired) as e:
+        return None, "taskkill of %s failed: %s" % (pids, e)
+    return pids, None
+
+
 def kept_env_keys(environ):
     """The environment a detached attempt keeps: the RM_/TESTQ_/STEVE_/RIMFLOW_ seams, and GABP_ (Steve2's bridge port
     and token, from `game_instance.py env b`; without them its modcheck would knock on Steve1's 5174)."""
@@ -935,6 +1039,7 @@ class Attempt:
     def sh(self, cmd, log_name=None, timeout=None):
         """Run a shell command in the runner clone; -> (rc or None on timeout, tail of output)."""
         logf = open(os.path.join(self.d, log_name or "worker.log"), "ab")
+        cmd = tag_windows_python(cmd, self.aid)    # a stop can then name this attempt's Windows processes
         self.say("$ " + cmd)
         # RIMMANDRAKE_FIX_STEVE_LANE_REFUSES_JOBS_BRIDGE_IDLE_SILENT: the lane is ssh-started with no seat env, and the
         # restart's `game down` asks `rimflow bridge idle`, which refuses a caller it cannot name (exit 2, 2026-11-20).
@@ -959,6 +1064,10 @@ class Attempt:
 
     def kill_child(self):
         c = self.child
+        if c:       # Windows first: once the shim dies, its python.exe's children have no live parent to be found by
+            pids, why = kill_windows_tree(self.aid)
+            if why or pids:
+                self.say("windows children: %s" % (why or "ended %s" % pids))
         if c and c.poll() is None:
             for sig in (signal.SIGTERM, signal.SIGKILL):
                 try:
@@ -2052,6 +2161,9 @@ def cmd_ack(aid):
 
 def cmd_stop(aid):
     st = read_json(p("attempts", aid, "state.json")) or {}
+    # the attempt's Windows processes before its unit: a unit stop (KillMode=control-group) kills every shim at once,
+    # and the children of the python.exe a shim took with it would live on, unseen (RIMMANDRAKE_KILL_WINDOWS_CHILD_...)
+    won, why = kill_windows_tree(aid)
     stopped = False
     if st.get("unit") and shutil.which("systemctl"):
         stopped = subprocess.run(["systemctl", "--user", "stop", st["unit"]], capture_output=True,
@@ -2061,7 +2173,7 @@ def cmd_stop(aid):
             os.kill(st["pid"], signal.SIGTERM)
         except ProcessLookupError:
             pass
-    return out({"attempt": aid, "stop_sent": True})
+    return out({"attempt": aid, "stop_sent": True, "windows_ended": won, **({"windows_unread": why} if why else {})})
 
 
 def main(argv=None):
