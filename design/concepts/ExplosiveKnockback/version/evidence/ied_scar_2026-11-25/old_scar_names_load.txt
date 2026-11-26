@@ -1,0 +1,3 @@
+SCARS {'RM_KnockbackBlastCrater_3Wide': 18, 'RM_KnockbackBlastCrater_5Wide': 1, 'RM_KnockbackBlastCrater_20Wide': 1}
+PASS OLD_NAMES_LOAD: 20 of 20 saved scars on the map under their Wide names
+[bridge split] 49.2 s wall: load 0.5 / ticks 0.0 / reads 1.2 / other 37.7 / outside calls 9.8 s
