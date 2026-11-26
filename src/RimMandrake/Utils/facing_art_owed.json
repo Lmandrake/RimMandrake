@@ -5,9 +5,6 @@
   "Things/Pawn/Animal/RM_Tellurox/RM_Tellurox": "TELLUROX_FACINGS_REDRAW_ALWAYS_SIDEWAYS"
  },
  "texPaths": [
-  "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_AV_B",
-  "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_AV_C",
-  "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_BV_I",
   "Things/Pawn/Animal/Moornak/Moornak",
   "Things/Pawn/Animal/Onnik/Onnik",
   "Things/Pawn/Animal/RM_Drommath/RM_Drommath",
