@@ -131,6 +131,11 @@ def criteria_cases(AC):
     check("criteria: a sub-bullet stays with its constraint", "RM_LadderPortable" in crit.get("D4", ""), crit.get("D4"))
     check("criteria: C1 is the brief's own line", crit.get("C1", "").startswith(
         "North is the creature's rear (no face, no eyes); south looks at the camera"), crit.get("C1"))
+    # RIMMANDRAKE_STEADY_ART_JUDGE_DANGLEMAW_NORTH_KEPT_ONE_RUN_IN_FOUR: a judge kept Danglemaw r1's toothed ring on north
+    # because "C1 only bans a face or eyes"; the line says a mouth is face and the back of a head is closed
+    c1 = crit.get("C1", "").lower()
+    check("criteria: C1 counts a mouth and teeth as face, and the back of the head as closed",
+          "mouth" in c1 and "teeth" in c1 and "closed" in c1, crit.get("C1"))
     # RIMMANDRAKE_RECONCILE_ART_BRIEF_SIZE_RULE_THREE_PICKS_REFUSED: his DecayDrake r2 pick (CL-035) carries mash mounds
     # its description says it makes; D4 names that ground matter as the subject, and still refuses every other prop
     d4 = crit.get("D4", "")

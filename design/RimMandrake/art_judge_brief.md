@@ -69,7 +69,9 @@ If one of these is missing, answer `UNSURE: not given <what>`. Never guess the m
 
 ### C. Facings and perspective
 - C1. North is the creature's rear (no face, no eyes); south looks at the camera; never a top-down view rotated.
-  — Owner 2026-09-15 (`rimworld-sprite-facings`)
+  A mouth, teeth or an open throat is part of the face: on north, the back of the head is drawn closed, never as a
+  toothed opening with the ground showing through it. — Owner 2026-09-15 (`rimworld-sprite-facings`); the closed
+  back: calibration case Danglemaw r1, which he purged (2026-10-24)
 - C2. Facings agree on size, proportions and palette. If one facing looks huge or small, that is REDO. West mirrors
   east unless a west file exists. — `rimworld-sprite-facings`; Owner 2026-11-19 ("Allow the Judge to bounce
   incorrectly sized creatures")
