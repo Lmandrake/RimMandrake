@@ -27,8 +27,9 @@ The checks (each prints PASS, FAIL or INVALID with what it read):
                hit is at most the larger mass's share of 8.9 (two cells of wall impact, 1.25 / 2.25 x 2 x 4 per cell;
                4.45 for a like pair)
   V_NOT_DOWNED colonist lane: neither colonist is downed
-  V_HEDIFF <lane>  the walker gained a Bruise or Crush hediff; on the animal lanes (small, large: no armour) its gain is the
-                   record's otherAmount within 25 percent, so the walker took its own share and not the thrower's
+  V_HEDIFF <lane>  the walker gained a Bruise or Crush hediff, and took its own share, not the thrower's: the light walker
+                   (small) gains at least 1.5 x the thrower's amount; the heavy walker (large) gains no more than the
+                   midpoint of the two amounts
   V_EMPTY      empty lane: the colonist launched, and no `land_on_pawn` record names it
 
     python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_pawn_land_on_pawn_sizes.py
@@ -38,8 +39,8 @@ The plant no_bruise turns impactDamageEnabled off: V_SMALL, V_LARGE and V_HEDIFF
 C_LANDING_BRUISE_SWAPPED (design/concepts/ExplosiveKnockback/version/in_game/visit_1/plants/) must make V_SMALL and V_LARGE
 FAIL. The 0.05 and 4.45 are the same rule as scene_pawn_arc_bruise_sizes. Visit 2 of 0.2.0 (ArchBig) ran that build plant
 (PF_LANDING_BRUISE_SWAPPED, the walker given the thrower's amount): V_SMALL and V_LARGE stayed PASS (squirrel +1.318 against
-colonist +1.100; colonist +5.624 against muffalo +4.946), so V_HEDIFF now reads the share itself: under the plant small
-gains 1.318 against an otherAmount of 6.682 and large 4.946 against 2.376, both FAIL.
+colonist +1.100; colonist +5.624 against muffalo +4.946), so V_HEDIFF now reads which share the walker took: under the
+plant small gains 1.14 to 1.32 (the thrower's 1.318; at least 1.98 wanted) and large 4.71 to 4.95 (at most 4.0), both FAIL.
 """
 import json
 
@@ -242,11 +243,23 @@ for name in ("small", "large", "colonist"):
     if name in land:
         g = gain(name, "walker")
         dead = r["after"]["walker"] is None or r["after"]["walker"][2]
-        share = num(hits[0], "otherAmount")
-        fits = name not in ("small", "large") or (g is not None and share is not None and abs(g - share) <= 0.25 * share)
+        share, own = num(hits[0], "otherAmount"), num(hits[0], "amount")
+        # the walker took its own share, not the thrower's (PF_LANDING_BRUISE_SWAPPED). A small walker's injury is capped by
+        # the body part it lands on (a squirrel read 3.68 and 6.66 of a 6.682 share), so the light lane asks for at least 1.5
+        # times the thrower's amount; the heavy lane asks for no more than the midpoint of the two shares.
+        if name == "small":
+            want = None if own is None else 1.5 * own
+            fits = g is not None and want is not None and g >= want
+            how = " (at least 1.5 x the thrower's %s = %s: %s)" % (own, want, fits)
+        elif name == "large":
+            want = None if own is None or share is None else (own + share) / 2
+            fits = g is not None and want is not None and g <= want
+            how = " (at most the midpoint %s of %s and %s: %s)" % (want, own, share, fits)
+        else:
+            fits, how = True, ""
         row("PASS" if dead or (g is not None and g > 0 and fits) else "FAIL", "V_HEDIFF " + name,
             "walker's new Bruise+Crush %s, its share otherAmount %s%s (before %s, after %s)" % (
-                g, share, " (within 25 percent: %s)" % fits if name in ("small", "large") else "", r["before"]["walker"], r["after"]["walker"]))
+                g, share, how, r["before"]["walker"], r["after"]["walker"]))
 
 
 def pair(name):
