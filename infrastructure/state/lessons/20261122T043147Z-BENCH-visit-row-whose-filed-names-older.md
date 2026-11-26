@@ -1,1 +1,0 @@
-A visit row whose 'filed' names an OLDER item (not filed caused-by the driver's or a steward's item) is invisible to the road back: maturation_autonomy._road_back_ids finds items only by caused_by, so the next visit would launch without it. The steward files a successor caused-by its own item with --replaces <old>. Seen: FlowWorks visit 5, GRATE_FIRE_FIX_SOLID_DECK_BURNS_TOO.

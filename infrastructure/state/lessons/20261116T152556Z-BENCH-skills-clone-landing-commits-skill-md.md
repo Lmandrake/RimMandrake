@@ -1,1 +1,4 @@
-skills/clone-landing-commits/SKILL.md says land.sh is installed as /home/mandrake/.seat-tmp/land.sh; on BENCH 2026-11-16 that path did not exist (exit 127): run src/RimMandrake/Utils/land.sh from the clone instead.
+To land a commit that ./publish left local (it lost the push race, exit 2), use land.sh at its tracked path: skills/clone-landing-commits/SKILL.md says land.sh is installed as /home/mandrake/.seat-tmp/land.sh; on BENCH 2026-11-16 that path did not exist (exit 127): run src/RimMandrake/Utils/land.sh from the clone instead.
+
+- Second sighting, Archmagi 2026-11-18: a push from a detached clone can lose the race three times in a row when many helpers land at once. ./publish then exits 2 with the commit made locally (ahead 1, behind 1). Land that commit with src/RimMandrake/Utils/land.sh <sha> <its paths> (LAND_REPO=the clone); it prints PUBLISHED. The clone-landing-commits skill still named /home/mandrake/.seat-tmp/land.sh; it was not there, the tracked copy is src/RimMandrake/Utils/land.sh.
+- The skill now names the tracked path and says the old copy is absent (measured 2026-11-23 in the skill; /home/mandrake/.seat-tmp/land.sh still absent 2026-11-25).

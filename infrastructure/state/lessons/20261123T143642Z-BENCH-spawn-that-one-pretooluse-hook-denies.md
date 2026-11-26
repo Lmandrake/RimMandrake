@@ -1,1 +1,0 @@
-A spawn that one PreToolUse hook denies can still hold a slot: block_agent_over_slots.py reserves the slot (RESERVE_S, 90 s) before a later hook (the unbounded-context blocker on general-purpose) refuses the call. The next spawn then reads slots_full with 'reserved-HHMMSS'. Wait 90 s, or spawn a bounded agent type first time.

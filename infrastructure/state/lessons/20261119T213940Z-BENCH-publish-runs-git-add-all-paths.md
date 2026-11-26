@@ -1,1 +1,0 @@
-./publish runs 'git add --all -- <paths>', which fails 'pathspec did not match' on a file already removed from the index by git rm. Delete with plain rm (or git reset the git rm) and pass each deleted FILE path, not the folder; a git mv/rename needs its old path listed too or the old file survives on origin (measured 2026-11-19).

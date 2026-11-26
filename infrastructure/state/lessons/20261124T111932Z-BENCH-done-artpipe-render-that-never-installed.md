@@ -1,1 +1,0 @@
-A done artpipe render that is never installed vanishes from _artsrc after 14 days and a census that looks only there reads it FAILED; look in the art store by the ledger's variant job sha before re-rendering (32 finished Alpha Biomes replacements were hidden this way, 2026-11-23).

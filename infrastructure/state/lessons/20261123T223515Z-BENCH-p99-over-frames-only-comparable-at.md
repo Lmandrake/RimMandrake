@@ -1,1 +1,0 @@
-A p99 over frames is only comparable at a held frame rate: vsync does not hold a covered window (517 to 2678 window frames in 21 pairs, 2026-11-23), so a frame probe sets vSyncCount 0 and a fixed targetFrameRate while it runs and puts both back in OnDestroy.

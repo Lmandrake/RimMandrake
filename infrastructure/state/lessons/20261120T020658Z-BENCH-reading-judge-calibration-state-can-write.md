@@ -1,1 +1,0 @@
-Reading judge calibration state can write: after running refusal_contract.py calibration (a status read) on 2026-11-19 the Conductor's clone had an edited infrastructure/state/judge_calibration.json that blocked ./sync; check git status after a status command on that file and drop the change.

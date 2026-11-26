@@ -51,7 +51,7 @@ The owner spent this sitting on WHY reviews stopped converging, and he ruled a n
 
 <!-- Instruments that lied, silent failures, commands that ate their own input. ONE line each, ending with where it now lives -- file it with `lessons.py add` the moment it is learned, then cite `(filed: lessons)` or `(see: <item/doc>)`. Never re-explain a trap that is already recorded somewhere durable. -->
 - A helper's keyword count contradicted the rule text and I repeated it to the owner; read the rule text first (filed: infrastructure/state/lessons/20261120T020658Z-BENCH-before-repeating-helper-s-finding-about.md)
-- A calibration status read edited judge_calibration.json and blocked ./sync (filed: infrastructure/state/lessons/20261120T020658Z-BENCH-reading-judge-calibration-state-can-write.md)
+- A calibration status read edited judge_calibration.json and blocked ./sync (filed: infrastructure/state/lessons/20261115T132719Z-BENCH-calibrate-no-run-writes-registry.md)
 - A time written into a note must come from `date` in the same command (filed: infrastructure/state/lessons/20261120T001210Z-BENCH-time-written-into-ledger-note-or.md)
 - 16 detached runs at once put the machine's load average near 40 and a timing test flaked; one lane was killed with no result (see: infrastructure/state/items/RIMMANDRAKE_FIX_RED_SELFTESTS_ONE_SWEEP_NO_NEW_ONES note of 2026-11-19)
 - A repair helper whose ticket title names a mod holds that mod's one live slot; launch with `--env RM_CONTROL_MOD=none` (see: /mnt/d/ClaudeWork/rimmandrake/conductor/readiness_refresh_20261119.md section 4)
