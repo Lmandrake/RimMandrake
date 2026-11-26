@@ -1,0 +1,59 @@
+{
+ "arrival": 4,
+ "at": "2026-11-25T20:16:30-08:00",
+ "by": "BENCH",
+ "conductor_decision": null,
+ "fix": [
+  "RIMMANDRAKE_DRILL_FLOWWORKS_WATER_LAYERS_HE_SAW_STACKED_BLUE",
+  "RIMMANDRAKE_OFFER_FLOWWORKS_STYLE_REACHES_AS_SLACK_DOES",
+  "RIMMANDRAKE_SHIFT_SUNK_BODY_OFF_THE_EAST_PIT_WALL",
+  "RIMMANDRAKE_JOIN_JETTY_SQUARES_SEAMLESS_STILL_TWO_BLOCKS",
+  "RIMMANDRAKE_REDRAW_ROPE_BRIDGE_AS_ROPES_AND_SPARSE_SLATS",
+  "RIMMANDRAKE_REDRAW_TIMBER_BRIDGE_FROM_HIS_THREE_PHOTOS",
+  "RIMMANDRAKE_SLOW_TAR_FIRE_IT_WENT_UP_IN_A_WHOOSH",
+  "RIMMANDRAKE_SHOW_TAR_LIGHT_ORDER_HE_FOUND_NONE"
+ ],
+ "groups": [
+  [
+   "RIMMANDRAKE_JOIN_JETTY_SQUARES_SEAMLESS_STILL_TWO_BLOCKS",
+   "RIMMANDRAKE_REDRAW_ROPE_BRIDGE_AS_ROPES_AND_SPARSE_SLATS",
+   "RIMMANDRAKE_REDRAW_TIMBER_BRIDGE_FROM_HIS_THREE_PHOTOS"
+  ],
+  [
+   "RIMMANDRAKE_SLOW_TAR_FIRE_IT_WENT_UP_IN_A_WHOOSH",
+   "RIMMANDRAKE_SHOW_TAR_LIGHT_ORDER_HE_FOUND_NONE"
+  ]
+ ],
+ "item": "RIMMANDRAKE_ROUTE_FLOWWORKS_WALK_FINDINGS_OF_NOV_TWENTY_FIVE",
+ "mod": "FlowWorks",
+ "next_version": [
+  "RIMMANDRAKE_DESIGN_FLUID_THIN_SHEETS_TAR_SHOWED_MISTY_GREY",
+  "RIMMANDRAKE_DESIGN_TAR_SMOKE_AND_GAS_ON_THE_WIND",
+  "RIMMANDRAKE_DESIGN_FLOWWORKS_WATER_WAVES_FOR_THE_NEXT_VERSION"
+ ],
+ "owner_said": {
+  "tsn": "1795661493888672544",
+  "words": "Stations 34-39: Pits look pretty good. We need you to add a new area with many complex surface deformations within a very large pit, to see if we can read complex shapes and relationships properly. Please set up proper testing for walking under covered pits and plank-covered pits. Grate doors work as expected. Ladders and climbing gear work as expected. I can't review any more. Please work to significantly enhance this test map to expose as many explicit testing principles as FlowWorks really needs... many of them are old, coded, and strange. That is end of my walkthrough for now. I must go AFK. Release the walkthrough game."
+ },
+ "passes": [
+  "Sluice gates look correctly half-covered when N/S and not when E/W (stations 7 to 10)",
+  "The water's transparency itself is good",
+  "Tank graphics look good",
+  "Sprinklers look good while working",
+  "A body under water looks good (stations 30 and 33), apart from its east offset",
+  "Wanda standing in the water is drawn at the correct level (station 30)",
+  "New bridge art everywhere looks great, with good shadows from the elevated cables",
+  "Pits look pretty good (stations 34 to 39)",
+  "Grate doors work as expected",
+  "Ladders and climbing gear work as expected",
+  "Tar is flammable and does not instantly go away"
+ ],
+ "pick": [],
+ "scene": [],
+ "schema": 1,
+ "to": "offline_build",
+ "verdict": "not_passed",
+ "version": "0.1.0",
+ "walked": "2026-11-25 about 5:40 to 6:50 PM PST, ArchBig, save FLOWWORKS_OWNER_REVIEW_VISIT13_SMALL_20261125_0957, walk brief arrival_4",
+ "why": "Conductor's brief (relayed under CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM): FlowWorks 0.1.0 did not pass his walk of 2026-11-25. The current-version fixes change code (style reaches, tar fire, the light order, the sunk-body draw) and art (jetties, rope and timber bridges): build work, so the road back is Offline build (Stage 3); each fix then passes the blind challenge and in-game acceptance reruns only the checks the fixes touch. The water drill already has its own live run on ArchSmall; the tick books that run and starts no second one (3d2fe15a2654)."
+}

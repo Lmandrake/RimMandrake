@@ -12,7 +12,7 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`: "Yes, lock the other four mods").
   Code exists and is large: `src/RimMandrake/FlowWorks/` (C# mod, a 325+ case C# SelfTest, about 168 Python selftests,
   a northstar proof harness).
-- **Stage now:** Stage 8, his live walk, since 2026-11-25 12:23 PM PST (`version/stage_record.json`).
+- **Stage now:** Stage 3, offline build, since 2026-11-25 8:16 PM PST (`version/stage_record.json`).
 - **Bars:** 55 = 28 inventory rows of `record.json` + 27 leaves of `tree.json` (`coverage_judge.required_ids()`); 59 at the
   lock, his card of 2026-11-14 added `inv_geyser_tub` and `inv_liquid_coating` (61), and his card of 2026-11-14 ~9:43 PM
   PST moved the four wetting bars to 0.2.0 (57), and his word of 2026-11-23 ~11:05 PM PST moved the raid proof to 0.2.0
@@ -23,7 +23,7 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - **Held look statements for this mod:** 103 rows in five files of `design/RimMandrake/validation_holding/` (2026-11-12:
   56 rows; 2026-11-13 morning: 18; 2026-11-13 dig interface: 2; 2026-11-13 evening: 5; 2026-11-14: 22); 83 are placed
   in `version/test_table.json`, all 103 placed. [measured, preflight C8, 2:40 PM PST]
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-25 12:23 PM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-25 8:16 PM PST).
 
 ### The vision (his root paragraph, approved 2026-11-04, OWNER:1793794915205594887; eight lines in `version/vision.md`)
 
@@ -576,4 +576,14 @@ None open; question 3 (the dig speed) is answered in the history entry of 2026-1
 - Checks passed: order, by, version, hold, walk_checks_stand, walk_brief, walk_items_closed.
 - Was, "Stage now": - **Stage now:** Stage 7, the walk brief, since 2026-11-25 12:00 PM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-25 12:00 PM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-25 8:16 PM PST, stage change: His live walk (Stage 8) to Offline build (Stage 3) (by BENCH)
+
+- Why: walk 4 not passed: Conductor's brief (relayed under CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM): FlowWorks 0.1.0 did not pass his walk of 2026-11-25. The current-version fixes change code (style reaches, tar fire, the light order, the sunk-body draw) and art (jetties, rope and timber bridges): build work, so the road back is Offline build (Stage 3); each fix then passes the blind challenge and in-game acceptance reruns only the checks the fixes touch. The water drill already has its own live run on ArchSmall; the tick books that run and starts no second one (3d2fe15a2654).
+- Checks passed: order, by, version, hold.
+- Owner said: OWNER:1795661493888672544
+- Walk result: design/concepts/FlowWorks/version/walk_brief/walk_4_result.json
+- Was, "Stage now": - **Stage now:** Stage 8, his live walk, since 2026-11-25 12:23 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-25 12:23 PM PST).
 - Record: `version/stage_record.json`.

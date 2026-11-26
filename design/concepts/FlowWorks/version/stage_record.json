@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "FlowWorks",
   "version": "0.1.0",
-  "stage": "his_walk",
-  "stage_label": "His live walk (Stage 8)",
-  "since": "2026-11-25T12:23:03-08:00",
+  "stage": "offline_build",
+  "stage_label": "Offline build (Stage 3)",
+  "since": "2026-11-25T20:16:31-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -549,6 +549,25 @@
         "walk_checks_stand",
         "walk_brief",
         "walk_items_closed"
+      ]
+    },
+    {
+      "from": "his_walk",
+      "to": "offline_build",
+      "at": "2026-11-25T20:16:31-08:00",
+      "by": "BENCH",
+      "why": "walk 4 not passed: Conductor's brief (relayed under CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM): FlowWorks 0.1.0 did not pass his walk of 2026-11-25. The current-version fixes change code (style reaches, tar fire, the light order, the sunk-body draw) and art (jetties, rope and timber bridges): build work, so the road back is Offline build (Stage 3); each fix then passes the blind challenge and in-game acceptance reruns only the checks the fixes touch. The water drill already has its own live run on ArchSmall; the tick books that run and starts no second one (3d2fe15a2654).",
+      "unit": "rm-detached-bench-rimmandrake-route-flowworks-walk-finding-1795661607",
+      "item": "RIMMANDRAKE_ROUTE_FLOWWORKS_WALK_FINDINGS_OF_NOV_TWENTY_FIVE",
+      "confirmed": {
+        "owner_said": "OWNER:1795661493888672544",
+        "walk_result": "design/concepts/FlowWorks/version/walk_brief/walk_4_result.json"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
       ]
     }
   ],
