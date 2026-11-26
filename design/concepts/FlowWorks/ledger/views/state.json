@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "d9d18d3f508c30b5e40a4f35791fd6c8f3fa322c9022badc0c523fec8761125a",
+  "body_sha256": "4a5f6bea575ca1706f26f0b238284723d14baef5e3b07fafbbe60b1d83056674",
   "reducer": 1,
   "shards": {
    "BACKFILL": 892335,
@@ -44,7 +44,7 @@
    "HOLDER.run-1795471235": 562,
    "HOLDER.run-1795503470": 1774,
    "HOLDER.run-1795670514": 9857,
-   "HOLDER.run-1795693138": 9641,
+   "HOLDER.run-1795693138": 12237,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1295,10 +1295,10 @@
   },
   "checkpoint": {
    "by": "HOLDER.run-1795693138",
-   "done": "LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP closed: Lake* 8/8, preview judged KEEP, A2 verified on 0b30f2a023f8 (4f70a3189a)",
-   "next": "Filter and work RIMMANDRAKE_ALIGN_FILL_GRID_LAGS_TRUE_BRIM",
-   "ruled_out": "shallow-only lakes at 1 m as a generator fault (wadeable terrain is shallow by design)",
-   "ts": "2026-11-26T15:42:53Z"
+   "done": "6 more members: 2 stale/done drops, crop delay done, pour held for 0.2.0, shooting row repaired and live PASS (751c85566c), vv reds classed (7cee07efb5)",
+   "next": "Filter and work RIMMANDRAKE_COVER_BOOKS_UNDER_LIQUID_NOVEL_READS_THROUGH_TAR",
+   "ruled_out": "a kernel fault behind the seven vv reds; a mod fault behind shooting_rule_off",
+   "ts": "2026-11-26T18:06:01Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1750,7 +1750,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1765,
+  "events": 1773,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7850,7 +7850,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-26T15:44:17Z",
+   "last": "2026-11-26T18:06:01Z",
    "lease": "run-1795693138",
    "released": false,
    "token": 61

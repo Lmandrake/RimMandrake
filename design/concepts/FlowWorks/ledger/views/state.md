@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":892335,"DISPATCH":89564,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":4566,"HOLDER.run-1795304573":2662,"HOLDER.run-1795312089":1009,"HOLDER.run-1795312923":2298,"HOLDER.run-1795315124":1540,"HOLDER.run-1795321038":846,"HOLDER.run-1795325268":1929,"HOLDER.run-1795329869":754,"HOLDER.run-1795330730":1090,"HOLDER.run-1795335550":748,"HOLDER.run-1795338340":3967,"HOLDER.run-1795341097":2076,"HOLDER.run-1795346318":1646,"HOLDER.run-1795396410":1686,"HOLDER.run-1795412632":930,"HOLDER.run-1795427578":1657,"HOLDER.run-1795429371":2915,"HOLDER.run-1795441687":754,"HOLDER.run-1795461568":2159,"HOLDER.run-1795471235":562,"HOLDER.run-1795503470":1774,"HOLDER.run-1795670514":9857,"HOLDER.run-1795693138":9641,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=4a9a065c1bf10f135deecc08aaa09781afb07940fbdd6960e2c99ecc953de3a3 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":892335,"DISPATCH":89564,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":4566,"HOLDER.run-1795304573":2662,"HOLDER.run-1795312089":1009,"HOLDER.run-1795312923":2298,"HOLDER.run-1795315124":1540,"HOLDER.run-1795321038":846,"HOLDER.run-1795325268":1929,"HOLDER.run-1795329869":754,"HOLDER.run-1795330730":1090,"HOLDER.run-1795335550":748,"HOLDER.run-1795338340":3967,"HOLDER.run-1795341097":2076,"HOLDER.run-1795346318":1646,"HOLDER.run-1795396410":1686,"HOLDER.run-1795412632":930,"HOLDER.run-1795427578":1657,"HOLDER.run-1795429371":2915,"HOLDER.run-1795441687":754,"HOLDER.run-1795461568":2159,"HOLDER.run-1795471235":562,"HOLDER.run-1795503470":1774,"HOLDER.run-1795670514":9857,"HOLDER.run-1795693138":12237,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=e500db6481428b62343a0fef75bd61c3be38f7569afc365b7bf40b086ad4c148 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage offline_build · 1765 events in 46 shards · reducer 1
-holder lease run-1795693138, token 61, last active 2026-11-26T15:44:17Z
+version 0.1.0 · stage offline_build · 1773 events in 46 shards · reducer 1
+holder lease run-1795693138, token 61, last active 2026-11-26T18:06:01Z
 holder session d663ac98-3664-4cdc-9376-afa355ba506f, context 290501 of ceiling 400000
 
-## Last checkpoint (HOLDER.run-1795693138, 2026-11-26T15:42:53Z)
-- done: LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP closed: Lake* 8/8, preview judged KEEP, A2 verified on 0b30f2a023f8 (4f70a3189a)
-- next: Filter and work RIMMANDRAKE_ALIGN_FILL_GRID_LAGS_TRUE_BRIM
-- ruled out: shallow-only lakes at 1 m as a generator fault (wadeable terrain is shallow by design)
+## Last checkpoint (HOLDER.run-1795693138, 2026-11-26T18:06:01Z)
+- done: 6 more members: 2 stale/done drops, crop delay done, pour held for 0.2.0, shooting row repaired and live PASS (751c85566c), vv reds classed (7cee07efb5)
+- next: Filter and work RIMMANDRAKE_COVER_BOOKS_UNDER_LIQUID_NOVEL_READS_THROUGH_TAR
+- ruled out: a kernel fault behind the seven vv reds; a mod fault behind shooting_rule_off
 
 ## Open findings (178)
 (claimed fixes, awaiting a judge, on one line each with the oldest 125 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
@@ -502,6 +502,6 @@ spend recorded: USD 78.94, 45401435 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1765 events (views/history.md; never read whole)
+- the full history: 1773 events (views/history.md; never read whole)
 
-cursor: t=2026-11-26T15:44:17Z.1795707857190390329 (modledger.py since --mod FlowWorks t=2026-11-26T15:44:17Z.1795707857190390329 prints what changed after this packet)
+cursor: t=2026-11-26T18:06:01Z.1795716361489443119 (modledger.py since --mod FlowWorks t=2026-11-26T18:06:01Z.1795716361489443119 prints what changed after this packet)
