@@ -1,6 +1,6 @@
 ---
 id: RIMMANDRAKE_DROP_REQUIRED_SAID_FLAG_RULE_SAYS_OPTIONAL
-title: title Two tools still require --said though the rule says no tool needs his words
+title: Two tools still require --said though the rule says no tool needs his words
 project: rimmaster
 type: bug
 status: open
