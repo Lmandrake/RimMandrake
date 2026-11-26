@@ -26,6 +26,7 @@ import sys
 TOP = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
 # page -> its tests file, repo-relative. A new boundary page is added here.
 PAGES = {
+    "design/specs/2026-11-26-exec-bits-kept/boundary.md": "src/RimMandrake/Utils/selftest_exec_bits.py",
     "design/specs/2026-11-26-world-sea-lists/boundary.md": "src/RimMandrake/BiomesShell/selftest_world_sea_lists.py",
     "design/specs/2026-11-26-flyer-cutout-area/boundary.md": "src/RimMandrake/Utils/art/selftest_flyer_cutout_area.py",
     "design/specs/2026-11-26-testq-stop-ends-windows-tree/boundary.md": "infrastructure/stevedesktop/selftest_steve_worker_windows_tree.py",
