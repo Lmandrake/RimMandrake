@@ -788,16 +788,33 @@ def crops(ctx):
 
         early = alive(P(1, 103) + (4, 3))
         soak_early = ld(l0, ledger(), "soaked")
-        dead, waited = _poll(ctx, lambda: sum(alive(c + (1, 1)) for c in deep) == 0, 6)
-        film_alive = sum(alive(c + (1, 1)) for c in film)
+        # RIMMANDRAKE_CLASS_SEVEN_THIRST_FAILS_SITE_FULL_OF_PATIENTS (direct re-runs 2026-11-25, 6 pulses, none drowned): since
+        # 87b2dddb89 a crop drowns once min(standing pulses, ITS age in pulses) reaches the delay, and Plant.Age grows only on
+        # the plant's TickLong (2,000 ticks). Rice set at age 0 cannot drown before its first TickLong, so the bound is one
+        # TickLong plus the delay plus one pulse (11 at the 250-tick pulse), not 6.
+        pt = int(ctx.get("pulseTicks") or 250)
+        bound = -(-2000 // pt) + int(sget(S_SHEET, field) or 2) + 1
+        # the longer window lets the spreading sheet deepen a film square: a film square counts only while every pulse's read
+        # keeps it at film (one that rose stood under the sheet, and may drown by the rule)
+        rose = set()
+
+        def all_drowned():
+            for c in film:
+                if c not in rose and ctx["scell"](c)[0].get("tier") in ("Sheet", "Pool"):
+                    rose.add(c)
+            return sum(alive(c + (1, 1)) for c in deep) == 0
+        dead, waited = _poll(ctx, all_drowned, bound)
+        film_kept = [c for c in film if c not in rose]
+        tt["filmRose"] = len(rose)
+        film_alive = sum(alive(c + (1, 1)) for c in film_kept)
         control = alive(P(1, 108) + (4, 1))
     finally:
         if shipped is not None:
             sset(S_SHEET, field, shipped)
-    good = early == 12 and (soak_early or 0) > 0 and dead and film_alive == len(film) and control == 4
+    good = early == 12 and (soak_early or 0) > 0 and dead and bool(film_kept) and film_alive == len(film_kept) and control == 4
     row("CROPS_IRRIGATE_THEN_DROWN", "PASS" if good else "FAIL",
         {"field": field, "shipped": shipped, "aliveEarly": early, "soakedEarly": soak_early, "drownedAfterPulses": waited,
-         "filmAlive": film_alive, "control": control, "tiers": tt})
+         "allDrowned": bool(dead), "pollBound": bound, "filmAlive": film_alive, "control": control, "tiers": tt})
 
 
 def below_zero(t):
@@ -1079,6 +1096,7 @@ class FakeBridge(object):
       load_drift         MOD: the load drops the loss remainders                -> SAVE_LOAD_CONTINUES_IDENTICAL FAIL
       crops_built        Stage 2 crops present (FEATURES crops=True)           -> CROPS_IRRIGATE_THEN_DROWN measured
       crop_never_dies    MOD (with crops_built): standing water never drowns   -> CROPS_IRRIGATE_THEN_DROWN FAIL
+      film_drowns        MOD (with crops_built): a film square drowns its crop too -> CROPS_IRRIGATE_THEN_DROWN FAIL
       cap_setting_built  Stage 3 cap setting present (FEATURES capSetting=True) -> LOWERED_CAP... measured
       cap_lower_cuts     MOD (with cap_setting_built): lowering cuts the water -> LOWERED_CAP_KEEPS_DEEPER_WATER FAIL
     Always on (the live map as the 2026-11-01 0114 run met it, so a clean mock proves the harness copes): a wild plant stands
@@ -1086,9 +1104,10 @@ class FakeBridge(object):
     one offer at an undug square reaches only that square and its 4 open neighbours (production FindLips)."""
     FAULTS = ("no_proofs", "noclock", "canal_not_full", "pump_no_spill", "pump_leaks", "rain_no_spill", "fillin_destroys",
               "no_return", "unbounded", "cap_destroys", "door_seals", "door_open", "off_still_spills", "off_purges",
-              "no_freeze", "ice_loses", "never_cold", "ledger_open", "load_drift", "crops_built", "crop_never_dies",
+              "no_freeze", "ice_loses", "never_cold", "ledger_open", "load_drift", "crops_built", "crop_never_dies", "film_drowns",
               "cap_setting_built", "cap_lower_cuts", "probe_refused")
     RET, QMIN, PULSE, SOAK = 200, 100, 250, 3   # dL (the kernel Params: retention 1 cm, q_min 0.5 cm); soak a pulse
+    LONG_TICK = 2000                            # Verse: Plant.TickLong, where Plant.Age grows
 
     def __init__(self, faults=(), origin=(30, 30)):
         self.f = set(faults)
@@ -1106,6 +1125,7 @@ class FakeBridge(object):
                          "rainFillsExcavationsEnabled": "True", "rainFillPerPulse": "0.1"}
         self.cap_cm = 50
         self.plants = {}        # cell -> stand pulses
+        self.plant_age = {}     # cell -> ticks since set (Plant.Age reads it in whole TickLongs)
         self.saved = None
         self.nid = 1000
 
@@ -1242,11 +1262,20 @@ class FakeBridge(object):
                 self.led["unbooked"] += k
             else:
                 self.led["soaked"] += k
+        # the shipped D3 per-crop rule (CROP_DROWNING_FIX_ONE_TIME_PUDDLE, 87b2dddb89; RM_SheetMath.CropDrowns): exposure is
+        # min(standing pulses, the plant's age in pulses), and Plant.Age grows only on the plant's TickLong (2,000 ticks), so
+        # a rice plant set at age 0 cannot drown before its first TickLong. Modelled at the worst offset: 2,000 ticks after it
+        # was set. CropKillPulses at the 250-tick pulse is the stored delay (RM_SheetMath.CropKillPulsesFor).
         for c, d in list(self.plants.items()):
-            if self.sheet.get(c, 0) >= 600 and "crop_never_dies" not in self.f:
+            age = self.plant_age.get(c, 0)
+            self.plant_age[c] = age + self.PULSE
+            if (self.sheet.get(c, 0) >= 600 or ("film_drowns" in self.f and self.sheet.get(c, 0) > 0)) \
+                    and "crop_never_dies" not in self.f:
                 self.plants[c] = d + 1
-                if self.plants[c] > int(self.settings["cropDrownPulses"]):
+                age_ticks = ((age + self.PULSE) // self.LONG_TICK) * self.LONG_TICK
+                if min(self.plants[c], age_ticks // self.PULSE) >= max(1, int(self.settings["cropDrownPulses"])):
                     del self.plants[c]
+                    self.plant_age.pop(c, None)
         self.sheet = {c: h for c, h in self.sheet.items() if h > 0}
 
     def _advance(self, n):
@@ -1426,6 +1455,7 @@ class FakeBridge(object):
             for i in range(x, x + w):
                 for j in range(z, z + h):
                     self.plants[(i, j)] = 0
+                    self.plant_age[(i, j)] = 0
             return {"success": True}
         if tool == "jawa/weather_set":
             self.rain = kw.get("weather") == "Rain"

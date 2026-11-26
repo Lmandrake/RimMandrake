@@ -232,6 +232,7 @@ def main(argv=None, bridge=None):
         # review 2026-10-27 F16: a row's test pawns stop being "under test" when the row is written -- left in the set, a
         # later row's feed_all would skip refilling them, and their thirst would drive them to drink that row's source
         UNDER_TEST.clear()
+        ROW_PAWNS.clear()
         rows.append({"id": rid, "status": st, "class": cls, "detail": det})
         print("%-34s %-10s %-8s %s" % (rid, st, cls, json.dumps(det, default=str)[:400]), flush=True)
         save()
@@ -245,6 +246,12 @@ def main(argv=None, bridge=None):
         return g.get("ticksGame") or (g.get("state") or {}).get("tick")
 
     UNDER_TEST = set()
+    # RIMMANDRAKE_CLASS_SEVEN_THIRST_FAILS_SITE_FULL_OF_PATIENTS (direct re-run 8135787B, ArchBig 2026-11-25): a governor
+    # stop's feed_all set RM_Thirst to 1.0 on every pawn not in UNDER_TEST, and T28 put neither of its pawns there, so the
+    # baseliner read 0.198 -> 0.998 mid-Ingest ("a baseliner's thirst rose 0.794 on a hemogen pack"; the same cap the
+    # THIRST_T28_DIAGNOSE_DOUBLE_BLOOD_QUENCH FAILs read). Every pawn a row spawns is in ROW_PAWNS until the row is
+    # written, and feed_all never writes a ROW_PAWNS thirst (food, mood and rest still, so no bystander stops the clock).
+    ROW_PAWNS = set()
     # THIRST_STORE_TANK_DIAGNOSE_LATE_BRINE (live J20261028T014816Z-d2e098): vanilla AutoUndrafter undrafts a pawn that
     # has stood drafted and idle (Wait_Combat) for 10,000 ticks, and Pawn_DraftController.Drafted returns early when the
     # value is unchanged -- so drafting an already-drafted bystander re-arms NOTHING. A bystander drafted ~10,000 ticks
@@ -263,7 +270,7 @@ def main(argv=None, bridge=None):
             if pid in UNDER_TEST:
                 continue
             # bystanders (earlier rows' test pawns, the drafted locals): no sad wander stopping the clock
-            for nd, lv in (("Mood", 1.0), ("Rest", 1.0), (NEED, 1.0)):
+            for nd, lv in (("Mood", 1.0), ("Rest", 1.0)) + ((() if pid in ROW_PAWNS else ((NEED, 1.0),))):
                 B.call("jawa/pawn_need", pawn=pid, action="need", need=nd, level=lv)
             B.call("jawa/pawn_mental", pawn=pid, action="end")
 
@@ -331,6 +338,20 @@ def main(argv=None, bridge=None):
             out_h[d] = max(out_h.get(d, 0.0), float(h.get("severity") or 0.0))
         return out_h
 
+    def ambient_start(x, z):
+        """A drafted, quenched control colonist beside a row's pawn: what it gains over the row's window came from the map
+        (a weather or biome condition), not from a drink. Direct re-run 8135787B (ArchBig, 2026-11-25): The Rot's permanent
+        RM_SheenExposureLock put RM_SheenCoating on every pawn, and T10's OFF arm and T15's 0.05 pawn read it as a drink's
+        hediff (FAIL). -> (control pid, its hediffs now)."""
+        c = spawn_colonist(x, z)
+        draft(c)
+        need(c, 1.0)
+        return c, hediffs(c)
+
+    def ambient_new(ctl):
+        c, h0 = ctl
+        return set(hediffs(c)) - set(h0)
+
     def colonists():
         r = B.call("rimworld/list_colonists", currentMapOnly=True) or {}
         return [c for c in r.get("colonists") or [] if not c.get("dead")]
@@ -347,10 +368,17 @@ def main(argv=None, bridge=None):
         if not ids:
             raise RuntimeError("spawn_pawn gave no id: %s" % str(r)[:200])
         pid = ids[0]
-        for hd in hediffs(pid):   # a generated colonist can arrive hurt; drop its fresh injuries (chronic ones stay)
-            if hd in ("Gunshot", "Cut", "Scratch", "Bite", "Crush", "Crack", "Burn", "Stab", "Bruise", "Shredded"):
-                for _ in range(6):
-                    B.call("jawa/pawn_health", pawn=pid, action="remove", hediff=hd)
+        ROW_PAWNS.add(pid)
+        # a generated colonist can arrive hurt or ill. Direct re-run 4D2C5B87 (ArchSmall, 2026-11-25): T17's colonist came
+        # with Carcinoma 0.77 (pain 0.5, kept as "chronic"), and two brine drinks' confusion stage downed it at thirst 0.60,
+        # so the break could not end quenched: a scene fault. healAll takes every injury and disease (implants stay).
+        hr = B.call("jawa/pawn_health", pawn=pid, action="healAll", confirmDestructive=True) or {}
+        if hr.get("success") is not True:
+            res.setdefault("healRefused", []).append({"pawn": pid, "reply": str(hr)[:160]})
+            for hd in hediffs(pid):   # the old fallback: fresh injuries only
+                if hd in ("Gunshot", "Cut", "Scratch", "Bite", "Crush", "Crack", "Burn", "Stab", "Bruise", "Shredded"):
+                    for _ in range(6):
+                        B.call("jawa/pawn_health", pawn=pid, action="remove", hediff=hd)
         for nd in ("Food", "Rest", "Joy", "Mood"):
             B.call("jawa/pawn_need", pawn=pid, action="need", need=nd, level=1.0)
         return pid
@@ -721,6 +749,7 @@ def main(argv=None, bridge=None):
                 if l0 is not None and l1 is not None and l1 - l0 >= 0.4:
                     break
             pf = spawn_colonist(PX + 12, PZ + 3)
+            ctl10 = ambient_start(PX + 14, PZ + 3)
             sset("drinkFromTerrain", False)
             try:
                 o0 = need(pf, 0.2)
@@ -742,14 +771,15 @@ def main(argv=None, bridge=None):
                 bad.append("drinkFromTerrain OFF but the job ran")
             if o0 is not None and o1 is not None and o1 > o0 + 0.02:
                 bad.append("drinkFromTerrain OFF but the need rose %s -> %s over the window (a drink between samples)" % (o0, o1))
-            new_oh = sorted(set(oh1) - set(oh0) - NOT_A_DRINK)
+            amb10 = ambient_new(ctl10)
+            new_oh = sorted(set(oh1) - set(oh0) - NOT_A_DRINK - amb10)
             if new_oh:
                 bad.append("drinkFromTerrain OFF but new hediffs %s" % new_oh)
             unm = l0 is None or o0 is None or o1 is None
             row("T10_terrain_drink", "UNMEASURED" if unm else ("FAIL" if bad else "PASS"),
                 "HARNESS" if unm else "MOD",
                 {"jobAtTick": t_hit, "jobsSeen": seen, "levels": [l0, l1], "trace": trace, "offJobsSeen": seen_off,
-                 "offLevels": [o0, o1], "offNewHediffs": new_oh, "bad": bad})
+                 "offLevels": [o0, o1], "offNewHediffs": new_oh, "ambient": sorted(amb10), "bad": bad})
             draft(pe)
             draft(pf)
         if want("T9"):
@@ -773,6 +803,12 @@ def main(argv=None, bridge=None):
             if len(got) < 2 or any(v[0] is None for v in lv.values()):
                 row("T9_animals_drink", "UNMEASURED", "HARNESS", {"spawned": got, "levels": lv,
                                                                   "why": "animal not spawned or carries no RM_Thirst"})
+            elif any(v[1] is None for v in lv.values()):
+                # direct re-run 4D2C5B87 (ArchSmall, 2026-11-25): the wild muffalo's level read None after 2,500 ticks and the
+                # row said FAIL MOD. An unread level is not "did not drink": say what became of the animal.
+                gone = {pid: str((B.call("jawa/pawn_get", pawn=pid) or {}))[:300] for _f, pid in got if lv[pid][1] is None}
+                row("T9_animals_drink", "UNMEASURED", "HARNESS", {"animals": got, "levels": lv, "unread": gone,
+                                                                  "why": "an animal's thirst was unreadable at the end"})
             else:
                 rose = {pid: v[1] is not None and v[1] > v[0] + 0.2 for pid, v in lv.items()}
                 row("T9_animals_drink", "PASS" if all(rose.values()) else "FAIL", "MOD",
@@ -935,6 +971,8 @@ def main(argv=None, bridge=None):
                        xenotype="Sanguophage") or {}
             ps = r.get("pawns") or [{}]
             sg = ps[0].get("id")
+            if sg:
+                ROW_PAWNS.add(sg)
             bl = spawn_colonist(X0 + 6, Z0 + 16)
             out28 = {"xenotype": ps[0].get("xenotype"), "applied": ps[0].get("xenotypeApplied")}
             for pid, tag in ((sg, "sang"), (bl, "base")):
@@ -1131,6 +1169,7 @@ def main(argv=None, bridge=None):
                 subj.append((terr, hd, pid))
             p5 = spawn_colonist(X0 + 36, Z0 + 37)
             UNDER_TEST.add(p5)
+            ctl15 = ambient_start(X0 + 38, Z0 + 37)
             q0 = need(p5, 0.05)
             qh0 = hediffs(p5)
             for _, _, pid in subj:
@@ -1172,7 +1211,9 @@ def main(argv=None, bridge=None):
                 bad.append("a pawn at 0.05 drank slime")
             if None not in (q0, q1) and q1 > q0 + 0.02:
                 bad.append("the pawn at 0.05 drank: need %s -> %s over the window" % (q0, q1))
-            new_q = sorted(set(qh1) - set(qh0) - NOT_A_DRINK)
+            amb15 = ambient_new(ctl15)
+            out15["ambient"] = sorted(amb15)
+            new_q = sorted(set(qh1) - set(qh0) - NOT_A_DRINK - amb15)
             if new_q:
                 bad.append("the pawn at 0.05 gained %s" % new_q)
             out15["at0.05"] = jobs[p5]
@@ -1283,6 +1324,11 @@ def main(argv=None, bridge=None):
                 UNDER_TEST.add(pid)
                 ok = all((B.call("jawa/set_work_priority", pawnId=pid, workType=w, priority=1) or {}).get("success") is True
                          for w in work)
+                if ok and "Doctor" not in work:
+                    # direct re-run 8135787B (ArchBig, 2026-11-25): T25/T26/T29's workers spent the row on TendPatient (the
+                    # map held patients: earlier rows' poisoned pawns, the locals). Vanilla's emergency tend pass runs before
+                    # any priority, so only Doctor OFF keeps the worker on the row's work.
+                    B.call("jawa/set_work_priority", pawnId=pid, workType="Doctor", priority=0)
                 if ok:
                     need(pid, 1.0)
                     return pid
@@ -1374,6 +1420,7 @@ def main(argv=None, bridge=None):
             sset("lastResortDrinking", False)
             p16b = spawn_colonist(LX + 3, LZ + 3)
             UNDER_TEST.add(p16b)
+            ctl16 = ambient_start(LX + 5, LZ + 3)
             o0 = need(p16b, 0.0)
             oh0 = hediffs(p16b)
             try:
@@ -1396,13 +1443,14 @@ def main(argv=None, bridge=None):
                 bad.append("lastResortDrinking OFF and the pawn still drank slime")
             if None not in (o0, o1) and o1 > o0 + 0.02:
                 bad.append("lastResortDrinking OFF and the need rose %s -> %s (a drink between samples)" % (o0, o1))
-            new_oh = sorted(set(oh1) - set(oh0) - NOT_A_DRINK)
+            amb16 = ambient_new(ctl16)
+            new_oh = sorted(set(oh1) - set(oh0) - NOT_A_DRINK - amb16)
             if new_oh:
                 bad.append("lastResortDrinking OFF and new hediffs %s" % new_oh)
             unm16 = None in (o0, o1) and not bad
             row("T16_living_slime", "UNMEASURED" if unm16 else ("FAIL" if bad else "PASS"), "HARNESS" if unm16 else "MOD",
                 {"jobsOn": seen_on, "hediffs": h16, "memories": m16, "jobsOff": seen_off, "offLevels": [o0, o1],
-                 "offNewHediffs": new_oh, "bad": bad,
+                 "offNewHediffs": new_oh, "ambient": sorted(amb16), "bad": bad,
                  "notRun": "a Gelatinous Slime biome map: RM_Slime_Liquid painted on the calm site (the drink rule is the terrain's)"})
             paint("Soil", LX, LZ, 2, 2)
 

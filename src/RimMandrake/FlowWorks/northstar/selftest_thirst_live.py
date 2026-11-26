@@ -183,6 +183,25 @@ CASES = [
     # live J20261028T005149Z-1f7ee6: a governor stop mid-T6 refilled the T6 pawn (T3's row cleared UNDER_TEST)
     ("T6 governor stop must not refill the dehydrating pawn", "T3,T6", ["governor_stop_t6"],
      [("T3", "PASS"), ("T6", "PASS")]),
+    # RIMMANDRAKE_CLASS_SEVEN_THIRST_FAILS_SITE_FULL_OF_PATIENTS (direct re-runs 8135787B / 4D2C5B87, 2026-11-25): each
+    # site/harness state the re-runs met reads clean on the repaired driver (the parent read a MOD FAIL on every one), and
+    # the row still FAILs when a mod fault is planted beside it
+    ("CS7 T28 governor stop must not refill the baseliner", "T28", ["governor_stop_t28"], [("T28", "PASS")]),
+    ("CS7 can-fail T28 under a governor stop", "T28", ["governor_stop_t28", "hemogen_double"], [("T28", "FAIL")]),
+    ("CS7 T10 a map condition's hediff is not a drink", "T10", ["ambient_hediff"], [("T10", "PASS")]),
+    ("CS7 can-fail T10 beside a map condition", "T10", ["ambient_hediff", "sneak_off_drink"], [("T10", "FAIL")]),
+    ("CS7 T15 a map condition's hediff is not a drink", "T15", ["ambient_hediff"], [("T15", "PASS")]),
+    ("CS7 can-fail T15 beside a map condition", "T15", ["ambient_hediff", "sneak_005_drink"], [("T15", "FAIL")]),
+    ("CS7 T16 a map condition's hediff is not a drink", "T16", ["ambient_hediff"], [("T16", "PASS")]),
+    ("CS7 T17 a colonist's chronic pain is healed at spawn", "T17", ["chronic_pain"], [("T17", "PASS")]),
+    ("CS7 can-fail T17 on a healed colonist", "T17", ["chronic_pain", "no_poisoning"], [("T17", "FAIL")]),
+    ("CS7 T9 an animal that left is UNMEASURED, not FAIL", "T9", ["animal_gone"], [("T9", "UNMEASURED")]),
+    ("CS7 T25 a patient on the map does not take the worker", "T25", ["patients"], [("T25", "PASS")]),
+    ("CS7 T26 a patient on the map does not take the worker", "T26", ["patients"], [("T26", "PASS")]),
+    ("CS7 T29 a patient on the map does not take the worker", "T29", ["patients"], [("T29", "PASS")]),
+    ("CS7 can-fail T25 beside patients", "T25", ["patients", "no_melt"], [("T25", "FAIL")]),
+    ("CS7 can-fail T26 beside patients", "T26", ["patients", "no_bill"], [("T26", "FAIL")]),
+    ("CS7 can-fail T29 beside patients", "T29", ["patients", "one_trip"], [("T29", "FAIL")]),
 ]
 # GPT round 2 #7: a save that starts with the setting OFF must not make the ON arm a false MOD FAIL, and the run must
 # put the saved (OFF) value back at the end

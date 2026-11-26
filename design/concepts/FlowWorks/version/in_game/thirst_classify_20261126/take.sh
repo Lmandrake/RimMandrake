@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# take.sh <name> <mod> <chains,csv> <tier>: take the first free Archmagi game (ArchBig, then ArchSmall; 75 = held, try the
+# next) and run rerun.sh on it under `game_lock.py run`. No bound on the wait: a held game is another live run, not a
+# hang; a WAIT line every ~5 min is its sign of life for waitalive.py.
+cd "$(dirname "$0")/../../../../../.." || exit 2
+HERE=design/concepts/FlowWorks/version/in_game/thirst_classify_20261126
+while true; do
+  for g in ArchBig ArchSmall; do
+    python3 src/RimMandrake/rimflow/game_lock.py query $g >/dev/null 2>&1 || continue
+    echo "TRY $g for $1 at $(date +%H:%M:%S)"
+    python3 src/RimMandrake/rimflow/game_lock.py run $g --for "RIMMANDRAKE_CLASS_SEVEN_THIRST_FAILS_SITE_FULL_OF_PATIENTS: re-run $1 ($2 $3)" \
+      -- bash $HERE/rerun.sh $g "$1" "$2" "$3" "$4"
+    rc=$?
+    if [ $rc != 75 ]; then echo "RAN $1 on $g rc=$rc at $(date +%H:%M:%S)"; exit $rc; fi
+  done
+  i=$((${i:-0}+1)); [ $((i % 15)) = 1 ] && echo "WAIT both Archmagi games held at $(date +%H:%M:%S): $(python3 src/RimMandrake/rimflow/game_lock.py query all 2>&1 | head -2 | cut -c1-90 | tr '\n' ';')"
+  sleep 20
+done

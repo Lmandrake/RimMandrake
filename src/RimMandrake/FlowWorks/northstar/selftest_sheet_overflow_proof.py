@@ -36,6 +36,7 @@ CAN_FAIL = {
     "off_still_spills": ("SETTING_OFF_STOPS_NEW_KEEPS_DRAINING", "FAIL", "MOD", ""),
     "off_purges": ("SETTING_OFF_STOPS_NEW_KEEPS_DRAINING", "FAIL", "MOD", ""),
     "crop_never_dies": ("CROPS_IRRIGATE_THEN_DROWN", "FAIL", "MOD", "crops_built"),
+    "film_drowns": ("CROPS_IRRIGATE_THEN_DROWN", "FAIL", "MOD", "crops_built"),
     "no_freeze": ("SHEET_FREEZES_AND_THAWS", "FAIL", "MOD", ""),
     "ice_loses": ("SHEET_FREEZES_AND_THAWS", "FAIL", "MOD", ""),
     "never_cold": ("SHEET_FREEZES_AND_THAWS", "UNMEASURED", "SITE", ""),

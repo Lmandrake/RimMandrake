@@ -82,6 +82,17 @@ faults (name -> intended effect):
   governor_stop_t6    the clock governor stops ONCE mid-advance once a colonist at need 0 is past 0.1 dehydration (live run
                       J20261028T005149Z-1f7ee6: a bystander starved during T6) -> the harness's feed_all must not refill
                       the T6 pawn, or its dehydration reads ~0.12 instead of 0.30 (T6 false FAIL)
+  RIMMANDRAKE_CLASS_SEVEN_THIRST_FAILS_SITE_FULL_OF_PATIENTS (direct re-runs 8135787B / 4D2C5B87, 2026-11-25): each fault
+  below is a site or harness state the live re-runs met; the old driver read a MOD FAIL on it, the repaired one does not.
+  governor_stop_t28   the clock governor stops ONCE while a non-sanguophage colonist is mid-Ingest of a hemogen pack (the
+                      old feed_all refilled that row pawn's thirst to 1.0 -> "a baseliner's thirst rose" false FAIL)
+  ambient_hediff      a map condition (The Rot's RM_SheenExposureLock) puts RM_SheenCoating on every colonist ~100 ticks
+                      after it spawns -> T10/T15/T16's "new hediffs while OFF" must not read it as a drink
+  patients            a downed patient lies on the map: any undrafted colonist whose Doctor work is on takes TendPatient
+                      (vanilla's emergency pass) and nothing else -> T25/T26/T29's workers must have Doctor off
+  chronic_pain        every spawned colonist carries Carcinoma 0.77 (pain 0.5); a pawn with it whose brine break reaches
+                      0.5 salt poisoning goes down at thirst 0.6 (the break ends unquenched) -> spawn_colonist must heal it
+  animal_gone         the wild muffalo of T9 leaves the map mid-window (its need is unreadable) -> UNMEASURED, never FAIL
 Unmodelled tools answer success=False and are listed in `unmodelled` (a clean run must leave it empty).
 """
 import re
@@ -210,6 +221,8 @@ class ThirstFakeBridge(object):
                 self.refused_ids.append(p.id)
             if "dubs_need" in self.faults:
                 p.dubs = True
+            if spawned and "chronic_pain" in self.faults:
+                p.hed["Carcinoma"] = 0.77
         self.pawns[p.id] = p
         return p
 
@@ -249,6 +262,11 @@ class ThirstFakeBridge(object):
 
     def ticks(self, n):
         self.advance(int(n))
+        if "governor_stop_t28" in self.faults and not getattr(self, "_gov28_fired", False) and any(
+                p.human and p.xeno != "Sanguophage" and p.job == "Ingest" and
+                (self.things.get(p.ctx.get("a")) or {}).get("def") == "HemogenPack" for p in self.pawns.values()):
+            self._gov28_fired = True
+            raise GovernorStop("safe_advance stopped after %d of %d tick(s): starving: food category Starving" % (n, n))
         if "governor_stop_t6" in self.faults and not getattr(self, "_gov_fired", False) and any(
                 p.human and p.need <= 0.0 and p.hed.get("RM_Dehydration", 0.0) > 0.1 for p in self.pawns.values()):
             self._gov_fired = True
@@ -465,7 +483,13 @@ class ThirstFakeBridge(object):
             h.pop("RM_Dehydration", None)
         return {"success": True, "pawns": [{"hediffs": [{"def": k, "severity": v} for k, v in h.items()]}]}
 
-    def t_jawa_pawn_health(self, **kw):
+    def t_jawa_pawn_health(self, pawn="", action="add", confirmDestructive=False, **kw):
+        p = self._p(pawn)
+        if action == "healAll":
+            if p is None or not confirmDestructive:
+                return {"success": False, "error": "MOCK: healAll needs a pawn and confirmDestructive=true"}
+            removed, p.hed = sorted(p.hed), {}
+            return {"success": True, "removed": removed}
         return {"success": True}
 
     def t_jawa_set_draft(self, pawnId="", drafted=True, **kw):
@@ -611,6 +635,15 @@ class ThirstFakeBridge(object):
 
     def _pawn(self, p, dt):
         s = self.settings
+        if "ambient_hediff" in self.faults and p.human:
+            p.age = getattr(p, "age", 0) + dt
+            if p.age >= 100:
+                p.hed["RM_SheenCoating"] = p.hed.get("RM_SheenCoating", 0.0) + 0.00001 * dt
+        if "animal_gone" in self.faults and p.kind == "Muffalo" and p.faction == "wild":
+            p.age = getattr(p, "age", 0) + dt
+            if p.age >= 1000:
+                del self.pawns[p.id]           # wandered off the map: its need is unreadable from now on
+                return
         if s["thirstEnabled"] and (p.human or s["animalsGetThirst"]):
             rate = 0.2 / 15000.0 * float(s["thirstRateMultiplier"]) * (2 if "fast_decay" in self.faults else 1)
             p.need = max(0.0, p.need - rate * dt)
@@ -619,6 +652,13 @@ class ThirstFakeBridge(object):
             p.hed["RM_Dehydration"] = min(1.0, p.hed.get("RM_Dehydration", 0.0) + k * 0.30 / 60000.0 * dt)
         if p.break_t > 0:
             p.break_t -= dt
+            if p.break_t <= 0 and "Carcinoma" in p.hed:
+                # chronic_pain: pain 0.5 + the 0.5 confusion stage downs the pawn mid-break, two drinks in
+                p.need, p.hed["RM_SaltPoisoning"] = 0.6, p.hed.get("RM_SaltPoisoning", 0.0) + 0.5
+                p.mem.append("RM_Thought_SaltRelief")
+                p.job, p.drafted = "Wait_Downed", False
+                p.downed = True
+                return
             if p.break_t <= 0:
                 p.need = 1.0
                 p.hed["RM_SaltPoisoning"] = 0.0 if "no_poisoning" in self.faults else p.hed.get("RM_SaltPoisoning", 0.0) + 0.5
@@ -627,7 +667,7 @@ class ThirstFakeBridge(object):
                 p.think_now = True
                 p.stuck_break = "break_never_ends" in self.faults
             return
-        if p.stuck_break:
+        if p.stuck_break or getattr(p, "downed", False):
             return
         if p.drafted and not p.ctx.get("ordered"):
             return
@@ -658,6 +698,9 @@ class ThirstFakeBridge(object):
         thirsty = s["thirstEnabled"] and p.need < 0.3
         desperate = s["thirstEnabled"] and p.need <= 0.0
         if thirsty and self._think_drink(p, desperate):
+            return
+        if not thirsty and "patients" in self.faults and p.prio.get("Doctor", 3) > 0:
+            self._start(p, "TendPatient", 600)        # vanilla's emergency tend pass: before any work priority
             return
         if not thirsty and self._think_work(p):
             return
