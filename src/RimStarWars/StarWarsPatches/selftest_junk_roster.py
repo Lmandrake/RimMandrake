@@ -11,6 +11,7 @@ Checks, offline, against the base game's own def files (all five DLC):
     defs, the base game's labels for the rest), and no reskin description does either;
   * junk_spawn_census.py with the reskin and cut patches applied: every def the scatter and the Zeddo's Yard
     template can place is in a kept kind, none is on the cut list;
+  * every junk def a live map showed (junk_live_seen.json, prove_junk_roster_live.py readings) is kept or cut;
   * the Fall Line: FallLineArrivals ships noOldJunk = true, sets RUT_FallLine's junkDensityFactor from it, and its
     DLL matches its .srchash; StarWarsPatches' DLL matches its .srchash.
 Sanity probes prove the instruments can see: a planted unknown def must be refused, a planted car label caught, a
@@ -298,6 +299,16 @@ def main():
     labels = [t["label"] for t in text.values()]
     check("re-text labels are distinct", len(labels) == len(set(labels)),
           sorted({l for l in labels if labels.count(l) > 1}))
+
+    # live: every junk def a real map showed (prove_junk_roster_live.py A1 readings) is kept or cut. The static census
+    # cannot follow C# layouts (AncientHermeticCrate) and missed Biotech's Base_Player step (the exostrider remains):
+    # live 2026-11-26, J20261126T203158Z-7dacbd, five such defs stood in no kind.
+    seen_path = os.path.join(os.path.dirname(ROSTER), "junk_live_seen.json")
+    seen = sorted({d for r in json.load(open(seen_path, encoding="utf-8"))["readings"] for d in r["defs"]}) \
+        if os.path.isfile(seen_path) else []
+    ruled = {d for k in roster["kinds"] for d in k["defs"]} | {c["def"] for c in roster["cut"]}
+    unruled = [d for d in seen if d not in ruled]
+    check("every junk def a live map showed (%d) is in a kept kind or cut" % len(seen), seen and not unruled, unruled)
 
     # census: what the scatter and the yard can place, against the roster
     if os.path.isfile(CENSUS):

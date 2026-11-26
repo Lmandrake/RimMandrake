@@ -93,6 +93,24 @@
       ]
     },
     {
+      "id": "fallen_assault_walker",
+      "name": "a fallen assault walker",
+      "regions": [
+        "scatter"
+      ],
+      "register": "accumulated",
+      "was": "one great assault walker, brought down long ago by a heavy turbolaser strike: its head, legs, back cannon and fused midsection lie where it fell (Biotech's AncientExostriderRemains step, the starting map only)",
+      "yields": "steel slag (2 to 6 a piece); the midsection still holds a working mech transponder that a mechanitor can pull out (vanilla)",
+      "risks": "nothing; the walker's guns are fused and its crew long gone",
+      "skin": "vanilla",
+      "defs": [
+        "AncientExostriderRemains",
+        "AncientExostriderHead",
+        "AncientExostriderLeg",
+        "AncientExostriderCannon"
+      ]
+    },
+    {
       "id": "ship_wreck",
       "name": "starship wreckage",
       "regions": [
@@ -231,7 +249,7 @@
         "scatter"
       ],
       "register": "accumulated",
-      "was": "beacons, cryptosleep caskets, pipeline sections, pollution machinery, a standpipe, a parts box, mechanoid slag",
+      "was": "beacons, cryptosleep caskets, pipeline sections, pollution machinery, a standpipe, a parts box, mechanoid slag, a sealed hermetic crate",
       "yields": "what vanilla gives: a sealed casket may hold a sleeper, a parts box holds components, smashed machinery leaves steel slag",
       "risks": "a casket's sleeper may come out shooting (vanilla); the rest is inert",
       "skin": "vanilla",
@@ -244,7 +262,8 @@
         "AncientToxifierGenerator",
         "AncientBandNode",
         "ChunkMechanoidSlag",
-        "AncientHydrant"
+        "AncientHydrant",
+        "AncientHermeticCrate"
       ]
     },
     {
@@ -604,6 +623,10 @@
     {
       "def": "Urn",
       "why": "a player-buildable def the ruins borrow; re-texting it would rename the player's own buildings"
+    },
+    {
+      "def": "AncientHermeticCrate",
+      "why": "a live reward container (ancient complexes and ruins seal loot in it); its label 'hermetic crate' and its description are already neutral, and the description tells the player what it does"
     }
   ],
   "text": {
@@ -786,6 +809,22 @@
     "AncientPallet_SteelSlag": {
       "label": "scrap metal pallet",
       "description": "A pallet heaped with old durasteel scrap. Opening it up gives a good haul of steel."
+    },
+    "AncientExostriderRemains": {
+      "label": "fallen walker midsection",
+      "description": "The fused midsection of a great assault walker, brought down long ago by a heavy turbolaser strike. Its armour has run together into one mass. Deep in its guts a transponder still answers; a mechanitor could pull it out. Breaking it up yields steel slag."
+    },
+    "AncientExostriderHead": {
+      "label": "fallen walker head",
+      "description": "The blasted command head of a great assault walker, its viewports long dark. Breaking it up yields steel slag."
+    },
+    "AncientExostriderLeg": {
+      "label": "fallen walker leg",
+      "description": "One leg of a great assault walker, snapped where it fell. Breaking it up yields steel slag."
+    },
+    "AncientExostriderCannon": {
+      "label": "fallen walker cannon",
+      "description": "The back-mounted heavy cannon of a great assault walker, its barrel fused shut by the strike that felled it. Breaking it up yields steel slag."
     }
   }
 }

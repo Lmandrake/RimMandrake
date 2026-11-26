@@ -40,6 +40,9 @@ VANILLA_STEPS = [
     "MechanoidRemains", "AncientTurret", "AncientMechs", "AncientLandingPad", "AncientFences",
     "AncientPipelineSection", "AncientJunkClusters", "AncientPollutionJunk",
     "ScarlandsJunkClusters", "ScarlandsJunkPrefabs",
+    # Biotech's Base_Player step (the player's starting map): one exostrider wreck, a GenStep_ScatterLayout. Missed until
+    # a live map showed its parts in no roster kind (J20261126T203158Z-7dacbd, 2026-11-26).
+    "AncientExostriderRemains",
 ]
 
 # C# GenSteps that hard-code what they place. Read from Assembly-CSharp.dll IL (ldsfld of
@@ -284,6 +287,8 @@ def collect_step(name, step, prefabs, unresolved, src):
     elif short == "GenStep_ScatterGroupPrefabs":
         for grp in (gs.find("groups") if gs.find("groups") is not None else []):
             out |= expand_prefab(grp.tag, prefabs, unresolved, src)
+    elif short == "GenStep_ScatterLayout":
+        out |= {li.findtext("thing").strip() for li in gs.findall("layout/li") if li.findtext("thing")}
     elif short == "GenStep_ScatterThings" or gs.findtext("thingDef"):
         if gs.findtext("thingDef"):
             out.add(gs.findtext("thingDef").strip())

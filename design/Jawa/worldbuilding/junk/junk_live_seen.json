@@ -1,0 +1,53 @@
+{
+ "_doc": "Junk defs a real map showed, read live by prove_junk_roster_live.py A1 (jawa/list_things, the whole map). selftest_junk_roster.py holds every one to a kept kind or the cut list, so a source the static census cannot read (C# layouts, Base_Player steps) still meets the roster. Add a reading; never edit one.",
+ "readings": [
+  {
+   "job": "J20261126T203158Z-7dacbd",
+   "host": "SteveDesktop",
+   "tier": "mods__mandrake_rsw_patches__mandrake_rsw_starwarsraces__mandrake_rut_falllinearrivals",
+   "source_sha": "28ba1a00f33f1ae27f6c58b9a41490e4e410c5d3",
+   "map": "quicktest",
+   "defs": [
+    "AncientAPC",
+    "AncientBarrel",
+    "AncientCryptosleepCasket",
+    "AncientDropshipEngine",
+    "AncientExostriderCannon",
+    "AncientExostriderHead",
+    "AncientExostriderLeg",
+    "AncientExostriderRemains",
+    "AncientFence",
+    "AncientHermeticCrate",
+    "AncientLargeRustedEngineBlock",
+    "AncientMechDropBeacon",
+    "AncientMiniWarwalkerRemains",
+    "AncientPipelineSection",
+    "AncientPodCar",
+    "AncientRazorWire",
+    "AncientRustedCar",
+    "AncientRustedEngineBlock",
+    "AncientRustedJeep",
+    "AncientShipBeacon",
+    "AncientTank",
+    "AncientTankTrap",
+    "AncientWarspiderRemains",
+    "AncientWarwalkerClaw",
+    "AncientWarwalkerFoot",
+    "AncientWarwalkerLeg",
+    "AncientWarwalkerTorso",
+    "AncientWheel",
+    "ChunkMechanoidSlag",
+    "Column",
+    "Door",
+    "RM_RotWreckFrame",
+    "RM_RotWreckHull",
+    "Sarcophagus",
+    "ShipChunk",
+    "Table1x2c",
+    "Table2x2c",
+    "Urn",
+    "Wall"
+   ]
+  }
+ ]
+}
