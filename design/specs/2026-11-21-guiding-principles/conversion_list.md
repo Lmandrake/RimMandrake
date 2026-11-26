@@ -218,10 +218,10 @@ Not ruled yet (wait for his card): none.
 | code 12 | `src/RimMandrake/Pyrelands/Source/PyrelandsAshField.cs:161` | Ash-field scan shortcuts to true on a Pyrelands biome; also detects by terrain extension. | UNCLEAR |
 | code 13 | `src/RimMandrake/Pyrelands/Source/PyrelandsForeignArrivals.cs:43-53`<br>`src/RimMandrake/Pyrelands/Patches/RM_Pyrelands_NoForeignArrivals.xml:15-70` | Foreign herds and aggressive animals kept out of Pyrelands (6 incident patches with disallowedBiomes). | UNCLEAR |
 | switch | `src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs:176`<br>`src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs:610` | crossBiomeEnabled "Enable outside the Pyrelands biome" (default false) plus same three sub-settings: crossBiomeEverywhere, crossBiomeBiomeList, crossBiomeCoverage (false, empty, 1.0). | SWITCH (RULED 2026-11-21: plain on/off, default on) |
-| switch | `src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs:46` | pyrelandsEnabled "Mod enabled" (default true). | SWITCH (not ruled) |
+| switch | `src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs:46` | pyrelandsEnabled "Mod enabled" (default true). | SWITCH (ruled 2026-11-25) |
 
-Ruled 2026-11-21 (convert at the next version): switch crossBiomeEnabled "Enable outside the Pyrelands biome": the six-switch ruling: this switch becomes a plain on/off for its mechanic, default on, with no biome in it; A13: dangerous mechanics are on by default on every map; conditions decide.
-Not ruled yet (wait for his card): switch: pyrelandsEnabled "Mod enabled".
+Ruled 2026-11-21 (convert at the next version): switch crossBiomeEnabled "Enable outside the Pyrelands biome": the six-switch ruling: this switch becomes a plain on/off for its mechanic, default on, with no biome in it; A13: dangerous mechanics are on by default on every map; conditions decide. Switch pyrelandsEnabled "Mod enabled": it stays as it is. It is already a plain on/off for the whole mod, default on, with no biome in it (the Conductor's call 2026-11-25, delegated to RIMMANDRAKE_SWEEP_SEAT_DOING_ITEMS_SIXTY_NINE_SIT_IN_DOING). The per-biome Enabled(key) that the same gate also reads is row code 10 and converts.
+Not ruled yet (wait for his card): none.
 
 ## PyrelandsMechanics
 
