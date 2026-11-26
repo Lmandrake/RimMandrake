@@ -259,7 +259,7 @@ def read_stores(lf, mods):
 
 # ---- the machines: one block each (RIMMANDRAKE_SEND_PIPELINE_TICKETS_TO_STEVEDESKTOP_FIRST_IT_SAT_IDLE) ---------------
 # The owner, 2026-11-25 10:52 PM PST: "I also don't see SteveDesktop on MATURATION_NOW.md. It used to be shown there I
-# believe... the Workshop Pipeline". RELENTLESS_NOW, which drew it, was removed 2026-11-24 (ec2637b7b6).
+# believe... the Workshop Pipeline". The retired Relentless page, which drew it, was removed 2026-11-24 (ec2637b7b6).
 STEVE_READING = os.environ.get("MATURATION_STEVE_READING",      # steve_reading.py, rm-steve-reading.timer; a test pins it
                                "/mnt/d/ClaudeWork/rimmandrake/conductor/running_steve.json")
 # budget: danger=an old SteveDesktop reading drawn as now; evidence=steve_reading.STEVE_STALE, the same line (ten missed 180 s probes); ends no work: the block reads could not look
