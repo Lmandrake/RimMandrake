@@ -28,8 +28,9 @@ What it knows (section 6.1), first match wins:
                    and it ends an incident (the lane stands idle on purpose, every check above it passed)
   IDLE_EMPTY       nothing queued and the fill found nothing selectable (no history, every chain DRY), or it would
                    queue chains yet nothing is pending (the fill itself failed): an evidence gap, a fault
-  SWITCHED         SteveDesktop is on pipeline work only (rimflow/host_work_switch.py, fill_plan verdict "switched"):
-                   the owner's order, never a fault and never aged; a fill.stop beside it is not read
+  SWITCHED         SteveDesktop's Claude work is pipeline only (rimflow/host_work_switch.py) and EVERY mod of the filler's
+                   list is refused by it (fill_plan verdict "switched": no mod is live): the owner's order, never a fault
+                   and never aged; a fill.stop beside it is not read. A live mod keeps its own state
   EXHAUSTED        the fill's gap scan found nothing to do at all (fill_plan verdict "exhausted"): not a fault,
                    and it ends an incident
   TICK_STOPPED     (after RUNNING and PAUSED: a job running or an intentional pause is not a fault) testq-tick.timer is not active on this machine (stopped by hand or by another seat): nothing is
@@ -248,7 +249,7 @@ def lane_state(now, mods=None):
     by = {}
     for m, p in plans.items():
         by.setdefault(p["verdict"], []).append(m)
-    if "switched" in by:    # the owner's order on the machine (rimflow/host_work_switch.py): intended, never a fault
+    if plans and len(by.get("switched", [])) == len(plans):   # every mod refused by the owner's order (host_work_switch.py): intended, never a fault
         return _st("SWITCHED", plans[by["switched"][0]]["text"][:240], None, settled=True)
     if "brake" in by:
         tails = [t for m in by["brake"] for t in plans[m].get("tail") or [] if t]

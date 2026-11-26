@@ -2275,7 +2275,7 @@ def brake_tail(mine):
 def fill_plan(mod, n, cap, *, now=None):   # now keyword-only: an old (.., day_s, now) call fails loudly
     """-> {"verdict", "text", ...}: what `fill MOD` would do now, without doing it. Shared by `cmd_fill` and the
     steward (steward.py), so the lane's brakes are read from ONE place. verdict:
-      switched SteveDesktop is on pipeline work only (rimflow/host_work_switch.py): the filler queues no mod job
+      switched SteveDesktop's Claude work is pipeline only (rimflow/host_work_switch.py): the filler queues no job of a mod that is not live
       stopped  fill.stop exists          paused  the lane is paused       busy    ready work waits or no game is free
       cap      the daily job backstop                                     brake   last two filler jobs not DONE (a cancel is not counted: brake_tail),
                                                                           and no DONE+canary job since (lane_proven_after)
@@ -2287,7 +2287,7 @@ def fill_plan(mod, n, cap, *, now=None):   # now keyword-only: an old (.., day_s
     ensure_dirs()
     now = time.time() if now is None else now
     import pipeline_admit as PA
-    sw = PA.steve_switched() if switch_applies() else None    # before fill.stop: the switch is the owner's order; the filler's jobs are all mod work
+    sw = PA.switch_text_for(mod) if switch_applies() else None    # before fill.stop: the switch is the owner's order; a live mod's jobs pass it
     if sw:
         return {"verdict": "switched", "text": "switched: " + sw}
     stop = q("fill.stop")

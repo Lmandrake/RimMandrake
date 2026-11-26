@@ -137,7 +137,7 @@ def t_status_page_shows_it():
     with open(SW, "w") as f:
         json.dump({"switches": [{"host": "SteveDesktop", "mode": "pipeline", "date": "2026-11-24", "said": SAID}]}, f)
     line = M.switch_line()
-    check("SteveDesktop works pipeline improvements only" in line and "lift SteveDesktop" in line,
+    check("SteveDesktop: Claude work is pipeline improvements only" in line and "lift SteveDesktop" in line,
           "the status page names the switch and its lift: %s" % line)
     with open(SW, "w") as f:
         json.dump({"switches": []}, f)

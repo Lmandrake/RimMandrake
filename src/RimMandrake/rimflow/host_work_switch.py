@@ -1,11 +1,17 @@
 #!/usr/bin/env python3
-"""host_work_switch.py - the one switch that says a machine works pipeline improvements only.
+"""host_work_switch.py - the one switch that says a machine's Claude work is pipeline improvements only.
 
 The owner, 2026-11-24: SteveDesktop works pipeline improvements only, with its own tickets first. Until 2026-11-25 that
 order lived in one stop file (Archmagi's testq/fill.stop) and in the Conductor's memory. The steward aged the file into
 a fault after 60 min, an Operations run wrote an expiry into it, a Conductor role run scheduled its removal, and at 12:00 PM
 PST 2026-11-25 the idle filler started a DivingInteraction guard job on SteveDesktop (item
 RIMMANDRAKE_VET_WORK_BOUND_FOR_STEVEDESKTOP_HE_SAW_FIREHAWK_AGAIN).
+
+The owner's card of 2026-11-25 11:02 PM PST ("Tests of live mods", his words: "(1) as well as pipeline updates/upgrades.")
+set the line between the two kinds of work. The switch binds Claude work: a Claude run that builds or fixes a mod is not
+sent to the machine. A scripted in-game test job (no model call) of a LIVE mod runs on the machine's games all the same.
+A live mod is in the Maturation Pipeline's advancing list, is not on the owner's hold and is not switched off (`pipe show`
+reads it ON). A test job of any other mod stays refused (testq/pipeline_admit.live_mod is the one reader).
 
 This switch is a tracked file (host_work_switch.json), so a set or a lift is a commit with its authority, on every
 clone of both machines. It has no expiry: it stays until he or the Conductor lifts it.
@@ -17,9 +23,10 @@ clone of both machines. It has no expiry: it stays until he or the Conductor lif
       RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS --why "<act and reason>" [--publish]   (Conductor window only)
 
 Readers (each refuses mod work for a switched host, and names the lift):
-  testq pipeline_admit.switch_refusal(job)   submit, the fault-window rerun: a mod job (chains, rows, --full, a
-                                              stage-6 checks job) for the SteveDesktop lane; a --proofs job is pipeline work
-  testq fill_plan                             verdict "switched": the idle filler queues nothing for SteveDesktop
+  testq pipeline_admit.switch_refusal(job)   submit, the fault-window rerun: a test job (chains, rows, --full, a
+                                              stage-6 checks job) of a mod that is not live, for the SteveDesktop lane; a
+                                              job of a live mod and a --proofs job pass
+  testq fill_plan                             verdict "switched": the idle filler queues nothing for a mod that is not live
   testq steward                               SWITCHED is intentional and settled, never a fault
   work_bundle                                 a mod bundle is not sent to, or launched on, a switched host
   maturation_now                              the status page shows the switch
@@ -41,7 +48,8 @@ REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 CONDUCTOR_ACT = "RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS"
 HOSTS = {"stevedesktop": "SteveDesktop", "archmagi": "Archmagi"}
 LIFT = 'python3 src/RimMandrake/rimflow/host_work_switch.py lift %s --said "<his words>"'
-MODE = "pipeline"      # the one mode: pipeline improvements only, no mod work
+MODE = "pipeline"      # the one mode: Claude work is pipeline improvements only; test jobs of live mods still run
+UNREADABLE = "could not look: the host work switch cannot be read"     # the text of an unreadable file, matched by readers
 
 
 class Unreadable(Exception):
@@ -97,12 +105,13 @@ def switched(host, path=None):
     try:
         row = load(path).get(k)
     except Unreadable as e:
-        return "the host work switch cannot be read (%s): no mod work is admitted until it reads" % e
+        return "%s (%s): no mod work is admitted until it reads" % (UNREADABLE, e)
     if not row:
         return None
     by = ("his words, %s: \"%s\"" % (row.get("date"), row.get("said")) if row.get("said") else
           "the Conductor's act, %s: %s" % (row.get("date"), row.get("why")))
-    return "%s works pipeline improvements only (%s); lift: %s" % (HOSTS[k], by, LIFT % HOSTS[k])
+    return ("%s: Claude work is pipeline improvements only, and its games run test jobs of live mods (%s); lift: %s"
+            % (HOSTS[k], by, LIFT % HOSTS[k]))
 
 
 def _authority(said, per_ruling, why, env=None):

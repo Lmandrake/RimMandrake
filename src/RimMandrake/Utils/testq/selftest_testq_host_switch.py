@@ -2,7 +2,8 @@
 """selftest_testq_host_switch.py - the test lane obeys the host work switch, and a harness repair re-runs only what held.
 
 Item RIMMANDRAKE_VET_WORK_BOUND_FOR_STEVEDESKTOP_HE_SAW_FIREHAWK_AGAIN. Failures that happened, 2026-11-24/25:
-- the owner's order (SteveDesktop works pipeline improvements only) lived in testq/fill.stop; the steward aged that file
+- the owner's order (SteveDesktop works pipeline improvements only; since his card of 2026-11-25 its Claude work only, its
+  games run test jobs of live mods) lived in testq/fill.stop; the steward aged that file
   into a fault after 60 min, a run gave it an expiry, a Conductor role run removed it, and at 12:00 PM PST 2026-11-25 the
   filler started a DivingInteraction guard job on SteveDesktop;
 - HARNESS_REPAIR_CAUSE_6236AE26_2's verify line re-ran the whole job (firehawk_first_sighting_letter and
@@ -101,10 +102,109 @@ def t_rerun_line():
           "with no held chain known the whole selection re-runs (nothing is left unproved)")
 
 
+LIVE = "LiveMod"
+LIVE_MODS = "LiveMod,Heldmod,OffMod"      # the pipeline's advancing list for this test (control.known_mods reads it)
+KINDS = (("commission", {"chains": ["c_x"]}, "BENCH"), ("fix", {"chains": ["c_x"]}, "BENCH"),
+         ("guard", {"chains": ["c_x"]}, "BENCH"), ("guard", {"chains": ["c_x"]}, "BENCH.filler"),
+         ("guard", {"checks": ["sc_x"]}, "BENCH"), ("commission", {"rows": ["r_x"]}, "BENCH"),
+         ("guard", {"full": True}, "BENCH"))
+
+
+def live_job(mod, purpose, sel, by, lane="stevedesktop"):
+    return {"mod": mod, "selector": sel, "purpose": purpose, "requested_by": by, "lane": lane}
+
+
+def plant():
+    """The switch on, one held mod, one mod switched off by `pipe off`, and the pipeline's advancing list LIVE_MODS."""
+    switch(True)
+    with open(HOLDS, "w") as f:
+        json.dump({"holds": [{"mod": "Heldmod", "date": "2026-11-16", "said": "hold it"}]}, f)
+    os.environ["RM_CONTROL_MODS"] = LIVE_MODS
+    P._moh()
+    C = sys.modules["control"]
+    C.switch("mod:OffMod", True, "pipe off for the test", p=C.db_path())
+
+
+def t_live_mod_admitted():
+    """Item RIMMANDRAKE_ADMIT_LIVE_MOD_TESTS_STEVEDESKTOP_GAMES_SAT_IDLE (owner's card 2026-11-25): while SteveDesktop is
+    switched to pipeline work, its games take the test jobs of a mod that is switched on in the pipeline."""
+    plant()
+    for purpose, sel, by in KINDS:
+        r = P.switch_refusal(live_job(LIVE, purpose, sel, by))
+        check(r is None, "live mod admitted on the switched host: %s %s by %s%s" % (
+            purpose, sorted(sel), by, "" if r is None else " REFUSED: " + r["text"][:150]))
+        check(T.hold_refusal(live_job(LIVE, purpose, sel, by)) is None,
+              "  and testq's queueing door admits it (%s by %s)" % (purpose, by))
+    check(P.switch_refusal(live_job(LIVE, "guard", {"chains": ["x"]}, "BENCH", lane="any")) is None,
+          "lane any of a live mod is admitted too")
+
+
+def t_not_live_stays_refused():
+    plant()
+    for mod, why in (("Heldmod", "a mod the owner holds"), ("OffMod", "a mod that pipe show reads OFF"),
+                     ("Nowhere", "a mod that is not in the Maturation Pipeline")):
+        for by in ("BENCH", "BENCH.filler"):
+            r = P.switch_refusal(live_job(mod, "guard", {"chains": ["x"]}, by))
+            check(bool(r), "refused on the switched host: %s by %s" % (why, by))
+    r = P.switch_refusal(live_job("Nowhere", "guard", {"chains": ["x"]}, "BENCH.filler"))
+    check(bool(r) and "not live" in r["text"] and "Nowhere" in r["text"] and "--lane archmagi" in r["text"],
+          "a filler guard job of a mod that is not live is refused and the refusal says why: %s" % (r or {}).get("text"))
+    r = P.switch_refusal(live_job("OffMod", "guard", {"chains": ["x"]}, "BENCH"))
+    check(bool(r) and "OFF" in r["text"], "the refusal of an OFF mod says it is OFF: %s" % (r or {}).get("text"))
+    check(P.switch_refusal(live_job("Heldmod", "guard", {"chains": ["x"]}, "Operations.canary")) is None,
+          "an Ops job of a held mod still passes this switch (the hold gate is the one that binds it)")
+
+
+def t_unreadable_state_refused():
+    plant()
+    job = live_job(LIVE, "guard", {"chains": ["x"]}, "BENCH")
+    os.environ["RM_OWNER_HOLD_FILE"] = os.path.join(TMP, "absent_hold.json")
+    r = P.switch_refusal(job)
+    check(bool(r) and "could not look" in r["text"] and "absent_hold.json" in r["text"],
+          "an unreadable hold list refuses a live mod with 'could not look' and the cause: %s" % (r or {}).get("text"))
+    os.environ["RM_OWNER_HOLD_FILE"] = HOLDS
+    os.environ["RM_CONTROL_MODS"] = ""
+    r = P.switch_refusal(job)
+    check(bool(r) and "could not look" in r["text"],
+          "an empty pipeline list is could-not-look, never 'not in the pipeline': %s" % (r or {}).get("text"))
+    os.environ["RM_CONTROL_MODS"] = LIVE_MODS
+    with open(SW, "w") as f:
+        f.write("{torn")
+    r = P.switch_refusal(job)
+    check(bool(r) and "could not look" in r["text"],
+          "an unreadable switch file refuses even a live mod, with 'could not look': %s" % (r or {}).get("text"))
+    switch(False)
+    os.environ.pop("RM_CONTROL_MODS", None)
+
+
+def t_filler_live_mods():
+    plant()
+    T.ensure_dirs()
+    p = T.fill_plan(LIVE, 4, 200, now=1795640000.0)
+    check(p["verdict"] != "switched", "fill_plan: the filler may pick for a live mod on the switched host: %s" % p["verdict"])
+    p = T.fill_plan("Nowhere", 4, 200, now=1795640000.0)
+    check(p["verdict"] == "switched" and "not live" in p["text"],
+          "fill_plan: the filler queues nothing for a mod that is not live: %s" % p)
+    p = T.fill_plan("OffMod", 4, 200, now=1795640000.0)
+    check(p["verdict"] in ("switched", "held"), "fill_plan: nothing for an OFF mod: %s" % p["verdict"])
+    # the steward: only when EVERY filler mod is refused is the lane SWITCHED (settled); a live mod's gap is its own state
+    import steward as ST
+    ST.tick_timer_state = lambda: "active"
+    ls = ST.lane_state(1795640000.0, mods=["Nowhere"])
+    check(ls["state"] == "SWITCHED" and ls["settled"], "the steward: a lane whose mods are all refused is SWITCHED: %s" % ls["state"])
+    ls = ST.lane_state(1795640000.0, mods=["Nowhere", LIVE])
+    check(ls["state"] != "SWITCHED", "the steward: a live mod beside a refused one keeps its own state: %s" % ls["state"])
+    switch(False)
+    os.environ.pop("RM_CONTROL_MODS", None)
+
 def main():
     t_admission()
     t_filler()
     t_rerun_line()
+    t_live_mod_admitted()
+    t_not_live_stays_refused()
+    t_unreadable_state_refused()
+    t_filler_live_mods()
     print("FAILED %d" % len(FAILS) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
 

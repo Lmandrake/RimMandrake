@@ -8,6 +8,9 @@ selection may be submitted and filled whatever its pipeline stage.
   refusal(mod, selector, requested_by) -> None (admitted) or a refusal record, checked by testq submit before anything
   else, and by fill, sweep and the fault-window rerun (fault_monitor.rerun_job).
 
+The host work switch (rimflow/host_work_switch.py) refuses a test job of a mod that is not live on SteveDesktop; a live
+mod's job passes (owner, by card 2026-11-25 11:02 PM PST; live_mod, switch_refusal).
+
 One refusal stays: a mod on the owner's hold (src/RimMandrake/rimflow/mod_owner_hold.json, his 2026-11-16 hold on the
 biome mods other than Pyrelands; he or the Conductor lifts it, owner 2026-11-19). An unreadable hold list refuses every test: nothing is queued that
 cannot be proved unheld. Ops jobs are not tests and are never refused: the requesters in OPS_REQUESTERS (the
@@ -66,23 +69,76 @@ def _hws():
 
 
 def steve_switched():
-    """-> the text of the host work switch on SteveDesktop (pipeline improvements only), or None."""
+    """-> the text of the host work switch on SteveDesktop (Claude work is pipeline improvements only), or None."""
     return _hws().switched("SteveDesktop")
 
 
-def switch_refusal(job):
-    """-> a refusal record when JOB is mod work bound for the SteveDesktop lane while SteveDesktop is switched to
-    pipeline work only (rimflow/host_work_switch.py), else None. Mod work: a chains, rows, --full or stage-6 checks job.
-    Pipeline work passes: a --proofs job (live-proof lines of a pipeline item), an Ops job, the Archmagi lane."""
-    job = job or {}
-    if job.get("requested_by") in OPS_REQUESTERS or str(job.get("lane") or "stevedesktop") == "archmagi":
-        return None     # lane "any" can land on SteveDesktop, so it is refused with the Archmagi lane as its repair
-    if ((job.get("selector") or {}).get("proofs")):
-        return None
+def _control():
+    """rimflow/control.py, loaded by its path under the name `control` (mod_owner_hold.load imports it by that name)."""
+    m = sys.modules.get("control")
+    if m is not None:
+        return m
+    import importlib.util
+    p = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "rimflow", "control.py")
+    spec = importlib.util.spec_from_file_location("control", os.path.abspath(p))
+    m = importlib.util.module_from_spec(spec)
+    sys.modules["control"] = m
+    spec.loader.exec_module(m)
+    return m
+
+
+def live_mod(mod):
+    """-> (True, None) when MOD is live, else (False, why). A live mod is in the Maturation Pipeline (the advancing list of
+    rimflow/maturation_dispatch.json, as `./pipe show` lists it), is not on the owner's hold and is not switched off
+    (`pipe off`): a mod `./pipe show` reads ON. Owner, by card 2026-11-25 11:02 PM PST: SteveDesktop's games take the test
+    jobs of live mods. A state that cannot be read is not live, and the why says `could not look` with the cause."""
+    if not (isinstance(mod, str) and mod.strip()):
+        return False, "could not look: the job names no mod"
+    moh = _moh()
+    try:
+        h = held_by_owner(mod)
+    except moh.Unreadable as e:
+        return False, "could not look: the owner-hold list or the control store cannot be read (%s)" % e
+    if h:
+        return False, "%s is not live: %s" % (mod, moh.status(h))
+    try:
+        listed = _control().known_mods(advancing_only=True)
+    except Exception as e:      # noqa: BLE001 - a control.py that cannot load is could-not-look, never "not in the pipeline"
+        return False, "could not look: the pipeline's mod list cannot be read (%s: %s)" % (type(e).__name__, e)
+    if not listed:
+        return False, "could not look: the pipeline's advancing list (rimflow/maturation_dispatch.json) is empty or unreadable"
+    if _control().key(mod) not in listed:
+        return False, "%s is not live: it is not in the Maturation Pipeline's advancing list" % mod
+    return True, None
+
+
+def switch_text_for(mod):
+    """-> why SteveDesktop's switch keeps test jobs of MOD off its games, or None when MOD's tests are admitted: no switch,
+    or a switch with MOD live. An unreadable switch is its own text (could not look): nothing is admitted that cannot be shown allowed."""
     sw = steve_switched()
     if not sw:
         return None
-    r = _refuse(job.get("mod"), "mod work on SteveDesktop: " + sw, "the switch is lifted",
+    if sw.startswith(_hws().UNREADABLE):
+        return sw
+    live, why = live_mod(mod)
+    return None if live else "%s; %s" % (sw, why)
+
+
+def switch_refusal(job):
+    """-> a refusal record when JOB is a test job of a mod that is not live, bound for the SteveDesktop lane while
+    SteveDesktop is switched (rimflow/host_work_switch.py), else None. A live mod's job passes: a commission, a fix, a guard
+    (a pipeline run's or the idle filler's) and a stage-6 checks job. Also passing: a --proofs job (live-proof lines of a
+    pipeline item), an Ops job, the Archmagi lane. A Claude run that builds or fixes a mod is not this file's: list_dispatch.switch_refuses."""
+    job = job or {}
+    if job.get("requested_by") in OPS_REQUESTERS or str(job.get("lane") or "stevedesktop") == "archmagi":
+        return None     # lane "any" can land on SteveDesktop, so it is judged like the SteveDesktop lane
+    if ((job.get("selector") or {}).get("proofs")):
+        return None
+    why = switch_text_for(job.get("mod"))
+    if not why:
+        return None
+    r = _refuse(job.get("mod"), "test job of a mod that is not live, on SteveDesktop: " + why,
+                "the switch is lifted or %s is live in the pipeline" % job.get("mod"),
                 "submit it to the Archmagi lane (--lane archmagi), or as pipeline proof lines (--proofs)", "held")
     r["clause"] = "host_work_switch"
     return r

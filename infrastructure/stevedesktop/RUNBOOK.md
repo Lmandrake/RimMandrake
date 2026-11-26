@@ -314,16 +314,23 @@ packages (VS Code, gh, Sysinternals) install fine straight over SSH. `winget sou
 
 ## What work SteveDesktop takes: the host work switch
 
-- One switch says that SteveDesktop works pipeline improvements only: `src/RimMandrake/rimflow/host_work_switch.json`.
+- One switch says that SteveDesktop's Claude work is pipeline improvements only: `src/RimMandrake/rimflow/host_work_switch.json`.
+  A scripted in-game test job (no model call) of a live mod still runs on Steve1 and Steve2 (owner, by card 2026-11-25
+  11:02 PM PST: "(1) as well as pipeline updates/upgrades.").
   - Show it with `python3 src/RimMandrake/rimflow/host_work_switch.py show`.
   - Set it with `... set SteveDesktop --said "<his words>" --publish`.
   - Lift it with `... lift SteveDesktop --said "<his words>" --publish`. The Conductor window can also lift it, with
     `--per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS --why "..."`.
-- While the switch is set, these refuse mod work: testq submit, the idle filler, the fault-window rerun, mod bundles
-  and the list launcher's host room.
-  - Mod work is a job with chains, rows, `--full` or stage-6 checks. Each refusal names its repair: the Archmagi lane,
-    or `--proofs`.
-  - The steward reads the switch as SWITCHED, which is settled and never a fault.
+- A live mod is a mod that `./pipe show` reads ON and that is in the pipeline's advancing list, and not on the owner's hold.
+  `pipeline_admit.live_mod` is the one reader.
+- While the switch is set, these refuse work:
+  - Claude work that builds or fixes a mod: mod bundles and the list launcher's host room.
+  - A test job of a mod that is not live (held, OFF, not in the pipeline, or a state that could not be read): testq
+    submit, the idle filler and the fault-window rerun. A job of a live mod passes, whatever its purpose (commission,
+    fix, guard, stage-6 checks).
+  - Each refusal names its repair: the Archmagi lane, or `--proofs`.
+  - The steward reads the switch as SWITCHED only when every mod of the filler's list is refused. SWITCHED is settled
+    and never a fault.
 - The switch has no expiry. Do not stop the filler with `testq/fill.stop` to carry an order of the owner. That file
   aged into a fault, got an expiry and was removed on 2026-11-25.
 
