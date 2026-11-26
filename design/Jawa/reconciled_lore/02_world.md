@@ -121,7 +121,11 @@ wealth), ④ **Threat** (the qualitative timer that evicts you). Closed loop; no
 tile is a terminus. **Terrain treasures** (quarry/well/deep-drill/wreck/derrick)
 are operable but never player-buildable — wealth bound to place. An
 infinite-rate generator is pillar-safe iff discoverable-only AND on a tile
-whose threat bounds the dwell. The world is REGIONALIZED, not noise: a volcanic
+whose threat bounds the dwell. So helixien gas is found and finite only — the
+mod's infinite starting pocket is removed and its extraction plant is never
+buildable [2026-08-10] — and the Star Wars ore deposits (durasteel, beskar,
+hypertech components) are finite finds on rocky tiles: "something on the map to
+find — and then have to leave behind" [owner 2026-08-12]. The world is REGIONALIZED, not noise: a volcanic
 "fire coast," vast unbroken desert seas, one Shipyards-like cluster (now the
 Rust Cathedral, `03_deep_history.md`), ocular forests on mountains bleeding
 rivers.

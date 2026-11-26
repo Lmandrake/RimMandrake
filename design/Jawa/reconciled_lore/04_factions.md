@@ -58,7 +58,10 @@ ransom for its own.
 tired, badly armed moisture farmers on vaporator trickle (manufactured water —
 exempt from the defended-source rule). `raidsForbidden` as mechanism. Their
 guilt-theology: the water was withdrawn, and the withdrawal was deserved.
-Capture: morally ugly excellence. A rare Jedi may quietly shelter among them.
+Capture: morally ugly excellence. A rare Jedi may quietly shelter among them —
+a survivor of the broken Rebel cell. **The Rebel Alliance exists here only in
+the past tense** [owner 2026-08-12]: no Rebel faction, settlements or raids; its
+surplus gear turns up on the Junkers and the Homestead and in Hutt weapon lots.
 
 **4 · Deep Desert Tribes.** Tusken-pattern clans; water sacred, moisture **Their theology is dual** [owner
 2026-08-30, canon.yml deep_desert_tribes]: Water is life and sacredness — the
