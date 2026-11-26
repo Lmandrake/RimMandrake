@@ -51,6 +51,8 @@ def build_and_run(text, extra=()):
     os.makedirs(os.path.dirname(COPY), exist_ok=True)
     with open(COPY, "w") as f:
         f.write(text)
+    managed = os.environ.get("RIMWORLD_MANAGED")  # this machine's RimWorld Managed folder, Windows path; unset = the csproj default
+    extra = tuple(extra) + (("-p:RimWorldManaged=" + managed,) if managed else ())
     rc, rec = winbuild.stage_build(CSPROJ, extra=extra, stage_name="PyreGateRealTypesPilot",
                                    extra_dirs=[os.path.join(PYRE, "Source"), os.path.join(PYRE, "Assemblies")])
     if rc:
@@ -63,6 +65,8 @@ def build_and_run(text, extra=()):
     else:
         exe = winbuild.staged_win(rec, HERE) + "\\bin\\Release\\net472\\PyreGateScenario.exe"
         cmd = [subprocess.run(["wslpath", "-u", exe], check=True, capture_output=True, text=True).stdout.strip()]
+    managed = os.environ.get("RIMWORLD_MANAGED")
+    probe = probe + (["--managed=" + managed] if managed else [])
     return winbuild.run_interop(cmd + [asm] + probe, cwd="/mnt/d/Luke/dev", timeout=300)
 
 

@@ -244,3 +244,21 @@ the recorded cost of finding those bugs live. Planted mutants and harness build 
    today's upper bound is 3.6 M weighted tokens per live-found bug.
 6. **Decide by the policy's fourth line:** expand only if catches × live cost beats minutes; otherwise stop writing scenarios ahead of
    a bug, and keep only the failure-led ones.
+
+## The two-week measure, read 2026-11-26
+
+The 2026-11-22 recipe above was read four days late, by the Workshop Pipeline's Shape run on this item.
+
+1. **Scenarios that exist.** Only `pilot_realtypes/` was added since 2026-11-08 (the files that `git log --diff-filter=A` lists under `design/concepts/*/exam_*` are Designer exam scenarios, not tests). No seed scenario was written.
+   - `pilot_realtypes/run_pilot.py`: `ALL SCENARIOS HOLD` on the caller from main, and `6 of 6 mutants killed`, on SteveDesktop. To build there, the run needed `RIMWORLD_MANAGED` (that machine's RimWorld `Managed` folder). This run added that override to `run_pilot.py` and `Scenario.cs`.
+   - `trial1_scenario/run_scenarios.py` (fake Verse): **build broken by drift**. One commit (`b967d9e9cb`, 2026-11-08) made `ThoughtWorker_ViewedGraffitiMark.cs` call `MapComponent_GraffitiSocial`, `GraffitiJobUtility` and `Filth_Mark.Position`, and the stubs do not have them. This is a drift, not a catch. The trial predicted it, and the owner then picked real types over fakes. It is not repaired: Graffiti is on the owner's hold, and its seeds now go to the real-types pattern.
+2. **Minutes.** 0 `Scenario-Minutes:` trailers on origin/main since 2026-11-08. The trailers were never adopted.
+3. **Catches.** 0 `Scenario-Caught:` trailers. 0 catches.
+4. **Re-mine.** Not done. With no seed scenario written, the re-mine can find no escape. Each gap that it found would be a seed bug that came back, so it adds no reading to the decision in step 6.
+5. **Report:** 0 minutes, 0 catches. The measure is UNMEASURED: the policy did not run past the pilot.
+6. **Decision.** The measure cannot decide "expand or stop". The policy's failure-led route stays: write a caller scenario for each confirmed caller bug. The standing fixer rule (a red test first) already asks for this. The ten seeds are confirmed caller bugs. So they go to their mods' next versions as offline rows, and the Maturation Pipeline works them, not this item:
+   - Pyrelands: `pyre_fire_duty_starves`, `pyre_fire_no_flee`, `pyre_wetroots_season`, `pyre_furnace_heat_cap`, `pyre_burrower_flees`.
+   - FlowWorks: `fw_melee_across_lip`, `fw_raid_stall_reach`.
+   - Graffiti (held): `gr_edgeon_migrate`, `gr_disabled_paints`, `gr_weak_hands_paint`, `gr_double_please`.
+   - Each mod's entry is in `design/concepts/<Mod>/version/next_version/README.md`.
+   - `fw_trapped_target_pick` is dropped as stale. The owner's pit-melee reach rule of 2026-11-23 (`RM_PitReach`) replaced the behaviour that it tested.

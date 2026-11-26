@@ -23,6 +23,7 @@ namespace PilotRealTypes
             string own = Path.GetDirectoryName(typeof(Program).Assembly.Location);
             var dirs = new List<string>(Probe);
             if (args.Length > 0) dirs.Add(args[0]);   // the mod's Assemblies dir (FireEcologyHook.dll)
+            foreach (string a in args) if (a.StartsWith("--managed=")) dirs.Insert(0, a.Substring(10));   // this machine's RimWorld Managed dir
             AppDomain.CurrentDomain.AssemblyResolve += (s, e) =>
             {
                 string name = new AssemblyName(e.Name).Name + ".dll";
