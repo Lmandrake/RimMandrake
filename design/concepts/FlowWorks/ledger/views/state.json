@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "a17046de99f486eeb44e0f427cba884641aedbd8758211b0e9f56ad7624fff14",
+  "body_sha256": "a129f7363982a92be414eda45418084af77ea06d515e1456aa570203ccce1ca1",
   "reducer": 1,
   "shards": {
    "BACKFILL": 892335,
@@ -43,6 +43,7 @@
    "HOLDER.run-1795461568": 2159,
    "HOLDER.run-1795471235": 562,
    "HOLDER.run-1795503470": 1774,
+   "HOLDER.run-1795670514": 1455,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1292,11 +1293,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795503470",
-   "done": "visit 9 routed: no mod-wrong line sends it back, advanced in_game to in_game (f0dd729654); paused-raid item hold fixed (f054ee9f94)",
-   "next": "Drive visit 10: the three walker scenes, the build-match re-runs; sc_walk and PIT_LOOK_1114_LIVE on ArchBig",
-   "ruled_out": "offline_build or blind_challenge as the road back: the one MOD FAIL is of a paused scene",
-   "ts": "2026-11-24T07:29:18Z"
+   "by": "HOLDER.run-1795670514",
+   "done": "WB 6 of 10 closed: labels, style reaches, toss-flame button, tar creeps like grass, lying body inside pit, (state file)",
+   "next": "Store the held flag on a pawn comp a read reaches, then the thirst rows and the three bridge arts",
+   "ruled_out": "a draw offset for the station 33 body: it was centred on the edge square",
+   "ts": "2026-11-26T06:08:55Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1748,7 +1749,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1712,
+  "events": 1716,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7848,7 +7849,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-26T05:23:07Z",
+   "last": "2026-11-26T06:08:59Z",
    "lease": "run-1795670514",
    "released": false,
    "token": 60
@@ -7971,6 +7972,7 @@
    "HOLDER.run-1795461568",
    "HOLDER.run-1795471235",
    "HOLDER.run-1795503470",
+   "HOLDER.run-1795670514",
    "JUDGE.judge-1794833810",
    "JUDGE.judge-1794849236",
    "JUDGE.judge-1795134433",

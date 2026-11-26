@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":892335,"DISPATCH":87548,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":4566,"HOLDER.run-1795304573":2662,"HOLDER.run-1795312089":1009,"HOLDER.run-1795312923":2298,"HOLDER.run-1795315124":1540,"HOLDER.run-1795321038":846,"HOLDER.run-1795325268":1929,"HOLDER.run-1795329869":754,"HOLDER.run-1795330730":1090,"HOLDER.run-1795335550":748,"HOLDER.run-1795338340":3967,"HOLDER.run-1795341097":2076,"HOLDER.run-1795346318":1646,"HOLDER.run-1795396410":1686,"HOLDER.run-1795412632":930,"HOLDER.run-1795427578":1657,"HOLDER.run-1795429371":2915,"HOLDER.run-1795441687":754,"HOLDER.run-1795461568":2159,"HOLDER.run-1795471235":562,"HOLDER.run-1795503470":1774,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=b4b18323f73b5a720c5a4414cb44d57c6cb72021fa7881186542eab1e5cc4094 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":892335,"DISPATCH":87548,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":4566,"HOLDER.run-1795304573":2662,"HOLDER.run-1795312089":1009,"HOLDER.run-1795312923":2298,"HOLDER.run-1795315124":1540,"HOLDER.run-1795321038":846,"HOLDER.run-1795325268":1929,"HOLDER.run-1795329869":754,"HOLDER.run-1795330730":1090,"HOLDER.run-1795335550":748,"HOLDER.run-1795338340":3967,"HOLDER.run-1795341097":2076,"HOLDER.run-1795346318":1646,"HOLDER.run-1795396410":1686,"HOLDER.run-1795412632":930,"HOLDER.run-1795427578":1657,"HOLDER.run-1795429371":2915,"HOLDER.run-1795441687":754,"HOLDER.run-1795461568":2159,"HOLDER.run-1795471235":562,"HOLDER.run-1795503470":1774,"HOLDER.run-1795670514":1455,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=6f05643d1d02f86a842a4f9d12e87b279007a75bea37443f03faf815bffe73ec -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage offline_build · 1712 events in 44 shards · reducer 1
-holder lease run-1795670514, token 60, last active 2026-11-26T05:23:07Z
+version 0.1.0 · stage offline_build · 1716 events in 45 shards · reducer 1
+holder lease run-1795670514, token 60, last active 2026-11-26T06:08:59Z
 holder session f0d3aad9-17a4-4145-834e-d761e01679cc, context 222910 of ceiling 400000
 
-## Last checkpoint (HOLDER.run-1795503470, 2026-11-24T07:29:18Z)
-- done: visit 9 routed: no mod-wrong line sends it back, advanced in_game to in_game (f0dd729654); paused-raid item hold fixed (f054ee9f94)
-- next: Drive visit 10: the three walker scenes, the build-match re-runs; sc_walk and PIT_LOOK_1114_LIVE on ArchBig
-- ruled out: offline_build or blind_challenge as the road back: the one MOD FAIL is of a paused scene
+## Last checkpoint (HOLDER.run-1795670514, 2026-11-26T06:08:55Z)
+- done: WB 6 of 10 closed: labels, style reaches, toss-flame button, tar creeps like grass, lying body inside pit, (state file)
+- next: Store the held flag on a pawn comp a read reaches, then the thirst rows and the three bridge arts
+- ruled out: a draw offset for the station 33 body: it was centred on the edge square
 
 ## Open findings (178)
 (claimed fixes, awaiting a judge, on one line each with the oldest 127 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
@@ -503,6 +503,6 @@ spend recorded: USD 78.94, 45401435 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1712 events (views/history.md; never read whole)
+- the full history: 1716 events (views/history.md; never read whole)
 
-cursor: t=2026-11-26T05:23:15Z.1795670595837322937 (modledger.py since --mod FlowWorks t=2026-11-26T05:23:15Z.1795670595837322937 prints what changed after this packet)
+cursor: t=2026-11-26T06:08:59Z.1795673339717607690 (modledger.py since --mod FlowWorks t=2026-11-26T06:08:59Z.1795673339717607690 prints what changed after this packet)
