@@ -73,8 +73,23 @@ def write(clause, verdict, lines):
         print("note: reading not written (%s)" % e)
 
 
+def wait_map(b, limit_s=120):
+    """Poll jawa/map_info until a current map answers. On Steve 2026-11-26 the site printed READY and the next call still
+    read 'No current map' (J20261126T181800Z-e28f66). limit_s is a hang guard far past the wait seen there."""
+    import time
+    t = time.time()
+    while time.time() - t < limit_s:
+        r = b.call("jawa/map_info") or {}
+        if isinstance(r, dict) and r.get("success") is not False and r.get("sizeX"):
+            return True
+        time.sleep(2)
+    return False
+
+
 def a1(b):
     kept, cut, family = roster()
+    if not wait_map(b):
+        return "UNMEASURED", ["no current map answered within 120 s"]
     r = b.call("jawa/list_things", defName=",".join(sorted(family)), limit=20000) or {}
     if not isinstance(r, dict) or "scanned" not in r:
         return "UNMEASURED", ["list_things gave no reading: %r" % (r,)][:1]
