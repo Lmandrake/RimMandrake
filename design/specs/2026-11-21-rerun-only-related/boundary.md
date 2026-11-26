@@ -85,6 +85,14 @@ stage (the in-game build match, the Stage 6 exit, the visit brief, `./pipe why`,
   line, an attribute or engine-called member, a member another file of the mod names, or a part no check reaches
   changed; a section that starts using a shared static another check reads touches that check. (ExplosiveKnockback
   visit 5, 2026-11-23: one scene's edit to RM_KnockbackProof.cs had sent all 54 scene checks back.)
+- **csharp-code-after-a-switch-runs-when-a-section-falls-out.** The code after a method's one top-level switch (plain
+  statements and if/else/try blocks only: no lambda, no local function) is reached only when a check calls the method
+  by name, or when a section it reaches can end without `return` or `throw` (a break, goto, continue or yield
+  anywhere in the section counts as one). Where an overload shares the method's name, a call counts only with a count
+  of arguments that fits the method; a method group, a generic call or an unclear count counts. Any other shape keeps
+  that code in its method, reached with it. (ExplosiveKnockback visit 2, 2026-11-26: `Build`'s
+  `if (s.name.StartsWith("settings_sweep_")) return SettingsSweep(s);` after its switch, and the placement helper
+  `Build(def, cell, stuff)`, sent all 64 scene checks back for a change in SweepLane; with this, 16.)
 - **csharp-reads-the-types-it-names.** A declared `.cs` file reads the mod's other `.cs` files that define a type it
   names, a partial class's other parts among them, to a fixed point, at either commit, of the C# project a `.srchash`
   names (an offline SelfTest program is not one). In such a file a changed member touches a check only when the names

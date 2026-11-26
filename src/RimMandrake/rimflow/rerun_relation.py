@@ -608,11 +608,13 @@ def _pairs(code, open_c, close_c):
 
 
 class CsUnit:
-    __slots__ = ("key", "name", "kind", "spans", "parent", "labels", "flags", "text", "refs", "strs", "static")
+    __slots__ = ("key", "name", "kind", "spans", "parent", "labels", "flags", "text", "refs", "strs", "static", "calls",
+                 "arity", "head")
 
     def __init__(self, key, name, kind, a, b, parent):
         self.key, self.name, self.kind, self.spans, self.parent = key, name, kind, [(a, b)], parent
         self.labels, self.flags, self.static = set(), set(), False
+        self.calls, self.arity, self.head = {}, (0, float("inf")), None
 
 
 def _strip_attrs(code, a, b, sq):
@@ -723,12 +725,14 @@ def cs_units(text):
             if mk:                                                 # an enum: one unit
                 tw = CS_WORD.findall(head[mk.end():])
                 nm, tok = (tw[0] if tw else "<anon>"), "enum"
-            sig = ""
+            sig, p = "", None
             if tok == "(":
                 p = hs + cut.start()
                 sig = "(%s)" % " ".join(code[p + 1:pa.get(p, p)].split())
             kind = "method" if tok == "(" else "field"
             u = add(CsUnit(prefix + nm + sig, nm, kind, s, e, parent))
+            if kind == "method":
+                u.head, u.arity = p, params_range(p + 1, pa.get(p, p))
             if attr:
                 u.flags.add("attribute")
             if "override" in words or (kind == "method" and nm in UNITY_MESSAGES):
@@ -797,7 +801,113 @@ def cs_units(text):
                 u.labels = labs
                 made.append((u, grp[-1][1]))
             for u, after in made:
+                if falls_out(after, u.spans[0][1]):
+                    u.flags.add("falls out")
                 switches(after, u.spans[0][1], u.key, u)
+            if parent is not None and parent.kind == "method" and made and lone_top(a, b, p) and plain_tail(end + 1, b):
+                tail = add(CsUnit("%s/after switch" % prefix, "", "case", end + 1, b, parent))
+                tail.flags.add("after switch")
+
+    def args(i, j):
+        """The count of arguments in code[i:j] (inside a call's parentheses), or None when unsure (a `<` may be a
+        generic's comma)."""
+        if not code[i:j].strip():
+            return 0
+        if "<" in code[i:j]:
+            return None
+        n, k = 1, i
+        while k < j:
+            ch = code[k]
+            if ch in "([{":
+                q = (pa if ch == "(" else sq if ch == "[" else br).get(k)
+                if q is None or q >= j:
+                    return None
+                k = q + 1
+                continue
+            n += ch == ","
+            k += 1
+        return n
+
+    def params_range(i, j):
+        """(fewest, most) arguments a method whose parameter list is code[i:j] takes; (0, inf) when unsure."""
+        whole = (0, float("inf"))
+        if not code[i:j].strip():
+            return (0, 0)
+        if "<" in code[i:j] or "[" in code[i:j]:
+            return whole
+        parts = code[i:j].split(",") if "(" not in code[i:j] and "{" not in code[i:j] else None
+        if parts is None:
+            return whole
+        if any(re.match(r"\s*params\b", x) for x in parts):
+            return whole
+        return (sum("=" not in x for x in parts), len(parts))
+
+    def calls(own, head):
+        """{word: the argument counts it is called with} over the spans `own`; None for an occurrence that is no plain
+        call (a method group, a generic call, unsure). head: a method's own '(' (its name before it is no call)."""
+        out = {}
+        for a, b in own:
+            for m in CS_WORD.finditer(code, a, b):
+                q = re.compile(r"\s*").match(code, m.end()).end()
+                if head is not None and q == head:
+                    continue
+                n = args(q + 1, pa[q]) if q < len(code) and code[q] == "(" and q in pa else None
+                out.setdefault(m.group(0), set()).add(n)
+        return out
+
+    CONTROL = re.compile(r"\s*(?:else\s+)?(?:if|else|for|foreach|while|do|try|catch|finally|lock|using|checked|unchecked"
+                         r"|unsafe|fixed)\b")
+
+    def falls_out(a, b):
+        """True unless the section [a, b) surely ends its method: its last statement at its own level (or in the one
+        bare block it ends with) is `return` or `throw`, and it holds no break, goto, continue or yield (each may leave
+        the switch). Unsure is True."""
+        if re.search(r"(?<![A-Za-z0-9_])(?:break|goto|continue|yield)(?![A-Za-z0-9_])", code[a:b]):
+            return True
+        i, start, last, bare = a, a, None, None
+        while i < b:
+            ch = code[i]
+            if ch in "([{":
+                j = (pa if ch == "(" else sq if ch == "[" else br).get(i)
+                if j is None or j >= b:
+                    return True
+                if ch == "{" and not code[start:i].strip():          # a bare block: a statement of its own
+                    bare, start = (i + 1, j), j + 1
+                elif ch == "{" and CONTROL.match(flat(start, i)):    # if/else/try ... { }: the statement ends here
+                    bare, start, last = None, j + 1, None
+                i = j + 1
+                continue
+            if ch == ";":
+                last, start, bare = (start, i), i + 1, None
+            i += 1
+        if code[start:b].strip():
+            return True
+        if bare is not None:
+            return falls_out(*bare)
+        if last is None:
+            return True
+        return not re.match(r"\s*(?:return|throw)(?![A-Za-z0-9_])", code[last[0]:last[1]])
+
+    def lone_top(a, b, p):
+        """True when the switch whose '(' is at p is the one switch of the method body [a, b) and stands at its top
+        level (no block of the body holds it)."""
+        if any(a <= k < p and v > p for k, v in br.items()):
+            return False
+        tops = [m.start() + a for m in re.finditer(r"(?<![A-Za-z0-9_])switch\s*\(", code[a:b])
+                if not any(a <= k < m.start() + a and v > m.start() + a for k, v in br.items())]
+        return len(tops) == 1
+
+    def plain_tail(a, b):
+        """True when the code [a, b) after a switch holds only plain statements and control blocks: no lambda, no local
+        function (a section before it may call one), no switch."""
+        if "=>" in code[a:b] or re.search(r"(?<![A-Za-z0-9_])switch(?![A-Za-z0-9_])", code[a:b]):
+            return False
+        for m in re.finditer(r"\{", code[a:b]):
+            q = a + m.start()
+            h = max(code.rfind(";", a, q), code.rfind("{", a, q), code.rfind("}", a, q)) + 1
+            if not CONTROL.match(flat(max(h, a), q)):
+                return False
+        return True
 
     body(0, len(code), "", None, False)
     kids = {}
@@ -815,6 +925,7 @@ def cs_units(text):
             own.append((p, b))
         u.text = " ".join(" ".join(plain[a:b].split()) for a, b in own)
         u.refs = {w for a, b in own for w in CS_WORD.findall(code[a:b])}
+        u.calls = calls(own, u.head)
         u.strs = {v for p, v in strings if any(a <= p < b for a, b in own)}
     return units
 
@@ -830,17 +941,36 @@ def cs_reach(units, seeds, owned, added=frozenset(), names_only=False):
     that is a seed or a string a reached section or method holds (`goto case "x"`), or with its method when no check's
     seed labels it (owned: every check's seeds); a member by its name; a string-list element by its value, or with its
     list when it was there before (added: the elements new at this commit, reached by their value only); a unit's
-    parents with it. names_only: the seeds are member names (the words a check reaches in another file), never strings
+    parents with it; the code after a method's switch only when the method is called by name (an overload's count of
+    arguments decides) or a reached section of the switch can fall out. names_only: the seeds are member names (the words a check reaches in another file), never strings
     or labels: a word like `x` is no `case "x":` and no string a method holds, and a member counts only when its type's
     name is reached too."""
     names, strs = set(seeds), (set() if names_only else set(seeds))
-    reached, anchored, grew = set(), False, True
+    reached, anchored, grew, direct, called = set(), False, True, set(), {w: {None} for w in seeds}
+    sections, overloads = {}, {}
+    for u in units.values():
+        if u.kind == "case" and u.parent is not None and "after switch" not in u.flags:
+            sections.setdefault(u.parent.key, []).append(u)
+        if u.kind == "method":
+            overloads[u.name] = overloads.get(u.name, 0) + 1
+
+    def is_called(u):
+        """A call of method u by name: its name with a fitting count of arguments when an overload shares the name."""
+        got = called.get(u.name)
+        if not got:
+            return False
+        lo, hi = u.arity
+        return overloads.get(u.name, 0) < 2 or any(n is None or lo <= n <= hi for n in got)
     while grew:
         grew = False
         for k, u in units.items():
-            if k in reached or u.kind == "file":
-                continue
-            if u.kind == "case":
+            if u.kind == "file" or (k in reached and (u.kind != "method" or k in direct)):
+                continue                        # a method reached as a section's parent may yet be called by name
+            if "after switch" in u.flags:      # runs when its method is called by name, or a reached section falls out
+                anchor = False
+                hit = u.parent.key in reached and (u.parent.key in direct or any(
+                    c.key in reached and "falls out" in c.flags for c in sections.get(u.parent.key, ())))
+            elif u.kind == "case":
                 hit = bool(u.labels & strs) or (not (u.labels & owned) and u.parent is not None
                                                 and u.parent.key in reached)
                 anchor = bool(u.labels & seeds)
@@ -860,12 +990,20 @@ def cs_reach(units, seeds, owned, added=frozenset(), names_only=False):
                     hit = anchor = t is None or t.name in names
             if not hit:
                 continue
+            if u.kind == "method":
+                if anchor or is_called(u):                      # called by name, not only its sections' parent
+                    direct.add(k)
+                if k in reached:
+                    grew = grew or k in direct
+                    continue
             anchored = anchored or anchor
             p = u
             while p is not None:
                 if p.key not in reached:
                     reached.add(p.key)
                     names |= p.refs
+                    for w, ns in (p.calls or {}).items():      # a method's name in its own head is no call of it
+                        called.setdefault(w, set()).update(ns)
                     if p.kind in ("case", "method"):
                         strs |= p.strs
                 p = p.parent

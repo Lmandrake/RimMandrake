@@ -505,6 +505,137 @@ def t_csharp_relates_by_scene_section():
        u is not None and "K/w" in u, sorted(u or {}))
 
 
+AFTER_CS = '''namespace Planted
+{
+    public static partial class After
+    {
+        private sealed class Scene { public string name; }
+
+        private static int Ret(int x) => x + 1;
+        private static int Brk(int x) => x + 2;
+        private static int LaneHelper(int x) => x + 3;
+        private static string Lane(Scene s) => "L" + LaneHelper(1);
+        private static int Build(string def, int x, string stuff = null) => x;
+
+        private static string Build(Scene s)
+        {
+            int pre = Ret(0);
+            switch (s.name)
+            {
+                case "ret":
+                    return "R" + Ret(pre);
+                case "brk":
+                    Brk(1);
+                    break;
+                case "cond":
+                    if (pre > 0) return "C";
+                    break;
+                case "jump":
+                    goto case "brk";
+                case "loop":
+                    yield_like();
+                    return "Y";
+                case "rec":
+                    return Build(new Scene { name = "lane_x" });
+                case "place":
+                    Build("Wall", 1);
+                    Build("Door", 2, "Wood");
+                    return "P";
+                case "group":
+                    System.Func<Scene, string> f = Build;
+                    return f(s);
+                case "blk":
+                {
+                    System.Func<int> g = () => { return Ret(2); };
+                    return "B" + g();
+                }
+                case "ifblk":
+                    if (pre > 9) { return "I"; }
+                    else { Brk(3); }
+                    return "J";
+                case "blkif":
+                {
+                    if (pre > 9) { return "K"; }
+                }
+            }
+            if (s.name.StartsWith("lane_"))
+            {
+                return Lane(s);
+            }
+            return "unknown " + s.name;
+        }
+
+        private static void yield_like() { }
+    }
+}
+'''
+
+LOCALFN_CS = '''namespace Planted
+{
+    public static partial class After
+    {
+        private static int LaneHelper(int x) => x + 3;
+
+        private static string Build(string n)
+        {
+            switch (n)
+            {
+                case "ret":
+                    return Local();
+            }
+            string Local() { return "L" + LaneHelper(1); }
+            return null;
+        }
+    }
+}
+'''
+
+
+def _after_case(text, edits, entries):
+    """-> the touched checks after the edits [(old, new)] to After.cs, or the error."""
+    f = "src/RimMandrake/Planted/Source/After.cs"
+    tr = Tree()
+    try:
+        tr.write(f, text)
+        tests = {"sc_" + e: {"id": "sc_" + e, "kind": "live_minimal", "stage": "6", "tier": "t", "file": f, "entry": e,
+                             "reads": [f]} for e in entries}
+        tr.set_table(tests)
+        base = tr.commit("after base")
+        for a, b in edits:
+            if a not in tr.read(f):
+                return "edit target missing: %r" % a
+            tr.edit(f, a, b)
+        tr.commit("after edit")
+        return sorted(relate(tr, all_rows(base, tests), tests)["touched"])
+    finally:
+        tr.close()
+
+
+def t_csharp_code_after_a_switch_runs_when_a_section_falls_out():
+    """Code after a method's switch runs for a scene only when its section can end without return or throw
+    (ExplosiveKnockback visit 2, 2026-11-26: Build's `if (s.name.StartsWith("settings_sweep_")) return SettingsSweep(s);`
+    after the switch sent all 64 scene checks back for a change in SweepLane that only sc_settings_sweep reaches)."""
+    ents = ["ret", "brk", "cond", "jump", "loop", "rec", "place", "group", "blk", "ifblk", "blkif"]
+    falls = ["sc_blkif", "sc_brk", "sc_cond", "sc_group", "sc_jump", "sc_rec"]
+    cases = [
+        ("a helper only the code after the switch calls reruns the sections that can fall out or call the method again "
+         "(an overload of its name with another count of arguments is no such call; a method group may be)",
+         AFTER_CS, [("x + 3;", "x + 4;")], ents, falls),
+        ("an edit to the code after the switch reruns the same sections",
+         AFTER_CS, [('return "unknown " + s.name;', 'return "unknown: " + s.name;')], ents, falls),
+        ("an edit before the switch reruns every section", AFTER_CS, [("int pre = Ret(0);", "int pre = Ret(1);")], ents,
+         ["sc_" + e for e in sorted(ents)]),
+        ("a helper of the returning section reruns it and the sections that reach it (rec through Build, pre)",
+         AFTER_CS, [("x + 1;", "x + 5;")], ents, ["sc_" + e for e in sorted(ents)]),
+        ("a local function after the switch, called by a returning section, keeps the code after it in the method",
+         LOCALFN_CS, [("x + 3;", "x + 4;")], ["ret"], ["sc_ret"]),
+    ]
+    for why, text, edits, entries, want in cases:
+        got = _after_case(text, edits, entries)
+        ok("csharp-code-after-a-switch-runs-when-a-section-falls-out: %s" % why, got == want,
+           "got %s, want %s" % (got, want))
+
+
 VERD_CS = ("namespace Planted\n{\n    public static class Verd\n    {\n        public static int Off(int x) => Deep.In(x);\n"
            "        public static int Other() => 2;\n    }\n}\n")
 DEEP_CS = ("namespace Planted\n{\n    public static class Deep\n    {\n        public static int In(int y) => y;\n"
@@ -1218,6 +1349,7 @@ def main():
     t_whole_mod_check_skips_hashignored()
     t_csharp_relates_by_source_file()
     t_csharp_relates_by_scene_section()
+    t_csharp_code_after_a_switch_runs_when_a_section_falls_out()
     t_csharp_reads_the_types_it_names()
     t_declared_exercises_bound_the_types_named()
     t_python_relates_by_symbol()
