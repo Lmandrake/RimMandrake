@@ -1147,9 +1147,12 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
 
             Case("tree crowns: a synthetic Greentide and Miasma forest is at least 60% shade, within 10 points of the estimate", () =>
             {
-                // Stand-ins for the census densities (design §2.2, def-expected caster cells; the live census is the
-                // measurement): a forest of 3.8-cell trees at 0.70 (the estimate's ordinary-tree forest, 0.99); RM_Miasma 0.45, 5% 12-cell nogtyl,
-                // 30% 6.5-cell mid trees, the rest 3.8-cell trees (estimate 0.97). Growth uniform 0.3-1 as the estimate.
+                // Stand-ins: the design §2.2 estimate's densities, not the maps'. The live census
+                // (design/specs/2026-11-26-tree-crowns/canopy_census_2026-11-26.md) measured the Greentide at 0.974 but
+                // the Miasma at 0.274: its mud grows few trees. So this case proves the model at the estimate's density
+                // only; the census decides T2 for a real map. The stand-ins: a forest of 3.8-cell trees at 0.70 (the
+                // estimate's ordinary-tree forest, 0.99); RM_Miasma 0.45, 5% 12-cell nogtyl, 30% 6.5-cell mid trees, the
+                // rest 3.8-cell trees (estimate 0.97). Growth uniform 0.3-1 as the estimate.
                 var greentide = SyntheticForest(200, 200, 0.70, new[] { new Spec(1f, 1.5f, 3.8f) }, 1);
                 var miasma = SyntheticForest(200, 200, 0.45, new[] { new Spec(0.05f, 7.2f, 12f), new Spec(0.30f, 3f, 6.5f), new Spec(0.65f, 1.5f, 3.8f) }, 2);
                 double g = Covered(ForestRaster(200, 200, greentide, 45f, 0f, -1f, true, 1f)) / 40000.0;

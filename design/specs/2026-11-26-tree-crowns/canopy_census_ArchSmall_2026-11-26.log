@@ -1,0 +1,8 @@
+  terrain RM_Greentide: [('SoilRich', 26540), ('Soil', 24657), ('Gravel', 4222), ('Slate_Rough', 3489), ('Marble_Rough', 2028), ('Granite_Rough', 398), ('AncientConcrete', 284), ('FlagstoneSlate', 208)] (water by name: [])
+MEASURED RM_Greentide tile 30979 Flat: open cells 60717, crown-covered 0.974, any crown shade 0.974, directional False; top crowns [('veluthar', 33063), ('mourvel', 7049), ('mirrelbole', 6287), ('kaddrath', 3450), ('greatbole', 2036)]
+  terrain RM_Miasma: [('Mud', 34289), ('RM_FertileMud', 10555), ('RM_MiasmaSaltCrust', 6414), ('Gravel', 4214), ('Slate_Rough', 3488), ('Marble_Rough', 1999), ('Granite_Rough', 398), ('AncientConcrete', 337)] (water by name: [])
+MEASURED RM_Miasma tile 30979 Flat: open cells 60825, crown-covered 0.274, any crown shade 0.274, directional False; top crowns [('thessamor', 9092), ('ollamane', 6216), ('thrannock', 615), ('brelloch', 309), ('ilbareen', 295)]
+  terrain RM_Webwork: [('Soil', 36051), ('Mud', 12681), ('Gravel', 4210), ('Slate_Rough', 3488), ('SoilRich', 2137), ('Marble_Rough', 2028), ('RM_Webwork_SilkCarpet', 450), ('Granite_Rough', 398)] (water by name: [])
+MEASURED RM_Webwork tile 30979 Flat: open cells 60830, crown-covered 0.694, any crown shade 0.694, directional False; top crowns [('kollavane', 29048), ('dulloth', 11175), ('norrveth', 939), ('vessark', 463), ('tavrosk', 395)]
+[bridge split] 202.1 s wall: load 0.0 / ticks 1.2 / reads 0.4 / other 112.8 / outside calls 87.6 s
+[bridge split] WARN 942 calls of jawa/shadegrid_read (42.0 s): batch them
