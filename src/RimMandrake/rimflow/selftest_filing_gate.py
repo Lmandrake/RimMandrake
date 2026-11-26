@@ -835,6 +835,12 @@ def t_the_other_doors_take_the_same_check():
                "his hold on FlowWorks: only he or the Conductor lifts it", "the Conductor's act: a looser bar on X",
                "rm-findings-judge.timer runs the sweep tomorrow"):
         check("a wait passes: %s" % ok[:40], defer("wait", ok).go, defer("wait", ok))
+    pick = ("owner-act: a replacement of art that he kept. His A (revert) or B (keep) on RM_Ssurr; on his words the "
+            "Conductor runs the revert lines (A) or closes (B)")
+    check("a wait on his pick between options of his own act passes (the options are his, not a choice of fixes)",
+          defer("wait", pick).go, defer("wait", pick))
+    check("a choice of fixes that names no act of his is still refused",
+          not defer("wait", "the owner picks (a) cache the dump or (b) rebuild it").go)
     check("a block on a held game is refused", not defer("block", "both Archmagi games are held by other runs").go)
     check("a block that says worked around is refused", not defer("block", "worked around in this run").go)
     check("a LEFT OPEN note that names the Conductor's call is refused",

@@ -114,7 +114,7 @@ there is of a promise here. The hook has its own selftest, `.claude/hooks/selfte
 - **the-other-doors-take-the-same-check.** In a helper run, `rimflow wait`, `rimflow block` and a `rimflow note` that
   defers to the Conductor or the owner (`LEFT OPEN:` or `NEXT:`) go through the same program check and the same judge.
   A wait or block whose reason names a reset, a timer, or a run that is live passes the program. A reason that names
-  the Conductor or the owner passes only when it names one of the five acts, a looser bar, or a hold to lift. A refusal
+  the Conductor or the owner passes only when it names one of the five acts, a looser bar, or a hold to lift. Such a reason is read as class `owner-act`: options that it names (his A or B on art he kept) are his to pick, so the choice-between-known-fixes check does not refuse it. A refusal
   exits 6, writes no event and is recorded. The same act done again that passes resolves that refusal. The owner,
   the Conductor window and a program are never refused.
 - **the-blind-brief-asks-three-theories.** The blind judge's brief (`maturation.blind_brief_text`) names "the cause is

@@ -485,7 +485,11 @@ def defer_check(door, text, unit, live_units):
     if door in ("wait", "block") and _DATED.search(text):
         rec["checked"] = "dated: " + _DATED.search(text).group(0)
         return None, rec
-    cls = "no-tool"     # the words checks of a set-down with no class: held game, workaround, did not look, choice
+    # the words checks of a set-down with no class: held game, workaround, did not look, choice. A reason that names the
+    # owner or the Conductor and one of his five acts is read as owner-act: its options are his to pick, not a choice of
+    # fixes that the run takes (RIMMANDRAKE_SHOW_HIM_TWO_FACING_SETS_INSTALLED_OVER_HIS_KEEPS: "his A or B on art he
+    # kept" was refused with "the choice is yours").
+    cls = "owner-act" if (_CONDUCTOR.search(text) or _OWNER.search(text)) and _ACT.search(text) else "no-tool"
     bad = words_check(cls, text)
     if bad:
         return refusal("%s: %s" % (door, bad[0])), None
