@@ -231,11 +231,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.16,
+    "seconds": 0.14,
     "last": "MOCK: PASS (41/41 scenes staged, all_green=False)",
-    "at": "2026-11-26T02:31:46Z",
+    "at": "2026-11-26T13:05:22Z",
     "result": "PASS",
-    "build": "7f39d06ba0fa9e7c0d07",
+    "build": "bae2d46e5ba28633a9d6",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_script.py",
     "margins": []
    }
@@ -255,11 +255,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.88,
+    "seconds": 2.56,
     "last": "PASS proofgate (R1 P1 D1 G1 C1 R2 S1)",
-    "at": "2026-11-26T04:39:42Z",
+    "at": "2026-11-26T13:05:25Z",
     "result": "PASS",
-    "build": "c3c73bc0bdf3c18b1d19",
+    "build": "89a19266c573110df9f8",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py",
     "margins": []
    }
@@ -277,11 +277,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 15.47,
+    "seconds": 11.15,
     "last": "selftest_proof_restore_check: PASS (0 failure(s))",
-    "at": "2026-11-26T02:49:01Z",
+    "at": "2026-11-26T13:05:36Z",
     "result": "PASS",
-    "build": "9b1b4eea717d92c70d65",
+    "build": "a8c7347c9052d57fe769",
     "command": "python3 src/RimMandrake/Utils/selftest_proof_restore_check.py",
     "margins": []
    }
@@ -454,9 +454,9 @@
     "rc": 0,
     "seconds": 0.02,
     "last": "PASS stage3 scenes: 0 failed",
-    "at": "2026-11-26T02:32:03Z",
+    "at": "2026-11-26T13:05:36Z",
     "result": "PASS",
-    "build": "84bd13822caed33f768a",
+    "build": "30f262f88400ae0a02df",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_stage3_scenes.py",
     "margins": []
    }
@@ -2501,9 +2501,9 @@
     "rc": 0,
     "seconds": 0.02,
     "last": "explosive knockback pit fetch geometry: PASS (0 faults; visit-2 layout caught: True)",
-    "at": "2026-11-25T12:37:14Z",
+    "at": "2026-11-26T13:05:36Z",
     "result": "PASS",
-    "build": "997d1a1ba4e3963e48eb",
+    "build": "9e843a69abfef01a5407",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_pit_fetch.py",
     "margins": []
    }
