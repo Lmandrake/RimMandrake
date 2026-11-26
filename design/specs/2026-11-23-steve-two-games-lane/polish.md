@@ -4,5 +4,3 @@
 - Codex review 2026-11-24, not significant in ordinary operation (worker_busy_under_steve2_stop, `fault_monitor.py:393`): When Steve1 is idle and the operator creates `steve2.stop` during a Steve2 attempt, the in-memory replay returns `False` from `worker_busy()`. Both reboot paths still hold because the dispatched job remains in `steve_running()`.
 - 2026-11-25 fresh reader (WB-pipeline-bridge-20261125-192133): `run_proof_line` appends the rerun to the same log, so a row's 15-line tail can still show the first run's "cannot reach the bridge from WSL" text above the rerun's verdict.
 - 2026-11-25 fresh reader: a mixed line (python.exe parts and python3 parts joined by &&) reruns its python.exe parts too, and a `/mnt/...` argument reaches Windows python unchanged.
-- 2026-11-25 fresh reader: bridge_bundle_proof.py TPS, FRAME and HOOKS leave the game Paused, not at the speed it had before.
-- 2026-11-25 fresh reader: in bridge_bundle_proof.py, an unrelated failed call can read as "refused" (EXPLAIN gone id) or "fresh" (TILECACHE re-audit).

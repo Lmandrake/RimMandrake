@@ -142,6 +142,8 @@ def v_TILECACHE(d):
         f.append("reset did not return verifiedNull: %s" % d.get("reset"))
     if d.get("staleAfter"):
         f.append("re-audit still stale: %s" % d.get("audit2"))
+    if d.get("audit2Ok") is False:                              # a failed re-audit reads no stale entry, never fresh
+        f.append("re-audit failed: %s" % d.get("audit2"))
     return (1 if f else 0), "; ".join(f) or "tile %s: stale after retile, verifiedNull, fresh after reset" % d.get("tile")
 
 
@@ -192,6 +194,8 @@ def v_EXPLAIN(d):
     gone = d.get("gone") or {}
     if _ok(gone) and gone.get("resolved") is not False:
         f.append("vanished id answered: %s" % json.dumps(gone)[:160])
+    elif not _ok(gone) and "nothing matched" not in json.dumps(gone):  # a refusal names the selector, not any failure
+        f.append("the vanished-id call failed for another reason, not a refusal: %s" % json.dumps(gone)[:160])
     dead = d.get("dead")
     if dead is not None and not (_ok(dead) and dead.get("resolved") is True):
         f.append("a killed pawn's id no longer explains: %s" % json.dumps(dead)[:160])
@@ -815,7 +819,7 @@ def g_TILECACHE(L):
     def stale(a):
         return sum(int((a.get(k) or {}).get("stale") or 0) for k in ("minTemp", "maxTemp"))
     return {"tile": t, "audit1": json.dumps(a1)[:300], "audit2": json.dumps(a2)[:300], "reset": json.dumps(rs)[:300],
-            "staleBefore": stale(a1) > 0, "staleAfter": stale(a2) > 0, "verifiedNull": "verifiednull" in json.dumps(rs).lower()}
+            "staleBefore": stale(a1) > 0, "staleAfter": stale(a2) > 0, "audit2Ok": _ok(a2), "verifiedNull": "verifiednull" in json.dumps(rs).lower()}
 
 
 def _profile(L):
@@ -1258,6 +1262,20 @@ def _hist(xs):
     for x in xs:
         out[str(x)] = out.get(str(x), 0) + 1
     return out
+
+
+RUNS_THE_CLOCK = ("TPS", "FRAME", "HOOKS")     # clauses that run the clock, then pause it for their own reads
+
+
+def _speed_now(L):
+    """-> the speed to restore ('Paused' when paused), or None when it could not be read (then nothing is restored)."""
+    try:
+        p = L.call("jawa/time_perf") or {}
+    except Exception:                                           # noqa: BLE001 - a restore is never worth a verdict
+        return None
+    if p.get("paused") is None and not p.get("curTimeSpeed"):
+        return None
+    return "Paused" if p.get("paused") is not False else p.get("curTimeSpeed")
 
 
 def pen_job_class(job):
@@ -2051,9 +2069,15 @@ def main(argv):
             if why:
                 print("%s UNMEASURED: %s" % (clause, why))
                 return 2
+            speed0 = _speed_now(L) if clause in RUNS_THE_CLOCK else None
             try:
                 d = globals()["g_" + clause](L)
             finally:
+                if speed0:          # give the game back the speed it had: these clauses end Paused for their reads
+                    try:
+                        L.call("rimworld/set_time_speed", speed=speed0)
+                    except Exception:                           # noqa: BLE001 - never masks the clause's own result
+                        pass
                 L.cleanup()
     except Exception as e:                                      # noqa: BLE001 - no bridge is not a verdict
         print("%s UNMEASURED: %s: %s" % (clause, type(e).__name__, str(e)[:300]))

@@ -36,6 +36,8 @@ check("NORTHSTAR a tool wrong", "NORTHSTAR", {"faults": {"damage_log": "0 events
 check("STATICCALL both resolve", "STATICCALL", {"calls": {"a": {"ok": True}, "b": {"ok": True}}, "note": "x"}, 0)
 check("STATICCALL whole id lost", "STATICCALL", {"calls": {"a": {"ok": False, "message": "No thing"}}}, 1)
 check("TILECACHE cycle", "TILECACHE", {"staleBefore": True, "verifiedNull": True, "staleAfter": False, "tile": 1}, 0)
+check("TILECACHE a failed re-audit is not fresh (polish 2026-11-25)", "TILECACHE",
+      {"staleBefore": True, "verifiedNull": True, "staleAfter": False, "audit2Ok": False, "tile": 1}, 1)
 check("TILECACHE reset left stale", "TILECACHE", {"staleBefore": True, "verifiedNull": True, "staleAfter": True}, 1)
 
 good = {"noFileProfile": "campaign", "spawnRan": True, "staticRefused": True, "backProfile": "test", "flipS": 0.4,
@@ -51,15 +53,18 @@ check("PEN release and pin", "PEN", pen, 0)
 check("PEN one still waits", "PEN", dict(pen, waitAfter=1), 1)
 
 amb = {"resolved": False, "ambiguous": [1, 2]}
-check("EXPLAIN ambiguous + vanished refused", "EXPLAIN", {"name": amb, "cell": amb, "gone": {"success": False}}, 0)
+GONE = {"success": False, "error": "nothing matched the id selector", "selector": "id"}   # the tool's real refusal
+check("EXPLAIN a failed vanished-id call that is no refusal (polish 2026-11-25)", "EXPLAIN",
+      {"name": amb, "cell": amb, "gone": {"success": False, "error": "RimBridgeError: timed out"}}, 1)
+check("EXPLAIN ambiguous + vanished refused", "EXPLAIN", {"name": amb, "cell": amb, "gone": GONE}, 0)
 check("EXPLAIN vanished id resolved (2026-11-25)", "EXPLAIN",
       {"name": amb, "cell": amb, "gone": {"success": True, "resolved": True}}, 1)
 check("EXPLAIN killed pawn refused like a vanished one (review 2026-11-25)", "EXPLAIN",
-      {"name": amb, "cell": amb, "gone": {"success": False}, "dead": {"success": False}}, 1)
+      {"name": amb, "cell": amb, "gone": GONE, "dead": {"success": False}}, 1)
 check("EXPLAIN killed pawn still explains", "EXPLAIN",
-      {"name": amb, "cell": amb, "gone": {"success": False}, "dead": {"success": True, "resolved": True}}, 0)
+      {"name": amb, "cell": amb, "gone": GONE, "dead": {"success": True, "resolved": True}}, 0)
 check("TPS report gives no min/median/max", "TPS", {"windows": win, "summary": {}, "grew": 3000}, 1)
-check("EXPLAIN tool picked one", "EXPLAIN", {"name": {"resolved": True}, "cell": amb, "gone": {"success": False}}, 1)
+check("EXPLAIN tool picked one", "EXPLAIN", {"name": {"resolved": True}, "cell": amb, "gone": GONE}, 1)
 
 check("HOOKS all ok", "HOOKS", {"coverage": {"tps.Root.Update": "ok"}, "faults": 0, "minutes": 10}, 0)
 check("HOOKS a hook dark", "HOOKS", {"coverage": {"tps.Root.Update": "never-entered"}, "faults": 0}, 1)
