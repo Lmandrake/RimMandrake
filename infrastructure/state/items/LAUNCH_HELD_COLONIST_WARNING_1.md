@@ -35,3 +35,7 @@ Evidence is the Player.log line or bridge read the criterion names; a screenshot
 
 ### Exact checks 2026-10-09 (acceptance sitting)
 - A2 CHECK: Read Player.log for the literal `[RM EnvironmentalHazards] launch held-colonist warning`. Patch is a [StaticConstructorOnStartup] in `EnvironmentalHazards/Source/RM_Patch_LaunchHeldColonistWarning.cs` that logs ONLY on failure (no success line). Positive control: `jawa/harmony_patches typeName="GravshipUtility" methodName="PreLaunchConfirmation"` must list a postfix with owner `mandrake.rm.environmentalhazards`. PASS: zero lines containing the literal AND harmony_patches shows the postfix (postfixCount>=1, owner mandrake.rm.environmentalhazards). FAIL: any line containing `NOT armed` or `not found`, or the postfix is absent from harmony_patches (silent non-arm; harmonyError set means the instrument is blind: UNMEASURED).
+
+## refs
+
+file: src/RimMandrake/EnvironmentalHazards/Source/RM_Patch_LaunchHeldColonistWarning.cs
