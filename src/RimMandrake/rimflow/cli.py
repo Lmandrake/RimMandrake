@@ -1790,7 +1790,7 @@ def cmd_namecheck(args, seat):
 
 # Owner by card 2026-11-02 ("What should happen to FOUNDRY?" -> "Retire it"): no FOUNDRY window. Work filed, spawned or
 # reassigned to it goes to BENCH, the key Relentless and the Conductor's roles run under; its old events still replay.
-RETIRED_SEATS = {"FOUNDRY": "BENCH"}
+RETIRED_SEATS = model.RETIRED_SEATS
 
 
 def _unretire(name):

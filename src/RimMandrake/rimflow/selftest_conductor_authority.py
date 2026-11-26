@@ -245,6 +245,13 @@ for verb in ("verify", "claim", "start"):
     ev = {"event": verb, "seat": "BENCH", "id": "I0"}
     check(M._who_refusal(ev, _it("OWNER")) is None, "BENCH may `%s` an item owned by OWNER" % verb)
     check(M._who_refusal(ev, _it("DESIGNER")) is not None, "BENCH still may not `%s` another seat's item" % verb)
+# A retired seat's open item belongs to its heir (owner by card 2026-11-02, FOUNDRY -> BENCH): the Workshop lane hands
+# such items to BENCH helpers, and the refusal stopped GOODBYE_CANCEL_FIX_PEER_ATE_THE_NIGHT at its first claim.
+for verb in ("lease", "claim", "start", "verify"):     # `close` is any seat's already
+    ev = {"event": verb, "seat": "BENCH", "id": "I0"}
+    check(M._who_refusal(ev, _it("FOUNDRY")) is None, "BENCH may `%s` an item of the retired seat FOUNDRY" % verb)
+    check(M._who_refusal(dict(ev, seat="DESIGNER"), _it("FOUNDRY")) is not None,
+          "DESIGNER still may not `%s` a FOUNDRY item (only the heir inherits)" % verb)
 
 # The function-level census. The parser census above sees only argparse flags; the two gates that escaped (a refusal of
 # BENCH on an item owned by OWNER; the lease guard reading argv for --owner-said) sat in plain functions. So: every

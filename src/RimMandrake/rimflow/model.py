@@ -207,6 +207,9 @@ def item_path(iid, for_write=False):
 # Explicit seat registry, not the item-id/namecheck grammar. Future loops register CODEX_<MACHINE>_<LANE> here.
 CODEX_SEATS = bridge_holder.CODEX_SEATS
 SEATS = ("BENCH", "FOUNDRY", "OWNER", "DECIDE", "BUILD", "CHECK", "REP", "RUNNER", "DISPATCHER") + CODEX_SEATS
+# A retired seat -> the seat that inherits its open items (owner by card 2026-11-02, "What should happen to FOUNDRY?"
+# -> "Retire it"). The one copy; cli.RETIRED_SEATS is this dict.
+RETIRED_SEATS = {"FOUNDRY": "BENCH"}
 # Who may hold the bridge without being a seat (RELENTLESS_SEAT_UNTANGLE_FROM_BENCH). Relentless owns its items as BENCH,
 # the key the Conductor's window also runs under, so a hold keyed on BENCH read as "ours" from both sides: Relentless saw
 # the owner's joint session as itself, and its own hold kept the Conductor's restart waiting 16 min (2026-11-03). Only
@@ -2075,6 +2078,8 @@ def _who_refusal(ev, item):
             # sitting it ran with him (DESIGNER_LESSONS_ABSORB_JOINT_SESSION_DAY). The Conductor carries his
             # authority (CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM), so his items never refuse it.
             return None
+        if item.owner and RETIRED_SEATS.get(item.owner) == seat:
+            return None                         # the heir moves a retired seat's items (cli.RETIRED_SEATS)
         if item.owner and item.owner != seat:
             # \u26a0\ufe0f Narrow, and the message must SAY it is narrow. Owner's ruling
             # 2026-09-19: correctness outranks seat ownership, and a cross-seat edit to
