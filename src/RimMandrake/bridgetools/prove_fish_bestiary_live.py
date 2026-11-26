@@ -21,6 +21,13 @@ owed one restart + live check per this item's own 2026-09-20 correction).
 Scald is intentionally NOT re-tested here -- its blocker (the cove) is
 unchanged and belongs to SCALD_MECHANICS_1, not this item.
 
+SEA_FLOOR_AND_CATCH_PASS_1 A2 (2026-11-26): the four seas are "shore" rows
+(Twilight Scald Grey Chill). Each reads the sea's own shore water (its
+RM_SeaShoreExtension terrains, or vanilla ocean) and its own fishTypes.
+Exit 0 every label PASS, 1 a label measured FAIL, 2 a label could not be
+measured (a sea with no land tile beside it on this planet: expected before
+the planet paint). Offline half: selftest_prove_fish_bestiary_shore.py.
+
 Run against a live bridge (python.exe, not python3 -- WSL cannot reach the
 bridge's Windows-loopback socket). Creates a Settlement + map per water
 tested and removes both afterward -- nothing kept.
@@ -47,9 +54,15 @@ WATERS = [
     # refuses a fishing zone: Designator_ZoneAdd_Fishing needs a passable cell). Its catch is fished FROM THE SHORE: a land
     # tile beside the sea, whose salt water SeaShores' SetFishTypes postfix stocks from the sea's own table. So Twilight
     # is a "shore" row: tiles are found from the live grid, not listed.
+    # SEA_FLOOR_AND_CATCH_PASS_1 A2: every sea's shore, the same way.
     ("Twilight",      "RM_TwilightSea",   [],                          "shore"),
+    ("Scald",         "RM_TheScald",      [],                          "shore"),
+    ("Grey",          "RM_GreySea",       [],                          "shore"),
+    ("Chill",         "RM_TheChill",      [],                          "shore"),
 ]
-SHORE_SEAS = {"Twilight": ("RM_TwilightSea",)}
+SHORE_SEAS = {label: (biome,) for label, biome, _, mode in WATERS if mode == "shore"}
+SEA_DEFS = _RM_ROOT / "src" / "RimMandrake" / "TerminalBiomes" / "Defs" / "BiomeDefs"
+VANILLA_SEA_WATER = ("WaterOceanShallow", "WaterOceanDeep")
 
 
 def connect():
@@ -204,16 +217,37 @@ def try_tile(call, label, biome, tile, mode):
         cleanup(call, tile)
 
 
-def sea_catches(label):
-    """The sea's catch defNames, read from the shipped RM_ BiomeDef ."""
+def sea_def(biome, defs_dir=None):
+    """The shipped BiomeDef element of `biome` (parsed, not grepped), or None."""
     import xml.etree.ElementTree as ET
-    f = _RM_ROOT / "src" / "RimMandrake" / "TerminalBiomes" / "Defs" / "BiomeDefs" / ("RM_%sSea.xml" % label)
-    ft = ET.parse(str(f)).getroot().find("BiomeDef/fishTypes")
+    for f in sorted((defs_dir or SEA_DEFS).glob("*.xml")):
+        for d in ET.parse(str(f)).getroot().findall("BiomeDef"):
+            if d.findtext("defName") == biome:
+                return d
+    return None
+
+
+def sea_catches(label, defs_dir=None):
+    """The sea's catch defNames, read from the shipped RM_ BiomeDef."""
+    d = sea_def(SHORE_SEAS[label][0], defs_dir)
+    ft = d.find("fishTypes") if d is not None else None
     names = set()
     for band in (ft if ft is not None else []):
         names.update(c.tag for c in band)
     names.discard("rareCatchesSetMaker")
     return names
+
+
+def sea_shore_water(label, defs_dir=None):
+    """The water terrains SeaShores lays on a shore map beside this sea, shallow first: the sea's RM_SeaShoreExtension
+    shallowTerrain/deepTerrain, or vanilla ocean water when the extension sets none (RM_TwilightSea)."""
+    d = sea_def(SHORE_SEAS[label][0], defs_dir)
+    ext = None
+    for li in (d.find("modExtensions") if d is not None and d.find("modExtensions") is not None else []):
+        if li.get("Class", "").endswith("RM_SeaShoreExtension"):
+            ext = li
+    named = [ext.findtext(k).strip() for k in ("shallowTerrain", "deepTerrain") if ext is not None and ext.findtext(k)]
+    return tuple(named) or VANILLA_SEA_WATER
 
 
 def shore_tiles(call, seas, limit=5):
@@ -261,6 +295,7 @@ def shore_tiles(call, seas, limit=5):
 def try_shore(call, label, tile):
     """Generate the shore tile's map, read the salt-water body's fish, and judge it against the sea's own table."""
     want = sea_catches(label)
+    water = sea_shore_water(label)
     gen = call("jawa/world_tile_map_generate", tile=tile, suggestedMapParent="Settlement")
     if not gen.get("success"):
         print("    generate FAILED:", json.dumps(gen)[:300])
@@ -274,11 +309,9 @@ def try_shore(call, label, tile):
         runs = scan_map(call, map_id, gen["mapSize"]["x"], gen["mapSize"]["z"])
         if runs is None:
             return None
-        sea = [(k, sp) for k, v in runs.items() for sp in v
-               if any(t in k.lower() for t in ("ocean", "brine")) and "deep" not in k.lower()]
-        sea = sea or [(k, sp) for k, v in runs.items() for sp in v if any(t in k.lower() for t in ("ocean", "brine"))]
+        sea = [(k, sp) for t in water for k, v in runs.items() if k == t for sp in v]   # shallow first
         if not sea:
-            print("    VERDICT: no sea water on this shore map (SITE)")
+            print("    VERDICT: no sea water (%s) on this shore map (SITE)" % "/".join(water))
             return {"tile": tile, "water": False}
         name, (x, z, w, h) = sea[0]
         fr = call("jawa/fishing", action="read", x=x, z=z)
@@ -319,6 +352,9 @@ def main():
         result = None
         if mode == "shore":
             tiles = shore_tiles(call, set(SHORE_SEAS[label]))
+            if not tiles:   # a sea with 0 tiles before the planet paint is expected, not a defect: no reading
+                results[label] = {"unmeasured": "no land tile beside %s on this planet" % biome}
+                continue
         for tile in tiles:
             result = try_shore(call, label, tile) if mode == "shore" else try_tile(call, label, biome, tile, mode)
             if result and result.get("water"):
@@ -326,8 +362,17 @@ def main():
         results[label] = result
     print("\n=== SUMMARY ===")
     for label, r in results.items():
-        print(f"  {label}: {r} -> {'PASS' if passed(r) else 'FAIL'}")
+        print(f"  {label}: {r} -> {'UNMEASURED' if r and 'unmeasured' in r else 'PASS' if passed(r) else 'FAIL'}")
     return results
+
+
+def exit_code(res):
+    """0 every label PASS; 1 a label measured and failed; 2 nothing failed but a label could not be measured."""
+    if not res:
+        return 2
+    if any(not passed(r) and not (r and "unmeasured" in r) for r in res.values()):
+        return 1
+    return 0 if all(passed(r) for r in res.values()) else 2
 
 
 def passed(r):
@@ -344,4 +389,4 @@ def passed(r):
 
 if __name__ == "__main__":
     res = main()
-    sys.exit(0 if res and all(passed(r) for r in res.values()) else 1)
+    sys.exit(exit_code(res))

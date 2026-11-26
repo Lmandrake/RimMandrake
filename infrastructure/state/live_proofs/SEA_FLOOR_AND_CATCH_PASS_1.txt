@@ -1,0 +1,4 @@
+live-mods: mandrake.rm.biomes, mandrake.rm.flowworks
+# A2 needs a planet that holds the four seas (the canonical world): on a planet without a sea's tiles the row reads UNMEASURED (exit 2), never FAIL.
+# A1 (descent + floor census per sea) has no line yet: it waits for SEABED_DESCENT_ASCENT_1 to pass live.
+live-proof A2: python.exe "$(wslpath -w src/RimMandrake/bridgetools/prove_fish_bestiary_live.py)" Twilight Scald Grey Chill < /dev/null
