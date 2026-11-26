@@ -122,14 +122,15 @@ def stale_load(res):
     """-> "repaired" when the result predates the worker's restart onto the composed list (no harness_cause: the
     worker that wrote it could not restart, the current one does), "unrepaired" when the current worker recorded the
     cause and still ended INVALID (it restarted and the load did not fit, or modcheck had restored FULL so no restart
-    could help: both repeat, so neither may release a brake), else None."""
+    could help: both repeat, so neither may release a brake), else None. None too when the worker's one restart repaired
+    the load and the second run died of another cause: that cause names the job (HARNESS_REPAIR_CAUSE_3A38C661_3)."""
     res = res or {}
     if res.get("outcome") != "INVALID" or res.get("cause") != "HARNESS" or res.get("harness_cause") == NOT_INSTALLED:
         return None
     note = str(res.get("note") or "")
     if res.get("harness_cause") != "stale_load" and not STALE_LOAD.search(note):
         return None
-    if res.get("stale_load_bounced") and not STALE_LOAD.search(note):
+    if res.get("stale_load_bounced") and not STALE_LOAD.search(note) and "restart onto the composed list" not in note:
         # HARNESS_REPAIR_CAUSE_3A38C661_3: the worker keeps harness_cause from its restart; the restart repaired the
         # load and the second run died of something else, which the note names. That death is the cause.
         return None
