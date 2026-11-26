@@ -783,7 +783,7 @@ if Suite is not None:
 
     def _ant_state(t):
         r = t.bridge_call("jawa/static_call", type="RimMandrake.Greentide.RM_GreentideAntRaidApplier",
-                          method="ProofApply", args="")
+                          method="ProofApply", args="proof")
         return str((r or {}).get("result", "")) or "no result: %r" % (r,)
 
     @suite.chain("giant_ants")
@@ -815,7 +815,7 @@ if Suite is not None:
                     _fail("strength 2.0 read %r (want %s), restored %r (want %s)" % (doubled, want, back, shipped))
         with _comp(t, "old_rut_names_load_as_rm_defs", beyond_toggle=True):
             r = t.bridge_call("jawa/static_call", type="RimMandrake.EnvironmentalHazards.RM_DefAliasProof",
-                              method="ProofAliases", args="")
+                              method="ProofAliases", args="proof")
             if _live(t):
                 text = str((r or {}).get("result", ""))
                 if not text:
