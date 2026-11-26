@@ -8,7 +8,7 @@
   </supportedVersions>
   <description>GIZKA_TRIBBLE_ADAPTATION_1 — the KotOR ship-pest, built as a found-aboard EVENT, never a storyteller threat roll.
 
-The creature itself is NOT ours: `Gizka` (ThingDef/PawnKindDef/BodyDef, art, sounds, name generators, egg items) ships in Star Wars Animal Collection (Continued), `mlie.starwarsanimalcollection`. This mod adds only what that mod does not have: the discovery event, the escalation, the exits and their prices.
+The creature itself is not in this mod: `RSW_Gizka` (ThingDef/PawnKindDef/BodyDef, art, sounds, egg items) ships in SWBestiary (`mandrake.rsw.swbestiary`), ported from the retired Star Wars Animal Collection. This mod adds only the discovery event, the escalation, the exits and their prices.
 
 Discovery rides four things the PLAYER did, each individually toggleable: a gravship landing (Harmony postfix on `RimWorld.Scenario.PostGravshipLanded` — the confirmed hook, GIZKA_HOLD_HOOK_SPIKE_1), deconstructing wreck/ship-chunk salvage, a completed trade, and a quest ending in success (the "free gift" gag). Exactly one gizka arrives, tame, with a warm letter.
 
