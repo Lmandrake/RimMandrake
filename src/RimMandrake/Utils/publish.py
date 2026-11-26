@@ -1272,38 +1272,6 @@ def split_pre_existing(top, base, red, run_one, committed=False, flaky=None):
         else:
             pre.append((c, o, "red the same way on origin/main %s before this change" % sha[:10]))
     return still, pre
-    try:
-        with full_head_tree(top, rev=sha, what="the base") as tree:
-            here = [x for x in red if os.path.isfile(os.path.join(tree, x[0]["test"]))]
-            with concurrent.futures.ThreadPoolExecutor(max_workers=6) as ex:
-                got = list(ex.map(lambda x: run_one(x[0], tree), here))
-    except (Refuse, OSError, subprocess.SubprocessError) as e:
-        return still + [(c, o, "origin/main's reading UNMEASURED (%s: %s): not proved pre-existing" % (
-            type(e).__name__, e)) for c, o, _rc in red], []
-    for c, o, _rc in red:
-        if not any(c is x[0] for x in here):
-            still.append((c, o, "absent on origin/main %s: a test this change adds" % sha[:10]))
-    for (c, o, arc), (_c, rc, bo, _t) in zip(here, got):
-        if rc is None:
-            still.append((c, o, "origin/main %s reading UNMEASURED (ran past its time there): not proved pre-existing"
-                          % sha[:10]))
-            continue
-        if rc == 0:
-            still.append((c, o, "green on origin/main %s: this change turned it red" % sha[:10]))
-            continue
-        now, raw = red_signature(o, top, arc)
-        was, wraw = red_signature(bo, tree, rc)
-        if now is None or was is None:
-            still.append((c, o, "red on origin/main %s too, but %s %s: not proved pre-existing" % (
-                sha[:10], "here" if now is None else "there", raw if now is None else wraw)))
-            continue
-        new = [raw[k] for k in now if now[k] > was.get(k, 0)]
-        if new:
-            still.append((c, o, "red on origin/main %s too, but these FAIL lines are new in this change: %s"
-                          % (sha[:10], " | ".join(new[:3]))))
-        else:
-            pre.append((c, o, "red the same way on origin/main %s before this change" % sha[:10]))
-    return still, pre
 
 
 def _committed(full, rel):
