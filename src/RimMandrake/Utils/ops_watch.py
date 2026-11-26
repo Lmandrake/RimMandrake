@@ -1946,6 +1946,29 @@ def whea_reading(now):
             "disk.whea_blind": M(0, "WHEA sources not seen", cause="none")}
 
 
+WHEA_QUIET_HOURS = 72   # 3 days: the drive logged at least 3 a day on every day of 2026-10-26..11-25, so 3 quiet days are a change
+
+
+def whea_quiet(now, hours=WHEA_QUIET_HOURS):
+    """-> (exit, line). The outcome check of DDRIVE_NVME_REPAIR_RESEAT_NEXT_SITTING: 0 when Windows reports no WHEA event
+    in the last `hours` but a CPU machine check (19, not the drive), 1 when it reports one, 2 when it could not look."""
+    try:
+        evs, why = whea_parse(whea_lines(), now)
+    except (OSError, UnicodeError) as e:
+        evs, why = [], str(e)
+    ahead = max((e[2] - now for e in evs), default=0)
+    if not why and ahead > WHEA_SKEW_S:
+        why = "a row dated %d s ahead of this clock (allowance %d s): the clocks disagree" % (ahead, WHEA_SKEW_S)
+    if why:
+        return 2, "UNMEASURED: WHEA count blind: %s" % why
+    if hours > WHEA_DAYS * 24:
+        return 2, "UNMEASURED: %d h is past the query's %d days" % (hours, WHEA_DAYS)
+    hit = [e for e in evs if now - hours * HOUR <= e[2] and e[0] != 19]
+    if hit:
+        return 1, "NOT QUIET: %d WHEA event(s) in %d h, ids %s, newest %s" % (
+            len(hit), hours, sorted({e[0] for e in hit}), iso(max(e[2] for e in hit)))
+    return 0, "QUIET: no drive WHEA event in %d h (Windows listed %d in %d days)" % (hours, len(evs), WHEA_DAYS)
+
 def c_disk(now, rules, ctx):
     # The three slow reads wait on subprocesses (find over the pool, git over the scratch clones and the seat and role
     # clones). They start first and overlap the rest: in series they took 21-29 s at load 45 on 2026-11-22, past the
@@ -5562,6 +5585,8 @@ def main(argv=None):
     sub.add_parser("backfill", help="seed an empty production series from rm-streams-collect' history")
     sub.add_parser("file-held", help="file the alarms the alarm pass deferred, outside the beat (start_held_filer)")
     sub.add_parser("rerun-reds", help="rerun new nightly-red groups and verify closed fixes at origin/main")
+    wq = sub.add_parser("whea-quiet", help="exit 0 when no drive WHEA event in --hours, 1 when one, 2 when blind")
+    wq.add_argument("--hours", type=int, default=WHEA_QUIET_HOURS)
     ln = sub.add_parser("lint", help="refuse a ranges block with a metric short of owner, class, age, ack or why")
     ln.add_argument("--rules", help="the rules file, default the shipped one")
     a = ap.parse_args(argv)
@@ -5605,6 +5630,10 @@ def main(argv=None):
                 signal.signal(signal.SIGTERM, old_term)     # an in-process caller (a selftest) gets its own back
         print(dg["headline"])
         return 0
+    if a.cmd == "whea-quiet":
+        rc, line = whea_quiet(time.time(), a.hours)
+        print(line)
+        return rc
     if a.cmd == "lint":
         problems = ranges_problems(json.loads(Path(a.rules or rules_path()).read_text(encoding="utf-8")))
         print("\n".join("REFUSED: " + p for p in problems) or "ranges clean")
