@@ -369,7 +369,8 @@ namespace RimMandrake.ExplosiveKnockback
             {
                 return "terrain_refuses";
             }
-            return "unknown";
+            // CanMakeFilth rolls the terrain's FilthMultiplier: under 1 a refusal can pass on this second roll
+            return "not_reproduced";
         }
 
         /// <summary>The cell as a scar sees it: terrain, then each thing's def and passability ("Soil|Wall:Impassable+...").</summary>
