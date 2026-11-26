@@ -17,7 +17,7 @@
      pre-placed (found) well, cracker or pump still works.
 
      The whole file is gated by the Doctrine Mod Setting "oilWorksFoundNotBuilt" (default on; acts after a restart).
-     The infinite helixien deposits are removed in C# (HelixienFinite.cs), gated by "noInfiniteHelixien".
+     The infinite helixien deposits are removed in C# (class HelixienFinite in Source/DoctrineCore/DoctrineSettings.cs), gated by "noInfiniteHelixien".
      Offline check: src/RimUtinni/Doctrine/selftest_found_not_forged.py. -->
 <Patch>
 
