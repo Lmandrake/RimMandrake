@@ -60,6 +60,10 @@ The launcher injects this packet with `designer.md` at stage 5. Follow one versi
    Any other agent's `--why` or `--per-ruling` event certifies nothing. Lint and the other gate checks still run. Status
    and the lock page read "passed on the owner's word" beside the judge's verdict, never as a judge pass. You never
    certify.
+
+   After the stamp, leave `coverage_fixes.json` as it was. The stamp pins its hash (`fixes_hash`). Any edit, even an
+   added sha or test, voids the certificate: `designer_stage.py status` reads 'owner certificate NOT valid'. Put new
+   evidence in the ledger note.
 4. **The gate**: `concept_tree.py gate <dir>` passes, and `designer_stage.py showcases <dir>` accepts the showcase
    set. The lock is refused while any record.json inventory capability has no showcase and no scene that exercises it. The program
    rechecks the scenes that the set names against the scene contract. A scene added since stage 3 is not trusted by its id.
