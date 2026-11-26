@@ -1,0 +1,3 @@
+refusal_contract.py calibrate re-reads EVERY family, not one: on 2026-11-25 it would have reset six other judge families (findings_judge_stop, operations_alarm_stop, rm_judge_stop, scene_look_judge_brief and two more) to UNTESTED, because their briefs had already changed on origin/main. When the selftest_calibration_rows_current fix line asks you to recalibrate after your change to one brief, run calibrate, then commit only your family's row (the run's own result), and leave the other rows as origin/main has them.
+item: RIMMANDRAKE_REPAIR_KNOCKBACK_LEDGER_READINESS_STOPS_TICK_HOLDER
+home: src/RimMandrake/rimflow/refusal_contract.py

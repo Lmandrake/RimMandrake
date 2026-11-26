@@ -1,6 +1,6 @@
 # Work bundle WB-mod-ExplosiveKnockback-20261126-011752 (mod:ExplosiveKnockback)
 
-Updated 2026-11-25 PST. One member, one group (the ledger readiness repair).
+Updated 2026-11-25 6:25 PM PST. One member, one group (the ledger readiness repair). Done.
 
 ## Classes
 | ticket | class | evidence |
@@ -21,3 +21,13 @@ Updated 2026-11-25 PST. One member, one group (the ledger readiness repair).
 ## Polish
 - The brief's 20 polish lines of `design/concepts/ExplosiveKnockback/version/polish.md` name mod files that this run did not change: none taken.
 - Polish lines beside `maturation.py`'s other pages (raid pause, live kinds) name functions this run did not touch and that its tests do not cover: left.
+
+## Landed
+- Code, page, test, `maturation_advance` recalibrated alone: 47f3903c84 (218 pipeline checks green).
+- Explosive Knockback ledger: 17c7d84297. Readiness PASS 7/7 on origin/main; `pilot_refusal` reads "ready". Run recorded 3cca8b5020.
+- FlowWorks ledger (+1 locked, 3 deferred): readiness 7/7. Gimme Some Slack ledger (+11 locked): 59 = its lock, 5ab3125787.
+- Filed: RIMMANDRAKE_SETTLE_SLACK_PASSED_WITH_TWO_LOCKED_BARS_UNTABLED (its test table and bars_total read 57, its lock 59), 01c56d4fcf.
+
+## Fresh reader
+- One Opus reader: nothing significant. Its nits, done in this run: an eased deferred bar stays deferred; `_status_of` reads a deferred bar; the packet lists deferred ids; `sync_bars` writes views also after a partial append; the `bars` verb says a ledger refusal; `bars_total` provenance written when `measured_from` is absent.
+- Left: a rewrite of a VERSION.json not in indent 1 (FlowWorks) reformats the whole file. The diff is noisy, and no data is lost.
