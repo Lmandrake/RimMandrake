@@ -25,7 +25,7 @@ A new code, or a code moved between columns, is a **criteria change**: add a row
 
 ```json policy
 {
-  "version": "severity@v4",
+  "version": "severity@v5",
   "high_confidence": 0.8,
   "codes": {
     "F_NORTH_FACE":        {"brief": "C1", "default": "blocking", "means": "north shows a face or eyes; north is the rear"},
@@ -74,6 +74,11 @@ A new code, or a code moved between columns, is a **criteria change**: add a row
     "WALL_AXIS_WRONG":     {"brief": "C3", "default": "blocking", "means": "a wall-climbing fixture's long axis runs along the wall (north-south on an east/west wall) instead of from the rim down into the pit"},
     "PORT_UNDRAWN":        {"brief": "C6", "default": "blocking", "means": "a code-defined port has no drawn connector there, or a drawn connector is not a code port"},
     "LAYER_ORDER":         {"brief": "C3", "default": "blocking", "means": "what is in front does not draw in front in the assembled view"},
+    "F_EAST_NOT_PROFILE":  {"brief": "C1", "default": "blocking", "means": "a head's east is not a true side profile looking to the screen's right (three-quarter view, or looking left)"},
+    "HEAD_BAKED_EXTRAS":   {"brief": "A2", "default": "blocking", "means": "a head texture has a human hairstyle, beard, headgear, clothing or body painted on (the game draws those on top)"},
+    "ATTACH_MISFIT":       {"brief": "C6", "default": "blocking", "means": "a head attachment (montrals, lekku, horns) does not grow from the skull where canon puts it, floats, or cuts through the face"},
+    "HEAD_ENVELOPE":       {"brief": "D3", "default": "blocking", "means": "measured by code: the skull or its appendages fall outside the painted-head envelope (head_envelope.json)"},
+    "SKIN_NOT_GREY":       {"brief": "B4", "default": "blocking", "means": "a skin-tinted head or attachment carries painted hue: the skin shader multiplies it into every skin tone"},
     "MATERIAL_PAINT":      {"brief": "B4", "default": "polish",   "means": "colour reads as a coat of paint, not the material"},
     "X_BLANK":             {"brief": "D4", "default": "gross",    "means": "nothing rendered"},
     "X_WRONG":             {"brief": "A2", "default": "gross",    "means": "not the named subject at all"},

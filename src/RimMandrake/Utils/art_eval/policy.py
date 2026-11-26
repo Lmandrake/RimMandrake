@@ -41,7 +41,7 @@ SKILL = ROOT / "skills" / "rimworld-art-evaluation"
 # references/prompt_variants_2026-10-23.md). Its files carry their own version tags, so a variant's decisions are
 # never pooled with the incumbent's (versions_key). Production runs leave it unset.
 REFS = Path(os.environ["ART_EVAL_REFS"]) if os.environ.get("ART_EVAL_REFS") else SKILL / "references"
-TEMPLATES = ("creature", "plant", "machine")
+TEMPLATES = ("creature", "plant", "machine", "head")
 STATUSES = ("ok", "fail", "unreadable", "n/a")
 BANDS = ("GOOD", "WEAK", "REALLY_BAD")
 KEPT_ART_CARD = "Kept art judged really bad: may the pipeline redraw it on its own? → Yes, but show me after"

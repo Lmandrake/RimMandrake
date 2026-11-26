@@ -34,6 +34,8 @@ PILOT = ROOT / "Transient/art_eval_pilot_20261023/bundle"
 BRIEFS = ROOT / "infrastructure/state/art_eval/briefs"
 FACINGS = ("south", "east", "north", "west")
 VISIBLE_ALPHA = 16          # rimworld-sprite-facings: never measure at alpha > 0 (sub-visible export halo)
+# composite reference panels: (catch items) the living animal, the owner-kept siblings, (head attachments) the head
+COMPOSITES = ("living_reference", "siblings", "head_reference")
 SPREAD_FLAG = 0.15          # cross-facing height spread that flags F_SIZE_JUMP for a look (sprite-facings audit)
 MAXPX = 2000                # both reviewers downscale past ~2000 px on the long side
 
@@ -155,7 +157,7 @@ def source_files(spec: dict) -> dict:
             out[f"{many}_{n}"] = p
     if imgs.get("wall_context"):
         out["wall_context"] = imgs["wall_context"]
-    for comp in ("living_reference", "siblings"):
+    for comp in COMPOSITES:
         for lab, p in _comp_items(imgs.get(comp)):
             out[f"{comp}_{lab}"] = p
     return out
@@ -205,7 +207,7 @@ def build_card(spec: dict, out: Path) -> dict:
             panels[many] = [k for k in panels if k.startswith(many + "_")]
     if imgs.get("wall_context"):
         put("wall_context", imgs["wall_context"])
-    for comp in ("living_reference", "siblings"):
+    for comp in COMPOSITES:
         v = imgs.get(comp)
         if v:
             labs, files = [a for a, _ in _comp_items(v)], [b for _, b in _comp_items(v)]
@@ -222,6 +224,10 @@ def build_card(spec: dict, out: Path) -> dict:
         panels["facings"] = "facings.png"
         shas["facings.png"] = sha256_file(out / "facings.png")
     g = gates({f: out / f"{f}.png" for f in facing_src} or ({"single": out / "single.png"} if "single" in panels else {}))
+    if spec.get("template") == "head":   # the head gate reads the SOURCE pictures (the panels are shrunk)
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import head_truth as HT
+        g["head_truth"] = HT.truth(spec)
     card = {k: v for k, v in spec.items() if k != "images"}
     # source canvas per facing (the shrunk panels hide it); policy.canvas_mismatch reads it, card.md does not show it
     card["canvas_px"] = {f: list(Image.open(p).size) for f, p in facing_src.items()}
@@ -268,6 +274,13 @@ def card_md(card: dict) -> str:
     if g.get("duplicates"):
         L.append(f"- byte-identical pictures: {g['duplicates']}")
     L.append(f"- real alpha present: {g.get('alpha')}")
+    if card.get("template") == "head":
+        L.append(f"- skin_tint: {'yes — the game multiplies this picture by the skin colour' if card.get('skin_tint', True) else 'no — drawn untinted'}")
+        ht = g.get("head_truth") or {}
+        L.append(f"- head gate (envelope + greyscale): {ht.get('verdict', 'UNMEASURED')}"
+                 + (f"; could not read {ht['unread']}" if ht.get("unread") else ""))
+        if ht.get("measured", {}).get("chroma"):
+            L.append(f"- chroma (mean, p95) per facing: {ht['measured']['chroma']}")
     return "\n".join(L) + "\n"
 
 

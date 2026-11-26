@@ -159,7 +159,7 @@ def codes_table(policy: dict, items: list) -> str:
 
 
 def image_list(card: dict) -> list:
-    order = ["facings", "south", "east", "north", "west", "single", "scale", "wall_context", "living_reference", "siblings"]
+    order = ["facings", "south", "east", "north", "west", "single", "scale", "wall_context", "living_reference", "head_reference", "siblings"]
     out = [card["panels"][k] for k in order if isinstance(card["panels"].get(k), str)]
     for many in ("flight", "variants", "assembled"):
         out += [card["panels"][k] for k in card["panels"].get(many, [])]
@@ -284,7 +284,7 @@ def ask_validated(ask, validate, retry_note):
 
 
 # ------------------------------------------------------------------ the pipeline for one subject
-_REFERENCE_PANELS = ("scale", "wall_context", "living_reference_", "siblings_")
+_REFERENCE_PANELS = ("scale", "wall_context", "living_reference_", "head_reference_", "siblings_")
 
 
 def _candidate_panel(panel: str) -> bool:
@@ -535,6 +535,22 @@ def evaluate(spec: dict, card_dir: Path, rev: Reviewers, policy: dict, settings:
                 fs = [{"code": "F_FACING_TRUTH", "fix": fix or "Every view matches the east view's height and feet row."}]
                 rec["regen"] = {"findings": ["F_FACING_TRUTH"],
                                 "request": P.deterministic_regen_prompt(card, fs, spec.get("previous_prompt"))}
+            return rec
+
+    # 0c. the head truth (template head): envelope and greyscale are measured by code, never by a model
+    ht = card["gates"].get("head_truth")
+    if ht:
+        rec["head_truth"] = ht
+        if ht["verdict"] == "UNMEASURED":
+            rec["reasons"].append(f"head truth UNMEASURED ({ht.get('unread') or ht.get('why')}) — judged by the models alone")
+        elif ht["verdict"] == "FLAG":
+            decision, rnd = P.cap_regen("REGEN", rounds.get(card["subject"], 0), settings["max_regen_rounds"])
+            rec["decision"], rec["round"] = decision, rnd
+            rec["reasons"].append("head truth FLAG: " + "; ".join(f"{x['code']} {x['facing']} {x['seen']}" for x in ht["flags"]))
+            if decision == "REGEN":
+                codes = sorted({x["code"] for x in ht["flags"]})
+                fs = [{"code": c, "fix": ht["fix"] if i == 0 else ""} for i, c in enumerate(codes)]
+                rec["regen"] = {"findings": codes, "request": P.deterministic_regen_prompt(card, fs, spec.get("previous_prompt"))}
             return rec
 
     # 1. Opus first pass

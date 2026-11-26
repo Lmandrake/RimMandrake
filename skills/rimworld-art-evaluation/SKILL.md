@@ -146,7 +146,7 @@ Format and examples: `references/criteria_ledger.md`.
 | `references/pipeline.md` | the owner's rules and each guard, routing table, shadow mode, his answers to the open questions |
 | `references/schema.md` | card, reviewer replies, decision record, regen job |
 | `references/severity_policy.md` | every reason code: blocking / polish / gross, and the card facts that demote one (machine-read) |
-| `references/templates/{creature,plant,machine}.md` | the class module sent to reviewers + required panels + checklist (machine-read) |
+| `references/templates/{creature,plant,machine,head}.md` | the class module sent to reviewers + required panels + checklist (machine-read); `head` also holds the greyscale limits of its code gate (`head_truth.py`) |
 | `references/prompts/*.md` | preamble, opus_first_pass, gpt_targeted_second_look, regen_prompt_edit, departures_brief (versioned) |
 | `references/criteria_ledger.md` | the learning loop |
 | `references/prompt_variants_<date>.md` | variant races against owner verdicts: tables, decisions (method in the 2026-10-23 file) |
