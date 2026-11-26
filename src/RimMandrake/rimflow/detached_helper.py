@@ -1888,12 +1888,13 @@ try:
 except Exception as e:
     rest = {"blind": "%s: %s" % (type(e).__name__, e)}
 print(json.dumps({"state": getattr(it, "state", None), "wait_until": getattr(it, "wait_until", None), "rest": rest,
+                  "home": getattr(it, "home", None),
                   "notes": [e for e in evs if e.get("id") == item and e.get("event") == "note"]}))
 """
 
 
 def read_item(clone, item):
-    """-> {"state", "wait_until", "notes"} for the item as the run's clone folds its ledger (the run's own close sits there before
+    """-> {"state", "wait_until", "home", "notes"} for the item as the run's clone folds its ledger (the run's own close sits there before
     any other clone pulls it), or None when that cannot be read."""
     try:
         r = subprocess.run([sys.executable, "-c", READ_ITEM, item], cwd=clone, capture_output=True, text=True,
@@ -2046,6 +2047,29 @@ def owed_close(rec, state, notes):
         return ""
     return ("run %s ended success; item %s is still %s: close it with its published sha or say what is left "
             "(a note starting %s)" % (rec.get("unit"), rec.get("item"), state or "absent from the ledger", LEFT_OPEN))
+
+
+def park_to_mod(rec, got, runner, reader, now):
+    """A run that gave its item a mod home (`home mod:<Mod>`) and left it open has nothing more to do: that mod's
+    Maturation Pipeline works it. The program writes what the Conductor window wrote by hand on 2026-11-25 (twice): the
+    `LEFT OPEN:` note, the dated wait that names the mod and its Design Version, and the reclaim that takes the item
+    out of `doing` (mod_park.py). -> (the item as read after the steps, step lines). Never raises: the finish goes on."""
+    try:
+        import mod_park
+        item = rec["item"]
+        todo, why = mod_park.plan(item, got.get("state"), got.get("home"), got.get("wait_until"), got.get("notes"),
+                                  rec.get("at") or 0, now)
+        if not todo:
+            return got, []
+        mod = mod_park.mod_of(got["home"])
+        lines = mod_park.park(rec["clone"], rec["seat"], item, todo, mod, got["home"], rec["unit"], now=now, runner=runner)
+        again = reader(rec["clone"], item)
+        steps = ["parked on mod %s: %s" % (mod, ", ".join(lines))]
+        if not isinstance(again, dict):
+            return got, steps + ["parked item UNMEASURED (its clone's ledger could not be read after the steps)"]
+        return again, steps
+    except Exception as e:  # noqa: BLE001  the finish goes on; the OWED line then says what is still owed
+        return got, ["park on mod FAILED (%s: %s)" % (type(e).__name__, e)]
 
 
 def owed_lines(records, items, evs):
@@ -2405,6 +2429,8 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
             # its item still open with nothing said: one plain line, everywhere; and what a continuation would carry on
             got = (item_reader or read_item)(clone, item)
             if isinstance(got, dict) and st.startswith("success ("):
+                got, parked = park_to_mod(rec, got, runner, item_reader or read_item, now)
+                steps.extend(parked)
                 owed = owed_close(dict(rec, result=st), got.get("state"), got.get("notes"))
                 steps.append("item " + (got.get("state") or "absent") + (": OWED" if owed else ""))
                 try:

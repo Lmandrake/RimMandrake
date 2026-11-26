@@ -1310,6 +1310,85 @@ def test_owed_close():
         "owed: the status page line goes once a LEFT OPEN note names what is left")
 
 
+def t_a_run_that_gives_its_item_to_a_mod_leaves_it_parked_on_the_mod():
+    """RIMMANDRAKE_PARK_ITEM_GIVEN_TO_MOD_TWO_WAKES_OWED_A_HAND: a run that gives its item a mod home and stops leaves the
+    item waiting on its mod (not `doing`), with a LEFT OPEN: note, and the run-end wake prints no OWED line. The reader
+    and the runner share one fake ledger, so the steps the program takes are what the next read sees."""
+    import mod_park
+    item = "SOME_ITEM_TO_BUILD"
+    vdir = os.path.join(CLONE, "design", "concepts", "FlowWorks", "version")
+    os.makedirs(vdir, exist_ok=True)
+    with open(os.path.join(vdir, "VERSION.json"), "w") as f:
+        json.dump({"mod": "FlowWorks", "version": "0.1.0", "state": "locked"}, f)
+    ok_env = {"SERVICE_RESULT": "success", "EXIT_CODE": "exited", "EXIT_STATUS": "0"}
+    bad_env = {"SERVICE_RESULT": "exit-code", "EXIT_CODE": "exited", "EXIT_STATUS": "1"}
+
+    def home(kind="mod:FlowWorks", at=T0 + 100):
+        return {"home": kind, "group": "flowworks-tick-cost", "flag": "CANNOT TELL", "reason": "one mod's work", "at": DH.iso(at)}
+
+    def ended(state="doing", hm=None, wait=None, notes=(), env=None, fail=()):
+        w = {"state": state, "wait_until": wait, "notes": list(notes), "home": hm, "rest": {}}
+        verbs, woke = [], []
+        unit, _ = det_clone(item, status="running", path=CLONE)
+        with open(os.path.join(TMP, unit + ".out"), "w") as fh:
+            json.dump({"result": "I handed the item to its mod.", "usage": {"input_tokens": 1, "output_tokens": 1}}, fh)
+        open(os.environ["RM_CONDUCTOR_LOG"], "w").close()
+
+        def run(argv, **kw):
+            if argv[:2] in (["git", "fetch"], ["git", "grep"]):
+                return fake_origin_git(argv, kw)
+            if argv[:1] == ["systemctl"]:
+                return R(0, "")
+            verb = argv[2] if len(argv) > 2 and argv[1].endswith("cli.py") else argv[0]
+            if verb == "note" and argv[argv.index("--text") + 1].startswith("DETACHED run"):
+                return R(0, "")     # finish's own end-of-run note: not a step of the park
+            if verb in ("note", "wait", "reclaim"):
+                verbs.append(verb)
+            if verb in fail:
+                return R(1, "refused")
+            if verb == "note":
+                w["notes"].append({"event": "note", "id": item, "ts": DH.iso(T0 + 850), "text": argv[argv.index("--text") + 1]})
+            elif verb == "wait":
+                w["wait_until"] = argv[argv.index("--until") + 1] + "T00:00:00Z"
+                w["wait_reason"] = argv[argv.index("--reason") + 1]
+            elif verb == "reclaim":
+                w["state"] = "ready"
+            return R(0, "PUBLISHED abcdef1234567" if verb == "./publish" else "")
+        DH.finish(unit, now=T0 + 900, env=env or ok_env, runner=run, item_reader=lambda c, i: json.loads(json.dumps(w)),
+                  waker=lambda u, st, out, it, owed: woke.append(owed) or "woke")
+        return w, verbs, woke, DH.read_record(unit)
+
+    w, verbs, woke, rec = ended(hm=home())
+    notes = [n["text"] for n in w["notes"] if n["text"].startswith("LEFT OPEN:")]
+    check(w["state"] == "ready", "park: the item leaves doing and reads ready (%s)" % w["state"])
+    check(w["wait_until"] and mod_park._epoch(w["wait_until"]) > T0 + 900,
+          "park: the item waits, the date ahead of the run's end (%s)" % w["wait_until"])
+    check("FlowWorks" in w.get("wait_reason", "") and "0.1.0" in w.get("wait_reason", "")
+          and "Conductor" not in w.get("wait_reason", ""),
+          "park: the wait names the mod and its Design Version, and not the Conductor (%s)" % w.get("wait_reason"))
+    check(len(notes) == 1 and "FlowWorks" in notes[0], "park: one note starts LEFT OPEN: and names the mod (%s)" % notes)
+    check(woke == [""] and not rec.get("owed_close"), "park: the wake carries no OWED line (%s | %s)" % (woke, rec.get("owed_close")))
+    check("parked on mod FlowWorks" in " ".join(rec["steps"]), "park: the record says what the program did (%s)" % rec["steps"])
+    for what, kw in (("a home older than the run", dict(hm=home(at=T0 - 50))),
+                     ("a home that is not a mod's", dict(hm=home("pipeline:Workshop"))),
+                     ("no home", dict(hm=None)),
+                     ("a closed item", dict(state="done", hm=home())),
+                     ("a failed run", dict(hm=home(), env=bad_env))):
+        w, verbs, woke, rec = ended(**kw)
+        check("wait" not in verbs and "reclaim" not in verbs and not w["notes"], "park: %s parks nothing (%s)" % (what, verbs))
+    w, verbs, woke, rec = ended(hm=home(), notes=[{"event": "note", "id": item, "ts": DH.iso(T0 + 300), "text": "LEFT OPEN: by hand"}],
+                                wait=DH.iso(T0 + 86400 * 9))
+    check(verbs == ["reclaim"] and w["state"] == "ready",
+          "park: a hand-parked item (note and wait there) only leaves doing (%s)" % verbs)
+    w, verbs, woke, rec = ended(hm=home(), fail=("wait",))
+    check(any("wait FAILED" in x for x in rec["steps"]) and w["notes"] and w["state"] == "ready",
+          "park: a failed wait is said in the record and the other steps still run (%s)" % rec["steps"])
+    steps, _ = mod_park.plan(item, "doing", home(), None, [], T0, T0 + 900)
+    check(steps == ["note", "wait", "reclaim"], "park: plan of a fresh gift is note, wait, reclaim (%s)" % steps)
+    steps, why = mod_park.plan(item, "proposed", home(), None, [], T0, T0 + 900)
+    check(steps == [] and "proposed" in why, "park: a proposed item is not parked (%s)" % why)
+
+
 def test_windows_path():
     """RIMMANDRAKE_GIVE_DETACHED_UNITS_WINDOWS_PATH_PYTHON_EXE_VANISHED: a unit started from a timer had no /mnt/c on PATH
     and no WSL_INTEROP, so python.exe, tasklist.exe and ./game 'did not exist' (FlowWorks visit 1, 2026-11-15)."""
@@ -1825,6 +1904,7 @@ def main():
     test_long_brief()
     t_a_brief_never_rides_in_a_wrappers_argv()
     test_owed_close()
+    t_a_run_that_gives_its_item_to_a_mod_leaves_it_parked_on_the_mod()
     test_hook_points_here()
     test_windows_path()
     test_launch_checks()
