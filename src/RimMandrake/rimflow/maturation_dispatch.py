@@ -2905,17 +2905,19 @@ def views_differ(root, paths):
     return False
 
 
-def ledger_open(root, mod, role, brief, stage=None, now=None, fx=None):
+def ledger_open(root, mod, role, brief, stage=None, now=None, fx=None, session=None, reconcile=None):
     """A pilot holder's run begins: modledger.launch grants the lease and records run.start, and the ledger lands
     before any launch cuts the holder's clone from origin/main (RIMMANDRAKE_LAND_HOLDER_GRANT_BEFORE_LAUNCH_CLONE_BLIND:
     landed after, the clone lacks its own grant and the holder's first append is refused "lease never granted");
     -> {"brief": the packet and holder lines, then `brief`, "env": the unit's RM_MODLEDGER_WRITER/TOKEN, "run",
-    "stage", "landed"}."""
+    "stage", "landed"}. session/reconcile: the holder session this run resumes and why it reconciles first (resume_plan),
+    recorded on its run.start."""
     now = now or time.time()
     lease = "run-%d" % int(now)
     import run_alive    # the timer renews a detached run's lease from its process; the brief asks only while no timer lives
     by_program = run_alive.timer_live()
-    out = modledger.launch(root, mod, lease, role, stage=stage, by_program=by_program)
+    out = modledger.launch(root, mod, lease, role, stage=stage, by_program=by_program, resume_session=session,
+                           reconcile=bool(reconcile))
     landed = land_ledger(root, [mod], "run %s on %s granted" % (lease, mod), fx)
     return {"run": lease, "stage": out["stage"], "packet": out["brief"], "landed": landed,
             "brief": out["brief"].rstrip("\n") + (
@@ -3104,7 +3106,8 @@ def launch_stage(root, cfg, st, mod, cap, item, now=None, fx=None, launch=None, 
         elif stage == "blind_challenge":      # a judge is never the holder: it writes JUDGE.<run>, blind (spec §3.6)
             led = judge_open(root, mod, stage=stage, now=now, fx=fx)
         else:
-            led = ledger_open(root, mod, ROLE_OF_STAGE.get(stage, "holder"), "", stage=stage, now=now, fx=fx)
+            led = ledger_open(root, mod, ROLE_OF_STAGE.get(stage, "holder"), "", stage=stage, now=now, fx=fx,
+                              session=kw.get("session"), reconcile=kw.get("reconcile"))
     except Exception as e:      # noqa: BLE001  a refused grant is a launch that never started, said in its words
         return 2, "REFUSED: %s's ledger launch failed: %s: %s" % (mod, type(e).__name__, e), None
     game = kw.pop("game", None)
@@ -3285,7 +3288,8 @@ def road_back_holder(root, cfg, st, mod, stage, opened, item, cap, now, fx, game
                 ", ".join(game6), "s" if len(game6) == 1 else "") if game6 else "") + (
             "\n" + M.game_brief(game) if game else "") + (
             "Not yours: %s, each worked by its own live run; work none of them here.\n" % ", ".join(
-                "%s (%s)" % kv for kv in sorted(busy.items())) if busy else "") + bnote), stage=stage, now=now, fx=fx)
+                "%s (%s)" % kv for kv in sorted(busy.items())) if busy else "") + bnote), stage=stage, now=now, fx=fx,
+            session=rkw.get("session"), reconcile=plan.get("reconcile"))
         rc, text, unit = (fx.get("launch_brief") or AUT.launch_brief)(
             item, led["brief"], MM.for_mod(cfg, mod).get("steward_model", "opus"), cap, cfg.get("seat", "BENCH"),
             env=dict(led["env"], **control_env(mod, stage), **({"RM_GAME_INSTANCE": game} if game else {}),

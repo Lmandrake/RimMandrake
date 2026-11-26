@@ -928,7 +928,8 @@ def holder_brief(mod, lease, token, role, stage, by_program=False):
 UNM_STAGE = "UNMEASURED"
 
 
-def launch(root, mod, lease, role, stage=None, ts=None, views=True, budget=None, by_program=False):
+def launch(root, mod, lease, role, stage=None, ts=None, views=True, budget=None, by_program=False, resume_session=None,
+           reconcile=False):
     """DISPATCH starts a holder's stage run from the packet (spec §3.1, §3.3): grants `lease` (the next fencing token),
     records run.start naming the lease, the role, the stage the ledger stands at now (`stage` only when the ledger
     names none) and the packet's size, and -> {"token", "run", "brief", "stage", "writer"}; the brief begins with the
@@ -954,7 +955,11 @@ def launch(root, mod, lease, role, stage=None, ts=None, views=True, budget=None,
                              "nothing droppable is left; lease %r revoked, no run started" % (tokens(brief), budget,
                                                                                              lease))
     append(root, mod, "DISPATCH", "run.start", "run", run=lease, ts=ts, views=views,
-           body={"run": lease, "lease": lease, "token": tok, "role": role, "stage": at, "packet_tokens": tokens(text)})
+           body=dict({"run": lease, "lease": lease, "token": tok, "role": role, "stage": at, "packet_tokens": tokens(text)},
+                     # the holder session this run resumes and its reconcile step (resume_plan), so a live kill-and-resume
+                     # reads from the ledger (RIMMANDRAKE_KILL_LIVE_HOLDER_RESUME_AFTER_FIRST_SESSION)
+                     **dict(({"resume_session": resume_session} if resume_session else {}),
+                            **({"reconcile": True} if reconcile else {}))))
     return {"token": tok, "run": lease, "brief": brief, "stage": at, "writer": "HOLDER.%s" % lease}
 
 

@@ -142,6 +142,23 @@ try:
           seen["argv"][seen["argv"].index("--resume") + 1] == SID, seen.get("argv"))
     check("the brief opens with the resume and the reconcile step", b.index("resumed (session") < b.index(
         "Reconcile first") < b.index("# stage brief"), b[:300])
+    # the run.start of that launch names the session it resumes and the reconcile: the live outcome is read from the ledger
+    led3 = MD.ledger_open(root, MOD, "fixer", "", now=1795000000, fx=fx, session=kw2.get("session"),
+                          reconcile=kw2.get("reconcile"))
+    st3 = [e for e in ML.read(root, MOD) if e.get("kind") == "run.start" and e.get("run") == led3["run"]]
+    check("the run.start names the resumed session and the reconcile", st3 and (st3[-1].get("body") or {}).get(
+        "resume_session") == SID and (st3[-1].get("body") or {}).get("reconcile") is True, st3[-1:] or None)
+    import holder_kill_check as HK
+
+    def ev(kind, run, **body):
+        return {"writer": "DISPATCH", "kind": kind, "body": dict({"run": run}, **body)}
+    s1 = ev("run.start", "r1", lease="r1", resume_session=SID)
+    k1 = ev("run.end", "r1", lease="r1", status="killed: signal (TERM)")
+    check("the live check fails before a resumed run is killed", not HK.seen([s1])[0], HK.seen([s1]))
+    check("the live check fails on a relaunch that did not resume and reconcile",
+          not HK.seen([s1, k1, ev("run.start", "r2", lease="r2")])[0])
+    check("the live check holds on a killed resumed run relaunched in the same session, reconciling",
+          HK.seen([s1, k1, ev("run.start", "r2", lease="r2", resume_session=SID, reconcile=True)])[0])
     txt, _ = ML.packet(root, MOD)
     check("the packet it is told to re-read lists the refuted cause and his answer",
           "modledger.py packet --mod %s" % MOD in b and "C_TICK" in txt and "radius 4" in txt)
