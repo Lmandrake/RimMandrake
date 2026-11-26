@@ -42,6 +42,7 @@ PAGES = {
     "design/specs/2026-11-24-full-list-walk-not-per-mod/boundary.md":
         "src/RimMandrake/rimflow/selftest_walk_small_list.py",
     "design/specs/2026-11-24-walk-save-start-twin/boundary.md": "src/RimMandrake/rimflow/selftest_walk_twins.py",
+    "design/specs/2026-11-26-look-changed-labels/boundary.md": "src/RimMandrake/Utils/selftest_look_changed_labels.py",
     "design/specs/2026-11-24-walk-pens/boundary.md": "src/RimMandrake/Utils/modcheck/selftest_walk_pens.py",
     "design/specs/2026-11-24-walk-owes-its-checks/boundary.md": "src/RimMandrake/rimflow/selftest_walk_owes_checks.py",
     "design/specs/2026-11-24-live-checks-in-builder-run/boundary.md": "src/RimMandrake/rimflow/selftest_live_checks_in_builder_run.py",

@@ -6380,7 +6380,11 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
           "before the event, with what would set it off removed before any tick (owner, 2026-11-23: \"replicate their frozen initial "
           "states beside them so I can see before / after\"). Give both a sign book (`reviewmap.sign_book`) with one key and one "
           "name, and the tag AFTER or START as the last word of the name. `python3 src/RimMandrake/Utils/walk_twins.py check "
-          "<save>` refuses an aftermath station without its twin, and so does this exit. A station he acts on himself needs none." % mod,
+          "<save>` refuses an aftermath station without its twin, and so does this exit. A station he acts on himself needs none. Label each "
+          "station or matrix cell whose inputs changed since his last look (owner card 2026-11-12, rule 2f: \"His look, as a "
+          "labelled cell in the next save\"): give `look_changed_labels.label_cells(\"%s\", CELLS)` each cell's key, name and the "
+          "files it is made from, put `sign_name(name, label)` on its sign, the `notes` (cells removed since his last look) on "
+          "a notes sign, and call `record(\"%s\", <save>, CELLS)` once the save is written (`src/RimMandrake/Utils/look_changed_labels.py`)." % (mod, mod, mod),
           "- `SUMMARY.md`: what ran, what failed and what you did about it, the owed cases one by one, then this block "
           "(the program reads it):", "",
           "```", "## Exit", "```", "ingame_rows: {%s}" % ", ".join("%s: pass|fail|unmeasured" % k for k in checks[:3])

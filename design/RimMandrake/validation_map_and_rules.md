@@ -142,8 +142,8 @@ the water retune's halved shallow end (0.49 to 0.25) in front of him by name (se
 - **Every objection of his closes on his look, and only there.** His card (ledger OWNER note 2026-11-13T04:34:04Z on this item, card of 2026-11-12 ~8:25 PM PST): *Who closes his objections →
   "His look, as a labelled cell in the next save"*. No agent judge closes one of his objections. The fixed cell is a
   **"changed since your last look"** labelled cell in the next save he opens anyway; it is never a sitting of its own.
-  The re-look is of the changed cells only, so he does not re-inspect what he passed. Tooling owed:
-  `RIMMANDRAKE_LABEL_CHANGED_SINCE_LAST_LOOK_IN_REVIEW_SAVES`.
+  The re-look is of the changed cells only, so he does not re-inspect what he passed. Tool:
+  `src/RimMandrake/Utils/look_changed_labels.py` (the Stage 6 walk-save brief and the walk brief call it).
 - A QUESTION costs no revalidation at all.
 
 **2g. A new standard is not an objection.** When a look sets a new bar ("Acceptance tests really should have pits like

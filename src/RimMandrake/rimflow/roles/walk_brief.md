@@ -69,6 +69,9 @@ changes creatures: where the creature pens are (the cells of the block of pens) 
 
 ## What changed since his last look
 What the version changed, in his words where he gave them, each with its commit.
+Then the lines of `python3 src/RimMandrake/Utils/look_changed_labels.py show --mod <Mod> --save <the walk save>`: each
+cell labelled changed or new since his last look, and each cell removed since. Exit 2 (no cells file): say so here and
+file a ticket.
 
 ## Known, not fixed: you need not report these
 Each known fault still open, with its ticket id, so he does not spend his walk finding it.
