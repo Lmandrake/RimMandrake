@@ -2,6 +2,14 @@
  "about": "Judge calibration registry (RIMMANDRAKE_SEED_JUDGE_CALIBRATION_FROM_CORPORA; spec design/specs/2026-11-12-refusal-contract-for-judges-and-gates.md section 5). Keyed by family; `hash` is refusal_contract.brief_hash of `brief`. Only a CALIBRATED brief's verdict, either way, has a consequence (a refusal sends work back, a pass signs); any edit to a brief file resets it to UNTESTED (refusal_contract.py calibrate). A brief is CALIBRATED only by a check on its current hash whose case results show every `planted` case ran and came out as planted, good and bad both (refusal_contract.judge_cases; RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS): `free_check` is deterministic and runs on every calibrate, `model_check` spends and runs only on `calibrate --model <family>`. `cases` is prose about the corpora a row was seeded from.",
  "families": {
   "art_eval_first_pass": {
+   "abstain": {
+    "answer": "second look",
+    "decided_share": {
+     "refuse": 0.5
+    },
+    "ruling": "RIMMANDRAKE_RULE_ART_FIRST_PASS_WEAK_IS_NO_VERDICT",
+    "why": "WEAK is a second look (GPT), not a verdict of the first pass (owner's option A, 2026-11-26 UTC); half the refuse cases must come out REALLY_BAD (3 of 6 did at 6ccd275b5b16)"
+   },
    "brief": [
     "skills/rimworld-art-evaluation/references/prompts/preamble.md",
     "skills/rimworld-art-evaluation/references/prompts/opus_first_pass.md",

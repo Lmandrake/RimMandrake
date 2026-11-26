@@ -43,8 +43,9 @@ answers a repeat (same item, clause, criterion hash, evidence content and sha) f
                                     UNTESTED (a .py docstring or comment is not brief text: brief_text.py),
                                     free deterministic checks run (--model runs a family's model_check, which
                                     spends); a check must show every planted case ran and came out as planted, both
-                                    ways. Only a CALIBRATED brief's verdict, either way, has a consequence. --no-run is
-                                    a read-only status (writes nothing) and flags signatures made under an unproven brief
+                                    ways (a row's `tolerate` and `abstain`, each set by a named ruling, bend this:
+                                    judge_cases). Only a CALIBRATED brief's verdict, either way, has a consequence.
+                                    --no-run is a read-only status (writes nothing) and flags signatures made under an unproven brief
     python3 src/RimMandrake/rimflow/refusal_contract.py repair <case.json>   the neutral fixer (roles/criteria_fixer.md,
                                     one fresh Opus run), guarded by diffguard, recorded whole; exit 1 if refused
 
@@ -652,16 +653,22 @@ EXPECTS = ("pass", "refuse")
 RESULTS_ENV = "RM_CALIBRATION_RESULTS"   # where a check writes {"cases": [{"id", "expect", "got"}, ...]}
 
 
-def judge_cases(planted, results, tolerate=0):
+def judge_cases(planted, results, tolerate=0, abstain=None):
     """-> (status, why) for one check's case results against the row's planted cases (RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS).
     `planted` is a list of {id, expect} or {"count": {"pass": n, "refuse": m}} (a corpus too big to list). CALIBRATED
     only when every planted case ran and came out as planted and the cases go both ways; a case that came out the other
     way is FAILED; a case that did not run, no results, or one-way cases leave it UNTESTED. Exit 0 alone proves nothing.
     `tolerate` (a row's field, set only by a ruling that names it; RIMMANDRAKE_TIGHTEN_SET_DOWN_CLASSES_ANY_TWELVE_LETTERS_PASS:
     the Conductor's "at most 3 disagreements of 25" for set_down_judge): up to that many cases may come out the other way,
-    and the why names them."""
+    and the why names them.
+    `abstain` (a row's field, set only by a ruling that names it; RIMMANDRAKE_RULE_ART_FIRST_PASS_WEAK_IS_NO_VERDICT for
+    art_eval_first_pass): {"answer": <a got word>, "decided_share": {<expect>: <0..1>}}. A case whose got is that answer
+    gave no verdict: it is never wrong. Each named expect must then have at least that share of its planted cases come
+    out as planted, else FAILED; an abstain with no case decided at all is FAILED."""
     cases = [c for c in (results or {}).get("cases") or [] if isinstance(c, dict)]
-    wrong = sorted(str(c.get("id")) for c in cases if c.get("expect") in EXPECTS and c.get("got") != c.get("expect"))
+    skip = abstain.get("answer") if isinstance(abstain, dict) and abstain.get("answer") else None
+    wrong = sorted(str(c.get("id")) for c in cases if c.get("expect") in EXPECTS and c.get("got") != c.get("expect")
+                   and not (skip and c.get("got") == skip))
     if isinstance(planted, dict) and isinstance(planted.get("count"), dict):
         want = {k: int(planted["count"].get(k) or 0) for k in EXPECTS}
         ran = {k: sum(1 for c in cases if c.get("expect") == k) for k in EXPECTS}
@@ -671,7 +678,8 @@ def judge_cases(planted, results, tolerate=0):
         got = {str(c.get("id")): c for c in cases}
         missing = sorted(str(c.get("id")) for c in planted or [] if isinstance(c, dict) and str(c.get("id")) not in got)
         wrong = sorted(set(wrong) | {str(c.get("id")) for c in planted or [] if isinstance(c, dict)
-                                     and str(c.get("id")) in got and got[str(c["id"])].get("got") != c.get("expect")})
+                                     and str(c.get("id")) in got and got[str(c["id"])].get("got") != c.get("expect")
+                                     and not (skip and got[str(c["id"])].get("got") == skip)})
     tolerate = int(tolerate or 0)
     if wrong and len(wrong) > tolerate:
         return "FAILED", "came out the other way: %s" % ", ".join(wrong)
@@ -680,16 +688,33 @@ def judge_cases(planted, results, tolerate=0):
     if missing:
         return "UNTESTED", "did not run: %s" % ", ".join(missing)
     n = len(cases) if isinstance(planted, dict) else len({str(c.get("id")) for c in planted or [] if isinstance(c, dict)})
+    if skip:
+        decided = {k: sum(1 for c in cases if c.get("expect") == k and c.get("got") == k) for k in EXPECTS}
+        if not any(decided.values()):
+            return "FAILED", "no case decided: every answer was %r" % skip
+        for k, share in sorted((abstain.get("decided_share") or {}).items()):
+            if k in want and decided.get(k, 0) < float(share) * want[k]:
+                return "FAILED", "%d of %d %s case(s) came out %s, under the row's decided_share %s (%r is no verdict)" % (
+                    decided.get(k, 0), want[k], k, k, share, skip)
+        held = sum(1 for c in cases if c.get("got") == skip)
+        return "CALIBRATED", "%d of %d planted case(s) came out the other way; %s; %d answered %r, no verdict (row's abstain)" % (
+            len(wrong), n, ", ".join("%d of %d %s decided" % (decided[k], want[k], k) for k in EXPECTS), held, skip)
     if wrong:
         return "CALIBRATED", "%d of %d planted case(s) came out the other way (%s), within the row's tolerate of %d" % (
             len(wrong), n, ", ".join(wrong), tolerate)
     return "CALIBRATED", "%d planted case(s) ran and came out as planted" % n   # a recorded, unplanted row is not one
 
 
+def judge_row(row, results):
+    """-> (status, why): judge_cases with the row's own planted cases, tolerate and abstain."""
+    row = row or {}
+    return judge_cases(row.get("planted"), results, row.get("tolerate") or 0, row.get("abstain"))
+
+
 # budget: danger=a calibration check that never ends holds the calibration; never reached in the 14 days to 2026-11-24; no
 # budget: record of its run
-def run_check(cmd, root, planted, timeout=600, tolerate=0):
-    """Run one calibration check with RESULTS_ENV set. -> (status, last_run)."""
+def run_check(cmd, root, row, timeout=600):
+    """Run one calibration check with RESULTS_ENV set; judge its results by the registry row. -> (status, last_run)."""
     import subprocess
     import tempfile
     with tempfile.TemporaryDirectory() as tmp:
@@ -708,7 +733,7 @@ def run_check(cmd, root, planted, timeout=600, tolerate=0):
     if code != 0:
         st, why = "FAILED", "exit %s" % code
     else:
-        st, why = judge_cases(planted, results, tolerate)
+        st, why = judge_row(row, results)
     run = {"exit": code, "out": out.splitlines()[-1] if out else "", "cases": why}
     if isinstance(results, dict) and isinstance(results.get("cases"), list):
         run["results"] = results["cases"] if len(results["cases"]) <= 20 else "%d case rows" % len(results["cases"])
@@ -729,9 +754,7 @@ def calibrate(path=None, root=None, run_free=True, now=None, model=()):
             row.update(status="UNTESTED", was=row.get("status"), hash=h, reset_at=at)
         cmd = row.get("model_check") if fam in model else row.get("free_check") if run_free else None
         if cmd:
-            row["status"], row["last_run"] = run_check(cmd, root, row.get("planted"),
-                                                       timeout=int(row.get("timeout_s") or 600),
-                                                       tolerate=row.get("tolerate") or 0)
+            row["status"], row["last_run"] = run_check(cmd, root, row, timeout=int(row.get("timeout_s") or 600))
             row["last_run"]["at"] = at
     if run_free or model:
         _write(path, reg)

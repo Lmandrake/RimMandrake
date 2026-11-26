@@ -133,6 +133,48 @@ def t_no_second_reviewer():
     check("no-second-reviewer: a WEAK band asks nobody else and files nothing", rc == 0 and len(x) == len(pl), x)
 
 
+def t_weak_is_no_verdict():
+    """The ruling RIMMANDRAKE_RULE_ART_FIRST_PASS_WEAK_IS_NO_VERDICT: WEAK is a second look, not a verdict of the first
+    pass. A case is wrong only when the first pass accepts a refused picture or sends back a kept one; a stated share of
+    the refuse cases must come out refuse."""
+    row = json.load(open(os.path.join(REPO, RC.CALIBRATION_REL)))["families"]["art_eval_first_pass"]
+    pl, ab = F.planted(), row.get("abstain")
+    check("weak-is-no-verdict: the registry row declares `second look` as no verdict, by the ruling",
+          isinstance(ab, dict) and ab.get("answer") == "second look" and ab.get("ruling") ==
+          "RIMMANDRAKE_RULE_ART_FIRST_PASS_WEAK_IS_NO_VERDICT" and 0 < float(ab["decided_share"]["refuse"]) <= 1, ab)
+    if not isinstance(ab, dict):
+        return
+    exp = {c["id"]: c["expect"] for c in pl}
+    measured = {"first_pass_RM_Huldu_C", "first_pass_RM_Vellak_B", "first_pass_RM_Murrin_C"}  # refuse at 6ccd275b5b16
+
+    def res(**got):
+        return {"cases": [{"id": i, "expect": e, "got": got.get(i, "refuse" if i in measured else "second look")}
+                          for i, e in exp.items()]}
+
+    def st(r, **kw):
+        return RC.judge_row(dict(row, **kw), r)[0]
+    check("weak-is-no-verdict: the run at 6ccd275b5b16 (3 refuse, 6 second look) reads CALIBRATED", st(res()) == "CALIBRATED",
+          RC.judge_row(row, res()))
+    check("weak-is-no-verdict: the same run reads FAILED on a row with no `abstain`",
+          st(res(), abstain=None) == "FAILED")
+    check("weak-is-no-verdict: all second look reads FAILED (no refuse case decided)",
+          st({"cases": [{"id": i, "expect": e, "got": "second look"} for i, e in exp.items()]}) == "FAILED")
+    two = sorted(measured)[:2]
+    check("weak-is-no-verdict: 2 of 6 refuse cases decided is under the share: FAILED",
+          st({"cases": [{"id": i, "expect": e, "got": "refuse" if i in two else "second look"} for i, e in exp.items()]})
+          == "FAILED")
+    check("weak-is-no-verdict: a refused picture accepted reads FAILED",
+          st(res(first_pass_RM_Ssurr_B="pass")) == "FAILED")
+    check("weak-is-no-verdict: a kept picture sent back reads FAILED",
+          st(res(first_pass_RM_Shadefern_B="refuse")) == "FAILED")
+    check("weak-is-no-verdict: `malformed` is still a wrong answer", st(res(first_pass_RM_Ssurr_B="malformed")) == "FAILED")
+    short = res()
+    short["cases"] = [c for c in short["cases"] if c["id"] != "first_pass_RM_Dewblade_B"]
+    check("weak-is-no-verdict: a case that did not run still reads UNTESTED", st(short) == "UNTESTED")
+    check("weak-is-no-verdict: calibrate reads the row's `abstain` (run_check passes the row)",
+          "row" in RC.run_check.__code__.co_varnames)
+
+
 def main():
     t_planted_rows()
     t_band_is_the_answer()
@@ -140,6 +182,7 @@ def main():
     t_malformed_is_not_missing()
     t_blind()
     t_no_second_reviewer()
+    t_weak_is_no_verdict()
     print("selftest_art_first_pass_calibration: %s" % ("PASS" if not FAILS else "FAIL (%d)" % len(FAILS)))
     return 1 if FAILS else 0
 

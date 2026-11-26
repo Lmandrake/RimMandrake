@@ -22,8 +22,13 @@ production acts on: GOOD accepts, REALLY_BAD sends the art back, WEAK asks the s
 
 - **planted-rows.** Every regression row with no `taste` is one planted case: ACCEPT expects pass, NOT_ACCEPT expects
   refuse. The registry row lists the same cases.
-- **band-is-the-answer.** GOOD is pass, REALLY_BAD is refuse, WEAK is `second look`. `second look` is never counted as
-  planted, in either direction. The model's own `overall` word is recorded beside the band and decides nothing.
+- **band-is-the-answer.** GOOD is pass, REALLY_BAD is refuse, WEAK is `second look`. The model's own `overall` word is
+  recorded beside the band and decides nothing. A row with no `abstain` counts `second look` as the wrong answer.
+- **weak-is-no-verdict.** The registry row's `abstain` (by the ruling RIMMANDRAKE_RULE_ART_FIRST_PASS_WEAK_IS_NO_VERDICT)
+  names `second look` as no verdict: `refusal_contract.judge_row` never counts it wrong. A case is wrong only when the
+  first pass accepts a refused picture, sends back a kept one, or answers `malformed`. The row's `decided_share` of the
+  refuse cases must come out refuse, else FAILED. With no case decided at all, FAILED. A case that did not run still
+  leaves UNTESTED.
 - **could-not-look.** A missing picture, or a judge call that failed, leaves its case out of the results. The family
   then reads UNTESTED, never FAILED and never CALIBRATED.
 - **malformed-is-not-missing.** A reply that does not fit the schema, after its one re-ask, is the answer `malformed`.
