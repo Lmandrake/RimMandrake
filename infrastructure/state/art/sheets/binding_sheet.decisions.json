@@ -1,0 +1,1358 @@
+{
+ "by": "agent",
+ "decisions": {
+  "RM_ArtpipeCutoverProbe_20261002": {
+   "decision": "no-subject",
+   "reason": "artpipe daemon cutover probe (a test pebble); not a game def"
+  },
+  "RM_ChorusMass": {
+   "awaits": "a def for RM_ChorusMass (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RM_CorrodedShrine": {
+   "awaits": "a def for RM_CorrodedShrine (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RM_CorrodedWellhead": {
+   "awaits": "a def for RM_CorrodedWellhead (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RM_Dhorrumak": {
+   "awaits": "a def for RM_Dhorrumak (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RM_DrawbridgeLeafUp_Edge_Scrapper": {
+   "decision": "bind",
+   "subject": "RM_DrawbridgeGate"
+  },
+  "RM_DrawbridgeLeafUp_Face_Scrapper": {
+   "decision": "bind",
+   "subject": "RM_DrawbridgeGate"
+  },
+  "RM_DrawbridgeLeafUp_Steel_Edge": {
+   "decision": "bind",
+   "subject": "RM_DrawbridgeGate"
+  },
+  "RM_DrawbridgeLeafUp_Steel_Face": {
+   "decision": "bind",
+   "subject": "RM_DrawbridgeGate"
+  },
+  "RM_DrawbridgeLeafUp_Timber_Edge": {
+   "decision": "bind",
+   "subject": "RM_DrawbridgeGate"
+  },
+  "RM_DrawbridgeLeafUp_Timber_Face": {
+   "decision": "bind",
+   "subject": "RM_DrawbridgeGate"
+  },
+  "RM_DrawbridgeLeafUp_Timber_Underside": {
+   "decision": "bind",
+   "subject": "RM_DrawbridgeGate"
+  },
+  "RM_DrawbridgeLeafUp_Underside_Scrapper": {
+   "decision": "bind",
+   "subject": "RM_DrawbridgeGate"
+  },
+  "RM_DrawbridgePlanks_Steel": {
+   "decision": "bind",
+   "subject": "RM_DrawbridgeGate"
+  },
+  "RM_DrawbridgeRaise_Icon": {
+   "decision": "bind",
+   "subject": "RM_DrawbridgeGate"
+  },
+  "RM_DuskRat": {
+   "awaits": "a def for RM_DuskRat (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RM_Filth_EruptionScar": {
+   "awaits": "a def for RM_Filth_EruptionScar (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RM_Filth_GlasscrustScar": {
+   "awaits": "a def for RM_Filth_GlasscrustScar (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RM_FlotsamDrift": {
+   "awaits": "a def for RM_FlotsamDrift (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RM_Frissim": {
+   "awaits": "a def for RM_Frissim (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RM_GaleDust_A_v1": {
+   "decision": "no-subject",
+   "reason": "weather overlay texture drawn by the weather overlay code, not by a def's graphic"
+  },
+  "RM_GaleDust_B_v1": {
+   "decision": "no-subject",
+   "reason": "weather overlay texture drawn by the weather overlay code, not by a def's graphic"
+  },
+  "RM_GorraskCondenserOverlay": {
+   "decision": "bind",
+   "subject": "RM_GorraskCondenser"
+  },
+  "RM_Hessarund": {
+   "awaits": "a def for RM_Hessarund (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RM_Hoarfrost_BladeGrowth": {
+   "awaits": "a def for RM_Hoarfrost_BladeGrowth (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RM_Hoarfrost_CrystalGarden": {
+   "awaits": "a def for RM_Hoarfrost_CrystalGarden (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RM_Hoarfrost_DepthHoarColumn": {
+   "awaits": "a def for RM_Hoarfrost_DepthHoarColumn (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RM_Hoarfrost_FrostFlower": {
+   "awaits": "a def for RM_Hoarfrost_FrostFlower (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RM_LashB": {
+   "decision": "bind",
+   "subject": "RM_LashItem"
+  },
+  "RM_LensSand": {
+   "awaits": "a def for RM_LensSand (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RM_MessyConduit_Aerial_Strand_Wire": {
+   "decision": "no-subject",
+   "reason": "messy-conduit texture part (strand tile, node, decal, shadow or hose end) tiled by the conduit drawer; not one def's picture"
+  },
+  "RM_MessyConduit_Aerial_Strand_WireShadow": {
+   "decision": "no-subject",
+   "reason": "messy-conduit texture part (strand tile, node, decal, shadow or hose end) tiled by the conduit drawer; not one def's picture"
+  },
+  "RM_MessyConduit_Cybertek_Node_T": {
+   "decision": "no-subject",
+   "reason": "messy-conduit texture part (strand tile, node, decal, shadow or hose end) tiled by the conduit drawer; not one def's picture"
+  },
+  "RM_MessyConduit_Cybertek_Strand": {
+   "decision": "no-subject",
+   "reason": "messy-conduit texture part (strand tile, node, decal, shadow or hose end) tiled by the conduit drawer; not one def's picture"
+  },
+  "RM_MessyConduit_ExtCord_Node_T_v2": {
+   "decision": "no-subject",
+   "reason": "messy-conduit texture part (strand tile, node, decal, shadow or hose end) tiled by the conduit drawer; not one def's picture"
+  },
+  "RM_MessyConduit_ExtCord_Strand_Blue": {
+   "decision": "no-subject",
+   "reason": "messy-conduit texture part (strand tile, node, decal, shadow or hose end) tiled by the conduit drawer; not one def's picture"
+  },
+  "RM_MessyConduit_ExtCord_Strand_Brown": {
+   "decision": "no-subject",
+   "reason": "messy-conduit texture part (strand tile, node, decal, shadow or hose end) tiled by the conduit drawer; not one def's picture"
+  },
+  "RM_MessyConduit_ExtCord_Strand_Green": {
+   "decision": "no-subject",
+   "reason": "messy-conduit texture part (strand tile, node, decal, shadow or hose end) tiled by the conduit drawer; not one def's picture"
+  },
+  "RM_MessyConduit_ExtCord_Strand_Orange": {
+   "decision": "no-subject",
+   "reason": "messy-conduit texture part (strand tile, node, decal, shadow or hose end) tiled by the conduit drawer; not one def's picture"
+  },
+  "RM_MessyConduit_ExtCord_Strand_Yellow": {
+   "decision": "no-subject",
+   "reason": "messy-conduit texture part (strand tile, node, decal, shadow or hose end) tiled by the conduit drawer; not one def's picture"
+  },
+  "RM_MessyConduit_Hose_Coupling_Brass": {
+   "decision": "no-subject",
+   "reason": "messy-conduit texture part (strand tile, node, decal, shadow or hose end) tiled by the conduit drawer; not one def's picture"
+  },
+  "RM_MessyConduit_Hose_EndCap": {
+   "decision": "no-subject",
+   "reason": "messy-conduit texture part (strand tile, node, decal, shadow or hose end) tiled by the conduit drawer; not one def's picture"
+  },
+  "RM_MessyConduit_Hose_Nozzle": {
+   "decision": "no-subject",
+   "reason": "messy-conduit texture part (strand tile, node, decal, shadow or hose end) tiled by the conduit drawer; not one def's picture"
+  },
+  "RM_MessyConduit_Hose_Strand_Flat": {
+   "decision": "no-subject",
+   "reason": "messy-conduit texture part (strand tile, node, decal, shadow or hose end) tiled by the conduit drawer; not one def's picture"
+  },
+  "RM_MessyConduit_Hose_Strand_Flat_v2": {
+   "decision": "no-subject",
+   "reason": "messy-conduit texture part (strand tile, node, decal, shadow or hose end) tiled by the conduit drawer; not one def's picture"
+  },
+  "RM_MessyConduit_Hose_Strand_Plump": {
+   "decision": "no-subject",
+   "reason": "messy-conduit texture part (strand tile, node, decal, shadow or hose end) tiled by the conduit drawer; not one def's picture"
+  },
+  "RM_MessyConduit_Hose_Strand_Plump_v2": {
+   "decision": "no-subject",
+   "reason": "messy-conduit texture part (strand tile, node, decal, shadow or hose end) tiled by the conduit drawer; not one def's picture"
+  },
+  "RM_MessyConduit_Hose_Strand_Shadow": {
+   "decision": "no-subject",
+   "reason": "messy-conduit texture part (strand tile, node, decal, shadow or hose end) tiled by the conduit drawer; not one def's picture"
+  },
+  "RM_MessyConduit_Jawa_Decal_FrayedEndLive": {
+   "decision": "no-subject",
+   "reason": "messy-conduit texture part (strand tile, node, decal, shadow or hose end) tiled by the conduit drawer; not one def's picture"
+  },
+  "RM_MessyConduit_Jawa_Strand_BlackMatte": {
+   "decision": "no-subject",
+   "reason": "messy-conduit texture part (strand tile, node, decal, shadow or hose end) tiled by the conduit drawer; not one def's picture"
+  },
+  "RM_MessyConduit_Jawa_Strand_Shadow": {
+   "decision": "no-subject",
+   "reason": "messy-conduit texture part (strand tile, node, decal, shadow or hose end) tiled by the conduit drawer; not one def's picture"
+  },
+  "RM_MessyConduit_StarWars_Node_T": {
+   "decision": "no-subject",
+   "reason": "messy-conduit texture part (strand tile, node, decal, shadow or hose end) tiled by the conduit drawer; not one def's picture"
+  },
+  "RM_MessyConduit_StarWars_Strand_BlackRubber": {
+   "decision": "no-subject",
+   "reason": "messy-conduit texture part (strand tile, node, decal, shadow or hose end) tiled by the conduit drawer; not one def's picture"
+  },
+  "RM_MessyConduit_StarWars_Strand_CoiledBlack": {
+   "decision": "no-subject",
+   "reason": "messy-conduit texture part (strand tile, node, decal, shadow or hose end) tiled by the conduit drawer; not one def's picture"
+  },
+  "RM_MessyConduit_StarWars_Strand_CorrugatedSteel": {
+   "decision": "no-subject",
+   "reason": "messy-conduit texture part (strand tile, node, decal, shadow or hose end) tiled by the conduit drawer; not one def's picture"
+  },
+  "RM_PillarArmB": {
+   "decision": "bind",
+   "subject": "RM_PillarArmItem"
+  },
+  "RM_RaidPlank": {
+   "decision": "bind",
+   "subject": "RM_RaidPlank"
+  },
+  "RM_RaidPlank_LaidEnd": {
+   "decision": "bind",
+   "subject": "RM_RaidPlank_Laid"
+  },
+  "RM_Scumrat": {
+   "awaits": "a def for RM_Scumrat (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RM_Seismograph": {
+   "awaits": "a def for RM_Seismograph (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RM_Seismograph_v2": {
+   "awaits": "a def for RM_Seismograph (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RM_SlimeBellows": {
+   "awaits": "a def for RM_SlimeBellows (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RM_Sohl": {
+   "awaits": "a def for RM_Sohl (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RM_Sohl_Dormant": {
+   "awaits": "a def for RM_Sohl_Dormant (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RM_StruckGlassRing": {
+   "awaits": "a def for RM_StruckGlassRing (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RM_TrackDrag": {
+   "decision": "bind",
+   "subject": "RM_Filth_DragMark"
+  },
+  "RM_TrackPrint_Animal": {
+   "awaits": "a def for RM_TrackPrint_Animal (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RM_TrackPrint_Human": {
+   "awaits": "a def for RM_TrackPrint_Human (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RM_WS_AuroraCurtainA": {
+   "decision": "no-subject",
+   "reason": "weather overlay texture drawn by the weather overlay code, not by a def's graphic"
+  },
+  "RM_WS_AuroraGlowBand": {
+   "decision": "no-subject",
+   "reason": "weather overlay texture drawn by the weather overlay code, not by a def's graphic"
+  },
+  "RM_Wyrmlet": {
+   "awaits": "a def for RM_Wyrmlet (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RSW_Filth_CrawlerTread": {
+   "awaits": "a def for RSW_Filth_CrawlerTread (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RSW_RotBedYield": {
+   "awaits": "a def for RSW_RotBedYield (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RUT_AncientAirlock_Large_Top": {
+   "decision": "bind",
+   "subject": "RUT_AncientAirlock_Large"
+  },
+  "RUT_BroodBone": {
+   "awaits": "a def for RUT_BroodBone (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RUT_BroodRibArch": {
+   "awaits": "a def for RUT_BroodRibArch (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RUT_CededRoomLintel": {
+   "awaits": "a def for RUT_CededRoomLintel (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RUT_DisposalOrder": {
+   "awaits": "a def for RUT_DisposalOrder (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RUT_FelledNoonStump": {
+   "awaits": "a def for RUT_FelledNoonStump (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RUT_GreatBone": {
+   "awaits": "a def for RUT_GreatBone (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RUT_ImperialMeteringStation": {
+   "awaits": "a def for RUT_ImperialMeteringStation (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RUT_JoiningWaterSite": {
+   "awaits": "a def for RUT_JoiningWaterSite (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RUT_MendingWeldPlate": {
+   "awaits": "a def for RUT_MendingWeldPlate (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RUT_MobUnlooInscription": {
+   "awaits": "a def for RUT_MobUnlooInscription (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RUT_OpenBoastRostrum": {
+   "awaits": "a def for RUT_OpenBoastRostrum (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RUT_OverhaulChassis": {
+   "awaits": "a def for RUT_OverhaulChassis (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RUT_ReclaimerMachine": {
+   "awaits": "a def for RUT_ReclaimerMachine (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RUT_RefusedTollMeter": {
+   "awaits": "a def for RUT_RefusedTollMeter (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RUT_SinkingInscription": {
+   "awaits": "a def for RUT_SinkingInscription (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RUT_SporefallDisplayTank": {
+   "awaits": "a def for RUT_SporefallDisplayTank (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RUT_TarEffigy": {
+   "awaits": "a def for RUT_TarEffigy (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RUT_UnjoiningVessel": {
+   "awaits": "a def for RUT_UnjoiningVessel (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RUT_WallWreckHull": {
+   "awaits": "a def for RUT_WallWreckHull (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "RUT_WreckDebris": {
+   "awaits": "a def for RUT_WreckDebris (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "contagion_brossak": {
+   "awaits": "a def for contagion_brossak (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "contagion_fezzira": {
+   "awaits": "a def for contagion_fezzira (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "contagion_fezzira_larva": {
+   "awaits": "a def for contagion_fezzira_larva (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "contagion_ghaaz": {
+   "awaits": "a def for contagion_ghaaz (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "contagion_ghuvv": {
+   "awaits": "a def for contagion_ghuvv (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "contagion_gollivra": {
+   "awaits": "a def for contagion_gollivra (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "contagion_pellorax": {
+   "awaits": "a def for contagion_pellorax (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "contagion_pibbo": {
+   "awaits": "a def for contagion_pibbo (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "contagion_vezzok": {
+   "awaits": "a def for contagion_vezzok (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "contagion_vulloth": {
+   "awaits": "a def for contagion_vulloth (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "contagion_zhirrik": {
+   "awaits": "a def for contagion_zhirrik (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "crags_ghorrumak": {
+   "awaits": "a def for crags_ghorrumak (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "crags_thrizzik": {
+   "awaits": "a def for crags_thrizzik (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "crags_vrakk": {
+   "awaits": "a def for crags_vrakk (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "crags_zekkra": {
+   "awaits": "a def for crags_zekkra (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "crags_zhurrakor": {
+   "awaits": "a def for crags_zhurrakor (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "desert_gap_DUM_v1": {
+   "decision": "bind",
+   "subject": "RSW_DW_OuterRim_DUMDroid"
+  },
+  "desert_gap_Destroyer_v1": {
+   "decision": "bind",
+   "subject": "RSW_DW_OuterRim_DestroyerDroid"
+  },
+  "desert_gap_FX7_v1": {
+   "decision": "bind",
+   "subject": "RSW_DW_OuterRim_FX7Droid"
+  },
+  "desert_gap_GNK_v1": {
+   "decision": "bind",
+   "subject": "RSW_DW_OuterRim_GNKDroid"
+  },
+  "desert_gap_MSE_v1": {
+   "decision": "bind",
+   "subject": "RSW_DW_OuterRim_MSEDroid"
+  },
+  "desert_gap_Muckraker_v1": {
+   "decision": "bind",
+   "subject": "RSW_DW_OuterRim_MuckrakerDroid"
+  },
+  "desert_gap_SalvageAssist_v1": {
+   "decision": "bind",
+   "subject": "RSW_DW_OuterRim_SalvageAssistDroid"
+  },
+  "donorart_akk_v2": {
+   "decision": "bind",
+   "subject": "RSW_Akk"
+  },
+  "donorart_nexuw_v2": {
+   "decision": "bind",
+   "subject": "RSW_Nexu"
+  },
+  "donorport_aiwha_v1": {
+   "awaits": "RSW_Aiwha (the job's target_def; the def is not ported yet)",
+   "decision": "skip"
+  },
+  "donorport_aiwha_v2": {
+   "awaits": "RSW_Aiwha (the job's target_def; the def is not ported yet)",
+   "decision": "skip"
+  },
+  "donorport_aiwha_v3": {
+   "awaits": "RSW_Aiwha (the job's target_def; the def is not ported yet)",
+   "decision": "skip"
+  },
+  "donorport_aiwha_v4": {
+   "awaits": "RSW_Aiwha (the job's target_def; the def is not ported yet)",
+   "decision": "skip"
+  },
+  "dulciscropitem_v1": {
+   "decision": "bind",
+   "subject": "RM_RawDulcis"
+  },
+  "enact_83bac00a_plant_ambrosia_v1": {
+   "awaits": "Plant_Ambrosia (the job's target_def, a vanilla def outside the resolver's src def set)",
+   "decision": "skip"
+  },
+  "enact_wlrmtallscumgrass_v1": {
+   "decision": "bind",
+   "subject": "RM_TallScumgrass"
+  },
+  "enact_wlrmtallscumgrass_v2": {
+   "decision": "bind",
+   "subject": "RM_TallScumgrass"
+  },
+  "enact_wlvaultroot_real_v1": {
+   "decision": "bind",
+   "subject": "RM_VaultRoot"
+  },
+  "facingrepair_grmolebear_v1": {
+   "awaits": "a molebear def (donor GR_ creature; none in src)",
+   "decision": "skip"
+  },
+  "facingrepair_rutcathedralroach_v1": {
+   "decision": "bind",
+   "subject": "RM_CathedralRoach"
+  },
+  "facingrepair_rutscarroach_v1": {
+   "decision": "bind",
+   "subject": "RM_ScarRoach"
+  },
+  "fountaincand_a_v2": {
+   "awaits": "a FlowWorks fountain def (job: v1 FlowWorks fountain candidate)",
+   "decision": "skip"
+  },
+  "fountaincand_b_v2": {
+   "awaits": "a FlowWorks fountain def (job: v1 FlowWorks fountain candidate)",
+   "decision": "skip"
+  },
+  "fountaincand_c_v2": {
+   "awaits": "a FlowWorks fountain def (job: v1 FlowWorks fountain candidate)",
+   "decision": "skip"
+  },
+  "graffiti_scratches_p1": {
+   "decision": "bind",
+   "subject": "RM_Graffiti_Scratches"
+  },
+  "graffiti_scratches_p2": {
+   "decision": "bind",
+   "subject": "RM_Graffiti_Scratches"
+  },
+  "graffiti_scratches_p3": {
+   "decision": "bind",
+   "subject": "RM_Graffiti_Scratches"
+  },
+  "greysea_saltblade": {
+   "decision": "bind",
+   "subject": "RM_SaltBladeGrey"
+  },
+  "hestia_octant_of_eyes_v1": {
+   "decision": "no-subject",
+   "reason": "visionary concept artwork; not a game def"
+  },
+  "hestia_octant_of_eyes_v2": {
+   "decision": "no-subject",
+   "reason": "visionary concept artwork; not a game def"
+  },
+  "ideoicon_sundebt_v2": {
+   "decision": "no-subject",
+   "reason": "ideoligion icon texture (UI/Ideoligions), not a def's graphic"
+  },
+  "joinfitraw_coupler_futuristic_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "joinfitraw_coupler_industrial_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "joinfitraw_coupler_modern_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "joinfitraw_coupler_scrapper_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "joinfitraw_flange_futuristic_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "joinfitraw_flange_industrial_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "joinfitraw_flange_modern_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "joinfitraw_flange_scrapper_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "joinfitraw_saddle_futuristic_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "joinfitraw_saddle_industrial_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "joinfitraw_saddle_industrial_v2": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "joinfitraw_saddle_modern_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "joinfitraw_saddle_scrapper_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "joinfitraw_saddle_scrapper_v2": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "kba_icon_ThumpShell": {
+   "decision": "bind",
+   "subject": "RM_Shell_Thump"
+  },
+  "ladderhung_a": {
+   "awaits": "RM_LadderHung (the prompt names it; no such def yet)",
+   "decision": "skip"
+  },
+  "ladderhung_b": {
+   "awaits": "RM_LadderHung (the prompt names it; no such def yet)",
+   "decision": "skip"
+  },
+  "ladderstowed_a": {
+   "awaits": "RM_LadderStowed (the prompt names it; no such def yet)",
+   "decision": "skip"
+  },
+  "ladderstowed_b": {
+   "awaits": "RM_LadderStowed (the prompt names it; no such def yet)",
+   "decision": "skip"
+  },
+  "liqcont_barrel_futuristic_freshwater": {
+   "decision": "no-subject",
+   "reason": "tint preview mock (job prompt: TINT PREVIEW ONLY, never install): a container x LiquidDef colour composite, not a def's art"
+  },
+  "liqcont_barrel_futuristic_tar": {
+   "decision": "no-subject",
+   "reason": "tint preview mock (job prompt: TINT PREVIEW ONLY, never install): a container x LiquidDef colour composite, not a def's art"
+  },
+  "liqcont_barrel_industrial_freshwater": {
+   "decision": "no-subject",
+   "reason": "tint preview mock (job prompt: TINT PREVIEW ONLY, never install): a container x LiquidDef colour composite, not a def's art"
+  },
+  "liqcont_barrel_industrial_tar": {
+   "decision": "no-subject",
+   "reason": "tint preview mock (job prompt: TINT PREVIEW ONLY, never install): a container x LiquidDef colour composite, not a def's art"
+  },
+  "liqcont_barrel_modern_freshwater": {
+   "decision": "no-subject",
+   "reason": "tint preview mock (job prompt: TINT PREVIEW ONLY, never install): a container x LiquidDef colour composite, not a def's art"
+  },
+  "liqcont_barrel_modern_tar": {
+   "decision": "no-subject",
+   "reason": "tint preview mock (job prompt: TINT PREVIEW ONLY, never install): a container x LiquidDef colour composite, not a def's art"
+  },
+  "liqcont_barrel_scrapper_freshwater": {
+   "decision": "no-subject",
+   "reason": "tint preview mock (job prompt: TINT PREVIEW ONLY, never install): a container x LiquidDef colour composite, not a def's art"
+  },
+  "liqcont_barrel_scrapper_tar": {
+   "decision": "no-subject",
+   "reason": "tint preview mock (job prompt: TINT PREVIEW ONLY, never install): a container x LiquidDef colour composite, not a def's art"
+  },
+  "liqcont_bottle_futuristic_freshwater": {
+   "decision": "no-subject",
+   "reason": "tint preview mock (job prompt: TINT PREVIEW ONLY, never install): a container x LiquidDef colour composite, not a def's art"
+  },
+  "liqcont_bottle_futuristic_tar": {
+   "decision": "no-subject",
+   "reason": "tint preview mock (job prompt: TINT PREVIEW ONLY, never install): a container x LiquidDef colour composite, not a def's art"
+  },
+  "liqcont_bottle_industrial_freshwater": {
+   "decision": "no-subject",
+   "reason": "tint preview mock (job prompt: TINT PREVIEW ONLY, never install): a container x LiquidDef colour composite, not a def's art"
+  },
+  "liqcont_bottle_industrial_tar": {
+   "decision": "no-subject",
+   "reason": "tint preview mock (job prompt: TINT PREVIEW ONLY, never install): a container x LiquidDef colour composite, not a def's art"
+  },
+  "liqcont_bottle_modern_freshwater": {
+   "decision": "no-subject",
+   "reason": "tint preview mock (job prompt: TINT PREVIEW ONLY, never install): a container x LiquidDef colour composite, not a def's art"
+  },
+  "liqcont_bottle_modern_tar": {
+   "decision": "no-subject",
+   "reason": "tint preview mock (job prompt: TINT PREVIEW ONLY, never install): a container x LiquidDef colour composite, not a def's art"
+  },
+  "liqcont_bottle_scrapper_freshwater": {
+   "decision": "no-subject",
+   "reason": "tint preview mock (job prompt: TINT PREVIEW ONLY, never install): a container x LiquidDef colour composite, not a def's art"
+  },
+  "liqcont_bottle_scrapper_tar": {
+   "decision": "no-subject",
+   "reason": "tint preview mock (job prompt: TINT PREVIEW ONLY, never install): a container x LiquidDef colour composite, not a def's art"
+  },
+  "liqcont_bucket_futuristic_freshwater": {
+   "decision": "no-subject",
+   "reason": "tint preview mock (job prompt: TINT PREVIEW ONLY, never install): a container x LiquidDef colour composite, not a def's art"
+  },
+  "liqcont_bucket_futuristic_tar": {
+   "decision": "no-subject",
+   "reason": "tint preview mock (job prompt: TINT PREVIEW ONLY, never install): a container x LiquidDef colour composite, not a def's art"
+  },
+  "liqcont_bucket_industrial_base": {
+   "decision": "bind",
+   "subject": "RM_BucketSnow"
+  },
+  "liqcont_bucket_industrial_freshwater": {
+   "decision": "no-subject",
+   "reason": "tint preview mock (job prompt: TINT PREVIEW ONLY, never install): a container x LiquidDef colour composite, not a def's art"
+  },
+  "liqcont_bucket_industrial_tar": {
+   "decision": "no-subject",
+   "reason": "tint preview mock (job prompt: TINT PREVIEW ONLY, never install): a container x LiquidDef colour composite, not a def's art"
+  },
+  "liqcont_bucket_modern_freshwater": {
+   "decision": "no-subject",
+   "reason": "tint preview mock (job prompt: TINT PREVIEW ONLY, never install): a container x LiquidDef colour composite, not a def's art"
+  },
+  "liqcont_bucket_modern_tar": {
+   "decision": "no-subject",
+   "reason": "tint preview mock (job prompt: TINT PREVIEW ONLY, never install): a container x LiquidDef colour composite, not a def's art"
+  },
+  "liqcont_bucket_scrapper_freshwater": {
+   "decision": "no-subject",
+   "reason": "tint preview mock (job prompt: TINT PREVIEW ONLY, never install): a container x LiquidDef colour composite, not a def's art"
+  },
+  "liqcont_bucket_scrapper_tar": {
+   "decision": "no-subject",
+   "reason": "tint preview mock (job prompt: TINT PREVIEW ONLY, never install): a container x LiquidDef colour composite, not a def's art"
+  },
+  "liqjoin_flange_futuristic_a": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "liqjoin_flange_industrial_a": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "liqjoin_flange_modern_a": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "liqjoin_flange_scrapper_a": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "liqjoin_mock_hose_to_pipe_futuristic": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_hose_to_pipe_industrial": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_hose_to_pipe_modern": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_hose_to_pipe_scrapper": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_hose_to_pump_futuristic": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_hose_to_pump_industrial": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_hose_to_pump_modern": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_hose_to_pump_scrapper": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_hose_to_reel_futuristic": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_hose_to_reel_industrial": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_hose_to_reel_modern": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_hose_to_reel_scrapper": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_hose_to_tank_futuristic": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_hose_to_tank_industrial": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_hose_to_tank_modern": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_hose_to_tank_scrapper": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_pipe_to_pipe_futuristic": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_pipe_to_pipe_industrial": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_pipe_to_pipe_modern": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_pipe_to_pipe_scrapper": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_pipe_to_pump_futuristic": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_pipe_to_pump_industrial": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_pipe_to_pump_modern": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_pipe_to_pump_scrapper": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_pipe_to_tank_futuristic": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_pipe_to_tank_industrial": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_pipe_to_tank_modern": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_pipe_to_tank_scrapper": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_pump_to_tank_futuristic": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_pump_to_tank_industrial": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_pump_to_tank_modern": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_pump_to_tank_scrapper": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_reel_to_tank_futuristic": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_reel_to_tank_industrial": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_reel_to_tank_modern": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_mock_reel_to_tank_scrapper": {
+   "decision": "no-subject",
+   "reason": "liquid-join mock: a composite of two FlowWorks parts for a look review, not a def's art"
+  },
+  "liqjoin_pump_futuristic_a": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "liqjoin_pump_industrial_a": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "liqjoin_pump_modern_a": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "liqjoin_pump_scrapper_a": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "liqjoin_saddle_futuristic_a": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "liqjoin_saddle_industrial_a": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "liqjoin_saddle_modern_a": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "liqjoin_saddle_scrapper_a": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "messyconduit_bracket_modern_v1": {
+   "decision": "bind",
+   "subject": "RM_AerialWallBracket"
+  },
+  "messyconduit_hose_binding_v1": {
+   "decision": "no-subject",
+   "reason": "messy-conduit texture part (strand tile, node, decal, shadow or hose end) tiled by the conduit drawer; not one def's picture"
+  },
+  "messyconduit_lampmast_futuristic_v1": {
+   "decision": "bind",
+   "subject": "RM_AerialLampMast"
+  },
+  "messyconduit_lampmast_industrial_v1": {
+   "decision": "bind",
+   "subject": "RM_AerialLampMast"
+  },
+  "messyconduit_lampmast_modern_v1": {
+   "decision": "bind",
+   "subject": "RM_AerialLampMast"
+  },
+  "messyconduit_lampmast_scrapper_v1": {
+   "decision": "bind",
+   "subject": "RM_AerialLampMast"
+  },
+  "messyconduit_lampmast_scrapper_v2": {
+   "decision": "bind",
+   "subject": "RM_AerialLampMast"
+  },
+  "messyconduit_mast_futuristic_v1": {
+   "decision": "bind",
+   "subject": "RM_AerialMast"
+  },
+  "messyconduit_mast_industrial_v1": {
+   "decision": "bind",
+   "subject": "RM_AerialMast"
+  },
+  "messyconduit_mast_modern_v1": {
+   "decision": "bind",
+   "subject": "RM_AerialMast"
+  },
+  "messyconduit_mast_scrapper_v1": {
+   "decision": "bind",
+   "subject": "RM_AerialMast"
+  },
+  "miasma_canon_opeejuv_v3": {
+   "decision": "bind",
+   "subject": "RSW_OpeeSeaKillerJuv"
+  },
+  "modernpump_a_v1": {
+   "decision": "bind",
+   "subject": "RM_LiquidPump"
+  },
+  "modernpump_b_v1": {
+   "decision": "bind",
+   "subject": "RM_LiquidPump"
+  },
+  "modernpump_c_v1": {
+   "decision": "bind",
+   "subject": "RM_LiquidPump"
+  },
+  "modernsprinkler_a_v1": {
+   "decision": "bind",
+   "subject": "RM_SprinklerHead"
+  },
+  "modernsprinkler_b_v1": {
+   "decision": "bind",
+   "subject": "RM_SprinklerHead"
+  },
+  "modernsprinkler_c_v1": {
+   "decision": "bind",
+   "subject": "RM_SprinklerHead"
+  },
+  "pipefit_coupling_futuristic_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "pipefit_coupling_industrial_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "pipefit_coupling_modern_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "pipefit_coupling_scrapper_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "pipefit_cross_futuristic_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "pipefit_cross_industrial_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "pipefit_cross_modern_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "pipefit_cross_scrapper_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "pipefit_endcap_futuristic_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "pipefit_endcap_industrial_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "pipefit_endcap_modern_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "pipefit_endcap_scrapper_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "pipefit_tee_futuristic_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "pipefit_tee_industrial_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "pipefit_tee_modern_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "pipefit_tee_scrapper_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "pipefitraw_coupling_futuristic_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "pipefitraw_coupling_industrial_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "pipefitraw_coupling_modern_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "pipefitraw_coupling_scrapper_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "pipefitraw_cross_futuristic_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "pipefitraw_cross_industrial_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "pipefitraw_cross_modern_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "pipefitraw_cross_scrapper_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "pipefitraw_endcap_futuristic_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "pipefitraw_endcap_industrial_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "pipefitraw_endcap_modern_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "pipefitraw_endcap_scrapper_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "pipefitraw_tee_futuristic_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "pipefitraw_tee_industrial_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "pipefitraw_tee_modern_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "pipefitraw_tee_scrapper_v1": {
+   "decision": "no-subject",
+   "reason": "raw pipe-fitting texture part (tee/cross/endcap/coupling/flange/saddle) drawn into a linked graphic; no def draws the raw render"
+  },
+  "pumplook_futuristic_v1": {
+   "decision": "bind",
+   "subject": "RM_LiquidPump"
+  },
+  "pumplook_futuristic_v1c": {
+   "decision": "bind",
+   "subject": "RM_LiquidPump"
+  },
+  "pumplook_industrial_v1": {
+   "decision": "bind",
+   "subject": "RM_LiquidPump"
+  },
+  "pumplook_industrial_v1c": {
+   "decision": "bind",
+   "subject": "RM_LiquidPump"
+  },
+  "pyrelands_razorjack_v1": {
+   "awaits": "a def for pyrelands_razorjack (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "pyrelands_razorjack_v3": {
+   "awaits": "a def for pyrelands_razorjack (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "rm_fleetflier_alien_x": {
+   "decision": "bind",
+   "subject": "RM_FleetFlier"
+  },
+  "rm_fleetflier_alien_y": {
+   "decision": "bind",
+   "subject": "RM_FleetFlier"
+  },
+  "rm_saltcrystalitem_pile_b": {
+   "decision": "bind",
+   "subject": "RM_RawSalt"
+  },
+  "rm_saltcrystalitem_pile_c": {
+   "decision": "bind",
+   "subject": "RM_RawSalt"
+  },
+  "rut_fleetflier_alien_x": {
+   "decision": "bind",
+   "subject": "RUT_FleetFlier"
+  },
+  "rut_fleetflier_alien_y": {
+   "decision": "bind",
+   "subject": "RUT_FleetFlier"
+  },
+  "rut_idol_ishko_v2": {
+   "decision": "bind",
+   "subject": "RUT_Statue"
+  },
+  "rut_idol_mobunloo_v2": {
+   "decision": "bind",
+   "subject": "RUT_Statue"
+  },
+  "rut_idol_ohm_grand_v2": {
+   "decision": "bind",
+   "subject": "RUT_StatueGrand"
+  },
+  "rut_idol_ohm_v2": {
+   "decision": "bind",
+   "subject": "RUT_Statue"
+  },
+  "rut_idol_oomo_v2": {
+   "decision": "bind",
+   "subject": "RUT_Statue"
+  },
+  "rut_idol_ozzik_v2": {
+   "decision": "bind",
+   "subject": "RUT_Statue"
+  },
+  "rut_idol_rekko_grand_v2": {
+   "decision": "bind",
+   "subject": "RUT_StatueGrand"
+  },
+  "rut_idol_shkaar_grand_v2": {
+   "decision": "bind",
+   "subject": "RUT_StatueGrand_Shkaar"
+  },
+  "rut_idol_tabaa_v2": {
+   "decision": "bind",
+   "subject": "RUT_Statue"
+  },
+  "rut_idol_zizzik_v2": {
+   "decision": "bind",
+   "subject": "RUT_Statue"
+  },
+  "rut_liveingredient_euphoriccrown_v1": {
+   "decision": "bind",
+   "subject": "RM_LiveIngredient_EuphoricCrown"
+  },
+  "rut_relief_crawler_v2": {
+   "decision": "bind",
+   "subject": "RUT_StatueGrand"
+  },
+  "rut_votive_bandolier_v2": {
+   "decision": "bind",
+   "subject": "RUT_StatueSmall"
+  },
+  "rut_votive_droplet_v2": {
+   "decision": "bind",
+   "subject": "RUT_StatueSmall"
+  },
+  "rut_votive_tally_v2": {
+   "decision": "bind",
+   "subject": "RUT_StatueSmall"
+  },
+  "rutbrinebattery_v1": {
+   "decision": "bind",
+   "subject": "RUT_BrineBattery"
+  },
+  "rutslimegrazer_v1": {
+   "awaits": "a def for rutslimegrazer (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "rutwelcomeblanket_v1": {
+   "awaits": "a def for rutwelcomeblanket (the job depicts a creature, plant, building or item that no def in src names yet)",
+   "decision": "skip"
+  },
+  "spec_creature_atispec_altconcept": {
+   "decision": "no-subject",
+   "reason": "speculative concept render (establishing scene, UI concept icon or alternate concept); never a def"
+  },
+  "spec_scene_dunesea": {
+   "decision": "no-subject",
+   "reason": "speculative concept render (establishing scene, UI concept icon or alternate concept); never a def"
+  },
+  "spec_scene_fallline": {
+   "decision": "no-subject",
+   "reason": "speculative concept render (establishing scene, UI concept icon or alternate concept); never a def"
+  },
+  "spec_scene_greysea": {
+   "decision": "no-subject",
+   "reason": "speculative concept render (establishing scene, UI concept icon or alternate concept); never a def"
+  },
+  "spec_scene_jawacaravan": {
+   "decision": "no-subject",
+   "reason": "speculative concept render (establishing scene, UI concept icon or alternate concept); never a def"
+  },
+  "spec_scene_kolyskadive": {
+   "decision": "no-subject",
+   "reason": "speculative concept render (establishing scene, UI concept icon or alternate concept); never a def"
+  },
+  "spec_scene_launchsite": {
+   "decision": "no-subject",
+   "reason": "speculative concept render (establishing scene, UI concept icon or alternate concept); never a def"
+  },
+  "spec_scene_nightsidemargin": {
+   "decision": "no-subject",
+   "reason": "speculative concept render (establishing scene, UI concept icon or alternate concept); never a def"
+  },
+  "spec_scene_propanelake": {
+   "decision": "no-subject",
+   "reason": "speculative concept render (establishing scene, UI concept icon or alternate concept); never a def"
+  },
+  "spec_scene_rustcathedral": {
+   "decision": "no-subject",
+   "reason": "speculative concept render (establishing scene, UI concept icon or alternate concept); never a def"
+  },
+  "spec_scene_sacredshore": {
+   "decision": "no-subject",
+   "reason": "speculative concept render (establishing scene, UI concept icon or alternate concept); never a def"
+  },
+  "spec_scene_scald": {
+   "decision": "no-subject",
+   "reason": "speculative concept render (establishing scene, UI concept icon or alternate concept); never a def"
+  },
+  "spec_scene_twilightskylights": {
+   "decision": "no-subject",
+   "reason": "speculative concept render (establishing scene, UI concept icon or alternate concept); never a def"
+  },
+  "spec_scene_wrecksite": {
+   "decision": "no-subject",
+   "reason": "speculative concept render (establishing scene, UI concept icon or alternate concept); never a def"
+  },
+  "spec_ui_flameharvest_icon": {
+   "decision": "no-subject",
+   "reason": "speculative concept render (establishing scene, UI concept icon or alternate concept); never a def"
+  },
+  "spec_ui_greatbolefruitfall_icon": {
+   "decision": "no-subject",
+   "reason": "speculative concept render (establishing scene, UI concept icon or alternate concept); never a def"
+  },
+  "spec_ui_podcrash_icon": {
+   "decision": "no-subject",
+   "reason": "speculative concept render (establishing scene, UI concept icon or alternate concept); never a def"
+  },
+  "spec_ui_shipbreak_icon": {
+   "decision": "no-subject",
+   "reason": "speculative concept render (establishing scene, UI concept icon or alternate concept); never a def"
+  },
+  "tallvv_crown_v2": {
+   "decision": "bind",
+   "subject": "RM_CrownVenomvine"
+  },
+  "twilightsea_saltblade": {
+   "decision": "bind",
+   "subject": "RM_SaltBladeTwilight"
+  },
+  "xeno_head_lasat_v1": {
+   "decision": "bind",
+   "subject": "RSW_RimMandrakeLasat_Kind"
+  },
+  "xeno_head_mimbanese_v1": {
+   "decision": "bind",
+   "subject": "RSW_RimMandrakeMimbanese_Kind"
+  },
+  "xeno_head_nelvaanian_v1": {
+   "decision": "bind",
+   "subject": "RSW_RimMandrakeNelvaanian_Kind"
+  },
+  "xeno_head_ortolan_v1": {
+   "decision": "bind",
+   "subject": "RSW_RimMandrakeOrtolan_Kind"
+  }
+ },
+ "item": "RENDER_BINDINGS_DECIDE_ORPHANS_AWAIT_PARENTS",
+ "reviewStatus": {
+  "state": "ruled"
+ },
+ "sheetId": "binding_sheet"
+}
