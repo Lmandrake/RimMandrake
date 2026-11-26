@@ -214,8 +214,9 @@ def structure():
          ", ".join(digit) or "none", "none", sum(1 for (t, _n) in D if t == "ThingDef"))
     show = read(os.path.join(SRC, "RM_KnockbackShow.cs")) if os.path.isfile(os.path.join(SRC, "RM_KnockbackShow.cs")) else ""
     named = re.search(r"ScarDefName\(KbScarKind kind, int sizeClass\)\s*\{\s*return OldScarDefName\(kind, sizeClass\) \+ \"Wide\";", show)
-    old = re.search(r"class RM_Patch_ScarOldNames.*?BackCompatibleDefName.*?__result \+ \"Wide\"", show, re.S) or \
-        re.search(r"BackCompatibleDefName\)\)\]\s*\[[^\]]*\]\s*public static class RM_Patch_ScarOldNames.*?__result \+ \"Wide\"", show, re.S)
+    # the postfix sits on BackCompatibleDefName and maps only a ThingDef name (a wrong type guard would map nothing a save holds)
+    old = re.search(r"BackCompatibleDefName\)\)\]\s*\[[^\]]*\]\s*public static class RM_Patch_ScarOldNames.*?"
+                    r"defType != typeof\(ThingDef\).*?__result \+ \"Wide\"", show, re.S)
     line(bool(named) and bool(old), "B_SCAR_NAMES_LOAD",
          "the code lays the defs by their Wide names, and a save that holds a 0.2.0 name (no Wide) loads the renamed def",
          "ScarDefName %s, old-name postfix %s" % (bool(named), bool(old)), "both", 2)
