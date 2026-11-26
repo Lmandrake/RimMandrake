@@ -477,6 +477,36 @@ def test_fill_queue_verifies_reference_path_and_stores_absolute():
             ok("fill_queue: the stored reference path is absolute", os.path.isabs(stored), stored)
 
 
+def test_fill_queue_pins_reference_so_it_outlives_its_clone():
+    """XART_FAILS_DIAGNOSE_TENTH_SECOND_RENDERS: 378 xart_* jobs were filed with a reference inside a helper clone
+    (/home/mandrake/rm/relentless/clones/EXTRA_ART_PER_BIOME_COMMISSION_1/...). The clone went away before the daemon
+    ran them, so codex refused each in 0.1 s ('Input image does not exist'). A filed reference must be a copy in the
+    content-addressed art store, so it outlives the tree it was filed from, byte for byte."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        clone = q.root / "clone" / "Textures"
+        clone.mkdir(parents=True)
+        src = clone / "Beast_east.png"
+        src.write_bytes(q.reference.read_bytes())
+        lst = q.root / "clone_refs.json"
+        lst.write_text(json.dumps([{
+            "id": "cloneref", "rimflow_item_id": "SELFTEST_ARTPIPE", "prompt": "x",
+            "canvas_w": 64, "canvas_h": 64, "reference": str(src)}]))
+        env = dict(os.environ, ARTSTORE=str(q.root / "artstore"))
+        fill = [sys.executable, str(HERE / "fill_queue.py"), "--input", str(lst), "--no-subject", "selftest fixture",
+                "--pending-dir", str(q.pending), "--active-dir", str(q.active),
+                "--done-dir", str(q.done), "--failed-dir", str(q.failed)]
+        proc = subprocess.run(fill, capture_output=True, text=True, timeout=30, env=env)
+        ok("fill_queue: a reference inside a clone is accepted", proc.returncode == 0, proc.stdout + proc.stderr)
+        filed = q.pending / "cloneref.json"
+        stored = json.loads(filed.read_text())["reference"] if filed.is_file() else ""
+        want = src.read_bytes()
+        shutil.rmtree(q.root / "clone")
+        ok("fill_queue: the filed reference outlives the clone it came from (pinned in the art store)",
+           bool(stored) and Path(stored).is_file() and Path(stored).read_bytes() == want
+           and Path(stored).resolve().is_relative_to((q.root / "artstore").resolve()), stored)
+
+
 def test_fill_queue_blank_priority_cell_does_not_crash():
     """Finding: int(row.get('priority', 100)) crashes on a blank CSV cell,
     because csv.DictReader gives '' (a present, falsy value), not a
@@ -4100,6 +4130,8 @@ def main() -> int:
     # Gate off by default for every in-process test — synthetic fixtures are
     # not art. The legibility test opts back in around its own calls.
     os.environ.setdefault("ARTPIPE_LEGIBILITY_THRESHOLDS", "")
+    # fill_queue pins every reference into the art store: fixtures go to a throwaway store, never the real one
+    os.environ["ARTSTORE"] = tempfile.mkdtemp(prefix="selftest_artstore_")
     for fn in (
         test_crash_reconciliation,
         test_orphan_wedge_housekeeping,
@@ -4114,6 +4146,7 @@ def main() -> int:
         test_validator_catches_bad_file,
         test_cannot_validate_distinguished_from_reject,
         test_fill_queue_verifies_reference_path_and_stores_absolute,
+        test_fill_queue_pins_reference_so_it_outlives_its_clone,
         test_fill_queue_blank_priority_cell_does_not_crash,
         test_fill_queue_write_job_never_leaves_a_corrupt_id_blocking_file,
         test_two_concurrent_daemons_claim_atomically,

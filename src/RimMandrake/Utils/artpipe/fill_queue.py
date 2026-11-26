@@ -18,6 +18,8 @@ CSV columns (JSON: same keys; `facings` may be a JSON list there):
                        — a dangling reference is refused here rather than
                        surfacing later as a validate_sprite.py exit-2 the
                        daemon has to distinguish from a real art rejection.
+                       The job stores the art store's copy (art store path),
+                       so a reference filed from a helper clone outlives it.
     facings            optional — comma/semicolon-separated (CSV) or a list
                        (JSON); empty means one job named bare "<id>"
     style_notes        optional — free text, folded into the prompt
@@ -419,7 +421,11 @@ def row_to_jobs(row: dict, default_channel: str = "codex",
             ref_path = (Path.cwd() / ref_path)
         if not ref_path.is_file():
             raise ValueError(f"row {base_id!r} reference does not exist: {ref_path}")
-        reference = str(ref_path.resolve())
+        # Pinned: the job carries the art store's copy, not the filer's path. A helper clone is deleted (or slim, with
+        # no media) by the time the daemon runs the job; 378 xart_* jobs failed in 0.1 s that way, 2026-11-03
+        # (XART_FAILS_DIAGNOSE_TENTH_SECOND_RENDERS). The store is content-addressed, so the copy never changes.
+        import artledger  # noqa: E402 — Utils/art is on sys.path (artreg above)
+        reference = str(artledger.store_path(artledger.store_put_file(ref_path.resolve())))
 
     # csv.DictReader gives '' (not a missing key) for a blank cell, and
     # int('') raises — `row.get('priority') or 50` treats a blank cell the
