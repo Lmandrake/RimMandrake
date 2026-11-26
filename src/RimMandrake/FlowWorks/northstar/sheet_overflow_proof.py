@@ -792,7 +792,7 @@ def crops(ctx):
         # 87b2dddb89 a crop drowns once min(standing pulses, ITS age in pulses) reaches the delay, and Plant.Age grows only on
         # the plant's TickLong (2,000 ticks). Rice set at age 0 cannot drown before its first TickLong, so the bound is one
         # TickLong plus the delay plus one pulse (11 at the 250-tick pulse), not 6.
-        pt = int(ctx.get("pulseTicks") or 250)
+        pt = int(ctx["CTX"].get("pulseTicks") or 250)   # the live pulse, read from the ledger at start
         bound = -(-2000 // pt) + int(sget(S_SHEET, field) or 2) + 1
         # the longer window lets the spreading sheet deepen a film square: a film square counts only while every pulse's read
         # keeps it at film (one that rose stood under the sheet, and may drown by the rule)
@@ -808,6 +808,9 @@ def crops(ctx):
         tt["filmRose"] = len(rose)
         film_alive = sum(alive(c + (1, 1)) for c in film_kept)
         control = alive(P(1, 108) + (4, 1))
+        # which squares kept a plant, so a FAIL names them (and their tier now) rather than a count
+        tt["deepAlive"] = [[c, ctx["scell"](c)[0].get("tier")] for c in deep if alive(c + (1, 1))]
+        tt["controlDead"] = [c for c in (P(x, 108) for x in range(1, 5)) if not alive(c + (1, 1))]
     finally:
         if shipped is not None:
             sset(S_SHEET, field, shipped)

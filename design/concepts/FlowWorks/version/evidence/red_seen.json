@@ -324,6 +324,19 @@
   "rc": 1,
   "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
  },
+ "T_SHEET": {
+  "at": "2026-11-26T20:24:32Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+  "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+  "last": "can-fail: each pulse re-reads the Mod Settings (SyncParams) before the kernel steps",
+  "patch": "diff --git b/src/RimMandrake/FlowWorks/Source/Sheet/RM_MapComponent_Sheet.cs a/src/RimMandrake/FlowWorks/Source/Sheet/RM_MapComponent_Sheet.cs\nindex 3183f53dc8..74c9fd12ce 100644\n--- b/src/RimMandrake/FlowWorks/Source/Sheet/RM_MapComponent_Sheet.cs\n+++ a/src/RimMandrake/FlowWorks/Source/Sheet/RM_MapComponent_Sheet.cs\n@@ -713,9 +713,6 @@ namespace RimMandrake.FlowWorks.Sheet\n \t\t\tlong t0 = System.Diagnostics.Stopwatch.GetTimestamp();\n \t\t\tlong mem0 = GC.GetTotalMemory(false);\n \t\t\tEnsure();\n-\t\t\t// a slider moved in a running game (crop-drown delay, cap, wet-square limit, retention, sweeps, door leak) acts from\n-\t\t\t// the next pulse, not from the next reload (RIMMANDRAKE_CLASS_SEVEN_THIRST_FAILS_SITE_FULL_OF_PATIENTS)\n-\t\t\tSyncParams();\n \t\t\tRefreshAround();\n \t\t\tHandOverTakenCells();\n \t\t\tproofLastPulseTick = Find.TickManager.TicksGame;\n",
+  "patch_files": [
+   "src/RimMandrake/FlowWorks/Source/Sheet/RM_MapComponent_Sheet.cs"
+  ],
+  "patch_sha": "f70a3a1bbb125a1b",
+  "rc": 1,
+  "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
+ },
  "T_STOCK": {
   "at": "2026-11-23T04:18:05Z",
   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only Body*,ContainerMat*,CreditableLevels*,Lake*,Limitless*,Placer*,PlacerStock*,Pond*,PondDepth*,Refill*,ReviewFix*,Scenario*,Season*,Theft*,WaterMend*,Wetness*",

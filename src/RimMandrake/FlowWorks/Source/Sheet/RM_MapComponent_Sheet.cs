@@ -713,6 +713,9 @@ namespace RimMandrake.FlowWorks.Sheet
 			long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
 			long mem0 = GC.GetTotalMemory(false);
 			Ensure();
+			// a slider moved in a running game (crop-drown delay, cap, wet-square limit, retention, sweeps, door leak) acts from
+			// the next pulse, not from the next reload (RIMMANDRAKE_CLASS_SEVEN_THIRST_FAILS_SITE_FULL_OF_PATIENTS)
+			SyncParams();
 			RefreshAround();
 			HandOverTakenCells();
 			proofLastPulseTick = Find.TickManager.TicksGame;

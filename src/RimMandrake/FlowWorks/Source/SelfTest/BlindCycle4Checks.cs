@@ -77,6 +77,20 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(DlPerCm == 200, "1 cm over a square is 200 dL (" + DlPerCm + ")");
             });
 
+            // RIMMANDRAKE_CLASS_SEVEN_THIRST_FAILS_SITE_FULL_OF_PATIENTS (CROPS_IRRIGATE_THEN_DROWN, live 2026-11-25/26): SyncParams
+            // ran only when a map's kernel was built (load, first spill) and when a new liquid first spilled, so a slider moved
+            // in a running game (crop-drown delay, sheet cap, wet-square limit, retention, sweeps, door leak) never reached the
+            // kernel until a reload. Every pulse re-reads the Mod Settings before the kernel steps.
+            Case("Sheet_settings_reach_the_kernel_mid_game", () =>
+            {
+                string pulse = Body(Src(System.IO.Path.Combine("Sheet", "RM_MapComponent_Sheet.cs")), "public void EnginePulse()");
+                Assert(pulse.Length > 0, "EnginePulse found");
+                int sync = pulse.IndexOf("SyncParams();", StringComparison.Ordinal);
+                int step = pulse.IndexOf("RM_SheetMath.Pulse(state, world, prm, rep);", StringComparison.Ordinal);
+                Assert(step > 0, "the kernel step found in EnginePulse");
+                Assert(sync > 0 && sync < step, "can-fail: each pulse re-reads the Mod Settings (SyncParams) before the kernel steps");
+            });
+
             // RIMMANDRAKE_PIN_FLOWWORKS_CONVERTER_CALLER_RATE_AND_SUN: planted CALLER_CONV_RATE_SETTING_IGNORED (the throughput
             // slider dropped from the budget) and CALLER_CONV_SUN_FACTOR_SKIPPED (a solar still running at night) stayed green
             // under T_CONVERT: the kernel's rate and sun maths are tested, the caller's use of them was not. Source laws.
