@@ -10,7 +10,9 @@ and GlobalDrawLayer_Stars.Rotation. Reading those values decides the bar without
 pixel comparison of two captures (which also see clouds, the camera and landmark icons).
 
 What it reads, on the RUNNING game (never ModsConfig, which names the next load):
-  R1 jawa/mod_inventory holds mandrake.rm.creaturebehaviors, and the game is Playing; else exit 2 (COULD NOT LOOK).
+  R1 jawa/mod_inventory holds mandrake.rm.creaturebehaviors, or mandrake.rm.biomes (CreatureBehaviors is composed into
+     it and then has no package id of its own), and the game is Playing; else exit 2 (COULD NOT LOOK). R2 then tells
+     whether the member is really in: its postfixes are live or they are not.
   R2 jawa/harmony_patches: GlobalDrawLayer_Stars.Rotation carries RM_WorldStarsPatch.Postfix_Rotation, and
      GenCelestial.CurSunPositionInWorldSpace carries RM_WorldSunPatch.Postfix_CurSunPositionInWorldSpace.
   R3 CurSunPositionInWorldSpace() == RM_WorldSunPatch.PinnedDirection() (a cached constant): the sun cannot move with
@@ -25,7 +27,7 @@ import json, os, re, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "Utils"))
 import rimbridge_client as rb  # noqa: E402
 
-PKG = "mandrake.rm.creaturebehaviors"
+PKGS = ("mandrake.rm.creaturebehaviors", "mandrake.rm.biomes")   # its own id, or the composed mod it is a member of
 NS = "RimMandrake.CreatureBehaviors."
 
 
@@ -51,8 +53,9 @@ def main():
         return str(r.get("result"))
 
     inv = json.dumps(call("jawa/mod_inventory")).lower()
-    if '"%s"' % PKG not in inv:
-        print("UNMEASURED: %s is not in the RUNNING mod list (jawa/mod_inventory); load a list that holds it" % PKG)
+    if not any('"%s"' % p in inv for p in PKGS):
+        print("UNMEASURED: neither %s is in the RUNNING mod list (jawa/mod_inventory); load a list that holds one"
+              % " nor ".join(PKGS))
         return 2
     gi = call("rimworld/get_game_info")
     state = (gi.get("state") or {}).get("programState") or gi.get("programState")

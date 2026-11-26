@@ -6,9 +6,9 @@ of ports is design/RimMandrake/retired_mutators_port_map.json (every entry with 
 not-reproduced ones carry none).
 
 What it reads (the running game; ModsConfig names only the next load):
-  L1 jawa/mod_inventory holds every package that ships a port: mandrake.rm.environmentalhazards (vents, shared),
-     mandrake.rm.biomes (TheRot, TheSump and Pyrelands are composed into it), mandrake.rsw.swbestiary (Sarlacc);
-     else exit 2 (COULD NOT LOOK).
+  L1 jawa/mod_inventory holds every package that ships a port: mandrake.rm.biomes (EnvironmentalHazards, TheRot,
+     TheSump and Pyrelands are composed into it and then have no package id of their own) and
+     mandrake.rsw.swbestiary (Sarlacc); else exit 2 (COULD NOT LOOK).
   L2 jawa/get_defs resolves every port as its own type (TileMutatorDef/<new>, LandmarkDef/<new>). A vanilla control
      (TileMutatorDef/Caves) must resolve too, or the instrument is blind.
   L3 the game's Player.log holds no "Config error in <port>" line (a literal search per port name).
@@ -24,7 +24,7 @@ REPO = os.path.abspath(os.path.join(HERE, "../../.."))
 sys.path.insert(0, os.path.join(HERE, "..", "Utils"))
 import rimbridge_client as rb  # noqa: E402
 
-PACKAGES = ("mandrake.rm.environmentalhazards", "mandrake.rm.biomes", "mandrake.rsw.swbestiary")
+PACKAGES = ("mandrake.rm.biomes", "mandrake.rsw.swbestiary")   # EnvironmentalHazards etc. are composed into biomes
 PORT_MAP = os.path.join(REPO, "design/RimMandrake/retired_mutators_port_map.json")
 
 
