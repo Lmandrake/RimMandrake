@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "6703cca12ff852379b9df11b217e390e47ffd4c940f43726b2599820aaa62df2",
+  "body_sha256": "c8dc762a06c6ce78328ed0532ea04f526acf098e8b37c9bdbcd93c22163d8ed5",
   "reducer": 1,
   "shards": {
    "BACKFILL": 892335,
@@ -44,7 +44,7 @@
    "HOLDER.run-1795471235": 562,
    "HOLDER.run-1795503470": 1774,
    "HOLDER.run-1795670514": 9857,
-   "HOLDER.run-1795693138": 5499,
+   "HOLDER.run-1795693138": 7202,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1750,7 +1750,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1756,
+  "events": 1760,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -5635,14 +5635,14 @@
      "sluice_drains_on_command"
     ],
     "by": "BACKFILL",
-    "claim": null,
+    "claim": "owner_review_stage reads a held gate state from the whole hold-open report (held_open_suffix, open=True); a gate that did not open is captioned hold-open tried with a note, never HELD OPEN. 4932169665 + 8e48f09407.",
     "class": "problem",
-    "code_sha": null,
+    "code_sha": "8e48f09407",
     "proposed_fix": "Read map size and fit layout or refuse before staging; read door state after gate_open and print the full report; arm the shooter or say the row cannot be.",
-    "status": "open",
+    "status": "claimed_fixed",
     "tags": [],
     "text": "owner_review_stage places bars_* rows off-map on a 250 map (site at origin+150) without checking map size; held-open gates read open=False after water_scenes_walk.gate_open; the bars_trench shooter has no ranged weapon.",
-    "ts": "2026-11-16T11:41:30Z",
+    "ts": "2026-11-26T14:52:26Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_ADAPT_SUITE_SCENES_TO_EMPTY_GAME_FLOWWORKS_ONLY": {
@@ -7850,7 +7850,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-26T14:01:58Z",
+   "last": "2026-11-26T14:52:26Z",
    "lease": "run-1795693138",
    "released": false,
    "token": 61
