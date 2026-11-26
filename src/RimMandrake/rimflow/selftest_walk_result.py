@@ -221,11 +221,48 @@ def t_walk_fixer_never_drops_his_finding(tmp):
           and "walk_2_result.json" in b, "walk-fixer-never-drops-his-finding", b[:400])
 
 
+def t_tick_runs_no_fixer_on_pick_or_next(tmp):
+    # the route run files every ticket of the walk with caused_by the route item: pick, next-version and another mod's
+    # tickets too (FlowWorks walk 3, 2026-11-25). The road back reads caused_by, so only the cited ids may come back.
+    root = fixture(tmp)
+    other = "RIMMANDRAKE_PROVE_OTHERMOD_CHECK_SELFTEST"
+    for i in (PICK, NEXT, other):
+        append(root, "BENCH", {"seat": "BENCH", "event": "file", "id": i + "_CAUSED", "title": "selftest caused %s" % i,
+                               "tsn": 4242000000000002000, "caused_by": ROUTE})
+    run(root)
+    s = {}
+    MA.adopt_walk_road_back(root, MOD, s)
+    rb = s.get("road_back") or {}
+    got = MA.road_back_open(s, rb, lambda ids, **kw: M.ledger_items_caused_by(root, ids, **kw))
+    ids = sorted(x["id"] for x in got or [])
+    check(got is not None and ids == sorted([FIX_A, FIX_B, SCENE]), "tick-runs-no-fixer-on-pick-or-next", ids)
+
+
+def t_tick_books_a_live_run_on_a_cited_item(tmp):
+    # a cited item that already has a live run (the Conductor launched one before the walk result): the tick books that
+    # run as the item's one fixer run and starts no second one, then or after it ends
+    items = [{"id": FIX_A, "needs": "offline"}, {"id": FIX_B, "needs": "offline"}]
+    rb = {"caused_by": ROUTE, "at": 1.0, "from": "his_walk", "cited": [FIX_A, FIX_B], "walk_result": "w.json"}
+    runs = {FIX_A: [("rm-detached-bench-fix-a-1", "running")]}
+    s, row = {"road_back": dict(rb)}, {"mod": MOD, "stage": "offline_build"}
+    MA._road_back(s, row, lambda ids, **kw: list(items), now=5.0, runs_of=lambda i: runs.get(i, []))
+    first = (row.get("fix_item"), sorted((s.get("fixers") or {}).keys()))
+    s2, row2 = {"road_back": dict(rb)}, {"mod": MOD, "stage": "offline_build"}
+    MA._road_back(s2, row2, lambda ids, **kw: [items[0]], now=5.0, runs_of=lambda i: runs.get(i, []))
+    runs[FIX_A] = [("rm-detached-bench-fix-a-1", "finished")]
+    row3 = {"mod": MOD, "stage": "offline_build"}
+    MA._road_back(s2, row3, lambda ids, **kw: [items[0]], now=9.0, runs_of=lambda i: runs.get(i, []))
+    check(first == (FIX_B, [FIX_A]) and row2.get("decision") == "live" and "rm-detached-bench-fix-a-1" in str(
+        row2.get("waits_on")) and row3.get("aut") != "fixer", "tick-books-a-live-run-on-a-cited-item",
+          {"first": first, "live": (row2.get("decision"), row2.get("waits_on")), "after": row3.get("decision")})
+
+
 def main():
     TESTS = [t_walk_result_records_not_passed, t_walk_result_refuses_off_stage, t_walk_result_refuses_unknown_item,
              t_walk_result_refuses_second_write, t_road_back_takes_his_refusing_words, t_road_back_takes_conductor_decision,
              t_walk_gate_holds_on_open_item, t_walk_gate_unreadable_result_refuses, t_tick_adopts_walk_road_back,
-             t_tick_adopts_once, t_walk_fixer_never_drops_his_finding]
+             t_tick_adopts_once, t_walk_fixer_never_drops_his_finding, t_tick_runs_no_fixer_on_pick_or_next,
+             t_tick_books_a_live_run_on_a_cited_item]
     tmp = tempfile.mkdtemp(prefix="walk_result_")
     saved = {k: os.environ.get(k) for k in ("RM_REFUSAL_DIR", "RM_OPS_WATCH_DIR", "RM_DISPATCHER_STATE",
                                             "RM_JUDGE_CALIBRATION")}

@@ -57,6 +57,14 @@ FlowWorks walkthrough." It did not pass. The pipeline had no record for a walk t
   state has no road back, or an older one, `adopt_walk_road_back` sets `road_back` to `{caused_by: <the result's item>,
   at: <move time>, from: his_walk, cited: <fix + scene ids>, walk_result: <path>}`. `pick` and `next` ids are never
   cited, so they get no fixer run.
+- **tick-runs-no-fixer-on-pick-or-next.** The open items of a walk road back are its `cited` ids only. An item filed
+  with `caused_by` the route item that the result does not list in `fix` or `scene` (a pick, a next-version item,
+  another mod's ticket) is not returned and gets no fixer run. The case: the route run of FlowWorks walk 3
+  (2026-11-25) files every ticket of the walk with `caused_by` the route item.
+- **tick-books-a-live-run-on-a-cited-item.** When an open item of the road back has a detached run that is launching or
+  running, the tick books that run as the item's one fixer run and starts no second run on it, while it runs or after
+  it ends. When every open item is booked and one still runs, the row reads `live` and names the run. The case: the
+  Conductor launched the water drill of FlowWorks walk 3 before the walk result named it.
 - **tick-adopts-once.** A second call on the same move changes nothing. After the tick pops that road back (every item
   closed), the same move does not open it again.
 - **walk-fixer-never-drops-his-finding.** The fixer brief of a walk road back says that the item is his finding,

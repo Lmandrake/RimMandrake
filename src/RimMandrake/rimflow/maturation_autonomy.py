@@ -922,7 +922,8 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
             _stop_tickets(fx, row, s, dst, now, root=root, ver=ver, cfg=cfg)
         elif dec in LAUNCH and s.get("road_back") and row.get("stage") in ROAD_BACK_STAGES and \
                 _road_back(s, row, open_items, now, moved=True, endings=endings, cfg=cfg, ver=ver,
-                           version_bugs=vbugs, paused_items=lambda ids: M.paused_scene_items(root, row["mod"], ids)):
+                           version_bugs=vbugs, paused_items=lambda ids: M.paused_scene_items(root, row["mod"], ids),
+                           runs_of=fx.get("ticket_runs", ticket_runs)):
             # RIMMANDRAKE_RUN_ROAD_BACK_FIXERS_SAME_STAGE_SKIPPED_THEM: the road back's items get their fixers before
             # the next cycle or visit launches (a blind_challenge -> blind_challenge road back launched at once)
             launches = [m for m in launches if m != mod]
@@ -935,7 +936,7 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
                    fx.get("designer_chain", lambda m: designer_chain(m, now)), now=now, fx_evidence=evidence,
                    fx_exam=fx.get("exam_gate", lambda m: exam_gate(root, m)), endings=endings, fx_version_bugs=vbugs,
                    fx_walk_owed=fx.get("walk_owed"), fx_walk_game=fx.get("walk_game"),
-                   fx_signed=fx.get("coverage_signed"))
+                   fx_signed=fx.get("coverage_signed"), fx_ticket_runs=fx.get("ticket_runs", ticket_runs))
             if row.get("decision") == "designer_blocked":
                 # a Designer blocked on a filed fix item (a pipeline defect) gets that item's one fixer run; the mod
                 # stays paused meanwhile (RIMMANDRAKE_BUDGET_DESIGNER_EXAM_HELPERS_FIVE_READERS_ZERO_SLOTS)
@@ -1249,11 +1250,42 @@ def road_back_open(s, rb, open_items):
     (rb["cited"]) as well; open_items is called without `named` when nothing is cited (the readers the selftests fake)."""
     cited = [c for c in rb.get("cited") or [] if c]
     ids = _road_back_ids(s, rb)
-    return open_items(ids, named=cited) if cited else open_items(ids)
+    got = open_items(ids, named=cited) if cited else open_items(ids)
+    # a walk's road back is its fix and scene lists, nothing more: the route run files every ticket of the walk with
+    # caused_by the route item, pick, next-version and another mod's tickets too (FlowWorks walk 3, 2026-11-25), and
+    # none of those gets a fixer run (design/specs/2026-11-22-walk-result/boundary.md, tick-runs-no-fixer-on-pick-or-next)
+    if got is not None and rb.get("from") == "his_walk" and cited:
+        got = [x for x in got if (x or {}).get("id") in cited]
+    return got
+
+
+def _book_live_runs(s, items, runs_of, now):
+    """-> [(item, unit)] of the items whose detached run is live now. Each such run is booked as the item's one fixer run
+    (s["fixers"], hand: True), so the tick starts no second run on it, then or after it ends: the Conductor launched the
+    water drill of FlowWorks walk 3 before the walk result named it (tick-books-a-live-run-on-a-cited-item). runs_of None
+    books nothing (the readers the selftests fake)."""
+    live = []
+    if runs_of is None:
+        return live
+    fixed = s.setdefault("fixers", {})
+    for x in items:
+        iid = (x or {}).get("id")
+        try:
+            runs = runs_of(iid) if iid else []
+        except Exception:   # noqa: BLE001  an unreadable run store books nothing; the clone guard still refuses a twin
+            runs = []
+        for unit, status in runs or []:
+            if status in ("launching", "running"):
+                if iid not in fixed or _retriable(fixed[iid], None):
+                    fixed[iid] = {"item": iid, "unit": unit, "hand": True, "at": now}
+                if fixed[iid].get("unit") == unit:
+                    live.append((iid, unit))
+                break
+    return live
 
 
 def _road_back(s, row, open_items, now=None, moved=False, endings=None, cfg=None, ver=None, version_bugs=None,
-               paused_items=None):
+               paused_items=None, runs_of=None):
     """-> True when the mod's open road back decides the row: a fixer on its next open item, fixers spent, or an
     unreadable ledger. Keyed on the road back being open, never on a stage change: blind_challenge -> blind_challenge
     is the road back ROADS_BACK draws for a blind cycle, so the stage never changes.
@@ -1265,7 +1297,9 @@ def _road_back(s, row, open_items, now=None, moved=False, endings=None, cfg=None
     endings: the ledger reader of the Test Pilot step (_pilot_step); None leaves the step out.
     ver, version_bugs: the version and the reader of its open offline Problems (read_version_bugs), read when every
     open item needs the live game at an offline stage: they get their fixer runs first, then the game-only exit.
-    paused_items: the reader of the items that only a paused raid scene cites (M.paused_scene_items); None reads none."""
+    paused_items: the reader of the items that only a paused raid scene cites (M.paused_scene_items); None reads none.
+    runs_of: the reader of an item's detached runs (ticket_runs); a live run on an open item is booked as its fixer run
+    (_book_live_runs). None books nothing."""
     rb = s.get("road_back")
     if not rb:
         return False
@@ -1276,6 +1310,7 @@ def _road_back(s, row, open_items, now=None, moved=False, endings=None, cfg=None
         return True
     if items:
         rb["had_items"] = True      # a tick saw it hold items: its closing is a new state
+        live_runs = _book_live_runs(s, items, runs_of, now)
         # offline stages never wait for a game: at one, an item only the game can show gets no run; it is Stage 6 work
         # (RIMMANDRAKE_CLOSE_OFFLINE_STAGE_ITEMS_OFFLINE_GAME_WAS_DEMANDED)
         game = ([x for x in items if (x or {}).get("needs") in M.LIVE_NEEDS]
@@ -1338,6 +1373,12 @@ def _road_back(s, row, open_items, now=None, moved=False, endings=None, cfg=None
         # untried items first, so a failure whose retries are spent never starves the items behind it
         todo = [x for x in items if x["id"] not in fixed] + [
             x for x in items if x["id"] in fixed and _retriable(fixed[x["id"]], cfg, row["mod"])]
+        if not todo and live_runs:
+            row.update(decision="live", aut=None, need=None, waits_on=", ".join("%s (road-back item %s)" % (u, i)
+                                                                               for i, u in live_runs),
+                       why="every open road-back item has had its run booked; %s still running" % ", ".join(
+                           "%s on %s" % (u, i) for i, u in live_runs))
+            return True
         if todo:
             row.update(aut="fixer", fix_item=todo[0]["id"], decision="fixer",
                        why="road-back item %s (of %d open, caused by %s) gets one fixer run" % (
@@ -1486,7 +1527,7 @@ def _fix_chain_ended(f):
 
 def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=designer_unit, fx_dchain=None, now=None,
            fx_evidence=None, fx_exam=None, endings=None, fx_version_bugs=None, fx_walk_owed=None, fx_walk_game=None,
-           fx_signed=None):
+           fx_signed=None, fx_ticket_runs=None):
     mod, dec, stage = row["mod"], row.get("decision"), row.get("stage")
     dst = dstate(mod)
     lc = chain_owed(dst)
@@ -1527,7 +1568,8 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=desig
     # an open road back: its filed items are fixed before the mod moves on, whether or not the steward moved its stage
     if stage in ROAD_BACK_STAGES and _road_back(s, row, open_items, now, endings=endings, cfg=cfg, ver=ver,
                                                 version_bugs=fx_version_bugs,
-                                                paused_items=lambda ids: M.paused_scene_items(root, mod, ids)):
+                                                paused_items=lambda ids: M.paused_scene_items(root, mod, ids),
+                                                runs_of=fx_ticket_runs):
         return
     if row.get("road_back_closed") and dec == "stopped":
         s.pop("stopped", None)
