@@ -687,6 +687,8 @@ def proof_verdict(rc, tail):
 WSL_NO_ROUTE = "cannot reach the bridge from WSL"
 _PY3_START_RX = re.compile(r"(^|&&|\|\||[;|(])(\s*(?:[A-Za-z_]\w*=\S*\s+)*)python3(?=\s|$)")
 _ASSIGN_RX = re.compile(r"([A-Za-z_]\w*)=\S*\s+")
+_SEG_RX = re.compile(r"(&&|\|\||[;|(])")             # one command of a line per piece (quotes are not parsed)
+_MNT_RX = re.compile(r"(^|[\s=])/mnt/([a-z])/")       # a WSL drive path word, which Windows python cannot open
 
 
 def windows_python_line(cmd):
@@ -699,10 +701,14 @@ def windows_python_line(cmd):
             if n != "WSLENV" and n not in names:
                 names.append(n)
         return m.group(1) + m.group(2) + "python.exe"
-    out, n = _PY3_START_RX.subn(sub, cmd)
+    parts, n = [], 0
+    for seg in _SEG_RX.split(cmd):      # separators kept at odd indexes; a /mnt word moves only in a turned command
+        new, k = _PY3_START_RX.subn(sub, seg)
+        parts.append(_MNT_RX.sub(lambda m: m.group(1) + m.group(2).upper() + ":/", new) if k else new)
+        n += k
     if not n:
         return None
-    return ("export WSLENV=${WSLENV:+$WSLENV:}%s; " % ":".join(names) if names else "") + out
+    return ("export WSLENV=${WSLENV:+$WSLENV:}%s; " % ":".join(names) if names else "") + "".join(parts)
 
 
 def run_proof_line(sh, cmd, log, timeout):
@@ -711,8 +717,13 @@ def run_proof_line(sh, cmd, log, timeout):
     win = windows_python_line(cmd) if WSL_NO_ROUTE in (tail or "") else None
     if not win:
         return rc, tail
-    rc, tail = sh(win, log_name=log, timeout=timeout)
+    rc, tail = sh(win, log_name=rerun_log(log), timeout=timeout)     # its own log: the row's tail is the rerun's alone
     return rc, "rerun under python.exe (WSL has no route to the bridge): %s" % (tail or "")
+
+
+def rerun_log(log):
+    """the log name of a proof line's python.exe rerun: proof_A1.log -> proof_A1_rerun.log."""
+    return (log[:-4] if log.endswith(".log") else log) + "_rerun.log"
 
 
 def proof_site(text, cid):
@@ -1776,10 +1787,11 @@ class Attempt:
                 if rc is not None else "timed out after %d s" % per
             rows.append({"chain": "proofs", "row": c, "verdict": verdict,
                          "detail": ("%s: %s" % (head, tail))[-S.DETAIL_CAP:]})
-            path = os.path.join(self.d, log)
-            if os.path.isfile(path):
-                self.res["artifacts"].append({"name": log, "path": path, "sha256": sha256_file(path),
-                                              "bytes": os.path.getsize(path)})
+            for name in (log, rerun_log(log)):
+                path = os.path.join(self.d, name)
+                if os.path.isfile(path):
+                    self.res["artifacts"].append({"name": name, "path": path, "sha256": sha256_file(path),
+                                                  "bytes": os.path.getsize(path)})
         self.res["rows"] = rows
         self.res["counts"] = S.count_verdicts(rows)
         self.res.update(outcome="DONE", cause=None, note="tier %s, %d running mods; %s" % (

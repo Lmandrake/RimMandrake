@@ -44,15 +44,25 @@ if callable(f):
     got = f("python3 x.py --note 'run python3 later' --py python3.11")
     check("argument words untouched", got == "python.exe x.py --note 'run python3 later' --py python3.11", repr(got))
     check("no python3 -> None", f("python.exe x.py") is None and f("mkdir -p a && rm -f b") is None)
+    # polish (2026-11-25 fresh reader): a /mnt/<d>/ argument of a python3 command reaches Windows python as D:/...; a
+    # /mnt word of a bash command or of a command already on python.exe is left alone. Measured 2026-11-26: 31 of 478
+    # live-proof and live-site lines give python3 a /mnt path.
+    got = f("python3 p.py --out /mnt/d/RimTest/x.json A1 && cat /mnt/d/a && python.exe q.py /mnt/c/y")
+    check("a /mnt argument of a rerun python3 becomes a Windows path",
+          got == "python.exe p.py --out D:/RimTest/x.json A1 && cat /mnt/d/a && python.exe q.py /mnt/c/y", repr(got))
 
 r = getattr(W, "run_proof_line", None)
 check("run_proof_line exists", callable(r), "worker.py has no run_proof_line")
 if callable(r):
+    logs = []
+
     def fake(results):
         calls = []
+        del logs[:]
 
         def sh(cmd, log_name=None, timeout=None):
             calls.append(cmd)
+            logs.append(log_name)
             return results[len(calls) - 1]
         return sh, calls
 
@@ -67,6 +77,9 @@ if callable(r):
     check("no-route reruns under python.exe", len(calls) == 2 and calls[1] == "python.exe p.py A1 < /dev/null"
           and out[0] == 0, repr((out, calls)))
     check("the rerun's tail names the rerun", "python.exe" in (out[1] or ""), repr(out))
+    # polish (2026-11-25 fresh reader): the rerun writes its own log, so the row's tail is the rerun's alone, never the
+    # first run's no-route text above the verdict
+    check("the rerun has its own log", logs == ["proof_A1.log", "proof_A1_rerun.log"], repr(logs))
     sh, calls = fake([(2, NOROUTE), (2, "A1 UNMEASURED: still no route")])
     out = r(sh, "python3 p.py A1", "proof_A1.log", 60)
     check("rerun at most once", len(calls) == 2 and out[0] == 2, repr((out, calls)))
