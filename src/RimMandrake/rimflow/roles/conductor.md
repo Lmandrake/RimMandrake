@@ -342,7 +342,9 @@ launch, FlowWorks + GSS (Gimme Some Slack) included. The earlier pipelines are r
   verdict are in `D:\ClaudeWork\rimmandrake\showings\<ITEM>\`.
 - Read the item's successors and his later notes. When a successor or a later note of his replaces the look, build
   that first. Never show the old build.
-- Design, from the retired Relentless era: `design/RimMandrake/relentless_agent_design_2026-11-01.md` section 8.1.
+- Design, from the retired Relentless era: section 8.1 of `design/RimMandrake/relentless_agent_design_2026-11-01.md`.
+  Commit ba609865bd deleted that file. Read it with
+  `git show ba609865bd^:design/RimMandrake/relentless_agent_design_2026-11-01.md`.
 
 Helpers: design · builder · live-test. **No helper limit only for work started within 20 min of his last typed message in this window; after that, two concurrent helpers**
 (owner, 2026-10-29; his words: `design/RimMandrake/roles.history.md` §conductor.md).

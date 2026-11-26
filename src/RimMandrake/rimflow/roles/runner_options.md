@@ -28,8 +28,8 @@ Windows `python.exe`. No Claude runner or Claude tool call drove the game. The r
   assertions → restoration → shutdown/release.
 - The proof does not certify general colony play, a full mod list, Windows sandbox confinement, mouse interaction or
   flight.
-- The failures of the Windows-launch workspace-write sandbox (§Runner selection) remain separate from the native WSL
-  result.
+- The failures of the Windows-launch workspace-write sandbox (the 2026-11-09 probes, `design/RimMandrake/roles.history.md`
+  §runner_options.md: Runner selection) remain separate from the native WSL result.
 
 ### What runs automatically, and what the operator must supply
 
