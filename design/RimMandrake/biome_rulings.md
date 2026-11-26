@@ -318,8 +318,8 @@ weights (ledger note on `BIOME_MAP_GENERATORS_DESIGN_1`, 2026-10-10).
 - The engine hook is the BiomeDef's `extraGenSteps` and `preventGenSteps`. Engine facts, the existing per-biome
   GenSteps and the shape intent of each biome: `design/RimMandrake/biome_map_makers_design_2026-10-10.md`.
 - A landform (a canyon, a crater, a plateau) is our own `TileMutatorDef` with our own worker, painted on a tile by hand
-  at the one painting. Build a landform when a biome's design asks for it. The sea-shore mutator
-  (`src/RimMandrake/SeaShores/`) is the model.
+  in the one final paint of the planet (`BIOME_PAINT_ONCE_AT_THE_END_1`). Build a landform when a biome's design asks
+  for it. The sea-shore mutator (`src/RimMandrake/SeaShores/`) is the model.
 - Geological Landforms is retired from the shipped list (2026-11-02,
   `design/RimMandrake/geological_landforms_judgment_2026-11-02.md`).
 
@@ -331,12 +331,12 @@ own stones". Card 2: new stones are wanted, basalt first, for the volcanic biome
 
 - Each biome's design names the natural stones of its maps. The BiomeDef lists them: `forceRockTypes`, or
   `extraRockTypes` for a rock that sets `building.biomeSpecific`. Mechanism: `12_rocks_design.md` §0.
-- A new rock def of ours sets `building.biomeSpecific`, or a biome forces it. Otherwise it goes into the random draw of
-  every tile on the planet.
-- The stone list is computed when a map is made. It is mod content, not world paint.
+- A new rock def of ours sets `building.biomeSpecific`, or a biome forces it. Otherwise the rock goes into the random
+  draw of every tile on the planet.
+- The stone list is computed when a map is made. The stone list is mod content, not world paint.
 - No basalt rock exists now (it left with Minerals). The Forge has a basalt terrain, `RM_BasaltShingle`, which is not a
   rock. The first volcanic biome that takes its stones builds the basalt rock, its chunk and its blocks, with art
-  through the art ledger.
+  installed through `art install` (CLAUDE.md §Art).
 - A biome takes its stones at its next Design Version. The bars of its current version do not move.
 
 ## Five biome answers by card — owner, 2026-11-19, 11:20 to 11:24 PM PST
