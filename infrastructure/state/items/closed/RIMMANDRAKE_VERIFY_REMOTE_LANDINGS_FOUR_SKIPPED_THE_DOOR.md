@@ -3,7 +3,7 @@
 
 On 2026-11-17 evening an offline builder (on a Mac, no game) landed these straight on main. The work order
 (`git show c8d73d052d:infrastructure/state/remote_work.md`) promised an independent reviewer per ticket; none ran, and
-four commits landed with `RM_PUBLISH_SKIP_PIPELINE_CHECKS`. Its own account: `infrastructure/state/handoffs/CONDUCTOR_HANDOFF_202611180743.md` and `..._202611180417.md`. The owner asked: confirm the work was done well.
+four commits landed with `RM_PUBLISH_SKIP_PIPELINE_CHECKS`. Its own account: `infrastructure/state/handoffs/CONDUCTOR_HANDOFF_202611180743.md` and `..._202611180417.md` (both culled 2026-11-25; read them with `git show eeb532cee4:<path>`). The owner asked: confirm the work was done well.
 
 Commits: publish untracked-copy `84ca416f3a` · Graffiti kernel6 fuzz `0755474953` · EK frame judge `9a437178d8` ·
 both judge-card tickets `dbd5c89339` · wrapup live-clone `cf4a8a4d02` · seat_restart Linux-only readings `55722bc0f9` ·

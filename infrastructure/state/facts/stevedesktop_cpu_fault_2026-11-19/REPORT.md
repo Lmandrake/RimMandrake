@@ -153,7 +153,7 @@ Named disagreements, not smoothed over:
    changes the load, and a swap that does not fix it costs a part and a visit for little information.
 3. **The evidence that the raise took effect.** Our facts file compared post-raise readings with a set that included turbo-on
    boots; the drop it showed was the turbo change. This run fixed the file (`infrastructure/state/facts/steve_fault_diagnosis.md`)
-   and the Conductor handoff `CONDUCTOR_HANDOFF_202611180140.md` that repeated it.
+   and the Conductor handoff `CONDUCTOR_HANDOFF_202611180140.md` that repeated it (culled 2026-11-25; read it with `git show eeb532cee4:infrastructure/state/handoffs/CONDUCTOR_HANDOFF_202611180140.md`).
 4. **The 10-31 "register held intact" result** was void (blind test). It was the only test that had looked for exactly this fault.
 
 ## 6. Buying options
@@ -233,4 +233,4 @@ alternative for seeds 0, 3 and 7. Five other seeds were not run (about 1 minute 
 ### D. Corrections made in other files this run
 - `infrastructure/state/facts/steve_fault_diagnosis.md`: the "+0.100 V raise IS visible" bullet was false (it compared with
   turbo-on readings); replaced with the NVRAM reading and the turbo-off comparison.
-- `infrastructure/state/handoffs/CONDUCTOR_HANDOFF_202611180140.md`: the same false sentence, replaced.
+- `infrastructure/state/handoffs/CONDUCTOR_HANDOFF_202611180140.md` (culled 2026-11-25; in git at `eeb532cee4`): the same false sentence, replaced.
