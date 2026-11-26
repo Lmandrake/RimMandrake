@@ -1,4 +1,4 @@
-# choose_look through the reach menu, ArchSmall, 2026-11-26 (FlowWorks loaded build = origin/main before b84d6f6337's DLL; flowworks_list)
+# choose_look through the reach menu, ArchSmall, 2026-11-26, flowworks_list. Loaded FlowWorks: the deploy dry run found only Assemblies/RimMandrakeFlowWorks.dll differing from source (not redeployed; which commit the loaded DLL holds was not read).
 ## before the fix (objects_sheet at 2f8579d1b5): choose_look returned None; probe: the looks menu opened by the reach pick is gone
 guardrail \\wsl.localhost\Ubuntu\home\mandrake\rm\runs\clones\BIGNET_PROOF_FIX_SIZE_NOT_RESTORED.det\Transient\bignet_closeups_20261126\guardrail_station2.png
 faucet default \\wsl.localhost\Ubuntu\home\mandrake\rm\runs\clones\BIGNET_PROOF_FIX_SIZE_NOT_RESTORED.det\Transient\bignet_closeups_20261126\faucet_station1_default.png
