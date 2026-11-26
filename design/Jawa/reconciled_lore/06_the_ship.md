@@ -44,7 +44,10 @@ Ohm — the machine-god — is one tenant of nine, not the ship and not its voic
 The voice that is no god is the Narrator above.
 
 **Each god seeks to grow into THEIR body — the ship — in the presence of the
-other eight. One hull, nine claimants. That is the campaign arc.** Beneath
+other eight. One hull, nine claimants. That is the campaign arc.** The old
+quarrels turn literal inside the hull: Ohm against Oomo is a dispute over the
+same ship-chambers, and Zizzik's name unspoken near the engine is operational
+security. Beneath
 them runs the tenth strand: the Cradle's own initiator purpose, still
 executing — *make a planet habitable* — pointed at the world outside the hull.
 Nine gods want the ship; the ship wants the planet. And below even that, a

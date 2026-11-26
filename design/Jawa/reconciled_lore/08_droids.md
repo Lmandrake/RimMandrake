@@ -46,8 +46,9 @@ droid parts. That is the lore wall between mechanoids and droids.
 ## The shop-centric lifecycle
 
 CUT as magic: ingestible repair kits, field reactivation kits, skill disks,
-healer auras, the auto-factory, battery-eating-as-food, surgery as the install
-verb. REPLACED by: repair benches and reassembly harnesses — repair is parts
+healer auras, the auto-factory, battery-eating-as-food, surgery as the install verb (reboot, bolt, wipe and spike
+stay operations-tab surgeries, built — `DROID_UNIFIED_FRAMEWORK_DESIGN.md`
+§1.3). REPLACED by: repair benches and reassembly harnesses — repair is parts
 off, parts fixed, parts on; assembly is lego from the same parts. Overclock is
 a bench job (reversible, ~+15% for power/heat/mood). Charging is three tiers
 (room nimbus / dock / socket) with spectacular visuals; power is minimal but

@@ -40,8 +40,14 @@ the subsolar ground. Ion EMPLACEMENTS are Imperial anti-ship tech
 [owner 2026-08-29]. Capture economy: no ransom — retrieves or erases.
 Stormtroopers spawn close to Broken.
 
-**2 · Hutt Cartel.** Wealthy, decentralised, transactional; owns the oases
-(palaces on water, service houses without) and the only non-Imperial orbital
+**2 · Hutt Cartel.** Wealthy, decentralised, transactional; owns the oases: the 8 palaces of the greater Hutts
+(Vexxa the Unblinking, Rulla the Deep, Zeddo the Patient, Norba the Wet, Hurgo
+the Vast, Bloatu the Ninth, Gorga the Immense, Mokka the Unpaid) each sit
+BESIDE an oasis, never on it, so the player can always reach the water — Mokka
+the Unpaid is the one palace with no well; the 11 lesser holdings hold no water
+and sell a service (tolls, markets, kennels, waystations, vaults, the casino,
+the spicehouse, the skimhouse) — so Hutt rank reads from the map [owner
+2026-08-24]. They also own and the only non-Imperial orbital
 node — the door off-world. The Jawa stole the Utinni from their salvage yard:
 strongly negative, recoverable — they want the ship back and they want paying.
 A Hutt never appears in a raid group. **Permanent slavers** (the Jawa are slave

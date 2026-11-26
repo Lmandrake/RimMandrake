@@ -79,7 +79,9 @@ appear early, sparingly — foreshadowing.
 ## The war and the sleepers [owner 2026-08-29]
 
 The fall took **nearly a generation** of fighting and losing. The casket
-sleepers are the **war generation** — grown children of the last great Rakata,
+sleepers are the **war generation** — adult grandchildren of the last true Rakatan empire
+(amendment 2026-09-10, below; earlier generations exist only at the antipode
+war lab),
 hardened, PTSD-scarred, fierce survivors, superb researchers, excellent with
 frightening weaponry, and **violently against genetic modification and the
 technology that births such things** (trauma from the flesh-weapon; the VQE

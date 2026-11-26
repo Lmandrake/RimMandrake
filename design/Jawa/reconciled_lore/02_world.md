@@ -43,10 +43,13 @@ built from shipped weather mechanics, not simulated. The Pyrelands are the
 high-risk/high-reward tile: the planet's best soil (ash), on a schedule you do
 not control. The **tar pits** are the receipt — eons of ash-and-flood churned
 into biologically rich tar at the margin, preserving what they catch
-(including things that are not bones). Four survival strategies characterize
+(including things that are not bones). They lie
+interspersed with the Pyrelands' margin, never in a band, and tar kills by
+holding on — a third way to die, after absence and fire [owner 2026-08-15]. Four survival strategies characterize
 factions: burrow (Geonosians) · move (Tuskens — camps in the scar behind the
-front) · burn-it-first (unclaimed — see GAPS) · wall-it-out (the Empire's
-sterile scars visible from orbit).
+front) · burn-it-first (the Deep Desert Tribes reap the flames,
+`04_factions.md`) · wall-it-out (the Empire's sterile scars visible from orbit). The Jawa
+burrow-and-move: a sandcrawler is a wall that moves.
 
 ## The nightside — a decay gradient, not a biome [owner 2026-08-15]
 
@@ -65,7 +68,17 @@ temperatures are forced down; nightside creatures ENJOY frigid cold and die
 crossing the terminator, as dayside life dies going out. The terminator is a
 hard biological barrier both ways — the ship must be excellently heated to
 reach the propane that keeps it warm, and nightside biology is untransportable,
-which makes it valuable.
+which makes it valuable. No Jawa carries a cold-tolerance gene: in the dark the
+clan lives on the heat its own factory throws, so hiding costs fuel hauled from
+the dayside, and heater technology is a real progression tier [owner
+2026-08-14]. The glowforest is the nightside's oasis — light in a desert of
+dark, the rhyme of water in a desert of heat [owner 2026-08-14].
+
+**The sun stays fixed only while the Tidally Locked mod and its Alien Worlds
+framework load** and the save names the planet type (with Worldbuilder loaded,
+`<worldPresetName>TidallyLocked</worldPresetName>`): both stay on every list
+that loads the world, or Ash'karr's sun rises and sets again. The mod's own
+temperature curve is worldgen-only and never reaches the painted save.
 
 Unifying idea: dayside assembles matter obscenely fast; the darkside takes it
 apart just as fast. Same metabolism, opposite sign. **Growth stalls in exactly

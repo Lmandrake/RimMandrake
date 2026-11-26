@@ -51,8 +51,10 @@ permanent colony lives aboard; planetary camps are disposable. Small crew
 
 - **The Empire** — the singular escalating military pursuer, orbital-first. Its
   detection timer forces exit from any open-sky tile **in under one growing
-  season** [owner 2026-08-06]. Dark/covered tiles PAUSE the orbital clock and
-  substitute their own dangers and scarcities [owner 2026-08-05].
+  season** [owner 2026-08-06]. The nightside and dark/covered tiles greatly EXTEND
+  the orbital clock and never stop it — *the player can always buy time, never
+  safety* [owner 2026-08-14] — and substitute their own dangers and scarcities
+  [owner 2026-08-05].
 - **The Hutt ledger** — economic/criminal pressure; they want the ship back and
   they want paying, which is very Hutt. Strongly negative but recoverable.
 - **Ta'Baa's clock** — the theological pressure to move (`05_the_clan.md`).
