@@ -51,9 +51,11 @@ register:
      2026-09-06). `megafauna_yield_group_count` below asserts the MEASURED
      34/413, not either stale prose figure.
 
-MOD SETTINGS: none. No `Settings.cs`/`ModSettings` subclass anywhere in
-this mod's tree (checked) -- `suite.toggles = []`, every component
-`beyond_toggle=True`.
+MOD SETTINGS: `Source/DoctrineCore/DoctrineSettings.cs` (OILGAS_BUILDABILITY_EXCISE_FOUND_NOT_FORGED):
+`oilWorksFoundNotBuilt` gates `Patches/FoundNotForged.xml` (acts after a restart) and `noInfiniteHelixien`
+gates the HelixienFinite postfix (new maps only); both default on. Their checks are
+`selftest_found_not_forged.py` (offline) and `live_found_not_forged.py` (live, kind A). The older
+components here have no switch and stay `beyond_toggle=True`.
 
 WHAT IS AND ISN'T PROVEN, and the mod's own dependency structure:
   - `megafauna_yield_group_count` and `bear_grizzly_yield_readback` are
@@ -82,7 +84,7 @@ WHAT IS AND ISN'T PROVEN, and the mod's own dependency structure:
 from modcheck import Suite, ExpectationFailed
 
 suite = Suite("Doctrine")
-suite.toggles = []   # no Settings.cs anywhere in this mod's tree
+suite.toggles = ["oilWorksFoundNotBuilt", "noInfiniteHelixien"]   # DoctrineSettings.cs
 
 MEGAFAUNA_GROUPS_MEASURED = 34     # grep -c 'PatchOperationFindMod', 2026-09-17
 MEGAFAUNA_DEFNAMES_MEASURED = 413  # grep -oP defName="..." | sort -u | wc -l

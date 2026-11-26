@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RUT_Doctrine_SettingsCategory>Jawa Doctrine</RUT_Doctrine_SettingsCategory>
+  <RUT_Doctrine_OilWorksFoundNotBuilt>Oil works and helixien pumps are found, never built (after a restart)</RUT_Doctrine_OilWorksFoundNotBuilt>
+  <RUT_Doctrine_OilWorksFoundNotBuilt_Desc>Rimefeller's oil wells, deep oil wells, oil storage, crude cracker and refinery loading bay, and the helixien pump of Vanilla Helixien Gas Expanded, are taken out of the build menu. Ones that are already on a map still work. Takes effect after the game restarts.</RUT_Doctrine_OilWorksFoundNotBuilt_Desc>
+  <RUT_Doctrine_NoInfiniteHelixien>No infinite helixien deposits (new maps only)</RUT_Doctrine_NoInfiniteHelixien>
+  <RUT_Doctrine_NoInfiniteHelixien_Desc>Vanilla Helixien Gas Expanded puts infinite helixien deposits on every new map. With this on, they are removed; ordinary finite deposits and gas geysers stay. Acts only on a newly generated map.</RUT_Doctrine_NoInfiniteHelixien_Desc>
+</LanguageData>

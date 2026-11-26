@@ -24,6 +24,14 @@ namespace RimMandrake.Utinni.Doctrine
             {
                 Log.Error("[RimMandrake.Utinni.Doctrine] Failed to apply patches: " + ex);
             }
+            try
+            {
+                HelixienFinite.Apply(harmony); // OILGAS_BUILDABILITY_EXCISE_FOUND_NOT_FORGED, DoctrineSettings.cs
+            }
+            catch (Exception ex)
+            {
+                Log.Error("[RimMandrake.Utinni.Doctrine] Failed to patch Vanilla Helixien Gas Expanded: " + ex);
+            }
 
             // COLONY_VISIBILITY_STAT_1's ColonyVisibility.cs / ColonyVisibilityRaidPatch.cs
             // moved out to their own dedicated mod, mandrake.rm.visibility

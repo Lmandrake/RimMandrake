@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Oil and helixien are FOUND, never built (OILGAS_BUILDABILITY_EXCISE_FOUND_NOT_FORGED).
+
+     Owner adoption rulings, design/Jawa/mods/required_mods.md: Rimefeller (2026-08-04) "place pre-built + strip
+     buildability (remove <designationCategory>) so it can only be found"; Vanilla Helixien Gas Expanded (2026-08-10)
+     "a cool thing to find added to the tile map, not as an infinite source", with the pump stripped of buildability.
+     Guardrail: desert_world_design.md section 2A (no player-buildable infinite generator of a windfall resource).
+
+     WHY AN EMPTY NODE AND NOT A REMOVE: every Rimefeller work below inherits designationCategory from an abstract
+     parent (BasedRimefellerMom, ChemfuelHopperBase); none declares its own, so a PatchOperationRemove on the child
+     matches nothing. An empty <designationCategory/> on the child overrides the parent's, and an empty def node
+     loads as null (Verse.DirectXmlToObject: InnerText.NullOrEmpty() sets the field null). Rimefeller uses the same
+     form itself on Filth_OilSlick. Each def gets a Conditional, so a future version that declares the field
+     directly is replaced, never doubled ("defines the same field twice").
+
+     WHY UNBUILDABLE AND NOT DELETED: the mods' own C#, research and pipe nets keep every reference intact; a
+     pre-placed (found) well, cracker or pump still works.
+
+     The whole file is gated by the Doctrine Mod Setting "oilWorksFoundNotBuilt" (default on; acts after a restart).
+     The infinite helixien deposits are removed in C# (HelixienFinite.cs), gated by "noInfiniteHelixien".
+     Offline check: src/RimUtinni/Doctrine/selftest_found_not_forged.py. -->
+<Patch>
+
+  <Operation Class="RimMandrake.Utinni.Doctrine.PatchOperationDoctrineSetting">
+    <setting>oilWorksFoundNotBuilt</setting>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationFindMod">
+          <mods><li>Rimefeller</li></mods>
+          <match Class="PatchOperationSequence">
+            <operations>
+              <li Class="PatchOperationConditional">
+                <xpath>/Defs/ThingDef[defName="OilWell" or defName="DeepOilWell" or defName="OilStorage" or defName="CrudeCracker" or defName="RefineryLoadingBay"][not(designationCategory)]</xpath>
+                <match Class="PatchOperationAdd">
+                  <xpath>/Defs/ThingDef[defName="OilWell" or defName="DeepOilWell" or defName="OilStorage" or defName="CrudeCracker" or defName="RefineryLoadingBay"][not(designationCategory)]</xpath>
+                  <value>
+                    <designationCategory></designationCategory>
+                  </value>
+                </match>
+              </li>
+              <li Class="PatchOperationConditional">
+                <xpath>/Defs/ThingDef[defName="OilWell" or defName="DeepOilWell" or defName="OilStorage" or defName="CrudeCracker" or defName="RefineryLoadingBay"]/designationCategory[text()]</xpath>
+                <match Class="PatchOperationReplace">
+                  <xpath>/Defs/ThingDef[defName="OilWell" or defName="DeepOilWell" or defName="OilStorage" or defName="CrudeCracker" or defName="RefineryLoadingBay"]/designationCategory[text()]</xpath>
+                  <value>
+                    <designationCategory></designationCategory>
+                  </value>
+                </match>
+              </li>
+            </operations>
+          </match>
+        </li>
+
+        <li Class="PatchOperationFindMod">
+          <mods><li>Vanilla Helixien Gas Expanded</li></mods>
+          <match Class="PatchOperationConditional">
+            <xpath>/Defs/ThingDef[defName="VHGE_HelixienPump"]/designationCategory[text()]</xpath>
+            <match Class="PatchOperationReplace">
+              <xpath>/Defs/ThingDef[defName="VHGE_HelixienPump"]/designationCategory[text()]</xpath>
+              <value>
+                <designationCategory></designationCategory>
+              </value>
+            </match>
+          </match>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

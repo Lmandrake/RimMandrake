@@ -16,3 +16,4 @@
 - 2026-11-24 (conversion ticket, the fresh agent): `scene.py tools` cuts each description at about 150 characters and prints no argument schema.
 - 2026-11-25 fresh reader: in `_answer_load_windows`, a failed window list reads as "no load window to answer"; the calm still refuses an open window by name.
 - 2026-11-25 fresh reader: `scene_fake` opens all load windows at once; VEF opens them one at a time, and the test does not exercise that order.
+- 2026-11-26 (OILGAS_BUILDABILITY_EXCISE_FOUND_NOT_FORGED): `scene_world.wanted` (via `build_match.mod_package_id`) looks for a named mod only under `src/RimMandrake/`, so `needs["mods"]` cannot name a `src/RimUtinni/` or `src/RimStarWars/` mod (KeyError "no mod folder under src/RimMandrake"); risk: a scene of such a mod cannot have its loaded build checked, so a stale DLL passes unseen. The Doctrine live check opened with no mods named and read the mod's own static counters instead.
