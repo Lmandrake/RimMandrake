@@ -2,6 +2,7 @@
 """selftest_run_root_rename.py -- the promises of design/specs/2026-11-26-run-root-rename/boundary.md.
 
 Offline: temp dirs only, one child process (`sleep`) for the /proc cwd reading."""
+import json
 import os
 import subprocess
 import sys
@@ -104,9 +105,68 @@ def t_a_transcript_folder_is_found_by_either_path():
               DH.project_dir(os.path.join(old, "clones", "ITEM.det"), projects) == given)
 
 
+def _real_pool_clone(pool, item):
+    """A real git clone inside <pool>/clones with one unlanded commit and one dirty file. -> its real path."""
+    def git(c, *a):
+        return subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@t", *a], cwd=c, check=True,
+                              capture_output=True, text=True).stdout
+    os.makedirs(os.path.join(pool, "clones"), exist_ok=True)
+    o = os.path.join(pool, "o.git")
+    git(pool, "init", "-q", "--bare", o, "-b", "main")
+    c = os.path.join(pool, "clones", item + ".det")
+    git(pool, "clone", "-q", o, c)
+    for name, text, commit in (("base.txt", "base\n", True), ("work.cs", "committed work\n", True),
+                               ("dirty.cs", "not committed\n", False)):
+        with open(os.path.join(c, name), "w") as f:
+            f.write(text)
+        if commit:
+            git(c, "add", name)
+            git(c, "commit", "-qm", name)
+            if name == "base.txt":
+                git(c, "push", "-q", "origin", "HEAD")
+    return c
+
+
+def t_a_clone_named_through_the_old_pool_name_is_bundled_and_returned():
+    import tarfile
+    with tempfile.TemporaryDirectory() as t:
+        real, old = _tree(t)
+        c = _real_pool_clone(real, "SYMLINKED_CLONE")
+        named = os.path.join(old, "clones", "SYMLINKED_CLONE.det")
+        fx = run_store.Effects(run_store.rules(), run_store.Store(real))
+        out = fx.remove_clone({"clone": named, "item": "SYMLINKED_CLONE"})
+        held = []
+        for f in (os.listdir(out) if out and os.path.isdir(out) else []):
+            if f.endswith(".tar"):
+                with tarfile.open(os.path.join(out, f)) as tf:
+                    held += tf.getnames()
+        left = os.listdir(os.path.join(real, "clones"))
+        check("a-clone-named-through-the-old-pool-name-is-bundled-and-returned",
+              bool(out) and os.path.exists(os.path.join(out, "commits.bundle")) and any(n.endswith("dirty.cs") for n in held)
+              and not os.path.exists(c) and any(n.startswith("warm") for n in left), (out, held, left))
+
+
+def t_a_clone_outside_the_pool_is_refused_with_an_alarm_line():
+    with tempfile.TemporaryDirectory() as t:
+        pool, elsewhere = os.path.join(t, "pool"), os.path.join(t, "elsewhere", "OUTSIDE.det")
+        os.makedirs(pool)
+        os.makedirs(elsewhere)
+        store = run_store.Store(pool)
+        out = run_store.Effects(run_store.rules(), store).remove_clone({"clone": elsewhere, "item": "OUTSIDE"})
+        lines = []
+        if os.path.exists(store.p("journal.jsonl")):
+            with open(store.p("journal.jsonl")) as f:
+                lines = [json.loads(x) for x in f if x.strip()]
+        mine = [x for x in lines if x.get("do") == "alarm" and x.get("clone") == elsewhere]
+        check("a-clone-outside-the-pool-is-refused-with-an-alarm-line",
+              out is None and os.path.isdir(elsewhere) and len(mine) == 1 and bool(mine[0].get("why")), lines)
+
+
 def main():
     for fn in (t_the_run_root_is_neutral, t_a_symlinked_pool_clone_is_seen_in_use,
-               t_a_record_by_the_old_path_is_the_same_clone, t_a_transcript_folder_is_found_by_either_path):
+               t_a_record_by_the_old_path_is_the_same_clone, t_a_transcript_folder_is_found_by_either_path,
+               t_a_clone_named_through_the_old_pool_name_is_bundled_and_returned,
+               t_a_clone_outside_the_pool_is_refused_with_an_alarm_line):
         try:
             fn()
         except Exception as e:  # noqa: BLE001 - a crash is a failed promise, named

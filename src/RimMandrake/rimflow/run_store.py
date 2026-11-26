@@ -535,8 +535,16 @@ class Effects(object):
     def remove_clone(self, st, before=None):
         """Nothing leaves the pool unbundled. -> the bundle dir or None; a bundle that fails keeps the clone."""
         c = st.get("clone")
-        if not c or not os.path.abspath(c).startswith(os.path.join(self.base, "clones") + os.sep):
+        if not c:
             return None
+        # Real paths on both sides (RIMMANDRAKE_RETURN_CLONE_UNDER_OLD_POOL_NAME_KEPT_SILENT): a record that names the pool
+        # through a symlink (the old /home/mandrake/rm/relentless) is still a pool clone. A refusal is never silent.
+        real = os.path.realpath(c)
+        if not real.startswith(os.path.join(os.path.realpath(self.base), "clones") + os.sep):
+            self.store.journal({"at": iso(time.time()), "do": "alarm", "kind": "clone_outside_pool", "clone": c,
+                                "why": "not under %s: the clone is neither bundled nor removed" % os.path.join(self.base, "clones")})
+            return None
+        c = real
         out = None
         if os.path.exists(os.path.join(c, ".git")):
             try:

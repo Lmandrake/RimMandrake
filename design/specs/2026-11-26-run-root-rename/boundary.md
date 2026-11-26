@@ -33,3 +33,9 @@ can name the pool by either path, and a reader compares them by their real path.
   through the symlink as the same clone. Red on the base: the run does not own or hold it.
 - **a-transcript-folder-is-found-by-either-path.** `project_dir` returns the folder that exists, of the path as given
   or of its real path. Red on the base: it returns the given path's folder, which does not exist.
+- **a-clone-named-through-the-old-pool-name-is-bundled-and-returned.** `run_store.Effects.remove_clone` compares real
+  paths: a clone whose recorded path goes through a symlink to the pool is bundled (`bundle_clone`), then parked as a warm
+  spare or removed. Red on the base: it returned None, bundled nothing and kept the clone, with no journal line.
+- **a-clone-outside-the-pool-is-refused-with-an-alarm-line.** `remove_clone` still refuses a clone that is not under
+  `<pool>/clones`, bundles and removes nothing, and writes one `alarm` line (`kind` `clone_outside_pool`, `clone`, `why`)
+  to the store's `journal.jsonl`. Red on the base: it refused with no line.
