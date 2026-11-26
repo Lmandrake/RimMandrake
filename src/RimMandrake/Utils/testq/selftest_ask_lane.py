@@ -143,11 +143,29 @@ def t_a_check_the_host_cannot_run_is_not_sent():
     check(not w and "absent" in str(got) and "could not look" not in str(got), "a check the host cannot run is not sent (the rest: selftest_steve_visit_feed.py) %s" % got)
 
 
+def t_facts_written_during_a_pass_are_never_read_as_stale():
+    """rm-host-facts.timer writes the file while a testq-tick pass runs; the pass took its time at its start
+    (RIMMANDRAKE_READ_FRESH_HOST_FACTS_NEGATIVE_AGE_CRIED_STALE: the steward read -176 s as `-2 min old`)."""
+    import testq as T
+    now = 1_000_000.0
+    p = os.path.join(os.environ["TESTQ_QUEUE"], "host_facts.json")
+    got = {}
+    for name, at in (("later", now + 120), ("edge", now + HF.MAX_FUTURE_S), ("over", now + HF.MAX_FUTURE_S + 1), ("broken", now + 86400)):
+        json.dump({"at": at, "facts": F}, open(p, "w"))
+        got[name] = (HF.read(p, now), T.facts_hold("FlowWorks", now), HF.unmet("FlowWorks", kept=HF.read(p, now)))
+    check(not got["later"][0]["stale"] and got["later"][0]["facts"] == F and "the host facts are" not in str(got["later"][1:])
+          and not got["edge"][0]["stale"], "facts stamped 120 s after the caller's time read fresh: %s" % (got["later"],))
+    check(got["over"][0]["stale"] and got["broken"][0]["stale"] and got["broken"][0]["facts"] is None
+          and "could not look: the host facts are" in got["broken"][1] and "could not look: the host facts are" in got["over"][2],
+          "facts stamped far in the future read could not look: %s" % (got["broken"][1:],))
+    os.remove(p)
+
+
 def main():
     os.environ["TESTQ_QUEUE_SSH"] = ""          # a submit here never leaves this fixture
     for t in (t_an_unread_part_is_never_absent, t_a_refresh_that_fails_writes_nothing, t_each_clause_goes_to_its_own_list,
               t_a_held_companion_is_queued_not_dropped, t_a_check_the_host_cannot_run_is_not_sent,
-              t_old_facts_are_stale, t_absent_is_measured, t_stale_never_says_absent, t_no_driver_is_cannot, t_a_missing_tier_mod_is_cannot,
+              t_old_facts_are_stale, t_facts_written_during_a_pass_are_never_read_as_stale, t_absent_is_measured, t_stale_never_says_absent, t_no_driver_is_cannot, t_a_missing_tier_mod_is_cannot,
               t_stale_facts_are_could_not_look, t_an_ask_is_the_whole_line, t_a_login_low_on_time_is_named):
         t()
     print("FAIL %d" % len(FAILS) if FAILS else "PASS")

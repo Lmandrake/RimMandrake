@@ -2,7 +2,7 @@
 """host_facts.py - what SteveDesktop's games have, read by program each half hour, kept with its age
 (page design/specs/2026-11-24-ask-lane-after-host-facts/boundary.md; tests selftest_ask_lane.py; rm-host-facts.timer).
 
-  read(path, now) -> {"age_s", "stale", "facts"}   no file, unreadable file, or older than MAX_AGE_S: stale, never facts
+  read(path, now) -> {"age_s", "stale", "facts"}   no file, unreadable file, older than MAX_AGE_S, or stamped over MAX_FUTURE_S after now: stale, never facts
   lacks(need, facts, stale) -> [(kind, name, word)]  "absent" (looked, not there) or "could not look" (stale, or that part unread)
   need_of(mod, tier) -> what a lane job of MOD on TIER (None: the minimal list) asks of the host
   unmet(mod, tier) -> "kind name is absent; ..." for that job at the kept facts, or None
@@ -23,6 +23,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
 # budget: danger=old facts of a host read as current; ends no work: the facts are read again
 MAX_AGE_S = 2 * 3600
+# budget: danger=facts stamped by a broken clock read as current; ends no work: they read could not look until the clock is right.
+# rm-host-facts.timer writes the file while a testq-tick pass runs, so a caller whose time was taken at the pass start reads facts
+# stamped after it. Longest pass measured: 1386 s (testq-tick.service budget line, 14 days to 2026-11-24); 10 x that, never tight.
+MAX_FUTURE_S = 10 * 1386
 KINDS = ("mods", "saves", "python", "companion")
 PART = {"companion": "companions"}      # the facts key of a kind that is not its own name
 PYTHON = ("numpy", "lxml", "PIL")       # Windows python: each was missing once and its jobs measured nothing (RUNBOOK)
@@ -82,7 +86,7 @@ def read(path=None, now=None):
     except (OSError, ValueError, KeyError, TypeError):
         return {"age_s": None, "stale": True, "facts": None}
     age = now - at
-    stale = age > MAX_AGE_S or age < 0
+    stale = age > MAX_AGE_S or age < -MAX_FUTURE_S     # facts stamped after the caller's time are fresh, up to MAX_FUTURE_S
     return {"age_s": age, "stale": stale, "facts": None if stale else facts}
 
 
@@ -137,7 +141,8 @@ def unmet(mod, tier=None, kept=None, need=None):
         return None
     if kept["stale"]:
         return "could not look: the host facts are %s" % (
-            "missing or unreadable" if kept["age_s"] is None else "%d min old" % (kept["age_s"] / 60))
+            "missing or unreadable" if kept["age_s"] is None else "%d min old" % (kept["age_s"] / 60) if kept["age_s"] >= 0
+            else "stamped %d min in the future (a broken clock)" % (-kept["age_s"] / 60))
     return "; ".join("%s %s is %s" % g if g[2] == "absent" else "could not look: %s %s" % g[:2] for g in gone)
 
 

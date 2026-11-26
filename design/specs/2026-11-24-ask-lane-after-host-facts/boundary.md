@@ -30,6 +30,9 @@ The gate in `visit_feed.py` (`facts_gate`) is tested in `src/RimMandrake/Utils/s
 ## PROMISES
 
 - **Old facts are stale.** A missing, unreadable or over-2-hour-old file reads stale with no facts.
+- **Facts written during a pass are never read as stale.** `rm-host-facts.timer` writes the file while a `testq-tick` pass runs, so a later step of
+  that pass reads facts stamped after the time that the pass took at its start. Facts stamped up to `MAX_FUTURE_S` after the caller's time read
+  fresh; facts stamped further ahead (a broken clock) read `could not look`.
 - **Absent is measured.** Fresh facts name a mod, save or package that is not there as `absent`, and a present one as nothing.
 - **Stale never says absent.** With stale facts every need reads `could not look`.
 - **An unread part is never absent.** A game, an About.xml or a package list that was not read makes its names `could not look`.
@@ -46,5 +49,6 @@ The gate in `visit_feed.py` (`facts_gate`) is tested in `src/RimMandrake/Utils/s
 
 ## LIMITS
 
+- `MAX_FUTURE_S` is 13860 s, 10 times the longest `testq-tick` pass measured (1386 s). It guards against facts of a broken clock read as current.
 - `MAX_AGE_S` is 2 hours. It guards against sending work on facts that may have changed. The half-hour refresh leaves three missed reads.
 - `_ssh` ends after 180 s: a hang guard. A read takes about 10 s.
